@@ -30,4 +30,20 @@ describe('sprites.json', () => {
     for (const kind of Object.keys(troops)) expect(sprites.troops, kind).toHaveProperty(kind);
     for (const kind of Object.keys(enemies)) expect(sprites.enemies, kind).toHaveProperty(kind);
   });
+
+  it('jedes Reittier hat ein Sheet und einen Sattelpunkt pro Frame', () => {
+    const mounts = (sprites as unknown as { mounts: Record<string, { sheet: string; saddle: Record<string, [number, number][]> }> }).mounts;
+    for (const [id, m] of Object.entries(mounts)) {
+      const sheet = sheets[m.sheet];
+      expect(sheet, id).toBeDefined();
+      expect(Object.keys(m.saddle), id).toContain('run');
+      for (const [anim, points] of Object.entries(m.saddle)) {
+        expect(points.length, `${id}/${anim}`).toBe(sheet.anims[anim].frames);
+        for (const [x, y] of points) {
+          expect(x, `${id}/${anim}`).toBeLessThan(sheet.frameWidth);
+          expect(y, `${id}/${anim}`).toBeLessThan(sheet.frameHeight);
+        }
+      }
+    }
+  });
 });
