@@ -5,7 +5,9 @@ Zielplattform ist **Edge auf der Xbox** (Gamepad API), gehostet im Heimnetz. Die
 
 - Design & Regeln: `docs/game-design.md` (nur bei Bedarf lesen)
 - Aktueller Stand & nächste Schritte: `docs/roadmap.md`
-- Arbeitspakete pro Session: `docs/sessions.md` (zu Beginn die nächste offene Session nehmen, am Ende abhaken)
+- Sprints & Sessions: `docs/sprints.md` (Arbeitsweise, Domänen, Review, Komplexitäts-Budget; zu Beginn die nächste
+  offene Session des aktuellen Sprints nehmen, am Ende abhaken)
+- Ideen & Probleme: `docs/backlog.md` (sofort eintragen, nicht nebenbei umsetzen)
 - Altes Godot-Projekt (nur Referenz): `C:\WORKSPACE\FamilyCrowns`
 
 ## Befehle
@@ -57,7 +59,8 @@ Nur so bleibt Vollbild auf der Xbox über Seitenwechsel erhalten. Für **jede** 
 - Jede Mechanik muss mit **2 Spielern gleichzeitig** funktionieren (Split-Screen, eigene Eingabe pro Spieler).
 - Controller-Taste **B** nicht belegen (Edge-Zurück auf der Xbox, wird von der Zurück-Falle geschluckt).
   **View + Menu** gemeinsam = zurück zur Landingpage (reserviert, auf keiner Seite anders belegen).
-- Klein bleiben: kein Framework-Overhead, keine Prozess-Dokumente. Lieber spielbarer Code.
+- Klein bleiben: kein Framework-Overhead. Prozess steht nur in `docs/sprints.md`, keine weiteren Prozess-Dokumente.
+  Ein Sprint bleibt in seiner Domäne; Datei ≤ 300 Zeilen (Ziel), Funktion ≤ 40 Zeilen. Lieber spielbarer Code.
 
 ## Im Browser-Pane testen
 
