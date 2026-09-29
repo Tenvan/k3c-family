@@ -36,6 +36,13 @@ export interface GameSceneData {
 }
 
 const FAST_CYCLE = 8;
+/** Der Mitspieler oben wechselt erst, wenn ein anderer um so viele Units näher ist */
+const PARTNER_SWITCH_UNITS = 10;
+
+interface CamStrip {
+  player: number;
+  height: number;
+}
 /** Helligkeit in tiefster Nacht */
 const NIGHT_BRIGHTNESS = 0.45;
 const SAVE_TEXT: Record<SaveTarget, string> = { server: 'Gespeichert', local: 'Gespeichert (nur im Browser)', none: 'Speichern fehlgeschlagen' };
@@ -57,6 +64,8 @@ export class GameScene extends Phaser.Scene {
   private data_!: GameSceneData;
   /** Online: Kamera folgt schon dem eigenen Monarchen */
   private onlineCameraReady = false;
+  /** Online: Mitspieler im oberen Drittel (null = allein, dann Vollbild) */
+  private partnerIndex: number | null = null;
   private renderer_!: WorldRenderer;
   private keyboard!: KeyboardInput;
   private touch: TouchInput | undefined;
@@ -86,6 +95,7 @@ export class GameScene extends Phaser.Scene {
     this.nightFx = [];
     this.touch = undefined;
     this.onlineCameraReady = false;
+    this.partnerIndex = null;
     this.lastDevice = wantsTouchControls() ? 'touch' : 'keyboard';
   }
 
@@ -186,15 +196,50 @@ export class GameScene extends Phaser.Scene {
 
     const brightness = NIGHT_BRIGHTNESS + (1 - NIGHT_BRIGHTNESS) * daylight(this.world.cycle);
     for (const fx of this.nightFx) fx.colorMatrix.brightness(brightness);
-    if (!this.onlineCameraReady && this.renderer_.playerView(client.you)) {
+    const partner = this.pickPartner(client.you);
+    if ((!this.onlineCameraReady || partner !== this.partnerIndex) && this.renderer_.playerView(client.you)) {
       this.onlineCameraReady = true;
-      this.layoutCameras([client.you]);
+      this.partnerIndex = partner;
+      this.layoutCameras(this.onlineStrips());
     }
   }
 
-  /** Welche Monarchen dieses Fenster zeigt (Split-Screen: alle lokalen, online: nur der eigene) */
-  hudPlayers(): number[] {
-    return this.data_.online ? [this.data_.online.you] : this.world.players.map((_, i) => i);
+  /** Bildschirmstreifen, für die das HUD Spielerwerte zeigt (Split-Screen: alle lokalen, online: nur der eigene) */
+  hudStrips(): { player: number; y: number }[] {
+    const online = this.data_.online;
+    const result: { player: number; y: number }[] = [];
+    let y = 0;
+    for (const s of online ? this.onlineStrips() : this.equalStrips()) {
+      if (!online || s.player === online.you) result.push({ player: s.player, y });
+      y += s.height;
+    }
+    return result;
+  }
+
+  private equalStrips(): CamStrip[] {
+    const n = Math.max(1, this.world.players.length);
+    return this.world.players.map((_, i) => ({ player: i, height: GAME_HEIGHT / n }));
+  }
+
+  /** Online (ein Monarch pro Gerät): unten 2/3 der eigene, oben 1/3 der nächste Mitspieler. Allein: Vollbild. */
+  private onlineStrips(): CamStrip[] {
+    const you = this.data_.online!.you;
+    if (this.partnerIndex === null) return [{ player: you, height: GAME_HEIGHT }];
+    return [
+      { player: this.partnerIndex, height: GAME_HEIGHT / 3 },
+      { player: you, height: (GAME_HEIGHT * 2) / 3 },
+    ];
+  }
+
+  /** Nächster Mitspieler; der bisherige bleibt, solange kein anderer deutlich näher ist (kein Flackern). */
+  private pickPartner(you: number): number | null {
+    const me = this.world.players[you];
+    const others = this.world.players.filter((p) => p.index !== you);
+    if (!me || others.length === 0) return null;
+    const dist = (p: { x: number }) => Math.abs(p.x - me.x);
+    const nearest = others.reduce((a, b) => (dist(b) < dist(a) ? b : a));
+    const current = others.find((p) => p.index === this.partnerIndex);
+    return current && dist(current) - dist(nearest) < PARTNER_SWITCH_UNITS ? current.index : nearest.index;
   }
 
   get online(): OnlineClient | undefined {
@@ -228,7 +273,7 @@ export class GameScene extends Phaser.Scene {
       joinPlayer(this.campaign);
       this.controls.push(input);
       this.renderer_.sync(this.world);
-      this.layoutCameras();
+      this.layoutCameras(this.equalStrips());
       if (this.controls.length >= MAX_PLAYERS) return;
     }
   }
@@ -254,26 +299,25 @@ export class GameScene extends Phaser.Scene {
     main.centerOn(world.hubX * UNIT_PX, GAME_HEIGHT / 2);
     main.setBackgroundColor(palette.sky);
     this.addNightFx(main);
-    if (world.players.length > 0) this.layoutCameras(this.data_.online ? [this.data_.online.you] : undefined);
+    if (world.players.length > 0) this.layoutCameras(this.data_.online ? this.onlineStrips() : this.equalStrips());
     this.onlineCameraReady = !!this.data_.online && !!this.renderer_.playerView(this.data_.online.you);
   }
 
   /** 1 Spieler: Vollbild. 2+ Spieler: horizontale Streifen übereinander (K2C-Stil). */
-  private layoutCameras(indices: number[] = this.world.players.map((_, i) => i)): void {
-    const n = indices.length;
-    const stripHeight = GAME_HEIGHT / n;
-    const zoom = stripHeight / GAME_HEIGHT;
+  private layoutCameras(strips: CamStrip[]): void {
     const widthPx = this.world.widthUnits * UNIT_PX;
 
     // Zusätzliche Kameras entfernen, main bleibt Spieler 1.
     this.cameras.cameras.filter((c) => c !== this.cameras.main).forEach((c) => this.cameras.remove(c));
     this.nightFx = this.nightFx.slice(0, 1);
 
-    indices.forEach((playerIndex, i) => {
+    let y = 0;
+    strips.forEach(({ player: playerIndex, height: stripHeight }, i) => {
       const cam = i === 0 ? this.cameras.main : this.cameras.add(0, 0, GAME_WIDTH, stripHeight);
       if (i > 0) this.addNightFx(cam);
-      cam.setViewport(0, i * stripHeight, GAME_WIDTH, stripHeight);
-      cam.setZoom(zoom);
+      cam.setViewport(0, y, GAME_WIDTH, stripHeight);
+      y += stripHeight;
+      cam.setZoom(stripHeight / GAME_HEIGHT);
       cam.setBounds(0, 0, widthPx, GAME_HEIGHT);
       cam.setBackgroundColor(this.world.biome.palette.sky);
       const view = this.renderer_.playerView(playerIndex);
