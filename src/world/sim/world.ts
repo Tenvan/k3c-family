@@ -50,6 +50,7 @@ export function createWorld(biome: BiomeConfig, seed: string, options: WorldOpti
     spawnQueue: [],
     stock: { wood: 0, stone: 0, copper: 0 },
     skillPoints: 0,
+    savedGold: [],
     events: [],
   };
   w.castle.id = newId(w);
@@ -85,7 +86,7 @@ export function addPlayer(w: World): Player {
     x: w.hubX + (index % 2 === 0 ? -3 : 3),
     vx: 0,
     facing: index % 2 === 0 ? -1 : 1,
-    gold: ECONOMY.purse.startGold,
+    gold: w.savedGold[index] ?? ECONOMY.purse.startGold,
     hp: MONARCH.base.hp,
     maxHp: MONARCH.base.hp,
     respawnIn: 0,

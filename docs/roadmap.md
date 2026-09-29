@@ -38,7 +38,7 @@ Aufteilung in Arbeitspakete pro Claude-Session: [`docs/sessions.md`](sessions.md
 - [x] Truhen + versteckte Skill-Punkte einsammeln
 - [ ] Skill-Baum (erst 1–2 Linien), 2 aktive Skills
 - [ ] Tiefen-Eingang → Höhle (Stufe 1) mit Aggressionspool (Pool + Wellen fertig, Eingang fehlt)
-- [ ] Speichern/Laden (Seeds + Hub-Zustand) auf dem Heimnetz-Server
+- [x] Speichern/Laden (Seeds + Hub-Zustand) auf dem Heimnetz-Server
 
 ## Schritt 4 – Inhalt & Politur
 

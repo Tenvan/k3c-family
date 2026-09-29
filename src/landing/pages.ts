@@ -17,7 +17,7 @@ export interface PageEntry {
 export const PAGES: PageEntry[] = [
   {
     title: 'Spiel starten',
-    description: 'Oberwelt · Seed „k3c“ · bis zu 2 Spieler im Split-Screen',
+    description: 'Spielstand weiterspielen · bis zu 2 Spieler im Split-Screen',
     icon: '👑',
     href: 'game.html',
     section: 'play',

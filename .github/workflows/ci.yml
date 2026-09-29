@@ -40,6 +40,10 @@ jobs:
           test "$(curl -s -o /dev/null -w '%{http_code}' -X POST -d 'kaputt' http://localhost:8080/api/report)" = 400
           test "$(curl -s -o /dev/null -w '%{http_code}' -X POST -H 'Content-Type: application/json' -d '{"ci":true}' http://localhost:8080/api/report)" = 200
           ls reports/gamepad-*.json
+          test "$(curl -s -o /dev/null -w '%{http_code}' http://localhost:8080/api/save)" = 204
+          test "$(curl -s -o /dev/null -w '%{http_code}' -X PUT -d 'kaputt' http://localhost:8080/api/save)" = 400
+          test "$(curl -s -o /dev/null -w '%{http_code}' -X PUT -d '{"version":1,"ci":true}' http://localhost:8080/api/save)" = 200
+          curl -fsS http://localhost:8080/api/save | grep -q '"ci":true'
 
       - uses: actions/upload-artifact@v7
         with:

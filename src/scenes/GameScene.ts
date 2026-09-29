@@ -1,10 +1,12 @@
 import Phaser from 'phaser';
 import { toggleFullscreen } from '../core/fullscreen';
 import { GAME_HEIGHT, GAME_WIDTH, GROUND_Y, MAX_PLAYERS, UNIT_PX } from '../core/constants';
+import { storeSave } from '../core/saveStore';
 import { GamepadInput, KeyboardInput, type PlayerInput } from '../input/playerInput';
 import { biomeForDepth } from '../world/biome';
 import { daylight } from '../world/sim/cycle';
 import { giveGold } from '../world/sim/economy';
+import { loadWorld, toSave, type SaveData } from '../world/sim/save';
 import type { GameEvent, PlayerCommand, World } from '../world/sim/types';
 import { addPlayer, createWorld, step } from '../world/sim/world';
 import { WorldRenderer } from './worldRenderer';
@@ -16,6 +18,10 @@ export interface GameSceneData {
   fast?: boolean;
   /** Dev-Tasten aktiv (Dev-Server oder ?dev=1) */
   dev?: boolean;
+  /** Spielstand speichern (bei Tagesanbruch und beim Verlassen). Aus bei ?seed / ?depth (freies Spiel). */
+  persist?: boolean;
+  /** Gespeicherter Stand zum Weiterspielen, sonst neue Welt aus depth + seed */
+  save?: SaveData | null;
 }
 
 const FAST_CYCLE = 8;
@@ -45,7 +51,8 @@ export class GameScene extends Phaser.Scene {
 
   init(data: GameSceneData): void {
     this.data_ = data;
-    this.world = createWorld(biomeForDepth(data.depth), data.seed, { cycleSpeed: data.fast ? FAST_CYCLE : 1 });
+    const options = { cycleSpeed: data.fast ? FAST_CYCLE : 1 };
+    this.world = data.save ? loadWorld(biomeForDepth(data.save.depth), data.save, options) : createWorld(biomeForDepth(data.depth), data.seed, options);
     this.controls.length = 0;
     this.pendingEvents.length = 0;
     this.pads = [];
@@ -74,7 +81,7 @@ export class GameScene extends Phaser.Scene {
     gamepads.on('connected', addPad);
 
     const kb = this.input.keyboard!;
-    // Dev-Hilfe: N = neues Level mit zufälligem Seed, 1/2/3 = Tiefe wechseln.
+    // Dev-Hilfe: N = neues Level mit zufälligem Seed, 1/2/3 = Tiefe wechseln. Ersetzt beim Speichern den Spielstand.
     kb.on('keydown-N', () => this.restartWith(this.world.biome.depth, Math.random().toString(36).slice(2, 8)));
     kb.on('keydown-ONE', () => this.restartWith(0, this.world.seed));
     kb.on('keydown-TWO', () => this.restartWith(1, this.world.seed));
@@ -86,8 +93,25 @@ export class GameScene extends Phaser.Scene {
       kb.on('keydown-T', () => (this.world.time += this.world.cycle.secondsLeft / this.world.cycleSpeed + 0.01));
     }
 
+    if (this.data_.persist) {
+      // Neues Spiel gleich ablegen, damit ein Reload nicht den alten Stand zurückholt.
+      if (!this.data_.save) this.save();
+      const onHide = () => document.visibilityState === 'hidden' && this.save();
+      window.addEventListener('pagehide', this.save);
+      document.addEventListener('visibilitychange', onHide);
+      this.events.once(Phaser.Scenes.Events.SHUTDOWN, () => {
+        window.removeEventListener('pagehide', this.save);
+        document.removeEventListener('visibilitychange', onHide);
+      });
+    }
+
     this.scene.launch('hud');
   }
+
+  /** Autosave: bei jedem Tagesanbruch und beim Verlassen der Seite. */
+  private readonly save = (): void => {
+    if (this.data_.persist) storeSave(toSave(this.world));
+  };
 
   update(_time: number, deltaMs: number): void {
     const dt = Math.min(deltaMs / 1000, 0.1);
@@ -102,6 +126,7 @@ export class GameScene extends Phaser.Scene {
     const commands: PlayerCommand[] = this.controls.map((c) => ({ moveX: c.moveX(), sprint: c.sprint(), pay: c.held('confirm') }));
     step(this.world, commands, dt);
     this.pendingEvents.push(...this.world.events);
+    if (this.world.events.some((e) => e.type === 'dawn')) this.save();
     this.renderer_.sync(this.world);
 
     const brightness = NIGHT_BRIGHTNESS + (1 - NIGHT_BRIGHTNESS) * daylight(this.world.cycle);
@@ -151,7 +176,7 @@ export class GameScene extends Phaser.Scene {
 
   private restartWith(depth: number, seed: string): void {
     this.scene.stop('hud');
-    this.scene.restart({ ...this.data_, depth, seed } satisfies GameSceneData);
+    this.scene.restart({ ...this.data_, depth, seed, save: null } satisfies GameSceneData);
   }
 
   private drawBackground(widthPx: number): void {

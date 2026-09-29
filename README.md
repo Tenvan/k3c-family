@@ -28,6 +28,9 @@ Im Spiel:
 - Linker Stick / **A**,**D**: laufen, **RT** / **Shift**: sprinten
 - **F** / rechten Stick drücken: Vollbild
 - Nachts kommen Gegner aus den Portalen. Mauern halten sie auf, Bogenschützen schießen automatisch.
+- Spielstand: wird bei jedem Tagesanbruch und beim Verlassen automatisch gespeichert (Heimnetz-Server `saves/k3c.json`,
+  sonst localStorage) und beim Start von `game.html` geladen. `?new=1` startet ein neues Spiel.
+  Mit `?seed` oder `?depth` wird frei gespielt, ohne zu speichern.
 - Dev: **N** neuer Seed, **1/2/3** Tiefe wechseln, URL-Parameter `?seed=abc&depth=1`,
   `?fast=1` (Tag/Nacht 8x schneller), `?dev=1` (**G** +10 Gold, **H** +50 Material, **T** nächste Tageszeit)
 

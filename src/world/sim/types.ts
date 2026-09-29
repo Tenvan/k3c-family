@@ -204,6 +204,8 @@ export interface World {
   /** Baumaterial gehört allen gemeinsam (Hub-Vorrat), Gold hat jeder Spieler selbst. */
   stock: Stock;
   skillPoints: number;
+  /** Gold aus dem Spielstand pro Spieler-Platz, bekommt der Spieler beim Beitritt zurück */
+  savedGold: number[];
 
   /** Ereignisse des letzten Ticks (für HUD-Meldungen), werden bei jedem step() geleert. */
   events: GameEvent[];

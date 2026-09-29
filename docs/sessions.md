@@ -126,10 +126,13 @@ Reihenfolge ist so gewählt, dass jede Session auf der vorigen aufbaut und einze
 
 ## Phase 2 – Fortschritt (Roadmap Schritt 3)
 
-### S2.1 ⬜ Speichern/Laden auf dem Heimnetz-Server
+### S2.1 ✅ Speichern/Laden auf dem Heimnetz-Server
 
 - `POST/GET /api/save` in `server/` (analog zu `reports.mjs`), Fallback localStorage. Gespeichert: Seeds, Hub, Monarch.
 - Tests: Serialisieren/Deserialisieren ohne Phaser, Server-Handler mit Fake-Requests.
+- ✅ `src/world/sim/save.ts` (`toSave`/`loadWorld`), `server/saves.mjs` → `saves/k3c.json`, Client `src/core/saveStore.ts`.
+  Autosave bei Tagesanbruch und beim Verlassen. `game.html` lädt den Stand, `?new=1` startet neu, `?seed`/`?depth` = freies Spiel ohne Speichern.
+  Offen: ein Stand pro Stufe (kommt mit S2.4), „Neues Spiel“ im Menü.
 
 ### S2.2 ✅ Truhen & versteckte Skill-Punkte
 

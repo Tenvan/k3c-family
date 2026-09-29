@@ -3,6 +3,7 @@ import { readdirSync } from 'node:fs';
 import { resolve } from 'node:path';
 // Reines JS-Modul, gemeinsam mit dem Heimnetz-Server genutzt
 import { handleReport } from './server/reports.mjs';
+import { handleSave } from './server/saves.mjs';
 
 export default defineConfig({
   // Relative Pfade, damit der Build von jedem Heimnetz-Server/Unterordner aus läuft.
@@ -23,11 +24,13 @@ export default defineConfig({
   },
   plugins: [
     {
-      // Testberichte auch im Dev-Server annehmen (POST /api/report -> reports/*.json)
-      name: 'k3c-reports',
+      // Testberichte und Spielstand auch im Dev-Server (POST /api/report -> reports/*.json, GET/PUT /api/save)
+      name: 'k3c-api',
       configureServer(server) {
         server.middlewares.use((req, res, next) => {
-          handleReport(req, res).then((handled: boolean) => handled || next(), next);
+          handleReport(req, res)
+            .then(async (handled: boolean) => handled || (await handleSave(req, res)) || next())
+            .catch(next);
         });
       },
     },

@@ -1,4 +1,4 @@
-// Heimnetz-Server: liefert den Produktions-Build (dist/) aus und nimmt Testberichte an.
+// Heimnetz-Server: liefert den Produktions-Build (dist/) aus, nimmt Testberichte an und speichert den Spielstand.
 // Start: npm run serve   (baut vorher)   oder   npm start   (nur Server)
 //
 // HTTP  auf Port 8080 (K3C_HTTP_PORT)
@@ -12,6 +12,7 @@ import { networkInterfaces } from 'node:os';
 import { dirname, extname, join, normalize, sep } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { handleReport } from './reports.mjs';
+import { handleSave } from './saves.mjs';
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
 const DIST = join(ROOT, 'dist');
@@ -42,6 +43,7 @@ if (!existsSync(join(DIST, 'index.html'))) {
 async function handle(req, res) {
   try {
     if (await handleReport(req, res)) return;
+    if (await handleSave(req, res)) return;
     if (req.method !== 'GET' && req.method !== 'HEAD') return void res.writeHead(405).end();
 
     const path = decodeURIComponent(new URL(req.url ?? '/', 'http://x').pathname);
