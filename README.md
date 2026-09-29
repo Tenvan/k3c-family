@@ -1,5 +1,7 @@
 # Family Three Crowns (K3C)
 
+[![CI](https://github.com/tenvan/k3c-family/actions/workflows/ci.yml/badge.svg)](https://github.com/tenvan/k3c-family/actions/workflows/ci.yml)
+
 Couch-Koop-Strategie-Side-Scroller im Stil von *Kingdom Two Crowns*, gebaut für den Browser,
 damit er auf der **Xbox (Edge)** mit mehreren Controllern läuft.
 
@@ -64,4 +66,12 @@ Die vollständige Regel steht in `CLAUDE.md` unter „Regel: Seiten & Navigation
 Die Eckdaten jeder Stufe stehen in `src/data/biomes/*.json` (Länge, Chunk-Häufigkeiten, Ressourcen,
 Portale, Gegner). Nach Änderungen `npm test` ausführen. Die Tests prüfen 500 Seeds pro Biom auf Spielbarkeit.
 
-Mehr: [Game Design](docs/game-design.md) · [Roadmap](docs/roadmap.md)
+## CI/CD (GitHub Actions)
+
+- **CI** (jeder Push/PR): Typecheck, Tests, Build, Smoke-Test des Heimnetz-Servers. Der Build liegt als Artefakt `k3c-dist` am Lauf.
+- **GitHub Pages** (Push auf `main`): Spiel und Testseiten online, ohne Bericht-Server.
+  Einmalig aktivieren: *Settings → Pages → Source: GitHub Actions*.
+- **Release** (Tag `v*`, z.B. `git tag v0.2.0 && git push --tags`): Zip mit `dist/` + `server/` am Release.
+  Entpacken und `node server/server.mjs` starten, `npm install` ist dafür nicht nötig.
+
+Mehr: [Game Design](docs/game-design.md) · [Roadmap](docs/roadmap.md) · [Session-Plan](docs/sessions.md)

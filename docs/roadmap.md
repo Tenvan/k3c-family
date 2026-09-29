@@ -1,6 +1,7 @@
 # Roadmap
 
 Kleine, spielbare Schritte. Jeder Schritt endet mit etwas, das man am TV mit Controller ausprobieren kann.
+Aufteilung in Arbeitspakete pro Claude-Session: [`docs/sessions.md`](sessions.md).
 
 ## Schritt 0 – Xbox-Machbarkeit (als Nächstes!)
 
