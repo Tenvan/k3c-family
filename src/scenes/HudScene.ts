@@ -66,8 +66,6 @@ export class HudScene extends Phaser.Scene {
     const game = this.game.scene.getScene('game') as GameScene;
     const world = game.world;
     const players = world.players;
-    const shown = game.hudPlayers();
-    const stripHeight = GAME_HEIGHT / Math.max(1, shown.length);
 
     this.controlsHint.setText(CONTROL_HINTS[game.lastDevice]);
     this.joinHint.setText(JOIN_HINTS[game.lastDevice]);
@@ -82,7 +80,7 @@ export class HudScene extends Phaser.Scene {
     const status = game.saveStatus;
     this.saved.setText(status && world.time - status.at < 4 ? status.text : '');
 
-    shown.forEach((playerIndex, i) => {
+    game.hudStrips().forEach(({ player: playerIndex, y }, i) => {
       const p = players[playerIndex];
       if (!p) return;
       let label = this.playerLabels[i];
@@ -90,7 +88,7 @@ export class HudScene extends Phaser.Scene {
         label = this.add.text(24, 0, '', STYLE);
         this.playerLabels[i] = label;
       }
-      label.setY(i * stripHeight + 16);
+      label.setY(y + 16);
       const status = p.respawnIn > 0 ? `gefallen · zurück in ${Math.ceil(p.respawnIn)} s` : `HP ${Math.ceil(p.hp)}`;
       label.setText(`P${p.index + 1}  ·  Gold ${p.gold}/${ECONOMY.purse.maxGold}  ·  ${status}`);
     });
