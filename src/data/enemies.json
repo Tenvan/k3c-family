@@ -1,0 +1,12 @@
+{
+  "greed":        { "name": "Greed",         "depth": 0, "tier": "standard", "hp": 50,  "damage": 10, "speed": 3, "range": 1,  "gold": [5, 10],  "traits": ["stealsGold"] },
+  "wolf":         { "name": "Wolf",          "depth": 0, "tier": "standard", "hp": 40,  "damage": 15, "speed": 5, "range": 1,  "gold": [3, 5],   "traits": ["prefersTroops", "pack"] },
+  "goblin":       { "name": "Goblin",        "depth": 0, "tier": "standard", "hp": 60,  "damage": 12, "speed": 4, "range": 1,  "gold": [8, 12],  "traits": ["prefersBuildings", "stealsWood", "fleesAtHalfHp"] },
+  "goblinArcher": { "name": "Goblin Archer", "depth": 0, "tier": "elite",    "hp": 50,  "damage": 20, "speed": 3, "range": 10, "gold": [15, 20], "traits": ["ranged", "prefersTowers"] },
+  "skeleton":     { "name": "Skelett",       "depth": 1, "tier": "standard", "hp": 70,  "damage": 15, "speed": 3, "range": 1,  "gold": [10, 15], "traits": [] },
+  "bat":          { "name": "Fledermaus",    "depth": 1, "tier": "standard", "hp": 30,  "damage": 8,  "speed": 7, "range": 1,  "gold": [3, 5],   "traits": ["flying", "ignoresWalls", "prefersMonarch"] },
+  "caveTroll":    { "name": "Höhlentroll",   "depth": 1, "tier": "elite",    "hp": 200, "damage": 30, "speed": 2, "range": 2,  "gold": [50, 80], "traits": ["aoe", "prefersBuildings"] },
+  "zombie":       { "name": "Zombie",        "depth": 2, "tier": "standard", "hp": 100, "damage": 20, "speed": 2, "range": 1,  "gold": [15, 25], "traits": [] },
+  "ratSwarm":     { "name": "Rattenschwarm", "depth": 2, "tier": "standard", "hp": 20,  "damage": 5,  "speed": 6, "range": 1,  "gold": [1, 2],   "traits": ["swarm"] },
+  "mineGhost":    { "name": "Minengeist",    "depth": 2, "tier": "elite",    "hp": 80,  "damage": 25, "speed": 4, "range": 1,  "gold": [30, 50], "traits": ["ignoresWalls", "prefersMonarch", "phases"] }
+}
