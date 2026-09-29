@@ -158,7 +158,9 @@ was aus der Welt schon entfernt wurde (gefällte Bäume, geöffnete Truhen), son
 - Figuren (Monarchen, Truppen, Gegner): Seitenansicht-Sprites von **LuizMelo (CC0)** für unsere Seite und
   **Gothicvania von ansimuz (CC0)** für die Gegner (Wolf, Skelett, Zombie, Geist, Fledermaus, Höhlentroll). Zuordnung in
   `src/data/sprites.json`, Bilder und Credits in `public/sprites/`. Referenz: Testseiten `aufstellung.html` (Rollen) und
-  `figuren.html` (alle Figuren, auch ungenutzte). Gebäude, Ressourcen und Hintergrund sind noch
+  `figuren.html` (alle Figuren, auch ungenutzte).
+- Reittiere: 13 Tiere (LPC-Pferde, Einhorn, Pegasus, Elefant, Hirsch, Wölfe, Gothicvania-Tiere) in `sprites.json` → `mounts`.
+  Der Reiter ist der Oberkörper des Monarchen, auf den Sattelpunkt gesetzt. LPC-Tiere sind CC-BY 3.0 (Credits Pflicht). Gebäude, Ressourcen und Hintergrund sind noch
   **Platzhalter-Formen**. Ziel: 2D-Pixel-Art mit Parallax-Ebenen.
 - Paletten pro Biom stehen in der Biom-JSON (Wald grün/braun, Höhle grau/orange, Mine braun/kupfer).
 - Audio: Kenney Audio / freesound.org (CC).
