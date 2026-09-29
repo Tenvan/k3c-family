@@ -1,5 +1,5 @@
 {
-  "purse": { "startGold": 12, "maxGold": 40 },
+  "purse": { "startGold": 100, "maxGold": 100 },
   "payRangeUnits": 2,
   "payIntervalSeconds": 0.25,
   "pickupRangeUnits": 0.8,

@@ -92,6 +92,8 @@ export function addPlayer(w: World): Player {
     // Der Beitritts-Tastendruck soll nicht gleich eine Münze ausgeben.
     payCooldown: 0.5,
     paying: false,
+    payKey: null,
+    payAmount: 0,
   };
   w.players.push(p);
   return p;
