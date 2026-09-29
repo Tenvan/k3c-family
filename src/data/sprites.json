@@ -1,5 +1,5 @@
 {
-  "_comment": "Sprites: LuizMelo (CC0), Bilder in public/sprites/<sheet>/<anim>.png. origin = Fußpunkt im Frame, height = Figurhöhe in Frame-Pixeln, scale = Vergrößerung. Pro Figur: tint = Einfärbung, scale = zusätzlicher Faktor, y = Pixel über dem Boden.",
+  "_comment": "Sprites: LuizMelo (CC0, unsere Seite) und Gothicvania von ansimuz (CC0, Gegner), Bilder in public/sprites/<sheet>/<anim>.png. origin = Fußpunkt im Frame, height = Figurhöhe in Frame-Pixeln, scale = Vergrößerung. Pro Figur: tint = Einfärbung, scale = zusätzlicher Faktor, y = Pixel über dem Boden.",
   "sheets": {
     "medieval-king": {
       "frameWidth": 155,
@@ -236,6 +236,190 @@
       },
       "pack": "Monsters Creatures Fantasy",
       "source": "https://luizmelo.itch.io/monsters-creatures-fantasy"
+    },
+    "hell-hound": {
+      "frameWidth": 50,
+      "frameHeight": 44,
+      "originX": 0.54,
+      "originY": 1.0,
+      "height": 24,
+      "scale": 3.0,
+      "anims": {
+        "idle": {
+          "frames": 6,
+          "fps": 8
+        },
+        "run": {
+          "frames": 5,
+          "fps": 12
+        },
+        "attack": {
+          "frames": 6,
+          "fps": 12
+        }
+      },
+      "pack": "Gothicvania Patreon’s Collection (Hell Hound)",
+      "source": "https://opengameart.org/content/gothicvania-patreons-collection"
+    },
+    "cemetery-skeleton": {
+      "frameWidth": 34,
+      "frameHeight": 46,
+      "originX": 0.5,
+      "originY": 1.0,
+      "height": 40,
+      "scale": 2.5,
+      "anims": {
+        "idle": {
+          "frames": 1,
+          "fps": 1
+        },
+        "run": {
+          "frames": 8,
+          "fps": 10
+        },
+        "attack": {
+          "frames": 8,
+          "fps": 10
+        }
+      },
+      "pack": "Gothicvania Cemetery (Skeleton)",
+      "source": "https://opengameart.org/content/gothicvania-cemetery-pack"
+    },
+    "cemetery-skeleton-clothed": {
+      "frameWidth": 34,
+      "frameHeight": 46,
+      "originX": 0.5,
+      "originY": 1.0,
+      "height": 40,
+      "scale": 2.5,
+      "anims": {
+        "idle": {
+          "frames": 1,
+          "fps": 1
+        },
+        "run": {
+          "frames": 8,
+          "fps": 8
+        },
+        "attack": {
+          "frames": 8,
+          "fps": 8
+        }
+      },
+      "pack": "Gothicvania Cemetery (Skeleton clothed)",
+      "source": "https://opengameart.org/content/gothicvania-cemetery-pack"
+    },
+    "ghost": {
+      "frameWidth": 48,
+      "frameHeight": 54,
+      "originX": 0.479,
+      "originY": 0.889,
+      "height": 42,
+      "scale": 2.5,
+      "anims": {
+        "idle": {
+          "frames": 7,
+          "fps": 10
+        },
+        "attack": {
+          "frames": 4,
+          "fps": 10
+        }
+      },
+      "pack": "Gothicvania Patreon’s Collection (Ghost)",
+      "source": "https://opengameart.org/content/gothicvania-patreons-collection"
+    },
+    "fire-skull": {
+      "frameWidth": 91,
+      "frameHeight": 102,
+      "originX": 0.44,
+      "originY": 0.99,
+      "height": 54,
+      "scale": 1.0,
+      "anims": {
+        "idle": {
+          "frames": 8,
+          "fps": 10
+        },
+        "run": {
+          "frames": 8,
+          "fps": 12
+        },
+        "attack": {
+          "frames": 8,
+          "fps": 12
+        }
+      },
+      "pack": "Gothicvania Patreon’s Collection (Fire Skull)",
+      "source": "https://opengameart.org/content/gothicvania-patreons-collection"
+    },
+    "hell-gato": {
+      "frameWidth": 87,
+      "frameHeight": 37,
+      "originX": 0.54,
+      "originY": 1.0,
+      "height": 35,
+      "scale": 3.25,
+      "anims": {
+        "idle": {
+          "frames": 1,
+          "fps": 1
+        },
+        "run": {
+          "frames": 4,
+          "fps": 10
+        },
+        "attack": {
+          "frames": 4,
+          "fps": 10
+        }
+      },
+      "pack": "Gothicvania Cemetery (Hell Gato)",
+      "source": "https://opengameart.org/content/gothicvania-cemetery-pack"
+    },
+    "demon": {
+      "frameWidth": 223,
+      "frameHeight": 172,
+      "originX": 0.453,
+      "originY": 0.948,
+      "height": 124,
+      "scale": 2.0,
+      "anims": {
+        "idle": {
+          "frames": 6,
+          "fps": 8
+        },
+        "attack": {
+          "frames": 11,
+          "fps": 12
+        }
+      },
+      "pack": "Gothicvania Patreon’s Collection (Demon)",
+      "source": "https://opengameart.org/content/gothicvania-patreons-collection"
+    },
+    "nightmare": {
+      "frameWidth": 121,
+      "frameHeight": 90,
+      "originX": 0.541,
+      "originY": 1.0,
+      "height": 81,
+      "scale": 1.75,
+      "anims": {
+        "idle": {
+          "frames": 4,
+          "fps": 8
+        },
+        "run": {
+          "frames": 4,
+          "fps": 10
+        },
+        "attack": {
+          "frames": 4,
+          "fps": 10
+        }
+      },
+      "pack": "Gothicvania Patreon’s Collection (Nightmare)",
+      "source": "https://opengameart.org/content/gothicvania-patreons-collection"
     }
   },
   "players": [
@@ -282,8 +466,7 @@
       "tint": "#c77dff"
     },
     "wolf": {
-      "sheet": "goblin",
-      "tint": "#9a9a9a"
+      "sheet": "hell-hound"
     },
     "goblin": {
       "sheet": "goblin"
@@ -293,20 +476,18 @@
       "tint": "#74c69d"
     },
     "skeleton": {
-      "sheet": "skeleton"
+      "sheet": "cemetery-skeleton"
     },
     "bat": {
-      "sheet": "flying-eye",
+      "sheet": "fire-skull",
       "y": 130
     },
     "caveTroll": {
-      "sheet": "mushroom",
-      "scale": 2.2,
-      "tint": "#c9a27e"
+      "sheet": "hell-gato",
+      "scale": 1.3
     },
     "zombie": {
-      "sheet": "skeleton",
-      "tint": "#a7c957"
+      "sheet": "cemetery-skeleton-clothed"
     },
     "ratSwarm": {
       "sheet": "mushroom",
@@ -314,9 +495,8 @@
       "tint": "#b08968"
     },
     "mineGhost": {
-      "sheet": "skeleton",
-      "tint": "#caf0f8",
-      "alpha": 0.7
+      "sheet": "ghost",
+      "alpha": 0.85
     }
   }
 }

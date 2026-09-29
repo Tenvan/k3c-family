@@ -2,7 +2,7 @@ import Phaser from 'phaser';
 import spritesJson from '../data/sprites.json';
 
 /**
- * Figuren-Sprites (LuizMelo, CC0). Welche Figur wofür steht, Frame-Größen und Einfärbung stehen in
+ * Figuren-Sprites (LuizMelo und Gothicvania, beide CC0). Welche Figur wofür steht, Frame-Größen und Einfärbung stehen in
  * src/data/sprites.json, die Bilder in public/sprites/<sheet>/<anim>.png.
  */
 
@@ -61,6 +61,8 @@ export function createSpriteAnims(scene: Phaser.Scene): void {
       const a = d.anims[anim];
       const key = textureKey(sheet, anim);
       if (!a || scene.anims.exists(key)) continue;
+      // Pixel-Art beim Vergrößern scharf halten
+      scene.textures.get(key).setFilter(Phaser.Textures.FilterMode.NEAREST);
       scene.anims.create({
         key,
         frames: scene.anims.generateFrameNumbers(key, { start: 0, end: a.frames - 1 }),
@@ -86,7 +88,7 @@ export function makeSprite(scene: Phaser.Scene, spec: SpriteSpec): Phaser.GameOb
 
 /**
  * Spielt eine Animation, ohne eine laufende neu zu starten. Ein Angriff läuft zu Ende, bevor wieder
- * Laufen/Stehen gezeigt wird. Fehlt eine Animation (Flugauge hat kein Laufen), bleibt es bei idle.
+ * Laufen/Stehen gezeigt wird. Fehlt eine Animation (z. B. der Geist hat kein Laufen), bleibt es bei idle.
  */
 export function playAnim(sprite: Phaser.GameObjects.Sprite, anim: AnimName, restart = false): void {
   const sheet = sprite.getData('sheet') as string;

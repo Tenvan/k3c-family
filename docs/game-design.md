@@ -155,7 +155,8 @@ was aus der Welt schon entfernt wurde (gefällte Bäume, geöffnete Truhen), son
 
 ## Grafik & Audio
 
-- Figuren (Monarchen, Truppen, Gegner): Seitenansicht-Sprites von **LuizMelo (CC0)**, Zuordnung in
+- Figuren (Monarchen, Truppen, Gegner): Seitenansicht-Sprites von **LuizMelo (CC0)** für unsere Seite und
+  **Gothicvania von ansimuz (CC0)** für die Gegner (Wolf, Skelett, Zombie, Geist, Fledermaus, Höhlentroll). Zuordnung in
   `src/data/sprites.json`, Bilder und Credits in `public/sprites/`. Gebäude, Ressourcen und Hintergrund sind noch
   **Platzhalter-Formen**. Ziel: 2D-Pixel-Art mit Parallax-Ebenen.
 - Paletten pro Biom stehen in der Biom-JSON (Wald grün/braun, Höhle grau/orange, Mine braun/kupfer).
