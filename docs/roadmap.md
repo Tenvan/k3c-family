@@ -14,7 +14,7 @@ Aufteilung in Arbeitspakete pro Claude-Session: [`docs/sessions.md`](sessions.md
 
 ## Schritt 1 – Grundgerüst ✅
 
-- [x] Vite + TypeScript + Phaser 3
+- [x] Vite + TypeScript + Phaser 4
 - [x] Spieldaten aus dem alten GDD als JSON (`src/data/`)
 - [x] Prozeduraler Level-Generator mit Seed + Tests (500 Seeds pro Biom)
 - [x] Platzhalter-Rendering mit Parallax

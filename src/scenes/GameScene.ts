@@ -37,7 +37,7 @@ export class GameScene extends Phaser.Scene {
   private renderer_!: WorldRenderer;
   private keyboard!: KeyboardInput;
   private pads: GamepadInput[] = [];
-  private nightFx: Phaser.FX.ColorMatrix[] = [];
+  private nightFx: Phaser.Filters.ColorMatrix[] = [];
 
   constructor() {
     super('game');
@@ -105,7 +105,7 @@ export class GameScene extends Phaser.Scene {
     this.renderer_.sync(this.world);
 
     const brightness = NIGHT_BRIGHTNESS + (1 - NIGHT_BRIGHTNESS) * daylight(this.world.cycle);
-    for (const fx of this.nightFx) fx.brightness(brightness);
+    for (const fx of this.nightFx) fx.colorMatrix.brightness(brightness);
   }
 
   private handleJoin(): void {
@@ -143,11 +143,10 @@ export class GameScene extends Phaser.Scene {
     });
   }
 
-  /** Nacht = Kamera abdunkeln. Nur mit WebGL (postFX), im Canvas-Modus bleibt es hell. */
+  /** Nacht = Kamera abdunkeln. Nur mit WebGL (Filter), im Canvas-Modus bleibt es hell. */
   private addNightFx(cam: Phaser.Cameras.Scene2D.Camera): void {
-    cam.postFX?.clear(); // die Hauptkamera überlebt einen Szenen-Neustart, sonst stapelt sich die Abdunklung
-    const fx = cam.postFX?.addColorMatrix();
-    if (fx) this.nightFx.push(fx);
+    cam.filters.internal.clear(); // die Hauptkamera überlebt einen Szenen-Neustart, sonst stapelt sich die Abdunklung
+    this.nightFx.push(cam.filters.internal.addColorMatrix());
   }
 
   private restartWith(depth: number, seed: string): void {
@@ -167,11 +166,11 @@ export class GameScene extends Phaser.Scene {
   private drawRidge(widthPx: number, color: number, scrollFactor: number, baseY: number, amplitude: number): void {
     const g = this.add.graphics().setScrollFactor(scrollFactor, 1);
     g.fillStyle(color, 1);
-    const points: Phaser.Types.Math.Vector2Like[] = [{ x: 0, y: GROUND_Y }];
+    const points = [new Phaser.Math.Vector2(0, GROUND_Y)];
     for (let x = 0; x <= widthPx * scrollFactor + GAME_WIDTH * 2; x += 160) {
-      points.push({ x, y: baseY - Math.abs(Math.sin(x * 0.0021) + Math.sin(x * 0.0057)) * amplitude * 0.6 });
+      points.push(new Phaser.Math.Vector2(x, baseY - Math.abs(Math.sin(x * 0.0021) + Math.sin(x * 0.0057)) * amplitude * 0.6));
     }
-    points.push({ x: widthPx * scrollFactor + GAME_WIDTH * 2, y: GROUND_Y });
+    points.push(new Phaser.Math.Vector2(widthPx * scrollFactor + GAME_WIDTH * 2, GROUND_Y));
     g.fillPoints(points, true);
   }
 }
