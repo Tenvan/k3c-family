@@ -70,7 +70,7 @@ describe('Welt', () => {
   it('startet mit Burg, Bauplätzen, Ressourcen und Landstreichern aus dem Level', () => {
     const w = createWorld(forest, 'k3c');
     expect(w.castle.x).toBe(w.hubX);
-    expect(w.sites.map((s) => s.kind).sort()).toEqual(['tower', 'tower', 'wall', 'wall', 'workshop']);
+    expect(w.sites.map((s) => s.kind).sort()).toEqual(['stairsDown', 'tower', 'tower', 'wall', 'wall', 'workshop']);
     expect(w.nodes.some((n) => n.kind === 'tree')).toBe(true);
     expect(w.portals.length).toBe(forest.portals.count);
     expect(w.troops.filter((t) => t.kind === 'vagrant').length).toBe(w.camps.length * ECONOMY.recruitCamp.maxVagrants);

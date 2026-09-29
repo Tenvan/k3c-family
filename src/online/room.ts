@@ -1,6 +1,6 @@
-import { biomeForDepth } from '../world/biome';
+import { createCampaign, currentWorld, joinPlayer, travel, type Campaign } from '../world/sim/campaign';
 import { IDLE, type PlayerCommand, type World } from '../world/sim/types';
-import { addPlayer, createWorld, step } from '../world/sim/world';
+import { step } from '../world/sim/world';
 import { MAX_ONLINE_PLAYERS, snapshotWorld, type ServerMessage } from './protocol';
 
 /** Kanal zu einem Client (WebSocket im Server, direkter Aufruf in Tests). */
@@ -25,7 +25,8 @@ export interface RoomOptions {
  * Ohne verbundene Spieler pausiert die Welt.
  */
 export class Room {
-  readonly world: World;
+  /** Alle Stufen des Raums; Stufenwechsel (Treppe, Tiefen-Eingang) rechnet wie im lokalen Spiel */
+  readonly campaign: Campaign;
   readonly seed: string;
   readonly depth: number;
   readonly fast: boolean;
@@ -36,7 +37,11 @@ export class Room {
     this.seed = options.seed ?? code;
     this.depth = options.depth;
     this.fast = options.fast;
-    this.world = createWorld(biomeForDepth(this.depth), this.seed, { cycleSpeed: this.fast ? 8 : 1 });
+    this.campaign = createCampaign(this.seed, { id: code, cycleSpeed: this.fast ? 8 : 1, depth: this.depth });
+  }
+
+  get world(): World {
+    return currentWorld(this.campaign);
   }
 
   get connected(): number {
@@ -48,8 +53,8 @@ export class Room {
     let member = this.members.get(clientId);
     if (!member) {
       if (this.members.size >= MAX_ONLINE_PLAYERS) return null;
-      const player = addPlayer(this.world);
-      member = { index: player.index, conn, cmd: IDLE };
+      joinPlayer(this.campaign);
+      member = { index: this.world.players.length - 1, conn, cmd: IDLE };
       this.members.set(clientId, member);
     }
     member.conn = conn;
@@ -79,6 +84,8 @@ export class Room {
     const commands: PlayerCommand[] = [];
     for (const m of this.members.values()) commands[m.index] = m.cmd;
     step(this.world, commands, dt);
+    const travelling = this.world.travel;
+    if (travelling && travelling.progress >= 1) travel(this.campaign, travelling.toDepth);
     const message = JSON.stringify({ t: 'state', s: snapshotWorld(this.world) } satisfies ServerMessage);
     for (const m of this.members.values()) m.conn?.send(message);
   }

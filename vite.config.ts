@@ -3,6 +3,7 @@ import { readdirSync } from 'node:fs';
 import { resolve } from 'node:path';
 // Reines JS-Modul, gemeinsam mit dem Heimnetz-Server genutzt
 import { handleReport } from './server/reports.mjs';
+import { handleSave } from './server/saves.mjs';
 
 export default defineConfig({
   // Relative Pfade, damit der Build von jedem Heimnetz-Server/Unterordner aus läuft.
@@ -23,15 +24,17 @@ export default defineConfig({
   },
   plugins: [
     {
-      // Testberichte auch im Dev-Server annehmen (POST /api/report -> reports/*.json)
-      name: 'k3c-reports',
+      // Testberichte und Spielstände auch im Dev-Server (POST /api/report -> reports/, /api/save -> saves/)
+      name: 'k3c-api',
       configureServer(server) {
         // Online-Modus (WebSocket /ws) auch im Dev-Server; der Server-Code liegt in src/online und läuft über Vites SSR-Loader.
         if (server.httpServer) {
           server.ssrLoadModule('/src/online/wsServer.ts').then((m) => m.attachOnline(server.httpServer), (err) => server.config.logger.error(String(err)));
         }
         server.middlewares.use((req, res, next) => {
-          handleReport(req, res).then((handled: boolean) => handled || next(), next);
+          handleReport(req, res)
+            .then(async (handled: boolean) => handled || (await handleSave(req, res)) || next())
+            .catch(next);
         });
       },
     },
