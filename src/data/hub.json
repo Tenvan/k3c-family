@@ -1,0 +1,31 @@
+{
+  "notes": "Bauplätze relativ zur Hub-Mitte (Units). Der Hub ist 100 Units breit (±50). startTroops: damit die erste Nacht mit Mauern zu schaffen ist (vorläufiges Balancing).",
+  "sites": [
+    {
+      "kind": "wall",
+      "offsetUnits": -44
+    },
+    {
+      "kind": "tower",
+      "offsetUnits": -36
+    },
+    {
+      "kind": "workshop",
+      "offsetUnits": -16
+    },
+    {
+      "kind": "tower",
+      "offsetUnits": 36
+    },
+    {
+      "kind": "wall",
+      "offsetUnits": 44
+    }
+  ],
+  "castleRadiusUnits": 5,
+  "homeRadiusUnits": 12,
+  "startTroops": {
+    "peasant": 1,
+    "archer": 2
+  }
+}

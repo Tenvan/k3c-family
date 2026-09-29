@@ -1,8 +1,8 @@
 {
-  "vagrant":     { "name": "Landstreicher",      "hp": 30,  "damage": 0,  "range": 0,  "attacksPerSecond": 0,   "recruitCost": { "gold": 1 },               "notes": "Wird mit Münze zum Bauer" },
-  "peasant":     { "name": "Bauer",              "hp": 40,  "damage": 0,  "range": 0,  "attacksPerSecond": 0,   "notes": "Sammelt Ressourcen, baut Gebäude" },
-  "archer":      { "name": "Bogenschütze",       "hp": 50,  "damage": 15, "range": 10, "attacksPerSecond": 1,   "upgradeFrom": "peasant", "cost": { "wood": 50, "gold": 20 } },
-  "warrior":     { "name": "Krieger",            "hp": 100, "damage": 20, "range": 1,  "attacksPerSecond": 1,   "upgradeFrom": "peasant", "cost": { "wood": 50, "gold": 20 } },
-  "eliteArcher": { "name": "Elite-Bogenschütze", "hp": 75,  "damage": 23, "range": 12, "attacksPerSecond": 1.2, "upgradeFrom": "archer",  "cost": { "stone": 100, "gold": 50 } },
-  "eliteWarrior":{ "name": "Elite-Krieger",      "hp": 150, "damage": 30, "range": 1,  "attacksPerSecond": 1.2, "upgradeFrom": "warrior", "cost": { "copper": 100, "gold": 50 } }
+  "vagrant":     { "name": "Landstreicher",      "hp": 30, "speed": 1.5,  "damage": 0,  "range": 0,  "attacksPerSecond": 0,   "recruitCost": { "gold": 1 },               "notes": "Wird mit Münze zum Bauer" },
+  "peasant":     { "name": "Bauer",              "hp": 40, "speed": 3,  "damage": 0,  "range": 0,  "attacksPerSecond": 0,   "notes": "Sammelt Ressourcen, baut Gebäude" },
+  "archer":      { "name": "Bogenschütze",       "hp": 50, "speed": 3.5,  "damage": 15, "range": 10, "attacksPerSecond": 1,   "upgradeFrom": "peasant", "cost": { "wood": 50, "gold": 20 } },
+  "warrior":     { "name": "Krieger",            "hp": 100, "speed": 3.5, "damage": 20, "range": 1,  "attacksPerSecond": 1,   "upgradeFrom": "peasant", "cost": { "wood": 50, "gold": 20 } },
+  "eliteArcher": { "name": "Elite-Bogenschütze", "hp": 75, "speed": 3.5,  "damage": 23, "range": 12, "attacksPerSecond": 1.2, "upgradeFrom": "archer",  "cost": { "stone": 100, "gold": 50 } },
+  "eliteWarrior":{ "name": "Elite-Krieger",      "hp": 150, "speed": 3.5, "damage": 30, "range": 1,  "attacksPerSecond": 1.2, "upgradeFrom": "warrior", "cost": { "copper": 100, "gold": 50 } }
 }

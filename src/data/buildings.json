@@ -1,11 +1,11 @@
 {
-  "castle":    { "name": "Burg/Thron",  "hp": 1000, "unlockDepth": 0, "cost": {},                         "notes": "Hub-Kern, muss verteidigt werden" },
-  "wall":      { "name": "Mauer",       "hp": 300,  "unlockDepth": 0, "cost": { "wood": 20, "gold": 5 },  "notes": "Blockiert Gegner" },
-  "tower":     { "name": "Turm",        "hp": 200,  "unlockDepth": 0, "cost": { "wood": 50, "gold": 20 }, "notes": "Plattform für Bogenschützen" },
-  "gate":      { "name": "Tor",         "hp": 250,  "unlockDepth": 0, "cost": { "wood": 30, "gold": 10 }, "notes": "Durchgang für eigene Truppen" },
-  "workshop":  { "name": "Werkstatt",   "hp": 150,  "unlockDepth": 0, "cost": { "wood": 40, "gold": 15 }, "notes": "Waffen-Upgrades (Bogen, Schwert)" },
-  "farm":      { "name": "Farm",        "hp": 100,  "unlockDepth": 0, "cost": { "wood": 30, "gold": 10 }, "notes": "Passive Ressourcen (optional)" },
-  "barracks":  { "name": "Kaserne",     "hp": 200,  "unlockDepth": 1, "cost": { "stone": 60, "gold": 30 },"notes": "+10 Truppen-Limit" },
-  "stairsUp":  { "name": "Treppe hoch", "hp": 500,  "unlockDepth": 1, "cost": { "stone": 100, "gold": 50 },"notes": "Verbindung zur Stufe darüber, max. 1 pro Hub" },
-  "stairsDown":{ "name": "Treppe runter","hp": 500, "unlockDepth": 1, "cost": { "stone": 100, "gold": 50 },"notes": "Verbindung zur Stufe darunter, max. 1 pro Hub" }
+  "castle":    { "name": "Burg/Thron",  "hp": 1000, "buildSeconds": 0,  "unlockDepth": 0, "cost": {},                         "notes": "Hub-Kern, muss verteidigt werden" },
+  "wall":      { "name": "Mauer",       "hp": 300,  "buildSeconds": 6,  "unlockDepth": 0, "cost": { "wood": 20, "gold": 5 },  "notes": "Blockiert Gegner" },
+  "tower":     { "name": "Turm",        "hp": 200,  "buildSeconds": 10, "archerSlots": 2, "rangeBonus": 3, "unlockDepth": 0, "cost": { "wood": 50, "gold": 20 }, "notes": "Plattform für Bogenschützen" },
+  "gate":      { "name": "Tor",         "hp": 250,  "buildSeconds": 6,  "unlockDepth": 0, "cost": { "wood": 30, "gold": 10 }, "notes": "Durchgang für eigene Truppen" },
+  "workshop":  { "name": "Werkstatt",   "hp": 150,  "buildSeconds": 8,  "bowRack": 3, "unlockDepth": 0, "cost": { "wood": 40, "gold": 15 }, "notes": "Waffen-Upgrades (Bogen, Schwert)" },
+  "farm":      { "name": "Farm",        "hp": 100,  "buildSeconds": 8,  "unlockDepth": 0, "cost": { "wood": 30, "gold": 10 }, "notes": "Passive Ressourcen (optional)" },
+  "barracks":  { "name": "Kaserne",     "hp": 200,  "buildSeconds": 12, "unlockDepth": 1, "cost": { "stone": 60, "gold": 30 },"notes": "+10 Truppen-Limit" },
+  "stairsUp":  { "name": "Treppe hoch", "hp": 500,  "buildSeconds": 20, "unlockDepth": 1, "cost": { "stone": 100, "gold": 50 },"notes": "Verbindung zur Stufe darüber, max. 1 pro Hub" },
+  "stairsDown":{ "name": "Treppe runter","hp": 500, "buildSeconds": 20, "unlockDepth": 1, "cost": { "stone": 100, "gold": 50 },"notes": "Verbindung zur Stufe darunter, max. 1 pro Hub" }
 }

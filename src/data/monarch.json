@@ -2,6 +2,9 @@
   "base": { "hp": 100, "damage": 10, "speed": 5, "defense": 5 },
   "perLevel": { "hp": 10, "damage": 2, "speed": 0.5, "defense": 1 },
   "maxLevel": 20,
+  "sprintMultiplier": 1.8,
+  "acceleration": 8,
+  "respawnSeconds": 5,
   "presets": {
     "tank":   { "name": "Tank",     "hp": 200, "damage": 8,  "speed": 5.0, "defense": 10,  "activeSkills": ["taunt", "shieldBash"] },
     "mage":   { "name": "Zauberer", "hp": 90,  "damage": 12, "speed": 5.0, "defense": 4.5, "activeSkills": ["fireball", "iceWall"] },
