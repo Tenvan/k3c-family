@@ -1,12 +1,13 @@
 import Phaser from 'phaser';
 import { toggleFullscreen } from '../core/fullscreen';
 import { GAME_HEIGHT, GAME_WIDTH, GROUND_Y, MAX_PLAYERS, UNIT_PX } from '../core/constants';
+import { storeSave, type SaveTarget } from '../core/saveStore';
 import { GamepadInput, KeyboardInput, type PlayerInput } from '../input/playerInput';
-import { biomeForDepth } from '../world/biome';
+import { createCampaign, currentWorld, fromSave, joinPlayer, toSave, travel, type Campaign, type SaveGame } from '../world/sim/campaign';
 import { daylight } from '../world/sim/cycle';
 import { giveGold } from '../world/sim/economy';
 import type { GameEvent, PlayerCommand, World } from '../world/sim/types';
-import { addPlayer, createWorld, step } from '../world/sim/world';
+import { step } from '../world/sim/world';
 import { WorldRenderer } from './worldRenderer';
 
 export interface GameSceneData {
@@ -16,22 +17,30 @@ export interface GameSceneData {
   fast?: boolean;
   /** Dev-Tasten aktiv (Dev-Server oder ?dev=1) */
   dev?: boolean;
+  /** Geladener Spielstand (?continue=1) */
+  save?: SaveGame | null;
+  /** Automatisch speichern (?save=1): bei Tagesanbruch, beim Stufenwechsel und beim Verlassen der Seite */
+  persist?: boolean;
 }
 
 const FAST_CYCLE = 8;
 /** Helligkeit in tiefster Nacht */
 const NIGHT_BRIGHTNESS = 0.45;
+const SAVE_TEXT: Record<SaveTarget, string> = { server: 'Gespeichert', local: 'Gespeichert (nur im Browser)', none: 'Speichern fehlgeschlagen' };
 
 /**
  * Spielwelt: rechnet die Simulation (src/world/sim) und zeichnet sie über den WorldRenderer.
  * Couch-Koop: Beitritt per A / Leertaste, jeder Spieler bekommt einen eigenen Split-Screen-Streifen.
+ * Die Kampagne hält alle Stufen. Beim Stufenwechsel wird nur die Darstellung neu aufgebaut, die Eingaben bleiben.
  */
 export class GameScene extends Phaser.Scene {
-  world!: World;
+  campaign!: Campaign;
   /** Eingabe pro Spieler (Index = world.players-Index) */
   readonly controls: PlayerInput[] = [];
   /** Ereignisse für die HudScene, die sie abholt und leert */
   readonly pendingEvents: GameEvent[] = [];
+  /** Letzte Speicher-Meldung für die HudScene */
+  saveStatus: { text: string; at: number } | null = null;
 
   private data_!: GameSceneData;
   private renderer_!: WorldRenderer;
@@ -43,26 +52,25 @@ export class GameScene extends Phaser.Scene {
     super('game');
   }
 
+  get world(): World {
+    return currentWorld(this.campaign);
+  }
+
   init(data: GameSceneData): void {
     this.data_ = data;
-    this.world = createWorld(biomeForDepth(data.depth), data.seed, { cycleSpeed: data.fast ? FAST_CYCLE : 1 });
+    const cycleSpeed = data.fast ? FAST_CYCLE : 1;
+    this.campaign = data.save
+      ? fromSave(data.save, cycleSpeed)
+      : createCampaign(data.seed, { id: `${data.seed}-${Date.now().toString(36)}`, cycleSpeed, depth: data.depth });
     this.controls.length = 0;
     this.pendingEvents.length = 0;
+    this.saveStatus = null;
     this.pads = [];
     this.nightFx = [];
   }
 
   create(): void {
-    const widthPx = this.world.widthUnits * UNIT_PX;
-    const palette = this.world.biome.palette;
-    this.drawBackground(widthPx);
-    this.add.rectangle(0, GROUND_Y, widthPx, GAME_HEIGHT - GROUND_Y, Phaser.Display.Color.HexStringToColor(palette.ground).color).setOrigin(0, 0);
-    this.renderer_ = new WorldRenderer(this, this.world);
-
-    this.cameras.main.setBounds(0, 0, widthPx, GAME_HEIGHT);
-    this.cameras.main.centerOn(this.world.hubX * UNIT_PX, GAME_HEIGHT / 2);
-    this.cameras.main.setBackgroundColor(palette.sky);
-    this.addNightFx(this.cameras.main);
+    this.buildWorldView();
 
     this.keyboard = new KeyboardInput(this.input.keyboard!);
     // Browser melden Gamepads erst nach dem ersten Tastendruck. Alle bekannten + neue Pads beobachten.
@@ -74,17 +82,23 @@ export class GameScene extends Phaser.Scene {
     gamepads.on('connected', addPad);
 
     const kb = this.input.keyboard!;
-    // Dev-Hilfe: N = neues Level mit zufälligem Seed, 1/2/3 = Tiefe wechseln.
+    // Dev-Hilfe: N = neues Level mit zufälligem Seed, 1/2/3 = Tiefe wechseln (jeweils neues Spiel, ohne Speichern).
     kb.on('keydown-N', () => this.restartWith(this.world.biome.depth, Math.random().toString(36).slice(2, 8)));
     kb.on('keydown-ONE', () => this.restartWith(0, this.world.seed));
     kb.on('keydown-TWO', () => this.restartWith(1, this.world.seed));
     kb.on('keydown-THREE', () => this.restartWith(2, this.world.seed));
     if (this.data_.dev) {
-      // G = +10 Gold, H = +50 Baumaterial, T = zur nächsten Tageszeit springen
+      // G = +10 Gold, H = +50 Baumaterial, T = zur nächsten Tageszeit springen, S = jetzt speichern
       kb.on('keydown-G', () => this.world.players.forEach((p) => giveGold(this.world, p, 10)));
       kb.on('keydown-H', () => (['wood', 'stone', 'copper'] as const).forEach((r) => (this.world.stock[r] += 50)));
       kb.on('keydown-T', () => (this.world.time += this.world.cycle.secondsLeft / this.world.cycleSpeed + 0.01));
+      kb.on('keydown-S', () => void this.autosave(true));
     }
+
+    // Verlassen der Seite (Home-Button / View+Menu): letzten Stand noch schnell sichern.
+    const onHide = () => void this.autosave(false, true);
+    window.addEventListener('pagehide', onHide);
+    this.events.once(Phaser.Scenes.Events.SHUTDOWN, () => window.removeEventListener('pagehide', onHide));
 
     this.scene.launch('hud');
   }
@@ -99,25 +113,68 @@ export class GameScene extends Phaser.Scene {
     const all: PlayerInput[] = [this.keyboard, ...this.pads];
     if (all.some((i) => i.justPressed('fullscreen'))) void toggleFullscreen(); // über die Shell, damit Vollbild beim Seitenwechsel bleibt
 
+    const world = this.world;
     const commands: PlayerCommand[] = this.controls.map((c) => ({ moveX: c.moveX(), sprint: c.sprint(), pay: c.held('confirm') }));
-    step(this.world, commands, dt);
-    this.pendingEvents.push(...this.world.events);
-    this.renderer_.sync(this.world);
+    step(world, commands, dt);
+    this.pendingEvents.push(...world.events);
+    if (world.events.some((e) => e.type === 'dawn')) void this.autosave();
 
-    const brightness = NIGHT_BRIGHTNESS + (1 - NIGHT_BRIGHTNESS) * daylight(this.world.cycle);
+    if (world.travel && world.travel.progress >= 1) {
+      const target = travel(this.campaign, world.travel.toDepth);
+      this.pendingEvents.push(...target.events);
+      this.buildWorldView();
+      void this.autosave();
+      return;
+    }
+
+    this.renderer_.sync(world);
+    const brightness = NIGHT_BRIGHTNESS + (1 - NIGHT_BRIGHTNESS) * daylight(world.cycle);
     for (const fx of this.nightFx) fx.colorMatrix.brightness(brightness);
+  }
+
+  /** Spielstand sichern, wenn diese Partie gespeichert werden soll (?save=1) oder per Dev-Taste. */
+  private async autosave(force = false, leaving = false): Promise<void> {
+    if (!this.data_.persist && !force) return;
+    if (this.world.players.length === 0) return; // noch niemand beigetreten: nichts überschreiben
+    const at = this.world.time;
+    const target = await storeSave(toSave(this.campaign, new Date().toISOString()), undefined, leaving);
+    this.saveStatus = { text: SAVE_TEXT[target], at };
   }
 
   private handleJoin(): void {
     if (this.controls.length >= MAX_PLAYERS) return;
     for (const input of [this.keyboard, ...this.pads]) {
       if (this.controls.includes(input) || !input.justPressed('confirm')) continue;
-      addPlayer(this.world);
+      joinPlayer(this.campaign);
       this.controls.push(input);
       this.renderer_.sync(this.world);
       this.layoutCameras();
       if (this.controls.length >= MAX_PLAYERS) return;
     }
+  }
+
+  /** Baut alles Sichtbare für die aktuelle Stufe (neu) auf: Hintergrund, Welt-Objekte, Kameras. */
+  private buildWorldView(): void {
+    const world = this.world;
+    this.children.removeAll(true);
+    this.cameras.cameras.filter((c) => c !== this.cameras.main).forEach((c) => this.cameras.remove(c));
+    this.nightFx = [];
+
+    const widthPx = world.widthUnits * UNIT_PX;
+    const palette = world.biome.palette;
+    this.drawBackground(widthPx);
+    this.add.rectangle(0, GROUND_Y, widthPx, GAME_HEIGHT - GROUND_Y, Phaser.Display.Color.HexStringToColor(palette.ground).color).setOrigin(0, 0);
+    this.renderer_ = new WorldRenderer(this, world);
+    this.renderer_.sync(world);
+
+    const main = this.cameras.main;
+    main.stopFollow();
+    main.setViewport(0, 0, GAME_WIDTH, GAME_HEIGHT).setZoom(1);
+    main.setBounds(0, 0, widthPx, GAME_HEIGHT);
+    main.centerOn(world.hubX * UNIT_PX, GAME_HEIGHT / 2);
+    main.setBackgroundColor(palette.sky);
+    this.addNightFx(main);
+    if (world.players.length > 0) this.layoutCameras();
   }
 
   /** 1 Spieler: Vollbild. 2+ Spieler: horizontale Streifen übereinander (K2C-Stil). */
@@ -151,7 +208,7 @@ export class GameScene extends Phaser.Scene {
 
   private restartWith(depth: number, seed: string): void {
     this.scene.stop('hud');
-    this.scene.restart({ ...this.data_, depth, seed } satisfies GameSceneData);
+    this.scene.restart({ ...this.data_, depth, seed, save: null, persist: false } satisfies GameSceneData);
   }
 
   private drawBackground(widthPx: number): void {

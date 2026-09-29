@@ -63,10 +63,11 @@ export const TROOPS = troopsJson as unknown as Record<'vagrant' | 'peasant' | 'a
 export const ENEMIES = enemiesJson as unknown as Record<string, EnemyData>;
 export const MONARCH = monarchJson;
 export const HUB = hubJson as {
-  sites: { kind: 'wall' | 'tower' | 'workshop'; offsetUnits: number }[];
+  sites: { kind: 'wall' | 'tower' | 'workshop' | 'stairsUp' | 'stairsDown'; offsetUnits: number; fromDepth?: number; needsDeeper?: boolean }[];
   castleRadiusUnits: number;
   homeRadiusUnits: number;
   startTroops: Partial<Record<'peasant' | 'archer', number>>;
+  travel: { rangeUnits: number; seconds: number };
 };
 export const ECONOMY = economyJson as unknown as {
   purse: { startGold: number; maxGold: number };

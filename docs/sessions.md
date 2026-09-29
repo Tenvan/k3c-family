@@ -126,10 +126,16 @@ Reihenfolge ist so gewählt, dass jede Session auf der vorigen aufbaut und einze
 
 ## Phase 2 – Fortschritt (Roadmap Schritt 3)
 
-### S2.1 ⬜ Speichern/Laden auf dem Heimnetz-Server
+### S2.1 ✅ Speichern/Laden auf dem Heimnetz-Server
 
 - `POST/GET /api/save` in `server/` (analog zu `reports.mjs`), Fallback localStorage. Gespeichert: Seeds, Hub, Monarch.
 - Tests: Serialisieren/Deserialisieren ohne Phaser, Server-Handler mit Fake-Requests.
+- ✅ `src/world/sim/campaign.ts` (Kampagne = alle Stufen, `toSave`/`fromSave`), `server/saves.mjs` → `saves/<slot>.json`,
+  `src/core/saveStore.ts` (Server + localStorage, der neuere Stand gewinnt).
+  Gespeichert werden Hubs (Gebäude, Truppen, Vorrat, Welle), Gold pro Spielerplatz, Zeit, gefällte Bäume, geöffnete Truhen.
+- Autosave bei Tagesanbruch, beim Stufenwechsel und beim Verlassen der Seite (`?save=1`). Kachel „Weiterspielen“ = `?continue=1`.
+  Überschreibt ein neues Spiel ein altes, legt der Server vorher `saves/autosave-<Datum>.json` an.
+- Offen: Monarch-Level/Skills kommen mit S2.3 dazu.
 
 ### S2.2 ✅ Truhen & versteckte Skill-Punkte
 
@@ -140,11 +146,14 @@ Reihenfolge ist so gewählt, dass jede Session auf der vorigen aufbaut und einze
 
 - Daten in `src/data/skills.json`, Tier-Gating, Skill-Menü (**View**), Slots nach S0.1-Belegung. Start: Tank + Zauberer.
 
-### S2.4 🟨 Tiefen-Eingang & Höhle mit Aggressionspool
+### S2.4 ✅ Tiefen-Eingang & Höhle mit Aggressionspool
 
 - Eingang am Levelende → Stufe 1 mit eigenem Hub. `src/world/aggression.ts` (+1%/min, +5%/Kill, +1%/Ressource).
 - Tests: Pool-Regeln, Übergang zwischen Stufen behält Stufe-0-Hub.
-- ✅ Aggressionspool inkl. Wellen läuft (Dev: Tasten 2/3). Offen: Tiefen-Eingang nutzen, Hub pro Stufe behalten (braucht S2.1).
+- ✅ Aggressionspool inkl. Wellen läuft (Dev: Tasten 2/3).
+- ✅ Alle Spieler 2 s am Tiefen-Eingang → nächste Stufe, Ankunft an deren Burg (`src/world/sim/travel.ts`).
+  Zurück über die Bauplätze **Treppe hoch** (ab Tiefe 1) bzw. als Abkürzung **Treppe runter** (`hub.json`).
+  Jede Stufe behält ihren Hub, der globale Tag/Nacht-Zyklus läuft weiter. Die Mine (Tiefe 2) ist vorerst die unterste.
 
 ---
 

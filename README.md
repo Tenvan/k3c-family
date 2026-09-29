@@ -28,8 +28,10 @@ Im Spiel:
 - Linker Stick / **A**,**D**: laufen, **RT** / **Shift**: sprinten
 - **F** / rechten Stick drücken: Vollbild
 - Nachts kommen Gegner aus den Portalen. Mauern halten sie auf, Bogenschützen schießen automatisch.
+- Am Levelende liegt der **Tiefen-Eingang**: Stehen alle Spieler dort, geht es eine Stufe tiefer (eigener Hub).
+  Zurück nach oben geht es über eine gebaute **Treppe hoch** im Hub.
 - Dev: **N** neuer Seed, **1/2/3** Tiefe wechseln, URL-Parameter `?seed=abc&depth=1`,
-  `?fast=1` (Tag/Nacht 8x schneller), `?dev=1` (**G** +10 Gold, **H** +50 Material, **T** nächste Tageszeit)
+  `?fast=1` (Tag/Nacht 8x schneller), `?dev=1` (**G** +10 Gold, **H** +50 Material, **T** nächste Tageszeit, **S** speichern)
 
 ## Im Heimnetz hosten (Xbox)
 
@@ -55,6 +57,13 @@ Falls der Test zeigt, dass die Xbox die Gamepad API ohne HTTPS nicht freigibt: `
 `certs/cert.pem` ablegen. Dann läuft zusätzlich HTTPS auf Port **8443**. Ein selbstsigniertes Zertifikat
 erzeugt auf der Xbox eine Warnung. Ob Edge die Seite danach als sicher behandelt, zeigt der Test
 („Secure Context“). Sonst bräuchte es ein echtes Zertifikat, etwa eine eigene Domain mit Let's Encrypt.
+
+### Spielstände
+
+**Weiterspielen** lädt den letzten Stand, **Neues Spiel** beginnt von vorn. Gespeichert wird automatisch bei Tagesanbruch,
+beim Wechsel in eine andere Tiefe und beim Verlassen des Spiels, auf dem Heimnetz-Server in `saves/autosave.json`
+(zusätzlich im Browser). Ein neues Spiel sichert den alten Stand vorher als `saves/autosave-<Datum>.json`.
+Zum Zurückholen die Sicherung einfach in `autosave.json` umbenennen.
 
 ## Neue Seite hinzufügen (z.B. weitere Testseiten)
 
