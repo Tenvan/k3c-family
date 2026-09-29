@@ -1,6 +1,6 @@
 # K3C – Family Three Crowns
 
-Couch-Koop-Side-Scroller im Stil von Kingdom Two Crowns. **TypeScript + Phaser 3 + Vite**, läuft im Browser.
+Couch-Koop-Side-Scroller im Stil von Kingdom Two Crowns. **TypeScript + Phaser 4 + Vite**, läuft im Browser.
 Zielplattform ist **Edge auf der Xbox** (Gamepad API), gehostet im Heimnetz. Die Kommunikation mit dem Nutzer ist deutsch.
 
 - Design & Regeln: `docs/game-design.md` (nur bei Bedarf lesen)
