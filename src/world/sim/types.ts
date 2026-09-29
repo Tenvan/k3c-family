@@ -36,6 +36,9 @@ export interface Player {
   respawnIn: number;
   payCooldown: number;
   paying: boolean;
+  /** Ziel, an dem gerade gezahlt wird ("site:3"), und wie viel Gold davon noch nicht vollendet ist */
+  payKey: string | null;
+  payAmount: number;
 }
 
 export interface Coin {

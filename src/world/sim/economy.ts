@@ -20,6 +20,7 @@ export function stepPlayers(w: World, commands: readonly PlayerCommand[], dt: nu
 
     if (!isAlive(p)) {
       p.paying = false;
+      refundPending(w, p);
       p.respawnIn -= dt;
       if (p.respawnIn <= 0) respawn(w, p);
       continue;
@@ -35,6 +36,8 @@ export function stepPlayers(w: World, commands: readonly PlayerCommand[], dt: nu
       payOneCoin(w, p);
       p.payCooldown = ECONOMY.payIntervalSeconds;
     }
+    // Aufgehört zu halten (oder das Ziel gewechselt), bevor der Betrag voll war: Münzen kommen zurück.
+    if (p.payKey && (!cmd.pay || keyOf(findPayTarget(w, p)) !== p.payKey)) refundPending(w, p);
   }
   collectCoins(w);
   collectPickups(w);
@@ -75,6 +78,38 @@ export function sitePayable(s: Site): boolean {
   return false;
 }
 
+function keyOf(t: PayTarget | null): string | null {
+  if (!t) return null;
+  return t.kind === 'site' ? `site:${t.site.id}` : t.kind === 'vagrant' ? `vagrant:${t.troop.id}` : `node:${t.node.id}`;
+}
+
+/** Gezahltes, aber nicht vollendetes Gold zurück auf den Boden werfen und beim Ziel abziehen. */
+function refundPending(w: World, p: Player): void {
+  const key = p.payKey;
+  const amount = p.payAmount;
+  p.payKey = null;
+  p.payAmount = 0;
+  if (!key || amount <= 0) return;
+  const [kind, idText] = key.split(':');
+  const id = Number(idText);
+  let back = 0;
+  const take = (paid: number) => Math.min(amount, paid);
+  if (kind === 'site') {
+    const s = w.sites.find((x) => x.id === id);
+    if (s && sitePayable(s)) {
+      if (s.state === 'unpaid') (back = take(s.paidGold)), (s.paidGold -= back);
+      else (back = take(s.bowPaidGold)), (s.bowPaidGold -= back);
+    }
+  } else if (kind === 'vagrant') {
+    const t = w.troops.find((x) => x.id === id);
+    if (t && t.kind === 'vagrant') (back = take(t.paidGold)), (t.paidGold -= back);
+  } else {
+    const n = w.nodes.find((x) => x.id === id);
+    if (n && !n.marked) (back = take(n.paidGold)), (n.paidGold -= back);
+  }
+  for (let i = 0; i < back; i++) w.coins.push({ id: newId(w), x: p.x, blockedPlayerId: null, blockedUntil: 0 });
+}
+
 function payOneCoin(w: World, p: Player): void {
   const target = findPayTarget(w, p);
   // Am fertig bezahlten Bauplatz nichts fallen lassen (sonst verliert man beim Festhalten Münzen).
@@ -84,6 +119,10 @@ function payOneCoin(w: World, p: Player): void {
     w.coins.push({ id: newId(w), x: p.x, blockedPlayerId: p.id, blockedUntil: w.time + ECONOMY.dropPickupDelaySeconds });
     return;
   }
+  const key = keyOf(target);
+  if (p.payKey !== key) refundPending(w, p);
+  p.payKey = key;
+  p.payAmount++;
   switch (target.kind) {
     case 'site': {
       const s = target.site;
@@ -93,6 +132,7 @@ function payOneCoin(w: World, p: Player): void {
       } else {
         s.bowPaidGold++;
       }
+      if (!sitePayable(s)) clearPending(p);
       break;
     }
     case 'vagrant': {
@@ -101,16 +141,22 @@ function payOneCoin(w: World, p: Player): void {
       if (t.paidGold >= (TROOPS.vagrant.recruitCost?.gold ?? 1)) {
         Object.assign(t, { kind: 'peasant', hp: TROOPS.peasant.hp, maxHp: TROOPS.peasant.hp, anchorX: w.hubX, targetX: t.x, job: null, paidGold: 0 });
         w.events.push({ type: 'recruited', player: p.index });
+        clearPending(p);
       }
       break;
     }
     case 'node': {
       const n = target.node;
       n.paidGold++;
-      if (n.paidGold >= ECONOMY.gatherables[n.kind].markCost) n.marked = true;
+      if (n.paidGold >= ECONOMY.gatherables[n.kind].markCost) (n.marked = true), clearPending(p);
       break;
     }
   }
+}
+
+function clearPending(p: Player): void {
+  p.payKey = null;
+  p.payAmount = 0;
 }
 
 function collectCoins(w: World): void {

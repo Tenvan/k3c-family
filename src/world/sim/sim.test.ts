@@ -105,6 +105,7 @@ describe('Gold', () => {
     a.x = b.x = w.hubX; // Mitte des Hubs, dort ist kein Bauplatz
     w.players.forEach((p) => (p.payCooldown = 0));
     b.x = w.hubX + 10;
+    b.gold = 50;
     const goldA = a.gold;
     step(w, [PAY, IDLE], DT);
     expect(a.gold).toBe(goldA - 1);
@@ -116,6 +117,39 @@ describe('Gold', () => {
     step(w, [], DT);
     expect(b.gold).toBe(goldB + 1);
     expect(w.coins).toHaveLength(0);
+  });
+
+  it('Startgold ist 100', () => {
+    expect(addPlayer(quietWorld()).gold).toBe(100);
+  });
+
+  it('Aufhören vor dem vollen Betrag gibt das Gold zurück', () => {
+    const w = quietWorld();
+    const p = addPlayer(w);
+    const site = w.sites[0];
+    p.x = site.x;
+    p.payCooldown = 0;
+    const before = p.gold;
+    run(w, 0.6, [PAY]); // ein paar Münzen, aber nicht alle
+    expect(site.paidGold).toBeGreaterThan(0);
+    expect(site.paidGold).toBeLessThan(BUILDINGS[site.kind].cost.gold ?? 0);
+    run(w, 0.3, [IDLE]); // Taste loslassen
+    expect(site.paidGold).toBe(0);
+    expect(site.state).toBe('unpaid');
+    expect(p.gold).toBe(before); // zurückgeworfen und wieder aufgehoben
+  });
+
+  it('voll bezahlt bleibt bezahlt', () => {
+    const w = quietWorld();
+    const p = addPlayer(w);
+    const site = w.sites[0];
+    p.x = site.x;
+    p.payCooldown = 0;
+    run(w, 6, [PAY]);
+    expect(site.state).not.toBe('unpaid');
+    const paid = site.paidGold;
+    run(w, 0.5, [IDLE]);
+    expect(site.paidGold).toBe(paid);
   });
 
   it('Beutel hat ein Limit, Überschuss bleibt liegen', () => {
