@@ -26,9 +26,11 @@ prüft die Regeln unten automatisch (Seiten eingetragen, `installPageChrome()`, 
 ## Struktur
 
 - `src/data/` – Balancing als JSON (Biome, Gegner, Truppen, Gebäude, Monarch). Werte gehören hierher, nicht in den Code.
-- `src/world/` – Spiel-Logik. Reine Logik (z.B. `levelGenerator.ts`) bleibt **ohne Phaser-Import** und bekommt Tests daneben (`*.test.ts`).
+- `src/world/` – Spiel-Logik **ohne Phaser-Import**, Tests daneben (`*.test.ts`). `levelGenerator.ts` baut das Level,
+  `sim/` simuliert es (`createWorld()` + `step()`, deterministisch, Zustand in `sim/types.ts`).
 - `src/input/` – `PlayerInput`-Abstraktion. Spiel-Code fragt Aktionen ab, nie konkrete Tasten.
-- `src/scenes/` – Phaser-Szenen (`GameScene` = Welt + Kameras, `HudScene` = bildschirmfeste Anzeigen).
+- `src/scenes/` – Phaser-Szenen (`GameScene` = Eingabe, `step()`, Kameras; `worldRenderer.ts` zeichnet den Zustand;
+  `HudScene` = bildschirmfeste Anzeigen). Neue Mechanik: Logik + Test in `sim/`, dann nur zeichnen.
 - Seiten: `index.html` = Landingpage/Shell (Kacheln aus `src/landing/pages.ts`), `game.html` = Spiel, weitere `*.html` = Testseiten.
   Jede `*.html` im Root wird automatisch gebaut.
 - `src/core/shell.ts` – Seiten-Rahmen (Home-Button, Home-Kombi, Zurück-Falle), `src/core/fullscreen.ts` – Vollbild über die Shell.

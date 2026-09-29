@@ -20,24 +20,24 @@ Aufteilung in Arbeitspakete pro Claude-Session: [`docs/sessions.md`](sessions.md
 - [x] Platzhalter-Rendering mit Parallax
 - [x] Couch-Koop: Beitreten per A/Leertaste, 2-Spieler-Split-Screen
 
-## Schritt 2 – Vertical Slice „Ein Tag, eine Nacht“ (Oberwelt)
+## Schritt 2 – Vertical Slice „Ein Tag, eine Nacht“ (Oberwelt) – umgesetzt, Spieleabend steht aus
 
-- [ ] Gold: Münzen aufsammeln, Münzbeutel pro Spieler, Münzen fallen lassen/geben
-- [ ] Rekrutierungs-Camp: Landstreicher → Bauer (Münze geben)
-- [ ] Bauer fällt Bäume → Holz
-- [ ] Bauplätze im Hub: Mauer und Turm bauen (Münzen/Holz einzahlen, Bauer baut)
-- [ ] Werkstatt: Bogen → Bogenschütze
-- [ ] Tag/Nacht-Zyklus (für Tests verkürzt) + Warnung „Nacht naht!“
-- [ ] Portal-Welle: Greed laufen zum Hub, greifen Mauer/Truppen an, klauen Gold
-- [ ] Bogenschützen schießen automatisch, Gegner droppen Gold
-- [ ] Niederlage/Respawn-Regeln
-- [ ] HUD pro Split-Screen-Hälfte
+- [x] Gold: Münzen aufsammeln, Münzbeutel pro Spieler, Münzen fallen lassen/geben
+- [x] Rekrutierungs-Camp: Landstreicher → Bauer (Münze geben)
+- [x] Bauer fällt Bäume → Holz
+- [x] Bauplätze im Hub: Mauer und Turm bauen (Münzen/Holz einzahlen, Bauer baut)
+- [x] Werkstatt: Bogen → Bogenschütze
+- [x] Tag/Nacht-Zyklus (für Tests verkürzt) + Warnung „Nacht naht!“
+- [x] Portal-Welle: Greed laufen zum Hub, greifen Mauer/Truppen an, klauen Gold
+- [x] Bogenschützen schießen automatisch, Gegner droppen Gold
+- [x] Niederlage/Respawn-Regeln
+- [x] HUD pro Split-Screen-Hälfte
 
 ## Schritt 3 – Fortschritt
 
-- [ ] Truhen + versteckte Skill-Punkte einsammeln
+- [x] Truhen + versteckte Skill-Punkte einsammeln
 - [ ] Skill-Baum (erst 1–2 Linien), 2 aktive Skills
-- [ ] Tiefen-Eingang → Höhle (Stufe 1) mit Aggressionspool
+- [ ] Tiefen-Eingang → Höhle (Stufe 1) mit Aggressionspool (Pool + Wellen fertig, Eingang fehlt)
 - [ ] Speichern/Laden (Seeds + Hub-Zustand) auf dem Heimnetz-Server
 
 ## Schritt 4 – Inhalt & Politur

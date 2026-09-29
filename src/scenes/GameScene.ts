@@ -1,50 +1,68 @@
 import Phaser from 'phaser';
 import { toggleFullscreen } from '../core/fullscreen';
-import { GAME_HEIGHT, GAME_WIDTH, GROUND_Y, MAX_PLAYERS, PLAYER_COLORS, UNIT_PX } from '../core/constants';
+import { GAME_HEIGHT, GAME_WIDTH, GROUND_Y, MAX_PLAYERS, UNIT_PX } from '../core/constants';
 import { GamepadInput, KeyboardInput, type PlayerInput } from '../input/playerInput';
-import { biomeForDepth, type BiomeConfig } from '../world/biome';
-import { generateLevel, type LevelEntity, type LevelLayout } from '../world/levelGenerator';
-import { Monarch } from '../world/monarch';
+import { biomeForDepth } from '../world/biome';
+import { daylight } from '../world/sim/cycle';
+import { giveGold } from '../world/sim/economy';
+import type { GameEvent, PlayerCommand, World } from '../world/sim/types';
+import { addPlayer, createWorld, step } from '../world/sim/world';
+import { WorldRenderer } from './worldRenderer';
 
 export interface GameSceneData {
   depth: number;
   seed: string;
+  /** Tag/Nacht 8x schneller (?fast=1) */
+  fast?: boolean;
+  /** Dev-Tasten aktiv (Dev-Server oder ?dev=1) */
+  dev?: boolean;
 }
 
+const FAST_CYCLE = 8;
+/** Helligkeit in tiefster Nacht */
+const NIGHT_BRIGHTNESS = 0.45;
+
 /**
- * Spielwelt: generiert ein Level aus Seed + Biom-Config, rendert Platzhalter,
- * verwaltet Couch-Koop-Spieler (Beitritt per A / Leertaste) und Split-Screen-Kameras.
+ * Spielwelt: rechnet die Simulation (src/world/sim) und zeichnet sie über den WorldRenderer.
+ * Couch-Koop: Beitritt per A / Leertaste, jeder Spieler bekommt einen eigenen Split-Screen-Streifen.
  */
 export class GameScene extends Phaser.Scene {
-  biome!: BiomeConfig;
-  level!: LevelLayout;
-  seed = '';
-  readonly players: Monarch[] = [];
+  world!: World;
+  /** Eingabe pro Spieler (Index = world.players-Index) */
+  readonly controls: PlayerInput[] = [];
+  /** Ereignisse für die HudScene, die sie abholt und leert */
+  readonly pendingEvents: GameEvent[] = [];
 
+  private data_!: GameSceneData;
+  private renderer_!: WorldRenderer;
   private keyboard!: KeyboardInput;
   private pads: GamepadInput[] = [];
+  private nightFx: Phaser.FX.ColorMatrix[] = [];
 
   constructor() {
     super('game');
   }
 
   init(data: GameSceneData): void {
-    this.biome = biomeForDepth(data.depth);
-    this.seed = data.seed;
-    this.level = generateLevel(this.biome, this.seed);
-    this.players.length = 0;
+    this.data_ = data;
+    this.world = createWorld(biomeForDepth(data.depth), data.seed, { cycleSpeed: data.fast ? FAST_CYCLE : 1 });
+    this.controls.length = 0;
+    this.pendingEvents.length = 0;
     this.pads = [];
+    this.nightFx = [];
   }
 
   create(): void {
-    const widthPx = this.level.widthUnits * UNIT_PX;
+    const widthPx = this.world.widthUnits * UNIT_PX;
+    const palette = this.world.biome.palette;
     this.drawBackground(widthPx);
-    this.level.entities.forEach((e) => this.drawEntity(e));
-    this.add.rectangle(0, GROUND_Y, widthPx, GAME_HEIGHT - GROUND_Y, Phaser.Display.Color.HexStringToColor(this.biome.palette.ground).color).setOrigin(0, 0);
+    this.add.rectangle(0, GROUND_Y, widthPx, GAME_HEIGHT - GROUND_Y, Phaser.Display.Color.HexStringToColor(palette.ground).color).setOrigin(0, 0);
+    this.renderer_ = new WorldRenderer(this, this.world);
 
     this.cameras.main.setBounds(0, 0, widthPx, GAME_HEIGHT);
-    this.cameras.main.centerOn(this.level.hubCenterUnits * UNIT_PX, GAME_HEIGHT / 2);
-    this.cameras.main.setBackgroundColor(this.biome.palette.sky);
+    this.cameras.main.centerOn(this.world.hubX * UNIT_PX, GAME_HEIGHT / 2);
+    this.cameras.main.setBackgroundColor(palette.sky);
+    this.addNightFx(this.cameras.main);
 
     this.keyboard = new KeyboardInput(this.input.keyboard!);
     // Browser melden Gamepads erst nach dem ersten Tastendruck. Alle bekannten + neue Pads beobachten.
@@ -55,11 +73,18 @@ export class GameScene extends Phaser.Scene {
     gamepads.gamepads.forEach(addPad);
     gamepads.on('connected', addPad);
 
+    const kb = this.input.keyboard!;
     // Dev-Hilfe: N = neues Level mit zufälligem Seed, 1/2/3 = Tiefe wechseln.
-    this.input.keyboard!.on('keydown-N', () => this.restartWith(this.biome.depth, Math.random().toString(36).slice(2, 8)));
-    this.input.keyboard!.on('keydown-ONE', () => this.restartWith(0, this.seed));
-    this.input.keyboard!.on('keydown-TWO', () => this.restartWith(1, this.seed));
-    this.input.keyboard!.on('keydown-THREE', () => this.restartWith(2, this.seed));
+    kb.on('keydown-N', () => this.restartWith(this.world.biome.depth, Math.random().toString(36).slice(2, 8)));
+    kb.on('keydown-ONE', () => this.restartWith(0, this.world.seed));
+    kb.on('keydown-TWO', () => this.restartWith(1, this.world.seed));
+    kb.on('keydown-THREE', () => this.restartWith(2, this.world.seed));
+    if (this.data_.dev) {
+      // G = +10 Gold, H = +50 Baumaterial, T = zur nächsten Tageszeit springen
+      kb.on('keydown-G', () => this.world.players.forEach((p) => giveGold(this.world, p, 10)));
+      kb.on('keydown-H', () => (['wood', 'stone', 'copper'] as const).forEach((r) => (this.world.stock[r] += 50)));
+      kb.on('keydown-T', () => (this.world.time += this.world.cycle.secondsLeft / this.world.cycleSpeed + 0.01));
+    }
 
     this.scene.launch('hud');
   }
@@ -74,52 +99,66 @@ export class GameScene extends Phaser.Scene {
     const all: PlayerInput[] = [this.keyboard, ...this.pads];
     if (all.some((i) => i.justPressed('fullscreen'))) void toggleFullscreen(); // über die Shell, damit Vollbild beim Seitenwechsel bleibt
 
-    const maxX = this.level.widthUnits * UNIT_PX;
-    for (const monarch of this.players) monarch.step(dt, 0, maxX);
+    const commands: PlayerCommand[] = this.controls.map((c) => ({ moveX: c.moveX(), sprint: c.sprint(), pay: c.held('confirm') }));
+    step(this.world, commands, dt);
+    this.pendingEvents.push(...this.world.events);
+    this.renderer_.sync(this.world);
+
+    const brightness = NIGHT_BRIGHTNESS + (1 - NIGHT_BRIGHTNESS) * daylight(this.world.cycle);
+    for (const fx of this.nightFx) fx.brightness(brightness);
   }
 
   private handleJoin(): void {
-    if (this.players.length >= MAX_PLAYERS) return;
-    const joined = new Set(this.players.map((p) => p.controls));
-    const candidates: PlayerInput[] = [this.keyboard, ...this.pads];
-    for (const input of candidates) {
-      if (joined.has(input) || !input.justPressed('confirm')) continue;
-      const index = this.players.length;
-      const spawnX = this.level.hubCenterUnits * UNIT_PX + (index === 0 ? -60 : 60);
-      this.players.push(new Monarch(this, spawnX, index, input, PLAYER_COLORS[index]));
+    if (this.controls.length >= MAX_PLAYERS) return;
+    for (const input of [this.keyboard, ...this.pads]) {
+      if (this.controls.includes(input) || !input.justPressed('confirm')) continue;
+      addPlayer(this.world);
+      this.controls.push(input);
+      this.renderer_.sync(this.world);
       this.layoutCameras();
-      if (this.players.length >= MAX_PLAYERS) return;
+      if (this.controls.length >= MAX_PLAYERS) return;
     }
   }
 
   /** 1 Spieler: Vollbild. 2+ Spieler: horizontale Streifen übereinander (K2C-Stil). */
   private layoutCameras(): void {
-    const n = this.players.length;
+    const n = this.world.players.length;
     const stripHeight = GAME_HEIGHT / n;
     const zoom = stripHeight / GAME_HEIGHT;
-    const widthPx = this.level.widthUnits * UNIT_PX;
+    const widthPx = this.world.widthUnits * UNIT_PX;
 
     // Zusätzliche Kameras entfernen, main bleibt Spieler 1.
     this.cameras.cameras.filter((c) => c !== this.cameras.main).forEach((c) => this.cameras.remove(c));
+    this.nightFx = this.nightFx.slice(0, 1);
 
-    this.players.forEach((monarch, i) => {
+    this.world.players.forEach((_, i) => {
       const cam = i === 0 ? this.cameras.main : this.cameras.add(0, 0, GAME_WIDTH, stripHeight);
+      if (i > 0) this.addNightFx(cam);
       cam.setViewport(0, i * stripHeight, GAME_WIDTH, stripHeight);
       cam.setZoom(zoom);
       cam.setBounds(0, 0, widthPx, GAME_HEIGHT);
-      cam.setBackgroundColor(this.biome.palette.sky);
-      cam.startFollow(monarch, true, 0.1, 0.1);
+      cam.setBackgroundColor(this.world.biome.palette.sky);
+      const view = this.renderer_.playerView(i);
+      if (view) cam.startFollow(view, true, 0.1, 0.1);
     });
+  }
+
+  /** Nacht = Kamera abdunkeln. Nur mit WebGL (postFX), im Canvas-Modus bleibt es hell. */
+  private addNightFx(cam: Phaser.Cameras.Scene2D.Camera): void {
+    cam.postFX?.clear(); // die Hauptkamera überlebt einen Szenen-Neustart, sonst stapelt sich die Abdunklung
+    const fx = cam.postFX?.addColorMatrix();
+    if (fx) this.nightFx.push(fx);
   }
 
   private restartWith(depth: number, seed: string): void {
     this.scene.stop('hud');
-    this.scene.restart({ depth, seed } satisfies GameSceneData);
+    this.scene.restart({ ...this.data_, depth, seed } satisfies GameSceneData);
   }
 
   private drawBackground(widthPx: number): void {
-    const far = Phaser.Display.Color.HexStringToColor(this.biome.palette.far).color;
-    const near = Phaser.Display.Color.HexStringToColor(this.biome.palette.near).color;
+    const palette = this.world.biome.palette;
+    const far = Phaser.Display.Color.HexStringToColor(palette.far).color;
+    const near = Phaser.Display.Color.HexStringToColor(palette.near).color;
     // Zwei Parallax-Ebenen mit gezackter Silhouette (Berge / Höhlenwände).
     this.drawRidge(widthPx, far, 0.3, 520, 180);
     this.drawRidge(widthPx, near, 0.6, 700, 120);
@@ -134,49 +173,5 @@ export class GameScene extends Phaser.Scene {
     }
     points.push({ x: widthPx * scrollFactor + GAME_WIDTH * 2, y: GROUND_Y });
     g.fillPoints(points, true);
-  }
-
-  /** Platzhalter-Grafiken. Später durch Sprites/Atlas ersetzen, Positionen bleiben. */
-  private drawEntity(e: LevelEntity): void {
-    const x = e.x * UNIT_PX;
-    const y = GROUND_Y;
-    switch (e.kind) {
-      case 'tree':
-        this.add.rectangle(x, y - 40, 14, 80, 0x6b4226);
-        this.add.triangle(x, y - 110, 0, 90, 40, 0, 80, 90, 0x2d6a4f);
-        break;
-      case 'bush':
-        this.add.circle(x, y - 14, 18, 0x40916c);
-        break;
-      case 'rock':
-        this.add.ellipse(x, y - 16, 50, 34, 0x8d99ae);
-        break;
-      case 'copperOre':
-        this.add.ellipse(x, y - 16, 44, 30, 0xb87333).setStrokeStyle(3, 0x6d3f1f);
-        break;
-      case 'castle':
-        this.add.rectangle(x, y - 130, 300, 260, 0x6c757d).setStrokeStyle(4, 0x343a40);
-        this.add.rectangle(x, y - 40, 60, 80, 0x343a40);
-        this.add.text(x, y - 280, 'HUB', { fontSize: '32px', color: '#ffffff', fontStyle: 'bold' }).setOrigin(0.5);
-        break;
-      case 'portal':
-        this.add.ellipse(x, y - 110, 110, 220, 0x7b2cbf).setStrokeStyle(6, 0x240046);
-        break;
-      case 'exit':
-        this.add.rectangle(x, y - 90, 160, 180, 0x111111).setStrokeStyle(6, 0x555555);
-        this.add.text(x, y - 210, `Tiefe ${this.biome.depth + 1}`, { fontSize: '24px', color: '#ffffff' }).setOrigin(0.5);
-        break;
-      case 'chest':
-        this.add.rectangle(x, y - 18, 44, 36, 0x9c6644).setStrokeStyle(3, 0x5c3d2e);
-        break;
-      case 'recruitCamp':
-        this.add.triangle(x, y - 45, 0, 90, 60, 0, 120, 90, 0xe9c46a).setStrokeStyle(3, 0x7f5539);
-        break;
-      case 'skillPoint':
-        this.add.star(x, y - 60, 5, 8, 18, 0xffd60a).setStrokeStyle(2, 0xffffff);
-        break;
-      default:
-        this.add.rectangle(x, y - 20, 30, 40, 0xff00ff); // unbekannter Typ => pink = auffällig
-    }
   }
 }

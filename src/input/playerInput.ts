@@ -6,7 +6,7 @@ import Phaser from 'phaser';
  *
  * Gamepad-Belegung (Xbox, Browser "standard mapping"), angelehnt an das alte GDD:
  *   Linker Stick / D-Pad links-rechts: laufen   RT: sprinten
- *   A: bestätigen / beitreten / Münze geben     X: interagieren
+ *   A: beitreten, halten = Münzen geben (K2C: eine Taste für alles)   X: interagieren (noch frei)
  *   Y: Bau-Menü   View: Skill-Menü   Menu: Pause   LB/RB/LT + D-Pad hoch: Skills (später)
  *   B wird bewusst NICHT belegt: Edge auf der Xbox nutzt B als "Zurück" (im Gamepad-Test prüfen!).
  */
@@ -19,6 +19,8 @@ export interface PlayerInput {
   sprint(): boolean;
   /** true nur im Frame, in dem die Aktion ausgelöst wurde */
   justPressed(action: Action): boolean;
+  /** true, solange die Taste gehalten wird */
+  held(action: Action): boolean;
   /** Einmal pro Frame aufrufen, VOR dem Abfragen */
   update(): void;
 }
@@ -66,6 +68,10 @@ export class GamepadInput implements PlayerInput {
     const button = PAD_ACTIONS[action];
     return this.current.has(button) && !this.previous.has(button);
   }
+
+  held(action: Action): boolean {
+    return this.current.has(PAD_ACTIONS[action]);
+  }
 }
 
 export class KeyboardInput implements PlayerInput {
@@ -109,5 +115,9 @@ export class KeyboardInput implements PlayerInput {
 
   justPressed(action: Action): boolean {
     return this.pressed.has(action);
+  }
+
+  held(action: Action): boolean {
+    return this.keys[action].isDown;
   }
 }
