@@ -42,7 +42,7 @@ Aufteilung in Arbeitspakete pro Claude-Session: [`docs/sessions.md`](sessions.md
 
 ## Schritt 4 – Inhalt & Politur
 
-- [x] Figuren-Sprites mit Animationen (LuizMelo, CC0)
+- [x] Figuren-Sprites mit Animationen (LuizMelo für unsere Seite, Gothicvania für Gegner, CC0)
 - [ ] Grafiken für Gebäude, Ressourcen, Hintergrund; Sounds
 - [ ] Mine (Stufe 2), Treppen zwischen den Hubs
 - [ ] Restliche Gegner und Truppen, Elite-Gegner
