@@ -39,7 +39,7 @@ export class HudScene extends Phaser.Scene {
       .setOrigin(0.5)
       .setVisible(false);
     this.joinHint = this.add
-      .text(GAME_WIDTH / 2, GAME_HEIGHT / 2, 'Drücke  A  (Controller) oder  Leertaste  zum Beitreten', { ...STYLE, fontSize: '44px' })
+      .text(GAME_WIDTH / 2, GAME_HEIGHT / 2, 'Drücke  A  (Controller), Leertaste oder die Münz-Taste zum Beitreten', { ...STYLE, fontSize: '44px' })
       .setOrigin(0.5);
     this.fps = this.add.text(20, GAME_HEIGHT - 40, '', { ...STYLE, fontSize: '20px', strokeThickness: 4 });
     const dev = 'Dev: N = neuer Seed · 1/2/3 = Tiefe · F / RS = Vollbild';

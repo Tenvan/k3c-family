@@ -2,12 +2,19 @@ import Phaser from 'phaser';
 import { toggleFullscreen } from '../core/fullscreen';
 import { GAME_HEIGHT, GAME_WIDTH, GROUND_Y, MAX_PLAYERS, UNIT_PX } from '../core/constants';
 import { GamepadInput, KeyboardInput, type PlayerInput } from '../input/playerInput';
+import { TouchInput, wantsTouchControls } from '../input/touchInput';
 import { biomeForDepth } from '../world/biome';
 import { daylight } from '../world/sim/cycle';
 import { giveGold } from '../world/sim/economy';
 import type { GameEvent, PlayerCommand, World } from '../world/sim/types';
 import { addPlayer, createWorld, step } from '../world/sim/world';
 import { WorldRenderer } from './worldRenderer';
+
+/** Ein Overlay pro Seite, auch über Szenen-Neustarts hinweg (N/1/2/3) */
+let sharedTouch: TouchInput | undefined;
+function touchControls(): TouchInput {
+  return (sharedTouch ??= new TouchInput());
+}
 
 export interface GameSceneData {
   depth: number;
@@ -36,6 +43,7 @@ export class GameScene extends Phaser.Scene {
   private data_!: GameSceneData;
   private renderer_!: WorldRenderer;
   private keyboard!: KeyboardInput;
+  private touch: TouchInput | undefined;
   private pads: GamepadInput[] = [];
   private nightFx: Phaser.Filters.ColorMatrix[] = [];
 
@@ -50,6 +58,7 @@ export class GameScene extends Phaser.Scene {
     this.pendingEvents.length = 0;
     this.pads = [];
     this.nightFx = [];
+    this.touch = undefined;
   }
 
   create(): void {
@@ -65,6 +74,7 @@ export class GameScene extends Phaser.Scene {
     this.addNightFx(this.cameras.main);
 
     this.keyboard = new KeyboardInput(this.input.keyboard!);
+    if (wantsTouchControls()) this.touch = touchControls();
     // Browser melden Gamepads erst nach dem ersten Tastendruck. Alle bekannten + neue Pads beobachten.
     const gamepads = this.input.gamepad!;
     const addPad = (pad: Phaser.Input.Gamepad.Gamepad) => {
@@ -93,10 +103,11 @@ export class GameScene extends Phaser.Scene {
     const dt = Math.min(deltaMs / 1000, 0.1);
     this.keyboard.update();
     this.pads.forEach((p) => p.update());
+    this.touch?.update();
 
     this.handleJoin();
 
-    const all: PlayerInput[] = [this.keyboard, ...this.pads];
+    const all = this.allInputs();
     if (all.some((i) => i.justPressed('fullscreen'))) void toggleFullscreen(); // über die Shell, damit Vollbild beim Seitenwechsel bleibt
 
     const commands: PlayerCommand[] = this.controls.map((c) => ({ moveX: c.moveX(), sprint: c.sprint(), pay: c.held('confirm') }));
@@ -108,9 +119,13 @@ export class GameScene extends Phaser.Scene {
     for (const fx of this.nightFx) fx.colorMatrix.brightness(brightness);
   }
 
+  private allInputs(): PlayerInput[] {
+    return [this.keyboard, ...this.pads, ...(this.touch ? [this.touch] : [])];
+  }
+
   private handleJoin(): void {
     if (this.controls.length >= MAX_PLAYERS) return;
-    for (const input of [this.keyboard, ...this.pads]) {
+    for (const input of this.allInputs()) {
       if (this.controls.includes(input) || !input.justPressed('confirm')) continue;
       addPlayer(this.world);
       this.controls.push(input);
