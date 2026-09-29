@@ -9,7 +9,7 @@ const STYLE = { fontSize: '28px', color: '#ffffff', stroke: '#000000', strokeThi
 const BANNER_SECONDS = 2.8;
 /** Hinweise passend zum zuletzt benutzten Eingabegerät */
 const CONTROL_HINTS = {
-  touch: 'Münz-Taste halten = Münzen geben · » = sprinten',
+  touch: 'Links/rechts berühren = laufen · Münz-Taste halten = Münzen geben',
   pad: 'A halten = Münzen geben · RT = sprinten · RS = Vollbild',
   keyboard: 'Leertaste halten = Münzen geben · Shift = sprinten · F = Vollbild · Dev: N neuer Seed · 1/2/3 Tiefe',
 } as const;
