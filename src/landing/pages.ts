@@ -65,6 +65,20 @@ export const PAGES: PageEntry[] = [
     href: 'gamepad-test.html',
     section: 'test',
   },
+  {
+    title: 'Unsere Aufstellung',
+    description: 'Jede Rolle im Spiel mit ihrer Figur · Monarchen, Truppen, Gegner',
+    icon: '🛡️',
+    href: 'aufstellung.html',
+    section: 'test',
+  },
+  {
+    title: 'Alle Figuren',
+    description: 'Alle Sprites aus LuizMelo und Gothicvania, auch ungenutzte',
+    icon: '🧙',
+    href: 'figuren.html',
+    section: 'test',
+  },
 ];
 
 export const SECTIONS: Record<PageEntry['section'], string> = {

@@ -2,7 +2,7 @@ import Phaser from 'phaser';
 import spritesJson from '../data/sprites.json';
 
 /**
- * Figuren-Sprites (LuizMelo, CC0). Welche Figur wofür steht, Frame-Größen und Einfärbung stehen in
+ * Figuren-Sprites (LuizMelo und Gothicvania, beide CC0). Welche Figur wofür steht, Frame-Größen und Einfärbung stehen in
  * src/data/sprites.json, die Bilder in public/sprites/<sheet>/<anim>.png.
  */
 
@@ -42,11 +42,14 @@ export const TROOP_SPRITES = DATA.troops;
 export const ENEMY_SPRITES = DATA.enemies;
 
 const ANIMS: AnimName[] = ['idle', 'run', 'attack'];
+/** Nur Figuren mit einer Rolle laden, die übrigen sind nur für die Referenzseiten da */
+const USED = new Set([...PLAYER_SPRITES, ...Object.values(TROOP_SPRITES), ...Object.values(ENEMY_SPRITES)].map((s) => s.sheet));
 const textureKey = (sheet: string, anim: AnimName) => `${sheet}-${anim}`;
 
 /** Im preload() der Szene aufrufen. */
 export function preloadSprites(scene: Phaser.Scene): void {
   for (const [sheet, d] of Object.entries(SHEETS)) {
+    if (!USED.has(sheet)) continue;
     for (const anim of ANIMS) {
       if (!d.anims[anim] || scene.textures.exists(textureKey(sheet, anim))) continue;
       scene.load.spritesheet(textureKey(sheet, anim), `sprites/${sheet}/${anim}.png`, { frameWidth: d.frameWidth, frameHeight: d.frameHeight });
@@ -60,7 +63,9 @@ export function createSpriteAnims(scene: Phaser.Scene): void {
     for (const anim of ANIMS) {
       const a = d.anims[anim];
       const key = textureKey(sheet, anim);
-      if (!a || scene.anims.exists(key)) continue;
+      if (!a || !scene.textures.exists(key) || scene.anims.exists(key)) continue;
+      // Pixel-Art beim Vergrößern scharf halten
+      scene.textures.get(key).setFilter(Phaser.Textures.FilterMode.NEAREST);
       scene.anims.create({
         key,
         frames: scene.anims.generateFrameNumbers(key, { start: 0, end: a.frames - 1 }),
@@ -86,7 +91,7 @@ export function makeSprite(scene: Phaser.Scene, spec: SpriteSpec): Phaser.GameOb
 
 /**
  * Spielt eine Animation, ohne eine laufende neu zu starten. Ein Angriff läuft zu Ende, bevor wieder
- * Laufen/Stehen gezeigt wird. Fehlt eine Animation (Flugauge hat kein Laufen), bleibt es bei idle.
+ * Laufen/Stehen gezeigt wird. Fehlt eine Animation (z. B. der Geist hat kein Laufen), bleibt es bei idle.
  */
 export function playAnim(sprite: Phaser.GameObjects.Sprite, anim: AnimName, restart = false): void {
   const sheet = sprite.getData('sheet') as string;
