@@ -1,4 +1,5 @@
 import Phaser from 'phaser';
+import { toggleFullscreen } from '../core/fullscreen';
 import { GAME_HEIGHT, GAME_WIDTH, GROUND_Y, MAX_PLAYERS, PLAYER_COLORS, UNIT_PX } from '../core/constants';
 import { GamepadInput, KeyboardInput, type PlayerInput } from '../input/playerInput';
 import { biomeForDepth, type BiomeConfig } from '../world/biome';
@@ -71,7 +72,7 @@ export class GameScene extends Phaser.Scene {
     this.handleJoin();
 
     const all: PlayerInput[] = [this.keyboard, ...this.pads];
-    if (all.some((i) => i.justPressed('fullscreen'))) this.scale.toggleFullscreen();
+    if (all.some((i) => i.justPressed('fullscreen'))) void toggleFullscreen(); // über die Shell, damit Vollbild beim Seitenwechsel bleibt
 
     const maxX = this.level.widthUnits * UNIT_PX;
     for (const monarch of this.players) monarch.step(dt, 0, maxX);

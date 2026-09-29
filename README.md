@@ -12,8 +12,11 @@ npm run dev
 
 Dann `http://localhost:5173` öffnen, oder im Heimnetz `http://<PC-IP>:5173` (z.B. von der Xbox aus).
 Die Startseite ist eine Landingpage, die man komplett mit dem Controller bedient (D-Pad/Stick + **A**,
-**Y** bzw. **F** = Vollbild). Vollbild endet beim Seitenwechsel. Auf der Xbox hält das Vollbild aus dem Edge-Menü länger.
-Von jeder Unterseite geht es mit **View + Menu** (kurz gemeinsam halten) bzw. **Pos1** zurück.
+**Y** bzw. **F** = Vollbild). Sie bleibt dauerhaft geöffnet und zeigt Spiel und Testseiten in sich an.
+Dadurch bleibt Vollbild beim Seitenwechsel erhalten.
+
+Jede Seite hat oben mittig einen **Start**-Button. Zurück zur Übersicht geht es auch mit **View + Menu**
+(kurz gemeinsam halten) bzw. **Pos1**. **B** wird abgefangen und schließt nichts versehentlich.
 
 Im Spiel:
 
@@ -50,8 +53,11 @@ erzeugt auf der Xbox eine Warnung. Ob Edge die Seite danach als sicher behandelt
 ## Neue Seite hinzufügen (z.B. weitere Testseiten)
 
 1. `meine-seite.html` in den Projektordner legen. Der Build nimmt jede `*.html` automatisch auf.
-2. Im Script `installHomeCombo()` aus `src/core/homeCombo.ts` aufrufen (Rückweg per View + Menu).
+2. Im Script `installPageChrome()` aus `src/core/shell.ts` aufrufen. Das bringt Start-Button, View + Menu und B-Schutz mit.
 3. Eintrag in `src/landing/pages.ts` ergänzen. Danach erscheint die Kachel auf der Startseite.
+4. Vollbild nur über `toggleFullscreen()` aus `src/core/fullscreen.ts`.
+
+Die vollständige Regel steht in `CLAUDE.md` unter „Regel: Seiten & Navigation“.
 
 ## Level anpassen
 
