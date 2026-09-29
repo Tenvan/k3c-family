@@ -42,11 +42,14 @@ export const TROOP_SPRITES = DATA.troops;
 export const ENEMY_SPRITES = DATA.enemies;
 
 const ANIMS: AnimName[] = ['idle', 'run', 'attack'];
+/** Nur Figuren mit einer Rolle laden, die übrigen sind nur für die Referenzseiten da */
+const USED = new Set([...PLAYER_SPRITES, ...Object.values(TROOP_SPRITES), ...Object.values(ENEMY_SPRITES)].map((s) => s.sheet));
 const textureKey = (sheet: string, anim: AnimName) => `${sheet}-${anim}`;
 
 /** Im preload() der Szene aufrufen. */
 export function preloadSprites(scene: Phaser.Scene): void {
   for (const [sheet, d] of Object.entries(SHEETS)) {
+    if (!USED.has(sheet)) continue;
     for (const anim of ANIMS) {
       if (!d.anims[anim] || scene.textures.exists(textureKey(sheet, anim))) continue;
       scene.load.spritesheet(textureKey(sheet, anim), `sprites/${sheet}/${anim}.png`, { frameWidth: d.frameWidth, frameHeight: d.frameHeight });
@@ -60,7 +63,7 @@ export function createSpriteAnims(scene: Phaser.Scene): void {
     for (const anim of ANIMS) {
       const a = d.anims[anim];
       const key = textureKey(sheet, anim);
-      if (!a || scene.anims.exists(key)) continue;
+      if (!a || !scene.textures.exists(key) || scene.anims.exists(key)) continue;
       // Pixel-Art beim Vergrößern scharf halten
       scene.textures.get(key).setFilter(Phaser.Textures.FilterMode.NEAREST);
       scene.anims.create({
