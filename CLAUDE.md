@@ -5,6 +5,7 @@ Zielplattform ist **Edge auf der Xbox** (Gamepad API), gehostet im Heimnetz. Die
 
 - Design & Regeln: `docs/game-design.md` (nur bei Bedarf lesen)
 - Aktueller Stand & nächste Schritte: `docs/roadmap.md`
+- Arbeitspakete pro Session: `docs/sessions.md` (zu Beginn die nächste offene Session nehmen, am Ende abhaken)
 - Altes Godot-Projekt (nur Referenz): `C:\WORKSPACE\FamilyCrowns`
 
 ## Befehle
@@ -19,6 +20,8 @@ npm run serve      # Build + Heimnetz-Server (Port 8080, server/server.mjs)
 Die Gamepad-Testseite (`gamepad-test.html`) schickt Berichte von der Xbox nach `reports/*.json`. Dort die Ergebnisse nachlesen.
 
 Vor jedem Abschluss: `npm test` und `npm run typecheck` müssen grün sein.
+Die CI (`.github/workflows/ci.yml`) prüft zusätzlich Build + Server-Smoke-Test. `tests/projectRules.test.ts`
+prüft die Regeln unten automatisch (Seiten eingetragen, `installPageChrome()`, Vollbild, kein `Math.random()`).
 
 ## Struktur
 

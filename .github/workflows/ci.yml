@@ -1,0 +1,48 @@
+# CI: Typecheck, Tests, Build und Server-Smoke-Test bei jedem Push und Pull Request.
+name: CI
+
+on:
+  push:
+    branches: ['**']
+  pull_request:
+  workflow_dispatch:
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  check:
+    name: Typecheck · Tests · Build
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+      - run: npm ci
+      - run: npm run typecheck
+      - run: npm test
+      - run: npm run build
+
+      - name: Smoke-Test Heimnetz-Server
+        run: |
+          K3C_HTTP_PORT=8080 node server/server.mjs > server.log 2>&1 &
+          for i in $(seq 1 20); do curl -fs http://localhost:8080/ > /dev/null && break; sleep 0.5; done
+          for page in / /game.html /gamepad-test.html; do
+            curl -fsS -o /dev/null -w "%{http_code} $page\n" "http://localhost:8080$page"
+          done
+          test "$(curl -s -o /dev/null -w '%{http_code}' -X POST -d 'kaputt' http://localhost:8080/api/report)" = 400
+          test "$(curl -s -o /dev/null -w '%{http_code}' -X POST -H 'Content-Type: application/json' -d '{"ci":true}' http://localhost:8080/api/report)" = 200
+          ls reports/gamepad-*.json
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: k3c-dist
+          path: dist/
+          retention-days: 14

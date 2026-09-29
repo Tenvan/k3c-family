@@ -1,0 +1,30 @@
+# Release: Tag v* (z.B. v0.2.0) → Build als Zip am GitHub-Release, fertig für den Heimnetz-Server.
+name: Release
+
+on:
+  push:
+    tags: ['v*']
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+      - run: npm ci
+      - run: npm run typecheck
+      - run: npm test
+      - run: npm run build
+      - name: Paket schnüren (dist + Server)
+        run: zip -r "k3c-${GITHUB_REF_NAME}.zip" dist server package.json README.md
+      - name: GitHub-Release anlegen
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh release create "$GITHUB_REF_NAME" "k3c-${GITHUB_REF_NAME}.zip" --generate-notes --title "K3C $GITHUB_REF_NAME"
