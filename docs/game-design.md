@@ -155,8 +155,9 @@ was aus der Welt schon entfernt wurde (gefällte Bäume, geöffnete Truhen), son
 
 ## Grafik & Audio
 
-- Aktuell **Platzhalter-Formen**. Ziel: 2D-Pixel-Art mit Parallax-Ebenen.
-  Kandidaten: Kenney (CC0), die Kenney-Platformer-Tiles aus dem alten Projekt, itch.io-Packs.
+- Figuren (Monarchen, Truppen, Gegner): Seitenansicht-Sprites von **LuizMelo (CC0)**, Zuordnung in
+  `src/data/sprites.json`, Bilder und Credits in `public/sprites/`. Gebäude, Ressourcen und Hintergrund sind noch
+  **Platzhalter-Formen**. Ziel: 2D-Pixel-Art mit Parallax-Ebenen.
 - Paletten pro Biom stehen in der Biom-JSON (Wald grün/braun, Höhle grau/orange, Mine braun/kupfer).
 - Audio: Kenney Audio / freesound.org (CC).
 

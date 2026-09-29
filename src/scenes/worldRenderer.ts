@@ -4,11 +4,13 @@ import { BUILDINGS, TROOPS } from '../world/sim/data';
 import { canAfford } from '../world/sim/economy';
 import { hasDepth } from '../world/sim/travel';
 import { isOnTower } from '../world/sim/units';
+import { ENEMY_SPRITES, PLAYER_SPRITES, TROOP_SPRITES, face, makeSprite, playAnim, spriteTop } from './sprites';
 import type { Coin, Enemy, Pickup, Player, Projectile, ResourceNode, Site, Troop, World } from '../world/sim/types';
 
 /**
- * Zeichnet den Simulationszustand mit Platzhalter-Formen. Hält pro Entität (id) ein Phaser-Objekt
- * und legt an/entfernt sie passend zum Zustand. Später durch Sprites ersetzen, die Logik bleibt.
+ * Zeichnet den Simulationszustand. Figuren (Monarchen, Truppen, Gegner) sind animierte Sprites (sprites.ts),
+ * Gebäude und Ressourcen noch Platzhalter-Formen. Hält pro Entität (id) ein Phaser-Objekt
+ * und legt an/entfernt sie passend zum Zustand.
  */
 
 const U = UNIT_PX;
@@ -31,20 +33,26 @@ const SITE_COLOR: Record<Site['kind'], number> = {
   stairsDown: 0x343a40,
 };
 
-const ENEMY_COLORS: Record<string, number> = {
-  greed: 0x5a189a,
-  wolf: 0x6c757d,
-  goblin: 0x2b9348,
-  goblinArcher: 0x007f5f,
-  skeleton: 0xe9ecef,
-  bat: 0x3c096c,
-  caveTroll: 0x7f5539,
-  zombie: 0x606c38,
-  ratSwarm: 0x8d6e63,
-  mineGhost: 0xcaf0f8,
-};
-
 type View = Phaser.GameObjects.Container;
+type Sprite = Phaser.GameObjects.Sprite;
+
+/** Ab dieser Bewegung pro Frame (Pixel) gilt eine Figur als laufend */
+const MOVING_PX = 0.5;
+
+/**
+ * Laufen/Stehen/Angriff aus der Bewegung und dem Angriffs-Cooldown ableiten. Ein Angriff setzt den
+ * Cooldown hoch, das erkennt man am Sprung gegenüber dem letzten Frame. Gibt die Laufrichtung zurück.
+ */
+function animate(v: View, sprite: Sprite, x: number, cooldown: number | null): number {
+  const dx = x - v.x;
+  const moving = Math.abs(dx) > MOVING_PX;
+  const prev = v.getData('cooldown') as number | undefined;
+  v.setData('cooldown', cooldown);
+  if (moving) face(sprite, Math.sign(dx));
+  if (cooldown !== null && prev !== undefined && cooldown > prev + 1e-6) playAnim(sprite, 'attack', true);
+  else playAnim(sprite, moving ? 'run' : 'idle');
+  return moving ? Math.sign(dx) : 0;
+}
 
 /** Synchronisiert eine Liste von Entitäten mit Phaser-Containern. */
 class Layer<T extends { id: number }> {
@@ -277,45 +285,49 @@ export class WorldRenderer {
 
   private createTroop(t: Troop): View {
     const s = this.scene;
-    const color = t.kind === 'vagrant' ? 0x8d8d8d : t.kind === 'peasant' ? 0xbc8a5f : 0x40916c;
-    const body = s.add.rectangle(0, -30, 22, 60, color).setStrokeStyle(2, 0x000000);
-    const head = s.add.circle(0, -70, 12, 0xf1c27d).setStrokeStyle(2, 0x000000);
-    const extra =
-      t.kind === 'archer'
-        ? s.add.arc(14, -40, 18, -80, 80, false).setStrokeStyle(4, 0x6b4226).setClosePath(false)
-        : s.add.rectangle(0, -84, 30, 6, t.kind === 'peasant' ? 0xe9c46a : 0x5c5c5c);
-    const load = s.add.rectangle(-16, -44, 16, 24, 0x6b4226).setVisible(false);
-    return s.add.container(t.x * U, G, [body, head, extra, load, ...bar(s, -100, 36, 0x52b788)]).setDepth(7).setData('kind', t.kind);
+    const sprite = makeSprite(s, TROOP_SPRITES[t.kind]);
+    const top = spriteTop(sprite);
+    const load = s.add.rectangle(0, top * 0.55, 16, 24, 0x6b4226).setStrokeStyle(2, 0x3b2414).setVisible(false);
+    return s.add.container(t.x * U, G, [sprite, load, ...bar(s, top - 16, 36, 0x52b788)]).setDepth(7).setData('kind', t.kind);
   }
 
   private updateTroop(v: View, t: Troop): void {
-    const dx = t.x * U - v.x;
-    if (Math.abs(dx) > 0.5) v.scaleX = Math.sign(dx);
-    v.setPosition(t.x * U, isOnTower(this.world, t) ? G - 270 : G);
-    (v.getAt(3) as Phaser.GameObjects.Rectangle).setVisible(t.job?.type === 'carry');
-    setBar(v, 4, t.hp / t.maxHp, t.hp < t.maxHp);
+    const sprite = v.getAt(0) as Sprite;
+    const x = t.x * U;
+    // Nur Kämpfer nutzen den Cooldown für Angriffe, bei Landstreichern ist es die Wartezeit beim Umherwandern
+    const dir = animate(v, sprite, x, t.kind === 'archer' ? t.cooldown : null);
+    if (t.kind === 'archer' && dir === 0) face(sprite, this.nearestEnemyDir(t.x));
+    // Bauer bei der Arbeit (Holz hacken, bauen): Schlag-Animation in Schleife
+    const working = t.kind === 'peasant' && dir === 0 && (t.job?.type === 'gather' || t.job?.type === 'build') && Math.abs(t.targetX - t.x) < 0.5;
+    if (working) playAnim(sprite, 'attack');
+    v.setPosition(x, isOnTower(this.world, t) ? G - 270 : G);
+    const load = v.getAt(1) as Phaser.GameObjects.Rectangle;
+    load.setVisible(t.job?.type === 'carry').setX(sprite.flipX ? 14 : -14);
+    setBar(v, 2, t.hp / t.maxHp, t.hp < t.maxHp);
+  }
+
+  /** Richtung zum nächsten Gegner (0 = keiner da) */
+  private nearestEnemyDir(x: number): number {
+    let best: Enemy | null = null;
+    for (const e of this.world.enemies) if (!best || Math.abs(e.x - x) < Math.abs(best.x - x)) best = e;
+    return best ? Math.sign(best.x - x) : 0;
   }
 
   // ---------- Gegner ----------
 
   private createEnemy(e: Enemy): View {
     const s = this.scene;
-    const elite = e.maxHp >= 150 || e.traits.includes('ranged');
-    const [w, h] = e.traits.includes('flying') ? [40, 26] : elite ? [60, 90] : [40, 50];
-    const y = e.traits.includes('flying') ? -130 : -h / 2;
-    const body = s.add.ellipse(0, y, w, h, ENEMY_COLORS[e.kind] ?? 0xff00ff).setStrokeStyle(3, 0x10002b);
-    const eye1 = s.add.circle(-8, y - h / 5, 5, 0xffffff);
-    const eye2 = s.add.circle(8, y - h / 5, 5, 0xffffff);
-    const loot = s.add.circle(0, y - h / 2 - 14, 10, 0xffd166).setVisible(false);
-    return s.add.container(e.x * U, G, [body, eye1, eye2, loot, ...bar(s, y - h / 2 - 30, 44, 0xe63946)]).setDepth(8);
+    const sprite = makeSprite(s, ENEMY_SPRITES[e.kind] ?? ENEMY_SPRITES.goblin);
+    const top = spriteTop(sprite);
+    const loot = s.add.circle(0, top - 12, 10, 0xffd166).setStrokeStyle(2, 0x9c6644).setVisible(false);
+    return s.add.container(e.x * U, G, [sprite, loot, ...bar(s, top - 32, 44, 0xe63946)]).setDepth(8);
   }
 
   private updateEnemy(v: View, e: Enemy): void {
-    const dx = e.x * U - v.x;
-    if (Math.abs(dx) > 0.5) v.scaleX = Math.sign(dx);
+    animate(v, v.getAt(0) as Sprite, e.x * U, e.cooldown);
     v.setX(e.x * U);
-    (v.getAt(3) as Phaser.GameObjects.Arc).setVisible(e.carriedGold > 0);
-    setBar(v, 4, e.hp / e.maxHp, e.hp < e.maxHp);
+    (v.getAt(1) as Phaser.GameObjects.Arc).setVisible(e.carriedGold > 0);
+    setBar(v, 2, e.hp / e.maxHp, e.hp < e.maxHp);
     v.setAlpha(e.fleeing ? 0.7 : 1);
   }
 
@@ -334,16 +346,20 @@ export class WorldRenderer {
 
   private createPlayer(p: Player): View {
     const s = this.scene;
+    const sprite = makeSprite(s, PLAYER_SPRITES[p.index % PLAYER_SPRITES.length]);
+    const top = spriteTop(sprite);
+    // Farbiger Punkt unter den Füßen: welcher Monarch gehört zu wem
     const color = PLAYER_COLORS[p.index % PLAYER_COLORS.length];
-    const body = s.add.rectangle(0, -40, 36, 80, color).setStrokeStyle(3, 0x000000);
-    const crown = s.add.rectangle(0, -88, 28, 12, 0xffd166).setStrokeStyle(2, 0x000000);
-    const purse = s.add.text(0, -110, '', { ...TEXT, color: '#ffd166', fontSize: '26px' }).setOrigin(0.5, 1);
-    return s.add.container(p.x * U, G, [body, crown, purse, ...bar(s, -150, 50, 0x52b788)]).setDepth(10);
+    const marker = s.add.ellipse(0, 4, 56, 12, color, 0.8);
+    const purse = s.add.text(0, top - 10, '', { ...TEXT, color: '#ffd166', fontSize: '26px' }).setOrigin(0.5, 1);
+    return s.add.container(p.x * U, G, [marker, sprite, purse, ...bar(s, top - 50, 50, 0x52b788)]).setDepth(10);
   }
 
   private updatePlayer(v: View, p: Player): void {
+    const sprite = v.getAt(1) as Sprite;
+    face(sprite, p.facing);
+    playAnim(sprite, Math.abs(p.vx) > 0.05 ? 'run' : 'idle');
     v.setPosition(p.x * U, G);
-    (v.getAt(0) as Phaser.GameObjects.Rectangle).scaleX = p.facing;
     v.setAlpha(p.respawnIn > 0 ? 0.25 : 1);
 
     // Münzbeutel über dem Kopf: beim Bezahlen und kurz nach jeder Änderung
