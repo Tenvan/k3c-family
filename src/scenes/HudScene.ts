@@ -7,6 +7,17 @@ import { RESOURCE_NAMES } from './worldRenderer';
 
 const STYLE = { fontSize: '28px', color: '#ffffff', stroke: '#000000', strokeThickness: 6, fontStyle: 'bold' };
 const BANNER_SECONDS = 2.8;
+/** Hinweise passend zum zuletzt benutzten Eingabegerät */
+const CONTROL_HINTS = {
+  touch: 'Münz-Taste halten = Münzen geben · » = sprinten',
+  pad: 'A halten = Münzen geben · RT = sprinten · RS = Vollbild',
+  keyboard: 'Leertaste halten = Münzen geben · Shift = sprinten · F = Vollbild · Dev: N neuer Seed · 1/2/3 Tiefe',
+} as const;
+const JOIN_HINTS = {
+  touch: 'Münz-Taste drücken zum Beitreten',
+  pad: 'A drücken zum Beitreten',
+  keyboard: 'Leertaste drücken zum Beitreten',
+} as const;
 const SITE_NAMES = { wall: 'Mauer', tower: 'Turm', workshop: 'Werkstatt' } as const;
 
 /** Bildschirmfeste Anzeigen: pro Split-Screen-Hälfte Spielerwerte, oben rechts Hub-Vorrat und Tageszeit, Meldungen in der Mitte. */
@@ -17,6 +28,7 @@ export class HudScene extends Phaser.Scene {
   private fight!: Phaser.GameObjects.Text;
   private banner!: Phaser.GameObjects.Text;
   private fps!: Phaser.GameObjects.Text;
+  private controlsHint!: Phaser.GameObjects.Text;
   private playerLabels: Phaser.GameObjects.Text[] = [];
   private bannerQueue: string[] = [];
   private bannerLeft = 0;
@@ -42,10 +54,7 @@ export class HudScene extends Phaser.Scene {
       .text(GAME_WIDTH / 2, GAME_HEIGHT / 2, 'Drücke  A  (Controller), Leertaste oder die Münz-Taste zum Beitreten', { ...STYLE, fontSize: '44px' })
       .setOrigin(0.5);
     this.fps = this.add.text(20, GAME_HEIGHT - 40, '', { ...STYLE, fontSize: '20px', strokeThickness: 4 });
-    const dev = 'Dev: N = neuer Seed · 1/2/3 = Tiefe · F / RS = Vollbild';
-    this.add
-      .text(GAME_WIDTH - 20, GAME_HEIGHT - 40, `A / Leertaste halten = Münzen geben · ${dev}`, { ...STYLE, fontSize: '20px', strokeThickness: 4 })
-      .setOrigin(1, 0);
+    this.controlsHint = this.add.text(GAME_WIDTH - 20, GAME_HEIGHT - 40, '', { ...STYLE, fontSize: '20px', strokeThickness: 4 }).setOrigin(1, 0);
     this.add.text(20, 16, `${game.world.biome.name} · Seed "${game.world.seed}"`, { ...STYLE, fontSize: '20px', strokeThickness: 4 }).setName('info');
   }
 
@@ -53,14 +62,22 @@ export class HudScene extends Phaser.Scene {
     const game = this.game.scene.getScene('game') as GameScene;
     const world = game.world;
     const players = world.players;
-    const stripHeight = GAME_HEIGHT / Math.max(1, players.length);
+    const shown = game.hudPlayers();
+    const stripHeight = GAME_HEIGHT / Math.max(1, shown.length);
 
-    this.joinHint.setVisible(players.length < MAX_PLAYERS);
+    this.controlsHint.setText(CONTROL_HINTS[game.lastDevice]);
+    this.joinHint.setText(JOIN_HINTS[game.lastDevice]);
+    this.joinHint.setVisible(!game.online && players.length < MAX_PLAYERS);
     this.joinHint.setY(players.length === 0 ? GAME_HEIGHT / 2 + 120 : GAME_HEIGHT - 100);
     this.joinHint.setFontSize(players.length === 0 ? 44 : 26);
-    this.byName('info')?.setVisible(players.length === 0);
+    const info = this.byName('info');
+    info?.setVisible(players.length === 0 || !!game.online);
+    info?.setY(game.online ? 60 : 16);
+    if (game.online) info?.setText(`Online · Raum "${game.online.room}" · ${players.length} Spieler`);
 
-    players.forEach((p, i) => {
+    shown.forEach((playerIndex, i) => {
+      const p = players[playerIndex];
+      if (!p) return;
       let label = this.playerLabels[i];
       if (!label) {
         label = this.add.text(24, 0, '', STYLE);
@@ -68,7 +85,7 @@ export class HudScene extends Phaser.Scene {
       }
       label.setY(i * stripHeight + 16);
       const status = p.respawnIn > 0 ? `gefallen · zurück in ${Math.ceil(p.respawnIn)} s` : `HP ${Math.ceil(p.hp)}`;
-      label.setText(`P${i + 1}  ·  Gold ${p.gold}/${ECONOMY.purse.maxGold}  ·  ${status}`);
+      label.setText(`P${p.index + 1}  ·  Gold ${p.gold}/${ECONOMY.purse.maxGold}  ·  ${status}`);
     });
 
     const stock = (['wood', 'stone', 'copper'] as const).filter((r) => r === 'wood' || world.stock[r] > 0).map((r) => `${RESOURCE_NAMES[r]} ${world.stock[r]}`);

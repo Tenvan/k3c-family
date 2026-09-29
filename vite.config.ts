@@ -26,6 +26,10 @@ export default defineConfig({
       // Testberichte auch im Dev-Server annehmen (POST /api/report -> reports/*.json)
       name: 'k3c-reports',
       configureServer(server) {
+        // Online-Modus (WebSocket /ws) auch im Dev-Server; der Server-Code liegt in src/online und läuft über Vites SSR-Loader.
+        if (server.httpServer) {
+          server.ssrLoadModule('/src/online/wsServer.ts').then((m) => m.attachOnline(server.httpServer), (err) => server.config.logger.error(String(err)));
+        }
         server.middlewares.use((req, res, next) => {
           handleReport(req, res).then((handled: boolean) => handled || next(), next);
         });
