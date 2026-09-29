@@ -12,6 +12,7 @@ import { daylight } from '../world/sim/cycle';
 import { giveGold } from '../world/sim/economy';
 import type { GameEvent, PlayerCommand, World } from '../world/sim/types';
 import { createWorld, step } from '../world/sim/world';
+import { createSpriteAnims, preloadSprites } from './sprites';
 import { WorldRenderer } from './worldRenderer';
 
 /** Ein Overlay pro Seite, auch über Szenen-Neustarts hinweg (N/1/2/3) */
@@ -99,7 +100,12 @@ export class GameScene extends Phaser.Scene {
     this.lastDevice = wantsTouchControls() ? 'touch' : 'keyboard';
   }
 
+  preload(): void {
+    preloadSprites(this);
+  }
+
   create(): void {
+    createSpriteAnims(this);
     this.buildWorldView();
 
     this.keyboard = new KeyboardInput(this.input.keyboard!);

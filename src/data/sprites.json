@@ -1,0 +1,322 @@
+{
+  "_comment": "Sprites: LuizMelo (CC0), Bilder in public/sprites/<sheet>/<anim>.png. origin = Fußpunkt im Frame, height = Figurhöhe in Frame-Pixeln, scale = Vergrößerung. Pro Figur: tint = Einfärbung, scale = zusätzlicher Faktor, y = Pixel über dem Boden.",
+  "sheets": {
+    "medieval-king": {
+      "frameWidth": 155,
+      "frameHeight": 155,
+      "originX": 0.429,
+      "originY": 0.748,
+      "height": 81,
+      "scale": 1.5,
+      "anims": {
+        "idle": {
+          "frames": 6,
+          "fps": 8
+        },
+        "run": {
+          "frames": 8,
+          "fps": 12
+        },
+        "attack": {
+          "frames": 6,
+          "fps": 14
+        }
+      },
+      "pack": "Medieval King Pack",
+      "source": "https://luizmelo.itch.io/medieval-king-pack"
+    },
+    "medieval-king-2": {
+      "frameWidth": 160,
+      "frameHeight": 111,
+      "originX": 0.506,
+      "originY": 0.946,
+      "height": 54,
+      "scale": 2.25,
+      "anims": {
+        "idle": {
+          "frames": 8,
+          "fps": 8
+        },
+        "run": {
+          "frames": 8,
+          "fps": 12
+        },
+        "attack": {
+          "frames": 4,
+          "fps": 14
+        }
+      },
+      "pack": "Medieval King Pack 2",
+      "source": "https://luizmelo.itch.io/medieval-king-pack-2"
+    },
+    "martial-hero-3": {
+      "frameWidth": 126,
+      "frameHeight": 126,
+      "originX": 0.54,
+      "originY": 0.651,
+      "height": 41,
+      "scale": 2.5,
+      "anims": {
+        "idle": {
+          "frames": 10,
+          "fps": 8
+        },
+        "run": {
+          "frames": 8,
+          "fps": 12
+        },
+        "attack": {
+          "frames": 7,
+          "fps": 14
+        }
+      },
+      "pack": "Martial Hero 3",
+      "source": "https://luizmelo.itch.io/martial-hero-3"
+    },
+    "huntress-2": {
+      "frameWidth": 100,
+      "frameHeight": 100,
+      "originX": 0.51,
+      "originY": 0.67,
+      "height": 36,
+      "scale": 2.75,
+      "anims": {
+        "idle": {
+          "frames": 10,
+          "fps": 8
+        },
+        "run": {
+          "frames": 8,
+          "fps": 12
+        },
+        "attack": {
+          "frames": 6,
+          "fps": 14
+        }
+      },
+      "pack": "Huntress 2",
+      "source": "https://luizmelo.itch.io/huntress-2"
+    },
+    "medieval-warrior": {
+      "frameWidth": 184,
+      "frameHeight": 137,
+      "originX": 0.503,
+      "originY": 0.912,
+      "height": 81,
+      "scale": 1.25,
+      "anims": {
+        "idle": {
+          "frames": 6,
+          "fps": 8
+        },
+        "run": {
+          "frames": 8,
+          "fps": 12
+        },
+        "attack": {
+          "frames": 4,
+          "fps": 14
+        }
+      },
+      "pack": "Medieval Warrior Pack",
+      "source": "https://luizmelo.itch.io/medieval-warrior-pack"
+    },
+    "medieval-warrior-2": {
+      "frameWidth": 150,
+      "frameHeight": 150,
+      "originX": 0.5,
+      "originY": 0.633,
+      "height": 41,
+      "scale": 2.5,
+      "anims": {
+        "idle": {
+          "frames": 8,
+          "fps": 8
+        },
+        "run": {
+          "frames": 8,
+          "fps": 12
+        },
+        "attack": {
+          "frames": 4,
+          "fps": 14
+        }
+      },
+      "pack": "Medieval Warrior Pack 2",
+      "source": "https://luizmelo.itch.io/medieval-warrior-pack-2"
+    },
+    "goblin": {
+      "frameWidth": 150,
+      "frameHeight": 150,
+      "originX": 0.497,
+      "originY": 0.673,
+      "height": 36,
+      "scale": 2.25,
+      "anims": {
+        "idle": {
+          "frames": 4,
+          "fps": 8
+        },
+        "run": {
+          "frames": 8,
+          "fps": 12
+        },
+        "attack": {
+          "frames": 8,
+          "fps": 14
+        }
+      },
+      "pack": "Monsters Creatures Fantasy",
+      "source": "https://luizmelo.itch.io/monsters-creatures-fantasy"
+    },
+    "skeleton": {
+      "frameWidth": 150,
+      "frameHeight": 150,
+      "originX": 0.55,
+      "originY": 0.673,
+      "height": 51,
+      "scale": 2,
+      "anims": {
+        "idle": {
+          "frames": 4,
+          "fps": 8
+        },
+        "run": {
+          "frames": 4,
+          "fps": 12
+        },
+        "attack": {
+          "frames": 8,
+          "fps": 14
+        }
+      },
+      "pack": "Monsters Creatures Fantasy",
+      "source": "https://luizmelo.itch.io/monsters-creatures-fantasy"
+    },
+    "mushroom": {
+      "frameWidth": 150,
+      "frameHeight": 150,
+      "originX": 0.503,
+      "originY": 0.673,
+      "height": 37,
+      "scale": 2,
+      "anims": {
+        "idle": {
+          "frames": 4,
+          "fps": 8
+        },
+        "run": {
+          "frames": 8,
+          "fps": 12
+        },
+        "attack": {
+          "frames": 8,
+          "fps": 14
+        }
+      },
+      "pack": "Monsters Creatures Fantasy",
+      "source": "https://luizmelo.itch.io/monsters-creatures-fantasy"
+    },
+    "flying-eye": {
+      "frameWidth": 150,
+      "frameHeight": 150,
+      "originX": 0.513,
+      "originY": 0.62,
+      "height": 33,
+      "scale": 2,
+      "anims": {
+        "idle": {
+          "frames": 8,
+          "fps": 8
+        },
+        "attack": {
+          "frames": 8,
+          "fps": 14
+        }
+      },
+      "pack": "Monsters Creatures Fantasy",
+      "source": "https://luizmelo.itch.io/monsters-creatures-fantasy"
+    }
+  },
+  "players": [
+    {
+      "sheet": "medieval-king"
+    },
+    {
+      "sheet": "medieval-king-2"
+    },
+    {
+      "sheet": "medieval-king",
+      "tint": "#9ecbff"
+    },
+    {
+      "sheet": "medieval-king-2",
+      "tint": "#ffb3c8"
+    }
+  ],
+  "troops": {
+    "vagrant": {
+      "sheet": "martial-hero-3",
+      "tint": "#8f8f8f"
+    },
+    "peasant": {
+      "sheet": "martial-hero-3"
+    },
+    "archer": {
+      "sheet": "huntress-2"
+    },
+    "warrior": {
+      "sheet": "medieval-warrior-2"
+    },
+    "eliteArcher": {
+      "sheet": "huntress-2",
+      "tint": "#ffd166"
+    },
+    "eliteWarrior": {
+      "sheet": "medieval-warrior"
+    }
+  },
+  "enemies": {
+    "greed": {
+      "sheet": "goblin",
+      "tint": "#c77dff"
+    },
+    "wolf": {
+      "sheet": "goblin",
+      "tint": "#9a9a9a"
+    },
+    "goblin": {
+      "sheet": "goblin"
+    },
+    "goblinArcher": {
+      "sheet": "goblin",
+      "tint": "#74c69d"
+    },
+    "skeleton": {
+      "sheet": "skeleton"
+    },
+    "bat": {
+      "sheet": "flying-eye",
+      "y": 130
+    },
+    "caveTroll": {
+      "sheet": "mushroom",
+      "scale": 2.2,
+      "tint": "#c9a27e"
+    },
+    "zombie": {
+      "sheet": "skeleton",
+      "tint": "#a7c957"
+    },
+    "ratSwarm": {
+      "sheet": "mushroom",
+      "scale": 0.7,
+      "tint": "#b08968"
+    },
+    "mineGhost": {
+      "sheet": "skeleton",
+      "tint": "#caf0f8",
+      "alpha": 0.7
+    }
+  }
+}
