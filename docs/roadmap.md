@@ -42,7 +42,8 @@ Aufteilung in Arbeitspakete pro Claude-Session: [`docs/sessions.md`](sessions.md
 
 ## Schritt 4 – Inhalt & Politur
 
-- [ ] Echte Grafiken (Pixel-Art-Pack) + Animationen, Sounds
+- [x] Figuren-Sprites mit Animationen (LuizMelo, CC0)
+- [ ] Grafiken für Gebäude, Ressourcen, Hintergrund; Sounds
 - [ ] Mine (Stufe 2), Treppen zwischen den Hubs
 - [ ] Restliche Gegner und Truppen, Elite-Gegner
 - [ ] Balancing-Abende mit der Familie
