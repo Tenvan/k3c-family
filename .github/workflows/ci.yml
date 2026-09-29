@@ -41,7 +41,7 @@ jobs:
           test "$(curl -s -o /dev/null -w '%{http_code}' -X POST -H 'Content-Type: application/json' -d '{"ci":true}' http://localhost:8080/api/report)" = 200
           ls reports/gamepad-*.json
 
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7
         with:
           name: k3c-dist
           path: dist/
