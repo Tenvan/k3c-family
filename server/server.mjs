@@ -10,7 +10,7 @@ import { existsSync, readFileSync } from 'node:fs';
 import { readFile, stat } from 'node:fs/promises';
 import { networkInterfaces } from 'node:os';
 import { dirname, extname, join, normalize, sep } from 'node:path';
-import { fileURLToPath } from 'node:url';
+import { fileURLToPath, pathToFileURL } from 'node:url';
 import { handleReport } from './reports.mjs';
 import { handleSave } from './saves.mjs';
 
@@ -70,7 +70,14 @@ const lanAddresses = Object.values(networkInterfaces())
   .filter((a) => a && a.family === 'IPv4' && !a.internal)
   .map((a) => a.address);
 
-createHttp(handle).listen(HTTP_PORT, () => {
+// Online-Modus (WebSocket /ws): kommt aus dem Server-Bundle, das `npm run build` neben dist/ erzeugt.
+const onlineBundle = join(ROOT, 'dist-server', 'online.mjs');
+const attachOnline = existsSync(onlineBundle) ? (await import(pathToFileURL(onlineBundle).href)).attachOnline : null;
+if (!attachOnline) console.warn('Online-Modus aus: dist-server/online.mjs fehlt (npm run build).');
+
+const httpServer = createHttp(handle);
+attachOnline?.(httpServer);
+httpServer.listen(HTTP_PORT, () => {
   console.log(`K3C läuft (HTTP):`);
   for (const ip of ['localhost', ...lanAddresses]) console.log(`  http://${ip}:${HTTP_PORT}/   Test: http://${ip}:${HTTP_PORT}/gamepad-test.html`);
 });
@@ -78,7 +85,9 @@ createHttp(handle).listen(HTTP_PORT, () => {
 const key = join(CERTS, 'key.pem');
 const cert = join(CERTS, 'cert.pem');
 if (existsSync(key) && existsSync(cert)) {
-  createHttps({ key: readFileSync(key), cert: readFileSync(cert) }, handle).listen(HTTPS_PORT, () => {
+  const httpsServer = createHttps({ key: readFileSync(key), cert: readFileSync(cert) }, handle);
+  attachOnline?.(httpsServer);
+  httpsServer.listen(HTTPS_PORT, () => {
     console.log(`K3C läuft (HTTPS):`);
     for (const ip of lanAddresses) console.log(`  https://${ip}:${HTTPS_PORT}/`);
   });
