@@ -1,4 +1,5 @@
 import { defineConfig } from 'vite';
+import { readdirSync } from 'node:fs';
 import { resolve } from 'node:path';
 // Reines JS-Modul, gemeinsam mit dem Heimnetz-Server genutzt
 import { handleReport } from './server/reports.mjs';
@@ -12,10 +13,12 @@ export default defineConfig({
     target: 'es2022',
     chunkSizeWarningLimit: 2000,
     rollupOptions: {
-      input: {
-        main: resolve(__dirname, 'index.html'),
-        gamepadTest: resolve(__dirname, 'gamepad-test.html'),
-      },
+      // Jede *.html im Projektordner ist eine eigene Seite (Landingpage, Spiel, Testseiten).
+      input: Object.fromEntries(
+        readdirSync(__dirname)
+          .filter((f) => f.endsWith('.html'))
+          .map((f) => [f.replace(/\.html$/, ''), resolve(__dirname, f)]),
+      ),
     },
   },
   plugins: [

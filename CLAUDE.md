@@ -26,13 +26,15 @@ Vor jedem Abschluss: `npm test` und `npm run typecheck` müssen grün sein.
 - `src/world/` – Spiel-Logik. Reine Logik (z.B. `levelGenerator.ts`) bleibt **ohne Phaser-Import** und bekommt Tests daneben (`*.test.ts`).
 - `src/input/` – `PlayerInput`-Abstraktion. Spiel-Code fragt Aktionen ab, nie konkrete Tasten.
 - `src/scenes/` – Phaser-Szenen (`GameScene` = Welt + Kameras, `HudScene` = bildschirmfeste Anzeigen).
+- Seiten: `index.html` = Landingpage (Kacheln aus `src/landing/pages.ts`), `game.html` = Spiel, weitere `*.html` = Testseiten.
+  Jede `*.html` im Root wird automatisch gebaut. Neue Seiten: in `pages.ts` eintragen und `installHomeCombo()` aufrufen.
 
 ## Regeln
 
 - Keine Sprünge, nur horizontale Bewegung. Welt-Koordinaten in **Units** (1 Unit = `UNIT_PX` = 32 px).
 - Level-Generierung ist deterministisch: nur `createRng(seed)` verwenden, niemals `Math.random()`.
 - Jede Mechanik muss mit **2 Spielern gleichzeitig** funktionieren (Split-Screen, eigene Eingabe pro Spieler).
-- Controller-Taste **B** nicht belegen (Edge-Zurück auf der Xbox).
+- Controller-Taste **B** nicht belegen (Edge-Zurück auf der Xbox). **View + Menu** gemeinsam = zurück zur Landingpage (reserviert).
 - Klein bleiben: kein Framework-Overhead, keine Prozess-Dokumente. Lieber spielbarer Code.
 
 ## Im Browser-Pane testen

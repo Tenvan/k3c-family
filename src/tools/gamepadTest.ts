@@ -1,4 +1,5 @@
 import Phaser from 'phaser';
+import { installHomeCombo } from '../core/homeCombo';
 
 /**
  * Gamepad-Testseite für Edge auf der Xbox (Schritt 0 der Roadmap).
@@ -190,6 +191,7 @@ $('btn-perf').addEventListener('click', () => togglePerf());
 
 // ---------- Controller-Anzeige ----------
 const previousPressed = new Map<number, Set<number>>();
+const comboUsed = new Set<number>();
 
 function pollPads(): void {
   const pads = navigator.getGamepads().filter((p): p is Gamepad => !!p);
@@ -218,17 +220,21 @@ function pollPads(): void {
 
     const before = previousPressed.get(pad.index) ?? new Set<number>();
     const justPressed = (i: number) => pressed.has(i) && !before.has(i);
+    // View/Menu lösen erst beim Loslassen aus, und nur wenn sie nicht Teil der Kombi View+Menu (= zur Startseite) waren.
+    if (pressed.has(BTN.VIEW) && pressed.has(BTN.MENU)) comboUsed.add(pad.index);
+    const released = (i: number) => !pressed.has(i) && before.has(i) && !comboUsed.has(pad.index);
     for (const i of pressed) if (!before.has(i)) log(`#${pad.index} ${BUTTON_NAMES[i] ?? `Taste ${i}`} gedrückt`);
     if (pressed.size > 0) onFirstInteraction();
 
     if (perfGame) {
-      if (justPressed(BTN.VIEW)) togglePerf();
+      if (released(BTN.VIEW)) togglePerf();
     } else {
       if (justPressed(BTN.Y)) void sendReport();
       if (justPressed(BTN.X)) void rumble();
-      if (justPressed(BTN.VIEW)) togglePerf();
-      if (justPressed(BTN.MENU)) void toggleFullscreen('controller-menu');
+      if (released(BTN.VIEW)) togglePerf();
+      if (released(BTN.MENU)) void toggleFullscreen('controller-menu');
     }
+    if (!pressed.has(BTN.VIEW) && !pressed.has(BTN.MENU)) comboUsed.delete(pad.index);
     previousPressed.set(pad.index, pressed);
   }
 
@@ -337,6 +343,7 @@ class PerfScene extends Phaser.Scene {
   }
 }
 
+installHomeCombo();
 renderEnv();
 log(report.gamepadApi ? 'Bereit. Taste auf einem Controller drücken.' : 'Gamepad API nicht verfügbar!');
 requestAnimationFrame(pollPads);

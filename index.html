@@ -5,12 +5,136 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Family Three Crowns</title>
     <style>
-      html, body { margin: 0; height: 100%; background: #000; overflow: hidden; }
-      #game { width: 100vw; height: 100vh; }
+      :root {
+        --night-1: #0b1026; --night-2: #1b2550; --night-3: #3b3a6b;
+        --gold: #ffd166; --gold-deep: #e0a526; --text: #f1f3f9; --dim: #a9b3cf;
+        --card: rgba(20, 28, 58, 0.72); --card-line: rgba(255, 255, 255, 0.10);
+        --a-green: #3fb950;
+      }
+      * { box-sizing: border-box; }
+      html, body { margin: 0; min-height: 100%; }
+      body {
+        color: var(--text);
+        font: 22px/1.4 "Segoe UI", system-ui, sans-serif;
+        background: linear-gradient(180deg, var(--night-1) 0%, var(--night-2) 55%, var(--night-3) 100%) fixed;
+        overflow-x: hidden;
+      }
+
+      /* ---------- Hintergrund: Sterne + Berge ---------- */
+      .sky { position: fixed; inset: 0; pointer-events: none; z-index: 0; }
+      .stars {
+        position: absolute; inset: 0 0 35% 0;
+        background-image:
+          radial-gradient(2px 2px at 8% 12%, #fff, transparent), radial-gradient(1.5px 1.5px at 22% 30%, #fff, transparent),
+          radial-gradient(2px 2px at 37% 8%, #fff, transparent), radial-gradient(1px 1px at 48% 26%, #fff, transparent),
+          radial-gradient(2px 2px at 63% 14%, #fff, transparent), radial-gradient(1.5px 1.5px at 76% 34%, #fff, transparent),
+          radial-gradient(1px 1px at 88% 10%, #fff, transparent), radial-gradient(2px 2px at 94% 28%, #fff, transparent),
+          radial-gradient(1px 1px at 15% 44%, #fff, transparent), radial-gradient(1.5px 1.5px at 56% 40%, #fff, transparent);
+        animation: twinkle 6s ease-in-out infinite alternate;
+      }
+      .moon { position: absolute; top: 9%; right: 11%; width: 110px; height: 110px; border-radius: 50%;
+        background: radial-gradient(circle at 35% 35%, #fffbe6, #f3e3a1 60%, #d9c47c); box-shadow: 0 0 80px 20px rgba(255, 238, 170, 0.25); }
+      .mountains { position: absolute; left: 0; right: 0; bottom: 0; width: 100%; height: 42vh; }
+      @keyframes twinkle { from { opacity: 0.55; } to { opacity: 1; } }
+
+      /* ---------- Layout ---------- */
+      .wrap { position: relative; z-index: 1; max-width: 1600px; margin: 0 auto; padding: 48px 64px 140px; }
+      header { display: flex; align-items: center; justify-content: space-between; gap: 24px; margin-bottom: 36px; flex-wrap: wrap; }
+      .brand { display: flex; align-items: center; gap: 22px; }
+      .brand svg { width: 92px; height: 92px; filter: drop-shadow(0 6px 18px rgba(255, 209, 102, 0.45)); }
+      h1 { margin: 0; font: 700 60px/1.05 Georgia, "Times New Roman", serif; letter-spacing: 1px;
+        background: linear-gradient(180deg, #fff6d5, var(--gold) 55%, var(--gold-deep)); -webkit-background-clip: text; background-clip: text; color: transparent; }
+      .tagline { margin: 6px 0 0; color: var(--dim); font-size: 22px; }
+      .status { display: flex; align-items: center; gap: 12px; padding: 12px 20px; border-radius: 999px; background: var(--card);
+        border: 1px solid var(--card-line); font-size: 20px; color: var(--dim); backdrop-filter: blur(6px); }
+      .status .dot { width: 12px; height: 12px; border-radius: 50%; background: #6b7280; }
+      .status.on .dot { background: var(--a-green); box-shadow: 0 0 10px var(--a-green); }
+      .status.on { color: var(--text); }
+
+      h2 { margin: 32px 0 16px; font-size: 20px; font-weight: 600; letter-spacing: 3px; text-transform: uppercase; color: var(--dim); }
+      .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(330px, 1fr)); gap: 22px; }
+
+      /* ---------- Kacheln ---------- */
+      .card {
+        position: relative; display: flex; gap: 20px; align-items: center; padding: 26px 28px; min-height: 140px;
+        border-radius: 22px; background: var(--card); border: 2px solid var(--card-line);
+        color: inherit; text-decoration: none; outline: none; backdrop-filter: blur(8px);
+        transition: transform 140ms ease, border-color 140ms ease, box-shadow 140ms ease, background 140ms ease;
+      }
+      .card .icon { font-size: 54px; line-height: 1; flex: none; width: 72px; text-align: center; }
+      .card .title { font-size: 28px; font-weight: 700; margin: 0 0 4px; }
+      .card .desc { color: var(--dim); font-size: 19px; margin: 0; }
+      .card.primary { grid-column: span 2; min-height: 200px;
+        background: linear-gradient(135deg, rgba(255, 209, 102, 0.20), rgba(20, 28, 58, 0.78) 60%); }
+      .card.primary .icon { font-size: 84px; width: 104px; }
+      .card.primary .title { font-size: 40px; }
+      .card:focus, .card.focus {
+        transform: scale(1.04); border-color: var(--gold); background-color: rgba(34, 44, 88, 0.85);
+        box-shadow: 0 0 0 4px rgba(255, 209, 102, 0.25), 0 18px 40px rgba(0, 0, 0, 0.45);
+      }
+      .card.focus::after {
+        content: "A"; position: absolute; right: 22px; top: 50%; translate: 0 -50%;
+        width: 44px; height: 44px; border-radius: 50%; display: grid; place-items: center;
+        background: var(--a-green); color: #fff; font-weight: 800; font-size: 22px; box-shadow: 0 4px 12px rgba(0,0,0,.4);
+      }
+      .card.launch { transform: scale(0.97); transition-duration: 80ms; }
+
+      /* ---------- Fußleiste mit Controller-Hinweisen ---------- */
+      .hints { position: fixed; left: 0; right: 0; bottom: 0; z-index: 2; display: flex; justify-content: center; gap: 44px; flex-wrap: wrap;
+        padding: 20px 32px; background: linear-gradient(0deg, rgba(8, 11, 28, 0.95), rgba(8, 11, 28, 0)); color: var(--dim); font-size: 20px; }
+      .hint { display: flex; align-items: center; gap: 12px; }
+      .glyph { display: inline-grid; place-items: center; min-width: 38px; height: 38px; padding: 0 10px; border-radius: 19px;
+        background: #2b3558; color: var(--text); font-weight: 700; font-size: 17px; }
+      .glyph.a { background: var(--a-green); color: #fff; border-radius: 50%; padding: 0; }
+
+      @media (max-width: 760px) {
+        body { font-size: 18px; }
+        .wrap { padding: 28px 16px 150px; }
+        h1 { font-size: 40px; }
+        .brand svg { width: 64px; height: 64px; }
+        .card.primary { grid-column: auto; }
+        .card.primary .title { font-size: 30px; }
+        .hints { gap: 18px; font-size: 16px; }
+      }
+      @media (prefers-reduced-motion: reduce) { .stars { animation: none; } .card { transition: none; } }
     </style>
   </head>
   <body>
-    <div id="game"></div>
-    <script type="module" src="/src/main.ts"></script>
+    <div class="sky" aria-hidden="true">
+      <div class="stars"></div>
+      <div class="moon"></div>
+      <svg class="mountains" viewBox="0 0 1600 400" preserveAspectRatio="none">
+        <path fill="#2a2f5c" d="M0 260 L120 170 L230 230 L380 110 L520 220 L640 150 L790 240 L930 120 L1080 230 L1220 140 L1380 220 L1500 160 L1600 210 L1600 400 L0 400 Z" />
+        <path fill="#1c2146" d="M0 320 L150 250 L290 300 L430 220 L600 300 L760 240 L900 310 L1060 230 L1230 300 L1380 250 L1600 300 L1600 400 L0 400 Z" />
+        <path fill="#121632" d="M0 370 Q200 330 400 360 T800 355 T1200 360 T1600 350 L1600 400 L0 400 Z" />
+      </svg>
+    </div>
+
+    <div class="wrap">
+      <header>
+        <div class="brand">
+          <svg viewBox="0 0 64 64" aria-hidden="true">
+            <path d="M8 46 L4 18 L20 30 L32 10 L44 30 L60 18 L56 46 Z" fill="#ffd166" stroke="#8a5a00" stroke-width="2.5" stroke-linejoin="round" />
+            <rect x="8" y="46" width="48" height="9" rx="2" fill="#e0a526" stroke="#8a5a00" stroke-width="2.5" />
+            <circle cx="32" cy="10" r="4" fill="#ff6b6b" /><circle cx="4" cy="18" r="3.5" fill="#4dabf7" /><circle cx="60" cy="18" r="3.5" fill="#4dabf7" />
+          </svg>
+          <div>
+            <h1>Family Three Crowns</h1>
+            <p class="tagline">Couch-Koop für die ganze Familie</p>
+          </div>
+        </div>
+        <div class="status" id="pad-status"><span class="dot"></span><span id="pad-status-text">Controller: Taste drücken</span></div>
+      </header>
+
+      <main id="menu"></main>
+    </div>
+
+    <footer class="hints">
+      <span class="hint"><span class="glyph">✚</span> / Stick auswählen</span>
+      <span class="hint"><span class="glyph a">A</span> öffnen</span>
+      <span class="hint"><span class="glyph">View</span>+<span class="glyph">Menu</span> auf jeder Seite: zurück hierher</span>
+    </footer>
+
+    <script type="module" src="/src/landing/landing.ts"></script>
   </body>
 </html>
