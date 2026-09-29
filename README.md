@@ -11,7 +11,8 @@ npm run dev
 ```
 
 Dann `http://localhost:5173` öffnen, oder im Heimnetz `http://<PC-IP>:5173` (z.B. von der Xbox aus).
-Die Startseite ist eine Landingpage, die man komplett mit dem Controller bedient (D-Pad/Stick + **A**).
+Die Startseite ist eine Landingpage, die man komplett mit dem Controller bedient (D-Pad/Stick + **A**,
+**Y** bzw. **F** = Vollbild). Vollbild endet beim Seitenwechsel. Auf der Xbox hält das Vollbild aus dem Edge-Menü länger.
 Von jeder Unterseite geht es mit **View + Menu** (kurz gemeinsam halten) bzw. **Pos1** zurück.
 
 Im Spiel:

@@ -51,6 +51,25 @@
       .status.on .dot { background: var(--a-green); box-shadow: 0 0 10px var(--a-green); }
       .status.on { color: var(--text); }
 
+      .top-right { display: flex; align-items: center; gap: 16px; flex-wrap: wrap; }
+      .fs-btn {
+        display: flex; align-items: center; gap: 12px; padding: 12px 22px; border-radius: 999px; cursor: pointer;
+        font: inherit; font-size: 20px; font-weight: 600; line-height: 1; color: var(--text); background: var(--card);
+        border: 2px solid var(--card-line); outline: none; backdrop-filter: blur(6px);
+        transition: transform 140ms ease, border-color 140ms ease, box-shadow 140ms ease;
+      }
+      .fs-btn svg { width: 24px; height: 24px; fill: none; stroke: currentColor; stroke-width: 2.5; stroke-linecap: round; stroke-linejoin: round; }
+      .fs-btn.focus { transform: scale(1.06); border-color: var(--gold); box-shadow: 0 0 0 4px rgba(255, 209, 102, 0.25); }
+      .fs-btn.active svg { color: var(--gold); }
+      .glyph.y { background: #e3b341; color: #1b1b1b; border-radius: 50%; padding: 0; }
+      .toast {
+        position: fixed; left: 50%; bottom: 96px; z-index: 3; max-width: min(900px, calc(100% - 32px));
+        translate: -50% 20px; opacity: 0; pointer-events: none; padding: 16px 24px; border-radius: 14px;
+        background: rgba(12, 16, 36, 0.95); border: 1px solid var(--gold); font-size: 20px;
+        transition: opacity 200ms ease, translate 200ms ease;
+      }
+      .toast.show { opacity: 1; translate: -50% 0; }
+
       h2 { margin: 32px 0 16px; font-size: 20px; font-weight: 600; letter-spacing: 3px; text-transform: uppercase; color: var(--dim); }
       .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(330px, 1fr)); gap: 22px; }
 
@@ -123,7 +142,13 @@
             <p class="tagline">Couch-Koop für die ganze Familie</p>
           </div>
         </div>
-        <div class="status" id="pad-status"><span class="dot"></span><span id="pad-status-text">Controller: Taste drücken</span></div>
+        <div class="top-right">
+          <div class="status" id="pad-status"><span class="dot"></span><span id="pad-status-text">Controller: Taste drücken</span></div>
+          <button class="fs-btn" id="fullscreen" type="button">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9V4h5M15 4h5v5M20 15v5h-5M9 20H4v-5" /></svg>
+            <span id="fullscreen-label">Vollbild</span>
+          </button>
+        </div>
       </header>
 
       <main id="menu"></main>
@@ -132,8 +157,11 @@
     <footer class="hints">
       <span class="hint"><span class="glyph">✚</span> / Stick auswählen</span>
       <span class="hint"><span class="glyph a">A</span> öffnen</span>
+      <span class="hint"><span class="glyph y">Y</span> Vollbild</span>
       <span class="hint"><span class="glyph">View</span>+<span class="glyph">Menu</span> auf jeder Seite: zurück hierher</span>
     </footer>
+
+    <div class="toast" id="toast" role="status"></div>
 
     <script type="module" src="/src/landing/landing.ts"></script>
   </body>
