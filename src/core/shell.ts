@@ -97,15 +97,16 @@ function addHomeButton(): void {
   const style = document.createElement('style');
   style.textContent = `
     .k3c-home {
-      position: fixed; top: 12px; left: 50%; translate: -50% 0; z-index: 2147483000;
-      display: flex; align-items: center; gap: 10px; padding: 8px 16px 8px 12px;
-      font: 600 18px/1 "Segoe UI", system-ui, sans-serif; color: #f1f3f9; text-decoration: none;
+      position: fixed; top: 0.6667em; left: 50%; translate: -50% 0; z-index: 2147483000;
+      display: flex; align-items: center; gap: 0.5556em; padding: 0.4444em 0.8889em 0.4444em 0.6667em;
+      font: 600 18px/1 "Segoe UI", system-ui, sans-serif; font-size: clamp(12px, 1.125vw, 18px); color: #f1f3f9; text-decoration: none;
       background: rgba(12, 16, 36, 0.72); border: 2px solid rgba(255, 255, 255, 0.18); border-radius: 999px;
       backdrop-filter: blur(6px); opacity: 0.8; transition: opacity 150ms ease, border-color 150ms ease;
     }
+    @media (orientation: portrait) { .k3c-home { font-size: 14px; } }
     .k3c-home:hover, .k3c-home:focus-visible { opacity: 1; border-color: #ffd166; outline: none; }
-    .k3c-home svg { width: 22px; height: 22px; fill: none; stroke: currentColor; stroke-width: 2.2; stroke-linejoin: round; }
-    .k3c-home small { font-size: 13px; font-weight: 600; color: #a9b3cf; }
+    .k3c-home svg { width: 1.2222em; height: 1.2222em; fill: none; stroke: currentColor; stroke-width: 2.2; stroke-linejoin: round; }
+    .k3c-home small { font-size: 0.7222em; font-weight: 600; color: #a9b3cf; }
   `;
   const button = document.createElement('a');
   button.className = 'k3c-home';
