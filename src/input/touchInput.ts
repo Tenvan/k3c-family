@@ -10,7 +10,11 @@ export function wantsTouchControls(): boolean {
 }
 
 const CSS = `
-  .k3c-touch { position: fixed; inset: auto 0 0 0; z-index: 10; display: flex; justify-content: space-between; align-items: flex-end;
+  .k3c-zone { position: fixed; inset: 0; z-index: 9; touch-action: none; user-select: none; -webkit-user-select: none; -webkit-tap-highlight-color: transparent; }
+  .k3c-zone i { position: absolute; top: 50%; translate: 0 -50%; font: normal 700 12vmin/1 system-ui, sans-serif; color: #fff; opacity: .18; transition: opacity 80ms; pointer-events: none; }
+  .k3c-zone i.l { left: 4vmin; } .k3c-zone i.r { right: 4vmin; }
+  .k3c-zone.left i.l, .k3c-zone.right i.r { opacity: .5; }
+  .k3c-touch { position: fixed; inset: auto 0 0 0; z-index: 10; display: flex; justify-content: flex-end; align-items: flex-end;
     padding: 0 max(2vmin, env(safe-area-inset-right)) max(2vmin, env(safe-area-inset-bottom)) max(2vmin, env(safe-area-inset-left));
     pointer-events: none; touch-action: none; user-select: none; -webkit-user-select: none; -webkit-touch-callout: none; }
   .k3c-touch .grp { display: flex; gap: 2vmin; align-items: flex-end; }
@@ -25,7 +29,8 @@ const CSS = `
 `;
 
 /**
- * Eingabe über Bildschirmtasten (◀ ▶ laufen, Münz-Taste = A, » sprinten).
+ * Eingabe per Touch: linke Bildschirmhälfte berühren = nach links laufen, rechte = nach rechts.
+ * Dazu Bildschirmtasten für Münz-Taste (= A) und » sprinten. Die Tasten liegen über der Lauf-Fläche.
  * DOM-Overlay statt Phaser, damit mehrere Finger gleichzeitig funktionieren (laufen + Münzen geben).
  */
 export class TouchInput implements PlayerInput {
@@ -40,13 +45,16 @@ export class TouchInput implements PlayerInput {
     const root = document.createElement('div');
     root.className = 'k3c-touch';
     root.innerHTML = `
-      <div class="grp"><button data-k="left" aria-label="Links">◀</button><button data-k="right" aria-label="Rechts">▶</button></div>
       <div class="grp">
         <div class="col"><button class="small" data-k="fullscreen" aria-label="Vollbild">⛶</button><button class="small" data-k="sprint" aria-label="Sprinten">»</button></div>
         <button class="a" data-k="confirm" aria-label="Münzen geben / beitreten">🪙</button>
       </div>`;
+    const zone = document.createElement('div');
+    zone.className = 'k3c-zone';
+    zone.innerHTML = '<i class="l">◀</i><i class="r">▶</i>';
+    this.bindZone(zone);
     document.head.append(style);
-    parent.append(root);
+    parent.append(zone, root);
     root.addEventListener('contextmenu', (e) => e.preventDefault());
 
     for (const button of root.querySelectorAll<HTMLButtonElement>('button')) {
@@ -72,6 +80,43 @@ export class TouchInput implements PlayerInput {
       button.addEventListener('pointercancel', release);
       button.addEventListener('lostpointercapture', release);
     }
+  }
+
+  /** Jeder Finger auf der Lauf-Fläche läuft in Richtung seiner Bildschirmhälfte (auch beim Wischen über die Mitte). */
+  private bindZone(zone: HTMLElement): void {
+    const fingers = new Map<number, 'left' | 'right'>();
+    const sync = () => {
+      const dirs = new Set(fingers.values());
+      for (const dir of ['left', 'right'] as const) {
+        if (dirs.has(dir)) this.down.add(dir);
+        else this.down.delete(dir);
+        zone.classList.toggle(dir, dirs.has(dir));
+      }
+    };
+    const side = (e: PointerEvent) => (e.clientX < window.innerWidth / 2 ? 'left' : 'right');
+    zone.addEventListener('pointerdown', (e) => {
+      e.preventDefault();
+      try {
+        zone.setPointerCapture(e.pointerId);
+      } catch {
+        /* Zeiger schon weg */
+      }
+      fingers.set(e.pointerId, side(e));
+      sync();
+    });
+    zone.addEventListener('pointermove', (e) => {
+      if (!fingers.has(e.pointerId)) return;
+      fingers.set(e.pointerId, side(e));
+      sync();
+    });
+    const release = (e: PointerEvent) => {
+      fingers.delete(e.pointerId);
+      sync();
+    };
+    zone.addEventListener('pointerup', release);
+    zone.addEventListener('pointercancel', release);
+    zone.addEventListener('lostpointercapture', release);
+    zone.addEventListener('contextmenu', (e) => e.preventDefault());
   }
 
   update(): void {
