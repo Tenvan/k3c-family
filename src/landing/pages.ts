@@ -31,6 +31,13 @@ export const PAGES: PageEntry[] = [
     section: 'play',
   },
   {
+    title: 'Online spielen',
+    description: 'Mit Handy, Tablet oder PC im selben Raum · ein Monarch pro Gerät',
+    icon: '🌐',
+    href: 'game.html?online=familie',
+    section: 'play',
+  },
+  {
     title: 'Höhle',
     description: 'Direkt in Tiefe 1 starten',
     icon: '🦇',
