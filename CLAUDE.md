@@ -26,20 +26,35 @@ Vor jedem Abschluss: `npm test` und `npm run typecheck` müssen grün sein.
 - `src/world/` – Spiel-Logik. Reine Logik (z.B. `levelGenerator.ts`) bleibt **ohne Phaser-Import** und bekommt Tests daneben (`*.test.ts`).
 - `src/input/` – `PlayerInput`-Abstraktion. Spiel-Code fragt Aktionen ab, nie konkrete Tasten.
 - `src/scenes/` – Phaser-Szenen (`GameScene` = Welt + Kameras, `HudScene` = bildschirmfeste Anzeigen).
-- Seiten: `index.html` = Landingpage (Kacheln aus `src/landing/pages.ts`), `game.html` = Spiel, weitere `*.html` = Testseiten.
-  Jede `*.html` im Root wird automatisch gebaut. Neue Seiten: in `pages.ts` eintragen und `installHomeCombo()` aufrufen.
+- Seiten: `index.html` = Landingpage/Shell (Kacheln aus `src/landing/pages.ts`), `game.html` = Spiel, weitere `*.html` = Testseiten.
+  Jede `*.html` im Root wird automatisch gebaut.
+- `src/core/shell.ts` – Seiten-Rahmen (Home-Button, Home-Kombi, Zurück-Falle), `src/core/fullscreen.ts` – Vollbild über die Shell.
+
+## Regel: Seiten & Navigation
+
+Die Landingpage bleibt **dauerhaft geöffnet** und zeigt alle anderen Seiten in einem Vollflächen-iframe.
+Nur so bleibt Vollbild auf der Xbox über Seitenwechsel erhalten. Für **jede** Seite außer der Landingpage gilt:
+
+1. Im Script **`installPageChrome()`** aus `src/core/shell.ts` aufrufen. Das liefert den sichtbaren **Home-Button**
+   (oben mittig), **View + Menu** gemeinsam halten bzw. **Pos1** = zurück, und die Zurück-Falle für B.
+   Oben ca. 70 px frei lassen, damit der Home-Button nichts verdeckt.
+2. In `src/landing/pages.ts` eintragen. Sonst ist die Seite vom Controller aus nicht erreichbar.
+3. Vollbild nur über `toggleFullscreen()` aus `src/core/fullscreen.ts`. Nie `requestFullscreen()` direkt
+   oder `this.scale.toggleFullscreen()`, das würde nur das iframe betreffen.
+4. Seiten nie per Link oder `location` untereinander wechseln. Zurück zur Übersicht immer über `goHome()`.
 
 ## Regeln
 
 - Keine Sprünge, nur horizontale Bewegung. Welt-Koordinaten in **Units** (1 Unit = `UNIT_PX` = 32 px).
 - Level-Generierung ist deterministisch: nur `createRng(seed)` verwenden, niemals `Math.random()`.
 - Jede Mechanik muss mit **2 Spielern gleichzeitig** funktionieren (Split-Screen, eigene Eingabe pro Spieler).
-- Controller-Taste **B** nicht belegen (Edge-Zurück auf der Xbox). **View + Menu** gemeinsam = zurück zur Landingpage (reserviert).
+- Controller-Taste **B** nicht belegen (Edge-Zurück auf der Xbox, wird von der Zurück-Falle geschluckt).
+  **View + Menu** gemeinsam = zurück zur Landingpage (reserviert, auf keiner Seite anders belegen).
 - Klein bleiben: kein Framework-Overhead, keine Prozess-Dokumente. Lieber spielbarer Code.
 
 ## Im Browser-Pane testen
 
-- Der Dev-Build stellt `window.game` bereit.
+- Der Dev-Build stellt `window.game` bereit. In der Shell liegt die Seite im iframe: `document.getElementById('frame').contentWindow`.
 - Ist das Pane im Hintergrund (`document.hidden`), läuft die Game-Loop nicht. Dann Frames manuell takten:
   `let t = performance.now(); for (...) { t += 16.7; game.loop.step(t); }`
 - Tastatur: `KeyboardEvent`s auf `window` dispatchen (keydown/keyup mit `code` + `keyCode`).

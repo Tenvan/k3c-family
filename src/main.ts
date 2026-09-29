@@ -1,6 +1,6 @@
 import Phaser from 'phaser';
 import { GAME_HEIGHT, GAME_WIDTH } from './core/constants';
-import { installHomeCombo } from './core/homeCombo';
+import { installPageChrome } from './core/shell';
 import { GameScene, type GameSceneData } from './scenes/GameScene';
 import { HudScene } from './scenes/HudScene';
 
@@ -24,7 +24,7 @@ const game = new Phaser.Game({
 
 game.scene.add('game', GameScene, true, startData);
 game.scene.add('hud', HudScene, false);
-installHomeCombo();
+installPageChrome();
 
 // Nur im Dev-Server: Zugriff für Debugging über die Browser-Konsole (window.game).
 if (import.meta.env.DEV) (window as unknown as { game: Phaser.Game }).game = game;

@@ -63,12 +63,18 @@
       .fs-btn.active svg { color: var(--gold); }
       .glyph.y { background: #e3b341; color: #1b1b1b; border-radius: 50%; padding: 0; }
       .toast {
-        position: fixed; left: 50%; bottom: 96px; z-index: 3; max-width: min(900px, calc(100% - 32px));
+        position: fixed; left: 50%; bottom: 96px; z-index: 20; max-width: min(900px, calc(100% - 32px));
         translate: -50% 20px; opacity: 0; pointer-events: none; padding: 16px 24px; border-radius: 14px;
         background: rgba(12, 16, 36, 0.95); border: 1px solid var(--gold); font-size: 20px;
         transition: opacity 200ms ease, translate 200ms ease;
       }
       .toast.show { opacity: 1; translate: -50% 0; }
+
+      /* ---------- Shell: geöffnete Unterseite (iframe wird von landing.ts erzeugt) ---------- */
+      #frame { position: fixed; inset: 0; z-index: 10; width: 100%; height: 100%; border: 0; background: #000; display: none; }
+      body.page-open #frame { display: block; }
+      body.page-open .wrap, body.page-open .hints, body.page-open .sky { visibility: hidden; }
+      body.page-open { overflow: hidden; }
 
       h2 { margin: 32px 0 16px; font-size: 20px; font-weight: 600; letter-spacing: 3px; text-transform: uppercase; color: var(--dim); }
       .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(330px, 1fr)); gap: 22px; }

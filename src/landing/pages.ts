@@ -1,6 +1,7 @@
 /**
  * Alle Seiten, die auf der Landingpage erscheinen.
- * Neue Testseite: `<name>.html` im Projektordner anlegen (wird automatisch gebaut) und hier eintragen.
+ * Neue Seite: `<name>.html` im Projektordner anlegen (wird automatisch gebaut), im Script `installPageChrome()`
+ * aus src/core/shell.ts aufrufen (Home-Button + Rückweg) und hier eintragen. Siehe Regel in CLAUDE.md.
  */
 export interface PageEntry {
   title: string;

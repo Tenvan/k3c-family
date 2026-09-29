@@ -1,17 +1,24 @@
-import { fullscreenSupported, isFullscreen, onFullscreenChange, toggleFullscreen } from '../core/fullscreen';
+import { fullscreenSupported, isFullscreen, onFullscreenChange, toggleLocal } from '../core/fullscreen';
+import { SHELL_MESSAGE, type ShellMessage } from '../core/shell';
 import { PAGES, SECTIONS, type PageEntry } from './pages';
 
 /**
- * Landingpage: Kacheln aus pages.ts, Navigation per Gamepad (D-Pad/Stick + A), Tastatur (Pfeile + Enter) und Maus.
- * Die Richtungsnavigation ist räumlich (nächste Kachel in Blickrichtung), funktioniert also für jedes Grid-Layout.
+ * Landingpage = dauerhaft offene Shell.
+ * - Kacheln aus pages.ts, Navigation per Gamepad (D-Pad/Stick + A), Tastatur (Pfeile + Enter) und Maus.
+ *   Die Richtungsnavigation ist räumlich (nächste Kachel in Blickrichtung), funktioniert also für jedes Layout.
+ * - Seiten öffnen sich in einem Vollflächen-iframe (#frame). Vollbild bleibt dadurch über Seitenwechsel erhalten.
+ * - Zurück: Home-Button/View+Menu der Unterseite (postMessage). Browser-Zurück (B) wird abgefangen.
  */
 
 const A = 0;
 const Y = 3;
+const VIEW = 8;
+const MENU = 9;
 const DPAD = { up: 12, down: 13, left: 14, right: 15 } as const;
 const STICK_THRESHOLD = 0.5;
 const REPEAT_DELAY_MS = 380;
 const REPEAT_RATE_MS = 150;
+const HOME_HOLD_MS = 400;
 const FOCUS_KEY = 'k3c.landing.focus';
 
 type Dir = 'up' | 'down' | 'left' | 'right';
@@ -20,10 +27,7 @@ const menu = document.getElementById('menu')!;
 /** Alles, was per D-Pad auswählbar ist: Kacheln + Vollbild-Knopf. */
 const cards: HTMLElement[] = [];
 
-function resolveHref(page: PageEntry): string {
-  return typeof page.href === 'function' ? page.href() : page.href;
-}
-
+// ---------- Kacheln ----------
 function render(): void {
   for (const section of Object.keys(SECTIONS) as PageEntry['section'][]) {
     const pages = PAGES.filter((p) => p.section === section);
@@ -62,41 +66,6 @@ function register(el: HTMLElement): void {
   cards.push(el);
 }
 
-// ---------- Vollbild ----------
-const fsButton = document.getElementById('fullscreen') as HTMLButtonElement;
-const fsLabel = document.getElementById('fullscreen-label')!;
-const toast = document.getElementById('toast')!;
-let toastTimer = 0;
-
-function showToast(message: string): void {
-  toast.textContent = message;
-  toast.classList.add('show');
-  clearTimeout(toastTimer);
-  toastTimer = window.setTimeout(() => toast.classList.remove('show'), 5000);
-}
-
-async function fullscreen(via: string): Promise<void> {
-  const error = await toggleFullscreen();
-  if (!error) return;
-  showToast(
-    via === 'Klick'
-      ? 'Der Browser erlaubt hier kein Vollbild. Auf der Xbox alternativ das Vollbild aus dem Edge-Menü nutzen.'
-      : `Vollbild per ${via} blockiert. Bitte mit dem Cursor auf „Vollbild“ klicken.`,
-  );
-}
-
-function setupFullscreen(): void {
-  if (!fullscreenSupported()) return void fsButton.remove();
-  fsButton.dataset.title = '__fullscreen';
-  fsButton.addEventListener('click', () => void fullscreen('Klick'));
-  onFullscreenChange((active) => {
-    fsLabel.textContent = active ? 'Vollbild beenden' : 'Vollbild';
-    fsButton.classList.toggle('active', active);
-  });
-  fsLabel.textContent = isFullscreen() ? 'Vollbild beenden' : 'Vollbild';
-  register(fsButton);
-}
-
 /**
  * Wählt eine Kachel aus. Eigene Klasse statt nur :focus, denn ohne Fensterfokus (z.B. wenn der
  * Controller-Cursor auf der Xbox woanders ist) greift weder :focus noch das focus-Event.
@@ -106,12 +75,8 @@ function select(card: HTMLElement): void {
   cards.forEach((c) => c.classList.toggle('focus', c === card));
   card.focus({ preventScroll: true });
   card.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
-  remember(card.dataset.title!);
-}
-
-function remember(title: string): void {
   try {
-    sessionStorage.setItem(FOCUS_KEY, title);
+    sessionStorage.setItem(FOCUS_KEY, card.dataset.title!);
   } catch {
     /* Speicher nicht verfügbar – egal */
   }
@@ -126,12 +91,6 @@ function restoreFocus(): void {
   }
   const card = cards.find((c) => c.dataset.title === title) ?? cards[0];
   if (card) select(card);
-}
-
-function launch(card: HTMLAnchorElement, page: PageEntry): void {
-  card.classList.add('launch');
-  const href = resolveHref(page);
-  setTimeout(() => location.assign(href), 120);
 }
 
 function current(): HTMLElement {
@@ -163,8 +122,117 @@ function move(dir: Dir): void {
   if (best) select(best);
 }
 
+// ---------- Seiten im iframe ----------
+// Das iframe wird bei jedem Öffnen neu erzeugt und beim Schließen entfernt. Würde man nur `src` wechseln,
+// legte der Browser Verlaufseinträge an, und "Zurück" könnte alte Seiten unsichtbar im Hintergrund laden.
+let frame: HTMLIFrameElement | null = null;
+
+/** Nur Seiten dieses Servers (*.html) zulassen – der Hash in der URL ist Nutzereingabe. */
+function safePageUrl(href: string): string | null {
+  try {
+    const url = new URL(href, location.href);
+    return url.origin === location.origin && url.pathname.endsWith('.html') && !url.pathname.endsWith('/index.html') ? href : null;
+  } catch {
+    return null;
+  }
+}
+
+function launch(card: HTMLElement, page: PageEntry): void {
+  card.classList.add('launch');
+  const href = typeof page.href === 'function' ? page.href() : page.href;
+  setTimeout(() => {
+    card.classList.remove('launch');
+    openPage(href);
+  }, 120);
+}
+
+function openPage(href: string): void {
+  const safe = safePageUrl(href);
+  if (!safe) return;
+  frame?.remove();
+  frame = document.createElement('iframe');
+  frame.id = 'frame';
+  frame.title = 'Seite';
+  frame.allow = 'fullscreen; gamepad; autoplay';
+  frame.src = safe;
+  frame.addEventListener('load', () => frame?.contentWindow?.focus(), { once: true });
+  document.body.append(frame);
+  document.body.classList.add('page-open');
+  // Hash nur ersetzen (kein neuer Verlaufseintrag): Neuladen öffnet dieselbe Seite wieder.
+  history.replaceState(history.state, '', `#${safe}`);
+}
+
+function closePage(): void {
+  if (!frame) return;
+  frame.remove();
+  frame = null;
+  document.body.classList.remove('page-open');
+  history.replaceState(history.state, '', location.pathname + location.search);
+  window.focus();
+}
+
+function isPageOpen(): boolean {
+  return frame !== null;
+}
+
+// Zurück-Falle auch für die Landingpage: B soll Edge nicht verlassen.
+history.pushState({ k3cShell: true }, '');
+addEventListener('popstate', () => history.pushState({ k3cShell: true }, ''));
+
+addEventListener('message', (e: MessageEvent<ShellMessage>) => {
+  if (e.origin !== location.origin || !frame || e.source !== frame.contentWindow) return;
+  if (e.data?.type === SHELL_MESSAGE.home) closePage();
+  if (e.data?.type === SHELL_MESSAGE.fullscreen) {
+    const id = e.data.id;
+    const target = frame.contentWindow;
+    void toggleLocal().then((error) => {
+      target?.postMessage({ type: SHELL_MESSAGE.fullscreenResult, id, error } satisfies ShellMessage, location.origin);
+    });
+  }
+});
+
+// ---------- Vollbild ----------
+const fsButton = document.getElementById('fullscreen') as HTMLButtonElement;
+const fsLabel = document.getElementById('fullscreen-label')!;
+const toast = document.getElementById('toast')!;
+let toastTimer = 0;
+
+function showToast(message: string): void {
+  toast.textContent = message;
+  toast.classList.add('show');
+  clearTimeout(toastTimer);
+  toastTimer = window.setTimeout(() => toast.classList.remove('show'), 5000);
+}
+
+async function fullscreen(via: string): Promise<void> {
+  const error = await toggleLocal();
+  if (!error) return;
+  showToast(
+    via === 'Klick'
+      ? 'Der Browser erlaubt hier kein Vollbild. Auf der Xbox alternativ das Vollbild aus dem Edge-Menü nutzen.'
+      : `Vollbild per ${via} blockiert. Bitte mit dem Cursor auf „Vollbild“ klicken.`,
+  );
+}
+
+function setupFullscreen(): void {
+  if (!fullscreenSupported()) return void fsButton.remove();
+  fsButton.dataset.title = '__fullscreen';
+  fsButton.addEventListener('click', () => void fullscreen('Klick'));
+  const update = (active: boolean) => {
+    fsLabel.textContent = active ? 'Vollbild beenden' : 'Vollbild';
+    fsButton.classList.toggle('active', active);
+  };
+  onFullscreenChange(update);
+  update(isFullscreen());
+  register(fsButton);
+}
+
 // ---------- Tastatur ----------
 addEventListener('keydown', (e) => {
+  if (isPageOpen()) {
+    if (e.key === 'Home') closePage();
+    return;
+  }
   const dir = ({ ArrowUp: 'up', ArrowDown: 'down', ArrowLeft: 'left', ArrowRight: 'right' } as Record<string, Dir>)[e.key];
   if (dir) {
     e.preventDefault();
@@ -179,12 +247,27 @@ const statusEl = document.getElementById('pad-status')!;
 const statusText = document.getElementById('pad-status-text')!;
 const heldSince = new Map<string, number>();
 const lastRepeat = new Map<string, number>();
-// true: ein beim Laden noch gehaltenes A/Y (von der vorherigen Seite) löst nichts aus
+// true: beim Zurückkommen noch gehaltene Tasten lösen nichts aus
 let aWasDown = true;
 let yWasDown = true;
+let comboSince = 0;
 
 function pollGamepads(now: number): void {
   const pads = (typeof navigator.getGamepads === 'function' ? navigator.getGamepads() : []).filter((p): p is Gamepad => !!p);
+
+  if (isPageOpen()) {
+    // Die Unterseite hat die Kontrolle. Nur die Home-Kombi beobachten, falls der Browser die Daten (auch) hierher liefert.
+    const combo = pads.some((p) => p.buttons[VIEW]?.pressed && p.buttons[MENU]?.pressed);
+    if (!combo) comboSince = 0;
+    else if (comboSince === 0) comboSince = now;
+    else if (now - comboSince > HOME_HOLD_MS) {
+      comboSince = Infinity;
+      closePage();
+    }
+    aWasDown = yWasDown = true;
+    heldSince.clear();
+    return void requestAnimationFrame(pollGamepads);
+  }
 
   statusEl.classList.toggle('on', pads.length > 0);
   statusText.textContent = pads.length === 0 ? 'Controller: Taste drücken' : `${pads.length} Controller verbunden`;
@@ -231,6 +314,6 @@ function pollGamepads(now: number): void {
 render();
 setupFullscreen();
 restoreFocus();
-// Zurück-Navigation (bfcache): Kachel-Animation zurücksetzen.
-addEventListener('pageshow', () => cards.forEach((c) => c.classList.remove('launch')));
+// Direkt-Link / Neuladen mit geöffneter Seite (index.html#game.html?seed=abc)
+if (location.hash.length > 1) openPage(decodeURIComponent(location.hash.slice(1)));
 requestAnimationFrame(pollGamepads);

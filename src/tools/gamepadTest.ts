@@ -1,5 +1,6 @@
 import Phaser from 'phaser';
-import { installHomeCombo } from '../core/homeCombo';
+import { toggleFullscreen as requestFullscreenToggle } from '../core/fullscreen';
+import { installPageChrome } from '../core/shell';
 
 /**
  * Gamepad-Testseite für Edge auf der Xbox (Schritt 0 der Roadmap).
@@ -105,29 +106,7 @@ function escapeHtml(s: string): string {
   return s.replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' })[c]!);
 }
 
-// ---------- Zurück-Navigation (B-Taste auf der Xbox?) abfangen ----------
-// Eigener History-Eintrag: Löst der Browser "Zurück" aus, landen wir in popstate statt die Seite zu verlassen.
-function armBackTrap(): void {
-  history.pushState({ k3cTrap: Date.now() }, '');
-}
-armBackTrap();
-addEventListener('popstate', () => {
-  report.backNavigations++;
-  log('⚠ Zurück-Navigation ausgelöst (B-Taste?)');
-  armBackTrap();
-  renderEnv();
-});
-let interacted = false;
-function onFirstInteraction(): void {
-  if (interacted) return;
-  interacted = true;
-  // Chrome ignoriert History-Einträge ohne Nutzer-Interaktion teilweise beim Zurückgehen -> nachlegen.
-  armBackTrap();
-}
-addEventListener('pointerdown', onFirstInteraction);
-
 addEventListener('keydown', (e) => {
-  onFirstInteraction();
   const entry = `key="${e.key}" code="${e.code}" keyCode=${e.keyCode}`;
   if (!report.keyEvents.includes(entry)) report.keyEvents.push(entry);
   log(`Taste: ${entry}`);
@@ -142,14 +121,10 @@ document.addEventListener('fullscreenchange', () => log(`Vollbild: ${document.fu
 
 // ---------- Aktionen ----------
 async function toggleFullscreen(via: string): Promise<void> {
-  try {
-    if (document.fullscreenElement) await document.exitFullscreen();
-    else await document.documentElement.requestFullscreen();
-    report.fullscreenAttempts.push({ via, ok: true });
-  } catch (err) {
-    report.fullscreenAttempts.push({ via, ok: false, error: String(err) });
-    log(`Vollbild über ${via} fehlgeschlagen: ${String(err)}`);
-  }
+  // Läuft über die Shell (Landingpage), damit Vollbild auch beim Seitenwechsel erhalten bleibt.
+  const error = await requestFullscreenToggle();
+  report.fullscreenAttempts.push(error ? { via, ok: false, error } : { via, ok: true });
+  log(error ? `Vollbild über ${via} fehlgeschlagen: ${error}` : `Vollbild über ${via}: ok`);
 }
 
 async function rumble(): Promise<void> {
@@ -224,7 +199,6 @@ function pollPads(): void {
     if (pressed.has(BTN.VIEW) && pressed.has(BTN.MENU)) comboUsed.add(pad.index);
     const released = (i: number) => !pressed.has(i) && before.has(i) && !comboUsed.has(pad.index);
     for (const i of pressed) if (!before.has(i)) log(`#${pad.index} ${BUTTON_NAMES[i] ?? `Taste ${i}`} gedrückt`);
-    if (pressed.size > 0) onFirstInteraction();
 
     if (perfGame) {
       if (released(BTN.VIEW)) togglePerf();
@@ -343,7 +317,14 @@ class PerfScene extends Phaser.Scene {
   }
 }
 
-installHomeCombo();
+// Zurück-Navigation (B-Taste auf der Xbox?) fängt installPageChrome ab – hier nur zählen.
+installPageChrome({
+  onBack: () => {
+    report.backNavigations++;
+    log('⚠ Zurück-Navigation ausgelöst (B-Taste?)');
+    renderEnv();
+  },
+});
 renderEnv();
 log(report.gamepadApi ? 'Bereit. Taste auf einem Controller drücken.' : 'Gamepad API nicht verfügbar!');
 requestAnimationFrame(pollPads);
