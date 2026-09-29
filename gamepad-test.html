@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="de">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>K3C Gamepad-Test</title>
+    <style>
+      :root { --bg: #11151c; --panel: #1c2330; --line: #2e3a4d; --text: #e8edf4; --dim: #8a97aa; --on: #ffd166; --ok: #52b788; --bad: #e76f51; }
+      * { box-sizing: border-box; }
+      html, body { margin: 0; background: var(--bg); color: var(--text); font: 20px/1.4 system-ui, sans-serif; }
+      main { padding: 24px 40px 40px; max-width: 1840px; margin: 0 auto; }
+      h1 { font-size: 34px; margin: 0 0 4px; }
+      h2 { font-size: 24px; margin: 0 0 12px; }
+      .sub { color: var(--dim); margin: 0 0 20px; }
+      .row { display: grid; grid-template-columns: repeat(auto-fit, minmax(420px, 1fr)); gap: 20px; margin-bottom: 20px; }
+      section { background: var(--panel); border: 1px solid var(--line); border-radius: 12px; padding: 18px 22px; }
+      button { font: inherit; font-size: 22px; padding: 14px 22px; margin: 0 10px 10px 0; border-radius: 10px; border: 2px solid var(--line); background: #26324a; color: var(--text); }
+      button:focus-visible, button:hover { border-color: var(--on); outline: none; }
+      dl { display: grid; grid-template-columns: max-content 1fr; gap: 4px 16px; margin: 0; }
+      dt { color: var(--dim); }
+      dd { margin: 0; word-break: break-all; }
+      .ok { color: var(--ok); } .bad { color: var(--bad); }
+      .pad { border-top: 1px solid var(--line); padding-top: 12px; margin-top: 12px; }
+      .pad:first-child { border: 0; margin: 0; padding: 0; }
+      .pad-title { font-weight: 700; margin-bottom: 8px; }
+      .buttons { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 8px; }
+      .btn { min-width: 64px; text-align: center; padding: 6px 8px; border-radius: 8px; background: #26324a; color: var(--dim); font-size: 17px; }
+      .btn.on { background: var(--on); color: #000; font-weight: 700; }
+      .btn.seen { box-shadow: inset 0 -4px 0 var(--ok); }
+      .axes { display: grid; grid-template-columns: 60px 1fr 70px; gap: 4px 10px; align-items: center; font-size: 17px; }
+      .bar { height: 14px; background: #26324a; border-radius: 7px; position: relative; overflow: hidden; }
+      .bar i { position: absolute; top: 0; bottom: 0; left: 50%; background: var(--on); }
+      #log { height: 260px; overflow: auto; font: 16px/1.35 ui-monospace, monospace; background: #0b0e13; border-radius: 8px; padding: 10px; }
+      #perf { position: fixed; inset: 0; display: none; background: #000; }
+      #perf.active { display: block; }
+      #perf-hud { position: absolute; top: 16px; left: 16px; font-size: 28px; background: rgba(0,0,0,.6); padding: 10px 16px; border-radius: 10px; z-index: 2; }
+      kbd { background: #26324a; border-radius: 6px; padding: 1px 8px; font: inherit; }
+    </style>
+  </head>
+  <body>
+    <main>
+      <h1>K3C Gamepad-Test</h1>
+      <p class="sub">
+        Controller verbinden und auf jedem eine Taste drücken. Grüner Strich = Taste wurde schon einmal erkannt.
+        Steuerung per Controller: <kbd>Y</kbd> Bericht senden · <kbd>X</kbd> Vibration · <kbd>View</kbd> FPS-Test · <kbd>Menu</kbd> Vollbild versuchen.
+        Bitte auch einmal <kbd>B</kbd> drücken.
+      </p>
+
+      <div class="row">
+        <section>
+          <h2>Aktionen</h2>
+          <button id="btn-fullscreen">Vollbild</button>
+          <button id="btn-perf">FPS-Test starten</button>
+          <button id="btn-rumble">Vibration testen</button>
+          <button id="btn-report">Bericht an Server senden</button>
+          <p id="report-status" class="sub" style="margin:8px 0 0"></p>
+        </section>
+        <section>
+          <h2>Umgebung</h2>
+          <dl id="env"></dl>
+        </section>
+      </div>
+
+      <div class="row">
+        <section>
+          <h2>Controller</h2>
+          <div id="pads"><p class="sub">Noch kein Controller erkannt. Taste auf dem Controller drücken.</p></div>
+        </section>
+        <section>
+          <h2>Ereignisse</h2>
+          <div id="log"></div>
+        </section>
+      </div>
+    </main>
+
+    <div id="perf">
+      <div id="perf-hud"></div>
+    </div>
+
+    <script type="module" src="/src/tools/gamepadTest.ts"></script>
+  </body>
+</html>

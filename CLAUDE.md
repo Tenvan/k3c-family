@@ -13,7 +13,10 @@ Zielplattform ist **Edge auf der Xbox** (Gamepad API), gehostet im Heimnetz. Die
 npm run dev        # Dev-Server (auch im LAN erreichbar, Port 5173)
 npm test           # Vitest (Level-Generator, reine Logik)
 npm run build      # Typecheck + Produktions-Build nach dist/
+npm run serve      # Build + Heimnetz-Server (Port 8080, server/server.mjs)
 ```
+
+Die Gamepad-Testseite (`gamepad-test.html`) schickt Berichte von der Xbox nach `reports/*.json`. Dort die Ergebnisse nachlesen.
 
 Vor jedem Abschluss: `npm test` und `npm run typecheck` müssen grün sein.
 

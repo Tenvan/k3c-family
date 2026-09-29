@@ -10,7 +10,9 @@
     "preview": "vite preview --host",
     "typecheck": "tsc --noEmit",
     "test": "vitest run",
-    "test:watch": "vitest"
+    "test:watch": "vitest",
+    "serve": "npm run build && node server/server.mjs",
+    "start": "node server/server.mjs"
   },
   "dependencies": {
     "phaser": "^3.90.0"
