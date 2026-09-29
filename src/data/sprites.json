@@ -1,5 +1,5 @@
 {
-  "_comment": "Sprites: LuizMelo (CC0, unsere Seite) und Gothicvania von ansimuz (CC0, Gegner), Bilder in public/sprites/<sheet>/<anim>.png. origin = Fußpunkt im Frame, height = Figurhöhe in Frame-Pixeln, scale = Vergrößerung. label/side = Name und Seite (ours/enemy) für die Referenzseiten. Pro Figur: tint = Einfärbung, scale = zusätzlicher Faktor, y = Pixel über dem Boden.",
+  "_comment": "Sprites: LuizMelo (CC0, unsere Seite) und Gothicvania von ansimuz (CC0, Gegner), Bilder in public/sprites/<sheet>/<anim>.png. origin = Fußpunkt im Frame, height = Figurhöhe in Frame-Pixeln, scale = Vergrößerung. label/side = Name und Seite (ours/enemy) für die Referenzseiten. Pro Figur: tint = Einfärbung, scale = zusätzlicher Faktor, y = Pixel über dem Boden. mounts = Reittiere: saddle = Sattelpunkt pro Frame (Frame-Pixel, Blick nach rechts), dort sitzt der Reiter mit der Hüfte; riderWaist = Schnitt durch die Figur (Anteil der Höhe von oben).",
   "sheets": {
     "medieval-king": {
       "label": "König",
@@ -816,6 +816,222 @@
       },
       "pack": "Gothicvania Cemetery (Ghost)",
       "source": "https://opengameart.org/content/gothicvania-cemetery-pack"
+    },
+    "horse": {
+      "label": "Braunes Pferd (Galopp)",
+      "side": "mount",
+      "frameWidth": 100,
+      "frameHeight": 65,
+      "originX": 0.55,
+      "originY": 0.969,
+      "height": 61,
+      "scale": 2.2,
+      "anims": {
+        "idle": {
+          "frames": 1,
+          "fps": 8
+        },
+        "run": {
+          "frames": 11,
+          "fps": 14
+        }
+      },
+      "pack": "LPC Horses",
+      "source": "https://opengameart.org/content/lpc-horses",
+      "authors": "bluecarrot16",
+      "license": "CC-BY 3.0"
+    },
+    "horse-walk": {
+      "label": "Braunes Pferd (Schritt)",
+      "side": "mount",
+      "frameWidth": 67,
+      "frameHeight": 64,
+      "originX": 0.493,
+      "originY": 0.969,
+      "height": 61,
+      "scale": 2.2,
+      "anims": {
+        "idle": {
+          "frames": 1,
+          "fps": 8
+        },
+        "run": {
+          "frames": 4,
+          "fps": 8
+        }
+      },
+      "pack": "LPC Horses",
+      "source": "https://opengameart.org/content/lpc-horses",
+      "authors": "bluecarrot16",
+      "license": "CC-BY 3.0"
+    },
+    "white-horse": {
+      "label": "Schimmel",
+      "side": "mount",
+      "frameWidth": 64,
+      "frameHeight": 62,
+      "originX": 0.492,
+      "originY": 0.984,
+      "height": 60,
+      "scale": 2.4,
+      "anims": {
+        "idle": {
+          "frames": 1,
+          "fps": 8
+        },
+        "run": {
+          "frames": 3,
+          "fps": 7
+        }
+      },
+      "pack": "Horses Rework",
+      "source": "https://opengameart.org/node/77472",
+      "authors": "bluecarrot16, Jordan Irwin (AntumDeluge)",
+      "license": "CC-BY 3.0"
+    },
+    "unicorn": {
+      "label": "Einhorn",
+      "side": "mount",
+      "frameWidth": 64,
+      "frameHeight": 64,
+      "originX": 0.492,
+      "originY": 0.984,
+      "height": 62,
+      "scale": 2.4,
+      "anims": {
+        "idle": {
+          "frames": 1,
+          "fps": 8
+        },
+        "run": {
+          "frames": 3,
+          "fps": 7
+        }
+      },
+      "pack": "Horses Rework",
+      "source": "https://opengameart.org/node/77472",
+      "authors": "bluecarrot16, Jordan Irwin (AntumDeluge)",
+      "license": "CC-BY 3.0"
+    },
+    "pegasus": {
+      "label": "Pegasus",
+      "side": "mount",
+      "frameWidth": 64,
+      "frameHeight": 62,
+      "originX": 0.492,
+      "originY": 0.984,
+      "height": 60,
+      "scale": 2.4,
+      "anims": {
+        "idle": {
+          "frames": 1,
+          "fps": 8
+        },
+        "run": {
+          "frames": 3,
+          "fps": 7
+        }
+      },
+      "pack": "Horses Rework",
+      "source": "https://opengameart.org/node/77472",
+      "authors": "bluecarrot16, Jordan Irwin (AntumDeluge), Flügel: lemmling (CC0)",
+      "license": "CC-BY 3.0"
+    },
+    "elephant": {
+      "label": "Elefant",
+      "side": "mount",
+      "frameWidth": 94,
+      "frameHeight": 59,
+      "originX": 0.5,
+      "originY": 0.983,
+      "height": 55,
+      "scale": 2.0,
+      "anims": {
+        "idle": {
+          "frames": 1,
+          "fps": 8
+        },
+        "run": {
+          "frames": 3,
+          "fps": 6
+        }
+      },
+      "pack": "Elephant Rework",
+      "source": "https://opengameart.org/node/84509",
+      "authors": "lawnjelly, Jordan Irwin (AntumDeluge)",
+      "license": "CC-BY 3.0"
+    },
+    "stag": {
+      "label": "Hirsch",
+      "side": "mount",
+      "frameWidth": 64,
+      "frameHeight": 61,
+      "originX": 0.531,
+      "originY": 1.0,
+      "height": 56,
+      "scale": 2.4,
+      "anims": {
+        "idle": {
+          "frames": 1,
+          "fps": 8
+        },
+        "run": {
+          "frames": 3,
+          "fps": 8
+        }
+      },
+      "pack": "Deer Rework",
+      "source": "https://opengameart.org/node/51561",
+      "authors": "Calciumtrice, Jordan Irwin (AntumDeluge)",
+      "license": "CC-BY 3.0"
+    },
+    "lpc-wolf": {
+      "label": "Wolf",
+      "side": "mount",
+      "frameWidth": 64,
+      "frameHeight": 33,
+      "originX": 0.508,
+      "originY": 1.0,
+      "height": 32,
+      "scale": 2.6,
+      "anims": {
+        "idle": {
+          "frames": 1,
+          "fps": 8
+        },
+        "run": {
+          "frames": 3,
+          "fps": 8
+        }
+      },
+      "pack": "Wolf Rework (LPC)",
+      "source": "https://github.com/AntumDeluge/game-resources",
+      "authors": "Jordan Irwin (AntumDeluge)",
+      "license": "CC-BY 3.0"
+    },
+    "lpc-hellhound": {
+      "label": "Höllenhund (LPC)",
+      "side": "mount",
+      "frameWidth": 64,
+      "frameHeight": 33,
+      "originX": 0.508,
+      "originY": 1.0,
+      "height": 32,
+      "scale": 2.6,
+      "anims": {
+        "idle": {
+          "frames": 1,
+          "fps": 8
+        },
+        "run": {
+          "frames": 3,
+          "fps": 8
+        }
+      },
+      "pack": "Wolf Rework (LPC)",
+      "source": "https://github.com/AntumDeluge/game-resources",
+      "authors": "Jordan Irwin (AntumDeluge)",
+      "license": "CC-BY 3.0"
     }
   },
   "players": [
@@ -894,5 +1110,476 @@
       "sheet": "ghost",
       "alpha": 0.85
     }
-  }
+  },
+  "mounts": {
+    "horse": {
+      "label": "Braunes Pferd",
+      "sheet": "horse",
+      "scale": 2.2,
+      "saddle": {
+        "run": [
+          [
+            40,
+            23
+          ],
+          [
+            39,
+            22
+          ],
+          [
+            42,
+            21
+          ],
+          [
+            42,
+            24
+          ],
+          [
+            38,
+            26
+          ],
+          [
+            40,
+            28
+          ],
+          [
+            42,
+            29
+          ],
+          [
+            42,
+            29
+          ],
+          [
+            41,
+            27
+          ],
+          [
+            42,
+            28
+          ],
+          [
+            42,
+            26
+          ]
+        ],
+        "idle": [
+          [
+            49,
+            26
+          ]
+        ]
+      }
+    },
+    "horseWalk": {
+      "label": "Braunes Pferd im Schritt",
+      "sheet": "horse-walk",
+      "scale": 2.2,
+      "saddle": {
+        "run": [
+          [
+            27,
+            25
+          ],
+          [
+            28,
+            25
+          ],
+          [
+            28,
+            25
+          ],
+          [
+            27,
+            25
+          ]
+        ],
+        "idle": [
+          [
+            27,
+            25
+          ]
+        ]
+      }
+    },
+    "blackHorse": {
+      "label": "Rappe",
+      "sheet": "horse",
+      "scale": 2.2,
+      "saddle": {
+        "run": [
+          [
+            40,
+            23
+          ],
+          [
+            39,
+            22
+          ],
+          [
+            42,
+            21
+          ],
+          [
+            42,
+            24
+          ],
+          [
+            38,
+            26
+          ],
+          [
+            40,
+            28
+          ],
+          [
+            42,
+            29
+          ],
+          [
+            42,
+            29
+          ],
+          [
+            41,
+            27
+          ],
+          [
+            42,
+            28
+          ],
+          [
+            42,
+            26
+          ]
+        ],
+        "idle": [
+          [
+            49,
+            26
+          ]
+        ]
+      },
+      "tint": "#5a4f55"
+    },
+    "whiteHorse": {
+      "label": "Schimmel",
+      "sheet": "white-horse",
+      "scale": 2.4,
+      "saddle": {
+        "run": [
+          [
+            26,
+            25
+          ],
+          [
+            26,
+            25
+          ],
+          [
+            26,
+            25
+          ]
+        ],
+        "idle": [
+          [
+            26,
+            25
+          ]
+        ]
+      }
+    },
+    "unicorn": {
+      "label": "Einhorn",
+      "sheet": "unicorn",
+      "scale": 2.4,
+      "saddle": {
+        "run": [
+          [
+            26,
+            27
+          ],
+          [
+            26,
+            27
+          ],
+          [
+            26,
+            27
+          ]
+        ],
+        "idle": [
+          [
+            26,
+            27
+          ]
+        ]
+      }
+    },
+    "pegasus": {
+      "label": "Pegasus",
+      "sheet": "pegasus",
+      "scale": 2.4,
+      "saddle": {
+        "run": [
+          [
+            25,
+            20
+          ],
+          [
+            25,
+            20
+          ],
+          [
+            25,
+            20
+          ]
+        ],
+        "idle": [
+          [
+            25,
+            20
+          ]
+        ]
+      }
+    },
+    "elephant": {
+      "label": "Elefant",
+      "sheet": "elephant",
+      "scale": 2.0,
+      "saddle": {
+        "run": [
+          [
+            42,
+            9
+          ],
+          [
+            42,
+            7
+          ],
+          [
+            42,
+            9
+          ]
+        ],
+        "idle": [
+          [
+            42,
+            9
+          ]
+        ]
+      }
+    },
+    "stag": {
+      "label": "Hirsch",
+      "sheet": "stag",
+      "scale": 2.4,
+      "saddle": {
+        "run": [
+          [
+            28,
+            34
+          ],
+          [
+            26,
+            30
+          ],
+          [
+            25,
+            31
+          ]
+        ],
+        "idle": [
+          [
+            28,
+            34
+          ]
+        ]
+      }
+    },
+    "wolf": {
+      "label": "Wolf",
+      "sheet": "lpc-wolf",
+      "scale": 2.6,
+      "saddle": {
+        "run": [
+          [
+            29,
+            9
+          ],
+          [
+            29,
+            11
+          ],
+          [
+            28,
+            9
+          ]
+        ],
+        "idle": [
+          [
+            29,
+            9
+          ]
+        ]
+      }
+    },
+    "hellhound": {
+      "label": "Höllenhund",
+      "sheet": "lpc-hellhound",
+      "scale": 2.6,
+      "saddle": {
+        "run": [
+          [
+            29,
+            9
+          ],
+          [
+            29,
+            11
+          ],
+          [
+            28,
+            9
+          ]
+        ],
+        "idle": [
+          [
+            29,
+            9
+          ]
+        ]
+      }
+    },
+    "nightmare": {
+      "label": "Albtraum-Pferd",
+      "sheet": "nightmare",
+      "scale": 1.75,
+      "saddle": {
+        "run": [
+          [
+            57,
+            39
+          ],
+          [
+            54,
+            57
+          ],
+          [
+            61,
+            53
+          ],
+          [
+            61,
+            30
+          ]
+        ],
+        "idle": [
+          [
+            60,
+            58
+          ],
+          [
+            56,
+            44
+          ],
+          [
+            59,
+            58
+          ],
+          [
+            59,
+            59
+          ]
+        ]
+      }
+    },
+    "hellHound": {
+      "label": "Höllenhund (Gothicvania)",
+      "sheet": "hell-hound",
+      "scale": 3.5,
+      "saddle": {
+        "run": [
+          [
+            22,
+            25
+          ],
+          [
+            21,
+            27
+          ],
+          [
+            21,
+            26
+          ],
+          [
+            22,
+            27
+          ],
+          [
+            22,
+            25
+          ]
+        ],
+        "idle": [
+          [
+            25,
+            25
+          ],
+          [
+            24,
+            27
+          ],
+          [
+            26,
+            26
+          ],
+          [
+            26,
+            26
+          ],
+          [
+            26,
+            26
+          ],
+          [
+            27,
+            26
+          ]
+        ]
+      }
+    },
+    "whiteWolf": {
+      "label": "Weißer Wolf",
+      "sheet": "wolf",
+      "scale": 3.8,
+      "saddle": {
+        "run": [
+          [
+            21,
+            5
+          ],
+          [
+            21,
+            7
+          ],
+          [
+            21,
+            7
+          ],
+          [
+            21,
+            5
+          ]
+        ],
+        "idle": [
+          [
+            21,
+            5
+          ]
+        ]
+      }
+    }
+  },
+  "riderWaist": 0.6
 }
