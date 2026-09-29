@@ -150,6 +150,8 @@ Die festen Eckdaten stehen in `src/data/biomes/<biom>.json`, der Generator in `s
 JSON mit Monarch-Zustand (Level, Skills), pro Hub (Gebäude, Truppen, Ressourcen), Fortschritt (freigeschaltete Tiefen)
 und den **Seeds** der Stufen. Gegner und Level-Layout werden nicht gespeichert. Speicherort ist der Heimnetz-Server
 (Browser-Speicher auf der Xbox gilt als unzuverlässig), mit Fallback auf localStorage.
+Umgesetzt in `src/world/sim/campaign.ts`: Autosave bei Tagesanbruch und beim Stufenwechsel. Zusätzlich gespeichert wird,
+was aus der Welt schon entfernt wurde (gefällte Bäume, geöffnete Truhen), sonst kämen sie beim Laden zurück.
 
 ## Grafik & Audio
 
