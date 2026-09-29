@@ -23,9 +23,13 @@ Jede Seite hat oben mittig einen **Start**-Button. Zurück zur Übersicht geht e
 Im Spiel:
 
 - **A** (Controller) / **Leertaste**: Beitreten (bis zu 2 Spieler, Split-Screen)
+- **A** / **Leertaste halten**: Münzen geben – an Bauplätze, Werkstatt (Bögen), Landstreicher (werden Bauern),
+  Bäume/Felsen (Bauer holt das Material). Ohne Ziel fällt die Münze, der andere Spieler kann sie aufheben.
 - Linker Stick / **A**,**D**: laufen, **RT** / **Shift**: sprinten
 - **F** / rechten Stick drücken: Vollbild
-- Dev: **N** neuer Seed, **1/2/3** Tiefe wechseln, URL-Parameter `?seed=abc&depth=1`
+- Nachts kommen Gegner aus den Portalen. Mauern halten sie auf, Bogenschützen schießen automatisch.
+- Dev: **N** neuer Seed, **1/2/3** Tiefe wechseln, URL-Parameter `?seed=abc&depth=1`,
+  `?fast=1` (Tag/Nacht 8x schneller), `?dev=1` (**G** +10 Gold, **H** +50 Material, **T** nächste Tageszeit)
 
 ## Im Heimnetz hosten (Xbox)
 

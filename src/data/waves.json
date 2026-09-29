@@ -1,0 +1,12 @@
+{
+  "notes": "Wellen laut GDD. Ab 'fromWave' gilt die Zeile. Spawns werden über 'spawnSpreadSeconds' verteilt.",
+  "table": [
+    { "fromWave": 1,  "standard": [5, 10],  "elite": [0, 0] },
+    { "fromWave": 6,  "standard": [10, 15], "elite": [1, 2] },
+    { "fromWave": 11, "standard": [15, 20], "elite": [3, 5] }
+  ],
+  "spawnSpreadSeconds": 20,
+  "depthScaling": { "hp": 1.5, "damage": 1.3, "speed": 1.1 },
+  "attacksPerSecond": 1,
+  "stealGold": 5
+}
