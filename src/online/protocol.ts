@@ -19,16 +19,19 @@ export type ServerMessage =
   | { t: 'error'; message: string };
 
 const STATIC_KEYS = ['seed', 'biome', 'level', 'rng', 'widthUnits'] as const;
-export type Snapshot = Omit<World, (typeof STATIC_KEYS)[number]> & { events: GameEvent[] };
+/** `depth`: Stufe der Welt. Wechselt sie (Treppe/Tiefen-Eingang), baut der Client die Spiegelwelt neu auf. */
+export type Snapshot = Omit<World, (typeof STATIC_KEYS)[number]> & { events: GameEvent[]; depth: number };
 
 export function snapshotWorld(w: World): Snapshot {
   const copy: Record<string, unknown> = { ...w };
   for (const key of STATIC_KEYS) delete copy[key];
+  copy.depth = w.biome.depth;
   return copy as unknown as Snapshot;
 }
 
 export function applySnapshot(w: World, s: Snapshot): void {
-  Object.assign(w, s);
+  const { depth: _depth, ...dynamic } = s;
+  Object.assign(w, dynamic);
 }
 
 export function sanitizeInput(m: Partial<PlayerCommand>): PlayerCommand {

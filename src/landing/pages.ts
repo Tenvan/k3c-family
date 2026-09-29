@@ -16,12 +16,19 @@ export interface PageEntry {
 
 export const PAGES: PageEntry[] = [
   {
-    title: 'Spiel starten',
-    description: 'Oberwelt · Seed „k3c“ · bis zu 2 Spieler im Split-Screen',
+    title: 'Weiterspielen',
+    description: 'Letzten Spielstand laden · speichert automatisch bei Tagesanbruch',
     icon: '👑',
-    href: 'game.html',
+    href: 'game.html?continue=1',
     section: 'play',
     primary: true,
+  },
+  {
+    title: 'Neues Spiel',
+    description: 'Oberwelt · Seed „k3c“ · bis zu 2 Spieler · alter Spielstand wird gesichert',
+    icon: '🏰',
+    href: 'game.html?save=1',
+    section: 'play',
   },
   {
     title: 'Zufälliges Level',

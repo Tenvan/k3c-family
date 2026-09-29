@@ -1,18 +1,25 @@
 import Phaser from 'phaser';
 import { GAME_HEIGHT, GAME_WIDTH } from './core/constants';
+import { fetchSave } from './core/saveStore';
 import { installPageChrome } from './core/shell';
 import { OnlineClient } from './online/client';
 import { GameScene, type GameSceneData } from './scenes/GameScene';
 import { HudScene } from './scenes/HudScene';
 
-// URL-Parameter zum Testen: ?seed=abc&depth=1&fast=1&dev=1
+// Seitenrahmen sofort (Home-Button, Zurück-Falle für B), nicht erst nach dem Laden des Spielstands.
+installPageChrome();
+
+// URL-Parameter: ?seed=abc&depth=1 (Start-Stufe), ?fast=1 (Tag/Nacht 8x schneller),
+// ?dev=1 (Dev-Tasten G/H/T/S auch im Build), ?save=1 (automatisch speichern), ?continue=1 (Spielstand laden)
 const params = new URLSearchParams(window.location.search);
-// ?fast=1: Tag/Nacht 8x schneller · ?dev=1: Dev-Tasten (G Gold, H Material, T Zeitsprung) auch im Build
+const save = params.has('continue') ? await fetchSave() : null;
 const startData: GameSceneData = {
   seed: params.get('seed') ?? 'k3c',
   depth: Number(params.get('depth') ?? 0),
   fast: params.has('fast'),
   dev: import.meta.env.DEV || params.has('dev'),
+  save,
+  persist: params.has('save') || params.has('continue'),
 };
 
 // ?online=RAUM: Mit anderen Geräten im selben Raum auf dem Server spielen (ein Monarch pro Gerät)
@@ -56,5 +63,4 @@ function launch(): void {
   if (import.meta.env.DEV) (window as unknown as { game: Phaser.Game }).game = game;
 }
 
-installPageChrome();
 void start();

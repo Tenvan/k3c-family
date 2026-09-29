@@ -87,7 +87,7 @@ export interface ResourceNode {
   progress: number;
 }
 
-export type SiteKind = 'wall' | 'tower' | 'workshop';
+export type SiteKind = 'wall' | 'tower' | 'workshop' | 'stairsUp' | 'stairsDown';
 export type SiteState = 'unpaid' | 'waitingMaterial' | 'waitingWorker' | 'built';
 
 export interface Site {
@@ -171,7 +171,8 @@ export type GameEvent =
   | { type: 'gathered'; resource: ResourceKind; amount: number }
   | { type: 'goldStolen'; player: number; amount: number }
   | { type: 'playerDown'; player: number }
-  | { type: 'castleFallen' };
+  | { type: 'castleFallen' }
+  | { type: 'arrived'; depth: number; name: string };
 
 export interface World {
   seed: string;
@@ -208,6 +209,19 @@ export interface World {
   stock: Stock;
   skillPoints: number;
 
+  /** Alle Spieler stehen an einem Tiefen-Eingang / einer Treppe: Fortschritt 0..1, bei 1 wechselt die Kampagne die Stufe. */
+  travel: Travel | null;
+
   /** Ereignisse des letzten Ticks (für HUD-Meldungen), werden bei jedem step() geleert. */
   events: GameEvent[];
+}
+
+export interface TravelPoint {
+  x: number;
+  toDepth: number;
+  via: 'exit' | 'stairsUp' | 'stairsDown';
+}
+
+export interface Travel extends TravelPoint {
+  progress: number;
 }

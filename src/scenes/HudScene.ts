@@ -18,7 +18,7 @@ const JOIN_HINTS = {
   pad: 'A drücken zum Beitreten',
   keyboard: 'Leertaste drücken zum Beitreten',
 } as const;
-const SITE_NAMES = { wall: 'Mauer', tower: 'Turm', workshop: 'Werkstatt' } as const;
+const SITE_NAMES = { wall: 'Mauer', tower: 'Turm', workshop: 'Werkstatt', stairsUp: 'Treppe hoch', stairsDown: 'Treppe runter' } as const;
 
 /** Bildschirmfeste Anzeigen: pro Split-Screen-Hälfte Spielerwerte, oben rechts Hub-Vorrat und Tageszeit, Meldungen in der Mitte. */
 export class HudScene extends Phaser.Scene {
@@ -29,6 +29,9 @@ export class HudScene extends Phaser.Scene {
   private banner!: Phaser.GameObjects.Text;
   private fps!: Phaser.GameObjects.Text;
   private controlsHint!: Phaser.GameObjects.Text;
+  private info!: Phaser.GameObjects.Text;
+  private travel!: Phaser.GameObjects.Text;
+  private saved!: Phaser.GameObjects.Text;
   private playerLabels: Phaser.GameObjects.Text[] = [];
   private bannerQueue: string[] = [];
   private bannerLeft = 0;
@@ -38,7 +41,6 @@ export class HudScene extends Phaser.Scene {
   }
 
   create(): void {
-    const game = this.game.scene.getScene('game') as GameScene;
     this.playerLabels = [];
     this.bannerQueue = [];
     this.bannerLeft = 0;
@@ -55,7 +57,9 @@ export class HudScene extends Phaser.Scene {
       .setOrigin(0.5);
     this.fps = this.add.text(20, GAME_HEIGHT - 40, '', { ...STYLE, fontSize: '20px', strokeThickness: 4 });
     this.controlsHint = this.add.text(GAME_WIDTH - 20, GAME_HEIGHT - 40, '', { ...STYLE, fontSize: '20px', strokeThickness: 4 }).setOrigin(1, 0);
-    this.add.text(20, 16, `${game.world.biome.name} · Seed "${game.world.seed}"`, { ...STYLE, fontSize: '20px', strokeThickness: 4 }).setName('info');
+    this.info = this.add.text(20, 16, '', { ...STYLE, fontSize: '20px', strokeThickness: 4 });
+    this.travel = this.add.text(GAME_WIDTH / 2, GAME_HEIGHT - 170, '', { ...STYLE, fontSize: '40px', color: '#ffd166' }).setOrigin(0.5);
+    this.saved = this.add.text(20, GAME_HEIGHT - 70, '', { ...STYLE, fontSize: '20px', strokeThickness: 4, color: '#b7e4c7' });
   }
 
   update(_time: number, deltaMs: number): void {
@@ -70,10 +74,13 @@ export class HudScene extends Phaser.Scene {
     this.joinHint.setVisible(!game.online && players.length < MAX_PLAYERS);
     this.joinHint.setY(players.length === 0 ? GAME_HEIGHT / 2 + 120 : GAME_HEIGHT - 100);
     this.joinHint.setFontSize(players.length === 0 ? 44 : 26);
-    const info = this.byName('info');
-    info?.setVisible(players.length === 0 || !!game.online);
-    info?.setY(game.online ? 60 : 16);
-    if (game.online) info?.setText(`Online · Raum "${game.online.room}" · ${players.length} Spieler`);
+    if (game.online) this.info.setText(`Online · Raum "${game.online.room}" · ${players.length} Spieler`).setVisible(true).setY(60);
+    else this.info.setText(`${world.biome.name} · Seed "${world.seed}"`).setVisible(players.length === 0).setY(16);
+    const t = world.travel;
+    const target = t ? (t.via === 'stairsUp' ? 'Aufstieg' : 'Abstieg') + ` in Tiefe ${t.toDepth}` : '';
+    this.travel.setText(t ? `${target}  ${'▮'.repeat(Math.ceil(t.progress * 10))}${'▯'.repeat(10 - Math.ceil(t.progress * 10))}` : '');
+    const status = game.saveStatus;
+    this.saved.setText(status && world.time - status.at < 4 ? status.text : '');
 
     shown.forEach((playerIndex, i) => {
       const p = players[playerIndex];
@@ -88,7 +95,7 @@ export class HudScene extends Phaser.Scene {
       label.setText(`P${p.index + 1}  ·  Gold ${p.gold}/${ECONOMY.purse.maxGold}  ·  ${status}`);
     });
 
-    const stock = (['wood', 'stone', 'copper'] as const).filter((r) => r === 'wood' || world.stock[r] > 0).map((r) => `${RESOURCE_NAMES[r]} ${world.stock[r]}`);
+    const stock = (['wood', 'stone', 'copper'] as const).filter((r) => r === world.biome.primaryResource || world.stock[r] > 0).map((r) => `${RESOURCE_NAMES[r]} ${world.stock[r]}`);
     if (world.skillPoints > 0) stock.push(`Skill-Punkte ${world.skillPoints}`);
     this.shared.setText(stock.join('  ·  '));
     this.clock.setText(clockText(world));
@@ -112,9 +119,6 @@ export class HudScene extends Phaser.Scene {
     this.fps.setText(`${Math.round(this.game.loop.actualFps)} FPS`);
   }
 
-  private byName(name: string): Phaser.GameObjects.Text | null {
-    return this.children.getByName(name) as Phaser.GameObjects.Text | null;
-  }
 }
 
 function formatTime(seconds: number): string {
@@ -162,5 +166,7 @@ function eventText(e: GameEvent): string | null {
       return `P${e.player + 1} ist gefallen`;
     case 'castleFallen':
       return 'Die Burg ist gefallen!\nGebäude, Truppen und die Hälfte der Vorräte sind verloren';
+    case 'arrived':
+      return e.name;
   }
 }

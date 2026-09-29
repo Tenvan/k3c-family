@@ -63,6 +63,18 @@ describe('Online-Raum', () => {
     expect(mirror.level).toBe(mirror.level); // statischer Teil bleibt lokal
   });
 
+  it('Stufenwechsel: alle am Tiefen-Eingang => neue Stufe, Snapshot meldet die Tiefe', () => {
+    const room = new Room('t', { depth: 0, fast: false });
+    const a = client();
+    room.join('a', a.conn);
+    const exit = room.world.level.entities.find((e) => e.kind === 'exit')!;
+    room.world.players[0].x = exit.x;
+    for (let i = 0; i < 30 * 12 && room.world.biome.depth === 0; i++) room.tick(1 / 30);
+    expect(room.world.biome.depth).toBe(1);
+    const last = a.messages.at(-1);
+    expect(last?.t === 'state' && last.s.depth).toBe(1);
+  });
+
   it('sanitizeInput begrenzt und normalisiert', () => {
     expect(sanitizeInput({ moveX: 99, sprint: true, pay: true })).toEqual({ moveX: 1, sprint: true, pay: true });
     expect(sanitizeInput({ moveX: NaN, sprint: 'ja' as never })).toEqual({ moveX: 0, sprint: false, pay: false });
