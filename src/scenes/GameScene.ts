@@ -216,9 +216,16 @@ export class GameScene extends Phaser.Scene {
     return result;
   }
 
+  /**
+   * Lokaler Split-Screen: gleich große Streifen. Wird ein Monarch per Touch gesteuert (Handy/Tablet),
+   * bekommt er unten 2/3, alle anderen teilen sich oben das letzte Drittel.
+   */
   private equalStrips(): CamStrip[] {
-    const n = Math.max(1, this.world.players.length);
-    return this.world.players.map((_, i) => ({ player: i, height: GAME_HEIGHT / n }));
+    const players = this.world.players;
+    const touchIndex = this.touch ? this.controls.indexOf(this.touch) : -1;
+    if (players.length < 2 || touchIndex < 0) return players.map((_, i) => ({ player: i, height: GAME_HEIGHT / Math.max(1, players.length) }));
+    const others = players.map((_, i) => i).filter((i) => i !== touchIndex);
+    return [...others.map((i) => ({ player: i, height: GAME_HEIGHT / 3 / others.length })), { player: touchIndex, height: (GAME_HEIGHT * 2) / 3 }];
   }
 
   /** Online (ein Monarch pro Gerät): unten 2/3 der eigene, oben 1/3 der nächste Mitspieler. Allein: Vollbild. */
