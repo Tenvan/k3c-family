@@ -1,7 +1,9 @@
 {
-  "_comment": "Sprites: LuizMelo (CC0, unsere Seite) und Gothicvania von ansimuz (CC0, Gegner), Bilder in public/sprites/<sheet>/<anim>.png. origin = Fußpunkt im Frame, height = Figurhöhe in Frame-Pixeln, scale = Vergrößerung. Pro Figur: tint = Einfärbung, scale = zusätzlicher Faktor, y = Pixel über dem Boden.",
+  "_comment": "Sprites: LuizMelo (CC0, unsere Seite) und Gothicvania von ansimuz (CC0, Gegner), Bilder in public/sprites/<sheet>/<anim>.png. origin = Fußpunkt im Frame, height = Figurhöhe in Frame-Pixeln, scale = Vergrößerung. label/side = Name und Seite (ours/enemy) für die Referenzseiten. Pro Figur: tint = Einfärbung, scale = zusätzlicher Faktor, y = Pixel über dem Boden.",
   "sheets": {
     "medieval-king": {
+      "label": "König",
+      "side": "ours",
       "frameWidth": 155,
       "frameHeight": 155,
       "originX": 0.429,
@@ -26,6 +28,8 @@
       "source": "https://luizmelo.itch.io/medieval-king-pack"
     },
     "medieval-king-2": {
+      "label": "König 2",
+      "side": "ours",
       "frameWidth": 160,
       "frameHeight": 111,
       "originX": 0.506,
@@ -50,6 +54,8 @@
       "source": "https://luizmelo.itch.io/medieval-king-pack-2"
     },
     "martial-hero-3": {
+      "label": "Kämpfer",
+      "side": "ours",
       "frameWidth": 126,
       "frameHeight": 126,
       "originX": 0.54,
@@ -74,6 +80,8 @@
       "source": "https://luizmelo.itch.io/martial-hero-3"
     },
     "huntress-2": {
+      "label": "Bogenschützin",
+      "side": "ours",
       "frameWidth": 100,
       "frameHeight": 100,
       "originX": 0.51,
@@ -98,6 +106,8 @@
       "source": "https://luizmelo.itch.io/huntress-2"
     },
     "medieval-warrior": {
+      "label": "Ritter",
+      "side": "ours",
       "frameWidth": 184,
       "frameHeight": 137,
       "originX": 0.503,
@@ -122,6 +132,8 @@
       "source": "https://luizmelo.itch.io/medieval-warrior-pack"
     },
     "medieval-warrior-2": {
+      "label": "Söldner",
+      "side": "ours",
       "frameWidth": 150,
       "frameHeight": 150,
       "originX": 0.5,
@@ -146,6 +158,8 @@
       "source": "https://luizmelo.itch.io/medieval-warrior-pack-2"
     },
     "goblin": {
+      "label": "Goblin",
+      "side": "enemy",
       "frameWidth": 150,
       "frameHeight": 150,
       "originX": 0.497,
@@ -170,6 +184,8 @@
       "source": "https://luizmelo.itch.io/monsters-creatures-fantasy"
     },
     "skeleton": {
+      "label": "Skelett mit Schild",
+      "side": "enemy",
       "frameWidth": 150,
       "frameHeight": 150,
       "originX": 0.55,
@@ -194,6 +210,8 @@
       "source": "https://luizmelo.itch.io/monsters-creatures-fantasy"
     },
     "mushroom": {
+      "label": "Pilz",
+      "side": "enemy",
       "frameWidth": 150,
       "frameHeight": 150,
       "originX": 0.503,
@@ -218,6 +236,8 @@
       "source": "https://luizmelo.itch.io/monsters-creatures-fantasy"
     },
     "flying-eye": {
+      "label": "Flugauge",
+      "side": "enemy",
       "frameWidth": 150,
       "frameHeight": 150,
       "originX": 0.513,
@@ -238,6 +258,8 @@
       "source": "https://luizmelo.itch.io/monsters-creatures-fantasy"
     },
     "hell-hound": {
+      "label": "Höllenhund",
+      "side": "enemy",
       "frameWidth": 50,
       "frameHeight": 44,
       "originX": 0.54,
@@ -262,6 +284,8 @@
       "source": "https://opengameart.org/content/gothicvania-patreons-collection"
     },
     "cemetery-skeleton": {
+      "label": "Friedhofs-Skelett",
+      "side": "enemy",
       "frameWidth": 34,
       "frameHeight": 46,
       "originX": 0.5,
@@ -286,6 +310,8 @@
       "source": "https://opengameart.org/content/gothicvania-cemetery-pack"
     },
     "cemetery-skeleton-clothed": {
+      "label": "Skelett mit Kleidung",
+      "side": "enemy",
       "frameWidth": 34,
       "frameHeight": 46,
       "originX": 0.5,
@@ -310,6 +336,8 @@
       "source": "https://opengameart.org/content/gothicvania-cemetery-pack"
     },
     "ghost": {
+      "label": "Geist",
+      "side": "enemy",
       "frameWidth": 48,
       "frameHeight": 54,
       "originX": 0.479,
@@ -330,6 +358,8 @@
       "source": "https://opengameart.org/content/gothicvania-patreons-collection"
     },
     "fire-skull": {
+      "label": "Feuerschädel",
+      "side": "enemy",
       "frameWidth": 91,
       "frameHeight": 102,
       "originX": 0.44,
@@ -354,6 +384,8 @@
       "source": "https://opengameart.org/content/gothicvania-patreons-collection"
     },
     "hell-gato": {
+      "label": "Höllenkatze",
+      "side": "enemy",
       "frameWidth": 87,
       "frameHeight": 37,
       "originX": 0.54,
@@ -378,6 +410,8 @@
       "source": "https://opengameart.org/content/gothicvania-cemetery-pack"
     },
     "demon": {
+      "label": "Dämon",
+      "side": "enemy",
       "frameWidth": 223,
       "frameHeight": 172,
       "originX": 0.453,
@@ -398,6 +432,8 @@
       "source": "https://opengameart.org/content/gothicvania-patreons-collection"
     },
     "nightmare": {
+      "label": "Albtraum-Pferd",
+      "side": "enemy",
       "frameWidth": 121,
       "frameHeight": 90,
       "originX": 0.541,
@@ -420,6 +456,366 @@
       },
       "pack": "Gothicvania Patreon’s Collection (Nightmare)",
       "source": "https://opengameart.org/content/gothicvania-patreons-collection"
+    },
+    "medieval-warrior-3": {
+      "label": "Speerträger",
+      "side": "ours",
+      "frameWidth": 108,
+      "frameHeight": 51,
+      "originX": 0.472,
+      "originY": 0.98,
+      "height": 38,
+      "scale": 2.75,
+      "anims": {
+        "idle": {
+          "frames": 10,
+          "fps": 8
+        },
+        "run": {
+          "frames": 6,
+          "fps": 12
+        },
+        "attack": {
+          "frames": 4,
+          "fps": 14
+        }
+      },
+      "pack": "Medieval Warrior Pack 3",
+      "source": "https://luizmelo.itch.io/medieval-warrior-pack-3"
+    },
+    "fantasy-warrior": {
+      "label": "Wikinger-Kandidat",
+      "side": "ours",
+      "frameWidth": 116,
+      "frameHeight": 61,
+      "originX": 0.582,
+      "originY": 0.984,
+      "height": 45,
+      "scale": 2.5,
+      "anims": {
+        "idle": {
+          "frames": 10,
+          "fps": 8
+        },
+        "run": {
+          "frames": 8,
+          "fps": 12
+        },
+        "attack": {
+          "frames": 7,
+          "fps": 14
+        }
+      },
+      "pack": "Fantasy Warrior",
+      "source": "https://luizmelo.itch.io/fantasy-warrior"
+    },
+    "martial-hero": {
+      "label": "Samurai",
+      "side": "ours",
+      "frameWidth": 122,
+      "frameHeight": 71,
+      "originX": 0.217,
+      "originY": 0.986,
+      "height": 52,
+      "scale": 2.0,
+      "anims": {
+        "idle": {
+          "frames": 8,
+          "fps": 8
+        },
+        "run": {
+          "frames": 8,
+          "fps": 12
+        },
+        "attack": {
+          "frames": 6,
+          "fps": 14
+        }
+      },
+      "pack": "Martial Hero",
+      "source": "https://luizmelo.itch.io/martial-hero"
+    },
+    "martial-hero-2": {
+      "label": "Kung-Fu-Kämpfer",
+      "side": "ours",
+      "frameWidth": 114,
+      "frameHeight": 68,
+      "originX": 0.241,
+      "originY": 0.971,
+      "height": 56,
+      "scale": 2.0,
+      "anims": {
+        "idle": {
+          "frames": 4,
+          "fps": 8
+        },
+        "run": {
+          "frames": 8,
+          "fps": 12
+        },
+        "attack": {
+          "frames": 4,
+          "fps": 14
+        }
+      },
+      "pack": "Martial Hero 2",
+      "source": "https://luizmelo.itch.io/martial-hero-2"
+    },
+    "huntress": {
+      "label": "Speerjägerin",
+      "side": "ours",
+      "frameWidth": 89,
+      "frameHeight": 67,
+      "originX": 0.438,
+      "originY": 0.985,
+      "height": 42,
+      "scale": 2.5,
+      "anims": {
+        "idle": {
+          "frames": 8,
+          "fps": 8
+        },
+        "run": {
+          "frames": 8,
+          "fps": 12
+        },
+        "attack": {
+          "frames": 5,
+          "fps": 14
+        }
+      },
+      "pack": "Huntress",
+      "source": "https://luizmelo.itch.io/huntress"
+    },
+    "wizard": {
+      "label": "Magier",
+      "side": "ours",
+      "frameWidth": 169,
+      "frameHeight": 138,
+      "originX": 0.399,
+      "originY": 0.993,
+      "height": 86,
+      "scale": 1.25,
+      "anims": {
+        "idle": {
+          "frames": 6,
+          "fps": 8
+        },
+        "run": {
+          "frames": 8,
+          "fps": 12
+        },
+        "attack": {
+          "frames": 8,
+          "fps": 14
+        }
+      },
+      "pack": "Wizard Pack",
+      "source": "https://luizmelo.itch.io/wizard-pack"
+    },
+    "evil-wizard": {
+      "label": "Böser Magier",
+      "side": "enemy",
+      "frameWidth": 96,
+      "frameHeight": 71,
+      "originX": 0.292,
+      "originY": 0.958,
+      "height": 55,
+      "scale": 2.25,
+      "anims": {
+        "idle": {
+          "frames": 8,
+          "fps": 8
+        },
+        "run": {
+          "frames": 8,
+          "fps": 12
+        },
+        "attack": {
+          "frames": 8,
+          "fps": 14
+        }
+      },
+      "pack": "Evil Wizard",
+      "source": "https://luizmelo.itch.io/evil-wizard"
+    },
+    "evil-wizard-2": {
+      "label": "Böser Magier 2",
+      "side": "enemy",
+      "frameWidth": 164,
+      "frameHeight": 143,
+      "originX": 0.387,
+      "originY": 0.993,
+      "height": 95,
+      "scale": 1.25,
+      "anims": {
+        "idle": {
+          "frames": 8,
+          "fps": 8
+        },
+        "run": {
+          "frames": 8,
+          "fps": 12
+        },
+        "attack": {
+          "frames": 8,
+          "fps": 14
+        }
+      },
+      "pack": "Evil Wizard 2",
+      "source": "https://luizmelo.itch.io/evil-wizard-2"
+    },
+    "evil-wizard-3": {
+      "label": "Böser Magier 3",
+      "side": "enemy",
+      "frameWidth": 90,
+      "frameHeight": 68,
+      "originX": 0.283,
+      "originY": 0.985,
+      "height": 53,
+      "scale": 2.0,
+      "anims": {
+        "idle": {
+          "frames": 10,
+          "fps": 8
+        },
+        "run": {
+          "frames": 8,
+          "fps": 12
+        },
+        "attack": {
+          "frames": 13,
+          "fps": 14
+        }
+      },
+      "pack": "Evil Wizard 3",
+      "source": "https://luizmelo.itch.io/evil-wizard-3"
+    },
+    "fire-worm": {
+      "label": "Feuerwurm",
+      "side": "enemy",
+      "frameWidth": 74,
+      "frameHeight": 56,
+      "originX": 0.358,
+      "originY": 0.982,
+      "height": 41,
+      "scale": 1.75,
+      "anims": {
+        "idle": {
+          "frames": 9,
+          "fps": 8
+        },
+        "run": {
+          "frames": 9,
+          "fps": 12
+        },
+        "attack": {
+          "frames": 16,
+          "fps": 14
+        }
+      },
+      "pack": "Fire Worm",
+      "source": "https://luizmelo.itch.io/fire-worm"
+    },
+    "gothic-hero": {
+      "label": "Held mit Peitsche",
+      "side": "ours",
+      "frameWidth": 83,
+      "frameHeight": 44,
+      "originX": 0.452,
+      "originY": 1.0,
+      "height": 40,
+      "scale": 2.75,
+      "anims": {
+        "idle": {
+          "frames": 4,
+          "fps": 8
+        },
+        "run": {
+          "frames": 12,
+          "fps": 14
+        },
+        "attack": {
+          "frames": 6,
+          "fps": 14
+        }
+      },
+      "pack": "Gothicvania Patreon’s Collection (Gothic Hero)",
+      "source": "https://opengameart.org/content/gothicvania-patreons-collection"
+    },
+    "cemetery-hero": {
+      "label": "Friedhofs-Held mit Axt",
+      "side": "ours",
+      "frameWidth": 92,
+      "frameHeight": 46,
+      "originX": 0.348,
+      "originY": 1.0,
+      "height": 45,
+      "scale": 2.5,
+      "anims": {
+        "idle": {
+          "frames": 4,
+          "fps": 8
+        },
+        "run": {
+          "frames": 6,
+          "fps": 12
+        },
+        "attack": {
+          "frames": 5,
+          "fps": 12
+        }
+      },
+      "pack": "Gothicvania Cemetery (Hero)",
+      "source": "https://opengameart.org/content/gothicvania-cemetery-pack"
+    },
+    "wolf": {
+      "label": "Weißer Wolf",
+      "side": "enemy",
+      "frameWidth": 48,
+      "frameHeight": 22,
+      "originX": 0.5,
+      "originY": 0.955,
+      "height": 18,
+      "scale": 3.25,
+      "anims": {
+        "idle": {
+          "frames": 1,
+          "fps": 1
+        },
+        "run": {
+          "frames": 4,
+          "fps": 10
+        },
+        "attack": {
+          "frames": 4,
+          "fps": 10
+        }
+      },
+      "pack": "Gothicvania Patreon’s Collection (Wolf)",
+      "source": "https://opengameart.org/content/gothicvania-patreons-collection"
+    },
+    "cemetery-ghost": {
+      "label": "Kleiner Geist",
+      "side": "enemy",
+      "frameWidth": 37,
+      "frameHeight": 60,
+      "originX": 0.5,
+      "originY": 0.95,
+      "height": 46,
+      "scale": 2.0,
+      "anims": {
+        "idle": {
+          "frames": 4,
+          "fps": 8
+        },
+        "attack": {
+          "frames": 4,
+          "fps": 8
+        }
+      },
+      "pack": "Gothicvania Cemetery (Ghost)",
+      "source": "https://opengameart.org/content/gothicvania-cemetery-pack"
     }
   },
   "players": [

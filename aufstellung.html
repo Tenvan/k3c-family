@@ -1,0 +1,34 @@
+<!doctype html>
+<html lang="de">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>K3C Unsere Aufstellung</title>
+    <style>
+      :root { --bg: #11151c; --panel: #1c2330; --line: #2e3a4d; --text: #e8edf4; --dim: #8a97aa; --on: #ffd166; }
+      * { box-sizing: border-box; }
+      html { font-size: clamp(9px, 0.8334vw, 16px); }
+      body { margin: 0; background: var(--bg); color: var(--text); font: 1.25rem/1.4 system-ui, sans-serif; }
+      main { padding: max(4.75rem, 70px) 2rem 2rem; max-width: 115rem; margin: 0 auto; }
+      h1 { font-size: 2.125rem; margin: 0 0 4px; }
+      .sub { color: var(--dim); margin: 0 0 1.5rem; max-width: 60rem; }
+      section { margin-bottom: 2rem; }
+      h2 { font-size: 1.5rem; margin: 0 0 0.75rem; border-bottom: 1px solid var(--line); padding-bottom: 0.4rem; }
+      h2 small { color: var(--dim); font-weight: 400; }
+      .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(18rem, 1fr)); gap: 1rem; }
+      article { background: var(--panel); border: 1px solid var(--line); border-radius: 0.75rem; padding: 0.75rem; }
+      canvas { width: 100%; aspect-ratio: 320 / 220; display: block; border-radius: 0.5rem; background: linear-gradient(#2c3350, #4a3a5c); }
+      h3 { font-size: 1.15rem; margin: 0.6rem 0 0.2rem; color: var(--on); }
+      p { margin: 0; font-size: 0.95rem; }
+      .dim { color: var(--dim); font-size: 0.85rem; }
+    </style>
+  </head>
+  <body>
+    <main>
+      <h1>Unsere Aufstellung</h1>
+      <p class="sub">Jede Rolle im Spiel mit Bild, Einfärbung und Größe aus src/data/sprites.json. Monarchen, Truppen und Gegner stehen im gleichen Maßstab, so wie die Größen im Spiel zueinander passen. Unten die Figuren, die noch keine Rolle haben. Scrollen mit Stick oder Steuerkreuz.</p>
+      <div id="cards"></div>
+    </main>
+    <script type="module" src="/src/tools/aufstellung.ts"></script>
+  </body>
+</html>
