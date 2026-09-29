@@ -11,17 +11,17 @@ export function wantsTouchControls(): boolean {
 
 const CSS = `
   .k3c-touch { position: fixed; inset: auto 0 0 0; z-index: 10; display: flex; justify-content: space-between; align-items: flex-end;
-    padding: 0 max(16px, env(safe-area-inset-right)) max(16px, env(safe-area-inset-bottom)) max(16px, env(safe-area-inset-left));
+    padding: 0 max(2vmin, env(safe-area-inset-right)) max(2vmin, env(safe-area-inset-bottom)) max(2vmin, env(safe-area-inset-left));
     pointer-events: none; touch-action: none; user-select: none; -webkit-user-select: none; -webkit-touch-callout: none; }
-  .k3c-touch .grp { display: flex; gap: 14px; align-items: flex-end; }
-  .k3c-touch button { pointer-events: auto; touch-action: none; font: 700 30px/1 system-ui, sans-serif; color: #f1f3f9;
-    width: var(--s); height: var(--s); border-radius: 50%; border: 3px solid rgba(255,255,255,.35);
+  .k3c-touch .grp { display: flex; gap: 2vmin; align-items: flex-end; }
+  .k3c-touch button { pointer-events: auto; touch-action: none; font: 700 calc(var(--s) * 0.4)/1 system-ui, sans-serif; color: #f1f3f9;
+    width: var(--s); height: var(--s); border-radius: 50%; border: max(2px, 0.4vmin) solid rgba(255,255,255,.35);
     background: rgba(12,16,36,.55); backdrop-filter: blur(4px); -webkit-tap-highlight-color: transparent; }
   .k3c-touch button.down { background: rgba(255,209,102,.55); border-color: #ffd166; }
-  .k3c-touch { --s: clamp(64px, 16vmin, 104px); }
-  .k3c-touch .a { --s: clamp(84px, 22vmin, 132px); background: rgba(63,185,80,.5); }
-  .k3c-touch .small { --s: clamp(44px, 10vmin, 60px); font-size: 20px; }
-  .k3c-touch .col { display: flex; flex-direction: column; gap: 12px; align-items: center; }
+  .k3c-touch { --s: 16vmin; }
+  .k3c-touch .a { --s: 22vmin; background: rgba(63,185,80,.5); }
+  .k3c-touch .small { --s: 10vmin; }
+  .k3c-touch .col { display: flex; flex-direction: column; gap: 1.5vmin; align-items: center; }
 `;
 
 /**
