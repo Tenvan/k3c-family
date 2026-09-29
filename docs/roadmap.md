@@ -4,14 +4,12 @@ Kleine, spielbare Schritte. Jeder Schritt endet mit etwas, das man am TV mit Con
 
 ## Schritt 0 – Xbox-Machbarkeit (als Nächstes!)
 
-- [ ] **Gamepad-Testseite** (`public/gamepad-test.html` oder eigene Route):
-  - alle Controller mit Live-Anzeige von Tasten und Achsen (Test mit 2+ Controllern),
-  - welche Tasten Edge abfängt (**B** = Zurück? Xbox-Taste?),
-  - Vollbild-Button (Fullscreen API),
-  - FPS-Test mit einigen hundert bewegten Sprites.
-- [ ] **Hosting im Heimnetz**: kleiner Node-Server, der `dist/` ausliefert (plus später Speicherstände).
-  Prüfen, ob die Gamepad API auf der Xbox **HTTPS** verlangt. Falls ja: lokales Zertifikat (z. B. mkcert).
-- [ ] Ergebnis in `docs/game-design.md` → Steuerung eintragen.
+- [x] **Gamepad-Testseite** `gamepad-test.html`: Live-Anzeige aller Controller, Falle für Zurück-Navigation (B),
+  Vollbild, Vibration, FPS-Test (Phaser/WebGL, 100–4000 Sprites), Bericht per **Y** an den Server.
+- [x] **Heimnetz-Server** `server/server.mjs` (ohne Abhängigkeiten): liefert `dist/` aus, speichert Berichte in `reports/`,
+  optional HTTPS mit `certs/`. Start: `npm run serve`.
+- [ ] **Test auf der Xbox durchführen** (Anleitung im README) → Bericht in `reports/` auswerten.
+- [ ] Ergebnis in `docs/game-design.md` → Steuerung eintragen (Skill-Tasten, B, Vollbild, max. Sprites).
 
 ## Schritt 1 – Grundgerüst ✅
 
