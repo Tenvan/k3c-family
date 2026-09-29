@@ -33,7 +33,7 @@ Typische Session: 30–60 Minuten.
 - Jeder Spieler ist **ein eigener Monarch** mit eigener Figur und eigener Kamera.
 - **Beitreten** jederzeit mit **A** (Controller) oder Leertaste (Tastatur).
 - **MVP: 2 Spieler, Split-Screen oben/unten** (wie K2C). Jede Hälfte zeigt die volle Welthöhe.
-- Ressourcen: *Vorschlag (offen)* – Gold pro Spieler (wie K2C), Baumaterial (Holz/Stein/Kupfer) gemeinsam für den Hub.
+- Ressourcen: Gold pro Spieler (wie K2C), Baumaterial (Holz/Stein/Kupfer) gemeinsam für den Hub. *So umgesetzt, im Playtest prüfen.*
 - Online-Koop ist **kein Ziel** (kein Netzwerkcode).
 
 ## Monarch
@@ -129,7 +129,7 @@ Die festen Eckdaten stehen in `src/data/biomes/<biom>.json`, der Generator in `s
 |---|---|---|
 | Laufen | Linker Stick / D-Pad ←→ | A/D, ←/→ |
 | Sprint | RT | Shift |
-| Beitreten / Bestätigen / Münze | A | Leertaste |
+| Beitreten; halten = Münzen geben/fallen lassen | A | Leertaste |
 | Interagieren | X | E |
 | Bau-Menü | Y | B |
 | Skill-Menü | View | K |
@@ -160,7 +160,6 @@ und den **Seeds** der Stufen. Gegner und Level-Layout werden nicht gespeichert. 
 
 ## Offene Fragen
 
-- Ressourcen im Koop: geteilt oder pro Spieler?
 - 3–4 Spieler: vier Streifen übereinander werden sehr flach. Alternativen wären ein 2×2-Raster oder eine gemeinsame Kamera, solange die Spieler nah beieinander sind.
 - Skill-Tasten am Controller (hängt vom Gamepad-Test ab).
 - Eine Klasse pro Spieler als Preset, damit sich die Rollen im Koop ergänzen?

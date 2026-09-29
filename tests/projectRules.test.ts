@@ -51,8 +51,8 @@ describe('Code-Regeln', () => {
     expect(offenders).toEqual([]);
   });
 
-  it('Level-Generierung ohne Math.random() und ohne Phaser', () => {
-    for (const f of ['src/core/rng.ts', 'src/world/levelGenerator.ts', 'src/world/biome.ts']) {
+  it('Spiel-Logik (src/world) ohne Math.random() und ohne Phaser', () => {
+    for (const f of files.filter((f) => f.startsWith(join('src', 'world'))).concat('src/core/rng.ts')) {
       const code = read(f).replace(/\/\*[\s\S]*?\*\/|\/\/.*$/gm, '');
       expect(code, f).not.toMatch(/Math\.random\(/);
       expect(code, f).not.toMatch(/from 'phaser'/);

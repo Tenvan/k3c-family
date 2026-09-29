@@ -4,11 +4,14 @@ import { installPageChrome } from './core/shell';
 import { GameScene, type GameSceneData } from './scenes/GameScene';
 import { HudScene } from './scenes/HudScene';
 
-// URL-Parameter zum Testen: ?seed=abc&depth=1
+// URL-Parameter zum Testen: ?seed=abc&depth=1&fast=1&dev=1
 const params = new URLSearchParams(window.location.search);
+// ?fast=1: Tag/Nacht 8x schneller · ?dev=1: Dev-Tasten (G Gold, H Material, T Zeitsprung) auch im Build
 const startData: GameSceneData = {
   seed: params.get('seed') ?? 'k3c',
   depth: Number(params.get('depth') ?? 0),
+  fast: params.has('fast'),
+  dev: import.meta.env.DEV || params.has('dev'),
 };
 
 const game = new Phaser.Game({

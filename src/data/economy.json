@@ -1,0 +1,16 @@
+{
+  "purse": { "startGold": 12, "maxGold": 40 },
+  "payRangeUnits": 2,
+  "payIntervalSeconds": 0.25,
+  "pickupRangeUnits": 0.8,
+  "dropPickupDelaySeconds": 1.5,
+  "dawnGoldPerPlayer": 5,
+  "chestGold": [10, 25],
+  "enemyResourceDrop": { "chance": 0.1, "amount": 5 },
+  "gatherables": {
+    "tree":      { "resource": "wood",   "amount": 10, "workSeconds": 4, "markCost": 1 },
+    "rock":      { "resource": "stone",  "amount": 10, "workSeconds": 6, "markCost": 1 },
+    "copperOre": { "resource": "copper", "amount": 10, "workSeconds": 8, "markCost": 2 }
+  },
+  "recruitCamp": { "maxVagrants": 2, "respawnSeconds": 25, "wanderUnits": 6 }
+}
