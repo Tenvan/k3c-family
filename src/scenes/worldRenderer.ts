@@ -2,6 +2,7 @@ import Phaser from 'phaser';
 import { GROUND_Y, PLAYER_COLORS, UNIT_PX } from '../core/constants';
 import { BUILDINGS, TROOPS } from '../world/sim/data';
 import { canAfford } from '../world/sim/economy';
+import { hasDepth } from '../world/sim/travel';
 import { isOnTower } from '../world/sim/units';
 import type { Coin, Enemy, Pickup, Player, Projectile, ResourceNode, Site, Troop, World } from '../world/sim/types';
 
@@ -14,6 +15,21 @@ const U = UNIT_PX;
 const G = GROUND_Y;
 const PRICE_TAG_RANGE = 6;
 const TEXT = { fontSize: '22px', color: '#ffffff', stroke: '#000000', strokeThickness: 4, fontStyle: 'bold' };
+
+const SITE_SIZE: Record<Site['kind'], [number, number]> = {
+  wall: [36, 150],
+  tower: [70, 260],
+  workshop: [150, 120],
+  stairsUp: [110, 110],
+  stairsDown: [110, 110],
+};
+const SITE_COLOR: Record<Site['kind'], number> = {
+  wall: 0x8d99ae,
+  tower: 0x9c6644,
+  workshop: 0xbc6c25,
+  stairsUp: 0x6c757d,
+  stairsDown: 0x343a40,
+};
 
 const ENEMY_COLORS: Record<string, number> = {
   greed: 0x5a189a,
@@ -149,7 +165,8 @@ export class WorldRenderer {
         scene.add.ellipse(ex, G - 110, 110, 220, 0x7b2cbf).setStrokeStyle(6, 0x240046);
       } else if (e.kind === 'exit') {
         scene.add.rectangle(ex, G - 90, 160, 180, 0x111111).setStrokeStyle(6, 0x555555);
-        scene.add.text(ex, G - 210, `Tiefe ${world.biome.depth + 1}`, TEXT).setOrigin(0.5);
+        const deeper = hasDepth(world.biome.depth + 1);
+        scene.add.text(ex, G - 210, deeper ? `Tiefe ${world.biome.depth + 1}\nalle hierher` : 'verschüttet', { ...TEXT, align: 'center' }).setOrigin(0.5);
       } else if (e.kind === 'bush') {
         scene.add.circle(ex, G - 14, 18, 0x40916c); // Deko
       } else if (e.kind === 'recruitCamp') {
@@ -205,12 +222,17 @@ export class WorldRenderer {
     const label = v.getAt(1) as Phaser.GameObjects.Text;
     g.clear();
     label.setText('');
-    const [w, h] = s.kind === 'wall' ? [36, 150] : s.kind === 'tower' ? [70, 260] : [150, 120];
+    const [w, h] = SITE_SIZE[s.kind];
 
     if (s.state === 'built') {
-      const color = s.kind === 'wall' ? 0x8d99ae : s.kind === 'tower' ? 0x9c6644 : 0xbc6c25;
+      const color = SITE_COLOR[s.kind];
       g.fillStyle(color).fillRect(-w / 2, -h, w, h).lineStyle(4, 0x343a40).strokeRect(-w / 2, -h, w, h);
       if (s.kind === 'tower') g.fillStyle(0x6f4518).fillRect(-w / 2 - 15, -h - 10, w + 30, 14);
+      if (s.kind === 'stairsUp' || s.kind === 'stairsDown') {
+        // Stufen als Treppe, dazu ein Schild wohin es geht
+        for (let i = 0; i < 5; i++) g.fillStyle(0x495057).fillRect(-w / 2 + i * (w / 5), -((i + 1) * h) / 5, w / 5, ((i + 1) * h) / 5);
+        label.setPosition(0, -h - 12).setText(s.kind === 'stairsUp' ? 'Treppe hoch' : 'Treppe runter').setColor('#ffd166');
+      }
       if (s.hp < s.maxHp) this.drawBar(g, -h - 30, 80, s.hp / s.maxHp, 0x52b788);
       if (s.kind === 'workshop') {
         for (let i = 0; i < s.bows; i++) g.lineStyle(4, 0xffd166).beginPath().arc(-40 + i * 30, -60, 14, -Math.PI / 2, Math.PI / 2).strokePath();

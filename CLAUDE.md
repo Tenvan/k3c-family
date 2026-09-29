@@ -28,6 +28,7 @@ prüft die Regeln unten automatisch (Seiten eingetragen, `installPageChrome()`, 
 - `src/data/` – Balancing als JSON (Biome, Gegner, Truppen, Gebäude, Monarch). Werte gehören hierher, nicht in den Code.
 - `src/world/` – Spiel-Logik **ohne Phaser-Import**, Tests daneben (`*.test.ts`). `levelGenerator.ts` baut das Level,
   `sim/` simuliert es (`createWorld()` + `step()`, deterministisch, Zustand in `sim/types.ts`).
+  `sim/campaign.ts` hält alle Stufen und macht daraus Spielstände (`toSave`/`fromSave`); Server: `server/saves.mjs` → `saves/`.
 - `src/input/` – `PlayerInput`-Abstraktion. Spiel-Code fragt Aktionen ab, nie konkrete Tasten.
 - `src/scenes/` – Phaser-Szenen (`GameScene` = Eingabe, `step()`, Kameras; `worldRenderer.ts` zeichnet den Zustand;
   `HudScene` = bildschirmfeste Anzeigen). Neue Mechanik: Logik + Test in `sim/`, dann nur zeichnen.
