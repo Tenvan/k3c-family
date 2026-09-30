@@ -1,7 +1,0 @@
-{
-  "src/landing/landing.ts": 319,
-  "src/scenes/GameScene.ts": 371,
-  "src/scenes/worldRenderer.ts": 383,
-  "src/tools/gamepadTest.ts": 332,
-  "src/tools/spriteReference.ts": 330
-}

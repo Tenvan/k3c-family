@@ -61,7 +61,7 @@ Entwurf. Vor dem Aktivieren jede Session als Datei nach `docs/vorlagen/session.m
 
 - SP07.1 `engine/room`: Raum-Verwaltung, eine Goroutine pro Raum, Takt 30 Hz, mehrere lokale Spieler pro Gerät (AC-01, AC-02).
 - SP07.2 `engine/net`: WebSocket nach Protokoll v2, Wiederverbinden, `/api/status` zeigt Räume (AC-03, AC-04, AC-05).
-- SP07.3 `cmd/k3c-mcp`: Tools `server_status`, `rooms_list`, `room_snapshot`, `level_generate`, `sim_run` (B-047) (AC-06).
+- SP07.3 `tools/k3c-dev`: Tools `server_status`, `rooms_list`, `room_snapshot`, `level_generate`, `sim_run` (B-047) (AC-06).
 - SP07.4 🔍 Review (alle).
 
 ## Abnahme

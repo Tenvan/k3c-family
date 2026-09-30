@@ -12,7 +12,7 @@
 
 ## Ausgangslage
 
-Ab SP07 rechnet der Go-Server mehrere Räume; `/api/status` (Token, B-027) zeigt Räume und Tick-Dauer. `engine/level` und `engine/sim` gibt es ab SP04 bzw. SP06. `cmd/k3c-mcp` (B-046) kennt davon nichts.
+Ab SP07 rechnet der Go-Server mehrere Räume; `/api/status` (Token, B-027) zeigt Räume und Tick-Dauer. `engine/level` und `engine/sim` gibt es ab SP04 bzw. SP06. Das Entwickler-Werkzeug `tools/k3c-dev` (B-046) kennt davon nichts.
 
 ## Ziel
 
@@ -35,7 +35,7 @@ Eingriffe in laufende Räume (Gerät trennen, Eingaben senden) bleiben bei der T
 
 ## Regeln und Einschränkungen
 
-Go-Server ist die einzige Engine (Entscheidung 001), Standardbibliothek zuerst; Schichtgrenzen und Komplexitäts-Budget aus `docs/arbeitsweise.md`. Nur lesend gegenüber dem Server; `cmd/k3c-mcp` spricht wie die TUI nur mit `/api/status`. In-process-Aufrufe sind deterministisch. Schichtgrenze: `engine/*` importiert nichts aus `cmd/`.
+Go-Server ist die einzige Engine (Entscheidung 001), Standardbibliothek zuerst; Schichtgrenzen und Komplexitäts-Budget aus `docs/arbeitsweise.md`. Nur lesend gegenüber dem Server; `tools/k3c-dev` spricht wie die TUI nur mit `/api/status`; `engine/*` bindet es als eigenes Modul per `replace k3c => ../..` ein. In-process-Aufrufe sind deterministisch. Schichtgrenze: `engine/*` importiert nichts aus `cmd/` oder `tools/`.
 
 ## Beispiele
 

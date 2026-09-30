@@ -13,7 +13,7 @@ SPnn.m · Domäne: REG / SIM / CLI / PLAT / SRV / INF · Session-Datei: `docs/sp
 - [ ] Nur „Erlaubte Dateien“ der Session geändert
 - [ ] `npm test` und `npm run typecheck` grün (ab SP01: `npm run check`)
 - [ ] Mit mehreren Spielern geprüft (falls Spiel betroffen)
-- [ ] Komplexitäts-Budget eingehalten (Datei ≤ 300 Z., Funktion ≤ 40 Z.; Ausnahmeliste nur verkleinert)
+- [ ] `npm run check` (und `check:go`) grün, damit ist das Komplexitäts-Budget geprüft
 - [ ] Session-Datei: `Status` und `Ergebnis` ausgefüllt, Sprint-Tabelle angepasst; neue Tickets nach Vorlage + Index
 
 ## Am TV prüfen

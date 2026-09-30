@@ -1,30 +1,30 @@
-# M1 · SRV · Entwickler-MCP-Server
+# M1 · SRV · k3c-dev I: MCP-Kern über HTTP
 
 - **Status:** geplant
 - **Domäne:** SRV
-- **Reife:** Entwurf
+- **Reife:** bereit
 - **Einschiebbar:** ja
 - **Tickets:** B-046
 - **Start-Commit:** –
-- **Spec:** Entwurf
-- **Revision:** 1
-- **Freigabe:** –
+- **Spec:** freigegeben
+- **Revision:** 2
+- **Freigabe:** 2026-09-30 🧑 Chat (Revision 2, mit Abhängigkeit und Ausnahmen aus M1)
 
 ## Ausgangslage
 
-Agenten prüfen über Shell-Befehle mit langer Rohausgabe und lesen Xbox-Berichte und Spielstände als rohe Dateien.
-ErpApi hat dafür einen eingebauten MCP-Server (`../ErpApi/tools/go/dev-workbench/internal/mcpsrv/`). Ab SP01 gibt es
-ein Go-Modul mit `golangci-lint` in der CI.
+Agenten prüfen über Shell-Befehle mit langer Rohausgabe und haben keine Logs. Ab SP01 gibt es ein Go-Modul mit
+`golangci-lint` in der CI. M1 ist der erste von vier einschiebbaren Sprints für das Entwickler-Werkzeug `k3c-dev`
+(M1 MCP-Kern, M2 Statistik und Spieldaten, M3 Oberfläche mit Logs-Seite, M4 MCP-Seite).
 
 ## Ziel
 
-Agenten haben einen MCP-Server `k3c-dev`, der Prüfungen verdichtet ausführt und Berichte und Spielstände lesbar macht.
-Am Ende sichtbar: Claude Code zeigt `k3c-dev` als verbunden; `check_run npm:check` antwortet mit Exit-Code, Dauer und nur
-den Fehlerzeilen.
+Agenten verbinden sich über HTTP mit `k3c-dev`, führen Prüfungen verdichtet aus und lesen Logs; jeder Aufruf wird
+gezählt und protokolliert. Am Ende sichtbar: `go run .` in `tools/k3c-dev` läuft, Claude Code zeigt `k3c-dev` als
+verbunden, `check_run npm:check` antwortet mit einer Zeile bzw. nur den Fehlerzeilen.
 
 ## Beteiligte und Zielgruppen
 
-Entwickler und Coding-Agenten am Entwickler-PC; 🧑 stimmt der neuen Abhängigkeit und dem Transport zu.
+Entwickler und Coding-Agenten am Entwickler-PC (Windows); 🧑 gibt Abhängigkeit und Ausnahmen frei.
 
 ## Anforderungen
 
@@ -32,12 +32,21 @@ B-046 › Anforderungen.
 
 ## Nicht-Ziele
 
-Räume, Live-Zustand und Simulation (B-047, SP07.3). Dienste starten oder stoppen, Commits, Oberfläche.
-Betrieb im Docker oder auf dem Pi.
+B-046 › Nicht-Ziele. Insbesondere keine Oberfläche (M3, M4) und keine Statistik über Sitzungen (M2).
 
 ## Regeln und Einschränkungen
 
-B-046 › Regeln und Einschränkungen. Einschiebbar nach SP01 (braucht Go-Modul und `golangci-lint`), unabhängig von der Engine.
+B-046 › Regeln und Einschränkungen. Dazu, mit der Freigabe dieser Revision genehmigt:
+
+1. **Abhängigkeit:** `github.com/modelcontextprotocol/go-sdk` **v1.8.0** (aktuelle stabile Version, geprüft 2026-09-30),
+   nur im Modul `tools/k3c-dev`.
+2. **Ausnahmen außerhalb der Domäne** (INF), nur diese Stellen:
+   - `package.json`: Script `check:dev` = `cd tools/k3c-dev && go test ./... && golangci-lint run`.
+   - `.github/workflows/ci.yml`: neuer Job `k3c-dev` auf `windows-latest` (Go aus `tools/k3c-dev/go.mod`, `go test ./...`,
+     `golangci-lint` v2.14 mit `working-directory: tools/k3c-dev`).
+   - `tests/projectRules.test.ts` und `tests/nesting_test.go`: `tools` bzw. `../tools` in `goDirs` aufnehmen.
+   - `.gitignore`: `.mcp.json`, `logs/`.
+3. Das Hauptmodul bleibt unberührt: `go build ./...` im Repo baut `tools/k3c-dev` nicht mit (eigenes `go.mod`).
 
 ## Beispiele
 
@@ -49,23 +58,24 @@ B-046 › Ausnahme- und Fehlerfälle.
 
 ## Akzeptanzkriterien
 
-- **AC-01** Gerüst: `cmd/k3c-mcp` startet über stdio, der Roundtrip-Test listet alle Tools (B-046/AC-01).
-- **AC-02** `check_run` ist fail-closed und verdichtet (B-046/AC-02, B-046/AC-03).
-- **AC-03** Berichte und Spielstände sind als verdichteter Text lesbar, Pfade sind begrenzt (B-046/AC-04).
-- **AC-04** Instructions, README-Eintrag und `.gitignore` sind da (B-046/AC-05).
-- **AC-05** `go test ./...` und `golangci-lint` sind grün, das Budget ist eingehalten (B-046/AC-06).
+- **AC-01** Modul, HTTP-Start und Roundtrip-Test mit Parameter-Hinweis (B-046/AC-01).
+- **AC-02** `check_run` ist fail-closed und verdichtet, mit Zeitlimit und Konsolenpuffer (B-046/AC-02, B-046/AC-03).
+- **AC-03** Zähler und Aufruf-Log (B-046/AC-04).
+- **AC-04** Eigenes JSON-Log und Log-Tools mit Verdichtung (B-046/AC-05).
+- **AC-05** Instructions, README, `.gitignore`, `check:dev` und CI-Job grün (B-046/AC-06).
 
 ## Offene Fragen
 
-B-046 › Offene Fragen (Abhängigkeit, Transport, Go auf dem Entwickler-PC; 🧑) – blockieren die Freigabe.
+keine
 
 ## Sessions
 
-Entwurf. Vor dem Aktivieren jede Session als Datei nach `docs/vorlagen/session.md` schreiben, die Kriterien in Klammern werden ihr Feld `Kriterien`.
-
-- M1.1 Gerüst `cmd/k3c-mcp` (SDK, stdio, `tools.go` als Katalog, Parameter-Hinweis, Roundtrip-Test) und `check_run` (AC-01, AC-02, AC-05).
-- M1.2 `reports_list`, `report_read`, `saves_list`, `instructions.md`, README-Eintrag, `.gitignore` (AC-03, AC-04, AC-05).
-- M1.3 🔍 Review (alle).
+| Nr. | Datei | Typ | Agent | Status |
+|---|---|---|---|---|
+| M1.1 | `M1.1-geruest-zaehler.md` | Umsetzung | autonom | offen |
+| M1.2 | `M1.2-check-run.md` | Umsetzung | autonom | offen |
+| M1.3 | `M1.3-logs.md` | Umsetzung | autonom | offen |
+| M1.4 | `M1.4-review.md` | Review | autonom | offen |
 
 ## Abnahme
 

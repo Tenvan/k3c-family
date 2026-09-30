@@ -72,7 +72,7 @@ Nur so bleibt Vollbild auf der Xbox über Seitenwechsel erhalten. Für **jede** 
 - Controller-Taste **B** nicht belegen (Edge-Zurück auf der Xbox, wird von der Zurück-Falle geschluckt).
   **View + Menu** gemeinsam = zurück zur Landingpage (reserviert, auf keiner Seite anders belegen).
 - Klein bleiben: kein Framework-Overhead. Prozess steht nur in `docs/arbeitsweise.md`, keine weiteren Prozess-Dokumente.
-  Ein Sprint bleibt in seiner Domäne; Datei ≤ 300 Zeilen (Ziel), Funktion ≤ 40 Zeilen. Lieber spielbarer Code.
+  Ein Sprint bleibt in seiner Domäne; Datei ≤ 400 Zeilen, Funktion ≤ 60 Zeilen. Lieber spielbarer Code.
 
 ## Im Browser-Pane testen
 

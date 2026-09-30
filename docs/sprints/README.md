@@ -31,7 +31,10 @@ dann über den Go-Server mit mehreren Räumen und gemischten Spielern.
 |---|---|---|---|---|
 | R1 | REG 🧑 | Regelwerk I – Fundament | Entwurf | `geplant/R1-regelwerk-1/` |
 | X1 | PLAT 🧑 | Xbox-Machbarkeit | Entwurf | `geplant/X1-xbox/` |
-| M1 | SRV | Entwickler-MCP-Server `k3c-dev` (frühestens nach SP01, Muster ErpApi) | Entwurf | `geplant/M1-dev-mcp/` |
+| M1 | SRV | k3c-dev I: MCP-Kern über HTTP (Prüfungen, Logs, Zähler) | bereit, freigegeben | `geplant/M1-dev-mcp/` |
+| M2 | SRV | k3c-dev II: Nutzungsstatistik, Berichte, Spielstände (nach M1) | Entwurf | `geplant/M2-dev-statistik/` |
+| M3 | SRV 🧑 | k3c-dev III: Oberfläche (Wails) und Logs-Seite (nach M2) | Entwurf | `geplant/M3-dev-logs/` |
+| M4 | SRV 🧑 | k3c-dev IV: MCP-Seite mit Monitoren und Statistik (nach M3) | Entwurf | `geplant/M4-dev-mcp-seite/` |
 
 Nach SP11: Regelwerk II (Skills) → SIM Skills in Go → CLI Skills → Spieleabend → Grafik/Sound → …
 
