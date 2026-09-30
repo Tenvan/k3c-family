@@ -3,12 +3,12 @@
 - **Domäne:** INF
 - **Typ:** Problem
 - **Prio:** mittel
-- **Status:** offen
-- **Sprint:** –
+- **Status:** eingeplant
+- **Sprint:** L2
 - **Erstellt:** 2026-09-30
-- **Spec:** Entwurf
+- **Spec:** freigegeben
 - **Revision:** 1
-- **Freigabe:** –
+- **Freigabe:** 2026-09-30 🧑 Chat-Freigabe durch Ralf (mit L2)
 
 ## Ausgangslage
 
@@ -24,43 +24,52 @@ Die harte Grenze Verschachtelung 4 bedeutet in Go dasselbe wie in TypeScript, au
 
 ## Beteiligte und Zielgruppen
 
-Entwickler und Cloud-Agenten, die ab SP03 Go-Code schreiben; 🧑 entscheidet den Weg (Offene Fragen); Review-Session.
+Entwickler und Cloud-Agenten, die ab SP03 Go-Code schreiben; Review-Session.
 
 ## Anforderungen
 
-- Go-Code mit Tiefe 5 über `for range` lässt `npm run check:go` scheitern, Tiefe 4 nicht.
-- Eine flache `else if`-Kette zählt als eine Ebene, wie bei Oxlint `max-depth`.
+- Eine eigene Prüfung als Go-Test (nur Standardbibliothek: `go/parser`, `go/ast`) misst die Verschachtelungstiefe
+  jeder Funktion in allen `.go`-Dateien unter `data/`, `engine/`, `cmd/`, auch in `*_test.go`.
+- Zählweise wie Oxlint/ESLint `max-depth`: `if`, `for`, `for range`, `switch`, Typ-`switch` und `select` erhöhen die
+  Tiefe um 1; ein `if` im `else`-Zweig eines `if` (`else if`) erhöht sie nicht; `case`-Klauseln zählen nicht;
+  ein Funktionsliteral beginnt wieder bei 0.
+- Tiefe über 4 lässt `go test ./...` und damit `npm run check:go` scheitern, die Meldung nennt Datei, Zeile und Tiefe.
+- `revive` › `max-control-nesting` ist danach entfernt; Kommentar in `.golangci.yml` und `docs/arbeitsweise.md` ›
+  Werkzeuge nennen die neue Prüfung.
 
 ## Nicht-Ziele
 
-Andere Budget-Grenzen ändern; Oxlint oder TypeScript-Regeln anfassen.
+Andere Budget-Grenzen ändern; Oxlint oder TypeScript-Regeln anfassen; einen eigenen golangci-lint-Linter bauen.
 
 ## Regeln und Einschränkungen
 
-Keine neue Abhängigkeit ohne Ticket und Zustimmung im Review; Komplexitäts-Budget; Grenzen nur aus
-`docs/arbeitsweise.md` › Komplexitäts-Budget. Domäne INF (Lint-Konfiguration, `tests/projectRules.test.ts`).
+Keine neue Abhängigkeit (nur Standardbibliothek); Komplexitäts-Budget gilt auch für die Prüfung selbst;
+Grenzen nur aus `docs/arbeitsweise.md` › Komplexitäts-Budget. Domäne INF.
 
 ## Beispiele
 
 - `for _, v := range xs` → `if` → `if` → `if` → `if` (Tiefe 5) → `npm run check:go` scheitert (heute grün).
-- `if` / `else if` / `else if` / `else if` / `else if` ohne innere Struktur (Tiefe 1) → grün (heute rot).
+- `if` / `else if` / `else if` / `else if` / `else if` / `else if` ohne innere Struktur (Tiefe 1) → grün (heute rot).
+- Funktionsliteral in Tiefe 3, darin 4× `if` → grün (das Literal beginnt bei 0, wie bei Oxlint).
 
 ## Ausnahme- und Fehlerfälle
 
-Kein Linter aus golangci-lint zählt wie Oxlint → Abweichung bewusst annehmen und in `docs/arbeitsweise.md` nennen,
-oder eigene Prüfung (Offene Fragen).
+- Datei lässt sich nicht parsen → der Test scheitert mit Datei und Parser-Fehler (statt sie zu überspringen).
+- Noch kein Go-Code unter `engine/` oder `cmd/` → Ordner überspringen, Test grün.
 
 ## Akzeptanzkriterien
 
 - **AC-01** Eine Go-Probe `range` → 4× `if` lässt `npm run check:go` scheitern, `range` → 3× `if` nicht (Proben zurücknehmen).
 - **AC-02** Eine Go-Probe mit flacher `else if`-Kette aus 6 Zweigen bleibt grün.
+- **AC-03** `for` → 4× `if`, `switch` → `for` → 3× `if` und `select` → 4× `if` scheitern; ein Funktionsliteral beginnt bei 0 (Proben).
+- **AC-04** `revive` ist aus `.golangci.yml` entfernt; `.golangci.yml` und `docs/arbeitsweise.md` › Werkzeuge nennen die neue Prüfung.
 
 ## Offene Fragen
 
-Weg (🧑): (a) Abweichung annehmen und dokumentieren, (b) Fehler an revive melden und auf eine neue Version warten,
-(c) eigene Tiefen-Prüfung für Go (z. B. kleiner `go/ast`-Test), `revive` dann entfernen.
+keine. Entschieden (🧑, 2026-09-30): eigene Tiefen-Prüfung mit `go/ast` (Weg c), `revive` wird entfernt.
 
 ## Notizen
 
 Proben und Zählweise: B-054 › Notizen (Review L1.2). Ursache vermutet, ungeprüft: `max-control-nesting` wertet
-`*ast.RangeStmt` nicht aus und läuft über `IfStmt.Else` mit erhöhter Ebene.
+`*ast.RangeStmt` nicht aus und läuft über `IfStmt.Else` mit erhöhter Ebene. Stolperfalle bei Proben: golangci-lint
+zeigt standardmäßig nur 3 gleiche Meldungen (`max-same-issues`); für Proben `--max-same-issues 0` setzen.
