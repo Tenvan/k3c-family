@@ -51,4 +51,4 @@ Albtraum-Pferd, Höllenhund und weißer Wolf sind die Gothicvania-Figuren von ob
 Bezogen über https://github.com/hckr/endless-horse-run (LPC Horses) und https://github.com/AntumDeluge/game-resources (Reworks).
 Der Rappe ist das braune Pferd, im Spiel dunkel eingefärbt.
 
-Welche Figur wofür steht, steht in `src/data/sprites.json`. Ansehen: Testseiten „Unsere Aufstellung“ (`aufstellung.html`) und „Alle Figuren“ (`figuren.html`).
+Welche Figur wofür steht, steht in `data/sprites.json`. Ansehen: Testseiten „Unsere Aufstellung“ (`aufstellung.html`) und „Alle Figuren“ (`figuren.html`).

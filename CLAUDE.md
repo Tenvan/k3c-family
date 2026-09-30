@@ -23,6 +23,7 @@ Zielplattform ist **Edge auf der Xbox** (Gamepad API), gehostet im Heimnetz. Die
 npm run dev        # Dev-Server (auch im LAN erreichbar, Port 5173)
 npm test           # Vitest (Level-Generator, reine Logik)
 npm run check      # Lint + Typecheck + Tests (vor jedem Abschluss)
+npm run check:go   # go test + golangci-lint (Rechner mit Go)
 npm run build      # Typecheck + Produktions-Build nach dist/
 npm run serve      # Build + Heimnetz-Server (Port 8080, server/server.mjs)
 ```
@@ -35,7 +36,8 @@ prüft die Regeln unten automatisch (Seiten eingetragen, `installPageChrome()`, 
 
 ## Struktur
 
-- `src/data/` – Balancing als JSON (Biome, Gegner, Truppen, Gebäude, Monarch). Werte gehören hierher, nicht in den Code.
+- `data/` – Balancing als JSON (Biome, Gegner, Truppen, Gebäude, Monarch), einzige Quelle für Client (Import) und
+  Go-Server (`go:embed`, `data/embed.go`). Werte gehören hierher, nicht in den Code.
 - `src/world/` – Spiel-Logik **ohne Phaser-Import**, Tests daneben (`*.test.ts`). `levelGenerator.ts` baut das Level,
   `sim/` simuliert es (`createWorld()` + `step()`, deterministisch, Zustand in `sim/types.ts`).
   `sim/campaign.ts` hält alle Stufen und macht daraus Spielstände (`toSave`/`fromSave`); Server: `server/saves.mjs` → `saves/`.

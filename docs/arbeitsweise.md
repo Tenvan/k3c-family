@@ -124,7 +124,7 @@ Grenzfälle:
 - [ ] Jedes Kriterium der Sprint-Spec hat einen Nachweis; keins wurde umformuliert, um zum Code zu passen
 - [ ] Datei gehört zur Domäne des Sprints (oder ist ein erlaubter Grenzfall)
 - [ ] Komplexitäts-Budget eingehalten, nichts auf Vorrat gebaut, kein toter Code, keine Platzhalter/`skip`
-- [ ] Werte stehen in `data/` (bzw. bis zum Umzug `src/data/`), nicht im Code
+- [ ] Werte stehen in `data/`, nicht im Code
 - [ ] Spiel-Logik ist getestet und deterministisch
 - [ ] Funktioniert mit mehreren Spielern (lokal und online, falls betroffen)
 - [ ] Regeln aus `CLAUDE.md` eingehalten (Seiten, Vollbild, B-Taste, kein `Math.random()`)
