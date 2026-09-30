@@ -1,0 +1,331 @@
+{
+  "t": "level",
+  "depth": 0,
+  "layout": {
+    "seed": "familie",
+    "biomeId": "forest",
+    "widthUnits": 1000,
+    "chunkWidthUnits": 50,
+    "hubCenterUnits": 500,
+    "chunks": [
+      {
+        "index": 0,
+        "kind": "edge",
+        "startUnits": 0
+      },
+      {
+        "index": 1,
+        "kind": "clearing",
+        "startUnits": 50
+      },
+      {
+        "index": 2,
+        "kind": "portal",
+        "startUnits": 100
+      },
+      {
+        "index": 3,
+        "kind": "stream",
+        "startUnits": 150
+      },
+      {
+        "index": 4,
+        "kind": "forest",
+        "startUnits": 200
+      },
+      {
+        "index": 5,
+        "kind": "clearing",
+        "startUnits": 250
+      },
+      {
+        "index": 6,
+        "kind": "forest",
+        "startUnits": 300
+      },
+      {
+        "index": 7,
+        "kind": "rocks",
+        "startUnits": 350
+      },
+      {
+        "index": 8,
+        "kind": "recruitCamp",
+        "startUnits": 400
+      },
+      {
+        "index": 9,
+        "kind": "hub",
+        "startUnits": 450
+      },
+      {
+        "index": 10,
+        "kind": "hub",
+        "startUnits": 500
+      },
+      {
+        "index": 11,
+        "kind": "recruitCamp",
+        "startUnits": 550
+      },
+      {
+        "index": 12,
+        "kind": "chest",
+        "startUnits": 600
+      },
+      {
+        "index": 13,
+        "kind": "rocks",
+        "startUnits": 650
+      },
+      {
+        "index": 14,
+        "kind": "forest",
+        "startUnits": 700
+      },
+      {
+        "index": 15,
+        "kind": "clearing",
+        "startUnits": 750
+      },
+      {
+        "index": 16,
+        "kind": "portal",
+        "startUnits": 800
+      },
+      {
+        "index": 17,
+        "kind": "chest",
+        "startUnits": 850
+      },
+      {
+        "index": 18,
+        "kind": "stream",
+        "startUnits": 900
+      },
+      {
+        "index": 19,
+        "kind": "exit",
+        "startUnits": 950
+      }
+    ],
+    "entities": [
+      {
+        "kind": "skillPoint",
+        "x": 57.70548827247694
+      },
+      {
+        "kind": "tree",
+        "x": 59.78183897351846
+      },
+      {
+        "kind": "bush",
+        "x": 72.72008047346026
+      },
+      {
+        "kind": "bush",
+        "x": 83.26762871956453
+      },
+      {
+        "kind": "tree",
+        "x": 94.6886640577577
+      },
+      {
+        "kind": "portal",
+        "x": 125
+      },
+      {
+        "kind": "tree",
+        "x": 156.6243751454167
+      },
+      {
+        "kind": "tree",
+        "x": 184.9760137507692
+      },
+      {
+        "kind": "tree",
+        "x": 189.41033677291125
+      },
+      {
+        "kind": "tree",
+        "x": 207.32289679395035
+      },
+      {
+        "kind": "tree",
+        "x": 229.8670887160115
+      },
+      {
+        "kind": "tree",
+        "x": 232.27573005342856
+      },
+      {
+        "kind": "tree",
+        "x": 239.65145965246484
+      },
+      {
+        "kind": "tree",
+        "x": 240.27470833063126
+      },
+      {
+        "kind": "tree",
+        "x": 241.3369672903791
+      },
+      {
+        "kind": "bush",
+        "x": 270.79138970794156
+      },
+      {
+        "kind": "skillPoint",
+        "x": 278.32423598272726
+      },
+      {
+        "kind": "tree",
+        "x": 289.9821694297716
+      },
+      {
+        "kind": "tree",
+        "x": 297.9391107233241
+      },
+      {
+        "kind": "tree",
+        "x": 308.41572277760133
+      },
+      {
+        "kind": "tree",
+        "x": 315.29992992663756
+      },
+      {
+        "kind": "tree",
+        "x": 316.6771805100143
+      },
+      {
+        "kind": "tree",
+        "x": 323.8451517387293
+      },
+      {
+        "kind": "tree",
+        "x": 328.37069179536775
+      },
+      {
+        "kind": "tree",
+        "x": 342.0887407865375
+      },
+      {
+        "kind": "tree",
+        "x": 346.20719728944823
+      },
+      {
+        "kind": "rock",
+        "x": 359.101914008148
+      },
+      {
+        "kind": "rock",
+        "x": 360.4617897826247
+      },
+      {
+        "kind": "rock",
+        "x": 389.7214471451007
+      },
+      {
+        "kind": "tree",
+        "x": 390.6902738455683
+      },
+      {
+        "kind": "rock",
+        "x": 392.1783385765739
+      },
+      {
+        "kind": "recruitCamp",
+        "x": 425
+      },
+      {
+        "kind": "castle",
+        "x": 500
+      },
+      {
+        "kind": "recruitCamp",
+        "x": 575
+      },
+      {
+        "kind": "skillPoint",
+        "x": 622.5113546606153
+      },
+      {
+        "kind": "chest",
+        "x": 625
+      },
+      {
+        "kind": "tree",
+        "x": 663.9465100415982
+      },
+      {
+        "kind": "tree",
+        "x": 677.4016015273519
+      },
+      {
+        "kind": "rock",
+        "x": 690.6827140119858
+      },
+      {
+        "kind": "rock",
+        "x": 697.7396054049022
+      },
+      {
+        "kind": "tree",
+        "x": 704.8988164430484
+      },
+      {
+        "kind": "tree",
+        "x": 708.4342266139574
+      },
+      {
+        "kind": "tree",
+        "x": 712.6924499277957
+      },
+      {
+        "kind": "tree",
+        "x": 726.9856296349317
+      },
+      {
+        "kind": "tree",
+        "x": 738.7453180951998
+      },
+      {
+        "kind": "bush",
+        "x": 763.7217359435745
+      },
+      {
+        "kind": "tree",
+        "x": 766.6710354844108
+      },
+      {
+        "kind": "bush",
+        "x": 782.3511638804339
+      },
+      {
+        "kind": "tree",
+        "x": 797.8764439695515
+      },
+      {
+        "kind": "portal",
+        "x": 825
+      },
+      {
+        "kind": "chest",
+        "x": 875
+      },
+      {
+        "kind": "skillPoint",
+        "x": 923.3906832081266
+      },
+      {
+        "kind": "tree",
+        "x": 931.3630967168137
+      },
+      {
+        "kind": "exit",
+        "x": 975
+      }
+    ]
+  }
+}

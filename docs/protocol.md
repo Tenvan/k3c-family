@@ -151,5 +151,74 @@ Fehler beenden nie einen Raum und betreffen nie andere Geräte oder Räume.
 
 ## Nachrichten
 
-Folgt in SP02.2: Nachrichten-Tabelle mit Versionsfeld, Eingaben pro Slot, vollem und Delta-Zustand, Level-Übertragung,
-Raumliste, Fehler-Codes, Takt 30 Hz und JSON-Beispielen in `testdata/protocol/`.
+**Transport:** JSON-Texte über WebSocket unter `/ws`, eine Nachricht pro Frame, Feld `t` = Typ. WebSocket liefert
+vollständig und in Reihenfolge, deshalb braucht es keine Wiederholung und keine Lückenerkennung.
+
+**Version:** Das Feld `v` steht nur im Handschlag (`hello`, `welcome`), nicht in jeder Nachricht. Die Version gilt für
+die ganze Verbindung; jede weitere Nachricht damit auszustatten kostet bei 30 Snapshots pro Sekunde nur Bytes.
+Erste Nachricht nach dem Verbinden ist immer `hello`; alles andere davor beantwortet der Server mit `bad_request`.
+
+**Takt:** Ein laufender Raum tickt mit **30 Hz** und schickt jedem seiner Geräte pro Tick genau einen Zustand
+(`snap` oder `delta`). Ein pausierter Raum schickt nichts. Geräte schicken `input`, sobald sich die Eingabe eines Slots
+ändert, und sonst höchstens alle 500 ms zur Bestätigung; der Server rechnet mit der zuletzt empfangenen Eingabe.
+
+| Nachricht | Richtung | Wann | Felder | Beispiel |
+|---|---|---|---|---|
+| `hello` | Gerät → Server | als erste Nachricht | `v` Protokoll-Version (2), `device` Geräte-ID (≤ 64 Zeichen) | `c2s-hello.json` |
+| `welcome` | Server → Gerät | Antwort auf passendes `hello` | `v`, `tickHz`, `limits` (Grenzen aus *Grenzen*) | `s2c-welcome.json` |
+| `rooms` | Server → Gerät | nach `welcome` und bei jeder Änderung, solange das Gerät in keinem Raum ist | `rooms[]`: `code`, `name`, `depth`, `taken` (besetzt + wartend), `free` (4 − `taken`), `running` | `s2c-rooms.json` |
+| `create` | Gerät → Server | Raum erstellen | `save` Name des Spielstands, `fresh` neu (true) oder gespeicherten laden, `depth` Startstufe (nur bei `fresh`), `slots[]` | `c2s-create.json` |
+| `join` | Gerät → Server | Raum beitreten oder wiederverbinden | `room` Code, `slots[]` | `c2s-join.json` |
+| `joined` | Server → Gerät | nach erfolgreichem `create`/`join` | `room`, `name`, `you[]`: `slot` → `monarch` | `s2c-joined.json` |
+| `level` | Server → Gerät | nach `joined` und nach jedem Stufenwechsel, vor dem ersten Zustand der Stufe | `depth`, `layout` (Level: Biom-ID, Breite, Chunks, Objekte) | `s2c-level.json` |
+| `snap` | Server → Gerät | voller Zustand: nach `level` (Beitreten, Wiederverbinden, Stufenwechsel) | `tick`, `ack`, `s` (Zustand der Welt ohne Statisches, mit `events`) | `s2c-snapshot-full.json` |
+| `delta` | Server → Gerät | jeder weitere Tick | `tick`, `ack`, `s` (nur Änderungen zum vorigen Tick) | `s2c-snapshot-delta.json` |
+| `seats` | Server → alle Geräte im Raum | wenn sich eine Zuordnung oder ein Monarch-Zustand ändert | `you[]` (eigene Slots), `monarchs[]` je Index `taken`/`waiting`/`free` | `s2c-seats.json` |
+| `addSlot` | Gerät → Server | lokaler Spieler kommt dazu | `slot` 0–3 | `c2s-add-slot.json` |
+| `removeSlot` | Gerät → Server | lokaler Spieler geht | `slot` | `c2s-remove-slot.json` |
+| `input` | Gerät → Server | Eingabe hat sich geändert, sonst alle 500 ms | `seq` fortlaufend, `p[]`: `slot`, `moveX` (−1…1), `sprint`, `pay` | `c2s-input.json` |
+| `leave` | Gerät → Server | Raum bewusst verlassen | – | `c2s-leave.json` |
+| `error` | Server → Gerät | Fehlerfall, siehe Codes | `code`, `message` (deutsch, für die Anzeige) | `s2c-error.json` |
+
+Die Beispiele stammen aus dem Ablauf *2 Controller an der Xbox + 1 Handy*; `level`, `snap` und `delta` sind aus der
+heutigen TS-Simulation erzeugt (Seed `familie`, 3 Spieler, Tick 299/300).
+
+**Zustand und Delta:** `s` in `snap` hat die Felder der Welt ohne `seed`, `biome`, `level`, `rng`, `widthUnits`
+(wie v1), dazu `events` des Ticks. `delta` enthält nur geänderte Felder: einfache Werte ganz; Listen mit `id`
+(`players`, `coins`, `troops`, `nodes`, `sites`, `enemies`, `projectiles`, `pickups`) als `{ "set": [geänderte oder
+neue Einträge], "del": [entfernte ids] }`. `events` stehen in jedem Zustand, der welche hat. `ack` ist das höchste
+`seq`, das der Server von **diesem** Gerät verrechnet hat (Grundlage für eine spätere Vorhersage, B-039).
+
+**Level-Übertragung:** Ab SP09 hat der Browser keinen Level-Generator mehr. Deshalb schickt der Server das Level
+(`level`) statt nur den Seed. Biom-Werte (Farben, Namen) liest der Client aus `data/` über die Biom-ID.
+
+### Fehler-Codes
+
+| Code | Situation (siehe *Fehlerfälle*) | Verbindung |
+|---|---|---|
+| `room_full` | Raum hat 4 Monarchen, keiner frei | bleibt |
+| `too_many_slots` | 5. lokaler Spieler oder Slot außerhalb 0–3 | bleibt |
+| `too_many_rooms` | 5. Raum | bleibt |
+| `room_not_found` | unbekannter Code | bleibt |
+| `version` | `v` in `hello` ist nicht 2 | Server schließt |
+| `bad_request` | kein gültiges JSON, unbekannter Typ, Feld fehlt, Nachricht vor `hello` | bleibt, Nachricht wird verworfen |
+
+`bad_request` ist kein Fehlerfall aus dem Raummodell, sondern Schutz vor kaputten Clients. Die Rückkehr nach 60 s ist
+kein Fehler und hat keinen Code.
+
+### Snapshot-Größe
+
+**Messweg:** Wegwerf-Skript (nicht eingecheckt) mit der heutigen TS-Simulation: `createCampaign` mit 4× `joinPlayer`,
+Stufe 0 (Wald) und Stufe 1 (Höhle), `cycleSpeed` 8, 5400 Ticks mit `step(…, 1/30)` (3 min, mehrere Tage und Nächte),
+wechselnde Eingaben. Je Tick `JSON.stringify` des vollen Zustands und eines Deltas nach der Regel oben.
+
+| 4 Spieler | Stufe 0 | Stufe 1 |
+|---|---|---|
+| `level` | 3,0 KB | 1,6 KB |
+| `snap` (voll) Mittel / Max | 10,7 KB / 13,0 KB | 6,0 KB / 7,8 KB |
+| `delta` Mittel / Max | 2,0 KB / 4,0 KB | 1,7 KB / 3,2 KB |
+
+**Bei 30 Hz pro Gerät:** nur `snap` ≈ 320 KB/s (≈ 2,6 Mbit/s), mit `delta` ≈ 61 KB/s (≈ 0,5 Mbit/s), Spitzen
+≈ 120 KB/s. Ein Raum mit 4 Geräten sendet mit `delta` ≈ 0,25 MB/s. Für WLAN im Heimnetz reicht JSON mit `delta`; ein
+Binärformat ist nicht nötig. Das Delta wird von vielen Nachkommastellen (`x`, `time`) und ganzen geänderten
+Einträgen bestimmt; Runden auf 2 Stellen wäre die nächste Stellschraube, falls die Messung am Pi (SP11) es verlangt.
