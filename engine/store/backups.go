@@ -38,14 +38,12 @@ func (s *Saves) rotate(slot string, prev []byte) error {
 	if err := writeAtomic(filepath.Join(dir, name), prev); err != nil {
 		return err
 	}
-	list, err := s.Backups(slot)
+	list, err := s.backups(slot)
 	if err != nil {
-		return err
+		return nil // Aufräumen ist Kür: der neue Stand wird trotzdem geschrieben
 	}
 	for _, b := range list[min(len(list), BackupKeep):] {
-		if err := os.Remove(filepath.Join(dir, b.Name)); err != nil {
-			return err
-		}
+		_ = os.Remove(filepath.Join(dir, b.Name)) // beim nächsten Speichern erneut versucht
 	}
 	return nil
 }
@@ -57,6 +55,12 @@ func exists(path string) bool {
 
 // Backups listet die Sicherungen eines Slots, neueste zuerst.
 func (s *Saves) Backups(slot string) ([]Backup, error) {
+	s.mu.Lock()
+	defer s.mu.Unlock()
+	return s.backups(slot)
+}
+
+func (s *Saves) backups(slot string) ([]Backup, error) {
 	if !slotName.MatchString(slot) {
 		return nil, ErrSlot
 	}
@@ -83,7 +87,9 @@ func (s *Saves) Backups(slot string) ([]Backup, error) {
 // Restore macht eine Sicherung zum aktuellen Stand; der bisherige wird dabei selbst gesichert. Der Name wird nur
 // angenommen, wenn er in der Liste des Slots steht (nie als Pfad).
 func (s *Saves) Restore(slot, name string) error {
-	list, err := s.Backups(slot)
+	s.mu.Lock()
+	defer s.mu.Unlock()
+	list, err := s.backups(slot)
 	if err != nil {
 		return err
 	}
@@ -93,7 +99,7 @@ func (s *Saves) Restore(slot, name string) error {
 			if err != nil {
 				return err
 			}
-			_, err = s.Store(slot, data)
+			_, err = s.store(slot, data)
 			return err
 		}
 	}

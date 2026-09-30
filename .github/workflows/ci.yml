@@ -73,7 +73,7 @@ jobs:
           test "$(curl -s -o /dev/null -w '%{http_code}' -X POST -d '{"version":1,"campaignId":"ci"}' http://localhost:8080/api/save)" = 200
           curl -fsS http://localhost:8080/api/save | grep -q '"campaignId":"ci"'
           test "$(curl -s -o /dev/null -w '%{http_code}' http://localhost:8080/api/status)" = 404
-          test "$(docker inspect --format '{{.Config.User}}' k3c-server:ci)" = nonroot
+          case "$(docker inspect --format '{{.Config.User}}' k3c-server:ci)" in nonroot | 65532 | 65532:65532) ;; *) exit 1 ;; esac
           docker logs k3c
 
   k3c-dev:
