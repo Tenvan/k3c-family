@@ -4,11 +4,11 @@ import { backend, type Source } from '../api';
 import { errorText } from '../lib/errors';
 import { loadText, savePref } from '../lib/prefs';
 import { NoticeCard } from '../ui/parts';
-import { ConsoleView } from './ConsoleView';
 import { pickSource, upsertSource } from './lines';
 import { SourceBar } from './SourceBar';
+import { SourcePanel } from './SourcePanel';
 
-/** Reiter `Logs` (B-064): Quellenleiste links, Konsole der gewählten Quelle rechts. */
+/** Reiter `Logs` (B-064): Quellenleiste links, rechts Konsole, Log und Fehler der gewählten Quelle. */
 export function LogsPage() {
   const [sources, setSources] = useState<Source[] | null>(null);
   const [error, setError] = useState('');
@@ -32,7 +32,7 @@ export function LogsPage() {
 
   if (error) return <NoticeCard title="Quellen nicht geladen" tone="error">{error}</NoticeCard>;
   if (!sources) return <Text color="gray">Lade Quellen …</Text>;
-  const selected = pickSource(sources, wanted);
+  const selected = sources.find((s) => s.name === pickSource(sources, wanted));
   const choose = (name: string) => {
     setWanted(name);
     savePref('source', name);
@@ -43,9 +43,9 @@ export function LogsPage() {
   };
   return (
     <div className="logs-page">
-      <SourceBar sources={sources} selected={selected} open={open} onSelect={choose} onToggle={toggle} />
+      <SourceBar sources={sources} selected={selected?.name ?? ''} open={open} onSelect={choose} onToggle={toggle} />
       {selected ? (
-        <ConsoleView key={selected} name={selected} />
+        <SourcePanel key={selected.name} source={selected} />
       ) : (
         <NoticeCard title="Keine Quellen" tone="neutral">Weder Dienste noch Läufe noch Log-Dateien.</NoticeCard>
       )}
