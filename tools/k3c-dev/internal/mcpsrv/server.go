@@ -14,6 +14,8 @@ import (
 	"time"
 
 	"github.com/modelcontextprotocol/go-sdk/mcp"
+
+	"k3c/tools/k3c-dev/internal/console"
 )
 
 const (
@@ -29,17 +31,21 @@ type Config struct {
 	Root    string // Repo-Wurzel
 	Port    int
 	Version string
-	OnStart func(Call) // optional: Aufruf beginnt
-	OnCall  func(Call) // optional: Aufruf beendet
+	OnStart func(Call)         // optional: Aufruf beginnt
+	OnCall  func(Call)         // optional: Aufruf beendet
+	OnLine  func(console.Line) // optional: neue Konsolenzeile
 }
 
 // Server hält den MCP-Server und den HTTP-Server, der ihn ausliefert. Der HTTP-Teil lässt sich neu starten,
 // ohne dass Katalog und Zähler verloren gehen.
 type Server struct {
-	cfg    Config
-	mcp    *mcp.Server
-	stats  *stats
-	params map[string][]string // gültige Parameter je Tool, gefüllt bei der Registrierung
+	cfg     Config
+	mcp     *mcp.Server
+	stats   *stats
+	params  map[string][]string // gültige Parameter je Tool, gefüllt bei der Registrierung
+	console *console.Store
+	checks  *checkRuns
+	run     func(context.Context, runSpec) runResult // Test-Naht für check_run
 
 	mu   sync.Mutex
 	http *http.Server
@@ -61,7 +67,8 @@ func ResolvePort(raw string) (int, error) {
 
 // New baut den Server mit allen Tools aus dem Katalog; gestartet wird er mit Start.
 func New(cfg Config) *Server {
-	s := &Server{cfg: cfg, stats: newStats(time.Now), params: map[string][]string{}}
+	s := &Server{cfg: cfg, stats: newStats(time.Now), params: map[string][]string{},
+		console: console.New(console.DefaultCapacity, cfg.OnLine), checks: newCheckRuns(), run: runProcess}
 	s.stats.onStart, s.stats.onCall = cfg.OnStart, cfg.OnCall
 	s.mcp = mcp.NewServer(&mcp.Implementation{Name: "k3c-dev", Version: cfg.Version}, &mcp.ServerOptions{
 		InitializedHandler: func(context.Context, *mcp.InitializedRequest) { s.observeClients() },
