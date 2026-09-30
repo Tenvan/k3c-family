@@ -4,8 +4,11 @@ import (
 	"context"
 	"fmt"
 	"strings"
+	"time"
 
 	"github.com/modelcontextprotocol/go-sdk/mcp"
+
+	"k3c/tools/k3c-dev/internal/usage"
 )
 
 // panicText steht im Ergebnis, wenn ein Handler in Panik gerät; der Server läuft weiter.
@@ -24,16 +27,25 @@ func (s *Server) observe(next mcp.MethodHandler) mcp.MethodHandler {
 			if p := recover(); p != nil {
 				res, err = textResult(fmt.Sprintf("%s: %v", panicText, p), true), nil
 			}
-			o := outcomeOf(res, err)
-			s.stats.end(id, o)
-			if !o.ok {
-				// Tool und Fehler in der Meldung, damit logs_errors gleichartige Fehler je Tool gruppiert.
-				s.log.Warn(call.Params.Name+": "+clip(o.err), "ns", "mcp", "tool", call.Params.Name)
-			}
+			s.finish(call, id, outcomeOf(res, err))
 		}()
 		res, err = next(ctx, method, req)
 		s.addParamHint(call.Params.Name, res)
 		return res, err
+	}
+}
+
+// finish schließt einen Aufruf ab: Zähler und Aufruf-Log, eigenes Log bei Fehlern, Nutzungsstatistik mit den rohen
+// Argumenten (das Aufruf-Log kürzt sie, gekürztes JSON ließe sich nicht mehr normieren).
+func (s *Server) finish(call *mcp.CallToolRequest, id int64, o outcome) {
+	c, found := s.stats.end(id, o)
+	if !o.ok {
+		// Tool und Fehler in der Meldung, damit logs_errors gleichartige Fehler je Tool gruppiert.
+		s.log.Warn(call.Params.Name+": "+clip(o.err), "ns", "mcp", "tool", call.Params.Name)
+	}
+	if found && s.cfg.Usage != nil {
+		s.cfg.Usage.Record(usage.Event{At: time.Now(), Tool: c.Tool, Args: string(call.Params.Arguments),
+			DurationMs: c.DurationMs, OK: c.OK, Error: o.err})
 	}
 }
 

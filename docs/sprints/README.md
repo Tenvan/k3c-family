@@ -6,7 +6,11 @@ Jede Sprint-README ist eine Spec (SDD); aktiv wird ein Sprint erst mit `Spec: fr
 
 ## Aktiv
 
-Kein aktiver Sprint. Nächster Schritt: M2 oder SP03 bereit machen (Sessions schreiben, 🧑 um Freigabe bitten).
+| Sprint | Domäne | Thema | Ordner |
+|---|---|---|---|
+| M2 | SRV | k3c-dev II: Nutzungsstatistik, Berichte, Spielstände (eingeschoben) | `aktiv/M2-dev-statistik/` |
+
+Danach: SP03 oder M3 bereit machen.
 
 ## Geplant (in dieser Reihenfolge)
 
@@ -31,7 +35,6 @@ dann über den Go-Server mit mehreren Räumen und gemischten Spielern.
 |---|---|---|---|---|
 | R1 | REG 🧑 | Regelwerk I – Fundament | Entwurf | `geplant/R1-regelwerk-1/` |
 | X1 | PLAT 🧑 | Xbox-Machbarkeit | Entwurf | `geplant/X1-xbox/` |
-| M2 | SRV | k3c-dev II: Nutzungsstatistik, Berichte, Spielstände (nach M1) | bereit, freigegeben | `geplant/M2-dev-statistik/` |
 | M3 | SRV | k3c-dev III: Dienste führen, `svc_*`-Tools (nach M2) | Entwurf | `geplant/M3-dev-dienste/` |
 | M4 | SRV 🧑 | k3c-dev IV: Oberfläche (Wails) mit Dienste- und Logs-Seite (nach M3) | Entwurf | `geplant/M4-dev-oberflaeche/` |
 | M5 | SRV 🧑 | k3c-dev V: MCP-Seite mit Monitoren und Statistik (nach M4) | Entwurf | `geplant/M5-dev-mcp-seite/` |
