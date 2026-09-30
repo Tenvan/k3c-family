@@ -28,6 +28,9 @@ import (
 //go:embed instructions.md
 var instructions string
 
+// Instructions ist der Text, den jeder Client beim Verbinden bekommt (Markdown; die Oberfläche zeigt ihn an).
+func Instructions() string { return instructions }
+
 const (
 	// DefaultPort ist der Vorgabe-Port, EnvPort überschreibt ihn.
 	DefaultPort = 5180

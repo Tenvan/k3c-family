@@ -25,6 +25,7 @@ describe('format', () => {
 
   it('Dauer wie formatMs in Go', () => {
     expect(formatDuration(468)).toBe('468 ms');
+    expect(formatDuration(999.6)).toBe('1,0 s');
     expect(formatDuration(12_400)).toBe('12,4 s');
     expect(formatDuration(125_000)).toBe('2 min 5 s');
     expect(formatDuration(62 * 60_000)).toBe('1 h 2 min');
