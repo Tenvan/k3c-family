@@ -56,7 +56,7 @@ keine
 Entwurf. Vor dem Aktivieren jede Session als Datei nach `docs/vorlagen/session.md` schreiben, die Kriterien in Klammern werden ihr Feld `Kriterien`.
 
 - SP10.1 Anzeige live (nur über `/api/status` mit Token) (AC-01).
-- SP10.2 Aktionen: Raum ansehen, Gerät trennen, Spielstand sichern (AC-02).
+- SP10.2 Aktionen: Raum ansehen, Gerät trennen, Spielstand sichern, Log folgen (AC-02).
 - SP10.3 🔍 Review (alle).
 
 ## Abnahme

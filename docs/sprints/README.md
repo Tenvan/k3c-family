@@ -8,7 +8,7 @@ Jede Sprint-README ist eine Spec (SDD); aktiv wird ein Sprint erst mit `Spec: fr
 
 | Sprint | Domäne | Thema | Ordner |
 |---|---|---|---|
-| SP00 | INF | Arbeitsweise einführen | `aktiv/SP00-arbeitsweise/` |
+| SP01 | INF | Leitplanken + Go-Gerüst | `aktiv/SP01-leitplanken/` |
 
 ## Geplant (in dieser Reihenfolge)
 
@@ -17,7 +17,6 @@ dann über den Go-Server mit mehreren Räumen und gemischten Spielern.
 
 | Sprint | Domäne | Thema | Am Ende sichtbar | Reife | Ordner |
 |---|---|---|---|---|---|
-| SP01 | INF | Leitplanken + Go-Gerüst | `npm run check` und Go-Prüfungen in der CI | bereit | `geplant/SP01-leitplanken/` |
 | SP02 | SRV 🧑 | Protokoll v2 & Raummodell (Entwurf) | `docs/protocol.md`, Entscheidung 002 | Entwurf | `geplant/SP02-protokoll/` |
 | SP03 | SRV | Go-Server Basis (ersetzt `server/*.mjs`) | EXE und Docker-Image liefern das Spiel aus | Entwurf | `geplant/SP03-go-server/` |
 | SP04 | SIM | Golden-Tests, RNG, Level-Generator in Go | gleiche Level in TS und Go | Entwurf | `geplant/SP04-golden-level/` |
@@ -44,3 +43,4 @@ Nach SP11: Regelwerk II (Skills) → SIM Skills in Go → CLI Skills → Spielea
 | Sprint | Thema | Ordner |
 |---|---|---|
 | ALT | Vorgeschichte vor der Sprint-Einteilung | `erledigt/ALT-vorgeschichte/` |
+| SP00 | Arbeitsweise einführen | `erledigt/SP00-arbeitsweise/` |

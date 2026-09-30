@@ -58,7 +58,7 @@ Die früheren Sessions S1.1–S1.11, S2.1, S2.2 und S2.4 (Details: `git log -- d
 - Gold pro Spieler, Baumaterial gemeinsam im Hub. Bauplätze fest im Hub (`hub.json`).
 - Start mit 1 Bauer + 2 Bogenschützen, sonst ist Nacht 1 nicht zu schaffen (Test „Balancing“).
 - Spielstand: `src/world/sim/campaign.ts`, `server/saves.mjs`, Autosave bei Tagesanbruch und Stufenwechsel.
-- Online-Modus (`?online=RAUM`), Touch-Steuerung, Figuren- und Reittier-Sprites kamen außerhalb des alten Plans dazu.
+- Online-Modus (`?online=RAUM`), Touch-Steuerung und Figuren-Sprites kamen außerhalb des alten Plans dazu (Reittier-Sprites erst nach `df6e1de`, PR #15).
 - Infrastruktur: CI (`ci.yml`), GitHub Pages (`deploy-pages.yml`), Release per Tag `v*` (`release.yml`).
 
 ## Abnahme
