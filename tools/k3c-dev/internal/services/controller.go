@@ -32,6 +32,7 @@ type Status struct {
 	Name      string    `json:"name"`
 	Port      int       `json:"port"`
 	Health    string    `json:"health"`
+	Log       string    `json:"log"` // Name unter logs/ (leer: kein Log); die Oberfläche zeigt dann keinen Log-Kasten
 	State     State     `json:"state"`
 	PID       int       `json:"pid"`
 	StartedAt time.Time `json:"startedAt"`
@@ -155,7 +156,7 @@ func New(list []Service, opts Options) *Controller {
 	opts.defaults()
 	c := &Controller{opts: opts}
 	for _, s := range list {
-		c.units = append(c.units, &unit{svc: s, st: Status{Name: s.Name, Port: s.Port, Health: s.HealthURL(), State: Stopped}})
+		c.units = append(c.units, &unit{svc: s, st: Status{Name: s.Name, Port: s.Port, Health: s.HealthURL(), Log: s.Log, State: Stopped}})
 	}
 	return c
 }
@@ -255,11 +256,14 @@ func (c *Controller) Restart(ctx context.Context, name string) (Status, error) {
 	return c.start(ctx, u)
 }
 
-// StartAll startet alle Dienste parallel.
+// StartAll startet alle Dienste parallel, die nicht schon laufen, starten oder übernommen sind.
 func (c *Controller) StartAll(ctx context.Context) error {
 	errs := make([]error, len(c.units))
 	var wg sync.WaitGroup
 	for i, u := range c.units {
+		if st := u.status().State; st == Running || st == Starting || st == Adopted {
+			continue
+		}
 		wg.Go(func() { _, errs[i] = c.Start(ctx, u.svc.Name) })
 	}
 	wg.Wait()
