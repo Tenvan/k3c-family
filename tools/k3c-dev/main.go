@@ -11,10 +11,12 @@ import (
 	"os/signal"
 	"path/filepath"
 	"strings"
+	"time"
 
 	"k3c/tools/k3c-dev/internal/applog"
 	"k3c/tools/k3c-dev/internal/console"
 	"k3c/tools/k3c-dev/internal/mcpsrv"
+	"k3c/tools/k3c-dev/internal/usage"
 )
 
 const version = "0.1.0"
@@ -50,7 +52,8 @@ func serve(root string, port int) error {
 		fmt.Fprintln(os.Stderr, "k3c-dev: eigenes Log nur im Speicher:", err)
 	}
 	defer func() { _ = log.Close() }()
-	srv := mcpsrv.New(mcpsrv.Config{Root: root, Port: port, Version: version, Console: store, Log: log.Logger})
+	srv := mcpsrv.New(mcpsrv.Config{Root: root, Port: port, Version: version, Console: store, Log: log.Logger,
+		Usage: usage.New(time.Now)})
 	if err := srv.Start(); err != nil {
 		log.Error("start fehlgeschlagen", "ns", "main", "error", err.Error())
 		return err

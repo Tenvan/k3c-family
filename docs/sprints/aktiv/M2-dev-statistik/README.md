@@ -1,11 +1,11 @@
 # M2 · SRV · k3c-dev II: Nutzungsstatistik, Berichte und Spielstände
 
-- **Status:** geplant
+- **Status:** aktiv
 - **Domäne:** SRV
 - **Reife:** bereit
 - **Einschiebbar:** ja
 - **Tickets:** B-062, B-063
-- **Start-Commit:** –
+- **Start-Commit:** 93cab71
 - **Spec:** freigegeben
 - **Revision:** 1
 - **Freigabe:** 2026-09-30 🧑 Chat (M2 Revision 1 mit B-062 und B-063)
@@ -60,7 +60,7 @@ keine
 
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
-| M2.1 | `M2.1-nutzungsstatistik.md` | Umsetzung | autonom | offen |
+| M2.1 | `M2.1-nutzungsstatistik.md` | Umsetzung | autonom | fertig |
 | M2.2 | `M2.2-speichern-spieldaten.md` | Umsetzung | autonom | offen |
 | M2.3 | `M2.3-review.md` | Review | autonom | offen |
 
