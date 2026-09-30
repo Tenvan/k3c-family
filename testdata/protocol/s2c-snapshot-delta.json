@@ -1,0 +1,134 @@
+{
+  "t": "delta",
+  "tick": 300,
+  "ack": 42,
+  "s": {
+    "time": 9.999999999999975,
+    "cycle": {
+      "phase": "day",
+      "day": 1,
+      "progress": 0.016666666666666625,
+      "secondsLeft": 590
+    },
+    "players": {
+      "set": [
+        {
+          "id": 58,
+          "index": 0,
+          "x": 546.4546340117788,
+          "vx": 4.999999999999998,
+          "facing": 1,
+          "gold": 100,
+          "hp": 100,
+          "maxHp": 100,
+          "respawnIn": 0,
+          "payCooldown": 0,
+          "paying": false,
+          "payKey": null,
+          "payAmount": 0
+        },
+        {
+          "id": 59,
+          "index": 1,
+          "x": 413.9816587787841,
+          "vx": -8.999999999999996,
+          "facing": -1,
+          "gold": 100,
+          "hp": 100,
+          "maxHp": 100,
+          "respawnIn": 0,
+          "payCooldown": 0,
+          "paying": false,
+          "payKey": null,
+          "payAmount": 0
+        },
+        {
+          "id": 60,
+          "index": 2,
+          "x": 521.7273170058957,
+          "vx": 2.499999999999999,
+          "facing": 1,
+          "gold": 100,
+          "hp": 100,
+          "maxHp": 100,
+          "respawnIn": 0,
+          "payCooldown": 0,
+          "paying": false,
+          "payKey": null,
+          "payAmount": 0
+        }
+      ],
+      "del": []
+    },
+    "troops": {
+      "set": [
+        {
+          "id": 29,
+          "kind": "vagrant",
+          "x": 421.8250000000015,
+          "hp": 30,
+          "maxHp": 30,
+          "anchorX": 425,
+          "targetX": 427.52207752969116,
+          "job": null,
+          "cooldown": 1.3304931879974902,
+          "towerId": null,
+          "paidGold": 0
+        },
+        {
+          "id": 30,
+          "kind": "vagrant",
+          "x": 421.72500000000434,
+          "hp": 30,
+          "maxHp": 30,
+          "anchorX": 425,
+          "targetX": 421.4480382623151,
+          "job": null,
+          "cooldown": 3.2973358501059327,
+          "towerId": null,
+          "paidGold": 0
+        },
+        {
+          "id": 31,
+          "kind": "vagrant",
+          "x": 578.1499999999958,
+          "hp": 30,
+          "maxHp": 30,
+          "anchorX": 575,
+          "targetX": 579.9844925468788,
+          "job": null,
+          "cooldown": 2.9319478082470596,
+          "towerId": null,
+          "paidGold": 0
+        },
+        {
+          "id": 32,
+          "kind": "vagrant",
+          "x": 578.8499999999979,
+          "hp": 30,
+          "maxHp": 30,
+          "anchorX": 575,
+          "targetX": 577.3411778621376,
+          "job": null,
+          "cooldown": 3.470917160855606,
+          "towerId": null,
+          "paidGold": 0
+        },
+        {
+          "id": 55,
+          "kind": "peasant",
+          "x": 503.05000000000024,
+          "hp": 40,
+          "maxHp": 40,
+          "anchorX": 500,
+          "targetX": 506.18545651994646,
+          "job": null,
+          "cooldown": 2.2750407445710152,
+          "towerId": null,
+          "paidGold": 0
+        }
+      ],
+      "del": []
+    }
+  }
+}

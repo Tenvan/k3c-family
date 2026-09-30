@@ -1,0 +1,639 @@
+{
+  "t": "snap",
+  "tick": 299,
+  "ack": 41,
+  "s": {
+    "time": 9.966666666666642,
+    "cycleSpeed": 1,
+    "nextId": 61,
+    "hubX": 500,
+    "cycle": {
+      "phase": "day",
+      "day": 1,
+      "progress": 0.01661111111111107,
+      "secondsLeft": 590.0333333333333
+    },
+    "aggression": null,
+    "wave": 0,
+    "players": [
+      {
+        "id": 58,
+        "index": 0,
+        "x": 546.2879673451122,
+        "vx": 4.999999999999998,
+        "facing": 1,
+        "gold": 100,
+        "hp": 100,
+        "maxHp": 100,
+        "respawnIn": 0,
+        "payCooldown": 0,
+        "paying": false,
+        "payKey": null,
+        "payAmount": 0
+      },
+      {
+        "id": 59,
+        "index": 1,
+        "x": 414.2816587787841,
+        "vx": -8.999999999999996,
+        "facing": -1,
+        "gold": 100,
+        "hp": 100,
+        "maxHp": 100,
+        "respawnIn": 0,
+        "payCooldown": 0,
+        "paying": false,
+        "payKey": null,
+        "payAmount": 0
+      },
+      {
+        "id": 60,
+        "index": 2,
+        "x": 521.6439836725623,
+        "vx": 2.499999999999999,
+        "facing": 1,
+        "gold": 100,
+        "hp": 100,
+        "maxHp": 100,
+        "respawnIn": 0,
+        "payCooldown": 0,
+        "paying": false,
+        "payKey": null,
+        "payAmount": 0
+      }
+    ],
+    "coins": [],
+    "troops": [
+      {
+        "id": 29,
+        "kind": "vagrant",
+        "x": 421.80000000000155,
+        "hp": 30,
+        "maxHp": 30,
+        "anchorX": 425,
+        "targetX": 427.52207752969116,
+        "job": null,
+        "cooldown": 1.3304931879974902,
+        "towerId": null,
+        "paidGold": 0
+      },
+      {
+        "id": 30,
+        "kind": "vagrant",
+        "x": 421.72500000000434,
+        "hp": 30,
+        "maxHp": 30,
+        "anchorX": 425,
+        "targetX": 421.4480382623151,
+        "job": null,
+        "cooldown": 3.330669183439266,
+        "towerId": null,
+        "paidGold": 0
+      },
+      {
+        "id": 31,
+        "kind": "vagrant",
+        "x": 578.1249999999958,
+        "hp": 30,
+        "maxHp": 30,
+        "anchorX": 575,
+        "targetX": 579.9844925468788,
+        "job": null,
+        "cooldown": 2.9319478082470596,
+        "towerId": null,
+        "paidGold": 0
+      },
+      {
+        "id": 32,
+        "kind": "vagrant",
+        "x": 578.8749999999978,
+        "hp": 30,
+        "maxHp": 30,
+        "anchorX": 575,
+        "targetX": 577.3411778621376,
+        "job": null,
+        "cooldown": 3.470917160855606,
+        "towerId": null,
+        "paidGold": 0
+      },
+      {
+        "id": 55,
+        "kind": "peasant",
+        "x": 503.0000000000002,
+        "hp": 40,
+        "maxHp": 40,
+        "anchorX": 500,
+        "targetX": 506.18545651994646,
+        "job": null,
+        "cooldown": 2.2750407445710152,
+        "towerId": null,
+        "paidGold": 0
+      },
+      {
+        "id": 56,
+        "kind": "archer",
+        "x": 490,
+        "hp": 50,
+        "maxHp": 50,
+        "anchorX": 499,
+        "targetX": 500,
+        "job": null,
+        "cooldown": 0,
+        "towerId": null,
+        "paidGold": 0
+      },
+      {
+        "id": 57,
+        "kind": "archer",
+        "x": 510,
+        "hp": 50,
+        "maxHp": 50,
+        "anchorX": 501,
+        "targetX": 500,
+        "job": null,
+        "cooldown": 0,
+        "towerId": null,
+        "paidGold": 0
+      }
+    ],
+    "nodes": [
+      {
+        "id": 3,
+        "kind": "tree",
+        "x": 59.78183897351846,
+        "paidGold": 0,
+        "marked": false,
+        "workerId": null,
+        "progress": 0
+      },
+      {
+        "id": 4,
+        "kind": "tree",
+        "x": 94.6886640577577,
+        "paidGold": 0,
+        "marked": false,
+        "workerId": null,
+        "progress": 0
+      },
+      {
+        "id": 5,
+        "kind": "tree",
+        "x": 156.6243751454167,
+        "paidGold": 0,
+        "marked": false,
+        "workerId": null,
+        "progress": 0
+      },
+      {
+        "id": 6,
+        "kind": "tree",
+        "x": 184.9760137507692,
+        "paidGold": 0,
+        "marked": false,
+        "workerId": null,
+        "progress": 0
+      },
+      {
+        "id": 7,
+        "kind": "tree",
+        "x": 189.41033677291125,
+        "paidGold": 0,
+        "marked": false,
+        "workerId": null,
+        "progress": 0
+      },
+      {
+        "id": 8,
+        "kind": "tree",
+        "x": 207.32289679395035,
+        "paidGold": 0,
+        "marked": false,
+        "workerId": null,
+        "progress": 0
+      },
+      {
+        "id": 9,
+        "kind": "tree",
+        "x": 229.8670887160115,
+        "paidGold": 0,
+        "marked": false,
+        "workerId": null,
+        "progress": 0
+      },
+      {
+        "id": 10,
+        "kind": "tree",
+        "x": 232.27573005342856,
+        "paidGold": 0,
+        "marked": false,
+        "workerId": null,
+        "progress": 0
+      },
+      {
+        "id": 11,
+        "kind": "tree",
+        "x": 239.65145965246484,
+        "paidGold": 0,
+        "marked": false,
+        "workerId": null,
+        "progress": 0
+      },
+      {
+        "id": 12,
+        "kind": "tree",
+        "x": 240.27470833063126,
+        "paidGold": 0,
+        "marked": false,
+        "workerId": null,
+        "progress": 0
+      },
+      {
+        "id": 13,
+        "kind": "tree",
+        "x": 241.3369672903791,
+        "paidGold": 0,
+        "marked": false,
+        "workerId": null,
+        "progress": 0
+      },
+      {
+        "id": 15,
+        "kind": "tree",
+        "x": 289.9821694297716,
+        "paidGold": 0,
+        "marked": false,
+        "workerId": null,
+        "progress": 0
+      },
+      {
+        "id": 16,
+        "kind": "tree",
+        "x": 297.9391107233241,
+        "paidGold": 0,
+        "marked": false,
+        "workerId": null,
+        "progress": 0
+      },
+      {
+        "id": 17,
+        "kind": "tree",
+        "x": 308.41572277760133,
+        "paidGold": 0,
+        "marked": false,
+        "workerId": null,
+        "progress": 0
+      },
+      {
+        "id": 18,
+        "kind": "tree",
+        "x": 315.29992992663756,
+        "paidGold": 0,
+        "marked": false,
+        "workerId": null,
+        "progress": 0
+      },
+      {
+        "id": 19,
+        "kind": "tree",
+        "x": 316.6771805100143,
+        "paidGold": 0,
+        "marked": false,
+        "workerId": null,
+        "progress": 0
+      },
+      {
+        "id": 20,
+        "kind": "tree",
+        "x": 323.8451517387293,
+        "paidGold": 0,
+        "marked": false,
+        "workerId": null,
+        "progress": 0
+      },
+      {
+        "id": 21,
+        "kind": "tree",
+        "x": 328.37069179536775,
+        "paidGold": 0,
+        "marked": false,
+        "workerId": null,
+        "progress": 0
+      },
+      {
+        "id": 22,
+        "kind": "tree",
+        "x": 342.0887407865375,
+        "paidGold": 0,
+        "marked": false,
+        "workerId": null,
+        "progress": 0
+      },
+      {
+        "id": 23,
+        "kind": "tree",
+        "x": 346.20719728944823,
+        "paidGold": 0,
+        "marked": false,
+        "workerId": null,
+        "progress": 0
+      },
+      {
+        "id": 24,
+        "kind": "rock",
+        "x": 359.101914008148,
+        "paidGold": 0,
+        "marked": false,
+        "workerId": null,
+        "progress": 0
+      },
+      {
+        "id": 25,
+        "kind": "rock",
+        "x": 360.4617897826247,
+        "paidGold": 0,
+        "marked": false,
+        "workerId": null,
+        "progress": 0
+      },
+      {
+        "id": 26,
+        "kind": "rock",
+        "x": 389.7214471451007,
+        "paidGold": 0,
+        "marked": false,
+        "workerId": null,
+        "progress": 0
+      },
+      {
+        "id": 27,
+        "kind": "tree",
+        "x": 390.6902738455683,
+        "paidGold": 0,
+        "marked": false,
+        "workerId": null,
+        "progress": 0
+      },
+      {
+        "id": 28,
+        "kind": "rock",
+        "x": 392.1783385765739,
+        "paidGold": 0,
+        "marked": false,
+        "workerId": null,
+        "progress": 0
+      },
+      {
+        "id": 35,
+        "kind": "tree",
+        "x": 663.9465100415982,
+        "paidGold": 0,
+        "marked": false,
+        "workerId": null,
+        "progress": 0
+      },
+      {
+        "id": 36,
+        "kind": "tree",
+        "x": 677.4016015273519,
+        "paidGold": 0,
+        "marked": false,
+        "workerId": null,
+        "progress": 0
+      },
+      {
+        "id": 37,
+        "kind": "rock",
+        "x": 690.6827140119858,
+        "paidGold": 0,
+        "marked": false,
+        "workerId": null,
+        "progress": 0
+      },
+      {
+        "id": 38,
+        "kind": "rock",
+        "x": 697.7396054049022,
+        "paidGold": 0,
+        "marked": false,
+        "workerId": null,
+        "progress": 0
+      },
+      {
+        "id": 39,
+        "kind": "tree",
+        "x": 704.8988164430484,
+        "paidGold": 0,
+        "marked": false,
+        "workerId": null,
+        "progress": 0
+      },
+      {
+        "id": 40,
+        "kind": "tree",
+        "x": 708.4342266139574,
+        "paidGold": 0,
+        "marked": false,
+        "workerId": null,
+        "progress": 0
+      },
+      {
+        "id": 41,
+        "kind": "tree",
+        "x": 712.6924499277957,
+        "paidGold": 0,
+        "marked": false,
+        "workerId": null,
+        "progress": 0
+      },
+      {
+        "id": 42,
+        "kind": "tree",
+        "x": 726.9856296349317,
+        "paidGold": 0,
+        "marked": false,
+        "workerId": null,
+        "progress": 0
+      },
+      {
+        "id": 43,
+        "kind": "tree",
+        "x": 738.7453180951998,
+        "paidGold": 0,
+        "marked": false,
+        "workerId": null,
+        "progress": 0
+      },
+      {
+        "id": 44,
+        "kind": "tree",
+        "x": 766.6710354844108,
+        "paidGold": 0,
+        "marked": false,
+        "workerId": null,
+        "progress": 0
+      },
+      {
+        "id": 45,
+        "kind": "tree",
+        "x": 797.8764439695515,
+        "paidGold": 0,
+        "marked": false,
+        "workerId": null,
+        "progress": 0
+      },
+      {
+        "id": 48,
+        "kind": "tree",
+        "x": 931.3630967168137,
+        "paidGold": 0,
+        "marked": false,
+        "workerId": null,
+        "progress": 0
+      }
+    ],
+    "sites": [
+      {
+        "id": 49,
+        "kind": "wall",
+        "x": 456,
+        "state": "unpaid",
+        "paidGold": 0,
+        "buildProgress": 0,
+        "hp": 0,
+        "maxHp": 300,
+        "workerId": null,
+        "bows": 0,
+        "bowPaidGold": 0
+      },
+      {
+        "id": 50,
+        "kind": "tower",
+        "x": 464,
+        "state": "unpaid",
+        "paidGold": 0,
+        "buildProgress": 0,
+        "hp": 0,
+        "maxHp": 200,
+        "workerId": null,
+        "bows": 0,
+        "bowPaidGold": 0
+      },
+      {
+        "id": 51,
+        "kind": "workshop",
+        "x": 484,
+        "state": "unpaid",
+        "paidGold": 0,
+        "buildProgress": 0,
+        "hp": 0,
+        "maxHp": 150,
+        "workerId": null,
+        "bows": 0,
+        "bowPaidGold": 0
+      },
+      {
+        "id": 52,
+        "kind": "stairsDown",
+        "x": 524,
+        "state": "unpaid",
+        "paidGold": 0,
+        "buildProgress": 0,
+        "hp": 0,
+        "maxHp": 500,
+        "workerId": null,
+        "bows": 0,
+        "bowPaidGold": 0
+      },
+      {
+        "id": 53,
+        "kind": "tower",
+        "x": 536,
+        "state": "unpaid",
+        "paidGold": 0,
+        "buildProgress": 0,
+        "hp": 0,
+        "maxHp": 200,
+        "workerId": null,
+        "bows": 0,
+        "bowPaidGold": 0
+      },
+      {
+        "id": 54,
+        "kind": "wall",
+        "x": 544,
+        "state": "unpaid",
+        "paidGold": 0,
+        "buildProgress": 0,
+        "hp": 0,
+        "maxHp": 300,
+        "workerId": null,
+        "bows": 0,
+        "bowPaidGold": 0
+      }
+    ],
+    "castle": {
+      "id": 1,
+      "x": 500,
+      "hp": 1000,
+      "maxHp": 1000
+    },
+    "enemies": [],
+    "projectiles": [],
+    "pickups": [
+      {
+        "id": 2,
+        "kind": "skillPoint",
+        "x": 57.70548827247694
+      },
+      {
+        "id": 14,
+        "kind": "skillPoint",
+        "x": 278.32423598272726
+      },
+      {
+        "id": 33,
+        "kind": "skillPoint",
+        "x": 622.5113546606153
+      },
+      {
+        "id": 34,
+        "kind": "chest",
+        "x": 625
+      },
+      {
+        "id": 46,
+        "kind": "chest",
+        "x": 875
+      },
+      {
+        "id": 47,
+        "kind": "skillPoint",
+        "x": 923.3906832081266
+      }
+    ],
+    "camps": [
+      {
+        "x": 425,
+        "respawnIn": 25
+      },
+      {
+        "x": 575,
+        "respawnIn": 25
+      }
+    ],
+    "portals": [
+      125,
+      825
+    ],
+    "spawnQueue": [],
+    "stock": {
+      "wood": 0,
+      "stone": 0,
+      "copper": 0
+    },
+    "skillPoints": 0,
+    "travel": null,
+    "events": [],
+    "depth": 0
+  }
+}
