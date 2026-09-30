@@ -25,6 +25,8 @@ func TestNutzungsstatistikBekommtRoheArgumente(t *testing.T) {
 		t.Fatal(text)
 	}
 	callText(t, cs, "check_run", map[string]any{"target": "npm:alles"})
+	// Erfundener Name: das SDK antwortet mit einem Protokollfehler, die Middleware sieht ihn trotzdem.
+	_, _ = cs.CallTool(context.Background(), &mcp.CallToolParams{Name: "gibt_es_nicht"})
 	if text, _ := callText(t, cs, "reports_list", nil); text != "keine Berichte" {
 		t.Errorf("reports_list ohne Ordner: %q", text)
 	}
@@ -39,6 +41,9 @@ func TestNutzungsstatistikBekommtRoheArgumente(t *testing.T) {
 		t.Fatalf("Zähler: %+v", snap)
 	}
 	for _, tool := range snap.Tools {
+		if tool.Name == "gibt_es_nicht" {
+			t.Error("unbekanntes Tool in der Statistik")
+		}
 		if tool.Name == "echo" && !strings.HasPrefix(tool.Args[0].Value, `{"text":"xxx`) {
 			t.Errorf("Argumente nicht aus dem Rohtext normiert: %q", tool.Args[0].Value)
 		}

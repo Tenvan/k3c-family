@@ -4,6 +4,7 @@ import (
 	"errors"
 	"os"
 	"path/filepath"
+	"strconv"
 	"strings"
 	"testing"
 	"time"
@@ -88,4 +89,59 @@ func TestRecordPlantSpeichernGebuendelt(t *testing.T) {
 		time.Sleep(50 * time.Millisecond)
 	}
 	t.Error("nach saveDelay nicht geschrieben")
+}
+
+func TestZweiteSicherungUeberschreibtErsteNicht(t *testing.T) {
+	dir := t.TempDir()
+	path := filepath.Join(dir, "mcp-usage.json")
+	for _, content := range []string{"{erste", "{zweite"} {
+		if err := os.WriteFile(path, []byte(content), 0o644); err != nil {
+			t.Fatal(err)
+		}
+		Open(path, time.Now, nil)
+	}
+	baks, _ := filepath.Glob(filepath.Join(dir, "*.bak"))
+	var contents []string
+	for _, b := range baks {
+		data, _ := os.ReadFile(b)
+		contents = append(contents, string(data))
+	}
+	if len(baks) != 2 || !strings.Contains(strings.Join(contents, "|"), "{erste") {
+		t.Errorf("Sicherungen: %v %v", baks, contents)
+	}
+}
+
+func TestFremdeDateiMitLueckenLoestKeinePanikAus(t *testing.T) {
+	path := filepath.Join(t.TempDir(), "mcp-usage.json")
+	content := `{"version":1,"allTime":{"since":"2026-09-30T10:00:00Z","tools":{"x":{},"y":null,"z":{"argDur":{"{}":null}}}},` +
+		`"minutes":[{"t":` + strconv.FormatInt(time.Now().Unix()/60, 10) + `,"calls":null}]}`
+	if err := os.WriteFile(path, []byte(content), 0o644); err != nil {
+		t.Fatal(err)
+	}
+	tr := Open(path, time.Now, func(err error) { t.Errorf("Warnung: %v", err) })
+	for _, tool := range []string{"x", "y", "z"} {
+		tr.Record(Event{At: time.Now(), Tool: tool, Args: `{}`, DurationMs: 5, OK: false, Error: "kaputt"})
+	}
+	if snap := tr.Snapshot(); snap.AllTime.Calls != 3 || len(snap.Minutes) != 1 || snap.Minutes[0].Calls["x"] != 1 {
+		t.Errorf("nach Laden mit Lücken: %d Aufrufe, Minuten %+v", snap.AllTime.Calls, snap.Minutes)
+	}
+}
+
+func TestLesefehlerLaesstDateiUnangetastet(t *testing.T) {
+	path := filepath.Join(t.TempDir(), "mcp-usage.json")
+	if err := os.Mkdir(path, 0o755); err != nil { // ein Ordner statt einer Datei: ReadFile scheitert, aber nicht mit NotExist
+		t.Fatal(err)
+	}
+	var warned []error
+	tr := Open(path, time.Now, func(err error) { warned = append(warned, err) })
+	tr.Record(Event{At: time.Now(), Tool: "q", DurationMs: 5, OK: true})
+	if err := tr.Flush(); err != nil || len(warned) != 1 || !strings.Contains(warned[0].Error(), "nur im Speicher") {
+		t.Errorf("Flush %v, Warnungen %v", err, warned)
+	}
+	if st, err := os.Stat(path); err != nil || !st.IsDir() {
+		t.Errorf("Pfad verändert: %v", err)
+	}
+	if _, err := os.Stat(path + ".bak"); !errors.Is(err, os.ErrNotExist) {
+		t.Error("gültiger Pfad nach .bak verschoben")
+	}
 }
