@@ -11,6 +11,7 @@ import (
 
 	"k3c/tools/k3c-dev/internal/applog"
 	"k3c/tools/k3c-dev/internal/console"
+	"k3c/tools/k3c-dev/internal/proc"
 )
 
 // State ist der Zustand eines Dienstes, mit den Namen aus B-067.
@@ -36,6 +37,8 @@ type Status struct {
 	StartedAt time.Time `json:"startedAt"`
 	Restarts  int       `json:"restarts"`
 	LastError string    `json:"lastError"`
+	CPU       float64   `json:"cpu"`    // Prozent, alle 2 s gemessen (Monitor)
+	Memory    uint64    `json:"memory"` // RSS in Bytes
 }
 
 // Process ist ein laufender Dienst-Prozess (Test-Naht; Produktion: procProcess in runtime.go).
@@ -59,6 +62,9 @@ type Options struct {
 	OnChange      func(Status)
 	Start         Starter
 	Check         Checker
+	Listen        Listener
+	Sample        Sampler
+	KillPID       func(pid int) error // übernommene Prozesse (ohne Job)
 	Now           func() time.Time
 	StartTimeout  time.Duration // 60 s bis gesund
 	StartPoll     time.Duration // 1 s zwischen zwei Prüfungen beim Start
@@ -84,6 +90,15 @@ func (o *Options) defaults() {
 	}
 	if o.Check == nil {
 		o.Check = HealthCheck
+	}
+	if o.Listen == nil {
+		o.Listen = PortListener
+	}
+	if o.Sample == nil {
+		o.Sample = NewSampler()
+	}
+	if o.KillPID == nil {
+		o.KillPID = proc.KillTree
 	}
 	if o.Now == nil {
 		o.Now = time.Now
@@ -115,6 +130,7 @@ type unit struct {
 	st       Status
 	run      *run
 	restarts []time.Time
+	unwatch  context.CancelFunc // Überwachung eines übernommenen Dienstes
 }
 
 // run ist ein eigener laufender Prozess mit seiner Überwachung.
@@ -190,7 +206,7 @@ func (c *Controller) set(u *unit, change func(*Status)) Status {
 
 func (c *Controller) fail(u *unit, reason string) Status {
 	c.opts.Log.Warn("dienst "+u.svc.Name+" fehlgeschlagen: "+reason, "ns", "svc")
-	return c.set(u, func(s *Status) { s.State, s.LastError, s.PID = Failed, reason, 0 })
+	return c.set(u, func(s *Status) { s.State, s.LastError, s.PID, s.CPU, s.Memory = Failed, reason, 0, 0, 0 })
 }
 
 // Start startet einen Dienst und wartet, bis er gesund ist.
@@ -204,14 +220,17 @@ func (c *Controller) Start(ctx context.Context, name string) (Status, error) {
 	return c.start(ctx, u)
 }
 
-// Stop beendet einen Dienst samt Prozessbaum.
-func (c *Controller) Stop(ctx context.Context, name string) (Status, error) {
+// Stop beendet einen Dienst samt Prozessbaum; einen übernommenen nur mit force.
+func (c *Controller) Stop(ctx context.Context, name string, force bool) (Status, error) {
 	u, err := c.unit(name)
 	if err != nil {
 		return Status{}, err
 	}
 	u.cmd.Lock()
 	defer u.cmd.Unlock()
+	if u.status().State == Adopted {
+		return c.stopAdopted(u, force)
+	}
 	return c.stop(u), nil
 }
 
@@ -223,6 +242,9 @@ func (c *Controller) Restart(ctx context.Context, name string) (Status, error) {
 	}
 	u.cmd.Lock()
 	defer u.cmd.Unlock()
+	if st := u.status(); st.State == Adopted {
+		return st, fmt.Errorf("%s ist übernommen; erst mit force stoppen, dann starten", name)
+	}
 	c.stop(u)
 	return c.start(ctx, u)
 }
@@ -238,9 +260,9 @@ func (c *Controller) StartAll(ctx context.Context) error {
 	return errors.Join(errs...)
 }
 
-// StopAll stoppt alle eigenen Dienste in umgekehrter Reihenfolge der Konfiguration.
+// StopAll stoppt alle eigenen Dienste in umgekehrter Reihenfolge der Konfiguration; übernommene bleiben.
 func (c *Controller) StopAll(ctx context.Context) {
 	for _, u := range slices.Backward(c.units) {
-		_, _ = c.Stop(ctx, u.svc.Name)
+		_, _ = c.Stop(ctx, u.svc.Name, false)
 	}
 }

@@ -31,9 +31,25 @@ func (p *fakeProc) Kill() error { p.killed.Store(true); p.exit(); return nil }
 
 // fake hält gestellten Start und gestellte Prüfung.
 type fake struct {
-	mu      sync.Mutex
-	procs   []*fakeProc
-	healthy atomic.Bool
+	mu        sync.Mutex
+	procs     []*fakeProc
+	healthy   atomic.Bool
+	busy      atomic.Bool // fremder Prozess am Port
+	listenPID int
+	killed    []int // KillPID-Aufrufe (übernommene Prozesse)
+}
+
+func (f *fake) listen(context.Context, int) (int, bool) { return f.listenPID, f.busy.Load() }
+
+func (f *fake) sample(context.Context, int) (Metrics, error) {
+	return Metrics{CPU: 3.1, Memory: 480 << 20, Started: time.Date(2026, 9, 30, 9, 0, 0, 0, time.UTC)}, nil
+}
+
+func (f *fake) killPID(pid int) error {
+	f.mu.Lock()
+	defer f.mu.Unlock()
+	f.killed = append(f.killed, pid)
+	return nil
 }
 
 func (f *fake) start(svc Service, _ string, out func(stream, text string)) (Process, error) {
@@ -68,7 +84,8 @@ func (f *fake) count() int {
 }
 
 func testController(f *fake, store *console.Store, list ...Service) *Controller {
-	return New(list, Options{Console: store, Start: f.start, Check: f.check, StartPoll: 2 * time.Millisecond,
+	return New(list, Options{Console: store, Start: f.start, Check: f.check, Listen: f.listen, Sample: f.sample,
+		KillPID: f.killPID, StartPoll: 2 * time.Millisecond,
 		StartTimeout: 150 * time.Millisecond, WatchEvery: 5 * time.Millisecond, StopTimeout: time.Second})
 }
 
@@ -106,7 +123,7 @@ func TestStartLaeuftUndStop(t *testing.T) {
 	if lines, _ := store.Tail("Vite", 0); len(lines) != 1 || lines[0].Text != "hallo von Vite" {
 		t.Errorf("Konsole: %+v", lines)
 	}
-	st, _ = c.Stop(context.Background(), "Vite")
+	st, _ = c.Stop(context.Background(), "Vite", false)
 	mu.Lock()
 	got := states
 	mu.Unlock()
