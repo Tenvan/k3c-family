@@ -8,9 +8,11 @@
     "dev": "vite --host",
     "build": "tsc --noEmit && vite build && vite build --config vite.server.config.ts",
     "preview": "vite preview --host",
+    "lint": "oxlint",
     "typecheck": "tsc --noEmit",
     "test": "vitest run",
     "test:watch": "vitest",
+    "check": "npm run lint && npm run typecheck && npm test",
     "serve": "npm run build && node server/server.mjs",
     "start": "node server/server.mjs"
   },
@@ -20,6 +22,7 @@
   },
   "devDependencies": {
     "@types/ws": "^8.18.2",
+    "oxlint": "^1.86.0",
     "typescript": "^7.0.2",
     "vite": "^8.3.1",
     "vitest": "^5.0.2"
