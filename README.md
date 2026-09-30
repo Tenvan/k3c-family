@@ -43,6 +43,11 @@ Baut das Spiel und startet den Server auf Port **8080**. Die Konsole zeigt die A
 `http://192.168.2.230:8080/`. Diese Adresse in Edge auf der Xbox öffnen. Falls die Windows-Firewall fragt:
 Zugriff im **privaten** Netzwerk erlauben.
 
+Der Go-Server (`cmd/k3c-server`, ersetzt ab SP03 den Node-Server für Seiten, Spielstände und Berichte) startet mit
+`npm run serve:go` bzw. `go run ./cmd/k3c-server` nach `npm run build`. Einstellungen per Umgebung: `K3C_HTTP_PORT`,
+`K3C_HTTPS_PORT`, `K3C_DIST`, `K3C_SAVES_DIR`, `K3C_REPORTS_DIR`, `K3C_CERTS_DIR`; `GET /api/health` meldet
+`{"ok":true}`. Den Online-Modus (WebSocket) hat bis SP08 nur der Node-Server (`npm run serve`).
+
 ### Gamepad-Test auf der Xbox
 
 1. `npm run serve` am PC starten.
@@ -106,7 +111,7 @@ Prüfen: `npm run check:dev`. Plan für Statistik, Dienste und Oberfläche: Spri
 
 ## CI/CD (GitHub Actions)
 
-- **CI** (jeder Push/PR): Lint, Typecheck, Tests, Build, Smoke-Test des Heimnetz-Servers; Go-Job mit Tests, `golangci-lint` und Cross-Build für Windows und Raspberry Pi; Windows-Job für `tools/k3c-dev`. Der Build liegt als Artefakt `k3c-dist` am Lauf.
+- **CI** (jeder Push/PR): Lint, Typecheck, Tests, Build; Go-Job mit Tests (auch Heimnetz-Server per `httptest`), `golangci-lint` und Cross-Build für Windows und Raspberry Pi; Windows-Job für `tools/k3c-dev`. Der Build liegt als Artefakt `k3c-dist` am Lauf.
 - **GitHub Pages** (Push auf `main`): Spiel und Testseiten online, ohne Bericht-Server.
   Einmalig aktivieren: *Settings → Pages → Source: GitHub Actions*.
 - **Release** (Tag `v*`, z.B. `git tag v0.2.0 && git push --tags`): Zip mit `dist/` + `server/` am Release.
