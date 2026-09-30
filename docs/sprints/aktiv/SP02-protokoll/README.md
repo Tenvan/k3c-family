@@ -1,11 +1,11 @@
 # SP02 · SRV · Protokoll v2 & Raummodell
 
-- **Status:** geplant
+- **Status:** aktiv
 - **Domäne:** SRV
 - **Reife:** bereit
 - **Einschiebbar:** nein
 - **Tickets:** B-030, B-036, B-038, B-039
-- **Start-Commit:** –
+- **Start-Commit:** 0fb32f8
 - **Spec:** freigegeben
 - **Revision:** 2
 - **Freigabe:** 2026-09-30 🧑 Chat-Freigabe durch Ralf (Revision 2)
@@ -77,7 +77,7 @@ keine
 
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
-| SP02.1 | `SP02.1-raummodell.md` | Umsetzung | autonom | offen |
+| SP02.1 | `SP02.1-raummodell.md` | Umsetzung | autonom | fertig |
 | SP02.2 | `SP02.2-nachrichten.md` | Umsetzung | autonom | offen |
 | SP02.3 | `SP02.3-review.md` | Review | autonom | offen |
 
