@@ -1,26 +1,36 @@
-// Command k3c-dev ist das Entwickler-Werkzeug von K3C: ein MCP-Server für Coding-Agenten (B-046).
-// Bis zur Oberfläche (B-064) läuft es ohne Fenster im Terminal und endet mit Strg+C.
+// Command k3c-dev ist das Entwickler-Werkzeug von K3C: ein Fenster, das den MCP-Server für Coding-Agenten hostet
+// (B-046) und Dienste, Läufe und Logs zeigt (B-064). Schließen beendet Programm und MCP-Server.
 package main
 
 import (
 	"bufio"
 	"context"
+	"embed"
 	"errors"
 	"fmt"
 	"os"
-	"os/signal"
 	"path/filepath"
 	"strings"
 	"time"
+
+	"github.com/wailsapp/wails/v2"
+	"github.com/wailsapp/wails/v2/pkg/options"
+	"github.com/wailsapp/wails/v2/pkg/options/assetserver"
+	"github.com/wailsapp/wails/v2/pkg/runtime"
 
 	"k3c/tools/k3c-dev/internal/applog"
 	"k3c/tools/k3c-dev/internal/console"
 	"k3c/tools/k3c-dev/internal/mcpsrv"
 	"k3c/tools/k3c-dev/internal/services"
-	"k3c/tools/k3c-dev/internal/usage"
 )
 
 const version = "0.1.0"
+
+// instanceID verbindet einen zweiten Start mit dem laufenden Fenster.
+const instanceID = "k3c-dev-5d0e8b7c-6f1a-4a51-9d0e-6b3c2a1f9e47"
+
+//go:embed all:frontend/dist
+var assets embed.FS
 
 func main() {
 	if err := run(); err != nil {
@@ -42,37 +52,30 @@ func run() error {
 	if err != nil {
 		return err
 	}
-	return serve(root, port)
+	return wails.Run(windowOptions(newApp(root, port)))
 }
 
-// serve öffnet das eigene Log, startet den Server und wartet auf Strg+C.
-func serve(root string, port int) error {
-	store := console.New(console.DefaultCapacity, nil)
-	log, err := applog.Open(filepath.Join(root, "logs"), store)
-	if err != nil {
-		fmt.Fprintln(os.Stderr, "k3c-dev: eigenes Log nur im Speicher:", err)
+// windowOptions beschreibt das Fenster: gemerkte Größe, verdeckter Start, bis die gemerkte Position gesetzt ist.
+func windowOptions(app *App) *options.App {
+	win, placed := loadWindow(configPath("k3c-dev.json"))
+	return &options.App{
+		Title: "K3C Dev", Width: win.Width, Height: win.Height, MinWidth: minWidth, MinHeight: minHeight,
+		StartHidden:      true,
+		BackgroundColour: &options.RGBA{R: 0x0b, G: 0x10, B: 0x26, A: 0xff}, // --night-1
+		AssetServer:      &assetserver.Options{Assets: assets},
+		OnStartup:        app.startup,
+		OnDomReady: func(ctx context.Context) {
+			if placed {
+				runtime.WindowSetPosition(ctx, win.X, win.Y)
+			}
+			runtime.WindowShow(ctx)
+		},
+		OnBeforeClose: app.beforeClose,
+		OnShutdown:    app.shutdown,
+		SingleInstanceLock: &options.SingleInstanceLock{UniqueId: instanceID,
+			OnSecondInstanceLaunch: func(options.SecondInstanceData) { app.secondInstance() }},
+		Bind: []any{app},
 	}
-	defer func() { _ = log.Close() }()
-	ctx, stop := signal.NotifyContext(context.Background(), os.Interrupt)
-	defer stop()
-	tracker := usage.Open(usagePath(), time.Now, func(err error) { log.Warn(err.Error(), "ns", "usage") })
-	ctl, svcErr := openServices(ctx, root, store, log)
-	srv := mcpsrv.New(mcpsrv.Config{Root: root, Port: port, Version: version, Console: store, Log: log.Logger,
-		Usage: tracker, Services: ctl, ServicesErr: svcErr})
-	if err := srv.Start(); err != nil {
-		log.Error("start fehlgeschlagen", "ns", "main", "error", err.Error())
-		return err
-	}
-	log.Info("k3c-dev gestartet", "ns", "main", "url", srv.URL(), "version", version)
-	fmt.Fprintf(os.Stderr, "k3c-dev lauscht an %s (Strg+C beendet)\n", srv.URL())
-	<-ctx.Done()
-	log.Info("k3c-dev beendet", "ns", "main")
-	if ctl != nil {
-		ctl.StopAll(context.Background()) // nur eigene Dienste, rückwärts; übernommene laufen weiter
-	}
-	err = srv.Stop()
-	_ = tracker.Flush() // ein Fehler steht schon im Log (Rückruf)
-	return err
 }
 
 // openServices lädt services.json, übernimmt laufende Dienste und misst alle 2 s, bis ctx endet. Eine kaputte
@@ -87,15 +90,6 @@ func openServices(ctx context.Context, root string, store *console.Store, log *a
 	ctl.Adopt(ctx)
 	go ctl.Monitor(ctx, 2*time.Second)
 	return ctl, nil
-}
-
-// usagePath ist die Datei der Nutzungsstatistik im Benutzerprofil, nicht im Repo.
-func usagePath() string {
-	dir, err := os.UserConfigDir()
-	if err != nil {
-		dir = os.TempDir()
-	}
-	return filepath.Join(dir, "k3c", "mcp-usage.json")
 }
 
 // findRoot sucht ab dir aufwärts das go.mod des Spiels (module k3c): die Repo-Wurzel.

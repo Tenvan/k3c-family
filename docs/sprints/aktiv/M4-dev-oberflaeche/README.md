@@ -5,7 +5,7 @@
 - **Reife:** bereit
 - **Einschiebbar:** ja
 - **Tickets:** B-064, B-068
-- **Start-Commit:** –
+- **Start-Commit:** 2795d18
 - **Spec:** freigegeben
 - **Revision:** 1
 - **Freigabe:** 2026-09-30 🧑 Chat (M4 Revision 1 mit B-064, B-068, Wails v2.16.0, React 19.3.0, Radix Themes 3.3.0, plugin-react 6.1.1, Ausnahmen und 5 Sessions)
@@ -75,7 +75,7 @@ keine
 
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
-| M4.1 | `M4.1-geruest.md` | Umsetzung | autonom | offen |
+| M4.1 | `M4.1-geruest.md` | Umsetzung | autonom | fertig |
 | M4.2 | `M4.2-dienste-seite.md` | Umsetzung | autonom | offen |
 | M4.3 | `M4.3-quellen-konsole.md` | Umsetzung | autonom | offen |
 | M4.4 | `M4.4-log-fehler.md` | Umsetzung | autonom | offen |

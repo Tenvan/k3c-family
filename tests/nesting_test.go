@@ -40,6 +40,9 @@ func goFiles(t *testing.T) []string {
 	var files []string
 	for _, dir := range goDirs {
 		err := filepath.WalkDir(dir, func(path string, d fs.DirEntry, err error) error {
+			if err == nil && d.IsDir() && d.Name() == "node_modules" { // z. B. tools/k3c-dev/frontend
+				return filepath.SkipDir
+			}
 			if err == nil && !d.IsDir() && strings.HasSuffix(path, ".go") {
 				files = append(files, path)
 			}

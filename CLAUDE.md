@@ -26,7 +26,7 @@ npm run dev        # Dev-Server (auch im LAN erreichbar, Port 5173)
 npm test           # Vitest (Level-Generator, reine Logik)
 npm run check      # Lint + Typecheck + Tests (vor jedem Abschluss)
 npm run check:go   # go test + golangci-lint (Rechner mit Go)
-npm run k3c-dev    # Entwickler-Werkzeug k3c-dev (MCP-Server, Dienste) starten
+npm run k3c-dev    # Entwickler-Werkzeug k3c-dev als Fenster starten (wails dev; EXE: npm run k3c-dev:build)
 npm run build      # Typecheck + Produktions-Build nach dist/
 npm run serve      # Build + Heimnetz-Server (Port 8080, server/server.mjs)
 ```
