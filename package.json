@@ -18,7 +18,8 @@
     "k3c-dev": "cd tools/k3c-dev && wails dev",
     "k3c-dev:build": "cd tools/k3c-dev && wails build",
     "serve": "npm run build && node server/server.mjs",
-    "start": "node server/server.mjs"
+    "start": "node server/server.mjs",
+    "serve:go": "npm run build && go run ./cmd/k3c-server"
   },
   "dependencies": {
     "phaser": "^4.2.1",

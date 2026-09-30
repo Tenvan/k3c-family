@@ -5,7 +5,7 @@
 - **Reife:** bereit
 - **Einschiebbar:** nein
 - **Tickets:** B-020, B-027, B-028
-- **Start-Commit:** –
+- **Start-Commit:** c8a221a
 - **Spec:** freigegeben
 - **Revision:** 1
 - **Freigabe:** 2026-09-30 🧑 Chat (Pauschalauftrag „beide komplett autonom fertig stellen“; N = 5, /api/health neu, ohne Token Diagnose aus)
@@ -59,7 +59,7 @@ keine. Geklärt von 🧑 (2026-09-30, Chat): N = 5 Sicherungen je Spielstand (B-
 
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
-| SP03.1 | `SP03.1-server-basis.md` | Umsetzung | autonom | offen |
+| SP03.1 | `SP03.1-server-basis.md` | Umsetzung | autonom | fertig |
 | SP03.2 | `SP03.2-status-sicherung-docker.md` | Umsetzung | autonom | offen |
 | SP03.3 | `SP03.3-review.md` | Review | autonom | offen |
 
