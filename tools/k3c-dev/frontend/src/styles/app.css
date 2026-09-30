@@ -1,0 +1,84 @@
+/* Rahmen der Oberfläche: Kopfzeile, Seiten, Bausteine aus ui.tsx. */
+.shell {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  padding: 10px 20px;
+  border-bottom: 1px solid var(--card-line);
+  background: var(--card);
+  backdrop-filter: blur(6px);
+}
+
+.header-title {
+  color: var(--title);
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  white-space: nowrap;
+}
+
+.header-tabs {
+  flex: 1;
+}
+
+.header-right {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  white-space: nowrap;
+}
+
+.page {
+  flex: 1;
+  padding: 20px;
+}
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 2px 10px;
+  border-radius: 999px;
+  border: 1px solid color-mix(in srgb, var(--tone) 55%, transparent);
+  background: color-mix(in srgb, var(--tone) 16%, transparent);
+  color: var(--text);
+  font-size: 13px;
+  line-height: 20px;
+}
+
+.badge-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--tone);
+}
+
+.tone-ok { --tone: var(--ok); }
+.tone-warn { --tone: var(--warn); }
+.tone-error { --tone: var(--error); }
+.tone-info { --tone: var(--info); }
+.tone-neutral { --tone: var(--neutral); }
+
+.notice {
+  max-width: 720px;
+  padding: 16px 20px;
+  border: 1px solid var(--card-line);
+  border-left: 4px solid var(--tone);
+  border-radius: 10px;
+  background: var(--card);
+}
+
+.notice-title {
+  margin: 0 0 6px;
+  font-weight: 600;
+}
+
+.notice-body {
+  margin: 0;
+  color: var(--dim);
+}

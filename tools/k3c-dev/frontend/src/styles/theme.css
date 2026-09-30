@@ -1,0 +1,60 @@
+/* Alle Farben der Oberfläche an einer Stelle (B-064 › Farbgebung). Dark ist die Palette der Landingpage
+   (index.html im Repo), Hell eine helle Variante mit denselben Akzenten. Radix bekommt Akzent und Hintergrund von hier. */
+:root {
+  --night-1: #0b1026;
+  --night-2: #1b2550;
+  --night-3: #3b3a6b;
+  --gold: #ffd166;
+  --gold-deep: #e0a526;
+  --text: #f1f3f9;
+  --dim: #a9b3cf;
+  --card: rgba(20, 28, 58, 0.72);
+  --card-line: rgba(255, 255, 255, 0.1);
+  --ok: #3fb950;
+  --error: #ff6b6b;
+  --info: #4dabf7;
+  --warn: var(--gold);
+  --neutral: #8b93ad;
+  --bg: linear-gradient(180deg, var(--night-1) 0%, var(--night-2) 55%, var(--night-3) 100%) fixed;
+  --on-accent: #1b1300;
+  --title: var(--gold);
+}
+
+:root[data-mode='light'] {
+  --text: #1b2550;
+  --dim: #56608a;
+  --card: rgba(255, 255, 255, 0.82);
+  --card-line: rgba(27, 37, 80, 0.14);
+  --ok: #238636;
+  --error: #d64545;
+  --info: #1c7ed6;
+  --warn: var(--gold-deep);
+  --neutral: #6b7390;
+  --title: var(--gold-deep);
+  --bg: linear-gradient(180deg, #fbf8f0 0%, #eef0f8 60%, #e3e5f3 100%) fixed;
+}
+
+.radix-themes[data-accent-color] {
+  --color-background: transparent;
+  --accent-9: var(--gold);
+  --accent-10: var(--gold-deep);
+  --accent-contrast: var(--on-accent);
+  --color-panel-solid: var(--card);
+  --default-font-family: 'Segoe UI', system-ui, sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+  margin: 0;
+  min-height: 100%;
+}
+
+body {
+  color: var(--text);
+  background: var(--bg);
+}
