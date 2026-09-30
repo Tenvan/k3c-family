@@ -63,7 +63,7 @@ keine
 |---|---|---|---|---|
 | M5.1 | `M5.1-uebersicht.md` | Umsetzung | autonom | fertig |
 | M5.2 | `M5.2-live-monitore.md` | Umsetzung | autonom | fertig |
-| M5.3 | `M5.3-aufruf-log.md` | Umsetzung | autonom | offen |
+| M5.3 | `M5.3-aufruf-log.md` | Umsetzung | autonom | fertig |
 | M5.4 | `M5.4-statistik.md` | Umsetzung | autonom | offen |
 | M5.5 | `M5.5-review.md` | Review | autonom | offen |
 
