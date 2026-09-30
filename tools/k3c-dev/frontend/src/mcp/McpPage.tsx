@@ -2,6 +2,7 @@ import { SegmentedControl, Text } from '@radix-ui/themes';
 import { useState } from 'react';
 import { loadPref, savePref } from '../lib/prefs';
 import { NoticeCard } from '../ui/parts';
+import { LiveMonitors } from './LiveMonitors';
 import { ServerCards } from './ServerCards';
 import { ToolTiles } from './ToolTiles';
 import { useMcpData } from './useMcpData';
@@ -32,7 +33,7 @@ export function McpPage() {
           <ServerCards overview={overview} error={data.error} reload={data.reload} />
           <div className="mcp-band2">
             <ToolTiles tools={overview.stats.tools} total={overview.stats.totalCalls} />
-            <NoticeCard title="Live-Monitore" tone="neutral">Folgen in M5.2.</NoticeCard>
+            <LiveMonitors minutes={data.usage?.minutes ?? []} />
           </div>
           <NoticeCard title="Aufruf-Log" tone="neutral">Folgt in M5.3.</NoticeCard>
         </>
