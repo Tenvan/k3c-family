@@ -1,0 +1,1 @@
+{ "name": "Wald", "cycle": { "type": "dayNight", "dayMinutes": 10, "nightMinutes": 5, "twilightMinutes": 1 } }

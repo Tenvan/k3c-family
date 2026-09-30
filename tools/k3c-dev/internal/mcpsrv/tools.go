@@ -49,6 +49,21 @@ func register(s *Server) {
 		Description: "Neue Einträge einer Log-Quelle ab einem Byte-Cursor, älteste zuerst, mit dem Cursor für den nächsten Aufruf.",
 		Annotations: readOnly(),
 	}, s.logsSince)
+	add(s, &mcp.Tool{
+		Name:        "reports_list",
+		Description: "Xbox-Berichte der Gamepad-Testseite (reports/*.json), neueste zuerst: Datum, Gerät, Controller, FPS.",
+		Annotations: readOnly(),
+	}, s.reportsList)
+	add(s, &mcp.Tool{
+		Name:        "report_read",
+		Description: "Ein Xbox-Bericht verdichtet: Controller mit gesehenen Tasten, FPS je Sprite-Stufe, Vollbild, Zurück-Navigationen.",
+		Annotations: readOnly(),
+	}, s.reportRead)
+	add(s, &mcp.Tool{
+		Name:        "saves_list",
+		Description: "Spielstände (saves/ oder K3C_SAVES_DIR) mit Stufe, Tag, Spielern und Datum, Sicherungen eingeschlossen.",
+		Annotations: readOnly(),
+	}, s.savesList)
 }
 
 // readOnly sind die Annotations eines Tools, das nur liest.

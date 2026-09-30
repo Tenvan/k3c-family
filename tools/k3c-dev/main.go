@@ -52,8 +52,9 @@ func serve(root string, port int) error {
 		fmt.Fprintln(os.Stderr, "k3c-dev: eigenes Log nur im Speicher:", err)
 	}
 	defer func() { _ = log.Close() }()
+	tracker := usage.Open(usagePath(), time.Now, func(err error) { log.Warn(err.Error(), "ns", "usage") })
 	srv := mcpsrv.New(mcpsrv.Config{Root: root, Port: port, Version: version, Console: store, Log: log.Logger,
-		Usage: usage.New(time.Now)})
+		Usage: tracker})
 	if err := srv.Start(); err != nil {
 		log.Error("start fehlgeschlagen", "ns", "main", "error", err.Error())
 		return err
@@ -64,7 +65,18 @@ func serve(root string, port int) error {
 	defer stop()
 	<-ctx.Done()
 	log.Info("k3c-dev beendet", "ns", "main")
-	return srv.Stop()
+	err = srv.Stop()
+	_ = tracker.Flush() // ein Fehler steht schon im Log (Rückruf)
+	return err
+}
+
+// usagePath ist die Datei der Nutzungsstatistik im Benutzerprofil, nicht im Repo.
+func usagePath() string {
+	dir, err := os.UserConfigDir()
+	if err != nil {
+		dir = os.TempDir()
+	}
+	return filepath.Join(dir, "k3c", "mcp-usage.json")
 }
 
 // findRoot sucht ab dir aufwärts das go.mod des Spiels (module k3c): die Repo-Wurzel.
