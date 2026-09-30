@@ -43,3 +43,28 @@ func TestCheckRunMeldetBeginnUndEnde(t *testing.T) {
 		t.Errorf("Checks() = %+v", checks)
 	}
 }
+
+// Ein Wiederholungslauf meldet in Checks() seinen eigenen Beginn, nicht den des vorigen Laufs.
+func TestChecksZeigtBeginnDesLaufendenLaufs(t *testing.T) {
+	release := make(chan struct{})
+	n := 0
+	s, started := fakeServer(t, func(runSpec) runResult {
+		n++
+		if n == 2 {
+			<-release
+		}
+		return runResult{at: time.Now().Add(-time.Hour)}
+	})
+	_, _ = s.checkRun(context.Background(), checkIn{Target: "npm:test"})
+	done := make(chan struct{})
+	go func() { _, _ = s.checkRun(context.Background(), checkIn{Target: "npm:test"}); close(done) }()
+	for started.Load() < 2 {
+		time.Sleep(time.Millisecond)
+	}
+	checks := s.Checks()
+	close(release)
+	<-done
+	if len(checks) != 1 || !checks[0].Running || time.Since(checks[0].At) > time.Minute {
+		t.Errorf("Checks() während des zweiten Laufs = %+v", checks)
+	}
+}

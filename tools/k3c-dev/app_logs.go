@@ -37,6 +37,7 @@ type Source struct {
 // Sources liefert alle Quellen: Dienste in der Reihenfolge der Konfiguration, dann Log-Dateien, dann Läufe, dann
 // übrige Konsolen-Quellen (Binding).
 func (a *App) Sources() []Source {
+	a.wait()
 	out := []Source{}
 	seen := map[string]bool{}
 	add := func(s Source) {
@@ -65,6 +66,7 @@ func (a *App) Sources() []Source {
 // ConsoleTail liefert den ganzen Puffer einer Quelle, ANSI-Farben eingeschlossen (Binding). Eine bekannte Quelle
 // ohne Ausgabe liefert eine leere Liste, eine unbekannte einen Fehler.
 func (a *App) ConsoleTail(source string) ([]console.Line, error) {
+	a.wait()
 	lines, ok := a.store.Tail(source, 0)
 	if ok {
 		return append([]console.Line{}, lines...), nil

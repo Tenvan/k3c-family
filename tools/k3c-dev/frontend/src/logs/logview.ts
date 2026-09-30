@@ -64,7 +64,16 @@ export function prettyData(data: Record<string, unknown> | undefined): string {
   return data && Object.keys(data).length > 0 ? JSON.stringify(data, null, 2) : '';
 }
 
-/** Stabiler Schlüssel einer Zeile über Nachladen hinweg (Aufklappen bleibt erhalten). */
-export function entryKey(e: LogEntry): string {
-  return `${e.time}|${e.level}|${e.ns}|${e.msg}`;
+/**
+ * Schlüssel der Zeilen: stabil über Nachladen hinweg (Aufklappen bleibt erhalten) und eindeutig, auch wenn zwei
+ * Einträge in Zeit, Level, ns und msg gleich sind (grobe Zeitstempel fremder Logs).
+ */
+export function entryKeys(entries: LogEntry[]): string[] {
+  const seen = new Map<string, number>();
+  return entries.map((e) => {
+    const base = `${e.time}|${e.level}|${e.ns}|${e.msg}`;
+    const n = seen.get(base) ?? 0;
+    seen.set(base, n + 1);
+    return n === 0 ? base : `${base}#${n}`;
+  });
 }

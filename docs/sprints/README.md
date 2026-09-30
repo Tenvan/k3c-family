@@ -6,11 +6,7 @@ Jede Sprint-README ist eine Spec (SDD); aktiv wird ein Sprint erst mit `Spec: fr
 
 ## Aktiv
 
-| Sprint | Domäne | Thema | Am Ende sichtbar | Ordner |
-|---|---|---|---|---|
-| M4 | SRV 🧑 | k3c-dev IV: Oberfläche (Wails) mit Dienste- und Logs-Seite | `k3c-dev.exe` zeigt Dienste und Läufe live | `aktiv/M4-dev-oberflaeche/` |
-
-Nächste Session: M4.1 (Wails-Gerüst).
+Kein aktiver Sprint. Nächster Schritt: M5 oder SP03 bereit machen (Sessions schreiben, 🧑 um Freigabe bitten).
 
 ## Geplant (in dieser Reihenfolge)
 
@@ -52,3 +48,4 @@ Nach SP11: Regelwerk II (Skills) → SIM Skills in Go → CLI Skills → Spielea
 | M1 | k3c-dev I: MCP-Kern über HTTP | `erledigt/M1-dev-mcp/` |
 | M2 | k3c-dev II: Nutzungsstatistik, Berichte, Spielstände | `erledigt/M2-dev-statistik/` |
 | M3 | k3c-dev III: Dienste führen, `svc_*`-Tools | `erledigt/M3-dev-dienste/` |
+| M4 | k3c-dev IV: Oberfläche (Wails) mit Dienste- und Logs-Seite | `erledigt/M4-dev-oberflaeche/` |
