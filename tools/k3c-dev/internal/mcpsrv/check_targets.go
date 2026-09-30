@@ -52,8 +52,9 @@ var checkTargets = []checkTarget{
 		timeout: testTimeout, kinds: []string{kindGoTest}},
 }
 
-// patternRule ist eine Positivliste: sie lehnt Shell-Zeichen (;&|$`"' < > % ^) und Leerzeichen ab.
-var patternRule = regexp.MustCompile(`^[A-Za-z0-9_./:-]{1,100}$`)
+// patternRule ist eine Positivliste: sie lehnt Shell-Zeichen (;&|$`"' < > % ^) und Leerzeichen ab, und ein
+// führendes "-", damit kein Muster zur Option wird (z. B. "--watch" hielte den Lauf bis zum Zeitlimit offen).
+var patternRule = regexp.MustCompile(`^[A-Za-z0-9_./:][A-Za-z0-9_./:-]{0,99}$`)
 
 func targetNames() string {
 	names := make([]string, len(checkTargets))
@@ -82,7 +83,7 @@ func (t checkTarget) args(pattern string) ([]string, error) {
 		return nil, fmt.Errorf("%s nimmt kein Testmuster; Muster gehen nur bei npm:test, go:test, dev:test", t.name)
 	}
 	if !patternRule.MatchString(pattern) {
-		return nil, fmt.Errorf("testmuster %q abgelehnt: erlaubt sind nur A–Z, a–z, 0–9 und _ . / : - (höchstens 100)", pattern)
+		return nil, fmt.Errorf("testmuster %q abgelehnt: erlaubt sind nur A–Z, a–z, 0–9 und _ . / : - (kein - am Anfang, höchstens 100)", pattern)
 	}
 	return append(args, t.pattern, pattern), nil
 }
