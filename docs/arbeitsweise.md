@@ -147,8 +147,8 @@ Niedrige Komplexität ist in **jeder** Session Pflicht, nicht erst im Review.
 - Schichtgrenzen: `engine/sim` und `engine/level` importieren nichts aus `engine/room`, `engine/net`, `cmd/`;
   `engine/` nichts aus `cmd/`. Im Client rechnet `src/scenes` nichts, es zeichnet Snapshots.
   Bis zur Löschung: `src/world` importiert nichts aus `scenes/`, `online/`, `input/`.
-- Werkzeuge: Oxlint (TypeScript), `golangci-lint` mit `funlen`, `gocyclo`, `revive` › `max-control-nesting`, `depguard` (Go);
-  Dateilänge beider Sprachen: `tests/projectRules.test.ts`.
+- Werkzeuge: Oxlint (TypeScript), `golangci-lint` mit `funlen`, `gocyclo`, `depguard` (Go);
+  Go-Verschachtelung: `tests/nesting_test.go`; Dateilänge beider Sprachen: `tests/projectRules.test.ts`.
 
 ## Entscheidungen und Versionen
 

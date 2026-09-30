@@ -70,7 +70,7 @@ describe('Komplexität & Schichten', () => {
   const baseline: Record<string, number> = JSON.parse(read(BASELINE));
   const posix = (path: string) => path.split(sep).join('/');
   const lines = (file: string) => (read(file).match(/\n/g) ?? []).length; // wie `wc -l`
-  const goDirs = ['data', 'engine', 'cmd'];
+  const goDirs = ['data', 'engine', 'cmd', 'tests'];
   const goFiles = goDirs.flatMap((d) => filesIn(d, (n) => n.endsWith('.go'))).map(posix);
   const codeFiles = sourceFiles('src').map(posix).concat(goFiles.filter((f) => !f.endsWith('_test.go')));
 
