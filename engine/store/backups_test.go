@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"os"
 	"path/filepath"
+	"sync"
 	"testing"
 	"time"
 )
@@ -86,5 +87,28 @@ func TestRestore(t *testing.T) {
 	}
 	if err := s.Restore("../x", oldest.Name); !errors.Is(err, ErrSlot) {
 		t.Errorf("Slot: %v", err)
+	}
+}
+
+// Xbox und Handy speichern gleichzeitig: jeder Speichervorgang gelingt, die Rotation bleibt bei 5.
+func TestGleichzeitigesSpeichern(t *testing.T) {
+	s := &Saves{Dir: t.TempDir()}
+	var wg sync.WaitGroup
+	errs := make(chan error, 20)
+	for i := 1; i <= 20; i++ {
+		wg.Go(func() {
+			if _, err := s.Store("autosave", save(i)); err != nil {
+				errs <- err
+			}
+		})
+		wg.Go(func() { _, _ = s.Load("autosave") })
+	}
+	wg.Wait()
+	close(errs)
+	for err := range errs {
+		t.Error(err)
+	}
+	if list, _ := s.Backups("autosave"); len(list) != BackupKeep {
+		t.Errorf("%d Sicherungen", len(list))
 	}
 }

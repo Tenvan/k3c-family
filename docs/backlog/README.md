@@ -32,7 +32,7 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-024](B-024-tiefe-3-4.md) | REG | Idee | niedrig | offen | – | Tiefe 3 und 4 sind beschrieben |
 | [B-025](B-025-kampagnen-ziel.md) | REG | Frage | mittel | eingeplant | R1 | Ziel einer Kampagne ist festgelegt |
 | [B-026](B-026-skill-tasten.md) | PLAT | Frage | hoch | eingeplant | X1 | Skill-Tasten am Controller sind festgelegt |
-| [B-027](B-027-diagnose-absichern.md) | SRV | Problem | hoch | eingeplant | SP03 | Diagnose-Schnittstelle ist abgesichert |
+| [B-027](B-027-diagnose-absichern.md) | SRV | Problem | hoch | erledigt | SP03 | Diagnose-Schnittstelle ist abgesichert |
 | [B-028](B-028-spielstand-sicherung.md) | SRV | Idee | mittel | eingeplant | SP03 | Spielstände werden rotierend gesichert |
 | [B-029](B-029-lade-szene.md) | CLI | Idee | mittel | offen | – | Lade-Szene zeigt Fortschritt |
 | [B-030](B-030-wiederverbinden.md) | SRV | Idee | hoch | eingeplant | SP07 | Geräte verbinden sich nach Abbruch wieder |
