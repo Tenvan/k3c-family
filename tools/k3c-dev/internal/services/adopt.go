@@ -122,14 +122,19 @@ func (c *Controller) Monitor(ctx context.Context, every time.Duration) {
 }
 
 // sampleAll misst einmal; eine gescheiterte Messung lässt den letzten Wert stehen, über den Zustand entscheidet die
-// Überwachung.
+// Überwachung. Gemessen wird der Prozess, der am Port lauscht: der eigene Start ist oft nur eine Hülle (npm.cmd →
+// cmd.exe → node), CPU und Speicher braucht aber der Server selbst.
 func (c *Controller) sampleAll(ctx context.Context) {
 	for _, u := range c.units {
 		st := u.status()
 		if (st.State != Running && st.State != Adopted) || st.PID <= 0 {
 			continue
 		}
-		m, err := c.opts.Sample(ctx, st.PID)
+		pid := st.PID
+		if lp, ok := c.opts.Listen(ctx, u.svc.Port); ok && lp > 0 {
+			pid = lp
+		}
+		m, err := c.opts.Sample(ctx, pid)
 		if err != nil {
 			continue
 		}
