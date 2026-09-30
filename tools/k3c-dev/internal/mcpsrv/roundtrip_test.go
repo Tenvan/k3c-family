@@ -2,6 +2,7 @@ package mcpsrv
 
 import (
 	"context"
+	"slices"
 	"strings"
 	"testing"
 
@@ -50,6 +51,7 @@ func TestAlleToolsMitBeschreibungUndAnnotations(t *testing.T) {
 	for _, ts := range s.Stats().Tools {
 		catalog = append(catalog, ts.Name)
 	}
+	slices.Sort(catalog) // ListTools liefert nach Namen sortiert
 	if strings.Join(names, ",") != strings.Join(catalog, ",") {
 		t.Errorf("gelistet %v, Katalog %v", names, catalog)
 	}
