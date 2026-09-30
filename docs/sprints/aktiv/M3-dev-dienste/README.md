@@ -1,11 +1,11 @@
 # M3 · SRV · k3c-dev III: Dienste führen
 
-- **Status:** geplant
+- **Status:** aktiv
 - **Domäne:** SRV
 - **Reife:** bereit
 - **Einschiebbar:** ja
 - **Tickets:** B-067
-- **Start-Commit:** –
+- **Start-Commit:** 9a85ce3
 - **Spec:** freigegeben
 - **Revision:** 1
 - **Freigabe:** 2026-09-30 🧑 Chat (M3 Revision 1 mit B-067, gopsutil v4.26.8 und x/sys)
@@ -66,7 +66,7 @@ keine
 
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
-| M3.1 | `M3.1-controller.md` | Umsetzung | autonom | offen |
+| M3.1 | `M3.1-controller.md` | Umsetzung | autonom | fertig |
 | M3.2 | `M3.2-uebernahme-metriken.md` | Umsetzung | autonom | offen |
 | M3.3 | `M3.3-svc-tools.md` | Umsetzung | autonom | offen |
 | M3.4 | `M3.4-review.md` | Review | autonom | offen |
