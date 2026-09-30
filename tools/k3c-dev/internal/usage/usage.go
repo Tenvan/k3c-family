@@ -53,9 +53,10 @@ type Tracker struct {
 	session *scope
 	allTime *scope
 	minutes []minute // aufsteigend nach T, ohne leere Minuten
+	persist *persist // nil = nur im Speicher (New)
 }
 
-// New legt einen leeren Tracker an; now ist die Uhr (Tests stellen sie).
+// New legt einen leeren Tracker nur im Speicher an; now ist die Uhr (Tests stellen sie). Mit Datei: Open.
 func New(now func() time.Time) *Tracker {
 	start := now()
 	return &Tracker{now: now, session: newScope(start), allTime: newScope(start)}
@@ -73,6 +74,7 @@ func (t *Tracker) Record(e Event) {
 	t.session.add(e, args, slow, outlier)
 	t.allTime.add(e, args, slow, outlier)
 	t.addMinute(e, outlier)
+	t.scheduleSave()
 }
 
 func (t *Tracker) addMinute(e Event, outlier bool) {
