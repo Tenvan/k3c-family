@@ -63,7 +63,7 @@ keine
 
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
-| SP01.1 | `SP01.1-client-lint.md` | Umsetzung | autonom | in Arbeit |
+| SP01.1 | `SP01.1-client-lint.md` | Umsetzung | autonom | fertig |
 | SP01.2 | `SP01.2-go-geruest.md` | Umsetzung | autonom | offen |
 | SP01.3 | `SP01.3-regel-tests.md` | Umsetzung | autonom | offen |
 | SP01.4 | `SP01.4-review.md` | Review | autonom | offen |
