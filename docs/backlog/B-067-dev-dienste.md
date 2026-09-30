@@ -6,9 +6,9 @@
 - **Status:** eingeplant
 - **Sprint:** M3
 - **Erstellt:** 2026-09-30
-- **Spec:** Entwurf
+- **Spec:** freigegeben
 - **Revision:** 1
-- **Freigabe:** –
+- **Freigabe:** 2026-09-30 🧑 Chat (M3 Revision 1 mit B-067, gopsutil v4.26.8 und x/sys)
 
 ## Ausgangslage
 
@@ -31,19 +31,22 @@ Entwickler und Coding-Agenten am Entwickler-PC (Windows); die Dienste-Seite (B-0
   Argumente als Liste, kein Shell-String), `cwd` (relativ zur Repo-Wurzel), `port`, `health` (`http` = `GET
   http://127.0.0.1:<port>/` antwortet mit 2xx/3xx, `tcp` = Port nimmt Verbindungen an), optional `log` (Name einer
   Log-Quelle `logs/<log>.jsonl`), `autoRestart` (ja/nein), `env` (zusätzliche Variablen). Anfangs:
-  `Vite` (`npm run dev`, 5173, `http`, Auto-Restart) und `Heimnetz` (`npm start`, 8080, `http`); `k3c-server` trägt
+  `Vite` (`npm run dev -- --strictPort`, 5173, `http`, Auto-Restart; ohne `--strictPort` wiche Vite bei belegtem
+  Port still auf 5174 aus) und `Heimnetz` (`npm start`, 8080, `http`); `k3c-server` trägt
   SP03 nach (B-066). Unbekannte Felder, doppelte Namen oder Ports und fehlende Pflichtfelder → Fehler mit Pfad und Feld.
 - **Zustände:** `gestoppt`, `startet`, `läuft`, `übernommen`, `stoppt`, `fehlgeschlagen`. Start: Prozess ohne
   Konsolenfenster, dann Health-Prüfung alle 1 s bis höchstens 60 s → `läuft`, sonst `fehlgeschlagen` mit Grund. Im
   Lauf Prüfung alle 10 s; drei Fehlschläge in Folge oder Prozessende → `fehlgeschlagen`, mit `autoRestart` neu starten
-  (höchstens 3 Neustarts je 10 min, Zähler sichtbar). Stopp beendet den ganzen Prozessbaum (Paket `internal/proc`, dasselbe wie für `check_run` aus B-046).
+  (höchstens 3 Neustarts je 10 min, Zähler sichtbar). Stopp beendet den ganzen Prozessbaum (Paket `internal/proc`, dasselbe wie für `check_run` aus B-046; unter
+  Windows über ein Job Object, damit auch verwaiste Enkel enden).
 - **Ein Steuerpunkt:** Alle Befehle (Oberfläche und MCP) laufen durch einen Controller, der je Dienst serialisiert; ein
   zweiter Start eines laufenden Dienstes ist ein Fehler, kein zweiter Prozess. Zustandswechsel gehen als Rückruf hinaus
   (für die Oberfläche) und ins eigene Log (B-046). `Alle starten` startet parallel, `Alle stoppen` in umgekehrter
   Reihenfolge der Konfiguration.
 - **Übernahme:** Beim Start von `k3c-dev` gilt ein Dienst, dessen Health-Prüfung schon besteht, als `übernommen`; die
   PID kommt über den Port (Verbindungstabelle des Systems). Übernommene Dienste haben keine Konsolenausgabe und keinen
-  Auto-Restart; Stopp beendet den Prozessbaum dieser PID nur mit ausdrücklicher Bestätigung (`force`).
+  Auto-Restart; besteht ihre Prüfung nicht mehr, werden sie `gestoppt` (Grund `übernommener Prozess nicht mehr
+  erreichbar`). Stopp beendet den Prozessbaum dieser PID nur mit ausdrücklicher Bestätigung (`force`).
 - **Port belegt** beim Start durch einen fremden Prozess → `fehlgeschlagen` mit `Port 8080 bereits belegt (PID 8812)`.
 - **Metriken** mit `github.com/shirou/gopsutil/v4` alle 2 s für laufende und übernommene Dienste: PID, CPU in %,
   Speicher (RSS), Laufzeit.
@@ -66,7 +69,7 @@ Dienste über die Oberfläche anlegen oder ändern; Einstellung „Dienste beim 
 
 ## Regeln und Einschränkungen
 
-Neue Abhängigkeit nur `gopsutil/v4` (Freigabe 🧑). Kein Shell-Aufruf: `command` wird direkt gestartet (unter Windows
+Neue Abhängigkeiten nur `gopsutil/v4` und `golang.org/x/sys` als direkte (heute schon indirekte) für das Job Object (Freigabe 🧑). Kein Shell-Aufruf: `command` wird direkt gestartet (unter Windows
 `npm.cmd`). Test-Nähte für Prozessstart, Health-Prüfung und Uhr, damit die Zustandsmaschine ohne echte Prozesse getestet
 wird. Komplexitäts-Budget aus `docs/arbeitsweise.md`.
 
