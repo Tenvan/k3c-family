@@ -126,13 +126,13 @@ func (st *stats) begin(tool, args string) int64 {
 	return c.ID
 }
 
-// end schließt einen Aufruf ab, zählt ihn und schiebt ihn ins Aufruf-Log.
-func (st *stats) end(id int64, o outcome) {
+// end schließt einen Aufruf ab, zählt ihn, schiebt ihn ins Aufruf-Log und liefert ihn zurück.
+func (st *stats) end(id int64, o outcome) (Call, bool) {
 	st.mu.Lock()
 	r, found := st.running[id]
 	if !found {
 		st.mu.Unlock()
-		return
+		return Call{}, false
 	}
 	delete(st.running, id)
 	now := st.now()
@@ -148,6 +148,7 @@ func (st *stats) end(id int64, o outcome) {
 	if fn != nil {
 		fn(c)
 	}
+	return c, true
 }
 
 // count zählt einen beendeten Aufruf; ein Tool außerhalb des Katalogs zählt nur in den Summen.
