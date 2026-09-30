@@ -1,4 +1,4 @@
-# M4 · SRV · k3c-dev IV: MCP-Seite mit Monitoren und Statistik
+# M5 · SRV · k3c-dev V: MCP-Seite mit Monitoren und Statistik
 
 - **Status:** geplant
 - **Domäne:** SRV
@@ -12,7 +12,7 @@
 
 ## Ausgangslage
 
-Nach M3 hat `k3c-dev` ein Fenster mit Logs-Seite; der Reiter `MCP` zeigt nur einen Hinweis.
+Nach M4 hat `k3c-dev` ein Fenster mit Logs-Seite; der Reiter `MCP` zeigt nur einen Hinweis.
 
 ## Ziel
 
@@ -33,7 +33,7 @@ B-065 › Nicht-Ziele.
 
 ## Regeln und Einschränkungen
 
-B-065 › Regeln und Einschränkungen. Einschiebbar nach M3. Keine neuen Abhängigkeiten, keine Ausnahmen außerhalb der Domäne.
+B-065 › Regeln und Einschränkungen. Einschiebbar nach M4. Keine neuen Abhängigkeiten, keine Ausnahmen außerhalb der Domäne.
 
 ## Beispiele
 
@@ -60,10 +60,10 @@ keine
 
 Entwurf. Vor dem Aktivieren jede Session als Datei nach `docs/vorlagen/session.md` schreiben, die Kriterien in Klammern werden ihr Feld `Kriterien`.
 
-- M4.1 Übersicht Band 1 und 2 links: Server- und Verbindungskarte, Instructions-Dialog, Neustart, Tool-Kacheln (AC-01, AC-02).
-- M4.2 Live-Monitore (Reihen-Berechnung, Säulen, Liniendiagramm) und Aufruf-Log mit Graph-Spuren (AC-02, AC-03).
-- M4.3 Statistik: Kennzahlen, sortierbare Tabelle, Aufklappen, Seitenspalte; Mock ergänzen (AC-04, AC-05).
-- M4.4 🔍 Review, 🧑 prüft die Seite (AC-06, alle).
+- M5.1 Übersicht Band 1 und 2 links: Server- und Verbindungskarte, Instructions-Dialog, Neustart, Tool-Kacheln (AC-01, AC-02).
+- M5.2 Live-Monitore (Reihen-Berechnung, Säulen, Liniendiagramm) und Aufruf-Log mit Graph-Spuren (AC-02, AC-03).
+- M5.3 Statistik: Kennzahlen, sortierbare Tabelle, Aufklappen, Seitenspalte; Mock ergänzen (AC-04, AC-05).
+- M5.4 🔍 Review, 🧑 prüft die Seite (AC-06, alle).
 
 ## Abnahme
 

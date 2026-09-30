@@ -4,7 +4,7 @@
 - **Typ:** Idee
 - **Prio:** mittel
 - **Status:** eingeplant
-- **Sprint:** M3
+- **Sprint:** M4
 - **Erstellt:** 2026-09-30
 - **Spec:** Entwurf
 - **Revision:** 1
@@ -12,8 +12,9 @@
 
 ## Ausgangslage
 
-Nach M1 und M2 (B-046, B-062, B-063) läuft `k3c-dev` als Programm ohne Fenster im Terminal. Konsolenpuffer, Log-Leser
-und Verdichtung gibt es nur für Agenten über MCP; ein Mensch sieht weder die Ausgabe der Prüfläufe noch die Logs.
+Nach M1 bis M3 (B-046, B-062, B-063, B-067) läuft `k3c-dev` als Programm ohne Fenster im Terminal. Dienste,
+Konsolenpuffer, Log-Leser und Verdichtung gibt es nur für Agenten über MCP; ein Mensch sieht weder die Ausgabe der
+Dienste und Prüfläufe noch die Logs.
 
 ## Ziel
 
@@ -33,7 +34,7 @@ Entwickler am Entwickler-PC (Windows); 🧑 stimmt den Abhängigkeiten zu und ni
   B-046; Schließen beendet Programm und MCP-Server.
 - **Fenster:** Titel `K3C Dev`; nur eine Instanz (zweiter Start holt das offene Fenster nach vorn); Größe und Position
   werden beim Schließen in `<os.UserConfigDir()>/k3c/k3c-dev.json` gemerkt und beim Start wiederhergestellt.
-- **Kopfzeile:** Titel, Reiter `Logs` und `MCP` (MCP-Seite: B-065, bis dahin ein Hinweis), Badge
+- **Kopfzeile:** Titel, Reiter `Dienste` (B-068), `Logs` und `MCP` (MCP-Seite: B-065, bis dahin ein Hinweis), Badge
   `MCP 127.0.0.1:5180` (grün: lauscht; rot: Fehler, Grund im Tooltip), Badge `Mock` ohne Wails-Laufzeit, Schalter
   `Dark`. Reiter und Farbmodus werden gemerkt (`localStorage`).
 - **Farbgebung wie die Landingpage** (`index.html`): Dark ist Standard und nutzt deren Palette (`--night-1` `#0b1026`,
@@ -46,10 +47,10 @@ Entwickler am Entwickler-PC (Windows); 🧑 stimmt den Abhängigkeiten zu und ni
 - **Backend-Vertrag an einer Stelle** (`src/api/`): Wails-Bindings oder, ohne Wails-Laufzeit, ein eingebauter Mock mit
   erfundenen, sich bewegenden Daten (Konsole läuft, Logs wachsen, Aufrufe kommen), damit die Oberfläche im normalen
   Browser (`npm run dev` im Frontend) testbar ist.
-- **Ereignisse statt Abfrage-Intervall** für Live-Daten: `console:line`, `source:state`, `mcp:state`, `mcp:start`,
-  `mcp:call` (die letzten beiden nutzt B-065).
+- **Ereignisse statt Abfrage-Intervall** für Live-Daten: `console:line`, `source:state`, `service:state`, `mcp:state`,
+  `mcp:start`, `mcp:call` (die letzten beiden nutzt B-065).
 - **Logs-Seite, Quellenleiste:** umschaltbare Leiste mit allen Quellen aus B-046 (`logs_sources`): Name mit
-  Zustands-Punkt, Log-Datei grün (Einträge da) oder grau (keine), Lauf `check:<ziel>` blau (läuft), grün (ok) oder rot
+  Zustands-Punkt, Dienst nach seinem Zustand (B-067), Log-Datei grün (Einträge da) oder grau (keine), Lauf `check:<ziel>` blau (läuft), grün (ok) oder rot
   (rot oder Zeitlimit); Tooltip mit Details. Läufe erscheinen, sobald sie einmal gelaufen sind. Auswahl gemerkt; eine
   verschwundene Quelle fällt auf die erste zurück.
 - **Reiter** `Konsole`, `Log`, `Fehler (verdichtet)`; `Log` und `Fehler` nur für Log-Dateien (bei Läufen deaktiviert,
@@ -72,7 +73,7 @@ Entwickler am Entwickler-PC (Windows); 🧑 stimmt den Abhängigkeiten zu und ni
 
 ## Nicht-Ziele
 
-MCP-Seite (B-065); Dienste starten oder stoppen; Tasks, Commits, Releases, Einstellungen; Wails v3 (Beta); eine
+MCP-Seite (B-065); Dienste-Seite (B-068); Tasks, Commits, Releases, Einstellungen; Wails v3 (Beta); eine
 Diagramm- oder Komponenten-Bibliothek außer Radix Themes; Betrieb ohne Windows.
 
 ## Regeln und Einschränkungen
@@ -112,4 +113,4 @@ keine
 
 ## Notizen
 
-Aus B-046 Revision 2 abgeleitet (2026-09-30). Farbgebung nach Vorgabe von 🧑 (2026-09-30, Chat).
+Aus B-046 Revision 2 abgeleitet (2026-09-30); Dienste als Quellen nach B-067. Farbgebung nach Vorgabe von 🧑 (2026-09-30, Chat).
