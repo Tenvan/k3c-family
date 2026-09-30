@@ -6,9 +6,9 @@
 - **Status:** eingeplant
 - **Sprint:** SP04
 - **Erstellt:** 2026-09-30
-- **Spec:** Entwurf
+- **Spec:** freigegeben
 - **Revision:** 1
-- **Freigabe:** –
+- **Freigabe:** 2026-09-30 🧑 Chat (3 Simulationsläufe, Generator als Vitest-Datei, FMA: Regel + Ticket B-071)
 
 ## Ausgangslage
 

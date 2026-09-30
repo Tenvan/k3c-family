@@ -6,7 +6,9 @@ Jede Sprint-README ist eine Spec (SDD); aktiv wird ein Sprint erst mit `Spec: fr
 
 ## Aktiv
 
-Kein aktiver Sprint. Nächster Schritt: SP04 bereit machen (Sessions schreiben, 🧑 um Freigabe bitten).
+| Sprint | Domäne | Thema | Am Ende sichtbar | Reife | Ordner |
+|---|---|---|---|---|---|
+| SP04 | SIM | Golden-Tests, RNG, Level-Generator in Go | gleiche Level in TS und Go | bereit | `aktiv/SP04-golden-level/` |
 
 ## Geplant (in dieser Reihenfolge)
 
@@ -15,7 +17,6 @@ dann über den Go-Server mit mehreren Räumen und gemischten Spielern.
 
 | Sprint | Domäne | Thema | Am Ende sichtbar | Reife | Ordner |
 |---|---|---|---|---|---|
-| SP04 | SIM | Golden-Tests, RNG, Level-Generator in Go | gleiche Level in TS und Go | Entwurf | `geplant/SP04-golden-level/` |
 | SP05 | SIM | Port I: Welt, Zyklus, Wirtschaft | Golden-Läufe ohne Gegner grün | Entwurf | `geplant/SP05-port-welt/` |
 | SP06 | SIM | Port II: Einheiten, Gegner, Wellen, Reisen, Kampagne | alle Golden-Läufe grün | Entwurf | `geplant/SP06-port-einheiten/` |
 | SP07 | SRV | Räume & WebSocket in Go, MCP-Tools für Räume und Simulation | 3 Räume parallel im Test | Entwurf | `geplant/SP07-raeume/` |
