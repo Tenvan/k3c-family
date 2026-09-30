@@ -11,7 +11,7 @@ Jede Sprint-README ist eine Spec (SDD); aktiv wird ein Sprint erst mit `Spec: fr
 | M5 | SRV 🧑 | k3c-dev V: MCP-Seite mit Monitoren und Statistik | zwei parallele Aufrufe als zwei Spuren, p95 je Tool | `aktiv/M5-dev-mcp-seite/` |
 | SP03 | SRV | Go-Server Basis (ersetzt `server/*.mjs` für Dateien, Spielstände, Berichte) | EXE und Docker-Image liefern das Spiel aus | `aktiv/SP03-go-server/` |
 
-M5 wartet auf die Abnahme durch 🧑 (M5.5). Nächste Session: SP03.1.
+M5 wartet auf die Abnahme durch 🧑 (M5.5), SP03 auf den grünen CI-Job `docker` nach dem Push (SP03.3).
 
 ## Geplant (in dieser Reihenfolge)
 

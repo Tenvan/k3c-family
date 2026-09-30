@@ -18,6 +18,7 @@ import (
 	"os"
 	"os/signal"
 	"path/filepath"
+	"syscall"
 	"time"
 
 	k3cnet "k3c/engine/net"
@@ -73,7 +74,8 @@ func run(cfg config, log *slog.Logger) error {
 	if cfg.statusToken == "" {
 		log.Info("diagnose aus: K3C_STATUS_TOKEN ist nicht gesetzt (/api/status antwortet 404)")
 	}
-	ctx, stop := signal.NotifyContext(context.Background(), os.Interrupt)
+	// SIGTERM schicken docker stop und compose down; ohne Handler würde PID 1 im Container es ignorieren.
+	ctx, stop := signal.NotifyContext(context.Background(), os.Interrupt, syscall.SIGTERM)
 	defer stop()
 	servers := []*http.Server{newServer(":"+cfg.httpPort, handler)}
 	errs := make(chan error, 2)

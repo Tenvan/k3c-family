@@ -10,6 +10,7 @@ import (
 	"regexp"
 	"strconv"
 	"strings"
+	"sync"
 	"time"
 )
 
@@ -24,10 +25,14 @@ var (
 	unsafe   = regexp.MustCompile(`[^A-Za-z0-9-]`)
 )
 
-// Saves sind die Spielstände unter Dir, je Slot eine Datei <slot>.json.
+// Saves sind die Spielstände unter Dir, je Slot eine Datei <slot>.json. Alle Zugriffe laufen unter einer Sperre:
+// net/http bedient parallel (Xbox und Handy speichern gleichzeitig), und unter Windows scheitert ein Umbenennen, solange
+// dieselbe Datei gelesen wird.
+// ponytail: eine Sperre für alle Slots; je Slot sperren, falls viele Räume gleichzeitig speichern.
 type Saves struct {
 	Dir string
 	Now func() time.Time // Test-Naht; nil = time.Now
+	mu  sync.Mutex
 }
 
 func (s *Saves) now() time.Time {
@@ -46,6 +51,8 @@ func (s *Saves) path(slot string) (string, error) {
 
 // Load liest einen Spielstand; ohne Datei ErrNotFound.
 func (s *Saves) Load(slot string) ([]byte, error) {
+	s.mu.Lock()
+	defer s.mu.Unlock()
 	path, err := s.path(slot)
 	if err != nil {
 		return nil, err
@@ -87,6 +94,12 @@ func parseSave(data []byte) (header, error) {
 // wird er vorher als <slot>-<savedAt>.json gesichert (wie server/saves.mjs); backup ist dann dessen Dateiname, sonst
 // leer. Sonst wandert der bisherige Stand in die rotierenden Sicherungen (B-028, BackupKeep je Slot).
 func (s *Saves) Store(slot string, data []byte) (backup string, err error) {
+	s.mu.Lock()
+	defer s.mu.Unlock()
+	return s.store(slot, data)
+}
+
+func (s *Saves) store(slot string, data []byte) (backup string, err error) {
 	path, err := s.path(slot)
 	if err != nil {
 		return "", err
