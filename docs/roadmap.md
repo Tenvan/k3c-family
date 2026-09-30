@@ -1,7 +1,7 @@
 # Roadmap
 
 Kleine, spielbare Schritte. Jeder Schritt endet mit etwas, das man am TV mit Controller ausprobieren kann.
-Umsetzung in Sprints und Sessions: [`docs/sprints.md`](sprints.md). Ideen und Probleme: [`docs/backlog.md`](backlog.md).
+Umsetzung in Sprints und Sessions: [`docs/sprints/`](sprints/README.md). Tickets: [`docs/backlog/`](backlog/README.md). Arbeitsweise: [`docs/arbeitsweise.md`](arbeitsweise.md).
 
 ## Schritt 0 – Xbox-Machbarkeit (als Nächstes!)
 

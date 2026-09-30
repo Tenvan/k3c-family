@@ -1,6 +1,6 @@
 ## Sprint / Session
 
-SP?.? · Domäne: REG / SIM / CLI / PLAT / SRV / INF
+SPnn.m · Domäne: REG / SIM / CLI / PLAT / SRV / INF · Session-Datei: `docs/sprints/aktiv/…/SPnn.m-….md`
 
 ## Was
 
@@ -10,10 +10,11 @@ SP?.? · Domäne: REG / SIM / CLI / PLAT / SRV / INF
 
 - [ ] Nur Dateien der Domäne geändert (sonst begründet)
 - [ ] „Fertig, wenn“ der Session erfüllt
-- [ ] `npm test` und `npm run typecheck` grün (ab SP1: `npm run check`)
-- [ ] Mit 2 Spielern geprüft (falls Spiel betroffen)
+- [ ] Nur „Erlaubte Dateien“ der Session geändert
+- [ ] `npm test` und `npm run typecheck` grün (ab SP01: `npm run check`)
+- [ ] Mit mehreren Spielern geprüft (falls Spiel betroffen)
 - [ ] Komplexitäts-Budget eingehalten (Datei ≤ 300 Z., Funktion ≤ 40 Z.; Ausnahmeliste nur verkleinert)
-- [ ] Session in `docs/sprints.md` abgehakt, neue Ideen/Probleme in `docs/backlog.md`
+- [ ] Session-Datei: `Status` und `Ergebnis` ausgefüllt, Sprint-Tabelle angepasst; neue Tickets nach Vorlage + Index
 
 ## Am TV prüfen
 
