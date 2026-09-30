@@ -1,0 +1,143 @@
+// Package mcpsrv ist der MCP-Server von k3c-dev (B-046): Streamable HTTP nur an 127.0.0.1, ein Tool-Katalog
+// (tools.go), Zähler und Aufruf-Log für die Oberfläche (stats.go).
+package mcpsrv
+
+import (
+	"context"
+	"errors"
+	"fmt"
+	"net"
+	"net/http"
+	"strconv"
+	"strings"
+	"sync"
+	"time"
+
+	"github.com/modelcontextprotocol/go-sdk/mcp"
+)
+
+const (
+	// DefaultPort ist der Vorgabe-Port, EnvPort überschreibt ihn.
+	DefaultPort = 5180
+	EnvPort     = "K3C_DEV_PORT"
+	// stopTimeout begrenzt das Warten auf offene Verbindungen (Streams der Clients) beim Stoppen.
+	stopTimeout = 2 * time.Second
+)
+
+// Config beschreibt einen Server. Port 0 wählt einen freien Port (Tests).
+type Config struct {
+	Root    string // Repo-Wurzel
+	Port    int
+	Version string
+	OnStart func(Call) // optional: Aufruf beginnt
+	OnCall  func(Call) // optional: Aufruf beendet
+}
+
+// Server hält den MCP-Server und den HTTP-Server, der ihn ausliefert. Der HTTP-Teil lässt sich neu starten,
+// ohne dass Katalog und Zähler verloren gehen.
+type Server struct {
+	cfg    Config
+	mcp    *mcp.Server
+	stats  *stats
+	params map[string][]string // gültige Parameter je Tool, gefüllt bei der Registrierung
+
+	mu   sync.Mutex
+	http *http.Server
+	addr string
+}
+
+// ResolvePort liest den Port aus dem Wert von EnvPort; leer heißt DefaultPort.
+func ResolvePort(raw string) (int, error) {
+	raw = strings.TrimSpace(raw)
+	if raw == "" {
+		return DefaultPort, nil
+	}
+	port, err := strconv.Atoi(raw)
+	if err != nil || port < 1 || port > 65535 {
+		return 0, fmt.Errorf("%s=%q ist keine gültige Portzahl (1–65535)", EnvPort, raw)
+	}
+	return port, nil
+}
+
+// New baut den Server mit allen Tools aus dem Katalog; gestartet wird er mit Start.
+func New(cfg Config) *Server {
+	s := &Server{cfg: cfg, stats: newStats(time.Now), params: map[string][]string{}}
+	s.stats.onStart, s.stats.onCall = cfg.OnStart, cfg.OnCall
+	s.mcp = mcp.NewServer(&mcp.Implementation{Name: "k3c-dev", Version: cfg.Version}, &mcp.ServerOptions{
+		InitializedHandler: func(context.Context, *mcp.InitializedRequest) { s.observeClients() },
+	})
+	register(s)
+	s.mcp.AddReceivingMiddleware(s.observe)
+	return s
+}
+
+// Start öffnet den HTTP-Server an 127.0.0.1 unter /mcp.
+func (s *Server) Start() error {
+	s.mu.Lock()
+	defer s.mu.Unlock()
+	if s.http != nil {
+		return errors.New("server läuft bereits")
+	}
+	ln, err := net.Listen("tcp", net.JoinHostPort("127.0.0.1", strconv.Itoa(s.cfg.Port)))
+	if err != nil {
+		return fmt.Errorf("port %d nicht verfügbar (%w); einen anderen Port über %s setzen", s.cfg.Port, err, EnvPort)
+	}
+	mux := http.NewServeMux()
+	mux.Handle("/mcp", mcp.NewStreamableHTTPHandler(func(*http.Request) *mcp.Server { return s.mcp }, nil))
+	srv := &http.Server{Handler: mux, ReadHeaderTimeout: 10 * time.Second}
+	s.http, s.addr = srv, ln.Addr().String()
+	go func() { _ = srv.Serve(ln) }()
+	return nil
+}
+
+// Stop schließt den HTTP-Server; offene Streams bekommen stopTimeout.
+func (s *Server) Stop() error {
+	s.mu.Lock()
+	srv := s.http
+	s.http = nil
+	s.mu.Unlock()
+	if srv == nil {
+		return nil
+	}
+	ctx, cancel := context.WithTimeout(context.Background(), stopTimeout)
+	defer cancel()
+	if err := srv.Shutdown(ctx); err != nil {
+		return srv.Close()
+	}
+	return nil
+}
+
+// Restart startet den HTTP-Teil neu; Clients verbinden sich danach neu.
+func (s *Server) Restart() error {
+	if err := s.Stop(); err != nil {
+		return err
+	}
+	return s.Start()
+}
+
+// URL ist die Adresse für .mcp.json, leer solange der Server nicht läuft.
+func (s *Server) URL() string {
+	s.mu.Lock()
+	defer s.mu.Unlock()
+	if s.http == nil {
+		return ""
+	}
+	return "http://" + s.addr + "/mcp"
+}
+
+// Stats liefert die Zähler; die Zahl der Clients wird dabei frisch gezählt.
+func (s *Server) Stats() Snapshot {
+	s.observeClients()
+	return s.stats.snapshot()
+}
+
+// Calls liefert das Aufruf-Log, laufende Aufrufe eingeschlossen, neueste zuerst.
+func (s *Server) Calls() []Call { return s.stats.calls() }
+
+func (s *Server) observeClients() {
+	n := 0
+	for range s.mcp.Sessions() {
+		n++
+	}
+	s.stats.observeClients(n)
+}
