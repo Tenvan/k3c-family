@@ -1,11 +1,11 @@
 # L2 · INF · Go-Tiefe wie TypeScript zählen
 
-- **Status:** geplant
+- **Status:** aktiv
 - **Domäne:** INF
 - **Reife:** bereit
 - **Einschiebbar:** ja
 - **Tickets:** B-057
-- **Start-Commit:** –
+- **Start-Commit:** 27cf540
 - **Spec:** freigegeben
 - **Revision:** 1
 - **Freigabe:** 2026-09-30 🧑 Chat-Freigabe durch Ralf (Revision 1)
@@ -65,7 +65,7 @@ keine
 
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
-| L2.1 | `L2.1-tiefen-pruefung.md` | Umsetzung | autonom | offen |
+| L2.1 | `L2.1-tiefen-pruefung.md` | Umsetzung | autonom | in Arbeit |
 | L2.2 | `L2.2-review.md` | Review | autonom | offen |
 
 ## Abnahme
