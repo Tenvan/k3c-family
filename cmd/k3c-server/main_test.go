@@ -3,6 +3,9 @@ package main
 import (
 	"io"
 	"log/slog"
+	"net/http"
+	"net/http/httptest"
+	"net/url"
 	"path/filepath"
 	"strings"
 	"testing"
@@ -25,5 +28,22 @@ func TestOhneBuildKeinStart(t *testing.T) {
 	err := run(cfg, slog.New(slog.NewTextHandler(io.Discard, nil)))
 	if err == nil || !strings.Contains(err.Error(), "npm run build") {
 		t.Errorf("run ohne dist: %v", err)
+	}
+}
+
+func TestHealthSchalter(t *testing.T) {
+	srv := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		if r.URL.Path != "/api/health" {
+			w.WriteHeader(http.StatusNotFound)
+		}
+	}))
+	defer srv.Close()
+	u, _ := url.Parse(srv.URL)
+	if code := checkHealth(u.Port()); code != 0 {
+		t.Errorf("gesund: %d", code)
+	}
+	srv.Close()
+	if code := checkHealth(u.Port()); code != 1 {
+		t.Errorf("aus: %d", code)
 	}
 }

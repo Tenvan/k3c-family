@@ -84,7 +84,8 @@ func parseSave(data []byte) (header, error) {
 }
 
 // Store schreibt einen Spielstand. Gehört der bisherige Stand des Slots zu einem anderen Spiel (andere campaignId),
-// wird er vorher als <slot>-<savedAt>.json gesichert; backup ist dann dessen Dateiname, sonst leer.
+// wird er vorher als <slot>-<savedAt>.json gesichert (wie server/saves.mjs); backup ist dann dessen Dateiname, sonst
+// leer. Sonst wandert der bisherige Stand in die rotierenden Sicherungen (B-028, BackupKeep je Slot).
 func (s *Saves) Store(slot string, data []byte) (backup string, err error) {
 	path, err := s.path(slot)
 	if err != nil {
@@ -98,14 +99,29 @@ func (s *Saves) Store(slot string, data []byte) (backup string, err error) {
 		return "", err
 	}
 	if prev, err := os.ReadFile(path); err == nil {
-		if old, err := parseSave(prev); err == nil && old.campaignID != next.campaignID {
+		old, perr := parseSave(prev)
+		if perr == nil && old.campaignID != next.campaignID {
 			backup = fmt.Sprintf("%s-%s.json", slot, s.stamp(old.savedAt))
 			if err := os.Rename(path, filepath.Join(s.Dir, backup)); err != nil {
 				return "", err
 			}
+		} else if err := s.rotate(slot, prev); err != nil {
+			return "", err
 		}
 	}
 	return backup, writeAtomic(path, data)
+}
+
+// Count ist die Zahl der Spielstände (ohne Sicherungen).
+func (s *Saves) Count() int {
+	files, _ := filepath.Glob(filepath.Join(s.Dir, "*.json"))
+	n := 0
+	for _, f := range files {
+		if slotName.MatchString(strings.TrimSuffix(filepath.Base(f), ".json")) {
+			n++
+		}
+	}
+	return n
 }
 
 // stamp macht aus savedAt einen sicheren Dateinamen-Teil (nie ein Pfad); ohne savedAt die aktuelle Zeit in ms.

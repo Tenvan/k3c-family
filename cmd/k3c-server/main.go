@@ -2,12 +2,15 @@
 // und Berichte). Der Online-Modus (WebSocket) läuft bis SP08 weiter über den Node-Server.
 //
 // Konfiguration per Umgebung: K3C_HTTP_PORT (8080), K3C_HTTPS_PORT (8443, nur mit <certs>/key.pem und cert.pem),
-// K3C_DIST (dist), K3C_SAVES_DIR (saves), K3C_REPORTS_DIR (reports), K3C_CERTS_DIR (certs).
+// K3C_DIST (dist), K3C_SAVES_DIR (saves), K3C_REPORTS_DIR (reports), K3C_CERTS_DIR (certs), K3C_STATUS_TOKEN
+// (schützt /api/status; leer = Diagnose aus). `k3c-server -health` fragt /api/health des laufenden Servers ab
+// (Docker-HEALTHCHECK, das Image hat kein curl).
 package main
 
 import (
 	"context"
 	"errors"
+	"flag"
 	"fmt"
 	"log/slog"
 	stdnet "net"
@@ -21,11 +24,15 @@ import (
 	"k3c/engine/store"
 )
 
+// version setzt release.yml per -ldflags "-X main.version=<tag>".
+var version = "dev"
+
 // config sind die Einstellungen aus der Umgebung.
 type config struct {
 	httpPort, httpsPort string
 	dist, saves         string
 	reports, certs      string
+	statusToken         string
 }
 
 func env(key, fallback string) string {
@@ -40,10 +47,16 @@ func loadConfig() config {
 		httpPort: env("K3C_HTTP_PORT", "8080"), httpsPort: env("K3C_HTTPS_PORT", "8443"),
 		dist: env("K3C_DIST", "dist"), saves: env("K3C_SAVES_DIR", "saves"),
 		reports: env("K3C_REPORTS_DIR", "reports"), certs: env("K3C_CERTS_DIR", "certs"),
+		statusToken: os.Getenv("K3C_STATUS_TOKEN"),
 	}
 }
 
 func main() {
+	health := flag.Bool("health", false, "fragt /api/health des laufenden Servers ab (Exit 0 = gesund)")
+	flag.Parse()
+	if *health {
+		os.Exit(checkHealth(loadConfig().httpPort))
+	}
 	log := slog.New(slog.NewTextHandler(os.Stderr, nil))
 	if err := run(loadConfig(), log); err != nil {
 		log.Error(err.Error())
@@ -55,8 +68,11 @@ func run(cfg config, log *slog.Logger) error {
 	if _, err := os.Stat(filepath.Join(cfg.dist, "index.html")); err != nil {
 		return fmt.Errorf("%s/index.html fehlt. Erst bauen: npm run build", cfg.dist)
 	}
-	handler := k3cnet.NewHandler(k3cnet.Config{Dist: cfg.dist, Log: log,
-		Saves: &store.Saves{Dir: cfg.saves}, Reports: &store.Reports{Dir: cfg.reports}})
+	handler := k3cnet.NewHandler(k3cnet.Config{Dist: cfg.dist, Log: log, Version: version, StartedAt: time.Now(),
+		StatusToken: cfg.statusToken, Saves: &store.Saves{Dir: cfg.saves}, Reports: &store.Reports{Dir: cfg.reports}})
+	if cfg.statusToken == "" {
+		log.Info("diagnose aus: K3C_STATUS_TOKEN ist nicht gesetzt (/api/status antwortet 404)")
+	}
 	ctx, stop := signal.NotifyContext(context.Background(), os.Interrupt)
 	defer stop()
 	servers := []*http.Server{newServer(":"+cfg.httpPort, handler)}
@@ -92,6 +108,21 @@ func shutdown(servers []*http.Server) error {
 		errs = append(errs, s.Shutdown(ctx))
 	}
 	return errors.Join(errs...)
+}
+
+// checkHealth ist der Schalter -health: 0, wenn /api/health mit 200 antwortet, sonst 1.
+func checkHealth(port string) int {
+	client := http.Client{Timeout: 3 * time.Second}
+	res, err := client.Get("http://127.0.0.1:" + port + "/api/health")
+	if err != nil {
+		fmt.Fprintln(os.Stderr, "k3c-server:", err)
+		return 1
+	}
+	_ = res.Body.Close()
+	if res.StatusCode != http.StatusOK {
+		return 1
+	}
+	return 0
 }
 
 func exists(path string) bool {

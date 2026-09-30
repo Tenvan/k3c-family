@@ -12,6 +12,7 @@ holt `npm ci` aus `package-lock.json`. Versionen gelten, solange diese Datei, `.
 | golangci-lint | 2.14 | Go-Lint mit Komplexitäts-Budget | `.github/workflows/ci.yml` | `golangci-lint --version` |
 | Wails-CLI | 2.16.0 | Fenster von `tools/k3c-dev` bauen (`npm run k3c-dev`, `k3c-dev:build`) | `tools/k3c-dev/go.mod` | `wails version` |
 | WebView2-Laufzeit | aktuell (in Windows 11 enthalten) | Fenster von `k3c-dev` | – | `wails doctor` |
+| Docker (optional) | aktuell, mit `buildx` | Image des Heimnetz-Servers (`Dockerfile`, `compose.yaml`); sonst prüft es die CI | – | `docker buildx version` |
 
 Zum Testen am Gerät, keine Installation im Repo: ein aktueller Browser (Edge oder Chrome) für `npm run dev`,
 Edge auf der Xbox für den Gamepad-Test (Anleitung im README).

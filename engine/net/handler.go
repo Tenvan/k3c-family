@@ -8,6 +8,7 @@ import (
 	"io"
 	"log/slog"
 	"net/http"
+	"time"
 
 	"k3c/engine/store"
 )
@@ -18,6 +19,10 @@ type Config struct {
 	Saves   *store.Saves
 	Reports *store.Reports
 	Log     *slog.Logger
+	// StatusToken schützt /api/status (B-027); leer = Diagnose aus.
+	StatusToken string
+	Version     string
+	StartedAt   time.Time
 }
 
 type server struct {
@@ -34,6 +39,9 @@ func NewHandler(cfg Config) http.Handler {
 	mux := http.NewServeMux()
 	mux.HandleFunc("/api/health", s.health)
 	mux.HandleFunc("/api/save", s.save)
+	mux.HandleFunc("/api/save/backups", s.backups)
+	mux.HandleFunc("/api/save/restore", s.restore)
+	mux.HandleFunc("/api/status", s.status)
 	mux.HandleFunc("/api/report", s.report)
 	mux.HandleFunc("/", s.static)
 	return mux
@@ -69,10 +77,7 @@ func (s *server) health(w http.ResponseWriter, r *http.Request) {
 
 // save ist GET/POST /api/save?slot=autosave wie server/saves.mjs.
 func (s *server) save(w http.ResponseWriter, r *http.Request) {
-	slot := r.URL.Query().Get("slot")
-	if slot == "" {
-		slot = "autosave"
-	}
+	slot := slotOf(r)
 	switch r.Method {
 	case http.MethodGet:
 		data, err := s.cfg.Saves.Load(slot)

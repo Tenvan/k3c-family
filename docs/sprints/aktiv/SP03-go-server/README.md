@@ -60,7 +60,7 @@ keine. Geklärt von 🧑 (2026-09-30, Chat): N = 5 Sicherungen je Spielstand (B-
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
 | SP03.1 | `SP03.1-server-basis.md` | Umsetzung | autonom | fertig |
-| SP03.2 | `SP03.2-status-sicherung-docker.md` | Umsetzung | autonom | offen |
+| SP03.2 | `SP03.2-status-sicherung-docker.md` | Umsetzung | autonom | fertig |
 | SP03.3 | `SP03.3-review.md` | Review | autonom | offen |
 
 ## Abnahme
