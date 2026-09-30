@@ -5,6 +5,7 @@ import { NoticeCard } from '../ui/parts';
 import { CallLog } from './CallLog';
 import { LiveMonitors } from './LiveMonitors';
 import { ServerCards } from './ServerCards';
+import { StatsView } from './StatsView';
 import { ToolTiles } from './ToolTiles';
 import { useMcpData } from './useMcpData';
 
@@ -39,7 +40,7 @@ export function McpPage() {
           <CallLog calls={data.calls} tools={overview.stats.tools.map((t) => t.name)} />
         </>
       )}
-      {overview && view === 'statistik' && <NoticeCard title="Statistik" tone="neutral">Folgt in M5.4.</NoticeCard>}
+      {view === 'statistik' && data.usage && <StatsView usage={data.usage} />}
     </div>
   );
 }
