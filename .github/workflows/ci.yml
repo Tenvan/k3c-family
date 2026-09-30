@@ -1,4 +1,4 @@
-# CI: Lint, Typecheck, Tests, Build und Server-Smoke-Test; Go: Tests, Lint, Cross-Build. Bei jedem Push und Pull Request.
+# CI: Lint, Typecheck, Tests, Build und Server-Smoke-Test; Go: Tests, Lint, Cross-Build; k3c-dev: Tests, Lint (Windows). Bei jedem Push und Pull Request.
 name: CI
 
 on:
@@ -66,3 +66,22 @@ jobs:
           version: v2.14
       - run: GOOS=windows GOARCH=amd64 go build ./...
       - run: GOOS=linux GOARCH=arm64 go build ./...
+
+  k3c-dev:
+    name: k3c-dev · Tests · Lint (Windows)
+    runs-on: windows-latest
+    timeout-minutes: 15
+    defaults:
+      run:
+        working-directory: tools/k3c-dev
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-go@v7
+        with:
+          go-version-file: tools/k3c-dev/go.mod
+          cache-dependency-path: tools/k3c-dev/go.sum
+      - run: go test ./...
+      - uses: golangci/golangci-lint-action@v9
+        with:
+          version: v2.14
+          working-directory: tools/k3c-dev

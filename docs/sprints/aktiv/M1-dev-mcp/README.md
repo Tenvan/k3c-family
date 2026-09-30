@@ -1,11 +1,11 @@
 # M1 · SRV · k3c-dev I: MCP-Kern über HTTP
 
-- **Status:** geplant
+- **Status:** aktiv
 - **Domäne:** SRV
 - **Reife:** bereit
 - **Einschiebbar:** ja
 - **Tickets:** B-046
-- **Start-Commit:** –
+- **Start-Commit:** 7ff19d6
 - **Spec:** freigegeben
 - **Revision:** 2
 - **Freigabe:** 2026-09-30 🧑 Chat (Revision 2, mit Abhängigkeit und Ausnahmen aus M1)
@@ -72,7 +72,7 @@ keine
 
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
-| M1.1 | `M1.1-geruest-zaehler.md` | Umsetzung | autonom | offen |
+| M1.1 | `M1.1-geruest-zaehler.md` | Umsetzung | autonom | fertig |
 | M1.2 | `M1.2-check-run.md` | Umsetzung | autonom | offen |
 | M1.3 | `M1.3-logs.md` | Umsetzung | autonom | offen |
 | M1.4 | `M1.4-review.md` | Review | autonom | offen |
