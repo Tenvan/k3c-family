@@ -30,7 +30,7 @@ func (c *Controller) start(ctx context.Context, u *unit) (Status, error) {
 	c.set(u, func(s *Status) { s.PID, s.StartedAt = p.PID(), c.opts.Now() })
 	began := time.Now()
 	if err := c.awaitHealthy(ctx, u, r); err != nil {
-		c.killRun(u, r)
+		_ = c.killRun(u, r)
 		st := c.fail(u, err.Error())
 		return st, fmt.Errorf("%s: %w", u.svc.Name, err)
 	}
@@ -63,30 +63,37 @@ func (c *Controller) awaitHealthy(ctx context.Context, u *unit, r *run) error {
 	}
 }
 
-// stop beendet den eigenen Prozess von u. Aufruf unter u.cmd.
-func (c *Controller) stop(u *unit) Status {
+// stop beendet den eigenen Prozess von u. Endet er nicht, meldet stop das als Fehler, statt "gestoppt" zu
+// behaupten. Aufruf unter u.cmd.
+func (c *Controller) stop(u *unit) (Status, error) {
 	u.mu.Lock()
 	r := u.run
 	u.mu.Unlock()
 	if r == nil {
-		return u.status()
+		return u.status(), nil
 	}
 	c.set(u, func(s *Status) { s.State = Stopping })
-	c.killRun(u, r)
-	return c.set(u, func(s *Status) { s.State, s.PID, s.LastError, s.CPU, s.Memory = Stopped, 0, "", 0, 0 })
+	if !c.killRun(u, r) {
+		reason := fmt.Sprintf("prozess (PID %d) endet nach %s nicht", r.proc.PID(), c.opts.StopTimeout)
+		return c.fail(u, reason), fmt.Errorf("%s: %s", u.svc.Name, reason)
+	}
+	return c.set(u, func(s *Status) { s.State, s.PID, s.LastError, s.CPU, s.Memory = Stopped, 0, "", 0, 0 }), nil
 }
 
-// killRun beendet Überwachung und Prozessbaum und wartet höchstens StopTimeout auf das Ende.
-func (c *Controller) killRun(u *unit, r *run) {
+// killRun beendet Überwachung und Prozessbaum und wartet höchstens StopTimeout auf das Ende; false heißt: der
+// Prozess läuft weiter.
+func (c *Controller) killRun(u *unit, r *run) bool {
 	if r.stop != nil {
 		r.stop()
 	}
 	if err := r.proc.Kill(); err != nil {
 		c.opts.Log.Warn("dienst "+u.svc.Name+": beenden: "+err.Error(), "ns", "svc")
 	}
+	ended := true
 	select {
 	case <-r.done:
 	case <-time.After(c.opts.StopTimeout):
+		ended = false
 		c.opts.Log.Error("dienst "+u.svc.Name+": prozess endet nicht", "ns", "svc", "pid", r.proc.PID())
 	}
 	u.mu.Lock()
@@ -94,6 +101,7 @@ func (c *Controller) killRun(u *unit, r *run) {
 		u.run = nil
 	}
 	u.mu.Unlock()
+	return ended
 }
 
 // watch prüft einen laufenden Dienst alle WatchEvery; Prozessende oder FailLimit Fehlschläge in Folge beenden ihn.
@@ -130,7 +138,7 @@ func (c *Controller) crashed(u *unit, r *run, reason string) {
 	if !current {
 		return
 	}
-	c.killRun(u, r)
+	_ = c.killRun(u, r) // der Prozess ist schon beendet (Ausfall), Kill tut dann nichts mehr
 	if !u.svc.AutoRestart {
 		c.fail(u, reason)
 		return

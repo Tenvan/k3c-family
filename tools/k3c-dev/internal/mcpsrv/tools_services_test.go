@@ -34,7 +34,7 @@ func serviceServer(t *testing.T, healthy, busy *atomic.Bool) (*Server, *services
 		},
 		Listen:    func(context.Context, int) (int, bool) { return 4711, busy.Load() },
 		Sample:    func(context.Context, int) (services.Metrics, error) { return services.Metrics{}, nil },
-		KillPID:   func(int) error { return nil },
+		KillPID:   func(int) error { busy.Store(false); return nil },
 		StartPoll: 2 * time.Millisecond, StartTimeout: 60 * time.Millisecond, WatchEvery: time.Hour,
 	})
 	t.Cleanup(func() { ctl.StopAll(context.Background()) })

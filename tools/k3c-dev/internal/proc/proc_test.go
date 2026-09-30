@@ -79,3 +79,14 @@ func TestKillOhneStartUndExecutable(t *testing.T) {
 		t.Errorf("einfacher Lauf: %q, %v", out, err)
 	}
 }
+
+func TestKillNachWaitTutNichts(t *testing.T) {
+	cmd := Command(context.Background(), []string{"go", "version"})
+	if err := cmd.Run(); err != nil {
+		t.Fatal(err)
+	}
+	// Die PID ist frei und kann schon einem fremden Prozess gehören: Kill darf kein taskkill mehr schicken.
+	if err := cmd.Kill(); err != nil {
+		t.Errorf("Kill nach Wait: %v", err)
+	}
+}

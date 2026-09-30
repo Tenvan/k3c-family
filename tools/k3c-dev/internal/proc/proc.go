@@ -27,8 +27,9 @@ func Executable(name string) string {
 // eingebetteten exec.Cmd, alles andere (Dir, Env, Stdout, ProcessState …) gilt wie dort.
 type Cmd struct {
 	*exec.Cmd
-	mu  sync.Mutex
-	job job // leer, solange nicht gestartet oder ohne Job
+	mu     sync.Mutex
+	job    job  // leer, solange nicht gestartet oder ohne Job
+	exited bool // Wait ist zurück: die PID ist frei und kann schon einem fremden Prozess gehören
 }
 
 // Command baut einen Befehl ohne Konsolenfenster bzw. in eigener Prozessgruppe. Endet ctx, beendet Kill den ganzen
@@ -60,7 +61,7 @@ func (c *Cmd) Wait() error {
 	err := c.Cmd.Wait()
 	c.mu.Lock()
 	c.job.close()
-	c.job = job{}
+	c.job, c.exited = job{}, true
 	c.mu.Unlock()
 	return err
 }
@@ -73,10 +74,14 @@ func (c *Cmd) Run() error {
 	return c.Wait()
 }
 
-// Kill beendet den ganzen Baum: über den Job, sonst (keine Zuordnung, andere Plattform) über KillTree.
+// Kill beendet den ganzen Baum: über den Job, sonst (keine Zuordnung, andere Plattform) über KillTree. Nach Wait tut
+// es nichts mehr: die PID ist dann frei, und Windows vergibt sie schnell neu, KillTree träfe einen fremden Prozess.
 func (c *Cmd) Kill() error {
 	c.mu.Lock()
 	defer c.mu.Unlock()
+	if c.exited {
+		return nil
+	}
 	if c.job.terminate() {
 		return nil
 	}
