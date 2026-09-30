@@ -4,8 +4,8 @@ import { backend, type McpState } from './api';
 import { Header, PAGES, type Page } from './Header';
 import { loadPref, savePref } from './lib/prefs';
 import { LogsPage } from './logs/LogsPage';
+import { McpPage } from './mcp/McpPage';
 import { ServicesPage } from './services/ServicesPage';
-import { NoticeCard } from './ui/parts';
 
 const MODES = ['dark', 'light'] as const;
 
@@ -43,7 +43,7 @@ export function App() {
             <LogsPage />
           </Tabs.Content>
           <Tabs.Content value="mcp">
-            <NoticeCard title="MCP">Die MCP-Seite mit Monitoren und Statistik folgt mit B-065 (M5).</NoticeCard>
+            <McpPage />
           </Tabs.Content>
         </main>
       </Tabs.Root>

@@ -25,6 +25,8 @@ const (
 	evServiceState = "service:state"
 	evSourceState  = "source:state"
 	evConsoleLine  = "console:line"
+	evMCPStart     = "mcp:start"
+	evMCPCall      = "mcp:call"
 )
 
 // MCPState ist der Zustand des MCP-Servers für das Badge der Kopfzeile.
@@ -100,7 +102,9 @@ func (a *App) startup(ctx context.Context) {
 		})
 	a.srv = mcpsrv.New(mcpsrv.Config{Root: a.root, Port: a.port, Version: version, Console: store,
 		Log: a.log.Logger, Usage: a.tracker, Services: a.ctl, ServicesErr: a.svcErr,
-		OnCheck: func(st mcpsrv.CheckState) { a.emit(a.ctx, evSourceState, checkSource(st)) }})
+		OnCheck: func(st mcpsrv.CheckState) { a.emit(a.ctx, evSourceState, checkSource(st)) },
+		OnStart: func(c mcpsrv.Call) { a.emit(a.ctx, evMCPStart, c) },
+		OnCall:  func(c mcpsrv.Call) { a.emit(a.ctx, evMCPCall, c) }})
 	err = a.srv.Start()
 	if err != nil {
 		a.log.Error("start fehlgeschlagen", "ns", "main", "error", err.Error())
