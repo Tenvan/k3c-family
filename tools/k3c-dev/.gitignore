@@ -1,0 +1,5 @@
+# Wails: EXE, Standard-Icon und Manifest (erzeugt wails build neu) und generierte Bindings (die Oberfläche nutzt
+# sie nicht, siehe frontend/src/api/wails.ts)
+build/
+frontend/wailsjs/
+frontend/package.json.md5
