@@ -1,9 +1,9 @@
 import { readFileSync } from 'node:fs';
 import { resolve } from 'node:path';
 import { describe, expect, it } from 'vitest';
-import enemies from '../src/data/enemies.json';
-import sprites from '../src/data/sprites.json';
-import troops from '../src/data/troops.json';
+import enemies from '../data/enemies.json';
+import sprites from '../data/sprites.json';
+import troops from '../data/troops.json';
 
 /** Breite/Höhe aus dem PNG-Header (IHDR) lesen */
 function pngSize(file: string): [number, number] {

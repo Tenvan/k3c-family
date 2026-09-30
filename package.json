@@ -13,6 +13,7 @@
     "test": "vitest run",
     "test:watch": "vitest",
     "check": "npm run lint && npm run typecheck && npm test",
+    "check:go": "go test ./... && golangci-lint run",
     "serve": "npm run build && node server/server.mjs",
     "start": "node server/server.mjs"
   },

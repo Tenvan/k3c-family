@@ -1,0 +1,36 @@
+# Harte Grenzen aus docs/arbeitsweise.md › Komplexitäts-Budget und die Go-Schichtgrenzen.
+# Die Dateilänge prüft tests/projectRules.test.ts (golangci-lint hat dafür keinen Linter, B-050).
+version: "2"
+
+linters:
+  enable:
+    - funlen
+    - gocyclo
+    - nestif
+    - depguard
+  settings:
+    funlen:
+      lines: 60
+      statements: -1
+    gocyclo:
+      min-complexity: 15
+    nestif:
+      min-complexity: 4
+    depguard:
+      rules:
+        engine-ohne-cmd:
+          files: ["**/engine/**"]
+          deny:
+            - pkg: k3c/cmd
+              desc: "engine/ importiert nichts aus cmd/ (docs/arbeitsweise.md › Schichtgrenzen)"
+        sim-ohne-netz:
+          files: ["**/engine/sim/**", "**/engine/level/**"]
+          deny:
+            - pkg: k3c/engine/room
+              desc: "engine/sim und engine/level kennen keine Räume"
+            - pkg: k3c/engine/net
+              desc: "engine/sim und engine/level kennen kein Netz"
+  exclusions:
+    rules:
+      - path: _test\.go
+        linters: [funlen]

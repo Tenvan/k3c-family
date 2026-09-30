@@ -1,9 +1,9 @@
 import Phaser from 'phaser';
-import spritesJson from '../data/sprites.json';
+import spritesJson from '../../data/sprites.json';
 
 /**
  * Figuren-Sprites (LuizMelo und Gothicvania, beide CC0). Welche Figur wofür steht, Frame-Größen und Einfärbung stehen in
- * src/data/sprites.json, die Bilder in public/sprites/<sheet>/<anim>.png.
+ * data/sprites.json, die Bilder in public/sprites/<sheet>/<anim>.png.
  */
 
 export type AnimName = 'idle' | 'run' | 'attack';
