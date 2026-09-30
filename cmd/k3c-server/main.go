@@ -1,0 +1,112 @@
+// Command k3c-server ist der Heimnetz-Server von K3C in Go (SP03, ersetzt server/*.mjs für Auslieferung, Spielstände
+// und Berichte). Der Online-Modus (WebSocket) läuft bis SP08 weiter über den Node-Server.
+//
+// Konfiguration per Umgebung: K3C_HTTP_PORT (8080), K3C_HTTPS_PORT (8443, nur mit <certs>/key.pem und cert.pem),
+// K3C_DIST (dist), K3C_SAVES_DIR (saves), K3C_REPORTS_DIR (reports), K3C_CERTS_DIR (certs).
+package main
+
+import (
+	"context"
+	"errors"
+	"fmt"
+	"log/slog"
+	stdnet "net"
+	"net/http"
+	"os"
+	"os/signal"
+	"path/filepath"
+	"time"
+
+	k3cnet "k3c/engine/net"
+	"k3c/engine/store"
+)
+
+// config sind die Einstellungen aus der Umgebung.
+type config struct {
+	httpPort, httpsPort string
+	dist, saves         string
+	reports, certs      string
+}
+
+func env(key, fallback string) string {
+	if v := os.Getenv(key); v != "" {
+		return v
+	}
+	return fallback
+}
+
+func loadConfig() config {
+	return config{
+		httpPort: env("K3C_HTTP_PORT", "8080"), httpsPort: env("K3C_HTTPS_PORT", "8443"),
+		dist: env("K3C_DIST", "dist"), saves: env("K3C_SAVES_DIR", "saves"),
+		reports: env("K3C_REPORTS_DIR", "reports"), certs: env("K3C_CERTS_DIR", "certs"),
+	}
+}
+
+func main() {
+	log := slog.New(slog.NewTextHandler(os.Stderr, nil))
+	if err := run(loadConfig(), log); err != nil {
+		log.Error(err.Error())
+		os.Exit(1)
+	}
+}
+
+func run(cfg config, log *slog.Logger) error {
+	if _, err := os.Stat(filepath.Join(cfg.dist, "index.html")); err != nil {
+		return fmt.Errorf("%s/index.html fehlt. Erst bauen: npm run build", cfg.dist)
+	}
+	handler := k3cnet.NewHandler(k3cnet.Config{Dist: cfg.dist, Log: log,
+		Saves: &store.Saves{Dir: cfg.saves}, Reports: &store.Reports{Dir: cfg.reports}})
+	ctx, stop := signal.NotifyContext(context.Background(), os.Interrupt)
+	defer stop()
+	servers := []*http.Server{newServer(":"+cfg.httpPort, handler)}
+	errs := make(chan error, 2)
+	go func() { errs <- servers[0].ListenAndServe() }()
+	logAddresses(log, "http", cfg.httpPort)
+	key, cert := filepath.Join(cfg.certs, "key.pem"), filepath.Join(cfg.certs, "cert.pem")
+	if exists(key) && exists(cert) {
+		tls := newServer(":"+cfg.httpsPort, handler)
+		servers = append(servers, tls)
+		go func() { errs <- tls.ListenAndServeTLS(cert, key) }()
+		logAddresses(log, "https", cfg.httpsPort)
+	} else {
+		log.Info("kein HTTPS: " + key + " und " + cert + " fehlen (nur nötig, falls die Xbox HTTPS verlangt)")
+	}
+	select {
+	case err := <-errs:
+		return err
+	case <-ctx.Done():
+	}
+	return shutdown(servers)
+}
+
+func newServer(addr string, h http.Handler) *http.Server {
+	return &http.Server{Addr: addr, Handler: h, ReadHeaderTimeout: 10 * time.Second}
+}
+
+func shutdown(servers []*http.Server) error {
+	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
+	defer cancel()
+	var errs []error
+	for _, s := range servers {
+		errs = append(errs, s.Shutdown(ctx))
+	}
+	return errors.Join(errs...)
+}
+
+func exists(path string) bool {
+	_, err := os.Stat(path)
+	return err == nil
+}
+
+// logAddresses nennt localhost und die IPv4-Adressen im Heimnetz, wie server/server.mjs.
+func logAddresses(log *slog.Logger, scheme, port string) {
+	urls := []string{scheme + "://localhost:" + port + "/"}
+	addrs, _ := stdnet.InterfaceAddrs()
+	for _, a := range addrs {
+		if ip, ok := a.(*stdnet.IPNet); ok && ip.IP.To4() != nil && !ip.IP.IsLoopback() {
+			urls = append(urls, scheme+"://"+ip.IP.String()+":"+port+"/")
+		}
+	}
+	log.Info("K3C läuft", "urls", urls)
+}
