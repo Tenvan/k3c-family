@@ -12,6 +12,8 @@ import (
 	"path/filepath"
 	"strings"
 
+	"k3c/tools/k3c-dev/internal/applog"
+	"k3c/tools/k3c-dev/internal/console"
 	"k3c/tools/k3c-dev/internal/mcpsrv"
 )
 
@@ -37,14 +39,28 @@ func run() error {
 	if err != nil {
 		return err
 	}
-	srv := mcpsrv.New(mcpsrv.Config{Root: root, Port: port, Version: version})
+	return serve(root, port)
+}
+
+// serve öffnet das eigene Log, startet den Server und wartet auf Strg+C.
+func serve(root string, port int) error {
+	store := console.New(console.DefaultCapacity, nil)
+	log, err := applog.Open(filepath.Join(root, "logs"), store)
+	if err != nil {
+		fmt.Fprintln(os.Stderr, "k3c-dev: eigenes Log nur im Speicher:", err)
+	}
+	defer func() { _ = log.Close() }()
+	srv := mcpsrv.New(mcpsrv.Config{Root: root, Port: port, Version: version, Console: store, Log: log.Logger})
 	if err := srv.Start(); err != nil {
+		log.Error("start fehlgeschlagen", "ns", "main", "error", err.Error())
 		return err
 	}
+	log.Info("k3c-dev gestartet", "ns", "main", "url", srv.URL(), "version", version)
 	fmt.Fprintf(os.Stderr, "k3c-dev lauscht an %s (Strg+C beendet)\n", srv.URL())
 	ctx, stop := signal.NotifyContext(context.Background(), os.Interrupt)
 	defer stop()
 	<-ctx.Done()
+	log.Info("k3c-dev beendet", "ns", "main")
 	return srv.Stop()
 }
 

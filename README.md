@@ -79,9 +79,28 @@ Die vollständige Regel steht in `CLAUDE.md` unter „Regel: Seiten & Navigation
 Die Eckdaten jeder Stufe stehen in `data/biomes/*.json` (Länge, Chunk-Häufigkeiten, Ressourcen,
 Portale, Gegner). Nach Änderungen `npm test` ausführen. Die Tests prüfen 500 Seeds pro Biom auf Spielbarkeit.
 
+## Entwickler-Werkzeug k3c-dev
+
+`tools/k3c-dev` ist ein MCP-Server für Coding-Agenten. Er führt Prüfungen aus einem festen Katalog verdichtet aus
+(`check_run`: nur Exit-Code, Dauer und Fehlerzeilen), macht die JSON-Logs unter `logs/` lesbar (`logs_*`) und zählt jeden
+Aufruf. Starten (Go aus `requirements.md`), läuft bis Strg+C:
+
+```bash
+cd tools/k3c-dev && go run .
+```
+
+Er lauscht nur an `http://127.0.0.1:5180/mcp` (anderer Port: `K3C_DEV_PORT`). Für Claude Code eine lokale `.mcp.json`
+im Repo anlegen (steht in `.gitignore`):
+
+```json
+{ "mcpServers": { "k3c-dev": { "type": "http", "url": "http://127.0.0.1:5180/mcp" } } }
+```
+
+Prüfen: `npm run check:dev`. Plan für Statistik, Dienste und Oberfläche: Sprints M2–M5 in [`docs/sprints/`](docs/sprints/README.md).
+
 ## CI/CD (GitHub Actions)
 
-- **CI** (jeder Push/PR): Lint, Typecheck, Tests, Build, Smoke-Test des Heimnetz-Servers; Go-Job mit Tests, `golangci-lint` und Cross-Build für Windows und Raspberry Pi. Der Build liegt als Artefakt `k3c-dist` am Lauf.
+- **CI** (jeder Push/PR): Lint, Typecheck, Tests, Build, Smoke-Test des Heimnetz-Servers; Go-Job mit Tests, `golangci-lint` und Cross-Build für Windows und Raspberry Pi; Windows-Job für `tools/k3c-dev`. Der Build liegt als Artefakt `k3c-dist` am Lauf.
 - **GitHub Pages** (Push auf `main`): Spiel und Testseiten online, ohne Bericht-Server.
   Einmalig aktivieren: *Settings → Pages → Source: GitHub Actions*.
 - **Release** (Tag `v*`, z.B. `git tag v0.2.0 && git push --tags`): Zip mit `dist/` + `server/` am Release.

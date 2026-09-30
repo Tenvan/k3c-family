@@ -96,10 +96,25 @@ func (s *Server) checkRun(ctx context.Context, in checkIn) (string, error) {
 			mu.Unlock()
 		}})
 	s.checks.end(t.name, res)
+	s.logRun(t.name, res)
 	if res.err != nil {
 		return "", fmt.Errorf("%s ließ sich nicht starten: %w", t.name, res.err)
 	}
 	return report(t, res, output), nil
+}
+
+func (s *Server) logRun(name string, res runResult) {
+	attrs := []any{"ns", "check", "target", name, "exit", res.exit, "ms", int64(res.ms())}
+	switch {
+	case res.err != nil:
+		s.log.Error("lauf nicht gestartet", append(attrs, "error", res.err.Error())...)
+	case res.timedOut:
+		s.log.Warn("lauf abgebrochen: zeitlimit", attrs...)
+	case res.exit != 0:
+		s.log.Warn("lauf beendet", attrs...)
+	default:
+		s.log.Info("lauf beendet", attrs...)
+	}
 }
 
 // runProcess startet einen Prozess mit Zeitlimit; das Zeitlimit beendet den ganzen Prozessbaum.
