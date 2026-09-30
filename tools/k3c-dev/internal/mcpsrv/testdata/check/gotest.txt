@@ -1,0 +1,6 @@
+--- FAIL: TestZZFalsch (0.00s)
+    zz_tmp_test.go:7: 1+1 = 2, erwartet 3
+FAIL
+FAIL	k3c/tools/k3c-dev	0.907s
+ok  	k3c/tools/k3c-dev/internal/mcpsrv	(cached)
+FAIL

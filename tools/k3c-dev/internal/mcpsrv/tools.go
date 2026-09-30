@@ -15,6 +15,19 @@ func register(s *Server) {
 		Description: "Zustand von k3c-dev: Adresse, Laufzeit, Aufrufe, Fehler, Clients und parallele Aufrufe.",
 		Annotations: readOnly(),
 	}, s.workbenchStatus)
+	closed, destructive := false, false
+	add(s, &mcp.Tool{
+		Name: "check_run",
+		Description: "Führt eine Prüfung aus einem festen Katalog aus (npm:check, npm:test, npm:typecheck, npm:lint, " +
+			"npm:build, go:test, go:lint, dev:test) und antwortet mit Exit-Code, Dauer und nur den Fehlerzeilen. " +
+			"Ersetzt npm run check, npm test und go test in der Shell. Volle Ausgabe: console_tail check:<ziel>.",
+		Annotations: &mcp.ToolAnnotations{DestructiveHint: &destructive, OpenWorldHint: &closed},
+	}, s.checkRun)
+	add(s, &mcp.Tool{
+		Name:        "console_tail",
+		Description: "Letzte Zeilen einer Konsolen-Quelle, z. B. check:npm:test (volle Ausgabe eines Prüflaufs).",
+		Annotations: readOnly(),
+	}, s.consoleTail)
 }
 
 // readOnly sind die Annotations eines Tools, das nur liest.
