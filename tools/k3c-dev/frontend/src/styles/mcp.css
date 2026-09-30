@@ -228,3 +228,109 @@
 .lane-c5 { color: var(--ansi-9); stroke: var(--ansi-9); fill: var(--ansi-9); }
 .lane-c6 { color: var(--ansi-3); stroke: var(--ansi-3); fill: var(--ansi-3); }
 .lane-c7 { color: var(--ansi-5); stroke: var(--ansi-5); fill: var(--ansi-5); }
+
+.mcp-stats {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.mcp-kpis-10 {
+  grid-template-columns: repeat(5, 1fr);
+}
+
+.mcp-stats-body {
+  display: grid;
+  grid-template-columns: 1fr 340px;
+  gap: 14px;
+  align-items: start;
+}
+
+.mcp-stats-table {
+  overflow-x: auto;
+}
+
+.mcp-stats-table table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+  font-variant-numeric: tabular-nums;
+}
+
+.mcp-stats-table th {
+  padding: 6px 8px;
+  color: var(--dim);
+  font-weight: 500;
+  text-align: left;
+  white-space: nowrap;
+  cursor: pointer;
+  user-select: none;
+}
+
+.mcp-stat-row {
+  cursor: pointer;
+}
+
+.mcp-stat-row:hover {
+  background: var(--card-line);
+}
+
+.mcp-stat-row td {
+  padding: 5px 8px;
+  border-top: 1px solid var(--card-line);
+  white-space: nowrap;
+}
+
+.mcp-share-inline {
+  display: inline-block;
+  width: 60px;
+  margin: 0 4px 0 0;
+  vertical-align: middle;
+}
+
+.mcp-stat-detail {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  padding: 6px 10px 10px;
+}
+
+.mcp-stat-item {
+  font-size: 12px;
+  margin-top: 4px;
+  overflow-wrap: anywhere;
+}
+
+.mcp-dim {
+  color: var(--dim);
+}
+
+.mcp-stats-side {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.mcp-slow {
+  display: grid;
+  grid-template-columns: 70px 1fr;
+  column-gap: 8px;
+  font-size: 12px;
+}
+
+.mcp-slow-ms {
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+}
+
+.mcp-slow .mcp-dim {
+  grid-column: 2;
+}
+
+.mcp-slow-args {
+  grid-column: 2;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  color: var(--dim);
+}
