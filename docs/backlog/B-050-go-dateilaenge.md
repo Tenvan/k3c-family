@@ -3,12 +3,12 @@
 - **Domäne:** INF
 - **Typ:** Schuld
 - **Prio:** mittel
-- **Status:** offen
-- **Sprint:** –
+- **Status:** eingeplant
+- **Sprint:** SP01
 - **Erstellt:** 2026-09-30
-- **Spec:** Entwurf
+- **Spec:** freigegeben
 - **Revision:** 1
-- **Freigabe:** –
+- **Freigabe:** 2026-09-30 🧑 Chat-Freigabe durch Ralf (mit SP01 Revision 2)
 
 ## Ausgangslage
 
@@ -60,8 +60,7 @@ dieselbe Ausnahmeliste `tests/complexity-baseline.json` nutzen, statt ein zweite
 
 ## Offene Fragen
 
-- Gibt es doch einen golangci-lint-Linter für die Dateilänge? Beim Umsetzen gegen die aktuelle Linter-Liste bestätigen; falls ja, ihn statt des Regel-Tests nehmen.
-- Einplanung: Als Erweiterung von SP01.3 hebt es SP01 auf Revision 2 (neue Freigabe nötig). Sonst später, spätestens vor SP04, wenn der erste größere Go-Code entsteht (🧑).
+keine. Entschieden (🧑, 2026-09-30): Umsetzung als Erweiterung des Regel-Tests in SP01.3, SP01 dafür auf Revision 2.
 
 ## Notizen
 

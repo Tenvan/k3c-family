@@ -55,4 +55,4 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-047](B-047-mcp-raeume-simulation.md) | SRV | Idee | mittel | eingeplant | SP07 | MCP-Tools zeigen laufende Räume und rechnen Level und Simulationen |
 | [B-048](B-048-standardbibliothek-in-001.md) | SRV | Frage | niedrig | offen | – | Die Wahl der Go-Standardbibliothek ist dort festgehalten, wo B-001 auf sie verweist |
 | [B-049](B-049-sp09-domaene.md) | INF | Frage | niedrig | offen | – | SP09 bleibt in einer Domäne oder hat einen erlaubten Grenzfall |
-| [B-050](B-050-go-dateilaenge.md) | INF | Schuld | mittel | offen | – | Die Dateilänge von Go-Code wird wie bei TypeScript geprüft |
+| [B-050](B-050-go-dateilaenge.md) | INF | Schuld | mittel | eingeplant | SP01 | Die Dateilänge von Go-Code wird wie bei TypeScript geprüft |
