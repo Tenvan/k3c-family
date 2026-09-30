@@ -5,7 +5,7 @@
 - **Reife:** bereit
 - **Einschiebbar:** ja
 - **Tickets:** B-065
-- **Start-Commit:** –
+- **Start-Commit:** 3b6ef83
 - **Spec:** freigegeben
 - **Revision:** 1
 - **Freigabe:** 2026-09-30 🧑 Chat (Pauschalauftrag „beide komplett autonom fertig stellen“: M5 Revision 1 mit B-065, 5 Sessions)
@@ -61,7 +61,7 @@ keine
 
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
-| M5.1 | `M5.1-uebersicht.md` | Umsetzung | autonom | offen |
+| M5.1 | `M5.1-uebersicht.md` | Umsetzung | autonom | fertig |
 | M5.2 | `M5.2-live-monitore.md` | Umsetzung | autonom | offen |
 | M5.3 | `M5.3-aufruf-log.md` | Umsetzung | autonom | offen |
 | M5.4 | `M5.4-statistik.md` | Umsetzung | autonom | offen |

@@ -1,6 +1,6 @@
 import type {
-  Backend, ConsoleLine, ErrorsView, EventName, Events, Info, LevelCounts, LogQuery, LogView, ServicesView,
-  ServiceStatus, Source,
+  Backend, ConsoleLine, ErrorsView, EventName, Events, Info, LevelCounts, LogQuery, LogView, McpCall, McpOverview,
+  McpState, McpUsage, ServicesView, ServiceStatus, Source,
 } from './types';
 
 // Die Wails-Laufzeit legt window.go (Bindings der App) und window.runtime an. Die generierten Dateien unter
@@ -18,6 +18,11 @@ interface GoApp {
   ConsoleTail(source: string): Promise<ConsoleLine[]>;
   LogsQuery(source: string, q: LogQuery): Promise<LogView>;
   LogsErrors(source: string, level: string): Promise<ErrorsView>;
+  McpOverview(): Promise<McpOverview>;
+  McpRestart(): Promise<McpState>;
+  McpInstructions(): Promise<string>;
+  McpCalls(): Promise<McpCall[]>;
+  McpUsage(): Promise<McpUsage>;
 }
 
 interface WailsRuntime {
@@ -52,6 +57,11 @@ export function wailsBackend(): Backend {
     consoleTail: (source) => app.ConsoleTail(source),
     logsQuery: (source, q) => app.LogsQuery(source, q),
     logsErrors: (source, level) => app.LogsErrors(source, level),
+    mcpOverview: () => app.McpOverview(),
+    mcpRestart: () => app.McpRestart(),
+    mcpInstructions: () => app.McpInstructions(),
+    mcpCalls: () => app.McpCalls(),
+    mcpUsage: () => app.McpUsage(),
     on: <E extends EventName>(event: E, fn: (data: Events[E]) => void) =>
       runtime.EventsOn(event, (data) => fn(data as Events[E])),
   };

@@ -115,13 +115,138 @@ export interface ErrorsView {
   missing: boolean;
 }
 
-/** Ereignisse von Go an die Oberfläche; M5 ergänzt seine Nutzdaten. */
+/** Zähler eines Tools seit dem Start von k3c-dev (Go: mcpsrv.ToolStats). */
+export interface ToolStats {
+  name: string;
+  description: string;
+  calls: number;
+  errors: number;
+  avgMs: number;
+  lastCall: string;
+}
+
+/** Zähler des MCP-Servers (Go: mcpsrv.Snapshot); startedAt ISO-Zeit. */
+export interface McpStats {
+  startedAt: string;
+  clients: number;
+  peakClients: number;
+  inFlight: number;
+  peakInFlight: number;
+  totalCalls: number;
+  errors: number;
+  tools: ToolStats[];
+}
+
+/** Band 1 und 2 der MCP-Seite (Go: McpOverview). */
+export interface McpOverview {
+  mcp: McpState;
+  stats: McpStats;
+}
+
+/** Ein Aufruf im Aufruf-Log (Go: mcpsrv.Call); ts ist das Ende, leer solange er läuft. */
+export interface McpCall {
+  id: number;
+  ref: string;
+  startedAt: string;
+  ts: string;
+  startSeq: number;
+  endSeq: number;
+  running: boolean;
+  tool: string;
+  args: string;
+  durationMs: number;
+  ok: boolean;
+  error?: string;
+  summary: string;
+}
+
+/** Eintrag einer Rangliste: Argument mit Laufzeiten oder Fehlermeldung mit Tool (Go: usage.Count). */
+export interface UsageCount {
+  tool?: string;
+  value: string;
+  count: number;
+  avgMs?: number;
+  p95Ms?: number;
+  maxMs?: number;
+}
+
+/** Einzelner Aufruf in „Letzte Ausreißer“ bzw. „Langsamste Aufrufe“ (Go: usage.SlowCall). */
+export interface SlowCall {
+  at: string;
+  tool: string;
+  args: string;
+  durationMs: number;
+  ok: boolean;
+  baselineMs: number;
+}
+
+/** Auswertung eines Tools in einem Bereich (Go: usage.ToolUsage). */
+export interface ToolUsage {
+  name: string;
+  calls: number;
+  errors: number;
+  avgMs: number;
+  p50Ms: number;
+  p95Ms: number;
+  maxMs: number;
+  sumMs: number;
+  outliers: number;
+  args: UsageCount[];
+  topErrors: UsageCount[];
+}
+
+/** Auswertung eines Bereichs, Sitzung oder Gesamtzeit (Go: usage.Scope). */
+export interface UsageScope {
+  since: string;
+  calls: number;
+  errors: number;
+  avgMs: number;
+  p50Ms: number;
+  p95Ms: number;
+  maxMs: number;
+  sumMs: number;
+  outliers: number;
+  tools: ToolUsage[];
+  topErrors: UsageCount[];
+  recentOutliers: SlowCall[];
+  slowest: SlowCall[];
+}
+
+/** Eine Minute der Zeitreihe (Go: usage.Bucket); ts Minutenanfang in ms, Werte je Tool. */
+export interface UsageBucket {
+  ts: number;
+  calls: Record<string, number>;
+  errors: number;
+  ms: Record<string, number>;
+  maxMs: Record<string, number>;
+  outliers: Record<string, number>;
+}
+
+/** Regeln der Statistik für die Erklärzeile, nur in Go gepflegt (Go: UsageRules). */
+export interface UsageRules {
+  outlierFactor: number;
+  outlierFloorMs: number;
+  baselineCalls: number;
+  percentileErrorPct: number;
+}
+
+/** Nutzungsstatistik (Go: McpUsageView). */
+export interface McpUsage {
+  session: UsageScope;
+  allTime: UsageScope;
+  minutes: UsageBucket[];
+  rules: UsageRules;
+}
+
+/** Ereignisse von Go an die Oberfläche. */
 export interface Events {
   'mcp:state': McpState;
   'service:state': ServiceStatus;
   'source:state': Source;
   /** Eine Liste, damit Go später bündeln kann; vorerst je eine Zeile. */
   'console:line': ConsoleLine[];
+  'mcp:start': McpCall;
+  'mcp:call': McpCall;
 }
 
 export type EventName = keyof Events;
@@ -145,6 +270,12 @@ export interface Backend {
   logsQuery(source: string, q: LogQuery): Promise<LogView>;
   /** level: WARN oder ERROR; Go liest die letzten 24 h. */
   logsErrors(source: string, level: string): Promise<ErrorsView>;
+  mcpOverview(): Promise<McpOverview>;
+  /** Startet den HTTP-Teil neu; ein Fehler steht im zurückgegebenen Zustand. */
+  mcpRestart(): Promise<McpState>;
+  mcpInstructions(): Promise<string>;
+  mcpCalls(): Promise<McpCall[]>;
+  mcpUsage(): Promise<McpUsage>;
   /** Abonniert ein Ereignis; die Rückgabe meldet wieder ab. */
   on<E extends EventName>(event: E, fn: (data: Events[E]) => void): () => void;
 }

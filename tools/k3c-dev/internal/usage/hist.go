@@ -10,6 +10,9 @@ const (
 	// histBase ist der Faktor zwischen zwei Bucket-Grenzen; das geometrische Mittel eines Buckets liegt höchstens
 	// um den Faktor √1,25 (rund 12 %) neben jedem Wert darin.
 	histBase = 1.25
+	// PercentileErrorPct ist die Genauigkeit der Perzentile in Prozent (√histBase − 1, gerundet); die Oberfläche
+	// nennt sie in der Erklärzeile der Statistik.
+	PercentileErrorPct = 12
 	// maxValues begrenzt verschiedene Argumente bzw. Fehlermeldungen je Tool; der Rest zählt unter overflowKey.
 	maxValues   = 50
 	overflowKey = "(weitere)"

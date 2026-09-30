@@ -37,7 +37,7 @@ export function formatUptime(ms: number): string {
 
 /** Dauer fein: „468 ms“, „12,4 s“, „2 min 5 s“, „1 h 2 min“. */
 export function formatDuration(ms: number): string {
-  if (ms < 1000) return `${Math.round(ms)} ms`;
+  if (ms < 999.5) return `${Math.round(ms)} ms`; // 999,6 ms wäre sonst „1000 ms“
   if (ms < 60_000) return `${formatNumber(ms / 1000, 1)} s`;
   if (ms < 3_600_000) {
     const sec = Math.floor(ms / 1000);

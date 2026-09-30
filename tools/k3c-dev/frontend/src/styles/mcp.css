@@ -1,0 +1,118 @@
+/* MCP-Seite (B-065): Bänder, Karten, Kennzahlen, Kacheln, Instructions. */
+.mcp-page {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.mcp-views {
+  align-self: flex-start;
+}
+
+.mcp-band1,
+.mcp-band2 {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 14px;
+}
+
+.mcp-band2 {
+  grid-template-columns: 1fr 1.6fr;
+}
+
+.mcp-card {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 14px 16px;
+  border: 1px solid var(--card-line);
+  border-radius: 12px;
+  background: var(--card);
+}
+
+.mcp-card-title {
+  font-weight: 600;
+}
+
+.mcp-addr {
+  color: var(--dim);
+  font-size: 12px;
+}
+
+.mcp-kpis {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 10px;
+  margin: 0;
+}
+
+.mcp-kpis dt {
+  color: var(--dim);
+  font-size: 11px;
+  letter-spacing: 0.06em;
+}
+
+.mcp-kpis dd {
+  margin: 2px 0 0;
+  font-size: 20px;
+  font-variant-numeric: tabular-nums;
+}
+
+.mcp-tiles {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap: 8px;
+}
+
+.mcp-tile {
+  padding: 8px 10px;
+  border: 1px solid var(--card-line);
+  border-radius: 8px;
+}
+
+.mcp-tile-name {
+  font: 600 13px 'Cascadia Mono', Consolas, monospace;
+  overflow-wrap: anywhere;
+}
+
+.mcp-share {
+  height: 4px;
+  margin: 6px 0;
+  border-radius: 2px;
+  background: var(--card-line);
+  overflow: hidden;
+}
+
+.mcp-share span {
+  display: block;
+  height: 100%;
+  background: var(--gold);
+}
+
+.mcp-tile-line {
+  color: var(--dim);
+  font-size: 12px;
+}
+
+.mcp-tile-bad {
+  color: var(--error);
+}
+
+.mcp-instructions h2,
+.mcp-instructions h3,
+.mcp-instructions h4 {
+  margin: 14px 0 6px;
+}
+
+.mcp-instructions p,
+.mcp-instructions li {
+  color: var(--text);
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.mcp-instructions code,
+.mcp-instructions pre {
+  font: 12px 'Cascadia Mono', Consolas, monospace;
+  color: var(--gold);
+}
