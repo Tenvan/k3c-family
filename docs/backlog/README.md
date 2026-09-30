@@ -25,7 +25,7 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-017](B-017-klassen-preset.md) | REG | Frage | mittel | offen | – | Klassen-Presets pro Spieler sind entschieden |
 | [B-018](B-018-renderer-aufteilen.md) | CLI | Schuld | mittel | verworfen | – | worldRenderer und GameScene liegen unter 300 Zeilen |
 | [B-019](B-019-test-abdeckung.md) | INF | Idee | niedrig | offen | – | Test-Abdeckung der Engine ist sichtbar |
-| [B-020](B-020-smoke-test.md) | INF | Schuld | niedrig | eingeplant | SP03 | Server-Tests laufen lokal wie in der CI |
+| [B-020](B-020-smoke-test.md) | INF | Schuld | niedrig | erledigt | SP03 | Server-Tests laufen lokal wie in der CI |
 | [B-021](B-021-taste-x.md) | REG | Frage | mittel | eingeplant | R1 | Belegung der Taste X ist entschieden |
 | [B-022](B-022-monarch-spielstand.md) | SIM | Idee | hoch | offen | – | Monarch-Level und Skills stehen im Spielstand |
 | [B-023](B-023-itch-io.md) | INF | Idee | niedrig | offen | – | Spiel ist auf itch.io veröffentlicht |
@@ -33,7 +33,7 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-025](B-025-kampagnen-ziel.md) | REG | Frage | mittel | eingeplant | R1 | Ziel einer Kampagne ist festgelegt |
 | [B-026](B-026-skill-tasten.md) | PLAT | Frage | hoch | eingeplant | X1 | Skill-Tasten am Controller sind festgelegt |
 | [B-027](B-027-diagnose-absichern.md) | SRV | Problem | hoch | erledigt | SP03 | Diagnose-Schnittstelle ist abgesichert |
-| [B-028](B-028-spielstand-sicherung.md) | SRV | Idee | mittel | eingeplant | SP03 | Spielstände werden rotierend gesichert |
+| [B-028](B-028-spielstand-sicherung.md) | SRV | Idee | mittel | erledigt | SP03 | Spielstände werden rotierend gesichert |
 | [B-029](B-029-lade-szene.md) | CLI | Idee | mittel | offen | – | Lade-Szene zeigt Fortschritt |
 | [B-030](B-030-wiederverbinden.md) | SRV | Idee | hoch | eingeplant | SP07 | Geräte verbinden sich nach Abbruch wieder |
 | [B-031](B-031-online-test.md) | INF | Idee | niedrig | eingeplant | SP07 | Online-Verbindung ist automatisch getestet |
@@ -70,7 +70,7 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-062](B-062-dev-nutzungsstatistik.md) | SRV | Idee | mittel | erledigt | M2 | k3c-dev wertet MCP-Aufrufe über Sitzungen aus: Perzentile, Ausreißer und Zeitreihe |
 | [B-063](B-063-dev-berichte-spielstaende.md) | SRV | Idee | mittel | erledigt | M2 | k3c-dev macht Xbox-Berichte und Spielstände für Agenten lesbar |
 | [B-064](B-064-dev-oberflaeche-logs.md) | SRV | Idee | mittel | erledigt | M4 | k3c-dev hat eine Oberfläche mit Logs-Seite für Läufe und JSON-Logs |
-| [B-065](B-065-dev-mcp-seite.md) | SRV | Idee | mittel | eingeplant | M5 | k3c-dev zeigt auf der MCP-Seite Server, Tools, Live-Monitore, Aufruf-Log und Statistik |
+| [B-065](B-065-dev-mcp-seite.md) | SRV | Idee | mittel | erledigt | M5 | k3c-dev zeigt auf der MCP-Seite Server, Tools, Live-Monitore, Aufruf-Log und Statistik |
 | [B-066](B-066-server-json-log.md) | SRV | Idee | mittel | offen | – | Der Go-Server schreibt sein Log als JSON nach logs/ |
 | [B-067](B-067-dev-dienste.md) | SRV | Idee | mittel | erledigt | M3 | k3c-dev startet, überwacht und stoppt die Entwicklungs-Dienste, auch für Agenten |
 | [B-068](B-068-dev-dienste-seite.md) | SRV | Idee | mittel | erledigt | M4 | k3c-dev zeigt die Dienste als Karten mit Zustand, Metriken und Log-Level |
