@@ -57,8 +57,7 @@ keine
 Entwurf. Vor dem Aktivieren jede Session als Datei nach `docs/vorlagen/session.md` schreiben, die Kriterien in Klammern werden ihr Feld `Kriterien`.
 
 - X1.1 🧑 Gamepad-Test auf der Xbox (Anleitung im README), zwei Controller (AC-01).
-- X1.2 Auswertung: Steuerungstabelle, Skill-Tasten (B-026), Sprite-Budget, HTTPS ja/nein (AC-02, AC-03).
-- X1.3 🔍 Review (alle).
+- X1.2 Auswertung: Steuerungstabelle, Skill-Tasten (B-026), Sprite-Budget, HTTPS ja/nein; schließt den Sprint ab (Doku-Sprint, kein Review) (AC-02, AC-03).
 
 ## Abnahme
 

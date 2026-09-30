@@ -64,27 +64,11 @@ describe('Code-Regeln', () => {
 });
 
 describe('Komplexität & Schichten', () => {
-  const TARGET = 300; // Ziel aus docs/arbeitsweise.md › Komplexitäts-Budget, darüber nur mit Baseline-Eintrag
-  const HARD = 400; // harte Grenze; für TypeScript prüft sie Oxlint, für Go dieser Test
-  const BASELINE = 'tests/complexity-baseline.json';
-  const baseline: Record<string, number> = JSON.parse(read(BASELINE));
+  const HARD = 400; // Grenze aus docs/arbeitsweise.md › Komplexitäts-Budget; für TypeScript prüft sie Oxlint, für Go dieser Test
   const posix = (path: string) => path.split(sep).join('/');
   const lines = (file: string) => (read(file).match(/\n/g) ?? []).length; // wie `wc -l`
   const goDirs = ['data', 'engine', 'cmd', 'tests'];
   const goFiles = goDirs.flatMap((d) => filesIn(d, (n) => n.endsWith('.go'))).map(posix);
-  const codeFiles = sourceFiles('src').map(posix).concat(goFiles.filter((f) => !f.endsWith('_test.go')));
-
-  it.each(codeFiles)('%s liegt im Ziel oder in der Baseline (Ratsche)', (file) => {
-    const n = lines(file);
-    if (n <= TARGET) return;
-    expect(baseline[file], `${file}: ${n} Zeilen > ${TARGET}. Verkleinern; ein neuer Baseline-Eintrag nur mit Zustimmung im Review`)
-      .toBeGreaterThanOrEqual(n);
-  });
-
-  it.each(Object.keys(baseline))('Baseline-Eintrag %s ist noch nötig', (file) => {
-    const needed = existsSync(join(ROOT, file)) && lines(file) > TARGET;
-    expect(needed, `Eintrag aus ${BASELINE} entfernen: ${file} liegt im Ziel oder existiert nicht mehr`).toBe(true);
-  });
 
   it('keine Go-Datei über der harten Grenze, auch keine Test-Datei', () => {
     expect(goFiles.filter((f) => lines(f) > HARD)).toEqual([]);

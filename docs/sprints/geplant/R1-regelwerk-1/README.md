@@ -61,7 +61,7 @@ Entwurf. Vor dem Aktivieren jede Session als Datei nach `docs/vorlagen/session.m
 - R1.1 Ist-Regelwerk: Regeln aus `src/world/sim/` und `data/` gegen `game-design.md` abgleichen; Widersprüche als Tickets; Gliederung für `docs/rules/` (AC-03).
 - R1.2 🧑 Workshop Kern-Loop & Wirtschaft: Gold/Material, Besitz im gemischten Koop (2–4+ Spieler), Tag/Nacht, Wellen, Taste X (AC-01, AC-04).
 - R1.3 🧑 Workshop Stufen & Niederlage: Tiefen, Aggressionspool, Strafen, Ziel der Kampagne (AC-02).
-- R1.4 🔍 Review + Beschluss, Umsetzungs-Tickets für SIM (Go) und CLI (AC-05, alle).
+- R1.4 Beschluss, Umsetzungs-Tickets für SIM (Go) und CLI; schließt den Sprint ab (Doku-Sprint, kein Review) (AC-05).
 
 ## Abnahme
 

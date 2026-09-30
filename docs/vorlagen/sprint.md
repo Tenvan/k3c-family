@@ -63,5 +63,5 @@ wird jede Session als eigene Datei nach `docs/vorlagen/session.md` geschrieben.
 
 ## Abnahme
 
-Wird von der Review-Session ausgefüllt: Datum, geprüfte Dateien, Nachweis je Kriterium, behobene Befunde, neue Tickets.
-Bis dahin `–`.
+Wird von der Review-Session (Doku-Sprint: letzte Session) ausgefüllt, höchstens fünf Zeilen: Datum, Kriterien
+(Verweis auf Session-Ergebnisse), behobene Befunde, neue Tickets. Bis dahin `–`.
