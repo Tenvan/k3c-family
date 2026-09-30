@@ -84,18 +84,19 @@ func (s *Server) checkRun(ctx context.Context, in checkIn) (string, error) {
 	if !s.checks.begin(t.name) {
 		return "", fmt.Errorf("%s läuft bereits; auf das Ende warten, Ausgabe über console_tail check:%s", t.name, t.name)
 	}
+	var res runResult
+	defer func() { s.checks.end(t.name, res) }() // auch nach einer Panik, sonst bliebe das Ziel gesperrt
 	source := "check:" + t.name
 	s.console.Reset(source)
 	var mu sync.Mutex
 	var output []string
-	res := s.run(ctx, runSpec{dir: filepath.Join(s.cfg.Root, t.dir), args: args, timeout: t.timeout,
+	res = s.run(ctx, runSpec{dir: filepath.Join(s.cfg.Root, t.dir), args: args, timeout: t.timeout,
 		out: func(stream, text string) {
 			s.console.Add(source, stream, text)
 			mu.Lock()
 			output = append(output, text)
 			mu.Unlock()
 		}})
-	s.checks.end(t.name, res)
 	s.logRun(t.name, res)
 	if res.err != nil {
 		return "", fmt.Errorf("%s ließ sich nicht starten: %w", t.name, res.err)

@@ -1,6 +1,6 @@
 # M1 · SRV · k3c-dev I: MCP-Kern über HTTP
 
-- **Status:** aktiv
+- **Status:** erledigt
 - **Domäne:** SRV
 - **Reife:** bereit
 - **Einschiebbar:** ja
@@ -75,8 +75,14 @@ keine
 | M1.1 | `M1.1-geruest-zaehler.md` | Umsetzung | autonom | fertig |
 | M1.2 | `M1.2-check-run.md` | Umsetzung | autonom | fertig |
 | M1.3 | `M1.3-logs.md` | Umsetzung | autonom | fertig |
-| M1.4 | `M1.4-review.md` | Review | autonom | offen |
+| M1.4 | `M1.4-review.md` | Review | autonom | fertig |
 
 ## Abnahme
 
-–
+- 2026-09-30, leichtes Review über `7ff19d6..main` (61 Dateien) durch vier Reviewer (Sonnet) je Bereich plus Agent.
+- Kriterien: AC-01 und AC-03 geprüft (M1.1), AC-02 geprüft (M1.2), AC-04 und AC-05 geprüft (M1.3); AC-05 zum Teil
+  `verschoben`: CI-Job nie gelaufen, weil nicht gepusht → B-069. „Claude Code zeigt `k3c-dev` verbunden“ prüft 🧑.
+- Behoben: Sessions ohne Leerlauf-Ende zählten nach Abbruch oder Neustart ewig als Clients (`SessionTimeout` 30 min,
+  `Stop` schließt Sessions); Sperre je Ziel nach Panik dauerhaft gesetzt (`defer`); Testmuster mit führendem `-`
+  (`--watch`) abgelehnt, strenger als die Positivliste in B-046.
+- Neue Tickets: B-069. Hinweise in M3 (Job Object statt `taskkill /T`) und M4 (`node_modules` in den Regeltests).

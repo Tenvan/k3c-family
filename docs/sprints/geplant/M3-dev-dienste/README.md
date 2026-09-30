@@ -63,7 +63,8 @@ keine
 Entwurf. Vor dem Aktivieren jede Session als Datei nach `docs/vorlagen/session.md` schreiben, die Kriterien in Klammern werden ihr Feld `Kriterien`.
 
 - M3.1 `services.json`, Konfiguration mit Prüfung, Controller und Zustandsmaschine mit Health-Prüfung, Auto-Restart,
-  Prozessbaum über `internal/proc` (AC-01).
+  Prozessbaum über `internal/proc`; dort unter Windows ein Job Object statt nur `taskkill /T` prüfen, damit auch
+  verwaiste Enkel enden (Hinweis aus dem Review M1.4) (AC-01).
 - M3.2 Übernahme per Port, `Port belegt`, Metriken mit `gopsutil`, Dienst-Konsolen in `logs_sources`, Log-Level-Zähler (AC-02, AC-03).
 - M3.3 `svc_status`, `svc_start`, `svc_stop`, `svc_restart`, Beenden, Instructions; Prüfung von Hand (AC-04, AC-05).
 - M3.4 🔍 Review (alle).

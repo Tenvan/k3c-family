@@ -30,6 +30,8 @@ func TestCheckRunLehntAbOhneProzessstart(t *testing.T) {
 	cases := []checkIn{
 		{Target: "npm:alles"},
 		{Target: "npm:lint", Pattern: "planning"},
+		{Target: "npm:test", Pattern: "--watch"},
+		{Target: "go:test", Pattern: "-v"},
 	}
 	for _, bad := range []string{";", "&", "|", "$", "`", `"`, "'", "<", ">", "%", "^", " ", "a b", strings.Repeat("a", 101)} {
 		cases = append(cases, checkIn{Target: "npm:test", Pattern: "x" + bad})
@@ -62,6 +64,23 @@ func TestCheckRunEinLaufJeZiel(t *testing.T) {
 	close(release)
 	if err := <-first; err != nil || started.Load() != 1 {
 		t.Errorf("erster Lauf: %v, %d Starts", err, started.Load())
+	}
+}
+
+func TestCheckRunGibtSperreNachPanikFrei(t *testing.T) {
+	var calls atomic.Int32
+	s, _ := fakeServer(t, func(runSpec) runResult {
+		if calls.Add(1) == 1 {
+			panic("kaputt")
+		}
+		return runResult{}
+	})
+	func() {
+		defer func() { _ = recover() }()
+		_, _ = s.checkRun(context.Background(), checkIn{Target: "npm:test"})
+	}()
+	if _, err := s.checkRun(context.Background(), checkIn{Target: "npm:test"}); err != nil {
+		t.Errorf("Ziel nach Panik gesperrt: %v", err)
 	}
 }
 

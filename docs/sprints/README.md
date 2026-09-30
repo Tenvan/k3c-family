@@ -6,11 +6,7 @@ Jede Sprint-README ist eine Spec (SDD); aktiv wird ein Sprint erst mit `Spec: fr
 
 ## Aktiv
 
-| Sprint | Domäne | Thema | Ordner |
-|---|---|---|---|
-| M1 | SRV | k3c-dev I: MCP-Kern über HTTP (eingeschoben) | `aktiv/M1-dev-mcp/` |
-
-Danach: SP03 bereit machen (Sessions schreiben, 🧑 um Freigabe bitten).
+Kein aktiver Sprint. Nächster Schritt: M2 oder SP03 bereit machen (Sessions schreiben, 🧑 um Freigabe bitten).
 
 ## Geplant (in dieser Reihenfolge)
 
@@ -52,3 +48,4 @@ Nach SP11: Regelwerk II (Skills) → SIM Skills in Go → CLI Skills → Spielea
 | L1 | Go-Verschachtelung als Tiefe prüfen (B-054) | `erledigt/L1-go-verschachtelung/` |
 | L2 | Go-Tiefe wie TypeScript zählen (B-057) | `erledigt/L2-go-tiefe/` |
 | SP02 | Protokoll v2 & Raummodell, Entscheidung 002 | `erledigt/SP02-protokoll/` |
+| M1 | k3c-dev I: MCP-Kern über HTTP | `erledigt/M1-dev-mcp/` |
