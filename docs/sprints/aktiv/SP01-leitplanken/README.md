@@ -5,7 +5,7 @@
 - **Reife:** bereit
 - **Einschiebbar:** nein
 - **Tickets:** B-009, B-033, B-050
-- **Start-Commit:** –
+- **Start-Commit:** 918f385
 - **Spec:** freigegeben
 - **Revision:** 2
 - **Freigabe:** 2026-09-30 🧑 Chat-Freigabe durch Ralf (Revision 2, mit B-050)
@@ -63,7 +63,7 @@ keine
 
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
-| SP01.1 | `SP01.1-client-lint.md` | Umsetzung | autonom | offen |
+| SP01.1 | `SP01.1-client-lint.md` | Umsetzung | autonom | fertig |
 | SP01.2 | `SP01.2-go-geruest.md` | Umsetzung | autonom | offen |
 | SP01.3 | `SP01.3-regel-tests.md` | Umsetzung | autonom | offen |
 | SP01.4 | `SP01.4-review.md` | Review | autonom | offen |
