@@ -81,7 +81,7 @@ Portale, Gegner). Nach Änderungen `npm test` ausführen. Die Tests prüfen 500 
 
 ## CI/CD (GitHub Actions)
 
-- **CI** (jeder Push/PR): Typecheck, Tests, Build, Smoke-Test des Heimnetz-Servers. Der Build liegt als Artefakt `k3c-dist` am Lauf.
+- **CI** (jeder Push/PR): Lint, Typecheck, Tests, Build, Smoke-Test des Heimnetz-Servers; Go-Job mit Tests, `golangci-lint` und Cross-Build für Windows und Raspberry Pi. Der Build liegt als Artefakt `k3c-dist` am Lauf.
 - **GitHub Pages** (Push auf `main`): Spiel und Testseiten online, ohne Bericht-Server.
   Einmalig aktivieren: *Settings → Pages → Source: GitHub Actions*.
 - **Release** (Tag `v*`, z.B. `git tag v0.2.0 && git push --tags`): Zip mit `dist/` + `server/` am Release.
