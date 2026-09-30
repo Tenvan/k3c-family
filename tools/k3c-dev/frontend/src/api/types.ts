@@ -47,10 +47,35 @@ export interface LevelCounts {
   budgetHit: boolean;
 }
 
-/** Ereignisse von Go an die Oberfläche; die Seiten ab M4.3 ergänzen ihre Nutzdaten. */
+/** Art einer Quelle der Logs-Seite (Go: Source.Kind). */
+export type SourceKind = 'service' | 'run' | 'log' | 'console';
+
+/**
+ * Eintrag der Quellenleiste (Go: Source). state: Dienst → ServiceState; Lauf → running, ok, failed, timeout;
+ * Log → entries, empty. Der Name ist die Konsolen-Quelle (Lauf: check:<ziel>).
+ */
+export interface Source {
+  name: string;
+  kind: SourceKind | string;
+  state: string;
+  detail: string;
+}
+
+/** Zeile einer Konsolen-Quelle (Go: console.Line). seq zählt je Quelle, auch über einen neuen Lauf hinweg. */
+export interface ConsoleLine {
+  source: string;
+  stream: string;
+  text: string;
+  seq: number;
+}
+
+/** Ereignisse von Go an die Oberfläche; M4.4 und M5 ergänzen ihre Nutzdaten. */
 export interface Events {
   'mcp:state': McpState;
   'service:state': ServiceStatus;
+  'source:state': Source;
+  /** Eine Liste, damit Go später bündeln kann; vorerst je eine Zeile. */
+  'console:line': ConsoleLine[];
 }
 
 export type EventName = keyof Events;
@@ -67,6 +92,9 @@ export interface Backend {
   servicesStartAll(): Promise<void>;
   servicesStopAll(): Promise<void>;
   serviceLogLevels(name: string): Promise<LevelCounts>;
+  sources(): Promise<Source[]>;
+  /** Ganzer Puffer einer Quelle mit ANSI-Farben; eine unbekannte Quelle lehnt Go ab. */
+  consoleTail(source: string): Promise<ConsoleLine[]>;
   /** Abonniert ein Ereignis; die Rückgabe meldet wieder ab. */
   on<E extends EventName>(event: E, fn: (data: Events[E]) => void): () => void;
 }

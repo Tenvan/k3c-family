@@ -44,11 +44,12 @@ type Config struct {
 	Root    string // Repo-Wurzel
 	Port    int
 	Version string
-	OnStart func(Call)     // optional: Aufruf beginnt
-	OnCall  func(Call)     // optional: Aufruf beendet
-	Console *console.Store // optional: gemeinsamer Konsolenpuffer (mit dem Spiegel des eigenen Logs)
-	Log     *slog.Logger   // optional: eigenes Log
-	Usage   *usage.Tracker // optional: Nutzungsstatistik (B-062)
+	OnStart func(Call)       // optional: Aufruf beginnt
+	OnCall  func(Call)       // optional: Aufruf beendet
+	OnCheck func(CheckState) // optional: ein Prüflauf beginnt oder endet (Quellenleiste der Oberfläche)
+	Console *console.Store   // optional: gemeinsamer Konsolenpuffer (mit dem Spiegel des eigenen Logs)
+	Log     *slog.Logger     // optional: eigenes Log
+	Usage   *usage.Tracker   // optional: Nutzungsstatistik (B-062)
 	// Services führt die Dienste (B-067); ServicesErr ist der Grund, falls services.json nicht geladen wurde.
 	Services    *services.Controller
 	ServicesErr error

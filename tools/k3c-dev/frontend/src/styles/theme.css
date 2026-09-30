@@ -18,6 +18,12 @@
   --bg: linear-gradient(180deg, var(--night-1) 0%, var(--night-2) 55%, var(--night-3) 100%) fixed;
   --on-accent: #1b1300;
   --title: var(--gold);
+  --console-bg: rgba(5, 8, 22, 0.72);
+  /* 16 ANSI-Farben der Konsole (0–7 normal, 8–15 hell) */
+  --ansi-0: #3b3a6b; --ansi-1: #ff6b6b; --ansi-2: #3fb950; --ansi-3: #ffd166;
+  --ansi-4: #4dabf7; --ansi-5: #d291ff; --ansi-6: #3dd6d0; --ansi-7: #c9d1e3;
+  --ansi-8: #6b7390; --ansi-9: #ff8e8e; --ansi-10: #6ee787; --ansi-11: #ffe29a;
+  --ansi-12: #82c4ff; --ansi-13: #e2b5ff; --ansi-14: #7ee8e3; --ansi-15: #ffffff;
 }
 
 :root[data-mode='light'] {
@@ -31,6 +37,11 @@
   --warn: var(--gold-deep);
   --neutral: #6b7390;
   --title: var(--gold-deep);
+  --console-bg: rgba(255, 255, 255, 0.9);
+  --ansi-0: #1b2550; --ansi-1: #c92a2a; --ansi-2: #1a7f37; --ansi-3: #9a6700;
+  --ansi-4: #1c6ed6; --ansi-5: #8250df; --ansi-6: #0f7b83; --ansi-7: #56608a;
+  --ansi-8: #6b7390; --ansi-9: #e03131; --ansi-10: #2b9348; --ansi-11: #b07d00;
+  --ansi-12: #1971c2; --ansi-13: #9c36b5; --ansi-14: #0c8599; --ansi-15: #1b2550;
   --bg: linear-gradient(180deg, #fbf8f0 0%, #eef0f8 60%, #e3e5f3 100%) fixed;
 }
 
