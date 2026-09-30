@@ -65,7 +65,7 @@ keine
 
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
-| L2.1 | `L2.1-tiefen-pruefung.md` | Umsetzung | autonom | in Arbeit |
+| L2.1 | `L2.1-tiefen-pruefung.md` | Umsetzung | autonom | fertig |
 | L2.2 | `L2.2-review.md` | Review | autonom | offen |
 
 ## Abnahme
