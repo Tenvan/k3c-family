@@ -64,3 +64,4 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-056](B-056-ratsche-nachziehen.md) | INF | Schuld | niedrig | offen | – | Die Ratsche zieht gesunkene Werte automatisch nach |
 | [B-057](B-057-go-tiefe-range.md) | INF | Problem | mittel | erledigt | L2 | Die Go-Verschachtelung zählt `for range` und `else if` wie TypeScript |
 | [B-058](B-058-execution-policy.md) | INF | Frage | niedrig | offen | – | requirements.md empfiehlt keine Sicherheitseinstellung ohne Entscheidung von 🧑 |
+| [B-059](B-059-freie-monarchen-reisen-mit.md) | SIM | Idee | hoch | offen | – | Nur gesteuerte Monarchen entscheiden über den Stufenwechsel |
