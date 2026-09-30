@@ -1,6 +1,6 @@
 # M5 · SRV · k3c-dev V: MCP-Seite mit Monitoren und Statistik
 
-- **Status:** aktiv
+- **Status:** erledigt
 - **Domäne:** SRV
 - **Reife:** bereit
 - **Einschiebbar:** ja
@@ -65,10 +65,13 @@ keine
 | M5.2 | `M5.2-live-monitore.md` | Umsetzung | autonom | fertig |
 | M5.3 | `M5.3-aufruf-log.md` | Umsetzung | autonom | fertig |
 | M5.4 | `M5.4-statistik.md` | Umsetzung | autonom | fertig |
-| M5.5 | `M5.5-review.md` | Review | autonom | blockiert |
+| M5.5 | `M5.5-review.md` | Review | autonom | fertig |
 
 M5.2 bis M5.4 hängen nur von M5.1 ab. Die Review-Session braucht die Abnahme der Seite durch 🧑 (AC-06).
 
 ## Abnahme
 
-–
+- 2026-09-30, leichtes Review über `3b6ef83..main` durch zwei Reviewer (Sonnet): Backend/Übersicht/Aufruf-Log und
+  Live-Monitore/Statistik. Kriterien: AC-01 (M5.1), AC-02 (M5.1, M5.2), AC-03 (M5.3), AC-04, AC-05 (M5.4; CI grün laut
+  🧑), AC-06 von 🧑 (M5.5).
+- Keine schweren Befunde; behoben (gering): gemerkter Tool-Filter fällt auf „Alle“ zurück. Neue Tickets: keine.
