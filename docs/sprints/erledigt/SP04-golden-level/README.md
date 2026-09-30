@@ -1,6 +1,6 @@
 # SP04 · SIM · Golden-Tests, RNG, Level-Generator in Go
 
-- **Status:** aktiv
+- **Status:** erledigt
 - **Domäne:** SIM
 - **Reife:** bereit
 - **Einschiebbar:** nein
@@ -73,8 +73,11 @@ FMA: Regel im Go-Code, arm64-Lauf als Ticket B-071.
 | SP04.1 | `SP04.1-golden-daten.md` | Umsetzung | autonom | fertig |
 | SP04.2 | `SP04.2-rng.md` | Umsetzung | autonom | fertig |
 | SP04.3 | `SP04.3-level.md` | Umsetzung | autonom | fertig |
-| SP04.4 | `SP04.4-review.md` | Review | autonom | offen |
+| SP04.4 | `SP04.4-review.md` | Review | autonom | fertig |
 
 ## Abnahme
 
-–
+- 2026-09-30, leichtes Review über `4f4cb2f..main` (Agent, im selben Lauf wie die Umsetzung, auf Auftrag von 🧑).
+  Kriterien: AC-01 (SP04.1), AC-02 (SP04.2), AC-03 (SP04.3), alle mit Gegentest belegt. B-043/AC-02 folgt in SP05/SP06.
+- Befunde: keine schweren. `src/` und `data/` sind unverändert, `engine/rng` und `engine/level` importieren nur
+  `k3c/data` und `k3c/engine/rng`. Neue Tickets: B-071 (Golden-Tests auf arm64), B-072 (depguard für `engine/rng`).

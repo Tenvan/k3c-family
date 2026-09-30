@@ -6,9 +6,7 @@ Jede Sprint-README ist eine Spec (SDD); aktiv wird ein Sprint erst mit `Spec: fr
 
 ## Aktiv
 
-| Sprint | Domäne | Thema | Am Ende sichtbar | Reife | Ordner |
-|---|---|---|---|---|---|
-| SP04 | SIM | Golden-Tests, RNG, Level-Generator in Go | gleiche Level in TS und Go | bereit | `aktiv/SP04-golden-level/` |
+Kein aktiver Sprint. Nächster Schritt: SP05 bereit machen (Sessions schreiben, 🧑 um Freigabe bitten).
 
 ## Geplant (in dieser Reihenfolge)
 
@@ -50,3 +48,4 @@ Nach SP11: Regelwerk II (Skills) → SIM Skills in Go → CLI Skills → Spielea
 | M4 | k3c-dev IV: Oberfläche (Wails) mit Dienste- und Logs-Seite | `erledigt/M4-dev-oberflaeche/` |
 | SP03 | Go-Server Basis: Auslieferung, Spielstände mit Sicherungen, Status, Docker | `erledigt/SP03-go-server/` |
 | M5 | k3c-dev V: MCP-Seite mit Monitoren und Statistik | `erledigt/M5-dev-mcp-seite/` |
+| SP04 | Golden-Tests, RNG und Level-Generator in Go | `erledigt/SP04-golden-level/` |

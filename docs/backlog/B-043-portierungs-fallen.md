@@ -53,4 +53,4 @@ keine
 
 ## Notizen
 
-Betrifft SP04 bis SP06.
+Betrifft SP04 bis SP06. SP04 erledigt (2026-09-30): AC-01 belegt über `rng.json` und `level-*.json`; Golden-Läufe `sim-*.json` liegen für SP05/SP06 bereit.
