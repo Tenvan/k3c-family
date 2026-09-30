@@ -6,11 +6,7 @@ Jede Sprint-README ist eine Spec (SDD); aktiv wird ein Sprint erst mit `Spec: fr
 
 ## Aktiv
 
-| Sprint | Domäne | Thema | Ordner |
-|---|---|---|---|
-| SP02 | SRV | Protokoll v2 & Raummodell | `aktiv/SP02-protokoll/` |
-
-Danach: SP03 bereit machen.
+Kein aktiver Sprint. Nächster Schritt: SP03 bereit machen (Sessions schreiben, 🧑 um Freigabe bitten).
 
 ## Geplant (in dieser Reihenfolge)
 
@@ -48,3 +44,4 @@ Nach SP11: Regelwerk II (Skills) → SIM Skills in Go → CLI Skills → Spielea
 | SP01 | Leitplanken + Go-Gerüst | `erledigt/SP01-leitplanken/` |
 | L1 | Go-Verschachtelung als Tiefe prüfen (B-054) | `erledigt/L1-go-verschachtelung/` |
 | L2 | Go-Tiefe wie TypeScript zählen (B-057) | `erledigt/L2-go-tiefe/` |
+| SP02 | Protokoll v2 & Raummodell, Entscheidung 002 | `erledigt/SP02-protokoll/` |
