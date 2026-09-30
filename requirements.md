@@ -35,8 +35,8 @@ git --version; node --version; go version; golangci-lint --version
 Hinweise:
 
 - `winget` nimmt die jeweils neueste Version. Bei `Go` und `golangci-lint` muss sie ≥ der Tabelle sein
-  (Go 1.27, golangci-lint 2.x); eine feste Version erzwingt `--version 2.14.0`.
-- Ohne `winget`: Installer von den Download-Links unten, Standardoptionen, „Add to PATH" aktiv lassen.
+  (Go 1.27, golangci-lint 2.14); eine feste Version erzwingt `--version 2.14.0`.
+- Ohne `winget`: Installer von den Download-Links unten, Standardoptionen, „Add to PATH“ aktiv lassen.
 - Ohne Go läuft alles außer `npm run check:go`; Client und `npm run check` brauchen nur Node.
 - Skripte blockiert von der Execution Policy (`npm.ps1 kann nicht geladen werden`)?
   Einmalig `Set-ExecutionPolicy -Scope CurrentUser RemoteSigned`, oder `npm.cmd` statt `npm` aufrufen.
