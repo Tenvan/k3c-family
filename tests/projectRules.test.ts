@@ -67,7 +67,7 @@ describe('Komplexität & Schichten', () => {
   const HARD = 400; // Grenze aus docs/arbeitsweise.md › Komplexitäts-Budget; für TypeScript prüft sie Oxlint, für Go dieser Test
   const posix = (path: string) => path.split(sep).join('/');
   const lines = (file: string) => (read(file).match(/\n/g) ?? []).length; // wie `wc -l`
-  const goDirs = ['data', 'engine', 'cmd', 'tests'];
+  const goDirs = ['data', 'engine', 'cmd', 'tools', 'tests'];
   const goFiles = goDirs.flatMap((d) => filesIn(d, (n) => n.endsWith('.go'))).map(posix);
 
   it('keine Go-Datei über der harten Grenze, auch keine Test-Datei', () => {
