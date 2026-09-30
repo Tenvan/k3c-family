@@ -1,14 +1,14 @@
 # M4 · SRV · k3c-dev IV: Oberfläche mit Dienste- und Logs-Seite
 
-- **Status:** geplant
+- **Status:** aktiv
 - **Domäne:** SRV
-- **Reife:** Entwurf
+- **Reife:** bereit
 - **Einschiebbar:** ja
 - **Tickets:** B-064, B-068
 - **Start-Commit:** –
-- **Spec:** Entwurf
+- **Spec:** freigegeben
 - **Revision:** 1
-- **Freigabe:** –
+- **Freigabe:** 2026-09-30 🧑 Chat (M4 Revision 1 mit B-064, B-068, Wails v2.16.0, React 19.3.0, Radix Themes 3.3.0, plugin-react 6.1.1, Ausnahmen und 5 Sessions)
 
 ## Ausgangslage
 
@@ -36,13 +36,18 @@ B-064 › Nicht-Ziele, B-068 › Nicht-Ziele. Die MCP-Seite folgt in M5.
 
 B-064 und B-068 › Regeln und Einschränkungen. Einschiebbar nach M3. Mit der Freigabe zu genehmigen:
 
-1. **Abhängigkeiten:** `github.com/wailsapp/wails/v2` (v2.16.0 geprüft 2026-09-30), im Frontend `react` und `react-dom`
-   19, `@radix-ui/themes` 3, `@vitejs/plugin-react`, `@types/react`, `@types/react-dom` (Versionen beim Umsetzen prüfen);
-   Vite und TypeScript wie im Hauptprojekt.
-2. **Ausnahmen außerhalb der Domäne** (INF): `package.json` (`check:dev` um Frontend-Typecheck erweitern),
-   `.github/workflows/ci.yml` (Job `k3c-dev` baut zusätzlich Frontend und `wails build`), `.oxlintrc.json`
-   (`tools/k3c-dev/frontend/dist` und `wailsjs` ignorieren), `requirements.md` (Wails-CLI, WebView2-Laufzeit), `tests/projectRules.test.ts` und `tests/nesting_test.go`
-   (`node_modules` unter `tools/` auslassen, Hinweis aus dem Review M1.4).
+1. **Abhängigkeiten** (Versionen geprüft 2026-09-30): im Modul `tools/k3c-dev` `github.com/wailsapp/wails/v2`
+   **v2.16.0** samt Wails-CLI v2.16.0; im Frontend `tools/k3c-dev/frontend/` `react` und `react-dom` **19.3.0**,
+   `@radix-ui/themes` **3.3.0**, `@vitejs/plugin-react` **6.1.1** (verlangt Vite 8), `@types/react` und
+   `@types/react-dom` **19.3.0**; Vite (`^8.3.1`) und TypeScript (`^7.0.2`) wie im Hauptprojekt. Die Frontend-Tests
+   laufen im Vitest des Hauptprojekts, das Frontend bekommt kein eigenes.
+2. **Ausnahmen außerhalb der Domäne** (INF, nur in M4.1): `package.json` (`check:dev` baut zuerst das Frontend samt
+   Typecheck), `.github/workflows/ci.yml` (Job `k3c-dev` baut zusätzlich Frontend und `wails build`), `.oxlintrc.json`
+   (`tools/k3c-dev/frontend/dist` und `wailsjs` ignorieren), `requirements.md` (Wails-CLI, WebView2-Laufzeit),
+   `tests/projectRules.test.ts` und `tests/nesting_test.go` (`node_modules` unter `tools/` auslassen, Hinweis aus dem
+   Review M1.4).
+3. **Fünf Sessions** statt 2–4: Die Logs-Seite (geschätzt ~1000 Zeilen) ist auf M4.3 und M4.4 verteilt
+   (Entscheidung 🧑, 2026-09-30, Chat).
 
 ## Beispiele
 
@@ -68,15 +73,16 @@ keine
 
 ## Sessions
 
-Entwurf. Vor dem Aktivieren jede Session als Datei nach `docs/vorlagen/session.md` schreiben, die Kriterien in Klammern werden ihr Feld `Kriterien`.
+| Nr. | Datei | Typ | Agent | Status |
+|---|---|---|---|---|
+| M4.1 | `M4.1-geruest.md` | Umsetzung | autonom | offen |
+| M4.2 | `M4.2-dienste-seite.md` | Umsetzung | autonom | offen |
+| M4.3 | `M4.3-quellen-konsole.md` | Umsetzung | autonom | offen |
+| M4.4 | `M4.4-log-fehler.md` | Umsetzung | autonom | offen |
+| M4.5 | `M4.5-review.md` | Review | autonom | offen |
 
-- M4.1 Wails-Gerüst: Fenster, Einzelinstanz, Größe merken, Bindings, Ereignisse, Frontend-Gerüst mit Kopfzeile,
-  Farben, Bausteinen, Backend-Vertrag und Mock; Ausnahmen (AC-01, AC-02, AC-06).
-- M4.2 Dienste-Seite (AC-03).
-- M4.3 Logs-Seite: Quellenleiste, Konsole, Reiter `Log` und `Fehler (verdichtet)`; Prüfung gegen den Mock im
-  Browser-Pane, falls 🧑 sie freigibt (AC-04, AC-05). Größte Session des Sprints; wird sie zu groß, `Log`/`Fehler` als
-  eigene Session abspalten und den Sprint auf 5 Sessions erweitern (🧑 fragen).
-- M4.4 🔍 Review, 🧑 prüft das Fenster (AC-07, alle).
+M4.2 und M4.3 hängen nur von M4.1 ab; M4.4 folgt auf M4.3. Die Review-Session braucht die Abnahme des Fensters
+durch 🧑 (AC-07).
 
 ## Abnahme
 

@@ -6,9 +6,9 @@
 - **Status:** eingeplant
 - **Sprint:** M4
 - **Erstellt:** 2026-09-30
-- **Spec:** Entwurf
+- **Spec:** freigegeben
 - **Revision:** 1
-- **Freigabe:** –
+- **Freigabe:** 2026-09-30 🧑 Chat (M4 Revision 1 mit B-064, B-068, Wails v2.16.0, React 19.3.0, Radix Themes 3.3.0, plugin-react 6.1.1, Ausnahmen und 5 Sessions)
 
 ## Ausgangslage
 
