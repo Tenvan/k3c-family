@@ -48,7 +48,7 @@ Umsetzung in Sprints und Sessions: [`docs/sprints/`](sprints/README.md). Tickets
 - [ ] Browser als reiner Client, TS-Simulation gelöscht
 - [ ] Diagnose-TUI, Betrieb auf dem Raspberry Pi
 - [ ] Entwickler-Werkzeug `k3c-dev` mit MCP-Server für Agenten (M1: Prüfungen, Logs; M2: Statistik, Berichte, Spielstände;
-  M3: Oberfläche mit Logs-Seite; M4: MCP-Seite; SP07: Räume, Simulation)
+  M3: Dienste; M4: Oberfläche mit Dienste- und Logs-Seite; M5: MCP-Seite; SP07: Räume, Simulation)
 
 ## Schritt 4 – Inhalt & Politur
 
