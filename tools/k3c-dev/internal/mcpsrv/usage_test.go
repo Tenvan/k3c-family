@@ -14,7 +14,7 @@ import (
 
 func TestNutzungsstatistikBekommtRoheArgumente(t *testing.T) {
 	tr := usage.New(time.Now)
-	s := New(Config{Version: "test", Usage: tr})
+	s := New(Config{Version: "test", Usage: tr, Root: t.TempDir()})
 	add(s, &mcp.Tool{Name: "echo", Description: "Test"}, func(_ context.Context, in echoIn) (string, error) {
 		return in.Text, nil
 	})
@@ -25,8 +25,17 @@ func TestNutzungsstatistikBekommtRoheArgumente(t *testing.T) {
 		t.Fatal(text)
 	}
 	callText(t, cs, "check_run", map[string]any{"target": "npm:alles"})
+	if text, _ := callText(t, cs, "reports_list", nil); text != "keine Berichte" {
+		t.Errorf("reports_list ohne Ordner: %q", text)
+	}
+	if text, _ := callText(t, cs, "report_read", map[string]any{"name": "../x.json"}); !strings.Contains(text, "abgelehnt") {
+		t.Errorf("report_read mit ..: %q", text)
+	}
+	if status, _ := s.workbenchStatus(context.Background(), struct{}{}); !strings.Contains(status, "Sitzung: p95 ") {
+		t.Errorf("Status ohne Statistik: %q", status)
+	}
 	snap := tr.Snapshot().Session
-	if snap.Calls != 2 || snap.Errors != 1 {
+	if snap.Calls != 4 || snap.Errors != 2 {
 		t.Fatalf("Zähler: %+v", snap)
 	}
 	for _, tool := range snap.Tools {

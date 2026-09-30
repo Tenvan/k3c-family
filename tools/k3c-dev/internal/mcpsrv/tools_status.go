@@ -16,6 +16,10 @@ func (s *Server) workbenchStatus(context.Context, struct{}) (string, error) {
 		fmt.Sprintf("Aufrufe %d · Fehler %d · Clients %d (max %d) · parallel %d (max %d)",
 			st.TotalCalls, st.Errors, st.Clients, st.PeakClients, st.InFlight, st.PeakInFlight),
 	}
+	if s.cfg.Usage != nil {
+		u := s.cfg.Usage.Snapshot().Session
+		lines = append(lines, fmt.Sprintf("Sitzung: p95 %s · Ausreißer %d", formatMs(u.P95Ms), u.Outliers))
+	}
 	lines = append(lines, "Log-Quellen: "+strings.Join(s.logSources(), ", "))
 	return strings.Join(append(lines, s.runLines()...), "\n"), nil
 }

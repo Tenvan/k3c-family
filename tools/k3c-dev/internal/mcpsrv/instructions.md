@@ -18,6 +18,11 @@ zurückgeben.
 - `logs_query` für einzelne Einträge (Filter `minLevel`, `ns`, `pattern`, `since`, `limit`).
 - `logs_since` zum Mitlesen: den `cursor` aus der letzten Antwort wieder mitgeben.
 
+## Spieldaten
+
+- `reports_list` und `report_read` statt `reports/*.json` zu öffnen: Xbox-Berichte der Gamepad-Testseite.
+- `saves_list` statt `saves/` zu durchsuchen: Stufe, Tag, Spieler und Datum je Spielstand.
+
 ## Zustand
 
 - `workbench_status`: Adresse, Laufzeit, Aufrufe, Clients, letzte Läufe, Log-Quellen.

@@ -61,7 +61,7 @@ keine
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
 | M2.1 | `M2.1-nutzungsstatistik.md` | Umsetzung | autonom | fertig |
-| M2.2 | `M2.2-speichern-spieldaten.md` | Umsetzung | autonom | offen |
+| M2.2 | `M2.2-speichern-spieldaten.md` | Umsetzung | autonom | fertig |
 | M2.3 | `M2.3-review.md` | Review | autonom | offen |
 
 ## Abnahme

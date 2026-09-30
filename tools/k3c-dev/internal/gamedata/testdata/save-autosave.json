@@ -1,0 +1,1 @@
+{ "version": 1, "campaignId": "c1", "savedAt": "2026-09-30T18:02:00.000Z", "seed": "abc", "depth": 2, "unlockedDepth": 3, "time": 4000, "skillPoints": 0, "players": [{ "gold": 5 }, { "gold": 7 }], "hubs": [] }
