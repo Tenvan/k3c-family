@@ -6,9 +6,9 @@
 - **Einschiebbar:** nein
 - **Tickets:** B-009, B-033
 - **Start-Commit:** –
-- **Spec:** Entwurf
+- **Spec:** freigegeben
 - **Revision:** 1
-- **Freigabe:** –
+- **Freigabe:** 2026-09-30 🧑 Chat-Freigabe durch Ralf (Revision 1)
 
 ## Ausgangslage
 

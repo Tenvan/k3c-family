@@ -53,7 +53,7 @@ Eine Planungs-Datei weicht von der Vorlage ab oder ein Kriterium hat keine Sessi
 
 ## Offene Fragen
 
-Freigabe der Spec von SP01 durch 🧑, bevor SP00.5 ihn aktivieren darf.
+keine (Spec von SP01 am 2026-09-30 freigegeben)
 
 ## Sessions
 
