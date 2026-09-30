@@ -80,13 +80,15 @@ func windowOptions(app *App) *options.App {
 
 // openServices lädt services.json, übernimmt laufende Dienste und misst alle 2 s, bis ctx endet. Eine kaputte
 // Konfiguration hält den Server nicht auf: dann gibt es keine Dienste, und svc_status nennt den Grund.
-func openServices(ctx context.Context, root string, store *console.Store, log *applog.Log) (*services.Controller, error) {
+// onChange meldet jede Änderung eines Dienstes (Oberfläche).
+func openServices(ctx context.Context, root string, store *console.Store, log *applog.Log,
+	onChange func(services.Status)) (*services.Controller, error) {
 	list, err := services.Load(filepath.Join(root, "tools", "k3c-dev", "services.json"))
 	if err != nil {
 		log.Error("dienste nicht geladen: "+err.Error(), "ns", "svc")
 		return nil, err
 	}
-	ctl := services.New(list, services.Options{Root: root, Console: store, Log: log.Logger})
+	ctl := services.New(list, services.Options{Root: root, Console: store, Log: log.Logger, OnChange: onChange})
 	ctl.Adopt(ctx)
 	go ctl.Monitor(ctx, 2*time.Second)
 	return ctl, nil
