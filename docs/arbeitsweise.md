@@ -1,7 +1,7 @@
 # Arbeitsweise
 
 **Ticket** ([`backlog/`](backlog/)) → **Sprint** (eine Domäne, 2–4 Sessions) → **Session** (ein PR).
-Ein Sprint ist erst fertig, wenn seine **Review-Session** alle im Sprint geänderten Dateien abgenommen hat.
+Ein Code-Sprint ist erst fertig, wenn seine **Review-Session** ihn abgenommen hat (leicht, siehe unten).
 Übersicht aller Sprints: [`sprints/README.md`](sprints/README.md). Zielbild: [`decisions/001-server-engine-go.md`](decisions/001-server-engine-go.md).
 
 ## Ablage
@@ -75,7 +75,7 @@ Was eine andere Domäne braucht, wird ein Ticket.
 |---|---|---|
 | **REG** | Regelwerk & Balancing | `docs/game-design.md`, `docs/rules/`, `docs/playtests/`, **Werte** in `data/*.json` |
 | **SIM** | Spiel-Logik (Go) | `engine/sim/`, `engine/level/`, **neue Felder** in `data/*.json`; bis zur Löschung `src/world/` (nur Fehler) |
-| **SRV** | Server & Betrieb (Go), Entwickler-MCP | `engine/room/`, `engine/net/`, `engine/store/`, `cmd/` (inkl. `cmd/k3c-mcp/`), Docker; bis zur Löschung `server/`, `src/online/room.ts`, `src/online/wsServer.ts` |
+| **SRV** | Server & Betrieb (Go), Entwickler-MCP | `engine/room/`, `engine/net/`, `engine/store/`, `cmd/`, Entwickler-Werkzeug `tools/k3c-dev/` (eigenes Go-Modul mit Oberfläche), Docker; bis zur Löschung `server/`, `src/online/room.ts`, `src/online/wsServer.ts` |
 | **CLI** | Client: Darstellung, HUD, Grafik, Audio, Verbindung | `src/scenes/`, `public/`, `src/online/client.ts`, `src/core/saveStore.ts` |
 | **PLAT** | Plattform: Eingabe, Shell, Seiten | `src/input/`, `src/core/shell.ts`, `src/core/fullscreen.ts`, `src/landing/`, `src/tools/`, `*.html` |
 | **INF** | Frameworks, Tooling, CI, Repo-Aufbau, Arbeitsweise | `package.json`, `go.mod`, `vite*.ts`, `tsconfig.json`, Lint-Konfiguration, `.github/`, `tests/projectRules.test.ts`, `tests/planning.test.ts`, `docs/arbeitsweise.md`, `docs/vorlagen/` |
@@ -104,7 +104,8 @@ Grenzfälle:
    Das Feld `Start-Commit` setzt die **erste Session** des Sprints: `git rev-parse --short origin/main` vor ihrem Branch.
 4. **Abschließen:** Die Review-Session verschiebt den Ordner nach `sprints/erledigt/` und setzt `Status: erledigt`.
 
-- **Klein:** 2–4 Sessions, die letzte ist immer das **Review**. Mehr Arbeit → zweiter Sprint.
+- **Klein:** 2–4 Sessions. In Code-Sprints ist die letzte das **Review**; Doku- und Planungs-Sprints (nur `docs/`)
+  haben keins, ihre letzte Session schließt den Sprint ab (Schritte 4–5 der Review-Session). Mehr Arbeit → zweiter Sprint.
 - **Blockade** (🧑 fehlt): Sprint bleibt aktiv, blockierte Session `Status: blockiert`. Ein einschiebbarer oder der
   nächste unabhängige Sprint darf vorgezogen werden.
 - **Richtwert Session:** ein PR mit ≤ ~400 geänderten Code-Zeilen (ohne Bilder, Daten-JSON, Lockfiles).
@@ -112,38 +113,38 @@ Grenzfälle:
 
 ## Review-Session (Sprint-Abnahme) 🔍
 
-1. `git fetch && git diff --stat <Start-Commit>..origin/main` → **alle** im Sprint erstellten oder geänderten Dateien.
-2. Jede Datei **vollständig** lesen (nicht nur den Diff) und gegen die Checkliste prüfen.
-3. Befunde **in der Domäne** im Review-PR beheben. Befunde **außerhalb** → Ticket, außer Kleinstes (≤ 5 Zeilen).
-4. **Abnahme** in der Sprint-README ausfüllen: Datum, Anzahl geprüfter Dateien, Nachweis je Kriterium, behobene
-   Befunde, neue Tickets. Ein Kriterium ohne Nachweis ist `verschoben` (mit Ticket) oder blockiert die Abnahme.
+Leicht und billig: Die Automatik prüft die Komplexität, das Review sucht nur **schwere Fehler**. Ein günstiges
+Modell (z. B. Sonnet) reicht.
+
+1. `npm run check` und `npm run check:go` → grün. Damit gelten die Grenzen aus dem Komplexitäts-Budget als geprüft.
+2. `git fetch && git diff <Start-Commit>..origin/main` lesen, **nur den Diff**, nicht jede Datei vollständig.
+3. Nur diese Befunde zählen:
+   - falsches Verhalten oder Datenverlust (Spielstände, Berichte, Dateien)
+   - Sicherheit: Pfade, Shell-Aufrufe, ungeprüfte Eingaben von außen
+   - Spiel-Logik nicht deterministisch (`Math.random()`), mit 2 Spielern kaputt
+   - Regeln aus `CLAUDE.md` verletzt (Seiten, Vollbild, B-Taste)
+   - ein Kriterium der Spec ohne Nachweis oder umformuliert, damit es zum Code passt
+
+   Stil, Doku, Benennung, mögliche Vereinfachungen sind **kein** Befund. Schwere Befunde in der Domäne im Review-PR
+   beheben, außerhalb → Ticket.
+4. **Abnahme** in der Sprint-README, höchstens fünf Zeilen: Datum, Kriterien (Verweis auf die Session-Ergebnisse,
+   `verschoben` mit Ticket), behobene Befunde, neue Tickets.
 5. Sprint-Ordner nach `sprints/erledigt/` verschieben, `Status: erledigt`, Fahrplan anpassen, PR öffnen.
-
-**Checkliste**
-
-- [ ] Jedes Kriterium der Sprint-Spec hat einen Nachweis; keins wurde umformuliert, um zum Code zu passen
-- [ ] Datei gehört zur Domäne des Sprints (oder ist ein erlaubter Grenzfall)
-- [ ] Komplexitäts-Budget eingehalten, nichts auf Vorrat gebaut, kein toter Code, keine Platzhalter/`skip`
-- [ ] Werte stehen in `data/`, nicht im Code
-- [ ] Spiel-Logik ist getestet und deterministisch
-- [ ] Funktioniert mit mehreren Spielern (lokal und online, falls betroffen)
-- [ ] Regeln aus `CLAUDE.md` eingehalten (Seiten, Vollbild, B-Taste, kein `Math.random()`)
-- [ ] Doku passt zum Code (`game-design.md`, README, Kommentare, Session-Ergebnisse)
 
 ## Komplexitäts-Budget
 
 Niedrige Komplexität ist in **jeder** Session Pflicht, nicht erst im Review.
 
-| Regel | Ziel | Harte Grenze | Gilt für |
-|---|---|---|---|
-| Zeilen pro Datei | 300 | 400 | Code; Tests nur harte Grenze |
-| Zeilen pro Funktion | 40 | 60 | Code, nicht Tests |
-| Verschachtelung | 3 | 4 | alles |
-| Zyklomatische Komplexität | 10 | 15 | Code |
+| Regel | Grenze | Gilt für |
+|---|---|---|
+| Zeilen pro Datei | 400 | Code und Tests |
+| Zeilen pro Funktion | 60 | Code, nicht Tests |
+| Verschachtelung | 4 | alles |
+| Zyklomatische Komplexität | 15 | Code |
 
-- **Ratsche für Bestandscode:** Dateien, die beim Einführen schon über dem Ziel liegen, stehen mit ihrem heutigen
-  Wert in einer Ausnahmeliste. Der Wert darf nur sinken.
-- Keine neue Abhängigkeit ohne Ticket und Zustimmung im Review. Keine Abstraktion für nur einen Fall.
+- Nur diese Grenzen gelten, geprüft von der Automatik. Kürzer ist besser, aber kein Befund.
+- **Ausnahmen für Bestandscode** stehen mit ihrem Wert in `.oxlintrc.json`; der Wert darf nicht steigen.
+- Keine neue Abhängigkeit ohne Ticket und Zustimmung von 🧑 (mit der Spec-Freigabe). Keine Abstraktion für nur einen Fall.
 - Schichtgrenzen: `engine/sim` und `engine/level` importieren nichts aus `engine/room`, `engine/net`, `cmd/`;
   `engine/` nichts aus `cmd/`. Im Client rechnet `src/scenes` nichts, es zeichnet Snapshots.
   Bis zur Löschung: `src/world` importiert nichts aus `scenes/`, `online/`, `input/`.

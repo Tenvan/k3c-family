@@ -3,7 +3,7 @@
 - **Domäne:** PLAT
 - **Typ:** Schuld
 - **Prio:** niedrig
-- **Status:** offen
+- **Status:** verworfen
 - **Sprint:** –
 - **Erstellt:** 2026-09-30
 - **Spec:** Entwurf
@@ -53,4 +53,4 @@ keine
 
 ## Notizen
 
-–
+Verworfen 2026-09-30 (🧑, Chat): Das Review wurde entschärft, es gelten nur noch die harten Grenzen aus `docs/arbeitsweise.md` › Komplexitäts-Budget; der Zielwert 300 Zeilen und die Baseline-Ratsche entfallen.

@@ -23,7 +23,7 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-015](B-015-gebaeude-werte.md) | REG | Problem | mittel | offen | – | Gebäude-HP und -Kosten sind gebalanced |
 | [B-016](B-016-mehr-lokale-spieler.md) | CLI | Frage | mittel | eingeplant | SP08 | Layout für mehr als zwei lokale Spieler ist entschieden |
 | [B-017](B-017-klassen-preset.md) | REG | Frage | mittel | offen | – | Klassen-Presets pro Spieler sind entschieden |
-| [B-018](B-018-renderer-aufteilen.md) | CLI | Schuld | mittel | eingeplant | SP08 | worldRenderer und GameScene liegen unter 300 Zeilen |
+| [B-018](B-018-renderer-aufteilen.md) | CLI | Schuld | mittel | verworfen | – | worldRenderer und GameScene liegen unter 300 Zeilen |
 | [B-019](B-019-test-abdeckung.md) | INF | Idee | niedrig | offen | – | Test-Abdeckung der Engine ist sichtbar |
 | [B-020](B-020-smoke-test.md) | INF | Schuld | niedrig | eingeplant | SP03 | Server-Tests laufen lokal wie in der CI |
 | [B-021](B-021-taste-x.md) | REG | Frage | mittel | eingeplant | R1 | Belegung der Taste X ist entschieden |
@@ -39,7 +39,7 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-031](B-031-online-test.md) | INF | Idee | niedrig | eingeplant | SP07 | Online-Verbindung ist automatisch getestet |
 | [B-032](B-032-github-pages.md) | PLAT | Problem | mittel | eingeplant | SP09 | GitHub Pages zeigt nur, was ohne Server geht |
 | [B-033](B-033-tests-typecheck.md) | INF | Schuld | mittel | erledigt | SP01 | Tests werden typgeprüft |
-| [B-034](B-034-plat-dateien-aufteilen.md) | PLAT | Schuld | niedrig | offen | – | Große PLAT-Dateien liegen unter 300 Zeilen |
+| [B-034](B-034-plat-dateien-aufteilen.md) | PLAT | Schuld | niedrig | verworfen | – | Große PLAT-Dateien liegen unter 300 Zeilen |
 | [B-035](B-035-raspberry-pi.md) | SRV | Idee | hoch | eingeplant | SP11 | Server läuft auf dem Raspberry Pi im Docker |
 | [B-036](B-036-mehrere-raeume.md) | SRV | Idee | hoch | eingeplant | SP07 | Mehrere Spiele laufen gleichzeitig |
 | [B-037](B-037-lobby.md) | CLI | Idee | mittel | eingeplant | SP08 | Lobby zeigt Räume und startet Spiele |
@@ -51,7 +51,7 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-043](B-043-portierungs-fallen.md) | SIM | Problem | hoch | eingeplant | SP04 | Portierungs-Fallen sind durch Golden-Tests abgedeckt |
 | [B-044](B-044-planer-struktur.md) | INF | Idee | mittel | erledigt | SP00 | Sprints und Tickets liegen als Dateien nach Pflicht-Vorlagen |
 | [B-045](B-045-sdd.md) | INF | Idee | hoch | erledigt | SP00 | Tickets und Sprints sind Specs nach Spec-Driven Development |
-| [B-046](B-046-dev-mcp.md) | SRV | Idee | mittel | eingeplant | M1 | Entwickler-MCP-Server gibt Agenten verdichteten Zugriff auf Prüfungen, Berichte und Spielstände |
+| [B-046](B-046-dev-mcp.md) | SRV | Idee | mittel | eingeplant | M1 | Entwickler-Werkzeug k3c-dev gibt Agenten über MCP verdichteten Zugriff auf Prüfungen und Logs |
 | [B-047](B-047-mcp-raeume-simulation.md) | SRV | Idee | mittel | eingeplant | SP07 | MCP-Tools zeigen laufende Räume und rechnen Level und Simulationen |
 | [B-048](B-048-standardbibliothek-in-001.md) | SRV | Frage | niedrig | offen | – | Die Wahl der Go-Standardbibliothek ist dort festgehalten, wo B-001 auf sie verweist |
 | [B-049](B-049-sp09-domaene.md) | INF | Frage | niedrig | offen | – | SP09 bleibt in einer Domäne oder hat einen erlaubten Grenzfall |
@@ -61,9 +61,14 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-053](B-053-ci-lauf-sp01.md) | INF | Problem | hoch | offen | – | Die CI hat die Prüfungen aus SP01 einmal grün durchlaufen |
 | [B-054](B-054-go-verschachtelung.md) | INF | Problem | mittel | erledigt | L1 | Die Verschachtelung von Go-Code wird als Tiefe geprüft |
 | [B-055](B-055-server-lint.md) | INF | Problem | niedrig | verworfen | – | Das Komplexitäts-Budget gilt auch für server/*.mjs |
-| [B-056](B-056-ratsche-nachziehen.md) | INF | Schuld | niedrig | offen | – | Die Ratsche zieht gesunkene Werte automatisch nach |
+| [B-056](B-056-ratsche-nachziehen.md) | INF | Schuld | niedrig | verworfen | – | Die Ratsche zieht gesunkene Werte automatisch nach |
 | [B-057](B-057-go-tiefe-range.md) | INF | Problem | mittel | erledigt | L2 | Die Go-Verschachtelung zählt `for range` und `else if` wie TypeScript |
 | [B-058](B-058-execution-policy.md) | INF | Frage | niedrig | offen | – | requirements.md empfiehlt keine Sicherheitseinstellung ohne Entscheidung von 🧑 |
 | [B-059](B-059-freie-monarchen-reisen-mit.md) | SIM | Idee | hoch | offen | – | Nur gesteuerte Monarchen entscheiden über den Stufenwechsel |
 | [B-060](B-060-sp07-protokoll-regeln.md) | SRV | Problem | hoch | offen | – | Die Spec von SP07 deckt alle Server-Regeln aus Protokoll v2 ab |
 | [B-061](B-061-sp08-protokoll-regeln.md) | CLI | Problem | hoch | offen | – | Die Spec von SP08 deckt alle Client-Regeln aus Protokoll v2 ab |
+| [B-062](B-062-dev-nutzungsstatistik.md) | SRV | Idee | mittel | eingeplant | M2 | k3c-dev wertet MCP-Aufrufe über Sitzungen aus: Perzentile, Ausreißer und Zeitreihe |
+| [B-063](B-063-dev-berichte-spielstaende.md) | SRV | Idee | mittel | eingeplant | M2 | k3c-dev macht Xbox-Berichte und Spielstände für Agenten lesbar |
+| [B-064](B-064-dev-oberflaeche-logs.md) | SRV | Idee | mittel | eingeplant | M3 | k3c-dev hat eine Oberfläche mit Logs-Seite für Läufe und JSON-Logs |
+| [B-065](B-065-dev-mcp-seite.md) | SRV | Idee | mittel | eingeplant | M4 | k3c-dev zeigt auf der MCP-Seite Server, Tools, Live-Monitore, Aufruf-Log und Statistik |
+| [B-066](B-066-server-json-log.md) | SRV | Idee | mittel | offen | – | Der Go-Server schreibt sein Log als JSON nach logs/ |

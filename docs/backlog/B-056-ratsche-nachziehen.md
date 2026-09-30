@@ -3,7 +3,7 @@
 - **Domäne:** INF
 - **Typ:** Schuld
 - **Prio:** niedrig
-- **Status:** offen
+- **Status:** verworfen
 - **Sprint:** –
 - **Erstellt:** 2026-09-30
 - **Spec:** Entwurf
@@ -60,4 +60,4 @@ Automatisch für Oxlint (Skript misst und vergleicht) oder nur als Review-Regel?
 
 ## Notizen
 
-Gefunden im Review SP01.4.
+Gefunden im Review SP01.4. Verworfen 2026-09-30 (🧑, Chat): Das Review wurde entschärft, es gelten nur noch die harten Grenzen aus `docs/arbeitsweise.md` › Komplexitäts-Budget; der Zielwert 300 Zeilen und die Baseline-Ratsche entfallen.
