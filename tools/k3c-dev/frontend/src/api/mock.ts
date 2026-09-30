@@ -1,7 +1,8 @@
+import { mockServices } from './mockServices';
 import type { Backend, EventName, Events, Info, McpState } from './types';
 
 // Mock ohne Wails-Laufzeit (`npm run dev` im Frontend): erfundene Daten, damit die Oberfläche im Browser testbar ist.
-// Die Seiten ab M4.2 lassen hier ihre Daten laufen (Konsole, Logs, Dienste).
+// Die Seiten lassen ihre Daten in eigenen Dateien laufen (mockServices.ts, ab M4.3 Konsole und Logs).
 
 type Listener = (data: never) => void;
 
@@ -19,6 +20,7 @@ export function mockBackend(): Backend {
   return {
     mock: true,
     info: async (): Promise<Info> => ({ version: 'mock', mcp }),
+    ...mockServices((st) => emit('service:state', st)),
     on: (event, fn) => {
       const set = listeners.get(event) ?? new Set<Listener>();
       set.add(fn as Listener);

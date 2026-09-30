@@ -1,0 +1,118 @@
+/* Dienste-Seite (B-068): Kopf, Raster, Karten, Metriken, Log-Kasten. */
+.svc-page {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.svc-order {
+  margin: 0 0 8px;
+  color: var(--dim);
+}
+
+.svc-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 16px;
+}
+
+@media (min-width: 1100px) {
+  .svc-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+.svc-card {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 16px;
+  border: 1px solid var(--card-line);
+  border-radius: 12px;
+  background: var(--card);
+}
+
+.svc-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.svc-name {
+  font-size: 17px;
+  font-weight: 600;
+}
+
+.svc-port,
+.svc-note,
+.svc-hint {
+  color: var(--dim);
+  font-size: 13px;
+  margin: 0;
+}
+
+.svc-health {
+  font-size: 12px;
+  color: var(--dim);
+  overflow-wrap: anywhere;
+}
+
+.svc-metrics,
+.svc-log {
+  margin: 0;
+  padding: 10px 12px;
+  border: 1px solid var(--card-line);
+  border-radius: 8px;
+}
+
+.svc-metrics {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 8px;
+}
+
+.svc-metrics dt,
+.svc-label {
+  color: var(--dim);
+  font-size: 11px;
+  letter-spacing: 0.06em;
+}
+
+.svc-metrics dd {
+  margin: 2px 0 0;
+  font-variant-numeric: tabular-nums;
+}
+
+.svc-log-total {
+  margin: 6px 0;
+  font-size: 13px;
+}
+
+.svc-bar {
+  display: flex;
+  height: 8px;
+  border-radius: 4px;
+  overflow: hidden;
+  background: var(--card-line);
+}
+
+.lvl-DEBUG { background: var(--neutral); }
+.lvl-INFO { background: var(--info); }
+.lvl-WARN { background: var(--warn); }
+.lvl-ERROR { background: var(--error); }
+
+.svc-levels {
+  margin-top: 6px;
+  font-size: 12px;
+  color: var(--dim);
+}
+
+.svc-error,
+.svc-error-count {
+  color: var(--error);
+}
+
+.svc-error {
+  margin: 0;
+  font-size: 13px;
+}

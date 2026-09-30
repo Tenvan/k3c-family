@@ -20,7 +20,10 @@ import (
 )
 
 // Ereignisse an die Oberfläche (B-064 › Ereignisse). Weitere kommen mit den Seiten dazu, die sie senden.
-const evMCPState = "mcp:state"
+const (
+	evMCPState     = "mcp:state"
+	evServiceState = "service:state"
+)
 
 // MCPState ist der Zustand des MCP-Servers für das Badge der Kopfzeile.
 type MCPState struct {
@@ -44,10 +47,12 @@ type App struct {
 	usage string                                              // Datei der Nutzungsstatistik (Test-Naht)
 
 	ctx     context.Context
+	svcCtx  context.Context // endet beim Beenden; Befehle der Oberfläche laufen darin
 	cancel  context.CancelFunc
 	log     *applog.Log
 	tracker *usage.Tracker
 	ctl     *services.Controller
+	svcErr  error // services.json nicht geladen
 	srv     *mcpsrv.Server
 
 	mu  sync.Mutex
@@ -70,12 +75,11 @@ func (a *App) startup(ctx context.Context) {
 	}
 	a.tracker = usage.Open(a.usage, time.Now,
 		func(err error) { a.log.Warn(err.Error(), "ns", "usage") })
-	svcCtx, cancel := context.WithCancel(ctx)
-	a.cancel = cancel
-	ctl, svcErr := openServices(svcCtx, a.root, store, a.log)
-	a.ctl = ctl
+	a.svcCtx, a.cancel = context.WithCancel(ctx)
+	a.ctl, a.svcErr = openServices(a.svcCtx, a.root, store, a.log,
+		func(st services.Status) { a.emit(a.ctx, evServiceState, st) })
 	a.srv = mcpsrv.New(mcpsrv.Config{Root: a.root, Port: a.port, Version: version, Console: store,
-		Log: a.log.Logger, Usage: a.tracker, Services: ctl, ServicesErr: svcErr})
+		Log: a.log.Logger, Usage: a.tracker, Services: a.ctl, ServicesErr: a.svcErr})
 	err = a.srv.Start()
 	if err != nil {
 		a.log.Error("start fehlgeschlagen", "ns", "main", "error", err.Error())

@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react';
 import { backend, type McpState } from './api';
 import { Header, PAGES, type Page } from './Header';
 import { loadPref, savePref } from './lib/prefs';
+import { ServicesPage } from './services/ServicesPage';
 import { NoticeCard } from './ui/parts';
 
 const MODES = ['dark', 'light'] as const;
@@ -35,7 +36,7 @@ export function App() {
         <Header mcp={mcp} mock={backend.mock} dark={mode === 'dark'} onDark={(d) => setMode(d ? 'dark' : 'light')} />
         <main className="page">
           <Tabs.Content value="dienste">
-            <NoticeCard title="Dienste">Die Dienste-Seite folgt in M4.2.</NoticeCard>
+            <ServicesPage />
           </Tabs.Content>
           <Tabs.Content value="logs">
             <NoticeCard title="Logs">Quellenleiste und Konsole folgen in M4.3, die Reiter Log und Fehler in M4.4.</NoticeCard>

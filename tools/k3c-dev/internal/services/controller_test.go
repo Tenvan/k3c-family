@@ -209,6 +209,9 @@ func TestStartAllUndStopAllRueckwaerts(t *testing.T) {
 	if err := c.StartAll(context.Background()); err != nil {
 		t.Fatal(err)
 	}
+	if err := c.StartAll(context.Background()); err != nil || f.count() != 2 {
+		t.Errorf("zweites StartAll überspringt laufende: %v, %d Starts", err, f.count())
+	}
 	var order []string
 	c.opts.OnChange = func(s Status) {
 		if s.State == Stopping {
