@@ -6,9 +6,9 @@
 - **Status:** eingeplant
 - **Sprint:** SP03
 - **Erstellt:** 2026-09-29
-- **Spec:** Entwurf
+- **Spec:** freigegeben
 - **Revision:** 1
-- **Freigabe:** –
+- **Freigabe:** 2026-09-30 🧑 Chat (Pauschalauftrag „beide komplett autonom fertig stellen“; N = 5, /api/health neu, ohne Token Diagnose aus)
 
 ## Ausgangslage
 
