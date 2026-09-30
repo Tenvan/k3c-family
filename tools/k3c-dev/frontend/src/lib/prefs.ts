@@ -12,6 +12,15 @@ export function loadPref<T extends string>(key: string, allowed: readonly T[], f
   }
 }
 
+/** Freier Text, z. B. die gewählte Quelle; der Aufrufer prüft ihn selbst. */
+export function loadText(key: string, fallback: string): string {
+  try {
+    return localStorage.getItem(PREFIX + key) ?? fallback;
+  } catch {
+    return fallback;
+  }
+}
+
 export function savePref(key: string, value: string): void {
   try {
     localStorage.setItem(PREFIX + key, value);

@@ -20,7 +20,7 @@ func (s *Server) workbenchStatus(context.Context, struct{}) (string, error) {
 		u := s.cfg.Usage.Snapshot().Session
 		lines = append(lines, fmt.Sprintf("Sitzung: p95 %s · Ausreißer %d", formatMs(u.P95Ms), u.Outliers))
 	}
-	lines = append(lines, s.serviceSummary(), "Log-Quellen: "+strings.Join(s.logSources(), ", "))
+	lines = append(lines, s.serviceSummary(), "Log-Quellen: "+strings.Join(s.LogSources(), ", "))
 	return strings.Join(append(lines, s.runLines()...), "\n"), nil
 }
 
