@@ -35,12 +35,28 @@ func PortListener(ctx context.Context, port int) (int, bool) {
 	if err != nil {
 		return 0, true
 	}
+	return ownerPID(conns, port), true
+}
+
+// systemPID ist die höchste PID, die Windows selbst gehört (0 Leerlauf, 4 System, z. B. http.sys); sie wird nie
+// als Besitzer genommen, damit ein Stopp sie nicht treffen kann.
+const systemPID = 4
+
+// ownerPID sucht den Prozess, den eine Verbindung an 127.0.0.1:port tatsächlich erreicht: wer dort, an 0.0.0.0 oder
+// (Dual-Stack) an :: lauscht. Andere Adressen (::1, LAN) zählen nicht, sonst träfe ein Stopp ein fremdes Programm
+// mit demselben Port. 127.0.0.1 gewinnt vor den Wildcards, wie beim Verbinden selbst.
+func ownerPID(conns []gnet.ConnectionStat, port int) int {
+	best, rank := 0, 0
 	for _, c := range conns {
-		if c.Status == "LISTEN" && c.Laddr.Port == uint32(port) && c.Pid > 0 {
-			return int(c.Pid), true
+		if c.Status != "LISTEN" || c.Laddr.Port != uint32(port) || c.Pid <= systemPID {
+			continue
+		}
+		r := map[string]int{"127.0.0.1": 3, "0.0.0.0": 2, "::": 1}[c.Laddr.IP]
+		if r > rank {
+			best, rank = int(c.Pid), r
 		}
 	}
-	return 0, true
+	return best
 }
 
 // maxCached begrenzt die gemerkten Prozesse des Samplers.

@@ -1,6 +1,6 @@
 # M3 · SRV · k3c-dev III: Dienste führen
 
-- **Status:** aktiv
+- **Status:** erledigt
 - **Domäne:** SRV
 - **Reife:** bereit
 - **Einschiebbar:** ja
@@ -69,8 +69,13 @@ keine
 | M3.1 | `M3.1-controller.md` | Umsetzung | autonom | fertig |
 | M3.2 | `M3.2-uebernahme-metriken.md` | Umsetzung | autonom | fertig |
 | M3.3 | `M3.3-svc-tools.md` | Umsetzung | autonom | fertig |
-| M3.4 | `M3.4-review.md` | Review | autonom | offen |
+| M3.4 | `M3.4-review.md` | Review | autonom | fertig |
 
 ## Abnahme
 
-–
+- 2026-09-30, leichtes Review über `9a85ce3..main` (25 Code-Dateien) durch drei Reviewer (Sonnet): Controller,
+  Prozesse/Übernahme, Tools/Verdrahtung. Kriterien: AC-01 (M3.1), AC-02 und AC-03 (M3.2), AC-04 und AC-05 (M3.3) geprüft.
+- Behoben (schwer): `Kill` nach `Wait` schickte `taskkill /T /F` an eine freie, evtl. neu vergebene PID; `svc_stop force`
+  beendete die PID von der Übernahme ungeprüft; übernommener bzw. eigener Prozess, der nicht endet, galt als `gestoppt`.
+- Behoben (bestätigte Vermutungen): Port-Besitzer nur an 127.0.0.1/0.0.0.0/:: und nie PID ≤ 4; `Seq` je Status gegen
+  ungeordnete Ereignisse; Vertrag „OnChange ruft den Controller nicht auf“. Neue Tickets: keine.

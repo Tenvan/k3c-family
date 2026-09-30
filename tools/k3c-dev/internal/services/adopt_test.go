@@ -11,6 +11,8 @@ import (
 	"strings"
 	"testing"
 	"time"
+
+	gnet "github.com/shirou/gopsutil/v4/net"
 )
 
 func TestUebernahmeUndAblehnungen(t *testing.T) {
@@ -33,6 +35,7 @@ func TestUebernahmeUndAblehnungen(t *testing.T) {
 func TestUebernommenStoppNurMitForce(t *testing.T) {
 	f := &fake{listenPID: 4711}
 	f.healthy.Store(true)
+	f.busy.Store(true)
 	c := testController(f, nil, svc("Heimnetz", true))
 	c.Adopt(context.Background())
 	c.StopAll(context.Background()) // übernommene bleiben
@@ -159,5 +162,82 @@ func TestGopsutilGegenEchtenProzess(t *testing.T) {
 	}
 	if _, listening := PortListener(context.Background(), 1); listening {
 		t.Error("Port 1 als belegt gemeldet")
+	}
+}
+
+func adopted(t *testing.T, f *fake) *Controller {
+	t.Helper()
+	f.healthy.Store(true)
+	f.busy.Store(true)
+	c := testController(f, nil, svc("Heimnetz", true))
+	c.opts.StopTimeout = 100 * time.Millisecond
+	c.Adopt(context.Background())
+	return c
+}
+
+func TestUebernommenVeraltetePIDWirdNichtBeendet(t *testing.T) {
+	f := &fake{listenPID: 4711}
+	c := adopted(t, f)
+	f.listenPID = 5000 // von Hand neu gestartet: jetzt lauscht ein anderer Prozess
+	if _, err := c.Stop(context.Background(), "Heimnetz", true); err == nil || !strings.Contains(err.Error(), "PID 5000 statt 4711") || len(f.killed) != 0 {
+		t.Errorf("veraltete PID: %v, getötet %v", err, f.killed)
+	}
+	f.busy.Store(false) // schon weg: nichts zu beenden
+	if st, err := c.Stop(context.Background(), "Heimnetz", true); err != nil || st.State != Stopped || len(f.killed) != 0 {
+		t.Errorf("schon beendet: %+v, %v, getötet %v", st, err, f.killed)
+	}
+}
+
+func TestUebernommenLebtNachKillWeiter(t *testing.T) {
+	f := &fake{listenPID: 4711}
+	c := adopted(t, f)
+	f.immortal.Store(true)
+	st, err := c.Stop(context.Background(), "Heimnetz", true)
+	if err == nil || !strings.Contains(err.Error(), "läuft nach dem Beenden weiter") || st.State != Adopted || st.PID != 4711 {
+		t.Errorf("Kill ohne Wirkung: %+v, %v", st, err)
+	}
+}
+
+func TestEigenerProzessEndetNicht(t *testing.T) {
+	f := &fake{}
+	f.healthy.Store(true)
+	c := testController(f, nil, svc("Vite", false))
+	c.opts.StopTimeout = 50 * time.Millisecond
+	c.opts.Start = func(svc Service, root string, out func(string, string)) (Process, error) {
+		return &stuckProc{done: make(chan struct{})}, nil
+	}
+	if _, err := c.Start(context.Background(), "Vite"); err != nil {
+		t.Fatal(err)
+	}
+	st, err := c.Stop(context.Background(), "Vite", false)
+	if err == nil || st.State != Failed || !strings.Contains(st.LastError, "endet nach") {
+		t.Errorf("hängender Prozess: %+v, %v", st, err)
+	}
+}
+
+// stuckProc lässt sich nicht beenden.
+type stuckProc struct{ done chan struct{} }
+
+func (p *stuckProc) PID() int    { return 7 }
+func (p *stuckProc) Wait() error { <-p.done; return nil }
+func (p *stuckProc) Kill() error { return nil }
+
+func TestOwnerPIDNurErreichbareAdressenOhneSystem(t *testing.T) {
+	c := func(ip string, pid int32) gnet.ConnectionStat {
+		return gnet.ConnectionStat{Status: "LISTEN", Laddr: gnet.Addr{IP: ip, Port: 5173}, Pid: pid}
+	}
+	cases := []struct {
+		conns []gnet.ConnectionStat
+		want  int
+	}{
+		{[]gnet.ConnectionStat{c("::1", 100), c("192.168.2.10", 200), c("::", 300)}, 300},
+		{[]gnet.ConnectionStat{c("::", 300), c("0.0.0.0", 400), c("127.0.0.1", 500)}, 500},
+		{[]gnet.ConnectionStat{c("0.0.0.0", 4), c("::1", 100)}, 0},
+		{[]gnet.ConnectionStat{{Status: "ESTABLISHED", Laddr: gnet.Addr{IP: "127.0.0.1", Port: 5173}, Pid: 600}}, 0},
+	}
+	for i, tc := range cases {
+		if got := ownerPID(tc.conns, 5173); got != tc.want {
+			t.Errorf("Fall %d: PID %d, erwartet %d", i, got, tc.want)
+		}
 	}
 }

@@ -83,15 +83,41 @@ func (c *Controller) stopAdopted(u *unit, force bool) (Status, error) {
 	if !force {
 		return st, fmt.Errorf("%s ist übernommen (vor k3c-dev gestartet, PID %d); Stopp nur mit force", u.svc.Name, st.PID)
 	}
-	if st.PID <= 0 {
+	if st.PID <= systemPID {
 		return st, errors.New(u.svc.Name + ": PID des übernommenen Prozesses unbekannt, bitte von Hand beenden")
+	}
+	// Die PID von der Übernahme kann veraltet sein (von Hand neu gestartet, inzwischen neu vergeben): beendet wird nur,
+	// wer jetzt am Port lauscht, und nur, wenn es derselbe Prozess ist.
+	pid, listening := c.opts.Listen(context.Background(), u.svc.Port)
+	switch {
+	case !listening:
+		c.release(u)
+		return c.set(u, func(s *Status) { s.State, s.PID, s.LastError, s.CPU, s.Memory = Stopped, 0, lostAdopted, 0, 0 }), nil
+	case pid != st.PID:
+		return st, fmt.Errorf("%s: am Port lauscht jetzt PID %d statt %d; nichts beendet, bitte prüfen", u.svc.Name, pid, st.PID)
 	}
 	c.release(u)
 	c.set(u, func(s *Status) { s.State = Stopping })
-	if err := c.opts.KillPID(st.PID); err != nil {
+	if err := c.opts.KillPID(pid); err != nil {
 		c.opts.Log.Warn("dienst "+u.svc.Name+": übernommenen Prozess beenden: "+err.Error(), "ns", "svc")
 	}
+	if !c.waitPortFree(u) {
+		c.adopt(context.Background(), u, pid) // lebt weiter: bleibt übernommen und überwacht
+		return u.status(), fmt.Errorf("%s: PID %d läuft nach dem Beenden weiter (Port %d belegt)", u.svc.Name, pid, u.svc.Port)
+	}
 	return c.set(u, func(s *Status) { s.State, s.PID, s.LastError, s.CPU, s.Memory = Stopped, 0, "", 0, 0 }), nil
+}
+
+// waitPortFree wartet höchstens StopTimeout, bis niemand mehr am Port lauscht.
+func (c *Controller) waitPortFree(u *unit) bool {
+	deadline := time.Now().Add(c.opts.StopTimeout)
+	for time.Now().Before(deadline) {
+		if _, busy := c.opts.Listen(context.Background(), u.svc.Port); !busy {
+			return true
+		}
+		time.Sleep(50 * time.Millisecond)
+	}
+	return false
 }
 
 // portBusy liefert den Grund, wenn ein fremder Prozess den Port schon belegt, sonst "". Aufruf unter u.cmd.
