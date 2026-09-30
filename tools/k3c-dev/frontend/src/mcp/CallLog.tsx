@@ -12,7 +12,8 @@ const ALL = 'ALLE'; // Radix Select erlaubt keinen leeren Wert
 
 /** Band 3 (B-065): Aufruf-Log mit Start- und Endzeile je Aufruf und Graph-Spuren. */
 export function CallLog({ calls, tools }: { calls: McpCall[]; tools: string[] }) {
-  const [tool, setTool] = useState(() => loadText('callTool', ''));
+  const [saved, setTool] = useState(() => loadText('callTool', ''));
+  const tool = tools.length > 0 && !tools.includes(saved) ? '' : saved; // gemerktes Tool nicht mehr im Katalog → alle
   const [errorsOnly, setErrorsOnly] = useState(() => loadText('callErrors', '') === '1');
   const [open, setOpen] = useState<Set<string>>(new Set());
   const shown = filterCalls(calls, { tool, errorsOnly });
