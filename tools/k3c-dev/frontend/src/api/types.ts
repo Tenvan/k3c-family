@@ -69,7 +69,53 @@ export interface ConsoleLine {
   seq: number;
 }
 
-/** Ereignisse von Go an die Oberfläche; M4.4 und M5 ergänzen ihre Nutzdaten. */
+/** Eintrag einer Log-Datei (Go: logs.Entry); time ist ISO-Zeit. */
+export interface LogEntry {
+  time: string;
+  level: string;
+  ns: string;
+  msg: string;
+  data?: Record<string, unknown>;
+}
+
+/** Filter des Reiters Log (Go: LogQuery); minLevel leer = alle, limit 100, 200 oder 500. */
+export interface LogQuery {
+  minLevel: string;
+  ns: string;
+  pattern: string;
+  limit: number;
+}
+
+/** Ergebnis des Reiters Log (Go: LogView), neueste zuerst. */
+export interface LogView {
+  entries: LogEntry[];
+  bytesRead: number;
+  budgetHit: boolean;
+  skipped: number;
+  missing: boolean;
+}
+
+/** Gleichartige Meldungen (Go: logs.Group). */
+export interface LogGroup {
+  ns: string;
+  fingerprint: string;
+  level: string;
+  count: number;
+  first: string;
+  last: string;
+  example: string;
+}
+
+/** Ergebnis des Reiters Fehler (verdichtet) (Go: ErrorsView), häufigste zuerst. */
+export interface ErrorsView {
+  groups: LogGroup[];
+  entries: number;
+  bytesRead: number;
+  budgetHit: boolean;
+  missing: boolean;
+}
+
+/** Ereignisse von Go an die Oberfläche; M5 ergänzt seine Nutzdaten. */
 export interface Events {
   'mcp:state': McpState;
   'service:state': ServiceStatus;
@@ -95,6 +141,10 @@ export interface Backend {
   sources(): Promise<Source[]>;
   /** Ganzer Puffer einer Quelle mit ANSI-Farben; eine unbekannte Quelle lehnt Go ab. */
   consoleTail(source: string): Promise<ConsoleLine[]>;
+  /** Ein ungültiger regulärer Ausdruck in pattern kommt als Ablehnung zurück. */
+  logsQuery(source: string, q: LogQuery): Promise<LogView>;
+  /** level: WARN oder ERROR; Go liest die letzten 24 h. */
+  logsErrors(source: string, level: string): Promise<ErrorsView>;
   /** Abonniert ein Ereignis; die Rückgabe meldet wieder ab. */
   on<E extends EventName>(event: E, fn: (data: Events[E]) => void): () => void;
 }
