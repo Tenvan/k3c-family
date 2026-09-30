@@ -1,5 +1,5 @@
 import { Flex, SegmentedControl } from '@radix-ui/themes';
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { backend, type ErrorsView } from '../api';
 import { errorText } from '../lib/errors';
 import { formatNumber } from '../lib/format';
@@ -15,12 +15,16 @@ export function ErrorsTab({ name }: { name: string }) {
   const [level, setLevel] = useState('WARN');
   const [view, setView] = useState<ErrorsView | null>(null);
   const [error, setError] = useState('');
+  const latest = useRef(0); // nur die jüngste Anfrage darf die Anzeige setzen
   const load = useCallback(async () => {
+    const id = ++latest.current;
     try {
-      setView(await backend.logsErrors(name, level));
+      const v = await backend.logsErrors(name, level);
+      if (id !== latest.current) return;
+      setView(v);
       setError('');
     } catch (e) {
-      setError(errorText(e));
+      if (id === latest.current) setError(errorText(e));
     }
   }, [name, level]);
   useEffect(() => void load(), [load]);

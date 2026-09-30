@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState, type RefObject } from 'react';
+import { useCallback, useEffect, useRef, useState, type RefObject } from 'react';
 import { backend, type LogQuery, type LogView } from '../api';
 import { errorText } from '../lib/errors';
 
@@ -16,13 +16,17 @@ export function useLogQuery(name: string, q: LogQuery, bottom: RefObject<boolean
   const [view, setView] = useState<LogView | null>(null);
   const [error, setError] = useState('');
   const { minLevel, ns, pattern, limit } = q;
+  const latest = useRef(0); // nur die jüngste Anfrage darf die Anzeige setzen
 
   const reload = useCallback(async () => {
+    const id = ++latest.current;
     try {
-      setView(await backend.logsQuery(name, { minLevel, ns, pattern, limit }));
+      const v = await backend.logsQuery(name, { minLevel, ns, pattern, limit });
+      if (id !== latest.current) return;
+      setView(v);
       setError('');
     } catch (e) {
-      setError(errorText(e));
+      if (id === latest.current) setError(errorText(e));
     }
   }, [name, minLevel, ns, pattern, limit]);
 

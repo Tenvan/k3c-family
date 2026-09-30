@@ -16,6 +16,7 @@ type ServicesView struct {
 
 // Services liefert alle Dienste in der Reihenfolge der Konfiguration (Binding).
 func (a *App) Services() ServicesView {
+	a.wait()
 	if a.ctl == nil {
 		return ServicesView{Services: []services.Status{}, Error: a.servicesErr().Error()}
 	}
@@ -30,6 +31,7 @@ func (a *App) servicesErr() error {
 }
 
 func (a *App) controller() (*services.Controller, error) {
+	a.wait()
 	if a.ctl == nil {
 		return nil, a.servicesErr()
 	}

@@ -47,6 +47,8 @@ type App struct {
 	port  int
 	emit  func(ctx context.Context, name string, data ...any) // Test-Naht; Produktion: runtime.EventsEmit
 	usage string                                              // Datei der Nutzungsstatistik (Test-Naht)
+	// ready schließt startup: Wails ruft OnStartup in einer eigenen Goroutine, Bindings können davor kommen.
+	ready chan struct{}
 
 	ctx     context.Context
 	svcCtx  context.Context // endet beim Beenden; Befehle der Oberfläche laufen darin
@@ -63,12 +65,22 @@ type App struct {
 }
 
 func newApp(root string, port int) *App {
-	return &App{root: root, port: port, emit: runtime.EventsEmit, usage: configPath("mcp-usage.json")}
+	return &App{root: root, port: port, emit: runtime.EventsEmit, usage: configPath("mcp-usage.json"),
+		ready: make(chan struct{})}
+}
+
+// wait blockiert, bis startup fertig ist; danach sind alle Felder gesetzt und werden nicht mehr geschrieben.
+// Ohne ready (Tests, die App direkt bauen) wartet es nicht.
+func (a *App) wait() {
+	if a.ready != nil {
+		<-a.ready
+	}
 }
 
 // startup öffnet Log, Statistik und Dienste und startet den MCP-Server. Ein belegter Port hält das Fenster nicht
 // auf: der Grund steht im Log und im Badge.
 func (a *App) startup(ctx context.Context) {
+	defer a.markReady()
 	a.ctx = ctx
 	// console:line trägt eine Liste, damit Go später bündeln kann, ohne den Vertrag zu ändern.
 	a.store = console.New(console.DefaultCapacity, func(l console.Line) { a.emit(a.ctx, evConsoleLine, []console.Line{l}) })
@@ -98,13 +110,21 @@ func (a *App) startup(ctx context.Context) {
 	a.setMCP(err)
 }
 
-// shutdown stoppt die eigenen Dienste (rückwärts; übernommene laufen weiter), dann Server, Statistik und Log.
+func (a *App) markReady() {
+	if a.ready != nil {
+		close(a.ready)
+	}
+}
+
+// shutdown bricht laufende Befehle ab (ein Start wartet sonst bis 60 s auf gesund), stoppt die eigenen Dienste
+// (rückwärts; übernommene laufen weiter), dann Server, Statistik und Log.
 func (a *App) shutdown(context.Context) {
+	a.wait()
 	a.log.Info("k3c-dev beendet", "ns", "main")
+	a.cancel()
 	if a.ctl != nil {
 		a.ctl.StopAll(context.Background())
 	}
-	a.cancel()
 	_ = a.srv.Stop()
 	_ = a.tracker.Flush() // ein Fehler steht schon im Log (Rückruf)
 	_ = a.log.Close()
@@ -124,6 +144,7 @@ func (a *App) setMCP(err error) {
 
 // Info liefert Version und MCP-Zustand (Binding).
 func (a *App) Info() Info {
+	a.wait()
 	a.mu.Lock()
 	defer a.mu.Unlock()
 	return Info{Version: version, MCP: a.mcp}
@@ -131,6 +152,10 @@ func (a *App) Info() Info {
 
 // beforeClose merkt Größe und Position des Fensters; das Schließen läuft immer weiter.
 func (a *App) beforeClose(ctx context.Context) bool {
+	a.wait()
+	if runtime.WindowIsMinimised(ctx) {
+		return false // minimiert liefert Windows Platzhalter-Maße; die zuletzt gemerkten bleiben
+	}
 	x, y := runtime.WindowGetPosition(ctx)
 	w, h := runtime.WindowGetSize(ctx)
 	if err := saveWindow(configPath("k3c-dev.json"), windowState{X: x, Y: y, Width: w, Height: h}); err != nil {
@@ -141,6 +166,7 @@ func (a *App) beforeClose(ctx context.Context) bool {
 
 // secondInstance holt das offene Fenster nach vorn, wenn k3c-dev ein zweites Mal gestartet wird.
 func (a *App) secondInstance() {
+	a.wait()
 	runtime.WindowUnminimise(a.ctx)
 	runtime.WindowShow(a.ctx)
 	runtime.WindowSetAlwaysOnTop(a.ctx, true) // Windows holt ein Fenster sonst nicht aus dem Hintergrund

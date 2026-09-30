@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import type { LogEntry, LogView } from '../api';
-import { budgetNote, footer, levelTone, oldestFirst, oneLine, pickTab, prettyData, tabEnabled, timeWindow } from './logview';
+import { budgetNote, entryKeys, footer, levelTone, oldestFirst, oneLine, pickTab, prettyData, tabEnabled, timeWindow } from './logview';
 
 const view = (over: Partial<LogView> = {}): LogView => ({
   entries: [], bytesRead: 2048, budgetHit: false, skipped: 0, missing: false, ...over,
@@ -45,6 +45,12 @@ describe('Reiter Log und Fehler', () => {
     expect(prettyData({ exit: 1 })).toBe('{\n  "exit": 1\n}');
     expect(prettyData({})).toBe('');
     expect(prettyData(undefined)).toBe('');
+  });
+
+  it('Zeilenschlüssel eindeutig, auch bei gleichen Einträgen', () => {
+    const keys = entryKeys([entry('a'), entry('a'), entry('b')]);
+    expect(new Set(keys).size).toBe(3);
+    expect(keys[0]).toBe('2026-09-30T08:03:00Z|INFO|mcp|a');
   });
 
   it('Level-Töne', () => {
