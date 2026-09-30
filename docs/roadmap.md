@@ -40,6 +40,14 @@ Umsetzung in Sprints und Sessions: [`docs/sprints.md`](sprints.md). Ideen und Pr
 - [x] Tiefen-Eingang → Höhle (Stufe 1) mit Aggressionspool, Treppen zwischen den Hubs
 - [x] Speichern/Laden (Seeds + Hub-Zustand) auf dem Heimnetz-Server
 
+## Schritt 3b – Go-Engine (Entscheidung 001)
+
+- [ ] Protokoll v2: mehrere Räume, mehrere lokale Spieler pro Gerät, Couch + Online gemischt
+- [ ] Go-Server ersetzt `server/*.mjs` (Windows-EXE, Docker amd64/arm64)
+- [ ] Simulation nach Go portiert (Golden-Tests gegen die TS-Simulation)
+- [ ] Browser als reiner Client, TS-Simulation gelöscht
+- [ ] Diagnose-TUI, Betrieb auf dem Raspberry Pi
+
 ## Schritt 4 – Inhalt & Politur
 
 - [x] Figuren-Sprites mit Animationen (LuizMelo für unsere Seite, Gothicvania für Gegner, CC0)
