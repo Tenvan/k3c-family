@@ -6,9 +6,7 @@ Jede Sprint-README ist eine Spec (SDD); aktiv wird ein Sprint erst mit `Spec: fr
 
 ## Aktiv
 
-| Sprint | Domäne | Thema | Ordner |
-|---|---|---|---|
-| SP01 | INF | Leitplanken + Go-Gerüst | `aktiv/SP01-leitplanken/` |
+Kein aktiver Sprint. Nächster Schritt: SP02 mit 🧑 bereit machen (`Reife: Entwurf`).
 
 ## Geplant (in dieser Reihenfolge)
 
@@ -44,3 +42,4 @@ Nach SP11: Regelwerk II (Skills) → SIM Skills in Go → CLI Skills → Spielea
 |---|---|---|
 | ALT | Vorgeschichte vor der Sprint-Einteilung | `erledigt/ALT-vorgeschichte/` |
 | SP00 | Arbeitsweise einführen | `erledigt/SP00-arbeitsweise/` |
+| SP01 | Leitplanken + Go-Gerüst | `erledigt/SP01-leitplanken/` |
