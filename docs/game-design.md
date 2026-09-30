@@ -1,7 +1,7 @@
 # Family Three Crowns (K3C) – Game Design
 
 Kompakte Fassung des alten GDD (`C:\WORKSPACE\FamilyCrowns\docs\gdd\`), bereinigt um Godot-Spezifika.
-Zahlenwerte stehen als Daten in `src/data/*.json`. Dieses Dokument erklärt das *Warum* und die Regeln.
+Zahlenwerte stehen als Daten in `data/*.json`. Dieses Dokument erklärt das *Warum* und die Regeln.
 
 ## Pitch
 
@@ -62,14 +62,14 @@ hybride Builds sind erlaubt. Die Presets aus `monarch.json` sind nur Startvertei
 
 Die Skills kommen **erst nach dem Vertical Slice**.
 
-## Truppen (`src/data/troops.json`)
+## Truppen (`data/troops.json`)
 
 - **Landstreicher** im Rekrutierungs-Camp → Münze geben → **Bauer** (folgt, sammelt, baut).
 - Werkstatt: Bauer + Bogen → **Bogenschütze** (Fernkampf, besetzt Türme). Bauer + Schwert → **Krieger** (Nahkampf, Frontlinie).
 - Elite-Upgrades mit Stein/Kupfer: +50% HP und Schaden, +20% Angriffstempo.
 - Truppen kämpfen automatisch (KI). Truppen-Limit hängt von den Kasernen ab.
 
-## Gebäude (`src/data/buildings.json`)
+## Gebäude (`data/buildings.json`)
 
 Burg/Thron (Hub-Kern), Mauer, Turm, Tor, Werkstatt, Farm (optional), Kaserne (ab Tiefe 1), Treppe hoch/runter (ab Tiefe 1, max. je 1 pro Hub).
 Platzierung auf einem Raster im Hub-Bereich, gebaut wird von Bauern.
@@ -93,7 +93,7 @@ Gold gibt es überall (Truhen, Gegner-Drops). Post-MVP: Tiefe 3 (Eisen, Lava), T
 
 ### Prozedurale Generierung (Pflicht-Feature)
 
-Die festen Eckdaten stehen in `src/data/biomes/<biom>.json`, der Generator in `src/world/levelGenerator.ts`.
+Die festen Eckdaten stehen in `data/biomes/<biom>.json`, der Generator in `src/world/levelGenerator.ts`.
 
 ```text
 [Rand|Ausgang] … [Portal] … [Chunks] [ HUB ] [Chunks] … [Portal] … [Ausgang|Rand]
@@ -108,7 +108,7 @@ Die festen Eckdaten stehen in `src/data/biomes/<biom>.json`, der Generator in `s
   **Jede Änderung an einer Biom-JSON muss `npm test` bestehen.**
 - Später möglich: Chunk-Vorlagen mit Untervarianten, Gegner-Camps in der Welt, Biom-spezifische Hazards.
 
-## Gegner (`src/data/enemies.json`)
+## Gegner (`data/enemies.json`)
 
 - Laufen geradeaus auf den Hub zu, **keine Sprünge**. Zustände: Idle → Move → Attack (→ Flee).
 - Elite-Gegner: Kiting (Fernkampf), Spezialangriffe (AoE).
@@ -157,7 +157,7 @@ was aus der Welt schon entfernt wurde (gefällte Bäume, geöffnete Truhen), son
 
 - Figuren (Monarchen, Truppen, Gegner): Seitenansicht-Sprites von **LuizMelo (CC0)** für unsere Seite und
   **Gothicvania von ansimuz (CC0)** für die Gegner (Wolf, Skelett, Zombie, Geist, Fledermaus, Höhlentroll). Zuordnung in
-  `src/data/sprites.json`, Bilder und Credits in `public/sprites/`. Referenz: Testseiten `aufstellung.html` (Rollen) und
+  `data/sprites.json`, Bilder und Credits in `public/sprites/`. Referenz: Testseiten `aufstellung.html` (Rollen) und
   `figuren.html` (alle Figuren, auch ungenutzte).
 - Reittiere: 13 Tiere (LPC-Pferde, Einhorn, Pegasus, Elefant, Hirsch, Wölfe, Gothicvania-Tiere) in `sprites.json` → `mounts`.
   Der Reiter ist der Oberkörper des Monarchen, auf den Sattelpunkt gesetzt. LPC-Tiere sind CC-BY 3.0 (Credits Pflicht). Gebäude, Ressourcen und Hintergrund sind noch

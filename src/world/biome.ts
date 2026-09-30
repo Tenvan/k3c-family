@@ -1,12 +1,12 @@
-import forest from '../data/biomes/forest.json';
-import cave from '../data/biomes/cave.json';
-import mine from '../data/biomes/mine.json';
+import forest from '../../data/biomes/forest.json';
+import cave from '../../data/biomes/cave.json';
+import mine from '../../data/biomes/mine.json';
 
 export type Range = [min: number, max: number];
 
 export type EventChunkKind = 'chest' | 'recruitCamp';
 
-/** Die "festen Eckdaten" einer Stufe. Wird aus src/data/biomes/*.json geladen. */
+/** Die "festen Eckdaten" einer Stufe. Wird aus data/biomes/*.json geladen. */
 export interface BiomeConfig {
   id: string;
   name: string;

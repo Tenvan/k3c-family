@@ -1,11 +1,11 @@
 /**
  * Referenzseiten für die Figuren (figuren.html = alle Figuren, aufstellung.html = Rollen im Spiel).
- * Liest alles aus src/data/sprites.json und zeichnet die Sprites auf einfache Canvas, ohne Phaser.
+ * Liest alles aus data/sprites.json und zeichnet die Sprites auf einfache Canvas, ohne Phaser.
  * Jede Karte spielt im Wechsel: Laufen rechts, Angriff, Stehen, Laufen links, Angriff, Stehen.
  */
-import enemiesJson from '../data/enemies.json';
-import spritesJson from '../data/sprites.json';
-import troopsJson from '../data/troops.json';
+import enemiesJson from '../../data/enemies.json';
+import spritesJson from '../../data/sprites.json';
+import troopsJson from '../../data/troops.json';
 
 type AnimName = 'idle' | 'run' | 'attack';
 
