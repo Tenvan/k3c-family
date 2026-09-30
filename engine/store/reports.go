@@ -72,3 +72,9 @@ func writeNew(dir, base string, data []byte) (string, error) {
 	}
 	return "", fmt.Errorf("%s: zu viele Berichte in derselben Millisekunde", base)
 }
+
+// Count ist die Zahl der gespeicherten Berichte.
+func (r *Reports) Count() int {
+	files, _ := filepath.Glob(filepath.Join(r.Dir, "gamepad-*.json"))
+	return len(files)
+}

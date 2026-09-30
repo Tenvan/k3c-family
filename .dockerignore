@@ -1,0 +1,14 @@
+# Nur was das Image braucht: Quellen des Spiels und des Go-Servers
+.git
+node_modules
+**/node_modules
+dist
+dist-server
+saves
+reports
+logs
+certs
+tools
+docs
+.omc
+.claude
