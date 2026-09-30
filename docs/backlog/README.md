@@ -14,7 +14,7 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-006](B-006-xbox-gamepad-test.md) | PLAT | Frage | hoch | eingeplant | X1 | Gamepad-Test auf der Xbox ist ausgewertet |
 | [B-007](B-007-skill-baum.md) | SIM | Idee | hoch | offen | – | Skill-Baum mit Tank und Zauberer ist spielbar |
 | [B-008](B-008-spieleabend.md) | REG | Frage | hoch | offen | – | Familie hat einen Spieleabend gespielt und Feedback gegeben |
-| [B-009](B-009-komplexitaet-pruefen.md) | INF | Idee | hoch | eingeplant | SP01 | Komplexitäts-Budget wird automatisch geprüft |
+| [B-009](B-009-komplexitaet-pruefen.md) | INF | Idee | hoch | erledigt | SP01 | Komplexitäts-Budget wird automatisch geprüft |
 | [B-010](B-010-grafik-gebaeude.md) | CLI | Idee | mittel | offen | – | Gebäude, Ressourcen und Hintergrund haben Grafiken |
 | [B-011](B-011-sound.md) | CLI | Idee | mittel | offen | – | Spiel hat Sound und Musik |
 | [B-012](B-012-mine.md) | SIM | Idee | mittel | offen | – | Mine (Tiefe 2) ist vollständig |
@@ -38,7 +38,7 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-030](B-030-wiederverbinden.md) | SRV | Idee | hoch | eingeplant | SP07 | Geräte verbinden sich nach Abbruch wieder |
 | [B-031](B-031-online-test.md) | INF | Idee | niedrig | eingeplant | SP07 | Online-Verbindung ist automatisch getestet |
 | [B-032](B-032-github-pages.md) | PLAT | Problem | mittel | eingeplant | SP09 | GitHub Pages zeigt nur, was ohne Server geht |
-| [B-033](B-033-tests-typecheck.md) | INF | Schuld | mittel | eingeplant | SP01 | Tests werden typgeprüft |
+| [B-033](B-033-tests-typecheck.md) | INF | Schuld | mittel | erledigt | SP01 | Tests werden typgeprüft |
 | [B-034](B-034-plat-dateien-aufteilen.md) | PLAT | Schuld | niedrig | offen | – | Große PLAT-Dateien liegen unter 300 Zeilen |
 | [B-035](B-035-raspberry-pi.md) | SRV | Idee | hoch | eingeplant | SP11 | Server läuft auf dem Raspberry Pi im Docker |
 | [B-036](B-036-mehrere-raeume.md) | SRV | Idee | hoch | eingeplant | SP07 | Mehrere Spiele laufen gleichzeitig |
@@ -55,6 +55,10 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-047](B-047-mcp-raeume-simulation.md) | SRV | Idee | mittel | eingeplant | SP07 | MCP-Tools zeigen laufende Räume und rechnen Level und Simulationen |
 | [B-048](B-048-standardbibliothek-in-001.md) | SRV | Frage | niedrig | offen | – | Die Wahl der Go-Standardbibliothek ist dort festgehalten, wo B-001 auf sie verweist |
 | [B-049](B-049-sp09-domaene.md) | INF | Frage | niedrig | offen | – | SP09 bleibt in einer Domäne oder hat einen erlaubten Grenzfall |
-| [B-050](B-050-go-dateilaenge.md) | INF | Schuld | mittel | eingeplant | SP01 | Die Dateilänge von Go-Code wird wie bei TypeScript geprüft |
+| [B-050](B-050-go-dateilaenge.md) | INF | Schuld | mittel | erledigt | SP01 | Die Dateilänge von Go-Code wird wie bei TypeScript geprüft |
 | [B-051](B-051-oxlint-warnungen.md) | INF | Schuld | niedrig | offen | – | Oxlint meldet im Bestand keine Warnungen mehr |
-| [B-052](B-052-requirements.md) | INF | Idee | mittel | eingeplant | SP01 | Alle vorausgesetzten Installationen stehen in requirements.md |
+| [B-052](B-052-requirements.md) | INF | Idee | mittel | erledigt | SP01 | Alle vorausgesetzten Installationen stehen in requirements.md |
+| [B-053](B-053-ci-lauf-sp01.md) | INF | Problem | hoch | offen | – | Die CI hat die Prüfungen aus SP01 einmal grün durchlaufen |
+| [B-054](B-054-go-verschachtelung.md) | INF | Problem | mittel | offen | – | Die Verschachtelung von Go-Code wird als Tiefe geprüft |
+| [B-055](B-055-server-lint.md) | INF | Problem | niedrig | offen | – | Das Komplexitäts-Budget gilt auch für server/*.mjs |
+| [B-056](B-056-ratsche-nachziehen.md) | INF | Schuld | niedrig | offen | – | Die Ratsche zieht gesunkene Werte automatisch nach |
