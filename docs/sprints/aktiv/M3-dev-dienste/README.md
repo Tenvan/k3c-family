@@ -67,7 +67,7 @@ keine
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
 | M3.1 | `M3.1-controller.md` | Umsetzung | autonom | fertig |
-| M3.2 | `M3.2-uebernahme-metriken.md` | Umsetzung | autonom | offen |
+| M3.2 | `M3.2-uebernahme-metriken.md` | Umsetzung | autonom | fertig |
 | M3.3 | `M3.3-svc-tools.md` | Umsetzung | autonom | offen |
 | M3.4 | `M3.4-review.md` | Review | autonom | offen |
 

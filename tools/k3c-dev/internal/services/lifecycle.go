@@ -11,6 +11,10 @@ func (c *Controller) start(ctx context.Context, u *unit) (Status, error) {
 	if st := u.status(); st.State == Running || st.State == Starting || st.State == Adopted {
 		return st, fmt.Errorf("%s läuft bereits (%s)", u.svc.Name, st.State)
 	}
+	if reason := c.portBusy(ctx, u); reason != "" {
+		st := c.fail(u, reason)
+		return st, fmt.Errorf("%s: %s", u.svc.Name, reason)
+	}
 	c.set(u, func(s *Status) { s.State, s.LastError, s.PID = Starting, "", 0 })
 	c.opts.Console.Reset(u.svc.Name)
 	p, err := c.opts.Start(u.svc, c.opts.Root, func(stream, text string) { c.opts.Console.Add(u.svc.Name, stream, text) })
@@ -69,7 +73,7 @@ func (c *Controller) stop(u *unit) Status {
 	}
 	c.set(u, func(s *Status) { s.State = Stopping })
 	c.killRun(u, r)
-	return c.set(u, func(s *Status) { s.State, s.PID, s.LastError = Stopped, 0, "" })
+	return c.set(u, func(s *Status) { s.State, s.PID, s.LastError, s.CPU, s.Memory = Stopped, 0, "", 0, 0 })
 }
 
 // killRun beendet Überwachung und Prozessbaum und wartet höchstens StopTimeout auf das Ende.
