@@ -3,7 +3,7 @@
 - **Domäne:** INF
 - **Typ:** Idee
 - **Prio:** hoch
-- **Status:** eingeplant
+- **Status:** erledigt
 - **Sprint:** SP01
 - **Erstellt:** 2026-09-29
 - **Spec:** freigegeben
@@ -55,3 +55,4 @@ keine
 ## Notizen
 
 TS 7 hat keine JS-API, deshalb Oxlint statt `typescript-eslint`.
+Umgesetzt in SP01, lokal geprüft im Review SP01.4; der CI-Teil von AC-01 und AC-02 ist verschoben nach B-053.
