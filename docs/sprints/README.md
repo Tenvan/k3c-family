@@ -33,6 +33,7 @@ dann über den Go-Server mit mehreren Räumen und gemischten Spielern.
 | R1 | REG 🧑 | Regelwerk I – Fundament | Entwurf | `geplant/R1-regelwerk-1/` |
 | X1 | PLAT 🧑 | Xbox-Machbarkeit | Entwurf | `geplant/X1-xbox/` |
 | M1 | SRV | Entwickler-MCP-Server `k3c-dev` (frühestens nach SP01, Muster ErpApi) | Entwurf | `geplant/M1-dev-mcp/` |
+| L1 | INF | Go-Verschachtelung als Tiefe prüfen (B-054, vor SP03) | bereit | `geplant/L1-go-verschachtelung/` |
 
 Nach SP11: Regelwerk II (Skills) → SIM Skills in Go → CLI Skills → Spieleabend → Grafik/Sound → …
 
