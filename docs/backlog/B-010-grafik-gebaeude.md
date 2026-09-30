@@ -6,18 +6,51 @@
 - **Status:** offen
 - **Sprint:** –
 - **Erstellt:** 2026-09-29
+- **Spec:** Entwurf
+- **Revision:** 1
+- **Freigabe:** –
 
-## Beschreibung
+## Ausgangslage
 
 Bisher sind Gebäude, Ressourcen und Hintergrund Platzhalter-Formen.
 
-## Warum
+## Ziel
 
-Das Spiel soll am TV nach einem Spiel aussehen.
+Gebäude, Ressourcen und Hintergrund haben Grafiken. Nutzen: Das Spiel soll am TV nach einem Spiel aussehen.
 
-## Akzeptanz
+## Beteiligte und Zielgruppen
 
-Pixel-Art (CC0) für alle Gebäude, Ressourcen und Parallax-Ebenen je Biom, Credits in `public/`.
+Spieler am TV (Edge auf der Xbox) und am Handy; Umsetzung durch Entwickler oder Agent.
+
+## Anforderungen
+
+- Pixel-Art für alle Gebäude, Ressourcen und Parallax-Ebenen je Biom.
+- Nur CC0-Grafiken, Credits in `public/`.
+
+## Nicht-Ziele
+
+Figuren (vorhanden) und Grafiken für neue Mechaniken.
+
+## Regeln und Einschränkungen
+
+`src/scenes` zeichnet nur Snapshots und rechnet nichts; Seiten-Regeln aus `CLAUDE.md`; Taste B nicht belegen; 2 Spieler gleichzeitig (Split-Screen).
+
+## Beispiele
+
+Mauer im Hub → wird als Sprite statt als Platzhalter-Form gezeichnet.
+
+## Ausnahme- und Fehlerfälle
+
+Grafik fehlt für ein Gebäude → die Platzhalter-Form bleibt sichtbar, keine leere Stelle.
+
+## Akzeptanzkriterien
+
+- **AC-01** Alle Gebäude, Ressourcen und Parallax-Ebenen je Biom haben Pixel-Art (CC0).
+- **AC-02** Die Credits stehen in `public/`.
+
+## Offene Fragen
+
+keine
 
 ## Notizen
 

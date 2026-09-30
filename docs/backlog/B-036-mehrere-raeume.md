@@ -6,18 +6,51 @@
 - **Status:** eingeplant
 - **Sprint:** SP07
 - **Erstellt:** 2026-09-30
+- **Spec:** Entwurf
+- **Revision:** 1
+- **Freigabe:** –
 
-## Beschreibung
+## Ausgangslage
 
-Beispiel: 2er-Spiel auf der Xbox und 3er-Spiel per Handy gleichzeitig auf einem Server.
+Mehrere gleichzeitige Spiele auf einem Server sind Teil von Entscheidung 001; der Go-Server hat noch keine Räume.
 
-## Warum
+## Ziel
 
-Die ganze Familie soll parallel spielen können.
+Mehrere Spiele laufen gleichzeitig. Nutzen: Die ganze Familie soll parallel spielen können.
 
-## Akzeptanz
+## Beteiligte und Zielgruppen
 
-Test mit 3 Räumen parallel; die Räume beeinflussen sich nicht.
+🧑 betreibt den Server im Heimnetz (PC, später Pi); Spieler verbinden sich mit Xbox und Handy; Umsetzung durch Entwickler oder Agent.
+
+## Anforderungen
+
+- Mehrere Räume laufen gleichzeitig auf einem Server.
+- Die Räume beeinflussen sich nicht.
+
+## Nicht-Ziele
+
+Bedienung (Lobby, B-037).
+
+## Regeln und Einschränkungen
+
+Go-Server ist die einzige Engine (Entscheidung 001), Standardbibliothek zuerst; Schichtgrenzen und Komplexitäts-Budget aus `docs/arbeitsweise.md`. Im Kern von Anfang an (Entscheidung 001).
+
+## Beispiele
+
+Ein 2er-Spiel auf der Xbox und ein 3er-Spiel per Handy laufen gleichzeitig.
+
+## Ausnahme- und Fehlerfälle
+
+Ein Raum stürzt ab → die anderen laufen weiter.
+
+## Akzeptanzkriterien
+
+- **AC-01** Ein Test lässt 3 Räume parallel laufen.
+- **AC-02** Die Räume beeinflussen sich im Test nicht.
+
+## Offene Fragen
+
+keine
 
 ## Notizen
 

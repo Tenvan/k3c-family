@@ -6,18 +6,49 @@
 - **Status:** eingeplant
 - **Sprint:** SP01
 - **Erstellt:** 2026-09-30
+- **Spec:** Entwurf
+- **Revision:** 1
+- **Freigabe:** –
 
-## Beschreibung
+## Ausgangslage
 
 `tsconfig.json` schließt mit `include: ["src"]` den Ordner `tests/` aus.
 
-## Warum
+## Ziel
 
-Typfehler in Tests fallen erst zur Laufzeit auf.
+Tests werden typgeprüft. Nutzen: Typfehler in Tests fallen erst zur Laufzeit auf.
 
-## Akzeptanz
+## Beteiligte und Zielgruppen
 
-`npm run typecheck` prüft auch `tests/`.
+Entwickler und Cloud-Agenten, die Sessions autonom abarbeiten; Review-Session.
+
+## Anforderungen
+
+- `npm run typecheck` prüft auch `tests/`.
+
+## Nicht-Ziele
+
+Verhalten der Tests ändern.
+
+## Regeln und Einschränkungen
+
+Prozess nur in `docs/arbeitsweise.md`; keine neue Abhängigkeit ohne Ticket und Zustimmung im Review; Komplexitäts-Budget.
+
+## Beispiele
+
+Typfehler in `tests/planning.test.ts` → `npm run typecheck` meldet ihn.
+
+## Ausnahme- und Fehlerfälle
+
+nicht relevant – reine Prüfung.
+
+## Akzeptanzkriterien
+
+- **AC-01** Ein absichtlicher Typfehler in einer Test-Datei lässt `npm run typecheck` scheitern.
+
+## Offene Fragen
+
+keine
 
 ## Notizen
 

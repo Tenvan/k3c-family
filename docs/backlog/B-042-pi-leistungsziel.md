@@ -6,18 +6,50 @@
 - **Status:** eingeplant
 - **Sprint:** SP11
 - **Erstellt:** 2026-09-30
+- **Spec:** Entwurf
+- **Revision:** 1
+- **Freigabe:** –
 
-## Beschreibung
+## Ausgangslage
 
-Welches Raspberry-Pi-Modell, welches Ziel (Räume × Spieler, Tick-Dauer p99)?
+Für den Pi-Betrieb (B-035) sind weder Modell noch Leistungsziel festgelegt.
 
-## Warum
+## Ziel
 
-Ohne Ziel ist die Lastmessung in SP11 nicht bewertbar.
+Pi-Modell und Leistungsziel sind festgelegt. Nutzen: Ohne Ziel ist die Lastmessung in SP11 nicht bewertbar.
 
-## Akzeptanz
+## Beteiligte und Zielgruppen
 
-Modell und Zielwerte stehen in diesem Ticket (🧑 entscheidet).
+🧑 entscheidet.
+
+## Anforderungen
+
+- Modell festlegen.
+- Zielwerte festlegen: Räume × Spieler, Tick-Dauer p99.
+
+## Nicht-Ziele
+
+Einrichtung des Pi (B-035).
+
+## Regeln und Einschränkungen
+
+Go-Server ist die einzige Engine (Entscheidung 001), Standardbibliothek zuerst; Schichtgrenzen und Komplexitäts-Budget aus `docs/arbeitsweise.md`.
+
+## Beispiele
+
+nicht relevant – reine Entscheidung, kein Verhalten.
+
+## Ausnahme- und Fehlerfälle
+
+nicht relevant – reine Entscheidung, kein Verhalten.
+
+## Akzeptanzkriterien
+
+- **AC-01** Modell und Zielwerte stehen in diesem Ticket.
+
+## Offene Fragen
+
+Modell und Zielwerte (🧑).
 
 ## Notizen
 

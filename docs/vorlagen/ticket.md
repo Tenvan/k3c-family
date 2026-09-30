@@ -6,19 +6,49 @@
 - **Status:** offen | eingeplant | erledigt | verworfen
 - **Sprint:** – (oder SP01, R1 …)
 - **Erstellt:** JJJJ-MM-TT
+- **Spec:** Entwurf | freigegeben | rückwirkend
+- **Revision:** 1
+- **Freigabe:** – (bei `freigegeben`: Datum und Quelle, z. B. „2026-10-02 🧑 PR #20“)
 
-## Beschreibung
+## Ausgangslage
 
-Was ist die Idee oder das Problem? 1–5 Sätze, mit Dateipfaden, wenn es um Code geht.
+Was ist heute so? Problem oder Idee in 1–5 Sätzen, mit Dateipfaden, wenn es um Code geht.
 
-## Warum
+## Ziel
 
-Welcher Nutzen oder welcher Schaden? Ohne „Warum“ wird das Ticket bei der Planung verworfen.
+Welches Ergebnis, welcher Nutzen (oder welcher Schaden verschwindet)? Kein Umsetzungsschritt.
 
-## Akzeptanz
+## Beteiligte und Zielgruppen
 
-Woran erkennt man, dass es erledigt ist? Prüfbar formulieren (Test, Befehl, Beobachtung am TV).
-Bei `Frage`: welche Entscheidung ist nötig und wer trifft sie (🧑).
+Wer spielt, entwickelt, betreibt oder entscheidet (🧑)? Keine Verantwortlichen erfinden.
+
+## Anforderungen
+
+- Was das Ergebnis können muss, auch Qualität (deterministisch, 2+ Spieler, Leistung).
+
+## Nicht-Ziele
+
+Was ausdrücklich nicht dazugehört, mit Ticket-Nummer, falls es später kommt.
+
+## Regeln und Einschränkungen
+
+Regeln aus `CLAUDE.md`, Entscheidungen (`docs/decisions/`), Domäne, Komplexitäts-Budget, Verträge (Protokoll, Spielstand).
+
+## Beispiele
+
+Typische Situation → erwartetes Ergebnis. Passt nichts: `nicht relevant` mit Grund.
+
+## Ausnahme- und Fehlerfälle
+
+Ungültige oder seltene Situation → gewolltes Verhalten. Passt nichts: `nicht relevant` mit Grund.
+
+## Akzeptanzkriterien
+
+- **AC-01** Prüfbar formuliert: Test, Befehl, Datei oder Beobachtung am TV mit erwartetem Ergebnis.
+
+## Offene Fragen
+
+Entscheidung, betroffener Umfang, wer entscheidet (🧑). Sonst `keine`.
 
 ## Notizen
 

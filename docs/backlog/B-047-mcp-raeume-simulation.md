@@ -1,0 +1,64 @@
+# B-047 · MCP-Tools zeigen laufende Räume und rechnen Level und Simulationen
+
+- **Domäne:** SRV
+- **Typ:** Idee
+- **Prio:** mittel
+- **Status:** eingeplant
+- **Sprint:** SP07
+- **Erstellt:** 2026-09-30
+- **Spec:** Entwurf
+- **Revision:** 1
+- **Freigabe:** –
+
+## Ausgangslage
+
+Ab SP07 rechnet der Go-Server mehrere Räume; `/api/status` (Token, B-027) zeigt Räume und Tick-Dauer. `engine/level` und `engine/sim` gibt es ab SP04 bzw. SP06. `cmd/k3c-mcp` (B-046) kennt davon nichts.
+
+## Ziel
+
+MCP-Tools zeigen laufende Räume und rechnen Level und Simulationen. Nutzen: Fehler im Online-Spiel und Balancing-Fragen lassen sich ohne Browser und ohne Rohdaten nachvollziehen.
+
+## Beteiligte und Zielgruppen
+
+Entwickler und Coding-Agenten; Balancing-Workshops (REG) nutzen `sim_run` für Vergleiche.
+
+## Anforderungen
+
+- `server_status` und `rooms_list`: über `/api/status` des laufenden Servers, verdichtet (Räume, Geräte, Spieler, Tick-Dauer).
+- `room_snapshot {room}`: kompakter Zustand eines Raums (Tag/Nacht, Gold, Einheiten, Spieler) über die Status-Schnittstelle.
+- `level_generate {seed, biome}`: rechnet in-process mit `engine/level`, eine Textzeile je Abschnitt.
+- `sim_run {seed, ticks, inputs?}`: deterministischer Lauf mit `engine/sim`, Zusammenfassung (Tag, Gold, Verluste, Ende).
+
+## Nicht-Ziele
+
+Eingriffe in laufende Räume (Gerät trennen, Eingaben senden) bleiben bei der TUI (B-002).
+
+## Regeln und Einschränkungen
+
+Go-Server ist die einzige Engine (Entscheidung 001), Standardbibliothek zuerst; Schichtgrenzen und Komplexitäts-Budget aus `docs/arbeitsweise.md`. Nur lesend gegenüber dem Server; `cmd/k3c-mcp` spricht wie die TUI nur mit `/api/status`. In-process-Aufrufe sind deterministisch. Schichtgrenze: `engine/*` importiert nichts aus `cmd/`.
+
+## Beispiele
+
+- `sim_run {"seed":"abc","ticks":3000}` zweimal → identische Zusammenfassung.
+- `rooms_list` bei 2 laufenden Räumen → 2 Zeilen mit Raum, Spielern und Tick-Dauer p99.
+
+## Ausnahme- und Fehlerfälle
+
+- Server nicht erreichbar → Meldung mit Adresse; die In-process-Tools laufen weiter.
+- Token fehlt oder ist falsch → Meldung „401, Token prüfen“.
+- `ticks` über der Grenze → Ablehnung mit der Grenze.
+
+## Akzeptanzkriterien
+
+- **AC-01** `server_status`, `rooms_list` und `room_snapshot` liefern gegen einen Test-Server (`httptest`) verdichteten Text (Tests).
+- **AC-02** Server weg oder 401 → verständliche Meldung, kein Absturz (Tests).
+- **AC-03** `level_generate` liefert für die Golden-Seeds dasselbe Level wie `testdata/golden/` (Test).
+- **AC-04** `sim_run` ist deterministisch (zwei Läufe identisch) und lehnt `ticks` über der Grenze ab (Tests).
+
+## Offene Fragen
+
+Namen der Umgebungsvariablen für Adresse und Token (zusammen mit B-027 festlegen). Grenze für `ticks` (🧑).
+
+## Notizen
+
+Setzt B-046 (M1), SP04, SP06 und SP07.2 voraus.

@@ -6,18 +6,50 @@
 - **Status:** eingeplant
 - **Sprint:** SP08
 - **Erstellt:** 2026-09-29
+- **Spec:** Entwurf
+- **Revision:** 1
+- **Freigabe:** –
 
-## Beschreibung
+## Ausgangslage
 
-Mehr als 2 lokale Spieler an einem Gerät: flache Streifen, 2×2-Raster oder gemeinsame Kamera?
+Heute gibt es höchstens 2 lokale Spieler im Split-Screen.
 
-## Warum
+## Ziel
 
-Mit mehreren lokalen Spielern pro Gerät (Entscheidung 001) wird das nötig.
+Layout für mehr als zwei lokale Spieler ist entschieden. Nutzen: Mit mehreren lokalen Spielern pro Gerät (Entscheidung 001) wird das nötig.
 
-## Akzeptanz
+## Beteiligte und Zielgruppen
 
-Entscheidung getroffen und in SP08 umgesetzt.
+Spieler am TV (Edge auf der Xbox) und am Handy; Umsetzung durch Entwickler oder Agent.
+
+## Anforderungen
+
+- Layout für 3–4 lokale Spieler an einem Gerät: flache Streifen, 2×2-Raster oder gemeinsame Kamera.
+
+## Nicht-Ziele
+
+Anzeige für Online-Spieler an anderen Geräten.
+
+## Regeln und Einschränkungen
+
+`src/scenes` zeichnet nur Snapshots und rechnet nichts; Seiten-Regeln aus `CLAUDE.md`; Taste B nicht belegen; 2 Spieler gleichzeitig (Split-Screen). Jeder lokale Spieler steuert seinen eigenen Monarchen (Entscheidung 001).
+
+## Beispiele
+
+3 Controller an der Xbox → jeder sieht seinen Monarchen.
+
+## Ausnahme- und Fehlerfälle
+
+Spieler weit auseinander → das Verhalten ist Teil der Entscheidung.
+
+## Akzeptanzkriterien
+
+- **AC-01** Die Layout-Entscheidung ist getroffen und festgehalten.
+- **AC-02** SP08 setzt sie um.
+
+## Offene Fragen
+
+Welches Layout? (🧑, in SP08)
 
 ## Notizen
 

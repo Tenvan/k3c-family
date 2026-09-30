@@ -6,6 +6,7 @@
 - **Branch:** sp00/1-kurzname
 - **Abhängig von:** – (oder SP00.1, B-000)
 - **Tickets:** B-000
+- **Kriterien:** AC-01, AC-02 (Akzeptanzkriterien der Sprint-README, die diese Session erfüllt; Review: alle)
 
 ## Ziel
 
@@ -32,7 +33,8 @@ Was in dieser Session ausdrücklich **nicht** passiert.
 
 ## Fertig, wenn
 
-- [ ] Jeder Punkt ist prüfbar: ein Befehl mit erwartetem Ergebnis, ein Test, eine Datei, eine Beobachtung.
+- [ ] AC-01: Jeder Punkt ist prüfbar: ein Befehl mit erwartetem Ergebnis, ein Test, eine Datei, eine Beobachtung.
+- [ ] Punkte ohne Kriterium sind technische Voraussetzungen (z. B. CI grün).
 
 ## Prüfen
 
@@ -40,7 +42,9 @@ Was in dieser Session ausdrücklich **nicht** passiert.
 npm run check
 ```
 
+Manuelle Prüfungen (Browser, Xbox, TV) nur, wenn diese Datei sie nennt und 🧑 sie für diesen Lauf freigegeben hat.
+
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: was umgesetzt wurde, Abweichungen vom Plan, neue Tickets, offene Punkte.
-Bis dahin `–`.
+Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: npm run check grün`,
+`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.

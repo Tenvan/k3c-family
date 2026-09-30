@@ -47,6 +47,7 @@ Umsetzung in Sprints und Sessions: [`docs/sprints/`](sprints/README.md). Tickets
 - [ ] Simulation nach Go portiert (Golden-Tests gegen die TS-Simulation)
 - [ ] Browser als reiner Client, TS-Simulation gelöscht
 - [ ] Diagnose-TUI, Betrieb auf dem Raspberry Pi
+- [ ] Entwickler-MCP-Server `k3c-dev` für Agenten (M1: Prüfungen, Berichte, Spielstände; SP07: Räume, Simulation)
 
 ## Schritt 4 – Inhalt & Politur
 
