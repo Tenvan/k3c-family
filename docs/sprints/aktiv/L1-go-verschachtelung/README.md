@@ -1,11 +1,11 @@
 # L1 · INF · Go-Verschachtelung als Tiefe prüfen
 
-- **Status:** geplant
+- **Status:** aktiv
 - **Domäne:** INF
 - **Reife:** bereit
 - **Einschiebbar:** ja
 - **Tickets:** B-054
-- **Start-Commit:** –
+- **Start-Commit:** 20c5530
 - **Spec:** freigegeben
 - **Revision:** 1
 - **Freigabe:** 2026-09-30 🧑 Chat-Freigabe durch Ralf (Revision 1, nestif ersetzen)
@@ -60,7 +60,7 @@ keine. Entschieden (🧑, 2026-09-30): `nestif` wird durch `revive` › `max-con
 
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
-| L1.1 | `L1.1-go-verschachtelung.md` | Umsetzung | autonom | offen |
+| L1.1 | `L1.1-go-verschachtelung.md` | Umsetzung | autonom | fertig |
 | L1.2 | `L1.2-review.md` | Review | autonom | offen |
 
 ## Abnahme
