@@ -41,7 +41,8 @@ B-064 und B-068 › Regeln und Einschränkungen. Einschiebbar nach M3. Mit der F
    Vite und TypeScript wie im Hauptprojekt.
 2. **Ausnahmen außerhalb der Domäne** (INF): `package.json` (`check:dev` um Frontend-Typecheck erweitern),
    `.github/workflows/ci.yml` (Job `k3c-dev` baut zusätzlich Frontend und `wails build`), `.oxlintrc.json`
-   (`tools/k3c-dev/frontend/dist` und `wailsjs` ignorieren), `requirements.md` (Wails-CLI, WebView2-Laufzeit).
+   (`tools/k3c-dev/frontend/dist` und `wailsjs` ignorieren), `requirements.md` (Wails-CLI, WebView2-Laufzeit), `tests/projectRules.test.ts` und `tests/nesting_test.go`
+   (`node_modules` unter `tools/` auslassen, Hinweis aus dem Review M1.4).
 
 ## Beispiele
 

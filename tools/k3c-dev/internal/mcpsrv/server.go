@@ -32,6 +32,9 @@ const (
 	EnvPort     = "K3C_DEV_PORT"
 	// stopTimeout begrenzt das Warten auf offene Verbindungen (Streams der Clients) beim Stoppen.
 	stopTimeout = 2 * time.Second
+	// sessionTimeout schließt Sessions ohne Anfrage (Agent ohne Abmelden beendet); sonst zählten sie für immer als
+	// Clients. Ein laufender Aufruf hält die Session offen, der Client meldet sich danach einfach neu an.
+	sessionTimeout = 30 * time.Minute
 )
 
 // Config beschreibt einen Server. Port 0 wählt einen freien Port (Tests).
@@ -107,14 +110,16 @@ func (s *Server) Start() error {
 		return fmt.Errorf("port %d nicht verfügbar (%w); einen anderen Port über %s setzen", s.cfg.Port, err, EnvPort)
 	}
 	mux := http.NewServeMux()
-	mux.Handle("/mcp", mcp.NewStreamableHTTPHandler(func(*http.Request) *mcp.Server { return s.mcp }, nil))
+	mux.Handle("/mcp", mcp.NewStreamableHTTPHandler(func(*http.Request) *mcp.Server { return s.mcp },
+		&mcp.StreamableHTTPOptions{SessionTimeout: sessionTimeout}))
 	srv := &http.Server{Handler: mux, ReadHeaderTimeout: 10 * time.Second}
 	s.http, s.addr = srv, ln.Addr().String()
 	go func() { _ = srv.Serve(ln) }()
 	return nil
 }
 
-// Stop schließt den HTTP-Server; offene Streams bekommen stopTimeout.
+// Stop schließt den HTTP-Server (offene Streams bekommen stopTimeout) und alle Sessions, damit sie nach einem
+// Neustart nicht weiter als Clients zählen.
 func (s *Server) Stop() error {
 	s.mu.Lock()
 	srv := s.http
@@ -125,10 +130,14 @@ func (s *Server) Stop() error {
 	}
 	ctx, cancel := context.WithTimeout(context.Background(), stopTimeout)
 	defer cancel()
-	if err := srv.Shutdown(ctx); err != nil {
-		return srv.Close()
+	err := srv.Shutdown(ctx)
+	if err != nil {
+		err = srv.Close()
 	}
-	return nil
+	for ss := range s.mcp.Sessions() {
+		_ = ss.Close()
+	}
+	return err
 }
 
 // Restart startet den HTTP-Teil neu; Clients verbinden sich danach neu.

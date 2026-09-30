@@ -120,6 +120,9 @@ func TestHTTPNurAnLocalhost(t *testing.T) {
 	if err := s.Restart(); err != nil {
 		t.Errorf("Neustart: %v", err)
 	}
+	if st := s.Stats(); st.Clients != 0 || st.PeakClients != 1 {
+		t.Errorf("alte Session zählt nach dem Neustart weiter: %+v", st)
+	}
 }
 
 func TestResolvePort(t *testing.T) {
