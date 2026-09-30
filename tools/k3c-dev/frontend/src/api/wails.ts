@@ -1,4 +1,6 @@
-import type { Backend, EventName, Events, Info, LevelCounts, ServicesView, ServiceStatus } from './types';
+import type {
+  Backend, ConsoleLine, EventName, Events, Info, LevelCounts, ServicesView, ServiceStatus, Source,
+} from './types';
 
 // Die Wails-Laufzeit legt window.go (Bindings der App) und window.runtime an. Die generierten Dateien unter
 // frontend/wailsjs/ bindet die Oberfläche bewusst nicht ein: so braucht der Typecheck keine Wails-CLI.
@@ -11,6 +13,8 @@ interface GoApp {
   ServicesStartAll(): Promise<void>;
   ServicesStopAll(): Promise<void>;
   ServiceLogLevels(name: string): Promise<LevelCounts>;
+  Sources(): Promise<Source[]>;
+  ConsoleTail(source: string): Promise<ConsoleLine[]>;
 }
 
 interface WailsRuntime {
@@ -41,6 +45,8 @@ export function wailsBackend(): Backend {
     servicesStartAll: () => app.ServicesStartAll(),
     servicesStopAll: () => app.ServicesStopAll(),
     serviceLogLevels: (name) => app.ServiceLogLevels(name),
+    sources: () => app.Sources(),
+    consoleTail: (source) => app.ConsoleTail(source),
     on: <E extends EventName>(event: E, fn: (data: Events[E]) => void) =>
       runtime.EventsOn(event, (data) => fn(data as Events[E])),
   };

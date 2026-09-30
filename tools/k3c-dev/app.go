@@ -23,6 +23,8 @@ import (
 const (
 	evMCPState     = "mcp:state"
 	evServiceState = "service:state"
+	evSourceState  = "source:state"
+	evConsoleLine  = "console:line"
 )
 
 // MCPState ist der Zustand des MCP-Servers für das Badge der Kopfzeile.
@@ -49,6 +51,7 @@ type App struct {
 	ctx     context.Context
 	svcCtx  context.Context // endet beim Beenden; Befehle der Oberfläche laufen darin
 	cancel  context.CancelFunc
+	store   *console.Store // Konsolenpuffer aller Quellen
 	log     *applog.Log
 	tracker *usage.Tracker
 	ctl     *services.Controller
@@ -67,7 +70,9 @@ func newApp(root string, port int) *App {
 // auf: der Grund steht im Log und im Badge.
 func (a *App) startup(ctx context.Context) {
 	a.ctx = ctx
-	store := console.New(console.DefaultCapacity, nil)
+	// console:line trägt eine Liste, damit Go später bündeln kann, ohne den Vertrag zu ändern.
+	a.store = console.New(console.DefaultCapacity, func(l console.Line) { a.emit(a.ctx, evConsoleLine, []console.Line{l}) })
+	store := a.store
 	var err error
 	a.log, err = applog.Open(filepath.Join(a.root, "logs"), store)
 	if err != nil {
@@ -77,9 +82,13 @@ func (a *App) startup(ctx context.Context) {
 		func(err error) { a.log.Warn(err.Error(), "ns", "usage") })
 	a.svcCtx, a.cancel = context.WithCancel(ctx)
 	a.ctl, a.svcErr = openServices(a.svcCtx, a.root, store, a.log,
-		func(st services.Status) { a.emit(a.ctx, evServiceState, st) })
+		func(st services.Status) {
+			a.emit(a.ctx, evServiceState, st)
+			a.emit(a.ctx, evSourceState, serviceSource(st))
+		})
 	a.srv = mcpsrv.New(mcpsrv.Config{Root: a.root, Port: a.port, Version: version, Console: store,
-		Log: a.log.Logger, Usage: a.tracker, Services: a.ctl, ServicesErr: a.svcErr})
+		Log: a.log.Logger, Usage: a.tracker, Services: a.ctl, ServicesErr: a.svcErr,
+		OnCheck: func(st mcpsrv.CheckState) { a.emit(a.ctx, evSourceState, checkSource(st)) }})
 	err = a.srv.Start()
 	if err != nil {
 		a.log.Error("start fehlgeschlagen", "ns", "main", "error", err.Error())
@@ -99,6 +108,7 @@ func (a *App) shutdown(context.Context) {
 	_ = a.srv.Stop()
 	_ = a.tracker.Flush() // ein Fehler steht schon im Log (Rückruf)
 	_ = a.log.Close()
+	a.store.Close() // danach keine console:line mehr
 }
 
 func (a *App) setMCP(err error) {

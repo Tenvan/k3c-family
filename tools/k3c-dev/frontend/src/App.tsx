@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react';
 import { backend, type McpState } from './api';
 import { Header, PAGES, type Page } from './Header';
 import { loadPref, savePref } from './lib/prefs';
+import { LogsPage } from './logs/LogsPage';
 import { ServicesPage } from './services/ServicesPage';
 import { NoticeCard } from './ui/parts';
 
@@ -39,7 +40,7 @@ export function App() {
             <ServicesPage />
           </Tabs.Content>
           <Tabs.Content value="logs">
-            <NoticeCard title="Logs">Quellenleiste und Konsole folgen in M4.3, die Reiter Log und Fehler in M4.4.</NoticeCard>
+            <LogsPage />
           </Tabs.Content>
           <Tabs.Content value="mcp">
             <NoticeCard title="MCP">Die MCP-Seite mit Monitoren und Statistik folgt mit B-065 (M5).</NoticeCard>
