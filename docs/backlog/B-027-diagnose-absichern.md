@@ -6,9 +6,9 @@
 - **Status:** eingeplant
 - **Sprint:** SP03
 - **Erstellt:** 2026-09-29
-- **Spec:** Entwurf
+- **Spec:** freigegeben
 - **Revision:** 1
-- **Freigabe:** –
+- **Freigabe:** 2026-09-30 🧑 Chat (Pauschalauftrag „beide komplett autonom fertig stellen“; N = 5, /api/health neu, ohne Token Diagnose aus)
 
 ## Ausgangslage
 
@@ -40,7 +40,7 @@ Ein Handy ruft `/api/status` ohne Token auf → 401.
 
 ## Ausnahme- und Fehlerfälle
 
-Vorschlag: Umgebungsvariable nicht gesetzt → Diagnose abgeschaltet (fail-closed), der Spielbetrieb läuft weiter.
+Umgebungsvariable nicht gesetzt → Diagnose abgeschaltet (fail-closed, `/api/status` antwortet 404), der Spielbetrieb läuft weiter.
 
 ## Akzeptanzkriterien
 
@@ -49,7 +49,7 @@ Vorschlag: Umgebungsvariable nicht gesetzt → Diagnose abgeschaltet (fail-close
 
 ## Offene Fragen
 
-Verhalten ohne gesetzte Variable bestätigen (🧑).
+keine (Verhalten ohne Variable von 🧑 bestätigt, 2026-09-30).
 
 ## Notizen
 
