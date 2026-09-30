@@ -18,6 +18,14 @@ zurückgeben.
 - `logs_query` für einzelne Einträge (Filter `minLevel`, `ns`, `pattern`, `since`, `limit`).
 - `logs_since` zum Mitlesen: den `cursor` aus der letzten Antwort wieder mitgeben.
 
+## Dienste
+
+- Dienste (Vite-Dev-Server, Heimnetz-Server) nie per Shell starten, sondern mit `svc_start`; stoppen mit `svc_stop`.
+- `svc_status` zeigt Zustand, PID, CPU, Speicher und Log-Level; die Ausgabe eines Dienstes steht in
+  `console_tail <Dienst>`.
+- Ein übernommener Dienst lief schon vor k3c-dev (z. B. im Terminal eines Menschen): nur mit `force` stoppen, und nur,
+  wenn das gewollt ist.
+
 ## Spieldaten
 
 - `reports_list` und `report_read` statt `reports/*.json` zu öffnen: Xbox-Berichte der Gamepad-Testseite.

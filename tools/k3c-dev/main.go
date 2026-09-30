@@ -16,6 +16,7 @@ import (
 	"k3c/tools/k3c-dev/internal/applog"
 	"k3c/tools/k3c-dev/internal/console"
 	"k3c/tools/k3c-dev/internal/mcpsrv"
+	"k3c/tools/k3c-dev/internal/services"
 	"k3c/tools/k3c-dev/internal/usage"
 )
 
@@ -52,22 +53,40 @@ func serve(root string, port int) error {
 		fmt.Fprintln(os.Stderr, "k3c-dev: eigenes Log nur im Speicher:", err)
 	}
 	defer func() { _ = log.Close() }()
+	ctx, stop := signal.NotifyContext(context.Background(), os.Interrupt)
+	defer stop()
 	tracker := usage.Open(usagePath(), time.Now, func(err error) { log.Warn(err.Error(), "ns", "usage") })
+	ctl, svcErr := openServices(ctx, root, store, log)
 	srv := mcpsrv.New(mcpsrv.Config{Root: root, Port: port, Version: version, Console: store, Log: log.Logger,
-		Usage: tracker})
+		Usage: tracker, Services: ctl, ServicesErr: svcErr})
 	if err := srv.Start(); err != nil {
 		log.Error("start fehlgeschlagen", "ns", "main", "error", err.Error())
 		return err
 	}
 	log.Info("k3c-dev gestartet", "ns", "main", "url", srv.URL(), "version", version)
 	fmt.Fprintf(os.Stderr, "k3c-dev lauscht an %s (Strg+C beendet)\n", srv.URL())
-	ctx, stop := signal.NotifyContext(context.Background(), os.Interrupt)
-	defer stop()
 	<-ctx.Done()
 	log.Info("k3c-dev beendet", "ns", "main")
+	if ctl != nil {
+		ctl.StopAll(context.Background()) // nur eigene Dienste, rückwärts; übernommene laufen weiter
+	}
 	err = srv.Stop()
 	_ = tracker.Flush() // ein Fehler steht schon im Log (Rückruf)
 	return err
+}
+
+// openServices lädt services.json, übernimmt laufende Dienste und misst alle 2 s, bis ctx endet. Eine kaputte
+// Konfiguration hält den Server nicht auf: dann gibt es keine Dienste, und svc_status nennt den Grund.
+func openServices(ctx context.Context, root string, store *console.Store, log *applog.Log) (*services.Controller, error) {
+	list, err := services.Load(filepath.Join(root, "tools", "k3c-dev", "services.json"))
+	if err != nil {
+		log.Error("dienste nicht geladen: "+err.Error(), "ns", "svc")
+		return nil, err
+	}
+	ctl := services.New(list, services.Options{Root: root, Console: store, Log: log.Logger})
+	ctl.Adopt(ctx)
+	go ctl.Monitor(ctx, 2*time.Second)
+	return ctl, nil
 }
 
 // usagePath ist die Datei der Nutzungsstatistik im Benutzerprofil, nicht im Repo.

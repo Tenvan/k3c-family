@@ -34,9 +34,9 @@ func (s *Server) consoleTail(_ context.Context, in tailIn) (string, error) {
 	out = append(out, fmt.Sprintf("%s · letzte %d Zeilen (bis Nr. %d)", in.Source, len(lines), lines[len(lines)-1].Seq))
 	for _, l := range lines {
 		if l.Stream == "stderr" {
-			out = append(out, "! "+l.Text)
+			out = append(out, "! "+ansi.ReplaceAllString(l.Text, ""))
 		} else {
-			out = append(out, l.Text)
+			out = append(out, ansi.ReplaceAllString(l.Text, "")) // Farben bleiben im Puffer für die Oberfläche
 		}
 	}
 	return strings.Join(out, "\n"), nil
