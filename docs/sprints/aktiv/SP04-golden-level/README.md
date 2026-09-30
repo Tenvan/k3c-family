@@ -72,7 +72,7 @@ FMA: Regel im Go-Code, arm64-Lauf als Ticket B-071.
 |---|---|---|---|---|
 | SP04.1 | `SP04.1-golden-daten.md` | Umsetzung | autonom | fertig |
 | SP04.2 | `SP04.2-rng.md` | Umsetzung | autonom | fertig |
-| SP04.3 | `SP04.3-level.md` | Umsetzung | autonom | offen |
+| SP04.3 | `SP04.3-level.md` | Umsetzung | autonom | fertig |
 | SP04.4 | `SP04.4-review.md` | Review | autonom | offen |
 
 ## Abnahme
