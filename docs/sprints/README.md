@@ -6,12 +6,7 @@ Jede Sprint-README ist eine Spec (SDD); aktiv wird ein Sprint erst mit `Spec: fr
 
 ## Aktiv
 
-| Sprint | Domäne | Thema | Am Ende sichtbar | Ordner |
-|---|---|---|---|---|
-| M5 | SRV 🧑 | k3c-dev V: MCP-Seite mit Monitoren und Statistik | zwei parallele Aufrufe als zwei Spuren, p95 je Tool | `aktiv/M5-dev-mcp-seite/` |
-| SP03 | SRV | Go-Server Basis (ersetzt `server/*.mjs` für Dateien, Spielstände, Berichte) | EXE und Docker-Image liefern das Spiel aus | `aktiv/SP03-go-server/` |
-
-M5 wartet auf die Abnahme durch 🧑 (M5.5), SP03 auf den grünen CI-Job `docker` nach dem Push (SP03.3).
+Kein aktiver Sprint. Nächster Schritt: SP04 bereit machen (Sessions schreiben, 🧑 um Freigabe bitten).
 
 ## Geplant (in dieser Reihenfolge)
 
@@ -52,3 +47,5 @@ Nach SP11: Regelwerk II (Skills) → SIM Skills in Go → CLI Skills → Spielea
 | M2 | k3c-dev II: Nutzungsstatistik, Berichte, Spielstände | `erledigt/M2-dev-statistik/` |
 | M3 | k3c-dev III: Dienste führen, `svc_*`-Tools | `erledigt/M3-dev-dienste/` |
 | M4 | k3c-dev IV: Oberfläche (Wails) mit Dienste- und Logs-Seite | `erledigt/M4-dev-oberflaeche/` |
+| SP03 | Go-Server Basis: Auslieferung, Spielstände mit Sicherungen, Status, Docker | `erledigt/SP03-go-server/` |
+| M5 | k3c-dev V: MCP-Seite mit Monitoren und Statistik | `erledigt/M5-dev-mcp-seite/` |
