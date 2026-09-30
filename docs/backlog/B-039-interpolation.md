@@ -6,9 +6,9 @@
 - **Status:** eingeplant
 - **Sprint:** SP08
 - **Erstellt:** 2026-09-30
-- **Spec:** Entwurf
+- **Spec:** freigegeben
 - **Revision:** 1
-- **Freigabe:** –
+- **Freigabe:** 2026-09-30 🧑 Chat-Freigabe durch Ralf (mit SP02)
 
 ## Ausgangslage
 
