@@ -87,4 +87,4 @@ Portale, Gegner). Nach Änderungen `npm test` ausführen. Die Tests prüfen 500 
 - **Release** (Tag `v*`, z.B. `git tag v0.2.0 && git push --tags`): Zip mit `dist/` + `server/` am Release.
   Entpacken und `node server/server.mjs` starten, `npm install` ist dafür nicht nötig.
 
-Mehr: [Game Design](docs/game-design.md) · [Roadmap](docs/roadmap.md) · [Sprints](docs/sprints.md) · [Backlog](docs/backlog.md)
+Mehr: [Game Design](docs/game-design.md) · [Roadmap](docs/roadmap.md) · [Arbeitsweise](docs/arbeitsweise.md) · [Sprints](docs/sprints/README.md) · [Backlog](docs/backlog/README.md)

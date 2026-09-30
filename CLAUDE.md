@@ -5,9 +5,12 @@ Zielplattform ist **Edge auf der Xbox** (Gamepad API), gehostet im Heimnetz. Die
 
 - Design & Regeln: `docs/game-design.md` (nur bei Bedarf lesen)
 - Aktueller Stand & nächste Schritte: `docs/roadmap.md`
-- Sprints & Sessions: `docs/sprints.md` (Arbeitsweise, Domänen, Review, Komplexitäts-Budget; zu Beginn die nächste
-  offene Session des aktuellen Sprints nehmen, am Ende abhaken)
-- Ideen & Probleme: `docs/backlog.md` (sofort eintragen, nicht nebenbei umsetzen)
+- **Arbeitsweise:** `docs/arbeitsweise.md` (Domänen, autonomer Ablauf, Review, Komplexitäts-Budget) – vor jeder Session lesen.
+- **Sprints:** `docs/sprints/aktiv/` lesen und die nächste offene Session nehmen. `docs/sprints/geplant/` nur beim
+  Planen lesen, `docs/sprints/erledigt/` nur auf Nachfrage. Übersicht: `docs/sprints/README.md`.
+- **Tickets:** `docs/backlog/` (Index `README.md`, ein Ticket pro Datei). Neue Ideen/Probleme sofort als Ticket anlegen,
+  nicht nebenbei umsetzen.
+- **Vorlagen sind Pflicht:** Tickets, Sprints und Sessions nur als Kopie von `docs/vorlagen/*.md`; `tests/planning.test.ts` prüft das.
 - Architektur-Entscheidungen: `docs/decisions/` – **001: Die Spiel-Engine wandert auf einen Go-Server**, der Browser
   wird reiner Client. Bis dahin **Feature-Stopp in `src/world/`** (nur Fehlerbehebungen, neue Mechaniken in Go).
 - Altes Godot-Projekt (nur Referenz): `C:\WORKSPACE\FamilyCrowns`
@@ -61,7 +64,7 @@ Nur so bleibt Vollbild auf der Xbox über Seitenwechsel erhalten. Für **jede** 
 - Jede Mechanik muss mit **2 Spielern gleichzeitig** funktionieren (Split-Screen, eigene Eingabe pro Spieler).
 - Controller-Taste **B** nicht belegen (Edge-Zurück auf der Xbox, wird von der Zurück-Falle geschluckt).
   **View + Menu** gemeinsam = zurück zur Landingpage (reserviert, auf keiner Seite anders belegen).
-- Klein bleiben: kein Framework-Overhead. Prozess steht nur in `docs/sprints.md`, keine weiteren Prozess-Dokumente.
+- Klein bleiben: kein Framework-Overhead. Prozess steht nur in `docs/arbeitsweise.md`, keine weiteren Prozess-Dokumente.
   Ein Sprint bleibt in seiner Domäne; Datei ≤ 300 Zeilen (Ziel), Funktion ≤ 40 Zeilen. Lieber spielbarer Code.
 
 ## Im Browser-Pane testen
