@@ -1,0 +1,6 @@
+[
+  { "name": "Vite", "command": ["npm", "run", "dev", "--", "--strictPort"], "cwd": ".", "port": 5173, "health": "http",
+    "autoRestart": true },
+  { "name": "Heimnetz", "command": ["npm", "start"], "cwd": ".", "port": 8080, "health": "http",
+    "env": { "K3C_HTTP_PORT": "8080" } }
+]
