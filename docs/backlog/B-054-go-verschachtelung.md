@@ -3,12 +3,12 @@
 - **Domäne:** INF
 - **Typ:** Problem
 - **Prio:** mittel
-- **Status:** offen
-- **Sprint:** –
+- **Status:** eingeplant
+- **Sprint:** L1
 - **Erstellt:** 2026-09-30
-- **Spec:** Entwurf
+- **Spec:** freigegeben
 - **Revision:** 1
-- **Freigabe:** –
+- **Freigabe:** 2026-09-30 🧑 Chat-Freigabe durch Ralf (mit L1)
 
 ## Ausgangslage
 
@@ -61,7 +61,7 @@ und muss mit angepasst werden.
 
 ## Offene Fragen
 
-`nestif` zusätzlich behalten oder ersetzen? (🧑)
+keine. Entschieden (🧑, 2026-09-30): `nestif` ersetzen.
 
 ## Notizen
 

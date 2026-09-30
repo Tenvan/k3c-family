@@ -3,7 +3,7 @@
 - **Domäne:** INF
 - **Typ:** Problem
 - **Prio:** niedrig
-- **Status:** offen
+- **Status:** verworfen
 - **Sprint:** –
 - **Erstellt:** 2026-09-30
 - **Spec:** Entwurf
@@ -61,4 +61,5 @@ Lohnt sich das bis SP09, oder bleibt `server/` bewusst ausgenommen (dann als Reg
 
 ## Notizen
 
+Verworfen 2026-09-30 (🧑): `server/*.mjs` wird in SP09 gelöscht, Ausnahmen für Code mit Ablaufdatum bringen nichts.
 Gefunden im Review SP01.4.

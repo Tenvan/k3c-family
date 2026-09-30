@@ -59,6 +59,6 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-051](B-051-oxlint-warnungen.md) | INF | Schuld | niedrig | offen | – | Oxlint meldet im Bestand keine Warnungen mehr |
 | [B-052](B-052-requirements.md) | INF | Idee | mittel | erledigt | SP01 | Alle vorausgesetzten Installationen stehen in requirements.md |
 | [B-053](B-053-ci-lauf-sp01.md) | INF | Problem | hoch | offen | – | Die CI hat die Prüfungen aus SP01 einmal grün durchlaufen |
-| [B-054](B-054-go-verschachtelung.md) | INF | Problem | mittel | offen | – | Die Verschachtelung von Go-Code wird als Tiefe geprüft |
-| [B-055](B-055-server-lint.md) | INF | Problem | niedrig | offen | – | Das Komplexitäts-Budget gilt auch für server/*.mjs |
+| [B-054](B-054-go-verschachtelung.md) | INF | Problem | mittel | eingeplant | L1 | Die Verschachtelung von Go-Code wird als Tiefe geprüft |
+| [B-055](B-055-server-lint.md) | INF | Problem | niedrig | verworfen | – | Das Komplexitäts-Budget gilt auch für server/*.mjs |
 | [B-056](B-056-ratsche-nachziehen.md) | INF | Schuld | niedrig | offen | – | Die Ratsche zieht gesunkene Werte automatisch nach |
