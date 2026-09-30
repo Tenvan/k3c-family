@@ -6,9 +6,9 @@
 - **Status:** eingeplant
 - **Sprint:** M2
 - **Erstellt:** 2026-09-30
-- **Spec:** Entwurf
+- **Spec:** freigegeben
 - **Revision:** 1
-- **Freigabe:** –
+- **Freigabe:** 2026-09-30 🧑 Chat (M2 Revision 1 mit B-062 und B-063)
 
 ## Ausgangslage
 
@@ -27,8 +27,9 @@ Entwickler, die Agenten-Arbeit beobachten; die MCP-Seite (B-065) als einziger Le
 
 ## Anforderungen
 
-- Paket `tools/k3c-dev/internal/usage`, hängt am Rückruf „Aufruf beendet“ aus B-046 und kennt den Server nicht.
-  Ein Ereignis: Zeitpunkt, Tool, Argumente (JSON), Dauer in ms, ok, Fehlermeldung.
+- Paket `tools/k3c-dev/internal/usage`, kennt den Server nicht. Die Middleware aus B-046 gibt jeden beendeten Aufruf
+  hinein, mit den **rohen** Argumenten (das Aufruf-Log kürzt sie auf 120 Zeichen, gekürztes JSON ließe sich nicht
+  normieren). Ein Ereignis: Zeitpunkt, Tool, Argumente (JSON), Dauer in ms, ok, Fehlermeldung.
 - **Zwei Bereiche:** `session` (seit Programmstart) und `allTime` (seit dem ersten Start, gespeichert). Je Bereich:
   - je Tool: Aufrufe, Fehler, Σ Dauer, Ø, Max, p50, p95, Ausreißer; häufigste Argumente mit Anzahl und je Argument
     Ø, p95 und Max; häufigste Fehlermeldungen mit Anzahl. Argumente normiert (Schlüssel sortiert, kompaktes JSON),

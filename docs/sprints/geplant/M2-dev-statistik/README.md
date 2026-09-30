@@ -2,13 +2,13 @@
 
 - **Status:** geplant
 - **Domäne:** SRV
-- **Reife:** Entwurf
+- **Reife:** bereit
 - **Einschiebbar:** ja
 - **Tickets:** B-062, B-063
 - **Start-Commit:** –
-- **Spec:** Entwurf
+- **Spec:** freigegeben
 - **Revision:** 1
-- **Freigabe:** –
+- **Freigabe:** 2026-09-30 🧑 Chat (M2 Revision 1 mit B-062 und B-063)
 
 ## Ausgangslage
 
@@ -58,12 +58,11 @@ keine
 
 ## Sessions
 
-Entwurf. Vor dem Aktivieren jede Session als Datei nach `docs/vorlagen/session.md` schreiben, die Kriterien in Klammern werden ihr Feld `Kriterien`.
-
-- M2.1 `internal/usage`: Bereiche, Histogramm, Perzentile, Ausreißer, Ranglisten, Zeitreihe, Schnappschuss (AC-01, AC-02).
-- M2.2 Speichern (atomar, `.bak`), `workbench_status` ergänzen, `internal/gamedata` mit `reports_list`, `report_read`,
-  `saves_list`, Instructions ergänzen (AC-02, AC-03, AC-04).
-- M2.3 🔍 Review (alle).
+| Nr. | Datei | Typ | Agent | Status |
+|---|---|---|---|---|
+| M2.1 | `M2.1-nutzungsstatistik.md` | Umsetzung | autonom | offen |
+| M2.2 | `M2.2-speichern-spieldaten.md` | Umsetzung | autonom | offen |
+| M2.3 | `M2.3-review.md` | Review | autonom | offen |
 
 ## Abnahme
 

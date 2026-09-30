@@ -6,9 +6,9 @@
 - **Status:** eingeplant
 - **Sprint:** M2
 - **Erstellt:** 2026-09-30
-- **Spec:** Entwurf
+- **Spec:** freigegeben
 - **Revision:** 1
-- **Freigabe:** –
+- **Freigabe:** 2026-09-30 🧑 Chat (M2 Revision 1 mit B-062 und B-063)
 
 ## Ausgangslage
 
