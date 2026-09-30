@@ -84,7 +84,12 @@ jobs:
         with:
           node-version-file: .nvmrc
           cache: npm
-          cache-dependency-path: tools/k3c-dev/frontend/package-lock.json
+          cache-dependency-path: |
+            package-lock.json
+            tools/k3c-dev/frontend/package-lock.json
+      # Der Typecheck des Frontends prüft auch die Tests; deren vitest kommt aus dem Hauptprojekt.
+      - run: npm ci
+        working-directory: .
       # go:embed braucht frontend/dist, deshalb zuerst das Frontend (mit Typecheck).
       - run: npm ci && npm run build
         working-directory: tools/k3c-dev/frontend
