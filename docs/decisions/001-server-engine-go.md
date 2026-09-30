@@ -65,5 +65,5 @@ Stand: 2026-09-30 · Status: **beschlossen** · Backlog: B-001, B-002, B-003, B-
 
 ## Nachfolgende Entscheidungen
 
-- 002 Protokoll v2 (Geräte, lokale Spieler, Räume, Snapshots, Wiederverbinden) — Sprint SP2
+- 002 Protokoll v2 (Geräte, lokale Spieler, Räume, Snapshots, Wiederverbinden) — Sprint SP02
 - Raspberry-Pi-Modell und Leistungsziel (B-042)

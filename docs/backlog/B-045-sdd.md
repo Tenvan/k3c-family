@@ -3,10 +3,10 @@
 - **Domäne:** INF
 - **Typ:** Idee
 - **Prio:** hoch
-- **Status:** eingeplant
+- **Status:** erledigt
 - **Sprint:** SP00
 - **Erstellt:** 2026-09-30
-- **Spec:** Entwurf
+- **Spec:** rückwirkend
 - **Revision:** 1
 - **Freigabe:** –
 
