@@ -8,6 +8,8 @@ Zielplattform ist **Edge auf der Xbox** (Gamepad API), gehostet im Heimnetz. Die
 - Sprints & Sessions: `docs/sprints.md` (Arbeitsweise, Domänen, Review, Komplexitäts-Budget; zu Beginn die nächste
   offene Session des aktuellen Sprints nehmen, am Ende abhaken)
 - Ideen & Probleme: `docs/backlog.md` (sofort eintragen, nicht nebenbei umsetzen)
+- Architektur-Entscheidungen: `docs/decisions/` – **001: Die Spiel-Engine wandert auf einen Go-Server**, der Browser
+  wird reiner Client. Bis dahin **Feature-Stopp in `src/world/`** (nur Fehlerbehebungen, neue Mechaniken in Go).
 - Altes Godot-Projekt (nur Referenz): `C:\WORKSPACE\FamilyCrowns`
 
 ## Befehle
