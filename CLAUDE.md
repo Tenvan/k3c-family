@@ -11,6 +11,8 @@ Zielplattform ist **Edge auf der Xbox** (Gamepad API), gehostet im Heimnetz. Die
 - **Tickets:** `docs/backlog/` (Index `README.md`, ein Ticket pro Datei). Neue Ideen/Probleme sofort als Ticket anlegen,
   nicht nebenbei umsetzen.
 - **Vorlagen sind Pflicht:** Tickets, Sprints und Sessions nur als Kopie von `docs/vorlagen/*.md`; `tests/planning.test.ts` prüft das.
+- **SDD:** Ticket und Sprint-README sind die Spec (Kriterien `AC-01` …), Sessions erfüllen genannte Kriterien.
+  Freigabe (`Spec: freigegeben`) und manuelle Abnahmen nur durch den Nutzer. Details: `docs/arbeitsweise.md` › SDD.
 - Architektur-Entscheidungen: `docs/decisions/` – **001: Die Spiel-Engine wandert auf einen Go-Server**, der Browser
   wird reiner Client. Bis dahin **Feature-Stopp in `src/world/`** (nur Fehlerbehebungen, neue Mechaniken in Go).
 - Altes Godot-Projekt (nur Referenz): `C:\WORKSPACE\FamilyCrowns`

@@ -6,18 +6,49 @@
 - **Status:** eingeplant
 - **Sprint:** SP07
 - **Erstellt:** 2026-09-29
+- **Spec:** Entwurf
+- **Revision:** 1
+- **Freigabe:** –
 
-## Beschreibung
+## Ausgangslage
 
-Ein Test verbindet per WebSocket, tritt einem Raum bei und empfängt einen Snapshot.
+Der Online-Weg (WebSocket, Raum, Snapshot) ist in keinem automatischen Test geprüft.
 
-## Warum
+## Ziel
 
-Der Online-Weg ist heute nicht in der CI geprüft.
+Online-Verbindung ist automatisch getestet. Nutzen: Der Online-Weg ist heute nicht in der CI geprüft.
 
-## Akzeptanz
+## Beteiligte und Zielgruppen
 
-Go-Test deckt Beitreten und Snapshot ab.
+Entwickler und Cloud-Agenten, die Sessions autonom abarbeiten; Review-Session.
+
+## Anforderungen
+
+- Ein Test verbindet per WebSocket, tritt einem Raum bei und empfängt einen Snapshot.
+
+## Nicht-Ziele
+
+Lasttests.
+
+## Regeln und Einschränkungen
+
+Prozess nur in `docs/arbeitsweise.md`; keine neue Abhängigkeit ohne Ticket und Zustimmung im Review; Komplexitäts-Budget.
+
+## Beispiele
+
+CI-Lauf → der Test tritt einem Raum bei und prüft den ersten Snapshot.
+
+## Ausnahme- und Fehlerfälle
+
+Kein Snapshot kommt → der Test scheitert mit Zeitlimit, statt zu hängen.
+
+## Akzeptanzkriterien
+
+- **AC-01** Ein Go-Test deckt Beitreten und Snapshot ab und läuft in der CI.
+
+## Offene Fragen
+
+keine
 
 ## Notizen
 

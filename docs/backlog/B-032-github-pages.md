@@ -6,18 +6,51 @@
 - **Status:** eingeplant
 - **Sprint:** SP09
 - **Erstellt:** 2026-09-29
+- **Spec:** Entwurf
+- **Revision:** 1
+- **Freigabe:** –
 
-## Beschreibung
+## Ausgangslage
 
 GitHub Pages hat keinen Server.
 
-## Warum
+## Ziel
 
-Nach SP09 funktioniert das Spiel dort nicht mehr.
+GitHub Pages zeigt nur, was ohne Server geht. Nutzen: Nach SP09 funktioniert das Spiel dort nicht mehr.
 
-## Akzeptanz
+## Beteiligte und Zielgruppen
 
-Auf Pages sind Spiel-Kacheln ausgeblendet oder erklärt, Testseiten bleiben.
+Spieler mit Controller auf der Xbox; 🧑 testet an der Xbox; Umsetzung durch Entwickler oder Agent.
+
+## Anforderungen
+
+- Auf Pages sind Spiel-Kacheln ausgeblendet oder erklärt.
+- Testseiten bleiben erreichbar.
+
+## Nicht-Ziele
+
+Server auf Pages.
+
+## Regeln und Einschränkungen
+
+Regel „Seiten & Navigation“ aus `CLAUDE.md` (`installPageChrome()`, `toggleFullscreen()`, `goHome()`); B nicht belegen, View + Menu reserviert.
+
+## Beispiele
+
+Aufruf der Pages-Landingpage → Gamepad-Test erreichbar, die Spiel-Kachel ist ausgeblendet oder erklärt.
+
+## Ausnahme- und Fehlerfälle
+
+Direkter Aufruf von `game.html` auf Pages → verständlicher Hinweis statt Fehler.
+
+## Akzeptanzkriterien
+
+- **AC-01** Auf Pages sind Spiel-Kacheln ausgeblendet oder erklärt.
+- **AC-02** Die Testseiten bleiben auf Pages erreichbar.
+
+## Offene Fragen
+
+Ausblenden oder erklären? (🧑)
 
 ## Notizen
 

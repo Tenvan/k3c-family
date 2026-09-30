@@ -6,18 +6,50 @@
 - **Status:** eingeplant
 - **Sprint:** SP07
 - **Erstellt:** 2026-09-30
+- **Spec:** Entwurf
+- **Revision:** 1
+- **Freigabe:** –
 
-## Beschreibung
+## Ausgangslage
 
-Ein Gerät tritt mit N lokalen Spielern bei (z. B. Xbox mit 2 Controllern), andere Geräte online.
+Heute steuert jedes Gerät genau einen Monarchen (`src/online/`).
 
-## Warum
+## Ziel
 
-Kern-Spielprinzip laut Entscheidung 001.
+Lokale und Online-Spieler teilen sich einen Raum. Nutzen: Kern-Spielprinzip laut Entscheidung 001.
 
-## Akzeptanz
+## Beteiligte und Zielgruppen
 
-Test: Gerät mit 2 lokalen Spielern und Gerät mit 1 Spieler im selben Raum, jeder steuert seinen eigenen Monarchen.
+🧑 betreibt den Server im Heimnetz (PC, später Pi); Spieler verbinden sich mit Xbox und Handy; Umsetzung durch Entwickler oder Agent.
+
+## Anforderungen
+
+- Ein Gerät tritt mit N lokalen Spielern bei (z. B. Xbox mit 2 Controllern), andere Geräte online.
+
+## Nicht-Ziele
+
+Layout für mehr als 2 lokale Spieler (B-016).
+
+## Regeln und Einschränkungen
+
+Go-Server ist die einzige Engine (Entscheidung 001), Standardbibliothek zuerst; Schichtgrenzen und Komplexitäts-Budget aus `docs/arbeitsweise.md`. Kern-Spielprinzip laut Entscheidung 001; Protokoll v2.
+
+## Beispiele
+
+Xbox mit 2 Controllern und ein Handy im selben Raum → drei Monarchen, jeder eigen gesteuert.
+
+## Ausnahme- und Fehlerfälle
+
+Ein lokaler Spieler verlässt das Spiel → die anderen Spieler desselben Geräts bleiben.
+
+## Akzeptanzkriterien
+
+- **AC-01** Test: Gerät mit 2 lokalen Spielern und Gerät mit 1 Spieler im selben Raum.
+- **AC-02** Jeder steuert im Test seinen eigenen Monarchen.
+
+## Offene Fragen
+
+keine
 
 ## Notizen
 
