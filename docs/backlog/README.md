@@ -67,8 +67,8 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-059](B-059-freie-monarchen-reisen-mit.md) | SIM | Idee | hoch | offen | – | Nur gesteuerte Monarchen entscheiden über den Stufenwechsel |
 | [B-060](B-060-sp07-protokoll-regeln.md) | SRV | Problem | hoch | offen | – | Die Spec von SP07 deckt alle Server-Regeln aus Protokoll v2 ab |
 | [B-061](B-061-sp08-protokoll-regeln.md) | CLI | Problem | hoch | offen | – | Die Spec von SP08 deckt alle Client-Regeln aus Protokoll v2 ab |
-| [B-062](B-062-dev-nutzungsstatistik.md) | SRV | Idee | mittel | eingeplant | M2 | k3c-dev wertet MCP-Aufrufe über Sitzungen aus: Perzentile, Ausreißer und Zeitreihe |
-| [B-063](B-063-dev-berichte-spielstaende.md) | SRV | Idee | mittel | eingeplant | M2 | k3c-dev macht Xbox-Berichte und Spielstände für Agenten lesbar |
+| [B-062](B-062-dev-nutzungsstatistik.md) | SRV | Idee | mittel | erledigt | M2 | k3c-dev wertet MCP-Aufrufe über Sitzungen aus: Perzentile, Ausreißer und Zeitreihe |
+| [B-063](B-063-dev-berichte-spielstaende.md) | SRV | Idee | mittel | erledigt | M2 | k3c-dev macht Xbox-Berichte und Spielstände für Agenten lesbar |
 | [B-064](B-064-dev-oberflaeche-logs.md) | SRV | Idee | mittel | eingeplant | M4 | k3c-dev hat eine Oberfläche mit Logs-Seite für Läufe und JSON-Logs |
 | [B-065](B-065-dev-mcp-seite.md) | SRV | Idee | mittel | eingeplant | M5 | k3c-dev zeigt auf der MCP-Seite Server, Tools, Live-Monitore, Aufruf-Log und Statistik |
 | [B-066](B-066-server-json-log.md) | SRV | Idee | mittel | offen | – | Der Go-Server schreibt sein Log als JSON nach logs/ |
