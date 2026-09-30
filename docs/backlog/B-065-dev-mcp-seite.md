@@ -4,7 +4,7 @@
 - **Typ:** Idee
 - **Prio:** mittel
 - **Status:** eingeplant
-- **Sprint:** M4
+- **Sprint:** M5
 - **Erstellt:** 2026-09-30
 - **Spec:** Entwurf
 - **Revision:** 1
@@ -12,7 +12,7 @@
 
 ## Ausgangslage
 
-Nach M3 (B-064) hat `k3c-dev` ein Fenster mit Logs-Seite; der Reiter `MCP` zeigt nur einen Hinweis. Zähler und
+Nach M4 (B-064) hat `k3c-dev` ein Fenster mit Logs-Seite; der Reiter `MCP` zeigt nur einen Hinweis. Zähler und
 Aufruf-Log (B-046) und die Nutzungsstatistik (B-062) sind da, aber nur als Daten.
 
 ## Ziel
