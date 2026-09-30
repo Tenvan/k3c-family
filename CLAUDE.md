@@ -19,6 +19,8 @@ Zielplattform ist **Edge auf der Xbox** (Gamepad API), gehostet im Heimnetz. Die
 
 ## Befehle
 
+Voraussetzungen (Node, Go, golangci-lint mit Versionen): `requirements.md`.
+
 ```bash
 npm run dev        # Dev-Server (auch im LAN erreichbar, Port 5173)
 npm test           # Vitest (Level-Generator, reine Logik)
