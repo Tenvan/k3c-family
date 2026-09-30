@@ -1,4 +1,4 @@
-# CI: Lint, Typecheck, Tests, Build und Server-Smoke-Test; Go: Tests, Lint, Cross-Build; k3c-dev: Tests, Lint (Windows). Bei jedem Push und Pull Request.
+# CI: Lint, Typecheck, Tests, Build und Server-Smoke-Test; Go: Tests, Lint, Cross-Build; k3c-dev: Frontend, Tests, Lint, Wails-Build (Windows). Bei jedem Push und Pull Request.
 name: CI
 
 on:
@@ -68,7 +68,7 @@ jobs:
       - run: GOOS=linux GOARCH=arm64 go build ./...
 
   k3c-dev:
-    name: k3c-dev · Tests · Lint (Windows)
+    name: k3c-dev · Frontend · Tests · Lint · Wails (Windows)
     runs-on: windows-latest
     timeout-minutes: 15
     defaults:
@@ -80,8 +80,18 @@ jobs:
         with:
           go-version-file: tools/k3c-dev/go.mod
           cache-dependency-path: tools/k3c-dev/go.sum
+      - uses: actions/setup-node@v7
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+          cache-dependency-path: tools/k3c-dev/frontend/package-lock.json
+      # go:embed braucht frontend/dist, deshalb zuerst das Frontend (mit Typecheck).
+      - run: npm ci && npm run build
+        working-directory: tools/k3c-dev/frontend
       - run: go test ./...
       - uses: golangci/golangci-lint-action@v9
         with:
           version: v2.14
           working-directory: tools/k3c-dev
+      - run: go install github.com/wailsapp/wails/v2/cmd/wails@v2.16.0
+      - run: wails build -s

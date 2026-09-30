@@ -1,7 +1,10 @@
 {
   "$schema": "./node_modules/oxlint/configuration_schema.json",
   // server/*.mjs ist JavaScript und entfällt mit SP09; geprüft wird nur TypeScript.
-  "ignorePatterns": ["dist", "dist-server", "node_modules", "public", "server"],
+  "ignorePatterns": [
+    "dist", "dist-server", "node_modules", "public", "server",
+    "tools/k3c-dev/frontend/dist", "tools/k3c-dev/frontend/wailsjs"
+  ],
   // Harte Grenzen aus docs/arbeitsweise.md › Komplexitäts-Budget. Die Zielwerte prüft das Review.
   "rules": {
     "max-lines": ["error", { "max": 400, "skipBlankLines": true, "skipComments": true }],
