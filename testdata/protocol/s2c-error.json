@@ -1,0 +1,5 @@
+{
+  "t": "error",
+  "code": "room_full",
+  "message": "Raum ist voll"
+}

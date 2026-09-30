@@ -78,7 +78,7 @@ keine
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
 | SP02.1 | `SP02.1-raummodell.md` | Umsetzung | autonom | fertig |
-| SP02.2 | `SP02.2-nachrichten.md` | Umsetzung | autonom | offen |
+| SP02.2 | `SP02.2-nachrichten.md` | Umsetzung | autonom | fertig |
 | SP02.3 | `SP02.3-review.md` | Review | autonom | offen |
 
 ## Abnahme
