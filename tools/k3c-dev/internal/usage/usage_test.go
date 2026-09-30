@@ -167,3 +167,16 @@ func TestSchnappschussAlsJSON(t *testing.T) {
 		t.Errorf("null in %s", text)
 	}
 }
+
+func TestMinutenwendeInBeliebigerReihenfolge(t *testing.T) {
+	tr, c := newTracker()
+	later := c.event("q", `{}`, 5)
+	later.At = c.t.Add(time.Minute)
+	tr.Record(later)
+	tr.Record(c.event("q", `{}`, 5)) // früher, kommt aber später an
+	tr.Record(later)
+	m := tr.Snapshot().Minutes
+	if len(m) != 2 || m[0].TS >= m[1].TS || m[0].Calls["q"] != 1 || m[1].Calls["q"] != 2 {
+		t.Errorf("Minuten: %+v", m)
+	}
+}

@@ -1,6 +1,6 @@
 # M2 · SRV · k3c-dev II: Nutzungsstatistik, Berichte und Spielstände
 
-- **Status:** aktiv
+- **Status:** erledigt
 - **Domäne:** SRV
 - **Reife:** bereit
 - **Einschiebbar:** ja
@@ -62,8 +62,13 @@ keine
 |---|---|---|---|---|
 | M2.1 | `M2.1-nutzungsstatistik.md` | Umsetzung | autonom | fertig |
 | M2.2 | `M2.2-speichern-spieldaten.md` | Umsetzung | autonom | fertig |
-| M2.3 | `M2.3-review.md` | Review | autonom | offen |
+| M2.3 | `M2.3-review.md` | Review | autonom | fertig |
 
 ## Abnahme
 
-–
+- 2026-09-30, leichtes Review über `93cab71..main` (26 Code-Dateien) durch drei Reviewer (Sonnet): Statistik, Speichern, Spieldaten.
+- Kriterien: AC-01 geprüft (M2.1), AC-02 und AC-03 geprüft (M2.2), AC-04 geprüft (M2.1, M2.2, nach den Fixes erneut).
+- Behoben: unbekannte Tool-Namen ließen Statistik und Datei ohne Grenze wachsen; zweite Beschädigung überschrieb die
+  erste `.bak` (jetzt mit Zeitstempel); fremde Datei mit Lücken → Panik nach dem `recover`; Lesefehler verschob eine
+  gültige Datei und der erste Flush überschrieb sie (jetzt unangetastet, Lauf nur im Speicher); Timer- und
+  End-Flush konnten sich überholen; doppelte Minute an der Minutenwende. Neue Tickets: keine.

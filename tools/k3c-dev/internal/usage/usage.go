@@ -78,12 +78,7 @@ func (t *Tracker) Record(e Event) {
 }
 
 func (t *Tracker) addMinute(e Event, outlier bool) {
-	m := e.At.Unix() / 60
-	if n := len(t.minutes); n == 0 || t.minutes[n-1].T != m {
-		t.minutes = append(t.minutes, minute{T: m, Calls: map[string]int{}, Ms: map[string]float64{},
-			MaxMs: map[string]float64{}, Outliers: map[string]int{}})
-	}
-	b := &t.minutes[len(t.minutes)-1]
+	b := t.minuteFor(e.At.Unix() / 60)
 	b.Calls[e.Tool]++
 	b.Ms[e.Tool] += e.DurationMs
 	b.MaxMs[e.Tool] = max(b.MaxMs[e.Tool], e.DurationMs)
@@ -94,6 +89,24 @@ func (t *Tracker) addMinute(e Event, outlier bool) {
 		b.Outliers[e.Tool]++
 	}
 	t.prune()
+}
+
+// minuteFor liefert die Minute m und legt sie an der richtigen Stelle an. Zwei parallele Aufrufe an der
+// Minutenwende kommen in beliebiger Reihenfolge an, die Liste bleibt trotzdem aufsteigend und ohne Doppel.
+func (t *Tracker) minuteFor(m int64) *minute {
+	i := len(t.minutes)
+	for i > 0 && t.minutes[i-1].T > m {
+		i--
+	}
+	if i > 0 && t.minutes[i-1].T == m {
+		return &t.minutes[i-1]
+	}
+	fresh := minute{T: m}
+	fresh.repair()
+	t.minutes = append(t.minutes, minute{})
+	copy(t.minutes[i+1:], t.minutes[i:])
+	t.minutes[i] = fresh
+	return &t.minutes[i]
 }
 
 // prune verwirft Minuten, die älter als SeriesSpan sind.
