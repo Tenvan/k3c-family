@@ -6,18 +6,51 @@
 - **Status:** offen
 - **Sprint:** –
 - **Erstellt:** 2026-09-29
+- **Spec:** Entwurf
+- **Revision:** 1
+- **Freigabe:** –
 
-## Beschreibung
+## Ausgangslage
 
-Kupfer als Ressource, eigene Gegner (Zombie, Rattenschwarm, Minengeist).
+Die Mine (Tiefe 2) ist heute nur angelegt.
 
-## Warum
+## Ziel
 
-Die dritte Stufe ist heute nur angelegt.
+Mine (Tiefe 2) ist vollständig. Nutzen: Die dritte Stufe ist heute nur angelegt.
 
-## Akzeptanz
+## Beteiligte und Zielgruppen
 
-Mine spielbar mit eigenen Ressourcen und Gegnern, Tests in Go.
+Spieler (2+ Monarchen gleichzeitig, lokal und online); Umsetzung durch Entwickler oder Agent in Go.
+
+## Anforderungen
+
+- Kupfer als Ressource.
+- Eigene Gegner: Zombie, Rattenschwarm, Minengeist.
+
+## Nicht-Ziele
+
+Tiefe 3 und 4 (B-024).
+
+## Regeln und Einschränkungen
+
+Neue Mechaniken nur in Go (Entscheidung 001, Feature-Stopp in `src/world/`); deterministisch, nur der Seed-RNG, kein `Math.random()`; Werte in `data/`; Komplexitäts-Budget. Erst nach Regelwerk III; Feature-Kette REG → SIM → CLI.
+
+## Beispiele
+
+Das Team steigt in die Mine → Kupfer ist abbaubar, nachts kommen Minen-Gegner.
+
+## Ausnahme- und Fehlerfälle
+
+Wird im Regelwerk III festgelegt (siehe Offene Fragen).
+
+## Akzeptanzkriterien
+
+- **AC-01** Die Mine ist spielbar mit eigenen Ressourcen und Gegnern.
+- **AC-02** Tests in Go decken Ressourcen und Gegner ab.
+
+## Offene Fragen
+
+Regeln der Mine (Regelwerk III, 🧑).
 
 ## Notizen
 

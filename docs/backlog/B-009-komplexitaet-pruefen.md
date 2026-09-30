@@ -6,18 +6,51 @@
 - **Status:** eingeplant
 - **Sprint:** SP01
 - **Erstellt:** 2026-09-29
+- **Spec:** Entwurf
+- **Revision:** 1
+- **Freigabe:** –
 
-## Beschreibung
+## Ausgangslage
 
-Oxlint (TypeScript) und `golangci-lint` (Go) prüfen Datei- und Funktionslänge, Verschachtelung und Komplexität; Regel-Tests prüfen Schichtgrenzen und die Ratsche für Bestandscode.
+Das Komplexitäts-Budget steht nur in `docs/arbeitsweise.md`; kein Werkzeug prüft es.
 
-## Warum
+## Ziel
 
-Niedrige Komplexität ist Pflicht in jeder Session und soll nicht vom Gedächtnis des Reviews abhängen.
+Komplexitäts-Budget wird automatisch geprüft. Nutzen: Niedrige Komplexität ist Pflicht in jeder Session und soll nicht vom Gedächtnis des Reviews abhängen.
 
-## Akzeptanz
+## Beteiligte und Zielgruppen
 
-`npm run check` und die Go-Prüfungen scheitern bei Verstößen, lokal und in der CI.
+Entwickler und Cloud-Agenten, die Sessions autonom abarbeiten; Review-Session.
+
+## Anforderungen
+
+- Oxlint (TypeScript) und `golangci-lint` (Go) prüfen Datei- und Funktionslänge, Verschachtelung und zyklomatische Komplexität.
+- Regel-Tests prüfen Schichtgrenzen und die Ratsche für Bestandscode.
+
+## Nicht-Ziele
+
+Bestandscode verkleinern (B-018, B-034); Stil-Regeln.
+
+## Regeln und Einschränkungen
+
+Prozess nur in `docs/arbeitsweise.md`; keine neue Abhängigkeit ohne Ticket und Zustimmung im Review; Komplexitäts-Budget. Grenzen aus `docs/arbeitsweise.md` › Komplexitäts-Budget.
+
+## Beispiele
+
+Neue Funktion mit 61 Zeilen → `npm run lint` scheitert.
+
+## Ausnahme- und Fehlerfälle
+
+Bestandsdatei über dem Ziel → Eintrag in der Ausnahmeliste mit heutigem Wert, der nur sinken darf.
+
+## Akzeptanzkriterien
+
+- **AC-01** `npm run check` scheitert bei Verstößen gegen das Budget, lokal und in der CI.
+- **AC-02** Die Go-Prüfungen scheitern bei Verstößen, in der CI.
+
+## Offene Fragen
+
+keine
 
 ## Notizen
 

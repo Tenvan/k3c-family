@@ -6,18 +6,49 @@
 - **Status:** offen
 - **Sprint:** –
 - **Erstellt:** 2026-09-30
+- **Spec:** Entwurf
+- **Revision:** 1
+- **Freigabe:** –
 
-## Beschreibung
+## Ausgangslage
 
-Desktop-Fenster (Wails) um denselben Go-Kern, mit Status und QR-Code.
+Am Windows-PC startet der Server per Konsole.
 
-## Warum
+## Ziel
 
-Einfacher Start am Windows-PC per Doppelklick.
+Wails-Starter für Windows existiert. Nutzen: Einfacher Start am Windows-PC per Doppelklick.
 
-## Akzeptanz
+## Beteiligte und Zielgruppen
 
-`cmd/k3c-desktop` startet Server und Fenster.
+🧑 betreibt den Server im Heimnetz (PC, später Pi); Spieler verbinden sich mit Xbox und Handy; Umsetzung durch Entwickler oder Agent.
+
+## Anforderungen
+
+- Desktop-Fenster (Wails) um denselben Go-Kern, mit Status und QR-Code.
+
+## Nicht-Ziele
+
+Pflicht für den Betrieb (optional laut Entscheidung 001); Docker-Betrieb.
+
+## Regeln und Einschränkungen
+
+Go-Server ist die einzige Engine (Entscheidung 001), Standardbibliothek zuerst; Schichtgrenzen und Komplexitäts-Budget aus `docs/arbeitsweise.md`.
+
+## Beispiele
+
+Doppelklick auf `k3c-desktop.exe` → Fenster zeigt Status und QR-Code, das Spiel ist erreichbar.
+
+## Ausnahme- und Fehlerfälle
+
+Port belegt → Meldung im Fenster statt stillem Absturz.
+
+## Akzeptanzkriterien
+
+- **AC-01** `cmd/k3c-desktop` startet Server und Fenster.
+
+## Offene Fragen
+
+keine
 
 ## Notizen
 

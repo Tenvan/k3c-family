@@ -6,18 +6,53 @@
 - **Status:** offen
 - **Sprint:** –
 - **Erstellt:** 2026-09-29
+- **Spec:** Entwurf
+- **Revision:** 1
+- **Freigabe:** –
 
-## Beschreibung
+## Ausgangslage
 
-Skill-Punkte verteilen, Tier-Gating, zwei aktive Skills je Linie (Tank: Taunt, Shield Bash; Zauberer: Fireball, Ice Wall).
+Truhen und versteckte Skill-Punkte gibt es schon, einen Skill-Baum noch nicht.
 
-## Warum
+## Ziel
 
-Der Monarch soll aktiv mitkämpfen, das unterscheidet das Spiel von K2C.
+Skill-Baum mit Tank und Zauberer ist spielbar. Nutzen: Der Monarch soll aktiv mitkämpfen, das unterscheidet das Spiel von K2C.
 
-## Akzeptanz
+## Beteiligte und Zielgruppen
 
-Skills in der Go-Simulation mit Tests, im Client bedienbar, im Spielstand gespeichert.
+Spieler (2+ Monarchen gleichzeitig, lokal und online); Umsetzung durch Entwickler oder Agent in Go.
+
+## Anforderungen
+
+- Skill-Punkte verteilen mit Tier-Gating.
+- Zwei aktive Skills je Linie: Tank (Taunt, Shield Bash), Zauberer (Fireball, Ice Wall).
+- Jeder Spieler hat seinen eigenen Skill-Baum, auch mit 2+ Spielern gleichzeitig.
+
+## Nicht-Ziele
+
+Weitere Linien (alle 4 Linien: später).
+
+## Regeln und Einschränkungen
+
+Neue Mechaniken nur in Go (Entscheidung 001, Feature-Stopp in `src/world/`); deterministisch, nur der Seed-RNG, kein `Math.random()`; Werte in `data/`; Komplexitäts-Budget. Erst nach der Go-Portierung; Feature-Kette REG (Regelwerk II) → SIM → CLI.
+
+## Beispiele
+
+Spieler 1 wählt Taunt, Spieler 2 Fireball → beide Skills wirken gleichzeitig, jeder auf seiner Taste.
+
+## Ausnahme- und Fehlerfälle
+
+Zu wenig Skill-Punkte oder Tier nicht freigeschaltet → Skill nicht wählbar, Punkte bleiben erhalten.
+
+## Akzeptanzkriterien
+
+- **AC-01** Die Skills sind in der Go-Simulation umgesetzt, mit Tests.
+- **AC-02** Im Client sind sie bedienbar.
+- **AC-03** Sie stehen im Spielstand (B-022).
+
+## Offene Fragen
+
+Skill-Tasten (B-026) und Klassen-Presets (B-017) sind noch nicht entschieden (🧑).
 
 ## Notizen
 
