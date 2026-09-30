@@ -24,6 +24,27 @@ docs/
 `docs/vorlagen/`. `tests/planning.test.ts` prüft Felder, Überschriften, Status passend zum Ordner, Index und Verweise.
 Eine Abweichung lässt `npm test` scheitern.
 
+## Spec-Driven Development (SDD)
+
+Ticket und Sprint-README **sind** die Spec, eine eigene Spec-Datei gibt es nicht. Das Wie steht in den Sessions.
+
+- **Abschnitte:** Ausgangslage · Ziel · Beteiligte und Zielgruppen · Anforderungen · Nicht-Ziele · Regeln und
+  Einschränkungen · Beispiele · Ausnahme- und Fehlerfälle · Akzeptanzkriterien · Offene Fragen. Kurz halten; passt ein
+  Abschnitt nicht, `nicht relevant` mit Grund. Unbekanntes steht unter **Offene Fragen**, nie erfunden anderswo.
+- **Kriterien** haben stabile IDs `AC-01`, `AC-02` … (lückenlos, nie umnummerieren). Ein Sprint verweist auf
+  Ticket-Kriterien als `B-009/AC-01` statt sie zu kopieren. Jede Session nennt im Feld `Kriterien` die Sprint-Kriterien,
+  die sie erfüllt (Review: `alle`); bei `Reife: bereit` hat jedes Kriterium mindestens eine Session.
+- **Status der Spec:** `Entwurf` → `freigegeben` nur durch ausdrückliche Zustimmung von 🧑 zu genau dieser Revision
+  (Feld `Freigabe`: Datum und Quelle). `rückwirkend` = aus erledigter Arbeit abgeleitet, ohne Freigabe.
+  Die Freigabe eines Sprints umfasst seine Ticket-Specs in ihrer aktuellen Revision; die Tickets bekommen dieselbe Freigabe.
+- **Änderung:** Passt eine Anforderung während der Umsetzung nicht, erst die Spec ändern (`Revision` + 1, zurück auf
+  `Entwurf`, neue Freigabe), dann den Code. Nie ein Kriterium umschreiben, damit es zum Code passt.
+- **Nachweis:** Das **Ergebnis** der Session nennt je Kriterium `umgesetzt`, `geprüft` (womit), `verschoben` (Grund,
+  Ticket) oder `blockiert`. Ein Kriterium wird nie still abgehakt.
+- **Abnahme gehört 🧑:** Eine Spec-Freigabe ist keine Erlaubnis für manuelle Prüfungen. Browser-, Xbox- und TV-Prüfungen
+  macht ein Agent nur, wenn die Session sie nennt und 🧑 sie für diesen Lauf freigegeben hat. Bestätigte Nachweise
+  gelten weiter, solange ihre Grundlage unverändert ist; wer geprüft hat, steht im Ergebnis.
+
 ## Autonomer Ablauf (Mensch oder Cloud-Agent)
 
 Eine Session muss **ohne Rückfragen und ohne Planungs-Werkzeuge** abzuarbeiten sein. Deshalb:
@@ -32,11 +53,13 @@ Eine Session muss **ohne Rückfragen und ohne Planungs-Werkzeuge** abzuarbeiten 
    Abhängigkeiten nehmen. Gibt es keine: **nichts tun** und das melden.
 2. Session-Datei vollständig lesen. Branch wie im Feld `Branch` anlegen. `Status: in Arbeit` setzen.
 3. Nur die **Erlaubten Dateien** ändern. Die **Schritte** der Reihe nach ausführen, **Nicht-Ziele** einhalten.
-4. Alles unter **Fertig, wenn** abhaken, die Befehle unter **Prüfen** müssen grün sein.
-5. **Ergebnis** ausfüllen, `Status: fertig` setzen, auch in der Session-Tabelle der Sprint-README. Neue Ideen oder
+4. Alles unter **Fertig, wenn** abhaken, die Befehle unter **Prüfen** müssen grün sein. Maßstab sind die Kriterien
+   der Session in der Sprint-README (SDD), nicht eine eigene Auslegung.
+5. **Ergebnis** mit Nachweis je Kriterium ausfüllen, `Status: fertig` setzen, auch in der Session-Tabelle der Sprint-README. Neue Ideen oder
    Probleme als Ticket anlegen (Vorlage!) und in `backlog/README.md` eintragen. PR öffnen (Vorlage), nicht selbst mergen.
 
-**Wenn etwas nicht passt** (Schritt unklar, Befehl scheitert unerklärlich, nötige Datei nicht erlaubt):
+**Wenn etwas nicht passt** (Schritt unklar, Befehl scheitert unerklärlich, nötige Datei nicht erlaubt, Kriterium
+widerspricht dem Code oder einer Regel):
 `Status: blockiert`, im **Ergebnis** Grund und bisherigen Stand notieren, ein Ticket vom Typ `Frage` anlegen,
 PR mit dem bisherigen Stand öffnen, **aufhören**. Nicht raten, nicht um die Regeln herum arbeiten.
 
@@ -52,7 +75,7 @@ Was eine andere Domäne braucht, wird ein Ticket.
 |---|---|---|
 | **REG** | Regelwerk & Balancing | `docs/game-design.md`, `docs/rules/`, `docs/playtests/`, **Werte** in `data/*.json` |
 | **SIM** | Spiel-Logik (Go) | `engine/sim/`, `engine/level/`, **neue Felder** in `data/*.json`; bis zur Löschung `src/world/` (nur Fehler) |
-| **SRV** | Server & Betrieb (Go) | `engine/room/`, `engine/net/`, `engine/store/`, `cmd/`, Docker; bis zur Löschung `server/`, `src/online/room.ts`, `src/online/wsServer.ts` |
+| **SRV** | Server & Betrieb (Go), Entwickler-MCP | `engine/room/`, `engine/net/`, `engine/store/`, `cmd/` (inkl. `cmd/k3c-mcp/`), Docker; bis zur Löschung `server/`, `src/online/room.ts`, `src/online/wsServer.ts` |
 | **CLI** | Client: Darstellung, HUD, Grafik, Audio, Verbindung | `src/scenes/`, `public/`, `src/online/client.ts`, `src/core/saveStore.ts` |
 | **PLAT** | Plattform: Eingabe, Shell, Seiten | `src/input/`, `src/core/shell.ts`, `src/core/fullscreen.ts`, `src/landing/`, `src/tools/`, `*.html` |
 | **INF** | Frameworks, Tooling, CI, Repo-Aufbau, Arbeitsweise | `package.json`, `go.mod`, `vite*.ts`, `tsconfig.json`, Lint-Konfiguration, `.github/`, `tests/projectRules.test.ts`, `tests/planning.test.ts`, `docs/arbeitsweise.md`, `docs/vorlagen/` |
@@ -69,10 +92,13 @@ Grenzfälle:
 
 ## Sprint-Lebenslauf
 
-1. **Geplant:** Ordner `sprints/geplant/SPnn-name/` mit `README.md` nach Vorlage. `Reife: Entwurf` erlaubt Stichpunkte.
-2. **Bereit machen** (Planung, meist am Ende des vorigen Reviews): Tickets sichten und bewerten, jede Session als Datei
-   nach Vorlage schreiben, `Reife: bereit`. Nur der **nächste** Sprint wird so detailliert.
-3. **Aktivieren** (meist in der Review-Session des vorigen Sprints): `git mv docs/sprints/geplant/SPnn-name docs/sprints/aktiv/`,
+1. **Geplant:** Ordner `sprints/geplant/SPnn-name/` mit `README.md` nach Vorlage, `Spec: Entwurf`. `Reife: Entwurf`
+   erlaubt Stichpunkte für die Sessions, die Kriterien stehen trotzdem schon fest.
+2. **Bereit machen** (Planung, meist am Ende des vorigen Reviews): Tickets sichten und bewerten, Offene Fragen klären,
+   jede Session als Datei nach Vorlage schreiben (Feld `Kriterien`), `Reife: bereit`. Nur der **nächste** Sprint wird so
+   detailliert. Danach 🧑 um Freigabe der Spec bitten.
+3. **Aktivieren** (meist in der Review-Session des vorigen Sprints), nur mit `Spec: freigegeben`:
+   `git mv docs/sprints/geplant/SPnn-name docs/sprints/aktiv/`,
    `Status: aktiv`, Fahrplan in `sprints/README.md` anpassen. Höchstens **ein** aktiver Sprint
    (ein eingeschobener Sprint mit `Einschiebbar: ja` darf zusätzlich aktiv sein).
    Das Feld `Start-Commit` setzt die **erste Session** des Sprints: `git rev-parse --short origin/main` vor ihrem Branch.
@@ -89,11 +115,13 @@ Grenzfälle:
 1. `git fetch && git diff --stat <Start-Commit>..origin/main` → **alle** im Sprint erstellten oder geänderten Dateien.
 2. Jede Datei **vollständig** lesen (nicht nur den Diff) und gegen die Checkliste prüfen.
 3. Befunde **in der Domäne** im Review-PR beheben. Befunde **außerhalb** → Ticket, außer Kleinstes (≤ 5 Zeilen).
-4. **Abnahme** in der Sprint-README ausfüllen: Datum, Anzahl geprüfter Dateien, behobene Befunde, neue Tickets.
+4. **Abnahme** in der Sprint-README ausfüllen: Datum, Anzahl geprüfter Dateien, Nachweis je Kriterium, behobene
+   Befunde, neue Tickets. Ein Kriterium ohne Nachweis ist `verschoben` (mit Ticket) oder blockiert die Abnahme.
 5. Sprint-Ordner nach `sprints/erledigt/` verschieben, `Status: erledigt`, Fahrplan anpassen, PR öffnen.
 
 **Checkliste**
 
+- [ ] Jedes Kriterium der Sprint-Spec hat einen Nachweis; keins wurde umformuliert, um zum Code zu passen
 - [ ] Datei gehört zur Domäne des Sprints (oder ist ein erlaubter Grenzfall)
 - [ ] Komplexitäts-Budget eingehalten, nichts auf Vorrat gebaut, kein toter Code, keine Platzhalter/`skip`
 - [ ] Werte stehen in `data/` (bzw. bis zum Umzug `src/data/`), nicht im Code

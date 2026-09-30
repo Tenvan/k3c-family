@@ -6,18 +6,50 @@
 - **Status:** offen
 - **Sprint:** –
 - **Erstellt:** 2026-09-30
+- **Spec:** Entwurf
+- **Revision:** 1
+- **Freigabe:** –
 
-## Beschreibung
+## Ausgangslage
 
-`src/tools/gamepadTest.ts` (332), `src/tools/spriteReference.ts` (330), `src/landing/landing.ts` (319).
+Über dem Ziel von 300 Zeilen: `src/tools/gamepadTest.ts` (332), `src/tools/spriteReference.ts` (330), `src/landing/landing.ts` (319).
 
-## Warum
+## Ziel
 
-Komplexitäts-Budget: die Ausnahmeliste soll schrumpfen.
+Große PLAT-Dateien liegen unter 300 Zeilen. Nutzen: Komplexitäts-Budget: die Ausnahmeliste soll schrumpfen.
 
-## Akzeptanz
+## Beteiligte und Zielgruppen
 
-Alle drei ≤ 300 Zeilen, Einträge aus der Ausnahmeliste entfernt.
+Entwickler und Review.
+
+## Anforderungen
+
+- Alle drei Dateien ≤ 300 Zeilen.
+
+## Nicht-Ziele
+
+Verhalten ändern.
+
+## Regeln und Einschränkungen
+
+Regel „Seiten & Navigation“ aus `CLAUDE.md` (`installPageChrome()`, `toggleFullscreen()`, `goHome()`); B nicht belegen, View + Menu reserviert.
+
+## Beispiele
+
+Nach dem Umbau zählt `wc -l` höchstens 300 Zeilen je Datei.
+
+## Ausnahme- und Fehlerfälle
+
+nicht relevant – Aufteilung ohne Verhaltensänderung.
+
+## Akzeptanzkriterien
+
+- **AC-01** Alle drei Dateien haben ≤ 300 Zeilen.
+- **AC-02** Ihre Einträge sind aus der Ausnahmeliste entfernt.
+
+## Offene Fragen
+
+keine
 
 ## Notizen
 

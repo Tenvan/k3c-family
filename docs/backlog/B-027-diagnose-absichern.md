@@ -6,18 +6,50 @@
 - **Status:** eingeplant
 - **Sprint:** SP03
 - **Erstellt:** 2026-09-29
+- **Spec:** Entwurf
+- **Revision:** 1
+- **Freigabe:** –
 
-## Beschreibung
+## Ausgangslage
 
-`/api/status` und die TUI dürfen nicht offen im Netz hängen.
+Die geplante Diagnose-Schnittstelle `/api/status` (SP03.2) und die TUI (B-002) können Spieler trennen; ohne Schutz könnte das jedes Gerät im Heimnetz.
 
-## Warum
+## Ziel
 
-Auch im Heimnetz soll nicht jedes Gerät Spieler trennen können.
+Diagnose-Schnittstelle ist abgesichert. Nutzen: Auch im Heimnetz soll nicht jedes Gerät Spieler trennen können.
 
-## Akzeptanz
+## Beteiligte und Zielgruppen
 
-Zugriff nur mit Token aus einer Umgebungsvariable, Test für 401 ohne Token.
+🧑 betreibt den Server im Heimnetz (PC, später Pi); Spieler verbinden sich mit Xbox und Handy; Umsetzung durch Entwickler oder Agent.
+
+## Anforderungen
+
+- `/api/status` und die TUI verlangen ein Token aus einer Umgebungsvariable.
+
+## Nicht-Ziele
+
+Benutzerkonten, TLS-Pflicht.
+
+## Regeln und Einschränkungen
+
+Go-Server ist die einzige Engine (Entscheidung 001), Standardbibliothek zuerst; Schichtgrenzen und Komplexitäts-Budget aus `docs/arbeitsweise.md`.
+
+## Beispiele
+
+Ein Handy ruft `/api/status` ohne Token auf → 401.
+
+## Ausnahme- und Fehlerfälle
+
+Vorschlag: Umgebungsvariable nicht gesetzt → Diagnose abgeschaltet (fail-closed), der Spielbetrieb läuft weiter.
+
+## Akzeptanzkriterien
+
+- **AC-01** Ohne gültiges Token antwortet `/api/status` mit 401 (Test).
+- **AC-02** Mit dem Token aus der Umgebungsvariable liefert es den Status (Test).
+
+## Offene Fragen
+
+Verhalten ohne gesetzte Variable bestätigen (🧑).
 
 ## Notizen
 

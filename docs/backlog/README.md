@@ -1,7 +1,8 @@
 # Backlog
 
 Alle Tickets, eine Zeile pro Ticket. Jedes Ticket ist eine eigene Datei nach [`../vorlagen/ticket.md`](../vorlagen/ticket.md).
-Neues Ticket: nächste freie Nummer, Datei `B-NNN-kurzname.md` aus der Vorlage, Zeile hier ergänzen. `npm test` prüft beides.
+Jedes Ticket ist eine Spec (SDD, siehe [`../arbeitsweise.md`](../arbeitsweise.md)). Neues Ticket: nächste freie Nummer,
+Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen. `npm test` prüft beides.
 
 | Nr. | Domäne | Typ | Prio | Status | Sprint | Titel |
 |---|---|---|---|---|---|---|
@@ -49,3 +50,6 @@ Neues Ticket: nächste freie Nummer, Datei `B-NNN-kurzname.md` aus der Vorlage, 
 | [B-042](B-042-pi-leistungsziel.md) | SRV | Frage | hoch | eingeplant | SP11 | Pi-Modell und Leistungsziel sind festgelegt |
 | [B-043](B-043-portierungs-fallen.md) | SIM | Problem | hoch | eingeplant | SP04 | Portierungs-Fallen sind durch Golden-Tests abgedeckt |
 | [B-044](B-044-planer-struktur.md) | INF | Idee | mittel | erledigt | SP00 | Sprints und Tickets liegen als Dateien nach Pflicht-Vorlagen |
+| [B-045](B-045-sdd.md) | INF | Idee | hoch | eingeplant | SP00 | Tickets und Sprints sind Specs nach Spec-Driven Development |
+| [B-046](B-046-dev-mcp.md) | SRV | Idee | mittel | eingeplant | M1 | Entwickler-MCP-Server gibt Agenten verdichteten Zugriff auf Prüfungen, Berichte und Spielstände |
+| [B-047](B-047-mcp-raeume-simulation.md) | SRV | Idee | mittel | eingeplant | SP07 | MCP-Tools zeigen laufende Räume und rechnen Level und Simulationen |

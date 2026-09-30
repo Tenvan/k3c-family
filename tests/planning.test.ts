@@ -19,10 +19,12 @@ const title = (text: string) => /^# (\S+) · /.exec(text)?.[1];
 const ids = (value: string) => value.match(/B-\d{3}/g) ?? [];
 
 const DOMAINS = ['REG', 'SIM', 'SRV', 'CLI', 'PLAT', 'INF'];
+const SPEC = ['Entwurf', 'freigegeben', 'rückwirkend'];
 const ALLOWED = {
   ticket: { Domäne: DOMAINS, Typ: ['Idee', 'Problem', 'Schuld', 'Frage'], Prio: ['hoch', 'mittel', 'niedrig', '?'],
-    Status: ['offen', 'eingeplant', 'erledigt', 'verworfen'] },
-  sprint: { Status: ['geplant', 'aktiv', 'erledigt'], Domäne: DOMAINS, Reife: ['Entwurf', 'bereit'], Einschiebbar: ['nein', 'ja'] },
+    Status: ['offen', 'eingeplant', 'erledigt', 'verworfen'], Spec: SPEC },
+  sprint: { Status: ['geplant', 'aktiv', 'erledigt'], Domäne: DOMAINS, Reife: ['Entwurf', 'bereit'], Einschiebbar: ['nein', 'ja'],
+    Spec: SPEC },
   session: { Status: ['offen', 'in Arbeit', 'fertig', 'blockiert'], Typ: ['Umsetzung', 'Review', 'Workshop'], Agent: ['autonom', 'Mensch'] },
 } as const;
 type Kind = keyof typeof ALLOWED;
@@ -39,14 +41,31 @@ function checkTemplate(kind: Kind, text: string, where: string): Record<string, 
   return fields;
 }
 
+/** Akzeptanzkriterien `- **AC-01** …` im gleichnamigen Abschnitt. */
+function criteria(text: string): string[] {
+  const section = text.split(/^## Akzeptanzkriterien$/m)[1]?.split(/^## /m)[0] ?? '';
+  return [...section.matchAll(/^- \*\*(AC-\d{2})\*\*/gm)].map((m) => m[1]);
+}
+
+/** SDD: Revision als Zahl, Freigabe genau bei `freigegeben`, Kriterien lückenlos ab AC-01. */
+function checkSpec(text: string, fields: Record<string, string>, where: string): string[] {
+  expect(fields.Revision, `${where}: Revision`).toMatch(/^\d+$/);
+  expect(fields.Freigabe.startsWith('–'), `${where}: Freigabe passt zu Spec = ${fields.Spec}`).toBe(fields.Spec !== 'freigegeben');
+  const acs = criteria(text);
+  expect(acs.length, `${where}: mindestens ein Akzeptanzkriterium`).toBeGreaterThan(0);
+  expect(acs, `${where}: Kriterien lückenlos ab AC-01`).toEqual(acs.map((_, i) => `AC-${String(i + 1).padStart(2, '0')}`));
+  return acs;
+}
+
 const tickets = readdirSync(join(DOCS, 'backlog')).filter((f) => /^B-\d{3}-.+\.md$/.test(f));
 const ticketIds = new Set(tickets.map((f) => f.slice(0, 5)));
+const ticketCriteria = (id: string) => criteria(read(`backlog/${tickets.find((f) => f.startsWith(id)) ?? ''}`));
 
 describe('Backlog', () => {
   it.each(tickets)('%s folgt der Vorlage', (file) => {
     const text = read(`backlog/${file}`);
     expect(title(text), `${file}: Überschrift`).toBe(file.slice(0, 5));
-    checkTemplate('ticket', text, file);
+    checkSpec(text, checkTemplate('ticket', text, file), file);
   });
 
   it('Index listet jedes Ticket genau einmal mit gleichem Status', () => {
@@ -69,11 +88,13 @@ function sessionRows(text: string) {
   }));
 }
 
-function checkSessions(path: string, sprintId: string) {
+/** Jede Session verweist nur auf Kriterien des Sprints, und jedes Kriterium hat eine Session. */
+function checkSessions(path: string, sprintId: string, sprintCriteria: string[]) {
   const rows = sessionRows(read(`${path}/README.md`));
   const files = readdirSync(join(DOCS, path)).filter((f) => f !== 'README.md');
   expect(rows.map((r) => r.file).sort(), `${path}: Session-Tabelle ↔ Dateien`).toEqual(files.sort());
   expect(rows.length, `${path}: mindestens eine Session`).toBeGreaterThan(0);
+  const covered = new Set<string>();
   for (const row of rows) {
     const text = read(`${path}/${row.file}`);
     const fields = checkTemplate('session', text, row.file);
@@ -81,25 +102,38 @@ function checkSessions(path: string, sprintId: string) {
     expect(row.id.startsWith(`${sprintId}.`) && row.file.startsWith(`${row.id}-`), `${row.file}: Name`).toBe(true);
     expect([row.typ, row.agent, row.status], `${row.file}: Tabelle`).toEqual([fields.Typ, fields.Agent, fields.Status]);
     for (const id of ids(fields.Tickets)) expect(ticketIds, `${row.file}: ${id}`).toContain(id);
+    const refs = ['alle', '–'].includes(fields.Kriterien) ? [] : fields.Kriterien.split(/,\s*/);
+    for (const ref of refs) {
+      expect(sprintCriteria, `${row.file}: Kriterium ${ref}`).toContain(ref);
+      covered.add(ref);
+    }
   }
+  for (const ac of sprintCriteria) expect(covered.has(ac), `${path}: ${ac} hat keine Session`).toBe(true);
 }
 
 describe('Sprints', () => {
   it.each(sprints)('$path folgt der Vorlage', ({ state, dir, path }) => {
     const text = read(`${path}/README.md`);
     const fields = checkTemplate('sprint', text, path);
+    const acs = checkSpec(text, fields, path);
     const id = title(text) ?? '';
     expect(dir.startsWith(`${id}-`), `${path}: Ordnername beginnt mit ${id}-`).toBe(true);
     expect(text, `${path}: Domäne in der Überschrift`).toMatch(new RegExp(`^# ${id} · ${fields.Domäne} · `));
     expect(fields.Status, `${path}: Status passt zum Ordner`).toBe(state);
     for (const ticket of ids(fields.Tickets)) expect(ticketIds, `${path}: ${ticket}`).toContain(ticket);
-    if (fields.Reife === 'bereit') checkSessions(path, id);
+    for (const [ref, ticket, ac] of text.matchAll(/(B-\d{3})\/(AC-\d{2})/g)) {
+      expect(ticketCriteria(ticket), `${path}: ${ref}`).toContain(ac);
+    }
+    if (fields.Reife === 'bereit') checkSessions(path, id, acs);
   });
 
-  it('höchstens ein aktiver Sprint (plus eingeschobene), und nur mit Reife bereit', () => {
+  it('höchstens ein aktiver Sprint (plus eingeschobene), nur mit Reife bereit und freigegebener Spec', () => {
     const active = sprints.filter((s) => s.state === 'aktiv').map((s) => meta(read(`${s.path}/README.md`)));
     expect(active.filter((f) => f.Einschiebbar === 'nein').length).toBeLessThanOrEqual(1);
-    for (const fields of active) expect(fields.Reife).toBe('bereit');
+    for (const fields of active) {
+      expect(fields.Reife).toBe('bereit');
+      expect(fields.Spec, 'aktiver Sprint braucht Spec freigegeben oder rückwirkend').not.toBe('Entwurf');
+    }
   });
 
   it('Fahrplan nennt jeden Sprint-Ordner', () => {
