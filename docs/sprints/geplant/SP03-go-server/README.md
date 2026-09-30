@@ -32,7 +32,7 @@ Räume und WebSocket (SP07). Der Online-Modus läuft bis SP08 weiter über den N
 
 ## Regeln und Einschränkungen
 
-Go-Standardbibliothek (`net/http`, `log/slog`), Entscheidung 001; Schichtgrenzen aus `docs/arbeitsweise.md`; `release.yml` baut die Artefakte.
+Go-Standardbibliothek (`net/http`, `log/slog`; B-001), Entscheidung 001; Schichtgrenzen aus `docs/arbeitsweise.md`; `release.yml` baut die Artefakte.
 
 ## Beispiele
 
@@ -51,7 +51,7 @@ Unbekannte Route oder kaputte Spielstand-Datei → Fehlercode und Log, der Serve
 
 ## Offene Fragen
 
-Anzahl N der Sicherungen (B-028, 🧑).
+Anzahl N der Sicherungen (B-028, 🧑). `/api/health` gibt es heute nicht (`server/*.mjs` kennt nur `/api/save` und `/api/report`): neu anlegen oder aus AC-02 streichen? (🧑)
 
 ## Sessions
 

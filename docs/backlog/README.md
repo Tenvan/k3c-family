@@ -50,6 +50,8 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-042](B-042-pi-leistungsziel.md) | SRV | Frage | hoch | eingeplant | SP11 | Pi-Modell und Leistungsziel sind festgelegt |
 | [B-043](B-043-portierungs-fallen.md) | SIM | Problem | hoch | eingeplant | SP04 | Portierungs-Fallen sind durch Golden-Tests abgedeckt |
 | [B-044](B-044-planer-struktur.md) | INF | Idee | mittel | erledigt | SP00 | Sprints und Tickets liegen als Dateien nach Pflicht-Vorlagen |
-| [B-045](B-045-sdd.md) | INF | Idee | hoch | eingeplant | SP00 | Tickets und Sprints sind Specs nach Spec-Driven Development |
+| [B-045](B-045-sdd.md) | INF | Idee | hoch | erledigt | SP00 | Tickets und Sprints sind Specs nach Spec-Driven Development |
 | [B-046](B-046-dev-mcp.md) | SRV | Idee | mittel | eingeplant | M1 | Entwickler-MCP-Server gibt Agenten verdichteten Zugriff auf Prüfungen, Berichte und Spielstände |
 | [B-047](B-047-mcp-raeume-simulation.md) | SRV | Idee | mittel | eingeplant | SP07 | MCP-Tools zeigen laufende Räume und rechnen Level und Simulationen |
+| [B-048](B-048-standardbibliothek-in-001.md) | SRV | Frage | niedrig | offen | – | Die Wahl der Go-Standardbibliothek ist dort festgehalten, wo B-001 auf sie verweist |
+| [B-049](B-049-sp09-domaene.md) | INF | Frage | niedrig | offen | – | SP09 bleibt in einer Domäne oder hat einen erlaubten Grenzfall |

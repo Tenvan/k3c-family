@@ -12,7 +12,7 @@
 
 ## Ausgangslage
 
-Vorher standen alle Sprints in `docs/sprints.md` und das Backlog in `docs/backlog.md`; nichts erzwang eine einheitliche Form.
+Vorher standen alle Sprints in einer Datei `sprints.md` und das Backlog in einer Tabelle `backlog.md` (beide unter `docs/`, in SP00.3 entfernt); nichts erzwang eine einheitliche Form.
 
 ## Ziel
 
