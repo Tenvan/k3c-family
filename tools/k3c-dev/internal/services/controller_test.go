@@ -36,7 +36,8 @@ type fake struct {
 	healthy   atomic.Bool
 	busy      atomic.Bool // fremder Prozess am Port
 	listenPID int
-	killed    []int // KillPID-Aufrufe (übernommene Prozesse)
+	killed    []int       // KillPID-Aufrufe (übernommene Prozesse)
+	immortal  atomic.Bool // KillPID wirkt nicht
 }
 
 func (f *fake) listen(context.Context, int) (int, bool) { return f.listenPID, f.busy.Load() }
@@ -49,6 +50,9 @@ func (f *fake) killPID(pid int) error {
 	f.mu.Lock()
 	defer f.mu.Unlock()
 	f.killed = append(f.killed, pid)
+	if !f.immortal.Load() {
+		f.busy.Store(false) // der Port wird frei
+	}
 	return nil
 }
 

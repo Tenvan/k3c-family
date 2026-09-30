@@ -39,6 +39,9 @@ type Status struct {
 	LastError string    `json:"lastError"`
 	CPU       float64   `json:"cpu"`    // Prozent, alle 2 s gemessen (Monitor)
 	Memory    uint64    `json:"memory"` // RSS in Bytes
+	// Seq zählt je Dienst jede Änderung. OnChange-Rückrufe kommen ungeordnet an (Messung und Befehl laufen
+	// parallel); wer sie weitergibt, verwirft einen Status mit kleinerer Seq als dem zuletzt gesehenen.
+	Seq uint64 `json:"seq"`
 }
 
 // Process ist ein laufender Dienst-Prozess (Test-Naht; Produktion: procProcess in runtime.go).
@@ -59,7 +62,7 @@ type Options struct {
 	Root          string
 	Console       *console.Store
 	Log           *slog.Logger
-	OnChange      func(Status)
+	OnChange      func(Status) // nur melden: darf den Controller nicht aufrufen (läuft teils unter der Befehlssperre)
 	Start         Starter
 	Check         Checker
 	Listen        Listener
@@ -195,6 +198,7 @@ func (c *Controller) set(u *unit, change func(*Status)) Status {
 	u.mu.Lock()
 	before := u.st.State
 	change(&u.st)
+	u.st.Seq++
 	st := u.st
 	u.mu.Unlock()
 	if st.State != before {
@@ -231,7 +235,7 @@ func (c *Controller) Stop(ctx context.Context, name string, force bool) (Status,
 	if u.status().State == Adopted {
 		return c.stopAdopted(u, force)
 	}
-	return c.stop(u), nil
+	return c.stop(u)
 }
 
 // Restart ist Stop und Start unter einer Sperre.
@@ -245,7 +249,9 @@ func (c *Controller) Restart(ctx context.Context, name string) (Status, error) {
 	if st := u.status(); st.State == Adopted {
 		return st, fmt.Errorf("%s ist übernommen; erst mit force stoppen, dann starten", name)
 	}
-	c.stop(u)
+	if st, err := c.stop(u); err != nil {
+		return st, err
+	}
 	return c.start(ctx, u)
 }
 
