@@ -1,0 +1,16 @@
+# Heimnetz-Server K3C im Container (SP03). Start: docker compose up -d
+# Diagnose /api/status nur mit Token: K3C_STATUS_TOKEN=<geheim> docker compose up -d (ohne Token ist sie aus).
+services:
+  k3c:
+    build: .
+    image: k3c-server
+    ports:
+      - "8080:8080"
+    environment:
+      K3C_STATUS_TOKEN: ${K3C_STATUS_TOKEN:-}
+    volumes:
+      - k3c-data:/data # Spielstände (saves/, samt backups/) und Berichte (reports/)
+    restart: unless-stopped
+
+volumes:
+  k3c-data:

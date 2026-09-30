@@ -48,6 +48,15 @@ Der Go-Server (`cmd/k3c-server`, ersetzt ab SP03 den Node-Server für Seiten, Sp
 `K3C_HTTPS_PORT`, `K3C_DIST`, `K3C_SAVES_DIR`, `K3C_REPORTS_DIR`, `K3C_CERTS_DIR`; `GET /api/health` meldet
 `{"ok":true}`. Den Online-Modus (WebSocket) hat bis SP08 nur der Node-Server (`npm run serve`).
 
+- **Diagnose:** `GET /api/status` mit `Authorization: Bearer <K3C_STATUS_TOKEN>`; ohne gesetzte Variable ist sie aus
+  (404), mit falschem Token 401.
+- **Sicherungen:** Jeder Speichervorgang legt den vorigen Stand unter `saves/backups/<slot>/` ab, je Spielstand bleiben
+  die letzten 5. `GET /api/save/backups?slot=autosave` listet sie, `POST /api/save/restore?slot=autosave&backup=<name>`
+  macht eine davon wieder zum aktuellen Stand (der bisherige wird dabei gesichert).
+- **Docker** (z. B. Raspberry Pi): `docker compose up -d` baut das Image (amd64 und arm64) und startet es auf Port
+  8080; Spielstände und Berichte liegen im Volume `k3c-data` unter `/data`.
+- **Release:** Ein Tag `v*` hängt `k3c-server` für Windows, Linux amd64 und arm64 an den Release.
+
 ### Gamepad-Test auf der Xbox
 
 1. `npm run serve` am PC starten.
