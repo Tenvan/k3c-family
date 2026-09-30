@@ -98,7 +98,7 @@ die vier Dateien dieses Sprints, `docs/sprints/README.md`, `docs/backlog/README.
   Tabellenzeile, jede Tabellenzeile hat ihre Datei, der Code in `s2c-error.json` steht in *Fehler-Codes* → 0 Fehler.
   *Snapshot-Größe* nennt Messweg, voll und Delta (Mittel/Max) und Bytes/s bei 30 Hz für 4 Spieler (1 KB = 1000 Byte).
 - **AC-03 umgesetzt:** `docs/decisions/002-protokoll-v2.md` mit Kontext · Optionen · Entscheidung · Folgen, Beschlüsse
-  1–4 und K1 mit Quelle 🧑 2026-09-30, Status `vorgeschlagen`; 001 › *Nachfolgende Entscheidungen* verlinkt 002.
+  1–4 und K1 mit Quelle 🧑 2026-09-30, Status `vorgeschlagen`, von 🧑 am 2026-09-30 im Chat beschlossen; 001 › *Nachfolgende Entscheidungen* verlinkt 002.
   🧑 beschließt 002 mit der Abnahme des Review-PR.
 - **Behoben in `docs/protocol.md`** (Vorab-Review): K1 (Stufenwechsel nur besetzte Monarchen, Spielstand ohne
   Monarchen, Gold pro Index), M1 (ungültiges erstes `hello` → `version`), M2 (Gerät = Browser, `replaced`, kein
