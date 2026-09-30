@@ -1,0 +1,8 @@
+{
+  // Typecheck für tests/ (B-033). Eigene Datei, damit Node-Typen nicht in den Browser-Code (src/) gelangen.
+  "extends": "../tsconfig.json",
+  "compilerOptions": {
+    "types": ["vite/client", "node"]
+  },
+  "include": ["."]
+}
