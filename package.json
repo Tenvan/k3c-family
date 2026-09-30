@@ -12,6 +12,7 @@
     "typecheck": "tsc --noEmit && tsc --noEmit -p tests",
     "test": "vitest run",
     "test:watch": "vitest",
+    "golden": "vitest run tests/golden.test.ts -u",
     "check": "npm run lint && npm run typecheck && npm test",
     "check:go": "go test ./... && golangci-lint run",
     "check:dev": "npm --prefix tools/k3c-dev/frontend run build && cd tools/k3c-dev && go test ./... && golangci-lint run",
