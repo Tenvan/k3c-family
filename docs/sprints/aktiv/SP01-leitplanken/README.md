@@ -1,6 +1,6 @@
 # SP01 · INF · Leitplanken + Go-Gerüst
 
-- **Status:** geplant
+- **Status:** aktiv
 - **Domäne:** INF
 - **Reife:** bereit
 - **Einschiebbar:** nein

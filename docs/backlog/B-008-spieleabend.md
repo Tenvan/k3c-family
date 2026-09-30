@@ -20,7 +20,7 @@ Familie hat einen Spieleabend gespielt und Feedback gegeben. Nutzen: Balancing u
 
 ## Beteiligte und Zielgruppen
 
-Familie spielt, 🧑 leitet den Abend, der Agent protokolliert.
+Familie spielt am TV, der Agent protokolliert.
 
 ## Anforderungen
 
