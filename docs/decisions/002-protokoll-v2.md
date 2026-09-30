@@ -1,6 +1,6 @@
 # 002 · Protokoll v2: Räume, Geräte mit lokalen Spielern, Snapshots
 
-Stand: 2026-09-30 · Status: **vorgeschlagen** · Backlog: B-030, B-036, B-038, B-039, B-059 · Sprint: SP02 ·
+Stand: 2026-09-30 · Status: **beschlossen** (🧑 2026-09-30, Chat) · Backlog: B-030, B-036, B-038, B-039, B-059 · Sprint: SP02 ·
 Details: [`docs/protocol.md`](../protocol.md)
 
 ## Kontext
