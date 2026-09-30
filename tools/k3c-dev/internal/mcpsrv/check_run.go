@@ -84,8 +84,12 @@ func (s *Server) checkRun(ctx context.Context, in checkIn) (string, error) {
 	if !s.checks.begin(t.name) {
 		return "", fmt.Errorf("%s läuft bereits; auf das Ende warten, Ausgabe über console_tail check:%s", t.name, t.name)
 	}
+	s.notifyCheck(CheckState{Name: t.name, Running: true, At: time.Now()})
 	var res runResult
-	defer func() { s.checks.end(t.name, res) }() // auch nach einer Panik, sonst bliebe das Ziel gesperrt
+	defer func() { // auch nach einer Panik, sonst bliebe das Ziel gesperrt
+		s.checks.end(t.name, res)
+		s.notifyCheck(stateOf(t.name, res))
+	}()
 	source := "check:" + t.name
 	s.console.Reset(source)
 	var mu sync.Mutex

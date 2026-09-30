@@ -77,7 +77,7 @@ keine
 |---|---|---|---|---|
 | M4.1 | `M4.1-geruest.md` | Umsetzung | autonom | fertig |
 | M4.2 | `M4.2-dienste-seite.md` | Umsetzung | autonom | fertig |
-| M4.3 | `M4.3-quellen-konsole.md` | Umsetzung | autonom | offen |
+| M4.3 | `M4.3-quellen-konsole.md` | Umsetzung | autonom | fertig |
 | M4.4 | `M4.4-log-fehler.md` | Umsetzung | autonom | offen |
 | M4.5 | `M4.5-review.md` | Review | autonom | offen |
 

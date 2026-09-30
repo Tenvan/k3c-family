@@ -45,8 +45,8 @@ type sinceIn struct {
 	Limit  int    `json:"limit,omitempty" jsonschema:"höchstens so viele Einträge, Standard 100, höchstens 500"`
 }
 
-// logSources sind alle logs/*.jsonl und immer das eigene Log, sortiert.
-func (s *Server) logSources() []string {
+// LogSources sind alle logs/*.jsonl und immer das eigene Log, sortiert.
+func (s *Server) LogSources() []string {
 	seen := map[string]bool{applog.Source: true}
 	files, _ := filepath.Glob(filepath.Join(s.cfg.Root, "logs", "*.jsonl"))
 	for _, f := range files {
@@ -60,20 +60,20 @@ func (s *Server) logSources() []string {
 	return names
 }
 
-// logPath prüft eine Quelle gegen die Liste; nur so wird aus einem Namen ein Pfad.
-func (s *Server) logPath(source string) (string, error) {
-	for _, n := range s.logSources() {
+// LogPath prüft eine Quelle gegen die Liste; nur so wird aus einem Namen ein Pfad.
+func (s *Server) LogPath(source string) (string, error) {
+	for _, n := range s.LogSources() {
 		if n == source && sourceName.MatchString(source) {
 			return filepath.Join(s.cfg.Root, "logs", source+".jsonl"), nil
 		}
 	}
-	return "", fmt.Errorf("unbekannte Log-Quelle %q; gültig: %s", source, strings.Join(s.logSources(), ", "))
+	return "", fmt.Errorf("unbekannte Log-Quelle %q; gültig: %s", source, strings.Join(s.LogSources(), ", "))
 }
 
 // logsSources ist das Tool logs_sources: Log-Dateien und Konsolen-Quellen.
 func (s *Server) logsSources(context.Context, struct{}) (string, error) {
 	var out []string
-	for _, name := range s.logSources() {
+	for _, name := range s.LogSources() {
 		out = append(out, s.logFileLine(name))
 	}
 	for _, name := range s.console.Sources() {
@@ -84,7 +84,7 @@ func (s *Server) logsSources(context.Context, struct{}) (string, error) {
 }
 
 func (s *Server) logFileLine(name string) string {
-	path, _ := s.logPath(name)
+	path, _ := s.LogPath(name)
 	st, err := os.Stat(path)
 	if err != nil {
 		return fmt.Sprintf("Log %s · noch keine Einträge", name)
@@ -99,7 +99,7 @@ func (s *Server) logFileLine(name string) string {
 
 // logsQuery ist das Tool logs_query: gefilterte Einträge, neueste zuerst.
 func (s *Server) logsQuery(_ context.Context, in queryIn) (string, error) {
-	path, err := s.logPath(in.Source)
+	path, err := s.LogPath(in.Source)
 	if err != nil {
 		return "", err
 	}
@@ -125,7 +125,7 @@ func (s *Server) logsQuery(_ context.Context, in queryIn) (string, error) {
 
 // logsErrors ist das Tool logs_errors: Warnungen und Fehler, gleichartige zu je einer Zeile verdichtet.
 func (s *Server) logsErrors(_ context.Context, in errorsIn) (string, error) {
-	path, err := s.logPath(in.Source)
+	path, err := s.LogPath(in.Source)
 	if err != nil {
 		return "", err
 	}
@@ -154,7 +154,7 @@ func (s *Server) logsErrors(_ context.Context, in errorsIn) (string, error) {
 
 // logsSince ist das Tool logs_since: neue Einträge ab einem Byte-Cursor, älteste zuerst, und der nächste Cursor.
 func (s *Server) logsSince(_ context.Context, in sinceIn) (string, error) {
-	path, err := s.logPath(in.Source)
+	path, err := s.LogPath(in.Source)
 	if err != nil {
 		return "", err
 	}
