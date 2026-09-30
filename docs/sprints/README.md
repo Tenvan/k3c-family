@@ -6,7 +6,11 @@ Jede Sprint-README ist eine Spec (SDD); aktiv wird ein Sprint erst mit `Spec: fr
 
 ## Aktiv
 
-Kein aktiver Sprint. Nächster Schritt: M4 oder SP03 bereit machen (Sessions schreiben, 🧑 um Freigabe bitten).
+| Sprint | Domäne | Thema | Am Ende sichtbar | Ordner |
+|---|---|---|---|---|
+| M4 | SRV 🧑 | k3c-dev IV: Oberfläche (Wails) mit Dienste- und Logs-Seite | `k3c-dev.exe` zeigt Dienste und Läufe live | `aktiv/M4-dev-oberflaeche/` |
+
+Nächste Session: M4.1 (Wails-Gerüst).
 
 ## Geplant (in dieser Reihenfolge)
 
@@ -31,7 +35,6 @@ dann über den Go-Server mit mehreren Räumen und gemischten Spielern.
 |---|---|---|---|---|
 | R1 | REG 🧑 | Regelwerk I – Fundament | Entwurf | `geplant/R1-regelwerk-1/` |
 | X1 | PLAT 🧑 | Xbox-Machbarkeit | Entwurf | `geplant/X1-xbox/` |
-| M4 | SRV 🧑 | k3c-dev IV: Oberfläche (Wails) mit Dienste- und Logs-Seite (nach M3) | Entwurf | `geplant/M4-dev-oberflaeche/` |
 | M5 | SRV 🧑 | k3c-dev V: MCP-Seite mit Monitoren und Statistik (nach M4) | Entwurf | `geplant/M5-dev-mcp-seite/` |
 
 Nach SP11: Regelwerk II (Skills) → SIM Skills in Go → CLI Skills → Spieleabend → Grafik/Sound → …
