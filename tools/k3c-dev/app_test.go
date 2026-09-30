@@ -6,6 +6,7 @@ import (
 	"path/filepath"
 	"strings"
 	"testing"
+	"time"
 )
 
 // Ein belegter Port hält das Fenster nicht auf: Info und Ereignis nennen den Grund (B-064 › Fehlerfälle).
@@ -45,4 +46,20 @@ func TestStartupListens(t *testing.T) {
 	if st := app.Info().MCP; !st.Listening || st.Error != "" {
 		t.Errorf("MCP-Zustand = %+v", st)
 	}
+}
+
+// Wails ruft OnStartup in einer eigenen Goroutine: ein Binding davor wartet, statt auf nil zuzugreifen.
+func TestBindingWartetAufStartup(t *testing.T) {
+	root := t.TempDir()
+	app := newApp(root, 0)
+	app.usage = filepath.Join(root, "usage.json")
+	app.emit = func(context.Context, string, ...any) {}
+	go func() {
+		time.Sleep(50 * time.Millisecond)
+		app.startup(context.Background())
+	}()
+	if src := app.Sources(); len(src) == 0 || src[0].Name != "k3c-dev" {
+		t.Errorf("Sources vor startup = %+v", src)
+	}
+	app.shutdown(context.Background())
 }

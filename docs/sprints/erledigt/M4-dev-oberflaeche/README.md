@@ -1,6 +1,6 @@
 # M4 · SRV · k3c-dev IV: Oberfläche mit Dienste- und Logs-Seite
 
-- **Status:** aktiv
+- **Status:** erledigt
 - **Domäne:** SRV
 - **Reife:** bereit
 - **Einschiebbar:** ja
@@ -79,11 +79,17 @@ keine
 | M4.2 | `M4.2-dienste-seite.md` | Umsetzung | autonom | fertig |
 | M4.3 | `M4.3-quellen-konsole.md` | Umsetzung | autonom | fertig |
 | M4.4 | `M4.4-log-fehler.md` | Umsetzung | autonom | fertig |
-| M4.5 | `M4.5-review.md` | Review | autonom | offen |
+| M4.5 | `M4.5-review.md` | Review | autonom | fertig |
 
 M4.2 und M4.3 hängen nur von M4.1 ab; M4.4 folgt auf M4.3. Die Review-Session braucht die Abnahme des Fensters
 durch 🧑 (AC-07).
 
 ## Abnahme
 
-–
+- 2026-09-30, leichtes Review über `2795d18..main` durch drei Reviewer (Sonnet): Wails-App/Go, Dienste-Seite,
+  Logs-Seite. Kriterien: AC-01, AC-02, AC-06 (M4.1), AC-03 (M4.2), AC-04 (M4.3), AC-05 (M4.4), AC-07 von 🧑 (M4.5).
+- Behoben (schwer): Bindings vor Ende von `startup` griffen auf nil zu (Wails ruft OnStartup in einer Goroutine);
+  Beenden wartete bis 60 s auf einen laufenden Start; Konsole zeigte nach Dienst-Neustart alte Zeilen und verlor
+  verworfene letzte Zeilen eines Laufs; überlappendes Laden der Konsole warf.
+- Behoben (gering): veraltete Antworten in Log/Fehler, doppelte Zeilenschlüssel, Startzeit und Reihenfolge der
+  Lauf-Meldungen, Fenstermaße beim Schließen im minimierten Zustand. Neue Tickets: keine.

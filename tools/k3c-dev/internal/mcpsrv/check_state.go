@@ -39,14 +39,12 @@ func (s *Server) Checks() []CheckState {
 	s.checks.mu.Lock()
 	defer s.checks.mu.Unlock()
 	out := make([]CheckState, 0, len(s.checks.last)+len(s.checks.running))
-	for name, res := range s.checks.last {
-		st := stateOf(name, res)
-		st.Running = s.checks.running[name]
-		out = append(out, st)
+	for name, at := range s.checks.running {
+		out = append(out, CheckState{Name: name, Running: true, At: at})
 	}
-	for name := range s.checks.running {
-		if _, ok := s.checks.last[name]; !ok {
-			out = append(out, CheckState{Name: name, Running: true})
+	for name, res := range s.checks.last {
+		if _, running := s.checks.running[name]; !running {
+			out = append(out, stateOf(name, res))
 		}
 	}
 	sort.Slice(out, func(i, j int) bool { return out[i].Name < out[j].Name })

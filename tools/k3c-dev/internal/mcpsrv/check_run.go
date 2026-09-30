@@ -38,21 +38,21 @@ func (r runResult) ms() float64 { return float64(r.dur.Microseconds()) / 1000 }
 // checkRuns sperrt je Ziel einen Lauf und merkt sich den letzten Lauf je Ziel.
 type checkRuns struct {
 	mu      sync.Mutex
-	running map[string]bool
+	running map[string]time.Time // Beginn des laufenden Laufs
 	last    map[string]runResult
 }
 
 func newCheckRuns() *checkRuns {
-	return &checkRuns{running: map[string]bool{}, last: map[string]runResult{}}
+	return &checkRuns{running: map[string]time.Time{}, last: map[string]runResult{}}
 }
 
 func (c *checkRuns) begin(name string) bool {
 	c.mu.Lock()
 	defer c.mu.Unlock()
-	if c.running[name] {
+	if _, ok := c.running[name]; ok {
 		return false
 	}
-	c.running[name] = true
+	c.running[name] = time.Now()
 	return true
 }
 
@@ -86,10 +86,9 @@ func (s *Server) checkRun(ctx context.Context, in checkIn) (string, error) {
 	}
 	s.notifyCheck(CheckState{Name: t.name, Running: true, At: time.Now()})
 	var res runResult
-	defer func() { // auch nach einer Panik, sonst bliebe das Ziel gesperrt
-		s.checks.end(t.name, res)
-		s.notifyCheck(stateOf(t.name, res))
-	}()
+	defer func() { s.checks.end(t.name, res) }() // auch nach einer Panik, sonst bliebe das Ziel gesperrt
+	// Ende melden, solange das Ziel noch gesperrt ist: sonst könnte „läuft“ des nächsten Laufs davor ankommen.
+	defer func() { s.notifyCheck(stateOf(t.name, res)) }()
 	source := "check:" + t.name
 	s.console.Reset(source)
 	var mu sync.Mutex

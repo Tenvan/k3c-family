@@ -45,6 +45,7 @@ type ErrorsView struct {
 
 // logFile prüft die Quelle gegen die Liste (nur so wird aus einem Namen ein Pfad) und ob die Datei fehlt.
 func (a *App) logFile(source string) (path string, missing bool, err error) {
+	a.wait()
 	if path, err = a.srv.LogPath(source); err != nil {
 		return "", false, err
 	}
