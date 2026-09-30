@@ -19,6 +19,7 @@ import (
 
 	"k3c/tools/k3c-dev/internal/applog"
 	"k3c/tools/k3c-dev/internal/console"
+	"k3c/tools/k3c-dev/internal/usage"
 )
 
 // instructions bekommt jeder Client beim Verbinden: welches Tool wofür, statt Shell.
@@ -46,6 +47,7 @@ type Config struct {
 	OnCall  func(Call)     // optional: Aufruf beendet
 	Console *console.Store // optional: gemeinsamer Konsolenpuffer (mit dem Spiegel des eigenen Logs)
 	Log     *slog.Logger   // optional: eigenes Log
+	Usage   *usage.Tracker // optional: Nutzungsstatistik (B-062)
 }
 
 // Server hält den MCP-Server und den HTTP-Server, der ihn ausliefert. Der HTTP-Teil lässt sich neu starten,
