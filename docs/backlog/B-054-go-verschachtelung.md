@@ -68,3 +68,7 @@ keine. Entschieden (🧑, 2026-09-30): `nestif` ersetzen.
 Probe (Review SP01.4): `nestif` 4 meldete `if`-Tiefe 4 (Punktzahl 6) und 5 (Punktzahl 10), nicht Tiefe 3;
 `revive` `max-control-nesting` 4 meldete nur Tiefe 5. Nebenbefund: `funlen` zählt nur den Rumpf (60 Rumpfzeilen
 erlaubt), Oxlint `max-lines-per-function` zählt Kopf und schließende Klammer mit (58 Rumpfzeilen erlaubt).
+
+Umsetzung L1.1 (golangci-lint 2.14, Oxlint 1.86): `revive` › `max-control-nesting` zählt `else if` als eigene Ebene,
+Oxlint `max-depth` nicht. Eine `else if`-Kette mit drei weiteren `if` darin ist in TypeScript Tiefe 4 (grün),
+in Go Tiefe 5 (rot). Go ist damit nur bei `else if` um eine Ebene strenger; bewusst so belassen.

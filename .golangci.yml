@@ -1,12 +1,14 @@
 # Harte Grenzen aus docs/arbeitsweise.md › Komplexitäts-Budget und die Go-Schichtgrenzen.
 # Die Dateilänge prüft tests/projectRules.test.ts (golangci-lint hat dafür keinen Linter, B-050).
+# Verschachtelung: revive › max-control-nesting zählt die Tiefe aller Kontrollstrukturen wie Oxlint max-depth
+# (nestif misst eine if-Punktzahl, keine Tiefe, B-054).
 version: "2"
 
 linters:
   enable:
     - funlen
     - gocyclo
-    - nestif
+    - revive
     - depguard
   settings:
     funlen:
@@ -14,8 +16,10 @@ linters:
       statements: -1
     gocyclo:
       min-complexity: 15
-    nestif:
-      min-complexity: 4
+    revive:
+      rules:
+        - name: max-control-nesting
+          arguments: [4]
     depguard:
       rules:
         engine-ohne-cmd:
