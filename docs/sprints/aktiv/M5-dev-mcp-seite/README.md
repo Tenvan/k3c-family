@@ -1,14 +1,14 @@
 # M5 · SRV · k3c-dev V: MCP-Seite mit Monitoren und Statistik
 
-- **Status:** geplant
+- **Status:** aktiv
 - **Domäne:** SRV
-- **Reife:** Entwurf
+- **Reife:** bereit
 - **Einschiebbar:** ja
 - **Tickets:** B-065
 - **Start-Commit:** –
-- **Spec:** Entwurf
+- **Spec:** freigegeben
 - **Revision:** 1
-- **Freigabe:** –
+- **Freigabe:** 2026-09-30 🧑 Chat (Pauschalauftrag „beide komplett autonom fertig stellen“: M5 Revision 1 mit B-065, 5 Sessions)
 
 ## Ausgangslage
 
@@ -34,6 +34,7 @@ B-065 › Nicht-Ziele.
 ## Regeln und Einschränkungen
 
 B-065 › Regeln und Einschränkungen. Einschiebbar nach M4. Keine neuen Abhängigkeiten, keine Ausnahmen außerhalb der Domäne.
+**Fünf Sessions** statt 2–4: Live-Monitore und Aufruf-Log sind je eine eigene Session (wie M4; Pauschalauftrag 🧑).
 
 ## Beispiele
 
@@ -58,12 +59,15 @@ keine
 
 ## Sessions
 
-Entwurf. Vor dem Aktivieren jede Session als Datei nach `docs/vorlagen/session.md` schreiben, die Kriterien in Klammern werden ihr Feld `Kriterien`.
+| Nr. | Datei | Typ | Agent | Status |
+|---|---|---|---|---|
+| M5.1 | `M5.1-uebersicht.md` | Umsetzung | autonom | offen |
+| M5.2 | `M5.2-live-monitore.md` | Umsetzung | autonom | offen |
+| M5.3 | `M5.3-aufruf-log.md` | Umsetzung | autonom | offen |
+| M5.4 | `M5.4-statistik.md` | Umsetzung | autonom | offen |
+| M5.5 | `M5.5-review.md` | Review | autonom | offen |
 
-- M5.1 Übersicht Band 1 und 2 links: Server- und Verbindungskarte, Instructions-Dialog, Neustart, Tool-Kacheln (AC-01, AC-02).
-- M5.2 Live-Monitore (Reihen-Berechnung, Säulen, Liniendiagramm) und Aufruf-Log mit Graph-Spuren (AC-02, AC-03).
-- M5.3 Statistik: Kennzahlen, sortierbare Tabelle, Aufklappen, Seitenspalte; Mock ergänzen (AC-04, AC-05).
-- M5.4 🔍 Review, 🧑 prüft die Seite (AC-06, alle).
+M5.2 bis M5.4 hängen nur von M5.1 ab. Die Review-Session braucht die Abnahme der Seite durch 🧑 (AC-06).
 
 ## Abnahme
 
