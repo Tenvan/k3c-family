@@ -2,13 +2,13 @@
 
 - **Status:** geplant
 - **Domäne:** SRV
-- **Reife:** Entwurf
+- **Reife:** bereit
 - **Einschiebbar:** ja
 - **Tickets:** B-067
 - **Start-Commit:** –
-- **Spec:** Entwurf
+- **Spec:** freigegeben
 - **Revision:** 1
-- **Freigabe:** –
+- **Freigabe:** 2026-09-30 🧑 Chat (M3 Revision 1 mit B-067, gopsutil v4.26.8 und x/sys)
 
 ## Ausgangslage
 
@@ -35,8 +35,12 @@ B-067 › Nicht-Ziele. Keine Oberfläche (M4).
 
 ## Regeln und Einschränkungen
 
-B-067 › Regeln und Einschränkungen. Einschiebbar nach M2. Mit der Freigabe zu genehmigen: Abhängigkeit
-`github.com/shirou/gopsutil/v4` (Version beim Umsetzen prüfen), nur im Modul `tools/k3c-dev`.
+B-067 › Regeln und Einschränkungen. Einschiebbar nach M2. Mit der Freigabe genehmigt, nur im Modul `tools/k3c-dev`:
+
+1. `github.com/shirou/gopsutil/v4` **v4.26.8** (aktuell, geprüft 2026-09-30) für Port → PID und Metriken.
+2. `golang.org/x/sys` als direkte Abhängigkeit (heute schon indirekt über das MCP-SDK) für das Windows Job Object.
+
+Keine Ausnahmen außerhalb der Domäne; der README-Satz in M3.3 ist Doku des Werkzeugs.
 
 ## Beispiele
 
@@ -60,14 +64,12 @@ keine
 
 ## Sessions
 
-Entwurf. Vor dem Aktivieren jede Session als Datei nach `docs/vorlagen/session.md` schreiben, die Kriterien in Klammern werden ihr Feld `Kriterien`.
-
-- M3.1 `services.json`, Konfiguration mit Prüfung, Controller und Zustandsmaschine mit Health-Prüfung, Auto-Restart,
-  Prozessbaum über `internal/proc`; dort unter Windows ein Job Object statt nur `taskkill /T` prüfen, damit auch
-  verwaiste Enkel enden (Hinweis aus dem Review M1.4) (AC-01).
-- M3.2 Übernahme per Port, `Port belegt`, Metriken mit `gopsutil`, Dienst-Konsolen in `logs_sources`, Log-Level-Zähler (AC-02, AC-03).
-- M3.3 `svc_status`, `svc_start`, `svc_stop`, `svc_restart`, Beenden, Instructions; Prüfung von Hand (AC-04, AC-05).
-- M3.4 🔍 Review (alle).
+| Nr. | Datei | Typ | Agent | Status |
+|---|---|---|---|---|
+| M3.1 | `M3.1-controller.md` | Umsetzung | autonom | offen |
+| M3.2 | `M3.2-uebernahme-metriken.md` | Umsetzung | autonom | offen |
+| M3.3 | `M3.3-svc-tools.md` | Umsetzung | autonom | offen |
+| M3.4 | `M3.4-review.md` | Review | autonom | offen |
 
 ## Abnahme
 
