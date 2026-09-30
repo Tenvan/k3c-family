@@ -1,0 +1,55 @@
+{
+  "$schema": "./node_modules/oxlint/configuration_schema.json",
+  // server/*.mjs ist JavaScript und entfällt mit SP09; geprüft wird nur TypeScript.
+  "ignorePatterns": ["dist", "dist-server", "node_modules", "public", "server"],
+  // Harte Grenzen aus docs/arbeitsweise.md › Komplexitäts-Budget. Die Zielwerte prüft das Review.
+  "rules": {
+    "max-lines": ["error", { "max": 400, "skipBlankLines": true, "skipComments": true }],
+    "max-lines-per-function": ["error", { "max": 60, "skipBlankLines": true, "skipComments": true }],
+    "max-depth": ["error", { "max": 4 }],
+    "complexity": ["error", { "max": 15 }]
+  },
+  "overrides": [
+    {
+      "files": ["**/*.test.ts", "tests/**"],
+      "rules": { "max-lines-per-function": "off", "complexity": "off" }
+    },
+    // Ratsche: Ausnahmen mit dem gemessenen Wert (SP01.1, 2026-09-30). Nur senken, nie heben;
+    // wird eine Datei besser, Wert senken oder Eintrag löschen.
+    {
+      "files": ["src/landing/landing.ts"],
+      "rules": { "complexity": ["error", { "max": 29 }] }
+    },
+    {
+      "files": ["src/world/sim/units.ts"],
+      "rules": {
+        "complexity": ["error", { "max": 25 }],
+        "max-lines-per-function": ["error", { "max": 62, "skipBlankLines": true, "skipComments": true }]
+      }
+    },
+    {
+      "files": ["src/scenes/worldRenderer.ts"],
+      "rules": { "complexity": ["error", { "max": 23 }] }
+    },
+    {
+      "files": ["src/world/sim/world.ts"],
+      "rules": { "complexity": ["error", { "max": 21 }] }
+    },
+    {
+      "files": ["src/tools/gamepadTest.ts", "src/world/sim/enemies.ts"],
+      "rules": { "complexity": ["error", { "max": 20 }] }
+    },
+    {
+      "files": ["src/world/levelGenerator.ts"],
+      "rules": { "complexity": ["error", { "max": 19 }] }
+    },
+    {
+      "files": ["src/scenes/HudScene.ts"],
+      "rules": { "complexity": ["error", { "max": 17 }] }
+    },
+    {
+      "files": ["src/world/sim/economy.ts"],
+      "rules": { "complexity": ["error", { "max": 16 }] }
+    }
+  ]
+}
