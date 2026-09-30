@@ -6,7 +6,11 @@ Jede Sprint-README ist eine Spec (SDD); aktiv wird ein Sprint erst mit `Spec: fr
 
 ## Aktiv
 
-Kein aktiver Sprint. Nächster Schritt: SP02 mit 🧑 bereit machen (`Reife: Entwurf`).
+| Sprint | Domäne | Thema | Ordner |
+|---|---|---|---|
+| L1 | INF | Go-Verschachtelung als Tiefe prüfen (B-054, einschiebbar) | `aktiv/L1-go-verschachtelung/` |
+
+Danach: SP02 mit 🧑 bereit machen (`Reife: Entwurf`).
 
 ## Geplant (in dieser Reihenfolge)
 
@@ -33,7 +37,6 @@ dann über den Go-Server mit mehreren Räumen und gemischten Spielern.
 | R1 | REG 🧑 | Regelwerk I – Fundament | Entwurf | `geplant/R1-regelwerk-1/` |
 | X1 | PLAT 🧑 | Xbox-Machbarkeit | Entwurf | `geplant/X1-xbox/` |
 | M1 | SRV | Entwickler-MCP-Server `k3c-dev` (frühestens nach SP01, Muster ErpApi) | Entwurf | `geplant/M1-dev-mcp/` |
-| L1 | INF | Go-Verschachtelung als Tiefe prüfen (B-054, vor SP03) | bereit | `geplant/L1-go-verschachtelung/` |
 
 Nach SP11: Regelwerk II (Skills) → SIM Skills in Go → CLI Skills → Spieleabend → Grafik/Sound → …
 
