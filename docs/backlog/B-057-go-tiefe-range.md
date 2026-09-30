@@ -3,7 +3,7 @@
 - **Domäne:** INF
 - **Typ:** Problem
 - **Prio:** mittel
-- **Status:** eingeplant
+- **Status:** erledigt
 - **Sprint:** L2
 - **Erstellt:** 2026-09-30
 - **Spec:** freigegeben

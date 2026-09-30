@@ -62,4 +62,5 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-054](B-054-go-verschachtelung.md) | INF | Problem | mittel | erledigt | L1 | Die Verschachtelung von Go-Code wird als Tiefe geprüft |
 | [B-055](B-055-server-lint.md) | INF | Problem | niedrig | verworfen | – | Das Komplexitäts-Budget gilt auch für server/*.mjs |
 | [B-056](B-056-ratsche-nachziehen.md) | INF | Schuld | niedrig | offen | – | Die Ratsche zieht gesunkene Werte automatisch nach |
-| [B-057](B-057-go-tiefe-range.md) | INF | Problem | mittel | eingeplant | L2 | Die Go-Verschachtelung zählt `for range` und `else if` wie TypeScript |
+| [B-057](B-057-go-tiefe-range.md) | INF | Problem | mittel | erledigt | L2 | Die Go-Verschachtelung zählt `for range` und `else if` wie TypeScript |
+| [B-058](B-058-execution-policy.md) | INF | Frage | niedrig | offen | – | requirements.md empfiehlt keine Sicherheitseinstellung ohne Entscheidung von 🧑 |
