@@ -4,11 +4,11 @@
 - **Domäne:** INF
 - **Reife:** bereit
 - **Einschiebbar:** nein
-- **Tickets:** B-009, B-033
+- **Tickets:** B-009, B-033, B-050
 - **Start-Commit:** –
 - **Spec:** freigegeben
-- **Revision:** 1
-- **Freigabe:** 2026-09-30 🧑 Chat-Freigabe durch Ralf (Revision 1)
+- **Revision:** 2
+- **Freigabe:** 2026-09-30 🧑 Chat-Freigabe durch Ralf (Revision 2, mit B-050)
 
 ## Ausgangslage
 
@@ -26,7 +26,7 @@ Entwickler und Cloud-Agenten (jede künftige Session); die Review-Session.
 
 ## Anforderungen
 
-B-009 › Anforderungen, B-033 › Anforderungen. Sprint-eigen: Go-Modul `k3c` im Root; die Daten liegen in `data/` als einzige Quelle für Client (Import) und Server (`go:embed`); die CI hat einen Go-Job mit Tests, Lint und Cross-Build für `windows/amd64` und `linux/arm64`.
+B-009 › Anforderungen, B-033 › Anforderungen, B-050 › Anforderungen (seit Revision 2). Sprint-eigen: Go-Modul `k3c` im Root; die Daten liegen in `data/` als einzige Quelle für Client (Import) und Server (`go:embed`); die CI hat einen Go-Job mit Tests, Lint und Cross-Build für `windows/amd64` und `linux/arm64`.
 
 ## Nicht-Ziele
 
@@ -53,6 +53,7 @@ Bestandsdatei über einer Grenze → Ausnahme mit gemessenem Wert (Ratsche), kei
 - **AC-04** CI-Job `go`: `go test ./...`, `golangci-lint` mit Budget- und Schichtregeln und Cross-Build für `windows/amd64` und `linux/arm64` sind grün (B-009/AC-02).
 - **AC-05** `npm test` scheitert, wenn eine Datei ohne passende Ausnahme über 300 Zeilen liegt, eine Ausnahme überflüssig ist oder `src/world` aus `scenes/`, `online/` oder `input/` importiert.
 - **AC-06** `npm run typecheck` prüft `tests/` (B-033/AC-01).
+- **AC-07** Der Regel-Test prüft auch Go-Dateien: über 300 Zeilen nur mit Ausnahme, über 400 nie, überflüssige Ausnahmen scheitern (B-050/AC-01, B-050/AC-02, B-050/AC-03).
 
 ## Offene Fragen
 
