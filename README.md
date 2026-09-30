@@ -76,7 +76,7 @@ Die vollständige Regel steht in `CLAUDE.md` unter „Regel: Seiten & Navigation
 
 ## Level anpassen
 
-Die Eckdaten jeder Stufe stehen in `src/data/biomes/*.json` (Länge, Chunk-Häufigkeiten, Ressourcen,
+Die Eckdaten jeder Stufe stehen in `data/biomes/*.json` (Länge, Chunk-Häufigkeiten, Ressourcen,
 Portale, Gegner). Nach Änderungen `npm test` ausführen. Die Tests prüfen 500 Seeds pro Biom auf Spielbarkeit.
 
 ## CI/CD (GitHub Actions)

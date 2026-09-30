@@ -15,7 +15,7 @@ Umsetzung in Sprints und Sessions: [`docs/sprints/`](sprints/README.md). Tickets
 ## Schritt 1 – Grundgerüst ✅
 
 - [x] Vite + TypeScript + Phaser 4
-- [x] Spieldaten aus dem alten GDD als JSON (`src/data/`)
+- [x] Spieldaten aus dem alten GDD als JSON (`data/`)
 - [x] Prozeduraler Level-Generator mit Seed + Tests (500 Seeds pro Biom)
 - [x] Platzhalter-Rendering mit Parallax
 - [x] Couch-Koop: Beitreten per A/Leertaste, 2-Spieler-Split-Screen
