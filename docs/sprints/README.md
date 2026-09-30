@@ -1,0 +1,44 @@
+# Fahrplan
+
+Alle Sprints mit Ordner und Status. Arbeitsweise: [`../arbeitsweise.md`](../arbeitsweise.md).
+**Lesen:** `aktiv/` immer, `geplant/` beim Planen, `erledigt/` nur auf Nachfrage.
+
+## Aktiv
+
+| Sprint | Domäne | Thema | Ordner |
+|---|---|---|---|
+| SP00 | INF | Arbeitsweise einführen | `aktiv/SP00-arbeitsweise/` |
+
+## Geplant (in dieser Reihenfolge)
+
+Der Weg zur Go-Engine ([Entscheidung 001](../decisions/001-server-engine-go.md)). Nach SP08 spielt man wieder am TV,
+dann über den Go-Server mit mehreren Räumen und gemischten Spielern.
+
+| Sprint | Domäne | Thema | Am Ende sichtbar | Reife | Ordner |
+|---|---|---|---|---|---|
+| SP01 | INF | Leitplanken + Go-Gerüst | `npm run check` und Go-Prüfungen in der CI | bereit | `geplant/SP01-leitplanken/` |
+| SP02 | SRV 🧑 | Protokoll v2 & Raummodell (Entwurf) | `docs/protocol.md`, Entscheidung 002 | Entwurf | `geplant/SP02-protokoll/` |
+| SP03 | SRV | Go-Server Basis (ersetzt `server/*.mjs`) | EXE und Docker-Image liefern das Spiel aus | Entwurf | `geplant/SP03-go-server/` |
+| SP04 | SIM | Golden-Tests, RNG, Level-Generator in Go | gleiche Level in TS und Go | Entwurf | `geplant/SP04-golden-level/` |
+| SP05 | SIM | Port I: Welt, Zyklus, Wirtschaft | Golden-Läufe ohne Gegner grün | Entwurf | `geplant/SP05-port-welt/` |
+| SP06 | SIM | Port II: Einheiten, Gegner, Wellen, Reisen, Kampagne | alle Golden-Läufe grün | Entwurf | `geplant/SP06-port-einheiten/` |
+| SP07 | SRV | Räume & WebSocket in Go | 3 Räume parallel im Test | Entwurf | `geplant/SP07-raeume/` |
+| SP08 | CLI | Browser als reiner Client | Xbox (2 Controller) + Handy im selben Raum | Entwurf | `geplant/SP08-client/` |
+| SP09 | INF | Aufräumen: TS-Sim und Node-Server löschen | Release `v0.2.0` | Entwurf | `geplant/SP09-aufraeumen/` |
+| SP10 | SRV | Diagnose-TUI (Bubble Tea) | `k3c-tui` zeigt Räume live | Entwurf | `geplant/SP10-tui/` |
+| SP11 | SRV 🧑 | Raspberry Pi | 2er- und 3er-Spiel parallel auf dem Pi | Entwurf | `geplant/SP11-raspberry-pi/` |
+
+**Einschiebbar** (🧑, unabhängig von der Engine, jeweils zwischen zwei Sprints):
+
+| Sprint | Domäne | Thema | Reife | Ordner |
+|---|---|---|---|---|
+| R1 | REG | Regelwerk I – Fundament | Entwurf | `geplant/R1-regelwerk-1/` |
+| X1 | PLAT | Xbox-Machbarkeit | Entwurf | `geplant/X1-xbox/` |
+
+Nach SP11: Regelwerk II (Skills) → SIM Skills in Go → CLI Skills → Spieleabend → Grafik/Sound → …
+
+## Erledigt
+
+| Sprint | Thema | Ordner |
+|---|---|---|
+| ALT | Vorgeschichte vor der Sprint-Einteilung | `erledigt/ALT-vorgeschichte/` |
