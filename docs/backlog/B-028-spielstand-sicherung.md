@@ -6,9 +6,9 @@
 - **Status:** eingeplant
 - **Sprint:** SP03
 - **Erstellt:** 2026-09-29
-- **Spec:** Entwurf
+- **Spec:** freigegeben
 - **Revision:** 1
-- **Freigabe:** –
+- **Freigabe:** 2026-09-30 🧑 Chat (Pauschalauftrag „beide komplett autonom fertig stellen“; N = 5, /api/health neu, ohne Token Diagnose aus)
 
 ## Ausgangslage
 
@@ -24,7 +24,7 @@ Spielstände werden rotierend gesichert. Nutzen: Ein kaputter oder überschriebe
 
 ## Anforderungen
 
-- Rotierende Sicherungen: die letzten N Stände bleiben erhalten.
+- Rotierende Sicherungen: die letzten N = 5 überschriebenen Stände je Spielstand bleiben erhalten.
 - Im Docker liegen sie in einem Volume.
 - Wiederherstellen per TUI oder API, ohne Dateien umzubenennen.
 
@@ -52,7 +52,7 @@ Schreiben wird unterbrochen → vorhandene Stände bleiben unbeschädigt.
 
 ## Offene Fragen
 
-Wert für N (🧑).
+keine (N = 5, 🧑 2026-09-30).
 
 ## Notizen
 

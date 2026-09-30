@@ -1,14 +1,14 @@
 # SP03 · SRV · Go-Server Basis
 
-- **Status:** geplant
+- **Status:** aktiv
 - **Domäne:** SRV
-- **Reife:** Entwurf
+- **Reife:** bereit
 - **Einschiebbar:** nein
 - **Tickets:** B-020, B-027, B-028
 - **Start-Commit:** –
-- **Spec:** Entwurf
+- **Spec:** freigegeben
 - **Revision:** 1
-- **Freigabe:** –
+- **Freigabe:** 2026-09-30 🧑 Chat (Pauschalauftrag „beide komplett autonom fertig stellen“; N = 5, /api/health neu, ohne Token Diagnose aus)
 
 ## Ausgangslage
 
@@ -33,6 +33,7 @@ Räume und WebSocket (SP07). Der Online-Modus läuft bis SP08 weiter über den N
 ## Regeln und Einschränkungen
 
 Go-Standardbibliothek (`net/http`, `log/slog`; B-001), Entscheidung 001; Schichtgrenzen aus `docs/arbeitsweise.md`; `release.yml` baut die Artefakte.
+Keine neuen Abhängigkeiten. Ausnahmen außerhalb der Domäne (INF): `.github/workflows/ci.yml` (Smoke-Test raus, Docker-Job rein), `.github/workflows/release.yml`, `requirements.md`, `package.json` (Skript `serve:go`). Der Node-Server bleibt für den Online-Modus bis SP08 und wird in SP09 gelöscht.
 
 ## Beispiele
 
@@ -51,15 +52,16 @@ Unbekannte Route oder kaputte Spielstand-Datei → Fehlercode und Log, der Serve
 
 ## Offene Fragen
 
-Anzahl N der Sicherungen (B-028, 🧑). `/api/health` gibt es heute nicht (`server/*.mjs` kennt nur `/api/save` und `/api/report`): neu anlegen oder aus AC-02 streichen? (🧑)
+keine. Geklärt von 🧑 (2026-09-30, Chat): N = 5 Sicherungen je Spielstand (B-028); `/api/health` wird neu angelegt
+(`GET` → 200 `{"ok":true}`); ohne `K3C_STATUS_TOKEN` ist die Diagnose aus (404, B-027).
 
 ## Sessions
 
-Entwurf. Vor dem Aktivieren jede Session als Datei nach `docs/vorlagen/session.md` schreiben, die Kriterien in Klammern werden ihr Feld `Kriterien`.
-
-- SP03.1 `cmd/k3c-server` + `engine/store`: liefert `dist/` aus, `/api/save`, `/api/report`, `/api/health` wie heute, Konfiguration per Umgebungsvariablen, Tests mit `httptest` (ersetzen den Smoke-Test in `ci.yml`) (AC-01, AC-02).
-- SP03.2 `/api/status` mit Token (B-027), `log/slog`, rotierende Sicherungen (B-028), `Dockerfile` multi-arch, `compose.yaml` mit Volumes; `release.yml` baut Windows-EXE und Linux-arm64 (AC-01, AC-03, AC-04).
-- SP03.3 🔍 Review (alle).
+| Nr. | Datei | Typ | Agent | Status |
+|---|---|---|---|---|
+| SP03.1 | `SP03.1-server-basis.md` | Umsetzung | autonom | offen |
+| SP03.2 | `SP03.2-status-sicherung-docker.md` | Umsetzung | autonom | offen |
+| SP03.3 | `SP03.3-review.md` | Review | autonom | offen |
 
 ## Abnahme
 

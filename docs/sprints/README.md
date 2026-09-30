@@ -10,7 +10,9 @@ Jede Sprint-README ist eine Spec (SDD); aktiv wird ein Sprint erst mit `Spec: fr
 |---|---|---|---|---|
 | M5 | SRV 🧑 | k3c-dev V: MCP-Seite mit Monitoren und Statistik | zwei parallele Aufrufe als zwei Spuren, p95 je Tool | `aktiv/M5-dev-mcp-seite/` |
 
-Nächste Session: M5.1 (Übersicht). Danach SP03 bereit machen.
+| SP03 | SRV | Go-Server Basis (ersetzt `server/*.mjs` für Dateien, Spielstände, Berichte) | EXE und Docker-Image liefern das Spiel aus | `aktiv/SP03-go-server/` |
+
+M5 wartet auf die Abnahme durch 🧑 (M5.5). Nächste Session: SP03.1.
 
 ## Geplant (in dieser Reihenfolge)
 
@@ -19,7 +21,6 @@ dann über den Go-Server mit mehreren Räumen und gemischten Spielern.
 
 | Sprint | Domäne | Thema | Am Ende sichtbar | Reife | Ordner |
 |---|---|---|---|---|---|
-| SP03 | SRV | Go-Server Basis (ersetzt `server/*.mjs`) | EXE und Docker-Image liefern das Spiel aus | Entwurf | `geplant/SP03-go-server/` |
 | SP04 | SIM | Golden-Tests, RNG, Level-Generator in Go | gleiche Level in TS und Go | Entwurf | `geplant/SP04-golden-level/` |
 | SP05 | SIM | Port I: Welt, Zyklus, Wirtschaft | Golden-Läufe ohne Gegner grün | Entwurf | `geplant/SP05-port-welt/` |
 | SP06 | SIM | Port II: Einheiten, Gegner, Wellen, Reisen, Kampagne | alle Golden-Läufe grün | Entwurf | `geplant/SP06-port-einheiten/` |
