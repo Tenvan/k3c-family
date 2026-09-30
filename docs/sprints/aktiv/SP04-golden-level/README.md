@@ -5,7 +5,7 @@
 - **Reife:** bereit
 - **Einschiebbar:** nein
 - **Tickets:** B-043
-- **Start-Commit:** –
+- **Start-Commit:** 4f4cb2f
 - **Spec:** freigegeben
 - **Revision:** 1
 - **Freigabe:** 2026-09-30 🧑 Chat (3 Simulationsläufe, Generator als Vitest-Datei, FMA: Regel + Ticket B-071)
@@ -70,7 +70,7 @@ FMA: Regel im Go-Code, arm64-Lauf als Ticket B-071.
 
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
-| SP04.1 | `SP04.1-golden-daten.md` | Umsetzung | autonom | offen |
+| SP04.1 | `SP04.1-golden-daten.md` | Umsetzung | autonom | fertig |
 | SP04.2 | `SP04.2-rng.md` | Umsetzung | autonom | offen |
 | SP04.3 | `SP04.3-level.md` | Umsetzung | autonom | offen |
 | SP04.4 | `SP04.4-review.md` | Review | autonom | offen |
