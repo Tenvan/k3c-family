@@ -29,7 +29,7 @@ func TestGoNestingDepth(t *testing.T) {
 			continue
 		}
 		c := checker{fset: fset}
-		c.walk("", file, 0)
+		c.walk("Paketebene", file, 0)
 		for _, msg := range c.found {
 			t.Error(msg)
 		}
