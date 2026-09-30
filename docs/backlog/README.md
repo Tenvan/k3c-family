@@ -57,3 +57,4 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-049](B-049-sp09-domaene.md) | INF | Frage | niedrig | offen | – | SP09 bleibt in einer Domäne oder hat einen erlaubten Grenzfall |
 | [B-050](B-050-go-dateilaenge.md) | INF | Schuld | mittel | eingeplant | SP01 | Die Dateilänge von Go-Code wird wie bei TypeScript geprüft |
 | [B-051](B-051-oxlint-warnungen.md) | INF | Schuld | niedrig | offen | – | Oxlint meldet im Bestand keine Warnungen mehr |
+| [B-052](B-052-requirements.md) | INF | Idee | mittel | eingeplant | SP01 | Alle vorausgesetzten Installationen stehen in requirements.md |
