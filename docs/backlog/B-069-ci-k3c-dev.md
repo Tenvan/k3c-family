@@ -3,7 +3,7 @@
 - **Domäne:** INF
 - **Typ:** Problem
 - **Prio:** mittel
-- **Status:** offen
+- **Status:** erledigt
 - **Sprint:** –
 - **Erstellt:** 2026-09-30
 - **Spec:** Entwurf
@@ -56,3 +56,8 @@ keine
 ## Notizen
 
 Aus der Abnahme von M1 (M1.4, 2026-09-30).
+
+Ergebnis (2026-09-30): AC-01 geprüft von 🧑 (Chat „ci build ist durch“). Der Job `k3c-dev · Frontend · Tests · Lint
+· Wails (Windows)` ist auf `main` grün, Commit [0000f7a](https://github.com/Tenvan/k3c-family/commit/0000f7a22bbbcc6a9c5555e6045b5ed151d0902a) mit den
+Checks am Commit. Davor war er einmal rot: Der Frontend-Typecheck fand `vitest` nicht, weil der Job das Hauptprojekt
+nicht installierte; behoben in `229ca6d`.

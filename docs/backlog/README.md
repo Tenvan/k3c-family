@@ -74,5 +74,5 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-066](B-066-server-json-log.md) | SRV | Idee | mittel | offen | – | Der Go-Server schreibt sein Log als JSON nach logs/ |
 | [B-067](B-067-dev-dienste.md) | SRV | Idee | mittel | erledigt | M3 | k3c-dev startet, überwacht und stoppt die Entwicklungs-Dienste, auch für Agenten |
 | [B-068](B-068-dev-dienste-seite.md) | SRV | Idee | mittel | erledigt | M4 | k3c-dev zeigt die Dienste als Karten mit Zustand, Metriken und Log-Level |
-| [B-069](B-069-ci-k3c-dev.md) | INF | Problem | mittel | offen | – | Der CI-Job k3c-dev ist einmal grün gelaufen |
+| [B-069](B-069-ci-k3c-dev.md) | INF | Problem | mittel | erledigt | – | Der CI-Job k3c-dev ist einmal grün gelaufen |
 | [B-070](B-070-gitignore-verankern.md) | INF | Schuld | niedrig | offen | – | Die .gitignore ignoriert reports/, saves/ und certs/ nur an der Repo-Wurzel |
