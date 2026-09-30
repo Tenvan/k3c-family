@@ -1,6 +1,6 @@
 # SP02 · SRV · Protokoll v2 & Raummodell
 
-- **Status:** aktiv
+- **Status:** erledigt
 - **Domäne:** SRV
 - **Reife:** bereit
 - **Einschiebbar:** nein
@@ -79,8 +79,35 @@ keine
 |---|---|---|---|---|
 | SP02.1 | `SP02.1-raummodell.md` | Umsetzung | autonom | fertig |
 | SP02.2 | `SP02.2-nachrichten.md` | Umsetzung | autonom | fertig |
-| SP02.3 | `SP02.3-review.md` | Review | autonom | offen |
+| SP02.3 | `SP02.3-review.md` | Review | autonom | fertig |
 
 ## Abnahme
 
-–
+**2026-09-30, SP02.3 (autonomer Agent).** Geprüft: 23 Dateien aus `git diff --stat 0fb32f8..origin/main`
+(`origin/main` 23b760c), jede vollständig gelesen: `docs/protocol.md`, die 15 Beispiele in `testdata/protocol/`
+(`s2c-level.json`, `s2c-snapshot-full.json`, `s2c-snapshot-delta.json` zusätzlich per Node nach Feldern ausgewertet),
+die vier Dateien dieses Sprints, `docs/sprints/README.md`, `docs/backlog/README.md`, B-059. Dazu gegen
+`docs/protocol.md` gelesen: SP07-/SP08-README, B-030, B-036, B-038, B-039, `src/online/protocol.ts`,
+`src/world/sim/campaign.ts`, `src/world/sim/travel.ts`, `server/saves.mjs`. Nur Doku und JSON, kein Code.
+
+- **AC-01 geprüft:** `docs/protocol.md` beschreibt Raum, Gerät (jetzt: Browser), lokale Spieler, Raumliste und Code,
+  Beitreten (mit Prüf-Reihenfolge bei `create`), Verlassen, Wiederverbinden, Grenzen und Spielstand; Beschluss 1 in
+  *Raumliste und Code*, 2 in *Grenzen*, 3 in *Verlassen und Abbruch* und *Wiederverbinden*, 4 in *Spielstand*, je mit
+  „(Beschluss N)“. Beispiel und Fehlerfälle decken alle Fälle aus der Spec ab.
+- **AC-02 geprüft:** Node-Einzeiler: 15 Dateien, 15 Tabellenzeilen, jede Datei parst, `t` und Richtung passen zur
+  Tabellenzeile, jede Tabellenzeile hat ihre Datei, der Code in `s2c-error.json` steht in *Fehler-Codes* → 0 Fehler.
+  *Snapshot-Größe* nennt Messweg, voll und Delta (Mittel/Max) und Bytes/s bei 30 Hz für 4 Spieler (1 KB = 1000 Byte).
+- **AC-03 umgesetzt:** `docs/decisions/002-protokoll-v2.md` mit Kontext · Optionen · Entscheidung · Folgen, Beschlüsse
+  1–4 und K1 mit Quelle 🧑 2026-09-30, Status `vorgeschlagen`, von 🧑 am 2026-09-30 im Chat beschlossen; 001 › *Nachfolgende Entscheidungen* verlinkt 002.
+  🧑 beschließt 002 mit der Abnahme des Review-PR.
+- **Behoben in `docs/protocol.md`** (Vorab-Review): K1 (Stufenwechsel nur besetzte Monarchen, Spielstand ohne
+  Monarchen, Gold pro Index), M1 (ungültiges erstes `hello` → `version`), M2 (Gerät = Browser, `replaced`, kein
+  automatisches Neuverbinden), M3 (`save_exists`, `save_not_found`, Reihenfolge, Namensformat), M4 (`room_closed`),
+  M5 (Slots beim Wiederverbinden, Vorrang für Gerät + Slot), G1–G9 (Delta-Regeln, `s.depth`, Eingabe-Takt,
+  `bad_request` für Slots, `seq` je Verbindung, Wanduhr, `familie` und markierte Beispiele, Sendepuffer-Hinweis für
+  SP07, KB = 1000 Byte). Eigener Durchgang: `bad_request` auch für Nachrichten, die nicht zum Zustand passen; `rooms`
+  auch nach Verlassen eines Raums; Kopfzeile verlinkt 002; veralteter Satz „Das Feld legt SP02.2 fest“ entfernt.
+  Die JSON-Beispiele passten schon und sind unverändert.
+- **Ticket-Status:** B-030, B-036, B-038, B-039 bleiben `eingeplant` (SP07/SP08), B-059 bleibt `offen`.
+- **Neue Tickets:** B-060 (SP07-Spec und B-030 decken nicht alle Server-Regeln aus `docs/protocol.md` ab),
+  B-061 (SP08-Spec deckt nicht alle Client-Regeln ab).
