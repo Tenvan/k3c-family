@@ -4,7 +4,7 @@ import type { LogEntry } from '../api';
 import { formatTime } from '../lib/format';
 import { useDebounced } from '../lib/useDebounced';
 import { NoticeCard, StatusBadge } from '../ui/parts';
-import { budgetNote, entryKey, footer, LEVEL_FILTERS, levelTone, LIMITS, oldestFirst, prettyData } from './logview';
+import { budgetNote, entryKeys, footer, LEVEL_FILTERS, levelTone, LIMITS, oldestFirst, prettyData } from './logview';
 import { useLogQuery } from './useLogQuery';
 
 const BOTTOM_PX = 24;
@@ -58,11 +58,7 @@ export function LogTab({ name }: { name: string }) {
       {error && <p className="svc-error">{error}</p>}
       {view?.missing && <NoticeCard title="Log-Datei fehlt" tone="neutral">logs/{name}.jsonl gibt es noch nicht.</NoticeCard>}
       <div className="logtab-body" ref={box} onScroll={onScroll}>
-        <table className="logtab-table">
-          <tbody>
-            {rows.map((e) => <LogRow key={entryKey(e)} e={e} />)}
-          </tbody>
-        </table>
+        <LogTable rows={rows} />
       </div>
       {view && (
         <p className="logtab-foot">
@@ -71,6 +67,17 @@ export function LogTab({ name }: { name: string }) {
         </p>
       )}
     </section>
+  );
+}
+
+function LogTable({ rows }: { rows: LogEntry[] }) {
+  const keys = entryKeys(rows);
+  return (
+    <table className="logtab-table">
+      <tbody>
+        {rows.map((e, i) => <LogRow key={keys[i]} e={e} />)}
+      </tbody>
+    </table>
   );
 }
 

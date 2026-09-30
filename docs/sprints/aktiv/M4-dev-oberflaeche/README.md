@@ -79,7 +79,7 @@ keine
 | M4.2 | `M4.2-dienste-seite.md` | Umsetzung | autonom | fertig |
 | M4.3 | `M4.3-quellen-konsole.md` | Umsetzung | autonom | fertig |
 | M4.4 | `M4.4-log-fehler.md` | Umsetzung | autonom | fertig |
-| M4.5 | `M4.5-review.md` | Review | autonom | offen |
+| M4.5 | `M4.5-review.md` | Review | autonom | in Arbeit |
 
 M4.2 und M4.3 hängen nur von M4.1 ab; M4.4 folgt auf M4.3. Die Review-Session braucht die Abnahme des Fensters
 durch 🧑 (AC-07).
