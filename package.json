@@ -15,6 +15,7 @@
     "check": "npm run lint && npm run typecheck && npm test",
     "check:go": "go test ./... && golangci-lint run",
     "check:dev": "cd tools/k3c-dev && go test ./... && golangci-lint run",
+    "k3c-dev": "cd tools/k3c-dev && go run .",
     "serve": "npm run build && node server/server.mjs",
     "start": "node server/server.mjs"
   },

@@ -87,7 +87,7 @@ Aufruf. Die Dienste aus `tools/k3c-dev/services.json` (Vite-Dev-Server, Heimnetz
 `svc_*`; schon laufende übernimmt er, beim Beenden stoppt er nur die eigenen. Starten (Go aus `requirements.md`), läuft bis Strg+C:
 
 ```bash
-cd tools/k3c-dev && go run .
+npm run k3c-dev
 ```
 
 Er lauscht nur an `http://127.0.0.1:5180/mcp` (anderer Port: `K3C_DEV_PORT`). Für Claude Code eine lokale `.mcp.json`
