@@ -59,7 +59,23 @@
   white-space: nowrap;
 }
 
-.console {
+.src-panel {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-width: 0;
+  gap: 10px;
+}
+
+.src-panel-body {
+  display: flex;
+  flex: 1;
+  min-height: 0;
+}
+
+.console,
+.logtab,
+.errtab {
   position: relative;
   display: flex;
   flex-direction: column;
@@ -113,6 +129,112 @@
   position: absolute;
   right: 24px;
   bottom: 16px;
+}
+
+.logtab-search {
+  flex: 1;
+  min-width: 220px;
+}
+
+.logtab-body,
+.errtab-list {
+  flex: 1;
+  overflow: auto;
+  border: 1px solid var(--card-line);
+  border-radius: 10px;
+  background: var(--console-bg);
+}
+
+.logtab-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+}
+
+.logrow td {
+  padding: 4px 10px;
+  border-bottom: 1px solid var(--card-line);
+  vertical-align: top;
+}
+
+.logrow-data {
+  cursor: pointer;
+}
+
+.logrow-data:hover {
+  background: var(--card-line);
+}
+
+.logrow-time,
+.logrow-ns {
+  color: var(--dim);
+  white-space: nowrap;
+  font-variant-numeric: tabular-nums;
+}
+
+.logrow-msg {
+  width: 100%;
+  overflow-wrap: anywhere;
+}
+
+.logrow-arrow {
+  color: var(--dim);
+}
+
+.logrow-detail pre {
+  margin: 0;
+  padding: 6px 10px 10px 40px;
+  font: 12px/1.5 'Cascadia Mono', Consolas, monospace;
+  color: var(--dim);
+}
+
+.logtab-foot,
+.errtab-explain {
+  margin: 0;
+  color: var(--dim);
+  font-size: 13px;
+}
+
+.logtab-budget {
+  color: var(--warn);
+}
+
+.errrow {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 8px 12px;
+  border-bottom: 1px solid var(--card-line);
+  font-size: 13px;
+}
+
+.errrow-count {
+  min-width: 5ch;
+  font-weight: 600;
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+.errrow-text {
+  flex: 1;
+  min-width: 0;
+}
+
+.errrow-example {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.errrow-fp {
+  color: var(--dim);
+  font: 11px 'Cascadia Mono', Consolas, monospace;
+}
+
+.errrow-window {
+  color: var(--dim);
+  white-space: nowrap;
+  font-variant-numeric: tabular-nums;
 }
 
 .ansi-bold { font-weight: 700; }
