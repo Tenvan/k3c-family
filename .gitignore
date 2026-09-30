@@ -7,3 +7,5 @@ saves/
 certs/
 dist-server/
 .omc/
+/logs/
+.mcp.json

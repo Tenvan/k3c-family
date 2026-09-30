@@ -4,8 +4,10 @@ package mcpsrv
 
 import (
 	"context"
+	_ "embed"
 	"errors"
 	"fmt"
+	"log/slog"
 	"net"
 	"net/http"
 	"strconv"
@@ -15,8 +17,14 @@ import (
 
 	"github.com/modelcontextprotocol/go-sdk/mcp"
 
+	"k3c/tools/k3c-dev/internal/applog"
 	"k3c/tools/k3c-dev/internal/console"
 )
+
+// instructions bekommt jeder Client beim Verbinden: welches Tool wofür, statt Shell.
+//
+//go:embed instructions.md
+var instructions string
 
 const (
 	// DefaultPort ist der Vorgabe-Port, EnvPort überschreibt ihn.
@@ -31,9 +39,10 @@ type Config struct {
 	Root    string // Repo-Wurzel
 	Port    int
 	Version string
-	OnStart func(Call)         // optional: Aufruf beginnt
-	OnCall  func(Call)         // optional: Aufruf beendet
-	OnLine  func(console.Line) // optional: neue Konsolenzeile
+	OnStart func(Call)     // optional: Aufruf beginnt
+	OnCall  func(Call)     // optional: Aufruf beendet
+	Console *console.Store // optional: gemeinsamer Konsolenpuffer (mit dem Spiegel des eigenen Logs)
+	Log     *slog.Logger   // optional: eigenes Log
 }
 
 // Server hält den MCP-Server und den HTTP-Server, der ihn ausliefert. Der HTTP-Teil lässt sich neu starten,
@@ -44,6 +53,7 @@ type Server struct {
 	stats   *stats
 	params  map[string][]string // gültige Parameter je Tool, gefüllt bei der Registrierung
 	console *console.Store
+	log     *slog.Logger
 	checks  *checkRuns
 	run     func(context.Context, runSpec) runResult // Test-Naht für check_run
 
@@ -68,9 +78,16 @@ func ResolvePort(raw string) (int, error) {
 // New baut den Server mit allen Tools aus dem Katalog; gestartet wird er mit Start.
 func New(cfg Config) *Server {
 	s := &Server{cfg: cfg, stats: newStats(time.Now), params: map[string][]string{},
-		console: console.New(console.DefaultCapacity, cfg.OnLine), checks: newCheckRuns(), run: runProcess}
+		console: cfg.Console, log: cfg.Log, checks: newCheckRuns(), run: runProcess}
+	if s.console == nil {
+		s.console = console.New(console.DefaultCapacity, nil)
+	}
+	if s.log == nil {
+		s.log = applog.Discard()
+	}
 	s.stats.onStart, s.stats.onCall = cfg.OnStart, cfg.OnCall
 	s.mcp = mcp.NewServer(&mcp.Implementation{Name: "k3c-dev", Version: cfg.Version}, &mcp.ServerOptions{
+		Instructions:       instructions,
 		InitializedHandler: func(context.Context, *mcp.InitializedRequest) { s.observeClients() },
 	})
 	register(s)
@@ -119,7 +136,12 @@ func (s *Server) Restart() error {
 	if err := s.Stop(); err != nil {
 		return err
 	}
-	return s.Start()
+	if err := s.Start(); err != nil {
+		s.log.Error("neustart fehlgeschlagen", "ns", "mcp", "error", err.Error())
+		return err
+	}
+	s.log.Info("server neu gestartet", "ns", "mcp", "url", s.URL())
+	return nil
 }
 
 // URL ist die Adresse für .mcp.json, leer solange der Server nicht läuft.
