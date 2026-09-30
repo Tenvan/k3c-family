@@ -73,7 +73,7 @@ keine
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
 | M1.1 | `M1.1-geruest-zaehler.md` | Umsetzung | autonom | fertig |
-| M1.2 | `M1.2-check-run.md` | Umsetzung | autonom | offen |
+| M1.2 | `M1.2-check-run.md` | Umsetzung | autonom | fertig |
 | M1.3 | `M1.3-logs.md` | Umsetzung | autonom | offen |
 | M1.4 | `M1.4-review.md` | Review | autonom | offen |
 

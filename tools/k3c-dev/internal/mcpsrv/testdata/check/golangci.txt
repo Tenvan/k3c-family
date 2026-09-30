@@ -1,0 +1,9 @@
+zz_tmp_test.go:11:35: Error return value is not checked (errcheck)
+func zzUnchecked() { _ = 1; tmpErr() }
+                                  ^
+zz_tmp_test.go:13:6: func tmpErr is unused (unused)
+func tmpErr() error { return nil }
+     ^
+2 issues:
+* errcheck: 1
+* unused: 1
