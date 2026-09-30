@@ -64,6 +64,34 @@ func register(s *Server) {
 		Description: "Spielstände (saves/ oder K3C_SAVES_DIR) mit Stufe, Tag, Spielern und Datum, Sicherungen eingeschlossen.",
 		Annotations: readOnly(),
 	}, s.savesList)
+	registerServices(s)
+}
+
+// registerServices sind die Dienste-Tools (B-067); Start ist nicht zerstörerisch, Stopp und Neustart schon.
+func registerServices(s *Server) {
+	no, yes, closed := false, true, false
+	add(s, &mcp.Tool{
+		Name: "svc_status",
+		Description: "Alle Dienste (Vite, Heimnetz …) mit Zustand, Port, PID, CPU, Speicher, Laufzeit, Neustarts, " +
+			"Log-Level der letzten 60 min und letztem Fehler.",
+		Annotations: readOnly(),
+	}, s.svcStatus)
+	add(s, &mcp.Tool{
+		Name: "svc_start",
+		Description: "Startet einen Dienst und wartet, bis er gesund ist (höchstens 60 s). Statt npm run dev oder " +
+			"npm start in der Shell; Ausgabe über console_tail <Dienst>.",
+		Annotations: &mcp.ToolAnnotations{DestructiveHint: &no, OpenWorldHint: &closed},
+	}, s.svcStart)
+	add(s, &mcp.Tool{
+		Name:        "svc_stop",
+		Description: "Stoppt einen Dienst samt Prozessbaum; übernommene (vor k3c-dev gestartete) nur mit force.",
+		Annotations: &mcp.ToolAnnotations{DestructiveHint: &yes, OpenWorldHint: &closed},
+	}, s.svcStop)
+	add(s, &mcp.Tool{
+		Name:        "svc_restart",
+		Description: "Startet einen eigenen Dienst neu und wartet, bis er gesund ist.",
+		Annotations: &mcp.ToolAnnotations{DestructiveHint: &yes, OpenWorldHint: &closed},
+	}, s.svcRestart)
 }
 
 // readOnly sind die Annotations eines Tools, das nur liest.
