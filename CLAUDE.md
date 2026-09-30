@@ -22,13 +22,14 @@ Zielplattform ist **Edge auf der Xbox** (Gamepad API), gehostet im Heimnetz. Die
 ```bash
 npm run dev        # Dev-Server (auch im LAN erreichbar, Port 5173)
 npm test           # Vitest (Level-Generator, reine Logik)
+npm run check      # Lint + Typecheck + Tests (vor jedem Abschluss)
 npm run build      # Typecheck + Produktions-Build nach dist/
 npm run serve      # Build + Heimnetz-Server (Port 8080, server/server.mjs)
 ```
 
 Die Gamepad-Testseite (`gamepad-test.html`) schickt Berichte von der Xbox nach `reports/*.json`. Dort die Ergebnisse nachlesen.
 
-Vor jedem Abschluss: `npm test` und `npm run typecheck` müssen grün sein.
+Vor jedem Abschluss: `npm run check` muss grün sein.
 Die CI (`.github/workflows/ci.yml`) prüft zusätzlich Build + Server-Smoke-Test. `tests/projectRules.test.ts`
 prüft die Regeln unten automatisch (Seiten eingetragen, `installPageChrome()`, Vollbild, kein `Math.random()`).
 
