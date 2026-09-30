@@ -28,6 +28,27 @@ func register(s *Server) {
 		Description: "Letzte Zeilen einer Konsolen-Quelle, z. B. check:npm:test (volle Ausgabe eines Prüflaufs).",
 		Annotations: readOnly(),
 	}, s.consoleTail)
+	add(s, &mcp.Tool{
+		Name:        "logs_sources",
+		Description: "Alle Log-Quellen (logs/*.jsonl mit Größe und letztem Eintrag) und Konsolen-Quellen.",
+		Annotations: readOnly(),
+	}, s.logsSources)
+	add(s, &mcp.Tool{
+		Name: "logs_query",
+		Description: "Einträge einer Log-Quelle, neueste zuerst, gefiltert nach minLevel, ns, pattern (Regex auf die " +
+			"Meldung) und since; statt die Datei zu lesen.",
+		Annotations: readOnly(),
+	}, s.logsQuery)
+	add(s, &mcp.Tool{
+		Name:        "logs_errors",
+		Description: "Warnungen und Fehler einer Log-Quelle, gleichartige Meldungen zu je einer Zeile verdichtet (Standard: ab WARN, 24h).",
+		Annotations: readOnly(),
+	}, s.logsErrors)
+	add(s, &mcp.Tool{
+		Name:        "logs_since",
+		Description: "Neue Einträge einer Log-Quelle ab einem Byte-Cursor, älteste zuerst, mit dem Cursor für den nächsten Aufruf.",
+		Annotations: readOnly(),
+	}, s.logsSince)
 }
 
 // readOnly sind die Annotations eines Tools, das nur liest.

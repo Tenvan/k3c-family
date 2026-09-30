@@ -24,7 +24,12 @@ func (s *Server) observe(next mcp.MethodHandler) mcp.MethodHandler {
 			if p := recover(); p != nil {
 				res, err = textResult(fmt.Sprintf("%s: %v", panicText, p), true), nil
 			}
-			s.stats.end(id, outcomeOf(res, err))
+			o := outcomeOf(res, err)
+			s.stats.end(id, o)
+			if !o.ok {
+				// Tool und Fehler in der Meldung, damit logs_errors gleichartige Fehler je Tool gruppiert.
+				s.log.Warn(call.Params.Name+": "+clip(o.err), "ns", "mcp", "tool", call.Params.Name)
+			}
 		}()
 		res, err = next(ctx, method, req)
 		s.addParamHint(call.Params.Name, res)
