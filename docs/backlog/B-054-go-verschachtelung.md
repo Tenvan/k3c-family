@@ -3,7 +3,7 @@
 - **Domäne:** INF
 - **Typ:** Problem
 - **Prio:** mittel
-- **Status:** eingeplant
+- **Status:** erledigt
 - **Sprint:** L1
 - **Erstellt:** 2026-09-30
 - **Spec:** freigegeben
@@ -72,3 +72,10 @@ erlaubt), Oxlint `max-lines-per-function` zählt Kopf und schließende Klammer m
 Umsetzung L1.1 (golangci-lint 2.14, Oxlint 1.86): `revive` › `max-control-nesting` zählt `else if` als eigene Ebene,
 Oxlint `max-depth` nicht. Eine `else if`-Kette mit drei weiteren `if` darin ist in TypeScript Tiefe 4 (grün),
 in Go Tiefe 5 (rot). Go ist damit nur bei `else if` um eine Ebene strenger; bewusst so belassen.
+
+Review L1.2 (Gegenproben, `--max-same-issues=0`): Die Aussage „nur eine Ebene“ stimmt nicht, **jedes** `else if`
+zählt eine Ebene: eine flache Kette mit 5 Zweigen scheitert (TypeScript Tiefe 1), ebenso `if`/3× `else if` mit einem
+`if` im letzten Zweig (TypeScript Tiefe 2). Außerdem zählt `for range` gar nicht: `range` → 4× `if` bleibt grün,
+erst `range` → 5× `if` scheitert. Tiefe 5 greift bei `if`, Dreiklausel-`for`, `switch`, Typ-`switch` und
+`select` → `if`; `else` und Funktionsliterale zählen wie bei Oxlint nicht bzw. setzen zurück. Offene Abweichungen: B-057.
+Achtung bei Proben: golangci-lint zeigt standardmäßig nur 3 gleiche Meldungen (`max-same-issues`), der Exit-Code stimmt.

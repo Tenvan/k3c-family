@@ -1,7 +1,7 @@
 # Harte Grenzen aus docs/arbeitsweise.md › Komplexitäts-Budget und die Go-Schichtgrenzen.
 # Die Dateilänge prüft tests/projectRules.test.ts (golangci-lint hat dafür keinen Linter, B-050).
-# Verschachtelung: revive › max-control-nesting zählt die Tiefe aller Kontrollstrukturen wie Oxlint max-depth
-# (nestif misst eine if-Punktzahl, keine Tiefe, B-054).
+# Verschachtelung: revive › max-control-nesting zählt die Tiefe wie Oxlint max-depth (nestif misst eine if-Punktzahl,
+# keine Tiefe, B-054). Abweichungen: `for range` zählt nicht, jedes `else if` zählt eine Ebene (B-057).
 version: "2"
 
 linters:
