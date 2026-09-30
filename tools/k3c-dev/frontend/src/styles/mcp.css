@@ -164,3 +164,67 @@
 .chart-dot { fill: var(--error); }
 .chart-tick { font-size: 11px; }
 .chart-empty { font-size: 13px; }
+
+.mcp-log-body {
+  max-height: max(260px, calc(100vh - 560px));
+  overflow: auto;
+  border: 1px solid var(--card-line);
+  border-radius: 10px;
+  background: var(--console-bg);
+}
+
+.mcp-log-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+}
+
+.mcp-log-row {
+  cursor: pointer;
+}
+
+.mcp-log-row:hover {
+  background: var(--card-line);
+}
+
+.mcp-log-row td {
+  padding: 0 8px;
+  height: 26px;
+  white-space: nowrap;
+}
+
+.mcp-log-row td.mcp-graph {
+  padding: 0 4px;
+  line-height: 0;
+}
+
+.mcp-log-tool {
+  font-family: 'Cascadia Mono', Consolas, monospace;
+}
+
+.mcp-ref {
+  font: 600 12px 'Cascadia Mono', Consolas, monospace;
+}
+
+.mcp-log-text {
+  width: 100%;
+  max-width: 1px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  color: var(--dim);
+}
+
+.lane { stroke-width: 2; }
+.lane-open { stroke-dasharray: 3 3; }
+.node { stroke-width: 2; }
+.node-start { fill: var(--console-bg) !important; }
+
+/* Palette der Aufrufe (ref und Spur) */
+.lane-c0 { color: var(--ansi-11); stroke: var(--ansi-11); fill: var(--ansi-11); }
+.lane-c1 { color: var(--ansi-12); stroke: var(--ansi-12); fill: var(--ansi-12); }
+.lane-c2 { color: var(--ansi-10); stroke: var(--ansi-10); fill: var(--ansi-10); }
+.lane-c3 { color: var(--ansi-13); stroke: var(--ansi-13); fill: var(--ansi-13); }
+.lane-c4 { color: var(--ansi-14); stroke: var(--ansi-14); fill: var(--ansi-14); }
+.lane-c5 { color: var(--ansi-9); stroke: var(--ansi-9); fill: var(--ansi-9); }
+.lane-c6 { color: var(--ansi-3); stroke: var(--ansi-3); fill: var(--ansi-3); }
+.lane-c7 { color: var(--ansi-5); stroke: var(--ansi-5); fill: var(--ansi-5); }

@@ -2,6 +2,7 @@ import { SegmentedControl, Text } from '@radix-ui/themes';
 import { useState } from 'react';
 import { loadPref, savePref } from '../lib/prefs';
 import { NoticeCard } from '../ui/parts';
+import { CallLog } from './CallLog';
 import { LiveMonitors } from './LiveMonitors';
 import { ServerCards } from './ServerCards';
 import { ToolTiles } from './ToolTiles';
@@ -35,7 +36,7 @@ export function McpPage() {
             <ToolTiles tools={overview.stats.tools} total={overview.stats.totalCalls} />
             <LiveMonitors minutes={data.usage?.minutes ?? []} />
           </div>
-          <NoticeCard title="Aufruf-Log" tone="neutral">Folgt in M5.3.</NoticeCard>
+          <CallLog calls={data.calls} tools={overview.stats.tools.map((t) => t.name)} />
         </>
       )}
       {overview && view === 'statistik' && <NoticeCard title="Statistik" tone="neutral">Folgt in M5.4.</NoticeCard>}
