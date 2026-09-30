@@ -4,11 +4,11 @@
 - **Domäne:** INF
 - **Reife:** bereit
 - **Einschiebbar:** nein
-- **Tickets:** B-009, B-033, B-050
+- **Tickets:** B-009, B-033, B-050, B-052
 - **Start-Commit:** 918f385
 - **Spec:** freigegeben
-- **Revision:** 2
-- **Freigabe:** 2026-09-30 🧑 Chat-Freigabe durch Ralf (Revision 2, mit B-050)
+- **Revision:** 3
+- **Freigabe:** 2026-09-30 🧑 Chat-Anweisung von Ralf (Revision 3, mit B-052; Revision 2 mit B-050 ebenfalls freigegeben)
 
 ## Ausgangslage
 
@@ -26,7 +26,7 @@ Entwickler und Cloud-Agenten (jede künftige Session); die Review-Session.
 
 ## Anforderungen
 
-B-009 › Anforderungen, B-033 › Anforderungen, B-050 › Anforderungen (seit Revision 2). Sprint-eigen: Go-Modul `k3c` im Root; die Daten liegen in `data/` als einzige Quelle für Client (Import) und Server (`go:embed`); die CI hat einen Go-Job mit Tests, Lint und Cross-Build für `windows/amd64` und `linux/arm64`.
+B-009 › Anforderungen, B-033 › Anforderungen, B-050 › Anforderungen (seit Revision 2), B-052 › Anforderungen (seit Revision 3). Sprint-eigen: Go-Modul `k3c` im Root; die Daten liegen in `data/` als einzige Quelle für Client (Import) und Server (`go:embed`); die CI hat einen Go-Job mit Tests, Lint und Cross-Build für `windows/amd64` und `linux/arm64`.
 
 ## Nicht-Ziele
 
@@ -54,6 +54,7 @@ Bestandsdatei über einer Grenze → Ausnahme mit gemessenem Wert (Ratsche), kei
 - **AC-05** `npm test` scheitert, wenn eine Datei ohne passende Ausnahme über 300 Zeilen liegt, eine Ausnahme überflüssig ist oder `src/world` aus `scenes/`, `online/` oder `input/` importiert.
 - **AC-06** `npm run typecheck` prüft `tests/` (B-033/AC-01).
 - **AC-07** Der Regel-Test prüft auch Go-Dateien: über 300 Zeilen nur mit Ausnahme, über 400 nie, überflüssige Ausnahmen scheitern (B-050/AC-01, B-050/AC-02, B-050/AC-03).
+- **AC-08** `requirements.md` im Root listet alle vorausgesetzten Installationen mit Version und Prüfbefehl, passend zu `.nvmrc`, `go.mod` und `ci.yml` (B-052/AC-01, B-052/AC-02).
 
 ## Offene Fragen
 
@@ -65,7 +66,7 @@ keine
 |---|---|---|---|---|
 | SP01.1 | `SP01.1-client-lint.md` | Umsetzung | autonom | fertig |
 | SP01.2 | `SP01.2-go-geruest.md` | Umsetzung | autonom | fertig |
-| SP01.3 | `SP01.3-regel-tests.md` | Umsetzung | autonom | offen |
+| SP01.3 | `SP01.3-regel-tests.md` | Umsetzung | autonom | fertig |
 | SP01.4 | `SP01.4-review.md` | Review | autonom | offen |
 
 ## Abnahme
