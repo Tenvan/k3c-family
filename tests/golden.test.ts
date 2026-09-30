@@ -64,7 +64,7 @@ const SCRIPT: { ticks: number; commands: PlayerCommand[] }[] = [
   { ticks: 60, commands: [PAY, PAY] },
   { ticks: 120, commands: [cmd(1), cmd(-0.5)] },
   { ticks: 45, commands: [IDLE, PAY] },
-]
+];
 
 interface SimRun {
   name: string;
