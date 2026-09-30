@@ -83,7 +83,8 @@ Portale, Gegner). Nach Änderungen `npm test` ausführen. Die Tests prüfen 500 
 
 `tools/k3c-dev` ist ein MCP-Server für Coding-Agenten. Er führt Prüfungen aus einem festen Katalog verdichtet aus
 (`check_run`: nur Exit-Code, Dauer und Fehlerzeilen), macht die JSON-Logs unter `logs/` lesbar (`logs_*`) und zählt jeden
-Aufruf. Starten (Go aus `requirements.md`), läuft bis Strg+C:
+Aufruf. Die Dienste aus `tools/k3c-dev/services.json` (Vite-Dev-Server, Heimnetz-Server) startet und stoppt er über
+`svc_*`; schon laufende übernimmt er, beim Beenden stoppt er nur die eigenen. Starten (Go aus `requirements.md`), läuft bis Strg+C:
 
 ```bash
 cd tools/k3c-dev && go run .

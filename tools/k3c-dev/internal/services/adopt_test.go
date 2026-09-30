@@ -77,8 +77,18 @@ func TestMetrikenFuerLaufendeDienste(t *testing.T) {
 	if _, err := c.Start(context.Background(), "Vite"); err != nil {
 		t.Fatal(err)
 	}
+	var sampled int
+	c.opts.Sample = func(_ context.Context, pid int) (Metrics, error) {
+		sampled = pid
+		return f.sample(context.Background(), pid)
+	}
+	f.listenPID = 9999 // lauschender Prozess (node) statt der Hülle (cmd.exe)
+	c.opts.Listen = func(context.Context, int) (int, bool) { return f.listenPID, true }
 	c.sampleAll(context.Background())
 	vite, aus := c.Statuses()[0], c.Statuses()[1]
+	if sampled != 9999 {
+		t.Errorf("gemessen PID %d statt des lauschenden Prozesses", sampled)
+	}
 	if vite.CPU != 3.1 || vite.Memory != 480<<20 || aus.Memory != 0 {
 		t.Errorf("Metriken: %+v / %+v", vite, aus)
 	}
