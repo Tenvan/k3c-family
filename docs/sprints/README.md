@@ -8,7 +8,7 @@ Jede Sprint-README ist eine Spec (SDD); aktiv wird ein Sprint erst mit `Spec: fr
 
 | Sprint | Domäne | Thema | Am Ende sichtbar | Ordner |
 |---|---|---|---|---|
-| M6 | SRV | k3c-dev VI: MCP-Tools für Räume und Simulation (einschiebbar) | `rooms_list` und `sim_run` in der MCP-Seite | `aktiv/M6-dev-raeume/` |
+| – | – | – | – | – |
 
 ## Geplant (in dieser Reihenfolge)
 
@@ -52,5 +52,6 @@ Nach SP11: Regelwerk II (Skills) → SIM Skills in Go → CLI Skills → Spielea
 | SP06 | Port II: Gegner, Wellen, Reisen, Kampagne, Spielstand in Go | `erledigt/SP06-port-einheiten/` |
 | SP07 | Räume & WebSocket (Protokoll v2) in Go | `erledigt/SP07-raeume/` |
 | SP08 | Browser als reiner Client (Protokoll v2, Lobby, lokale Spieler, Layout 1–4) | `erledigt/SP08-client/` |
+| M6 | k3c-dev VI: MCP-Tools für Räume und Simulation (B-047) | `erledigt/M6-dev-raeume/` |
 | SP09 | Aufräumen: TS-Sim und Node-Server gelöscht, Release `v0.2.0` | `erledigt/SP09-aufraeumen/` |
 | G1 | Referenzseite für die gewählten Grafik-Packs, Auswahl auf den Referenzseiten (B-087) | `erledigt/G1-grafiken/` |

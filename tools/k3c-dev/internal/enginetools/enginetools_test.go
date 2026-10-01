@@ -100,3 +100,13 @@ func TestEingabenUndBiomWerdenGeprueft(t *testing.T) {
 		}
 	}
 }
+
+func TestZuvieleSegmenteWerdenAbgelehnt(t *testing.T) {
+	_, err := Run("forest", "0", 10, make([]Segment, MaxSegments+1))
+	if err == nil || !strings.Contains(err.Error(), "höchstens 100") {
+		t.Errorf("Segment-Grenze: %v", err)
+	}
+	if _, err := Run("forest", "0", 10, make([]Segment, MaxSegments)); err != nil {
+		t.Errorf("genau die Grenze muss gehen: %v", err)
+	}
+}

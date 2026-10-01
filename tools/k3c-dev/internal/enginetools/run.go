@@ -17,6 +17,9 @@ const TickHz = 30
 
 const maxPlayers = 4
 
+// MaxSegments begrenzt `inputs`: jeder Tick prüft alle Segmente, ein riesiges Feld würde den MCP-Server blockieren.
+const MaxSegments = 100
+
 // Segment hält die Eingabe eines Monarchen von FromTick (einschließlich) bis ToTick (ausschließlich) gedrückt.
 type Segment struct {
 	Player   int     `json:"player,omitempty" jsonschema:"Monarch ab 0, höchstens 3"`
@@ -69,6 +72,9 @@ func Run(biomeID, seed string, ticks int, inputs []Segment) (string, error) {
 
 // playerCount ist die Zahl der Monarchen und prüft die Segmente.
 func playerCount(inputs []Segment) (int, error) {
+	if len(inputs) > MaxSegments {
+		return 0, fmt.Errorf("inputs hat %d Segmente, höchstens %d erlaubt", len(inputs), MaxSegments)
+	}
 	players := 1
 	for i, s := range inputs {
 		if s.Player < 0 || s.Player >= maxPlayers {
