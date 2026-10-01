@@ -6,7 +6,9 @@ Jede Sprint-README ist eine Spec (SDD); aktiv wird ein Sprint erst mit `Spec: fr
 
 ## Aktiv
 
-Kein aktiver Sprint. Nächster Schritt: SP07 bereit machen (Sessions schreiben, 🧑 um Freigabe bitten).
+| Sprint | Domäne | Thema | Am Ende sichtbar | Ordner |
+|---|---|---|---|---|
+| SP07 | SRV | Räume & WebSocket (Protokoll v2) in Go | 3 Räume parallel im Test, `/api/status` mit Räumen | `aktiv/SP07-raeume/` |
 
 ## Geplant (in dieser Reihenfolge)
 
@@ -15,7 +17,6 @@ dann über den Go-Server mit mehreren Räumen und gemischten Spielern.
 
 | Sprint | Domäne | Thema | Am Ende sichtbar | Reife | Ordner |
 |---|---|---|---|---|---|
-| SP07 | SRV | Räume & WebSocket in Go, MCP-Tools für Räume und Simulation | 3 Räume parallel im Test | Entwurf | `geplant/SP07-raeume/` |
 | SP08 | CLI | Browser als reiner Client | Xbox (2 Controller) + Handy im selben Raum | Entwurf | `geplant/SP08-client/` |
 | SP09 | INF | Aufräumen: TS-Sim und Node-Server löschen | Release `v0.2.0` | Entwurf | `geplant/SP09-aufraeumen/` |
 | SP10 | SRV | Diagnose-TUI (Bubble Tea) | `k3c-tui` zeigt Räume live | Entwurf | `geplant/SP10-tui/` |
@@ -27,6 +28,7 @@ dann über den Go-Server mit mehreren Räumen und gemischten Spielern.
 |---|---|---|---|---|
 | R1 | REG 🧑 | Regelwerk I – Fundament | Entwurf | `geplant/R1-regelwerk-1/` |
 | X1 | PLAT 🧑 | Xbox-Machbarkeit | Entwurf | `geplant/X1-xbox/` |
+| M6 | SRV | k3c-dev VI: MCP-Tools für Räume und Simulation (B-047, nach SP07) | Entwurf | `geplant/M6-dev-raeume/` |
 
 Nach SP11: Regelwerk II (Skills) → SIM Skills in Go → CLI Skills → Spieleabend → Grafik/Sound → …
 
