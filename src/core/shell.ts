@@ -13,18 +13,36 @@ export const SHELL_MESSAGE = {
   home: 'k3c:home',
   fullscreen: 'k3c:fullscreen',
   fullscreenResult: 'k3c:fullscreen-result',
+  open: 'k3c:open',
 } as const;
 
 export type ShellMessage =
   | { type: typeof SHELL_MESSAGE.home }
   | { type: typeof SHELL_MESSAGE.fullscreen; id: number }
-  | { type: typeof SHELL_MESSAGE.fullscreenResult; id: number; error: string | null };
+  | { type: typeof SHELL_MESSAGE.fullscreenResult; id: number; error: string | null }
+  | { type: typeof SHELL_MESSAGE.open; href: string };
 
 /** true, wenn die Seite in der Landingpage-Shell läuft */
-export const isEmbedded = window.parent !== window;
+export const isEmbedded = typeof window !== 'undefined' && window.parent !== window;
 
 export function postToShell(message: ShellMessage): void {
   window.parent.postMessage(message, location.origin);
+}
+
+/**
+ * Darf die Shell diese Seite öffnen? Nur eine Seite dieses Ordners: `name.html` mit beliebiger Abfrage oder Hash, aber ohne Pfad, Schema,
+ * `//` oder `..` und nicht die Landingpage selbst. Der Hash der Landingpage ist Nutzereingabe, `open` kommt von einer Seite im iframe.
+ */
+export function isOpenable(href: string): boolean {
+  const path = href.split(/[?#]/, 1)[0] ?? '';
+  return /^[\w.-]+\.html$/.test(path) && !path.includes('..') && path !== 'index.html';
+}
+
+/** Eine andere Seite öffnen. Seiten wechseln nie per Link oder `location` untereinander, sondern über die Shell (Regel in CLAUDE.md). */
+export function openPage(href: string): void {
+  if (!isOpenable(href)) return;
+  if (isEmbedded) postToShell({ type: SHELL_MESSAGE.open, href });
+  else location.assign(href);
 }
 
 export function goHome(): void {

@@ -66,6 +66,13 @@ export const PAGES: PageEntry[] = [
     section: 'test',
   },
   {
+    title: 'Testing',
+    description: 'Test-Szenarien starten · 1 bis 4 Spieler mit Mock-Spielern (Go-Server nötig)',
+    icon: '🧪',
+    href: 'testing.html',
+    section: 'test',
+  },
+  {
     title: 'Unsere Aufstellung',
     description: 'Jede Rolle im Spiel mit ihrer Figur · Monarchen, Truppen, Gegner',
     icon: '🛡️',
