@@ -109,8 +109,23 @@ func TestSummary(t *testing.T) {
 	ticks(r, 3)
 	s := r.Summary()
 	want := Summary{Code: "KRNZ", Depth: 0, Tick: 3, Phase: "day", Day: 1, Gold: []int{100, 100},
-		Troops: s.Troops, Enemies: 0, Castle: 1000, Wave: 0}
+		Troops: s.Troops, Enemies: 0, Castle: 1000, Wave: 0, Devices: []DeviceInfo{{ID: "a", Connected: true, Slots: []int{0, 1}}}}
 	if !reflect.DeepEqual(s, want) || s.Troops["archer"] != 2 {
 		t.Fatalf("Summary: %+v", s)
+	}
+}
+
+// B-088: Die Kennung ist der kürzeste gemeinsame Anfang (mindestens 6 Zeichen), der alle Geräte des Raums unterscheidet.
+func TestGeraeteKennungen(t *testing.T) {
+	f := newFixture()
+	r := need(f.m.Create("b1f4c2e0-5d7a-4c1e-9a33-7e2f0d6c8a15", &peer{}, "kennung", true, 0, []int{0}))(t)
+	if err := r.lockedJoin("b1f4c2ff-0000-4c1e-9a33-7e2f0d6c8a15", &peer{}, []int{1}); err != nil {
+		t.Fatal(err)
+	}
+	r.mu.Lock()
+	got := r.deviceInfos()
+	r.mu.Unlock()
+	if len(got) != 2 || got[0].ID != "b1f4c2e" || got[1].ID != "b1f4c2f" {
+		t.Errorf("Kennungen: %+v", got)
 	}
 }
