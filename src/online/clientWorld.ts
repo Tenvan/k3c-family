@@ -1,4 +1,4 @@
-import type { World } from '../world/sim/types';
+import type { World } from '../model/types';
 import type { LevelInfo } from './clientConnection';
 import type { WorldState } from './clientProtocol';
 

@@ -1,5 +1,8 @@
 import { createRng, type Rng } from '../core/rng';
-import type { BiomeConfig, EventChunkKind } from './biome';
+import type { BiomeConfig, EventChunkKind } from '../model/biome';
+import type { Chunk, ChunkKind, LevelEntity, LevelLayout } from '../model/types';
+
+export type { Chunk, ChunkKind, LevelEntity, LevelLayout } from '../model/types';
 
 /**
  * Prozeduraler Level-Generator (K2C-Stil, 1D Side-Scroller).
@@ -12,29 +15,6 @@ import type { BiomeConfig, EventChunkKind } from './biome';
  *
  * Reine Funktion ohne Phaser-Abhängigkeit => per Vitest testbar.
  */
-
-export type ChunkKind = string; // 'hub' | 'edge' | 'exit' | 'portal' | EventChunkKind | Biom-Chunk-Typ
-
-export interface Chunk {
-  index: number;
-  kind: ChunkKind;
-  startUnits: number;
-}
-
-export interface LevelEntity {
-  kind: string; // 'castle' | 'portal' | 'exit' | 'tree' | 'rock' | 'chest' | 'skillPoint' | 'recruitCamp' | ...
-  x: number; // Units
-}
-
-export interface LevelLayout {
-  seed: string | number;
-  biomeId: string;
-  widthUnits: number;
-  chunkWidthUnits: number;
-  hubCenterUnits: number;
-  chunks: Chunk[];
-  entities: LevelEntity[];
-}
 
 const RESERVED = new Set(['hub', 'edge', 'exit', 'portal']);
 const EVENT_KINDS: EventChunkKind[] = ['chest', 'recruitCamp'];

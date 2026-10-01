@@ -3,7 +3,7 @@ import { createCampaign, currentWorld, fromSave, isSaveGame, joinPlayer, toSave,
 import { cycleAt, globalDayNight } from './cycle';
 import { travelPoints } from './travel';
 import { step } from './world';
-import type { World } from './types';
+import type { World } from '../../model/types';
 
 const DT = 1 / 30;
 const roundtrip = (c: Campaign) => JSON.parse(JSON.stringify(toSave(c, '2026-01-01T00:00:00.000Z')));

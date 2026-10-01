@@ -1,5 +1,5 @@
-import type { LevelLayout } from '../world/levelGenerator';
-import type { GameEvent, World } from '../world/sim/types';
+import type { LevelLayout } from '../model/types';
+import type { GameEvent, World } from '../model/types';
 
 /** Protokoll v2 aus Sicht des Browsers (Vertrag: docs/protocol.md, Beispiele: testdata/protocol/). */
 
