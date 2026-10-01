@@ -5,7 +5,7 @@
 - **Reife:** bereit
 - **Einschiebbar:** nein
 - **Tickets:** B-016, B-037, B-039, B-061, B-082
-- **Start-Commit:** – (wird beim Aktivieren gesetzt: `git rev-parse --short origin/main`)
+- **Start-Commit:** 98a4907
 - **Spec:** freigegeben
 - **Revision:** 4
 - **Freigabe:** 2026-10-01 🧑 Chat (SP08 Revision 4)
@@ -85,7 +85,7 @@ keine
 
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
-| SP08.1 | `SP08.1-protokoll-client.md` | Umsetzung | autonom | offen |
+| SP08.1 | `SP08.1-protokoll-client.md` | Umsetzung | autonom | fertig |
 | SP08.2 | `SP08.2-szene-slots.md` | Umsetzung | autonom | offen |
 | SP08.3 | `SP08.3-lobby.md` | Umsetzung | autonom | offen |
 | SP08.4 | `SP08.4-review.md` | Review | autonom | offen |
