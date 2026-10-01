@@ -126,4 +126,10 @@ Prüfen: `npm run check:dev`. Plan für Statistik, Dienste und Oberfläche: Spri
 - **Release** (Tag `v*`, z.B. `git tag v0.2.0 && git push --tags`): Zip mit `dist/` + `server/` am Release.
   Entpacken und `node server/server.mjs` starten, `npm install` ist dafür nicht nötig.
 
+## Lizenz
+
+Quelltext: [PolyForm Noncommercial 1.0.0](LICENSE). Eigene Grafiken und Sounds: [CC BY-NC 4.0](LICENSE-ASSETS).
+Das Projekt ist *source-available*, aber **nicht** für kommerzielle Nutzung frei (kein Open Source im Sinne der OSI).
+Fremdmaterial behält seine Lizenz: [Figuren-Credits](public/sprites/CREDITS.md), im Spiel die Seite „Lizenzen & Danksagung“ (`lizenzen.html`).
+
 Mehr: [Game Design](docs/game-design.md) · [Roadmap](docs/roadmap.md) · [Arbeitsweise](docs/arbeitsweise.md) · [Sprints](docs/sprints/README.md) · [Backlog](docs/backlog/README.md)

@@ -9,7 +9,7 @@ export interface PageEntry {
   icon: string;
   /** Ziel-URL, relativ. Eine Funktion wird erst beim Öffnen ausgewertet (z.B. für Zufalls-Seeds). */
   href: string | (() => string);
-  section: 'play' | 'test';
+  section: 'play' | 'test' | 'about';
   /** Große Hauptkachel */
   primary?: boolean;
 }
@@ -79,9 +79,17 @@ export const PAGES: PageEntry[] = [
     href: 'figuren.html',
     section: 'test',
   },
+  {
+    title: 'Lizenzen & Danksagung',
+    description: 'Unsere Lizenz (nicht-kommerziell) · Grafiken, Software und ein großes Danke an alle Urheber',
+    icon: '📜',
+    href: 'lizenzen.html',
+    section: 'about',
+  },
 ];
 
 export const SECTIONS: Record<PageEntry['section'], string> = {
   play: 'Spielen',
   test: 'Tests & Werkzeuge',
+  about: 'Über das Spiel',
 };
