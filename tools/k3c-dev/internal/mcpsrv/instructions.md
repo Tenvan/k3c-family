@@ -37,6 +37,12 @@ zurückgeben.
   `K3C_STATUS_TOKEN`; Adresse `K3C_SERVER_URL`, sonst `127.0.0.1:K3C_HTTP_PORT` (8080). Ist der Server aus oder das
   Token falsch, steht das in der Meldung; kein Grund, den Server selbst abzufragen.
 
+## Rechnen ohne Server
+
+- `level_generate {seed, biome?}` und `sim_run {seed, ticks, biome?, inputs?}` rechnen in-process mit `engine/level` und
+  `engine/sim`, ohne laufenden Server und ohne den Browser. Gleiche Eingabe ergibt denselben Text; `ticks` höchstens 100000
+  (30 pro Sekunde). Für Balancing-Vergleiche statt eigener Skripte.
+
 ## Zustand
 
 - `workbench_status`: Adresse, Laufzeit, Aufrufe, Clients, letzte Läufe, Log-Quellen.
