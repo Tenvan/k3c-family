@@ -60,7 +60,7 @@ keine
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
 | M6.1 | `M6.1-server-tools.md` | Umsetzung | autonom | fertig |
-| M6.2 | `M6.2-level-sim-tools.md` | Umsetzung | autonom | offen |
+| M6.2 | `M6.2-level-sim-tools.md` | Umsetzung | autonom | fertig |
 | M6.3 | `M6.3-review.md` | Review | autonom | offen |
 
 ## Abnahme
