@@ -56,7 +56,7 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-048](B-048-standardbibliothek-in-001.md) | SRV | Frage | niedrig | offen | – | Die Wahl der Go-Standardbibliothek ist dort festgehalten, wo B-001 auf sie verweist |
 | [B-049](B-049-sp09-domaene.md) | INF | Frage | niedrig | erledigt | SP09 | SP09 bleibt in einer Domäne oder hat einen erlaubten Grenzfall |
 | [B-050](B-050-go-dateilaenge.md) | INF | Schuld | mittel | erledigt | SP01 | Die Dateilänge von Go-Code wird wie bei TypeScript geprüft |
-| [B-051](B-051-oxlint-warnungen.md) | INF | Schuld | niedrig | offen | – | Oxlint meldet im Bestand keine Warnungen mehr |
+| [B-051](B-051-oxlint-warnungen.md) | INF | Schuld | niedrig | eingeplant | I1 | Oxlint meldet im Bestand keine Warnungen mehr |
 | [B-052](B-052-requirements.md) | INF | Idee | mittel | erledigt | SP01 | Alle vorausgesetzten Installationen stehen in requirements.md |
 | [B-053](B-053-ci-lauf-sp01.md) | INF | Problem | hoch | offen | – | Die CI hat die Prüfungen aus SP01 einmal grün durchlaufen |
 | [B-054](B-054-go-verschachtelung.md) | INF | Problem | mittel | erledigt | L1 | Die Verschachtelung von Go-Code wird als Tiefe geprüft |
@@ -75,10 +75,10 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-067](B-067-dev-dienste.md) | SRV | Idee | mittel | erledigt | M3 | k3c-dev startet, überwacht und stoppt die Entwicklungs-Dienste, auch für Agenten |
 | [B-068](B-068-dev-dienste-seite.md) | SRV | Idee | mittel | erledigt | M4 | k3c-dev zeigt die Dienste als Karten mit Zustand, Metriken und Log-Level |
 | [B-069](B-069-ci-k3c-dev.md) | INF | Problem | mittel | erledigt | – | Der CI-Job k3c-dev ist einmal grün gelaufen |
-| [B-070](B-070-gitignore-verankern.md) | INF | Schuld | niedrig | offen | – | Die .gitignore ignoriert reports/, saves/ und certs/ nur an der Repo-Wurzel |
+| [B-070](B-070-gitignore-verankern.md) | INF | Schuld | niedrig | eingeplant | I1 | Die .gitignore ignoriert reports/, saves/ und certs/ nur an der Repo-Wurzel |
 | [B-071](B-071-golden-arm64.md) | INF | Problem | mittel | offen | – | Die Golden-Tests laufen auch auf arm64 grün |
-| [B-072](B-072-depguard-rng.md) | INF | Schuld | niedrig | offen | – | depguard prüft die Schichtgrenze auch für engine/rng |
-| [B-073](B-073-go-task-umstellen.md) | INF | Schuld | hoch | offen | – | Alle Aufrufer nutzen Go Task statt npm-Skripte |
+| [B-072](B-072-depguard-rng.md) | INF | Schuld | niedrig | eingeplant | I1 | depguard prüft die Schichtgrenze auch für engine/rng |
+| [B-073](B-073-go-task-umstellen.md) | INF | Schuld | hoch | eingeplant | I1 | Alle Aufrufer nutzen Go Task statt npm-Skripte |
 | [B-074](B-074-golden-wirtschaft-luecken.md) | SIM | Problem | mittel | erledigt | SP06 | Golden-Läufe decken Tragen, Bauen, Bögen, Truhen und Münz-Rückgabe ab |
 | [B-075](B-075-golden-spielstand-hub.md) | SIM | Schuld | mittel | offen | – | Der Golden-Spielstand enthält einen gebauten und veränderten Hub |
 | [B-076](B-076-websocket-bibliothek.md) | INF | Frage | hoch | erledigt | SP07 | Der Go-Server spricht WebSocket über github.com/coder/websocket |
