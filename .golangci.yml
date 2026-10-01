@@ -29,6 +29,11 @@ linters:
               desc: "engine/sim und engine/level kennen keine Räume"
             - pkg: k3c/engine/net
               desc: "engine/sim und engine/level kennen kein Netz"
+        room-ohne-netz:
+          files: ["**/engine/room/**"]
+          deny:
+            - pkg: k3c/engine/net
+              desc: "engine/room kennt kein Netz, engine/net setzt room.Peer um"
   exclusions:
     rules:
       - path: _test\.go

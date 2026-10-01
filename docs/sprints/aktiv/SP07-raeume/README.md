@@ -5,7 +5,7 @@
 - **Reife:** bereit
 - **Einschiebbar:** nein
 - **Tickets:** B-030, B-031, B-036, B-038, B-060, B-076
-- **Start-Commit:** –
+- **Start-Commit:** 3a3c9d5
 - **Spec:** freigegeben
 - **Revision:** 1
 - **Freigabe:** 2026-10-01 🧑 Chat (SP07 Rev. 1: Protokoll v2 vollständig, coder/websocket, B-047 nach M6, B-030 Rev. 3)
@@ -101,7 +101,7 @@ eigenen Sprint M6. Speichern pro Raum gehört in SP07 (B-060 › Offene Fragen),
 
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
-| SP07.1 | `SP07.1-raummodell.md` | Umsetzung | autonom | offen |
+| SP07.1 | `SP07.1-raummodell.md` | Umsetzung | autonom | fertig |
 | SP07.2 | `SP07.2-websocket.md` | Umsetzung | autonom | offen |
 | SP07.3 | `SP07.3-takt-delta-status.md` | Umsetzung | autonom | offen |
 | SP07.4 | `SP07.4-review.md` | Review | autonom | offen |
