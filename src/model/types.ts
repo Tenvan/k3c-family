@@ -1,4 +1,3 @@
-import type { Rng } from '../core/rng';
 import type { BiomeConfig } from './biome';
 import type { ResourceKind } from './data';
 
@@ -176,7 +175,6 @@ export interface World {
   seed: string;
   biome: BiomeConfig;
   level: LevelLayout;
-  rng: Rng;
   /** Simulierte Sekunden seit Start */
   time: number;
   /** Faktor für den Tag/Nacht-Zyklus (Dev: ?fast=1) */

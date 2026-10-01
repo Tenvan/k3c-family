@@ -54,12 +54,6 @@ describe('Code-Regeln', () => {
     );
     expect(offenders).toEqual([]);
   });
-
-  it('RNG (src/core/rng.ts) ohne Math.random() und ohne Phaser', () => {
-    const code = read('src/core/rng.ts').replace(/\/\*[\s\S]*?\*\/|\/\/.*$/gm, '');
-    expect(code).not.toMatch(/Math\.random\(/);
-    expect(code).not.toMatch(/from 'phaser'/);
-  });
 });
 
 describe('Komplexität & Schichten', () => {

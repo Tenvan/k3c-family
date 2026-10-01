@@ -42,12 +42,12 @@ Umsetzung in Sprints und Sessions: [`docs/sprints/`](sprints/README.md). Tickets
 
 ## Schritt 3b – Go-Engine (Entscheidung 001)
 
-- [ ] Protokoll v2: mehrere Räume, mehrere lokale Spieler pro Gerät, Couch + Online gemischt
-- [ ] Go-Server ersetzt `server/*.mjs` (Windows-EXE, Docker amd64/arm64)
-- [ ] Simulation nach Go portiert (Golden-Tests gegen die TS-Simulation)
-- [ ] Browser als reiner Client, TS-Simulation gelöscht
-- [ ] Diagnose-TUI, Betrieb auf dem Raspberry Pi
-- [ ] Entwickler-Werkzeug `k3c-dev` mit MCP-Server für Agenten (M1: Prüfungen, Logs; M2: Statistik, Berichte, Spielstände;
+- [x] Protokoll v2: mehrere Räume, mehrere lokale Spieler pro Gerät, Couch + Online gemischt
+- [x] Go-Server ersetzt `server/*.mjs` (Windows-EXE, Docker amd64/arm64)
+- [x] Simulation nach Go portiert (Golden-Tests gegen die TS-Simulation)
+- [x] Browser als reiner Client, TS-Simulation gelöscht
+- [x] Diagnose-TUI (SP10); [ ] Betrieb auf dem Raspberry Pi (SP11)
+- [x] Entwickler-Werkzeug `k3c-dev` mit MCP-Server für Agenten (M1: Prüfungen, Logs; M2: Statistik, Berichte, Spielstände;
   M3: Dienste; M4: Oberfläche mit Dienste- und Logs-Seite; M5: MCP-Seite; SP07: Räume, Simulation)
 
 ## Schritt 4 – Inhalt & Politur
