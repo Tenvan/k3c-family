@@ -21,6 +21,7 @@ type goldenRun struct {
 	Dt            float64
 	Ticks         int
 	SnapshotEvery int
+	Setup         *struct{ Stock Stock } // Start-Vorrat nach CreateWorld und AddPlayer
 	Inputs        []struct {
 		Ticks    int
 		Commands []PlayerCommand
@@ -71,6 +72,9 @@ func replay(t *testing.T, run goldenRun) {
 	for range run.Players {
 		AddPlayer(w)
 	}
+	if run.Setup != nil {
+		w.Stock = run.Setup.Stock
+	}
 	snap, tick := 0, 0
 	compare(t, run, 0, run.Snapshots[0].World, w)
 	for _, seg := range run.Inputs {
@@ -103,7 +107,10 @@ func TestGoldenLaeufeVollstaendig(t *testing.T) {
 	for _, run := range goldenRuns(t) {
 		names = append(names, run.Name)
 	}
-	for _, want := range []string{"forest-tag", "forest-nacht", "cave-aggression", "forest-ohne-spieler"} {
+	for _, want := range []string{
+		"forest-tag", "forest-nacht", "cave-aggression", "forest-ohne-spieler",
+		"forest-aufbau", "cave-aufbau", "forest-raub", "forest-sturm", "cave-belagerung", "mine-welle",
+	} {
 		if !slices.Contains(names, want) {
 			t.Errorf("Golden-Lauf sim-%s fehlt", want)
 		}

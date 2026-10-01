@@ -76,6 +76,53 @@ interface SimRun {
   ticks: number;
   /** `ohne Gegner`: in keinem Tick ein Gegner (Grundlage für SP05); `mit Welle`: am Ende lief mindestens eine Welle. */
   expect: 'ohne Gegner' | 'mit Welle';
+  /** Abstand der Snapshots, Standard SNAPSHOT_EVERY (lange Läufe: 60) */
+  snapshotEvery?: number;
+  /** Start-Vorrat nach createWorld und addPlayer, damit Bauen ohne langes Sammeln erreichbar ist (SP06.3) */
+  setup?: { stock: World['stock'] };
+  /** Eingabe je Tick statt SCRIPT; aufgezeichnet als Segmente, Go spielt sie nur ab */
+  bot?: (w: World, tick: number) => PlayerCommand[];
+}
+
+const GO = (dx: number): PlayerCommand => cmd(Math.sign(dx), Math.abs(dx) > 10);
+
+/**
+ * Ziel eines Aufbau-Spielers: Bauplätze seiner Seite bezahlen (ohne Treppen). Spieler 1 markiert danach Bäume,
+ * Spieler 2 rekrutiert zwei Landstreicher und holt eine Truhe; beide kaufen Bögen bis zu 4 Bogenschützen.
+ */
+function builderGoal(w: World, p: World['players'][number], tick: number): { x: number; pay: boolean } | null {
+  const side = p.index === 0 ? -1 : 1;
+  const mine = w.sites.filter((s) => Math.sign(s.x - w.hubX) === side && !s.kind.startsWith('stairs'));
+  // Spieler 2 bricht die erste Zahlung an seiner Mauer ab (Rückgabe der Münzen).
+  const wall = mine.find((s) => s.kind === 'wall');
+  if (side > 0 && wall && tick < 300) return { x: wall.x, pay: tick < 200 };
+  const unpaid = mine.find((s) => s.state === 'unpaid');
+  if (unpaid) return { x: unpaid.x, pay: true };
+  const tree = w.nodes.filter((n) => !n.marked && n.kind === 'tree').sort((a, b) => Math.abs(a.x - p.x) - Math.abs(b.x - p.x))[0];
+  if (side < 0 && tree && w.nodes.filter((n) => n.marked).length < 3) return { x: tree.x, pay: true };
+  const vagrant = w.troops.find((t) => t.kind === 'vagrant');
+  if (side > 0 && vagrant && w.troops.filter((t) => t.kind === 'peasant').length < 3) return { x: vagrant.x, pay: true };
+  const shop = w.sites.find((s) => s.kind === 'workshop' && s.state === 'built');
+  if (shop && shop.bows + w.troops.filter((t) => t.kind === 'archer').length < 4) return { x: shop.x, pay: true };
+  const chest = w.pickups.find((pk) => pk.kind === 'chest');
+  return side > 0 && chest ? { x: chest.x, pay: false } : null;
+}
+
+/** Beide Spieler stellen sich mit vollem Beutel an je ein Portal (Gegner klauen Gold, Monarchen fallen). */
+function raider(w: World): PlayerCommand[] {
+  return w.players.map((p) => {
+    const dx = w.portals[p.index % 2 === 0 ? 0 : w.portals.length - 1] - p.x;
+    return Math.abs(dx) > 0.5 ? GO(dx) : IDLE;
+  });
+}
+
+function builder(w: World, tick: number): PlayerCommand[] {
+  return w.players.map((p) => {
+    const goal = builderGoal(w, p, tick);
+    if (!goal) return IDLE;
+    const dx = goal.x - p.x;
+    return Math.abs(dx) > 0.5 ? GO(dx) : cmd(0, false, goal.pay);
+  });
 }
 
 const SIM_RUNS: SimRun[] = [
@@ -90,6 +137,31 @@ const SIM_RUNS: SimRun[] = [
   },
   {
     name: 'cave-aggression', biome: 'cave', seed: 'Käse🧀', cycleSpeed: 100, players: 1, ticks: 2700, expect: 'mit Welle',
+  },
+  // SP06.3: Läufe für die Abdeckung der Go-Simulation (B-074)
+  {
+    name: 'forest-aufbau', biome: 'forest', seed: 'golden-4', cycleSpeed: 5, players: 2, ticks: 6000, expect: 'mit Welle',
+    snapshotEvery: 60, setup: { stock: { wood: 600, stone: 0, copper: 0 } }, bot: builder,
+  },
+  {
+    name: 'cave-aufbau', biome: 'cave', seed: 'golden-8', cycleSpeed: 50, players: 2, ticks: 6000, expect: 'mit Welle',
+    snapshotEvery: 60, setup: { stock: { wood: 600, stone: 0, copper: 0 } }, bot: builder,
+  },
+  {
+    name: 'forest-raub', biome: 'forest', seed: 'golden-9', cycleSpeed: 20, players: 2, ticks: 1800, expect: 'mit Welle',
+    snapshotEvery: 60, bot: raider,
+  },
+  {
+    name: 'forest-sturm', biome: 'forest', seed: 'golden-5', cycleSpeed: 100, players: 2, ticks: 4500, expect: 'mit Welle',
+    snapshotEvery: 60,
+  },
+  {
+    name: 'cave-belagerung', biome: 'cave', seed: 'golden-6', cycleSpeed: 100, players: 1, ticks: 6000, expect: 'mit Welle',
+    snapshotEvery: 60,
+  },
+  {
+    name: 'mine-welle', biome: 'mine', seed: 'golden-7', cycleSpeed: 100, players: 2, ticks: 3000, expect: 'mit Welle',
+    snapshotEvery: 60,
   },
 ];
 
@@ -110,19 +182,24 @@ const snapshot = (w: World) => JSON.parse(json({ ...w, rng: undefined, biome: un
 function simulate(run: SimRun, biome: BiomeConfig) {
   const w = createWorld(biome, run.seed, { cycleSpeed: run.cycleSpeed });
   for (let i = 0; i < run.players; i++) addPlayer(w);
-  const segments = inputs(run.ticks, run.players);
+  if (run.setup) w.stock = { ...run.setup.stock };
+  const every = run.snapshotEvery ?? SNAPSHOT_EVERY;
+  const script = inputs(run.ticks, run.players);
+  const segments: typeof script = [];
   const snapshots = [{ tick: 0, world: snapshot(w) }];
-  let tick = 0;
-  for (const segment of segments) {
-    for (let n = 0; n < segment.ticks; n++) {
-      step(w, segment.commands, DT);
-      tick++;
-      if (run.expect === 'ohne Gegner') expect(w.enemies.length + w.spawnQueue.length, `Tick ${tick}`).toBe(0);
-      if (tick % SNAPSHOT_EVERY === 0) snapshots.push({ tick, world: snapshot(w) });
-    }
+  for (let tick = 1, i = 0, n = 0; tick <= run.ticks; tick++) {
+    let commands = script[i].commands;
+    if (++n === script[i].ticks) (i++, (n = 0));
+    if (run.bot) commands = run.bot(w, tick);
+    const last = segments.at(-1);
+    if (last && json(last.commands) === json(commands)) last.ticks++;
+    else segments.push({ ticks: 1, commands });
+    step(w, commands, DT);
+    if (run.expect === 'ohne Gegner') expect(w.enemies.length + w.spawnQueue.length, `Tick ${tick}`).toBe(0);
+    if (tick % every === 0) snapshots.push({ tick, world: snapshot(w) });
   }
   if (run.expect === 'mit Welle') expect(w.wave).toBeGreaterThan(0);
-  return { segments, snapshots };
+  return { segments: run.bot ? segments : script, snapshots, every };
 }
 
 const biome = (id: string) => BIOMES.find((b) => b.id === id)!;
@@ -183,9 +260,9 @@ describe('Golden-Daten (testdata/golden/)', () => {
   });
 
   it.each(SIM_RUNS)('sim-$name.json', async (run) => {
-    const { segments, snapshots } = simulate(run, biome(run.biome));
-    const { name, biome: id, seed, cycleSpeed, players, ticks } = run;
-    const head = { name, biome: id, seed, cycleSpeed, players, dt: DT, ticks, snapshotEvery: SNAPSHOT_EVERY, inputs: segments };
+    const { segments, snapshots, every } = simulate(run, biome(run.biome));
+    const { name, biome: id, seed, cycleSpeed, players, ticks, setup } = run;
+    const head = { name, biome: id, seed, cycleSpeed, players, dt: DT, ticks, snapshotEvery: every, ...(setup && { setup }), inputs: segments };
     await expect(jsonFile(head, 'snapshots', snapshots)).toMatchFileSnapshot(`${DIR}/sim-${run.name}.json`);
   });
 
