@@ -1,6 +1,6 @@
 # SP06 · SIM · Port II – Gegner, Wellen, Reisen, Kampagne
 
-- **Status:** aktiv
+- **Status:** erledigt
 - **Domäne:** SIM
 - **Reife:** bereit
 - **Einschiebbar:** nein
@@ -90,8 +90,11 @@ keine. Geklärt von 🧑 (2026-10-01, Chat): B-059 gehört in SP06.2.
 | SP06.1 | `SP06.1-kampf.md` | Umsetzung | autonom | fertig |
 | SP06.2 | `SP06.2-kampagne.md` | Umsetzung | autonom | fertig |
 | SP06.3 | `SP06.3-abdeckung.md` | Umsetzung | autonom | fertig |
-| SP06.4 | `SP06.4-review.md` | Review | autonom | offen |
+| SP06.4 | `SP06.4-review.md` | Review | autonom | fertig |
 
 ## Abnahme
 
-–
+- 2026-10-01, leichtes Review über `520e39d..main` per unabhängigem Subagent (auf Auftrag von 🧑 im selben Lauf).
+- Kriterien: AC-01 (SP06.1), AC-02, AC-03 und AC-04 (SP06.2), AC-05 (SP06.3), alle mit Gegentest bzw. Messung belegt.
+  B-043, B-059 und B-074 sind erledigt.
+- Behobene Befunde: keine (keine schweren). Neues Ticket: B-075 (Golden-Spielstand mit ausgebautem Hub).

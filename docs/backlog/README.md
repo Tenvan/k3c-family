@@ -48,7 +48,7 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-040](B-040-server-finden.md) | SRV | Idee | niedrig | offen | – | Geräte finden den Server im Heimnetz |
 | [B-041](B-041-wails-starter.md) | SRV | Idee | niedrig | offen | – | Wails-Starter für Windows existiert |
 | [B-042](B-042-pi-leistungsziel.md) | SRV | Frage | hoch | eingeplant | SP11 | Pi-Modell und Leistungsziel sind festgelegt |
-| [B-043](B-043-portierungs-fallen.md) | SIM | Problem | hoch | eingeplant | SP04 | Portierungs-Fallen sind durch Golden-Tests abgedeckt |
+| [B-043](B-043-portierungs-fallen.md) | SIM | Problem | hoch | erledigt | SP06 | Portierungs-Fallen sind durch Golden-Tests abgedeckt |
 | [B-044](B-044-planer-struktur.md) | INF | Idee | mittel | erledigt | SP00 | Sprints und Tickets liegen als Dateien nach Pflicht-Vorlagen |
 | [B-045](B-045-sdd.md) | INF | Idee | hoch | erledigt | SP00 | Tickets und Sprints sind Specs nach Spec-Driven Development |
 | [B-046](B-046-dev-mcp.md) | SRV | Idee | mittel | erledigt | M1 | Entwickler-Werkzeug k3c-dev gibt Agenten über MCP verdichteten Zugriff auf Prüfungen und Logs |
@@ -80,3 +80,4 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-072](B-072-depguard-rng.md) | INF | Schuld | niedrig | offen | – | depguard prüft die Schichtgrenze auch für engine/rng |
 | [B-073](B-073-go-task-umstellen.md) | INF | Schuld | hoch | offen | – | Alle Aufrufer nutzen Go Task statt npm-Skripte |
 | [B-074](B-074-golden-wirtschaft-luecken.md) | SIM | Problem | mittel | erledigt | SP06 | Golden-Läufe decken Tragen, Bauen, Bögen, Truhen und Münz-Rückgabe ab |
+| [B-075](B-075-golden-spielstand-hub.md) | SIM | Schuld | mittel | offen | – | Der Golden-Spielstand enthält einen gebauten und veränderten Hub |
