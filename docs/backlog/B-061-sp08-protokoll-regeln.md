@@ -3,8 +3,8 @@
 - **Domäne:** CLI
 - **Typ:** Problem
 - **Prio:** hoch
-- **Status:** offen
-- **Sprint:** –
+- **Status:** eingeplant
+- **Sprint:** SP08
 - **Erstellt:** 2026-09-30
 - **Spec:** Entwurf
 - **Revision:** 1
@@ -61,4 +61,4 @@ keine
 
 ## Notizen
 
-Beim Bereitmachen von SP08 einarbeiten.
+Eingearbeitet in SP08 Revision 3: Handschlag AC-06, Eingabe-Takt AC-07, Level und Delta AC-08, Fehler-Codes AC-09, Wiederverbinden AC-10, Slots AC-11.

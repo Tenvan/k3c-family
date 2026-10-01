@@ -7,7 +7,7 @@
 - **Sprint:** SP08
 - **Erstellt:** 2026-09-29
 - **Spec:** Entwurf
-- **Revision:** 1
+- **Revision:** 2
 - **Freigabe:** –
 
 ## Ausgangslage
@@ -49,8 +49,8 @@ Spieler weit auseinander → das Verhalten ist Teil der Entscheidung.
 
 ## Offene Fragen
 
-Welches Layout? (🧑, in SP08)
+keine
 
 ## Notizen
 
-–
+Entscheidung 2026-10-01 🧑 (Chat, beim Bereitmachen von SP08): **2×2-Raster** für 3–4 lokale Spieler, eine Kamera je Spieler. Bei 1–2 Spielern bleibt es bei Vollbild bzw. Streifen. AC-01 ist damit getroffen, AC-02 setzt SP08 um.
