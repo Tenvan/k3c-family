@@ -10,3 +10,4 @@ dist-server/
 /logs/
 .mcp.json
 .task/
+/bin/
