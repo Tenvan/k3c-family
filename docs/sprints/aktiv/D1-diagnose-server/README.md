@@ -67,7 +67,7 @@ keine
 |---|---|---|---|---|
 | D1.1 | `D1.1-json-log.md` | Umsetzung | autonom | fertig |
 | D1.2 | `D1.2-status-log-endpunkt.md` | Umsetzung | autonom | fertig |
-| D1.3 | `D1.3-aktionen.md` | Umsetzung | autonom | offen |
+| D1.3 | `D1.3-aktionen.md` | Umsetzung | autonom | fertig |
 | D1.4 | `D1.4-review.md` | Review | autonom | offen |
 
 ## Abnahme
