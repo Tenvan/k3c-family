@@ -88,9 +88,12 @@ keine
 | SP08.1 | `SP08.1-protokoll-client.md` | Umsetzung | autonom | fertig |
 | SP08.2 | `SP08.2-szene-slots.md` | Umsetzung | autonom | fertig |
 | SP08.3 | `SP08.3-lobby.md` | Umsetzung | autonom | fertig |
-| SP08.4 | `SP08.4-review.md` | Review | autonom | offen |
+| SP08.4 | `SP08.4-review.md` | Review | autonom | fertig |
 | SP08.5 | `SP08.5-tv-abnahme.md` | Workshop | Mensch | offen |
 
 ## Abnahme
 
-–
+Review 2026-10-01 (SP08.4): `task check` und `task check:go` grün, Diff `98a4907..main` geprüft; keine schweren Befunde, nichts behoben, keine neuen Tickets.
+AC-01 bis AC-03 und AC-06 bis AC-14 geprüft mit Tests laut Ergebnis in SP08.1 bis SP08.3 (AC-09: je Fehler-Code ein Test, `replaced`/`version` ohne Neuverbinden; AC-13: `noSim.test.ts` prüft die Importzeilen in `src/scenes`); AC-04 entfällt.
+`verschoben` auf SP08.5, weil nicht im Browser geprüft: Anzeige der Fehler-Hinweise in der Lobby und im Spiel (AC-09/AC-10), Raum erstellen/beitreten mit zwei Tabs (AC-03), Szene, Interpolation und Layout am echten Server (AC-01, AC-02, AC-12).
+AC-05 bleibt bei SP08.5 (Mensch am TV); B-061 erledigt; B-082, B-016, B-037, B-039 bleiben bis SP08.5 offen.
