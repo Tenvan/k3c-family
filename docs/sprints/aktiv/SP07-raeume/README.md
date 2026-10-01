@@ -102,7 +102,7 @@ eigenen Sprint M6. Speichern pro Raum gehört in SP07 (B-060 › Offene Fragen),
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
 | SP07.1 | `SP07.1-raummodell.md` | Umsetzung | autonom | fertig |
-| SP07.2 | `SP07.2-websocket.md` | Umsetzung | autonom | offen |
+| SP07.2 | `SP07.2-websocket.md` | Umsetzung | autonom | fertig |
 | SP07.3 | `SP07.3-takt-delta-status.md` | Umsetzung | autonom | offen |
 | SP07.4 | `SP07.4-review.md` | Review | autonom | offen |
 

@@ -8,8 +8,10 @@ import (
 	"io"
 	"log/slog"
 	"net/http"
+	"sync"
 	"time"
 
+	"k3c/engine/room"
 	"k3c/engine/store"
 )
 
@@ -23,16 +25,21 @@ type Config struct {
 	StatusToken string
 	Version     string
 	StartedAt   time.Time
+	// Rooms sind die Räume hinter /ws (Protokoll v2); nil = kein /ws. NewHandler setzt Rooms.Changed.
+	Rooms *room.Manager
 }
 
 type server struct {
 	cfg Config
 	log *slog.Logger
+
+	mu    sync.Mutex
+	conns map[*conn]bool // offene WebSocket-Verbindungen
 }
 
 // NewHandler baut den Handler mit allen Routen.
 func NewHandler(cfg Config) http.Handler {
-	s := &server{cfg: cfg, log: cfg.Log}
+	s := &server{cfg: cfg, log: cfg.Log, conns: map[*conn]bool{}}
 	if s.log == nil {
 		s.log = slog.New(slog.NewTextHandler(io.Discard, nil))
 	}
@@ -43,6 +50,10 @@ func NewHandler(cfg Config) http.Handler {
 	mux.HandleFunc("/api/save/restore", s.restore)
 	mux.HandleFunc("/api/status", s.status)
 	mux.HandleFunc("/api/report", s.report)
+	if cfg.Rooms != nil {
+		cfg.Rooms.Changed = s.broadcastRooms
+		mux.HandleFunc("/ws", s.websocket)
+	}
 	mux.HandleFunc("/", s.static)
 	return mux
 }
