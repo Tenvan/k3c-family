@@ -1,4 +1,4 @@
-import type { GameEvent, PlayerCommand, World } from '../world/sim/types';
+import type { GameEvent, PlayerCommand, World } from '../model/types';
 
 /**
  * Online-Modus: Der Server rechnet die Simulation, Clients schicken nur ihre Eingabe und zeichnen den Zustand.

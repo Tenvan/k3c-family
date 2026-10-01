@@ -7,7 +7,7 @@ import type { RoomClient } from '../online/clientConnection';
 import { applyState, createViewWorld } from '../online/clientWorld';
 import { blendAlpha, interpolate } from '../online/clientInterpolation';
 import type { Frame } from '../online/clientConnection';
-import type { GameEvent, World } from '../world/sim/types';
+import type { GameEvent, World } from '../model/types';
 import { computeLayout, type Cell } from './layout';
 import type { LobbySceneData } from './LobbyScene';
 import { leavesGame } from './lobbyLogic';

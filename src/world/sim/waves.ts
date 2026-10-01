@@ -1,6 +1,6 @@
 import type { Rng } from '../../core/rng';
-import type { BiomeConfig } from '../biome';
-import { ENEMIES, WAVES, type WaveRow } from './data';
+import type { BiomeConfig } from '../../model/biome';
+import { ENEMIES, WAVES, type WaveRow } from '../../model/data';
 
 export interface SpawnOrder {
   kind: string;

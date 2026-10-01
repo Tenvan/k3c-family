@@ -1,4 +1,7 @@
-import { BIOMES } from '../biome';
+import { BIOMES } from '../../model/biome';
+import type { CycleInfo } from '../../model/types';
+
+export type { CycleInfo, Phase } from '../../model/types';
 
 /**
  * Tag/Nacht-Zyklus: Tag → Dämmerung → Nacht → (nächster Tag).
@@ -8,17 +11,6 @@ export interface DayNightConfig {
   dayMinutes: number;
   twilightMinutes: number;
   nightMinutes: number;
-}
-
-export type Phase = 'day' | 'dusk' | 'night';
-
-export interface CycleInfo {
-  phase: Phase;
-  /** 1 = erster Tag. Die Nacht gehört zum Tag davor. */
-  day: number;
-  /** 0..1 innerhalb der Phase */
-  progress: number;
-  secondsLeft: number;
 }
 
 export function cycleAt(cfg: DayNightConfig, seconds: number): CycleInfo {

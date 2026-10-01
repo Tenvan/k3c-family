@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import { MAX_ONLINE_PLAYERS, applySnapshot, sanitizeInput, snapshotWorld, type ServerMessage } from './protocol';
 import { Room } from './room';
-import { biomeForDepth } from '../world/biome';
+import { biomeForDepth } from '../model/biome';
 import { createWorld } from '../world/sim/world';
 
 function client() {

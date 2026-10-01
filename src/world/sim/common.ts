@@ -1,5 +1,5 @@
-import { BUILDINGS, HUB, MONARCH } from './data';
-import type { World } from './types';
+import { BUILDINGS, HUB, MONARCH } from '../../model/data';
+import type { World } from '../../model/types';
 
 export const newId = (w: World): number => w.nextId++;
 

@@ -3,11 +3,11 @@
 // Go liest dieselben Dateien und muss sie exakt nachbilden (engine/rng, engine/level, später engine/sim).
 import { describe, expect, it } from 'vitest';
 import { createRng, hashSeed } from '../src/core/rng';
-import { BIOMES, type BiomeConfig } from '../src/world/biome';
+import { BIOMES, type BiomeConfig } from '../src/model/biome';
 import { generateLevel, validateLevel } from '../src/world/levelGenerator';
 import { createCampaign, currentWorld, fromSave, joinPlayer, toSave, travel, type SaveGame } from '../src/world/sim/campaign';
 import { addPlayer, createWorld, step } from '../src/world/sim/world';
-import { IDLE, type PlayerCommand, type World } from '../src/world/sim/types';
+import { IDLE, type PlayerCommand, type World } from '../src/model/types';
 
 const DIR = '../testdata/golden';
 
