@@ -26,6 +26,8 @@ func sign(v float64) float64 {
 
 func intPtr(v int) *int { return &v }
 
+func isAlive(p *Player) bool { return p.RespawnIn <= 0 }
+
 // isDangerous: nachts oder solange Gegner in der Welt sind, bleiben Bauern im Hub.
 func isDangerous(w *World) bool { return w.Cycle.Phase == "night" || len(w.Enemies) > 0 }
 
@@ -47,6 +49,15 @@ func siteByID(w *World, id int) *Site {
 	for _, s := range w.Sites {
 		if s.ID == id {
 			return s
+		}
+	}
+	return nil
+}
+
+func troopByID(w *World, id int) *Troop {
+	for _, t := range w.Troops {
+		if t.ID == id {
+			return t
 		}
 	}
 	return nil

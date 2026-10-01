@@ -50,12 +50,17 @@ func goldenRuns(t *testing.T) []goldenRun {
 	return runs
 }
 
-// fullUntil ist der letzte Tick, bis zu dem ein Lauf vollständig verglichen wird; danach nur time und cycle.
+// fullUntil ist der letzte Tick, bis zu dem ein Lauf vollständig verglichen wird: der Snapshot vor dem ersten mit
+// Gegner oder spawnQueue-Eintrag (Gegner rechnet Go ab SP06). Danach nur time und cycle.
 func fullUntil(run goldenRun) int {
-	if run.Players == 0 {
-		return run.Ticks
+	last := 0
+	for _, s := range run.Snapshots {
+		if len(s.World["enemies"].([]any))+len(s.World["spawnQueue"].([]any)) > 0 {
+			return last
+		}
+		last = s.Tick
 	}
-	return 0
+	return run.Ticks
 }
 
 // compare vergleicht einen Snapshot: bis fullUntil vollständig, danach nur die Felder, die Go schon rechnet.
@@ -123,6 +128,20 @@ func TestGoldenLaeufeVollstaendig(t *testing.T) {
 	for _, want := range []string{"forest-tag", "forest-nacht", "cave-aggression", "forest-ohne-spieler"} {
 		if !slices.Contains(names, want) {
 			t.Errorf("Golden-Lauf sim-%s fehlt", want)
+		}
+	}
+}
+
+// Die Läufe ohne Gegner müssen vollständig verglichen werden, die mit Welle bis kurz vor der ersten Welle.
+func TestGoldenGrenzen(t *testing.T) {
+	for _, run := range goldenRuns(t) {
+		limit := fullUntil(run)
+		t.Logf("sim-%s: vollständig bis Tick %d von %d", run.Name, limit, run.Ticks)
+		if (run.Name == "forest-tag" || run.Name == "forest-ohne-spieler") && limit != run.Ticks {
+			t.Errorf("sim-%s: nur bis Tick %d vollständig, erwartet %d", run.Name, limit, run.Ticks)
+		}
+		if limit < run.Ticks/3 {
+			t.Errorf("sim-%s: nur bis Tick %d vollständig", run.Name, limit)
 		}
 	}
 }
