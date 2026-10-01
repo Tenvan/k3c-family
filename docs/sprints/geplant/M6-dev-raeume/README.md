@@ -2,12 +2,12 @@
 
 - **Status:** geplant
 - **Domäne:** SRV
-- **Reife:** Entwurf
+- **Reife:** bereit
 - **Einschiebbar:** ja
 - **Tickets:** B-047
-- **Start-Commit:** –
+- **Start-Commit:** – (wird beim Aktivieren gesetzt: `git rev-parse --short origin/main`)
 - **Spec:** Entwurf
-- **Revision:** 1
+- **Revision:** 2
 - **Freigabe:** –
 
 ## Ausgangslage
@@ -27,7 +27,7 @@ Entwickler und Coding-Agenten; Balancing-Workshops (REG) nutzen `sim_run`.
 
 ## Anforderungen
 
-B-047 › Anforderungen.
+B-047 › Anforderungen (Adresse und Token aus `K3C_SERVER_URL`/`K3C_HTTP_PORT`/`K3C_STATUS_TOKEN`, `ticks` höchstens 100 000; Entscheidung 🧑 2026-10-01).
 
 ## Nicht-Ziele
 
@@ -53,17 +53,15 @@ B-047 › Ausnahme- und Fehlerfälle.
 
 ## Offene Fragen
 
-- Namen der Umgebungsvariablen für Adresse und Token des Servers (🧑, zusammen mit B-027).
-- Grenze für `ticks` in `sim_run` (🧑).
+keine
 
 ## Sessions
 
-Entwurf. Vor dem Aktivieren jede Session als Datei nach `docs/vorlagen/session.md` schreiben, die Kriterien in
-Klammern werden ihr Feld `Kriterien`.
-
-- M6.1 `server_status`, `rooms_list`, `room_snapshot` über `/api/status` (AC-01).
-- M6.2 `level_generate`, `sim_run` in-process (AC-02).
-- M6.3 🔍 Review (alle).
+| Nr. | Datei | Typ | Agent | Status |
+|---|---|---|---|---|
+| M6.1 | `M6.1-server-tools.md` | Umsetzung | autonom | offen |
+| M6.2 | `M6.2-level-sim-tools.md` | Umsetzung | autonom | offen |
+| M6.3 | `M6.3-review.md` | Review | autonom | offen |
 
 ## Abnahme
 
