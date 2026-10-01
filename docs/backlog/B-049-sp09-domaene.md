@@ -3,12 +3,12 @@
 - **Domäne:** INF
 - **Typ:** Frage
 - **Prio:** niedrig
-- **Status:** offen
-- **Sprint:** –
+- **Status:** erledigt
+- **Sprint:** SP09
 - **Erstellt:** 2026-09-30
-- **Spec:** Entwurf
-- **Revision:** 1
-- **Freigabe:** –
+- **Spec:** freigegeben
+- **Revision:** 2
+- **Freigabe:** 2026-10-01 🧑 Chat („SP09 freigegeben“), Revision 2
 
 ## Ausgangslage
 
@@ -53,8 +53,8 @@ nicht relevant – Planungsfrage.
 
 ## Offene Fragen
 
-Grenzfall in `arbeitsweise.md` oder SP09 aufteilen? (🧑)
+keine (entschieden 2026-10-01 🧑 Chat: Grenzfall „Alt-Engine löschen“ in `arbeitsweise.md`, SP09 bleibt ein Sprint; Revision 2)
 
 ## Notizen
 
-–
+Umgesetzt beim Bereitmachen von SP09: Grenzfall in `docs/arbeitsweise.md` › Domänen.

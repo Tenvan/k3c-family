@@ -6,9 +6,9 @@
 - **Status:** eingeplant
 - **Sprint:** SP09
 - **Erstellt:** 2026-09-29
-- **Spec:** Entwurf
-- **Revision:** 1
-- **Freigabe:** –
+- **Spec:** freigegeben
+- **Revision:** 2
+- **Freigabe:** 2026-10-01 🧑 Chat („SP09 freigegeben“), Revision 2
 
 ## Ausgangslage
 
@@ -24,7 +24,7 @@ Spieler mit Controller auf der Xbox; 🧑 testet an der Xbox; Umsetzung durch En
 
 ## Anforderungen
 
-- Auf Pages sind Spiel-Kacheln ausgeblendet oder erklärt.
+- Auf Pages sind die Spiel-Kacheln deaktiviert und erklärt (nicht ausgeblendet).
 - Testseiten bleiben erreichbar.
 
 ## Nicht-Ziele
@@ -37,7 +37,7 @@ Regel „Seiten & Navigation“ aus `CLAUDE.md` (`installPageChrome()`, `toggleF
 
 ## Beispiele
 
-Aufruf der Pages-Landingpage → Gamepad-Test erreichbar, die Spiel-Kachel ist ausgeblendet oder erklärt.
+Aufruf der Pages-Landingpage → Gamepad-Test erreichbar, die Spiel-Kachel ist deaktiviert mit Hinweis „Braucht den Heimnetz-Server“.
 
 ## Ausnahme- und Fehlerfälle
 
@@ -45,12 +45,12 @@ Direkter Aufruf von `game.html` auf Pages → verständlicher Hinweis statt Fehl
 
 ## Akzeptanzkriterien
 
-- **AC-01** Auf Pages sind Spiel-Kacheln ausgeblendet oder erklärt.
+- **AC-01** Auf Pages sind die Spiel-Kacheln deaktiviert und erklärt (nicht ausgeblendet).
 - **AC-02** Die Testseiten bleiben auf Pages erreichbar.
 
 ## Offene Fragen
 
-Ausblenden oder erklären? (🧑)
+keine (entschieden 2026-10-01 🧑 Chat: erklären; Revision 2)
 
 ## Notizen
 

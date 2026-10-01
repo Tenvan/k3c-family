@@ -8,9 +8,9 @@ Jede Sprint-README ist eine Spec (SDD); aktiv wird ein Sprint erst mit `Spec: fr
 
 | Sprint | Domäne | Thema | Am Ende sichtbar | Ordner |
 |---|---|---|---|---|
-| – | – | – | – | – |
+| SP09 | INF | Aufräumen: TS-Sim und Node-Server löschen | Release `v0.2.0` | `aktiv/SP09-aufraeumen/` |
 
-Danach: SP09 bereit machen (Aufräumen); M6 (MCP-Tools) ist einschiebbar.
+Danach: M6 (MCP-Tools) ist einschiebbar.
 
 ## Geplant (in dieser Reihenfolge)
 
@@ -19,7 +19,6 @@ dann über den Go-Server mit mehreren Räumen und gemischten Spielern.
 
 | Sprint | Domäne | Thema | Am Ende sichtbar | Reife | Ordner |
 |---|---|---|---|---|---|
-| SP09 | INF | Aufräumen: TS-Sim und Node-Server löschen | Release `v0.2.0` | Entwurf | `geplant/SP09-aufraeumen/` |
 | SP10 | SRV | Diagnose-TUI (Bubble Tea) | `k3c-tui` zeigt Räume live | Entwurf | `geplant/SP10-tui/` |
 | SP11 | SRV 🧑 | Raspberry Pi | 2er- und 3er-Spiel parallel auf dem Pi | Entwurf | `geplant/SP11-raspberry-pi/` |
 
