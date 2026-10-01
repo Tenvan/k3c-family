@@ -18,9 +18,9 @@ type CycleInfo struct {
 }
 
 func cycleAt(c level.Cycle, seconds float64) CycleInfo {
-	day := c.DayMinutes * 60
-	dusk := c.TwilightMinutes * 60
-	night := c.NightMinutes * 60
+	day := float64(c.DayMinutes * 60)
+	dusk := float64(c.TwilightMinutes * 60)
+	night := float64(c.NightMinutes * 60)
 	length := day + dusk + night
 	n := math.Floor(seconds / length)
 	t := seconds - float64(n*length)
