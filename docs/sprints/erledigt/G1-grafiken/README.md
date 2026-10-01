@@ -1,6 +1,6 @@
 # G1 · PLAT · Referenzseite für die gewählten Grafik-Packs
 
-- **Status:** aktiv
+- **Status:** erledigt
 - **Domäne:** PLAT
 - **Reife:** bereit
 - **Einschiebbar:** ja
@@ -64,11 +64,11 @@ keine
 | G1.2 | `G1.2-review.md` | Review | autonom | fertig |
 | G1.3 | `G1.3-auswahl.md` | Umsetzung | autonom | fertig |
 | G1.4 | `G1.4-review.md` | Review | autonom | fertig |
-| G1.5 | `G1.5-abnahme.md` | Workshop | Mensch | offen |
+| G1.5 | `G1.5-abnahme.md` | Workshop | Mensch | fertig |
 
 ## Abnahme
 
-Review 2026-10-01 (G1.2): `task check` grün (698 Tests), `task build` nimmt `grafiken.html` und `public/grafik/` (921 KB) auf; Diff `657751e..main` und Dateiliste gelesen; keine schweren Befunde, nichts behoben.
-`public/grafik/`: 119 PNG, 12 Lizenzdateien, `CREDITS.md`, `index.json`; keine Musik, kein Code, keine Quelldateien. AC-01 bis AC-03 durch `grafikPacks.test.ts` und `projectRules` belegt; die Seite wurde nicht gerendert.
-Hinweise (kein Befund): Tall Forest und Fort of Illusion haben in der Pack-Lizenzdatei keinen CC0-Wortlaut, sondern „personal or commercial, credit not required“ (OpenGameArt zeigt CC0); Warped Caves ist CC BY 3.0 (kenntlich gemacht, Entscheidung 🧑 in G1.3). AC-04 bleibt bei G1.3.
-Review Auswahlfunktion 2026-10-01 (G1.4): `task check` grün (701 Tests), Diff `a05f699..main` gelesen; keine schweren Befunde; ein Kopieren-Weg für http im Heimnetz ergänzt (`document.execCommand('copy')`, wenn `navigator.clipboard` fehlt). AC-05 durch `selection.test.ts` und Aufruf in den drei Seiten belegt, DOM nicht gerendert. AC-04 und AC-05 liegen bei G1.5 (🧑).
+Reviews 2026-10-01 (G1.2, G1.4): `task check` grün (701 Tests), `task build` nimmt Seite und `public/grafik/` (921 KB) auf; keine schweren Befunde; Kopieren der Auswahl über http ergänzt. Prüfer war dieselbe Sitzung wie die Umsetzung.
+AC-01 bis AC-03 und AC-05 durch `grafikPacks.test.ts` und `selection.test.ts` belegt (zwölf Packs mit Lizenzdatei, Credits in `CREDITS.md` und `lizenzen.html`, Auswahl auf drei Seiten).
+**AC-04 und AC-05 abgenommen 2026-10-01 durch 🧑 (Ralf)** am lokalen Browser: „passt alles“, alle zwölf Packs übernommen (auch Warped Caves unter CC BY 3.0). Einzelschritte und die Zuordnung Pack → Zweck hat 🧑 nicht gemeldet.
+Offen für B-010: Verwendung je Pack (per Auswahl im Chat), Lücken Mine-Hintergrund, Rekrutierungslager, Werkstatt, Farm, Kaserne, Treppen; Blue Cave ohne bekannten Urheber. Neue Tickets: keine.
