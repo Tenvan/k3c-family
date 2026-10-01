@@ -7,6 +7,7 @@ require (
 	github.com/shirou/gopsutil/v4 v4.26.8
 	github.com/wailsapp/wails/v2 v2.16.0
 	golang.org/x/sys v0.46.0
+	k3c v0.0.0
 )
 
 require (
@@ -51,3 +52,6 @@ require (
 	golang.org/x/text v0.39.0 // indirect
 	golang.org/x/time v0.15.0 // indirect
 )
+
+// Level-Generator und Simulation des Hauptmoduls, in-process (M6, B-047).
+replace k3c => ../..

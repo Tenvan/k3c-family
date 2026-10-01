@@ -132,3 +132,20 @@ func TestServerAdresseAusPort(t *testing.T) {
 		t.Errorf("Adresse aus K3C_HTTP_PORT: %q", text)
 	}
 }
+
+func TestEngineToolsLaufenOhneServer(t *testing.T) {
+	t.Setenv("K3C_SERVER_URL", "http://127.0.0.1:1") // kein Server: die In-process-Tools brauchen keinen
+	call := serverTools(t)
+	text, isErr := call("level_generate", map[string]any{"seed": "0", "biome": "forest"})
+	if isErr || !strings.HasPrefix(text, "Level forest · Seed \"0\" · Breite 900 Units") {
+		t.Errorf("level_generate: %q", text)
+	}
+	a, isErr := call("sim_run", map[string]any{"seed": "abc", "ticks": 600})
+	b, _ := call("sim_run", map[string]any{"seed": "abc", "ticks": 600})
+	if isErr || a != b || !strings.Contains(a, "600 Ticks") {
+		t.Errorf("sim_run: %q / %q", a, b)
+	}
+	if text, isErr = call("sim_run", map[string]any{"seed": "abc", "ticks": 100001}); !isErr || !strings.Contains(text, "100000") {
+		t.Errorf("Grenze: %q", text)
+	}
+}
