@@ -82,6 +82,18 @@ func need[T any](v T, err error) func(*testing.T) T {
 	}
 }
 
+func second[T any](_ T, err error) error { return err }
+
+// peerOf ist die aktuelle Verbindung eines Geräts (nil, wenn es fehlt).
+func (r *Room) peerOf(id string) Peer {
+	r.mu.Lock()
+	defer r.mu.Unlock()
+	if d := r.devices[id]; d != nil {
+		return d.peer
+	}
+	return nil
+}
+
 func ok(t *testing.T, err error) {
 	t.Helper()
 	if err != nil {
@@ -106,8 +118,8 @@ func xs(r *Room) []float64 {
 // ownMovement: Xbox-Slot 0 läuft rechts, Slot 1 links, das Handy (Monarch 2) steht. Jeder steuert seinen eigenen Monarchen.
 func ownMovement(t *testing.T, r *Room) {
 	t.Helper()
-	ok(t, r.Input("xbox", 0, sim.PlayerCommand{MoveX: 1}))
-	ok(t, r.Input("xbox", 1, sim.PlayerCommand{MoveX: -1}))
+	ok(t, r.Input("xbox", r.peerOf("xbox"), map[int]sim.PlayerCommand{0: sim.PlayerCommand{MoveX: 1}}))
+	ok(t, r.Input("xbox", r.peerOf("xbox"), map[int]sim.PlayerCommand{1: sim.PlayerCommand{MoveX: -1}}))
 	before := xs(r)
 	ticks(r, 30)
 	after := xs(r)
@@ -124,7 +136,7 @@ func TestXboxUndHandy(t *testing.T) {
 	if r.Code != "KRNZ" || !x.has("joined KRNZ familie [{0 0}]") || !x.has("level 0") || !x.has("state 0") {
 		t.Fatalf("Erstellen: %v", x.log)
 	}
-	ok(t, r.AddSlot("xbox", 1))
+	ok(t, r.AddSlot("xbox", r.peerOf("xbox"), 1))
 	need(f.m.Join("handy", h, "KRNZ", []int{0}))(t)
 	if fmt.Sprint(h.you) != "[{0 2}]" || fmt.Sprint(x.monarchs) != "[taken taken taken]" {
 		t.Fatalf("Handy %v, Plätze %v", h.you, x.monarchs)
@@ -142,7 +154,7 @@ func TestXboxUndHandy(t *testing.T) {
 		t.Fatalf("Wiederverbinden: %v", h2.log)
 	}
 	// Controller 2 geht: Monarch 1 frei; ein neues Gerät bekommt ihn.
-	ok(t, r.RemoveSlot("xbox", 1))
+	ok(t, second(r.RemoveSlot("xbox", r.peerOf("xbox"), 1)))
 	if fmt.Sprint(x.monarchs) != "[taken free taken]" {
 		t.Fatalf("nach removeSlot: %v", x.monarchs)
 	}
@@ -241,13 +253,13 @@ func TestGrenzen(t *testing.T) {
 		t.Fatal("Beitreten war nicht alles oder nichts")
 	}
 	need(f.m.Join("drei", &peer{}, r.Code, []int{0, 1, 2}))(t)
-	if err := r.AddSlot("drei", 3); err != ErrRoomFull {
+	if err := r.AddSlot("drei", r.peerOf("drei"), 3); err != ErrRoomFull {
 		t.Fatalf("addSlot im vollen Raum: %v", err)
 	}
 	if _, err := f.m.Join("x", &peer{}, r.Code, []int{4}); err != ErrTooManySlots {
 		t.Fatalf("Slot 4: %v", err)
 	}
-	if err := r.AddSlot("drei", 4); err != ErrTooManySlots {
+	if err := r.AddSlot("drei", r.peerOf("drei"), 4); err != ErrTooManySlots {
 		t.Fatalf("addSlot 4: %v", err)
 	}
 	for _, bad := range [][]int{{}, {-1}, {1, 1}} {
@@ -353,17 +365,17 @@ func TestSpeicherzeitpunkte(t *testing.T) {
 func TestEingabeNurEigeneSlots(t *testing.T) {
 	f := newFixture()
 	r := need(f.m.Create("xbox", &peer{}, "eingabe", true, 0, []int{0}))(t)
-	if err := r.Input("xbox", 1, sim.PlayerCommand{}); err != ErrBadRequest {
+	if err := r.Input("xbox", r.peerOf("xbox"), map[int]sim.PlayerCommand{1: sim.PlayerCommand{}}); err != ErrBadRequest {
 		t.Errorf("fremder Slot: %v", err)
 	}
-	if err := r.Input("fremd", 0, sim.PlayerCommand{}); err != ErrBadRequest {
+	if err := r.Input("fremd", r.peerOf("fremd"), map[int]sim.PlayerCommand{0: sim.PlayerCommand{}}); err != ErrBadRequest {
 		t.Errorf("fremdes Gerät: %v", err)
 	}
-	ok(t, r.Input("xbox", 0, sim.PlayerCommand{MoveX: 7}))
+	ok(t, r.Input("xbox", r.peerOf("xbox"), map[int]sim.PlayerCommand{0: sim.PlayerCommand{MoveX: 7}}))
 	if r.monarchs[0].input.MoveX != 1 {
 		t.Errorf("moveX nicht begrenzt: %v", r.monarchs[0].input.MoveX)
 	}
-	if err := r.RemoveSlot("xbox", 3); err != ErrBadRequest {
+	if _, err := r.RemoveSlot("xbox", r.peerOf("xbox"), 3); err != ErrBadRequest {
 		t.Errorf("removeSlot fremd: %v", err)
 	}
 }
