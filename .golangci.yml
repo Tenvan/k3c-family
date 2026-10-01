@@ -23,12 +23,12 @@ linters:
             - pkg: k3c/cmd
               desc: "engine/ importiert nichts aus cmd/ (docs/arbeitsweise.md › Schichtgrenzen)"
         sim-ohne-netz:
-          files: ["**/engine/sim/**", "**/engine/level/**"]
+          files: ["**/engine/sim/**", "**/engine/level/**", "**/engine/rng/**"]
           deny:
             - pkg: k3c/engine/room
-              desc: "engine/sim und engine/level kennen keine Räume"
+              desc: "engine/sim, engine/level und engine/rng kennen keine Räume"
             - pkg: k3c/engine/net
-              desc: "engine/sim und engine/level kennen kein Netz"
+              desc: "engine/sim, engine/level und engine/rng kennen kein Netz"
         room-ohne-netz:
           files: ["**/engine/room/**"]
           deny:
