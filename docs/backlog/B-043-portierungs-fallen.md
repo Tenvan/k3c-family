@@ -8,7 +8,7 @@
 - **Erstellt:** 2026-09-30
 - **Spec:** freigegeben
 - **Revision:** 1
-- **Freigabe:** 2026-09-30 🧑 Chat (3 Simulationsläufe, Generator als Vitest-Datei, FMA: Regel + Ticket B-071); 2026-10-01 🧑 Chat (Truppen nach SP05, Golden-Lauf ohne Spieler, 4 Sessions)
+- **Freigabe:** 2026-09-30 🧑 Chat (3 Simulationsläufe, Generator als Vitest-Datei, FMA: Regel + Ticket B-071); 2026-10-01 🧑 Chat (Truppen nach SP05, Golden-Lauf ohne Spieler, 4 Sessions); 2026-10-01 🧑 Chat (SP06: campaign-abstieg, Abdeckung ≥ 90 %, B-059 in SP06.2, Golden ≤ 8 MB)
 
 ## Ausgangslage
 
