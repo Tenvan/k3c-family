@@ -1,5 +1,5 @@
 import Phaser from 'phaser';
-import { GAME_HEIGHT, GAME_WIDTH, MAX_PLAYERS } from '../core/constants';
+import { GAME_HEIGHT, GAME_WIDTH } from '../core/constants';
 import { ECONOMY } from '../world/sim/data';
 import type { GameEvent, World } from '../world/sim/types';
 import type { GameScene } from './GameScene';
@@ -11,7 +11,7 @@ const BANNER_SECONDS = 2.8;
 const CONTROL_HINTS = {
   touch: 'Links/rechts berühren = laufen · Münz-Taste halten = Münzen geben',
   pad: 'A halten = Münzen geben · RT = sprinten · RS = Vollbild',
-  keyboard: 'Leertaste halten = Münzen geben · Shift = sprinten · F = Vollbild · Dev: N neuer Seed · 1/2/3 Tiefe',
+  keyboard: 'Leertaste halten = Münzen geben · Shift = sprinten · F = Vollbild',
 } as const;
 const JOIN_HINTS = {
   touch: 'Münz-Taste drücken zum Beitreten',
@@ -31,7 +31,9 @@ export class HudScene extends Phaser.Scene {
   private controlsHint!: Phaser.GameObjects.Text;
   private info!: Phaser.GameObjects.Text;
   private travel!: Phaser.GameObjects.Text;
-  private saved!: Phaser.GameObjects.Text;
+  private infoBox!: Phaser.GameObjects.Container;
+  private infoText!: Phaser.GameObjects.Text;
+  private infoBg!: Phaser.GameObjects.Rectangle;
   private playerLabels: Phaser.GameObjects.Text[] = [];
   private bannerQueue: string[] = [];
   private bannerLeft = 0;
@@ -59,64 +61,85 @@ export class HudScene extends Phaser.Scene {
     this.controlsHint = this.add.text(GAME_WIDTH - 20, GAME_HEIGHT - 40, '', { ...STYLE, fontSize: '20px', strokeThickness: 4 }).setOrigin(1, 0);
     this.info = this.add.text(20, 16, '', { ...STYLE, fontSize: '20px', strokeThickness: 4 });
     this.travel = this.add.text(GAME_WIDTH / 2, GAME_HEIGHT - 170, '', { ...STYLE, fontSize: '40px', color: '#ffd166' }).setOrigin(0.5);
-    this.saved = this.add.text(20, GAME_HEIGHT - 70, '', { ...STYLE, fontSize: '20px', strokeThickness: 4, color: '#b7e4c7' });
+    this.infoBg = this.add.rectangle(0, 0, 10, 10, 0x0b1020, 1);
+    this.infoText = this.add.text(0, 0, '', { ...STYLE, fontSize: '36px', align: 'center' }).setOrigin(0.5);
+    this.infoBox = this.add.container(0, 0, [this.infoBg, this.infoText]).setVisible(false);
   }
 
   update(_time: number, deltaMs: number): void {
     const game = this.game.scene.getScene('game') as GameScene;
     const world = game.world;
-    const players = world.players;
+    this.showHints(game, world);
+    if (!world) return;
+    this.showCells(game, world.players);
+    this.showWorld(world);
+    this.showBanner(game, deltaMs);
+    this.fps.setText(`${Math.round(this.game.loop.actualFps)} FPS`);
+  }
 
+  /** Hinweise: Verbindungsstand, Beitritt, Steuerung, Raum. */
+  private showHints(game: GameScene, world: World | undefined): void {
+    const client = game.client;
+    const waiting = !world || game.waitingForJoin();
     this.controlsHint.setText(CONTROL_HINTS[game.lastDevice]);
-    this.joinHint.setText(JOIN_HINTS[game.lastDevice]);
-    this.joinHint.setVisible(!game.online && players.length < MAX_PLAYERS);
-    this.joinHint.setY(players.length === 0 ? GAME_HEIGHT / 2 + 120 : GAME_HEIGHT - 100);
-    this.joinHint.setFontSize(players.length === 0 ? 44 : 26);
-    if (game.online) this.info.setText(`Online · Raum "${game.online.room}" · ${players.length} Spieler`).setVisible(true).setY(60);
-    else this.info.setText(`${world.biome.name} · Seed "${world.seed}"`).setVisible(players.length === 0).setY(16);
+    this.joinHint.setText(world ? JOIN_HINTS[game.lastDevice] : (client.notice ?? 'Verbinde …'));
+    this.joinHint.setVisible(waiting || client.you.length < (client.limits?.slotsPerDevice ?? 4));
+    this.joinHint.setY(waiting ? GAME_HEIGHT / 2 + 120 : GAME_HEIGHT - 100);
+    this.joinHint.setFontSize(waiting ? 44 : 26);
+    const taken = client.monarchs.filter((m) => m !== 'free').length;
+    this.info.setText(client.roomCode ? `Raum ${client.roomCode} · ${client.roomName} · ${taken} Spieler` : '').setVisible(!!client.roomCode).setY(60);
+  }
+
+  /** Vorrat, Tageszeit, Kampf und Reise. */
+  private showWorld(world: World): void {
     const t = world.travel;
     const target = t ? (t.via === 'stairsUp' ? 'Aufstieg' : 'Abstieg') + ` in Tiefe ${t.toDepth}` : '';
     this.travel.setText(t ? `${target}  ${'▮'.repeat(Math.ceil(t.progress * 10))}${'▯'.repeat(10 - Math.ceil(t.progress * 10))}` : '');
-    const status = game.saveStatus;
-    this.saved.setText(status && world.time - status.at < 4 ? status.text : '');
-
-    game.hudStrips().forEach(({ player: playerIndex, y }, i) => {
-      const p = players[playerIndex];
-      if (!p) return;
-      let label = this.playerLabels[i];
-      if (!label) {
-        label = this.add.text(24, 0, '', STYLE);
-        this.playerLabels[i] = label;
-      }
-      label.setY(y + 16);
-      const status = p.respawnIn > 0 ? `gefallen · zurück in ${Math.ceil(p.respawnIn)} s` : `HP ${Math.ceil(p.hp)}`;
-      label.setText(`P${p.index + 1}  ·  Gold ${p.gold}/${ECONOMY.purse.maxGold}  ·  ${status}`);
-    });
-
     const stock = (['wood', 'stone', 'copper'] as const).filter((r) => r === world.biome.primaryResource || world.stock[r] > 0).map((r) => `${RESOURCE_NAMES[r]} ${world.stock[r]}`);
     if (world.skillPoints > 0) stock.push(`Skill-Punkte ${world.skillPoints}`);
     this.shared.setText(stock.join('  ·  '));
     this.clock.setText(clockText(world));
     const enemies = world.enemies.length + world.spawnQueue.length;
     this.fight.setText(enemies > 0 ? `Welle ${world.wave}: ${enemies} Gegner` : '');
+  }
 
+  private showBanner(game: GameScene, deltaMs: number): void {
     for (const e of game.pendingEvents.splice(0)) {
       const text = eventText(e);
       if (text) this.bannerQueue.push(text);
     }
     this.bannerLeft -= deltaMs / 1000;
-    if (this.bannerLeft <= 0) {
-      const next = this.bannerQueue.shift();
-      this.banner.setVisible(!!next);
-      if (next) {
-        this.banner.setText(next);
-        this.bannerLeft = this.bannerQueue.length > 2 ? BANNER_SECONDS / 2 : BANNER_SECONDS;
-      }
-    }
-
-    this.fps.setText(`${Math.round(this.game.loop.actualFps)} FPS`);
+    if (this.bannerLeft > 0) return;
+    const next = this.bannerQueue.shift();
+    this.banner.setVisible(!!next);
+    if (!next) return;
+    this.banner.setText(next);
+    this.bannerLeft = this.bannerQueue.length > 2 ? BANNER_SECONDS / 2 : BANNER_SECONDS;
   }
 
+  /** Spielerwerte je Feld; ein freies Feld im Raster zeigt Raumcode und freie Plätze. */
+  private showCells(game: GameScene, players: World['players']): void {
+    const client = game.client;
+    this.infoBox.setVisible(false);
+    let label = 0;
+    for (const { cell, monarch } of game.hudCells()) {
+      if (cell.kind === 'info') {
+        const free = client.monarchs.filter((m) => m === 'free').length + Math.max(0, (client.limits?.monarchsPerRoom ?? 4) - client.monarchs.length);
+        this.infoBg.setSize(cell.w, cell.h);
+        this.infoText.setText(`Raum ${client.roomCode ?? ''}
+${free} Plätze frei`);
+        this.infoBox.setPosition(cell.x + cell.w / 2, cell.y + cell.h / 2).setVisible(true);
+        continue;
+      }
+      const p = monarch === null ? undefined : players.find((q) => q.index === monarch);
+      if (!p) continue;
+      const text = (this.playerLabels[label] ??= this.add.text(0, 0, '', STYLE));
+      label += 1;
+      text.setPosition(cell.x + 24, cell.y + 16);
+      const status = p.respawnIn > 0 ? `gefallen · zurück in ${Math.ceil(p.respawnIn)} s` : `HP ${Math.ceil(p.hp)}`;
+      text.setText(`P${p.index + 1}  ·  Gold ${p.gold}/${ECONOMY.purse.maxGold}  ·  ${status}`);
+    }
+  }
 }
 
 function formatTime(seconds: number): string {

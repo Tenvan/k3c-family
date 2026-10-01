@@ -1,66 +1,48 @@
 import Phaser from 'phaser';
 import { GAME_HEIGHT, GAME_WIDTH } from './core/constants';
-import { fetchSave } from './core/saveStore';
 import { installPageChrome } from './core/shell';
-import { OnlineClient } from './online/client';
-import { GameScene, type GameSceneData } from './scenes/GameScene';
+import { createRoomClient } from './online/clientConnection';
+import { GameScene } from './scenes/GameScene';
 import { HudScene } from './scenes/HudScene';
 
-// Seitenrahmen sofort (Home-Button, Zurück-Falle für B), nicht erst nach dem Laden des Spielstands.
+// Seitenrahmen sofort (Home-Button, Zurück-Falle für B).
 installPageChrome();
 
-// URL-Parameter: ?seed=abc&depth=1 (Start-Stufe), ?fast=1 (Tag/Nacht 8x schneller),
-// ?dev=1 (Dev-Tasten G/H/T/S auch im Build), ?save=1 (automatisch speichern), ?continue=1 (Spielstand laden)
+// Übergangslösung bis zur Lobby (SP08.3): Nach dem Verbinden wird der Spielstand `familie` geöffnet (oder neu erstellt),
+// `?save=NAME` wählt einen anderen, `?room=CODE` tritt einem Raum bei. Der Server rechnet, der Browser zeichnet.
 const params = new URLSearchParams(window.location.search);
-const save = params.has('continue') ? await fetchSave() : null;
-const startData: GameSceneData = {
-  seed: params.get('seed') ?? 'k3c',
-  depth: Number(params.get('depth') ?? 0),
-  fast: params.has('fast'),
-  dev: import.meta.env.DEV || params.has('dev'),
-  save,
-  persist: params.has('save') || params.has('continue'),
+const saveParam = params.get('save') ?? '';
+const save = /^[a-z0-9-]{1,32}$/.test(saveParam) ? saveParam : 'familie';
+const room = params.get('room');
+
+const client = createRoomClient();
+let requested = false;
+let created = false;
+client.onChange = () => {
+  if (client.status !== 'lobby') return;
+  if (!requested) {
+    requested = true;
+    if (room) client.join(room, [0]);
+    else client.create(save, false, 0, [0]);
+  } else if (!room && !created && client.errorCode === 'save_not_found') {
+    created = true; // gibt es den Spielstand noch nicht, einmal neu anlegen
+    client.create(save, true, 0, [0]);
+  }
 };
 
-// ?online=RAUM: Mit anderen Geräten im selben Raum auf dem Server spielen (ein Monarch pro Gerät)
-const onlineRoom = params.get('online');
+const game = new Phaser.Game({
+  type: Phaser.AUTO,
+  parent: 'game',
+  width: GAME_WIDTH,
+  height: GAME_HEIGHT,
+  backgroundColor: '#000000',
+  scale: { mode: Phaser.Scale.FIT, autoCenter: Phaser.Scale.CENTER_BOTH },
+  input: { gamepad: true },
+  scene: [],
+});
 
-/** Online: erst verbinden, dann starten. Seed, Tiefe und Tempo bestimmt der Raum. */
-async function start(): Promise<void> {
-  if (onlineRoom !== null) {
-    const status = document.createElement('p');
-    status.style.cssText = 'position:fixed;inset:0;display:grid;place-items:center;margin:0;color:#f1f3f9;font:24px system-ui,sans-serif;text-align:center;padding:0 24px';
-    status.textContent = 'Verbinde …';
-    document.body.append(status);
-    try {
-      const client = await OnlineClient.connect(onlineRoom || 'familie', { depth: startData.depth, fast: !!startData.fast, seed: params.get('seed') ?? undefined });
-      Object.assign(startData, { seed: client.seed, depth: client.depth, fast: client.fast, online: client });
-      status.remove();
-    } catch (err) {
-      status.textContent = `Online nicht möglich: ${(err as Error).message}`;
-      return;
-    }
-  }
-  launch();
-}
+game.scene.add('game', GameScene, true, { client });
+game.scene.add('hud', HudScene, false);
 
-function launch(): void {
-  const game = new Phaser.Game({
-    type: Phaser.AUTO,
-    parent: 'game',
-    width: GAME_WIDTH,
-    height: GAME_HEIGHT,
-    backgroundColor: '#000000',
-    scale: { mode: Phaser.Scale.FIT, autoCenter: Phaser.Scale.CENTER_BOTH },
-    input: { gamepad: true },
-    scene: [],
-  });
-
-  game.scene.add('game', GameScene, true, startData);
-  game.scene.add('hud', HudScene, false);
-
-  // Nur im Dev-Server: Zugriff für Debugging über die Browser-Konsole (window.game).
-  if (import.meta.env.DEV) (window as unknown as { game: Phaser.Game }).game = game;
-}
-
-void start();
+// Nur im Dev-Server: Zugriff für Debugging über die Browser-Konsole (window.game).
+if (import.meta.env.DEV) (window as unknown as { game: Phaser.Game; client: typeof client }).game = Object.assign(game, { client });
