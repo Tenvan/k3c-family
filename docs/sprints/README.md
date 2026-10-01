@@ -8,9 +8,9 @@ Jede Sprint-README ist eine Spec (SDD); aktiv wird ein Sprint erst mit `Spec: fr
 
 | Sprint | Domäne | Thema | Am Ende sichtbar | Ordner |
 |---|---|---|---|---|
-| SP08 | CLI | Browser als reiner Client | Xbox (2 Controller) + Handy im selben Raum | `aktiv/SP08-client/` |
+| – | – | – | – | – |
 
-Danach: SP09 bereit machen (Aufräumen); M6 (MCP-Tools) und T1 (Testseite, nach SP08.3) sind einschiebbar.
+Danach: SP09 bereit machen (Aufräumen); M6 (MCP-Tools) ist einschiebbar.
 
 ## Geplant (in dieser Reihenfolge)
 
@@ -55,3 +55,4 @@ Nach SP11: Regelwerk II (Skills) → SIM Skills in Go → CLI Skills → Spielea
 | SP05 | Port I: Welt, Zyklus, Truppen, Wirtschaft in Go | `erledigt/SP05-port-welt/` |
 | SP06 | Port II: Gegner, Wellen, Reisen, Kampagne, Spielstand in Go | `erledigt/SP06-port-einheiten/` |
 | SP07 | Räume & WebSocket (Protokoll v2) in Go | `erledigt/SP07-raeume/` |
+| SP08 | Browser als reiner Client (Protokoll v2, Lobby, lokale Spieler, Layout 1–4) | `erledigt/SP08-client/` |
