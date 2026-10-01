@@ -379,3 +379,16 @@ func TestTokenNieSichtbar(t *testing.T) {
 		t.Errorf("Meldung bei falschem Token: %q", d.m.flash)
 	}
 }
+
+// Review SP10.3: Die Rückfrage gilt dem Gerät, nach dem gefragt wurde, auch wenn die Liste sich bis zum „y“ ändert.
+func TestRueckfrageBleibtBeimGefragtenGeraet(t *testing.T) {
+	s := newDiag(t)
+	d := opened(t, s)
+	d.key("d") // fragt nach aaaaaa
+	d.send(roomMsg{d: roomDetail{Code: "FAMILIE", Devices: []device{{ID: "cccccc", Connected: true}}}, chain: d.m.chain})
+	d.send(roomMsg{d: roomDetail{Code: "FAMILIE"}, chain: d.m.chain}) // Liste jetzt leer: kein Absturz
+	d.key("y")
+	if got := s.posts(); len(got) != 1 || got[0] != "POST /api/status/disconnect?room=FAMILIE&device=aaaaaa" {
+		t.Fatalf("POSTs: %v", got)
+	}
+}
