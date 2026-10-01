@@ -62,8 +62,9 @@ type model struct {
 	sel          int // gewählte Raumzeile der Übersicht
 	roomCode     string
 	detail       *roomDetail
-	devSel       int  // gewähltes Gerät der Raumansicht
-	confirm      bool // „Gerät trennen? (y/n)“ ist offen
+	devSel       int    // gewähltes Gerät der Raumansicht
+	confirm      bool   // „Gerät trennen? (y/n)“ ist offen
+	confirmID    string // Kennung des Geräts, nach dem gefragt wurde (die Liste lädt jede Sekunde neu, die Auswahl kann wandern)
 	log          logState
 }
 
@@ -111,7 +112,7 @@ func (m model) next() tea.Cmd {
 
 // enter wechselt die Ansicht, beginnt einen neuen Takt und ruft sofort ab.
 func (m model) enter(s screen) (model, tea.Cmd) {
-	m.screen, m.chain, m.err, m.confirm = s, m.chain+1, "", false
+	m.screen, m.chain, m.err, m.confirm, m.confirmID = s, m.chain+1, "", false, ""
 	return m, m.poll()
 }
 
@@ -179,7 +180,7 @@ func (m model) View() tea.View {
 	var body string
 	switch m.screen {
 	case scrRoom:
-		body = renderRoom(roomView{d: m.detail, code: m.roomCode, sel: m.devSel, confirm: m.confirm, err: m.err, width: m.width})
+		body = renderRoom(roomView{d: m.detail, code: m.roomCode, sel: m.devSel, confirmID: m.confirmID, err: m.err, width: m.width})
 	case scrLog:
 		body = renderLog(m.log, m.err, m.width, m.height)
 	default:

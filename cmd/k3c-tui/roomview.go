@@ -9,12 +9,13 @@ import (
 
 // roomView hält, was renderRoom braucht.
 type roomView struct {
-	d       *roomDetail
-	code    string
-	sel     int
-	confirm bool
-	err     string
-	width   int
+	d    *roomDetail
+	code string
+	sel  int
+	// confirmID ist die Kennung des Geräts, das getrennt werden soll (leer: keine Rückfrage offen).
+	confirmID string
+	err       string
+	width     int
 }
 
 // renderRoom ist die Raumansicht: Zusammenfassung und Liste der Geräte mit Auswahl.
@@ -51,9 +52,9 @@ func deviceLines(v roomView) []string {
 			mark = "▶ "
 		}
 		lines = append(lines, fmt.Sprintf("%s%-8s %-11s %v", mark, dev.ID, state, dev.Slots))
-		if i == v.sel && v.confirm {
-			lines = append(lines, styleError.Render(fmt.Sprintf("  Gerät %s trennen? (y/n)", dev.ID)))
-		}
+	}
+	if v.confirmID != "" {
+		lines = append(lines, "", styleError.Render(fmt.Sprintf("Gerät %s trennen? (y/n)", v.confirmID)))
 	}
 	return lines
 }

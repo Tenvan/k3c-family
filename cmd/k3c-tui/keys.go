@@ -42,7 +42,7 @@ func (m model) keyRoom(k string) (tea.Model, tea.Cmd) {
 		switch k {
 		case "y":
 			m.confirm = false
-			return m, m.disconnectCmd(m.roomCode, m.detail.Devices[m.devSel].ID)
+			return m, m.disconnectCmd(m.roomCode, m.confirmID)
 		case "n", "esc", "q":
 			m.confirm = false
 		}
@@ -74,7 +74,7 @@ func (m *model) askDisconnect() {
 		m.flash = "Kein verbundenes Gerät gewählt"
 		return
 	}
-	m.confirm, m.flash = true, ""
+	m.confirm, m.confirmID, m.flash = true, m.detail.Devices[m.devSel].ID, ""
 }
 
 func (m model) keyLog(k string) (tea.Model, tea.Cmd) {
