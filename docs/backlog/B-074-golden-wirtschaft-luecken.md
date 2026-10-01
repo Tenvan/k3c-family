@@ -3,7 +3,7 @@
 - **Domäne:** SIM
 - **Typ:** Problem
 - **Prio:** mittel
-- **Status:** eingeplant
+- **Status:** erledigt
 - **Sprint:** SP06
 - **Erstellt:** 2026-10-01
 - **Spec:** freigegeben
@@ -61,4 +61,4 @@ keine
 
 ## Notizen
 
-Abdeckung in SP05.3 per Auswertung der Golden-Snapshots bestimmt (Ergebnis der Session SP05.3). Umsetzung: SP06.3.
+Abdeckung in SP05.3 per Auswertung der Golden-Snapshots bestimmt (Ergebnis der Session SP05.3). Umsetzung: SP06.3, erledigt: Abdeckung 94,5 % mit sechs neuen Läufen und Regel-Tests aus TS (Ergebnis SP06.3).
