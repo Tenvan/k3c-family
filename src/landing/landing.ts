@@ -1,5 +1,5 @@
 import { fullscreenSupported, isFullscreen, onFullscreenChange, toggleLocal } from '../core/fullscreen';
-import { SHELL_MESSAGE, type ShellMessage } from '../core/shell';
+import { SHELL_MESSAGE, isOpenable, type ShellMessage } from '../core/shell';
 import { PAGES, SECTIONS, type PageEntry } from './pages';
 
 /**
@@ -127,14 +127,9 @@ function move(dir: Dir): void {
 // legte der Browser Verlaufseinträge an, und "Zurück" könnte alte Seiten unsichtbar im Hintergrund laden.
 let frame: HTMLIFrameElement | null = null;
 
-/** Nur Seiten dieses Servers (*.html) zulassen – der Hash in der URL ist Nutzereingabe. */
+/** Nur Seiten dieses Ordners (*.html) zulassen – der Hash in der URL und `open` von Seiten sind Eingaben von außen. */
 function safePageUrl(href: string): string | null {
-  try {
-    const url = new URL(href, location.href);
-    return url.origin === location.origin && url.pathname.endsWith('.html') && !url.pathname.endsWith('/index.html') ? href : null;
-  } catch {
-    return null;
-  }
+  return isOpenable(href) ? href : null;
 }
 
 function launch(card: HTMLElement, page: PageEntry): void {
@@ -182,6 +177,7 @@ addEventListener('popstate', () => history.pushState({ k3cShell: true }, ''));
 addEventListener('message', (e: MessageEvent<ShellMessage>) => {
   if (e.origin !== location.origin || !frame || e.source !== frame.contentWindow) return;
   if (e.data?.type === SHELL_MESSAGE.home) closePage();
+  if (e.data?.type === SHELL_MESSAGE.open) openPage(e.data.href);
   if (e.data?.type === SHELL_MESSAGE.fullscreen) {
     const id = e.data.id;
     const target = frame.contentWindow;
