@@ -24,7 +24,7 @@ Entwickler oder Agent.
 
 ## Anforderungen
 
-B-043 › Anforderungen. Sprint-eigen: Gegner, Wellen, Projektile, Burg-Fall, Reisen, Kampagne und Spielstand in Go; Spielstand-Format mit Version.
+B-043 › Anforderungen. Sprint-eigen: Gegner, Wellen, Projektile, Burg-Fall (dazu `applyDamage` und `destroySite` aus `common.ts`), Reisen, Kampagne und Spielstand in Go; Spielstand-Format mit Version.
 
 ## Nicht-Ziele
 

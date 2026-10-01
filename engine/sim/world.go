@@ -102,8 +102,20 @@ func Step(w *World, commands []PlayerCommand, dt float64) {
 	w.Events = []Event{}
 	w.Time += dt
 	stepCycle(w, dt)
-	// SP06: stepSpawns; SP05.3: stepPlayers; SP05.2: stepCamps; SP05.3: stepSites; SP05.2: stepTroops;
-	// SP06: stepEnemies, stepProjectiles, removeDeadEnemies; SP05.2: tote Truppen aufräumen;
-	// SP06: castleFallen, stepTravel
+	// SP06: stepSpawns; SP05.3: stepPlayers
 	_ = commands
+	stepCamps(w, dt)
+	// SP05.3: stepSites
+	stepTroops(w, dt)
+	// SP06: stepEnemies, stepProjectiles, removeDeadEnemies
+	alive := w.Troops[:0]
+	for _, t := range w.Troops {
+		if t.HP > 0 {
+			alive = append(alive, t)
+		} else {
+			releaseJob(w, t)
+		}
+	}
+	w.Troops = alive
+	// SP06: castleFallen, stepTravel
 }
