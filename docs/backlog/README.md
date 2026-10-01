@@ -64,7 +64,7 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-056](B-056-ratsche-nachziehen.md) | INF | Schuld | niedrig | verworfen | – | Die Ratsche zieht gesunkene Werte automatisch nach |
 | [B-057](B-057-go-tiefe-range.md) | INF | Problem | mittel | erledigt | L2 | Die Go-Verschachtelung zählt `for range` und `else if` wie TypeScript |
 | [B-058](B-058-execution-policy.md) | INF | Frage | niedrig | offen | – | requirements.md empfiehlt keine Sicherheitseinstellung ohne Entscheidung von 🧑 |
-| [B-059](B-059-freie-monarchen-reisen-mit.md) | SIM | Idee | hoch | eingeplant | SP06 | Nur gesteuerte Monarchen entscheiden über den Stufenwechsel |
+| [B-059](B-059-freie-monarchen-reisen-mit.md) | SIM | Idee | hoch | erledigt | SP06 | Nur gesteuerte Monarchen entscheiden über den Stufenwechsel |
 | [B-060](B-060-sp07-protokoll-regeln.md) | SRV | Problem | hoch | offen | – | Die Spec von SP07 deckt alle Server-Regeln aus Protokoll v2 ab |
 | [B-061](B-061-sp08-protokoll-regeln.md) | CLI | Problem | hoch | offen | – | Die Spec von SP08 deckt alle Client-Regeln aus Protokoll v2 ab |
 | [B-062](B-062-dev-nutzungsstatistik.md) | SRV | Idee | mittel | erledigt | M2 | k3c-dev wertet MCP-Aufrufe über Sitzungen aus: Perzentile, Ausreißer und Zeitreihe |

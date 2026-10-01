@@ -122,7 +122,7 @@ func Step(w *World, commands []PlayerCommand, dt float64) {
 	if w.Castle.HP <= 0 {
 		castleFallen(w)
 	}
-	// SP06.2: stepTravel
+	stepTravel(w, dt)
 }
 
 // castleFallen: Niederlage laut GDD. Respawn am Hub, Gebäude bleiben zerstört, 50 % der Ressourcen und alle Truppen
