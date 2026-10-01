@@ -5,7 +5,7 @@
 - **Reife:** bereit
 - **Einschiebbar:** nein
 - **Tickets:** B-002
-- **Start-Commit:** – (wird beim Aktivieren gesetzt: `git rev-parse --short origin/main`)
+- **Start-Commit:** 5c2559a
 - **Spec:** freigegeben
 - **Revision:** 3
 - **Freigabe:** 2026-10-01 🧑 Chat („SP10 freigegeben“), Revision 3
@@ -69,7 +69,7 @@ keine
 
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
-| SP10.1 | `SP10.1-anzeige.md` | Umsetzung | autonom | offen |
+| SP10.1 | `SP10.1-anzeige.md` | Umsetzung | autonom | fertig |
 | SP10.2 | `SP10.2-aktionen-log.md` | Umsetzung | autonom | offen |
 | SP10.3 | `SP10.3-review.md` | Review | autonom | offen |
 
