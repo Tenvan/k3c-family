@@ -17,7 +17,7 @@ dann über den Go-Server mit mehreren Räumen und gemischten Spielern.
 
 | Sprint | Domäne | Thema | Am Ende sichtbar | Reife | Ordner |
 |---|---|---|---|---|---|
-| SP10 | SRV | Diagnose-TUI (Bubble Tea) | `k3c-tui` zeigt Räume live | Entwurf | `geplant/SP10-tui/` |
+| SP10 | SRV | Diagnose-TUI (Bubble Tea) | `k3c-tui` zeigt Räume live | bereit | `geplant/SP10-tui/` |
 | SP11 | SRV 🧑 | Raspberry Pi | 2er- und 3er-Spiel parallel auf dem Pi | Entwurf | `geplant/SP11-raspberry-pi/` |
 
 **Einschiebbar** (unabhängig vom Engine-Fortschritt, jeweils zwischen zwei Sprints):
