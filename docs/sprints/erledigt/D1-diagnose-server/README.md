@@ -1,6 +1,6 @@
 # D1 · SRV · Diagnose-Schnittstelle des Servers
 
-- **Status:** aktiv
+- **Status:** erledigt
 - **Domäne:** SRV
 - **Reife:** bereit
 - **Einschiebbar:** nein
@@ -68,8 +68,10 @@ keine
 | D1.1 | `D1.1-json-log.md` | Umsetzung | autonom | fertig |
 | D1.2 | `D1.2-status-log-endpunkt.md` | Umsetzung | autonom | fertig |
 | D1.3 | `D1.3-aktionen.md` | Umsetzung | autonom | fertig |
-| D1.4 | `D1.4-review.md` | Review | autonom | offen |
+| D1.4 | `D1.4-review.md` | Review | autonom | fertig |
 
 ## Abnahme
 
-–
+Review 2026-10-01 (D1.4): `task check`, `task check:go`, `task check:dev` grün, Diff `7c4288c..main` geprüft, keine schweren Befunde.
+AC-01: D1.1 (JSON-Zeile, stderr bleibt, `services.json`); AC-02: D1.2 (`memory`, `devices`, Log-Endpunkt); AC-03: D1.3 (`disconnect`, `save`, Token-Schutz aller Wege).
+Nicht geprüft: Lauf gegen den echten Server und `-race` lokal. Neue Tickets: keine. B-066 und B-088 erledigt; SP10 (TUI, B-002) kann bereit gemacht werden.
