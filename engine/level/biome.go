@@ -14,7 +14,7 @@ type Range struct {
 	Max int `json:"max"`
 }
 
-// Biome enthält die Felder aus data/biomes/*.json, die der Level-Generator braucht (Port von src/world/biome.ts).
+// Biome enthält die Felder aus data/biomes/*.json, die Level-Generator und Simulation brauchen (Port von src/world/biome.ts).
 // Einheiten sind float64 wie in JavaScript, damit z. B. `cw / 2` auch bei ungerader Breite gleich rechnet.
 type Biome struct {
 	ID              string  `json:"id"`
@@ -31,6 +31,18 @@ type Biome struct {
 	EventChunks       map[string]Range         `json:"eventChunks"`
 	SkillPoints       Range                    `json:"skillPoints"`
 	ResourcesPerChunk Ordered[Ordered[[2]int]] `json:"resourcesPerChunk"`
+	Cycle             Cycle                    `json:"cycle"`
+}
+
+// Cycle ist der Zyklus eines Bioms: `dayNight` (Oberwelt) oder `aggressionPool` (unter Tage). Die Simulation
+// (engine/sim) braucht ihn, der Generator nicht.
+type Cycle struct {
+	Type             string  `json:"type"`
+	DayMinutes       float64 `json:"dayMinutes"`
+	TwilightMinutes  float64 `json:"twilightMinutes"`
+	NightMinutes     float64 `json:"nightMinutes"`
+	PercentPerMinute float64 `json:"percentPerMinute"`
+	PercentPerGather float64 `json:"percentPerGather"`
 }
 
 // LoadBiome liest data/biomes/<id>.json.

@@ -1,0 +1,109 @@
+// Package sim ist die Simulation einer Stufe (Port von src/world/sim/): CreateWorld baut den Startzustand aus
+// Biom und Seed, Step rechnet einen Tick. Deterministisch: gleicher Seed und gleiche Eingaben ergeben denselben
+// Zustand wie in TypeScript, geprüft gegen testdata/golden/sim-*.json.
+//
+// Fließkomma: Go darf Produkt und Summe zu einer FMA-Operation verschmelzen (z. B. auf arm64). Jedes Produkt,
+// das in eine Addition geht, wird deshalb mit float64(…) gerundet, sonst weicht Go von JavaScript ab.
+package sim
+
+import (
+	"k3c/engine/level"
+	"k3c/engine/rng"
+)
+
+// Options für CreateWorld. CycleSpeed 0 bedeutet 1 (wie `?? 1` in TS).
+type Options struct {
+	CycleSpeed float64 // beschleunigt den Tag/Nacht-Zyklus (Tests, Dev)
+	Time       float64 // Startzeit in Sekunden, damit der globale Zyklus beim Stufenwechsel weiterläuft
+}
+
+// CreateWorld baut den Startzustand einer Stufe.
+func CreateWorld(b level.Biome, seed string, opts Options) (*World, error) {
+	lv, err := level.Generate(b, seed)
+	if err != nil {
+		return nil, err
+	}
+	speed := opts.CycleSpeed
+	if speed == 0 {
+		speed = 1
+	}
+	hubX := lv.HubCenterUnits
+	w := &World{
+		Seed: seed, Biome: b, Level: lv, rng: rng.New(b.ID + ":" + seed + ":sim"),
+		Time: opts.Time, CycleSpeed: speed, NextID: 1, WidthUnits: lv.WidthUnits, HubX: hubX,
+		Cycle:   cycleAt(globalDayNight, float64(opts.Time*speed)),
+		Players: []*Player{}, Coins: []*Coin{}, Troops: []*Troop{}, Nodes: []*ResourceNode{}, Sites: []*Site{},
+		Castle:  Castle{X: hubX, HP: buildings["castle"].HP, MaxHP: buildings["castle"].HP},
+		Enemies: []*Enemy{}, Projectiles: []*Projectile{}, Pickups: []*Pickup{}, Camps: []*Camp{},
+		Portals: []float64{}, SpawnQueue: []QueuedSpawn{}, Events: []Event{},
+	}
+	if b.Cycle.Type == "aggressionPool" {
+		w.Aggression = new(float64)
+	}
+	w.Castle.ID = w.newID()
+	placeEntities(w)
+	for _, s := range hub.Sites {
+		if b.Depth < s.FromDepth || (s.NeedsDeeper && !hasDepth(b.Depth+1)) {
+			continue
+		}
+		w.Sites = append(w.Sites, emptySite(w, s.Kind, hubX+s.OffsetUnits))
+	}
+	for i := range hub.StartTroops.Peasant {
+		t := spawnVagrant(w, hubX, hubX+2+float64(i))
+		t.Kind, t.HP, t.MaxHP = "peasant", troops["peasant"].HP, troops["peasant"].HP
+	}
+	for range hub.StartTroops.Archer {
+		makeArcher(w, spawnVagrant(w, hubX, hubX))
+	}
+	return w, nil
+}
+
+// placeEntities legt Ressourcen, Truhen, Skill-Punkte, Camps und Portale aus dem Level an.
+func placeEntities(w *World) {
+	for _, e := range w.Level.Entities {
+		switch _, gatherable := economy.Gatherables[e.Kind]; {
+		case gatherable:
+			w.Nodes = append(w.Nodes, &ResourceNode{ID: w.newID(), Kind: e.Kind, X: e.X})
+		case e.Kind == "chest" || e.Kind == "skillPoint":
+			w.Pickups = append(w.Pickups, &Pickup{ID: w.newID(), Kind: e.Kind, X: e.X})
+		case e.Kind == "recruitCamp":
+			w.Camps = append(w.Camps, &Camp{X: e.X, RespawnIn: economy.RecruitCamp.RespawnSeconds})
+			for i := range economy.RecruitCamp.MaxVagrants {
+				spawnVagrant(w, e.X, e.X+float64((float64(i)-0.5)*3))
+			}
+		case e.Kind == "portal":
+			w.Portals = append(w.Portals, e.X)
+		}
+	}
+}
+
+func emptySite(w *World, kind string, x float64) *Site {
+	return &Site{ID: w.newID(), Kind: kind, X: x, State: "unpaid", MaxHP: buildings[kind].HP}
+}
+
+// AddPlayer stellt einen neuen Monarchen an die Burg (Couch-Koop).
+func AddPlayer(w *World) *Player {
+	index := len(w.Players)
+	offset, facing := -3.0, -1
+	if index%2 != 0 {
+		offset, facing = 3, 1
+	}
+	p := &Player{
+		ID: w.newID(), Index: index, X: w.HubX + offset, Facing: facing, Gold: economy.Purse.StartGold,
+		HP: monarch.Base.HP, MaxHP: monarch.Base.HP,
+		PayCooldown: 0.5, // der Beitritts-Tastendruck soll nicht gleich eine Münze ausgeben
+	}
+	w.Players = append(w.Players, p)
+	return p
+}
+
+// Step rechnet einen Tick. commands[i] gehört zu Players[i].
+func Step(w *World, commands []PlayerCommand, dt float64) {
+	w.Events = []Event{}
+	w.Time += dt
+	stepCycle(w, dt)
+	// SP06: stepSpawns; SP05.3: stepPlayers; SP05.2: stepCamps; SP05.3: stepSites; SP05.2: stepTroops;
+	// SP06: stepEnemies, stepProjectiles, removeDeadEnemies; SP05.2: tote Truppen aufräumen;
+	// SP06: castleFallen, stepTravel
+	_ = commands
+}
