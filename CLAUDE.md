@@ -22,18 +22,23 @@ Zielplattform ist **Edge auf der Xbox** (Gamepad API), gehostet im Heimnetz. Die
 Voraussetzungen (Node, Go, golangci-lint mit Versionen): `requirements.md`.
 
 ```bash
-npm run dev        # Dev-Server (auch im LAN erreichbar, Port 5173)
-npm test           # Vitest (Level-Generator, reine Logik)
-npm run check      # Lint + Typecheck + Tests (vor jedem Abschluss)
-npm run check:go   # go test + golangci-lint (Rechner mit Go)
-npm run k3c-dev    # Entwickler-Werkzeug k3c-dev als Fenster starten (wails dev; EXE: npm run k3c-dev:build)
-npm run build      # Typecheck + Produktions-Build nach dist/
-npm run serve      # Build + Heimnetz-Server (Port 8080, server/server.mjs)
+task               # alle Aufgaben anzeigen (Go Task, Taskfile.yml; einziger Einstieg für Befehle)
+task install       # Abhängigkeiten holen
+task dev           # Dev-Server (auch im LAN erreichbar, Port 5173)
+task test          # Vitest (Level-Generator, reine Logik); Filter: task test -- planning
+task check         # Lint + Typecheck + Tests (vor jedem Abschluss)
+task check:go      # go test + golangci-lint (Rechner mit Go)
+task check:dev     # k3c-dev: Frontend, go test, golangci-lint
+task check:all     # alles inklusive Build
+task k3c-dev       # Entwickler-Werkzeug k3c-dev als Fenster starten (wails dev; EXE: task k3c-dev:build)
+task build         # Typecheck + Produktions-Build nach dist/
+task serve         # Build + Heimnetz-Server (Port 8080, server/server.mjs)
 ```
 
 Die Gamepad-Testseite (`gamepad-test.html`) schickt Berichte von der Xbox nach `reports/*.json`. Dort die Ergebnisse nachlesen.
 
-Vor jedem Abschluss: `npm run check` muss grün sein.
+**Tasks und Ausführungen laufen ausschließlich über `task`** (Neues in `Taskfile.yml`, nicht in `package.json`).
+Vor jedem Abschluss: `task check` muss grün sein.
 Die CI (`.github/workflows/ci.yml`) prüft zusätzlich Build + Server-Smoke-Test. `tests/projectRules.test.ts`
 prüft die Regeln unten automatisch (Seiten eingetragen, `installPageChrome()`, Vollbild, kein `Math.random()`).
 
