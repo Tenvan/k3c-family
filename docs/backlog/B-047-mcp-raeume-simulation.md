@@ -7,7 +7,7 @@
 - **Sprint:** M6
 - **Erstellt:** 2026-09-30
 - **Spec:** Entwurf
-- **Revision:** 1
+- **Revision:** 2
 - **Freigabe:** –
 
 ## Ausgangslage
@@ -27,7 +27,8 @@ Entwickler und Coding-Agenten; Balancing-Workshops (REG) nutzen `sim_run` für V
 - `server_status` und `rooms_list`: über `/api/status` des laufenden Servers, verdichtet (Räume, Geräte, Spieler, Tick-Dauer).
 - `room_snapshot {room}`: kompakter Zustand eines Raums (Tag/Nacht, Gold, Einheiten, Spieler) über die Status-Schnittstelle.
 - `level_generate {seed, biome}`: rechnet in-process mit `engine/level`, eine Textzeile je Abschnitt.
-- `sim_run {seed, ticks, inputs?}`: deterministischer Lauf mit `engine/sim`, Zusammenfassung (Tag, Gold, Verluste, Ende).
+- `sim_run {seed, ticks, inputs?}`: deterministischer Lauf mit `engine/sim`, Zusammenfassung (Tag, Gold, Verluste, Ende); `ticks` höchstens 100 000 (30 Ticks/s, gut drei Tag/Nacht-Zyklen).
+- Adresse und Token kommen aus den Variablen des Servers: Token `K3C_STATUS_TOKEN`, Adresse `K3C_SERVER_URL`, sonst `http://127.0.0.1:<K3C_HTTP_PORT oder 8080>`.
 
 ## Nicht-Ziele
 
@@ -46,18 +47,18 @@ Go-Server ist die einzige Engine (Entscheidung 001), Standardbibliothek zuerst; 
 
 - Server nicht erreichbar → Meldung mit Adresse; die In-process-Tools laufen weiter.
 - Token fehlt oder ist falsch → Meldung „401, Token prüfen“.
-- `ticks` über der Grenze → Ablehnung mit der Grenze.
+- `ticks` über 100 000 → Ablehnung mit der Grenze.
 
 ## Akzeptanzkriterien
 
 - **AC-01** `server_status`, `rooms_list` und `room_snapshot` liefern gegen einen Test-Server (`httptest`) verdichteten Text (Tests).
 - **AC-02** Server weg oder 401 → verständliche Meldung, kein Absturz (Tests).
 - **AC-03** `level_generate` liefert für die Golden-Seeds dasselbe Level wie `testdata/golden/` (Test).
-- **AC-04** `sim_run` ist deterministisch (zwei Läufe identisch) und lehnt `ticks` über der Grenze ab (Tests).
+- **AC-04** `sim_run` ist deterministisch (zwei Läufe identisch) und lehnt `ticks` über 100 000 ab (Tests).
 
 ## Offene Fragen
 
-Namen der Umgebungsvariablen für Adresse und Token (zusammen mit B-027 festlegen). Grenze für `ticks` (🧑).
+keine (entschieden 2026-10-01 🧑 Chat: Namen des Servers übernehmen, `ticks` höchstens 100 000; Revision 2).
 
 ## Notizen
 
