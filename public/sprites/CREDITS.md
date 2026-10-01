@@ -1,5 +1,7 @@
 # Figuren-Sprites
 
+Die Nicht-kommerziell-Lizenz des Projekts (`LICENSE`) gilt **nicht** für diese Fremdwerke; sie behalten ihre Lizenz. Die Danksagung im Spiel steht auf `lizenzen.html` und muss mit dieser Datei übereinstimmen.
+
 Die Figuren stehen unter **CC0 1.0** (gemeinfrei), Namensnennung ist nicht nötig, aber erwünscht.
 Ausnahme sind die LPC-Reittiere unten: **CC-BY 3.0**, dort ist die Namensnennung Pflicht.
 
