@@ -1,6 +1,7 @@
 import { fullscreenSupported, isFullscreen, onFullscreenChange, toggleLocal } from '../core/fullscreen';
 import { SHELL_MESSAGE, isOpenable, type ShellMessage } from '../core/shell';
 import { PAGES, SECTIONS, type PageEntry } from './pages';
+import { NO_SERVER_HINT, needsServer, serverReachable } from './serverCheck';
 
 /**
  * Landingpage = dauerhaft offene Shell.
@@ -41,6 +42,7 @@ function render(): void {
       a.className = `card${page.primary ? ' primary' : ''}`;
       a.href = typeof page.href === 'string' ? page.href : '#';
       a.dataset.title = page.title;
+      if (needsServer(page)) a.dataset.needsServer = '';
       a.innerHTML = `<span class="icon">${page.icon}</span><span><p class="title"></p><p class="desc"></p></span>`;
       a.querySelector('.title')!.textContent = page.title;
       a.querySelector('.desc')!.textContent = page.description;
@@ -79,6 +81,14 @@ function select(card: HTMLElement): void {
     sessionStorage.setItem(FOCUS_KEY, card.dataset.title!);
   } catch {
     /* Speicher nicht verfügbar – egal */
+  }
+}
+
+/** Ohne Go-Server (z. B. GitHub Pages) sind die Spiel-Kacheln deaktiviert und erklärt; Testseiten bleiben offen (B-032). */
+function markNoServer(): void {
+  for (const card of cards.filter((c) => c.dataset.needsServer !== undefined)) {
+    card.classList.add('disabled');
+    card.querySelector('.desc')!.textContent = NO_SERVER_HINT;
   }
 }
 
@@ -133,6 +143,7 @@ function safePageUrl(href: string): string | null {
 }
 
 function launch(card: HTMLElement, page: PageEntry): void {
+  if (card.classList.contains('disabled')) return;
   card.classList.add('launch');
   const href = typeof page.href === 'function' ? page.href() : page.href;
   setTimeout(() => {
@@ -310,6 +321,7 @@ function pollGamepads(now: number): void {
 render();
 setupFullscreen();
 restoreFocus();
+void serverReachable().then((ok) => ok || markNoServer());
 // Direkt-Link / Neuladen mit geöffneter Seite (index.html#game.html?seed=abc)
 if (location.hash.length > 1) openPage(decodeURIComponent(location.hash.slice(1)));
 requestAnimationFrame(pollGamepads);

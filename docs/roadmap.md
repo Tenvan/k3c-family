@@ -7,8 +7,8 @@ Umsetzung in Sprints und Sessions: [`docs/sprints/`](sprints/README.md). Tickets
 
 - [x] **Gamepad-Testseite** `gamepad-test.html`: Live-Anzeige aller Controller, Falle für Zurück-Navigation (B),
   Vollbild, Vibration, FPS-Test (Phaser/WebGL, 100–4000 Sprites), Bericht per **Y** an den Server.
-- [x] **Heimnetz-Server** `server/server.mjs` (ohne Abhängigkeiten): liefert `dist/` aus, speichert Berichte in `reports/`,
-  optional HTTPS mit `certs/`. Start: `npm run serve`.
+- [x] **Heimnetz-Server** (früher ein Node-Server, seit SP03/SP09 der Go-Server `cmd/k3c-server`): liefert `dist/` aus, speichert Berichte
+  in `reports/`, optional HTTPS mit `certs/`. Start: `task serve`.
 - [ ] **Test auf der Xbox durchführen** (Anleitung im README) → Bericht in `reports/` auswerten.
 - [ ] Ergebnis in `docs/game-design.md` → Steuerung eintragen (Skill-Tasten, B, Vollbild, max. Sprites).
 

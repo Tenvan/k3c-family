@@ -1,4 +1,4 @@
-# CD: Stand von main als statische Seite auf GitHub Pages (Spiel + Testseiten, ohne Bericht-Server).
+# CD: Stand von main als statische Seite auf GitHub Pages: nur was ohne Server geht (Testseiten; Spiel-Kacheln erklärt, B-032).
 # Einmalig aktivieren: Repo → Settings → Pages → Source: "GitHub Actions".
 name: Deploy (GitHub Pages)
 
