@@ -7,7 +7,7 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | Nr. | Domäne | Typ | Prio | Status | Sprint | Titel |
 |---|---|---|---|---|---|---|
 | [B-001](B-001-server-framework.md) | SRV | Idee | niedrig | erledigt | SP00 | Server bekommt ein tragfähiges Framework, falls mehr Leistung nötig wird |
-| [B-002](B-002-diagnose-tui.md) | SRV | Idee | mittel | eingeplant | SP10 | Diagnose-TUI zeigt den laufenden Server |
+| [B-002](B-002-diagnose-tui.md) | SRV | Idee | mittel | erledigt | SP10 | Diagnose-TUI zeigt den laufenden Server |
 | [B-003](B-003-server-sprache.md) | SRV | Frage | mittel | erledigt | SP00 | Server-Sprache ist entschieden |
 | [B-004](B-004-regelwerk.md) | REG | Idee | hoch | eingeplant | R1 | Regelwerk ist ausführlich diskutiert und ausgearbeitet |
 | [B-005](B-005-online-koop-ziel.md) | REG | Problem | hoch | eingeplant | R1 | Game-Design nennt gemischten Koop als Kern |

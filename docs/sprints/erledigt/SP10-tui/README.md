@@ -1,6 +1,6 @@
 # SP10 · SRV · Diagnose-TUI
 
-- **Status:** aktiv
+- **Status:** erledigt
 - **Domäne:** SRV
 - **Reife:** bereit
 - **Einschiebbar:** nein
@@ -71,8 +71,10 @@ keine
 |---|---|---|---|---|
 | SP10.1 | `SP10.1-anzeige.md` | Umsetzung | autonom | fertig |
 | SP10.2 | `SP10.2-aktionen-log.md` | Umsetzung | autonom | fertig |
-| SP10.3 | `SP10.3-review.md` | Review | autonom | offen |
+| SP10.3 | `SP10.3-review.md` | Review | autonom | fertig |
 
 ## Abnahme
 
-–
+Review 2026-10-01 (SP10.3): `task check`, `task check:go`, `task check:dev` grün, Diff `5c2559a..main` geprüft. Behoben: „Gerät trennen“ meinte nach einem Neuladen der Liste womöglich ein anderes Gerät (jetzt Kennung beim Fragen gemerkt).
+AC-01: SP10.1 (Anzeige, `-once`, Fehlerfälle, Modell-Takt; Image und CI-Schritt in der Datei geprüft, Lauf in der CI); AC-02: SP10.2 (Raum ansehen, trennen mit Rückfrage, sichern, Log folgen, alle gegen einen Test-Server).
+Nicht geprüft: Docker-Build und Lauf der CI, interaktiver Lauf gegen einen echten Server. Neue Tickets: keine. B-002 erledigt.
