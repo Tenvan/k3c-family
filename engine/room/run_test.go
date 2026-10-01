@@ -17,11 +17,11 @@ func setup(t *testing.T, f *fixture) []*Room {
 	r2 := need(f.m.Create("b", &peer{}, "zwei", true, 0, []int{0, 1, 2}))(t)
 	r3 := need(f.m.Create("c", &peer{}, "drei", true, 0, []int{0, 1}))(t)
 	need(f.m.Join("d", &peer{}, r3.Code, []int{0, 1}))(t)
-	ok(t, r1.Input("a", 0, sim.PlayerCommand{MoveX: 1}))
-	ok(t, r1.Input("a", 1, sim.PlayerCommand{MoveX: -1, Pay: true}))
-	ok(t, r2.Input("b", 2, sim.PlayerCommand{MoveX: 1, Sprint: true}))
-	ok(t, r3.Input("c", 0, sim.PlayerCommand{MoveX: -1}))
-	ok(t, r3.Input("d", 1, sim.PlayerCommand{MoveX: 1, Pay: true}))
+	ok(t, r1.Input("a", r1.peerOf("a"), map[int]sim.PlayerCommand{0: sim.PlayerCommand{MoveX: 1}}))
+	ok(t, r1.Input("a", r1.peerOf("a"), map[int]sim.PlayerCommand{1: sim.PlayerCommand{MoveX: -1, Pay: true}}))
+	ok(t, r2.Input("b", r2.peerOf("b"), map[int]sim.PlayerCommand{2: sim.PlayerCommand{MoveX: 1, Sprint: true}}))
+	ok(t, r3.Input("c", r3.peerOf("c"), map[int]sim.PlayerCommand{0: sim.PlayerCommand{MoveX: -1}}))
+	ok(t, r3.Input("d", r3.peerOf("d"), map[int]sim.PlayerCommand{1: sim.PlayerCommand{MoveX: 1, Pay: true}}))
 	return []*Room{r1, r2, r3}
 }
 

@@ -3,7 +3,7 @@
 - **Domäne:** SRV
 - **Typ:** Idee
 - **Prio:** hoch
-- **Status:** eingeplant
+- **Status:** erledigt
 - **Sprint:** SP07
 - **Erstellt:** 2026-09-30
 - **Spec:** freigegeben
@@ -55,3 +55,5 @@ keine
 ## Notizen
 
 Im Kern von Anfang an (Entscheidung 001). Entwurf SP02, Umsetzung SP07.
+
+Erledigt in SP07 (2026-10-01).

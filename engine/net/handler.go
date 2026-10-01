@@ -27,6 +27,8 @@ type Config struct {
 	StartedAt   time.Time
 	// Rooms sind die Räume hinter /ws (Protokoll v2); nil = kein /ws. NewHandler setzt Rooms.Changed.
 	Rooms *room.Manager
+	// Conns zählt die offenen WebSocket-Verbindungen, damit der Server beim Beenden auf room_closed warten kann.
+	Conns *sync.WaitGroup
 }
 
 type server struct {

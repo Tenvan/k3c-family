@@ -3,7 +3,7 @@
 - **Domäne:** SRV
 - **Typ:** Idee
 - **Prio:** hoch
-- **Status:** eingeplant
+- **Status:** erledigt
 - **Sprint:** SP07
 - **Erstellt:** 2026-09-30
 - **Spec:** freigegeben
@@ -54,3 +54,5 @@ keine
 ## Notizen
 
 Entwurf SP02, Server SP07, Client SP08.
+
+Erledigt in SP07 (2026-10-01).

@@ -6,6 +6,7 @@ import (
 	"net/http"
 	"sync"
 	"sync/atomic"
+	"time"
 
 	"github.com/coder/websocket"
 
@@ -21,6 +22,7 @@ const (
 	sendBuffer   = 64
 	maxMsgBytes  = 16 << 10
 	maxDeviceLen = 64
+	helloTimeout = 10 * time.Second
 )
 
 // out ist eine Nachricht im Sendekanal; mit close statt data schließt die Schreib-Goroutine die Verbindung.
@@ -120,10 +122,16 @@ func (c *conn) leaveRoom() {
 	c.mu.Unlock()
 }
 
+// current ist der Raum des Geräts; ein inzwischen geschlossener Raum zählt als keiner.
 func (c *conn) current() *room.Room {
 	c.mu.Lock()
-	defer c.mu.Unlock()
-	return c.room
+	r := c.room
+	c.mu.Unlock()
+	if r != nil && r.Closed() {
+		c.leaveRoom()
+		return nil
+	}
+	return r
 }
 
 func (c *conn) writer(ctx context.Context) {
@@ -147,6 +155,10 @@ func (c *conn) writer(ctx context.Context) {
 
 // websocket ist GET /ws.
 func (s *server) websocket(w http.ResponseWriter, r *http.Request) {
+	if s.cfg.Conns != nil {
+		s.cfg.Conns.Add(1)
+		defer s.cfg.Conns.Done()
+	}
 	ws, err := websocket.Accept(w, r, nil)
 	if err != nil {
 		return
@@ -184,6 +196,8 @@ func (s *server) websocket(w http.ResponseWriter, r *http.Request) {
 
 // handshake: Die erste Nachricht muss ein gültiges hello mit v 2 und einer Geräte-ID sein.
 func handshake(ctx context.Context, ws *websocket.Conn) (string, bool) {
+	ctx, cancel := context.WithTimeout(ctx, helloTimeout)
+	defer cancel()
 	_, data, err := ws.Read(ctx)
 	var m inMsg
 	if err != nil || json.Unmarshal(data, &m) != nil {
