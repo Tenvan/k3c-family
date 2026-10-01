@@ -3,12 +3,12 @@
 - **Domäne:** INF
 - **Typ:** Schuld
 - **Prio:** niedrig
-- **Status:** offen
-- **Sprint:** –
+- **Status:** eingeplant
+- **Sprint:** I1
 - **Erstellt:** 2026-09-30
-- **Spec:** Entwurf
+- **Spec:** freigegeben
 - **Revision:** 1
-- **Freigabe:** –
+- **Freigabe:** 2026-10-01 🧑 Chat („baue aus den offenen Punkten den nächsten Sprint und aktiviere ihn“, Sprint I1 Revision 1)
 
 ## Ausgangslage
 
@@ -46,7 +46,7 @@ nicht relevant: reine Konfiguration.
 
 ## Akzeptanzkriterien
 
-- **AC-01** Ein Probe-Import von `k3c/engine/net` in `engine/rng` lässt `npm run check:go` scheitern.
+- **AC-01** Ein Probe-Import von `k3c/engine/net` in `engine/rng` lässt `task check:go` scheitern.
 
 ## Offene Fragen
 
