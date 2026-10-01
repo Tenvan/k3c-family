@@ -64,7 +64,30 @@ func register(s *Server) {
 		Description: "Spielstände (saves/ oder K3C_SAVES_DIR) mit Stufe, Tag, Spielern und Datum, Sicherungen eingeschlossen.",
 		Annotations: readOnly(),
 	}, s.savesList)
+	registerServer(s)
 	registerServices(s)
+}
+
+// registerServer sind die Tools für den laufenden Go-Server (B-047): nur lesend über /api/status.
+func registerServer(s *Server) {
+	open := false
+	ro := &mcp.ToolAnnotations{ReadOnlyHint: true, IdempotentHint: true, OpenWorldHint: &open}
+	add(s, &mcp.Tool{
+		Name: "server_status",
+		Description: "Laufender Go-Server über /api/status: Version, Laufzeit, Räume, Spielstände, Berichte, letzte Abstürze. " +
+			"Token K3C_STATUS_TOKEN, Adresse K3C_SERVER_URL oder 127.0.0.1:K3C_HTTP_PORT.",
+		Annotations: ro,
+	}, s.serverStatus)
+	add(s, &mcp.Tool{
+		Name:        "rooms_list",
+		Description: "Laufende Räume des Go-Servers, eine Zeile je Raum: Geräte, Monarchen, Tick und Tick-Dauer (letzter, p99).",
+		Annotations: ro,
+	}, s.roomsList)
+	add(s, &mcp.Tool{
+		Name:        "room_snapshot",
+		Description: "Verdichteter Zustand eines Raums: Tiefe, Tag/Nacht, Welle, Gold je Monarch, Truppen, Gegner, Burg-HP.",
+		Annotations: ro,
+	}, s.roomSnapshot)
 }
 
 // registerServices sind die Dienste-Tools (B-067); Start ist nicht zerstörerisch, Stopp und Neustart schon.
