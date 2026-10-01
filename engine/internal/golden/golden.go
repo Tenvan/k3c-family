@@ -40,6 +40,11 @@ func Diff(at string, want, got any) string {
 		}
 		slices.Sort(keys)
 		for _, k := range slices.Compact(keys) {
+			_, inW := w[k]
+			_, inG := g[k]
+			if inW != inG {
+				return fmt.Sprintf("%s.%s (Schlüssel nur auf einer Seite)", at, k)
+			}
 			if d := Diff(at+"."+k, w[k], g[k]); d != "" {
 				return d
 			}
