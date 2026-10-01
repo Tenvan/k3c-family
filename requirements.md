@@ -13,6 +13,7 @@ holt `npm ci` aus `package-lock.json`. Versionen gelten, solange diese Datei, `.
 | Wails-CLI | 2.16.0 | Fenster von `tools/k3c-dev` bauen (`task k3c-dev`, `task k3c-dev:build`) | `tools/k3c-dev/go.mod` | `wails version` |
 | WebView2-Laufzeit | aktuell (in Windows 11 enthalten) | Fenster von `k3c-dev` | – | `wails doctor` |
 | Go Task | 3 | Alle Befehle (`Taskfile.yml`, `task --list`) | `Taskfile.yml` | `task --version` |
+| C-Compiler (optional) | `gcc` oder `clang` | Race-Detector `go test -race` in `task check:race`; ohne Compiler nur ein Hinweis, die CI prüft es (B-077) | – | `gcc --version` |
 | Docker (optional) | aktuell, mit `buildx` | Image des Heimnetz-Servers (`Dockerfile`, `compose.yaml`); sonst prüft es die CI | – | `docker buildx version` |
 
 Zum Testen am Gerät, keine Installation im Repo: ein aktueller Browser (Edge oder Chrome) für `npm run dev`,

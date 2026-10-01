@@ -102,10 +102,21 @@ tasks:
       - golangci-lint run
 
   check:go:
-    desc: Go-Tests und golangci-lint
+    desc: Go-Tests, Race-Detector (falls möglich) und golangci-lint
     cmds:
       - task: go:test
+      - task: check:race
       - task: go:lint
+
+  check:race:
+    desc: go test -race für engine/ (braucht cgo und einen C-Compiler; ohne Compiler nur ein Hinweis, B-077)
+    cmds:
+      - cmd: |
+          if command -v gcc >/dev/null 2>&1 || command -v clang >/dev/null 2>&1; then
+            CGO_ENABLED=1 go test -race ./engine/...
+          else
+            echo "check:race übersprungen: kein C-Compiler (gcc oder clang), siehe requirements.md. Die CI prüft -race."
+          fi
 
   dev:frontend:
     desc: Frontend von k3c-dev bauen (go:embed braucht frontend/dist)
