@@ -1,11 +1,11 @@
-import buildingsJson from '../../../data/buildings.json';
-import economyJson from '../../../data/economy.json';
-import enemiesJson from '../../../data/enemies.json';
-import hubJson from '../../../data/hub.json';
-import monarchJson from '../../../data/monarch.json';
-import troopsJson from '../../../data/troops.json';
-import wavesJson from '../../../data/waves.json';
-import type { Range } from '../biome';
+import buildingsJson from '../../data/buildings.json';
+import economyJson from '../../data/economy.json';
+import enemiesJson from '../../data/enemies.json';
+import hubJson from '../../data/hub.json';
+import monarchJson from '../../data/monarch.json';
+import troopsJson from '../../data/troops.json';
+import wavesJson from '../../data/waves.json';
+import type { Range } from './biome';
 
 /** Typisierter Zugriff auf die Balancing-Daten aus data/. Werte gehören in die JSON, nicht in den Code. */
 

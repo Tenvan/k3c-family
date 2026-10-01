@@ -1,6 +1,6 @@
 import { approach, isDangerous, newId, outerWall } from './common';
-import { BUILDINGS, ECONOMY, HUB, TROOPS } from './data';
-import type { Troop, World } from './types';
+import { BUILDINGS, ECONOMY, HUB, TROOPS } from '../../model/data';
+import type { Troop, World } from '../../model/types';
 
 /**
  * Eigene Truppen (KI):

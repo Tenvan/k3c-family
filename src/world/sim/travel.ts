@@ -1,7 +1,7 @@
-import { BIOMES } from '../biome';
+import { BIOMES } from '../../model/biome';
 import { isAlive } from './common';
-import { HUB } from './data';
-import type { TravelPoint, World } from './types';
+import { HUB } from '../../model/data';
+import type { TravelPoint, World } from '../../model/types';
 
 /**
  * Stufenwechsel: Der Tiefen-Eingang am Levelende führt nach unten, gebaute Treppen im Hub verbinden die Hubs.

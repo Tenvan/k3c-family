@@ -1,15 +1,15 @@
 import { createRng } from '../../core/rng';
-import type { BiomeConfig } from '../biome';
+import type { BiomeConfig } from '../../model/biome';
 import { generateLevel } from '../levelGenerator';
 import { newId } from './common';
 import { cycleAt, globalDayNight } from './cycle';
-import { BUILDINGS, ECONOMY, HUB, MONARCH, TROOPS } from './data';
+import { BUILDINGS, ECONOMY, HUB, MONARCH, TROOPS } from '../../model/data';
 import { payDawnIncome, stepPlayers, stepSites } from './economy';
 import { removeDeadEnemies, sendEnemiesHome, stepEnemies, stepProjectiles, stepSpawns } from './enemies';
 import { makeArcher, releaseJob, spawnVagrant, stepCamps, stepTroops } from './units';
 import { hasDepth, stepTravel } from './travel';
 import { planWave } from './waves';
-import type { Player, PlayerCommand, Site, World } from './types';
+import type { Player, PlayerCommand, Site, World } from '../../model/types';
 
 /**
  * Die Simulation einer Stufe: createWorld() baut den Startzustand aus Biom + Seed, step() rechnet einen Tick.

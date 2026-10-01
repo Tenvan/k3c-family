@@ -5,7 +5,7 @@
 - **Reife:** bereit
 - **Einschiebbar:** nein
 - **Tickets:** B-032, B-049, B-078
-- **Start-Commit:** – (wird beim Aktivieren gesetzt: `git rev-parse --short origin/main`)
+- **Start-Commit:** bee8e44
 - **Spec:** freigegeben
 - **Revision:** 2
 - **Freigabe:** 2026-10-01 🧑 Chat („SP09 freigegeben“), Revision 2
@@ -69,7 +69,7 @@ keine
 
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
-| SP09.1 | `SP09.1-client-model.md` | Umsetzung | autonom | offen |
+| SP09.1 | `SP09.1-client-model.md` | Umsetzung | autonom | fertig |
 | SP09.2 | `SP09.2-umstellen-loeschen.md` | Umsetzung | autonom | offen |
 | SP09.3 | `SP09.3-pages-doku.md` | Umsetzung | autonom | offen |
 | SP09.4 | `SP09.4-review-release.md` | Review | autonom | offen |

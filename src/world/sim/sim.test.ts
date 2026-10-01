@@ -1,14 +1,14 @@
 import { describe, expect, it } from 'vitest';
 import { createRng } from '../../core/rng';
-import { BIOMES, biomeForDepth } from '../biome';
+import { BIOMES, biomeForDepth } from '../../model/biome';
 import { cycleAt, globalDayNight } from './cycle';
-import { BUILDINGS, ECONOMY, ENEMIES, TROOPS, WAVES } from './data';
+import { BUILDINGS, ECONOMY, ENEMIES, TROOPS, WAVES } from '../../model/data';
 import { findPayTarget } from './economy';
 import { spawnEnemy } from './enemies';
 import { spawnVagrant } from './units';
 import { planWave, waveRow } from './waves';
 import { addPlayer, createWorld, startWave, step } from './world';
-import { IDLE, type PlayerCommand, type World } from './types';
+import { IDLE, type PlayerCommand, type World } from '../../model/types';
 
 const forest = biomeForDepth(0);
 const DT = 1 / 30;

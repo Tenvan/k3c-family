@@ -1,5 +1,5 @@
 import { createCampaign, currentWorld, joinPlayer, travel, type Campaign } from '../world/sim/campaign';
-import { IDLE, type PlayerCommand, type World } from '../world/sim/types';
+import { IDLE, type PlayerCommand, type World } from '../model/types';
 import { step } from '../world/sim/world';
 import { MAX_ONLINE_PLAYERS, snapshotWorld, type ServerMessage } from './protocol';
 

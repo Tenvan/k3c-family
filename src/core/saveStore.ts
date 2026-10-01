@@ -1,4 +1,4 @@
-import { isSaveGame, type SaveGame } from '../world/sim/campaign';
+import { isSaveGame, type SaveGame } from '../model/types';
 
 /**
  * Spielstände: primär auf dem Heimnetz-Server (/api/save, Browser-Speicher auf der Xbox gilt als unzuverlässig),

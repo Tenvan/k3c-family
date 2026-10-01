@@ -1,8 +1,8 @@
 import { applyDamage, castleRadius, isAlive, newId } from './common';
-import { ECONOMY, ENEMIES, WAVES, type ResourceKind } from './data';
+import { ECONOMY, ENEMIES, WAVES, type ResourceKind } from '../../model/data';
 import { scatterCoins } from './economy';
 import { isOnTower } from './units';
-import type { Enemy, Site, World } from './types';
+import type { Enemy, Site, World } from '../../model/types';
 
 /**
  * Gegner laufen vom Portal geradeaus auf die Burg zu (keine Sprünge).
