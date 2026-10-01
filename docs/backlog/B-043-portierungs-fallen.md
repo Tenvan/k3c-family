@@ -8,7 +8,7 @@
 - **Erstellt:** 2026-09-30
 - **Spec:** freigegeben
 - **Revision:** 1
-- **Freigabe:** 2026-09-30 🧑 Chat (3 Simulationsläufe, Generator als Vitest-Datei, FMA: Regel + Ticket B-071)
+- **Freigabe:** 2026-09-30 🧑 Chat (3 Simulationsläufe, Generator als Vitest-Datei, FMA: Regel + Ticket B-071); 2026-10-01 🧑 Chat (Truppen nach SP05, Golden-Lauf ohne Spieler, 4 Sessions)
 
 ## Ausgangslage
 
@@ -53,4 +53,4 @@ keine
 
 ## Notizen
 
-Betrifft SP04 bis SP06. SP04 erledigt (2026-09-30): AC-01 belegt über `rng.json` und `level-*.json`; Golden-Läufe `sim-*.json` liegen für SP05/SP06 bereit.
+Betrifft SP04 bis SP06. SP04 erledigt (2026-09-30): AC-01 belegt über `rng.json` und `level-*.json`; Golden-Läufe `sim-*.json` liegen für SP05/SP06 bereit. SP05 portiert auch die eigenen Truppen (ab Tick 0 in jedem Lauf) und ergänzt `sim-forest-ohne-spieler.json`.
