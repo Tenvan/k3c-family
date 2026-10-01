@@ -3,6 +3,7 @@ import { GAME_HEIGHT, GAME_WIDTH } from '../core/constants';
 import { ECONOMY } from '../world/sim/data';
 import type { GameEvent, World } from '../world/sim/types';
 import type { GameScene } from './GameScene';
+import { gameNotice } from './lobbyLogic';
 import { RESOURCE_NAMES } from './worldRenderer';
 
 const STYLE = { fontSize: '28px', color: '#ffffff', stroke: '#000000', strokeThickness: 6, fontStyle: 'bold' };
@@ -80,6 +81,11 @@ export class HudScene extends Phaser.Scene {
   /** Hinweise: Verbindungsstand, Beitritt, Steuerung, Raum. */
   private showHints(game: GameScene, world: World | undefined): void {
     const client = game.client;
+    const away = gameNotice(client);
+    if (away) {
+      this.joinHint.setText(away).setVisible(true).setY(GAME_HEIGHT / 2 + 120).setFontSize(44); // Verbindung weg: Hinweis statt Standbild
+      return;
+    }
     const waiting = !world || game.waitingForJoin();
     this.controlsHint.setText(CONTROL_HINTS[game.lastDevice]);
     this.joinHint.setText(world ? JOIN_HINTS[game.lastDevice] : (client.notice ?? 'Verbinde …'));
