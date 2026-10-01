@@ -4,10 +4,10 @@
 - **Domäne:** CLI
 - **Reife:** bereit
 - **Einschiebbar:** nein
-- **Tickets:** B-016, B-037, B-039, B-061
+- **Tickets:** B-016, B-037, B-039, B-061, B-082
 - **Start-Commit:** – (wird beim Aktivieren gesetzt: `git rev-parse --short origin/main`)
 - **Spec:** Entwurf
-- **Revision:** 3
+- **Revision:** 4
 - **Freigabe:** –
 
 ## Ausgangslage
@@ -33,6 +33,8 @@ B-016, B-037 (einfache Raumwahl) und B-039 › Anforderungen. Vertrag ist `docs/
   mit einer Kamera je Spieler. Bei 1 lokalem Spieler bleibt der nächste Mitspieler eines anderen Geräts oben (⅓), wie heute online.
 - Lobby (`game.html` startet immer dort): Raumliste, ein Eintrag „Spielen“ (öffnet oder erstellt den Spielstand `familie`,
   `?save=NAME` wählt einen anderen), Beitritt per Liste oder `?room=CODE`. Bedienbar mit Controller, Tastatur und Touch.
+- Start-Parameter für Tests (B-082, Grundlage der Testseite B-081): `?autostart=1` überspringt die Auswahl, `?fresh=1` erstellt einen neuen
+  Spielstand, `?mock=N` (0–3) legt N **Mock-Slots** am selben Gerät an, die ohne Eingabe stehen.
 - Keine Vorhersage (B-039): nur Interpolation; ob die eigene Laufbewegung vorhergesagt werden muss, entscheidet die Beobachtung am TV.
 
 ## Nicht-Ziele
@@ -73,6 +75,7 @@ festes Verhalten (AC-09). Raum voll, unbekannt oder geschlossen → Hinweis, zur
 - **AC-11** Slots: A auf einem neuen Controller sendet `addSlot`, ein getrennter Controller `removeSlot`, der letzte entfernte Slot `leave` und zurück zur Lobby; `seats` und `joined` bestimmen, welcher Monarch zu welchem Slot gehört (Test).
 - **AC-12** Layout nach B-016: 1 lokaler Spieler Vollbild (mit Mitspieler oben ⅓), 2 Streifen, 3–4 ein 2×2-Raster, bei 3 Spielern zeigt das vierte Feld Raumcode und freie Plätze (Test der Layout-Funktion für 1–4).
 - **AC-13** Der Browser rechnet nichts: `src/scenes` importiert keine Simulationsfunktionen aus `src/world/sim` (nur Typen und Biom-Daten), geprüft von einem Test.
+- **AC-14** `game.html?autostart=1&fresh=1&save=NAME&mock=N` erstellt ohne Auswahl einen neuen Raum mit dem echten Spieler als Slot 0 und N Mock-Slots, die stehen und nichts senden außer „keine Bewegung“; ungültige Werte (`mock` nicht 0–3, `save` gegen `^[a-z0-9-]{1,32}$`) werden ignoriert (B-082/AC-01, B-082/AC-02; Test der Parameter-Auswertung).
 
 ## Offene Fragen
 
