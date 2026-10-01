@@ -3,7 +3,7 @@
 - **Domäne:** SIM
 - **Typ:** Idee
 - **Prio:** hoch
-- **Status:** eingeplant
+- **Status:** erledigt
 - **Sprint:** SP06
 - **Erstellt:** 2026-09-30
 - **Spec:** freigegeben
@@ -60,4 +60,4 @@ keine
 
 ## Notizen
 
-Beim Planen von SP05/SP06 einplanen. Eingeplant in SP06.2 (🧑, 2026-10-01, Chat): Feld `free` am Monarchen, im JSON nur bei `true`.
+Beim Planen von SP05/SP06 einplanen. Eingeplant in SP06.2 (🧑, 2026-10-01, Chat): Feld `free` am Monarchen, im JSON nur bei `true`. Erledigt in SP06.2: `stepTravel` zählt nur gesteuerte Monarchen, Go-Tests `TestFreierMonarchBlockiertNicht` (AC-01) und `TestOhneGesteuertenMonarchenKeinWechsel` (AC-02). Setzen durch den Raum: SP07.

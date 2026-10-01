@@ -88,7 +88,7 @@ keine. Geklärt von 🧑 (2026-10-01, Chat): B-059 gehört in SP06.2.
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
 | SP06.1 | `SP06.1-kampf.md` | Umsetzung | autonom | fertig |
-| SP06.2 | `SP06.2-kampagne.md` | Umsetzung | autonom | offen |
+| SP06.2 | `SP06.2-kampagne.md` | Umsetzung | autonom | fertig |
 | SP06.3 | `SP06.3-abdeckung.md` | Umsetzung | autonom | offen |
 | SP06.4 | `SP06.4-review.md` | Review | autonom | offen |
 
