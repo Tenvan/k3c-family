@@ -50,11 +50,19 @@ func goldenRuns(t *testing.T) []goldenRun {
 	return runs
 }
 
-// compare vergleicht einen Snapshot. Tick 0 vollständig, danach nur die Felder, die Go schon rechnet.
+// fullUntil ist der letzte Tick, bis zu dem ein Lauf vollständig verglichen wird; danach nur time und cycle.
+func fullUntil(run goldenRun) int {
+	if run.Players == 0 {
+		return run.Ticks
+	}
+	return 0
+}
+
+// compare vergleicht einen Snapshot: bis fullUntil vollständig, danach nur die Felder, die Go schon rechnet.
 func compare(t *testing.T, run goldenRun, tick int, want map[string]any, w *World) {
 	t.Helper()
 	got := golden.Tree(t, w).(map[string]any)
-	if tick == 0 {
+	if tick <= fullUntil(run) {
 		if d := golden.Diff("world", want, got); d != "" {
 			t.Fatalf("sim-%s Tick %d: %s", run.Name, tick, d)
 		}
@@ -112,7 +120,7 @@ func TestGoldenLaeufeVollstaendig(t *testing.T) {
 	for _, run := range goldenRuns(t) {
 		names = append(names, run.Name)
 	}
-	for _, want := range []string{"forest-tag", "forest-nacht", "cave-aggression"} {
+	for _, want := range []string{"forest-tag", "forest-nacht", "cave-aggression", "forest-ohne-spieler"} {
 		if !slices.Contains(names, want) {
 			t.Errorf("Golden-Lauf sim-%s fehlt", want)
 		}
