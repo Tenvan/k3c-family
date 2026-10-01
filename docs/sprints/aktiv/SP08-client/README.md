@@ -7,8 +7,8 @@
 - **Tickets:** B-016, B-037, B-039, B-061, B-082
 - **Start-Commit:** 98a4907
 - **Spec:** freigegeben
-- **Revision:** 4
-- **Freigabe:** 2026-10-01 🧑 Chat (SP08 Revision 4)
+- **Revision:** 5
+- **Freigabe:** 2026-10-01 🧑 Chat („bei drei Spieler ein 2x1 Raster“, mit Auswahl: zwei oben, einer breit unten), Revision 5
 
 ## Ausgangslage
 
@@ -29,7 +29,7 @@ B-016, B-037 (einfache Raumwahl) und B-039 › Anforderungen. Vertrag ist `docs/
 `testdata/protocol/` (Entscheidung 001, 002). Sprint-eigen:
 
 - Couch-Spiel läuft ebenfalls über den Server: Jeder lokale Spieler ist ein Slot, `addSlot` bei A auf einem neuen Controller.
-- Layout (B-016, Entscheidung 🧑 2026-10-01): 1 lokaler Spieler Vollbild, 2 Streifen übereinander, 3–4 ein 2×2-Raster
+- Layout (B-016, Entscheidung 🧑 2026-10-01): 1 lokaler Spieler Vollbild, 2 Streifen übereinander, 3 Spieler zwei oben und einer breit unten, 4 ein 2×2-Raster
   mit einer Kamera je Spieler. Bei 1 lokalem Spieler bleibt der nächste Mitspieler eines anderen Geräts oben (⅓), wie heute online.
 - Lobby (`game.html` startet immer dort): Raumliste, ein Eintrag „Spielen“ (öffnet oder erstellt den Spielstand `familie`,
   `?save=NAME` wählt einen anderen), Beitritt per Liste oder `?room=CODE`. Bedienbar mit Controller, Tastatur und Touch.
@@ -73,7 +73,7 @@ festes Verhalten (AC-09). Raum voll, unbekannt oder geschlossen → Hinweis, zur
 - **AC-09** Jeder Fehler-Code aus `docs/protocol.md` › *Fehler-Codes* hat ein festes Verhalten: die Server-`message` wird angezeigt; `room_full`, `too_many_slots`, `too_many_rooms`, `room_not_found`, `save_exists`, `save_not_found` bleiben bei der Raumliste bzw. im Spiel; `room_closed` führt zur Raumliste; `replaced` zeigt „an anderer Stelle geöffnet“ ohne Neuverbinden; `version` siehe AC-06; `bad_request` wird protokolliert (Test je Code, Anzeige in der Lobby).
 - **AC-10** Wiederverbinden (Client-Teil von B-030): Bricht die Verbindung ab, zeigt der Client einen Hinweis und verbindet sich mit derselben Geräte-ID, demselben Code und denselben Slots neu (Wartezeit wächst bis 4 s, höchstens 120 s); `room_not_found` oder `room_closed` führen zur Raumliste, `replaced` und `version` nie zu einem Neuverbinden (Test mit Fake-Uhr; Hinweis im Spiel).
 - **AC-11** Slots: A auf einem neuen Controller sendet `addSlot`, ein getrennter Controller `removeSlot`, der letzte entfernte Slot `leave` und zurück zur Lobby; `seats` und `joined` bestimmen, welcher Monarch zu welchem Slot gehört (Test).
-- **AC-12** Layout nach B-016: 1 lokaler Spieler Vollbild (mit Mitspieler oben ⅓), 2 Streifen, 3–4 ein 2×2-Raster, bei 3 Spielern zeigt das vierte Feld Raumcode und freie Plätze (Test der Layout-Funktion für 1–4).
+- **AC-12** Layout nach B-016: 1 lokaler Spieler Vollbild (mit Mitspieler oben ⅓), 2 Streifen, 3 Spieler zwei oben und einer breit unten (Revision 5, vorher 2×2 mit Info-Feld), 4 Spieler ein 2×2-Raster (Test der Layout-Funktion für 1–4).
 - **AC-13** Der Browser rechnet nichts: `src/scenes` importiert keine Simulationsfunktionen aus `src/world/sim` (nur Typen und Biom-Daten), geprüft von einem Test.
 - **AC-14** `game.html?autostart=1&fresh=1&save=NAME&mock=N` erstellt ohne Auswahl einen neuen Raum mit dem echten Spieler als Slot 0 und N Mock-Slots, die stehen und nichts senden außer „keine Bewegung“; ungültige Werte (`mock` nicht 0–3, `save` gegen `^[a-z0-9-]{1,32}$`) werden ignoriert (B-082/AC-01, B-082/AC-02; Test der Parameter-Auswertung).
 
@@ -97,4 +97,4 @@ Review 2026-10-01 (SP08.4): `task check` und `task check:go` grün, Diff `98a490
 AC-01 bis AC-03 und AC-06 bis AC-14 geprüft mit Tests laut Ergebnis in SP08.1 bis SP08.3 (AC-09: je Fehler-Code ein Test, `replaced`/`version` ohne Neuverbinden; AC-13: `noSim.test.ts` prüft die Importzeilen in `src/scenes`); AC-04 entfällt.
 `verschoben` auf SP08.5, weil nicht im Browser geprüft: Anzeige der Fehler-Hinweise in der Lobby und im Spiel (AC-09/AC-10), Raum erstellen/beitreten mit zwei Tabs (AC-03), Szene, Interpolation und Layout am echten Server (AC-01, AC-02, AC-12).
 AC-05 bleibt bei SP08.5 (Mensch am TV); B-061 erledigt; B-082, B-016, B-037, B-039 bleiben bis SP08.5 offen.
-Browser-Lauf 2026-10-01 (Agent, mit Freigabe 🧑, `task serve:go`, Pane per Hand getaktet): Lobby, Raum erstellen, Tastatur-Slot, Laufen, `?mock=3`/`2` (2×2-Raster, Info-Feld), Wiederverbinden mit allen Slots, `replaced` im zweiten Tab, gemockter Controller (`addSlot`/`removeSlot`) liefen ohne Fehler (AC-03, AC-09–AC-12, AC-14 im Browser bestätigt); offen für 🧑: Gefühl der Interpolation am TV, echte Controller, Handy (AC-05). Neue Tickets: B-083, B-084.
+Browser-Lauf 2026-10-01 (Agent, mit Freigabe 🧑, `task serve:go`, Pane per Hand getaktet): Lobby, Raum erstellen, Tastatur-Slot, Laufen, `?mock=3`/`2` (2×2-Raster, bei 3 Spielern damals Info-Feld, ab Revision 5 zwei oben/einer unten), Wiederverbinden mit allen Slots, `replaced` im zweiten Tab, gemockter Controller (`addSlot`/`removeSlot`) liefen ohne Fehler (AC-03, AC-09–AC-12, AC-14 im Browser bestätigt); offen für 🧑: Gefühl der Interpolation am TV, echte Controller, Handy (AC-05). Neue Tickets: B-083, B-084.

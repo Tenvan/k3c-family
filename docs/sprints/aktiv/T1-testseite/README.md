@@ -47,7 +47,7 @@ Prüfungen am TV nur mit Freigabe durch 🧑.
 
 ## Beispiele
 
-Kachel „Testing“ → „3 Spieler“ → `game.html?autostart=1&fresh=1&save=test-k3x9&mock=2`: ein Raum mit drei Monarchen, zwei stehen, 2×2-Raster mit Raumcode im vierten Feld.
+Kachel „Testing“ → „3 Spieler“ → `game.html?autostart=1&fresh=1&save=test-k3x9&mock=2`: ein Raum mit drei Monarchen, zwei stehen, zwei Felder oben und eines breit unten.
 
 ## Ausnahme- und Fehlerfälle
 

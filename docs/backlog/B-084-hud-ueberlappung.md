@@ -7,8 +7,8 @@
 - **Sprint:** –
 - **Erstellt:** 2026-10-01
 - **Spec:** freigegeben
-- **Revision:** 2
-- **Freigabe:** 2026-10-01 🧑 Chat („mach B-083 und B-084“) (Revision 2)
+- **Revision:** 3
+- **Freigabe:** 2026-10-01 🧑 Chat („mach B-083 und B-084“, Revision 2; Revision 3 folgt dem 3-Spieler-Layout aus B-016 Revision 3)
 
 ## Ausgangslage
 
@@ -26,7 +26,7 @@ Spieler am TV; 🧑 entscheidet über das Aussehen.
 
 ## Anforderungen
 
-- Gemeinsame Anzeigen (Vorrat, Tageszeit, Kampf) stehen bei 3 Spielern im Info-Feld, bei 4 mittig am Kreuzpunkt; der Steuerungshinweis bleibt am unteren Rand.
+- Gemeinsame Anzeigen (Vorrat, Tageszeit, Kampf) stehen bei 3 und 4 Spielern mittig am Kreuzpunkt; der Steuerungshinweis bleibt am unteren Rand.
 
 ## Nicht-Ziele
 
@@ -46,7 +46,7 @@ nicht relevant: reine Darstellung.
 
 ## Akzeptanzkriterien
 
-- **AC-01** Die Position der gemeinsamen Anzeigen ist je Layout festgelegt (Vollbild/Streifen oben rechts, 3 Spieler im Info-Feld, 4 Spieler mittig; Test der Positionsfunktion `sharedAnchor`).
+- **AC-01** Die Position der gemeinsamen Anzeigen ist je Layout festgelegt (Vollbild/Streifen oben rechts, 3 und 4 Spieler mittig; Test der Positionsfunktion `sharedAnchor`).
 - **AC-02** Bei 3 und 4 lokalen Spielern sind die Anzeigen lesbar und stehen in keiner Spielerecke (Beobachtung durch 🧑 am TV oder im Browser).
 
 ## Offene Fragen

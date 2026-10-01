@@ -33,9 +33,6 @@ export class HudScene extends Phaser.Scene {
   private controlsHint!: Phaser.GameObjects.Text;
   private info!: Phaser.GameObjects.Text;
   private travel!: Phaser.GameObjects.Text;
-  private infoBox!: Phaser.GameObjects.Container;
-  private infoText!: Phaser.GameObjects.Text;
-  private infoBg!: Phaser.GameObjects.Rectangle;
   private playerLabels: Phaser.GameObjects.Text[] = [];
   private bannerQueue: string[] = [];
   private bannerLeft = 0;
@@ -63,9 +60,6 @@ export class HudScene extends Phaser.Scene {
     this.controlsHint = this.add.text(GAME_WIDTH - 20, GAME_HEIGHT - 40, '', { ...STYLE, fontSize: '20px', strokeThickness: 4 }).setOrigin(1, 0);
     this.info = this.add.text(20, 16, '', { ...STYLE, fontSize: '20px', strokeThickness: 4 });
     this.travel = this.add.text(GAME_WIDTH / 2, GAME_HEIGHT - 170, '', { ...STYLE, fontSize: '40px', color: '#ffd166' }).setOrigin(0.5);
-    this.infoBg = this.add.rectangle(0, 0, 10, 10, 0x0b1020, 1);
-    this.infoText = this.add.text(0, 0, '', { ...STYLE, fontSize: '36px', align: 'center' }).setOrigin(0.5);
-    this.infoBox = this.add.container(0, 0, [this.infoBg, this.infoText]).setVisible(false);
   }
 
   update(_time: number, deltaMs: number): void {
@@ -98,7 +92,7 @@ export class HudScene extends Phaser.Scene {
     this.info.setText(client.roomCode ? `Raum ${client.roomCode} · ${client.roomName} · ${taken} Spieler` : '').setVisible(!!client.roomCode).setY(60);
   }
 
-  /** Gemeinsame Anzeigen stehen je nach Layout oben rechts, im Info-Feld oder mittig (B-084). */
+  /** Gemeinsame Anzeigen stehen je nach Layout oben rechts oder mittig am Kreuzpunkt (B-084). */
   private placeShared(game: GameScene): void {
     const { x, y, originX } = sharedAnchor(game.hudCells().map((h) => h.cell));
     [this.shared, this.clock, this.fight].forEach((text, i) => text.setPosition(x, y + i * SHARED_LINE_HEIGHT).setOrigin(originX, 0));
@@ -131,20 +125,10 @@ export class HudScene extends Phaser.Scene {
     this.bannerLeft = this.bannerQueue.length > 2 ? BANNER_SECONDS / 2 : BANNER_SECONDS;
   }
 
-  /** Spielerwerte je Feld; ein freies Feld im Raster zeigt Raumcode und freie Plätze. */
+  /** Spielerwerte je Feld. */
   private showCells(game: GameScene, players: World['players']): void {
-    const client = game.client;
-    this.infoBox.setVisible(false);
     let label = 0;
     for (const { cell, monarch } of game.hudCells()) {
-      if (cell.kind === 'info') {
-        const free = client.monarchs.filter((m) => m === 'free').length + Math.max(0, (client.limits?.monarchsPerRoom ?? 4) - client.monarchs.length);
-        this.infoBg.setSize(cell.w, cell.h);
-        this.infoText.setText(`Raum ${client.roomCode ?? ''}
-${free} Plätze frei`);
-        this.infoBox.setPosition(cell.x + cell.w / 2, cell.y + cell.h / 2).setVisible(true);
-        continue;
-      }
       const p = monarch === null ? undefined : players.find((q) => q.index === monarch);
       if (!p) continue;
       const text = (this.playerLabels[label] ??= this.add.text(0, 0, '', STYLE));
