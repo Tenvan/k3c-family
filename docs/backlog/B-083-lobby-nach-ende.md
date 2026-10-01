@@ -3,12 +3,12 @@
 - **Domäne:** CLI
 - **Typ:** Problem
 - **Prio:** niedrig
-- **Status:** offen
+- **Status:** erledigt
 - **Sprint:** –
 - **Erstellt:** 2026-10-01
-- **Spec:** Entwurf
+- **Spec:** freigegeben
 - **Revision:** 1
-- **Freigabe:** –
+- **Freigabe:** 2026-10-01 🧑 Chat („mach B-083 und B-084“)
 
 ## Ausgangslage
 
@@ -55,4 +55,4 @@ keine
 
 ## Notizen
 
-Gefunden beim Browser-Lauf zu SP08 (siehe SP08-README, Abnahme).
+Gefunden beim Browser-Lauf zu SP08 (siehe SP08-README, Abnahme). Umgesetzt: `lobbyEntries(rooms, status)` in `src/scenes/lobbyLogic.ts` (Test dort), `LobbyScene.activate()`; `lost` bietet „Erneut versuchen“, `ended` „Seite neu laden“. AC-01 durch Test belegt, nicht im Browser gesehen.

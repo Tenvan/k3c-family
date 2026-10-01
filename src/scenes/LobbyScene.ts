@@ -66,7 +66,7 @@ export class LobbyScene extends Phaser.Scene {
     this.notice = this.add.text(GAME_WIDTH / 2, GAME_HEIGHT - 90, '', { ...STYLE, fontSize: '30px', color: '#ffd166', align: 'center' }).setOrigin(0.5);
     this.add.text(GAME_WIDTH / 2, GAME_HEIGHT - 36, 'Pfeile/Stick wählen · A / Enter / Tippen bestätigen', { ...STYLE, fontSize: '20px', strokeThickness: 4 }).setOrigin(0.5);
     // Touch über das Fenster: das Touch-Overlay des Spiels liegt über dem Canvas, die Ereignisse laufen aber bis hierher.
-    const onTap = (e: PointerEvent) => (this.tapped = rowAt(this.scale.transformY(e.pageY), TOP, ROW_H, lobbyEntries(this.client.rooms).length));
+    const onTap = (e: PointerEvent) => (this.tapped = rowAt(this.scale.transformY(e.pageY), TOP, ROW_H, lobbyEntries(this.client.rooms, this.client.status).length));
     window.addEventListener('pointerdown', onTap);
     this.events.once('shutdown', () => window.removeEventListener('pointerdown', onTap));
   }
@@ -77,7 +77,7 @@ export class LobbyScene extends Phaser.Scene {
     const first = this.flow.step(client);
     if (first) applyCommand(client, first);
 
-    const entries = lobbyEntries(client.rooms);
+    const entries = lobbyEntries(client.rooms, client.status);
     const { dir, confirm } = this.poll();
     this.selected = moveSelection(this.selected, dir, entries.length);
     let chosen = confirm ? this.selected : null;
@@ -85,11 +85,18 @@ export class LobbyScene extends Phaser.Scene {
       if (this.tapped >= 0) chosen = this.selected = this.tapped;
       this.tapped = null;
     }
-    if (chosen !== null) {
-      if (client.status === 'lost') client.retry();
-      else if (client.status === 'lobby') applyCommand(client, this.flow.choose(entries[chosen]!));
-    }
+    const entry = chosen === null ? undefined : entries[chosen];
+    if (entry) this.activate(entry);
     this.draw(entries);
+  }
+
+  private activate(entry: ReturnType<typeof lobbyEntries>[number]): void {
+    if (entry.kind === 'retry') this.client.retry();
+    else if (entry.kind === 'reload') window.location.reload();
+    else {
+      const cmd = this.flow.choose(entry);
+      if (cmd) applyCommand(this.client, cmd);
+    }
   }
 
   private enterGame(): void {
@@ -98,7 +105,7 @@ export class LobbyScene extends Phaser.Scene {
   }
 
   private draw(entries: ReturnType<typeof lobbyEntries>): void {
-    const usable = this.client.status === 'lobby';
+    const usable = entries.length > 0;
     entries.forEach((e, i) => {
       const row = (this.rows[i] ??= this.add.text(GAME_WIDTH / 2, TOP + i * ROW_H + ROW_H / 2, '', STYLE).setOrigin(0.5));
       row.setText(`${i === this.selected ? '▶  ' : '    '}${entryLabel(e, this.params.save)}`).setColor(i === this.selected && usable ? '#ffd166' : '#ffffff');
