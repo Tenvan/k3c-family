@@ -8,7 +8,7 @@ Jede Sprint-README ist eine Spec (SDD); aktiv wird ein Sprint erst mit `Spec: fr
 
 | Sprint | Domäne | Thema | Am Ende sichtbar | Ordner |
 |---|---|---|---|---|
-| D1 | SRV | Diagnose-Schnittstelle des Servers (B-066, B-088) | k3c-dev sieht Server-Logs, neue Endpunkte | `aktiv/D1-diagnose-server/` |
+| – | – | – | – | – |
 
 ## Geplant (in dieser Reihenfolge)
 
@@ -17,7 +17,7 @@ dann über den Go-Server mit mehreren Räumen und gemischten Spielern.
 
 | Sprint | Domäne | Thema | Am Ende sichtbar | Reife | Ordner |
 |---|---|---|---|---|---|
-| SP10 | SRV | Diagnose-TUI (Bubble Tea), nach D1 | `k3c-tui` zeigt Räume live | Entwurf | `geplant/SP10-tui/` |
+| SP10 | SRV | Diagnose-TUI (Bubble Tea) | `k3c-tui` zeigt Räume live | Entwurf | `geplant/SP10-tui/` |
 | SP11 | SRV 🧑 | Raspberry Pi | 2er- und 3er-Spiel parallel auf dem Pi | Entwurf | `geplant/SP11-raspberry-pi/` |
 
 **Einschiebbar** (unabhängig vom Engine-Fortschritt, jeweils zwischen zwei Sprints):
@@ -52,6 +52,7 @@ Nach SP11: Regelwerk II (Skills) → SIM Skills in Go → CLI Skills → Spielea
 | SP06 | Port II: Gegner, Wellen, Reisen, Kampagne, Spielstand in Go | `erledigt/SP06-port-einheiten/` |
 | SP07 | Räume & WebSocket (Protokoll v2) in Go | `erledigt/SP07-raeume/` |
 | SP08 | Browser als reiner Client (Protokoll v2, Lobby, lokale Spieler, Layout 1–4) | `erledigt/SP08-client/` |
+| D1 | Diagnose-Schnittstelle des Servers: JSON-Log, Speicher, Geräte, Log, Aktionen (B-066, B-088) | `erledigt/D1-diagnose-server/` |
 | M6 | k3c-dev VI: MCP-Tools für Räume und Simulation (B-047) | `erledigt/M6-dev-raeume/` |
 | SP09 | Aufräumen: TS-Sim und Node-Server gelöscht, Release `v0.2.0` | `erledigt/SP09-aufraeumen/` |
 | G1 | Referenzseite für die gewählten Grafik-Packs, Auswahl auf den Referenzseiten (B-087) | `erledigt/G1-grafiken/` |
