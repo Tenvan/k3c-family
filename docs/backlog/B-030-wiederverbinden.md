@@ -7,8 +7,8 @@
 - **Sprint:** SP07
 - **Erstellt:** 2026-09-29
 - **Spec:** freigegeben
-- **Revision:** 2
-- **Freigabe:** 2026-09-30 🧑 Chat-Freigabe durch Ralf (mit SP02)
+- **Revision:** 3
+- **Freigabe:** 2026-10-01 🧑 Chat (SP07 Rev. 1: Protokoll v2 vollständig, coder/websocket, B-047 nach M6, B-030 Rev. 3)
 
 ## Ausgangslage
 
@@ -24,8 +24,9 @@ Geräte verbinden sich nach Abbruch wieder. Nutzen: WLAN-Aussetzer am Handy dür
 
 ## Anforderungen
 
-- Ein Gerät kommt binnen 60 s nach Abbruch mit seiner Geräte-ID und denselben Spielern zurück; bis dahin stehen
-  seine Monarchen still.
+- Ein Gerät kommt binnen 60 s nach Abbruch mit seiner Geräte-ID zurück und steuert die Monarchen der Slots weiter,
+  die es wieder nennt; bis dahin stehen seine Monarchen still. Weggelassene Slots werden frei, zusätzliche wie beim
+  Hinzufügen (`docs/protocol.md` › *Wiederverbinden*, Revision 3 nach B-060).
 - Leere Räume werden nach 10 min aufgeräumt.
 - Grenzen: höchstens 4 Monarchen pro Raum, 4 lokale Spieler pro Gerät, 4 Räume pro Server.
 
