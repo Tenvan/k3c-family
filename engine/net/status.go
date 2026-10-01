@@ -3,7 +3,9 @@ package net
 import (
 	"crypto/subtle"
 	"errors"
+	"math"
 	"net/http"
+	"runtime"
 	"strings"
 	"time"
 
@@ -14,18 +16,7 @@ import (
 // status ist GET /api/status (B-027): nur mit Authorization: Bearer <K3C_STATUS_TOKEN>. Ohne gesetztes Token ist die
 // Diagnose aus (404, Entscheidung 🧑), der Spielbetrieb läuft normal.
 func (s *server) status(w http.ResponseWriter, r *http.Request) {
-	if s.cfg.StatusToken == "" {
-		http.NotFound(w, r)
-		return
-	}
-	given, ok := strings.CutPrefix(r.Header.Get("Authorization"), "Bearer ")
-	if !ok || subtle.ConstantTimeCompare([]byte(given), []byte(s.cfg.StatusToken)) != 1 {
-		w.Header().Set("WWW-Authenticate", `Bearer realm="k3c"`)
-		fail(w, http.StatusUnauthorized, "Token fehlt oder falsch")
-		return
-	}
-	if r.Method != http.MethodGet {
-		fail(w, http.StatusMethodNotAllowed, "Nur GET")
+	if !s.authorized(w, r, http.MethodGet) {
 		return
 	}
 	if code := r.URL.Query().Get("room"); code != "" {
@@ -33,17 +24,43 @@ func (s *server) status(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	started := s.cfg.StartedAt
+	var mem runtime.MemStats
+	runtime.ReadMemStats(&mem)
 	body := map[string]any{
+		"memory":  map[string]any{"heapMB": mb(mem.HeapAlloc), "sysMB": mb(mem.Sys), "numGC": mem.NumGC},
 		"version": s.cfg.Version, "startedAt": started.UTC().Format(time.RFC3339),
 		"uptimeS": int64(time.Since(started).Seconds()),
 		"saves":   s.cfg.Saves.Count(), "reports": s.cfg.Reports.Count(),
-		"rooms":   []room.Status{}, "failures": []room.Failure{},
+		"rooms": []room.Status{}, "failures": []room.Failure{},
 	}
 	if s.cfg.Rooms != nil {
 		body["rooms"], body["failures"] = s.cfg.Rooms.Status()
 	}
 	writeJSON(w, http.StatusOK, body)
 }
+
+// authorized prüft alle Diagnose-Wege gleich (B-027, B-088): ohne gesetztes Token 404, falsches Token 401, falsche Methode 405.
+// false heißt: die Antwort ist schon geschrieben.
+func (s *server) authorized(w http.ResponseWriter, r *http.Request, method string) bool {
+	if s.cfg.StatusToken == "" {
+		http.NotFound(w, r)
+		return false
+	}
+	given, ok := strings.CutPrefix(r.Header.Get("Authorization"), "Bearer ")
+	if !ok || subtle.ConstantTimeCompare([]byte(given), []byte(s.cfg.StatusToken)) != 1 {
+		w.Header().Set("WWW-Authenticate", `Bearer realm="k3c"`)
+		fail(w, http.StatusUnauthorized, "Token fehlt oder falsch")
+		return false
+	}
+	if r.Method != method {
+		fail(w, http.StatusMethodNotAllowed, "Nur "+method)
+		return false
+	}
+	return true
+}
+
+// mb rechnet Bytes in MB mit einer Nachkommastelle.
+func mb(n uint64) float64 { return math.Round(float64(n)/(1<<20)*10) / 10 }
 
 // roomStatus ist GET /api/status?room=CODE: der verdichtete Zustand eines Raums.
 func (s *server) roomStatus(w http.ResponseWriter, code string) {

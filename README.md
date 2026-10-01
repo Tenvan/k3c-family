@@ -50,7 +50,10 @@ Einstellungen per Umgebung: `K3C_HTTP_PORT`,
 `{"ok":true}`.
 
 - **Diagnose:** `GET /api/status` mit `Authorization: Bearer <K3C_STATUS_TOKEN>`; ohne gesetzte Variable ist sie aus
-  (404), mit falschem Token 401.
+  (404), mit falschem Token 401. Der Status nennt Räume, Tick-Dauer
+  und `memory` (Heap und Systemspeicher in MB); `?room=CODE` zeigt den Raum samt `devices` (Kennung = Anfang der Geräte-ID,
+  verbunden, Slots). `GET /api/status/log?since=<Byte-Cursor>&limit=<n>` liefert Zeilen des JSON-Logs (`k3c-server.jsonl`)
+  ab dem Cursor und den neuen Cursor (404 „Log aus“ ohne Log-Ordner).
 - **Sicherungen:** Jeder Speichervorgang legt den vorigen Stand unter `saves/backups/<slot>/` ab, je Spielstand bleiben
   die letzten 5. `GET /api/save/backups?slot=autosave` listet sie, `POST /api/save/restore?slot=autosave&backup=<name>`
   macht eine davon wieder zum aktuellen Stand (der bisherige wird dabei gesichert).

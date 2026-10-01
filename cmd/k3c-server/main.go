@@ -89,7 +89,7 @@ func run(cfg config, log *slog.Logger) error {
 	}
 	conns := &sync.WaitGroup{}
 	handler := k3cnet.NewHandler(k3cnet.Config{Dist: cfg.dist, Log: log, Version: version, StartedAt: time.Now(),
-		StatusToken: cfg.statusToken, Saves: saves, Reports: &store.Reports{Dir: cfg.reports}, Rooms: rooms,
+		StatusToken: cfg.statusToken, LogDir: logDir(), Saves: saves, Reports: &store.Reports{Dir: cfg.reports}, Rooms: rooms,
 		Conns: conns})
 	if cfg.statusToken == "" {
 		log.Info("diagnose aus: K3C_STATUS_TOKEN ist nicht gesetzt (/api/status antwortet 404)")
