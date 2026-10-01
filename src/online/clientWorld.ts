@@ -4,7 +4,7 @@ import type { WorldState } from './clientProtocol';
 
 /**
  * Das `World`-Objekt, das die Darstellung zeichnet: Statisches aus `level` (Layout, Biom), Dynamisches aus dem Zustand.
- * Der Browser rechnet damit nichts; `rng` gibt es nicht (nur der Server würfelt).
+ * Der Browser rechnet damit nichts; würfeln tut nur der Server.
  */
 
 function dynamic(state: WorldState): Omit<WorldState, 'depth'> {
@@ -14,7 +14,7 @@ function dynamic(state: WorldState): Omit<WorldState, 'depth'> {
 
 export function createViewWorld(level: LevelInfo, state: WorldState): World {
   const { layout, biome } = level;
-  return { ...dynamic(state), seed: String(layout.seed), biome, level: layout, widthUnits: layout.widthUnits, rng: undefined as never };
+  return { ...dynamic(state), seed: String(layout.seed), biome, level: layout, widthUnits: layout.widthUnits };
 }
 
 /** Neuen Zustand in dasselbe Objekt schreiben, damit der Renderer seinen Verweis behält. */
