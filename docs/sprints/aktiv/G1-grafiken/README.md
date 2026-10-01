@@ -60,9 +60,11 @@ keine
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
 | G1.1 | `G1.1-referenzseite.md` | Umsetzung | autonom | fertig |
-| G1.2 | `G1.2-review.md` | Review | autonom | offen |
+| G1.2 | `G1.2-review.md` | Review | autonom | fertig |
 | G1.3 | `G1.3-abnahme.md` | Workshop | Mensch | offen |
 
 ## Abnahme
 
-–
+Review 2026-10-01 (G1.2): `task check` grün (698 Tests), `task build` nimmt `grafiken.html` und `public/grafik/` (921 KB) auf; Diff `657751e..main` und Dateiliste gelesen; keine schweren Befunde, nichts behoben.
+`public/grafik/`: 119 PNG, 12 Lizenzdateien, `CREDITS.md`, `index.json`; keine Musik, kein Code, keine Quelldateien. AC-01 bis AC-03 durch `grafikPacks.test.ts` und `projectRules` belegt; die Seite wurde nicht gerendert.
+Hinweise (kein Befund): Tall Forest und Fort of Illusion haben in der Pack-Lizenzdatei keinen CC0-Wortlaut, sondern „personal or commercial, credit not required“ (OpenGameArt zeigt CC0); Warped Caves ist CC BY 3.0 (kenntlich gemacht, Entscheidung 🧑 in G1.3). AC-04 bleibt bei G1.3.
