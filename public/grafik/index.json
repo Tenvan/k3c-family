@@ -1,0 +1,835 @@
+[
+ {
+  "pack": "gothicvania-town",
+  "group": "ebenen",
+  "file": "ebenen/environment-preview.png",
+  "w": 1536,
+  "h": 288
+ },
+ {
+  "pack": "gothicvania-town",
+  "group": "ebenen",
+  "file": "ebenen/background.png",
+  "w": 384,
+  "h": 288
+ },
+ {
+  "pack": "gothicvania-town",
+  "group": "ebenen",
+  "file": "ebenen/middleground.png",
+  "w": 384,
+  "h": 288
+ },
+ {
+  "pack": "gothicvania-town",
+  "group": "ebenen",
+  "file": "ebenen/tileset.png",
+  "w": 592,
+  "h": 192
+ },
+ {
+  "pack": "gothicvania-town",
+  "group": "tileset-einzeln",
+  "file": "tileset-einzeln/ground-b.png",
+  "w": 16,
+  "h": 48
+ },
+ {
+  "pack": "gothicvania-town",
+  "group": "tileset-einzeln",
+  "file": "tileset-einzeln/ground-corner.png",
+  "w": 48,
+  "h": 32
+ },
+ {
+  "pack": "gothicvania-town",
+  "group": "tileset-einzeln",
+  "file": "tileset-einzeln/ground-right-corner.png",
+  "w": 16,
+  "h": 32
+ },
+ {
+  "pack": "gothicvania-town",
+  "group": "tileset-einzeln",
+  "file": "tileset-einzeln/ground-shadow.png",
+  "w": 16,
+  "h": 32
+ },
+ {
+  "pack": "gothicvania-town",
+  "group": "tileset-einzeln",
+  "file": "tileset-einzeln/ground-wall-b.png",
+  "w": 48,
+  "h": 32
+ },
+ {
+  "pack": "gothicvania-town",
+  "group": "tileset-einzeln",
+  "file": "tileset-einzeln/ground-wall.png",
+  "w": 32,
+  "h": 32
+ },
+ {
+  "pack": "gothicvania-town",
+  "group": "tileset-einzeln",
+  "file": "tileset-einzeln/ground-wood-legs.png",
+  "w": 32,
+  "h": 16
+ },
+ {
+  "pack": "gothicvania-town",
+  "group": "tileset-einzeln",
+  "file": "tileset-einzeln/ground.png",
+  "w": 16,
+  "h": 48
+ },
+ {
+  "pack": "gothicvania-town",
+  "group": "tileset-einzeln",
+  "file": "tileset-einzeln/left-corner.png",
+  "w": 32,
+  "h": 32
+ },
+ {
+  "pack": "gothicvania-town",
+  "group": "tileset-einzeln",
+  "file": "tileset-einzeln/left-roof.png",
+  "w": 64,
+  "h": 80
+ },
+ {
+  "pack": "gothicvania-town",
+  "group": "tileset-einzeln",
+  "file": "tileset-einzeln/left-slope.png",
+  "w": 16,
+  "h": 32
+ },
+ {
+  "pack": "gothicvania-town",
+  "group": "tileset-einzeln",
+  "file": "tileset-einzeln/right-corner.png",
+  "w": 16,
+  "h": 32
+ },
+ {
+  "pack": "gothicvania-town",
+  "group": "tileset-einzeln",
+  "file": "tileset-einzeln/right-roof.png",
+  "w": 32,
+  "h": 80
+ },
+ {
+  "pack": "gothicvania-town",
+  "group": "tileset-einzeln",
+  "file": "tileset-einzeln/right-slope.png",
+  "w": 16,
+  "h": 32
+ },
+ {
+  "pack": "gothicvania-town",
+  "group": "tileset-einzeln",
+  "file": "tileset-einzeln/roof.png",
+  "w": 16,
+  "h": 80
+ },
+ {
+  "pack": "gothicvania-town",
+  "group": "tileset-einzeln",
+  "file": "tileset-einzeln/shadow.png",
+  "w": 16,
+  "h": 32
+ },
+ {
+  "pack": "gothicvania-town",
+  "group": "tileset-einzeln",
+  "file": "tileset-einzeln/slope.png",
+  "w": 16,
+  "h": 32
+ },
+ {
+  "pack": "gothicvania-town",
+  "group": "tileset-einzeln",
+  "file": "tileset-einzeln/stairs-left.png",
+  "w": 16,
+  "h": 32
+ },
+ {
+  "pack": "gothicvania-town",
+  "group": "tileset-einzeln",
+  "file": "tileset-einzeln/stairs-mirror-left.png",
+  "w": 16,
+  "h": 32
+ },
+ {
+  "pack": "gothicvania-town",
+  "group": "tileset-einzeln",
+  "file": "tileset-einzeln/stairs-mirror-right.png",
+  "w": 16,
+  "h": 32
+ },
+ {
+  "pack": "gothicvania-town",
+  "group": "tileset-einzeln",
+  "file": "tileset-einzeln/stairs-mirror.png",
+  "w": 16,
+  "h": 32
+ },
+ {
+  "pack": "gothicvania-town",
+  "group": "tileset-einzeln",
+  "file": "tileset-einzeln/stairs-right.png",
+  "w": 16,
+  "h": 32
+ },
+ {
+  "pack": "gothicvania-town",
+  "group": "tileset-einzeln",
+  "file": "tileset-einzeln/stairs-wall-left.png",
+  "w": 16,
+  "h": 32
+ },
+ {
+  "pack": "gothicvania-town",
+  "group": "tileset-einzeln",
+  "file": "tileset-einzeln/stairs-wall-mirror-left.png",
+  "w": 16,
+  "h": 32
+ },
+ {
+  "pack": "gothicvania-town",
+  "group": "tileset-einzeln",
+  "file": "tileset-einzeln/stairs-wall-mirror-right.png",
+  "w": 16,
+  "h": 32
+ },
+ {
+  "pack": "gothicvania-town",
+  "group": "tileset-einzeln",
+  "file": "tileset-einzeln/stairs-wall-mirror.png",
+  "w": 16,
+  "h": 32
+ },
+ {
+  "pack": "gothicvania-town",
+  "group": "tileset-einzeln",
+  "file": "tileset-einzeln/stairs-wall-right.png",
+  "w": 16,
+  "h": 32
+ },
+ {
+  "pack": "gothicvania-town",
+  "group": "tileset-einzeln",
+  "file": "tileset-einzeln/stairs-wall.png",
+  "w": 16,
+  "h": 32
+ },
+ {
+  "pack": "gothicvania-town",
+  "group": "tileset-einzeln",
+  "file": "tileset-einzeln/stairs.png",
+  "w": 16,
+  "h": 32
+ },
+ {
+  "pack": "gothicvania-town",
+  "group": "tileset-einzeln",
+  "file": "tileset-einzeln/top-left-wood.png",
+  "w": 32,
+  "h": 32
+ },
+ {
+  "pack": "gothicvania-town",
+  "group": "tileset-einzeln",
+  "file": "tileset-einzeln/top-right-wood.png",
+  "w": 32,
+  "h": 32
+ },
+ {
+  "pack": "gothicvania-town",
+  "group": "tileset-einzeln",
+  "file": "tileset-einzeln/top-wood.png",
+  "w": 16,
+  "h": 16
+ },
+ {
+  "pack": "gothicvania-town",
+  "group": "tileset-einzeln",
+  "file": "tileset-einzeln/wall-b.png",
+  "w": 16,
+  "h": 16
+ },
+ {
+  "pack": "gothicvania-town",
+  "group": "tileset-einzeln",
+  "file": "tileset-einzeln/wall.png",
+  "w": 16,
+  "h": 16
+ },
+ {
+  "pack": "gothicvania-town",
+  "group": "tileset-einzeln",
+  "file": "tileset-einzeln/window-bars.png",
+  "w": 32,
+  "h": 64
+ },
+ {
+  "pack": "gothicvania-town",
+  "group": "tileset-einzeln",
+  "file": "tileset-einzeln/window.png",
+  "w": 32,
+  "h": 64
+ },
+ {
+  "pack": "gothicvania-town",
+  "group": "tileset-einzeln",
+  "file": "tileset-einzeln/wood-legs.png",
+  "w": 32,
+  "h": 16
+ },
+ {
+  "pack": "gothicvania-town",
+  "group": "props",
+  "file": "props/houses.png",
+  "w": 688,
+  "h": 272
+ },
+ {
+  "pack": "gothicvania-town",
+  "group": "props",
+  "file": "props/props.png",
+  "w": 352,
+  "h": 192
+ },
+ {
+  "pack": "gothicvania-town",
+  "group": "props-einzeln",
+  "file": "props-einzeln/barrel.png",
+  "w": 24,
+  "h": 30
+ },
+ {
+  "pack": "gothicvania-town",
+  "group": "props-einzeln",
+  "file": "props-einzeln/crate-stack.png",
+  "w": 73,
+  "h": 68
+ },
+ {
+  "pack": "gothicvania-town",
+  "group": "props-einzeln",
+  "file": "props-einzeln/crate.png",
+  "w": 39,
+  "h": 35
+ },
+ {
+  "pack": "gothicvania-town",
+  "group": "props-einzeln",
+  "file": "props-einzeln/house-a.png",
+  "w": 168,
+  "h": 183
+ },
+ {
+  "pack": "gothicvania-town",
+  "group": "props-einzeln",
+  "file": "props-einzeln/house-b.png",
+  "w": 210,
+  "h": 244
+ },
+ {
+  "pack": "gothicvania-town",
+  "group": "props-einzeln",
+  "file": "props-einzeln/house-c.png",
+  "w": 221,
+  "h": 183
+ },
+ {
+  "pack": "gothicvania-town",
+  "group": "props-einzeln",
+  "file": "props-einzeln/sign.png",
+  "w": 37,
+  "h": 45
+ },
+ {
+  "pack": "gothicvania-town",
+  "group": "props-einzeln",
+  "file": "props-einzeln/street-lamp.png",
+  "w": 35,
+  "h": 108
+ },
+ {
+  "pack": "gothicvania-town",
+  "group": "props-einzeln",
+  "file": "props-einzeln/wagon.png",
+  "w": 93,
+  "h": 75
+ },
+ {
+  "pack": "gothicvania-town",
+  "group": "props-einzeln",
+  "file": "props-einzeln/well.png",
+  "w": 65,
+  "h": 65
+ },
+ {
+  "pack": "gothicvania-church-pack",
+  "group": "umgebung",
+  "file": "umgebung/backgrounds.png",
+  "w": 624,
+  "h": 192
+ },
+ {
+  "pack": "gothicvania-church-pack",
+  "group": "umgebung",
+  "file": "umgebung/column.png",
+  "w": 114,
+  "h": 190
+ },
+ {
+  "pack": "gothicvania-church-pack",
+  "group": "umgebung",
+  "file": "umgebung/tileset.png",
+  "w": 336,
+  "h": 224
+ },
+ {
+  "pack": "various-stones-and-oregem-veins-16x16",
+  "group": "ressourcen",
+  "file": "ressourcen/Stone_ore_gems_grass.png",
+  "w": 112,
+  "h": 176
+ },
+ {
+  "pack": "various-stones-and-oregem-veins-16x16",
+  "group": "ressourcen",
+  "file": "ressourcen/Stones_ores_gems_without_grass.png",
+  "w": 112,
+  "h": 144
+ },
+ {
+  "pack": "portals-32-x-48",
+  "group": "portale",
+  "file": "portale/portalsSpriteSheet.png",
+  "w": 128,
+  "h": 192
+ },
+ {
+  "pack": "16x16-small-and-medium-coin-animation",
+  "group": "muenzen",
+  "file": "muenzen/sCoins_1.png",
+  "w": 128,
+  "h": 64
+ },
+ {
+  "pack": "16x16-small-and-medium-coin-animation",
+  "group": "muenzen",
+  "file": "muenzen/sCoins_2.png",
+  "w": 128,
+  "h": 64
+ },
+ {
+  "pack": "gold-treasure-icons-16x16",
+  "group": "icons",
+  "file": "icons/1.png",
+  "w": 16,
+  "h": 16
+ },
+ {
+  "pack": "gold-treasure-icons-16x16",
+  "group": "icons",
+  "file": "icons/10.png",
+  "w": 16,
+  "h": 16
+ },
+ {
+  "pack": "gold-treasure-icons-16x16",
+  "group": "icons",
+  "file": "icons/2.png",
+  "w": 16,
+  "h": 16
+ },
+ {
+  "pack": "gold-treasure-icons-16x16",
+  "group": "icons",
+  "file": "icons/3.png",
+  "w": 16,
+  "h": 16
+ },
+ {
+  "pack": "gold-treasure-icons-16x16",
+  "group": "icons",
+  "file": "icons/4.png",
+  "w": 16,
+  "h": 16
+ },
+ {
+  "pack": "gold-treasure-icons-16x16",
+  "group": "icons",
+  "file": "icons/5.png",
+  "w": 16,
+  "h": 16
+ },
+ {
+  "pack": "gold-treasure-icons-16x16",
+  "group": "icons",
+  "file": "icons/6.png",
+  "w": 16,
+  "h": 16
+ },
+ {
+  "pack": "gold-treasure-icons-16x16",
+  "group": "icons",
+  "file": "icons/7.png",
+  "w": 16,
+  "h": 16
+ },
+ {
+  "pack": "gold-treasure-icons-16x16",
+  "group": "icons",
+  "file": "icons/8.png",
+  "w": 16,
+  "h": 16
+ },
+ {
+  "pack": "gold-treasure-icons-16x16",
+  "group": "icons",
+  "file": "icons/9.png",
+  "w": 16,
+  "h": 16
+ },
+ {
+  "pack": "gold-treasure-icons-16x16",
+  "group": "icons",
+  "file": "icons/sheet.png",
+  "w": 64,
+  "h": 64
+ },
+ {
+  "pack": "sunnyland-tall-forest-environment",
+  "group": "ebenen",
+  "file": "ebenen/back.png",
+  "w": 144,
+  "h": 240
+ },
+ {
+  "pack": "sunnyland-tall-forest-environment",
+  "group": "ebenen",
+  "file": "ebenen/far.png",
+  "w": 176,
+  "h": 240
+ },
+ {
+  "pack": "sunnyland-tall-forest-environment",
+  "group": "ebenen",
+  "file": "ebenen/middle.png",
+  "w": 192,
+  "h": 240
+ },
+ {
+  "pack": "sunnyland-tall-forest-environment",
+  "group": "ebenen",
+  "file": "ebenen/tileset.png",
+  "w": 112,
+  "h": 144
+ },
+ {
+  "pack": "sunnyland-tall-forest-environment",
+  "group": "props",
+  "file": "props/Plant.png",
+  "w": 42,
+  "h": 27
+ },
+ {
+  "pack": "sunnyland-tall-forest-environment",
+  "group": "props",
+  "file": "props/Rock.png",
+  "w": 32,
+  "h": 32
+ },
+ {
+  "pack": "sunnyland-tall-forest-environment",
+  "group": "props",
+  "file": "props/moss-1.png",
+  "w": 27,
+  "h": 19
+ },
+ {
+  "pack": "sunnyland-tall-forest-environment",
+  "group": "props",
+  "file": "props/moss-2.png",
+  "w": 31,
+  "h": 25
+ },
+ {
+  "pack": "sunnyland-tall-forest-environment",
+  "group": "vorschau",
+  "file": "vorschau/forest.png",
+  "w": 368,
+  "h": 240
+ },
+ {
+  "pack": "gotthicvania-swamp",
+  "group": "umgebung",
+  "file": "umgebung/background.png",
+  "w": 96,
+  "h": 256
+ },
+ {
+  "pack": "gotthicvania-swamp",
+  "group": "umgebung",
+  "file": "umgebung/mid-layer-01.png",
+  "w": 208,
+  "h": 256
+ },
+ {
+  "pack": "gotthicvania-swamp",
+  "group": "umgebung",
+  "file": "umgebung/mid-layer-02.png",
+  "w": 208,
+  "h": 256
+ },
+ {
+  "pack": "gotthicvania-swamp",
+  "group": "umgebung",
+  "file": "umgebung/props.png",
+  "w": 176,
+  "h": 43
+ },
+ {
+  "pack": "gotthicvania-swamp",
+  "group": "umgebung",
+  "file": "umgebung/tileset.png",
+  "w": 336,
+  "h": 112
+ },
+ {
+  "pack": "gotthicvania-swamp",
+  "group": "umgebung",
+  "file": "umgebung/trees.png",
+  "w": 288,
+  "h": 208
+ },
+ {
+  "pack": "forest-background",
+  "group": "ebenen",
+  "file": "ebenen/parallax-forest-back-trees.png",
+  "w": 272,
+  "h": 160
+ },
+ {
+  "pack": "forest-background",
+  "group": "ebenen",
+  "file": "ebenen/parallax-forest-front-trees.png",
+  "w": 272,
+  "h": 160
+ },
+ {
+  "pack": "forest-background",
+  "group": "ebenen",
+  "file": "ebenen/parallax-forest-lights.png",
+  "w": 272,
+  "h": 160
+ },
+ {
+  "pack": "forest-background",
+  "group": "ebenen",
+  "file": "ebenen/parallax-forest-middle-trees.png",
+  "w": 272,
+  "h": 160
+ },
+ {
+  "pack": "blue-cave-background",
+  "group": "ebenen",
+  "file": "ebenen/startcavebg.png",
+  "w": 400,
+  "h": 225
+ },
+ {
+  "pack": "warped-caves-pixel-art-pack",
+  "group": "vorschau",
+  "file": "vorschau/environment-preview.png",
+  "w": 1056,
+  "h": 352
+ },
+ {
+  "pack": "warped-caves-pixel-art-pack",
+  "group": "ebenen",
+  "file": "ebenen/background.png",
+  "w": 240,
+  "h": 176
+ },
+ {
+  "pack": "warped-caves-pixel-art-pack",
+  "group": "ebenen",
+  "file": "ebenen/middleground-no-fungus.png",
+  "w": 272,
+  "h": 176
+ },
+ {
+  "pack": "warped-caves-pixel-art-pack",
+  "group": "ebenen",
+  "file": "ebenen/middleground.png",
+  "w": 272,
+  "h": 176
+ },
+ {
+  "pack": "warped-caves-pixel-art-pack",
+  "group": "ebenen",
+  "file": "ebenen/props.png",
+  "w": 240,
+  "h": 160
+ },
+ {
+  "pack": "warped-caves-pixel-art-pack",
+  "group": "ebenen",
+  "file": "ebenen/tilesets.png",
+  "w": 384,
+  "h": 192
+ },
+ {
+  "pack": "warped-caves-pixel-art-pack",
+  "group": "ebenen",
+  "file": "ebenen/walls.png",
+  "w": 160,
+  "h": 128
+ },
+ {
+  "pack": "warped-caves-pixel-art-pack",
+  "group": "props",
+  "file": "props/gate-01.png",
+  "w": 48,
+  "h": 48
+ },
+ {
+  "pack": "warped-caves-pixel-art-pack",
+  "group": "props",
+  "file": "props/gate-02.png",
+  "w": 48,
+  "h": 48
+ },
+ {
+  "pack": "warped-caves-pixel-art-pack",
+  "group": "props",
+  "file": "props/gate-03.png",
+  "w": 48,
+  "h": 48
+ },
+ {
+  "pack": "warped-caves-pixel-art-pack",
+  "group": "props",
+  "file": "props/plant-big.png",
+  "w": 36,
+  "h": 48
+ },
+ {
+  "pack": "warped-caves-pixel-art-pack",
+  "group": "props",
+  "file": "props/plant-small.png",
+  "w": 27,
+  "h": 32
+ },
+ {
+  "pack": "warped-caves-pixel-art-pack",
+  "group": "props",
+  "file": "props/stalactite.png",
+  "w": 38,
+  "h": 53
+ },
+ {
+  "pack": "warped-caves-pixel-art-pack",
+  "group": "props",
+  "file": "props/stone-head.png",
+  "w": 55,
+  "h": 51
+ },
+ {
+  "pack": "warped-caves-pixel-art-pack",
+  "group": "props",
+  "file": "props/stone.png",
+  "w": 48,
+  "h": 40
+ },
+ {
+  "pack": "sunnyland-fort-of-illusion",
+  "group": "ebenen",
+  "file": "ebenen/all-props.png",
+  "w": 335,
+  "h": 272
+ },
+ {
+  "pack": "sunnyland-fort-of-illusion",
+  "group": "ebenen",
+  "file": "ebenen/back.png",
+  "w": 64,
+  "h": 272
+ },
+ {
+  "pack": "sunnyland-fort-of-illusion",
+  "group": "ebenen",
+  "file": "ebenen/front.png",
+  "w": 112,
+  "h": 128
+ },
+ {
+  "pack": "sunnyland-fort-of-illusion",
+  "group": "ebenen",
+  "file": "ebenen/mountains.png",
+  "w": 256,
+  "h": 272
+ },
+ {
+  "pack": "sunnyland-fort-of-illusion",
+  "group": "ebenen",
+  "file": "ebenen/tileset.png",
+  "w": 208,
+  "h": 128
+ },
+ {
+  "pack": "sunnyland-fort-of-illusion",
+  "group": "props",
+  "file": "props/banner.png",
+  "w": 48,
+  "h": 59
+ },
+ {
+  "pack": "sunnyland-fort-of-illusion",
+  "group": "props",
+  "file": "props/closed-door.png",
+  "w": 96,
+  "h": 80
+ },
+ {
+  "pack": "sunnyland-fort-of-illusion",
+  "group": "props",
+  "file": "props/door.png",
+  "w": 96,
+  "h": 80
+ },
+ {
+  "pack": "sunnyland-fort-of-illusion",
+  "group": "props",
+  "file": "props/flag.png",
+  "w": 16,
+  "h": 63
+ },
+ {
+  "pack": "sunnyland-fort-of-illusion",
+  "group": "props",
+  "file": "props/window.png",
+  "w": 32,
+  "h": 53
+ },
+ {
+  "pack": "sunnyland-fort-of-illusion",
+  "group": "vorschau",
+  "file": "vorschau/Fort-of-Illusion.png",
+  "w": 895,
+  "h": 272
+ },
+ {
+  "pack": "sunnyland-fort-of-illusion",
+  "group": "vorschau",
+  "file": "vorschau/Fort-of-Illusionx3.png",
+  "w": 2685,
+  "h": 816
+ }
+]

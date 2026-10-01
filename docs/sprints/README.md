@@ -8,7 +8,7 @@ Jede Sprint-README ist eine Spec (SDD); aktiv wird ein Sprint erst mit `Spec: fr
 
 | Sprint | Domäne | Thema | Am Ende sichtbar | Ordner |
 |---|---|---|---|---|
-| – | – | – | – | – |
+| G1 (eingeschoben) | PLAT | Referenzseite für die gewählten Grafik-Packs (B-087, Auswahl aus B-010) | Kachel „Alle Grafiken“ → Packs mit Lizenz und Bildern | `aktiv/G1-grafiken/` |
 
 Danach: SP09 bereit machen (Aufräumen); M6 (MCP-Tools) ist einschiebbar.
 
