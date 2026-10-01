@@ -44,7 +44,7 @@ const report = {
   devicePixelRatio: devicePixelRatio,
   webgl: (() => {
     try {
-      return !!document.createElement('canvas').getContext('webgl2') ? 'webgl2' : !!document.createElement('canvas').getContext('webgl') ? 'webgl' : 'none';
+      return document.createElement('canvas').getContext('webgl2') ? 'webgl2' : document.createElement('canvas').getContext('webgl') ? 'webgl' : 'none';
     } catch {
       return 'error';
     }
