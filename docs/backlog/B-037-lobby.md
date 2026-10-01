@@ -3,8 +3,8 @@
 - **Domäne:** CLI
 - **Typ:** Idee
 - **Prio:** mittel
-- **Status:** eingeplant
-- **Sprint:** SP08
+- **Status:** offen
+- **Sprint:** –
 - **Erstellt:** 2026-09-30
 - **Spec:** freigegeben
 - **Revision:** 1
@@ -57,4 +57,4 @@ keine
 
 ## Notizen
 
-–
+SP08 (abgenommen 2026-10-01) hat AC-01 und AC-02 umgesetzt (Raum erstellen und beitreten über `LobbyScene`, auch per `?room=CODE`). Die Raumliste zeigt Code, Name, Stufe, Plätze und läuft/pausiert und deckt damit AC-03 weitgehend ab, ohne dass es separat abgenommen wurde. AC-04 (Spielstand pro Raum wählen) fehlt; das Ticket bleibt dafür offen.
