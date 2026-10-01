@@ -8,7 +8,7 @@ Jede Sprint-README ist eine Spec (SDD); aktiv wird ein Sprint erst mit `Spec: fr
 
 | Sprint | Domäne | Thema | Am Ende sichtbar | Ordner |
 |---|---|---|---|---|
-| – | – | – | – | – |
+| D1 | SRV | Diagnose-Schnittstelle des Servers (B-066, B-088) | k3c-dev sieht Server-Logs, neue Endpunkte | `aktiv/D1-diagnose-server/` |
 
 ## Geplant (in dieser Reihenfolge)
 
@@ -17,7 +17,6 @@ dann über den Go-Server mit mehreren Räumen und gemischten Spielern.
 
 | Sprint | Domäne | Thema | Am Ende sichtbar | Reife | Ordner |
 |---|---|---|---|---|---|
-| D1 | SRV | Diagnose-Schnittstelle des Servers: JSON-Log, Speicher, Geräte, Log, Aktionen (B-066, B-088) | k3c-dev sieht Server-Logs, neue Endpunkte | bereit | `geplant/D1-diagnose-server/` |
 | SP10 | SRV | Diagnose-TUI (Bubble Tea), nach D1 | `k3c-tui` zeigt Räume live | Entwurf | `geplant/SP10-tui/` |
 | SP11 | SRV 🧑 | Raspberry Pi | 2er- und 3er-Spiel parallel auf dem Pi | Entwurf | `geplant/SP11-raspberry-pi/` |
 
