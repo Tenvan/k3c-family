@@ -8,7 +8,7 @@
 - **Erstellt:** 2026-09-30
 - **Spec:** freigegeben
 - **Revision:** 1
-- **Freigabe:** 2026-09-30 🧑 Chat-Freigabe durch Ralf (mit SP02)
+- **Freigabe:** 2026-09-30 🧑 Chat-Freigabe durch Ralf (mit SP02); 2026-10-01 🧑 Chat (SP07 Rev. 1: Protokoll v2 vollständig, coder/websocket, B-047 nach M6, B-030 Rev. 3)
 
 ## Ausgangslage
 
