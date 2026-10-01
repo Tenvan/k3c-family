@@ -2,7 +2,7 @@
   "name": "k3c",
   "private": true,
   "license": "PolyForm-Noncommercial-1.0.0",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Family Three Crowns - Couch-Koop Side-Scroller (Browser / Xbox Edge)",
   "type": "module",
   "scripts": {
