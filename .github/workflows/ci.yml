@@ -25,11 +25,12 @@ jobs:
         with:
           node-version-file: .nvmrc
           cache: npm
+      - uses: go-task/setup-task@v1
       - run: npm ci
-      - run: npm run lint
-      - run: npm run typecheck
-      - run: npm test
-      - run: npm run build
+      - run: task lint
+      - run: task typecheck
+      - run: task test
+      - run: task build
 
       # Den Heimnetz-Server prüfen seit SP03 die Go-Tests (engine/net, httptest) im Job go (B-020).
 
@@ -48,9 +49,10 @@ jobs:
       - uses: actions/setup-go@v7
         with:
           go-version-file: go.mod
-      - run: go test ./...
+      - uses: go-task/setup-task@v1
+      - run: task go:test
       - name: Race-Detector für engine/ (B-077)
-        run: go test -race ./engine/...
+        run: task check:race
       - uses: golangci/golangci-lint-action@v9
         with:
           version: v2.14
@@ -107,11 +109,13 @@ jobs:
             package-lock.json
             tools/k3c-dev/frontend/package-lock.json
       # Der Typecheck des Frontends prüft auch die Tests; deren vitest kommt aus dem Hauptprojekt.
+      - uses: go-task/setup-task@v1
       - run: npm ci
         working-directory: .
       # go:embed braucht frontend/dist, deshalb zuerst das Frontend (mit Typecheck).
-      - run: npm ci && npm run build
+      - run: npm ci
         working-directory: tools/k3c-dev/frontend
+      - run: task dev:frontend
       - run: go test ./...
       - uses: golangci/golangci-lint-action@v9
         with:

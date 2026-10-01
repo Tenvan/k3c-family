@@ -5,20 +5,6 @@
   "version": "0.2.0",
   "description": "Family Three Crowns - Couch-Koop Side-Scroller (Browser / Xbox Edge)",
   "type": "module",
-  "scripts": {
-    "dev": "vite --host",
-    "build": "tsc --noEmit && vite build",
-    "preview": "vite preview --host",
-    "lint": "oxlint",
-    "typecheck": "tsc --noEmit && tsc --noEmit -p tests",
-    "test": "vitest run",
-    "test:watch": "vitest",
-    "check": "npm run lint && npm run typecheck && npm test",
-    "check:go": "go test ./... && golangci-lint run",
-    "check:dev": "npm --prefix tools/k3c-dev/frontend run build && cd tools/k3c-dev && go test ./... && golangci-lint run",
-    "k3c-dev": "cd tools/k3c-dev && wails dev",
-    "k3c-dev:build": "cd tools/k3c-dev && wails build"
-  },
   "dependencies": {
     "phaser": "^4.2.1"
   },
