@@ -82,6 +82,9 @@ const SIM_RUNS: SimRun[] = [
     name: 'forest-tag', biome: 'forest', seed: 'golden-1', cycleSpeed: 1, players: 2, ticks: 1800, expect: 'ohne Gegner',
   },
   {
+    name: 'forest-ohne-spieler', biome: 'forest', seed: 'golden-1', cycleSpeed: 1, players: 0, ticks: 1800, expect: 'ohne Gegner',
+  },
+  {
     name: 'forest-nacht', biome: 'forest', seed: 'golden-2', cycleSpeed: 20, players: 2, ticks: 2700, expect: 'mit Welle',
   },
   {
