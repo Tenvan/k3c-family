@@ -10,3 +10,6 @@ dist/
 .mcp.json
 .task/
 /bin/
+
+# Test-Binaries (feste Namen, damit Norton sie nur einmal prüft)
+.work/
