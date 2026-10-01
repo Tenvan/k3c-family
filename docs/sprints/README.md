@@ -6,7 +6,11 @@ Jede Sprint-README ist eine Spec (SDD); aktiv wird ein Sprint erst mit `Spec: fr
 
 ## Aktiv
 
-Kein aktiver Sprint. Nächster Schritt: SP08 bereit machen (Client auf Protokoll v2); M6 (MCP-Tools) ist einschiebbar. Vorher empfohlen: B-077 (Race-Detector in der CI).
+| Sprint | Domäne | Thema | Am Ende sichtbar | Ordner |
+|---|---|---|---|---|
+| L3 | INF | Race-Detector für die nebenläufigen Go-Pakete (B-077, eingeschoben) | CI-Schritt `go test -race ./engine/...` | `aktiv/L3-race/` |
+
+Danach: SP08 bereit machen (Client auf Protokoll v2); M6 (MCP-Tools) ist einschiebbar.
 
 ## Geplant (in dieser Reihenfolge)
 

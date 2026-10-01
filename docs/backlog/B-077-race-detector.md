@@ -3,12 +3,12 @@
 - **Domäne:** INF
 - **Typ:** Schuld
 - **Prio:** hoch
-- **Status:** offen
-- **Sprint:** –
+- **Status:** eingeplant
+- **Sprint:** L3
 - **Erstellt:** 2026-10-01
-- **Spec:** Entwurf
+- **Spec:** freigegeben
 - **Revision:** 1
-- **Freigabe:** –
+- **Freigabe:** 2026-10-01 🧑 Chat („B-077 umsetzen“, Revision 1)
 
 ## Ausgangslage
 
