@@ -24,6 +24,9 @@ func TestLoadServicesJSONImModul(t *testing.T) {
 	if !strings.Contains(strings.Join(list[0].Command, " "), "--strictPort") || !list[0].AutoRestart || list[1].Env["K3C_HTTP_PORT"] != "8080" {
 		t.Errorf("Einträge: %+v", list)
 	}
+	if list[1].Log != "k3c-server" { // B-066: Quelle logs/k3c-server.jsonl, geschrieben vom Go-Server
+		t.Errorf("Heimnetz-Log = %q", list[1].Log)
+	}
 	if list[0].HealthURL() != "http://127.0.0.1:5173/" {
 		t.Errorf("Adresse: %s", list[0].HealthURL())
 	}
