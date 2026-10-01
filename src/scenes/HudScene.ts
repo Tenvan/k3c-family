@@ -3,6 +3,7 @@ import { GAME_HEIGHT, GAME_WIDTH } from '../core/constants';
 import { ECONOMY } from '../world/sim/data';
 import type { GameEvent, World } from '../world/sim/types';
 import type { GameScene } from './GameScene';
+import { SHARED_LINE_HEIGHT, sharedAnchor } from './layout';
 import { gameNotice } from './lobbyLogic';
 import { RESOURCE_NAMES } from './worldRenderer';
 
@@ -74,6 +75,7 @@ export class HudScene extends Phaser.Scene {
     if (!world) return;
     this.showCells(game, world.players);
     this.showWorld(world);
+    this.placeShared(game);
     this.showBanner(game, deltaMs);
     this.fps.setText(`${Math.round(this.game.loop.actualFps)} FPS`);
   }
@@ -94,6 +96,12 @@ export class HudScene extends Phaser.Scene {
     this.joinHint.setFontSize(waiting ? 44 : 26);
     const taken = client.monarchs.filter((m) => m !== 'free').length;
     this.info.setText(client.roomCode ? `Raum ${client.roomCode} · ${client.roomName} · ${taken} Spieler` : '').setVisible(!!client.roomCode).setY(60);
+  }
+
+  /** Gemeinsame Anzeigen stehen je nach Layout oben rechts, im Info-Feld oder mittig (B-084). */
+  private placeShared(game: GameScene): void {
+    const { x, y, originX } = sharedAnchor(game.hudCells().map((h) => h.cell));
+    [this.shared, this.clock, this.fight].forEach((text, i) => text.setPosition(x, y + i * SHARED_LINE_HEIGHT).setOrigin(originX, 0));
   }
 
   /** Vorrat, Tageszeit, Kampf und Reise. */

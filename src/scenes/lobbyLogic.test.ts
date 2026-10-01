@@ -3,6 +3,7 @@ import type { Status } from '../online/clientConnection';
 import {
   LobbyFlow,
   applyCommand,
+  entryLabel,
   gameNotice,
   leavesGame,
   lobbyEntries,
@@ -178,5 +179,25 @@ describe('Hinweise (AC-09, AC-10)', () => {
   it('Rückkehr zur Lobby nach room_closed/room_not_found (lobby), 120 s (lost) und replaced/version (ended)', () => {
     for (const s of ['lobby', 'lost', 'ended'] as Status[]) expect(leavesGame(s)).toBe(true);
     for (const s of ['room', 'reconnecting', 'connecting'] as Status[]) expect(leavesGame(s)).toBe(false);
+  });
+});
+
+describe('Lobby ohne Verbindung (B-083)', () => {
+  const room = { code: 'KRNZ', name: 'familie', depth: 0, taken: 1, free: 3, running: true };
+
+  it('lost bietet nur „Erneut versuchen“, ended nur „Seite neu laden“, ohne Verbindung gibt es keine Einträge', () => {
+    expect(lobbyEntries([room], 'lost')).toEqual([{ kind: 'retry' }]);
+    expect(lobbyEntries([room], 'ended')).toEqual([{ kind: 'reload' }]);
+    expect(lobbyEntries([room], 'connecting')).toEqual([]);
+    expect(lobbyEntries([room], 'reconnecting')).toEqual([]);
+    expect(lobbyEntries([room], 'lobby').map((e) => e.kind)).toEqual(['play', 'room']);
+  });
+
+  it('beschriftet die Aktionen und sendet für sie keinen Befehl an den Server', () => {
+    expect(entryLabel({ kind: 'retry' }, 'familie')).toBe('Erneut versuchen');
+    expect(entryLabel({ kind: 'reload' }, 'familie')).toBe('Seite neu laden');
+    const flow = new LobbyFlow(parseStartParams(''));
+    expect(flow.choose({ kind: 'retry' })).toBeNull();
+    expect(flow.choose({ kind: 'reload' })).toBeNull();
   });
 });
