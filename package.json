@@ -7,29 +7,24 @@
   "type": "module",
   "scripts": {
     "dev": "vite --host",
-    "build": "tsc --noEmit && vite build && vite build --config vite.server.config.ts",
+    "build": "tsc --noEmit && vite build",
     "preview": "vite preview --host",
     "lint": "oxlint",
     "typecheck": "tsc --noEmit && tsc --noEmit -p tests",
     "test": "vitest run",
     "test:watch": "vitest",
-    "golden": "vitest run tests/golden.test.ts -u",
     "check": "npm run lint && npm run typecheck && npm test",
     "check:go": "go test ./... && golangci-lint run",
     "check:dev": "npm --prefix tools/k3c-dev/frontend run build && cd tools/k3c-dev && go test ./... && golangci-lint run",
     "k3c-dev": "cd tools/k3c-dev && wails dev",
     "k3c-dev:build": "cd tools/k3c-dev && wails build",
-    "serve": "npm run build && node server/server.mjs",
-    "start": "node server/server.mjs",
-    "serve:go": "npm run build && go run ./cmd/k3c-server"
+    "serve": "npm run build && go run ./cmd/k3c-server"
   },
   "dependencies": {
-    "phaser": "^4.2.1",
-    "ws": "^8.22.0"
+    "phaser": "^4.2.1"
   },
   "devDependencies": {
     "@types/node": "^22.20.4",
-    "@types/ws": "^8.18.2",
     "oxlint": "^1.86.0",
     "typescript": "^7.0.2",
     "vite": "^8.3.1",

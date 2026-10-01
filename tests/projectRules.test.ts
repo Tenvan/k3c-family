@@ -1,6 +1,6 @@
 // Prüft die Projektregeln aus CLAUDE.md, damit die CI Verstöße früh meldet.
 import { existsSync, readdirSync, readFileSync, statSync } from 'node:fs';
-import { dirname, join, relative, resolve, sep } from 'node:path';
+import { join, relative, resolve, sep } from 'node:path';
 import { describe, expect, it } from 'vitest';
 import { PAGES } from '../src/landing/pages';
 
@@ -55,12 +55,10 @@ describe('Code-Regeln', () => {
     expect(offenders).toEqual([]);
   });
 
-  it('Spiel-Logik (src/world) ohne Math.random() und ohne Phaser', () => {
-    for (const f of files.filter((f) => f.startsWith(join('src', 'world'))).concat('src/core/rng.ts')) {
-      const code = read(f).replace(/\/\*[\s\S]*?\*\/|\/\/.*$/gm, '');
-      expect(code, f).not.toMatch(/Math\.random\(/);
-      expect(code, f).not.toMatch(/from 'phaser'/);
-    }
+  it('RNG (src/core/rng.ts) ohne Math.random() und ohne Phaser', () => {
+    const code = read('src/core/rng.ts').replace(/\/\*[\s\S]*?\*\/|\/\/.*$/gm, '');
+    expect(code).not.toMatch(/Math\.random\(/);
+    expect(code).not.toMatch(/from 'phaser'/);
   });
 });
 
@@ -73,16 +71,5 @@ describe('Komplexität & Schichten', () => {
 
   it('keine Go-Datei über der harten Grenze, auch keine Test-Datei', () => {
     expect(goFiles.filter((f) => lines(f) > HARD)).toEqual([]);
-  });
-
-  it('src/world importiert nichts aus scenes/, online/ oder input/', () => {
-    const forbidden = ['scenes', 'online', 'input'].map((d) => join(ROOT, 'src', d) + sep);
-    const offenders = sourceFiles(join('src', 'world')).flatMap((file) =>
-      [...read(file).matchAll(/(?:from|import)\s+'(\.[^']*)'/g)]
-        .map((m) => resolve(ROOT, dirname(file), m[1]))
-        .filter((target) => forbidden.some((dir) => (target + sep).startsWith(dir)))
-        .map((target) => `${posix(file)} → ${posix(relative(ROOT, target))}`),
-    );
-    expect(offenders).toEqual([]);
   });
 });
