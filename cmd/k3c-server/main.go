@@ -1,9 +1,9 @@
-// Command k3c-server ist der Heimnetz-Server von K3C in Go (SP03, ersetzt server/*.mjs für Auslieferung, Spielstände
-// und Berichte). Der Online-Modus (WebSocket) läuft bis SP08 weiter über den Node-Server.
+// Command k3c-server ist der Server von K3C in Go: Auslieferung, Spielstände, Berichte und der Online-Modus (WebSocket).
 //
 // Konfiguration per Umgebung: K3C_HTTP_PORT (8080), K3C_HTTPS_PORT (8443, nur mit <certs>/key.pem und cert.pem),
 // K3C_DIST (dist), K3C_SAVES_DIR (saves), K3C_REPORTS_DIR (reports), K3C_CERTS_DIR (certs), K3C_STATUS_TOKEN
-// (schützt /api/status; leer = Diagnose aus). `k3c-server -health` fragt /api/health des laufenden Servers ab
+// (schützt /api/status; leer = Diagnose aus), K3C_LOG_DIR (JSON-Log nach <Ordner>/k3c-server.jsonl; Standard: ein vorhandener
+// Ordner logs/, sonst nur Text auf stderr). `k3c-server -health` fragt /api/health des laufenden Servers ab
 // (Docker-HEALTHCHECK, das Image hat kein curl).
 package main
 
@@ -63,9 +63,13 @@ func main() {
 	if *health {
 		os.Exit(checkHealth(loadConfig().httpPort))
 	}
-	log := slog.New(slog.NewTextHandler(os.Stderr, nil))
-	if err := run(loadConfig(), log); err != nil {
+	log, closeLog := newLogger(logDir(), os.Stderr)
+	err := run(loadConfig(), log)
+	if err != nil {
 		log.Error(err.Error())
+	}
+	closeLog()
+	if err != nil {
 		os.Exit(1)
 	}
 }
