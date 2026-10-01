@@ -161,7 +161,7 @@ func TestWebSocketXboxUndHandy(t *testing.T) {
 	// Die Eingabe verrechnet die Lese-Schleife des Servers; sobald sie da ist, bestätigt ack sie.
 	for i := 0; ; i++ {
 		m.Room("KRNZ").Tick()
-		if x.expect("snap")["ack"] == float64(1) {
+		if x.expect("delta")["ack"] == float64(1) {
 			break
 		}
 		if i > 100 {
@@ -169,7 +169,7 @@ func TestWebSocketXboxUndHandy(t *testing.T) {
 		}
 		time.Sleep(5 * time.Millisecond)
 	}
-	h.expect("snap", "seats")
+	h.expect("delta", "seats")
 }
 
 func waitFor(t *testing.T, ok func() bool) {
@@ -249,7 +249,11 @@ func TestReplacedUndRoomClosed(t *testing.T) {
 	}
 	m.Close()
 	neu.expectError("room_closed")
-	neu.expect("rooms", "seats", "snap")
+	ctx2, cancel2 := context.WithTimeout(context.Background(), 2*time.Second)
+	defer cancel2()
+	if _, _, err := neu.ws.Read(ctx2); websocket.CloseStatus(err) != websocket.StatusGoingAway {
+		t.Fatalf("Herunterfahren schließt nicht: %v", err)
+	}
 }
 
 func TestVollerSendepufferIstAbbruch(t *testing.T) {
@@ -341,4 +345,55 @@ func sameKeys(at string, want, got any, deep bool) string {
 		}
 	}
 	return ""
+}
+
+// /api/status zeigt die Räume; ?room=CODE liefert den verdichteten Zustand (AC-08).
+func TestStatusMitRaeumen(t *testing.T) {
+	m := room.NewManager(memSaves{})
+	m.NewCode = func() string { return "KRNZ" }
+	srv := httptest.NewServer(NewHandler(Config{Rooms: m, StatusToken: "geheim", Saves: &store.Saves{Dir: t.TempDir()},
+		Reports: &store.Reports{Dir: t.TempDir()}}))
+	t.Cleanup(srv.Close)
+	x := hello(t, srv, "xbox")
+	create(x, "familie", 0, 1)
+	x.entered()
+	code, body := get(t, srv.URL+"/api/status", "Bearer geheim")
+	var s struct {
+		Rooms    []room.Status
+		Failures []room.Failure
+	}
+	if err := json.Unmarshal([]byte(body), &s); err != nil || code != 200 {
+		t.Fatalf("%d %s", code, body)
+	}
+	if len(s.Rooms) != 1 || s.Rooms[0].Code != "KRNZ" || s.Rooms[0].Devices != 1 || fmt.Sprint(s.Rooms[0].Monarchs) != "[taken taken]" ||
+		!strings.Contains(body, `"tickMs":{"last":`) || s.Failures == nil {
+		t.Fatalf("Status: %s", body)
+	}
+	if code, body := get(t, srv.URL+"/api/status?room=KRNZ", "Bearer geheim"); code != 200 || !strings.Contains(body, `"gold":[100,100]`) {
+		t.Fatalf("?room: %d %s", code, body)
+	}
+	if code, _ := get(t, srv.URL+"/api/status?room=QQQQ", "Bearer geheim"); code != 404 {
+		t.Fatalf("unbekannter Raum: %d", code)
+	}
+	if code, _ := get(t, srv.URL+"/api/status?room=KRNZ", ""); code != 401 {
+		t.Fatalf("ohne Token: %d", code)
+	}
+}
+
+// seq zählt je Verbindung: nach dem Wiederverbinden beginnt ack wieder bei 0.
+func TestAckJeVerbindung(t *testing.T) {
+	srv, m := wsServer(t)
+	x := hello(t, srv, "xbox")
+	create(x, "ack", 0)
+	x.entered()
+	x.send(map[string]any{"t": "input", "seq": 7, "p": []map[string]any{{"slot": 0, "moveX": 1}}})
+	waitFor(t, func() bool { m.Room("KRNZ").Tick(); return x.expect("delta", "seats")["ack"] == float64(7) })
+	_ = x.ws.CloseNow()
+	x2 := hello(t, srv, "xbox")
+	joinRoom(x2, "KRNZ", 0)
+	x2.expect("joined")
+	x2.expect("level")
+	if s := x2.expect("snap"); s["ack"] != float64(0) {
+		t.Fatalf("ack nach Wiederverbinden: %v", s["ack"])
+	}
 }
