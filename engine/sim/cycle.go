@@ -38,24 +38,28 @@ func stepCycle(w *World, dt float64) {
 	before := w.Cycle
 	w.Cycle = cycleAt(globalDayNight, float64(w.Time*w.CycleSpeed))
 	changed := before.Phase != w.Cycle.Phase
+	dayNight := w.Biome.Cycle.Type == "dayNight"
 	if changed && w.Cycle.Phase == "dusk" {
 		w.Events = append(w.Events, Event{"type": "dusk"})
 	}
 	if changed && w.Cycle.Phase == "night" {
 		w.Events = append(w.Events, Event{"type": "night", "day": w.Cycle.Day})
-		// SP06: bei dayNight startWave
+		if dayNight {
+			startWave(w)
+		}
 	}
 	if changed && w.Cycle.Phase == "day" {
 		w.Events = append(w.Events, Event{"type": "dawn", "day": w.Cycle.Day})
-		// SP06: bei dayNight sendEnemiesHome
+		if dayNight {
+			sendEnemiesHome(w)
+		}
 		payDawnIncome(w)
 	}
 	if w.Aggression != nil && w.Biome.Cycle.Type == "aggressionPool" {
-		a := math.Min(100, *w.Aggression+float64(w.Biome.Cycle.PercentPerMinute/60*dt*w.CycleSpeed))
-		if a >= 100 {
-			a = 0
-			// SP06: startWave
+		*w.Aggression = math.Min(100, *w.Aggression+float64(w.Biome.Cycle.PercentPerMinute/60*dt*w.CycleSpeed))
+		if *w.Aggression >= 100 {
+			*w.Aggression = 0
+			startWave(w)
 		}
-		*w.Aggression = a
 	}
 }

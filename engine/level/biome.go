@@ -32,6 +32,11 @@ type Biome struct {
 	SkillPoints       Range                    `json:"skillPoints"`
 	ResourcesPerChunk Ordered[Ordered[[2]int]] `json:"resourcesPerChunk"`
 	Cycle             Cycle                    `json:"cycle"`
+	PrimaryResource   string                   `json:"primaryResource"`
+	Enemies           struct {
+		Portal []string `json:"portal"`
+		Night  []string `json:"night"`
+	} `json:"enemies"`
 }
 
 // Cycle ist der Zyklus eines Bioms: `dayNight` (Oberwelt) oder `aggressionPool` (unter Tage). Die Simulation
@@ -43,6 +48,7 @@ type Cycle struct {
 	NightMinutes     float64 `json:"nightMinutes"`
 	PercentPerMinute float64 `json:"percentPerMinute"`
 	PercentPerGather float64 `json:"percentPerGather"`
+	PercentPerKill   float64 `json:"percentPerKill"`
 }
 
 // LoadBiome liest data/biomes/<id>.json.

@@ -102,12 +102,14 @@ func Step(w *World, commands []PlayerCommand, dt float64) {
 	w.Events = []Event{}
 	w.Time += dt
 	stepCycle(w, dt)
-	// SP06: stepSpawns
+	stepSpawns(w)
 	stepPlayers(w, commands, dt)
 	stepCamps(w, dt)
 	stepSites(w)
 	stepTroops(w, dt)
-	// SP06: stepEnemies, stepProjectiles, removeDeadEnemies
+	stepEnemies(w, dt)
+	stepProjectiles(w, dt)
+	removeDeadEnemies(w)
 	alive := w.Troops[:0]
 	for _, t := range w.Troops {
 		if t.HP > 0 {
@@ -117,5 +119,36 @@ func Step(w *World, commands []PlayerCommand, dt float64) {
 		}
 	}
 	w.Troops = alive
-	// SP06: castleFallen, stepTravel
+	if w.Castle.HP <= 0 {
+		castleFallen(w)
+	}
+	// SP06.2: stepTravel
+}
+
+// castleFallen: Niederlage laut GDD. Respawn am Hub, Gebäude bleiben zerstört, 50 % der Ressourcen und alle Truppen
+// verloren. Die Burg selbst steht danach wieder (sonst wäre das Spiel vorbei).
+func castleFallen(w *World) {
+	w.Events = append(w.Events, Event{"type": "castleFallen"})
+	w.Castle.HP = w.Castle.MaxHP
+	for _, s := range w.Sites {
+		id := s.ID
+		*s = *emptySite(w, s.Kind, s.X) // verbraucht wie in TS eine ID je Bauplatz
+		s.ID = id
+	}
+	w.Stock = Stock{Wood: w.Stock.Wood / 2, Stone: w.Stock.Stone / 2, Copper: w.Stock.Copper / 2}
+	for _, p := range w.Players {
+		p.Gold /= 2
+		respawn(w, p)
+	}
+	for _, n := range w.Nodes {
+		n.WorkerID = nil
+	}
+	vagrants := []*Troop{}
+	for _, t := range w.Troops {
+		if t.Kind == "vagrant" {
+			vagrants = append(vagrants, t)
+		}
+	}
+	w.Troops = vagrants
+	w.Enemies, w.SpawnQueue, w.Projectiles = []*Enemy{}, []QueuedSpawn{}, []*Projectile{}
 }
