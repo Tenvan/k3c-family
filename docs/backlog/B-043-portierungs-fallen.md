@@ -53,4 +53,4 @@ keine
 
 ## Notizen
 
-Betrifft SP04 bis SP06. SP04 erledigt (2026-09-30): AC-01 belegt über `rng.json` und `level-*.json`; Golden-Läufe `sim-*.json` liegen für SP05/SP06 bereit. SP05 portiert auch die eigenen Truppen (ab Tick 0 in jedem Lauf) und ergänzt `sim-forest-ohne-spieler.json`.
+Betrifft SP04 bis SP06. SP04 erledigt (2026-09-30): AC-01 belegt über `rng.json` und `level-*.json`; Golden-Läufe `sim-*.json` liegen für SP05/SP06 bereit. SP05 portiert auch die eigenen Truppen (ab Tick 0 in jedem Lauf) und ergänzt `sim-forest-ohne-spieler.json`. SP05: Läufe ohne Gegner grün (`sim-forest-tag`, `sim-forest-ohne-spieler` komplett, die anderen bis zur ersten Welle); Lücken der Abdeckung in B-074.

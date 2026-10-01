@@ -102,10 +102,10 @@ func Step(w *World, commands []PlayerCommand, dt float64) {
 	w.Events = []Event{}
 	w.Time += dt
 	stepCycle(w, dt)
-	// SP06: stepSpawns; SP05.3: stepPlayers
-	_ = commands
+	// SP06: stepSpawns
+	stepPlayers(w, commands, dt)
 	stepCamps(w, dt)
-	// SP05.3: stepSites
+	stepSites(w)
 	stepTroops(w, dt)
 	// SP06: stepEnemies, stepProjectiles, removeDeadEnemies
 	alive := w.Troops[:0]

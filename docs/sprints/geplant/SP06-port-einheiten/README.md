@@ -4,7 +4,7 @@
 - **Domäne:** SIM
 - **Reife:** Entwurf
 - **Einschiebbar:** nein
-- **Tickets:** B-043
+- **Tickets:** B-043, B-074
 - **Start-Commit:** –
 - **Spec:** Entwurf
 - **Revision:** 1
@@ -24,7 +24,7 @@ Entwickler oder Agent.
 
 ## Anforderungen
 
-B-043 › Anforderungen. Sprint-eigen: Gegner, Wellen, Projektile, Burg-Fall (dazu `applyDamage` und `destroySite` aus `common.ts`), Reisen, Kampagne und Spielstand in Go; Spielstand-Format mit Version.
+B-043 › Anforderungen. Sprint-eigen: Golden-Lücken der Wirtschaft schließen (B-074); Gegner, Wellen, Projektile, Burg-Fall (dazu `applyDamage` und `destroySite` aus `common.ts`), Reisen, Kampagne und Spielstand in Go; Spielstand-Format mit Version.
 
 ## Nicht-Ziele
 
