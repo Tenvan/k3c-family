@@ -66,7 +66,7 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-058](B-058-execution-policy.md) | INF | Frage | niedrig | offen | – | requirements.md empfiehlt keine Sicherheitseinstellung ohne Entscheidung von 🧑 |
 | [B-059](B-059-freie-monarchen-reisen-mit.md) | SIM | Idee | hoch | erledigt | SP06 | Nur gesteuerte Monarchen entscheiden über den Stufenwechsel |
 | [B-060](B-060-sp07-protokoll-regeln.md) | SRV | Problem | hoch | erledigt | SP07 | Die Spec von SP07 deckt alle Server-Regeln aus Protokoll v2 ab |
-| [B-061](B-061-sp08-protokoll-regeln.md) | CLI | Problem | hoch | eingeplant | SP08 | Die Spec von SP08 deckt alle Client-Regeln aus Protokoll v2 ab |
+| [B-061](B-061-sp08-protokoll-regeln.md) | CLI | Problem | hoch | erledigt | SP08 | Die Spec von SP08 deckt alle Client-Regeln aus Protokoll v2 ab |
 | [B-062](B-062-dev-nutzungsstatistik.md) | SRV | Idee | mittel | erledigt | M2 | k3c-dev wertet MCP-Aufrufe über Sitzungen aus: Perzentile, Ausreißer und Zeitreihe |
 | [B-063](B-063-dev-berichte-spielstaende.md) | SRV | Idee | mittel | erledigt | M2 | k3c-dev macht Xbox-Berichte und Spielstände für Agenten lesbar |
 | [B-064](B-064-dev-oberflaeche-logs.md) | SRV | Idee | mittel | erledigt | M4 | k3c-dev hat eine Oberfläche mit Logs-Seite für Läufe und JSON-Logs |
