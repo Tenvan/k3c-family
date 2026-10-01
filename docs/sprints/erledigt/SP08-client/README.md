@@ -1,6 +1,6 @@
 # SP08 · CLI · Browser als reiner Client
 
-- **Status:** aktiv
+- **Status:** erledigt
 - **Domäne:** CLI
 - **Reife:** bereit
 - **Einschiebbar:** nein
@@ -89,12 +89,12 @@ keine
 | SP08.2 | `SP08.2-szene-slots.md` | Umsetzung | autonom | fertig |
 | SP08.3 | `SP08.3-lobby.md` | Umsetzung | autonom | fertig |
 | SP08.4 | `SP08.4-review.md` | Review | autonom | fertig |
-| SP08.5 | `SP08.5-tv-abnahme.md` | Workshop | Mensch | offen |
+| SP08.5 | `SP08.5-tv-abnahme.md` | Workshop | Mensch | fertig |
 
 ## Abnahme
 
-Review 2026-10-01 (SP08.4): `task check` und `task check:go` grün, Diff `98a4907..main` geprüft; keine schweren Befunde, nichts behoben, keine neuen Tickets.
-AC-01 bis AC-03 und AC-06 bis AC-14 geprüft mit Tests laut Ergebnis in SP08.1 bis SP08.3 (AC-09: je Fehler-Code ein Test, `replaced`/`version` ohne Neuverbinden; AC-13: `noSim.test.ts` prüft die Importzeilen in `src/scenes`); AC-04 entfällt.
-`verschoben` auf SP08.5, weil nicht im Browser geprüft: Anzeige der Fehler-Hinweise in der Lobby und im Spiel (AC-09/AC-10), Raum erstellen/beitreten mit zwei Tabs (AC-03), Szene, Interpolation und Layout am echten Server (AC-01, AC-02, AC-12).
-AC-05 bleibt bei SP08.5 (Mensch am TV); B-061 erledigt; B-082, B-016, B-037, B-039 bleiben bis SP08.5 offen.
-Browser-Lauf 2026-10-01 (Agent, mit Freigabe 🧑, `task serve:go`, Pane per Hand getaktet): Lobby, Raum erstellen, Tastatur-Slot, Laufen, `?mock=3`/`2` (2×2-Raster, bei 3 Spielern damals Info-Feld, ab Revision 5 zwei oben/einer unten), Wiederverbinden mit allen Slots, `replaced` im zweiten Tab, gemockter Controller (`addSlot`/`removeSlot`) liefen ohne Fehler (AC-03, AC-09–AC-12, AC-14 im Browser bestätigt); offen für 🧑: Gefühl der Interpolation am TV, echte Controller, Handy (AC-05). Neue Tickets: B-083, B-084.
+Review 2026-10-01 (SP08.4): `task check` und `task check:go` grün, Diff `98a4907..main` geprüft, keine schweren Befunde; AC-01 bis AC-03 und AC-06 bis AC-14 mit Tests laut SP08.1 bis SP08.3 belegt (AC-09: je Fehler-Code ein Test; AC-13: `noSim.test.ts`).
+Browser-Lauf 2026-10-01 (Agent, Freigabe 🧑, `task serve:go`): Lobby, Raum erstellen, Slots, `?mock=N`, Wiederverbinden, `replaced`, gemockter Controller bestätigt; danach Testseite und alle Layouts 1–4 von 🧑 am PC abgenommen (T1).
+AC-04 entfällt. **AC-05 abgenommen 2026-10-01 durch 🧑 (Ralf)** an Xbox mit Controllern und Handy im selben Raum: „Abnahme ok“; Auffälligkeiten und Einzelschritte wurden nicht gemeldet, deshalb keine Tickets zur Vorhersage (B-039) oder zum Ruckeln.
+Während des Sprints von 🧑 geändert: Layout bei 3 Spielern zwei oben, einer breit unten (B-016 Revision 3, SP08 Revision 5). Entstandene Tickets: B-078 bis B-080 (offen), B-081 bis B-086 (erledigt).
+Abgeschlossen: B-016, B-039, B-061, B-082; B-037 bleibt offen (AC-04 Spielstand wählen, nicht Teil von SP08).
