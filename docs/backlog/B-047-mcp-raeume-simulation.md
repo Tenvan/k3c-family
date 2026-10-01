@@ -6,9 +6,9 @@
 - **Status:** eingeplant
 - **Sprint:** M6
 - **Erstellt:** 2026-09-30
-- **Spec:** Entwurf
+- **Spec:** freigegeben
 - **Revision:** 2
-- **Freigabe:** –
+- **Freigabe:** 2026-10-01 🧑 Chat („M6 freigeben“), Revision 2
 
 ## Ausgangslage
 

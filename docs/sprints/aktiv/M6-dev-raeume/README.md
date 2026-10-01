@@ -1,14 +1,14 @@
 # M6 · SRV · k3c-dev VI: MCP-Tools für Räume und Simulation
 
-- **Status:** geplant
+- **Status:** aktiv
 - **Domäne:** SRV
 - **Reife:** bereit
 - **Einschiebbar:** ja
 - **Tickets:** B-047
 - **Start-Commit:** – (wird beim Aktivieren gesetzt: `git rev-parse --short origin/main`)
-- **Spec:** Entwurf
+- **Spec:** freigegeben
 - **Revision:** 2
-- **Freigabe:** –
+- **Freigabe:** 2026-10-01 🧑 Chat („M6 freigeben“), Revision 2
 
 ## Ausgangslage
 
