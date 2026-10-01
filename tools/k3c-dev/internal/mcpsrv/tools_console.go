@@ -12,7 +12,7 @@ const (
 )
 
 type tailIn struct {
-	Source string `json:"source" jsonschema:"Quelle, z. B. check:npm:test"`
+	Source string `json:"source" jsonschema:"Quelle, z. B. check:task:test"`
 	Lines  int    `json:"lines,omitempty" jsonschema:"Zahl der letzten Zeilen, Standard 50, höchstens 500"`
 }
 

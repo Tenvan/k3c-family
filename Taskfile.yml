@@ -21,7 +21,7 @@ tasks:
   dev:
     desc: Dev-Server (LAN, Port 5173); /api und /ws gehen an den Go-Server (Port 8080, `task start`)
     cmds:
-      - npx vite --host
+      - npx vite --host {{.CLI_ARGS}}
 
   preview:
     desc: Produktions-Build lokal ansehen

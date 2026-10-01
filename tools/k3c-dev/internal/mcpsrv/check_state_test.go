@@ -12,7 +12,7 @@ import (
 func TestCheckRunMeldetBeginnUndEnde(t *testing.T) {
 	results := []runResult{ // in der Reihenfolge der Läufe unten
 		{exit: 1, dur: 12 * time.Millisecond},
-		{err: errors.New("npm fehlt")},
+		{err: errors.New("task fehlt")},
 		{timedOut: true, exit: -1},
 	}
 	n := 0
@@ -24,7 +24,7 @@ func TestCheckRunMeldetBeginnUndEnde(t *testing.T) {
 		got = append(got, st)
 		mu.Unlock()
 	}
-	for _, target := range []string{"npm:test", "npm:lint", "npm:check"} {
+	for _, target := range []string{"task:test", "task:lint", "task:check"} {
 		_, _ = s.checkRun(context.Background(), checkIn{Target: target})
 	}
 	if len(got) != 6 {
@@ -39,7 +39,7 @@ func TestCheckRunMeldetBeginnUndEnde(t *testing.T) {
 		t.Errorf("Ergebnisse: %+v", got)
 	}
 	checks := s.Checks()
-	if len(checks) != 3 || checks[0].Name != "npm:check" || checks[0].Running {
+	if len(checks) != 3 || checks[0].Name != "task:check" || checks[0].Running {
 		t.Errorf("Checks() = %+v", checks)
 	}
 }
@@ -55,9 +55,9 @@ func TestChecksZeigtBeginnDesLaufendenLaufs(t *testing.T) {
 		}
 		return runResult{at: time.Now().Add(-time.Hour)}
 	})
-	_, _ = s.checkRun(context.Background(), checkIn{Target: "npm:test"})
+	_, _ = s.checkRun(context.Background(), checkIn{Target: "task:test"})
 	done := make(chan struct{})
-	go func() { _, _ = s.checkRun(context.Background(), checkIn{Target: "npm:test"}); close(done) }()
+	go func() { _, _ = s.checkRun(context.Background(), checkIn{Target: "task:test"}); close(done) }()
 	for started.Load() < 2 {
 		time.Sleep(time.Millisecond)
 	}

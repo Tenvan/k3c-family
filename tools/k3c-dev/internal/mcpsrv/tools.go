@@ -18,14 +18,14 @@ func register(s *Server) {
 	closed, destructive := false, false
 	add(s, &mcp.Tool{
 		Name: "check_run",
-		Description: "Führt eine Prüfung aus einem festen Katalog aus (npm:check, npm:test, npm:typecheck, npm:lint, " +
-			"npm:build, go:test, go:lint, dev:test) und antwortet mit Exit-Code, Dauer und nur den Fehlerzeilen. " +
-			"Ersetzt npm run check, npm test und go test in der Shell. Volle Ausgabe: console_tail check:<ziel>.",
+		Description: "Führt eine Prüfung aus einem festen Katalog aus (task:check, task:test, task:typecheck, task:lint, " +
+			"task:build, task:check:go, go:test, go:lint, dev:test) und antwortet mit Exit-Code, Dauer und nur den Fehlerzeilen. " +
+			"Ersetzt task check, task test und go test in der Shell. Volle Ausgabe: console_tail check:<ziel>.",
 		Annotations: &mcp.ToolAnnotations{DestructiveHint: &destructive, OpenWorldHint: &closed},
 	}, s.checkRun)
 	add(s, &mcp.Tool{
 		Name:        "console_tail",
-		Description: "Letzte Zeilen einer Konsolen-Quelle, z. B. check:npm:test (volle Ausgabe eines Prüflaufs).",
+		Description: "Letzte Zeilen einer Konsolen-Quelle, z. B. check:task:test (volle Ausgabe eines Prüflaufs).",
 		Annotations: readOnly(),
 	}, s.consoleTail)
 	add(s, &mcp.Tool{
@@ -121,8 +121,8 @@ func registerServices(s *Server) {
 	}, s.svcStatus)
 	add(s, &mcp.Tool{
 		Name: "svc_start",
-		Description: "Startet einen Dienst und wartet, bis er gesund ist (höchstens 60 s). Statt npm run dev oder " +
-			"npm start in der Shell; Ausgabe über console_tail <Dienst>.",
+		Description: "Startet einen Dienst und wartet, bis er gesund ist (höchstens 60 s). Statt task dev oder " +
+			"task start in der Shell; Ausgabe über console_tail <Dienst>.",
 		Annotations: &mcp.ToolAnnotations{DestructiveHint: &no, OpenWorldHint: &closed},
 	}, s.svcStart)
 	add(s, &mcp.Tool{
