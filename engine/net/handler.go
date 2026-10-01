@@ -54,6 +54,8 @@ func NewHandler(cfg Config) http.Handler {
 	mux.HandleFunc("/api/save/restore", s.restore)
 	mux.HandleFunc("/api/status", s.status)
 	mux.HandleFunc("/api/status/log", s.statusLog)
+	mux.HandleFunc("/api/status/disconnect", s.statusDisconnect)
+	mux.HandleFunc("/api/status/save", s.statusSave)
 	mux.HandleFunc("/api/report", s.report)
 	if cfg.Rooms != nil {
 		cfg.Rooms.Changed = s.broadcastRooms
