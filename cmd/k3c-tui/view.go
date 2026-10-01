@@ -20,7 +20,8 @@ type view struct {
 	st    *status
 	err   string // Fehlermeldung des letzten Versuchs; sie steht über dem letzten bekannten Zustand
 	width int
-	plain bool
+	sel   int  // gewählte Raumzeile (Übersicht)
+	plain bool // -once: ohne Farbe und ohne Auswahlpfeil
 }
 
 func (v view) style(s lipgloss.Style, text string) string {
@@ -54,10 +55,14 @@ func roomTable(v view, rooms []room) []string {
 	if len(rooms) == 0 {
 		return []string{v.style(styleDim, "Keine Räume")}
 	}
-	lines := []string{v.style(styleHead, fmt.Sprintf("%-9s %-14s %5s %7s %-6s %8s %-18s", "Raum", "Name", "Tiefe", "Geräte", "Plätze", "Tick", "Tick-Dauer (p99)"))}
-	for _, r := range rooms {
-		lines = append(lines, fmt.Sprintf("%-9s %-14s %5d %7d %-6s %8d %-18s",
-			r.Code, truncate(r.Name, 14), r.Depth, r.Devices, seats(r.Monarchs), r.Tick,
+	lines := []string{v.style(styleHead, fmt.Sprintf("%s%-9s %-14s %5s %7s %-6s %8s %-18s", "  ", "Raum", "Name", "Tiefe", "Geräte", "Plätze", "Tick", "Tick-Dauer (p99)"))}
+	for i, r := range rooms {
+		mark := "  "
+		if !v.plain && i == v.sel {
+			mark = "▶ "
+		}
+		lines = append(lines, fmt.Sprintf("%s%-9s %-14s %5d %7d %-6s %8d %-18s",
+			mark, r.Code, truncate(r.Name, 14), r.Depth, r.Devices, seats(r.Monarchs), r.Tick,
 			fmt.Sprintf("%.2f ms (%.2f)", r.TickMs.Last, r.TickMs.P99)))
 	}
 	return lines
