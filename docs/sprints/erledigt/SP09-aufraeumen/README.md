@@ -1,6 +1,6 @@
 # SP09 · INF · Aufräumen: TS-Simulation und Node-Server löschen
 
-- **Status:** aktiv
+- **Status:** erledigt
 - **Domäne:** INF
 - **Reife:** bereit
 - **Einschiebbar:** nein
@@ -72,8 +72,10 @@ keine
 | SP09.1 | `SP09.1-client-model.md` | Umsetzung | autonom | fertig |
 | SP09.2 | `SP09.2-umstellen-loeschen.md` | Umsetzung | autonom | fertig |
 | SP09.3 | `SP09.3-pages-doku.md` | Umsetzung | autonom | fertig |
-| SP09.4 | `SP09.4-review-release.md` | Review | autonom | offen |
+| SP09.4 | `SP09.4-review-release.md` | Review | autonom | fertig |
 
 ## Abnahme
 
-–
+Review 2026-10-01 (SP09.4): `task check`, `task check:go`, `task check:dev` grün, Diff `bee8e44..main` gelesen, keine schweren Befunde; `testdata/` unverändert.
+AC-01 und AC-06: SP09.2 (Löschliste leer, Proxy-Probe `welcome`); AC-05: SP09.1 (`noSim.test.ts`); AC-02 und AC-03: SP09.3 (Tests in `serverCheck.test.ts`, Browser nicht geprüft); AC-04: lokaler Tag `v0.2.0`, Push offen bei 🧑.
+Neue Tickets: keine. B-032, B-049, B-078 erledigt.
