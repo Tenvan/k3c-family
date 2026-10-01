@@ -8,8 +8,8 @@ damit er auf der **Xbox (Edge)** mit mehreren Controllern läuft.
 ## Loslegen
 
 ```bash
-npm install
-npm run dev
+task install
+task dev
 ```
 
 Dann `http://localhost:5173` öffnen, oder im Heimnetz `http://<PC-IP>:5173` (z.B. von der Xbox aus).
@@ -104,7 +104,7 @@ Die vollständige Regel steht in `CLAUDE.md` unter „Regel: Seiten & Navigation
 ## Level anpassen
 
 Die Eckdaten jeder Stufe stehen in `data/biomes/*.json` (Länge, Chunk-Häufigkeiten, Ressourcen,
-Portale, Gegner). Nach Änderungen `npm test` ausführen. Die Tests prüfen 500 Seeds pro Biom auf Spielbarkeit.
+Portale, Gegner). Nach Änderungen `task test` ausführen. Die Tests prüfen 500 Seeds pro Biom auf Spielbarkeit.
 
 ## Entwickler-Werkzeug k3c-dev
 
@@ -115,11 +115,11 @@ Aufruf. Die Dienste aus `tools/k3c-dev/services.json` (Vite-Dev-Server, Heimnetz
 Schließen beendet ihn. Voraussetzungen: Go, Wails-CLI und `npm ci --prefix tools/k3c-dev/frontend` (`requirements.md`).
 
 ```bash
-npm run k3c-dev:build
+task k3c-dev:build
 ```
 
 baut `tools/k3c-dev/build/bin/k3c-dev.exe` (starten per Doppelklick, die EXE muss im Repo liegen). Zum Entwickeln
-mit Neuladen: `npm run k3c-dev` (`wails dev`). Die Oberfläche allein läuft im Browser gegen erfundene Daten:
+mit Neuladen: `task k3c-dev` (`wails dev`). Die Oberfläche allein läuft im Browser gegen erfundene Daten:
 `npm --prefix tools/k3c-dev/frontend run dev` (Port 5181).
 
 Er lauscht nur an `http://127.0.0.1:5180/mcp` (anderer Port: `K3C_DEV_PORT`). Für Claude Code eine lokale `.mcp.json`
@@ -129,7 +129,7 @@ im Repo anlegen (steht in `.gitignore`):
 { "mcpServers": { "k3c-dev": { "type": "http", "url": "http://127.0.0.1:5180/mcp" } } }
 ```
 
-Prüfen: `npm run check:dev`. Plan für Statistik, Dienste und Oberfläche: Sprints M2–M5 in [`docs/sprints/`](docs/sprints/README.md).
+Prüfen: `task check:dev`. Plan für Statistik, Dienste und Oberfläche: Sprints M2–M5 in [`docs/sprints/`](docs/sprints/README.md).
 
 ## CI/CD (GitHub Actions)
 

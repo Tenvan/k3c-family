@@ -62,7 +62,7 @@ keine
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
 | I1.1 | `I1.1-kleine-schulden.md` | Umsetzung | autonom | fertig |
-| I1.2 | `I1.2-npm-weg.md` | Umsetzung | autonom | offen |
+| I1.2 | `I1.2-npm-weg.md` | Umsetzung | autonom | fertig |
 | I1.3 | `I1.3-k3c-dev-task.md` | Umsetzung | autonom | offen |
 | I1.4 | `I1.4-review.md` | Review | autonom | offen |
 

@@ -117,7 +117,7 @@ Grenzfälle:
 Leicht und billig: Die Automatik prüft die Komplexität, das Review sucht nur **schwere Fehler**. Ein günstiges
 Modell (z. B. Sonnet) reicht.
 
-1. `npm run check` und `npm run check:go` → grün. Damit gelten die Grenzen aus dem Komplexitäts-Budget als geprüft.
+1. `task check` und `task check:go` → grün. Damit gelten die Grenzen aus dem Komplexitäts-Budget als geprüft.
 2. `git fetch && git diff <Start-Commit>..origin/main` lesen, **nur den Diff**, nicht jede Datei vollständig.
 3. Nur diese Befunde zählen:
    - falsches Verhalten oder Datenverlust (Spielstände, Berichte, Dateien)
