@@ -1,6 +1,6 @@
 # L3 · INF · Race-Detector für die nebenläufigen Go-Pakete
 
-- **Status:** aktiv
+- **Status:** erledigt
 - **Domäne:** INF
 - **Reife:** bereit
 - **Einschiebbar:** ja
@@ -59,8 +59,11 @@ keine
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
 | L3.1 | `L3.1-race.md` | Umsetzung | autonom | fertig |
-| L3.2 | `L3.2-review.md` | Review | autonom | offen |
+| L3.2 | `L3.2-review.md` | Review | autonom | fertig |
 
 ## Abnahme
 
-–
+2026-10-01 · Review L3.2, `task check` und `task check:go` grün.
+- AC-01 umgesetzt (CI-Schritt im Job `go` auf ubuntu-latest, nach `go test ./...`); erster grüner CI-Lauf steht aus (🧑).
+- AC-02 geprüft (L3.1: ohne Compiler Hinweis und Exit 0, mit scheiterndem `gcc` Exit 1).
+- Befunde: keine. Neue Tickets: keine.

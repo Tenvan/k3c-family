@@ -8,7 +8,7 @@ Jede Sprint-README ist eine Spec (SDD); aktiv wird ein Sprint erst mit `Spec: fr
 
 | Sprint | Domäne | Thema | Am Ende sichtbar | Ordner |
 |---|---|---|---|---|
-| L3 | INF | Race-Detector für die nebenläufigen Go-Pakete (B-077, eingeschoben) | CI-Schritt `go test -race ./engine/...` | `aktiv/L3-race/` |
+| – | – | – | – | – |
 
 Danach: SP08 bereit machen (Client auf Protokoll v2); M6 (MCP-Tools) ist einschiebbar.
 
@@ -43,6 +43,7 @@ Nach SP11: Regelwerk II (Skills) → SIM Skills in Go → CLI Skills → Spielea
 | SP01 | Leitplanken + Go-Gerüst | `erledigt/SP01-leitplanken/` |
 | L1 | Go-Verschachtelung als Tiefe prüfen (B-054) | `erledigt/L1-go-verschachtelung/` |
 | L2 | Go-Tiefe wie TypeScript zählen (B-057) | `erledigt/L2-go-tiefe/` |
+| L3 | Race-Detector für die nebenläufigen Go-Pakete (B-077) | `erledigt/L3-race/` |
 | SP02 | Protokoll v2 & Raummodell, Entscheidung 002 | `erledigt/SP02-protokoll/` |
 | M1 | k3c-dev I: MCP-Kern über HTTP | `erledigt/M1-dev-mcp/` |
 | M2 | k3c-dev II: Nutzungsstatistik, Berichte, Spielstände | `erledigt/M2-dev-statistik/` |
