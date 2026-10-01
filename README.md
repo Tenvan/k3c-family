@@ -16,6 +16,7 @@ Dann `http://localhost:5173` öffnen, oder im Heimnetz `http://<PC-IP>:5173` (z.
 Die Startseite ist eine Landingpage, die man komplett mit dem Controller bedient (D-Pad/Stick + **A**,
 **Y** bzw. **F** = Vollbild). Sie bleibt dauerhaft geöffnet und zeigt Spiel und Testseiten in sich an.
 Dadurch bleibt Vollbild beim Seitenwechsel erhalten.
+Der Dev-Server reicht `/api` und `/ws` an den Go-Server (Port 8080) weiter: Zum Spielen zusätzlich `task start` laufen lassen.
 
 Jede Seite hat oben mittig einen **Start**-Button. Zurück zur Übersicht geht es auch mit **View + Menu**
 (kurz gemeinsam halten) bzw. **Pos1**. **B** wird abgefangen und schließt nichts versehentlich.
@@ -36,17 +37,17 @@ Im Spiel:
 ## Im Heimnetz hosten (Xbox)
 
 ```bash
-npm run serve
+task serve
 ```
 
-Baut das Spiel und startet den Server auf Port **8080**. Die Konsole zeigt die Adressen, z.B.
+Baut das Spiel und startet den Go-Server (`bin/k3c-server`) auf Port **8080**; `task start` startet ihn ohne Web-Build. Die Konsole zeigt die Adressen, z.B.
 `http://192.168.2.230:8080/`. Diese Adresse in Edge auf der Xbox öffnen. Falls die Windows-Firewall fragt:
 Zugriff im **privaten** Netzwerk erlauben.
 
-Der Go-Server (`cmd/k3c-server`, ersetzt ab SP03 den Node-Server für Seiten, Spielstände und Berichte) startet mit
-`npm run serve:go` bzw. `go run ./cmd/k3c-server` nach `npm run build`. Einstellungen per Umgebung: `K3C_HTTP_PORT`,
+Der Go-Server (`cmd/k3c-server`) liefert Seiten, Spielstände, Berichte und den Online-Modus (WebSocket `/ws`, Protokoll v2).
+Einstellungen per Umgebung: `K3C_HTTP_PORT`,
 `K3C_HTTPS_PORT`, `K3C_DIST`, `K3C_SAVES_DIR`, `K3C_REPORTS_DIR`, `K3C_CERTS_DIR`; `GET /api/health` meldet
-`{"ok":true}`. Den Online-Modus (WebSocket) hat bis SP08 nur der Node-Server (`npm run serve`).
+`{"ok":true}`.
 
 - **Diagnose:** `GET /api/status` mit `Authorization: Bearer <K3C_STATUS_TOKEN>`; ohne gesetzte Variable ist sie aus
   (404), mit falschem Token 401.
@@ -59,7 +60,7 @@ Der Go-Server (`cmd/k3c-server`, ersetzt ab SP03 den Node-Server für Seiten, Sp
 
 ### Gamepad-Test auf der Xbox
 
-1. `npm run serve` am PC starten.
+1. `task serve` am PC starten.
 2. Auf der Xbox in Edge `http://<PC-IP>:8080/` öffnen und die Kachel **Gamepad-Test** wählen.
 3. Beide Controller verbinden, auf jedem alle Tasten einmal drücken, auch **B** und die Sticks.
 4. **Vollbild** anklicken, dann **View** für den FPS-Test drücken (dauert ca. 30 s, danach View = zurück).
@@ -121,10 +122,11 @@ Prüfen: `npm run check:dev`. Plan für Statistik, Dienste und Oberfläche: Spri
 ## CI/CD (GitHub Actions)
 
 - **CI** (jeder Push/PR): Lint, Typecheck, Tests, Build; Go-Job mit Tests (auch Heimnetz-Server per `httptest`), `golangci-lint` und Cross-Build für Windows und Raspberry Pi; Windows-Job für `tools/k3c-dev`. Der Build liegt als Artefakt `k3c-dist` am Lauf.
-- **GitHub Pages** (Push auf `main`): Spiel und Testseiten online, ohne Bericht-Server.
+- **GitHub Pages** (Push auf `main`): nur was ohne Server geht. Die Testseiten laufen; die Spiel-Kacheln sind deaktiviert
+  („Braucht den Heimnetz-Server“), `game.html` zeigt denselben Hinweis.
   Einmalig aktivieren: *Settings → Pages → Source: GitHub Actions*.
-- **Release** (Tag `v*`, z.B. `git tag v0.2.0 && git push --tags`): Zip mit `dist/` + `server/` am Release.
-  Entpacken und `node server/server.mjs` starten, `npm install` ist dafür nicht nötig.
+- **Release** (Tag `v*`, z.B. `git tag v0.2.0 && git push --tags`): Zip mit `dist/` und `k3c-server` für Windows, Linux amd64 und arm64.
+  Das Zip entpacken, `k3c-server` daneben legen und starten (`K3C_DIST` zeigt auf `dist/`), Node ist dafür nicht nötig.
 
 ## Lizenz
 

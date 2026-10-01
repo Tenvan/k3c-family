@@ -14,7 +14,7 @@ Zielplattform ist **Edge auf der Xbox** (Gamepad API), gehostet im Heimnetz. Die
 - **SDD:** Ticket und Sprint-README sind die Spec (Kriterien `AC-01` …), Sessions erfüllen genannte Kriterien.
   Freigabe (`Spec: freigegeben`) und manuelle Abnahmen nur durch den Nutzer. Details: `docs/arbeitsweise.md` › SDD.
 - Architektur-Entscheidungen: `docs/decisions/` – **001: Die Spiel-Engine wandert auf einen Go-Server**, der Browser
-  wird reiner Client. Bis dahin **Feature-Stopp in `src/world/`** (nur Fehlerbehebungen, neue Mechaniken in Go).
+  wird reiner Client. Umgesetzt (SP09): Es gibt keine TS-Simulation mehr, neue Mechaniken entstehen in `engine/` (Go).
 - Altes Godot-Projekt (nur Referenz): `C:\WORKSPACE\FamilyCrowns`
 
 ## Befehle
@@ -32,7 +32,8 @@ task check:dev     # k3c-dev: Frontend, go test, golangci-lint
 task check:all     # alles inklusive Build
 task k3c-dev       # Entwickler-Werkzeug k3c-dev als Fenster starten (wails dev; EXE: task k3c-dev:build)
 task build         # Typecheck + Produktions-Build nach dist/
-task serve         # Build + Heimnetz-Server (Port 8080, server/server.mjs)
+task serve         # Build + Go-Server (Port 8080, bin/k3c-server)
+task start         # Go-Server ohne Web-Build (task dev leitet /api und /ws an ihn weiter)
 ```
 
 Die Gamepad-Testseite (`gamepad-test.html`) schickt Berichte von der Xbox nach `reports/*.json`. Dort die Ergebnisse nachlesen.
@@ -46,13 +47,13 @@ prüft die Regeln unten automatisch (Seiten eingetragen, `installPageChrome()`, 
 
 - `data/` – Balancing als JSON (Biome, Gegner, Truppen, Gebäude, Monarch), einzige Quelle für Client (Import) und
   Go-Server (`go:embed`, `data/embed.go`). Werte gehören hierher, nicht in den Code.
-- `src/world/` – Spiel-Logik **ohne Phaser-Import**, Tests daneben (`*.test.ts`). `levelGenerator.ts` baut das Level,
-  `sim/` simuliert es (`createWorld()` + `step()`, deterministisch, Zustand in `sim/types.ts`).
-  `sim/campaign.ts` hält alle Stufen und macht daraus Spielstände (`toSave`/`fromSave`); Server: `server/saves.mjs` → `saves/`.
-- `src/online/` – Online-Modus (`?online=RAUM`): Server rechnet `step()` (`room.ts`, `wsServer.ts`, WebSocket `/ws`, im Dev-Server und in `server/server.mjs` über `dist-server/online.mjs`), Clients senden nur Eingaben (`client.ts`) und zeichnen Snapshots. Ein Monarch pro Gerät.
+- `engine/` – Go: `sim/` (Simulation, deterministisch), `level/` (Level-Generator), `room/`, `net/` (HTTP, WebSocket `/ws`,
+  Protokoll v2), `store/` (Spielstände → `saves/`, Berichte → `reports/`). `cmd/k3c-server` liefert `dist/` und die API aus.
+- `src/model/` – Typen und Daten, die der Client vom Server kennt (`World`, `GameEvent`, `BIOMES`, `SaveGame` …), keine Logik.
+- `src/online/` – Client des Go-Servers (`clientConnection.ts`, Protokoll v2): sendet nur Eingaben, zeichnet Snapshots. Ein Monarch pro Gerät.
 - `src/input/` – `PlayerInput`-Abstraktion (Tastatur, Gamepad, Touch-Overlay `touchInput.ts`, per `?touch=1` erzwingbar). Spiel-Code fragt Aktionen ab, nie konkrete Tasten.
 - `src/scenes/` – Phaser-Szenen (`GameScene` = Eingabe, `step()`, Kameras; `worldRenderer.ts` zeichnet den Zustand;
-  `HudScene` = bildschirmfeste Anzeigen). Neue Mechanik: Logik + Test in `sim/`, dann nur zeichnen.
+  `HudScene` = bildschirmfeste Anzeigen). Neue Mechanik: Logik + Test in `engine/sim/`, dann nur zeichnen.
 - Seiten: `index.html` = Landingpage/Shell (Kacheln aus `src/landing/pages.ts`), `game.html` = Spiel, weitere `*.html` = Testseiten.
   Jede `*.html` im Root wird automatisch gebaut.
 - `src/core/shell.ts` – Seiten-Rahmen (Home-Button, Home-Kombi, Zurück-Falle), `src/core/fullscreen.ts` – Vollbild über die Shell.
