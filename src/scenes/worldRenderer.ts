@@ -1,9 +1,7 @@
 import Phaser from 'phaser';
 import { GROUND_Y, PLAYER_COLORS, UNIT_PX } from '../core/constants';
 import { BUILDINGS, TROOPS } from '../world/sim/data';
-import { canAfford } from '../world/sim/economy';
-import { hasDepth } from '../world/sim/travel';
-import { isOnTower } from '../world/sim/units';
+import { canAfford, hasDepth, isOnTower } from './viewRules';
 import { ENEMY_SPRITES, PLAYER_SPRITES, TROOP_SPRITES, face, makeSprite, playAnim, spriteTop } from './sprites';
 import type { Coin, Enemy, Pickup, Player, Projectile, ResourceNode, Site, Troop, World } from '../world/sim/types';
 

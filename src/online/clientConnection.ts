@@ -6,6 +6,7 @@ import {
   PROTOCOL_VERSION,
   WS_PATH,
   type ClientMessage,
+  type ErrorCode,
   type Limits,
   type MonarchState,
   type RoomInfo,
@@ -92,6 +93,8 @@ export class RoomClient {
   status: Status = 'connecting';
   /** Hinweis für die Anzeige (Fehlertext des Servers oder Verbindungsstatus), null = keiner */
   notice: string | null = null;
+  /** Code des Fehlers hinter `notice` (nur bei Fehlern des Servers), sonst null */
+  errorCode: ErrorCode | null = null;
   rooms: RoomInfo[] = [];
   limits: Limits | null = null;
   tickHz = 30;
@@ -123,6 +126,7 @@ export class RoomClient {
     if (this.status !== 'lobby') return;
     this.slotsWanted = slots;
     this.notice = null;
+    this.errorCode = null;
     this.send({ t: 'create', save, fresh, ...(fresh ? { depth } : {}), slots });
   }
 
@@ -130,6 +134,7 @@ export class RoomClient {
     if (this.status !== 'lobby') return;
     this.slotsWanted = slots;
     this.notice = null;
+    this.errorCode = null;
     this.send({ t: 'join', room, slots });
   }
 
@@ -319,6 +324,7 @@ export class RoomClient {
   private setConnected(status: 'lobby' | 'room' = 'lobby'): void {
     this.status = status;
     this.notice = null;
+    this.errorCode = null;
   }
 
   private setLevel(depth: number, layout: LevelLayout): void {
@@ -359,6 +365,7 @@ export class RoomClient {
         }
     }
     this.notice = message;
+    this.errorCode = code as ErrorCode;
   }
 }
 

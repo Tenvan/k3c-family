@@ -86,7 +86,7 @@ keine
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
 | SP08.1 | `SP08.1-protokoll-client.md` | Umsetzung | autonom | fertig |
-| SP08.2 | `SP08.2-szene-slots.md` | Umsetzung | autonom | offen |
+| SP08.2 | `SP08.2-szene-slots.md` | Umsetzung | autonom | fertig |
 | SP08.3 | `SP08.3-lobby.md` | Umsetzung | autonom | offen |
 | SP08.4 | `SP08.4-review.md` | Review | autonom | offen |
 | SP08.5 | `SP08.5-tv-abnahme.md` | Workshop | Mensch | offen |
