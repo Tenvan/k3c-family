@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import { createRng } from '../core/rng';
-import { BIOMES } from './biome';
+import { BIOMES } from '../model/biome';
 import { generateLevel, validateLevel } from './levelGenerator';
 
 describe('rng', () => {

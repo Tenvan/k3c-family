@@ -1,7 +1,7 @@
 import Phaser from 'phaser';
 import { GAME_HEIGHT, GAME_WIDTH } from '../core/constants';
-import { ECONOMY } from '../world/sim/data';
-import type { GameEvent, World } from '../world/sim/types';
+import { ECONOMY } from '../model/data';
+import type { GameEvent, World } from '../model/types';
 import type { GameScene } from './GameScene';
 import { SHARED_LINE_HEIGHT, sharedAnchor } from './layout';
 import { gameNotice } from './lobbyLogic';

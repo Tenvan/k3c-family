@@ -1,7 +1,5 @@
-import type { Rng } from '../../core/rng';
-import type { BiomeConfig } from '../biome';
-import type { LevelLayout } from '../levelGenerator';
-import type { CycleInfo } from './cycle';
+import type { Rng } from '../core/rng';
+import type { BiomeConfig } from './biome';
 import type { ResourceKind } from './data';
 
 /**
@@ -224,4 +222,86 @@ export interface TravelPoint {
 
 export interface Travel extends TravelPoint {
   progress: number;
+}
+
+// ---------- vom Client genutzt, früher in world/ ----------
+
+export type ChunkKind = string; // 'hub' | 'edge' | 'exit' | 'portal' | EventChunkKind | Biom-Chunk-Typ
+
+export interface Chunk {
+  index: number;
+  kind: ChunkKind;
+  startUnits: number;
+}
+
+export interface LevelEntity {
+  kind: string; // 'castle' | 'portal' | 'exit' | 'tree' | 'rock' | 'chest' | 'skillPoint' | 'recruitCamp' | ...
+  x: number; // Units
+}
+
+export interface LevelLayout {
+  seed: string | number;
+  biomeId: string;
+  widthUnits: number;
+  chunkWidthUnits: number;
+  hubCenterUnits: number;
+  chunks: Chunk[];
+  entities: LevelEntity[];
+}
+
+export type Phase = 'day' | 'dusk' | 'night';
+
+export interface CycleInfo {
+  phase: Phase;
+  /** 1 = erster Tag. Die Nacht gehört zum Tag davor. */
+  day: number;
+  /** 0..1 innerhalb der Phase */
+  progress: number;
+  secondsLeft: number;
+}
+
+export const SAVE_VERSION = 1;
+
+export interface HubSave {
+  depth: number;
+  castleHp: number;
+  stock: Stock;
+  wave: number;
+  aggression: number | null;
+  sites: { kind: string; x: number; state: SiteState; paidGold: number; buildProgress: number; hp: number; bows: number; bowPaidGold: number }[];
+  /** Nur Bauern und Bogenschützen. Landstreicher kommen von allein aus den Camps. */
+  troops: { kind: TroopKind; x: number; anchorX: number }[];
+  /** Schlüssel `kind@x` der Bäume/Felsen, die schon abgebaut sind bzw. markiert */
+  nodesGone: string[];
+  nodesMarked: string[];
+  pickupsTaken: string[];
+}
+
+export interface SaveGame {
+  version: number;
+  /** Gleiche id = gleiches Spiel. Der Server legt beim Überschreiben eines anderen Spiels eine Sicherung an. */
+  campaignId: string;
+  savedAt: string;
+  seed: string;
+  depth: number;
+  unlockedDepth: number;
+  time: number;
+  skillPoints: number;
+  players: { gold: number }[];
+  hubs: HubSave[];
+}
+
+/** Prüft grob, ob ein JSON ein Spielstand ist, den wir laden können. */
+export function isSaveGame(data: unknown): data is SaveGame {
+  const s = data as SaveGame;
+  return (
+    !!s &&
+    s.version === SAVE_VERSION &&
+    typeof s.campaignId === 'string' &&
+    typeof s.seed === 'string' &&
+    typeof s.depth === 'number' &&
+    typeof s.time === 'number' &&
+    Array.isArray(s.hubs) &&
+    Array.isArray(s.players)
+  );
 }

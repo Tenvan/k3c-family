@@ -1,6 +1,6 @@
-import { BIOMES } from '../world/biome';
-import type { CycleInfo } from '../world/sim/cycle';
-import type { Troop, World } from '../world/sim/types';
+import { BIOMES } from '../model/biome';
+import type { CycleInfo } from '../model/types';
+import type { Troop, World } from '../model/types';
 
 /**
  * Darstellungsregeln, die der Browser selbst auswertet, ohne die Simulation zu importieren (SP08, AC-13).

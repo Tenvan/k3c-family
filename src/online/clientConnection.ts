@@ -1,5 +1,5 @@
-import { BIOMES, type BiomeConfig } from '../world/biome';
-import type { LevelLayout } from '../world/levelGenerator';
+import { BIOMES, type BiomeConfig } from '../model/biome';
+import type { LevelLayout } from '../model/types';
 import { applyDelta } from './clientDelta';
 import {
   INPUT_KEEPALIVE_MS,

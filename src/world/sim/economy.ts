@@ -1,6 +1,6 @@
 import { isAlive, newId } from './common';
-import { BUILDINGS, ECONOMY, MONARCH, TROOPS, type Cost, type ResourceKind } from './data';
-import { IDLE, type Player, type PlayerCommand, type ResourceNode, type Site, type Troop, type World } from './types';
+import { BUILDINGS, ECONOMY, MONARCH, TROOPS, type Cost, type ResourceKind } from '../../model/data';
+import { IDLE, type Player, type PlayerCommand, type ResourceNode, type Site, type Troop, type World } from '../../model/types';
 
 /**
  * Monarchen, Münzen und alles, was man bezahlt (K2C-Prinzip: eine Taste für alles).
