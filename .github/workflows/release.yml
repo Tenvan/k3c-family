@@ -18,10 +18,11 @@ jobs:
         with:
           node-version-file: .nvmrc
           cache: npm
+      - uses: go-task/setup-task@v1
       - run: npm ci
-      - run: npm run typecheck
-      - run: npm test
-      - run: npm run build
+      - run: task typecheck
+      - run: task test
+      - run: task build
       - uses: actions/setup-go@v7
         with:
           go-version-file: go.mod

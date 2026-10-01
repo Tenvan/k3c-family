@@ -26,7 +26,7 @@ func TestOhneBuildKeinStart(t *testing.T) {
 	cfg := loadConfig()
 	cfg.dist = filepath.Join(t.TempDir(), "dist")
 	err := run(cfg, slog.New(slog.NewTextHandler(io.Discard, nil)))
-	if err == nil || !strings.Contains(err.Error(), "npm run build") {
+	if err == nil || !strings.Contains(err.Error(), "task build") {
 		t.Errorf("run ohne dist: %v", err)
 	}
 }

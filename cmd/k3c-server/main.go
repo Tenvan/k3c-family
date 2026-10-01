@@ -76,7 +76,7 @@ func main() {
 
 func run(cfg config, log *slog.Logger) error {
 	if _, err := os.Stat(filepath.Join(cfg.dist, "index.html")); err != nil {
-		return fmt.Errorf("%s/index.html fehlt. Erst bauen: npm run build", cfg.dist)
+		return fmt.Errorf("%s/index.html fehlt. Erst bauen: task build", cfg.dist)
 	}
 	saves := &store.Saves{Dir: cfg.saves}
 	rooms := room.NewManager(saves)
