@@ -70,7 +70,7 @@ keine
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
 | SP10.1 | `SP10.1-anzeige.md` | Umsetzung | autonom | fertig |
-| SP10.2 | `SP10.2-aktionen-log.md` | Umsetzung | autonom | offen |
+| SP10.2 | `SP10.2-aktionen-log.md` | Umsetzung | autonom | fertig |
 | SP10.3 | `SP10.3-review.md` | Review | autonom | offen |
 
 ## Abnahme
