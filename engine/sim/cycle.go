@@ -47,7 +47,8 @@ func stepCycle(w *World, dt float64) {
 	}
 	if changed && w.Cycle.Phase == "day" {
 		w.Events = append(w.Events, Event{"type": "dawn", "day": w.Cycle.Day})
-		// SP06: bei dayNight sendEnemiesHome; SP05.3: payDawnIncome
+		// SP06: bei dayNight sendEnemiesHome
+		payDawnIncome(w)
 	}
 	if w.Aggression != nil && w.Biome.Cycle.Type == "aggressionPool" {
 		a := math.Min(100, *w.Aggression+float64(w.Biome.Cycle.PercentPerMinute/60*dt*w.CycleSpeed))

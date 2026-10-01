@@ -79,7 +79,7 @@ keine
 |---|---|---|---|---|
 | SP05.1 | `SP05.1-welt-zyklus.md` | Umsetzung | autonom | fertig |
 | SP05.2 | `SP05.2-truppen.md` | Umsetzung | autonom | fertig |
-| SP05.3 | `SP05.3-wirtschaft.md` | Umsetzung | autonom | offen |
+| SP05.3 | `SP05.3-wirtschaft.md` | Umsetzung | autonom | fertig |
 | SP05.4 | `SP05.4-review.md` | Review | autonom | offen |
 
 ## Abnahme
