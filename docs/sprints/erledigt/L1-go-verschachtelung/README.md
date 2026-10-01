@@ -67,7 +67,7 @@ keine. Entschieden (🧑, 2026-09-30): `nestif` wird durch `revive` › `max-con
 
 **2026-09-30, L1.2 (autonomer Agent, nur lokal).** Geprüft: 8 Dateien aus `git diff --stat 20c5530..main`
 (lokales `main` 9aee6a5; kein `git fetch`, 🧑: nur lokal), jede vollständig gelesen: `.golangci.yml`,
-`docs/arbeitsweise.md`, `docs/backlog/B-054-go-verschachtelung.md`, `docs/sprints/README.md`,
+`docs/arbeitsweise.md`, `docs/backlog/archiv/B-054-go-verschachtelung.md`, `docs/sprints/README.md`,
 `docs/sprints/aktiv/.gitkeep` und die drei Dateien dieses Sprints. Lokal: Go 1.27.0, golangci-lint 2.14.0.
 
 - **AC-01 geprüft, mit Lücke (Teil verschoben nach B-057):** Gegenproben in `engine/probe/` mit
