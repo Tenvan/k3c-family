@@ -3,7 +3,7 @@
 - **Domäne:** PLAT
 - **Typ:** Idee
 - **Prio:** mittel
-- **Status:** eingeplant
+- **Status:** erledigt
 - **Sprint:** G1
 - **Erstellt:** 2026-10-01
 - **Spec:** freigegeben
@@ -64,4 +64,4 @@ keine
 
 ## Notizen
 
-Entstanden aus der Recherche zu B-010. Urheber lt. Pack-Lizenzdateien: ansimuz (Luis Zuno) für Gothicvania Town/Church/Swamp, Forest Background, Tall Forest, Fort of Illusion und Warped Caves; Gold-Icons: Bonsaiheldin; die übrigen Packs nennen den OGA-Uploader (siehe CREDITS).
+Abgenommen 2026-10-01 durch 🧑 („passt alles“, alle zwölf Packs übernommen). Entstanden aus der Recherche zu B-010. Urheber lt. Pack-Lizenzdateien: ansimuz (Luis Zuno) für Gothicvania Town/Church/Swamp, Forest Background, Tall Forest, Fort of Illusion und Warped Caves; Gold-Icons: Bonsaiheldin; die übrigen Packs nennen den OGA-Uploader (siehe CREDITS).
