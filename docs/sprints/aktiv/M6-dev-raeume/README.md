@@ -5,7 +5,7 @@
 - **Reife:** bereit
 - **Einschiebbar:** ja
 - **Tickets:** B-047
-- **Start-Commit:** – (wird beim Aktivieren gesetzt: `git rev-parse --short origin/main`)
+- **Start-Commit:** 9de807c
 - **Spec:** freigegeben
 - **Revision:** 2
 - **Freigabe:** 2026-10-01 🧑 Chat („M6 freigeben“), Revision 2
@@ -59,7 +59,7 @@ keine
 
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
-| M6.1 | `M6.1-server-tools.md` | Umsetzung | autonom | offen |
+| M6.1 | `M6.1-server-tools.md` | Umsetzung | autonom | fertig |
 | M6.2 | `M6.2-level-sim-tools.md` | Umsetzung | autonom | offen |
 | M6.3 | `M6.3-review.md` | Review | autonom | offen |
 
