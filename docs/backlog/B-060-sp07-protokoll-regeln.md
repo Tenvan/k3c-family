@@ -3,12 +3,12 @@
 - **Domäne:** SRV
 - **Typ:** Problem
 - **Prio:** hoch
-- **Status:** offen
-- **Sprint:** –
+- **Status:** erledigt
+- **Sprint:** SP07
 - **Erstellt:** 2026-09-30
-- **Spec:** Entwurf
+- **Spec:** freigegeben
 - **Revision:** 1
-- **Freigabe:** –
+- **Freigabe:** 2026-10-01 🧑 Chat (SP07 Rev. 1: Protokoll v2 vollständig, coder/websocket, B-047 nach M6, B-030 Rev. 3)
 
 ## Ausgangslage
 
@@ -63,4 +63,4 @@ Gehört das Speichern pro Raum (`engine/store`) in SP07 oder schon in SP03 (Go-S
 
 ## Notizen
 
-Beim Bereitmachen von SP07 einarbeiten.
+Erledigt mit der Planung von SP07 (2026-10-01): AC-01 durch SP07-README AC-01 bis AC-08 (Speichern pro Raum AC-04, Handschlag und Codes AC-05, Fristen AC-03, Delta und `seq`/`ack` AC-07, Sendepuffer AC-07), AC-02 durch B-030 Revision 3. Speichern pro Raum gehört in SP07 (🧑).
