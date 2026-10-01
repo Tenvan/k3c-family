@@ -8,9 +8,7 @@ Jede Sprint-README ist eine Spec (SDD); aktiv wird ein Sprint erst mit `Spec: fr
 
 | Sprint | Domäne | Thema | Am Ende sichtbar | Ordner |
 |---|---|---|---|---|
-| – | – | – | – | – |
-
-Danach: M6 (MCP-Tools, bereit, wartet auf Freigabe der Spec durch 🧑) ist einschiebbar.
+| M6 | SRV | k3c-dev VI: MCP-Tools für Räume und Simulation (einschiebbar) | `rooms_list` und `sim_run` in der MCP-Seite | `aktiv/M6-dev-raeume/` |
 
 ## Geplant (in dieser Reihenfolge)
 
@@ -28,7 +26,6 @@ dann über den Go-Server mit mehreren Räumen und gemischten Spielern.
 |---|---|---|---|---|
 | R1 | REG 🧑 | Regelwerk I – Fundament | Entwurf | `geplant/R1-regelwerk-1/` |
 | X1 | PLAT 🧑 | Xbox-Machbarkeit | Entwurf | `geplant/X1-xbox/` |
-| M6 | SRV | k3c-dev VI: MCP-Tools für Räume und Simulation (B-047, nach SP07) | bereit | `geplant/M6-dev-raeume/` |
 
 Nach SP11: Regelwerk II (Skills) → SIM Skills in Go → CLI Skills → Spieleabend → Grafik/Sound → …
 
