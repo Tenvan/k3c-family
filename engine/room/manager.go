@@ -1,0 +1,228 @@
+package room
+
+import (
+	"encoding/json"
+	"errors"
+	"io"
+	"log/slog"
+	"math/rand/v2"
+	"regexp"
+	"slices"
+	"strings"
+	"sync"
+	"time"
+
+	"k3c/engine/sim"
+	"k3c/engine/store"
+)
+
+// Store sind die Spielstände (engine/store.Saves). Load liefert store.ErrNotFound, wenn es keinen gibt.
+type Store interface {
+	Load(name string) ([]byte, error)
+	Store(name string, data []byte) (backup string, err error)
+}
+
+var saveName = regexp.MustCompile(`^[a-z0-9-]{1,32}$`)
+
+// codeLetters: Großbuchstaben ohne I und O (docs/protocol.md › Begriffe).
+const codeLetters = "ABCDEFGHJKLMNPQRSTUVWXYZ"
+
+// Manager hält alle Räume eines Servers. Sperr-Reihenfolge: erst Manager, dann Raum, nie umgekehrt.
+type Manager struct {
+	Store   Store
+	Now     func() time.Time // Test-Naht; nil = time.Now
+	NewCode func() string    // Test-Naht; nil = zufällig
+	Log     *slog.Logger
+	// Changed meldet, dass sich Raumliste oder Plätze geändert haben (für `rooms` an Geräte ohne Raum).
+	// Aufruf ohne gehaltene Sperre.
+	Changed func()
+
+	mu    sync.Mutex
+	rooms map[string]*Room
+}
+
+// NewManager legt einen Manager ohne Räume an.
+func NewManager(s Store) *Manager { return &Manager{Store: s, rooms: map[string]*Room{}} }
+
+func (m *Manager) now() time.Time {
+	if m.Now == nil {
+		return time.Now()
+	}
+	return m.Now()
+}
+
+func (m *Manager) log() *slog.Logger {
+	if m.Log == nil {
+		return slog.New(slog.NewTextHandler(io.Discard, nil))
+	}
+	return m.Log
+}
+
+func (m *Manager) notify(changed bool) {
+	if changed && m.Changed != nil {
+		m.Changed()
+	}
+}
+
+func (m *Manager) code() string {
+	for {
+		c := ""
+		if m.NewCode != nil {
+			c = m.NewCode()
+		} else {
+			var b strings.Builder
+			for range 4 {
+				b.WriteByte(codeLetters[rand.IntN(len(codeLetters))])
+			}
+			c = b.String()
+		}
+		if _, used := m.rooms[c]; !used {
+			return c
+		}
+	}
+}
+
+// Create erstellt einen Raum mit neuem (fresh) oder gespeichertem Spielstand und nimmt das Gerät auf. Prüf-Reihenfolge
+// aus docs/protocol.md › Beitreten; ist der gespeicherte Stand schon offen, tritt das Gerät diesem Raum bei.
+func (m *Manager) Create(id string, peer Peer, name string, fresh bool, depth int, slots []int) (*Room, error) {
+	if err := validSlots(slots); err != nil {
+		return nil, err
+	}
+	if !saveName.MatchString(name) {
+		return nil, ErrBadRequest
+	}
+	m.mu.Lock()
+	r, err := m.create(id, peer, name, fresh, depth, slots)
+	m.mu.Unlock()
+	m.notify(err == nil)
+	return r, err
+}
+
+func (m *Manager) create(id string, peer Peer, name string, fresh bool, depth int, slots []int) (*Room, error) {
+	for _, r := range m.rooms {
+		if r.Name != name {
+			continue
+		}
+		if fresh {
+			return nil, ErrSaveExists
+		}
+		return r, r.lockedJoin(id, peer, slots)
+	}
+	camp, err := m.open(name, fresh, depth)
+	if err != nil {
+		return nil, err
+	}
+	if len(m.rooms) >= MaxRooms {
+		return nil, ErrTooManyRooms
+	}
+	r := &Room{Code: m.code(), Name: name, m: m, camp: camp, devices: map[string]*device{}}
+	m.rooms[r.Code] = r
+	return r, r.lockedJoin(id, peer, slots)
+}
+
+// open lädt den Spielstand oder legt einen neuen an. Ein geladener Stand hat keine Monarchen, Gold gilt pro Index.
+func (m *Manager) open(name string, fresh bool, depth int) (*sim.Campaign, error) {
+	data, err := m.Store.Load(name)
+	switch {
+	case fresh && err == nil:
+		return nil, ErrSaveExists
+	case !fresh && errors.Is(err, store.ErrNotFound):
+		return nil, ErrSaveNotFound
+	case err != nil && !errors.Is(err, store.ErrNotFound):
+		return nil, err
+	case fresh:
+		// Neuer Stand wie createCampaign(seed, {depth}) in TS: leerer Spielstand dieser Tiefe, Seed = Name.
+		// ponytail: Seed ist der Name; ein eigener Seed käme mit einem Feld in `create` (Protokoll-Änderung).
+		data, _ = json.Marshal(sim.SaveGame{
+			Version: sim.SaveVersion, CampaignID: name + "-" + m.now().UTC().Format("20060102T150405.000"), Seed: name,
+			Depth: depth, UnlockedDepth: depth, Players: []sim.PlayerSave{}, Hubs: []sim.HubSave{},
+		})
+	}
+	s, err := sim.ParseSave(data)
+	if err != nil {
+		if fresh {
+			return nil, ErrBadRequest // unbekannte Startstufe
+		}
+		return nil, err
+	}
+	return sim.FromSave(s, 1), nil
+}
+
+func (r *Room) lockedJoin(id string, peer Peer, slots []int) error {
+	r.mu.Lock()
+	defer r.mu.Unlock()
+	if r.closed {
+		return ErrRoomNotFound
+	}
+	return r.join(id, peer, slots)
+}
+
+// Join tritt einem Raum per Code bei oder verbindet wieder.
+func (m *Manager) Join(id string, peer Peer, code string, slots []int) (*Room, error) {
+	if err := validSlots(slots); err != nil {
+		return nil, err
+	}
+	m.mu.Lock()
+	r := m.rooms[code]
+	err := ErrRoomNotFound
+	if r != nil {
+		err = r.lockedJoin(id, peer, slots)
+	}
+	m.mu.Unlock()
+	m.notify(err == nil)
+	return r, err
+}
+
+// Rooms ist die Raumliste, nach Code sortiert.
+func (m *Manager) Rooms() []Info {
+	m.mu.Lock()
+	defer m.mu.Unlock()
+	out := []Info{}
+	for _, r := range m.rooms {
+		r.mu.Lock()
+		out = append(out, r.info())
+		r.mu.Unlock()
+	}
+	slices.SortFunc(out, func(a, b Info) int { return strings.Compare(a.Code, b.Code) })
+	return out
+}
+
+// Sweep prüft die Fristen aller Räume nach Wanduhr: wartende Monarchen nach WaitFor frei, leere Räume nach EmptyFor
+// speichern und aufräumen (Code wird frei).
+func (m *Manager) Sweep() {
+	now := m.now()
+	changed := false
+	m.mu.Lock()
+	for code, r := range m.rooms {
+		r.mu.Lock()
+		c, remove := r.sweep(now)
+		if remove {
+			r.save()
+			r.closed = true
+			delete(m.rooms, code)
+		}
+		r.mu.Unlock()
+		changed = changed || c || remove
+	}
+	m.mu.Unlock()
+	m.notify(changed)
+}
+
+// Close speichert alle Räume, meldet ihren Geräten `room_closed` und räumt sie auf (Server fährt herunter).
+func (m *Manager) Close() {
+	m.mu.Lock()
+	for code, r := range m.rooms {
+		r.mu.Lock()
+		r.save()
+		r.closed = true
+		for _, d := range r.devices {
+			if d.connected {
+				d.peer.Closed()
+			}
+		}
+		r.mu.Unlock()
+		delete(m.rooms, code)
+	}
+	m.mu.Unlock()
+	m.notify(true)
+}
