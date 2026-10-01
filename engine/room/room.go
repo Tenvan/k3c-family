@@ -7,6 +7,7 @@ import (
 	"encoding/json"
 	"errors"
 	"slices"
+	"strings"
 	"sync"
 	"time"
 
@@ -245,6 +246,16 @@ func (r *Room) broadcastSeats() {
 }
 
 // save schreibt den Spielstand (docs/protocol.md › Spielstand). Fehler landen im Log, der Raum läuft weiter.
+// dropTestSave löscht den Spielstand eines Testraums (TestPrefix), nachdem der leere Raum aufgeräumt wurde.
+func (r *Room) dropTestSave() {
+	if !strings.HasPrefix(r.Name, TestPrefix) {
+		return
+	}
+	if err := r.m.Store.Delete(r.Name); err != nil {
+		r.m.log().Error("Test-Spielstand nicht gelöscht", "room", r.Code, "save", r.Name, "err", err)
+	}
+}
+
 func (r *Room) save() {
 	data, err := json.Marshal(r.camp.ToSave(r.m.now().UTC().Format("2006-01-02T15:04:05.000Z07:00")))
 	if err == nil {

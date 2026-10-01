@@ -90,5 +90,5 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-082](B-082-start-parameter-mock.md) | CLI | Idee | mittel | erledigt | SP08 | `game.html` startet per Parameter ohne Auswahl und mit Mock-Slots |
 | [B-083](B-083-lobby-nach-ende.md) | CLI | Problem | niedrig | erledigt | – | Die Lobby zeigt nach `replaced` oder `version` keinen bedienbaren Eintrag mehr |
 | [B-084](B-084-hud-ueberlappung.md) | CLI | Problem | niedrig | erledigt | – | HUD-Texte überlappen im 2×2-Raster |
-| [B-085](B-085-serve-go-feste-exe.md) | INF | Problem | mittel | offen | – | `task serve:go` startet eine EXE mit festem Pfad |
-| [B-086](B-086-testspielstaende-aufraeumen.md) | SRV | Problem | niedrig | offen | – | Test-Spielstände der Testseite bleiben nicht liegen |
+| [B-085](B-085-serve-go-feste-exe.md) | INF | Problem | mittel | erledigt | – | `task serve:go` startet eine EXE mit festem Pfad |
+| [B-086](B-086-testspielstaende-aufraeumen.md) | SRV | Problem | niedrig | erledigt | – | Test-Spielstände der Testseite bleiben nicht liegen |

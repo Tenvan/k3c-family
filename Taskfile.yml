@@ -80,10 +80,11 @@ tasks:
       - node server/server.mjs
 
   serve:go:
-    desc: Build und Go-Server
+    desc: Build und Go-Server (feste EXE bin/k3c-server, damit die Firewall-Freigabe bleibt, B-085)
     deps: [build]
     cmds:
-      - go run ./cmd/k3c-server
+      - go build -o bin/k3c-server{{exeExt}} ./cmd/k3c-server
+      - ./bin/k3c-server{{exeExt}}
 
   go:test:
     desc: go test ./...

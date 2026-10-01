@@ -21,7 +21,13 @@ import (
 type Store interface {
 	Load(name string) ([]byte, error)
 	Store(name string, data []byte) (backup string, err error)
+	// Delete entfernt einen Spielstand samt Sicherungen; ein fehlender ist kein Fehler.
+	Delete(name string) error
 }
+
+// TestPrefix reserviert Spielstandnamen für Testläufe (Testseite, B-086): Räume mit diesem Präfix löschen ihren Spielstand,
+// wenn sie nach der Frist EmptyFor aufgeräumt werden, der Server beim Start auch alte Dateien (store.Saves.Purge).
+const TestPrefix = "test-"
 
 var saveName = regexp.MustCompile(`^[a-z0-9-]{1,32}$`)
 
@@ -232,6 +238,7 @@ func (r *Room) lockedSweep(now time.Time) (changed, remove bool) {
 	if remove {
 		r.save()
 		r.closed = true
+		r.dropTestSave()
 	}
 	return changed, remove
 }
