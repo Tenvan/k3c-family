@@ -86,4 +86,5 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-078](B-078-dev-proxy-go-server.md) | INF | Schuld | hoch | offen | – | `task dev` leitet `/ws` an den Go-Server weiter |
 | [B-079](B-079-landing-kacheln-lobby.md) | PLAT | Schuld | mittel | offen | – | Die Kacheln der Landingpage passen zum Start über die Lobby |
 | [B-080](B-080-dev-tasten-server.md) | SRV | Idee | niedrig | offen | – | Dev-Tasten (Gold, Stufe, Neustart) wirken über den Server |
-| [B-081](B-081-testseite-szenarien.md) | PLAT | Idee | mittel | offen | – | Eine Testseite startet Test-Szenarien, zuerst 1–4 Spieler mit Mock-Spielern |
+| [B-081](B-081-testseite-szenarien.md) | PLAT | Idee | mittel | eingeplant | T1 | Eine Testseite startet Test-Szenarien, zuerst 1–4 Spieler mit Mock-Spielern |
+| [B-082](B-082-start-parameter-mock.md) | CLI | Idee | mittel | eingeplant | SP08 | `game.html` startet per Parameter ohne Auswahl und mit Mock-Slots |

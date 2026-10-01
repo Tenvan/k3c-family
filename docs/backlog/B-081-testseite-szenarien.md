@@ -3,11 +3,11 @@
 - **Domäne:** PLAT
 - **Typ:** Idee
 - **Prio:** mittel
-- **Status:** offen
-- **Sprint:** –
+- **Status:** eingeplant
+- **Sprint:** T1
 - **Erstellt:** 2026-10-01
 - **Spec:** Entwurf
-- **Revision:** 1
+- **Revision:** 2
 - **Freigabe:** –
 
 ## Ausgangslage
@@ -29,9 +29,12 @@ Entwickler und Agenten; 🧑 prüft am TV. Spieler sehen die Seite nicht im Haup
 ## Anforderungen
 
 - Neue Seite `testing.html` im Stil der Landingpage, mit je einer Schaltfläche „1 Spieler“ bis „4 Spieler“ (Controller, Tastatur und Touch bedienbar).
-- Ein Klick erstellt einen Raum (eigener Spielstandname, z. B. `test-<n>`, `fresh: true`) und startet das Spiel mit dem echten Spieler als Slot 0.
-- Mock-Spieler erscheinen sofort als eigene Monarchen im Raum und stehen still. In der ersten Version nur das; Verhalten (Laufen, Bauen,
-  Zufallseingaben) kommt später.
+- Ein Klick öffnet `game.html` mit den Start-Parametern aus B-082 (`?autostart=1&fresh=1&save=test-<kennung>&mock=N−1`): ein neuer Raum,
+  der echte Spieler ist Slot 0.
+- Mock-Spieler sind **lokale Slots desselben Geräts** (Entscheidung 🧑 2026-10-01) mit eigenem Monarchen, eine einzige Browser-Verbindung.
+  Sie erscheinen sofort und stehen still. In der ersten Version nur das; Verhalten (Laufen, Bauen, Zufallseingaben) kommt später.
+- Der Wechsel von der Testseite ins Spiel läuft über die Shell (`openPage()`, neue Shell-Nachricht), nicht über einen Link oder `location`
+  (Regel 4 in `CLAUDE.md`).
 - Szenarien sind Daten (eine Liste in einer Datei), damit neue ohne Seitenumbau dazukommen.
 - Die Seite hat `installPageChrome()` und steht in `src/landing/pages.ts` (Abschnitt `test`); Seiten-Regeln aus `CLAUDE.md`.
 
@@ -41,8 +44,8 @@ Verhalten der Mock-Spieler über „steht still“ hinaus; weitere Szenarien (Wi
 
 ## Regeln und Einschränkungen
 
-Domäne PLAT (`*.html`, `src/landing/`, `src/tools/`); der Client aus SP08 (`src/online/client*.ts`) wird nur benutzt, nicht geändert.
-Nach SP08.3 (Lobby, Client). Test-Räume belegen Raumplätze auf dem Server (höchstens 4 Räume, B-016/Protokoll); beim Beenden verlassen.
+Domäne PLAT (`*.html`, `src/landing/`, `src/tools/`, `src/core/shell.ts`); Spiel und Client (SP08, B-082) werden nur benutzt, nicht geändert.
+Nach SP08.3 (Lobby, Start-Parameter). Test-Räume belegen Raumplätze auf dem Server (höchstens 4 Räume, B-016/Protokoll); beim Beenden verlassen.
 
 ## Beispiele
 
@@ -55,16 +58,14 @@ Raum nicht erstellbar (`too_many_rooms`, Server weg) → Hinweis auf der Testsei
 ## Akzeptanzkriterien
 
 - **AC-01** `testing.html` ist von der Landingpage erreichbar (Eintrag in `pages.ts`, `tests/projectRules.test.ts` grün).
-- **AC-02** Je „1 Spieler“ bis „4 Spieler“ entsteht ein Raum mit genau dieser Zahl besetzter Monarchen (Test mit Fake-Server bzw. Client-Test).
-- **AC-03** Mock-Spieler stehen still und verhindern nichts (die echte Eingabe steuert nur Slot 0).
+- **AC-02** Je „1 Spieler“ bis „4 Spieler“ baut die Testseite die richtige URL (`mock` = Spielerzahl − 1, neuer eindeutiger `save`-Name) und öffnet sie über die Shell (Test der URL-Funktion).
+- **AC-03** Mock-Spieler stehen still und verhindern nichts: Die Szenen-URL nutzt nur die Parameter aus B-082; die echte Eingabe steuert nur Slot 0 (Beobachtung in AC-04).
 - **AC-04** Am TV oder Rechner: 4 Spieler zeigen das 2×2-Raster (Beobachtung durch 🧑).
 
 ## Offene Fragen
 
-Woher kommen die Mock-Spieler? Vorschlag: der Browser öffnet je Mock eine eigene Verbindung mit eigener Geräte-ID (ein „Mock-Gerät“,
-nutzt den Client aus SP08, kein Server-Umbau). Alternative: ein Server-Aufruf, der Bots in den Raum setzt (SRV, mit B-080/M6). (🧑)
-Sollen Mock-Spieler als lokale Slots desselben Geräts erscheinen (testet das 2×2-Raster direkt) oder als andere Geräte (testet den Mitspieler oben ⅓)? (🧑)
+keine (Entscheidung 🧑 2026-10-01: Mocks als lokale Slots, eine Browser-Verbindung; Mocks als eigene Geräte wären ein späteres Szenario).
 
 ## Notizen
 
-Entstanden aus dem Wunsch nach einer Testseite mit Szenarien. Einordnung: einschiebbarer PLAT-Sprint nach SP08.3, wenn 🧑 die Fragen entschieden hat.
+Entstanden aus dem Wunsch nach einer Testseite mit Szenarien. Eingeplant als einschiebbarer PLAT-Sprint T1 nach SP08.3 (braucht B-082).
