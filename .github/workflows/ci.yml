@@ -77,6 +77,14 @@ jobs:
           test "$(curl -s -o /dev/null -w '%{http_code}' http://localhost:8080/api/status)" = 404
           case "$(docker inspect --format '{{.Config.User}}' k3c-server:ci)" in nonroot | 65532 | 65532:65532) ;; *) exit 1 ;; esac
           docker logs k3c
+      # Diagnose-TUI im Image (SP10, B-002): ein zweiter Container mit Token, k3c-tui -once ohne Terminal.
+      - name: k3c-tui im Image prüfen
+        run: |
+          docker run -d --name k3c-diag -e K3C_STATUS_TOKEN=ci-token k3c-server:ci
+          for i in $(seq 1 30); do docker exec k3c-diag /app/k3c-server -health && break; sleep 1; done
+          docker exec k3c-diag k3c-tui -once | tee tui.txt
+          grep -q 'K3C ' tui.txt
+          grep -q 'Keine Räume' tui.txt
 
   k3c-dev:
     name: k3c-dev · Frontend · Tests · Lint · Wails (Windows)
