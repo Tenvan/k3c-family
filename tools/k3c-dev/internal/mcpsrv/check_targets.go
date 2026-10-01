@@ -34,19 +34,21 @@ const (
 )
 
 var checkTargets = []checkTarget{
-	{name: "npm:check", command: []string{"npm", "run", "check"}, timeout: defaultTimeout,
+	{name: "task:check", command: []string{"task", "check"}, timeout: defaultTimeout,
 		kinds: []string{kindOxlint, kindTsc, kindVitest}},
-	{name: "npm:test", command: []string{"npm", "test"}, pattern: "--", timeout: testTimeout,
+	{name: "task:test", command: []string{"task", "test"}, pattern: "--", timeout: testTimeout,
 		kinds: []string{kindVitest}},
-	{name: "npm:typecheck", command: []string{"npm", "run", "typecheck"}, timeout: defaultTimeout,
+	{name: "task:typecheck", command: []string{"task", "typecheck"}, timeout: defaultTimeout,
 		kinds: []string{kindTsc}},
-	{name: "npm:lint", command: []string{"npm", "run", "lint"}, timeout: defaultTimeout,
+	{name: "task:lint", command: []string{"task", "lint"}, timeout: defaultTimeout,
 		kinds: []string{kindOxlint}},
-	{name: "npm:build", command: []string{"npm", "run", "build"}, timeout: defaultTimeout,
+	{name: "task:build", command: []string{"task", "build"}, timeout: defaultTimeout,
 		kinds: []string{kindTsc, kindVite}},
+	{name: "task:check:go", command: []string{"task", "check:go"}, timeout: defaultTimeout,
+		kinds: []string{kindGoTest, kindGolangci}},
 	{name: "go:test", command: []string{"go", "test", "./..."}, pattern: "-run", timeout: testTimeout,
 		kinds: []string{kindGoTest}},
-	{name: "go:lint", command: []string{"golangci-lint", "run"}, timeout: defaultTimeout,
+	{name: "go:lint", command: []string{"task", "go:lint"}, timeout: defaultTimeout,
 		kinds: []string{kindGolangci}},
 	{name: "dev:test", dir: "tools/k3c-dev", command: []string{"go", "test", "./..."}, pattern: "-run",
 		timeout: testTimeout, kinds: []string{kindGoTest}},
@@ -80,7 +82,7 @@ func (t checkTarget) args(pattern string) ([]string, error) {
 		return args, nil
 	}
 	if t.pattern == "" {
-		return nil, fmt.Errorf("%s nimmt kein Testmuster; Muster gehen nur bei npm:test, go:test, dev:test", t.name)
+		return nil, fmt.Errorf("%s nimmt kein Testmuster; Muster gehen nur bei task:test, go:test, dev:test", t.name)
 	}
 	if !patternRule.MatchString(pattern) {
 		return nil, fmt.Errorf("testmuster %q abgelehnt: erlaubt sind nur A–Z, a–z, 0–9 und _ . / : - (kein - am Anfang, höchstens 100)", pattern)

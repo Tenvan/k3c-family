@@ -5,9 +5,9 @@ zurückgeben.
 
 ## Prüfen
 
-- `check_run` statt `npm run check`, `npm test`, `npm run typecheck`, `npm run lint`, `npm run build`, `go test`
-  oder `golangci-lint` in der Shell. Ziele: `npm:check`, `npm:test`, `npm:typecheck`, `npm:lint`, `npm:build`,
-  `go:test`, `go:lint`, `dev:test`. Ein Testmuster (`pattern`) geht bei `npm:test`, `go:test` und `dev:test`.
+- `check_run` statt `task check`, `task test`, `task typecheck`, `task lint`, `task build`, `task check:go`, `go test`
+  oder `golangci-lint` in der Shell. Ziele: `task:check`, `task:test`, `task:typecheck`, `task:lint`, `task:build`,
+  `task:check:go`, `go:test`, `go:lint`, `dev:test`. Ein Testmuster (`pattern`) geht bei `task:test`, `go:test` und `dev:test`.
 - Die Antwort ist bei grünem Lauf eine Zeile, sonst Kopfzeile und nur die Fehlerzeilen.
 - Mehr Kontext zu einem Lauf: `console_tail` mit `check:<ziel>`.
 

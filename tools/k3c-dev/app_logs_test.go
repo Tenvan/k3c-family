@@ -78,14 +78,14 @@ func TestSourceZustaende(t *testing.T) {
 		st          mcpsrv.CheckState
 		state, want string
 	}{
-		{mcpsrv.CheckState{Name: "npm:test", Running: true, At: at}, runRunning, "läuft seit 08:03:15"},
-		{mcpsrv.CheckState{Name: "npm:test", Ms: 12400, At: at}, runOK, "Exit 0 · 12,4 s · 08:03:15"},
-		{mcpsrv.CheckState{Name: "npm:test", Exit: 1, Ms: 800, At: at}, runFailed, "Exit 1 · 0,8 s · 08:03:15"},
-		{mcpsrv.CheckState{Name: "npm:test", TimedOut: true, Ms: 300000, At: at}, runTimeout, "Zeitlimit nach 300,0 s · 08:03:15"},
-		{mcpsrv.CheckState{Name: "npm:test", Error: "exec: npm.cmd nicht gefunden", At: at}, runFailed, "nicht gestartet: exec: npm.cmd nicht gefunden"},
+		{mcpsrv.CheckState{Name: "task:test", Running: true, At: at}, runRunning, "läuft seit 08:03:15"},
+		{mcpsrv.CheckState{Name: "task:test", Ms: 12400, At: at}, runOK, "Exit 0 · 12,4 s · 08:03:15"},
+		{mcpsrv.CheckState{Name: "task:test", Exit: 1, Ms: 800, At: at}, runFailed, "Exit 1 · 0,8 s · 08:03:15"},
+		{mcpsrv.CheckState{Name: "task:test", TimedOut: true, Ms: 300000, At: at}, runTimeout, "Zeitlimit nach 300,0 s · 08:03:15"},
+		{mcpsrv.CheckState{Name: "task:test", Error: "exec: task nicht gefunden", At: at}, runFailed, "nicht gestartet: exec: task nicht gefunden"},
 	}
 	for _, c := range cases {
-		if s := checkSource(c.st); s.Name != "check:npm:test" || s.Kind != kindRun || s.State != c.state || s.Detail != c.want {
+		if s := checkSource(c.st); s.Name != "check:task:test" || s.Kind != kindRun || s.State != c.state || s.Detail != c.want {
 			t.Errorf("checkSource(%+v) = %+v", c.st, s)
 		}
 	}

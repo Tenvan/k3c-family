@@ -1,8 +1,8 @@
 {"time": "2026-09-30T09:00:00Z", "level": "INFO", "msg": "k3c-dev gestartet", "ns": "main", "url": "http://127.0.0.1:5180/mcp"}
 {"time": "2026-09-30T09:01:00Z", "level": "DEBUG", "msg": "client verbunden", "ns": "mcp"}
 das ist kein JSON
-{"time": "2026-09-30T09:02:00Z", "level": "INFO", "msg": "lauf beendet", "ns": "check", "target": "npm:test", "exit": 0}
+{"time": "2026-09-30T09:02:00Z", "level": "INFO", "msg": "lauf beendet", "ns": "check", "target": "task:test", "exit": 0}
 {"time": "2026-09-30T09:03:00Z", "level": "INFO", "msg": "datei C:\\WORKSPACE\\k3c\\logs\\a.jsonl gelesen", "ns": "mcp"}
 {"time": "2026-09-30T09:04:00Z", "level": "WARN", "msg": "check_run: Ziel \"go:y\" unbekannt", "ns": "mcp"}
-{"time": "2026-09-30T09:05:00Z", "level": "ERROR", "msg": "check_run: Ziel \"npm:x\" unbekannt", "ns": "mcp"}
+{"time": "2026-09-30T09:05:00Z", "level": "ERROR", "msg": "check_run: Ziel \"task:x\" unbekannt", "ns": "mcp"}
 {"time": "2026-09-30T09:06:00Z", "level": "WARN", "msg": "server gestoppt", "ns": "main"}

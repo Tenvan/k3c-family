@@ -64,8 +64,8 @@ func TestAusreisserRegel(t *testing.T) {
 	}{
 		{"Beispiel logs_query", func(tr *Tracker, c *clock) { repeat(tr, c.event("q", `{}`, 100), 20) },
 			Event{Tool: "q", Args: `{}`, DurationMs: 1500, OK: true}, 1},
-		{"Beispiel check_run unter 2× p95", func(tr *Tracker, c *clock) { repeat(tr, c.event("c", `{"target":"npm:check"}`, 40_000), 20) },
-			Event{Tool: "c", Args: `{"target":"npm:check"}`, DurationMs: 50_000, OK: true}, 0},
+		{"Beispiel check_run unter 2× p95", func(tr *Tracker, c *clock) { repeat(tr, c.event("c", `{"target":"task:check"}`, 40_000), 20) },
+			Event{Tool: "c", Args: `{"target":"task:check"}`, DurationMs: 50_000, OK: true}, 0},
 		{"unter 1 s", func(tr *Tracker, c *clock) { repeat(tr, c.event("q", `{}`, 100), 20) },
 			Event{Tool: "q", Args: `{}`, DurationMs: 900, OK: true}, 0},
 		{"erst ab 8 Aufrufen", func(tr *Tracker, c *clock) { repeat(tr, c.event("q", `{}`, 100), 7) },

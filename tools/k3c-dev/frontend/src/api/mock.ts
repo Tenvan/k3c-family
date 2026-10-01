@@ -4,7 +4,7 @@ import { mockMcp } from './mockMcp';
 import { mockServices } from './mockServices';
 import type { Backend, EventName, Events, Info, McpState, ServiceStatus, Source } from './types';
 
-// Mock ohne Wails-Laufzeit (`npm run dev` im Frontend): erfundene Daten, damit die Oberfläche im Browser testbar ist.
+// Mock ohne Wails-Laufzeit (`npx vite` im Frontend): erfundene Daten, damit die Oberfläche im Browser testbar ist.
 // Die Seiten lassen ihre Daten in eigenen Dateien laufen (mockServices.ts, mockLogs.ts, mockLogFiles.ts, mockMcp.ts).
 
 type Listener = (data: never) => void;
@@ -15,7 +15,7 @@ Entwickler-Werkzeug des Spiels K3C. Diese Tools ersetzen **Shell-Befehle** und D
 
 ## Prüfen
 
-- \`check_run\` statt \`npm run check\` in der Shell. Ziele: \`npm:check\`, \`npm:test\`,
+- \`check_run\` statt \`task check\` in der Shell. Ziele: \`task:check\`, \`task:test\`,
   \`go:test\`.
 - Mehr Kontext zu einem Lauf: \`console_tail\` mit \`check:<ziel>\`.
 
