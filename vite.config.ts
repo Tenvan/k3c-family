@@ -1,14 +1,16 @@
 import { defineConfig } from 'vite';
 import { readdirSync } from 'node:fs';
 import { resolve } from 'node:path';
-// Reines JS-Modul, gemeinsam mit dem Heimnetz-Server genutzt
-import { handleReport } from './server/reports.mjs';
-import { handleSave } from './server/saves.mjs';
 
 export default defineConfig({
   // Relative Pfade, damit der Build von jedem Heimnetz-Server/Unterordner aus läuft.
   base: './',
-  server: { host: true, port: 5173 },
+  // /api und /ws gehören dem Go-Server (task start, Port 8080); läuft er nicht, meldet Vite den Proxy-Fehler im Terminal.
+  server: {
+    host: true,
+    port: 5173,
+    proxy: { '/api': 'http://localhost:8080', '/ws': { target: 'ws://localhost:8080', ws: true } },
+  },
   preview: { host: true, port: 4173 },
   build: {
     target: 'es2022',
@@ -22,21 +24,4 @@ export default defineConfig({
       ),
     },
   },
-  plugins: [
-    {
-      // Testberichte und Spielstände auch im Dev-Server (POST /api/report -> reports/, /api/save -> saves/)
-      name: 'k3c-api',
-      configureServer(server) {
-        // Online-Modus (WebSocket /ws) auch im Dev-Server; der Server-Code liegt in src/online und läuft über Vites SSR-Loader.
-        if (server.httpServer) {
-          server.ssrLoadModule('/src/online/wsServer.ts').then((m) => m.attachOnline(server.httpServer), (err) => server.config.logger.error(String(err)));
-        }
-        server.middlewares.use((req, res, next) => {
-          handleReport(req, res)
-            .then(async (handled: boolean) => handled || (await handleSave(req, res)) || next())
-            .catch(next);
-        });
-      },
-    },
-  ],
 });

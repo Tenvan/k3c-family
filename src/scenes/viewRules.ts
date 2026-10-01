@@ -4,7 +4,7 @@ import type { Troop, World } from '../model/types';
 
 /**
  * Darstellungsregeln, die der Browser selbst auswertet, ohne die Simulation zu importieren (SP08, AC-13).
- * Sie spiegeln src/world/sim/{economy,travel,units,cycle}.ts; die TS-Simulation entfällt mit SP09.
+ * Sie spiegeln die Regeln aus engine/sim (economy, travel, units, cycle).
  */
 
 const RESOURCES = ['wood', 'stone', 'copper'] as const;

@@ -19,7 +19,7 @@ tasks:
       - npm ci --prefix {{.DEV}}/frontend
 
   dev:
-    desc: Dev-Server (auch im LAN erreichbar, Port 5173)
+    desc: Dev-Server (LAN, Port 5173); /api und /ws gehen an den Go-Server (Port 8080, `task start`)
     cmds:
       - npx vite --host
 
@@ -49,11 +49,6 @@ tasks:
     cmds:
       - npx vitest
 
-  golden:
-    desc: Golden-Dateien in testdata/golden/ aus der TS-Simulation neu schreiben
-    cmds:
-      - npx vitest run tests/golden.test.ts -u
-
   check:
     desc: Lint, Typecheck, Tests des Clients (vor jedem Abschluss)
     cmds:
@@ -62,26 +57,19 @@ tasks:
       - task: test
 
   build:
-    desc: Typecheck und Produktions-Build nach dist/ und dist-server/
+    desc: Typecheck und Produktions-Build nach dist/
     cmds:
       - npx tsc --noEmit
       - npx vite build
-      - npx vite build --config vite.server.config.ts
 
   serve:
-    desc: Build und Heimnetz-Server in Node (Port 8080)
+    desc: Build und Go-Server (Port 8080)
     deps: [build]
     cmds:
-      - node server/server.mjs
+      - task: start
 
   start:
-    desc: Heimnetz-Server in Node ohne Build
-    cmds:
-      - node server/server.mjs
-
-  serve:go:
-    desc: Build und Go-Server (feste EXE bin/k3c-server, damit die Firewall-Freigabe bleibt, B-085)
-    deps: [build]
+    desc: Go-Server ohne Web-Build (feste EXE bin/k3c-server, damit die Firewall-Freigabe bleibt, B-085)
     cmds:
       - go build -o bin/k3c-server{{exeExt}} ./cmd/k3c-server
       - ./bin/k3c-server{{exeExt}}

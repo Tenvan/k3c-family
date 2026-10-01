@@ -70,7 +70,7 @@ keine
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
 | SP09.1 | `SP09.1-client-model.md` | Umsetzung | autonom | fertig |
-| SP09.2 | `SP09.2-umstellen-loeschen.md` | Umsetzung | autonom | offen |
+| SP09.2 | `SP09.2-umstellen-loeschen.md` | Umsetzung | autonom | fertig |
 | SP09.3 | `SP09.3-pages-doku.md` | Umsetzung | autonom | offen |
 | SP09.4 | `SP09.4-review-release.md` | Review | autonom | offen |
 

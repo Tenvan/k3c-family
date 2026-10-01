@@ -1,8 +1,7 @@
 {
   "$schema": "./node_modules/oxlint/configuration_schema.json",
-  // server/*.mjs ist JavaScript und entfällt mit SP09; geprüft wird nur TypeScript.
   "ignorePatterns": [
-    "dist", "dist-server", "node_modules", "public", "server",
+    "dist", "node_modules", "public",
     "tools/k3c-dev/frontend/dist", "tools/k3c-dev/frontend/wailsjs"
   ],
   // Harte Grenzen aus docs/arbeitsweise.md › Komplexitäts-Budget. Die Zielwerte prüft das Review.
@@ -24,35 +23,16 @@
       "rules": { "complexity": ["error", { "max": 29 }] }
     },
     {
-      "files": ["src/world/sim/units.ts"],
-      "rules": {
-        "complexity": ["error", { "max": 25 }],
-        "max-lines-per-function": ["error", { "max": 62, "skipBlankLines": true, "skipComments": true }]
-      }
-    },
-    {
       "files": ["src/scenes/worldRenderer.ts"],
       "rules": { "complexity": ["error", { "max": 23 }] }
     },
     {
-      "files": ["src/world/sim/world.ts"],
-      "rules": { "complexity": ["error", { "max": 21 }] }
-    },
-    {
-      "files": ["src/tools/gamepadTest.ts", "src/world/sim/enemies.ts"],
+      "files": ["src/tools/gamepadTest.ts"],
       "rules": { "complexity": ["error", { "max": 20 }] }
-    },
-    {
-      "files": ["src/world/levelGenerator.ts"],
-      "rules": { "complexity": ["error", { "max": 19 }] }
     },
     {
       "files": ["src/scenes/HudScene.ts"],
       "rules": { "complexity": ["error", { "max": 17 }] }
-    },
-    {
-      "files": ["src/world/sim/economy.ts"],
-      "rules": { "complexity": ["error", { "max": 16 }] }
     }
   ]
 }
