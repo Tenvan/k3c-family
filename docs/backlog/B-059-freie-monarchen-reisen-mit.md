@@ -3,12 +3,12 @@
 - **Domäne:** SIM
 - **Typ:** Idee
 - **Prio:** hoch
-- **Status:** offen
-- **Sprint:** –
+- **Status:** eingeplant
+- **Sprint:** SP06
 - **Erstellt:** 2026-09-30
-- **Spec:** Entwurf
+- **Spec:** freigegeben
 - **Revision:** 1
-- **Freigabe:** –
+- **Freigabe:** 2026-10-01 🧑 Chat (SP06: campaign-abstieg, Abdeckung ≥ 90 %, B-059 in SP06.2, Golden ≤ 8 MB)
 
 ## Ausgangslage
 
@@ -60,4 +60,4 @@ keine
 
 ## Notizen
 
-Beim Planen von SP05/SP06 einplanen.
+Beim Planen von SP05/SP06 einplanen. Eingeplant in SP06.2 (🧑, 2026-10-01, Chat): Feld `free` am Monarchen, im JSON nur bei `true`.

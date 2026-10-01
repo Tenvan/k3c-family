@@ -6,7 +6,9 @@ Jede Sprint-README ist eine Spec (SDD); aktiv wird ein Sprint erst mit `Spec: fr
 
 ## Aktiv
 
-Kein aktiver Sprint. Nächster Schritt: SP06 bereit machen (Sessions schreiben, B-074 einplanen, 🧑 um Freigabe bitten).
+| Sprint | Domäne | Thema | Am Ende sichtbar | Ordner |
+|---|---|---|---|---|
+| SP06 | SIM | Port II: Gegner, Wellen, Reisen, Kampagne | alle Golden-Läufe grün, Abdeckung ≥ 90 % | `aktiv/SP06-port-einheiten/` |
 
 ## Geplant (in dieser Reihenfolge)
 
@@ -15,7 +17,6 @@ dann über den Go-Server mit mehreren Räumen und gemischten Spielern.
 
 | Sprint | Domäne | Thema | Am Ende sichtbar | Reife | Ordner |
 |---|---|---|---|---|---|
-| SP06 | SIM | Port II: Gegner, Wellen, Reisen, Kampagne | alle Golden-Läufe grün | Entwurf | `geplant/SP06-port-einheiten/` |
 | SP07 | SRV | Räume & WebSocket in Go, MCP-Tools für Räume und Simulation | 3 Räume parallel im Test | Entwurf | `geplant/SP07-raeume/` |
 | SP08 | CLI | Browser als reiner Client | Xbox (2 Controller) + Handy im selben Raum | Entwurf | `geplant/SP08-client/` |
 | SP09 | INF | Aufräumen: TS-Sim und Node-Server löschen | Release `v0.2.0` | Entwurf | `geplant/SP09-aufraeumen/` |
