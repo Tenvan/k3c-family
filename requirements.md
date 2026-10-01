@@ -10,8 +10,9 @@ holt `npm ci` aus `package-lock.json`. Versionen gelten, solange diese Datei, `.
 | Node.js (mit npm) | 22 (neuere laufen lokal meist auch) | Client bauen, testen, Dev-Server | `.nvmrc` | `node --version` |
 | Go | 1.27 | Go-Server, `data/embed.go`, `npm run check:go` | `go.mod` | `go version` |
 | golangci-lint | 2.14 | Go-Lint mit Komplexitäts-Budget | `.github/workflows/ci.yml` | `golangci-lint --version` |
-| Wails-CLI | 2.16.0 | Fenster von `tools/k3c-dev` bauen (`npm run k3c-dev`, `k3c-dev:build`) | `tools/k3c-dev/go.mod` | `wails version` |
+| Wails-CLI | 2.16.0 | Fenster von `tools/k3c-dev` bauen (`task k3c-dev`, `task k3c-dev:build`) | `tools/k3c-dev/go.mod` | `wails version` |
 | WebView2-Laufzeit | aktuell (in Windows 11 enthalten) | Fenster von `k3c-dev` | – | `wails doctor` |
+| Go Task | 3 | Alle Befehle (`Taskfile.yml`, `task --list`) | `Taskfile.yml` | `task --version` |
 | Docker (optional) | aktuell, mit `buildx` | Image des Heimnetz-Servers (`Dockerfile`, `compose.yaml`); sonst prüft es die CI | – | `docker buildx version` |
 
 Zum Testen am Gerät, keine Installation im Repo: ein aktueller Browser (Edge oder Chrome) für `npm run dev`,
@@ -27,7 +28,9 @@ winget install --id Git.Git -e
 winget install --id OpenJS.NodeJS.22 -e
 winget install --id GoLang.Go -e
 winget install --id GolangCI.golangci-lint -e
+winget install --id Task.Task -e --source winget
 go install github.com/wailsapp/wails/v2/cmd/wails@v2.16.0
+# danach den Ordner go/bin im Benutzerprofil in den PATH aufnehmen (dort liegt wails.exe)
 ```
 
 Prüfen (Ausgabe muss zur Tabelle oben passen):

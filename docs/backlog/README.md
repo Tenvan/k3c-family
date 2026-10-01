@@ -78,3 +78,4 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-070](B-070-gitignore-verankern.md) | INF | Schuld | niedrig | offen | – | Die .gitignore ignoriert reports/, saves/ und certs/ nur an der Repo-Wurzel |
 | [B-071](B-071-golden-arm64.md) | INF | Problem | mittel | offen | – | Die Golden-Tests laufen auch auf arm64 grün |
 | [B-072](B-072-depguard-rng.md) | INF | Schuld | niedrig | offen | – | depguard prüft die Schichtgrenze auch für engine/rng |
+| [B-073](B-073-go-task-umstellen.md) | INF | Schuld | hoch | offen | – | Alle Aufrufer nutzen Go Task statt npm-Skripte |
