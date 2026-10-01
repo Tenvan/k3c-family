@@ -40,11 +40,11 @@ func TestScanFilter(t *testing.T) {
 		q    Query
 		want string
 	}{
-		{Query{MinLevel: "WARN"}, "server gestoppt|check_run: Ziel \"npm:x\" unbekannt|check_run: Ziel \"go:y\" unbekannt"},
+		{Query{MinLevel: "WARN"}, "server gestoppt|check_run: Ziel \"task:x\" unbekannt|check_run: Ziel \"go:y\" unbekannt"},
 		{Query{NS: "check"}, "lauf beendet"},
-		{Query{Pattern: regexp.MustCompile(`^check_run`)}, "check_run: Ziel \"npm:x\" unbekannt|check_run: Ziel \"go:y\" unbekannt"},
-		{Query{Limit: 2}, "server gestoppt|check_run: Ziel \"npm:x\" unbekannt"},
-		{Query{Since: time.Date(2026, 9, 30, 9, 5, 0, 0, time.UTC)}, "server gestoppt|check_run: Ziel \"npm:x\" unbekannt"},
+		{Query{Pattern: regexp.MustCompile(`^check_run`)}, "check_run: Ziel \"task:x\" unbekannt|check_run: Ziel \"go:y\" unbekannt"},
+		{Query{Limit: 2}, "server gestoppt|check_run: Ziel \"task:x\" unbekannt"},
+		{Query{Since: time.Date(2026, 9, 30, 9, 5, 0, 0, time.UTC)}, "server gestoppt|check_run: Ziel \"task:x\" unbekannt"},
 	}
 	for _, c := range cases {
 		res, err := Scan(sample, c.q)
@@ -105,7 +105,7 @@ func TestFingerprintReihenfolge(t *testing.T) {
 	cases := map[string]string{
 		`Anfrage 3f2a9c1e-0dfd-28b2-eb78-0c47ed6f37b9 nach 12837 ms`: "Anfrage <id> nach <n> ms",
 		`Datei C:\WORKSPACE\k3c\saves\a1.json fehlt`:                 "Datei <path> fehlt",
-		`Ziel "npm:x" unbekannt`:                                     "Ziel <s> unbekannt",
+		`Ziel "task:x" unbekannt`:                                     "Ziel <s> unbekannt",
 		`Versuch 4 von 5, 2,5 s`:                                     "Versuch <n> von <n>, <n> s",
 		strings.Repeat("x", 300):                                     strings.Repeat("x", fingerprintMax),
 	}
@@ -124,7 +124,7 @@ func TestDigestGruppen(t *testing.T) {
 	}
 	g := groups[0]
 	if g.Count != 2 || g.NS != "mcp" || g.Level != "ERROR" || g.Fingerprint != "check_run: Ziel <s> unbekannt" ||
-		g.Example != `check_run: Ziel "npm:x" unbekannt` || g.First.Minute() != 4 || g.Last.Minute() != 5 {
+		g.Example != `check_run: Ziel "task:x" unbekannt` || g.First.Minute() != 4 || g.Last.Minute() != 5 {
 		t.Errorf("Gruppe: %+v", g)
 	}
 	if LevelRank("TRACE") != -1 || LevelRank("warn") != 2 {

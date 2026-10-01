@@ -1,11 +1,11 @@
 import type { ConsoleLine, Source } from './types';
 
 // Erfundene Quellen und Konsolen für den Mock (B-064): Vite schreibt laufend, das eigene Log spiegelt Einträge,
-// ein Lauf check:npm:test wechselt blau → grün/rot und schreibt dabei farbige Zeilen.
+// ein Lauf check:task:test wechselt blau → grün/rot und schreibt dabei farbige Zeilen.
 
 const ESC = '\u001b[';
 const CAPACITY = 2000;
-const RUN = 'check:npm:test';
+const RUN = 'check:task:test';
 
 type EmitLines = (lines: ConsoleLine[]) => void;
 type EmitSource = (src: Source) => void;
@@ -19,7 +19,7 @@ const VITE_LINES = [
 
 const LOG_LINES = [
   'time=17:03:01 level=INFO msg="aufruf beendet" ns=mcp tool=logs_query ms=12',
-  'time=17:03:04 level=WARN msg="lauf beendet" ns=check target=npm:test exit=1',
+  'time=17:03:04 level=WARN msg="lauf beendet" ns=check target=task:test exit=1',
   'time=17:03:09 level=INFO msg="dienst Vite: läuft" ns=svc pid=41232',
   'time=17:03:11 level=ERROR msg="dienst Heimnetz fehlgeschlagen: Port 8080 bereits belegt" ns=svc',
 ];
