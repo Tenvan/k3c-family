@@ -3,7 +3,7 @@
 - **Domäne:** INF
 - **Typ:** Frage
 - **Prio:** hoch
-- **Status:** eingeplant
+- **Status:** erledigt
 - **Sprint:** SP07
 - **Erstellt:** 2026-10-01
 - **Spec:** freigegeben
@@ -57,4 +57,4 @@ keine. Entschieden von 🧑 (2026-10-01, Chat): `github.com/coder/websocket`.
 
 ## Notizen
 
-–
+Erledigt in SP07 (2026-10-01).

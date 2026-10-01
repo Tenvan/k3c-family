@@ -39,7 +39,7 @@ var messages = map[string]string{
 // codeOf übersetzt einen Fehler aus engine/room in seinen Code; alles andere ist bad_request.
 func codeOf(err error) string {
 	for _, e := range []error{room.ErrRoomFull, room.ErrTooManySlots, room.ErrTooManyRooms, room.ErrRoomNotFound,
-		room.ErrSaveExists, room.ErrSaveNotFound} {
+		room.ErrSaveExists, room.ErrSaveNotFound, room.ErrClosed} {
 		if errors.Is(err, e) {
 			return e.Error()
 		}

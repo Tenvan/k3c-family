@@ -35,9 +35,19 @@ func (m *Manager) Run(ctx context.Context) {
 		case <-ctx.Done():
 			return
 		case <-sweep.C:
-			m.Sweep()
+			m.safeSweep()
 		}
 	}
+}
+
+// safeSweep: Ein Panic beim Aufräumen (z. B. beim Speichern) beendet nicht den Server.
+func (m *Manager) safeSweep() {
+	defer func() {
+		if p := recover(); p != nil {
+			m.log().Error("Sweep abgestürzt", "err", fmt.Sprint(p))
+		}
+	}()
+	m.Sweep()
 }
 
 func (r *Room) run(ctx context.Context) {
@@ -68,33 +78,37 @@ func (r *Room) safeTick() (alive bool) {
 		return false
 	}
 	r.mu.Lock()
+	defer r.mu.Unlock()
 	r.durations = append(r.durations, time.Since(start))
 	if len(r.durations) > durations {
 		r.durations = r.durations[1:]
 	}
-	r.mu.Unlock()
 	return true
 }
 
 // crash schließt einen abgestürzten Raum, ohne ihn zu speichern (sein Zustand ist nicht mehr sicher).
 func (m *Manager) crash(r *Room, msg string) {
 	m.log().Error("Raum abgestürzt", "room", r.Code, "save", r.Name, "err", msg)
+	defer m.notify(true)
 	m.mu.Lock()
+	defer m.mu.Unlock()
+	r.closeCrashed()
+	delete(m.rooms, r.Code)
+	m.failures = append(m.failures, Failure{r.Code, r.Name, msg, m.now()})
+	if len(m.failures) > 10 {
+		m.failures = m.failures[1:]
+	}
+}
+
+func (r *Room) closeCrashed() {
 	r.mu.Lock()
+	defer r.mu.Unlock()
 	r.closed = true
 	for _, d := range r.devices {
 		if d.connected {
 			d.peer.Closed(false)
 		}
 	}
-	r.mu.Unlock()
-	delete(m.rooms, r.Code)
-	m.failures = append(m.failures, Failure{r.Code, r.Name, msg, m.now()})
-	if len(m.failures) > 10 {
-		m.failures = m.failures[1:]
-	}
-	m.mu.Unlock()
-	m.notify(true)
 }
 
 // tickMs: letzte Tick-Dauer und p99 der letzten Ticks in Millisekunden (unter Raum-Sperre).

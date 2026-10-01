@@ -42,6 +42,7 @@ type Manager struct {
 	rooms    map[string]*Room
 	ctx      context.Context // gesetzt von Run; neue Räume bekommen dann ihre Goroutine
 	failures []Failure       // die letzten abgestürzten Räume
+	shut     bool            // nach Close: keine neuen Räume
 }
 
 // NewManager legt einen Manager ohne Räume an.
@@ -88,16 +89,21 @@ func (m *Manager) code() string {
 // Create erstellt einen Raum mit neuem (fresh) oder gespeichertem Spielstand und nimmt das Gerät auf. Prüf-Reihenfolge
 // aus docs/protocol.md › Beitreten; ist der gespeicherte Stand schon offen, tritt das Gerät diesem Raum bei.
 func (m *Manager) Create(id string, peer Peer, name string, fresh bool, depth int, slots []int) (*Room, error) {
-	if err := validSlots(slots); err != nil {
+	if err := ValidSlots(slots); err != nil {
 		return nil, err
 	}
 	if !saveName.MatchString(name) {
 		return nil, ErrBadRequest
 	}
+	var r *Room
+	var err error
+	defer func() { m.notify(err == nil) }()
 	m.mu.Lock()
-	r, err := m.create(id, peer, name, fresh, depth, slots)
-	m.mu.Unlock()
-	m.notify(err == nil)
+	defer m.mu.Unlock()
+	if m.shut {
+		return nil, ErrClosed
+	}
+	r, err = m.create(id, peer, name, fresh, depth, slots)
 	return r, err
 }
 
@@ -165,17 +171,19 @@ func (r *Room) lockedJoin(id string, peer Peer, slots []int) error {
 
 // Join tritt einem Raum per Code bei oder verbindet wieder.
 func (m *Manager) Join(id string, peer Peer, code string, slots []int) (*Room, error) {
-	if err := validSlots(slots); err != nil {
+	if err := ValidSlots(slots); err != nil {
 		return nil, err
 	}
-	m.mu.Lock()
-	r := m.rooms[code]
 	err := ErrRoomNotFound
-	if r != nil {
+	defer func() { m.notify(err == nil) }()
+	m.mu.Lock()
+	defer m.mu.Unlock()
+	r := m.rooms[code]
+	if m.shut {
+		err = ErrClosed
+	} else if r != nil {
 		err = r.lockedJoin(id, peer, slots)
 	}
-	m.mu.Unlock()
-	m.notify(err == nil)
 	return r, err
 }
 
@@ -205,37 +213,50 @@ func (m *Manager) Rooms() []Info {
 func (m *Manager) Sweep() {
 	now := m.now()
 	changed := false
+	defer func() { m.notify(changed) }()
 	m.mu.Lock()
+	defer m.mu.Unlock()
 	for code, r := range m.rooms {
-		r.mu.Lock()
-		c, remove := r.sweep(now)
+		c, remove := r.lockedSweep(now)
 		if remove {
-			r.save()
-			r.closed = true
 			delete(m.rooms, code)
 		}
-		r.mu.Unlock()
 		changed = changed || c || remove
 	}
-	m.mu.Unlock()
-	m.notify(changed)
+}
+
+func (r *Room) lockedSweep(now time.Time) (changed, remove bool) {
+	r.mu.Lock()
+	defer r.mu.Unlock()
+	changed, remove = r.sweep(now)
+	if remove {
+		r.save()
+		r.closed = true
+	}
+	return changed, remove
 }
 
 // Close speichert alle Räume, meldet ihren Geräten `room_closed` und räumt sie auf (Server fährt herunter).
+// Danach nimmt der Manager keine Räume mehr an (room_closed).
 func (m *Manager) Close() {
+	defer m.notify(true)
 	m.mu.Lock()
+	defer m.mu.Unlock()
+	m.shut = true
 	for code, r := range m.rooms {
-		r.mu.Lock()
-		r.save()
-		r.closed = true
-		for _, d := range r.devices {
-			if d.connected {
-				d.peer.Closed(true)
-			}
-		}
-		r.mu.Unlock()
+		r.closeFinal()
 		delete(m.rooms, code)
 	}
-	m.mu.Unlock()
-	m.notify(true)
+}
+
+func (r *Room) closeFinal() {
+	r.mu.Lock()
+	defer r.mu.Unlock()
+	r.save()
+	r.closed = true
+	for _, d := range r.devices {
+		if d.connected {
+			d.peer.Closed(true)
+		}
+	}
 }

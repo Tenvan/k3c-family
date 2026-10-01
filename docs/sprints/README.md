@@ -6,9 +6,7 @@ Jede Sprint-README ist eine Spec (SDD); aktiv wird ein Sprint erst mit `Spec: fr
 
 ## Aktiv
 
-| Sprint | Domäne | Thema | Am Ende sichtbar | Ordner |
-|---|---|---|---|---|
-| SP07 | SRV | Räume & WebSocket (Protokoll v2) in Go | 3 Räume parallel im Test, `/api/status` mit Räumen | `aktiv/SP07-raeume/` |
+Kein aktiver Sprint. Nächster Schritt: SP08 bereit machen (Client auf Protokoll v2); M6 (MCP-Tools) ist einschiebbar. Vorher empfohlen: B-077 (Race-Detector in der CI).
 
 ## Geplant (in dieser Reihenfolge)
 
@@ -51,3 +49,4 @@ Nach SP11: Regelwerk II (Skills) → SIM Skills in Go → CLI Skills → Spielea
 | SP04 | Golden-Tests, RNG und Level-Generator in Go | `erledigt/SP04-golden-level/` |
 | SP05 | Port I: Welt, Zyklus, Truppen, Wirtschaft in Go | `erledigt/SP05-port-welt/` |
 | SP06 | Port II: Gegner, Wellen, Reisen, Kampagne, Spielstand in Go | `erledigt/SP06-port-einheiten/` |
+| SP07 | Räume & WebSocket (Protokoll v2) in Go | `erledigt/SP07-raeume/` |

@@ -33,6 +33,7 @@ var (
 	ErrSaveExists   = errors.New("save_exists")
 	ErrSaveNotFound = errors.New("save_not_found")
 	ErrBadRequest   = errors.New("bad_request")
+	ErrClosed       = errors.New("room_closed") // Server fährt herunter
 )
 
 // Zustände eines Monarchen.
@@ -89,8 +90,8 @@ type Room struct {
 	beforeStep func()          // Test-Naht: läuft im Tick vor sim.Step
 }
 
-// validSlots: Slot 4 oder höher → too_many_slots, sonst leer, negativ oder doppelt → bad_request.
-func validSlots(slots []int) error {
+// ValidSlots: Slot 4 oder höher → too_many_slots, sonst leer, negativ oder doppelt → bad_request.
+func ValidSlots(slots []int) error {
 	for _, s := range slots {
 		if s >= MaxSlots {
 			return ErrTooManySlots
@@ -109,7 +110,7 @@ func validSlots(slots []int) error {
 
 // join nimmt ein Gerät auf oder verbindet es wieder (docs/protocol.md › Beitreten, Wiederverbinden). Alles oder nichts.
 func (r *Room) join(id string, peer Peer, slots []int) error {
-	if err := validSlots(slots); err != nil {
+	if err := ValidSlots(slots); err != nil {
 		return err
 	}
 	keep := map[int]int{}

@@ -10,21 +10,26 @@ import (
 // Aktionen eines Geräts im Raum und der Takt. Jede öffentliche Methode sperrt den Raum; ändern sich Plätze, erfährt
 // der Manager es danach (Raumliste an Geräte ohne Raum).
 
-// AddSlot nimmt einen lokalen Spieler dazu (docs/protocol.md › Lokale Spieler hinzufügen/entfernen).
-func (r *Room) AddSlot(id string, slot int) error {
-	r.mu.Lock()
-	err := r.addSlot(id, slot)
-	r.mu.Unlock()
-	r.m.notify(err == nil)
-	return err
+// own ist das Gerät id, wenn peer seine aktuelle Verbindung ist und der Raum offen; sonst nil. Eine ersetzte
+// Verbindung darf nichts mehr am neuen Gerät ändern.
+func (r *Room) own(id string, peer Peer) *device {
+	d := r.devices[id]
+	if r.closed || d == nil || !d.connected || d.peer != peer {
+		return nil
+	}
+	return d
 }
 
-func (r *Room) addSlot(id string, slot int) error {
-	d := r.devices[id]
+// AddSlot nimmt einen lokalen Spieler dazu (docs/protocol.md › Lokale Spieler hinzufügen/entfernen).
+func (r *Room) AddSlot(id string, peer Peer, slot int) (err error) {
+	defer func() { r.m.notify(err == nil) }() // läuft nach dem Entsperren
+	r.mu.Lock()
+	defer r.mu.Unlock()
+	d := r.own(id, peer)
 	switch {
 	case slot >= MaxSlots:
 		return ErrTooManySlots
-	case d == nil || !d.connected || slot < 0:
+	case d == nil || slot < 0:
 		return ErrBadRequest
 	}
 	if _, used := d.slots[slot]; used {
@@ -39,58 +44,60 @@ func (r *Room) addSlot(id string, slot int) error {
 	return nil
 }
 
-// RemoveSlot lässt einen lokalen Spieler gehen; sein Monarch ist sofort frei. Ohne Slot verlässt das Gerät den Raum.
-func (r *Room) RemoveSlot(id string, slot int) error {
+// RemoveSlot lässt einen lokalen Spieler gehen; sein Monarch ist sofort frei. left: Das war der letzte Slot, das
+// Gerät hat den Raum verlassen.
+func (r *Room) RemoveSlot(id string, peer Peer, slot int) (left bool, err error) {
+	defer func() { r.m.notify(err == nil) }()
 	r.mu.Lock()
-	err := r.removeSlot(id, slot)
-	r.mu.Unlock()
-	r.m.notify(err == nil)
-	return err
-}
-
-func (r *Room) removeSlot(id string, slot int) error {
-	d := r.devices[id]
-	if d == nil || !d.connected {
-		return ErrBadRequest
+	defer r.mu.Unlock()
+	d := r.own(id, peer)
+	if d == nil {
+		return false, ErrBadRequest
 	}
 	idx, ok := d.slots[slot]
 	if !ok {
-		return ErrBadRequest
+		return false, ErrBadRequest
 	}
 	r.release(idx)
 	delete(d.slots, slot)
 	if len(d.slots) == 0 {
 		r.leave(id)
-		return nil
+		return true, nil
 	}
 	r.syncFree()
 	r.broadcastSeats()
-	return nil
+	return false, nil
 }
 
-// Input setzt die Eingabe eines Slots; der Raum rechnet mit der zuletzt empfangenen. moveX wird auf −1…1 begrenzt.
-func (r *Room) Input(id string, slot int, cmd sim.PlayerCommand) error {
+// Input setzt die Eingaben mehrerer Slots, alles oder nichts; der Raum rechnet mit der zuletzt empfangenen.
+// moveX wird auf −1…1 begrenzt, NaN ist ungültig.
+func (r *Room) Input(id string, peer Peer, in map[int]sim.PlayerCommand) error {
 	r.mu.Lock()
 	defer r.mu.Unlock()
-	d := r.devices[id]
-	if d == nil || !d.connected {
+	d := r.own(id, peer)
+	if d == nil || len(in) == 0 {
 		return ErrBadRequest
 	}
-	idx, ok := d.slots[slot]
-	if !ok || math.IsNaN(cmd.MoveX) {
-		return ErrBadRequest
+	for slot, cmd := range in {
+		if _, ok := d.slots[slot]; !ok || math.IsNaN(cmd.MoveX) {
+			return ErrBadRequest
+		}
 	}
-	cmd.MoveX = math.Max(-1, math.Min(1, cmd.MoveX))
-	r.monarchs[idx].input = cmd
+	for slot, cmd := range in {
+		cmd.MoveX = math.Max(-1, math.Min(1, cmd.MoveX))
+		r.monarchs[d.slots[slot]].input = cmd
+	}
 	return nil
 }
 
 // Leave: Das Gerät verlässt den Raum bewusst, alle seine Monarchen sind sofort frei.
-func (r *Room) Leave(id string) {
+func (r *Room) Leave(id string, peer Peer) {
+	defer r.m.notify(true)
 	r.mu.Lock()
-	r.leave(id)
-	r.mu.Unlock()
-	r.m.notify(true)
+	defer r.mu.Unlock()
+	if r.own(id, peer) != nil {
+		r.leave(id)
+	}
 }
 
 func (r *Room) leave(id string) {
@@ -106,26 +113,38 @@ func (r *Room) leave(id string) {
 }
 
 // Drop: Die Verbindung peer ist abgebrochen. Seine Monarchen warten (stehen still), nach WaitFor sind sie frei.
-// Eine schon ersetzte Verbindung wird ignoriert.
+// Eine schon ersetzte Verbindung oder ein geschlossener Raum wird ignoriert.
 func (r *Room) Drop(id string, peer Peer) {
+	ok := false
+	defer func() { r.m.notify(ok) }()
 	r.mu.Lock()
-	d := r.devices[id]
-	ok := d != nil && d.connected && d.peer == peer
-	if ok {
-		now := r.m.now()
-		for _, idx := range d.slots {
-			mo := r.monarchs[idx]
-			mo.state, mo.since, mo.input = Waiting, now, sim.PlayerCommand{}
-		}
-		d.connected = false
-		r.afterDisconnect()
+	defer r.mu.Unlock()
+	d := r.own(id, peer)
+	if ok = d != nil; !ok {
+		return
 	}
-	r.mu.Unlock()
-	r.m.notify(ok)
+	now := r.m.now()
+	for _, idx := range d.slots {
+		mo := r.monarchs[idx]
+		mo.state, mo.since, mo.input = Waiting, now, sim.PlayerCommand{}
+	}
+	d.connected = false
+	r.afterDisconnect()
+}
+
+// Closed: Ist der Raum geschlossen (aufgeräumt, abgestürzt, Server beendet)?
+func (r *Room) Closed() bool {
+	r.mu.Lock()
+	defer r.mu.Unlock()
+	return r.closed
 }
 
 // afterDisconnect: Plätze melden; ist kein Gerät mehr verbunden, ist der Raum pausiert und speichert sofort.
+// Ein geschlossener Raum speichert nicht (nach einem Absturz ist sein Zustand nicht sicher).
 func (r *Room) afterDisconnect() {
+	if r.closed {
+		return
+	}
 	r.syncFree()
 	r.broadcastSeats()
 	if r.connected() == 0 {

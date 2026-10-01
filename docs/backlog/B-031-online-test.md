@@ -3,7 +3,7 @@
 - **Domäne:** INF
 - **Typ:** Idee
 - **Prio:** niedrig
-- **Status:** eingeplant
+- **Status:** erledigt
 - **Sprint:** SP07
 - **Erstellt:** 2026-09-29
 - **Spec:** freigegeben
@@ -52,4 +52,4 @@ keine
 
 ## Notizen
 
-–
+Erledigt in SP07 (2026-10-01).

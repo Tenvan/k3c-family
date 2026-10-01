@@ -2,6 +2,7 @@ package net
 
 import (
 	"encoding/json"
+	"fmt"
 
 	"k3c/engine/room"
 	"k3c/engine/sim"
@@ -9,6 +10,12 @@ import (
 
 // handle verarbeitet eine Nachricht nach dem Handschlag. Fehler gehen nur an dieses Gerät, die Verbindung bleibt.
 func (c *conn) handle(data []byte) {
+	defer func() {
+		if p := recover(); p != nil { // ein Fehler im Raum-Code beendet nur diese Nachricht
+			c.s.log.Error("Nachricht abgestürzt", "device", c.device, "err", fmt.Sprint(p))
+			c.fail(codeBadRequest)
+		}
+	}()
 	var m inMsg
 	if err := json.Unmarshal(data, &m); err != nil {
 		c.fail(codeBadRequest)
@@ -36,7 +43,10 @@ func (c *conn) handle(data []byte) {
 func (c *conn) fail(code string) { c.enqueue(errMsg(code)) }
 
 func (c *conn) create(m inMsg) error {
-	if m.Fresh == nil || m.Slots == nil {
+	if err := room.ValidSlots(m.Slots); err != nil {
+		return err // too_many_slots vor allen anderen Prüfungen (docs/protocol.md › Beitreten, Schritt 1)
+	}
+	if m.Fresh == nil {
 		return room.ErrBadRequest
 	}
 	return c.enter(c.s.cfg.Rooms.Create(c.device, c, m.Save, *m.Fresh, m.Depth, m.Slots))
@@ -60,17 +70,17 @@ func (c *conn) roomMessage(r *room.Room, m inMsg) error {
 			return room.ErrBadRequest
 		}
 		if m.T == "addSlot" {
-			return r.AddSlot(c.device, *m.Slot)
+			return r.AddSlot(c.device, c, *m.Slot)
 		}
-		err := r.RemoveSlot(c.device, *m.Slot)
-		if err == nil && c.current() == r && !r.Has(c.device) {
+		left, err := r.RemoveSlot(c.device, c, *m.Slot)
+		if left {
 			c.left() // letzter Slot weg: Gerät hat den Raum verlassen
 		}
 		return err
 	case "input":
 		return c.input(r, m)
 	case "leave":
-		r.Leave(c.device)
+		r.Leave(c.device, c)
 		c.left()
 		return nil
 	}
@@ -82,13 +92,18 @@ func (c *conn) input(r *room.Room, m inMsg) error {
 	if len(m.P) == 0 || m.Seq <= 0 {
 		return room.ErrBadRequest
 	}
+	in := map[int]sim.PlayerCommand{}
 	for _, p := range m.P {
 		if p.Slot == nil {
 			return room.ErrBadRequest
 		}
-		if err := r.Input(c.device, *p.Slot, sim.PlayerCommand{MoveX: p.MoveX, Sprint: p.Sprint, Pay: p.Pay}); err != nil {
-			return err
+		if _, dup := in[*p.Slot]; dup {
+			return room.ErrBadRequest
 		}
+		in[*p.Slot] = sim.PlayerCommand{MoveX: p.MoveX, Sprint: p.Sprint, Pay: p.Pay}
+	}
+	if err := r.Input(c.device, c, in); err != nil {
+		return err
 	}
 	if m.Seq > c.seq.Load() {
 		c.seq.Store(m.Seq)
