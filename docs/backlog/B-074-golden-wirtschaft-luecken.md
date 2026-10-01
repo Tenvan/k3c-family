@@ -6,9 +6,9 @@
 - **Status:** eingeplant
 - **Sprint:** SP06
 - **Erstellt:** 2026-10-01
-- **Spec:** Entwurf
+- **Spec:** freigegeben
 - **Revision:** 1
-- **Freigabe:** –
+- **Freigabe:** 2026-10-01 🧑 Chat (SP06: campaign-abstieg, Abdeckung ≥ 90 %, B-059 in SP06.2, Golden ≤ 8 MB)
 
 ## Ausgangslage
 
@@ -31,7 +31,8 @@ Entwickler oder Agent (SIM).
 
 ## Anforderungen
 
-- Neue oder verlängerte Golden-Läufe in `tests/golden.test.ts`, die die Pfade aus der Ausgangslage durchlaufen.
+- Neue Golden-Läufe in `tests/golden.test.ts`, die die Pfade aus der Ausgangslage durchlaufen. Maßstab ist die
+  Go-Abdeckung von `engine/sim` durch Tests, die jeden Snapshot vollständig mit TS vergleichen.
 
 ## Nicht-Ziele
 
@@ -52,7 +53,7 @@ Ein Pfad ist mit dem Skript nicht erreichbar → im Ticket begründen.
 
 ## Akzeptanzkriterien
 
-- **AC-01** Ein Test zählt je Pfad aus der Ausgangslage, in wie vielen Snapshots ohne Gegner er vorkommt. Jeder Pfad kommt mindestens einmal vor, und `go test ./engine/sim/` ist grün.
+- **AC-01** `go test -cover ./engine/sim/` ist grün und meldet mindestens 90 % der Anweisungen; die Pfade aus der Ausgangslage sind ausgeführt (`go tool cover -func`), nicht erreichbare sind begründet.
 
 ## Offene Fragen
 
@@ -60,4 +61,4 @@ keine
 
 ## Notizen
 
-Abdeckung in SP05.3 per Auswertung der Golden-Snapshots bestimmt (Ergebnis der Session SP05.3).
+Abdeckung in SP05.3 per Auswertung der Golden-Snapshots bestimmt (Ergebnis der Session SP05.3). Umsetzung: SP06.3.
