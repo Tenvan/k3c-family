@@ -1,6 +1,6 @@
 # SP05 · SIM · Port I – Welt, Zyklus, Truppen, Wirtschaft
 
-- **Status:** aktiv
+- **Status:** erledigt
 - **Domäne:** SIM
 - **Reife:** bereit
 - **Einschiebbar:** nein
@@ -80,8 +80,12 @@ keine
 | SP05.1 | `SP05.1-welt-zyklus.md` | Umsetzung | autonom | fertig |
 | SP05.2 | `SP05.2-truppen.md` | Umsetzung | autonom | fertig |
 | SP05.3 | `SP05.3-wirtschaft.md` | Umsetzung | autonom | fertig |
-| SP05.4 | `SP05.4-review.md` | Review | autonom | offen |
+| SP05.4 | `SP05.4-review.md` | Review | autonom | fertig |
 
 ## Abnahme
 
-–
+- 2026-10-01, leichtes Review über `f015b3c..main` per unabhängigem Subagent (auf Auftrag von 🧑 im selben Lauf).
+  Kriterien: AC-01 (SP05.1), AC-03 (SP05.2), AC-02 (SP05.3), alle mit Gegentest belegt; B-043/AC-02 folgt in SP06.
+- Behobene Befunde: zwei Produkte ohne `float64(…)` (FMA) in `movePlayer` und `cycleAt`; `golden.Diff` übersah
+  Schlüssel, die nur auf einer Seite stehen.
+- Neue Tickets: B-074 (Golden-Lücken der Wirtschaft, eingeplant für SP06).

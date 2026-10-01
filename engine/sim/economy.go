@@ -52,7 +52,7 @@ func movePlayer(w *World, p *Player, cmd PlayerCommand, dt float64) {
 	if cmd.Sprint {
 		mult = monarch.SprintMultiplier
 	}
-	target := cmd.MoveX * monarch.Base.Speed * mult
+	target := float64(cmd.MoveX * monarch.Base.Speed * mult)
 	p.VX += float64((target - p.VX) * (1 - math.Exp(-monarch.Acceleration*dt)))
 	p.X = math.Min(w.WidthUnits, math.Max(0, p.X+float64(p.VX*dt)))
 	if math.Abs(p.VX) > 0.05 {
