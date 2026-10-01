@@ -131,3 +131,20 @@ func TestDigestGruppen(t *testing.T) {
 		t.Error("LevelRank")
 	}
 }
+
+// B-066: Eine Zeile, wie sie slog.NewJSONHandler im Go-Server schreibt (cmd/k3c-server/logging.go), liest der Log-Leser als Eintrag.
+func TestScanLiestZeileDesGoServers(t *testing.T) {
+	line := `{"time":"2026-10-01T16:01:11.453+02:00","level":"ERROR","msg":"Spielstand nicht gespeichert","ns":"room","room":"FAMILIE","err":"disk voll"}` + "\n"
+	path := filepath.Join(t.TempDir(), "k3c-server.jsonl")
+	if err := os.WriteFile(path, []byte(line), 0o644); err != nil {
+		t.Fatal(err)
+	}
+	res, err := Scan(path, Query{})
+	if err != nil || len(res.Entries) != 1 {
+		t.Fatalf("Scan: %+v, %v", res, err)
+	}
+	e := res.Entries[0]
+	if e.Level != "ERROR" || e.NS != "room" || e.Msg != "Spielstand nicht gespeichert" || e.Data["room"] != "FAMILIE" {
+		t.Errorf("Eintrag: %+v", e)
+	}
+}

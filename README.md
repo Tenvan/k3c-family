@@ -46,7 +46,7 @@ Zugriff im **privaten** Netzwerk erlauben.
 
 Der Go-Server (`cmd/k3c-server`) liefert Seiten, Spielstände, Berichte und den Online-Modus (WebSocket `/ws`, Protokoll v2).
 Einstellungen per Umgebung: `K3C_HTTP_PORT`,
-`K3C_HTTPS_PORT`, `K3C_DIST`, `K3C_SAVES_DIR`, `K3C_REPORTS_DIR`, `K3C_CERTS_DIR`; `GET /api/health` meldet
+`K3C_HTTPS_PORT`, `K3C_DIST`, `K3C_SAVES_DIR`, `K3C_REPORTS_DIR`, `K3C_CERTS_DIR`, `K3C_LOG_DIR` (JSON-Log `k3c-server.jsonl`; ohne Angabe nur, wenn ein Ordner `logs/` existiert); `GET /api/health` meldet
 `{"ok":true}`.
 
 - **Diagnose:** `GET /api/status` mit `Authorization: Bearer <K3C_STATUS_TOKEN>`; ohne gesetzte Variable ist sie aus
