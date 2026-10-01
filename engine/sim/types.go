@@ -31,6 +31,9 @@ type Player struct {
 	Paying      bool    `json:"paying"`
 	PayKey      *string `json:"payKey"` // Ziel, an dem gerade gezahlt wird ("site:3")
 	PayAmount   int     `json:"payAmount"`
+	// Free: Niemand steuert diesen Monarchen (vom Raum gesetzt, B-059). Er zählt nicht für den Stufenwechsel und
+	// reist mit. Nur Go, im JSON nur bei true.
+	Free bool `json:"free,omitempty"`
 }
 
 // Coin ist eine Münze am Boden.

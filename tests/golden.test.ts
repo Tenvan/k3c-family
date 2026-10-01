@@ -5,6 +5,7 @@ import { describe, expect, it } from 'vitest';
 import { createRng, hashSeed } from '../src/core/rng';
 import { BIOMES, type BiomeConfig } from '../src/world/biome';
 import { generateLevel, validateLevel } from '../src/world/levelGenerator';
+import { createCampaign, currentWorld, fromSave, joinPlayer, toSave, travel, type SaveGame } from '../src/world/sim/campaign';
 import { addPlayer, createWorld, step } from '../src/world/sim/world';
 import { IDLE, type PlayerCommand, type World } from '../src/world/sim/types';
 
@@ -126,6 +127,49 @@ function simulate(run: SimRun, biome: BiomeConfig) {
 
 const biome = (id: string) => BIOMES.find((b) => b.id === id)!;
 
+/** Kampagnen-Lauf (SP06.2): 2 Spieler steigen über die Tiefen-Eingänge bis mine ab, in cave wird gespeichert und geladen. */
+const CAMPAIGN = { name: 'campaign-abstieg', seed: 'golden-3', cycleSpeed: 1, players: 2, savedAt: '2026-01-01T00:00:00.000Z' };
+
+/** Beide Spieler sprinten zum Tiefen-Eingang der aktuellen Welt und warten dort. */
+function towardExit(w: World): PlayerCommand[] {
+  const exit = w.level.entities.find((e) => e.kind === 'exit');
+  return w.players.map((p) => (!exit || Math.abs(exit.x - p.x) <= 1 ? IDLE : cmd(Math.sign(exit.x - p.x), true)));
+}
+
+function campaignRun() {
+  const { seed, cycleSpeed, players, savedAt } = CAMPAIGN;
+  let c = createCampaign(seed, { id: 'golden', cycleSpeed });
+  for (let i = 0; i < players; i++) joinPlayer(c);
+  const segments: { ticks: number; commands: PlayerCommand[] }[] = [];
+  const snap = (tick: number) => ({ tick, depth: c.depth, unlockedDepth: c.unlockedDepth, world: snapshot(currentWorld(c)) });
+  const snapshots = [snap(0)];
+  let tick = 0, saveAt = -1, inMine = -1;
+  let save: SaveGame | null = null;
+  while (inMine < 0 || tick < inMine + 300) {
+    const w = currentWorld(c);
+    const commands = towardExit(w);
+    const last = segments.at(-1);
+    if (last && json(last.commands) === json(commands)) last.ticks++;
+    else segments.push({ ticks: 1, commands });
+    step(w, commands, DT);
+    tick++;
+    if (w.travel && w.travel.progress >= 1) {
+      travel(c, w.travel.toDepth);
+      if (c.depth === 1 && saveAt < 0) saveAt = tick + 60;
+      if (c.depth === 2) inMine = tick;
+    }
+    if (tick === saveAt) {
+      save = JSON.parse(json(toSave(c, savedAt))) as SaveGame;
+      c = fromSave(JSON.parse(json(save)) as SaveGame, cycleSpeed);
+      for (let i = 0; i < players; i++) joinPlayer(c);
+    }
+    if (tick % SNAPSHOT_EVERY === 0) snapshots.push(snap(tick));
+    expect(tick, 'Kampagne erreicht mine nicht').toBeLessThan(20000);
+  }
+  expect(save).not.toBeNull();
+  return { segments, snapshots, saveAt, save, ticks: tick };
+}
+
 describe('Golden-Daten (testdata/golden/)', () => {
   it('rng.json', async () => {
     const head = { params: { int: [0, 9], weights: WEIGHTS, pick: PICK, shuffle: 10 } };
@@ -143,5 +187,12 @@ describe('Golden-Daten (testdata/golden/)', () => {
     const { name, biome: id, seed, cycleSpeed, players, ticks } = run;
     const head = { name, biome: id, seed, cycleSpeed, players, dt: DT, ticks, snapshotEvery: SNAPSHOT_EVERY, inputs: segments };
     await expect(jsonFile(head, 'snapshots', snapshots)).toMatchFileSnapshot(`${DIR}/sim-${run.name}.json`);
+  });
+
+  it('campaign-abstieg.json', async () => {
+    const { segments, snapshots, saveAt, save, ticks } = campaignRun();
+    const { name, seed, cycleSpeed, players, savedAt } = CAMPAIGN;
+    const head = { name, seed, cycleSpeed, players, dt: DT, ticks, snapshotEvery: SNAPSHOT_EVERY, saveAt, savedAt, save, inputs: segments };
+    await expect(jsonFile(head, 'snapshots', snapshots)).toMatchFileSnapshot(`${DIR}/${name}.json`);
   });
 });
