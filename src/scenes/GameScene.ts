@@ -131,7 +131,7 @@ export class GameScene extends Phaser.Scene {
     return this.slots.waiting(this.client.you.map((s) => s.slot));
   }
 
-  /** Felder, für die das HUD Werte zeigt: Monarchen der lokalen Spieler und ggf. das Info-Feld */
+  /** Felder, für die das HUD Werte zeigt: Monarchen der lokalen Spieler */
   hudCells(): { cell: Cell; monarch: number | null }[] {
     const seats = [...this.client.you].sort((a, b) => a.slot - b.slot);
     return this.cells.map((cell) => ({ cell, monarch: cell.kind === 'player' ? (seats[cell.seat]?.monarch ?? null) : null }));
@@ -238,15 +238,14 @@ export class GameScene extends Phaser.Scene {
     this.layoutKey = '';
   }
 
-  /** Eine Kamera je Feld; Spieler-Felder folgen ihrem Monarchen, das Feld des Mitspielers dem Partner, Info-Felder haben keine. */
+  /** Eine Kamera je Feld; Spieler-Felder folgen ihrem Monarchen, das Feld des Mitspielers dem Partner, */
   private layoutCameras(world: World): void {
     const widthPx = world.widthUnits * UNIT_PX;
     this.cameras.cameras.filter((c) => c !== this.cameras.main).forEach((c) => this.cameras.remove(c));
     this.nightFx = this.nightFx.slice(0, 1);
     const seats = [...this.client.you].sort((a, b) => a.slot - b.slot);
 
-    const cams = this.cells.filter((c) => c.kind !== 'info');
-    cams.forEach((cell, i) => {
+    this.cells.forEach((cell, i) => {
       const cam = i === 0 ? this.cameras.main : this.cameras.add(0, 0, cell.w, cell.h);
       if (i > 0) this.addNightFx(cam);
       cam.setViewport(cell.x, cell.y, cell.w, cell.h);
