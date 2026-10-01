@@ -6,9 +6,9 @@
 - **Status:** eingeplant
 - **Sprint:** SP10
 - **Erstellt:** 2026-09-29
-- **Spec:** Entwurf
+- **Spec:** freigegeben
 - **Revision:** 3
-- **Freigabe:** –
+- **Freigabe:** 2026-10-01 🧑 Chat („SP10 freigegeben“), Revision 3
 
 ## Ausgangslage
 
