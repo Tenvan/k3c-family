@@ -9,6 +9,8 @@ import { blendAlpha, interpolate } from '../online/clientInterpolation';
 import type { Frame } from '../online/clientConnection';
 import type { GameEvent, World } from '../world/sim/types';
 import { computeLayout, type Cell } from './layout';
+import type { LobbySceneData } from './LobbyScene';
+import { leavesGame } from './lobbyLogic';
 import { LocalSlots } from './localSlots';
 import { createSpriteAnims, preloadSprites } from './sprites';
 import { daylight } from './viewRules';
@@ -113,7 +115,7 @@ export class GameScene extends Phaser.Scene {
     if (inputs.some((i) => i.justPressed('fullscreen'))) void toggleFullscreen(); // über die Shell, damit Vollbild beim Seitenwechsel bleibt
 
     const client = this.client;
-    if (client.status === 'lobby' && this.world_) return this.leaveRoom(); // Raum geschlossen: zurück zur Auswahl
+    if (leavesGame(client.status)) return this.leaveRoom(); // Raum geschlossen, 120 s ohne Verbindung, an anderer Stelle geöffnet: zurück zur Lobby
     if (client.status !== 'room') return;
 
     const seated = client.you.map((s) => s.slot);
@@ -135,10 +137,11 @@ export class GameScene extends Phaser.Scene {
     return this.cells.map((cell) => ({ cell, monarch: cell.kind === 'player' ? (seats[cell.seat]?.monarch ?? null) : null }));
   }
 
-  /** Raum verlassen und zurück zur Auswahl. Die Lobby folgt in SP08.3; bis dahin lädt die Seite neu. */
+  /** Raum verlassen und zurück zur Lobby (die Hinweise zum Grund zeigt sie selbst) */
   private leaveRoom(): void {
     this.client.leave();
-    window.location.reload();
+    this.scene.stop('hud');
+    this.scene.start('lobby', { client: this.client, returned: true } satisfies LobbySceneData);
   }
 
   private allInputs(): PlayerInput[] {
