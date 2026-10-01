@@ -3,7 +3,7 @@
 - **Domäne:** SRV
 - **Typ:** Idee
 - **Prio:** hoch
-- **Status:** eingeplant
+- **Status:** erledigt
 - **Sprint:** SP07
 - **Erstellt:** 2026-09-29
 - **Spec:** freigegeben
@@ -59,3 +59,5 @@ keine (entschieden von 🧑 am 2026-09-30, SP02)
 ## Notizen
 
 Entwurf in SP02, Umsetzung in SP07.
+
+Erledigt in SP07 (2026-10-01).

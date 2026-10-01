@@ -35,15 +35,15 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-027](B-027-diagnose-absichern.md) | SRV | Problem | hoch | erledigt | SP03 | Diagnose-Schnittstelle ist abgesichert |
 | [B-028](B-028-spielstand-sicherung.md) | SRV | Idee | mittel | erledigt | SP03 | Spielstände werden rotierend gesichert |
 | [B-029](B-029-lade-szene.md) | CLI | Idee | mittel | offen | – | Lade-Szene zeigt Fortschritt |
-| [B-030](B-030-wiederverbinden.md) | SRV | Idee | hoch | eingeplant | SP07 | Geräte verbinden sich nach Abbruch wieder |
-| [B-031](B-031-online-test.md) | INF | Idee | niedrig | eingeplant | SP07 | Online-Verbindung ist automatisch getestet |
+| [B-030](B-030-wiederverbinden.md) | SRV | Idee | hoch | erledigt | SP07 | Geräte verbinden sich nach Abbruch wieder |
+| [B-031](B-031-online-test.md) | INF | Idee | niedrig | erledigt | SP07 | Online-Verbindung ist automatisch getestet |
 | [B-032](B-032-github-pages.md) | PLAT | Problem | mittel | eingeplant | SP09 | GitHub Pages zeigt nur, was ohne Server geht |
 | [B-033](B-033-tests-typecheck.md) | INF | Schuld | mittel | erledigt | SP01 | Tests werden typgeprüft |
 | [B-034](B-034-plat-dateien-aufteilen.md) | PLAT | Schuld | niedrig | verworfen | – | Große PLAT-Dateien liegen unter 300 Zeilen |
 | [B-035](B-035-raspberry-pi.md) | SRV | Idee | hoch | eingeplant | SP11 | Server läuft auf dem Raspberry Pi im Docker |
-| [B-036](B-036-mehrere-raeume.md) | SRV | Idee | hoch | eingeplant | SP07 | Mehrere Spiele laufen gleichzeitig |
+| [B-036](B-036-mehrere-raeume.md) | SRV | Idee | hoch | erledigt | SP07 | Mehrere Spiele laufen gleichzeitig |
 | [B-037](B-037-lobby.md) | CLI | Idee | mittel | eingeplant | SP08 | Lobby zeigt Räume und startet Spiele |
-| [B-038](B-038-lokale-und-online-spieler.md) | SRV | Idee | hoch | eingeplant | SP07 | Lokale und Online-Spieler teilen sich einen Raum |
+| [B-038](B-038-lokale-und-online-spieler.md) | SRV | Idee | hoch | erledigt | SP07 | Lokale und Online-Spieler teilen sich einen Raum |
 | [B-039](B-039-interpolation.md) | CLI | Idee | mittel | eingeplant | SP08 | Bewegungen laufen trotz Snapshots flüssig |
 | [B-040](B-040-server-finden.md) | SRV | Idee | niedrig | offen | – | Geräte finden den Server im Heimnetz |
 | [B-041](B-041-wails-starter.md) | SRV | Idee | niedrig | offen | – | Wails-Starter für Windows existiert |
@@ -81,5 +81,5 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-073](B-073-go-task-umstellen.md) | INF | Schuld | hoch | offen | – | Alle Aufrufer nutzen Go Task statt npm-Skripte |
 | [B-074](B-074-golden-wirtschaft-luecken.md) | SIM | Problem | mittel | erledigt | SP06 | Golden-Läufe decken Tragen, Bauen, Bögen, Truhen und Münz-Rückgabe ab |
 | [B-075](B-075-golden-spielstand-hub.md) | SIM | Schuld | mittel | offen | – | Der Golden-Spielstand enthält einen gebauten und veränderten Hub |
-| [B-076](B-076-websocket-bibliothek.md) | INF | Frage | hoch | eingeplant | SP07 | Der Go-Server spricht WebSocket über github.com/coder/websocket |
+| [B-076](B-076-websocket-bibliothek.md) | INF | Frage | hoch | erledigt | SP07 | Der Go-Server spricht WebSocket über github.com/coder/websocket |
 | [B-077](B-077-race-detector.md) | INF | Schuld | hoch | offen | – | Die nebenläufigen Go-Pakete werden mit dem Race-Detector geprüft |

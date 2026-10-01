@@ -18,6 +18,7 @@ import (
 	"os"
 	"os/signal"
 	"path/filepath"
+	"sync"
 	"syscall"
 	"time"
 
@@ -73,8 +74,10 @@ func run(cfg config, log *slog.Logger) error {
 	saves := &store.Saves{Dir: cfg.saves}
 	rooms := room.NewManager(saves)
 	rooms.Log = log
+	conns := &sync.WaitGroup{}
 	handler := k3cnet.NewHandler(k3cnet.Config{Dist: cfg.dist, Log: log, Version: version, StartedAt: time.Now(),
-		StatusToken: cfg.statusToken, Saves: saves, Reports: &store.Reports{Dir: cfg.reports}, Rooms: rooms})
+		StatusToken: cfg.statusToken, Saves: saves, Reports: &store.Reports{Dir: cfg.reports}, Rooms: rooms,
+		Conns: conns})
 	if cfg.statusToken == "" {
 		log.Info("diagnose aus: K3C_STATUS_TOKEN ist nicht gesetzt (/api/status antwortet 404)")
 	}
@@ -101,7 +104,19 @@ func run(cfg config, log *slog.Logger) error {
 	case <-ctx.Done():
 	}
 	rooms.Close() // alle Räume speichern, room_closed an die Geräte, Verbindungen schließen
+	waitConns(conns, 2*time.Second)
 	return shutdown(servers)
+}
+
+// waitConns wartet kurz auf die WebSocket-Handler, damit room_closed noch ankommt. http.Server.Shutdown wartet nicht
+// auf gekaperte Verbindungen; Geräte in der Raumliste bleiben bis zum Ende der Frist offen.
+func waitConns(conns *sync.WaitGroup, limit time.Duration) {
+	done := make(chan struct{})
+	go func() { conns.Wait(); close(done) }()
+	select {
+	case <-done:
+	case <-time.After(limit):
+	}
 }
 
 func newServer(addr string, h http.Handler) *http.Server {

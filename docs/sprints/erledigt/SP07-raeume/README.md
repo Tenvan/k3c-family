@@ -1,6 +1,6 @@
 # SP07 · SRV · Räume & WebSocket (Protokoll v2) in Go
 
-- **Status:** aktiv
+- **Status:** erledigt
 - **Domäne:** SRV
 - **Reife:** bereit
 - **Einschiebbar:** nein
@@ -104,8 +104,12 @@ eigenen Sprint M6. Speichern pro Raum gehört in SP07 (B-060 › Offene Fragen),
 | SP07.1 | `SP07.1-raummodell.md` | Umsetzung | autonom | fertig |
 | SP07.2 | `SP07.2-websocket.md` | Umsetzung | autonom | fertig |
 | SP07.3 | `SP07.3-takt-delta-status.md` | Umsetzung | autonom | fertig |
-| SP07.4 | `SP07.4-review.md` | Review | autonom | offen |
+| SP07.4 | `SP07.4-review.md` | Review | autonom | fertig |
 
 ## Abnahme
 
-–
+- 2026-10-01, Review über `3a3c9d5..main` per unabhängigem Subagent (auf Auftrag von 🧑 im selben Lauf).
+- Kriterien: AC-02, AC-03, AC-04 (SP07.1); AC-05, AC-06 (SP07.2); AC-01, AC-07, AC-08 (SP07.3). Alle mit Tests und Gegentest belegt.
+- Behobene Befunde: Sperren bei Panic, Speichern eines abgestürzten Raums, ersetzte Verbindung, `room_closed` beim
+  Beenden, zwei Vertragsabweichungen, Frist im Handschlag (SP07.4).
+- Offen: B-077 (Race-Detector in der CI). Neue Tickets im Sprint: B-077.
