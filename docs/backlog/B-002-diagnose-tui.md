@@ -7,7 +7,7 @@
 - **Sprint:** SP10
 - **Erstellt:** 2026-09-29
 - **Spec:** Entwurf
-- **Revision:** 1
+- **Revision:** 2
 - **Freigabe:** –
 
 ## Ausgangslage
@@ -24,7 +24,7 @@ Diagnose-TUI zeigt den laufenden Server. Nutzen: Im Betrieb (PC oder Pi im Docke
 
 ## Anforderungen
 
-- Eigenes Programm `cmd/k3c-tui` (Bubble Tea), das nur mit `/api/status` spricht, lokal oder über das Netz.
+- Eigenes Programm `cmd/k3c-tui` (Bubble Tea), das nur mit der Diagnose-Schnittstelle des Servers (`/api/status…`, B-027, B-088) spricht, lokal oder über das Netz.
 - Zeigt Räume, Geräte, Tick-Dauer, Speicher, letzte Fehler und Spielstände live.
 - Aktionen: Raum ansehen, Gerät trennen, Spielstand sichern, Log folgen.
 
@@ -34,7 +34,7 @@ Kein Zugriff am Server vorbei (Dateien, Prozess); kein Desktop-Fenster (B-041).
 
 ## Regeln und Einschränkungen
 
-Go-Server ist die einzige Engine (Entscheidung 001), Standardbibliothek zuerst; Schichtgrenzen und Komplexitäts-Budget aus `docs/arbeitsweise.md`. Zugriff nur mit Token (B-027); die TUI nutzt nur `/api/status` (Entscheidung 001).
+Go-Server ist die einzige Engine (Entscheidung 001), Standardbibliothek zuerst; Schichtgrenzen und Komplexitäts-Budget aus `docs/arbeitsweise.md`. Zugriff nur mit Token (B-027); die TUI nutzt nur `/api/status…` (Entscheidung 001). Neue Abhängigkeit Bubble Tea (`charmbracelet/bubbletea`, `lipgloss`) ist mit der Freigabe dieser Spec zugestimmt; das Dockerfile muss dafür `go.sum` kopieren und `k3c-tui` ins Image legen.
 
 ## Beispiele
 
@@ -56,4 +56,4 @@ keine
 
 ## Notizen
 
-Voraussetzung: `/api/status` mit Token (SP03.2), Räume ab SP07.
+Voraussetzung: `/api/status` mit Token (SP03.2), Räume ab SP07, Speicher, Geräte, Log und Aktionen aus Sprint D1 (B-088). Entscheidung 🧑 2026-10-01: Server erweitern statt TUI nur lesend; Bubble Tea.
