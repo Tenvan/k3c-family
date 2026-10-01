@@ -1,6 +1,6 @@
 # M6 · SRV · k3c-dev VI: MCP-Tools für Räume und Simulation
 
-- **Status:** aktiv
+- **Status:** erledigt
 - **Domäne:** SRV
 - **Reife:** bereit
 - **Einschiebbar:** ja
@@ -61,8 +61,10 @@ keine
 |---|---|---|---|---|
 | M6.1 | `M6.1-server-tools.md` | Umsetzung | autonom | fertig |
 | M6.2 | `M6.2-level-sim-tools.md` | Umsetzung | autonom | fertig |
-| M6.3 | `M6.3-review.md` | Review | autonom | offen |
+| M6.3 | `M6.3-review.md` | Review | autonom | fertig |
 
 ## Abnahme
 
-–
+Review 2026-10-01 (M6.3): `task check:dev`, `task check:go`, `task check` grün, Diff `9de807c..main` geprüft.
+AC-01: M6.1 (Tests mit `httptest`, auch 401 und Server aus); AC-02: M6.2 (Golden-Vergleich, Determinismus, Grenze 100 000). Behoben: `inputs` auf 100 Segmente begrenzt.
+Nicht geprüft: Lauf gegen den echten Server und im k3c-dev-Fenster. Neue Tickets: keine. B-047 erledigt.
