@@ -68,7 +68,7 @@ Nur so bleibt Vollbild auf der Xbox über Seitenwechsel erhalten. Für **jede** 
 2. In `src/landing/pages.ts` eintragen. Sonst ist die Seite vom Controller aus nicht erreichbar.
 3. Vollbild nur über `toggleFullscreen()` aus `src/core/fullscreen.ts`. Nie `requestFullscreen()` direkt
    oder `this.scale.toggleFullscreen()`, das würde nur das iframe betreffen.
-4. Seiten nie per Link oder `location` untereinander wechseln. Zurück zur Übersicht immer über `goHome()`.
+4. Seiten nie per Link oder `location` untereinander wechseln, außer über `openPage()` aus `src/core/shell.ts` (die Shell öffnet nur `name.html` dieses Ordners). Zurück zur Übersicht immer über `goHome()`.
 
 ## Regeln
 

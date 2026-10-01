@@ -5,7 +5,7 @@
 - **Reife:** bereit
 - **Einschiebbar:** ja
 - **Tickets:** B-081
-- **Start-Commit:** – (wird beim Aktivieren gesetzt: `git rev-parse --short origin/main`)
+- **Start-Commit:** 59389cd
 - **Spec:** freigegeben
 - **Revision:** 1
 - **Freigabe:** 2026-10-01 🧑 Chat (T1 Revision 1, mit B-081 Revision 2)
@@ -69,7 +69,7 @@ keine
 
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
-| T1.1 | `T1.1-testseite.md` | Umsetzung | autonom | offen |
+| T1.1 | `T1.1-testseite.md` | Umsetzung | autonom | fertig |
 | T1.2 | `T1.2-review.md` | Review | autonom | offen |
 | T1.3 | `T1.3-abnahme.md` | Workshop | Mensch | offen |
 
