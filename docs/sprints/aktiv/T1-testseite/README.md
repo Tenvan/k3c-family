@@ -70,9 +70,11 @@ keine
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
 | T1.1 | `T1.1-testseite.md` | Umsetzung | autonom | fertig |
-| T1.2 | `T1.2-review.md` | Review | autonom | offen |
+| T1.2 | `T1.2-review.md` | Review | autonom | fertig |
 | T1.3 | `T1.3-abnahme.md` | Workshop | Mensch | offen |
 
 ## Abnahme
 
-–
+Review 2026-10-01 (T1.2): `task check` grün (403 Tests); Diff `59389cd..main` gelesen; keine schweren Befunde, nichts behoben (ein Hinweis: `open` mit nicht-String-`href` würfe im Listener, harmlos, nur gleicher Ursprung).
+AC-01 bis AC-03 geprüft mit Tests laut T1.1-Ergebnis (`isOpenable`-Tabelle, Szenarien-URLs, `projectRules`); im Browser bestätigt (Agent, Freigabe 🧑): Kachel → Testseite → „4 Spieler“ → 2×2-Raster → Home.
+AC-04 bleibt bei T1.3 (🧑). Neues Ticket: B-086 (Test-Spielstände sammeln sich in `saves/`).
