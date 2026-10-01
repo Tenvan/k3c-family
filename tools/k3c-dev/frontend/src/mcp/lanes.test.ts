@@ -60,7 +60,7 @@ describe('Filter und Fußzeile', () => {
 
   it('Fußzeile und Argumente', () => {
     expect(callFooter(calls)).toBe('3 Aufrufe · 1 laufend · 1 Fehler');
-    expect(prettyArgs('{"target":"npm:test"}')).toBe('{\n  "target": "npm:test"\n}');
+    expect(prettyArgs('{"target":"task:test"}')).toBe('{\n  "target": "task:test"\n}');
     expect(prettyArgs('kein json')).toBe('kein json');
   });
 });

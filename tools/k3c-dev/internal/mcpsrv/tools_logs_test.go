@@ -31,10 +31,10 @@ func logServer(t *testing.T) *Server {
 func TestLogsSourcesUndUnbekannteQuelle(t *testing.T) {
 	s := logServer(t)
 	ctx := context.Background()
-	s.console.Add("check:npm:test", "stdout", "x")
+	s.console.Add("check:task:test", "stdout", "x")
 	text, _ := s.logsSources(ctx, struct{}{})
 	if !strings.Contains(text, "Log k3c-dev · ") || !strings.Contains(text, " zuletzt ") || !strings.Contains(text, "WARN") ||
-		!strings.Contains(text, "Konsole check:npm:test · 1 Zeilen") {
+		!strings.Contains(text, "Konsole check:task:test · 1 Zeilen") {
 		t.Errorf("Quellen: %q", text)
 	}
 	for _, bad := range []string{"../k3c-dev", "gibtsnicht", ""} {
@@ -50,11 +50,11 @@ func TestLogsQuery(t *testing.T) {
 	text, err := s.logsQuery(ctx, queryIn{Source: "k3c-dev", MinLevel: "WARN", Limit: 2})
 	lines := strings.Split(text, "\n")
 	if err != nil || len(lines) != 3 || !strings.HasSuffix(lines[0], " WARN main server gestoppt") ||
-		!strings.Contains(lines[1], ` ERROR mcp check_run: Ziel "npm:x" unbekannt`) || !strings.HasPrefix(lines[2], "2 Einträge · ") {
+		!strings.Contains(lines[1], ` ERROR mcp check_run: Ziel "task:x" unbekannt`) || !strings.HasPrefix(lines[2], "2 Einträge · ") {
 		t.Errorf("Abfrage: %q, %v", text, err)
 	}
 	text, _ = s.logsQuery(ctx, queryIn{Source: "k3c-dev", NS: "check"})
-	if !strings.Contains(text, `lauf beendet {"exit":0,"target":"npm:test"}`) || !strings.Contains(text, "1 unlesbare Zeilen") {
+	if !strings.Contains(text, `lauf beendet {"exit":0,"target":"task:test"}`) || !strings.Contains(text, "1 unlesbare Zeilen") {
 		t.Errorf("Daten und übersprungene Zeile: %q", text)
 	}
 	if _, err := s.logsQuery(ctx, queryIn{Source: "k3c-dev", Pattern: "["}); err == nil || !strings.Contains(err.Error(), "regulärer Ausdruck") {
@@ -70,7 +70,7 @@ func TestLogsErrorsUndSince(t *testing.T) {
 	ctx := context.Background()
 	text, _ := s.logsErrors(ctx, errorsIn{Source: "k3c-dev", Since: "2026-09-30T00:00:00Z"})
 	lines := strings.Split(text, "\n")
-	if len(lines) != 3 || !strings.HasPrefix(lines[0], `2× ERROR mcp check_run: Ziel "npm:x" unbekannt · `) ||
+	if len(lines) != 3 || !strings.HasPrefix(lines[0], `2× ERROR mcp check_run: Ziel "task:x" unbekannt · `) ||
 		!strings.HasPrefix(lines[1], "1× WARN main server gestoppt") || !strings.HasPrefix(lines[2], "2 Gruppen aus 3 Einträgen ab WARN") {
 		t.Errorf("Verdichtung: %q", text)
 	}
@@ -111,14 +111,14 @@ func TestEreignisseImEigenenLog(t *testing.T) {
 	var buf bytes.Buffer
 	s := New(Config{Version: "test", Root: t.TempDir(), Log: slog.New(slog.NewJSONHandler(&buf, nil))})
 	s.run = func(context.Context, runSpec) runResult { return runResult{exit: 1} }
-	if _, err := s.checkRun(context.Background(), checkIn{Target: "npm:lint"}); err != nil {
+	if _, err := s.checkRun(context.Background(), checkIn{Target: "task:lint"}); err != nil {
 		t.Fatal(err)
 	}
 	cs := connect(t, s)
-	callText(t, cs, "check_run", map[string]any{"target": "npm:alles"})
+	callText(t, cs, "check_run", map[string]any{"target": "task:alles"})
 	log := buf.String()
-	if !strings.Contains(log, `"level":"WARN","msg":"lauf beendet","ns":"check","target":"npm:lint","exit":1`) ||
-		!strings.Contains(log, `"msg":"check_run: unbekanntes Ziel \"npm:alles\"; gültige Ziele: npm:check`) {
+	if !strings.Contains(log, `"level":"WARN","msg":"lauf beendet","ns":"check","target":"task:lint","exit":1`) ||
+		!strings.Contains(log, `"msg":"check_run: unbekanntes Ziel \"task:alles\"; gültige Ziele: task:check`) {
 		t.Errorf("Log: %s", log)
 	}
 	if cs.InitializeResult().Instructions == "" || !strings.Contains(cs.InitializeResult().Instructions, "check_run") {

@@ -79,10 +79,10 @@ describe('Quellen', () => {
   it('Punkt-Töne je Art, unbekannt neutral', () => {
     expect(dotTone(src('Vite', 'service', 'läuft'))).toBe('ok');
     expect(dotTone(src('Vite', 'service', 'übernommen'))).toBe('warn');
-    expect(dotTone(src('check:npm:test', 'run', 'running'))).toBe('info');
-    expect(dotTone(src('check:npm:test', 'run', 'ok'))).toBe('ok');
-    expect(dotTone(src('check:npm:test', 'run', 'failed'))).toBe('error');
-    expect(dotTone(src('check:npm:test', 'run', 'timeout'))).toBe('error');
+    expect(dotTone(src('check:task:test', 'run', 'running'))).toBe('info');
+    expect(dotTone(src('check:task:test', 'run', 'ok'))).toBe('ok');
+    expect(dotTone(src('check:task:test', 'run', 'failed'))).toBe('error');
+    expect(dotTone(src('check:task:test', 'run', 'timeout'))).toBe('error');
     expect(dotTone(src('k3c-dev', 'log', 'entries'))).toBe('ok');
     expect(dotTone(src('server', 'log', 'empty'))).toBe('neutral');
     expect(dotTone(src('x', 'run', 'rätselhaft'))).toBe('neutral');
@@ -98,9 +98,9 @@ describe('Quellen', () => {
 
   it('ein neuer Lauf erscheint, ein bekannter wird ersetzt', () => {
     const list = [src('Vite', 'service', 'läuft')];
-    const run = src('check:npm:test', 'run', 'running');
+    const run = src('check:task:test', 'run', 'running');
     const added = upsertSource(list, run);
-    expect(added.map((s) => s.name)).toEqual(['Vite', 'check:npm:test']);
+    expect(added.map((s) => s.name)).toEqual(['Vite', 'check:task:test']);
     expect(upsertSource(added, { ...run, state: 'ok' })[1].state).toBe('ok');
   });
 });

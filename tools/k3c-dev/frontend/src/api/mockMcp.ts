@@ -16,13 +16,13 @@ interface Tool {
 
 const TOOLS: Tool[] = [
   { name: 'check_run', description: 'Prüfung aus dem Katalog, verdichtet', ms: [1400, 9000],
-    args: ['{"target":"npm:test"}', '{"target":"go:test"}', '{"target":"npm:lint"}'], errors: ['npm:test · exit 1'] },
+    args: ['{"target":"task:test"}', '{"target":"go:test"}', '{"target":"task:lint"}'], errors: ['task:test · exit 1'] },
   { name: 'logs_query', description: 'Gefilterte Log-Einträge', ms: [6, 60],
     args: ['{"source":"k3c-dev","minLevel":"WARN"}', '{"source":"k3c-dev"}'], errors: ['unbekannte Log-Quelle "x"'] },
   { name: 'logs_errors', description: 'Warnungen und Fehler, verdichtet', ms: [10, 90],
     args: ['{"source":"k3c-dev"}'], errors: [] },
   { name: 'console_tail', description: 'Letzte Zeilen einer Konsolen-Quelle', ms: [1, 6],
-    args: ['{"source":"check:npm:test"}', '{"source":"Vite"}'], errors: ['unbekannte Quelle "check:x"'] },
+    args: ['{"source":"check:task:test"}', '{"source":"Vite"}'], errors: ['unbekannte Quelle "check:x"'] },
   { name: 'svc_status', description: 'Zustand aller Dienste', ms: [2, 12], args: ['{}'], errors: [] },
   { name: 'svc_start', description: 'Dienst starten und auf gesund warten', ms: [1500, 3200],
     args: ['{"service":"Vite"}'], errors: ['Vite läuft bereits (läuft)'] },

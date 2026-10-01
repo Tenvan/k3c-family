@@ -24,7 +24,7 @@ func TestNutzungsstatistikBekommtRoheArgumente(t *testing.T) {
 	if text, isErr := callText(t, cs, "echo", raw); isErr {
 		t.Fatal(text)
 	}
-	callText(t, cs, "check_run", map[string]any{"target": "npm:alles"})
+	callText(t, cs, "check_run", map[string]any{"target": "task:alles"})
 	// Erfundener Name: das SDK antwortet mit einem Protokollfehler, die Middleware sieht ihn trotzdem.
 	_, _ = cs.CallTool(context.Background(), &mcp.CallToolParams{Name: "gibt_es_nicht"})
 	if text, _ := callText(t, cs, "reports_list", nil); text != "keine Berichte" {

@@ -17,7 +17,7 @@ func TestSchreibtJSONUndSpiegelt(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	l.With("ns", "check").Warn("lauf beendet", "target", "npm:test", "exit", 1)
+	l.With("ns", "check").Warn("lauf beendet", "target", "task:test", "exit", 1)
 	if err := l.Close(); err != nil {
 		t.Fatal(err)
 	}
@@ -26,7 +26,7 @@ func TestSchreibtJSONUndSpiegelt(t *testing.T) {
 		t.Fatalf("Scan: %+v, %v", res, err)
 	}
 	e := res.Entries[0]
-	if e.Level != "WARN" || e.NS != "check" || e.Msg != "lauf beendet" || e.Data["target"] != "npm:test" || e.Data["exit"] != 1.0 {
+	if e.Level != "WARN" || e.NS != "check" || e.Msg != "lauf beendet" || e.Data["target"] != "task:test" || e.Data["exit"] != 1.0 {
 		t.Errorf("Eintrag: %+v", e)
 	}
 	lines, _ := store.Tail(Source, 0)
