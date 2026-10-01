@@ -97,3 +97,60 @@ func TestReports(t *testing.T) {
 		t.Errorf("zu groß: %v", err)
 	}
 }
+
+// fill legt Spielstände an; das zweite Speichern erzeugt je eine Sicherung.
+func fill(t *testing.T, s *Saves, slots ...string) {
+	t.Helper()
+	for _, slot := range slots {
+		for range 2 {
+			if _, err := s.Store(slot, []byte(`{"version":1,"campaignId":"ci"}`)); err != nil {
+				t.Fatal(err)
+			}
+		}
+	}
+}
+
+func TestSavesPurge(t *testing.T) {
+	s := &Saves{Dir: t.TempDir()}
+	fill(t, s, "test-alt", "test-neu", "familie")
+	old := time.Now().Add(-48 * time.Hour)
+	for _, slot := range []string{"test-alt", "familie"} {
+		if err := os.Chtimes(filepath.Join(s.Dir, slot+".json"), old, old); err != nil {
+			t.Fatal(err)
+		}
+	}
+	if n, err := s.Purge("test-", time.Now().Add(-24*time.Hour)); err != nil || n != 1 {
+		t.Fatalf("Purge: %d, %v", n, err)
+	}
+	for slot, want := range map[string]bool{"test-alt": false, "test-neu": true, "familie": true} {
+		if _, err := s.Load(slot); (err == nil) != want {
+			t.Errorf("%s vorhanden = %v, erwartet %v", slot, err == nil, want)
+		}
+	}
+	if _, err := os.Stat(s.backupDir("test-alt")); !errors.Is(err, os.ErrNotExist) {
+		t.Errorf("Sicherungen von test-alt bleiben: %v", err)
+	}
+	if _, err := s.Purge("", time.Now()); !errors.Is(err, ErrSlot) {
+		t.Errorf("leeres Präfix: %v", err)
+	}
+}
+
+func TestSavesDelete(t *testing.T) {
+	s := &Saves{Dir: t.TempDir()}
+	fill(t, s, "test-x", "familie")
+	if err := s.Delete("test-x"); err != nil {
+		t.Fatal(err)
+	}
+	if err := s.Delete("test-x"); err != nil {
+		t.Errorf("zweites Löschen: %v", err)
+	}
+	if err := s.Delete("../x"); !errors.Is(err, ErrSlot) {
+		t.Errorf("ungültiger Name: %v", err)
+	}
+	if _, err := s.Load("test-x"); !errors.Is(err, ErrNotFound) {
+		t.Errorf("test-x noch da: %v", err)
+	}
+	if _, err := s.Load("familie"); err != nil {
+		t.Errorf("familie weg: %v", err)
+	}
+}

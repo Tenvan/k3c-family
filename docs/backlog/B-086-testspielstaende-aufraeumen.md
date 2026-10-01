@@ -3,12 +3,12 @@
 - **Domäne:** SRV
 - **Typ:** Problem
 - **Prio:** niedrig
-- **Status:** offen
+- **Status:** erledigt
 - **Sprint:** –
 - **Erstellt:** 2026-10-01
-- **Spec:** Entwurf
-- **Revision:** 1
-- **Freigabe:** –
+- **Spec:** freigegeben
+- **Revision:** 2
+- **Freigabe:** 2026-10-01 🧑 Chat („mach B-085 und B-086“) (Revision 2, Entscheidung zur Löschung 🧑 ebenda)
 
 ## Ausgangslage
 
@@ -25,7 +25,8 @@ Entwickler und Agenten; 🧑 betreibt den Server.
 
 ## Anforderungen
 
-- Spielstände mit dem Präfix `test-` werden nicht gespeichert, oder beim Aufräumen des Raums (10 min leer) gelöscht, oder beim Serverstart nach X Tagen entfernt (Entscheidung offen).
+- Das Präfix `test-` ist für Testläufe reserviert. Ein leerer Raum mit so benanntem Spielstand löscht ihn samt Sicherungen, wenn er nach 10 min aufgeräumt wird (`room.TestPrefix`, `Saves.Delete`).
+- Beim Serverstart löscht der Server außerdem `test-*`-Spielstände, die seit mehr als 24 Stunden nicht geschrieben wurden (`Saves.Purge`), für Reste nach Absturz oder Neustart.
 
 ## Nicht-Ziele
 
@@ -41,7 +42,7 @@ Ein Test-Raum wird verlassen und bleibt 10 min leer → seine Datei `saves/test-
 
 ## Ausnahme- und Fehlerfälle
 
-Ein echter Spielstand heißt zufällig `test-familie` → er wäre betroffen; deshalb Präfix nur für Räume, die per Testseite entstehen? (Entscheidung offen)
+Ein echter Spielstand heißt `test-familie` → er wird wie ein Test-Spielstand gelöscht. Das ist so entschieden: das Präfix ist reserviert.
 
 ## Akzeptanzkriterien
 
@@ -49,8 +50,8 @@ Ein echter Spielstand heißt zufällig `test-familie` → er wäre betroffen; de
 
 ## Offene Fragen
 
-Wie wird ein Test-Spielstand erkannt (Präfix, eigenes Flag im Protokoll)? Wann wird gelöscht? (🧑)
+keine (🧑 2026-10-01: Präfix, Löschen beim Aufräumen des Raums plus Aufräumen beim Start nach 24 h).
 
 ## Notizen
 
-Gefunden beim Review T1.2.
+Gefunden beim Review T1.2. Umgesetzt in `engine/room` (`TestPrefix`, `dropTestSave`), `engine/store` (`Delete`, `Purge`), `cmd/k3c-server`; Go-Tests in `room_test.go` und `store_test.go`. Das Präfix ist nur hier und im Code dokumentiert, `docs/protocol.md` bleibt unverändert (Protokoll hat eine eigene Session).

@@ -3,12 +3,12 @@
 - **Domäne:** INF
 - **Typ:** Problem
 - **Prio:** mittel
-- **Status:** offen
+- **Status:** erledigt
 - **Sprint:** –
 - **Erstellt:** 2026-10-01
-- **Spec:** Entwurf
+- **Spec:** freigegeben
 - **Revision:** 1
-- **Freigabe:** –
+- **Freigabe:** 2026-10-01 🧑 Chat („mach B-085 und B-086“)
 
 ## Ausgangslage
 
@@ -55,4 +55,4 @@ keine
 
 ## Notizen
 
-Gefunden beim Browser-Lauf zu T1.1 (Firewall-Dialog bei jedem Start).
+Gefunden beim Browser-Lauf zu T1.1 (Firewall-Dialog bei jedem Start). Umgesetzt: `task serve:go` baut `bin/k3c-server{{exeExt}}` und startet sie; `/bin/` steht in `.gitignore`. Geprüft mit `task -n serve:go` (beide Schritte, gleicher Pfad) und `git check-ignore bin/k3c-server.exe`; ein zweiter echter Start wurde nicht ausgeführt (löst bei neuem Pfad den Firewall-Dialog aus, den 🧑 beantwortet). Hinweis: Unter Windows lässt sich die EXE nicht neu bauen, solange der Server läuft; erst stoppen.

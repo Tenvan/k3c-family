@@ -37,8 +37,9 @@ func (p *peer) Closed(bool) { p.log = append(p.log, "closed") }
 func (p *peer) has(entry string) bool { return slices.Contains(p.log, entry) }
 
 type memStore struct {
-	data  map[string][]byte
-	saves int
+	data    map[string][]byte
+	saves   int
+	deleted []string
 }
 
 func (s *memStore) Load(name string) ([]byte, error) {

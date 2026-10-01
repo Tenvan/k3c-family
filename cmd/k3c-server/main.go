@@ -30,6 +30,9 @@ import (
 // version setzt release.yml per -ldflags "-X main.version=<tag>".
 var version = "dev"
 
+// testSaveMaxAge: Test-Spielstände (Präfix test-) älter als das räumt der Server beim Start auf.
+const testSaveMaxAge = 24 * time.Hour
+
 // config sind die Einstellungen aus der Umgebung.
 type config struct {
 	httpPort, httpsPort string
@@ -74,6 +77,12 @@ func run(cfg config, log *slog.Logger) error {
 	saves := &store.Saves{Dir: cfg.saves}
 	rooms := room.NewManager(saves)
 	rooms.Log = log
+	// Testläufe (Spielstände mit Präfix test-, B-086) räumen sich beim Aufräumen des Raums auf; Reste alter Läufe hier.
+	if n, err := saves.Purge(room.TestPrefix, time.Now().Add(-testSaveMaxAge)); err != nil {
+		log.Error("Test-Spielstände nicht aufgeräumt", "err", err)
+	} else if n > 0 {
+		log.Info("Test-Spielstände aufgeräumt", "anzahl", n)
+	}
 	conns := &sync.WaitGroup{}
 	handler := k3cnet.NewHandler(k3cnet.Config{Dist: cfg.dist, Log: log, Version: version, StartedAt: time.Now(),
 		StatusToken: cfg.statusToken, Saves: saves, Reports: &store.Reports{Dir: cfg.reports}, Rooms: rooms,

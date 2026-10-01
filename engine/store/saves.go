@@ -125,6 +125,49 @@ func (s *Saves) store(slot string, data []byte) (backup string, err error) {
 	return backup, writeAtomic(path, data)
 }
 
+// Delete entfernt einen Spielstand und seine rotierenden Sicherungen. Gibt es ihn nicht, ist das kein Fehler.
+// (Sicherungen eines anderen Spiels unter demselben Namen, <slot>-<savedAt>.json, bleiben liegen.)
+func (s *Saves) Delete(slot string) error {
+	s.mu.Lock()
+	defer s.mu.Unlock()
+	return s.remove(slot)
+}
+
+func (s *Saves) remove(slot string) error {
+	path, err := s.path(slot)
+	if err != nil {
+		return err
+	}
+	if err := os.Remove(path); err != nil && !errors.Is(err, fs.ErrNotExist) {
+		return err
+	}
+	return os.RemoveAll(s.backupDir(slot))
+}
+
+// Purge löscht Spielstände, deren Name mit prefix beginnt und die seit before nicht mehr geschrieben wurden (Testläufe,
+// B-086). Liefert die Zahl der gelöschten. Andere Spielstände bleiben, auch bei leerem prefix: der muss mindestens ein Zeichen haben.
+func (s *Saves) Purge(prefix string, before time.Time) (int, error) {
+	if prefix == "" {
+		return 0, ErrSlot
+	}
+	s.mu.Lock()
+	defer s.mu.Unlock()
+	files, _ := filepath.Glob(filepath.Join(s.Dir, prefix+"*.json"))
+	n := 0
+	for _, f := range files {
+		slot := strings.TrimSuffix(filepath.Base(f), ".json")
+		info, err := os.Stat(f)
+		if !slotName.MatchString(slot) || err != nil || !info.ModTime().Before(before) {
+			continue
+		}
+		if err := s.remove(slot); err != nil {
+			return n, err
+		}
+		n++
+	}
+	return n, nil
+}
+
 // Count ist die Zahl der Spielstände (ohne Sicherungen).
 func (s *Saves) Count() int {
 	files, _ := filepath.Glob(filepath.Join(s.Dir, "*.json"))
