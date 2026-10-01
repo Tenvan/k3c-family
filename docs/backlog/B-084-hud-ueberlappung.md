@@ -55,4 +55,4 @@ keine
 
 ## Notizen
 
-Gefunden beim Browser-Lauf zu SP08. Revision 2: AC-01 neu gefasst (ein Text über vier lückenlosen Feldern überdeckt immer etwas; Kreuzpunkt statt „überdeckt nichts“), AC-02 ist die Beobachtung. Umgesetzt: `sharedAnchor` in `src/scenes/layout.ts`, `HudScene.placeShared()`; AC-01 durch Test belegt, AC-02 steht aus, deshalb bleibt das Ticket offen.
+Gefunden beim Browser-Lauf zu SP08. Revision 2: AC-01 neu gefasst (ein Text über vier lückenlosen Feldern überdeckt immer etwas; Kreuzpunkt statt „überdeckt nichts“), AC-02 ist die Beobachtung. Umgesetzt: `sharedAnchor` in `src/scenes/layout.ts`, `HudScene.placeShared()`; AC-01 durch Test belegt, AC-02 steht aus, deshalb bleibt das Ticket offen. Im Browser-Pane beobachtet (Agent, Freigabe 🧑, 4 Spieler: Vorrat und Tageszeit mittig am Kreuzpunkt, lesbar); die Bestätigung durch 🧑 am TV oder Rechner fehlt noch.
