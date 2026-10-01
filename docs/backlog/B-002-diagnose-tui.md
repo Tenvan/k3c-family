@@ -7,7 +7,7 @@
 - **Sprint:** SP10
 - **Erstellt:** 2026-09-29
 - **Spec:** Entwurf
-- **Revision:** 2
+- **Revision:** 3
 - **Freigabe:** –
 
 ## Ausgangslage
@@ -27,6 +27,7 @@ Diagnose-TUI zeigt den laufenden Server. Nutzen: Im Betrieb (PC oder Pi im Docke
 - Eigenes Programm `cmd/k3c-tui` (Bubble Tea), das nur mit der Diagnose-Schnittstelle des Servers (`/api/status…`, B-027, B-088) spricht, lokal oder über das Netz.
 - Zeigt Räume, Geräte, Tick-Dauer, Speicher, letzte Fehler und Spielstände live.
 - Aktionen: Raum ansehen, Gerät trennen, Spielstand sichern, Log folgen.
+- `k3c-tui -once` druckt den Zustand einmal als Text (für Skripte, CI und `docker exec` ohne Terminal); das Docker-Image enthält `k3c-tui`.
 
 ## Nicht-Ziele
 
@@ -47,7 +48,7 @@ Server nicht erreichbar oder Token falsch → klare Meldung und erneuter Versuch
 ## Akzeptanzkriterien
 
 - **AC-01** `k3c-tui` zeigt gegen einen lokal laufenden Server die Räume live.
-- **AC-02** Im Docker-Container zeigt `docker exec -it k3c k3c-tui` dasselbe.
+- **AC-02** Im Docker-Container zeigt `docker exec -it k3c k3c-tui` dasselbe; `docker exec k3c k3c-tui -once` druckt es und die CI führt das aus.
 - **AC-03** Die Aktionen Raum ansehen, Gerät trennen, Spielstand sichern und Log folgen wirken (Test oder Beobachtung).
 
 ## Offene Fragen
