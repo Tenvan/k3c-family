@@ -87,6 +87,9 @@ Grenzfälle:
 - **Protokoll** (`docs/protocol.md`, `engine/net/protocol*.go`, `src/online/protocol.ts`, `testdata/protocol/`) betrifft
   Client und Server. Eine Änderung daran bekommt eine eigene Session, die nur das Protokoll und beide Enden anpasst.
 - **Portierung:** Ein SIM-Port-Sprint darf `src/world/` lesen und Golden-Daten daraus erzeugen, ändert es aber nicht.
+- **Alt-Engine löschen (SP09, B-049):** INF löscht `src/world/`, `src/online/room.ts`, `src/online/wsServer.ts`, `server/*.mjs`,
+  `vite.server.config.ts` und zieht dafür Importe in `src/scenes/`, `src/online/`, `src/core/`, Dev-Server, `Taskfile.yml`, CI,
+  `tools/k3c-dev/services.json` und die Landingpage-Hinweise für GitHub Pages (B-032) nach. Neue Funktionen gehören nicht dazu.
 - **Feature-Stopp:** In `src/world/` nur noch Fehlerbehebungen, neue Mechaniken entstehen in Go (Entscheidung 001).
 - **Feature-Kette:** Ein neues Spielelement läuft als REG → SIM → CLI in direkt aufeinanderfolgenden Sprints.
 

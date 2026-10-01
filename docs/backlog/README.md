@@ -54,7 +54,7 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-046](B-046-dev-mcp.md) | SRV | Idee | mittel | erledigt | M1 | Entwickler-Werkzeug k3c-dev gibt Agenten über MCP verdichteten Zugriff auf Prüfungen und Logs |
 | [B-047](B-047-mcp-raeume-simulation.md) | SRV | Idee | mittel | eingeplant | M6 | MCP-Tools zeigen laufende Räume und rechnen Level und Simulationen |
 | [B-048](B-048-standardbibliothek-in-001.md) | SRV | Frage | niedrig | offen | – | Die Wahl der Go-Standardbibliothek ist dort festgehalten, wo B-001 auf sie verweist |
-| [B-049](B-049-sp09-domaene.md) | INF | Frage | niedrig | offen | – | SP09 bleibt in einer Domäne oder hat einen erlaubten Grenzfall |
+| [B-049](B-049-sp09-domaene.md) | INF | Frage | niedrig | erledigt | SP09 | SP09 bleibt in einer Domäne oder hat einen erlaubten Grenzfall |
 | [B-050](B-050-go-dateilaenge.md) | INF | Schuld | mittel | erledigt | SP01 | Die Dateilänge von Go-Code wird wie bei TypeScript geprüft |
 | [B-051](B-051-oxlint-warnungen.md) | INF | Schuld | niedrig | offen | – | Oxlint meldet im Bestand keine Warnungen mehr |
 | [B-052](B-052-requirements.md) | INF | Idee | mittel | erledigt | SP01 | Alle vorausgesetzten Installationen stehen in requirements.md |
@@ -83,7 +83,7 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-075](B-075-golden-spielstand-hub.md) | SIM | Schuld | mittel | offen | – | Der Golden-Spielstand enthält einen gebauten und veränderten Hub |
 | [B-076](B-076-websocket-bibliothek.md) | INF | Frage | hoch | erledigt | SP07 | Der Go-Server spricht WebSocket über github.com/coder/websocket |
 | [B-077](B-077-race-detector.md) | INF | Schuld | hoch | erledigt | L3 | Die nebenläufigen Go-Pakete werden mit dem Race-Detector geprüft |
-| [B-078](B-078-dev-proxy-go-server.md) | INF | Schuld | hoch | offen | – | `task dev` leitet `/ws` an den Go-Server weiter |
+| [B-078](B-078-dev-proxy-go-server.md) | INF | Schuld | hoch | eingeplant | SP09 | `task dev` leitet `/ws` an den Go-Server weiter |
 | [B-079](B-079-landing-kacheln-lobby.md) | PLAT | Schuld | mittel | offen | – | Die Kacheln der Landingpage passen zum Start über die Lobby |
 | [B-080](B-080-dev-tasten-server.md) | SRV | Idee | niedrig | offen | – | Dev-Tasten (Gold, Stufe, Neustart) wirken über den Server |
 | [B-081](B-081-testseite-szenarien.md) | PLAT | Idee | mittel | erledigt | T1 | Eine Testseite startet Test-Szenarien, zuerst 1–4 Spieler mit Mock-Spielern |

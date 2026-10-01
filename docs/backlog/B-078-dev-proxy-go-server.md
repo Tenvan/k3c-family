@@ -3,12 +3,12 @@
 - **Domäne:** INF
 - **Typ:** Schuld
 - **Prio:** hoch
-- **Status:** offen
-- **Sprint:** –
+- **Status:** eingeplant
+- **Sprint:** SP09
 - **Erstellt:** 2026-10-01
-- **Spec:** Entwurf
-- **Revision:** 1
-- **Freigabe:** –
+- **Spec:** freigegeben
+- **Revision:** 2
+- **Freigabe:** 2026-10-01 🧑 Chat („SP09 freigegeben“), Revision 2
 
 ## Ausgangslage
 
@@ -31,7 +31,7 @@ Entwickler und Agenten (CLI-Sessions); 🧑 entscheidet.
 
 ## Nicht-Ziele
 
-Löschen des Node-Servers (SP09).
+Löschen des Node-Servers (SP09.2 erledigt beides in einer Session).
 
 ## Regeln und Einschränkungen
 
@@ -51,7 +51,7 @@ Go-Server läuft nicht → Hinweis im Terminal, der Browser zeigt „Server nich
 
 ## Offene Fragen
 
-Soll der Go-Server künftig auch den Dev-Server starten (k3c-dev-Dienst)? (🧑)
+keine (SP09.2: der k3c-dev-Dienst „Heimnetz“ startet den Go-Server per `task start`, `/api` und `/ws` laufen über den Vite-Proxy).
 
 ## Notizen
 
