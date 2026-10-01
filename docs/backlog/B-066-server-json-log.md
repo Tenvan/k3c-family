@@ -3,11 +3,11 @@
 - **Domäne:** SRV
 - **Typ:** Idee
 - **Prio:** mittel
-- **Status:** offen
-- **Sprint:** –
+- **Status:** eingeplant
+- **Sprint:** D1
 - **Erstellt:** 2026-09-30
 - **Spec:** Entwurf
-- **Revision:** 1
+- **Revision:** 2
 - **Freigabe:** –
 
 ## Ausgangslage
@@ -26,8 +26,11 @@ Entwickler und Agenten am Entwickler-PC; im Docker und auf dem Pi bleibt stdout.
 
 ## Anforderungen
 
-- `k3c-server` schreibt mit dem JSON-Handler von `log/slog` nach `logs/k3c-server.jsonl`, wenn `K3C_LOG_DIR` gesetzt ist
-  oder der Server aus dem Repo startet; sonst nach stdout.
+- `k3c-server` schreibt mit dem JSON-Handler von `log/slog` nach `<Ordner>/k3c-server.jsonl`. Ordner: `K3C_LOG_DIR`, sonst
+  `logs/`, wenn dieser Ordner im Arbeitsverzeichnis schon existiert (Start aus dem Repo, auch per k3c-dev). Ohne beides
+  (Docker, Pi) bleibt das Text-Log auf stderr, wie bisher.
+- Die Datei kommt zusätzlich zum Text-Log auf stderr, nicht statt dessen.
+- Der Dienst „Heimnetz“ in `tools/k3c-dev/services.json` bekommt `"log": "k3c-server"`, damit `svc_status` und `logs_*` ihn sehen.
 - Format wie B-046 › Eigenes Log: `time`, `level`, `msg`, optional `ns` (z. B. `http`, `room`, `store`).
 
 ## Nicht-Ziele
@@ -49,7 +52,8 @@ Ordner nicht schreibbar → Log nach stdout, eine Warnung.
 ## Akzeptanzkriterien
 
 - **AC-01** Der Server schreibt im Repo nach `logs/k3c-server.jsonl` im Format aus B-046 (Test).
-- **AC-02** Ohne Repo bzw. im Docker geht das Log nach stdout (Test).
+- **AC-02** Ohne `K3C_LOG_DIR` und ohne Ordner `logs/` entsteht keine Datei, das Log bleibt auf stderr (Test).
+- **AC-03** `services.json` führt den Dienst „Heimnetz“ mit `"log": "k3c-server"`, k3c-dev lädt sie (Test).
 
 ## Offene Fragen
 

@@ -7,12 +7,12 @@
 - **Tickets:** B-002
 - **Start-Commit:** –
 - **Spec:** Entwurf
-- **Revision:** 1
+- **Revision:** 2
 - **Freigabe:** –
 
 ## Ausgangslage
 
-Ab SP07 zeigt `/api/status` Räume und Tick-Dauer; eine Oberfläche dafür gibt es nicht.
+Ab SP07 zeigt `/api/status` Räume und Tick-Dauer; Sprint D1 ergänzt Speicher, Geräte, Log und die Aktionen (B-088). Eine Oberfläche dafür gibt es nicht.
 
 ## Ziel
 
@@ -32,7 +32,7 @@ Wails-Starter (B-041).
 
 ## Regeln und Einschränkungen
 
-Nur `/api/status` mit Token (B-027); Bubble Tea.
+Nur die Diagnose-Endpunkte `/api/status…` mit Token (B-027, B-088); Bubble Tea (Zustimmung mit der Freigabe, B-002); Voraussetzung: Sprint D1 erledigt.
 
 ## Beispiele
 
