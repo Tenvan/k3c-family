@@ -6,9 +6,9 @@
 - **Status:** eingeplant
 - **Sprint:** T1
 - **Erstellt:** 2026-10-01
-- **Spec:** Entwurf
+- **Spec:** freigegeben
 - **Revision:** 2
-- **Freigabe:** –
+- **Freigabe:** 2026-10-01 🧑 Chat (T1 Revision 1)
 
 ## Ausgangslage
 

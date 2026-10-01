@@ -6,9 +6,9 @@
 - **Einschiebbar:** ja
 - **Tickets:** B-081
 - **Start-Commit:** – (wird beim Aktivieren gesetzt: `git rev-parse --short origin/main`)
-- **Spec:** Entwurf
+- **Spec:** freigegeben
 - **Revision:** 1
-- **Freigabe:** –
+- **Freigabe:** 2026-10-01 🧑 Chat (T1 Revision 1, mit B-081 Revision 2)
 
 ## Ausgangslage
 
