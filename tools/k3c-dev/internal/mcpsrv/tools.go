@@ -80,7 +80,7 @@ func registerEngine(s *Server) {
 	add(s, &mcp.Tool{
 		Name: "sim_run",
 		Description: "Deterministischer Simulationslauf in-process (engine/sim, kein Server nötig), höchstens 100000 Ticks (30/s): " +
-			"Tag, Welle, Gold, Truppen, Verluste, Ende. Optional Eingaben je Monarch und Tick-Bereich.",
+			"Tag, Welle, Gold, Truppen, Verluste, Ende. Optional Eingaben je Monarch und Tick-Bereich (höchstens 100 Segmente).",
 		Annotations: readOnlyEngine(),
 	}, s.simRun)
 }
