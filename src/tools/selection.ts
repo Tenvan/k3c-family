@@ -73,7 +73,9 @@ export function installSelection(key: string, label: string): Selection {
   };
   copy.addEventListener('click', () => {
     out.select();
-    void navigator.clipboard?.writeText(out.value);
+    // navigator.clipboard gibt es nur in sicheren Kontexten (https, localhost); über http://<IP> im Heimnetz bleibt der alte Weg
+    if (navigator.clipboard) void navigator.clipboard.writeText(out.value);
+    else document.execCommand('copy');
   });
   clear.addEventListener('click', () => [...ids].forEach((id) => set(id, false)));
   refresh();
