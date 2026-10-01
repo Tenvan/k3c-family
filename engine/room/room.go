@@ -55,8 +55,8 @@ type Peer interface {
 	Level(depth int, layout level.Layout)
 	State(tick int, w *sim.World)
 	Seats(you []Seat, monarchs []string)
-	Replaced() // dieselbe Geräte-ID ist über eine neue Verbindung beigetreten
-	Closed()   // Raum geschlossen (Absturz oder Server fährt herunter)
+	Replaced()         // dieselbe Geräte-ID ist über eine neue Verbindung beigetreten
+	Closed(final bool) // Raum geschlossen; final: Server fährt herunter, die Verbindung endet danach
 }
 
 type monarch struct {
@@ -85,6 +85,8 @@ type Room struct {
 	tick       int
 	emptySince time.Time
 	closed     bool
+	durations  []time.Duration // letzte Tick-Dauern (run.go)
+	beforeStep func()          // Test-Naht: läuft im Tick vor sim.Step
 }
 
 // validSlots: Slot 4 oder höher → too_many_slots, sonst leer, negativ oder doppelt → bad_request.

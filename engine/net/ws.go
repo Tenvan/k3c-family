@@ -23,15 +23,23 @@ const (
 	maxDeviceLen = 64
 )
 
+// out ist eine Nachricht im Sendekanal; mit close statt data schließt die Schreib-Goroutine die Verbindung.
+type out struct {
+	data   []byte
+	close  websocket.StatusCode
+	reason string
+}
+
 // conn ist ein Gerät; es setzt room.Peer um. Die Peer-Methoden laufen unter der Sperre des Raums und schreiben nur
 // in den Sendekanal.
 type conn struct {
 	s      *server
 	ws     *websocket.Conn
 	device string
-	send   chan []byte
+	send   chan out
 	cancel context.CancelFunc
 	seq    atomic.Int64 // höchstes verrechnetes seq dieser Verbindung (ack)
+	prev   map[string]any // zuletzt gesendeter Zustand; nil = nächster Zustand ist ein snap (nur unter Raum-Sperre)
 
 	mu     sync.Mutex
 	room   *room.Room
@@ -45,7 +53,7 @@ func (c *conn) enqueue(v any) {
 		return
 	}
 	select {
-	case c.send <- b:
+	case c.send <- out{data: b}:
 	default:
 		c.s.log.Warn("Sendepuffer voll, Verbindung zu", "device", c.device)
 		c.cancel()
@@ -59,10 +67,21 @@ func (c *conn) Joined(code, name string, you []room.Seat) {
 	c.enqueue(joinedMsg{"joined", code, name, you})
 }
 
-func (c *conn) Level(depth int, layout level.Layout) { c.enqueue(levelMsg{"level", depth, layout}) }
+// Level: nach dem Level kommt immer ein voller Zustand (Beitreten, Wiederverbinden, Stufenwechsel).
+func (c *conn) Level(depth int, layout level.Layout) {
+	c.prev = nil
+	c.enqueue(levelMsg{"level", depth, layout})
+}
 
+// State schickt snap nach Level, sonst delta zum zuletzt gesendeten Zustand.
 func (c *conn) State(tick int, w *sim.World) {
-	c.enqueue(stateMsg{"snap", tick, c.seq.Load(), stateOf(w)})
+	s := stateOf(w)
+	msg := stateMsg{"snap", tick, c.seq.Load(), s}
+	if c.prev != nil {
+		msg.T, msg.S = "delta", deltaOf(c.prev, s)
+	}
+	c.prev = s
+	c.enqueue(msg)
 }
 
 func (c *conn) Seats(you []room.Seat, monarchs []string) {
@@ -73,17 +92,26 @@ func (c *conn) Seats(you []room.Seat, monarchs []string) {
 func (c *conn) Replaced() {
 	c.leaveRoom()
 	c.enqueue(errMsg(codeReplaced))
+	c.closeAfterSend(websocket.StatusPolicyViolation, codeReplaced)
+}
+
+// closeAfterSend schließt die Verbindung, sobald alles davor gesendet ist.
+func (c *conn) closeAfterSend(code websocket.StatusCode, reason string) {
 	select {
-	case c.send <- nil: // nil = nach dem Senden schließen
+	case c.send <- out{close: code, reason: reason}:
 	default:
 		c.cancel() // Puffer voll: sofort schließen
 	}
 }
 
-// Closed: Raum abgestürzt oder Server fährt herunter; das Gerät ist danach in keinem Raum.
-func (c *conn) Closed() {
+// Closed: Raum abgestürzt oder Server fährt herunter; das Gerät ist danach in keinem Raum. Beim Herunterfahren
+// (final) schließt der Server die Verbindung nach dem Fehler.
+func (c *conn) Closed(final bool) {
 	c.leaveRoom()
 	c.enqueue(errMsg(codeRoomClosed))
+	if final {
+		c.closeAfterSend(websocket.StatusGoingAway, codeRoomClosed)
+	}
 }
 
 func (c *conn) leaveRoom() {
@@ -103,13 +131,13 @@ func (c *conn) writer(ctx context.Context) {
 		select {
 		case <-ctx.Done():
 			return
-		case b := <-c.send:
-			if b == nil {
-				_ = c.ws.Close(websocket.StatusPolicyViolation, codeReplaced)
+		case o := <-c.send:
+			if o.data == nil {
+				_ = c.ws.Close(o.close, o.reason)
 				c.cancel()
 				return
 			}
-			if err := c.ws.Write(ctx, websocket.MessageText, b); err != nil {
+			if err := c.ws.Write(ctx, websocket.MessageText, o.data); err != nil {
 				c.cancel()
 				return
 			}
@@ -133,7 +161,7 @@ func (s *server) websocket(w http.ResponseWriter, r *http.Request) {
 		_ = ws.Close(websocket.StatusPolicyViolation, codeVersion)
 		return
 	}
-	c := &conn{s: s, ws: ws, device: device, send: make(chan []byte, sendBuffer), cancel: cancel}
+	c := &conn{s: s, ws: ws, device: device, send: make(chan out, sendBuffer), cancel: cancel}
 	go c.writer(ctx)
 	c.enqueue(welcome())
 	s.track(c, true)
