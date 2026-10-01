@@ -16,12 +16,14 @@ ARG TARGETOS
 ARG TARGETARCH
 ARG VERSION=dev
 WORKDIR /src
-COPY go.mod ./
+COPY go.mod go.sum ./
 COPY data ./data
 COPY engine ./engine
 COPY cmd ./cmd
 RUN CGO_ENABLED=0 GOOS=$TARGETOS GOARCH=$TARGETARCH \
     go build -trimpath -ldflags "-s -w -X main.version=$VERSION" -o /out/k3c-server ./cmd/k3c-server \
+ && CGO_ENABLED=0 GOOS=$TARGETOS GOARCH=$TARGETARCH \
+    go build -trimpath -ldflags "-s -w" -o /out/k3c-tui ./cmd/k3c-tui \
  && mkdir -p /out/data/saves /out/data/reports
 
 # Laufzeit ohne Shell, als nonroot (UID 65532); /data gehört ihm, damit ein neues Volume beschreibbar ist
@@ -29,6 +31,8 @@ FROM gcr.io/distroless/static-debian12:nonroot
 WORKDIR /app
 COPY --from=web /src/dist ./dist
 COPY --from=server /out/k3c-server ./k3c-server
+# Diagnose-TUI: docker exec -it <Container> k3c-tui (K3C_STATUS_TOKEN muss im Container gesetzt sein)
+COPY --from=server /out/k3c-tui /usr/local/bin/k3c-tui
 COPY --from=server --chown=65532:65532 /out/data /data
 ENV K3C_DIST=/app/dist K3C_SAVES_DIR=/data/saves K3C_REPORTS_DIR=/data/reports K3C_HTTP_PORT=8080
 VOLUME ["/data"]
