@@ -7,8 +7,8 @@
 - **Sprint:** SP08
 - **Erstellt:** 2026-09-29
 - **Spec:** freigegeben
-- **Revision:** 2
-- **Freigabe:** 2026-10-01 🧑 Chat (SP08 Revision 4)
+- **Revision:** 3
+- **Freigabe:** 2026-10-01 🧑 Chat („bei drei Spieler ein 2x1 Raster“, mit Auswahl: zwei oben, einer breit unten), Revision 3
 
 ## Ausgangslage
 
@@ -53,4 +53,4 @@ keine
 
 ## Notizen
 
-Entscheidung 2026-10-01 🧑 (Chat, beim Bereitmachen von SP08): **2×2-Raster** für 3–4 lokale Spieler, eine Kamera je Spieler. Bei 1–2 Spielern bleibt es bei Vollbild bzw. Streifen. AC-01 ist damit getroffen, AC-02 setzt SP08 um.
+Entscheidung 2026-10-01 🧑 (Chat, beim Bereitmachen von SP08): **2×2-Raster** für 3–4 lokale Spieler, eine Kamera je Spieler. Bei 1–2 Spielern bleibt es bei Vollbild bzw. Streifen. Revision 3 (2026-10-01 🧑 Chat): bei **3 Spielern zwei oben und einer breit unten** (statt 2×2 mit freiem Feld), bei 4 bleibt es beim 2×2-Raster. AC-01 ist damit getroffen, AC-02 setzt SP08 um.

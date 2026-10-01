@@ -18,11 +18,14 @@ describe('computeLayout (B-016)', () => {
     expect(computeLayout(2, true)).toEqual(cells);
   });
 
-  it('3 Spieler: 2×2-Raster, das vierte Feld zeigt Raumcode und freie Plätze', () => {
+  it('3 Spieler: zwei oben, einer breit unten, ohne Lücke und Überlappung', () => {
     const cells = computeLayout(3, false);
-    expect(cells).toHaveLength(4);
-    expect(cells.map((c) => c.kind)).toEqual(['player', 'player', 'player', 'info']);
-    expect(cells.map((c) => c.seat)).toEqual([0, 1, 2, -1]);
+    expect(cells.map((c) => [c.seat, c.x, c.y, c.w, c.h])).toEqual([
+      [0, 0, 0, GAME_WIDTH / 2, GAME_HEIGHT / 2],
+      [1, GAME_WIDTH / 2, 0, GAME_WIDTH / 2, GAME_HEIGHT / 2],
+      [2, 0, GAME_HEIGHT / 2, GAME_WIDTH, GAME_HEIGHT / 2],
+    ]);
+    expect(cells.every((c) => c.kind === 'player')).toBe(true);
     expect(area(cells)).toBe(GAME_WIDTH * GAME_HEIGHT);
   });
 
@@ -44,13 +47,8 @@ describe('sharedAnchor (B-084)', () => {
     for (const n of [1, 2]) expect(sharedAnchor(computeLayout(n, false))).toEqual({ x: GAME_WIDTH - 24, y: 16, originX: 1 });
   });
 
-  it('3 Spieler: im Info-Feld, oben mittig', () => {
-    const a = sharedAnchor(computeLayout(3, false));
-    expect(a).toEqual({ x: GAME_WIDTH * 0.75, y: GAME_HEIGHT / 2 + 16, originX: 0.5 });
-  });
-
-  it('4 Spieler: mittig am Kreuzpunkt, nicht in einer Feldecke', () => {
-    const a = sharedAnchor(computeLayout(4, false));
+  it.each([3, 4])('%i Spieler: mittig am Kreuzpunkt, nicht in einer Feldecke', (n) => {
+    const a = sharedAnchor(computeLayout(n, false));
     expect(a.x).toBe(GAME_WIDTH / 2);
     expect(a.originX).toBe(0.5);
     expect(a.y + (SHARED_LINE_HEIGHT * 3) / 2).toBe(GAME_HEIGHT / 2);

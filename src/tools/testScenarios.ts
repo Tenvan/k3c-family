@@ -13,7 +13,7 @@ export interface Scenario {
 export const SCENARIOS: readonly Scenario[] = [1, 2, 3, 4].map((n) => ({
   id: `players-${n}`,
   title: n === 1 ? '1 Spieler' : `${n} Spieler`,
-  description: n === 1 ? 'Vollbild, keine Mock-Spieler' : `Du und ${n - 1} Mock-Spieler (stehen still) · ${n === 2 ? 'zwei Streifen' : '2×2-Raster'}`,
+  description: n === 1 ? 'Vollbild, keine Mock-Spieler' : `Du und ${n - 1} Mock-Spieler (stehen still) · ${{ 2: 'zwei Streifen', 3: 'zwei oben, einer breit unten', 4: '2×2-Raster' }[n]}`,
   players: n,
 }));
 
