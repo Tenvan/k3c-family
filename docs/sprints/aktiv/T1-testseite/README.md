@@ -1,6 +1,6 @@
 # T1 · PLAT · Testseite mit Szenarien und Mock-Spielern
 
-- **Status:** geplant
+- **Status:** aktiv
 - **Domäne:** PLAT
 - **Reife:** bereit
 - **Einschiebbar:** ja
