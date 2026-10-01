@@ -41,6 +41,14 @@ type Gatherable struct {
 	MarkCost    int
 }
 
+// EnemyData ist ein Eintrag aus data/enemies.json.
+type EnemyData struct {
+	Tier                     string // standard, elite
+	HP, Damage, Speed, Range float64
+	Gold                     [2]int
+	Traits                   []string
+}
+
 // HubSite ist ein Bauplatz relativ zur Hub-Mitte.
 type HubSite struct {
 	Kind        string
@@ -58,8 +66,12 @@ var (
 		DropPickupDelaySeconds                              float64
 		DawnGoldPerPlayer                                   int
 		ChestGold                                           [2]int
-		Gatherables                                         map[string]Gatherable
-		RecruitCamp                                         struct {
+		EnemyResourceDrop                                   struct {
+			Chance float64
+			Amount int
+		}
+		Gatherables map[string]Gatherable
+		RecruitCamp struct {
 			MaxVagrants                 int
 			RespawnSeconds, WanderUnits float64
 		}
@@ -74,6 +86,17 @@ var (
 		Base                                           struct{ HP, Damage, Speed, Defense float64 }
 		SprintMultiplier, Acceleration, RespawnSeconds float64
 	}]("monarch.json")
+	enemyData = load[map[string]EnemyData]("enemies.json")
+	waves     = load[struct {
+		Table []struct {
+			FromWave        int
+			Standard, Elite [2]int
+		}
+		SpawnSpreadSeconds float64
+		DepthScaling       struct{ HP, Damage, Speed float64 }
+		AttacksPerSecond   float64
+		StealGold          int
+	}]("waves.json")
 	// biomes in der Reihenfolge von `BIOMES` in TS (Oberwelt zuerst, dann nach Tiefe).
 	biomes         = loadBiomes()
 	globalDayNight = firstDayNight()

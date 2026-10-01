@@ -50,33 +50,11 @@ func goldenRuns(t *testing.T) []goldenRun {
 	return runs
 }
 
-// fullUntil ist der letzte Tick, bis zu dem ein Lauf vollständig verglichen wird: der Snapshot vor dem ersten mit
-// Gegner oder spawnQueue-Eintrag (Gegner rechnet Go ab SP06). Danach nur time und cycle.
-func fullUntil(run goldenRun) int {
-	last := 0
-	for _, s := range run.Snapshots {
-		if len(s.World["enemies"].([]any))+len(s.World["spawnQueue"].([]any)) > 0 {
-			return last
-		}
-		last = s.Tick
-	}
-	return run.Ticks
-}
-
-// compare vergleicht einen Snapshot: bis fullUntil vollständig, danach nur die Felder, die Go schon rechnet.
+// compare vergleicht einen Snapshot vollständig.
 func compare(t *testing.T, run goldenRun, tick int, want map[string]any, w *World) {
 	t.Helper()
-	got := golden.Tree(t, w).(map[string]any)
-	if tick <= fullUntil(run) {
-		if d := golden.Diff("world", want, got); d != "" {
-			t.Fatalf("sim-%s Tick %d: %s", run.Name, tick, d)
-		}
-		return
-	}
-	for _, k := range []string{"time", "cycle"} {
-		if d := golden.Diff("world."+k, want[k], got[k]); d != "" {
-			t.Fatalf("sim-%s Tick %d: %s", run.Name, tick, d)
-		}
+	if d := golden.Diff("world", want, golden.Tree(t, w)); d != "" {
+		t.Fatalf("sim-%s Tick %d: %s", run.Name, tick, d)
 	}
 }
 
@@ -128,20 +106,6 @@ func TestGoldenLaeufeVollstaendig(t *testing.T) {
 	for _, want := range []string{"forest-tag", "forest-nacht", "cave-aggression", "forest-ohne-spieler"} {
 		if !slices.Contains(names, want) {
 			t.Errorf("Golden-Lauf sim-%s fehlt", want)
-		}
-	}
-}
-
-// Die Läufe ohne Gegner müssen vollständig verglichen werden, die mit Welle bis kurz vor der ersten Welle.
-func TestGoldenGrenzen(t *testing.T) {
-	for _, run := range goldenRuns(t) {
-		limit := fullUntil(run)
-		t.Logf("sim-%s: vollständig bis Tick %d von %d", run.Name, limit, run.Ticks)
-		if (run.Name == "forest-tag" || run.Name == "forest-ohne-spieler") && limit != run.Ticks {
-			t.Errorf("sim-%s: nur bis Tick %d vollständig, erwartet %d", run.Name, limit, run.Ticks)
-		}
-		if limit < run.Ticks/3 {
-			t.Errorf("sim-%s: nur bis Tick %d vollständig", run.Name, limit)
 		}
 	}
 }

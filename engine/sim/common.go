@@ -84,3 +84,58 @@ func isWorker(w *World, id *int) bool {
 	}
 	return false
 }
+
+// applyDamage verteilt Schaden auf ein Ziel per ID. Tod und Zerstörung behandelt der Tick.
+func applyDamage(w *World, targetID int, damage float64) {
+	for _, p := range w.Players {
+		if p.ID != targetID {
+			continue
+		}
+		if !isAlive(p) {
+			return
+		}
+		p.HP -= math.Max(1, damage-monarch.Base.Defense)
+		if p.HP <= 0 {
+			p.HP, p.RespawnIn, p.VX = 0, monarch.RespawnSeconds, 0
+			w.Events = append(w.Events, Event{"type": "playerDown", "player": p.Index})
+		}
+		return
+	}
+	if t := troopByID(w, targetID); t != nil {
+		t.HP -= damage
+		return
+	}
+	for _, e := range w.Enemies {
+		if e.ID == targetID {
+			e.HP -= damage
+			return
+		}
+	}
+	if w.Castle.ID == targetID {
+		w.Castle.HP -= damage
+		return
+	}
+	if s := siteByID(w, targetID); s != nil && s.State == "built" {
+		s.HP -= damage
+		if s.HP <= 0 {
+			destroySite(w, s)
+		}
+	}
+}
+
+// destroySite: Der Bauplatz ist wieder leer und muss neu bezahlt werden.
+func destroySite(w *World, s *Site) {
+	wasBuilt := s.State == "built"
+	*s = Site{ID: s.ID, Kind: s.Kind, X: s.X, State: "unpaid", MaxHP: buildings[s.Kind].HP}
+	for _, t := range w.Troops {
+		if t.TowerID != nil && *t.TowerID == s.ID {
+			t.TowerID = nil
+		}
+		if t.Job != nil && (t.Job.Type == "build" || t.Job.Type == "fetchBow") && t.Job.SiteID == s.ID {
+			t.Job = nil
+		}
+	}
+	if wasBuilt {
+		w.Events = append(w.Events, Event{"type": "destroyed", "kind": s.Kind})
+	}
+}

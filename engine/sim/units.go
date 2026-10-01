@@ -167,14 +167,7 @@ func carry(w *World, t *Troop, dt float64) {
 	if !walkTo(t, w.HubX, dt) {
 		return
 	}
-	switch t.Job.Resource {
-	case "wood":
-		w.Stock.Wood += t.Job.Amount
-	case "stone":
-		w.Stock.Stone += t.Job.Amount
-	case "copper":
-		w.Stock.Copper += t.Job.Amount
-	}
+	addStock(w, t.Job.Resource, t.Job.Amount)
 	w.Events = append(w.Events, Event{"type": "gathered", "resource": t.Job.Resource, "amount": t.Job.Amount})
 	if w.Aggression != nil && w.Biome.Cycle.Type == "aggressionPool" {
 		*w.Aggression = math.Min(100, *w.Aggression+w.Biome.Cycle.PercentPerGather)

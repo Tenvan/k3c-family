@@ -277,10 +277,29 @@ func collectPickups(w *World) {
 func giveGold(w *World, p *Player, amount int, x float64) {
 	fits := min(amount, economy.Purse.MaxGold-p.Gold)
 	p.Gold += fits
-	for range amount - fits {
+	scatterCoins(w, x, amount-fits)
+}
+
+func scatterCoins(w *World, x float64, count int) {
+	for range count {
 		cx := math.Min(w.WidthUnits, math.Max(0, x+float64((w.rng.Next()-0.5)*3)))
 		w.Coins = append(w.Coins, &Coin{ID: w.newID(), X: cx})
 	}
+}
+
+// addStock legt Baumaterial in den Hub-Vorrat; false, wenn resource kein Baumaterial ist.
+func addStock(w *World, resource string, amount int) bool {
+	switch resource {
+	case "wood":
+		w.Stock.Wood += amount
+	case "stone":
+		w.Stock.Stone += amount
+	case "copper":
+		w.Stock.Copper += amount
+	default:
+		return false
+	}
+	return true
 }
 
 func canAfford(s Stock, c Cost) bool {
