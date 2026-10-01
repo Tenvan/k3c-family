@@ -3,19 +3,16 @@
 - **Domäne:** INF
 - **Typ:** Schuld
 - **Prio:** niedrig
-- **Status:** offen
-- **Sprint:** –
+- **Status:** eingeplant
+- **Sprint:** I1
 - **Erstellt:** 2026-09-30
-- **Spec:** Entwurf
-- **Revision:** 1
-- **Freigabe:** –
+- **Spec:** freigegeben
+- **Revision:** 2
+- **Freigabe:** 2026-10-01 🧑 Chat („baue aus den offenen Punkten den nächsten Sprint und aktiviere ihn“, Sprint I1 Revision 1)
 
 ## Ausgangslage
 
-Seit SP01.1 läuft Oxlint mit seinen Standard-Regeln. Neben dem Budget (Fehler) meldet es im Bestand 9 Warnungen,
-die den Lauf nicht scheitern lassen: `no-unused-expressions` 5× in `src/world/sim/economy.ts` (Zeilen 100, 101, 105,
-108, 151), `no-extra-boolean-cast` 2× in `src/tools/gamepadTest.ts:47`, `unicorn/no-new-array` in
-`src/world/levelGenerator.ts:51`, `unicorn/prefer-string-starts-ends-with` in `tests/projectRules.test.ts:14`.
+Oxlint meldet im Bestand noch 2 Warnungen (`no-extra-boolean-cast` in `src/tools/gamepadTest.ts:47`); die übrigen sieben sind mit dem Löschen von `src/world/` (SP09) verschwunden.
 
 ## Ziel
 
@@ -27,8 +24,7 @@ Entwickler und Cloud-Agenten, die `npm run lint` lesen; Review-Session.
 
 ## Anforderungen
 
-- Jede der 9 Warnungen ist behoben oder die Regel ist mit Begründung in `.oxlintrc.json` abgeschaltet.
-- Verhalten bleibt gleich (Tests grün, Golden-Daten ab SP04 unverändert).
+- Beide Warnungen sind behoben (Verhalten gleich, Tests grün).
 
 ## Nicht-Ziele
 
@@ -51,13 +47,12 @@ Eine Warnung ist in diesem Projekt kein Problem → Regel abschalten, Grund als 
 
 ## Akzeptanzkriterien
 
-- **AC-01** `npm run lint` meldet 0 Warnungen.
-- **AC-02** `npm run check` ist grün.
+- **AC-01** `task lint` meldet 0 Warnungen.
+- **AC-02** `task check` ist grün.
 
 ## Offene Fragen
 
-Sollen Warnungen danach die CI scheitern lassen (`oxlint --deny-warnings`)? (🧑) Lohnt es sich vor SP09 überhaupt,
-da 6 der 9 Warnungen in `src/world/` liegen, das dann gelöscht wird? (🧑)
+keine (Revision 2: Warnungen lassen die CI nicht scheitern, `--deny-warnings` ist kein Ziel dieses Tickets).
 
 ## Notizen
 
