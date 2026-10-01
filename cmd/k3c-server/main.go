@@ -73,7 +73,6 @@ func run(cfg config, log *slog.Logger) error {
 	saves := &store.Saves{Dir: cfg.saves}
 	rooms := room.NewManager(saves)
 	rooms.Log = log
-	// SP07.3: Takt je Raum (Manager.Run) und Close beim Beenden.
 	handler := k3cnet.NewHandler(k3cnet.Config{Dist: cfg.dist, Log: log, Version: version, StartedAt: time.Now(),
 		StatusToken: cfg.statusToken, Saves: saves, Reports: &store.Reports{Dir: cfg.reports}, Rooms: rooms})
 	if cfg.statusToken == "" {
@@ -82,6 +81,7 @@ func run(cfg config, log *slog.Logger) error {
 	// SIGTERM schicken docker stop und compose down; ohne Handler würde PID 1 im Container es ignorieren.
 	ctx, stop := signal.NotifyContext(context.Background(), os.Interrupt, syscall.SIGTERM)
 	defer stop()
+	go rooms.Run(ctx) // eine Goroutine je Raum, 30 Hz, Fristen einmal pro Sekunde
 	servers := []*http.Server{newServer(":"+cfg.httpPort, handler)}
 	errs := make(chan error, 2)
 	go func() { errs <- servers[0].ListenAndServe() }()
@@ -100,6 +100,7 @@ func run(cfg config, log *slog.Logger) error {
 		return err
 	case <-ctx.Done():
 	}
+	rooms.Close() // alle Räume speichern, room_closed an die Geräte, Verbindungen schließen
 	return shutdown(servers)
 }
 

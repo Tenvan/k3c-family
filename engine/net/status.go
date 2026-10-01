@@ -7,6 +7,7 @@ import (
 	"strings"
 	"time"
 
+	"k3c/engine/room"
 	"k3c/engine/store"
 )
 
@@ -27,12 +28,34 @@ func (s *server) status(w http.ResponseWriter, r *http.Request) {
 		fail(w, http.StatusMethodNotAllowed, "Nur GET")
 		return
 	}
+	if code := r.URL.Query().Get("room"); code != "" {
+		s.roomStatus(w, code)
+		return
+	}
 	started := s.cfg.StartedAt
-	writeJSON(w, http.StatusOK, map[string]any{
+	body := map[string]any{
 		"version": s.cfg.Version, "startedAt": started.UTC().Format(time.RFC3339),
 		"uptimeS": int64(time.Since(started).Seconds()),
 		"saves":   s.cfg.Saves.Count(), "reports": s.cfg.Reports.Count(),
-	})
+		"rooms":   []room.Status{}, "failures": []room.Failure{},
+	}
+	if s.cfg.Rooms != nil {
+		body["rooms"], body["failures"] = s.cfg.Rooms.Status()
+	}
+	writeJSON(w, http.StatusOK, body)
+}
+
+// roomStatus ist GET /api/status?room=CODE: der verdichtete Zustand eines Raums.
+func (s *server) roomStatus(w http.ResponseWriter, code string) {
+	var r *room.Room
+	if s.cfg.Rooms != nil {
+		r = s.cfg.Rooms.Room(code)
+	}
+	if r == nil {
+		fail(w, http.StatusNotFound, "Raum nicht gefunden")
+		return
+	}
+	writeJSON(w, http.StatusOK, r.Summary())
 }
 
 // backups ist GET /api/save/backups?slot= (B-028): Sicherungen eines Spielstands, neueste zuerst.

@@ -1,6 +1,7 @@
 package room
 
 import (
+	"context"
 	"encoding/json"
 	"errors"
 	"io"
@@ -37,8 +38,10 @@ type Manager struct {
 	// Aufruf ohne gehaltene Sperre.
 	Changed func()
 
-	mu    sync.Mutex
-	rooms map[string]*Room
+	mu       sync.Mutex
+	rooms    map[string]*Room
+	ctx      context.Context // gesetzt von Run; neue Räume bekommen dann ihre Goroutine
+	failures []Failure       // die letzten abgestürzten Räume
 }
 
 // NewManager legt einen Manager ohne Räume an.
@@ -117,6 +120,9 @@ func (m *Manager) create(id string, peer Peer, name string, fresh bool, depth in
 	}
 	r := &Room{Code: m.code(), Name: name, m: m, camp: camp, devices: map[string]*device{}}
 	m.rooms[r.Code] = r
+	if m.ctx != nil {
+		go r.run(m.ctx)
+	}
 	return r, r.lockedJoin(id, peer, slots)
 }
 
@@ -224,7 +230,7 @@ func (m *Manager) Close() {
 		r.closed = true
 		for _, d := range r.devices {
 			if d.connected {
-				d.peer.Closed()
+				d.peer.Closed(true)
 			}
 		}
 		r.mu.Unlock()

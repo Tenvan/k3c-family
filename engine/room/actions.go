@@ -136,11 +136,15 @@ func (r *Room) afterDisconnect() {
 
 // Tick rechnet einen Schritt mit 1/TickHz Sekunden. Ein Raum ohne verbundenes Gerät ist pausiert und tickt nicht.
 // Nach einem Stufenwechsel speichert er und schickt das neue Level vor dem Zustand.
-func (r *Room) Tick() {
+// false: Der Raum ist geschlossen.
+func (r *Room) Tick() bool {
 	r.mu.Lock()
 	defer r.mu.Unlock()
-	if r.closed || r.connected() == 0 {
-		return
+	if r.closed {
+		return false
+	}
+	if r.connected() == 0 {
+		return true
 	}
 	commands := make([]sim.PlayerCommand, len(r.monarchs))
 	for i, mo := range r.monarchs {
@@ -149,6 +153,9 @@ func (r *Room) Tick() {
 		}
 	}
 	w := r.syncFree()
+	if r.beforeStep != nil {
+		r.beforeStep()
+	}
 	sim.Step(w, commands, 1.0/TickHz)
 	r.tick++
 	travelled := w.Travel != nil && w.Travel.Progress >= 1
@@ -165,6 +172,7 @@ func (r *Room) Tick() {
 		}
 		d.peer.State(r.tick, w)
 	}
+	return true
 }
 
 // sweep prüft die Fristen nach Wanduhr, auch im pausierten Raum. remove: Raum ist seit EmptyFor leer.

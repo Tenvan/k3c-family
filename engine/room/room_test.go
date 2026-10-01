@@ -32,7 +32,7 @@ func (p *peer) Seats(you []Seat, monarchs []string) {
 	p.log = append(p.log, "seats")
 }
 func (p *peer) Replaced() { p.log = append(p.log, "replaced") }
-func (p *peer) Closed()   { p.log = append(p.log, "closed") }
+func (p *peer) Closed(bool) { p.log = append(p.log, "closed") }
 
 func (p *peer) has(entry string) bool { return slices.Contains(p.log, entry) }
 
@@ -91,7 +91,7 @@ func ok(t *testing.T, err error) {
 
 func ticks(r *Room, n int) {
 	for range n {
-		r.Tick()
+		_ = r.Tick()
 	}
 }
 
