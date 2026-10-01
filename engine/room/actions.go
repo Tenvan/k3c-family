@@ -205,6 +205,14 @@ func (r *Room) allFree(d *device) bool {
 	return true
 }
 
+// Has: Ist das Gerät (verbunden oder wartend) im Raum?
+func (r *Room) Has(id string) bool {
+	r.mu.Lock()
+	defer r.mu.Unlock()
+	_, ok := r.devices[id]
+	return ok
+}
+
 // Info ist ein Eintrag der Raumliste (docs/protocol.md › Nachrichten, rooms).
 type Info struct {
 	Code    string `json:"code"`

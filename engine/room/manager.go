@@ -173,6 +173,13 @@ func (m *Manager) Join(id string, peer Peer, code string, slots []int) (*Room, e
 	return r, err
 }
 
+// Room ist der Raum mit diesem Code oder nil.
+func (m *Manager) Room(code string) *Room {
+	m.mu.Lock()
+	defer m.mu.Unlock()
+	return m.rooms[code]
+}
+
 // Rooms ist die Raumliste, nach Code sortiert.
 func (m *Manager) Rooms() []Info {
 	m.mu.Lock()

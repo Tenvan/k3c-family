@@ -22,6 +22,7 @@ import (
 	"time"
 
 	k3cnet "k3c/engine/net"
+	"k3c/engine/room"
 	"k3c/engine/store"
 )
 
@@ -69,8 +70,12 @@ func run(cfg config, log *slog.Logger) error {
 	if _, err := os.Stat(filepath.Join(cfg.dist, "index.html")); err != nil {
 		return fmt.Errorf("%s/index.html fehlt. Erst bauen: npm run build", cfg.dist)
 	}
+	saves := &store.Saves{Dir: cfg.saves}
+	rooms := room.NewManager(saves)
+	rooms.Log = log
+	// SP07.3: Takt je Raum (Manager.Run) und Close beim Beenden.
 	handler := k3cnet.NewHandler(k3cnet.Config{Dist: cfg.dist, Log: log, Version: version, StartedAt: time.Now(),
-		StatusToken: cfg.statusToken, Saves: &store.Saves{Dir: cfg.saves}, Reports: &store.Reports{Dir: cfg.reports}})
+		StatusToken: cfg.statusToken, Saves: saves, Reports: &store.Reports{Dir: cfg.reports}, Rooms: rooms})
 	if cfg.statusToken == "" {
 		log.Info("diagnose aus: K3C_STATUS_TOKEN ist nicht gesetzt (/api/status antwortet 404)")
 	}
