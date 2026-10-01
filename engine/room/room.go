@@ -257,11 +257,26 @@ func (r *Room) dropTestSave() {
 }
 
 func (r *Room) save() {
-	data, err := json.Marshal(r.camp.ToSave(r.m.now().UTC().Format("2006-01-02T15:04:05.000Z07:00")))
-	if err == nil {
-		_, err = r.m.Store.Store(r.Name, data)
-	}
-	if err != nil {
+	if _, err := r.store(); err != nil {
 		r.m.log().Error("Spielstand nicht gespeichert", "room", r.Code, "save", r.Name, "err", err)
 	}
+}
+
+// store schreibt den Spielstand und liefert den Namen der Sicherung des vorigen Stands (leer, wenn es keine gab).
+func (r *Room) store() (backup string, err error) {
+	data, err := json.Marshal(r.camp.ToSave(r.m.now().UTC().Format("2006-01-02T15:04:05.000Z07:00")))
+	if err != nil {
+		return "", err
+	}
+	return r.m.Store.Store(r.Name, data)
+}
+
+// SaveNow sichert den Spielstand sofort (Diagnose, B-088) und meldet den Fehler, statt ihn nur zu loggen.
+func (r *Room) SaveNow() (backup string, err error) {
+	r.mu.Lock()
+	defer r.mu.Unlock()
+	if r.closed {
+		return "", ErrClosed
+	}
+	return r.store()
 }
