@@ -1,5 +1,6 @@
 import { installPageChrome } from '../core/shell';
 import { GRAFIK_PACKS, type GrafikPack } from './grafikPacks';
+import { installSelection, type Selection } from './selection';
 import { installPadScroll } from './spriteReference';
 
 installPageChrome();
@@ -48,8 +49,10 @@ function renderZoom(root: HTMLElement): void {
   }
 }
 
-function renderImage(entry: ImageEntry): HTMLElement {
+function renderImage(entry: ImageEntry, selection: Selection): HTMLElement {
   const figure = el('figure');
+  figure.style.position = 'relative';
+  figure.append(selection.box(`${entry.pack}/${entry.file}`));
   const img = el('img');
   img.src = `grafik/${entry.pack}/${entry.file}`;
   img.alt = entry.file;
@@ -61,10 +64,14 @@ function renderImage(entry: ImageEntry): HTMLElement {
   return figure;
 }
 
-function renderPack(pack: GrafikPack, images: ImageEntry[]): HTMLElement {
+function renderPack(pack: GrafikPack, images: ImageEntry[], selection: Selection): HTMLElement {
   const section = el('section', 'pack');
   section.id = pack.id;
-  section.append(el('h2', undefined, pack.name));
+  section.style.position = 'relative';
+  section.append(selection.box(pack.id));
+  const title = el('h2', undefined, pack.name);
+  title.style.paddingLeft = '7rem';
+  section.append(title);
   const meta = el('p', 'meta');
   const link = el('a', undefined, 'Quelle');
   link.href = pack.source;
@@ -80,7 +87,7 @@ function renderPack(pack: GrafikPack, images: ImageEntry[]): HTMLElement {
   for (const group of groups) {
     section.append(el('h3', undefined, GROUP_TITLES[group] ?? group));
     const row = el('div', 'imgs');
-    images.filter((i) => i.group === group).forEach((i) => row.append(renderImage(i)));
+    images.filter((i) => i.group === group).forEach((i) => row.append(renderImage(i, selection)));
     section.append(row);
   }
   return section;
@@ -91,7 +98,8 @@ async function main(): Promise<void> {
   const root = document.getElementById('packs')!;
   try {
     const index = (await (await fetch('grafik/index.json')).json()) as ImageEntry[];
-    for (const pack of GRAFIK_PACKS) root.append(renderPack(pack, index.filter((i) => i.pack === pack.id)));
+    const selection = installSelection('k3c-auswahl-grafiken', 'Grafiken');
+    for (const pack of GRAFIK_PACKS) root.append(renderPack(pack, index.filter((i) => i.pack === pack.id), selection));
   } catch {
     root.append(el('p', 'missing', 'Die Bildliste grafik/index.json lässt sich nicht laden.'));
   }
