@@ -54,7 +54,7 @@ Stand: 2026-09-30 · Status: **beschlossen** · Backlog: B-001, B-002, B-003, B-
   GitHub Pages zeigt danach nur noch Testseiten (B-032).
 - Der Browser braucht Interpolation zwischen Snapshots. Für ein ruhiges Spiel wie K2C reicht das, höchstens die eigene
   Laufbewegung wird lokal vorhergesagt (B-039).
-- Zwei Werkzeugketten: `npm run check` für den Client, `go test` + `golangci-lint` für den Server.
+- Zwei Werkzeugketten: `task check` für den Client, `go test` + `golangci-lint` für den Server.
   Das Komplexitäts-Budget gilt für beide.
 - Portierungs-Fallen, die Golden-Tests abdecken müssen:
   `hashSeed` rechnet über UTF-16-Codeeinheiten (`charCodeAt`), in Go über `utf16.Encode` nachbilden;
