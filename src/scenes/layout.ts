@@ -34,3 +34,25 @@ export function computeLayout(seats: number, hasPartner: boolean): Cell[] {
   if (n === 3) cells.push({ x: W / 2, y: H / 2, w: W / 2, h: H / 2, kind: 'info', seat: -1 });
   return cells;
 }
+
+export interface Anchor {
+  x: number;
+  y: number;
+  /** 1 = rechtsbündig, 0.5 = zentriert */
+  originX: number;
+}
+
+/**
+ * Wo die gemeinsamen Anzeigen (Vorrat, Tageszeit, Kampf) stehen (B-084): oben rechts bei Vollbild und Streifen,
+ * im Info-Feld bei 3 Spielern, mittig am Kreuzpunkt bei 4 Spielern – nie in der Ecke eines Spielerfelds.
+ */
+export function sharedAnchor(cells: readonly Cell[]): Anchor {
+  const info = cells.find((c) => c.kind === 'info');
+  if (info) return { x: info.x + info.w / 2, y: info.y + 16, originX: 0.5 };
+  if (cells.some((c) => c.w < GAME_WIDTH)) return { x: GAME_WIDTH / 2, y: GAME_HEIGHT / 2 - SHARED_BLOCK_HEIGHT / 2, originX: 0.5 };
+  return { x: GAME_WIDTH - 24, y: 16, originX: 1 };
+}
+
+/** Höhe der drei gemeinsamen Textzeilen (Zeilenabstand 40 px) */
+export const SHARED_LINE_HEIGHT = 40;
+const SHARED_BLOCK_HEIGHT = SHARED_LINE_HEIGHT * 3;

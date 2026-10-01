@@ -54,10 +54,16 @@ export function applyCommand(client: LobbyClient, cmd: LobbyCommand): void {
   else client.join(cmd.room, cmd.slots);
 }
 
-export type LobbyEntry = { kind: 'play' } | { kind: 'room'; room: RoomInfo };
+export type LobbyEntry = { kind: 'play' } | { kind: 'room'; room: RoomInfo } | { kind: 'retry' } | { kind: 'reload' };
 
-/** „Spielen“ steht immer oben, darunter die Räume des Servers */
-export function lobbyEntries(rooms: readonly RoomInfo[]): LobbyEntry[] {
+/**
+ * „Spielen“ steht oben, darunter die Räume des Servers. Ohne Verbindung (B-083) gibt es keine wirkungslosen Einträge:
+ * `lost` bietet „Erneut versuchen“, `ended` (an anderer Stelle geöffnet, veraltete Version) „Seite neu laden“, sonst nichts.
+ */
+export function lobbyEntries(rooms: readonly RoomInfo[], status: Status = 'lobby'): LobbyEntry[] {
+  if (status === 'lost') return [{ kind: 'retry' }];
+  if (status === 'ended') return [{ kind: 'reload' }];
+  if (status !== 'lobby') return [];
   return [{ kind: 'play' }, ...rooms.map((room): LobbyEntry => ({ kind: 'room', room }))];
 }
 
@@ -67,6 +73,8 @@ export function moveSelection(selected: number, dir: number, count: number): num
 
 export function entryLabel(e: LobbyEntry, save: string): string {
   if (e.kind === 'play') return `Spielen  (${save})`;
+  if (e.kind === 'retry') return 'Erneut versuchen';
+  if (e.kind === 'reload') return 'Seite neu laden';
   const r = e.room;
   return `${r.code}  ${r.name}  ·  Stufe ${r.depth}  ·  ${r.taken}/4 Plätze  ·  ${r.running ? 'läuft' : 'pausiert'}`;
 }
@@ -80,7 +88,6 @@ export function rowAt(y: number, top: number, rowHeight: number, count: number):
 /** Hinweis der Lobby: Verbindungsstand oder Fehlertext des Servers (jeder Fehler-Code bringt seine `message` mit) */
 export function lobbyNotice(c: { status: Status; notice: string | null }): string | null {
   if (c.status === 'connecting') return c.notice ?? 'Verbinde …';
-  if (c.status === 'lost') return `${c.notice ?? ''} – Taste drücken für neuen Versuch`;
   return c.notice;
 }
 
@@ -120,8 +127,9 @@ export class LobbyFlow {
     return null;
   }
 
-  /** Auswahl in der Liste bestätigt */
-  choose(e: LobbyEntry): LobbyCommand {
+  /** Auswahl in der Liste bestätigt; „Erneut versuchen“ und „Seite neu laden“ sind keine Befehle an den Server (null). */
+  choose(e: LobbyEntry): LobbyCommand | null {
+    if (e.kind !== 'play' && e.kind !== 'room') return null;
     this.retried = false;
     return this.remember(e.kind === 'play' ? this.create(this.params.fresh) : { t: 'join', room: e.room.code, slots: slotsFor(this.params.mock) });
   }
