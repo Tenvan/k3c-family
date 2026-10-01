@@ -7,8 +7,8 @@
 - **Tickets:** B-087
 - **Start-Commit:** 657658d
 - **Spec:** freigegeben
-- **Revision:** 2
-- **Freigabe:** 2026-10-01 🧑 Chat („Auswahl B-010: …“, „Ja, alle zehn“, Einbau in eine Referenzseite wie die Spielfiguren; Revision 2: zwei weitere Packs, B-087 Revision 2)
+- **Revision:** 3
+- **Freigabe:** 2026-10-01 🧑 Chat („Auswahl B-010: …“, „Ja, alle zehn“, Einbau in eine Referenzseite wie die Spielfiguren; Revision 2: zwei weitere Packs, B-087 Revision 2; Revision 3: Auswahlfunktion, alle zwölf Packs vorläufig übernommen)
 
 ## Ausgangslage
 
@@ -34,7 +34,7 @@ Einbau ins Spiel (B-010); Figuren-Sprites der Packs; Musik; Lücken schließen (
 ## Regeln und Einschränkungen
 
 Seiten-Regeln aus `CLAUDE.md`; `public/grafik/` ist Fremdmaterial mit eigener Lizenz (wie `public/sprites/`); `lizenzen.html` und `public/grafik/CREDITS.md` müssen übereinstimmen (Test).
-Prüfungen im Browser nur mit Freigabe durch 🧑.
+Prüfungen im Browser nur mit Freigabe durch 🧑. Die Auswahl gehört in `src/tools/` (PLAT), `spriteReference.ts` ist dafür mit angefasst.
 
 ## Beispiele
 
@@ -50,6 +50,7 @@ Ein Bild fehlt → „Bild fehlt“ in der Karte statt einer leeren Stelle.
 - **AC-02** `public/grafik/CREDITS.md` und `lizenzen.html` nennen jedes Pack mit Quelle, Urheber und Lizenz (B-087/AC-02).
 - **AC-03** `grafiken.html` ist von der Landingpage erreichbar und zeigt alle Packs mit allen Bildern (B-087/AC-03).
 - **AC-04** 🧑 hat die Seite angesehen und die Packs abgenommen (B-087/AC-04).
+- **AC-05** Auf `grafiken.html`, `figuren.html` und `aufstellung.html` kann 🧑 Figuren, Packs und Bilder ankreuzen; unten steht die Auswahl als kopierbarer Satz mit stabilen IDs (B-087/AC-05).
 
 ## Offene Fragen
 
@@ -61,7 +62,9 @@ keine
 |---|---|---|---|---|
 | G1.1 | `G1.1-referenzseite.md` | Umsetzung | autonom | fertig |
 | G1.2 | `G1.2-review.md` | Review | autonom | fertig |
-| G1.3 | `G1.3-abnahme.md` | Workshop | Mensch | offen |
+| G1.3 | `G1.3-auswahl.md` | Umsetzung | autonom | fertig |
+| G1.4 | `G1.4-review.md` | Review | autonom | offen |
+| G1.5 | `G1.5-abnahme.md` | Workshop | Mensch | offen |
 
 ## Abnahme
 

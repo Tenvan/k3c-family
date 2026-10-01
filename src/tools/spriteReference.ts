@@ -6,6 +6,7 @@
 import enemiesJson from '../../data/enemies.json';
 import spritesJson from '../../data/sprites.json';
 import troopsJson from '../../data/troops.json';
+import type { Selection } from './selection';
 
 type AnimName = 'idle' | 'run' | 'attack';
 
@@ -178,7 +179,7 @@ const DRIFT = 60;
  * Baut die Seite. sameScale = true: alle Figuren im gleichen Maßstab wie im Spiel (Größen vergleichbar),
  * sonst wird jede Figur einzeln auf die Karte eingepasst.
  */
-export function renderReference(root: HTMLElement, groups: Group[], sameScale: boolean): void {
+export function renderReference(root: HTMLElement, groups: Group[], sameScale: boolean, selection?: Selection): void {
   const lives: Live[] = [];
   const inGame = (spec: Spec) => DATA.sheets[spec.sheet].scale * (spec.scale ?? 1);
   /** Höhe und halbe Breite im Spiel (px), bei Reittieren samt Reiter */
@@ -209,11 +210,13 @@ export function renderReference(root: HTMLElement, groups: Group[], sameScale: b
     for (const card of group.cards) {
       const s = DATA.sheets[card.spec.sheet];
       const el = document.createElement('article');
+      el.style.position = 'relative';
       const canvas = document.createElement('canvas');
       canvas.width = CANVAS_W;
       canvas.height = CANVAS_H;
       el.append(canvas);
       const id = card.mount ? DATA.mounts[card.mount].sheet : card.spec.sheet;
+      if (selection) el.append(selection.box(id));
       el.insertAdjacentHTML('beforeend', `<h3>${card.title}</h3><p>${card.note}</p><p class="dim">${id} · im Spiel ${Math.round(size(card)[0])} px hoch</p>`);
       grid.append(el);
       const k = sameScale && !group.fit ? common : fit(card);

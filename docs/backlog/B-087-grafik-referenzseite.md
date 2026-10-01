@@ -7,8 +7,8 @@
 - **Sprint:** G1
 - **Erstellt:** 2026-10-01
 - **Spec:** freigegeben
-- **Revision:** 2
-- **Freigabe:** 2026-10-01 🧑 Chat („Auswahl B-010: …“ und „Ja, alle zehn“, danach „einbauen“ in der Referenzseite wie die Spielfiguren); Revision 2: 🧑 Chat („Auswahl auch B-010: warped-caves-pixel-art-pack, sunnyland-tall-forest-environment, sunnyland-Fort-of-Illusion“, Download „Ja, beide“)
+- **Revision:** 3
+- **Freigabe:** 2026-10-01 🧑 Chat („Auswahl B-010: …“ und „Ja, alle zehn“, danach „einbauen“ in der Referenzseite wie die Spielfiguren); Revision 2: 🧑 Chat („Auswahl auch B-010: warped-caves-pixel-art-pack, sunnyland-tall-forest-environment, sunnyland-Fort-of-Illusion“, Download „Ja, beide“); Revision 3: 🧑 Chat („erstmal alle übernehmen, aber bitte in die figuren und grafik htmls auch eine Auswahlmöglichkeit einbauen“)
 
 ## Ausgangslage
 
@@ -30,6 +30,7 @@ was davon wofür ins Spiel kommt (B-010), ohne die Packs einzeln zu öffnen.
   `16x16-small-and-medium-coin-animation`, `gold-treasure-icons-16x16`, `sunnyland-tall-forest-environment`, `gotthicvania-swamp`, `forest-background`, `blue-cave-background`; Revision 2 zusätzlich `warped-caves-pixel-art-pack` und `sunnyland-fort-of-illusion` (`sunnyland-tall-forest-environment` war schon dabei).
 - Nur Umgebungs-Grafiken kommen ins Repo (Ebenen, Tilesets, Props, Häuser, Objekte). Nicht übernommen: Musik (nicht CC0, Namensnennung Pflicht), Code, PSD/Aseprite-Quellen, GIFs, `__MACOSX`, Figuren-Sprites.
 - Je Pack: `LICENSE.txt` des Packs, Credits in `public/grafik/CREDITS.md` und Eintrag auf `lizenzen.html`; beides stimmt mit der Seite überein (Test).
+- Auswahl (Revision 3): Auf `grafiken.html`, `figuren.html` und `aufstellung.html` hat jede Figur, jedes Pack und jedes Bild ein Kästchen „Auswahl“ mit stabiler ID (Figuren: Sheet-ID, Packs: Ordnername, Bilder: `<pack>/<datei>`). Unten steht die Auswahl als Satz zum Kopieren („Auswahl Grafiken: …“), damit 🧑 im Chat einfach sagen kann, was mit welcher Grafik geschehen soll; sie bleibt im Browser erhalten.
 - Die Seite `grafiken.html` zeigt je Pack Name, Urheber, Lizenz, Quelle, Hinweis wofür es taugt und die Bilder pixelscharf in wählbarer Vergrößerung; Hintergrund-Ebenen zusätzlich als gestapelte Vorschau.
 
 ## Nicht-Ziele
@@ -54,7 +55,8 @@ Ein Bild lässt sich nicht laden → die Karte zeigt „Bild fehlt“ statt eine
 - **AC-01** Alle zwölf Packs liegen unter `public/grafik/<pack>/` mit `LICENSE.txt`, ohne Musik, Code und Quelldateien (Test).
 - **AC-02** `public/grafik/CREDITS.md` und `lizenzen.html` nennen jedes Pack mit Quelle, Urheber und Lizenz (Test).
 - **AC-03** `grafiken.html` ist von der Landingpage erreichbar und zeigt alle Packs mit allen ihren Bildern (Test der Seitendaten, Seite ruft `installPageChrome()`).
-- **AC-04** 🧑 hat die Seite angesehen und die Packs abgenommen (Beobachtung durch 🧑).
+- **AC-04** 🧑 hat die Seite angesehen und die Packs abgenommen (Beobachtung durch 🧑). Vorläufig: alle zwölf Packs sind übernommen (Chat 2026-10-01 „erstmal alle übernehmen“), die endgültige Abnahme folgt nach der Auswahlfunktion.
+- **AC-05** Die drei Referenzseiten haben die Auswahl mit stabilen IDs und dem kopierbaren Satz; Text und gespeicherte Werte sind getestet (`selection.test.ts`), die Seiten rufen `installSelection()` auf.
 
 ## Offene Fragen
 
