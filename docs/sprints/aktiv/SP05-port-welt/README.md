@@ -5,7 +5,7 @@
 - **Reife:** bereit
 - **Einschiebbar:** nein
 - **Tickets:** B-043
-- **Start-Commit:** –
+- **Start-Commit:** f015b3c
 - **Spec:** freigegeben
 - **Revision:** 1
 - **Freigabe:** 2026-10-01 🧑 Chat (Truppen nach SP05, Golden-Lauf ohne Spieler, 4 Sessions)
@@ -77,7 +77,7 @@ keine
 
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
-| SP05.1 | `SP05.1-welt-zyklus.md` | Umsetzung | autonom | offen |
+| SP05.1 | `SP05.1-welt-zyklus.md` | Umsetzung | autonom | fertig |
 | SP05.2 | `SP05.2-truppen.md` | Umsetzung | autonom | offen |
 | SP05.3 | `SP05.3-wirtschaft.md` | Umsetzung | autonom | offen |
 | SP05.4 | `SP05.4-review.md` | Review | autonom | offen |
