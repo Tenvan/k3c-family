@@ -54,4 +54,5 @@ keine
 
 ## Notizen
 
-–
+Stand 2026-10-01: Zwölf CC0-Packs (Warped Caves: CC BY 3.0) liegen unter `public/grafik/` und sind auf `grafiken.html` ansehbar (B-087, erledigt). Eingebaut ist noch nichts; welche Grafik wofür dient, legt 🧑 per Auswahl im Chat fest.
+Lücken ohne Treffer: Mine-Hintergrund, Rekrutierungslager, Werkstatt, Farm, Kaserne, Treppen. Recherche: `docs/funde/b010-grafik-funde.html`.
