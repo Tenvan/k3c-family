@@ -87,6 +87,13 @@ export const PAGES: PageEntry[] = [
     section: 'test',
   },
   {
+    title: 'Alle Grafiken',
+    description: 'Gewählte CC0-Packs für Gebäude, Ressourcen und Hintergründe · mit Urheber, Lizenz und Quelle',
+    icon: '🏰',
+    href: 'grafiken.html',
+    section: 'test',
+  },
+  {
     title: 'Lizenzen & Danksagung',
     description: 'Unsere Lizenz (nicht-kommerziell) · Grafiken, Software und ein großes Danke an alle Urheber',
     icon: '📜',

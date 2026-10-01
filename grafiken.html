@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="de">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>K3C Alle Grafiken</title>
+    <style>
+      :root { --bg: #11151c; --panel: #1c2330; --line: #2e3a4d; --text: #e8edf4; --dim: #8a97aa; --on: #ffd166; --warn: #ff8fa3; --z: 2; }
+      * { box-sizing: border-box; }
+      html { font-size: clamp(9px, 0.8334vw, 16px); }
+      body { margin: 0; background: var(--bg); color: var(--text); font: 1.25rem/1.4 system-ui, sans-serif; }
+      main { padding: max(4.75rem, 70px) 2rem 2rem; max-width: 115rem; margin: 0 auto; }
+      h1 { font-size: 2.125rem; margin: 0 0 4px; }
+      .sub { color: var(--dim); margin: 0 0 1rem; max-width: 62rem; }
+      .zoom { display: flex; gap: 0.5rem; align-items: center; margin-bottom: 1.5rem; position: sticky; top: 0; background: var(--bg); padding: 0.5rem 0; z-index: 2; }
+      .zoom button { font: inherit; color: inherit; background: var(--panel); border: 2px solid var(--line); border-radius: 0.5rem; padding: 0.25rem 0.9rem; cursor: pointer; }
+      .zoom button[aria-pressed='true'], .zoom button:hover, .zoom button:focus-visible { border-color: var(--on); outline: none; }
+      section.pack { background: var(--panel); border: 1px solid var(--line); border-radius: 0.75rem; padding: 1rem 1.25rem; margin-bottom: 1.5rem; }
+      h2 { font-size: 1.5rem; margin: 0 0 0.25rem; color: var(--on); }
+      h3 { font-size: 1.05rem; margin: 1rem 0 0.4rem; color: var(--dim); font-weight: 600; }
+      .meta { color: var(--dim); margin: 0 0 0.4rem; font-size: 1rem; }
+      .meta a { color: #8ecae6; }
+      .note { font-size: 1rem; margin: 0.3rem 0; }
+      .warn { color: var(--warn); font-size: 0.95rem; margin: 0.3rem 0; }
+      .chips { display: flex; flex-wrap: wrap; gap: 0.4rem; margin: 0.4rem 0; }
+      .chips span { background: #0b0e13; border: 1px solid var(--line); border-radius: 999px; padding: 0.1rem 0.7rem; font-size: 0.9rem; }
+      .imgs { display: flex; flex-wrap: wrap; gap: 0.75rem; align-items: flex-end; }
+      figure { margin: 0; background: linear-gradient(#2c3350, #4a3a5c); border-radius: 0.4rem; padding: 0.4rem; max-width: 100%; }
+      figure img { display: block; image-rendering: pixelated; max-width: 100%; height: auto; }
+      figcaption { font-size: 0.75rem; color: #c9d2e3; margin-top: 0.2rem; word-break: break-all; }
+      .missing { color: var(--warn); padding: 0.5rem; }
+    </style>
+  </head>
+  <body>
+    <main>
+      <h1>Alle Grafiken</h1>
+      <p class="sub">Die für B-010 gewählten Pixel-Art-Packs für Gebäude, Ressourcen und Hintergründe, mit Urheber, Lizenz und Quelle. Nur die Umgebungs-Bilder sind im Spiel-Ordner (<code>public/grafik/</code>). Scrollen mit Stick oder Steuerkreuz.</p>
+      <div class="zoom" id="zoom"></div>
+      <div id="packs"></div>
+    </main>
+    <script type="module" src="/src/tools/grafiken.ts"></script>
+  </body>
+</html>
