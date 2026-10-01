@@ -57,22 +57,29 @@ function checkSpec(text: string, fields: Record<string, string>, where: string):
   return acs;
 }
 
-const tickets = readdirSync(join(DOCS, 'backlog')).filter((f) => /^B-\d{3}-.+\.md$/.test(f));
-const ticketIds = new Set(tickets.map((f) => f.slice(0, 5)));
-const ticketCriteria = (id: string) => criteria(read(`backlog/${tickets.find((f) => f.startsWith(id)) ?? ''}`));
+const isTicket = (f: string) => /^B-\d{3}-.+\.md$/.test(f);
+const ticketFiles = (folder: string) =>
+  readdirSync(join(DOCS, 'backlog', folder)).filter(isTicket).map((file) => ({ file, folder, rel: folder ? folder + '/' + file : file }));
+/** Offene und eingeplante Tickets liegen in backlog/, erledigte und verworfene in backlog/archiv/. */
+const tickets = [...ticketFiles(''), ...ticketFiles('archiv')].map((t) => ({ ...t, path: 'backlog/' + t.rel }));
+const ticketIds = new Set(tickets.map((t) => t.file.slice(0, 5)));
+const ticketCriteria = (id: string) => criteria(read(tickets.find((t) => t.file.startsWith(id))?.path ?? ''));
 
 describe('Backlog', () => {
-  it.each(tickets)('%s folgt der Vorlage', (file) => {
-    const text = read(`backlog/${file}`);
+  it.each(tickets)('$path folgt der Vorlage', ({ file, folder, path }) => {
+    const text = read(path);
     expect(title(text), `${file}: Überschrift`).toBe(file.slice(0, 5));
-    checkSpec(text, checkTemplate('ticket', text, file), file);
+    const fields = checkTemplate('ticket', text, file);
+    const archived = ['erledigt', 'verworfen'].includes(fields.Status);
+    expect(folder === 'archiv', `${path}: Ordner passt zum Status ${fields.Status}`).toBe(archived);
+    checkSpec(text, fields, file);
   });
 
-  it('Index listet jedes Ticket genau einmal mit gleichem Status', () => {
+  it('Index listet jedes Ticket genau einmal mit gleichem Status und Pfad', () => {
     const rows = [...read('backlog/README.md').matchAll(/^\| \[(B-\d{3})\]\((.+?)\) \|.*\| (\S+) \| \S+ \| .* \|$/gm)];
-    expect(rows.map((r) => r[2]).sort()).toEqual([...tickets].sort());
+    expect(rows.map((r) => r[2]).sort()).toEqual(tickets.map((t) => t.rel).sort());
     for (const [, id, file, status] of rows) {
-      expect(status, `${id}: Status im Index`).toBe(meta(read(`backlog/${file}`)).Status);
+      expect(status, `${id}: Status im Index`).toBe(meta(read('backlog/' + file)).Status);
     }
   });
 });
