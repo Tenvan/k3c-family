@@ -120,8 +120,8 @@ func (s *Server) Start() error {
 		return fmt.Errorf("port %d nicht verfügbar (%w); einen anderen Port über %s setzen", s.cfg.Port, err, EnvPort)
 	}
 	mux := http.NewServeMux()
-	mux.Handle("/mcp", mcp.NewStreamableHTTPHandler(func(*http.Request) *mcp.Server { return s.mcp },
-		&mcp.StreamableHTTPOptions{SessionTimeout: sessionTimeout}))
+	mux.Handle("/mcp", forceChunked(mcp.NewStreamableHTTPHandler(func(*http.Request) *mcp.Server { return s.mcp },
+		&mcp.StreamableHTTPOptions{SessionTimeout: sessionTimeout})))
 	srv := &http.Server{Handler: mux, ReadHeaderTimeout: 10 * time.Second}
 	s.http, s.addr = srv, ln.Addr().String()
 	go func() { _ = srv.Serve(ln) }()
