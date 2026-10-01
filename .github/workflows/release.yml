@@ -32,7 +32,7 @@ jobs:
             CGO_ENABLED=0 GOOS=$os GOARCH=$arch go build -trimpath -ldflags "-s -w -X main.version=${GITHUB_REF_NAME}"               -o "k3c-server-${os}-${arch}${ext}" ./cmd/k3c-server
           done
       - name: Paket schnüren (dist + Server)
-        run: zip -r "k3c-${GITHUB_REF_NAME}.zip" dist server package.json README.md
+        run: zip -r "k3c-${GITHUB_REF_NAME}.zip" dist README.md
       - name: GitHub-Release anlegen
         env:
           GH_TOKEN: ${{ github.token }}
