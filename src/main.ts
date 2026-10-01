@@ -27,5 +27,5 @@ game.scene.add('lobby', LobbyScene, true, { client });
 game.scene.add('game', GameScene, false);
 game.scene.add('hud', HudScene, false);
 
-// Nur im Dev-Server: Zugriff für Debugging über die Browser-Konsole (window.game).
-if (import.meta.env.DEV) (window as unknown as { game: Phaser.Game; client: typeof client }).game = Object.assign(game, { client });
+// Nur im Dev-Server oder mit ?dev=1: Zugriff für Debugging über die Browser-Konsole (window.game).
+if (import.meta.env.DEV || new URLSearchParams(location.search).has('dev')) (window as unknown as { game: Phaser.Game; client: typeof client }).game = Object.assign(game, { client });
