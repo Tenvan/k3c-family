@@ -1,0 +1,156 @@
+# Einstieg für alle Aufgaben: `task --list`. Voraussetzung: Go Task (requirements.md).
+# Die Werkzeuge laufen direkt (npx, go, wails); package.json hält nur noch Abhängigkeiten.
+version: '3'
+
+vars:
+  DEV: tools/k3c-dev
+
+tasks:
+  default:
+    desc: Alle Aufgaben anzeigen
+    silent: true
+    cmds:
+      - task --list
+
+  install:
+    desc: Abhängigkeiten holen (Client und Frontend von k3c-dev)
+    cmds:
+      - npm ci
+      - npm ci --prefix {{.DEV}}/frontend
+
+  dev:
+    desc: Dev-Server (auch im LAN erreichbar, Port 5173)
+    cmds:
+      - npx vite --host
+
+  preview:
+    desc: Produktions-Build lokal ansehen
+    cmds:
+      - npx vite preview --host
+
+  lint:
+    desc: Oxlint
+    cmds:
+      - npx oxlint
+
+  typecheck:
+    desc: tsc für Client und Tests
+    cmds:
+      - npx tsc --noEmit
+      - npx tsc --noEmit -p tests
+
+  test:
+    desc: Vitest (Filter optional, z. B. `task test -- planning`)
+    cmds:
+      - npx vitest run {{.CLI_ARGS}}
+
+  test:watch:
+    desc: Vitest im Watch-Modus
+    cmds:
+      - npx vitest
+
+  golden:
+    desc: Golden-Dateien in testdata/golden/ aus der TS-Simulation neu schreiben
+    cmds:
+      - npx vitest run tests/golden.test.ts -u
+
+  check:
+    desc: Lint, Typecheck, Tests des Clients (vor jedem Abschluss)
+    cmds:
+      - task: lint
+      - task: typecheck
+      - task: test
+
+  build:
+    desc: Typecheck und Produktions-Build nach dist/ und dist-server/
+    cmds:
+      - npx tsc --noEmit
+      - npx vite build
+      - npx vite build --config vite.server.config.ts
+
+  serve:
+    desc: Build und Heimnetz-Server in Node (Port 8080)
+    deps: [build]
+    cmds:
+      - node server/server.mjs
+
+  start:
+    desc: Heimnetz-Server in Node ohne Build
+    cmds:
+      - node server/server.mjs
+
+  serve:go:
+    desc: Build und Go-Server
+    deps: [build]
+    cmds:
+      - go run ./cmd/k3c-server
+
+  go:test:
+    desc: go test ./...
+    preconditions:
+      - sh: command -v go
+        msg: Go fehlt (requirements.md)
+    cmds:
+      - go test ./...
+
+  go:lint:
+    desc: golangci-lint
+    preconditions:
+      - sh: command -v golangci-lint
+        msg: golangci-lint fehlt (requirements.md)
+    cmds:
+      - golangci-lint run
+
+  check:go:
+    desc: Go-Tests und golangci-lint
+    cmds:
+      - task: go:test
+      - task: go:lint
+
+  dev:frontend:
+    desc: Frontend von k3c-dev bauen (go:embed braucht frontend/dist)
+    dir: '{{.DEV}}/frontend'
+    cmds:
+      - npx tsc --noEmit
+      - npx vite build
+    sources:
+      - src/**/*
+      - index.html
+      - package.json
+      - vite.config.ts
+    generates:
+      - dist/**/*
+
+  check:dev:
+    desc: k3c-dev prüfen (Frontend, go test, golangci-lint)
+    deps: [dev:frontend]
+    dir: '{{.DEV}}'
+    cmds:
+      - go test ./...
+      - golangci-lint run
+
+  k3c-dev:
+    desc: Entwickler-Werkzeug k3c-dev als Fenster starten (wails dev)
+    dir: '{{.DEV}}'
+    preconditions:
+      - sh: command -v wails
+        msg: 'Wails-CLI fehlt – go install github.com/wailsapp/wails/v2/cmd/wails@v2.16.0 (requirements.md)'
+    cmds:
+      - wails dev
+
+  k3c-dev:build:
+    desc: EXE von k3c-dev bauen (wails build)
+    dir: '{{.DEV}}'
+    preconditions:
+      - sh: command -v wails
+        msg: 'Wails-CLI fehlt – go install github.com/wailsapp/wails/v2/cmd/wails@v2.16.0 (requirements.md)'
+    cmds:
+      - wails build
+
+  check:all:
+    desc: Alles prüfen (Client, Go, k3c-dev, Build)
+    cmds:
+      - task: check
+      - task: build
+      - task: check:go
+      - task: check:dev
