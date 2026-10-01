@@ -18,6 +18,7 @@ type Range struct {
 // Einheiten sind float64 wie in JavaScript, damit z. B. `cw / 2` auch bei ungerader Breite gleich rechnet.
 type Biome struct {
 	ID              string  `json:"id"`
+	Name            string  `json:"name"`
 	Depth           int     `json:"depth"`
 	LengthUnits     Range   `json:"lengthUnits"`
 	ChunkWidthUnits float64 `json:"chunkWidthUnits"`
