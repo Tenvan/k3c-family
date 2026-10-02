@@ -3,12 +3,12 @@
 - **Domäne:** REG
 - **Typ:** Frage
 - **Prio:** mittel
-- **Status:** offen
+- **Status:** erledigt
 - **Sprint:** –
 - **Erstellt:** 2026-10-02
-- **Spec:** Entwurf
+- **Spec:** freigegeben
 - **Revision:** 1
-- **Freigabe:** –
+- **Freigabe:** 2026-10-02, Chat (Ralf), Revision 1 (Workshop)
 
 ## Ausgangslage
 
@@ -49,8 +49,8 @@ nicht relevant – reine Entscheidung, kein Verhalten.
 
 ## Offene Fragen
 
-Material je Hub, je Insel oder global? Wie viele Inseln, welche Reihenfolge? (🧑)
+Material je Hub, je Insel oder global? Wie viele Inseln, welche Reihenfolge? (🧑, entschieden, siehe Notizen)
 
 ## Notizen
 
-Aus R1.3 › Offen. Gehört in Regelwerk III oder einen kurzen Workshop vor B-100.
+Workshop 2026-10-02 mit 🧑: **Material gehört der Insel** (alle Stufen teilen einen Vorrat; neue Insel beginnt leer). **Inseln:** klassisch Insel 1 bis n in fester Reihenfolge (n offen, bis Insel 1 spielbar ist); **später** Variante „Ebenen“: mehrere Inseln je Ebene, freie Reihenfolge, nächste Ebene nach **mindestens k** besiegten Inseln der Ebene (k je Ebene in den Daten), Wechsel gemeinsam. Beschluss steht in `docs/rules/stufen.md` § 1.
