@@ -12,6 +12,7 @@ import { computeLayout, type Cell } from './layout';
 import type { LobbySceneData } from './LobbyScene';
 import { leavesGame } from './lobbyLogic';
 import { LocalSlots } from './localSlots';
+import type { RadarCell } from './radarView';
 import { createSpriteAnims, preloadSprites } from './sprites';
 import { daylight } from './viewRules';
 import { WorldRenderer } from './worldRenderer';
@@ -131,10 +132,17 @@ export class GameScene extends Phaser.Scene {
     return this.slots.waiting(this.client.you.map((s) => s.slot));
   }
 
-  /** Felder, für die das HUD Werte zeigt: Monarchen der lokalen Spieler */
-  hudCells(): { cell: Cell; monarch: number | null }[] {
+  /** Felder, für die das HUD Werte zeigt: Monarchen der lokalen Spieler, dazu der sichtbare Ausschnitt der Kamera (Radar) */
+  hudCells(): RadarCell[] {
     const seats = [...this.client.you].sort((a, b) => a.slot - b.slot);
-    return this.cells.map((cell) => ({ cell, monarch: cell.kind === 'player' ? (seats[cell.seat]?.monarch ?? null) : null }));
+    return this.cells.map((cell, i) => {
+      const view = this.cameras.cameras[i]?.worldView; // Kamera i gehört zu Feld i (layoutCameras)
+      return {
+        cell,
+        monarch: cell.kind === 'player' ? (seats[cell.seat]?.monarch ?? null) : null,
+        view: view ? { fromUnits: view.x / UNIT_PX, spanUnits: view.width / UNIT_PX } : null,
+      };
+    });
   }
 
   /** Raum verlassen und zurück zur Lobby (die Hinweise zum Grund zeigt sie selbst) */
