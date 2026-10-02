@@ -9,6 +9,9 @@
     { "kind": "tower", "offsetUnits": 36 },
     { "kind": "wall", "offsetUnits": 44 }
   ],
+  "islandSites": [
+    { "kind": "storage", "offsetUnits": -26 }
+  ],
   "castleRadiusUnits": 5,
   "homeRadiusUnits": 12,
   "startTroops": {

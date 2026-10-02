@@ -287,29 +287,23 @@ func scatterCoins(w *World, x float64, count int) {
 	}
 }
 
-// addStock legt Baumaterial in den Hub-Vorrat; false, wenn resource kein Baumaterial ist.
+// addStock legt Baumaterial in den Vorrat (in einer Insel höchstens bis zur Kapazität); false, wenn resource kein
+// Baumaterial ist.
 func addStock(w *World, resource string, amount int) bool {
-	switch resource {
-	case "wood":
-		w.Stock.Wood += amount
-	case "stone":
-		w.Stock.Stone += amount
-	case "copper":
-		w.Stock.Copper += amount
-	default:
-		return false
-	}
-	return true
+	_, ok := addStockCapped(w, resource, amount)
+	return ok
 }
 
 func canAfford(s Stock, c Cost) bool {
-	return s.Wood >= c.Wood && s.Stone >= c.Stone && s.Copper >= c.Copper
+	return s.Wood >= c.Wood && s.Stone >= c.Stone && s.Copper >= c.Copper && s.Iron >= c.Iron && s.Crystal >= c.Crystal
 }
 
 func spend(s *Stock, c Cost) {
 	s.Wood -= c.Wood
 	s.Stone -= c.Stone
 	s.Copper -= c.Copper
+	s.Iron -= c.Iron
+	s.Crystal -= c.Crystal
 }
 
 // stepSites: Bezahlte Bauplätze ziehen das Material aus dem Hub-Vorrat, sobald genug da ist. Werkstatt fertigt Bögen.

@@ -12,5 +12,6 @@
     "rock":      { "resource": "stone",  "amount": 10, "workSeconds": 6, "markCost": 1 },
     "copperOre": { "resource": "copper", "amount": 10, "workSeconds": 8, "markCost": 2 }
   },
+  "storage": { "basePerHub": 300, "perStorage": 300 },
   "recruitCamp": { "maxVagrants": 2, "respawnSeconds": 25, "wanderUnits": 6 }
 }
