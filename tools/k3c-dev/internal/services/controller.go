@@ -77,6 +77,8 @@ type Options struct {
 	RestartLimit  int           // 3 Neustarts …
 	RestartWindow time.Duration // … je 10 min
 	StopTimeout   time.Duration // 10 s Warten auf das Ende nach Kill
+	FilesEvery    time.Duration // 1 s zwischen zwei Prüfungen der beobachteten Dateien (watch)
+	FilesQuiet    time.Duration // 500 ms Ruhe, bevor eine Änderung zum Neustart führt
 }
 
 func (o *Options) defaults() {
@@ -112,6 +114,8 @@ func (o *Options) defaults() {
 	setDur(&o.WatchEvery, 10*time.Second)
 	setDur(&o.RestartWindow, 10*time.Minute)
 	setDur(&o.StopTimeout, 10*time.Second)
+	setDur(&o.FilesEvery, time.Second)
+	setDur(&o.FilesQuiet, 500*time.Millisecond)
 	if o.FailLimit <= 0 {
 		o.FailLimit = 3
 	}
@@ -135,6 +139,7 @@ type unit struct {
 	run      *run
 	restarts []time.Time
 	unwatch  context.CancelFunc // Überwachung eines übernommenen Dienstes
+	unfiles  context.CancelFunc // Beobachtung der Dateien (Watch-Modus)
 }
 
 // run ist ein eigener laufender Prozess mit seiner Überwachung.
@@ -220,6 +225,7 @@ func (c *Controller) Start(ctx context.Context, name string) (Status, error) {
 	if err != nil {
 		return Status{}, err
 	}
+	c.watchFiles(u) // ab jetzt: bei Änderungen neu starten, auch wenn dieser Start scheitert (Build-Fehler)
 	u.cmd.Lock()
 	defer u.cmd.Unlock()
 	return c.start(ctx, u)
@@ -231,6 +237,7 @@ func (c *Controller) Stop(ctx context.Context, name string, force bool) (Status,
 	if err != nil {
 		return Status{}, err
 	}
+	c.unwatchFiles(u) // zuerst, damit ein laufender Neustart abbricht und kein neuer folgt
 	u.cmd.Lock()
 	defer u.cmd.Unlock()
 	if u.status().State == Adopted {

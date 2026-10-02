@@ -21,6 +21,7 @@ zurückgeben.
 ## Dienste
 
 - Dienste (Vite-Dev-Server, Heimnetz-Server) nie per Shell starten, sondern mit `svc_start`; stoppen mit `svc_stop`.
+- Der Heimnetz-Server startet von selbst neu, sobald sich Go-Code oder Daten ändern (`watch` in `services.json`); ein Neustart per Hand ist dafür nicht nötig. Die Konsole (`console_tail Heimnetz`) nennt die Datei; ein Build-Fehler steht dort und der Dienst heißt `fehlgeschlagen`, bis die nächste Änderung ihn wieder startet.
 - `svc_status` zeigt Zustand, PID, CPU, Speicher und Log-Level; die Ausgabe eines Dienstes steht in
   `console_tail <Dienst>`.
 - Ein übernommener Dienst lief schon vor k3c-dev (z. B. im Terminal eines Menschen): nur mit `force` stoppen, und nur,

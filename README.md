@@ -115,7 +115,7 @@ Portale, Gegner). Nach Änderungen `task test` ausführen. Die Tests prüfen 500
 `tools/k3c-dev` ist ein MCP-Server für Coding-Agenten. Er führt Prüfungen aus einem festen Katalog verdichtet aus
 (`check_run`: nur Exit-Code, Dauer und Fehlerzeilen), macht die JSON-Logs unter `logs/` lesbar (`logs_*`) und zählt jeden
 Aufruf. Die Dienste aus `tools/k3c-dev/services.json` (Vite-Dev-Server, Heimnetz-Server) startet und stoppt er über
-`svc_*`; schon laufende übernimmt er, beim Beenden stoppt er nur die eigenen. Er läuft als Fenster `K3C Dev` (Wails),
+`svc_*`; der Go-Server startet bei Änderungen an `cmd/`, `engine/` und `data/` von selbst neu (`watch` in `services.json`); schon laufende übernimmt er, beim Beenden stoppt er nur die eigenen. Er läuft als Fenster `K3C Dev` (Wails),
 Schließen beendet ihn. Voraussetzungen: Go, Wails-CLI und `npm ci --prefix tools/k3c-dev/frontend` (`requirements.md`).
 
 ```bash
