@@ -62,3 +62,5 @@ Wie viel Zustand der anderen Stufen bekommt ein Gerät (B-104).
 Folgt aus SP12. Zusammen mit B-104 (Protokoll) planen; danach B-106 (Kamera je Stufe).
 
 SP12 (2026-10-02): `Island` mit `StepIsland`, Einzelwechsel und Spielstand Version 2 stehen in `engine/sim` (`island*.go`); der Raum kann sie direkt nutzen. `ParseIslandSave` überführt Stände der Version 1.
+
+SP13 (2026-10-02): `Island.Options` (Grad, Ziel, Niederlage-Modus) und fünf Materialien stehen im Spielstand der Insel. Beim Anlegen und Laden muss der Raum den Dev-Mode prüfen (`SetOptions(…, devMode)`; `FromIslandSave` prüft ihn nicht). Träger-Aufträge werden nicht gespeichert, getragenes Material geht beim Speichern verloren.

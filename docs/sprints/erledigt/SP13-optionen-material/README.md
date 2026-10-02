@@ -1,6 +1,6 @@
 # SP13 · SIM · Raum-Optionen, Grade und Material-Lager
 
-- **Status:** aktiv
+- **Status:** erledigt
 - **Domäne:** SIM
 - **Reife:** bereit
 - **Einschiebbar:** ja
@@ -64,8 +64,10 @@ keine
 | SP13.1 | `SP13.1-optionen-grade.md` | Umsetzung | autonom | fertig |
 | SP13.2 | `SP13.2-material-kapazitaet.md` | Umsetzung | autonom | fertig |
 | SP13.3 | `SP13.3-lager-tragen.md` | Umsetzung | autonom | fertig |
-| SP13.4 | `SP13.4-review.md` | Review | autonom | offen |
+| SP13.4 | `SP13.4-review.md` | Review | autonom | fertig |
 
 ## Abnahme
 
-–
+- 2026-10-02, Review SP13.4 (getrennter Review-Agent): AC-01 bis AC-04 und AC-08 belegt (SP13.1 › Ergebnis), AC-05 und AC-07 (SP13.2), AC-06 (SP13.3 und Review-Fix).
+- Behobene Befunde: 1 schwerer (wartender Träger blockiert den Bau) und 1 mittlerer Restfall (Bogen holen verliert Material). Bekannt/dokumentiert: Träger-Material geht beim Speichern verloren, Dev-Prüfung beim Laden liegt beim Raum (B-133), getrennte Rundung Standard/Elite.
+- Neue Tickets: keine. Golden-Daten unverändert (neue Regeln nur für Inseln).
