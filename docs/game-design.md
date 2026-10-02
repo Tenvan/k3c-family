@@ -92,7 +92,7 @@ Gold gibt es überall (Truhen, Gegner-Drops). Post-MVP: Tiefe 3 (Eisen, Lava), T
 - **Tiefen-Eingang** am Ende der Stufe führt nach unten. Zurück geht es nur über gebaute **Treppen**. Jeder Spieler wechselt für sich.
 - **Aggressionspool** (unter Tage statt Tag/Nacht): +1%/min, +5% pro Kill, +1% pro gesammelter Ressource.
   Bei 100% folgt ein Portal-Angriff, danach Reset auf 0. So bestimmen die Spieler das Tempo selbst.
-- Globaler Tag/Nacht-Zyklus läuft auch unter Tage weiter (Skelette nachts, Wölfe bei Vollmond).
+- Globaler Tag/Nacht-Zyklus läuft auch unter Tage weiter (Skelette nachts; Events: jede 7. Nacht Vollmond mit Alpha-Wolf, jede 13. Blutmond, siehe `rules/bosse.md`).
 
 ### Prozedurale Generierung (Pflicht-Feature)
 
@@ -120,6 +120,8 @@ Die festen Eckdaten stehen in `data/biomes/<biom>.json`, der Generator in `engin
 - Pools je Stufe (2 Standard + 1 Elite): Wald, Höhle, Mine wie bisher; **Eisenstollen:** Lavaschleim, Eisenkäfer, Feuergeist; **Kristallhöhle:** Kristallspinne, Splitterwicht, Kristallwächter (`rules/gegner.md`).
 - Wellen: 1–5 → 5–10 Standard. 6–10 → 10–15 Standard + 1–2 Elite. Ab 11 → 15–20 Standard + 3–5 Elite; dazu Wellenfaktor je Spieleranzahl und Schwierigkeitsgrad. Eine Welle je Nacht (Oberwelt) bzw. je 100 % Aggressionspool, 2 Portale je Stufe (ab Tiefe 3 drei), Wellenzähler je Stufe. Das Tor blockiert Gegner wie die Mauer.
 - Skalierung je Tiefe und je Insel (eigene Tabelle je Insel, Startwerte HP +50 %, Schaden +30 %, Tempo +10 % je Tiefe).
+- **Bosse:** je Stufe ein Miniboss (kommt mit Welle 5 im Wald, Welle 3 unten), je Insel ein Endboss in seinem Bau in der tiefsten Stufe (wartet, wird bei Ankunft ausgelöst); Gold, Material und Skill-Punkte als Belohnung, sie kehren nie zurück. Der Sieg über den Endboss öffnet die nächste Insel. Details: `rules/bosse.md`.
+- **Events:** Vollmond (jede 7. Nacht), Blutmond (jede 13.), Händler-Überfall (jeder 4. Besuch), siehe `rules/bosse.md`.
 - Drops: Gold je Gegnerart wie in `data/enemies.json` (Standard etwa 3–25, Elite etwa 15–80), 10% Chance auf Stufen-Ressource.
 
 ## Niederlage und Ziel
