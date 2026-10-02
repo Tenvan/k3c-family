@@ -1,5 +1,6 @@
 import Phaser from 'phaser';
 import { GAME_HEIGHT, GAME_WIDTH } from './core/constants';
+import { clientLog, installClientLog } from './core/clientLog';
 import { installPageChrome } from './core/shell';
 import { serverReachable, showNoServer } from './landing/serverCheck';
 import { createRoomClient } from './online/clientConnection';
@@ -9,6 +10,7 @@ import { LobbyScene } from './scenes/LobbyScene';
 
 // Seitenrahmen sofort (Home-Button, Zurück-Falle für B).
 installPageChrome();
+installClientLog();
 
 function start(): void {
   // Der Server rechnet, der Browser zeichnet; Raumwahl und Start-Parameter übernimmt die LobbyScene.
@@ -25,6 +27,7 @@ function start(): void {
     scene: [],
   });
 
+  clientLog('info', `Phaser gestartet (${game.config.renderType === Phaser.WEBGL ? 'WebGL' : 'Canvas/Auto'})`);
   game.scene.add('lobby', LobbyScene, true, { client });
   game.scene.add('game', GameScene, false);
   game.scene.add('hud', HudScene, false);
