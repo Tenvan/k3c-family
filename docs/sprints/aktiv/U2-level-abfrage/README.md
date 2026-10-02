@@ -1,14 +1,14 @@
 # U2 · SRV · Level-Abfrage per HTTP
 
-- **Status:** geplant
+- **Status:** aktiv
 - **Domäne:** SRV
 - **Reife:** bereit
 - **Einschiebbar:** nein
 - **Tickets:** B-091
-- **Start-Commit:** –
-- **Spec:** Entwurf
+- **Start-Commit:** a0ed852
+- **Spec:** freigegeben
 - **Revision:** 1
-- **Freigabe:** –
+- **Freigabe:** 2026-10-02 🧑 Chat („weiter mit U2 dann“; Revision 1)
 
 ## Ausgangslage
 

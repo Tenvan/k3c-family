@@ -8,6 +8,7 @@ Jede Sprint-README ist eine Spec (SDD); aktiv wird ein Sprint erst mit `Spec: fr
 
 | Sprint | Domäne | Thema | Am Ende sichtbar | Ordner |
 |---|---|---|---|---|
+| U2 | SRV | Level-Abfrage per HTTP (B-091) | `GET /api/level` liefert ein Level ohne Raum | `aktiv/U2-level-abfrage/` |
 
 ## Geplant (in dieser Reihenfolge)
 
@@ -16,7 +17,6 @@ dann über den Go-Server mit mehreren Räumen und gemischten Spielern.
 
 | Sprint | Domäne | Thema | Am Ende sichtbar | Reife | Ordner |
 |---|---|---|---|---|---|
-| U2 | SRV | Level-Abfrage per HTTP (B-091) | `GET /api/level` liefert ein Level ohne Raum | Entwurf | `geplant/U2-level-abfrage/` |
 | U3 | PLAT | Level-Betrachter (B-092) | Seite `leveltest.html` zeigt Seed und Biom, startet das Level im Spiel | Entwurf | `geplant/U3-level-betrachter/` |
 | U4 | CLI | Debug-Overlay (B-093) | Overlay mit `?dev=1` zeigt Verbindung, Takt und Entitäten | Entwurf | `geplant/U4-debug-overlay/` |
 | SP11 | SRV 🧑 | Raspberry Pi | 2er- und 3er-Spiel parallel auf dem Pi | Entwurf | `geplant/SP11-raspberry-pi/` |

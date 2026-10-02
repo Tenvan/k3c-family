@@ -6,9 +6,9 @@
 - **Status:** eingeplant
 - **Sprint:** U2
 - **Erstellt:** 2026-10-01
-- **Spec:** Entwurf
+- **Spec:** freigegeben
 - **Revision:** 1
-- **Freigabe:** –
+- **Freigabe:** 2026-10-02 🧑 Chat („weiter mit U2 dann“; Revision 1; umfasst Sprint U2)
 
 ## Ausgangslage
 
