@@ -77,13 +77,13 @@ const SAVE_NAME = /^[a-z0-9-]{1,32}$/;
 export type StartTarget = { url: string } | { reason: string };
 
 /**
- * Ob und wohin „Im Spiel starten“ führt: nur für den Wald (Tiefe 0) und Seeds im Namensformat, weil der Server den Seed
+ * Ob und wohin „Im Spiel starten“ führt (ohne `fresh`: die Lobby lädt einen vorhandenen Spielstand mit diesem Namen oder legt ihn einmal neu an, B-096): nur für den Wald (Tiefe 0) und Seeds im Namensformat, weil der Server den Seed
  * eines neuen Spiels aus dem Namen des Spielstands nimmt und beim Autostart immer in Tiefe 0 beginnt (B-095).
  */
 export function startTarget(seed: string, biomeId: string): StartTarget {
   if (biomeId !== 'forest') return { reason: 'Start nur für den Wald (Tiefe 0)' };
   if (!SAVE_NAME.test(seed)) return { reason: 'Seed muss aus Kleinbuchstaben, Ziffern und - bestehen (höchstens 32 Zeichen)' };
-  const params = new URLSearchParams({ autostart: '1', fresh: '1', save: seed });
+  const params = new URLSearchParams({ autostart: '1', save: seed });
   return { url: `game.html?${params.toString()}` };
 }
 
