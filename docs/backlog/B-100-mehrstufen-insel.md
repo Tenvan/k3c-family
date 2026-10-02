@@ -3,8 +3,8 @@
 - **Domäne:** SIM
 - **Typ:** Idee
 - **Prio:** hoch
-- **Status:** offen
-- **Sprint:** –
+- **Status:** eingeplant
+- **Sprint:** SP12
 - **Erstellt:** 2026-10-02
 - **Spec:** Entwurf
 - **Revision:** 1
@@ -60,4 +60,4 @@ Tick-Budget mit 3 aktiven Stufen auf dem Pi 3 (SP11).
 
 ## Notizen
 
-Aus R1.3. Groß: bei der Planung auf 2–3 Sprints aufteilen.
+Aus R1.3. Groß: SP12 setzt den SIM-Kern um (Insel, Einzelwechsel, Spielstand); Raum und Protokoll folgen in B-133 und B-104.
