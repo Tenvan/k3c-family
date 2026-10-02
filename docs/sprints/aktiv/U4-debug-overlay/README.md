@@ -5,7 +5,7 @@
 - **Reife:** bereit
 - **Einschiebbar:** nein
 - **Tickets:** B-093
-- **Start-Commit:** –
+- **Start-Commit:** 9fbf698
 - **Spec:** freigegeben
 - **Revision:** 1
 - **Freigabe:** 2026-10-02, Chat (Ralf), Revision 1
@@ -57,7 +57,7 @@ Keine. Entschieden (🧑, 2026-10-02): **F3** (Tastatur) und **Klick auf den lin
 
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
-| U4.1 | `U4.1-zeilen-funktion.md` | Umsetzung | autonom | offen |
+| U4.1 | `U4.1-zeilen-funktion.md` | Umsetzung | autonom | fertig |
 | U4.2 | `U4.2-overlay-zeichnen.md` | Umsetzung | autonom | offen |
 | U4.3 | `U4.3-review.md` | Review | autonom | offen |
 
