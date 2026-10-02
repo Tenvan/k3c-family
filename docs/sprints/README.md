@@ -17,6 +17,7 @@ dann über den Go-Server mit mehreren Räumen und gemischten Spielern.
 
 | Sprint | Domäne | Thema | Am Ende sichtbar | Reife | Ordner |
 |---|---|---|---|---|---|
+| SP12 | SIM | Insel-Kern (B-100) | Eine Insel mit mehreren Stufen rechnet in Go: alle Stufen ticken, Einzelwechsel, Vorrat je Insel, Spielstand | bereit | `geplant/SP12-insel-kern/` |
 
 **Einschiebbar** (unabhängig vom Engine-Fortschritt, jeweils zwischen zwei Sprints):
 
