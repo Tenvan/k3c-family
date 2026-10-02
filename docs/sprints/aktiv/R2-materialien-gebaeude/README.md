@@ -5,7 +5,7 @@
 - **Reife:** bereit
 - **Einschiebbar:** ja
 - **Tickets:** B-109
-- **Start-Commit:** –
+- **Start-Commit:** e03409f
 - **Spec:** freigegeben
 - **Revision:** 1
 - **Freigabe:** 2026-10-02, Chat (Ralf), Revision 1
@@ -57,7 +57,7 @@ keine
 
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
-| R2.1 | `R2.1-ist-material-gebaeude.md` | Umsetzung | autonom | offen |
+| R2.1 | `R2.1-ist-material-gebaeude.md` | Umsetzung | autonom | fertig |
 | R2.2 | `R2.2-workshop-material-gebaeude.md` | Workshop | Mensch | offen |
 | R2.3 | `R2.3-beschluss-tickets.md` | Umsetzung | autonom | offen |
 
