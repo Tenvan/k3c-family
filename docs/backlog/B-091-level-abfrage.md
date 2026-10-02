@@ -43,7 +43,7 @@ Domäne SRV (`engine/net/`); `engine/level` bleibt frei von Importen aus `engine
 
 ## Ausnahme- und Fehlerfälle
 
-Fehlender Seed → Standardseed oder 400 (entscheidet die Spec-Freigabe); Seed zu lang oder Biom unbekannt → 400; falsche Methode → 405.
+Fehlender Seed → Standardseed `k3c`, fehlendes Biom → `forest`; Seed zu lang oder Biom unbekannt → 400; falsche Methode → 405.
 
 ## Akzeptanzkriterien
 
@@ -54,7 +54,7 @@ Fehlender Seed → Standardseed oder 400 (entscheidet die Spec-Freigabe); Seed z
 
 ## Offene Fragen
 
-Fehlender Seed: Standardseed (`k3c`) oder Fehler? Entscheidet 🧑 mit der Freigabe.
+keine. Entschieden 2026-10-02 durch 🧑 (Chat): Fehlt der Seed, gilt der Standardseed `k3c`; fehlt das Biom, gilt `forest`.
 
 ## Notizen
 
