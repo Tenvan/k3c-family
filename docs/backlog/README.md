@@ -34,13 +34,9 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-041](B-041-wails-starter.md) | SRV | Idee | niedrig | offen | – | Wails-Starter für Windows existiert |
 | [B-042](B-042-pi-leistungsziel.md) | SRV | Frage | hoch | eingeplant | SP11 | Pi-Modell und Leistungsziel sind festgelegt |
 | [B-048](B-048-standardbibliothek-in-001.md) | SRV | Frage | niedrig | offen | – | Die Wahl der Go-Standardbibliothek ist dort festgehalten, wo B-001 auf sie verweist |
-| [B-051](B-051-oxlint-warnungen.md) | INF | Schuld | niedrig | eingeplant | I1 | Oxlint meldet im Bestand keine Warnungen mehr |
 | [B-053](B-053-ci-lauf-sp01.md) | INF | Problem | hoch | offen | – | Die CI hat die Prüfungen aus SP01 einmal grün durchlaufen |
 | [B-058](B-058-execution-policy.md) | INF | Frage | niedrig | offen | – | requirements.md empfiehlt keine Sicherheitseinstellung ohne Entscheidung von 🧑 |
-| [B-070](B-070-gitignore-verankern.md) | INF | Schuld | niedrig | eingeplant | I1 | Die .gitignore ignoriert reports/, saves/ und certs/ nur an der Repo-Wurzel |
 | [B-071](B-071-golden-arm64.md) | INF | Problem | mittel | offen | – | Die Golden-Tests laufen auch auf arm64 grün |
-| [B-072](B-072-depguard-rng.md) | INF | Schuld | niedrig | eingeplant | I1 | depguard prüft die Schichtgrenze auch für engine/rng |
-| [B-073](B-073-go-task-umstellen.md) | INF | Schuld | hoch | eingeplant | I1 | Alle Aufrufer nutzen Go Task statt npm-Skripte |
 | [B-075](B-075-golden-spielstand-hub.md) | SIM | Schuld | mittel | offen | – | Der Golden-Spielstand enthält einen gebauten und veränderten Hub |
 | [B-079](B-079-landing-kacheln-lobby.md) | PLAT | Schuld | mittel | offen | – | Die Kacheln der Landingpage passen zum Start über die Lobby |
 | [B-080](B-080-dev-tasten-server.md) | SRV | Idee | niedrig | offen | – | Dev-Tasten (Gold, Stufe, Neustart) wirken über den Server |
@@ -48,6 +44,7 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-091](B-091-level-abfrage.md) | SRV | Idee | mittel | eingeplant | U2 | Der Server liefert ein generiertes Level per HTTP, ohne einen Raum anzulegen |
 | [B-092](B-092-level-betrachter.md) | PLAT | Idee | mittel | eingeplant | U3 | Eine Testseite zeigt ein generiertes Level (Seed und Biom) ohne zu spielen |
 | [B-093](B-093-debug-overlay.md) | CLI | Idee | mittel | eingeplant | U4 | Ein Debug-Overlay zeigt Verbindung, Snapshot-Takt und Entitäten im Spiel |
+| [B-094](B-094-npm-reste.md) | INF | Schuld | niedrig | offen | – | Im Repo liegen keine Alt-Binaries und keine npm-Skripte mehr |
 
 ## Archiv
 
@@ -81,6 +78,7 @@ Zeile in diesen Abschnitt.
 | [B-047](archiv/B-047-mcp-raeume-simulation.md) | SRV | Idee | mittel | erledigt | M6 | MCP-Tools zeigen laufende Räume und rechnen Level und Simulationen |
 | [B-049](archiv/B-049-sp09-domaene.md) | INF | Frage | niedrig | erledigt | SP09 | SP09 bleibt in einer Domäne oder hat einen erlaubten Grenzfall |
 | [B-050](archiv/B-050-go-dateilaenge.md) | INF | Schuld | mittel | erledigt | SP01 | Die Dateilänge von Go-Code wird wie bei TypeScript geprüft |
+| [B-051](archiv/B-051-oxlint-warnungen.md) | INF | Schuld | niedrig | erledigt | I1 | Oxlint meldet im Bestand keine Warnungen mehr |
 | [B-052](archiv/B-052-requirements.md) | INF | Idee | mittel | erledigt | SP01 | Alle vorausgesetzten Installationen stehen in requirements.md |
 | [B-054](archiv/B-054-go-verschachtelung.md) | INF | Problem | mittel | erledigt | L1 | Die Verschachtelung von Go-Code wird als Tiefe geprüft |
 | [B-055](archiv/B-055-server-lint.md) | INF | Problem | niedrig | verworfen | – | Das Komplexitäts-Budget gilt auch für server/*.mjs |
@@ -97,6 +95,9 @@ Zeile in diesen Abschnitt.
 | [B-067](archiv/B-067-dev-dienste.md) | SRV | Idee | mittel | erledigt | M3 | k3c-dev startet, überwacht und stoppt die Entwicklungs-Dienste, auch für Agenten |
 | [B-068](archiv/B-068-dev-dienste-seite.md) | SRV | Idee | mittel | erledigt | M4 | k3c-dev zeigt die Dienste als Karten mit Zustand, Metriken und Log-Level |
 | [B-069](archiv/B-069-ci-k3c-dev.md) | INF | Problem | mittel | erledigt | – | Der CI-Job k3c-dev ist einmal grün gelaufen |
+| [B-070](archiv/B-070-gitignore-verankern.md) | INF | Schuld | niedrig | erledigt | I1 | Die .gitignore ignoriert reports/, saves/ und certs/ nur an der Repo-Wurzel |
+| [B-072](archiv/B-072-depguard-rng.md) | INF | Schuld | niedrig | erledigt | I1 | depguard prüft die Schichtgrenze auch für engine/rng |
+| [B-073](archiv/B-073-go-task-umstellen.md) | INF | Schuld | hoch | erledigt | I1 | Alle Aufrufer nutzen Go Task statt npm-Skripte |
 | [B-074](archiv/B-074-golden-wirtschaft-luecken.md) | SIM | Problem | mittel | erledigt | SP06 | Golden-Läufe decken Tragen, Bauen, Bögen, Truhen und Münz-Rückgabe ab |
 | [B-076](archiv/B-076-websocket-bibliothek.md) | INF | Frage | hoch | erledigt | SP07 | Der Go-Server spricht WebSocket über github.com/coder/websocket |
 | [B-077](archiv/B-077-race-detector.md) | INF | Schuld | hoch | erledigt | L3 | Die nebenläufigen Go-Pakete werden mit dem Race-Detector geprüft |
