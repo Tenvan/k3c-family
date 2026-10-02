@@ -7,8 +7,8 @@
 - **Sprint:** U3
 - **Erstellt:** 2026-10-01
 - **Spec:** freigegeben
-- **Revision:** 1
-- **Freigabe:** 2026-10-02 🧑 Chat („ja, freigeben und umsetzen“; Revision 1; umfasst Sprint U3)
+- **Revision:** 2
+- **Freigabe:** 2026-10-02 🧑 Chat („ja, so starten“; Revision 2: Start ohne `fresh`, B-096; umfasst Sprint U3)
 
 ## Ausgangslage
 
@@ -28,7 +28,7 @@ Entwickler, 🧑 beim Balancing; bedienbar mit Tastatur und Controller (Xbox). E
 - Seed (freier Text, Zufalls-Seed per Taste/Knopf) und Biom (Auswahl) einstellbar; scrollen und zoomen mit linkem Stick bzw. Tastatur.
 - Die Abbildung (Abschnitt/Objekt → Zeichenmodell) ist eine reine, getestete Funktion.
 - `testing.html` bekommt einen Abschnitt „Level“ mit einer Kachel „Level-Betrachter“, die `leveltest.html` über `openPage()` öffnet; die Kachel ist wie die Szenarien-Kacheln mit Controller bedienbar (Steuerkreuz wählt, A öffnet). Die Kachel auf der Landingpage bleibt zusätzlich.
-- Knopf „Im Spiel starten“ öffnet `game.html?autostart=1&fresh=1&save=<Seed>` über `openPage()`: Der Seed eines neuen Spiels ist der Name des Spielstands, daher nur für das Biom `forest` (Tiefe 0) und Seeds im Namensformat `^[a-z0-9-]{1,32}$`. Sonst ist der Knopf aus und nennt den Grund (Start mit beliebigem Seed und Höhle/Mine braucht B-095). Der Start ersetzt einen gleichnamigen Spielstand (die Sicherung bleibt, wie bei „Neues Spiel“).
+- Knopf „Im Spiel starten“ öffnet `game.html?autostart=1&save=<Seed>` (ohne `fresh`) über `openPage()`: Der Seed eines neuen Spiels ist der Name des Spielstands, daher nur für das Biom `forest` (Tiefe 0) und Seeds im Namensformat `^[a-z0-9-]{1,32}$`. Sonst ist der Knopf aus und nennt den Grund (Start mit beliebigem Seed und Höhle/Mine braucht B-095). Die Lobby lädt einen vorhandenen Spielstand mit diesem Namen (der Server lehnt `create` mit `fresh` bei vorhandenem Stand ab, B-096) oder legt ihn beim ersten Mal neu an; der Seitentext sagt das.
 - Der Zufalls-Seed liefert immer einen startbaren Namen (Kleinbuchstaben und Ziffern, `crypto.getRandomValues`).
 
 ## Nicht-Ziele
@@ -59,7 +59,7 @@ Seed oder Biom nicht startbar → „Im Spiel starten“ ist aus, der Grund steh
 
 ## Offene Fragen
 
-keine. Entschieden 2026-10-02 durch 🧑 (Chat): „Im Spiel starten“ darf einen gleichnamigen Spielstand ersetzen (die Sicherung bleibt). Ein Export der Objekt-Positionen ist nicht Teil dieser Spec.
+keine. Entschieden 2026-10-02 durch 🧑 (Chat, „ja, so starten“): „Im Spiel starten“ startet ohne `fresh` und spielt einen vorhandenen gleichnamigen Spielstand weiter (Revision 2; die frühere Annahme, der Start ersetze ihn, stimmte nicht). Ein Export der Objekt-Positionen ist nicht Teil dieser Spec.
 
 ## Notizen
 
