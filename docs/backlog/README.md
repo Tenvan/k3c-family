@@ -18,7 +18,6 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-013](B-013-gegner-elite.md) | SIM | Idee | mittel | offen | – | Restliche Gegner und Elite-KI sind umgesetzt |
 | [B-014](B-014-krieger-elite.md) | SIM | Idee | mittel | offen | – | Krieger und Elite-Truppen sind umgesetzt |
 | [B-015](B-015-gebaeude-werte.md) | REG | Problem | mittel | offen | – | Gebäude-HP und -Kosten sind gebalanced |
-| [B-017](B-017-klassen-preset.md) | REG | Frage | mittel | eingeplant | R3 | Klassen-Presets pro Spieler sind entschieden |
 | [B-019](B-019-test-abdeckung.md) | INF | Idee | niedrig | offen | – | Test-Abdeckung der Engine ist sichtbar |
 | [B-022](B-022-monarch-spielstand.md) | SIM | Idee | hoch | offen | – | Monarch-Level und Skills stehen im Spielstand |
 | [B-023](B-023-itch-io.md) | INF | Idee | niedrig | offen | – | Spiel ist auf itch.io veröffentlicht |
@@ -51,7 +50,6 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-105](B-105-anlegen-dialog-optionen.md) | CLI | Idee | mittel | offen | – | Der Anlegen-Dialog der Lobby wählt Grad, Ziel und Niederlage-Modus |
 | [B-106](B-106-kamera-je-stufe.md) | CLI | Idee | hoch | offen | – | Jeder Spieler sieht seine Stufe, auch wenn die Spieler in verschiedenen Stufen sind |
 | [B-107](B-107-debug-panel-gradwechsel.md) | CLI | Idee | mittel | offen | – | Ein Debug-Panel im Dev-Mode wechselt den Schwierigkeitsgrad und weitere Optionen |
-| [B-110](B-110-skillung-klassen-level.md) | REG | Idee | hoch | eingeplant | R3 | Skillung, Klassen und Level von Monarchen und Bürgern sind im Regelwerk beschlossen |
 
 ## Archiv
 
@@ -128,9 +126,20 @@ Zeile in diesen Abschnitt.
 | [B-108](archiv/B-108-material-und-inseln-offen.md) | REG | Frage | mittel | erledigt | – | Material je Hub oder je Insel, Anzahl und Reihenfolge der Inseln sind entschieden |
 | [B-111](archiv/B-111-materialmengen-je-stufe.md) | REG | Frage | hoch | erledigt | R2 | Die Materialmengen je Stufe passen zu den Kosten von Hub-Ausbau, Mauern und Gebäuden |
 | [B-109](archiv/B-109-materialien-gebaeude-regelwerk.md) | REG | Idee | hoch | erledigt | R2 | Materialien und Gebäude sind im Regelwerk beschlossen |
+| [B-110](archiv/B-110-skillung-klassen-level.md) | REG | Idee | hoch | erledigt | R3 | Skillung, Klassen und Level von Monarchen und Bürgern sind im Regelwerk beschlossen |
+| [B-017](archiv/B-017-klassen-preset.md) | REG | Frage | mittel | erledigt | R3 | Klassen-Presets pro Spieler sind entschieden |
 | [B-112](B-112-hub-ausbau-mauerstufen.md) | SIM | Idee | hoch | offen | – | Der Hub wird in fünf Stufen ausgebaut, Mauern und Türme haben fünf Materialstufen |
 | [B-113](B-113-material-lager.md) | SIM | Idee | hoch | offen | – | Fünf Materialien, Lager-Maximum und Tragen zum Lager sind umgesetzt |
 | [B-114](B-114-plantage-adern.md) | SIM | Idee | hoch | offen | – | Farm-Plantage lässt Holz nachwachsen, Adern liefern Stein bis Kristall unendlich mit Abbaurate |
 | [B-115](B-115-stufen-breite-eisen-kristall.md) | SIM | Idee | mittel | offen | – | Die Stufen sind nach unten schmaler und dichter, Eisenstollen und Kristallhöhle sind als Stufen angelegt |
 | [B-116](B-116-gebaeude-wirkungen.md) | SIM | Idee | mittel | offen | – | Tor, Kaserne, Taverne, Heilplatz, Schmiede, Rüstkammer und Zaubertum wirken im Spiel |
 | [B-117](B-117-anzeige-bau-lager.md) | CLI | Idee | mittel | offen | – | Der Client zeigt Wartezeit, Lagerstand, Hub-Stufe, Adern und Plantage |
+| [B-118](B-118-monarch-schlag-pool.md) | SIM | Idee | hoch | offen | – | Der Monarch schlägt zu, Skill-Punkte kommen aus einem Fund-Pool und jeder Spieler verteilt sie für sich |
+| [B-119](B-119-skills-tank-zauberer-heiler.md) | SIM | Idee | hoch | offen | – | Die Skills von Tank, Zauberer und Heiler wirken in der Simulation |
+| [B-120](B-120-wiederbeleben.md) | SIM | Idee | mittel | offen | – | Gefallene Monarchen bleiben liegen, Mitspieler beleben sie wieder, sonst Respawn nach 15 s |
+| [B-121](B-121-berufe-haendler.md) | SIM | Idee | mittel | offen | – | Bauern haben Berufe (Bergmann, Baumeister, Handwerker), und ein Händler tauscht Material gegen Gold |
+| [B-122](B-122-elite-ruestung-limit-heilung.md) | SIM | Idee | mittel | offen | – | Elite-Upgrades, Rüstung, Truppen-Limit je Hub und Heilung der Truppen sind umgesetzt |
+| [B-123](B-123-protokoll-skills-aktionen.md) | SRV | Idee | hoch | offen | – | Das Protokoll kennt Schlag, Skills, Pool, Berufe und die gültigen Aktionen je Spieler |
+| [B-124](B-124-skill-menue-tasten.md) | CLI | Idee | hoch | offen | – | Der Client hat Schlag, Skill-Slots, Skill-Menü und die Tasten für Controller, Tastatur und Touch |
+| [B-125](B-125-aktionen-overlay.md) | CLI | Idee | hoch | offen | – | Gültige Aktionen erscheinen überall in der Welt als Overlay am Ort |
+| [B-126](B-126-buerger-ui.md) | CLI | Idee | mittel | offen | – | Der Client zeigt Berufe, Ausbildung, Händler, Truppen-Limit und Heilung |

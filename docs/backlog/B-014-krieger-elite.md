@@ -56,3 +56,5 @@ Verhalten bei fehlendem Stein/Kupfer (Regelwerk, 🧑).
 ## Notizen
 
 –
+
+R3 (2026-10-02): Krieger, Elite und Rüstung sind in `docs/rules/buerger.md` beschlossen; die Umsetzung steht in B-122.
