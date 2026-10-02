@@ -1,6 +1,6 @@
 # U3 · PLAT · Level-Betrachter
 
-- **Status:** aktiv
+- **Status:** erledigt
 - **Domäne:** PLAT
 - **Reife:** bereit
 - **Einschiebbar:** nein
@@ -63,8 +63,11 @@ keine. Entschieden 2026-10-02 durch 🧑 (Chat): „Im Spiel starten“ darf ein
 | U3.1 | `U3.1-zeichenmodell.md` | Umsetzung | autonom | fertig |
 | U3.2 | `U3.2-seite.md` | Umsetzung | autonom | fertig |
 | U3.3 | `U3.3-testseite.md` | Umsetzung | autonom | fertig |
-| U3.4 | `U3.4-review.md` | Review | autonom | offen |
+| U3.4 | `U3.4-review.md` | Review | autonom | fertig |
 
 ## Abnahme
 
-–
+- 2026-10-02 (U3.4, Review): AC-01 bis AC-04, AC-06, AC-07 belegt (Ergebnisse U3.1–U3.3, AC-03-Beispiel Seed `test` im Review beobachtet, siehe U3.4).
+- AC-05 offen: wartet auf Abnahme durch 🧑 am TV.
+- Behobene Befunde: keine. Schwerer Befund außerhalb PLAT: „Im Spiel starten“ mit vorhandenem gleichnamigem Spielstand wird vom Server abgewiesen (`save_exists`), der Hinweis auf der Seite stimmt nicht.
+- Neue Tickets: B-096.
