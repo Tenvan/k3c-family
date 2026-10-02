@@ -1,24 +1,36 @@
 import { installPageChrome, openPage } from '../core/shell';
 import { SCENARIOS, scenarioUrl } from './testScenarios';
+import { LEVEL_TILES, nextFocus } from './testTiles';
 
 installPageChrome();
 
 const list = document.getElementById('scenarios')!;
+const levels = document.getElementById('levels')!;
 const note = document.getElementById('note')!;
 
-for (const scenario of SCENARIOS) {
+function addTile(parent: HTMLElement, titleText: string, descriptionText: string, onClick: () => void): void {
   const button = document.createElement('button');
   button.type = 'button';
   const title = document.createElement('strong');
-  title.textContent = scenario.title;
+  title.textContent = titleText;
   const description = document.createElement('span');
-  description.textContent = scenario.description;
+  description.textContent = descriptionText;
   button.append(title, description);
-  button.addEventListener('click', () => {
+  button.addEventListener('click', onClick);
+  parent.append(button);
+}
+
+for (const scenario of SCENARIOS) {
+  addTile(list, scenario.title, scenario.description, () => {
     note.textContent = `Starte „${scenario.title}“ …`;
     openPage(scenarioUrl(scenario, Date.now().toString(36))); // Uhrzeit als Kennung: jeder Start bekommt einen neuen Spielstand
   });
-  list.append(button);
+}
+for (const tile of LEVEL_TILES) {
+  addTile(levels, tile.title, tile.description, () => {
+    note.textContent = `Öffne „${tile.title}“ …`;
+    openPage(tile.href);
+  });
 }
 
 // Bedienung mit Controller: Steuerkreuz/Stick wählt, A klickt. B bleibt frei (Edge-Zurück), View + Menu übernimmt die Shell.
@@ -43,10 +55,10 @@ function padKeys(): Set<string> {
 function pollPad(): void {
   const next = padKeys();
   const edge = (name: string) => next.has(name) && !held.has(name);
-  const buttons = [...list.querySelectorAll('button')];
-  const at = Math.max(0, buttons.indexOf(document.activeElement as HTMLButtonElement));
-  if (edge('next')) buttons[Math.min(buttons.length - 1, at + 1)]?.focus();
-  if (edge('prev')) buttons[Math.max(0, at - 1)]?.focus();
+  const buttons = [...document.querySelectorAll<HTMLButtonElement>('main button')]; // Szenarien, dann Abschnitt „Level'
+  const at = buttons.indexOf(document.activeElement as HTMLButtonElement);
+  if (edge('next')) buttons[nextFocus(buttons.length, at, 'next')]?.focus();
+  if (edge('prev')) buttons[nextFocus(buttons.length, at, 'prev')]?.focus();
   if (edge('a')) (document.activeElement as HTMLElement | null)?.click();
   held = next;
   requestAnimationFrame(pollPad);
