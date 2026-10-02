@@ -1,6 +1,6 @@
 # R1 · REG · Regelwerk I – Fundament
 
-- **Status:** aktiv
+- **Status:** erledigt
 - **Domäne:** REG
 - **Reife:** bereit
 - **Einschiebbar:** ja
@@ -63,8 +63,10 @@ keine
 | R1.1 | `R1.1-ist-regelwerk.md` | Umsetzung | autonom | fertig |
 | R1.2 | `R1.2-workshop-wirtschaft.md` | Workshop | Mensch | fertig |
 | R1.3 | `R1.3-workshop-stufen.md` | Workshop | Mensch | fertig |
-| R1.4 | `R1.4-beschluss-tickets.md` | Umsetzung | autonom | offen |
+| R1.4 | `R1.4-beschluss-tickets.md` | Umsetzung | autonom | fertig |
 
 ## Abnahme
 
-–
+- 2026-10-02, Doku-Sprint ohne Review (R1.4 schließt ab): AC-01 (R1.2 › Ergebnis), AC-02 und AC-03 (R1.3 › Ergebnis, R1.1 › Ergebnis), AC-04 (R1.2 › Ergebnis: X bleibt frei für Skills), AC-05 (R1.4 › Ergebnis). Beschlüsse von 🧑 in den Workshops am 2026-10-02.
+- Neu gegenüber der Spec: Schwierigkeitsgrade und Raum-Optionen (Revision 2), Spielstruktur Inseln/Stufen (Entscheidung 003).
+- Neue Tickets: B-099 bis B-108. Offen: B-108 (Material und Inseln), Regelwerk II und III (B-004).

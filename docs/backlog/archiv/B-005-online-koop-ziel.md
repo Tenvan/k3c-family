@@ -3,7 +3,7 @@
 - **Domäne:** REG
 - **Typ:** Problem
 - **Prio:** hoch
-- **Status:** eingeplant
+- **Status:** erledigt
 - **Sprint:** R1
 - **Erstellt:** 2026-09-29
 - **Spec:** freigegeben
