@@ -58,10 +58,10 @@ describe('debugLines (AC-01)', () => {
 });
 
 describe('debugEnabled (AC-02)', () => {
-  it('nur mit dev-Parameter', () => {
+  it('standardmäßig an, nur ?dev=0 schaltet ab', () => {
+    expect(debugEnabled('')).toBe(true);
+    expect(debugEnabled('?x=1')).toBe(true);
     expect(debugEnabled('?dev=1')).toBe(true);
-    expect(debugEnabled('?seed=x&dev=1')).toBe(true);
-    expect(debugEnabled('')).toBe(false);
-    expect(debugEnabled('?x=1')).toBe(false);
+    expect(debugEnabled('?seed=x&dev=0')).toBe(false);
   });
 });
