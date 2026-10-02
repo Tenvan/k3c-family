@@ -4,6 +4,8 @@ Stand: 2026-10-02 (Session R1.1). Vergleich von `docs/game-design.md` mit dem Go
 Nur Tatsachen aus dem Code; was nicht gelesen oder getestet wurde, steht als **ungeprüft**. Beschlüsse trifft 🧑 in den Workshops,
 dieses Dokument ändert keine Regel und keinen Wert.
 
+> **Nachtrag R1.3 (2026-10-02):** Die Spielstruktur ist anders geplant als im Ist: **1 Spielstand → n Inseln → n Stufen je Insel, Stufen pro Spieler frei begehbar, alle Stufen laufen weiter** (`stufen.md`, Entscheidung `003`). Die Abschnitte 3 und 4 beschreiben den **Ist-Stand** (eine Stufe = eine Welt, gemeinsame Reise); sie gelten nicht als Soll.
+
 ## 1. Kern-Loop und Wirtschaft
 
 | Regel in game-design.md | Ist im Go-Code / `data/` | Abweichung? |

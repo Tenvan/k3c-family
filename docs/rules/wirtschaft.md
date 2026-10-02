@@ -21,7 +21,7 @@ Jede Regel gilt für 2+ Spieler (Couch und Online gemischt).
 ## 2. Koop und Besitz
 
 - **Wellen wachsen mit der Spieleranzahl.** Die Gegnerzahl einer Welle wird mit `1 + 0,5 × (Spieler − 1)` multipliziert und auf ganze Zahlen gerundet. Begründung: Mehr Spieler bringen mehr Gold, Truppen und Schlagkraft; die Nacht soll mit 4 Spielern nicht trivial werden. Daten: `data/waves.json` (neuer Faktor `perExtraPlayer: 0,5`, SIM legt das Feld an). Zielkorridor: dieselbe Überlebensquote wie in Abschnitt 4, **je Spieleranzahl 1–4**.
-- Was zählt als Spieler? Annahme (🧑 hat nicht gesondert bestätigt): Jeder gesteuerte, nicht freie Monarch im Raum, egal ob lokal oder online; ein freier Monarch (B-059) zählt nicht.
+- Die Stufen einer Insel laufen alle weiter und sind pro Spieler frei begehbar; die Wellenstärke zählt die Spieler der **Insel** (siehe `stufen.md`). Was zählt als Spieler? Annahme (🧑 hat nicht gesondert bestätigt): Jeder gesteuerte, nicht freie Monarch im Raum, egal ob lokal oder online; ein freier Monarch (B-059) zählt nicht.
 - Bauplätze, Truppen und Material gehören dem Hub, nicht einem Spieler.
 
 ## 3. Tag, Nacht und Wellen
@@ -53,6 +53,7 @@ Die Faktoren sind **Startwerte** (Basis: heutige Werte = Normal); der Balancing-
 - **Live (Familie):** Der Grad wird beim **Anlegen des Raums** gewählt (Leicht bis Ultra, Standard Normal). **Dev** ist in Live nicht wählbar.
 - **Dev-Mode (Entwicklungsphase):** Standardgrad **Dev**; alle fünf Grade lassen sich im **Debug-Panel** jederzeit umschalten. Der Wechsel wirkt ab der **nächsten Welle**, nie rückwirkend auf Gegner, die schon laufen oder warten.
 - Der Grad gehört zum Raum und steht im Spielstand.
+- Der Grad ist eine von drei **Raum-Optionen** (Grad, Ziel, Niederlage-Modus; siehe `stufen.md` § 5).
 - Das Debug-Panel mit Aktionen ist neu (heute gibt es nur das lesende Overlay, B-093); die Dev-Aktionen laufen als B-080 über den Server.
 
 ## 5. Truppen und Gebäude: beschlossen, später gebaut
@@ -63,11 +64,11 @@ Krieger, Elite-Upgrades, Tor, Farm, Kaserne und das Truppen-Limit bleiben im Reg
 
 - **Taste X (Controller) bzw. E (Tastatur) bleibt frei für Skills** (Regelwerk II). Bis dahin ohne Funktion; „Interagieren“ erledigt A (halten).
 - B bleibt unbelegt, View + Menu gemeinsam sind reserviert (`CLAUDE.md`).
-- Das Debug-Panel und der Gradwechsel gehören nicht auf X; die Belegung steht mit dem Ticket für das Panel fest (nur Dev-Mode).
+- Das Skill-Menü liegt nicht auf View (`stufen.md` § 6). Das Debug-Panel und der Gradwechsel gehören nicht auf X; die Belegung steht mit dem Ticket für das Panel fest (nur Dev-Mode).
 
 ## 7. Offen / Annahmen
 
 - **Gold-Beutel, Startgold und Tageseinkommen** bleiben bei den heutigen Werten; das folgt daraus, dass die Grade die Wirtschaft nicht ändern. 🧑 hat das nicht gesondert bestätigt und kann es mit den Messläufen von B-099 ändern.
 - Zielkorridore für Verluste und Wirtschaftsfluss gelten als Startziele; die Kennzahlen dafür fehlen noch (siehe `ist-abgleich.md` › Messgrößen) und kommen mit B-099.
-- **Wolf bei Vollmond** bleibt eine Frage für R1.3.
+- **Wolf bei Vollmond:** Event-Idee für später (Regelwerk III), siehe `stufen.md`.
 - Das Standardszenario (Wald, 2 Spieler, Bot „sparsam“) gilt für alle Korridore; Korridore für Höhle und Mine folgen mit `stufen.md` (R1.3).
