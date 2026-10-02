@@ -3,7 +3,7 @@
 - **Domäne:** SIM
 - **Typ:** Idee
 - **Prio:** hoch
-- **Status:** eingeplant
+- **Status:** erledigt
 - **Sprint:** SP13
 - **Erstellt:** 2026-10-02
 - **Spec:** freigegeben
@@ -60,3 +60,5 @@ Wirkung beim Absinken der Kapazität (zerstörtes Lager): Überschuss bleibt (An
 ## Notizen
 
 Aus R2.2. Abhängig von B-100 (Insel-Vorrat).
+
+SP13 (2026-10-02) hat den SIM-Teil umgesetzt (Insel-Optionen, Grade, Wellenfaktor, Gradwechsel, fünf Materialien, Lager-Maximum, Lager-Gebäude, Tragen). Offen für den Rest: Protokoll (B-104, B-123), Raum (B-133), Dialog (B-105), Debug-Panel (B-107), Anzeige (B-117); Wirkung von Ziel und Niederlage-Modus: B-102.
