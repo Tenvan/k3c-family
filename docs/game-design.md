@@ -81,7 +81,7 @@ Platzierung auf einem Raster im Hub-Bereich, gebaut wird von Bauern.
 
 ## Welt & Stufen
 
-**Aufbau:** Ein Raum hat einen Spielstand, der Spielstand hat **n Inseln**, jede Insel hat **n Stufen** (Level). Die Stufen einer Insel sind **pro Spieler frei begehbar** (jeder wechselt allein über Tiefen-Eingang oder Treppe) und laufen alle weiter, auch ohne Spieler. Der **Endboss** der tiefsten Stufe macht den Weg zur nächsten Insel frei (gemeinsamer Wechsel); je Stufe gibt es einen **Miniboss**. Erste Ausbaustufe: 1 Insel mit den 3 Stufen unten. Details: `rules/stufen.md`, Entscheidung `decisions/003-spielstruktur-inseln-stufen.md`.
+**Aufbau:** Ein Raum hat einen Spielstand, der Spielstand hat **n Inseln**, jede Insel hat **n Stufen** (Level). Die Stufen einer Insel sind **pro Spieler frei begehbar** (jeder wechselt allein über Tiefen-Eingang oder Treppe) und laufen alle weiter, auch ohne Spieler. Der **Endboss** der tiefsten Stufe macht den Weg zur nächsten Insel frei (gemeinsamer Wechsel); je Stufe gibt es einen **Miniboss**. Das Baumaterial gehört der Insel (alle Stufen teilen einen Vorrat). Die Inseln folgen klassisch als Insel 1 bis n; später sind mehrere Inseln je Ebene wählbar (nächste Ebene nach k besiegten Inseln). Erste Ausbaustufe: 1 Insel mit den 3 Stufen unten. Details: `rules/stufen.md`, Entscheidung `decisions/003-spielstruktur-inseln-stufen.md`.
 
 | Stufe | Biom | Länge (Units) | Primär-Ressource | Zyklus | Gegner |
 |---|---|---|---|---|---|
