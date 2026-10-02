@@ -118,3 +118,56 @@ func TestIslandCarryDeterministic(t *testing.T) {
 		t.Errorf("nicht deterministisch: %v vs %v", a, b)
 	}
 }
+
+// Review SP13.4: Ein wartender Träger darf den Bau nicht blockieren und behält sein Material.
+func TestIslandFullCarrierStillBuildsAndKeepsMaterial(t *testing.T) {
+	isl := mustIsland(t, "trag-c", []int{0})
+	w := isl.Stages[0]
+	isl.Stock.Wood = 300 // voll
+	p := carrier(w, w.HubX, 10)
+	w.Troops = []*Troop{p}
+	var site *Site
+	for _, s := range w.Sites {
+		if s.Kind == "wall" {
+			site = s
+			break
+		}
+	}
+	site.State = "waitingWorker"
+	for range 2000 {
+		w.Cycle.Phase, w.Enemies = "day", nil
+		stepPeasant(w, p, dt)
+		if site.State == "built" {
+			break
+		}
+	}
+	if site.State != "built" {
+		t.Fatal("der wartende Träger muss den Bauplatz bauen")
+	}
+	stepPeasant(w, p, dt)
+	if p.Job == nil || p.Job.Type != "carry" || p.Job.Amount != 10 {
+		t.Fatalf("danach trägt er das behaltene Material weiter: %+v", p.Job)
+	}
+	isl.Stock.Wood = 0 // Platz
+	runCarry(w, p, 2000)
+	if p.Job != nil || isl.Stock.Wood != 10 {
+		t.Errorf("Abgabe nach dem Bau: Job %+v, Holz %d", p.Job, isl.Stock.Wood)
+	}
+}
+
+func TestIslandFindJobSkipsFullResource(t *testing.T) {
+	isl := mustIsland(t, "trag-d", []int{0})
+	w := isl.Stages[0]
+	w.Cycle.Phase, w.Enemies = "day", nil
+	for _, n := range w.Nodes {
+		n.Marked = true
+	}
+	peasant := &Troop{ID: 901, Kind: "peasant", X: w.HubX, HP: 1, MaxHP: 1}
+	isl.Stock.Wood = 300 // Bäume liefern Holz: voll
+	for _, s := range w.Sites {
+		s.State = "unpaid"
+	}
+	if j := findJob(w, peasant); j != nil && j.Type == "gather" && economy.Gatherables[nodeByID(w, j.NodeID).Kind].Resource == "wood" {
+		t.Error("ein volles Holzlager darf keine Sammelaufträge für Holz vergeben")
+	}
+}

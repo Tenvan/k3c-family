@@ -77,6 +77,9 @@ func walkTo(t *Troop, x, dt float64) bool {
 }
 
 func stepPeasant(w *World, t *Troop, dt float64) {
+	if t.Job == nil && t.carried != nil { // nach dem Bauauftrag das behaltene Material weitertragen
+		t.Job, t.carried = t.carried, nil
+	}
 	if t.Job == nil {
 		t.Job = findJob(w, t)
 	}
@@ -187,6 +190,27 @@ func gatherPressure(w *World) {
 // findJob: Bogen holen, sonst nächsten wartenden Bauplatz, sonst (ohne Gefahr) die markierte Ressource nächst am Hub.
 // Bei gleichem Abstand gewinnt das frühere Element, wie das stabile `sort(...)[0]` in TS.
 func findJob(w *World, t *Troop) *Job {
+	if j := siteJob(w, t); j != nil {
+		return j
+	}
+	if isDangerous(w) {
+		return nil
+	}
+	var node *ResourceNode
+	for _, n := range w.Nodes {
+		if n.Marked && !isWorker(w, n.WorkerID) && !resourceFull(w, economy.Gatherables[n.Kind].Resource) && (node == nil || math.Abs(n.X-w.HubX) < math.Abs(node.X-w.HubX)) {
+			node = n
+		}
+	}
+	if node != nil {
+		node.WorkerID = intPtr(t.ID)
+		return &Job{Type: "gather", NodeID: node.ID}
+	}
+	return nil
+}
+
+// siteJob: Bogen holen oder den nächsten wartenden Bauplatz bauen; nil, wenn es nichts zu tun gibt.
+func siteJob(w *World, t *Troop) *Job {
 	if s := bowToFetch(w, t); s != nil {
 		return &Job{Type: "fetchBow", SiteID: s.ID}
 	}
@@ -199,19 +223,6 @@ func findJob(w *World, t *Troop) *Job {
 	if site != nil {
 		site.WorkerID = intPtr(t.ID)
 		return &Job{Type: "build", SiteID: site.ID}
-	}
-	if isDangerous(w) {
-		return nil
-	}
-	var node *ResourceNode
-	for _, n := range w.Nodes {
-		if n.Marked && !isWorker(w, n.WorkerID) && (node == nil || math.Abs(n.X-w.HubX) < math.Abs(node.X-w.HubX)) {
-			node = n
-		}
-	}
-	if node != nil {
-		node.WorkerID = intPtr(t.ID)
-		return &Job{Type: "gather", NodeID: node.ID}
 	}
 	return nil
 }
