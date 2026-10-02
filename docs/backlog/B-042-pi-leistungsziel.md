@@ -49,8 +49,8 @@ nicht relevant – reine Entscheidung, kein Verhalten.
 
 ## Offene Fragen
 
-Modell und Zielwerte (🧑).
+Pi-Modell genau (🧑 bestätigt mit der Freigabe von SP11): Angabe „Pi 3 oder älter“ vom 2026-10-02; arm64 braucht mindestens einen Pi 3 mit 64-Bit-Betriebssystem.
 
 ## Notizen
 
-–
+**Festgelegt (🧑, 2026-10-02):** Modell Pi 3 oder älter (vermutlich Pi 3, 64-Bit-OS). Ziel: 2 Räume × 3 Spieler parallel, Tick-Dauer p99 < 10 ms bei 30 Hz (Budget 33 ms). Gemessen wird in SP11.3.
