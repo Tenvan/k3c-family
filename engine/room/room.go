@@ -51,7 +51,7 @@ type Seat struct {
 	Depth   int `json:"depth"` // Tiefe der Stufe, in der der Monarch steht
 }
 
-// Options sind die Raum-Optionen aus `create` (leer = Standard). SP14.2 reicht sie nur durch, Prüfung und Wirkung folgen.
+// Options sind die Raum-Optionen aus `create` (leer = Standard). Der Manager prüft sie beim Anlegen eines neuen Stands und setzt sie auf die Insel.
 type Options struct{ Grade, Goal, Defeat string }
 
 // Peer ist die Verbindung eines Geräts. Der Raum ruft die Methoden unter seiner Sperre auf: Sie dürfen nicht blockieren
@@ -87,7 +87,7 @@ type Room struct {
 	mu         sync.Mutex
 	m          *Manager
 	isl        *sim.Island
-	Opts       Options // angeforderte Raum-Optionen (noch ohne Wirkung)
+	Opts       Options // angeforderte Raum-Optionen (gelten nur für neue Stände)
 	start      int // Startstufe: dort treten neue Geräte ohne Spieler ein
 	monarchs   []*monarch
 	devices    map[string]*device

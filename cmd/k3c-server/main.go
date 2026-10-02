@@ -3,7 +3,7 @@
 // Konfiguration per Umgebung: K3C_HTTP_PORT (8080), K3C_HTTPS_PORT (8443, nur mit <certs>/key.pem und cert.pem),
 // K3C_DIST (dist), K3C_SAVES_DIR (saves), K3C_REPORTS_DIR (reports), K3C_CERTS_DIR (certs), K3C_STATUS_TOKEN
 // (schützt /api/status; leer = Diagnose aus), K3C_LOG_DIR (JSON-Log nach <Ordner>/k3c-server.jsonl; Standard: ein vorhandener
-// Ordner logs/, sonst nur Text auf stderr). `k3c-server -health` fragt /api/health des laufenden Servers ab
+// Ordner logs/, sonst nur Text auf stderr), K3C_DEV (Dev-Mode: leer oder 1 = an, 0 = aus; Grad dev wählbar und Standard). `k3c-server -health` fragt /api/health des laufenden Servers ab
 // (Docker-HEALTHCHECK, das Image hat kein curl).
 package main
 
@@ -39,6 +39,7 @@ type config struct {
 	dist, saves         string
 	reports, certs      string
 	statusToken         string
+	dev                 bool
 }
 
 func env(key, fallback string) string {
@@ -53,7 +54,7 @@ func loadConfig() config {
 		httpPort: env("K3C_HTTP_PORT", "8080"), httpsPort: env("K3C_HTTPS_PORT", "8443"),
 		dist: env("K3C_DIST", "dist"), saves: env("K3C_SAVES_DIR", "saves"),
 		reports: env("K3C_REPORTS_DIR", "reports"), certs: env("K3C_CERTS_DIR", "certs"),
-		statusToken: os.Getenv("K3C_STATUS_TOKEN"),
+		statusToken: os.Getenv("K3C_STATUS_TOKEN"), dev: os.Getenv("K3C_DEV") != "0",
 	}
 }
 
@@ -81,6 +82,7 @@ func run(cfg config, log *slog.Logger) error {
 	saves := &store.Saves{Dir: cfg.saves}
 	rooms := room.NewManager(saves)
 	rooms.Log = log
+	rooms.Dev = cfg.dev
 	// Testläufe (Spielstände mit Präfix test-, B-086) räumen sich beim Aufräumen des Raums auf; Reste alter Läufe hier.
 	if n, err := saves.Purge(room.TestPrefix, time.Now().Add(-testSaveMaxAge)); err != nil {
 		log.Error("Test-Spielstände nicht aufgeräumt", "err", err)
