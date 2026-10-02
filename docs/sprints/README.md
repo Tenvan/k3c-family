@@ -8,6 +8,7 @@ Jede Sprint-README ist eine Spec (SDD); aktiv wird ein Sprint erst mit `Spec: fr
 
 | Sprint | Domäne | Thema | Am Ende sichtbar | Ordner |
 |---|---|---|---|---|
+| SP13 | SIM | Raum-Optionen, Grade, Material-Lager (B-101, B-113) | Insel mit Grad, Wellenfaktor, fünf Materialien, Lager-Maximum und Tragen | `aktiv/SP13-optionen-material/` |
 | SP11 | SRV 🧑 | Raspberry Pi | 2er- und 3er-Spiel parallel auf dem Pi | `aktiv/SP11-raspberry-pi/` |
 
 ## Geplant (in dieser Reihenfolge)
