@@ -62,7 +62,7 @@ keine
 |---|---|---|---|---|
 | R1.1 | `R1.1-ist-regelwerk.md` | Umsetzung | autonom | fertig |
 | R1.2 | `R1.2-workshop-wirtschaft.md` | Workshop | Mensch | fertig |
-| R1.3 | `R1.3-workshop-stufen.md` | Workshop | Mensch | offen |
+| R1.3 | `R1.3-workshop-stufen.md` | Workshop | Mensch | fertig |
 | R1.4 | `R1.4-beschluss-tickets.md` | Umsetzung | autonom | offen |
 
 ## Abnahme
