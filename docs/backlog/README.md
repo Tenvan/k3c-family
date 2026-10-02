@@ -44,6 +44,7 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-092](B-092-level-betrachter.md) | PLAT | Idee | mittel | eingeplant | U3 | Eine Testseite zeigt ein generiertes Level (Seed und Biom) ohne zu spielen |
 | [B-093](B-093-debug-overlay.md) | CLI | Idee | mittel | eingeplant | U4 | Ein Debug-Overlay zeigt Verbindung, Snapshot-Takt und Entitäten im Spiel |
 | [B-094](B-094-npm-reste.md) | INF | Schuld | niedrig | offen | – | Im Repo liegen keine Alt-Binaries und keine npm-Skripte mehr |
+| [B-095](B-095-start-mit-seed-und-tiefe.md) | SRV | Idee | niedrig | offen | – | Ein neues Spiel startet per URL mit eigenem Seed und gewählter Tiefe |
 
 ## Archiv
 
