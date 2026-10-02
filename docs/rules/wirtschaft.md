@@ -70,5 +70,5 @@ Gebäude und Material sind in `materialien-gebaeude.md` beschlossen (R2), Bürge
 
 - **Gold-Beutel, Startgold und Tageseinkommen** bleiben bei den heutigen Werten; das folgt daraus, dass die Grade die Wirtschaft nicht ändern. 🧑 hat das nicht gesondert bestätigt und kann es mit den Messläufen von B-099 ändern.
 - Zielkorridore für Verluste und Wirtschaftsfluss gelten als Startziele; die Kennzahlen dafür fehlen noch (siehe `ist-abgleich.md` › Messgrößen) und kommen mit B-099.
-- **Wolf bei Vollmond:** Event-Idee für später (Regelwerk III), siehe `stufen.md`.
+- **Vollmond und weitere Events:** beschlossen in `bosse.md` § 2.
 - Das Standardszenario (Wald, 2 Spieler, Bot „sparsam“) gilt für alle Korridore; Korridore für Höhle und Mine folgen mit `stufen.md` (R1.3).
