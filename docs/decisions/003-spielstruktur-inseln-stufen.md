@@ -25,8 +25,9 @@ Option **B**:
 2. Jeder Spieler wechselt **einzeln** die Stufe (Tiefen-Eingang, Treppe); jeder Spieler kann in einer anderen Stufe sein.
 3. **Alle Stufen einer Insel laufen weiter** (gemeinsame Zeit, eigene Wellen je Stufe), auch ohne Spieler.
 4. Der **Endboss** der tiefsten Stufe macht den Weg zur nächsten Insel frei; der **Inselwechsel** ist gemeinsam.
-5. Wellenstärke skaliert mit der Spieleranzahl der Insel; Gegnerskalierung je Insel mit eigener Tabelle.
-6. Raum-Optionen (Schwierigkeitsgrad, Ziel, Niederlage-Modus) siehe `docs/rules/stufen.md` und `wirtschaft.md`.
+5. Das **Baumaterial gehört der Insel** (alle Stufen teilen einen Vorrat); die Inseln folgen klassisch als 1 bis n, später optional mehrere Inseln je Ebene (B-108).
+6. Wellenstärke skaliert mit der Spieleranzahl der Insel; Gegnerskalierung je Insel mit eigener Tabelle.
+7. Raum-Optionen (Schwierigkeitsgrad, Ziel, Niederlage-Modus) siehe `docs/rules/stufen.md` und `wirtschaft.md`.
 
 ## Folgen
 

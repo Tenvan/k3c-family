@@ -1,6 +1,6 @@
 # Regelwerk: Spielstruktur, Stufen, Niederlage und Ziel
 
-Beschlossen von 🧑 im Workshop R1.3 am 2026-10-02 (Grundlage: [`ist-abgleich.md`](ist-abgleich.md), Wirtschaft und Schwierigkeitsgrade: [`wirtschaft.md`](wirtschaft.md)).
+Beschlossen von 🧑 im Workshop R1.3 und in der Klärung B-108 am 2026-10-02 (Grundlage: [`ist-abgleich.md`](ist-abgleich.md), Wirtschaft und Schwierigkeitsgrade: [`wirtschaft.md`](wirtschaft.md)).
 Je Regel: **Regel · Begründung · Verweis auf `data/` · Zielkorridor**. Zielkorridore prüft später der Balancing-Tester (B-099) mit dem
 Standardszenario **Wald, 2 Spieler, Bot „sparsam“, Normal, je 100 Seeds**.
 
@@ -17,8 +17,10 @@ Standardszenario **Wald, 2 Spieler, Bot „sparsam“, Normal, je 100 Seeds**.
 | Ein Raum hat einen Spielstand, der Spielstand hat **n Inseln**, jede Insel hat **n Stufen** (Oberwelt/Wald, Höhle, Mine, später mehr). Die erste Ausbaustufe ist **1 Insel mit 3 Stufen**; weitere Inseln kommen später. | Struktur trägt Koop mit freier Wahl des Ortes; wächst über Inseln statt über beliebig viele Stufen. | `data/biomes/*.json` (Stufen), neue Insel-Daten (SIM legt sie an) | – |
 | Die Stufen einer Insel bilden **ein Level** und sind **pro Spieler frei begehbar**: Jeder Spieler wechselt allein über den Tiefen-Eingang (2 s stehen) oder eine gebaute Treppe; es gibt keine gemeinsame Reise. | Spieler sollen verschiedene Aufgaben an verschiedenen Orten übernehmen können. | `data/hub.json` › `travel` | – |
 | Jede Stufe hat **einen eigenen Hub**, der von Grund auf gebaut wird; alle Hubs bleiben bestehen. | Wie bisher. | `data/hub.json` | – |
+| **Das Baumaterial (Holz, Stein, Kupfer) gehört der Insel:** alle Stufen und Hubs einer Insel teilen einen Vorrat. Eine neue Insel beginnt mit leerem Vorrat. Gold bleibt je Spieler. | Wald liefert Holz, Höhle Stein, Mine Kupfer, gebaut wird überall; so trägt niemand Material von Hub zu Hub. | `World.stock` wird ein Vorrat je Insel (SIM) | Material am Morgen je Rohstoff im Korridor aus B-099 (Messgröße noch offen) |
 | **Alle Stufen einer Insel laufen weiter**, auch wenn kein Spieler dort ist (eine gemeinsame Zeit, eigene Wellen je Stufe). Ein Hub ohne Verteidiger kann fallen. | Die Entscheidung „wo bin ich?“ ist Spielinhalt. Rechenlast wird mit B-099 und SP11 (Pi 3) gemessen. | – | Rechenzeit je Tick mit 3 Stufen aktiv im Ziel aus B-042 (p99 < 10 ms bei 2 Räumen × 3 Spielern) |
-| **Inselwechsel:** Der Endboss der tiefsten Stufe macht den Weg zur nächsten Insel frei (Boot oder Portal). Der Wechsel erfolgt **gemeinsam**: alle lebenden Spieler stehen am Boot/Portal. Die neue Insel ist eine neue Welt mit eigenen Hubs. | Der Fortschritt bleibt ein gemeinsamer Meilenstein, Inseln folgen einander. | neue Insel-Daten | – |
+| **Inselwechsel:** Der Endboss der tiefsten Stufe macht den Weg zur nächsten Insel frei (Boot oder Portal). Der Wechsel erfolgt **gemeinsam**: alle lebenden Spieler stehen am Boot/Portal. Die neue Insel ist eine neue Welt mit eigenen Hubs und leerem Material-Vorrat. | Der Fortschritt bleibt ein gemeinsamer Meilenstein, Inseln folgen einander. | `data/islands.json` (SIM legt an) | – |
+| **Reihenfolge der Inseln:** Klassische Variante **Insel 1 bis n** in fester Reihenfolge aus den Daten; die Anzahl n bleibt offen, bis Insel 1 spielbar ist und der Balancing-Tester Werte liefert. **Später** (Variante „Ebenen“): mehrere Inseln je **Ebene** (Schwierigkeits-Ebene), freie Reihenfolge innerhalb der Ebene; die nächste Ebene öffnet, wenn **mindestens k Inseln der Ebene** besiegt sind (k je Ebene in den Daten), die übrigen bleiben optional. Auch dort ist der Wechsel gemeinsam. | Linear ist einfach zu balancen; Ebenen geben später Wahlfreiheit, ähnlich dem letzten K2C-DLC. | `data/islands.json` | – |
 | Die Wellenstärke einer Stufe skaliert mit der **Anzahl der Spieler der Insel** (Faktor `1 + 0,5 × (Spieler − 1)`), nicht mit den Spielern in genau dieser Stufe. | Einfach und gleichmäßig; ein Spieler allein in der Tiefe trifft die Wellen für alle. | `data/waves.json` | Korridore je Spieleranzahl wie in `wirtschaft.md` |
 | Skalierung der Gegner: je Stufe multiplikativ wie heute (HP ×1,5, Schaden ×1,3, Tempo ×1,1 je Tiefe), und **je Insel eine eigene Tabelle** statt einer Formel. | Jede Insel lässt sich frei abstimmen. | `data/waves.json` › `depthScaling`, neue Insel-Tabellen | – |
 
@@ -73,8 +75,8 @@ Die Taste X bleibt für Skills frei (`wirtschaft.md` § 6). **Das Skill-Menü li
 
 ## 7. Offen und Annahmen
 
-- **Material je Hub oder je Insel?** Nicht besprochen: Heute gehört das Material dem Hub (je Stufe). Entscheidung mit der Umsetzung (SIM-Ticket) oder in Regelwerk III.
-- **Anzahl und Reihenfolge der Inseln** über die erste Insel hinaus sind offen (Daten, später).
+- **Material:** entschieden in B-108 (je Insel, siehe § 1).
+- **Anzahl n der Inseln** und die Werte k je Ebene sind offen (Daten, mit Insel 1 und den Messläufen von B-099); die Variante „Ebenen“ kommt später als eigenes Ticket.
 - **Kosten und Belastung:** Der Umbau von „Welt = Stufe“ zu „Level = Insel mit n Stufen“ ist groß (`engine/sim`, `engine/room`, Protokoll, Client-Kameras je Spieler). R1.4 legt dafür Tickets an; SP11 (Pi 3) und B-099 messen die Last mit allen Stufen aktiv.
 - **Wolf bei Vollmond:** bleibt als Event-Idee für später (Regelwerk III), kein Ticket jetzt.
 - Annahmen ohne gesonderte Bestätigung: Aggressionspool unverändert; ein Spieler wechselt die Stufe einzeln wie heute (2 s am Eingang/an der Treppe); Siegvarianten gelten je Insel.

@@ -51,7 +51,6 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-105](B-105-anlegen-dialog-optionen.md) | CLI | Idee | mittel | offen | – | Der Anlegen-Dialog der Lobby wählt Grad, Ziel und Niederlage-Modus |
 | [B-106](B-106-kamera-je-stufe.md) | CLI | Idee | hoch | offen | – | Jeder Spieler sieht seine Stufe, auch wenn die Spieler in verschiedenen Stufen sind |
 | [B-107](B-107-debug-panel-gradwechsel.md) | CLI | Idee | mittel | offen | – | Ein Debug-Panel im Dev-Mode wechselt den Schwierigkeitsgrad und weitere Optionen |
-| [B-108](B-108-material-und-inseln-offen.md) | REG | Frage | mittel | offen | – | Material je Hub oder je Insel, Anzahl und Reihenfolge der Inseln sind entschieden |
 
 ## Archiv
 
@@ -125,3 +124,4 @@ Zeile in diesen Abschnitt.
 | [B-005](archiv/B-005-online-koop-ziel.md) | REG | Problem | hoch | erledigt | R1 | Game-Design nennt gemischten Koop als Kern |
 | [B-021](archiv/B-021-taste-x.md) | REG | Frage | mittel | erledigt | R1 | Belegung der Taste X ist entschieden |
 | [B-025](archiv/B-025-kampagnen-ziel.md) | REG | Frage | mittel | erledigt | R1 | Ziel einer Kampagne ist festgelegt |
+| [B-108](archiv/B-108-material-und-inseln-offen.md) | REG | Frage | mittel | erledigt | – | Material je Hub oder je Insel, Anzahl und Reihenfolge der Inseln sind entschieden |
