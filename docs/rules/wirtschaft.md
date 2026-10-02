@@ -62,7 +62,7 @@ Gebäude und Material sind in `materialien-gebaeude.md` beschlossen (R2). Kriege
 
 ## 6. Steuerung
 
-- **Taste X (Controller) bzw. E (Tastatur) bleibt frei für Skills** (Regelwerk II). Bis dahin ohne Funktion; „Interagieren“ erledigt A (halten).
+- **Taste X (Controller) bzw. E (Tastatur) ist der Schlag des Monarchen** (R3.2, `monarch.md` § 4; ersetzt „bleibt frei für Skills“). Skill-Slots: LB, RB, LT, D-Pad hoch bzw. Q, R, T, Z; Skill-Menü D-Pad runter bzw. K.
 - B bleibt unbelegt, View + Menu gemeinsam sind reserviert (`CLAUDE.md`).
 - Das Skill-Menü liegt nicht auf View (`stufen.md` § 6). Das Debug-Panel und der Gradwechsel gehören nicht auf X; die Belegung steht mit dem Ticket für das Panel fest (nur Dev-Mode).
 

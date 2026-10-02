@@ -43,19 +43,18 @@ Typische Session: 30–60 Minuten.
 ## Monarch
 
 - Bewegung nur **horizontal** (links/rechts), Sprint, **kein Springen**.
-- Interagieren (Münze geben, Truhe öffnen, Eingang nutzen), Bau-Menü, Skill-Menü.
-- Hauptrolle ist Truppen-Management. Im Kampf unterstützt er per Skill, trägt aber nicht den Hauptschaden.
-- Stats Level 1: HP 100, Schaden 10, Speed 5 Units/s, Verteidigung 5. Pro Level +10/+2/+0.5/+1, max. Level 20.
-- Tod: Respawn am Hub ohne Strafe, Truppen bleiben.
+- Interagieren (Münze geben, Truhe öffnen, Eingang nutzen; A halten), Bau-Menü, Skill-Menü, **Schlag** (X) und vier Skill-Slots.
+- Hauptrolle ist Truppen-Management. Im Kampf unterstützt er per Skill und mit einem einfachen Schlag, trägt aber nicht den Hauptschaden.
+- Werte: HP 100, Speed 5 Units/s, Verteidigung 5, Schlag 10 Schaden. **Kein Level**, der Monarch wächst nur über Skills.
+- Tod: Der gefallene Monarch bleibt liegen; ein Mitspieler belebt ihn durch A halten (3 s, 50 % HP), sonst Respawn an der Burg nach 15 s, ohne Strafe, Truppen bleiben. Details: `rules/monarch.md`.
 
 ### Skill-System (offene Archetypen-Linien)
 
-Ein gemeinsamer Skill-Baum mit 4 Linien: **Tank, Zauberer, Heiler, Dieb**. Punkte werden frei verteilt,
-hybride Builds sind erlaubt. Die Presets aus `monarch.json` sind nur Startverteilungen. Respec kostenlos im Hub.
+Jeder Spieler hat einen **eigenen Skill-Baum** mit 4 Linien: **Tank, Zauberer, Heiler, Dieb** (zuerst Tank, Zauberer, Heiler). Punkte werden frei verteilt, hybride Builds sind erlaubt. Die Presets aus `monarch.json` sind nur Startverteilungen. Respec kostenlos an der Burg jedes Hubs, nur am Tag.
 
-- Skill-Punkte vor allem **versteckt in der Welt** (3–5 pro Stufe), optional zusätzlich per Level-Up.
+- Skill-Punkte kommen aus einem **gemeinsamen Fund-Pool** je Insel (versteckt in der Welt 3–5 je Stufe, Minibosse, Endboss, Meilensteine des Hub-Ausbaus, jede 3. Truhe); jeder Spieler verteilt die gefundenen Punkte für sich.
 - Tier-Gating: Tier 2 ab 5, Tier 3 ab 10, Tier 4 (Ultimate) ab 15 Punkten in der Linie.
-- 4 Skill-Slots (Controller: Schultertasten/D-Pad, genaue Belegung nach dem Gamepad-Test).
+- 4 Skill-Slots: LB, RB, LT, D-Pad hoch (Tastatur Q, R, T, Z), Skill-Menü D-Pad runter (K).
 
 | Linie | Tier 1 (aktiv) | Tier 3 | Tier 4 (Ultimate) | Passive (Auswahl) |
 |---|---|---|---|---|
@@ -137,9 +136,11 @@ Die festen Eckdaten stehen in `data/biomes/<biom>.json`, der Generator in `engin
 | Sprint | RT | Shift |
 | Beitreten; halten = Münzen geben/fallen lassen | A | Leertaste |
 | Interagieren | A (halten) | Leertaste (halten) |
-| Skill 1 (später) | X (frei, für Skills reserviert) | E |
+| Schlag | X | E |
+| Skills 1–4 | LB, RB, LT, D-Pad hoch | Q, R, T, Z |
+| Wiederbeleben (neben einem gefallenen Mitspieler) | A halten (3 s) | Leertaste halten |
 | Bau-Menü | Y | B |
-| Skill-Menü | später (nicht View, da View + Menu reserviert ist) | K |
+| Skill-Menü | D-Pad runter (nicht View, da View + Menu reserviert ist) | K |
 | Pause | Menu | Esc |
 | Vollbild | RS (Stick drücken) | F |
 
@@ -147,7 +148,7 @@ Die festen Eckdaten stehen in `data/biomes/<biom>.json`, der Generator in `engin
 
 ## UI
 
-- Minimalistisch wie K2C: möglichst viel in der Welt anzeigen (Münzen über dem Kopf, Baupreise als Münz-Slots).
+- Minimalistisch wie K2C: möglichst viel in der Welt anzeigen (Münzen über dem Kopf, Baupreise als Münz-Slots). **Gültige Aktionen erscheinen überall in der Welt als Overlay am Ort** (Taste und Aktion, passend zum benutzten Gerät), wie die Preise an den Gebäuden (`rules/monarch.md` § 4).
 - HUD pro Split-Screen-Hälfte: HP, Gold, Ressourcen, Tag/Nacht bzw. Aggressionspool, Skill-Slots mit Cooldown.
 - Meldungen in der Mitte: „Nacht naht!“, „Portal öffnet sich!“, „Skill-Punkt gefunden!“.
 - Mindestgröße für Texte auf dem TV beachten (Couch-Abstand!), hoher Kontrast.
