@@ -81,6 +81,8 @@ Platzierung auf einem Raster im Hub-Bereich, gebaut wird von Bauern.
 
 ## Welt & Stufen
 
+**Aufbau:** Ein Raum hat einen Spielstand, der Spielstand hat **n Inseln**, jede Insel hat **n Stufen** (Level). Die Stufen einer Insel sind **pro Spieler frei begehbar** (jeder wechselt allein über Tiefen-Eingang oder Treppe) und laufen alle weiter, auch ohne Spieler. Der **Endboss** der tiefsten Stufe macht den Weg zur nächsten Insel frei (gemeinsamer Wechsel); je Stufe gibt es einen **Miniboss**. Erste Ausbaustufe: 1 Insel mit den 3 Stufen unten. Details: `rules/stufen.md`, Entscheidung `decisions/003-spielstruktur-inseln-stufen.md`.
+
 | Stufe | Biom | Länge (Units) | Primär-Ressource | Zyklus | Gegner |
 |---|---|---|---|---|---|
 | 0 | Oberwelt (Wald) | 900–1100 | Holz | Tag 10 min / Nacht 5 min, 1 min Dämmerung | Greed, Goblin, Goblin Archer (Elite), Wolf (nachts) |
@@ -90,7 +92,7 @@ Platzierung auf einem Raster im Hub-Bereich, gebaut wird von Bauern.
 Gold gibt es überall (Truhen, Gegner-Drops). Post-MVP: Tiefe 3 (Eisen, Lava), Tiefe 4 (Kristall).
 
 - **Jede Stufe hat einen eigenen Hub**, der von Grund auf neu gebaut wird. Alle Hubs bleiben bestehen.
-- **Tiefen-Eingang** am Ende der Stufe führt nach unten. Zurück geht es nur über gebaute **Treppen**.
+- **Tiefen-Eingang** am Ende der Stufe führt nach unten. Zurück geht es nur über gebaute **Treppen**. Jeder Spieler wechselt für sich.
 - **Aggressionspool** (unter Tage statt Tag/Nacht): +1%/min, +5% pro Kill, +1% pro gesammelter Ressource.
   Bei 100% folgt ein Portal-Angriff, danach Reset auf 0. So bestimmen die Spieler das Tempo selbst.
 - Globaler Tag/Nacht-Zyklus läuft auch unter Tage weiter (Skelette nachts, Wölfe bei Vollmond).
@@ -122,10 +124,12 @@ Die festen Eckdaten stehen in `data/biomes/<biom>.json`, der Generator in `engin
 - Skalierung pro Stufe: HP +50%, Schaden +30%, Speed +10%.
 - Drops: Gold je Gegnerart wie in `data/enemies.json` (Standard etwa 3–25, Elite etwa 15–80), 10% Chance auf Stufen-Ressource.
 
-## Niederlage
+## Niederlage und Ziel
 
-- **Hub-Kern zerstört:** Respawn am Hub, Gebäude bleiben zerstört, 50% der Ressourcen und alle Truppen verloren.
+- **Burg einer Stufe zerstört:** Der **Niederlage-Modus** des Raums entscheidet: *Gold/Material-Verlust* (je −50 %), *Stufenverlust* (Hub der Stufe zurückgesetzt) oder *Komplett verloren* (Game Over). Standard je Schwierigkeitsgrad: Dev/Leicht Gold/Material, Normal/Hart Stufenverlust, Ultra komplett verloren.
 - **Monarch tot:** Respawn am Hub, keine Strafe.
+- **Ziel:** Standard ist der Endboss der letzten Insel; Varianten als Raum-Option: Gold sammeln, N Tage überleben, alles abbauen, alles ausbauen. Details: `rules/stufen.md`.
+- **Raum-Optionen:** Schwierigkeitsgrad, Ziel und Niederlage-Modus werden beim Anlegen des Raums gewählt.
 
 ## Steuerung
 
@@ -137,7 +141,7 @@ Die festen Eckdaten stehen in `data/biomes/<biom>.json`, der Generator in `engin
 | Interagieren | A (halten) | Leertaste (halten) |
 | Skill 1 (später) | X (frei, für Skills reserviert) | E |
 | Bau-Menü | Y | B |
-| Skill-Menü | View | K |
+| Skill-Menü | später (nicht View, da View + Menu reserviert ist) | K |
 | Pause | Menu | Esc |
 | Vollbild | RS (Stick drücken) | F |
 
