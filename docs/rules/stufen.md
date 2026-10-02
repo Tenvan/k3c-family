@@ -79,6 +79,6 @@ Die Taste X ist der Schlag des Monarchen (R3.2); Skill-Slots LB, RB, LT, D-Pad h
 - **Material:** entschieden in B-108 (je Insel, siehe § 1).
 - **Anzahl n der Inseln** und die Werte k je Ebene sind offen (Daten, mit Insel 1 und den Messläufen von B-099); die Variante „Ebenen“ kommt später als eigenes Ticket.
 - **Kosten und Belastung:** Der Umbau von „Welt = Stufe“ zu „Level = Insel mit n Stufen“ ist groß (`engine/sim`, `engine/room`, Protokoll, Client-Kameras je Spieler). R1.4 legt dafür Tickets an; SP11 (Pi 3) und B-099 messen die Last mit allen Stufen aktiv.
-- **Wolf bei Vollmond:** bleibt als Event-Idee für später (Regelwerk III), kein Ticket jetzt.
+- **Vollmond und weitere Events** sind in R4.3 beschlossen (`bosse.md` § 2).
 - Annahme: Da das Material der Insel gehört (B-108), trifft die Halbierung bei Niederlage den Insel-Vorrat; ob sie nur den Anteil der gefallenen Stufe treffen soll, ist nicht besprochen (SIM-Ticket B-102 klärt es mit 🧑).
 - Annahmen ohne gesonderte Bestätigung: Aggressionspool unverändert; ein Spieler wechselt die Stufe einzeln wie heute (2 s am Eingang/an der Treppe); Siegvarianten gelten je Insel.
