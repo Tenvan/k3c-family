@@ -49,6 +49,10 @@ Einstellungen per Umgebung: `K3C_HTTP_PORT`,
 `K3C_HTTPS_PORT`, `K3C_DIST`, `K3C_SAVES_DIR`, `K3C_REPORTS_DIR`, `K3C_CERTS_DIR`, `K3C_LOG_DIR` (JSON-Log `k3c-server.jsonl`; ohne Angabe nur, wenn ein Ordner `logs/` existiert); `GET /api/health` meldet
 `{"ok":true}`.
 
+- **Level ansehen:** `GET /api/level?seed=test&biome=forest` liefert das Level, das ein Raum mit diesem Seed und Biom bekäme
+  (`chunks`, `entities`, Breite und `warnings` der Spielbarkeits-Prüfung), als JSON. Ohne `seed` gilt `k3c`, ohne `biome` `forest`
+  (`forest`, `cave`, `mine`); ein unbekanntes Biom oder ein Seed über 64 Zeichen ergibt 400, andere Methoden als GET 405.
+  Reine Berechnung: kein Token, kein Raum, keine Datei.
 - **Diagnose:** `GET /api/status` mit `Authorization: Bearer <K3C_STATUS_TOKEN>`; ohne gesetzte Variable ist sie aus
   (404), mit falschem Token 401. Der Status nennt Räume, Tick-Dauer
   und `memory` (Heap und Systemspeicher in MB); `?room=CODE` zeigt den Raum samt `devices` (Kennung = Anfang der Geräte-ID,
