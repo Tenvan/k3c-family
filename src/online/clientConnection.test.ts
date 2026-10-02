@@ -350,3 +350,30 @@ describe('Befehle', () => {
     expect(t.last().sent.slice(-2)).toEqual([{ t: 'addSlot', slot: 1 }, { t: 'removeSlot', slot: 1 }]);
   });
 });
+
+describe('Snapshot-Zeiten für das Debug-Overlay (B-093)', () => {
+  it('ohne Snapshot: Zeit und Takt null, Geräte-ID lesbar', () => {
+    const t = inLobby();
+    expect(t.client.lastSnapshotAt).toBeNull();
+    expect(t.client.snapshotHz).toBeNull();
+    expect(t.client.deviceId).toBe('dev-1');
+  });
+
+  it('ein Snapshot gibt die Zeit, erst zwei den Takt', () => {
+    const t = inRoom();
+    expect(t.client.lastSnapshotAt).toBe(t.time());
+    expect(t.client.snapshotHz).toBeNull();
+    t.advance(50);
+    t.last().recv(deltaMsg);
+    expect(t.client.lastSnapshotAt).toBe(t.time());
+    expect(t.client.snapshotHz).toBeCloseTo(20);
+  });
+
+  it('offlineSince nur während des Wiederverbindens', () => {
+    const t = inRoom();
+    expect(t.client.offlineSince).toBeNull();
+    t.advance(1000);
+    t.last().drop();
+    expect(t.client.offlineSince).toBe(1000);
+  });
+});
