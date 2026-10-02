@@ -197,7 +197,7 @@ type World struct {
 	Portals     []float64       `json:"portals"`
 	SpawnQueue  []QueuedSpawn   `json:"spawnQueue"`
 
-	Stock       Stock   `json:"stock"` // Baumaterial gehört allen, Gold hat jeder Spieler selbst
+	Stock       *Stock  `json:"stock"` // Baumaterial gehört allen (in einer Insel: allen Stufen), Gold hat jeder Spieler selbst
 	SkillPoints int     `json:"skillPoints"`
 	Travel      *Travel `json:"travel"`
 	Events      []Event `json:"events"` // wird bei jedem Step geleert
