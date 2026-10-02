@@ -52,6 +52,7 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-106](B-106-kamera-je-stufe.md) | CLI | Idee | hoch | offen | – | Jeder Spieler sieht seine Stufe, auch wenn die Spieler in verschiedenen Stufen sind |
 | [B-107](B-107-debug-panel-gradwechsel.md) | CLI | Idee | mittel | offen | – | Ein Debug-Panel im Dev-Mode wechselt den Schwierigkeitsgrad und weitere Optionen |
 | [B-109](B-109-materialien-gebaeude-regelwerk.md) | REG | Idee | hoch | eingeplant | R2 | Materialien und Gebäude sind im Regelwerk beschlossen |
+| [B-110](B-110-skillung-klassen-level.md) | REG | Idee | hoch | offen | – | Skillung, Klassen und Level von Monarchen und Bürgern sind im Regelwerk beschlossen |
 
 ## Archiv
 
