@@ -38,7 +38,7 @@ func (r *Room) AddSlot(id string, peer Peer, slot int) (err error) {
 	if r.count(Free) == 0 && len(r.monarchs) >= MaxMonarchs {
 		return ErrRoomFull
 	}
-	r.take(d, id, slot, r.assign(id, slot))
+	r.take(d, id, slot, r.assign(id, slot, r.deviceStage(d)))
 	r.syncFree()
 	r.broadcastSeats()
 	return nil
@@ -154,7 +154,7 @@ func (r *Room) afterDisconnect() {
 }
 
 // Tick rechnet einen Schritt mit 1/TickHz Sekunden. Ein Raum ohne verbundenes Gerät ist pausiert und tickt nicht.
-// Nach einem Stufenwechsel speichert er und schickt das neue Level vor dem Zustand.
+// Wechselt ein Gerät die Stufe, speichert der Raum und schickt das neue Level vor dem Zustand.
 // false: Der Raum ist geschlossen.
 func (r *Room) Tick() bool {
 	r.mu.Lock()
@@ -171,25 +171,20 @@ func (r *Room) Tick() bool {
 			commands[i] = mo.input
 		}
 	}
-	w := r.syncFree()
+	r.syncFree()
 	if r.beforeStep != nil {
 		r.beforeStep()
 	}
-	sim.Step(w, commands, 1.0/TickHz)
+	sim.StepIsland(r.isl, commands, 1.0/TickHz)
 	r.tick++
-	travelled := w.Travel != nil && w.Travel.Progress >= 1
-	if travelled {
-		w = r.camp.Travel(w.Travel.ToDepth)
-		r.save()
-	}
+	travelled := false
 	for _, d := range r.devices {
-		if !d.connected {
-			continue
+		if d.connected && r.pushState(d) {
+			travelled = true
 		}
-		if travelled {
-			d.peer.Level(r.camp.Depth, w.Level)
-		}
-		d.peer.State(r.tick, w)
+	}
+	if travelled {
+		r.save()
 	}
 	return true
 }
@@ -252,5 +247,5 @@ type Info struct {
 
 func (r *Room) info() Info {
 	taken := r.count(Taken) + r.count(Waiting)
-	return Info{r.Code, r.Name, r.camp.Depth, taken, MaxMonarchs - taken, r.connected() > 0}
+	return Info{r.Code, r.Name, r.isl.Stages[0].Biome.Depth, taken, MaxMonarchs - taken, r.connected() > 0}
 }
