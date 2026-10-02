@@ -1,11 +1,11 @@
 # U1 · CLI · Radar im HUD
 
-- **Status:** geplant
+- **Status:** aktiv
 - **Domäne:** CLI
 - **Reife:** bereit
 - **Einschiebbar:** nein
 - **Tickets:** B-090
-- **Start-Commit:** –
+- **Start-Commit:** be978e0
 - **Spec:** freigegeben
 - **Revision:** 1
 - **Freigabe:** 2026-10-02 🧑 Chat („Ja, freigeben und umsetzen“; Revision 1)
