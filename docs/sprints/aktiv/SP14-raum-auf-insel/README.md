@@ -60,7 +60,7 @@ Wie viel Zustand der anderen Stufen bekommt ein Gerät (B-104 › Offene Fragen)
 
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
-| SP14.1 | `SP14.1-raum-kern.md` | Umsetzung | autonom | offen |
+| SP14.1 | `SP14.1-raum-kern.md` | Umsetzung | autonom | fertig |
 | SP14.2 | `SP14.2-protokoll-v3.md` | Umsetzung | autonom | offen |
 | SP14.3 | `SP14.3-optionen-im-raum.md` | Umsetzung | autonom | offen |
 | SP14.4 | `SP14.4-review.md` | Review | autonom | offen |
