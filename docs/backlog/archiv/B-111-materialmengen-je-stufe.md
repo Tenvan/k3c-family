@@ -3,7 +3,7 @@
 - **Domäne:** REG
 - **Typ:** Frage
 - **Prio:** hoch
-- **Status:** eingeplant
+- **Status:** erledigt
 - **Sprint:** R2
 - **Erstellt:** 2026-10-02
 - **Spec:** freigegeben
@@ -70,4 +70,4 @@ Die drei Entscheidungen oben (🧑).
 
 ## Notizen
 
-Entstanden am 2026-10-02 aus dem Aufruf von `/oh-my-claudecode:ask-navigator` mit „Materialmengen pro Stufe“. Der Nebel-Test (Ziel in einem Satz, erste drei Entscheidungen genau) fällt positiv aus, deshalb keine Karte, sondern ein Frage-Ticket. Die Erwartungswerte rechnen Chunk-Gewichte mit den Mittelwerten der Bereiche (Hub 100 Units = 2 Chunks); die tatsächliche Verteilung kann mit dem Level-Generator (`level_generate`, k3c-dev) gemessen werden.
+Workshop R2.3 am 2026-10-02 mit 🧑: **Breite** nach unten schmaler, dafür dichter. **Messung** (100 Seeds, Mittel): Wald 1035 Units, 39 Bäume, 3 Felsen; Höhle 832, 23 Felsen; Mine 647, 6 Felsen, 3,4 Kupfererz (p10 = 0). **Anpassung:** beides plus Quellen, dann geändert zum **Rate-Modell**: Holz wächst über Farm-Plantagen nach; Stein bis Kristall kommen unendlich aus **Adern** (2 je Stufe) mit begrenzter Abbaurate (Stein 60/min … Kristall 25/min je Ader bei 2 Bauern); Kosten aus R2.2 unverändert, jeder Hub komplett; Verhältnis je Insel 120–150 % (jetzt über Raten statt Mengen). Beschluss in `docs/rules/materialien-gebaeude.md` § 1. Entstanden am 2026-10-02 aus dem Aufruf von `/oh-my-claudecode:ask-navigator` mit „Materialmengen pro Stufe“. Der Nebel-Test (Ziel in einem Satz, erste drei Entscheidungen genau) fällt positiv aus, deshalb keine Karte, sondern ein Frage-Ticket. Die Erwartungswerte rechnen Chunk-Gewichte mit den Mittelwerten der Bereiche (Hub 100 Units = 2 Chunks); die tatsächliche Verteilung kann mit dem Level-Generator (`level_generate`, k3c-dev) gemessen werden.

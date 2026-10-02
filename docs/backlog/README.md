@@ -53,7 +53,6 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-107](B-107-debug-panel-gradwechsel.md) | CLI | Idee | mittel | offen | – | Ein Debug-Panel im Dev-Mode wechselt den Schwierigkeitsgrad und weitere Optionen |
 | [B-109](B-109-materialien-gebaeude-regelwerk.md) | REG | Idee | hoch | eingeplant | R2 | Materialien und Gebäude sind im Regelwerk beschlossen |
 | [B-110](B-110-skillung-klassen-level.md) | REG | Idee | hoch | offen | – | Skillung, Klassen und Level von Monarchen und Bürgern sind im Regelwerk beschlossen |
-| [B-111](B-111-materialmengen-je-stufe.md) | REG | Frage | hoch | eingeplant | R2 | Die Materialmengen je Stufe passen zu den Kosten von Hub-Ausbau, Mauern und Gebäuden |
 
 ## Archiv
 
@@ -128,3 +127,4 @@ Zeile in diesen Abschnitt.
 | [B-021](archiv/B-021-taste-x.md) | REG | Frage | mittel | erledigt | R1 | Belegung der Taste X ist entschieden |
 | [B-025](archiv/B-025-kampagnen-ziel.md) | REG | Frage | mittel | erledigt | R1 | Ziel einer Kampagne ist festgelegt |
 | [B-108](archiv/B-108-material-und-inseln-offen.md) | REG | Frage | mittel | erledigt | – | Material je Hub oder je Insel, Anzahl und Reihenfolge der Inseln sind entschieden |
+| [B-111](archiv/B-111-materialmengen-je-stufe.md) | REG | Frage | hoch | erledigt | R2 | Die Materialmengen je Stufe passen zu den Kosten von Hub-Ausbau, Mauern und Gebäuden |
