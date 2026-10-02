@@ -6,9 +6,9 @@
 - **Status:** eingeplant
 - **Sprint:** U3
 - **Erstellt:** 2026-10-01
-- **Spec:** Entwurf
+- **Spec:** freigegeben
 - **Revision:** 1
-- **Freigabe:** –
+- **Freigabe:** 2026-10-02 🧑 Chat („ja, freigeben und umsetzen“; Revision 1; umfasst Sprint U3)
 
 ## Ausgangslage
 
@@ -59,7 +59,7 @@ Seed oder Biom nicht startbar → „Im Spiel starten“ ist aus, der Grund steh
 
 ## Offene Fragen
 
-Ist es in Ordnung, dass „Im Spiel starten“ einen gleichnamigen Spielstand ersetzt (Sicherung bleibt)? Entscheidet 🧑 mit der Freigabe. Ein Export der Objekt-Positionen ist nicht Teil dieser Spec.
+keine. Entschieden 2026-10-02 durch 🧑 (Chat): „Im Spiel starten“ darf einen gleichnamigen Spielstand ersetzen (die Sicherung bleibt). Ein Export der Objekt-Positionen ist nicht Teil dieser Spec.
 
 ## Notizen
 

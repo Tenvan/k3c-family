@@ -1,14 +1,14 @@
 # U3 · PLAT · Level-Betrachter
 
-- **Status:** geplant
+- **Status:** aktiv
 - **Domäne:** PLAT
 - **Reife:** bereit
 - **Einschiebbar:** nein
 - **Tickets:** B-092
-- **Start-Commit:** –
-- **Spec:** Entwurf
+- **Start-Commit:** 4d824fa
+- **Spec:** freigegeben
 - **Revision:** 1
-- **Freigabe:** –
+- **Freigabe:** 2026-10-02 🧑 Chat („ja, freigeben und umsetzen“; Revision 1)
 
 ## Ausgangslage
 
@@ -54,7 +54,7 @@ Server nicht erreichbar → Hinweistext statt leerer Seite (B-092 › Ausnahme- 
 
 ## Offene Fragen
 
-Ist es in Ordnung, dass „Im Spiel starten“ einen gleichnamigen Spielstand ersetzt (Sicherung bleibt)? (B-092 › Offene Fragen, entscheidet 🧑 mit der Freigabe.)
+keine. Entschieden 2026-10-02 durch 🧑 (Chat): „Im Spiel starten“ darf einen gleichnamigen Spielstand ersetzen (die Sicherung bleibt).
 
 ## Sessions
 
