@@ -8,7 +8,6 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 
 | Nr. | Domäne | Typ | Prio | Status | Sprint | Titel |
 |---|---|---|---|---|---|---|
-| [B-004](B-004-regelwerk.md) | REG | Idee | hoch | offen | – | Regelwerk ist ausführlich diskutiert und ausgearbeitet |
 | [B-006](B-006-xbox-gamepad-test.md) | PLAT | Frage | hoch | eingeplant | X1 | Gamepad-Test auf der Xbox ist ausgewertet |
 | [B-007](B-007-skill-baum.md) | SIM | Idee | hoch | offen | – | Skill-Baum mit Tank und Zauberer ist spielbar |
 | [B-008](B-008-spieleabend.md) | REG | Frage | hoch | offen | – | Familie hat einen Spieleabend gespielt und Feedback gegeben |
@@ -128,6 +127,8 @@ Zeile in diesen Abschnitt.
 | [B-109](archiv/B-109-materialien-gebaeude-regelwerk.md) | REG | Idee | hoch | erledigt | R2 | Materialien und Gebäude sind im Regelwerk beschlossen |
 | [B-110](archiv/B-110-skillung-klassen-level.md) | REG | Idee | hoch | erledigt | R3 | Skillung, Klassen und Level von Monarchen und Bürgern sind im Regelwerk beschlossen |
 | [B-017](archiv/B-017-klassen-preset.md) | REG | Frage | mittel | erledigt | R3 | Klassen-Presets pro Spieler sind entschieden |
+| [B-127](archiv/B-127-regelwerk-gegner-bosse.md) | REG | Idee | hoch | erledigt | R4 | Gegner, Wellen, Bosse und Events sind im Regelwerk beschlossen |
+| [B-004](archiv/B-004-regelwerk.md) | REG | Idee | hoch | erledigt | – | Regelwerk ist ausführlich diskutiert und ausgearbeitet |
 | [B-112](B-112-hub-ausbau-mauerstufen.md) | SIM | Idee | hoch | offen | – | Der Hub wird in fünf Stufen ausgebaut, Mauern und Türme haben fünf Materialstufen |
 | [B-113](B-113-material-lager.md) | SIM | Idee | hoch | offen | – | Fünf Materialien, Lager-Maximum und Tragen zum Lager sind umgesetzt |
 | [B-114](B-114-plantage-adern.md) | SIM | Idee | hoch | offen | – | Farm-Plantage lässt Holz nachwachsen, Adern liefern Stein bis Kristall unendlich mit Abbaurate |
@@ -143,4 +144,8 @@ Zeile in diesen Abschnitt.
 | [B-124](B-124-skill-menue-tasten.md) | CLI | Idee | hoch | offen | – | Der Client hat Schlag, Skill-Slots, Skill-Menü und die Tasten für Controller, Tastatur und Touch |
 | [B-125](B-125-aktionen-overlay.md) | CLI | Idee | hoch | offen | – | Gültige Aktionen erscheinen überall in der Welt als Overlay am Ort |
 | [B-126](B-126-buerger-ui.md) | CLI | Idee | mittel | offen | – | Der Client zeigt Berufe, Ausbildung, Händler, Truppen-Limit und Heilung |
-| [B-127](B-127-regelwerk-gegner-bosse.md) | REG | Idee | hoch | eingeplant | R4 | Gegner, Wellen, Bosse und Events sind im Regelwerk beschlossen |
+| [B-128](B-128-traits-kiting-angriffsrate.md) | SIM | Idee | mittel | offen | – | Die Gegner-Traits aoe, swarm, phases und Kiting wirken, die Angriffsrate steht je Gegner in den Daten |
+| [B-129](B-129-neue-gegner-pools.md) | SIM | Idee | mittel | offen | – | Eisenstollen und Kristallhöhle haben ihre Gegner und Pools |
+| [B-130](B-130-bosse.md) | SIM | Idee | hoch | offen | – | Minibosse und Endboss sind spielbar |
+| [B-131](B-131-events.md) | SIM | Idee | niedrig | offen | – | Vollmond, Blutmond und Händler-Überfall sind als Events umgesetzt |
+| [B-132](B-132-anzeige-bosse-events.md) | CLI | Idee | mittel | offen | – | Der Client zeigt Gegner-Fähigkeiten, Bosse, Phasen und Events |
