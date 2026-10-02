@@ -41,7 +41,6 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-079](B-079-landing-kacheln-lobby.md) | PLAT | Schuld | mittel | offen | – | Die Kacheln der Landingpage passen zum Start über die Lobby |
 | [B-080](B-080-dev-tasten-server.md) | SRV | Idee | niedrig | offen | – | Dev-Tasten (Gold, Stufe, Neustart) wirken über den Server |
 | [B-090](B-090-radar.md) | CLI | Idee | mittel | eingeplant | U1 | Ein Radar im HUD zeigt Burg, Portale, Ausgang, Mitspieler und Gegner |
-| [B-091](B-091-level-abfrage.md) | SRV | Idee | mittel | eingeplant | U2 | Der Server liefert ein generiertes Level per HTTP, ohne einen Raum anzulegen |
 | [B-092](B-092-level-betrachter.md) | PLAT | Idee | mittel | eingeplant | U3 | Eine Testseite zeigt ein generiertes Level (Seed und Biom) ohne zu spielen |
 | [B-093](B-093-debug-overlay.md) | CLI | Idee | mittel | eingeplant | U4 | Ein Debug-Overlay zeigt Verbindung, Snapshot-Takt und Entitäten im Spiel |
 | [B-094](B-094-npm-reste.md) | INF | Schuld | niedrig | offen | – | Im Repo liegen keine Alt-Binaries und keine npm-Skripte mehr |
@@ -111,3 +110,4 @@ Zeile in diesen Abschnitt.
 | [B-087](archiv/B-087-grafik-referenzseite.md) | PLAT | Idee | mittel | erledigt | G1 | Eine Referenzseite zeigt die gewählten CC0-Grafik-Packs für Gebäude, Ressourcen und Hintergründe |
 | [B-088](archiv/B-088-diagnose-endpunkte.md) | SRV | Idee | mittel | erledigt | D1 | Der Server zeigt Speicher, Geräte und Log und führt Diagnose-Aktionen aus |
 | [B-089](archiv/B-089-ts-rng-reste.md) | CLI | Schuld | niedrig | erledigt | – | Der Client enthält keinen RNG-Rest der alten TS-Simulation mehr |
+| [B-091](archiv/B-091-level-abfrage.md) | SRV | Idee | mittel | erledigt | U2 | Der Server liefert ein generiertes Level per HTTP, ohne einen Raum anzulegen |
