@@ -7,8 +7,8 @@
 - **Sprint:** U4
 - **Erstellt:** 2026-10-01
 - **Spec:** freigegeben
-- **Revision:** 1
-- **Freigabe:** 2026-10-02, Chat (Ralf), Revision 1
+- **Revision:** 2
+- **Freigabe:** 2026-10-02, Chat (Ralf), Revision 1; Revision 2 (Ö statt F3, dev standardmäßig an) auf Zuruf von Ralf am 2026-10-02
 
 ## Ausgangslage
 
@@ -48,13 +48,13 @@ Noch keine Verbindung → „verbindet…“, keine Zahlen erfinden. Fehlende We
 ## Akzeptanzkriterien
 
 - **AC-01** Eine reine Funktion liefert aus Verbindungs- und Weltzustand die Overlay-Zeilen; Vitest deckt verbunden, getrennt, verbindet und fehlende Werte ab.
-- **AC-02** Ohne `?dev=1` wird das Overlay nicht erzeugt (Test oder Prüfung der Szene); mit `?dev=1` lässt es sich per Tastatur- und per Controller-Taste umschalten.
+- **AC-02** In der Entwicklungsphase ist das Overlay ohne Parameter verfügbar, mit `?dev=0` wird es nicht erzeugt (Test oder Prüfung der Szene); es lässt sich per Tastatur- und per Controller-Taste umschalten.
 - **AC-03** Die alte FPS-Anzeige ist im Overlay aufgegangen; `task check` ist grün, `src/scenes` bleibt frei von Spiel-Logik.
 - **AC-04** 🧑 hat das Overlay auf der Xbox oder am TV abgenommen.
 
 ## Offene Fragen
 
-Entschieden (🧑, 2026-10-02): F3 (Tastatur) und Klick auf den linken Stick (Controller) schalten um; die FPS-Anzeige gibt es nur noch im Overlay.
+Entschieden (🧑, 2026-10-02): Ö (Tastatur; F3 ist im Browser belegt, D ist „laufen“) und Klick auf den linken Stick (Controller) schalten um; die FPS-Anzeige gibt es nur noch im Overlay.
 
 ## Notizen
 
