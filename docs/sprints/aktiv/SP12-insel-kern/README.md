@@ -62,7 +62,7 @@ keine
 |---|---|---|---|---|
 | SP12.1 | `SP12.1-insel-geruest.md` | Umsetzung | autonom | fertig |
 | SP12.2 | `SP12.2-einzelwechsel.md` | Umsetzung | autonom | fertig |
-| SP12.3 | `SP12.3-spielstand.md` | Umsetzung | autonom | offen |
+| SP12.3 | `SP12.3-spielstand.md` | Umsetzung | autonom | fertig |
 | SP12.4 | `SP12.4-review.md` | Review | autonom | offen |
 
 ## Abnahme
