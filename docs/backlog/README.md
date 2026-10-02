@@ -41,7 +41,7 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-095](B-095-start-mit-seed-und-tiefe.md) | SRV | Idee | niedrig | offen | – | Ein neues Spiel startet per URL mit eigenem Seed und gewählter Tiefe |
 | [B-098](B-098-debug-overlay-standard-zurueck.md) | CLI | Schuld | niedrig | offen | – | Das Debug-Overlay ist vor dem Release wieder nur mit ?dev=1 verfügbar |
 | [B-099](B-099-balancing-tester.md) | SIM | Idee | mittel | offen | – | Ein automatischer Balancing-Tester prüft Regeln und Werte gegen messbare Ziele |
-| [B-100](B-100-mehrstufen-insel.md) | SIM | Idee | hoch | offen | – | Eine Insel hat n Stufen, die alle laufen und pro Spieler begehbar sind |
+| [B-100](B-100-mehrstufen-insel.md) | SIM | Idee | hoch | eingeplant | SP12 | Eine Insel hat n Stufen, die alle laufen und pro Spieler begehbar sind |
 | [B-101](B-101-raum-optionen-schwierigkeit.md) | SIM | Idee | hoch | offen | – | Raum-Optionen und fünf Schwierigkeitsgrade wirken in der Simulation |
 | [B-102](B-102-siegvarianten-niederlage.md) | SIM | Idee | mittel | offen | – | Siegvarianten und Niederlage-Modi der Raum-Optionen sind umgesetzt |
 | [B-103](B-103-inseln-bosse.md) | SIM | Idee | mittel | offen | – | Inseln mit Endboss und gemeinsamem Inselwechsel sind spielbar |
@@ -149,3 +149,4 @@ Zeile in diesen Abschnitt.
 | [B-130](B-130-bosse.md) | SIM | Idee | hoch | offen | – | Minibosse und Endboss sind spielbar |
 | [B-131](B-131-events.md) | SIM | Idee | niedrig | offen | – | Vollmond, Blutmond und Händler-Überfall sind als Events umgesetzt |
 | [B-132](B-132-anzeige-bosse-events.md) | CLI | Idee | mittel | offen | – | Der Client zeigt Gegner-Fähigkeiten, Bosse, Phasen und Events |
+| [B-133](B-133-raum-auf-insel.md) | SRV | Idee | hoch | offen | – | Der Raum rechnet mit einer Insel statt mit einer Kampagne |
