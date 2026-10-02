@@ -27,6 +27,8 @@ const RETRY_FIRST_MS = 500;
 const RETRY_MAX_MS = 4000;
 /** So lange versucht der Client nach einem Abbruch, sich neu zu verbinden. */
 export const RECONNECT_LIMIT_MS = 120_000;
+/** Anzahl Snapshots für die Takt-Messung des Debug-Overlays */
+const SNAPSHOT_WINDOW = 30;
 
 const TEXT = {
   reconnecting: 'Verbindung weg, verbinde neu …',
@@ -117,9 +119,31 @@ export class RoomClient {
   private slotsWanted: number[] = [];
   private state: Record<string, unknown> | null = null;
   private frames: Frame[] = [];
+  private snapshotTimes: number[] = [];
 
   constructor(private readonly env: ClientEnv) {
     this.open();
+  }
+
+  get deviceId(): string {
+    return this.env.deviceId;
+  }
+
+  /** `env.now()` beim letzten Snapshot, null bis zum ersten (Debug-Overlay). */
+  get lastSnapshotAt(): number | null {
+    return this.snapshotTimes[this.snapshotTimes.length - 1] ?? null;
+  }
+
+  /** Gemessener Snapshot-Takt über die letzten Snapshots, null ohne zwei Messpunkte (Debug-Overlay). */
+  get snapshotHz(): number | null {
+    const n = this.snapshotTimes.length;
+    const span = n > 1 ? this.snapshotTimes[n - 1]! - this.snapshotTimes[0]! : 0;
+    return span > 0 ? ((n - 1) * 1000) / span : null;
+  }
+
+  /** `env.now()` des Verbindungsverlusts, solange wiederverbunden wird, sonst null (Debug-Overlay). */
+  get offlineSince(): number | null {
+    return this.status === 'reconnecting' ? this.downSince : null;
   }
 
   create(save: string, fresh: boolean, depth: number, slots: number[]): void {
@@ -340,7 +364,10 @@ export class RoomClient {
   }
 
   private pushFrame(tick: number, ack: number): void {
-    this.frames.push({ tick, ack, receivedAt: this.env.now(), state: this.state as unknown as WorldState });
+    const receivedAt = this.env.now();
+    this.frames.push({ tick, ack, receivedAt, state: this.state as unknown as WorldState });
+    this.snapshotTimes.push(receivedAt);
+    if (this.snapshotTimes.length > SNAPSHOT_WINDOW) this.snapshotTimes.shift();
   }
 
   /** Verhalten je Fehler-Code (docs/protocol.md › Fehler-Codes). */
