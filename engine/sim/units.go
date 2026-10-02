@@ -214,6 +214,11 @@ func siteJob(w *World, t *Troop) *Job {
 	if s := bowToFetch(w, t); s != nil {
 		return &Job{Type: "fetchBow", SiteID: s.ID}
 	}
+	return buildJob(w, t)
+}
+
+// buildJob: nächster wartender Bauplatz ohne Bauer; nil, wenn es keinen gibt.
+func buildJob(w *World, t *Troop) *Job {
 	var site *Site
 	for _, s := range w.Sites {
 		if s.State == "waitingWorker" && !isWorker(w, s.WorkerID) && (site == nil || math.Abs(s.X-t.X) < math.Abs(site.X-t.X)) {
