@@ -16,7 +16,7 @@ const strip = byId('strip');
 const legend = byId('legend');
 const warnings = byId('warnings');
 
-const REPLACES = 'Der Start legt ein neues Spiel mit dem Seed als Namen an und ersetzt einen gleichnamigen Spielstand (die Sicherung bleibt).';
+const REPLACES = 'Der Start öffnet den Spielstand mit dem Seed als Namen: gibt es ihn schon, wird er weitergespielt, sonst entsteht ein neues Spiel mit diesem Level.';
 const COLORS: Record<string, string> = {
   castle: '#ffd166',
   portal: '#b388ff',
