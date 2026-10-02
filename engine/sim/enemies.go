@@ -14,13 +14,18 @@ const body = 0.6
 func (e *Enemy) has(trait string) bool { return slices.Contains(e.Traits, trait) }
 
 func spawnEnemy(w *World, kind string, x float64) *Enemy {
+	return spawnScaled(w, kind, x, 1, 1)
+}
+
+// spawnScaled wie spawnEnemy, mit den Grad-Faktoren der Insel für HP und Schaden.
+func spawnScaled(w *World, kind string, x, hpFactor, damageFactor float64) *Enemy {
 	d := enemyData[kind]
 	depth := float64(w.Biome.Depth)
 	s := waves.DepthScaling
-	hp := math.Round(d.HP * math.Pow(s.HP, depth))
+	hp := math.Round(d.HP * math.Pow(s.HP, depth) * hpFactor)
 	e := &Enemy{
 		ID: w.newID(), Kind: kind, X: x, HP: hp, MaxHP: hp,
-		Damage: math.Round(d.Damage * math.Pow(s.Damage, depth)), Speed: d.Speed * math.Pow(s.Speed, depth),
+		Damage: math.Round(d.Damage * math.Pow(s.Damage, depth) * damageFactor), Speed: d.Speed * math.Pow(s.Speed, depth),
 		Range: d.Range, Traits: d.Traits, HomeX: x,
 	}
 	w.Enemies = append(w.Enemies, e)
@@ -41,7 +46,7 @@ func stepSpawns(w *World) {
 	}
 	w.SpawnQueue = rest
 	for _, s := range due {
-		spawnEnemy(w, s.Kind, s.X)
+		spawnScaled(w, s.Kind, s.X, s.hpFactor, s.damageFactor)
 	}
 }
 

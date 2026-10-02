@@ -147,6 +147,8 @@ type QueuedSpawn struct {
 	Kind string  `json:"kind"`
 	X    float64 `json:"x"`
 	At   float64 `json:"at"`
+	// Grad-Faktoren der Insel zum Wellenstart (startWave setzt sie immer, ohne Insel 1); ein Gradwechsel ändert wartende Gegner nicht.
+	hpFactor, damageFactor float64
 }
 
 // Stock ist der gemeinsame Hub-Vorrat an Baumaterial.
@@ -208,7 +210,8 @@ type World struct {
 	// noTravel: Die Stufe gehört zu einer Insel, deren Spieler einzeln wechseln (island_travel.go); der gemeinsame
 	// Stufenwechsel der Campaign (stepTravel) ist dort aus.
 	noTravel bool
-	// island: die Insel, zu der die Stufe gehört (nil = Campaign/einzelne Welt); nur dann gilt das Lager-Maximum.
+	// island: die Insel, zu der die Stufe gehört (nil bei Campaign und einzelnen Welten: keine Optionen, Faktor 1,
+	// kein Lager-Maximum).
 	island *Island
 }
 
