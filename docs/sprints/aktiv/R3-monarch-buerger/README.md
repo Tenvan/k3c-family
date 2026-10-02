@@ -5,7 +5,7 @@
 - **Reife:** bereit
 - **Einschiebbar:** ja
 - **Tickets:** B-110, B-017
-- **Start-Commit:** –
+- **Start-Commit:** 2038474
 - **Spec:** freigegeben
 - **Revision:** 1
 - **Freigabe:** 2026-10-02, Chat (Ralf), Revision 1
@@ -58,7 +58,7 @@ Keine Einigung im Workshop → Frage-Ticket, Thema im nächsten Workshop.
 
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
-| R3.1 | `R3.1-ist-monarch-buerger.md` | Umsetzung | autonom | offen |
+| R3.1 | `R3.1-ist-monarch-buerger.md` | Umsetzung | autonom | fertig |
 | R3.2 | `R3.2-workshop-monarch.md` | Workshop | Mensch | offen |
 | R3.3 | `R3.3-workshop-buerger.md` | Workshop | Mensch | offen |
 | R3.4 | `R3.4-beschluss-tickets.md` | Umsetzung | autonom | offen |
