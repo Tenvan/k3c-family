@@ -65,7 +65,7 @@ jobs:
     timeout-minutes: 20
     steps:
       - uses: actions/checkout@v7
-      - uses: docker/setup-buildx-action@v3
+      - uses: docker/setup-buildx-action@v4
       # Beide Plattformen bauen (arm64 = Raspberry Pi); nur die Go-Stufe kompiliert je Plattform, keine Emulation nötig.
       - run: docker buildx build --platform linux/amd64,linux/arm64 -t k3c-server:ci .
       - name: amd64-Image starten und prüfen
