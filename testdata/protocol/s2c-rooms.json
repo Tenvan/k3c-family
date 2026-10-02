@@ -1,7 +1,7 @@
 {
   "t": "rooms",
   "rooms": [
-    { "code": "KRNZ", "name": "familie", "depth": 0, "taken": 2, "free": 2, "running": true },
-    { "code": "BWTQ", "name": "kinder", "depth": 1, "taken": 0, "free": 4, "running": false }
+    { "code": "KRNZ", "name": "familie", "depth": 0, "grade": "normal", "taken": 2, "free": 2, "running": true },
+    { "code": "BWTQ", "name": "kinder", "depth": 1, "grade": "easy", "taken": 0, "free": 4, "running": false }
   ]
 }

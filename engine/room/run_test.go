@@ -13,9 +13,9 @@ import (
 // setup baut drei Räume mit 2, 3 und 4 Spielern und festen Eingaben je Slot.
 func setup(t *testing.T, f *fixture) []*Room {
 	t.Helper()
-	r1 := need(f.m.Create("a", &peer{}, "eins", true, 0, []int{0, 1}))(t)
-	r2 := need(f.m.Create("b", &peer{}, "zwei", true, 0, []int{0, 1, 2}))(t)
-	r3 := need(f.m.Create("c", &peer{}, "drei", true, 0, []int{0, 1}))(t)
+	r1 := need(f.m.Create("a", &peer{}, "eins", true, 0, []int{0, 1}, Options{}))(t)
+	r2 := need(f.m.Create("b", &peer{}, "zwei", true, 0, []int{0, 1, 2}, Options{}))(t)
+	r3 := need(f.m.Create("c", &peer{}, "drei", true, 0, []int{0, 1}, Options{}))(t)
 	need(f.m.Join("d", &peer{}, r3.Code, []int{0, 1}))(t)
 	ok(t, r1.Input("a", r1.peerOf("a"), map[int]sim.PlayerCommand{0: sim.PlayerCommand{MoveX: 1}}))
 	ok(t, r1.Input("a", r1.peerOf("a"), map[int]sim.PlayerCommand{1: sim.PlayerCommand{MoveX: -1, Pay: true}}))
@@ -75,8 +75,8 @@ func TestAbsturzTrifftNurDenRaum(t *testing.T) {
 	f := newFixture()
 	f.m.Now = time.Now
 	ok1, broken := &peer{}, &peer{}
-	r1 := need(f.m.Create("a", ok1, "heil", true, 0, []int{0}))(t)
-	r2 := need(f.m.Create("b", broken, "kaputt", true, 0, []int{0}))(t)
+	r1 := need(f.m.Create("a", ok1, "heil", true, 0, []int{0}, Options{}))(t)
+	r2 := need(f.m.Create("b", broken, "kaputt", true, 0, []int{0}, Options{}))(t)
 	r2.mu.Lock()
 	r2.beforeStep = func() { panic("Absturz im Test") }
 	r2.mu.Unlock()
@@ -105,7 +105,7 @@ func TestAbsturzTrifftNurDenRaum(t *testing.T) {
 
 func TestSummary(t *testing.T) {
 	f := newFixture()
-	r := need(f.m.Create("a", &peer{}, "kurz", true, 0, []int{0, 1}))(t)
+	r := need(f.m.Create("a", &peer{}, "kurz", true, 0, []int{0, 1}, Options{}))(t)
 	ticks(r, 3)
 	s := r.Summary()
 	want := Summary{Code: "KRNZ", Depth: 0, Tick: 3, Phase: "day", Day: 1, Gold: []int{100, 100},
@@ -118,7 +118,7 @@ func TestSummary(t *testing.T) {
 // B-088: Die Kennung ist der kürzeste gemeinsame Anfang (mindestens 6 Zeichen), der alle Geräte des Raums unterscheidet.
 func TestGeraeteKennungen(t *testing.T) {
 	f := newFixture()
-	r := need(f.m.Create("b1f4c2e0-5d7a-4c1e-9a33-7e2f0d6c8a15", &peer{}, "kennung", true, 0, []int{0}))(t)
+	r := need(f.m.Create("b1f4c2e0-5d7a-4c1e-9a33-7e2f0d6c8a15", &peer{}, "kennung", true, 0, []int{0}, Options{}))(t)
 	if err := r.lockedJoin("b1f4c2ff-0000-4c1e-9a33-7e2f0d6c8a15", &peer{}, []int{1}); err != nil {
 		t.Fatal(err)
 	}
