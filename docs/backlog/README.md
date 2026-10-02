@@ -43,7 +43,7 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-099](B-099-balancing-tester.md) | SIM | Idee | mittel | offen | – | Ein automatischer Balancing-Tester prüft Regeln und Werte gegen messbare Ziele |
 | [B-102](B-102-siegvarianten-niederlage.md) | SIM | Idee | mittel | offen | – | Siegvarianten und Niederlage-Modi der Raum-Optionen sind umgesetzt |
 | [B-103](B-103-inseln-bosse.md) | SIM | Idee | mittel | offen | – | Inseln mit Endboss und gemeinsamem Inselwechsel sind spielbar |
-| [B-104](B-104-protokoll-stufe-und-optionen.md) | SRV | Idee | hoch | offen | – | Das Protokoll kennt die Stufe je Spieler und die Raum-Optionen |
+| [B-104](B-104-protokoll-stufe-und-optionen.md) | SRV | Idee | hoch | eingeplant | SP14 | Das Protokoll kennt die Stufe je Spieler und die Raum-Optionen |
 | [B-105](B-105-anlegen-dialog-optionen.md) | CLI | Idee | mittel | offen | – | Der Anlegen-Dialog der Lobby wählt Grad, Ziel und Niederlage-Modus |
 | [B-106](B-106-kamera-je-stufe.md) | CLI | Idee | hoch | offen | – | Jeder Spieler sieht seine Stufe, auch wenn die Spieler in verschiedenen Stufen sind |
 | [B-107](B-107-debug-panel-gradwechsel.md) | CLI | Idee | mittel | offen | – | Ein Debug-Panel im Dev-Mode wechselt den Schwierigkeitsgrad und weitere Optionen |
@@ -149,4 +149,4 @@ Zeile in diesen Abschnitt.
 | [B-130](B-130-bosse.md) | SIM | Idee | hoch | offen | – | Minibosse und Endboss sind spielbar |
 | [B-131](B-131-events.md) | SIM | Idee | niedrig | offen | – | Vollmond, Blutmond und Händler-Überfall sind als Events umgesetzt |
 | [B-132](B-132-anzeige-bosse-events.md) | CLI | Idee | mittel | offen | – | Der Client zeigt Gegner-Fähigkeiten, Bosse, Phasen und Events |
-| [B-133](B-133-raum-auf-insel.md) | SRV | Idee | hoch | offen | – | Der Raum rechnet mit einer Insel statt mit einer Kampagne |
+| [B-133](B-133-raum-auf-insel.md) | SRV | Idee | hoch | eingeplant | SP14 | Der Raum rechnet mit einer Insel statt mit einer Kampagne |

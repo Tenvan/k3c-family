@@ -8,6 +8,7 @@ Jede Sprint-README ist eine Spec (SDD); aktiv wird ein Sprint erst mit `Spec: fr
 
 | Sprint | Domäne | Thema | Am Ende sichtbar | Ordner |
 |---|---|---|---|---|
+| SP14 | SRV | Raum auf Insel (B-133, B-104) | Raum rechnet die Insel, Protokoll v3 mit Stufe je Platz und Raum-Optionen | `aktiv/SP14-raum-auf-insel/` |
 | SP11 | SRV 🧑 | Raspberry Pi | 2er- und 3er-Spiel parallel auf dem Pi | `aktiv/SP11-raspberry-pi/` |
 
 ## Geplant (in dieser Reihenfolge)
