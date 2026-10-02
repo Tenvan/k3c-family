@@ -17,6 +17,7 @@ Standardszenario **Wald, 2 Spieler, Bot „sparsam“, Normal, je 100 Seeds**.
 | Ein Raum hat einen Spielstand, der Spielstand hat **n Inseln**, jede Insel hat **n Stufen** (Oberwelt/Wald, Höhle, Mine, Eisenstollen, Kristallhöhle). Die erste Ausbaustufe ist **1 Insel mit 5 Stufen** (zuerst werden Wald, Höhle und Mine gebaut, die beiden tiefsten folgen als Inhalt); weitere Inseln kommen später (`materialien-gebaeude.md` § 1). | Struktur trägt Koop mit freier Wahl des Ortes; wächst über Inseln statt über beliebig viele Stufen. | `data/biomes/*.json` (Stufen), neue Insel-Daten (SIM legt sie an) | – |
 | Die Stufen einer Insel bilden **ein Level** und sind **pro Spieler frei begehbar**: Jeder Spieler wechselt allein über den Tiefen-Eingang (2 s stehen) oder eine gebaute Treppe; es gibt keine gemeinsame Reise. | Spieler sollen verschiedene Aufgaben an verschiedenen Orten übernehmen können. | `data/hub.json` › `travel` | – |
 | Jede Stufe hat **einen eigenen Hub**, der von Grund auf gebaut wird; alle Hubs bleiben bestehen. | Wie bisher. | `data/hub.json` | – |
+| **Breite der Stufen:** nach unten schmaler, dafür dichter (Startwerte in `materialien-gebaeude.md` § 1). | Wege, Druck, Rechenzeit. | `data/biomes/*.json` | – |
 | **Das Baumaterial (Holz, Stein, Kupfer) gehört der Insel:** alle Stufen und Hubs einer Insel teilen einen Vorrat. Eine neue Insel beginnt mit leerem Vorrat. Gold bleibt je Spieler. | Wald liefert Holz, Höhle Stein, Mine Kupfer, gebaut wird überall; so trägt niemand Material von Hub zu Hub. | `World.stock` wird ein Vorrat je Insel (SIM) | Material am Morgen je Rohstoff im Korridor aus B-099 (Messgröße noch offen) |
 | **Alle Stufen einer Insel laufen weiter**, auch wenn kein Spieler dort ist (eine gemeinsame Zeit, eigene Wellen je Stufe). Ein Hub ohne Verteidiger kann fallen. | Die Entscheidung „wo bin ich?“ ist Spielinhalt. Rechenlast wird mit B-099 und SP11 (Pi 3) gemessen. | – | Rechenzeit je Tick mit 3 Stufen aktiv im Ziel aus B-042 (p99 < 10 ms bei 2 Räumen × 3 Spielern) |
 | **Inselwechsel:** Der Endboss der tiefsten Stufe macht den Weg zur nächsten Insel frei (Boot oder Portal). Der Wechsel erfolgt **gemeinsam**: alle lebenden Spieler stehen am Boot/Portal. Die neue Insel ist eine neue Welt mit eigenen Hubs und leerem Material-Vorrat. | Der Fortschritt bleibt ein gemeinsamer Meilenstein, Inseln folgen einander. | `data/islands.json` (SIM legt an) | – |
@@ -39,7 +40,7 @@ Unverändert (🧑 hat nicht gesondert bestätigt): Unter Tage statt Tag/Nacht: 
 | Endboss (Standard) | der Endboss besiegt ist | – |
 | Gold sammeln | die Spieler zusammen N Gold eingesammelt haben (Summe aller eingesammelten Münzen) | N = 1000 |
 | Tage überleben | N Tage vergangen sind, ohne Spielende | N = 20 |
-| Alles abbauen | alle Ressourcenknoten der Insel abgebaut sind | – |
+| Alles abbauen | alle **endlichen** Ressourcenobjekte (Bäume, Felsen, Erz im Level) der Insel abgebaut sind (Adern und Plantagen zählen nicht) | – |
 | Alles ausbauen | alle Bauplätze aller Stufen der Insel gebaut sind | – |
 
 Annahme (🧑 hat nicht gesondert bestätigt): Eine Variante gilt je Insel; das Erfüllen schaltet bei mehreren Inseln den Inselwechsel frei, der letzte Sieg ist der Kampagnensieg.
