@@ -1,6 +1,6 @@
 # SP12 · SIM · Insel-Kern
 
-- **Status:** aktiv
+- **Status:** erledigt
 - **Domäne:** SIM
 - **Reife:** bereit
 - **Einschiebbar:** ja
@@ -63,8 +63,10 @@ keine
 | SP12.1 | `SP12.1-insel-geruest.md` | Umsetzung | autonom | fertig |
 | SP12.2 | `SP12.2-einzelwechsel.md` | Umsetzung | autonom | fertig |
 | SP12.3 | `SP12.3-spielstand.md` | Umsetzung | autonom | fertig |
-| SP12.4 | `SP12.4-review.md` | Review | autonom | offen |
+| SP12.4 | `SP12.4-review.md` | Review | autonom | fertig |
 
 ## Abnahme
 
-–
+- 2026-10-02, Review SP12.4 (Agent, im selben Gespräch wie die Umsetzung): AC-01, AC-03, AC-06, AC-07 belegt (SP12.1 › Ergebnis), AC-02 und AC-05 (SP12.2 › Ergebnis), AC-04 (SP12.3 › Ergebnis).
+- Behobene Befunde: keine (keine schweren Befunde). Neue Tickets: keine (Folge: B-133 Raum auf Insel, B-104 Protokoll).
+- Hinweis: Tick-Dauer nur auf dem Entwickler-Rechner gemessen; Pi 3 offen (SP11).
