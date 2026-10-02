@@ -316,12 +316,12 @@ func spend(s *Stock, c Cost) {
 func stepSites(w *World) {
 	bow := troops["archer"].Cost
 	for _, s := range w.Sites {
-		if s.State == "waitingMaterial" && canAfford(w.Stock, buildings[s.Kind].Cost) {
-			spend(&w.Stock, buildings[s.Kind].Cost)
+		if s.State == "waitingMaterial" && canAfford(*w.Stock, buildings[s.Kind].Cost) {
+			spend(w.Stock, buildings[s.Kind].Cost)
 			s.State = "waitingWorker"
 		}
-		if s.Kind == "workshop" && s.State == "built" && s.BowPaidGold >= bow.Gold && canAfford(w.Stock, bow) {
-			spend(&w.Stock, bow)
+		if s.Kind == "workshop" && s.State == "built" && s.BowPaidGold >= bow.Gold && canAfford(*w.Stock, bow) {
+			spend(w.Stock, bow)
 			s.BowPaidGold = 0
 			s.Bows++
 		}

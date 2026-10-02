@@ -3,9 +3,9 @@
 - **Status:** aktiv
 - **Domäne:** SIM
 - **Reife:** bereit
-- **Einschiebbar:** nein
+- **Einschiebbar:** ja
 - **Tickets:** B-100
-- **Start-Commit:** –
+- **Start-Commit:** d155f3f
 - **Spec:** freigegeben
 - **Revision:** 1
 - **Freigabe:** 2026-10-02, Chat (Ralf), Revision 1
@@ -32,7 +32,7 @@ Raum, Protokoll und Client (B-133, B-104, B-106), Wellenfaktor und Schwierigkeit
 
 ## Regeln und Einschränkungen
 
-Domäne SIM: nur `engine/sim/` (und `engine/level/`, falls nötig), Tests und Daten dazu. Deterministisch (nur `engine/rng`), Komplexitäts-Budget (Datei ≤ 400 Zeilen, Funktion ≤ 60). Schichtgrenzen: `engine/sim` importiert nichts aus `room`, `net`, `cmd`. Bestehende Golden-Tests (`testdata/golden/`) bleiben unverändert grün. Fließkomma: Produkte, die in Summen gehen, mit `float64(…)` runden (siehe Paketkommentar in `world.go`).
+**Parallel zu SP11:** SP11 (Raspberry Pi) wartet auf 🧑 (Sessions am Pi) und ist blockiert. Nach `docs/arbeitsweise.md` › Sprint-Lebenslauf (Blockade) darf der nächste unabhängige Sprint vorgezogen werden; SP12 ist von SP11 unabhängig (SIM gegen SRV/Pi). Deshalb steht `Einschiebbar: ja`. Domäne SIM: nur `engine/sim/` (und `engine/level/`, falls nötig), Tests und Daten dazu. Deterministisch (nur `engine/rng`), Komplexitäts-Budget (Datei ≤ 400 Zeilen, Funktion ≤ 60). Schichtgrenzen: `engine/sim` importiert nichts aus `room`, `net`, `cmd`. Bestehende Golden-Tests (`testdata/golden/`) bleiben unverändert grün. Fließkomma: Produkte, die in Summen gehen, mit `float64(…)` runden (siehe Paketkommentar in `world.go`).
 
 ## Beispiele
 
@@ -60,7 +60,7 @@ keine
 
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
-| SP12.1 | `SP12.1-insel-geruest.md` | Umsetzung | autonom | offen |
+| SP12.1 | `SP12.1-insel-geruest.md` | Umsetzung | autonom | fertig |
 | SP12.2 | `SP12.2-einzelwechsel.md` | Umsetzung | autonom | offen |
 | SP12.3 | `SP12.3-spielstand.md` | Umsetzung | autonom | offen |
 | SP12.4 | `SP12.4-review.md` | Review | autonom | offen |

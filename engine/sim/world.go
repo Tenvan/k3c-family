@@ -34,6 +34,7 @@ func CreateWorld(b level.Biome, seed string, opts Options) (*World, error) {
 		Cycle:   cycleAt(globalDayNight, float64(opts.Time*speed)),
 		Players: []*Player{}, Coins: []*Coin{}, Troops: []*Troop{}, Nodes: []*ResourceNode{}, Sites: []*Site{},
 		Castle:  Castle{X: hubX, HP: buildings["castle"].HP, MaxHP: buildings["castle"].HP},
+		Stock:   &Stock{},
 		Enemies: []*Enemy{}, Projectiles: []*Projectile{}, Pickups: []*Pickup{}, Camps: []*Camp{},
 		Portals: []float64{}, SpawnQueue: []QueuedSpawn{}, Events: []Event{},
 	}
@@ -82,8 +83,10 @@ func emptySite(w *World, kind string, x float64) *Site {
 }
 
 // AddPlayer stellt einen neuen Monarchen an die Burg (Couch-Koop).
-func AddPlayer(w *World) *Player {
-	index := len(w.Players)
+func AddPlayer(w *World) *Player { return addPlayerAt(w, len(w.Players)) }
+
+// addPlayerAt stellt den Monarchen mit dem angegebenen Spielerindex an die Burg (in einer Insel inselweit eindeutig).
+func addPlayerAt(w *World, index int) *Player {
 	offset, facing := -3.0, -1
 	if index%2 != 0 {
 		offset, facing = 3, 1
@@ -135,7 +138,7 @@ func castleFallen(w *World) {
 		*s = *emptySite(w, s.Kind, s.X) // verbraucht wie in TS eine ID je Bauplatz
 		s.ID = id
 	}
-	w.Stock = Stock{Wood: w.Stock.Wood / 2, Stone: w.Stock.Stone / 2, Copper: w.Stock.Copper / 2}
+	*w.Stock = Stock{Wood: w.Stock.Wood / 2, Stone: w.Stock.Stone / 2, Copper: w.Stock.Copper / 2}
 	for _, p := range w.Players {
 		p.Gold /= 2
 		respawn(w, p)
