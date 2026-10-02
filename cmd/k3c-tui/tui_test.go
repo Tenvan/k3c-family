@@ -18,7 +18,7 @@ const token = "geheim-123"
 const statusJSON = `{"version":"v0.2.0","startedAt":"x","uptimeS":3720,"saves":2,"reports":1,
  "memory":{"heapMB":4.5,"sysMB":12.3,"numGC":7},
  "rooms":[
-  {"code":"FAMILIE","name":"Familie","depth":0,"taken":2,"free":2,"running":true,"devices":2,"monarchs":["taken","taken","waiting","free"],"tick":900,"tickMs":{"last":0.4,"p99":1.25}},
+  {"code":"FAMILIE","name":"Familie","depth":0,"taken":2,"free":2,"running":true,"devices":2,"monarchs":["taken","taken","waiting","free"],"tick":900,"tickMs":{"last":0.4,"p99":1.25},"stages":[{"depth":0,"phase":"day","day":2,"players":[0,2]},{"depth":1,"phase":"night","day":1,"players":[]},{"depth":2,"phase":"day","day":1,"players":[1]}]},
   {"code":"TEST1","name":"ein sehr langer Name","depth":1,"taken":1,"free":3,"running":true,"devices":1,"monarchs":["taken","free","free","free"],"tick":30,"tickMs":{"last":0.2,"p99":0.5}}],
  "failures":[{"code":"X","name":"alt","error":"boom","at":"2026-10-01T10:00:00Z"}]}`
 
@@ -65,7 +65,7 @@ func parsed(t *testing.T) status {
 func TestRenderZeigtServerRaeumeAbstuerze(t *testing.T) {
 	st := parsed(t)
 	out := render(view{addr: "http://x:8080", st: &st, plain: true})
-	for _, want := range []string{"K3C v0.2.0", "läuft 1 h 2 min", "4.5 MB Heap", "2 Spielstände", "FAMILIE", "TTWF", "0.40 ms (1.25)", "TEST1", "ein sehr lang…", "Abstürze", "X (alt) 2026-10-01T10:00:00Z: boom"} {
+	for _, want := range []string{"K3C v0.2.0", "läuft 1 h 2 min", "4.5 MB Heap", "2 Spielstände", "FAMILIE", "TTWF", "0.40 ms (1.25)", "2/0/1", "TEST1", "ein sehr lang…", "Abstürze", "X (alt) 2026-10-01T10:00:00Z: boom"} {
 		if !strings.Contains(out, want) {
 			t.Errorf("%q fehlt in\n%s", want, out)
 		}
@@ -76,6 +76,15 @@ func TestRenderZeigtServerRaeumeAbstuerze(t *testing.T) {
 				t.Errorf("Breite %d: Zeile mit %d Zeichen: %q", width, lipgloss.Width(line), line)
 			}
 		}
+	}
+}
+
+// AC-03: Die Raumansicht zeigt die Stufen mit Tiefe, Tag, Phase und Spielern.
+func TestRenderRaumZeigtStufen(t *testing.T) {
+	d := roomDetail{Code: "FAMILIE", Stages: []stage{{0, "day", 2, []int{0, 2}}, {1, "night", 1, nil}}}
+	out := renderRoom(roomView{d: &d, code: "FAMILIE"})
+	if want := "Stufen: T0 Tag 2 day: 0,2 · T1 Tag 1 night: –"; !strings.Contains(out, want) {
+		t.Errorf("%q fehlt in\n%s", want, out)
 	}
 }
 

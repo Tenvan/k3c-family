@@ -55,15 +55,15 @@ func roomTable(v view, rooms []room) []string {
 	if len(rooms) == 0 {
 		return []string{v.style(styleDim, "Keine Räume")}
 	}
-	lines := []string{v.style(styleHead, fmt.Sprintf("%s%-9s %-14s %5s %7s %-6s %8s %-18s", "  ", "Raum", "Name", "Tiefe", "Geräte", "Plätze", "Tick", "Tick-Dauer (p99)"))}
+	lines := []string{v.style(styleHead, fmt.Sprintf("%s%-9s %-14s %5s %7s %-6s %8s %-18s %s", "  ", "Raum", "Name", "Tiefe", "Geräte", "Plätze", "Tick", "Tick-Dauer (p99)", "Spieler je Stufe"))}
 	for i, r := range rooms {
 		mark := "  "
 		if !v.plain && i == v.sel {
 			mark = "▶ "
 		}
-		lines = append(lines, fmt.Sprintf("%s%-9s %-14s %5d %7d %-6s %8d %-18s",
+		lines = append(lines, fmt.Sprintf("%s%-9s %-14s %5d %7d %-6s %8d %-18s %s",
 			mark, r.Code, truncate(r.Name, 14), r.Depth, r.Devices, seats(r.Monarchs), r.Tick,
-			fmt.Sprintf("%.2f ms (%.2f)", r.TickMs.Last, r.TickMs.P99)))
+			fmt.Sprintf("%.2f ms (%.2f)", r.TickMs.Last, r.TickMs.P99), playersPerStage(r.Stages)))
 	}
 	return lines
 }
@@ -77,6 +77,18 @@ func failureLines(v view, fails []failure) []string {
 		lines = append(lines, fmt.Sprintf("%s (%s) %s: %s", f.Code, f.Name, f.At, f.Error))
 	}
 	return lines
+}
+
+// playersPerStage schreibt die Spielerzahl je Stufe, durch / getrennt („2/0/1“); ohne Stufen „–“.
+func playersPerStage(stages []stage) string {
+	if len(stages) == 0 {
+		return "–"
+	}
+	parts := make([]string, len(stages))
+	for i, s := range stages {
+		parts[i] = fmt.Sprint(len(s.Players))
+	}
+	return strings.Join(parts, "/")
 }
 
 // seats schreibt die Plätze eines Raums als ein Zeichen je Platz: T besetzt, W wartet, F frei.

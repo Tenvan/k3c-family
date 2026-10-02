@@ -73,22 +73,24 @@ type device struct {
 	peer      Peer
 	slots     map[int]int // Slot → Monarch
 	connected bool
+	stage     int // Stufe, deren Level das Gerät zuletzt bekam (-1: noch keine)
 }
 
-// Room ist ein laufendes Spiel: eine Kampagne, ein Spielstand, ein Code. Monarch i ist CurrentWorld().Players[i].
+// Room ist ein laufendes Spiel: eine Insel, ein Spielstand, ein Code. Monarch i ist der Insel-Spieler mit Index i.
 type Room struct {
 	Code, Name string
 
 	mu         sync.Mutex
 	m          *Manager
-	camp       *sim.Campaign
+	isl        *sim.Island
+	start      int // Startstufe: dort treten neue Geräte ohne Spieler ein
 	monarchs   []*monarch
 	devices    map[string]*device
 	tick       int
 	emptySince time.Time
 	closed     bool
 	durations  []time.Duration // letzte Tick-Dauern (run.go)
-	beforeStep func()          // Test-Naht: läuft im Tick vor sim.Step
+	beforeStep func()          // Test-Naht: läuft im Tick vor StepIsland
 }
 
 // ValidSlots: Slot 4 oder höher → too_many_slots, sonst leer, negativ oder doppelt → bad_request.
@@ -140,26 +142,26 @@ func (r *Room) join(id string, peer Peer, slots []int) error {
 			}
 		}
 	}
-	d := &device{peer: peer, slots: keep, connected: true}
+	d := &device{peer: peer, slots: keep, connected: true, stage: -1}
 	r.devices[id] = d
 	for _, slot := range slots {
 		idx, ok := keep[slot]
 		if !ok {
-			idx = r.assign(id, slot)
+			idx = r.assign(id, slot, r.deviceStage(d))
 		}
 		r.take(d, id, slot, idx)
 	}
 	r.emptySince = time.Time{}
-	w := r.syncFree()
+	r.syncFree()
 	peer.Joined(r.Code, r.Name, d.seats())
-	peer.Level(r.camp.Depth, w.Level)
-	peer.State(r.tick, w)
+	r.pushState(d)
 	r.broadcastSeats()
 	return nil
 }
 
-// assign: freien Monarchen wählen, den (Gerät, Slot) zuletzt hatte, sonst den kleinsten freien, sonst einen neuen.
-func (r *Room) assign(id string, slot int) int {
+// assign: freien Monarchen wählen, den (Gerät, Slot) zuletzt hatte, sonst den kleinsten freien, sonst einen neuen
+// Insel-Spieler in der Stufe stage (die Stufe des Geräts).
+func (r *Room) assign(id string, slot, stage int) int {
 	best := -1
 	for i, mo := range r.monarchs {
 		if mo.state != Free {
@@ -175,7 +177,7 @@ func (r *Room) assign(id string, slot int) int {
 	if best >= 0 {
 		return best
 	}
-	r.camp.JoinPlayer()
+	sim.AddIslandPlayer(r.isl, stage)
 	r.monarchs = append(r.monarchs, &monarch{})
 	return len(r.monarchs) - 1
 }
@@ -220,12 +222,11 @@ func (d *device) seats() []Seat {
 }
 
 // syncFree setzt sim.Player.Free (B-059): Nur besetzte Monarchen entscheiden über den Stufenwechsel.
-func (r *Room) syncFree() *sim.World {
-	w := r.camp.CurrentWorld()
+func (r *Room) syncFree() {
+	players := r.isl.Players()
 	for i, mo := range r.monarchs {
-		w.Players[i].Free = mo.state != Taken
+		players[i].Free = mo.state != Taken
 	}
-	return w
 }
 
 func (r *Room) states() []string {
@@ -264,7 +265,7 @@ func (r *Room) save() {
 
 // store schreibt den Spielstand und liefert den Namen der Sicherung des vorigen Stands (leer, wenn es keine gab).
 func (r *Room) store() (backup string, err error) {
-	data, err := json.Marshal(r.camp.ToSave(r.m.now().UTC().Format("2006-01-02T15:04:05.000Z07:00")))
+	data, err := json.Marshal(r.isl.ToSave(r.m.now().UTC().Format("2006-01-02T15:04:05.000Z07:00")))
 	if err != nil {
 		return "", err
 	}

@@ -41,6 +41,13 @@ type (
 		Last float64 `json:"last"`
 		P99  float64 `json:"p99"`
 	}
+	// stage ist eine Stufe der Insel (room.StageStatus): Tiefe, Phase, Tag und die Spielerindizes.
+	stage struct {
+		Depth   int    `json:"depth"`
+		Phase   string `json:"phase"`
+		Day     int    `json:"day"`
+		Players []int  `json:"players"`
+	}
 	room struct {
 		Code     string   `json:"code"`
 		Name     string   `json:"name"`
@@ -49,6 +56,7 @@ type (
 		Monarchs []string `json:"monarchs"`
 		Tick     int      `json:"tick"`
 		TickMs   tickMs   `json:"tickMs"`
+		Stages   []stage  `json:"stages"`
 	}
 	failure struct {
 		Code  string `json:"code"`
@@ -135,6 +143,7 @@ type (
 		Castle  float64        `json:"castleHp"`
 		Wave    int            `json:"wave"`
 		Devices []device       `json:"devices"`
+		Stages  []stage        `json:"stages"`
 	}
 	logPage struct {
 		Cursor    int64    `json:"cursor"`
