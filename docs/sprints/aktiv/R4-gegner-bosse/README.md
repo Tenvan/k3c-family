@@ -60,7 +60,7 @@ keine
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
 | R4.1 | `R4.1-ist-gegner-bosse.md` | Umsetzung | autonom | fertig |
-| R4.2 | `R4.2-workshop-gegner-wellen.md` | Workshop | Mensch | offen |
+| R4.2 | `R4.2-workshop-gegner-wellen.md` | Workshop | Mensch | fertig |
 | R4.3 | `R4.3-workshop-bosse-events.md` | Workshop | Mensch | offen |
 | R4.4 | `R4.4-beschluss-tickets.md` | Umsetzung | autonom | offen |
 
