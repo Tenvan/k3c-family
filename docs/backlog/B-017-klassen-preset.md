@@ -53,3 +53,4 @@ Preset ja oder nein (🧑, Regelwerk II).
 ## Notizen
 
 –
+Wird im Rahmen von B-110 (Regelwerk II) entschieden.
