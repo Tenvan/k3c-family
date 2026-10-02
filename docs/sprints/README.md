@@ -22,6 +22,7 @@ dann über den Go-Server mit mehreren Räumen und gemischten Spielern.
 
 | Sprint | Domäne | Thema | Reife | Ordner |
 |---|---|---|---|---|
+| R4 | REG 🧑 | Regelwerk III – Gegner, Wellen, Bosse, Events (B-127) | bereit | `geplant/R4-gegner-bosse/` |
 | X1 | PLAT 🧑 | Xbox-Machbarkeit | Entwurf | `geplant/X1-xbox/` |
 
 Nach SP11: Regelwerk II (Monarch und Bürger: Skillung, Klassen, Level, B-110) → SIM Skills in Go → CLI Skills → Spieleabend → Grafik/Sound → …
