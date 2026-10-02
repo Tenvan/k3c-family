@@ -71,9 +71,9 @@ func carryToStock(w *World, t *Troop, dt float64) {
 		t.Job = nil
 		return
 	}
-	// Maximum voll: Das Material bleibt beim Träger, aber ein wartender Bauplatz oder Bogen geht vor, sonst blockiert
+	// Maximum voll: Das Material bleibt beim Träger, aber ein wartender Bauplatz geht vor, sonst blockiert
 	// ein wartender Träger den Bau, der Platz schaffen würde.
-	if j := siteJob(w, t); j != nil {
+	if j := buildJob(w, t); j != nil { // nur Bauaufträge: Wer zum Bogenschützen wird, verlöre das Material
 		t.carried, t.Job = t.Job, j
 	}
 }

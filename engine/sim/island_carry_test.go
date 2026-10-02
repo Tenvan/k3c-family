@@ -171,3 +171,23 @@ func TestIslandFindJobSkipsFullResource(t *testing.T) {
 		t.Error("ein volles Holzlager darf keine Sammelaufträge für Holz vergeben")
 	}
 }
+
+// Ein wartender Träger holt keinen Bogen (er würde zum Bogenschützen und verlöre das behaltene Material).
+func TestIslandFullCarrierDoesNotFetchBow(t *testing.T) {
+	isl := mustIsland(t, "trag-e", []int{0})
+	w := isl.Stages[0]
+	isl.Stock.Wood = 300
+	p := carrier(w, w.HubX, 10)
+	w.Troops = []*Troop{p}
+	for _, s := range w.Sites {
+		if s.Kind == "workshop" {
+			s.State, s.Bows = "built", 1
+		}
+	}
+	for range 30 {
+		stepPeasant(w, p, dt)
+	}
+	if p.Job == nil || p.Job.Type != "carry" || p.Kind != "peasant" || p.carried != nil {
+		t.Errorf("wartender Träger bleibt Träger: Kind %s, Job %+v, carried %v", p.Kind, p.Job, p.carried)
+	}
+}
