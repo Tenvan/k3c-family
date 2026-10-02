@@ -63,7 +63,7 @@ keine
 |---|---|---|---|---|
 | SP13.1 | `SP13.1-optionen-grade.md` | Umsetzung | autonom | fertig |
 | SP13.2 | `SP13.2-material-kapazitaet.md` | Umsetzung | autonom | fertig |
-| SP13.3 | `SP13.3-lager-tragen.md` | Umsetzung | autonom | offen |
+| SP13.3 | `SP13.3-lager-tragen.md` | Umsetzung | autonom | fertig |
 | SP13.4 | `SP13.4-review.md` | Review | autonom | offen |
 
 ## Abnahme
