@@ -46,7 +46,7 @@ Zugriff im **privaten** Netzwerk erlauben.
 
 Der Go-Server (`cmd/k3c-server`) liefert Seiten, Spielstände, Berichte und den Online-Modus (WebSocket `/ws`, Protokoll v2).
 Einstellungen per Umgebung: `K3C_HTTP_PORT`,
-`K3C_HTTPS_PORT`, `K3C_DIST`, `K3C_SAVES_DIR`, `K3C_REPORTS_DIR`, `K3C_CERTS_DIR`, `K3C_LOG_DIR` (JSON-Log `k3c-server.jsonl`; ohne Angabe nur, wenn ein Ordner `logs/` existiert); `GET /api/health` meldet
+`K3C_HTTPS_PORT`, `K3C_DIST`, `K3C_SAVES_DIR`, `K3C_REPORTS_DIR`, `K3C_CERTS_DIR`, `K3C_LOG_DIR` (JSON-Log `k3c-server.jsonl`; ohne Angabe nur, wenn ein Ordner `logs/` existiert), `K3C_DEV` (Dev-Mode: leer oder `1` = an, `0` = aus; im Dev-Mode ist der Grad `dev` wählbar und der Standardgrad neuer Räume, sonst `normal`; Standard in der Entwicklungsphase: an); `GET /api/health` meldet
 `{"ok":true}`.
 
 - **Level ansehen:** `GET /api/level?seed=test&biome=forest` liefert das Level, das ein Raum mit diesem Seed und Biom bekäme
