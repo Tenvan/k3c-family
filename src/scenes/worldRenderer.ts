@@ -139,7 +139,7 @@ export class WorldRenderer {
 
   /** Kamera-Ziel für Spieler i */
   playerView(index: number): View | undefined {
-    const p = this.world.players[index];
+    const p = this.world.players.find((p) => p.index === index);
     return p ? this.players.views.get(p.id) : undefined;
   }
 

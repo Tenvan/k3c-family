@@ -133,13 +133,13 @@ func ownMovement(t *testing.T, r *Room) {
 func TestXboxUndHandy(t *testing.T) {
 	f := newFixture()
 	x, h := &peer{}, &peer{}
-	r := need(f.m.Create("xbox", x, "familie", true, 0, []int{0}))(t)
-	if r.Code != "KRNZ" || !x.has("joined KRNZ familie [{0 0}]") || !x.has("level 0") || !x.has("state 0") {
+	r := need(f.m.Create("xbox", x, "familie", true, 0, []int{0}, Options{}))(t)
+	if r.Code != "KRNZ" || !x.has("joined KRNZ familie [{0 0 0}]") || !x.has("level 0") || !x.has("state 0") {
 		t.Fatalf("Erstellen: %v", x.log)
 	}
 	ok(t, r.AddSlot("xbox", r.peerOf("xbox"), 1))
 	need(f.m.Join("handy", h, "KRNZ", []int{0}))(t)
-	if fmt.Sprint(h.you) != "[{0 2}]" || fmt.Sprint(x.monarchs) != "[taken taken taken]" {
+	if fmt.Sprint(h.you) != "[{0 2 0}]" || fmt.Sprint(x.monarchs) != "[taken taken taken]" {
 		t.Fatalf("Handy %v, Plätze %v", h.you, x.monarchs)
 	}
 	ownMovement(t, r)
@@ -151,7 +151,7 @@ func TestXboxUndHandy(t *testing.T) {
 	f.wait(10 * time.Second)
 	h2 := &peer{}
 	need(f.m.Join("handy", h2, "KRNZ", []int{0}))(t)
-	if fmt.Sprint(h2.you) != "[{0 2}]" || !h2.has("level 0") {
+	if fmt.Sprint(h2.you) != "[{0 2 0}]" || !h2.has("level 0") {
 		t.Fatalf("Wiederverbinden: %v", h2.log)
 	}
 	// Controller 2 geht: Monarch 1 frei; ein neues Gerät bekommt ihn.
@@ -161,7 +161,7 @@ func TestXboxUndHandy(t *testing.T) {
 	}
 	z := &peer{}
 	need(f.m.Join("tablet", z, "KRNZ", []int{0}))(t)
-	if fmt.Sprint(z.you) != "[{0 1}]" {
+	if fmt.Sprint(z.you) != "[{0 1 0}]" {
 		t.Fatalf("neues Gerät bekommt %v", z.you)
 	}
 }
@@ -169,18 +169,18 @@ func TestXboxUndHandy(t *testing.T) {
 func TestWiederverbindenMitGeaendertenSlots(t *testing.T) {
 	f := newFixture()
 	x := &peer{}
-	r := need(f.m.Create("xbox", x, "slots", true, 0, []int{0, 1}))(t)
+	r := need(f.m.Create("xbox", x, "slots", true, 0, []int{0, 1}, Options{}))(t)
 	r.Drop("xbox", x)
 	x2 := &peer{}
 	need(f.m.Join("xbox", x2, r.Code, []int{1, 2}))(t)
 	// Slot 1 behält Monarch 1, Slot 0 fällt weg (Monarch 0 frei), Slot 2 bekommt den kleinsten freien: 0.
-	if fmt.Sprint(x2.you) != "[{1 1} {2 0}]" || fmt.Sprint(x2.monarchs) != "[taken taken]" {
+	if fmt.Sprint(x2.you) != "[{1 1 0} {2 0 0}]" || fmt.Sprint(x2.monarchs) != "[taken taken]" {
 		t.Fatalf("mehr/weniger Slots: %v %v", x2.you, x2.monarchs)
 	}
 	r.Drop("xbox", x2)
 	x3 := &peer{}
 	need(f.m.Join("xbox", x3, r.Code, []int{1}))(t)
-	if fmt.Sprint(x3.you) != "[{1 1}]" || fmt.Sprint(x3.monarchs) != "[free taken]" {
+	if fmt.Sprint(x3.you) != "[{1 1 0}]" || fmt.Sprint(x3.monarchs) != "[free taken]" {
 		t.Fatalf("weniger Slots: %v %v", x3.you, x3.monarchs)
 	}
 }
@@ -188,7 +188,7 @@ func TestWiederverbindenMitGeaendertenSlots(t *testing.T) {
 func TestNach60SekundenFreiUndBevorzugt(t *testing.T) {
 	f := newFixture()
 	x, h := &peer{}, &peer{}
-	r := need(f.m.Create("xbox", x, "frist", true, 0, []int{0}))(t)
+	r := need(f.m.Create("xbox", x, "frist", true, 0, []int{0}, Options{}))(t)
 	need(f.m.Join("handy", h, r.Code, []int{0, 1}))(t)
 	r.Drop("handy", h)
 	f.wait(59 * time.Second)
@@ -202,7 +202,7 @@ func TestNach60SekundenFreiUndBevorzugt(t *testing.T) {
 	// Rückkehr nach der Frist: normales Beitreten, die alten Monarchen werden bevorzugt.
 	h2 := &peer{}
 	need(f.m.Join("handy", h2, r.Code, []int{1, 0}))(t)
-	if fmt.Sprint(h2.you) != "[{0 1} {1 2}]" {
+	if fmt.Sprint(h2.you) != "[{0 1 0} {1 2 0}]" {
 		t.Fatalf("Rückkehr: %v", h2.you)
 	}
 }
@@ -210,7 +210,7 @@ func TestNach60SekundenFreiUndBevorzugt(t *testing.T) {
 func TestPausierterRaumFristenUndAufraeumen(t *testing.T) {
 	f := newFixture()
 	x := &peer{}
-	r := need(f.m.Create("xbox", x, "pause", true, 0, []int{0}))(t)
+	r := need(f.m.Create("xbox", x, "pause", true, 0, []int{0}, Options{}))(t)
 	ticks(r, 3)
 	saves := f.store.saves
 	r.Drop("xbox", x)
@@ -241,9 +241,9 @@ func TestPausierterRaumFristenUndAufraeumen(t *testing.T) {
 func TestGrenzen(t *testing.T) {
 	f := newFixture()
 	for i := range MaxRooms {
-		need(f.m.Create(fmt.Sprint("g", i), &peer{}, fmt.Sprint("raum-", i), true, 0, []int{0}))(t)
+		need(f.m.Create(fmt.Sprint("g", i), &peer{}, fmt.Sprint("raum-", i), true, 0, []int{0}, Options{}))(t)
 	}
-	if _, err := f.m.Create("g9", &peer{}, "raum-9", true, 0, []int{0}); err != ErrTooManyRooms {
+	if _, err := f.m.Create("g9", &peer{}, "raum-9", true, 0, []int{0}, Options{}); err != ErrTooManyRooms {
 		t.Fatalf("5. Raum: %v", err)
 	}
 	r := f.m.rooms["KRNZ"]
@@ -273,9 +273,9 @@ func TestGrenzen(t *testing.T) {
 func TestErsetzteVerbindung(t *testing.T) {
 	f := newFixture()
 	a, b := &peer{}, &peer{}
-	r := need(f.m.Create("tab", a, "tabs", true, 0, []int{0}))(t)
+	r := need(f.m.Create("tab", a, "tabs", true, 0, []int{0}, Options{}))(t)
 	need(f.m.Join("tab", b, r.Code, []int{0}))(t)
-	if !a.has("replaced") || fmt.Sprint(b.you) != "[{0 0}]" {
+	if !a.has("replaced") || fmt.Sprint(b.you) != "[{0 0 0}]" {
 		t.Fatalf("alte %v, neue %v", a.log, b.you)
 	}
 	r.Drop("tab", a) // die alte Verbindung bricht ab: ohne Wirkung
@@ -286,36 +286,36 @@ func TestErsetzteVerbindung(t *testing.T) {
 
 func TestCreateReihenfolge(t *testing.T) {
 	f := newFixture()
-	if _, err := f.m.Create("a", &peer{}, "Falsch!", true, 0, []int{4}); err != ErrTooManySlots {
+	if _, err := f.m.Create("a", &peer{}, "Falsch!", true, 0, []int{4}, Options{}); err != ErrTooManySlots {
 		t.Errorf("Slot 4 zuerst: %v", err)
 	}
-	if _, err := f.m.Create("a", &peer{}, "Falsch!", true, 0, []int{0}); err != ErrBadRequest {
+	if _, err := f.m.Create("a", &peer{}, "Falsch!", true, 0, []int{0}, Options{}); err != ErrBadRequest {
 		t.Errorf("Name: %v", err)
 	}
-	if _, err := f.m.Create("a", &peer{}, "tief", true, 7, []int{0}); err != ErrBadRequest {
+	if _, err := f.m.Create("a", &peer{}, "tief", true, 7, []int{0}, Options{}); err != ErrBadRequest {
 		t.Errorf("Startstufe 7: %v", err)
 	}
-	r := need(f.m.Create("a", &peer{}, "offen", true, 0, []int{0}))(t)
-	if _, err := f.m.Create("b", &peer{}, "offen", true, 0, []int{0}); err != ErrSaveExists {
+	r := need(f.m.Create("a", &peer{}, "offen", true, 0, []int{0}, Options{}))(t)
+	if _, err := f.m.Create("b", &peer{}, "offen", true, 0, []int{0}, Options{}); err != ErrSaveExists {
 		t.Errorf("neu, aber offen: %v", err)
 	}
-	if again := need(f.m.Create("b", &peer{}, "offen", false, 0, []int{0}))(t); again != r {
+	if again := need(f.m.Create("b", &peer{}, "offen", false, 0, []int{0}, Options{}))(t); again != r {
 		t.Error("gespeichert und offen: nicht demselben Raum beigetreten")
 	}
 	f.store.data["alt"] = []byte(`{}`)
-	if _, err := f.m.Create("c", &peer{}, "alt", true, 0, []int{0}); err != ErrSaveExists {
+	if _, err := f.m.Create("c", &peer{}, "alt", true, 0, []int{0}, Options{}); err != ErrSaveExists {
 		t.Errorf("neu, aber gespeichert: %v", err)
 	}
-	if _, err := f.m.Create("c", &peer{}, "fehlt", false, 0, []int{0}); err != ErrSaveNotFound {
+	if _, err := f.m.Create("c", &peer{}, "fehlt", false, 0, []int{0}, Options{}); err != ErrSaveNotFound {
 		t.Errorf("gespeichert, aber fehlt: %v", err)
 	}
 	for i := range MaxRooms - 1 {
-		need(f.m.Create("d", &peer{}, fmt.Sprint("voll-", i), true, 0, []int{0}))(t)
+		need(f.m.Create("d", &peer{}, fmt.Sprint("voll-", i), true, 0, []int{0}, Options{}))(t)
 	}
-	if _, err := f.m.Create("e", &peer{}, "alt", true, 0, []int{0}); err != ErrSaveExists {
+	if _, err := f.m.Create("e", &peer{}, "alt", true, 0, []int{0}, Options{}); err != ErrSaveExists {
 		t.Errorf("Spielstand vor Raumzahl prüfen: %v", err)
 	}
-	if _, err := f.m.Create("e", &peer{}, "noch-einer", true, 0, []int{0}); err != ErrTooManyRooms {
+	if _, err := f.m.Create("e", &peer{}, "noch-einer", true, 0, []int{0}, Options{}); err != ErrTooManyRooms {
 		t.Errorf("5. Raum: %v", err)
 	}
 }
@@ -328,9 +328,9 @@ func TestGeladenerStand(t *testing.T) {
 	c.JoinPlayer().Gold = 44
 	f.store.data["gold"] = need(json.Marshal(c.ToSave("2026-01-01T00:00:00.000Z")))(t)
 	x := &peer{}
-	r := need(f.m.Create("xbox", x, "gold", false, 0, []int{1}))(t)
+	r := need(f.m.Create("xbox", x, "gold", false, 0, []int{1}, Options{}))(t)
 	players := r.isl.Players()
-	if len(players) != 2 || players[0].Gold != 33 || players[1].Gold != 44 || fmt.Sprint(x.you) != "[{1 0}]" ||
+	if len(players) != 2 || players[0].Gold != 33 || players[1].Gold != 44 || fmt.Sprint(x.you) != "[{1 0 0}]" ||
 		fmt.Sprint(x.monarchs) != "[taken free]" || !players[1].Free {
 		t.Fatalf("Monarchen nach Laden: %d, Gold %v, Plätze %v", len(players), players[0].Gold, x.monarchs)
 	}
@@ -339,7 +339,7 @@ func TestGeladenerStand(t *testing.T) {
 func TestSpeicherzeitpunkte(t *testing.T) {
 	f := newFixture()
 	x := &peer{}
-	r := need(f.m.Create("xbox", x, "reise", true, 0, []int{0}))(t)
+	r := need(f.m.Create("xbox", x, "reise", true, 0, []int{0}, Options{}))(t)
 	saves := f.store.saves
 	w := r.isl.Stages[0]
 	for _, e := range w.Level.Entities {
@@ -365,7 +365,7 @@ func TestSpeicherzeitpunkte(t *testing.T) {
 
 func TestEingabeNurEigeneSlots(t *testing.T) {
 	f := newFixture()
-	r := need(f.m.Create("xbox", &peer{}, "eingabe", true, 0, []int{0}))(t)
+	r := need(f.m.Create("xbox", &peer{}, "eingabe", true, 0, []int{0}, Options{}))(t)
 	if err := r.Input("xbox", r.peerOf("xbox"), map[int]sim.PlayerCommand{1: sim.PlayerCommand{}}); err != ErrBadRequest {
 		t.Errorf("fremder Slot: %v", err)
 	}
@@ -386,10 +386,10 @@ func TestRaumlisteUndChanged(t *testing.T) {
 	calls := 0
 	f.m.Changed = func() { calls++; f.m.Rooms() } // ohne Sperre aufgerufen: Rooms() darf nicht hängen
 	x := &peer{}
-	r := need(f.m.Create("xbox", x, "liste", true, 0, []int{0, 1}))(t)
+	r := need(f.m.Create("xbox", x, "liste", true, 0, []int{0, 1}, Options{}))(t)
 	r.Drop("xbox", x)
 	got := f.m.Rooms()
-	if len(got) != 1 || got[0] != (Info{"KRNZ", "liste", 0, 2, 2, false}) || calls != 2 {
+	if len(got) != 1 || got[0] != (Info{"KRNZ", "liste", 0, "normal", 2, 2, false}) || calls != 2 {
 		t.Fatalf("Raumliste %+v, Changed %d", got, calls)
 	}
 	if !strings.HasPrefix(x.log[0], "joined") {

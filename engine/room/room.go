@@ -48,7 +48,11 @@ const (
 type Seat struct {
 	Slot    int `json:"slot"`
 	Monarch int `json:"monarch"`
+	Depth   int `json:"depth"` // Tiefe der Stufe, in der der Monarch steht
 }
+
+// Options sind die Raum-Optionen aus `create` (leer = Standard). SP14.2 reicht sie nur durch, Prüfung und Wirkung folgen.
+type Options struct{ Grade, Goal, Defeat string }
 
 // Peer ist die Verbindung eines Geräts. Der Raum ruft die Methoden unter seiner Sperre auf: Sie dürfen nicht blockieren
 // und nicht in den Raum oder Manager zurückrufen. State muss w sofort lesen, w gehört danach wieder dem Raum.
@@ -83,6 +87,7 @@ type Room struct {
 	mu         sync.Mutex
 	m          *Manager
 	isl        *sim.Island
+	Opts       Options // angeforderte Raum-Optionen (noch ohne Wirkung)
 	start      int // Startstufe: dort treten neue Geräte ohne Spieler ein
 	monarchs   []*monarch
 	devices    map[string]*device
@@ -153,7 +158,7 @@ func (r *Room) join(id string, peer Peer, slots []int) error {
 	}
 	r.emptySince = time.Time{}
 	r.syncFree()
-	peer.Joined(r.Code, r.Name, d.seats())
+	peer.Joined(r.Code, r.Name, r.seats(d))
 	r.pushState(d)
 	r.broadcastSeats()
 	return nil
@@ -212,10 +217,10 @@ func (r *Room) connected() int {
 	return n
 }
 
-func (d *device) seats() []Seat {
+func (r *Room) seats(d *device) []Seat {
 	out := []Seat{}
 	for slot, idx := range d.slots {
-		out = append(out, Seat{slot, idx})
+		out = append(out, Seat{slot, idx, r.isl.Stages[r.isl.StageOf(idx)].Biome.Depth})
 	}
 	slices.SortFunc(out, func(a, b Seat) int { return a.Slot - b.Slot })
 	return out
@@ -241,7 +246,7 @@ func (r *Room) broadcastSeats() {
 	states := r.states()
 	for _, d := range r.devices {
 		if d.connected {
-			d.peer.Seats(d.seats(), states)
+			d.peer.Seats(r.seats(d), states)
 		}
 	}
 }

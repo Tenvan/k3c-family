@@ -13,7 +13,7 @@ import (
 func TestErsetzteVerbindungKannNichtsMehr(t *testing.T) {
 	f := newFixture()
 	a, b := &peer{}, &peer{}
-	r := need(f.m.Create("tab", a, "alt-tab", true, 0, []int{0}))(t)
+	r := need(f.m.Create("tab", a, "alt-tab", true, 0, []int{0}, Options{}))(t)
 	need(f.m.Join("tab", b, r.Code, []int{0}))(t)
 	r.Leave("tab", a)
 	if err := r.AddSlot("tab", a, 1); err != ErrBadRequest {
@@ -31,7 +31,7 @@ func TestErsetzteVerbindungKannNichtsMehr(t *testing.T) {
 func TestGeschlossenerRaumSpeichertNicht(t *testing.T) {
 	f := newFixture()
 	x := &peer{}
-	r := need(f.m.Create("xbox", x, "absturz", true, 0, []int{0}))(t)
+	r := need(f.m.Create("xbox", x, "absturz", true, 0, []int{0}, Options{}))(t)
 	f.m.crash(r, "Test")
 	saves := f.store.saves
 	r.Leave("xbox", x)
@@ -45,7 +45,7 @@ func TestGeschlossenerRaumSpeichertNicht(t *testing.T) {
 func TestNachCloseKeineRaeume(t *testing.T) {
 	f := newFixture()
 	f.m.Close()
-	if _, err := f.m.Create("x", &peer{}, "spaet", true, 0, []int{0}); err != ErrClosed {
+	if _, err := f.m.Create("x", &peer{}, "spaet", true, 0, []int{0}, Options{}); err != ErrClosed {
 		t.Errorf("create nach Close: %v", err)
 	}
 	if _, err := f.m.Join("x", &peer{}, "KRNZ", []int{0}); err != ErrClosed {
@@ -59,5 +59,5 @@ func TestSweepUeberlebtPanic(t *testing.T) {
 	f.m.Now = func() time.Time { panic("Uhr kaputt") }
 	f.m.safeSweep()
 	f.m.Now = func() time.Time { return f.now }
-	need(f.m.Create("x", &peer{}, "danach", true, 0, []int{0}))(t) // Sperre ist wieder frei
+	need(f.m.Create("x", &peer{}, "danach", true, 0, []int{0}, Options{}))(t) // Sperre ist wieder frei
 }

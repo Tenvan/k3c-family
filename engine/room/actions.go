@@ -240,6 +240,7 @@ type Info struct {
 	Code    string `json:"code"`
 	Name    string `json:"name"`
 	Depth   int    `json:"depth"`
+	Grade   string `json:"grade"`
 	Taken   int    `json:"taken"` // besetzt + wartend
 	Free    int    `json:"free"`  // 4 − taken
 	Running bool   `json:"running"`
@@ -247,5 +248,5 @@ type Info struct {
 
 func (r *Room) info() Info {
 	taken := r.count(Taken) + r.count(Waiting)
-	return Info{r.Code, r.Name, r.isl.Stages[0].Biome.Depth, taken, MaxMonarchs - taken, r.connected() > 0}
+	return Info{r.Code, r.Name, r.isl.Stages[0].Biome.Depth, r.isl.Options.Grade, taken, MaxMonarchs - taken, r.connected() > 0}
 }

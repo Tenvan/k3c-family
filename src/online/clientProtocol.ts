@@ -1,9 +1,9 @@
 import type { LevelLayout } from '../model/types';
 import type { GameEvent, World } from '../model/types';
 
-/** Protokoll v2 aus Sicht des Browsers (Vertrag: docs/protocol.md, Beispiele: testdata/protocol/). */
+/** Protokoll v3 aus Sicht des Browsers (Vertrag: docs/protocol.md, Beispiele: testdata/protocol/). */
 
-export const PROTOCOL_VERSION = 2;
+export const PROTOCOL_VERSION = 3;
 export const WS_PATH = '/ws';
 /** Ein Gerät sendet mindestens alle 500 ms eine `input` zur Bestätigung. */
 export const INPUT_KEEPALIVE_MS = 500;
@@ -30,6 +30,7 @@ export interface RoomInfo {
   code: string;
   name: string;
   depth: number;
+  grade: string;
   taken: number;
   free: number;
   running: boolean;
@@ -38,6 +39,8 @@ export interface RoomInfo {
 export interface SlotSeat {
   slot: number;
   monarch: number;
+  /** Tiefe der Stufe, in der der Monarch steht. */
+  depth: number;
 }
 
 export type MonarchState = 'taken' | 'waiting' | 'free';
@@ -65,7 +68,7 @@ export type ServerMessage =
 
 export type ClientMessage =
   | { t: 'hello'; v: number; device: string }
-  | { t: 'create'; save: string; fresh: boolean; depth?: number; slots: number[] }
+  | { t: 'create'; save: string; fresh: boolean; depth?: number; slots: number[]; grade?: string; goal?: string; defeat?: string }
   | { t: 'join'; room: string; slots: number[] }
   | { t: 'addSlot'; slot: number }
   | { t: 'removeSlot'; slot: number }
