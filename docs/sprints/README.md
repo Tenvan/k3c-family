@@ -8,6 +8,7 @@ Jede Sprint-README ist eine Spec (SDD); aktiv wird ein Sprint erst mit `Spec: fr
 
 | Sprint | Domäne | Thema | Am Ende sichtbar | Ordner |
 |---|---|---|---|---|
+| SP12 | SIM | Insel-Kern (B-100) | Eine Insel mit mehreren Stufen rechnet in Go: alle Stufen ticken, Einzelwechsel, Vorrat je Insel, Spielstand | `aktiv/SP12-insel-kern/` |
 | SP11 | SRV 🧑 | Raspberry Pi | 2er- und 3er-Spiel parallel auf dem Pi | `aktiv/SP11-raspberry-pi/` |
 
 ## Geplant (in dieser Reihenfolge)
@@ -17,7 +18,6 @@ dann über den Go-Server mit mehreren Räumen und gemischten Spielern.
 
 | Sprint | Domäne | Thema | Am Ende sichtbar | Reife | Ordner |
 |---|---|---|---|---|---|
-| SP12 | SIM | Insel-Kern (B-100) | Eine Insel mit mehreren Stufen rechnet in Go: alle Stufen ticken, Einzelwechsel, Vorrat je Insel, Spielstand | bereit | `geplant/SP12-insel-kern/` |
 
 **Einschiebbar** (unabhängig vom Engine-Fortschritt, jeweils zwischen zwei Sprints):
 
