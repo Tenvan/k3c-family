@@ -143,3 +143,4 @@ Zeile in diesen Abschnitt.
 | [B-124](B-124-skill-menue-tasten.md) | CLI | Idee | hoch | offen | – | Der Client hat Schlag, Skill-Slots, Skill-Menü und die Tasten für Controller, Tastatur und Touch |
 | [B-125](B-125-aktionen-overlay.md) | CLI | Idee | hoch | offen | – | Gültige Aktionen erscheinen überall in der Welt als Overlay am Ort |
 | [B-126](B-126-buerger-ui.md) | CLI | Idee | mittel | offen | – | Der Client zeigt Berufe, Ausbildung, Händler, Truppen-Limit und Heilung |
+| [B-127](B-127-regelwerk-gegner-bosse.md) | REG | Idee | hoch | eingeplant | R4 | Gegner, Wellen, Bosse und Events sind im Regelwerk beschlossen |
