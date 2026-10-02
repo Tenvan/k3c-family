@@ -6,7 +6,9 @@ import (
 	"encoding/json"
 	"fmt"
 	"os"
+	"path"
 	"regexp"
+	"strings"
 )
 
 // Service ist ein Eintrag aus services.json.
@@ -19,6 +21,8 @@ type Service struct {
 	Log         string            `json:"log,omitempty"`
 	AutoRestart bool              `json:"autoRestart,omitempty"`
 	Env         map[string]string `json:"env,omitempty"`
+	// Watch: bei Änderungen dieser Dateien startet k3c-dev den Dienst neu (Watch-Modus, B-097); nil = nie.
+	Watch *Watch `json:"watch,omitempty"`
 }
 
 // name ist ein Dienst- bzw. Log-Name: er wird Konsolen-Quelle, MCP-Argument und Dateiname unter logs/.
@@ -64,6 +68,8 @@ func check(s Service, names map[string]bool, ports map[int]bool) error {
 		return fmt.Errorf("health %q: erlaubt sind http und tcp", s.Health)
 	case s.Log != "" && !name.MatchString(s.Log):
 		return fmt.Errorf("log %q ist kein gültiger Name", s.Log)
+	case checkWatch(s.Watch) != nil:
+		return checkWatch(s.Watch)
 	case names[s.Name]:
 		return fmt.Errorf("name doppelt")
 	case ports[s.Port]:
@@ -78,4 +84,26 @@ func (s Service) HealthURL() string {
 		return fmt.Sprintf("tcp://127.0.0.1:%d", s.Port)
 	}
 	return fmt.Sprintf("http://127.0.0.1:%d/", s.Port)
+}
+
+// checkWatch prüft den Eintrag `watch`: nur Pfade unterhalb der Repo-Wurzel, Endungen mit Punkt.
+func checkWatch(w *Watch) error {
+	if w == nil {
+		return nil
+	}
+	if len(w.Paths) == 0 || len(w.Paths) > 16 {
+		return fmt.Errorf("watch.paths: 1 bis 16 Pfade erwartet")
+	}
+	for _, p := range w.Paths {
+		clean := path.Clean(p)
+		if p == "" || path.IsAbs(p) || strings.Contains(p, "\\") || clean == ".." || strings.HasPrefix(clean, "../") {
+			return fmt.Errorf("watch.paths: %q muss ein Pfad relativ zur Repo-Wurzel sein (mit /, ohne ..)", p)
+		}
+	}
+	for _, e := range w.Ext {
+		if len(e) < 2 || e[0] != '.' || strings.ContainsAny(e[1:], `./\*?`) {
+			return fmt.Errorf("watch.ext: %q ist keine Endung wie \".go\"", e)
+		}
+	}
+	return nil
 }
