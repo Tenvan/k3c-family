@@ -6,10 +6,11 @@ import { debugLines } from './debugOverlay';
 
 /** Linker Stick (Klick), standard mapping. B (1) und View + Menu (8 + 9) bleiben unberührt. */
 const PAD_LS = 10;
+// keyCode 192 ist auf deutscher Tastatur Ö (Phaser nennt ihn BACKTICK, US-Layout: `).
 
 /**
- * Debug-Overlay (B-093): Text oben links, F3 oder Klick auf den linken Stick schaltet um.
- * Nur Lesezugriff; die Zeilen kommen aus `debugLines`. Wird nur mit `?dev=1` erzeugt.
+ * Debug-Overlay (B-093): Text oben links, Ö (Tastatur) oder Klick auf den linken Stick schaltet um. D wäre „laufen“, F3 ist im Browser belegt.
+ * Nur Lesezugriff; die Zeilen kommen aus `debugLines`. Wird nur erzeugt, wenn `debugEnabled` gilt (Standard an, `?dev=0` aus).
  */
 export class DebugOverlay {
   private readonly text: Phaser.GameObjects.Text;
@@ -18,7 +19,7 @@ export class DebugOverlay {
   private shown = false;
 
   constructor(private readonly scene: Phaser.Scene) {
-    this.key = scene.input.keyboard?.addKey(Phaser.Input.Keyboard.KeyCodes.F3);
+    this.key = scene.input.keyboard?.addKey(Phaser.Input.Keyboard.KeyCodes.BACKTICK);
     this.text = scene.add
       .text(20, 96, '', { fontSize: '20px', color: '#9be564', stroke: '#000000', strokeThickness: 4, fontStyle: 'bold' })
       .setVisible(false);
@@ -32,7 +33,7 @@ export class DebugOverlay {
     this.text.setText(lines);
   }
 
-  /** Flanke von F3 oder LS (irgendein Controller). */
+  /** Flanke von Ö oder LS (irgendein Controller). */
   private toggled(): boolean {
     const keyHit = !!this.key && Phaser.Input.Keyboard.JustDown(this.key);
     const pads = this.scene.input.gamepad?.gamepads ?? [];
