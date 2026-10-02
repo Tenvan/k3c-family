@@ -17,7 +17,7 @@ import (
 
 // Cost sind Kosten in Gold und Baumaterial.
 type Cost struct {
-	Gold, Wood, Stone, Copper int
+	Gold, Wood, Stone, Copper, Iron, Crystal int
 }
 
 // BuildingData ist ein Eintrag aus data/buildings.json.
@@ -71,6 +71,7 @@ var (
 			Amount int
 		}
 		Gatherables map[string]Gatherable
+		Storage     struct{ BasePerHub, PerStorage int }
 		RecruitCamp struct {
 			MaxVagrants                 int
 			RespawnSeconds, WanderUnits float64
@@ -78,6 +79,7 @@ var (
 	}]("economy.json")
 	hub = load[struct {
 		Sites                              []HubSite
+		IslandSites                        []HubSite // nur Insel-Stufen (island_storage.go)
 		CastleRadiusUnits, HomeRadiusUnits float64
 		StartTroops                        struct{ Peasant, Archer int }
 		Travel                             struct{ RangeUnits, Seconds float64 }

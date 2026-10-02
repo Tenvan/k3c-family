@@ -41,6 +41,10 @@ func createIsland(seed string, depths []int, cycleSpeed, startTime float64) (*Is
 			return nil, fmt.Errorf("insel: Stufe mit Tiefe %d: %w", d, err)
 		}
 		w.Stock = isl.Stock
+		w.island = isl
+		for _, s := range hub.IslandSites {
+			w.Sites = append(w.Sites, emptySite(w, s.Kind, w.HubX+s.OffsetUnits))
+		}
 		w.noTravel = true
 		isl.Stages = append(isl.Stages, w)
 	}
