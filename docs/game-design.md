@@ -37,6 +37,8 @@ Typische Session: 30–60 Minuten.
 - **Mehrere Räume** laufen parallel auf dem Server (z. B. ein 2er-Spiel auf der Xbox, ein 3er-Spiel per Handy). Ein Gerät sitzt in einem Raum.
 - Ressourcen: Gold pro Spieler (wie K2C), Baumaterial (Holz/Stein/Kupfer) gemeinsam für den Hub. *So umgesetzt, im Playtest prüfen.*
 - Jede Regel muss mit 2+ Spielern gleichzeitig funktionieren, egal ob sie auf einem oder mehreren Geräten sitzen.
+- **Die Wellen wachsen mit der Spieleranzahl** (Gegnerzahl ×(1 + 0,5 je Zusatzspieler)), siehe `rules/wirtschaft.md`.
+- **Schwierigkeitsgrade** Dev, Leicht, Normal, Hart, Ultra verändern Wellen und Gegner, nicht die Wirtschaft. Live wählt man den Grad beim Anlegen des Raums, im Dev-Mode lässt er sich im Debug-Panel jederzeit umschalten (wirkt ab der nächsten Welle). Details und Faktoren: `rules/wirtschaft.md`.
 
 ## Monarch
 
@@ -69,7 +71,7 @@ Die Skills kommen **erst nach dem Vertical Slice**.
 - **Landstreicher** im Rekrutierungs-Camp → Münze geben → **Bauer** (folgt, sammelt, baut).
 - Werkstatt: Bauer + Bogen → **Bogenschütze** (Fernkampf, besetzt Türme). Bauer + Schwert → **Krieger** (Nahkampf, Frontlinie).
 - Elite-Upgrades mit Stein/Kupfer: +50% HP und Schaden, +20% Angriffstempo.
-- Truppen kämpfen automatisch (KI). Truppen-Limit hängt von den Kasernen ab.
+- Truppen kämpfen automatisch (KI). Truppen-Limit hängt von den Kasernen ab. *Krieger, Elite-Upgrades, Kaserne und Limit sind beschlossen, aber noch nicht im Code (siehe `rules/wirtschaft.md`).*
 
 ## Gebäude (`data/buildings.json`)
 
@@ -118,7 +120,7 @@ Die festen Eckdaten stehen in `data/biomes/<biom>.json`, der Generator in `engin
   `prefersBuildings`/`prefersTroops`/`prefersMonarch`, `swarm`, `fleesAtHalfHp`.
 - Wellen: 1–5 → 5–10 Standard. 6–10 → 10–15 Standard + 1–2 Elite. Ab 11 → 15–20 Standard + 3–5 Elite.
 - Skalierung pro Stufe: HP +50%, Schaden +30%, Speed +10%.
-- Drops: Standard 5–15 Gold, Elite 20–50 Gold, 10% Chance auf Stufen-Ressource.
+- Drops: Gold je Gegnerart wie in `data/enemies.json` (Standard etwa 3–25, Elite etwa 15–80), 10% Chance auf Stufen-Ressource.
 
 ## Niederlage
 
@@ -132,7 +134,8 @@ Die festen Eckdaten stehen in `data/biomes/<biom>.json`, der Generator in `engin
 | Laufen | Linker Stick / D-Pad ←→ | A/D, ←/→ |
 | Sprint | RT | Shift |
 | Beitreten; halten = Münzen geben/fallen lassen | A | Leertaste |
-| Interagieren | X | E |
+| Interagieren | A (halten) | Leertaste (halten) |
+| Skill 1 (später) | X (frei, für Skills reserviert) | E |
 | Bau-Menü | Y | B |
 | Skill-Menü | View | K |
 | Pause | Menu | Esc |
