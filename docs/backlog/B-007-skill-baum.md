@@ -59,3 +59,4 @@ Skill-Tasten (B-026) und Klassen-Presets (B-017) sind noch nicht entschieden (�
 Erst nach der Go-Portierung (nach SP11): REG Regelwerk II → SIM → CLI.
 
 R1 (2026-10-02): Das Skill-Menü liegt **nicht auf View** (View + Menu ist reserviert), die Taste legt Regelwerk II fest (Vorschlag LB + RB); Taste X bleibt für Skills frei.
+Regelwerk dazu: B-110 (Skillung, Klassen, Level von Monarchen und Bürgern); die SIM-Umsetzung folgt nach dem Beschluss.

@@ -25,7 +25,7 @@ dann über den Go-Server mit mehreren Räumen und gemischten Spielern.
 | R2 | REG 🧑 | Regelwerk I b – Materialien & Gebäude (B-109) | bereit | `geplant/R2-materialien-gebaeude/` |
 | X1 | PLAT 🧑 | Xbox-Machbarkeit | Entwurf | `geplant/X1-xbox/` |
 
-Nach SP11: Regelwerk II (Skills) → SIM Skills in Go → CLI Skills → Spieleabend → Grafik/Sound → …
+Nach SP11: Regelwerk II (Monarch und Bürger: Skillung, Klassen, Level, B-110) → SIM Skills in Go → CLI Skills → Spieleabend → Grafik/Sound → …
 
 ## Erledigt
 
