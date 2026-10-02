@@ -5,7 +5,7 @@
 - **Reife:** bereit
 - **Einschiebbar:** ja
 - **Tickets:** B-101, B-113
-- **Start-Commit:** –
+- **Start-Commit:** 1874d9d
 - **Spec:** freigegeben
 - **Revision:** 1
 - **Freigabe:** 2026-10-02, Chat (Ralf) per /goal „SP13 vorbereiten und im Team komplett abarbeiten“, Revision 1
