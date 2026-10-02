@@ -73,6 +73,13 @@ export const PAGES: PageEntry[] = [
     section: 'test',
   },
   {
+    title: 'Level-Betrachter',
+    description: 'Seed und Biom wählen, das generierte Level ansehen · Warnungen der Prüfung (Go-Server nötig)',
+    icon: '🗺️',
+    href: 'leveltest.html',
+    section: 'test',
+  },
+  {
     title: 'Unsere Aufstellung',
     description: 'Jede Rolle im Spiel mit ihrer Figur · Monarchen, Truppen, Gegner',
     icon: '🛡️',
