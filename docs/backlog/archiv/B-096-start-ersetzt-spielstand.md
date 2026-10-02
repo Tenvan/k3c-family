@@ -3,7 +3,7 @@
 - **Domäne:** SRV
 - **Typ:** Problem
 - **Prio:** mittel
-- **Status:** offen
+- **Status:** erledigt
 - **Sprint:** –
 - **Erstellt:** 2026-10-02
 - **Spec:** Entwurf
@@ -51,8 +51,10 @@ Raum mit dem Namen noch offen → Verhalten nach Entscheidung von 🧑 (abweisen
 
 ## Offene Fragen
 
-Server-Änderung (Protokoll-Semantik von `fresh`) oder Lösung auf der Seite (ohne `fresh` starten: vorhandenen Stand gleichen Namens fortsetzen, sonst neues Spiel über den Wiederholungsversuch in `src/scenes/lobbyLogic.ts`)? Entscheidet 🧑.
+keine. Entschieden 2026-10-02 durch 🧑 (Chat, „ja, so starten“): Lösung auf der Seite, ohne Server-Änderung.
 
 ## Notizen
+
+Gelöst in B-092 Revision 2: „Im Spiel starten“ öffnet `game.html?autostart=1&save=<Seed>` ohne `fresh`; die Lobby lädt einen vorhandenen Spielstand oder legt ihn einmal neu an (`save_not_found`), der Seitentext sagt das. **AC-01 entfällt** (die Server-Semantik von `fresh` bleibt, kein Eingriff nötig), **AC-02 umgesetzt** (Hinweistext in `src/tools/leveltest.ts`). Ein Ersetzen eines vorhandenen Standes gibt es nicht mehr.
 
 Die Szenarien der Testseite umgehen das Problem mit eindeutigen Namen (`scenarioUrl`, Uhrzeit als Kennung).

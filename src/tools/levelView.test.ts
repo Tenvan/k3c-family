@@ -56,8 +56,8 @@ describe('levelModel (B-092/AC-02, AC-03)', () => {
 
 describe('startTarget (B-092/AC-07)', () => {
   it('Wald und gültiger Seed: URL für ein neues Spiel mit diesem Namen', () => {
-    expect(startTarget('probe', 'forest')).toEqual({ url: 'game.html?autostart=1&fresh=1&save=probe' });
-    expect(startTarget('a-1', 'forest')).toEqual({ url: 'game.html?autostart=1&fresh=1&save=a-1' });
+    expect(startTarget('probe', 'forest')).toEqual({ url: 'game.html?autostart=1&save=probe' });
+    expect(startTarget('a-1', 'forest')).toEqual({ url: 'game.html?autostart=1&save=a-1' });
     expect(startTarget('k'.repeat(32), 'forest')).toHaveProperty('url');
   });
 
