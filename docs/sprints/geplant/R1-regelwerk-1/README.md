@@ -2,7 +2,7 @@
 
 - **Status:** geplant
 - **Domäne:** REG
-- **Reife:** Entwurf
+- **Reife:** bereit
 - **Einschiebbar:** ja
 - **Tickets:** B-004, B-005, B-021, B-025
 - **Start-Commit:** –
@@ -12,7 +12,7 @@
 
 ## Ausgangslage
 
-`game-design.md` ist die einzige Regelquelle und widerspricht Entscheidung 001 (B-005). Sonst stecken Regeln im TS-Code (`src/world/sim/`) und in `data/`.
+`game-design.md` ist die einzige Regelquelle und widerspricht Entscheidung 001 (B-005). Sonst stecken Regeln im Go-Code (`engine/sim/`, die TS-Simulation ist seit SP09 gelöscht) und in `data/`.
 
 ## Ziel
 
@@ -56,12 +56,12 @@ keine
 
 ## Sessions
 
-Entwurf. Vor dem Aktivieren jede Session als Datei nach `docs/vorlagen/session.md` schreiben, die Kriterien in Klammern werden ihr Feld `Kriterien`.
-
-- R1.1 Ist-Regelwerk: Regeln aus `src/world/sim/` und `data/` gegen `game-design.md` abgleichen; Widersprüche als Tickets; Gliederung für `docs/rules/` (AC-03).
-- R1.2 🧑 Workshop Kern-Loop & Wirtschaft: Gold/Material, Besitz im gemischten Koop (2–4+ Spieler), Tag/Nacht, Wellen, Taste X (AC-01, AC-04).
-- R1.3 🧑 Workshop Stufen & Niederlage: Tiefen, Aggressionspool, Strafen, Ziel der Kampagne (AC-02).
-- R1.4 Beschluss, Umsetzungs-Tickets für SIM (Go) und CLI; schließt den Sprint ab (Doku-Sprint, kein Review) (AC-05).
+| Nr. | Datei | Typ | Agent | Status |
+|---|---|---|---|---|
+| R1.1 | `R1.1-ist-regelwerk.md` | Umsetzung | autonom | offen |
+| R1.2 | `R1.2-workshop-wirtschaft.md` | Workshop | Mensch | offen |
+| R1.3 | `R1.3-workshop-stufen.md` | Workshop | Mensch | offen |
+| R1.4 | `R1.4-beschluss-tickets.md` | Umsetzung | autonom | offen |
 
 ## Abnahme
 
