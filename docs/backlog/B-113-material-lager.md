@@ -3,12 +3,12 @@
 - **Domäne:** SIM
 - **Typ:** Idee
 - **Prio:** hoch
-- **Status:** offen
-- **Sprint:** –
+- **Status:** eingeplant
+- **Sprint:** SP13
 - **Erstellt:** 2026-10-02
-- **Spec:** Entwurf
+- **Spec:** freigegeben
 - **Revision:** 1
-- **Freigabe:** –
+- **Freigabe:** 2026-10-02, Chat (Ralf) per /goal „SP13 vorbereiten und im Team komplett abarbeiten“, Revision 1
 
 ## Ausgangslage
 
