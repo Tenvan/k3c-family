@@ -1,6 +1,6 @@
 # R4 · REG · Regelwerk III – Gegner, Wellen, Bosse, Events
 
-- **Status:** aktiv
+- **Status:** erledigt
 - **Domäne:** REG
 - **Reife:** bereit
 - **Einschiebbar:** ja
@@ -62,8 +62,10 @@ keine
 | R4.1 | `R4.1-ist-gegner-bosse.md` | Umsetzung | autonom | fertig |
 | R4.2 | `R4.2-workshop-gegner-wellen.md` | Workshop | Mensch | fertig |
 | R4.3 | `R4.3-workshop-bosse-events.md` | Workshop | Mensch | fertig |
-| R4.4 | `R4.4-beschluss-tickets.md` | Umsetzung | autonom | offen |
+| R4.4 | `R4.4-beschluss-tickets.md` | Umsetzung | autonom | fertig |
 
 ## Abnahme
 
-–
+- 2026-10-02, Doku-Sprint ohne Review (R4.4 schließt ab): AC-01 und AC-02 (R4.2 › Ergebnis), AC-03, AC-04 und AC-05 (R4.3 › Ergebnis), AC-06 (R4.4 › Ergebnis); R4.1 lieferte Ist-Stand und Fragen. Beschlüsse von 🧑 in den Workshops am 2026-10-02.
+- Neu gegenüber der Spec: neue Gegner-Pools für Eisenstollen und Kristallhöhle, mehrere Events (Vollmond, Blutmond, Händler-Überfall).
+- Neue Tickets: B-128 bis B-132. Regelwerk I bis III sind damit beschlossen (B-004 erledigt).
