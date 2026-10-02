@@ -109,8 +109,8 @@ func (c *client) expectError(code string) {
 func hello(t *testing.T, srv *httptest.Server, device string) *client {
 	t.Helper()
 	c := dial(t, srv)
-	c.send(map[string]any{"t": "hello", "v": 2, "device": device})
-	if m := c.expect("welcome"); m["v"] != float64(2) || m["tickHz"] != float64(30) {
+	c.send(map[string]any{"t": "hello", "v": 3, "device": device})
+	if m := c.expect("welcome"); m["v"] != float64(3) || m["tickHz"] != float64(30) {
 		t.Fatalf("welcome: %v", m)
 	}
 	c.expect("rooms")
@@ -143,7 +143,7 @@ func TestWebSocketXboxUndHandy(t *testing.T) {
 	srv, m := wsServer(t)
 	x := hello(t, srv, "xbox")
 	create(x, "familie", 0)
-	if j := x.entered(); j["room"] != "KRNZ" || j["name"] != "familie" || fmt.Sprint(j["you"]) != "[map[monarch:0 slot:0]]" {
+	if j := x.entered(); j["room"] != "KRNZ" || j["name"] != "familie" || fmt.Sprint(j["you"]) != "[map[depth:0 monarch:0 slot:0]]" {
 		t.Fatalf("joined: %v", j)
 	}
 	x.expect("seats")
@@ -153,7 +153,7 @@ func TestWebSocketXboxUndHandy(t *testing.T) {
 	}
 	h := hello(t, srv, "handy")
 	joinRoom(h, "KRNZ", 0)
-	if j := h.entered(); fmt.Sprint(j["you"]) != "[map[monarch:2 slot:0]]" {
+	if j := h.entered(); fmt.Sprint(j["you"]) != "[map[depth:0 monarch:2 slot:0]]" {
 		t.Fatalf("Handy: %v", j)
 	}
 	x.expect("seats")
@@ -185,8 +185,8 @@ func waitFor(t *testing.T, ok func() bool) {
 
 func TestHandschlagFalsch(t *testing.T) {
 	srv, _ := wsServer(t)
-	for _, first := range []string{`kein json`, `{"t":"join","room":"KRNZ","slots":[0]}`, `{"t":"hello","v":1,"device":"x"}`,
-		`{"t":"hello","v":2,"device":""}`, `{"t":"hello","v":2,"device":"` + strings.Repeat("x", 65) + `"}`} {
+	for _, first := range []string{`kein json`, `{"t":"join","room":"KRNZ","slots":[0]}`, `{"t":"hello","v":1,"device":"x"}`, `{"t":"hello","v":2,"device":"x"}`,
+		`{"t":"hello","v":3,"device":""}`, `{"t":"hello","v":3,"device":"` + strings.Repeat("x", 65) + `"}`} {
 		c := dial(t, srv)
 		c.send(first)
 		if m := c.next(); m["code"] != "version" {
@@ -278,12 +278,12 @@ func TestFormWieBeispiele(t *testing.T) {
 	srv, m := wsServer(t)
 	x := hello(t, srv, "xbox")
 	got := map[string]map[string]any{}
-	x.send(map[string]any{"t": "hello", "v": 2, "device": "xbox"})
+	x.send(map[string]any{"t": "hello", "v": 3, "device": "xbox"})
 	got["error"] = x.expect("error")
 	create(x, "familie", 0)
 	got["joined"], got["level"], got["snap"], got["seats"] = x.expect("joined"), x.expect("level"), x.expect("snap"), x.expect("seats")
 	c := dial(t, srv)
-	c.send(map[string]any{"t": "hello", "v": 2, "device": "handy"})
+	c.send(map[string]any{"t": "hello", "v": 3, "device": "handy"})
 	got["welcome"], got["rooms"] = c.expect("welcome"), c.expect("rooms")
 	_ = m
 	for typ, file := range map[string]string{"welcome": "welcome", "rooms": "rooms", "joined": "joined", "level": "level",

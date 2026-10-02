@@ -3,5 +3,8 @@
   "save": "familie",
   "fresh": true,
   "depth": 0,
-  "slots": [0]
+  "slots": [0],
+  "grade": "normal",
+  "goal": "endboss",
+  "defeat": "stage"
 }

@@ -8,11 +8,11 @@ import (
 	"k3c/engine/sim"
 )
 
-// Protokoll v2 (docs/protocol.md, Beispiele in testdata/protocol/). Eine Änderung hier ändert auch das Dokument, die
+// Protokoll v3 (docs/protocol.md, Beispiele in testdata/protocol/). Eine Änderung hier ändert auch das Dokument, die
 // Beispiele und den Client (docs/arbeitsweise.md › Grenzfall Protokoll).
 
 // ProtocolVersion steht nur im Handschlag (hello, welcome).
-const ProtocolVersion = 2
+const ProtocolVersion = 3
 
 // Codes ohne Gegenstück in engine/room.
 const (
@@ -55,6 +55,9 @@ type inMsg struct {
 	Save   string    `json:"save"`
 	Fresh  *bool     `json:"fresh"`
 	Depth  int       `json:"depth"`
+	Grade  string    `json:"grade"`
+	Goal   string    `json:"goal"`
+	Defeat string    `json:"defeat"`
 	Slots  []int     `json:"slots"`
 	Room   string    `json:"room"`
 	Slot   *int      `json:"slot"`

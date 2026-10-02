@@ -36,7 +36,7 @@ func moveToExit(t *testing.T, r *Room, i int) {
 func TestEinzelwechselSchicktLevelAnRichtigesGeraet(t *testing.T) {
 	f := newFixture()
 	x, h := &peer{}, &peer{}
-	r := need(f.m.Create("xbox", x, "zwei", true, 0, []int{0}))(t)
+	r := need(f.m.Create("xbox", x, "zwei", true, 0, []int{0}, Options{}))(t)
 	need(f.m.Join("handy", h, r.Code, []int{0}))(t)
 	if r.isl.StageOf(0) != 0 || r.isl.StageOf(1) != 0 {
 		t.Fatalf("Start: Stufen %d, %d", r.isl.StageOf(0), r.isl.StageOf(1))
@@ -66,7 +66,7 @@ func TestEinzelwechselSchicktLevelAnRichtigesGeraet(t *testing.T) {
 func TestBeitrittInStufeDesGeraets(t *testing.T) {
 	f := newFixture()
 	x, h := &peer{}, &peer{}
-	r := need(f.m.Create("xbox", x, "beitritt", true, 1, []int{0}))(t)
+	r := need(f.m.Create("xbox", x, "beitritt", true, 1, []int{0}, Options{}))(t)
 	if r.isl.StageOf(0) != 1 || !x.has("level 1") {
 		t.Fatalf("Startstufe 1: Stufe %d, %v", r.isl.StageOf(0), x.log)
 	}
@@ -91,7 +91,7 @@ func fileStore(t *testing.T) (*fixture, *store.Saves) {
 func TestInselRundlauf(t *testing.T) {
 	f, s := fileStore(t)
 	x := &peer{}
-	r := need(f.m.Create("xbox", x, "insel", true, 0, []int{0, 1}))(t)
+	r := need(f.m.Create("xbox", x, "insel", true, 0, []int{0, 1}, Options{}))(t)
 	r.isl.Players()[1].Gold = 77
 	moveToExit(t, r, 0)
 	ticks(r, 70)
@@ -102,7 +102,7 @@ func TestInselRundlauf(t *testing.T) {
 	}
 	f.wait(11 * time.Minute) // leerer Raum wird aufgeräumt
 	y := &peer{}
-	r2 := need(f.m.Create("xbox", y, "insel", false, 0, []int{0}))(t)
+	r2 := need(f.m.Create("xbox", y, "insel", false, 0, []int{0}, Options{}))(t)
 	ps := r2.isl.Players()
 	if len(ps) != 2 || ps[1].Gold != 77 || r2.isl.StageOf(0) != 1 || r2.isl.StageOf(1) != 0 || fmt.Sprint(y.monarchs) != "[taken free]" {
 		t.Fatalf("geladen: %d Spieler, Stufen %d/%d, Plätze %v", len(ps), r2.isl.StageOf(0), r2.isl.StageOf(1), y.monarchs)
@@ -117,7 +117,7 @@ func TestVersion1WirdUeberfuehrtUndGesichert(t *testing.T) {
 	v1 := need(json.Marshal(c.ToSave("2026-01-01T00:00:00.000Z")))(t)
 	_ = need(s.Store("alt", v1))(t)
 	x := &peer{}
-	r := need(f.m.Create("xbox", x, "alt", false, 0, []int{0}))(t)
+	r := need(f.m.Create("xbox", x, "alt", false, 0, []int{0}, Options{}))(t)
 	if r.isl.Players()[0].Gold != 12 {
 		t.Fatal("Gold aus Version 1 fehlt")
 	}
@@ -139,7 +139,7 @@ func TestVersion1WirdUeberfuehrtUndGesichert(t *testing.T) {
 func TestStatusZeigtStufen(t *testing.T) {
 	f := newFixture()
 	x, h := &peer{}, &peer{}
-	r := need(f.m.Create("xbox", x, "status", true, 0, []int{0}))(t)
+	r := need(f.m.Create("xbox", x, "status", true, 0, []int{0}, Options{}))(t)
 	need(f.m.Join("handy", h, r.Code, []int{0}))(t)
 	moveToExit(t, r, 0)
 	ticks(r, 70)

@@ -15,8 +15,8 @@ func (s *memStore) Delete(name string) error {
 func TestTestRaumLoeschtSpielstandBeimAufraeumen(t *testing.T) {
 	f := newFixture()
 	x, y := &peer{}, &peer{}
-	test := need(f.m.Create("xbox", x, "test-ab12", true, 0, []int{0}))(t)
-	real := need(f.m.Create("handy", y, "familie", true, 0, []int{0}))(t)
+	test := need(f.m.Create("xbox", x, "test-ab12", true, 0, []int{0}, Options{}))(t)
+	real := need(f.m.Create("handy", y, "familie", true, 0, []int{0}, Options{}))(t)
 	test.Leave("xbox", x)
 	real.Leave("handy", y)
 	f.wait(9 * time.Minute)

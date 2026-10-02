@@ -1,4 +1,11 @@
-# Protokoll v2
+# Protokoll v3
+
+**Änderungen gegenüber v2 (SP14.2, Version 3):** `you[]` in `joined` und `seats` nennt je Platz die `depth` (Tiefe der Stufe
+des Monarchen, denn jedes Gerät sieht die Stufe seines ersten Monarchen und Spieler anderer Stufen fehlen im Zustand: der
+Client sucht Spieler nach `index`, nicht nach Position). `create` nimmt die optionalen Strings `grade`
+(`dev|easy|normal|hard|ultra`), `goal` (`endboss|gold|days|mineAll|buildAll`) und `defeat` (`resources|stage|lost`); fehlend
+heißt Standard. Der Server liest sie und reicht sie an den Raum weiter, Prüfung und Wirkung folgen mit SP14.3. `rooms[]`
+nennt zusätzlich den `grade` des Raums. `hello.v` muss 3 sein; ein v2-Client erhält `version`.
 
 Stand: 2026-09-30 · Sprint SP02 · [Entscheidung 002](decisions/002-protokoll-v2.md) · Zielbild: [Entscheidung 001](decisions/001-server-engine-go.md)
 
@@ -178,7 +185,8 @@ vollständig und in Reihenfolge, deshalb braucht es keine Wiederholung und keine
 **Version:** Das Feld `v` steht nur im Handschlag (`hello`, `welcome`), nicht in jeder Nachricht. Die Version gilt für
 die ganze Verbindung; jede weitere Nachricht damit auszustatten kostet bei 30 Snapshots pro Sekunde nur Bytes.
 Erste Nachricht nach dem Verbinden ist immer `hello`. Ist sie kein gültiges `hello` (kein JSON, anderer Typ, Feld
-fehlt, `v` nicht 2), antwortet der Server mit `version` und schließt: Ein alter v1-Client schickt zuerst `join`.
+fehlt, `v` nicht 3), antwortet der Server mit `version` und schließt: Ein alter v1-Client schickt zuerst `join`, ein
+v2-Client schickt `v: 2`.
 
 **Takt:** Ein laufender Raum tickt mit **30 Hz** und schickt jedem seiner Geräte pro Tick genau einen Zustand
 (`snap` oder `delta`). Ein pausierter Raum schickt nichts. Geräte schicken `input`, sobald sich die Eingabe eines Slots
@@ -188,16 +196,16 @@ der Server die Verbindung; das zählt als Abbruch.
 
 | Nachricht | Richtung | Wann | Felder | Beispiel |
 |---|---|---|---|---|
-| `hello` | Gerät → Server | als erste Nachricht | `v` Protokoll-Version (2), `device` Geräte-ID (≤ 64 Zeichen) | `c2s-hello.json` |
+| `hello` | Gerät → Server | als erste Nachricht | `v` Protokoll-Version (3), `device` Geräte-ID (≤ 64 Zeichen) | `c2s-hello.json` |
 | `welcome` | Server → Gerät | Antwort auf passendes `hello` | `v`, `tickHz`, `limits` (Grenzen aus *Grenzen*) | `s2c-welcome.json` |
-| `rooms` | Server → Gerät | nach `welcome`, sobald das Gerät wieder in keinem Raum ist, und bei jeder Änderung, solange es in keinem Raum ist | `rooms[]`: `code`, `name`, `depth`, `taken` (besetzt + wartend), `free` (4 − `taken`), `running` | `s2c-rooms.json` |
-| `create` | Gerät → Server | Raum erstellen | `save` Name des Spielstands (`^[a-z0-9-]{1,32}$`), `fresh` neu (true) oder gespeicherten laden, `depth` Startstufe (nur bei `fresh`), `slots[]` | `c2s-create.json` |
+| `rooms` | Server → Gerät | nach `welcome`, sobald das Gerät wieder in keinem Raum ist, und bei jeder Änderung, solange es in keinem Raum ist | `rooms[]`: `code`, `name`, `depth`, `grade`, `taken` (besetzt + wartend), `free` (4 − `taken`), `running` | `s2c-rooms.json` |
+| `create` | Gerät → Server | Raum erstellen | `save` Name des Spielstands (`^[a-z0-9-]{1,32}$`), `fresh` neu (true) oder gespeicherten laden, `depth` Startstufe (nur bei `fresh`), `slots[]`, optional `grade`, `goal`, `defeat` (siehe oben) | `c2s-create.json` |
 | `join` | Gerät → Server | Raum beitreten oder wiederverbinden | `room` Code, `slots[]` | `c2s-join.json` |
-| `joined` | Server → Gerät | nach erfolgreichem `create`/`join` | `room`, `name`, `you[]`: `slot` → `monarch` | `s2c-joined.json` |
+| `joined` | Server → Gerät | nach erfolgreichem `create`/`join` | `room`, `name`, `you[]`: `slot` → `monarch`, `depth` | `s2c-joined.json` |
 | `level` | Server → Gerät | nach `joined` und nach jedem Stufenwechsel, vor dem ersten Zustand der Stufe | `depth`, `layout` (Level: Biom-ID, Breite, Chunks, Objekte) | `s2c-level.json` |
 | `snap` | Server → Gerät | voller Zustand: nach `level` (Beitreten, Wiederverbinden, Stufenwechsel) | `tick`, `ack`, `s` (Zustand der Welt ohne Statisches, mit `events` und `depth`) | `s2c-snapshot-full.json` |
 | `delta` | Server → Gerät | jeder weitere Tick | `tick`, `ack`, `s` (nur Änderungen zum vorigen Tick) | `s2c-snapshot-delta.json` |
-| `seats` | Server → alle Geräte im Raum | wenn sich eine Zuordnung oder ein Monarch-Zustand ändert | `you[]` (eigene Slots), `monarchs[]` je Index `taken`/`waiting`/`free` | `s2c-seats.json` |
+| `seats` | Server → alle Geräte im Raum | wenn sich eine Zuordnung oder ein Monarch-Zustand ändert | `you[]` (eigene Slots mit `monarch` und `depth`), `monarchs[]` je Index `taken`/`waiting`/`free` | `s2c-seats.json` |
 | `addSlot` | Gerät → Server | lokaler Spieler kommt dazu | `slot` 0–3 | `c2s-add-slot.json` |
 | `removeSlot` | Gerät → Server | lokaler Spieler geht | `slot` | `c2s-remove-slot.json` |
 | `input` | Gerät → Server | Eingabe hat sich geändert, sonst mindestens alle 500 ms, höchstens eine pro Tick | `seq` fortlaufend je Verbindung, `p[]`: `slot`, `moveX` (−1…1), `sprint`, `pay` | `c2s-input.json` |
@@ -233,7 +241,7 @@ Vorhersage, B-039).
 | `save_not_found` | `create` mit `fresh: false` und einem Namen, den es nicht gibt | bleibt |
 | `room_closed` | Raum abgestürzt oder Server fährt herunter; Gerät geht zurück zur Raumliste | bleibt (beim Herunterfahren: Server schließt) |
 | `replaced` | dieselbe Geräte-ID ist demselben Raum über eine neue Verbindung beigetreten | Server schließt, kein automatisches Neuverbinden |
-| `version` | erste Nachricht ist kein gültiges `hello` oder `v` ist nicht 2 | Server schließt |
+| `version` | erste Nachricht ist kein gültiges `hello` oder `v` ist nicht 3 | Server schließt |
 | `bad_request` | kein gültiges JSON, unbekannter Typ, Feld fehlt, Name passt nicht zum Format, ungültiger Slot (doppelt, keine Zahl 0–3, bei `input`/`removeSlot` nicht vom Gerät, bei `addSlot` schon vergeben), Nachricht passt nicht zum Zustand (`input`, `addSlot`, `removeSlot`, `leave` ohne Raum; `create`, `join` im Raum) | bleibt, Nachricht wird verworfen |
 
 `bad_request` ist kein Fehlerfall aus dem Raummodell, sondern Schutz vor kaputten Clients. Die Rückkehr nach 60 s ist
