@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { debugLines, type DebugClient, type DebugInput, type DebugWorld } from './debugOverlay';
+import { debugEnabled, debugLines, type DebugClient, type DebugInput, type DebugWorld } from './debugOverlay';
 
 const client = (over: Partial<DebugClient> = {}): DebugClient => ({
   status: 'room',
@@ -54,5 +54,14 @@ describe('debugLines (AC-01)', () => {
   it('Lobby und verloren zeigen ihren Status', () => {
     expect(debugLines(input({ client: client({ status: 'lobby' }) }))[1]).toContain('Lobby');
     expect(debugLines(input({ client: client({ status: 'lost' }) }))[1]).toContain('verloren');
+  });
+});
+
+describe('debugEnabled (AC-02)', () => {
+  it('nur mit dev-Parameter', () => {
+    expect(debugEnabled('?dev=1')).toBe(true);
+    expect(debugEnabled('?seed=x&dev=1')).toBe(true);
+    expect(debugEnabled('')).toBe(false);
+    expect(debugEnabled('?x=1')).toBe(false);
   });
 });
