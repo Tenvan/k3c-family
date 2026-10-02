@@ -16,17 +16,18 @@ Wer ein Level beurteilen will (Balancing, Generator-Änderungen), muss es spiele
 
 ## Ziel
 
-Eine Seite `leveltest.html`: Seed und Biom wählen, das generierte Level als Streifen sehen (Abschnitte nach Art, Objekte nach Art, Portale, Hub, Ausgang), Warnungen der Prüfung lesen, und das Level mit einem Klick im Spiel starten. Nutzen: Level in Sekunden beurteilen, auch auf dem Sofa mit Controller.
+Eine Seite `leveltest.html`: Seed und Biom wählen, das generierte Level als Streifen sehen (Abschnitte nach Art, Objekte nach Art, Portale, Hub, Ausgang), Warnungen der Prüfung lesen, und das Level mit einem Klick im Spiel starten. Die Seite ist von der Testseite (`testing.html`) aus erreichbar. Nutzen: Level in Sekunden beurteilen, auch auf dem Sofa mit Controller.
 
 ## Beteiligte und Zielgruppen
 
-Entwickler, 🧑 beim Balancing; bedienbar mit Tastatur und Controller (Xbox).
+Entwickler, 🧑 beim Balancing; bedienbar mit Tastatur und Controller (Xbox). Einstieg von der Testseite (🧑 will das Level dort aufrufen können).
 
 ## Anforderungen
 
 - Die Daten kommen von `GET /api/level` (B-091), die Seite rechnet kein Level selbst.
 - Seed (freier Text, Zufalls-Seed per Taste/Knopf) und Biom (Auswahl) einstellbar; scrollen und zoomen mit linkem Stick bzw. Tastatur.
 - Die Abbildung (Abschnitt/Objekt → Zeichenmodell) ist eine reine, getestete Funktion.
+- `testing.html` bekommt einen Abschnitt „Level“ mit einer Kachel „Level-Betrachter“, die `leveltest.html` über `openPage()` öffnet; die Kachel ist wie die Szenarien-Kacheln mit Controller bedienbar (Steuerkreuz wählt, A öffnet). Die Kachel auf der Landingpage bleibt zusätzlich.
 - Link „Im Spiel starten“ öffnet `game.html` mit demselben Seed und Biom bzw. Tiefe über `openPage()`.
 
 ## Nicht-Ziele
@@ -35,7 +36,7 @@ Spielen oder Simulieren, Level bearbeiten, Levels speichern oder teilen.
 
 ## Regeln und Einschränkungen
 
-Regel „Seiten & Navigation“ aus `CLAUDE.md`: `installPageChrome()`, Eintrag in `src/landing/pages.ts`, Vollbild nur über `toggleFullscreen()`, kein Seitenwechsel außer `openPage()`/`goHome()`; oben ca. 70 px frei; Taste B und View + Menu unbelegt. Domäne PLAT (`*.html`, `src/tools/`, `src/landing/`).
+Regel „Seiten & Navigation“ aus `CLAUDE.md`: `installPageChrome()`, Eintrag in `src/landing/pages.ts`, Vollbild nur über `toggleFullscreen()`, kein Seitenwechsel außer `openPage()`/`goHome()`; oben ca. 70 px frei; Taste B und View + Menu unbelegt. Domäne PLAT (`*.html`, `src/tools/`, `src/landing/`); `testing.html` und `src/tools/testing.ts` gehören dazu.
 
 ## Beispiele
 
@@ -52,6 +53,7 @@ Server nicht erreichbar oder 400 → klarer Hinweistext (z. B. „Server nicht e
 - **AC-03** Seed `test`, Biom `forest` zeigt dieselben 22 Abschnitte wie `level_generate` (Vergleich im Test mit festem Beispiel).
 - **AC-04** Ohne Server zeigt die Seite einen Hinweis statt leerer Fläche (Test oder Beobachtung).
 - **AC-05** 🧑 hat die Seite mit Controller am TV bedient (Seed ändern, scrollen, im Spiel starten).
+- **AC-06** `testing.html` enthält den Abschnitt „Level“ mit der Kachel „Level-Betrachter“, die `leveltest.html` öffnet; ein Test prüft den Eintrag und dass die Controller-Auswahl die Kachel erreicht.
 
 ## Offene Fragen
 
