@@ -8,7 +8,6 @@ Jede Sprint-README ist eine Spec (SDD); aktiv wird ein Sprint erst mit `Spec: fr
 
 | Sprint | Domäne | Thema | Am Ende sichtbar | Ordner |
 |---|---|---|---|---|
-| U4 | CLI | Debug-Overlay (B-093) | Overlay mit `?dev=1` zeigt Verbindung, Takt und Entitäten | `aktiv/U4-debug-overlay/` |
 
 ## Geplant (in dieser Reihenfolge)
 
@@ -60,3 +59,4 @@ Nach SP11: Regelwerk II (Skills) → SIM Skills in Go → CLI Skills → Spielea
 | U1 | Radar-Leiste im HUD (B-090) | `erledigt/U1-radar/` |
 | U2 | Level-Abfrage per HTTP: GET /api/level (B-091) | `erledigt/U2-level-abfrage/` |
 | U3 | Level-Betrachter: leveltest.html, Einstieg von der Testseite (B-092) | `erledigt/U3-level-betrachter/` |
+| U4 | Debug-Overlay: Verbindung, Takt und Entitäten per Ö oder Stick-Klick (B-093) | `erledigt/U4-debug-overlay/` |
