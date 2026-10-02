@@ -2,7 +2,7 @@
 
 - **Status:** geplant
 - **Domäne:** SRV
-- **Reife:** Entwurf
+- **Reife:** bereit
 - **Einschiebbar:** nein
 - **Tickets:** B-028, B-035, B-042
 - **Start-Commit:** –
@@ -12,11 +12,11 @@
 
 ## Ausgangslage
 
-Der Server läuft nur auf dem Windows-PC; Docker-Image und Sicherungen gibt es ab SP03.
+Der Server läuft nur auf dem Windows-PC; Docker-Image und Sicherungen gibt es ab SP03. `compose.yaml` baut das Image selbst (`build: .`), ein veröffentlichtes Image für `docker compose pull` fehlt.
 
 ## Ziel
 
-Der Server läuft dauerhaft auf dem Raspberry Pi. Am Ende sichtbar: 2er- und 3er-Spiel parallel auf dem Pi, Lastmessung gegen das Ziel aus B-042.
+Der Server läuft dauerhaft auf dem Raspberry Pi. Am Ende sichtbar: 2er- und 3er-Spiel parallel auf dem Pi, Lastmessung gegen das Ziel aus B-042: **2 Räume × 3 Spieler, Tick-Dauer p99 < 10 ms** bei 30 Hz.
 
 ## Beteiligte und Zielgruppen
 
@@ -32,7 +32,7 @@ Server-Suche per QR/mDNS (B-040).
 
 ## Regeln und Einschränkungen
 
-Die Einrichtung am Pi macht 🧑 (Session mit `Agent: Mensch`).
+Die Einrichtung und die Lastmessung am Pi macht 🧑 (Sessions mit `Agent: Mensch`). Modell laut 🧑: Pi 3 oder älter; das Image gibt es nur für amd64 und arm64, der Pi braucht also ein 64-Bit-Betriebssystem. **Domänen-Ausnahme (INF):** SP11.1 darf `.github/workflows/release.yml` ändern, sonst bleibt `docker compose pull` unerfüllbar; die Freigabe dieser Spec erlaubt das.
 
 ## Beispiele
 
@@ -40,7 +40,7 @@ Die Einrichtung am Pi macht 🧑 (Session mit `Agent: Mensch`).
 
 ## Ausnahme- und Fehlerfälle
 
-Ziel verfehlt → Messwerte und Befund als Ticket, keine stille Absenkung des Ziels.
+Ziel verfehlt → Messwerte und Befund als Ticket, keine stille Absenkung des Ziels. Ein Pi 3 ist deutlich schwächer als ein PC; ein Verfehlen ist möglich (ungeprüft).
 
 ## Akzeptanzkriterien
 
@@ -51,15 +51,17 @@ Ziel verfehlt → Messwerte und Befund als Ticket, keine stille Absenkung des Zi
 
 ## Offene Fragen
 
-Pi-Modell und Leistungsziel (B-042, 🧑) – blockiert die Freigabe.
+- **Registry:** Vorschlag `ghcr.io/tenvan/k3c-family`. Ist das Paket öffentlich (Pi zieht ohne Anmeldung) oder bleibt es privat (Pi braucht `docker login` mit Token)? Entscheidet 🧑, Sichtbarkeit des Repos ungeprüft.
+- **Pi-Modell genau:** „Pi 3 oder älter“ (🧑 2026-10-02). Ein Pi 2 oder älter ist mit arm64-Image nicht möglich; gemeint ist vermutlich Pi 3 (B/B+) mit 64-Bit-Betriebssystem. 🧑 bestätigt mit der Freigabe.
 
 ## Sessions
 
-Entwurf. Vor dem Aktivieren jede Session als Datei nach `docs/vorlagen/session.md` schreiben, die Kriterien in Klammern werden ihr Feld `Kriterien`.
-
-- SP11.1 🧑 Pi einrichten, Docker-Compose, Autostart, Sicherungen der Spielstände (AC-01, AC-02, AC-03).
-- SP11.2 Lastmessung auf dem Pi, Ergebnis gegen B-042 (AC-04).
-- SP11.3 🔍 Review (alle).
+| Nr. | Datei | Typ | Agent | Status |
+|---|---|---|---|---|
+| SP11.1 | `SP11.1-image-und-compose.md` | Umsetzung | autonom | offen |
+| SP11.2 | `SP11.2-pi-einrichten.md` | Workshop | Mensch | offen |
+| SP11.3 | `SP11.3-lastmessung.md` | Workshop | Mensch | offen |
+| SP11.4 | `SP11.4-review.md` | Review | autonom | offen |
 
 ## Abnahme
 
