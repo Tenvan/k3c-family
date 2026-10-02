@@ -2,7 +2,6 @@ package room
 
 import (
 	"context"
-	"encoding/json"
 	"errors"
 	"io"
 	"log/slog"
@@ -123,14 +122,18 @@ func (m *Manager) create(id string, peer Peer, name string, fresh bool, depth in
 		}
 		return r, r.lockedJoin(id, peer, slots)
 	}
-	camp, err := m.open(name, fresh, depth)
+	isl, err := m.open(name, fresh, depth)
 	if err != nil {
 		return nil, err
+	}
+	monarchs, ok := freeMonarchs(isl)
+	if !ok {
+		return nil, ErrBadRequest
 	}
 	if len(m.rooms) >= MaxRooms {
 		return nil, ErrTooManyRooms
 	}
-	r := &Room{Code: m.code(), Name: name, m: m, camp: camp, devices: map[string]*device{}}
+	r := &Room{Code: m.code(), Name: name, m: m, isl: isl, start: startStage(isl, depth), monarchs: monarchs, devices: map[string]*device{}}
 	m.rooms[r.Code] = r
 	if m.ctx != nil {
 		go r.run(m.ctx)
@@ -138,8 +141,9 @@ func (m *Manager) create(id string, peer Peer, name string, fresh bool, depth in
 	return r, r.lockedJoin(id, peer, slots)
 }
 
-// open lädt den Spielstand oder legt einen neuen an. Ein geladener Stand hat keine Monarchen, Gold gilt pro Index.
-func (m *Manager) open(name string, fresh bool, depth int) (*sim.Campaign, error) {
+// open lädt den Spielstand (Version 1 oder 2) oder legt eine neue Insel mit den Stufen Tiefe 0, 1, 2 an. Die Spieler eines
+// geladenen Stands sind im Raum freie Monarchen.
+func (m *Manager) open(name string, fresh bool, depth int) (*sim.Island, error) {
 	data, err := m.Store.Load(name)
 	switch {
 	case fresh && err == nil:
@@ -149,21 +153,22 @@ func (m *Manager) open(name string, fresh bool, depth int) (*sim.Campaign, error
 	case err != nil && !errors.Is(err, store.ErrNotFound):
 		return nil, err
 	case fresh:
-		// Neuer Stand wie createCampaign(seed, {depth}) in TS: leerer Spielstand dieser Tiefe, Seed = Name.
 		// ponytail: Seed ist der Name; ein eigener Seed käme mit einem Feld in `create` (Protokoll-Änderung).
-		data, _ = json.Marshal(sim.SaveGame{
-			Version: sim.SaveVersion, CampaignID: name + "-" + m.now().UTC().Format("20060102T150405.000"), Seed: name,
-			Depth: depth, UnlockedDepth: depth, Players: []sim.PlayerSave{}, Hubs: []sim.HubSave{},
-		})
-	}
-	s, err := sim.ParseSave(data)
-	if err != nil {
-		if fresh {
+		if depth < 0 || depth > 2 {
 			return nil, ErrBadRequest // unbekannte Startstufe
 		}
+		isl, err := sim.CreateIsland(name, []int{0, 1, 2}, 1)
+		if err != nil {
+			return nil, err
+		}
+		isl.ID = name + "-" + m.now().UTC().Format("20060102T150405.000")
+		return isl, nil
+	}
+	s, err := sim.ParseIslandSave(data)
+	if err != nil {
 		return nil, err
 	}
-	return sim.FromSave(s, 1), nil
+	return sim.FromIslandSave(s, 1)
 }
 
 func (r *Room) lockedJoin(id string, peer Peer, slots []int) error {

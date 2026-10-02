@@ -110,7 +110,7 @@ func ticks(r *Room, n int) {
 
 func xs(r *Room) []float64 {
 	var out []float64
-	for _, p := range r.camp.CurrentWorld().Players {
+	for _, p := range r.isl.Players() {
 		out = append(out, p.X)
 	}
 	return out
@@ -145,7 +145,7 @@ func TestXboxUndHandy(t *testing.T) {
 	ownMovement(t, r)
 	// Handy verliert WLAN: Monarch 2 wartet und steht still, die Xbox spielt weiter.
 	r.Drop("handy", h)
-	if fmt.Sprint(x.monarchs) != "[taken taken waiting]" || !r.camp.CurrentWorld().Players[2].Free {
+	if fmt.Sprint(x.monarchs) != "[taken taken waiting]" || !r.isl.Players()[2].Free {
 		t.Fatalf("nach Abbruch: %v", x.monarchs)
 	}
 	f.wait(10 * time.Second)
@@ -218,7 +218,7 @@ func TestPausierterRaumFristenUndAufraeumen(t *testing.T) {
 		t.Fatal("leerer Raum speichert nicht sofort")
 	}
 	ticks(r, 30)
-	if got := r.camp.CurrentWorld().Time; got > 0.11 {
+	if got := r.isl.Stages[0].Time; got > 0.11 {
 		t.Fatalf("pausierter Raum tickt: time %v", got)
 	}
 	f.wait(61 * time.Second)
@@ -320,7 +320,7 @@ func TestCreateReihenfolge(t *testing.T) {
 	}
 }
 
-// Ein geladener Stand hat keine Monarchen; sie entstehen beim Beitreten mit dem Gold ihres Index.
+// Ein geladener Stand (hier Version 1) bringt seine Spieler als freie Monarchen mit, samt Gold.
 func TestGeladenerStand(t *testing.T) {
 	f := newFixture()
 	c := sim.CreateCampaign("gold", "g", 1)
@@ -329,9 +329,10 @@ func TestGeladenerStand(t *testing.T) {
 	f.store.data["gold"] = need(json.Marshal(c.ToSave("2026-01-01T00:00:00.000Z")))(t)
 	x := &peer{}
 	r := need(f.m.Create("xbox", x, "gold", false, 0, []int{1}))(t)
-	players := r.camp.CurrentWorld().Players
-	if len(players) != 1 || players[0].Gold != 33 || fmt.Sprint(x.you) != "[{1 0}]" {
-		t.Fatalf("Monarchen nach Laden: %d, Gold %v", len(players), players[0].Gold)
+	players := r.isl.Players()
+	if len(players) != 2 || players[0].Gold != 33 || players[1].Gold != 44 || fmt.Sprint(x.you) != "[{1 0}]" ||
+		fmt.Sprint(x.monarchs) != "[taken free]" || !players[1].Free {
+		t.Fatalf("Monarchen nach Laden: %d, Gold %v, Plätze %v", len(players), players[0].Gold, x.monarchs)
 	}
 }
 
@@ -340,20 +341,19 @@ func TestSpeicherzeitpunkte(t *testing.T) {
 	x := &peer{}
 	r := need(f.m.Create("xbox", x, "reise", true, 0, []int{0}))(t)
 	saves := f.store.saves
-	w := r.camp.CurrentWorld()
+	w := r.isl.Stages[0]
 	for _, e := range w.Level.Entities {
 		if e.Kind == "exit" {
 			w.Players[0].X = e.X
 		}
 	}
 	ticks(r, 70) // 2 s am Tiefen-Eingang
-	if r.camp.Depth != 1 || f.store.saves != saves+1 || !x.has("level 1") {
-		t.Fatalf("Stufenwechsel: Tiefe %d, %d Speicherungen, %v", r.camp.Depth, f.store.saves-saves, x.log[len(x.log)-3:])
+	if r.isl.StageOf(0) != 1 || f.store.saves != saves+1 || !x.has("level 1") {
+		t.Fatalf("Stufenwechsel: Stufe %d, %d Speicherungen, %v", r.isl.StageOf(0), f.store.saves-saves, x.log[len(x.log)-3:])
 	}
-	var s sim.SaveGame
-	ok(t, json.Unmarshal(f.store.data["reise"], &s))
-	if s.Depth != 1 {
-		t.Fatalf("gespeicherte Tiefe %d", s.Depth)
+	s := need(sim.ParseIslandSave(f.store.data["reise"]))(t)
+	if s.Version != sim.IslandSaveVersion || len(s.Stages) != 3 || s.Players[0].Depth != 1 {
+		t.Fatalf("gespeicherter Stand: %+v", s.Players)
 	}
 	h := &peer{}
 	need(f.m.Join("handy", h, r.Code, []int{0}))(t)
