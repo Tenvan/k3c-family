@@ -55,6 +55,8 @@ Umsetzung in Sprints und Sessions: [`docs/sprints/`](sprints/README.md). Tickets
 - [x] Regelwerk I: `docs/rules/wirtschaft.md` und `stufen.md`, `game-design.md` ohne Widerspruch zu Entscheidung 001
 - [x] Entscheidung 003: Spielstand → Inseln → Stufen, Stufen pro Spieler frei begehbar
 - [ ] Umsetzung: Mehrstufen-Insel (B-100), Raum-Optionen und Grade (B-101), Siegvarianten und Niederlage (B-102), Inseln und Bosse (B-103), Protokoll (B-104), Dialog (B-105), Kamera je Stufe (B-106), Debug-Panel (B-107)
+- [x] Regelwerk Materialien und Gebäude (R2): fünf Materialien, Hub-Ausbau 1–5, Lager, Plantage und Adern
+- [ ] Umsetzung R2: Hub-Ausbau (B-112), Material und Lager (B-113), Plantage und Adern (B-114), Stufen-Breite und neue Stufen (B-115), Gebäude-Wirkungen (B-116), Anzeige (B-117)
 - [ ] Automatischer Balancing-Tester (B-099); Regelwerk II (Skillung, Klassen, Level von Monarchen und Bürgern, B-110) und III (B-004); Material je Insel und Inselfolge entschieden (B-108)
 
 ## Schritt 4 – Inhalt & Politur
