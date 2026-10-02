@@ -6,9 +6,9 @@
 - **Status:** eingeplant
 - **Sprint:** U1
 - **Erstellt:** 2026-10-01
-- **Spec:** Entwurf
+- **Spec:** freigegeben
 - **Revision:** 1
-- **Freigabe:** –
+- **Freigabe:** 2026-10-02 🧑 Chat („Ja, freigeben und umsetzen“; Revision 1; umfasst Sprint U1)
 
 ## Ausgangslage
 
@@ -54,7 +54,7 @@ Level ohne Portale (Hub-Stufe) → keine Portal-Marker. Unter Tage mit Aggressio
 
 ## Offene Fragen
 
-Soll das Radar ausblendbar sein (Taste, nicht B)? Sollen Gegner einzeln oder verdichtet (Häufchen) erscheinen? Entscheidet 🧑.
+keine. Entschieden 2026-10-02 durch 🧑 (Chat): Das Radar ist immer sichtbar (kein Umschalter), Gegner erscheinen als einzelne Marker.
 
 ## Notizen
 
