@@ -69,8 +69,8 @@ Die Skills kommen **erst nach dem Vertical Slice**.
 
 - **Landstreicher** im Rekrutierungs-Camp → Münze geben → **Bauer** (folgt, sammelt, baut).
 - Werkstatt: Bauer + Bogen → **Bogenschütze** (Fernkampf, besetzt Türme). Bauer + Schwert → **Krieger** (Nahkampf, Frontlinie).
-- Elite-Upgrades mit Stein/Kupfer: +50% HP und Schaden, +20% Angriffstempo.
-- Truppen kämpfen automatisch (KI). Truppen-Limit hängt von den Kasernen ab. *Krieger, Elite-Upgrades, Kaserne und Limit sind beschlossen, aber noch nicht im Code (siehe `rules/wirtschaft.md`).*
+- Elite-Upgrades in der Schmiede (Stein/Kupfer), Rüstung in der Rüstkammer (Eisen): +50% HP und Schaden, +20% Angriffstempo bzw. +20 % HP je Stufe. Bürger haben **kein Level und keine Skills**, nur Upgrades und **Berufe** (Bergmann, Baumeister, Handwerker; Händler kommt zu Besuch).
+- Truppen kämpfen automatisch (KI), Bauern fliehen bei Gefahr. **Truppen-Limit je Hub:** Basis 10, Kaserne +10, es zählen nur Kämpfer. Heilung nur am Heilplatz. Details: `rules/buerger.md`. *Krieger, Elite-Upgrades, Kaserne, Limit und Berufe sind beschlossen, aber noch nicht im Code.*
 
 ## Gebäude (`data/buildings.json`)
 

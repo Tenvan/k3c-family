@@ -81,8 +81,8 @@ Zielkorridor: Erste Mauer vor Ende Tag 1 in ≥ 90 %; erster Turm vor Ende Tag 2
 | **Lager** | +300 Kapazität je Rohstoff für die Insel; Arbeiter bringen Material hierher oder zur Burg | Startwert: 50 Stein + 20 Gold, HP 200, Bauzeit 8 s |
 | **Taverne** | 1 Landstreicher je Tag im Hub | Startwert: 60 Stein + 30 Gold, HP 150 |
 | **Heilplatz** | heilt Truppen und Spieler in Reichweite | Startwert: 50 Kupfer + 30 Gold, HP 150 |
-| **Schmiede** | Elite-Upgrades (Werte in Regelwerk III) | Startwert: 80 Kupfer + 50 Gold, HP 250 |
-| **Rüstkammer** | Rüstung und Waffen-Upgrade für alle Truppen (Werte in Regelwerk III) | Startwert: 100 Eisen + 100 Gold, HP 350 |
+| **Schmiede** | Elite-Upgrades (Werte in `buerger.md`) | Startwert: 80 Kupfer + 50 Gold, HP 250 |
+| **Rüstkammer** | Rüstung und Waffen-Upgrade für alle Truppen (Werte in `buerger.md`) | Startwert: 100 Eisen + 100 Gold, HP 350 |
 | **Treppen** | Verbindung zur Stufe darüber/darunter, je 1 je Hub, ab Hub-Stufe 2 | 100 Stein + 50 Gold, HP 500, 20 s |
 
 Die Startwerte für Taverne, Heilplatz, Schmiede und Rüstkammer sind **Vorschläge des Agenten** (🧑 hat die Wirkung beschlossen, nicht die Zahlen) und werden mit B-099 geprüft.
@@ -101,7 +101,7 @@ Die Startwerte für Taverne, Heilplatz, Schmiede und Rüstkammer sind **Vorschl�
 
 - Die Zahlen für **Stufen 4 und 5** (Eisen, Kristall) und die Stufen selbst werden erst messbar, wenn Insel 1 sie enthält; ihre Zielkorridore folgen mit B-099.
 - Startwerte für Taverne, Heilplatz, Schmiede, Rüstkammer (§ 3.2) und die Turm-Kosten (2,5-faches der Mauer) sind Vorschläge ohne gesonderte Bestätigung.
-- Elite-Upgrades (Schmiede) und Rüstung/Waffen (Rüstkammer): Werte und Wirkung gehören zu Regelwerk III (`gegner-truppen.md`). Bürger-Fortschritt gehört zu B-110.
+- Elite-Upgrades (Schmiede) und Rüstung/Waffen (Rüstkammer): Werte und Wirkung stehen in `buerger.md` (R3.3). Bürger-Fortschritt gehört zu B-110.
 - Die Wirkung „Farm: +5 Holz je Tagesanbruch“ und „Taverne: 1 Landstreicher je Tag“ sind Startwerte (Wirtschaftsbalance, B-099).
 - Das Rate-Modell (Plantage, Adern, Raten) und die Breiten der Eisenstollen und Kristallhöhle sind **Startwerte** (🧑 hat Plantage + Adern beschlossen; Adernzahl 2, Raten und 6 Plätze/30 s hat er mit „Vorschlag“ übernommen). Die Kosten aus R2.2 bleiben, **jeder Hub baut die ganze Liste**.
 - Gemessene Level-Mengen (100 Seeds, Mittel): Wald 39 Bäume (≈ 390 Holz), 3 Felsen; Höhle 23 Felsen (≈ 230 Stein); Mine 6 Felsen, 3,4 Kupfererz (≈ 34 Kupfer, p10 = 0); damit tragen die Level allein die Kosten nicht, deshalb Plantage und Adern.
