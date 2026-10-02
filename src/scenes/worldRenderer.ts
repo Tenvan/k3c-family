@@ -20,6 +20,7 @@ const SITE_SIZE: Record<Site['kind'], [number, number]> = {
   wall: [36, 150],
   tower: [70, 260],
   workshop: [150, 120],
+  storage: [130, 100],
   stairsUp: [110, 110],
   stairsDown: [110, 110],
 };
@@ -27,6 +28,7 @@ const SITE_COLOR: Record<Site['kind'], number> = {
   wall: 0x8d99ae,
   tower: 0x9c6644,
   workshop: 0xbc6c25,
+  storage: 0x7f5539,
   stairsUp: 0x6c757d,
   stairsDown: 0x343a40,
 };

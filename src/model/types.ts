@@ -84,7 +84,7 @@ export interface ResourceNode {
   progress: number;
 }
 
-export type SiteKind = 'wall' | 'tower' | 'workshop' | 'stairsUp' | 'stairsDown';
+export type SiteKind = 'wall' | 'tower' | 'workshop' | 'storage' | 'stairsUp' | 'stairsDown';
 export type SiteState = 'unpaid' | 'waitingMaterial' | 'waitingWorker' | 'built';
 
 export interface Site {

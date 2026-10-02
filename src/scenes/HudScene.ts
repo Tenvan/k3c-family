@@ -23,7 +23,7 @@ const JOIN_HINTS = {
   pad: 'A drücken zum Beitreten',
   keyboard: 'Leertaste drücken zum Beitreten',
 } as const;
-const SITE_NAMES = { wall: 'Mauer', tower: 'Turm', workshop: 'Werkstatt', stairsUp: 'Treppe hoch', stairsDown: 'Treppe runter' } as const;
+const SITE_NAMES = { wall: 'Mauer', tower: 'Turm', workshop: 'Werkstatt', storage: 'Lager', stairsUp: 'Treppe hoch', stairsDown: 'Treppe runter' } as const;
 
 /** Bildschirmfeste Anzeigen: pro Split-Screen-Hälfte Spielerwerte, oben rechts Hub-Vorrat und Tageszeit, Meldungen in der Mitte. */
 export class HudScene extends Phaser.Scene {
