@@ -105,7 +105,7 @@ func nodeKey(n *ResourceNode) (string, bool) { return key(n.Kind, n.X), true }
 func pickupKey(p *Pickup) (string, bool)     { return key(p.Kind, p.X), true }
 
 func hubSave(w, base *World) HubSave {
-	h := HubSave{Depth: w.Biome.Depth, CastleHP: w.Castle.HP, Stock: w.Stock, Wave: w.Wave, Sites: []SiteSave{}}
+	h := HubSave{Depth: w.Biome.Depth, CastleHP: w.Castle.HP, Stock: *w.Stock, Wave: w.Wave, Sites: []SiteSave{}}
 	if w.Aggression != nil {
 		a := *w.Aggression
 		h.Aggression = &a
@@ -202,7 +202,7 @@ func FromSave(s SaveGame, cycleSpeed float64) *Campaign {
 // applyHub legt einen gespeicherten Hub auf eine frisch erzeugte Stufe.
 func applyHub(w *World, h HubSave) {
 	w.Castle.HP = h.CastleHP
-	w.Stock = h.Stock
+	*w.Stock = h.Stock
 	w.Wave = h.Wave
 	if w.Aggression != nil && h.Aggression != nil {
 		*w.Aggression = *h.Aggression
