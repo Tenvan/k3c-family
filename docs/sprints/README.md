@@ -8,6 +8,7 @@ Jede Sprint-README ist eine Spec (SDD); aktiv wird ein Sprint erst mit `Spec: fr
 
 | Sprint | Domäne | Thema | Am Ende sichtbar | Ordner |
 |---|---|---|---|---|
+| R2 | REG 🧑 | Regelwerk I b – Materialien & Gebäude | `docs/rules/materialien-gebaeude.md`, Tickets für SIM und CLI | `aktiv/R2-materialien-gebaeude/` |
 | SP11 | SRV 🧑 | Raspberry Pi | 2er- und 3er-Spiel parallel auf dem Pi | `aktiv/SP11-raspberry-pi/` |
 
 ## Geplant (in dieser Reihenfolge)
@@ -22,7 +23,6 @@ dann über den Go-Server mit mehreren Räumen und gemischten Spielern.
 
 | Sprint | Domäne | Thema | Reife | Ordner |
 |---|---|---|---|---|
-| R2 | REG 🧑 | Regelwerk I b – Materialien & Gebäude (B-109) | bereit | `geplant/R2-materialien-gebaeude/` |
 | X1 | PLAT 🧑 | Xbox-Machbarkeit | Entwurf | `geplant/X1-xbox/` |
 
 Nach SP11: Regelwerk II (Monarch und Bürger: Skillung, Klassen, Level, B-110) → SIM Skills in Go → CLI Skills → Spieleabend → Grafik/Sound → …
