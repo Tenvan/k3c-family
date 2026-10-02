@@ -2,13 +2,13 @@
 
 - **Status:** geplant
 - **Domäne:** CLI
-- **Reife:** Entwurf
+- **Reife:** bereit
 - **Einschiebbar:** nein
 - **Tickets:** B-090
 - **Start-Commit:** –
-- **Spec:** Entwurf
+- **Spec:** freigegeben
 - **Revision:** 1
-- **Freigabe:** –
+- **Freigabe:** 2026-10-02 🧑 Chat („Ja, freigeben und umsetzen“; Revision 1)
 
 ## Ausgangslage
 
@@ -51,15 +51,15 @@ Level ohne Portale → keine Portal-Marker; Spieler am Boden → gedämpfter Mar
 
 ## Offene Fragen
 
-Ausblendbar per Taste? Gegner einzeln oder verdichtet? (B-090 › Offene Fragen, entscheidet 🧑 vor der Freigabe.)
+keine. Entschieden 2026-10-02 durch 🧑 (Chat): Das Radar ist immer sichtbar (kein Umschalter), Gegner erscheinen als einzelne Marker.
 
 ## Sessions
 
-Entwurf. Vor dem Aktivieren jede Session als Datei nach `docs/vorlagen/session.md` schreiben, die Kriterien in Klammern werden ihr Feld `Kriterien`.
-
-- U1.1 Marker-Logik als reine Funktion mit Tests (AC-01).
-- U1.2 Radar zeichnen in allen Layout-Zellen, Test für den freien Home-Button-Streifen (AC-02, AC-03).
-- U1.3 Review (alle); AC-04 ist die Abnahme durch 🧑 am TV.
+| Nr. | Datei | Typ | Agent | Status |
+|---|---|---|---|---|
+| U1.1 | `U1.1-marker-logik.md` | Umsetzung | autonom | offen |
+| U1.2 | `U1.2-radar-zeichnen.md` | Umsetzung | autonom | offen |
+| U1.3 | `U1.3-review.md` | Review | autonom | offen |
 
 ## Abnahme
 
