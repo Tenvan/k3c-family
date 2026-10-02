@@ -61,8 +61,8 @@ keine
 
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
-| SP13.1 | `SP13.1-optionen-grade.md` | Umsetzung | autonom | offen |
-| SP13.2 | `SP13.2-material-kapazitaet.md` | Umsetzung | autonom | offen |
+| SP13.1 | `SP13.1-optionen-grade.md` | Umsetzung | autonom | fertig |
+| SP13.2 | `SP13.2-material-kapazitaet.md` | Umsetzung | autonom | fertig |
 | SP13.3 | `SP13.3-lager-tragen.md` | Umsetzung | autonom | offen |
 | SP13.4 | `SP13.4-review.md` | Review | autonom | offen |
 
