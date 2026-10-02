@@ -93,6 +93,7 @@ var (
 			Standard, Elite [2]int
 		}
 		SpawnSpreadSeconds float64
+		PerExtraPlayer     float64 // Wellenfaktor je Zusatzspieler einer Insel
 		DepthScaling       struct{ HP, Damage, Speed float64 }
 		AttacksPerSecond   float64
 		StealGold          int
