@@ -1,6 +1,6 @@
 # I1 · INF · Ein Weg für alle Befehle: `task`
 
-- **Status:** aktiv
+- **Status:** erledigt
 - **Domäne:** INF
 - **Reife:** bereit
 - **Einschiebbar:** nein
@@ -64,8 +64,12 @@ keine
 | I1.1 | `I1.1-kleine-schulden.md` | Umsetzung | autonom | fertig |
 | I1.2 | `I1.2-npm-weg.md` | Umsetzung | autonom | fertig |
 | I1.3 | `I1.3-k3c-dev-task.md` | Umsetzung | autonom | fertig |
-| I1.4 | `I1.4-review.md` | Review | autonom | offen |
+| I1.4 | `I1.4-review.md` | Review | autonom | fertig |
 
 ## Abnahme
 
-–
+Review 2026-10-02 (I1.4, unabhängiger Prüfer, Diff `05d4942..main`): `task check` (388 Tests), `task check:go`, `task check:dev` grün; keine schweren Befunde, nichts behoben.
+AC-01, AC-02, AC-03, AC-06 nachgeprüft (Belege in I1.4 › Ergebnis). AC-04 für alle Textdateien erfüllt; Rest **verschoben** (B-094): die seit SP03 eingecheckten Alt-Binaries `k3c-server`, `k3c-server.exe` enthalten noch den alten Befehl.
+AC-05: drei Workflows geparst, Task vor jedem `task`-Aufruf installiert; grüner CI-Lauf **verschoben**, bis 🧑 gepusht und geprüft hat (B-053).
+Abweichung I1.3 (`Taskfile.yml` › `dev` reicht `{{.CLI_ARGS}}` durch) geprüft: vertretbar (INF-Datei der Sprint-Domäne, ohne Argumente unverändert), in I1.3 › Ergebnis offen vermerkt.
+Neue Tickets: B-094.
