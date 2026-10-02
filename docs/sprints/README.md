@@ -8,7 +8,6 @@ Jede Sprint-README ist eine Spec (SDD); aktiv wird ein Sprint erst mit `Spec: fr
 
 | Sprint | Domäne | Thema | Am Ende sichtbar | Ordner |
 |---|---|---|---|---|
-| U3 | PLAT | Level-Betrachter (B-092) | Seite `leveltest.html` (auch von der Testseite aus) zeigt Seed und Biom, startet den Wald im Spiel | `aktiv/U3-level-betrachter/` |
 
 ## Geplant (in dieser Reihenfolge)
 
@@ -60,3 +59,4 @@ Nach SP11: Regelwerk II (Skills) → SIM Skills in Go → CLI Skills → Spielea
 | I1 | Ein Weg für alle Befehle: `task`, `package.json` ohne Skripte, CI und k3c-dev rufen `task` (B-073, B-070, B-072, B-051) | `erledigt/I1-ein-weg/` |
 | U1 | Radar-Leiste im HUD (B-090) | `erledigt/U1-radar/` |
 | U2 | Level-Abfrage per HTTP: GET /api/level (B-091) | `erledigt/U2-level-abfrage/` |
+| U3 | Level-Betrachter: leveltest.html, Einstieg von der Testseite (B-092) | `erledigt/U3-level-betrachter/` |
