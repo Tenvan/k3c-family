@@ -58,7 +58,7 @@ keine
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
 | R2.1 | `R2.1-ist-material-gebaeude.md` | Umsetzung | autonom | fertig |
-| R2.2 | `R2.2-workshop-material-gebaeude.md` | Workshop | Mensch | offen |
+| R2.2 | `R2.2-workshop-material-gebaeude.md` | Workshop | Mensch | fertig |
 | R2.3 | `R2.3-beschluss-tickets.md` | Umsetzung | autonom | offen |
 
 ## Abnahme
