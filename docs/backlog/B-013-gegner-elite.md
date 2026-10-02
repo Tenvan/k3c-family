@@ -53,4 +53,6 @@ keine
 
 ## Notizen
 
+R4 (2026-10-02): Regelwerk beschlossen (`docs/rules/gegner.md`, `bosse.md`). Umsetzung: B-128 (Traits, Kiting, Angriffsrate), B-129 (neue Gegner und Pools), B-130 (Bosse), B-131 (Events).
+
 –

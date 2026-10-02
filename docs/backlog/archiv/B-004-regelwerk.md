@@ -3,7 +3,7 @@
 - **Domäne:** REG
 - **Typ:** Idee
 - **Prio:** hoch
-- **Status:** offen
+- **Status:** erledigt
 - **Sprint:** –
 - **Erstellt:** 2026-09-29
 - **Spec:** freigegeben
@@ -62,3 +62,5 @@ Workshops: Claude bereitet vor und fragt einzeln, der Mensch entscheidet.
 **Stand 2026-10-02 (R1 abgeschlossen):** Regelwerk I ist beschlossen (`docs/rules/wirtschaft.md`, `stufen.md`), **B-004/AC-01 ist erfüllt**. **AC-02 (Monarch, Skills, Bürger) ist mit R3 erfüllt** (2026-10-02, `docs/rules/monarch.md` und `buerger.md`). Offen: AC-03 (Gegner & Truppen inkl. Bosse, Vollmond-Event, Elite, Truppen-Limit, Regelwerk III). B-108 (Material je Insel, Inselfolge) ist am 2026-10-02 entschieden.
 
 R4 (Sprint vorbereitet 2026-10-02): AC-03 (Gegner, Truppen-Werte, Bosse) läuft über B-127; die Truppen-Seite ist mit R3 (`buerger.md`) beschlossen, offen sind Gegner, Wellen, Bosse und Events.
+
+**Abgeschlossen am 2026-10-02:** AC-01 (R1, R2), AC-02 (R3), AC-03 (R4: `docs/rules/gegner.md`, `bosse.md`). Das Regelwerk ist beschlossen; offen bleibt die Umsetzung in den SIM- und CLI-Tickets (B-100 bis B-132) und das Feintuning (B-099, B-015).
