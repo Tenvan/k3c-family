@@ -60,3 +60,5 @@ Erst nach der Go-Portierung (nach SP11): REG Regelwerk II → SIM → CLI.
 
 R1 (2026-10-02): Das Skill-Menü liegt **nicht auf View** (View + Menu ist reserviert), die Taste legt Regelwerk II fest (Vorschlag LB + RB); Taste X bleibt für Skills frei.
 Regelwerk dazu: B-110 (Skillung, Klassen, Level von Monarchen und Bürgern); die SIM-Umsetzung folgt nach dem Beschluss.
+
+R3 (2026-10-02): Regelwerk II ist beschlossen (`docs/rules/monarch.md`, `buerger.md`). B-007 ist das **Dach-Ticket**; die Umsetzung läuft in B-118 (Schlag, Pool, Verteilung), B-119 (Skills Tank, Zauberer, Heiler), B-120 (Wiederbeleben), B-123 (Protokoll), B-124 (Skill-Menü, Tasten) und B-125 (Aktionen-Overlay). Entschieden: freie Skillung (B-017), gemeinsamer Fund-Pool mit persönlicher Verteilung, kein Level; Tank, Zauberer und Heiler zuerst, der Dieb später.
