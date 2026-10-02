@@ -45,6 +45,7 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-093](B-093-debug-overlay.md) | CLI | Idee | mittel | eingeplant | U4 | Ein Debug-Overlay zeigt Verbindung, Snapshot-Takt und Entitäten im Spiel |
 | [B-094](B-094-npm-reste.md) | INF | Schuld | niedrig | offen | – | Im Repo liegen keine Alt-Binaries und keine npm-Skripte mehr |
 | [B-095](B-095-start-mit-seed-und-tiefe.md) | SRV | Idee | niedrig | offen | – | Ein neues Spiel startet per URL mit eigenem Seed und gewählter Tiefe |
+| [B-098](B-098-debug-overlay-standard-zurueck.md) | CLI | Schuld | niedrig | offen | – | Das Debug-Overlay ist vor dem Release wieder nur mit ?dev=1 verfügbar |
 
 ## Archiv
 
