@@ -125,11 +125,15 @@ func TestVersion1WirdUeberfuehrtUndGesichert(t *testing.T) {
 	if got := need(sim.ParseIslandSave(need(s.Load("alt"))(t)))(t); got.Version != sim.IslandSaveVersion {
 		t.Fatalf("Version nach Speichern: %d", got.Version)
 	}
-	list := need(s.Backups("alt"))(t)
-	if len(list) != 1 {
-		t.Fatalf("Sicherungen: %v", list)
+	if len(r.isl.Stages) != 3 {
+		t.Fatalf("Stufen: %d, erwartet 3 (sonst kein Weiterreisen)", len(r.isl.Stages))
 	}
-	old := need(os.ReadFile(filepath.Join(s.Dir, "backups", "alt", list[0].Name)))(t)
+	// Die Datei Version 1 liegt dauerhaft neben dem Slot (nicht in der rotierenden Sicherung, die nach 5 Speicherungen verfällt).
+	list := need(filepath.Glob(filepath.Join(s.Dir, "alt-*.json")))(t)
+	if len(list) != 1 {
+		t.Fatalf("dauerhafte Sicherung: %v", list)
+	}
+	old := need(os.ReadFile(list[0]))(t)
 	if string(old) != string(v1) {
 		t.Fatal("Sicherung ist nicht der Stand Version 1")
 	}

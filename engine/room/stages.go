@@ -58,3 +58,12 @@ func freeMonarchs(isl *sim.Island) ([]*monarch, bool) {
 	}
 	return out, true
 }
+
+// depths sind die Stufen aller Monarchen (Index = Slot), zum Erkennen eines Stufenwechsels im Tick.
+func (r *Room) depths() []int {
+	out := make([]int, len(r.monarchs))
+	for i := range r.monarchs {
+		out[i] = r.isl.StageOf(i)
+	}
+	return out
+}
