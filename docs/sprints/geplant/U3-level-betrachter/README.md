@@ -2,7 +2,7 @@
 
 - **Status:** geplant
 - **Domäne:** PLAT
-- **Reife:** Entwurf
+- **Reife:** bereit
 - **Einschiebbar:** nein
 - **Tickets:** B-092
 - **Start-Commit:** –
@@ -28,11 +28,11 @@ B-092 › Anforderungen.
 
 ## Nicht-Ziele
 
-Spielen, Level bearbeiten oder speichern (B-092 › Nicht-Ziele).
+Spielen, Level bearbeiten oder speichern; Start mit beliebigem Seed oder in Höhle und Mine (B-092 › Nicht-Ziele, B-095).
 
 ## Regeln und Einschränkungen
 
-Domäne PLAT. Regel „Seiten & Navigation“ aus `CLAUDE.md` (`installPageChrome()`, Eintrag in `src/landing/pages.ts`, `toggleFullscreen()`, `openPage()`/`goHome()`); die Testseite `testing.html` darf für den Einstieg angepasst werden. Voraussetzung: U2 abgeschlossen. Die Abnahme am TV macht nur 🧑.
+Domäne PLAT. Regel „Seiten & Navigation“ aus `CLAUDE.md` (`installPageChrome()`, Eintrag in `src/landing/pages.ts`, `toggleFullscreen()`, `openPage()`/`goHome()`); die Testseite `testing.html` darf für den Einstieg angepasst werden. U2 ist abgeschlossen (`GET /api/level`). Die Abnahme am TV macht nur 🧑.
 
 ## Beispiele
 
@@ -46,23 +46,24 @@ Server nicht erreichbar → Hinweistext statt leerer Seite (B-092 › Ausnahme- 
 
 - **AC-01** Seite eingetragen, `installPageChrome()` vorhanden, Projektregeln grün (B-092/AC-01).
 - **AC-02** Abbildungs-Funktion getestet (B-092/AC-02).
-- **AC-03** Beispiel-Level stimmt mit `level_generate` überein (B-092/AC-03).
+- **AC-03** Das Golden-Level ergibt im Zeichenmodell genau seine Abschnitte und Objekte (B-092/AC-03).
 - **AC-04** Hinweis ohne Server (B-092/AC-04).
 - **AC-05** 🧑 hat die Seite mit Controller am TV bedient (B-092/AC-05).
 - **AC-06** Die Testseite `testing.html` führt über eine Kachel „Level-Betrachter“ zu `leveltest.html`, Test grün (B-092/AC-06).
+- **AC-07** Start-URL-Funktion nur für Wald und Seeds im Namensformat, getestet (B-092/AC-07).
 
 ## Offene Fragen
 
-keine blockierenden (Export der Positionen ist ausdrücklich kein Teil dieser Spec).
+Ist es in Ordnung, dass „Im Spiel starten“ einen gleichnamigen Spielstand ersetzt (Sicherung bleibt)? (B-092 › Offene Fragen, entscheidet 🧑 mit der Freigabe.)
 
 ## Sessions
 
-Entwurf. Vor dem Aktivieren jede Session als Datei nach `docs/vorlagen/session.md` schreiben, die Kriterien in Klammern werden ihr Feld `Kriterien`.
-
-- U3.1 Abbildungs-Funktion (Abschnitte/Objekte → Zeichenmodell) mit Tests (AC-02, AC-03).
-- U3.2 Seite `leveltest.html`: Eingabe, Zeichnen, Fehlerhinweis, Kachel auf der Landingpage (AC-01, AC-04).
-- U3.3 Einstieg von der Testseite: Abschnitt „Level“ mit Kachel in `testing.html` / `src/tools/testing.ts`, Controller-Auswahl, Test (AC-06).
-- U3.4 Review (alle); AC-05 ist die Abnahme durch 🧑.
+| Nr. | Datei | Typ | Agent | Status |
+|---|---|---|---|---|
+| U3.1 | `U3.1-zeichenmodell.md` | Umsetzung | autonom | offen |
+| U3.2 | `U3.2-seite.md` | Umsetzung | autonom | offen |
+| U3.3 | `U3.3-testseite.md` | Umsetzung | autonom | offen |
+| U3.4 | `U3.4-review.md` | Review | autonom | offen |
 
 ## Abnahme
 
