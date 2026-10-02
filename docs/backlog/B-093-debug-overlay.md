@@ -6,9 +6,9 @@
 - **Status:** eingeplant
 - **Sprint:** U4
 - **Erstellt:** 2026-10-01
-- **Spec:** Entwurf
+- **Spec:** freigegeben
 - **Revision:** 1
-- **Freigabe:** –
+- **Freigabe:** 2026-10-02, Chat (Ralf), Revision 1
 
 ## Ausgangslage
 
@@ -54,7 +54,7 @@ Noch keine Verbindung → „verbindet…“, keine Zahlen erfinden. Fehlende We
 
 ## Offene Fragen
 
-Welche Tasten schalten das Overlay um (Vorschlag: F3 auf der Tastatur, linker Stick-Klick am Controller; B und View + Menu sind reserviert)? Soll die FPS-Anzeige ohne `?dev=1` weiter sichtbar bleiben? Entscheidet 🧑.
+Entschieden (🧑, 2026-10-02): F3 (Tastatur) und Klick auf den linken Stick (Controller) schalten um; die FPS-Anzeige gibt es nur noch im Overlay.
 
 ## Notizen
 

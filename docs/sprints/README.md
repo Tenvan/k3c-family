@@ -8,6 +8,7 @@ Jede Sprint-README ist eine Spec (SDD); aktiv wird ein Sprint erst mit `Spec: fr
 
 | Sprint | Domäne | Thema | Am Ende sichtbar | Ordner |
 |---|---|---|---|---|
+| U4 | CLI | Debug-Overlay (B-093) | Overlay mit `?dev=1` zeigt Verbindung, Takt und Entitäten | `aktiv/U4-debug-overlay/` |
 
 ## Geplant (in dieser Reihenfolge)
 
@@ -16,7 +17,6 @@ dann über den Go-Server mit mehreren Räumen und gemischten Spielern.
 
 | Sprint | Domäne | Thema | Am Ende sichtbar | Reife | Ordner |
 |---|---|---|---|---|---|
-| U4 | CLI | Debug-Overlay (B-093) | Overlay mit `?dev=1` zeigt Verbindung, Takt und Entitäten | Entwurf | `geplant/U4-debug-overlay/` |
 | SP11 | SRV 🧑 | Raspberry Pi | 2er- und 3er-Spiel parallel auf dem Pi | Entwurf | `geplant/SP11-raspberry-pi/` |
 
 **Einschiebbar** (unabhängig vom Engine-Fortschritt, jeweils zwischen zwei Sprints):

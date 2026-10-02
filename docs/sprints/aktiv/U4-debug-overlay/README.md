@@ -1,14 +1,14 @@
 # U4 · CLI · Debug-Overlay
 
-- **Status:** geplant
+- **Status:** aktiv
 - **Domäne:** CLI
-- **Reife:** Entwurf
+- **Reife:** bereit
 - **Einschiebbar:** nein
 - **Tickets:** B-093
 - **Start-Commit:** –
-- **Spec:** Entwurf
+- **Spec:** freigegeben
 - **Revision:** 1
-- **Freigabe:** –
+- **Freigabe:** 2026-10-02, Chat (Ralf), Revision 1
 
 ## Ausgangslage
 
@@ -51,15 +51,15 @@ Keine Verbindung → „verbindet…“; fehlende Werte → „–“ (B-093 ›
 
 ## Offene Fragen
 
-Tastenbelegung und Sichtbarkeit der FPS-Anzeige ohne `?dev=1` (B-093 › Offene Fragen, entscheidet 🧑 vor der Freigabe).
+Keine. Entschieden (🧑, 2026-10-02): **F3** (Tastatur) und **Klick auf den linken Stick** (Controller) schalten um; die FPS-Anzeige gibt es nur noch im Overlay, ohne `?dev=1` entfällt sie.
 
 ## Sessions
 
-Entwurf. Vor dem Aktivieren jede Session als Datei nach `docs/vorlagen/session.md` schreiben, die Kriterien in Klammern werden ihr Feld `Kriterien`.
-
-- U4.1 Zeilen-Funktion aus Verbindungs- und Weltzustand mit Tests (AC-01).
-- U4.2 Overlay in der HUD-Szene, Umschalten, FPS aufnehmen (AC-02, AC-03).
-- U4.3 Review (alle); AC-04 ist die Abnahme durch 🧑.
+| Nr. | Datei | Typ | Agent | Status |
+|---|---|---|---|---|
+| U4.1 | `U4.1-zeilen-funktion.md` | Umsetzung | autonom | offen |
+| U4.2 | `U4.2-overlay-zeichnen.md` | Umsetzung | autonom | offen |
+| U4.3 | `U4.3-review.md` | Review | autonom | offen |
 
 ## Abnahme
 
