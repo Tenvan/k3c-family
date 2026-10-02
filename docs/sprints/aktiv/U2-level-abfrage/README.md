@@ -57,7 +57,7 @@ keine. Entschieden 2026-10-02 durch 🧑 (Chat): Fehlt der Seed, gilt der Standa
 
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
-| U2.1 | `U2.1-endpunkt.md` | Umsetzung | autonom | offen |
+| U2.1 | `U2.1-endpunkt.md` | Umsetzung | autonom | fertig |
 | U2.2 | `U2.2-review.md` | Review | autonom | offen |
 
 ## Abnahme
