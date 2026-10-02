@@ -56,7 +56,7 @@ func TestSourcesUndConsoleTail(t *testing.T) {
 	if empty, err := app.ConsoleTail("server"); err != nil || empty == nil || len(empty) != 0 {
 		t.Errorf("bekannte Quelle ohne Ausgabe = %v, %v", empty, err)
 	}
-	if _, err := app.ConsoleTail("../geheim"); err == nil || !strings.Contains(err.Error(), "gültig: k3c-dev, server") {
+	if _, err := app.ConsoleTail("../geheim"); err == nil || !strings.Contains(err.Error(), "gültig: k3c-client, k3c-dev, server, vite") {
 		t.Errorf("unbekannte Quelle: %v", err)
 	}
 }

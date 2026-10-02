@@ -1,6 +1,7 @@
 package services
 
 import (
+	"context"
 	"os"
 	"path/filepath"
 	"strings"
@@ -87,6 +88,7 @@ func watchController(t *testing.T, f *fake, root string, w *Watch) (*Controller,
 	c := New([]Service{s}, Options{Root: root, Console: store, Start: f.start, Check: f.check, Listen: f.listen, Sample: f.sample,
 		KillPID: f.killPID, StartPoll: 2 * time.Millisecond, StartTimeout: 300 * time.Millisecond, WatchEvery: time.Hour,
 		StopTimeout: time.Second, FilesEvery: 5 * time.Millisecond, FilesQuiet: 15 * time.Millisecond})
+	t.Cleanup(func() { c.StopAll(context.Background()) }) // schließt die Ausgabe-Logs (Windows: sonst nicht löschbar)
 	return c, store
 }
 

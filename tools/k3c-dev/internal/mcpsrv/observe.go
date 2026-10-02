@@ -23,6 +23,7 @@ func (s *Server) observe(next mcp.MethodHandler) mcp.MethodHandler {
 			return next(ctx, method, req)
 		}
 		id := s.stats.begin(call.Params.Name, string(call.Params.Arguments))
+		s.log.Debug(call.Params.Name+": start", "ns", "mcp", "tool", call.Params.Name, "args", clipArgs(call.Params.Arguments))
 		defer func() {
 			if p := recover(); p != nil {
 				res, err = textResult(fmt.Sprintf("%s: %v", panicText, p), true), nil
@@ -41,13 +42,27 @@ func (s *Server) finish(call *mcp.CallToolRequest, id int64, o outcome) {
 	c, found := s.stats.end(id, o)
 	if !o.ok {
 		// Tool und Fehler in der Meldung, damit logs_errors gleichartige Fehler je Tool gruppiert.
-		s.log.Warn(call.Params.Name+": "+clip(o.err), "ns", "mcp", "tool", call.Params.Name)
+		s.log.Warn(call.Params.Name+": "+clip(o.err), "ns", "mcp", "tool", call.Params.Name, "ms", c.DurationMs, "ok", false)
+	} else {
+		s.log.Info(call.Params.Name+": ok", "ns", "mcp", "tool", call.Params.Name, "ms", c.DurationMs, "ok", true)
 	}
 	// Nur Tools aus dem Katalog: erfundene Namen eines Clients ließen Statistik und Datei sonst ohne Grenze wachsen.
 	if _, known := s.params[c.Tool]; found && known && s.cfg.Usage != nil {
 		s.cfg.Usage.Record(usage.Event{At: time.Now(), Tool: c.Tool, Args: string(call.Params.Arguments),
 			DurationMs: c.DurationMs, OK: c.OK, Error: o.err})
 	}
+}
+
+// argsRunes begrenzt die Argumente im Log.
+const argsRunes = 200
+
+// clipArgs kürzt rohe Tool-Argumente für das Log.
+func clipArgs(raw []byte) string {
+	r := []rune(string(raw))
+	if len(r) <= argsRunes {
+		return string(r)
+	}
+	return string(r[:argsRunes-1]) + "…"
 }
 
 // outcomeOf liest Erfolg, Fehlertext und erste Antwortzeile aus einem Ergebnis.
