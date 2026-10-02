@@ -1,6 +1,6 @@
 # U1 · CLI · Radar im HUD
 
-- **Status:** aktiv
+- **Status:** erledigt
 - **Domäne:** CLI
 - **Reife:** bereit
 - **Einschiebbar:** nein
@@ -59,8 +59,10 @@ keine. Entschieden 2026-10-02 durch 🧑 (Chat): Das Radar ist immer sichtbar (k
 |---|---|---|---|---|
 | U1.1 | `U1.1-marker-logik.md` | Umsetzung | autonom | fertig |
 | U1.2 | `U1.2-radar-zeichnen.md` | Umsetzung | autonom | fertig |
-| U1.3 | `U1.3-review.md` | Review | autonom | offen |
+| U1.3 | `U1.3-review.md` | Review | autonom | fertig |
 
 ## Abnahme
 
-–
+- 2026-10-02, Review U1.3 (Agent): AC-01 belegt (U1.1 › Ergebnis), AC-02 und AC-03 belegt (U1.2 › Ergebnis, nachgeprüft in U1.3 › Ergebnis).
+- AC-04 offen: wartet auf Abnahme durch 🧑 am TV.
+- Behobene Befunde: keine (keine schweren Befunde). Neue Tickets: keine.
