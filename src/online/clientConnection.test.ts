@@ -79,7 +79,7 @@ function inLobby() {
 function inRoom(slots = [0]) {
   const t = inLobby();
   t.client.create('familie', true, 0, slots);
-  t.last().recv({ ...joined, you: slots.map((slot) => ({ slot, monarch: slot })) });
+  t.last().recv({ ...joined, you: slots.map((slot) => ({ slot, monarch: slot, depth: 0 })) });
   t.last().recv(levelMsg);
   t.last().recv(snapMsg);
   return t;
@@ -94,7 +94,7 @@ describe('Handschlag und Geräte-ID (AC-06)', () => {
     const t = setup();
     expect(t.last().sent).toEqual([]);
     t.last().open();
-    expect(t.last().sent).toEqual([{ t: 'hello', v: 2, device: 'dev-1' }]);
+    expect(t.last().sent).toEqual([{ t: 'hello', v: 3, device: 'dev-1' }]);
     t.last().recv(welcome);
     expect(t.client.status).toBe('lobby');
     expect(t.client.tickHz).toBe(30);
@@ -268,10 +268,10 @@ describe('Wiederverbinden (AC-10)', () => {
     t.advance(1);
     expect(t.socks).toHaveLength(2);
     t.last().open();
-    expect(t.last().sent[0]).toEqual({ t: 'hello', v: 2, device: 'dev-1' });
+    expect(t.last().sent[0]).toEqual({ t: 'hello', v: 3, device: 'dev-1' });
     t.last().recv(welcome);
     expect(t.last().sent[1]).toEqual({ t: 'join', room: 'KRNZ', slots: [0, 1] });
-    t.last().recv({ ...joined, you: [{ slot: 0, monarch: 0 }, { slot: 1, monarch: 1 }] });
+    t.last().recv({ ...joined, you: [{ slot: 0, monarch: 0, depth: 0 }, { slot: 1, monarch: 1, depth: 0 }] });
     expect(t.client.status).toBe('room');
     expect(t.client.notice).toBeNull();
   });
@@ -343,7 +343,7 @@ describe('Befehle', () => {
 
   it('seats aktualisiert Zuordnung und Monarchen-Zustände', () => {
     const t = inRoom();
-    t.last().recv({ t: 'seats', you: [{ slot: 0, monarch: 0 }], monarchs: ['taken', 'free', 'taken'] });
+    t.last().recv({ t: 'seats', you: [{ slot: 0, monarch: 0, depth: 0 }], monarchs: ['taken', 'free', 'taken'] });
     expect(t.client.monarchs).toEqual(['taken', 'free', 'taken']);
     t.client.addSlot(1);
     t.client.removeSlot(1);

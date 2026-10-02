@@ -93,7 +93,7 @@ func (m *Manager) code() string {
 
 // Create erstellt einen Raum mit neuem (fresh) oder gespeichertem Spielstand und nimmt das Gerät auf. Prüf-Reihenfolge
 // aus docs/protocol.md › Beitreten; ist der gespeicherte Stand schon offen, tritt das Gerät diesem Raum bei.
-func (m *Manager) Create(id string, peer Peer, name string, fresh bool, depth int, slots []int) (*Room, error) {
+func (m *Manager) Create(id string, peer Peer, name string, fresh bool, depth int, slots []int, opts Options) (*Room, error) {
 	if err := ValidSlots(slots); err != nil {
 		return nil, err
 	}
@@ -108,11 +108,11 @@ func (m *Manager) Create(id string, peer Peer, name string, fresh bool, depth in
 	if m.shut {
 		return nil, ErrClosed
 	}
-	r, err = m.create(id, peer, name, fresh, depth, slots)
+	r, err = m.create(id, peer, name, fresh, depth, slots, opts)
 	return r, err
 }
 
-func (m *Manager) create(id string, peer Peer, name string, fresh bool, depth int, slots []int) (*Room, error) {
+func (m *Manager) create(id string, peer Peer, name string, fresh bool, depth int, slots []int, opts Options) (*Room, error) {
 	for _, r := range m.rooms {
 		if r.Name != name {
 			continue
@@ -133,7 +133,7 @@ func (m *Manager) create(id string, peer Peer, name string, fresh bool, depth in
 	if len(m.rooms) >= MaxRooms {
 		return nil, ErrTooManyRooms
 	}
-	r := &Room{Code: m.code(), Name: name, m: m, isl: isl, start: startStage(isl, depth), monarchs: monarchs, devices: map[string]*device{}}
+	r := &Room{Code: m.code(), Name: name, m: m, isl: isl, start: startStage(isl, depth), Opts: opts, monarchs: monarchs, devices: map[string]*device{}}
 	m.rooms[r.Code] = r
 	if m.ctx != nil {
 		go r.run(m.ctx)
