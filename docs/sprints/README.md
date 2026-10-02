@@ -8,7 +8,6 @@ Jede Sprint-README ist eine Spec (SDD); aktiv wird ein Sprint erst mit `Spec: fr
 
 | Sprint | Domäne | Thema | Am Ende sichtbar | Ordner |
 |---|---|---|---|---|
-| SP13 | SIM | Raum-Optionen, Grade, Material-Lager (B-101, B-113) | Insel mit Grad, Wellenfaktor, fünf Materialien, Lager-Maximum und Tragen | `aktiv/SP13-optionen-material/` |
 | SP11 | SRV 🧑 | Raspberry Pi | 2er- und 3er-Spiel parallel auf dem Pi | `aktiv/SP11-raspberry-pi/` |
 
 ## Geplant (in dieser Reihenfolge)
@@ -65,3 +64,4 @@ Nach SP11: Regelwerk II (Monarch und Bürger: Skillung, Klassen, Level, B-110) �
 | R3 | Regelwerk II: Monarch und Bürger, freie Skillung, Fund-Pool, Schlag, Berufe, Händler (B-110, B-017) | `erledigt/R3-monarch-buerger/` |
 | R4 | Regelwerk III: Gegner, Wellen, Bosse, Events (B-127, B-004) | `erledigt/R4-gegner-bosse/` |
 | SP12 | Insel-Kern: mehrere Stufen ticken, Einzelwechsel, Vorrat je Insel, Spielstand Version 2 (B-100) | `erledigt/SP12-insel-kern/` |
+| SP13 | Raum-Optionen, Grade, fünf Materialien, Lager-Maximum und Tragen in der Insel (B-101, B-113) | `erledigt/SP13-optionen-material/` |

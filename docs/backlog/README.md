@@ -41,7 +41,6 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-095](B-095-start-mit-seed-und-tiefe.md) | SRV | Idee | niedrig | offen | – | Ein neues Spiel startet per URL mit eigenem Seed und gewählter Tiefe |
 | [B-098](B-098-debug-overlay-standard-zurueck.md) | CLI | Schuld | niedrig | offen | – | Das Debug-Overlay ist vor dem Release wieder nur mit ?dev=1 verfügbar |
 | [B-099](B-099-balancing-tester.md) | SIM | Idee | mittel | offen | – | Ein automatischer Balancing-Tester prüft Regeln und Werte gegen messbare Ziele |
-| [B-101](B-101-raum-optionen-schwierigkeit.md) | SIM | Idee | hoch | eingeplant | SP13 | Raum-Optionen und fünf Schwierigkeitsgrade wirken in der Simulation |
 | [B-102](B-102-siegvarianten-niederlage.md) | SIM | Idee | mittel | offen | – | Siegvarianten und Niederlage-Modi der Raum-Optionen sind umgesetzt |
 | [B-103](B-103-inseln-bosse.md) | SIM | Idee | mittel | offen | – | Inseln mit Endboss und gemeinsamem Inselwechsel sind spielbar |
 | [B-104](B-104-protokoll-stufe-und-optionen.md) | SRV | Idee | hoch | offen | – | Das Protokoll kennt die Stufe je Spieler und die Raum-Optionen |
@@ -129,8 +128,9 @@ Zeile in diesen Abschnitt.
 | [B-127](archiv/B-127-regelwerk-gegner-bosse.md) | REG | Idee | hoch | erledigt | R4 | Gegner, Wellen, Bosse und Events sind im Regelwerk beschlossen |
 | [B-004](archiv/B-004-regelwerk.md) | REG | Idee | hoch | erledigt | – | Regelwerk ist ausführlich diskutiert und ausgearbeitet |
 | [B-100](archiv/B-100-mehrstufen-insel.md) | SIM | Idee | hoch | erledigt | SP12 | Eine Insel hat n Stufen, die alle laufen und pro Spieler begehbar sind |
+| [B-101](archiv/B-101-raum-optionen-schwierigkeit.md) | SIM | Idee | hoch | erledigt | SP13 | Raum-Optionen und fünf Schwierigkeitsgrade wirken in der Simulation |
+| [B-113](archiv/B-113-material-lager.md) | SIM | Idee | hoch | erledigt | SP13 | Fünf Materialien, Lager-Maximum und Tragen zum Lager sind umgesetzt |
 | [B-112](B-112-hub-ausbau-mauerstufen.md) | SIM | Idee | hoch | offen | – | Der Hub wird in fünf Stufen ausgebaut, Mauern und Türme haben fünf Materialstufen |
-| [B-113](B-113-material-lager.md) | SIM | Idee | hoch | eingeplant | SP13 | Fünf Materialien, Lager-Maximum und Tragen zum Lager sind umgesetzt |
 | [B-114](B-114-plantage-adern.md) | SIM | Idee | hoch | offen | – | Farm-Plantage lässt Holz nachwachsen, Adern liefern Stein bis Kristall unendlich mit Abbaurate |
 | [B-115](B-115-stufen-breite-eisen-kristall.md) | SIM | Idee | mittel | offen | – | Die Stufen sind nach unten schmaler und dichter, Eisenstollen und Kristallhöhle sind als Stufen angelegt |
 | [B-116](B-116-gebaeude-wirkungen.md) | SIM | Idee | mittel | offen | – | Tor, Kaserne, Taverne, Heilplatz, Schmiede, Rüstkammer und Zaubertum wirken im Spiel |
