@@ -1,4 +1,5 @@
 import type { Castle, Enemy, LevelEntity, Player, Site } from '../model/types';
+import { GAME_WIDTH } from '../core/constants';
 import type { Cell } from './layout';
 
 /**
@@ -72,8 +73,21 @@ export const RADAR_BOTTOM_OFFSET = 68;
 /** Oben bleiben ca. 70 px für den Home-Button der Shell frei. */
 export const TOP_STRIP = 70;
 
-/** Fläche der Leiste im Feld: unten mittig, halbe Feldbreite (höchstens `RADAR_MAX_WIDTH`). */
+/** Abstand zum Außenrand, wenn die Leiste in einem schmalen Feld nach außen rückt. */
+const EDGE_MARGIN = 24;
+
+/**
+ * Fläche der Leiste im Feld, unten. Im Vollbild-Streifen mittig und halb so breit wie das Feld (höchstens
+ * `RADAR_MAX_WIDTH`). In schmalen Feldern (3 und 4 Spieler) sitzt der gemeinsame HUD-Block mittig am Kreuzpunkt:
+ * dort ist die Leiste 40 % so breit und rückt an den äußeren Bildschirmrand.
+ */
 export function radarRect(cell: Pick<Cell, 'x' | 'y' | 'w' | 'h'>): RadarRect {
-  const w = Math.min(cell.w / 2, RADAR_MAX_WIDTH);
-  return { x: cell.x + (cell.w - w) / 2, y: cell.y + cell.h - RADAR_BOTTOM_OFFSET, w, h: RADAR_HEIGHT };
+  const y = cell.y + cell.h - RADAR_BOTTOM_OFFSET;
+  if (cell.w >= GAME_WIDTH) {
+    const w = Math.min(cell.w / 2, RADAR_MAX_WIDTH);
+    return { x: cell.x + (cell.w - w) / 2, y, w, h: RADAR_HEIGHT };
+  }
+  const w = Math.min(cell.w * 0.4, RADAR_MAX_WIDTH);
+  const left = cell.x < GAME_WIDTH / 2;
+  return { x: left ? cell.x + EDGE_MARGIN : cell.x + cell.w - EDGE_MARGIN - w, y, w, h: RADAR_HEIGHT };
 }

@@ -5,6 +5,7 @@ import type { GameEvent, World } from '../model/types';
 import type { GameScene } from './GameScene';
 import { SHARED_LINE_HEIGHT, sharedAnchor } from './layout';
 import { gameNotice } from './lobbyLogic';
+import { RadarLayer } from './radarView';
 import { RESOURCE_NAMES } from './worldRenderer';
 
 const STYLE = { fontSize: '28px', color: '#ffffff', stroke: '#000000', strokeThickness: 6, fontStyle: 'bold' };
@@ -34,6 +35,7 @@ export class HudScene extends Phaser.Scene {
   private info!: Phaser.GameObjects.Text;
   private travel!: Phaser.GameObjects.Text;
   private playerLabels: Phaser.GameObjects.Text[] = [];
+  private radar!: RadarLayer;
   private bannerQueue: string[] = [];
   private bannerLeft = 0;
 
@@ -45,6 +47,7 @@ export class HudScene extends Phaser.Scene {
     this.playerLabels = [];
     this.bannerQueue = [];
     this.bannerLeft = 0;
+    this.radar = new RadarLayer(this);
 
     this.shared = this.add.text(GAME_WIDTH - 24, 16, '', STYLE).setOrigin(1, 0);
     this.clock = this.add.text(GAME_WIDTH - 24, 56, '', STYLE).setOrigin(1, 0);
@@ -68,6 +71,7 @@ export class HudScene extends Phaser.Scene {
     this.showHints(game, world);
     if (!world) return;
     this.showCells(game, world.players);
+    this.radar.draw(game.hudCells(), world);
     this.showWorld(world);
     this.placeShared(game);
     this.showBanner(game, deltaMs);
