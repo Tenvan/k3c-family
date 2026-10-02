@@ -67,4 +67,4 @@ Lauf bricht ab (Fehler in der Simulation) → Lauf als „ungültig“ im Berich
 
 ## Notizen
 
-Vorbereitung in R1: Ergebnisse der Workshops enthalten je Regel mit Zahlen einen messbaren Zielkorridor; R1.1 listet, welche Kennzahlen sich headless aus `World` und `World.Events` ablesen lassen.
+Vorbereitung in R1 abgeschlossen: Zielkorridore stehen in `docs/rules/wirtschaft.md` (§ 1, 3, 4) und `docs/rules/stufen.md` (§ 1, 3); Kennzahlen: `docs/rules/ist-abgleich.md` › Messgrößen. Antworten auf die Offenen Fragen: Kennzahlen und Ziele siehe diese Dateien (Standardszenario Wald, 2 Spieler, Bot „sparsam“, je 100 Seeds, Normal). Der Tester soll je Schwierigkeitsgrad, je Spieleranzahl 1–4 und mit allen aktiven Stufen einer Insel laufen (B-100, B-101) und die Last messen (SP11).

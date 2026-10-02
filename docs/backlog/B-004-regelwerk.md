@@ -3,8 +3,8 @@
 - **Domäne:** REG
 - **Typ:** Idee
 - **Prio:** hoch
-- **Status:** eingeplant
-- **Sprint:** R1
+- **Status:** offen
+- **Sprint:** –
 - **Erstellt:** 2026-09-29
 - **Spec:** freigegeben
 - **Revision:** 2
@@ -58,3 +58,5 @@ keine
 ## Notizen
 
 Workshops: Claude bereitet vor und fragt einzeln, der Mensch entscheidet.
+
+**Stand 2026-10-02 (R1 abgeschlossen):** Regelwerk I ist beschlossen (`docs/rules/wirtschaft.md`, `stufen.md`), **B-004/AC-01 ist erfüllt**. Offen: AC-02 (Monarch & Skills, Regelwerk II; Skill-Menü liegt nicht auf View) und AC-03 (Gegner & Truppen inkl. Bosse, Vollmond-Event, Elite, Truppen-Limit, Regelwerk III). Weiteres Vorgehen: B-108 (Material und Inseln) vor B-100.
