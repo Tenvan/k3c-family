@@ -3,8 +3,8 @@
 - **Domäne:** REG
 - **Typ:** Idee
 - **Prio:** hoch
-- **Status:** offen
-- **Sprint:** –
+- **Status:** eingeplant
+- **Sprint:** R3
 - **Erstellt:** 2026-10-02
 - **Spec:** Entwurf
 - **Revision:** 1
