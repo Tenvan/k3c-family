@@ -4,11 +4,11 @@
 - **Domäne:** REG
 - **Reife:** bereit
 - **Einschiebbar:** ja
-- **Tickets:** B-109
+- **Tickets:** B-109, B-111
 - **Start-Commit:** e03409f
 - **Spec:** freigegeben
-- **Revision:** 1
-- **Freigabe:** 2026-10-02, Chat (Ralf), Revision 1
+- **Revision:** 2
+- **Freigabe:** 2026-10-02, Chat (Ralf), Revision 1; Revision 2 (Workshop Materialmengen und Stufenbreite, B-111) auf Zuruf von Ralf am 2026-10-02
 
 ## Ausgangslage
 
@@ -24,7 +24,7 @@ Materialien und Gebäude sind beschlossen. Am Ende sichtbar: `docs/rules/materia
 
 ## Anforderungen
 
-B-109 › Anforderungen. Sprint-eigen: Je Beschluss mit Zahlen ein messbarer Zielkorridor (Kennzahl, Szenario, Grenzen) für den Balancing-Tester (B-099); der Sprint baut ihn nicht. Benennung: Regelwerk II (Monarch & Skills) und III (Gegner, Truppen, Bosse) bleiben so benannt (B-004); ihre Sprints heißen später R3 und R4.
+B-109 › Anforderungen und B-111 › Anforderungen (Materialmengen je Stufe, Breite der Stufen). Sprint-eigen: Je Beschluss mit Zahlen ein messbarer Zielkorridor (Kennzahl, Szenario, Grenzen) für den Balancing-Tester (B-099); der Sprint baut ihn nicht. Benennung: Regelwerk II (Monarch & Skills) und III (Gegner, Truppen, Bosse) bleiben so benannt (B-004); ihre Sprints heißen später R3 und R4.
 
 ## Nicht-Ziele
 
@@ -48,6 +48,7 @@ Keine Einigung im Workshop → Frage-Ticket, Thema im nächsten Workshop.
 - **AC-02** Die Gebäude sind dort beschlossen, je mit Zielkorridor (B-109/AC-02).
 - **AC-03** `game-design.md` stimmt mit den Beschlüssen überein (B-109/AC-03).
 - **AC-04** Umsetzungs-Tickets für SIM und CLI liegen im Backlog, B-015 ist angepasst (B-109/AC-04).
+- **AC-05** Die Breite der Stufen und die Materialmengen je Stufe sind beschlossen, mit Zielkorridoren (B-111/AC-01, B-111/AC-02, B-111/AC-03).
 
 ## Offene Fragen
 
@@ -59,7 +60,8 @@ keine
 |---|---|---|---|---|
 | R2.1 | `R2.1-ist-material-gebaeude.md` | Umsetzung | autonom | fertig |
 | R2.2 | `R2.2-workshop-material-gebaeude.md` | Workshop | Mensch | fertig |
-| R2.3 | `R2.3-beschluss-tickets.md` | Umsetzung | autonom | offen |
+| R2.3 | `R2.3-workshop-materialmengen.md` | Workshop | Mensch | offen |
+| R2.4 | `R2.4-beschluss-tickets.md` | Umsetzung | autonom | offen |
 
 ## Abnahme
 

@@ -3,12 +3,12 @@
 - **Domäne:** REG
 - **Typ:** Frage
 - **Prio:** hoch
-- **Status:** offen
-- **Sprint:** –
+- **Status:** eingeplant
+- **Sprint:** R2
 - **Erstellt:** 2026-10-02
-- **Spec:** Entwurf
-- **Revision:** 1
-- **Freigabe:** –
+- **Spec:** freigegeben
+- **Revision:** 2
+- **Freigabe:** 2026-10-02, Chat (Ralf), Revision 2 (Breite der Stufen ergänzt)
 
 ## Ausgangslage
 
@@ -32,7 +32,9 @@ Die Materialmengen je Stufe und Insel sind festgelegt und passen zu den Kosten: 
 
 ## Anforderungen
 
-Die ersten drei Entscheidungen, genau gestellt:
+Die ersten Entscheidungen, genau gestellt:
+
+0. **Wie breit sind die Stufen in die Tiefe?** (Frage von 🧑 2026-10-02) Gleich breit, nach unten breiter oder nach unten schmaler; Ist-Stand schmaler (Wald 900–1100, Höhle 700–900, Mine 550–700 Units). Folgen: Laufweg, Ressourcendichte, Rechenzeit (alle Stufen laufen weiter), Gegnerdruck.
 
 1. **Welche Seite wird angepasst?** (a) Biom-Mengen erhöhen (mehr Felsen, Erz je Chunk, evtl. größere Mengen je Objekt), (b) Kosten senken, (c) beides, oder (d) weitere Quellen (Truhen, Gegner- und Boss-Drops, Händler/Tausch), sodass die Chunks nicht allein tragen.
 2. **Welches Verhältnis Angebot zu Bedarf?** Zielwert je Material und Insel: z. B. Angebot 120–150 % des Bedarfs bis zur nächsten Hub-Stufe (Reserve für Zerstörungen), und welcher Anteil darf ungenutzt bleiben.
@@ -58,7 +60,7 @@ nicht relevant – reine Entscheidung, kein Verhalten.
 
 ## Akzeptanzkriterien
 
-- **AC-01** Je Material und Stufe steht die Zielmenge im Regelwerk (`docs/rules/materialien-gebaeude.md`), mit Begründung.
+- **AC-01** Die Breite je Stufe und je Material und Stufe steht die Zielmenge im Regelwerk (`docs/rules/materialien-gebaeude.md`), mit Begründung.
 - **AC-02** Die Zielkorridore für Material und Hub-Stufen sind angepasst (mit den beschlossenen Mengen).
 - **AC-03** Die Messung der tatsächlichen Mengen aus dem Generator (Seeds) liegt als Wert im Ticket oder als B-099-Kennzahl vor.
 
