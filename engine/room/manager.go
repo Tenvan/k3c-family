@@ -39,6 +39,8 @@ type Manager struct {
 	Now     func() time.Time // Test-Naht; nil = time.Now
 	NewCode func() string    // Test-Naht; nil = zufällig
 	Log     *slog.Logger
+	// Dev schaltet den Dev-Mode ein (K3C_DEV): Grad dev wählbar, Standardgrad eines neuen Raums ist dann dev.
+	Dev bool
 	// Changed meldet, dass sich Raumliste oder Plätze geändert haben (für `rooms` an Geräte ohne Raum).
 	// Aufruf ohne gehaltene Sperre.
 	Changed func()
@@ -122,7 +124,7 @@ func (m *Manager) create(id string, peer Peer, name string, fresh bool, depth in
 		}
 		return r, r.lockedJoin(id, peer, slots)
 	}
-	isl, err := m.open(name, fresh, depth)
+	isl, err := m.open(name, fresh, depth, opts)
 	if err != nil {
 		return nil, err
 	}
@@ -143,7 +145,7 @@ func (m *Manager) create(id string, peer Peer, name string, fresh bool, depth in
 
 // open lädt den Spielstand (Version 1 oder 2) oder legt eine neue Insel mit den Stufen Tiefe 0, 1, 2 an. Die Spieler eines
 // geladenen Stands sind im Raum freie Monarchen.
-func (m *Manager) open(name string, fresh bool, depth int) (*sim.Island, error) {
+func (m *Manager) open(name string, fresh bool, depth int, opts Options) (*sim.Island, error) {
 	data, err := m.Store.Load(name)
 	switch {
 	case fresh && err == nil:
@@ -162,13 +164,50 @@ func (m *Manager) open(name string, fresh bool, depth int) (*sim.Island, error) 
 			return nil, err
 		}
 		isl.ID = name + "-" + m.now().UTC().Format("20060102T150405.000")
+		if err := sim.SetOptions(isl, m.islandOptions(opts), m.Dev); err != nil {
+			return nil, ErrBadRequest // ungültiger Wert oder dev ohne Dev-Mode
+		}
 		return isl, nil
 	}
 	s, err := sim.ParseIslandSave(data)
 	if err != nil {
 		return nil, err
 	}
-	return sim.FromIslandSave(s, 1)
+	isl, err := sim.FromIslandSave(s, 1)
+	if err != nil {
+		return nil, err
+	}
+	m.liveGrade(isl, name)
+	return isl, nil
+}
+
+// liveGrade setzt den Grad dev im Live-Modus auf normal (nur im Speicher; der Stand bleibt, bis er neu gespeichert wird).
+func (m *Manager) liveGrade(isl *sim.Island, name string) {
+	if isl.Options.Grade == "dev" && !m.Dev {
+		m.log().Warn("Spielstand mit Grad dev im Live-Modus: Grad auf normal gesetzt", "save", name)
+		isl.Options.Grade = "normal"
+	}
+}
+
+// islandOptions füllt fehlende Felder: Grad nach Modus (dev im Dev-Mode, sonst normal), Ziel und Niederlage-Modus nach Grad.
+func (m *Manager) islandOptions(o Options) sim.IslandOptions {
+	if o.Grade == "" {
+		o.Grade = "normal"
+		if m.Dev {
+			o.Grade = "dev"
+		}
+	}
+	r := sim.DefaultOptionsFor(o.Grade)
+	if r.Grade != o.Grade {
+		r.Grade = o.Grade // unbekannter Grad: SetOptions lehnt ihn ab
+	}
+	if o.Goal != "" {
+		r.Goal = o.Goal
+	}
+	if o.Defeat != "" {
+		r.Defeat = o.Defeat
+	}
+	return r
 }
 
 func (r *Room) lockedJoin(id string, peer Peer, slots []int) error {

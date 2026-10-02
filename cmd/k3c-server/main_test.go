@@ -22,6 +22,15 @@ func TestKonfiguration(t *testing.T) {
 	}
 }
 
+func TestDevModeAusUmgebung(t *testing.T) {
+	for v, want := range map[string]bool{"": true, "1": true, "0": false} {
+		t.Setenv("K3C_DEV", v)
+		if got := loadConfig().dev; got != want {
+			t.Errorf("K3C_DEV=%q: dev=%v, erwartet %v", v, got, want)
+		}
+	}
+}
+
 func TestOhneBuildKeinStart(t *testing.T) {
 	cfg := loadConfig()
 	cfg.dist = filepath.Join(t.TempDir(), "dist")
