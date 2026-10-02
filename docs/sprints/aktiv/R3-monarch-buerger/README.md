@@ -1,14 +1,14 @@
 # R3 · REG · Regelwerk II – Monarch, Bürger, Klassen, Level, Skills
 
-- **Status:** geplant
+- **Status:** aktiv
 - **Domäne:** REG
 - **Reife:** bereit
 - **Einschiebbar:** ja
 - **Tickets:** B-110, B-017
 - **Start-Commit:** –
-- **Spec:** Entwurf
+- **Spec:** freigegeben
 - **Revision:** 1
-- **Freigabe:** –
+- **Freigabe:** 2026-10-02, Chat (Ralf), Revision 1
 
 ## Ausgangslage
 
