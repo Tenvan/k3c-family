@@ -16,7 +16,7 @@ dann über den Go-Server mit mehreren Räumen und gemischten Spielern.
 
 | Sprint | Domäne | Thema | Am Ende sichtbar | Reife | Ordner |
 |---|---|---|---|---|---|
-| U3 | PLAT | Level-Betrachter (B-092) | Seite `leveltest.html` zeigt Seed und Biom, startet das Level im Spiel | Entwurf | `geplant/U3-level-betrachter/` |
+| U3 | PLAT | Level-Betrachter (B-092) | Seite `leveltest.html` (auch von der Testseite aus) zeigt Seed und Biom, startet den Wald im Spiel | bereit | `geplant/U3-level-betrachter/` |
 | U4 | CLI | Debug-Overlay (B-093) | Overlay mit `?dev=1` zeigt Verbindung, Takt und Entitäten | Entwurf | `geplant/U4-debug-overlay/` |
 | SP11 | SRV 🧑 | Raspberry Pi | 2er- und 3er-Spiel parallel auf dem Pi | Entwurf | `geplant/SP11-raspberry-pi/` |
 
