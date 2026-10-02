@@ -1,4 +1,4 @@
-import { defineConfig } from 'vite';
+import { configDefaults, defineConfig } from 'vitest/config';
 import { readdirSync } from 'node:fs';
 import { resolve } from 'node:path';
 
@@ -12,6 +12,8 @@ export default defineConfig({
     proxy: { '/api': 'http://localhost:8080', '/ws': { target: 'ws://localhost:8080', ws: true } },
   },
   preview: { host: true, port: 4173 },
+  // .claude/worktrees enthält komplette Checkouts anderer Branches; deren Tests gehören nicht zu diesem Lauf.
+  test: { exclude: [...configDefaults.exclude, '.claude/**'] },
   build: {
     target: 'es2022',
     chunkSizeWarningLimit: 2000,
