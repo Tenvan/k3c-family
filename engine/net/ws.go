@@ -4,6 +4,7 @@ import (
 	"context"
 	"encoding/json"
 	"net/http"
+	"strconv"
 	"sync"
 	"sync/atomic"
 	"time"
@@ -168,6 +169,7 @@ func (s *server) websocket(w http.ResponseWriter, r *http.Request) {
 	defer cancel()
 	device, ok := handshake(ctx, ws)
 	if !ok {
+		s.log.Warn("WebSocket: Handschlag abgelehnt", "ns", "ws", "remote", r.RemoteAddr, "erwartet", ProtocolVersion, "userAgent", r.UserAgent())
 		b, _ := json.Marshal(errMsg(codeVersion))
 		_ = ws.Write(ctx, websocket.MessageText, b)
 		_ = ws.Close(websocket.StatusPolicyViolation, codeVersion)
@@ -177,17 +179,25 @@ func (s *server) websocket(w http.ResponseWriter, r *http.Request) {
 	go c.writer(ctx)
 	c.enqueue(welcome())
 	s.track(c, true)
+	began := time.Now()
+	s.log.Info("WebSocket: Gerät verbunden", "ns", "ws", "device", short(device), "remote", r.RemoteAddr, "verbindungen", s.openConns())
+	var readErr error
 	defer func() {
 		s.track(c, false)
-		if r := c.current(); r != nil {
-			r.Drop(c.device, c)
+		room := ""
+		if rm := c.current(); rm != nil {
+			room = rm.Code
+			rm.Drop(c.device, c)
 		}
+		s.log.Info("WebSocket: Gerät getrennt", "ns", "ws", "device", short(device), "raum", room, "dauerS", int(time.Since(began).Seconds()),
+			"grund", closeReason(readErr), "verbindungen", s.openConns())
 		_ = ws.CloseNow()
 	}()
 	c.enqueue(roomsMsg{"rooms", s.cfg.Rooms.Rooms()})
 	for {
 		_, data, err := ws.Read(ctx)
 		if err != nil {
+			readErr = err
 			return
 		}
 		c.handle(data)
@@ -231,4 +241,30 @@ func (s *server) broadcastRooms() {
 			c.enqueue(msg)
 		}
 	}
+}
+
+// short kürzt eine Geräte-ID für das Log.
+func short(id string) string {
+	if len(id) > 8 {
+		return id[:8]
+	}
+	return id
+}
+
+// closeReason nennt, warum die Lese-Schleife endete: Statuscode der Gegenstelle, sonst der Fehlertext.
+func closeReason(err error) string {
+	if err == nil {
+		return "geschlossen"
+	}
+	if code := websocket.CloseStatus(err); code != -1 {
+		return "close " + strconv.Itoa(int(code))
+	}
+	return err.Error()
+}
+
+// openConns zählt die offenen Verbindungen.
+func (s *server) openConns() int {
+	s.mu.Lock()
+	defer s.mu.Unlock()
+	return len(s.conns)
 }

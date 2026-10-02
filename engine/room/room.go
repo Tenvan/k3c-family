@@ -95,6 +95,8 @@ type Room struct {
 	emptySince time.Time
 	closed     bool
 	durations  []time.Duration // letzte Tick-Dauern (run.go)
+	slowLogged time.Time       // letzte Meldung eines langsamen Ticks (logging.go)
+	slowCount  int             // langsame Ticks seit dieser Meldung
 	beforeStep func()          // Test-Naht: läuft im Tick vor StepIsland
 }
 
@@ -158,6 +160,7 @@ func (r *Room) join(id string, peer Peer, slots []int) error {
 	}
 	r.emptySince = time.Time{}
 	r.syncFree()
+	r.log().Info("Gerät im Raum", "device", short(id), "slots", slots, "wiederverbunden", old != nil, "geraete", r.connected())
 	peer.Joined(r.Code, r.Name, r.seats(d))
 	r.pushState(d)
 	r.broadcastSeats()
@@ -263,9 +266,12 @@ func (r *Room) dropTestSave() {
 }
 
 func (r *Room) save() {
-	if _, err := r.store(); err != nil {
-		r.m.log().Error("Spielstand nicht gespeichert", "room", r.Code, "save", r.Name, "err", err)
+	backup, err := r.store()
+	if err != nil {
+		r.log().Error("Spielstand nicht gespeichert", "err", err)
+		return
 	}
+	r.log().Debug("Spielstand gespeichert", "tick", r.tick, "sicherung", backup)
 }
 
 // store schreibt den Spielstand und liefert den Namen der Sicherung des vorigen Stands (leer, wenn es keine gab).
