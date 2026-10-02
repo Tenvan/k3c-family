@@ -2,7 +2,7 @@
 
 - **Status:** geplant
 - **Domäne:** SRV
-- **Reife:** Entwurf
+- **Reife:** bereit
 - **Einschiebbar:** nein
 - **Tickets:** B-091
 - **Start-Commit:** –
@@ -40,7 +40,7 @@ Domäne SRV (`engine/net/`, README für den Aufruf). Schichtgrenzen: `engine/lev
 
 ## Ausnahme- und Fehlerfälle
 
-Zu langer Seed oder unbekanntes Biom → 400; falsche Methode → 405 (B-091 › Ausnahme- und Fehlerfälle).
+Fehlender Seed → `k3c`, fehlendes Biom → `forest`; zu langer Seed oder unbekanntes Biom → 400; falsche Methode → 405 (B-091 › Ausnahme- und Fehlerfälle).
 
 ## Akzeptanzkriterien
 
@@ -51,14 +51,14 @@ Zu langer Seed oder unbekanntes Biom → 400; falsche Methode → 405 (B-091 ›
 
 ## Offene Fragen
 
-Fehlender Seed: Standardseed oder Fehler? (B-091 › Offene Fragen, entscheidet 🧑 vor der Freigabe.)
+keine. Entschieden 2026-10-02 durch 🧑 (Chat): Fehlt der Seed, gilt der Standardseed `k3c`; fehlt das Biom, gilt `forest`.
 
 ## Sessions
 
-Entwurf. Vor dem Aktivieren jede Session als Datei nach `docs/vorlagen/session.md` schreiben, die Kriterien in Klammern werden ihr Feld `Kriterien`.
-
-- U2.1 Endpunkt `/api/level` mit Eingabeprüfung und Tests (AC-01, AC-02, AC-03).
-- U2.2 README-Abschnitt, Smoke-Aufruf; Review (alle) (AC-04).
+| Nr. | Datei | Typ | Agent | Status |
+|---|---|---|---|---|
+| U2.1 | `U2.1-endpunkt.md` | Umsetzung | autonom | offen |
+| U2.2 | `U2.2-review.md` | Review | autonom | offen |
 
 ## Abnahme
 
