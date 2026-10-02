@@ -4,7 +4,10 @@
 des Monarchen, denn jedes Gerät sieht die Stufe seines ersten Monarchen und Spieler anderer Stufen fehlen im Zustand: der
 Client sucht Spieler nach `index`, nicht nach Position). `create` nimmt die optionalen Strings `grade`
 (`dev|easy|normal|hard|ultra`), `goal` (`endboss|gold|days|mineAll|buildAll`) und `defeat` (`resources|stage|lost`); fehlend
-heißt Standard. Der Server liest sie und reicht sie an den Raum weiter, Prüfung und Wirkung folgen mit SP14.3. `rooms[]`
+heißt Standard. Der Server prüft sie beim Anlegen eines neuen Stands (SP14.3): Fehlende Felder bekommen den Standard (Grad: `dev` im
+Dev-Mode, sonst `normal`; `goal`/`defeat` je Grad), ein unbekannter Wert oder `dev` ohne Dev-Mode (`K3C_DEV=0`) ergibt
+`bad_request`. Die Optionen stehen im Spielstand; für einen vorhandenen Stand (`fresh` false) werden sie ignoriert, ein
+gespeicherter Grad `dev` wird im Live-Modus beim Laden auf `normal` gesetzt. `rooms[]`
 nennt zusätzlich den `grade` des Raums. `hello.v` muss 3 sein; ein v2-Client erhält `version`.
 
 Stand: 2026-09-30 · Sprint SP02 · [Entscheidung 002](decisions/002-protokoll-v2.md) · Zielbild: [Entscheidung 001](decisions/001-server-engine-go.md)
