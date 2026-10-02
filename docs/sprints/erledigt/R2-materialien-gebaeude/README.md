@@ -1,6 +1,6 @@
 # R2 · REG · Regelwerk I b – Materialien & Gebäude
 
-- **Status:** aktiv
+- **Status:** erledigt
 - **Domäne:** REG
 - **Reife:** bereit
 - **Einschiebbar:** ja
@@ -61,8 +61,10 @@ keine
 | R2.1 | `R2.1-ist-material-gebaeude.md` | Umsetzung | autonom | fertig |
 | R2.2 | `R2.2-workshop-material-gebaeude.md` | Workshop | Mensch | fertig |
 | R2.3 | `R2.3-workshop-materialmengen.md` | Workshop | Mensch | fertig |
-| R2.4 | `R2.4-beschluss-tickets.md` | Umsetzung | autonom | offen |
+| R2.4 | `R2.4-beschluss-tickets.md` | Umsetzung | autonom | fertig |
 
 ## Abnahme
 
-–
+- 2026-10-02, Doku-Sprint ohne Review (R2.4 schließt ab): AC-01 und AC-02 (R2.1 und R2.2 › Ergebnis), AC-03 (R2.2 › Ergebnis), AC-04 (R2.4 › Ergebnis), AC-05 (R2.3 › Ergebnis). Beschlüsse von 🧑 in den Workshops am 2026-10-02.
+- Neu gegenüber der Spec: Rate-Modell (Plantage, Adern), Lager-Maximum, Stufenbreite (Revision 2, B-111).
+- Neue Tickets: B-112 bis B-117. Offen: Regelwerk II (B-110) und III (B-004), Zielkorridore für Stufen 4 und 5 (B-099).

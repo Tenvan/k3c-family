@@ -51,7 +51,6 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-105](B-105-anlegen-dialog-optionen.md) | CLI | Idee | mittel | offen | – | Der Anlegen-Dialog der Lobby wählt Grad, Ziel und Niederlage-Modus |
 | [B-106](B-106-kamera-je-stufe.md) | CLI | Idee | hoch | offen | – | Jeder Spieler sieht seine Stufe, auch wenn die Spieler in verschiedenen Stufen sind |
 | [B-107](B-107-debug-panel-gradwechsel.md) | CLI | Idee | mittel | offen | – | Ein Debug-Panel im Dev-Mode wechselt den Schwierigkeitsgrad und weitere Optionen |
-| [B-109](B-109-materialien-gebaeude-regelwerk.md) | REG | Idee | hoch | eingeplant | R2 | Materialien und Gebäude sind im Regelwerk beschlossen |
 | [B-110](B-110-skillung-klassen-level.md) | REG | Idee | hoch | offen | – | Skillung, Klassen und Level von Monarchen und Bürgern sind im Regelwerk beschlossen |
 
 ## Archiv
@@ -128,3 +127,10 @@ Zeile in diesen Abschnitt.
 | [B-025](archiv/B-025-kampagnen-ziel.md) | REG | Frage | mittel | erledigt | R1 | Ziel einer Kampagne ist festgelegt |
 | [B-108](archiv/B-108-material-und-inseln-offen.md) | REG | Frage | mittel | erledigt | – | Material je Hub oder je Insel, Anzahl und Reihenfolge der Inseln sind entschieden |
 | [B-111](archiv/B-111-materialmengen-je-stufe.md) | REG | Frage | hoch | erledigt | R2 | Die Materialmengen je Stufe passen zu den Kosten von Hub-Ausbau, Mauern und Gebäuden |
+| [B-109](archiv/B-109-materialien-gebaeude-regelwerk.md) | REG | Idee | hoch | erledigt | R2 | Materialien und Gebäude sind im Regelwerk beschlossen |
+| [B-112](B-112-hub-ausbau-mauerstufen.md) | SIM | Idee | hoch | offen | – | Der Hub wird in fünf Stufen ausgebaut, Mauern und Türme haben fünf Materialstufen |
+| [B-113](B-113-material-lager.md) | SIM | Idee | hoch | offen | – | Fünf Materialien, Lager-Maximum und Tragen zum Lager sind umgesetzt |
+| [B-114](B-114-plantage-adern.md) | SIM | Idee | hoch | offen | – | Farm-Plantage lässt Holz nachwachsen, Adern liefern Stein bis Kristall unendlich mit Abbaurate |
+| [B-115](B-115-stufen-breite-eisen-kristall.md) | SIM | Idee | mittel | offen | – | Die Stufen sind nach unten schmaler und dichter, Eisenstollen und Kristallhöhle sind als Stufen angelegt |
+| [B-116](B-116-gebaeude-wirkungen.md) | SIM | Idee | mittel | offen | – | Tor, Kaserne, Taverne, Heilplatz, Schmiede, Rüstkammer und Zaubertum wirken im Spiel |
+| [B-117](B-117-anzeige-bau-lager.md) | CLI | Idee | mittel | offen | – | Der Client zeigt Wartezeit, Lagerstand, Hub-Stufe, Adern und Plantage |

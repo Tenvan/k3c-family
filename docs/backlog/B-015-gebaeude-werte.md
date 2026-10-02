@@ -12,7 +12,7 @@
 
 ## Ausgangslage
 
-Außer Turm und Treppen sind die Werte in `buildings.json` Platzhalter.
+Außer Turm und Treppen sind die Werte in `buildings.json` Platzhalter. Mit R2 (2026-10-02) gibt es beschlossene **Startwerte** (`docs/rules/materialien-gebaeude.md`); sie sind noch nicht in `data/` und nicht gemessen.
 
 ## Ziel
 
@@ -25,6 +25,7 @@ Familie als Spieler; 🧑 entscheidet in Workshops, der Agent bereitet vor.
 ## Anforderungen
 
 - HP und Kosten jedes Gebäudes in `buildings.json` sind begründet.
+- Startwerte stehen in `docs/rules/materialien-gebaeude.md` (R2): Mauer und Turm Stufen 1–5, Hub-Ausbau, Gebäude-Kosten; sie werden mit dem Balancing-Tester (B-099) gegen die Zielkorridore geprüft und fein justiert (Wertänderung nur mit Beschluss).
 
 ## Nicht-Ziele
 
@@ -53,4 +54,4 @@ keine
 
 ## Notizen
 
-–
+Nach R2: Umsetzung der Startwerte in B-112 bis B-116, Messung und Feintuning mit B-099; dieses Ticket schließt, wenn die Werte gemessen und freigegeben sind (AC-01, AC-02).
