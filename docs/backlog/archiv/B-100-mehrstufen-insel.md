@@ -3,7 +3,7 @@
 - **Domäne:** SIM
 - **Typ:** Idee
 - **Prio:** hoch
-- **Status:** eingeplant
+- **Status:** erledigt
 - **Sprint:** SP12
 - **Erstellt:** 2026-10-02
 - **Spec:** freigegeben
@@ -61,3 +61,5 @@ Tick-Budget mit 3 aktiven Stufen auf dem Pi 3 (SP11).
 ## Notizen
 
 Aus R1.3. Groß: SP12 setzt den SIM-Kern um (Insel, Einzelwechsel, Spielstand); Raum und Protokoll folgen in B-133 und B-104.
+
+SP12 (2026-10-02) hat den SIM-Kern umgesetzt (Insel, Einzelwechsel, Vorrat je Insel, Spielstand Version 2, Benchmark). Offen für den Rest: Raum auf Insel (B-133), Protokoll (B-104), Kamera je Stufe (B-106).

@@ -57,3 +57,5 @@ Wie viel Zustand der anderen Stufen sieht ein Gerät (nur Stufen mit eigenen Spi
 ## Notizen
 
 Aus R1.3. Vor B-105 und B-106.
+
+SP12 (2026-10-02): `Island.StageOf(index)` und `Island.Players()` liefern die Stufe je Spieler; das Protokoll muss sie ausgeben.
