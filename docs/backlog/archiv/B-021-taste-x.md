@@ -3,7 +3,7 @@
 - **Domäne:** REG
 - **Typ:** Frage
 - **Prio:** mittel
-- **Status:** eingeplant
+- **Status:** erledigt
 - **Sprint:** R1
 - **Erstellt:** 2026-09-29
 - **Spec:** freigegeben

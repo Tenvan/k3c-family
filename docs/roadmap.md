@@ -50,6 +50,13 @@ Umsetzung in Sprints und Sessions: [`docs/sprints/`](sprints/README.md). Tickets
 - [x] Entwickler-Werkzeug `k3c-dev` mit MCP-Server für Agenten (M1: Prüfungen, Logs; M2: Statistik, Berichte, Spielstände;
   M3: Dienste; M4: Oberfläche mit Dienste- und Logs-Seite; M5: MCP-Seite; SP07: Räume, Simulation)
 
+## Schritt 3c – Regelwerk I und Spielstruktur (R1, beschlossen am 2026-10-02)
+
+- [x] Regelwerk I: `docs/rules/wirtschaft.md` und `stufen.md`, `game-design.md` ohne Widerspruch zu Entscheidung 001
+- [x] Entscheidung 003: Spielstand → Inseln → Stufen, Stufen pro Spieler frei begehbar
+- [ ] Umsetzung: Mehrstufen-Insel (B-100), Raum-Optionen und Grade (B-101), Siegvarianten und Niederlage (B-102), Inseln und Bosse (B-103), Protokoll (B-104), Dialog (B-105), Kamera je Stufe (B-106), Debug-Panel (B-107)
+- [ ] Automatischer Balancing-Tester (B-099); Entscheidung Material und Inseln (B-108); Regelwerk II und III (B-004)
+
 ## Schritt 4 – Inhalt & Politur
 
 - [x] Figuren-Sprites mit Animationen (LuizMelo für unsere Seite, Gothicvania für Gegner, CC0)

@@ -55,3 +55,5 @@ Gehört das in M6 (B-047)? (🧑)
 ## Notizen
 
 Entstanden beim Bereitmachen von SP08.
+
+R1 (2026-10-02): Soll auch den Wechsel des Schwierigkeitsgrads im Dev-Mode tragen (B-107, Panel; wirkt ab der nächsten Welle).
