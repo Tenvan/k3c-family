@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="de">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>K3C Level-Betrachter</title>
+    <style>
+      :root { --bg: #11151c; --panel: #1c2330; --line: #2e3a4d; --text: #e8edf4; --dim: #8a97aa; --on: #ffd166; --bad: #ff8fa3; }
+      * { box-sizing: border-box; }
+      html { font-size: clamp(9px, 0.8334vw, 16px); }
+      body { margin: 0; background: var(--bg); color: var(--text); font: 1.25rem/1.4 system-ui, sans-serif; }
+      main { padding: max(4.75rem, 70px) 2rem 2rem; max-width: 120rem; margin: 0 auto; }
+      h1 { font-size: 2.125rem; margin: 0 0 4px; }
+      .sub { color: var(--dim); margin: 0 0 1.25rem; max-width: 60rem; }
+      .controls { display: flex; flex-wrap: wrap; gap: 0.75rem; align-items: end; margin-bottom: 0.75rem; }
+      label { display: flex; flex-direction: column; gap: 0.25rem; color: var(--dim); font-size: 1rem; }
+      input, select, button { font: inherit; color: var(--text); background: var(--panel); border: 2px solid var(--line); border-radius: 0.5rem; padding: 0.5rem 0.9rem; }
+      input { width: 16rem; }
+      button { cursor: pointer; }
+      button:disabled { opacity: 0.45; cursor: not-allowed; }
+      input:focus-visible, select:focus-visible, button:focus-visible, button:hover:not(:disabled) { border-color: var(--on); outline: none; }
+      #note { min-height: 1.5em; color: var(--on); margin: 0.25rem 0 0.25rem; }
+      #startNote { color: var(--dim); font-size: 1rem; margin: 0 0 1rem; max-width: 70rem; }
+      #viewport { overflow-x: auto; border: 2px solid var(--line); border-radius: 0.5rem; background: var(--panel); padding: 0.5rem 0; }
+      #strip { position: relative; height: 12.5rem; }
+      .chunk { position: absolute; top: 5.75rem; height: 5rem; border-right: 1px solid var(--line); background: #232c3b; overflow: hidden; font-size: 0.8rem; color: var(--dim); padding: 0.2rem 0.3rem; }
+      .chunk.special { background: #2d3750; color: var(--text); }
+      .chunk.hub { background: #4a3d1f; color: var(--on); }
+      .hubline { position: absolute; top: 0; bottom: 0; width: 2px; background: var(--on); opacity: 0.6; }
+      .marker { position: absolute; border-radius: 3px; }
+      #legend, #warnings { display: flex; flex-wrap: wrap; gap: 0.5rem 1.25rem; margin: 0.75rem 0 0; padding: 0; list-style: none; }
+      #legend li::before { content: ''; display: inline-block; width: 0.75em; height: 0.75em; margin-right: 0.4em; border-radius: 2px; background: var(--dot, #c0c8d4); }
+      #warnings li { color: var(--bad); }
+      #warnings li::before { content: '⚠ '; }
+      .keys { color: var(--dim); font-size: 1rem; margin-top: 1rem; }
+    </style>
+  </head>
+  <body>
+    <main>
+      <h1>Level-Betrachter</h1>
+      <p class="sub">Zeigt das Level, das ein Raum mit diesem Seed und Biom bekäme, ohne zu spielen. Voraussetzung: der Go-Server läuft (<code>task start</code>).</p>
+      <div class="controls">
+        <label>Seed <input id="seed" type="text" value="k3c" autocomplete="off" spellcheck="false" maxlength="64" /></label>
+        <label>Biom <select id="biome"></select></label>
+        <button id="random" type="button">Zufälliger Seed</button>
+        <button id="load" type="button">Laden</button>
+        <button id="start" type="button">Im Spiel starten</button>
+      </div>
+      <p id="note" role="status"></p>
+      <p id="startNote"></p>
+      <div id="viewport"><div id="strip"></div></div>
+      <ul id="legend"></ul>
+      <ul id="warnings"></ul>
+      <p class="keys">Scrollen: linker Stick oder Pfeiltasten · Zoom: LB/RB oder + / − · Auswahl: Steuerkreuz hoch/runter, A drücken</p>
+    </main>
+    <script type="module" src="/src/tools/leveltest.ts"></script>
+  </body>
+</html>
