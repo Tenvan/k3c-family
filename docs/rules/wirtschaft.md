@@ -58,7 +58,7 @@ Die Faktoren sind **Startwerte** (Basis: heutige Werte = Normal); der Balancing-
 
 ## 5. Truppen und Gebäude: beschlossen, später gebaut
 
-Krieger, Elite-Upgrades, Tor, Farm, Kaserne und das Truppen-Limit bleiben im Regelwerk und in `data/`, sind aber im Code noch nicht umgesetzt. Bis dahin gilt: kein Truppen-Limit, kein Tor, keine Farm, keine Kaserne im Hub. Die Werte werden mit Regelwerk III (`gegner-truppen.md`) festgelegt, die Umsetzung kommt als SIM-Ticket in einem späteren Sprint.
+Gebäude und Material sind in `materialien-gebaeude.md` beschlossen (R2). Krieger, Elite-Upgrades, Tor, Farm, Kaserne und das Truppen-Limit bleiben im Regelwerk und in `data/`, sind aber im Code noch nicht umgesetzt. Bis dahin gilt: kein Truppen-Limit, kein Tor, keine Farm, keine Kaserne im Hub. Die Werte werden mit Regelwerk III (`gegner-truppen.md`) festgelegt, die Umsetzung kommt als SIM-Ticket in einem späteren Sprint.
 
 ## 6. Steuerung
 

@@ -21,7 +21,7 @@ Stand: 2026-10-02 · Status: **beschlossen (Regelwerk), Umsetzung offen** · Bac
 
 Option **B**:
 
-1. Ein Raum hat einen Spielstand mit **n Inseln**, jede Insel hat **n Stufen** (ein Level). Die erste Ausbaustufe: 1 Insel mit 3 Stufen.
+1. Ein Raum hat einen Spielstand mit **n Inseln**, jede Insel hat **n Stufen** (ein Level). Die erste Ausbaustufe: 1 Insel mit 5 Stufen (Wald, Höhle, Mine zuerst; Eisenstollen und Kristallhöhle folgen).
 2. Jeder Spieler wechselt **einzeln** die Stufe (Tiefen-Eingang, Treppe); jeder Spieler kann in einer anderen Stufe sein.
 3. **Alle Stufen einer Insel laufen weiter** (gemeinsame Zeit, eigene Wellen je Stufe), auch ohne Spieler.
 4. Der **Endboss** der tiefsten Stufe macht den Weg zur nächsten Insel frei; der **Inselwechsel** ist gemeinsam.

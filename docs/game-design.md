@@ -75,13 +75,11 @@ Die Skills kommen **erst nach dem Vertical Slice**.
 
 ## Gebäude (`data/buildings.json`)
 
-Burg/Thron (Hub-Kern), Mauer, Turm, Tor, Werkstatt, Farm (optional), Kaserne (ab Tiefe 1), Treppe hoch/runter (ab Tiefe 1, max. je 1 pro Hub).
-Platzierung auf einem Raster im Hub-Bereich, gebaut wird von Bauern.
-**Achtung:** HP- und Kostenwerte außer bei Turm und Treppen sind **Platzhalter** (nicht im GDD definiert) und müssen gebalanced werden.
+Der Hub hat **Ausbaustufen 1 bis 5** (Holz, Stein, Kupfer, Eisen, Kristall); jede schaltet Mauer- und Turm-Stufe und neue Gebäude frei. Gebäude: Burg/Thron (Hub-Kern, Basislager), Mauer und Turm (Stufen 1–5, Turm Stufe 5 = Zaubertum), Tor, Werkstatt, Farm, Kaserne, Lager, Taverne, Heilplatz, Schmiede, Rüstkammer, Treppe hoch/runter (je 1 pro Hub). Plätze sind fest je Gebäude (Daten), gebaut wird von Bauern; Material liegt im Insel-Vorrat mit Maximum (Burg + Lager), Arbeiter bringen es zum Lager. Liste, Kosten, HP und Wirkung: `rules/materialien-gebaeude.md`. Werte sind Startwerte (B-015).
 
 ## Welt & Stufen
 
-**Aufbau:** Ein Raum hat einen Spielstand, der Spielstand hat **n Inseln**, jede Insel hat **n Stufen** (Level). Die Stufen einer Insel sind **pro Spieler frei begehbar** (jeder wechselt allein über Tiefen-Eingang oder Treppe) und laufen alle weiter, auch ohne Spieler. Der **Endboss** der tiefsten Stufe macht den Weg zur nächsten Insel frei (gemeinsamer Wechsel); je Stufe gibt es einen **Miniboss**. Das Baumaterial gehört der Insel (alle Stufen teilen einen Vorrat). Die Inseln folgen klassisch als Insel 1 bis n; später sind mehrere Inseln je Ebene wählbar (nächste Ebene nach k besiegten Inseln). Erste Ausbaustufe: 1 Insel mit den 3 Stufen unten. Details: `rules/stufen.md`, Entscheidung `decisions/003-spielstruktur-inseln-stufen.md`.
+**Aufbau:** Ein Raum hat einen Spielstand, der Spielstand hat **n Inseln**, jede Insel hat **n Stufen** (Level). Die Stufen einer Insel sind **pro Spieler frei begehbar** (jeder wechselt allein über Tiefen-Eingang oder Treppe) und laufen alle weiter, auch ohne Spieler. Der **Endboss** der tiefsten Stufe macht den Weg zur nächsten Insel frei (gemeinsamer Wechsel); je Stufe gibt es einen **Miniboss**. Das Baumaterial gehört der Insel (alle Stufen teilen einen Vorrat). Die Inseln folgen klassisch als Insel 1 bis n; später sind mehrere Inseln je Ebene wählbar (nächste Ebene nach k besiegten Inseln). Erste Ausbaustufe: 1 Insel mit 5 Stufen; die drei Stufen unten kommen zuerst, Eisenstollen (Tiefe 3) und Kristallhöhle (Tiefe 4) folgen. Details: `rules/stufen.md`, Entscheidung `decisions/003-spielstruktur-inseln-stufen.md`.
 
 | Stufe | Biom | Länge (Units) | Primär-Ressource | Zyklus | Gegner |
 |---|---|---|---|---|---|
