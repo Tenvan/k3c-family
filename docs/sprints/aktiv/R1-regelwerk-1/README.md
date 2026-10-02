@@ -1,14 +1,14 @@
 # R1 · REG · Regelwerk I – Fundament
 
-- **Status:** geplant
+- **Status:** aktiv
 - **Domäne:** REG
 - **Reife:** bereit
 - **Einschiebbar:** ja
 - **Tickets:** B-004, B-005, B-021, B-025
 - **Start-Commit:** –
-- **Spec:** Entwurf
-- **Revision:** 1
-- **Freigabe:** –
+- **Spec:** freigegeben
+- **Revision:** 2
+- **Freigabe:** 2026-10-02, Chat (Ralf), Revision 1; Revision 2 (messbare Zielkorridore für den Balancing-Tester B-099) auf Zuruf von Ralf am 2026-10-02
 
 ## Ausgangslage
 
@@ -26,9 +26,11 @@ Das Fundament des Regelwerks ist beschlossen. Am Ende sichtbar: `docs/rules/wirt
 
 B-004 › Anforderungen (Regelwerk I), B-005, B-021 und B-025 › Anforderungen.
 
+**Messbar beschließen (Revision 2):** Jede Regel mit Zahlen nennt einen messbaren Zielkorridor (Kennzahl, Szenario, Untergrenze/Obergrenze, z. B. „Überlebensquote Welle 3 mit 2 Spielern 70–95 %“). Grundlage für den späteren automatischen Balancing-Tester (B-099); R1 baut ihn nicht, sondern liefert die Ziele.
+
 ## Nicht-Ziele
 
-Skills und Monarch (Regelwerk II). Keine Code-Änderungen.
+Skills und Monarch (Regelwerk II). Keine Code-Änderungen, kein Balancing-Tester (B-099, eigener Sprint nach R1).
 
 ## Regeln und Einschränkungen
 
