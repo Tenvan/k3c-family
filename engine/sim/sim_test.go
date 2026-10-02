@@ -73,7 +73,7 @@ func replay(t *testing.T, run goldenRun) {
 		AddPlayer(w)
 	}
 	if run.Setup != nil {
-		w.Stock = run.Setup.Stock
+		*w.Stock = run.Setup.Stock
 	}
 	snap, tick := 0, 0
 	compare(t, run, 0, run.Snapshots[0].World, w)
