@@ -3,7 +3,7 @@
 - **Domäne:** SRV
 - **Typ:** Idee
 - **Prio:** hoch
-- **Status:** eingeplant
+- **Status:** erledigt
 - **Sprint:** SP14
 - **Erstellt:** 2026-10-02
 - **Spec:** freigegeben
@@ -64,3 +64,5 @@ Folgt aus SP12. Zusammen mit B-104 (Protokoll) planen; danach B-106 (Kamera je S
 SP12 (2026-10-02): `Island` mit `StepIsland`, Einzelwechsel und Spielstand Version 2 stehen in `engine/sim` (`island*.go`); der Raum kann sie direkt nutzen. `ParseIslandSave` überführt Stände der Version 1.
 
 SP13 (2026-10-02): `Island.Options` (Grad, Ziel, Niederlage-Modus) und fünf Materialien stehen im Spielstand der Insel. Beim Anlegen und Laden muss der Raum den Dev-Mode prüfen (`SetOptions(…, devMode)`; `FromIslandSave` prüft ihn nicht). Träger-Aufträge werden nicht gespeichert, getragenes Material geht beim Speichern verloren.
+
+SP14 (2026-10-02) hat Server und Protokoll umgesetzt (Raum rechnet die Insel, Protokoll Version 3, Raum-Optionen mit Dev-Modus `K3C_DEV`). Offen für den Rest: Anlegen-Dialog (B-105), Kamera und Anzeige je Stufe (B-106), Debug-Panel (B-107); Wirkung von Ziel und Niederlage-Modus: B-102.

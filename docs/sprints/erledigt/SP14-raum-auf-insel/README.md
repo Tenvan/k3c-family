@@ -1,6 +1,6 @@
 # SP14 · SRV · Raum auf Insel
 
-- **Status:** aktiv
+- **Status:** erledigt
 - **Domäne:** SRV
 - **Reife:** bereit
 - **Einschiebbar:** ja
@@ -63,8 +63,10 @@ Wie viel Zustand der anderen Stufen bekommt ein Gerät (B-104 › Offene Fragen)
 | SP14.1 | `SP14.1-raum-kern.md` | Umsetzung | autonom | fertig |
 | SP14.2 | `SP14.2-protokoll-v3.md` | Umsetzung | autonom | fertig |
 | SP14.3 | `SP14.3-optionen-im-raum.md` | Umsetzung | autonom | fertig |
-| SP14.4 | `SP14.4-review.md` | Review | autonom | offen |
+| SP14.4 | `SP14.4-review.md` | Review | autonom | fertig |
 
 ## Abnahme
 
-–
+- 2026-10-02, Review SP14.4 (getrennter Review-Agent): AC-01 bis AC-07 belegt in den Ergebnissen SP14.1 bis SP14.4; `task check` und `task check:go` grün.
+- Behobene mittlere Befunde: Stand Version 1 mit allen drei Stufen, dauerhafte Sicherung bei Versionswechsel, Speichern und `seats` nach Stufenwechsel jedes Monarchen. Ungeprüft: Test für den Wechsel im zweiten Slot.
+- Bekannt/offen: Träger-Material wird beim Speichern nicht gespeichert, Summary bezieht sich auf die Startstufe, Client liest `depth` noch nicht (B-106), Dialog (B-105), Debug-Panel (B-107).

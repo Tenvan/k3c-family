@@ -3,7 +3,7 @@
 - **Domäne:** SRV
 - **Typ:** Idee
 - **Prio:** hoch
-- **Status:** eingeplant
+- **Status:** erledigt
 - **Sprint:** SP14
 - **Erstellt:** 2026-10-02
 - **Spec:** freigegeben
@@ -59,3 +59,5 @@ Wie viel Zustand der anderen Stufen sieht ein Gerät (nur Stufen mit eigenen Spi
 Aus R1.3. Vor B-105 und B-106.
 
 SP12 (2026-10-02): `Island.StageOf(index)` und `Island.Players()` liefern die Stufe je Spieler; das Protokoll muss sie ausgeben.
+
+SP14 (2026-10-02) hat Server und Protokoll umgesetzt (Raum rechnet die Insel, Protokoll Version 3, Raum-Optionen mit Dev-Modus `K3C_DEV`). Offen für den Rest: Anlegen-Dialog (B-105), Kamera und Anzeige je Stufe (B-106), Debug-Panel (B-107); Wirkung von Ziel und Niederlage-Modus: B-102.
