@@ -43,7 +43,6 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-099](B-099-balancing-tester.md) | SIM | Idee | mittel | offen | – | Ein automatischer Balancing-Tester prüft Regeln und Werte gegen messbare Ziele |
 | [B-102](B-102-siegvarianten-niederlage.md) | SIM | Idee | mittel | offen | – | Siegvarianten und Niederlage-Modi der Raum-Optionen sind umgesetzt |
 | [B-103](B-103-inseln-bosse.md) | SIM | Idee | mittel | offen | – | Inseln mit Endboss und gemeinsamem Inselwechsel sind spielbar |
-| [B-104](B-104-protokoll-stufe-und-optionen.md) | SRV | Idee | hoch | eingeplant | SP14 | Das Protokoll kennt die Stufe je Spieler und die Raum-Optionen |
 | [B-105](B-105-anlegen-dialog-optionen.md) | CLI | Idee | mittel | offen | – | Der Anlegen-Dialog der Lobby wählt Grad, Ziel und Niederlage-Modus |
 | [B-106](B-106-kamera-je-stufe.md) | CLI | Idee | hoch | offen | – | Jeder Spieler sieht seine Stufe, auch wenn die Spieler in verschiedenen Stufen sind |
 | [B-107](B-107-debug-panel-gradwechsel.md) | CLI | Idee | mittel | offen | – | Ein Debug-Panel im Dev-Mode wechselt den Schwierigkeitsgrad und weitere Optionen |
@@ -130,6 +129,8 @@ Zeile in diesen Abschnitt.
 | [B-100](archiv/B-100-mehrstufen-insel.md) | SIM | Idee | hoch | erledigt | SP12 | Eine Insel hat n Stufen, die alle laufen und pro Spieler begehbar sind |
 | [B-101](archiv/B-101-raum-optionen-schwierigkeit.md) | SIM | Idee | hoch | erledigt | SP13 | Raum-Optionen und fünf Schwierigkeitsgrade wirken in der Simulation |
 | [B-113](archiv/B-113-material-lager.md) | SIM | Idee | hoch | erledigt | SP13 | Fünf Materialien, Lager-Maximum und Tragen zum Lager sind umgesetzt |
+| [B-133](archiv/B-133-raum-auf-insel.md) | SRV | Idee | hoch | erledigt | SP14 | Der Raum rechnet mit einer Insel statt mit einer Kampagne |
+| [B-104](archiv/B-104-protokoll-stufe-und-optionen.md) | SRV | Idee | hoch | erledigt | SP14 | Das Protokoll kennt die Stufe je Spieler und die Raum-Optionen |
 | [B-112](B-112-hub-ausbau-mauerstufen.md) | SIM | Idee | hoch | offen | – | Der Hub wird in fünf Stufen ausgebaut, Mauern und Türme haben fünf Materialstufen |
 | [B-114](B-114-plantage-adern.md) | SIM | Idee | hoch | offen | – | Farm-Plantage lässt Holz nachwachsen, Adern liefern Stein bis Kristall unendlich mit Abbaurate |
 | [B-115](B-115-stufen-breite-eisen-kristall.md) | SIM | Idee | mittel | offen | – | Die Stufen sind nach unten schmaler und dichter, Eisenstollen und Kristallhöhle sind als Stufen angelegt |
@@ -149,4 +150,3 @@ Zeile in diesen Abschnitt.
 | [B-130](B-130-bosse.md) | SIM | Idee | hoch | offen | – | Minibosse und Endboss sind spielbar |
 | [B-131](B-131-events.md) | SIM | Idee | niedrig | offen | – | Vollmond, Blutmond und Händler-Überfall sind als Events umgesetzt |
 | [B-132](B-132-anzeige-bosse-events.md) | CLI | Idee | mittel | offen | – | Der Client zeigt Gegner-Fähigkeiten, Bosse, Phasen und Events |
-| [B-133](B-133-raum-auf-insel.md) | SRV | Idee | hoch | eingeplant | SP14 | Der Raum rechnet mit einer Insel statt mit einer Kampagne |

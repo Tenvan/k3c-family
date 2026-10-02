@@ -56,7 +56,8 @@ Umsetzung in Sprints und Sessions: [`docs/sprints/`](sprints/README.md). Tickets
 - [x] Entscheidung 003: Spielstand → Inseln → Stufen, Stufen pro Spieler frei begehbar
 - [x] SIM-Kern der Insel (B-100, SP12): mehrere Stufen ticken, Einzelwechsel, Vorrat je Insel, Spielstand Version 2
 - [x] SIM-Teil von Raum-Optionen, Graden, Material und Lager (B-101, B-113, SP13)
-- [ ] Umsetzung: Raum auf Insel (B-133), Raum-Optionen und Grade (B-101), Siegvarianten und Niederlage (B-102), Inseln und Bosse (B-103), Protokoll (B-104), Dialog (B-105), Kamera je Stufe (B-106), Debug-Panel (B-107)
+- [x] Raum auf Insel und Protokoll Version 3 mit Raum-Optionen (B-133, B-104, SP14)
+- [ ] Umsetzung: Raum-Optionen und Grade (B-101), Siegvarianten und Niederlage (B-102), Inseln und Bosse (B-103), Protokoll (B-104), Dialog (B-105), Kamera je Stufe (B-106), Debug-Panel (B-107)
 - [x] Regelwerk Materialien und Gebäude (R2): fünf Materialien, Hub-Ausbau 1–5, Lager, Plantage und Adern
 - [ ] Umsetzung R2: Hub-Ausbau (B-112), Material und Lager (B-113), Plantage und Adern (B-114), Stufen-Breite und neue Stufen (B-115), Gebäude-Wirkungen (B-116), Anzeige (B-117)
 - [x] Regelwerk II (R3): Monarch (kein Level, Fund-Pool, Schlag, Skills Tank/Zauberer/Heiler, Wiederbeleben), Bürger (Berufe, Handwerker, Händler, Limit je Hub)
