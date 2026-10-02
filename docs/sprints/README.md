@@ -8,7 +8,6 @@ Jede Sprint-README ist eine Spec (SDD); aktiv wird ein Sprint erst mit `Spec: fr
 
 | Sprint | Domäne | Thema | Am Ende sichtbar | Ordner |
 |---|---|---|---|---|
-| U1 | CLI | Radar im HUD (B-090) | Radar-Leiste in jeder Spieler-Zelle, Gegner wandern vom Portal zur Burg | `aktiv/U1-radar/` |
 
 ## Geplant (in dieser Reihenfolge)
 
@@ -60,3 +59,4 @@ Nach SP11: Regelwerk II (Skills) → SIM Skills in Go → CLI Skills → Spielea
 | SP09 | Aufräumen: TS-Sim und Node-Server gelöscht, Release `v0.2.0` | `erledigt/SP09-aufraeumen/` |
 | G1 | Referenzseite für die gewählten Grafik-Packs, Auswahl auf den Referenzseiten (B-087) | `erledigt/G1-grafiken/` |
 | I1 | Ein Weg für alle Befehle: `task`, `package.json` ohne Skripte, CI und k3c-dev rufen `task` (B-073, B-070, B-072, B-051) | `erledigt/I1-ein-weg/` |
+| U1 | Radar-Leiste im HUD (B-090) | `erledigt/U1-radar/` |
