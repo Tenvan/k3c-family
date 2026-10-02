@@ -1,6 +1,6 @@
 # U2 · SRV · Level-Abfrage per HTTP
 
-- **Status:** aktiv
+- **Status:** erledigt
 - **Domäne:** SRV
 - **Reife:** bereit
 - **Einschiebbar:** nein
@@ -58,8 +58,10 @@ keine. Entschieden 2026-10-02 durch 🧑 (Chat): Fehlt der Seed, gilt der Standa
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
 | U2.1 | `U2.1-endpunkt.md` | Umsetzung | autonom | fertig |
-| U2.2 | `U2.2-review.md` | Review | autonom | offen |
+| U2.2 | `U2.2-review.md` | Review | autonom | fertig |
 
 ## Abnahme
 
-–
+- 2026-10-02, Review U2.2 (Agent): AC-01 bis AC-04 belegt (U2.1 › Ergebnis, nachgeprüft in U2.2 › Ergebnis).
+- AC-03 über `room.Manager.Rooms()` statt `/api/status` belegt: gleichwertig, beide lesen dieselbe Raumliste (`Manager.rooms`).
+- Behobene Befunde: keine (keine schweren Befunde). Neue Tickets: keine.
