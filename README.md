@@ -70,8 +70,10 @@ Einstellungen per Umgebung: `K3C_HTTP_PORT`,
 - **Sicherungen:** Jeder Speichervorgang legt den vorigen Stand unter `saves/backups/<slot>/` ab, je Spielstand bleiben
   die letzten 5. `GET /api/save/backups?slot=autosave` listet sie, `POST /api/save/restore?slot=autosave&backup=<name>`
   macht eine davon wieder zum aktuellen Stand (der bisherige wird dabei gesichert).
-- **Docker** (z. B. Raspberry Pi): `docker compose up -d` baut das Image (amd64 und arm64) und startet es auf Port
-  8080; Spielstände und Berichte liegen im Volume `k3c-data` unter `/data`.
+- **Docker** (z. B. Raspberry Pi, 64-Bit-Betriebssystem): `docker compose up -d` zieht das Image `ghcr.io/tenvan/k3c-family`
+  (amd64 und arm64, vom Release-Tag `v*` gebaut) und startet es auf Port 8080; Spielstände und Berichte liegen im Volume
+  `k3c-data` unter `/data`. **Update:** `docker compose pull && docker compose up -d`. **Rückfall:** in `compose.yaml` den
+  Tag des vorigen Images eintragen (z. B. `…:v0.2.0`). Selbst bauen: `docker compose build`.
 - **Release:** Ein Tag `v*` hängt `k3c-server` für Windows, Linux amd64 und arm64 an den Release.
 
 ### Gamepad-Test auf der Xbox

@@ -1,9 +1,11 @@
 # Heimnetz-Server K3C im Container (SP03). Start: docker compose up -d
+# Update (z. B. Raspberry Pi): docker compose pull && docker compose up -d. Rückfall: image auf einen älteren Tag setzen.
+# Lokal selbst bauen statt ziehen: docker compose build (build: . bleibt erhalten).
 # Diagnose /api/status nur mit Token: K3C_STATUS_TOKEN=<geheim> docker compose up -d (ohne Token ist sie aus).
 services:
   k3c:
     build: .
-    image: k3c-server
+    image: ghcr.io/tenvan/k3c-family:latest
     ports:
       - "8080:8080"
     environment:
