@@ -1,6 +1,6 @@
 # R3 · REG · Regelwerk II – Monarch, Bürger, Klassen, Level, Skills
 
-- **Status:** aktiv
+- **Status:** erledigt
 - **Domäne:** REG
 - **Reife:** bereit
 - **Einschiebbar:** ja
@@ -61,8 +61,10 @@ Keine Einigung im Workshop → Frage-Ticket, Thema im nächsten Workshop.
 | R3.1 | `R3.1-ist-monarch-buerger.md` | Umsetzung | autonom | fertig |
 | R3.2 | `R3.2-workshop-monarch.md` | Workshop | Mensch | fertig |
 | R3.3 | `R3.3-workshop-buerger.md` | Workshop | Mensch | fertig |
-| R3.4 | `R3.4-beschluss-tickets.md` | Umsetzung | autonom | offen |
+| R3.4 | `R3.4-beschluss-tickets.md` | Umsetzung | autonom | fertig |
 
 ## Abnahme
 
-–
+- 2026-10-02, Doku-Sprint ohne Review (R3.4 schließt ab): AC-01 und AC-03 (R3.2 › Ergebnis), AC-02 und AC-04 (R3.3 › Ergebnis, R3.1 › Ergebnis), AC-05 (R3.4 › Ergebnis). Beschlüsse von 🧑 in den Workshops am 2026-10-02.
+- Neu gegenüber der Spec: kein Level für Monarchen und Bürger, Schlag auf X, Wiederbeleben, Aktionen-Overlay, Handwerker und Händler.
+- Neue Tickets: B-118 bis B-126. Offen: Regelwerk III (Gegner, Truppen-Werte, Bosse, B-004/AC-03), Zielkorridore der Stufen 4 und 5 (B-099).
