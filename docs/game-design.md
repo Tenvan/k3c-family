@@ -5,8 +5,8 @@ Zahlenwerte stehen als Daten in `data/*.json`. Dieses Dokument erklärt das *War
 
 ## Pitch
 
-2D-Side-Scroller-Strategiespiel im Stil von **Kingdom Two Crowns (K2C)** für **Couch-Koop auf der Xbox**
-(Browser/Edge). Die Monarchen bauen einen Hub aus, rekrutieren Truppen und verteidigen ihn gegen
+2D-Side-Scroller-Strategiespiel im Stil von **Kingdom Two Crowns (K2C)** für **gemischten Koop** (Couch und Online) auf der
+Xbox (Browser/Edge) und weiteren Geräten. Die Monarchen bauen einen Hub aus, rekrutieren Truppen und verteidigen ihn gegen
 Portal-Angriffe. Unterschied zu K2C: Die Welt geht **nach unten** (Oberwelt → Höhle → Mine), der Monarch
 kämpft **aktiv** mit Skills mit, und die Level werden **prozedural aus festen Eckdaten** erzeugt.
 
@@ -14,9 +14,10 @@ Zielgruppe: die eigene Familie (ab 12), später evtl. itch.io.
 
 ## Harte Anforderungen
 
-1. **Couch-Koop auf der Xbox** (Edge-Browser, Gamepad API). Alles andere ist verhandelbar.
+1. **Koop auf der Xbox** (Edge-Browser, Gamepad API), gemischt Couch und Online (z. B. zwei Controller an der Xbox, weitere Spieler per Handy). Alles andere ist verhandelbar.
 2. **Prozedurale Level aus festen Eckdaten** (Biom-Config + Seed), damit Levels abwechslungsreich sind.
 3. Läuft auch am PC (Tastatur + Controller) für Entwicklung und Tests.
+4. **Der Go-Server rechnet** (Entscheidung `decisions/001-server-engine-go.md`): Der Browser schickt nur Eingaben und zeichnet Snapshots, auch beim reinen Couch-Spiel.
 
 ## Kern-Loop (wie K2C)
 
@@ -28,13 +29,14 @@ Ziel:  Hub halten, Stufe erkunden, Tiefen-Eingang am Ende nutzen → nächste St
 
 Typische Session: 30–60 Minuten.
 
-## Couch-Koop
+## Koop (Couch und Online gemischt)
 
-- Jeder Spieler ist **ein eigener Monarch** mit eigener Figur und eigener Kamera.
-- **Beitreten** jederzeit mit **A** (Controller) oder Leertaste (Tastatur).
-- **MVP: 2 Spieler, Split-Screen oben/unten** (wie K2C). Jede Hälfte zeigt die volle Welthöhe.
+- Jeder Spieler ist **ein eigener Monarch** mit eigener Figur und eigener Kamera, auf demselben oder auf einem anderen Gerät.
+- **Beitreten** jederzeit mit **A** (Controller), Leertaste (Tastatur) oder der Münz-Taste (Touch).
+- **2–4+ Spieler pro Raum.** Lokale Spieler teilen sich den Bildschirm (Split-Screen, Layout für 1–4 Spieler).
+- **Mehrere Räume** laufen parallel auf dem Server (z. B. ein 2er-Spiel auf der Xbox, ein 3er-Spiel per Handy). Ein Gerät sitzt in einem Raum.
 - Ressourcen: Gold pro Spieler (wie K2C), Baumaterial (Holz/Stein/Kupfer) gemeinsam für den Hub. *So umgesetzt, im Playtest prüfen.*
-- Online-Koop ist **kein Ziel** (kein Netzwerkcode).
+- Jede Regel muss mit 2+ Spielern gleichzeitig funktionieren, egal ob sie auf einem oder mehreren Geräten sitzen.
 
 ## Monarch
 
@@ -93,7 +95,7 @@ Gold gibt es überall (Truhen, Gegner-Drops). Post-MVP: Tiefe 3 (Eisen, Lava), T
 
 ### Prozedurale Generierung (Pflicht-Feature)
 
-Die festen Eckdaten stehen in `data/biomes/<biom>.json`, der Generator in `src/world/levelGenerator.ts`.
+Die festen Eckdaten stehen in `data/biomes/<biom>.json`, der Generator in `engine/level/` (Go, deterministisch über `engine/rng`).
 
 ```text
 [Rand|Ausgang] … [Portal] … [Chunks] [ HUB ] [Chunks] … [Portal] … [Ausgang|Rand]
@@ -105,7 +107,7 @@ Die festen Eckdaten stehen in `data/biomes/<biom>.json`, der Generator in `src/w
   → Event-Chunks (Truhe, Rekrutierungs-Camp nahe am Hub) → restliche Chunks gewichtet aus `chunkWeights`
   → Ressourcen pro Chunk-Typ aus `resourcesPerChunk` → versteckte Skill-Punkte.
 - `validateLevel()` prüft die Spielbarkeits-Regeln. Die Tests jagen jede Biom-Config durch 500 Seeds.
-  **Jede Änderung an einer Biom-JSON muss `npm test` bestehen.**
+  **Jede Änderung an einer Biom-JSON muss `task check` bestehen.**
 - Später möglich: Chunk-Vorlagen mit Untervarianten, Gegner-Camps in der Welt, Biom-spezifische Hazards.
 
 ## Gegner (`data/enemies.json`)
@@ -150,7 +152,7 @@ Die festen Eckdaten stehen in `data/biomes/<biom>.json`, der Generator in `src/w
 JSON mit Monarch-Zustand (Level, Skills), pro Hub (Gebäude, Truppen, Ressourcen), Fortschritt (freigeschaltete Tiefen)
 und den **Seeds** der Stufen. Gegner und Level-Layout werden nicht gespeichert. Speicherort ist der Heimnetz-Server
 (Browser-Speicher auf der Xbox gilt als unzuverlässig), mit Fallback auf localStorage.
-Umgesetzt in `src/world/sim/campaign.ts`: Autosave bei Tagesanbruch und beim Stufenwechsel. Zusätzlich gespeichert wird,
+Umgesetzt in `engine/sim/campaign.go` und `engine/store/`: Autosave bei Tagesanbruch und beim Stufenwechsel. Zusätzlich gespeichert wird,
 was aus der Welt schon entfernt wurde (gefällte Bäume, geöffnete Truhen), sonst kämen sie beim Laden zurück.
 
 ## Grafik & Audio
