@@ -27,6 +27,7 @@ Spieler (2+ Monarchen, auch in verschiedenen Stufen); Umsetzung durch Entwickler
 - Mehrere Stufen einer Insel ticken in jedem Tick mit gemeinsamer Zeit und eigenen Wellen je Stufe, auch ohne Spieler.
 - Jeder Spieler hat eine Stufe; der Wechsel erfolgt einzeln (2 s am Eingang oder an einer gebauten Treppe).
 - Wellenstärke zählt die Spieler der Insel (siehe B-101).
+- Das Baumaterial ist ein Vorrat je Insel (alle Stufen teilen ihn, B-108); Gold bleibt je Spieler.
 - Spielstand speichert Insel und Stufe je Spieler (`SAVE_VERSION` erhöhen, Altstände laden).
 
 ## Nicht-Ziele
@@ -55,7 +56,7 @@ Hub ohne Verteidiger fällt → Niederlage-Modus dieser Stufe (B-102). Spieler f
 
 ## Offene Fragen
 
-Material je Hub oder je Insel (B-108). Tick-Budget mit 3 aktiven Stufen auf dem Pi 3 (SP11).
+Tick-Budget mit 3 aktiven Stufen auf dem Pi 3 (SP11).
 
 ## Notizen
 
