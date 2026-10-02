@@ -63,4 +63,4 @@ keine. Entschieden 2026-10-02 durch 🧑 (Chat): „Im Spiel starten“ darf ein
 
 ## Notizen
 
-B-091 (Endpunkt) ist erledigt. Start mit Seed und Tiefe: B-095.
+B-091 (Endpunkt) ist erledigt. Start mit Seed und Tiefe: B-095. U3 abgeschlossen, AC-05 (TV-Abnahme) wartet auf 🧑. Start über vorhandenen gleichnamigen Spielstand: B-096.
