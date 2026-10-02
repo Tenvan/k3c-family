@@ -9,6 +9,7 @@ import "fmt"
 
 // Island ist eine Insel mit ihren Stufen.
 type Island struct {
+	ID         string // gleiche ID = gleiches Spiel (Spielstand)
 	Seed       string
 	CycleSpeed float64
 	// Stages: Stufe i ist die Welt der i-ten Tiefe aus CreateIsland.
@@ -22,15 +23,20 @@ type Island struct {
 
 // CreateIsland baut die Stufen für die angegebenen Tiefen (Reihenfolge = Stufenindex). CycleSpeed 0 bedeutet 1.
 func CreateIsland(seed string, depths []int, cycleSpeed float64) (*Island, error) {
+	return createIsland(seed, depths, cycleSpeed, 0)
+}
+
+// createIsland wie CreateIsland, mit Startzeit (Laden eines Spielstands).
+func createIsland(seed string, depths []int, cycleSpeed, startTime float64) (*Island, error) {
 	if len(depths) == 0 {
 		return nil, fmt.Errorf("insel: keine Stufen")
 	}
-	isl := &Island{Seed: seed, CycleSpeed: cycleSpeed, Stock: &Stock{}, travel: map[int]*islandTravel{}}
+	isl := &Island{ID: seed, Seed: seed, CycleSpeed: cycleSpeed, Stock: &Stock{}, travel: map[int]*islandTravel{}}
 	for _, d := range depths {
 		if !hasDepth(d) {
 			return nil, fmt.Errorf("insel: unbekannte Tiefe %d", d)
 		}
-		w, err := CreateWorld(biomeForDepth(d), seed, Options{CycleSpeed: cycleSpeed})
+		w, err := CreateWorld(biomeForDepth(d), seed, Options{CycleSpeed: cycleSpeed, Time: startTime})
 		if err != nil {
 			return nil, fmt.Errorf("insel: Stufe mit Tiefe %d: %w", d, err)
 		}
