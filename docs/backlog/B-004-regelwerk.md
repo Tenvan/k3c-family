@@ -6,9 +6,9 @@
 - **Status:** eingeplant
 - **Sprint:** R1
 - **Erstellt:** 2026-09-29
-- **Spec:** Entwurf
-- **Revision:** 1
-- **Freigabe:** –
+- **Spec:** freigegeben
+- **Revision:** 2
+- **Freigabe:** 2026-10-02, Chat (Ralf), Revision 1; Revision 2 (messbare Zielkorridore für den Balancing-Tester B-099) auf Zuruf von Ralf am 2026-10-02
 
 ## Ausgangslage
 
@@ -24,6 +24,7 @@ Familie als Spieler; 🧑 entscheidet in Workshops, der Agent bereitet vor.
 
 ## Anforderungen
 
+- Regeln mit Zahlen nennen einen messbaren Zielkorridor (Kennzahl, Szenario, Grenzen) für den Balancing-Tester (B-099).
 - Je Thema eine Datei in `docs/rules/` mit Regel, Begründung und Verweis auf die Werte in `data/`.
 - Widerspruchsfrei zu `game-design.md`, das die kurze Übersicht bleibt.
 - Reihenfolge: Regelwerk I (Wirtschaft, Koop & Besitz, Stufen & Niederlage), II (Monarch & Skills), später Gegner & Truppen.
