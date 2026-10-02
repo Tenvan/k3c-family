@@ -3,7 +3,7 @@
 - **Domäne:** INF
 - **Typ:** Schuld
 - **Prio:** hoch
-- **Status:** eingeplant
+- **Status:** erledigt
 - **Sprint:** I1
 - **Erstellt:** 2026-10-01
 - **Spec:** freigegeben
