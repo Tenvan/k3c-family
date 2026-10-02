@@ -58,7 +58,7 @@ keine. Entschieden 2026-10-02 durch 🧑 (Chat): Das Radar ist immer sichtbar (k
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
 | U1.1 | `U1.1-marker-logik.md` | Umsetzung | autonom | fertig |
-| U1.2 | `U1.2-radar-zeichnen.md` | Umsetzung | autonom | offen |
+| U1.2 | `U1.2-radar-zeichnen.md` | Umsetzung | autonom | fertig |
 | U1.3 | `U1.3-review.md` | Review | autonom | offen |
 
 ## Abnahme
