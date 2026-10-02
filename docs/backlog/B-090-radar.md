@@ -59,3 +59,5 @@ keine. Entschieden 2026-10-02 durch 🧑 (Chat): Das Radar ist immer sichtbar (k
 ## Notizen
 
 Im alten Godot-GDD nur als „Minimap, optional, Post-MVP“ (`FamilyCrowns/docs/gdd/ui_ux.md`).
+
+U1 abgeschlossen, AC-04 (TV-Abnahme) wartet auf 🧑.
