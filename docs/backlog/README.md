@@ -53,7 +53,7 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-107](B-107-debug-panel-gradwechsel.md) | CLI | Idee | mittel | offen | – | Ein Debug-Panel im Dev-Mode wechselt den Schwierigkeitsgrad und weitere Optionen |
 | [B-109](B-109-materialien-gebaeude-regelwerk.md) | REG | Idee | hoch | eingeplant | R2 | Materialien und Gebäude sind im Regelwerk beschlossen |
 | [B-110](B-110-skillung-klassen-level.md) | REG | Idee | hoch | offen | – | Skillung, Klassen und Level von Monarchen und Bürgern sind im Regelwerk beschlossen |
-| [B-111](B-111-materialmengen-je-stufe.md) | REG | Frage | hoch | offen | – | Die Materialmengen je Stufe passen zu den Kosten von Hub-Ausbau, Mauern und Gebäuden |
+| [B-111](B-111-materialmengen-je-stufe.md) | REG | Frage | hoch | eingeplant | R2 | Die Materialmengen je Stufe passen zu den Kosten von Hub-Ausbau, Mauern und Gebäuden |
 
 ## Archiv
 
