@@ -3,6 +3,7 @@ package mcpsrv
 import (
 	"bytes"
 	"context"
+	"encoding/json"
 	"log/slog"
 	"os"
 	"path/filepath"
@@ -38,7 +39,7 @@ func TestLogsSourcesUndUnbekannteQuelle(t *testing.T) {
 		t.Errorf("Quellen: %q", text)
 	}
 	for _, bad := range []string{"../k3c-dev", "gibtsnicht", ""} {
-		if _, err := s.logsQuery(ctx, queryIn{Source: bad}); err == nil || !strings.Contains(err.Error(), "gültig: k3c-dev") {
+		if _, err := s.logsQuery(ctx, queryIn{Source: bad}); err == nil || !strings.Contains(err.Error(), "gültig: k3c-client, k3c-dev, vite") {
 			t.Errorf("Quelle %q: %v", bad, err)
 		}
 	}
@@ -123,5 +124,40 @@ func TestEreignisseImEigenenLog(t *testing.T) {
 	}
 	if cs.InitializeResult().Instructions == "" || !strings.Contains(cs.InitializeResult().Instructions, "check_run") {
 		t.Error("Instructions fehlen")
+	}
+}
+
+// Jeder Tool-Aufruf steht im Log: Debug beim Start mit gekürzten Argumenten, Info/Warn am Ende mit Dauer.
+func TestToolAufrufeImLog(t *testing.T) {
+	var buf bytes.Buffer
+	s := New(Config{Version: "test", Log: slog.New(slog.NewJSONHandler(&buf, &slog.HandlerOptions{Level: slog.LevelDebug}))})
+	cs := connect(t, s)
+	callText(t, cs, "workbench_status", map[string]any{})
+	callText(t, cs, "check_run", map[string]any{"target": strings.Repeat("x", 400)})
+	var starts, ends []map[string]any
+	for line := range strings.SplitSeq(strings.TrimSpace(buf.String()), "\n") {
+		var m map[string]any
+		if json.Unmarshal([]byte(line), &m) != nil || m["ns"] != "mcp" {
+			continue
+		}
+		if m["level"] == "DEBUG" {
+			starts = append(starts, m)
+		} else {
+			ends = append(ends, m)
+		}
+	}
+	if len(starts) != 2 || len(ends) != 2 {
+		t.Fatalf("Einträge: %d Start, %d Ende\n%s", len(starts), len(ends), buf.String())
+	}
+	if a, _ := starts[1]["args"].(string); len([]rune(a)) != argsRunes || !strings.HasSuffix(a, "…") {
+		t.Errorf("Argumente nicht gekürzt: %d Zeichen", len(a))
+	}
+	for i, want := range []struct {
+		level string
+		ok    bool
+	}{{"INFO", true}, {"WARN", false}} {
+		if ends[i]["level"] != want.level || ends[i]["ok"] != want.ok || ends[i]["ms"] == nil {
+			t.Errorf("Ende %d: %v", i, ends[i])
+		}
 	}
 }

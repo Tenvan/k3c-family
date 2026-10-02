@@ -7,6 +7,7 @@ import (
 	"log/slog"
 	"slices"
 	"sync"
+	"sync/atomic"
 	"time"
 
 	"k3c/tools/k3c-dev/internal/applog"
@@ -148,6 +149,8 @@ type run struct {
 	done chan struct{} // geschlossen, wenn der Prozess geendet hat
 	err  error         // Ergebnis von Wait, gültig nach done
 	stop context.CancelFunc
+	// killed ist gesetzt, sobald k3c-dev den Prozess beenden will (Log: Ende durch k3c-dev statt von selbst).
+	killed atomic.Bool
 }
 
 // Controller ist der eine Steuerpunkt aller Dienste.

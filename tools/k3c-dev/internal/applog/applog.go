@@ -9,12 +9,53 @@ import (
 	"log/slog"
 	"os"
 	"path/filepath"
+	"strings"
 
 	"k3c/tools/k3c-dev/internal/console"
 )
 
 // Source ist der Name der Log-Datei (ohne .jsonl) und der Konsolen-Quelle.
 const Source = "k3c-dev"
+
+// LevelEnv ist die Umgebungsvariable für die Log-Stufe (debug|info|warn|error); gesetzt gilt sie für Datei und Konsole.
+const LevelEnv = "K3C_DEV_LOG_LEVEL"
+
+// MaxFileSize ist die Größe, ab der eine Log-Datei beim Öffnen rotiert wird.
+const MaxFileSize = 10 << 20
+
+// ParseLevel liest debug|info|warn|error (Groß-/Kleinschreibung egal); ok ist false bei allem anderen.
+func ParseLevel(s string) (slog.Level, bool) {
+	switch strings.ToLower(strings.TrimSpace(s)) {
+	case "debug":
+		return slog.LevelDebug, true
+	case "info":
+		return slog.LevelInfo, true
+	case "warn", "warning":
+		return slog.LevelWarn, true
+	case "error":
+		return slog.LevelError, true
+	}
+	return 0, false
+}
+
+// Levels liefert die Stufen für Datei und Konsolen-Spiegel: Standard debug und info, K3C_DEV_LOG_LEVEL setzt beide.
+func Levels() (file, mirror slog.Level) {
+	if l, ok := ParseLevel(os.Getenv(LevelEnv)); ok {
+		return l, l
+	}
+	return slog.LevelDebug, slog.LevelInfo
+}
+
+// Rotate benennt path nach path.1 um (ein altes .1 wird überschrieben), wenn die Datei größer als max ist.
+// Eine fehlende Datei ist kein Fehler.
+func Rotate(path string, max int64) error {
+	st, err := os.Stat(path)
+	if err != nil || st.Size() <= max {
+		return nil
+	}
+	_ = os.Remove(path + ".1")
+	return os.Rename(path, path+".1")
+}
 
 // Log hält den Logger und die offene Datei.
 type Log struct {
@@ -27,15 +68,19 @@ type Log struct {
 // nur in den Konsolenpuffer, und der Fehler kommt zurück, damit der Aufrufer ihn melden kann.
 func Open(logsDir string, store *console.Store) (*Log, error) {
 	mirror := console.NewLineWriter(func(text string) { store.Add(Source, "log", text) })
-	opts := &slog.HandlerOptions{Level: slog.LevelDebug}
-	handlers := []slog.Handler{slog.NewTextHandler(mirror, opts)}
+	fileLevel, mirrorLevel := Levels()
+	handlers := []slog.Handler{slog.NewTextHandler(mirror, &slog.HandlerOptions{Level: mirrorLevel})}
 	l := &Log{mirror: mirror}
 	err := os.MkdirAll(logsDir, 0o755)
 	if err == nil {
-		l.file, err = os.OpenFile(filepath.Join(logsDir, Source+".jsonl"), os.O_CREATE|os.O_APPEND|os.O_WRONLY, 0o644)
+		path := filepath.Join(logsDir, Source+".jsonl")
+		err = Rotate(path, MaxFileSize)
+		if err == nil {
+			l.file, err = os.OpenFile(path, os.O_CREATE|os.O_APPEND|os.O_WRONLY, 0o644)
+		}
 	}
 	if err == nil {
-		handlers = append(handlers, slog.NewJSONHandler(l.file, opts))
+		handlers = append(handlers, slog.NewJSONHandler(l.file, &slog.HandlerOptions{Level: fileLevel}))
 	}
 	l.Logger = slog.New(fanout(handlers))
 	return l, err

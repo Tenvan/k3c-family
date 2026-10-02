@@ -3,6 +3,7 @@ package main
 import (
 	"context"
 	"net"
+	"slices"
 	"path/filepath"
 	"strings"
 	"testing"
@@ -58,7 +59,7 @@ func TestBindingWartetAufStartup(t *testing.T) {
 		time.Sleep(50 * time.Millisecond)
 		app.startup(context.Background())
 	}()
-	if src := app.Sources(); len(src) == 0 || src[0].Name != "k3c-dev" {
+	if src := app.Sources(); len(src) == 0 || !slices.ContainsFunc(src, func(s Source) bool { return s.Name == "k3c-dev" }) {
 		t.Errorf("Sources vor startup = %+v", src)
 	}
 	app.shutdown(context.Background())

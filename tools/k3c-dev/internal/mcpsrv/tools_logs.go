@@ -45,9 +45,16 @@ type sinceIn struct {
 	Limit  int    `json:"limit,omitempty" jsonschema:"höchstens so viele Einträge, Standard 100, höchstens 500"`
 }
 
-// LogSources sind alle logs/*.jsonl und immer das eigene Log, sortiert.
+// knownSources sind Quellen, die immer gelten, auch bevor ihre Datei existiert: k3c-dev schreibt das eigene Log,
+// k3c-client schreibt der Spielserver (Browser-Meldungen), vite die Ausgabe des Dienstes Vite (k3c-dev).
+var knownSources = []string{applog.Source, "k3c-client", "vite"}
+
+// LogSources sind alle logs/*.jsonl und die bekannten Quellen, sortiert.
 func (s *Server) LogSources() []string {
-	seen := map[string]bool{applog.Source: true}
+	seen := map[string]bool{}
+	for _, n := range knownSources {
+		seen[n] = true
+	}
 	files, _ := filepath.Glob(filepath.Join(s.cfg.Root, "logs", "*.jsonl"))
 	for _, f := range files {
 		seen[strings.TrimSuffix(filepath.Base(f), ".jsonl")] = true
