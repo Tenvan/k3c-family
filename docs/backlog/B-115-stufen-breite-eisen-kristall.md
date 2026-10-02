@@ -59,3 +59,5 @@ Gegner-Pools und Hindernisse (Lava) der neuen Stufen (Regelwerk III).
 ## Notizen
 
 Aus R2.2 und R2.3. Abhängig von B-100, B-103, B-114 und Regelwerk III.
+
+R4 (2026-10-02): Gegner und Pools der beiden neuen Stufen stehen in `docs/rules/gegner.md`; Umsetzung in B-129 (Daten), Portale ab Tiefe 3 drei.

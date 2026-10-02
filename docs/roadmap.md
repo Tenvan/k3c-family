@@ -59,6 +59,8 @@ Umsetzung in Sprints und Sessions: [`docs/sprints/`](sprints/README.md). Tickets
 - [ ] Umsetzung R2: Hub-Ausbau (B-112), Material und Lager (B-113), Plantage und Adern (B-114), Stufen-Breite und neue Stufen (B-115), Gebäude-Wirkungen (B-116), Anzeige (B-117)
 - [x] Regelwerk II (R3): Monarch (kein Level, Fund-Pool, Schlag, Skills Tank/Zauberer/Heiler, Wiederbeleben), Bürger (Berufe, Handwerker, Händler, Limit je Hub)
 - [ ] Umsetzung R3: Monarch und Pool (B-118), Skills (B-119), Wiederbeleben (B-120), Berufe und Händler (B-121), Elite/Limit/Heilung (B-122), Protokoll (B-123), Skill-Menü (B-124), Aktionen-Overlay (B-125), Bürger-UI (B-126)
+- [x] Regelwerk III (R4): Gegner je Stufe, Traits, Wellen, Bosse (Miniboss je Stufe, Endboss je Insel), Events (Vollmond, Blutmond, Händler-Überfall)
+- [ ] Umsetzung R4: Traits und Kiting (B-128), neue Gegner (B-129), Bosse (B-130), Events (B-131), Anzeige (B-132)
 - [ ] Automatischer Balancing-Tester (B-099); Regelwerk II (Skillung, Klassen, Level von Monarchen und Bürgern, B-110) und III (B-004); Material je Insel und Inselfolge entschieden (B-108)
 
 ## Schritt 4 – Inhalt & Politur

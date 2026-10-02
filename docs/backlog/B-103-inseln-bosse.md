@@ -58,3 +58,5 @@ Anzahl n der Inseln (offen, mit Insel 1); Boss-Werte (Regelwerk III).
 ## Notizen
 
 Aus R1.3 und B-108: klassisch Insel 1 bis n (`data/islands.json`), neue Insel mit leerem Material-Vorrat. Die Variante „Ebenen“ (mehrere Inseln je Ebene, nächste Ebene nach mindestens k besiegten Inseln) kommt später als eigenes Ticket. Abhängig von B-100 und Regelwerk III.
+
+R4 (2026-10-02): Die Bosse selbst (Werte, Auslöser, Belohnung) stehen in `docs/rules/bosse.md` und werden in B-130 umgesetzt; B-103 bleibt für Inseln, Inselwechsel und den Endboss-Sieg als Auslöser.
