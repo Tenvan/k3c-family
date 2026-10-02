@@ -66,6 +66,8 @@ type Troop struct {
 	Cooldown float64 `json:"cooldown"`
 	TowerID  *int    `json:"towerId"`
 	PaidGold int     `json:"paidGold"` // Landstreicher: bereits bezahltes Rekrutierungs-Gold
+	// carried: Material, das ein Träger in einer Insel bei vollem Maximum behält, während er einen Bauauftrag übernimmt.
+	carried *Job
 }
 
 // ResourceNode ist ein Baum, Fels oder Kupfererz.

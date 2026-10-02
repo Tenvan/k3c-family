@@ -69,7 +69,20 @@ func carryToStock(w *World, t *Troop, dt float64) {
 	if !ok || t.Job.Amount <= 0 {
 		gatherPressure(w)
 		t.Job = nil
+		return
 	}
+	// Maximum voll: Das Material bleibt beim Träger, aber ein wartender Bauplatz oder Bogen geht vor, sonst blockiert
+	// ein wartender Träger den Bau, der Platz schaffen würde.
+	if j := siteJob(w, t); j != nil {
+		t.carried, t.Job = t.Job, j
+	}
+}
+
+// resourceFull sagt, ob der Rohstoff in einer Insel am Maximum steht (ohne Insel nie).
+func resourceFull(w *World, resource string) bool {
+	field := stockField(w.Stock, resource)
+	limit, capped := capacity(w)
+	return field != nil && capped && *field >= limit
 }
 
 // addStockCapped legt höchstens bis zur Kapazität ab und liefert die aufgenommene Menge. Liegt der Vorrat schon
