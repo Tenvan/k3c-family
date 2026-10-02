@@ -6,9 +6,9 @@
 - **Status:** eingeplant
 - **Sprint:** R3
 - **Erstellt:** 2026-10-02
-- **Spec:** Entwurf
+- **Spec:** freigegeben
 - **Revision:** 1
-- **Freigabe:** –
+- **Freigabe:** 2026-10-02, Chat (Ralf), Revision 1
 
 ## Ausgangslage
 
