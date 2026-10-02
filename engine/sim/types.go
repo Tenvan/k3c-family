@@ -154,6 +154,9 @@ type Stock struct {
 	Wood   int `json:"wood"`
 	Stone  int `json:"stone"`
 	Copper int `json:"copper"`
+	// Eisen und Kristall: omitempty, damit Snapshots und Spielstände der Campaign gleich bleiben.
+	Iron    int `json:"iron,omitempty"`
+	Crystal int `json:"crystal,omitempty"`
 }
 
 // Travel: Alle Spieler stehen an einem Tiefen-Eingang oder einer Treppe, Fortschritt 0..1.
@@ -205,6 +208,8 @@ type World struct {
 	// noTravel: Die Stufe gehört zu einer Insel, deren Spieler einzeln wechseln (island_travel.go); der gemeinsame
 	// Stufenwechsel der Campaign (stepTravel) ist dort aus.
 	noTravel bool
+	// island: die Insel, zu der die Stufe gehört (nil = Campaign/einzelne Welt); nur dann gilt das Lager-Maximum.
+	island *Island
 }
 
 func (w *World) newID() int {
