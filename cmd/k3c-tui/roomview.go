@@ -32,6 +32,7 @@ func renderRoom(v roomView) string {
 	lines = append(lines,
 		styleHead.Render("Raum "+d.Code)+fmt.Sprintf(" · Tiefe %d · Tag %d (%s) · Welle %d · Tick %d", d.Depth, d.Day, d.Phase, d.Wave, d.Tick),
 		"Gold je Monarch: "+goldList(d.Gold),
+		"Stufen: "+stageList(d.Stages),
 		fmt.Sprintf("Truppen: %s · Gegner %d · Burg %.0f HP", troopList(d.Troops), d.Enemies, d.Castle),
 		"")
 	lines = append(lines, deviceLines(v)...)
@@ -57,6 +58,26 @@ func deviceLines(v roomView) []string {
 		lines = append(lines, "", styleError.Render(fmt.Sprintf("Gerät %s trennen? (y/n)", v.confirmID)))
 	}
 	return lines
+}
+
+// stageList schreibt je Stufe Tiefe, Tag, Phase und Spieler („T0 Tag 2 day: 0,1 · T1 Tag 1 night: –“).
+func stageList(stages []stage) string {
+	if len(stages) == 0 {
+		return "–"
+	}
+	parts := make([]string, len(stages))
+	for i, s := range stages {
+		players := make([]string, len(s.Players))
+		for j, p := range s.Players {
+			players[j] = fmt.Sprint(p)
+		}
+		list := strings.Join(players, ",")
+		if list == "" {
+			list = "–"
+		}
+		parts[i] = fmt.Sprintf("T%d Tag %d %s: %s", s.Depth, s.Day, s.Phase, list)
+	}
+	return strings.Join(parts, " · ")
 }
 
 func goldList(gold []int) string {

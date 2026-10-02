@@ -16,10 +16,31 @@ type TickMs struct {
 // Status ist ein Raum in /api/status.
 type Status struct {
 	Info
-	Devices  int      `json:"devices"`  // verbunden
-	Monarchs []string `json:"monarchs"` // taken, waiting, free je Index
-	Tick     int      `json:"tick"`
-	TickMs   TickMs   `json:"tickMs"`
+	Devices  int           `json:"devices"`  // verbunden
+	Monarchs []string      `json:"monarchs"` // taken, waiting, free je Index
+	Tick     int           `json:"tick"`
+	TickMs   TickMs        `json:"tickMs"`
+	Stages   []StageStatus `json:"stages"`
+}
+
+// StageStatus ist eine Stufe der Insel: Tiefe, Phase, Tag und die Indizes ihrer Spieler (= Monarchen).
+type StageStatus struct {
+	Depth   int    `json:"depth"`
+	Phase   string `json:"phase"`
+	Day     int    `json:"day"`
+	Players []int  `json:"players"`
+}
+
+// stages beschreibt alle Stufen (Sperre hält der Aufrufer).
+func (r *Room) stages() []StageStatus {
+	out := make([]StageStatus, len(r.isl.Stages))
+	for i, w := range r.isl.Stages {
+		out[i] = StageStatus{w.Biome.Depth, w.Cycle.Phase, w.Cycle.Day, []int{}}
+		for _, p := range w.Players {
+			out[i].Players = append(out[i].Players, p.Index)
+		}
+	}
+	return out
 }
 
 // Status liefert alle Räume (nach Code) und die letzten Abstürze.
@@ -30,7 +51,7 @@ func (m *Manager) Status() ([]Status, []Failure) {
 	for _, r := range m.rooms {
 		r.mu.Lock()
 		last, p99 := r.tickMs()
-		out = append(out, Status{r.info(), r.connected(), r.states(), r.tick, TickMs{last, p99}})
+		out = append(out, Status{r.info(), r.connected(), r.states(), r.tick, TickMs{last, p99}, r.stages()})
 		r.mu.Unlock()
 	}
 	slices.SortFunc(out, func(a, b Status) int { return strings.Compare(a.Code, b.Code) })
@@ -50,6 +71,7 @@ type Summary struct {
 	Castle  float64        `json:"castleHp"`
 	Wave    int            `json:"wave"`
 	Devices []DeviceInfo   `json:"devices"`
+	Stages  []StageStatus  `json:"stages"`
 }
 
 // DeviceInfo ist ein Gerät im Raum. ID ist nur eine Kennung (Anfang der Geräte-ID); die volle ID dient dem Wiederverbinden
@@ -64,14 +86,15 @@ type DeviceInfo struct {
 func (r *Room) Summary() Summary {
 	r.mu.Lock()
 	defer r.mu.Unlock()
-	w := r.camp.CurrentWorld()
+	w := r.isl.Stages[r.start]
 	s := Summary{
-		Code: r.Code, Depth: r.camp.Depth, Tick: r.tick, Phase: w.Cycle.Phase, Day: w.Cycle.Day, Gold: []int{},
-		Troops: map[string]int{}, Enemies: len(w.Enemies), Castle: w.Castle.HP, Wave: w.Wave, Devices: r.deviceInfos(),
+		Code: r.Code, Depth: w.Biome.Depth, Tick: r.tick, Phase: w.Cycle.Phase, Day: w.Cycle.Day, Gold: []int{},
+		Troops: map[string]int{}, Castle: w.Castle.HP, Wave: w.Wave, Devices: r.deviceInfos(), Stages: r.stages(),
 	}
-	for _, p := range w.Players {
+	for _, p := range r.isl.Players() {
 		s.Gold = append(s.Gold, p.Gold)
 	}
+	s.Enemies = len(w.Enemies) // Gegner, Truppen, Burg, Welle: die Startstufe; alle Stufen stehen in Stages
 	for _, t := range w.Troops {
 		s.Troops[t.Kind]++
 	}

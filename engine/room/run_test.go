@@ -29,7 +29,7 @@ func world(t *testing.T, r *Room) string {
 	t.Helper()
 	r.mu.Lock()
 	defer r.mu.Unlock()
-	return string(need(json.Marshal(r.camp.CurrentWorld()))(t))
+	return string(need(json.Marshal(r.isl.Stages))(t))
 }
 
 // 3 Räume ticken parallel in eigenen Goroutinen. Jeder Raum hängt nur von seinen Eingaben ab: Ein Referenzraum mit
@@ -109,7 +109,7 @@ func TestSummary(t *testing.T) {
 	ticks(r, 3)
 	s := r.Summary()
 	want := Summary{Code: "KRNZ", Depth: 0, Tick: 3, Phase: "day", Day: 1, Gold: []int{100, 100},
-		Troops: s.Troops, Enemies: 0, Castle: 1000, Wave: 0, Devices: []DeviceInfo{{ID: "a", Connected: true, Slots: []int{0, 1}}}}
+		Troops: s.Troops, Enemies: 0, Castle: 1000, Wave: 0, Devices: []DeviceInfo{{ID: "a", Connected: true, Slots: []int{0, 1}}}, Stages: s.Stages}
 	if !reflect.DeepEqual(s, want) || s.Troops["archer"] != 2 {
 		t.Fatalf("Summary: %+v", s)
 	}
