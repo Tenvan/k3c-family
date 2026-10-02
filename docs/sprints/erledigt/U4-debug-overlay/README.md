@@ -1,6 +1,6 @@
 # U4 · CLI · Debug-Overlay
 
-- **Status:** aktiv
+- **Status:** erledigt
 - **Domäne:** CLI
 - **Reife:** bereit
 - **Einschiebbar:** nein
@@ -59,9 +59,10 @@ Keine. Entschieden (🧑, 2026-10-02): **Ö** (Tastatur; F3 ist im Browser beleg
 |---|---|---|---|---|
 | U4.1 | `U4.1-zeilen-funktion.md` | Umsetzung | autonom | fertig |
 | U4.2 | `U4.2-overlay-zeichnen.md` | Umsetzung | autonom | fertig |
-| U4.3 | `U4.3-review.md` | Review | autonom | blockiert |
+| U4.3 | `U4.3-review.md` | Review | autonom | fertig |
 
 ## Abnahme
 
-2026-10-02, Review U4.3: AC-01 bis AC-03 siehe Ergebnisse U4.1 und U4.2. Keine schweren Befunde, keine neuen Tickets.
-AC-04 offen: 🧑 prüft `game.html` am Gerät (Ö, LS-Klick). Danach U4.3 abschließen, Ordner nach `erledigt/`, B-093 archivieren.
+- 2026-10-02, Review U4.3 (Agent): AC-01 belegt (U4.1 › Ergebnis), AC-02 und AC-03 belegt (U4.2 › Ergebnis, Revision 2: Ö, dev standardmäßig an).
+- AC-04 abgenommen: 🧑 hat das Overlay am Gerät geprüft (Chat, 2026-10-02).
+- Behobene Befunde: keine (keine schweren Befunde). Neue Tickets: B-098 (dev-Standard vor dem Release zurücknehmen).
