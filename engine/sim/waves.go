@@ -18,7 +18,7 @@ type spawnOrder struct {
 
 // planWave stellt eine Welle zusammen: Anzahl laut Tabelle, Gegnertypen aus dem Biom (nachts mit Nacht-Gegnern),
 // gleichmäßig auf die Portale verteilt und über `spawnSpreadSeconds` gestaffelt.
-func planWave(b level.Biome, wave int, r *rng.Rng, portals []float64, night bool) []spawnOrder {
+func planWave(b level.Biome, wave int, r *rng.Rng, portals []float64, night bool, size float64) []spawnOrder {
 	if len(portals) == 0 {
 		return nil
 	}
@@ -42,12 +42,12 @@ func planWave(b level.Biome, wave int, r *rng.Rng, portals []float64, night bool
 	}
 	var picks []string
 	if len(standard) > 0 {
-		for n := r.Int(row.Standard[0], row.Standard[1]); n > 0; n-- {
+		for n := scaled(r.Int(row.Standard[0], row.Standard[1]), size); n > 0; n-- {
 			picks = append(picks, rng.Pick(r, standard))
 		}
 	}
 	if len(elite) > 0 {
-		for n := r.Int(row.Elite[0], row.Elite[1]); n > 0; n-- {
+		for n := scaled(r.Int(row.Elite[0], row.Elite[1]), size); n > 0; n-- {
 			picks = append(picks, rng.Pick(r, elite))
 		}
 	}
@@ -61,9 +61,13 @@ func planWave(b level.Biome, wave int, r *rng.Rng, portals []float64, night bool
 
 func startWave(w *World) {
 	w.Wave++
-	plan := planWave(w.Biome, w.Wave, w.rng, w.Portals, w.Cycle.Phase == "night")
+	size, hp, damage := 1.0, 1.0, 1.0 // nur Inseln skalieren nach Spieleranzahl und Grad
+	if w.island != nil {
+		size, hp, damage = w.island.waveFactors()
+	}
+	plan := planWave(w.Biome, w.Wave, w.rng, w.Portals, w.Cycle.Phase == "night", size)
 	for _, s := range plan {
-		w.SpawnQueue = append(w.SpawnQueue, QueuedSpawn{Kind: s.kind, X: s.x, At: w.Time + s.delay})
+		w.SpawnQueue = append(w.SpawnQueue, QueuedSpawn{Kind: s.kind, X: s.x, At: w.Time + s.delay, hpFactor: hp, damageFactor: damage})
 	}
 	w.Events = append(w.Events, Event{"type": "wave", "wave": w.Wave, "count": len(plan)})
 }

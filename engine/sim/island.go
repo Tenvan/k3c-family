@@ -15,7 +15,9 @@ type Island struct {
 	// Stages: Stufe i ist die Welt der i-ten Tiefe aus CreateIsland.
 	Stages []*World
 	// Stock ist der Vorrat der Insel; alle Stufen zeigen auf denselben Wert.
-	Stock      *Stock
+	Stock *Stock
+	// Options: Grad, Ziel, Niederlage-Modus (island_options.go).
+	Options    IslandOptions
 	nextPlayer int
 	// travel: Reisefortschritt je Spielerindex (island_travel.go); nur über die Stufen- und Spielerlisten iterieren.
 	travel map[int]*islandTravel
@@ -31,7 +33,7 @@ func createIsland(seed string, depths []int, cycleSpeed, startTime float64) (*Is
 	if len(depths) == 0 {
 		return nil, fmt.Errorf("insel: keine Stufen")
 	}
-	isl := &Island{ID: seed, Seed: seed, CycleSpeed: cycleSpeed, Stock: &Stock{}, travel: map[int]*islandTravel{}}
+	isl := &Island{ID: seed, Seed: seed, CycleSpeed: cycleSpeed, Stock: &Stock{}, Options: DefaultOptions(), travel: map[int]*islandTravel{}}
 	for _, d := range depths {
 		if !hasDepth(d) {
 			return nil, fmt.Errorf("insel: unbekannte Tiefe %d", d)

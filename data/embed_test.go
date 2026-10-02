@@ -10,7 +10,7 @@ import (
 // Erwartete Dateien: fehlt eine, ist das Einbetten oder der Umzug nach data/ kaputt.
 var want = []string{
 	"biomes/cave.json", "biomes/forest.json", "biomes/mine.json",
-	"buildings.json", "economy.json", "enemies.json", "hub.json",
+	"buildings.json", "difficulty.json", "economy.json", "enemies.json", "hub.json",
 	"monarch.json", "sprites.json", "troops.json", "waves.json",
 }
 

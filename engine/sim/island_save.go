@@ -16,13 +16,14 @@ const IslandSaveVersion = 2
 
 // IslandSave ist ein Spielstand einer Insel.
 type IslandSave struct {
-	Version    int      `json:"version"`
-	CampaignID string   `json:"campaignId"`
-	SavedAt    string   `json:"savedAt"`
-	Seed       string   `json:"seed"`
-	Time       float64  `json:"time"`
-	Stock      Stock    `json:"stock"` // Vorrat der Insel (alle Stufen teilen ihn)
-	Stages     []HubSave `json:"stages"` // je Stufe der Hub, nach Tiefe aufsteigend
+	Version    int           `json:"version"`
+	CampaignID string        `json:"campaignId"`
+	SavedAt    string        `json:"savedAt"`
+	Seed       string        `json:"seed"`
+	Time       float64       `json:"time"`
+	Stock      Stock         `json:"stock"`   // Vorrat der Insel (alle Stufen teilen ihn)
+	Options    IslandOptions `json:"options"` // fehlt im Stand: Standard (Normal, Endboss, Stufenverlust)
+	Stages     []HubSave     `json:"stages"`  // je Stufe der Hub, nach Tiefe aufsteigend
 	// StageSkillPoints: Skill-Punkt-Zähler je Stufe (gleiche Reihenfolge); der Pool je Insel folgt mit B-118.
 	StageSkillPoints []int              `json:"stageSkillPoints"`
 	Players          []IslandPlayerSave `json:"players"`
@@ -39,7 +40,7 @@ type IslandPlayerSave struct {
 func (isl *Island) ToSave(savedAt string) IslandSave {
 	s := IslandSave{
 		Version: IslandSaveVersion, CampaignID: isl.ID, SavedAt: savedAt, Seed: isl.Seed, Time: isl.Stages[0].Time,
-		Stock: *isl.Stock, Stages: []HubSave{}, StageSkillPoints: []int{}, Players: []IslandPlayerSave{},
+		Stock: *isl.Stock, Options: isl.Options, Stages: []HubSave{}, StageSkillPoints: []int{}, Players: []IslandPlayerSave{},
 	}
 	for _, w := range isl.Stages {
 		s.Stages = append(s.Stages, hubSave(w, newWorld(w.Biome.Depth, isl.Seed, Options{})))
@@ -83,6 +84,7 @@ func parseIslandV2(raw []byte) (IslandSave, error) {
 		}
 	}
 	var s IslandSave
+	s.Options = DefaultOptions() // Felder, die im Stand fehlen, behalten den Standard
 	if err := json.Unmarshal(raw, &s); err != nil {
 		return IslandSave{}, fmt.Errorf("spielstand: %w", err)
 	}
@@ -90,6 +92,9 @@ func parseIslandV2(raw []byte) (IslandSave, error) {
 }
 
 func validateIslandSave(s IslandSave) error {
+	if err := validateOptions(s.Options); err != nil {
+		return err
+	}
 	if len(s.Stages) == 0 || len(s.StageSkillPoints) != len(s.Stages) {
 		return errors.New("spielstand: Stufen fehlen oder passen nicht zu den Skill-Punkten")
 	}
@@ -117,7 +122,7 @@ func islandFromV1(old SaveGame) IslandSave {
 	sort.SliceStable(hubs, func(i, j int) bool { return hubs[i].Depth < hubs[j].Depth })
 	s := IslandSave{
 		Version: IslandSaveVersion, CampaignID: old.CampaignID, SavedAt: old.SavedAt, Seed: old.Seed, Time: old.Time,
-		Stages: []HubSave{}, StageSkillPoints: []int{}, Players: []IslandPlayerSave{},
+		Options: DefaultOptions(), Stages: []HubSave{}, StageSkillPoints: []int{}, Players: []IslandPlayerSave{},
 	}
 	present := false
 	for _, h := range hubs {
@@ -161,6 +166,7 @@ func FromIslandSave(s IslandSave, cycleSpeed float64) (*Island, error) {
 		return nil, err
 	}
 	isl.ID = s.CampaignID
+	isl.Options = s.Options
 	for i, h := range s.Stages {
 		applyHub(isl.Stages[i], h)
 		isl.Stages[i].SkillPoints = s.StageSkillPoints[i]
