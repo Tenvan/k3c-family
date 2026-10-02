@@ -62,7 +62,7 @@ keine. Entschieden 2026-10-02 durch 🧑 (Chat): „Im Spiel starten“ darf ein
 |---|---|---|---|---|
 | U3.1 | `U3.1-zeichenmodell.md` | Umsetzung | autonom | fertig |
 | U3.2 | `U3.2-seite.md` | Umsetzung | autonom | fertig |
-| U3.3 | `U3.3-testseite.md` | Umsetzung | autonom | offen |
+| U3.3 | `U3.3-testseite.md` | Umsetzung | autonom | fertig |
 | U3.4 | `U3.4-review.md` | Review | autonom | offen |
 
 ## Abnahme
