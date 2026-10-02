@@ -68,6 +68,7 @@ func (s *Saves) Load(slot string) ([]byte, error) {
 type header struct {
 	campaignID string
 	savedAt    string
+	version    float64
 }
 
 // parseSave prüft: ein JSON-Objekt mit campaignId (Text) und version (Zahl).
@@ -80,7 +81,7 @@ func parseSave(data []byte) (header, error) {
 	if _, isNum := m["version"].(float64); !ok || !isNum {
 		return header{}, ErrInvalid
 	}
-	h := header{campaignID: id}
+	h := header{campaignID: id, version: m["version"].(float64)}
 	switch v := m["savedAt"].(type) {
 	case string:
 		h.savedAt = v
@@ -113,7 +114,7 @@ func (s *Saves) store(slot string, data []byte) (backup string, err error) {
 	}
 	if prev, err := os.ReadFile(path); err == nil {
 		old, perr := parseSave(prev)
-		if perr == nil && old.campaignID != next.campaignID {
+		if perr == nil && (old.campaignID != next.campaignID || old.version != next.version) {
 			backup = fmt.Sprintf("%s-%s.json", slot, s.stamp(old.savedAt))
 			if err := os.Rename(path, filepath.Join(s.Dir, backup)); err != nil {
 				return "", err

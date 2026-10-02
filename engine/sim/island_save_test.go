@@ -92,8 +92,8 @@ func TestParseIslandSaveFromVersion1(t *testing.T) {
 		t.Fatalf("Stand der Version 1 muss für den Raum lesbar bleiben: %v", err)
 	}
 	isl := loadIsland(t, old)
-	if len(isl.Stages) != 2 || isl.Stages[0].Biome.Depth != 0 || isl.Stages[1].Biome.Depth != 1 {
-		t.Fatalf("zwei Stufen (Wald, Höhle) erwartet, bekam %d", len(isl.Stages))
+	if len(isl.Stages) != 3 || isl.Stages[0].Biome.Depth != 0 || isl.Stages[1].Biome.Depth != 1 || isl.Stages[2].Biome.Depth != 2 {
+		t.Fatalf("drei Stufen (Tiefe 0, 1, 2) erwartet, bekam %d", len(isl.Stages))
 	}
 	if isl.ID != "alt-1" || isl.Seed != "alt-a" {
 		t.Errorf("ID und Seed bleiben: %q, %q", isl.ID, isl.Seed)

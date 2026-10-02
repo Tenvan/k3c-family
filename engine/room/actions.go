@@ -2,6 +2,7 @@ package room
 
 import (
 	"math"
+	"slices"
 	"time"
 
 	"k3c/engine/sim"
@@ -175,6 +176,7 @@ func (r *Room) Tick() bool {
 	if r.beforeStep != nil {
 		r.beforeStep()
 	}
+	before := r.depths()
 	sim.StepIsland(r.isl, commands, 1.0/TickHz)
 	r.tick++
 	travelled := false
@@ -182,6 +184,10 @@ func (r *Room) Tick() bool {
 		if d.connected && r.pushState(d) {
 			travelled = true
 		}
+	}
+	if after := r.depths(); !slices.Equal(before, after) { // irgendein Monarch hat die Stufe gewechselt
+		travelled = true
+		r.broadcastSeats()
 	}
 	if travelled {
 		r.save()

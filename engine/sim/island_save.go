@@ -131,10 +131,17 @@ func islandFromV1(old SaveGame) IslandSave {
 		s.Stock.Stone += h.Stock.Stone
 		s.Stock.Copper += h.Stock.Copper
 	}
-	if !present { // die aktuelle Stufe ist noch unverändert und hat keinen Hub im Stand
-		hubs = append(hubs, HubSave{Depth: old.Depth, Sites: []SiteSave{}, Troops: []TroopSave{}})
-		sort.SliceStable(hubs, func(i, j int) bool { return hubs[i].Depth < hubs[j].Depth })
+	// Stufen ohne Hub im Stand (die aktuelle und die noch unbesuchten Tiefen 0..2) sind unverändert und kommen leer dazu,
+	// sonst säße ein alter Stand auf seinen Stufen fest (moveToStage findet kein Ziel).
+	for d := 0; d <= 2; d++ {
+		if d != old.Depth && !hasHub(hubs, d) {
+			hubs = append(hubs, HubSave{Depth: d, Sites: []SiteSave{}, Troops: []TroopSave{}})
+		}
 	}
+	if !present {
+		hubs = append(hubs, HubSave{Depth: old.Depth, Sites: []SiteSave{}, Troops: []TroopSave{}})
+	}
+	sort.SliceStable(hubs, func(i, j int) bool { return hubs[i].Depth < hubs[j].Depth })
 	for _, h := range hubs {
 		sp := 0
 		if h.Depth == old.Depth {
@@ -181,4 +188,13 @@ func FromIslandSave(s IslandSave, cycleSpeed float64) (*Island, error) {
 		sort.SliceStable(w.Players, func(i, j int) bool { return w.Players[i].Index < w.Players[j].Index })
 	}
 	return isl, nil
+}
+
+func hasHub(hubs []HubSave, depth int) bool {
+	for _, h := range hubs {
+		if h.Depth == depth {
+			return true
+		}
+	}
+	return false
 }
