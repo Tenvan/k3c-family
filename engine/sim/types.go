@@ -201,6 +201,10 @@ type World struct {
 	SkillPoints int     `json:"skillPoints"`
 	Travel      *Travel `json:"travel"`
 	Events      []Event `json:"events"` // wird bei jedem Step geleert
+
+	// noTravel: Die Stufe gehört zu einer Insel, deren Spieler einzeln wechseln (island_travel.go); der gemeinsame
+	// Stufenwechsel der Campaign (stepTravel) ist dort aus.
+	noTravel bool
 }
 
 func (w *World) newID() int {
