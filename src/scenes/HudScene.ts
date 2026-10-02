@@ -4,6 +4,8 @@ import { ECONOMY } from '../model/data';
 import type { GameEvent, World } from '../model/types';
 import type { GameScene } from './GameScene';
 import { SHARED_LINE_HEIGHT, sharedAnchor } from './layout';
+import { debugEnabled } from './debugOverlay';
+import { DebugOverlay } from './debugOverlayView';
 import { gameNotice } from './lobbyLogic';
 import { RadarLayer } from './radarView';
 import { RESOURCE_NAMES } from './worldRenderer';
@@ -30,7 +32,7 @@ export class HudScene extends Phaser.Scene {
   private clock!: Phaser.GameObjects.Text;
   private fight!: Phaser.GameObjects.Text;
   private banner!: Phaser.GameObjects.Text;
-  private fps!: Phaser.GameObjects.Text;
+  private debug: DebugOverlay | null = null;
   private controlsHint!: Phaser.GameObjects.Text;
   private info!: Phaser.GameObjects.Text;
   private travel!: Phaser.GameObjects.Text;
@@ -59,7 +61,7 @@ export class HudScene extends Phaser.Scene {
     this.joinHint = this.add
       .text(GAME_WIDTH / 2, GAME_HEIGHT / 2, 'Drücke  A  (Controller), Leertaste oder die Münz-Taste zum Beitreten', { ...STYLE, fontSize: '44px' })
       .setOrigin(0.5);
-    this.fps = this.add.text(20, GAME_HEIGHT - 40, '', { ...STYLE, fontSize: '20px', strokeThickness: 4 });
+    this.debug = debugEnabled(location.search) ? new DebugOverlay(this) : null;
     this.controlsHint = this.add.text(GAME_WIDTH - 20, GAME_HEIGHT - 40, '', { ...STYLE, fontSize: '20px', strokeThickness: 4 }).setOrigin(1, 0);
     this.info = this.add.text(20, 16, '', { ...STYLE, fontSize: '20px', strokeThickness: 4 });
     this.travel = this.add.text(GAME_WIDTH / 2, GAME_HEIGHT - 170, '', { ...STYLE, fontSize: '40px', color: '#ffd166' }).setOrigin(0.5);
@@ -68,6 +70,7 @@ export class HudScene extends Phaser.Scene {
   update(_time: number, deltaMs: number): void {
     const game = this.game.scene.getScene('game') as GameScene;
     const world = game.world;
+    this.debug?.update(game.client, world ?? null);
     this.showHints(game, world);
     if (!world) return;
     this.showCells(game, world.players);
@@ -75,7 +78,6 @@ export class HudScene extends Phaser.Scene {
     this.showWorld(world);
     this.placeShared(game);
     this.showBanner(game, deltaMs);
-    this.fps.setText(`${Math.round(this.game.loop.actualFps)} FPS`);
   }
 
   /** Hinweise: Verbindungsstand, Beitritt, Steuerung, Raum. */
