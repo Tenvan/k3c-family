@@ -5,7 +5,7 @@
 - **Reife:** bereit
 - **Einschiebbar:** ja
 - **Tickets:** B-004, B-005, B-021, B-025
-- **Start-Commit:** –
+- **Start-Commit:** cf35ecc
 - **Spec:** freigegeben
 - **Revision:** 2
 - **Freigabe:** 2026-10-02, Chat (Ralf), Revision 1; Revision 2 (messbare Zielkorridore für den Balancing-Tester B-099) auf Zuruf von Ralf am 2026-10-02
@@ -60,7 +60,7 @@ keine
 
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
-| R1.1 | `R1.1-ist-regelwerk.md` | Umsetzung | autonom | offen |
+| R1.1 | `R1.1-ist-regelwerk.md` | Umsetzung | autonom | fertig |
 | R1.2 | `R1.2-workshop-wirtschaft.md` | Workshop | Mensch | offen |
 | R1.3 | `R1.3-workshop-stufen.md` | Workshop | Mensch | offen |
 | R1.4 | `R1.4-beschluss-tickets.md` | Umsetzung | autonom | offen |
