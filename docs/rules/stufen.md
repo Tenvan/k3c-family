@@ -72,7 +72,7 @@ Die Optionen stehen im Spielstand. **Dev** ist nur im Dev-Mode wählbar.
 
 ## 6. Steuerung
 
-Die Taste X bleibt für Skills frei (`wirtschaft.md` § 6). **Das Skill-Menü liegt nicht auf View**, weil View + Menu gemeinsam „zurück zur Landingpage“ ist; die neue Taste legt Regelwerk II fest (Vorschlag: LB + RB).
+Die Taste X ist der Schlag des Monarchen (R3.2); Skill-Slots LB, RB, LT, D-Pad hoch, Skill-Menü D-Pad runter (`monarch.md` § 4). **Das Skill-Menü liegt nicht auf View**, weil View + Menu gemeinsam „zurück zur Landingpage“ ist.
 
 ## 7. Offen und Annahmen
 
