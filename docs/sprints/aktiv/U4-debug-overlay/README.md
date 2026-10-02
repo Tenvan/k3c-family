@@ -59,8 +59,9 @@ Keine. Entschieden (🧑, 2026-10-02): **F3** (Tastatur) und **Klick auf den lin
 |---|---|---|---|---|
 | U4.1 | `U4.1-zeilen-funktion.md` | Umsetzung | autonom | fertig |
 | U4.2 | `U4.2-overlay-zeichnen.md` | Umsetzung | autonom | fertig |
-| U4.3 | `U4.3-review.md` | Review | autonom | offen |
+| U4.3 | `U4.3-review.md` | Review | autonom | blockiert |
 
 ## Abnahme
 
-–
+2026-10-02, Review U4.3: AC-01 bis AC-03 siehe Ergebnisse U4.1 und U4.2. Keine schweren Befunde, keine neuen Tickets.
+AC-04 offen: 🧑 prüft `game.html?dev=1` am Gerät (F3, LS-Klick). Danach U4.3 abschließen, Ordner nach `erledigt/`, B-093 archivieren.
