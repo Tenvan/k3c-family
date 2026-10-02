@@ -16,7 +16,7 @@ Es gibt Testseiten für Szenarien, Figuren und Grafiken, aber keine, die ein gen
 
 ## Ziel
 
-Die Seite `leveltest.html` zeigt Seed und Biom als Level-Streifen mit Warnungen und startet das Level im Spiel. Am Ende sichtbar: auf dem TV mit Controller Seed ändern, scrollen und „Im Spiel starten“.
+Die Seite `leveltest.html` zeigt Seed und Biom als Level-Streifen mit Warnungen und startet das Level im Spiel und ist von der Testseite (`testing.html`) aus erreichbar. Am Ende sichtbar: auf dem TV von der Testseite die Kachel „Level-Betrachter“ öffnen, mit Controller Seed ändern, scrollen und „Im Spiel starten“.
 
 ## Beteiligte und Zielgruppen
 
@@ -32,7 +32,7 @@ Spielen, Level bearbeiten oder speichern (B-092 › Nicht-Ziele).
 
 ## Regeln und Einschränkungen
 
-Domäne PLAT. Regel „Seiten & Navigation“ aus `CLAUDE.md` (`installPageChrome()`, Eintrag in `src/landing/pages.ts`, `toggleFullscreen()`, `openPage()`/`goHome()`). Voraussetzung: U2 abgeschlossen. Die Abnahme am TV macht nur 🧑.
+Domäne PLAT. Regel „Seiten & Navigation“ aus `CLAUDE.md` (`installPageChrome()`, Eintrag in `src/landing/pages.ts`, `toggleFullscreen()`, `openPage()`/`goHome()`); die Testseite `testing.html` darf für den Einstieg angepasst werden. Voraussetzung: U2 abgeschlossen. Die Abnahme am TV macht nur 🧑.
 
 ## Beispiele
 
@@ -49,6 +49,7 @@ Server nicht erreichbar → Hinweistext statt leerer Seite (B-092 › Ausnahme- 
 - **AC-03** Beispiel-Level stimmt mit `level_generate` überein (B-092/AC-03).
 - **AC-04** Hinweis ohne Server (B-092/AC-04).
 - **AC-05** 🧑 hat die Seite mit Controller am TV bedient (B-092/AC-05).
+- **AC-06** Die Testseite `testing.html` führt über eine Kachel „Level-Betrachter“ zu `leveltest.html`, Test grün (B-092/AC-06).
 
 ## Offene Fragen
 
@@ -59,8 +60,9 @@ keine blockierenden (Export der Positionen ist ausdrücklich kein Teil dieser Sp
 Entwurf. Vor dem Aktivieren jede Session als Datei nach `docs/vorlagen/session.md` schreiben, die Kriterien in Klammern werden ihr Feld `Kriterien`.
 
 - U3.1 Abbildungs-Funktion (Abschnitte/Objekte → Zeichenmodell) mit Tests (AC-02, AC-03).
-- U3.2 Seite `leveltest.html`: Eingabe, Zeichnen, Fehlerhinweis, Kachel (AC-01, AC-04).
-- U3.3 Review (alle); AC-05 ist die Abnahme durch 🧑.
+- U3.2 Seite `leveltest.html`: Eingabe, Zeichnen, Fehlerhinweis, Kachel auf der Landingpage (AC-01, AC-04).
+- U3.3 Einstieg von der Testseite: Abschnitt „Level“ mit Kachel in `testing.html` / `src/tools/testing.ts`, Controller-Auswahl, Test (AC-06).
+- U3.4 Review (alle); AC-05 ist die Abnahme durch 🧑.
 
 ## Abnahme
 
