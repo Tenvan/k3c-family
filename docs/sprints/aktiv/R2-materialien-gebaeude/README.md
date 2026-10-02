@@ -1,14 +1,14 @@
 # R2 · REG · Regelwerk I b – Materialien & Gebäude
 
-- **Status:** geplant
+- **Status:** aktiv
 - **Domäne:** REG
 - **Reife:** bereit
 - **Einschiebbar:** ja
 - **Tickets:** B-109
 - **Start-Commit:** –
-- **Spec:** Entwurf
+- **Spec:** freigegeben
 - **Revision:** 1
-- **Freigabe:** –
+- **Freigabe:** 2026-10-02, Chat (Ralf), Revision 1
 
 ## Ausgangslage
 
