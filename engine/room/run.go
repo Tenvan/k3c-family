@@ -30,12 +30,16 @@ func (m *Manager) Run(ctx context.Context) {
 	m.mu.Unlock()
 	sweep := time.NewTicker(time.Second)
 	defer sweep.Stop()
+	stats := time.NewTicker(statsEvery)
+	defer stats.Stop()
 	for {
 		select {
 		case <-ctx.Done():
 			return
 		case <-sweep.C:
 			m.safeSweep()
+		case <-stats.C:
+			m.logStats()
 		}
 	}
 }
@@ -79,7 +83,9 @@ func (r *Room) safeTick() (alive bool) {
 	}
 	r.mu.Lock()
 	defer r.mu.Unlock()
-	r.durations = append(r.durations, time.Since(start))
+	took := time.Since(start)
+	r.noteTick(took)
+	r.durations = append(r.durations, took)
 	if len(r.durations) > durations {
 		r.durations = r.durations[1:]
 	}
@@ -88,7 +94,7 @@ func (r *Room) safeTick() (alive bool) {
 
 // crash schließt einen abgestürzten Raum, ohne ihn zu speichern (sein Zustand ist nicht mehr sicher).
 func (m *Manager) crash(r *Room, msg string) {
-	m.log().Error("Raum abgestürzt", "room", r.Code, "save", r.Name, "err", msg)
+	m.log().Error("Raum abgestürzt", "ns", "room", "room", r.Code, "save", r.Name, "err", msg)
 	defer m.notify(true)
 	m.mu.Lock()
 	defer m.mu.Unlock()

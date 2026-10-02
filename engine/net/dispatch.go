@@ -21,6 +21,9 @@ func (c *conn) handle(data []byte) {
 		c.fail(codeBadRequest)
 		return
 	}
+	if m.T != "input" { // input kommt je Tick, alles andere ist selten und zeigt den Ablauf
+		c.s.log.Debug("Nachricht", "ns", "ws", "device", short(c.device), "t", m.T, "room", m.Room, "save", m.Save, "slots", m.Slots)
+	}
 	r := c.current()
 	var err error
 	switch {
@@ -40,7 +43,10 @@ func (c *conn) handle(data []byte) {
 	}
 }
 
-func (c *conn) fail(code string) { c.enqueue(errMsg(code)) }
+func (c *conn) fail(code string) {
+	c.s.log.Warn("Fehler an Gerät", "ns", "ws", "device", short(c.device), "code", code)
+	c.enqueue(errMsg(code))
+}
 
 func (c *conn) create(m inMsg) error {
 	if err := room.ValidSlots(m.Slots); err != nil {

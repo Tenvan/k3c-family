@@ -2,7 +2,8 @@
 //
 // Konfiguration per Umgebung: K3C_HTTP_PORT (8080), K3C_HTTPS_PORT (8443, nur mit <certs>/key.pem und cert.pem),
 // K3C_DIST (dist), K3C_SAVES_DIR (saves), K3C_REPORTS_DIR (reports), K3C_CERTS_DIR (certs), K3C_STATUS_TOKEN
-// (schützt /api/status; leer = Diagnose aus), K3C_LOG_DIR (JSON-Log nach <Ordner>/k3c-server.jsonl; Standard: ein vorhandener
+// (schützt /api/status; leer = Diagnose aus), K3C_LOG_LEVEL (Konsole: debug, info, warn, error; Standard info; die JSON-Dateien schreiben immer ab debug),
+// K3C_LOG_DIR (JSON-Log nach <Ordner>/k3c-server.jsonl, Browser-Meldungen nach k3c-client.jsonl; Standard: ein vorhandener
 // Ordner logs/, sonst nur Text auf stderr), K3C_DEV (Dev-Mode: leer oder 1 = an, 0 = aus; Grad dev wählbar und Standard). `k3c-server -health` fragt /api/health des laufenden Servers ab
 // (Docker-HEALTHCHECK, das Image hat kein curl).
 package main
@@ -18,6 +19,7 @@ import (
 	"os"
 	"os/signal"
 	"path/filepath"
+	"runtime"
 	"sync"
 	"syscall"
 	"time"
@@ -79,6 +81,8 @@ func run(cfg config, log *slog.Logger) error {
 	if _, err := os.Stat(filepath.Join(cfg.dist, "index.html")); err != nil {
 		return fmt.Errorf("%s/index.html fehlt. Erst bauen: task build", cfg.dist)
 	}
+	log.Info("Server startet", "ns", "main", "version", version, "pid", os.Getpid(), "go", runtime.Version(), "http", cfg.httpPort,
+		"dist", cfg.dist, "saves", cfg.saves, "reports", cfg.reports, "dev", cfg.dev, "logDir", logDir(), "konsolenLevel", consoleLevel().String())
 	saves := &store.Saves{Dir: cfg.saves}
 	rooms := room.NewManager(saves)
 	rooms.Log = log
@@ -90,7 +94,9 @@ func run(cfg config, log *slog.Logger) error {
 		log.Info("Test-Spielstände aufgeräumt", "anzahl", n)
 	}
 	conns := &sync.WaitGroup{}
-	handler := k3cnet.NewHandler(k3cnet.Config{Dist: cfg.dist, Log: log, Version: version, StartedAt: time.Now(),
+	clientLog, closeClientLog := newNamedLogger(logDir(), clientLogFile, os.Stderr)
+	defer closeClientLog()
+	handler := k3cnet.NewHandler(k3cnet.Config{Dist: cfg.dist, Log: log, ClientLog: clientLog, Version: version, StartedAt: time.Now(),
 		StatusToken: cfg.statusToken, LogDir: logDir(), Saves: saves, Reports: &store.Reports{Dir: cfg.reports}, Rooms: rooms,
 		Conns: conns})
 	if cfg.statusToken == "" {
@@ -117,6 +123,7 @@ func run(cfg config, log *slog.Logger) error {
 	case err := <-errs:
 		return err
 	case <-ctx.Done():
+		log.Info("Server fährt herunter (Signal)", "ns", "main", "raeume", len(rooms.Rooms()))
 	}
 	rooms.Close() // alle Räume speichern, room_closed an die Geräte, Verbindungen schließen
 	waitConns(conns, 2*time.Second)

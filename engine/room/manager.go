@@ -104,7 +104,10 @@ func (m *Manager) Create(id string, peer Peer, name string, fresh bool, depth in
 	}
 	var r *Room
 	var err error
-	defer func() { m.notify(err == nil) }()
+	defer func() {
+		m.notify(err == nil)
+		m.logRejected("create", id, name, err)
+	}()
 	m.mu.Lock()
 	defer m.mu.Unlock()
 	if m.shut {
@@ -137,6 +140,7 @@ func (m *Manager) create(id string, peer Peer, name string, fresh bool, depth in
 	}
 	r := &Room{Code: m.code(), Name: name, m: m, isl: isl, start: startStage(isl, depth), Opts: opts, monarchs: monarchs, devices: map[string]*device{}}
 	m.rooms[r.Code] = r
+	r.log().Info("Raum erstellt", "device", short(id), "neu", fresh, "tiefe", depth, "slots", slots, "optionen", opts, "raeume", len(m.rooms))
 	if m.ctx != nil {
 		go r.run(m.ctx)
 	}
@@ -225,7 +229,10 @@ func (m *Manager) Join(id string, peer Peer, code string, slots []int) (*Room, e
 		return nil, err
 	}
 	err := ErrRoomNotFound
-	defer func() { m.notify(err == nil) }()
+	defer func() {
+		m.notify(err == nil)
+		m.logRejected("join", id, code, err)
+	}()
 	m.mu.Lock()
 	defer m.mu.Unlock()
 	r := m.rooms[code]
@@ -280,6 +287,7 @@ func (r *Room) lockedSweep(now time.Time) (changed, remove bool) {
 	defer r.mu.Unlock()
 	changed, remove = r.sweep(now)
 	if remove {
+		r.log().Info("Raum leer seit Frist, wird aufgeräumt", "frist", EmptyFor.String())
 		r.save()
 		r.closed = true
 		r.dropTestSave()
@@ -303,6 +311,7 @@ func (m *Manager) Close() {
 func (r *Room) closeFinal() {
 	r.mu.Lock()
 	defer r.mu.Unlock()
+	r.log().Info("Raum schließt (Server fährt herunter)")
 	r.save()
 	r.closed = true
 	for _, d := range r.devices {

@@ -21,6 +21,8 @@ type Config struct {
 	Saves   *store.Saves
 	Reports *store.Reports
 	Log     *slog.Logger
+	// ClientLog nimmt die Meldungen des Browsers (POST /api/clientlog) auf; nil = in Log.
+	ClientLog *slog.Logger
 	// StatusToken schützt /api/status (B-027); leer = Diagnose aus.
 	StatusToken string
 	// LogDir ist der Ordner des JSON-Logs (k3c-server.jsonl) für GET /api/status/log (B-088); leer = Log aus.
@@ -34,8 +36,9 @@ type Config struct {
 }
 
 type server struct {
-	cfg Config
-	log *slog.Logger
+	cfg  Config
+	log  *slog.Logger
+	gate clientGate
 
 	mu    sync.Mutex
 	conns map[*conn]bool // offene WebSocket-Verbindungen
@@ -58,12 +61,13 @@ func NewHandler(cfg Config) http.Handler {
 	mux.HandleFunc("/api/status/save", s.statusSave)
 	mux.HandleFunc("/api/report", s.report)
 	mux.HandleFunc("/api/level", s.level)
+	mux.HandleFunc("/api/clientlog", s.clientLog)
 	if cfg.Rooms != nil {
 		cfg.Rooms.Changed = s.broadcastRooms
 		mux.HandleFunc("/ws", s.websocket)
 	}
 	mux.HandleFunc("/", s.static)
-	return mux
+	return s.accessLog(mux)
 }
 
 func writeJSON(w http.ResponseWriter, status int, body any) {

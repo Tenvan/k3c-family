@@ -110,6 +110,7 @@ func (r *Room) leave(id string) {
 		r.release(idx)
 	}
 	delete(r.devices, id)
+	r.log().Info("Gerät hat den Raum verlassen", "device", short(id), "geraete", r.connected())
 	r.afterDisconnect()
 }
 
@@ -130,6 +131,7 @@ func (r *Room) Drop(id string, peer Peer) {
 		mo.state, mo.since, mo.input = Waiting, now, sim.PlayerCommand{}
 	}
 	d.connected = false
+	r.log().Info("Gerät getrennt, Monarchen warten", "device", short(id), "frist", WaitFor.String(), "geraete", r.connected())
 	r.afterDisconnect()
 }
 
@@ -149,6 +151,7 @@ func (r *Room) afterDisconnect() {
 	r.syncFree()
 	r.broadcastSeats()
 	if r.connected() == 0 {
+		r.log().Info("Raum leer und pausiert, speichert")
 		r.save()
 		r.emptySince = r.m.now()
 	}
@@ -187,6 +190,7 @@ func (r *Room) Tick() bool {
 	}
 	if after := r.depths(); !slices.Equal(before, after) { // irgendein Monarch hat die Stufe gewechselt
 		travelled = true
+		r.log().Info("Stufenwechsel", "vorher", before, "nachher", after, "tick", r.tick)
 		r.broadcastSeats()
 	}
 	if travelled {
@@ -209,6 +213,7 @@ func (r *Room) sweep(now time.Time) (changed, remove bool) {
 		}
 	}
 	if changed {
+		r.log().Info("Wartende Monarchen nach Frist frei")
 		r.syncFree()
 		r.broadcastSeats()
 	}
