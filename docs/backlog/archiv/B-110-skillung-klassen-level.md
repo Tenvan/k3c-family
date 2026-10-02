@@ -3,7 +3,7 @@
 - **Domäne:** REG
 - **Typ:** Idee
 - **Prio:** hoch
-- **Status:** eingeplant
+- **Status:** erledigt
 - **Sprint:** R3
 - **Erstellt:** 2026-10-02
 - **Spec:** freigegeben

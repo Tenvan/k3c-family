@@ -59,4 +59,4 @@ keine
 
 Workshops: Claude bereitet vor und fragt einzeln, der Mensch entscheidet.
 
-**Stand 2026-10-02 (R1 abgeschlossen):** Regelwerk I ist beschlossen (`docs/rules/wirtschaft.md`, `stufen.md`), **B-004/AC-01 ist erfüllt**. Offen: AC-02 (Monarch & Skills **und Bürger**: Skillung, Klassen, Level, Regelwerk II, Ticket B-110; Skill-Menü liegt nicht auf View) und AC-03 (Gegner & Truppen inkl. Bosse, Vollmond-Event, Elite, Truppen-Limit, Regelwerk III). B-108 (Material je Insel, Inselfolge) ist am 2026-10-02 entschieden.
+**Stand 2026-10-02 (R1 abgeschlossen):** Regelwerk I ist beschlossen (`docs/rules/wirtschaft.md`, `stufen.md`), **B-004/AC-01 ist erfüllt**. **AC-02 (Monarch, Skills, Bürger) ist mit R3 erfüllt** (2026-10-02, `docs/rules/monarch.md` und `buerger.md`). Offen: AC-03 (Gegner & Truppen inkl. Bosse, Vollmond-Event, Elite, Truppen-Limit, Regelwerk III). B-108 (Material je Insel, Inselfolge) ist am 2026-10-02 entschieden.
