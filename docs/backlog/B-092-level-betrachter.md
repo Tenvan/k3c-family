@@ -28,11 +28,12 @@ Entwickler, 🧑 beim Balancing; bedienbar mit Tastatur und Controller (Xbox). E
 - Seed (freier Text, Zufalls-Seed per Taste/Knopf) und Biom (Auswahl) einstellbar; scrollen und zoomen mit linkem Stick bzw. Tastatur.
 - Die Abbildung (Abschnitt/Objekt → Zeichenmodell) ist eine reine, getestete Funktion.
 - `testing.html` bekommt einen Abschnitt „Level“ mit einer Kachel „Level-Betrachter“, die `leveltest.html` über `openPage()` öffnet; die Kachel ist wie die Szenarien-Kacheln mit Controller bedienbar (Steuerkreuz wählt, A öffnet). Die Kachel auf der Landingpage bleibt zusätzlich.
-- Link „Im Spiel starten“ öffnet `game.html` mit demselben Seed und Biom bzw. Tiefe über `openPage()`.
+- Knopf „Im Spiel starten“ öffnet `game.html?autostart=1&fresh=1&save=<Seed>` über `openPage()`: Der Seed eines neuen Spiels ist der Name des Spielstands, daher nur für das Biom `forest` (Tiefe 0) und Seeds im Namensformat `^[a-z0-9-]{1,32}$`. Sonst ist der Knopf aus und nennt den Grund (Start mit beliebigem Seed und Höhle/Mine braucht B-095). Der Start ersetzt einen gleichnamigen Spielstand (die Sicherung bleibt, wie bei „Neues Spiel“).
+- Der Zufalls-Seed liefert immer einen startbaren Namen (Kleinbuchstaben und Ziffern, `crypto.getRandomValues`).
 
 ## Nicht-Ziele
 
-Spielen oder Simulieren, Level bearbeiten, Levels speichern oder teilen.
+Spielen oder Simulieren, Level bearbeiten, Levels speichern oder teilen; Start mit beliebigem Seed oder in Höhle und Mine (B-095).
 
 ## Regeln und Einschränkungen
 
@@ -44,21 +45,22 @@ Seed `test`, Biom `forest` → 22 Abschnitte à 50 Units, zwei Portale, Hub in d
 
 ## Ausnahme- und Fehlerfälle
 
-Server nicht erreichbar oder 400 → klarer Hinweistext (z. B. „Server nicht erreichbar, `task start`“), keine leere Seite. Level mit Warnungen → Warnungen sichtbar und markiert.
+Seed oder Biom nicht startbar → „Im Spiel starten“ ist aus, der Grund steht daneben. Server nicht erreichbar oder 400 → klarer Hinweistext (z. B. „Server nicht erreichbar, `task start`“), keine leere Seite. Level mit Warnungen → Warnungen sichtbar und markiert.
 
 ## Akzeptanzkriterien
 
 - **AC-01** `leveltest.html` ruft `installPageChrome()` auf und steht in `src/landing/pages.ts` (Abschnitt Test); `tests/projectRules.test.ts` ist grün.
 - **AC-02** Die reine Abbildungs-Funktion ist mit Vitest geprüft (Abschnitte, Objekte nach Art, Portale, Hub, Ausgang, Warnungen).
-- **AC-03** Seed `test`, Biom `forest` zeigt dieselben 22 Abschnitte wie `level_generate` (Vergleich im Test mit festem Beispiel).
+- **AC-03** Das Golden-Level `testdata/golden/level-forest.json` (erstes Level) ergibt im Zeichenmodell genau seine Abschnitte und Objekte nach Art; das Beispiel Seed `test`, Biom `forest` hat 22 Abschnitte.
 - **AC-04** Ohne Server zeigt die Seite einen Hinweis statt leerer Fläche (Test oder Beobachtung).
 - **AC-05** 🧑 hat die Seite mit Controller am TV bedient (Seed ändern, scrollen, im Spiel starten).
 - **AC-06** `testing.html` enthält den Abschnitt „Level“ mit der Kachel „Level-Betrachter“, die `leveltest.html` öffnet; ein Test prüft den Eintrag und dass die Controller-Auswahl die Kachel erreicht.
+- **AC-07** Eine reine Funktion liefert die Start-URL nur für `forest` und Seeds im Namensformat (sonst `null` mit Grund); Vitest deckt gültige, zu lange, großgeschriebene und fremde Biome ab.
 
 ## Offene Fragen
 
-Soll die Seite später auch Objekt-Positionen exportieren (Text zum Kopieren)? Entscheidet 🧑, nicht Teil dieser Spec.
+Ist es in Ordnung, dass „Im Spiel starten“ einen gleichnamigen Spielstand ersetzt (Sicherung bleibt)? Entscheidet 🧑 mit der Freigabe. Ein Export der Objekt-Positionen ist nicht Teil dieser Spec.
 
 ## Notizen
 
-Hängt von B-091 ab (Sprint U2 vor U3).
+B-091 (Endpunkt) ist erledigt. Start mit Seed und Tiefe: B-095.
