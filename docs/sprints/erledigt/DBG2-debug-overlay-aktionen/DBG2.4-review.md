@@ -1,6 +1,6 @@
 # DBG2.4 · Review und Abnahme des Sprints DBG2
 
-- **Status:** in Arbeit
+- **Status:** fertig
 - **Typ:** Review
 - **Agent:** autonom
 - **Branch:** dbg2/4-review
@@ -36,9 +36,9 @@ Stil, Optimierung, Umbau, Server und Protokoll (DBG1).
 
 ## Fertig, wenn
 
-- [ ] AC-01 bis AC-05 haben einen Nachweis im Ergebnis der jeweiligen Session oder sind mit Grund und Ticket verschoben.
-- [ ] Schwere Befunde sind behoben oder als Ticket angelegt.
-- [ ] `task check` und `task check:go` grün; der Sprint liegt unter `docs/sprints/erledigt/`.
+- [x] AC-01 bis AC-05 haben einen Nachweis im Ergebnis der jeweiligen Session oder sind mit Grund und Ticket verschoben.
+- [x] Schwere Befunde sind behoben oder als Ticket angelegt.
+- [x] `task check` und `task check:go` grün; der Sprint liegt unter `docs/sprints/erledigt/`.
 
 ## Prüfen
 
@@ -49,4 +49,10 @@ task check:go
 
 ## Ergebnis
 
-–
+2026-10-03, Review-Agent (Claude Opus 5.5, Diff-Review durch getrennten Agenten), Branch `dbg2/4-review`.
+
+- `task check` und `task check:go` grün; `git diff ae2ca20..origin/develop -- .oxlintrc.json` leer (Grenzen unverändert, `HudScene.ts` bei 17).
+- Diff `src/scenes`, `src/online`, `src/model` gelesen: Client rechnet nichts (nur Abbildung Auswahl → `dev`), B, X, View + Menu nicht belegt, Ö und Stick-Klick schalten das Overlay, Liste nur bei Overlay an + Dev-Mode + Raum, Panel wird bei Szenen-Ende entfernt, Dev-Fokus fällt im nächsten Frame weg, Gold an den gewählten Slot, kein `Math.random()`.
+- **AC-01, AC-02** geprüft (Ergebnis DBG2.1, `debugActions.test.ts`); **AC-03** geprüft (Ergebnis DBG2.2, `debugOverlay.test.ts` und Browser-Pane); **AC-04** geprüft (`task check` in dieser Session).
+- **AC-05** angenommen, Validierung offen (DBG2.3); DBG2.3 steht im Fahrplan unter „Offen am Gerät“.
+- Keine schweren Befunde, keine neuen Tickets. B-179 archiviert.
