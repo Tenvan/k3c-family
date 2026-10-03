@@ -3,6 +3,7 @@ package planning
 import (
 	"os"
 	"path/filepath"
+	"strings"
 	"testing"
 )
 
@@ -39,6 +40,7 @@ func TestLoad(t *testing.T) {
 		}
 	}
 	w("docs/sprints/aktiv/SP11-pi/README.md", sprint)
+	w("docs/sprints/aktiv/SP11-pi/a.md", "# SP11.1 · Image")
 	w("docs/sprints/geplant/F1-x/README.md", draft)
 	w("docs/sprints/erledigt/M1-a/README.md", "# M1")
 	w("docs/backlog/B-090-radar.md", "# B-090 · Radar\n\n- **Domäne:** CLI\n- **Status:** eingeplant\n- **Sprint:** U1\n")
@@ -46,6 +48,13 @@ func TestLoad(t *testing.T) {
 	d, err := Load(root)
 	if err != nil || len(d.Sprints) != 2 || len(d.Tickets) != 1 || d.Done != 1 || d.Tickets[0].Title != "Radar" {
 		t.Fatalf("%+v %v", d, err)
+	}
+	if d.Sprints[0].Sessions[0].Text != "# SP11.1 · Image" || d.Sprints[0].Sessions[1].Text != "" {
+		t.Fatalf("Session-Text aus der Spalte Datei: %+v", d.Sprints[0].Sessions)
+	}
+	page, err := Page(root)
+	if err != nil || strings.Contains(page, DataMarker) || !strings.Contains(page, `"B-090"`) {
+		t.Fatalf("Seite ohne Daten: %v", err)
 	}
 	if _, err := Load(t.TempDir()); err == nil {
 		t.Fatal("falsche Wurzel muss scheitern")

@@ -1,24 +1,6 @@
-/* Planungs-Seite: Umschalter oben, darunter Sprints und Backlog nebeneinander oder ein Markdown-Dokument. */
+/* Planungs-Seite: Umschalter oben, darunter die erzeugte Seite „Sprints & Backlog“ (iframe) oder ein Markdown-Dokument. */
 .pl-page { display: flex; flex-direction: column; gap: 14px; }
-.pl-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; align-items: start; }
-@media (max-width: 1100px) { .pl-grid { grid-template-columns: 1fr; } }
-.pl-col { display: flex; flex-direction: column; gap: 10px; min-width: 0; }
-.pl-card { border: 1px solid var(--card-line); border-radius: 10px; background: var(--card); padding: 12px 14px; display: flex; flex-direction: column; gap: 8px; }
-.pl-card-on { border-color: var(--accent-8); }
-.pl-domain { color: var(--dim); font-size: 12px; }
-.pl-title { flex: 1; min-width: 160px; font-weight: 600; }
-.pl-bar { height: 6px; border-radius: 3px; background: var(--gray-a4); overflow: hidden; }
-.pl-bar-fill { height: 100%; background: var(--ok); }
-.pl-sessions { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 4px; }
-.pl-sessions li { display: flex; align-items: center; gap: 8px; font-size: 13px; padding: 2px 4px; border-radius: 6px; }
-.pl-next { background: var(--accent-a3); }
-.pl-filter { width: 200px; }
-.pl-tickets { display: flex; flex-direction: column; gap: 2px; }
-.pl-group { margin-top: 8px; font-weight: 600; color: var(--title); }
-.pl-group span { color: var(--dim); font-weight: 400; }
-.pl-ticket { display: flex; align-items: center; gap: 8px; padding: 3px 6px; border-radius: 6px; font-size: 13px; }
-.pl-ticket:hover { background: var(--gray-a3); }
-.pl-ticket-title { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.pl-frame { width: 100%; height: calc(100vh - 150px); min-height: 480px; border: 1px solid var(--card-line); border-radius: 10px; background: var(--card); }
 .pl-doc { max-width: 980px; line-height: 1.55; }
 .pl-doc h1, .pl-doc h2, .pl-doc h3, .pl-doc h4 { margin: 1.2em 0 0.4em; color: var(--title); }
 .pl-doc code, .pl-doc pre { background: var(--gray-a3); border-radius: 4px; padding: 1px 5px; }
