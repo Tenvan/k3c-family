@@ -1,6 +1,6 @@
 # DBG2.1 · Reine Funktionen: Auswahl zur Dev-Nachricht, Sichtbarkeit der Aktionsliste
 
-- **Status:** offen
+- **Status:** in Arbeit
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Branch:** dbg2/1-aktionen-logik
