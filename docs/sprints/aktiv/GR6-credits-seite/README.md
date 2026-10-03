@@ -57,7 +57,7 @@ keine
 
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
-| GR6.1 | `GR6.1-vollstaendigkeit-datenquelle.md` | Umsetzung | autonom | in Arbeit |
+| GR6.1 | `GR6.1-vollstaendigkeit-datenquelle.md` | Umsetzung | autonom | fertig |
 | GR6.2 | `GR6.2-cc-by-seite.md` | Umsetzung | autonom | offen |
 | GR6.3 | `GR6.3-review.md` | Review | autonom | offen |
 
