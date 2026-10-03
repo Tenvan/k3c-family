@@ -19,10 +19,11 @@ func TestFindRoot(t *testing.T) {
 	}
 	write(filepath.Join(root, "go.mod"), "module k3c\n\ngo 1.27.0\n")
 	write(filepath.Join(sub, "go.mod"), "module k3c/tools/k3c-dev\n")
-	if got, err := findRoot(sub); err != nil || got != root {
+	if got, err := findRoot(sub); err != nil || got != filepath.Clean(root) {
 		t.Errorf("findRoot(sub) = %q, %v", got, err)
 	}
-	if _, err := findRoot(t.TempDir()); err == nil {
+	// Das Temp-Verzeichnis kann im Repo liegen (task setzt TMP nach .work/tmp); die Laufwerkswurzel hat sicher kein go.mod.
+	if _, err := findRoot(filepath.VolumeName(os.TempDir()) + string(os.PathSeparator)); err == nil {
 		t.Error("ohne go.mod kein Fehler")
 	}
 }
