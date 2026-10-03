@@ -74,6 +74,14 @@ Einstellungen per Umgebung: `K3C_HTTP_PORT`,
   (amd64 und arm64, vom Release-Tag `v*` gebaut) und startet es auf Port 8080; Spielstände und Berichte liegen im Volume
   `k3c-data` unter `/data`. **Update:** `docker compose pull && docker compose up -d`. **Rückfall:** in `compose.yaml` den
   Tag des vorigen Images eintragen (z. B. `…:v0.2.0`). Selbst bauen: `docker compose build`.
+- **Backup auf den USB-Stick** (Pi, im Ordner mit `compose.yaml`): `sh scripts/backup-saves.sh /media/usb` kopiert
+  `/data/saves` nach `/media/usb/k3c-saves-<Datum-Uhrzeit>/`; Fehler stehen mit Zeit auf stderr (Exit ≠ 0), das Spiel
+  läuft weiter. Täglich um 4 Uhr per `crontab -e`:
+  `0 4 * * * cd /home/pi/k3c && sh scripts/backup-saves.sh /media/usb >> /media/usb/k3c-backup.log 2>&1`.
+  **Restore:** `docker compose cp /media/usb/k3c-saves-<…>/. k3c:/data/saves/`, dann `docker compose restart`.
+  Schützt nur vor einem Ausfall der SD-Karte, nicht vor dem Verlust des Pi. Lokal: `task saves:backup -- <ziel>` mit
+  `K3C_SAVES_DIR=<ordner>`. Berichte (`reports/`, die letzten 100) und das Client-Log (`k3c-client.jsonl`, 1 MB plus
+  eine alte Generation `k3c-client.1.jsonl`) rotieren von selbst; Spielstände fasst die Rotation nie an.
 - **Release:** Ein Tag `v*` hängt `k3c-server` für Windows, Linux amd64 und arm64 an den Release.
 
 ### Gamepad-Test auf der Xbox
