@@ -119,7 +119,9 @@ func removeDeadEnemies(w *World) {
 			continue
 		}
 		gold := enemyData[e.Kind].Gold
-		scatterCoins(w, e.X, w.rng.Int(gold[0], gold[1])+e.CarriedGold)
+		dropped := w.rng.Int(gold[0], gold[1]) + e.CarriedGold
+		scatterCoins(w, e.X, dropped)
+		emit(w, "kill", Event{"kind": e.Kind, "x": unitX(e.X), "gold": dropped})
 		drop := economy.EnemyResourceDrop
 		if w.rng.Next() < drop.Chance && addStock(w, w.Biome.PrimaryResource, drop.Amount) {
 			w.Events = append(w.Events, Event{"type": "gathered", "resource": w.Biome.PrimaryResource, "amount": drop.Amount})
