@@ -62,7 +62,7 @@ keine
 | GR4.1 | `GR4.1-task-atlas.md` | Umsetzung | autonom | fertig |
 | GR4.2 | `GR4.2-laden-ladeszene.md` | Umsetzung | autonom | fertig |
 | GR4.3 | `GR4.3-messung-xbox.md` | Workshop | Mensch | offen |
-| GR4.4 | `GR4.4-review.md` | Review | autonom | offen |
+| GR4.4 | `GR4.4-review.md` | Review | autonom | in Arbeit |
 
 Bei `Reife: Entwurf` genügen Stichpunkte mit den Kriterien in Klammern statt Session-Dateien. Vor dem Aktivieren
 wird jede Session als eigene Datei nach `docs/vorlagen/session.md` geschrieben.
