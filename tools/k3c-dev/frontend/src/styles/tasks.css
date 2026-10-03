@@ -1,0 +1,36 @@
+/* Tasks-Seite: Baum links, Detail mit Ausgabe rechts (unter 1000 px untereinander). */
+.tk-page {
+  display: grid;
+  grid-template-columns: minmax(300px, 40%) 1fr;
+  gap: 16px;
+  height: calc(100vh - 100px);
+}
+@media (max-width: 1000px) {
+  .tk-page { grid-template-columns: 1fr; height: auto; }
+}
+.tk-list, .tk-detail { display: flex; flex-direction: column; gap: 10px; min-height: 0; }
+.tk-filter { flex: 1; }
+.tk-tree { flex: 1; overflow: auto; border: 1px solid var(--card-line); border-radius: 10px; background: var(--card); padding: 6px; }
+.tk-ns {
+  all: unset; display: block; box-sizing: border-box; width: 100%; padding: 6px 8px; cursor: pointer;
+  font-weight: 600; color: var(--title); border-radius: 6px;
+}
+.tk-ns:hover { background: var(--gray-a3); }
+.tk-ns-count { color: var(--dim); font-weight: 400; margin-left: 4px; }
+.tk-row {
+  all: unset; box-sizing: border-box; display: flex; align-items: center; gap: 10px; width: 100%;
+  padding: 5px 8px 5px 24px; cursor: pointer; border-radius: 6px; color: var(--text);
+}
+.tk-row:hover { background: var(--gray-a3); }
+.tk-row-on { background: var(--accent-a4); }
+.tk-row-name { font-family: var(--code-font-family); font-size: 13px; white-space: nowrap; }
+.tk-row-desc { flex: 1; min-width: 0; color: var(--dim); font-size: 12px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.tk-detail-body { display: flex; flex-direction: column; gap: 10px; height: 100%; min-height: 0; }
+.tk-args { flex: 1; }
+.tk-detail-body .console { flex: 1; min-height: 240px; }
+
+/* Markdown-Dokumente (Planung, Instructions): Tabellen scrollen waagerecht statt die Seite zu dehnen. */
+.md-table { overflow-x: auto; margin: 8px 0; }
+.md-table table { border-collapse: collapse; font-size: 13px; }
+.md-table th, .md-table td { border: 1px solid var(--card-line); padding: 4px 10px; text-align: left; vertical-align: top; }
+.md-table th { background: var(--gray-a3); }
