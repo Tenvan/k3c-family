@@ -1,6 +1,6 @@
 # GR6.1 · Vollständigkeits-Test und gemeinsame Datenquelle der Credits
 
-- **Status:** offen
+- **Status:** in Arbeit
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Branch:** gr6/1-credits-daten

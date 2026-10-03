@@ -1,11 +1,11 @@
 # GR6 · PLAT · Credits-Seite
 
-- **Status:** geplant
+- **Status:** aktiv
 - **Domäne:** PLAT
 - **Reife:** bereit
 - **Einschiebbar:** ja
 - **Tickets:** B-165
-- **Start-Commit:** –
+- **Start-Commit:** 605f467
 - **Spec:** freigegeben
 - **Revision:** 1
 - **Freigabe:** 2026-10-03, Chat (Ralf), Revision 1, durch 🧑; umfasst B-165; mit Änderungen aus dem Spec-Review (CREDITS-Dateien als einzige Quelle, Nicht-Ziel Übersetzung nach Q05)
@@ -57,7 +57,7 @@ keine
 
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
-| GR6.1 | `GR6.1-vollstaendigkeit-datenquelle.md` | Umsetzung | autonom | offen |
+| GR6.1 | `GR6.1-vollstaendigkeit-datenquelle.md` | Umsetzung | autonom | in Arbeit |
 | GR6.2 | `GR6.2-cc-by-seite.md` | Umsetzung | autonom | offen |
 | GR6.3 | `GR6.3-review.md` | Review | autonom | offen |
 
