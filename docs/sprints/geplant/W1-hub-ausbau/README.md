@@ -2,7 +2,7 @@
 
 - **Status:** geplant
 - **Domäne:** SIM
-- **Reife:** Entwurf
+- **Reife:** bereit
 - **Einschiebbar:** nein
 - **Tickets:** B-112
 - **Start-Commit:** –
@@ -57,11 +57,15 @@ keine
 
 ## Sessions
 
-Entwurf. Vor dem Aktivieren jede Session als Datei nach `docs/vorlagen/session.md` schreiben, die Kriterien in Klammern werden ihr Feld `Kriterien`.
+| Nr. | Datei | Typ | Agent | Status |
+|---|---|---|---|---|
+| W1.1 | `W1.1-hub-ausbau.md` | Umsetzung | autonom | offen |
+| W1.2 | `W1.2-mauer-turm-stufen.md` | Umsetzung | autonom | offen |
+| W1.3 | `W1.3-zerstoerung-reparatur-spielstand.md` | Umsetzung | autonom | offen |
+| W1.4 | `W1.4-review.md` | Review | autonom | offen |
 
-- W1.1 Hub-Ausbau und Freischaltung nach Hub-Stufe in `data/hub.json` und `engine/sim/` (AC-01).
-- W1.2 Mauer-/Turm-Stufen, Zerstörung, Reparatur, Spielstand und Golden (AC-02, AC-03, AC-04).
-- W1.3 Review (Code-Sprint): alle Kriterien prüfen.
+Bei `Reife: Entwurf` genügen Stichpunkte mit den Kriterien in Klammern statt Session-Dateien. Vor dem Aktivieren
+wird jede Session als eigene Datei nach `docs/vorlagen/session.md` geschrieben.
 
 ## Abnahme
 
