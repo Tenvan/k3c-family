@@ -1,7 +1,8 @@
 import { fullscreenSupported, isFullscreen, onFullscreenChange, toggleLocal } from '../core/fullscreen';
 import { SHELL_MESSAGE, isOpenable, type ShellMessage } from '../core/shell';
 import { PAGES, SECTIONS, type PageEntry } from './pages';
-import { NO_SERVER_HINT, needsServer, serverReachable } from './serverCheck';
+import { CLIENT, fetchServerBuild, versionLine } from '../core/version';
+import { NO_SERVER_HINT, needsServer } from './serverCheck';
 
 /**
  * Landingpage = dauerhaft offene Shell.
@@ -321,7 +322,11 @@ function pollGamepads(now: number): void {
 render();
 setupFullscreen();
 restoreFocus();
-void serverReachable().then((ok) => ok || markNoServer());
+// Ohne Go-Server: Spiel-Kacheln aus; die Kopfzeile zeigt Client- und Server-Version (Tag und Buildzeit).
+void fetchServerBuild().then((server) => {
+  if (!server) markNoServer();
+  document.getElementById('version')!.textContent = versionLine(CLIENT, server);
+});
 // Direkt-Link / Neuladen mit geöffneter Seite (index.html#game.html?seed=abc)
 if (location.hash.length > 1) openPage(decodeURIComponent(location.hash.slice(1)));
 requestAnimationFrame(pollGamepads);

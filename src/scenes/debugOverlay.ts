@@ -26,7 +26,12 @@ export interface DebugInput {
   fps: number | null;
   /** `env.now()` des Clients (gleiche Uhr wie `lastSnapshotAt`) */
   now: number;
+  /** Versionszeile `Client … · Server …` (src/core/version.ts); fehlt = keine Zeile */
+  version?: string;
 }
+
+/** Schlüssel der Versionszeile in der Phaser-Registry (gesetzt in src/main.ts). */
+export const VERSION_KEY = 'versionLine';
 
 /** Entwicklungsphase: Overlay ist standardmäßig verfügbar, `?dev=0` schaltet es ab (B-093, Revision 2). `search` ist `location.search`. */
 export const debugEnabled = (search: string): boolean => new URLSearchParams(search).get('dev') !== '0';
@@ -60,12 +65,13 @@ export function debugLines(i: DebugInput): string[] {
     `Raum ${c.roomCode ?? NONE} · Gerät ${c.deviceId.slice(0, 4) || NONE}`,
     connectionLine(c, i.protocol, i.now),
   ];
-  if (c.status === 'connecting') return [...lines, `${num(i.fps)} FPS`];
+  if (c.status === 'connecting') return [...lines, `${num(i.fps)} FPS`, ...(i.version ? [i.version] : [])];
   const age = c.lastSnapshotAt === null ? null : i.now - c.lastSnapshotAt;
   lines.push(`letzter Snapshot ${num(age)} ms`);
   if (world) {
     lines.push(`Tag ${world.cycle.day} · ${world.enemies.length} Gegner · ${world.troops.length} Truppen · ${world.players.length} Spieler`);
   }
   lines.push(`${num(i.fps)} FPS`);
+  if (i.version) lines.push(i.version);
   return lines;
 }

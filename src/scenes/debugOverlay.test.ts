@@ -64,4 +64,10 @@ describe('debugEnabled (AC-02)', () => {
     expect(debugEnabled('?dev=1')).toBe(true);
     expect(debugEnabled('?seed=x&dev=0')).toBe(false);
   });
+  it('Versionszeile steht zuletzt, auch beim Verbinden', () => {
+    const v = 'Client v0.4.0 · Server v0.4.0';
+    expect(debugLines(input({ version: v })).at(-1)).toBe(v);
+    expect(debugLines(input({ version: v, client: client({ status: 'connecting' }) })).at(-1)).toBe(v);
+    expect(debugLines(input()).at(-1)).toBe('60 FPS');
+  });
 });
