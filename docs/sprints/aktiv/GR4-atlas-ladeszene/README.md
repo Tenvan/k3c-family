@@ -1,11 +1,11 @@
 # GR4 · INF · Atlas und Lade-Szene
 
-- **Status:** geplant
+- **Status:** aktiv
 - **Domäne:** INF
 - **Reife:** bereit
 - **Einschiebbar:** ja
 - **Tickets:** B-163, B-029
-- **Start-Commit:** –
+- **Start-Commit:** 605f467
 - **Spec:** freigegeben
 - **Revision:** 1
 - **Freigabe:** 2026-10-03, Chat (Ralf), Revision 1, durch 🧑; umfasst B-163, B-029; mit Änderungen aus dem Spec-Review (Voraussetzungen, AC-06 Ladefehler, Texturgröße in GR4.3)
@@ -59,7 +59,7 @@ keine
 
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
-| GR4.1 | `GR4.1-task-atlas.md` | Umsetzung | autonom | offen |
+| GR4.1 | `GR4.1-task-atlas.md` | Umsetzung | autonom | in Arbeit |
 | GR4.2 | `GR4.2-laden-ladeszene.md` | Umsetzung | autonom | offen |
 | GR4.3 | `GR4.3-messung-xbox.md` | Workshop | Mensch | offen |
 | GR4.4 | `GR4.4-review.md` | Review | autonom | offen |

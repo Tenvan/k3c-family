@@ -1,6 +1,6 @@
 # GR4.1 · `task atlas` mit deterministischer Ausgabe, eingebunden in `task build`
 
-- **Status:** offen
+- **Status:** in Arbeit
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Branch:** gr4/1-task-atlas
