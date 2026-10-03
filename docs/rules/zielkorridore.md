@@ -1,9 +1,9 @@
 # Zielkorridore (Kennzahlen für das Balancing)
 
-- **Stand:** Entwurf von Agent (F1.2, 2026-10-03), bestätigt von 🧑: – (offen, Workshop F1.4)
+- **Stand:** Entwurf von Agent (F1.2, 2026-10-03), **Bestätigt von 🧑 am 2026-10-03** im Workshop F1.4 (alle Zahlen in § 1–3 unverändert)
 - **Revision:** 1
 
-Alle Kennzahlen mit Zielkorridor aus den Regelwerken in einer Tabelle (Beschluss Q02: der Agent schlägt Startwerte vor, 🧑 bestätigt; Pass/Fail je Kennzahl über 100 feste Seeds). **Jede Zahl hier ist ein Vorschlag**, bis der Kopf ein Datum der Bestätigung trägt. Die Zahlen sind Startwerte; die Balancing-Runden B-155 und B-156 passen sie an, jede Änderung erhöht die Revision.
+Alle Kennzahlen mit Zielkorridor aus den Regelwerken in einer Tabelle (Beschluss Q02: der Agent schlägt Startwerte vor, 🧑 bestätigt; Pass/Fail je Kennzahl über 100 feste Seeds). **Alle Zahlen in § 1–3 sind von 🧑 bestätigt** (Datum im Kopf). Sie sind Startwerte; die Balancing-Runden B-155 und B-156 passen sie an, jede Änderung erhöht die Revision.
 
 **Standardszenario** (wenn die Zeile nichts anderes nennt): Insel 1, Wald-Start, Grad Normal, 2 Spieler, Bot „sparsam“, 100 Seeds (`wirtschaft.md`, Kopf).
 **Lesart:** Ein Anteil in % ist der Anteil der Seeds, in denen die Bedingung erfüllt ist; ein Median oder eine Zeit gilt über alle Seeds des Szenarios. „–“ heißt: keine Grenze in diese Richtung.
@@ -50,7 +50,7 @@ Alle Kennzahlen mit Zielkorridor aus den Regelwerken in einer Tabelle (Beschluss
 
 Diese Korridore stehen in den Regelwerken, ihre Messgröße liefert der Simulator noch nicht (`ist-abgleich.md` § 6). Sie bekommen mit dem Balancing-Tester B-099 eine Messgröße und erst dann eine Zeile in der Tabelle:
 
-- Verluste je Welle: Median höchstens die Hälfte der Truppen (`wirtschaft.md` § 3) bzw. höchstens 25 % der Kämpfer (`buerger.md` § 3); kein Verlust-Ereignis, nur Differenz des Bestands. Die beiden Werte widersprechen sich; 🧑 entscheidet in F1.4.
+- Verluste je Welle: Median **höchstens 25 % der Kämpfer** (`buerger.md` § 3; entschieden von 🧑 am 2026-10-03 im Workshop F1.4, der abweichende Wert „höchstens die Hälfte der Truppen“ in `wirtschaft.md` § 3 wird mit B-185 angeglichen); kein Verlust-Ereignis, nur Differenz des Bestands.
 - Letzter Gegner einer Welle tot innerhalb der Frist ≥ 80 % (`gegner.md` § 3).
 - Boss-Kampfdauer Median 60–180 s (`bosse.md` § 1).
 - Erstes Elite-Upgrade vor Tag 10 in 40–70 % (`buerger.md` § 3).
