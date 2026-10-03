@@ -9,6 +9,8 @@ const client = (over: Partial<DebugClient> = {}): DebugClient => ({
   snapshotHz: 29.6,
   lastSnapshotAt: 969,
   offlineSince: null,
+  notice: null,
+  errorCode: null,
   ...over,
 });
 const world: DebugWorld = { cycle: { day: 2 }, enemies: [1, 2, 3], troops: [1], players: [1, 2] };
@@ -69,5 +71,16 @@ describe('debugEnabled (AC-02)', () => {
     expect(debugLines(input({ version: v })).at(-1)).toBe(v);
     expect(debugLines(input({ version: v, client: client({ status: 'connecting' }) })).at(-1)).toBe(v);
     expect(debugLines(input()).at(-1)).toBe('60 FPS');
+  });
+  it('Zeitfaktor nur im Dev-Mode des Raums (B-179/AC-03)', () => {
+    expect(debugLines(input({ world: { ...world, devTimescale: 8 } }))).toContain('Zeit 8×');
+    expect(debugLines(input({ world: { ...world, devTimescale: 1 } }))).toContain('Zeit 1×');
+    expect(debugLines(input()).some((l) => l.startsWith('Zeit'))).toBe(false);
+  });
+
+  it('forbidden nach einer Dev-Aktion: Hinweis im Overlay', () => {
+    const c = client({ errorCode: 'forbidden', notice: 'Nur im Dev-Mode erlaubt' });
+    expect(debugLines(input({ client: c }))).toContain('Dev abgelehnt: Nur im Dev-Mode erlaubt');
+    expect(debugLines(input({ client: client({ errorCode: 'room_full', notice: 'Raum voll' }) })).some((l) => l.startsWith('Dev'))).toBe(false);
   });
 });
