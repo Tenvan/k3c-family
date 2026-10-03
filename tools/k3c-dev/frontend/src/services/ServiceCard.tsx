@@ -26,7 +26,6 @@ export function ServiceCard({ s, selected, onSelect }: Props) {
   const [confirm, setConfirm] = useState(false);
   const allowed = buttonsFor(s.state);
   const badge = badgeFor(s.state);
-  const m = metricsOf(s, Date.now());
 
   const run = async (cmd: Command, force = false) => {
     setBusy(cmd);
@@ -64,12 +63,7 @@ export function ServiceCard({ s, selected, onSelect }: Props) {
       <RoleTags tags={s.tags} />
       {s.description && <p className="svc-desc">{s.description}</p>}
       <code className="svc-health">{s.health}</code>
-      <dl className="svc-metrics">
-        <Metric label="PID" value={m.pid} />
-        <Metric label="CPU" value={m.cpu} />
-        <Metric label="SPEICHER" value={m.memory} />
-        <Metric label="LAUFZEIT" value={m.uptime} />
-      </dl>
+      <Metrics s={s} />
       {s.log && <LogBox name={s.name} />}
       {s.restarts > 0 && <p className="svc-note">Neustarts: {s.restarts}</p>}
       {s.lastError && <p className="svc-error">{s.lastError}</p>}
@@ -82,6 +76,18 @@ export function ServiceCard({ s, selected, onSelect }: Props) {
       </Flex>
       <ConfirmStop open={confirm} s={s} onOpen={setConfirm} onStop={() => void run('stop', true)} />
     </div>
+  );
+}
+
+function Metrics({ s }: { s: ServiceStatus }) {
+  const m = metricsOf(s, Date.now());
+  return (
+    <dl className="svc-metrics">
+      <Metric label="PID" value={m.pid} />
+      <Metric label="CPU" value={m.cpu} />
+      <Metric label="SPEICHER" value={m.memory} />
+      <Metric label="LAUFZEIT" value={m.uptime} />
+    </dl>
   );
 }
 
