@@ -2,7 +2,7 @@
 
 - **Status:** geplant
 - **Domäne:** SRV
-- **Reife:** Entwurf
+- **Reife:** bereit
 - **Einschiebbar:** nein
 - **Tickets:** B-123, B-147, B-150, B-176
 - **Start-Commit:** –
@@ -58,13 +58,15 @@ Umfang der Aktionsliste: B-123 › Offene Fragen; Speicherzeitpunkt `docs/fragen
 
 ## Sessions
 
-Entwurf. Vor dem Aktivieren jede Session als Datei nach `docs/vorlagen/session.md` schreiben, die Kriterien in Klammern werden ihr Feld `Kriterien`.
+Reihenfolge wie die Nummern. Die Protokollversion steigt einmal (S2.1 auf 4, S2.4 bleibt dabei, Vorschlag); die Spielstand-Version steigt einmal (S2.2). Vorschläge der Planung stehen in den Sessions unter „Entscheidungen dieser Session“ und gelten erst mit der Freigabe.
 
-- S2.1 Protokoll: Eingaben und Zustand für Schlag, Skills, Pool, gültige Aktionen, `docs/protocol.md`, `testdata/protocol/`, Versionssprung (AC-01, AC-02).
-- S2.2 Speichern beim Verlassen und beim Trennen des letzten Geräts, Zeitpunkt im Spielstand und in der Liste (AC-03, AC-04).
-- S2.3 Spielmetrik-Report beim Raumende, Schema beschreiben (AC-05, AC-06).
-- S2.4 Protokoll: Level und Zustand je Stufe der lokalen Spieler (`stage` in `level`, `snap`, `delta`), `docs/protocol.md`, `testdata/protocol/`, beide Enden (AC-07).
-- S2.5 Review des Sprints (Code-Sprint) (AC-01, AC-02, AC-03, AC-04, AC-05, AC-06, AC-07).
+| Nr. | Datei | Typ | Agent | Status |
+|---|---|---|---|---|
+| S2.1 | `S2.1-protokoll-skills.md` | Umsetzung | autonom | offen |
+| S2.2 | `S2.2-speichern-verlassen.md` | Umsetzung | autonom | offen |
+| S2.3 | `S2.3-spielmetrik-report.md` | Umsetzung | autonom | offen |
+| S2.4 | `S2.4-stufen-je-spieler.md` | Umsetzung | autonom | offen |
+| S2.5 | `S2.5-review.md` | Review | autonom | offen |
 
 ## Abnahme
 
