@@ -6,9 +6,9 @@
 - **Status:** eingeplant
 - **Sprint:** S2
 - **Erstellt:** 2026-10-02
-- **Spec:** Entwurf
+- **Spec:** freigegeben
 - **Revision:** 1
-- **Freigabe:** –
+- **Freigabe:** 2026-10-03, Chat (Ralf), mit Sprint S2
 
 ## Ausgangslage
 
@@ -54,7 +54,7 @@ Speichern schlägt fehl (Platte voll) → Fehler im Log, der vorherige Stand ble
 
 ## Offene Fragen
 
-Wann genau gespeichert wird (nur Verlassen, auch Tagesanbruch, nach Meilensteinen): 🧑, `docs/fragenkatalog.md Q10`.
+Mit der Freigabe von S2 (2026-10-03): Speichern bei jedem Verlassen in S2; 60-s-Takt, Tagesanbruch und HUD „gesichert“ (Q10) folgen mit B-186.
 
 ## Notizen
 

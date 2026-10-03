@@ -6,9 +6,9 @@
 - **Status:** eingeplant
 - **Sprint:** S2
 - **Erstellt:** 2026-10-02
-- **Spec:** Entwurf
+- **Spec:** freigegeben
 - **Revision:** 1
-- **Freigabe:** –
+- **Freigabe:** 2026-10-03, Chat (Ralf), mit Sprint S2
 
 ## Ausgangslage
 
@@ -53,7 +53,7 @@ Ungültiger Skill-Slot oder Beruf → `bad_request`.
 
 ## Offene Fragen
 
-Umfang der Aktionsliste (nur der Ort des Spielers oder alle sichtbaren Ziele).
+Entschieden mit der Freigabe von S2 (2026-10-03): nur der Ort des Spielers.
 
 ## Notizen
 
