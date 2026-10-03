@@ -30,7 +30,6 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-048](B-048-standardbibliothek-in-001.md) | SRV | Frage | niedrig | offen | – | Die Wahl der Go-Standardbibliothek ist dort festgehalten, wo B-001 auf sie verweist |
 | [B-053](B-053-ci-lauf-sp01.md) | INF | Problem | hoch | offen | – | Die CI hat die Prüfungen aus SP01 einmal grün durchlaufen |
 | [B-058](B-058-execution-policy.md) | INF | Frage | niedrig | offen | – | requirements.md empfiehlt keine Sicherheitseinstellung ohne Entscheidung von 🧑 |
-| [B-071](B-071-golden-arm64.md) | INF | Problem | mittel | eingeplant | F2 | Die Golden-Tests laufen auch auf arm64 grün |
 | [B-075](B-075-golden-spielstand-hub.md) | SIM | Schuld | mittel | offen | – | Der Golden-Spielstand enthält einen gebauten und veränderten Hub |
 | [B-079](B-079-landing-kacheln-lobby.md) | PLAT | Schuld | mittel | eingeplant | F5 | Die Kacheln der Landingpage passen zum Start über die Lobby |
 | [B-080](B-080-dev-tasten-server.md) | SRV | Idee | niedrig | offen | – | Dev-Tasten (Gold, Stufe, Neustart) wirken über den Server |
@@ -64,8 +63,6 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-130](B-130-bosse.md) | SIM | Idee | hoch | eingeplant | K2 | Minibosse und Endboss sind spielbar |
 | [B-131](B-131-events.md) | SIM | Idee | niedrig | eingeplant | K3 | Vollmond, Blutmond und Händler-Überfall sind als Events umgesetzt |
 | [B-132](B-132-anzeige-bosse-events.md) | CLI | Idee | mittel | eingeplant | K5 | Der Client zeigt Gegner-Fähigkeiten, Bosse, Phasen und Events |
-| [B-137](B-137-golden-ablauf-migration.md) | INF | Idee | hoch | eingeplant | F2 | Golden-Daten und Spielstand-Formate haben einen festen Änderungsablauf |
-| [B-138](B-138-determinismus-pruefung.md) | INF | Schuld | mittel | eingeplant | F2 | Determinismus der Simulation wird gegen Map-Reihenfolge und langsame Ticks geprüft |
 | [B-139](B-139-feedback-events-sim.md) | SIM | Idee | hoch | eingeplant | F3 | Die Simulation meldet Feedback-Ereignisse für Treffer, Münzen, Schläge und Tod |
 | [B-140](B-140-feedback-events-protokoll.md) | SRV | Idee | hoch | eingeplant | F4 | Feedback-Ereignisse laufen im Protokoll mit gemessener Bandbreite zum Client |
 | [B-141](B-141-doku-drift-version.md) | INF | Schuld | mittel | eingeplant | F5 | Doku und CLAUDE.md stimmen mit dem Code überein, die Version ist sichtbar |
@@ -107,6 +104,7 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-184](B-184-pages-screenshots.md) | PLAT | Idee | niedrig | offen | – | Die Präsentationsseite zeigt echte Bilder aus dem Spiel |
 | [B-185](B-185-verluste-je-welle-angleichen.md) | REG | Schuld | niedrig | offen | – | Wirtschaft nennt denselben Verlust-Korridor je Welle wie die Bürger |
 | [B-186](B-186-autospeichern-takt.md) | SRV | Idee | mittel | offen | – | Der Server speichert alle 60 s und bei Tagesanbruch, das HUD zeigt „gesichert“ |
+| [B-187](B-187-speichern-windows-rename.md) | SRV | Problem | mittel | offen | – | Speichern übersteht unter Windows eine kurz gesperrte Zieldatei |
 
 ## Archiv
 
@@ -203,3 +201,6 @@ Zeile in diesen Abschnitt.
 | [B-136](archiv/B-136-mindest-schriftgroesse.md) | REG | Frage | mittel | erledigt | F1 | Die Mindest-Schriftgröße je Split-Viertel ist festgelegt |
 | [B-144](archiv/B-144-verbindungsverlust-latenz.md) | REG | Frage | mittel | erledigt | F1 | Verbindungsverlust und Eingabe-Latenz haben eine Regel mit Zahlen |
 | [B-145](archiv/B-145-sprache-nur-deutsch.md) | REG | Frage | niedrig | erledigt | F1 | Das Spiel bleibt dauerhaft deutschsprachig, oder die Lokalisierung ist geplant |
+| [B-071](archiv/B-071-golden-arm64.md) | INF | Problem | mittel | erledigt | F2 | Die Golden-Tests laufen auch auf arm64 grün |
+| [B-137](archiv/B-137-golden-ablauf-migration.md) | INF | Idee | hoch | erledigt | F2 | Golden-Daten und Spielstand-Formate haben einen festen Änderungsablauf |
+| [B-138](archiv/B-138-determinismus-pruefung.md) | INF | Schuld | mittel | erledigt | F2 | Determinismus der Simulation wird gegen Map-Reihenfolge und langsame Ticks geprüft |

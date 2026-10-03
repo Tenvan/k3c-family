@@ -1,6 +1,6 @@
 # F2 · INF · Golden-Ablauf, Spielstand-Migration und Determinismus
 
-- **Status:** aktiv
+- **Status:** erledigt
 - **Domäne:** INF
 - **Reife:** bereit
 - **Einschiebbar:** nein
@@ -64,11 +64,14 @@ Runner für arm64: nativer arm64-Runner von GitHub oder Emulation (B-071, 🧑).
 | F2.1 | `F2.1-golden-update-arm64.md` | Umsetzung | autonom | fertig |
 | F2.2 | `F2.2-spielstand-migration.md` | Umsetzung | autonom | fertig |
 | F2.3 | `F2.3-determinismus.md` | Umsetzung | autonom | fertig |
-| F2.4 | `F2.4-review.md` | Review | autonom | in Arbeit |
+| F2.4 | `F2.4-review.md` | Review | autonom | fertig |
 
 Bei `Reife: Entwurf` genügen Stichpunkte mit den Kriterien in Klammern statt Session-Dateien. Vor dem Aktivieren
 wird jede Session als eigene Datei nach `docs/vorlagen/session.md` geschrieben.
 
 ## Abnahme
 
-–
+2026-10-03, Review F2.4 (Agent, Claude Opus 5.5): AC-01, AC-02 (Golden), AC-08 in F2.1; AC-02 (Spielstand), AC-03 bis AC-05 in F2.2; AC-06, AC-07 in F2.3 – alle mit Nachweis, nichts verschoben.
+arm64: Job `Go · Tests arm64` (`ubuntu-24.04-arm`) grün in PR #35 und auf `develop`; `golden:update` ruft nur `./engine/sim ./engine/level` (`rng.json` liegt in `engine/rng`, unberührt); kein Test gelockert, Fixtures enthalten nur Spielstand; Map-Check ohne offene Treffer (eine Ausnahme mit Begründung).
+Behobene Befunde: keine. Neues Ticket: B-187 (SRV, `TestGleichzeitigesSpeichern` unter Windows einmal rot: `rename … Access is denied`, nicht Teil von F2).
+Version: v0.4.1 vorgeschlagen (Patch: Tests, CI und Task, keine neue Funktion; gemeinsam mit F1, falls dort noch nicht gesetzt); gesetzt erst nach Bestätigung durch 🧑.

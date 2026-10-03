@@ -59,7 +59,7 @@ keine
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
 | X1.1 | `X1.1-audio-testseite.md` | Umsetzung | autonom | fertig |
-| X1.2 | `X1.2-xbox-test.md` | Workshop | Mensch | in Arbeit |
+| X1.2 | `X1.2-xbox-test.md` | Workshop | Mensch | offen |
 | X1.3 | `X1.3-auswertung.md` | Umsetzung | autonom | offen |
 
 ## Abnahme
