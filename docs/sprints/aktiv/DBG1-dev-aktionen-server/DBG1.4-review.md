@@ -1,6 +1,6 @@
 # DBG1.4 · Review und Abnahme des Sprints DBG1
 
-- **Status:** offen
+- **Status:** in Arbeit
 - **Typ:** Review
 - **Agent:** autonom
 - **Branch:** dbg1/4-review
