@@ -219,8 +219,11 @@ func attack(w *World, e *Enemy, t *target) {
 		return
 	}
 	if e.has("ranged") {
-		w.Projectiles = append(w.Projectiles, &Projectile{ID: w.newID(), X: e.X, TargetID: t.id, Team: "enemy", Damage: e.Damage, Speed: 20})
+		p := &Projectile{ID: w.newID(), X: e.X, TargetID: t.id, Team: "enemy", Damage: e.Damage, Speed: 20}
+		w.Projectiles = append(w.Projectiles, p)
+		arrowEvent(w, p, e.ID)
 	} else {
+		emit(w, "strike", Event{"from": e.ID, "x": unitX(e.X)})
 		applyDamage(w, t.id, e.Damage)
 	}
 }

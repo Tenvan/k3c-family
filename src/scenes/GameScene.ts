@@ -16,6 +16,7 @@ import type { RadarCell } from './radarView';
 import { createSpriteAnims, preloadSprites } from './sprites';
 import { daylight } from './viewRules';
 import { WorldRenderer } from './worldRenderer';
+import { DEV_FOCUS_KEY, muteFocused } from './debugOverlayPanel';
 
 /** Ein Overlay pro Seite, auch über Szenen-Neustarts hinweg */
 let sharedTouch: TouchInput | undefined;
@@ -120,8 +121,10 @@ export class GameScene extends Phaser.Scene {
     if (client.status !== 'room') return;
 
     const seated = client.you.map((s) => s.slot);
-    this.slots.join(inputs, seated, client, performance.now());
-    const p = this.slots.commands(seated);
+    const devFocus = this.registry.get(DEV_FOCUS_KEY) === true; // Dev-Fokus im Debug-Overlay (B-179): Controller bedienen die Liste
+    const isPad = (i: PlayerInput | null) => this.pads.includes(i as GamepadInput);
+    this.slots.join(devFocus ? inputs.filter((i) => !isPad(i)) : inputs, seated, client, performance.now());
+    const p = muteFocused(this.slots.commands(seated), devFocus, (s) => isPad(this.slots.bound[s] ?? null));
     if (p.length > 0) client.sendInput(p);
     this.takeFrames();
     this.draw();

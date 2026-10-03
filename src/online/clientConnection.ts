@@ -7,6 +7,7 @@ import {
   PROTOCOL_VERSION,
   WS_PATH,
   type ClientMessage,
+  type DevMessage,
   type ErrorCode,
   type Limits,
   type MonarchState,
@@ -163,6 +164,11 @@ export class RoomClient {
     this.notice = null;
     this.errorCode = null;
     this.send({ t: 'join', room, slots });
+  }
+
+  /** Dev-Aktion (nur im Dev-Mode des Servers wirksam, sonst `forbidden`; docs/protocol.md › Dev-Aktionen), nur im Raum. */
+  sendDev(message: DevMessage): void {
+    if (this.status === 'room') this.send(message);
   }
 
   addSlot(slot: number): void {

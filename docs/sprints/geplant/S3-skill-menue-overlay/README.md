@@ -2,7 +2,7 @@
 
 - **Status:** geplant
 - **Domäne:** CLI
-- **Reife:** Entwurf
+- **Reife:** bereit
 - **Einschiebbar:** nein
 - **Tickets:** B-124, B-125
 - **Start-Commit:** –
@@ -56,13 +56,16 @@ Skill-Tasten am Controller (LB/RB bestätigen): 🧑, `docs/fragenkatalog.md Q06
 
 ## Sessions
 
-Entwurf. Vor dem Aktivieren jede Session als Datei nach `docs/vorlagen/session.md` schreiben, die Kriterien in Klammern werden ihr Feld `Kriterien`.
+| Nr. | Datei | Typ | Agent | Status |
+|---|---|---|---|---|
+| S3.1 | `S3.1-eingabe-slots.md` | Umsetzung | autonom | offen |
+| S3.2 | `S3.2-skill-menue.md` | Umsetzung | autonom | offen |
+| S3.3 | `S3.3-aktionen-overlay.md` | Umsetzung | autonom | offen |
+| S3.4 | `S3.4-abnahme-geraet.md` | Workshop | Mensch | offen |
+| S3.5 | `S3.5-review.md` | Review | autonom | offen |
 
-- S3.1 Eingabe: Schlag, Skill-Slots, Skill-Menü in `src/input/` und `touchInput.ts` mit Slot-Belegung als reine Funktion (AC-01, AC-02).
-- S3.2 Skill-Menü in der HUD-Szene: Punkte verteilen, Respec, Slots und Abklingzeiten (AC-02).
-- S3.3 Aktionen-Overlay aus Snapshot-Daten, Funktion Aktion → Text/Symbol (AC-03, AC-04).
-- S3.4 🧑 Abnahme am Gerät (Controller, Tastatur, Touch) (AC-05).
-- S3.5 Review des Sprints (Code-Sprint) (AC-01, AC-02, AC-03, AC-04, AC-05).
+Bei `Reife: Entwurf` genügen Stichpunkte mit den Kriterien in Klammern statt Session-Dateien. Vor dem Aktivieren
+wird jede Session als eigene Datei nach `docs/vorlagen/session.md` geschrieben.
 
 ## Abnahme
 

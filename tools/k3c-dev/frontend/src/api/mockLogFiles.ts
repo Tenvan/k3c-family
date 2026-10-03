@@ -11,7 +11,7 @@ const SAMPLES: Omit<LogEntry, 'time'>[] = [
   { level: 'INFO', ns: 'svc', msg: 'dienst Vite: läuft', data: { pid: 41232 } },
   { level: 'WARN', ns: 'check', msg: 'lauf beendet', data: { target: 'task:test', exit: 1, ms: 5120 } },
   { level: 'INFO', ns: 'check', msg: 'lauf beendet', data: { target: 'task:lint', exit: 0, ms: 1442 } },
-  { level: 'ERROR', ns: 'svc', msg: 'dienst Heimnetz fehlgeschlagen: Port 8080 bereits belegt (PID 8812)' },
+  { level: 'ERROR', ns: 'svc', msg: 'dienst Spielserver fehlgeschlagen: Port 8080 bereits belegt (PID 8812)' },
   { level: 'WARN', ns: 'svc', msg: 'dienst Vite antwortet nicht (3 Prüfungen in Folge)' },
   { level: 'ERROR', ns: 'mcp', msg: 'tool "logs_query": source "../geheim" unbekannt' },
 ];

@@ -94,7 +94,9 @@ func applyDamage(w *World, targetID int, damage float64) {
 		if !isAlive(p) {
 			return
 		}
-		p.HP -= math.Max(1, damage-monarch.Base.Defense)
+		dealt := math.Max(1, damage-monarch.Base.Defense)
+		p.HP -= dealt
+		hitEvent(w, "player", p.Index, p.X, dealt)
 		if p.HP <= 0 {
 			p.HP, p.RespawnIn, p.VX = 0, monarch.RespawnSeconds, 0
 			w.Events = append(w.Events, Event{"type": "playerDown", "player": p.Index})
@@ -103,20 +105,24 @@ func applyDamage(w *World, targetID int, damage float64) {
 	}
 	if t := troopByID(w, targetID); t != nil {
 		t.HP -= damage
+		hitEvent(w, "troop", t.ID, t.X, damage)
 		return
 	}
 	for _, e := range w.Enemies {
 		if e.ID == targetID {
 			e.HP -= damage
+			hitEvent(w, "enemy", e.ID, e.X, damage)
 			return
 		}
 	}
 	if w.Castle.ID == targetID {
 		w.Castle.HP -= damage
+		hitEvent(w, "castle", w.Castle.ID, w.Castle.X, damage)
 		return
 	}
 	if s := siteByID(w, targetID); s != nil && s.State == "built" {
 		s.HP -= damage
+		hitEvent(w, "site", s.ID, s.X, damage)
 		if s.HP <= 0 {
 			destroySite(w, s)
 		}

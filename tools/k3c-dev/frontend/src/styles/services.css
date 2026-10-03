@@ -1,25 +1,23 @@
-/* Dienste-Seite (B-068): Kopf, Raster, Karten, Metriken, Log-Kasten. */
+/* Dienste & Logs (B-068): Spalte links, Karten, Metriken, Log-Kasten. */
 .svc-page {
   display: flex;
+  gap: 16px;
+  height: calc(100vh - 100px);
+}
+
+.svc-side {
+  display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 12px;
+  width: 380px;
+  flex-shrink: 0;
+  overflow-y: auto;
+  padding-right: 4px;
 }
 
 .svc-order {
-  margin: 0 0 8px;
+  margin: 4px 0 0;
   color: var(--dim);
-}
-
-.svc-grid {
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: 16px;
-}
-
-@media (min-width: 1100px) {
-  .svc-grid {
-    grid-template-columns: repeat(3, 1fr);
-  }
 }
 
 .svc-card {
@@ -30,6 +28,11 @@
   border: 1px solid var(--card-line);
   border-radius: 12px;
   background: var(--card);
+  cursor: pointer;
+}
+
+.svc-card-on {
+  border-color: var(--gold);
 }
 
 .svc-head {
@@ -39,8 +42,19 @@
 }
 
 .svc-name {
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--text);
+  font: inherit;
   font-size: 17px;
   font-weight: 600;
+  cursor: pointer;
+}
+
+.svc-desc {
+  margin: 0;
+  font-size: 13px;
 }
 
 .svc-port,
