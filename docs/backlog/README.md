@@ -106,6 +106,7 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-187](B-187-speichern-windows-rename.md) | SRV | Problem | mittel | offen | – | Speichern übersteht unter Windows eine kurz gesperrte Zieldatei |
 | [B-188](B-188-client-rohstoffe-eisen-kristall.md) | CLI | Schuld | niedrig | offen | – | Der Client kennt alle fünf Rohstoffe des Servers |
 | [B-189](B-189-toter-gegner-flieht-ins-portal.md) | SIM | Problem | mittel | offen | – | Ein besiegter Gegner verschwindet nicht im Portal, sondern lässt sein Gold fallen |
+| [B-190](B-190-events-dropped-im-protokoll.md) | SRV | Problem | niedrig | offen | – | Der Client erfährt zuverlässig, wie viele Ereignisse verworfen wurden |
 
 ## Archiv
 
