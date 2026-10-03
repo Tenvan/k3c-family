@@ -62,7 +62,7 @@ Entschieden am 2026-10-03: Es bleiben nur Kacheln mit Parametern, die die Lobby 
 | F5.1 | `F5.1-doku-drift.md` | Umsetzung | autonom | fertig |
 | F5.2 | `F5.2-version-cache.md` | Umsetzung | autonom | fertig |
 | F5.3 | `F5.3-landing-kacheln.md` | Umsetzung | autonom | fertig |
-| F5.4 | `F5.4-review.md` | Review | autonom | offen |
+| F5.4 | `F5.4-review.md` | Review | autonom | in Arbeit |
 
 ## Abnahme
 
