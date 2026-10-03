@@ -46,7 +46,7 @@ Umsetzung in Sprints und Sessions: [`docs/sprints/`](sprints/README.md). Tickets
 - [x] Go-Server ersetzt `server/*.mjs` (Windows-EXE, Docker amd64/arm64)
 - [x] Simulation nach Go portiert (Golden-Tests gegen die TS-Simulation)
 - [x] Browser als reiner Client, TS-Simulation gelöscht
-- [x] Diagnose-TUI (SP10); [ ] Betrieb auf dem Raspberry Pi (SP11)
+- [x] Diagnose-TUI (SP10); [ ] Betrieb auf dem Raspberry Pi (SP11, Lastmessung in LT1)
 - [x] Entwickler-Werkzeug `k3c-dev` mit MCP-Server für Agenten (M1: Prüfungen, Logs; M2: Statistik, Berichte, Spielstände;
   M3: Dienste; M4: Oberfläche mit Dienste- und Logs-Seite; M5: MCP-Seite; SP07: Räume, Simulation)
 
