@@ -19,15 +19,6 @@ import (
 
 type memSaves map[string][]byte
 
-func (s memSaves) Load(name string) ([]byte, error) {
-	if d, ok := s[name]; ok {
-		return d, nil
-	}
-	return nil, store.ErrNotFound
-}
-
-func (s memSaves) Store(name string, data []byte) (string, error) { s[name] = data; return "", nil }
-
 // wsServer startet einen Server mit /ws; Codes der Räume der Reihe nach.
 func wsServer(t *testing.T) (*httptest.Server, *room.Manager) {
 	t.Helper()
@@ -391,7 +382,7 @@ func TestAckJeVerbindung(t *testing.T) {
 	_ = x.ws.CloseNow()
 	x2 := hello(t, srv, "xbox")
 	joinRoom(x2, "KRNZ", 0)
-	x2.expect("joined")
+	x2.expect("joined", "rooms") // die Raumliste kann vor joined eintreffen (Drop der alten Verbindung)
 	x2.expect("level")
 	if s := x2.expect("snap"); s["ack"] != float64(0) {
 		t.Fatalf("ack nach Wiederverbinden: %v", s["ack"])
