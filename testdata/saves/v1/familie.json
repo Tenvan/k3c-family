@@ -1,0 +1,113 @@
+{
+  "version": 1,
+  "campaignId": "familie",
+  "savedAt": "2026-10-03T12:00:00Z",
+  "seed": "familie",
+  "depth": 0,
+  "unlockedDepth": 0,
+  "time": 0,
+  "skillPoints": 0,
+  "players": [
+    {
+      "gold": 17
+    },
+    {
+      "gold": 4
+    }
+  ],
+  "hubs": [
+    {
+      "depth": 0,
+      "castleHp": 1000,
+      "stock": {
+        "wood": 30,
+        "stone": 0,
+        "copper": 0
+      },
+      "wave": 0,
+      "aggression": null,
+      "sites": [
+        {
+          "kind": "wall",
+          "x": 456,
+          "state": "unpaid",
+          "paidGold": 0,
+          "buildProgress": 0,
+          "hp": 0,
+          "bows": 0,
+          "bowPaidGold": 0
+        },
+        {
+          "kind": "tower",
+          "x": 464,
+          "state": "unpaid",
+          "paidGold": 0,
+          "buildProgress": 0,
+          "hp": 0,
+          "bows": 0,
+          "bowPaidGold": 0
+        },
+        {
+          "kind": "workshop",
+          "x": 484,
+          "state": "unpaid",
+          "paidGold": 0,
+          "buildProgress": 0,
+          "hp": 0,
+          "bows": 0,
+          "bowPaidGold": 0
+        },
+        {
+          "kind": "stairsDown",
+          "x": 524,
+          "state": "unpaid",
+          "paidGold": 0,
+          "buildProgress": 0,
+          "hp": 0,
+          "bows": 0,
+          "bowPaidGold": 0
+        },
+        {
+          "kind": "tower",
+          "x": 536,
+          "state": "unpaid",
+          "paidGold": 0,
+          "buildProgress": 0,
+          "hp": 0,
+          "bows": 0,
+          "bowPaidGold": 0
+        },
+        {
+          "kind": "wall",
+          "x": 544,
+          "state": "unpaid",
+          "paidGold": 0,
+          "buildProgress": 0,
+          "hp": 0,
+          "bows": 0,
+          "bowPaidGold": 0
+        }
+      ],
+      "troops": [
+        {
+          "kind": "peasant",
+          "x": 502,
+          "anchorX": 500
+        },
+        {
+          "kind": "archer",
+          "x": 500,
+          "anchorX": 499
+        },
+        {
+          "kind": "archer",
+          "x": 500,
+          "anchorX": 501
+        }
+      ],
+      "nodesGone": [],
+      "nodesMarked": [],
+      "pickupsTaken": []
+    }
+  ]
+}
