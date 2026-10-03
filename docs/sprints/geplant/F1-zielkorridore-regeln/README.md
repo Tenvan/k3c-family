@@ -2,17 +2,17 @@
 
 - **Status:** geplant
 - **Domäne:** REG
-- **Reife:** Entwurf
+- **Reife:** bereit
 - **Einschiebbar:** nein
 - **Tickets:** B-134, B-135, B-136, B-144, B-145
 - **Start-Commit:** –
-- **Spec:** Entwurf
+- **Spec:** freigegeben
 - **Revision:** 1
-- **Freigabe:** –
+- **Freigabe:** 2026-10-03, Chat (Ralf), Revision 1; umfasst B-134, B-135, B-136, B-144, B-145 und B-152/AC-01
 
 ## Ausgangslage
 
-Die Regelwerke R1 bis R4 sind beschlossen (`docs/rules/*.md`), enthalten aber Zielkorridore nur verstreut. Für Pause, Schriftgröße am TV, Verbindungsverlust und Sprache gibt es keine Regel; die Aktion `pause` existiert ohne Funktion. Die fünf Entscheidungen Q01 bis Q05 stehen in `docs/fragenkatalog.md`.
+Die Regelwerke R1 bis R4 sind beschlossen (`docs/rules/*.md`), enthalten aber Zielkorridore nur verstreut. Für Pause, Schriftgröße am TV, Verbindungsverlust und Sprache gibt es keine Regel; die Aktion `pause` existiert ohne Funktion. Die Entscheidungen Q01 bis Q05 und Q23 hat 🧑 am 2026-10-03 getroffen (`docs/fragenkatalog.md` › Beschlüsse); der Sprint schreibt sie als Regeln nieder und lässt 🧑 die Zahlen bestätigen.
 
 ## Ziel
 
@@ -20,7 +20,7 @@ Jede Kennzahl hat einen Zielkorridor als Zahl, und Pause, Schriftgröße, Verbin
 
 ## Beteiligte und Zielgruppen
 
-🧑 entscheidet in drei Workshops (Q01 bis Q05); ein Agent bereitet die Vorschläge aus `docs/rules/*.md` vor und schreibt die Beschlüsse nieder. Danach arbeiten BAL2, S4, S5 und SP-Sprints mit den Zahlen.
+🧑 hat entschieden und bestätigt die Zahlen im Workshop F1.4; ein Agent schreibt die Beschlüsse nieder und bereitet Vorschläge aus `docs/rules/*.md` vor. Danach arbeiten BAL2, S4, S5 und SP-Sprints mit den Zahlen.
 
 ## Anforderungen
 
@@ -52,19 +52,21 @@ Workshop F1.1: Agent legt „Überleben Nacht 3 ≥ 80 %“ vor, 🧑 ändert au
 - **AC-06** Abschnitt „Sprache“ hält die Entscheidung mit Datum fest (B-145/AC-01).
 - **AC-07** Der Abschnitt „Reittier“ in `docs/rules/monarch.md` nennt Standard-Reittier und Faktoren (B-152/AC-01).
 - **AC-08** `task check` ist grün, und die Tickets B-134, B-135, B-136, B-144, B-145 sind nach `docs/backlog/archiv/` verschoben (Status `erledigt`), soweit ihre Kriterien erfüllt sind.
+- **AC-09** 🧑 hat die Vorschläge in `bedienung.md` und im Abschnitt Reittier bestätigt, Datum im Kopf der Dateien, oder offene Punkte sind als Ticket geführt (B-135/AC-01, B-136/AC-01, B-144/AC-01, B-152/AC-01).
 
 ## Offene Fragen
 
-Q01 bis Q05 aus `docs/fragenkatalog.md`; entscheidet 🧑 in den Workshops. Blockiert die Freigabe der Spec nicht, wohl aber die Abnahme der jeweiligen Kriterien.
+Entschieden am 2026-10-03: Q01 Pause, Q03 Schriftgröße (≥ 28 px Vollbild, ≥ 24 px Viertel), Q04 Verbindungsverlust (unverwundbar und ausgeblendet bis 60 s, Latenz ≤ 100 ms), Q05 Deutsch und Englisch (B-172), Q23 Standard-Reittier von Anfang an. Offen für F1.4: Zahlen aus Q02 (Zielkorridore), Höchstdauer der Pause, Schrift für 2 Spieler und Nebeninfo, p95 der Latenz, Tierart und Faktoren des Reittiers. Blockiert die Freigabe der Spec nicht.
 
 ## Sessions
 
-Entwurf. Vor dem Aktivieren jede Session als Datei nach `docs/vorlagen/session.md` schreiben, die Kriterien in Klammern werden ihr Feld `Kriterien`.
-
-- F1.1 🧑 Workshop Zielkorridore: Agent bereitet Vorschlag aus `docs/rules/*.md` vor, 🧑 entscheidet Q02, Ergebnis in `docs/rules/zielkorridore.md` (AC-01, AC-02).
-- F1.2 🧑 Workshop Bedienung 1: Pause (Q01) und Mindest-Schriftgröße (Q03) in `docs/rules/bedienung.md` (AC-03, AC-04).
-- F1.3 🧑 Workshop Bedienung 2: Verbindungsverlust und Latenz (Q04), Sprache (Q05); schließt den Sprint ab (Doku-Sprint, kein Review), Tickets archivieren (AC-05, AC-06, AC-08).
-- F1.4 🧑 Reittier-Regel: Standard-Reittier und Faktoren (Q23) in `docs/rules/monarch.md` (AC-07).
+| Nr. | Datei | Typ | Agent | Status |
+|---|---|---|---|---|
+| F1.1 | `F1.1-bedienung-regeln.md` | Umsetzung | autonom | offen |
+| F1.2 | `F1.2-zielkorridore-vorschlag.md` | Umsetzung | autonom | offen |
+| F1.3 | `F1.3-reittier-regel.md` | Umsetzung | autonom | offen |
+| F1.4 | `F1.4-workshop-bestaetigung.md` | Workshop | Mensch | offen |
+| F1.5 | `F1.5-abschluss.md` | Umsetzung | autonom | offen |
 
 ## Abnahme
 

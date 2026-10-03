@@ -102,9 +102,9 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-168](B-168-musik-je-zustand.md) | CLI | Idee | mittel | eingeplant | SO4 | Die Musik wechselt je Spielzustand mit Crossfade |
 | [B-169](B-169-hoerprobenseite-soundtest.md) | PLAT | Idee | mittel | eingeplant | SO3 | Eine Hörprobenseite spielt Kandidaten für Musik und Effekte ab |
 | [B-170](B-170-release-checkliste.md) | INF | Idee | hoch | eingeplant | RL1 | Eine Release-Checkliste macht jeden Release prüfbar |
-| [B-171](B-171-dev-seiten-tasks-planung-git.md) | SRV | Idee | mittel | eingeplant | M7 | k3c-dev zeigt Tasks, Planung und Git wie die Workbench der ErpApi |
 | [B-172](B-172-sprachauswahl-de-en.md) | CLI | Idee | mittel | eingeplant | S5 | Der Client hat Deutsch und Englisch mit Sprachauswahl in den Optionen |
 | [B-173](B-173-monarch-auf-reittier-zeichnen.md) | CLI | Idee | hoch | eingeplant | S7 | Der Client zeichnet den Monarchen auf dem Standard-Reittier |
+| [B-174](B-174-sprints-je-domaene-parallel.md) | INF | Idee | hoch | eingeplant | F0 | Je Domäne darf ein Sprint aktiv sein, Sessions werden per Branch beansprucht |
 
 ## Archiv
 
@@ -190,3 +190,4 @@ Zeile in diesen Abschnitt.
 | [B-113](archiv/B-113-material-lager.md) | SIM | Idee | hoch | erledigt | SP13 | Fünf Materialien, Lager-Maximum und Tragen zum Lager sind umgesetzt |
 | [B-133](archiv/B-133-raum-auf-insel.md) | SRV | Idee | hoch | erledigt | SP14 | Der Raum rechnet mit einer Insel statt mit einer Kampagne |
 | [B-104](archiv/B-104-protokoll-stufe-und-optionen.md) | SRV | Idee | hoch | erledigt | SP14 | Das Protokoll kennt die Stufe je Spieler und die Raum-Optionen |
+| [B-171](archiv/B-171-dev-seiten-tasks-planung-git.md) | SRV | Idee | mittel | erledigt | M7 | k3c-dev zeigt Tasks, Planung und Git wie die Workbench der ErpApi |

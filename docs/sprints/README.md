@@ -3,13 +3,13 @@
 Alle Sprints mit Ordner und Status. Arbeitsweise: [`../arbeitsweise.md`](../arbeitsweise.md).
 **Lesen:** `aktiv/` immer, `geplant/` beim Planen, `erledigt/` nur auf Nachfrage.
 Jede Sprint-README ist eine Spec (SDD); aktiv wird ein Sprint erst mit `Spec: freigegeben` durch 🧑.
+Reihenfolge in Wellen, Bahnen je Domäne und Zuordnung Mensch/autonom (zwei Accounts): [`../plan-weiterentwicklung.md`](../plan-weiterentwicklung.md) § 11.
 
 ## Aktiv
 
 | Sprint | Domäne | Thema | Am Ende sichtbar | Ordner |
 |---|---|---|---|---|
 | SP11 | SRV 🧑 | Raspberry Pi | 2er- und 3er-Spiel parallel auf dem Pi | `aktiv/SP11-raspberry-pi/` |
-| M7 | SRV 🧑 | k3c-dev VII: Seiten Tasks, Planung und Git (einschiebbar) | drei neue Reiter in `task k3c-dev` | `aktiv/M7-dev-seiten/` |
 
 ## Geplant (in dieser Reihenfolge)
 
@@ -18,6 +18,7 @@ dann über den Go-Server mit mehreren Räumen und gemischten Spielern.
 
 | Sprint | Domäne | Thema | Am Ende sichtbar | Reife | Ordner |
 |---|---|---|---|---|---|
+| F0 | INF | Parallele Sprints je Domäne | `task check` grün mit zwei aktiven Sprints verschiedener Domänen, neue Regel in `docs/arbeitsweise.md` | bereit | `geplant/F0-sprint-regel/` |
 | F1 | REG 🧑 | Zielkorridore und Bedienungsregeln | `docs/rules/zielkorridore.md` und `docs/rules/bedienung.md` mit Datum der Bestätigung durch 🧑 | Entwurf | `geplant/F1-zielkorridore-regeln/` |
 | F2 | INF | Golden-Ablauf, Spielstand-Migration und Determinismus | `task golden:update` in `task --list`, Abschnitte in `docs/arbeitsweise.md`, ein grüner arm64-Job in der CI | bereit | `geplant/F2-golden-migration-determinismus/` |
 | F3 | SIM | Feedback-Ereignisse in der Simulation | Go-Tests je Ereignistyp, `task check:go` grün, Ereignisse im Ergebnis von `sim_run` (k3c-dev) | Entwurf | `geplant/F3-feedback-events-sim/` |
@@ -108,3 +109,4 @@ Gesamtplan und Begründung: [`../plan-weiterentwicklung.md`](../plan-weiterentwi
 | SP12 | Insel-Kern: mehrere Stufen ticken, Einzelwechsel, Vorrat je Insel, Spielstand Version 2 (B-100) | `erledigt/SP12-insel-kern/` |
 | SP13 | Raum-Optionen, Grade, fünf Materialien, Lager-Maximum und Tragen in der Insel (B-101, B-113) | `erledigt/SP13-optionen-material/` |
 | SP14 | Raum rechnet die Insel, Protokoll Version 3, Raum-Optionen mit Dev-Modus (B-133, B-104) | `erledigt/SP14-raum-auf-insel/` |
+| M7 | k3c-dev VII: Seiten Tasks, Planung und Git (B-171) | `erledigt/M7-dev-seiten/` |
