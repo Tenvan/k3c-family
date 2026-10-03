@@ -1,6 +1,6 @@
 # DBG1 · SRV · Dev-Aktionen: Gold, Material, Zeitraffer
 
-- **Status:** aktiv
+- **Status:** erledigt
 - **Domäne:** SRV
 - **Reife:** bereit
 - **Einschiebbar:** nein
@@ -62,8 +62,10 @@ Siehe Ticket › Offene Fragen.
 | DBG1.1 | `DBG1.1-protokoll.md` | Umsetzung | autonom | fertig |
 | DBG1.2 | `DBG1.2-gold-material.md` | Umsetzung | autonom | fertig |
 | DBG1.3 | `DBG1.3-zeitraffer.md` | Umsetzung | autonom | fertig |
-| DBG1.4 | `DBG1.4-review.md` | Review | autonom | offen |
+| DBG1.4 | `DBG1.4-review.md` | Review | autonom | fertig |
 
 ## Abnahme
 
-–
+- 2026-10-03, Review DBG1.4 (getrennter Review-Agent): AC-01 bis AC-06 belegt in den Ergebnissen DBG1.1 bis DBG1.3; `task check` und `task check:go` grün.
+- Keine schweren Befunde; keine neuen Tickets. B-178 archiviert, B-179 (DBG2) kann auf dem Protokoll aufbauen.
+- Version: v0.5.0 vorgeschlagen (Minor: neue Nachricht `dev` mit Gold, Material und Zeitraffer im Dev-Mode).
