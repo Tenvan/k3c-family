@@ -89,6 +89,8 @@ func (c *conn) roomMessage(r *room.Room, m inMsg) error {
 		r.Leave(c.device, c)
 		c.left()
 		return nil
+	case "dev":
+		return r.Dev(c.device, c, room.DevAction{Action: m.Action, Slot: m.Slot, Amount: m.Amount, Resource: m.Resource, Factor: m.Factor})
 	}
 	return room.ErrBadRequest
 }

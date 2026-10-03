@@ -1,5 +1,5 @@
 import type { LevelLayout } from '../model/types';
-import type { GameEvent, World } from '../model/types';
+import type { GameEvent, ResourceKind, World } from '../model/types';
 
 /** Protokoll v3 aus Sicht des Browsers (Vertrag: docs/protocol.md, Beispiele: testdata/protocol/). */
 
@@ -18,7 +18,8 @@ export type ErrorCode =
   | 'room_closed'
   | 'replaced'
   | 'version'
-  | 'bad_request';
+  | 'bad_request'
+  | 'forbidden';
 
 export interface Limits {
   monarchsPerRoom: number;
@@ -73,4 +74,11 @@ export type ClientMessage =
   | { t: 'addSlot'; slot: number }
   | { t: 'removeSlot'; slot: number }
   | { t: 'input'; seq: number; p: SlotInput[] }
-  | { t: 'leave' };
+  | { t: 'leave' }
+  | DevMessage;
+
+/** Dev-Aktionen (nur Dev-Mode am Server, sonst `forbidden`; docs/protocol.md › Dev-Aktionen). */
+export type DevMessage =
+  | { t: 'dev'; action: 'gold'; slot: number; amount: number }
+  | { t: 'dev'; action: 'material'; slot: number; resource: ResourceKind; amount: number }
+  | { t: 'dev'; action: 'timescale'; factor: number };

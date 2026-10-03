@@ -35,6 +35,7 @@ var (
 	ErrSaveNotFound = errors.New("save_not_found")
 	ErrBadRequest   = errors.New("bad_request")
 	ErrClosed       = errors.New("room_closed") // Server fährt herunter
+	ErrForbidden    = errors.New("forbidden")   // dev ohne Dev-Mode (B-178)
 )
 
 // Zustände eines Monarchen.

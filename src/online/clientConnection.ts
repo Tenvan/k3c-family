@@ -393,6 +393,8 @@ export class RoomClient {
         return this.end(TEXT.version);
       case 'bad_request':
         return void console.warn(`bad_request: ${message}`);
+      case 'forbidden':
+        break; // dev ohne Dev-Mode: Hinweis zeigen, Raum und Verbindung bleiben
       case 'room_closed':
       case 'room_not_found':
         this.clearRoom();
