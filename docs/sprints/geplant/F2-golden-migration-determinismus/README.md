@@ -6,9 +6,9 @@
 - **Einschiebbar:** nein
 - **Tickets:** B-137, B-138, B-071
 - **Start-Commit:** –
-- **Spec:** Entwurf
+- **Spec:** freigegeben
 - **Revision:** 1
-- **Freigabe:** –
+- **Freigabe:** 2026-10-03, Chat (Ralf), Revision 1; umfasst B-137, B-138, B-071 (arm64-Runner: nativer GitHub-Runner, Rückfall qemu)
 
 ## Ausgangslage
 
@@ -55,7 +55,7 @@ Wertänderung in `data/` ändert den Zustand eines Golden-Laufs → `task go:tes
 
 ## Offene Fragen
 
-Runner für arm64: nativer arm64-Runner von GitHub oder Emulation (B-071, 🧑). Wer bestätigt Golden-Updates: `docs/fragenkatalog.md` Q09 (🧑). Beides blockiert die Freigabe.
+Runner für arm64: nativer arm64-Runner von GitHub oder Emulation (B-071, 🧑). Golden-Updates (Q09, entschieden 2026-10-03): `task golden:update` plus Begründung im Commit-Text, die Review-Session prüft, kein Freigabe-Zwang durch 🧑. arm64-Runner (Vorschlag, 🧑 bestätigt mit der Freigabe): Das Repo ist öffentlich (`gh repo view`: PUBLIC), dort sind die GitHub-Linux-arm64-Runner (`ubuntu-24.04-arm`) nach meinem Kenntnisstand kostenlos; F2.1 nimmt sie, die erste CI-Ausführung belegt es, springt der Job nicht an, wird es qemu-Emulation und das steht im Ergebnis. Es bleibt keine blockierende Frage.
 
 ## Sessions
 

@@ -6,9 +6,9 @@
 - **Einschiebbar:** nein
 - **Tickets:** B-141, B-079
 - **Start-Commit:** –
-- **Spec:** Entwurf
+- **Spec:** freigegeben
 - **Revision:** 1
-- **Freigabe:** –
+- **Freigabe:** 2026-10-03, Chat (Ralf), Revision 1; umfasst B-141, B-079
 
 ## Ausgangslage
 
@@ -53,7 +53,7 @@ Server nicht erreichbar → Fußzeile „Server – · Client <Version>“, kein
 
 ## Offene Fragen
 
-Welche Dev-Kacheln (Höhle/Mine, Zufallsseed, Online) bleiben, über den Server erreichbar: B-079, entscheidet 🧑; ohne Antwort entfallen Kacheln mit unbekannten Parametern (B-079 › Anforderungen). Blockiert die Freigabe nicht.
+Entschieden am 2026-10-03: Es bleiben nur Kacheln mit Parametern, die die Lobby kennt (Neues Spiel, Online); Kacheln mit unbekannten Parametern (Höhle/Mine direkt, Zufallsseed) entfallen. Keine offene Frage.
 
 ## Sessions
 
