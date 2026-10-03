@@ -13,6 +13,7 @@ Reihenfolge in Wellen, Bahnen je Domäne und Zuordnung Mensch/autonom (zwei Acco
 | DBG1 | SRV | Dev-Aktionen: Gold, Material, Zeitraffer | Dev-Nachricht im Raum: Gold droppen, Material geben, Zeit 1-8x | `aktiv/DBG1-dev-aktionen-server/` |
 | F1 | REG 🧑 | Zielkorridore und Bedienungsregeln | `docs/rules/zielkorridore.md` und `docs/rules/bedienung.md` mit Datum der Bestätigung durch 🧑 | `aktiv/F1-zielkorridore-regeln/` |
 | F2 | INF | Golden-Ablauf, Spielstand-Migration und Determinismus | `task golden:update` in `task --list`, Abschnitte in `docs/arbeitsweise.md`, ein grüner arm64-Job in der CI | `aktiv/F2-golden-migration-determinismus/` |
+| X1 | PLAT 🧑 | Xbox-Machbarkeit (einschiebbar) | Bericht in `reports/` mit Audio-Ergebnis, Steuerungstabelle und Audio-Ergebnis in `game-design.md` | `aktiv/X1-xbox/` |
 
 ## Offen am Gerät
 
@@ -78,7 +79,6 @@ dann über den Go-Server mit mehreren Räumen und gemischten Spielern.
 | SO2 | CLI | SFX-Katalog und Einbau | Entwurf | `geplant/SO2-sfx-katalog/` |
 | SO3 | PLAT | Hörprobenseite `soundtest.html` | Entwurf | `geplant/SO3-hoerprobenseite/` |
 | SO4 | CLI | Musik je Zustand | Entwurf | `geplant/SO4-musik/` |
-| X1 | PLAT 🧑 | Xbox-Machbarkeit | Entwurf | `geplant/X1-xbox/` |
 
 Gesamtplan und Begründung: [`../plan-weiterentwicklung.md`](../plan-weiterentwicklung.md). Offene Entscheidungen: [`../fragenkatalog.md`](../fragenkatalog.md).
 
