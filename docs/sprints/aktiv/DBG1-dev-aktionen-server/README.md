@@ -5,7 +5,7 @@
 - **Reife:** bereit
 - **Einschiebbar:** nein
 - **Tickets:** B-178
-- **Start-Commit:** 25cac18
+- **Start-Commit:** f6bb3c3
 - **Spec:** freigegeben
 - **Revision:** 1
 - **Freigabe:** 2026-10-03, Chat (Ralf), Revision 1; umfasst B-178 und die Vorschläge der Sessions (WebSocket-Nachricht nur im Dev-Mode, Domänen-Ausnahmen Client-Parser und engine/sim/dev.go)
