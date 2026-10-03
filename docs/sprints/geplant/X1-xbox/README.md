@@ -6,9 +6,9 @@
 - **Einschiebbar:** ja
 - **Tickets:** B-006, B-026, B-166
 - **Start-Commit:** –
-- **Spec:** Entwurf
+- **Spec:** freigegeben
 - **Revision:** 1
-- **Freigabe:** –
+- **Freigabe:** 2026-10-03, Chat (Ralf), Revision 1; umfasst B-006, B-026, B-166 und die Domänen-Ausnahme
 
 ## Ausgangslage
 
