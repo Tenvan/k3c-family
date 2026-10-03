@@ -198,7 +198,7 @@ Stand 2026-10-03. Ziel: Auf dem zweiten Account laufen möglichst viele autonome
 | INF | F0 → F2 → F5 → GR4 → RL1 | RL1.1, RL1.3 (Checkliste abnehmen) |
 | REG | F1.1–F1.3 → **F1.4** → F1.5 … später BAL4 → BR1 → BR2 | F1.4, BAL4.2, BR1.2, BR2.2, P1 |
 | SIM | F3 → BAL1 → S1 → BAL2 → W1 → W2 → W3 → W4 → K1 → K2 → K3 → BAL3 | BAL3.1 (Bot-Profile) |
-| SRV | SP11 (🧑 Pi) → F4 → S2 → W5 → K4 | SP11.2, SP11.3 |
+| SRV | SP11 (Rev. 2: schließt nach SP11.4 ab) → F4 → S2 → LT1 → W5 → K4 | LT1.3 (Messlauf am Pi) |
 | CLI | S5 → S4 → S3 → S7 → S6 → SO1 → W6 → K5 | S3.4, S4.3, S5.4, S6.4, S7.3, W6.4, K5.4 (Abnahmen am Gerät) |
 | PLAT | X1.1 (autonom, Audio-Abschnitt) → X1.2 (🧑 Xbox-Test) → X1.3 → GR6 → SO3 | X1.2 (Xbox-Test) |
 | Asset-Schiene (einschiebbar, CLI/INF) | GR1 → GR2 → GR3 → GR5, SO2, SO4 | GR1.1, GR2.2, GR4.3, SO2.1, SO4.1 (Stil und Auswahl) |
@@ -210,7 +210,7 @@ Die Asset-Schiene zählt nach Regel nicht als aktiver Sprint, teilt sich aber Da
 | Welle | Voraussetzung | Spur A (autonom, 2. Account, parallel je Bahn) | Spur M (🧑 hier) |
 |---|---|---|---|
 | **W0** jetzt | – | **F0.1 → F0.2** (INF) ‖ **X1.1** (PLAT, Audio-Abschnitt der Testseite, nach Freigabe X1). Währenddessen „Bereit machen“ (11.4) für F3, F4, S4, S5, S1. | Freigabe Spec **X1** (neue Spec mit Audio-Test, damit X1.1 starten kann); **SP11.2** Pi einrichten (läuft); **X1.2** Xbox-Test (Gamepad und Audio, B-166), sobald der autonome **X1.1** den Audio-Abschnitt gebaut hat |
-| **W1** | F0 erledigt | **F1.1 → F1.2 → F1.3** (REG) ‖ **F2.1 → F2.4** (INF: Golden-Ablauf, Migration, Determinismus) ‖ SP11.1 liegt schon fertig | **F1.4** Workshop (Zielkorridore, Reittier, Bedienungszahlen); Freigabe-Paket 1: F2, F5, F3; **SP11.3** Lastmessung |
+| **W1** | F0 erledigt | **F1.1 → F1.2 → F1.3** (REG) ‖ **F2.1 → F2.4** (INF: Golden-Ablauf, Migration, Determinismus) ‖ SP11.1 liegt schon fertig | **F1.4** Workshop (Zielkorridore, Reittier, Bedienungszahlen); Freigabe-Paket 1: F2, F5, F3; **LT1.3** Messlauf am Pi (nach dem Lasttest-Werkzeug) |
 | **W2** | F1.4, F2 erledigt | **F1.5** (REG) ‖ **F5.1 → F5.4** (INF) ‖ **F3.1 → F3.3** (SIM, Feedback-Events) ‖ **S5.1 → S5.3, S5.5** (CLI) ‖ **SP11.4** Review (SRV, nach SP11.3) | Freigabe-Paket 2: S5, S4, F4, S1; **S5.4** Abnahme; **X1.3** Auswertung beauftragen |
 | **W3** | F3 erledigt | **BAL1** (SIM) ‖ **F4.1 → F4.4** (SRV, nach SP11 und F3) ‖ **S4.1, S4.2, S4.4** (CLI) ‖ **GR6** (PLAT, nach X1) ‖ **GR1.2 → GR1.4** (Asset) | **S4.3** Abnahme; **GR1.1** Stil-Zuordnung (Q13 ist entschieden: nur bestätigen); Freigabe-Paket 3: S2, S3, S7, GR1, GR2 |
 | **W4** | F4, BAL1 erledigt | **S1.1 → S1.5** (SIM) ‖ **GR2.1, GR2.3, GR2.4** (Asset, nach GR2.2) ‖ **GR4** (INF) | **GR2.2** Auswahl der Grafik-Kandidaten (Referenzseite) |

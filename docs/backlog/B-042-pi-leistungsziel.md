@@ -4,7 +4,7 @@
 - **Typ:** Frage
 - **Prio:** hoch
 - **Status:** eingeplant
-- **Sprint:** SP11
+- **Sprint:** LT1
 - **Erstellt:** 2026-09-30
 - **Spec:** Entwurf
 - **Revision:** 1
@@ -16,7 +16,7 @@ Für den Pi-Betrieb (B-035) sind weder Modell noch Leistungsziel festgelegt.
 
 ## Ziel
 
-Pi-Modell und Leistungsziel sind festgelegt. Nutzen: Ohne Ziel ist die Lastmessung in SP11 nicht bewertbar.
+Pi-Modell und Leistungsziel sind festgelegt. Nutzen: Ohne Ziel ist die Lastmessung (LT1) nicht bewertbar.
 
 ## Beteiligte und Zielgruppen
 
@@ -53,4 +53,4 @@ Pi-Modell genau (🧑 bestätigt mit der Freigabe von SP11): Angabe „Pi 3 oder
 
 ## Notizen
 
-**Festgelegt (🧑, 2026-10-02):** Modell Pi 3 oder älter (vermutlich Pi 3, 64-Bit-OS). Ziel: 2 Räume × 3 Spieler parallel, Tick-Dauer p99 < 10 ms bei 30 Hz (Budget 33 ms). Gemessen wird in SP11.3.
+**Festgelegt (🧑, 2026-10-02):** Modell Pi 3 oder älter (vermutlich Pi 3, 64-Bit-OS). Ziel: 2 Räume × 3 Spieler parallel, Tick-Dauer p99 < 10 ms bei 30 Hz (Budget 33 ms). Gemessen wird mit dem Lasttest-Werkzeug (B-175) im Sprint LT1.3; die erste Handmessung vom 2026-10-03 (Tag p99 8,0 bis 9,5 ms, Nacht 10,2 bis 10,3 ms, ein Messpunkt) liegt knapp am Ziel.
