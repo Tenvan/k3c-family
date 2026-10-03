@@ -15,6 +15,7 @@ import (
 	"k3c/tools/k3c-dev/internal/applog"
 	"k3c/tools/k3c-dev/internal/console"
 	"k3c/tools/k3c-dev/internal/mcpsrv"
+	"k3c/tools/k3c-dev/internal/planning"
 	"k3c/tools/k3c-dev/internal/services"
 	"k3c/tools/k3c-dev/internal/taskrun"
 	"k3c/tools/k3c-dev/internal/usage"
@@ -29,6 +30,7 @@ const (
 	evMCPStart     = "mcp:start"
 	evMCPCall      = "mcp:call"
 	evTaskState    = "task:state"
+	evPlanning     = "planning:changed"
 )
 
 // MCPState ist der Zustand des MCP-Servers für das Badge der Kopfzeile.
@@ -100,6 +102,7 @@ func (a *App) startup(ctx context.Context) {
 		func(err error) { a.log.Warn(err.Error(), "ns", "usage") })
 	a.initTasks()
 	a.svcCtx, a.cancel = context.WithCancel(ctx)
+	planning.Watch(a.svcCtx, a.root, planningPoll, func() { a.emit(a.ctx, evPlanning, nil) })
 	a.ctl, a.svcErr = openServices(a.svcCtx, a.root, store, a.log,
 		func(st services.Status) {
 			a.emit(a.ctx, evServiceState, st)

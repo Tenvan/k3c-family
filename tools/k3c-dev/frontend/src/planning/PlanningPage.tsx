@@ -37,7 +37,10 @@ function DocView({ name }: { name: PlanDoc }) {
     setError('');
     backend.planningDoc(name).then(setText, (e) => setError(errorText(e)));
   };
-  useEffect(load, [name]);
+  useEffect(() => {
+    load();
+    return backend.on('planning:changed', load); // Plan oder Fragenkatalog wurde gespeichert
+  }, [name]);
   if (error) return <NoticeCard title="Dokument nicht geladen" tone="error">{error}</NoticeCard>;
   if (text === null) return <Text color="gray">Lade …</Text>;
   return (
@@ -52,7 +55,10 @@ function SprintsAndBacklog() {
   const [data, setData] = useState<PlanningData | null>(null);
   const [error, setError] = useState('');
   const load = () => backend.planning().then((d) => { setData(d); setError(''); }, (e) => setError(errorText(e)));
-  useEffect(() => void load(), []);
+  useEffect(() => {
+    void load();
+    return backend.on('planning:changed', () => void load()); // Wächter in Go: Datei in docs/ geändert
+  }, []);
   if (error) return <NoticeCard title="Planung nicht geladen" tone="error">{error}</NoticeCard>;
   if (!data) return <Text color="gray">Lade Planung …</Text>;
   return (
