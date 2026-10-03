@@ -2,7 +2,7 @@
 
 - **Status:** geplant
 - **Domäne:** CLI
-- **Reife:** Entwurf
+- **Reife:** bereit
 - **Einschiebbar:** nein
 - **Tickets:** B-179
 - **Start-Commit:** –
@@ -56,12 +56,12 @@ Siehe Ticket › Offene Fragen.
 
 ## Sessions
 
-Entwurf. Vor dem Aktivieren jede Session als Datei nach `docs/vorlagen/session.md` schreiben, die Kriterien in Klammern werden ihr Feld `Kriterien`.
-
-- DBG2.1 Reine Funktionen: Auswahl → `dev`-Nachricht, Sichtbarkeit der Aktionsliste, Test (AC-01, AC-02).
-- DBG2.2 Overlay-Ansicht mit Aktionen und Zeitfaktor, Bedienung Maus, Touch, Controller (AC-03).
-- DBG2.3 🧑 Abnahme am PC, Handy und Controller (AC-05).
-- DBG2.4 Review des Sprints (Code-Sprint) (AC-01, AC-02, AC-03, AC-04, AC-05).
+| Nr. | Datei | Typ | Agent | Status |
+|---|---|---|---|---|
+| DBG2.1 | `DBG2.1-aktionen-logik.md` | Umsetzung | autonom | offen |
+| DBG2.2 | `DBG2.2-overlay-bedienung.md` | Umsetzung | autonom | offen |
+| DBG2.3 | `DBG2.3-abnahme-geraet.md` | Workshop | Mensch | offen |
+| DBG2.4 | `DBG2.4-review.md` | Review | autonom | offen |
 
 ## Abnahme
 

@@ -2,7 +2,7 @@
 
 - **Status:** geplant
 - **Domäne:** SRV
-- **Reife:** Entwurf
+- **Reife:** bereit
 - **Einschiebbar:** nein
 - **Tickets:** B-178
 - **Start-Commit:** –
@@ -57,12 +57,12 @@ Siehe Ticket › Offene Fragen.
 
 ## Sessions
 
-Entwurf. Vor dem Aktivieren jede Session als Datei nach `docs/vorlagen/session.md` schreiben, die Kriterien in Klammern werden ihr Feld `Kriterien`.
-
-- DBG1.1 Protokoll: Nachricht `dev`, Fehlercode `forbidden`, `docs/protocol.md`, `testdata/protocol/`, beide Enden parsen (AC-01, AC-05).
-- DBG1.2 Raum: Gold droppen und Material in den Vorrat, Log (AC-02, AC-03, AC-06).
-- DBG1.3 Zeitraffer: mehrere Schritte je Tick, Faktor im Zustand, Test gegen normale Ticks (AC-04).
-- DBG1.4 Review des Sprints (Code-Sprint) (AC-01, AC-02, AC-03, AC-04, AC-05, AC-06).
+| Nr. | Datei | Typ | Agent | Status |
+|---|---|---|---|---|
+| DBG1.1 | `DBG1.1-protokoll.md` | Umsetzung | autonom | offen |
+| DBG1.2 | `DBG1.2-gold-material.md` | Umsetzung | autonom | offen |
+| DBG1.3 | `DBG1.3-zeitraffer.md` | Umsetzung | autonom | offen |
+| DBG1.4 | `DBG1.4-review.md` | Review | autonom | offen |
 
 ## Abnahme
 
