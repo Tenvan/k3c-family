@@ -2,7 +2,7 @@
 
 - **Status:** geplant
 - **Domäne:** SIM
-- **Reife:** Entwurf
+- **Reife:** bereit
 - **Einschiebbar:** nein
 - **Tickets:** B-118, B-119, B-022, B-152
 - **Start-Commit:** –
@@ -58,13 +58,17 @@ Wie Pool-Quelle „jede 3. Truhe“ zählt und die Passiv-Startwerte: siehe B-11
 
 ## Sessions
 
-Entwurf. Vor dem Aktivieren jede Session als Datei nach `docs/vorlagen/session.md` schreiben, die Kriterien in Klammern werden ihr Feld `Kriterien`.
+S1.2 ist in drei Dateien geteilt (a, b, c), damit jede Session unter dem Richtwert von ca. 400 Code-Zeilen bleibt; die Nummern S1.1, S1.3, S1.4 und S1.5 bleiben wie geplant.
 
-- S1.1 Schlag, Fund-Pool, Gating, Respec, Presets in `engine/sim/` und `data/monarch.json` (AC-01, AC-02).
-- S1.2 Skills und Passive Tank/Zauberer/Heiler in Daten und Sim, Abklingzeiten je Spieler (AC-03, AC-04).
-- S1.3 Standard-Reittier aus `data/monarch.json` im Monarchen, Test mit 2 Spielern (AC-07).
-- S1.4 Spielstand: Pool, Verteilung, Skills mit Versionssprung und Fixture, Golden-Daten aktualisieren (AC-05, AC-06).
-- S1.5 Review des Sprints (Code-Sprint) (AC-01, AC-02, AC-03, AC-04, AC-05, AC-06, AC-07).
+| Nr. | Datei | Typ | Agent | Status |
+|---|---|---|---|---|
+| S1.1 | `S1.1-schlag-pool.md` | Umsetzung | autonom | offen |
+| S1.2a | `S1.2a-skill-rahmen-tank.md` | Umsetzung | autonom | offen |
+| S1.2b | `S1.2b-skills-zauberer-heiler.md` | Umsetzung | autonom | offen |
+| S1.2c | `S1.2c-passive.md` | Umsetzung | autonom | offen |
+| S1.3 | `S1.3-reittier.md` | Umsetzung | autonom | offen |
+| S1.4 | `S1.4-spielstand-golden.md` | Umsetzung | autonom | offen |
+| S1.5 | `S1.5-review.md` | Review | autonom | offen |
 
 ## Abnahme
 

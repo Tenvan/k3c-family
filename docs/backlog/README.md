@@ -104,6 +104,7 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-172](B-172-sprachauswahl-de-en.md) | CLI | Idee | mittel | eingeplant | S5 | Der Client hat Deutsch und Englisch mit Sprachauswahl in den Optionen |
 | [B-173](B-173-monarch-auf-reittier-zeichnen.md) | CLI | Idee | hoch | eingeplant | S7 | Der Client zeichnet den Monarchen auf dem Standard-Reittier |
 | [B-175](B-175-lasttest-werkzeug.md) | SRV | Idee | mittel | eingeplant | LT1 | Ein Lasttest-Werkzeug misst Tick-Dauer und CPU gegen das Pi-Ziel |
+| [B-176](B-176-protokoll-mehrere-stufen.md) | SRV | Idee | hoch | eingeplant | S2 | Das Protokoll liefert Level und Zustand jeder Stufe, in der ein lokaler Spieler steht |
 
 ## Archiv
 
