@@ -5,7 +5,7 @@
 - **Reife:** bereit
 - **Einschiebbar:** nein
 - **Tickets:** B-137, B-138, B-071
-- **Start-Commit:** 54c1657
+- **Start-Commit:** f6bb3c3
 - **Spec:** freigegeben
 - **Revision:** 1
 - **Freigabe:** 2026-10-03, Chat (Ralf), Revision 1; umfasst B-137, B-138, B-071 (arm64-Runner: nativer GitHub-Runner, Rückfall qemu)
