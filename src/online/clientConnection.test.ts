@@ -351,6 +351,17 @@ describe('Befehle', () => {
   });
 });
 
+describe('Dev-Aktionen (B-179)', () => {
+  it('sendDev geht nur im Raum raus', () => {
+    const lobby = inLobby();
+    lobby.client.sendDev({ t: 'dev', action: 'timescale', factor: 8 });
+    expect(lobby.last().sent).toHaveLength(1); // nur hello
+    const t = inRoom();
+    t.client.sendDev({ t: 'dev', action: 'gold', slot: 0, amount: 50 });
+    expect(t.last().sent.at(-1)).toEqual({ t: 'dev', action: 'gold', slot: 0, amount: 50 });
+  });
+});
+
 describe('Snapshot-Zeiten für das Debug-Overlay (B-093)', () => {
   it('ohne Snapshot: Zeit und Takt null, Geräte-ID lesbar', () => {
     const t = inLobby();
