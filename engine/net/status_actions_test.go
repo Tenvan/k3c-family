@@ -1,7 +1,6 @@
 package net
 
 import (
-	"bytes"
 	"encoding/json"
 	"log/slog"
 	"net/http"
@@ -16,19 +15,19 @@ import (
 )
 
 // actionServer ist wie diagServer, mit eigenem Spielstand-Speicher und einem Log-Puffer.
-func actionServer(t *testing.T) (*httptest.Server, memSaves, *bytes.Buffer) {
+func actionServer(t *testing.T) (*httptest.Server, memSaves, *lockedBuffer) {
 	t.Helper()
 	saves := memSaves{}
 	m := room.NewManager(saves)
 	codes := []string{"FAMILIE", "ZWEITER"}
 	m.NewCode = func() string { c := codes[0]; codes = codes[1:]; return c }
-	var logBuf bytes.Buffer
+	logBuf := &lockedBuffer{} // der Server loggt aus eigenen Goroutinen (Trennen, Speichern)
 	root := t.TempDir()
 	srv := httptest.NewServer(NewHandler(Config{Dist: root, StatusToken: diagToken, Version: "test", StartedAt: time.Now(),
 		Saves: &store.Saves{Dir: filepath.Join(root, "saves")}, Reports: &store.Reports{Dir: filepath.Join(root, "reports")},
-		Rooms: m, Log: slog.New(slog.NewTextHandler(&logBuf, nil))}))
+		Rooms: m, Log: slog.New(slog.NewTextHandler(logBuf, nil))}))
 	t.Cleanup(srv.Close)
-	return srv, saves, &logBuf
+	return srv, saves, logBuf
 }
 
 func post(t *testing.T, srv *httptest.Server, path, auth string) (int, map[string]any) {
