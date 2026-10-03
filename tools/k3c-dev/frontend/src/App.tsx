@@ -3,15 +3,22 @@ import { useEffect, useState } from 'react';
 import { backend, type McpState } from './api';
 import { Header, PAGES, type Page } from './Header';
 import { loadPref, savePref } from './lib/prefs';
+import { GitPage } from './git/GitPage';
 import { LogsPage } from './logs/LogsPage';
 import { McpPage } from './mcp/McpPage';
+import { PlanningPage } from './planning/PlanningPage';
 import { ServicesPage } from './services/ServicesPage';
+import { TasksPage } from './tasks/TasksPage';
 
 const MODES = ['dark', 'light'] as const;
 
+/** Ohne gemerkte Wahl gilt die Einstellung des Systems. */
+const systemMode = (): (typeof MODES)[number] =>
+  window.matchMedia?.('(prefers-color-scheme: light)').matches ? 'light' : 'dark';
+
 export function App() {
   const [page, setPage] = useState<Page>(() => loadPref('page', PAGES, 'dienste'));
-  const [mode, setMode] = useState(() => loadPref('mode', MODES, 'dark'));
+  const [mode, setMode] = useState(() => loadPref('mode', MODES, systemMode()));
   const [mcp, setMcp] = useState<McpState | null>(null);
 
   useEffect(() => {
@@ -21,7 +28,6 @@ export function App() {
   }, []);
 
   useEffect(() => {
-    document.documentElement.dataset.mode = mode;
     savePref('mode', mode);
   }, [mode]);
 
@@ -32,12 +38,21 @@ export function App() {
   };
 
   return (
-    <Theme appearance={mode} accentColor="amber" grayColor="slate" radius="medium" hasBackground={false}>
+    <Theme appearance={mode}>
       <Tabs.Root value={page} onValueChange={choose} className="shell">
         <Header mcp={mcp} mock={backend.mock} dark={mode === 'dark'} onDark={(d) => setMode(d ? 'dark' : 'light')} />
         <main className="page">
           <Tabs.Content value="dienste">
             <ServicesPage />
+          </Tabs.Content>
+          <Tabs.Content value="tasks">
+            <TasksPage />
+          </Tabs.Content>
+          <Tabs.Content value="planung">
+            <PlanningPage />
+          </Tabs.Content>
+          <Tabs.Content value="git">
+            <GitPage />
           </Tabs.Content>
           <Tabs.Content value="logs">
             <LogsPage />
