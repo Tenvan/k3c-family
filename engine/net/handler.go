@@ -28,6 +28,7 @@ type Config struct {
 	// LogDir ist der Ordner des JSON-Logs (k3c-server.jsonl) für GET /api/status/log (B-088); leer = Log aus.
 	LogDir    string
 	Version   string
+	Built     string // Buildzeit (RFC 3339), steht mit Version in /api/health
 	StartedAt time.Time
 	// Rooms sind die Räume hinter /ws (Protokoll v2); nil = kein /ws. NewHandler setzt Rooms.Changed.
 	Rooms *room.Manager
@@ -95,7 +96,7 @@ func (s *server) health(w http.ResponseWriter, r *http.Request) {
 		fail(w, http.StatusMethodNotAllowed, "Nur GET")
 		return
 	}
-	writeJSON(w, http.StatusOK, map[string]bool{"ok": true})
+	writeJSON(w, http.StatusOK, map[string]any{"ok": true, "version": s.cfg.Version, "built": s.cfg.Built})
 }
 
 // save ist GET/POST /api/save?slot=autosave wie server/saves.mjs.

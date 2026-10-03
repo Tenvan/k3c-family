@@ -32,6 +32,25 @@ import (
 // version setzt release.yml per -ldflags "-X main.version=<tag>".
 var version = "dev"
 
+// built setzt das Dockerfile per -ldflags "-X main.built=<UTC-Zeit>"; leer = Änderungszeit der EXE (buildTime).
+var built = ""
+
+// buildTime ist die Buildzeit für /api/health (RFC 3339, UTC); ohne ldflags die Änderungszeit der EXE, sonst leer.
+func buildTime() string {
+	if built != "" {
+		return built
+	}
+	exe, err := os.Executable()
+	if err != nil {
+		return ""
+	}
+	info, err := os.Stat(exe)
+	if err != nil {
+		return ""
+	}
+	return info.ModTime().UTC().Format(time.RFC3339)
+}
+
 // testSaveMaxAge: Test-Spielstände (Präfix test-) älter als das räumt der Server beim Start auf.
 const testSaveMaxAge = 24 * time.Hour
 
@@ -96,7 +115,7 @@ func run(cfg config, log *slog.Logger) error {
 	conns := &sync.WaitGroup{}
 	clientLog, closeClientLog := newNamedLogger(logDir(), clientLogFile, os.Stderr)
 	defer closeClientLog()
-	handler := k3cnet.NewHandler(k3cnet.Config{Dist: cfg.dist, Log: log, ClientLog: clientLog, Version: version, StartedAt: time.Now(),
+	handler := k3cnet.NewHandler(k3cnet.Config{Dist: cfg.dist, Log: log, ClientLog: clientLog, Version: version, Built: buildTime(), StartedAt: time.Now(),
 		StatusToken: cfg.statusToken, LogDir: logDir(), Saves: saves, Reports: &store.Reports{Dir: cfg.reports}, Rooms: rooms,
 		Conns: conns})
 	if cfg.statusToken == "" {

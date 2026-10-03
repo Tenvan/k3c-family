@@ -32,7 +32,7 @@ func testServer(t *testing.T) (*httptest.Server, string) {
 	if err := os.WriteFile(filepath.Join(root, "geheim.txt"), []byte("geheim"), 0o644); err != nil {
 		t.Fatal(err)
 	}
-	srv := httptest.NewServer(NewHandler(Config{Dist: dist, Saves: &store.Saves{Dir: filepath.Join(root, "saves")},
+	srv := httptest.NewServer(NewHandler(Config{Dist: dist, Version: "v9.9.9", Built: "2026-10-03T12:00:00Z", Saves: &store.Saves{Dir: filepath.Join(root, "saves")},
 		Reports: &store.Reports{Dir: filepath.Join(root, "reports")}}))
 	t.Cleanup(srv.Close)
 	return srv, root
@@ -104,8 +104,9 @@ func TestAuslieferung(t *testing.T) {
 	if res, _ := do(t, "DELETE", srv.URL+"/", ""); res.StatusCode != 405 {
 		t.Errorf("DELETE: %d", res.StatusCode)
 	}
-	if res, _ := do(t, "GET", srv.URL+"/api/health", ""); res.StatusCode != 200 {
-		t.Errorf("health: %d", res.StatusCode)
+	if res, body := do(t, "GET", srv.URL+"/api/health", ""); res.StatusCode != 200 ||
+		!strings.Contains(body, `"version":"v9.9.9"`) || !strings.Contains(body, `"built":"2026-10-03T12:00:00Z"`) {
+		t.Errorf("health: %d %q", res.StatusCode, body)
 	}
 }
 
