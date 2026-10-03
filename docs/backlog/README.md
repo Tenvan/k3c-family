@@ -103,7 +103,8 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-184](B-184-pages-screenshots.md) | PLAT | Idee | niedrig | offen | – | Die Präsentationsseite zeigt echte Bilder aus dem Spiel |
 | [B-185](B-185-verluste-je-welle-angleichen.md) | REG | Schuld | niedrig | offen | – | Wirtschaft nennt denselben Verlust-Korridor je Welle wie die Bürger |
 | [B-186](B-186-autospeichern-takt.md) | SRV | Idee | mittel | offen | – | Der Server speichert alle 60 s und bei Tagesanbruch, das HUD zeigt „gesichert“ |
-| [B-187](B-187-speichern-windows-rename.md) | SRV | Problem | mittel | offen | – | Speichern übersteht unter Windows eine kurz gesperrte Zieldatei |
+| [B-187](B-187-speichern-windows-rename.md) | SRV | Problem | mittel | offen | – | Speichern übersteht unter Windows eine kurz gesperrte Zieldatei |
+| [B-188](B-188-client-rohstoffe-eisen-kristall.md) | CLI | Schuld | niedrig | offen | – | Der Client kennt alle fünf Rohstoffe des Servers |
 
 ## Archiv
 
