@@ -106,6 +106,8 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-175](B-175-lasttest-werkzeug.md) | SRV | Idee | mittel | eingeplant | LT1 | Ein Lasttest-Werkzeug misst Tick-Dauer und CPU gegen das Pi-Ziel |
 | [B-176](B-176-protokoll-mehrere-stufen.md) | SRV | Idee | hoch | eingeplant | S2 | Das Protokoll liefert Level und Zustand jeder Stufe, in der ein lokaler Spieler steht |
 | [B-177](B-177-holz-startvorrat.md) | SIM | Idee | hoch | eingeplant | H1 | Die Insel startet mit einem Holz-Startvorrat |
+| [B-178](B-178-dev-aktionen-gold-material-zeitraffer.md) | SRV | Idee | hoch | eingeplant | DBG1 | Im Dev-Mode lassen sich Gold und Material droppen und die Zeit beschleunigen |
+| [B-179](B-179-debug-overlay-aktionen.md) | CLI | Idee | hoch | eingeplant | DBG2 | Das Debug-Overlay bedient Gold, Material und Zeitraffer |
 
 ## Archiv
 

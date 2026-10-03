@@ -19,6 +19,8 @@ dann über den Go-Server mit mehreren Räumen und gemischten Spielern.
 
 | Sprint | Domäne | Thema | Am Ende sichtbar | Reife | Ordner |
 |---|---|---|---|---|---|
+| DBG1 | SRV | Dev-Aktionen: Gold, Material, Zeitraffer | Dev-Nachricht im Raum: Gold droppen, Material geben, Zeit 1-8x | Entwurf | `geplant/DBG1-dev-aktionen-server/` |
+| DBG2 | CLI | Debug-Overlay: Gold, Material, Zeitraffer | Aktionen im Overlay am PC, Handy und Controller | Entwurf | `geplant/DBG2-debug-overlay-aktionen/` |
 | F1 | REG 🧑 | Zielkorridore und Bedienungsregeln | `docs/rules/zielkorridore.md` und `docs/rules/bedienung.md` mit Datum der Bestätigung durch 🧑 | Entwurf | `geplant/F1-zielkorridore-regeln/` |
 | F2 | INF | Golden-Ablauf, Spielstand-Migration und Determinismus | `task golden:update` in `task --list`, Abschnitte in `docs/arbeitsweise.md`, ein grüner arm64-Job in der CI | bereit | `geplant/F2-golden-migration-determinismus/` |
 | F3 | SIM | Feedback-Ereignisse in der Simulation | Go-Tests je Ereignistyp, `task check:go` grün, Ereignisse im Ergebnis von `sim_run` (k3c-dev) | Entwurf | `geplant/F3-feedback-events-sim/` |
