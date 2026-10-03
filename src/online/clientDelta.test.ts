@@ -1,4 +1,5 @@
 import { describe, expect, it } from 'vitest';
+import timescaleMsg from '../../testdata/protocol/s2c-snapshot-delta-timescale.json';
 import { applyDelta } from './clientDelta';
 
 const base = {
@@ -41,5 +42,12 @@ describe('applyDelta', () => {
 
   it('Liste fehlt im alten Zustand: wird aus set aufgebaut', () => {
     expect(applyDelta({}, { coins: { set: [{ id: 5 }], del: [] } }).coins).toEqual([{ id: 5 }]);
+  });
+
+  it('devTimescale aus dem Beispiel wird übernommen, der Rest bleibt', () => {
+    const next = applyDelta({ ...base, devTimescale: 1 }, timescaleMsg.s);
+    expect(next.devTimescale).toBe(4);
+    expect(next.players).toBe(base.players);
+    expect(next.time).toBe(1);
   });
 });

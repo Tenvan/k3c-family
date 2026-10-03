@@ -55,7 +55,8 @@ export interface SlotInput {
 
 /** Dynamischer Weltzustand: alles außer dem Statischen (kommt mit `level`), dazu `events` und `depth`. */
 export type StaticKey = 'seed' | 'biome' | 'level' | 'rng' | 'widthUnits';
-export type WorldState = Omit<World, StaticKey> & { events: GameEvent[]; depth: number };
+/** `devTimescale`: Faktor des Zeitraffers, nur im Dev-Mode des Servers (docs/protocol.md › Dev-Aktionen). */
+export type WorldState = Omit<World, StaticKey> & { events: GameEvent[]; depth: number; devTimescale?: number };
 
 export type ServerMessage =
   | { t: 'welcome'; v: number; tickHz: number; limits: Limits }
