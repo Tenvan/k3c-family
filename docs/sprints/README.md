@@ -70,7 +70,7 @@ dann über den Go-Server mit mehreren Räumen und gemischten Spielern.
 | GR5 | CLI | Juice: Treffer, Screenshake, Münzen | Entwurf | `geplant/GR5-juice/` |
 | GR6 | PLAT | Credits-Seite | bereit | `geplant/GR6-credits-seite/` |
 | RL1 | INF | Release-Checkliste | bereit | `geplant/RL1-release-checkliste/` |
-| SO1 | CLI | Audio-Kern | Entwurf | `geplant/SO1-audio-kern/` |
+| SO1 | CLI | Audio-Kern | bereit | `geplant/SO1-audio-kern/` |
 | SO2 | CLI | SFX-Katalog und Einbau | Entwurf | `geplant/SO2-sfx-katalog/` |
 | SO3 | PLAT | Hörprobenseite `soundtest.html` | bereit | `geplant/SO3-hoerprobenseite/` |
 | SO4 | CLI | Musik je Zustand | Entwurf | `geplant/SO4-musik/` |
