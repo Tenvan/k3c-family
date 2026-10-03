@@ -126,6 +126,7 @@ func Step(w *World, commands []PlayerCommand, dt float64) {
 		castleFallen(w)
 	}
 	stepTravel(w, dt)
+	capEvents(w)
 }
 
 // castleFallen: Niederlage laut GDD. Respawn am Hub, Gebäude bleiben zerstört, 50 % der Ressourcen und alle Truppen
