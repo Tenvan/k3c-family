@@ -39,6 +39,7 @@ Typische Session: 30–60 Minuten.
 - Jede Regel muss mit 2+ Spielern gleichzeitig funktionieren, egal ob sie auf einem oder mehreren Geräten sitzen.
 - **Die Wellen wachsen mit der Spieleranzahl** (Gegnerzahl ×(1 + 0,5 je Zusatzspieler)), siehe `rules/wirtschaft.md`.
 - **Schwierigkeitsgrade** Dev, Leicht, Normal, Hart, Ultra verändern Wellen und Gegner, nicht die Wirtschaft. Live wählt man den Grad beim Anlegen des Raums, im Dev-Mode lässt er sich im Debug-Panel jederzeit umschalten (wirkt ab der nächsten Welle). Details und Faktoren: `rules/wirtschaft.md`.
+- **Zielkorridore** (Kennzahlen mit Unter- und Obergrenze je Szenario, Pass/Fail für das Balancing): [`rules/zielkorridore.md`](rules/zielkorridore.md).
 
 ## Monarch
 
