@@ -63,7 +63,7 @@ Entschieden am 2026-10-03: Q01 Pause, Q03 Schriftgröße (≥ 28 px Vollbild, �
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
 | F1.1 | `F1.1-bedienung-regeln.md` | Umsetzung | autonom | fertig |
-| F1.2 | `F1.2-zielkorridore-vorschlag.md` | Umsetzung | autonom | offen |
+| F1.2 | `F1.2-zielkorridore-vorschlag.md` | Umsetzung | autonom | fertig |
 | F1.3 | `F1.3-reittier-regel.md` | Umsetzung | autonom | offen |
 | F1.4 | `F1.4-workshop-bestaetigung.md` | Workshop | Mensch | offen |
 | F1.5 | `F1.5-abschluss.md` | Umsetzung | autonom | offen |
