@@ -61,7 +61,7 @@ Siehe Ticket › Offene Fragen.
 | DBG2.1 | `DBG2.1-aktionen-logik.md` | Umsetzung | autonom | fertig |
 | DBG2.2 | `DBG2.2-overlay-bedienung.md` | Umsetzung | autonom | fertig |
 | DBG2.3 | `DBG2.3-abnahme-geraet.md` | Workshop | Mensch | in Arbeit |
-| DBG2.4 | `DBG2.4-review.md` | Review | autonom | offen |
+| DBG2.4 | `DBG2.4-review.md` | Review | autonom | in Arbeit |
 
 ## Abnahme
 
