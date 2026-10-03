@@ -5,6 +5,13 @@ version: '3'
 vars:
   DEV: tools/k3c-dev
 
+# Go-Build-Temp (go-build, Test-EXEs) und Wails-Bindings-EXE liegen fest im Projekt statt in %TEMP%:
+# Nur so reicht EINE Norton-Ausnahme für `.work/` (Ordner legt `task install` an).
+env:
+  GOTMPDIR: '{{.ROOT_DIR}}/.work/tmp'
+  TMP: '{{.ROOT_DIR}}/.work/tmp'
+  TEMP: '{{.ROOT_DIR}}/.work/tmp'
+
 tasks:
   default:
     desc: Alle Aufgaben anzeigen
@@ -15,6 +22,7 @@ tasks:
   install:
     desc: Abhängigkeiten holen (Client und Frontend von k3c-dev)
     cmds:
+      - mkdir -p .work/tmp
       - npm ci
       - npm ci --prefix {{.DEV}}/frontend
 

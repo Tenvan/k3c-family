@@ -1,0 +1,71 @@
+# SO1 · CLI · Audio-Kern
+
+- **Status:** geplant
+- **Domäne:** CLI
+- **Reife:** Entwurf
+- **Einschiebbar:** ja
+- **Tickets:** B-011
+- **Start-Commit:** –
+- **Spec:** Entwurf
+- **Revision:** 1
+- **Freigabe:** –
+
+## Ausgangslage
+
+Das Spiel hat keinen Ton (B-011). Die Gamepad-Testseite kennt kein Audio (geprüft für `gamepad-test.html` und `src/tools/gamepadTest.ts`); Autoplay und Formate auf Edge der Xbox sind unbekannt (B-166). Feedback-Events liefert F3.
+
+## Ziel
+
+Ein Audio-Kern mit Mixer, Entsperren per Geste und Lautstärke je Gerät steht bereit, an dem Effekte (SO2) und Musik (SO4) hängen. Am Ende sichtbar: ein Demo-Ton auf Ereignis am TV, getrennt regelbare Lautstärken, Verhalten im Split-Screen.
+
+## Beteiligte und Zielgruppen
+
+Spieler am TV und Handy; Umsetzung durch Agent; 🧑 hört am TV ab.
+
+## Anforderungen
+
+B-011 › Anforderungen (Lautstärke einstellbar; Soundeffekte und Musik folgen in SO2 und SO4). Sprint-eigen: `src/audio/` mit Mixer (Busse Musik, Effekte, Ambient), Lautstärke je Gerät im `localStorage`, Format gemäß Ergebnis aus B-166 (ogg mit m4a-Fallback), Sound-Atlas (ein Sprite-Sheet statt vieler Requests), Positions-Dämpfung im Split-Screen (jeder hört seinen Bereich, Warnungen global).
+
+## Nicht-Ziele
+
+Katalog und Effekte (SO2, B-167), Hörproben (SO3, B-169), Musik (SO4, B-168), Optionen-Szene (S5, B-146).
+
+## Regeln und Einschränkungen
+
+`src/scenes` zeichnet nur Snapshots und rechnet nichts; Audio reagiert nur auf Events und Snapshots; B nicht belegen; 2 Spieler gleichzeitig. Voraussetzung: B-166 (Messergebnis) und F3 (Feedback-Events).
+
+## Beispiele
+
+Erste Taste am Controller → Audio wird entsperrt, Demo-Ton auf ein Ereignis; Effekte-Lautstärke 0 → Effekte stumm, Musik-Bus unverändert.
+
+## Ausnahme- und Fehlerfälle
+
+Browser blockiert Audio bis zur ersten Eingabe → kein Fehler, Ton startet nach der ersten Taste (B-011). `localStorage` nicht verfügbar → Standardlautstärken, kein Absturz.
+
+## Akzeptanzkriterien
+
+- **AC-01** Der Mixer hat getrennte Busse Musik, Effekte und Ambient mit eigener Lautstärke (B-011/AC-03).
+- **AC-02** Die Lautstärken werden je Gerät im `localStorage` gespeichert und beim Start gelesen (Test).
+- **AC-03** Vor der ersten Eingabe läuft das Spiel ohne Audio-Fehler, nach der ersten Taste startet der Ton (B-011/AC-03, Ausnahmefall; Test oder Beobachtung).
+- **AC-04** Das Audio-Format entspricht dem Ergebnis aus B-166, mit Fallback (Beobachtung am TV).
+- **AC-05** Die Sounds liegen in einem Sound-Atlas, die Zahl der Audio-Requests beim Start ist dokumentiert.
+- **AC-06** Im Split-Screen mit 2 Spielern hört jeder seinen Bereich, Warnungen sind global (Test auf der Dämpfungsfunktion).
+- **AC-07** Mindestens ein Demo-Ereignis löst einen Ton aus (B-011/AC-01, erster Schritt).
+- **AC-08** `task check` ist grün.
+
+## Offene Fragen
+
+- Welche Ereignisse sind „wichtig“ (B-011)? Wird in SO2 mit B-167 geklärt (Q15), blockiert diesen Sprint nicht.
+
+## Sessions
+
+Entwurf. Vor dem Aktivieren jede Session als Datei nach `docs/vorlagen/session.md` schreiben, die Kriterien in Klammern werden ihr Feld `Kriterien`.
+
+- SO1.1 Mixer mit Bussen und Lautstärke je Gerät in `src/audio/` (AC-01, AC-02).
+- SO1.2 Entsperren per Geste, Format nach B-166, Sound-Atlas (AC-03, AC-04, AC-05).
+- SO1.3 Positions-Dämpfung im Split-Screen, Demo-Ereignis (AC-06, AC-07).
+- SO1.4 Review (AC-08).
+
+## Abnahme
+
+–

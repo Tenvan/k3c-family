@@ -3,8 +3,8 @@
 - **Domäne:** CLI
 - **Typ:** Idee
 - **Prio:** mittel
-- **Status:** offen
-- **Sprint:** –
+- **Status:** eingeplant
+- **Sprint:** GR3
 - **Erstellt:** 2026-09-29
 - **Spec:** Entwurf
 - **Revision:** 1

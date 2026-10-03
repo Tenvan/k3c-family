@@ -10,19 +10,19 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 |---|---|---|---|---|---|---|
 | [B-006](B-006-xbox-gamepad-test.md) | PLAT | Frage | hoch | eingeplant | X1 | Gamepad-Test auf der Xbox ist ausgewertet |
 | [B-007](B-007-skill-baum.md) | SIM | Idee | hoch | offen | – | Skill-Baum mit Tank und Zauberer ist spielbar |
-| [B-008](B-008-spieleabend.md) | REG | Frage | hoch | offen | – | Familie hat einen Spieleabend gespielt und Feedback gegeben |
-| [B-010](B-010-grafik-gebaeude.md) | CLI | Idee | mittel | offen | – | Gebäude, Ressourcen und Hintergrund haben Grafiken |
-| [B-011](B-011-sound.md) | CLI | Idee | mittel | offen | – | Spiel hat Sound und Musik |
-| [B-012](B-012-mine.md) | SIM | Idee | mittel | offen | – | Mine (Tiefe 2) ist vollständig |
-| [B-013](B-013-gegner-elite.md) | SIM | Idee | mittel | offen | – | Restliche Gegner und Elite-KI sind umgesetzt |
-| [B-014](B-014-krieger-elite.md) | SIM | Idee | mittel | offen | – | Krieger und Elite-Truppen sind umgesetzt |
-| [B-015](B-015-gebaeude-werte.md) | REG | Problem | mittel | offen | – | Gebäude-HP und -Kosten sind gebalanced |
+| [B-008](B-008-spieleabend.md) | REG | Frage | hoch | eingeplant | P1 | Familie hat einen Spieleabend gespielt und Feedback gegeben |
+| [B-010](B-010-grafik-gebaeude.md) | CLI | Idee | mittel | eingeplant | GR3 | Gebäude, Ressourcen und Hintergrund haben Grafiken |
+| [B-011](B-011-sound.md) | CLI | Idee | mittel | eingeplant | SO1 | Spiel hat Sound und Musik |
+| [B-012](B-012-mine.md) | SIM | Idee | mittel | eingeplant | W2 | Mine (Tiefe 2) ist vollständig |
+| [B-013](B-013-gegner-elite.md) | SIM | Idee | mittel | eingeplant | K1 | Restliche Gegner und Elite-KI sind umgesetzt |
+| [B-014](B-014-krieger-elite.md) | SIM | Idee | mittel | eingeplant | W4 | Krieger und Elite-Truppen sind umgesetzt |
+| [B-015](B-015-gebaeude-werte.md) | REG | Problem | mittel | eingeplant | BR1 | Gebäude-HP und -Kosten sind gebalanced |
 | [B-019](B-019-test-abdeckung.md) | INF | Idee | niedrig | offen | – | Test-Abdeckung der Engine ist sichtbar |
-| [B-022](B-022-monarch-spielstand.md) | SIM | Idee | hoch | offen | – | Monarch-Level und Skills stehen im Spielstand |
+| [B-022](B-022-monarch-spielstand.md) | SIM | Idee | hoch | eingeplant | S1 | Monarch-Level und Skills stehen im Spielstand |
 | [B-023](B-023-itch-io.md) | INF | Idee | niedrig | offen | – | Spiel ist auf itch.io veröffentlicht |
 | [B-024](B-024-tiefe-3-4.md) | REG | Idee | niedrig | offen | – | Tiefe 3 und 4 sind beschrieben |
 | [B-026](B-026-skill-tasten.md) | PLAT | Frage | hoch | eingeplant | X1 | Skill-Tasten am Controller sind festgelegt |
-| [B-029](B-029-lade-szene.md) | CLI | Idee | mittel | offen | – | Lade-Szene zeigt Fortschritt |
+| [B-029](B-029-lade-szene.md) | CLI | Idee | mittel | eingeplant | GR4 | Lade-Szene zeigt Fortschritt |
 | [B-035](B-035-raspberry-pi.md) | SRV | Idee | hoch | eingeplant | SP11 | Server läuft auf dem Raspberry Pi im Docker |
 | [B-037](B-037-lobby.md) | CLI | Idee | mittel | offen | – | Lobby zeigt Räume und startet Spiele |
 | [B-040](B-040-server-finden.md) | SRV | Idee | niedrig | offen | – | Geräte finden den Server im Heimnetz |
@@ -31,21 +31,77 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-048](B-048-standardbibliothek-in-001.md) | SRV | Frage | niedrig | offen | – | Die Wahl der Go-Standardbibliothek ist dort festgehalten, wo B-001 auf sie verweist |
 | [B-053](B-053-ci-lauf-sp01.md) | INF | Problem | hoch | offen | – | Die CI hat die Prüfungen aus SP01 einmal grün durchlaufen |
 | [B-058](B-058-execution-policy.md) | INF | Frage | niedrig | offen | – | requirements.md empfiehlt keine Sicherheitseinstellung ohne Entscheidung von 🧑 |
-| [B-071](B-071-golden-arm64.md) | INF | Problem | mittel | offen | – | Die Golden-Tests laufen auch auf arm64 grün |
+| [B-071](B-071-golden-arm64.md) | INF | Problem | mittel | eingeplant | F2 | Die Golden-Tests laufen auch auf arm64 grün |
 | [B-075](B-075-golden-spielstand-hub.md) | SIM | Schuld | mittel | offen | – | Der Golden-Spielstand enthält einen gebauten und veränderten Hub |
-| [B-079](B-079-landing-kacheln-lobby.md) | PLAT | Schuld | mittel | offen | – | Die Kacheln der Landingpage passen zum Start über die Lobby |
+| [B-079](B-079-landing-kacheln-lobby.md) | PLAT | Schuld | mittel | eingeplant | F5 | Die Kacheln der Landingpage passen zum Start über die Lobby |
 | [B-080](B-080-dev-tasten-server.md) | SRV | Idee | niedrig | offen | – | Dev-Tasten (Gold, Stufe, Neustart) wirken über den Server |
 | [B-090](B-090-radar.md) | CLI | Idee | mittel | eingeplant | U1 | Ein Radar im HUD zeigt Burg, Portale, Ausgang, Mitspieler und Gegner |
 | [B-092](B-092-level-betrachter.md) | PLAT | Idee | mittel | eingeplant | U3 | Eine Testseite zeigt ein generiertes Level (Seed und Biom) ohne zu spielen |
 | [B-094](B-094-npm-reste.md) | INF | Schuld | niedrig | offen | – | Im Repo liegen keine Alt-Binaries und keine npm-Skripte mehr |
 | [B-095](B-095-start-mit-seed-und-tiefe.md) | SRV | Idee | niedrig | offen | – | Ein neues Spiel startet per URL mit eigenem Seed und gewählter Tiefe |
-| [B-098](B-098-debug-overlay-standard-zurueck.md) | CLI | Schuld | niedrig | offen | – | Das Debug-Overlay ist vor dem Release wieder nur mit ?dev=1 verfügbar |
-| [B-099](B-099-balancing-tester.md) | SIM | Idee | mittel | offen | – | Ein automatischer Balancing-Tester prüft Regeln und Werte gegen messbare Ziele |
-| [B-102](B-102-siegvarianten-niederlage.md) | SIM | Idee | mittel | offen | – | Siegvarianten und Niederlage-Modi der Raum-Optionen sind umgesetzt |
-| [B-103](B-103-inseln-bosse.md) | SIM | Idee | mittel | offen | – | Inseln mit Endboss und gemeinsamem Inselwechsel sind spielbar |
-| [B-105](B-105-anlegen-dialog-optionen.md) | CLI | Idee | mittel | offen | – | Der Anlegen-Dialog der Lobby wählt Grad, Ziel und Niederlage-Modus |
-| [B-106](B-106-kamera-je-stufe.md) | CLI | Idee | hoch | offen | – | Jeder Spieler sieht seine Stufe, auch wenn die Spieler in verschiedenen Stufen sind |
-| [B-107](B-107-debug-panel-gradwechsel.md) | CLI | Idee | mittel | offen | – | Ein Debug-Panel im Dev-Mode wechselt den Schwierigkeitsgrad und weitere Optionen |
+| [B-098](B-098-debug-overlay-standard-zurueck.md) | CLI | Schuld | niedrig | eingeplant | K5 | Das Debug-Overlay ist vor dem Release wieder nur mit ?dev=1 verfügbar |
+| [B-099](B-099-balancing-tester.md) | SIM | Idee | mittel | eingeplant | BAL1 | Ein automatischer Balancing-Tester prüft Regeln und Werte gegen messbare Ziele |
+| [B-102](B-102-siegvarianten-niederlage.md) | SIM | Idee | mittel | eingeplant | K2 | Siegvarianten und Niederlage-Modi der Raum-Optionen sind umgesetzt |
+| [B-103](B-103-inseln-bosse.md) | SIM | Idee | mittel | eingeplant | K2 | Inseln mit Endboss und gemeinsamem Inselwechsel sind spielbar |
+| [B-105](B-105-anlegen-dialog-optionen.md) | CLI | Idee | mittel | eingeplant | K5 | Der Anlegen-Dialog der Lobby wählt Grad, Ziel und Niederlage-Modus |
+| [B-106](B-106-kamera-je-stufe.md) | CLI | Idee | hoch | eingeplant | S4 | Jeder Spieler sieht seine Stufe, auch wenn die Spieler in verschiedenen Stufen sind |
+| [B-107](B-107-debug-panel-gradwechsel.md) | CLI | Idee | mittel | eingeplant | K5 | Ein Debug-Panel im Dev-Mode wechselt den Schwierigkeitsgrad und weitere Optionen |
+| [B-112](B-112-hub-ausbau-mauerstufen.md) | SIM | Idee | hoch | eingeplant | W1 | Der Hub wird in fünf Stufen ausgebaut, Mauern und Türme haben fünf Materialstufen |
+| [B-114](B-114-plantage-adern.md) | SIM | Idee | hoch | eingeplant | W2 | Farm-Plantage lässt Holz nachwachsen, Adern liefern Stein bis Kristall unendlich mit Abbaurate |
+| [B-115](B-115-stufen-breite-eisen-kristall.md) | SIM | Idee | mittel | eingeplant | W2 | Die Stufen sind nach unten schmaler und dichter, Eisenstollen und Kristallhöhle sind als Stufen angelegt |
+| [B-116](B-116-gebaeude-wirkungen.md) | SIM | Idee | mittel | eingeplant | W3 | Tor, Kaserne, Taverne, Heilplatz, Schmiede, Rüstkammer und Zaubertum wirken im Spiel |
+| [B-117](B-117-anzeige-bau-lager.md) | CLI | Idee | mittel | eingeplant | W6 | Der Client zeigt Wartezeit, Lagerstand, Hub-Stufe, Adern und Plantage |
+| [B-118](B-118-monarch-schlag-pool.md) | SIM | Idee | hoch | eingeplant | S1 | Der Monarch schlägt zu, Skill-Punkte kommen aus einem Fund-Pool und jeder Spieler verteilt sie für sich |
+| [B-119](B-119-skills-tank-zauberer-heiler.md) | SIM | Idee | hoch | eingeplant | S1 | Die Skills von Tank, Zauberer und Heiler wirken in der Simulation |
+| [B-120](B-120-wiederbeleben.md) | SIM | Idee | mittel | eingeplant | W4 | Gefallene Monarchen bleiben liegen, Mitspieler beleben sie wieder, sonst Respawn nach 15 s |
+| [B-121](B-121-berufe-haendler.md) | SIM | Idee | mittel | eingeplant | W4 | Bauern haben Berufe (Bergmann, Baumeister, Handwerker), und ein Händler tauscht Material gegen Gold |
+| [B-122](B-122-elite-ruestung-limit-heilung.md) | SIM | Idee | mittel | eingeplant | W4 | Elite-Upgrades, Rüstung, Truppen-Limit je Hub und Heilung der Truppen sind umgesetzt |
+| [B-123](B-123-protokoll-skills-aktionen.md) | SRV | Idee | hoch | eingeplant | S2 | Das Protokoll kennt Schlag, Skills, Pool, Berufe und die gültigen Aktionen je Spieler |
+| [B-124](B-124-skill-menue-tasten.md) | CLI | Idee | hoch | eingeplant | S3 | Der Client hat Schlag, Skill-Slots, Skill-Menü und die Tasten für Controller, Tastatur und Touch |
+| [B-125](B-125-aktionen-overlay.md) | CLI | Idee | hoch | eingeplant | S3 | Gültige Aktionen erscheinen überall in der Welt als Overlay am Ort |
+| [B-126](B-126-buerger-ui.md) | CLI | Idee | mittel | eingeplant | W6 | Der Client zeigt Berufe, Ausbildung, Händler, Truppen-Limit und Heilung |
+| [B-128](B-128-traits-kiting-angriffsrate.md) | SIM | Idee | mittel | eingeplant | K1 | Die Gegner-Traits aoe, swarm, phases und Kiting wirken, die Angriffsrate steht je Gegner in den Daten |
+| [B-129](B-129-neue-gegner-pools.md) | SIM | Idee | mittel | eingeplant | K1 | Eisenstollen und Kristallhöhle haben ihre Gegner und Pools |
+| [B-130](B-130-bosse.md) | SIM | Idee | hoch | eingeplant | K2 | Minibosse und Endboss sind spielbar |
+| [B-131](B-131-events.md) | SIM | Idee | niedrig | eingeplant | K3 | Vollmond, Blutmond und Händler-Überfall sind als Events umgesetzt |
+| [B-132](B-132-anzeige-bosse-events.md) | CLI | Idee | mittel | eingeplant | K5 | Der Client zeigt Gegner-Fähigkeiten, Bosse, Phasen und Events |
+| [B-134](B-134-zielkorridore.md) | REG | Idee | hoch | eingeplant | F1 | Jede Kennzahl des Spiels hat einen Zielkorridor als Zahl |
+| [B-135](B-135-pause-im-raum.md) | REG | Frage | hoch | eingeplant | F1 | Pause im gemeinsamen Raum ist als Regel festgelegt |
+| [B-136](B-136-mindest-schriftgroesse.md) | REG | Frage | mittel | eingeplant | F1 | Die Mindest-Schriftgröße je Split-Viertel ist festgelegt |
+| [B-137](B-137-golden-ablauf-migration.md) | INF | Idee | hoch | eingeplant | F2 | Golden-Daten und Spielstand-Formate haben einen festen Änderungsablauf |
+| [B-138](B-138-determinismus-pruefung.md) | INF | Schuld | mittel | eingeplant | F2 | Determinismus der Simulation wird gegen Map-Reihenfolge und langsame Ticks geprüft |
+| [B-139](B-139-feedback-events-sim.md) | SIM | Idee | hoch | eingeplant | F3 | Die Simulation meldet Feedback-Ereignisse für Treffer, Münzen, Schläge und Tod |
+| [B-140](B-140-feedback-events-protokoll.md) | SRV | Idee | hoch | eingeplant | F4 | Feedback-Ereignisse laufen im Protokoll mit gemessener Bandbreite zum Client |
+| [B-141](B-141-doku-drift-version.md) | INF | Schuld | mittel | eingeplant | F5 | Doku und CLAUDE.md stimmen mit dem Code überein, die Version ist sichtbar |
+| [B-142](B-142-pi-betrieb-backup-rotation.md) | SRV | Idee | hoch | eingeplant | F4 | Spielstände werden außerhalb des Pi gesichert, Berichte und Logs rotieren |
+| [B-143](B-143-endpunkte-heimnetz-absichern.md) | SRV | Problem | mittel | eingeplant | F4 | Restore-, Save- und Report-Endpunkte sind im Heimnetz abgesichert |
+| [B-144](B-144-verbindungsverlust-latenz.md) | REG | Frage | mittel | eingeplant | F1 | Verbindungsverlust und Eingabe-Latenz haben eine Regel mit Zahlen |
+| [B-145](B-145-sprache-nur-deutsch.md) | REG | Frage | niedrig | eingeplant | F1 | Das Spiel bleibt dauerhaft deutschsprachig, oder die Lokalisierung ist geplant |
+| [B-146](B-146-optionen-pause-szene.md) | CLI | Idee | hoch | eingeplant | S5 | Der Client hat eine Optionen- und Pause-Szene mit getrennter Lautstärke und Barrierefreiheit |
+| [B-147](B-147-speichern-verlassen.md) | SRV | Idee | mittel | eingeplant | S2 | Der Server speichert beim Verlassen und wenn das letzte Gerät getrennt ist, der Spielstand zeigt seinen Speicherstand |
+| [B-148](B-148-onboarding-erste-nacht.md) | CLI | Idee | hoch | eingeplant | S6 | Die erste Nacht wird mit kontextuellen Hinweisen geführt, der Freundlich-Grad kostet keinen Fortschritt |
+| [B-149](B-149-controller-glyphen.md) | CLI | Idee | mittel | eingeplant | S6 | Hinweise zeigen Controller-Glyphen statt Tasten-Text |
+| [B-150](B-150-spielmetrik-report.md) | SRV | Idee | mittel | eingeplant | S2 | Der Server schreibt je Sitzung einen Spielmetrik-Report nach reports/ |
+| [B-151](B-151-spieleabend-fragebogen.md) | REG | Idee | mittel | eingeplant | P1 | Der Spieleabend hat einen kindgerechten Fragebogen und eine Playtest-Vorlage |
+| [B-152](B-152-reittiere-mechanik.md) | SIM | Idee | niedrig | offen | – | Reittiere haben eine Mechanik, bisher gibt es nur die Grafiken |
+| [B-153](B-153-protokoll-berufe-haendler-lager-hub.md) | SRV | Idee | hoch | eingeplant | W5 | Das Protokoll kennt Berufe, Händler, Lagerstand, Hub-Stufe und Wartegrund |
+| [B-154](B-154-protokoll-bosse-events-inselwechsel.md) | SRV | Idee | hoch | eingeplant | K4 | Das Protokoll kennt Bosse, Phasen, Events und den Inselwechsel |
+| [B-155](B-155-balancing-runde-wirtschaft.md) | REG | Idee | hoch | eingeplant | BR1 | Die Wirtschaft ist in einer Balancing-Runde gegen die Zielkorridore abgestimmt |
+| [B-156](B-156-balancing-runde-kampf-bosse.md) | REG | Idee | hoch | eingeplant | BR2 | Kampf, Gegner und Bosse sind in einer Balancing-Runde gegen die Zielkorridore abgestimmt |
+| [B-157](B-157-zielkorridor-pruefung.md) | SIM | Idee | mittel | eingeplant | BAL2 | Der Balancing-Tester prüft Zielkorridore und meldet Pass oder Fail je Kennzahl |
+| [B-158](B-158-bot-profile-sensitivitaet.md) | SIM | Idee | mittel | eingeplant | BAL3 | Der Tester kennt weitere Bot-Profile, Sensitivitäts-Läufe und Kurven je Schwierigkeitsgrad |
+| [B-159](B-159-replay-repro-format.md) | SIM | Idee | mittel | eingeplant | BAL1 | Ein Lauf ist als Datei aus Seed und Eingaben wiederholbar |
+| [B-160](B-160-abgleich-spielmetrik-simulator.md) | REG | Idee | mittel | eingeplant | BAL4 | Spielmetrik echter Abende und Simulatorwerte sind abgeglichen |
+| [B-161](B-161-grafik-zuordnungstabelle.md) | CLI | Idee | hoch | eingeplant | GR1 | Jedes Spielobjekt hat eine Zuordnung zu Asset und Lizenz oder eine dokumentierte Lücke |
+| [B-162](B-162-grafik-suche-luecken.md) | CLI | Frage | mittel | eingeplant | GR2 | Für die Grafik-Lücken liegen Kandidaten mit Vorschau, Lizenz und Stilbewertung vor |
+| [B-163](B-163-atlas-build-ladezeit.md) | INF | Idee | mittel | eingeplant | GR4 | Die Spiel-Grafiken kommen aus einem Atlas, der Kaltstart hat ein Zeitbudget |
+| [B-164](B-164-juice-treffer-screenshake.md) | CLI | Idee | mittel | eingeplant | GR5 | Treffer, Münzen und Bauen haben sichtbare Rückmeldung, Screenshake und Blitze sind abschaltbar |
+| [B-165](B-165-credits-seite.md) | PLAT | Idee | mittel | eingeplant | GR6 | Eine Credits-Seite entsteht aus den CREDITS-Dateien, ein Test prüft die Vollständigkeit |
+| [B-166](B-166-audio-autoplay-formate-xbox.md) | PLAT | Frage | hoch | offen | – | Audio-Autoplay und Formate auf Edge der Xbox sind geprüft |
+| [B-167](B-167-sfx-katalog.md) | CLI | Idee | mittel | eingeplant | SO2 | Jedes wichtige Ereignis hat einen Sound mit Quelle und Lizenz |
+| [B-168](B-168-musik-je-zustand.md) | CLI | Idee | mittel | eingeplant | SO4 | Die Musik wechselt je Spielzustand mit Crossfade |
+| [B-169](B-169-hoerprobenseite-soundtest.md) | PLAT | Idee | mittel | eingeplant | SO3 | Eine Hörprobenseite spielt Kandidaten für Musik und Effekte ab |
+| [B-170](B-170-release-checkliste.md) | INF | Idee | hoch | eingeplant | RL1 | Eine Release-Checkliste macht jeden Release prüfbar |
 
 ## Archiv
 
@@ -131,22 +187,3 @@ Zeile in diesen Abschnitt.
 | [B-113](archiv/B-113-material-lager.md) | SIM | Idee | hoch | erledigt | SP13 | Fünf Materialien, Lager-Maximum und Tragen zum Lager sind umgesetzt |
 | [B-133](archiv/B-133-raum-auf-insel.md) | SRV | Idee | hoch | erledigt | SP14 | Der Raum rechnet mit einer Insel statt mit einer Kampagne |
 | [B-104](archiv/B-104-protokoll-stufe-und-optionen.md) | SRV | Idee | hoch | erledigt | SP14 | Das Protokoll kennt die Stufe je Spieler und die Raum-Optionen |
-| [B-112](B-112-hub-ausbau-mauerstufen.md) | SIM | Idee | hoch | offen | – | Der Hub wird in fünf Stufen ausgebaut, Mauern und Türme haben fünf Materialstufen |
-| [B-114](B-114-plantage-adern.md) | SIM | Idee | hoch | offen | – | Farm-Plantage lässt Holz nachwachsen, Adern liefern Stein bis Kristall unendlich mit Abbaurate |
-| [B-115](B-115-stufen-breite-eisen-kristall.md) | SIM | Idee | mittel | offen | – | Die Stufen sind nach unten schmaler und dichter, Eisenstollen und Kristallhöhle sind als Stufen angelegt |
-| [B-116](B-116-gebaeude-wirkungen.md) | SIM | Idee | mittel | offen | – | Tor, Kaserne, Taverne, Heilplatz, Schmiede, Rüstkammer und Zaubertum wirken im Spiel |
-| [B-117](B-117-anzeige-bau-lager.md) | CLI | Idee | mittel | offen | – | Der Client zeigt Wartezeit, Lagerstand, Hub-Stufe, Adern und Plantage |
-| [B-118](B-118-monarch-schlag-pool.md) | SIM | Idee | hoch | offen | – | Der Monarch schlägt zu, Skill-Punkte kommen aus einem Fund-Pool und jeder Spieler verteilt sie für sich |
-| [B-119](B-119-skills-tank-zauberer-heiler.md) | SIM | Idee | hoch | offen | – | Die Skills von Tank, Zauberer und Heiler wirken in der Simulation |
-| [B-120](B-120-wiederbeleben.md) | SIM | Idee | mittel | offen | – | Gefallene Monarchen bleiben liegen, Mitspieler beleben sie wieder, sonst Respawn nach 15 s |
-| [B-121](B-121-berufe-haendler.md) | SIM | Idee | mittel | offen | – | Bauern haben Berufe (Bergmann, Baumeister, Handwerker), und ein Händler tauscht Material gegen Gold |
-| [B-122](B-122-elite-ruestung-limit-heilung.md) | SIM | Idee | mittel | offen | – | Elite-Upgrades, Rüstung, Truppen-Limit je Hub und Heilung der Truppen sind umgesetzt |
-| [B-123](B-123-protokoll-skills-aktionen.md) | SRV | Idee | hoch | offen | – | Das Protokoll kennt Schlag, Skills, Pool, Berufe und die gültigen Aktionen je Spieler |
-| [B-124](B-124-skill-menue-tasten.md) | CLI | Idee | hoch | offen | – | Der Client hat Schlag, Skill-Slots, Skill-Menü und die Tasten für Controller, Tastatur und Touch |
-| [B-125](B-125-aktionen-overlay.md) | CLI | Idee | hoch | offen | – | Gültige Aktionen erscheinen überall in der Welt als Overlay am Ort |
-| [B-126](B-126-buerger-ui.md) | CLI | Idee | mittel | offen | – | Der Client zeigt Berufe, Ausbildung, Händler, Truppen-Limit und Heilung |
-| [B-128](B-128-traits-kiting-angriffsrate.md) | SIM | Idee | mittel | offen | – | Die Gegner-Traits aoe, swarm, phases und Kiting wirken, die Angriffsrate steht je Gegner in den Daten |
-| [B-129](B-129-neue-gegner-pools.md) | SIM | Idee | mittel | offen | – | Eisenstollen und Kristallhöhle haben ihre Gegner und Pools |
-| [B-130](B-130-bosse.md) | SIM | Idee | hoch | offen | – | Minibosse und Endboss sind spielbar |
-| [B-131](B-131-events.md) | SIM | Idee | niedrig | offen | – | Vollmond, Blutmond und Händler-Überfall sind als Events umgesetzt |
-| [B-132](B-132-anzeige-bosse-events.md) | CLI | Idee | mittel | offen | – | Der Client zeigt Gegner-Fähigkeiten, Bosse, Phasen und Events |
