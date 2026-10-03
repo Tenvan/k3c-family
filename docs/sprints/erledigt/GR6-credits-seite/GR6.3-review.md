@@ -1,6 +1,6 @@
 # GR6.3 · Review und Abnahme des Sprints GR6
 
-- **Status:** in Arbeit
+- **Status:** fertig
 - **Typ:** Review
 - **Agent:** autonom
 - **Branch:** gr6/3-review
@@ -36,9 +36,9 @@ Stil, Optimierung, neue Assets.
 
 ## Fertig, wenn
 
-- [ ] AC-01 bis AC-04 haben einen Nachweis im Ergebnis der jeweiligen Session oder sind mit Grund und Ticket verschoben.
-- [ ] Schwere Befunde sind behoben oder als Ticket angelegt.
-- [ ] `task check` grün; Sprint liegt unter `docs/sprints/erledigt/`.
+- [x] AC-01 bis AC-04 haben einen Nachweis im Ergebnis der jeweiligen Session oder sind mit Grund und Ticket verschoben.
+- [x] Schwere Befunde sind behoben oder als Ticket angelegt.
+- [x] `task check` grün; Sprint liegt unter `docs/sprints/erledigt/`.
 
 ## Prüfen
 
@@ -48,4 +48,9 @@ task check
 
 ## Ergebnis
 
-–
+Review auf dem Sprint-Branch `sprint/gr6` (Diff gegen `origin/develop`, nur `src/tools/`, `lizenzen.html`, `public/sprites/CREDITS.md`).
+
+- **AC-01 bis AC-04** aus den Ergebnissen von GR6.1 und GR6.2 nachgewiesen (Test `src/tools/credits.test.ts`), nichts verschoben; Sichtprüfung am TV angenommen, Validierung offen.
+- Befunde: keine schweren. Namensnennungen vollständig erhalten, Test nicht gelockert, `installPageChrome()` und `pages.ts`-Eintrag vorhanden, keine B-Belegung, keine Seitenwechsel.
+- `task check` grün (672 Tests); keine Go-Änderungen, daher kein `task check:go`.
+- B-165 archiviert, Sprint nach `erledigt/`, Version `v0.7.0` vorgeschlagen (siehe Abnahme).
