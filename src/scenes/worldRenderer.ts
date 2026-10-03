@@ -1,6 +1,7 @@
 import Phaser from 'phaser';
 import { GROUND_Y, PLAYER_COLORS, UNIT_PX } from '../core/constants';
 import { BUILDINGS, TROOPS } from '../model/data';
+import { fontStyle } from './fontRules';
 import { canAfford, hasDepth, isOnTower } from './viewRules';
 import { ENEMY_SPRITES, PLAYER_SPRITES, TROOP_SPRITES, face, makeSprite, playAnim, spriteTop } from './sprites';
 import type { Coin, Enemy, Pickup, Player, Projectile, ResourceNode, Site, Troop, World } from '../model/types';
@@ -14,7 +15,7 @@ import type { Coin, Enemy, Pickup, Player, Projectile, ResourceNode, Site, Troop
 const U = UNIT_PX;
 const G = GROUND_Y;
 const PRICE_TAG_RANGE = 6;
-const TEXT = { fontSize: '22px', color: '#ffffff', stroke: '#000000', strokeThickness: 4, fontStyle: 'bold' };
+const TEXT = { stroke: '#000000', strokeThickness: 4, fontStyle: 'bold' };
 
 const SITE_SIZE: Record<Site['kind'], [number, number]> = {
   wall: [36, 150],
@@ -185,7 +186,7 @@ export class WorldRenderer {
       } else if (e.kind === 'exit') {
         this.put(scene.add.rectangle(ex, G - 90, 160, 180, 0x111111).setStrokeStyle(6, 0x555555));
         const deeper = hasDepth(world.biome.depth + 1);
-        this.put(scene.add.text(ex, G - 210, deeper ? `Tiefe ${world.biome.depth + 1}\nalle hierher` : 'verschüttet', { ...TEXT, align: 'center' }).setOrigin(0.5));
+        this.put(scene.add.text(ex, G - 210, deeper ? `Tiefe ${world.biome.depth + 1}\nalle hierher` : 'verschüttet', { ...TEXT, ...fontStyle('exitSign'), align: 'center' }).setOrigin(0.5));
       } else if (e.kind === 'bush') {
         this.put(scene.add.circle(ex, G - 14, 18, 0x40916c)); // Deko
       } else if (e.kind === 'recruitCamp') {
@@ -226,7 +227,7 @@ export class WorldRenderer {
 
   private createSite(s: Site): View {
     const g = this.scene.add.graphics();
-    const label = this.scene.add.text(0, 0, '', { ...TEXT, fontSize: '20px' }).setOrigin(0.5, 1);
+    const label = this.scene.add.text(0, 0, '', { ...TEXT, ...fontStyle('priceTag') }).setOrigin(0.5, 1);
     return this.scene.add.container(s.x * U, G, [g, label]).setDepth(2);
   }
 
@@ -362,7 +363,7 @@ export class WorldRenderer {
     // Farbiger Punkt unter den Füßen: welcher Monarch gehört zu wem
     const color = PLAYER_COLORS[p.index % PLAYER_COLORS.length];
     const marker = s.add.ellipse(0, 4, 56, 12, color, 0.8);
-    const purse = s.add.text(0, top - 10, '', { ...TEXT, color: '#ffd166', fontSize: '26px' }).setOrigin(0.5, 1);
+    const purse = s.add.text(0, top - 10, '', { ...TEXT, ...fontStyle('purse') }).setOrigin(0.5, 1);
     return s.add.container(p.x * U, G, [marker, sprite, purse, ...bar(s, top - 50, 50, 0x52b788)]).setDepth(10);
   }
 

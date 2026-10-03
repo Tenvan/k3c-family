@@ -7,10 +7,11 @@ import { SHARED_LINE_HEIGHT, sharedAnchor } from './layout';
 import { debugEnabled } from './debugOverlay';
 import { DebugOverlay } from './debugOverlayView';
 import { gameNotice } from './lobbyLogic';
-import { RadarLayer } from './radarView';
+import { FONTS, fontStyle } from './fontRules';
+import { RadarLayer, type RadarCell } from './radarView';
 import { RESOURCE_NAMES } from './worldRenderer';
 
-const STYLE = { fontSize: '28px', color: '#ffffff', stroke: '#000000', strokeThickness: 6, fontStyle: 'bold' };
+const STYLE = { stroke: '#000000', strokeThickness: 6, fontStyle: 'bold' };
 const BANNER_SECONDS = 2.8;
 /** Hinweise passend zum zuletzt benutzten Eingabegerät */
 const CONTROL_HINTS = {
@@ -51,20 +52,21 @@ export class HudScene extends Phaser.Scene {
     this.bannerLeft = 0;
     this.radar = new RadarLayer(this);
 
-    this.shared = this.add.text(GAME_WIDTH - 24, 16, '', STYLE).setOrigin(1, 0);
-    this.clock = this.add.text(GAME_WIDTH - 24, 56, '', STYLE).setOrigin(1, 0);
-    this.fight = this.add.text(GAME_WIDTH - 24, 96, '', { ...STYLE, color: '#ff8fa3' }).setOrigin(1, 0);
+    const shared = { ...STYLE, ...fontStyle('shared') };
+    this.shared = this.add.text(GAME_WIDTH - 24, 16, '', shared).setOrigin(1, 0);
+    this.clock = this.add.text(GAME_WIDTH - 24, 56, '', shared).setOrigin(1, 0);
+    this.fight = this.add.text(GAME_WIDTH - 24, 96, '', { ...STYLE, ...fontStyle('fight') }).setOrigin(1, 0);
     this.banner = this.add
-      .text(GAME_WIDTH / 2, GAME_HEIGHT / 2, '', { ...STYLE, fontSize: '56px', strokeThickness: 10, align: 'center' })
+      .text(GAME_WIDTH / 2, GAME_HEIGHT / 2, '', { ...STYLE, ...fontStyle('banner'), strokeThickness: 10, align: 'center' })
       .setOrigin(0.5)
       .setVisible(false);
     this.joinHint = this.add
-      .text(GAME_WIDTH / 2, GAME_HEIGHT / 2, 'Drücke  A  (Controller), Leertaste oder die Münz-Taste zum Beitreten', { ...STYLE, fontSize: '44px' })
+      .text(GAME_WIDTH / 2, GAME_HEIGHT / 2, 'Drücke  A  (Controller), Leertaste oder die Münz-Taste zum Beitreten', { ...STYLE, ...fontStyle('joinCenter') })
       .setOrigin(0.5);
     this.debug = debugEnabled(location.search) ? new DebugOverlay(this) : null;
-    this.controlsHint = this.add.text(GAME_WIDTH - 20, GAME_HEIGHT - 40, '', { ...STYLE, fontSize: '20px', strokeThickness: 4 }).setOrigin(1, 0);
-    this.info = this.add.text(20, 16, '', { ...STYLE, fontSize: '20px', strokeThickness: 4 });
-    this.travel = this.add.text(GAME_WIDTH / 2, GAME_HEIGHT - 170, '', { ...STYLE, fontSize: '40px', color: '#ffd166' }).setOrigin(0.5);
+    this.controlsHint = this.add.text(GAME_WIDTH - 20, GAME_HEIGHT - 40, '', { ...STYLE, ...fontStyle('controlsHint'), strokeThickness: 4 }).setOrigin(1, 0);
+    this.info = this.add.text(20, 16, '', { ...STYLE, ...fontStyle('roomInfo'), strokeThickness: 4 });
+    this.travel = this.add.text(GAME_WIDTH / 2, GAME_HEIGHT - 170, '', { ...STYLE, ...fontStyle('travel') }).setOrigin(0.5);
   }
 
   update(_time: number, deltaMs: number): void {
@@ -73,9 +75,10 @@ export class HudScene extends Phaser.Scene {
     this.debug?.update(game.client, world ?? null);
     this.showHints(game, world);
     if (!world) return;
-    this.showCells(game, world.players);
-    this.radar.draw(game.hudCells(), world);
-    this.showWorld(world);
+    const cells = game.hudCells();
+    this.showCells(cells);
+    this.radar.draw(cells);
+    this.showWorld(cells.find((c) => c.cell.kind === 'player' && c.world)?.world ?? world); // gemeinsamer Block: Stufe der ersten Zelle dieses Geräts
     this.placeShared(game);
     this.showBanner(game, deltaMs);
   }
@@ -85,7 +88,7 @@ export class HudScene extends Phaser.Scene {
     const client = game.client;
     const away = gameNotice(client);
     if (away) {
-      this.joinHint.setText(away).setVisible(true).setY(GAME_HEIGHT / 2 + 120).setFontSize(44); // Verbindung weg: Hinweis statt Standbild
+      this.joinHint.setText(away).setVisible(true).setY(GAME_HEIGHT / 2 + 120).setFontSize(FONTS.joinCenter.px); // Verbindung weg: Hinweis statt Standbild
       return;
     }
     const waiting = !world || game.waitingForJoin();
@@ -93,7 +96,7 @@ export class HudScene extends Phaser.Scene {
     this.joinHint.setText(world ? JOIN_HINTS[game.lastDevice] : (client.notice ?? 'Verbinde …'));
     this.joinHint.setVisible(waiting || client.you.length < (client.limits?.slotsPerDevice ?? 4));
     this.joinHint.setY(waiting ? GAME_HEIGHT / 2 + 120 : GAME_HEIGHT - 100);
-    this.joinHint.setFontSize(waiting ? 44 : 26);
+    this.joinHint.setFontSize(waiting ? FONTS.joinCenter.px : FONTS.joinCorner.px);
     const taken = client.monarchs.filter((m) => m !== 'free').length;
     this.info.setText(client.roomCode ? `Raum ${client.roomCode} · ${client.roomName} · ${taken} Spieler` : '').setVisible(!!client.roomCode).setY(60);
   }
@@ -131,17 +134,24 @@ export class HudScene extends Phaser.Scene {
     this.bannerLeft = this.bannerQueue.length > 2 ? BANNER_SECONDS / 2 : BANNER_SECONDS;
   }
 
-  /** Spielerwerte je Feld. */
-  private showCells(game: GameScene, players: World['players']): void {
+  /** Spielerwerte je Feld, aus der Welt der Stufe dieses Feldes; Feld ohne geladene Stufe zeigt nichts. */
+  private showCells(cells: readonly RadarCell[]): void {
+    const compact = cells.some((c) => c.cell.w < GAME_WIDTH); // 3 bis 4 Spieler: Text kürzen statt verkleinern (Q03)
+    this.playerLabels.forEach((t) => t.setVisible(false));
     let label = 0;
-    for (const { cell, monarch } of game.hudCells()) {
-      const p = monarch === null ? undefined : players.find((q) => q.index === monarch);
-      if (!p) continue;
-      const text = (this.playerLabels[label] ??= this.add.text(0, 0, '', STYLE));
+    for (const { cell, monarch, world } of cells) {
+      const p = monarch === null ? undefined : world?.players.find((q) => q.index === monarch);
+      if (!p || !world) continue;
+      const text = (this.playerLabels[label] ??= this.add.text(0, 0, '', { ...STYLE, ...fontStyle('playerValue') }));
       label += 1;
-      text.setPosition(cell.x + 24, cell.y + 16);
+      text.setVisible(true).setPosition(cell.x + 24, cell.y + 16);
       const status = p.respawnIn > 0 ? `gefallen · zurück in ${Math.ceil(p.respawnIn)} s` : `HP ${Math.ceil(p.hp)}`;
-      text.setText(`P${p.index + 1}  ·  Gold ${p.gold}/${ECONOMY.purse.maxGold}  ·  ${status}`);
+      const stage = world.biome.name;
+      text.setText(
+        compact
+          ? `P${p.index + 1} · ${p.gold}/${ECONOMY.purse.maxGold} · ${p.respawnIn > 0 ? `${Math.ceil(p.respawnIn)} s` : status} · ${stage}`
+          : `P${p.index + 1}  ·  Gold ${p.gold}/${ECONOMY.purse.maxGold}  ·  ${status}  ·  ${stage}`,
+      );
     }
   }
 }

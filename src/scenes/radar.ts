@@ -59,6 +59,18 @@ export function radarMarkers(world: RadarWorld, view: RadarView, self: number | 
   return { markers, view: { from: at(view.fromUnits), to: at(view.fromUnits + view.spanUnits) } };
 }
 
+/** Ein Feld des Radars: Monarch des Feldes, Kamera-Ausschnitt und die Welt der Stufe dieses Feldes (`null` = Stufe noch nicht geladen) */
+export interface RadarFeed {
+  monarch: number | null;
+  view: RadarView | null;
+  world: RadarWorld | null;
+}
+
+/** Modell eines Feldes aus der Welt seiner eigenen Stufe (S4.2); ohne Kamera-Ausschnitt oder ohne geladene Welt: `null`, kein Radar. */
+export function cellRadar(feed: RadarFeed): RadarModel | null {
+  return feed.view && feed.world ? radarMarkers(feed.world, feed.view, feed.monarch) : null;
+}
+
 export interface RadarRect {
   x: number;
   y: number;
