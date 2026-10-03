@@ -60,7 +60,7 @@ Mindest-Schriftgröße je Viertel: 🧑, `docs/fragenkatalog.md Q03`, Regel in B
 | S4.1 | `S4.1-zelle-stufe.md` | Umsetzung | autonom | fertig |
 | S4.2 | `S4.2-radar-hud-schrift.md` | Umsetzung | autonom | fertig |
 | S4.3 | `S4.3-abnahme-geraet.md` | Workshop | Mensch | offen |
-| S4.4 | `S4.4-review.md` | Review | autonom | offen |
+| S4.4 | `S4.4-review.md` | Review | autonom | in Arbeit |
 
 ## Abnahme
 
