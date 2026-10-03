@@ -8,7 +8,6 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 
 | Nr. | Domäne | Typ | Prio | Status | Sprint | Titel |
 |---|---|---|---|---|---|---|
-| [B-006](B-006-xbox-gamepad-test.md) | PLAT | Frage | hoch | eingeplant | X1 | Gamepad-Test auf der Xbox ist ausgewertet |
 | [B-007](B-007-skill-baum.md) | SIM | Idee | hoch | offen | – | Skill-Baum mit Tank und Zauberer ist spielbar |
 | [B-008](B-008-spieleabend.md) | REG | Frage | hoch | eingeplant | P1 | Familie hat einen Spieleabend gespielt und Feedback gegeben |
 | [B-010](B-010-grafik-gebaeude.md) | CLI | Idee | mittel | eingeplant | GR3 | Gebäude, Ressourcen und Hintergrund haben Grafiken |
@@ -21,7 +20,6 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-022](B-022-monarch-spielstand.md) | SIM | Idee | hoch | eingeplant | S1 | Monarch-Level und Skills stehen im Spielstand |
 | [B-023](B-023-itch-io.md) | INF | Idee | niedrig | offen | – | Spiel ist auf itch.io veröffentlicht |
 | [B-024](B-024-tiefe-3-4.md) | REG | Idee | niedrig | offen | – | Tiefe 3 und 4 sind beschrieben |
-| [B-026](B-026-skill-tasten.md) | PLAT | Frage | hoch | eingeplant | X1 | Skill-Tasten am Controller sind festgelegt |
 | [B-029](B-029-lade-szene.md) | CLI | Idee | mittel | eingeplant | GR4 | Lade-Szene zeigt Fortschritt |
 | [B-037](B-037-lobby.md) | CLI | Idee | mittel | offen | – | Lobby zeigt Räume und startet Spiele |
 | [B-040](B-040-server-finden.md) | SRV | Idee | niedrig | offen | – | Geräte finden den Server im Heimnetz |
@@ -87,7 +85,6 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-163](B-163-atlas-build-ladezeit.md) | INF | Idee | mittel | eingeplant | GR4 | Die Spiel-Grafiken kommen aus einem Atlas, der Kaltstart hat ein Zeitbudget |
 | [B-164](B-164-juice-treffer-screenshake.md) | CLI | Idee | mittel | eingeplant | GR5 | Treffer, Münzen und Bauen haben sichtbare Rückmeldung, Screenshake und Blitze sind abschaltbar |
 | [B-165](B-165-credits-seite.md) | PLAT | Idee | mittel | eingeplant | GR6 | Eine Credits-Seite entsteht aus den CREDITS-Dateien, ein Test prüft die Vollständigkeit |
-| [B-166](B-166-audio-autoplay-formate-xbox.md) | PLAT | Frage | hoch | eingeplant | X1 | Audio-Autoplay und Formate auf Edge der Xbox sind geprüft |
 | [B-167](B-167-sfx-katalog.md) | CLI | Idee | mittel | eingeplant | SO2 | Jedes wichtige Ereignis hat einen Sound mit Quelle und Lizenz |
 | [B-168](B-168-musik-je-zustand.md) | CLI | Idee | mittel | eingeplant | SO4 | Die Musik wechselt je Spielzustand mit Crossfade |
 | [B-169](B-169-hoerprobenseite-soundtest.md) | PLAT | Idee | mittel | eingeplant | SO3 | Eine Hörprobenseite spielt Kandidaten für Musik und Effekte ab |
@@ -108,6 +105,8 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-191](B-191-debug-overlay-links-unten.md) | CLI | Problem | mittel | offen | – | Debug-Overlay und Aktionsliste verdecken das HUD nicht |
 | [B-192](B-192-aktionsliste-schliesst-mit-oe.md) | CLI | Problem | hoch | offen | – | Die Dev-Aktionsliste schließt sich mit Ö |
 | [B-193](B-193-figuren-luecken-suche.md) | CLI | Idee | mittel | offen | – | Figuren-Lücken unter public/sprites/ haben Kandidaten und eine Auswahl |
+| [B-194](B-194-splitscreen-ruckelt-xbox.md) | CLI | Problem | hoch | offen | – | Der Split-Screen läuft auf der Xbox flüssig |
+| [B-195](B-195-debug-overlay-xbox.md) | PLAT | Problem | mittel | offen | – | Das Debug-Overlay lässt sich auf der Xbox öffnen |
 
 ## Archiv
 
@@ -210,3 +209,6 @@ Zeile in diesen Abschnitt.
 | [B-139](archiv/B-139-feedback-events-sim.md) | SIM | Idee | hoch | erledigt | F3 | Die Simulation meldet Feedback-Ereignisse für Treffer, Münzen, Schläge und Tod |
 | [B-178](archiv/B-178-dev-aktionen-gold-material-zeitraffer.md) | SRV | Idee | hoch | erledigt | DBG1 | Im Dev-Mode lassen sich Gold und Material droppen und die Zeit beschleunigen |
 | [B-179](archiv/B-179-debug-overlay-aktionen.md) | CLI | Idee | hoch | erledigt | DBG2 | Das Debug-Overlay bedient Gold, Material und Zeitraffer |
+| [B-006](archiv/B-006-xbox-gamepad-test.md) | PLAT | Frage | hoch | erledigt | X1 | Gamepad-Test auf der Xbox ist ausgewertet |
+| [B-026](archiv/B-026-skill-tasten.md) | PLAT | Frage | hoch | erledigt | X1 | Skill-Tasten am Controller sind festgelegt |
+| [B-166](archiv/B-166-audio-autoplay-formate-xbox.md) | PLAT | Frage | hoch | erledigt | X1 | Audio-Autoplay und Formate auf Edge der Xbox sind geprüft |
