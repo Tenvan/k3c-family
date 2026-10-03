@@ -40,7 +40,6 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-102](B-102-siegvarianten-niederlage.md) | SIM | Idee | mittel | eingeplant | K2 | Siegvarianten und Niederlage-Modi der Raum-Optionen sind umgesetzt |
 | [B-103](B-103-inseln-bosse.md) | SIM | Idee | mittel | eingeplant | K2 | Inseln mit Endboss und gemeinsamem Inselwechsel sind spielbar |
 | [B-105](B-105-anlegen-dialog-optionen.md) | CLI | Idee | mittel | eingeplant | K5 | Der Anlegen-Dialog der Lobby wählt Grad, Ziel und Niederlage-Modus |
-| [B-106](B-106-kamera-je-stufe.md) | CLI | Idee | hoch | eingeplant | S4 | Jeder Spieler sieht seine Stufe, auch wenn die Spieler in verschiedenen Stufen sind |
 | [B-107](B-107-debug-panel-gradwechsel.md) | CLI | Idee | mittel | eingeplant | K5 | Ein Debug-Panel im Dev-Mode wechselt den Schwierigkeitsgrad und weitere Optionen |
 | [B-112](B-112-hub-ausbau-mauerstufen.md) | SIM | Idee | hoch | eingeplant | W1 | Der Hub wird in fünf Stufen ausgebaut, Mauern und Türme haben fünf Materialstufen |
 | [B-114](B-114-plantage-adern.md) | SIM | Idee | hoch | eingeplant | W2 | Farm-Plantage lässt Holz nachwachsen, Adern liefern Stein bis Kristall unendlich mit Abbaurate |
@@ -214,3 +213,4 @@ Zeile in diesen Abschnitt.
 | [B-006](archiv/B-006-xbox-gamepad-test.md) | PLAT | Frage | hoch | erledigt | X1 | Gamepad-Test auf der Xbox ist ausgewertet |
 | [B-026](archiv/B-026-skill-tasten.md) | PLAT | Frage | hoch | erledigt | X1 | Skill-Tasten am Controller sind festgelegt |
 | [B-166](archiv/B-166-audio-autoplay-formate-xbox.md) | PLAT | Frage | hoch | erledigt | X1 | Audio-Autoplay und Formate auf Edge der Xbox sind geprüft |
+| [B-106](archiv/B-106-kamera-je-stufe.md) | CLI | Idee | hoch | erledigt | S4 | Jeder Spieler sieht seine Stufe, auch wenn die Spieler in verschiedenen Stufen sind |
