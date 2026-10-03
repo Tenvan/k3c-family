@@ -2,7 +2,7 @@
 
 - **Status:** geplant
 - **Domäne:** SIM
-- **Reife:** Entwurf
+- **Reife:** bereit
 - **Einschiebbar:** ja
 - **Tickets:** B-157
 - **Start-Commit:** –
@@ -58,12 +58,15 @@ Ziel ohne Kennzahl → Ladefehler. Fehlende Baseline → Hinweis. Lauf bricht ab
 
 ## Sessions
 
-Entwurf. Vor dem Aktivieren jede Session als Datei nach `docs/vorlagen/session.md` schreiben, die Kriterien in Klammern werden ihr Feld `Kriterien`.
+| Nr. | Datei | Typ | Agent | Status |
+|---|---|---|---|---|
+| BAL2.1 | `BAL2.1-korridore-bewertung.md` | Umsetzung | autonom | offen |
+| BAL2.2 | `BAL2.2-task-balance-bericht.md` | Umsetzung | autonom | offen |
+| BAL2.3 | `BAL2.3-ci-lauf.md` | Umsetzung | autonom | offen |
+| BAL2.4 | `BAL2.4-review.md` | Review | autonom | offen |
 
-- BAL2.1 Korridor-Daten laden und Bewertung (im Korridor, knapp, verletzt) (AC-01, AC-02).
-- BAL2.2 `task balance`, Bericht JSON und Markdown mit Seeds, Baseline und Regressions-Vergleich (AC-03, AC-04, AC-05).
-- BAL2.3 CI-Lauf mit kleiner Seed-Menge (AC-06).
-- BAL2.4 Review (AC-07).
+Bei `Reife: Entwurf` genügen Stichpunkte mit den Kriterien in Klammern statt Session-Dateien. Vor dem Aktivieren
+wird jede Session als eigene Datei nach `docs/vorlagen/session.md` geschrieben.
 
 ## Abnahme
 
