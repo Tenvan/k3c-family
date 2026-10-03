@@ -5,14 +5,22 @@ import (
 	"errors"
 	"fmt"
 	"io/fs"
+	"log/slog"
 	"os"
 	"path/filepath"
+	"sort"
 	"strings"
 	"time"
 )
 
 // MaxReportBytes ist die Obergrenze eines Testberichts (wie server/reports.mjs).
 const MaxReportBytes = 256 << 10
+
+// MaxReports ist die Zahl der Berichte, die liegen bleiben (B-142): 100 × MaxReportBytes = höchstens 25 MB auf der
+// SD-Karte des Pi, und 100 Testläufe reichen für jeden Vergleich. Ältere Berichte löscht Store vor dem Schreiben.
+const MaxReports = 100
+
+const reportGlob = "gamepad-*.json"
 
 // Reports sind die Testberichte der Gamepad-Testseite unter Dir.
 type Reports struct {
@@ -44,6 +52,11 @@ func (r *Reports) Store(data []byte, remote string) (string, error) {
 	if err := os.MkdirAll(r.Dir, 0o755); err != nil {
 		return "", err
 	}
+	if n, err := r.prune(MaxReports - 1); err != nil {
+		return "", err
+	} else if n > 0 {
+		slog.Info("alte Berichte gelöscht", "ns", "report", "anzahl", n)
+	}
 	base := "gamepad-" + strings.NewReplacer(":", "-", ".", "-").Replace(received)
 	return writeNew(r.Dir, base, out)
 }
@@ -73,8 +86,25 @@ func writeNew(dir, base string, data []byte) (string, error) {
 	return "", fmt.Errorf("%s: zu viele Berichte in derselben Millisekunde", base)
 }
 
+// prune löscht die ältesten Berichte in Dir, bis höchstens keep übrig sind, und meldet, wie viele es waren. Die Ordnung
+// folgt dem Zeitstempel im Dateinamen, nicht der Dateizeit; andere Dateien und Ordner (etwa saves/) bleiben unberührt.
+func (r *Reports) prune(keep int) (int, error) {
+	files, err := filepath.Glob(filepath.Join(r.Dir, reportGlob))
+	if err != nil || len(files) <= keep {
+		return 0, err
+	}
+	sort.Strings(files)
+	old := files[:len(files)-keep]
+	for _, f := range old {
+		if err := os.Remove(f); err != nil && !errors.Is(err, fs.ErrNotExist) {
+			return 0, err
+		}
+	}
+	return len(old), nil
+}
+
 // Count ist die Zahl der gespeicherten Berichte.
 func (r *Reports) Count() int {
-	files, _ := filepath.Glob(filepath.Join(r.Dir, "gamepad-*.json"))
+	files, _ := filepath.Glob(filepath.Join(r.Dir, reportGlob))
 	return len(files)
 }

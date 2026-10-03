@@ -3,6 +3,7 @@ package main
 import (
 	"bytes"
 	"encoding/json"
+	"io"
 	"os"
 	"path/filepath"
 	"strings"
@@ -85,5 +86,27 @@ func TestNichtBeschreibbarerLogOrdner(t *testing.T) {
 	out := stderr.String()
 	if !strings.Contains(out, "JSON-Log nicht geschrieben") || !strings.Contains(out, "weiter") {
 		t.Errorf("stderr: %q", out)
+	}
+}
+
+// B-142/AC-02: Das Client-Log rotiert; über 10 000 Meldungen bleibt jede Generation unter der Grenze, die neueste
+// Meldung steht in k3c-client.jsonl.
+func TestClientLogRotiert(t *testing.T) {
+	dir := t.TempDir()
+	log, closeLog := newNamedLogger(dir, clientLogFile, io.Discard)
+	pad := strings.Repeat("x", 200)
+	for i := range 10000 {
+		log.Info("meldung", "ns", "client", "i", i, "text", pad)
+	}
+	closeLog()
+	for _, file := range []string{clientLogFile, "k3c-client.1.jsonl"} {
+		st, err := os.Stat(filepath.Join(dir, file))
+		if err != nil || st.Size() > maxClientLogBytes {
+			t.Errorf("%s: %v, %v", file, st, err)
+		}
+	}
+	raw, _ := os.ReadFile(filepath.Join(dir, clientLogFile))
+	if !strings.Contains(string(raw), `"i":9999,`) {
+		t.Error("neueste Meldung fehlt in k3c-client.jsonl")
 	}
 }
