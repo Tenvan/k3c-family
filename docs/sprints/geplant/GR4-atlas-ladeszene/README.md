@@ -2,7 +2,7 @@
 
 - **Status:** geplant
 - **Domäne:** INF
-- **Reife:** Entwurf
+- **Reife:** bereit
 - **Einschiebbar:** ja
 - **Tickets:** B-163, B-029
 - **Start-Commit:** –
@@ -56,12 +56,15 @@ keine
 
 ## Sessions
 
-Entwurf. Vor dem Aktivieren jede Session als Datei nach `docs/vorlagen/session.md` schreiben, die Kriterien in Klammern werden ihr Feld `Kriterien`.
+| Nr. | Datei | Typ | Agent | Status |
+|---|---|---|---|---|
+| GR4.1 | `GR4.1-task-atlas.md` | Umsetzung | autonom | offen |
+| GR4.2 | `GR4.2-laden-ladeszene.md` | Umsetzung | autonom | offen |
+| GR4.3 | `GR4.3-messung-xbox.md` | Workshop | Mensch | offen |
+| GR4.4 | `GR4.4-review.md` | Review | autonom | offen |
 
-- GR4.1 `task atlas` mit deterministischer Ausgabe und Einbindung in `task build` (AC-01).
-- GR4.2 Spiel lädt aus Atlanten, Lade-Szene mit Fortschritt und Fehlermeldung (AC-02, AC-03).
-- GR4.3 🧑 Messung auf der Xbox, Budget festlegen (AC-04).
-- GR4.4 Review (AC-05).
+Bei `Reife: Entwurf` genügen Stichpunkte mit den Kriterien in Klammern statt Session-Dateien. Vor dem Aktivieren
+wird jede Session als eigene Datei nach `docs/vorlagen/session.md` geschrieben.
 
 ## Abnahme
 
