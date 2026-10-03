@@ -10,7 +10,7 @@ Reihenfolge in Wellen, Bahnen je Domäne und Zuordnung Mensch/autonom (zwei Acco
 
 | Sprint | Domäne | Thema | Am Ende sichtbar | Ordner |
 |---|---|---|---|---|
-| DBG2 | CLI | Debug-Overlay: Gold, Material, Zeitraffer | Aktionen im Overlay am PC, Handy und Controller | `aktiv/DBG2-debug-overlay-aktionen/` |
+| F3 | SIM | Feedback-Ereignisse in der Simulation | Go-Tests je Ereignistyp, `task check:go` grün, Ereignisse im Ergebnis von `sim_run` (k3c-dev) | `aktiv/F3-feedback-events-sim/` |
 | X1 | PLAT 🧑 | Xbox-Machbarkeit (einschiebbar) | Bericht in `reports/` mit Audio-Ergebnis, Steuerungstabelle und Audio-Ergebnis in `game-design.md` | `aktiv/X1-xbox/` |
 
 ## Offen am Gerät
@@ -21,6 +21,7 @@ Hardware-Sessions (`Agent: Mensch`) aus Sprints, deren Review schon abgeschlosse
 
 | Session | Gerät | Kriterium (angenommen) | Ordner |
 |---|---|---|---|
+| DBG2.3 | PC, Handy, Controller | AC-05: Aktionen mit allen drei Eingaben ausprobiert | `erledigt/DBG2-debug-overlay-aktionen/` |
 
 ## Geplant (in dieser Reihenfolge)
 
@@ -29,16 +30,15 @@ dann über den Go-Server mit mehreren Räumen und gemischten Spielern.
 
 | Sprint | Domäne | Thema | Am Ende sichtbar | Reife | Ordner |
 |---|---|---|---|---|---|
-| F3 | SIM | Feedback-Ereignisse in der Simulation | Go-Tests je Ereignistyp, `task check:go` grün, Ereignisse im Ergebnis von `sim_run` (k3c-dev) | Entwurf | `geplant/F3-feedback-events-sim/` |
 | F4 | SRV | Feedback-Ereignisse im Protokoll und Pi-Betrieb | Benchmark mit Bytes je Tick, README-Abschnitt zum Backup, Test „Restore ohne Berechtigung abgelehnt“ | bereit | `geplant/F4-feedback-events-protokoll-pi/` |
 | F5 | INF | Doku-Drift, Version und Landing-Kacheln | Fußzeile „Server <Version> · Client <Version>“ auf der Landingpage am TV, keine toten Kacheln | bereit | `geplant/F5-doku-version/` |
 | S1 | SIM | Monarch: Schlag, Fund-Pool und Skills | Go-Tests und Golden-Daten grün (Minimum der Phase 1: Schlag plus ein Skill je Klasse) | Entwurf | `geplant/S1-monarch-schlag-skills/` |
 | S2 | SRV | Protokoll für Skills, Speichern beim Verlassen, Spielmetrik | neue Felder in `docs/protocol.md` mit Beispielen unter `testdata/protocol/`, Spielstand nach Trennung mitten in der Nacht, ein Report in `reports/` | bereit | `geplant/S2-protokoll-skills-speichern-metrik/` |
 | LT1 | SRV | Lasttest-Werkzeug | Messlauf am Pi mit Tabelle und Bewertung gegen das Ziel (< 10 ms) | bereit | `geplant/LT1-lasttest-werkzeug/` |
-| S3 | CLI | Skill-Menü, Tasten und Aktionen-Overlay | 🧑 spielt am Gerät Schlag, Skill, Punkte verteilen und liest die Aktionen im Overlay | Entwurf | `geplant/S3-skill-menue-overlay/` |
+| S3 | CLI | Skill-Menü, Tasten und Aktionen-Overlay | 🧑 spielt am Gerät Schlag, Skill, Punkte verteilen und liest die Aktionen im Overlay | bereit | `geplant/S3-skill-menue-overlay/` |
 | S4 | CLI | Kamera je Stufe und Layouts 1–4 | 2 Spieler am selben Gerät in verschiedenen Stufen | Entwurf | `geplant/S4-kamera-layouts/` |
 | S5 | CLI | Optionen- und Pause-Szene | Einstellungen bleiben nach dem Neuladen erhalten | Entwurf | `geplant/S5-optionen-pause/` |
-| S6 | CLI | Onboarding „Erste Nacht geführt“ und Controller-Glyphen | Ein Kind spielt die erste Nacht ohne Erklärung | Entwurf | `geplant/S6-onboarding-glyphen/` |
+| S6 | CLI | Onboarding „Erste Nacht geführt“ und Controller-Glyphen | Ein Kind spielt die erste Nacht ohne Erklärung | bereit | `geplant/S6-onboarding-glyphen/` |
 | S7 | CLI | Monarch auf dem Standard-Reittier | Zwei Spieler im Split-Screen reiten über die Stufe | bereit | `geplant/S7-monarch-reittier/` |
 | P1 | REG 🧑 | Spieleabend 1 | Protokoll und Folge-Tickets | Entwurf | `geplant/P1-spieleabend-1/` |
 | W1 | SIM | Hub-Ausbau und Mauerstufen | `task check:go` grün, Tests für Ausbau, Zerstörung und Reparatur, aktualisierte Golden-Daten | bereit | `geplant/W1-hub-ausbau/` |
@@ -59,20 +59,20 @@ dann über den Go-Server mit mehreren Räumen und gemischten Spielern.
 
 | Sprint | Domäne | Thema | Reife | Ordner |
 |---|---|---|---|---|
-| BAL1 | SIM | Balancing-Tester: Kern und Replay | Entwurf | `geplant/BAL1-balancing-tester-kern/` |
-| BAL2 | SIM | Zielkorridor-Prüfung und `task balance` | Entwurf | `geplant/BAL2-zielkorridor-pruefung/` |
+| BAL1 | SIM | Balancing-Tester: Kern und Replay | bereit | `geplant/BAL1-balancing-tester-kern/` |
+| BAL2 | SIM | Zielkorridor-Prüfung und `task balance` | bereit | `geplant/BAL2-zielkorridor-pruefung/` |
 | BAL3 | SIM | Bot-Profile, Sensitivität und Grad-Kurven | Entwurf | `geplant/BAL3-bot-profile-sensitivitaet/` |
 | BAL4 | REG | Abgleich Spielmetrik und Simulator | Entwurf | `geplant/BAL4-metrik-abgleich/` |
-| GR1 | CLI | Grafik-Zuordnungstabelle | Entwurf | `geplant/GR1-grafik-zuordnung/` |
-| GR2 | CLI | Grafik-Suche für Lücken | Entwurf | `geplant/GR2-grafik-suche/` |
+| GR1 | CLI | Grafik-Zuordnungstabelle | bereit | `geplant/GR1-grafik-zuordnung/` |
+| GR2 | CLI | Grafik-Suche für Lücken | bereit | `geplant/GR2-grafik-suche/` |
 | GR3 | CLI | Grafik im Renderer | Entwurf | `geplant/GR3-grafik-renderer/` |
-| GR4 | INF | Atlas und Lade-Szene | Entwurf | `geplant/GR4-atlas-ladeszene/` |
+| GR4 | INF | Atlas und Lade-Szene | bereit | `geplant/GR4-atlas-ladeszene/` |
 | GR5 | CLI | Juice: Treffer, Screenshake, Münzen | Entwurf | `geplant/GR5-juice/` |
-| GR6 | PLAT | Credits-Seite | Entwurf | `geplant/GR6-credits-seite/` |
-| RL1 | INF | Release-Checkliste | Entwurf | `geplant/RL1-release-checkliste/` |
+| GR6 | PLAT | Credits-Seite | bereit | `geplant/GR6-credits-seite/` |
+| RL1 | INF | Release-Checkliste | bereit | `geplant/RL1-release-checkliste/` |
 | SO1 | CLI | Audio-Kern | Entwurf | `geplant/SO1-audio-kern/` |
 | SO2 | CLI | SFX-Katalog und Einbau | Entwurf | `geplant/SO2-sfx-katalog/` |
-| SO3 | PLAT | Hörprobenseite `soundtest.html` | Entwurf | `geplant/SO3-hoerprobenseite/` |
+| SO3 | PLAT | Hörprobenseite `soundtest.html` | bereit | `geplant/SO3-hoerprobenseite/` |
 | SO4 | CLI | Musik je Zustand | Entwurf | `geplant/SO4-musik/` |
 
 Gesamtplan und Begründung: [`../plan-weiterentwicklung.md`](../plan-weiterentwicklung.md). Offene Entscheidungen: [`../fragenkatalog.md`](../fragenkatalog.md).
@@ -124,3 +124,4 @@ Gesamtplan und Begründung: [`../plan-weiterentwicklung.md`](../plan-weiterentwi
 | F1 | Zielkorridore und Bedienungsregeln, von 🧑 bestätigt (B-134, B-135, B-136, B-144, B-145) | `erledigt/F1-zielkorridore-regeln/` |
 | DBG1 | Dev-Aktionen im Raum: Gold, Material, Zeitraffer (B-178) | `erledigt/DBG1-dev-aktionen-server/` |
 | F2 | Golden-Ablauf, Spielstand-Migration und Determinismus (B-137, B-138, B-071) | `erledigt/F2-golden-migration-determinismus/` |
+| DBG2 | Debug-Overlay bedient Gold, Material und Zeitraffer (B-179; Abnahme am Gerät offen) | `erledigt/DBG2-debug-overlay-aktionen/` |

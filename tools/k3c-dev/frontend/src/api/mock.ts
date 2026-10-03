@@ -2,7 +2,6 @@ import { mockLogFiles } from './mockLogFiles';
 import { mockLogs } from './mockLogs';
 import { mockMcp } from './mockMcp';
 import { mockServices } from './mockServices';
-import { mockGit } from './mockGit';
 import { mockPlanning } from './mockPlanning';
 import { mockTasks } from './mockTasks';
 import type { Backend, EventName, Events, Info, McpState, ServiceStatus, Source } from './types';
@@ -61,7 +60,6 @@ export function mockBackend(): Backend {
     taskStart: tasks.taskStart,
     taskStop: tasks.taskStop,
     taskRuns: tasks.taskRuns,
-    ...mockGit(),
     ...mockPlanning(),
     mcpInstructions: async () => INSTRUCTIONS,
     mcpRestart: async () => {

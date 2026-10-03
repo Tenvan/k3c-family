@@ -1,40 +1,40 @@
 import type { Source } from '../api';
-import { Tip } from '../ui/parts';
 import { dotTone } from './lines';
-
-const KINDS: Record<string, string> = { service: 'Dienst', run: 'Lauf', log: 'Log-Datei', console: 'Konsole' };
-// Zustände von Läufen und Log-Dateien auf Deutsch; Dienste tragen schon deutsche Zustände.
-const STATES: Record<string, string> = {
-  running: 'läuft', ok: 'grün', failed: 'rot', timeout: 'Zeitlimit', entries: 'Einträge', empty: 'leer',
-};
+import { RoleTags } from './RoleTags';
+import { describe, tagsOf, type Group } from './sources';
 
 interface Props {
-  sources: Source[];
+  groups: Group[];
   selected: string;
-  open: boolean;
   onSelect: (name: string) => void;
-  onToggle: () => void;
 }
 
-/** Quellenleiste (B-064): alle Quellen mit Zustands-Punkt, Details im Tooltip; eingeklappt nur die Punkte. */
-export function SourceBar({ sources, selected, open, onSelect, onToggle }: Props) {
+/** Quellen ohne Dienst unter den Dienst-Karten: gruppiert, je Quelle Zustands-Punkt, Zweck und Detail. */
+export function SourceBar({ groups, selected, onSelect }: Props) {
   return (
-    <aside className={open ? 'src-bar' : 'src-bar src-bar-closed'}>
-      <button className="src-toggle" onClick={onToggle} title={open ? 'Leiste einklappen' : 'Leiste ausklappen'}>
-        {open ? '‹ Quellen' : '›'}
-      </button>
-      {sources.map((s) => (
-        <Tip key={s.name} content={[KINDS[s.kind] ?? s.kind, STATES[s.state] ?? s.state, s.detail].filter(Boolean).join(' · ')}>
-          <button
-            className={s.name === selected ? 'src-item src-item-on' : 'src-item'}
-            onClick={() => onSelect(s.name)}
-            aria-current={s.name === selected}
-          >
-            <span className={`badge-dot tone-${dotTone(s)}`} aria-hidden />
-            {open && <span className="src-name">{s.name}</span>}
-          </button>
-        </Tip>
+    <>
+      {groups.map((g) => (
+        <section key={g.title} className="src-group">
+          <h3 className="svc-label">{g.title.toUpperCase()}</h3>
+          {g.items.map((s) => (
+            <Item key={s.name} s={s} on={s.name === selected} onSelect={onSelect} />
+          ))}
+        </section>
       ))}
-    </aside>
+    </>
+  );
+}
+
+function Item({ s, on, onSelect }: { s: Source; on: boolean; onSelect: (name: string) => void }) {
+  return (
+    <button className={on ? 'src-item src-item-on' : 'src-item'} onClick={() => onSelect(s.name)} aria-current={on}>
+      <span className={`badge-dot tone-${dotTone(s)}`} aria-hidden />
+      <span className="src-text">
+        <span className="src-name">{s.name}</span>
+        <RoleTags tags={tagsOf(s)} />
+        <span className="src-desc">{describe(s)}</span>
+        {s.detail && <span className="src-desc">{s.detail}</span>}
+      </span>
+    </button>
   );
 }

@@ -18,7 +18,7 @@ func serviceServer(t *testing.T, healthy, busy *atomic.Bool) (*Server, *services
 	store := console.New(0, nil)
 	ctl := services.New([]services.Service{
 		{Name: "Vite", Command: []string{"x"}, Port: 5173, Health: "http"},
-		{Name: "Heimnetz", Command: []string{"x"}, Port: 8080, Health: "http"},
+		{Name: "Spielserver", Command: []string{"x"}, Port: 8080, Health: "http"},
 	}, services.Options{
 		Console: store,
 		Start: func(svc services.Service, _ string, out func(string, string)) (services.Process, error) {
@@ -54,10 +54,10 @@ func TestSvcToolsStartStatusStop(t *testing.T) {
 		t.Errorf("zweiter Start: %q", text)
 	}
 	text, _ = callText(t, cs, "svc_status", nil)
-	if lines := strings.Split(text, "\n"); len(lines) != 2 || !strings.HasPrefix(lines[1], "Heimnetz · gestoppt · Port 8080") {
+	if lines := strings.Split(text, "\n"); len(lines) != 2 || !strings.HasPrefix(lines[1], "Spielserver · gestoppt · Port 8080") {
 		t.Errorf("svc_status: %q", text)
 	}
-	if text, _ = callText(t, cs, "workbench_status", nil); !strings.Contains(text, "Dienste: Vite läuft (5173) · Heimnetz gestoppt (8080)") {
+	if text, _ = callText(t, cs, "workbench_status", nil); !strings.Contains(text, "Dienste: Vite läuft (5173) · Spielserver gestoppt (8080)") {
 		t.Errorf("workbench_status: %q", text)
 	}
 	if text, isErr = callText(t, cs, "svc_restart", map[string]any{"service": "Vite"}); isErr || !strings.HasPrefix(text, "Vite · läuft") {
@@ -66,7 +66,7 @@ func TestSvcToolsStartStatusStop(t *testing.T) {
 	if text, isErr = callText(t, cs, "svc_stop", map[string]any{"service": "Vite"}); isErr || !strings.HasPrefix(text, "Vite · gestoppt · Port 5173") {
 		t.Errorf("svc_stop: %q", text)
 	}
-	if text, isErr = callText(t, cs, "svc_stop", map[string]any{"service": "Gibtsnicht"}); !isErr || !strings.Contains(text, "gültig: [Vite Heimnetz]") {
+	if text, isErr = callText(t, cs, "svc_stop", map[string]any{"service": "Gibtsnicht"}); !isErr || !strings.Contains(text, "gültig: [Vite Spielserver]") {
 		t.Errorf("unbekannter Dienst: %q", text)
 	}
 }
@@ -83,12 +83,12 @@ func TestSvcToolsFehlerMitKonsoleUndForce(t *testing.T) {
 	busy.Store(true)
 	ctl.Adopt(context.Background())
 	if st := ctl.Statuses()[1]; st.State != services.Adopted {
-		t.Fatalf("Heimnetz nicht übernommen: %+v", st)
+		t.Fatalf("Spielserver nicht übernommen: %+v", st)
 	}
-	if text, isErr = callText(t, cs, "svc_stop", map[string]any{"service": "Heimnetz"}); !isErr || !strings.Contains(text, "nur mit force") {
+	if text, isErr = callText(t, cs, "svc_stop", map[string]any{"service": "Spielserver"}); !isErr || !strings.Contains(text, "nur mit force") {
 		t.Errorf("Stopp ohne force: %q", text)
 	}
-	if text, isErr = callText(t, cs, "svc_stop", map[string]any{"service": "Heimnetz", "force": true}); isErr || !strings.HasPrefix(text, "Heimnetz · gestoppt") {
+	if text, isErr = callText(t, cs, "svc_stop", map[string]any{"service": "Spielserver", "force": true}); isErr || !strings.HasPrefix(text, "Spielserver · gestoppt") {
 		t.Errorf("Stopp mit force: %q", text)
 	}
 }

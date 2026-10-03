@@ -20,6 +20,10 @@ export type ServiceState = 'gestoppt' | 'startet' | 'läuft' | 'übernommen' | '
 /** Ein Dienst (Go: services.Status). startedAt ist ISO-Zeit, cpu Prozent, memory Bytes. */
 export interface ServiceStatus {
   name: string;
+  /** Ein Satz aus services.json: wofür der Dienst da ist (leer: keiner). */
+  description: string;
+  /** Einordnung aus services.json: Spiel/Tool, Backend/Client. */
+  tags?: string[];
   port: number;
   health: string;
   log: string;
@@ -324,36 +328,6 @@ export interface PlanningData {
 /** Lesbare Planungs-Dokumente: Plan (docs/plan-weiterentwicklung.md) und Fragenkatalog (docs/fragenkatalog.md). */
 export type PlanDoc = 'plan' | 'fragen';
 
-/** Datei im Index (Status A, M, D, R, C, T) oder Arbeitsbaum (M, D, T, U Konflikt, ? untracked); Go: gitcommit.File. */
-export interface GitFile {
-  path: string;
-  status: string;
-}
-
-/** Git-Seite beim Laden (Go: GitView); recent sind die letzten Commits als Zeile, types/domains füllen das Formular. */
-export interface GitView {
-  branch: string;
-  staged: GitFile[];
-  unstaged: GitFile[];
-  recent: string[];
-  types: string[];
-  domains: string[];
-}
-
-/** Eingabe des Commit-Formulars (Go: gitcommit.Message). */
-export interface CommitMessage {
-  type: string;
-  scope: string;
-  subject: string;
-  body: string;
-}
-
-/** Ergebnis eines Commits: neuer Hash und Stand danach (Go: CommitResult). */
-export interface CommitResult {
-  hash: string;
-  view: GitView;
-}
-
 /** Ereignisse von Go an die Oberfläche. */
 export interface Events {
   'mcp:state': McpState;
@@ -402,12 +376,6 @@ export interface Backend {
   taskStart(name: string, args: string[]): Promise<TaskRun>;
   taskStop(name: string): Promise<TaskRun>;
   taskRuns(): Promise<TaskRun[]>;
-  git(): Promise<GitView>;
-  /** Staging verändert nur den Index; ein Fehler kommt als Ablehnung mit dem Text aus Go. */
-  gitStage(paths: string[]): Promise<GitView>;
-  gitUnstage(paths: string[]): Promise<GitView>;
-  /** Eine verletzte Regel kommt als `feld: Grund` (feld: type, scope, subject), `nichts gestaged` ohne Feld. */
-  gitCommit(m: CommitMessage): Promise<CommitResult>;
   /** Seite „Sprints & Backlog“ als eigenständiges HTML, frisch aus docs/ erzeugt (Go: planning.Page). */
   planningPage(): Promise<string>;
   /** Markdown eines Planungs-Dokuments. */

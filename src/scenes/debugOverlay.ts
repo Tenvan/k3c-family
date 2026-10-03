@@ -1,4 +1,5 @@
 import type { Status } from '../online/clientConnection';
+import type { ErrorCode } from '../online/clientProtocol';
 import type { World } from '../model/types';
 
 /** Client-Teil des Overlays: genau die lesbaren Felder von `RoomClient`. */
@@ -10,6 +11,9 @@ export interface DebugClient {
   snapshotHz: number | null;
   lastSnapshotAt: number | null;
   offlineSince: number | null;
+  /** Hinweis und Code des letzten Server-Fehlers (`forbidden` nach einer Dev-Aktion ohne Dev-Mode) */
+  notice: string | null;
+  errorCode: ErrorCode | null;
 }
 
 export type DebugWorld = {
@@ -17,6 +21,8 @@ export type DebugWorld = {
   enemies: unknown[];
   troops: unknown[];
   players: unknown[];
+  /** Zeitraffer des Raums, nur im Dev-Mode im Zustand (docs/protocol.md › Dev-Aktionen) */
+  devTimescale?: number;
 };
 
 export interface DebugInput {
@@ -70,7 +76,9 @@ export function debugLines(i: DebugInput): string[] {
   lines.push(`letzter Snapshot ${num(age)} ms`);
   if (world) {
     lines.push(`Tag ${world.cycle.day} · ${world.enemies.length} Gegner · ${world.troops.length} Truppen · ${world.players.length} Spieler`);
+    if (world.devTimescale !== undefined) lines.push(`Zeit ${world.devTimescale}×`);
   }
+  if (c.errorCode === 'forbidden') lines.push(`Dev abgelehnt: ${c.notice ?? ''}`);
   lines.push(`${num(i.fps)} FPS`);
   if (i.version) lines.push(i.version);
   return lines;
