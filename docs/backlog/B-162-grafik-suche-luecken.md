@@ -6,9 +6,9 @@
 - **Status:** eingeplant
 - **Sprint:** GR2
 - **Erstellt:** 2026-10-02
-- **Spec:** Entwurf
+- **Spec:** freigegeben
 - **Revision:** 1
-- **Freigabe:** –
+- **Freigabe:** 2026-10-03, Chat (Ralf), Revision 1, durch 🧑; mit Sprint GR2; mit Änderungen aus dem Spec-Review (3 Kandidaten nach Q14, Figuren-Lücken als B-193, Reihenfolge nach GR1)
 
 ## Ausgangslage
 
@@ -25,13 +25,13 @@ Der Agent recherchiert; 🧑 wählt je Lücke aus den Vorschlägen (Q14 in `docs
 ## Anforderungen
 
 - Suche bei OpenGameArt, itch.io (nur CC0 oder CC-BY) und Kenney (CC0) je Lücke aus `docs/assets/zuordnung.md`.
-- Je Lücke mindestens zwei Kandidaten mit Link, Vorschau, Lizenz, Urheber, Raster und Stilbewertung zum Grundstil (B-161); Ergebnis als Seite oder Datei unter `docs/funde/` im Stil von `b010-grafik-funde.html`.
+- Je Lücke drei Kandidaten (Q14; weniger nur mit Vermerk) mit Link, Vorschau, Lizenz, Urheber, Raster und Stilbewertung zum Grundstil (B-161); Ergebnis als Seite oder Datei unter `docs/funde/` im Stil von `b010-grafik-funde.html`.
 - Nach der Auswahl: Dateien gefiltert nach `public/grafik/<id>/` (nur PNG und Lizenzdatei, Regeln aus `public/grafik/CREDITS.md`), Eintrag in `public/grafik/index.json` und `public/grafik/CREDITS.md`, Zeile in `docs/assets/zuordnung.md` auf „zugeordnet“.
 - Nur Skalieren und Palette als Nachbearbeitung.
 
 ## Nicht-Ziele
 
-Einbau in den Renderer (B-010), Atlas (B-163), selbst gezeichnete Grafiken, Packs mit nicht erlaubter Lizenz (CC-BY-NC, unklar).
+Einbau in den Renderer (B-010), Atlas (B-163), Figuren-Lücken unter `public/sprites/` (B-193), selbst gezeichnete Grafiken, Packs mit nicht erlaubter Lizenz (CC-BY-NC, unklar).
 
 ## Regeln und Einschränkungen
 
@@ -47,7 +47,7 @@ Kein passender Kandidat → Lücke bleibt mit Vermerk „kein Treffer, Platzhalt
 
 ## Akzeptanzkriterien
 
-- **AC-01** Zu jeder Lücke aus `docs/assets/zuordnung.md` liegt eine Kandidatenliste mit mindestens zwei Einträgen (Link, Vorschau, Lizenz, Urheber, Stilbewertung) unter `docs/funde/` vor.
+- **AC-01** Zu jeder Lücke aus `docs/assets/zuordnung.md` liegt eine Kandidatenliste mit drei Einträgen, weniger nur mit Vermerk, wenn die Suche nicht mehr hergibt (Link, Vorschau, Lizenz, Urheber, Stilbewertung) unter `docs/funde/` vor.
 - **AC-02** 🧑 hat je Lücke gewählt oder „kein Treffer“ bestätigt; die Entscheidung steht in der Kandidatenliste.
 - **AC-03** Gewählte Assets liegen unter `public/grafik/` mit Lizenzdatei, Eintrag in `public/grafik/index.json` und `public/grafik/CREDITS.md`; `task test` (Test `src/tools/grafikPacks.test.ts`) ist grün.
 - **AC-04** Die Zuordnungstabelle zeigt für jede entschiedene Lücke „zugeordnet“ oder „kein Treffer, Platzhalter“.

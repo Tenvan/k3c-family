@@ -6,9 +6,9 @@
 - **Einschiebbar:** ja
 - **Tickets:** B-161
 - **Start-Commit:** –
-- **Spec:** Entwurf
+- **Spec:** freigegeben
 - **Revision:** 1
-- **Freigabe:** –
+- **Freigabe:** 2026-10-03, Chat (Ralf), Revision 1, durch 🧑; umfasst B-161; mit Änderungen aus dem Spec-Review (Q13 geklärt, Reittiere nach Q23, Reihenfolge nach GR2)
 
 ## Ausgangslage
 
@@ -32,7 +32,7 @@ Suche nach Assets für Lücken (GR2, B-162), Einbau (GR3, B-010), Atlas (GR4, B-
 
 ## Regeln und Einschränkungen
 
-Nur CC0 oder CC-BY, Credits in `public/*/CREDITS.md`; Datei ≤ 400 Zeilen; `task check` grün. Einschiebbar, läuft früh und parallel zu GR2.
+Nur CC0 oder CC-BY, Credits in `public/*/CREDITS.md`; Datei ≤ 400 Zeilen; `task check` grün. Einschiebbar, läuft früh; GR2 braucht seine Lückenliste (GR2.1 nach GR1.3).
 
 ## Beispiele
 
@@ -45,7 +45,7 @@ Objekt in `data/` ohne Zeile → Test rot. Asset ohne Credit → Test rot.
 ## Akzeptanzkriterien
 
 - **AC-01** `docs/assets/zuordnung.md` hat zu jeder Objekt-ID aus `data/buildings.json`, `data/enemies.json` und `data/troops.json` eine Zeile mit Status (B-161/AC-01).
-- **AC-02** Weitere Objekte (Hub-Stufen, Materialstufen, Materialien, Adern, Plantage, Truhen, Portale, Icons, Hintergründe je Biom) sind erfasst (B-161/AC-02).
+- **AC-02** Weitere Objekte (Hub-Stufen, Materialstufen, Materialien, Adern, Plantage, Truhen, Portale, Reittiere, Icons, Hintergründe je Biom) sind erfasst (B-161/AC-02).
 - **AC-03** Jedes zugeordnete Asset hat einen Credit-Eintrag (B-161/AC-03).
 - **AC-04** Jede Lücke ist fett markiert und verweist auf ein Ticket (B-161/AC-04).
 - **AC-05** Jede Zeile nennt Stil und Lizenz, der Stilbeschluss von 🧑 steht im Kopf (B-161/AC-05).
@@ -53,7 +53,7 @@ Objekt in `data/` ohne Zeile → Test rot. Asset ohne Credit → Test rot.
 
 ## Offene Fragen
 
-- Grundstil (Raster, Palette, Skalierung): Entscheidet 🧑 (`docs/fragenkatalog.md` Q13); blockiert die Freigabe.
+keine (Grundstil durch Q13 geklärt, 2026-10-03)
 
 ## Sessions
 
