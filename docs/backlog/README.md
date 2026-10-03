@@ -110,6 +110,7 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-181](B-181-latenz-im-debug-overlay.md) | CLI | Idee | mittel | offen | – | Das Debug-Overlay zeigt die Latenz von Eingabe bis Bild |
 | [B-182](B-182-tod-mit-ursache.md) | SIM | Problem | hoch | offen | – | Das Ereignis playerDown nennt, was den Monarchen getötet hat |
 | [B-184](B-184-pages-screenshots.md) | PLAT | Idee | niedrig | offen | – | Die Präsentationsseite zeigt echte Bilder aus dem Spiel |
+| [B-185](B-185-verluste-je-welle-angleichen.md) | REG | Schuld | niedrig | offen | – | Wirtschaft nennt denselben Verlust-Korridor je Welle wie die Bürger |
 
 ## Archiv
 

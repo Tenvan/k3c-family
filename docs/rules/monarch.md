@@ -1,6 +1,7 @@
 # Regelwerk: Monarch, Klassen, Skills
 
 Beschlossen von 🧑 im Workshop R3.2 am 2026-10-02 (Grundlage: [`ist-monarch-buerger.md`](ist-monarch-buerger.md); Rahmen: [`wirtschaft.md`](wirtschaft.md), [`stufen.md`](stufen.md), [`materialien-gebaeude.md`](materialien-gebaeude.md)).
+Abschnitt 7 (Reittier) **bestätigt von 🧑 am 2026-10-03** im Workshop F1.4.
 Je Regel: **Regel · Begründung · Verweis auf `data/` · Zielkorridor**. Werte sind **Startwerte**, Feintuning mit dem Balancing-Tester (B-099).
 Zielkorridore gelten im Standardszenario **Normal, Wald-Start, 2 Spieler, Bot „sparsam“, je 100 Seeds**. Jede Regel gilt für 2+ Spieler. Die Bürger beschließt R3.3 (`buerger.md`).
 
@@ -56,13 +57,13 @@ Begründung: Alle Skills ohne Menü erreichbar, X bleibt die Hauptaktion im Kamp
 
 ## 7. Reittier
 
-Beschlossen von 🧑 am 2026-10-03 im Chat (Fragenkatalog Q23, Korrektur): Reittiere **von Anfang an**, jeder Monarch reitet ein Standard-Reittier wie im Vorbild. Tierart und Faktoren sind **Vorschläge des Agenten** (F1.3) und warten auf die Bestätigung durch 🧑 im Workshop F1.4. Umsetzung: B-152 (SIM, S1), Darstellung: B-173 (CLI, S7).
+Beschlossen von 🧑 am 2026-10-03 im Chat (Fragenkatalog Q23, Korrektur): Reittiere **von Anfang an**, jeder Monarch reitet ein Standard-Reittier wie im Vorbild. Tierart und Faktoren hat der Agent in F1.3 vorgeschlagen; **bestätigt von 🧑 am 2026-10-03** im Workshop F1.4 (unverändert). Umsetzung: B-152 (SIM, S1), Darstellung: B-173 (CLI, S7).
 
 | Regel | Begründung | Daten | Zielkorridor |
 |---|---|---|---|
 | Jeder Monarch reitet von Beginn an ein **Standard-Reittier**; es ist für alle Monarchen gleich. | Wie im Vorbild Kingdom Two Crowns (beschlossen, Q23). | `data/monarch.json` › `mount` (SIM legt an) | – |
-| **Tierart: Pferd**, Sprite-Schlüssel `horse` („Braunes Pferd (Galopp)“) aus `data/sprites.json` › `mounts` (**Vorschlag**). | Das Pferd ist das Reittier des Vorbilds; der Schlüssel ist eines der 13 vorhandenen Tiere. | `monarch.json` › `mount.sprite`; Tiere in `sprites.json` › `mounts` | – |
-| **Geschwindigkeitsfaktor 1,0** (**Vorschlag**): Geschwindigkeit = Basis × Faktor, heute 5 Units/s (`base.speed`; Presets Tank, Zauberer, Heiler 5,0, Dieb 5,5) bleibt unverändert. | Das Reittier soll das Balancing nicht verschieben, nur die Bewegung an einen Datenwert hängen. | `monarch.json` › `mount.speedFactor` | Keine Verschiebung der Kennzahlen aus [`zielkorridore.md`](zielkorridore.md) durch Faktor 1,0 |
-| **Sprintfaktor 1,0** (**Vorschlag**): Sprint wie heute `sprintMultiplier` 1,8 auf das Reittier, Beschleunigung 8 bleibt. | Wie oben: gleiche Bewegung wie heute. | `monarch.json` › `mount.sprintFactor`, `sprintMultiplier`, `acceleration` | wie oben |
+| **Tierart: Pferd**, Sprite-Schlüssel `horse` („Braunes Pferd (Galopp)“) aus `data/sprites.json` › `mounts` (bestätigt F1.4). | Das Pferd ist das Reittier des Vorbilds; der Schlüssel ist eines der 13 vorhandenen Tiere. | `monarch.json` › `mount.sprite`; Tiere in `sprites.json` › `mounts` | – |
+| **Geschwindigkeitsfaktor 1,0** (bestätigt F1.4): Geschwindigkeit = Basis × Faktor, heute 5 Units/s (`base.speed`; Presets Tank, Zauberer, Heiler 5,0, Dieb 5,5) bleibt unverändert. | Das Reittier soll das Balancing nicht verschieben, nur die Bewegung an einen Datenwert hängen. | `monarch.json` › `mount.speedFactor` | Keine Verschiebung der Kennzahlen aus [`zielkorridore.md`](zielkorridore.md) durch Faktor 1,0 |
+| **Sprintfaktor 1,0** (bestätigt F1.4): Sprint wie heute `sprintMultiplier` 1,8 auf das Reittier, Beschleunigung 8 bleibt. | Wie oben: gleiche Bewegung wie heute. | `monarch.json` › `mount.sprintFactor`, `sprintMultiplier`, `acceleration` | wie oben |
 | **Immer beritten:** kein Auf- und Absteigen; das Reittier wird weder gekauft noch verloren. Beitritt (auch spät), Wiederverbinden und Stufenwechsel behalten es; ein gefallener Monarch kommt mit Reittier zurück (§ 5). | Standard-Reittier ohne eigene Mechanik; keine neue Taste. | – | – |
 | **Weitere Reittiere** (die übrigen Tiere in `sprites.json` › `mounts`) gibt es erst später als Auswahl oder Belohnung; ob das eine Spieloption wird, ist offen (🧑). | Grafik ist vorhanden, Regeln dafür fehlen noch. | – | – |
