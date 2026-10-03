@@ -2,7 +2,7 @@
 
 - **Status:** geplant
 - **Domäne:** INF
-- **Reife:** Entwurf
+- **Reife:** bereit
 - **Einschiebbar:** ja
 - **Tickets:** B-170
 - **Start-Commit:** –
@@ -55,11 +55,13 @@ Ein Punkt rot → kein Tag, Befund als Ticket.
 
 ## Sessions
 
-Entwurf. Vor dem Aktivieren jede Session als Datei nach `docs/vorlagen/session.md` schreiben, die Kriterien in Klammern werden ihr Feld `Kriterien`.
+| Nr. | Datei | Typ | Agent | Status |
+|---|---|---|---|---|
+| RL1.1 | `RL1.1-abschnitt-release.md` | Umsetzung | autonom | offen |
+| RL1.2 | `RL1.2-probelauf.md` | Workshop | Mensch | offen |
 
-- RL1.1 🧑 Workshop (Agent: Mensch): Rhythmus und Auslöser beschließen (AC-04).
-- RL1.2 Abschnitt „Release“ in `docs/arbeitsweise.md` schreiben (AC-01, AC-02).
-- RL1.3 Probelauf ohne Tag, Abnahme eintragen; schließt den Sprint ab (Doku-Sprint, kein Review) (AC-03).
+Bei `Reife: Entwurf` genügen Stichpunkte mit den Kriterien in Klammern statt Session-Dateien. Vor dem Aktivieren
+wird jede Session als eigene Datei nach `docs/vorlagen/session.md` geschrieben.
 
 ## Abnahme
 
