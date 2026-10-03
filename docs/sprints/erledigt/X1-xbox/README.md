@@ -1,6 +1,6 @@
 # X1 · PLAT · Xbox-Machbarkeit
 
-- **Status:** aktiv
+- **Status:** erledigt
 - **Domäne:** PLAT
 - **Reife:** bereit
 - **Einschiebbar:** ja
@@ -59,9 +59,12 @@ keine
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
 | X1.1 | `X1.1-audio-testseite.md` | Umsetzung | autonom | fertig |
-| X1.2 | `X1.2-xbox-test.md` | Workshop | Mensch | offen |
-| X1.3 | `X1.3-auswertung.md` | Umsetzung | autonom | offen |
+| X1.2 | `X1.2-xbox-test.md` | Workshop | Mensch | fertig |
+| X1.3 | `X1.3-auswertung.md` | Umsetzung | autonom | fertig |
 
 ## Abnahme
 
-–
+2026-10-03, Agent (Claude Opus 5.5) in X1.3, Doku-Sprint ohne Review.
+AC-01 und AC-05 (Bericht): Ergebnis X1.2; AC-04: Ergebnis X1.1; AC-02, AC-03, AC-05 (Doku): Ergebnis X1.3.
+Neue Tickets: B-194 (Ruckeln im Split-Screen auf der Xbox), B-195 (Debug-Overlay auf der Xbox nicht aufrufbar).
+Version: v0.5.1 vorgeschlagen (Patch: nur Doku und Messung, keine neue Funktion); gesetzt erst nach Bestätigung durch 🧑.

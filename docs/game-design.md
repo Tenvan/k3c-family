@@ -148,7 +148,20 @@ Die festen Eckdaten stehen in `data/biomes/<biom>.json`, der Generator in `engin
 | Pause (Regel: [`rules/bedienung.md`](rules/bedienung.md) § 1) | Menu (kurz, < 600 ms) | Esc |
 | Vollbild | RS (Stick drücken) | F |
 
-**B bleibt unbelegt**, weil Edge auf der Xbox B vermutlich als „Zurück“ nutzt. Der Gamepad-Test klärt das.
+**B bleibt unbelegt**: Edge auf der Xbox nutzt B als „Zurück“. Die Zurück-Falle der Shell hält das ab (Gamepad-Test
+2026-10-03: B 8× gedrückt, 0 Zurück-Navigationen). Die Skill-Tasten LB, RB, LT und D-Pad hoch hat der Test erkannt.
+
+### Xbox-Messung
+
+Gamepad-Test vom 2026-10-03 an der Xbox (Edge 150, zwei Controller, Server `http://pi-gaming:8080`; Werte in X1.2):
+
+- **Sprite-Budget:** 2000 Sprites (WebGL) laufen flüssig, gemessen 100 → 60, 300 → 58 (min 56), 600 → 59,
+  1000 → 60, 2000 → 60 FPS im Mittel; 4000 ist nicht gemessen.
+- **HTTPS nein:** Gamepad API, Vibration und Audio laufen ohne Secure Context über HTTP.
+- **Vollbild:** ok über das Controller-Menü und per Klick.
+- **Audio, Autoplay:** Der `AudioContext` läuft schon vor der ersten Geste, ein Abspielversuch ohne Geste spielt;
+  eine Controller-Taste zählt als Geste.
+- **Audio, Formate:** ogg ja, m4a nein, mp3 ja, wav ja. **Latenz:** 10 ms (base), 56 ms (output).
 
 ## UI
 
@@ -176,10 +189,9 @@ was aus der Welt schon entfernt wurde (gefällte Bäume, geöffnete Truhen), son
   Der Reiter ist der Oberkörper des Monarchen, auf den Sattelpunkt gesetzt. LPC-Tiere sind CC-BY 3.0 (Credits Pflicht). Gebäude, Ressourcen und Hintergrund sind noch
   **Platzhalter-Formen**. Ziel: 2D-Pixel-Art mit Parallax-Ebenen.
 - Paletten pro Biom stehen in der Biom-JSON (Wald grün/braun, Höhle grau/orange, Mine braun/kupfer).
-- Audio: Kenney Audio / freesound.org (CC).
+- Audio: Kenney Audio / freesound.org (CC). Was die Xbox abspielt: [Xbox-Messung](#xbox-messung).
 
 ## Offene Fragen
 
 - 3–4 Spieler: entschieden (2×2-Raster bzw. zwei oben und einer breit unten, `src/scenes/layout.ts`); Schriftgrößen je Layout in [`rules/bedienung.md`](rules/bedienung.md) § 2.
-- Skill-Tasten am Controller (hängt vom Gamepad-Test ab).
 - Eine Klasse pro Spieler als Preset, damit sich die Rollen im Koop ergänzen?
