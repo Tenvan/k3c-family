@@ -1,6 +1,6 @@
 # F0 · INF · Parallele Sprints je Domäne
 
-- **Status:** aktiv
+- **Status:** erledigt
 - **Domäne:** INF
 - **Reife:** bereit
 - **Einschiebbar:** nein
@@ -57,8 +57,10 @@ keine
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
 | F0.1 | `F0.1-regel-und-test.md` | Umsetzung | autonom | fertig |
-| F0.2 | `F0.2-review.md` | Review | autonom | offen |
+| F0.2 | `F0.2-review.md` | Review | autonom | fertig |
 
 ## Abnahme
 
-–
+2026-10-03: AC-01 bis AC-03 geprüft in F0.1 (Durchsicht `docs/arbeitsweise.md`, `tests/planning.test.ts`, `task check` grün), in F0.2 bestätigt.
+AC-02 belegt mit Tests der reinen Funktion `crowdedDomains` statt mit temporären Ordnern (so von F0.1 vorgegeben), Verhalten wie B-174/AC-02.
+Review ohne schweren Befund, nichts behoben. Neue Tickets: keine.
