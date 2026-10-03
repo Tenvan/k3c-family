@@ -1,4 +1,4 @@
-# CI: Lint, Typecheck, Tests, Build; Go: Tests (auch Heimnetz-Server), Lint, Cross-Build; Docker: Image amd64/arm64 mit Smoke-Test; k3c-dev: Frontend, Tests, Lint, Wails-Build (Windows). Bei jedem Push und Pull Request.
+# CI: Lint, Typecheck, Tests, Build (auch GitHub-Pages-Seite); Go: Tests (auch Heimnetz-Server), Lint, Cross-Build; Docker: Image amd64/arm64 mit Smoke-Test; k3c-dev: Frontend, Tests, Lint, Wails-Build (Windows). Bei jedem Push und Pull Request.
 name: CI
 
 on:
@@ -30,7 +30,8 @@ jobs:
       - run: task lint
       - run: task typecheck
       - run: task test
-      - run: task build
+      # Baut dist/ und die GitHub-Pages-Seite _site/ (Präsentation site/ + dist unter app/, B-183).
+      - run: task pages
 
       # Den Heimnetz-Server prüfen seit SP03 die Go-Tests (engine/net, httptest) im Job go (B-020).
 
