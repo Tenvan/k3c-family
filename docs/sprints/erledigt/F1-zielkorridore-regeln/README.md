@@ -1,6 +1,6 @@
 # F1 · REG · Zielkorridore und Bedienungsregeln
 
-- **Status:** aktiv
+- **Status:** erledigt
 - **Domäne:** REG
 - **Reife:** bereit
 - **Einschiebbar:** nein
@@ -66,8 +66,11 @@ Entschieden am 2026-10-03: Q01 Pause, Q03 Schriftgröße (≥ 28 px Vollbild, �
 | F1.2 | `F1.2-zielkorridore-vorschlag.md` | Umsetzung | autonom | fertig |
 | F1.3 | `F1.3-reittier-regel.md` | Umsetzung | autonom | fertig |
 | F1.4 | `F1.4-workshop-bestaetigung.md` | Workshop | Mensch | fertig |
-| F1.5 | `F1.5-abschluss.md` | Umsetzung | autonom | offen |
+| F1.5 | `F1.5-abschluss.md` | Umsetzung | autonom | fertig |
 
 ## Abnahme
 
-–
+2026-10-03 (F1.5): Doku-Sprint ohne Review, `task check` grün.
+AC-01 bis AC-07, AC-09: Nachweise in den Ergebnissen von F1.1 bis F1.4 (Workshop F1.4: alle Vorschläge von 🧑 unverändert bestätigt); AC-08: Ergebnis F1.5, B-134, B-135, B-136, B-144, B-145 archiviert.
+Nichts verschoben, keine behobenen Befunde; neue Tickets aus dem Sprint: B-181 (Latenz-Anzeige), B-185 (Verluste je Welle in `wirtschaft.md`).
+Version: v0.4.1 vorgeschlagen (Patch: nur Regeln und Planung, keine neue Funktion); gesetzt erst nach Bestätigung durch 🧑.
