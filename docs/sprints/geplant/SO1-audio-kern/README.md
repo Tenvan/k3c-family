@@ -2,7 +2,7 @@
 
 - **Status:** geplant
 - **Domäne:** CLI
-- **Reife:** Entwurf
+- **Reife:** bereit
 - **Einschiebbar:** ja
 - **Tickets:** B-011
 - **Start-Commit:** –
@@ -59,12 +59,16 @@ Browser blockiert Audio bis zur ersten Eingabe → kein Fehler, Ton startet nach
 
 ## Sessions
 
-Entwurf. Vor dem Aktivieren jede Session als Datei nach `docs/vorlagen/session.md` schreiben, die Kriterien in Klammern werden ihr Feld `Kriterien`.
+| Nr. | Datei | Typ | Agent | Status |
+|---|---|---|---|---|
+| SO1.1 | `SO1.1-mixer-lautstaerke.md` | Umsetzung | autonom | offen |
+| SO1.2 | `SO1.2-entsperren-format-atlas.md` | Umsetzung | autonom | offen |
+| SO1.3 | `SO1.3-daempfung-demo.md` | Umsetzung | autonom | offen |
+| SO1.4 | `SO1.4-review.md` | Review | autonom | offen |
+| SO1.5 | `SO1.5-hoerprobe-tv.md` | Workshop | Mensch | offen |
 
-- SO1.1 Mixer mit Bussen und Lautstärke je Gerät in `src/audio/` (AC-01, AC-02).
-- SO1.2 Entsperren per Geste, Format nach B-166, Sound-Atlas (AC-03, AC-04, AC-05).
-- SO1.3 Positions-Dämpfung im Split-Screen, Demo-Ereignis (AC-06, AC-07).
-- SO1.4 Review (AC-08).
+Bei `Reife: Entwurf` genügen Stichpunkte mit den Kriterien in Klammern statt Session-Dateien. Vor dem Aktivieren
+wird jede Session als eigene Datei nach `docs/vorlagen/session.md` geschrieben.
 
 ## Abnahme
 
