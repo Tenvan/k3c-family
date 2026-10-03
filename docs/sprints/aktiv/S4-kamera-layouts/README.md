@@ -1,11 +1,11 @@
 # S4 · CLI · Kamera je Stufe und Layouts 1–4
 
-- **Status:** geplant
+- **Status:** aktiv
 - **Domäne:** CLI
 - **Reife:** bereit
 - **Einschiebbar:** nein
 - **Tickets:** B-106
-- **Start-Commit:** –
+- **Start-Commit:** 605f467
 - **Spec:** freigegeben
 - **Revision:** 1
 - **Freigabe:** 2026-10-03, Chat (Ralf), Revision 1; umfasst B-106
@@ -57,7 +57,7 @@ Mindest-Schriftgröße je Viertel: 🧑, `docs/fragenkatalog.md Q03`, Regel in B
 
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
-| S4.1 | `S4.1-zelle-stufe.md` | Umsetzung | autonom | offen |
+| S4.1 | `S4.1-zelle-stufe.md` | Umsetzung | autonom | in Arbeit |
 | S4.2 | `S4.2-radar-hud-schrift.md` | Umsetzung | autonom | offen |
 | S4.3 | `S4.3-abnahme-geraet.md` | Workshop | Mensch | offen |
 | S4.4 | `S4.4-review.md` | Review | autonom | offen |
