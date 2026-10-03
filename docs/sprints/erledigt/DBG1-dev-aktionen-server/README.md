@@ -68,4 +68,4 @@ Siehe Ticket › Offene Fragen.
 
 - 2026-10-03, Review DBG1.4 (getrennter Review-Agent): AC-01 bis AC-06 belegt in den Ergebnissen DBG1.1 bis DBG1.3; `task check` und `task check:go` grün.
 - Keine schweren Befunde; keine neuen Tickets. B-178 archiviert, B-179 (DBG2) kann auf dem Protokoll aufbauen.
-- Version: v0.5.0 vorgeschlagen (Minor: neue Nachricht `dev` mit Gold, Material und Zeitraffer im Dev-Mode).
+- Version: v0.5.0 gesetzt (2026-10-03, Bestätigung 🧑; Minor: neue Nachricht `dev` mit Gold, Material und Zeitraffer im Dev-Mode).
