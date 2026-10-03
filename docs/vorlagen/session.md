@@ -10,7 +10,7 @@
 
 ## Ziel
 
-Ein bis zwei Sätze: welches Ergebnis nach dieser Session auf `main` liegt.
+Ein bis zwei Sätze: welches Ergebnis nach dieser Session auf `develop` liegt.
 
 ## Kontext
 

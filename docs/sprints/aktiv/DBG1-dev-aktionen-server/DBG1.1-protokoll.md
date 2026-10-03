@@ -40,7 +40,7 @@ Wirkung der Aktionen (DBG1.2, DBG1.3), `engine/sim/`, Bedienung im Client (DBG2)
 
 ## Schritte
 
-1. Branch anlegen und pushen, `Status: in Arbeit`. `Start-Commit` der Sprint-README setzen, falls noch `–` (`git rev-parse --short origin/main` vor dem Branch).
+1. Branch anlegen und pushen, `Status: in Arbeit`. `Start-Commit` der Sprint-README setzen, falls noch `–` (`git rev-parse --short origin/develop` vor dem Branch).
 2. `room.ErrForbidden = errors.New("forbidden")` in `room.go` ergänzen. In `protocol.go`: `room.ErrForbidden` in die Liste von `codeOf`, Text in `messages`; `inMsg` um `Action string`, `Amount int`, `Resource string`, `Factor int` erweitern (`slot` gibt es schon als `*int`).
 3. `engine/room/dev.go`: `DevAction{Action string; Slot *int; Amount int; Resource string; Factor int}` und `(*Room).Dev` mit der Prüfreihenfolge aus dem Kontext (Schritte 1 und 2; im `switch a.Action` gibt es nur `default: return ErrBadRequest`). Die Methode sperrt `r.mu` wie die anderen Aktionen.
 4. `dispatch.go`: in `roomMessage` den Fall `"dev"`: `r.Dev(c.device, c, room.DevAction{…})` aus `m`. Ohne Raum bleibt es bei `bad_request` (greift schon).
