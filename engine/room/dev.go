@@ -1,9 +1,13 @@
 package room
 
-import "k3c/engine/sim"
+import (
+	"slices"
+
+	"k3c/engine/sim"
+)
 
 // DevAction ist eine Dev-Aktion eines Geräts (Nachricht dev, B-178): gold und material brauchen slot und amount,
-// material zusätzlich resource, timescale braucht factor. Die Wirkung von timescale baut DBG1.3.
+// material zusätzlich resource, timescale braucht factor.
 type DevAction struct {
 	Action   string
 	Slot     *int
@@ -14,6 +18,12 @@ type DevAction struct {
 
 // devMaxAmount ist die Obergrenze von amount (gold, material).
 const devMaxAmount = 1000
+
+// MaxTimescale ist der größte Faktor des Zeitraffers; er schützt das Tick-Budget (B-178).
+const MaxTimescale = 8
+
+// devTimescales sind die erlaubten Faktoren von timescale.
+var devTimescales = []int{1, 2, 4, MaxTimescale}
 
 // Dev führt eine Dev-Aktion aus. Ohne Dev-Mode (Manager.Dev) ist sie verboten, noch vor jeder Feldprüfung, damit ein
 // Server ohne Dev-Mode nichts über Felder verrät; die Ablehnung steht als Warnung im Log, jede gelungene Aktion als Info.
@@ -46,6 +56,12 @@ func (r *Room) Dev(id string, peer Peer, a DevAction) error {
 			return ErrBadRequest
 		}
 		attrs = append(attrs, "slot", *a.Slot, "amount", a.Amount, "resource", a.Resource, "genommen", taken)
+	case "timescale":
+		if !slices.Contains(devTimescales, a.Factor) {
+			return ErrBadRequest
+		}
+		r.timescale = a.Factor
+		attrs = append(attrs, "faktor", a.Factor)
 	default:
 		return ErrBadRequest
 	}
@@ -60,4 +76,9 @@ func devPlayer(d *device, a DevAction) (int, bool) {
 	}
 	idx, ok := d.slots[*a.Slot]
 	return idx, ok
+}
+
+// scale ist der Faktor des Zeitraffers, mindestens 1 (unter Raum-Sperre).
+func (r *Room) scale() int {
+	return max(r.timescale, 1)
 }

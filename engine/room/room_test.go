@@ -26,7 +26,7 @@ func (p *peer) Joined(room, name string, you []Seat) {
 	p.log = append(p.log, fmt.Sprintf("joined %s %s %v", room, name, you))
 }
 func (p *peer) Level(depth int, _ level.Layout) { p.log = append(p.log, fmt.Sprintf("level %d", depth)) }
-func (p *peer) State(tick int, w *sim.World)    { p.world = w; p.log = append(p.log, fmt.Sprintf("state %d", tick)) }
+func (p *peer) State(tick int, w *sim.World, _ int) { p.world = w; p.log = append(p.log, fmt.Sprintf("state %d", tick)) }
 func (p *peer) Seats(you []Seat, monarchs []string) {
 	p.you, p.monarchs = you, monarchs
 	p.log = append(p.log, "seats")
