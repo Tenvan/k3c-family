@@ -4,7 +4,7 @@
 - **Domäne:** SRV
 - **Reife:** Entwurf
 - **Einschiebbar:** nein
-- **Tickets:** B-123, B-147, B-150
+- **Tickets:** B-123, B-147, B-150, B-176
 - **Start-Commit:** –
 - **Spec:** Entwurf
 - **Revision:** 1
@@ -50,6 +50,7 @@ Ungültiger Slot oder Beruf → `bad_request`; älterer Client → `version`; Sp
 - **AC-04** Der Spielstand nennt Zeitpunkt und Tag/Nacht/Stufe, die Liste liefert sie; ein Stand ohne diese Felder lädt weiter (B-147/AC-03, B-147/AC-04).
 - **AC-05** Ein Raumlauf erzeugt einen Spielmetrik-Report mit allen Mindestfeldern, ohne Namen, und beeinflusst den Golden-Hash nicht (B-150/AC-01, B-150/AC-02, B-150/AC-03).
 - **AC-06** Das Report-Schema ist beschrieben und `task check:go` ist grün (B-150/AC-04).
+- **AC-07** Ein Gerät bekommt Level und Zustand jeder Stufe, in der ein lokaler Spieler steht; Beispiele, Tests und Benchmark sind belegt (B-176/AC-01, B-176/AC-02, B-176/AC-03, B-176/AC-04).
 
 ## Offene Fragen
 
@@ -62,7 +63,8 @@ Entwurf. Vor dem Aktivieren jede Session als Datei nach `docs/vorlagen/session.m
 - S2.1 Protokoll: Eingaben und Zustand für Schlag, Skills, Pool, gültige Aktionen, `docs/protocol.md`, `testdata/protocol/`, Versionssprung (AC-01, AC-02).
 - S2.2 Speichern beim Verlassen und beim Trennen des letzten Geräts, Zeitpunkt im Spielstand und in der Liste (AC-03, AC-04).
 - S2.3 Spielmetrik-Report beim Raumende, Schema beschreiben (AC-05, AC-06).
-- S2.4 Review des Sprints (Code-Sprint) (AC-01, AC-02, AC-03, AC-04, AC-05, AC-06).
+- S2.4 Protokoll: Level und Zustand je Stufe der lokalen Spieler (`stage` in `level`, `snap`, `delta`), `docs/protocol.md`, `testdata/protocol/`, beide Enden (AC-07).
+- S2.5 Review des Sprints (Code-Sprint) (AC-01, AC-02, AC-03, AC-04, AC-05, AC-06, AC-07).
 
 ## Abnahme
 

@@ -2,7 +2,7 @@
 
 - **Status:** geplant
 - **Domäne:** CLI
-- **Reife:** Entwurf
+- **Reife:** bereit
 - **Einschiebbar:** nein
 - **Tickets:** B-106
 - **Start-Commit:** –
@@ -55,12 +55,12 @@ Mindest-Schriftgröße je Viertel: 🧑, `docs/fragenkatalog.md Q03`, Regel in B
 
 ## Sessions
 
-Entwurf. Vor dem Aktivieren jede Session als Datei nach `docs/vorlagen/session.md` schreiben, die Kriterien in Klammern werden ihr Feld `Kriterien`.
-
-- S4.1 Zuordnung Spieler → Stufe → Zelle als reine Funktion, Zeichnen je Zelle mit Parallax und Palette (AC-01).
-- S4.2 Radar und HUD je Zelle, Layouts 1–4 mit Mindestschrift (AC-02, AC-03).
-- S4.3 🧑 Abnahme am Gerät mit 2 Spielern in verschiedenen Stufen und im Viertel-Split (AC-04).
-- S4.4 Review des Sprints (Code-Sprint) (AC-01, AC-02, AC-03, AC-04).
+| Nr. | Datei | Typ | Agent | Status |
+|---|---|---|---|---|
+| S4.1 | `S4.1-zelle-stufe.md` | Umsetzung | autonom | offen |
+| S4.2 | `S4.2-radar-hud-schrift.md` | Umsetzung | autonom | offen |
+| S4.3 | `S4.3-abnahme-geraet.md` | Workshop | Mensch | offen |
+| S4.4 | `S4.4-review.md` | Review | autonom | offen |
 
 ## Abnahme
 

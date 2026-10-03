@@ -2,7 +2,7 @@
 
 - **Status:** geplant
 - **Domäne:** CLI
-- **Reife:** Entwurf
+- **Reife:** bereit
 - **Einschiebbar:** nein
 - **Tickets:** B-146, B-172
 - **Start-Commit:** –
@@ -58,13 +58,13 @@ Pause im gemeinsamen Raum: 🧑, `docs/fragenkatalog.md Q01`.
 
 ## Sessions
 
-Entwurf. Vor dem Aktivieren jede Session als Datei nach `docs/vorlagen/session.md` schreiben, die Kriterien in Klammern werden ihr Feld `Kriterien`.
-
-- S5.1 Einstellungen als reine Funktionen und Speicher je Gerät mit Test (AC-01, AC-03).
-- S5.2 Szene Optionen/Pause, Bedienung mit allen Geräten, Pause-Regel aus B-135 umsetzen (AC-02, AC-04).
-- S5.3 Zentrale Textdateien de/en, Sprachwahl in der Szene, alle bestehenden Texte umziehen (AC-06).
-- S5.4 🧑 Abnahme am TV und am Handy, englische Texte lesen (AC-05, AC-07).
-- S5.5 Review des Sprints (Code-Sprint) (AC-01, AC-02, AC-03, AC-04, AC-05, AC-06, AC-07).
+| Nr. | Datei | Typ | Agent | Status |
+|---|---|---|---|---|
+| S5.1 | `S5.1-einstellungen-speicher.md` | Umsetzung | autonom | offen |
+| S5.2 | `S5.2-szene-optionen-pause.md` | Umsetzung | autonom | offen |
+| S5.3 | `S5.3-texte-de-en.md` | Umsetzung | autonom | offen |
+| S5.4 | `S5.4-abnahme-geraet.md` | Workshop | Mensch | offen |
+| S5.5 | `S5.5-review.md` | Review | autonom | offen |
 
 ## Abnahme
 
