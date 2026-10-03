@@ -68,7 +68,7 @@ dann über den Go-Server mit mehreren Räumen und gemischten Spielern.
 | GR3 | CLI | Grafik im Renderer | Entwurf | `geplant/GR3-grafik-renderer/` |
 | GR4 | INF | Atlas und Lade-Szene | Entwurf | `geplant/GR4-atlas-ladeszene/` |
 | GR5 | CLI | Juice: Treffer, Screenshake, Münzen | Entwurf | `geplant/GR5-juice/` |
-| GR6 | PLAT | Credits-Seite | Entwurf | `geplant/GR6-credits-seite/` |
+| GR6 | PLAT | Credits-Seite | bereit | `geplant/GR6-credits-seite/` |
 | RL1 | INF | Release-Checkliste | Entwurf | `geplant/RL1-release-checkliste/` |
 | SO1 | CLI | Audio-Kern | Entwurf | `geplant/SO1-audio-kern/` |
 | SO2 | CLI | SFX-Katalog und Einbau | Entwurf | `geplant/SO2-sfx-katalog/` |
