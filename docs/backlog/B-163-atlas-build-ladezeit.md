@@ -59,3 +59,5 @@ keine
 ## Notizen
 
 Lücke 11 aus `docs/plan-weiterentwicklung.md` § 4. Hängt an X1 (Messung auf der Xbox) und B-161 (Liste der genutzten Grafiken).
+
+**Messwerte GR4.2 (Browser-Pane, Go-Server, `game.html`):** Grafik-Requests beim Start vorher 41 PNGs (14 genutzte Sheets, je Animation eine Datei; aus `data/sprites.json` gezählt, Loader-Code unverändert bis GR4.2), nachher 2 (`atlas/atlas.json`, `atlas/atlas-0.png`). Kaltstart auf der Xbox: GR4.3.
