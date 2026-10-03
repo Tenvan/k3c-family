@@ -152,12 +152,16 @@ func (r *Room) afterDisconnect() {
 	r.broadcastSeats()
 	if r.connected() == 0 {
 		r.log().Info("Raum leer und pausiert, speichert")
+		if r.timescale > 1 {
+			r.log().Info("Zeitraffer beendet", "faktor", r.timescale)
+		}
+		r.timescale = 1
 		r.save()
 		r.emptySince = r.m.now()
 	}
 }
 
-// Tick rechnet einen Schritt mit 1/TickHz Sekunden. Ein Raum ohne verbundenes Gerät ist pausiert und tickt nicht.
+// Tick rechnet einen Schritt mit 1/TickHz Sekunden, im Zeitraffer scale() solche Schritte. Ein Raum ohne verbundenes Gerät ist pausiert und tickt nicht.
 // Wechselt ein Gerät die Stufe, speichert der Raum und schickt das neue Level vor dem Zustand.
 // false: Der Raum ist geschlossen.
 func (r *Room) Tick() bool {
@@ -180,7 +184,9 @@ func (r *Room) Tick() bool {
 		r.beforeStep()
 	}
 	before := r.depths()
-	sim.StepIsland(r.isl, commands, 1.0/TickHz)
+	for range r.scale() { // Zeitraffer: scale() Schritte mit denselben Eingaben, ein Tick
+		sim.StepIsland(r.isl, commands, 1.0/TickHz)
+	}
 	r.tick++
 	travelled := false
 	for _, d := range r.devices {

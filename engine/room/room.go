@@ -60,7 +60,7 @@ type Options struct{ Grade, Goal, Defeat string }
 type Peer interface {
 	Joined(room, name string, you []Seat)
 	Level(depth int, layout level.Layout)
-	State(tick int, w *sim.World)
+	State(tick int, w *sim.World, timescale int) // timescale > 0: Feld devTimescale (nur Dev-Mode)
 	Seats(you []Seat, monarchs []string)
 	Replaced()         // dieselbe Geräte-ID ist über eine neue Verbindung beigetreten
 	Closed(final bool) // Raum geschlossen; final: Server fährt herunter, die Verbindung endet danach
@@ -99,6 +99,7 @@ type Room struct {
 	slowLogged time.Time       // letzte Meldung eines langsamen Ticks (logging.go)
 	slowCount  int             // langsame Ticks seit dieser Meldung
 	beforeStep func()          // Test-Naht: läuft im Tick vor StepIsland
+	timescale  int             // Zeitraffer (dev timescale): Schritte je Tick, 0 = 1
 }
 
 // ValidSlots: Slot 4 oder höher → too_many_slots, sonst leer, negativ oder doppelt → bad_request.

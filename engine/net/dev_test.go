@@ -54,8 +54,7 @@ func TestDevOhneDevModeForbidden(t *testing.T) {
 }
 
 // B-178/AC-02, AC-03, AC-05: Mit Dev-Mode liest der Server jedes Beispiel; gold und material wirken ohne Fehler (die
-// Verbindung lebt, ein folgendes input wird bestätigt), timescale fehlt noch (DBG1.3) → bad_request. dev ohne Raum ist
-// bad_request.
+// Verbindung lebt, ein folgendes input wird bestätigt). dev ohne Raum ist bad_request.
 func TestDevMitDevModeLiestBeispiele(t *testing.T) {
 	srv, m := devServer(t)
 	x := hello(t, srv, "xbox")
@@ -68,8 +67,44 @@ func TestDevMitDevModeLiestBeispiele(t *testing.T) {
 	x.send(ex[1])
 	x.send(map[string]any{"t": "input", "seq": 9, "p": []map[string]any{{"slot": 0}}})
 	waitFor(t, func() bool { r.Tick(); return x.expect("delta", "seats")["ack"] == float64(9) })
-	x.send(ex[2])
-	if msg := x.expect("error", "seats", "delta"); msg["code"] != "bad_request" {
-		t.Fatalf("timescale: %v", msg)
+}
+
+// B-178/AC-04, AC-05: Im Dev-Mode hat der snap devTimescale 1; nach c2s-dev-timescale.json kommt ein delta mit
+// devTimescale 4 in der Form von s2c-snapshot-delta-timescale.json. Ohne Dev-Mode fehlt das Feld in snap und delta.
+func TestDevTimescaleImZustand(t *testing.T) {
+	srv, m := devServer(t)
+	x := hello(t, srv, "xbox")
+	create(x, "dev", 0)
+	j := x.expect("joined")
+	x.expect("level")
+	if s := x.expect("snap")["s"].(map[string]any); s["devTimescale"] != float64(1) {
+		t.Fatalf("snap: devTimescale %v", s["devTimescale"])
+	}
+	x.send(devExamples(t)[2])
+	r := m.Room(j["room"].(string))
+	var got map[string]any
+	waitFor(t, func() bool {
+		r.Tick()
+		got = x.expect("delta", "seats")
+		return got["s"].(map[string]any)["devTimescale"] == float64(4)
+	})
+	if d := sameKeys("delta", want(t, "snapshot-delta-timescale"), got, false); d != "" { // s hat daneben andere Änderungen
+		t.Fatal(d)
+	}
+
+	srv, m = wsServer(t)
+	y := hello(t, srv, "xbox")
+	create(y, "live", 0)
+	j = y.expect("joined")
+	y.expect("level")
+	if _, ok := y.expect("snap")["s"].(map[string]any)["devTimescale"]; ok {
+		t.Fatal("snap ohne Dev-Mode hat devTimescale")
+	}
+	r = m.Room(j["room"].(string))
+	for range 3 {
+		r.Tick()
+		if _, ok := y.expect("delta", "seats")["s"].(map[string]any)["devTimescale"]; ok {
+			t.Fatal("delta ohne Dev-Mode hat devTimescale")
+		}
 	}
 }

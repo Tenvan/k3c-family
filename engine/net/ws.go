@@ -77,8 +77,8 @@ func (c *conn) Level(depth int, layout level.Layout) {
 }
 
 // State schickt snap nach Level, sonst delta zum zuletzt gesendeten Zustand.
-func (c *conn) State(tick int, w *sim.World) {
-	s := stateOf(w)
+func (c *conn) State(tick int, w *sim.World, timescale int) {
+	s := stateOf(w, timescale)
 	msg := stateMsg{"snap", tick, c.seq.Load(), s}
 	if c.prev != nil {
 		msg.T, msg.S = "delta", deltaOf(c.prev, s)

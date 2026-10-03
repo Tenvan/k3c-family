@@ -1,6 +1,6 @@
 # DBG1.3 · Zeitraffer: mehrere Schritte je Tick, Faktor im Zustand
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Branch:** dbg1/3-zeitraffer
@@ -52,10 +52,10 @@ Bedienung im Client (DBG2), Faktoren über 8, Zeitraffer je Gerät, Pause oder R
 
 ## Fertig, wenn
 
-- [ ] AC-04: Test 5a belegt, dass ein Tick mit Faktor 4 (und 2) denselben Zustand ergibt wie 4 (2) normale Ticks bei gleichem Seed und gleicher Eingabe; Test 5b belegt den Normalfall Faktor 1 (`go test ./engine/room -run Dev`).
-- [ ] Faktor außerhalb 1, 2, 4, 8 wird abgelehnt, der Zeitraffer endet bei Pause, beide Spieler laufen weiter (Tests 5c, 5d, 5e).
-- [ ] Der Faktor steht im Snapshot nur im Dev-Mode (Test 6, Client-Test 7) und im Log (Test 5f); Beispiel und `docs/protocol.md` stimmen überein.
-- [ ] `task check:go` und `task check` grün; `engine/sim/` unverändert gegenüber DBG1.2.
+- [x] AC-04: Test 5a belegt, dass ein Tick mit Faktor 4 (und 2) denselben Zustand ergibt wie 4 (2) normale Ticks bei gleichem Seed und gleicher Eingabe; Test 5b belegt den Normalfall Faktor 1 (`go test ./engine/room -run Dev`).
+- [x] Faktor außerhalb 1, 2, 4, 8 wird abgelehnt, der Zeitraffer endet bei Pause, beide Spieler laufen weiter (Tests 5c, 5d, 5e).
+- [x] Der Faktor steht im Snapshot nur im Dev-Mode (Test 6, Client-Test 7) und im Log (Test 5f); Beispiel und `docs/protocol.md` stimmen überein.
+- [x] `task check:go` und `task check` grün; `engine/sim/` unverändert gegenüber DBG1.2.
 
 ## Prüfen
 
@@ -68,4 +68,10 @@ npx vitest run tests/planning.test.ts
 
 ## Ergebnis
 
-–
+2026-10-03, Agent (Claude Opus 5.5), Branch `dbg1/3-zeitraffer`.
+
+- **AC-04 geprüft:** `TestDevTimescaleGleichNormalenTicks` (`engine/room/dev_timescale_test.go`): Faktor 1, 2 und 4, je 30 Ticks gegen 30 × Faktor normale Ticks, gleicher Seed, zwei Spieler mit verschiedenen Eingaben; Welt je Stufe und `Stock` gleich. Gegenprobe: mit nur einem Schritt je Tick scheitert der Test.
+- Ungültige Faktoren 3, 0, −1, 9, 16 → `ErrBadRequest`, Faktor bleibt (`TestDevTimescaleUngueltig`); Ende bei Pause über `Leave` und `Drop` mit Log „Zeitraffer beendet“ (`TestDevTimescaleEndetBeiPause`); zwei Spieler laufen mit Faktor 4 je nach Eingabe, Log „Dev-Aktion … faktor=4“ (`TestDevTimescaleZweiSpielerUndLog`).
+- Zustand: `devTimescale` im `snap` (1) und im `delta` (4, Form wie `s2c-snapshot-delta-timescale.json`) nur im Dev-Mode, ohne Dev-Mode fehlt es (`TestDevTimescaleImZustand`, `engine/net/dev_test.go`); Client-Test in `clientDelta.test.ts`. `docs/protocol.md` beschreibt Aktion, Feld, `events` im Zeitraffer und Tick-Budget; „Tick zu langsam“ nennt `faktor`.
+- Tick-Budget: `BenchmarkIslandStep3Stages4Players` ≈ 29 µs je Schritt (PC), Faktor 8 ≈ 0,23 ms je Tick bei 33 ms Budget; nichts Auffälliges, kein Ticket.
+- `task check:go` grün (race lokal übersprungen, kein C-Compiler; prüft die CI), `task check` grün; `engine/sim/` unverändert.

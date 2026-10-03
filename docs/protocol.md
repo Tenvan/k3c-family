@@ -265,7 +265,14 @@ Aktion, Werte, Raum).
   aufgehoben, solange der Beutel nicht voll ist; der Rest bleibt liegen. Ein Slot, den das Gerät nicht hat, ist `bad_request`.
 - `material`: `amount` von `resource` (`wood`, `stone`, `copper`, `iron`, `crystal`) in den Vorrat der Insel des
   Monarchen von `slot`, höchstens bis zum Lager-Maximum; der Rest wird verworfen, kein Fehler.
-- `timescale`: Wirkung folgt mit DBG1.3, bis dahin `bad_request`.
+- `timescale`: `factor` 1, 2, 4 oder 8 (sonst `bad_request`) gilt für den ganzen Raum: Jeder Tick rechnet `factor`
+  Schritte mit je 1/`tickHz` s und denselben Eingaben, der Zustand ist derselbe wie nach `factor` normalen Ticks.
+  Verlässt das letzte Gerät den Raum (pausiert), ist der Faktor wieder 1; Beitreten beginnt mit 1. Im Dev-Mode steht
+  der Faktor in `s` von `snap` und `delta` als `devTimescale` (immer, auch 1; im Delta nur bei Änderung,
+  `s2c-snapshot-delta-timescale.json`), ohne Dev-Mode fehlt das Feld. `events` enthält im Zeitraffer nur die
+  Ereignisse des letzten Schritts, die übrigen Felder sind vollständig. Überschreitet ein Tick das Budget von
+  1/`tickHz` s, läuft der Raum langsamer (verpasste Ticks fallen weg) und rechnet weiter korrekt; die Warnung
+  „Tick zu langsam“ im Log nennt den `faktor`.
 
 ### Snapshot-Größe
 
