@@ -5,7 +5,7 @@
 - **Reife:** Entwurf | bereit
 - **Einschiebbar:** nein | ja
 - **Tickets:** B-000, B-000
-- **Start-Commit:** – (wird beim Aktivieren gesetzt: `git rev-parse --short origin/main`)
+- **Start-Commit:** – (wird beim Aktivieren gesetzt: `git rev-parse --short origin/develop`)
 - **Spec:** Entwurf | freigegeben | rückwirkend
 - **Revision:** 1
 - **Freigabe:** – (bei `freigegeben`: Datum und Quelle; umfasst die Ticket-Specs in ihrer aktuellen Revision)

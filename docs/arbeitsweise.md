@@ -47,6 +47,13 @@ Ticket und Sprint-README **sind** die Spec, eine eigene Spec-Datei gibt es nicht
   macht ein Agent nur, wenn die Session sie nennt und 🧑 sie für diesen Lauf freigegeben hat. Bestätigte Nachweise
   gelten weiter, solange ihre Grundlage unverändert ist; wer geprüft hat, steht im Ergebnis.
 
+## Branches
+
+- **`develop`** ist der Arbeitsstand. Session-Branches gehen von `origin/develop` ab, jeder PR zielt auf `develop`.
+- **`main`** ist geschützt und trägt nur Release-Stände. Nur 🧑 gleicht ihn bei einem neuen Major-Release ab,
+  per Fast-Forward: `git fetch && git push origin origin/develop:main`, danach Tag `v*` auf `main`
+  (startet `release.yml`; GitHub Pages baut aus `main`). Nie direkt auf `main` committen oder einen PR gegen `main` öffnen.
+
 ## Autonomer Ablauf (Mensch oder Cloud-Agent)
 
 Eine Session muss **ohne Rückfragen und ohne Planungs-Werkzeuge** abzuarbeiten sein. Deshalb:
@@ -61,7 +68,7 @@ Eine Session muss **ohne Rückfragen und ohne Planungs-Werkzeuge** abzuarbeiten 
    der Session in der Sprint-README (SDD), nicht eine eigene Auslegung.
 5. **Ergebnis** mit Nachweis je Kriterium ausfüllen, `Status: fertig` setzen, auch in der Session-Tabelle der Sprint-README. Neue Ideen oder
    Probleme als Ticket anlegen (Vorlage!) und in `backlog/README.md` eintragen. Gemeinsame Planungsdateien
-   (`backlog/README.md`, `sprints/README.md`) erst am Ende ändern. Vor dem PR `git fetch` und `git rebase origin/main`.
+   (`backlog/README.md`, `sprints/README.md`) erst am Ende ändern. Vor dem PR `git fetch` und `git rebase origin/develop`.
    PR öffnen (Vorlage), nicht selbst mergen.
 
 **Wenn etwas nicht passt** (Schritt unklar, Befehl scheitert unerklärlich, nötige Datei nicht erlaubt, Kriterium
@@ -108,7 +115,7 @@ Grenzfälle:
    `git mv docs/sprints/geplant/SPnn-name docs/sprints/aktiv/`,
    `Status: aktiv`, Fahrplan in `sprints/README.md` anpassen. Höchstens ein aktiver Sprint **je Domäne**;
    einschiebbare Sprints (`Einschiebbar: ja`) zählen nicht mit (B-174).
-   Das Feld `Start-Commit` setzt die **erste Session** des Sprints: `git rev-parse --short origin/main` vor ihrem Branch.
+   Das Feld `Start-Commit` setzt die **erste Session** des Sprints: `git rev-parse --short origin/develop` vor ihrem Branch.
 4. **Abschließen:** Die Review-Session verschiebt den Ordner nach `sprints/erledigt/` und setzt `Status: erledigt`.
 
 - **Klein:** 2–4 Sessions. In Code-Sprints ist die letzte das **Review**; Doku- und Planungs-Sprints (nur `docs/`)
@@ -132,7 +139,7 @@ Leicht und billig: Die Automatik prüft die Komplexität, das Review sucht nur *
 Modell (z. B. Sonnet) reicht.
 
 1. `task check` und `task check:go` → grün. Damit gelten die Grenzen aus dem Komplexitäts-Budget als geprüft.
-2. `git fetch && git diff <Start-Commit>..origin/main` lesen, **nur den Diff**, nicht jede Datei vollständig.
+2. `git fetch && git diff <Start-Commit>..origin/develop` lesen, **nur den Diff**, nicht jede Datei vollständig.
 3. Nur diese Befunde zählen:
    - falsches Verhalten oder Datenverlust (Spielstände, Berichte, Dateien)
    - Sicherheit: Pfade, Shell-Aufrufe, ungeprüfte Eingaben von außen
