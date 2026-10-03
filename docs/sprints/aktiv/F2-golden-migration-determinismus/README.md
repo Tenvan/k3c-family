@@ -1,11 +1,11 @@
 # F2 · INF · Golden-Ablauf, Spielstand-Migration und Determinismus
 
-- **Status:** geplant
+- **Status:** aktiv
 - **Domäne:** INF
 - **Reife:** bereit
 - **Einschiebbar:** nein
 - **Tickets:** B-137, B-138, B-071
-- **Start-Commit:** –
+- **Start-Commit:** 54c1657
 - **Spec:** freigegeben
 - **Revision:** 1
 - **Freigabe:** 2026-10-03, Chat (Ralf), Revision 1; umfasst B-137, B-138, B-071 (arm64-Runner: nativer GitHub-Runner, Rückfall qemu)
@@ -61,7 +61,7 @@ Runner für arm64: nativer arm64-Runner von GitHub oder Emulation (B-071, 🧑).
 
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
-| F2.1 | `F2.1-golden-update-arm64.md` | Umsetzung | autonom | offen |
+| F2.1 | `F2.1-golden-update-arm64.md` | Umsetzung | autonom | in Arbeit |
 | F2.2 | `F2.2-spielstand-migration.md` | Umsetzung | autonom | offen |
 | F2.3 | `F2.3-determinismus.md` | Umsetzung | autonom | offen |
 | F2.4 | `F2.4-review.md` | Review | autonom | offen |
