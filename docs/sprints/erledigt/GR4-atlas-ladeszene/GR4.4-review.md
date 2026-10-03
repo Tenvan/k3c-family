@@ -1,6 +1,6 @@
 # GR4.4 · Review und Abnahme des Sprints GR4
 
-- **Status:** in Arbeit
+- **Status:** fertig
 - **Typ:** Review
 - **Agent:** autonom
 - **Branch:** gr4/4-review
@@ -36,9 +36,9 @@ Stil, Optimierung, Messung an der Xbox.
 
 ## Fertig, wenn
 
-- [ ] AC-01 bis AC-03, AC-05 und AC-06 haben einen Nachweis im Ergebnis der jeweiligen Session oder sind mit Grund und Ticket verschoben.
-- [ ] AC-04 ist nachgewiesen oder als `angenommen, Validierung offen (GR4.3)` geführt.
-- [ ] Schwere Befunde sind behoben oder als Ticket angelegt; Sprint liegt unter `docs/sprints/erledigt/`.
+- [x] AC-01 bis AC-03, AC-05 und AC-06 haben einen Nachweis im Ergebnis der jeweiligen Session oder sind mit Grund und Ticket verschoben.
+- [x] AC-04 ist nachgewiesen oder als `angenommen, Validierung offen (GR4.3)` geführt.
+- [x] Schwere Befunde sind behoben oder als Ticket angelegt; Sprint liegt unter `docs/sprints/erledigt/`.
 
 ## Prüfen
 
@@ -49,4 +49,10 @@ task build
 
 ## Ergebnis
 
-–
+`task check` und `task check:go` grün (Race-Test lokal übersprungen, kein C-Compiler; die CI prüft ihn). Diff `origin/develop...origin/sprint/gr4` gelesen. Atlas-Erzeugung deterministisch (Test aus GR4.1 unverändert), keine neue Abhängigkeit, Ladefehler zeigen Meldung, B nicht belegt.
+
+Nachweis: AC-01 (GR4.1), AC-02, AC-03, AC-06 (GR4.2, im Browser-Pane geprüft), AC-05 (`task check`, `task build` in GR4.1/GR4.2; hier `task check` erneut), AC-04 angenommen, Validierung offen (GR4.3).
+
+Schwere Befunde, behoben in INF:
+- B-196: CI-, Pages- und Release-Workflow bauten ohne `setup-go` (Atlas braucht Go).
+- Dockerfile baute das Web-Bundle per `vite build` ohne Atlas und `.dockerignore` schloss `tools/` aus; das Image hätte die Lade-Szene mit Fehlermeldung gezeigt. Neue Stufe `atlas` (Image nicht lokal gebaut, ungeprüft; der CI-Job `docker` prüft `/game.html`, aber nicht den Atlas).

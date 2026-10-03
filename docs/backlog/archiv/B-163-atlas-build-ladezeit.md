@@ -3,7 +3,7 @@
 - **Domäne:** INF
 - **Typ:** Idee
 - **Prio:** mittel
-- **Status:** eingeplant
+- **Status:** erledigt
 - **Sprint:** GR4
 - **Erstellt:** 2026-10-02
 - **Spec:** freigegeben
@@ -61,3 +61,5 @@ keine
 Lücke 11 aus `docs/plan-weiterentwicklung.md` § 4. Hängt an X1 (Messung auf der Xbox) und B-161 (Liste der genutzten Grafiken).
 
 **Messwerte GR4.2 (Browser-Pane, Go-Server, `game.html`):** Grafik-Requests beim Start vorher 41 PNGs (14 genutzte Sheets, je Animation eine Datei; aus `data/sprites.json` gezählt, Loader-Code unverändert bis GR4.2), nachher 2 (`atlas/atlas.json`, `atlas/atlas-0.png`). Kaltstart auf der Xbox: GR4.3.
+
+Erledigt in GR4 (Review GR4.4, 2026-10-03). AC-03 (Kaltstart-Budget, Messung an der Xbox): angenommen, Validierung offen (GR4.3); Annahme: Texturgröße 4096 (Atlas 4067 x 1004).
