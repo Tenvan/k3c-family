@@ -6,9 +6,9 @@
 - **Einschiebbar:** ja
 - **Tickets:** B-162
 - **Start-Commit:** –
-- **Spec:** Entwurf
+- **Spec:** freigegeben
 - **Revision:** 1
-- **Freigabe:** –
+- **Freigabe:** 2026-10-03, Chat (Ralf), Revision 1, durch 🧑; umfasst B-162; mit Änderungen aus dem Spec-Review (3 Kandidaten nach Q14, Figuren-Lücken als B-193, Reihenfolge nach GR1)
 
 ## Ausgangslage
 
@@ -28,11 +28,11 @@ B-162 › Anforderungen.
 
 ## Nicht-Ziele
 
-Einbau (GR3), Atlas (GR4), selbst gezeichnete Grafiken, Lizenzen außer CC0 und CC-BY.
+Einbau (GR3), Atlas (GR4), selbst gezeichnete Grafiken, Lizenzen außer CC0 und CC-BY, Figuren-Lücken unter `public/sprites/` (B-193).
 
 ## Regeln und Einschränkungen
 
-Credits sofort in `public/grafik/CREDITS.md` und `lizenzen.html` (Test `src/tools/grafikPacks.test.ts`); keine Musik und kein Demo-Code im Repo. Läuft parallel zu GR1, braucht dessen Lückenliste.
+Credits sofort in `public/grafik/CREDITS.md` und `lizenzen.html` (Test `src/tools/grafikPacks.test.ts`); keine Musik und kein Demo-Code im Repo. Läuft nach GR1, braucht dessen Lückenliste (GR2.1 nach GR1.3).
 
 ## Beispiele
 
@@ -44,7 +44,7 @@ Kein Treffer → Platzhalter bleibt, Vermerk in der Tabelle. Widersprüchliche L
 
 ## Akzeptanzkriterien
 
-- **AC-01** Zu jeder Lücke liegt eine Kandidatenliste mit mindestens zwei Einträgen vor (B-162/AC-01).
+- **AC-01** Zu jeder Lücke liegt eine Kandidatenliste mit drei Einträgen vor, weniger nur mit Vermerk, wenn die Suche nicht mehr hergibt (Q14, B-162/AC-01).
 - **AC-02** 🧑 hat je Lücke gewählt oder „kein Treffer“ bestätigt (B-162/AC-02).
 - **AC-03** Gewählte Assets liegen unter `public/grafik/` mit Lizenzdatei, Index- und Credit-Eintrag, `task test` ist grün (B-162/AC-03).
 - **AC-04** Die Zuordnungstabelle zeigt für jede entschiedene Lücke den neuen Status (B-162/AC-04).

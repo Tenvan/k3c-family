@@ -6,9 +6,9 @@
 - **Status:** eingeplant
 - **Sprint:** GR6
 - **Erstellt:** 2026-10-02
-- **Spec:** Entwurf
+- **Spec:** freigegeben
 - **Revision:** 1
-- **Freigabe:** –
+- **Freigabe:** 2026-10-03, Chat (Ralf), Revision 1, durch 🧑; mit Sprint GR6; mit Änderungen aus dem Spec-Review (CREDITS-Dateien als einzige Quelle, Nicht-Ziel Übersetzung nach Q05)
 
 ## Ausgangslage
 
@@ -24,14 +24,14 @@ Spieler (sehen die Danksagung), Urheber der Assets, Entwickler und Agenten (Test
 
 ## Anforderungen
 
-- Die Credits-Seite (Erweiterung von `lizenzen.html` oder Ersatz, Entscheidung in der Session) erzeugt ihre Einträge aus den CREDITS-Dateien beziehungsweise aus einer gemeinsamen Datenquelle, nicht aus Handtext.
+- Die Credits-Seite (Erweiterung von `lizenzen.html` oder Ersatz, Entscheidung in der Session) erzeugt ihre Einträge aus den CREDITS-Dateien als einziger Quelle (`?raw`-Import), nicht aus Handtext und nicht aus einer zweiten Datei.
 - Test: Jedes Verzeichnis unter `public/grafik/` und `public/sprites/` (später `public/audio/`) hat einen Eintrag in der zugehörigen CREDITS-Datei und auf der Seite.
 - CC-BY-Einträge zeigen Urheber, Lizenz und Quelle sichtbar.
 - Die Seite hält die Regeln aus `CLAUDE.md` ein (Home-Button, Eintrag in `src/landing/pages.ts`).
 
 ## Nicht-Ziele
 
-Neue Assets, Lizenz des Projekts (`LICENSE`), Englisch (B-145, B-023).
+Neue Assets, Lizenz des Projekts (`LICENSE`), Übersetzung der Seitentexte (Q05: Deutsch und Englisch, zentrale Texte über B-172 in S5).
 
 ## Regeln und Einschränkungen
 
@@ -48,7 +48,7 @@ CREDITS-Eintrag ohne Verzeichnis (Asset entfernt) → Test rot. Eintrag ohne Liz
 ## Akzeptanzkriterien
 
 - **AC-01** Test: Jedes Verzeichnis unter `public/grafik/` und `public/sprites/` hat einen Eintrag in der zugehörigen CREDITS-Datei; ein Verzeichnis ohne Eintrag macht den Test rot.
-- **AC-02** Die Credits-Seite zeigt alle Einträge der CREDITS-Dateien, erzeugt aus den Dateien oder einer gemeinsamen Datenquelle (Test auf Übereinstimmung).
+- **AC-02** Die Credits-Seite zeigt alle Einträge der CREDITS-Dateien, erzeugt aus den CREDITS-Dateien als einziger Quelle (Test).
 - **AC-03** Alle CC-BY-Einträge (Warped Caves, LPC-Reittiere) zeigen Urheber, Lizenz und Quelle auf der Seite (Test).
 - **AC-04** Die Seite ist über die Landingpage erreichbar, hat `installPageChrome()`; `task check` ist grün.
 

@@ -14,7 +14,7 @@ Für jede Lücke aus `docs/assets/zuordnung.md` liegt eine Referenzseite unter `
 
 ## Kontext
 
-- **Beschluss Q14:** Auswahl auf einer Referenzseite im Browser (G1-Muster), **3 Kandidaten je Lücke** (Spec verlangt mindestens 2; 3 erfüllt beides). Weniger als 3 nur, wenn die Suche nicht mehr hergibt — dann mit Vermerk; unter 2 → „kein Treffer“-Vorschlag.
+- **Beschluss Q14:** Auswahl auf einer Referenzseite im Browser (G1-Muster), **3 Kandidaten je Lücke** (Spec verlangt 3). Weniger als 3 nur, wenn die Suche nicht mehr hergibt — dann mit Vermerk; unter 2 → „kein Treffer“-Vorschlag.
 - Vorbild: `docs/funde/b010-grafik-funde.html` (eigenständige HTML-Seite mit Vorschau, Links und Bewertung; Recherche zu B-010).
 - **Lücken:** fett markierte Zeilen in `docs/assets/zuordnung.md` (GR1; dort je Lücke ein Ticket, hier B-162). Bekannt ohne Treffer laut B-010: Mine-Hintergrund, Rekrutierungslager, Werkstatt, Farm, Kaserne, Treppen; dazu Materialstufen, Hub-Stufen, Icons usw. aus GR1.3. Lücken „später“ (Bosse, Skill-Icons) nur, wenn GR1 sie nicht als „später“ markiert.
 - **Quellen:** OpenGameArt, itch.io (nur CC0 oder CC-BY), Kenney (CC0). Keine CC-BY-NC, keine unklare Lizenz; widersprüchliche Angaben → strengere gilt.
@@ -41,7 +41,7 @@ Auswahl (GR2.2), Dateien unter `public/grafik/` (GR2.3), Einbau (GR3), selbst ge
 
 ## Fertig, wenn
 
-- [ ] AC-01: Referenzseite unter `docs/funde/` mit Kandidaten (mindestens 2, Ziel 3) je Lücke, jeweils Link, Vorschau, Lizenz, Urheber, Stilbewertung.
+- [ ] AC-01: Referenzseite unter `docs/funde/` mit 3 Kandidaten je Lücke (weniger nur mit Vermerk), jeweils Link, Vorschau, Lizenz, Urheber, Stilbewertung.
 - [ ] `task check` grün.
 
 ## Prüfen

@@ -28,7 +28,7 @@ Jeder CC-BY-Eintrag zeigt auf der Credits-Seite Urheber, Lizenz und Quelle als L
 
 ## Nicht-Ziele
 
-Neue Assets, Sound-Credits, neue Seite neben `lizenzen.html`, Englisch, Umbau der Shell.
+Neue Assets, Sound-Credits, neue Seite neben `lizenzen.html`, Übersetzung (B-172), Umbau der Shell.
 
 ## Schritte
 
