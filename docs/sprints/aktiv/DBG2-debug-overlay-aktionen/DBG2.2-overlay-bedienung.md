@@ -1,6 +1,6 @@
 # DBG2.2 · Overlay-Ansicht mit Aktionen, Zeitfaktor und Bedienung
 
-- **Status:** offen
+- **Status:** in Arbeit
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Branch:** dbg2/2-overlay-bedienung
