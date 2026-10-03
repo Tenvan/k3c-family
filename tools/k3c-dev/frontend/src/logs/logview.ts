@@ -10,14 +10,14 @@ export type Tab = (typeof TABS)[number];
 export const LIMITS = [100, 200, 500] as const;
 export const LEVEL_FILTERS = ['', 'DEBUG', 'INFO', 'WARN', 'ERROR'] as const; // '' = Alle
 
-/** `Log` und `Fehler` gibt es nur für Log-Dateien; bei Läufen und Diensten nur die Konsole. */
-export function tabEnabled(tab: Tab, kind: string): boolean {
-  return tab === 'konsole' || kind === 'log';
+/** `Log` und `Fehler` gibt es nur, wenn zur Quelle eine Log-Datei gehört; sonst nur die Konsole. */
+export function tabEnabled(tab: Tab, hasLog: boolean): boolean {
+  return tab === 'konsole' || hasLog;
 }
 
 /** Gemerkter Reiter, solange er für die Quelle geht; sonst `Konsole`. */
-export function pickTab(wanted: Tab, kind: string): Tab {
-  return tabEnabled(wanted, kind) ? wanted : 'konsole';
+export function pickTab(wanted: Tab, hasLog: boolean): Tab {
+  return tabEnabled(wanted, hasLog) ? wanted : 'konsole';
 }
 
 const LEVEL_TONES: Record<string, Tone> = { DEBUG: 'neutral', INFO: 'info', WARN: 'warn', ERROR: 'error' };

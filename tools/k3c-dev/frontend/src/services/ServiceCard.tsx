@@ -3,14 +3,24 @@ import { useState } from 'react';
 import { backend, type ServiceStatus } from '../api';
 import { errorText } from '../lib/errors';
 import { StatusBadge } from '../ui/parts';
+import { RoleTags } from '../logs/RoleTags';
 import { LogBox } from './LogBox';
 import { badgeFor, buttonsFor, metricsOf, type Command } from './tables';
 
 const ADOPTED_HINT =
   'Vor dem Start von k3c-dev gestartet: keine Konsolenausgabe, kein Auto-Restart. Stoppen nur nach Bestätigung.';
 
-/** Karte eines Dienstes (B-068 › Karten). Den Zustand nach einem Befehl liefert das nächste Ereignis. */
-export function ServiceCard({ s }: { s: ServiceStatus }) {
+interface Props {
+  s: ServiceStatus;
+  selected: boolean;
+  onSelect: () => void;
+}
+
+/**
+ * Karte eines Dienstes (B-068 › Karten). Den Zustand nach einem Befehl liefert das nächste Ereignis; ein Klick
+ * auf die Karte zeigt rechts Konsole und Log des Dienstes.
+ */
+export function ServiceCard({ s, selected, onSelect }: Props) {
   const [busy, setBusy] = useState<Command | null>(null);
   const [error, setError] = useState('');
   const [confirm, setConfirm] = useState(false);
@@ -43,14 +53,16 @@ export function ServiceCard({ s }: { s: ServiceStatus }) {
   );
 
   return (
-    <div className="svc-card">
+    <div className={selected ? 'svc-card svc-card-on' : 'svc-card'} onClick={onSelect}>
       <div className="svc-head">
         <div>
-          <div className="svc-name">{s.name}</div>
+          <button className="svc-name" onClick={onSelect} aria-current={selected}>{s.name}</button>
           <div className="svc-port">Port {s.port}</div>
         </div>
         <StatusBadge tone={badge.tone}>{badge.label}</StatusBadge>
       </div>
+      <RoleTags tags={s.tags} />
+      {s.description && <p className="svc-desc">{s.description}</p>}
       <code className="svc-health">{s.health}</code>
       <dl className="svc-metrics">
         <Metric label="PID" value={m.pid} />

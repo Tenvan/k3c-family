@@ -3,8 +3,6 @@ import { useEffect, useState } from 'react';
 import { backend, type McpState } from './api';
 import { Header, PAGES, type Page } from './Header';
 import { loadPref, savePref } from './lib/prefs';
-import { GitPage } from './git/GitPage';
-import { LogsPage } from './logs/LogsPage';
 import { McpPage } from './mcp/McpPage';
 import { PlanningPage } from './planning/PlanningPage';
 import { ServicesPage } from './services/ServicesPage';
@@ -50,12 +48,6 @@ export function App() {
           </Tabs.Content>
           <Tabs.Content value="planung">
             <PlanningPage />
-          </Tabs.Content>
-          <Tabs.Content value="git">
-            <GitPage />
-          </Tabs.Content>
-          <Tabs.Content value="logs">
-            <LogsPage />
           </Tabs.Content>
           <Tabs.Content value="mcp">
             <McpPage />
