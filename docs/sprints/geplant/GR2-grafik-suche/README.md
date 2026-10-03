@@ -2,7 +2,7 @@
 
 - **Status:** geplant
 - **Domäne:** CLI
-- **Reife:** Entwurf
+- **Reife:** bereit
 - **Einschiebbar:** ja
 - **Tickets:** B-162
 - **Start-Commit:** –
@@ -56,12 +56,15 @@ Kein Treffer → Platzhalter bleibt, Vermerk in der Tabelle. Widersprüchliche L
 
 ## Sessions
 
-Entwurf. Vor dem Aktivieren jede Session als Datei nach `docs/vorlagen/session.md` schreiben, die Kriterien in Klammern werden ihr Feld `Kriterien`.
+| Nr. | Datei | Typ | Agent | Status |
+|---|---|---|---|---|
+| GR2.1 | `GR2.1-recherche-kandidaten.md` | Umsetzung | autonom | offen |
+| GR2.2 | `GR2.2-workshop-auswahl.md` | Workshop | Mensch | offen |
+| GR2.3 | `GR2.3-assets-einbinden.md` | Umsetzung | autonom | offen |
+| GR2.4 | `GR2.4-review.md` | Review | autonom | offen |
 
-- GR2.1 Recherche: Kandidaten je Lücke mit Vorschau, Lizenz, Stilbewertung (AC-01).
-- GR2.2 🧑 Workshop (Agent: Mensch): je Lücke wählen (AC-02).
-- GR2.3 Gewählte Assets einbinden, Credits, Tabelle aktualisieren (AC-03, AC-04).
-- GR2.4 Review (AC-05).
+Bei `Reife: Entwurf` genügen Stichpunkte mit den Kriterien in Klammern statt Session-Dateien. Vor dem Aktivieren
+wird jede Session als eigene Datei nach `docs/vorlagen/session.md` geschrieben.
 
 ## Abnahme
 
