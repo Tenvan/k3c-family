@@ -3,7 +3,7 @@
 - **Domäne:** PLAT
 - **Typ:** Frage
 - **Prio:** hoch
-- **Status:** eingeplant
+- **Status:** erledigt
 - **Sprint:** X1
 - **Erstellt:** 2026-09-29
 - **Spec:** freigegeben
