@@ -362,6 +362,8 @@ export interface Events {
   'mcp:start': McpCall;
   'mcp:call': McpCall;
   'task:state': TaskRun;
+  /** Eine Datei der Planung (docs/sprints, docs/backlog, Plan, Fragenkatalog) hat sich geändert; ohne Nutzlast. */
+  'planning:changed': null;
 }
 
 export type EventName = keyof Events;
