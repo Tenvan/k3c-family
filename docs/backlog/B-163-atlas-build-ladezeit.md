@@ -6,9 +6,9 @@
 - **Status:** eingeplant
 - **Sprint:** GR4
 - **Erstellt:** 2026-10-02
-- **Spec:** Entwurf
+- **Spec:** freigegeben
 - **Revision:** 1
-- **Freigabe:** –
+- **Freigabe:** 2026-10-03, Chat (Ralf), Revision 1, durch 🧑; mit Sprint GR4; mit Änderungen aus dem Spec-Review (Voraussetzungen, AC-06 Ladefehler, Texturgröße in GR4.3)
 
 ## Ausgangslage
 
@@ -24,7 +24,7 @@ Spieler am TV (Edge auf der Xbox); Entwickler und Agenten bauen und messen; 🧑
 
 ## Anforderungen
 
-- Aufgabe `task atlas` (Eintrag in `Taskfile.yml`) erzeugt Atlas-Bild und -Beschreibung aus den im Spiel genutzten Grafiken (Quelle: Zuordnung aus B-161); Ergebnis eingebunden in `task build`.
+- Aufgabe `task atlas` (Eintrag in `Taskfile.yml`) erzeugt Atlas-Bild und -Beschreibung aus den im Spiel genutzten Grafiken (Quelle: `data/sprites.json`, nach GR1/GR3 zusätzlich die Zuordnung aus B-161); Ergebnis eingebunden in `task build`.
 - Das Spiel lädt Atlanten statt Einzeldateien; Anzahl der Requests beim Start gesenkt, Messwert vorher und nachher im Ticket.
 - Budget „Kaltstart bis Menü“ in Sekunden auf der Xbox, Messung über die Gamepad-Testseite oder eine Messung im Browser (Wert legt 🧑 fest, Startwert aus der ersten Messung).
 - Atlas-Erzeugung deterministisch (gleiche Eingabe, gleiche Ausgabe).
@@ -49,7 +49,7 @@ Ein Quell-Bild fehlt → `task atlas` bricht mit Dateinamen ab. Atlas wird zu gr
 
 - **AC-01** `task atlas` erzeugt Atlas-Bild und -Beschreibung; zweimaliger Lauf liefert byte-gleiche Dateien.
 - **AC-02** Das Spiel lädt die Figuren und die eingebauten Umgebungs-Grafiken aus Atlanten; die Zahl der Grafik-Requests beim Start ist gegenüber vorher gemessen und dokumentiert.
-- **AC-03** Ein Kaltstart-Budget in Sekunden ist festgelegt, am TV (Xbox) gemessen und in `docs/game-design.md` oder diesem Ticket festgehalten.
+- **AC-03** Ein Kaltstart-Budget in Sekunden ist festgelegt, am TV (Xbox) gemessen und in `docs/game-design.md` oder diesem Ticket festgehalten; die maximale Texturgröße (`MAX_TEXTURE_SIZE`) der Xbox steht daneben.
 - **AC-04** `task check` und `task build` sind grün.
 
 ## Offene Fragen

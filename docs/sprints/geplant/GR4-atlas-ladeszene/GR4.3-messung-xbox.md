@@ -29,12 +29,13 @@ Code-Änderungen; Budget verfehlt → Ticket (INF bzw. CLI).
 
 1. Stand mit Atlas und Lade-Szene (`task serve` oder Pi) im Heimnetz bereitstellen.
 2. Auf der Xbox Edge-Cache leeren, `index.html` öffnen, Spiel starten bis Menü/Lobby; dreimal messen.
-3. Budget festlegen (z. B. Median plus Reserve), in B-163 und hier eintragen; liegt der Wert über dem Gewünschten, Ticket.
-4. `Status: fertig`.
+3. Maximale Texturgröße ablesen (`MAX_TEXTURE_SIZE` in Edge auf der Xbox, z. B. über eine WebGL-Report-Seite); liegt sie unter 4096 px, Ticket für GR4.1 (Startwert angenommen).
+4. Budget festlegen (z. B. Median plus Reserve), in B-163 und hier eintragen; liegt der Wert über dem Gewünschten, Ticket.
+5. `Status: fertig`.
 
 ## Fertig, wenn
 
-- [ ] AC-04: Budget in Sekunden festgelegt, Messung am TV (Xbox) im Ergebnis und in B-163.
+- [ ] AC-04: Budget in Sekunden festgelegt, Messung am TV (Xbox) und maximale Texturgröße im Ergebnis und in B-163.
 
 ## Prüfen
 

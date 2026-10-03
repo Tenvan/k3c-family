@@ -6,9 +6,9 @@
 - **Einschiebbar:** nein
 - **Tickets:** B-124, B-125
 - **Start-Commit:** –
-- **Spec:** Entwurf
+- **Spec:** freigegeben
 - **Revision:** 1
-- **Freigabe:** –
+- **Freigabe:** 2026-10-03, Chat (Ralf), Revision 1, durch 🧑; umfasst B-124, B-125
 
 ## Ausgangslage
 

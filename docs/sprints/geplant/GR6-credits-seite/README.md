@@ -6,9 +6,9 @@
 - **Einschiebbar:** ja
 - **Tickets:** B-165
 - **Start-Commit:** –
-- **Spec:** Entwurf
+- **Spec:** freigegeben
 - **Revision:** 1
-- **Freigabe:** –
+- **Freigabe:** 2026-10-03, Chat (Ralf), Revision 1, durch 🧑; umfasst B-165; mit Änderungen aus dem Spec-Review (CREDITS-Dateien als einzige Quelle, Nicht-Ziel Übersetzung nach Q05)
 
 ## Ausgangslage
 
@@ -28,7 +28,7 @@ B-165 › Anforderungen.
 
 ## Nicht-Ziele
 
-Neue Assets, Englisch, Projekt-`LICENSE`.
+Neue Assets, Übersetzung der Seitentexte (Q05: Deutsch und Englisch, zentrale Texte über B-172 in S5), Projekt-`LICENSE`.
 
 ## Regeln und Einschränkungen
 
@@ -45,7 +45,7 @@ Eintrag ohne Verzeichnis oder ohne Lizenz → Test rot.
 ## Akzeptanzkriterien
 
 - **AC-01** Jedes Verzeichnis unter `public/grafik/` und `public/sprites/` hat einen Credit-Eintrag, ein fehlender Eintrag macht den Test rot (B-165/AC-01).
-- **AC-02** Die Seite zeigt alle Einträge der CREDITS-Dateien, erzeugt aus den Dateien oder einer gemeinsamen Quelle (B-165/AC-02).
+- **AC-02** Die Seite zeigt alle Einträge der CREDITS-Dateien, erzeugt aus den CREDITS-Dateien als einziger Quelle, ohne zweite gepflegte Kopie (B-165/AC-02).
 - **AC-03** CC-BY-Einträge zeigen Urheber, Lizenz und Quelle (B-165/AC-03).
 - **AC-04** Die Seite ist über die Landingpage erreichbar, `task check` ist grün (B-165/AC-04).
 

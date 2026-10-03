@@ -17,7 +17,7 @@ Die Zuordnung deckt zusätzlich Hub-Stufen 1–5, Mauer-/Turm-Materialstufen, di
 - Regeln: `docs/rules/materialien-gebaeude.md` (§ 1 Materialien Holz, Stein, Kupfer, Eisen, Kristall, Adern, Plantage; § 2 Hub-Stufen; § 3.1 Mauer und Turm Stufe 1–5, Turm-Stufe 5 = Zaubertum). Diese Objekte gibt es teils noch nicht im Code (B-112, W1; B-114, W2); sie werden trotzdem als Zeile erfasst, Herkunft = Regel.
 - Truhen: `data/economy.json` › `chestGold`; Portale und Münzen: Packs `portals-32-x-48`, `16x16-small-and-medium-coin-animation`, `gold-treasure-icons-16x16`; Erze: `various-stones-and-oregem-veins-16x16`; Hintergründe: `forest-background`, `blue-cave-background`, `sunnyland-*`, `gothicvania-*`, `warped-caves-pixel-art-pack`; Biome: `data/biomes/` (Wald, Höhle, Mine; Mine ohne Treffer laut B-161).
 - Icons: Gruppe `icons` in `public/grafik/index.json` (11 Bilder); Skill-Icons gibt es noch nicht (Skills B-119) → Lücke, später.
-- Bosse und Reittier-Mechanik nur als „Lücke, später“ (B-161 › Nicht-Ziele).
+- Bosse nur als „Lücke, später“ (B-161 › Nicht-Ziele). Reittiere (Q23) als zugeordnete Zeilen aus `data/sprites.json` › `mounts`.
 - Stil je Pack aus GR1.1; Test aus GR1.2 prüft Credits und Lücken-Tickets auch für die neuen Zeilen.
 
 ## Erlaubte Dateien
