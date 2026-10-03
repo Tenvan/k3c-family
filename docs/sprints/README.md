@@ -11,6 +11,7 @@ Reihenfolge in Wellen, Bahnen je Domäne und Zuordnung Mensch/autonom (zwei Acco
 | Sprint | Domäne | Thema | Am Ende sichtbar | Ordner |
 |---|---|---|---|---|
 | F4 | SRV | Feedback-Ereignisse im Protokoll und Pi-Betrieb | Benchmark mit Bytes je Tick, README-Abschnitt zum Backup, Test „Restore ohne Berechtigung abgelehnt“ | `aktiv/F4-feedback-events-protokoll-pi/` |
+| GR4 | INF | Atlas und Lade-Szene | `task atlas`, ein Balken beim Start, ein Messwert vom TV | `aktiv/GR4-atlas-ladeszene/` |
 
 ## Offen am Gerät
 
@@ -64,7 +65,6 @@ dann über den Go-Server mit mehreren Räumen und gemischten Spielern.
 | GR1 | CLI | Grafik-Zuordnungstabelle | bereit | `geplant/GR1-grafik-zuordnung/` |
 | GR2 | CLI | Grafik-Suche für Lücken | bereit | `geplant/GR2-grafik-suche/` |
 | GR3 | CLI | Grafik im Renderer | Entwurf | `geplant/GR3-grafik-renderer/` |
-| GR4 | INF | Atlas und Lade-Szene | bereit | `geplant/GR4-atlas-ladeszene/` |
 | GR5 | CLI | Juice: Treffer, Screenshake, Münzen | Entwurf | `geplant/GR5-juice/` |
 | GR6 | PLAT | Credits-Seite | bereit | `geplant/GR6-credits-seite/` |
 | RL1 | INF | Release-Checkliste | bereit | `geplant/RL1-release-checkliste/` |
