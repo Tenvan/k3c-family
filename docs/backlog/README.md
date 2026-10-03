@@ -97,7 +97,7 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-163](B-163-atlas-build-ladezeit.md) | INF | Idee | mittel | eingeplant | GR4 | Die Spiel-Grafiken kommen aus einem Atlas, der Kaltstart hat ein Zeitbudget |
 | [B-164](B-164-juice-treffer-screenshake.md) | CLI | Idee | mittel | eingeplant | GR5 | Treffer, Münzen und Bauen haben sichtbare Rückmeldung, Screenshake und Blitze sind abschaltbar |
 | [B-165](B-165-credits-seite.md) | PLAT | Idee | mittel | eingeplant | GR6 | Eine Credits-Seite entsteht aus den CREDITS-Dateien, ein Test prüft die Vollständigkeit |
-| [B-166](B-166-audio-autoplay-formate-xbox.md) | PLAT | Frage | hoch | offen | – | Audio-Autoplay und Formate auf Edge der Xbox sind geprüft |
+| [B-166](B-166-audio-autoplay-formate-xbox.md) | PLAT | Frage | hoch | eingeplant | X1 | Audio-Autoplay und Formate auf Edge der Xbox sind geprüft |
 | [B-167](B-167-sfx-katalog.md) | CLI | Idee | mittel | eingeplant | SO2 | Jedes wichtige Ereignis hat einen Sound mit Quelle und Lizenz |
 | [B-168](B-168-musik-je-zustand.md) | CLI | Idee | mittel | eingeplant | SO4 | Die Musik wechselt je Spielzustand mit Crossfade |
 | [B-169](B-169-hoerprobenseite-soundtest.md) | PLAT | Idee | mittel | eingeplant | SO3 | Eine Hörprobenseite spielt Kandidaten für Musik und Effekte ab |
