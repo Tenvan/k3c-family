@@ -2,7 +2,7 @@
 
 - **Status:** geplant
 - **Domäne:** CLI
-- **Reife:** Entwurf
+- **Reife:** bereit
 - **Einschiebbar:** ja
 - **Tickets:** B-161
 - **Start-Commit:** –
@@ -57,12 +57,15 @@ Objekt in `data/` ohne Zeile → Test rot. Asset ohne Credit → Test rot.
 
 ## Sessions
 
-Entwurf. Vor dem Aktivieren jede Session als Datei nach `docs/vorlagen/session.md` schreiben, die Kriterien in Klammern werden ihr Feld `Kriterien`.
+| Nr. | Datei | Typ | Agent | Status |
+|---|---|---|---|---|
+| GR1.1 | `GR1.1-workshop-stil.md` | Workshop | Mensch | offen |
+| GR1.2 | `GR1.2-tabelle-test.md` | Umsetzung | autonom | offen |
+| GR1.3 | `GR1.3-restliche-objekte.md` | Umsetzung | autonom | offen |
+| GR1.4 | `GR1.4-review.md` | Review | autonom | offen |
 
-- GR1.1 🧑 Workshop (Agent: Mensch): Grundstil festlegen (AC-05).
-- GR1.2 Tabelle mit Gebäuden, Gegnern, Truppen und Vollständigkeits-Test (AC-01, AC-03, AC-04).
-- GR1.3 Restliche Objekte erfassen (AC-02).
-- GR1.4 Review (AC-06).
+Bei `Reife: Entwurf` genügen Stichpunkte mit den Kriterien in Klammern statt Session-Dateien. Vor dem Aktivieren
+wird jede Session als eigene Datei nach `docs/vorlagen/session.md` geschrieben.
 
 ## Abnahme
 
