@@ -28,7 +28,7 @@ Stil, Optimierung, Umbau, Server und Protokoll (DBG1).
 ## Schritte
 
 1. Branch anlegen, `Status: in Arbeit`. `task check` und `task check:go` grün.
-2. `git fetch && git diff <Start-Commit>..origin/main` lesen (nur den Diff), Befunde nach `docs/arbeitsweise.md` behandeln.
+2. `git fetch && git diff <Start-Commit>..origin/develop` lesen (nur den Diff), Befunde nach `docs/arbeitsweise.md` behandeln.
 3. Nachweis je Kriterium AC-01 bis AC-05 aus den Ergebnissen von DBG2.1 bis DBG2.3 prüfen (Tests wörtlich, Zeitfaktor-Anzeige, Abnahme am Gerät mit Datum); ist DBG2.3 noch offen, steht das Kriterium der Abnahme als `angenommen, Validierung offen (DBG2.3)`, DBG2.3 kommt in den Fahrplan unter „Offen am Gerät“.
 4. Abnahme (höchstens fünf Zeilen) in die Sprint-README schreiben.
 5. B-179 auf `erledigt` setzen und nach `docs/backlog/archiv/` verschieben (Index-Zeile in „Archiv“); `docs/roadmap.md` anpassen, falls dort erwähnt.

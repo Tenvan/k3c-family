@@ -10,7 +10,7 @@
 
 ## Ziel
 
-Zwei getestete reine Funktionen liegen auf `main`: eine macht aus der Overlay-Auswahl die zu sendende `dev`-Nachricht (bei unbekannter Auswahl nichts), die andere sagt, ob die Aktionsliste sichtbar ist (nur bei aktivem Overlay und Dev-Mode des Raums). Eine Oberfläche gibt es noch nicht.
+Zwei getestete reine Funktionen liegen auf `develop`: eine macht aus der Overlay-Auswahl die zu sendende `dev`-Nachricht (bei unbekannter Auswahl nichts), die andere sagt, ob die Aktionsliste sichtbar ist (nur bei aktivem Overlay und Dev-Mode des Raums). Eine Oberfläche gibt es noch nicht.
 
 ## Kontext
 
@@ -34,7 +34,7 @@ Zeichnen, Eingabe, Senden über die Verbindung, Zeitfaktor-Anzeige (DBG2.2), Än
 
 ## Schritte
 
-1. Branch anlegen, `Status: in Arbeit`; Start-Commit des Sprints eintragen, falls noch leer (`git rev-parse --short origin/main`). `docs/protocol.md` und `testdata/protocol/c2s-dev*.json` lesen: Nachrichtenform und Name des Zustandsfelds für den Zeitfaktor notieren.
+1. Branch anlegen, `Status: in Arbeit`; Start-Commit des Sprints eintragen, falls noch leer (`git rev-parse --short origin/develop`). `docs/protocol.md` und `testdata/protocol/c2s-dev*.json` lesen: Nachrichtenform und Name des Zustandsfelds für den Zeitfaktor notieren.
 2. Falls `src/online/clientProtocol.ts` die Nachricht `dev` oder den Code `forbidden` noch nicht kennt, die Typen genau nach dem Protokoll ergänzen.
 3. `debugActions.ts` anlegen: Die Aktionen als Daten (Gruppe, Beschriftung, Auswahl-Schlüssel): Gold 10/50/100, Material Holz/Stein/Kupfer/Eisen/Kristall je 50, Zeit 1×/2×/4×/8×. Reihenfolge und Beschriftungen wie im Ticket („Gold 50“, „Zeit 8×“).
 4. `devMessage(selection, slot)` schreiben: liefert die `dev`-Nachricht (Typ aus `clientProtocol.ts`) für eine bekannte Auswahl und den lokalen Slot (für `gold`; bei `timescale` und `material` je nach Protokoll), sonst `null`. Keine Eingabeprüfung außer „Auswahl bekannt“.
