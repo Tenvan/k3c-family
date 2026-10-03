@@ -2,7 +2,7 @@
 
 - **Status:** geplant
 - **Domäne:** CLI
-- **Reife:** Entwurf
+- **Reife:** bereit
 - **Einschiebbar:** nein
 - **Tickets:** B-173
 - **Start-Commit:** –
@@ -55,12 +55,14 @@ Standard-Tier (Pferd?): `docs/fragenkatalog.md Q23`, Auswahl 🧑.
 
 ## Sessions
 
-Entwurf. Vor dem Aktivieren jede Session als Datei nach `docs/vorlagen/session.md` schreiben, die Kriterien in Klammern werden ihr Feld `Kriterien`.
+Reihenfolge wie die Nummern. Voraussetzung: S1.3 hat `data/monarch.json › mount` angelegt, S4 ist erledigt (CLI-Bahn), GR3 läuft nicht gleichzeitig (gleicher Renderer). Vorschläge der Planung stehen in den Sessions unter „Entscheidungen dieser Session“ und gelten erst mit der Freigabe.
 
-- S7.1 Reine Funktion für Sprite, Animation und Sattelpunkt mit Test (AC-01).
-- S7.2 Anbindung im Renderer, Split-Screen 1–4 (AC-02, AC-03).
-- S7.3 🧑 Abnahme am TV und am Handy (AC-04).
-- S7.4 Review des Sprints (Code-Sprint) (AC-01, AC-02, AC-03, AC-04).
+| Nr. | Datei | Typ | Agent | Status |
+|---|---|---|---|---|
+| S7.1 | `S7.1-reittier-pose.md` | Umsetzung | autonom | offen |
+| S7.2 | `S7.2-renderer-anbindung.md` | Umsetzung | autonom | offen |
+| S7.3 | `S7.3-abnahme-geraet.md` | Workshop | Mensch | offen |
+| S7.4 | `S7.4-review.md` | Review | autonom | offen |
 
 ## Abnahme
 
