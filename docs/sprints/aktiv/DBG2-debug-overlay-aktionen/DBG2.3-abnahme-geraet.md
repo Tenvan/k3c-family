@@ -1,6 +1,6 @@
 # DBG2.3 · Abnahme am PC, Handy und Controller
 
-- **Status:** offen
+- **Status:** in Arbeit
 - **Typ:** Workshop
 - **Agent:** Mensch
 - **Branch:** dbg2/3-abnahme-geraet
