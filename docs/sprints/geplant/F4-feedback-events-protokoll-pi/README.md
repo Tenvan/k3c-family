@@ -2,7 +2,7 @@
 
 - **Status:** geplant
 - **Domäne:** SRV
-- **Reife:** Entwurf
+- **Reife:** bereit
 - **Einschiebbar:** nein
 - **Tickets:** B-140, B-142, B-143
 - **Start-Commit:** –
@@ -54,16 +54,16 @@ Budget überschritten → Ereignisse niedriger Priorität werden im Server gekü
 
 ## Offene Fragen
 
-Q08 (Budget), Q17 (Schutzmodell), Q18 (Backup-Ziel); entscheidet 🧑. Q17 und Q08 blockieren die Freigabe.
+Q08, Q17 und Q18 sind entschieden (2026-10-03, `docs/fragenkatalog.md` › Beschlüsse): Budget ≤ 200 Byte je Tick und Client im Mittel (bei 30 Hz = 6 KB/s), im Delta mitgesendet; Restore nur mit Token, Report und Client-Log nur Limits und Rotation, kein Port-Forwarding (dokumentieren); Backup-Ziel USB-Stick am Pi, Restore-Probe einmal durchspielen (🧑 am Pi). Offen: Als Token gilt das vorhandene `K3C_STATUS_TOKEN` (Auslegung in F4.3), das bestätigt 🧑 mit der Freigabe.
 
 ## Sessions
 
-Entwurf. Vor dem Aktivieren jede Session als Datei nach `docs/vorlagen/session.md` schreiben, die Kriterien in Klammern werden ihr Feld `Kriterien`.
-
-- F4.1 Protokoll: Ereignisse in Snapshot, Client-Typ, Beispiel, Test; Bandbreiten-Benchmark und Budget-Prüfung (AC-01, AC-02, AC-03, AC-04).
-- F4.2 Rotation von Reports und Client-Log, Backup-Befehl und README (AC-05, AC-06).
-- F4.3 Absicherung von Restore und Endpunkten (AC-07).
-- F4.4 Review nach `docs/arbeitsweise.md` (alle Kriterien).
+| Nr. | Datei | Typ | Agent | Status |
+|---|---|---|---|---|
+| F4.1 | `F4.1-protokoll-ereignisse-bandbreite.md` | Umsetzung | autonom | offen |
+| F4.2 | `F4.2-rotation-backup.md` | Umsetzung | autonom | offen |
+| F4.3 | `F4.3-restore-absichern.md` | Umsetzung | autonom | offen |
+| F4.4 | `F4.4-review.md` | Review | autonom | offen |
 
 ## Abnahme
 
