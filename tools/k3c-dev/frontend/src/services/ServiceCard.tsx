@@ -65,10 +65,7 @@ export function ServiceCard({ s, selected, onSelect }: Props) {
       <code className="svc-health">{s.health}</code>
       <Metrics s={s} />
       {s.log && <LogBox name={s.name} />}
-      {s.restarts > 0 && <p className="svc-note">Neustarts: {s.restarts}</p>}
-      {s.lastError && <p className="svc-error">{s.lastError}</p>}
-      {s.state === 'übernommen' && <p className="svc-hint">{ADOPTED_HINT}</p>}
-      {error && <p className="svc-error">{error}</p>}
+      <Notes s={s} error={error} />
       <Flex gap="2" mt="auto">
         {button('start', 'Start')}
         {button('stop', 'Stopp', 'red')}
@@ -76,6 +73,17 @@ export function ServiceCard({ s, selected, onSelect }: Props) {
       </Flex>
       <ConfirmStop open={confirm} s={s} onOpen={setConfirm} onStop={() => void run('stop', true)} />
     </div>
+  );
+}
+
+function Notes({ s, error }: { s: ServiceStatus; error: string }) {
+  return (
+    <>
+      {s.restarts > 0 && <p className="svc-note">Neustarts: {s.restarts}</p>}
+      {s.lastError && <p className="svc-error">{s.lastError}</p>}
+      {s.state === 'übernommen' && <p className="svc-hint">{ADOPTED_HINT}</p>}
+      {error && <p className="svc-error">{error}</p>}
+    </>
   );
 }
 
