@@ -2,7 +2,7 @@
 
 - **Status:** geplant
 - **Domäne:** SIM
-- **Reife:** Entwurf
+- **Reife:** bereit
 - **Einschiebbar:** ja
 - **Tickets:** B-099, B-159
 - **Start-Commit:** –
@@ -58,12 +58,15 @@ Lauf bricht ab → „ungültig“ mit Seed im Report. Replay-Datei mit unbekann
 
 ## Sessions
 
-Entwurf. Vor dem Aktivieren jede Session als Datei nach `docs/vorlagen/session.md` schreiben, die Kriterien in Klammern werden ihr Feld `Kriterien`.
+| Nr. | Datei | Typ | Agent | Status |
+|---|---|---|---|---|
+| BAL1.1 | `BAL1.1-bots-kennzahlen.md` | Umsetzung | autonom | offen |
+| BAL1.2 | `BAL1.2-replay-format.md` | Umsetzung | autonom | offen |
+| BAL1.3 | `BAL1.3-replay-k3c-dev.md` | Umsetzung | autonom | offen |
+| BAL1.4 | `BAL1.4-review.md` | Review | autonom | offen |
 
-- BAL1.1 Szenario-Matrix, zwei Bot-Profile über `PlayerCommand`, Kennzahlen als JSON, Determinismus-Test (AC-01, AC-02).
-- BAL1.2 Replay-Format: Aufnahme durch Bots, Wiedergabe, Versions- und Datenstand-Prüfung (AC-03, AC-04, AC-05).
-- BAL1.3 Wiedergabe-Werkzeug in k3c-dev (AC-06).
-- BAL1.4 Review (AC-07).
+Bei `Reife: Entwurf` genügen Stichpunkte mit den Kriterien in Klammern statt Session-Dateien. Vor dem Aktivieren
+wird jede Session als eigene Datei nach `docs/vorlagen/session.md` geschrieben.
 
 ## Abnahme
 

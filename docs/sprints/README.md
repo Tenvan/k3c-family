@@ -59,7 +59,7 @@ dann über den Go-Server mit mehreren Räumen und gemischten Spielern.
 
 | Sprint | Domäne | Thema | Reife | Ordner |
 |---|---|---|---|---|
-| BAL1 | SIM | Balancing-Tester: Kern und Replay | Entwurf | `geplant/BAL1-balancing-tester-kern/` |
+| BAL1 | SIM | Balancing-Tester: Kern und Replay | bereit | `geplant/BAL1-balancing-tester-kern/` |
 | BAL2 | SIM | Zielkorridor-Prüfung und `task balance` | Entwurf | `geplant/BAL2-zielkorridor-pruefung/` |
 | BAL3 | SIM | Bot-Profile, Sensitivität und Grad-Kurven | Entwurf | `geplant/BAL3-bot-profile-sensitivitaet/` |
 | BAL4 | REG | Abgleich Spielmetrik und Simulator | Entwurf | `geplant/BAL4-metrik-abgleich/` |
