@@ -77,6 +77,15 @@ tasks:
       - npx tsc --noEmit
       - npx vite build
 
+  pages:
+    desc: GitHub-Pages-Seite nach _site/ (Präsentation site/ + Build unter app/; danach z. B. `npx vite preview --outDir _site`)
+    deps: [build]
+    cmds:
+      - rm -rf _site
+      - mkdir -p _site
+      - cp -r dist _site/app
+      - cp -r site/. _site/
+
   serve:
     desc: Build und Go-Server (Port 8080)
     deps: [build]
