@@ -50,7 +50,8 @@ Workshop F1.1: Agent legt „Überleben Nacht 3 ≥ 80 %“ vor, 🧑 ändert au
 - **AC-04** Abschnitt „Schriftgröße“ nennt je Layout 1 bis 4 Spieler eine Mindestgröße in px und das Prüfverfahren (B-136/AC-01, B-136/AC-02).
 - **AC-05** Abschnitt „Verbindung“ nennt Reservierungszeit, Verhalten des Monarchen und Latenz-Ziel in ms (B-144/AC-01, B-144/AC-02).
 - **AC-06** Abschnitt „Sprache“ hält die Entscheidung mit Datum fest (B-145/AC-01).
-- **AC-07** `task check` ist grün, und die Tickets B-134, B-135, B-136, B-144, B-145 sind nach `docs/backlog/archiv/` verschoben (Status `erledigt`), soweit ihre Kriterien erfüllt sind.
+- **AC-07** Der Abschnitt „Reittier“ in `docs/rules/monarch.md` nennt Standard-Reittier und Faktoren (B-152/AC-01).
+- **AC-08** `task check` ist grün, und die Tickets B-134, B-135, B-136, B-144, B-145 sind nach `docs/backlog/archiv/` verschoben (Status `erledigt`), soweit ihre Kriterien erfüllt sind.
 
 ## Offene Fragen
 
@@ -62,7 +63,8 @@ Entwurf. Vor dem Aktivieren jede Session als Datei nach `docs/vorlagen/session.m
 
 - F1.1 🧑 Workshop Zielkorridore: Agent bereitet Vorschlag aus `docs/rules/*.md` vor, 🧑 entscheidet Q02, Ergebnis in `docs/rules/zielkorridore.md` (AC-01, AC-02).
 - F1.2 🧑 Workshop Bedienung 1: Pause (Q01) und Mindest-Schriftgröße (Q03) in `docs/rules/bedienung.md` (AC-03, AC-04).
-- F1.3 🧑 Workshop Bedienung 2: Verbindungsverlust und Latenz (Q04), Sprache (Q05); schließt den Sprint ab (Doku-Sprint, kein Review), Tickets archivieren (AC-05, AC-06, AC-07).
+- F1.3 🧑 Workshop Bedienung 2: Verbindungsverlust und Latenz (Q04), Sprache (Q05); schließt den Sprint ab (Doku-Sprint, kein Review), Tickets archivieren (AC-05, AC-06, AC-08).
+- F1.4 🧑 Reittier-Regel: Standard-Reittier und Faktoren (Q23) in `docs/rules/monarch.md` (AC-07).
 
 ## Abnahme
 

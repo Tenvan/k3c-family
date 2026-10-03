@@ -58,3 +58,5 @@ Backup-Ziel PC oder NAS und Rhythmus: `docs/fragenkatalog.md` Q18, entscheidet �
 ## Notizen
 
 Aus Plan Lücken 14 und 15 (SP11-Ergänzung). Das eigentliche Backup am Pi richtet 🧑 ein (Agent: Mensch), der Agent liefert Skript und Doku.
+
+Beschluss 2026-10-03 (Q18): Backup-Ziel ist ein USB-Stick am Pi; Restore-Probe einmal durchspielen. Hinweis: gleiches Gerät wie der Pi, schützt nur vor SD-Karten-Ausfall, nicht vor Verlust des Pi.

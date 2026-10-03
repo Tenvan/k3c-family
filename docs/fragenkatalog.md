@@ -11,30 +11,61 @@ Sprints bleiben `Spec: Entwurf`, bis 🧑 sie je Sprint freigibt.
 
 | Nr. | Thema | Blockiert | Block | Status |
 |---|---|---|---|---|
-| Q01 | Pause im gemeinsamen Raum | F1, S5 | 1 | offen |
-| Q02 | Zielkorridore als Zahlen | F1, BAL2, BR1, BR2 | 1 | offen |
-| Q03 | Mindest-Schriftgröße je Split-Viertel | F1, S4 | 1 | offen |
-| Q04 | Verbindungsverlust und Eingabe-Latenz | F1 | 1 | offen |
-| Q05 | Nur Deutsch? | F1 | 1 | offen |
-| Q06 | Skill-Tasten am Controller | X1, S3 | 1 | offen |
-| Q08 | Feedback-Events: Liste und Bandbreite | F3, F4, SO1 | 2 | offen |
-| Q09 | Golden-Hash ändern: wer bestätigt | F2 | 2 | offen |
-| Q10 | Wann wird gespeichert | S2 | 2 | offen |
-| Q11 | Onboarding-Umfang und Freundlich-Grad | S6 | 2 | offen |
-| Q12 | Spielmetrik: was wird erfasst | S2, BAL4 | 2 | offen |
-| Q24 | Spieleabend: Termin, Teilnehmer, Fragebogen | P1 | 2 | offen |
-| Q22 | Reihenfolge Phase 2 | W1–W6 | 2 | offen |
-| Q13 | Grafik-Stil: Raster, Palette, Skalierung | GR1 | 3 | offen |
-| Q14 | Grafik-Auswahl je Lücke | GR2, GR3 | 3 | offen |
-| Q15 | Sound-Quellen und Stil | SO2 | 3 | offen |
-| Q16 | Musik-Zustände und Hörproben | SO3, SO4 | 3 | offen |
-| Q19 | Bot-Profile für den Balancing-Tester | BAL3 | 3 | offen |
-| Q07 | Registry und Pi-Modell | SP11 | 4 | offen |
-| Q17 | Absicherung von Restore und Heimnetz | F4 | 4 | offen |
-| Q18 | Backup-Ziel für den Pi | F4 | 4 | offen |
-| Q20 | Release-Rhythmus | RL1 | 4 | offen |
-| Q21 | itch.io und Englisch | später | 4 | offen |
-| Q23 | Reittiere | später | 4 | offen |
+| Q01 | Pause im gemeinsamen Raum | F1, S5 | 1 | geklärt 2026-10-03 |
+| Q02 | Zielkorridore als Zahlen | F1, BAL2, BR1, BR2 | 1 | Vorgehen geklärt, Zahlen in F1 |
+| Q03 | Mindest-Schriftgröße je Split-Viertel | F1, S4 | 1 | geklärt 2026-10-03 |
+| Q04 | Verbindungsverlust und Eingabe-Latenz | F1 | 1 | geklärt 2026-10-03 |
+| Q05 | Nur Deutsch? | F1 | 1 | geklärt 2026-10-03 |
+| Q06 | Skill-Tasten am Controller | X1, S3 | 1 | geklärt 2026-10-03 |
+| Q08 | Feedback-Events: Liste und Bandbreite | F3, F4, SO1 | 2 | geklärt 2026-10-03 |
+| Q09 | Golden-Hash ändern: wer bestätigt | F2 | 2 | geklärt 2026-10-03 |
+| Q10 | Wann wird gespeichert | S2 | 2 | geklärt 2026-10-03 |
+| Q11 | Onboarding-Umfang und Freundlich-Grad | S6 | 2 | geklärt 2026-10-03 |
+| Q12 | Spielmetrik: was wird erfasst | S2, BAL4 | 2 | geklärt 2026-10-03 |
+| Q24 | Spieleabend: Termin, Teilnehmer, Fragebogen | P1 | 2 | geklärt 2026-10-03 |
+| Q22 | Reihenfolge Phase 2 | W1–W6 | 2 | geklärt 2026-10-03 |
+| Q13 | Grafik-Stil: Raster, Palette, Skalierung | GR1 | 3 | geklärt 2026-10-03 |
+| Q14 | Grafik-Auswahl je Lücke | GR2, GR3 | 3 | geklärt 2026-10-03 |
+| Q15 | Sound-Quellen und Stil | SO2 | 3 | geklärt 2026-10-03 |
+| Q16 | Musik-Zustände und Hörproben | SO3, SO4 | 3 | geklärt 2026-10-03 |
+| Q19 | Bot-Profile für den Balancing-Tester | BAL3 | 3 | geklärt 2026-10-03 |
+| Q07 | Registry und Pi-Modell | SP11 | 4 | geklärt 2026-10-03 |
+| Q17 | Absicherung von Restore und Heimnetz | F4 | 4 | geklärt 2026-10-03 |
+| Q18 | Backup-Ziel für den Pi | F4 | 4 | geklärt 2026-10-03 |
+| Q20 | Release-Rhythmus | RL1 | 4 | geklärt 2026-10-03 |
+| Q21 | itch.io und Englisch | später | 4 | geklärt 2026-10-03 |
+| Q23 | Reittiere | S1, S7 | 4 | geklärt 2026-10-03 (korrigiert) |
+
+## Beschlüsse vom 2026-10-03 (🧑 im Chat)
+
+| Nr. | Beschluss | Wirkt auf |
+|---|---|---|
+| Q01 | Online-Geräte pausieren **lokal** (Raum läuft weiter, Monarch steht still und ist geschützt); im reinen Couch-Raum (ein Gerät) **pausiert der Raum**. Menu kurz (< 600 ms) öffnet das Menü, View + Menu bleibt reserviert. | B-135, B-146, F1, S5 |
+| Q02 | Agent schlägt Startwerte aus `docs/rules/` vor, 🧑 bestätigt im Workshop F1 (Pass/Fail je Kennzahl, 100 feste Seeds). | B-134, F1 |
+| Q03 | ≥ 28 px im Vollbild (1080p), ≥ 24 px im Viertel nach Skalierung, Kontrast ≥ 4,5:1; bei 3–4 Spielern Text kürzen statt verkleinern. | B-136, S4, S6 |
+| Q04 | Getrennter Monarch ist **unverwundbar und ausgeblendet** bis zur Frist (WaitFor 60 s), danach frei. Latenz-Ziel Eingabe → Bild ≤ 100 ms im Heim-WLAN, gemessen mit dem Debug-Overlay. | B-144, F1 |
+| Q05 | **Deutsch und Englisch**, Sprachauswahl in den Optionen, neue Texte zentral. Neues Ticket B-172 in S5. | B-145 (erledigt durch Beschluss), B-172, S5 |
+| Q06 | Belegung aus `game-design.md` übernommen: Schlag X, Skills 1–4 LB/RB/LT/D-Pad hoch (Tastatur Q/R/T/Z), Skill-Menü D-Pad runter (K), Bau-Menü Y, Vollbild Stick drücken; B frei, View + Menu reserviert. X1 bestätigt nur noch. | B-026, X1, S3 |
+| Q07 | Paket `ghcr.io/tenvan/k3c-family` **öffentlich**, Pi 3 mit 64-Bit-Betriebssystem. (SP11-Spec nennt dies als Annahme; Änderung der freigegebenen Spec nicht nötig.) | SP11 |
+| Q08 | 12 Ereignisse (Treffer, Kill, Münze auf/gegeben, Pfeil, Schlag, Bau-Fortschritt/fertig, Tod, Wiederbeleben, Skill, Nacht naht, Portal), Budget ≤ 200 Byte je Tick und Client im Mittel, im Delta mitgesendet, Benchmark in F4. | B-139, B-140, F3, F4 |
+| Q09 | `task golden:update` plus Begründung im Commit-Text; die Review-Session prüft. Kein Freigabe-Zwang durch 🧑 bei Werteänderungen aus Beschlüssen. | B-137, F2 |
+| Q10 | Speichern beim Verlassen jedes Geräts **und alle 60 s**, zusätzlich Tagesanbruch/Stufenwechsel; HUD zeigt „gesichert“. | B-147, S2 |
+| Q11 | Kontextuelle Hinweise mit Controller-Glyphen, geführte erste Nacht optional, Grad „leicht“ ohne Niederlage aus `data/difficulty.json`. | B-148, B-149, S6 |
+| Q12 | Spielmetrik wie vorgeschlagen (Tod durch was, Nächte überlebt, Zeit bis erstem Bau, Gold je Tag, Verbindungsabbrüche), JSON je Sitzung in `reports/`, nur Geräte-Kürzel. | B-150, S2 |
+| Q13 | Grundraster 16/32 px, Skalierung ×2 bis ×3; nicht passende Packs sind Lücken, Palettenbruch nur bei Hintergründen. | B-161, GR1 |
+| Q14 | Auswahl auf einer Referenzseite im Browser (G1-Muster), 3 Kandidaten je Lücke. | B-162, GR2 |
+| Q15 | Retro/Chiptune, kindgerecht, Nacht leise; Quellen Kenney, OpenGameArt, freesound (CC0/CC-BY), Retro-SFX per Web Audio als Lückenfüller. | B-167, SO2 |
+| Q16 | 1–2 Stücke je Zustand, 8 Zustände (Tag, Abend, Nacht, Kampf, Tiefe/Höhle, Boss, Lobby, Niederlage/Sieg), Crossfade, Ducking bei Warnungen, Lautheit am TV prüfen. | B-168, B-169, SO3, SO4 |
+| Q17 | Restore nur mit Token; Report und Clientlog nur Limits und Rotation; kein Port-Forwarding (dokumentieren). | B-143, F4 |
+| Q18 | Backup-Ziel **USB-Stick am Pi**; Restore-Probe einmal durchspielen. Hinweis: schützt nur vor SD-Karten-Ausfall. | B-142, F4 |
+| Q19 | Pflicht: passiv, sparsam, Mauern zuerst, Wirtschaft zuerst, Koop 2/4 Spieler (später „Kind-Bot“). | B-158, BAL3 |
+| Q20 | Tag `v0.<n>.0` nach jeder Phase und jedem Spieleabend mit der Release-Checkliste. | B-170, RL1 |
+| Q21 | itch.io später nach Phase 3, jetzt nur vorbereiten (Englisch kommt mit B-172). | B-023 |
+| Q22 | Wirtschaft zuerst (W1–W3), **Wiederbeleben (B-120) aus W4 nach vorn**, weil es den Koop-Spaß stärkt; beim Bereitmachen von W1–W4 umsetzen. | W1–W4 |
+| Q23 | **Korrektur 2026-10-03:** Reittiere **von Anfang an**, jeder Monarch reitet ein Standard-Reittier (wie im Vorbild); Sim in S1 (B-152), Darstellung in S7 (B-173), Zahlen im Workshop F1. Ersetzt „nach Phase 3, als Politur“. | B-152, B-173, S1, S7, F1 |
+| Q24 | Fragebogen mit 8 Fragen, Daumen hoch/runter plus ein Satz Freitext; Termin und Teilnehmer nennt 🧑, wenn Phase 1 steht. | B-151, P1 |
+
+**Folgen für die Planung (nächste Schritte):** B-135, B-136, B-144 und B-145 sind damit entschieden; F1 trägt die Beschlüsse in `docs/rules/` ein und lässt 🧑 die Zahlen aus Q02 bestätigen. Die Specs der Sprints bleiben `Entwurf` bis zur Freigabe durch 🧑.
 
 ## Block 1 – blockiert F1 und den Spieleabend-Build
 
@@ -108,4 +139,4 @@ Fragen: Wie strikt (Ausschlusskriterium) und welche Packs sind gesetzt?
 
 **Q21 · itch.io und Englisch** (B-023). Ob und wann. Hängt an Q05 (Sprache), CC-BY-Credits, Lizenz (PolyForm Noncommercial, Spiel kostenlos).
 
-**Q23 · Reittiere** (B-152). Grafiken und Sattelpunkte liegen in `data/sprites.json` › `mounts`; Mechanik (Tempo, Kosten, Tod) fehlt. Wann, welcher Nutzen, Balancing?
+**Q23 · Reittiere** (B-152, B-173). Entschieden am 2026-10-03: Reittiere gibt es **von Anfang an**, jeder Monarch reitet ein Standard-Reittier (Vorbild Kingdom Two Crowns). Offen bleiben nur die Zahlen (Geschwindigkeits- und Sprintfaktor, Standard-Tier) im Workshop F1.

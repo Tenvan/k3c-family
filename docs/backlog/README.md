@@ -83,7 +83,7 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-149](B-149-controller-glyphen.md) | CLI | Idee | mittel | eingeplant | S6 | Hinweise zeigen Controller-Glyphen statt Tasten-Text |
 | [B-150](B-150-spielmetrik-report.md) | SRV | Idee | mittel | eingeplant | S2 | Der Server schreibt je Sitzung einen Spielmetrik-Report nach reports/ |
 | [B-151](B-151-spieleabend-fragebogen.md) | REG | Idee | mittel | eingeplant | P1 | Der Spieleabend hat einen kindgerechten Fragebogen und eine Playtest-Vorlage |
-| [B-152](B-152-reittiere-mechanik.md) | SIM | Idee | niedrig | offen | – | Reittiere haben eine Mechanik, bisher gibt es nur die Grafiken |
+| [B-152](B-152-reittiere-mechanik.md) | SIM | Idee | hoch | eingeplant | S1 | Jeder Monarch reitet von Anfang an auf einem Standard-Reittier |
 | [B-153](B-153-protokoll-berufe-haendler-lager-hub.md) | SRV | Idee | hoch | eingeplant | W5 | Das Protokoll kennt Berufe, Händler, Lagerstand, Hub-Stufe und Wartegrund |
 | [B-154](B-154-protokoll-bosse-events-inselwechsel.md) | SRV | Idee | hoch | eingeplant | K4 | Das Protokoll kennt Bosse, Phasen, Events und den Inselwechsel |
 | [B-155](B-155-balancing-runde-wirtschaft.md) | REG | Idee | hoch | eingeplant | BR1 | Die Wirtschaft ist in einer Balancing-Runde gegen die Zielkorridore abgestimmt |
@@ -103,6 +103,8 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-169](B-169-hoerprobenseite-soundtest.md) | PLAT | Idee | mittel | eingeplant | SO3 | Eine Hörprobenseite spielt Kandidaten für Musik und Effekte ab |
 | [B-170](B-170-release-checkliste.md) | INF | Idee | hoch | eingeplant | RL1 | Eine Release-Checkliste macht jeden Release prüfbar |
 | [B-171](B-171-dev-seiten-tasks-planung-git.md) | SRV | Idee | mittel | eingeplant | M7 | k3c-dev zeigt Tasks, Planung und Git wie die Workbench der ErpApi |
+| [B-172](B-172-sprachauswahl-de-en.md) | CLI | Idee | mittel | eingeplant | S5 | Der Client hat Deutsch und Englisch mit Sprachauswahl in den Optionen |
+| [B-173](B-173-monarch-auf-reittier-zeichnen.md) | CLI | Idee | hoch | eingeplant | S7 | Der Client zeichnet den Monarchen auf dem Standard-Reittier |
 
 ## Archiv
 

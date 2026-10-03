@@ -4,7 +4,7 @@
 - **Domäne:** CLI
 - **Reife:** Entwurf
 - **Einschiebbar:** nein
-- **Tickets:** B-146
+- **Tickets:** B-146, B-172
 - **Start-Commit:** –
 - **Spec:** Entwurf
 - **Revision:** 1
@@ -49,6 +49,8 @@ Spieler öffnet mit Menu die Pause, stellt Musik auf 0 %, schaltet Screenshake a
 - **AC-03** Die Einstellungen bleiben nach Neuladen erhalten (B-146/AC-03).
 - **AC-04** View + Menu führt weiter zur Landingpage, B bleibt unbelegt (B-146/AC-04).
 - **AC-05** 🧑 hat die Szene am TV und am Handy abgenommen (B-146/AC-05).
+- **AC-06** Alle Texte kommen aus zentralen Textdateien (de, en), die Sprache ist in den Optionen wählbar und bleibt erhalten (B-172/AC-01, B-172/AC-02, B-172/AC-03, B-172/AC-04).
+- **AC-07** 🧑 hat die englischen Texte abgenommen (B-172/AC-05).
 
 ## Offene Fragen
 
@@ -60,8 +62,9 @@ Entwurf. Vor dem Aktivieren jede Session als Datei nach `docs/vorlagen/session.m
 
 - S5.1 Einstellungen als reine Funktionen und Speicher je Gerät mit Test (AC-01, AC-03).
 - S5.2 Szene Optionen/Pause, Bedienung mit allen Geräten, Pause-Regel aus B-135 umsetzen (AC-02, AC-04).
-- S5.3 🧑 Abnahme am TV und am Handy (AC-05).
-- S5.4 Review des Sprints (Code-Sprint) (AC-01, AC-02, AC-03, AC-04, AC-05).
+- S5.3 Zentrale Textdateien de/en, Sprachwahl in der Szene, alle bestehenden Texte umziehen (AC-06).
+- S5.4 🧑 Abnahme am TV und am Handy, englische Texte lesen (AC-05, AC-07).
+- S5.5 Review des Sprints (Code-Sprint) (AC-01, AC-02, AC-03, AC-04, AC-05, AC-06, AC-07).
 
 ## Abnahme
 
