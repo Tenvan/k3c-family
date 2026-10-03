@@ -1,11 +1,11 @@
 # F5 · INF · Doku-Drift, Version und Landing-Kacheln
 
-- **Status:** geplant
+- **Status:** aktiv
 - **Domäne:** INF
 - **Reife:** bereit
 - **Einschiebbar:** nein
 - **Tickets:** B-141, B-079
-- **Start-Commit:** –
+- **Start-Commit:** 605f467
 - **Spec:** freigegeben
 - **Revision:** 1
 - **Freigabe:** 2026-10-03, Chat (Ralf), Revision 1; umfasst B-141, B-079
@@ -59,7 +59,7 @@ Entschieden am 2026-10-03: Es bleiben nur Kacheln mit Parametern, die die Lobby 
 
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
-| F5.1 | `F5.1-doku-drift.md` | Umsetzung | autonom | offen |
+| F5.1 | `F5.1-doku-drift.md` | Umsetzung | autonom | in Arbeit |
 | F5.2 | `F5.2-version-cache.md` | Umsetzung | autonom | offen |
 | F5.3 | `F5.3-landing-kacheln.md` | Umsetzung | autonom | offen |
 | F5.4 | `F5.4-review.md` | Review | autonom | offen |
