@@ -1,6 +1,6 @@
 # H1 · SIM · Holz-Startvorrat
 
-- **Status:** aktiv
+- **Status:** erledigt
 - **Domäne:** SIM
 - **Reife:** bereit
 - **Einschiebbar:** nein
@@ -60,8 +60,11 @@ Höhe des Startvorrats (100 Holz ist ein Vorschlag): 🧑 bestätigt mit der Fre
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
 | H1.1 | `H1.1-startvorrat-umsetzen.md` | Umsetzung | autonom | fertig |
-| H1.2 | `H1.2-review.md` | Review | autonom | offen |
+| H1.2 | `H1.2-review.md` | Review | autonom | fertig |
 
 ## Abnahme
 
-–
+2026-10-03 (H1.2): `task check` und `task check:go` grün, Diff `fc8aa19..origin/main` geprüft, keine schweren Befunde.
+AC-01 bis AC-06: Nachweise im Ergebnis von H1.1 (`island_start_test.go`, Regel in `docs/rules/materialien-gebaeude.md` und `docs/game-design.md`).
+Keine behobenen Befunde, keine neuen Tickets.
+Version: v0.4.0 gesetzt (2026-10-03, auf `80dfb6b`, von 🧑 bestätigt; Minor: neue Insel startet mit 100 Holz).
