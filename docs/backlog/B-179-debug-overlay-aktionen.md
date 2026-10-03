@@ -60,4 +60,4 @@ keine
 
 ## Notizen
 
-Hängt an B-178 (Protokoll). Anlass: Wunsch von 🧑 am 2026-10-03.
+Hängt an B-178 (Protokoll). Das Protokoll steht seit DBG1 (2026-10-03, `docs/protocol.md` › Dev-Aktionen, Nachricht `dev`, Feld `devTimescale`). Anlass: Wunsch von 🧑 am 2026-10-03.
