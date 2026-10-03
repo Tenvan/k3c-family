@@ -232,13 +232,30 @@ Die Wellen sind keine Termine, sondern Reihenfolgen: Eine Bahn rückt vor, sobal
 5. **Abnahmen am Gerät** (kurz, je Sprint): S5.4, S4.3, S7.3, S3.4, S6.4.
 6. **Auswahl-Termine** Grafik und Sound (GR2.2, SO2.1, SO4.1), **Spieleabende** P1, BR1, BR2.
 
-### 11.4 Startanweisung für den zweiten Account (Spur A)
+### 11.4 Startanweisungen für den zweiten Account (Spur A)
 
-Eine Session pro Lauf, immer so:
+Es gibt **zwei getrennte Aufträge**. Jeder Lauf bekommt genau einen davon; kopiert wird nur der Inhalt des jeweiligen Codeblocks.
 
-> Lies `CLAUDE.md` und `docs/arbeitsweise.md`. Lies `docs/sprints/README.md` (Fahrplan, Aktiv) und alle `docs/sprints/aktiv/*/README.md`. Wähle die erste Session mit `Status: offen`, `Agent: autonom` und erledigten Abhängigkeiten, deren Branch noch nicht auf `origin` existiert (`git ls-remote --heads origin <Branch>`). Gibt es keine: nichts tun, melden, welche Freigabe oder 🧑-Session fehlt. Führe die Session nach `docs/arbeitsweise.md` › Autonomer Ablauf aus, `git fetch` und `git rebase origin/main` vor dem PR, PR öffnen, nicht mergen.
+**Auftrag 1: Eine Session ausführen** (Standard, so oft wiederholen, wie Sessions bereitstehen):
 
-**„Bereit machen“-Aufträge** (autonom, brauchen keinen aktiven Sprint und keine Freigabe; schreiben nur Session-Dateien und setzen `Reife: bereit`, die Spec bleibt `Entwurf` bis 🧑 freigibt): Sprint F3, F4, S5, S4, S1, S2, BAL1, GR1, W1 (in dieser Reihenfolge, je Sprint ein Lauf). Prompt: „Mache den Sprint `<ID>` nach `docs/arbeitsweise.md` › Sprint-Lebenslauf (Schritt 2) bereit: Offene Fragen sind in `docs/fragenkatalog.md` › Beschlüsse beantwortet; schreibe jede Session als Datei nach `docs/vorlagen/session.md`, setze `Reife: bereit`, prüfe `npx vitest run tests/planning.test.ts`.“
+```text
+Lies CLAUDE.md und docs/arbeitsweise.md. Lies docs/sprints/README.md (Fahrplan) und alle docs/sprints/aktiv/*/README.md.
+1. Suche in den aktiven Sprints die erste Session mit Status offen, Agent autonom und erledigten Abhängigkeiten, deren Branch (Feld Branch der Session-Datei) noch nicht auf origin existiert (git ls-remote --heads origin <Branch>).
+2. Gibt es keine: Nimm aus docs/sprints/geplant/ den ersten Sprint in der Reihenfolge des Fahrplans mit Spec freigegeben, Reife bereit, erledigten Voraussetzungen (Plan, Abschnitt 11.2) und einer Domäne ohne aktiven Sprint. Aktiviere ihn nach docs/arbeitsweise.md (git mv nach docs/sprints/aktiv/, Status aktiv, Fahrplan anpassen) und nimm dessen erste autonome Session.
+3. Gibt es auch das nicht: nichts tun und melden, welche Freigabe, welches Bereit-machen oder welche Mensch-Session fehlt.
+4. Führe genau die gefundene Session nach docs/arbeitsweise.md, Abschnitt Autonomer Ablauf, aus. Vor dem PR: git fetch und git rebase origin/main. PR öffnen, nicht mergen.
+```
+
+**Auftrag 2: Einen Sprint bereit machen** (nur wenn ein Sprint `Reife: Entwurf` hat und als Nächstes gebraucht wird; `<ID>` durch die Sprint-Nummer ersetzen, z. B. `F4`; Reihenfolge der Sprints: F4, S5, S4, S1, S2, BAL1, GR1, W1):
+
+```text
+Lies CLAUDE.md und docs/arbeitsweise.md. Mache den Sprint <ID> nach docs/arbeitsweise.md, Abschnitt Sprint-Lebenslauf, Schritt 2 bereit.
+Der Sprint liegt unter docs/sprints/geplant/<ID>-*/. Offene Fragen sind in docs/fragenkatalog.md, Abschnitt Beschlüsse, beantwortet; erfinde keine weiteren Entscheidungen.
+Schreibe jede Session als Datei nach docs/vorlagen/session.md (Stilvorbild: docs/sprints/geplant/F2-golden-migration-determinismus/), ersetze in der Sprint-README den Abschnitt Sessions durch die Tabelle, setze Reife bereit.
+Spec und Freigabe nicht ändern. Prüfe mit: npx vitest run tests/planning.test.ts. PR öffnen, nicht mergen.
+```
+
+Auftrag 2 braucht keinen aktiven Sprint und keine Freigabe; Auftrag 1 aktiviert nur Sprints, deren Spec 🧑 freigegeben hat und die `Reife: bereit` haben.
 
 ### 11.5 Regeln gegen Reibung zwischen den Accounts
 

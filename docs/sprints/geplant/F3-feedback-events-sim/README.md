@@ -2,7 +2,7 @@
 
 - **Status:** geplant
 - **Domäne:** SIM
-- **Reife:** Entwurf
+- **Reife:** bereit
 - **Einschiebbar:** nein
 - **Tickets:** B-139
 - **Start-Commit:** –
@@ -52,15 +52,15 @@ Mehr als K Ereignisse in einem Tick → niedrigste Priorität fällt weg, Zähle
 
 ## Offene Fragen
 
-Ereignisliste, K je Tick und Priorität: Q08, entscheidet 🧑. Blockiert die Freigabe.
+Q08 ist entschieden (2026-10-03): 12 Ereignisse (Treffer, Kill, Münze auf/gegeben, Pfeil, Schlag, Bau-Fortschritt/fertig, Tod, Wiederbeleben, Skill, Nacht naht, Portal), Budget ≤ 200 Byte je Tick und Client im Mittel. Offen: Obergrenze K je Tick und Priorität bei Überlauf (Tod und Bau zuerst, Vorschlag), das bestätigt 🧑 mit der Freigabe.
 
 ## Sessions
 
-Entwurf. Vor dem Aktivieren jede Session als Datei nach `docs/vorlagen/session.md` schreiben, die Kriterien in Klammern werden ihr Feld `Kriterien`.
-
-- F3.1 Ereignistypen Kampf (Treffer, Gegner-Tod, Pfeil, Schlag) mit Tests (AC-01, AC-02).
-- F3.2 Ereignistypen Wirtschaft und Bau (Münze aufgehoben und gegeben, Bau fertig, Monarch-Tod), Obergrenze je Tick, Insel-Stufen, Golden-Update nach B-137 (AC-03, AC-04, AC-05).
-- F3.3 Review nach `docs/arbeitsweise.md` (alle Kriterien).
+| Nr. | Datei | Typ | Agent | Status |
+|---|---|---|---|---|
+| F3.1 | `F3.1-ereignisse-kampf.md` | Umsetzung | autonom | offen |
+| F3.2 | `F3.2-ereignisse-rest-obergrenze.md` | Umsetzung | autonom | offen |
+| F3.3 | `F3.3-review.md` | Review | autonom | offen |
 
 ## Abnahme
 

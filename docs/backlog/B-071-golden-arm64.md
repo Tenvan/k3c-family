@@ -6,9 +6,9 @@
 - **Status:** eingeplant
 - **Sprint:** F2
 - **Erstellt:** 2026-09-30
-- **Spec:** Entwurf
+- **Spec:** freigegeben
 - **Revision:** 1
-- **Freigabe:** –
+- **Freigabe:** 2026-10-03, Chat (Ralf), mit Sprint F2
 
 ## Ausgangslage
 
@@ -50,7 +50,7 @@ Kein arm64-Runner verfügbar → Lauf unter Emulation (qemu), langsamer, aber vo
 
 ## Offene Fragen
 
-Runner: nativer arm64-Runner von GitHub oder Emulation (🧑).
+Runner: nativer GitHub-arm64-Runner `ubuntu-24.04-arm` (Repo ist öffentlich, dort nach Kenntnisstand kostenlos), Rückfall qemu-Emulation, wenn der Job nicht anspringt (Vorschlag vom 2026-10-03, 🧑 bestätigt mit der Freigabe von F2).
 
 ## Notizen
 

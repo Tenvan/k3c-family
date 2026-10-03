@@ -2,7 +2,7 @@
 
 - **Status:** geplant
 - **Domäne:** PLAT
-- **Reife:** Entwurf
+- **Reife:** bereit
 - **Einschiebbar:** ja
 - **Tickets:** B-006, B-026, B-166
 - **Start-Commit:** –
@@ -32,7 +32,7 @@ Umbau der Eingabe für mehrere lokale Spieler (SP08).
 
 ## Regeln und Einschränkungen
 
-Den Test an der Xbox macht nur 🧑. B nicht belegen, View + Menu reserviert.
+Den Test an der Xbox macht nur 🧑. B nicht belegen, View + Menu reserviert. **Domänen-Ausnahme (Freigabe dieser Spec erlaubt sie, wie bei SP11):** X1.1 darf Testdateien unter `public/audio-test/` anlegen (CLI), X1.3 darf `docs/game-design.md` (REG) nachführen; beides verlangen B-006 und B-166.
 
 ## Beispiele
 
@@ -56,11 +56,11 @@ keine
 
 ## Sessions
 
-Entwurf. Vor dem Aktivieren jede Session als Datei nach `docs/vorlagen/session.md` schreiben, die Kriterien in Klammern werden ihr Feld `Kriterien`.
-
-- X1.1 Audio-Abschnitt auf der Gamepad-Testseite (`gamepad-test.html`, `src/tools/gamepadTest.ts`) mit Testdateien und Test der Auswertung; autonom, vor dem Xbox-Test (AC-04).
-- X1.2 🧑 Gamepad- und Audio-Test auf der Xbox (Anleitung im README), zwei Controller (AC-01, AC-05).
-- X1.3 Auswertung: Steuerungstabelle, Skill-Tasten (B-026), Sprite-Budget, HTTPS ja/nein, Audio-Ergebnis; schließt den Sprint ab (Doku-Sprint, kein Review) (AC-02, AC-03, AC-05).
+| Nr. | Datei | Typ | Agent | Status |
+|---|---|---|---|---|
+| X1.1 | `X1.1-audio-testseite.md` | Umsetzung | autonom | offen |
+| X1.2 | `X1.2-xbox-test.md` | Workshop | Mensch | offen |
+| X1.3 | `X1.3-auswertung.md` | Umsetzung | autonom | offen |
 
 ## Abnahme
 
