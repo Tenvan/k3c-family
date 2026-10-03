@@ -154,7 +154,11 @@ export interface QueuedSpawn {
   at: number;
 }
 
-export type GameEvent =
+/**
+ * Ereignis eines Ticks. Auf einer Insel trägt jedes Ereignis `stage` (Index seiner Stufe); Orte `x` in Units.
+ * Feedback-Ereignisse (hit … revive, B-139) laufen nur im Zustand der eigenen Stufe, Liste in `docs/protocol.md`.
+ */
+export type GameEvent = (
   | { type: 'dusk' }
   | { type: 'night'; day: number }
   | { type: 'dawn'; day: number }
@@ -169,7 +173,16 @@ export type GameEvent =
   | { type: 'goldStolen'; player: number; amount: number }
   | { type: 'playerDown'; player: number }
   | { type: 'castleFallen' }
-  | { type: 'arrived'; depth: number; name: string };
+  | { type: 'arrived'; depth: number; name: string; player?: number }
+  | { type: 'hit'; x: number; target: 'player' | 'troop' | 'enemy' | 'castle' | 'site'; id: number; damage: number }
+  | { type: 'kill'; kind: string; x: number; gold: number }
+  | { type: 'arrow'; from: number; to: number; x: number; team: 'player' | 'enemy' }
+  | { type: 'strike'; from: number; x: number }
+  | { type: 'coinPickup'; player: number; x: number }
+  | { type: 'coinGive'; player: number; x: number; to: 'site' | 'recruit' | 'mark' }
+  | { type: 'buildProgress'; site: number; kind: SiteKind; x: number; percent: 25 | 50 | 75 }
+  | { type: 'revive'; player: number; x: number }
+) & { stage?: number };
 
 export interface World {
   seed: string;
@@ -210,6 +223,8 @@ export interface World {
 
   /** Ereignisse des letzten Ticks (für HUD-Meldungen), werden bei jedem step() geleert. */
   events: GameEvent[];
+  /** Vom Server verworfene Ereignisse dieses Ticks (Obergrenze je Tick); fehlt bei 0. */
+  eventsDropped?: number;
 }
 
 export interface TravelPoint {

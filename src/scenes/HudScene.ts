@@ -193,5 +193,7 @@ function eventText(e: GameEvent): string | null {
       return 'Die Burg ist gefallen!\nGebäude, Truppen und die Hälfte der Vorräte sind verloren';
     case 'arrived':
       return e.name;
+    default:
+      return null;
   }
 }

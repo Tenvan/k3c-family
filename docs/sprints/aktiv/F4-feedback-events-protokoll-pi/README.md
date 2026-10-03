@@ -60,7 +60,7 @@ Q08, Q17 und Q18 sind entschieden (2026-10-03, `docs/fragenkatalog.md` › Besch
 
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
-| F4.1 | `F4.1-protokoll-ereignisse-bandbreite.md` | Umsetzung | autonom | in Arbeit |
+| F4.1 | `F4.1-protokoll-ereignisse-bandbreite.md` | Umsetzung | autonom | fertig |
 | F4.2 | `F4.2-rotation-backup.md` | Umsetzung | autonom | offen |
 | F4.3 | `F4.3-restore-absichern.md` | Umsetzung | autonom | offen |
 | F4.4 | `F4.4-review.md` | Review | autonom | offen |
