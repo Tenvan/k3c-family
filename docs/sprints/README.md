@@ -12,6 +12,7 @@ Reihenfolge in Wellen, Bahnen je Domäne und Zuordnung Mensch/autonom (zwei Acco
 |---|---|---|---|---|
 | DBG1 | SRV | Dev-Aktionen: Gold, Material, Zeitraffer | Dev-Nachricht im Raum: Gold droppen, Material geben, Zeit 1-8x | `aktiv/DBG1-dev-aktionen-server/` |
 | F1 | REG 🧑 | Zielkorridore und Bedienungsregeln | `docs/rules/zielkorridore.md` und `docs/rules/bedienung.md` mit Datum der Bestätigung durch 🧑 | `aktiv/F1-zielkorridore-regeln/` |
+| F2 | INF | Golden-Ablauf, Spielstand-Migration und Determinismus | `task golden:update` in `task --list`, Abschnitte in `docs/arbeitsweise.md`, ein grüner arm64-Job in der CI | `aktiv/F2-golden-migration-determinismus/` |
 
 ## Geplant (in dieser Reihenfolge)
 
@@ -22,6 +23,7 @@ dann über den Go-Server mit mehreren Räumen und gemischten Spielern.
 |---|---|---|---|---|---|
 | DBG2 | CLI | Debug-Overlay: Gold, Material, Zeitraffer | Aktionen im Overlay am PC, Handy und Controller | Entwurf | `geplant/DBG2-debug-overlay-aktionen/` |
 | F2 | INF | Golden-Ablauf, Spielstand-Migration und Determinismus | `task golden:update` in `task --list`, Abschnitte in `docs/arbeitsweise.md`, ein grüner arm64-Job in der CI | bereit | `geplant/F2-golden-migration-determinismus/` |
+| F1 | REG 🧑 | Zielkorridore und Bedienungsregeln | `docs/rules/zielkorridore.md` und `docs/rules/bedienung.md` mit Datum der Bestätigung durch 🧑 | Entwurf | `geplant/F1-zielkorridore-regeln/` |
 | F3 | SIM | Feedback-Ereignisse in der Simulation | Go-Tests je Ereignistyp, `task check:go` grün, Ereignisse im Ergebnis von `sim_run` (k3c-dev) | Entwurf | `geplant/F3-feedback-events-sim/` |
 | F4 | SRV | Feedback-Ereignisse im Protokoll und Pi-Betrieb | Benchmark mit Bytes je Tick, README-Abschnitt zum Backup, Test „Restore ohne Berechtigung abgelehnt“ | bereit | `geplant/F4-feedback-events-protokoll-pi/` |
 | F5 | INF | Doku-Drift, Version und Landing-Kacheln | Fußzeile „Server <Version> · Client <Version>“ auf der Landingpage am TV, keine toten Kacheln | bereit | `geplant/F5-doku-version/` |

@@ -11,8 +11,10 @@ import (
 	"k3c/engine/level"
 )
 
-// goldenRun ist eine Datei testdata/golden/sim-*.json (erzeugt von tests/golden.test.ts).
+// goldenRun ist eine Datei testdata/golden/sim-*.json (ursprünglich aus der TS-Simulation; neu schreiben mit
+// `task golden:update`, B-137).
 type goldenRun struct {
+	path          string
 	Name          string
 	Biome         string
 	Seed          string
@@ -47,13 +49,24 @@ func goldenRuns(t *testing.T) []goldenRun {
 		if err != nil || len(runs[i].Snapshots) == 0 || runs[i].SnapshotEvery == 0 {
 			t.Fatalf("%s unbrauchbar: %v", f, err)
 		}
+		runs[i].path = f
 	}
 	return runs
 }
 
-// compare vergleicht einen Snapshot vollständig.
-func compare(t *testing.T, run goldenRun, tick int, want map[string]any, w *World) {
+// snapshot ist ein Eintrag von snapshots in der Reihenfolge der Datei.
+type snapshot struct {
+	Tick  int `json:"tick"`
+	World any `json:"world"`
+}
+
+// compare vergleicht einen Snapshot vollständig; mit -update sammelt es ihn stattdessen in got.
+func compare(t *testing.T, run goldenRun, tick int, want map[string]any, w *World, got *[]snapshot) {
 	t.Helper()
+	if *golden.Update {
+		*got = append(*got, snapshot{tick, golden.Raw(t, w)})
+		return
+	}
 	if d := golden.Diff("world", want, golden.Tree(t, w)); d != "" {
 		t.Fatalf("sim-%s Tick %d: %s", run.Name, tick, d)
 	}
@@ -76,7 +89,8 @@ func replay(t *testing.T, run goldenRun) {
 		*w.Stock = run.Setup.Stock
 	}
 	snap, tick := 0, 0
-	compare(t, run, 0, run.Snapshots[0].World, w)
+	var got []snapshot
+	compare(t, run, 0, run.Snapshots[0].World, w, &got)
 	for _, seg := range run.Inputs {
 		for range seg.Ticks {
 			Step(w, seg.Commands, run.Dt)
@@ -88,11 +102,16 @@ func replay(t *testing.T, run goldenRun) {
 			if s := run.Snapshots[snap]; s.Tick != tick {
 				t.Fatalf("sim-%s: Snapshot %d hat Tick %d, erwartet %d", run.Name, snap, s.Tick, tick)
 			}
-			compare(t, run, tick, run.Snapshots[snap].World, w)
+			compare(t, run, tick, run.Snapshots[snap].World, w, &got)
 		}
 	}
 	if tick != run.Ticks || snap != len(run.Snapshots)-1 {
 		t.Fatalf("sim-%s: %d Ticks und %d Snapshots gerechnet, Datei hat %d und %d", run.Name, tick, snap+1, run.Ticks, len(run.Snapshots))
+	}
+	if *golden.Update {
+		f := golden.ReadFile(t, run.path)
+		f.Set(t, "snapshots", got)
+		f.Write(t, run.path)
 	}
 }
 
