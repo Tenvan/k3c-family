@@ -67,4 +67,4 @@ Höhe des Startvorrats (100 Holz ist ein Vorschlag): 🧑 bestätigt mit der Fre
 2026-10-03 (H1.2): `task check` und `task check:go` grün, Diff `fc8aa19..origin/main` geprüft, keine schweren Befunde.
 AC-01 bis AC-06: Nachweise im Ergebnis von H1.1 (`island_start_test.go`, Regel in `docs/rules/materialien-gebaeude.md` und `docs/game-design.md`).
 Keine behobenen Befunde, keine neuen Tickets.
-Version: v0.4.0 vorgeschlagen (Minor: Wirkung im Spiel, neue Insel startet mit 100 Holz).
+Version: v0.4.0 gesetzt (2026-10-03, auf `80dfb6b`, von 🧑 bestätigt; Minor: neue Insel startet mit 100 Holz).
