@@ -11,7 +11,6 @@ Reihenfolge in Wellen, Bahnen je Domäne und Zuordnung Mensch/autonom (zwei Acco
 | Sprint | Domäne | Thema | Am Ende sichtbar | Ordner |
 |---|---|---|---|---|
 | F4 | SRV | Feedback-Ereignisse im Protokoll und Pi-Betrieb | Benchmark mit Bytes je Tick, README-Abschnitt zum Backup, Test „Restore ohne Berechtigung abgelehnt“ | `aktiv/F4-feedback-events-protokoll-pi/` |
-| F5 | INF | Doku-Drift, Version und Landing-Kacheln | Fußzeile „Server <Version> · Client <Version>“ auf der Landingpage am TV, keine toten Kacheln | `aktiv/F5-doku-version/` |
 
 ## Offen am Gerät
 
@@ -125,3 +124,4 @@ Gesamtplan und Begründung: [`../plan-weiterentwicklung.md`](../plan-weiterentwi
 | DBG2 | Debug-Overlay bedient Gold, Material und Zeitraffer (B-179; Abnahme am Gerät offen) | `erledigt/DBG2-debug-overlay-aktionen/` |
 | F3 | Feedback-Ereignisse in der Simulation: Treffer, Kill, Münzen, Bau, Obergrenze je Tick (B-139) | `erledigt/F3-feedback-events-sim/` |
 | X1 | Xbox-Machbarkeit: Steuerung, Sprite-Budget, HTTPS und Audio gemessen (B-006, B-026, B-166) | `erledigt/X1-xbox/` |
+| F5 | Doku-Drift, Version in Landing-Fußzeile und Landing-Kacheln zur Lobby (B-141, B-079) | `erledigt/F5-doku-version/` |

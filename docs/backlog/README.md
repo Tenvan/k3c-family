@@ -29,7 +29,6 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-053](B-053-ci-lauf-sp01.md) | INF | Problem | hoch | offen | – | Die CI hat die Prüfungen aus SP01 einmal grün durchlaufen |
 | [B-058](B-058-execution-policy.md) | INF | Frage | niedrig | offen | – | requirements.md empfiehlt keine Sicherheitseinstellung ohne Entscheidung von 🧑 |
 | [B-075](B-075-golden-spielstand-hub.md) | SIM | Schuld | mittel | offen | – | Der Golden-Spielstand enthält einen gebauten und veränderten Hub |
-| [B-079](B-079-landing-kacheln-lobby.md) | PLAT | Schuld | mittel | eingeplant | F5 | Die Kacheln der Landingpage passen zum Start über die Lobby |
 | [B-080](B-080-dev-tasten-server.md) | SRV | Idee | niedrig | offen | – | Dev-Tasten (Gold, Stufe, Neustart) wirken über den Server |
 | [B-090](B-090-radar.md) | CLI | Idee | mittel | eingeplant | U1 | Ein Radar im HUD zeigt Burg, Portale, Ausgang, Mitspieler und Gegner |
 | [B-092](B-092-level-betrachter.md) | PLAT | Idee | mittel | eingeplant | U3 | Eine Testseite zeigt ein generiertes Level (Seed und Biom) ohne zu spielen |
@@ -62,7 +61,6 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-131](B-131-events.md) | SIM | Idee | niedrig | eingeplant | K3 | Vollmond, Blutmond und Händler-Überfall sind als Events umgesetzt |
 | [B-132](B-132-anzeige-bosse-events.md) | CLI | Idee | mittel | eingeplant | K5 | Der Client zeigt Gegner-Fähigkeiten, Bosse, Phasen und Events |
 | [B-140](B-140-feedback-events-protokoll.md) | SRV | Idee | hoch | eingeplant | F4 | Feedback-Ereignisse laufen im Protokoll mit gemessener Bandbreite zum Client |
-| [B-141](B-141-doku-drift-version.md) | INF | Schuld | mittel | eingeplant | F5 | Doku und CLAUDE.md stimmen mit dem Code überein, die Version ist sichtbar |
 | [B-142](B-142-pi-betrieb-backup-rotation.md) | SRV | Idee | hoch | eingeplant | F4 | Spielstände werden außerhalb des Pi gesichert, Berichte und Logs rotieren |
 | [B-143](B-143-endpunkte-heimnetz-absichern.md) | SRV | Problem | mittel | eingeplant | F4 | Restore-, Save- und Report-Endpunkte sind im Heimnetz abgesichert |
 | [B-146](B-146-optionen-pause-szene.md) | CLI | Idee | hoch | eingeplant | S5 | Der Client hat eine Optionen- und Pause-Szene mit getrennter Lautstärke und Barrierefreiheit |
@@ -212,3 +210,5 @@ Zeile in diesen Abschnitt.
 | [B-006](archiv/B-006-xbox-gamepad-test.md) | PLAT | Frage | hoch | erledigt | X1 | Gamepad-Test auf der Xbox ist ausgewertet |
 | [B-026](archiv/B-026-skill-tasten.md) | PLAT | Frage | hoch | erledigt | X1 | Skill-Tasten am Controller sind festgelegt |
 | [B-166](archiv/B-166-audio-autoplay-formate-xbox.md) | PLAT | Frage | hoch | erledigt | X1 | Audio-Autoplay und Formate auf Edge der Xbox sind geprüft |
+| [B-079](archiv/B-079-landing-kacheln-lobby.md) | PLAT | Schuld | mittel | erledigt | F5 | Die Kacheln der Landingpage passen zum Start über die Lobby |
+| [B-141](archiv/B-141-doku-drift-version.md) | INF | Schuld | mittel | erledigt | F5 | Doku und CLAUDE.md stimmen mit dem Code überein, die Version ist sichtbar |
