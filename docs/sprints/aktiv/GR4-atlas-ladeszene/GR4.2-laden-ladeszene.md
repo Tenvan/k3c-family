@@ -1,6 +1,6 @@
 # GR4.2 · Spiel lädt aus Atlanten, Lade-Szene mit Fortschritt und Fehlermeldung
 
-- **Status:** offen
+- **Status:** in Arbeit
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Branch:** gr4/2-laden-ladeszene
