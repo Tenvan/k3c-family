@@ -60,7 +60,7 @@ Q08 ist entschieden (2026-10-03): 12 Ereignisse (Treffer, Kill, Münze auf/gegeb
 |---|---|---|---|---|
 | F3.1 | `F3.1-ereignisse-kampf.md` | Umsetzung | autonom | fertig |
 | F3.2 | `F3.2-ereignisse-rest-obergrenze.md` | Umsetzung | autonom | fertig |
-| F3.3 | `F3.3-review.md` | Review | autonom | offen |
+| F3.3 | `F3.3-review.md` | Review | autonom | in Arbeit |
 
 ## Abnahme
 
