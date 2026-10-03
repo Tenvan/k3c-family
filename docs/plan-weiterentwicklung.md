@@ -198,8 +198,8 @@ Stand 2026-10-03. Ziel: Auf dem zweiten Account laufen möglichst viele autonome
 | INF | F0 → F2 → F5 → GR4 → RL1 | RL1.1, RL1.3 (Checkliste abnehmen) |
 | REG | F1.1–F1.3 → **F1.4** → F1.5 … später BAL4 → BR1 → BR2 | F1.4, BAL4.2, BR1.2, BR2.2, P1 |
 | SIM | H1 → F3 → BAL1 → S1 → BAL2 → W1 → W2 → W3 → W4 → K1 → K2 → K3 → BAL3 | BAL3.1 (Bot-Profile) |
-| SRV | SP11 (Rev. 2: schließt nach SP11.4 ab) → F4 → S2 → LT1 → W5 → K4 | LT1.3 (Messlauf am Pi) |
-| CLI | S5 → S4 → S3 → S7 → S6 → SO1 → W6 → K5 | S3.4, S4.3, S5.4, S6.4, S7.3, W6.4, K5.4 (Abnahmen am Gerät) |
+| SRV | DBG1 → F4 → S2 → LT1 → W5 → K4 | LT1.3 (Messlauf am Pi) |
+| CLI | DBG2 → S5 → S4 → S3 → S7 → S6 → SO1 → W6 → K5 | S3.4, S4.3, S5.4, S6.4, S7.3, W6.4, K5.4 (Abnahmen am Gerät) |
 | PLAT | X1.1 (autonom, Audio-Abschnitt) → X1.2 (🧑 Xbox-Test) → X1.3 → GR6 → SO3 | X1.2 (Xbox-Test) |
 | Asset-Schiene (einschiebbar, CLI/INF) | GR1 → GR2 → GR3 → GR5, SO2, SO4 | GR1.1, GR2.2, GR4.3, SO2.1, SO4.1 (Stil und Auswahl) |
 
