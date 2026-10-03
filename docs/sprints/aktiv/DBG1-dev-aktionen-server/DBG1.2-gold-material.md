@@ -1,6 +1,6 @@
 # DBG1.2 · Raum: Gold droppen und Material in den Vorrat, Log
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Branch:** dbg1/2-gold-material
@@ -49,10 +49,10 @@ Zeitraffer (DBG1.3), Bedienung im Client, neue Spielregeln, Ereignisse für Dev-
 
 ## Fertig, wenn
 
-- [ ] AC-02: Test 4a belegt Münzen am richtigen Spieler und das Aufheben (`Player.Gold`), Test 4b `bad_request` bei ungültigem Slot (`go test ./engine/room ./engine/sim -run Dev`).
-- [ ] AC-03: Test 4c belegt die Erhöhung des Insel-Vorrats und die Begrenzung durch das Lager-Maximum.
-- [ ] AC-06 (Log): Test 4d belegt je Dev-Aktion einen Log-Eintrag mit Gerät, Aktion, Werten und Raum.
-- [ ] `engine/sim/` unverändert außer `dev.go` und `dev_test.go` (`git diff --stat engine/sim`); `task check:go` und `task check` grün.
+- [x] AC-02: Test 4a belegt Münzen am richtigen Spieler und das Aufheben (`Player.Gold`), Test 4b `bad_request` bei ungültigem Slot (`go test ./engine/room ./engine/sim -run Dev`).
+- [x] AC-03: Test 4c belegt die Erhöhung des Insel-Vorrats und die Begrenzung durch das Lager-Maximum.
+- [x] AC-06 (Log): Test 4d belegt je Dev-Aktion einen Log-Eintrag mit Gerät, Aktion, Werten und Raum.
+- [x] `engine/sim/` unverändert außer `dev.go` und `dev_test.go` (`git diff --stat engine/sim`); `task check:go` und `task check` grün.
 
 ## Prüfen
 
@@ -64,4 +64,10 @@ task check
 
 ## Ergebnis
 
-–
+Umgesetzt am 2026-10-03.
+- AC-02 geprüft: `TestDevGold` (Raum mit zwei Slots: 50 Münzen bei Monarch 0, keine bei Monarch 1, nach `r.Tick()` hat Monarch 0 das Gold), `TestDevUngueltig` (fremder Slot, `amount` 0 und 1001, fehlender `slot` → `bad_request`), `TestDevDropGold` (Sim: Aufheben bis zum Beutel-Maximum, Rest bleibt liegen, unbekannter Spieler → false).
+- AC-03 geprüft: `TestDevMaterial` (Holz +100, Stein über das Maximum nur bis 300 je Stufe, kein Fehler), `TestDevUngueltig` (unbekannter Rohstoff, `amount` 0 → `bad_request`), `TestDevAddStock` (Sim).
+- AC-06 (Log) geprüft: `TestDevLog`, je gelungener Aktion genau eine Info-Zeile „Dev-Aktion“ mit Gerät, Aktion, Slot, Werten und Raum; eine abgelehnte Aktion schreibt keine.
+- Netz: `TestDevMitDevModeLiestBeispiele` erwartet für `c2s-dev-gold.json` und `c2s-dev-material.json` keinen Fehler (folgendes `input` wird mit `ack` bestätigt), `timescale` bleibt `bad_request`.
+- `go test ./engine/room ./engine/sim ./engine/net -run Dev`, `task check:go` (ohne `-race` lokal, kein C-Compiler; die CI prüft es) und `task check` grün; `engine/sim/` nur `dev.go` und `dev_test.go` neu.
+Abweichungen: `DevAddStock` meldet auch bei unbekanntem Spieler `ok` false (Stufe nicht auffindbar). Keine neuen Tickets.

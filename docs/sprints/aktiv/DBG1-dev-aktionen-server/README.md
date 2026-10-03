@@ -60,7 +60,7 @@ Siehe Ticket › Offene Fragen.
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
 | DBG1.1 | `DBG1.1-protokoll.md` | Umsetzung | autonom | fertig |
-| DBG1.2 | `DBG1.2-gold-material.md` | Umsetzung | autonom | offen |
+| DBG1.2 | `DBG1.2-gold-material.md` | Umsetzung | autonom | fertig |
 | DBG1.3 | `DBG1.3-zeitraffer.md` | Umsetzung | autonom | offen |
 | DBG1.4 | `DBG1.4-review.md` | Review | autonom | offen |
 
