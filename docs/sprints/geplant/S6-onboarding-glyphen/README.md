@@ -2,7 +2,7 @@
 
 - **Status:** geplant
 - **Domäne:** CLI
-- **Reife:** Entwurf
+- **Reife:** bereit
 - **Einschiebbar:** nein
 - **Tickets:** B-148, B-149
 - **Start-Commit:** –
@@ -57,13 +57,16 @@ Umfang der Führung und Freundlich-Grad: 🧑, `docs/fragenkatalog.md Q11`; Zeic
 
 ## Sessions
 
-Entwurf. Vor dem Aktivieren jede Session als Datei nach `docs/vorlagen/session.md` schreiben, die Kriterien in Klammern werden ihr Feld `Kriterien`.
+| Nr. | Datei | Typ | Agent | Status |
+|---|---|---|---|---|
+| S6.1 | `S6.1-freundlich-grad.md` | Umsetzung | autonom | offen |
+| S6.2 | `S6.2-glyphen.md` | Umsetzung | autonom | offen |
+| S6.3 | `S6.3-hinweise.md` | Umsetzung | autonom | offen |
+| S6.4 | `S6.4-abnahme-kind.md` | Workshop | Mensch | offen |
+| S6.5 | `S6.5-review.md` | Review | autonom | offen |
 
-- S6.1 Freundlich-Grad in `data/difficulty.json` und Sim-Test (AC-02).
-- S6.2 Glyph-Funktion und Zeichnung, Credits (AC-04, AC-05).
-- S6.3 Hinweis-Funktion und Darstellung über den Objekten, „Gesehen“-Merkung (AC-01, AC-03).
-- S6.4 🧑 Abnahme mit einem Kind am TV (AC-06).
-- S6.5 Review des Sprints (Code-Sprint) (AC-01, AC-02, AC-03, AC-04, AC-05, AC-06).
+Bei `Reife: Entwurf` genügen Stichpunkte mit den Kriterien in Klammern statt Session-Dateien. Vor dem Aktivieren
+wird jede Session als eigene Datei nach `docs/vorlagen/session.md` geschrieben.
 
 ## Abnahme
 

@@ -29,6 +29,7 @@ func stepPlayers(w *World, commands []PlayerCommand, dt float64) {
 			p.RespawnIn -= dt
 			if p.RespawnIn <= 0 {
 				respawn(w, p)
+				emit(w, "revive", Event{"player": p.Index, "x": unitX(p.X)})
 			}
 			continue
 		}
@@ -176,6 +177,7 @@ func payOneCoin(w *World, p *Player) {
 		w.Coins = append(w.Coins, &Coin{ID: w.newID(), X: p.X, BlockedPlayerID: intPtr(p.ID), BlockedUntil: w.Time + economy.DropPickupDelaySeconds})
 		return
 	}
+	coinGiveEvent(w, p, target)
 	key := keyOf(target)
 	if p.PayKey == nil || *p.PayKey != key {
 		refundPending(w, p)
@@ -242,6 +244,7 @@ func collectCoins(w *World) {
 			kept = append(kept, c)
 		} else {
 			taker.Gold++
+			emit(w, "coinPickup", Event{"player": taker.Index, "x": unitX(c.X)})
 		}
 	}
 	w.Coins = kept
