@@ -1,11 +1,11 @@
 # F1 · REG · Zielkorridore und Bedienungsregeln
 
-- **Status:** geplant
+- **Status:** aktiv
 - **Domäne:** REG
 - **Reife:** bereit
 - **Einschiebbar:** nein
 - **Tickets:** B-134, B-135, B-136, B-144, B-145
-- **Start-Commit:** –
+- **Start-Commit:** 54c1657
 - **Spec:** freigegeben
 - **Revision:** 1
 - **Freigabe:** 2026-10-03, Chat (Ralf), Revision 1; umfasst B-134, B-135, B-136, B-144, B-145 und B-152/AC-01
@@ -62,7 +62,7 @@ Entschieden am 2026-10-03: Q01 Pause, Q03 Schriftgröße (≥ 28 px Vollbild, �
 
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
-| F1.1 | `F1.1-bedienung-regeln.md` | Umsetzung | autonom | offen |
+| F1.1 | `F1.1-bedienung-regeln.md` | Umsetzung | autonom | in Arbeit |
 | F1.2 | `F1.2-zielkorridore-vorschlag.md` | Umsetzung | autonom | offen |
 | F1.3 | `F1.3-reittier-regel.md` | Umsetzung | autonom | offen |
 | F1.4 | `F1.4-workshop-bestaetigung.md` | Workshop | Mensch | offen |
