@@ -52,13 +52,17 @@ Ticket und Sprint-README **sind** die Spec, eine eigene Spec-Datei gibt es nicht
 Eine Session muss **ohne Rückfragen und ohne Planungs-Werkzeuge** abzuarbeiten sein. Deshalb:
 
 1. `docs/sprints/aktiv/*/README.md` lesen. Die erste Session mit `Status: offen`, `Agent: autonom` und erledigten
-   Abhängigkeiten nehmen. Gibt es keine: **nichts tun** und das melden.
-2. Session-Datei vollständig lesen. Branch wie im Feld `Branch` anlegen. `Status: in Arbeit` setzen.
+   Abhängigkeiten nehmen, deren Branch noch nicht auf `origin` liegt (`git ls-remote --heads origin <Branch>`;
+   existiert er, ist die Session vergeben, die nächste nehmen). Gibt es keine: **nichts tun** und das melden.
+2. Session-Datei vollständig lesen. Branch wie im Feld `Branch` anlegen und sofort mit `git push -u origin <Branch>`
+   schieben (beansprucht die Session). `Status: in Arbeit` setzen.
 3. Nur die **Erlaubten Dateien** ändern. Die **Schritte** der Reihe nach ausführen, **Nicht-Ziele** einhalten.
 4. Alles unter **Fertig, wenn** abhaken, die Befehle unter **Prüfen** müssen grün sein. Maßstab sind die Kriterien
    der Session in der Sprint-README (SDD), nicht eine eigene Auslegung.
 5. **Ergebnis** mit Nachweis je Kriterium ausfüllen, `Status: fertig` setzen, auch in der Session-Tabelle der Sprint-README. Neue Ideen oder
-   Probleme als Ticket anlegen (Vorlage!) und in `backlog/README.md` eintragen. PR öffnen (Vorlage), nicht selbst mergen.
+   Probleme als Ticket anlegen (Vorlage!) und in `backlog/README.md` eintragen. Gemeinsame Planungsdateien
+   (`backlog/README.md`, `sprints/README.md`) erst am Ende ändern. Vor dem PR `git fetch` und `git rebase origin/main`.
+   PR öffnen (Vorlage), nicht selbst mergen.
 
 **Wenn etwas nicht passt** (Schritt unklar, Befehl scheitert unerklärlich, nötige Datei nicht erlaubt, Kriterium
 widerspricht dem Code oder einer Regel):
@@ -98,19 +102,19 @@ Grenzfälle:
 1. **Geplant:** Ordner `sprints/geplant/SPnn-name/` mit `README.md` nach Vorlage, `Spec: Entwurf`. `Reife: Entwurf`
    erlaubt Stichpunkte für die Sessions, die Kriterien stehen trotzdem schon fest.
 2. **Bereit machen** (Planung, meist am Ende des vorigen Reviews): Tickets sichten und bewerten, Offene Fragen klären,
-   jede Session als Datei nach Vorlage schreiben (Feld `Kriterien`), `Reife: bereit`. Nur der **nächste** Sprint wird so
+   jede Session als Datei nach Vorlage schreiben (Feld `Kriterien`), `Reife: bereit`. Nur der **nächste** Sprint je Domäne wird so
    detailliert. Danach 🧑 um Freigabe der Spec bitten.
 3. **Aktivieren** (meist in der Review-Session des vorigen Sprints), nur mit `Spec: freigegeben`:
    `git mv docs/sprints/geplant/SPnn-name docs/sprints/aktiv/`,
-   `Status: aktiv`, Fahrplan in `sprints/README.md` anpassen. Höchstens **ein** aktiver Sprint
-   (ein eingeschobener Sprint mit `Einschiebbar: ja` darf zusätzlich aktiv sein).
+   `Status: aktiv`, Fahrplan in `sprints/README.md` anpassen. Höchstens ein aktiver Sprint **je Domäne**;
+   einschiebbare Sprints (`Einschiebbar: ja`) zählen nicht mit (B-174).
    Das Feld `Start-Commit` setzt die **erste Session** des Sprints: `git rev-parse --short origin/main` vor ihrem Branch.
 4. **Abschließen:** Die Review-Session verschiebt den Ordner nach `sprints/erledigt/` und setzt `Status: erledigt`.
 
 - **Klein:** 2–4 Sessions. In Code-Sprints ist die letzte das **Review**; Doku- und Planungs-Sprints (nur `docs/`)
   haben keins, ihre letzte Session schließt den Sprint ab (Schritte 4–5 der Review-Session). Mehr Arbeit → zweiter Sprint.
-- **Blockade** (🧑 fehlt): Sprint bleibt aktiv, blockierte Session `Status: blockiert`. Ein einschiebbarer oder der
-  nächste unabhängige Sprint darf vorgezogen werden.
+- **Blockade** (🧑 fehlt): Sprint bleibt aktiv, blockierte Session `Status: blockiert`. Ein einschiebbarer Sprint oder
+  der nächste Sprint einer anderen Domäne darf vorgezogen werden.
 - **Richtwert Session:** ein PR mit ≤ ~400 geänderten Code-Zeilen (ohne Bilder, Daten-JSON, Lockfiles).
 - **Commit-Titel** mit Domäne: `feat(sim): Taunt`, `fix(srv): Raum aufräumen`, `docs(reg): Wirtschaft v1`.
 

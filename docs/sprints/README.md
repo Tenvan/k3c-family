@@ -3,6 +3,7 @@
 Alle Sprints mit Ordner und Status. Arbeitsweise: [`../arbeitsweise.md`](../arbeitsweise.md).
 **Lesen:** `aktiv/` immer, `geplant/` beim Planen, `erledigt/` nur auf Nachfrage.
 Jede Sprint-README ist eine Spec (SDD); aktiv wird ein Sprint erst mit `Spec: freigegeben` durch 🧑.
+Je Domäne ein aktiver Sprint (B-174); einschiebbare zählen nicht mit.
 Reihenfolge in Wellen, Bahnen je Domäne und Zuordnung Mensch/autonom (zwei Accounts): [`../plan-weiterentwicklung.md`](../plan-weiterentwicklung.md) § 11.
 
 ## Aktiv

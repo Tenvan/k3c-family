@@ -56,7 +56,7 @@ keine
 
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
-| F0.1 | `F0.1-regel-und-test.md` | Umsetzung | autonom | in Arbeit |
+| F0.1 | `F0.1-regel-und-test.md` | Umsetzung | autonom | fertig |
 | F0.2 | `F0.2-review.md` | Review | autonom | offen |
 
 ## Abnahme
