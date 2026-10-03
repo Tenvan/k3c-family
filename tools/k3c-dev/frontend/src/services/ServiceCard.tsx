@@ -3,20 +3,29 @@ import { useState } from 'react';
 import { backend, type ServiceStatus } from '../api';
 import { errorText } from '../lib/errors';
 import { StatusBadge } from '../ui/parts';
+import { RoleTags } from '../logs/RoleTags';
 import { LogBox } from './LogBox';
 import { badgeFor, buttonsFor, metricsOf, type Command } from './tables';
 
 const ADOPTED_HINT =
   'Vor dem Start von k3c-dev gestartet: keine Konsolenausgabe, kein Auto-Restart. Stoppen nur nach Bestätigung.';
 
-/** Karte eines Dienstes (B-068 › Karten). Den Zustand nach einem Befehl liefert das nächste Ereignis. */
-export function ServiceCard({ s }: { s: ServiceStatus }) {
+interface Props {
+  s: ServiceStatus;
+  selected: boolean;
+  onSelect: () => void;
+}
+
+/**
+ * Karte eines Dienstes (B-068 › Karten). Den Zustand nach einem Befehl liefert das nächste Ereignis; ein Klick
+ * auf die Karte zeigt rechts Konsole und Log des Dienstes.
+ */
+export function ServiceCard({ s, selected, onSelect }: Props) {
   const [busy, setBusy] = useState<Command | null>(null);
   const [error, setError] = useState('');
   const [confirm, setConfirm] = useState(false);
   const allowed = buttonsFor(s.state);
   const badge = badgeFor(s.state);
-  const m = metricsOf(s, Date.now());
 
   const run = async (cmd: Command, force = false) => {
     setBusy(cmd);
@@ -43,26 +52,20 @@ export function ServiceCard({ s }: { s: ServiceStatus }) {
   );
 
   return (
-    <div className="svc-card">
+    <div className={selected ? 'svc-card svc-card-on' : 'svc-card'} onClick={onSelect}>
       <div className="svc-head">
         <div>
-          <div className="svc-name">{s.name}</div>
+          <button className="svc-name" onClick={onSelect} aria-current={selected}>{s.name}</button>
           <div className="svc-port">Port {s.port}</div>
         </div>
         <StatusBadge tone={badge.tone}>{badge.label}</StatusBadge>
       </div>
+      <RoleTags tags={s.tags} />
+      {s.description && <p className="svc-desc">{s.description}</p>}
       <code className="svc-health">{s.health}</code>
-      <dl className="svc-metrics">
-        <Metric label="PID" value={m.pid} />
-        <Metric label="CPU" value={m.cpu} />
-        <Metric label="SPEICHER" value={m.memory} />
-        <Metric label="LAUFZEIT" value={m.uptime} />
-      </dl>
+      <Metrics s={s} />
       {s.log && <LogBox name={s.name} />}
-      {s.restarts > 0 && <p className="svc-note">Neustarts: {s.restarts}</p>}
-      {s.lastError && <p className="svc-error">{s.lastError}</p>}
-      {s.state === 'übernommen' && <p className="svc-hint">{ADOPTED_HINT}</p>}
-      {error && <p className="svc-error">{error}</p>}
+      <Notes s={s} error={error} />
       <Flex gap="2" mt="auto">
         {button('start', 'Start')}
         {button('stop', 'Stopp', 'red')}
@@ -70,6 +73,29 @@ export function ServiceCard({ s }: { s: ServiceStatus }) {
       </Flex>
       <ConfirmStop open={confirm} s={s} onOpen={setConfirm} onStop={() => void run('stop', true)} />
     </div>
+  );
+}
+
+function Notes({ s, error }: { s: ServiceStatus; error: string }) {
+  return (
+    <>
+      {s.restarts > 0 && <p className="svc-note">Neustarts: {s.restarts}</p>}
+      {s.lastError && <p className="svc-error">{s.lastError}</p>}
+      {s.state === 'übernommen' && <p className="svc-hint">{ADOPTED_HINT}</p>}
+      {error && <p className="svc-error">{error}</p>}
+    </>
+  );
+}
+
+function Metrics({ s }: { s: ServiceStatus }) {
+  const m = metricsOf(s, Date.now());
+  return (
+    <dl className="svc-metrics">
+      <Metric label="PID" value={m.pid} />
+      <Metric label="CPU" value={m.cpu} />
+      <Metric label="SPEICHER" value={m.memory} />
+      <Metric label="LAUFZEIT" value={m.uptime} />
+    </dl>
   );
 }
 

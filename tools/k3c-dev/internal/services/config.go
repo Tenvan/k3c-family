@@ -14,6 +14,8 @@ import (
 // Service ist ein Eintrag aus services.json.
 type Service struct {
 	Name        string            `json:"name"`
+	Description string            `json:"description,omitempty"` // ein Satz: wofür der Dienst da ist (Oberfläche)
+	Tags        []string          `json:"tags,omitempty"`        // Einordnung für die Oberfläche: Spiel/Tool, Backend/Client
 	Command     []string          `json:"command"` // Programm und Argumente, ohne Shell gestartet
 	Cwd         string            `json:"cwd"`     // relativ zur Repo-Wurzel
 	Port        int               `json:"port"`

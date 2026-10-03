@@ -9,13 +9,11 @@ const entry = (msg: string): LogEntry => ({ time: '2026-09-30T08:03:00Z', level:
 
 describe('Reiter Log und Fehler', () => {
   it('Log und Fehler nur für Log-Dateien, gemerkter Reiter fällt auf Konsole zurück', () => {
-    expect(tabEnabled('konsole', 'run')).toBe(true);
-    expect(tabEnabled('log', 'log')).toBe(true);
-    expect(tabEnabled('log', 'run')).toBe(false);
-    expect(tabEnabled('fehler', 'service')).toBe(false);
-    expect(pickTab('fehler', 'log')).toBe('fehler');
-    expect(pickTab('fehler', 'run')).toBe('konsole');
-    expect(pickTab('log', 'console')).toBe('konsole');
+    expect(tabEnabled('konsole', false)).toBe(true);
+    expect(tabEnabled('log', true)).toBe(true);
+    expect(tabEnabled('log', false)).toBe(false);
+    expect(pickTab('fehler', true)).toBe('fehler');
+    expect(pickTab('fehler', false)).toBe('konsole');
   });
 
   it('älteste oben', () => {

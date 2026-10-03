@@ -9,17 +9,17 @@ const MB = 1024 * 1024;
 const wait = (ms: number) => new Promise((r) => setTimeout(r, ms));
 
 function initial(now: number): ServiceStatus[] {
-  const base = { health: '', log: '', pid: 0, startedAt: '', restarts: 0, lastError: '', cpu: 0, memory: 0, seq: 1 };
+  const base = { description: '', health: '', log: '', pid: 0, startedAt: '', restarts: 0, lastError: '', cpu: 0, memory: 0, seq: 1 };
   const svc = (name: string, port: number, rest: Partial<ServiceStatus>): ServiceStatus => ({
     ...base, name, port, health: `http://127.0.0.1:${port}/`, state: 'gestoppt', ...rest,
   });
   return [
-    svc('Vite', 5173, { state: 'läuft', pid: 41232, cpu: 3.1, memory: 480 * MB,
+    svc('Vite', 5173, { tags: ['Spiel', 'Client'], description: 'Vite-Dev-Server: liefert den Browser-Client mit Hot Reload aus.', state: 'läuft', pid: 41232, cpu: 3.1, memory: 480 * MB,
       startedAt: new Date(now - (2 * 60 + 13) * 60_000).toISOString() }),
-    svc('Heimnetz', 8080, { log: 'server' }),
-    svc('Go-Server', 8090, { state: 'fehlgeschlagen', restarts: 2, log: 'k3c-dev',
+    svc('Spielserver', 8080, { tags: ['Spiel', 'Backend'], log: 'server', description: 'Go-Spielserver (Engine, API, WebSocket).' }),
+    svc('Go-Server', 8090, { tags: ['Spiel', 'Backend'], state: 'fehlgeschlagen', restarts: 2, log: 'k3c-dev',
       lastError: 'Port 8090 bereits belegt (PID 8812)' }),
-    svc('Spielraum', 8091, { state: 'übernommen', pid: 8812, cpu: 0.4, memory: 96 * MB,
+    svc('Spielraum', 8091, { tags: ['Spiel', 'Backend'], state: 'übernommen', pid: 8812, cpu: 0.4, memory: 96 * MB,
       startedAt: new Date(now - 42 * 60_000).toISOString() }),
   ];
 }

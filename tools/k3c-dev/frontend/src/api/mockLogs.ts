@@ -21,7 +21,7 @@ const LOG_LINES = [
   'time=17:03:01 level=INFO msg="aufruf beendet" ns=mcp tool=logs_query ms=12',
   'time=17:03:04 level=WARN msg="lauf beendet" ns=check target=task:test exit=1',
   'time=17:03:09 level=INFO msg="dienst Vite: läuft" ns=svc pid=41232',
-  'time=17:03:11 level=ERROR msg="dienst Heimnetz fehlgeschlagen: Port 8080 bereits belegt" ns=svc',
+  'time=17:03:11 level=ERROR msg="dienst Spielserver fehlgeschlagen: Port 8080 bereits belegt" ns=svc',
 ];
 
 const TEST_LINES = [
@@ -72,6 +72,8 @@ export function mockLogs(emitLines: EmitLines, emitSource: EmitSource) {
   const logs: Source[] = [
     { name: 'k3c-dev', kind: 'log', state: 'entries', detail: 'logs/k3c-dev.jsonl · 48 KB' },
     { name: 'server', kind: 'log', state: 'empty', detail: 'noch keine Einträge' },
+    { name: 'vite', kind: 'log', state: 'entries', detail: 'logs/vite.jsonl · 12 KB' },
+    { name: 'k3c-client', kind: 'log', state: 'entries', detail: 'logs/k3c-client.jsonl · 3 KB' },
   ];
   return {
     /** Log-Dateien und Läufe; die Dienste steuert mockServices bei. */

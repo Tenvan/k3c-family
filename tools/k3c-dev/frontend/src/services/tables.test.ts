@@ -3,7 +3,7 @@ import type { ServiceStatus } from '../api';
 import { applyStatus, badgeFor, buttonsFor, levelShares, metricsOf, orderLine } from './tables';
 
 const svc = (over: Partial<ServiceStatus> = {}): ServiceStatus => ({
-  name: 'Vite', port: 5173, health: 'http://127.0.0.1:5173/', log: '', state: 'gestoppt', pid: 0, startedAt: '',
+  name: 'Vite', description: '', port: 5173, health: 'http://127.0.0.1:5173/', log: '', state: 'gestoppt', pid: 0, startedAt: '',
   restarts: 0, lastError: '', cpu: 0, memory: 0, seq: 1, ...over,
 });
 
@@ -29,7 +29,7 @@ describe('Dienste-Tabellen', () => {
   });
 
   it('Ereignisse: neuere übernehmen, veraltete und unbekannte verwerfen', () => {
-    const list = [svc({ seq: 5 }), svc({ name: 'Heimnetz', port: 8080, seq: 2 })];
+    const list = [svc({ seq: 5 }), svc({ name: 'Spielserver', port: 8080, seq: 2 })];
     expect(applyStatus(list, svc({ seq: 4, state: 'läuft' }))).toBe(list);
     expect(applyStatus(list, svc({ seq: 5, state: 'läuft' }))).toBe(list);
     expect(applyStatus(list, svc({ name: 'Weg', seq: 9 }))).toBe(list);
@@ -39,8 +39,8 @@ describe('Dienste-Tabellen', () => {
   });
 
   it('Stopp-Reihenfolge rückwärts', () => {
-    expect(orderLine(['Vite', 'Heimnetz'])).toBe(
-      '„Alle starten“ startet parallel · „Alle stoppen“ rückwärts: Heimnetz → Vite',
+    expect(orderLine(['Vite', 'Spielserver'])).toBe(
+      '„Alle starten“ startet parallel · „Alle stoppen“ rückwärts: Spielserver → Vite',
     );
   });
 
