@@ -107,6 +107,7 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-176](B-176-protokoll-mehrere-stufen.md) | SRV | Idee | hoch | eingeplant | S2 | Das Protokoll liefert Level und Zustand jeder Stufe, in der ein lokaler Spieler steht |
 | [B-178](B-178-dev-aktionen-gold-material-zeitraffer.md) | SRV | Idee | hoch | eingeplant | DBG1 | Im Dev-Mode lassen sich Gold und Material droppen und die Zeit beschleunigen |
 | [B-179](B-179-debug-overlay-aktionen.md) | CLI | Idee | hoch | eingeplant | DBG2 | Das Debug-Overlay bedient Gold, Material und Zeitraffer |
+| [B-181](B-181-tod-mit-ursache.md) | SIM | Problem | hoch | offen | – | Das Ereignis playerDown nennt, was den Monarchen getötet hat |
 
 ## Archiv
 
