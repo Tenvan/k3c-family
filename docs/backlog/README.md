@@ -106,6 +106,8 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-188](B-188-client-rohstoffe-eisen-kristall.md) | CLI | Schuld | niedrig | offen | – | Der Client kennt alle fünf Rohstoffe des Servers |
 | [B-189](B-189-toter-gegner-flieht-ins-portal.md) | SIM | Problem | mittel | offen | – | Ein besiegter Gegner verschwindet nicht im Portal, sondern lässt sein Gold fallen |
 | [B-190](B-190-events-dropped-im-protokoll.md) | SRV | Problem | niedrig | offen | – | Der Client erfährt zuverlässig, wie viele Ereignisse verworfen wurden |
+| [B-191](B-191-debug-overlay-links-unten.md) | CLI | Problem | mittel | offen | – | Debug-Overlay und Aktionsliste verdecken das HUD nicht |
+| [B-192](B-192-aktionsliste-schliesst-mit-oe.md) | CLI | Problem | hoch | offen | – | Die Dev-Aktionsliste schließt sich mit Ö |
 
 ## Archiv
 

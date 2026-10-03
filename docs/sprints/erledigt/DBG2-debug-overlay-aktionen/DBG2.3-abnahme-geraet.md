@@ -1,6 +1,6 @@
 # DBG2.3 · Abnahme am PC, Handy und Controller
 
-- **Status:** in Arbeit
+- **Status:** blockiert
 - **Typ:** Workshop
 - **Agent:** Mensch
 - **Branch:** dbg2/3-abnahme-geraet
@@ -36,8 +36,8 @@ Keine Code-Änderungen; Mängel werden Tickets (Domäne CLI oder SRV), keine Nac
 
 ## Fertig, wenn
 
-- [ ] AC-05: 🧑 bestätigt im Ergebnis mit Datum „Gold droppen, Material geben und Zeitraffer am PC ausprobiert“.
-- [ ] AC-05: 🧑 bestätigt dasselbe für das Handy.
+- [x] AC-05: 🧑 bestätigt im Ergebnis mit Datum „Gold droppen, Material geben und Zeitraffer am PC ausprobiert“.
+- [x] AC-05: 🧑 bestätigt dasselbe für das Handy.
 - [ ] AC-05: 🧑 bestätigt dasselbe mit Controller (oder nennt die Mängel als Tickets, dann bleibt die Session `blockiert`).
 
 ## Prüfen
@@ -46,4 +46,9 @@ Manuell durch 🧑 am Gerät; vorher `task check` grün auf dem getesteten Stand
 
 ## Ergebnis
 
-–
+2026-10-03, geprüft von 🧑 (Ralf) im Interview mit Agent (Claude Opus 5.5), Branch `dbg2/3-abnahme-geraet`, Stand `origin/develop` 7c29a94. Vorher `task check` grün (658 Tests). Go-Server `bin/k3c-server` mit Dev-Mode (`dev=true`), `task dev` im LAN.
+
+- **AC-05 PC: geprüft** (🧑, Maus und Ö): Overlay öffnet, „Gold 50“ lässt Münzen fallen, Material erhöht den Vorrat, „Zeit 8×“ und „Zeit 1×“ wirken und stehen im Overlay. Mängel: Overlay und Aktionsliste liegen halbtransparent über dem HUD, gewünscht links unten (**B-191**); Ö schließt die Aktionsliste nicht (**B-192**).
+- **AC-05 Handy: geprüft** (🧑, Touch): alle drei Aktionen per Tippen, Schaltflächen treffbar, Lauf-Flächen nicht gestört.
+- **AC-05 Controller: blockiert**, nicht geprüft (kein Gamepad zur Hand). Prüfliste 3 nachholen: Stick-Klick öffnet, RB Fokus (gelber Rahmen), D-Pad wählt, A löst aus ohne Beitritt, Stick im Fokus stumm, B ohne Wirkung, View + Menu zurück. Nach `docs/arbeitsweise.md` › Hardware entkoppelt keine Abhängigkeit für DBG2.4.
+- Schritt 5 (`K3C_DEV=0`, keine Aktionsliste): von 🧑 nicht geprüft; Nachweis bisher nur aus DBG2.2 (Agent, Browser-Pane und Test). Wegen B-192 nach dessen Behebung erneut ansehen.
