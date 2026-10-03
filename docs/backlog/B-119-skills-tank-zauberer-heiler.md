@@ -12,7 +12,7 @@
 
 ## Ausgangslage
 
-Es gibt keine Skills (`docs/rules/ist-monarch-buerger.md` § 2); das GDD beschreibt 4 Linien mit Tiers und Zahlen.
+Es gibt keine Skills (`docs/rules/archiv/ist-monarch-buerger.md` § 2); das GDD beschreibt 4 Linien mit Tiers und Zahlen.
 
 ## Ziel
 

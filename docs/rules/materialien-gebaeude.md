@@ -1,6 +1,6 @@
 # Regelwerk: Materialien, Hub-Ausbau und Gebäude
 
-Beschlossen von 🧑 im Workshop R2.2 am 2026-10-02 (Grundlage: [`ist-material-gebaeude.md`](ist-material-gebaeude.md); Rahmen: [`wirtschaft.md`](wirtschaft.md), [`stufen.md`](stufen.md)).
+Beschlossen von 🧑 im Workshop R2.2 am 2026-10-02 (Grundlage: [`archiv/ist-material-gebaeude.md`](archiv/ist-material-gebaeude.md); Rahmen: [`wirtschaft.md`](wirtschaft.md), [`stufen.md`](stufen.md)).
 Je Regel: **Regel · Begründung · Verweis auf `data/` · Zielkorridor**. Werte sind **Startwerte**, Feintuning mit dem Balancing-Tester (B-099, B-015).
 Zielkorridore gelten im Standardszenario **Normal, Wald-Start, 2 Spieler, Bot „sparsam“, je 100 Seeds**. Jede Regel gilt für 2+ Spieler.
 
