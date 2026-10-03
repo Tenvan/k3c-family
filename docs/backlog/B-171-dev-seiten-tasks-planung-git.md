@@ -7,7 +7,7 @@
 - **Sprint:** M7
 - **Erstellt:** 2026-10-03
 - **Spec:** rückwirkend
-- **Revision:** 1
+- **Revision:** 2
 - **Freigabe:** – (rückwirkend: aus der Umsetzung vom 2026-10-03 abgeleitet, ohne Freigabe)
 
 ## Ausgangslage
@@ -25,7 +25,7 @@ Entwickler und 🧑, die k3c-dev im Fenster nutzen; Coding-Agenten bleiben bei d
 ## Anforderungen
 
 - Tasks: Katalog aus `task --list-all --json --no-status` nach Namensräumen mit Filter; Start und Stopp je Task mit Zusatzargumenten; Ausgabe live als Konsolen-Quelle `task:<name>`; höchstens ein Lauf je Task; beim Beenden von k3c-dev enden laufende Tasks.
-- Planung: aktive und geplante Sprints mit Session-Fortschritt, offene Tickets nach Domäne mit Filter; ein Umschalter zeigt zusätzlich `docs/plan-weiterentwicklung.md` und `docs/fragenkatalog.md` als Markdown (inklusive Tabellen). Gelesen wird frisch von der Platte, nur aus `docs/`.
+- Planung: aktive und geplante Sprints mit Session-Fortschritt, offene Tickets nach Domäne mit Filter; ein Umschalter zeigt zusätzlich `docs/plan-weiterentwicklung.md` und `docs/fragenkatalog.md` als Markdown (inklusive Tabellen). Gelesen wird frisch von der Platte, nur aus `docs/`. Ein Wächter in k3c-dev (Polling alle 2 s, unabhängig von der offenen Seite) meldet Änderungen an Sprints, Tickets, Plan und Fragenkatalog; die Seite lädt dann selbst neu.
 - Git: Stand von Index und Arbeitsbaum, Stagen und Unstagen, Commit mit Typ, Domäne, Betreff (≤ 72 Zeichen) und Rumpf im Format `typ(domäne): Betreff`; letzte Commits. Verändert werden nur Index und Historie.
 - Alle drei Seiten laufen ohne Wails gegen das Mock-Backend (`npx vite` im Frontend).
 - Theme: Radix-Standard, Hell/Dunkel über `appearance`, Vorgabe nach Systemeinstellung.
@@ -49,7 +49,7 @@ Domäne SRV: Änderungen nur in `tools/k3c-dev/`. Datei ≤ 400 Zeilen, Funktion
 ## Akzeptanzkriterien
 
 - **AC-01** Die Seite Tasks zeigt den Katalog, startet und stoppt Tasks und zeigt die Ausgabe live; Go-Tests für Katalog, Lauf (Erfolg, Fehler) und Argumentprüfung sind grün.
-- **AC-02** Die Seite Planung zeigt Sprints und Tickets des Repos und per Umschalter Plan und Fragenkatalog; ein Go-Test liest die echten `docs/` des Repos ohne Format-Ausfall.
+- **AC-02** Die Seite Planung zeigt Sprints und Tickets des Repos und per Umschalter Plan und Fragenkatalog; ein Go-Test liest die echten `docs/` des Repos ohne Format-Ausfall; ein Go-Test belegt, dass der Wächter eine Änderung meldet, den Ausgangsstand, das Archiv und fremde Dateien aber nicht.
 - **AC-03** Die Seite Git stagt, unstagt und committet im Repo-Format; ein Go-Test geht den ganzen Weg in einem echten temporären Repo (inklusive Zustand vor dem ersten Commit).
 - **AC-04** Das Theme ist das Radix-Standard-Theme in Dark und Light; es gibt keine eigene Farbpalette mehr.
 - **AC-05** Alle drei Seiten laufen im Mock ohne Wails (Browser-Pane).

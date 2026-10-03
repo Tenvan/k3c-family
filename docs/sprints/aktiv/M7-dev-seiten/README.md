@@ -7,7 +7,7 @@
 - **Tickets:** B-171
 - **Start-Commit:** 433dd07
 - **Spec:** rückwirkend
-- **Revision:** 1
+- **Revision:** 2
 - **Freigabe:** – (rückwirkend: aus der Umsetzung vom 2026-10-03 abgeleitet, ohne Freigabe)
 
 ## Ausgangslage
@@ -45,7 +45,7 @@ B-171 › Ausnahme- und Fehlerfälle.
 ## Akzeptanzkriterien
 
 - **AC-01** Seite Tasks mit Katalog, Start, Stopp und Live-Ausgabe (B-171/AC-01).
-- **AC-02** Seite Planung mit Sprints, Backlog, Plan und Fragenkatalog (B-171/AC-02).
+- **AC-02** Seite Planung mit Sprints, Backlog, Plan und Fragenkatalog, die sich bei Dateiänderungen selbst aktualisiert (B-171/AC-02).
 - **AC-03** Seite Git mit Staging und Commit (B-171/AC-03).
 - **AC-04** Standard-Theme Dark/Light und Mock für alle Seiten (B-171/AC-04, B-171/AC-05).
 - **AC-05** `task check:dev` grün (B-171/AC-06).
