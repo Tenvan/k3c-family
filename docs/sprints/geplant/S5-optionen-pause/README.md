@@ -6,9 +6,9 @@
 - **Einschiebbar:** nein
 - **Tickets:** B-146, B-172
 - **Start-Commit:** –
-- **Spec:** Entwurf
+- **Spec:** freigegeben
 - **Revision:** 1
-- **Freigabe:** –
+- **Freigabe:** 2026-10-03, Chat (Ralf), Revision 1; umfasst B-146, B-172
 
 ## Ausgangslage
 

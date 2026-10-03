@@ -6,9 +6,9 @@
 - **Einschiebbar:** nein
 - **Tickets:** B-118, B-119, B-022, B-152
 - **Start-Commit:** –
-- **Spec:** Entwurf
+- **Spec:** freigegeben
 - **Revision:** 1
-- **Freigabe:** –
+- **Freigabe:** 2026-10-03, Chat (Ralf), Revision 1; umfasst B-118, B-119, B-022; B-152 nur AC-02 und AC-03 (AC-01 gehört zu F1)
 
 ## Ausgangslage
 

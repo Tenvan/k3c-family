@@ -20,6 +20,7 @@ dann über den Go-Server mit mehreren Räumen und gemischten Spielern.
 |---|---|---|---|---|---|
 | F1 | REG 🧑 | Zielkorridore und Bedienungsregeln | `docs/rules/zielkorridore.md` und `docs/rules/bedienung.md` mit Datum der Bestätigung durch 🧑 | Entwurf | `geplant/F1-zielkorridore-regeln/` |
 | F2 | INF | Golden-Ablauf, Spielstand-Migration und Determinismus | `task golden:update` in `task --list`, Abschnitte in `docs/arbeitsweise.md`, ein grüner arm64-Job in der CI | bereit | `geplant/F2-golden-migration-determinismus/` |
+| H1 | SIM | Holz-Startvorrat | Neue Insel startet mit 100 Holz, beide Mauern und ein Turm sofort baubar | bereit | `geplant/H1-holz-startvorrat/` |
 | F3 | SIM | Feedback-Ereignisse in der Simulation | Go-Tests je Ereignistyp, `task check:go` grün, Ereignisse im Ergebnis von `sim_run` (k3c-dev) | Entwurf | `geplant/F3-feedback-events-sim/` |
 | F4 | SRV | Feedback-Ereignisse im Protokoll und Pi-Betrieb | Benchmark mit Bytes je Tick, README-Abschnitt zum Backup, Test „Restore ohne Berechtigung abgelehnt“ | bereit | `geplant/F4-feedback-events-protokoll-pi/` |
 | F5 | INF | Doku-Drift, Version und Landing-Kacheln | Fußzeile „Server <Version> · Client <Version>“ auf der Landingpage am TV, keine toten Kacheln | bereit | `geplant/F5-doku-version/` |
