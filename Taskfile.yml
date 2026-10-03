@@ -99,6 +99,15 @@ tasks:
     cmds:
       - go test ./...
 
+  golden:update:
+    desc: "testdata/golden/ aus dem Ist-Zustand neu schreiben (B-137): nur bei gewollter Regel- oder Wertänderung, Begründung in den Commit-Text, die Review-Session prüft den Diff; rng.json bleibt"
+    deps: [tmp]
+    preconditions:
+      - sh: command -v go
+        msg: Go fehlt (requirements.md)
+    cmds:
+      - go test -count=1 ./engine/sim ./engine/level -run Golden -update
+
   go:lint:
     desc: golangci-lint
     deps: [tmp]

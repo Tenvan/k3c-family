@@ -45,7 +45,8 @@ func biome(t *testing.T, id string) Biome {
 func TestGolden(t *testing.T) {
 	for _, id := range biomeIDs(t) {
 		t.Run(id, func(t *testing.T) {
-			raw, err := os.ReadFile("../../testdata/golden/level-" + id + ".json")
+			path := "../../testdata/golden/level-" + id + ".json"
+			raw, err := os.ReadFile(path)
 			if err != nil {
 				t.Fatalf("Golden-Daten fehlen für Biom %s: %v", id, err)
 			}
@@ -54,6 +55,7 @@ func TestGolden(t *testing.T) {
 				t.Fatalf("level-%s.json unbrauchbar (Biom %q, %d Level): %v", id, g.Biome, len(g.Levels), err)
 			}
 			b := biome(t, id)
+			var all []Layout // mit -update: alle Level in der Reihenfolge der Datei
 			for _, rawLevel := range g.Levels {
 				var want any
 				if err := json.Unmarshal(rawLevel, &want); err != nil {
@@ -65,9 +67,15 @@ func TestGolden(t *testing.T) {
 					t.Errorf("Biom %s, Seed %q: %v", id, seed, err)
 					continue
 				}
-				if d := golden.Diff("level", want, golden.Tree(t, got)); d != "" {
+				all = append(all, got)
+				if d := golden.Diff("level", want, golden.Tree(t, got)); d != "" && !*golden.Update {
 					t.Errorf("Biom %s, Seed %q: %s", id, seed, d)
 				}
+			}
+			if *golden.Update {
+				f := golden.ReadFile(t, path)
+				f.Set(t, "levels", all)
+				f.Write(t, path)
 			}
 		})
 	}
