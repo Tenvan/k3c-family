@@ -21,7 +21,7 @@ Hardware-Sessions (`Agent: Mensch`) aus Sprints, deren Review schon abgeschlosse
 
 | Session | Gerät | Kriterium (angenommen) | Ordner |
 |---|---|---|---|
-| DBG2.3 | PC, Handy, Controller | AC-05: Aktionen mit allen drei Eingaben ausprobiert | `erledigt/DBG2-debug-overlay-aktionen/` |
+| DBG2.3 | Controller (PC und Handy geprüft 2026-10-03) | AC-05: Aktionen mit allen drei Eingaben ausprobiert | `erledigt/DBG2-debug-overlay-aktionen/` |
 
 ## Geplant (in dieser Reihenfolge)
 
