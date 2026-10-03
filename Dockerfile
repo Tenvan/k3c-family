@@ -8,7 +8,9 @@ WORKDIR /src
 COPY package.json package-lock.json ./
 RUN npm ci
 COPY . .
-RUN npx tsc --noEmit && npx vite build
+# Version des Clients (Landingpage, Lobby, Debug-Overlay); .git fehlt im Image, deshalb als Build-Argument
+ARG VERSION=dev
+RUN npx tsc --noEmit && K3C_VERSION=$VERSION npx vite build
 
 # Go-Server für die Zielplattform, ohne cgo (statisch)
 FROM --platform=$BUILDPLATFORM golang:1.27-alpine AS server
@@ -21,7 +23,7 @@ COPY data ./data
 COPY engine ./engine
 COPY cmd ./cmd
 RUN CGO_ENABLED=0 GOOS=$TARGETOS GOARCH=$TARGETARCH \
-    go build -trimpath -ldflags "-s -w -X main.version=$VERSION" -o /out/k3c-server ./cmd/k3c-server \
+    go build -trimpath -ldflags "-s -w -X main.version=$VERSION -X main.built=$(date -u +%Y-%m-%dT%H:%M:%SZ)" -o /out/k3c-server ./cmd/k3c-server \
  && CGO_ENABLED=0 GOOS=$TARGETOS GOARCH=$TARGETARCH \
     go build -trimpath -ldflags "-s -w" -o /out/k3c-tui ./cmd/k3c-tui \
  && mkdir -p /out/data/saves /out/data/reports
