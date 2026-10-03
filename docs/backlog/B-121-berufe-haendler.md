@@ -12,7 +12,7 @@
 
 ## Ausgangslage
 
-Ein Bauer kann alles; Handwerker und Händler gibt es nicht (`docs/rules/ist-monarch-buerger.md` § 3).
+Ein Bauer kann alles; Handwerker und Händler gibt es nicht (`docs/rules/archiv/ist-monarch-buerger.md` § 3).
 
 ## Ziel
 

@@ -48,7 +48,7 @@ Alle Kennzahlen mit Zielkorridor aus den Regelwerken in einer Tabelle (Beschluss
 
 ## 4. Fehlende Messgrößen
 
-Diese Korridore stehen in den Regelwerken, ihre Messgröße liefert der Simulator noch nicht (`ist-abgleich.md` § 6). Sie bekommen mit dem Balancing-Tester B-099 eine Messgröße und erst dann eine Zeile in der Tabelle:
+Diese Korridore stehen in den Regelwerken, ihre Messgröße liefert der Simulator noch nicht (`archiv/ist-abgleich.md` § 6). Sie bekommen mit dem Balancing-Tester B-099 eine Messgröße und erst dann eine Zeile in der Tabelle:
 
 - Verluste je Welle: Median **höchstens 25 % der Kämpfer** (`buerger.md` § 3; entschieden von 🧑 am 2026-10-03 im Workshop F1.4, der abweichende Wert „höchstens die Hälfte der Truppen“ in `wirtschaft.md` § 3 wird mit B-185 angeglichen); kein Verlust-Ereignis, nur Differenz des Bestands.
 - Letzter Gegner einer Welle tot innerhalb der Frist ≥ 80 % (`gegner.md` § 3).
