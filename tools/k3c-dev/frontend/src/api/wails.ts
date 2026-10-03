@@ -1,6 +1,6 @@
 import type {
   Backend, ConsoleLine, ErrorsView, EventName, Events, Info, LevelCounts, LogQuery, LogView, McpCall, McpOverview,
-  McpState, McpUsage, ServicesView, ServiceStatus, Source,
+  McpState, McpUsage, ServicesView, ServiceStatus, Source, TaskCatalog, TaskRun, PlanDoc, PlanningData, CommitMessage, CommitResult, GitView,
 } from './types';
 
 // Die Wails-Laufzeit legt window.go (Bindings der App) und window.runtime an. Die generierten Dateien unter
@@ -23,6 +23,17 @@ interface GoApp {
   McpInstructions(): Promise<string>;
   McpCalls(): Promise<McpCall[]>;
   McpUsage(): Promise<McpUsage>;
+  Tasks(): Promise<TaskCatalog>;
+  TasksReload(): Promise<TaskCatalog>;
+  TaskStart(name: string, args: string[]): Promise<TaskRun>;
+  TaskStop(name: string): Promise<TaskRun>;
+  TaskRuns(): Promise<TaskRun[]>;
+  Git(): Promise<GitView>;
+  GitStage(paths: string[]): Promise<GitView>;
+  GitUnstage(paths: string[]): Promise<GitView>;
+  GitCommit(m: CommitMessage): Promise<CommitResult>;
+  Planning(): Promise<PlanningData>;
+  PlanningDoc(name: PlanDoc): Promise<string>;
 }
 
 interface WailsRuntime {
@@ -62,6 +73,17 @@ export function wailsBackend(): Backend {
     mcpInstructions: () => app.McpInstructions(),
     mcpCalls: () => app.McpCalls(),
     mcpUsage: () => app.McpUsage(),
+    tasks: () => app.Tasks(),
+    tasksReload: () => app.TasksReload(),
+    taskStart: (name, args) => app.TaskStart(name, args),
+    taskStop: (name) => app.TaskStop(name),
+    taskRuns: () => app.TaskRuns(),
+    git: () => app.Git(),
+    gitStage: (paths) => app.GitStage(paths),
+    gitUnstage: (paths) => app.GitUnstage(paths),
+    gitCommit: (m) => app.GitCommit(m),
+    planning: () => app.Planning(),
+    planningDoc: (name) => app.PlanningDoc(name),
     on: <E extends EventName>(event: E, fn: (data: Events[E]) => void) =>
       runtime.EventsOn(event, (data) => fn(data as Events[E])),
   };

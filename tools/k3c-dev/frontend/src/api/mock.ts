@@ -2,6 +2,9 @@ import { mockLogFiles } from './mockLogFiles';
 import { mockLogs } from './mockLogs';
 import { mockMcp } from './mockMcp';
 import { mockServices } from './mockServices';
+import { mockGit } from './mockGit';
+import { mockPlanning } from './mockPlanning';
+import { mockTasks } from './mockTasks';
 import type { Backend, EventName, Events, Info, McpState, ServiceStatus, Source } from './types';
 
 // Mock ohne Wails-Laufzeit (`npx vite` im Frontend): erfundene Daten, damit die Oberfläche im Browser testbar ist.
@@ -45,6 +48,7 @@ export function mockBackend(): Backend {
     emit('source:state', serviceSource(st));
   });
   const mcpTools = mockMcp((event, call) => emit(event, call), () => mcp);
+  const tasks = mockTasks((event, run) => emit(event, run), (lines) => emit('console:line', lines));
   const logs = mockLogs((lines) => emit('console:line', lines), (src) => emit('source:state', src));
   return {
     mock: true,
@@ -52,6 +56,13 @@ export function mockBackend(): Backend {
     ...services,
     ...mockLogFiles(),
     ...mcpTools,
+    tasks: tasks.tasks,
+    tasksReload: tasks.tasksReload,
+    taskStart: tasks.taskStart,
+    taskStop: tasks.taskStop,
+    taskRuns: tasks.taskRuns,
+    ...mockGit(),
+    ...mockPlanning(),
     mcpInstructions: async () => INSTRUCTIONS,
     mcpRestart: async () => {
       mcp = { ...mcp, listening: false, error: '' };
@@ -64,6 +75,7 @@ export function mockBackend(): Backend {
     sources: async () => [...(await services.services()).services.map(serviceSource), ...logs.logSources()],
     consoleTail: async (source) => {
       const names = (await services.services()).services.map((s) => s.name);
+      if (tasks.taskKnows(source)) return tasks.taskTail(source);
       if (!logs.knows(source) && !names.includes(source)) throw new Error(`unbekannte Quelle "${source}"`);
       return logs.consoleTail(source);
     },

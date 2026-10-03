@@ -238,6 +238,120 @@ export interface McpUsage {
   rules: UsageRules;
 }
 
+/** Ein Task aus `task --list-all` (Go: taskcat.Task); file relativ zur Repo-Wurzel. */
+export interface TaskInfo {
+  name: string;
+  namespace: string;
+  leaf: string;
+  desc: string;
+  summary: string;
+  aliases: string[];
+  file: string;
+  line: number;
+}
+
+/** Gruppe des Task-Baums, Namensraum vor dem ersten Doppelpunkt (Go: taskcat.Namespace). */
+export interface TaskNamespace {
+  name: string;
+  tasks: TaskInfo[];
+}
+
+/** Katalog der Tasks-Seite (Go: TaskCatalog); error ist ein Feld, der alte Baum bleibt dann sichtbar. */
+export interface TaskCatalog {
+  namespaces: TaskNamespace[];
+  count: number;
+  loadedAt: string;
+  error: string;
+}
+
+export type TaskRunState = 'running' | 'succeeded' | 'failed' | 'cancelled';
+
+/** Aktueller oder letzter Lauf eines Tasks (Go: taskrun.Run); endedAt ist beim Laufen der Nullwert. */
+export interface TaskRun {
+  name: string;
+  state: TaskRunState;
+  pid: number;
+  args: string[];
+  startedAt: string;
+  endedAt: string;
+  exitCode: number;
+  durationMs: number;
+  reason: string;
+}
+
+/** Eine Session eines Sprints (Go: planning.Session); Status `entwurf` bei Stichpunkten ohne Tabelle. */
+export interface PlanSession {
+  nr: string;
+  typ: string;
+  agent: string;
+  status: string;
+  titel: string;
+}
+
+/** Aktiver oder geplanter Sprint (Go: planning.Sprint). */
+export interface PlanSprint {
+  id: string;
+  title: string;
+  domain: string;
+  status: string;
+  reife: string;
+  spec: string;
+  tickets: string[];
+  sessions: PlanSession[];
+}
+
+/** Ticket aus docs/backlog (Go: planning.Ticket). */
+export interface PlanTicket {
+  nr: string;
+  title: string;
+  domain: string;
+  typ: string;
+  prio: string;
+  status: string;
+  sprint: string;
+  spec: string;
+}
+
+/** Planung beim Laden (Go: planning.Data); done zählt die erledigten Sprints. */
+export interface PlanningData {
+  sprints: PlanSprint[];
+  tickets: PlanTicket[];
+  done: number;
+}
+
+/** Lesbare Planungs-Dokumente: Plan (docs/plan-weiterentwicklung.md) und Fragenkatalog (docs/fragenkatalog.md). */
+export type PlanDoc = 'plan' | 'fragen';
+
+/** Datei im Index (Status A, M, D, R, C, T) oder Arbeitsbaum (M, D, T, U Konflikt, ? untracked); Go: gitcommit.File. */
+export interface GitFile {
+  path: string;
+  status: string;
+}
+
+/** Git-Seite beim Laden (Go: GitView); recent sind die letzten Commits als Zeile, types/domains füllen das Formular. */
+export interface GitView {
+  branch: string;
+  staged: GitFile[];
+  unstaged: GitFile[];
+  recent: string[];
+  types: string[];
+  domains: string[];
+}
+
+/** Eingabe des Commit-Formulars (Go: gitcommit.Message). */
+export interface CommitMessage {
+  type: string;
+  scope: string;
+  subject: string;
+  body: string;
+}
+
+/** Ergebnis eines Commits: neuer Hash und Stand danach (Go: CommitResult). */
+export interface CommitResult {
+  hash: string;
+  view: GitView;
+}
+
 /** Ereignisse von Go an die Oberfläche. */
 export interface Events {
   'mcp:state': McpState;
@@ -247,6 +361,7 @@ export interface Events {
   'console:line': ConsoleLine[];
   'mcp:start': McpCall;
   'mcp:call': McpCall;
+  'task:state': TaskRun;
 }
 
 export type EventName = keyof Events;
@@ -276,6 +391,23 @@ export interface Backend {
   mcpInstructions(): Promise<string>;
   mcpCalls(): Promise<McpCall[]>;
   mcpUsage(): Promise<McpUsage>;
+  /** Katalog; wird beim ersten Aufruf geladen und dann gehalten, `tasksReload` liest neu. */
+  tasks(): Promise<TaskCatalog>;
+  tasksReload(): Promise<TaskCatalog>;
+  /** Startet `task <name> -- args`; die Ausgabe liegt als Konsolen-Quelle `task:<name>` (consoleTail, console:line). */
+  taskStart(name: string, args: string[]): Promise<TaskRun>;
+  taskStop(name: string): Promise<TaskRun>;
+  taskRuns(): Promise<TaskRun[]>;
+  git(): Promise<GitView>;
+  /** Staging verändert nur den Index; ein Fehler kommt als Ablehnung mit dem Text aus Go. */
+  gitStage(paths: string[]): Promise<GitView>;
+  gitUnstage(paths: string[]): Promise<GitView>;
+  /** Eine verletzte Regel kommt als `feld: Grund` (feld: type, scope, subject), `nichts gestaged` ohne Feld. */
+  gitCommit(m: CommitMessage): Promise<CommitResult>;
+  /** Liest Sprints und Tickets frisch von der Platte. */
+  planning(): Promise<PlanningData>;
+  /** Markdown eines Planungs-Dokuments. */
+  planningDoc(name: PlanDoc): Promise<string>;
   /** Abonniert ein Ereignis; die Rückgabe meldet wieder ab. */
   on<E extends EventName>(event: E, fn: (data: Events[E]) => void): () => void;
 }
