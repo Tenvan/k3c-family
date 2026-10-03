@@ -144,7 +144,7 @@ Die festen Eckdaten stehen in `data/biomes/<biom>.json`, der Generator in `engin
 | Wiederbeleben (neben einem gefallenen Mitspieler) | A halten (3 s) | Leertaste halten |
 | Bau-Menü | Y | B |
 | Skill-Menü | D-Pad runter (nicht View, da View + Menu reserviert ist) | K |
-| Pause | Menu | Esc |
+| Pause (Regel: [`rules/bedienung.md`](rules/bedienung.md) § 1) | Menu (kurz, < 600 ms) | Esc |
 | Vollbild | RS (Stick drücken) | F |
 
 **B bleibt unbelegt**, weil Edge auf der Xbox B vermutlich als „Zurück“ nutzt. Der Gamepad-Test klärt das.
@@ -154,7 +154,8 @@ Die festen Eckdaten stehen in `data/biomes/<biom>.json`, der Generator in `engin
 - Minimalistisch wie K2C: möglichst viel in der Welt anzeigen (Münzen über dem Kopf, Baupreise als Münz-Slots). **Gültige Aktionen erscheinen überall in der Welt als Overlay am Ort** (Taste und Aktion, passend zum benutzten Gerät), wie die Preise an den Gebäuden (`rules/monarch.md` § 4).
 - HUD pro Split-Screen-Hälfte: HP, Gold, Ressourcen, Tag/Nacht bzw. Aggressionspool, Skill-Slots mit Cooldown.
 - Meldungen in der Mitte: „Nacht naht!“, „Portal öffnet sich!“, „Skill-Punkt gefunden!“.
-- Mindestgröße für Texte auf dem TV beachten (Couch-Abstand!), hoher Kontrast.
+- Mindestgröße für Texte auf dem TV (Couch-Abstand!) und Kontrast ≥ 4,5 : 1 je Layout: [`rules/bedienung.md`](rules/bedienung.md) § 2 (≥ 28 px Vollbild, ≥ 24 px im Viertel). Verbindungsverlust und Latenz-Ziel: § 3.
+- Sprache: Deutsch und Englisch mit Auswahl in den Optionen, neue Texte nur zentral ([`rules/bedienung.md`](rules/bedienung.md) § 4, B-172).
 
 ## Speichern
 
@@ -178,6 +179,6 @@ was aus der Welt schon entfernt wurde (gefällte Bäume, geöffnete Truhen), son
 
 ## Offene Fragen
 
-- 3–4 Spieler: vier Streifen übereinander werden sehr flach. Alternativen wären ein 2×2-Raster oder eine gemeinsame Kamera, solange die Spieler nah beieinander sind.
+- 3–4 Spieler: entschieden (2×2-Raster bzw. zwei oben und einer breit unten, `src/scenes/layout.ts`); Schriftgrößen je Layout in [`rules/bedienung.md`](rules/bedienung.md) § 2.
 - Skill-Tasten am Controller (hängt vom Gamepad-Test ab).
 - Eine Klasse pro Spieler als Preset, damit sich die Rollen im Koop ergänzen?
