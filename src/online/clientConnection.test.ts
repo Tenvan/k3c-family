@@ -177,6 +177,8 @@ describe('Level und Zustand (AC-08)', () => {
     expect(second?.state.players[0]?.x).toBeCloseTo(546.4546340117788);
     expect(second?.state.players[1]?.x).toBeCloseTo(413.9816587787841);
     expect(second?.state.hubX).toBe(500);
+    expect(second?.state.events.map((e) => e.type)).toEqual(['hit', 'coinPickup']); // F4/AC-02: Ereignisse aus dem Delta
+    expect(first?.state.events).toEqual([]);
     expect(first?.state.players[0]?.x).toBeCloseTo(546.2879673451122); // früherer Frame bleibt unverändert
     expect(t.client.takeFrames()).toEqual([]);
   });
