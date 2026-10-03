@@ -1,6 +1,6 @@
 # DBG1.1 · Protokoll: Nachricht `dev`, Fehlercode `forbidden`, Beispiele, beide Enden
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Branch:** dbg1/1-protokoll
@@ -54,9 +54,9 @@ Wirkung der Aktionen (DBG1.2, DBG1.3), `engine/sim/`, Bedienung im Client (DBG2)
 
 ## Fertig, wenn
 
-- [ ] AC-01: Die Tests aus Schritt 8a und 9 belegen `forbidden` für alle drei Beispiele ohne Dev-Mode und die Warnung im Log (`go test ./engine/net ./engine/room -run Dev`).
-- [ ] AC-05: `docs/protocol.md` beschreibt `dev` und `forbidden`; die vier Beispiele liegen in `testdata/protocol/`; der Server liest sie (Test 8), der Client-Typ und die Fehlerbehandlung kennen sie (Test 10).
-- [ ] `task check:go` und `task check` grün; bestehende Beispiele unverändert (`git diff --stat testdata/protocol` zeigt nur neue Dateien).
+- [x] AC-01: Die Tests aus Schritt 8a und 9 belegen `forbidden` für alle drei Beispiele ohne Dev-Mode und die Warnung im Log (`go test ./engine/net ./engine/room -run Dev`).
+- [x] AC-05: `docs/protocol.md` beschreibt `dev` und `forbidden`; die vier Beispiele liegen in `testdata/protocol/`; der Server liest sie (Test 8), der Client-Typ und die Fehlerbehandlung kennen sie (Test 10).
+- [x] `task check:go` und `task check` grün; bestehende Beispiele unverändert (`git diff --stat testdata/protocol` zeigt nur neue Dateien).
 
 ## Prüfen
 
@@ -69,4 +69,8 @@ npx vitest run tests/planning.test.ts
 
 ## Ergebnis
 
-–
+Umgesetzt am 2026-10-03.
+- AC-01 geprüft: `go test ./engine/net ./engine/room -run Dev` grün. `TestDevOhneDevModeForbidden` (WebSocket, alle drei Beispiele → `forbidden`, danach `leave` geht), `TestDevOhneDevModeVerboten` (Raum: `ErrForbidden` vor jeder Feldprüfung, Warnung „Dev-Aktion abgelehnt“ mit gekürztem Gerät und Aktion im Log).
+- AC-05 geprüft: `docs/protocol.md` (Nachricht `dev`, Code `forbidden`, Abschnitt *Dev-Aktionen*), vier neue Beispiele in `testdata/protocol/`; der Server liest sie (`TestDevMitDevModeLiestBeispiele`: mit Dev-Mode `bad_request`, weil die Aktionen erst in DBG1.2/DBG1.3 kommen; ohne Raum `bad_request`), die Fehlernachricht hat die Schlüssel von `s2c-error-forbidden.json`; Client: `DevMessage` in `ClientMessage`, `forbidden` in `ErrorCode` und `fail` (`src/online/clientProtocol.test.ts`).
+- `task check:go` und `task check` grün (`check:race` lokal übersprungen, kein C-Compiler; die CI prüft `-race`); `git status testdata/protocol` zeigt nur die vier neuen Dateien.
+Abweichungen: Der Dev-Mode-Server im Test ist ein eigener Helfer `devServer` (setzt `Dev` vor dem Start, damit kein Datenrennen entsteht) statt `m.Dev = true` nach `wsServer`. `resource` ist im Client-Typ `ResourceKind` statt `string`. Keine neuen Tickets.
