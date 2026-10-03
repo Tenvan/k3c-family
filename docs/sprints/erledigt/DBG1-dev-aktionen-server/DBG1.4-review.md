@@ -1,6 +1,6 @@
 # DBG1.4 · Review und Abnahme des Sprints DBG1
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Review
 - **Agent:** autonom
 - **Branch:** dbg1/4-review
@@ -44,9 +44,9 @@ Stil, Optimierung, Umbau, Bedienung im Client (DBG2), Dev-Tasten und Neustart (B
 
 ## Fertig, wenn
 
-- [ ] AC-01 bis AC-06 haben einen Nachweis im Ergebnis der jeweiligen Session oder sind mit Grund und Ticket verschoben.
-- [ ] Schwere Befunde sind behoben oder als Ticket angelegt.
-- [ ] `task check` und `task check:go` grün; Sprint liegt unter `docs/sprints/erledigt/`.
+- [x] AC-01 bis AC-06 haben einen Nachweis im Ergebnis der jeweiligen Session oder sind mit Grund und Ticket verschoben.
+- [x] Schwere Befunde sind behoben oder als Ticket angelegt.
+- [x] `task check` und `task check:go` grün; Sprint liegt unter `docs/sprints/erledigt/`.
 
 ## Prüfen
 
@@ -57,4 +57,10 @@ task check:go
 
 ## Ergebnis
 
-–
+2026-10-03, Review-Agent (Claude Opus 5.5, nicht an DBG1.1–DBG1.3 beteiligt), Branch `dbg1/4-review`.
+
+- `task check:go` grün (golangci-lint 0 issues); `task check` grün nach dem Abschluss (vorher nur `planning.test.ts` wegen „in Arbeit“).
+- Diff `f6bb3c3..origin/develop` gelesen (nur DBG1-Dateien; die Testdateien von F2 in `engine/sim`, `engine/level`, `engine/room` gehören nicht zu DBG1). **Keine schweren Befunde.**
+- Sicherheit: `Room.Dev` prüft `Manager.Dev` vor jeder Feldprüfung und vor der Sperre, Ablehnung als Warnung im Log; danach `own()` (Gerät verbunden, gleiche Verbindung, sonst `bad_request`), `slot` nur aus `d.slots`, `Slot` als Zeiger (fehlt → `bad_request`), `amount` 1…1000, `resource` über `addStockCapped`, `factor` nur 1, 2, 4, 8.
+- Determinismus: `engine/sim/dev.go` nutzt kein `rng`, Münz-IDs über `newID`; der Zeitraffer ruft `StepIsland` `scale()`-mal mit `1/TickHz`, `r.tick++` einmal; `testdata/golden/` unverändert; Produktionscode in `engine/sim` nur `dev.go`. Pause (`connected() == 0`) setzt den Faktor auf 1 zurück, ein Raum ohne Gerät tickt nicht. `engine/room` liest keine `events`, der Verlust der Zwischenereignisse im Zeitraffer betrifft nur die Anzeige (mit der Freigabe bestätigt).
+- Kriterien: AC-01, AC-05 in DBG1.1; AC-02, AC-03, AC-06 (Log, `TestDevLog`) in DBG1.2; AC-04 in DBG1.3. Die Vorschläge der Sessions deckt die Freigabe der Spec ab („umfasst B-178 und die Vorschläge der Sessions“).
