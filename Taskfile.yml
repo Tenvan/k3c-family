@@ -13,6 +13,13 @@ env:
   TEMP: '{{.ROOT_DIR}}/.work/tmp'
 
 tasks:
+  # Legt das feste Temp-Verzeichnis an (GOTMPDIR muss existieren, auch in der CI und in frischen Klonen ohne `task install`).
+  tmp:
+    internal: true
+    run: once
+    cmds:
+      - mkdir -p '{{.ROOT_DIR}}/.work/tmp'
+
   default:
     desc: Alle Aufgaben anzeigen
     silent: true
@@ -78,12 +85,14 @@ tasks:
 
   start:
     desc: Go-Server ohne Web-Build (feste EXE bin/k3c-server, damit die Firewall-Freigabe bleibt, B-085)
+    deps: [tmp]
     cmds:
       - go build -o bin/k3c-server{{exeExt}} ./cmd/k3c-server
       - ./bin/k3c-server{{exeExt}}
 
   go:test:
     desc: go test ./...
+    deps: [tmp]
     preconditions:
       - sh: command -v go
         msg: Go fehlt (requirements.md)
@@ -92,6 +101,7 @@ tasks:
 
   go:lint:
     desc: golangci-lint
+    deps: [tmp]
     preconditions:
       - sh: command -v golangci-lint
         msg: golangci-lint fehlt (requirements.md)
@@ -107,6 +117,7 @@ tasks:
 
   check:race:
     desc: go test -race für engine/ (braucht cgo und einen C-Compiler; ohne Compiler nur ein Hinweis, B-077)
+    deps: [tmp]
     cmds:
       - cmd: |
           if command -v gcc >/dev/null 2>&1 || command -v clang >/dev/null 2>&1; then
@@ -131,7 +142,7 @@ tasks:
 
   check:dev:
     desc: k3c-dev prüfen (Frontend, go test, golangci-lint)
-    deps: [dev:frontend]
+    deps: [tmp, dev:frontend]
     dir: '{{.DEV}}'
     cmds:
       - go test ./...
@@ -139,6 +150,7 @@ tasks:
 
   k3c-dev:
     desc: Entwickler-Werkzeug k3c-dev als Fenster starten (wails dev)
+    deps: [tmp]
     dir: '{{.DEV}}'
     preconditions:
       - sh: command -v wails
@@ -148,6 +160,7 @@ tasks:
 
   k3c-dev:build:
     desc: EXE von k3c-dev bauen (wails build)
+    deps: [tmp]
     dir: '{{.DEV}}'
     preconditions:
       - sh: command -v wails
