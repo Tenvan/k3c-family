@@ -38,7 +38,7 @@ dann über den Go-Server mit mehreren Räumen und gemischten Spielern.
 | S3 | CLI | Skill-Menü, Tasten und Aktionen-Overlay | 🧑 spielt am Gerät Schlag, Skill, Punkte verteilen und liest die Aktionen im Overlay | bereit | `geplant/S3-skill-menue-overlay/` |
 | S4 | CLI | Kamera je Stufe und Layouts 1–4 | 2 Spieler am selben Gerät in verschiedenen Stufen | Entwurf | `geplant/S4-kamera-layouts/` |
 | S5 | CLI | Optionen- und Pause-Szene | Einstellungen bleiben nach dem Neuladen erhalten | Entwurf | `geplant/S5-optionen-pause/` |
-| S6 | CLI | Onboarding „Erste Nacht geführt“ und Controller-Glyphen | Ein Kind spielt die erste Nacht ohne Erklärung | Entwurf | `geplant/S6-onboarding-glyphen/` |
+| S6 | CLI | Onboarding „Erste Nacht geführt“ und Controller-Glyphen | Ein Kind spielt die erste Nacht ohne Erklärung | bereit | `geplant/S6-onboarding-glyphen/` |
 | S7 | CLI | Monarch auf dem Standard-Reittier | Zwei Spieler im Split-Screen reiten über die Stufe | bereit | `geplant/S7-monarch-reittier/` |
 | P1 | REG 🧑 | Spieleabend 1 | Protokoll und Folge-Tickets | Entwurf | `geplant/P1-spieleabend-1/` |
 | W1 | SIM | Hub-Ausbau und Mauerstufen | `task check:go` grün, Tests für Ausbau, Zerstörung und Reparatur, aktualisierte Golden-Daten | bereit | `geplant/W1-hub-ausbau/` |
