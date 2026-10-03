@@ -1,6 +1,6 @@
 # GR6.2 · CC-BY-Einträge sichtbar, Seite über die Landingpage
 
-- **Status:** offen
+- **Status:** in Arbeit
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Branch:** gr6/2-cc-by-seite
