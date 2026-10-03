@@ -59,7 +59,7 @@ Ziel verfehlt → Messwerte und Befund als Ticket, keine stille Absenkung des Zi
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
 | SP11.1 | `SP11.1-image-und-compose.md` | Umsetzung | autonom | fertig |
-| SP11.2 | `SP11.2-pi-einrichten.md` | Workshop | Mensch | offen |
+| SP11.2 | `SP11.2-pi-einrichten.md` | Workshop | Mensch | fertig |
 | SP11.3 | `SP11.3-lastmessung.md` | Workshop | Mensch | offen |
 | SP11.4 | `SP11.4-review.md` | Review | autonom | offen |
 
