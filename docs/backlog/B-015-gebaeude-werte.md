@@ -3,8 +3,8 @@
 - **Domäne:** REG
 - **Typ:** Problem
 - **Prio:** mittel
-- **Status:** offen
-- **Sprint:** –
+- **Status:** eingeplant
+- **Sprint:** BR1
 - **Erstellt:** 2026-09-29
 - **Spec:** Entwurf
 - **Revision:** 1

@@ -3,8 +3,8 @@
 - **Domäne:** SIM
 - **Typ:** Idee
 - **Prio:** niedrig
-- **Status:** offen
-- **Sprint:** –
+- **Status:** eingeplant
+- **Sprint:** K3
 - **Erstellt:** 2026-10-02
 - **Spec:** Entwurf
 - **Revision:** 1

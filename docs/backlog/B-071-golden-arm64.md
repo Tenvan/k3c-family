@@ -3,8 +3,8 @@
 - **Domäne:** INF
 - **Typ:** Problem
 - **Prio:** mittel
-- **Status:** offen
-- **Sprint:** –
+- **Status:** eingeplant
+- **Sprint:** F2
 - **Erstellt:** 2026-09-30
 - **Spec:** Entwurf
 - **Revision:** 1

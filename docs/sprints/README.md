@@ -17,14 +17,54 @@ dann über den Go-Server mit mehreren Räumen und gemischten Spielern.
 
 | Sprint | Domäne | Thema | Am Ende sichtbar | Reife | Ordner |
 |---|---|---|---|---|---|
+| F1 | REG 🧑 | Zielkorridore und Bedienungsregeln | `docs/rules/zielkorridore.md` und `docs/rules/bedienung.md` mit Datum der Bestätigung durch 🧑 | Entwurf | `geplant/F1-zielkorridore-regeln/` |
+| F2 | INF | Golden-Ablauf, Spielstand-Migration und Determinismus | `task golden:update` in `task --list`, Abschnitte in `docs/arbeitsweise.md`, ein grüner arm64-Job in der CI | bereit | `geplant/F2-golden-migration-determinismus/` |
+| F3 | SIM | Feedback-Ereignisse in der Simulation | Go-Tests je Ereignistyp, `task check:go` grün, Ereignisse im Ergebnis von `sim_run` (k3c-dev) | Entwurf | `geplant/F3-feedback-events-sim/` |
+| F4 | SRV | Feedback-Ereignisse im Protokoll und Pi-Betrieb | Benchmark mit Bytes je Tick, README-Abschnitt zum Backup, Test „Restore ohne Berechtigung abgelehnt“ | Entwurf | `geplant/F4-feedback-events-protokoll-pi/` |
+| F5 | INF | Doku-Drift, Version und Landing-Kacheln | Fußzeile „Server <Version> · Client <Version>“ auf der Landingpage am TV, keine toten Kacheln | bereit | `geplant/F5-doku-version/` |
+| S1 | SIM | Monarch: Schlag, Fund-Pool und Skills | Go-Tests und Golden-Daten grün (Minimum der Phase 1: Schlag plus ein Skill je Klasse) | Entwurf | `geplant/S1-monarch-schlag-skills/` |
+| S2 | SRV | Protokoll für Skills, Speichern beim Verlassen, Spielmetrik | neue Felder in `docs/protocol.md` mit Beispielen unter `testdata/protocol/`, Spielstand nach Trennung mitten in der Nacht, ein Report in `reports/` | Entwurf | `geplant/S2-protokoll-skills-speichern-metrik/` |
+| S3 | CLI | Skill-Menü, Tasten und Aktionen-Overlay | 🧑 spielt am Gerät Schlag, Skill, Punkte verteilen und liest die Aktionen im Overlay | Entwurf | `geplant/S3-skill-menue-overlay/` |
+| S4 | CLI | Kamera je Stufe und Layouts 1–4 | 2 Spieler am selben Gerät in verschiedenen Stufen | Entwurf | `geplant/S4-kamera-layouts/` |
+| S5 | CLI | Optionen- und Pause-Szene | Einstellungen bleiben nach dem Neuladen erhalten | Entwurf | `geplant/S5-optionen-pause/` |
+| S6 | CLI | Onboarding „Erste Nacht geführt“ und Controller-Glyphen | Ein Kind spielt die erste Nacht ohne Erklärung | Entwurf | `geplant/S6-onboarding-glyphen/` |
+| P1 | REG 🧑 | Spieleabend 1 | Protokoll und Folge-Tickets | Entwurf | `geplant/P1-spieleabend-1/` |
+| W1 | SIM | Hub-Ausbau und Mauerstufen | `task check:go` grün, Tests für Ausbau, Zerstörung und Reparatur, aktualisierte Golden-Daten | Entwurf | `geplant/W1-hub-ausbau/` |
+| W2 | SIM | Plantage, Adern, Stufenbreite und Mine | Tests für Generator, Adern, Plantage und Biome grün, aktualisierte Golden-Level | Entwurf | `geplant/W2-plantage-adern-stufen/` |
+| W3 | SIM | Gebäude-Wirkungen | Tests je Gebäude grün, Werte aus den Daten, aktualisierte Golden-Daten | Entwurf | `geplant/W3-gebaeude-wirkungen/` |
+| W4 | SIM | Wiederbeleben, Berufe, Händler, Elite und Limit | Tests je Regel grün, aktualisierte Golden-Daten | Entwurf | `geplant/W4-buerger-wiederbeleben/` |
+| W5 | SRV | Protokoll für Berufe, Händler, Lager und Hub-Stufe | `docs/protocol.md` mit neuen Feldern, Beispiele in `testdata/protocol/`, `task check:go` und `task check` grün | Entwurf | `geplant/W5-protokoll-wirtschaft/` |
+| W6 | CLI | Anzeigen für Bau, Lager, Hub und Bürger | HUD und Bauplätze am TV, von 🧑 abgenommen | Entwurf | `geplant/W6-anzeige-wirtschaft/` |
+| BR1 | REG 🧑 | Balancing-Runde Wirtschaft und Spieleabend 2 | Pass/Fail je Kennzahl, Begründungen in `docs/rules/`, Protokoll in `docs/playtests/` | Entwurf | `geplant/BR1-balancing-wirtschaft/` |
+| K1 | SIM | Gegner-Traits, neue Gegner und Elite-KI | Tests je Trait und Gegner grün, aktualisierte Golden-Daten | Entwurf | `geplant/K1-gegner-traits/` |
+| K2 | SIM | Bosse, Siegvarianten und Inselwechsel | Tests je Boss, Siegvariante und Modus grün, Spielstand mit besiegten Bossen und aktueller Insel | Entwurf | `geplant/K2-bosse-siege-inseln/` |
+| K3 | SIM | Events Vollmond, Blutmond und Händler-Überfall | Tests je Event grün, aktualisierte Golden-Daten | Entwurf | `geplant/K3-events/` |
+| K4 | SRV | Protokoll für Bosse, Events und Inselwechsel | `docs/protocol.md` mit neuen Feldern, Beispiele in `testdata/protocol/`, `task check:go` und `task check` grün | Entwurf | `geplant/K4-protokoll-kampf/` |
+| K5 | CLI | Anzeigen für Kampf, Bosse und Events, Anlegen-Dialog, Debug-Panel | Boss-Leiste, Warnkreis und Event-Banner am TV, Lobby-Dialog, von 🧑 abgenommen | Entwurf | `geplant/K5-anzeige-kampf/` |
+| BR2 | REG 🧑 | Balancing-Runde Kampf und Bosse und Spieleabend 3 | Pass/Fail je Kennzahl, Begründungen in `docs/rules/`, Protokoll in `docs/playtests/` | Entwurf | `geplant/BR2-balancing-kampf/` |
 
-**Einschiebbar** (unabhängig vom Engine-Fortschritt, jeweils zwischen zwei Sprints):
+**Einschiebbar** (Schienen Balancing, Grafik, Sound, Betrieb; unabhängig vom Engine-Fortschritt, jeweils zwischen zwei Sprints):
 
 | Sprint | Domäne | Thema | Reife | Ordner |
 |---|---|---|---|---|
+| BAL1 | SIM | Balancing-Tester: Kern und Replay | Entwurf | `geplant/BAL1-balancing-tester-kern/` |
+| BAL2 | SIM | Zielkorridor-Prüfung und `task balance` | Entwurf | `geplant/BAL2-zielkorridor-pruefung/` |
+| BAL3 | SIM | Bot-Profile, Sensitivität und Grad-Kurven | Entwurf | `geplant/BAL3-bot-profile-sensitivitaet/` |
+| BAL4 | REG | Abgleich Spielmetrik und Simulator | Entwurf | `geplant/BAL4-metrik-abgleich/` |
+| GR1 | CLI | Grafik-Zuordnungstabelle | Entwurf | `geplant/GR1-grafik-zuordnung/` |
+| GR2 | CLI | Grafik-Suche für Lücken | Entwurf | `geplant/GR2-grafik-suche/` |
+| GR3 | CLI | Grafik im Renderer | Entwurf | `geplant/GR3-grafik-renderer/` |
+| GR4 | INF | Atlas und Lade-Szene | Entwurf | `geplant/GR4-atlas-ladeszene/` |
+| GR5 | CLI | Juice: Treffer, Screenshake, Münzen | Entwurf | `geplant/GR5-juice/` |
+| GR6 | PLAT | Credits-Seite | Entwurf | `geplant/GR6-credits-seite/` |
+| RL1 | INF | Release-Checkliste | Entwurf | `geplant/RL1-release-checkliste/` |
+| SO1 | CLI | Audio-Kern | Entwurf | `geplant/SO1-audio-kern/` |
+| SO2 | CLI | SFX-Katalog und Einbau | Entwurf | `geplant/SO2-sfx-katalog/` |
+| SO3 | PLAT | Hörprobenseite `soundtest.html` | Entwurf | `geplant/SO3-hoerprobenseite/` |
+| SO4 | CLI | Musik je Zustand | Entwurf | `geplant/SO4-musik/` |
 | X1 | PLAT 🧑 | Xbox-Machbarkeit | Entwurf | `geplant/X1-xbox/` |
 
-Nach SP11: Regelwerk II (Monarch und Bürger: Skillung, Klassen, Level, B-110) → SIM Skills in Go → CLI Skills → Spieleabend → Grafik/Sound → …
+Gesamtplan und Begründung: [`../plan-weiterentwicklung.md`](../plan-weiterentwicklung.md). Offene Entscheidungen: [`../fragenkatalog.md`](../fragenkatalog.md).
 
 ## Erledigt
 

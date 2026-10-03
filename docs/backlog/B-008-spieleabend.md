@@ -3,8 +3,8 @@
 - **Domäne:** REG
 - **Typ:** Frage
 - **Prio:** hoch
-- **Status:** offen
-- **Sprint:** –
+- **Status:** eingeplant
+- **Sprint:** P1
 - **Erstellt:** 2026-09-29
 - **Spec:** Entwurf
 - **Revision:** 1

@@ -1,0 +1,67 @@
+# F3 · SIM · Feedback-Ereignisse in der Simulation
+
+- **Status:** geplant
+- **Domäne:** SIM
+- **Reife:** Entwurf
+- **Einschiebbar:** nein
+- **Tickets:** B-139
+- **Start-Commit:** –
+- **Spec:** Entwurf
+- **Revision:** 1
+- **Freigabe:** –
+
+## Ausgangslage
+
+`World.Events` kennt nur grobe Ereignisse (`built`, `wave`, `chest`, `playerDown` …). Treffer, Kill, Münze, Pfeil und Schlag fehlen; ohne sie gibt es weder Ton noch Effekte aus dem Server. Die Liste und das Größenbudget sind Beschluss Q08 (`docs/fragenkatalog.md`).
+
+## Ziel
+
+Die Simulation erzeugt die beschlossenen Feedback-Ereignisse deterministisch und mit Obergrenze je Tick. Am Ende sichtbar: Go-Tests je Ereignistyp, `task check:go` grün, Ereignisse im Ergebnis von `sim_run` (k3c-dev).
+
+## Beteiligte und Zielgruppen
+
+Entwickler von F4, SO1, GR5; 🧑 beschließt Liste und Budget (Q08) vor der Freigabe.
+
+## Anforderungen
+
+B-139 › Anforderungen.
+
+## Nicht-Ziele
+
+Protokoll und Bandbreitenmessung (F4, B-140), Ton und Effekte im Client (B-167, B-164).
+
+## Regeln und Einschränkungen
+
+Domäne SIM (`engine/sim/`). F2 (Golden-Ablauf, `task golden:update`) ist vorher abgeschlossen. Deterministisch, nur `engine/rng`, mit 2+ Spielern und Insel mit mehreren Stufen.
+
+## Beispiele
+
+Gegner trifft Mauer → ein `hit`-Ereignis mit Ort und Ziel; zweimal derselbe Lauf → gleiche Folge.
+
+## Ausnahme- und Fehlerfälle
+
+Mehr als K Ereignisse in einem Tick → niedrigste Priorität fällt weg, Zähler zählt mit (B-139/AC-03).
+
+## Akzeptanzkriterien
+
+- **AC-01** Je Ereignistyp der beschlossenen Liste prüft ein Test Typ, Ort und Beteiligte (B-139/AC-01).
+- **AC-02** Ereignisfolgen sind bei gleichem Seed und gleichen Eingaben identisch (B-139/AC-02).
+- **AC-03** Die Obergrenze je Tick schützt Tod- und Bau-Ereignisse und zählt Verworfene (B-139/AC-03).
+- **AC-04** Auf der Insel entsteht ein Ereignis nur in seiner Stufe (B-139/AC-04).
+- **AC-05** Golden-Daten sind aktualisiert und `task check:go` grün (B-139/AC-05).
+
+## Offene Fragen
+
+Ereignisliste, K je Tick und Priorität: Q08, entscheidet 🧑. Blockiert die Freigabe.
+
+## Sessions
+
+Entwurf. Vor dem Aktivieren jede Session als Datei nach `docs/vorlagen/session.md` schreiben, die Kriterien in Klammern werden ihr Feld `Kriterien`.
+
+- F3.1 Ereignistypen Kampf (Treffer, Gegner-Tod, Pfeil, Schlag) mit Tests (AC-01, AC-02).
+- F3.2 Ereignistypen Wirtschaft und Bau (Münze aufgehoben und gegeben, Bau fertig, Monarch-Tod), Obergrenze je Tick, Insel-Stufen, Golden-Update nach B-137 (AC-03, AC-04, AC-05).
+- F3.3 Review nach `docs/arbeitsweise.md` (alle Kriterien).
+
+## Abnahme
+
+–
