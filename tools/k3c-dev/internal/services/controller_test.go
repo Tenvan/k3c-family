@@ -191,8 +191,8 @@ func TestAusfallStartetNeuMitGrenze(t *testing.T) {
 func TestDreiFehlschlaegeImLauf(t *testing.T) {
 	f := &fake{}
 	f.healthy.Store(true)
-	c := testController(f, nil, svc("Heimnetz", false))
-	if _, err := c.Start(context.Background(), "Heimnetz"); err != nil {
+	c := testController(f, nil, svc("Spielserver", false))
+	if _, err := c.Start(context.Background(), "Spielserver"); err != nil {
 		t.Fatal(err)
 	}
 	f.healthy.Store(false)

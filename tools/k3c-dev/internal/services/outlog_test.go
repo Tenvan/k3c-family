@@ -67,14 +67,14 @@ func TestDienstMitEigenemLogOhneAusgabeDatei(t *testing.T) {
 	root := t.TempDir()
 	f := &fake{}
 	f.healthy.Store(true)
-	s := svc("Heimnetz", false)
+	s := svc("Spielserver", false)
 	s.Log = "k3c-server"
 	c := New([]Service{s}, Options{Root: root, Start: f.start, Check: f.check, Listen: f.listen, Sample: f.sample,
 		KillPID: f.killPID, StartPoll: 2 * time.Millisecond})
-	if _, err := c.Start(context.Background(), "Heimnetz"); err != nil {
+	if _, err := c.Start(context.Background(), "Spielserver"); err != nil {
 		t.Fatal(err)
 	}
-	_, _ = c.Stop(context.Background(), "Heimnetz", false)
+	_, _ = c.Stop(context.Background(), "Spielserver", false)
 	if _, err := os.Stat(filepath.Join(root, "logs")); err == nil {
 		entries, _ := os.ReadDir(filepath.Join(root, "logs"))
 		t.Errorf("unerwartete Dateien: %v", entries)

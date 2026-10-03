@@ -115,7 +115,7 @@ func registerServices(s *Server) {
 	no, yes, closed := false, true, false
 	add(s, &mcp.Tool{
 		Name: "svc_status",
-		Description: "Alle Dienste (Vite, Heimnetz …) mit Zustand, Port, PID, CPU, Speicher, Laufzeit, Neustarts, " +
+		Description: "Alle Dienste (Vite, Spielserver …) mit Zustand, Port, PID, CPU, Speicher, Laufzeit, Neustarts, " +
 			"Log-Level der letzten 60 min und letztem Fehler.",
 		Annotations: readOnly(),
 	}, s.svcStatus)

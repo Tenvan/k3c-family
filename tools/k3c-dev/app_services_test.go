@@ -20,7 +20,7 @@ func (p *stubProc) PID() int    { return 42 }
 func (p *stubProc) Wait() error { <-p.done; return nil }
 func (p *stubProc) Kill() error { close(p.done); return nil }
 
-// serviceApp baut eine App mit gestelltem Controller: Vite (ohne Log) startet, Heimnetz (Log server) läuft
+// serviceApp baut eine App mit gestelltem Controller: Vite (ohne Log) startet, Spielserver (Log server) läuft
 // schon vor dem Start und wird übernommen. events sammelt die Namen der gemeldeten Zustände.
 func serviceApp(t *testing.T) (*App, func() []string) {
 	t.Helper()
@@ -39,7 +39,7 @@ func serviceApp(t *testing.T) (*App, func() []string) {
 	}
 	app.ctl = services.New([]services.Service{
 		{Name: "Vite", Command: []string{"x"}, Port: 5173, Health: "http"},
-		{Name: "Heimnetz", Command: []string{"x"}, Port: 8080, Health: "http", Log: "server"},
+		{Name: "Spielserver", Command: []string{"x"}, Port: 8080, Health: "http", Log: "server"},
 	}, services.Options{
 		Root: root,
 		Start: func(services.Service, string, func(string, string)) (services.Process, error) {
@@ -47,7 +47,7 @@ func serviceApp(t *testing.T) (*App, func() []string) {
 			return &stubProc{done: make(chan struct{})}, nil
 		},
 		Check: func(_ context.Context, svc services.Service) error {
-			if (svc.Name == "Heimnetz" && !adopted.Load()) || (svc.Name == "Vite" && !started.Load()) {
+			if (svc.Name == "Spielserver" && !adopted.Load()) || (svc.Name == "Vite" && !started.Load()) {
 				return errors.New("antwortet nicht")
 			}
 			return nil
@@ -75,7 +75,7 @@ func TestServicesBindings(t *testing.T) {
 		t.Fatalf("Services() = %+v", view)
 	}
 	if st := view.Services[1].State; st != services.Adopted {
-		t.Fatalf("Heimnetz = %s, erwartet übernommen", st)
+		t.Fatalf("Spielserver = %s, erwartet übernommen", st)
 	}
 	if st, err := app.ServiceStart("Vite"); err != nil || st.State != services.Running {
 		t.Errorf("ServiceStart = %+v, %v", st, err)
@@ -91,17 +91,17 @@ func TestServicesStopUndEreignisse(t *testing.T) {
 	if _, err := app.ServiceStart("Vite"); err != nil {
 		t.Fatal(err)
 	}
-	if _, err := app.ServiceStop("Heimnetz", false); err == nil {
+	if _, err := app.ServiceStop("Spielserver", false); err == nil {
 		t.Error("übernommener Dienst ohne force gestoppt")
 	}
-	if st, err := app.ServiceStop("Heimnetz", true); err != nil || st.State != services.Stopped {
+	if st, err := app.ServiceStop("Spielserver", true); err != nil || st.State != services.Stopped {
 		t.Errorf("Stopp mit force = %+v, %v", st, err)
 	}
 	if err := app.ServicesStopAll(); err != nil || app.Services().Services[0].State != services.Stopped {
 		t.Errorf("ServicesStopAll: %v, %+v", err, app.Services().Services[0])
 	}
 	got := strings.Join(events(), ",")
-	for _, want := range []string{"Heimnetz übernommen", "Vite startet", "Vite läuft", "Heimnetz gestoppt", "Vite stoppt"} {
+	for _, want := range []string{"Spielserver übernommen", "Vite startet", "Vite läuft", "Spielserver gestoppt", "Vite stoppt"} {
 		if !strings.Contains(got, want) {
 			t.Errorf("Ereignis %q fehlt in %s", want, got)
 		}
@@ -122,9 +122,9 @@ func TestServiceLogLevels(t *testing.T) {
 	if err := os.WriteFile(filepath.Join(dir, "server.jsonl"), []byte(line("INFO")+line("WARN")+line("ERROR")+line("INFO")), 0o644); err != nil {
 		t.Fatal(err)
 	}
-	c, err := app.ServiceLogLevels("Heimnetz")
+	c, err := app.ServiceLogLevels("Spielserver")
 	if err != nil || c.Total != 4 || c.Counts["INFO"] != 2 || c.Counts["ERROR"] != 1 {
-		t.Errorf("Heimnetz: %+v, %v", c, err)
+		t.Errorf("Spielserver: %+v, %v", c, err)
 	}
 }
 
