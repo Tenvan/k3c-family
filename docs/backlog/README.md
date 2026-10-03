@@ -108,6 +108,7 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-178](B-178-dev-aktionen-gold-material-zeitraffer.md) | SRV | Idee | hoch | eingeplant | DBG1 | Im Dev-Mode lassen sich Gold und Material droppen und die Zeit beschleunigen |
 | [B-179](B-179-debug-overlay-aktionen.md) | CLI | Idee | hoch | eingeplant | DBG2 | Das Debug-Overlay bedient Gold, Material und Zeitraffer |
 | [B-181](B-181-latenz-im-debug-overlay.md) | CLI | Idee | mittel | offen | – | Das Debug-Overlay zeigt die Latenz von Eingabe bis Bild |
+| [B-182](B-182-tod-mit-ursache.md) | SIM | Problem | hoch | offen | – | Das Ereignis playerDown nennt, was den Monarchen getötet hat |
 
 ## Archiv
 
