@@ -3,14 +3,14 @@
 Kleine, spielbare Schritte. Jeder Schritt endet mit etwas, das man am TV mit Controller ausprobieren kann.
 Umsetzung in Sprints und Sessions: [`docs/sprints/`](sprints/README.md). Tickets: [`docs/backlog/`](backlog/README.md). Arbeitsweise: [`docs/arbeitsweise.md`](arbeitsweise.md).
 
-## Schritt 0 – Xbox-Machbarkeit (einschiebbar, Sprint X1)
+## Schritt 0 – Xbox-Machbarkeit (einschiebbar, Sprint X1) ✅
 
 - [x] **Gamepad-Testseite** `gamepad-test.html`: Live-Anzeige aller Controller, Falle für Zurück-Navigation (B),
   Vollbild, Vibration, FPS-Test (Phaser/WebGL, 100–4000 Sprites), Bericht per **Y** an den Server.
 - [x] **Heimnetz-Server** (früher ein Node-Server, seit SP03/SP09 der Go-Server `cmd/k3c-server`): liefert `dist/` aus, speichert Berichte
   in `reports/`, optional HTTPS mit `certs/`. Start: `task serve`.
-- [ ] **Test auf der Xbox durchführen** (Anleitung im README) → Bericht in `reports/` auswerten.
-- [ ] Ergebnis in `docs/game-design.md` → Steuerung eintragen (Skill-Tasten, B, Vollbild, max. Sprites).
+- [x] **Test auf der Xbox durchführen** (Anleitung im README) → Bericht in `reports/` auswerten.
+- [x] Ergebnis in `docs/game-design.md` → Steuerung eintragen (Skill-Tasten, B, Vollbild, max. Sprites).
 
 ## Schritt 1 – Grundgerüst ✅
 

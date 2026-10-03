@@ -3,7 +3,7 @@
 - **Domäne:** PLAT
 - **Typ:** Frage
 - **Prio:** hoch
-- **Status:** eingeplant
+- **Status:** erledigt
 - **Sprint:** X1
 - **Erstellt:** 2026-10-02
 - **Spec:** freigegeben
@@ -61,3 +61,4 @@ keine
 ## Notizen
 
 Lücke 3 aus `docs/plan-weiterentwicklung.md` § 4. Voraussetzung für SO1. Passt zu X1 (Xbox-Test), kann dort mit eingeplant werden.
+Ergebnis (X1, 2026-10-03): `docs/game-design.md` › Xbox-Messung; SO1 nutzt diese Messung für die Format-Entscheidung (m4a fällt weg).
