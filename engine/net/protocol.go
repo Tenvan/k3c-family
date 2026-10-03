@@ -34,12 +34,13 @@ var messages = map[string]string{
 	codeReplaced:     "An anderer Stelle geöffnet",
 	codeVersion:      "Veraltete Version, Seite neu laden",
 	codeBadRequest:   "Ungültige Nachricht",
+	"forbidden":      "Nur im Dev-Mode erlaubt",
 }
 
 // codeOf übersetzt einen Fehler aus engine/room in seinen Code; alles andere ist bad_request.
 func codeOf(err error) string {
 	for _, e := range []error{room.ErrRoomFull, room.ErrTooManySlots, room.ErrTooManyRooms, room.ErrRoomNotFound,
-		room.ErrSaveExists, room.ErrSaveNotFound, room.ErrClosed} {
+		room.ErrSaveExists, room.ErrSaveNotFound, room.ErrClosed, room.ErrForbidden} {
 		if errors.Is(err, e) {
 			return e.Error()
 		}
@@ -49,20 +50,24 @@ func codeOf(err error) string {
 
 // inMsg ist jede Nachricht Gerät → Server; Zeiger heißen „Pflichtfeld, fehlt = bad_request“.
 type inMsg struct {
-	T      string    `json:"t"`
-	V      int       `json:"v"`
-	Device string    `json:"device"`
-	Save   string    `json:"save"`
-	Fresh  *bool     `json:"fresh"`
-	Depth  int       `json:"depth"`
-	Grade  string    `json:"grade"`
-	Goal   string    `json:"goal"`
-	Defeat string    `json:"defeat"`
-	Slots  []int     `json:"slots"`
-	Room   string    `json:"room"`
-	Slot   *int      `json:"slot"`
-	Seq    int64     `json:"seq"`
-	P      []inInput `json:"p"`
+	T        string    `json:"t"`
+	V        int       `json:"v"`
+	Device   string    `json:"device"`
+	Save     string    `json:"save"`
+	Fresh    *bool     `json:"fresh"`
+	Depth    int       `json:"depth"`
+	Grade    string    `json:"grade"`
+	Goal     string    `json:"goal"`
+	Defeat   string    `json:"defeat"`
+	Slots    []int     `json:"slots"`
+	Room     string    `json:"room"`
+	Slot     *int      `json:"slot"`
+	Seq      int64     `json:"seq"`
+	P        []inInput `json:"p"`
+	Action   string    `json:"action"`   // dev
+	Amount   int       `json:"amount"`   // dev: gold, material
+	Resource string    `json:"resource"` // dev: material
+	Factor   int       `json:"factor"`   // dev: timescale
 }
 
 type inInput struct {
