@@ -58,7 +58,7 @@ Mindest-Schriftgröße je Viertel: 🧑, `docs/fragenkatalog.md Q03`, Regel in B
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
 | S4.1 | `S4.1-zelle-stufe.md` | Umsetzung | autonom | fertig |
-| S4.2 | `S4.2-radar-hud-schrift.md` | Umsetzung | autonom | offen |
+| S4.2 | `S4.2-radar-hud-schrift.md` | Umsetzung | autonom | in Arbeit |
 | S4.3 | `S4.3-abnahme-geraet.md` | Workshop | Mensch | offen |
 | S4.4 | `S4.4-review.md` | Review | autonom | offen |
 
