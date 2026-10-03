@@ -3,7 +3,7 @@
 - **Domäne:** PLAT
 - **Typ:** Idee
 - **Prio:** mittel
-- **Status:** eingeplant
+- **Status:** erledigt
 - **Sprint:** GR6
 - **Erstellt:** 2026-10-02
 - **Spec:** freigegeben
