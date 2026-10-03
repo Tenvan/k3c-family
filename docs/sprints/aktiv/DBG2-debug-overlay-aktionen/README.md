@@ -1,11 +1,11 @@
 # DBG2 · CLI · Debug-Overlay: Gold, Material, Zeitraffer
 
-- **Status:** geplant
+- **Status:** aktiv
 - **Domäne:** CLI
 - **Reife:** bereit
 - **Einschiebbar:** nein
 - **Tickets:** B-179
-- **Start-Commit:** –
+- **Start-Commit:** ae2ca20
 - **Spec:** freigegeben
 - **Revision:** 1
 - **Freigabe:** 2026-10-03, Chat (Ralf), Revision 1; umfasst B-179; bestätigt Dev-Mode-Erkennung am Zeitfaktor-Feld und RB als Dev-Fokus
@@ -58,7 +58,7 @@ Siehe Ticket › Offene Fragen.
 
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
-| DBG2.1 | `DBG2.1-aktionen-logik.md` | Umsetzung | autonom | offen |
+| DBG2.1 | `DBG2.1-aktionen-logik.md` | Umsetzung | autonom | fertig |
 | DBG2.2 | `DBG2.2-overlay-bedienung.md` | Umsetzung | autonom | offen |
 | DBG2.3 | `DBG2.3-abnahme-geraet.md` | Workshop | Mensch | offen |
 | DBG2.4 | `DBG2.4-review.md` | Review | autonom | offen |
