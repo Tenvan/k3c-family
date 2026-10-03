@@ -1,6 +1,6 @@
 # GR6.1 · Vollständigkeits-Test und gemeinsame Datenquelle der Credits
 
-- **Status:** in Arbeit
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Branch:** gr6/1-credits-daten
@@ -42,9 +42,9 @@ Neue Assets, Sound-Credits (B-167, B-168), Software-Abschnitt der Seite, Überse
 
 ## Fertig, wenn
 
-- [ ] AC-01: Test belegt Eintrag je Verzeichnis unter `public/grafik/` und `public/sprites/`; ein fehlender Eintrag macht ihn rot.
-- [ ] AC-02: Test belegt, dass die Seite alle Einträge aus den CREDITS-Dateien zeigt.
-- [ ] `task check` grün; keine Datei > 400 Zeilen, keine Funktion > 60 Zeilen.
+- [x] AC-01: Test belegt Eintrag je Verzeichnis unter `public/grafik/` und `public/sprites/`; ein fehlender Eintrag macht ihn rot.
+- [x] AC-02: Test belegt, dass die Seite alle Einträge aus den CREDITS-Dateien zeigt.
+- [x] `task check` grün; keine Datei > 400 Zeilen, keine Funktion > 60 Zeilen.
 
 ## Prüfen
 
@@ -54,4 +54,10 @@ task check
 
 ## Ergebnis
 
-–
+Umgesetzt auf Branch `sprint/gr6` (ein PR je Sprint).
+
+- **AC-01** umgesetzt, geprüft mit `src/tools/credits.test.ts` (Verzeichnis ohne Eintrag und Eintrag ohne Verzeichnis sind rot). Rotprobe: `forest-background` aus `public/grafik/CREDITS.md` entfernt, Test rot, Eintrag wiederhergestellt (nicht eingecheckt).
+- **AC-02** umgesetzt, geprüft mit demselben Test: `renderCredits(CREDITS)` liefert eine Zeile je Eintrag mit Werk, Urheber, Lizenz, Quelle. `lizenzen.ts` füllt `#credits-grafik` daraus; der Handtext (LuizMelo, ansimuz, Umgebungs- und Reittier-Tabelle) in `lizenzen.html` entfällt, Dank-Texte und der Hinweis zu Warped Caves bleiben.
+- Datenquelle: `src/tools/credits.ts` parst die CREDITS-Dateien per `?raw` (Spalten über die Kopfzeile). Form: `public/sprites/CREDITS.md` hat in den zwei Pack-Tabellen jetzt die Spalten Urheber und Lizenz (LuizMelo, ansimuz, CC0 1.0), keine Inhalte gestrichen.
+- `src/tools/grafikPacks.test.ts` bleibt, prüft die Seite aber über die erzeugte Tabelle statt über `lizenzen.html`.
+- `task check` grün (670 Tests). Darstellung nach CC-BY und Landingpage: GR6.2.
