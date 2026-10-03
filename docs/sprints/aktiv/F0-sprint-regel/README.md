@@ -1,11 +1,11 @@
 # F0 · INF · Parallele Sprints je Domäne
 
-- **Status:** geplant
+- **Status:** aktiv
 - **Domäne:** INF
 - **Reife:** bereit
 - **Einschiebbar:** nein
 - **Tickets:** B-174
-- **Start-Commit:** –
+- **Start-Commit:** 975e6d8
 - **Spec:** freigegeben
 - **Revision:** 1
 - **Freigabe:** 2026-10-03, Chat (Ralf), Revision 1; umfasst B-174
@@ -56,7 +56,7 @@ keine
 
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
-| F0.1 | `F0.1-regel-und-test.md` | Umsetzung | autonom | offen |
+| F0.1 | `F0.1-regel-und-test.md` | Umsetzung | autonom | in Arbeit |
 | F0.2 | `F0.2-review.md` | Review | autonom | offen |
 
 ## Abnahme
