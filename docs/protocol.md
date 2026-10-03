@@ -213,11 +213,13 @@ der Server die Verbindung; das zählt als Abbruch.
 | `removeSlot` | Gerät → Server | lokaler Spieler geht | `slot` | `c2s-remove-slot.json` |
 | `input` | Gerät → Server | Eingabe hat sich geändert, sonst mindestens alle 500 ms, höchstens eine pro Tick | `seq` fortlaufend je Verbindung, `p[]`: `slot`, `moveX` (−1…1), `sprint`, `pay` | `c2s-input.json` |
 | `leave` | Gerät → Server | Raum bewusst verlassen | – | `c2s-leave.json` |
-| `error` | Server → Gerät | Fehlerfall, siehe Codes | `code`, `message` (deutsch, für die Anzeige) | `s2c-error.json` |
+| `dev` | Gerät → Server | nur im Dev-Mode (siehe *Dev-Aktionen*), im Raum | `action` und je Aktion: `gold` `slot`, `amount`; `material` `slot`, `resource`, `amount`; `timescale` `factor` | `c2s-dev-gold.json`, `c2s-dev-material.json`, `c2s-dev-timescale.json` |
+| `error` | Server → Gerät | Fehlerfall, siehe Codes | `code`, `message` (deutsch, für die Anzeige) | `s2c-error.json`, `s2c-error-forbidden.json` |
 
 Die Beispiele stammen aus dem Ablauf *2 Controller an der Xbox + 1 Handy*; `level`, `snap` und `delta` sind aus der
 heutigen TS-Simulation erzeugt (Seed `familie`, 3 Spieler, Tick 299/300). **Außerhalb des Ablaufs:** der zweite Raum
-`BWTQ` in `s2c-rooms.json` (zeigt einen pausierten Raum) und `s2c-error.json` (`room_full` kommt im Ablauf nicht vor).
+`BWTQ` in `s2c-rooms.json` (zeigt einen pausierten Raum), `s2c-error.json` (`room_full` kommt im Ablauf nicht vor) sowie
+`c2s-dev-*.json` und `s2c-error-forbidden.json` (Dev-Aktionen).
 
 **Zustand und Delta:** `s` in `snap` hat die Felder der Welt ohne `seed`, `biome`, `level`, `rng`, `widthUnits`
 (wie v1), dazu `events` des Ticks (leer: `[]`) und `depth`, die Stufe des Zustands (gleich `level.depth`).
@@ -245,10 +247,19 @@ Vorhersage, B-039).
 | `room_closed` | Raum abgestürzt oder Server fährt herunter; Gerät geht zurück zur Raumliste | bleibt (beim Herunterfahren: Server schließt) |
 | `replaced` | dieselbe Geräte-ID ist demselben Raum über eine neue Verbindung beigetreten | Server schließt, kein automatisches Neuverbinden |
 | `version` | erste Nachricht ist kein gültiges `hello` oder `v` ist nicht 3 | Server schließt |
-| `bad_request` | kein gültiges JSON, unbekannter Typ, Feld fehlt, Name passt nicht zum Format, ungültiger Slot (doppelt, keine Zahl 0–3, bei `input`/`removeSlot` nicht vom Gerät, bei `addSlot` schon vergeben), Nachricht passt nicht zum Zustand (`input`, `addSlot`, `removeSlot`, `leave` ohne Raum; `create`, `join` im Raum) | bleibt, Nachricht wird verworfen |
+| `forbidden` | `dev` ohne Dev-Mode am Server; die Warnung steht im Log | bleibt, Nachricht wird verworfen |
+| `bad_request` | kein gültiges JSON, unbekannter Typ, Feld fehlt, Name passt nicht zum Format, ungültiger Slot (doppelt, keine Zahl 0–3, bei `input`/`removeSlot` nicht vom Gerät, bei `addSlot` schon vergeben), ungültige Felder von `dev`, Nachricht passt nicht zum Zustand (`input`, `addSlot`, `removeSlot`, `leave`, `dev` ohne Raum; `create`, `join` im Raum) | bleibt, Nachricht wird verworfen |
 
 `bad_request` ist kein Fehlerfall aus dem Raummodell, sondern Schutz vor kaputten Clients. Die Rückkehr nach 60 s ist
 kein Fehler und hat keinen Code.
+
+### Dev-Aktionen
+
+`dev` gibt es nur im Dev-Mode des Servers (`K3C_DEV`, vor einem Release aus). Ohne Dev-Mode antwortet der Server
+`forbidden`, noch bevor er die Felder prüft, und warnt im Log. Mit Dev-Mode prüft er die Verbindung und die Felder
+(`amount` ganze Zahl 1…1000); Ungültiges ergibt `bad_request`. Ein älterer Server kennt `dev` nicht und antwortet
+`bad_request`; die Protokollversion bleibt 3. Die Wirkung der Aktionen (`gold`, `material`, `timescale`) beschreiben
+DBG1.2 und DBG1.3 hier, sobald sie gebaut sind.
 
 ### Snapshot-Größe
 
