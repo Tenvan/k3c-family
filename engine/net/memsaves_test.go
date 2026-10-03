@@ -32,3 +32,11 @@ func (s memSaves) Delete(name string) error {
 	delete(s, name)
 	return nil
 }
+
+// peek liest einen Eintrag für Tests (mit Sperre, der Server schreibt in anderen Goroutinen).
+func (s memSaves) peek(name string) ([]byte, bool) {
+	memSavesMu.Lock()
+	defer memSavesMu.Unlock()
+	d, ok := s[name]
+	return d, ok
+}

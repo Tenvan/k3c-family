@@ -101,7 +101,7 @@ func TestSaveSichertSpielstand(t *testing.T) {
 	a := hello(t, srv, deviceA)
 	create(a, "familie", 0)
 	a.entered()
-	if _, ok := saves["familie"]; ok {
+	if _, ok := saves.peek("familie"); ok {
 		t.Fatal("vor dem Aufruf darf noch nichts gesichert sein")
 	}
 	code, body := asDiag(t, srv, "/api/status/save?room=FAMILIE")
@@ -109,8 +109,9 @@ func TestSaveSichertSpielstand(t *testing.T) {
 		t.Fatalf("save: %d %v", code, body)
 	}
 	var save map[string]any
-	if err := json.Unmarshal(saves["familie"], &save); err != nil || save["campaignId"] == nil {
-		t.Errorf("Spielstand: %v %s", err, saves["familie"])
+	raw, _ := saves.peek("familie")
+	if err := json.Unmarshal(raw, &save); err != nil || save["campaignId"] == nil {
+		t.Errorf("Spielstand: %v %s", err, raw)
 	}
 	if log := logBuf.String(); !strings.Contains(log, "ns=diag") || !strings.Contains(log, "spielstand gesichert") {
 		t.Errorf("Log: %q", log)
