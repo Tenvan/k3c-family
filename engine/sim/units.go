@@ -135,7 +135,9 @@ func build(w *World, t *Troop, dt float64) {
 		return
 	}
 	b := buildings[site.Kind]
+	before := site.BuildProgress
 	site.BuildProgress += dt / math.Max(0.1, b.BuildSeconds)
+	buildProgressEvent(w, site, before)
 	if site.BuildProgress >= 1 {
 		site.State, site.BuildProgress, site.HP, site.MaxHP, site.WorkerID = "built", 1, b.HP, b.HP, nil
 		t.Job = nil

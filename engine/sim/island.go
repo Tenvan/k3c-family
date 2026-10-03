@@ -74,4 +74,9 @@ func StepIsland(isl *Island, commands []PlayerCommand, dt float64) {
 		Step(w, commands, dt)
 	}
 	stepIslandTravel(isl, dt)
+	for i, w := range isl.Stages { // nach dem Wechsel, damit auch `arrived` seine Stufe trägt
+		for _, ev := range w.Events {
+			ev["stage"] = i
+		}
+	}
 }

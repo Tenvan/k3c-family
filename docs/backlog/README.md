@@ -97,15 +97,15 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-173](B-173-monarch-auf-reittier-zeichnen.md) | CLI | Idee | hoch | eingeplant | S7 | Der Client zeichnet den Monarchen auf dem Standard-Reittier |
 | [B-175](B-175-lasttest-werkzeug.md) | SRV | Idee | mittel | eingeplant | LT1 | Ein Lasttest-Werkzeug misst Tick-Dauer und CPU gegen das Pi-Ziel |
 | [B-176](B-176-protokoll-mehrere-stufen.md) | SRV | Idee | hoch | eingeplant | S2 | Das Protokoll liefert Level und Zustand jeder Stufe, in der ein lokaler Spieler steht |
-| [B-179](B-179-debug-overlay-aktionen.md) | CLI | Idee | hoch | eingeplant | DBG2 | Das Debug-Overlay bedient Gold, Material und Zeitraffer |
 | [B-181](B-181-latenz-im-debug-overlay.md) | CLI | Idee | mittel | offen | – | Das Debug-Overlay zeigt die Latenz von Eingabe bis Bild |
 | [B-182](B-182-tod-mit-ursache.md) | SIM | Problem | hoch | offen | – | Das Ereignis playerDown nennt, was den Monarchen getötet hat |
 | [B-184](B-184-pages-screenshots.md) | PLAT | Idee | niedrig | offen | – | Die Präsentationsseite zeigt echte Bilder aus dem Spiel |
 | [B-185](B-185-verluste-je-welle-angleichen.md) | REG | Schuld | niedrig | offen | – | Wirtschaft nennt denselben Verlust-Korridor je Welle wie die Bürger |
 | [B-186](B-186-autospeichern-takt.md) | SRV | Idee | mittel | offen | – | Der Server speichert alle 60 s und bei Tagesanbruch, das HUD zeigt „gesichert“ |
-| [B-187](B-187-speichern-windows-rename.md) | SRV | Problem | mittel | offen | – | Speichern übersteht unter Windows eine kurz gesperrte Zieldatei |
+| [B-187](B-187-speichern-windows-rename.md) | SRV | Problem | mittel | offen | – | Speichern übersteht unter Windows eine kurz gesperrte Zieldatei |
 | [B-188](B-188-client-rohstoffe-eisen-kristall.md) | CLI | Schuld | niedrig | offen | – | Der Client kennt alle fünf Rohstoffe des Servers |
 | [B-189](B-189-toter-gegner-flieht-ins-portal.md) | SIM | Problem | mittel | offen | – | Ein besiegter Gegner verschwindet nicht im Portal, sondern lässt sein Gold fallen |
+| [B-190](B-190-events-dropped-im-protokoll.md) | SRV | Problem | niedrig | offen | – | Der Client erfährt zuverlässig, wie viele Ereignisse verworfen wurden |
 
 ## Archiv
 
@@ -206,3 +206,4 @@ Zeile in diesen Abschnitt.
 | [B-137](archiv/B-137-golden-ablauf-migration.md) | INF | Idee | hoch | erledigt | F2 | Golden-Daten und Spielstand-Formate haben einen festen Änderungsablauf |
 | [B-138](archiv/B-138-determinismus-pruefung.md) | INF | Schuld | mittel | erledigt | F2 | Determinismus der Simulation wird gegen Map-Reihenfolge und langsame Ticks geprüft |
 | [B-178](archiv/B-178-dev-aktionen-gold-material-zeitraffer.md) | SRV | Idee | hoch | erledigt | DBG1 | Im Dev-Mode lassen sich Gold und Material droppen und die Zeit beschleunigen |
+| [B-179](archiv/B-179-debug-overlay-aktionen.md) | CLI | Idee | hoch | erledigt | DBG2 | Das Debug-Overlay bedient Gold, Material und Zeitraffer |

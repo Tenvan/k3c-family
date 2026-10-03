@@ -2,7 +2,7 @@
 
 - **Status:** geplant
 - **Domäne:** PLAT
-- **Reife:** Entwurf
+- **Reife:** bereit
 - **Einschiebbar:** ja
 - **Tickets:** B-169
 - **Start-Commit:** –
@@ -57,11 +57,15 @@ Audio gesperrt → Hinweis zum Entsperren; Kandidat lädt nicht → Eintrag grau
 
 ## Sessions
 
-Entwurf. Vor dem Aktivieren jede Session als Datei nach `docs/vorlagen/session.md` schreiben, die Kriterien in Klammern werden ihr Feld `Kriterien`.
+| Nr. | Datei | Typ | Agent | Status |
+|---|---|---|---|---|
+| SO3.1 | `SO3.1-seite-rahmen.md` | Umsetzung | autonom | offen |
+| SO3.2 | `SO3.2-kandidaten-abspielen.md` | Umsetzung | autonom | offen |
+| SO3.3 | `SO3.3-abnahme-tv.md` | Workshop | Mensch | offen |
+| SO3.4 | `SO3.4-review.md` | Review | autonom | offen |
 
-- SO3.1 Seite mit Seitenrahmen und Landingpage-Eintrag (AC-01, AC-05).
-- SO3.2 Kandidatenliste, Abspielen, Crossfade-Probe, Controller-Bedienung (AC-02, AC-03, AC-04).
-- SO3.3 Review (AC-06).
+Bei `Reife: Entwurf` genügen Stichpunkte mit den Kriterien in Klammern statt Session-Dateien. Vor dem Aktivieren
+wird jede Session als eigene Datei nach `docs/vorlagen/session.md` geschrieben.
 
 ## Abnahme
 
