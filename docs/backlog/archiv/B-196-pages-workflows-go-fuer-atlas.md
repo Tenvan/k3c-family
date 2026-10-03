@@ -3,8 +3,8 @@
 - **Domäne:** INF
 - **Typ:** Problem
 - **Prio:** hoch
-- **Status:** offen
-- **Sprint:** –
+- **Status:** erledigt
+- **Sprint:** GR4
 - **Erstellt:** 2026-10-03
 - **Spec:** Entwurf
 - **Revision:** 1
@@ -53,3 +53,5 @@ keine
 ## Notizen
 
 Aufgefallen in GR4.1. Sinnvoll vor dem PR von GR4 (Review-Session GR4.4) umzusetzen.
+
+Behoben im Review GR4.4: `setup-go` (go.mod) in ci.yml, deploy-pages.yml und release.yml vor dem Build; zusätzlich das Dockerfile: das Web-Bundle wurde dort ohne Atlas gebaut (neue Stufe `atlas`, `.dockerignore` lässt `tools/atlas` durch). Der grüne PR-Lauf der CI bestätigt AC-01.

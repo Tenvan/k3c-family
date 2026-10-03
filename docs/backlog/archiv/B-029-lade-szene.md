@@ -3,7 +3,7 @@
 - **Domäne:** CLI
 - **Typ:** Idee
 - **Prio:** mittel
-- **Status:** eingeplant
+- **Status:** erledigt
 - **Sprint:** GR4
 - **Erstellt:** 2026-09-29
 - **Spec:** freigegeben
@@ -54,3 +54,5 @@ keine
 ## Notizen
 
 –
+
+Erledigt in GR4 (GR4.2, Review GR4.4, 2026-10-03).
