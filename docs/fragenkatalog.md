@@ -59,7 +59,7 @@ Sprints bleiben `Spec: Entwurf`, bis 🧑 sie je Sprint freigibt.
 | Q17 | Restore nur mit Token; Report und Clientlog nur Limits und Rotation; kein Port-Forwarding (dokumentieren). | B-143, F4 |
 | Q18 | Backup-Ziel **USB-Stick am Pi**; Restore-Probe einmal durchspielen. Hinweis: schützt nur vor SD-Karten-Ausfall. | B-142, F4 |
 | Q19 | Pflicht: passiv, sparsam, Mauern zuerst, Wirtschaft zuerst, Koop 2/4 Spieler (später „Kind-Bot“). | B-158, BAL3 |
-| Q20 | Tag `v0.<n>.0` nach jeder Phase und jedem Spieleabend mit der Release-Checkliste. | B-170, RL1 |
+| Q20 | **Geändert 2026-10-03:** Nach **jedem fertigen Sprint** schlägt die Abnahme eine Version vor, ein Tag wird nur bei Bestätigung durch 🧑 gesetzt (B-180); zusätzlich ein Tag nach jedem Spieleabend, mit der Release-Checkliste. | B-170, B-180, RL1 |
 | Q21 | itch.io später nach Phase 3, jetzt nur vorbereiten (Englisch kommt mit B-172). | B-023 |
 | Q22 | Wirtschaft zuerst (W1–W3), **Wiederbeleben (B-120) aus W4 nach vorn**, weil es den Koop-Spaß stärkt; beim Bereitmachen von W1–W4 umsetzen. | W1–W4 |
 | Q23 | **Korrektur 2026-10-03:** Reittiere **von Anfang an**, jeder Monarch reitet ein Standard-Reittier (wie im Vorbild); Sim in S1 (B-152), Darstellung in S7 (B-173), Zahlen im Workshop F1. Ersetzt „nach Phase 3, als Politur“. | B-152, B-173, S1, S7, F1 |
