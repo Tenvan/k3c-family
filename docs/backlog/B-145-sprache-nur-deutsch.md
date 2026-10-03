@@ -54,3 +54,5 @@ Nur Deutsch oder Englisch dazu, wann: `docs/fragenkatalog.md` Q05 (verwandt Q21)
 ## Notizen
 
 Aus Plan Lücke 20. Verwandt: B-023.
+
+Beschluss 2026-10-03 (Q05): Deutsch und Englisch mit Sprachauswahl in den Optionen, siehe B-172. Dieses Ticket kann mit F1 als erledigt archiviert werden.

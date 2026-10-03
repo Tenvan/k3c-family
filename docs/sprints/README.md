@@ -29,6 +29,7 @@ dann über den Go-Server mit mehreren Räumen und gemischten Spielern.
 | S4 | CLI | Kamera je Stufe und Layouts 1–4 | 2 Spieler am selben Gerät in verschiedenen Stufen | Entwurf | `geplant/S4-kamera-layouts/` |
 | S5 | CLI | Optionen- und Pause-Szene | Einstellungen bleiben nach dem Neuladen erhalten | Entwurf | `geplant/S5-optionen-pause/` |
 | S6 | CLI | Onboarding „Erste Nacht geführt“ und Controller-Glyphen | Ein Kind spielt die erste Nacht ohne Erklärung | Entwurf | `geplant/S6-onboarding-glyphen/` |
+| S7 | CLI | Monarch auf dem Standard-Reittier | Zwei Spieler im Split-Screen reiten über die Stufe | Entwurf | `geplant/S7-monarch-reittier/` |
 | P1 | REG 🧑 | Spieleabend 1 | Protokoll und Folge-Tickets | Entwurf | `geplant/P1-spieleabend-1/` |
 | W1 | SIM | Hub-Ausbau und Mauerstufen | `task check:go` grün, Tests für Ausbau, Zerstörung und Reparatur, aktualisierte Golden-Daten | Entwurf | `geplant/W1-hub-ausbau/` |
 | W2 | SIM | Plantage, Adern, Stufenbreite und Mine | Tests für Generator, Adern, Plantage und Biome grün, aktualisierte Golden-Level | Entwurf | `geplant/W2-plantage-adern-stufen/` |

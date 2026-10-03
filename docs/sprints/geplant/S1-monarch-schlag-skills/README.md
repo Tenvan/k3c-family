@@ -4,7 +4,7 @@
 - **Domäne:** SIM
 - **Reife:** Entwurf
 - **Einschiebbar:** nein
-- **Tickets:** B-118, B-119, B-022
+- **Tickets:** B-118, B-119, B-022, B-152
 - **Start-Commit:** –
 - **Spec:** Entwurf
 - **Revision:** 1
@@ -49,7 +49,8 @@ Respec in der Nacht oder Punkt über das Gating hinaus → abgelehnt; Skill in A
 - **AC-03** Aktive Skills von Tank, Zauberer und Heiler wirken laut Daten, Gating verhindert Skills ohne Punkte (B-119/AC-01, B-119/AC-02).
 - **AC-04** Passive wirken in 2-Spieler-Szenen (B-119/AC-03).
 - **AC-05** Spielstand speichert und lädt Pool, Verteilung und Skills; ein alter Stand lädt (B-118/AC-04, B-022/AC-01, B-022/AC-02).
-- **AC-06** Golden-Daten sind aktualisiert und `task check:go` ist grün (B-118/AC-05, B-119/AC-04).
+- **AC-06** Golden-Daten sind aktualisiert und `task check:go` ist grün (B-118/AC-05, B-119/AC-04, B-152/AC-03).
+- **AC-07** Jeder Monarch hat das Standard-Reittier aus den Daten, seine Geschwindigkeit entspricht Basis × Faktor (B-152/AC-02).
 
 ## Offene Fragen
 
@@ -61,8 +62,9 @@ Entwurf. Vor dem Aktivieren jede Session als Datei nach `docs/vorlagen/session.m
 
 - S1.1 Schlag, Fund-Pool, Gating, Respec, Presets in `engine/sim/` und `data/monarch.json` (AC-01, AC-02).
 - S1.2 Skills und Passive Tank/Zauberer/Heiler in Daten und Sim, Abklingzeiten je Spieler (AC-03, AC-04).
-- S1.3 Spielstand: Pool, Verteilung, Skills mit Versionssprung und Fixture, Golden-Daten aktualisieren (AC-05, AC-06).
-- S1.4 Review des Sprints (Code-Sprint) (AC-01, AC-02, AC-03, AC-04, AC-05, AC-06).
+- S1.3 Standard-Reittier aus `data/monarch.json` im Monarchen, Test mit 2 Spielern (AC-07).
+- S1.4 Spielstand: Pool, Verteilung, Skills mit Versionssprung und Fixture, Golden-Daten aktualisieren (AC-05, AC-06).
+- S1.5 Review des Sprints (Code-Sprint) (AC-01, AC-02, AC-03, AC-04, AC-05, AC-06, AC-07).
 
 ## Abnahme
 
