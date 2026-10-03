@@ -61,7 +61,7 @@ Runner für arm64: nativer arm64-Runner von GitHub oder Emulation (B-071, 🧑).
 
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
-| F2.1 | `F2.1-golden-update-arm64.md` | Umsetzung | autonom | in Arbeit |
+| F2.1 | `F2.1-golden-update-arm64.md` | Umsetzung | autonom | fertig |
 | F2.2 | `F2.2-spielstand-migration.md` | Umsetzung | autonom | offen |
 | F2.3 | `F2.3-determinismus.md` | Umsetzung | autonom | offen |
 | F2.4 | `F2.4-review.md` | Review | autonom | offen |
