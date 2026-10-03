@@ -2,7 +2,7 @@
 
 - **Status:** geplant
 - **Domäne:** SRV
-- **Reife:** Entwurf
+- **Reife:** bereit
 - **Einschiebbar:** nein
 - **Tickets:** B-175
 - **Start-Commit:** –
@@ -57,12 +57,15 @@ keine
 
 ## Sessions
 
-Entwurf. Vor dem Aktivieren jede Session als Datei nach `docs/vorlagen/session.md` schreiben, die Kriterien in Klammern werden ihr Feld `Kriterien`.
+| Nr. | Datei | Typ | Agent | Status |
+|---|---|---|---|---|
+| LT1.1 | `LT1.1-bots-client.md` | Umsetzung | autonom | offen |
+| LT1.2 | `LT1.2-status-bericht.md` | Umsetzung | autonom | offen |
+| LT1.3 | `LT1.3-messlauf-pi.md` | Workshop | Mensch | offen |
+| LT1.4 | `LT1.4-review.md` | Review | autonom | offen |
 
-- LT1.1 Bots und Client über Protokoll v3, Seed, Aufräumen der Test-Räume (AC-01, AC-02, AC-05).
-- LT1.2 Status-Abfrage, `cpu` in `/api/status`, Bericht JSON und Markdown, Bewertung, Task `load` (AC-03, AC-04).
-- LT1.3 🧑 Messlauf am Pi über eine Nacht, Ergebnis und B-042 (AC-06).
-- LT1.4 Review des Sprints (Code-Sprint) (AC-01, AC-02, AC-03, AC-04, AC-05, AC-06).
+Bei `Reife: Entwurf` genügen Stichpunkte mit den Kriterien in Klammern statt Session-Dateien. Vor dem Aktivieren
+wird jede Session als eigene Datei nach `docs/vorlagen/session.md` geschrieben.
 
 ## Abnahme
 
