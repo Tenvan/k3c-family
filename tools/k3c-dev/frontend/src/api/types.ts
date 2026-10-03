@@ -286,6 +286,8 @@ export interface PlanSession {
   agent: string;
   status: string;
   titel: string;
+  /** Markdown der Session-Datei; fehlt bei Entwürfen ohne Datei. */
+  text?: string;
 }
 
 /** Aktiver oder geplanter Sprint (Go: planning.Sprint). */
@@ -312,7 +314,7 @@ export interface PlanTicket {
   spec: string;
 }
 
-/** Planung beim Laden (Go: planning.Data); done zählt die erledigten Sprints. */
+/** Daten der Seite „Sprints & Backlog“ (Go: planning.Data); done zählt die erledigten Sprints. Nur der Mock baut sie. */
 export interface PlanningData {
   sprints: PlanSprint[];
   tickets: PlanTicket[];
@@ -406,8 +408,8 @@ export interface Backend {
   gitUnstage(paths: string[]): Promise<GitView>;
   /** Eine verletzte Regel kommt als `feld: Grund` (feld: type, scope, subject), `nichts gestaged` ohne Feld. */
   gitCommit(m: CommitMessage): Promise<CommitResult>;
-  /** Liest Sprints und Tickets frisch von der Platte. */
-  planning(): Promise<PlanningData>;
+  /** Seite „Sprints & Backlog“ als eigenständiges HTML, frisch aus docs/ erzeugt (Go: planning.Page). */
+  planningPage(): Promise<string>;
   /** Markdown eines Planungs-Dokuments. */
   planningDoc(name: PlanDoc): Promise<string>;
   /** Abonniert ein Ereignis; die Rückgabe meldet wieder ab. */

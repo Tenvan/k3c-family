@@ -1,9 +1,40 @@
+import PAGE from '../../../internal/planning/page.html?raw';
 import type { PlanDoc, PlanningData, PlanSession, PlanTicket } from './types';
 
 // Erfundene Planung für den Mock: ein aktiver Sprint mit Session-Tabelle, geplante Entwürfe, Tickets und zwei kurze
 // Dokumente, die dieselben Markdown-Formen haben wie docs/plan-weiterentwicklung.md und docs/fragenkatalog.md.
 
-const s = (nr: string, typ: string, agent: string, status: string, titel = ''): PlanSession => ({ nr, typ, agent, status, titel });
+const s = (nr: string, typ: string, agent: string, status: string, titel = '', text?: string): PlanSession =>
+  ({ nr, typ, agent, status, titel, text });
+
+const SP11_2 = `# SP11.2 · Pi einrichten
+
+- **Status:** offen
+- **Typ:** Workshop
+- **Agent:** Mensch
+- **Tickets:** B-035
+- **Kriterien:** AC-02, AC-03
+
+## Ziel
+
+Der Server läuft auf dem Raspberry Pi im Docker und ist im Heimnetz unter Port 8080 erreichbar.
+
+## Erlaubte Dateien
+
+- \`deploy/pi/…\`
+- \`docs/betrieb.md\`
+
+## Schritte
+
+1. Image aus SP11.1 auf den Pi ziehen.
+2. \`docker compose up -d\` im Ordner \`deploy/pi\`.
+3. Von der Xbox \`http://pi.local:8080\` öffnen.
+
+## Fertig, wenn
+
+- [ ] AC-02: \`curl pi.local:8080/api/health\` liefert **ok**.
+- [x] AC-03: Neustart des Pi startet den Container mit.
+`;
 const tk = (nr: string, title: string, domain: string, prio: string, status: string, sprint: string, spec = 'Entwurf'): PlanTicket =>
   ({ nr, title, domain, typ: 'Idee', prio, status, sprint, spec });
 
@@ -12,7 +43,14 @@ const DATA: PlanningData = {
   sprints: [
     { id: 'SP11', title: 'Raspberry Pi', domain: 'SRV', status: 'aktiv', reife: 'bereit', spec: 'freigegeben',
       tickets: ['B-028', 'B-035', 'B-042'],
-      sessions: [s('SP11.1', 'Umsetzung', 'autonom', 'fertig'), s('SP11.2', 'Workshop', 'Mensch', 'offen'),
+      sessions: [s('SP11.1', 'Umsetzung', 'autonom', 'fertig', '', `# SP11.1 · Image und Compose
+
+- **Status:** fertig
+
+## Ziel
+
+Ein ARM-Image des Servers liegt in der Registry.
+`), s('SP11.2', 'Workshop', 'Mensch', 'offen', '', SP11_2),
         s('SP11.3', 'Workshop', 'Mensch', 'offen'), s('SP11.4', 'Review', 'autonom', 'offen')] },
     { id: 'F1', title: 'Zielkorridore und Bedienungsregeln', domain: 'REG', status: 'geplant', reife: 'Entwurf', spec: 'Entwurf',
       tickets: ['B-134', 'B-135', 'B-136'],
@@ -77,7 +115,7 @@ Zu klärende Punkte für die Planung. Eine Frage = ein Absatz mit Optionen und e
 
 export function mockPlanning() {
   return {
-    planning: async (): Promise<PlanningData> => DATA,
+    planningPage: async (): Promise<string> => PAGE.replace('/*DATA*/null', JSON.stringify(DATA)), // wie planning.Page in Go
     planningDoc: async (name: PlanDoc): Promise<string> => (name === 'plan' ? PLAN : FRAGEN),
   };
 }

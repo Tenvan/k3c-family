@@ -19,6 +19,8 @@ type Session struct {
 	Agent  string `json:"agent"`
 	Status string `json:"status"`
 	Titel  string `json:"titel"`
+	File   string `json:"-"`              // Spalte „Datei“ der Tabelle, relativ zum Sprint-Ordner
+	Text   string `json:"text,omitempty"` // Inhalt der Session-Datei (Markdown) für das Detail-Panel
 }
 
 // Sprint ist die Kopfzeile und Session-Tabelle einer Sprint-README.
@@ -57,7 +59,7 @@ var Docs = map[string]string{"plan": "plan-weiterentwicklung.md", "fragen": "fra
 
 var (
 	field   = regexp.MustCompile(`^- \*\*([^:*]+):\*\*\s*(.*)$`)
-	session = regexp.MustCompile(`^\|\s*([A-Za-z0-9]+\.\d+)\s*\|[^|]*\|\s*([^|]*?)\s*\|\s*([^|]*?)\s*\|\s*([^|]*?)\s*\|`)
+	session = regexp.MustCompile(`^\|\s*([A-Za-z0-9]+\.\d+)\s*\|\s*` + "`?" + `([^|` + "`" + `]*?)` + "`?" + `\s*\|\s*([^|]*?)\s*\|\s*([^|]*?)\s*\|\s*([^|]*?)\s*\|`)
 	bullet  = regexp.MustCompile(`^- ([A-Za-z0-9]+\.\d+)\s+(.*)$`)
 	ticket  = regexp.MustCompile(`^B-\d+-.*\.md$`)
 )
@@ -76,11 +78,9 @@ func Load(root string) (Data, error) {
 			if !e.IsDir() {
 				continue
 			}
-			text, err := os.ReadFile(filepath.Join(dir, e.Name(), "README.md"))
-			if err != nil {
-				continue
+			if sp, ok := loadSprint(filepath.Join(dir, e.Name()), status); ok {
+				d.Sprints = append(d.Sprints, sp)
 			}
-			d.Sprints = append(d.Sprints, ParseSprint(string(text), e.Name(), status))
 		}
 	}
 	if done, err := os.ReadDir(filepath.Join(root, "docs", "sprints", "erledigt")); err == nil {
@@ -102,6 +102,24 @@ func Load(root string) (Data, error) {
 	}
 	sort.Slice(d.Tickets, func(i, j int) bool { return d.Tickets[i].Nr < d.Tickets[j].Nr })
 	return d, nil
+}
+
+// loadSprint liest die README eines Sprint-Ordners und die Session-Dateien aus der Spalte „Datei“ (nur Dateinamen im
+// Ordner, kein Pfad).
+func loadSprint(dir, status string) (Sprint, bool) {
+	text, err := os.ReadFile(filepath.Join(dir, "README.md"))
+	if err != nil {
+		return Sprint{}, false
+	}
+	sp := ParseSprint(string(text), filepath.Base(dir), status)
+	for i, x := range sp.Sessions {
+		if x.File != "" && !strings.ContainsAny(x.File, `/\`) {
+			if b, err := os.ReadFile(filepath.Join(dir, x.File)); err == nil {
+				sp.Sessions[i].Text = string(b)
+			}
+		}
+	}
+	return sp, true
 }
 
 // Doc liefert eines der Dokumente aus Docs.
@@ -158,7 +176,7 @@ func ParseSprint(text, dir, status string) Sprint {
 			continue
 		}
 		if m := session.FindStringSubmatch(l); m != nil {
-			s.Sessions = append(s.Sessions, Session{Nr: m[1], Typ: m[2], Agent: m[3], Status: m[4]})
+			s.Sessions = append(s.Sessions, Session{Nr: m[1], File: m[2], Typ: m[3], Agent: m[4], Status: m[5]})
 		} else if m := bullet.FindStringSubmatch(l); m != nil {
 			s.Sessions = append(s.Sessions, Session{Nr: m[1], Status: "entwurf", Titel: m[2]})
 		}
