@@ -24,15 +24,14 @@ func devExamples(t *testing.T) []string {
 }
 
 // devServer ist wsServer mit Dev-Mode (gesetzt, bevor der Server Verbindungen annimmt).
-func devServer(t *testing.T) *httptest.Server {
+func devServer(t *testing.T) (*httptest.Server, *room.Manager) {
 	t.Helper()
 	m := room.NewManager(memSaves{})
 	m.Dev = true
 	srv := httptest.NewServer(NewHandler(Config{Rooms: m}))
 	t.Cleanup(srv.Close)
-	return srv
+	return srv, m
 }
-
 // B-178/AC-01, AC-05: ohne Dev-Mode ergibt jedes Beispiel forbidden, die Verbindung bleibt; die Fehlernachricht hat
 // die Form von s2c-error-forbidden.json.
 func TestDevOhneDevModeForbidden(t *testing.T) {
@@ -54,19 +53,23 @@ func TestDevOhneDevModeForbidden(t *testing.T) {
 	x.expect("rooms", "seats", "delta")
 }
 
-// B-178/AC-05: Mit Dev-Mode liest der Server jedes Beispiel; die Aktionen fehlen noch (DBG1.2, DBG1.3) → bad_request.
-// dev ohne Raum ist bad_request.
+// B-178/AC-02, AC-03, AC-05: Mit Dev-Mode liest der Server jedes Beispiel; gold und material wirken ohne Fehler (die
+// Verbindung lebt, ein folgendes input wird bestätigt), timescale fehlt noch (DBG1.3) → bad_request. dev ohne Raum ist
+// bad_request.
 func TestDevMitDevModeLiestBeispiele(t *testing.T) {
-	srv := devServer(t)
+	srv, m := devServer(t)
 	x := hello(t, srv, "xbox")
-	x.send(devExamples(t)[0])
+	ex := devExamples(t)
+	x.send(ex[0])
 	x.expectError("bad_request")
 	create(x, "dev", 0)
-	x.entered()
-	for _, ex := range devExamples(t) {
-		x.send(ex)
-		if m := x.expect("error", "seats", "delta"); m["code"] != "bad_request" {
-			t.Fatalf("%s: %v", ex, m)
-		}
+	r := m.Room(x.entered()["room"].(string))
+	x.send(ex[0])
+	x.send(ex[1])
+	x.send(map[string]any{"t": "input", "seq": 9, "p": []map[string]any{{"slot": 0}}})
+	waitFor(t, func() bool { r.Tick(); return x.expect("delta", "seats")["ack"] == float64(9) })
+	x.send(ex[2])
+	if msg := x.expect("error", "seats", "delta"); msg["code"] != "bad_request" {
+		t.Fatalf("timescale: %v", msg)
 	}
 }

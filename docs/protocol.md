@@ -258,8 +258,14 @@ kein Fehler und hat keinen Code.
 `dev` gibt es nur im Dev-Mode des Servers (`K3C_DEV`, vor einem Release aus). Ohne Dev-Mode antwortet der Server
 `forbidden`, noch bevor er die Felder prüft, und warnt im Log. Mit Dev-Mode prüft er die Verbindung und die Felder
 (`amount` ganze Zahl 1…1000); Ungültiges ergibt `bad_request`. Ein älterer Server kennt `dev` nicht und antwortet
-`bad_request`; die Protokollversion bleibt 3. Die Wirkung der Aktionen (`gold`, `material`, `timescale`) beschreiben
-DBG1.2 und DBG1.3 hier, sobald sie gebaut sind.
+`bad_request`; die Protokollversion bleibt 3. Jede gelungene Aktion steht als Info „Dev-Aktion“ im Log (Gerät,
+Aktion, Werte, Raum).
+
+- `gold`: `amount` Münzen fallen beim Monarchen des eigenen `slot` (an seinem `x`) und werden wie normale Münzen
+  aufgehoben, solange der Beutel nicht voll ist; der Rest bleibt liegen. Ein Slot, den das Gerät nicht hat, ist `bad_request`.
+- `material`: `amount` von `resource` (`wood`, `stone`, `copper`, `iron`, `crystal`) in den Vorrat der Insel des
+  Monarchen von `slot`, höchstens bis zum Lager-Maximum; der Rest wird verworfen, kein Fehler.
+- `timescale`: Wirkung folgt mit DBG1.3, bis dahin `bad_request`.
 
 ### Snapshot-Größe
 
