@@ -63,7 +63,6 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-130](B-130-bosse.md) | SIM | Idee | hoch | eingeplant | K2 | Minibosse und Endboss sind spielbar |
 | [B-131](B-131-events.md) | SIM | Idee | niedrig | eingeplant | K3 | Vollmond, Blutmond und Händler-Überfall sind als Events umgesetzt |
 | [B-132](B-132-anzeige-bosse-events.md) | CLI | Idee | mittel | eingeplant | K5 | Der Client zeigt Gegner-Fähigkeiten, Bosse, Phasen und Events |
-| [B-139](B-139-feedback-events-sim.md) | SIM | Idee | hoch | eingeplant | F3 | Die Simulation meldet Feedback-Ereignisse für Treffer, Münzen, Schläge und Tod |
 | [B-140](B-140-feedback-events-protokoll.md) | SRV | Idee | hoch | eingeplant | F4 | Feedback-Ereignisse laufen im Protokoll mit gemessener Bandbreite zum Client |
 | [B-141](B-141-doku-drift-version.md) | INF | Schuld | mittel | eingeplant | F5 | Doku und CLAUDE.md stimmen mit dem Code überein, die Version ist sichtbar |
 | [B-142](B-142-pi-betrieb-backup-rotation.md) | SRV | Idee | hoch | eingeplant | F4 | Spielstände werden außerhalb des Pi gesichert, Berichte und Logs rotieren |
@@ -207,5 +206,6 @@ Zeile in diesen Abschnitt.
 | [B-071](archiv/B-071-golden-arm64.md) | INF | Problem | mittel | erledigt | F2 | Die Golden-Tests laufen auch auf arm64 grün |
 | [B-137](archiv/B-137-golden-ablauf-migration.md) | INF | Idee | hoch | erledigt | F2 | Golden-Daten und Spielstand-Formate haben einen festen Änderungsablauf |
 | [B-138](archiv/B-138-determinismus-pruefung.md) | INF | Schuld | mittel | erledigt | F2 | Determinismus der Simulation wird gegen Map-Reihenfolge und langsame Ticks geprüft |
+| [B-139](archiv/B-139-feedback-events-sim.md) | SIM | Idee | hoch | erledigt | F3 | Die Simulation meldet Feedback-Ereignisse für Treffer, Münzen, Schläge und Tod |
 | [B-178](archiv/B-178-dev-aktionen-gold-material-zeitraffer.md) | SRV | Idee | hoch | erledigt | DBG1 | Im Dev-Mode lassen sich Gold und Material droppen und die Zeit beschleunigen |
 | [B-179](archiv/B-179-debug-overlay-aktionen.md) | CLI | Idee | hoch | erledigt | DBG2 | Das Debug-Overlay bedient Gold, Material und Zeitraffer |
