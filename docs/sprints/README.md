@@ -10,7 +10,6 @@ Reihenfolge in Wellen, Bahnen je Domäne und Zuordnung Mensch/autonom (zwei Acco
 
 | Sprint | Domäne | Thema | Am Ende sichtbar | Ordner |
 |---|---|---|---|---|
-| DBG2 | CLI | Debug-Overlay: Gold, Material, Zeitraffer | Aktionen im Overlay am PC, Handy und Controller | `aktiv/DBG2-debug-overlay-aktionen/` |
 | F3 | SIM | Feedback-Ereignisse in der Simulation | Go-Tests je Ereignistyp, `task check:go` grün, Ereignisse im Ergebnis von `sim_run` (k3c-dev) | `aktiv/F3-feedback-events-sim/` |
 | X1 | PLAT 🧑 | Xbox-Machbarkeit (einschiebbar) | Bericht in `reports/` mit Audio-Ergebnis, Steuerungstabelle und Audio-Ergebnis in `game-design.md` | `aktiv/X1-xbox/` |
 
@@ -22,6 +21,7 @@ Hardware-Sessions (`Agent: Mensch`) aus Sprints, deren Review schon abgeschlosse
 
 | Session | Gerät | Kriterium (angenommen) | Ordner |
 |---|---|---|---|
+| DBG2.3 | PC, Handy, Controller | AC-05: Aktionen mit allen drei Eingaben ausprobiert | `erledigt/DBG2-debug-overlay-aktionen/` |
 
 ## Geplant (in dieser Reihenfolge)
 
@@ -124,3 +124,4 @@ Gesamtplan und Begründung: [`../plan-weiterentwicklung.md`](../plan-weiterentwi
 | F1 | Zielkorridore und Bedienungsregeln, von 🧑 bestätigt (B-134, B-135, B-136, B-144, B-145) | `erledigt/F1-zielkorridore-regeln/` |
 | DBG1 | Dev-Aktionen im Raum: Gold, Material, Zeitraffer (B-178) | `erledigt/DBG1-dev-aktionen-server/` |
 | F2 | Golden-Ablauf, Spielstand-Migration und Determinismus (B-137, B-138, B-071) | `erledigt/F2-golden-migration-determinismus/` |
+| DBG2 | Debug-Overlay bedient Gold, Material und Zeitraffer (B-179; Abnahme am Gerät offen) | `erledigt/DBG2-debug-overlay-aktionen/` |

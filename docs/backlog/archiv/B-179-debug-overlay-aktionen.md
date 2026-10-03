@@ -3,7 +3,7 @@
 - **Domäne:** CLI
 - **Typ:** Idee
 - **Prio:** hoch
-- **Status:** eingeplant
+- **Status:** erledigt
 - **Sprint:** DBG2
 - **Erstellt:** 2026-10-03
 - **Spec:** freigegeben
