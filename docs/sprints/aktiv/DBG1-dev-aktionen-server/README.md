@@ -1,11 +1,11 @@
 # DBG1 · SRV · Dev-Aktionen: Gold, Material, Zeitraffer
 
-- **Status:** geplant
+- **Status:** aktiv
 - **Domäne:** SRV
 - **Reife:** bereit
 - **Einschiebbar:** nein
 - **Tickets:** B-178
-- **Start-Commit:** –
+- **Start-Commit:** 25cac18
 - **Spec:** freigegeben
 - **Revision:** 1
 - **Freigabe:** 2026-10-03, Chat (Ralf), Revision 1; umfasst B-178 und die Vorschläge der Sessions (WebSocket-Nachricht nur im Dev-Mode, Domänen-Ausnahmen Client-Parser und engine/sim/dev.go)
@@ -59,7 +59,7 @@ Siehe Ticket › Offene Fragen.
 
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
-| DBG1.1 | `DBG1.1-protokoll.md` | Umsetzung | autonom | offen |
+| DBG1.1 | `DBG1.1-protokoll.md` | Umsetzung | autonom | in Arbeit |
 | DBG1.2 | `DBG1.2-gold-material.md` | Umsetzung | autonom | offen |
 | DBG1.3 | `DBG1.3-zeitraffer.md` | Umsetzung | autonom | offen |
 | DBG1.4 | `DBG1.4-review.md` | Review | autonom | offen |

@@ -1,6 +1,6 @@
 # DBG1.1 · Protokoll: Nachricht `dev`, Fehlercode `forbidden`, Beispiele, beide Enden
 
-- **Status:** offen
+- **Status:** in Arbeit
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Branch:** dbg1/1-protokoll
