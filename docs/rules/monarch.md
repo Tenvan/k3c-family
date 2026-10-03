@@ -53,3 +53,16 @@ Begründung: Alle Skills ohne Menü erreichbar, X bleibt die Hauptaktion im Kamp
 - Die Schwierigkeitsgrade (`wirtschaft.md` § 4) ändern den Monarchen nicht.
 - Das Aktionen-Overlay ist eine Anforderung an den Client (CLI-Ticket in R3.4, mit Protokoll: gültige Aktionen je Spieler); Gestaltung und Reichweite legt das Ticket fest.
 - Offen: Skill-Zahlen und Passive in Daten (SIM-Ticket), Heiler im Koop (kein Wiederbeleben-Skill), Verhalten bei Niederlage-Modus „Stufenverlust“ (Skills und Pool bleiben; Spielstand).
+
+## 7. Reittier
+
+Beschlossen von 🧑 am 2026-10-03 im Chat (Fragenkatalog Q23, Korrektur): Reittiere **von Anfang an**, jeder Monarch reitet ein Standard-Reittier wie im Vorbild. Tierart und Faktoren sind **Vorschläge des Agenten** (F1.3) und warten auf die Bestätigung durch 🧑 im Workshop F1.4. Umsetzung: B-152 (SIM, S1), Darstellung: B-173 (CLI, S7).
+
+| Regel | Begründung | Daten | Zielkorridor |
+|---|---|---|---|
+| Jeder Monarch reitet von Beginn an ein **Standard-Reittier**; es ist für alle Monarchen gleich. | Wie im Vorbild Kingdom Two Crowns (beschlossen, Q23). | `data/monarch.json` › `mount` (SIM legt an) | – |
+| **Tierart: Pferd**, Sprite-Schlüssel `horse` („Braunes Pferd (Galopp)“) aus `data/sprites.json` › `mounts` (**Vorschlag**). | Das Pferd ist das Reittier des Vorbilds; der Schlüssel ist eines der 13 vorhandenen Tiere. | `monarch.json` › `mount.sprite`; Tiere in `sprites.json` › `mounts` | – |
+| **Geschwindigkeitsfaktor 1,0** (**Vorschlag**): Geschwindigkeit = Basis × Faktor, heute 5 Units/s (`base.speed`; Presets Tank, Zauberer, Heiler 5,0, Dieb 5,5) bleibt unverändert. | Das Reittier soll das Balancing nicht verschieben, nur die Bewegung an einen Datenwert hängen. | `monarch.json` › `mount.speedFactor` | Keine Verschiebung der Kennzahlen aus [`zielkorridore.md`](zielkorridore.md) durch Faktor 1,0 |
+| **Sprintfaktor 1,0** (**Vorschlag**): Sprint wie heute `sprintMultiplier` 1,8 auf das Reittier, Beschleunigung 8 bleibt. | Wie oben: gleiche Bewegung wie heute. | `monarch.json` › `mount.sprintFactor`, `sprintMultiplier`, `acceleration` | wie oben |
+| **Immer beritten:** kein Auf- und Absteigen; das Reittier wird weder gekauft noch verloren. Beitritt (auch spät), Wiederverbinden und Stufenwechsel behalten es; ein gefallener Monarch kommt mit Reittier zurück (§ 5). | Standard-Reittier ohne eigene Mechanik; keine neue Taste. | – | – |
+| **Weitere Reittiere** (die übrigen Tiere in `sprites.json` › `mounts`) gibt es erst später als Auswahl oder Belohnung; ob das eine Spieloption wird, ist offen (🧑). | Grafik ist vorhanden, Regeln dafür fehlen noch. | – | – |
