@@ -68,8 +68,15 @@ Einstellungen per Umgebung: `K3C_HTTP_PORT`,
   das gewählte Gerät (erst nach `y`), `s` sichert den Spielstand, `l` zeigt das Log des Servers (`f` folgen, ↑↓ blättern),
   Esc geht zurück, `q` in der Übersicht beendet. Das Log braucht ein JSON-Log am Server (`K3C_LOG_DIR`, siehe oben).
 - **Sicherungen:** Jeder Speichervorgang legt den vorigen Stand unter `saves/backups/<slot>/` ab, je Spielstand bleiben
-  die letzten 5. `GET /api/save/backups?slot=autosave` listet sie, `POST /api/save/restore?slot=autosave&backup=<name>`
+  die letzten 5. `GET /api/save/backups?slot=autosave` listet sie,
+  `curl -X POST -H "Authorization: Bearer $K3C_STATUS_TOKEN" "http://<server>:8080/api/save/restore?slot=autosave&backup=<name>"`
   macht eine davon wieder zum aktuellen Stand (der bisherige wird dabei gesichert).
+- **Schutzmodell** (B-143): Restore braucht `K3C_STATUS_TOKEN` wie `/api/status`; ohne gesetzte Variable ist es aus (404),
+  ohne oder mit falschem Token 401. Jede Ablehnung steht im Log (`ns` `save`, Pfad, Aufrufer, Grund, nie das Token).
+  Spielen, Lobby, `/ws`, Speichern, Berichte und Client-Log brauchen kein Token; Berichte und Client-Log sind nur durch
+  Größenlimits und Rotation begrenzt. Aufrufer ist die Adresse der Verbindung, `X-Forwarded-For` wird nicht ausgewertet
+  (hinter einem Proxy steht dessen Adresse im Log). Der Server ist fürs Heimnetz gedacht: **kein Port-Forwarding** am
+  Router, nicht aus dem Internet erreichbar machen.
 - **Docker** (z. B. Raspberry Pi, 64-Bit-Betriebssystem): `docker compose up -d` zieht das Image `ghcr.io/tenvan/k3c-family`
   (amd64 und arm64, vom Release-Tag `v*` gebaut) und startet es auf Port 8080; Spielstände und Berichte liegen im Volume
   `k3c-data` unter `/data`. **Update:** `docker compose pull && docker compose up -d`. **Rückfall:** in `compose.yaml` den

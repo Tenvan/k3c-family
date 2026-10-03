@@ -1,7 +1,8 @@
 # Heimnetz-Server K3C im Container (SP03). Start: docker compose up -d
 # Update (z. B. Raspberry Pi): docker compose pull && docker compose up -d. Rückfall: image auf einen älteren Tag setzen.
 # Lokal selbst bauen statt ziehen: docker compose build (build: . bleibt erhalten).
-# Diagnose /api/status nur mit Token: K3C_STATUS_TOKEN=<geheim> docker compose up -d (ohne Token ist sie aus).
+# Diagnose /api/status und Restore /api/save/restore nur mit Token: K3C_STATUS_TOKEN=<geheim> docker compose up -d
+# (ohne Token sind beide aus). Kein Port-Forwarding am Router, nur fürs Heimnetz.
 services:
   k3c:
     build: .

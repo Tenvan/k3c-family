@@ -4,6 +4,7 @@ import (
 	"crypto/subtle"
 	"errors"
 	"math"
+	stdnet "net"
 	"net/http"
 	"runtime"
 	"strings"
@@ -42,21 +43,26 @@ func (s *server) status(w http.ResponseWriter, r *http.Request) {
 // authorized prüft alle Diagnose-Wege gleich (B-027, B-088): ohne gesetztes Token 404, falsches Token 401, falsche Methode 405.
 // false heißt: die Antwort ist schon geschrieben.
 func (s *server) authorized(w http.ResponseWriter, r *http.Request, method string) bool {
+	return s.deny(w, r, method) == 0
+}
+
+// deny schreibt bei einer Ablehnung die Antwort und liefert ihren Status; 0 heißt erlaubt.
+func (s *server) deny(w http.ResponseWriter, r *http.Request, method string) int {
 	if s.cfg.StatusToken == "" {
 		http.NotFound(w, r)
-		return false
+		return http.StatusNotFound
 	}
 	given, ok := strings.CutPrefix(r.Header.Get("Authorization"), "Bearer ")
 	if !ok || subtle.ConstantTimeCompare([]byte(given), []byte(s.cfg.StatusToken)) != 1 {
 		w.Header().Set("WWW-Authenticate", `Bearer realm="k3c"`)
 		fail(w, http.StatusUnauthorized, "Token fehlt oder falsch")
-		return false
+		return http.StatusUnauthorized
 	}
 	if r.Method != method {
 		fail(w, http.StatusMethodNotAllowed, "Nur "+method)
-		return false
+		return http.StatusMethodNotAllowed
 	}
-	return true
+	return 0
 }
 
 // mb rechnet Bytes in MB mit einer Nachkommastelle.
@@ -89,10 +95,22 @@ func (s *server) backups(w http.ResponseWriter, r *http.Request) {
 	writeJSON(w, http.StatusOK, list)
 }
 
-// restore ist POST /api/save/restore?slot=&backup=<name> (B-028).
+// restoreDenied nennt den Grund einer Ablehnung von Restore im Log (B-143).
+var restoreDenied = map[int]string{
+	http.StatusNotFound:         "Restore aus",
+	http.StatusUnauthorized:     "Token fehlt oder falsch",
+	http.StatusMethodNotAllowed: "Methode",
+}
+
+// restore ist POST /api/save/restore?slot=&backup=<name> (B-028), nur mit K3C_STATUS_TOKEN (B-143, Q17). Jede Ablehnung
+// steht genau einmal im Log; Aufrufer ist die Adresse der Verbindung, X-Forwarded-For zählt nicht, Token nie im Log.
 func (s *server) restore(w http.ResponseWriter, r *http.Request) {
-	if r.Method != http.MethodPost {
-		fail(w, http.StatusMethodNotAllowed, "Nur POST")
+	if code := s.deny(w, r, http.MethodPost); code != 0 {
+		caller, _, err := stdnet.SplitHostPort(r.RemoteAddr)
+		if err != nil {
+			caller = r.RemoteAddr
+		}
+		s.log.Warn("restore abgelehnt", "ns", "save", "path", r.URL.Path, "caller", caller, "reason", restoreDenied[code])
 		return
 	}
 	slot, name := slotOf(r), r.URL.Query().Get("backup")

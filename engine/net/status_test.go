@@ -57,9 +57,9 @@ func TestStatusNurMitToken(t *testing.T) {
 	}
 }
 
-// B-028/AC-02: Sicherungen per API listen und wiederherstellen.
+// B-028/AC-02: Sicherungen per API listen und wiederherstellen (Restore mit Token, B-143).
 func TestSicherungenPerAPI(t *testing.T) {
-	srv := statusServer(t, "")
+	srv, auth := statusServer(t, diagToken), "Bearer "+diagToken
 	for i := 1; i <= 3; i++ {
 		res, err := http.Post(srv.URL+"/api/save", "application/json",
 			strings.NewReader(fmt.Sprintf(`{"version":1,"campaignId":"a","n":%d}`, i)))
@@ -74,20 +74,18 @@ func TestSicherungenPerAPI(t *testing.T) {
 	if code != 200 || json.Unmarshal([]byte(body), &list) != nil || len(list) != 2 {
 		t.Fatalf("Liste: %d %s", code, body)
 	}
-	res, _ := http.Post(srv.URL+"/api/save/restore?backup="+list[1].Name, "", nil)
-	if res.StatusCode != 200 {
-		t.Fatalf("restore: %d", res.StatusCode)
+	if code, _ := post(t, srv, "/api/save/restore?backup="+list[1].Name, auth); code != 200 {
+		t.Fatalf("restore: %d", code)
 	}
 	if _, body := get(t, srv.URL+"/api/save", ""); !strings.Contains(body, `"n":1`) {
 		t.Errorf("nach restore: %s", body)
 	}
 	for _, q := range []string{"backup=../autosave.json", "backup=fehlt.json", "slot=../x&backup=a"} {
-		res, _ := http.Post(srv.URL+"/api/save/restore?"+q, "", nil)
-		if res.StatusCode != 404 && res.StatusCode != 400 {
-			t.Errorf("%s: %d", q, res.StatusCode)
+		if code, _ := post(t, srv, "/api/save/restore?"+q, auth); code != 404 && code != 400 {
+			t.Errorf("%s: %d", q, code)
 		}
 	}
-	if code, _ := get(t, srv.URL+"/api/save/restore", ""); code != 405 {
+	if code, _ := get(t, srv.URL+"/api/save/restore", auth); code != 405 {
 		t.Errorf("GET restore: %d", code)
 	}
 }
