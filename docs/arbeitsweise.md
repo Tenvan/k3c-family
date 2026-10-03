@@ -186,6 +186,15 @@ Die Golden-Daten (`testdata/golden/`) halten fest, was Simulation und Level-Gene
 - **`rng.json` nie per Task ändern:** Sie ist die Referenz der Zufallsfolge (`engine/rng`); der Task fasst sie nicht an.
 - Golden-Daten ändert nur der Sprint, der gerade in der Bahn SIM/INF läuft (`plan-weiterentwicklung.md` § 11.5).
 
+## Spielstand-Format ändern
+
+Gespeicherte Stände (`saves/`) überleben jedes Update; dafür sorgt die Regel aus B-137.
+
+- **Jede Formatänderung** des Spielstands (Feld neu, entfernt, umbenannt oder mit neuer Bedeutung) erhöht `IslandSaveVersion` (`engine/sim/island_save.go`); `ParseIslandSave` liest jede ältere Version und überführt sie.
+- **Fixture:** Ein kleiner, aus dem Code erzeugter Stand liegt unter `testdata/saves/v<n>/`; alte Fixtures bleiben unverändert liegen. `TestJedeVersionHatFixture` ist rot, solange eines fehlt.
+- **Test „alter Stand lädt“:** `engine/sim/save_migration_test.go` lädt jedes Fixture über `ParseIslandSave` und prüft Seed, Spieler und Hubs; eine neue Version ergänzt dort ihren Fall.
+- **Neuere Version** (Stand von einem neueren Server): `ParseIslandSave` meldet gefundene und unterstützte Versionen und ändert keine Datei.
+
 ## Entscheidungen und Versionen
 
 - Größere Entscheidungen als `docs/decisions/NNN-titel.md`: **Kontext · Optionen · Entscheidung · Folgen**, höchstens eine Seite.
