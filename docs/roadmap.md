@@ -71,7 +71,7 @@ Umsetzung in Sprints und Sessions: [`docs/sprints/`](sprints/README.md). Tickets
 Gesamtplan: [`plan-weiterentwicklung.md`](plan-weiterentwicklung.md). Leitlinie: früh spielbar, dann Tiefe; Assets CC0 + CC-BY mit Credits.
 Offene Entscheidungen für die nächste Session: [`fragenkatalog.md`](fragenkatalog.md). Tickets B-134 bis B-170, Sprints im [Fahrplan](sprints/README.md).
 
-- [ ] **Phase 0 Fundament:** F1 Zielkorridore und Bedienungsregeln (🧑, erledigt), F2 Golden/Migration/Determinismus (erledigt), F3 Feedback-Events (Sim), F4 Protokoll + Pi-Betrieb, F5 Doku/Version; parallel SP11 (Pi)
+- [ ] **Phase 0 Fundament:** F1 Zielkorridore und Bedienungsregeln (🧑, erledigt), F2 Golden/Migration/Determinismus (erledigt), F3 Feedback-Events (Sim), F4 Protokoll + Pi-Betrieb, F5 Doku/Version; parallel SP11 (Pi); vorgezogen DBG1 Dev-Aktionen im Raum (erledigt)
 - [ ] **Phase 1 Spieleabend-Build:** S1 Schlag/Skills, S2 Protokoll/Speichern/Metrik, S3 Skill-Menü, S4 Kamera, S5 Optionen/Pause, S6 Onboarding, S7 Monarch auf dem Standard-Reittier, SO1 Audio-Kern, P1 Spieleabend 1
 - [ ] **Phase 2 Tiefe:** W1–W6 Hub-Ausbau, Plantage/Adern, Gebäude, Bürger, Protokoll, Anzeige; BR1 Balancing + Spieleabend 2
 - [ ] **Phase 3 Kampf:** K1–K5 Gegner, Bosse/Inseln, Events, Protokoll, Anzeige; BR2 Balancing + Spieleabend 3
