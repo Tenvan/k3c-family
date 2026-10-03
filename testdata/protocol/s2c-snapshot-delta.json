@@ -129,6 +129,20 @@
         }
       ],
       "del": []
-    }
+    },
+    "events": [
+      {
+        "type": "hit",
+        "x": 546.5,
+        "target": "enemy",
+        "id": 61,
+        "damage": 5
+      },
+      {
+        "type": "coinPickup",
+        "player": 1,
+        "x": 414
+      }
+    ]
   }
 }
