@@ -292,3 +292,48 @@ Xbox, TV, Pi, Handy und Controller stehen nicht immer bereit. Deshalb gilt (`arb
 | LT1.3 Messlauf | Pi | LT1-Werkzeug gemergt | nichts; F4 und S2 bauen mit dem Benchmark |
 
 Folgen für die Bahnen (11.1): Die PLAT-Bahn ist nach **X1.1** frei (GR6, SO3 warten nicht auf den Xbox-Test); in der CLI-Bahn rückt der nächste Sprint nach dem Review vor, auch wenn die Abnahme am Gerät noch offen ist.
+
+### 11.7 Startanweisungen für 🧑 (Spur M, neue Session ohne Vorwissen)
+
+Für Sessions hier, wenn der aktuelle Stand unbekannt ist. **Prompt M0 immer zuerst**; er nennt den nächsten Schritt und welcher der Prompts M1–M3 dafür passt. Platzhalter in `<…>` ersetzen.
+
+**M0: Lagebericht** (ändert nichts):
+
+```text
+Lies CLAUDE.md, docs/arbeitsweise.md, docs/sprints/README.md (Fahrplan), alle docs/sprints/aktiv/*/README.md und docs/plan-weiterentwicklung.md, Abschnitt 11.
+Ermittle den Stand per git fetch, git log origin/main und gh pr list. Ändere keine Dateien.
+Melde kurz:
+1. Offene PRs der Spur A in der Merge-Reihenfolge der Bahnen (11.1, 11.5), je PR: Sprint/Session, Review erledigt ja/nein, mergebar.
+2. Was auf mich wartet, in der Priorität von 11.3: Freigaben (Sprints mit Reife bereit und Spec Entwurf), Workshops, Mensch-Sessions mit erledigten Abhängigkeiten, Hardware-Sessions aus 11.6, deren Vorbereitung gemergt ist (getrennt nach Gerät).
+3. Welche Bahn der Spur A gerade steht und welche meiner Aufgaben sie entsperrt.
+4. Den einen nächsten Schritt mit dem passenden Prompt (M1, M2 oder M3) und eingesetzter ID.
+```
+
+**M1: Spec freigeben** (`<IDs>` z. B. `F2, F5, F3` oder ein Freigabe-Paket aus 11.3):
+
+```text
+Lies CLAUDE.md und docs/arbeitsweise.md, Abschnitt SDD. Lies für jeden Sprint <IDs> die Sprint-README und die verlinkten Tickets.
+Fasse je Sprint in höchstens zehn Zeilen zusammen: Ziel, Kriterien AC-xx, Abhängigkeiten, was danach am Gerät sichtbar ist, offene Fragen oder Widersprüche zu docs/fragenkatalog.md (Beschlüsse).
+Frage mich je Sprint per Auswahl: freigeben, mit Änderung freigeben, zurückstellen.
+Setze nur bei meiner Freigabe Spec freigegeben (Datum, „durch 🧑“) in Sprint-README und Tickets, Änderungen nur wie von mir genannt. Prüfe mit npx vitest run tests/planning.test.ts. PR öffnen, nicht mergen.
+```
+
+**M2: Mensch-Session führen** (Workshop, Auswahl, Spieleabend, Abnahme am PC; `<ID>` z. B. `F1.4`, `GR2.2`, `S5.4`):
+
+```text
+Lies CLAUDE.md und docs/arbeitsweise.md. Lies die Session-Datei <ID> unter docs/sprints/aktiv/ (oder geplant/), ihre Sprint-README und die genannten Tickets und Regeln.
+Prüfe, ob die Abhängigkeiten der Session erledigt (gemergt) sind; wenn nicht, melde, was fehlt, und höre auf.
+Führe die Session mit mir als Interview: je Entscheidung eine Frage per Auswahl mit Vorschlag (Vorschlag aus docs/rules/*.md und docs/fragenkatalog.md), bei Abnahmen eine Prüfliste Schritt für Schritt (was ich tue, was ich sehen muss). Starte nötige Seiten selbst (task dev, Browser-Pane), Eingaben am Gerät mache ich.
+Trage Ergebnisse in die Session-Datei (Ergebnis, Status erledigt) und wo vorgesehen in docs/rules/ oder docs/fragenkatalog.md ein. Jede Abweichung oder neue Idee wird ein Ticket nach docs/vorlagen/ticket.md. task check, PR öffnen, nicht mergen.
+```
+
+**M3: Hardware-Session** (`<Gerät>`: Xbox, TV, Pi, Handy; Sessions aus 11.6):
+
+```text
+Lies CLAUDE.md, docs/arbeitsweise.md (Hardware entkoppelt) und docs/plan-weiterentwicklung.md, Abschnitt 11.6.
+Ich habe jetzt <Gerät> da. Liste alle Hardware-Sessions für dieses Gerät, deren Vorbereitung gemergt und die noch offen sind, und frage, welche ich mache (Mehrfachauswahl).
+Je Session: Anleitung zum Aufbau (URL im Heimnetz, task-Befehl, wo Berichte landen, z. B. reports/*.json), dann Prüfliste Schritt für Schritt. Werte Berichte selbst aus.
+Danach: Ergebnis in die Session-Datei, in 11.6 die Annahme durch den Messwert ersetzen (Datum, Session); weicht ein Wert ab, ein Ticket in der passenden Domäne. task check, PR öffnen, nicht mergen.
+```
+
+PRs der Spur A mergt 🧑 selbst in der Reihenfolge aus M0, Punkt 1.

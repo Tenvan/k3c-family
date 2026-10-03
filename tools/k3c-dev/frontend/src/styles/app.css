@@ -6,6 +6,9 @@
 }
 
 .header {
+  position: sticky; /* bleibt beim Scrollen langer Seiten (Plan, Fragenkatalog) oben */
+  top: 0;
+  z-index: 10;
   display: flex;
   align-items: center;
   gap: 24px;
