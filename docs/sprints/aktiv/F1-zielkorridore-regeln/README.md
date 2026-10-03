@@ -56,7 +56,7 @@ Workshop F1.1: Agent legt „Überleben Nacht 3 ≥ 80 %“ vor, 🧑 ändert au
 
 ## Offene Fragen
 
-Entschieden am 2026-10-03: Q01 Pause, Q03 Schriftgröße (≥ 28 px Vollbild, ≥ 24 px Viertel), Q04 Verbindungsverlust (unverwundbar und ausgeblendet bis 60 s, Latenz ≤ 100 ms), Q05 Deutsch und Englisch (B-172), Q23 Standard-Reittier von Anfang an. Offen für F1.4: Zahlen aus Q02 (Zielkorridore), Höchstdauer der Pause, Schrift für 2 Spieler und Nebeninfo, p95 der Latenz, Tierart und Faktoren des Reittiers. Blockiert die Freigabe der Spec nicht.
+Entschieden am 2026-10-03: Q01 Pause, Q03 Schriftgröße (≥ 28 px Vollbild, ≥ 24 px Viertel), Q04 Verbindungsverlust (unverwundbar und ausgeblendet bis 60 s, Latenz ≤ 100 ms), Q05 Deutsch und Englisch (B-172), Q23 Standard-Reittier von Anfang an. Bestätigt von 🧑 am 2026-10-03 im Workshop F1.4: Zahlen aus Q02 (Zielkorridore), Höchstdauer der Pause, Schrift für 2 Spieler und Nebeninfo, p95 der Latenz, Tierart und Faktoren des Reittiers (alle Vorschläge unverändert); Verluste je Welle: 25 % der Kämpfer (B-185 gleicht `wirtschaft.md` an).
 
 ## Sessions
 
@@ -65,7 +65,7 @@ Entschieden am 2026-10-03: Q01 Pause, Q03 Schriftgröße (≥ 28 px Vollbild, �
 | F1.1 | `F1.1-bedienung-regeln.md` | Umsetzung | autonom | fertig |
 | F1.2 | `F1.2-zielkorridore-vorschlag.md` | Umsetzung | autonom | fertig |
 | F1.3 | `F1.3-reittier-regel.md` | Umsetzung | autonom | fertig |
-| F1.4 | `F1.4-workshop-bestaetigung.md` | Workshop | Mensch | offen |
+| F1.4 | `F1.4-workshop-bestaetigung.md` | Workshop | Mensch | fertig |
 | F1.5 | `F1.5-abschluss.md` | Umsetzung | autonom | offen |
 
 ## Abnahme
