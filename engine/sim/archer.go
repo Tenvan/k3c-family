@@ -77,6 +77,8 @@ func stepArcher(w *World, t *Troop, dt float64) {
 	if target == nil {
 		return
 	}
-	w.Projectiles = append(w.Projectiles, &Projectile{ID: w.newID(), X: t.X, TargetID: target.ID, Team: "player", Damage: a.Damage, Speed: arrowSpeed})
+	p := &Projectile{ID: w.newID(), X: t.X, TargetID: target.ID, Team: "player", Damage: a.Damage, Speed: arrowSpeed}
+	w.Projectiles = append(w.Projectiles, p)
+	arrowEvent(w, p, t.ID)
 	t.Cooldown = 1 / a.AttacksPerSecond
 }

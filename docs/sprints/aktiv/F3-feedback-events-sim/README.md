@@ -1,11 +1,11 @@
 # F3 · SIM · Feedback-Ereignisse in der Simulation
 
-- **Status:** geplant
+- **Status:** aktiv
 - **Domäne:** SIM
 - **Reife:** bereit
 - **Einschiebbar:** nein
 - **Tickets:** B-139
-- **Start-Commit:** –
+- **Start-Commit:** fab601a
 - **Spec:** freigegeben
 - **Revision:** 1
 - **Freigabe:** 2026-10-03, Chat (Ralf), Revision 1; umfasst B-139; bestätigt die Auslegung (Tod, Skill, Nacht naht, Portal auf bestehende Ereignisse) und die vorläufige Obergrenze K
@@ -58,7 +58,7 @@ Q08 ist entschieden (2026-10-03): 12 Ereignisse (Treffer, Kill, Münze auf/gegeb
 
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
-| F3.1 | `F3.1-ereignisse-kampf.md` | Umsetzung | autonom | offen |
+| F3.1 | `F3.1-ereignisse-kampf.md` | Umsetzung | autonom | fertig |
 | F3.2 | `F3.2-ereignisse-rest-obergrenze.md` | Umsetzung | autonom | offen |
 | F3.3 | `F3.3-review.md` | Review | autonom | offen |
 
