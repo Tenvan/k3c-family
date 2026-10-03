@@ -58,7 +58,7 @@ keine
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
 | GR6.1 | `GR6.1-vollstaendigkeit-datenquelle.md` | Umsetzung | autonom | fertig |
-| GR6.2 | `GR6.2-cc-by-seite.md` | Umsetzung | autonom | in Arbeit |
+| GR6.2 | `GR6.2-cc-by-seite.md` | Umsetzung | autonom | fertig |
 | GR6.3 | `GR6.3-review.md` | Review | autonom | offen |
 
 Bei `Reife: Entwurf` genügen Stichpunkte mit den Kriterien in Klammern statt Session-Dateien. Vor dem Aktivieren
