@@ -134,8 +134,9 @@ type stateMsg struct {
 }
 
 // stateOf ist der Zustand für `snap`: die Welt ohne seed, biome, level, rng, widthUnits, mit events und depth. Das Feld
-// `free` der Spieler (B-059) fällt weg, der Zustand der Monarchen steht in `seats`.
-func stateOf(w *sim.World) map[string]any {
+// `free` der Spieler (B-059) fällt weg, der Zustand der Monarchen steht in `seats`. timescale > 0 (nur Dev-Mode) steht
+// als `devTimescale` darin.
+func stateOf(w *sim.World, timescale int) map[string]any {
 	raw, _ := json.Marshal(w)
 	var s map[string]any
 	_ = json.Unmarshal(raw, &s)
@@ -145,5 +146,8 @@ func stateOf(w *sim.World) map[string]any {
 		delete(p.(map[string]any), "free")
 	}
 	s["depth"] = w.Biome.Depth
+	if timescale > 0 {
+		s["devTimescale"] = timescale
+	}
 	return s
 }

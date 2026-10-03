@@ -28,7 +28,11 @@ func (r *Room) pushState(d *device) (levelSent bool) {
 		d.peer.Level(w.Biome.Depth, w.Level)
 		d.stage, levelSent = s, true
 	}
-	d.peer.State(r.tick, w)
+	timescale := 0 // ohne Dev-Mode fehlt devTimescale im Zustand
+	if r.m.Dev {
+		timescale = r.scale()
+	}
+	d.peer.State(r.tick, w, timescale)
 	return levelSent
 }
 

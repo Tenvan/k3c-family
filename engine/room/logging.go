@@ -38,7 +38,7 @@ func (r *Room) noteTick(d time.Duration) {
 		return
 	}
 	r.log().Warn("Tick zu langsam", "ms", float64(d)/float64(time.Millisecond), "budgetMs", float64(slowTick)/float64(time.Millisecond),
-		"seitLetzterMeldung", r.slowCount, "tick", r.tick, "geraete", r.connected())
+		"seitLetzterMeldung", r.slowCount, "tick", r.tick, "geraete", r.connected(), "faktor", r.scale())
 	r.slowLogged, r.slowCount = now, 0
 }
 
