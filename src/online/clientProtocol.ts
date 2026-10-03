@@ -78,8 +78,11 @@ export type ClientMessage =
   | { t: 'leave' }
   | DevMessage;
 
+/** Rohstoffe der Aktion `material`: alle, die der Server kennt (`engine/sim` › `stockField`), auch Eisen und Kristall. */
+export type DevResource = ResourceKind | 'iron' | 'crystal';
+
 /** Dev-Aktionen (nur Dev-Mode am Server, sonst `forbidden`; docs/protocol.md › Dev-Aktionen). */
 export type DevMessage =
   | { t: 'dev'; action: 'gold'; slot: number; amount: number }
-  | { t: 'dev'; action: 'material'; slot: number; resource: ResourceKind; amount: number }
+  | { t: 'dev'; action: 'material'; slot: number; resource: DevResource; amount: number }
   | { t: 'dev'; action: 'timescale'; factor: number };

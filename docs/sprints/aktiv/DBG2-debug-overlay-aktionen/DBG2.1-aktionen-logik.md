@@ -1,6 +1,6 @@
 # DBG2.1 · Reine Funktionen: Auswahl zur Dev-Nachricht, Sichtbarkeit der Aktionsliste
 
-- **Status:** in Arbeit
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Branch:** dbg2/1-aktionen-logik
@@ -44,10 +44,10 @@ Zeichnen, Eingabe, Senden über die Verbindung, Zeitfaktor-Anzeige (DBG2.2), Än
 
 ## Fertig, wenn
 
-- [ ] AC-01: `npx vitest run src/scenes/debugActions.test.ts` zeigt Tests, in denen jede Auswahl (Gold, Material, Zeitfaktor) die erwartete `dev`-Nachricht liefert und eine unbekannte Auswahl `null`.
-- [ ] AC-02: Derselbe Testlauf zeigt, dass `actionsVisible` nur bei aktivem Overlay und Dev-Mode wahr ist (die drei anderen Kombinationen falsch).
-- [ ] AC-04: `task check` grün, darin `src/scenes/noSim.test.ts` und `tests/projectRules.test.ts`.
-- [ ] `.oxlintrc.json` unverändert.
+- [x] AC-01: `npx vitest run src/scenes/debugActions.test.ts` zeigt Tests, in denen jede Auswahl (Gold, Material, Zeitfaktor) die erwartete `dev`-Nachricht liefert und eine unbekannte Auswahl `null`.
+- [x] AC-02: Derselbe Testlauf zeigt, dass `actionsVisible` nur bei aktivem Overlay und Dev-Mode wahr ist (die drei anderen Kombinationen falsch).
+- [x] AC-04: `task check` grün, darin `src/scenes/noSim.test.ts` und `tests/projectRules.test.ts`.
+- [x] `.oxlintrc.json` unverändert.
 
 ## Prüfen
 
@@ -57,4 +57,10 @@ task check
 
 ## Ergebnis
 
-–
+2026-10-03, Agent (Claude Opus 5.5), Branch `dbg2/1-aktionen-logik`. Sprint DBG2 aktiviert (Start-Commit `ae2ca20`).
+
+- Protokoll (Schritt 1): Nachricht `dev` wie `testdata/protocol/c2s-dev-*.json` (`gold`: `slot`, `amount`; `material`: `slot`, `resource`, `amount`; `timescale`: `factor`); Dev-Mode erkennt der Client am Feld `devTimescale` im Zustand (nur im Dev-Mode, auch bei 1). `dev` und `forbidden` standen schon in `clientProtocol.ts` (DBG1).
+- **AC-01 geprüft:** `npx vitest run src/scenes/debugActions.test.ts` (6 Tests grün): Gold und Zeitfaktor wörtlich wie die Beispiele, jede der zwölf Aktionen (Gold 10/50/100, Holz/Stein/Kupfer/Eisen/Kristall je 50, Zeit 1×/2×/4×/8×) ergibt die erwartete Nachricht, unbekannte Auswahl, Menge oder Faktor → `null`.
+- **AC-02 geprüft:** derselbe Lauf: `actionsVisible` nur bei Overlay an und Dev-Mode wahr (vier Kombinationen); `roomDevMode` wahr bei `devTimescale` 4 und 1, falsch ohne Feld und ohne Zustand.
+- **AC-04 geprüft:** `task check` grün (inkl. `noSim.test.ts`, `projectRules.test.ts`); `.oxlintrc.json` unverändert.
+- Abweichung: Der Client-Typ `ResourceKind` kennt nur Holz, Stein, Kupfer. Für Eisen und Kristall hat `clientProtocol.ts` den Typ `DevResource` bekommen (nur Typ, erlaubte Datei); die Angleichung des Client-Typs ist **B-188**.
