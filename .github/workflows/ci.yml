@@ -59,6 +59,21 @@ jobs:
       - run: GOOS=windows GOARCH=amd64 go build ./...
       - run: GOOS=linux GOARCH=arm64 go build ./...
 
+  # Golden-Tests auf arm64 (Raspberry Pi, B-071): Go darf dort x*y + z zu FMA fusionieren, dann weichen Gleitkommawerte
+  # ab. Nativer GitHub-Runner (Repo öffentlich), Rückfall wäre qemu-Emulation.
+  go-arm64:
+    name: Go · Tests arm64
+    runs-on: ubuntu-24.04-arm
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-go@v7
+        with:
+          go-version-file: go.mod
+      - uses: go-task/setup-task@v1
+      - run: go env GOARCH
+      - run: task go:test
+
   docker:
     name: Docker · Image amd64/arm64 · Smoke-Test
     runs-on: ubuntu-latest

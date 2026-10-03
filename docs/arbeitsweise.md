@@ -159,6 +159,18 @@ Niedrige Komplexität ist in **jeder** Session Pflicht, nicht erst im Review.
 - Werkzeuge: Oxlint (TypeScript), `golangci-lint` mit `funlen`, `gocyclo`, `depguard` (Go);
   Go-Verschachtelung: `tests/nesting_test.go`; Dateilänge beider Sprachen: `tests/projectRules.test.ts`.
 
+## Golden aktualisieren
+
+Die Golden-Daten (`testdata/golden/`) halten fest, was Simulation und Level-Generator rechnen; die Go-Tests vergleichen Feld für Feld.
+
+- **Erlaubt** nur bei einer gewollten Regel- oder Wertänderung (Beschluss, Ticket, Daten in `data/`). Bricht ein Golden-Test ohne solche Änderung, ist das ein Fehler im Code, kein Anlass zum Update.
+- **Befehl:** `task golden:update` schreibt `sim-*.json`, `campaign-abstieg.json` und `level-*.json` aus dem Ist-Zustand neu. Unveränderte Einträge behalten ihre Bytes; der Diff zeigt nur, was sich wirklich geändert hat.
+- **Prüfen:** `git diff --stat testdata/golden` lesen. Ändert sich mehr als die Regel erklärt, Ursache klären und nicht einchecken.
+- **Begründung im Commit-Text:** welche Regel, welcher Wert, welche Kennzahl sich dadurch ändert. Golden-Änderungen in eigenem Commit.
+- **Bestätigung:** Kein Freigabe-Zwang durch 🧑 (Beschluss Q09); die Review-Session des Sprints prüft Diff und Begründung.
+- **`rng.json` nie per Task ändern:** Sie ist die Referenz der Zufallsfolge (`engine/rng`); der Task fasst sie nicht an.
+- Golden-Daten ändert nur der Sprint, der gerade in der Bahn SIM/INF läuft (`plan-weiterentwicklung.md` § 11.5).
+
 ## Entscheidungen und Versionen
 
 - Größere Entscheidungen als `docs/decisions/NNN-titel.md`: **Kontext · Optionen · Entscheidung · Folgen**, höchstens eine Seite.
