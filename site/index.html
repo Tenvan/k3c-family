@@ -1,0 +1,314 @@
+<!doctype html>
+<!--
+  Präsentationsseite für GitHub Pages (B-183). Rein statisch: kein Script, keine Anfrage an einen Server oder Fremddienst.
+  Bilder kommen aus dem Spiel-Build unter app/ (= public/), `task pages` baut beides nach _site/.
+  tests/pagesSite.test.ts prüft das.
+-->
+<html lang="de">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Family Three Crowns</title>
+    <meta name="description" content="Couch-Koop-Strategie im Stil von Kingdom Two Crowns: im Browser, auf der Xbox, mit der ganzen Familie." />
+    <meta name="theme-color" content="#0d1020" />
+    <link rel="icon" href="app/grafik/gold-treasure-icons-16x16/icons/1.png" />
+    <style>
+      :root {
+        --bg: #0d1020;
+        --bg-2: #151a33;
+        --card: #1b2140;
+        --line: #2c3563;
+        --text: #e9e6dc;
+        --muted: #a9adc4;
+        --gold: #f2c14e;
+        --gold-2: #c98b2b;
+        --night: #6f7bd8;
+        --radius: 14px;
+        --serif: 'Palatino Linotype', Palatino, 'Book Antiqua', Georgia, serif;
+        --sans: system-ui, 'Segoe UI', Roboto, sans-serif;
+      }
+      * { box-sizing: border-box; }
+      html { scroll-behavior: smooth; }
+      body { margin: 0; background: var(--bg); color: var(--text); font: 17px/1.6 var(--sans); }
+      img, .px { image-rendering: pixelated; }
+      a { color: var(--gold); }
+      h1, h2, h3 { font-family: var(--serif); line-height: 1.15; margin: 0 0 0.5em; }
+      h2 { font-size: clamp(1.8rem, 4vw, 2.6rem); }
+      h2 small { display: block; font: 600 0.8rem/1 var(--sans); letter-spacing: 0.2em; text-transform: uppercase; color: var(--gold-2); margin-bottom: 0.7em; }
+      section { padding: 88px 16px; }
+      .wrap { max-width: 1100px; margin: 0 auto; }
+      .lead { color: var(--muted); max-width: 680px; font-size: 1.1rem; }
+
+      /* Hero: Wald-Parallax (272×160 px, vierfach), Figuren laufen auf der Stelle, die Welt zieht vorbei. */
+      .hero { position: relative; height: min(92vh, 680px); min-height: 540px; overflow: hidden; padding: 0; background: #1e2a3a; }
+      .layer { position: absolute; left: 0; right: 0; bottom: 0; height: 680px; background-repeat: repeat-x; background-size: 1156px 680px; animation: scroll linear infinite; }
+      .l-back { background-image: url(app/grafik/forest-background/ebenen/parallax-forest-back-trees.png); animation-duration: 90s; }
+      .l-lights { background-image: url(app/grafik/forest-background/ebenen/parallax-forest-lights.png); animation-duration: 70s; opacity: 0.8; }
+      .l-mid { background-image: url(app/grafik/forest-background/ebenen/parallax-forest-middle-trees.png); animation-duration: 50s; }
+      .l-front { background-image: url(app/grafik/forest-background/ebenen/parallax-forest-front-trees.png); animation-duration: 30s; }
+      @keyframes scroll { to { background-position-x: -1156px; } }
+      .ground { position: absolute; left: 0; right: 0; bottom: 0; height: 9%; background: linear-gradient(#2b2f22, var(--bg)); }
+      .shade { position: absolute; inset: 0; background: linear-gradient(180deg, rgba(13, 16, 32, 0.35) 0%, rgba(13, 16, 32, 0.6) 50%, rgba(13, 16, 32, 0.15) 85%); }
+
+      /* --foot: Pixel vom Bildrand bis zu den Füßen (aus originY in data/sprites.json), damit alle auf dem Boden stehen. */
+      .sprite { position: absolute; bottom: calc(9% - var(--foot, 0) * var(--s) * 1px); width: calc(var(--w) * 1px); height: calc(var(--h) * 1px); background: var(--img) 0 0 / auto 100% no-repeat;
+        transform-origin: 50% 100%; transform: scale(var(--s)); animation: frames calc(var(--n) / var(--fps) * 1s) steps(var(--n)) infinite; }
+      @keyframes frames { to { background-position-x: calc(var(--w) * var(--n) * -1px); } }
+      .king { --img: url(app/sprites/medieval-king/run.png); --w: 155; --h: 155; --n: 8; --fps: 12; --s: 2.4; --foot: 39; left: 20%; }
+      .huntress { --img: url(app/sprites/huntress/run.png); --w: 89; --h: 67; --n: 8; --fps: 12; --s: 3.2; --foot: 1; left: 7%; }
+      .goblin { --img: url(app/sprites/goblin/run.png); --w: 150; --h: 150; --n: 8; --fps: 12; --s: 2.4; --foot: 49; right: 10%; transform: scale(calc(var(--s) * -1), var(--s)); }
+      .coin { --img: url(app/grafik/16x16-small-and-medium-coin-animation/muenzen/sCoins_1.png); --w: 16; --h: 16; --n: 8; --fps: 10; --s: 3;
+        background-size: 128px 64px; position: absolute; }
+
+      .hero-text { position: absolute; inset: 0; display: grid; place-content: center; text-align: center; padding: 0 16px 12vh; }
+      .crowns { font-size: 2.2rem; letter-spacing: 0.4em; color: var(--gold); text-shadow: 0 0 18px rgba(242, 193, 78, 0.6); }
+      .hero h1 { font-size: clamp(2.6rem, 9vw, 5.8rem); text-shadow: 0 4px 24px rgba(0, 0, 0, 0.7); margin: 0.1em 0 0.2em; }
+      .hero p { font-size: clamp(1.05rem, 2.4vw, 1.35rem); max-width: 720px; margin: 0 auto 1.6em; text-shadow: 0 2px 10px #000; }
+      .btns { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+      .btn { display: inline-block; padding: 13px 24px; border-radius: 999px; font-weight: 700; text-decoration: none; border: 2px solid var(--gold); }
+      .btn.primary { background: linear-gradient(var(--gold), var(--gold-2)); color: #23180a; }
+      .btn.ghost { color: var(--gold); background: rgba(13, 16, 32, 0.6); }
+      .btn:hover, .btn:focus-visible { filter: brightness(1.12); outline: none; box-shadow: 0 0 0 4px rgba(242, 193, 78, 0.3); }
+
+      /* Tag und Nacht */
+      .cycle { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 20px; margin-top: 36px; }
+      .phase { border-radius: var(--radius); padding: 28px; border: 1px solid var(--line); }
+      .phase.day { background: linear-gradient(160deg, #3a3418, #1b2140 70%); }
+      .phase.night { background: linear-gradient(160deg, #1d2257, #11142a 70%); }
+      .phase.goal { background: linear-gradient(160deg, #3b1d2d, #1b2140 70%); }
+      .phase h3 { font-size: 1.5rem; }
+      .phase ol { margin: 0; padding-left: 1.2em; color: var(--muted); }
+
+      /* Features */
+      .alt { background: var(--bg-2); }
+      .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 18px; margin-top: 36px; }
+      .feature { background: var(--card); border: 1px solid var(--line); border-radius: var(--radius); padding: 24px; transition: transform 0.2s, border-color 0.2s; }
+      .feature:hover { transform: translateY(-3px); border-color: var(--gold-2); }
+      .feature .icon { font-size: 1.9rem; }
+      .feature h3 { font-size: 1.25rem; margin-top: 0.4em; }
+      .feature p { margin: 0; color: var(--muted); }
+
+      /* Stufen */
+      .depths { display: grid; gap: 18px; margin-top: 36px; }
+      .depth { position: relative; display: grid; grid-template-columns: 120px 1fr; align-items: center; gap: 20px; min-height: 170px; padding: 24px;
+        border-radius: var(--radius); overflow: hidden; border: 1px solid var(--line); background: var(--pic) center / cover; }
+      .depth::before { content: ''; position: absolute; inset: 0; background: linear-gradient(90deg, rgba(13, 16, 32, 0.92) 35%, rgba(13, 16, 32, 0.35)); }
+      .depth > * { position: relative; }
+      .depth .no { font: 700 3.4rem/1 var(--serif); color: var(--gold); text-align: center; }
+      .depth .no span { display: block; font: 600 0.75rem/1.4 var(--sans); letter-spacing: 0.15em; text-transform: uppercase; color: var(--muted); }
+      .depth h3 { font-size: 1.5rem; margin-bottom: 0.2em; }
+      .depth p { margin: 0; color: #d4d6e4; max-width: 640px; }
+      .tags { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 10px; }
+      .tag { font-size: 0.8rem; padding: 2px 10px; border-radius: 999px; background: rgba(242, 193, 78, 0.14); color: var(--gold); border: 1px solid rgba(242, 193, 78, 0.35); }
+      .d0 { --pic: url(app/grafik/forest-background/ebenen/parallax-forest-middle-trees.png); }
+      .d1 { --pic: url(app/grafik/blue-cave-background/ebenen/startcavebg.png); }
+      .d2 { --pic: url(app/grafik/warped-caves-pixel-art-pack/ebenen/background.png); }
+
+      /* Skills */
+      .lines { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 16px; margin-top: 36px; }
+      .line { border-radius: var(--radius); padding: 22px; background: var(--card); border-top: 4px solid var(--c); }
+      .line h3 { color: var(--c); }
+      .line ul { margin: 0; padding-left: 1.1em; color: var(--muted); }
+      .line b { color: var(--text); font-weight: 600; }
+
+      /* Steuerung */
+      .pad { overflow-x: auto; margin-top: 30px; }
+      table { width: 100%; border-collapse: collapse; min-width: 480px; }
+      th, td { text-align: left; padding: 11px 14px; border-bottom: 1px solid var(--line); }
+      th { color: var(--gold-2); font-size: 0.8rem; letter-spacing: 0.12em; text-transform: uppercase; }
+      kbd { display: inline-block; min-width: 1.8em; padding: 1px 8px; border-radius: 6px; background: #252c52; border: 1px solid #3a4478; border-bottom-width: 3px;
+        font: 600 0.85rem/1.5 var(--sans); text-align: center; color: var(--text); }
+
+      /* Technik und Stand */
+      .split { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 28px; margin-top: 30px; }
+      .box { background: var(--card); border: 1px solid var(--line); border-radius: var(--radius); padding: 26px; }
+      .box ul { margin: 0; padding-left: 1.1em; }
+      .box li { margin: 0.35em 0; }
+      .done { color: #7fd48a; }
+      .todo { color: var(--muted); }
+      .note { margin-top: 28px; padding: 18px 22px; border-left: 4px solid var(--night); background: rgba(111, 123, 216, 0.1); border-radius: 0 var(--radius) var(--radius) 0; }
+
+      footer { padding: 44px 16px 56px; border-top: 1px solid var(--line); color: var(--muted); font-size: 0.92rem; }
+      footer .wrap { display: grid; gap: 10px; }
+
+      @media (max-width: 640px) {
+        section { padding: 64px 16px; }
+        .king { --s: 1.5; left: 24%; }
+        .huntress { --s: 2; left: 2%; }
+        .goblin { --s: 1.5; right: -4%; }
+        .coin { --s: 2; }
+        .depth { grid-template-columns: 1fr; }
+        .depth .no { text-align: left; }
+      }
+      @media (prefers-reduced-motion: reduce) {
+        .layer, .sprite { animation: none; }
+        html { scroll-behavior: auto; }
+      }
+    </style>
+  </head>
+  <body>
+    <header class="hero">
+      <div class="layer l-back px"></div>
+      <div class="layer l-lights px"></div>
+      <div class="layer l-mid px"></div>
+      <div class="layer l-front px"></div>
+      <div class="shade"></div>
+      <div class="ground"></div>
+      <div class="sprite huntress px" role="img" aria-label="Speerjägerin läuft"></div>
+      <div class="sprite king px" role="img" aria-label="König läuft"></div>
+      <div class="sprite goblin px" role="img" aria-label="Goblin läuft auf die Helden zu"></div>
+      <div class="sprite coin px" style="left: 42%; bottom: 13%" aria-hidden="true"></div>
+      <div class="sprite coin px" style="left: 49%; bottom: 13%" aria-hidden="true"></div>
+      <div class="sprite coin px" style="left: 56%; bottom: 13%" aria-hidden="true"></div>
+      <div class="hero-text">
+        <div class="crowns" aria-hidden="true">♛ ♛ ♛</div>
+        <h1>Family Three Crowns</h1>
+        <p>Couch-Koop-Strategie im Stil von <em>Kingdom Two Crowns</em>. Baut gemeinsam euer Reich auf, verteidigt es bei Nacht und
+          steigt Stufe um Stufe in die Tiefe. Im Browser, auf der Xbox, mit der ganzen Familie.</p>
+        <div class="btns">
+          <a class="btn primary" href="#features">Features ansehen</a>
+          <a class="btn ghost" href="https://github.com/tenvan/k3c-family">Quellcode auf GitHub</a>
+        </div>
+      </div>
+    </header>
+
+    <main>
+      <section id="loop">
+        <div class="wrap">
+          <h2><small>Das Spielprinzip</small>Bei Tag bauen, bei Nacht halten</h2>
+          <p class="lead">Jeder Spieler ist ein eigener Monarch. Gold bekommt ihr aus Truhen und von Gegnern, Material holen eure Bauern.
+            Wer klug investiert, steht die Nacht durch.</p>
+          <div class="cycle">
+            <div class="phase day">
+              <h3>☀️ Tag</h3>
+              <ol><li>Erkunden und Gold sammeln</li><li>Landstreicher zu Bauern machen</li><li>Mauern, Türme und Werkstatt bauen</li><li>Bögen verteilen, Truppen ausrüsten</li></ol>
+            </div>
+            <div class="phase night">
+              <h3>🌙 Nacht</h3>
+              <ol><li>Portale öffnen sich</li><li>Gegnerwellen laufen auf den Hub zu</li><li>Bogenschützen schießen von den Türmen</li><li>Der Monarch greift mit Schlag und Skills ein</li></ol>
+            </div>
+            <div class="phase goal">
+              <h3>⬇️ Tiefer</h3>
+              <ol><li>Am Ende der Stufe wartet der Tiefen-Eingang</li><li>Darunter beginnt ein neuer Hub</li><li>Gebaute Treppen führen zurück nach oben</li><li>Ganz unten wartet der Endboss der Insel</li></ol>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="features" class="alt">
+        <div class="wrap">
+          <h2><small>Features</small>Was K3C ausmacht</h2>
+          <div class="grid">
+            <article class="feature"><div class="icon">🎮</div><h3>Couch und Online gemischt</h3>
+              <p>Zwei Controller an der Xbox im Split-Screen, weitere Spieler per Handy oder PC. Beitreten jederzeit mit einem Druck auf A.</p></article>
+            <article class="feature"><div class="icon">🗺️</div><h3>Prozedurale Level</h3>
+              <p>Jede Stufe entsteht aus festen Eckdaten und einem Seed. Gleicher Seed, gleiche Welt, gespeichert wird nur der Seed.</p></article>
+            <article class="feature"><div class="icon">⛏️</div><h3>Die Welt geht nach unten</h3>
+              <p>Oberwelt, Höhle, Mine und tiefer. Jede Stufe hat ihren eigenen Hub, und alle Stufen laufen weiter, auch ohne Spieler.</p></article>
+            <article class="feature"><div class="icon">⚔️</div><h3>Der Monarch kämpft mit</h3>
+              <p>Anders als in Kingdom führt der Monarch nicht nur: Er schlägt zu und setzt Skills aus vier Linien ein.</p></article>
+            <article class="feature"><div class="icon">🏰</div><h3>Hub in fünf Stufen</h3>
+              <p>Von Holz über Stein, Kupfer und Eisen bis Kristall. Jede Stufe schaltet stärkere Mauern, Türme und neue Gebäude frei.</p></article>
+            <article class="feature"><div class="icon">🔥</div><h3>Aggressionspool</h3>
+              <p>Unter Tage gibt es keine Nacht. Jeder Kill und jede Ressource heizt den Pool an, bei 100 % greifen die Portale an. Ihr bestimmt das Tempo.</p></article>
+            <article class="feature"><div class="icon">👑</div><h3>Bosse und Ereignisse</h3>
+              <p>Ein Miniboss je Stufe, ein Endboss je Insel. Jede 7. Nacht Vollmond mit Alpha-Wolf, jede 13. Blutmond.</p></article>
+            <article class="feature"><div class="icon">📺</div><h3>Gemacht für den Fernseher</h3>
+              <p>Läuft in Edge auf der Xbox, komplett mit dem Controller bedienbar, große Schrift für den Couch-Abstand.</p></article>
+          </div>
+        </div>
+      </section>
+
+      <section id="stufen">
+        <div class="wrap">
+          <h2><small>Die Welt</small>Drei Stufen, ein Vorrat</h2>
+          <p class="lead">Eine Insel besteht aus mehreren Stufen, die nach unten schmaler und dichter werden. Das Baumaterial gehört der ganzen Insel.</p>
+          <div class="depths">
+            <div class="depth d0 px"><div class="no">0<span>Oberwelt</span></div><div><h3>Wald</h3>
+              <p>Tag 10 Minuten, Nacht 5. Holz fällen, Lager aufbauen, die ersten Wellen abwehren.</p>
+              <div class="tags"><span class="tag">Holz</span><span class="tag">Greed</span><span class="tag">Goblin</span><span class="tag">Wolf bei Nacht</span></div></div></div>
+            <div class="depth d1 px"><div class="no">1<span>Tiefe</span></div><div><h3>Höhle</h3>
+              <p>Hier tickt der Aggressionspool statt der Uhr. Stein abbauen, bevor die Fledermäuse über die Mauern fliegen.</p>
+              <div class="tags"><span class="tag">Stein</span><span class="tag">Fledermaus</span><span class="tag">Höhlentroll</span><span class="tag">Skelett</span></div></div></div>
+            <div class="depth d2 px"><div class="no">2<span>Tiefe</span></div><div><h3>Mine</h3>
+              <p>Kupferadern liefern endlos, aber langsam. Zombies, Rattenschwärme und Minengeister machen es eng.</p>
+              <div class="tags"><span class="tag">Kupfer</span><span class="tag">Zombie</span><span class="tag">Rattenschwarm</span><span class="tag">Minengeist</span></div></div></div>
+          </div>
+        </div>
+      </section>
+
+      <section id="skills" class="alt">
+        <div class="wrap">
+          <h2><small>Skills</small>Vier Linien, frei kombinierbar</h2>
+          <p class="lead">Skill-Punkte findet ihr gemeinsam, verteilt werden sie von jedem selbst. Hybride Builds sind ausdrücklich erlaubt, umskillen kostet nichts.</p>
+          <div class="lines">
+            <div class="line" style="--c: #e0a458"><h3>Tank</h3><ul><li><b>Taunt</b> zieht Gegner auf sich</li><li><b>Iron Wall</b> als Barriere</li><li>Ultimate: <b>Last Stand</b></li></ul></div>
+            <div class="line" style="--c: #6fa8ff"><h3>Zauberer</h3><ul><li><b>Fireball</b> und <b>Ice Wall</b></li><li><b>Lightning Storm</b></li><li>Ultimate: <b>Meteor</b></li></ul></div>
+            <div class="line" style="--c: #7fd48a"><h3>Heiler</h3><ul><li><b>Heal</b> und <b>Group Heal</b></li><li><b>Divine Shield</b></li><li>Ultimate: <b>Resurrection</b></li></ul></div>
+            <div class="line" style="--c: #c58cf0"><h3>Dieb</h3><ul><li><b>Backstab</b> und <b>Smoke Bomb</b></li><li><b>Poison Blade</b></li><li>Ultimate: <b>Shadow Strike</b></li></ul></div>
+          </div>
+        </div>
+      </section>
+
+      <section id="steuerung">
+        <div class="wrap">
+          <h2><small>Steuerung</small>Controller in die Hand, los</h2>
+          <p class="lead">Kein Springen, nur links und rechts. Was gerade geht, zeigt das Spiel direkt am Ort an.</p>
+          <div class="pad">
+            <table>
+              <thead><tr><th>Aktion</th><th>Xbox-Controller</th><th>Tastatur</th></tr></thead>
+              <tbody>
+                <tr><td>Laufen</td><td>Linker Stick</td><td><kbd>A</kbd> <kbd>D</kbd></td></tr>
+                <tr><td>Sprinten</td><td><kbd>RT</kbd></td><td><kbd>Shift</kbd></td></tr>
+                <tr><td>Beitreten, Münzen geben (halten)</td><td><kbd>A</kbd></td><td><kbd>Leertaste</kbd></td></tr>
+                <tr><td>Schlag</td><td><kbd>X</kbd></td><td><kbd>E</kbd></td></tr>
+                <tr><td>Skills 1–4</td><td><kbd>LB</kbd> <kbd>RB</kbd> <kbd>LT</kbd> <kbd>↑</kbd></td><td><kbd>Q</kbd> <kbd>R</kbd> <kbd>T</kbd> <kbd>Z</kbd></td></tr>
+                <tr><td>Bau-Menü</td><td><kbd>Y</kbd></td><td><kbd>B</kbd></td></tr>
+                <tr><td>Vollbild</td><td>Rechten Stick drücken</td><td><kbd>F</kbd></td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <section id="technik" class="alt">
+        <div class="wrap">
+          <h2><small>Technik und Stand</small>Ein Server im Wohnzimmer</h2>
+          <div class="split">
+            <div class="box">
+              <h3>So läuft es</h3>
+              <ul>
+                <li>Ein <b>Go-Server</b> im Heimnetz rechnet die Spielwelt, deterministisch und mit festen Seeds.</li>
+                <li>Der Browser ist reiner Client: <b>TypeScript</b> und <b>Phaser 4</b> zeichnen, Eingaben gehen per WebSocket zum Server.</li>
+                <li>Mehrere Räume parallel, zum Beispiel ein Spiel an der Xbox und eins auf den Handys.</li>
+                <li>Betrieb auf PC oder als <b>Docker-Image</b> auf dem Raspberry Pi (amd64 und arm64).</li>
+              </ul>
+            </div>
+            <div class="box">
+              <h3>Wo wir stehen</h3>
+              <ul>
+                <li class="done">✔ Ein Tag, eine Nacht: Gold, Bauern, Bauen, Bogenschützen, Wellen</li>
+                <li class="done">✔ Prozedurale Level für Wald, Höhle und Mine</li>
+                <li class="done">✔ Split-Screen-Koop und Spielstände auf dem Server</li>
+                <li class="todo">… Skills, Bosse und Hub-Ausbau in Arbeit</li>
+                <li class="todo">… Grafiken für Gebäude und Sound folgen</li>
+              </ul>
+            </div>
+          </div>
+          <p class="note">Auf dieser Seite läuft kein Spiel: Gespielt wird über den eigenen Server im Heimnetz. Ohne Server ausprobieren lassen sich die
+            <a href="app/">Testseiten</a>, zum Beispiel der Gamepad-Test und die Figurenübersicht.</p>
+        </div>
+      </section>
+    </main>
+
+    <footer>
+      <div class="wrap">
+        <div><b>Family Three Crowns (K3C)</b> · © 2026 Ralf Stich · source-available, nur nicht-kommerziell
+          (<a href="https://github.com/tenvan/k3c-family/blob/main/LICENSE">Lizenz</a>)</div>
+        <div>Figuren von LuizMelo und ansimuz, Umgebung von OpenGameArt-Künstlern (meist CC0). Warped Caves: Artwork created by Luis Zuno (@ansimuz), CC BY 3.0.
+          Alle Danksagungen: <a href="app/lizenzen.html">Lizenzen &amp; Danksagung</a>.</div>
+        <div>Inspiriert von <em>Kingdom Two Crowns</em>, kein offizielles Produkt und nicht verbunden mit dessen Herstellern.</div>
+      </div>
+    </footer>
+  </body>
+</html>

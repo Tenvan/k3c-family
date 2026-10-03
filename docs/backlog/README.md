@@ -109,6 +109,7 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-179](B-179-debug-overlay-aktionen.md) | CLI | Idee | hoch | eingeplant | DBG2 | Das Debug-Overlay bedient Gold, Material und Zeitraffer |
 | [B-181](B-181-latenz-im-debug-overlay.md) | CLI | Idee | mittel | offen | – | Das Debug-Overlay zeigt die Latenz von Eingabe bis Bild |
 | [B-182](B-182-tod-mit-ursache.md) | SIM | Problem | hoch | offen | – | Das Ereignis playerDown nennt, was den Monarchen getötet hat |
+| [B-184](B-184-pages-screenshots.md) | PLAT | Idee | niedrig | offen | – | Die Präsentationsseite zeigt echte Bilder aus dem Spiel |
 
 ## Archiv
 
@@ -199,3 +200,4 @@ Zeile in diesen Abschnitt.
 | [B-035](archiv/B-035-raspberry-pi.md) | SRV | Idee | hoch | erledigt | SP11 | Server läuft auf dem Raspberry Pi im Docker |
 | [B-180](archiv/B-180-version-nach-sprint.md) | INF | Idee | mittel | erledigt | – | Nach jedem fertigen Sprint wird eine neue Version vorgeschlagen und bei Bestätigung gesetzt |
 | [B-177](archiv/B-177-holz-startvorrat.md) | SIM | Idee | hoch | erledigt | H1 | Die Insel startet mit einem Holz-Startvorrat |
+| [B-183](archiv/B-183-pages-praesentation.md) | PLAT | Idee | mittel | erledigt | – | GitHub Pages zeigt eine Präsentationsseite des Spiels |

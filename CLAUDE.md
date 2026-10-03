@@ -33,6 +33,7 @@ task check:dev     # k3c-dev: Frontend, go test, golangci-lint
 task check:all     # alles inklusive Build
 task k3c-dev       # Entwickler-Werkzeug k3c-dev als Fenster starten (wails dev; EXE: task k3c-dev:build)
 task build         # Typecheck + Produktions-Build nach dist/
+task pages         # GitHub-Pages-Seite nach _site/ (site/ + dist unter app/)
 task serve         # Build + Go-Server (Port 8080, bin/k3c-server)
 task start         # Go-Server ohne Web-Build (task dev leitet /api und /ws an ihn weiter)
 ```
@@ -57,6 +58,7 @@ prüft die Regeln unten automatisch (Seiten eingetragen, `installPageChrome()`, 
   `HudScene` = bildschirmfeste Anzeigen). Neue Mechanik: Logik + Test in `engine/sim/`, dann nur zeichnen.
 - Seiten: `index.html` = Landingpage/Shell (Kacheln aus `src/landing/pages.ts`), `game.html` = Spiel, weitere `*.html` = Testseiten.
   Jede `*.html` im Root wird automatisch gebaut.
+- `site/` – Präsentationsseite für GitHub Pages (B-183), rein statisch, ohne Server. `task pages` baut sie mit dem Build unter `app/` nach `_site/`.
 - `src/core/shell.ts` – Seiten-Rahmen (Home-Button, Home-Kombi, Zurück-Falle), `src/core/fullscreen.ts` – Vollbild über die Shell.
 
 ## Regel: Seiten & Navigation
