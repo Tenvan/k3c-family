@@ -11,6 +11,7 @@ _site/
 .mcp.json
 .task/
 /bin/
+/public/atlas/
 
 # Test-Binaries (feste Namen, damit Norton sie nur einmal prüft)
 .work/

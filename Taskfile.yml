@@ -35,6 +35,7 @@ tasks:
 
   dev:
     desc: Dev-Server (LAN, Port 5173); /api und /ws gehen an den Go-Server (Port 8080, `task start`)
+    deps: [atlas]
     cmds:
       - npx vite --host {{.CLI_ARGS}}
 
@@ -71,8 +72,25 @@ tasks:
       - task: typecheck
       - task: test
 
+  atlas:
+    desc: Figuren-Atlas nach public/atlas/ packen (aus data/sprites.json, deterministisch; feste EXE bin/atlas, B-163)
+    deps: [tmp]
+    preconditions:
+      - sh: command -v go
+        msg: Go fehlt (requirements.md)
+    sources:
+      - tools/atlas/*.go
+      - data/sprites.json
+      - public/sprites/**/*.png
+    generates:
+      - public/atlas/atlas.json
+    cmds:
+      - go build -o bin/atlas{{exeExt}} ./tools/atlas
+      - ./bin/atlas{{exeExt}}
+
   build:
-    desc: Typecheck und Produktions-Build nach dist/
+    desc: Atlas, Typecheck und Produktions-Build nach dist/
+    deps: [atlas]
     cmds:
       - npx tsc --noEmit
       - npx vite build
