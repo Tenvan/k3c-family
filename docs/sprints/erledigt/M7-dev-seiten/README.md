@@ -1,6 +1,6 @@
 # M7 · SRV · k3c-dev VII: Seiten Tasks, Planung und Git
 
-- **Status:** aktiv
+- **Status:** erledigt
 - **Domäne:** SRV
 - **Reife:** bereit
 - **Einschiebbar:** ja
@@ -60,9 +60,10 @@ keine
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
 | M7.1 | `M7.1-seiten.md` | Umsetzung | autonom | fertig |
-| M7.2 | `M7.2-abnahme-fenster.md` | Workshop | Mensch | offen |
-| M7.3 | `M7.3-review.md` | Review | autonom | offen |
+| M7.2 | `M7.2-abnahme-fenster.md` | Workshop | Mensch | fertig |
+| M7.3 | `M7.3-review.md` | Review | autonom | fertig |
 
 ## Abnahme
 
-–
+2026-10-03: AC-01 bis AC-04 geprüft in M7.1 (Tests und Mocks), AC-05 in M7.3 (`task check:dev` und `task check` grün), AC-06 durch 🧑 in M7.2 (echtes Fenster, bestanden).
+Review ohne schweren Sicherheitsbefund; behoben: `TasksPage` auf unter 60 Zeilen, `TestFindRoot` mit Temp-Ordner im Repo. Neue Tickets: keine.

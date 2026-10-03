@@ -54,42 +54,63 @@ export function TasksPage() {
     return <NoticeCard title="Task-Katalog nicht ladbar" tone="error">task --list-all --json --no-status: {catalog.error}</NoticeCard>;
   }
   const task = findTask(catalog.namespaces, selected);
-  const running = runs.filter((r) => r.state === 'running').length;
   return (
     <div className="tk-page">
-      <section className="tk-list">
-        <Flex gap="2" align="center">
-          <TextField.Root className="tk-filter" size="2" placeholder="Filter: Name oder Beschreibung" value={query}
-            onChange={(e) => setQuery(e.target.value)} onKeyDown={(e) => e.key === 'Escape' && setQuery('')} />
-          <Button variant="soft" loading={reloading} onClick={() => void reload()}>Neu laden</Button>
-        </Flex>
-        <div className="tk-tree">
-          {visible.map((ns) => (
-            <div key={ns.name}>
-              <button type="button" className="tk-ns" onClick={() => toggle(ns.name)} aria-expanded={!collapsed.has(ns.name)}>
-                {collapsed.has(ns.name) ? '▸' : '▾'} {ns.name} <span className="tk-ns-count">{ns.tasks.length}</span>
-              </button>
-              {!collapsed.has(ns.name) &&
-                ns.tasks.map((t) => (
-                  <TaskRow key={t.name} task={t} run={runs.find((r) => r.name === t.name)} active={t.name === selected}
-                    onSelect={() => choose(t.name)} />
-                ))}
-            </div>
-          ))}
-          {visible.length === 0 && <Text color="gray" size="2">Kein Task passt zum Filter.</Text>}
-        </div>
-        <Text size="1" color="gray">
-          {query.trim() ? `${countTasks(visible)} von ${catalog.count}` : catalog.count} Tasks
-          {running > 0 && ` · ${running} ${running === 1 ? 'läuft' : 'laufen'}`}
-          {catalog.error && ` · veraltet: ${catalog.error}`}
-        </Text>
-      </section>
+      <TaskList catalog={catalog} visible={visible} runs={runs} selected={selected} query={query} collapsed={collapsed}
+        reloading={reloading} onQuery={setQuery} onReload={() => void reload()} onToggle={toggle} onSelect={choose} />
       <section className="tk-detail">
         {task ? <TaskDetail key={task.name} task={task} run={runs.find((r) => r.name === task.name)} /> : (
           <NoticeCard title="Kein Task gewählt" tone="neutral">Links einen Task wählen: Start, Stopp und Ausgabe erscheinen hier.</NoticeCard>
         )}
       </section>
     </div>
+  );
+}
+
+interface TaskListProps {
+  catalog: TaskCatalog;
+  visible: TaskCatalog['namespaces'];
+  runs: TaskRun[];
+  selected: string;
+  query: string;
+  collapsed: Set<string>;
+  reloading: boolean;
+  onQuery: (q: string) => void;
+  onReload: () => void;
+  onToggle: (ns: string) => void;
+  onSelect: (name: string) => void;
+}
+
+function TaskList({ catalog, visible, runs, selected, query, collapsed, reloading, onQuery, onReload, onToggle, onSelect }: TaskListProps) {
+  const running = runs.filter((r) => r.state === 'running').length;
+  return (
+    <section className="tk-list">
+      <Flex gap="2" align="center">
+        <TextField.Root className="tk-filter" size="2" placeholder="Filter: Name oder Beschreibung" value={query}
+          onChange={(e) => onQuery(e.target.value)} onKeyDown={(e) => e.key === 'Escape' && onQuery('')} />
+        <Button variant="soft" loading={reloading} onClick={onReload}>Neu laden</Button>
+      </Flex>
+      <div className="tk-tree">
+        {visible.map((ns) => (
+          <div key={ns.name}>
+            <button type="button" className="tk-ns" onClick={() => onToggle(ns.name)} aria-expanded={!collapsed.has(ns.name)}>
+              {collapsed.has(ns.name) ? '▸' : '▾'} {ns.name} <span className="tk-ns-count">{ns.tasks.length}</span>
+            </button>
+            {!collapsed.has(ns.name) &&
+              ns.tasks.map((t) => (
+                <TaskRow key={t.name} task={t} run={runs.find((r) => r.name === t.name)} active={t.name === selected}
+                  onSelect={() => onSelect(t.name)} />
+              ))}
+          </div>
+        ))}
+        {visible.length === 0 && <Text color="gray" size="2">Kein Task passt zum Filter.</Text>}
+      </div>
+      <Text size="1" color="gray">
+        {query.trim() ? `${countTasks(visible)} von ${catalog.count}` : catalog.count} Tasks
+        {running > 0 && ` · ${running} ${running === 1 ? 'läuft' : 'laufen'}`}
+        {catalog.error && ` · veraltet: ${catalog.error}`}
+      </Text>
+    </section>
   );
 }
 
