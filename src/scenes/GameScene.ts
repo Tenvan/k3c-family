@@ -13,7 +13,6 @@ import type { LobbySceneData } from './LobbyScene';
 import { leavesGame } from './lobbyLogic';
 import { LocalSlots } from './localSlots';
 import type { RadarCell } from './radarView';
-import { createSpriteAnims, preloadSprites } from './sprites';
 import { daylight } from './viewRules';
 import { WorldRenderer } from './worldRenderer';
 import { DEV_FOCUS_KEY, muteFocused } from './debugOverlayPanel';
@@ -88,12 +87,7 @@ export class GameScene extends Phaser.Scene {
     this.lastDevice = wantsTouchControls() ? 'touch' : 'keyboard';
   }
 
-  preload(): void {
-    preloadSprites(this);
-  }
-
   create(): void {
-    createSpriteAnims(this);
     this.keyboard = new KeyboardInput(this.input.keyboard!);
     if (wantsTouchControls()) this.touch = touchControls();
     // Browser melden Gamepads erst nach dem ersten Tastendruck. Alle bekannten + neue Pads beobachten.
