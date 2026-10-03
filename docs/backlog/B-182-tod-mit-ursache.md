@@ -1,4 +1,4 @@
-# B-181 · Das Ereignis playerDown nennt, was den Monarchen getötet hat
+# B-182 · Das Ereignis playerDown nennt, was den Monarchen getötet hat
 
 - **Domäne:** SIM
 - **Typ:** Problem
