@@ -23,7 +23,6 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-024](B-024-tiefe-3-4.md) | REG | Idee | niedrig | offen | – | Tiefe 3 und 4 sind beschrieben |
 | [B-026](B-026-skill-tasten.md) | PLAT | Frage | hoch | eingeplant | X1 | Skill-Tasten am Controller sind festgelegt |
 | [B-029](B-029-lade-szene.md) | CLI | Idee | mittel | eingeplant | GR4 | Lade-Szene zeigt Fortschritt |
-| [B-035](B-035-raspberry-pi.md) | SRV | Idee | hoch | eingeplant | SP11 | Server läuft auf dem Raspberry Pi im Docker |
 | [B-037](B-037-lobby.md) | CLI | Idee | mittel | offen | – | Lobby zeigt Räume und startet Spiele |
 | [B-040](B-040-server-finden.md) | SRV | Idee | niedrig | offen | – | Geräte finden den Server im Heimnetz |
 | [B-041](B-041-wails-starter.md) | SRV | Idee | niedrig | offen | – | Wails-Starter für Windows existiert |
@@ -192,3 +191,4 @@ Zeile in diesen Abschnitt.
 | [B-104](archiv/B-104-protokoll-stufe-und-optionen.md) | SRV | Idee | hoch | erledigt | SP14 | Das Protokoll kennt die Stufe je Spieler und die Raum-Optionen |
 | [B-171](archiv/B-171-dev-seiten-tasks-planung-git.md) | SRV | Idee | mittel | erledigt | M7 | k3c-dev zeigt Tasks, Planung und Git wie die Workbench der ErpApi |
 | [B-174](archiv/B-174-sprints-je-domaene-parallel.md) | INF | Idee | hoch | erledigt | F0 | Je Domäne darf ein Sprint aktiv sein, Sessions werden per Branch beansprucht |
+| [B-035](archiv/B-035-raspberry-pi.md) | SRV | Idee | hoch | erledigt | SP11 | Server läuft auf dem Raspberry Pi im Docker |

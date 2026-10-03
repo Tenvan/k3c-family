@@ -1,6 +1,6 @@
 # SP11 · SRV · Raspberry Pi
 
-- **Status:** aktiv
+- **Status:** erledigt
 - **Domäne:** SRV
 - **Reife:** bereit
 - **Einschiebbar:** nein
@@ -60,8 +60,9 @@ Ziel verfehlt → Messwerte und Befund als Ticket, keine stille Absenkung des Zi
 |---|---|---|---|---|
 | SP11.1 | `SP11.1-image-und-compose.md` | Umsetzung | autonom | fertig |
 | SP11.2 | `SP11.2-pi-einrichten.md` | Workshop | Mensch | fertig |
-| SP11.4 | `SP11.4-review.md` | Review | autonom | offen |
+| SP11.4 | `SP11.4-review.md` | Review | autonom | fertig |
 
 ## Abnahme
 
-–
+2026-10-03: AC-01 bis AC-03 geprüft durch 🧑 am Pi (SP11.2-Ergebnis), AC-02 vorbereitet in SP11.1. AC-04 `verschoben` nach LT1 (B-175, Revision 2), B-042 bleibt offen.
+Review ohne schweren Befund: `GITHUB_TOKEN` nur für `docker/login-action`, kein Secret im Image oder in `compose.yaml`, Volume `/data`, Rückfall im README. Neue Tickets: keine.
