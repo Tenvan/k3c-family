@@ -1,8 +1,8 @@
 {
   "version": "0.0.1",
   "configurations": [
-    { "name": "k3c-dev", "runtimeExecutable": "npm", "runtimeArgs": ["run", "dev"], "port": 5173 },
-    { "name": "k3c-server", "runtimeExecutable": "npm", "runtimeArgs": ["start"], "port": 8080 },
+    { "name": "k3c-dev", "runtimeExecutable": "task", "runtimeArgs": ["dev"], "port": 5173 },
+    { "name": "k3c-server", "runtimeExecutable": "task", "runtimeArgs": ["start"], "port": 8080 },
     { "name": "k3c-go", "runtimeExecutable": "task", "runtimeArgs": ["serve"], "port": 8080 },
     { "name": "k3c-dev-ui", "runtimeExecutable": "npm", "runtimeArgs": ["--prefix", "tools/k3c-dev/frontend", "run", "dev"], "port": 5181 }
   ]
