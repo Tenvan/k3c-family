@@ -6,9 +6,9 @@
 - **Status:** eingeplant
 - **Sprint:** S2
 - **Erstellt:** 2026-10-03
-- **Spec:** Entwurf
+- **Spec:** freigegeben
 - **Revision:** 1
-- **Freigabe:** –
+- **Freigabe:** 2026-10-03, Chat (Ralf), mit Sprint S2
 
 ## Ausgangslage
 
@@ -57,7 +57,7 @@ Ein Spieler fällt und wartet → seine Stufe bleibt im Strom, solange der Slot 
 
 ## Offene Fragen
 
-Versionssprung 4 oder rückwärtskompatibel (optionales Feld): Vorschlag Sprung auf 4, 🧑 bestätigt mit der Freigabe.
+Entschieden mit der Freigabe von S2 (2026-10-03): Sprung auf 4, einmal für S2.1 und S2.4.
 
 ## Notizen
 

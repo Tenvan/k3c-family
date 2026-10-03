@@ -6,9 +6,9 @@
 - **Status:** eingeplant
 - **Sprint:** S2
 - **Erstellt:** 2026-10-02
-- **Spec:** Entwurf
+- **Spec:** freigegeben
 - **Revision:** 1
-- **Freigabe:** –
+- **Freigabe:** 2026-10-03, Chat (Ralf), mit Sprint S2
 
 ## Ausgangslage
 
@@ -54,7 +54,7 @@ Schreiben schlägt fehl → Fehler im Log, der Raum fährt trotzdem herunter. Ra
 
 ## Offene Fragen
 
-Welche Kennzahlen darüber hinaus erfasst werden: 🧑, `docs/fragenkatalog.md Q12`.
+keine: Umfang wie Beschluss Q12 (`docs/fragenkatalog.md`), bestätigt mit der Freigabe von S2 (2026-10-03).
 
 ## Notizen
 

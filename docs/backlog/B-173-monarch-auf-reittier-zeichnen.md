@@ -6,9 +6,9 @@
 - **Status:** eingeplant
 - **Sprint:** S7
 - **Erstellt:** 2026-10-03
-- **Spec:** Entwurf
+- **Spec:** freigegeben
 - **Revision:** 1
-- **Freigabe:** –
+- **Freigabe:** 2026-10-03, Chat (Ralf), mit Sprint S7
 
 ## Ausgangslage
 
@@ -54,7 +54,7 @@ Sprite-Schlüssel unbekannt → Rückfall auf die bisherige Figur und ein Eintra
 
 ## Offene Fragen
 
-Welches Tier das Standard-Reittier ist (Pferd? Wahl aus `mounts`): 🧑 bei der Grafik-Auswahl (Fragenkatalog Q14) oder im Workshop F1.
+keine: Standard-Reittier ist das braune Pferd `horse` (Workshop F1.4, 2026-10-03, `docs/rules/monarch.md` § 7).
 
 ## Notizen
 
