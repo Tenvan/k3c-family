@@ -1,6 +1,6 @@
 # F3 · SIM · Feedback-Ereignisse in der Simulation
 
-- **Status:** aktiv
+- **Status:** erledigt
 - **Domäne:** SIM
 - **Reife:** bereit
 - **Einschiebbar:** nein
@@ -60,8 +60,11 @@ Q08 ist entschieden (2026-10-03): 12 Ereignisse (Treffer, Kill, Münze auf/gegeb
 |---|---|---|---|---|
 | F3.1 | `F3.1-ereignisse-kampf.md` | Umsetzung | autonom | fertig |
 | F3.2 | `F3.2-ereignisse-rest-obergrenze.md` | Umsetzung | autonom | fertig |
-| F3.3 | `F3.3-review.md` | Review | autonom | offen |
+| F3.3 | `F3.3-review.md` | Review | autonom | fertig |
 
 ## Abnahme
 
-–
+- 2026-10-03, Review F3.3: AC-01 bis AC-05 belegt in den Ergebnissen F3.1, F3.2 und F3.3; `task check` und `task check:go` grün.
+- Keine schweren Befunde; Golden-Diff betrifft nur `events`, `rng.json` unverändert. B-139 archiviert; offen bleiben B-189 (Flüchtender ohne `kill`) und B-190 (`eventsDropped` im Protokoll, F4).
+- Obergrenze für F4: K = 32 je Tick und Stufe (vorläufig), größter gemessener Tick 19, Mittel ≤ 0,1 Ereignisse je Tick; Budget ≤ 200 Byte je Tick und Client misst F4.
+- Version: v0.5.0 vorgeschlagen (Minor: Feedback-Ereignisse in der Simulation; gemeinsam mit DBG1/DBG2, solange v0.5.0 nicht gesetzt ist).
