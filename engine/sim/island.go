@@ -24,8 +24,14 @@ type Island struct {
 }
 
 // CreateIsland baut die Stufen für die angegebenen Tiefen (Reihenfolge = Stufenindex). CycleSpeed 0 bedeutet 1.
+// Eine neue Insel startet mit dem Vorrat aus hub.json › islandStartStock; Spielstände setzen ihren eigenen (FromIslandSave).
 func CreateIsland(seed string, depths []int, cycleSpeed float64) (*Island, error) {
-	return createIsland(seed, depths, cycleSpeed, 0)
+	isl, err := createIsland(seed, depths, cycleSpeed, 0)
+	if err != nil {
+		return nil, err
+	}
+	*isl.Stock = hub.IslandStartStock
+	return isl, nil
 }
 
 // createIsland wie CreateIsland, mit Startzeit (Laden eines Spielstands).

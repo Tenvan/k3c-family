@@ -80,6 +80,7 @@ var (
 	hub = load[struct {
 		Sites                              []HubSite
 		IslandSites                        []HubSite // nur Insel-Stufen (island_storage.go)
+		IslandStartStock                   Stock     // Vorrat einer neuen Insel (B-177)
 		CastleRadiusUnits, HomeRadiusUnits float64
 		StartTroops                        struct{ Peasant, Archer int }
 		Travel                             struct{ RangeUnits, Seconds float64 }

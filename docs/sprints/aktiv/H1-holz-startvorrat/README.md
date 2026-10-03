@@ -1,11 +1,11 @@
 # H1 · SIM · Holz-Startvorrat
 
-- **Status:** geplant
+- **Status:** aktiv
 - **Domäne:** SIM
 - **Reife:** bereit
 - **Einschiebbar:** nein
 - **Tickets:** B-177
-- **Start-Commit:** –
+- **Start-Commit:** fc8aa19
 - **Spec:** freigegeben
 - **Revision:** 1
 - **Freigabe:** 2026-10-03, Chat (Ralf), Revision 1; umfasst B-177; Startvorrat 100 Holz bestätigt
@@ -59,7 +59,7 @@ Höhe des Startvorrats (100 Holz ist ein Vorschlag): 🧑 bestätigt mit der Fre
 
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
-| H1.1 | `H1.1-startvorrat-umsetzen.md` | Umsetzung | autonom | offen |
+| H1.1 | `H1.1-startvorrat-umsetzen.md` | Umsetzung | autonom | fertig |
 | H1.2 | `H1.2-review.md` | Review | autonom | offen |
 
 ## Abnahme
