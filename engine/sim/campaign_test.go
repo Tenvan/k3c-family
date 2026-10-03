@@ -8,7 +8,8 @@ import (
 	"k3c/engine/internal/golden"
 )
 
-// campaignFile ist testdata/golden/campaign-abstieg.json (erzeugt von tests/golden.test.ts).
+// campaignFile ist testdata/golden/campaign-abstieg.json (ursprünglich aus der TS-Simulation; neu schreiben mit
+// `task golden:update`, B-137).
 type campaignFile struct {
 	Name          string
 	Seed          string
@@ -34,7 +35,7 @@ type campaignFile struct {
 
 func loadCampaign(t *testing.T) campaignFile {
 	t.Helper()
-	raw, err := os.ReadFile("../../testdata/golden/campaign-abstieg.json")
+	raw, err := os.ReadFile(campaignPath)
 	var f campaignFile
 	if err == nil {
 		err = json.Unmarshal(raw, &f)
@@ -45,9 +46,29 @@ func loadCampaign(t *testing.T) campaignFile {
 	return f
 }
 
-func compareCampaign(t *testing.T, f campaignFile, snap int, c *Campaign) {
+// campaignSnap ist ein Eintrag von snapshots in der Reihenfolge der Datei.
+type campaignSnap struct {
+	Tick          int `json:"tick"`
+	Depth         int `json:"depth"`
+	UnlockedDepth int `json:"unlockedDepth"`
+	World         any `json:"world"`
+}
+
+// campaignGot sammelt mit -update den Ist-Zustand für die Datei.
+type campaignGot struct {
+	save  any
+	snaps []campaignSnap
+}
+
+const campaignPath = "../../testdata/golden/campaign-abstieg.json"
+
+func compareCampaign(t *testing.T, f campaignFile, snap int, c *Campaign, got *campaignGot) {
 	t.Helper()
 	s := f.Snapshots[snap]
+	if *golden.Update {
+		got.snaps = append(got.snaps, campaignSnap{s.Tick, c.Depth, c.UnlockedDepth, golden.Raw(t, c.CurrentWorld())})
+		return
+	}
 	if s.Depth != c.Depth || s.UnlockedDepth != c.UnlockedDepth {
 		t.Fatalf("Tick %d: Tiefe %d/%d, erwartet %d/%d", s.Tick, c.Depth, c.UnlockedDepth, s.Depth, s.UnlockedDepth)
 	}
@@ -57,12 +78,19 @@ func compareCampaign(t *testing.T, f campaignFile, snap int, c *Campaign) {
 }
 
 // saveAndLoad vergleicht den Spielstand mit TS und lädt ihn wie der Golden-Lauf.
-func saveAndLoad(t *testing.T, f campaignFile, c *Campaign) *Campaign {
+func saveAndLoad(t *testing.T, f campaignFile, c *Campaign, got *campaignGot) *Campaign {
 	t.Helper()
-	if d := golden.Diff("save", golden.Tree(t, f.Save), golden.Tree(t, c.ToSave(f.SavedAt))); d != "" {
+	raw := f.Save
+	if *golden.Update {
+		got.save = c.ToSave(f.SavedAt)
+		var err error
+		if raw, err = json.Marshal(got.save); err != nil {
+			t.Fatal(err)
+		}
+	} else if d := golden.Diff("save", golden.Tree(t, f.Save), golden.Tree(t, c.ToSave(f.SavedAt))); d != "" {
 		t.Fatalf("campaign-abstieg Tick %d: %s", f.SaveAt, d)
 	}
-	s, err := ParseSave(f.Save)
+	s, err := ParseSave(raw)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -79,7 +107,8 @@ func TestGoldenKampagne(t *testing.T) {
 	for range f.Players {
 		c.JoinPlayer()
 	}
-	compareCampaign(t, f, 0, c)
+	var got campaignGot
+	compareCampaign(t, f, 0, c, &got)
 	tick, snap := 0, 0
 	for _, seg := range f.Inputs {
 		for range seg.Ticks {
@@ -90,16 +119,22 @@ func TestGoldenKampagne(t *testing.T) {
 				c.Travel(w.Travel.ToDepth)
 			}
 			if tick == f.SaveAt {
-				c = saveAndLoad(t, f, c)
+				c = saveAndLoad(t, f, c, &got)
 			}
 			if tick%f.SnapshotEvery == 0 {
 				snap++
-				compareCampaign(t, f, snap, c)
+				compareCampaign(t, f, snap, c, &got)
 			}
 		}
 	}
 	if tick != f.Ticks || snap != len(f.Snapshots)-1 || c.Depth != 2 {
 		t.Fatalf("%d Ticks, %d Snapshots, Tiefe %d; Datei hat %d Ticks, %d Snapshots, Ziel Tiefe 2", tick, snap+1, c.Depth, f.Ticks, len(f.Snapshots))
+	}
+	if *golden.Update {
+		file := golden.ReadFile(t, campaignPath)
+		file.Set(t, "save", got.save)
+		file.Set(t, "snapshots", got.snaps)
+		file.Write(t, campaignPath)
 	}
 }
 
