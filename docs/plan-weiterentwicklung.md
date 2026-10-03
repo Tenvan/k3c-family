@@ -149,7 +149,7 @@ GR1 (früh), GR2 (parallel) ──→ GR3 ab Phase 2 (W1 braucht Hub-Grafiken)
 BAL1 ab Phase 1 (parallel) → BAL2 vor B1
 P1 → W1…W6 → B1 (Spieleabend 2) → G1b…G5 → B2 (Spieleabend 3) → Release v0.x
 ```
-Ein aktiver Sprint zur Zeit (`arbeitsweise.md`); Schienen GR/SO/BAL laufen als einschiebbare Sprints (`Einschiebbar: ja`) oder zwischen Sprints, nie als Nebenarbeit.
+Ein aktiver Sprint je Domäne (ab F0, B-174; vorher einer insgesamt); Schienen GR/SO/BAL laufen als einschiebbare Sprints (`Einschiebbar: ja`) oder zwischen Sprints, nie als Nebenarbeit. Reihenfolge, Wellen und Zuordnung Mensch/autonom: § 11.
 
 ## 7. Akzeptanzkriterien dieses Plans (testbar)
 
@@ -186,3 +186,65 @@ Ein aktiver Sprint zur Zeit (`arbeitsweise.md`); Schienen GR/SO/BAL laufen als e
 
 - Dieser Plan ändert nichts am Code; Umsetzung erst nach ausdrücklicher Freigabe.
 - Nicht verifiziert (Annahmen): Edge/Xbox-Autoplay und ogg-Dekodierung, Pi-3-Leistung bei Events, Eignung der vorhandenen Packs in `public/grafik` für Hub-Stufen 1–5.
+
+## 11. Zwei Spuren: Mensch (hier) und autonom (zweiter Account)
+
+Stand 2026-10-03. Ziel: Auf dem zweiten Account laufen möglichst viele autonome Sessions parallel, hier laufen nur die Schritte, die 🧑 braucht (Freigaben, Workshops, Abnahmen, Tests am Gerät). Grundlage ist die Domänen-Regel der Arbeitsweise: Jeder Sprint ändert nur Dateien seiner Domäne, Sprints verschiedener Domänen können deshalb gleichzeitig laufen. Dafür braucht es die Regeländerung **F0 (B-174)**: je Domäne ein aktiver Sprint, Sessions per Branch beanspruchen. Ohne F0 darf neben SP11 (SRV, wartet auf den Pi) kein weiterer nicht einschiebbarer Sprint aktiv sein.
+
+### 11.1 Bahnen (je Domäne eine Reihenfolge, nacheinander)
+
+| Domäne | Reihenfolge der Sprints | Sperre durch 🧑 |
+|---|---|---|
+| INF | F0 → F2 → F5 → GR4 → RL1 | RL1.1, RL1.3 (Checkliste abnehmen) |
+| REG | F1.1–F1.3 → **F1.4** → F1.5 … später BAL4 → BR1 → BR2 | F1.4, BAL4.2, BR1.2, BR2.2, P1 |
+| SIM | F3 → BAL1 → S1 → BAL2 → W1 → W2 → W3 → W4 → K1 → K2 → K3 → BAL3 | BAL3.1 (Bot-Profile) |
+| SRV | SP11 (🧑 Pi) → F4 → S2 → W5 → K4 | SP11.2, SP11.3 |
+| CLI | S5 → S4 → S3 → S7 → S6 → SO1 → W6 → K5 | S3.4, S4.3, S5.4, S6.4, S7.3, W6.4, K5.4 (Abnahmen am Gerät) |
+| PLAT | X1 (🧑) → GR6 → SO3 | X1.1 (Xbox-Test) |
+| Asset-Schiene (einschiebbar, CLI/INF) | GR1 → GR2 → GR3 → GR5, SO2, SO4 | GR1.1, GR2.2, GR4.3, SO2.1, SO4.1 (Stil und Auswahl) |
+
+Die Asset-Schiene zählt nach Regel nicht als aktiver Sprint, teilt sich aber Dateien mit der CLI-Bahn (`src/scenes/worldRenderer.ts`): GR3 läuft nie gleichzeitig mit S4, S7, W6 oder K5.
+
+### 11.2 Wellen (Abhängigkeiten berücksichtigt)
+
+| Welle | Voraussetzung | Spur A (autonom, 2. Account, parallel je Bahn) | Spur M (🧑 hier) |
+|---|---|---|---|
+| **W0** jetzt | – | **F0.1 → F0.2** (INF). Währenddessen „Bereit machen“ (11.4) für F3, F4, S4, S5, S1. | Freigabe Spec F0 (kurz lesen, `freigegeben`); **SP11.2** Pi einrichten; **X1.1** Xbox-Test, dabei **B-166** (Audio-Autoplay und Formate) mitprüfen |
+| **W1** | F0 erledigt | **F1.1 → F1.2 → F1.3** (REG) ‖ **F2.1 → F2.4** (INF: Golden-Ablauf, Migration, Determinismus) ‖ SP11.1 liegt schon fertig | **F1.4** Workshop (Zielkorridore, Reittier, Bedienungszahlen); Freigabe-Paket 1: F2, F5, F3; **SP11.3** Lastmessung |
+| **W2** | F1.4, F2 erledigt | **F1.5** (REG) ‖ **F5.1 → F5.4** (INF) ‖ **F3.1 → F3.3** (SIM, Feedback-Events) ‖ **S5.1 → S5.3, S5.5** (CLI) ‖ **SP11.4** Review (SRV, nach SP11.3) | Freigabe-Paket 2: S5, S4, F4, S1; **S5.4** Abnahme; **X1.2** Auswertung beauftragen |
+| **W3** | F3 erledigt | **BAL1** (SIM) ‖ **F4.1 → F4.4** (SRV, nach SP11 und F3) ‖ **S4.1, S4.2, S4.4** (CLI) ‖ **GR6** (PLAT) ‖ **GR1.2 → GR1.4** (Asset) | **S4.3** Abnahme; **GR1.1** Stil-Zuordnung (Q13 ist entschieden: nur bestätigen); Freigabe-Paket 3: S2, S3, S7, GR1, GR2 |
+| **W4** | F4, BAL1 erledigt | **S1.1 → S1.5** (SIM) ‖ **GR2.1, GR2.3, GR2.4** (Asset, nach GR2.2) ‖ **GR4** (INF) | **GR2.2** Auswahl der Grafik-Kandidaten (Referenzseite) |
+| **W5** | S1 erledigt | **S2.1 → S2.4** (SRV) ‖ **S7.1, S7.2, S7.4** (CLI) ‖ **BAL2** (SIM, braucht F1.4) ‖ **SO1.1 → SO1.4** (Asset/CLI, wenn S7 nicht läuft) | **S7.3** Abnahme; **B-166**-Ergebnis in SO1 übernehmen |
+| **W6** | S2, S5 erledigt | **S3.1 → S3.3, S3.5** (CLI) ‖ **W1** (SIM) ‖ **SO3** (PLAT) ‖ **GR3** (Asset, nur wenn S3 es nicht stört) | **S3.4** Abnahme am Gerät (Tasten aus Q06 bestätigen) |
+| **W7** | S3, S5 erledigt | **S6** (CLI, Hinweise, Glyphen) ‖ **W2** (SIM) ‖ **SO2, SO4** (Asset, nach 🧑-Auswahl) ‖ **GR5** | **S6.4** Abnahme; **SO2.1**, **SO4.1** Hörproben und Auswahl |
+| **W8** | S1–S7, SO1 erledigt | **RL1.2** Vorbereitung ‖ Doku für den Spieleabend | **P1.1, P1.2 Spieleabend 1**, Fragebogen auswerten |
+| **W9** Phase 2 | P1 (nur für Werte) | SIM: **W2 → W3 → W4**, SRV **W5**, CLI **W6**, REG **BAL4** | **W6.4** Abnahme, **BR1.2** Balancing + Spieleabend 2 |
+| **W10** Phase 3 | W4 erledigt | SIM **K1 → K2 → K3**, SRV **K4**, CLI **K5**, SIM **BAL3** | **K5.4** Abnahme, **BR2.2** Balancing + Spieleabend 3, **RL1.1, RL1.3** |
+
+Die Wellen sind keine Termine, sondern Reihenfolgen: Eine Bahn rückt vor, sobald ihre Voraussetzung erledigt ist; die Spur M gibt vorher frei, was die Spur A als Nächstes braucht.
+
+### 11.3 Was 🧑 hier priorisiert (Spur M, in dieser Reihenfolge)
+
+1. **Freigabe F0** (ein Satz „F0 freigegeben“): entsperrt alle parallelen Bahnen.
+2. **SP11.2 und X1.1** (Hardware, dauern; laufen im Hintergrund von allem anderen).
+3. **F1.4 Workshop** (45 Minuten, sobald F1.1–F1.3 durch sind): entsperrt S1, S4, S5, BAL2.
+4. **Freigabe-Pakete** (Spec lesen und freigeben; jedes Paket entsperrt die nächste Welle): Paket 1 F2, F5, F3 · Paket 2 S5, S4, F4, S1 · Paket 3 S2, S3, S7, GR1, GR2, SO1 · Paket 4 S6, SO2–SO4, W1–W6, BAL2, BAL3.
+5. **Abnahmen am Gerät** (kurz, je Sprint): S5.4, S4.3, S7.3, S3.4, S6.4.
+6. **Auswahl-Termine** Grafik und Sound (GR2.2, SO2.1, SO4.1), **Spieleabende** P1, BR1, BR2.
+
+### 11.4 Startanweisung für den zweiten Account (Spur A)
+
+Eine Session pro Lauf, immer so:
+
+> Lies `CLAUDE.md` und `docs/arbeitsweise.md`. Lies `docs/sprints/README.md` (Fahrplan, Aktiv) und alle `docs/sprints/aktiv/*/README.md`. Wähle die erste Session mit `Status: offen`, `Agent: autonom` und erledigten Abhängigkeiten, deren Branch noch nicht auf `origin` existiert (`git ls-remote --heads origin <Branch>`). Gibt es keine: nichts tun, melden, welche Freigabe oder 🧑-Session fehlt. Führe die Session nach `docs/arbeitsweise.md` › Autonomer Ablauf aus, `git fetch` und `git rebase origin/main` vor dem PR, PR öffnen, nicht mergen.
+
+**„Bereit machen“-Aufträge** (autonom, brauchen keinen aktiven Sprint und keine Freigabe; schreiben nur Session-Dateien und setzen `Reife: bereit`, die Spec bleibt `Entwurf` bis 🧑 freigibt): Sprint F3, F4, S5, S4, S1, S2, BAL1, GR1, W1 (in dieser Reihenfolge, je Sprint ein Lauf). Prompt: „Mache den Sprint `<ID>` nach `docs/arbeitsweise.md` › Sprint-Lebenslauf (Schritt 2) bereit: Offene Fragen sind in `docs/fragenkatalog.md` › Beschlüsse beantwortet; schreibe jede Session als Datei nach `docs/vorlagen/session.md`, setze `Reife: bereit`, prüfe `npx vitest run tests/planning.test.ts`.“
+
+### 11.5 Regeln gegen Reibung zwischen den Accounts
+
+- **Zuständigkeit:** Spur M ändert keine Dateien eines Sprints, der gerade in Spur A läuft, außer Ergebnis-Einträge der 🧑-Sessions.
+- **Merge-Reihenfolge:** 🧑 mergt PRs der Spur A in der Reihenfolge der Bahn (Abhängigkeit), nicht nach Eingang.
+- **Gemeinsame Dateien** (`docs/backlog/README.md`, `docs/sprints/README.md`, `docs/roadmap.md`): Eine Session ändert sie erst am Ende, vor dem PR `git rebase origin/main`; Konflikte löst der Agent, der zuletzt rebased.
+- **Golden-Daten und Spielstand-Fixtures** ändert nur der Sprint, der gerade in der Bahn SIM/INF läuft (kein zweiter parallel).
+- **Review-Sessions** laufen nie im selben Lauf wie die Umsetzung und nie vom selben Agenten.
+- **Engpass CLI:** Die Bahn CLI hat die meisten Sprints (S5, S4, S3, S7, S6, SO1, W6, K5); Asset-Sprints (GR3, GR5, SO2, SO4) schieben sich nur dazwischen, wenn die Datei-Überschneidung (Renderer) es erlaubt.
