@@ -1,6 +1,6 @@
 # GR6.2 · CC-BY-Einträge sichtbar, Seite über die Landingpage
 
-- **Status:** in Arbeit
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Branch:** gr6/2-cc-by-seite
@@ -40,9 +40,9 @@ Neue Assets, Sound-Credits, neue Seite neben `lizenzen.html`, Übersetzung (B-17
 
 ## Fertig, wenn
 
-- [ ] AC-03: Test belegt Urheber, Lizenz und Quelle für jeden CC-BY-Eintrag auf der Seite.
-- [ ] AC-04: Seite in `src/landing/pages.ts`, `installPageChrome()` aktiv, `task check` grün.
-- [ ] Keine Datei > 400 Zeilen, keine Funktion > 60 Zeilen.
+- [x] AC-03: Test belegt Urheber, Lizenz und Quelle für jeden CC-BY-Eintrag auf der Seite.
+- [x] AC-04: Seite in `src/landing/pages.ts`, `installPageChrome()` aktiv, `task check` grün.
+- [x] Keine Datei > 400 Zeilen, keine Funktion > 60 Zeilen.
 
 ## Prüfen
 
@@ -54,4 +54,6 @@ Manuelle Prüfungen (Browser, TV) nur, wenn 🧑 sie für diesen Lauf freigegebe
 
 ## Ergebnis
 
-–
+- **AC-03** umgesetzt, geprüft mit `src/tools/credits.test.ts`: jede CC-BY-Zeile (`isCcBy`, aus der Datenquelle) enthält Urheber, Lizenz und Quelle als Link; Warped Caves, horse, elephant, lpc-wolf sind dabei. CC-BY-Zeilen sind in `lizenzen.html` hervorgehoben (`tr.by`, Lizenz fett mit „Namensnennung“).
+- **AC-04** geprüft: `lizenzen.html` steht in `src/landing/pages.ts`, `installPageChrome()` in `lizenzen.ts` aktiv, `projectRules.test.ts` und `serverCheck.test.ts` grün; `task check` grün (672 Tests). Kachel-Text unverändert.
+- Keine Datei > 400 Zeilen, keine Funktion > 60 Zeilen. Browser-/TV-Prüfung offen (🧑), nicht freigegeben.

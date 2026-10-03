@@ -47,13 +47,16 @@ export const CREDITS: readonly Credit[] = [...parseCredits(grafik, 'grafik'), ..
 
 const esc = (s: string) => s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
 
+/** CC-BY (Namensnennung Pflicht); CC BY-NC zählt nicht, die Projekt-Assets stehen nicht in den CREDITS. */
+export const isCcBy = (c: Credit) => /\bCC[- ]BY\b(?!-)/i.test(c.license);
+
 /** Tabelle aller Einträge als HTML (Werk, Urheber, Lizenz, Quelle); jeder Eintrag eine Zeile. */
 export function renderCredits(credits: readonly Credit[]): string {
   const rows = credits.map((c) => {
     const link = /^https?:\/\//.test(c.source)
       ? `<a href="${esc(c.source)}" target="_blank" rel="noopener">${esc(c.source.replace(/^https?:\/\//, ''))}</a>`
       : esc(c.source);
-    return `<tr><td>${esc(c.title)}</td><td>${esc(c.author)}</td><td>${esc(c.license)}</td><td>${link}</td></tr>`;
+    return `<tr${isCcBy(c) ? ' class="by"' : ''}><td>${esc(c.title)}</td><td>${esc(c.author)}</td><td>${isCcBy(c) ? `<strong>${esc(c.license)}</strong> (Namensnennung)` : esc(c.license)}</td><td>${link}</td></tr>`;
   });
   return `<table><thead><tr><th>Werk</th><th>Urheber:innen</th><th>Lizenz</th><th>Quelle</th></tr></thead><tbody>${rows.join('')}</tbody></table>`;
 }
