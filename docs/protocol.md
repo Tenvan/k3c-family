@@ -274,7 +274,46 @@ Aktion, Werte, Raum).
   1/`tickHz` s, läuft der Raum langsamer (verpasste Ticks fallen weg) und rechnet weiter korrekt; die Warnung
   „Tick zu langsam“ im Log nennt den `faktor`.
 
+### Ereignisse
+
+`events` in `s` von `snap` und `delta` sind die Ereignisse des letzten Ticks **der Stufe des Geräts**; Ereignisse
+anderer Stufen kommen nie an. Auf einer Insel trägt jedes Ereignis `stage` (Index seiner Stufe), Orte `x` in Units
+(auf 0,1 gerundet). Quelle der Namen und Felder: `engine/sim/events.go`, Client-Typ `GameEvent` (`src/model/types.ts`).
+
+| `type` | Felder | Bedeutung |
+|---|---|---|
+| `hit` | `x`, `target` (`player`, `troop`, `enemy`, `castle`, `site`), `id` (Spieler: Index, sonst ID), `damage` | Schaden wirkt |
+| `kill` | `kind`, `x`, `gold` | Gegner besiegt, `gold` gestreute Münzen |
+| `arrow` | `from`, `to` (IDs), `x`, `team` (`player`, `enemy`) | Geschoss abgeschossen |
+| `strike` | `from`, `x` | Nahkampf-Schlag eines Gegners |
+| `coinPickup` | `player`, `x` | Münze aufgehoben |
+| `coinGive` | `player`, `x`, `to` (`site`, `recruit`, `mark`) | Münze bezahlt ein Ziel (nur zu Boden: kein Ereignis) |
+| `buildProgress` | `site`, `kind`, `x`, `percent` (25, 50, 75) | Bau fortgeschritten, fertig = `built` |
+| `revive` | `player`, `x` | Monarch steht nach der Wartezeit wieder |
+
+Tod, Bau fertig, Skill, Nacht naht und Portal laufen über die älteren Typen `playerDown`, `built`, `skillPoint`,
+`dusk`, `arrived` (`arrived` mit `player` beim Einzelwechsel). Die Simulation begrenzt die Ereignisse je Tick und
+Stufe auf **K = 32** (`maxEventsPerTick`); bei Überlauf gehen Tod und Bau vor, `eventsDropped` in `s` zählt die
+Verworfenen und fehlt bei 0 (zuverlässige Übertragung im Delta: B-190). Ein Client übergeht unbekannte Typen
+(Banner nur für bekannte), deshalb bleibt die Protokollversion 3.
+
 ### Snapshot-Größe
+
+**Budget (Beschluss Q08):** Ereignisse ≤ **200 Byte je Tick und Client im Mittel**, bei 30 Hz also **6 KB/s je
+Client**; sie laufen im Delta mit, keine eigene Nachricht. Geprüft von `TestEventsBudgetJeTick`
+(`engine/sim/events_budget_test.go`): 3 Stufen, 4 Spieler, Seed `bench`, 1800 Ticks, Mittel je Stufe und Tick ≤ 200
+Byte, sonst rot. Für den ganzen Zustand ist keine Grenze beschlossen, er wird nur gemessen.
+
+**Ist-Wert Go-Server** (2026-10-03, Intel Core Ultra 7 165H, `go test -bench Island -run '^$' ./engine/sim`; JSON je
+Stufe und Tick, erste 1800 Ticks nach dem Aufwärmen, schneller Zyklus mit Nächten):
+
+| je Stufe und Tick | Mittel | p99 |
+|---|---|---|
+| `events` | 4,3 Byte | 52 Byte |
+| ganzer Zustand (`snap`) | 7,8 KB | 13,6 KB |
+
+Ereignisse brauchen damit ≈ 0,13 KB/s je Client (2 % des Budgets). Die Tabelle unten ist die ältere Messung mit
+der TS-Simulation (Historie).
 
 **Messweg:** Wegwerf-Skript (nicht eingecheckt) mit der heutigen TS-Simulation: `createCampaign` mit 4× `joinPlayer`,
 Stufe 0 (Wald) und Stufe 1 (Höhle), `cycleSpeed` 8, 5400 Ticks mit `step(…, 1/30)` (3 min, mehrere Tage und Nächte),
