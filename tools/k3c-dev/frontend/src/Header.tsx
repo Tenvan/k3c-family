@@ -2,10 +2,10 @@ import { Flex, Switch, Tabs, Text } from '@radix-ui/themes';
 import type { McpState } from './api';
 import { StatusBadge, Tip } from './ui/parts';
 
-export const PAGES = ['dienste', 'logs', 'mcp'] as const;
+export const PAGES = ['dienste', 'tasks', 'planung', 'git', 'logs', 'mcp'] as const;
 export type Page = (typeof PAGES)[number];
 
-const LABELS: Record<Page, string> = { dienste: 'Dienste', logs: 'Logs', mcp: 'MCP' };
+const LABELS: Record<Page, string> = { dienste: 'Dienste', tasks: 'Tasks', planung: 'Planung', git: 'Git', logs: 'Logs', mcp: 'MCP' };
 
 interface Props {
   mcp: McpState | null;

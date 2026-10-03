@@ -16,6 +16,7 @@ import (
 	"k3c/tools/k3c-dev/internal/console"
 	"k3c/tools/k3c-dev/internal/mcpsrv"
 	"k3c/tools/k3c-dev/internal/services"
+	"k3c/tools/k3c-dev/internal/taskrun"
 	"k3c/tools/k3c-dev/internal/usage"
 )
 
@@ -27,6 +28,7 @@ const (
 	evConsoleLine  = "console:line"
 	evMCPStart     = "mcp:start"
 	evMCPCall      = "mcp:call"
+	evTaskState    = "task:state"
 )
 
 // MCPState ist der Zustand des MCP-Servers für das Badge der Kopfzeile.
@@ -52,15 +54,17 @@ type App struct {
 	// ready schließt startup: Wails ruft OnStartup in einer eigenen Goroutine, Bindings können davor kommen.
 	ready chan struct{}
 
-	ctx     context.Context
-	svcCtx  context.Context // endet beim Beenden; Befehle der Oberfläche laufen darin
-	cancel  context.CancelFunc
-	store   *console.Store // Konsolenpuffer aller Quellen
-	log     *applog.Log
-	tracker *usage.Tracker
-	ctl     *services.Controller
-	svcErr  error // services.json nicht geladen
-	srv     *mcpsrv.Server
+	ctx        context.Context
+	svcCtx     context.Context // endet beim Beenden; Befehle der Oberfläche laufen darin
+	cancel     context.CancelFunc
+	store      *console.Store // Konsolenpuffer aller Quellen
+	log        *applog.Log
+	tracker    *usage.Tracker
+	ctl        *services.Controller
+	svcErr     error // services.json nicht geladen
+	srv        *mcpsrv.Server
+	tasks      taskState
+	taskRunner *taskrun.Runner
 
 	mu  sync.Mutex
 	mcp MCPState
@@ -94,6 +98,7 @@ func (a *App) startup(ctx context.Context) {
 	}
 	a.tracker = usage.Open(a.usage, time.Now,
 		func(err error) { a.log.Warn(err.Error(), "ns", "usage") })
+	a.initTasks()
 	a.svcCtx, a.cancel = context.WithCancel(ctx)
 	a.ctl, a.svcErr = openServices(a.svcCtx, a.root, store, a.log,
 		func(st services.Status) {
@@ -126,6 +131,12 @@ func (a *App) shutdown(context.Context) {
 	a.wait()
 	a.log.Info("k3c-dev beendet", "ns", "main")
 	a.cancel()
+	// Ein halb gelaufener Testlauf darf die Anwendung nicht überleben, unabhängig von den Diensten.
+	stopCtx, stop := context.WithTimeout(context.Background(), taskStopTimeout)
+	if err := a.taskRunner.StopAll(stopCtx); err != nil {
+		a.log.Warn("Tasks nicht vollständig beendet: "+err.Error(), "ns", "tasks")
+	}
+	stop()
 	if a.ctl != nil {
 		a.ctl.StopAll(context.Background())
 	}
