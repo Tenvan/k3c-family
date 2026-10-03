@@ -107,6 +107,7 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-190](B-190-events-dropped-im-protokoll.md) | SRV | Problem | niedrig | offen | – | Der Client erfährt zuverlässig, wie viele Ereignisse verworfen wurden |
 | [B-191](B-191-debug-overlay-links-unten.md) | CLI | Problem | mittel | offen | – | Debug-Overlay und Aktionsliste verdecken das HUD nicht |
 | [B-192](B-192-aktionsliste-schliesst-mit-oe.md) | CLI | Problem | hoch | offen | – | Die Dev-Aktionsliste schließt sich mit Ö |
+| [B-193](B-193-figuren-luecken-suche.md) | CLI | Idee | mittel | offen | – | Figuren-Lücken unter public/sprites/ haben Kandidaten und eine Auswahl |
 
 ## Archiv
 

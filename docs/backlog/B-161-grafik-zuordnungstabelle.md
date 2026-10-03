@@ -6,9 +6,9 @@
 - **Status:** eingeplant
 - **Sprint:** GR1
 - **Erstellt:** 2026-10-02
-- **Spec:** Entwurf
+- **Spec:** freigegeben
 - **Revision:** 1
-- **Freigabe:** –
+- **Freigabe:** 2026-10-03, Chat (Ralf), Revision 1, durch 🧑; mit Sprint GR1; mit Änderungen aus dem Spec-Review (Q13 geklärt, Reittiere nach Q23, Reihenfolge nach GR2)
 
 ## Ausgangslage
 
@@ -39,7 +39,7 @@ Eine Tabelle ordnet jedes Spielobjekt einem Asset (Pack, Datei, Frame), seinem S
 
 ## Nicht-Ziele
 
-Suche nach neuen Assets (B-162), Einbau in den Renderer (B-010), Atlas (B-163), neue Grafiken für Mechaniken, die es noch nicht gibt (Bosse, Reittier-Mechanik B-152): nur als „Lücke, später“ eintragen.
+Suche nach neuen Assets (B-162), Einbau in den Renderer (B-010), Atlas (B-163), neue Grafiken für Mechaniken, die es noch nicht gibt (Bosse): nur als „Lücke, später“ eintragen. Reittiere (Q23, B-152) sind keine spätere Mechanik: die 13 Einträge unter `mounts` in `data/sprites.json` werden als zugeordnete Zeilen erfasst.
 
 ## Regeln und Einschränkungen
 
@@ -56,14 +56,14 @@ Asset ohne Credit-Eintrag → Test rot. Objekt in `data/` ohne Zeile → Test ro
 ## Akzeptanzkriterien
 
 - **AC-01** `docs/assets/zuordnung.md` enthält zu jeder Objekt-ID aus `data/buildings.json`, `data/enemies.json` und `data/troops.json` eine Zeile mit Status zugeordnet oder Lücke (Test).
-- **AC-02** Die Tabelle deckt zusätzlich Hub-Stufen 1–5, Mauer-/Turm-Materialstufen, die fünf Materialien, Adern, Plantage, Truhen, Portale, UI-/Skill-Icons und Hintergründe je Biom (Wald, Höhle, Mine) ab.
+- **AC-02** Die Tabelle deckt zusätzlich Hub-Stufen 1–5, Mauer-/Turm-Materialstufen, die fünf Materialien, Adern, Plantage, Truhen, Portale, Reittiere, UI-/Skill-Icons und Hintergründe je Biom (Wald, Höhle, Mine) ab.
 - **AC-03** Jedes zugeordnete Asset hat einen Eintrag in `public/grafik/CREDITS.md` oder `public/sprites/CREDITS.md` (Test).
 - **AC-04** Jede Lücke steht fett markiert in der Tabelle und verweist auf ein Ticket (Test).
 - **AC-05** Jede Zeile nennt Stil (Raster, Palette, Skalierung) und Lizenz; der Stilbeschluss von 🧑 (Q13) steht im Kopf der Datei.
 
 ## Offene Fragen
 
-- Welcher Grundstil gilt (Raster 16 oder 32 px, Palette, Skalierung)? Entscheidet 🧑, `docs/fragenkatalog.md` Q13.
+keine (Grundstil durch Q13 geklärt, 2026-10-03: Raster 16/32 px, Skalierung ×2 bis ×3, Palettenbruch nur bei Hintergründen)
 
 ## Notizen
 

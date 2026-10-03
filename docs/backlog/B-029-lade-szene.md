@@ -6,9 +6,9 @@
 - **Status:** eingeplant
 - **Sprint:** GR4
 - **Erstellt:** 2026-09-29
-- **Spec:** Entwurf
+- **Spec:** freigegeben
 - **Revision:** 1
-- **Freigabe:** –
+- **Freigabe:** 2026-10-03, Chat (Ralf), Revision 1, durch 🧑; mit Sprint GR4; mit Änderungen aus dem Spec-Review (Voraussetzungen, AC-06 Ladefehler, Texturgröße in GR4.3)
 
 ## Ausgangslage
 
@@ -45,6 +45,7 @@ Ein Asset lädt nicht → Meldung statt ewig laufendem Balken.
 ## Akzeptanzkriterien
 
 - **AC-01** Beim Start zeigt eine Lade-Szene den Fortschritt, bis alle Assets geladen sind.
+- **AC-02** Lädt ein Asset nicht, zeigt die Lade-Szene eine Meldung mit Dateinamen statt eines hängenden Balkens.
 
 ## Offene Fragen
 

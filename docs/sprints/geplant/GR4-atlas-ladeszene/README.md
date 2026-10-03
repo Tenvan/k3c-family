@@ -6,9 +6,9 @@
 - **Einschiebbar:** ja
 - **Tickets:** B-163, B-029
 - **Start-Commit:** –
-- **Spec:** Entwurf
+- **Spec:** freigegeben
 - **Revision:** 1
-- **Freigabe:** –
+- **Freigabe:** 2026-10-03, Chat (Ralf), Revision 1, durch 🧑; umfasst B-163, B-029; mit Änderungen aus dem Spec-Review (Voraussetzungen, AC-06 Ladefehler, Texturgröße in GR4.3)
 
 ## Ausgangslage
 
@@ -32,7 +32,7 @@ Nachladen im Hintergrund, neue Grafiken (GR2), Effekte (GR5).
 
 ## Regeln und Einschränkungen
 
-Aufgaben nur über `task`; `src/scenes` rechnet nichts; deterministische Atlas-Erzeugung; keine schwere Abhängigkeit ohne Begründung. Voraussetzung: GR1, GR3, X1 für die Messung.
+Aufgaben nur über `task`; `src/scenes` rechnet nichts; deterministische Atlas-Erzeugung; keine schwere Abhängigkeit ohne Begründung. Keine harte Voraussetzung: GR4.1 nimmt die Figurenliste aus `data/sprites.json`; ohne GR3 betrifft AC-02 nur die Figuren; X1 nur für die Messung (GR4.3).
 
 ## Beispiele
 
@@ -47,8 +47,9 @@ Asset lädt nicht → Meldung statt ewig laufendem Balken (B-029). Quell-Bild fe
 - **AC-01** `task atlas` erzeugt Atlas-Bild und -Beschreibung, zweimaliger Lauf liefert byte-gleiche Dateien (B-163/AC-01).
 - **AC-02** Das Spiel lädt Figuren und eingebaute Umgebungs-Grafiken aus Atlanten, die Zahl der Requests ist vorher und nachher dokumentiert (B-163/AC-02).
 - **AC-03** Beim Start zeigt eine Lade-Szene den Fortschritt, bis alle Assets geladen sind (B-029/AC-01).
-- **AC-04** Das Kaltstart-Budget ist festgelegt und am TV gemessen (B-163/AC-03).
+- **AC-04** Das Kaltstart-Budget ist festgelegt und am TV gemessen, die maximale Texturgröße der Xbox ist abgelesen (B-163/AC-03).
 - **AC-05** `task check` und `task build` sind grün (B-163/AC-04).
+- **AC-06** Lädt ein Asset nicht, zeigt die Lade-Szene eine Meldung mit Dateinamen statt eines hängenden Balkens (B-029/AC-02).
 
 ## Offene Fragen
 

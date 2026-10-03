@@ -6,7 +6,7 @@
 - **Branch:** gr4/2-laden-ladeszene
 - **Abhängig von:** GR4.1
 - **Tickets:** B-163, B-029
-- **Kriterien:** AC-02, AC-03, AC-05
+- **Kriterien:** AC-02, AC-03, AC-05, AC-06
 
 ## Ziel
 
@@ -42,7 +42,8 @@ Nachladen im Hintergrund, neue Grafiken, Effekte (GR5), Messung auf der Xbox (GR
 ## Fertig, wenn
 
 - [ ] AC-02: Figuren (und eingebaute Umgebungs-Grafiken) kommen aus Atlanten; Requests vorher/nachher dokumentiert.
-- [ ] AC-03: Lade-Szene zeigt Fortschritt bis alles geladen ist, bei Fehler eine Meldung (Nachweis im Browser-Pane).
+- [ ] AC-03: Lade-Szene zeigt Fortschritt bis alles geladen ist (Nachweis im Browser-Pane).
+- [ ] AC-06: Bei einem Ladefehler zeigt sie eine Meldung mit Dateinamen (Nachweis im Browser-Pane).
 - [ ] AC-05: `task check` und `task build` grün.
 
 ## Prüfen

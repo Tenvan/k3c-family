@@ -18,7 +18,7 @@ Es gibt genau eine Datenquelle für alle Credits (Grafik und Figuren); ein Test 
 - Verzeichnisse heute: 12 unter `public/grafik/` (dazu `index.json`, `CREDITS.md`), 41 unter `public/sprites/`. `public/audio-test/` ist selbst erzeugt (README dort) und gehört nicht zu diesem Sprint.
 - Seite: `lizenzen.html` (211 Zeilen, Abschnitt „Grafiken“ ab Zeile 66 als Handtext), Script `src/tools/lizenzen.ts` (nur `installPageChrome()` und `installPadScroll()`).
 - Bestehender Test: `src/tools/grafikPacks.test.ts` prüft für die 12 Umgebungs-Packs aus `src/tools/grafikPacks.ts`, dass `CREDITS.md` und `lizenzen.html` Quelle, Urheber und Lizenz nennen. Er bleibt grün oder wird durch den neuen Test ersetzt (dann im Ergebnis nennen).
-- Datenquelle (Entscheidung dieser Session laut B-165): Entweder liest die Seite die CREDITS-Dateien (`?raw`-Import, Tabellen parsen) oder eine TS-Datei (z. B. `src/tools/credits.ts`, Muster `grafikPacks.ts`) ist die Quelle und der Test prüft CREDITS-Dateien und Verzeichnisse gegen sie. Kriterium: keine doppelt gepflegten Texte, kleiner Code. Wahl und Grund ins Ergebnis.
+- Datenquelle (Freigabe 2026-10-03): Die CREDITS-Dateien sind die einzige Quelle. Die Seite liest sie per `?raw`-Import und parst die Tabellen; keine TS-Datei mit abgeschriebenen Texten.
 - Tests laufen mit Vitest (`task test`), Verzeichnisse lassen sich im Test mit `node:fs` lesen (Muster in `tests/planning.test.ts`).
 
 ## Erlaubte Dateien
@@ -30,20 +30,20 @@ Es gibt genau eine Datenquelle für alle Credits (Grafik und Figuren); ein Test 
 
 ## Nicht-Ziele
 
-Neue Assets, Sound-Credits (B-167, B-168), Software-Abschnitt der Seite, Englisch, Projekt-`LICENSE`, Darstellung und Landingpage (GR6.2).
+Neue Assets, Sound-Credits (B-167, B-168), Software-Abschnitt der Seite, Übersetzung (B-172), Projekt-`LICENSE`, Darstellung und Landingpage (GR6.2).
 
 ## Schritte
 
 1. Branch anlegen, `Status: in Arbeit`.
-2. Datenquelle wählen und anlegen: je Eintrag Ordner (einer oder mehrere), Werk, Urheber, Lizenz, Quelle.
-3. Test: (a) jedes Verzeichnis unter `public/grafik/` und `public/sprites/` hat einen Eintrag; (b) jeder Eintrag zeigt auf ein vorhandenes Verzeichnis; (c) jeder Eintrag hat Lizenz und Quelle; (d) Datenquelle und CREDITS-Dateien stimmen überein. Einmal mit einem gelöschten Eintrag rot sehen (nicht einchecken).
+2. Parser für die CREDITS-Tabellen anlegen: je Eintrag Ordner (einer oder mehrere), Werk, Urheber, Lizenz, Quelle.
+3. Test: (a) jedes Verzeichnis unter `public/grafik/` und `public/sprites/` hat einen Eintrag; (b) jeder Eintrag zeigt auf ein vorhandenes Verzeichnis; (c) jeder Eintrag hat Lizenz und Quelle; (d) die Seite zeigt jeden geparsten Eintrag. Einmal mit einem gelöschten Eintrag rot sehen (nicht einchecken).
 4. `lizenzen.ts` füllt den Grafik-Abschnitt aus der Quelle; der Handtext für Figuren und Packs entfällt, Dank-Texte bleiben.
 5. `task check`. Ergebnis, `Status: fertig`, Tabelle der Sprint-README.
 
 ## Fertig, wenn
 
 - [ ] AC-01: Test belegt Eintrag je Verzeichnis unter `public/grafik/` und `public/sprites/`; ein fehlender Eintrag macht ihn rot.
-- [ ] AC-02: Test belegt, dass die Seite alle Einträge aus der gemeinsamen Quelle zeigt und die CREDITS-Dateien übereinstimmen.
+- [ ] AC-02: Test belegt, dass die Seite alle Einträge aus den CREDITS-Dateien zeigt.
 - [ ] `task check` grün; keine Datei > 400 Zeilen, keine Funktion > 60 Zeilen.
 
 ## Prüfen

@@ -29,14 +29,14 @@ Stil, Optimierung, Messung an der Xbox.
 
 1. Branch anlegen, `Status: in Arbeit`. `task check` und `task build` grün.
 2. `git fetch && git diff <Start-Commit>..origin/develop` lesen (nur den Diff), Befunde nach `docs/arbeitsweise.md` behandeln.
-3. Nachweis je Kriterium AC-01 bis AC-05 aus den Ergebnissen von GR4.1 bis GR4.3 prüfen.
+3. Nachweis je Kriterium AC-01 bis AC-06 aus den Ergebnissen von GR4.1 bis GR4.3 prüfen.
 4. Abnahme (höchstens fünf Zeilen) in die Sprint-README schreiben, mit Versionsvorschlag.
 5. B-029 auf `erledigt` setzen und archivieren; B-163 erst, wenn GR4.3 das Budget eingetragen hat (sonst offen lassen, Hinweis in der Abnahme).
 6. Sprint-Ordner nach `docs/sprints/erledigt/` verschieben, `Status: erledigt`, Fahrplan in `docs/sprints/README.md` anpassen (GR4.3 ggf. unter „Offen am Gerät“), PR öffnen.
 
 ## Fertig, wenn
 
-- [ ] AC-01 bis AC-03 und AC-05 haben einen Nachweis im Ergebnis der jeweiligen Session oder sind mit Grund und Ticket verschoben.
+- [ ] AC-01 bis AC-03, AC-05 und AC-06 haben einen Nachweis im Ergebnis der jeweiligen Session oder sind mit Grund und Ticket verschoben.
 - [ ] AC-04 ist nachgewiesen oder als `angenommen, Validierung offen (GR4.3)` geführt.
 - [ ] Schwere Befunde sind behoben oder als Ticket angelegt; Sprint liegt unter `docs/sprints/erledigt/`.
 
