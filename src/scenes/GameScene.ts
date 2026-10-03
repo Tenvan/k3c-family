@@ -143,12 +143,18 @@ export class GameScene extends Phaser.Scene {
   /** Felder, für die das HUD Werte zeigt: Monarchen der lokalen Spieler, dazu der sichtbare Ausschnitt der Kamera (Radar) */
   hudCells(): RadarCell[] {
     const seats = [...this.client.you].sort((a, b) => a.slot - b.slot);
+    const current = this.world_;
+    const plan = cellStages(this.cells, seats, this.partnerMonarch === null || !current ? null : current.biome.depth, new Set(this.stages.keys()));
     return this.cells.map((cell, i) => {
       const view = this.cameras.cameras[i]?.worldView; // Kamera i gehört zu Feld i (layoutCameras)
+      const depth = plan[i]?.depth ?? null;
       return {
         cell,
         monarch: cell.kind === 'player' ? (seats[cell.seat]?.monarch ?? null) : null,
         view: view ? { fromUnits: view.x / UNIT_PX, spanUnits: view.width / UNIT_PX } : null,
+        depth,
+        // Welt der Stufe dieser Zelle; mit dem heutigen Protokoll (B-176) ist nur die Stufe von `client.level` geladen
+        world: plan[i]?.ready && current?.biome.depth === depth ? current : null,
       };
     });
   }

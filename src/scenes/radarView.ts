@@ -1,6 +1,7 @@
 import Phaser from 'phaser';
 import { PLAYER_COLORS } from '../core/constants';
-import { radarMarkers, radarRect, type RadarKind, type RadarMarker, type RadarRect, type RadarView, type RadarWorld } from './radar';
+import type { World } from '../model/types';
+import { cellRadar, radarRect, type RadarFeed, type RadarKind, type RadarMarker, type RadarRect } from './radar';
 import type { Cell } from './layout';
 
 const COLORS: Record<Exclude<RadarKind, 'player'>, number> = {
@@ -13,11 +14,14 @@ const COLORS: Record<Exclude<RadarKind, 'player'>, number> = {
 const BACKGROUND = 0x000000;
 const FRAME = 0xffffff;
 
-/** Ein Feld, für das das HUD ein Radar zeigt: Zelle, Monarch des Feldes (`null` = Feld des Mitspielers), Kamera-Ausschnitt. */
-export interface RadarCell {
+/**
+ * Ein Feld, für das das HUD Radar und Werte zeigt: Zelle, Monarch des Feldes (`null` = Feld des Mitspielers),
+ * Kamera-Ausschnitt, Stufe der Zelle (`depth`) und die Welt dieser Stufe (`world`, `null` = noch nicht geladen).
+ */
+export interface RadarCell extends RadarFeed {
   cell: Cell;
-  monarch: number | null;
-  view: RadarView | null;
+  depth: number | null;
+  world: World | null;
 }
 
 /**
@@ -29,14 +33,14 @@ export class RadarLayer {
 
   constructor(private readonly scene: Phaser.Scene) {}
 
-  /** Zeichnet alle Felder; Felder ohne Kamera-Ausschnitt (Layout wechselt gerade) bleiben leer. */
-  draw(cells: readonly RadarCell[], world: RadarWorld): void {
+  /** Zeichnet alle Felder aus der Welt ihrer Stufe; Felder ohne Kamera-Ausschnitt (Layout wechselt) oder ohne geladene Stufe bleiben leer. */
+  draw(cells: readonly RadarCell[]): void {
     cells.forEach((c, i) => {
       const g = (this.graphics[i] ??= this.scene.add.graphics().setDepth(-1));
-      g.clear().setVisible(c.view !== null);
-      if (!c.view) return;
+      const model = cellRadar(c);
+      g.clear().setVisible(model !== null);
+      if (!model) return;
       const rect = radarRect(c.cell);
-      const model = radarMarkers(world, c.view, c.monarch);
       this.background(g, rect);
       for (const m of model.markers) this.marker(g, rect, m);
       this.window(g, rect, model.view);
