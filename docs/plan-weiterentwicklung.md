@@ -198,9 +198,9 @@ Stand 2026-10-03. Ziel: Auf dem zweiten Account laufen möglichst viele autonome
 | INF | F0 → F2 → F5 → GR4 → RL1 | RL1.1, RL1.3 (Checkliste abnehmen) |
 | REG | F1.1–F1.3 → **F1.4** → F1.5 … später BAL4 → BR1 → BR2 | F1.4, BAL4.2, BR1.2, BR2.2, P1 |
 | SIM | H1 → F3 → BAL1 → S1 → BAL2 → W1 → W2 → W3 → W4 → K1 → K2 → K3 → BAL3 | BAL3.1 (Bot-Profile) |
-| SRV | DBG1 → F4 → S2 → LT1 → W5 → K4 | LT1.3 (Messlauf am Pi) |
-| CLI | DBG2 → S5 → S4 → S3 → S7 → S6 → SO1 → W6 → K5 | S3.4, S4.3, S5.4, S6.4, S7.3, W6.4, K5.4 (Abnahmen am Gerät) |
-| PLAT | X1.1 (autonom, Audio-Abschnitt) → X1.2 (🧑 Xbox-Test) → X1.3 → GR6 → SO3 | X1.2 (Xbox-Test) |
+| SRV | DBG1 → F4 → S2 → LT1 → W5 → K4 | keine: LT1.3 (Messlauf am Pi) läuft in der Hardware-Bahn (11.6) |
+| CLI | DBG2 → S5 → S4 → S3 → S7 → S6 → SO1 → W6 → K5 | keine: die Abnahmen am Gerät (DBG2.3, S3.4, S4.3, S5.4, S6.4, S7.3, W6.4, K5.4) laufen in der Hardware-Bahn (11.6) |
+| PLAT | X1.1 (autonom, Audio-Abschnitt) → GR6 → SO3; X1.2 (🧑 Xbox-Test) und X1.3 laufen in der Hardware-Bahn (11.6) | keine (X1.2 sperrt die Bahn nicht) |
 | Asset-Schiene (einschiebbar, CLI/INF) | GR1 → GR2 → GR3 → GR5, SO2, SO4 | GR1.1, GR2.2, GR4.3, SO2.1, SO4.1 (Stil und Auswahl) |
 
 Die Asset-Schiene zählt nach Regel nicht als aktiver Sprint, teilt sich aber Dateien mit der CLI-Bahn (`src/scenes/worldRenderer.ts`): GR3 läuft nie gleichzeitig mit S4, S7, W6 oder K5.
@@ -226,10 +226,10 @@ Die Wellen sind keine Termine, sondern Reihenfolgen: Eine Bahn rückt vor, sobal
 ### 11.3 Was 🧑 hier priorisiert (Spur M, in dieser Reihenfolge)
 
 1. **Freigabe F0** (ein Satz „F0 freigegeben“): entsperrt alle parallelen Bahnen.
-2. **SP11.2 und X1.1** (Hardware, dauern; laufen im Hintergrund von allem anderen).
+2. **Hardware-Bahn (11.6)**, wann immer ein Gerät da ist: X1.2 (Xbox), LT1.3 (Pi), Abnahmen am TV oder Handy. Nichts wartet darauf; bis dahin gelten die angenommenen Werte.
 3. **F1.4 Workshop** (45 Minuten, sobald F1.1–F1.3 durch sind): entsperrt S1, S4, S5, BAL2.
 4. **Freigabe-Pakete** (Spec lesen und freigeben; jedes Paket entsperrt die nächste Welle): Paket 1 F2, F5, F3 · Paket 2 S5, S4, F4, S1 · Paket 3 S2, S3, S7, GR1, GR2, SO1 · Paket 4 S6, SO2–SO4, W1–W6, BAL2, BAL3.
-5. **Abnahmen am Gerät** (kurz, je Sprint): S5.4, S4.3, S7.3, S3.4, S6.4.
+5. **Abnahmen am Gerät** (kurz, je Sprint, Hardware-Bahn 11.6): DBG2.3, S5.4, S4.3, S7.3, S3.4, S6.4; sie blockieren weder Review noch nächsten Sprint.
 6. **Auswahl-Termine** Grafik und Sound (GR2.2, SO2.1, SO4.1), **Spieleabende** P1, BR1, BR2.
 
 ### 11.4 Startanweisungen für den zweiten Account (Spur A)
@@ -265,3 +265,30 @@ Auftrag 2 braucht keinen aktiven Sprint und keine Freigabe; Auftrag 1 aktiviert 
 - **Golden-Daten und Spielstand-Fixtures** ändert nur der Sprint, der gerade in der Bahn SIM/INF läuft (kein zweiter parallel).
 - **Review-Sessions** laufen nie im selben Lauf wie die Umsetzung und nie vom selben Agenten.
 - **Engpass CLI:** Die Bahn CLI hat die meisten Sprints (S5, S4, S3, S7, S6, SO1, W6, K5); Asset-Sprints (GR3, GR5, SO2, SO4) schieben sich nur dazwischen, wenn die Datei-Überschneidung (Renderer) es erlaubt.
+
+### 11.6 Hardware-Bahn: Geräte entkoppelt (Beschluss 🧑 2026-10-03)
+
+Xbox, TV, Pi, Handy und Controller stehen nicht immer bereit. Deshalb gilt (`arbeitsweise.md` › Hardware entkoppelt): Die App wird mit den **angenommenen Werten** unten gebaut, Hardware-Sessions sind keine Abhängigkeit einer App-Session oder eines Reviews und werden erledigt, sobald das Gerät da ist. Weicht ein Messwert ab, entsteht ein Ticket in der passenden Domäne; die Annahme wird hier durch den Messwert (mit Datum und Session) ersetzt.
+
+| Gerät | Angenommen bis zur Validierung | Quelle der Annahme | Validiert in |
+|---|---|---|---|
+| Xbox, Edge, Controller | Gamepad API mit `mapping: 'standard'` (17 Tasten, 4 Achsen) über HTTP im Heimnetz, ohne HTTPS; B ist Edge-Zurück und bleibt unbelegt; Belegung wie Q06 | `CLAUDE.md`, README › HTTPS, Q06 | X1.2 (B-006), Auswertung X1.3 |
+| Xbox, Audio | Ton startet erst nach der ersten Eingabe (Autoplay gesperrt, Entsperren per Geste); Format **mp3** mit Fallback; Latenz unkritisch für Effekte | Annahme (Chromium-Verhalten), B-166 | X1.2 (B-166), Auswertung X1.3; SO1 baut damit |
+| TV (Couch-Abstand) | Schriftgrößen und Kontrast aus `rules/bedienung.md` § 2 (28 px Vollbild, 24 px Viertel, Rest Vorschlag bis F1.4) sind lesbar | Q03, `bedienung.md` | S4.3, S5.4, S7.3, S3.4, S6.4, W6.4, K5.4 |
+| Handy, Tablet | Touch-Overlay (`src/input/touchInput.ts`, am PC per `?touch=1`) ist bedienbar; Chromium-Browser | Ist-Stand Code | DBG2.3, Abnahmen der CLI-Sprints |
+| Heim-WLAN | Latenz Eingabe → Bild im Mittel ≤ 100 ms; Ereignis-Budget 6 KB/s je Client | Q04, Q08, `bedienung.md` § 3, F4 | Messung am Gerät mit B-181 |
+| Raspberry Pi 3 | 64-Bit-Betriebssystem, Image `ghcr.io/tenvan/k3c-family`; Tick-Dauer p99 < 10 ms bei 2 Räumen × 3 Spielern | Q07, B-042, `rules/zielkorridore.md` § 1 | LT1.3 (Messlauf), Benchmark in `engine/sim` bis dahin |
+
+**Hardware-Sessions** (Spur M, je nach Gerät; Reihenfolge egal, keine wartet auf eine andere außer der eigenen Vorbereitung):
+
+| Session | Gerät | Machbar, sobald | Blockiert |
+|---|---|---|---|
+| X1.2 Gamepad- und Audio-Test | Xbox | X1.1 (Audio-Abschnitt der Testseite) gemergt | nichts; X1.3 wertet aus, SO1 baut mit der Annahme |
+| DBG2.3 Abnahme Debug-Overlay | PC, Handy, Controller | DBG2.2 gemergt | nichts (DBG2.4 hängt nicht mehr daran) |
+| S5.4 Abnahme Optionen und Pause | TV oder PC | S5.3 gemergt | nichts (S5.5 hängt nicht mehr daran) |
+| S4.3 Abnahme Stufen und Viertel | TV | S4.2 gemergt | nichts (S4.4 hängt nicht mehr daran) |
+| S7.3 Abnahme Reittier | TV | S7.2 gemergt | nichts (S7.4 hängt nicht mehr daran) |
+| S3.4, S6.4, W6.4, K5.4 Abnahmen | TV | jeweilige Umsetzung gemergt | nichts; die Session-Dateien werden beim Bereitmachen nach dieser Regel geschrieben |
+| LT1.3 Messlauf | Pi | LT1-Werkzeug gemergt | nichts; F4 und S2 bauen mit dem Benchmark |
+
+Folgen für die Bahnen (11.1): Die PLAT-Bahn ist nach **X1.1** frei (GR6, SO3 warten nicht auf den Xbox-Test); in der CLI-Bahn rückt der nächste Sprint nach dem Review vor, auch wenn die Abnahme am Gerät noch offen ist.
