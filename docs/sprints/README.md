@@ -14,6 +14,15 @@ Reihenfolge in Wellen, Bahnen je Domäne und Zuordnung Mensch/autonom (zwei Acco
 | F1 | REG 🧑 | Zielkorridore und Bedienungsregeln | `docs/rules/zielkorridore.md` und `docs/rules/bedienung.md` mit Datum der Bestätigung durch 🧑 | `aktiv/F1-zielkorridore-regeln/` |
 | F2 | INF | Golden-Ablauf, Spielstand-Migration und Determinismus | `task golden:update` in `task --list`, Abschnitte in `docs/arbeitsweise.md`, ein grüner arm64-Job in der CI | `aktiv/F2-golden-migration-determinismus/` |
 
+## Offen am Gerät
+
+Hardware-Sessions (`Agent: Mensch`) aus Sprints, deren Review schon abgeschlossen ist; erledigt, sobald das Gerät da ist
+(`../arbeitsweise.md` › Hardware entkoppelt). Bis dahin gelten die angenommenen Werte aus
+[`../plan-weiterentwicklung.md`](../plan-weiterentwicklung.md) § 11.6, dort steht auch die Liste aller Hardware-Sessions.
+
+| Session | Gerät | Kriterium (angenommen) | Ordner |
+|---|---|---|---|
+
 ## Geplant (in dieser Reihenfolge)
 
 Der Weg zur Go-Engine ([Entscheidung 001](../decisions/001-server-engine-go.md)). Nach SP08 spielt man wieder am TV,
