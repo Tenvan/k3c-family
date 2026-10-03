@@ -1,6 +1,7 @@
 import Phaser from 'phaser';
 import { toggleFullscreen as requestFullscreenToggle } from '../core/fullscreen';
 import { installPageChrome } from '../core/shell';
+import { audioRows, startAudioProbe, type AudioReport } from './audioProbe';
 
 /**
  * Gamepad-Testseite für Edge auf der Xbox (Schritt 0 der Roadmap).
@@ -9,7 +10,7 @@ import { installPageChrome } from '../core/shell';
 
 const BUTTON_NAMES = ['A', 'B', 'X', 'Y', 'LB', 'RB', 'LT', 'RT', 'View', 'Menu', 'LS', 'RS', '↑', '↓', '←', '→', 'Xbox'];
 const AXIS_NAMES = ['LS X', 'LS Y', 'RS X', 'RS Y'];
-const BTN = { Y: 3, X: 2, VIEW: 8, MENU: 9 } as const;
+const BTN = { A: 0, Y: 3, X: 2, VIEW: 8, MENU: 9 } as const;
 const PERF_STEPS = [100, 300, 600, 1000, 2000, 4000];
 const PERF_STEP_SECONDS = 4;
 
@@ -59,6 +60,7 @@ const report = {
   rumble: [] as { pad: number; ok: boolean; error?: string }[],
   perf: [] as PerfResult[],
   perfRenderer: '',
+  audio: null as AudioReport | null, // B-166: null ohne AudioContext oder solange der Probelauf läuft
   log: [] as string[],
 };
 
@@ -97,10 +99,20 @@ function renderEnv(): void {
     ['Browser', report.userAgent],
   ];
   if (report.gamepadInputEmulation !== undefined) rows.splice(3, 0, ['gamepadInputEmulation', report.gamepadInputEmulation]);
-  $('env').innerHTML = rows
+  renderRows('env', rows);
+}
+
+function renderRows(id: string, rows: [string, string, boolean?][]): void {
+  $(id).innerHTML = rows
     .map(([k, v, ok]) => `<dt>${k}</dt><dd class="${ok === undefined ? '' : ok ? 'ok' : 'bad'}">${escapeHtml(v)}</dd>`)
     .join('');
 }
+
+// ---------- Audio (B-166): Probelauf beim Laden, Gesten per Controller A, Taste oder Klick ----------
+const audio = startAudioProbe(() => {
+  report.audio = audio.report();
+  renderRows('audio', audioRows(report.audio));
+});
 
 function escapeHtml(s: string): string {
   return s.replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' })[c]!);
@@ -110,6 +122,7 @@ addEventListener('keydown', (e) => {
   const entry = `key="${e.key}" code="${e.code}" keyCode=${e.keyCode}`;
   if (!report.keyEvents.includes(entry)) report.keyEvents.push(entry);
   log(`Taste: ${entry}`);
+  void audio.gesture('taste');
 });
 document.addEventListener('visibilitychange', () => {
   report.visibilityChanges++;
@@ -146,6 +159,7 @@ async function rumble(): Promise<void> {
 
 async function sendReport(): Promise<void> {
   report.viewport = `${innerWidth}x${innerHeight}`;
+  report.audio = audio.report(); // Latenz und Zustand zum Zeitpunkt des Sendens
   statusEl.textContent = 'Sende …';
   try {
     const res = await fetch('/api/report', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(report) });
@@ -163,6 +177,7 @@ $('btn-fullscreen').addEventListener('click', () => toggleFullscreen('klick'));
 $('btn-rumble').addEventListener('click', rumble);
 $('btn-report').addEventListener('click', sendReport);
 $('btn-perf').addEventListener('click', () => togglePerf());
+$('btn-audio').addEventListener('click', () => void audio.playTone());
 
 // ---------- Controller-Anzeige ----------
 const previousPressed = new Map<number, Set<number>>();
@@ -200,20 +215,26 @@ function pollPads(): void {
     const released = (i: number) => !pressed.has(i) && before.has(i) && !comboUsed.has(pad.index);
     for (const i of pressed) if (!before.has(i)) log(`#${pad.index} ${BUTTON_NAMES[i] ?? `Taste ${i}`} gedrückt`);
 
-    if (perfGame) {
-      if (released(BTN.VIEW)) togglePerf();
-    } else {
-      if (justPressed(BTN.Y)) void sendReport();
-      if (justPressed(BTN.X)) void rumble();
-      if (released(BTN.VIEW)) togglePerf();
-      if (released(BTN.MENU)) void toggleFullscreen('controller-menu');
-    }
+    padActions(justPressed, released);
     if (!pressed.has(BTN.VIEW) && !pressed.has(BTN.MENU)) comboUsed.delete(pad.index);
     previousPressed.set(pad.index, pressed);
   }
 
   if (!perfGame) renderPads(pads);
   requestAnimationFrame(pollPads);
+}
+
+// Aktionen der Controller-Tasten; B (Button 1) bleibt unbelegt.
+function padActions(justPressed: (i: number) => boolean, released: (i: number) => boolean): void {
+  if (perfGame) {
+    if (released(BTN.VIEW)) togglePerf();
+    return;
+  }
+  if (justPressed(BTN.A)) void audio.gesture('controller');
+  if (justPressed(BTN.Y)) void sendReport();
+  if (justPressed(BTN.X)) void rumble();
+  if (released(BTN.VIEW)) togglePerf();
+  if (released(BTN.MENU)) void toggleFullscreen('controller-menu');
 }
 
 function renderPads(pads: Gamepad[]): void {
@@ -326,6 +347,7 @@ installPageChrome({
   },
 });
 renderEnv();
+renderRows('audio', [['Audio', 'Probelauf läuft …']]);
 log(report.gamepadApi ? 'Bereit. Taste auf einem Controller drücken.' : 'Gamepad API nicht verfügbar!');
 requestAnimationFrame(pollPads);
 

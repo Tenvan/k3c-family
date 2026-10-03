@@ -80,9 +80,11 @@ Einstellungen per Umgebung: `K3C_HTTP_PORT`,
 
 1. `task serve` am PC starten.
 2. Auf der Xbox in Edge `http://<PC-IP>:8080/` öffnen und die Kachel **Gamepad-Test** wählen.
-3. Beide Controller verbinden, auf jedem alle Tasten einmal drücken, auch **B** und die Sticks.
-4. **Vollbild** anklicken, dann **View** für den FPS-Test drücken (dauert ca. 30 s, danach View = zurück).
-5. **Y** drücken. Der Bericht landet am PC in `reports/gamepad-*.json`.
+3. Vor der ersten Taste den Abschnitt **Audio** ablesen. Dann **A** auf einem Controller drücken und den Button
+   **Audio entsperren und Testton** anklicken; notieren, ob der Ton hörbar war (ja/nein). **Y** sendet den Bericht.
+4. Beide Controller verbinden, auf jedem alle Tasten einmal drücken, auch **B** und die Sticks.
+5. **Vollbild** anklicken, dann **View** für den FPS-Test drücken (dauert ca. 30 s, danach View = zurück).
+6. **Y** drücken. Der Bericht landet am PC in `reports/gamepad-*.json`.
 
 ### HTTPS (nur falls nötig)
 

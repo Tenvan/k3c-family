@@ -1,11 +1,11 @@
 # X1 · PLAT · Xbox-Machbarkeit
 
-- **Status:** geplant
+- **Status:** aktiv
 - **Domäne:** PLAT
 - **Reife:** bereit
 - **Einschiebbar:** ja
 - **Tickets:** B-006, B-026, B-166
-- **Start-Commit:** –
+- **Start-Commit:** 6c8ba2a
 - **Spec:** freigegeben
 - **Revision:** 1
 - **Freigabe:** 2026-10-03, Chat (Ralf), Revision 1; umfasst B-006, B-026, B-166 und die Domänen-Ausnahme
@@ -58,7 +58,7 @@ keine
 
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
-| X1.1 | `X1.1-audio-testseite.md` | Umsetzung | autonom | offen |
+| X1.1 | `X1.1-audio-testseite.md` | Umsetzung | autonom | fertig |
 | X1.2 | `X1.2-xbox-test.md` | Workshop | Mensch | offen |
 | X1.3 | `X1.3-auswertung.md` | Umsetzung | autonom | offen |
 
