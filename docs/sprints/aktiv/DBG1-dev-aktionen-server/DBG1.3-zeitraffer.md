@@ -41,7 +41,7 @@ Bedienung im Client (DBG2), Faktoren über 8, Zeitraffer je Gerät, Pause oder R
 
 ## Schritte
 
-1. Branch anlegen und pushen (`git ls-remote --heads origin dbg1/3-zeitraffer` muss leer sein), `Status: in Arbeit`. DBG1.2 muss auf `main` sein.
+1. Branch anlegen und pushen (`git ls-remote --heads origin dbg1/3-zeitraffer` muss leer sein), `Status: in Arbeit`. DBG1.2 muss auf `develop` sein.
 2. `Peer.State` um `timescale int` erweitern und überall nachziehen (siehe Kontext); `stateOf(w, timescale)` setzt `devTimescale`; `pushState` übergibt den Faktor (nur im Dev-Mode, mindestens 1). `go build ./...` und die bestehenden Tests laufen lassen (nur Signatur geändert, Verhalten gleich).
 3. `Room.timescale` und die Auswertung in `Tick`: `factor` Schritte `StepIsland` je Tick, `beforeStep` und `tick++` einmal. `Dev`: Fall `timescale` (Faktor aus der Liste 1, 2, 4, 8, sonst `ErrBadRequest`), Log-Feld `faktor`. `afterDisconnect` setzt den Faktor auf 1 (mit Log), `noteTick` nennt den Faktor.
 4. Beispiel `s2c-snapshot-delta-timescale.json` schreiben; `docs/protocol.md` ergänzen: Aktion `timescale` (Faktoren, ganzer Raum, Ende bei Pause), Feld `devTimescale` (nur Dev-Mode, immer vorhanden), Hinweis zu `events` im Zeitraffer, Hinweis zum Tick-Budget.

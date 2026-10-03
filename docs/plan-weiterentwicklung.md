@@ -243,7 +243,7 @@ Lies CLAUDE.md und docs/arbeitsweise.md. Lies docs/sprints/README.md (Fahrplan) 
 1. Suche in den aktiven Sprints die erste Session mit Status offen, Agent autonom und erledigten Abhängigkeiten, deren Branch (Feld Branch der Session-Datei) noch nicht auf origin existiert (git ls-remote --heads origin <Branch>).
 2. Gibt es keine: Nimm aus docs/sprints/geplant/ den ersten Sprint in der Reihenfolge des Fahrplans mit Spec freigegeben, Reife bereit, erledigten Voraussetzungen (Plan, Abschnitt 11.2) und einer Domäne ohne aktiven Sprint. Aktiviere ihn nach docs/arbeitsweise.md (git mv nach docs/sprints/aktiv/, Status aktiv, Fahrplan anpassen) und nimm dessen erste autonome Session.
 3. Gibt es auch das nicht: nichts tun und melden, welche Freigabe, welches Bereit-machen oder welche Mensch-Session fehlt.
-4. Führe genau die gefundene Session nach docs/arbeitsweise.md, Abschnitt Autonomer Ablauf, aus. Vor dem PR: git fetch und git rebase origin/main. PR öffnen, nicht mergen.
+4. Führe genau die gefundene Session nach docs/arbeitsweise.md, Abschnitt Autonomer Ablauf, aus. Vor dem PR: git fetch und git rebase origin/develop. PR öffnen, nicht mergen.
 ```
 
 **Auftrag 2: Einen Sprint bereit machen** (nur wenn ein Sprint `Reife: Entwurf` hat und als Nächstes gebraucht wird; `<ID>` durch die Sprint-Nummer ersetzen, z. B. `F4`; Reihenfolge der Sprints: F4, S5, S4, S1, S2, BAL1, GR1, W1):
@@ -261,7 +261,7 @@ Auftrag 2 braucht keinen aktiven Sprint und keine Freigabe; Auftrag 1 aktiviert 
 
 - **Zuständigkeit:** Spur M ändert keine Dateien eines Sprints, der gerade in Spur A läuft, außer Ergebnis-Einträge der 🧑-Sessions.
 - **Merge-Reihenfolge:** 🧑 mergt PRs der Spur A in der Reihenfolge der Bahn (Abhängigkeit), nicht nach Eingang.
-- **Gemeinsame Dateien** (`docs/backlog/README.md`, `docs/sprints/README.md`, `docs/roadmap.md`): Eine Session ändert sie erst am Ende, vor dem PR `git rebase origin/main`; Konflikte löst der Agent, der zuletzt rebased.
+- **Gemeinsame Dateien** (`docs/backlog/README.md`, `docs/sprints/README.md`, `docs/roadmap.md`): Eine Session ändert sie erst am Ende, vor dem PR `git rebase origin/develop`; Konflikte löst der Agent, der zuletzt rebased.
 - **Golden-Daten und Spielstand-Fixtures** ändert nur der Sprint, der gerade in der Bahn SIM/INF läuft (kein zweiter parallel).
 - **Review-Sessions** laufen nie im selben Lauf wie die Umsetzung und nie vom selben Agenten.
 - **Engpass CLI:** Die Bahn CLI hat die meisten Sprints (S5, S4, S3, S7, S6, SO1, W6, K5); Asset-Sprints (GR3, GR5, SO2, SO4) schieben sich nur dazwischen, wenn die Datei-Überschneidung (Renderer) es erlaubt.
@@ -301,7 +301,7 @@ Für Sessions hier, wenn der aktuelle Stand unbekannt ist. **Prompt M0 immer zue
 
 ```text
 Lies CLAUDE.md, docs/arbeitsweise.md, docs/sprints/README.md (Fahrplan), alle docs/sprints/aktiv/*/README.md und docs/plan-weiterentwicklung.md, Abschnitt 11.
-Ermittle den Stand per git fetch, git log origin/main und gh pr list. Ändere keine Dateien.
+Ermittle den Stand per git fetch, git log origin/develop und gh pr list. Ändere keine Dateien.
 Melde kurz:
 1. Offene PRs der Spur A in der Merge-Reihenfolge der Bahnen (11.1, 11.5), je PR: Sprint/Session, Review erledigt ja/nein, mergebar.
 2. Was auf mich wartet, in der Priorität von 11.3: Freigaben (Sprints mit Reife bereit und Spec Entwurf), Workshops, Mensch-Sessions mit erledigten Abhängigkeiten, Hardware-Sessions aus 11.6, deren Vorbereitung gemergt ist (getrennt nach Gerät).
