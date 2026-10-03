@@ -31,6 +31,8 @@ const (
 // Status ist der Zustand eines Dienstes für MCP und Oberfläche.
 type Status struct {
 	Name      string    `json:"name"`
+	Desc      string    `json:"description"`
+	Tags      []string  `json:"tags,omitempty"`
 	Port      int       `json:"port"`
 	Health    string    `json:"health"`
 	Log       string    `json:"log"` // Name unter logs/ (leer: kein Log); die Oberfläche zeigt dann keinen Log-Kasten
@@ -164,7 +166,7 @@ func New(list []Service, opts Options) *Controller {
 	opts.defaults()
 	c := &Controller{opts: opts}
 	for _, s := range list {
-		c.units = append(c.units, &unit{svc: s, st: Status{Name: s.Name, Port: s.Port, Health: s.HealthURL(), Log: s.Log, State: Stopped}})
+		c.units = append(c.units, &unit{svc: s, st: Status{Name: s.Name, Desc: s.Description, Tags: s.Tags, Port: s.Port, Health: s.HealthURL(), Log: s.Log, State: Stopped}})
 	}
 	return c
 }

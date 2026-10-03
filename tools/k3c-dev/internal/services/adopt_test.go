@@ -18,16 +18,16 @@ import (
 func TestUebernahmeUndAblehnungen(t *testing.T) {
 	f := &fake{listenPID: 4711}
 	f.healthy.Store(true)
-	c := testController(f, nil, svc("Heimnetz", true))
+	c := testController(f, nil, svc("Spielserver", true))
 	c.Adopt(context.Background())
 	st := c.Statuses()[0]
 	if st.State != Adopted || st.PID != 4711 || st.StartedAt.Hour() != 9 {
 		t.Fatalf("Übernahme: %+v", st)
 	}
-	if _, err := c.Start(context.Background(), "Heimnetz"); err == nil || !strings.Contains(err.Error(), "läuft bereits") {
+	if _, err := c.Start(context.Background(), "Spielserver"); err == nil || !strings.Contains(err.Error(), "läuft bereits") {
 		t.Errorf("Start eines übernommenen: %v", err)
 	}
-	if _, err := c.Restart(context.Background(), "Heimnetz"); err == nil {
+	if _, err := c.Restart(context.Background(), "Spielserver"); err == nil {
 		t.Error("Neustart eines übernommenen ohne Fehler")
 	}
 }
@@ -36,14 +36,14 @@ func TestUebernommenStoppNurMitForce(t *testing.T) {
 	f := &fake{listenPID: 4711}
 	f.healthy.Store(true)
 	f.busy.Store(true)
-	c := testController(f, nil, svc("Heimnetz", true))
+	c := testController(f, nil, svc("Spielserver", true))
 	c.Adopt(context.Background())
 	c.StopAll(context.Background()) // übernommene bleiben
-	if _, err := c.Stop(context.Background(), "Heimnetz", false); err == nil || !strings.Contains(err.Error(), "nur mit force") ||
+	if _, err := c.Stop(context.Background(), "Spielserver", false); err == nil || !strings.Contains(err.Error(), "nur mit force") ||
 		c.Statuses()[0].State != Adopted || len(f.killed) != 0 {
 		t.Errorf("Stopp ohne force: %v, %+v, getötet %v", err, c.Statuses()[0], f.killed)
 	}
-	st, err := c.Stop(context.Background(), "Heimnetz", true)
+	st, err := c.Stop(context.Background(), "Spielserver", true)
 	if err != nil || st.State != Stopped || len(f.killed) != 1 || f.killed[0] != 4711 || f.count() != 0 {
 		t.Errorf("Stopp mit force: %+v, %v, getötet %v", st, err, f.killed)
 	}
@@ -52,7 +52,7 @@ func TestUebernommenStoppNurMitForce(t *testing.T) {
 func TestUebernommenerDienstVerschwindet(t *testing.T) {
 	f := &fake{listenPID: 4711}
 	f.healthy.Store(true)
-	c := testController(f, nil, svc("Heimnetz", true))
+	c := testController(f, nil, svc("Spielserver", true))
 	c.Adopt(context.Background())
 	f.healthy.Store(false)
 	waitFor(t, "gestoppt", func() bool { return c.Statuses()[0].State == Stopped })
@@ -169,7 +169,7 @@ func adopted(t *testing.T, f *fake) *Controller {
 	t.Helper()
 	f.healthy.Store(true)
 	f.busy.Store(true)
-	c := testController(f, nil, svc("Heimnetz", true))
+	c := testController(f, nil, svc("Spielserver", true))
 	c.opts.StopTimeout = 100 * time.Millisecond
 	c.Adopt(context.Background())
 	return c
@@ -179,11 +179,11 @@ func TestUebernommenVeraltetePIDWirdNichtBeendet(t *testing.T) {
 	f := &fake{listenPID: 4711}
 	c := adopted(t, f)
 	f.listenPID = 5000 // von Hand neu gestartet: jetzt lauscht ein anderer Prozess
-	if _, err := c.Stop(context.Background(), "Heimnetz", true); err == nil || !strings.Contains(err.Error(), "PID 5000 statt 4711") || len(f.killed) != 0 {
+	if _, err := c.Stop(context.Background(), "Spielserver", true); err == nil || !strings.Contains(err.Error(), "PID 5000 statt 4711") || len(f.killed) != 0 {
 		t.Errorf("veraltete PID: %v, getötet %v", err, f.killed)
 	}
 	f.busy.Store(false) // schon weg: nichts zu beenden
-	if st, err := c.Stop(context.Background(), "Heimnetz", true); err != nil || st.State != Stopped || len(f.killed) != 0 {
+	if st, err := c.Stop(context.Background(), "Spielserver", true); err != nil || st.State != Stopped || len(f.killed) != 0 {
 		t.Errorf("schon beendet: %+v, %v, getötet %v", st, err, f.killed)
 	}
 }
@@ -192,7 +192,7 @@ func TestUebernommenLebtNachKillWeiter(t *testing.T) {
 	f := &fake{listenPID: 4711}
 	c := adopted(t, f)
 	f.immortal.Store(true)
-	st, err := c.Stop(context.Background(), "Heimnetz", true)
+	st, err := c.Stop(context.Background(), "Spielserver", true)
 	if err == nil || !strings.Contains(err.Error(), "läuft nach dem Beenden weiter") || st.State != Adopted || st.PID != 4711 {
 		t.Errorf("Kill ohne Wirkung: %+v, %v", st, err)
 	}
