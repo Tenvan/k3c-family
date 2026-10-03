@@ -1,6 +1,6 @@
 # F5 · INF · Doku-Drift, Version und Landing-Kacheln
 
-- **Status:** aktiv
+- **Status:** erledigt
 - **Domäne:** INF
 - **Reife:** bereit
 - **Einschiebbar:** nein
@@ -62,8 +62,10 @@ Entschieden am 2026-10-03: Es bleiben nur Kacheln mit Parametern, die die Lobby 
 | F5.1 | `F5.1-doku-drift.md` | Umsetzung | autonom | fertig |
 | F5.2 | `F5.2-version-cache.md` | Umsetzung | autonom | fertig |
 | F5.3 | `F5.3-landing-kacheln.md` | Umsetzung | autonom | fertig |
-| F5.4 | `F5.4-review.md` | Review | autonom | in Arbeit |
+| F5.4 | `F5.4-review.md` | Review | autonom | fertig |
 
 ## Abnahme
 
-–
+- 2026-10-03, Review F5.4: AC-01, AC-02 (F5.1), AC-03 bis AC-05 (F5.2), AC-06 (F5.3) belegt in den Session-Ergebnissen; AC-04 Optik am TV angenommen, Validierung offen (🧑); `task check` und `task check:go` grün (`-race` lokal ohne C-Compiler, die CI prüft es).
+- Keine schweren Befunde; `/api/health` behält `ok: true`, keine Seitenregel berührt, Version enthält kein Geheimnis. Beobachtung ohne Befund: Fußzeile zeigt „Client … · Server …“ statt der Spec-Reihenfolge (nur Reihenfolge, beide Versionen und Abweichung belegt). Keine neuen Tickets; B-141 und B-079 archiviert.
+- Version: v0.6.0 vorgeschlagen (Minor: `/api/health` liefert die Version, Landingpage markiert Versionsabweichung, Kacheln führen in die Lobby; gemeinsam mit F4, für das v0.6.0 schon vorgeschlagen ist, solange es nicht gesetzt ist); gesetzt erst nach Bestätigung durch 🧑.
