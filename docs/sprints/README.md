@@ -11,6 +11,7 @@ Reihenfolge in Wellen, Bahnen je Domäne und Zuordnung Mensch/autonom (zwei Acco
 | Sprint | Domäne | Thema | Am Ende sichtbar | Ordner |
 |---|---|---|---|---|
 | F4 | SRV | Feedback-Ereignisse im Protokoll und Pi-Betrieb | Benchmark mit Bytes je Tick, README-Abschnitt zum Backup, Test „Restore ohne Berechtigung abgelehnt“ | `aktiv/F4-feedback-events-protokoll-pi/` |
+| GR6 | PLAT | Credits-Seite | Seite mit allen Credits auf der Landingpage, roter Test bei fehlendem Eintrag | `aktiv/GR6-credits-seite/` |
 
 ## Offen am Gerät
 
@@ -66,7 +67,6 @@ dann über den Go-Server mit mehreren Räumen und gemischten Spielern.
 | GR3 | CLI | Grafik im Renderer | Entwurf | `geplant/GR3-grafik-renderer/` |
 | GR4 | INF | Atlas und Lade-Szene | bereit | `geplant/GR4-atlas-ladeszene/` |
 | GR5 | CLI | Juice: Treffer, Screenshake, Münzen | Entwurf | `geplant/GR5-juice/` |
-| GR6 | PLAT | Credits-Seite | bereit | `geplant/GR6-credits-seite/` |
 | RL1 | INF | Release-Checkliste | bereit | `geplant/RL1-release-checkliste/` |
 | SO1 | CLI | Audio-Kern | bereit | `geplant/SO1-audio-kern/` |
 | SO2 | CLI | SFX-Katalog und Einbau | Entwurf | `geplant/SO2-sfx-katalog/` |
