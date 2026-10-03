@@ -111,6 +111,11 @@ tasks:
     cmds:
       - go test ./...
 
+  saves:backup:
+    desc: "Spielstände sichern (B-142): task saves:backup -- <ziel>; Quelle K3C_SAVES_DIR, sonst /data/saves im Compose-Dienst k3c"
+    cmds:
+      - sh scripts/backup-saves.sh {{.CLI_ARGS}}
+
   golden:update:
     desc: "testdata/golden/ aus dem Ist-Zustand neu schreiben (B-137): nur bei gewollter Regel- oder Wertänderung, Begründung in den Commit-Text, die Review-Session prüft den Diff; rng.json bleibt"
     deps: [tmp]
