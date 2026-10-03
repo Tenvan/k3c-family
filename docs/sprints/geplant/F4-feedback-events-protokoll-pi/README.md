@@ -6,9 +6,9 @@
 - **Einschiebbar:** nein
 - **Tickets:** B-140, B-142, B-143
 - **Start-Commit:** –
-- **Spec:** Entwurf
+- **Spec:** freigegeben
 - **Revision:** 1
-- **Freigabe:** –
+- **Freigabe:** 2026-10-03, Chat (Ralf), Revision 1; umfasst B-140, B-142, B-143; bestätigt die Auslegung „Token = `K3C_STATUS_TOKEN`“ (F4.3)
 
 ## Ausgangslage
 
@@ -54,7 +54,7 @@ Budget überschritten → Ereignisse niedriger Priorität werden im Server gekü
 
 ## Offene Fragen
 
-Q08, Q17 und Q18 sind entschieden (2026-10-03, `docs/fragenkatalog.md` › Beschlüsse): Budget ≤ 200 Byte je Tick und Client im Mittel (bei 30 Hz = 6 KB/s), im Delta mitgesendet; Restore nur mit Token, Report und Client-Log nur Limits und Rotation, kein Port-Forwarding (dokumentieren); Backup-Ziel USB-Stick am Pi, Restore-Probe einmal durchspielen (🧑 am Pi). Offen: Als Token gilt das vorhandene `K3C_STATUS_TOKEN` (Auslegung in F4.3), das bestätigt 🧑 mit der Freigabe.
+Q08, Q17 und Q18 sind entschieden (2026-10-03, `docs/fragenkatalog.md` › Beschlüsse): Budget ≤ 200 Byte je Tick und Client im Mittel (bei 30 Hz = 6 KB/s), im Delta mitgesendet; Restore nur mit Token, Report und Client-Log nur Limits und Rotation, kein Port-Forwarding (dokumentieren); Backup-Ziel USB-Stick am Pi, Restore-Probe einmal durchspielen (🧑 am Pi). Als Token gilt das vorhandene `K3C_STATUS_TOKEN` (Auslegung in F4.3, von 🧑 mit der Freigabe bestätigt).
 
 ## Sessions
 
