@@ -1,5 +1,5 @@
 {
-  "notes": "Bauplätze relativ zur Hub-Mitte (Units). Der Hub ist 100 Units breit (±50). fromDepth: erst ab dieser Tiefe; needsDeeper: nur wenn es eine tiefere Stufe gibt. startTroops: damit die erste Nacht mit Mauern zu schaffen ist (vorläufiges Balancing). travel: alle Spieler so lange am Tiefen-Eingang bzw. an der Treppe stehen = Stufe wechseln.",
+  "notes": "Bauplätze relativ zur Hub-Mitte (Units). Der Hub ist 100 Units breit (±50). fromDepth: erst ab dieser Tiefe; needsDeeper: nur wenn es eine tiefere Stufe gibt. islandStartStock: Vorrat einer neuen Insel (B-177; Spielstände bringen ihren eigenen mit), Startwert 100 Holz = zwei Mauern und ein Turm. startTroops: damit die erste Nacht mit Mauern zu schaffen ist (vorläufiges Balancing). travel: alle Spieler so lange am Tiefen-Eingang bzw. an der Treppe stehen = Stufe wechseln.",
   "sites": [
     { "kind": "wall", "offsetUnits": -44 },
     { "kind": "tower", "offsetUnits": -36 },
@@ -12,6 +12,7 @@
   "islandSites": [
     { "kind": "storage", "offsetUnits": -26 }
   ],
+  "islandStartStock": { "wood": 100 },
   "castleRadiusUnits": 5,
   "homeRadiusUnits": 12,
   "startTroops": {

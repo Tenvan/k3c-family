@@ -11,6 +11,14 @@ const islandSpeed = 60 // schneller Zyklus: Tag, Dämmerung und Nacht in Sekunde
 
 func mustIsland(t *testing.T, seed string, depths []int) *Island {
 	t.Helper()
+	isl := newIsland(t, seed, depths)
+	*isl.Stock = Stock{} // die Tests rechnen mit leerem Vorrat; den Startvorrat prüft island_start_test.go
+	return isl
+}
+
+// newIsland ist CreateIsland mit Startvorrat, wie ein neues Spiel.
+func newIsland(t *testing.T, seed string, depths []int) *Island {
+	t.Helper()
 	isl, err := CreateIsland(seed, depths, islandSpeed)
 	if err != nil {
 		t.Fatal(err)

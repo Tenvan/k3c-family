@@ -74,7 +74,7 @@ Die Skills kommen **erst nach dem Vertical Slice**.
 
 ## Gebäude (`data/buildings.json`)
 
-Der Hub hat **Ausbaustufen 1 bis 5** (Holz, Stein, Kupfer, Eisen, Kristall); jede schaltet Mauer- und Turm-Stufe und neue Gebäude frei. Gebäude: Burg/Thron (Hub-Kern, Basislager), Mauer und Turm (Stufen 1–5, Turm Stufe 5 = Zaubertum), Tor, Werkstatt, Farm, Kaserne, Lager, Taverne, Heilplatz, Schmiede, Rüstkammer, Treppe hoch/runter (je 1 pro Hub). Plätze sind fest je Gebäude (Daten), gebaut wird von Bauern; Material liegt im Insel-Vorrat mit Maximum (Burg + Lager), Arbeiter bringen es zum Lager; Holz wächst über Farm-Plantagen nach, Stein bis Kristall kommen unendlich aus Adern mit begrenzter Abbaurate. Liste, Kosten, HP und Wirkung: `rules/materialien-gebaeude.md`. Werte sind Startwerte (B-015).
+Der Hub hat **Ausbaustufen 1 bis 5** (Holz, Stein, Kupfer, Eisen, Kristall); jede schaltet Mauer- und Turm-Stufe und neue Gebäude frei. Gebäude: Burg/Thron (Hub-Kern, Basislager), Mauer und Turm (Stufen 1–5, Turm Stufe 5 = Zaubertum), Tor, Werkstatt, Farm, Kaserne, Lager, Taverne, Heilplatz, Schmiede, Rüstkammer, Treppe hoch/runter (je 1 pro Hub). Plätze sind fest je Gebäude (Daten), gebaut wird von Bauern; Material liegt im Insel-Vorrat mit Maximum (Burg + Lager), Arbeiter bringen es zum Lager; Holz wächst über Farm-Plantagen nach, Stein bis Kristall kommen unendlich aus Adern mit begrenzter Abbaurate. Liste, Kosten, HP und Wirkung: `rules/materialien-gebaeude.md`. **Startvorrat:** Eine neue Insel startet mit 100 Holz (`data/hub.json` › `islandStartStock`, B-177). Werte sind Startwerte (B-015).
 
 ## Welt & Stufen
 
