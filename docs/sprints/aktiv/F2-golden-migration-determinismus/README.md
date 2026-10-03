@@ -64,7 +64,7 @@ Runner für arm64: nativer arm64-Runner von GitHub oder Emulation (B-071, 🧑).
 | F2.1 | `F2.1-golden-update-arm64.md` | Umsetzung | autonom | fertig |
 | F2.2 | `F2.2-spielstand-migration.md` | Umsetzung | autonom | fertig |
 | F2.3 | `F2.3-determinismus.md` | Umsetzung | autonom | fertig |
-| F2.4 | `F2.4-review.md` | Review | autonom | offen |
+| F2.4 | `F2.4-review.md` | Review | autonom | in Arbeit |
 
 Bei `Reife: Entwurf` genügen Stichpunkte mit den Kriterien in Klammern statt Session-Dateien. Vor dem Aktivieren
 wird jede Session als eigene Datei nach `docs/vorlagen/session.md` geschrieben.
