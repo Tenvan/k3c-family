@@ -1,6 +1,6 @@
 # DBG2.2 · Overlay-Ansicht mit Aktionen, Zeitfaktor und Bedienung
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Branch:** dbg2/2-overlay-bedienung
@@ -48,11 +48,11 @@ Serverseitige Aktionen (DBG1), Wechsel des Schwierigkeitsgrads (B-107), Stufenwe
 
 ## Fertig, wenn
 
-- [ ] AC-03: Ein Test in `debugOverlay.test.ts` zeigt die Zeitfaktor-Zeile aus dem Zustand (Faktor 8 → `Zeit 8×`), und im Browser-Pane zeigt das Overlay nach „Zeit 8×“ den Faktor.
-- [ ] AC-04: `task check` grün, darin `src/scenes/noSim.test.ts`.
-- [ ] Ohne Dev-Mode des Raums erscheinen weder Liste noch Zeitfaktor-Zeile (Test aus Schritt 2 und Beobachtung im Browser-Pane mit `K3C_DEV=0`).
-- [ ] B, View + Menu und X sind für die Dev-Bedienung nicht belegt (Durchsicht der Eingabe-Änderungen im Diff).
-- [ ] `.oxlintrc.json` unverändert (die Ausnahmen steigen nicht).
+- [x] AC-03: Ein Test in `debugOverlay.test.ts` zeigt die Zeitfaktor-Zeile aus dem Zustand (Faktor 8 → `Zeit 8×`), und im Browser-Pane zeigt das Overlay nach „Zeit 8×“ den Faktor.
+- [x] AC-04: `task check` grün, darin `src/scenes/noSim.test.ts`.
+- [x] Ohne Dev-Mode des Raums erscheinen weder Liste noch Zeitfaktor-Zeile (Test aus Schritt 2 und Beobachtung im Browser-Pane mit `K3C_DEV=0`).
+- [x] B, View + Menu und X sind für die Dev-Bedienung nicht belegt (Durchsicht der Eingabe-Änderungen im Diff).
+- [x] `.oxlintrc.json` unverändert (die Ausnahmen steigen nicht).
 
 ## Prüfen
 
@@ -64,4 +64,13 @@ Manuelle Prüfungen am Handy und mit Controller macht 🧑 in DBG2.3; hier nur d
 
 ## Ergebnis
 
-–
+2026-10-03, Agent (Claude Opus 5.5), Branch `dbg2/2-overlay-bedienung`.
+
+- Protokoll bestätigt: Nachricht `dev`, Zustandsfeld `devTimescale` (nur Dev-Mode, auch 1), Fehlercode `forbidden`.
+- **AC-03 geprüft:** `debugOverlay.test.ts` „Zeitfaktor nur im Dev-Mode des Raums“: Faktor 8 → Zeile `Zeit 8×`, Faktor 1 → `Zeit 1×`, ohne Feld keine Zeile. Browser-Pane (Server aus diesem Branch auf Port 8091, Dev-Mode an, Frames von Hand getaktet): Overlay mit Ö geöffnet, Liste erscheint oben rechts; Klick „Gold 50“ → 50 Münzen in der Welt; Klick „Zeit 8×“ → `devTimescale` 8 und Zeile `Zeit 8×` im Overlay.
+- Controller (Pad im Browser-Pane gemockt): RB schaltet den Dev-Fokus (Rahmen gelb, `devFocus` in der Registry), D-Pad runter ×2 wählt „Gold 100“, A löst aus → +100 Münzen; A im Fokus lässt keinen zweiten Spieler beitreten, Bewegung und Münzen der Controller-Spieler sind im Fokus stumm (`muteFocused`). D-Pad links/rechts bzw. die Schaltfläche „für Spieler n“ wählt den lokalen Spieler (2 Spieler am Gerät).
+- **Ohne Dev-Mode** (`K3C_DEV=0`): Overlay offen, keine Aktionsliste, keine Zeitzeile (Browser-Pane und Test).
+- `forbidden`: Overlay zeigt „Dev abgelehnt: <Hinweis>“, keine Wiederholung (Test in `debugOverlay.test.ts`).
+- **AC-04 geprüft:** `task check` grün (656 Tests, darin `noSim.test.ts`, `projectRules.test.ts`); `.oxlintrc.json` unverändert; `HudScene.ts` unverändert.
+- Belegung: RB (Fokus), D-Pad, A nur im Fokus; B, View + Menu und X nicht belegt (Test „B, X, View und Menu gehören nicht zur Fokus-Bedienung“). Hinweis für S3: RB wird dort Skill-Slot 2 (`rules/monarch.md` § 4); der Dev-Fokus greift nur bei offenem Overlay im Dev-Raum.
+- Dateien: neu `debugOverlayPanel.ts` (reine Fokus-Logik, DOM-Schaltflächen z-index 11 über dem Touch-Overlay, Aufräumen bei Szenen-Ende) mit Test; `RoomClient.sendDev` mit Test; `GameScene` sperrt im Fokus die Controller-Spieler.
