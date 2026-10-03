@@ -118,6 +118,24 @@ function checkSessions(path: string, sprintId: string, sprintCriteria: string[])
   for (const ac of sprintCriteria) expect(covered.has(ac), `${path}: ${ac} hat keine Session`).toBe(true);
 }
 
+/** Domänen mit mehr als einem aktiven, nicht einschiebbaren Sprint (B-174). */
+function crowdedDomains(active: Record<string, string>[]) {
+  const count = new Map<string, number>();
+  for (const f of active.filter((f) => f.Einschiebbar === 'nein')) count.set(f.Domäne, (count.get(f.Domäne) ?? 0) + 1);
+  return [...count].filter(([, n]) => n > 1).map(([d]) => d);
+}
+
+describe('Regel: je Domäne ein aktiver Sprint', () => {
+  it('zwei aktive Sprints verschiedener Domänen sind erlaubt', () => {
+    expect(crowdedDomains([{ Domäne: 'SRV', Einschiebbar: 'nein' }, { Domäne: 'INF', Einschiebbar: 'nein' }])).toEqual([]);
+  });
+
+  it('zwei nicht einschiebbare Sprints der gleichen Domäne sind ein Fehler', () => {
+    const active = [{ Domäne: 'SIM', Einschiebbar: 'nein' }, { Domäne: 'SIM', Einschiebbar: 'nein' }, { Domäne: 'SIM', Einschiebbar: 'ja' }];
+    expect(crowdedDomains(active)).toEqual(['SIM']);
+  });
+});
+
 describe('Sprints', () => {
   it.each(sprints)('$path folgt der Vorlage', ({ state, dir, path }) => {
     const text = read(`${path}/README.md`);
@@ -134,9 +152,9 @@ describe('Sprints', () => {
     if (fields.Reife === 'bereit') checkSessions(path, id, acs);
   });
 
-  it('höchstens ein aktiver Sprint (plus eingeschobene), nur mit Reife bereit und freigegebener Spec', () => {
+  it('je Domäne höchstens ein aktiver Sprint (ohne einschiebbare), nur mit Reife bereit und freigegebener Spec', () => {
     const active = sprints.filter((s) => s.state === 'aktiv').map((s) => meta(read(`${s.path}/README.md`)));
-    expect(active.filter((f) => f.Einschiebbar === 'nein').length).toBeLessThanOrEqual(1);
+    expect(crowdedDomains(active)).toEqual([]);
     for (const fields of active) {
       expect(fields.Reife).toBe('bereit');
       expect(fields.Spec, 'aktiver Sprint braucht Spec freigegeben oder rückwirkend').not.toBe('Entwurf');
