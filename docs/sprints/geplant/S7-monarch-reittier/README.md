@@ -6,9 +6,9 @@
 - **Einschiebbar:** nein
 - **Tickets:** B-173
 - **Start-Commit:** –
-- **Spec:** Entwurf
+- **Spec:** freigegeben
 - **Revision:** 1
-- **Freigabe:** –
+- **Freigabe:** 2026-10-03, Chat (Ralf), Revision 1, durch 🧑; umfasst B-173; bestätigt die Vorschläge der Planung in S7.1 und S7.2
 
 ## Ausgangslage
 
@@ -51,7 +51,7 @@ Unbekannter Sprite-Schlüssel → bisherige Figur und Log-Eintrag.
 
 ## Offene Fragen
 
-Standard-Tier (Pferd?): `docs/fragenkatalog.md Q23`, Auswahl 🧑.
+keine: Standard-Tier ist das braune Pferd `horse`, Geschwindigkeits- und Sprintfaktor 1,0 (bestätigt im Workshop F1.4, `docs/rules/monarch.md` § 7).
 
 ## Sessions
 

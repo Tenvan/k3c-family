@@ -6,9 +6,9 @@
 - **Einschiebbar:** nein
 - **Tickets:** B-123, B-147, B-150, B-176
 - **Start-Commit:** –
-- **Spec:** Entwurf
+- **Spec:** freigegeben
 - **Revision:** 1
-- **Freigabe:** –
+- **Freigabe:** 2026-10-03, Chat (Ralf), Revision 1, durch 🧑; umfasst B-123, B-147, B-150, B-176; bestätigt die Vorschläge der Planung in den Sessions (Protokoll v4 einmal, Aktionsliste nur am Ort des Spielers, Speichern bei jedem Verlassen); der Rest von Q10 (60-s-Takt, Tagesanbruch, HUD „gesichert“) ist B-186
 
 ## Ausgangslage
 
@@ -54,7 +54,7 @@ Ungültiger Slot oder Beruf → `bad_request`; älterer Client → `version`; Sp
 
 ## Offene Fragen
 
-Umfang der Aktionsliste: B-123 › Offene Fragen; Speicherzeitpunkt `docs/fragenkatalog.md Q10`; Metrik-Umfang `docs/fragenkatalog.md Q12`.
+Mit der Freigabe entschieden: Aktionsliste nur am Ort des Spielers (B-123), Protokoll v4 einmal (B-176), Speichern bei jedem Verlassen (Q10, Teil); 60-s-Takt, Tagesanbruch und HUD „gesichert“ aus Q10 folgen mit B-186. Metrik-Umfang wie Q12.
 
 ## Sessions
 
