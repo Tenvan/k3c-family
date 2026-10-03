@@ -64,9 +64,6 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-130](B-130-bosse.md) | SIM | Idee | hoch | eingeplant | K2 | Minibosse und Endboss sind spielbar |
 | [B-131](B-131-events.md) | SIM | Idee | niedrig | eingeplant | K3 | Vollmond, Blutmond und Händler-Überfall sind als Events umgesetzt |
 | [B-132](B-132-anzeige-bosse-events.md) | CLI | Idee | mittel | eingeplant | K5 | Der Client zeigt Gegner-Fähigkeiten, Bosse, Phasen und Events |
-| [B-134](B-134-zielkorridore.md) | REG | Idee | hoch | eingeplant | F1 | Jede Kennzahl des Spiels hat einen Zielkorridor als Zahl |
-| [B-135](B-135-pause-im-raum.md) | REG | Frage | hoch | eingeplant | F1 | Pause im gemeinsamen Raum ist als Regel festgelegt |
-| [B-136](B-136-mindest-schriftgroesse.md) | REG | Frage | mittel | eingeplant | F1 | Die Mindest-Schriftgröße je Split-Viertel ist festgelegt |
 | [B-137](B-137-golden-ablauf-migration.md) | INF | Idee | hoch | eingeplant | F2 | Golden-Daten und Spielstand-Formate haben einen festen Änderungsablauf |
 | [B-138](B-138-determinismus-pruefung.md) | INF | Schuld | mittel | eingeplant | F2 | Determinismus der Simulation wird gegen Map-Reihenfolge und langsame Ticks geprüft |
 | [B-139](B-139-feedback-events-sim.md) | SIM | Idee | hoch | eingeplant | F3 | Die Simulation meldet Feedback-Ereignisse für Treffer, Münzen, Schläge und Tod |
@@ -74,8 +71,6 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-141](B-141-doku-drift-version.md) | INF | Schuld | mittel | eingeplant | F5 | Doku und CLAUDE.md stimmen mit dem Code überein, die Version ist sichtbar |
 | [B-142](B-142-pi-betrieb-backup-rotation.md) | SRV | Idee | hoch | eingeplant | F4 | Spielstände werden außerhalb des Pi gesichert, Berichte und Logs rotieren |
 | [B-143](B-143-endpunkte-heimnetz-absichern.md) | SRV | Problem | mittel | eingeplant | F4 | Restore-, Save- und Report-Endpunkte sind im Heimnetz abgesichert |
-| [B-144](B-144-verbindungsverlust-latenz.md) | REG | Frage | mittel | eingeplant | F1 | Verbindungsverlust und Eingabe-Latenz haben eine Regel mit Zahlen |
-| [B-145](B-145-sprache-nur-deutsch.md) | REG | Frage | niedrig | eingeplant | F1 | Das Spiel bleibt dauerhaft deutschsprachig, oder die Lokalisierung ist geplant |
 | [B-146](B-146-optionen-pause-szene.md) | CLI | Idee | hoch | eingeplant | S5 | Der Client hat eine Optionen- und Pause-Szene mit getrennter Lautstärke und Barrierefreiheit |
 | [B-147](B-147-speichern-verlassen.md) | SRV | Idee | mittel | eingeplant | S2 | Der Server speichert beim Verlassen und wenn das letzte Gerät getrennt ist, der Spielstand zeigt seinen Speicherstand |
 | [B-148](B-148-onboarding-erste-nacht.md) | CLI | Idee | hoch | eingeplant | S6 | Die erste Nacht wird mit kontextuellen Hinweisen geführt, der Freundlich-Grad kostet keinen Fortschritt |
@@ -202,3 +197,8 @@ Zeile in diesen Abschnitt.
 | [B-180](archiv/B-180-version-nach-sprint.md) | INF | Idee | mittel | erledigt | – | Nach jedem fertigen Sprint wird eine neue Version vorgeschlagen und bei Bestätigung gesetzt |
 | [B-177](archiv/B-177-holz-startvorrat.md) | SIM | Idee | hoch | erledigt | H1 | Die Insel startet mit einem Holz-Startvorrat |
 | [B-183](archiv/B-183-pages-praesentation.md) | PLAT | Idee | mittel | erledigt | – | GitHub Pages zeigt eine Präsentationsseite des Spiels |
+| [B-134](archiv/B-134-zielkorridore.md) | REG | Idee | hoch | erledigt | F1 | Jede Kennzahl des Spiels hat einen Zielkorridor als Zahl |
+| [B-135](archiv/B-135-pause-im-raum.md) | REG | Frage | hoch | erledigt | F1 | Pause im gemeinsamen Raum ist als Regel festgelegt |
+| [B-136](archiv/B-136-mindest-schriftgroesse.md) | REG | Frage | mittel | erledigt | F1 | Die Mindest-Schriftgröße je Split-Viertel ist festgelegt |
+| [B-144](archiv/B-144-verbindungsverlust-latenz.md) | REG | Frage | mittel | erledigt | F1 | Verbindungsverlust und Eingabe-Latenz haben eine Regel mit Zahlen |
+| [B-145](archiv/B-145-sprache-nur-deutsch.md) | REG | Frage | niedrig | erledigt | F1 | Das Spiel bleibt dauerhaft deutschsprachig, oder die Lokalisierung ist geplant |
