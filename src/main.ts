@@ -2,17 +2,19 @@ import Phaser from 'phaser';
 import { GAME_HEIGHT, GAME_WIDTH } from './core/constants';
 import { clientLog, installClientLog } from './core/clientLog';
 import { installPageChrome } from './core/shell';
-import { serverReachable, showNoServer } from './landing/serverCheck';
+import { CLIENT, fetchServerBuild, versionLine, type BuildInfo } from './core/version';
+import { showNoServer } from './landing/serverCheck';
 import { createRoomClient } from './online/clientConnection';
 import { GameScene } from './scenes/GameScene';
 import { HudScene } from './scenes/HudScene';
 import { LobbyScene } from './scenes/LobbyScene';
+import { VERSION_KEY } from './scenes/debugOverlay';
 
 // Seitenrahmen sofort (Home-Button, Zurück-Falle für B).
 installPageChrome();
 installClientLog();
 
-function start(): void {
+function start(server: BuildInfo): void {
   // Der Server rechnet, der Browser zeichnet; Raumwahl und Start-Parameter übernimmt die LobbyScene.
   const client = createRoomClient();
 
@@ -27,6 +29,8 @@ function start(): void {
     scene: [],
   });
 
+  // Versionen für Lobby und Debug-Overlay, je eine Zeile für Client und Server (beide lesen sie aus der Registry)
+  game.registry.set(VERSION_KEY, versionLine(CLIENT, server, '\n'));
   clientLog('info', `Phaser gestartet (${game.config.renderType === Phaser.WEBGL ? 'WebGL' : 'Canvas/Auto'})`);
   game.scene.add('lobby', LobbyScene, true, { client });
   game.scene.add('game', GameScene, false);
@@ -37,4 +41,4 @@ function start(): void {
 }
 
 // Ohne Go-Server (z. B. GitHub Pages) statt der Lobby ein Hinweis (B-032).
-void serverReachable().then((ok) => (ok ? start() : showNoServer(document.getElementById('game')!)));
+void fetchServerBuild().then((server) => (server ? start(server) : showNoServer(document.getElementById('game')!)));

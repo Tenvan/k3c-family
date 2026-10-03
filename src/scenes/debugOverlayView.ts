@@ -2,7 +2,7 @@ import Phaser from 'phaser';
 import { PROTOCOL_VERSION } from '../online/clientProtocol';
 import type { RoomClient } from '../online/clientConnection';
 import type { World } from '../model/types';
-import { debugLines } from './debugOverlay';
+import { VERSION_KEY, debugLines } from './debugOverlay';
 
 /** Linker Stick (Klick), standard mapping. B (1) und View + Menu (8 + 9) bleiben unberührt. */
 const PAD_LS = 10;
@@ -29,7 +29,7 @@ export class DebugOverlay {
     if (this.toggled()) this.shown = !this.shown;
     this.text.setVisible(this.shown);
     if (!this.shown) return;
-    const lines = debugLines({ client, protocol: PROTOCOL_VERSION, world, fps: this.scene.game.loop.actualFps, now: performance.now() });
+    const lines = debugLines({ client, protocol: PROTOCOL_VERSION, world, fps: this.scene.game.loop.actualFps, now: performance.now(), version: this.scene.registry.get(VERSION_KEY) as string | undefined });
     this.text.setText(lines);
   }
 

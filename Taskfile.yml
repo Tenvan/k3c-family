@@ -95,8 +95,11 @@ tasks:
   start:
     desc: Go-Server ohne Web-Build (feste EXE bin/k3c-server, damit die Firewall-Freigabe bleibt, B-085)
     deps: [tmp]
+    vars:
+      VERSION: # steht in /api/health und auf der Landingpage
+        sh: git describe --tags --always --dirty || echo dev
     cmds:
-      - go build -o bin/k3c-server{{exeExt}} ./cmd/k3c-server
+      - go build -ldflags "-X main.version={{.VERSION}}" -o bin/k3c-server{{exeExt}} ./cmd/k3c-server
       - ./bin/k3c-server{{exeExt}}
 
   go:test:
