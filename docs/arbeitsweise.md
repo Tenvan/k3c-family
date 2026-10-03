@@ -1,6 +1,6 @@
 # Arbeitsweise
 
-**Ticket** ([`backlog/`](backlog/)) → **Sprint** (eine Domäne, 2–4 Sessions) → **Session** (ein PR).
+**Ticket** ([`backlog/`](backlog/)) → **Sprint** (eine Domäne, 2–4 Sessions) → **Session** (ein Commit). **Ein PR je Sprint.**
 Ein Code-Sprint ist erst fertig, wenn seine **Review-Session** ihn abgenommen hat (leicht, siehe unten).
 Übersicht aller Sprints: [`sprints/README.md`](sprints/README.md). Zielbild: [`decisions/001-server-engine-go.md`](decisions/001-server-engine-go.md).
 
@@ -49,7 +49,10 @@ Ticket und Sprint-README **sind** die Spec, eine eigene Spec-Datei gibt es nicht
 
 ## Branches
 
-- **`develop`** ist der Arbeitsstand. Session-Branches gehen von `origin/develop` ab, jeder PR zielt auf `develop`.
+- **`develop`** ist der Arbeitsstand. Jeder Sprint hat **einen** Branch `sprint/<präfix>` von `origin/develop`; `<präfix>` ist
+  der Teil vor `/` im Feld `Branch` seiner Sessions (z. B. `f5/1-…` → `sprint/f5`). Alle Sessions committen dort,
+  am Ende steht **ein PR je Sprint** gegen `develop`. Abgleich mit `develop` per `git merge origin/develop`, nie Rebase
+  oder Force-Push auf einem geteilten Sprint-Branch.
 - **`main`** ist geschützt und trägt nur Release-Stände. Nur 🧑 gleicht ihn bei einem neuen Major-Release ab,
   per Fast-Forward: `git fetch && git push origin origin/develop:main`, danach Tag `v*` auf `main`
   (startet `release.yml`; GitHub Pages baut aus `main`). Nie direkt auf `main` committen oder einen PR gegen `main` öffnen.
@@ -58,23 +61,26 @@ Ticket und Sprint-README **sind** die Spec, eine eigene Spec-Datei gibt es nicht
 
 Eine Session muss **ohne Rückfragen und ohne Planungs-Werkzeuge** abzuarbeiten sein. Deshalb:
 
-1. `docs/sprints/aktiv/*/README.md` lesen. Die erste Session mit `Status: offen`, `Agent: autonom` und erledigten
-   Abhängigkeiten nehmen, deren Branch noch nicht auf `origin` liegt (`git ls-remote --heads origin <Branch>`;
-   existiert er, ist die Session vergeben, die nächste nehmen). Gibt es keine: **nichts tun** und das melden.
-2. Session-Datei vollständig lesen. Branch wie im Feld `Branch` anlegen und sofort mit `git push -u origin <Branch>`
-   schieben (beansprucht die Session). `Status: in Arbeit` setzen.
+1. `docs/sprints/aktiv/*/README.md` lesen. Liegt `sprint/<präfix>` schon auf `origin` (`git ls-remote --heads origin
+   sprint/<präfix>`), gilt der Stand der Sprint-Dateien dort (`git show origin/sprint/<präfix>:<Pfad>`), sonst der von
+   `develop`. Die erste Session mit `Status: offen`, `Agent: autonom` und erledigten Abhängigkeiten nehmen.
+   Gibt es keine: **nichts tun** und das melden.
+2. Sprint-Branch auschecken (fehlt er: von `origin/develop` anlegen, die erste Session setzt `Start-Commit`).
+   Session-Datei vollständig lesen, `Status: in Arbeit` setzen, committen und sofort `git push -u origin sprint/<präfix>`
+   (beansprucht die Session; scheitert der Push, hat ein anderer Lauf sie: neu holen und bei 1. beginnen).
 3. Nur die **Erlaubten Dateien** ändern. Die **Schritte** der Reihe nach ausführen, **Nicht-Ziele** einhalten.
 4. Alles unter **Fertig, wenn** abhaken, die Befehle unter **Prüfen** müssen grün sein. Maßstab sind die Kriterien
    der Session in der Sprint-README (SDD), nicht eine eigene Auslegung.
 5. **Ergebnis** mit Nachweis je Kriterium ausfüllen, `Status: fertig` setzen, auch in der Session-Tabelle der Sprint-README. Neue Ideen oder
    Probleme als Ticket anlegen (Vorlage!) und in `backlog/README.md` eintragen. Gemeinsame Planungsdateien
-   (`backlog/README.md`, `sprints/README.md`) erst am Ende ändern. Vor dem PR `git fetch` und `git rebase origin/develop`.
-   PR öffnen (Vorlage), nicht selbst mergen.
+   (`backlog/README.md`, `sprints/README.md`) erst am Ende ändern. Ein Commit mit Session im Titel
+   (`feat(srv): Restore absichern (F4.3)`), `git fetch`, `git merge origin/develop`, push auf den Sprint-Branch.
+   **Kein PR**: den öffnet erst die letzte Session des Sprints (Review, im Doku-Sprint die letzte), nicht selbst mergen.
 
 **Wenn etwas nicht passt** (Schritt unklar, Befehl scheitert unerklärlich, nötige Datei nicht erlaubt, Kriterium
 widerspricht dem Code oder einer Regel):
 `Status: blockiert`, im **Ergebnis** Grund und bisherigen Stand notieren, ein Ticket vom Typ `Frage` anlegen,
-PR mit dem bisherigen Stand öffnen, **aufhören**. Nicht raten, nicht um die Regeln herum arbeiten.
+bisherigen Stand auf den Sprint-Branch pushen und einen **Entwurfs-PR** des Sprints öffnen (falls noch keiner offen ist), **aufhören**. Nicht raten, nicht um die Regeln herum arbeiten.
 
 Eine Session pro Lauf. Eine Review-Session nie im selben Lauf wie eine Umsetzung. Sessions mit `Agent: Mensch`
 (Xbox-Test, Workshop, Spieleabend) nimmt ein Agent nicht; er darf sie nur vorbereiten, wenn die Datei das verlangt.
@@ -115,7 +121,9 @@ Grenzfälle:
    `git mv docs/sprints/geplant/SPnn-name docs/sprints/aktiv/`,
    `Status: aktiv`, Fahrplan in `sprints/README.md` anpassen. Höchstens ein aktiver Sprint **je Domäne**;
    einschiebbare Sprints (`Einschiebbar: ja`) zählen nicht mit (B-174).
-   Das Feld `Start-Commit` setzt die **erste Session** des Sprints: `git rev-parse --short origin/develop` vor ihrem Branch.
+   Die Aktivierung ist der erste Commit auf `sprint/<präfix>`; ein Sprint mit Branch auf `origin`
+   (`git ls-remote --heads origin 'sprint/*'`) gilt als aktiv, auch solange sein PR noch offen ist.
+   Das Feld `Start-Commit` setzt die **erste Session** des Sprints: `git rev-parse --short origin/develop` beim Anlegen des Sprint-Branchs.
 4. **Abschließen:** Die Review-Session verschiebt den Ordner nach `sprints/erledigt/` und setzt `Status: erledigt`.
 
 - **Klein:** 2–4 Sessions. In Code-Sprints ist die letzte das **Review**; Doku- und Planungs-Sprints (nur `docs/`)
@@ -130,7 +138,9 @@ Grenzfälle:
   Offene Hardware-Sessions stehen im Fahrplan unter „Offen am Gerät“ und werden erledigt, wenn das Gerät da ist;
   weicht das Ergebnis von der Annahme ab, entsteht ein Ticket (die Arbeit dahinter läuft weiter). Ein Sprint, in dem
   nur noch Hardware-Sessions (und ihre Auswertung) offen sind, sperrt seine Domäne nicht.
-- **Richtwert Session:** ein PR mit ≤ ~400 geänderten Code-Zeilen (ohne Bilder, Daten-JSON, Lockfiles).
+- **Richtwert Session:** ein Commit mit ≤ ~400 geänderten Code-Zeilen (ohne Bilder, Daten-JSON, Lockfiles).
+- **Übergang:** Sprints, die vor dieser Regel (2026-10-03) schon Session-PRs hatten (F4), schließen nach altem Ablauf ab
+  (Review-Session mit eigenem PR). Ab dem nächsten aktivierten Sprint gilt ein PR je Sprint.
 - **Commit-Titel** mit Domäne: `feat(sim): Taunt`, `fix(srv): Raum aufräumen`, `docs(reg): Wirtschaft v1`.
 
 ## Review-Session (Sprint-Abnahme) 🔍
@@ -139,7 +149,7 @@ Leicht und billig: Die Automatik prüft die Komplexität, das Review sucht nur *
 Modell (z. B. Sonnet) reicht.
 
 1. `task check` und `task check:go` → grün. Damit gelten die Grenzen aus dem Komplexitäts-Budget als geprüft.
-2. `git fetch && git diff <Start-Commit>..origin/develop` lesen, **nur den Diff**, nicht jede Datei vollständig.
+2. `git fetch && git diff origin/develop...origin/sprint/<präfix>` lesen (alles, was der Sprint ändert), **nur den Diff**, nicht jede Datei vollständig.
 3. Nur diese Befunde zählen:
    - falsches Verhalten oder Datenverlust (Spielstände, Berichte, Dateien)
    - Sicherheit: Pfade, Shell-Aufrufe, ungeprüfte Eingaben von außen
@@ -147,11 +157,12 @@ Modell (z. B. Sonnet) reicht.
    - Regeln aus `CLAUDE.md` verletzt (Seiten, Vollbild, B-Taste)
    - ein Kriterium der Spec ohne Nachweis oder umformuliert, damit es zum Code passt
 
-   Stil, Doku, Benennung, mögliche Vereinfachungen sind **kein** Befund. Schwere Befunde in der Domäne im Review-PR
-   beheben, außerhalb → Ticket.
+   Stil, Doku, Benennung, mögliche Vereinfachungen sind **kein** Befund. Schwere Befunde in der Domäne im Review-Commit
+   beheben, außerhalb → Ticket. Das Review läuft auf dem Sprint-Branch, nie im selben Lauf wie eine Umsetzung.
 4. **Abnahme** in der Sprint-README, höchstens fünf Zeilen: Datum, Kriterien (Verweis auf die Session-Ergebnisse,
    `verschoben` mit Ticket), behobene Befunde, neue Tickets.
-5. Sprint-Ordner nach `sprints/erledigt/` verschieben, `Status: erledigt`, Fahrplan anpassen, PR öffnen.
+5. Sprint-Ordner nach `sprints/erledigt/` verschieben, `Status: erledigt`, Fahrplan anpassen, committen, `git merge origin/develop`,
+   pushen und **den einen PR des Sprints** öffnen (Vorlage, eine Zeile je Session). Gemergt wird er von 🧑.
 6. **Version vorschlagen** (siehe „Entscheidungen und Versionen“): eine Zeile `Version: v… vorgeschlagen (Grund)` in der Abnahme; gesetzt wird sie erst nach Bestätigung durch 🧑.
 
 ## Komplexitäts-Budget
