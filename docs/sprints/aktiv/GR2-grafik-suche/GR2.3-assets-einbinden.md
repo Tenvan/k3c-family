@@ -1,6 +1,6 @@
 # GR2.3 · Gewählte Assets einbinden, Credits, Zuordnung aktualisieren
 
-- **Status:** offen
+- **Status:** in Arbeit
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Branch:** gr2/3-assets-einbinden
