@@ -1,0 +1,55 @@
+{
+  "skill_name": "codemap",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Kartiere dieses TypeScript-Repository. Ich kenne den Code nicht und brauche pro Ordner eine codemap.md plus einen Einstiegspunkt.",
+      "expected_output": "A fresh mapping run: state detection via `changes`, derived include/exclude globs for core code only, `init`, one filled codemap.md per folder, `update`, a root atlas, and the Repository Map section registered in CLAUDE.md or AGENTS.md.",
+      "files": [],
+      "expectations": [
+        "The workflow resolves exactly one logical `SKILL_FOLDER` before the first script call and substitutes the quoted absolute path directly.",
+        "Step 1 executes `changes` for real and sets mode=init from the `No codemap state found` output.",
+        "The include/exclude globs exclude tests, docs, build output, and node_modules.",
+        "Every written codemap.md has the sections Responsibility, Design, Flow, and Integration with real paths.",
+        "`update` runs after the codemaps are written, and the root codemap.md links every folder codemap."
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "Die Codemaps in diesem Repo sind veraltet, seit dem letzten Lauf wurden Dateien in src/config geändert und eine gelöscht. Bitte aktualisieren.",
+      "expected_output": "An incremental run: `changes` lists the affected folders, only those codemaps are updated section by section, the stale reference to the deleted file is removed, the root atlas row is refreshed, and `update` saves the new state.",
+      "files": [],
+      "expectations": [
+        "Only the folders listed under `folders affected` receive edits; other codemap.md files stay untouched.",
+        "The existing src/config/codemap.md is read before editing and only the invalidated sections are rewritten.",
+        "The deleted file no longer appears in any codemap.",
+        "`update` runs after the edits so `.codemap/state.json` matches the new hashes.",
+        "The State Table shows mode=update and the affected_folders list."
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "Prüfe, ob die Codemaps noch aktuell sind.",
+      "expected_output": "`changes` reports `No changes detected.`; the skill sets mode=noop, verifies the root atlas and the Repository Map registration, writes nothing else, and reports that in German.",
+      "files": [],
+      "expectations": [
+        "No codemap.md is rewritten when the state reports no changes.",
+        "The root atlas and the Repository Map registration are still checked.",
+        "The German report states explicitly that nothing had to be mapped.",
+        "The run ends with the SKILL DONE banner, not with an abort."
+      ]
+    },
+    {
+      "id": 4,
+      "prompt": "Erstelle Codemaps für dieses Monorepo mit apps/backend (TypeScript), apps/mobile (Dart) und einigen Python-Skripten in tools/.",
+      "expected_output": "Before scanning, the skill asks via `interviewe` which apps and directories to include, then derives scoped include globs from the answer and continues with the normal init flow.",
+      "files": [],
+      "expectations": [
+        "An `interviewe` block (or a structured question tool) asks for scope and exclusions before `init` runs.",
+        "The include globs are scoped to the confirmed apps instead of mapping everything.",
+        "Tests, docs, and build output remain excluded for every language.",
+        "The workflow pauses until the user answers instead of assuming a scope."
+      ]
+    }
+  ]
+}

@@ -1,8 +1,7 @@
-import PAGE from '../../../internal/planning/page.html?raw';
-import type { PlanDoc, PlanningData, PlanSession, PlanTicket } from './types';
+import type { GitHubData, GitHubSprint, PlanDoc, PlanningData, PlanSession, PlanTicket } from './types';
 
-// Erfundene Planung für den Mock: ein aktiver Sprint mit Session-Tabelle, geplante Entwürfe, Tickets und zwei kurze
-// Dokumente, die dieselben Markdown-Formen haben wie docs/plan-weiterentwicklung.md und docs/fragenkatalog.md.
+// Erfundene Planung für den Mock: ein aktiver Sprint mit Session-Tabelle, geplante Entwürfe, Tickets und drei kurze
+// Dokumente in denselben Markdown-Formen wie docs/plan-weiterentwicklung.md, docs/fragenkatalog.md und docs/glossar.md.
 
 const s = (nr: string, typ: string, agent: string, status: string, titel = '', text?: string): PlanSession =>
   ({ nr, typ, agent, status, titel, text });
@@ -117,9 +116,47 @@ Zu klärende Punkte für die Planung. Eine Frage = ein Absatz mit Optionen und e
 - **Empfehlung:** A, mit sichtbarem Hinweis, wer pausiert hat.
 `;
 
-export function mockPlanning() {
+const GLOSSAR = `# Glossar
+
+Verbindliche Begriffe für Regeln, Tickets, Sprints und Sessions.
+
+| Begriff | Bedeutung | Quelle |
+|---|---|---|
+| Ader | Unendliche Quelle für Stein, Kupfer, Eisen oder Kristall, 2 je Stufe. | \`rules/materialien-gebaeude.md\` § 1 |
+| Einschiebbar | Sprint-Feld: \`ja\` zählt nicht gegen „ein aktiver Sprint je Domäne“. | \`arbeitsweise.md\` |
+| Hub | Basis einer Stufe mit Burg, Bauplätzen und Truppen. | \`rules/stufen.md\` § 1 |
+
+## Unklar und Widersprüche
+
+1. **Respawn-Zeit:** 5 s oder 15 s.
+`;
+
+const pr = (number: number, state: GitHubSprint['state'], ci: GitHubSprint['ci'], merge: GitHubSprint['merge']): GitHubSprint =>
+  ({ number, title: `PR ${number}`, url: `https://github.com/Tenvan/k3c-family/pull/${number}`, state, ci, merge });
+
+/** GitHub-Stand mit allen Zuständen, wie github.Parse sie liefert. */
+const GITHUB: GitHubData = {
+  sprints: { SP11: pr(110, 'offen', 'grün', 'konfliktfrei'), F1: pr(108, 'Entwurf', 'läuft', 'Konflikt'),
+    F2: pr(107, 'offen', 'rot', 'unbekannt'), R1: pr(95, 'gemergt', '–', '–'), M5: pr(90, 'geschlossen', '–', '–') },
+  develop: { ci: 'grün', title: 'M8 · SRV · k3c-dev VIII (#104)', url: 'https://github.com/Tenvan/k3c-family/actions/runs/1',
+    created: '2026-10-04T10:16:35Z' },
+  fetched: '2026-10-04T12:00:00Z',
+};
+
+const DOCS: Record<PlanDoc, string> = { plan: PLAN, fragen: FRAGEN, glossar: GLOSSAR };
+
+/** changed meldet `planning:changed`: alle 15 s wechselt SP11.3 zwischen offen und in Arbeit, wie ein Agent an docs/. */
+export function mockPlanning(changed: () => void) {
+  setInterval(() => {
+    const x = DATA.sprints[0].sessions[2];
+    x.status = x.status === 'offen' ? 'in Arbeit' : 'offen';
+    changed();
+  }, 15000);
   return {
-    planningPage: async (): Promise<string> => PAGE.replace('/*DATA*/null', JSON.stringify(DATA)), // wie planning.Page in Go
-    planningDoc: async (name: PlanDoc): Promise<string> => (name === 'plan' ? PLAN : FRAGEN),
+    planningData: async (): Promise<PlanningData> => structuredClone(DATA), // wie planning.Load in Go: jedes Mal frisch
+    planningDocs: async (): Promise<PlanDoc[]> => ['plan', 'fragen', 'glossar'],
+    planningDoc: async (name: PlanDoc): Promise<string> => DOCS[name],
+    githubStatus: async (): Promise<GitHubData> => structuredClone(GITHUB),
+    openUrl: (url: string) => void window.open(url, '_blank', 'noopener'),
   };
 }

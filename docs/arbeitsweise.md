@@ -26,6 +26,13 @@ Setzt eine Session ein Ticket auf `erledigt` oder `verworfen`, verschiebt sie es
 `docs/vorlagen/`. `tests/planning.test.ts` prüft Felder, Überschriften, Status passend zum Ordner, Index und Verweise.
 Eine Abweichung lässt `npm test` scheitern.
 
+**Planung nur über k3c-dev (B-210).** Anlegen, Felder ändern, Abschnitte füllen, archivieren, Sprints verschieben und
+Entwürfe löschen laufen über die MCP-Tools `plan_list`, `plan_get`, `plan_create`, `plan_set`, `plan_section`,
+`plan_delete`; sie ziehen Index, Session-Tabelle, Fahrplan und Ordner selbst nach. Handarbeit an diesen Dateien ist nur
+der Rückfall, wenn k3c-dev nicht läuft; dann gelten die Regeln dieses Abschnitts wörtlich.
+**Glossar ist verbindlich.** [`glossar.md`](glossar.md) legt die Begriffe fest und wird vor jeder Session gelesen. Ein neuer
+Begriff kommt beim Planen zuerst ins Glossar, dann in Ticket, Sprint oder Regel. Reviews achten auf Begriffs-Treue: Abweichungen gleicht der Review-Commit an (kein schwerer Befund).
+
 ## Spec-Driven Development (SDD)
 
 Ticket und Sprint-README **sind** die Spec, eine eigene Spec-Datei gibt es nicht. Das Wie steht in den Sessions.

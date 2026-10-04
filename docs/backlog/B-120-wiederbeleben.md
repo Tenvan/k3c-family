@@ -26,6 +26,7 @@ Spieler; Mitspieler in derselben Stufe.
 
 - Zustand „gefallen“ mit Ort; `respawnSeconds` 15 (`data/monarch.json`).
 - Wiederbeleben: Mitspieler hält A 3 s in Reichweite des Gefallenen (kein Zahlziel in der Nähe); Wiederbelebung am Ort mit 50 % HP.
+- Reichweite 2 Units als eigener Wert in `data/monarch.json`; mehrere Helfer gleichzeitig beschleunigen nicht, keiner lässt dabei eine Münze fallen; ein getrennter Monarch (`Player.Free`) ist nicht wiederbelebbar (Beschluss Q33, 2026-10-04).
 - Bezahlte, nicht fertige Münzen werden wie heute erstattet; gilt in jeder Stufe der Insel.
 - Ereignisse `playerDown`, `revived`.
 

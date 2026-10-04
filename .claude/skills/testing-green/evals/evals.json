@@ -1,0 +1,29 @@
+{
+  "skill_name": "testing-green",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Wir haben bereits einen failing test fuer die Rabattberechnung. Uebernimm bitte nur die Green-Phase und implementiere die kleinstmoegliche Loesung, damit der Test gruen wird.",
+      "expected_output": "Der Skill fokussiert auf minimale Implementierung, behaelt den Testkontext im Blick und erweitert den Scope nicht unnötig.",
+      "files": [],
+      "expectations": [
+        "The workflow starts from the failing test context.",
+        "The implementation strategy is explicitly minimal.",
+        "The response avoids speculative refactors or future-proofing.",
+        "The outcome aims for green tests before any cleanup."
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "Die Akzeptanzkriterien sind klar und zwei Tests schlagen fehl. Bitte mache nur das Nötigste, damit beide Tests wieder laufen, und verschiebe saubere Umstrukturierungen auf spaeter.",
+      "expected_output": "Der Skill priorisiert das Gruenwerden der Tests und verschiebt nicht notwendige Verbesserungen in eine spaetere Refactor-Phase.",
+      "files": [],
+      "expectations": [
+        "The workflow stays within the current task scope.",
+        "The run emphasizes green-first over design polish.",
+        "Non-essential refactoring is deferred.",
+        "The summary reflects remaining cleanup as follow-up, not current work."
+      ]
+    }
+  ]
+}

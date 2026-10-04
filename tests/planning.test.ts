@@ -166,3 +166,19 @@ describe('Sprints', () => {
     for (const { state, dir } of sprints) expect(overview, `${state}/${dir}`).toContain(`${state}/${dir}/`);
   });
 });
+
+describe('Glossar', () => {
+  it('ist eine Tabelle mit eindeutigen, alphabetisch sortierten Begriffen', () => {
+    const text = read('glossar.md');
+    expect(text).toContain('| Begriff | Bedeutung | Quelle |');
+    const terms = [...text.matchAll(/^\| (.+?) \| .+ \| .+ \|$/gm)].map((m) => m[1].replace(/`/g, '')).slice(1);
+    expect(terms.length).toBeGreaterThan(0);
+    expect(new Set(terms).size, 'keine Dubletten').toBe(terms.length);
+    expect(terms, 'deutsche Sortierung').toEqual([...terms].sort((a, b) => a.localeCompare(b, 'de')));
+  });
+
+  it('ist in CLAUDE.md und arbeitsweise.md verpflichtend verlinkt', () => {
+    expect(readFileSync(resolve(DOCS, '../CLAUDE.md'), 'utf8')).toContain('docs/glossar.md');
+    expect(read('arbeitsweise.md')).toContain('glossar.md');
+  });
+});

@@ -9,9 +9,9 @@ Jede Regel gilt für 2+ Spieler (Couch und Online gemischt).
 
 | Regel | Begründung | Daten | Zielkorridor |
 |---|---|---|---|
-| Gold gehört jedem Spieler selbst, Baumaterial (Holz, Stein, Kupfer) gehört allen gemeinsam, und zwar **je Insel** (alle Stufen und Hubs einer Insel teilen einen Vorrat, `stufen.md` § 1). | Wie in K2C: persönliche Münzen, gemeinsamer Hub. Im Playtest prüfen (B-008). | `World.stock`, `Player.Gold` | – |
+| Gold gehört jedem Spieler selbst, Baumaterial (Holz, Stein, Kupfer, Eisen, Kristall; `materialien-gebaeude.md` § 1) gehört allen gemeinsam, und zwar **je Insel** (alle Stufen und Hubs einer Insel teilen einen Vorrat, `stufen.md` § 1). | Wie in K2C: persönliche Münzen, gemeinsamer Hub. Im Playtest prüfen (B-008). | `World.stock`, `Player.Gold` | – |
 | Jeder Spieler startet mit 100 Gold und trägt höchstens 100. | Begrenzt Horten und hält das Geld in Bewegung. Gilt in **allen** Schwierigkeitsgraden (siehe 4). | `data/economy.json` › `purse` | Gold am Morgen: Median 20–70, nicht dauerhaft am Maximum (Normal) |
-| Morgens bekommt jeder lebende Spieler 5 Gold. | Kleines Grundeinkommen, damit ein Spieler ohne Funde nicht festsitzt. Heutiger Wert, gilt in allen Graden. | `economy.json` › `dawnGoldPerPlayer` | im Korridor „Gold am Morgen“ |
+| Morgens (`dawn`, bei Beginn des Morgengrauens, § 3) bekommt jeder lebende Spieler 5 Gold. | Kleines Grundeinkommen, damit ein Spieler ohne Funde nicht festsitzt. Heutiger Wert, gilt in allen Graden. | `economy.json` › `dawnGoldPerPlayer` | im Korridor „Gold am Morgen“ |
 | Münzen gibt man durch Halten von A (alle 0,25 s, Reichweite 2 Units); wer loslässt, bekommt die Münzen zurück. Fallen gelassene Münzen kann ein anderer Spieler nach 1,5 s aufheben. | Eine Taste für alles, Münzen wirken in der Welt. | `economy.json` › `payIntervalSeconds`, `payRangeUnits`, `pickupRangeUnits`, `dropPickupDelaySeconds` | – |
 | Quellen von Gold: Truhen (10–25), Drops der Gegner, Tageseinkommen. Die Drops gelten **je Gegnerart** wie in `enemies.json`; die Werte im Spiel-Design sind nur Spannen (Standard etwa 3–25, Elite etwa 15–80). | Feinere Abstimmung je Gegner. | `economy.json` › `chestGold`; `enemies.json` › `gold` | Summe der Drops je Welle im Verhältnis zum Gold am Morgen (Messgröße wird mit B-099 festgelegt) |
 | Gegner lassen mit 10 % Wahrscheinlichkeit 5 der Stufen-Ressource fallen. | Material kommt auch aus dem Kampf. | `economy.json` › `enemyResourceDrop` | – |
@@ -20,15 +20,15 @@ Jede Regel gilt für 2+ Spieler (Couch und Online gemischt).
 
 ## 2. Koop und Besitz
 
-- **Wellen wachsen mit der Spieleranzahl.** Die Gegnerzahl einer Welle wird mit `1 + 0,5 × (Spieler − 1)` multipliziert und auf ganze Zahlen gerundet. Begründung: Mehr Spieler bringen mehr Gold, Truppen und Schlagkraft; die Nacht soll mit 4 Spielern nicht trivial werden. Daten: `data/waves.json` (neuer Faktor `perExtraPlayer: 0,5`, SIM legt das Feld an). Zielkorridor: dieselbe Überlebensquote wie in Abschnitt 4, **je Spieleranzahl 1–4**.
+- **Wellen wachsen mit der Spieleranzahl.** Die Gegnerzahl einer Welle wird mit `1 + 0,5 × (Spieler − 1)` multipliziert und auf ganze Zahlen gerundet. Begründung: Mehr Spieler bringen mehr Gold, Bürger und Schlagkraft; die Nacht soll mit 4 Spielern nicht trivial werden. Daten: `data/waves.json` (neuer Faktor `perExtraPlayer: 0,5`, SIM legt das Feld an). Zielkorridor: dieselbe Überlebensquote wie in Abschnitt 4, **je Spieleranzahl 1–4**.
 - Die Stufen einer Insel laufen alle weiter und sind pro Spieler frei begehbar; die Wellenstärke zählt die Spieler der **Insel** (siehe `stufen.md`). Was zählt als Spieler? Annahme (🧑 hat nicht gesondert bestätigt): Jeder gesteuerte, nicht freie Monarch im Raum, egal ob lokal oder online; ein freier Monarch (B-059) zählt nicht.
-- Bauplätze und Truppen gehören dem Hub, das Material der Insel, nicht einem Spieler.
+- Bauplätze und Bürger gehören dem Hub, das Material der Insel, nicht einem Spieler.
 
 ## 3. Tag, Nacht und Wellen
 
 | Regel | Begründung | Daten | Zielkorridor |
 |---|---|---|---|
-| Wald: Tag 10 min, Dämmerung 1 min, Nacht 5 min; der globale Zyklus läuft auch unter Tage weiter. | Tempo wie K2C. | `data/biomes/forest.json` › `cycle` | – |
+| **Vier Phasen:** Tag, Dämmerung, Nacht, Morgengrauen im Verhältnis 3:1:2:1, Einheit 2 min → **Tag 6, Dämmerung 2, Nacht 4, Morgengrauen 2 min** (14 min; Startwert, BR1 bestätigt; Q65, 2026-10-04). `dawn` (Gold je Spieler, Taverne, Händler, Speichern) fällt bei **Beginn des Morgengrauens**: Die Nacht endet, Gegner ziehen ab. Der globale Zyklus läuft auch unter Tage weiter. Heute (bis B-213): Tag 10, Dämmerung 1, Nacht 5 min, `dawn` bei Beginn des Tages. | Tempo wie K2C; das Morgengrauen trennt das Ende der Nacht vom neuen Tag. | `data/biomes/forest.json` › `cycle` (bleibt die Datenquelle), `engine/sim/cycle.go`; Umsetzung B-213 | – |
 | Oberwelt: eine Welle je Nacht. Unter Tage kommt eine Welle, wenn der Aggressionspool 100 % erreicht (Details in `stufen.md`). | Spieler bestimmen unten das Tempo selbst. | `waves.json`, `biomes/cave.json`, `mine.json` | – |
 | Wellengrößen laut Tabelle: Welle 1–5 5–10 Standard, ab 6 10–15 Standard + 1–2 Elite, ab 11 15–20 + 3–5 Elite (Normal, 1 Spieler). | Bisherige Tabelle bleibt Basis. | `waves.json` › `table` | Burg hält Nacht 1–5, siehe 4 |
 | Gegnerwerte skalieren je Tiefe multiplikativ (HP ×1,5, Schaden ×1,3, Tempo ×1,1 je Tiefe). | Heutige Umsetzung (`Pow`). | `waves.json` › `depthScaling` | – |

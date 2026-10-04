@@ -2,7 +2,8 @@
   "$schema": "./node_modules/oxlint/configuration_schema.json",
   "ignorePatterns": [
     "dist", "_site", "node_modules", "public",
-    "tools/k3c-dev/frontend/dist", "tools/k3c-dev/frontend/wailsjs"
+    "tools/k3c-dev/frontend/dist", "tools/k3c-dev/frontend/wailsjs",
+    ".claude" // fremde Skill-Skripte, nicht Teil des Spiel-Codes
   ],
   // Harte Grenzen aus docs/arbeitsweise.md › Komplexitäts-Budget. Die Zielwerte prüft das Review.
   "rules": {

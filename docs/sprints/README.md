@@ -10,6 +10,8 @@ Reihenfolge in Wellen, Bahnen je Domäne und Zuordnung Mensch/autonom (zwei Acco
 
 | Sprint | Domäne | Thema | Am Ende sichtbar | Ordner |
 |---|---|---|---|---|
+| S5 | CLI | Optionen- und Pause-Szene | Einstellungen bleiben nach dem Neuladen erhalten | `aktiv/S5-optionen-pause/` |
+| BAL1 | SIM | Balancing-Tester: Kern und Replay (einschiebbar) | ein Befehl im Terminal erzeugt den Kennzahlen-Report, eine Replay-Datei lässt sich in k3c-dev abspielen und liefert denselben Endzustand-Hash | `aktiv/BAL1-balancing-tester-kern/` |
 | LT1 | SRV | Lasttest-Werkzeug | Messlauf am Pi mit Tabelle und Bewertung gegen das Ziel (< 10 ms) | `aktiv/LT1-lasttest-werkzeug/` |
 
 ## Offen am Gerät
@@ -34,10 +36,10 @@ dann über den Go-Server mit mehreren Räumen und gemischten Spielern.
 | S1 | SIM | Monarch: Schlag, Fund-Pool und Skills | Go-Tests und Golden-Daten grün (Minimum der Phase 1: Schlag plus ein Skill je Klasse) | Entwurf | `geplant/S1-monarch-schlag-skills/` |
 | S2 | SRV | Protokoll für Skills, Speichern beim Verlassen, Spielmetrik | neue Felder in `docs/protocol.md` mit Beispielen unter `testdata/protocol/`, Spielstand nach Trennung mitten in der Nacht, ein Report in `reports/` | bereit | `geplant/S2-protokoll-skills-speichern-metrik/` |
 | S3 | CLI | Skill-Menü, Tasten und Aktionen-Overlay | 🧑 spielt am Gerät Schlag, Skill, Punkte verteilen und liest die Aktionen im Overlay | bereit | `geplant/S3-skill-menue-overlay/` |
-| S5 | CLI | Optionen- und Pause-Szene | Einstellungen bleiben nach dem Neuladen erhalten | Entwurf | `geplant/S5-optionen-pause/` |
 | S6 | CLI | Onboarding „Erste Nacht geführt“ und Controller-Glyphen | Ein Kind spielt die erste Nacht ohne Erklärung | bereit | `geplant/S6-onboarding-glyphen/` |
 | S7 | CLI | Monarch auf dem Standard-Reittier | Zwei Spieler im Split-Screen reiten über die Stufe | bereit | `geplant/S7-monarch-reittier/` |
 | P1 | REG 🧑 | Spieleabend 1 | Protokoll und Folge-Tickets | Entwurf | `geplant/P1-spieleabend-1/` |
+| W0 | SIM | Bauplätze aus dem Seed: feste Hub-Plätze, Mauerlinien, Tor und Farm | `task check:go` grün mit Tests für Linien, Freischaltung und Platz-Abstände, alte Spielstände laden, Level-Golden unverändert | bereit | `geplant/W0-bauplaetze-seed/` |
 | W1 | SIM | Hub-Ausbau und Mauerstufen | `task check:go` grün, Tests für Ausbau, Zerstörung und Reparatur, aktualisierte Golden-Daten | bereit | `geplant/W1-hub-ausbau/` |
 | W2 | SIM | Plantage, Adern, Stufenbreite und Mine | Tests für Generator, Adern, Plantage und Biome grün, aktualisierte Golden-Level | bereit | `geplant/W2-plantage-adern-stufen/` |
 | W3 | SIM | Gebäude-Wirkungen | Tests je Gebäude grün, Werte aus den Daten, aktualisierte Golden-Daten | bereit | `geplant/W3-gebaeude-wirkungen/` |
@@ -56,7 +58,6 @@ dann über den Go-Server mit mehreren Räumen und gemischten Spielern.
 
 | Sprint | Domäne | Thema | Reife | Ordner |
 |---|---|---|---|---|
-| BAL1 | SIM | Balancing-Tester: Kern und Replay | bereit | `geplant/BAL1-balancing-tester-kern/` |
 | BAL2 | SIM | Zielkorridor-Prüfung und `task balance` | bereit | `geplant/BAL2-zielkorridor-pruefung/` |
 | BAL3 | SIM | Bot-Profile, Sensitivität und Grad-Kurven | Entwurf | `geplant/BAL3-bot-profile-sensitivitaet/` |
 | BAL4 | REG | Abgleich Spielmetrik und Simulator | Entwurf | `geplant/BAL4-metrik-abgleich/` |
@@ -127,3 +128,4 @@ Gesamtplan und Begründung: [`../plan-weiterentwicklung.md`](../plan-weiterentwi
 | GR6 | Credits-Seite aus den CREDITS-Dateien mit Vollständigkeits-Test (B-165) | `erledigt/GR6-credits-seite/` |
 | GR4 | Atlas und Lade-Szene (B-163, B-029; Messung an der Xbox offen, GR4.3) | `erledigt/GR4-atlas-ladeszene/` |
 | S4 | Kamera je Stufe und Layouts 1–4: Zelle zeigt Stufe, Radar und HUD je Zelle, Mindest-Schrift (B-106; Abnahme am Gerät offen) | `erledigt/S4-kamera-layouts/` |
+| M8 | k3c-dev VIII: Planung über MCP, React-Planungsseite, GitHub-Status (einschiebbar) | `erledigt/M8-dev-planung-mcp/` |

@@ -24,8 +24,10 @@ Spieler und Bauern.
 
 ## Anforderungen
 
-- Berufe: Bergmann (+50 % Abbaurate an Adern und Fels, 20 Gold), Baumeister (+50 % Bautempo und Reparatur, 20 Gold), Handwerker (30 Gold, in Werkstatt, Schmiede oder Rüstkammer, 1–2 je Gebäude, +50 % Herstellungstempo); Umschulung kostet erneut.
-- Händler: kommt alle 3 Tage (häufiger mit Taverne), bleibt einen Tag, tauscht Material gegen Gold und umgekehrt (10 Material = 5 Gold).
+- Berufe: Bergmann (+50 % Abbaurate an Adern, Fels und Kupfererz, 20 Gold; zählt als einer der höchstens 2 Bauern an einer Ader), Baumeister (+50 % Bautempo und Reparatur, 20 Gold), Handwerker (30 Gold, in Werkstatt, Schmiede oder Rüstkammer, höchstens 2 je Gebäude, +50 % Herstellungstempo je Handwerker); Umschulung kostet erneut (Bergmann: Beschluss Q35, 2026-10-04).
+- Herstellungszeiten für alles (Startwerte): Bogen und Schwert 10 s, Elite-Upgrade 20 s, Rüstungsstufe 30 s; Golden ändert sich (Bogen nicht mehr sofort), Begründung im Commit (Beschluss Q35, 2026-10-04).
+- Auswahl am Platz: je Angebot ein eigenes Zahlziel als Anhang mit festem `dx` am Gebäude (`data/buildings.json`), entsteht mit dem Bau (A halten, keine neue Taste, kein Bau-Menü); ausgebildet wird der nächste freie Bauer (Beschlüsse Q34, Q52, 2026-10-04).
+- Händler: ein Händler je Insel im Hub der Tiefe 0 auf den Hub-Plätzen +8/+12 (Beschluss Q55, 2026-10-04); Zahlziele „Kaufen“ und „Verkaufen“, Kurs 10 Material = 5 Gold in beide Richtungen; ein Material je Besuch, gewählt per `w.rng` aus den freigeschalteten; Ankunft bei `dawn` alle 3 Tage, mit Taverne auf der Insel alle 2 Tage; bleibt einen Tag (Beschluss Q36, 2026-10-04).
 - Werte in `data/troops.json` und `data/economy.json`; Ausbildung am Werkstatt-Platz.
 
 ## Nicht-Ziele
@@ -53,7 +55,7 @@ Kein Platz im Gebäude → Ausbildung nicht möglich. Händler ohne Interesse an
 
 ## Offene Fragen
 
-Händler: Erscheinung, Ort, Preise je Material (mit B-099).
+keine (Zeiten, Kurs und Rhythmus sind Startwerte, Feintuning B-099; Darstellung des Händlers B-126).
 
 ## Notizen
 

@@ -103,7 +103,15 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-199](B-199-raum-fuenf-stufen.md) | SRV | Problem | mittel | offen | – | Ein neuer Raum legt die Insel mit allen Stufen an, für die es ein Biom gibt |
 | [B-200](B-200-aggressionspool-adern.md) | SIM | Problem | mittel | offen | – | Der Aggressionspool unter Tage bleibt auch mit Adern im Wellen-Korridor |
 | [B-201](B-201-spielstand-wirtschaft.md) | SIM | Schuld | mittel | offen | – | Der Spielstand stellt Plantage, Berufe, Krieger, Elite, Rüstung, Schwerter und Händler nach dem Laden wieder her |
-| [B-202](B-202-spielstand-versionsfolge.md) | SIM | Problem | hoch | offen | – | Die Spielstand-Versionen von S1 und W1 folgen eindeutig aufeinander |
+| [B-202](B-202-spielstand-versionsfolge.md) | SIM | Problem | hoch | offen | – | S1 und W1 teilen sich die Spielstand-Version 3 eindeutig |
+| [B-203](B-203-gold-schwelle-kennzahl.md) | REG | Frage | niedrig | offen | – | Die Kennzahl „erste Gold-Schwelle“ hat eine feste Schwelle und Bedeutung |
+| [B-204](B-204-test-raeume-sofort-schliessen.md) | SRV | Idee | niedrig | offen | – | Leere Test-Räume schließen sofort statt nach der Leer-Frist |
+| [B-205](B-205-y-belegung-s3.md) | CLI | Problem | mittel | offen | – | Die Y-Belegung in S3 folgt dem Beschluss „kein Bau-Menü“ |
+| [B-206](B-206-bauplaetze-aus-dem-seed.md) | SIM | Idee | hoch | eingeplant | W0 | Alle Bauplätze sind feste Punkte aus Daten und Level-Seed, Mauerlinien schalten je Seite nacheinander frei |
+| [B-207](B-207-bauplaetze-anzeige.md) | CLI | Idee | mittel | offen | – | Der Client zeigt freie und gesperrte Bauplätze mit Grund (ab Hub-Stufe n, Linie fehlt) |
+| [B-208](B-208-protokoll-bauplaetze.md) | SRV | Idee | mittel | eingeplant | W5 | Das Protokoll trägt die Bauplätze des Layouts sowie Platz- und Hub-Stufe zum Client |
+| [B-209](B-209-client-platz-arten.md) | CLI | Schuld | mittel | offen | – | `src/model/data.ts` kennt alle Platz-Arten aus `hub.json` |
+| [B-213](B-213-markdown-listen-haekchen.md) | SRV | Problem | niedrig | offen | – | MarkdownView in k3c-dev zeigt nummerierte Listen und Häkchen wie die alte Planungsseite |
 
 ## Archiv
 
@@ -220,3 +228,6 @@ Zeile in diesen Abschnitt.
 | [B-196](archiv/B-196-pages-workflows-go-fuer-atlas.md) | INF | Problem | hoch | erledigt | GR4 | Die Pages-Workflows bauen mit Go, weil `task build` den Atlas packt |
 | [B-106](archiv/B-106-kamera-je-stufe.md) | CLI | Idee | hoch | erledigt | S4 | Jeder Spieler sieht seine Stufe, auch wenn die Spieler in verschiedenen Stufen sind |
 | [B-199](archiv/B-199-review-diff-befehl.md) | INF | Schuld | mittel | erledigt | – | Review-Sessions lesen den Sprint-Diff mit dem Befehl aus der Arbeitsweise |
+| [B-210](archiv/B-210-planung-ueber-mcp.md) | SRV | Idee | hoch | erledigt | M8 | Agenten pflegen Tickets, Sprints und Sessions über MCP-Tools von k3c-dev |
+| [B-211](archiv/B-211-planungsseite-react.md) | SRV | Schuld | mittel | erledigt | M8 | Die Planungsseite von k3c-dev ist eine React-Ansicht aus denselben Daten wie die MCP-Tools |
+| [B-212](archiv/B-212-github-status-planung.md) | SRV | Idee | mittel | erledigt | M8 | k3c-dev zeigt PR, CI und Merge-Konflikte je Sprint aus GitHub |
