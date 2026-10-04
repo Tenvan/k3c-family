@@ -1,4 +1,4 @@
-# B-202 · Die Spielstand-Versionen von S1 und W1 folgen eindeutig aufeinander
+# B-202 · S1 und W1 teilen sich die Spielstand-Version 3 eindeutig
 
 - **Domäne:** SIM
 - **Typ:** Problem
@@ -21,43 +21,45 @@ Beide Sprints sind SIM und laufen nacheinander (ein aktiver Sprint je Domäne, B
 
 ## Ziel
 
-Jede Formatänderung hat eine eigene Versionsnummer und einen eigenen Fixture-Ordner; die zweite Session migriert von der ersten, kein Stand geht verloren.
+S1.4 und W1.3 ändern das Spielstand-Format in **einer gemeinsamen Version 3**, ohne dass die zweite Session die erste überschreibt; kein Stand geht verloren (Beschluss Q42, 2026-10-04).
 
 ## Beteiligte und Zielgruppen
 
-Entwickler (SIM), Review-Sessions S1.5 und W1.4; 🧑 entscheidet die Reihenfolge.
+Entwickler (SIM), Review-Sessions S1.5 und W1.4; 🧑 hat die gemeinsame Version beschlossen (Q42).
 
 ## Anforderungen
 
-- Die zuerst laufende Session behält Version 3, die zweite nutzt Version 4 mit Fixture `testdata/saves/v4/` und Migration 3 → 4 (sowie 1 → 4, 2 → 4).
-- Die Session-Dateien beider Sprints nennen ihre Version, ihren Fixture-Ordner und die Fehlermeldung (`erwartet 1, 2, 3 oder 4`) passend.
-- B-201 (Spielstand der Wirtschaft) schließt mit der nächsten freien Version an.
+- Wer zuerst landet, hebt `IslandSaveVersion` auf 3 und legt die Fixture `testdata/saves/v3/` an (Migration 1 → 3 und 2 → 3) (Beschluss Q42, 2026-10-04).
+- Die zweite Session ergänzt ihre Felder **optional** (`omitempty`) in Version 3, ohne neue Version, und erweitert die Fixture; ein v3-Stand ohne ihre Felder lädt mit Startzustand (Beschluss Q42, 2026-10-04).
+- v3 trägt nur Hub-Stufe und Platz-Stufe; wandernde Offsets gibt es nicht, die Zuordnung der Plätze über `kind@x` bleibt stabil (Beschluss Q43, 2026-10-04; ersetzt Q26).
+- Die Session-Dateien beider Sprints nennen Version 3, denselben Fixture-Ordner und die Regel „wer zuerst landet“.
+- B-201 (Spielstand der Wirtschaft) folgt später mit Version 4 (Beschluss Q42, 2026-10-04).
 
 ## Nicht-Ziele
 
-Inhalt der Formatänderungen (S1.4, W1.3, B-201); Zusammenlegen beider Änderungen in eine Version.
+Inhalt der Formatänderungen (S1.4, W1.3, B-201); eine eigene Version je Sprint.
 
 ## Regeln und Einschränkungen
 
-`docs/arbeitsweise.md` › „Spielstand-Format ändern“ (B-137): je Formatänderung eine Version, alte Fixtures bleiben unverändert. Spec-Änderung der Session-Dateien nur über Revision und Freigabe durch 🧑.
+`docs/arbeitsweise.md` › „Spielstand-Format ändern“ (B-137); Ausnahme durch Beschluss Q42: beide Änderungen teilen Version 3, die zweite nur mit optionalen Feldern. Eine bereits gemergte Fixture wird nur erweitert, nie umnummeriert. Spec-Änderung der Session-Dateien nur über Revision und Freigabe durch 🧑.
 
 ## Beispiele
 
-S1 läuft zuerst → S1.4 schreibt v3; W1.3 schreibt v4 und liest einen v3-Stand mit Skills, setzt Hub- und Platz-Stufe 1, Skills bleiben.
+S1 landet zuerst → S1.4 schreibt v3 mit Skills; W1.3 ergänzt Hub- und Platz-Stufe als optionale Felder in v3 und erweitert `testdata/saves/v3/`; ein v3-Stand aus S1.4 lädt mit Hub- und Platz-Stufe 1, Skills bleiben. Umgekehrt (W1 zuerst) genauso.
 
 ## Ausnahme- und Fehlerfälle
 
-Reihenfolge ändert sich nach der Anpassung (W1 doch zuerst) → Versionen in beiden Dateien tauschen, bevor eine der Sessions startet; nach dem Merge einer Version wird sie nie umnummeriert.
+v3-Stand ohne die Felder der zweiten Session → Startzustand für diese Felder, kein Ladefehler. Eine Session würde ein Pflichtfeld in v3 einführen → nicht erlaubt, nur `omitempty`.
 
 ## Akzeptanzkriterien
 
-- **AC-01** S1.4 und W1.3 (und W1.1, Zeile „Spielstand“) nennen verschiedene Versionen und Fixture-Ordner; `grep -rn "IslandSaveVersion = 3" docs/sprints/geplant` trifft genau eine Session.
-- **AC-02** Die Session mit Version 4 nennt die Migration aus Version 3 und einen Test, der das v3-Fixture lädt.
+- **AC-01** S1.4 und W1.3 (und W1.1, Zeile „Spielstand“) nennen beide Version 3, den Fixture-Ordner `testdata/saves/v3/` und die Regel „wer zuerst landet hebt, der Zweite ergänzt optional“.
+- **AC-02** Die zweite Session nennt einen Test, der einen v3-Stand ohne ihre Felder lädt.
 - **AC-03** `task test -- planning` grün.
 
 ## Offene Fragen
 
-Welcher Sprint läuft zuerst, S1 oder W1 (🧑)? Vorschlag des Agenten: Reihenfolge des Fahrplans (S1 zuerst, W1.3 bekommt Version 4); siehe Fragenkatalog Q42.
+keine (Beschluss Q42, 2026-10-04).
 
 ## Notizen
 

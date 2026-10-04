@@ -24,7 +24,7 @@ Spieler am TV und am Handy; 🧑 testet am Gerät.
 
 ## Anforderungen
 
-- Berufe und Handwerker sichtbar (Symbol/Name); Ausbilden und Tauschen über das Aktionen-Overlay (B-125).
+- Berufe und Handwerker sichtbar (Symbol/Name); Ausbilden und Tauschen über das Aktionen-Overlay (B-125). Jedes Angebot hat ein eigenes Zahlziel neben dem Gebäude, keine neue Taste (Beschluss Q34, 2026-10-04); der Händler hat die Zahlziele „Kaufen“ und „Verkaufen“ (Kurs 10 Material = 5 Gold, Beschluss Q36, 2026-10-04).
 - HUD: Truppen-Limit je Hub (Kämpfer/Limit), Hinweis bei erreichtem Limit.
 - Händler als Figur im Hub; Heilplatz-Reichweite sichtbar; Platzhalter, bis Grafiken kommen (B-010).
 

@@ -26,6 +26,9 @@ Setzt eine Session ein Ticket auf `erledigt` oder `verworfen`, verschiebt sie es
 `docs/vorlagen/`. `tests/planning.test.ts` prüft Felder, Überschriften, Status passend zum Ordner, Index und Verweise.
 Eine Abweichung lässt `npm test` scheitern.
 
+**Glossar ist verbindlich.** [`glossar.md`](glossar.md) legt die Begriffe fest und wird vor jeder Session gelesen. Ein neuer
+Begriff kommt beim Planen zuerst ins Glossar, dann in Ticket, Sprint oder Regel. Reviews achten auf Begriffs-Treue: Abweichungen gleicht der Review-Commit an (kein schwerer Befund).
+
 ## Spec-Driven Development (SDD)
 
 Ticket und Sprint-README **sind** die Spec, eine eigene Spec-Datei gibt es nicht. Das Wie steht in den Sessions.
