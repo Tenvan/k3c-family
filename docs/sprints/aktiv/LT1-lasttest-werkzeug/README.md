@@ -1,11 +1,11 @@
 # LT1 · SRV · Lasttest-Werkzeug
 
-- **Status:** geplant
+- **Status:** aktiv
 - **Domäne:** SRV
 - **Reife:** bereit
 - **Einschiebbar:** nein
 - **Tickets:** B-175, B-042
-- **Start-Commit:** –
+- **Start-Commit:** 9e6849e
 - **Spec:** freigegeben
 - **Revision:** 1
 - **Freigabe:** 2026-10-04, Chat (Ralf), Revision 1, durch 🧑; umfasst B-175, B-042; mit Änderungen aus dem Spec-Review (B-042 im Feld Tickets, Review-Diff korrigiert, `-max-duration` 60 min bestätigt, Protokoll = aktuelle Version)
@@ -59,7 +59,7 @@ keine (Obergrenze der Nachtmessung: Flag `-max-duration`, Standard 60 min, 🧑 
 
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
-| LT1.1 | `LT1.1-bots-client.md` | Umsetzung | autonom | offen |
+| LT1.1 | `LT1.1-bots-client.md` | Umsetzung | autonom | in Arbeit |
 | LT1.2 | `LT1.2-status-bericht.md` | Umsetzung | autonom | offen |
 | LT1.3 | `LT1.3-messlauf-pi.md` | Workshop | Mensch | offen |
 | LT1.4 | `LT1.4-review.md` | Review | autonom | offen |
