@@ -1,6 +1,6 @@
 # BAL1.3 · Replay-Wiedergabe in k3c-dev
 
-- **Status:** in Arbeit
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Branch:** bal1/3-replay-k3c-dev
@@ -37,8 +37,8 @@ Oberfläche für Replays in der k3c-dev-Ansicht, Aufnahme in k3c-dev, Änderunge
 
 ## Fertig, wenn
 
-- [ ] AC-06: k3c-dev spielt eine Replay-Datei ab und nennt Endzustand-Hash und Burgfall-Tick (Test).
-- [ ] AC-07: `task check:go` grün; zusätzlich `task check:dev` grün.
+- [x] AC-06: k3c-dev spielt eine Replay-Datei ab und nennt Endzustand-Hash und Burgfall-Tick (Test).
+- [x] AC-07: `task check:go` grün; zusätzlich `task check:dev` grün.
 
 ## Prüfen
 
@@ -49,4 +49,8 @@ task check:dev
 
 ## Ergebnis
 
-–
+- **Werkzeug:** MCP-Tool `replay_run {path}` in `tools/k3c-dev/internal/mcpsrv/tools_replay.go`, registriert neben `sim_run` (`tools.go` › `registerEngine`), Hinweis in `instructions.md`. Ruft `balance.ReadReplay` und `balance.Play` aus BAL1.2 (nicht nachgebaut). Ausgabe: Kopfzeile mit Szenario, `Ticks · Endzustand-Hash · Burgfall-Tick`, Vergleich mit der Aufnahme (gleich/weicht ab), je Warnung eine Zeile (z. B. anderer Datenstand). Keine Hülle in `enginetools/` nötig.
+- **Pfadprüfung:** `path` relativ zur Repo-Wurzel (`Config.Root`); nach `filepath.EvalSymlinks` muss die Datei unterhalb der Wurzel liegen, sonst Fehler „abgelehnt“ (auch absolute Pfade und `..`).
+- **Abweichung von Schritt 3:** keine eingecheckte Beispiel-Datei unter `testdata/replay/` (BAL1.2 hat keine angelegt, und eine feste Datei würde bei jeder Änderung an `data/` zur Datenstand-Warnung). Der Test nimmt stattdessen einen Bot-Lauf auf (Seed 2, 1 Spieler, passiv, 1 Tag, Burgfall in Nacht 1) und schreibt ihn in eine temporäre Repo-Wurzel.
+- **AC-06** umgesetzt, geprüft mit `TestReplayRunGleicherHashUndBurgfall` (Endzustand-Hash und Burgfall-Tick wie bei der Aufnahme, keine Warnung), `TestReplayRunNurImRepo` (`../…` und absoluter Pfad außerhalb → abgelehnt, fehlende Datei → Fehler), `TestReplayRunKaputteDatei` (Version 99 → Fehler mit Version).
+- **AC-07** `task check:go`, `task check:dev`, `task check` grün (2026-10-04, Worktree). Im ersten `task check:go`-Lauf schlug `engine/store` › `TestGleichzeitigesSpeichern` einmal fehl, danach dreimal grün und `task check:go` grün; passt zu **B-187** (Windows, kurz gesperrte Zieldatei), kein neues Ticket.
