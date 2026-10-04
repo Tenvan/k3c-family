@@ -56,7 +56,7 @@ func openOutSink(root, service string, log *slog.Logger, now func() time.Time) *
 		s.f, err = os.OpenFile(path, os.O_CREATE|os.O_APPEND|os.O_WRONLY, 0o644)
 	}
 	if err != nil {
-		log.Warn("dienst "+service+": Ausgabe-Log nicht geöffnet: "+err.Error(), "ns", "svc", "datei", path)
+		log.Warn("📄 dienst "+service+": Ausgabe-Log nicht geöffnet: "+err.Error(), "ns", "svc", "datei", path)
 	}
 	return s
 }
@@ -72,7 +72,7 @@ func (s *outSink) write(stream, text string) {
 	defer s.mu.Unlock()
 	if _, err := s.f.Write(append(line, '\n')); err != nil && !s.failed {
 		s.failed = true
-		s.log.Warn("dienst "+s.name+": Ausgabe-Log nicht beschreibbar: "+err.Error(), "ns", "svc")
+		s.log.Warn("📄 dienst "+s.name+": Ausgabe-Log nicht beschreibbar: "+err.Error(), "ns", "svc")
 	}
 }
 

@@ -213,14 +213,14 @@ func (c *Controller) set(u *unit, change func(*Status)) Status {
 	st := u.st
 	u.mu.Unlock()
 	if st.State != before {
-		c.opts.Log.Info("dienst "+st.Name+": "+string(st.State), "ns", "svc", "pid", st.PID, "grund", st.LastError)
+		c.opts.Log.Info("🚦 dienst "+st.Name+": "+string(st.State), "ns", "svc", "pid", st.PID, "grund", st.LastError)
 	}
 	c.opts.OnChange(st)
 	return st
 }
 
 func (c *Controller) fail(u *unit, reason string) Status {
-	c.opts.Log.Warn("dienst "+u.svc.Name+" fehlgeschlagen: "+reason, "ns", "svc")
+	c.opts.Log.Warn("💥 dienst "+u.svc.Name+" fehlgeschlagen: "+reason, "ns", "svc")
 	return c.set(u, func(s *Status) { s.State, s.LastError, s.PID, s.CPU, s.Memory = Failed, reason, 0, 0, 0 })
 }
 

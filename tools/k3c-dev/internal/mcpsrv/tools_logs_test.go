@@ -118,8 +118,8 @@ func TestEreignisseImEigenenLog(t *testing.T) {
 	cs := connect(t, s)
 	callText(t, cs, "check_run", map[string]any{"target": "task:alles"})
 	log := buf.String()
-	if !strings.Contains(log, `"level":"WARN","msg":"lauf beendet","ns":"check","target":"task:lint","exit":1`) ||
-		!strings.Contains(log, `"msg":"check_run: unbekanntes Ziel \"task:alles\"; gültige Ziele: task:check`) {
+	if !strings.Contains(log, `"level":"WARN","msg":"❌ lauf beendet","ns":"check","target":"task:lint","exit":1`) ||
+		!strings.Contains(log, `"msg":"❌ check_run: unbekanntes Ziel \"task:alles\"; gültige Ziele: task:check`) {
 		t.Errorf("Log: %s", log)
 	}
 	if cs.InitializeResult().Instructions == "" || !strings.Contains(cs.InitializeResult().Instructions, "check_run") {

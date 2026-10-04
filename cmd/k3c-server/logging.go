@@ -64,7 +64,7 @@ func newNamedLogger(dir, file string, stderr io.Writer) (*slog.Logger, func()) {
 	f, err := openRotating(filepath.Join(dir, file), limit)
 	if err != nil {
 		log := slog.New(text)
-		log.Warn("JSON-Log nicht geschrieben, nur stderr", "dir", dir, "file", file, "err", err)
+		log.Warn("📄 JSON-Log nicht geschrieben, nur stderr", "dir", dir, "file", file, "err", err)
 		return log, func() {}
 	}
 	return slog.New(fanout{text, slog.NewJSONHandler(f, &slog.HandlerOptions{Level: slog.LevelDebug})}), func() { _ = f.Close() }

@@ -162,7 +162,7 @@ func (r *Room) join(id string, peer Peer, slots []int) error {
 	}
 	r.emptySince = time.Time{}
 	r.syncFree()
-	r.log().Info("Gerät im Raum", "device", short(id), "slots", slots, "wiederverbunden", old != nil, "geraete", r.connected())
+	r.log().Info("👑 Gerät im Raum", "device", short(id), "slots", slots, "wiederverbunden", old != nil, "geraete", r.connected())
 	peer.Joined(r.Code, r.Name, r.seats(d))
 	r.pushState(d)
 	r.broadcastSeats()
@@ -263,17 +263,17 @@ func (r *Room) dropTestSave() {
 		return
 	}
 	if err := r.m.Store.Delete(r.Name); err != nil {
-		r.m.log().Error("Test-Spielstand nicht gelöscht", "room", r.Code, "save", r.Name, "err", err)
+		r.m.log().Error("💥 Test-Spielstand nicht gelöscht", "room", r.Code, "save", r.Name, "err", err)
 	}
 }
 
 func (r *Room) save() {
 	backup, err := r.store()
 	if err != nil {
-		r.log().Error("Spielstand nicht gespeichert", "err", err)
+		r.log().Error("💥 Spielstand nicht gespeichert", "err", err)
 		return
 	}
-	r.log().Debug("Spielstand gespeichert", "tick", r.tick, "sicherung", backup)
+	r.log().Debug("💾 Spielstand gespeichert", "tick", r.tick, "sicherung", backup)
 }
 
 // store schreibt den Spielstand und liefert den Namen der Sicherung des vorigen Stands (leer, wenn es keine gab).

@@ -36,7 +36,7 @@ export class LoadScene extends Phaser.Scene {
     // Phaser meldet nach Fehlern trotzdem „complete“: Fehler merken, statt weiterzumachen.
     this.load.on('loaderror', (file: Phaser.Loader.File) => {
       failed.push(String(file.url));
-      clientLog('error', `Laden fehlgeschlagen: ${file.url}`);
+      clientLog('error', `💥 Laden fehlgeschlagen: ${file.url}`);
       label.setText(errorText(failed)).setColor('#ff6060');
       fill.setFillStyle(0xff4040);
     });
