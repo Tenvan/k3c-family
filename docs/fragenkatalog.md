@@ -49,7 +49,7 @@ Sprints bleiben `Spec: Entwurf`, bis 🧑 sie je Sprint freigibt.
 | Q36 | Händler: Ort, Ablauf, Preise, Rhythmus | W4.2 | 5 | geklärt 2026-10-04 |
 | Q37 | Rüstung: Stufen und Wirkung auf bestehende Truppen | W4.3 | 5 | geklärt 2026-10-04 |
 | Q38 | Krieger: Posten und Seitenverteilung | W4.3 | 5 | geklärt 2026-10-04 (geändert durch Q46) |
-| Q39 | Ereignis `troopLost` | W4.3 | 5 | geklärt 2026-10-04 (geändert durch Q64) |
+| Q39 | Ereignis `troopLost` | W4.3 | 5 | geklärt 2026-10-04 (ersetzt durch Q69) |
 | Q40 | Abgrenzung W3-AC-01 und W4-AC-04/05 | W3, W4 | 5 | geklärt 2026-10-04 |
 | Q41 | Teilung von W4.3 | W4.3 | 5 | geklärt 2026-10-04 |
 | Q42 | Spielstand-Versionen S1.4 und W1.3 | S1.4, W1.3 | 5 | geklärt 2026-10-04 (ohne wandernde Offsets, Q43) |
@@ -74,8 +74,12 @@ Sprints bleiben `Spec: Entwurf`, bis 🧑 sie je Sprint freigibt.
 | Q61 | Level = Stufe oder Insel? | – | 7 | geklärt 2026-10-04 |
 | Q62 | Respawn und Wiederbeleben als Ereignisse | W4.1, W5 | 7 | geklärt 2026-10-04 |
 | Q63 | Begriff „Truppe“ | – | 7 | geklärt 2026-10-04 |
-| Q64 | `troopLost` nur für Kämpfer | W4.3a | 7 | geklärt 2026-10-04 |
+| Q64 | `troopLost` nur für Kämpfer | W4.3a | 7 | geklärt 2026-10-04 (ersetzt durch Q69) |
 | Q65 | Tageszyklus mit Morgengrauen | B-213 | 7 | geklärt 2026-10-04 |
+| Q66 | Ziel des Heiler-Skills Resurrection | S1 | 7 | geklärt 2026-10-04 |
+| Q67 | Verlust-Kaskade statt Tod der Bürger | B-122, W4.3a, W4.3b | 7 | geklärt 2026-10-04 |
+| Q68 | Ausrüstung am Boden | W4.2, W4.3a, K1 | 7 | geklärt 2026-10-04 |
+| Q69 | Elite-Waffen und Ereignisse `disarmed`, `equipmentTaken` | W4.3a, W4.3b | 7 | geklärt 2026-10-04 |
 
 ## Beschlüsse vom 2026-10-03 (🧑 im Chat)
 
@@ -88,7 +92,7 @@ Sprints bleiben `Spec: Entwurf`, bis 🧑 sie je Sprint freigibt.
 | Q05 | **Deutsch und Englisch**, Sprachauswahl in den Optionen, neue Texte zentral. Neues Ticket B-172 in S5. | B-145 (erledigt durch Beschluss), B-172, S5 |
 | Q06 | **Geändert 2026-10-04:** Belegung aus `game-design.md` übernommen: Schlag X, Skills 1–4 LB/RB/LT/D-Pad hoch (Tastatur Q/R/T/Z), Skill-Menü D-Pad runter (K), Vollbild Stick drücken; B frei, View + Menu reserviert. **Kein Bau-Menü** (Regel `materialien-gebaeude.md` § 3, Beschluss zu Q34), **Y ist frei** (für später). X1 bestätigt nur noch. | B-026, X1, S3, B-205 |
 | Q07 | Paket `ghcr.io/tenvan/k3c-family` **öffentlich**, Pi 3 mit 64-Bit-Betriebssystem. (SP11-Spec nennt dies als Annahme; Änderung der freigegebenen Spec nicht nötig.) | SP11 |
-| Q08 | 12 Ereignisse (Treffer, Kill, Münze auf/gegeben, Pfeil, Schlag, Bau-Fortschritt/fertig, Tod, Wiederbeleben, Skill, Nacht naht, Portal), Budget ≤ 200 Byte je Tick und Client im Mittel, im Delta mitgesendet, Benchmark in F4. | B-139, B-140, F3, F4 |
+| Q08 | 12 Ereignisse (Treffer, Kill, Münze auf/gegeben, Pfeil, Schlag, Bau-Fortschritt/fertig, Tod, Wiederbeleben, Skill, Nacht naht, Portal), Budget ≤ 200 Byte je Tick und Client im Mittel, im Delta mitgesendet, Benchmark in F4. **Hinweis 2026-10-04 (Q67, Q69):** „Tod“ gilt nur noch für Monarchen; Bürger sterben nicht, für sie gibt es `disarmed` und `equipmentTaken`. | B-139, B-140, F3, F4 |
 | Q09 | `task golden:update` plus Begründung im Commit-Text; die Review-Session prüft. Kein Freigabe-Zwang durch 🧑 bei Werteänderungen aus Beschlüssen. | B-137, F2 |
 | Q10 | Speichern beim Verlassen jedes Geräts **und alle 60 s**, zusätzlich Tagesanbruch/Stufenwechsel; HUD zeigt „gesichert“. | B-147, S2 |
 | Q11 | Kontextuelle Hinweise mit Controller-Glyphen, geführte erste Nacht optional, Grad „leicht“ ohne Niederlage aus `data/difficulty.json`. | B-148, B-149, S6 |
@@ -126,7 +130,7 @@ Sprints bleiben `Spec: Entwurf`, bis 🧑 sie je Sprint freigibt.
 | Q36 | Ein Händler je Insel im Hub der Tiefe 0 bei Hub-Mitte +8; Zahlziele „Kaufen“ und „Verkaufen“, Kurs 10 Material = 5 Gold in beide Richtungen; ein Material je Besuch per `w.rng` aus den freigeschalteten; Ankunft bei `dawn` alle 3 Tage, mit Taverne auf der Insel alle 2 Tage; bleibt einen Tag. | B-121, W4.2 |
 | Q37 | 2 Rüstungsstufen (ab Hub-Stufe 4 und 5), +20 % / +40 % auf die Basis-HP, wirkt sofort auf alle Kämpfer (`MaxHP` und `HP` steigen gleich, keine Vollheilung); Bauern und Landstreicher ohne Rüstung. | B-122, W4.3 |
 | Q38 | **Geändert durch Q46 (2026-10-04):** Posten hinter der äußersten gebauten Sperre (mit Tor zwischen Mauer und Tor). Ursprünglicher Wortlaut: **Geändert gegenüber Empfehlung:** Krieger stehen **direkt hinter der äußersten Mauer** und treffen Gegner an der Mauer (Reichweite 1). Seitenverteilung wie bei Bogenschützen (`makeArcher`) als Startwert. | B-014, B-122, W4.3 |
-| Q39 | **Geändert durch Q64:** nur Kämpfer. Ursprünglicher Wortlaut: `troopLost` für alle Truppen außer Landstreichern, Felder `kind`, `x`, `cause`; ohne Priorität; kein Ereignis beim Burgfall. | B-122, W4.3 |
+| Q39 | **Ersetzt durch Q69** (`disarmed`, `equipmentTaken`; 2026-10-04). Zuvor **geändert durch Q64:** nur Kämpfer. Ursprünglicher Wortlaut: `troopLost` für alle Truppen außer Landstreichern, Felder `kind`, `x`, `cause`; ohne Priorität; kein Ereignis beim Burgfall. | B-122, W4.3 |
 | Q40 | W3 baut Limit (für Bogenschützen) und Heilplatz vollständig; W4.3 erweitert das Limit um Krieger und Elite und weist AC-05 per Regressionstest plus `troopLost` nach. Keine Spec-Revision. | B-116, B-122, W3, W4 |
 | Q41 | W4.3 wird jetzt geteilt: **W4.3a** (Krieger, Schwert-Regal, Limit-Erweiterung, `troopLost`) und **W4.3b** (Elite, Rüstung, Heilplatz-Nachweis, Golden); die Review bleibt **W4.4**. Kriterien unverändert. | B-014, B-122, W4 |
 | Q42 | **Geändert gegenüber Empfehlung:** **Eine gemeinsame Version v3** für S1.4 und W1.3: Wer zuerst landet, hebt `IslandSaveVersion` auf 3 mit Fixture `testdata/saves/v3/`; der Zweite ergänzt seine Felder optional (`omitempty`) in v3 ohne neue Version und erweitert die Fixture. B-201 folgt später mit v4. **Ergänzt 2026-10-04:** Wandernde Offsets gibt es nicht mehr (Q43); v3 trägt nur Hub-Stufe und Platz-Stufe, `kind@x` bleibt stabil. | B-201, B-202, S1.4, W1.3 |
@@ -169,12 +173,36 @@ Anlass: Beim Anlegen des Glossars fielen Widersprüche zwischen Regelwerk, Spiel
 | Q61 | **Level = eine Stufe** (wie Generator und Code); die Insel ist die Sammlung ihrer Stufen. | `rules/stufen.md` § 1, Glossar |
 | Q62 | **Zwei Ereignisse:** `revive` = Respawn nach der Wartezeit; neues `revived` = Wiederbeleben durch einen Mitspieler (B-120). W4.1 sendet bisher `revive` für beides; `protocol.md` und die Client-Typen folgen mit W5. | B-120, W4.1, W5, Q33 |
 | Q63 | **Truppe = Kämpfer** (Bogenschütze, Krieger, Elite). Alle Figuren des Hubs heißen **Bürger**. Code-Namen (`World.Troops`) bleiben als Ausnahme, im Glossar vermerkt. Regeltexte mit „Truppen“ für alle Figuren heißen „Bürger“. | `rules/*.md`, `game-design.md`, Glossar |
-| Q64 | **`troopLost` nur für Kämpfer** (ändert Q39); ein Ereignis für Bauern und Berufe kommt bei Bedarf später per Ticket (`citizenLost`). | B-122, W4.3a, Q39 |
+| Q64 | **Ersetzt durch Q69** (`disarmed`, `equipmentTaken`; 2026-10-04). Ursprünglicher Wortlaut: **`troopLost` nur für Kämpfer** (ändert Q39); ein Ereignis für Bauern und Berufe kommt bei Bedarf später per Ticket (`citizenLost`). | B-122, W4.3a, Q39 |
 | Q65 | **Tageszyklus:** vier Phasen **Tag, Dämmerung, Nacht, Morgengrauen** im Verhältnis 3:1:2:1, Einheit 2 min → Tag 6, Dämmerung 2, Nacht 4, Morgengrauen 2 min (14 min, Startwert, BR1 bestätigt). Heute: `data/biomes/forest.json` › `cycle` 10/1/5 min, `engine/sim/cycle.go` (`day`, `dusk`, `night`). `dawn` (Gold je Spieler, Taverne, Händler, Speichern) fällt bei **Beginn Morgengrauen** (Nacht endet, Gegner ziehen ab). „Abend“ (Musik-Zustand Q16) = Dämmerung. Neues SIM-Ticket B-213 (Zyklus mit Morgengrauen); Folgen für Protokoll, Client und Musik prüft das Ticket. | B-213, BR1, Q16, `rules/wirtschaft.md` § 3, `game-design.md` |
 
 Ohne Frage aus Fakten korrigiert (redaktionell): Startvorrat 100 Holz (B-177) statt „leerer Vorrat“, fünf Materialien statt drei, Farm = Plantage statt „+5 Holz je Tagesanbruch“, Respawn heute 5 s und Ziel 15 s mit B-120/W4.1, `CLAUDE.md` › Struktur „Protokoll v3“, Q27 „Lage an Linie 1 (±48), baubar ab Hub-Stufe 2“.
 
 **Folgen für die Planung:** Die Regeln (`stufen.md`, `monarch.md`, `wirtschaft.md`, `materialien-gebaeude.md`, `buerger.md`), `game-design.md` und das Glossar sind angepasst. Offen ist die Planungsarbeit über k3c-dev: neues Ticket **B-213** (SIM, Tageszyklus mit Morgengrauen); Anpassungen in **B-120** (`revived`, Respawn 15 s), **B-122** (`troopLost` nur Kämpfer), **W4.1** (`revived` statt `revive` beim Wiederbeleben) und **W4.3a** (`troopLost` nur Kämpfer); redaktionelle Korrektur der „Offenen Fragen“ in BAL3, BAL4, GR2, SO2, SO4, S3, S6, S5, BR1, BR2 und P1 auf „geklärt durch Qnn (Datum)“. Wirklich offen bleiben dort: BAL4 Toleranz je Kennzahl, W5 Abgrenzung der Berufe-Felder zu B-123, P1 Termin und Teilnehmer.
+
+## Beschlüsse vom 2026-10-04, vierte Runde (🧑 im Chat)
+
+Anlass: Ziel des Heiler-Skills Resurrection und was mit Bürgern geschieht, deren HP auf 0 fallen. Heute entfernt der Code Bürger mit HP ≤ 0 (`engine/sim/world.go`, Schleife über `w.Troops`). Vorbild ist Kingdom Two Crowns (Quellen: magicgameworld.com „Subjects“, Steam-Diskussion). Fragen in Block 7.
+
+| Nr. | Beschluss | Wirkt auf |
+|---|---|---|
+| Q66 | **Resurrection** (Heiler-Skill) wirkt **nur auf gefallene Monarchen**, nicht auf Bürger. | `game-design.md` › Skill-Tabelle, `rules/monarch.md` § 6, S1.2b, B-119 |
+| Q67 | **Verlust-Kaskade statt Tod:** Bürger sterben nicht. Ein Treffer, der die HP auf 0 bringt, kostet die nächste Schicht: Bürger **mit Ausrüstung** (Kämpfer: Bogenschütze, Krieger, Elite; Berufe: Bergmann, Baumeister, Handwerker) **lassen die Ausrüstung zu Boden fallen** und werden **Bauer** (bleiben rekrutiert, volle HP, können sich Ausrüstung neu holen, zählen nicht mehr zum Truppen-Limit). Ein **Bauer** lässt seine **Münze** fallen (Gegner oder Monarch können sie aufheben) und wird **Landstreicher**, der zum Camp läuft. **Landstreicher** werden **nicht angegriffen**. Ersetzt „Gefallene Bürger sind verloren“ (`buerger.md` § 3) und den heutigen Code-Stand als Ziel. | `rules/buerger.md` § 3, `rules/gegner.md` § 4, B-122, B-014, W4.3a, W4.3b |
+| Q68 | **Ausrüstung am Boden:** Bürger heben sie auf (wie eine Waffe im Regal, als Abholauftrag). Ein **Gegner** kann sie aufheben und **trägt sie zum Portal**, dann ist sie verloren; wird der Gegner vorher getötet, fällt sie wieder zu Boden. | `rules/buerger.md` § 3, `rules/gegner.md` § 4, W4.2, W4.3a, K1 |
+| Q69 | **Elite-Waffen fallen mit ihrer Stufe** zu Boden. Das Ereignis **`troopLost` entfällt** (niemand stirbt; ersetzt Q39 und Q64); neu **`disarmed`** (Felder `kind`, `x`, `cause`), wenn ein Bürger seine Ausrüstung verliert, und **`equipmentTaken`**, wenn ein Gegner Ausrüstung wegträgt. | `rules/buerger.md` § 3, `protocol.md` (mit W5), B-122, W4.3a, W4.3b, Q39, Q64 |
+
+**Nicht jetzt:** Extra-Münzen als Schutz (im Vorbild verlieren Figuren zuerst zusätzliche Münzen) kommen später als Idee-Ticket.
+
+**Folgen für die Planung** (über k3c-dev, nicht in diesem Commit):
+- **B-122** und **W4.3a**/**W4.3b**/**W4.4**: `troopLost` durch `disarmed` ersetzen (AC-05 aus Q40/Q41 neu fassen), Verlust-Kaskade statt Entfernen bei HP ≤ 0, Elite-Waffe fällt mit Stufe; `W4/README.md` und `W3.2` nennen `troopLost` ebenfalls.
+- **B-014** (Krieger, Elite): Rückstufung zum Bauern, Schwert und Elite-Schwert am Boden.
+- **B-121** und **W4.2** (Berufe, Werkstatt): Berufe verlieren ihre Ausrüstung; Aufheben vom Boden als Abholauftrag wie am Waffenregal.
+- **B-120** und **W4.1** prüfen: Resurrection als zweiter Weg zum `revived` (Ereignis-Abgrenzung offen); der Hinweis auf Resurrection in W4.1 („Nicht-Ziele“) passt.
+- **B-119** und **S1.2b**: Resurrection zielt auf gefallene Monarchen (Grabstein), nicht auf Truppen.
+- **K1** (Gegner-KI): Ausrüstung und Münzen aufheben, Ausrüstung zum Portal tragen (`equipmentTaken`), Drop beim Tod des Trägers; Landstreicher sind kein Ziel.
+- **B-099** (Balancing-Tester): „Verluste je Welle“ zählt künftig Rückstufungen statt Tote (`zielkorridore.md`).
+- Neues **Idee-Ticket** „Extra-Münzen als Schutz“.
+- **Offen:** Ein Ereignis für „Bauer verliert Münze“ ist nicht beschlossen.
 
 ## Block 1 – blockiert F1 und den Spieleabend-Build
 
@@ -312,7 +340,7 @@ Optionen: (a) Krieger stehen 1 Unit **vor** der äußersten gebauten Mauer bzw. 
 
 **Q39 · Ereignis `troopLost`** (B-122, W4.3). Das Ticket nennt es als Messgröße, Felder und Arten sind offen. `capEvents` begrenzt auf 32 je Tick, `priorityEvent` (`engine/sim/events.go`) bevorzugt Tod, Bau, Zerstörung. Die Kennzahl „Verluste je Welle“ misst laut `zielkorridore.md` die Differenz des Bestands, nicht ein Ereignis.
 Optionen: (a) alle außer Landstreichern, Felder `kind`, `x`, `cause` (Gegner-Art, wie B-182), ohne Priorität; (b) nur Kämpfer, mit Priorität; (c) zusätzlich beim Burgfall.
-🤖 Empfehlung: (a). Ohne Priorität, weil die Kennzahl über den Bestand rechnet und Sound/Anzeige einen verlorenen Bauern verschmerzen; beim Burgfall kein `troopLost` (dort gilt `castleFallen`).
+🤖 Empfehlung: (a). Ohne Priorität, weil die Kennzahl über den Bestand rechnet und Sound/Anzeige einen verlorenen Bauern verschmerzen; beim Burgfall kein `troopLost` (dort gilt `castleFallen`). **Ersetzt durch Q69** (`disarmed`, `equipmentTaken`; 2026-10-04).
 
 **Q40 · Abgrenzung W3-AC-01 und W4-AC-04/05** (B-116, B-122). W3-AC-01 verlangt „Kaserne-Limit“ und „Heilplatz“ je mit Test, W4-AC-04 „das Limit je Hub zählt nur Kämpfer“, W4-AC-05 „Heilplatz heilt in Reichweite, ohne Heilplatz keine Heilung“. Beide Sprints würden dasselbe bauen.
 Optionen: (a) W3 baut Limit (für Bogenschützen) und Heilplatz vollständig; W4.3 erweitert das Limit um Krieger und Elite und weist AC-05 durch einen Regressionstest plus `troopLost` nach (Spec bleibt); (b) W3 nur Bauplätze, Wirkung in W4 (Revision von W3-AC-01 nötig); (c) Kriterien in W4 streichen (Revision von W4).
@@ -404,8 +432,24 @@ Optionen: (a) Truppe = Kämpfer (Bogenschütze, Krieger, Elite), alle Hub-Figure
 
 **Q64 · `troopLost` nur für Kämpfer** (B-122, W4.3a). Q39 legte `troopLost` für alle Figuren außer Landstreichern fest; mit Q63 passt der Name nur noch zu Kämpfern.
 Optionen: (a) nur Kämpfer (ändert Q39), ein Ereignis für Bauern und Berufe bei Bedarf später per Ticket (`citizenLost`); (b) wie Q39, Ereignis umbenennen; (c) wie Q39, Name bleibt.
-🤖 Empfehlung: (a). Die Kennzahl „Verluste je Welle“ zählt ohnehin Kämpfer. **Beschlossen: (a).**
+🤖 Empfehlung: (a). Die Kennzahl „Verluste je Welle“ zählt ohnehin Kämpfer. **Beschlossen: (a).** **Ersetzt durch Q69** (`disarmed`, `equipmentTaken`; 2026-10-04).
 
 **Q65 · Tageszyklus mit Morgengrauen** (B-213, BR1). Heute Tag 10, Dämmerung 1, Nacht 5 min (`data/biomes/forest.json` › `cycle`), `dawn` fällt beim Übergang Nacht → Tag (`engine/sim/cycle.go`). „Abend“ kommt nur als Musik-Zustand vor (Q16). 🧑 wünscht vier Phasen Tag, Dämmerung, Nacht, Morgengrauen im Verhältnis 3:1:2:1.
 Optionen Einheit: (a) 2 min → 6/2/4/2 min (14 min); (b) 1 min → 3/1/2/1 min (7 min); (c) je Biom eigene Werte. Optionen `dawn`: (a) bei Beginn Morgengrauen (Nacht endet, Gegner ziehen ab); (b) bei Beginn Tag; (c) beides (zwei Ereignisse).
 🤖 Empfehlung: Einheit (a), nahe am heutigen Zyklus (16 min); `dawn` (a), damit Gold, Taverne, Händler und Speichern mit dem Ende der Nacht zusammenfallen. „Abend“ (Q16) = Dämmerung. **Beschlossen: Einheit (a), `dawn` (a).**
+
+**Q66 · Ziel des Heiler-Skills Resurrection** (S1.2b, B-119). `game-design.md` nennt „Resurrection (Truppen 50 % HP, CD 180 s)“, `monarch.md` § 6 „wirkt nur auf Truppen“; mit Q67 fällt aber kein Bürger mehr, und den gefallenen Monarchen belebt bisher nur ein Mitspieler per A-Halten.
+Optionen: (a) nur gefallene Monarchen; (b) nur Truppen (wie bisher); (c) beide.
+🤖 Empfehlung: (a), weil Bürger nach Q67 nicht mehr sterben. **Beschlossen: (a).**
+
+**Q67 · Verlust-Kaskade statt Tod** (B-122, B-014, W4.3a, W4.3b). Heute entfernt der Code Bürger mit HP ≤ 0 (`engine/sim/world.go`), `buerger.md` § 3 sagt „Gefallene Bürger sind verloren“. Im Vorbild Kingdom Two Crowns sterben Untertanen nicht, sondern verlieren erst ihr Werkzeug, dann ihre Münze (Quellen: magicgameworld.com „Subjects“, Steam-Diskussion).
+Optionen danach: (a) Bürger mit Ausrüstung lassen sie fallen und werden Bauer; (b) sie werden Landstreicher; (c) sie bleiben Bauer mit Rest-HP. Optionen ohne Ausrüstung: (a) wie Vorbild – der Bauer lässt seine Münze fallen und wird Landstreicher, Landstreicher werden nicht angegriffen; (b) ohne Münz-Drop; (c) Landstreicher sterben.
+🤖 Empfehlung: danach (a) mit voller HP, ohne Ausrüstung (a) wie Vorbild; der Bauer bleibt rekrutiert und holt sich Ausrüstung neu, zählt aber nicht mehr zum Truppen-Limit. **Beschlossen: (a) und (a).**
+
+**Q68 · Ausrüstung am Boden** (W4.2, W4.3a, K1). Mit Q67 liegt verlorene Ausrüstung am Boden; Bürger sollen sie aufheben können wie eine Waffe im Regal (Abholauftrag).
+Optionen für Gegner: (a) ein Gegner hebt sie auf und trägt sie zum Portal, dort ist sie verloren; wird er vorher getötet, fällt sie wieder zu Boden; (b) ein Gegner zerstört sie sofort; (c) ein Gegner nutzt sie.
+🤖 Empfehlung: (a). Der Verlust lässt sich abwenden, das gibt der Verfolgung Sinn. **Beschlossen: (a).**
+
+**Q69 · Elite-Waffen und Ereignisse** (W4.3a, W4.3b, Q39, Q64). `troopLost` setzt einen Tod voraus, den es nach Q67 nicht mehr gibt; offen ist auch, was aus einer Elite-Waffe wird.
+Optionen: (a) Elite-Waffen fallen mit ihrer Stufe zu Boden; `troopLost` entfällt, neu `disarmed` (Felder `kind`, `x`, `cause`) beim Verlust der Ausrüstung und `equipmentTaken`, wenn ein Gegner Ausrüstung wegträgt; (b) die Elite-Stufe verfällt beim Verlust; (c) `troopLost` bleibt.
+🤖 Empfehlung: (a). Das Upgrade bleibt zurückholbar, die Ereignisse heißen nach dem, was wirklich geschieht. **Beschlossen: (a).** Ein Ereignis für „Bauer verliert Münze“ ist nicht beschlossen (offen).

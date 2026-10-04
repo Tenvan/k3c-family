@@ -51,10 +51,10 @@ Begründung: Alle Skills ohne Menü erreichbar, X bleibt die Hauptaktion im Kamp
 
 - Annahme: Die Presets sind beim Beitritt wählbar (Standard Tank für Spieler 1, Zauberer für Spieler 2); 🧑 hat „Freie Skillung, Presets als Start“ beschlossen, die Auswahl beim Beitritt ist nicht gesondert bestätigt.
 - Startwerte für Schlag (Schaden 10, Reichweite 1,5, Abklingzeit 0,7 s), Meilenstein- und Truhen-Punkte, Respawn 15 s, Wiederbelebung (3 s, 50 % HP) und die Zielkorridore sind **Vorschläge des Agenten** ohne gesonderte Bestätigung; Feintuning mit B-099.
-- Die Skill-Zahlen und Passive stehen in `game-design.md` (Skill-Tabelle); Heiler-Skill „Resurrection“ wirkt nur auf Truppen, die Wiederbelebung des Monarchen läuft nicht über einen Skill.
+- Die Skill-Zahlen und Passive stehen in `game-design.md` (Skill-Tabelle); Heiler-Skill „Resurrection“ wirkt **nur auf gefallene Monarchen**, nicht auf Bürger (Q66, 2026-10-04; Bürger sterben nicht, `buerger.md` § 3). Das Wiederbeleben per A-Halten (§ 5) braucht keinen Skill.
 - Die Schwierigkeitsgrade (`wirtschaft.md` § 4) ändern den Monarchen nicht.
 - Das Aktionen-Overlay ist eine Anforderung an den Client (CLI-Ticket in R3.4, mit Protokoll: gültige Aktionen je Spieler); Gestaltung und Reichweite legt das Ticket fest.
-- Offen: Skill-Zahlen und Passive in Daten (SIM-Ticket), Heiler im Koop (kein Wiederbeleben-Skill), Verhalten bei Niederlage-Modus „Stufenverlust“ (Skills und Pool bleiben; Spielstand).
+- Offen: Skill-Zahlen und Passive in Daten (SIM-Ticket), Heiler im Koop (Resurrection belebt gefallene Monarchen, Q66; das Ereignis dazu ist offen), Verhalten bei Niederlage-Modus „Stufenverlust“ (Skills und Pool bleiben; Spielstand).
 
 ## 7. Reittier
 

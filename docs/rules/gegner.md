@@ -59,6 +59,8 @@ Gold-Drops je Gegnerart wie in `wirtschaft.md` § 1 (Werte in `data/enemies.json
 
 - Das **Tor blockiert wie die Mauer** (eigene Bürger und Spieler passieren).
 - Alle übrigen Gebäude (Heilplatz, Taverne, Lager, Schmiede, Rüstkammer, Werkstatt, Farm) sind **Ziele** für Gegner mit `prefersBuildings`; andere Gegner greifen sie nur an, wenn nichts anderes in Reichweite ist.
+- **Landstreicher sind kein Ziel** (Q67, 2026-10-04): Bürger sterben nicht, ein Treffer auf 0 HP stuft sie zurück (`buerger.md` § 3).
+- **Aufheben** (Q67, Q68, 2026-10-04): Gegner heben am Boden liegende **Münzen** und **Ausrüstung** auf. Ausrüstung **tragen sie zum Portal**, dort ist sie verloren (Ereignis `equipmentTaken`, Q69); wird der Träger vorher getötet, fällt sie wieder zu Boden.
 - Begründung: Wirtschaft muss geschützt werden, ohne dass jeder Gegner sie sucht. Zielkorridor: zerstörte Gebäude je Welle (1–5): Median höchstens 1 (`materialien-gebaeude.md` § 4).
 
 ## 5. Offen und Annahmen

@@ -1,6 +1,6 @@
 # Glossar
 
-Verbindliche Begriffe für Regeln, Tickets, Sprints, Sessions und Code-Kommentare (Stand 2026-10-04, feste Bauplätze nach Q43–Q59, Begriffe und Tageszyklus nach Q60–Q65).
+Verbindliche Begriffe für Regeln, Tickets, Sprints, Sessions und Code-Kommentare (Stand 2026-10-04, feste Bauplätze nach Q43–Q59, Begriffe und Tageszyklus nach Q60–Q65, Verlust-Kaskade nach Q66–Q69).
 Ein neuer Begriff wird **hier zuerst eingetragen**, bevor ihn ein Ticket, eine Session oder eine Regel benutzt. Bei Widerspruch gilt das
 Regelwerk in [`rules/`](rules/), und das Glossar wird angepasst. Zahlen sind, wo nicht anders vermerkt, **Startwerte** (gelten bis zur Prüfung mit B-099).
 
@@ -14,9 +14,10 @@ Regelwerk in [`rules/`](rules/), und das Glossar wird angepasst. Zahlen sind, wo
 | Aktionen-Overlay | Anzeige der gerade gültigen Aktion am Ort in der Welt mit passender Taste (z. B. „A halten: Bauen“), passend zum zuletzt benutzten Gerät. | `rules/monarch.md` § 4 |
 | Angebot | Etwas, das ein Gebäude verkauft oder ausbildet (Bogen, Schwert, Beruf, Elite, Rüstung). Jedes Angebot hat ein eigenes Zahlziel, keine Auswahl per Taste. | Q34, `rules/materialien-gebaeude.md` § 3 |
 | Angebots-Anhang (`dx`) | Zahlziel eines Angebots mit festem Abstand `dx` zum Gebäude (`data/buildings.json`); entsteht mit dem Bau, alle `dx` liegen frei. Beispiel: Schwert an der Werkstatt `dx +4`. | Q52, Q53 |
+| Ausrüstung | Was einen Bauern zum Kämpfer oder Beruf macht: Bogen, Schwert (auch Elite, mit ihrer Stufe) und die Ausrüstung von Bergmann, Baumeister, Handwerker. Fällt bei 0 HP zu Boden; Bürger heben sie wieder auf (Abholauftrag wie am Waffenregal), ein Gegner trägt sie zum Portal (dann verloren) oder lässt sie bei seinem Tod fallen. | `rules/buerger.md` § 3, Q67, Q68, Q69 |
 | Äußerste Sperre (äußerste Linie) | Die äußerste gebaute Mauerlinie einer Seite: Mauer, mit Tor bis zum Tor. Dort stehen Krieger, und nur dort ist ein neues Tor bezahlbar; innere Türme und Tore wirken weiter. | Q46, Q47, Q54 |
 | Bau-Menü | Gibt es nicht: Gebaut wird nur an Bauplätzen durch Bezahlen, die Taste Y bleibt frei. | Q06, Q34 |
-| Bauer | Rekrutierter Landstreicher (1 Gold): sammelt markierte Ressourcen, baut, repariert, holt Waffen, flieht bei Gefahr in die Burg. Zählt nicht zum Truppen-Limit. | `rules/buerger.md` § 1 |
+| Bauer | Rekrutierter Landstreicher (1 Gold): sammelt markierte Ressourcen, baut, repariert, holt Waffen, flieht bei Gefahr in die Burg. Zählt nicht zum Truppen-Limit. Bei 0 HP lässt er seine Münze fallen und wird Landstreicher; ein Kämpfer oder Beruf, der seine Ausrüstung verliert, wird wieder Bauer (volle HP). | `rules/buerger.md` §§ 1, 3, Q67 |
 | Baumeister | Beruf (20 Gold): Bauer, der +50 % schneller baut und repariert. | `rules/buerger.md` §§ 1–2 |
 | Bauplatz | Fester Ort, an dem genau ein Gebäude gebaut und am selben Ort ausgebaut wird; kein Platz bewegt sich. Klassen: Hub-Platz, Mauerlinie (Mauer, Turm), Tor-Platz, Farm-Weltplatz, Angebots-Anhang. | Q43, `rules/materialien-gebaeude.md` § 3; `data/hub.json` › `sites` |
 | Bauzeit | Zeit, die ein Bauer nach dem Bezahlen baut (z. B. Hub-Ausbau 20/30/40/50 s); Baumeister sind schneller. | `rules/materialien-gebaeude.md` §§ 2–3, Q44, Q45 |
@@ -26,7 +27,7 @@ Regelwerk in [`rules/`](rules/), und das Glossar wird angepasst. Zahlen sind, wo
 | Bogenschütze | Kämpfer: Bauer plus Bogen aus der Werkstatt. Posten auf einem Turm oder hinter der äußersten Mauer (`outerWall`), Fernkampf. | `rules/buerger.md` § 1 |
 | Börse | Das Gold, das ein Spieler trägt (Beutel, höchstens 100); beim Verkaufen an den Händler fließt Gold hinein. | `rules/wirtschaft.md` § 1 (`purse`), W4.2 |
 | Burg | Hub-Kern in der Hub-Mitte und Basislager; Zahlziel des Hub-Ausbaus, Ort für Respawn und Respec. Fällt sie, wirkt der Niederlage-Modus. | `rules/materialien-gebaeude.md` §§ 2–3, `rules/stufen.md` § 4 |
-| Bürger | Alle Figuren des Hubs, die kein Spieler steuert: Landstreicher, Bauer, Berufe, Kämpfer (Truppen), Händler. Kein Level, keine Skills. Regeltexte sagen „Bürger“, wo alle Figuren gemeint sind. | `rules/buerger.md`, Q63 |
+| Bürger | Alle Figuren des Hubs, die kein Spieler steuert: Landstreicher, Bauer, Berufe, Kämpfer (Truppen), Händler. Kein Level, keine Skills. Regeltexte sagen „Bürger“, wo alle Figuren gemeint sind. Bürger sterben nicht, siehe Verlust-Kaskade. | `rules/buerger.md`, Q63, Q67 |
 | Camp | Rekrutierungs-Camp in der Welt mit höchstens 2 Landstreichern (Nachwuchs 25 s); darf innerhalb der Mauerlinien liegen. | `rules/wirtschaft.md` § 1, Q57 |
 | Cheat-Dialog | Modaler Dialog im Spiel mit den wichtigsten Dev-Aktionen für Tester; hält den Raum an, solange er offen ist. Aufruf: Ä, LB + RB 3 s, Doppeltap mit zwei Fingern. | B-231 |
 | Chunk | Abschnitt eines Levels, 50 Units breit; der Generator reiht Chunks links und rechts vom Hub nach `chunkWeights`. | `game-design.md` › Prozedurale Generierung |
@@ -38,6 +39,7 @@ Regelwerk in [`rules/`](rules/), und das Glossar wird angepasst. Zahlen sind, wo
 | Determinismus | Gleicher Seed und gleiche Eingaben ergeben dasselbe Ergebnis. Zufall nur über `engine/rng` (`rng.New(seed)`), nie `math/rand` oder `Math.random()`. | `CLAUDE.md` › Regeln |
 | Dev-Mode | Entwicklungsmodus des Servers (`K3C_DEV`): erlaubt den Grad Dev, das Debug-Panel und Dev-Aktionen. | `rules/wirtschaft.md` § 4, `protocol.md` |
 | Diagnose | Debug-Anzeige oben links (Raum, Takt, Snapshot, FPS, Version), nur lesend. Aufruf: Ö, RB 3 s, Doppeltap mit einem Finger. | B-093, B-231 |
+| `disarmed` | Ereignis (geplant): Ein Bürger verliert seine Ausrüstung (Felder `kind`, `x`, `cause`); ersetzt `troopLost`. | `rules/buerger.md` § 3, Q69 |
 | Domäne | Fachbereich, dem ein Sprint genau zugeordnet ist und dessen Dateien er ändert: REG (Regelwerk), SIM (Spiel-Logik Go), SRV (Server), CLI (Client), PLAT (Plattform), INF (Tooling, Arbeitsweise). | `arbeitsweise.md` › Domänen |
 | Dungeon-Master-Seite | Responsive Seite unter `/dm` für Handy und Tablet mit Live-Anpassungen und Diagnose laufender Räume (geplant). | B-232 |
 | Ebene | Spätere Variante: mehrere Inseln je Schwierigkeits-Ebene in freier Reihenfolge, die nächste Ebene öffnet nach k besiegten Inseln. Nicht der Schwierigkeitsgrad. | `rules/stufen.md` § 1 |
@@ -47,7 +49,8 @@ Regelwerk in [`rules/`](rules/), und das Glossar wird angepasst. Zahlen sind, wo
 | Eisenstollen | Stufe der Tiefe 3 (Biom `ironhold`, geplant) mit Eisen-Adern, Lava und 3 Portalen. | `rules/stufen.md` § 1, Q28 |
 | Elite | (1) Elite-Gegner: stärkerer Gegner einer Stufe mit genau einer Fähigkeit. (2) Elite-Bogenschütze/-Krieger: Kämpfer nach Upgrade in der Schmiede. | `rules/gegner.md` § 1, `rules/buerger.md` § 1 |
 | Endboss | Boss einer Insel in seinem Bau, sitzt immer in der tiefsten Stufe (bis W2 die Mine, danach die Kristallhöhle); ausgelöst bei Ankunft eines Spielers, sein Sieg öffnet den Inselwechsel. | `rules/bosse.md` § 1, `rules/stufen.md` § 3, Q60 |
-| Ereignis (Event) | Meldung der Simulation im letzten Tick einer Stufe (`events` in `snap`/`delta`), z. B. `hit`, `kill`, `built`, `playerDown`, `revive` (Respawn), `revived` (Wiederbeleben, kommt mit W4.1/W5); höchstens 32 je Tick und Stufe. | `protocol.md` › Ereignisse, `engine/sim/events.go`, Q62 |
+| `equipmentTaken` | Ereignis (geplant): Ein Gegner hat Ausrüstung zum Portal getragen, sie ist verloren. | `rules/buerger.md` § 3, `rules/gegner.md` § 4, Q68, Q69 |
+| Ereignis (Event) | Meldung der Simulation im letzten Tick einer Stufe (`events` in `snap`/`delta`), z. B. `hit`, `kill`, `built`, `playerDown`, `revive` (Respawn), `revived` (Wiederbeleben, kommt mit W4.1/W5), `disarmed` und `equipmentTaken` (geplant, Q69); höchstens 32 je Tick und Stufe. | `protocol.md` › Ereignisse, `engine/sim/events.go`, Q62 |
 | Farm | Gebäude der Hub-Stufe 1 auf einem festen Farm-Weltplatz je Seite zwischen Linie 1 und 2 (±52); wirkt als Plantage. | `rules/materialien-gebaeude.md` § 3, Q51 |
 | Fixture | Kleiner, aus dem Code erzeugter Spielstand je Version unter `testdata/saves/v<n>/`; alte bleiben unverändert, `TestJedeVersionHatFixture` verlangt eines je Version. | `arbeitsweise.md` › Spielstand-Format |
 | Freigabe | Ausdrückliche Zustimmung von 🧑 zu genau einer Revision einer Spec (Feld `Freigabe`: Datum und Quelle); erst dann `Spec: freigegeben`. | `arbeitsweise.md` › SDD |
@@ -80,7 +83,7 @@ Regelwerk in [`rules/`](rules/), und das Glossar wird angepasst. Zahlen sind, wo
 | Kupfer | Material der Hub-Stufe 3 aus Adern in der Mine und endlichem Kupfererz; für Kupfermauer und -turm, Schmiede, Heilplatz. | `rules/materialien-gebaeude.md` § 1 |
 | Lager | Gebäude der Hub-Stufe 2: +300 Kapazität je Rohstoff für die Insel; Arbeiter bringen Material hierher oder zur Burg. | `rules/materialien-gebaeude.md` § 3.2 |
 | Landingpage | `index.html`: bleibt dauerhaft offen und zeigt alle anderen Seiten im Vollflächen-iframe, damit Vollbild auf der Xbox erhalten bleibt. | `CLAUDE.md` › Seiten & Navigation |
-| Landstreicher | Nicht rekrutierte Figur aus Camp oder Taverne; eine Münze (1 Gold) macht ihn zum Bauern. | `rules/buerger.md` § 1 |
+| Landstreicher | Nicht rekrutierte Figur aus Camp oder Taverne; eine Münze (1 Gold) macht ihn zum Bauern. Wird nicht angegriffen; ein Bauer, der seine Münze verliert, wird Landstreicher und läuft zum Camp. | `rules/buerger.md` §§ 1, 3, Q67 |
 | Lava | Boden der tiefen Stufen: Figuren darauf erleiden 5 Schaden/s; ob Gegner betroffen sind, ist offen. | `rules/stufen.md` § 1, Q28 |
 | Level | Eine Stufe: aus Biom-Daten und Seed prozedural erzeugte Welt (der Generator erzeugt je Stufe ein Level); gespeichert wird nur der Seed. Die Insel ist die Sammlung ihrer Stufen. | `game-design.md` › Prozedurale Generierung, `rules/stufen.md` § 1, Q61 |
 | Linie | Kurz für Mauerlinie; „Linie k“ ist die k-te Linie einer Seite von innen. | Q48, Q49 |
@@ -110,6 +113,7 @@ Regelwerk in [`rules/`](rules/), und das Glossar wird angepasst. Zahlen sind, wo
 | Respawn | Rückkehr eines gefallenen Monarchen an der Burg seiner Stufe mit voller HP nach der Wartezeit, wenn niemand ihn wiederbelebt: heute 5 s, Ziel 15 s mit B-120/W4.1. Ereignis `revive`. | `rules/monarch.md` §§ 1, 5, Q62 |
 | Respec | Kostenloses Umverteilen der Skill-Punkte an der Burg jedes Hubs, nur am Tag. | `rules/monarch.md` § 3 |
 | Ressource (Gatherable) | Endliches, abbaubares Level-Objekt: Baum, Fels, Kupfererz (Code `ResourceNode`, Arten in `economy.Gatherables`). Adern und Plantagen sind keine Gatherables. | `rules/wirtschaft.md` § 1, W2.1; `data/economy.json` › `gatherables` |
+| Resurrection | Ultimate-Skill des Heilers (50 % HP, CD 180 s): belebt nur gefallene Monarchen, keine Bürger. | `game-design.md` › Skill-Tabelle, `rules/monarch.md` § 6, Q66 |
 | Review-Session | Letzte Session eines Code-Sprints: `task check` und `task check:go`, nur den Diff lesen, nur schwere Befunde, Abnahme, PR des Sprints. | `arbeitsweise.md` › Review-Session |
 | Revision | Zähler der Spec-Fassung; jede Änderung erhöht ihn und setzt die Spec auf `Entwurf` zurück. | `arbeitsweise.md` › SDD |
 | `revive` | Ereignis: Monarch steht nach der Wartezeit an der Burg wieder (Respawn). | `protocol.md` › Ereignisse, Q62 |
@@ -150,12 +154,13 @@ Regelwerk in [`rules/`](rules/), und das Glossar wird angepasst. Zahlen sind, wo
 | Tiefen-Eingang | Eingang am Ende einer Stufe zur nächsttieferen (2 s stehen); nach oben geht es nur über Treppen. | `rules/stufen.md` § 1, `game-design.md` |
 | Tor | Bau auf dem Tor-Platz einer Linie (Mauer +4 außen), ab Hub-Stufe 2: eigene Bürger und Spieler passieren, Gegner nicht. Bezahlbar nur an der äußersten gebauten Linie („wandert“); ein inneres Tor bleibt stehen. | Q27, Q47, Q54 |
 | Treppe | Hub-Platz (+16/+24) ab Hub-Stufe 2, verbindet mit der Stufe darüber bzw. darunter. | `rules/materialien-gebaeude.md` § 3.2, Q55 |
-| `troopLost` | Ereignis, wenn ein Kämpfer fällt (Felder `kind`, `x`, `cause`); nicht beim Burgfall. Für Bauern und Berufe gibt es keines (später bei Bedarf `citizenLost` per Ticket). | `rules/buerger.md` § 3, Q39, Q64 |
+| `troopLost` | Entfällt (Q69): Bürger sterben nicht; ersetzt durch `disarmed` und `equipmentTaken`. Früher geplant für fallende Kämpfer (Q39, Q64). | `rules/buerger.md` § 3, Q69 |
 | Truhe | Level-Objekt mit 10–25 Gold; jede 3. gefundene Truhe der Insel gibt einen Skill-Punkt. | `rules/wirtschaft.md` § 1, `rules/monarch.md` § 3 |
 | Truppe | Kämpfer: Bogenschütze, Krieger, Elite. Ausnahme Code: `World.Troops` und `data/troops.json` umfassen alle Bürger; die Namen bleiben. | `rules/buerger.md`, Q63 |
 | Truppen-Limit | Höchstzahl Kämpfer je Hub: 10, mit Kaserne 20; geprüft beim Waffe-Holen, bei vollem Limit bleibt die Waffe im Regal. | `rules/buerger.md` § 3, Q29 |
 | Turm | Bau auf dem Turm-Platz einer Linie (8 Units innen): Posten für 2 Bogenschützen, Material-Stufen 1–5, Stufe 5 ist der Zaubertum. | `rules/materialien-gebaeude.md` § 3.1, Q45 |
 | Unit | Längeneinheit der Welt: 1 Unit = `UNIT_PX` = 32 px (`src/core/constants.ts`). | `CLAUDE.md` › Regeln |
+| Verlust-Kaskade (Rückstufung) | Statt Tod: Ein Treffer auf 0 HP kostet einen Bürger die nächste Schicht. Mit Ausrüstung → fällt zu Boden, er wird Bauer (volle HP, nicht mehr im Truppen-Limit); Bauer → Münze fällt, er wird Landstreicher; Landstreicher werden nicht angegriffen. Wie im Vorbild Kingdom Two Crowns. | `rules/buerger.md` § 3, Q67 |
 | Vorlage | Pflicht-Kopiervorlage für Ticket, Sprint und Session in `docs/vorlagen/`; `tests/planning.test.ts` prüft sie. | `arbeitsweise.md` › Ablage |
 | Wald | Stufe der Tiefe 0 (Oberwelt, Biom `forest`) mit Bäumen und Tag-Nacht-Zyklus; eine Welle je Nacht. | `game-design.md` › Welt & Stufen |
 | Welle | Gruppe Gegner aus den Portalen: in der Oberwelt eine je Nacht, unten bei 100 % Aggressionspool. Größe nach Tabelle, Spieleranzahl der Insel und Grad; Zähler je Stufe. | `rules/gegner.md` § 3 |
@@ -168,4 +173,4 @@ Regelwerk in [`rules/`](rules/), und das Glossar wird angepasst. Zahlen sind, wo
 
 ## Unklar und Widersprüche
 
-Keine (geklärt 2026-10-04, Q60–Q65 im [Fragenkatalog](fragenkatalog.md)).
+Keine (geklärt 2026-10-04, Q60–Q69 im [Fragenkatalog](fragenkatalog.md)). Offen ohne Widerspruch: Ereignis für „Bauer verliert Münze“ (Q69).
