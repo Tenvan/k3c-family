@@ -16,7 +16,7 @@ import (
 	"k3c/engine/sim"
 )
 
-// WebSocket /ws nach Protokoll v2. Jede Verbindung hat eine Lese-Schleife (diese Goroutine) und eine
+// WebSocket /ws nach Protokoll v4. Jede Verbindung hat eine Lese-Schleife (diese Goroutine) und eine
 // Schreib-Goroutine mit gepuffertem Kanal. Ist der Puffer voll, wird die Verbindung geschlossen, das zählt als Abbruch.
 
 const (

@@ -59,6 +59,7 @@ func NewHandler(cfg Config) http.Handler {
 	mux := http.NewServeMux()
 	mux.HandleFunc("/api/health", s.health)
 	mux.HandleFunc("/api/save", s.save)
+	mux.HandleFunc("/api/saves", s.saves)
 	mux.HandleFunc("/api/save/backups", s.backups)
 	mux.HandleFunc("/api/save/restore", s.restore)
 	mux.HandleFunc("/api/status", s.status)

@@ -1,11 +1,11 @@
 # S2 · SRV · Protokoll für Skills, Speichern beim Verlassen, Spielmetrik
 
-- **Status:** geplant
+- **Status:** aktiv
 - **Domäne:** SRV
 - **Reife:** bereit
 - **Einschiebbar:** nein
 - **Tickets:** B-123, B-147, B-150, B-176
-- **Start-Commit:** –
+- **Start-Commit:** 7e2b70c
 - **Spec:** freigegeben
 - **Revision:** 1
 - **Freigabe:** 2026-10-03, Chat (Ralf), Revision 1, durch 🧑; umfasst B-123, B-147, B-150, B-176; bestätigt die Vorschläge der Planung in den Sessions (Protokoll v4 einmal, Aktionsliste nur am Ort des Spielers, Speichern bei jedem Verlassen); der Rest von Q10 (60-s-Takt, Tagesanbruch, HUD „gesichert“) ist B-186
@@ -62,9 +62,9 @@ Reihenfolge wie die Nummern. Die Protokollversion steigt einmal (S2.1 auf 4, S2.
 
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
-| S2.1 | `S2.1-protokoll-skills.md` | Umsetzung | autonom | offen |
-| S2.2 | `S2.2-speichern-verlassen.md` | Umsetzung | autonom | offen |
-| S2.3 | `S2.3-spielmetrik-report.md` | Umsetzung | autonom | offen |
+| S2.1 | `S2.1-protokoll-skills.md` | Umsetzung | autonom | fertig |
+| S2.2 | `S2.2-speichern-verlassen.md` | Umsetzung | autonom | fertig |
+| S2.3 | `S2.3-spielmetrik-report.md` | Umsetzung | autonom | blockiert |
 | S2.4 | `S2.4-stufen-je-spieler.md` | Umsetzung | autonom | offen |
 | S2.5 | `S2.5-review.md` | Review | autonom | offen |
 

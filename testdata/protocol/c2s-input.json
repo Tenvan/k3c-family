@@ -2,7 +2,7 @@
   "t": "input",
   "seq": 42,
   "p": [
-    { "slot": 0, "moveX": 1, "sprint": false, "pay": false },
-    { "slot": 1, "moveX": -1, "sprint": true, "pay": false }
+    { "slot": 0, "moveX": 1, "sprint": false, "pay": false, "attack": true, "skill": 0 },
+    { "slot": 1, "moveX": -1, "sprint": true, "pay": false, "attack": false, "skill": 2 }
   ]
 }

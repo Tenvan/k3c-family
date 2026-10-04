@@ -172,6 +172,16 @@ export class RoomClient {
     if (this.status === 'room') this.send({ t: 'removeSlot', slot });
   }
 
+  /** Skill für den Monarchen des Slots lernen (Skill-ID aus `data/monarch.json`), nur im Raum. */
+  learn(slot: number, skill: string): void {
+    if (this.status === 'room') this.send({ t: 'learn', slot, skill });
+  }
+
+  /** Skill-Verteilung des Slots zurücksetzen (nur am Tag an der Burg, prüft der Server), nur im Raum. */
+  respec(slot: number): void {
+    if (this.status === 'room') this.send({ t: 'respec', slot });
+  }
+
   /** Raum bewusst verlassen: zurück zur Raumliste, kein Wiederverbinden. */
   leave(): void {
     if (this.status !== 'room') return;

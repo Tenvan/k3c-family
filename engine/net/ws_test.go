@@ -100,8 +100,8 @@ func (c *client) expectError(code string) {
 func hello(t *testing.T, srv *httptest.Server, device string) *client {
 	t.Helper()
 	c := dial(t, srv)
-	c.send(map[string]any{"t": "hello", "v": 3, "device": device})
-	if m := c.expect("welcome"); m["v"] != float64(3) || m["tickHz"] != float64(30) {
+	c.send(map[string]any{"t": "hello", "v": ProtocolVersion, "device": device})
+	if m := c.expect("welcome"); m["v"] != float64(ProtocolVersion) || m["tickHz"] != float64(30) {
 		t.Fatalf("welcome: %v", m)
 	}
 	c.expect("rooms")
@@ -177,7 +177,7 @@ func waitFor(t *testing.T, ok func() bool) {
 func TestHandschlagFalsch(t *testing.T) {
 	srv, _ := wsServer(t)
 	for _, first := range []string{`kein json`, `{"t":"join","room":"KRNZ","slots":[0]}`, `{"t":"hello","v":1,"device":"x"}`, `{"t":"hello","v":2,"device":"x"}`,
-		`{"t":"hello","v":3,"device":""}`, `{"t":"hello","v":3,"device":"` + strings.Repeat("x", 65) + `"}`} {
+		`{"t":"hello","v":4,"device":""}`, `{"t":"hello","v":4,"device":"` + strings.Repeat("x", 65) + `"}`} {
 		c := dial(t, srv)
 		c.send(first)
 		if m := c.next(); m["code"] != "version" {
@@ -269,12 +269,12 @@ func TestFormWieBeispiele(t *testing.T) {
 	srv, m := wsServer(t)
 	x := hello(t, srv, "xbox")
 	got := map[string]map[string]any{}
-	x.send(map[string]any{"t": "hello", "v": 3, "device": "xbox"})
+	x.send(map[string]any{"t": "hello", "v": ProtocolVersion, "device": "xbox"})
 	got["error"] = x.expect("error")
 	create(x, "familie", 0)
 	got["joined"], got["level"], got["snap"], got["seats"] = x.expect("joined"), x.expect("level"), x.expect("snap"), x.expect("seats")
 	c := dial(t, srv)
-	c.send(map[string]any{"t": "hello", "v": 3, "device": "handy"})
+	c.send(map[string]any{"t": "hello", "v": ProtocolVersion, "device": "handy"})
 	got["welcome"], got["rooms"] = c.expect("welcome"), c.expect("rooms")
 	_ = m
 	for typ, file := range map[string]string{"welcome": "welcome", "rooms": "rooms", "joined": "joined", "level": "level",

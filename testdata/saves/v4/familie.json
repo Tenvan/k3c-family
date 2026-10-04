@@ -1,0 +1,250 @@
+{
+  "version": 4,
+  "campaignId": "familie",
+  "savedAt": "2026-10-04T22:00:00Z",
+  "day": 1,
+  "phase": "night",
+  "seed": "familie",
+  "time": 11.033333333333305,
+  "stock": {
+    "wood": 0,
+    "stone": 12,
+    "copper": 0
+  },
+  "options": {
+    "grade": "normal",
+    "goal": "endboss",
+    "defeat": "stage"
+  },
+  "stages": [
+    {
+      "depth": 0,
+      "castleHp": 1000,
+      "stock": {
+        "wood": 0,
+        "stone": 12,
+        "copper": 0
+      },
+      "wave": 1,
+      "aggression": null,
+      "sites": [
+        {
+          "kind": "wall",
+          "x": 456,
+          "state": "unpaid",
+          "paidGold": 0,
+          "buildProgress": 0,
+          "hp": 0,
+          "bows": 0,
+          "bowPaidGold": 0
+        },
+        {
+          "kind": "tower",
+          "x": 464,
+          "state": "unpaid",
+          "paidGold": 0,
+          "buildProgress": 0,
+          "hp": 0,
+          "bows": 0,
+          "bowPaidGold": 0
+        },
+        {
+          "kind": "workshop",
+          "x": 484,
+          "state": "unpaid",
+          "paidGold": 0,
+          "buildProgress": 0,
+          "hp": 0,
+          "bows": 0,
+          "bowPaidGold": 0
+        },
+        {
+          "kind": "stairsDown",
+          "x": 524,
+          "state": "unpaid",
+          "paidGold": 0,
+          "buildProgress": 0,
+          "hp": 0,
+          "bows": 0,
+          "bowPaidGold": 0
+        },
+        {
+          "kind": "tower",
+          "x": 536,
+          "state": "unpaid",
+          "paidGold": 0,
+          "buildProgress": 0,
+          "hp": 0,
+          "bows": 0,
+          "bowPaidGold": 0
+        },
+        {
+          "kind": "wall",
+          "x": 544,
+          "state": "unpaid",
+          "paidGold": 0,
+          "buildProgress": 0,
+          "hp": 0,
+          "bows": 0,
+          "bowPaidGold": 0
+        },
+        {
+          "kind": "storage",
+          "x": 474,
+          "state": "unpaid",
+          "paidGold": 0,
+          "buildProgress": 0,
+          "hp": 0,
+          "bows": 0,
+          "bowPaidGold": 0
+        }
+      ],
+      "troops": [
+        {
+          "kind": "peasant",
+          "x": 504.45000000000056,
+          "anchorX": 500
+        },
+        {
+          "kind": "archer",
+          "x": 490,
+          "anchorX": 499
+        },
+        {
+          "kind": "archer",
+          "x": 510,
+          "anchorX": 501
+        }
+      ],
+      "nodesGone": [],
+      "nodesMarked": [],
+      "pickupsTaken": []
+    },
+    {
+      "depth": 1,
+      "castleHp": 1000,
+      "stock": {
+        "wood": 0,
+        "stone": 12,
+        "copper": 0
+      },
+      "wave": 0,
+      "aggression": 11.033333333333305,
+      "sites": [
+        {
+          "kind": "wall",
+          "x": 356,
+          "state": "unpaid",
+          "paidGold": 0,
+          "buildProgress": 0,
+          "hp": 0,
+          "bows": 0,
+          "bowPaidGold": 0
+        },
+        {
+          "kind": "tower",
+          "x": 364,
+          "state": "unpaid",
+          "paidGold": 0,
+          "buildProgress": 0,
+          "hp": 0,
+          "bows": 0,
+          "bowPaidGold": 0
+        },
+        {
+          "kind": "workshop",
+          "x": 384,
+          "state": "unpaid",
+          "paidGold": 0,
+          "buildProgress": 0,
+          "hp": 0,
+          "bows": 0,
+          "bowPaidGold": 0
+        },
+        {
+          "kind": "stairsUp",
+          "x": 416,
+          "state": "unpaid",
+          "paidGold": 0,
+          "buildProgress": 0,
+          "hp": 0,
+          "bows": 0,
+          "bowPaidGold": 0
+        },
+        {
+          "kind": "stairsDown",
+          "x": 424,
+          "state": "unpaid",
+          "paidGold": 0,
+          "buildProgress": 0,
+          "hp": 0,
+          "bows": 0,
+          "bowPaidGold": 0
+        },
+        {
+          "kind": "tower",
+          "x": 436,
+          "state": "unpaid",
+          "paidGold": 0,
+          "buildProgress": 0,
+          "hp": 0,
+          "bows": 0,
+          "bowPaidGold": 0
+        },
+        {
+          "kind": "wall",
+          "x": 444,
+          "state": "unpaid",
+          "paidGold": 0,
+          "buildProgress": 0,
+          "hp": 0,
+          "bows": 0,
+          "bowPaidGold": 0
+        },
+        {
+          "kind": "storage",
+          "x": 374,
+          "state": "unpaid",
+          "paidGold": 0,
+          "buildProgress": 0,
+          "hp": 0,
+          "bows": 0,
+          "bowPaidGold": 0
+        }
+      ],
+      "troops": [
+        {
+          "kind": "peasant",
+          "x": 402.60000000000014,
+          "anchorX": 400
+        },
+        {
+          "kind": "archer",
+          "x": 390,
+          "anchorX": 399
+        },
+        {
+          "kind": "archer",
+          "x": 410,
+          "anchorX": 401
+        }
+      ],
+      "nodesGone": [],
+      "nodesMarked": [],
+      "pickupsTaken": []
+    }
+  ],
+  "skillPool": 0,
+  "players": [
+    {
+      "index": 0,
+      "gold": 23,
+      "depth": 0
+    },
+    {
+      "index": 1,
+      "gold": 8,
+      "depth": 1
+    }
+  ]
+}

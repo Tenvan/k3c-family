@@ -8,18 +8,20 @@ import (
 	"sort"
 )
 
-// Spielstand der Insel (Version 3, B-100, S1.4). Die Campaign schreibt weiter Version 1 (save.go); der Raum benutzt bis zur
+// Spielstand der Insel (Version 4, B-100, S1.4, S2.2). Die Campaign schreibt weiter Version 1 (save.go); der Raum benutzt bis zur
 // Umstellung (B-133) nur Version 1. Gespeichert wird wie dort nur, was sich nicht aus dem Seed ergibt: Hubs, Truppen,
 // Vorrat, Gold und Entferntes. Flüchtiges (Gegner, Münzen am Boden, Geschosse, Zufallsstand) geht beim Laden verloren.
 
 // IslandSaveVersion ist die Version des Insel-Spielstands.
-const IslandSaveVersion = 3
+const IslandSaveVersion = 4
 
 // IslandSave ist ein Spielstand einer Insel.
 type IslandSave struct {
 	Version    int                `json:"version"`
 	CampaignID string             `json:"campaignId"`
 	SavedAt    string             `json:"savedAt"`
+	Day        int                `json:"day,omitempty"`   // Tag der Insel beim Speichern (Version 4, nur Anzeige)
+	Phase      string             `json:"phase,omitempty"` // day, dusk, night beim Speichern (Version 4, nur Anzeige)
 	Seed       string             `json:"seed"`
 	Time       float64            `json:"time"`
 	Stock      Stock              `json:"stock"`     // Vorrat der Insel (alle Stufen teilen ihn)
@@ -43,6 +45,7 @@ type IslandPlayerSave struct {
 func (isl *Island) ToSave(savedAt string) IslandSave {
 	s := IslandSave{
 		Version: IslandSaveVersion, CampaignID: isl.ID, SavedAt: savedAt, Seed: isl.Seed, Time: isl.Stages[0].Time,
+		Day: isl.Stages[0].Cycle.Day, Phase: isl.Stages[0].Cycle.Phase,
 		Stock: *isl.Stock, Options: isl.Options, Stages: []HubSave{}, SkillPool: isl.SkillPool, Players: []IslandPlayerSave{},
 	}
 	for _, w := range isl.Stages {
@@ -57,7 +60,8 @@ func (isl *Island) ToSave(savedAt string) IslandSave {
 	return s
 }
 
-// ParseIslandSave liest einen Spielstand der Version 3 oder, überführt, der Version 2 oder 1 (Campaign).
+// ParseIslandSave liest einen Spielstand der Version 4 oder, überführt, der Version 3 (ohne Tag und Phase), 2 oder 1
+// (Campaign). Tag und Phase wirken beim Laden nicht, die Zeit kommt aus `time`.
 func ParseIslandSave(raw []byte) (IslandSave, error) {
 	var head struct {
 		Version int `json:"version"`
@@ -74,10 +78,10 @@ func ParseIslandSave(raw []byte) (IslandSave, error) {
 		return islandFromV1(old), nil
 	case 2:
 		return parseIslandV2(raw)
-	case IslandSaveVersion:
+	case 3, IslandSaveVersion:
 		return parseIslandV3(raw)
 	}
-	return IslandSave{}, fmt.Errorf("spielstand: Version %d, erwartet %d, 2 oder %d", head.Version, SaveVersion, IslandSaveVersion)
+	return IslandSave{}, fmt.Errorf("spielstand: Version %d, erwartet %d, 2, 3 oder %d", head.Version, SaveVersion, IslandSaveVersion)
 }
 
 func validateIslandSave(s IslandSave) error {
