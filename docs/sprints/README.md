@@ -10,6 +10,7 @@ Reihenfolge in Wellen, Bahnen je Domäne und Zuordnung Mensch/autonom (zwei Acco
 
 | Sprint | Domäne | Thema | Am Ende sichtbar | Ordner |
 |---|---|---|---|---|
+| GR1 | CLI | Grafik-Zuordnungstabelle | `docs/assets/zuordnung.md`, grüner Vollständigkeits-Test | `aktiv/GR1-grafik-zuordnung/` |
 
 ## Offen am Gerät
 
@@ -61,7 +62,6 @@ dann über den Go-Server mit mehreren Räumen und gemischten Spielern.
 |---|---|---|---|---|
 | BAL3 | SIM | Bot-Profile, Sensitivität und Grad-Kurven | Entwurf | `geplant/BAL3-bot-profile-sensitivitaet/` |
 | BAL4 | REG | Abgleich Spielmetrik und Simulator | Entwurf | `geplant/BAL4-metrik-abgleich/` |
-| GR1 | CLI | Grafik-Zuordnungstabelle | bereit | `geplant/GR1-grafik-zuordnung/` |
 | GR2 | CLI | Grafik-Suche für Lücken | bereit | `geplant/GR2-grafik-suche/` |
 | GR3 | CLI | Grafik im Renderer | Entwurf | `geplant/GR3-grafik-renderer/` |
 | RL1 | INF | Release-Checkliste | bereit | `geplant/RL1-release-checkliste/` |

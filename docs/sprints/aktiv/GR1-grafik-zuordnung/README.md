@@ -1,6 +1,6 @@
 # GR1 · CLI · Grafik-Zuordnungstabelle
 
-- **Status:** geplant
+- **Status:** aktiv
 - **Domäne:** CLI
 - **Reife:** bereit
 - **Einschiebbar:** ja
