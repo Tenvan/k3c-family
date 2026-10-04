@@ -2,7 +2,6 @@ package sim
 
 import (
 	"fmt"
-	"math"
 	"sort"
 	"testing"
 )
@@ -99,18 +98,9 @@ func TestSiteDataGenauEinPlatzJeBau(t *testing.T) {
 			t.Errorf("Platz %q ohne Eintrag in buildings.json", kind)
 		}
 	}
-	if count["gate"] != nil {
-		t.Error("Tore gehören nur auf die Mauerlinien, nicht in sites")
-	}
-}
-
-// Bis W0.3 stehen Mauer und Turm noch in sites; sie müssen genau Linie 1 sein.
-func TestSiteDataMauerUndTurmSindLinie1(t *testing.T) {
-	l := hub.WallLines
-	want := map[string]float64{"wall": l.WallUnits[0], "tower": l.WallUnits[0] - l.TowerInsetUnits}
-	for _, s := range hub.Sites {
-		if w, ok := want[s.Kind]; ok && math.Abs(s.OffsetUnits) != w {
-			t.Errorf("%s bei %v liegt nicht auf Linie 1 (±%v)", s.Kind, s.OffsetUnits, w)
+	for _, kind := range []string{"wall", "tower", "gate"} {
+		if count[kind] != nil {
+			t.Errorf("%s gehört nur auf die Mauerlinien, nicht in sites", kind)
 		}
 	}
 }

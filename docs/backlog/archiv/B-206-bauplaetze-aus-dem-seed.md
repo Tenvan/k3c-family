@@ -3,7 +3,7 @@
 - **Domäne:** SIM
 - **Typ:** Idee
 - **Prio:** hoch
-- **Status:** eingeplant
+- **Status:** erledigt
 - **Sprint:** W0
 - **Erstellt:** 2026-10-04
 - **Spec:** freigegeben
@@ -78,3 +78,5 @@ Beschlüsse Q43–Q55 vom 2026-10-04, zweite Runde (`docs/fragenkatalog.md`, Blo
 | mine | 500 | 490 / 10 | 1 / 2,85 / 5 | 344 | 0 |
 
 Rund 70 % der Camps liegen näher als 4 Units (2 × `payRangeUnits`) an einem Linien-Platz, bei ±125 teils genau auf der Mauer der Linie 5 (124 + Streuung). Folgefrage: B-261.
+
+**Abnahme W0.4 (2026-10-04):** AC-01 bis AC-06 erfüllt (Nachweise in den Ergebnissen von W0.1–W0.3, Sprint W0). AC-02 „Camps unverändert“ gilt seit Sprint-Revision 2 nur noch für Portale: Camps liegen nach B-261 auf Abstand zu den Linien (Level-Golden mit Begründung aktualisiert).

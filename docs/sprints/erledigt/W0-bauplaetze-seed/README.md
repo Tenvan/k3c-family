@@ -1,6 +1,6 @@
 # W0 · SIM · Bauplätze aus dem Seed
 
-- **Status:** aktiv
+- **Status:** erledigt
 - **Domäne:** SIM
 - **Reife:** bereit
 - **Einschiebbar:** nein
@@ -80,11 +80,15 @@ keine; die vier Widersprüche der Planung sind am 2026-10-04 durch Q56 bis Q59 g
 | W0.2 | `W0.2-linien-generator.md` | Umsetzung | autonom | fertig |
 | W0.3 | `W0.3-plaetze-sim.md` | Umsetzung | autonom | fertig |
 | W0.3b | `W0.3b-ursache-camps.md` | Umsetzung | autonom | fertig |
-| W0.4 | `W0.4-review.md` | Review | autonom | in Arbeit |
+| W0.4 | `W0.4-review.md` | Review | autonom | fertig |
 
 Bei `Reife: Entwurf` genügen Stichpunkte mit den Kriterien in Klammern statt Session-Dateien. Vor dem Aktivieren
 wird jede Session als eigene Datei nach `docs/vorlagen/session.md` geschrieben.
 
 ## Abnahme
 
-–
+- 2026-10-04 (W0.4, autonom): AC-01–AC-08 mit Nachweis (W0.1: AC-04; W0.2: AC-01, AC-02; W0.3: AC-03, AC-05, AC-06; W0.3b: AC-07, AC-08); `task check` und `task check:go` grün (`-race` übersprungen, kein C-Compiler).
+- Golden geprüft: W0.1 +7 Plätze, W0.3 +26 Linien-Plätze (beide „Q43“), W0.3b Camps (`level-*`: nur Chunk-Arten/Ressourcen, Portale, Breite und Hub gleich; „B-261“); `rng.json` unverändert. `cause` ist Zusatzfeld, Protokoll v3 und Client-Tests unberührt.
+- Keine schweren Befunde. Aufgeräumt: leerer `TestSiteDataMauerUndTurmSindLinie1` entfernt, Prüfung „keine Mauer/Turm/Tor in `sites`“ in `TestSiteDataGenauEinPlatzJeBau`. Außerhalb erlaubter Dateien (W0.3b) vertretbar: `engine/net/delta_test.go` (Startfenster 3500 → 2400, deckt mehr Ticks ab, keine Lockerung), `docs/assets/zuordnung-objekte.md` (Lücken-Zeilen für die neuen Gebäude, von GR1 verlangt).
+- Neue Tickets: B-263 (Snapshot +34 %, W5/LT1). B-262 entschieden: so lassen, Balancing später (🧑, 2026-10-04). Alte Stände: gebaute Plätze bleiben (`kind@x`); gefällte Ressourcen/Truhen derselben Seeds können nach B-261 an anderer Stelle wieder auftauchen (gewollte Level-Änderung).
+- Version: v0.7.0 vorgeschlagen (Minor; v0.6.0 gesetzt).

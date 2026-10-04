@@ -48,8 +48,10 @@ nicht relevant: Entscheidungsfrage.
 
 ## Offene Fragen
 
-Regel: 🧑.
+keine: entschieden 2026-10-04 (🧑, Chat): so lassen; offen ist nur die Bewertung über Balancing-Läufe bzw. Spieleabend.
 
 ## Notizen
 
 Aufgefallen beim Golden-Update in W0.3b (2026-10-04).
+
+**Entscheidung 2026-10-04 (🧑, Chat, vermerkt in W0.4):** Camps bleiben vorerst bei ±175–275 nahe den Portalen (Regel „so lassen“, AC-01). Bewertung später über Balancing-Läufe (BAL3/BR1) bzw. den Spieleabend; ohne eigenen Sprint, das Ticket bleibt bis dahin offen.
