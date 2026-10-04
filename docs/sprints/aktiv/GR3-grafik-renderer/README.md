@@ -1,6 +1,6 @@
 # GR3 · CLI · Grafik im Renderer
 
-- **Status:** geplant
+- **Status:** aktiv
 - **Domäne:** CLI
 - **Reife:** bereit
 - **Einschiebbar:** ja
