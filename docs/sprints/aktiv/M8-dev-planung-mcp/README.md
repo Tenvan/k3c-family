@@ -66,7 +66,7 @@ keine
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
 | M8.1 | `M8.1-planung-mcp.md` | Umsetzung | autonom | fertig |
-| M8.2 | `M8.2-planungsseite-react.md` | Umsetzung | autonom | offen |
+| M8.2 | `M8.2-planungsseite-react.md` | Umsetzung | autonom | in Arbeit |
 | M8.3 | `M8.3-github-status.md` | Umsetzung | autonom | offen |
 | M8.4 | `M8.4-review.md` | Review | autonom | offen |
 
