@@ -145,12 +145,9 @@ baut `tools/k3c-dev/build/bin/k3c-dev.exe` (starten per Doppelklick, die EXE mus
 mit Neuladen: `task k3c-dev` (`wails dev`). Die Oberfläche allein läuft im Browser gegen erfundene Daten:
 `npm --prefix tools/k3c-dev/frontend run dev` (Port 5181).
 
-Er lauscht nur an `http://127.0.0.1:5180/mcp` (anderer Port: `K3C_DEV_PORT`). Für Claude Code eine lokale `.mcp.json`
-im Repo anlegen (steht in `.gitignore`):
-
-```json
-{ "mcpServers": { "k3c-dev": { "type": "http", "url": "http://127.0.0.1:5180/mcp" } } }
-```
+Er lauscht nur an `http://127.0.0.1:5180/mcp` (anderer Port: `K3C_DEV_PORT`). Claude Code verbindet sich über die
+eingecheckte `.mcp.json` (gilt so auch in jedem Worktree), freigegeben in `.claude/settings.json`. Läuft k3c-dev nicht,
+fehlen die Tools nur in der Session.
 
 Prüfen: `task check:dev`. Plan für Statistik, Dienste und Oberfläche: Sprints M2–M5 in [`docs/sprints/`](docs/sprints/README.md).
 
