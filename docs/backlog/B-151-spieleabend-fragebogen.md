@@ -6,9 +6,9 @@
 - **Status:** eingeplant
 - **Sprint:** P1
 - **Erstellt:** 2026-10-02
-- **Spec:** Entwurf
+- **Spec:** freigegeben
 - **Revision:** 1
-- **Freigabe:** –
+- **Freigabe:** 2026-10-04, Chat, durch 🧑, mit Sprint P1
 
 ## Ausgangslage
 
@@ -25,7 +25,7 @@ Familie (auch Kinder) spielt am TV; der Agent protokolliert; 🧑 legt Termin, T
 ## Anforderungen
 
 - Vorlage `docs/playtests/vorlage.md`: Datum, Teilnehmer (Altersgruppe, Gerät), Build/Commit, Spielverlauf, Beobachtungen, Ergebnis des Spielmetrik-Reports (B-150), Eindrücke zu Verbindung und Eingabe-Latenz (B-144), Fehler (→ Tickets).
-- Kindgerechter Fragebogen (kurz, Smileys oder Daumen statt Fließtext): Spaß, Verständlichkeit, Schwierigkeit, Lesbarkeit am TV, Ton, Steuerung; Fragen als Liste mit Skala.
+- Kindgerechter Fragebogen (Q24): 8 Fragen mit Daumen hoch/runter (z. B. Spaß, Verständlichkeit, Schwierigkeit, Lesbarkeit am TV, Ton, Steuerung) plus ein Satz Freitext.
 - Auswertung: Wünsche an Mechaniken werden Tickets, Balancing-Änderungen nur in JSON (B-008/AC-02).
 
 ## Nicht-Ziele
@@ -47,12 +47,12 @@ Ein Kind will nicht antworten → Frage bleibt leer, kein Zwang. Eine Frage wird
 ## Akzeptanzkriterien
 
 - **AC-01** `docs/playtests/vorlage.md` enthält alle oben genannten Abschnitte.
-- **AC-02** Der Fragebogen hat 6–10 Fragen mit Skala, jede kindgerecht formuliert (Beobachtung: 🧑 hat sie gelesen und freigegeben).
+- **AC-02** Der Fragebogen hat 8 Fragen mit Daumen hoch/runter plus ein Satz Freitext (Q24), jede kindgerecht formuliert (Beobachtung: 🧑 hat sie gelesen und freigegeben).
 - **AC-03** Die Vorlage nennt, wie Wünsche zu Tickets und Balancing zu JSON-Änderungen werden.
 
 ## Offene Fragen
 
-Termin, Teilnehmer und endgültige Fragen: 🧑, `docs/fragenkatalog.md Q24`.
+Termin und Teilnehmer: 🧑, `docs/fragenkatalog.md Q24`.
 
 ## Notizen
 

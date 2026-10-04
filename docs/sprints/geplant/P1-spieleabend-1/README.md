@@ -6,9 +6,9 @@
 - **Einschiebbar:** nein
 - **Tickets:** B-008, B-151
 - **Start-Commit:** –
-- **Spec:** Entwurf
+- **Spec:** freigegeben
 - **Revision:** 1
-- **Freigabe:** –
+- **Freigabe:** 2026-10-04, Chat, durch 🧑, Revision 1; mit Änderungen aus der Spec-Prüfung
 
 ## Ausgangslage
 
@@ -44,14 +44,14 @@ Spiel stürzt ab oder hängt → das Protokoll hält es fest, Ticket vom Typ Pro
 
 ## Akzeptanzkriterien
 
-- **AC-01** `docs/playtests/vorlage.md` mit allen Abschnitten und ein kindgerechter Fragebogen mit 6–10 Fragen liegen vor (B-151/AC-01, B-151/AC-02, B-151/AC-03).
+- **AC-01** `docs/playtests/vorlage.md` mit allen Abschnitten und ein kindgerechter Fragebogen mit 8 Fragen (Daumen hoch/runter) plus einem Satz Freitext (Q24) liegen vor (B-151/AC-01, B-151/AC-02, B-151/AC-03).
 - **AC-02** Ein Protokoll des Abends liegt in `docs/playtests/` (B-008/AC-01).
 - **AC-03** Balancing-Änderungen stehen nur in JSON, alles andere als Tickets im Backlog (B-008/AC-02).
-- **AC-04** Das Protokoll enthält den Spielmetrik-Report (Tod durch was, Nacht überlebt, Zeit bis zum ersten Bau) und die Beobachtung zu Verbindung und Latenz.
+- **AC-04** Das Protokoll enthält den Spielmetrik-Report (Tod durch was, Nacht überlebt, Zeit bis zum ersten Bau) und die Beobachtung zu Verbindung und Latenz; die Latenz ist gegen das Ziel ≤ 100 ms (Q04) bewertet, gemessen mit dem Debug-Overlay (U4).
 
 ## Offene Fragen
 
-Termin, Teilnehmer, Fragen: 🧑, `docs/fragenkatalog.md Q24`; Verbindungsverlust und Latenz-Ziel: `docs/fragenkatalog.md Q04`.
+Termin und Teilnehmer: 🧑, `docs/fragenkatalog.md Q24`.
 
 ## Sessions
 

@@ -6,9 +6,9 @@
 - **Status:** eingeplant
 - **Sprint:** W1
 - **Erstellt:** 2026-10-02
-- **Spec:** Entwurf
+- **Spec:** freigegeben
 - **Revision:** 1
-- **Freigabe:** –
+- **Freigabe:** 2026-10-04, Chat, durch 🧑, mit Sprint W1
 
 ## Ausgangslage
 
@@ -29,8 +29,8 @@ Spieler (2+ Monarchen) und Bauern; Werte pflegt REG, Feintuning mit B-099 und B-
 - `data/buildings.json`: Mauer und Turm mit Stufen 1–5 (Kosten, HP, Bauzeit laut `materialien-gebaeude.md` § 3.1); Turm Stufe 2–5: 75 Stein + 25 Gold, 100 Kupfer + 50 Gold, 125 Eisen + 100 Gold, 150 Kristall + 200 Gold, Bauzeit 15/20/27/33 s (Startwerte; Beschluss Q45, 2026-10-04). Ausbau läuft bei Mauer und Turm **am selben Platz** (Gold zahlen, Material abbuchen, Bauer baut; Q43).
 - Gebäude und Mauer-/Turm-Stufen der Stufe n sind erst mit Hub-Stufe n baubar (Liste in `materialien-gebaeude.md` § 3).
 - **Mauerlinien** (Layout aus B-206, Sprint W0): Linie k ist bezahlbar ab Hub-Stufe k, sobald Linie k−1 derselben Seite gebaut ist (Material egal); jede Seite für sich (Beschluss Q48, 2026-10-04). Kein Platz bewegt sich, die Spielstand-Zuordnung über `kind@x` bleibt stabil (Q43; ersetzt „Hub wächst“ aus Q26).
-- Zerstörung: Mauer/Turm verliert die Stufe (neu ab Holzstufe), die Hub-Stufe bleibt; Gold und Material sind verloren.
-- Reparatur: Bauern reparieren beschädigte Gebäude zwischen den Wellen kostenlos (Anteil der Bauzeit).
+- Zerstörung: Mauer/Turm verliert die Stufe (neu ab Holzstufe), der Platz ist wieder `unpaid` und wird gegen Bezahlung neu gebaut; die Hub-Stufe bleibt, Gold und Material sind verloren.
+- Reparatur: Bauern reparieren **beschädigte** (nicht zerstörte) Gebäude zwischen den Wellen kostenlos (Anteil der Bauzeit).
 - Ereignisse `upgraded` und `repaired` für Anzeige und Messung.
 
 ## Nicht-Ziele
@@ -64,4 +64,4 @@ keine (Hub-Breiten und Offsets aus Q26 entfallen durch Q43; Linien-Lagen kommen 
 
 ## Notizen
 
-Aus R2.2 und R2.3. Abhängig von B-100, B-113 und B-206 (Bauplätze, W0). Zahlen sind Startwerte (B-015).
+Aus R2.2 und R2.3. Abhängig von B-100, B-113 und B-206 (Bauplätze, W0). Zahlen sind Startwerte (B-015). Begriff: „Reparatur“ gilt nur für beschädigte Gebäude; „bis die Mauer k−1 repariert ist“ (Q58) heißt bei zerstörter Mauer: bis sie neu gebaut (bezahlt) ist.

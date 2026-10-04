@@ -6,9 +6,9 @@
 - **Einschiebbar:** ja
 - **Tickets:** B-164
 - **Start-Commit:** –
-- **Spec:** Entwurf
+- **Spec:** freigegeben
 - **Revision:** 1
-- **Freigabe:** –
+- **Freigabe:** 2026-10-04, Chat, durch 🧑, Revision 1; mit Änderungen aus der Spec-Prüfung
 
 ## Ausgangslage
 
@@ -44,7 +44,7 @@ Controller ohne Vibration → keine Vibration, kein Fehler. Unbekanntes Event �
 
 ## Akzeptanzkriterien
 
-- **AC-01** Jedes Feedback-Event aus der Liste (Treffer, Kill, Münze aufheben, Bau fertig) löst den Effekt aus (B-164/AC-01).
+- **AC-01** Jedes Feedback-Event aus der Liste (Treffer, Kill, Münze aufheben, Münze geben, Bau fertig, Tod; Q08) löst den Effekt aus (B-164/AC-01).
 - **AC-02** Mit Screenshake und Blitz „aus“ treten beide nicht auf (B-164/AC-02).
 - **AC-03** Die Effekt-Auslösung ändert keinen Spielzustand, `noSim.test.ts` bleibt grün (B-164/AC-03).
 - **AC-04** Screenshake wirkt im Split-Screen nur in der Kamera des betroffenen Spielers (B-164/AC-04).

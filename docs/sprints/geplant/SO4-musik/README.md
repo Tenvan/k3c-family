@@ -6,9 +6,9 @@
 - **Einschiebbar:** ja
 - **Tickets:** B-168
 - **Start-Commit:** –
-- **Spec:** Entwurf
+- **Spec:** freigegeben
 - **Revision:** 1
-- **Freigabe:** –
+- **Freigabe:** 2026-10-04, Chat, durch 🧑, Revision 1; mit Änderungen aus der Spec-Prüfung
 
 ## Ausgangslage
 
@@ -16,7 +16,7 @@ Audio-Kern (SO1), Effekte (SO2) und Hörprobenseite (SO3) stehen; Musik fehlt. D
 
 ## Ziel
 
-Die Musik wechselt je Spielzustand mit Crossfade. Am Ende sichtbar: Tag, Abend, Nacht, Kampf, Tiefe, Boss und Lobby haben eigene Stücke, Warnungen senken die Musik.
+Die Musik wechselt je Spielzustand mit Crossfade. Am Ende sichtbar: Die 8 Zustände Tag, Abend (= Dämmerung, Q65), Nacht, Kampf, Tiefe/Höhle, Boss, Lobby und Niederlage/Sieg haben je 1–2 eigene Stücke, Warnungen senken die Musik.
 
 ## Beteiligte und Zielgruppen
 
@@ -44,16 +44,17 @@ Stück fehlt → vorheriger Zustand oder Stille, kein Absturz.
 
 ## Akzeptanzkriterien
 
-- **AC-01** Der Zustands-Automat bildet jeden Zustand auf genau ein Stück ab (B-168/AC-01).
-- **AC-02** Der Wechsel Tag → Abend → Nacht ist hörbar ohne Pause und Knacken (B-168/AC-02).
+- **AC-01** Der Zustands-Automat bildet jeden der 8 Zustände auf 1–2 Stücke ab (Q16) (B-168/AC-01).
+- **AC-02** Der Wechsel Tag → Dämmerung → Nacht → Morgengrauen (Q65) ist hörbar ohne Pause und Knacken (B-168/AC-02).
 - **AC-03** Ein Warn-Sound senkt die Musik ab und stellt sie wieder her (B-168/AC-03).
 - **AC-04** Jede Musik-Datei hat einen Credit-Eintrag, CC-BY-Stücke stehen auf der Credits-Seite (B-168/AC-04).
 - **AC-05** Die Lautstärke des Busses „Musik“ ist getrennt von den Effekten einstellbar (B-168/AC-05).
 - **AC-06** `task check` ist grün.
+- **AC-07** Die Lautheit der Musik ist am TV geprüft (Q16) (B-168/AC-06).
 
 ## Offene Fragen
 
-- Zustände und Stücke: Entscheidet 🧑 (`docs/fragenkatalog.md` Q16); blockiert die Freigabe.
+- Welches Stück läuft im Morgengrauen? Q65 führt die Phase ein, Q16 nennt dafür keinen eigenen Zustand (B-168 › Offene Fragen, B-213).
 
 ## Sessions
 

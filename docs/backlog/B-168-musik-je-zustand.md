@@ -6,9 +6,9 @@
 - **Status:** eingeplant
 - **Sprint:** SO4
 - **Erstellt:** 2026-10-02
-- **Spec:** Entwurf
+- **Spec:** freigegeben
 - **Revision:** 1
-- **Freigabe:** –
+- **Freigabe:** 2026-10-04, Chat, durch 🧑, mit Sprint SO4
 
 ## Ausgangslage
 
@@ -24,7 +24,7 @@ Die Musik passt zum Zustand (Tag, Abend, Nacht, Kampf, Höhle/Tiefe je Stufe, Bo
 
 ## Anforderungen
 
-- Zustände: Tag, Abend, Nacht, Kampf, Höhle/Tiefe je Stufe, Boss, Niederlage/Sieg, Lobby; Tabelle Zustand → Stück → Quelle → Lizenz in `docs/assets/sounds.md` (aus B-167) oder einer Schwesterdatei.
+- 8 Zustände (Q16): Tag, Abend (= Dämmerung, Q65), Nacht, Kampf, Höhle/Tiefe je Stufe, Boss, Niederlage/Sieg, Lobby; je Zustand 1–2 Stücke; Tabelle Zustand → Stück → Quelle → Lizenz in `docs/assets/sounds.md` (aus B-167) oder einer Schwesterdatei.
 - Übergänge per Crossfade (Dauer als Wert in `data/` oder in der Konfiguration des Audio-Kerns); Ducking: Warn-Sounds senken die Musik kurz ab.
 - Der Zustand kommt aus dem Snapshot beziehungsweise Events; der Client rechnet keinen Spielzustand.
 - Quellen CC0 oder CC-BY, Credits sofort (CREDITS-Datei, Credits-Seite B-165); Musik-Dateien klein halten (Format laut B-166).
@@ -48,15 +48,16 @@ Stück fehlt → die Musik bleibt beim vorherigen Zustand oder still, kein Abstu
 
 ## Akzeptanzkriterien
 
-- **AC-01** Test: Der Zustands-Automat bildet jeden Snapshot-Zustand (Tag, Abend, Nacht, Kampf, Tiefe, Boss, Niederlage/Sieg, Lobby) auf genau ein Stück ab.
-- **AC-02** Beobachtung am TV: Beim Wechsel Tag → Abend → Nacht wechselt die Musik hörbar ohne Pause und ohne Knacken (Crossfade).
+- **AC-01** Test: Der Zustands-Automat bildet jeden der 8 Zustände (Tag, Abend = Dämmerung, Nacht, Kampf, Tiefe, Boss, Niederlage/Sieg, Lobby) auf 1–2 Stücke ab (Q16).
+- **AC-02** Beobachtung am TV: Beim Wechsel Tag → Dämmerung → Nacht → Morgengrauen (Q65) wechselt die Musik hörbar ohne Pause und ohne Knacken (Crossfade).
 - **AC-03** Ein Warn-Sound senkt die Musik hörbar ab und stellt sie danach wieder her (Beobachtung oder Test auf dem Pegel).
 - **AC-04** Jede Musik-Datei hat einen Credit-Eintrag, CC-BY-Stücke erscheinen auf der Credits-Seite (Test, B-165).
 - **AC-05** Die Lautstärke des Busses „Musik“ ist getrennt von der der Effekte einstellbar.
+- **AC-06** Beobachtung am TV: Die Lautheit der Musik ist geprüft und passt zu den Effekten (Q16).
 
 ## Offene Fragen
 
-- Welche Zustände und welche Stücke? Entscheidet 🧑 mit den Hörproben, `docs/fragenkatalog.md` Q16.
+- Welches Stück läuft im Morgengrauen (Q65)? Q16 nennt dafür keinen eigenen Zustand; klärt B-213 bzw. 🧑 mit den Hörproben.
 
 ## Notizen
 

@@ -6,7 +6,7 @@
 - **Branch:** so4/5-hoerprobe-tv
 - **Abhängig von:** SO4.3
 - **Tickets:** B-168
-- **Kriterien:** AC-02, AC-03
+- **Kriterien:** AC-02, AC-03, AC-07
 
 ## Ziel
 

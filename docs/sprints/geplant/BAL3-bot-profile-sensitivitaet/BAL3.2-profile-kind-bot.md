@@ -1,4 +1,4 @@
-# BAL3.2 · Fünf Profile inklusive Kind-Bot mit Fehlern aus Daten
+# BAL3.2 · Vier Profile ohne Kind-Bot
 
 - **Status:** offen
 - **Typ:** Umsetzung
@@ -10,7 +10,7 @@
 
 ## Ziel
 
-Der Tester kennt die Profile „Wirtschaft zuerst“, „Mauern zuerst“, „Koop 2 Spieler“, „Koop 4 Spieler“ und „Kind-Bot“; der Kind-Bot macht Fehler mit Wahrscheinlichkeiten aus `data/`, deterministisch je Seed.
+Der Tester kennt die Profile „Wirtschaft zuerst“, „Mauern zuerst“, „Koop 2 Spieler“ und „Koop 4 Spieler“; der Kind-Bot ist nach der Spec-Prüfung 2026-10-04 nicht Pflicht (Q19, später; B-158/AC-02) und entsteht hier nicht.
 
 ## Kontext
 
@@ -24,7 +24,6 @@ Der Tester kennt die Profile „Wirtschaft zuerst“, „Mauern zuerst“, „Ko
 ## Erlaubte Dateien
 
 - `engine/balance/` (Profile, Tests), `cmd/k3c-balance/` (nur Profil-Auswahl)
-- `data/` (nur neue Fehler-Daten für den Kind-Bot, Embed-Anpassung)
 - `docs/sprints/` (nur Status dieser Session), `docs/backlog/` (nur Status und neue Tickets)
 
 ## Nicht-Ziele
@@ -35,20 +34,20 @@ Sensitivität und Kurven (BAL3.3), lernende Bots, Änderung bestehender Werte in
 
 1. Branch anlegen, `Status: in Arbeit`. Beschluss BAL3.1 und Profil-Schnittstelle aus BAL1 nachlesen.
 2. Vier Profile (Wirtschaft zuerst, Mauern zuerst, Koop 2, Koop 4) nach der Profil-Schnittstelle; Fehler beim Start, wenn das Szenario zu wenige Spieler hat.
-3. Fehler-Daten anlegen, Lader, Kind-Bot mit Fehlern über `engine/rng`.
-4. Tests: je Profil gleicher Seed und gleiche Daten → byte-gleiche Kennzahlen; Kind-Bot mit einem Seed zweimal gerechnet → dieselbe Fehlerliste; Wahrscheinlichkeiten kommen aus den Daten (andere Daten in der Test-Option ändern das Verhalten); Profil mit zu wenigen Spielern → Fehler.
-5. `task check:go`. Ergebnis mit Vergleich Kind-Bot gegen „sparsam“ (Überleben Welle 3, 100 Seeds, 2 Spieler; Erwartung nach B-158 › Beispiele: niedriger), `Status: fertig`, Tabelle der Sprint-README.
+3. Entfällt (Kind-Bot nicht Pflicht, Q19): keine Fehler-Daten, kein Kind-Bot.
+4. Tests: je Profil gleicher Seed und gleiche Daten → byte-gleiche Kennzahlen; Profil mit zu wenigen Spielern → Fehler.
+5. `task check:dev`. Ergebnis mit Vergleich „Mauern zuerst“ gegen „sparsam“ (Überleben Welle 3, 100 Seeds, 2 Spieler), `Status: fertig`, Tabelle der Sprint-README.
 
 ## Fertig, wenn
 
-- [ ] AC-01: Test belegt für jedes der fünf neuen Profile byte-gleiche Kennzahlen bei gleichem Seed und gleichen Daten.
-- [ ] AC-02: Test belegt dieselben Fehler des Kind-Bots je Seed; die Wahrscheinlichkeiten stehen in `data/`.
-- [ ] `task check:go` grün; keine Datei > 400 Zeilen, keine Funktion > 60 Zeilen.
+- [ ] AC-01: Test belegt für jedes der vier neuen Profile byte-gleiche Kennzahlen bei gleichem Seed und gleichen Daten.
+- [ ] AC-02: Kein Kind-Bot, keine Fehler-Daten in `data/` (Q19, später).
+- [ ] `task check:dev` grün; keine Datei > 400 Zeilen, keine Funktion > 60 Zeilen.
 
 ## Prüfen
 
 ```bash
-task check:go
+task check:dev
 ```
 
 ## Ergebnis
