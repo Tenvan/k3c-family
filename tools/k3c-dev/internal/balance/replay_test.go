@@ -141,3 +141,11 @@ func TestAndererDatenstandWarnt(t *testing.T) {
 		t.Error("Wiedergabe mit Warnung lief nicht bis zum Ende")
 	}
 }
+
+// Riesige Tick-Zahl aus einer Datei → Fehler statt endloser Wiedergabe.
+func TestZuvieleTicksAbgelehnt(t *testing.T) {
+	_, err := ReadReplay([]byte(`{"version":1,"players":1,"ticks":2000000000,"inputs":[[{"n":2000000000}]]}`))
+	if err == nil || !strings.Contains(err.Error(), "höchstens") {
+		t.Errorf("Fehler %v, erwartet Tick-Obergrenze", err)
+	}
+}

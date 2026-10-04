@@ -18,6 +18,9 @@ import (
 // Die Wiedergabe braucht keinen Bot; sie rechnet dieselben Befehle nach und liefert denselben Endzustand-Hash.
 // Eigenes Format mit eigener Version, unabhängig von den Spielstand-Versionen (B-137).
 
+// maxReplayTicks begrenzt Ticks aus einer Datei: Play läuft im MCP-Server, ein riesiger Wert würde ihn blockieren.
+const maxReplayTicks = 1_000_000
+
 // ReplayVersion ist die einzige Version, die Read kennt.
 const ReplayVersion = 1
 
@@ -116,6 +119,9 @@ func ReadReplay(b []byte) (Replay, error) {
 	var r Replay
 	if err := json.Unmarshal(b, &r); err != nil {
 		return Replay{}, lineError(b, err)
+	}
+	if r.Ticks < 0 || r.Ticks > maxReplayTicks {
+		return Replay{}, fmt.Errorf("replay: %d Ticks, höchstens %d erlaubt", r.Ticks, maxReplayTicks)
 	}
 	if len(r.Inputs) != r.Players {
 		return Replay{}, fmt.Errorf("replay: %d Eingabe-Listen für %d Spieler", len(r.Inputs), r.Players)
