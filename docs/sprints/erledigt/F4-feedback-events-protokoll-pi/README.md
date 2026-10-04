@@ -1,6 +1,6 @@
 # F4 · SRV · Feedback-Ereignisse im Protokoll und Pi-Betrieb
 
-- **Status:** aktiv
+- **Status:** erledigt
 - **Domäne:** SRV
 - **Reife:** bereit
 - **Einschiebbar:** nein
@@ -63,8 +63,11 @@ Q08, Q17 und Q18 sind entschieden (2026-10-03, `docs/fragenkatalog.md` › Besch
 | F4.1 | `F4.1-protokoll-ereignisse-bandbreite.md` | Umsetzung | autonom | fertig |
 | F4.2 | `F4.2-rotation-backup.md` | Umsetzung | autonom | fertig |
 | F4.3 | `F4.3-restore-absichern.md` | Umsetzung | autonom | fertig |
-| F4.4 | `F4.4-review.md` | Review | autonom | offen |
+| F4.4 | `F4.4-review.md` | Review | autonom | fertig |
 
 ## Abnahme
 
-–
+2026-10-03, Review F4.4 (Sonnet): `task check` und `task check:go` grün, keine schweren Befunde, keine neuen Tickets.
+AC-01 bis AC-04 geprüft in F4.1, AC-05 und AC-06 in F4.2, AC-07 in F4.3 (Ergebnisse der Sessions).
+Restore-Probe am Pi (AC-06, Q18, 🧑): angenommen, Validierung offen (Session); Backup lokal getestet, der Pi-Lauf folgt mit dem Gerät.
+Version: v0.6.0 vorgeschlagen (Minor: Wirkung im Server — Rotation, Backup-Skript, Restore nur mit Token, Ereignis-Budget geprüft; aktuell v0.5.0).

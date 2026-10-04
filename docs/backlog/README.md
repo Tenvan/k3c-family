@@ -60,10 +60,7 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-130](B-130-bosse.md) | SIM | Idee | hoch | eingeplant | K2 | Minibosse und Endboss sind spielbar |
 | [B-131](B-131-events.md) | SIM | Idee | niedrig | eingeplant | K3 | Vollmond, Blutmond und Händler-Überfall sind als Events umgesetzt |
 | [B-132](B-132-anzeige-bosse-events.md) | CLI | Idee | mittel | eingeplant | K5 | Der Client zeigt Gegner-Fähigkeiten, Bosse, Phasen und Events |
-| [B-140](B-140-feedback-events-protokoll.md) | SRV | Idee | hoch | eingeplant | F4 | Feedback-Ereignisse laufen im Protokoll mit gemessener Bandbreite zum Client |
 | [B-141](B-141-doku-drift-version.md) | INF | Schuld | mittel | eingeplant | F5 | Doku und CLAUDE.md stimmen mit dem Code überein, die Version ist sichtbar |
-| [B-142](B-142-pi-betrieb-backup-rotation.md) | SRV | Idee | hoch | eingeplant | F4 | Spielstände werden außerhalb des Pi gesichert, Berichte und Logs rotieren |
-| [B-143](B-143-endpunkte-heimnetz-absichern.md) | SRV | Problem | mittel | eingeplant | F4 | Restore-, Save- und Report-Endpunkte sind im Heimnetz abgesichert |
 | [B-146](B-146-optionen-pause-szene.md) | CLI | Idee | hoch | eingeplant | S5 | Der Client hat eine Optionen- und Pause-Szene mit getrennter Lautstärke und Barrierefreiheit |
 | [B-147](B-147-speichern-verlassen.md) | SRV | Idee | mittel | eingeplant | S2 | Der Server speichert beim Verlassen und wenn das letzte Gerät getrennt ist, der Spielstand zeigt seinen Speicherstand |
 | [B-148](B-148-onboarding-erste-nacht.md) | CLI | Idee | hoch | eingeplant | S6 | Die erste Nacht wird mit kontextuellen Hinweisen geführt, der Freundlich-Grad kostet keinen Fortschritt |
@@ -208,6 +205,9 @@ Zeile in diesen Abschnitt.
 | [B-137](archiv/B-137-golden-ablauf-migration.md) | INF | Idee | hoch | erledigt | F2 | Golden-Daten und Spielstand-Formate haben einen festen Änderungsablauf |
 | [B-138](archiv/B-138-determinismus-pruefung.md) | INF | Schuld | mittel | erledigt | F2 | Determinismus der Simulation wird gegen Map-Reihenfolge und langsame Ticks geprüft |
 | [B-139](archiv/B-139-feedback-events-sim.md) | SIM | Idee | hoch | erledigt | F3 | Die Simulation meldet Feedback-Ereignisse für Treffer, Münzen, Schläge und Tod |
+| [B-140](archiv/B-140-feedback-events-protokoll.md) | SRV | Idee | hoch | erledigt | F4 | Feedback-Ereignisse laufen im Protokoll mit gemessener Bandbreite zum Client |
+| [B-142](archiv/B-142-pi-betrieb-backup-rotation.md) | SRV | Idee | hoch | erledigt | F4 | Spielstände werden außerhalb des Pi gesichert, Berichte und Logs rotieren |
+| [B-143](archiv/B-143-endpunkte-heimnetz-absichern.md) | SRV | Problem | mittel | erledigt | F4 | Restore-, Save- und Report-Endpunkte sind im Heimnetz abgesichert |
 | [B-178](archiv/B-178-dev-aktionen-gold-material-zeitraffer.md) | SRV | Idee | hoch | erledigt | DBG1 | Im Dev-Mode lassen sich Gold und Material droppen und die Zeit beschleunigen |
 | [B-179](archiv/B-179-debug-overlay-aktionen.md) | CLI | Idee | hoch | erledigt | DBG2 | Das Debug-Overlay bedient Gold, Material und Zeitraffer |
 | [B-006](archiv/B-006-xbox-gamepad-test.md) | PLAT | Frage | hoch | erledigt | X1 | Gamepad-Test auf der Xbox ist ausgewertet |
