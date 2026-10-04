@@ -63,7 +63,7 @@ keine (Zahlen: `docs/rules/zielkorridore.md`, F1 erledigt, Q02)
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
 | BAL2.1 | `BAL2.1-korridore-bewertung.md` | Umsetzung | autonom | fertig |
-| BAL2.2 | `BAL2.2-task-balance-bericht.md` | Umsetzung | autonom | in Arbeit |
+| BAL2.2 | `BAL2.2-task-balance-bericht.md` | Umsetzung | autonom | fertig |
 | BAL2.3 | `BAL2.3-ci-lauf.md` | Umsetzung | autonom | offen |
 | BAL2.4 | `BAL2.4-review.md` | Review | autonom | offen |
 

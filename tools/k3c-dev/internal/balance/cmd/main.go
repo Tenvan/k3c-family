@@ -34,8 +34,22 @@ func run(args []string) error {
 	out := fs.String("out", "", "Datei für das JSON (leer = Standardausgabe)")
 	replayDir := fs.String("replay-dir", "", "Ordner für eine Replay-Datei je gültigem Lauf (leer = keine)")
 	play := fs.String("play", "", "Replay-Datei ohne Bot abspielen statt einer Matrix")
+	var to targetOpts
+	fs.BoolVar(&to.on, "targets", false, "Ziele aus data/balance-targets.json bewerten, Bericht als JSON und Markdown; --seeds N = nur die ersten N, sonst alle")
+	fs.StringVar(&to.dir, "report-dir", "reports", "Ordner für balance-<Zeit>.json und .md (nur mit --targets)")
+	fs.StringVar(&to.baseline, "baseline", "", "Baseline-Datei zum Vergleichen (nur mit --targets)")
+	fs.BoolVar(&to.write, "write-baseline", false, "Bericht nach --baseline schreiben statt vergleichen")
 	if err := fs.Parse(args); err != nil {
 		return err
+	}
+	if to.on {
+		to.replays = *replayDir
+		fs.Visit(func(f *flag.Flag) {
+			if f.Name == "seeds" {
+				to.seeds = *seeds
+			}
+		})
+		return runTargets(to)
 	}
 	if *play != "" {
 		return playFile(*play, *out)
