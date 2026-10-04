@@ -202,6 +202,13 @@ tasks:
     cmds:
       - wails dev
 
+  balance:run:
+    desc: 'Balancing-Tester: Bots spielen eine Szenario-Matrix, Kennzahlen als JSON (z. B. `task balance:run -- --seeds 10 --bots saver --days 5`)'
+    deps: [tmp]
+    cmds:
+      - cd {{.DEV}} && go build -o ../../bin/k3c-balance{{exeExt}} ./internal/balance/cmd
+      - ./bin/k3c-balance{{exeExt}} {{.CLI_ARGS}}
+
   k3c-dev:build:
     desc: EXE von k3c-dev bauen (wails build)
     deps: [tmp]
