@@ -1,8 +1,11 @@
 /* MCP-Seite (B-065): Bänder, Karten, Kennzahlen, Kacheln, Instructions. */
+/* Feste Höhe wie die anderen Seiten: Die Seite scrollt nie, nur Tool-Kacheln, Log und Statistik scrollen in sich. */
 .mcp-page {
   display: flex;
   flex-direction: column;
   gap: 14px;
+  height: calc(100vh - 104px); /* Kopfzeile 61 px + Rand der Seite 2 × 20 px */
+  min-height: 420px;
 }
 
 .mcp-views {
@@ -14,10 +17,43 @@
   display: grid;
   grid-template-columns: 2fr 1fr;
   gap: 14px;
+  flex: none;
 }
 
+/* Band 2 gibt Höhe ab (Kacheln scrollen), das Log behält immer seine Mindesthöhe. */
 .mcp-band2 {
   grid-template-columns: 1fr 1.6fr;
+  grid-template-rows: minmax(0, 1fr);
+  flex: 0 1 auto;
+  min-height: 150px;
+}
+
+.mcp-band2 > .mcp-card {
+  min-height: 0;
+  overflow: hidden;
+}
+
+.mcp-tiles {
+  min-height: 0;
+  overflow-y: auto;
+  padding-right: 4px;
+}
+
+.mcp-log {
+  flex: 1 0 max(190px, 28vh);
+  min-height: 0;
+}
+
+.mcp-log .mcp-log-body {
+  flex: 1;
+  min-height: 0;
+}
+
+@media (max-width: 800px) {
+  .mcp-band2 {
+    grid-template-columns: 1fr;
+    grid-template-rows: minmax(0, 1fr) auto;
+  }
 }
 
 .mcp-card {
@@ -41,7 +77,7 @@
 
 .mcp-kpis {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(auto-fit, minmax(80px, 1fr));
   gap: 10px;
   margin: 0;
 }
@@ -120,7 +156,18 @@
 .mcp-live-body {
   display: grid;
   grid-template-columns: 1fr 2fr;
+  grid-template-rows: minmax(0, 1fr);
   gap: 14px;
+  flex: 1;
+  min-height: 0;
+}
+
+/* Diagramme schrumpfen mit der Höhe von Band 2, statt abgeschnitten zu werden. */
+.mcp-bars,
+.mcp-line {
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
 }
 
 .mcp-chart-head {
@@ -132,6 +179,9 @@
 .mcp-svg {
   width: 100%;
   height: auto;
+  flex: 0 1 auto;
+  min-height: 0;
+  max-height: 190px; /* breite Fenster: Diagramme nicht höher als nötig, Platz bleibt fürs Log */
   display: block;
 }
 
@@ -166,7 +216,6 @@
 .chart-empty { font-size: 13px; }
 
 .mcp-log-body {
-  max-height: max(260px, calc(100vh - 560px));
   overflow: auto;
   border: 1px solid var(--card-line);
   border-radius: 10px;
@@ -233,10 +282,13 @@
   display: flex;
   flex-direction: column;
   gap: 14px;
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
 }
 
 .mcp-kpis-10 {
-  grid-template-columns: repeat(5, 1fr);
+  grid-template-columns: repeat(auto-fit, minmax(110px, 1fr));
 }
 
 .mcp-stats-body {
@@ -244,6 +296,12 @@
   grid-template-columns: 1fr 340px;
   gap: 14px;
   align-items: start;
+}
+
+@media (max-width: 1000px) {
+  .mcp-stats-body {
+    grid-template-columns: 1fr;
+  }
 }
 
 .mcp-stats-table {
