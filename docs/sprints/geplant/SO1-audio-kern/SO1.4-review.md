@@ -28,7 +28,7 @@ Stil, Optimierung, Klangauswahl.
 ## Schritte
 
 1. Branch anlegen, `Status: in Arbeit`. `task check` grün.
-2. `git fetch && git diff <Start-Commit>..origin/develop` lesen (nur den Diff), Befunde nach `docs/arbeitsweise.md` behandeln.
+2. `git fetch && git diff origin/develop...origin/sprint/so1` lesen (nur den Diff), Befunde nach `docs/arbeitsweise.md` behandeln.
 3. Nachweis je Kriterium AC-01 bis AC-08 aus den Ergebnissen von SO1.1 bis SO1.3 (und SO1.5, falls schon da) prüfen.
 4. Abnahme (höchstens fünf Zeilen) in die Sprint-README schreiben, mit Versionsvorschlag.
 5. B-011: Status `eingeplant` lassen (SO2, SO4), Notiz „AC-03 Lautstärke: Kern fertig (SO1)“.
