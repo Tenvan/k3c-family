@@ -330,3 +330,8 @@ wechselnde Eingaben. Je Tick `JSON.stringify` des vollen Zustands und eines Delt
 ≈ 120 KB/s. Ein Raum mit 4 Geräten sendet mit `delta` ≈ 0,25 MB/s. Für WLAN im Heimnetz reicht JSON mit `delta`; ein
 Binärformat ist nicht nötig. Das Delta wird von vielen Nachkommastellen (`x`, `time`) und ganzen geänderten
 Einträgen bestimmt; Runden auf 2 Stellen wäre die nächste Stellschraube, falls die Messung am Pi (SP11) es verlangt.
+
+## Diagnose: CPU im Status (B-175)
+
+`GET /api/status` (Token) nennt mit `cpu` die CPU-Last des Server-Prozesses in Prozent einer CPU, gemittelt über das
+Intervall seit dem letzten Aufruf (100 = eine volle CPU). Quelle ist `/proc/self/stat` (Linux); wo es sie nicht gibt, fehlt das Feld.

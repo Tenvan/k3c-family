@@ -1,6 +1,6 @@
 # LT1 · SRV · Lasttest-Werkzeug
 
-- **Status:** aktiv
+- **Status:** erledigt
 - **Domäne:** SRV
 - **Reife:** bereit
 - **Einschiebbar:** nein
@@ -60,13 +60,16 @@ keine (Obergrenze der Nachtmessung: Flag `-max-duration`, Standard 60 min, 🧑 
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
 | LT1.1 | `LT1.1-bots-client.md` | Umsetzung | autonom | fertig |
-| LT1.2 | `LT1.2-status-bericht.md` | Umsetzung | autonom | offen |
+| LT1.2 | `LT1.2-status-bericht.md` | Umsetzung | autonom | fertig |
 | LT1.3 | `LT1.3-messlauf-pi.md` | Workshop | Mensch | offen |
-| LT1.4 | `LT1.4-review.md` | Review | autonom | offen |
+| LT1.4 | `LT1.4-review.md` | Review | autonom | fertig |
 
 Bei `Reife: Entwurf` genügen Stichpunkte mit den Kriterien in Klammern statt Session-Dateien. Vor dem Aktivieren
 wird jede Session als eigene Datei nach `docs/vorlagen/session.md` geschrieben.
 
 ## Abnahme
 
-–
+- 2026-10-04, Review LT1.4: AC-01, AC-02, AC-05 (LT1.1) sowie AC-03, AC-04 (LT1.2) sind mit Tests nachgewiesen (`TestLaufSammeltTicksUndRaeumtAuf`, `TestGleicherSeedGleicheEingaben`, `TestBewertungUndExitCode`, `TestStatusNenntCPU`); AC-05 mit der Abweichung B-204 (Test-Räume schließen erst nach der Leer-Frist).
+- AC-06: angenommen, Validierung offen (LT1.3, 🧑 am Pi; B-042 bleibt eingeplant bis zur Messung, angenommen laut Messung 2026-10-03: Nacht 10,2 bis 10,3 ms, Ziel < 10 ms).
+- Ein Befund behoben (SRV): Der Poller konnte nach dem Ende des Laufs noch Proben anhängen, während der Bericht las (Datenwettlauf); `load` wartet jetzt auf ihn. Keine Tickets neu; `task check` und `task check:go` grün; Token, `test-`-Räume, Schichtgrenzen und `go.mod` geprüft.
+- Version: v0.9.0 vorgeschlagen (Minor, Wirkung im Werkzeug/Server: `task load` und `cpu` in `/api/status`; nach den offenen Vorschlägen bis v0.8.0 bei gemeinsamem Setzen anpassen).
