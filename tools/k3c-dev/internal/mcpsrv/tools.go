@@ -84,6 +84,12 @@ func registerEngine(s *Server) {
 			"Tag, Welle, Gold, Truppen, Verluste, Ende. Optional Eingaben je Monarch und Tick-Bereich (höchstens 100 Segmente).",
 		Annotations: readOnlyEngine(),
 	}, s.simRun)
+	add(s, &mcp.Tool{
+		Name: "replay_run",
+		Description: "Spielt eine Replay-Datei des Balancing-Testers (task balance:run -- --replay-dir) in-process ohne Bot ab: " +
+			"Endzustand-Hash, Burgfall-Tick, Vergleich mit der Aufnahme, Warnung bei anderem Datenstand. Nur Dateien im Repo.",
+		Annotations: readOnlyEngine(),
+	}, s.replayRun)
 }
 
 // readOnlyEngine: rechnet nur im Speicher, ändert nichts.
