@@ -1,11 +1,11 @@
 # GR5 · CLI · Juice: Treffer, Screenshake, Münzen
 
-- **Status:** geplant
+- **Status:** aktiv
 - **Domäne:** CLI
 - **Reife:** bereit
 - **Einschiebbar:** ja
 - **Tickets:** B-164
-- **Start-Commit:** –
+- **Start-Commit:** 1fa9529
 - **Spec:** freigegeben
 - **Revision:** 1
 - **Freigabe:** 2026-10-04, Chat, durch 🧑, Revision 1; mit Änderungen aus der Spec-Prüfung
@@ -60,7 +60,7 @@ keine
 
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
-| GR5.1 | `GR5.1-effekte-aus-events.md` | Umsetzung | autonom | offen |
+| GR5.1 | `GR5.1-effekte-aus-events.md` | Umsetzung | autonom | in Arbeit |
 | GR5.2 | `GR5.2-abschalten-kamera-vibration.md` | Umsetzung | autonom | offen |
 | GR5.3 | `GR5.3-review.md` | Review | autonom | offen |
 

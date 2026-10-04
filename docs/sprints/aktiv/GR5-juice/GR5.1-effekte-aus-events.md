@@ -1,6 +1,6 @@
 # GR5.1 · Effekte für Treffer, Kill, Münze und Bauen, nur aus Events
 
-- **Status:** offen
+- **Status:** in Arbeit
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Branch:** gr5/1-effekte-aus-events
