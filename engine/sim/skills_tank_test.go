@@ -95,3 +95,19 @@ func TestTankLastStand(t *testing.T) {
 		t.Fatalf("nach Ablauf überlebt: HP %v, Last Stand %v", p.HP, p.LastStandFor)
 	}
 }
+
+// TestTankSchildNurGroesser (B-220/AC-01): Divine Shield (100) ersetzt einen laufenden Schild nur, wenn er größer ist;
+// die Abklingzeit startet trotzdem.
+func TestTankSchildNurGroesser(t *testing.T) {
+	w := quietWorld(t)
+	p := AddPlayer(w)
+	divine := monarch.Skills["divineShield"].Effect
+	p.Shield, p.ShieldFor = 400, 5
+	if !castShield(w, p, divine) || p.Shield != 400 || p.ShieldFor != 5 {
+		t.Fatalf("laufender 400er-Schild: %v für %v s", p.Shield, p.ShieldFor)
+	}
+	p.Shield = 50
+	if !castShield(w, p, divine) || p.Shield != 100 || p.ShieldFor != 10 {
+		t.Fatalf("Rest 50: %v für %v s", p.Shield, p.ShieldFor)
+	}
+}

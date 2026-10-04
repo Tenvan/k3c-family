@@ -5,11 +5,13 @@ import "testing"
 // Skill-Rahmen: Slot-Befehl, Abklingzeit je Spieler, nicht gelernt = nichts, Gating (S1.2a, B-119).
 
 // tankPlayer: ein Spieler, der die vier aktiven Tank-Skills gelernt hat (Slots: taunt, shieldBash, ironWall, lastStand).
+// Füller für das Gating sind Passive ohne Einfluss auf Verteidigung (guardian wirkt nur auf Truppen; thickSkin und
+// regeneration nur über Step), damit die Zahlen der aktiven Skills ohne Passiv gelten (S1.2c).
 func tankPlayer(t *testing.T, w *World) *Player {
 	t.Helper()
 	p := AddPlayer(w)
 	addPoolPoints(w, 7)
-	mustLearn(t, w, p, "taunt", "shieldBash", "armorAura", "thickSkin", "ironWall", "regeneration", "lastStand")
+	mustLearn(t, w, p, "taunt", "shieldBash", "guardian", "thickSkin", "ironWall", "regeneration", "lastStand")
 	return p
 }
 

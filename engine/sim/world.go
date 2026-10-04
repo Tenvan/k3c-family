@@ -108,6 +108,7 @@ func Step(w *World, commands []PlayerCommand, dt float64) {
 	stepCycle(w, dt)
 	stepSpawns(w)
 	stepPlayers(w, commands, dt)
+	stepPassives(w, dt)
 	stepCamps(w, dt)
 	stepSites(w)
 	stepTroops(w, dt)

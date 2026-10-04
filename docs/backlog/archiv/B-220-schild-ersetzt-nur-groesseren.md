@@ -3,7 +3,7 @@
 - **Domäne:** SIM
 - **Typ:** Problem
 - **Prio:** niedrig
-- **Status:** eingeplant
+- **Status:** erledigt
 - **Sprint:** S1
 - **Erstellt:** 2026-10-04
 - **Spec:** Entwurf
@@ -54,3 +54,5 @@ Gilt die Regel auch für Dauer (längerer, aber kleinerer Schild)? 🧑
 ## Notizen
 
 Gefunden in S1.2b (Sprint S1).
+
+**Ergebnis (2026-10-04):** Umgesetzt in S1.2c (Freigabe 🧑 über B-221): `castShield` übernimmt den neuen Schild nur, wenn seine HP größer sind als der Rest; die Abklingzeit startet trotzdem. AC-01 geprüft mit `TestTankSchildNurGroesser`. Gleich große Schilde: der alte bleibt, die Dauer wird nicht erneuert (Offene Frage weiter bei 🧑).

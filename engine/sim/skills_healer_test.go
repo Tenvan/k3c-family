@@ -111,7 +111,8 @@ func TestHealerAbklingzeit(t *testing.T) {
 	}
 }
 
-// TestHealerHeiltZauberer (d): Zauberer (Spieler 0) und Heiler (Spieler 1) im selben Kampf über Step.
+// TestHealerHeiltZauberer (d): Zauberer (Spieler 0) und Heiler (Spieler 1) im selben Kampf über Step. Mit Passiven:
+// Fireball 30 × (1 + Arcane Power 0,2 + Blessings 0,1) = 39; Heal 40 → 90, dann Healing Aura 2 HP/s für einen Tick.
 func TestHealerHeiltZauberer(t *testing.T) {
 	w := quietWorld(t)
 	mage, healer := AddPlayer(w), AddPlayer(w)
@@ -123,10 +124,10 @@ func TestHealerHeiltZauberer(t *testing.T) {
 	e := toughEnemy(w, mage.X+6)
 	mage.HP = 40
 	Step(w, []PlayerCommand{{Skill: 1}, {Skill: 1}}, dt)
-	if lost(e) != 30 || mage.HP != 90 || healer.HP != 100 {
+	if !near(lost(e), 39) || mage.HP != 90+float64(2*dt) || healer.HP != 100 {
 		t.Fatalf("Fireball %v, Zauberer %v, Heiler %v", lost(e), mage.HP, healer.HP)
 	}
-	if mage.Cooldowns[0] != 8 || healer.Cooldowns[0] != 10 || mage.Cooldowns[1] != 0 {
+	if mage.Cooldowns[0] != 8*cooldownMult || healer.Cooldowns[0] != 10 || mage.Cooldowns[1] != 0 {
 		t.Fatalf("Abklingzeiten Zauberer %v, Heiler %v", mage.Cooldowns, healer.Cooldowns)
 	}
 }

@@ -24,7 +24,7 @@ func stepAttack(w *World, p *Player, cmd PlayerCommand, dt float64) {
 	}
 	p.AttackCooldown = a.Cooldown
 	emit(w, "strike", Event{"from": p.ID, "x": unitX(p.X)})
-	applyDamage(w, e.ID, a.Damage)
+	applyDamage(w, e.ID, float64(a.Damage*damageMultOf(w, p, false)))
 }
 
 // poolOf ist der Fund-Pool: der Insel, ohne Insel der Zähler der Welt.

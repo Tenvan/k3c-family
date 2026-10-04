@@ -94,6 +94,7 @@ func applyDamage(w *World, targetID int, damage float64) {
 		}
 	}
 	if t := troopByID(w, targetID); t != nil {
+		damage = troopDamage(w, t, damage)
 		t.HP -= damage
 		hitEvent(w, "troop", t.ID, t.X, damage)
 		return
@@ -119,13 +120,13 @@ func applyDamage(w *World, targetID int, damage float64) {
 	}
 }
 
-// damagePlayer: Verteidigung, dann zieht der Schild (Iron Wall) zuerst ab, der Rest geht auf die HP. Solange Last
+// damagePlayer: Verteidigung (defenseOf, Passive), dann zieht der Schild (Iron Wall) zuerst ab, der Rest geht auf die HP. Solange Last
 // Stand läuft, lässt ein tödlicher Treffer 1 HP stehen.
 func damagePlayer(w *World, p *Player, damage float64) {
 	if !isAlive(p) {
 		return
 	}
-	dealt := math.Max(1, damage-monarch.Base.Defense)
+	dealt := math.Max(1, damage-defenseOf(w, p))
 	if p.Shield > 0 {
 		absorbed := math.Min(p.Shield, dealt)
 		p.Shield -= absorbed

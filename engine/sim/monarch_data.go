@@ -14,14 +14,19 @@ type SkillData struct {
 	Tier           int
 	Cooldown       float64 // Sekunden, nur aktive Skills
 	Effect         skillEffect
+	Provisional    bool // Startwert vorläufig, noch nicht von REG abgestimmt (Passive, S1.2c)
 }
 
-// skillEffect ist die Wirkung eines aktiven Skills; Type wählt die Funktion in skills.go, die übrigen Felder sind
-// Parameter je Typ (Units, Sekunden, HP; Factor und HPFraction als Anteil).
+// skillEffect ist die Wirkung eines Skills; Type wählt die Funktion in skills.go (aktiv) bzw. passives.go (passiv),
+// die übrigen Felder sind Parameter je Typ (Units, Sekunden, HP; Factor, HPFraction und *Bonus als Anteil).
 type skillEffect struct {
 	Type                                          string
 	Radius, Range, Duration, HP                   float64
 	Damage, Factor, PerSecond, Amount, HPFraction float64
+	// Passive (S1.2c): Aura = Radius in Units (0 = nur der Besitzer), Castle = Burgradius statt Aura.
+	Defense, Aura, Reduction, Chance                               float64
+	MaxHPBonus, SpeedBonus, DamageBonus, SpellBonus, CooldownBonus float64
+	Castle                                                         bool
 }
 
 // presetData ist eine Startverteilung aus monarch.json › presets (Basiswerte liest der Code nicht, S1.1).

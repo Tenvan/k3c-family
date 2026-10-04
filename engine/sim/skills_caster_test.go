@@ -7,8 +7,18 @@ import (
 
 // Zauberer-Linie: Wirkung, Fläche, Reichweite und Abklingzeit laut monarch.json (S1.2b, B-119).
 
-// mageSkills: die sieben Skills für alle vier aktiven Zauber (Slots: fireball, iceWall, lightningStorm, meteor).
-var mageSkills = []string{"fireball", "iceWall", "arcanePower", "spellEcho", "lightningStorm", "frostArmor", "meteor"}
+// mageSkills: die sieben Skills für alle vier aktiven Zauber (Slots: fireball, iceWall, lightningStorm, meteor). Füller
+// fürs Gating: arcanePower (Zauberschaden × spellMult), elementalMastery (Abklingzeit × cooldownMult) und frostArmor;
+// spellEcho bleibt draußen, damit kein Zauber zufällig doppelt wirkt (S1.2c).
+var mageSkills = []string{"fireball", "iceWall", "arcanePower", "elementalMastery", "lightningStorm", "frostArmor", "meteor"}
+
+// spellMult und cooldownMult: Wirkung von Arcane Power (+20 %) und Elemental Mastery (−15 %) laut monarch.json.
+var (
+	spellMult    = 1 + monarch.Skills["arcanePower"].Effect.SpellBonus
+	cooldownMult = 1 + monarch.Skills["elementalMastery"].Effect.CooldownBonus
+)
+
+func near(a, b float64) bool { return math.Abs(a-b) < 1e-6 }
 
 // casterPlayer: ein Zauberer abseits der Burg, der alle vier aktiven Zauber gelernt hat.
 func casterPlayer(t *testing.T, w *World) *Player {
@@ -35,7 +45,8 @@ func TestCasterFireballUndMeteor(t *testing.T) {
 		target := toughEnemy(w, p.X+5)
 		in, out := toughEnemy(w, target.X+c.radius), toughEnemy(w, target.X+c.radius+1)
 		stepSkills(w, p, PlayerCommand{Skill: c.slot}, dt)
-		if lost(target) != c.damage || lost(in) != c.damage || lost(out) != 0 {
+		want := c.damage * spellMult // mit Arcane Power: 36 bzw. 240
+		if !near(lost(target), want) || !near(lost(in), want) || lost(out) != 0 {
 			t.Fatalf("Slot %d: Ziel %v, %vu %v, %vu %v", c.slot, lost(target), c.radius, lost(in), c.radius+1, lost(out))
 		}
 	}
@@ -76,13 +87,13 @@ func TestCasterLightningStorm(t *testing.T) {
 	for range 75 { // 2,5 s
 		stepStorms(w, dt)
 	}
-	if math.Abs(lost(in)-25) > 1e-6 || lost(out) != 0 {
+	if !near(lost(in), 25*spellMult) || lost(out) != 0 {
 		t.Fatalf("nach 2,5 s: 5u %v, 6u %v", lost(in), lost(out))
 	}
 	for range 125 { // weit über 5 s hinaus
 		stepStorms(w, dt)
 	}
-	if math.Abs(lost(target)-50) > 1e-6 || math.Abs(lost(in)-50) > 1e-6 || lost(out) != 0 || len(w.Storms) != 0 {
+	if !near(lost(target), 50*spellMult) || !near(lost(in), 50*spellMult) || lost(out) != 0 || len(w.Storms) != 0 {
 		t.Fatalf("nach 5 s: Ziel %v, 5u %v, 6u %v, Stürme %d", lost(target), lost(in), lost(out), len(w.Storms))
 	}
 }
@@ -94,6 +105,7 @@ func TestCasterAbklingzeitUndOhneZiel(t *testing.T) {
 		w := quietWorld(t)
 		p := casterPlayer(t, w)
 		s, _ := skillByID(p.Slots[slot-1])
+		cd := s.Cooldown * cooldownMult // mit Elemental Mastery
 		far := toughEnemy(w, p.X+s.Effect.Range+0.5)
 		effect := func() float64 { return lost(far) + far.SlowFor + float64(len(w.Storms)) }
 		stepSkills(w, p, PlayerCommand{Skill: slot}, dt)
@@ -103,8 +115,8 @@ func TestCasterAbklingzeitUndOhneZiel(t *testing.T) {
 		far.X = p.X + 1
 		stepSkills(w, p, PlayerCommand{Skill: slot}, dt)
 		first := effect()
-		if first == 0 || p.Cooldowns[slot-1] != s.Cooldown {
-			t.Fatalf("%s: Wirkung %v, CD %v (erwartet %v)", s.ID, first, p.Cooldowns, s.Cooldown)
+		if first == 0 || p.Cooldowns[slot-1] != cd {
+			t.Fatalf("%s: Wirkung %v, CD %v (erwartet %v)", s.ID, first, p.Cooldowns, cd)
 		}
 		far.SlowFor, w.Storms = 0, nil
 		before := effect()
@@ -112,10 +124,10 @@ func TestCasterAbklingzeitUndOhneZiel(t *testing.T) {
 		if effect() != before {
 			t.Fatalf("%s: zweiter Einsatz in der Abklingzeit wirkt", s.ID)
 		}
-		stepIdle(w, p, int(math.Ceil(s.Cooldown/dt)))
+		stepIdle(w, p, int(math.Ceil(cd/dt)))
 		stepSkills(w, p, PlayerCommand{Skill: slot}, dt)
-		if p.Cooldowns[slot-1] != s.Cooldown {
-			t.Fatalf("%s: nach %v s kein neuer Einsatz, CD %v", s.ID, s.Cooldown, p.Cooldowns)
+		if p.Cooldowns[slot-1] != cd {
+			t.Fatalf("%s: nach %v s kein neuer Einsatz, CD %v", s.ID, cd, p.Cooldowns)
 		}
 	}
 }

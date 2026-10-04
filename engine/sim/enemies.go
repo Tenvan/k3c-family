@@ -259,5 +259,8 @@ func attack(w *World, e *Enemy, t *target) {
 	} else {
 		emit(w, "strike", Event{"from": e.ID, "x": unitX(e.X)})
 		applyDamage(w, t.id, e.Damage)
+		if t.player != nil {
+			frostArmorHit(t.player, e)
+		}
 	}
 }
