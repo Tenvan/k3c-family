@@ -53,7 +53,7 @@ func stepPlayers(w *World, commands []PlayerCommand, dt float64) {
 func movePlayer(w *World, p *Player, cmd PlayerCommand, dt float64) {
 	mult := 1.0
 	if cmd.Sprint {
-		mult = monarch.SprintMultiplier
+		mult = float64(monarch.SprintMultiplier * MountOf(p).SprintFactor) // Sprint auf dem Reittier
 	}
 	target := float64(cmd.MoveX * speedOf(w, p) * mult)
 	p.VX += float64((target - p.VX) * (1 - math.Exp(-monarch.Acceleration*dt)))

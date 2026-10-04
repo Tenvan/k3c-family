@@ -4,6 +4,7 @@
   "sprintMultiplier": 1.8,
   "acceleration": 8,
   "respawnSeconds": 5,
+  "mount": { "id": "horse", "sprite": "horse", "speedFactor": 1.0, "sprintFactor": 1.0 },
   "attack": { "damage": 10, "range": 1.5, "cooldown": 0.7 },
   "tierPoints": [0, 2, 4, 6],
   "skillPointSources": { "hidden": 1, "miniboss": 1, "endboss": 3, "milestone": 1, "chestEvery": 3 },

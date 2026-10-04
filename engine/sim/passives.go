@@ -43,9 +43,10 @@ func maxHPOf(w *World, p *Player) float64 {
 	return float64(monarch.Base.HP * (1 + statSum(w, p, func(e skillEffect) float64 { return e.MaxHPBonus })))
 }
 
-// speedOf: Grundtempo des Monarchen (Basis × (1 + Blessings)).
+// speedOf: Grundtempo des Monarchen (Basis × Reittier-Faktor × (1 + Blessings)).
 func speedOf(w *World, p *Player) float64 {
-	return float64(monarch.Base.Speed * (1 + statSum(w, p, func(e skillEffect) float64 { return e.SpeedBonus })))
+	ridden := float64(monarch.Base.Speed * MountOf(p).SpeedFactor)
+	return float64(ridden * (1 + statSum(w, p, func(e skillEffect) float64 { return e.SpeedBonus })))
 }
 
 // damageMultOf: Faktor auf Schlag- und Zauberschaden (Blessings); spell = Zauber, dann zusätzlich Arcane Power.

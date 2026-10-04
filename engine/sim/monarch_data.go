@@ -35,9 +35,17 @@ type presetData struct {
 	ActiveSkills []string
 }
 
+// MountData ist das Standard-Reittier aus monarch.json › mount (docs/rules/monarch.md § 7, B-152). Sprite ist ein
+// Schlüssel aus sprites.json › mounts; Tempo = base.speed × SpeedFactor, Sprint = sprintMultiplier × SprintFactor.
+type MountData struct {
+	ID, Sprite                string
+	SpeedFactor, SprintFactor float64
+}
+
 type monarchData struct {
 	Base                                           struct{ HP, Damage, Speed, Defense float64 }
 	SprintMultiplier, Acceleration, RespawnSeconds float64
+	Mount                                          MountData
 	Attack                                         struct{ Damage, Range, Cooldown float64 }
 	// TierPoints: Tier n verlangt TierPoints[n-1] gelernte Skills der Linie (Beschluss 🧑 2026-10-04, B-216).
 	TierPoints []int
