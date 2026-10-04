@@ -68,7 +68,7 @@ keine
 | M8.1 | `M8.1-planung-mcp.md` | Umsetzung | autonom | fertig |
 | M8.2 | `M8.2-planungsseite-react.md` | Umsetzung | autonom | fertig |
 | M8.3 | `M8.3-github-status.md` | Umsetzung | autonom | fertig |
-| M8.4 | `M8.4-review.md` | Review | autonom | offen |
+| M8.4 | `M8.4-review.md` | Review | autonom | in Arbeit |
 
 ## Abnahme
 
