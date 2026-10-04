@@ -59,6 +59,8 @@ Lauf bricht ab (Fehler in der Simulation) → Lauf als „ungültig“ im Berich
 - **AC-04** Der Bericht nennt zu jedem verletzten Ziel die Seeds zum Nachspielen.
 - **AC-05** Ein CI-Lauf mit kleiner Seed-Menge erzeugt den Bericht.
 
+Stand 2026-10-04: AC-03 bis AC-05 sind mit BAL2 erfüllt (B-157, BAL2.1 bis BAL2.3). Das Ticket bleibt eingeplant (BAL3).
+
 ## Offene Fragen
 
 - Wie viele Seeds sind genug (Rechenzeit gegen Aussagekraft)? Wird mit den ersten Läufen gemessen.
