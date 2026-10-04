@@ -1,6 +1,6 @@
 # LT1.4 · Review und Abnahme des Sprints LT1
 
-- **Status:** offen
+- **Status:** in Arbeit
 - **Typ:** Review
 - **Agent:** autonom
 - **Branch:** lt1/4-review

@@ -62,7 +62,7 @@ keine (Obergrenze der Nachtmessung: Flag `-max-duration`, Standard 60 min, 🧑 
 | LT1.1 | `LT1.1-bots-client.md` | Umsetzung | autonom | fertig |
 | LT1.2 | `LT1.2-status-bericht.md` | Umsetzung | autonom | fertig |
 | LT1.3 | `LT1.3-messlauf-pi.md` | Workshop | Mensch | offen |
-| LT1.4 | `LT1.4-review.md` | Review | autonom | offen |
+| LT1.4 | `LT1.4-review.md` | Review | autonom | in Arbeit |
 
 Bei `Reife: Entwurf` genügen Stichpunkte mit den Kriterien in Klammern statt Session-Dateien. Vor dem Aktivieren
 wird jede Session als eigene Datei nach `docs/vorlagen/session.md` geschrieben.
