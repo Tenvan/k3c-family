@@ -1,6 +1,6 @@
 # SO1.2 · Entsperren per Geste, Format mit Fallback, Sound-Atlas
 
-- **Status:** offen
+- **Status:** in Arbeit
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Branch:** so1/2-entsperren-format-atlas
