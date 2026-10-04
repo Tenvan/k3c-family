@@ -1,7 +1,8 @@
 /* Planungs-Seite: Umschalter oben, darunter die erzeugte Seite „Sprints & Backlog“ (iframe) oder ein Markdown-Dokument. */
 .pl-page { display: flex; flex-direction: column; gap: 14px; }
 .pl-frame { width: 100%; height: calc(100vh - 150px); min-height: 480px; border: 1px solid var(--card-line); border-radius: 10px; background: var(--card); }
-.pl-doc { max-width: 980px; line-height: 1.55; }
+/* Seite selbst scrollt nicht: Umschalter bleibt oben, iframe und Dokument scrollen in sich. */
+.pl-doc { max-width: 980px; line-height: 1.55; height: calc(100vh - 150px); min-height: 480px; overflow: auto; padding-right: 8px; }
 .pl-doc h1, .pl-doc h2, .pl-doc h3, .pl-doc h4 { margin: 1.2em 0 0.4em; color: var(--title); }
 .pl-doc code, .pl-doc pre { background: var(--gray-a3); border-radius: 4px; padding: 1px 5px; }
 .pl-doc pre { padding: 8px 12px; overflow-x: auto; }

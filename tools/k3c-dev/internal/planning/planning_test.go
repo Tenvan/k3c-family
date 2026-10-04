@@ -42,11 +42,11 @@ func TestLoad(t *testing.T) {
 	w("docs/sprints/aktiv/SP11-pi/README.md", sprint)
 	w("docs/sprints/aktiv/SP11-pi/a.md", "# SP11.1 · Image")
 	w("docs/sprints/geplant/F1-x/README.md", draft)
-	w("docs/sprints/erledigt/M1-a/README.md", "# M1")
+	w("docs/sprints/erledigt/M1-a/README.md", "# M1 · DEV · Alt")
 	w("docs/backlog/B-090-radar.md", "# B-090 · Radar\n\n- **Domäne:** CLI\n- **Status:** eingeplant\n- **Sprint:** U1\n")
 	w("docs/backlog/README.md", "kein Ticket")
 	d, err := Load(root)
-	if err != nil || len(d.Sprints) != 2 || len(d.Tickets) != 1 || d.Done != 1 || d.Tickets[0].Title != "Radar" {
+	if err != nil || len(d.Sprints) != 3 || len(d.Tickets) != 1 || d.Done != 1 || d.Tickets[0].Title != "Radar" {
 		t.Fatalf("%+v %v", d, err)
 	}
 	if d.Sprints[0].Sessions[0].Text != "# SP11.1 · Image" || d.Sprints[0].Sessions[1].Text != "" {
@@ -75,7 +75,7 @@ func TestRepo(t *testing.T) {
 		t.Fatalf("%v %d %d", err, len(d.Sprints), len(d.Tickets))
 	}
 	for _, s := range d.Sprints {
-		if s.Title == "" || len(s.Sessions) == 0 {
+		if s.Title == "" || len(s.Sessions) == 0 && s.Status != "erledigt" { // Altlasten ohne Session-Tabelle
 			t.Errorf("Sprint %s ohne Titel oder Sessions: %+v", s.ID, s)
 		}
 	}
@@ -86,5 +86,18 @@ func TestRepo(t *testing.T) {
 	}
 	if text, err := Doc(root, "plan"); err != nil || text == "" {
 		t.Errorf("Plan: %v", err)
+	}
+}
+
+func TestWorktrees(t *testing.T) {
+	b := parseWorktrees("worktree C:/k3c\nHEAD 1\nbranch refs/heads/develop\n\nworktree C:/w1\nbranch refs/heads/sprint/s4\n\n" +
+		"worktree C:/w2\nbranch refs/heads/gr4-4-work\n\nworktree C:/w3\ndetached\n")
+	if len(b) != 3 {
+		t.Fatalf("%v", b)
+	}
+	sp := []Sprint{{ID: "S4"}, {ID: "GR4"}, {ID: "S40"}, {ID: "F1"}}
+	markWorktrees(sp, b)
+	if sp[0].Worktree != "sprint/s4" || sp[1].Worktree != "gr4-4-work" || sp[2].Worktree != "" || sp[3].Worktree != "" {
+		t.Fatalf("%+v", sp)
 	}
 }
