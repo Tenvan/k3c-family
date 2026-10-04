@@ -61,7 +61,7 @@ keine (Grundstil durch Q13 geklärt, 2026-10-03)
 |---|---|---|---|---|
 | GR1.1 | `GR1.1-workshop-stil.md` | Workshop | Mensch | fertig |
 | GR1.2 | `GR1.2-tabelle-test.md` | Umsetzung | autonom | fertig |
-| GR1.3 | `GR1.3-restliche-objekte.md` | Umsetzung | autonom | offen |
+| GR1.3 | `GR1.3-restliche-objekte.md` | Umsetzung | autonom | fertig |
 | GR1.4 | `GR1.4-review.md` | Review | autonom | offen |
 
 Bei `Reife: Entwurf` genügen Stichpunkte mit den Kriterien in Klammern statt Session-Dateien. Vor dem Aktivieren

@@ -16,8 +16,8 @@ Skalierung ×2 bis ×3, Nachbearbeitung nur Skalieren und Palette.
 | Objekt | Herkunft | Pack | Datei/Frame | Stil (Raster, Palette, Skalierung) | Lizenz | Status |
 |---|---|---|---|---|---|---|
 | `castle` | `data/buildings.json` | `grafik/sunnyland-fort-of-illusion` | `ebenen/tileset.png` (Burgmauer mit Zinnen), `props/banner.png` | 16 px, SunnyLand-Fort (Blaugrau), ×2; Vermerk: Palette an gothicvania-town angleichen, Entscheidung 🧑 GR1.1 | CC0 1.0 | zugeordnet |
-| `wall` | `data/buildings.json` | `grafik/gothicvania-town` | `tileset-einzeln/wall.png`, `tileset-einzeln/wall-b.png` (16×16) | 16 px, Gothicvania (Dunkelviolett), ×2 | CC0 1.0 | zugeordnet |
-| `tower` | `data/buildings.json` | `grafik/sunnyland-fort-of-illusion` | `ebenen/front.png` (Turm mit Kegeldach, 112×128) | 16 px, SunnyLand-Fort (Blaugrau), ×2; Vermerk: Palette an gothicvania-town angleichen, Entscheidung 🧑 GR1.1 | CC0 1.0 | zugeordnet |
+| `wall` | `data/buildings.json` | `grafik/gothicvania-town` | `tileset-einzeln/wall.png`, `tileset-einzeln/wall-b.png` (16×16) | 16 px, Gothicvania (Dunkelviolett), ×2; Vermerk: zeigt Stufe 2 (Stein), Stufen siehe zuordnung-welt.md (`wall:1`/`tower:1` Lücke) | CC0 1.0 | zugeordnet |
+| `tower` | `data/buildings.json` | `grafik/sunnyland-fort-of-illusion` | `ebenen/front.png` (Turm mit Kegeldach, 112×128) | 16 px, SunnyLand-Fort (Blaugrau), ×2; Vermerk: Palette an gothicvania-town angleichen, Entscheidung 🧑 GR1.1; Vermerk: zeigt Stufe 2 (Stein), Stufen siehe zuordnung-welt.md (`wall:1`/`tower:1` Lücke) | CC0 1.0 | zugeordnet |
 | `gate` | `data/buildings.json` | `grafik/sunnyland-fort-of-illusion` | `props/door.png` (offen), `props/closed-door.png` (zu), je 96×80 | 16 px, SunnyLand-Fort (Blaugrau), ×2; Vermerk: Palette an gothicvania-town angleichen, Entscheidung 🧑 GR1.1 | CC0 1.0 | zugeordnet |
 | `workshop` | `data/buildings.json` | – | – | Ziel: 16/32 px, Gothicvania, ×2–×3 (Q13) | Ziel: CC0 oder CC-BY | **Lücke: keine Grafik, B-162** |
 | `storage` | `data/buildings.json` | `grafik/gothicvania-town` | `props-einzeln/crate-stack.png` (73×68) | 16 px, Gothicvania (Dunkelviolett), ×2 | CC0 1.0 | zugeordnet |
