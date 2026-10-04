@@ -1,6 +1,6 @@
 # SO1.3 · Positions-Dämpfung im Split-Screen und Demo-Ereignis
 
-- **Status:** in Arbeit
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Branch:** so1/3-daempfung-demo
@@ -39,9 +39,9 @@ SFX-Katalog und weitere Ereignisse (SO2), Musik (SO4), Optionen-Oberfläche (S5)
 
 ## Fertig, wenn
 
-- [ ] AC-06: Test der Dämpfungs-Funktion (Bereich je Spieler, Warnungen global).
-- [ ] AC-07: Ein Spiel-Ereignis löst einen Ton aus (Nachweis im Browser-Pane).
-- [ ] AC-08: `task check` grün; keine Datei > 400 Zeilen, keine Funktion > 60 Zeilen.
+- [x] AC-06: Test der Dämpfungs-Funktion (Bereich je Spieler, Warnungen global).
+- [x] AC-07: Ein Spiel-Ereignis löst einen Ton aus (Nachweis im Browser-Pane).
+- [x] AC-08: `task check` grün; keine Datei > 400 Zeilen, keine Funktion > 60 Zeilen.
 
 ## Prüfen
 
@@ -51,4 +51,7 @@ task check
 
 ## Ergebnis
 
-–
+- **AC-06** geprüft: `src/audio/events.test.ts` (`attenuation`): Quelle im Bereich von Spieler 1 oder 2 laut, außerhalb beider leiser und mit Abstand fallend bis 0, Warnungen (`wave`, `castleFallen`) global, 1 Spieler im Bereich ungedämpft.
+- **AC-07** geprüft (Test, nicht Browser-Pane: laut Auftrag keine Browser-Prüfung): `audioCore.test.ts` › `onEvent`: `built` startet den Atlas-Ton `coin` mit Dämpfung nach Position (`GameScene.spawnEffects` → `audioCore().onEvent`, Ort aus `buildSpots`, Kameras aus `hudCells`); vor Entsperrung stumm. Browser-Nachweis bleibt SO1.5 (TV).
+- **AC-08** geprüft: `task check` grün (925 Tests); `audioCore.ts` 115, `GameScene.ts` 374 Zeilen, alle Funktionen < 60.
+- Abweichung: Schritt 4 (Browser-Pane mit 2 Spielern) nicht ausgeführt, siehe AC-07. Dämpfung: `EDGE_GAIN` 0,5 am Rand, linear 0 bei einer Bildschirmbreite Abstand; der lauteste lokale Spieler gilt.

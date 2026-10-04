@@ -81,6 +81,18 @@ describe('AudioCore (AC-03, AC-05)', () => {
     expect(log.fetched.length).toBe(2);
     expect(core.play('coin')).toBe(false);
   });
+  it('onEvent (AC-07): built löst den Demo-Ton aus, außerhalb gedämpft, weit weg stumm, vor Entsperrung stumm', async () => {
+    const { core, log } = setup();
+    const view = [{ center: 20, span: 20 }];
+    expect(core.onEvent({ type: 'built', kind: 'wall' }, 20, view)).toBe(false);
+    await core.onInput();
+    await tick();
+    expect(core.onEvent({ type: 'built', kind: 'wall' }, 20, view)).toBe(true);
+    expect(core.onEvent({ type: 'built', kind: 'wall' }, 35, view)).toBe(true);
+    expect(core.onEvent({ type: 'built', kind: 'wall' }, 500, view)).toBe(false);
+    expect(core.onEvent({ type: 'dusk' }, 20, view)).toBe(false);
+    expect(log.started.length).toBe(2);
+  });
   it('wirft nie, wenn der Context nicht entsteht', async () => {
     const core = new AudioCore({ createContext: () => { throw new Error('nein'); }, canPlay: () => true, fetchJson: async () => ({}), fetchBytes: async () => new ArrayBuffer(0) });
     await expect(core.onInput()).resolves.toBeUndefined();

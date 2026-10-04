@@ -5,6 +5,8 @@
  */
 import { clientLog } from '../core/clientLog';
 import { parseAtlas, pickFile, type Atlas } from './atlas';
+import type { GameEvent } from '../model/types';
+import { attenuation, cueFor, type Listener } from './events';
 import { Mixer, type AudioContextLike, type Bus, type GainNodeLike } from './mixer';
 
 export interface SourceLike {
@@ -57,14 +59,27 @@ export class AudioCore {
   }
 
   /** Spielt einen Sprite des Atlas auf einem Bus; noch gesperrt oder unbekannt → nichts. */
-  play(name: string, bus: Bus = 'sfx'): boolean {
+  play(name: string, bus: Bus = 'sfx', volume = 1): boolean {
     const sprite = this.atlas?.sprites[name];
     if (!sprite || !this.ctx || !this.mixer || !this.buffer || !this.running) return false;
+    if (volume <= 0) return false;
     const src = this.ctx.createBufferSource();
     src.buffer = this.buffer;
-    src.connect(this.mixer.node(bus) as GainNodeLike);
+    const target = this.mixer.node(bus) as GainNodeLike;
+    if (volume < 1) {
+      const g = this.ctx.createGain(); // Dämpfung je Ton (Position), der Bus-Regler bleibt unberührt
+      g.gain.value = volume;
+      g.connect(target);
+      src.connect(g);
+    } else src.connect(target);
     src.start(this.ctx.currentTime, sprite.start, sprite.duration);
     return true;
+  }
+
+  /** Spiel-Ereignis → Ton, je nach Position gedämpft; `x` in Units (Quelle), `listeners` = Kameras der lokalen Spieler. */
+  onEvent(e: GameEvent, x: number | undefined, listeners: readonly Listener[]): boolean {
+    const cue = cueFor(e);
+    return !!cue && this.play(cue.sprite, 'sfx', attenuation(x, listeners, cue.global));
   }
 
   private async loadAtlas(): Promise<void> {

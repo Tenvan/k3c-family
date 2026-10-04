@@ -18,6 +18,7 @@ import { cellStages } from './cellStages';
 import { PLACEHOLDER_BG, StageView, placeholderLayer, showOnly } from './stageView';
 import { clientLog } from '../core/clientLog';
 import { audioCore } from '../audio/audioCore';
+import type { Listener } from '../audio/events';
 import { loadSettings } from '../core/settings';
 import { EFFECT_CONFIG, SHAKE, effectFor, type BuildSpots } from './effects';
 import { hurtSeat, rumblePad, runEffect, shakeCell } from './effectRules';
@@ -239,12 +240,18 @@ export class GameScene extends Phaser.Scene {
     for (const e of events) {
       this.feedback(e, settings.screenshake);
       const fx = effectFor(e, playerX, this.buildSpots);
+      audioCore().onEvent(e, fx ? fx.x / UNIT_PX : undefined, this.listeners());
       if (!fx) continue;
       const isFlash = EFFECT_CONFIG[fx.kind].flash;
       if (!runEffect(isFlash, settings, now, this.lastFlashAt)) continue;
       if (isFlash) this.lastFlashAt = now;
       view.effects.spawn(fx);
     }
+  }
+
+  /** Sichtbare Ausschnitte der lokalen Spieler für die Positions-Dämpfung des Tons (Mitte und Breite in Units). */
+  private listeners(): Listener[] {
+    return this.hudCells().flatMap((c) => (c.monarch !== null && c.view ? [{ center: c.view.fromUnits + c.view.spanUnits / 2, span: c.view.spanUnits }] : []));
   }
 
   /** Treffer an einem lokalen Spieler: nur dessen Kamera schüttelt (Schalter `screenshake`), nur dessen Controller vibriert. */
