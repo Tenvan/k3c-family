@@ -67,6 +67,7 @@ func register(s *Server) {
 	registerServer(s)
 	registerEngine(s)
 	registerServices(s)
+	registerPlanning(s)
 }
 
 // registerEngine sind die In-process-Tools (B-047): rechnen mit engine/level und engine/sim, ohne laufenden Server.
