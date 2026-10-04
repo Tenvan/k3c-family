@@ -1,11 +1,11 @@
 # BAL1 · SIM · Balancing-Tester: Kern und Replay
 
-- **Status:** geplant
+- **Status:** aktiv
 - **Domäne:** SIM
 - **Reife:** bereit
 - **Einschiebbar:** ja
 - **Tickets:** B-099, B-159
-- **Start-Commit:** –
+- **Start-Commit:** 9e6849e
 - **Spec:** freigegeben
 - **Revision:** 1
 - **Freigabe:** 2026-10-04, Chat (Ralf), Revision 1, durch 🧑; umfasst B-099, B-159 und die Domänen-Ausnahme `tools/k3c-dev/`; mit Änderungen aus dem Spec-Review (Werkzeug als Tool in k3c-dev, veraltete Fragen in B-099 gestrichen)
@@ -62,7 +62,7 @@ keine (Ort des Werkzeugs: Tool in k3c-dev, 🧑 2026-10-04)
 
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
-| BAL1.1 | `BAL1.1-bots-kennzahlen.md` | Umsetzung | autonom | offen |
+| BAL1.1 | `BAL1.1-bots-kennzahlen.md` | Umsetzung | autonom | fertig |
 | BAL1.2 | `BAL1.2-replay-format.md` | Umsetzung | autonom | offen |
 | BAL1.3 | `BAL1.3-replay-k3c-dev.md` | Umsetzung | autonom | offen |
 | BAL1.4 | `BAL1.4-review.md` | Review | autonom | offen |
