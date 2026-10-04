@@ -100,6 +100,7 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-195](B-195-debug-overlay-xbox.md) | PLAT | Problem | mittel | offen | – | Das Debug-Overlay lässt sich auf der Xbox öffnen |
 | [B-197](B-197-partner-zelle-schriftgroesse.md) | CLI | Frage | niedrig | offen | – | Die Schriftregel nennt eine Mindestgröße für die Mitspieler-Zelle |
 | [B-198](B-198-platzhaltertext-schrift-katalog.md) | CLI | Schuld | niedrig | offen | – | Der Platzhaltertext einer ungeladenen Stufe liest seine Schrift aus dem Katalog |
+| [B-203](B-203-gold-schwelle-kennzahl.md) | REG | Frage | niedrig | offen | – | Die Kennzahl „erste Gold-Schwelle“ hat eine feste Schwelle und Bedeutung |
 
 ## Archiv
 
