@@ -35,6 +35,7 @@ func stepPlayers(w *World, commands []PlayerCommand, dt float64) {
 		}
 		movePlayer(w, p, cmd, dt)
 		stepAttack(w, p, cmd, dt)
+		stepSkills(w, p, cmd, dt)
 		p.Paying = cmd.Pay
 		if cmd.Pay && p.PayCooldown <= 0 && p.Gold > 0 {
 			payOneCoin(w, p)

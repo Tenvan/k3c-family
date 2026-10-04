@@ -12,6 +12,15 @@ import (
 type SkillData struct {
 	ID, Line, Kind string
 	Tier           int
+	Cooldown       float64 // Sekunden, nur aktive Skills
+	Effect         skillEffect
+}
+
+// skillEffect ist die Wirkung eines aktiven Skills; Type wählt die Funktion in skills.go, die übrigen Felder sind
+// Parameter je Typ (Units, Sekunden, HP).
+type skillEffect struct {
+	Type                         string
+	Radius, Range, Duration, HP float64
 }
 
 // presetData ist eine Startverteilung aus monarch.json › presets (Basiswerte liest der Code nicht, S1.1).

@@ -15,6 +15,7 @@ type PlayerCommand struct {
 	Sprint bool    `json:"sprint"`
 	Pay    bool    `json:"pay"` // Bezahl-Taste gehalten: Münze geben bzw. fallen lassen
 	Attack bool    `json:"attack,omitempty"` // Schlag (Taste X, monarch.md § 1)
+	Skill  int     `json:"skill,omitempty"`  // aktiven Skill in Slot 1 bis 4 auslösen, 0 = keiner (skills.go)
 }
 
 // Player ist ein Monarch.
@@ -39,6 +40,13 @@ type Player struct {
 	Skills         []string `json:"skills,omitempty"`
 	Slots          []string `json:"slots,omitempty"`
 	AttackCooldown float64  `json:"attackCooldown,omitempty"` // Sekunden bis zum nächsten Schlag
+	// Cooldowns: Abklingzeit je Slot (Index 0 bis 3, Sekunden), nil bis zum ersten Skill-Einsatz.
+	Cooldowns []float64 `json:"cooldowns,omitempty"`
+	// Shield: Schild-HP, die applyDamage zuerst abzieht, für ShieldFor Sekunden. LastStandFor: so lange lässt ein
+	// tödlicher Treffer 1 HP stehen.
+	Shield       float64 `json:"shield,omitempty"`
+	ShieldFor    float64 `json:"shieldFor,omitempty"`
+	LastStandFor float64 `json:"lastStandFor,omitempty"`
 }
 
 // Coin ist eine Münze am Boden.
@@ -124,6 +132,10 @@ type Enemy struct {
 	Fleeing     bool     `json:"fleeing"`
 	CarriedGold int      `json:"carriedGold"`
 	HomeX       float64  `json:"homeX"` // Portal, aus dem der Gegner kam
+	// Stun: Sekunden betäubt (kein Schritt, kein Angriff). TauntFor: so lange zielt der Gegner auf den Spieler TauntID.
+	Stun     float64 `json:"stun,omitempty"`
+	TauntID  int     `json:"tauntId,omitempty"`
+	TauntFor float64 `json:"tauntFor,omitempty"`
 }
 
 // Projectile ist ein Pfeil oder Geschoss.

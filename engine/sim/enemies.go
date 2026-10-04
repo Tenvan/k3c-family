@@ -68,6 +68,9 @@ type target struct {
 func stepEnemies(w *World, dt float64) {
 	for _, e := range w.Enemies {
 		e.Cooldown = math.Max(0, e.Cooldown-dt)
+		if stunned(e, dt) {
+			continue
+		}
 		if e.has("fleesAtHalfHp") && e.HP < e.MaxHP/2 {
 			e.Fleeing = true
 		}
@@ -108,6 +111,18 @@ func stepEnemies(w *World, dt float64) {
 		}
 	}
 	w.Enemies = kept
+}
+
+// stunned senkt Betäubung und Verspottung (Skills, skills_tank.go); true: der Gegner ist betäubt und tut nichts.
+func stunned(e *Enemy, dt float64) bool {
+	if e.TauntFor = math.Max(0, e.TauntFor-dt); e.TauntFor == 0 {
+		e.TauntID = 0
+	}
+	if e.Stun <= 0 {
+		return false
+	}
+	e.Stun = math.Max(0, e.Stun-dt)
+	return true
 }
 
 func blockingWall(w *World, e *Enemy, dir float64) *Site {
@@ -184,9 +199,15 @@ func (e *Enemy) prefers(c target) bool {
 		((e.has("prefersMonarch") || e.has("stealsGold")) && c.kind == "player")
 }
 
-// chooseTarget: bevorzugte Ziele zuerst, davon das nächste; bei Gleichstand das frühere (wie `reduce` in TS).
+// chooseTarget: ein verspottender Monarch in Reichweite zuerst (Taunt), sonst bevorzugte Ziele, davon das nächste;
+// bei Gleichstand das frühere (wie `reduce` in TS).
 func chooseTarget(w *World, e *Enemy, dir float64, wall *Site) *target {
 	all := candidates(w, e, dir, wall)
+	for _, c := range all {
+		if e.TauntFor > 0 && c.kind == "player" && c.id == e.TauntID {
+			return &c
+		}
+	}
 	pool := []target{}
 	for _, c := range all {
 		if e.prefers(c) {

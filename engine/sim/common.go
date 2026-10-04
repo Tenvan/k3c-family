@@ -88,20 +88,10 @@ func isWorker(w *World, id *int) bool {
 // applyDamage verteilt Schaden auf ein Ziel per ID. Tod und Zerstörung behandelt der Tick.
 func applyDamage(w *World, targetID int, damage float64) {
 	for _, p := range w.Players {
-		if p.ID != targetID {
-			continue
-		}
-		if !isAlive(p) {
+		if p.ID == targetID {
+			damagePlayer(w, p, damage)
 			return
 		}
-		dealt := math.Max(1, damage-monarch.Base.Defense)
-		p.HP -= dealt
-		hitEvent(w, "player", p.Index, p.X, dealt)
-		if p.HP <= 0 {
-			p.HP, p.RespawnIn, p.VX = 0, monarch.RespawnSeconds, 0
-			w.Events = append(w.Events, Event{"type": "playerDown", "player": p.Index})
-		}
-		return
 	}
 	if t := troopByID(w, targetID); t != nil {
 		t.HP -= damage
@@ -126,6 +116,32 @@ func applyDamage(w *World, targetID int, damage float64) {
 		if s.HP <= 0 {
 			destroySite(w, s)
 		}
+	}
+}
+
+// damagePlayer: Verteidigung, dann zieht der Schild (Iron Wall) zuerst ab, der Rest geht auf die HP. Solange Last
+// Stand läuft, lässt ein tödlicher Treffer 1 HP stehen.
+func damagePlayer(w *World, p *Player, damage float64) {
+	if !isAlive(p) {
+		return
+	}
+	dealt := math.Max(1, damage-monarch.Base.Defense)
+	if p.Shield > 0 {
+		absorbed := math.Min(p.Shield, dealt)
+		p.Shield -= absorbed
+		dealt -= absorbed
+		if p.Shield == 0 {
+			p.ShieldFor = 0
+		}
+	}
+	p.HP -= dealt
+	hitEvent(w, "player", p.Index, p.X, dealt)
+	if p.HP <= 0 && p.LastStandFor > 0 {
+		p.HP = 1
+	}
+	if p.HP <= 0 {
+		p.HP, p.RespawnIn, p.VX = 0, monarch.RespawnSeconds, 0
+		w.Events = append(w.Events, Event{"type": "playerDown", "player": p.Index})
 	}
 }
 

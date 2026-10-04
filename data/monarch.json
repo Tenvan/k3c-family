@@ -13,10 +13,10 @@
     "thief":  { "name": "Dieb" }
   },
   "skills": {
-    "taunt":            { "line": "tank",   "tier": 1, "kind": "active" },
-    "shieldBash":       { "line": "tank",   "tier": 1, "kind": "active" },
-    "ironWall":         { "line": "tank",   "tier": 3, "kind": "active" },
-    "lastStand":        { "line": "tank",   "tier": 4, "kind": "active" },
+    "taunt":            { "line": "tank",   "tier": 1, "kind": "active", "cooldown": 15,  "effect": { "type": "taunt", "radius": 10, "duration": 4 } },
+    "shieldBash":       { "line": "tank",   "tier": 1, "kind": "active", "cooldown": 10,  "effect": { "type": "stun", "range": 2, "duration": 2 } },
+    "ironWall":         { "line": "tank",   "tier": 3, "kind": "active", "cooldown": 30,  "effect": { "type": "shield", "hp": 500, "duration": 10 } },
+    "lastStand":        { "line": "tank",   "tier": 4, "kind": "active", "cooldown": 120, "effect": { "type": "lastStand", "duration": 10 } },
     "armorAura":        { "line": "tank",   "tier": 2, "kind": "passive" },
     "thickSkin":        { "line": "tank",   "tier": 2, "kind": "passive" },
     "regeneration":     { "line": "tank",   "tier": 2, "kind": "passive" },
