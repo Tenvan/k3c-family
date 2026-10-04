@@ -16,6 +16,7 @@ import type { RadarCell } from './radarView';
 import { daylight } from './viewRules';
 import { cellStages } from './cellStages';
 import { PLACEHOLDER_BG, StageView, placeholderLayer, showOnly } from './stageView';
+import { effectFor, type BuildSpots } from './effects';
 import { DEV_FOCUS_KEY, muteFocused } from './debugOverlayPanel';
 import { MenuPress, idleCommands } from './optionsLogic';
 import { pauseButton } from './pauseButton';
@@ -52,6 +53,7 @@ export class GameScene extends Phaser.Scene {
   private world_: World | undefined;
   /** Geladene Stufen nach Tiefe; mit dem heutigen Protokoll (B-176 offen) nur die Stufe von `client.level` */
   private stages = new Map<number, StageView>();
+  private readonly buildSpots: BuildSpots = new Map();
   private holders: Phaser.GameObjects.Layer[] = [];
   private keyboard!: KeyboardInput;
   private touch: TouchInput | undefined;
@@ -88,6 +90,7 @@ export class GameScene extends Phaser.Scene {
     this.world_ = undefined;
     this.stages = new Map(); // die Szene hat ihre Ebenen beim Neustart schon zerstört
     this.holders = [];
+    this.buildSpots.clear();
     this.level = null;
     this.prev = this.cur = null;
     this.layoutKey = '';
@@ -215,6 +218,18 @@ export class GameScene extends Phaser.Scene {
       this.prev = this.cur;
       this.cur = frame;
       this.pendingEvents.push(...frame.state.events);
+      this.spawnEffects(frame.state.events);
+    }
+  }
+
+  /** Effekte nur aus den Ereignissen des Frames (nicht aus `pendingEvents`, das die HudScene leert); ändert keinen Zustand. */
+  private spawnEffects(events: readonly GameEvent[]): void {
+    const view = this.level ? this.stages.get(this.level.depth) : undefined;
+    if (!view) return;
+    const playerX = (i: number): number | undefined => this.cur?.state.players.find((p) => p.index === i)?.x;
+    for (const e of events) {
+      const fx = effectFor(e, playerX, this.buildSpots);
+      if (fx) view.effects.spawn(fx);
     }
   }
 
