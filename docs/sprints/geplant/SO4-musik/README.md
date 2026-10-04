@@ -2,7 +2,7 @@
 
 - **Status:** geplant
 - **Domäne:** CLI
-- **Reife:** Entwurf
+- **Reife:** bereit
 - **Einschiebbar:** ja
 - **Tickets:** B-168
 - **Start-Commit:** –
@@ -57,12 +57,16 @@ Stück fehlt → vorheriger Zustand oder Stille, kein Absturz.
 
 ## Sessions
 
-Entwurf. Vor dem Aktivieren jede Session als Datei nach `docs/vorlagen/session.md` schreiben, die Kriterien in Klammern werden ihr Feld `Kriterien`.
+| Nr. | Datei | Typ | Agent | Status |
+|---|---|---|---|---|
+| SO4.1 | `SO4.1-workshop-stuecke.md` | Workshop | Mensch | offen |
+| SO4.2 | `SO4.2-zustandsautomat-crossfade.md` | Umsetzung | autonom | offen |
+| SO4.3 | `SO4.3-ducking-dateien-credits.md` | Umsetzung | autonom | offen |
+| SO4.4 | `SO4.4-review.md` | Review | autonom | offen |
+| SO4.5 | `SO4.5-hoerprobe-tv.md` | Workshop | Mensch | offen |
 
-- SO4.1 🧑 Workshop (Agent: Mensch): Stücke je Zustand mit `soundtest.html` wählen (Grundlage für AC-01).
-- SO4.2 Zustands-Automat, Crossfade, Bus „Musik“ (AC-01, AC-02, AC-05).
-- SO4.3 Ducking bei Warnungen, Dateien und Credits (AC-03, AC-04).
-- SO4.4 Review (AC-06).
+Bei `Reife: Entwurf` genügen Stichpunkte mit den Kriterien in Klammern statt Session-Dateien. Vor dem Aktivieren
+wird jede Session als eigene Datei nach `docs/vorlagen/session.md` geschrieben.
 
 ## Abnahme
 

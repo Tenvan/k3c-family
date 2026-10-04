@@ -2,7 +2,7 @@
 
 - **Status:** geplant
 - **Domäne:** SRV
-- **Reife:** Entwurf
+- **Reife:** bereit
 - **Einschiebbar:** nein
 - **Tickets:** B-153
 - **Start-Commit:** –
@@ -58,11 +58,14 @@ Abgrenzung der Berufe-Felder zu B-123: beim Planen der Protokoll-Sessions kläre
 
 ## Sessions
 
-Entwurf. Vor dem Aktivieren jede Session als Datei nach `docs/vorlagen/session.md` schreiben, die Kriterien in Klammern werden ihr Feld `Kriterien`.
+| Nr. | Datei | Typ | Agent | Status |
+|---|---|---|---|---|
+| W5.1 | `W5.1-felder.md` | Umsetzung | autonom | offen |
+| W5.2 | `W5.2-eingaben-version-bytes.md` | Umsetzung | autonom | offen |
+| W5.3 | `W5.3-review.md` | Review | autonom | offen |
 
-- W5.1 Felder und Doku in `docs/protocol.md`, `engine/net/protocol.go`, Testdaten (AC-01, AC-03).
-- W5.2 Eingaben prüfen, Protokollversion, Bytes-je-Tick-Messung (AC-02, AC-04, AC-05).
-- W5.3 Review (Code-Sprint): alle Kriterien prüfen.
+Bei `Reife: Entwurf` genügen Stichpunkte mit den Kriterien in Klammern statt Session-Dateien. Vor dem Aktivieren
+wird jede Session als eigene Datei nach `docs/vorlagen/session.md` geschrieben.
 
 ## Abnahme
 

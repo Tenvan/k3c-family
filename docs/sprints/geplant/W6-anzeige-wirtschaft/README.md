@@ -2,7 +2,7 @@
 
 - **Status:** geplant
 - **Domäne:** CLI
-- **Reife:** Entwurf
+- **Reife:** bereit
 - **Einschiebbar:** nein
 - **Tickets:** B-117, B-126
 - **Start-Commit:** –
@@ -57,12 +57,16 @@ keine
 
 ## Sessions
 
-Entwurf. Vor dem Aktivieren jede Session als Datei nach `docs/vorlagen/session.md` schreiben, die Kriterien in Klammern werden ihr Feld `Kriterien`.
+| Nr. | Datei | Typ | Agent | Status |
+|---|---|---|---|---|
+| W6.1 | `W6.1-reine-funktionen.md` | Umsetzung | autonom | offen |
+| W6.2 | `W6.2-hud-bauplaetze.md` | Umsetzung | autonom | offen |
+| W6.3 | `W6.3-buerger-ui.md` | Umsetzung | autonom | offen |
+| W6.4 | `W6.4-abnahme-geraet.md` | Workshop | Mensch | offen |
+| W6.5 | `W6.5-review.md` | Review | autonom | offen |
 
-- W6.1 Reine Funktionen für Wartegrund, Lagerstand, Limit, Berufe mit Tests (AC-01).
-- W6.2 HUD und Bauplätze: Wartegrund, Lager, Hub-Stufe (AC-02).
-- W6.3 Bürger-UI: Berufe, Händler, Limit, Heilplatz (AC-03).
-- W6.4 Review (Code-Sprint) und 🧑-Abnahme am Gerät (AC-04).
+Bei `Reife: Entwurf` genügen Stichpunkte mit den Kriterien in Klammern statt Session-Dateien. Vor dem Aktivieren
+wird jede Session als eigene Datei nach `docs/vorlagen/session.md` geschrieben.
 
 ## Abnahme
 

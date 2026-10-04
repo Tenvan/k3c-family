@@ -2,7 +2,7 @@
 
 - **Status:** geplant
 - **Domäne:** SIM
-- **Reife:** Entwurf
+- **Reife:** bereit
 - **Einschiebbar:** nein
 - **Tickets:** B-131
 - **Start-Commit:** –
@@ -56,11 +56,14 @@ keine
 
 ## Sessions
 
-Entwurf. Vor dem Aktivieren jede Session als Datei nach `docs/vorlagen/session.md` schreiben, die Kriterien in Klammern werden ihr Feld `Kriterien`.
+| Nr. | Datei | Typ | Agent | Status |
+|---|---|---|---|---|
+| K3.1 | `K3.1-vollmond-blutmond.md` | Umsetzung | autonom | offen |
+| K3.2 | `K3.2-haendler-ueberfall-golden.md` | Umsetzung | autonom | offen |
+| K3.3 | `K3.3-review.md` | Review | autonom | offen |
 
-- K3.1 Vollmond und Blutmond: Rhythmus, Wellen, Schaden, Drops (AC-01).
-- K3.2 Händler-Überfall, Golden (AC-02, AC-03).
-- K3.3 Review (Code-Sprint): alle Kriterien prüfen.
+Bei `Reife: Entwurf` genügen Stichpunkte mit den Kriterien in Klammern statt Session-Dateien. Vor dem Aktivieren
+wird jede Session als eigene Datei nach `docs/vorlagen/session.md` geschrieben.
 
 ## Abnahme
 

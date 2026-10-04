@@ -2,7 +2,7 @@
 
 - **Status:** geplant
 - **Domäne:** SIM
-- **Reife:** Entwurf
+- **Reife:** bereit
 - **Einschiebbar:** nein
 - **Tickets:** B-128, B-129, B-013
 - **Start-Commit:** –
@@ -60,12 +60,15 @@ keine
 
 ## Sessions
 
-Entwurf. Vor dem Aktivieren jede Session als Datei nach `docs/vorlagen/session.md` schreiben, die Kriterien in Klammern werden ihr Feld `Kriterien`.
+| Nr. | Datei | Typ | Agent | Status |
+|---|---|---|---|---|
+| K1.1 | `K1.1-traits-angriffsrate.md` | Umsetzung | autonom | offen |
+| K1.2 | `K1.2-tor-enemykilled.md` | Umsetzung | autonom | offen |
+| K1.3 | `K1.3-neue-gegner-pools-golden.md` | Umsetzung | autonom | offen |
+| K1.4 | `K1.4-review.md` | Review | autonom | offen |
 
-- K1.1 Traits aoe, swarm, phases, Kiting und Angriffsrate in `data/enemies.json` (AC-01, AC-02).
-- K1.2 Tor-Blockade und `enemyKilled` (AC-03, AC-04).
-- K1.3 Gegner und Pools für Eisenstollen und Kristallhöhle, restliche Gegner, Golden (AC-05, AC-06, AC-07).
-- K1.4 Review (Code-Sprint): alle Kriterien prüfen.
+Bei `Reife: Entwurf` genügen Stichpunkte mit den Kriterien in Klammern statt Session-Dateien. Vor dem Aktivieren
+wird jede Session als eigene Datei nach `docs/vorlagen/session.md` geschrieben.
 
 ## Abnahme
 

@@ -2,7 +2,7 @@
 
 - **Status:** geplant
 - **Domäne:** SRV
-- **Reife:** Entwurf
+- **Reife:** bereit
 - **Einschiebbar:** nein
 - **Tickets:** B-154
 - **Start-Commit:** –
@@ -58,11 +58,14 @@ keine
 
 ## Sessions
 
-Entwurf. Vor dem Aktivieren jede Session als Datei nach `docs/vorlagen/session.md` schreiben, die Kriterien in Klammern werden ihr Feld `Kriterien`.
+| Nr. | Datei | Typ | Agent | Status |
+|---|---|---|---|---|
+| K4.1 | `K4.1-felder.md` | Umsetzung | autonom | offen |
+| K4.2 | `K4.2-eingabe-version-bytes.md` | Umsetzung | autonom | offen |
+| K4.3 | `K4.3-review.md` | Review | autonom | offen |
 
-- K4.1 Felder und Doku in `docs/protocol.md`, `engine/net/protocol.go`, Testdaten (AC-01, AC-03).
-- K4.2 Eingabeprüfung Inselwechsel, Protokollversion, Bytes-je-Tick-Messung (AC-02, AC-04, AC-05).
-- K4.3 Review (Code-Sprint): alle Kriterien prüfen.
+Bei `Reife: Entwurf` genügen Stichpunkte mit den Kriterien in Klammern statt Session-Dateien. Vor dem Aktivieren
+wird jede Session als eigene Datei nach `docs/vorlagen/session.md` geschrieben.
 
 ## Abnahme
 
