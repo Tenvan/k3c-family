@@ -1,6 +1,6 @@
 # RL1.2 · Probelauf der Checkliste ohne Tag, Sprint abschließen
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Workshop
 - **Agent:** Mensch
 - **Branch:** rl1/2-probelauf
@@ -35,8 +35,8 @@ Tag setzen, Befunde beheben (nur Tickets), Änderung der Liste (falls nötig: Ti
 
 ## Fertig, wenn
 
-- [ ] AC-03: Probelauf ohne Tag durchgeführt, Ergebnis je Punkt in der Abnahme; rote Punkte als Tickets.
-- [ ] Sprint liegt unter `docs/sprints/erledigt/`, B-170 archiviert.
+- [x] AC-03: Probelauf ohne Tag durchgeführt, Ergebnis je Punkt in der Abnahme; rote Punkte als Tickets.
+- [x] Sprint liegt unter `docs/sprints/erledigt/`, B-170 archiviert.
 
 ## Prüfen
 

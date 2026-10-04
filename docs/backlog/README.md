@@ -78,7 +78,6 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-263](B-263-snapshot-groesse-plaetze.md) | SRV | Problem | niedrig | offen | – | Der Welt-Snapshot bleibt mit 39 Plätzen je Stufe im Budget |
 | [B-251](B-251-figuren-ganzzahlig-skalieren.md) | CLI | Schuld | niedrig | offen | – | Figuren werden ganzzahlig skaliert und flimmern nicht |
 | [B-252](B-252-grafikmanager-seite.md) | PLAT | Idee | mittel | offen | – | Eine GrafikManager-Seite zeigt Bestand, Kandidaten und Zuordnung für die feine Auswahl |
-| [B-170](B-170-release-checkliste.md) | INF | Idee | hoch | eingeplant | RL1 | Eine Release-Checkliste macht jeden Release prüfbar |
 | [B-176](B-176-protokoll-mehrere-stufen.md) | SRV | Idee | hoch | eingeplant | S2 | Das Protokoll liefert Level und Zustand jeder Stufe, in der ein lokaler Spieler steht |
 | [B-181](B-181-latenz-im-debug-overlay.md) | CLI | Idee | mittel | offen | – | Das Debug-Overlay zeigt die Latenz von Eingabe bis Bild |
 | [B-184](B-184-pages-screenshots.md) | PLAT | Idee | niedrig | offen | – | Die Präsentationsseite zeigt echte Bilder aus dem Spiel |
@@ -255,3 +254,4 @@ Zeile in diesen Abschnitt.
 | [B-261](archiv/B-261-camp-neben-linien-platz.md) | SIM | Frage | mittel | erledigt | W0 | Ein Camp liegt nie so nah an einem Linien-Platz, dass Zahlziele sich überlagern |
 | [B-206](archiv/B-206-bauplaetze-aus-dem-seed.md) | SIM | Idee | hoch | erledigt | W0 | Alle Bauplätze sind feste Punkte aus Daten und Level-Seed, Mauerlinien schalten je Seite nacheinander frei |
 | [B-161](archiv/B-161-grafik-zuordnungstabelle.md) | CLI | Idee | hoch | erledigt | GR1 | Jedes Spielobjekt hat eine Zuordnung zu Asset und Lizenz oder eine dokumentierte Lücke |
+| [B-170](archiv/B-170-release-checkliste.md) | INF | Idee | hoch | erledigt | RL1 | Eine Release-Checkliste macht jeden Release prüfbar |

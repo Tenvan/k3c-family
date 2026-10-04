@@ -75,7 +75,7 @@ Offene Entscheidungen für die nächste Session: [`fragenkatalog.md`](fragenkata
 - [ ] **Phase 1 Spieleabend-Build:** S1 Schlag/Skills (erledigt), S2 Protokoll/Speichern/Metrik, S3 Skill-Menü, S4 Kamera, S5 Optionen/Pause, S6 Onboarding, S7 Monarch auf dem Standard-Reittier, SO1 Audio-Kern, P1 Spieleabend 1
 - [ ] **Phase 2 Tiefe:** W1–W6 Hub-Ausbau, Plantage/Adern, Gebäude, Bürger, Protokoll, Anzeige; BR1 Balancing + Spieleabend 2
 - [ ] **Phase 3 Kampf:** K1–K5 Gegner, Bosse/Inseln, Events, Protokoll, Anzeige; BR2 Balancing + Spieleabend 3
-- [ ] **Schienen (einschiebbar):** Balancing BAL1–4, Grafik GR1–6, Sound SO1–4, Release RL1
+- [ ] **Schienen (einschiebbar):** Balancing BAL1–4, Grafik GR1–6, Sound SO1–4, Release RL1 (erledigt, Checkliste in `arbeitsweise.md` › „Release“)
 
 ## Schritt 4 – Inhalt & Politur
 
