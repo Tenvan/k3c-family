@@ -6,12 +6,15 @@ Zielplattform ist **Edge auf der Xbox** (Gamepad API), gehostet im Heimnetz. Die
 - Design & Regeln: `docs/game-design.md` (nur bei Bedarf lesen)
 - Aktueller Stand & nächste Schritte: `docs/roadmap.md`
 - **Arbeitsweise:** `docs/arbeitsweise.md` (Domänen, autonomer Ablauf, Review, Komplexitäts-Budget) – vor jeder Session lesen.
+- **Glossar:** `docs/glossar.md` – verbindliche Begriffe; vor jeder Session lesen, neue Begriffe dort zuerst eintragen.
 - **Branches:** Entwickelt wird auf `develop`, PRs zielen auf `develop`; **ein PR je Sprint** (Branch `sprint/<präfix>`, ein Commit je Session). `main` ist geschützt, nur Releases (Fast-Forward durch den Nutzer).
 - **Sprints:** `docs/sprints/aktiv/` lesen und die nächste offene Session nehmen. `docs/sprints/geplant/` nur beim
   Planen lesen, `docs/sprints/erledigt/` nur auf Nachfrage. Übersicht: `docs/sprints/README.md`.
 - **Tickets:** `docs/backlog/` (Index `README.md`, ein Ticket pro Datei). Neue Ideen/Probleme sofort als Ticket anlegen,
   nicht nebenbei umsetzen. Erledigte/verworfene liegen in `docs/backlog/archiv/` (nur auf Nachfrage lesen).
 - **Vorlagen sind Pflicht:** Tickets, Sprints und Sessions nur als Kopie von `docs/vorlagen/*.md`; `tests/planning.test.ts` prüft das.
+- **Planung nur über MCP:** Tickets, Sprints und Sessions anlegen und ändern ausschließlich mit `plan_create`, `plan_set`,
+  `plan_section`, `plan_delete` (lesen: `plan_list`, `plan_get`) von k3c-dev; von Hand nur, wenn k3c-dev nicht läuft.
 - **SDD:** Ticket und Sprint-README sind die Spec (Kriterien `AC-01` …), Sessions erfüllen genannte Kriterien.
   Freigabe (`Spec: freigegeben`) und manuelle Abnahmen nur durch den Nutzer. Details: `docs/arbeitsweise.md` › SDD.
 - **Spielstruktur (003):** Ein Raum hat einen Spielstand mit n Inseln, jede Insel n Stufen; Stufen sind pro Spieler frei begehbar und laufen alle weiter. Im Go-Code rechnet ein Raum eine Insel mit mehreren Stufen im selben Takt, Einzelwechsel je Spieler und einem Material-Vorrat je Insel (`engine/sim/island*.go`, SP12–SP14, Protokoll v3); noch offen: mehrere Inseln und Inselwechsel (B-103). Regeln: `docs/rules/stufen.md`.
@@ -56,9 +59,9 @@ prüft die Regeln unten automatisch (Seiten eingetragen, `installPageChrome()`, 
 - `data/` – Balancing als JSON (Biome, Gegner, Truppen, Gebäude, Monarch), einzige Quelle für Client (Import) und
   Go-Server (`go:embed`, `data/embed.go`). Werte gehören hierher, nicht in den Code.
 - `engine/` – Go: `sim/` (Simulation, deterministisch), `level/` (Level-Generator), `room/`, `net/` (HTTP, WebSocket `/ws`,
-  Protokoll v2), `store/` (Spielstände → `saves/`, Berichte → `reports/`). `cmd/k3c-server` liefert `dist/` und die API aus.
+  Protokoll v3), `store/` (Spielstände → `saves/`, Berichte → `reports/`). `cmd/k3c-server` liefert `dist/` und die API aus.
 - `src/model/` – Typen und Daten, die der Client vom Server kennt (`World`, `GameEvent`, `BIOMES`, `SaveGame` …), keine Logik.
-- `src/online/` – Client des Go-Servers (`clientConnection.ts`, Protokoll v2): sendet nur Eingaben, zeichnet Snapshots. Ein Monarch pro Gerät.
+- `src/online/` – Client des Go-Servers (`clientConnection.ts`, Protokoll v3): sendet nur Eingaben, zeichnet Snapshots. Ein Monarch pro Gerät.
 - `src/input/` – `PlayerInput`-Abstraktion (Tastatur, Gamepad, Touch-Overlay `touchInput.ts`, per `?touch=1` erzwingbar). Spiel-Code fragt Aktionen ab, nie konkrete Tasten.
 - `src/scenes/` – Phaser-Szenen (`GameScene` = Eingabe, `step()`, Kameras; `worldRenderer.ts` zeichnet den Zustand;
   `HudScene` = bildschirmfeste Anzeigen). Neue Mechanik: Logik + Test in `engine/sim/`, dann nur zeichnen.
