@@ -11,6 +11,7 @@ import (
 	"path/filepath"
 	"strings"
 
+	"k3c/engine/conlog"
 	"k3c/tools/k3c-dev/internal/console"
 )
 
@@ -69,7 +70,8 @@ type Log struct {
 func Open(logsDir string, store *console.Store) (*Log, error) {
 	mirror := console.NewLineWriter(func(text string) { store.Add(Source, "log", text) })
 	fileLevel, mirrorLevel := Levels()
-	handlers := []slog.Handler{slog.NewTextHandler(mirror, &slog.HandlerOptions{Level: mirrorLevel})}
+	// Farben immer: die Oberfläche zeichnet sie, console_tail entfernt sie.
+	handlers := []slog.Handler{conlog.New(mirror, mirrorLevel, true)}
 	l := &Log{mirror: mirror}
 	err := os.MkdirAll(logsDir, 0o755)
 	if err == nil {

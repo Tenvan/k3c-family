@@ -46,7 +46,7 @@ COPY --from=server /out/k3c-server ./k3c-server
 # Diagnose-TUI: docker exec -it <Container> k3c-tui (K3C_STATUS_TOKEN muss im Container gesetzt sein)
 COPY --from=server /out/k3c-tui /usr/local/bin/k3c-tui
 COPY --from=server --chown=65532:65532 /out/data /data
-ENV K3C_DIST=/app/dist K3C_SAVES_DIR=/data/saves K3C_REPORTS_DIR=/data/reports K3C_HTTP_PORT=8080
+ENV NO_COLOR=1 K3C_DIST=/app/dist K3C_SAVES_DIR=/data/saves K3C_REPORTS_DIR=/data/reports K3C_HTTP_PORT=8080
 VOLUME ["/data"]
 EXPOSE 8080
 HEALTHCHECK --interval=30s --timeout=5s --start-period=5s CMD ["/app/k3c-server", "-health"]
