@@ -43,7 +43,7 @@ func (s *server) statusDisconnect(w http.ResponseWriter, r *http.Request) {
 		fail(w, http.StatusNotFound, "Gerät nicht gefunden oder nicht verbunden")
 	default:
 		c.cancel() // die Lese-Schleife endet, der Abbruch läuft über den normalen Weg (Drop)
-		s.log.Info("diagnose: gerät getrennt", "ns", "diag", "room", rm.Code, "device", kennung)
+		s.log.Info("👋 diagnose: gerät getrennt", "ns", "diag", "room", rm.Code, "device", kennung)
 		writeJSON(w, http.StatusOK, map[string]any{"ok": true, "room": rm.Code, "device": kennung})
 	}
 }
@@ -90,10 +90,10 @@ func (s *server) statusSave(w http.ResponseWriter, r *http.Request) {
 	case errors.Is(err, room.ErrClosed):
 		fail(w, http.StatusConflict, "Raum ist geschlossen")
 	case err != nil:
-		s.log.Error("diagnose: spielstand nicht gesichert", "ns", "diag", "room", rm.Code, "err", err)
+		s.log.Error("💥 diagnose: spielstand nicht gesichert", "ns", "diag", "room", rm.Code, "err", err)
 		fail(w, http.StatusInternalServerError, "Spielstand nicht gesichert")
 	default:
-		s.log.Info("diagnose: spielstand gesichert", "ns", "diag", "room", rm.Code, "save", rm.Name)
+		s.log.Info("💾 diagnose: spielstand gesichert", "ns", "diag", "room", rm.Code, "save", rm.Name)
 		body := map[string]any{"ok": true, "room": rm.Code, "save": rm.Name}
 		if backup != "" {
 			body["backup"] = backup

@@ -128,7 +128,7 @@ func (s *server) save(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 		if backup != "" {
-			s.log.Info("anderes Spiel, Sicherung angelegt", "ns", "save", "backup", backup)
+			s.log.Info("💾 anderes Spiel, Sicherung angelegt", "ns", "save", "backup", backup)
 		}
 		writeJSON(w, http.StatusOK, map[string]any{"ok": true, "slot": slot, "backup": nullable(backup)})
 	default:
@@ -154,7 +154,7 @@ func (s *server) saveError(w http.ResponseWriter, err error) {
 	case errors.Is(err, store.ErrInvalid):
 		fail(w, http.StatusBadRequest, "Kein Spielstand")
 	default:
-		s.log.Error("spielstand: "+err.Error(), "ns", "save")
+		s.log.Error("💥 spielstand: "+err.Error(), "ns", "save")
 		fail(w, http.StatusInternalServerError, "Speichern fehlgeschlagen")
 	}
 }
@@ -176,10 +176,10 @@ func (s *server) report(w http.ResponseWriter, r *http.Request) {
 	case errors.Is(err, store.ErrInvalid):
 		http.Error(w, "Kein gültiges JSON", http.StatusBadRequest)
 	case err != nil:
-		s.log.Error("bericht: "+err.Error(), "ns", "report")
+		s.log.Error("💥 bericht: "+err.Error(), "ns", "report")
 		http.Error(w, "Speichern fehlgeschlagen", http.StatusInternalServerError)
 	default:
-		s.log.Info("bericht gespeichert", "ns", "report", "file", file)
+		s.log.Info("💾 bericht gespeichert", "ns", "report", "file", file)
 		writeJSON(w, http.StatusOK, map[string]any{"ok": true, "file": file})
 	}
 }

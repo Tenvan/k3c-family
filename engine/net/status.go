@@ -115,7 +115,7 @@ func (s *server) restore(w http.ResponseWriter, r *http.Request) {
 		if err != nil {
 			caller = r.RemoteAddr
 		}
-		s.log.Warn("restore abgelehnt", "ns", "save", "path", r.URL.Path, "caller", caller, "reason", restoreDenied[code])
+		s.log.Warn("🚫 restore abgelehnt", "ns", "save", "path", r.URL.Path, "caller", caller, "reason", restoreDenied[code])
 		return
 	}
 	slot, name := slotOf(r), r.URL.Query().Get("backup")
@@ -128,7 +128,7 @@ func (s *server) restore(w http.ResponseWriter, r *http.Request) {
 		s.saveError(w, err)
 		return
 	}
-	s.log.Info("spielstand wiederhergestellt", "ns", "save", "slot", slot, "backup", name)
+	s.log.Info("🩹 spielstand wiederhergestellt", "ns", "save", "slot", slot, "backup", name)
 	writeJSON(w, http.StatusOK, map[string]any{"ok": true, "slot": slot, "restored": name})
 }
 

@@ -156,10 +156,10 @@ func (s *Server) Restart() error {
 		return err
 	}
 	if err := s.Start(); err != nil {
-		s.log.Error("neustart fehlgeschlagen", "ns", "mcp", "error", err.Error())
+		s.log.Error("💥 neustart fehlgeschlagen", "ns", "mcp", "error", err.Error())
 		return err
 	}
-	s.log.Info("server neu gestartet", "ns", "mcp", "url", s.URL())
+	s.log.Info("🔁 server neu gestartet", "ns", "mcp", "url", s.URL())
 	return nil
 }
 

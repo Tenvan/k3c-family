@@ -74,11 +74,11 @@ func (a *App) loadTasksLocked() {
 	a.tasks.loaded = true
 	if err != nil {
 		a.tasks.err = err // der alte Stand bleibt stehen
-		a.log.Warn("Task-Katalog nicht ladbar: "+err.Error(), "ns", "tasks")
+		a.log.Warn("💥 Task-Katalog nicht ladbar: "+err.Error(), "ns", "tasks")
 		return
 	}
 	a.tasks.tasks, a.tasks.loadedAt, a.tasks.err = tasks, time.Now(), nil
-	a.log.Info("Task-Katalog geladen", "ns", "tasks", "anzahl", len(tasks))
+	a.log.Info("📂 Task-Katalog geladen", "ns", "tasks", "anzahl", len(tasks))
 }
 
 func (a *App) catalogLocked() TaskCatalog {

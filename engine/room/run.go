@@ -48,7 +48,7 @@ func (m *Manager) Run(ctx context.Context) {
 func (m *Manager) safeSweep() {
 	defer func() {
 		if p := recover(); p != nil {
-			m.log().Error("Sweep abgestürzt", "err", fmt.Sprint(p))
+			m.log().Error("💥 Sweep abgestürzt", "err", fmt.Sprint(p))
 		}
 	}()
 	m.Sweep()
@@ -94,7 +94,7 @@ func (r *Room) safeTick() (alive bool) {
 
 // crash schließt einen abgestürzten Raum, ohne ihn zu speichern (sein Zustand ist nicht mehr sicher).
 func (m *Manager) crash(r *Room, msg string) {
-	m.log().Error("Raum abgestürzt", "ns", "room", "room", r.Code, "save", r.Name, "err", msg)
+	m.log().Error("💥 Raum abgestürzt", "ns", "room", "room", r.Code, "save", r.Name, "err", msg)
 	defer m.notify(true)
 	m.mu.Lock()
 	defer m.mu.Unlock()
