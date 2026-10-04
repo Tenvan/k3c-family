@@ -6,9 +6,9 @@
 - **Status:** eingeplant
 - **Sprint:** W3
 - **Erstellt:** 2026-10-02
-- **Spec:** Entwurf
+- **Spec:** freigegeben
 - **Revision:** 1
-- **Freigabe:** –
+- **Freigabe:** 2026-10-04, Chat, durch 🧑, mit Sprint W3
 
 ## Ausgangslage
 
@@ -28,15 +28,15 @@ Spieler; Elite- und Rüstungswerte kommen aus Regelwerk III.
 - Tor: je Mauerlinie ein fester Tor-Platz 4 Units außen (Linie 1: ±48), bezahlbar nur an der äußersten gebauten Linie (Beschluss Q47, 2026-10-04); eigene Truppen und Spieler passieren, für Gegner wirkt es wie eine Mauer (Hindernis und Angriffsziel), nicht aber für `outerWall` (Beschluss Q27, 2026-10-04). Wird außen eine neue Linie gebaut, bleiben Turm und Tor innen stehen und wirken weiter (Beschluss Q54, 2026-10-04).
 - Kaserne: Truppen-Limit +10 (Basis 10); es zählen nur Kämpfer (in W3: Bogenschützen); geprüft an genau einer Stelle beim Waffe-Holen, bei vollem Limit bleibt die Waffe im Regal (Beschlüsse Q29 und Q40, 2026-10-04).
 - Taverne: bei jedem `dawn` ein Landstreicher an der Taverne, solange dort weniger als 2 stehen; Wanderradius 6; eigene Werte in `data/` (Beschluss Q30, 2026-10-04).
-- Heilplatz: heilt Truppen und Spieler in Reichweite, **immer** (auch im Kampf), 5 HP/s, Radius 6 um den Platz (Startwerte; Beschluss Q32, 2026-10-04). W3 baut Limit und Heilplatz vollständig (Beschluss Q40, 2026-10-04).
-- Werkstatt: Schwert (Krieger, B-014) neben Bogen, je bis 3 im Waffenregal.
+- Heilplatz: heilt Bürger und Spieler in Reichweite (Q63), **immer** (auch im Kampf), 5 HP/s, Radius 6 um den Platz (Startwerte; Beschluss Q32, 2026-10-04). W3 baut Limit und Heilplatz vollständig (Beschluss Q40, 2026-10-04).
+- Werkstatt: Schwert (Krieger, B-014) gehört nicht zu W3, siehe Nicht-Ziele (kommt mit W4).
 - Schmiede (Elite-Upgrades) und Rüstkammer (Rüstung/Waffen) als Gebäude mit Platzhalterwirkung bis Regelwerk III.
 - Zaubertum (Turm-Stufe 5): eigener Schuss statt Bogen, Startwerte 40 Schaden, Radius 3, Reichweite 13, alle 1,5 s; die Schützen steigen beim Ausbau ab und zählen weiter als Kämpfer (Beschluss Q31, 2026-10-04).
 - Startwerte für Kosten und HP laut `materialien-gebaeude.md` § 3.2.
 
 ## Nicht-Ziele
 
-Elite- und Rüstungswerte (Regelwerk III), Krieger/Elite-Truppen (B-014), Grafiken (B-010), Anzeige (B-117).
+Elite- und Rüstungswerte (Regelwerk III), Krieger/Elite-Truppen und Schwerter in der Werkstatt (B-014, W4), Grafiken (B-010), Anzeige (B-117).
 
 ## Regeln und Einschränkungen
 

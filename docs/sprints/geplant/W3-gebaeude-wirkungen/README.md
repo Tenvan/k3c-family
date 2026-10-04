@@ -6,9 +6,9 @@
 - **Einschiebbar:** nein
 - **Tickets:** B-116
 - **Start-Commit:** –
-- **Spec:** Entwurf
+- **Spec:** freigegeben
 - **Revision:** 1
-- **Freigabe:** –
+- **Freigabe:** 2026-10-04, Chat, durch 🧑, Revision 1; mit Änderungen aus der Spec-Prüfung
 
 ## Ausgangslage
 
@@ -30,7 +30,7 @@ B-116 › Anforderungen.
 
 ## Nicht-Ziele
 
-Wirkung von Schmiede und Rüstkammer (W4, B-122), Anzeige (W6), Protokoll (W5).
+Wirkung von Schmiede und Rüstkammer (W4, B-122), Schwerter in der Werkstatt (Krieger B-014, W4), Anzeige (W6), Protokoll (W5).
 
 ## Regeln und Einschränkungen
 
@@ -53,7 +53,8 @@ Gebäude zerstört → Wirkung entfällt bis zum Wiederaufbau.
 
 ## Offene Fragen
 
-keine
+- Wirkung von Schmiede und Rüstkammer (B-116, Regelwerk III, B-122); W3 baut sie nur mit Vermerk „Wirkung offen“.
+- Taverne: `dawn` fällt nach Q65 auf den **Beginn des Morgengrauens**; das Zyklus-Ticket aus Q65 fehlt noch (die dort genannte Nummer B-213 ist schon vergeben). Offen, ob W3 bis dahin am heutigen `dawn` (Übergang Nacht → Tag) auslöst.
 
 ## Sessions
 

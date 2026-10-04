@@ -6,9 +6,9 @@
 - **Status:** eingeplant
 - **Sprint:** K4
 - **Erstellt:** 2026-10-02
-- **Spec:** Entwurf
+- **Spec:** freigegeben
 - **Revision:** 1
-- **Freigabe:** –
+- **Freigabe:** 2026-10-04, Chat, durch 🧑, mit Sprint K4
 
 ## Ausgangslage
 
@@ -51,7 +51,7 @@ Inselwechsel vor dem Sieg über den Endboss oder von einem Spieler allein → Ei
 - **AC-02** Der Server lehnt die Wechsel-Bestätigung vor dem Sieg über den Endboss mit `bad_request` ab (Test in `engine/net/`).
 - **AC-03** Der Snapshot einer Bosswelle enthält Boss-HP, Phase und Warnkreis; der Snapshot einer Eventnacht das Event mit Restzeit (Test auf Testdaten).
 - **AC-04** Protokollversion erhöht; ein älterer Client erhält `version` (Test).
-- **AC-05** Bytes je Tick in einer Bosswelle mit 4 Spielern gemessen und in den Notizen festgehalten; `task check:go` grün.
+- **AC-05** Bytes je Tick in einer Bosswelle mit 4 Spielern gemessen und in den Notizen festgehalten; höchstens 200 Byte je Tick und Client (Q08); `task check:go` grün.
 
 ## Offene Fragen
 

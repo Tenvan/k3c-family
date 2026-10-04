@@ -6,9 +6,9 @@
 - **Status:** eingeplant
 - **Sprint:** BR2
 - **Erstellt:** 2026-10-02
-- **Spec:** Entwurf
+- **Spec:** freigegeben
 - **Revision:** 1
-- **Freigabe:** –
+- **Freigabe:** 2026-10-04, Chat, durch 🧑, mit Sprint BR2
 
 ## Ausgangslage
 
@@ -27,6 +27,7 @@ Spieler (Familie, Kinder); 🧑 spielt den Abend und entscheidet über Werte; de
 - Messung der Kennzahlen aus den Zielkorridoren vor und nach jeder Wertänderung (Simulator B-099, soweit verfügbar, sonst Läufe über die Go-Tests), je Schwierigkeitsgrad.
 - Wertänderungen nur in `data/`, jede mit Begründung in `docs/rules/gegner.md` oder `docs/rules/bosse.md`.
 - Spieleabend 3 mit Protokoll nach `docs/playtests/`.
+- Nach Spieleabend 3 ein Tag mit Release-Checkliste (Q20).
 
 ## Nicht-Ziele
 
@@ -34,7 +35,7 @@ Wirtschaft (B-155), neue Mechaniken, Ausbau des Testers (BAL1 bis BAL3), Release
 
 ## Regeln und Einschränkungen
 
-Werte gehören nach `data/`, Golden-Daten werden nach dem Golden-Ablauf (B-137) aktualisiert; die manuelle Abnahme und Freigabe liegen bei 🧑.
+Werte gehören nach `data/`, Golden-Daten werden nach dem Golden-Ablauf (B-137) aktualisiert; die manuelle Abnahme und Freigabe liegen bei 🧑. Voraussetzung: B-155 (BR1).
 
 ## Beispiele
 
@@ -48,13 +49,14 @@ Ein Zielkorridor lässt sich nicht erreichen → Abweichung als Ticket anlegen, 
 
 - **AC-01** Die Zielkorridore für Kampf und Bosse stehen vor der Runde als Zahlen in `docs/rules/` (Beobachtung: Datei enthält Zahlen je Kennzahl).
 - **AC-02** Für jede Wertänderung in `data/` nennt der Commit die betroffenen Kennzahlen mit Wert vor und nach der Änderung.
-- **AC-03** Für jeden geänderten Wert aus `data/enemies.json`, `data/waves.json` und `data/difficulty.json` steht eine Begründung in `docs/rules/` (Stichprobe von 🧑).
+- **AC-03** Für jeden geänderten Wert aus `data/enemies.json`, `data/waves.json`, `data/difficulty.json` und `data/biomes/` steht eine Begründung in `docs/rules/` (Stichprobe von 🧑).
 - **AC-04** Spieleabend 3 hat stattgefunden, das Protokoll liegt in `docs/playtests/`.
 - **AC-05** Je Zielkorridor für Kampf und Bosse ist Pass oder Fail festgehalten; jede Abweichung hat ein Ticket; `task check` und `task check:go` grün.
+- **AC-06** Nach Spieleabend 3 ist ein Tag mit Release-Checkliste gesetzt, nach Bestätigung durch 🧑 (Q20).
 
 ## Offene Fragen
 
-Termin und Teilnehmer des Spieleabends: `docs/fragenkatalog.md Q24`; Zahlen der Zielkorridore: `docs/fragenkatalog.md Q02` (🧑).
+Termin und Teilnehmer des Spieleabends: `docs/fragenkatalog.md Q24` (🧑).
 
 ## Notizen
 

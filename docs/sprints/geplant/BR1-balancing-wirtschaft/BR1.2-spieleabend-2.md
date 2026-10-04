@@ -6,7 +6,7 @@
 - **Branch:** br1/2-spieleabend-2
 - **Abhängig von:** –
 - **Tickets:** B-155, B-015
-- **Kriterien:** AC-03
+- **Kriterien:** AC-03, AC-05
 
 ## Ziel
 

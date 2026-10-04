@@ -37,18 +37,18 @@ Automatische Wertsuche oder Optimierung, Änderung von `data/*.json`, neue Profi
 3. Sensitivitäts-Bericht: je Variation die Liste der gekippten Kennzahlen mit Bewertung vorher und nachher.
 4. Grad-Kurven: je Grad Tabelle der beschlossenen Kennzahlen über die Tage im Bericht.
 5. Tests: Variation um +25 % auf einen Wert, der eine Kennzahl kippt (feste Werte), der Bericht nennt sie; unbekannter Pfad → Fehler; Kurven enthalten jeden Grad aus `data/difficulty.json`; gleiche Eingaben → byte-gleicher Bericht.
-6. `task check:go`. Ein Beispiel-Lauf (Laufzeit, Rechner) ins Ergebnis, `Status: fertig`, Tabelle der Sprint-README.
+6. `task check:dev`. Ein Beispiel-Lauf (Laufzeit, Rechner) ins Ergebnis, `Status: fertig`, Tabelle der Sprint-README.
 
 ## Fertig, wenn
 
 - [ ] AC-03: Test belegt, dass ein Lauf mit ±10 % und ±25 % eines Werts einen Bericht mit der Liste gekippter Kennzahlen erzeugt.
 - [ ] AC-04: Test belegt, dass der Bericht je Grad aus `data/difficulty.json` eine Kurve über die Tage enthält.
-- [ ] AC-06: `task check:go` grün; `git status` zeigt keine Änderung an `data/*.json`.
+- [ ] AC-06: `task check:dev` grün; `git status` zeigt keine Änderung an `data/*.json`.
 
 ## Prüfen
 
 ```bash
-task check:go
+task check:dev
 ```
 
 ## Ergebnis

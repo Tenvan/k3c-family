@@ -6,9 +6,9 @@
 - **Einschiebbar:** nein
 - **Tickets:** B-132, B-105, B-107, B-098
 - **Start-Commit:** –
-- **Spec:** Entwurf
+- **Spec:** freigegeben
 - **Revision:** 1
-- **Freigabe:** –
+- **Freigabe:** 2026-10-04, Chat, durch 🧑, Revision 1; mit Änderungen aus der Spec-Prüfung
 
 ## Ausgangslage
 
@@ -30,11 +30,11 @@ B-132 › Anforderungen, B-105 › Anforderungen, B-107 › Anforderungen, B-098
 
 ## Nicht-Ziele
 
-Grafik-Anbindung (GR3), Ton, Protokoll (K4), Neustart und weitere Panel-Aktionen (B-080).
+Grafik-Anbindung (GR3), Ton, Protokoll (K4), Neustart und weitere Panel-Aktionen (Gold, Stufe).
 
 ## Regeln und Einschränkungen
 
-Der Client rechnet nichts und zeichnet nur Server-Zustand (`src/scenes/noSim.test.ts`); Logik als reine Funktionen mit Test. Mindest-Schriftgrößen je Split-Viertel nach den Regeln aus F1 (B-136). Seiten-Regeln aus `CLAUDE.md`; B nicht belegen, View + Menu reserviert. Datei ≤ 400 Zeilen, Funktion ≤ 60. Der Sprint bleibt in der Domäne CLI.
+Der Client rechnet nichts und zeichnet nur Server-Zustand (`src/scenes/noSim.test.ts`); Logik als reine Funktionen mit Test. Mindest-Schriftgrößen je Split-Viertel nach den Regeln aus F1 (B-136). Seiten-Regeln aus `CLAUDE.md`; B nicht belegen, View + Menu reserviert. Datei ≤ 400 Zeilen, Funktion ≤ 60. Der Sprint bleibt in der Domäne CLI. Abhängigkeit: K4 (B-080, Server-Aktion Grad).
 
 ## Beispiele
 
@@ -55,7 +55,9 @@ Dev-Sperre aktiv → Debug-Panel und Grad „Dev“ sind nicht verfügbar.
 
 ## Offene Fragen
 
-keine
+- Tastenbelegung des Debug-Panels (B-107 › Offene Fragen).
+- Stick-Klick als Overlay-Umschalter gegen Vollbild per Stick drücken (Q06).
+- Dev-Sperre in der Lobby: Wie erkennt der Anlegen-Dialog, dass „Dev“ nicht angeboten wird (K5.2)?
 
 ## Sessions
 

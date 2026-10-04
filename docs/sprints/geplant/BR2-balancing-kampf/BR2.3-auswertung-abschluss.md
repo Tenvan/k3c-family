@@ -6,7 +6,7 @@
 - **Branch:** br2/3-auswertung-abschluss
 - **Abhängig von:** BR2.1, BR2.2
 - **Tickets:** B-156
-- **Kriterien:** AC-02, AC-04
+- **Kriterien:** AC-02, AC-04, AC-05
 
 ## Ziel
 

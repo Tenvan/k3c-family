@@ -6,9 +6,9 @@
 - **Status:** eingeplant
 - **Sprint:** K1
 - **Erstellt:** 2026-10-02
-- **Spec:** Entwurf
+- **Spec:** freigegeben
 - **Revision:** 1
-- **Freigabe:** –
+- **Freigabe:** 2026-10-04, Chat, durch 🧑, mit Sprint K1
 
 ## Ausgangslage
 

@@ -6,9 +6,9 @@
 - **Status:** eingeplant
 - **Sprint:** K5
 - **Erstellt:** 2026-10-02
-- **Spec:** Entwurf
+- **Spec:** freigegeben
 - **Revision:** 1
-- **Freigabe:** –
+- **Freigabe:** 2026-10-04, Chat, durch 🧑, mit Sprint K5
 
 ## Ausgangslage
 
@@ -16,7 +16,7 @@ Das Debug-Overlay (B-093) zeigt nur Werte; Dev-Aktionen laufen nicht über den S
 
 ## Ziel
 
-Im Dev-Mode öffnet ein Panel mit Aktionen: Schwierigkeitsgrad (Dev, Leicht, Normal, Hart, Ultra) wechseln, soweit der aktuelle Stand es erlaubt (wirkt ab der nächsten Welle), später Gold, Stufe, Neustart (B-080). Nutzen: Entwickeln und Testen ohne Neustart.
+Im Dev-Mode öffnet ein Panel mit Aktionen: Schwierigkeitsgrad (Dev, Leicht, Normal, Hart, Ultra) wechseln, auch im laufenden Raum (wirkt ab der nächsten Welle), später Gold, Stufe, Neustart (B-080). Nutzen: Entwickeln und Testen ohne Neustart.
 
 ## Beteiligte und Zielgruppen
 
@@ -42,7 +42,7 @@ Panel öffnen, „Hart“ wählen → ab der nächsten Welle gelten die Hart-Fak
 
 ## Ausnahme- und Fehlerfälle
 
-Wechsel im Live-Raum → abgelehnt.
+Wechsel ohne Dev-Mode → vom Server abgelehnt; im laufenden Raum mit Dev-Mode erlaubt, wirkt ab der nächsten Welle.
 
 ## Akzeptanzkriterien
 

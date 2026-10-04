@@ -6,9 +6,9 @@
 - **Status:** eingeplant
 - **Sprint:** K5
 - **Erstellt:** 2026-10-02
-- **Spec:** Entwurf
+- **Spec:** freigegeben
 - **Revision:** 1
-- **Freigabe:** –
+- **Freigabe:** 2026-10-04, Chat, durch 🧑, mit Sprint K5
 
 ## Ausgangslage
 
@@ -31,7 +31,7 @@ Spieler am TV und am Handy; 🧑 testet am Gerät.
 
 ## Nicht-Ziele
 
-Simulation (B-128 bis B-131), Protokoll (B-123, B-104), Grafiken (B-010), Sound (B-011).
+Simulation (B-128 bis B-131), Protokoll (B-154), Grafiken (B-010), Sound (B-011).
 
 ## Regeln und Einschränkungen
 
@@ -57,4 +57,4 @@ keine
 
 ## Notizen
 
-Aus R4.2 und R4.3. Abhängig von B-123 und B-130.
+Aus R4.2 und R4.3. Abhängig von B-154 und B-130.

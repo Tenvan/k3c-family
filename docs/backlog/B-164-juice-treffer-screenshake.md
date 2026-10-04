@@ -6,9 +6,9 @@
 - **Status:** eingeplant
 - **Sprint:** GR5
 - **Erstellt:** 2026-10-02
-- **Spec:** Entwurf
+- **Spec:** freigegeben
 - **Revision:** 1
-- **Freigabe:** –
+- **Freigabe:** 2026-10-04, Chat, durch 🧑, mit Sprint GR5
 
 ## Ausgangslage
 
@@ -48,7 +48,7 @@ Gamepad ohne Vibration → keine Vibration, kein Fehler. Event unbekannt (alter 
 
 ## Akzeptanzkriterien
 
-- **AC-01** Test oder Beobachtung: Jedes der Feedback-Events Treffer, Kill, Münze aufheben, Bau fertig löst den zugehörigen Effekt aus (Liste aus B-139).
+- **AC-01** Test oder Beobachtung: Jedes der Feedback-Events Treffer, Kill, Münze aufheben, Münze geben, Bau fertig, Tod löst den zugehörigen Effekt aus (Liste aus B-139).
 - **AC-02** Beobachtung am TV: Mit Screenshake und Blitz „aus“ in den Optionen treten beide Effekte nicht auf; mit „an“ sind sie sichtbar.
 - **AC-03** Test: Die Effekt-Auslösung liest nur Events und Einstellungen und ändert keinen Spielzustand (`noSim.test.ts` bleibt grün).
 - **AC-04** Mit 2 Spielern im Split-Screen wirkt ein Screenshake nur in der Kamera des betroffenen Spielers.

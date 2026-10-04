@@ -6,9 +6,9 @@
 - **Einschiebbar:** ja
 - **Tickets:** B-167
 - **Start-Commit:** –
-- **Spec:** Entwurf
+- **Spec:** freigegeben
 - **Revision:** 1
-- **Freigabe:** –
+- **Freigabe:** 2026-10-04, Chat, durch 🧑, Revision 1; mit Änderungen aus der Spec-Prüfung
 
 ## Ausgangslage
 
@@ -50,10 +50,11 @@ Sound lädt nicht → stumm und Log-Eintrag, kein Absturz.
 - **AC-04** Das Mapping Ereignis → Sound ändert keinen Spielzustand (B-167/AC-04).
 - **AC-05** Eine fehlende Sound-Datei lässt das Spiel ohne Fehlermeldung weiterlaufen (B-167/AC-05).
 - **AC-06** `task check` ist grün.
+- **AC-07** Nacht leise: Nachts spielen die Effekte gedämpft (Q15) (B-167/AC-06).
 
 ## Offene Fragen
 
-- Quellen, Klangstil und „wichtige“ Ereignisse: Entscheidet 🧑 (`docs/fragenkatalog.md` Q15); blockiert die Freigabe.
+- Hub-Ausbau, Boss-Auftritt und UI-Klicks: Woher kommen die Auslöser (kein Feedback-Event in Q08)? Bis dahin nicht in der Ereignisliste (B-167 › Offene Fragen).
 
 ## Sessions
 

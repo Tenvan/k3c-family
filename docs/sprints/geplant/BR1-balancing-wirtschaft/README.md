@@ -6,9 +6,9 @@
 - **Einschiebbar:** nein
 - **Tickets:** B-155, B-015
 - **Start-Commit:** –
-- **Spec:** Entwurf
+- **Spec:** freigegeben
 - **Revision:** 1
-- **Freigabe:** –
+- **Freigabe:** 2026-10-04, Chat, durch 🧑, Revision 1; mit Änderungen aus der Spec-Prüfung
 
 ## Ausgangslage
 
@@ -26,7 +26,7 @@ Familie spielt, 🧑 entscheidet über Werte; der Agent misst und wertet aus.
 
 ## Anforderungen
 
-B-155 › Anforderungen, B-015 › Anforderungen.
+B-155 › Anforderungen, B-015 › Anforderungen. Vor AC-01 werden die Zielkorridore in `docs/rules/zielkorridore.md` auf den 6-min-Tag (Q65) neu gefasst (heute z. B. „erste Mauer ≤ 10 min“). Der Tageszyklus 6/2/4/2 min (Q65, Startwert) wird am Spieleabend 2 bestätigt oder mit Beschluss geändert. Nach Spieleabend 2 folgt ein Tag mit Release-Checkliste (Q20).
 
 ## Nicht-Ziele
 
@@ -46,14 +46,16 @@ Ein Korridor lässt sich nicht erreichen → Abweichung als Ticket, 🧑 entsche
 
 ## Akzeptanzkriterien
 
-- **AC-01** Die Zielkorridore der Wirtschaft stehen vor der Runde als Zahlen in `docs/rules/` (B-155/AC-01).
+- **AC-01** Die Zielkorridore der Wirtschaft stehen vor der Runde als Zahlen in `docs/rules/`, neu gefasst auf den 6-min-Tag (Q65) (B-155/AC-01).
 - **AC-02** Jede Wertänderung in `data/` nennt im Commit die betroffenen Kennzahlen, jeder geänderte Wert ist in `docs/rules/` begründet (B-155/AC-02, B-155/AC-03, B-015/AC-01).
 - **AC-03** Spieleabend 2 hat stattgefunden, das Protokoll liegt in `docs/playtests/`, die Werte sind damit geprüft (B-155/AC-04, B-015/AC-02).
-- **AC-04** Je Zielkorridor ist Pass oder Fail festgehalten, jede Abweichung hat ein Ticket, `task check` grün (B-155/AC-05).
+- **AC-04** Je Zielkorridor ist Pass oder Fail festgehalten, jede Abweichung hat ein Ticket, `task check` und `task check:go` grün (B-155/AC-05).
+- **AC-05** Der Tageszyklus 6/2/4/2 min (Q65, Startwert) ist am Spieleabend 2 bestätigt oder mit Beschluss von 🧑 geändert (B-155/AC-06).
+- **AC-06** Nach Spieleabend 2 ist ein Tag mit Release-Checkliste gesetzt, nach Bestätigung durch 🧑 (Q20, B-155/AC-07).
 
 ## Offene Fragen
 
-Termin und Teilnehmer: `docs/fragenkatalog.md Q24`; Zahlen der Korridore: `Q02`; Reihenfolge Wirtschaft vor Bürger: `Q22` (🧑).
+Termin und Teilnehmer: `docs/fragenkatalog.md Q24` (🧑).
 
 ## Sessions
 
