@@ -10,6 +10,8 @@ export interface Settings {
   musicVolume: number;
   /** Ganze Prozent 0–100. */
   sfxVolume: number;
+  /** Ganze Prozent 0–100 (Ambient-Bus des Mixers, B-011). */
+  ambientVolume: number;
   screenshake: boolean;
   flash: boolean;
   colorblindSymbols: boolean;
@@ -23,6 +25,7 @@ const KEY = 'k3c-settings';
 export const DEFAULT_SETTINGS: Readonly<Settings> = Object.freeze({
   musicVolume: 100,
   sfxVolume: 100,
+  ambientVolume: 100,
   screenshake: true,
   flash: true,
   colorblindSymbols: true,
@@ -44,6 +47,7 @@ export function normalizeSettings(raw: unknown): Settings {
   return {
     musicVolume: clampVolume(r.musicVolume, d.musicVolume),
     sfxVolume: clampVolume(r.sfxVolume, d.sfxVolume),
+    ambientVolume: clampVolume(r.ambientVolume, d.ambientVolume),
     screenshake: bool(r.screenshake, d.screenshake),
     flash: bool(r.flash, d.flash),
     colorblindSymbols: bool(r.colorblindSymbols, d.colorblindSymbols),

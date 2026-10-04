@@ -25,7 +25,7 @@ afterEach(() => vi.unstubAllGlobals());
 
 describe('settings', () => {
   it('Standard: alles an, Lautstärke 100 %, Deutsch', () => {
-    expect(DEFAULT_SETTINGS).toEqual({ musicVolume: 100, sfxVolume: 100, screenshake: true, flash: true, colorblindSymbols: true, language: 'de' });
+    expect(DEFAULT_SETTINGS).toEqual({ musicVolume: 100, sfxVolume: 100, ambientVolume: 100, screenshake: true, flash: true, colorblindSymbols: true, language: 'de' });
     expect(loadSettings(fakeStorage())).toEqual(DEFAULT_SETTINGS);
   });
 
@@ -77,7 +77,7 @@ describe('settings', () => {
 
   it('Schreiben, dann neu Lesen liefert dieselben Werte (Neuladen)', () => {
     const storage = fakeStorage();
-    const settings: Settings = { musicVolume: 0, sfxVolume: 40, screenshake: false, flash: false, colorblindSymbols: true, language: 'en' };
+    const settings: Settings = { musicVolume: 0, sfxVolume: 40, ambientVolume: 25, screenshake: false, flash: false, colorblindSymbols: true, language: 'en' };
     expect(saveSettings(settings, storage)).toBe(true);
     expect(Object.keys(storage.data)).toEqual(['k3c-settings']);
     expect(loadSettings(storage)).toEqual(settings);
