@@ -99,15 +99,15 @@ Zielkorridor: Erste Mauer vor Ende Tag 1 in ≥ 90 %; erster Turm vor Ende Tag 2
 |---|---|---|
 | **Burg** | Hub-Kern; fällt sie, wirkt der Niederlage-Modus (`stufen.md` § 4) | HP 1000 |
 | **Mauer** | blockiert Gegner (außer `ignoresWalls`) | siehe 3.1 |
-| **Tor** | eigene Truppen und Spieler passieren, Gegner nicht; je Linie ein fester Tor-Platz 4 Units außen vor der Mauer (Linie 1: ±48), bezahlbar nur an der äußersten gebauten Linie (Q47, 2026-10-04); für Gegner wie eine Mauer (Hindernis und Angriffsziel), nicht für den Posten der Bogenschützen (`outerWall`) (Q27, 2026-10-04); ein inneres Tor bleibt stehen und wirkt weiter (Q54) | Startwerte wie heute (30 Holz + 10 Gold, 250 HP), ab Stufe 2 (Stein) |
+| **Tor** | eigene Bürger und Spieler passieren, Gegner nicht; je Linie ein fester Tor-Platz 4 Units außen vor der Mauer (Linie 1: ±48), bezahlbar nur an der äußersten gebauten Linie (Q47, 2026-10-04); für Gegner wie eine Mauer (Hindernis und Angriffsziel), nicht für den Posten der Bogenschützen (`outerWall`) (Q27, 2026-10-04); ein inneres Tor bleibt stehen und wirkt weiter (Q54) | Startwerte wie heute (30 Holz + 10 Gold, 250 HP), ab Stufe 2 (Stein) |
 | **Werkstatt** | Bogen und Schwert, je bis 3 im Waffenregal; Schwert-Zahlziel als Anhang `dx +4` (Q53, 2026-10-04) | wie heute (40 Holz + 15 Gold, 150 HP) |
 | **Farm** | Baumplantage: 6 Plätze, je Platz alle 30 s ein Baum (10 Holz), siehe § 1; fester Weltplatz je Seite zwischen Linie 1 und 2 (Q51, 2026-10-04) | wie heute (30 Holz + 10 Gold, 100 HP) |
 | **Kaserne** | Truppen-Limit +10 (Basis 10, einfach gebaut); Regel und Prüfung beim Waffe-Holen: `buerger.md` § 3 | wie heute (60 Stein + 30 Gold, 200 HP) |
 | **Lager** | +300 Kapazität je Rohstoff für die Insel; Arbeiter bringen Material hierher oder zur Burg | Startwert: 50 Stein + 20 Gold, HP 200, Bauzeit 8 s |
 | **Taverne** | bei jedem `dawn` ein Landstreicher an der Taverne, solange dort weniger als 2 stehen; Wanderradius 6; eigene Werte in `data/` (Q30, 2026-10-04) | Startwert: 60 Stein + 30 Gold, HP 150, Bauzeit 12 s (Q26, gilt nach Q43) |
-| **Heilplatz** | heilt Truppen und Spieler in Reichweite, **immer** (auch im Kampf); Startwerte 5 HP/s, Radius 6 um den Platz (Q32, 2026-10-04) | Startwert: 50 Kupfer + 30 Gold, HP 150, Bauzeit 12 s (Q26, gilt nach Q43) |
+| **Heilplatz** | heilt Truppen (Kämpfer) und Spieler in Reichweite, **immer** (auch im Kampf); Startwerte 5 HP/s, Radius 6 um den Platz (Q32, 2026-10-04) | Startwert: 50 Kupfer + 30 Gold, HP 150, Bauzeit 12 s (Q26, gilt nach Q43) |
 | **Schmiede** | Elite-Upgrades (Werte in `buerger.md`) | Startwert: 80 Kupfer + 50 Gold, HP 250, Bauzeit 16 s (Q26, gilt nach Q43) |
-| **Rüstkammer** | Rüstung und Waffen-Upgrade für alle Truppen (Werte in `buerger.md`) | Startwert: 100 Eisen + 100 Gold, HP 350, Bauzeit 16 s (Q26, gilt nach Q43) |
+| **Rüstkammer** | Rüstung und Waffen-Upgrade für alle Kämpfer (Werte in `buerger.md`) | Startwert: 100 Eisen + 100 Gold, HP 350, Bauzeit 16 s (Q26, gilt nach Q43) |
 | **Treppen** | Verbindung zur Stufe darüber/darunter, je 1 je Hub, ab Hub-Stufe 2 | 100 Stein + 50 Gold, HP 500, 20 s |
 
 Die Startwerte für Taverne, Heilplatz, Schmiede und Rüstkammer sind **Vorschläge des Agenten** (🧑 hat die Wirkung beschlossen, nicht die Zahlen) und werden mit B-099 geprüft.
@@ -127,7 +127,7 @@ Die Startwerte für Taverne, Heilplatz, Schmiede und Rüstkammer sind **Vorschl�
 - Die Zahlen für **Stufen 4 und 5** (Eisen, Kristall) und die Stufen selbst werden erst messbar, wenn Insel 1 sie enthält; ihre Zielkorridore folgen mit B-099.
 - Startwerte für Taverne, Heilplatz, Schmiede, Rüstkammer (§ 3.2) sind Vorschläge ohne gesonderte Bestätigung; Turm-Kosten und -Bauzeiten (§ 3.1) und die Bauzeiten des Hub-Ausbaus (§ 2) hat 🧑 als Startwerte beschlossen (Q44, Q45, 2026-10-04).
 - Elite-Upgrades (Schmiede) und Rüstung/Waffen (Rüstkammer): Werte und Wirkung stehen in `buerger.md` (R3.3). Bürger-Fortschritt gehört zu B-110.
-- Die Wirkung „Farm: +5 Holz je Tagesanbruch“ und „Taverne: 1 Landstreicher je `dawn`, höchstens 2“ sind Startwerte (Wirtschaftsbalance, B-099).
+- Die Wirkung „Farm: Plantage mit 6 Plätzen, je Platz alle 30 s ein Baum (10 Holz)“ (§ 1) und „Taverne: 1 Landstreicher je `dawn`, höchstens 2“ sind Startwerte (Wirtschaftsbalance, B-099).
 - Beschlüsse vom 2026-10-04 (Fragenkatalog Q25–Q42): Bauzeiten von Taverne, Heilplatz (12 s), Schmiede und Rüstkammer (16 s) sind beschlossen; Zaubertum- und Heilplatz-Werte sind Startwerte. Das Modell „Hub wächst“ aus Q26 ist durch feste Bauplätze ersetzt (Q43–Q55, 2026-10-04, zweite Runde); Linien-Lagen und Streuung (§ 3) sind Startwerte, die Offsets der neuen Hub-Plätze legt W0 an (B-206).
 - Das Rate-Modell (Plantage, Adern, Raten) und die Breiten der Eisenstollen und Kristallhöhle sind **Startwerte** (🧑 hat Plantage + Adern beschlossen; Adernzahl 2, Raten und 6 Plätze/30 s hat er mit „Vorschlag“ übernommen). Die Kosten aus R2.2 bleiben, **jeder Hub baut die ganze Liste**.
 - Gemessene Level-Mengen (100 Seeds, Mittel): Wald 39 Bäume (≈ 390 Holz), 3 Felsen; Höhle 23 Felsen (≈ 230 Stein); Mine 6 Felsen, 3,4 Kupfererz (≈ 34 Kupfer, p10 = 0); damit tragen die Level allein die Kosten nicht, deshalb Plantage und Adern.
