@@ -62,6 +62,14 @@ jobs:
           version: v2.14
       - run: GOOS=windows GOARCH=amd64 go build ./...
       - run: GOOS=linux GOARCH=arm64 go build ./...
+      # Balance-Bericht mit 10 Seeds (B-157, BAL2.3): kein Gate. Verletzte Ziele ergeben Exit 0, nur ein Fehler des Werkzeugs färbt den Job rot.
+      - name: Balance-Bericht (10 Seeds)
+        run: task balance -- --seeds 10
+      - uses: actions/upload-artifact@v7
+        with:
+          name: k3c-balance
+          path: reports/balance-*
+          retention-days: 14
 
   # Golden-Tests auf arm64 (Raspberry Pi, B-071): Go darf dort x*y + z zu FMA fusionieren, dann weichen Gleitkommawerte
   # ab. Nativer GitHub-Runner (Repo öffentlich), Rückfall wäre qemu-Emulation.

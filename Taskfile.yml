@@ -209,6 +209,20 @@ tasks:
       - go build -o bin/k3c-load{{exeExt}} ./cmd/k3c-load
       - ./bin/k3c-load{{exeExt}} {{.CLI_ARGS}}
 
+  balance:
+    desc: 'Zielkorridore prüfen: 100 feste Seeds, Bericht reports/balance-<Zeit>.json und .md, Vergleich mit testdata/balance/baseline.json (z. B. `task balance -- --seeds 10`; kein Teil von `task check`)'
+    deps: [tmp]
+    cmds:
+      - cd {{.DEV}} && go build -o ../../bin/k3c-balance{{exeExt}} ./internal/balance/cmd
+      - ./bin/k3c-balance{{exeExt}} --targets --baseline testdata/balance/baseline.json --replay-dir reports/balance-replays {{.CLI_ARGS}}
+
+  balance:baseline:
+    desc: 'Baseline neu schreiben (testdata/balance/baseline.json); nur mit Begründung im Commit, wie bei Golden-Dateien'
+    deps: [tmp]
+    cmds:
+      - cd {{.DEV}} && go build -o ../../bin/k3c-balance{{exeExt}} ./internal/balance/cmd
+      - ./bin/k3c-balance{{exeExt}} --targets --write-baseline --baseline testdata/balance/baseline.json {{.CLI_ARGS}}
+
   balance:run:
     desc: 'Balancing-Tester: Bots spielen eine Szenario-Matrix, Kennzahlen als JSON (z. B. `task balance:run -- --seeds 10 --bots saver --days 5`)'
     deps: [tmp]
