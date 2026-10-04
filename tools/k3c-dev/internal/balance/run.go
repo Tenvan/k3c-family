@@ -41,6 +41,9 @@ type Result struct {
 	Error   string   `json:"error,omitempty"`
 	Ticks   int      `json:"ticks"`
 	Metrics *Metrics `json:"metrics"`
+	// Replay ist die Aufnahme des Laufs (nur gültige Läufe); sie steht nicht im Bericht, der Befehl schreibt sie
+	// auf Wunsch als eigene Datei (BAL1.2).
+	Replay *Replay `json:"-"`
 }
 
 // Report ist die Ausgabe: die Matrix und alle Läufe in der Reihenfolge der Matrix.
@@ -107,30 +110,42 @@ func runOne(sc Scenario, threshold int) (res Result) {
 			res.Valid, res.Metrics, res.Error = false, nil, fmt.Sprintf("abgebrochen: %v", p)
 		}
 	}()
-	isl, err := sim.CreateIsland(sc.Seed, []int{sc.Depth}, 1)
+	isl, err := newIsland(sc)
 	if err != nil {
 		res.Error = err.Error()
 		return res
 	}
-	for range sc.Players {
-		sim.AddIslandPlayer(isl, 0)
-	}
 	bot, c := bots[sc.Bot], newCollector(isl, threshold)
 	cmds := make([]sim.PlayerCommand, sc.Players)
+	rp := &Replay{Version: ReplayVersion, Scenario: sc, DataHash: dataHash}
 	for tick := 1; tick <= sc.Days*maxTicksPerDay; tick++ {
 		for _, w := range isl.Stages {
 			for _, p := range w.Players {
 				cmds[p.Index] = bot(w, p)
 			}
 		}
+		rp.record(cmds)
 		sim.StepIsland(isl, cmds, 1.0/enginetools.TickHz)
 		c.observe(tick)
 		res.Ticks = tick
 		if isl.Stages[0].Cycle.Day > sc.Days {
-			res.Valid, res.Metrics = true, c.result()
+			res.Valid, res.Metrics, res.Replay = true, c.result(), rp
+			rp.EndHash, rp.CastleFallTick = endHash(isl), res.Metrics.CastleFallTick
 			return res
 		}
 	}
 	res.Error = fmt.Sprintf("Tag %d nach %d Ticks nicht beendet", sc.Days, res.Ticks)
 	return res
+}
+
+// newIsland erzeugt die Insel eines Szenarios mit seinen Monarchen auf Stufe 0 (Lauf und Wiedergabe).
+func newIsland(sc Scenario) (*sim.Island, error) {
+	isl, err := sim.CreateIsland(sc.Seed, []int{sc.Depth}, 1)
+	if err != nil {
+		return nil, err
+	}
+	for range sc.Players {
+		sim.AddIslandPlayer(isl, 0)
+	}
+	return isl, nil
 }

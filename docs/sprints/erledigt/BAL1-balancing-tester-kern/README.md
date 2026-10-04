@@ -1,6 +1,6 @@
 # BAL1 · SIM · Balancing-Tester: Kern und Replay
 
-- **Status:** aktiv
+- **Status:** erledigt
 - **Domäne:** SIM
 - **Reife:** bereit
 - **Einschiebbar:** ja
@@ -63,13 +63,15 @@ keine (Ort des Werkzeugs: Tool in k3c-dev, 🧑 2026-10-04)
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
 | BAL1.1 | `BAL1.1-bots-kennzahlen.md` | Umsetzung | autonom | fertig |
-| BAL1.2 | `BAL1.2-replay-format.md` | Umsetzung | autonom | offen |
-| BAL1.3 | `BAL1.3-replay-k3c-dev.md` | Umsetzung | autonom | offen |
-| BAL1.4 | `BAL1.4-review.md` | Review | autonom | offen |
+| BAL1.2 | `BAL1.2-replay-format.md` | Umsetzung | autonom | fertig |
+| BAL1.3 | `BAL1.3-replay-k3c-dev.md` | Umsetzung | autonom | fertig |
+| BAL1.4 | `BAL1.4-review.md` | Review | autonom | fertig |
 
 Bei `Reife: Entwurf` genügen Stichpunkte mit den Kriterien in Klammern statt Session-Dateien. Vor dem Aktivieren
 wird jede Session als eigene Datei nach `docs/vorlagen/session.md` geschrieben.
 
 ## Abnahme
 
-–
+2026-10-04, Agent (Claude Opus 5.5) in BAL1.4, leichtes Review. AC-01, AC-02: Ergebnis BAL1.1; AC-03 bis AC-05: Ergebnis BAL1.2; AC-06, AC-07: Ergebnis BAL1.3 (AC-07 nach dem Review-Commit erneut grün, `TestGleichzeitigesSpeichern` flaky, B-187).
+Behobener Befund: `replay_run` und `ReadReplay` hatten keine Obergrenze für die Ticks aus der Datei (konnte den MCP-Server blockieren); jetzt höchstens 1 000 000 Ticks, Test `TestZuvieleTicksAbgelehnt`. Neue Tickets: keine. B-159 archiviert, B-099 bleibt eingeplant (BAL2, BAL3).
+Version: v0.5.1 vorgeschlagen (Patch: nur Entwickler-Werkzeug ohne Änderung am Spiel); gesetzt erst nach Bestätigung durch 🧑.
