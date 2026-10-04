@@ -63,7 +63,7 @@ S1.2 ist in drei Dateien geteilt (a, b, c), damit jede Session unter dem Richtwe
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
 | S1.1 | `S1.1-schlag-pool.md` | Umsetzung | autonom | fertig |
-| S1.2a | `S1.2a-skill-rahmen-tank.md` | Umsetzung | autonom | offen |
+| S1.2a | `S1.2a-skill-rahmen-tank.md` | Umsetzung | autonom | in Arbeit |
 | S1.2b | `S1.2b-skills-zauberer-heiler.md` | Umsetzung | autonom | offen |
 | S1.2c | `S1.2c-passive.md` | Umsetzung | autonom | offen |
 | S1.3 | `S1.3-reittier.md` | Umsetzung | autonom | offen |
