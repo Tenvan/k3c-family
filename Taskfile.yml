@@ -202,6 +202,13 @@ tasks:
     cmds:
       - wails dev
 
+  load:
+    desc: 'Lasttest gegen laufenden Server, Bericht nach reports/ (z. B. `task load -- -url http://pi-gaming:8080 -token … -rooms 2 -players 3 -duration night`; feste EXE bin/k3c-load, B-175)'
+    deps: [tmp]
+    cmds:
+      - go build -o bin/k3c-load{{exeExt}} ./cmd/k3c-load
+      - ./bin/k3c-load{{exeExt}} {{.CLI_ARGS}}
+
   balance:run:
     desc: 'Balancing-Tester: Bots spielen eine Szenario-Matrix, Kennzahlen als JSON (z. B. `task balance:run -- --seeds 10 --bots saver --days 5`)'
     deps: [tmp]

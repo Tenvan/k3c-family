@@ -1,6 +1,6 @@
 # LT1.4 · Review und Abnahme des Sprints LT1
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Review
 - **Agent:** autonom
 - **Branch:** lt1/4-review
@@ -36,9 +36,9 @@ Stil, Optimierung, Messung am Pi.
 
 ## Fertig, wenn
 
-- [ ] AC-01 bis AC-05 haben einen Nachweis im Ergebnis der jeweiligen Session oder sind mit Grund und Ticket verschoben.
-- [ ] AC-06 ist nachgewiesen oder als `angenommen, Validierung offen (LT1.3)` geführt.
-- [ ] Schwere Befunde sind behoben oder als Ticket angelegt; `task check` und `task check:go` grün; Sprint liegt unter `docs/sprints/erledigt/`.
+- [x] AC-01 bis AC-05 haben einen Nachweis im Ergebnis der jeweiligen Session oder sind mit Grund und Ticket verschoben.
+- [x] AC-06 ist nachgewiesen oder als `angenommen, Validierung offen (LT1.3)` geführt.
+- [x] Schwere Befunde sind behoben oder als Ticket angelegt; `task check` und `task check:go` grün; Sprint liegt unter `docs/sprints/erledigt/`.
 
 ## Prüfen
 
@@ -49,4 +49,4 @@ task check:go
 
 ## Ergebnis
 
-–
+2026-10-04, Agent (Review). Diff gelesen, ein Befund (Poller-Datenwettlauf in `cmd/k3c-load/main.go`) behoben; Abnahme in der Sprint-README; `task check` und `task check:go` grün; LT1.3 offen am Gerät.

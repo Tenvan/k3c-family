@@ -66,7 +66,7 @@ func (r *recorder) inputs() map[string][]string {
 }
 
 func testConfig(srv *httptest.Server, seed string, d time.Duration, rec *recorder) config {
-	return config{url: srv.URL, token: testToken, seed: seed, rooms: 2, players: 2, duration: d,
+	return config{url: srv.URL, token: testToken, seed: seed, rooms: 2, players: 2, duration: d, interval: 500 * time.Millisecond, target: 10,
 		tag: strings.ReplaceAll(strings.ToLower(seed), "_", ""), sent: rec.sent}
 }
 
@@ -75,7 +75,7 @@ func testConfig(srv *httptest.Server, seed string, d time.Duration, rec *recorde
 func TestLaufSammeltTicksUndRaeumtAuf(t *testing.T) {
 	srv, m, saves, skew := testServer(t)
 	var out, errOut bytes.Buffer
-	args := []string{"-url", srv.URL, "-token", testToken, "-rooms", "2", "-players", "2", "-duration", "5s"}
+	args := []string{"-url", srv.URL, "-token", testToken, "-rooms", "2", "-players", "2", "-duration", "5s", "-interval", "1s", "-target-p99", "10000", "-out", filepath.Join(t.TempDir(), "r")}
 	if code := run(context.Background(), args, func(string) string { return "" }, &out, &errOut); code != 0 {
 		t.Fatalf("Exit %d, stderr: %s", code, errOut.String())
 	}

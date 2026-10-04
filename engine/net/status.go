@@ -34,6 +34,11 @@ func (s *server) status(w http.ResponseWriter, r *http.Request) {
 		"saves":   s.cfg.Saves.Count(), "reports": s.cfg.Reports.Count(),
 		"rooms": []room.Status{}, "failures": []room.Failure{},
 	}
+	if s.cfg.CPU != nil {
+		if pct, ok := s.cfg.CPU(); ok {
+			body["cpu"] = pct
+		}
+	}
 	if s.cfg.Rooms != nil {
 		body["rooms"], body["failures"] = s.cfg.Rooms.Status()
 	}
