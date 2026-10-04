@@ -60,7 +60,6 @@ dann über den Go-Server mit mehreren Räumen und gemischten Spielern.
 
 | Sprint | Domäne | Thema | Reife | Ordner |
 |---|---|---|---|---|
-| BAL2 | SIM | Zielkorridor-Prüfung und `task balance` | bereit | `geplant/BAL2-zielkorridor-pruefung/` |
 | BAL3 | SIM | Bot-Profile, Sensitivität und Grad-Kurven | Entwurf | `geplant/BAL3-bot-profile-sensitivitaet/` |
 | BAL4 | REG | Abgleich Spielmetrik und Simulator | Entwurf | `geplant/BAL4-metrik-abgleich/` |
 | GR1 | CLI | Grafik-Zuordnungstabelle | bereit | `geplant/GR1-grafik-zuordnung/` |
@@ -133,3 +132,4 @@ Gesamtplan und Begründung: [`../plan-weiterentwicklung.md`](../plan-weiterentwi
 | M8 | k3c-dev VIII: Planung über MCP, React-Planungsseite, GitHub-Status (einschiebbar) | `erledigt/M8-dev-planung-mcp/` |
 | BAL1 | Balancing-Tester: Kern und Replay: Bots, Kennzahlen-Report und Replay-Datei in k3c-dev (B-099 teils, B-159; einschiebbar) | `erledigt/BAL1-balancing-tester-kern/` |
 | SO1 | Audio-Kern: Mixer mit Bus-Lautstärke je Gerät, Entsperren per Eingabe, Sound-Atlas, Positions-Dämpfung, Demo-Ton (B-011 teils; einschiebbar; Hörprobe am TV offen) | `erledigt/SO1-audio-kern/` |
+| BAL2 | Zielkorridor-Prüfung und `task balance`: Pass/Fail je Kennzahl für 100 feste Seeds, Vergleich mit Baseline, CI-Bericht (B-157; einschiebbar) | `erledigt/BAL2-zielkorridor-pruefung/` |

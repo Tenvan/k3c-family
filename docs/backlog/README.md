@@ -68,7 +68,6 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-154](B-154-protokoll-bosse-events-inselwechsel.md) | SRV | Idee | hoch | eingeplant | K4 | Das Protokoll kennt Bosse, Phasen, Events und den Inselwechsel |
 | [B-155](B-155-balancing-runde-wirtschaft.md) | REG | Idee | hoch | eingeplant | BR1 | Die Wirtschaft ist in einer Balancing-Runde gegen die Zielkorridore abgestimmt |
 | [B-156](B-156-balancing-runde-kampf-bosse.md) | REG | Idee | hoch | eingeplant | BR2 | Kampf, Gegner und Bosse sind in einer Balancing-Runde gegen die Zielkorridore abgestimmt |
-| [B-157](B-157-zielkorridor-pruefung.md) | SIM | Idee | mittel | eingeplant | BAL2 | Der Balancing-Tester prüft Zielkorridore und meldet Pass oder Fail je Kennzahl |
 | [B-158](B-158-bot-profile-sensitivitaet.md) | SIM | Idee | mittel | eingeplant | BAL3 | Der Tester kennt weitere Bot-Profile, Sensitivitäts-Läufe und Kurven je Schwierigkeitsgrad |
 | [B-160](B-160-abgleich-spielmetrik-simulator.md) | REG | Idee | mittel | eingeplant | BAL4 | Spielmetrik echter Abende und Simulatorwerte sind abgeglichen |
 | [B-161](B-161-grafik-zuordnungstabelle.md) | CLI | Idee | hoch | eingeplant | GR1 | Jedes Spielobjekt hat eine Zuordnung zu Asset und Lizenz oder eine dokumentierte Lücke |
@@ -96,6 +95,7 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-195](B-195-debug-overlay-xbox.md) | PLAT | Problem | mittel | offen | – | Das Debug-Overlay lässt sich auf der Xbox öffnen |
 | [B-197](B-197-partner-zelle-schriftgroesse.md) | CLI | Frage | niedrig | offen | – | Die Schriftregel nennt eine Mindestgröße für die Mitspieler-Zelle |
 | [B-198](B-198-platzhaltertext-schrift-katalog.md) | CLI | Schuld | niedrig | offen | – | Der Platzhaltertext einer ungeladenen Stufe liest seine Schrift aus dem Katalog |
+| [B-157](archiv/B-157-zielkorridor-pruefung.md) | SIM | Idee | mittel | erledigt | BAL2 | Der Balancing-Tester prüft Zielkorridore und meldet Pass oder Fail je Kennzahl |
 | [B-159](archiv/B-159-replay-repro-format.md) | SIM | Idee | mittel | erledigt | BAL1 | Ein Lauf ist als Datei aus Seed und Eingaben wiederholbar |
 | [B-199](B-199-raum-fuenf-stufen.md) | SRV | Problem | mittel | offen | – | Ein neuer Raum legt die Insel mit allen Stufen an, für die es ein Biom gibt |
 | [B-200](B-200-aggressionspool-adern.md) | SIM | Problem | mittel | offen | – | Der Aggressionspool unter Tage bleibt auch mit Adern im Wellen-Korridor |
@@ -110,6 +110,7 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-209](B-209-client-platz-arten.md) | CLI | Schuld | mittel | offen | – | `src/model/data.ts` kennt alle Platz-Arten aus `hub.json` |
 | [B-214](B-214-server-pause.md) | SRV | Idee | mittel | offen | – | Der Server pausiert den Raum im Couch-Raum und schützt den stehenden Monarchen online |
 | [B-215](B-215-texte-eingabe-shell-tools.md) | PLAT | Schuld | niedrig | offen | – | Die Texte von Touch-Overlay, Shell und Werkzeug-Seiten kommen aus den zentralen Textdateien |
+| [B-230](B-230-burg-haelt-nur-47-prozent.md) | REG | Problem | mittel | offen | – | Burg hält Nacht 1–5 nur in 47 % der Seeds (Bot saver), Ziel 75–90 %: Ursache klären |
 | [B-217](B-217-ereignisse-built-playerdown-ort.md) | SIM | Schuld | niedrig | offen | – | Die Ereignisse `built` und `playerDown` tragen ihren Ort |
 | [B-213](B-213-markdown-listen-haekchen.md) | SRV | Problem | niedrig | offen | – | MarkdownView in k3c-dev zeigt nummerierte Listen und Häkchen wie die alte Planungsseite |
 | [B-218](B-218-optionen-ambient-lautstaerke.md) | CLI | Idee | niedrig | offen | – | Die Optionen-Szene regelt auch die Lautstärke des Ambient-Busses |
