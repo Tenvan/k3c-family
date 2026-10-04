@@ -2,9 +2,9 @@
 
 - **Domäne:** PLAT
 - **Typ:** Idee
-- **Prio:** mittel
-- **Status:** offen
-- **Sprint:** –
+- **Prio:** hoch
+- **Status:** eingeplant
+- **Sprint:** DBG3
 - **Erstellt:** 2026-10-04
 - **Spec:** Entwurf
 - **Revision:** 1
