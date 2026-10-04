@@ -1,6 +1,6 @@
 # GR4.2 · Spiel lädt aus Atlanten, Lade-Szene mit Fortschritt und Fehlermeldung
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Branch:** gr4/2-laden-ladeszene
@@ -41,10 +41,10 @@ Nachladen im Hintergrund, neue Grafiken, Effekte (GR5), Messung auf der Xbox (GR
 
 ## Fertig, wenn
 
-- [ ] AC-02: Figuren (und eingebaute Umgebungs-Grafiken) kommen aus Atlanten; Requests vorher/nachher dokumentiert.
-- [ ] AC-03: Lade-Szene zeigt Fortschritt bis alles geladen ist (Nachweis im Browser-Pane).
-- [ ] AC-06: Bei einem Ladefehler zeigt sie eine Meldung mit Dateinamen (Nachweis im Browser-Pane).
-- [ ] AC-05: `task check` und `task build` grün.
+- [x] AC-02: Figuren (und eingebaute Umgebungs-Grafiken) kommen aus Atlanten; Requests vorher/nachher dokumentiert.
+- [x] AC-03: Lade-Szene zeigt Fortschritt bis alles geladen ist (Nachweis im Browser-Pane).
+- [x] AC-06: Bei einem Ladefehler zeigt sie eine Meldung mit Dateinamen (Nachweis im Browser-Pane).
+- [x] AC-05: `task check` und `task build` grün.
 
 ## Prüfen
 
@@ -55,4 +55,16 @@ task build
 
 ## Ergebnis
 
-–
+Nachweis je Kriterium (geprüft im Browser-Pane gegen `task build` + Go-Server, durch den Agenten in diesem Lauf):
+
+- **AC-02** umgesetzt und geprüft: `preloadSprites` lädt per `load.multiatlas` den Atlas aus GR4.1; `createSpriteAnims` baut dieselben Schlüssel `<sheet>-<anim>` über `generateFrameNames`, `makeSprite` nimmt Frame `<sheet>-idle/0`, `worldRenderer.ts` unverändert. Im Browser: 41 Animationen, 9 Sprites der Szene alle auf Textur `atlas`, laufende Animationen `martial-hero-3-idle`, `huntress-2-idle`. **Requests vorher 41 PNGs, nachher 2** (`atlas.json`, `atlas-0.png`). Umgebungs-Grafiken: GR3 nicht gelaufen, betrifft nur die Figuren; Reittiere sind (wie vorher) nicht dabei.
+- **AC-03** geprüft: neue `LoadScene` (`src/scenes/LoadScene.ts`, reine Texte in `loadLogic.ts` mit Test) ist erste Szene in `main.ts`, Balken und Prozenttext aus `progress`, nach `complete` Animationen anlegen und `lobby` starten; im Browser-Pane landet `game.html` in der Lobby (Szene `load` → `lobby`).
+- **AC-06** geprüft: `atlas-0.png` in `dist/` umbenannt (nicht eingecheckt), `game.html` neu geladen: Szene bleibt `load`, roter Balken, Text „Laden fehlgeschlagen: atlas/atlas-0.png …“ plus Eintrag im Client-Log; Datei zurückbenannt.
+- **AC-05** geprüft: `task check` (669 Tests, Typecheck, Lint) und `task build` grün.
+
+Abweichungen und Hinweise:
+
+- „Vorher“ nicht per Netzwerkmitschnitt, sondern aus `data/sprites.json` gezählt (14 Sheets, 41 Animationen, je eine PNG); der alte Loader lud genau diese.
+- Sichtprüfung mit `?autostart=1&mock=1` (zwei Spieler, Split-Screen): Figuren sichtbar und animiert. Der Screenshot-Vergleich für den PR bleibt bei 🧑 (Browser-Pane war im Hochformat, daher klein).
+- Szenen-Reihenfolge: `load` → `lobby` → `game`/`hud`; GameScene hat kein `preload` mehr, Animationen sind global.
+- Ladefehler zeigen nur die Meldung (kein automatischer Neuversuch, Nicht-Ziel).

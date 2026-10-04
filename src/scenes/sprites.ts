@@ -46,29 +46,27 @@ const ANIMS: AnimName[] = ['idle', 'run', 'attack'];
 const USED = new Set([...PLAYER_SPRITES, ...Object.values(TROOP_SPRITES), ...Object.values(ENEMY_SPRITES)].map((s) => s.sheet));
 const textureKey = (sheet: string, anim: AnimName) => `${sheet}-${anim}`;
 
-/** Im preload() der Szene aufrufen. */
+/** Schlüssel des Figuren-Atlas (Phaser-Multiatlas aus `task atlas`, Frames `<sheet>-<anim>/<i>`). */
+export const ATLAS_KEY = 'atlas';
+
+/** Im preload() der Lade-Szene aufrufen: ein Multiatlas statt je Sheet und Animation eine PNG. */
 export function preloadSprites(scene: Phaser.Scene): void {
+  if (!scene.textures.exists(ATLAS_KEY)) scene.load.multiatlas(ATLAS_KEY, 'atlas/atlas.json', 'atlas/');
+}
+
+/** Nach dem Laden aufrufen. Legt die Animationen einmal global an (Schlüssel `<sheet>-<anim>` wie zuvor). */
+export function createSpriteAnims(scene: Phaser.Scene): void {
+  // Pixel-Art beim Vergrößern scharf halten
+  scene.textures.get(ATLAS_KEY).setFilter(Phaser.Textures.FilterMode.NEAREST);
   for (const [sheet, d] of Object.entries(SHEETS)) {
     if (!USED.has(sheet)) continue;
     for (const anim of ANIMS) {
-      if (!d.anims[anim] || scene.textures.exists(textureKey(sheet, anim))) continue;
-      scene.load.spritesheet(textureKey(sheet, anim), `sprites/${sheet}/${anim}.png`, { frameWidth: d.frameWidth, frameHeight: d.frameHeight });
-    }
-  }
-}
-
-/** Im create() nach dem Laden aufrufen. Legt die Animationen einmal global an. */
-export function createSpriteAnims(scene: Phaser.Scene): void {
-  for (const [sheet, d] of Object.entries(SHEETS)) {
-    for (const anim of ANIMS) {
       const a = d.anims[anim];
       const key = textureKey(sheet, anim);
-      if (!a || !scene.textures.exists(key) || scene.anims.exists(key)) continue;
-      // Pixel-Art beim Vergrößern scharf halten
-      scene.textures.get(key).setFilter(Phaser.Textures.FilterMode.NEAREST);
+      if (!a || scene.anims.exists(key)) continue;
       scene.anims.create({
         key,
-        frames: scene.anims.generateFrameNumbers(key, { start: 0, end: a.frames - 1 }),
+        frames: scene.anims.generateFrameNames(ATLAS_KEY, { prefix: `${key}/`, start: 0, end: a.frames - 1 }),
         frameRate: a.fps,
         repeat: anim === 'attack' ? 0 : -1,
       });
@@ -79,7 +77,7 @@ export function createSpriteAnims(scene: Phaser.Scene): void {
 /** Figur mit Fußpunkt bei (0, 0) bzw. spec.y darüber. */
 export function makeSprite(scene: Phaser.Scene, spec: SpriteSpec): Phaser.GameObjects.Sprite {
   const d = SHEETS[spec.sheet];
-  const sprite = scene.add.sprite(0, -(spec.y ?? 0), textureKey(spec.sheet, 'idle'));
+  const sprite = scene.add.sprite(0, -(spec.y ?? 0), ATLAS_KEY, `${textureKey(spec.sheet, 'idle')}/0`);
   sprite.setOrigin(d.originX, d.originY).setScale(d.scale * (spec.scale ?? 1));
   if (spec.tint) sprite.setTint(Phaser.Display.Color.HexStringToColor(spec.tint).color);
   if (spec.alpha !== undefined) sprite.setAlpha(spec.alpha);
