@@ -62,7 +62,7 @@ keine
 |---|---|---|---|---|
 | GR5.1 | `GR5.1-effekte-aus-events.md` | Umsetzung | autonom | fertig |
 | GR5.2 | `GR5.2-abschalten-kamera-vibration.md` | Umsetzung | autonom | fertig |
-| GR5.3 | `GR5.3-review.md` | Review | autonom | offen |
+| GR5.3 | `GR5.3-review.md` | Review | autonom | in Arbeit |
 
 Bei `Reife: Entwurf` genügen Stichpunkte mit den Kriterien in Klammern statt Session-Dateien. Vor dem Aktivieren
 wird jede Session als eigene Datei nach `docs/vorlagen/session.md` geschrieben.

@@ -1,6 +1,6 @@
 # GR5.3 · Review und Abnahme des Sprints GR5
 
-- **Status:** offen
+- **Status:** in Arbeit
 - **Typ:** Review
 - **Agent:** autonom
 - **Branch:** gr5/3-review
