@@ -1,11 +1,11 @@
 # SO1 · CLI · Audio-Kern
 
-- **Status:** geplant
+- **Status:** aktiv
 - **Domäne:** CLI
 - **Reife:** bereit
 - **Einschiebbar:** ja
 - **Tickets:** B-011
-- **Start-Commit:** –
+- **Start-Commit:** 1fa9529
 - **Spec:** freigegeben
 - **Revision:** 1
 - **Freigabe:** 2026-10-04, Chat (Ralf), Revision 1, durch 🧑; umfasst B-011; mit Änderungen aus dem Spec-Review (Format und Autoplay nach Xbox-Messung B-166, Verweis in AC-03 korrigiert)
@@ -61,7 +61,7 @@ Auf der Xbox läuft der `AudioContext` schon vor der ersten Geste, eine Controll
 
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
-| SO1.1 | `SO1.1-mixer-lautstaerke.md` | Umsetzung | autonom | offen |
+| SO1.1 | `SO1.1-mixer-lautstaerke.md` | Umsetzung | autonom | in Arbeit |
 | SO1.2 | `SO1.2-entsperren-format-atlas.md` | Umsetzung | autonom | offen |
 | SO1.3 | `SO1.3-daempfung-demo.md` | Umsetzung | autonom | offen |
 | SO1.4 | `SO1.4-review.md` | Review | autonom | offen |

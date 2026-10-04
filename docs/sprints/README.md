@@ -10,6 +10,7 @@ Reihenfolge in Wellen, Bahnen je Domäne und Zuordnung Mensch/autonom (zwei Acco
 
 | Sprint | Domäne | Thema | Am Ende sichtbar | Ordner |
 |---|---|---|---|---|
+| SO1 | CLI | Audio-Kern (einschiebbar) | ein Demo-Ton auf Ereignis am TV, getrennt regelbare Lautstärken, Verhalten im Split-Screen | `aktiv/SO1-audio-kern/` |
 
 ## Offen am Gerät
 
@@ -65,7 +66,6 @@ dann über den Go-Server mit mehreren Räumen und gemischten Spielern.
 | GR3 | CLI | Grafik im Renderer | Entwurf | `geplant/GR3-grafik-renderer/` |
 | GR5 | CLI | Juice: Treffer, Screenshake, Münzen | Entwurf | `geplant/GR5-juice/` |
 | RL1 | INF | Release-Checkliste | bereit | `geplant/RL1-release-checkliste/` |
-| SO1 | CLI | Audio-Kern | bereit | `geplant/SO1-audio-kern/` |
 | SO2 | CLI | SFX-Katalog und Einbau | Entwurf | `geplant/SO2-sfx-katalog/` |
 | SO3 | PLAT | Hörprobenseite `soundtest.html` | bereit | `geplant/SO3-hoerprobenseite/` |
 | SO4 | CLI | Musik je Zustand | Entwurf | `geplant/SO4-musik/` |

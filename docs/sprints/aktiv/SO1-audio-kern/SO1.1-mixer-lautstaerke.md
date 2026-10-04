@@ -1,6 +1,6 @@
 # SO1.1 · Mixer mit Bussen und Lautstärke je Gerät
 
-- **Status:** offen
+- **Status:** in Arbeit
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Branch:** so1/1-mixer-lautstaerke
