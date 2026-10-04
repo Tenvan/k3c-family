@@ -68,6 +68,7 @@ dann über den Go-Server mit mehreren Räumen und gemischten Spielern.
 | RL1 | INF | Release-Checkliste | bereit | `geplant/RL1-release-checkliste/` |
 | SO2 | CLI | SFX-Katalog und Einbau | Entwurf | `geplant/SO2-sfx-katalog/` |
 | SO4 | CLI | Musik je Zustand | Entwurf | `geplant/SO4-musik/` |
+| DBG3 | PLAT | Dungeon-Master-Seite /dm | Entwurf | `geplant/DBG3-dungeon-master-seite/` |
 
 Gesamtplan und Begründung: [`../plan-weiterentwicklung.md`](../plan-weiterentwicklung.md). Offene Entscheidungen: [`../fragenkatalog.md`](../fragenkatalog.md).
 

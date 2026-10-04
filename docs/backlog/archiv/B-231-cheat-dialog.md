@@ -3,10 +3,10 @@
 - **Domäne:** CLI
 - **Typ:** Idee
 - **Prio:** hoch
-- **Status:** offen
+- **Status:** erledigt
 - **Sprint:** –
 - **Erstellt:** 2026-10-04
-- **Spec:** Entwurf
+- **Spec:** rückwirkend
 - **Revision:** 1
 - **Freigabe:** –
 
