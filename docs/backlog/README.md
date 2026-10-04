@@ -112,6 +112,7 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-230](B-230-burg-haelt-nur-47-prozent.md) | REG | Problem | mittel | offen | – | Burg hält Nacht 1–5 nur in 47 % der Seeds (Bot saver), Ziel 75–90 %: Ursache klären |
 | [B-217](B-217-ereignisse-built-playerdown-ort.md) | SIM | Schuld | niedrig | offen | – | Die Ereignisse `built` und `playerDown` tragen ihren Ort |
 | [B-213](B-213-markdown-listen-haekchen.md) | SRV | Problem | niedrig | offen | – | MarkdownView in k3c-dev zeigt nummerierte Listen und Häkchen wie die alte Planungsseite |
+| [B-218](B-218-optionen-ambient-lautstaerke.md) | CLI | Idee | niedrig | offen | – | Die Optionen-Szene regelt auch die Lautstärke des Ambient-Busses |
 
 ## Archiv
 
