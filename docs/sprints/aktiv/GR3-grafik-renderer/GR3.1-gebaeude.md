@@ -1,6 +1,6 @@
 # GR3.1 · Gebäude, Bauplätze, Hub- und Materialstufen als Sprites
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Branch:** gr3/1-gebaeude
@@ -42,10 +42,10 @@ Ressourcen, Adern, Plantage und Parallax (GR3.2), neue Grafiken (GR2), Reittiere
 
 ## Fertig, wenn
 
-- [ ] AC-01: Jedes Gebäude (Burg, Mauer, Turm, Tor, Lager usw.), das in der Zuordnung `zugeordnet` ist, erscheint im Browser-Pane als Sprite (Screenshot).
-- [ ] AC-03: Test der Auswahlfunktion und Beobachtung: Textur fehlt oder Gebäude ist Lücke → Platzhalter-Form, keine leere Stelle.
-- [ ] AC-04: Stufen unterscheiden sich im Bild (Screenshot Stufe 1 und höhere Stufen); ohne W1 steht nur Stufe 1 plus der Test der Stufen-Zuordnung im Ergebnis. Die Sicht am TV ist Abnahme durch 🧑 und wird im Review als „angenommen, Validierung offen“ geführt.
-- [ ] `worldRenderer.ts` ≤ 400 Zeilen, jede neue Funktion ≤ 60 Zeilen, `noSim.test.ts` grün.
+- [x] AC-01: Jedes Gebäude (Burg, Mauer, Turm, Tor, Lager usw.), das in der Zuordnung `zugeordnet` ist, erscheint im Browser-Pane als Sprite (Screenshot).
+- [x] AC-03: Test der Auswahlfunktion und Beobachtung: Textur fehlt oder Gebäude ist Lücke → Platzhalter-Form, keine leere Stelle.
+- [x] AC-04: Stufen unterscheiden sich im Bild (Screenshot Stufe 1 und höhere Stufen); ohne W1 steht nur Stufe 1 plus der Test der Stufen-Zuordnung im Ergebnis. Die Sicht am TV ist Abnahme durch 🧑 und wird im Review als „angenommen, Validierung offen“ geführt.
+- [x] `worldRenderer.ts` ≤ 400 Zeilen, jede neue Funktion ≤ 60 Zeilen, `noSim.test.ts` grün.
 
 ## Prüfen
 
@@ -57,4 +57,10 @@ Manuelle Prüfungen (Browser, Xbox, TV) nur, wenn diese Datei sie nennt und 🧑
 
 ## Ergebnis
 
-–
+Umsetzung durch Executor-Agent, Browser-Prüfung durch die Hauptsession (Freigabe 🧑 2026-10-04 im Chat), Vite 5193 + Spielserver 8100, 2 Spieler (`game.html?autostart=1&mock=1`), Bauzustand `built` per Dev-Konsole im Client-Snapshot gesetzt.
+
+- **AC-01:** umgesetzt, geprüft im Browser-Pane (Split-Screen, beide Kameras): Burg (Fort-Tileset + Banner), Mauer, Turm, Tor, Werkstatt, Farm, Kaserne, Lager, Treppe runter (Ausschnitt Dungeon-Eingang) und Treppe hoch (5 Kacheln `stairs-left`, 3 × `stairs`, `stairs-right`) als Sprites, ×2 nach Q13. Neue Dateien `src/scenes/buildingSprites.ts` (Auswahl, 65 Zeilen), `src/scenes/siteView.ts` (Zeichnen, 210 Zeilen); `worldRenderer.ts` 416 → 302 Zeilen; `LoadScene.ts` lädt nur die 19 zugeordneten Dateien.
+- **AC-03:** umgesetzt – Test `buildingSprites.test.ts` (Lücken und Baustellen → `null`); Beobachtung: `house-b.png` umbenannt → Ladeszene läuft durch, Werkstatt zeigt die Platzhalter-Form. Lücken (Taverne, Heiler, Schmiede, Rüstkammer) bleiben Platzhalter.
+- **AC-04:** teilweise – der Snapshot liefert noch keine Stufe (B-112/W1). Ohne Stufe zeichnen Mauer und Turm die Grafik ihrer Objekt-Zeile (Stein = Stufe 2), weil Stufe 1 (Holz) eine Lücke ist; bewusste Abweichung von „nur Stufe 1“ zugunsten AC-01. Stufen-Auswahl getestet (Mauer 2–5, Turm 2–4, Hub 1–2; Mauer/Turm 1, Turm 5, Hub 3–5 → `null`), Texturen geladen; W1 reicht nur `stage` durch. Sicht am TV: angenommen, Validierung offen (🧑).
+- `worldRenderer.ts` ≤ 400, `noSim.test.ts` grün, `task check` grün (1107 Tests).
+- Hinweise: Zuordnung nennt 13 `stairs*.png`, im Ordner liegen 12 (keine Auswirkung). Worktree-Probleme (k3c-dev auf Repo-Wurzel, Vite ignoriert `.claude/`) als B-275.

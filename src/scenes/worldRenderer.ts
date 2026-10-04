@@ -1,54 +1,21 @@
 import Phaser from 'phaser';
 import { GROUND_Y, PLAYER_COLORS, UNIT_PX } from '../core/constants';
-import { currentLanguage, nameOf, t } from '../core/texts';
-import { BUILDINGS, TROOPS } from '../model/data';
+import { t } from '../core/texts';
 import { fontStyle } from './fontRules';
 import { createRider, updateRider } from './mountView';
-import { canAfford, hasDepth, isOnTower } from './viewRules';
+import { TEXT, createSiteView, drawCastle, updateSiteView } from './siteView';
+import { hasDepth, isOnTower } from './viewRules';
 import { ENEMY_SPRITES, PLAYER_SPRITES, TROOP_SPRITES, face, makeSprite, playAnim, spriteTop } from './sprites';
 import type { Coin, Enemy, Pickup, Player, Projectile, ResourceNode, Site, Troop, World } from '../model/types';
 
 /**
  * Zeichnet den Simulationszustand. Figuren (Monarchen, Truppen, Gegner) sind animierte Sprites (sprites.ts),
- * Gebäude und Ressourcen noch Platzhalter-Formen. Hält pro Entität (id) ein Phaser-Objekt
+ * Burg und Bauplätze zeichnet siteView.ts, Ressourcen sind noch Platzhalter-Formen. Hält pro Entität (id) ein Phaser-Objekt
  * und legt an/entfernt sie passend zum Zustand.
  */
 
 const U = UNIT_PX;
 const G = GROUND_Y;
-const PRICE_TAG_RANGE = 6;
-const TEXT = { stroke: '#000000', strokeThickness: 4, fontStyle: 'bold' };
-
-const SITE_SIZE: Record<Site['kind'], [number, number]> = {
-  wall: [36, 150],
-  tower: [70, 260],
-  gate: [40, 160],
-  workshop: [150, 120],
-  storage: [130, 100],
-  stairsUp: [110, 110],
-  stairsDown: [110, 110],
-  farm: [140, 90],
-  barracks: [150, 130],
-  tavern: [130, 120],
-  healer: [100, 100],
-  smithy: [120, 110],
-  armory: [130, 120],
-};
-const SITE_COLOR: Record<Site['kind'], number> = {
-  wall: 0x8d99ae,
-  tower: 0x9c6644,
-  gate: 0x7f5539,
-  workshop: 0xbc6c25,
-  storage: 0x7f5539,
-  stairsUp: 0x6c757d,
-  stairsDown: 0x343a40,
-  farm: 0xa7c957,
-  barracks: 0x6c584c,
-  tavern: 0xb08968,
-  healer: 0xe5e5e5,
-  smithy: 0x495057,
-  armory: 0x5c677d,
-};
 
 type View = Phaser.GameObjects.Container;
 type Sprite = Phaser.GameObjects.Sprite;
@@ -142,7 +109,7 @@ export class WorldRenderer {
     this.castleHp = this.put(scene.add.container(world.castle.x * U, G - 300, bar(scene, 0, 240, 0x52b788)).setDepth(5));
 
     this.nodes = this.layer((n) => this.createNode(n), (v, n) => this.updateNode(v, n));
-    this.sites = this.layer((s) => this.createSite(s), (v, s) => this.updateSite(v, s));
+    this.sites = this.layer((s) => createSiteView(scene, s), (v, s) => updateSiteView(scene, v, s, this.world));
     this.pickups = this.layer((p) => this.createPickup(p), () => {});
     this.coins = this.layer((c) => scene.add.container(c.x * U, G - 8, [scene.add.circle(0, 0, 8, 0xffd166).setStrokeStyle(2, 0x9c6644)]).setDepth(6), () => {});
     this.troops = this.layer(
@@ -190,10 +157,7 @@ export class WorldRenderer {
 
   private drawStatic(): void {
     const { scene, world } = this;
-    const x = world.castle.x * U;
-    this.put(scene.add.rectangle(x, G - 130, 300, 260, 0x6c757d).setStrokeStyle(4, 0x343a40));
-    this.put(scene.add.rectangle(x, G - 40, 60, 80, 0x343a40));
-    for (const dx of [-120, -40, 40, 120]) this.put(scene.add.rectangle(x + dx, G - 275, 40, 30, 0x6c757d).setStrokeStyle(4, 0x343a40));
+    drawCastle(scene, world.castle.x * U, (o) => this.put(o));
 
     for (const e of world.level.entities) {
       const ex = e.x * U;
@@ -237,76 +201,6 @@ export class WorldRenderer {
     (v.getAt(i + 1) as Phaser.GameObjects.Rectangle).setVisible(n.marked);
     setBar(v, i + 2, n.progress, n.progress > 0);
     v.setScale(1, 1 - n.progress * 0.3);
-  }
-
-  // ---------- Bauplätze ----------
-
-  private createSite(s: Site): View {
-    const g = this.scene.add.graphics();
-    const label = this.scene.add.text(0, 0, '', { ...TEXT, ...fontStyle('priceTag') }).setOrigin(0.5, 1);
-    return this.scene.add.container(s.x * U, G, [g, label]).setDepth(2);
-  }
-
-  private updateSite(v: View, s: Site): void {
-    const near = this.world.players.some((p) => p.respawnIn <= 0 && Math.abs(p.x - s.x) < PRICE_TAG_RANGE);
-    const data = BUILDINGS[s.kind];
-    const key = [s.state, s.paidGold, Math.round(s.buildProgress * 20), Math.round((s.hp / s.maxHp) * 20), s.bows, s.bowPaidGold, near, canAfford(this.world.stock, data.cost), currentLanguage()].join('|');
-    if (v.getData('key') === key) return;
-    v.setData('key', key);
-
-    const g = v.getAt(0) as Phaser.GameObjects.Graphics;
-    const label = v.getAt(1) as Phaser.GameObjects.Text;
-    g.clear();
-    label.setText('');
-    const [w, h] = SITE_SIZE[s.kind];
-
-    if (s.state === 'built') {
-      const color = SITE_COLOR[s.kind];
-      g.fillStyle(color).fillRect(-w / 2, -h, w, h).lineStyle(4, 0x343a40).strokeRect(-w / 2, -h, w, h);
-      if (s.kind === 'tower') g.fillStyle(0x6f4518).fillRect(-w / 2 - 15, -h - 10, w + 30, 14);
-      if (s.kind === 'stairsUp' || s.kind === 'stairsDown') {
-        // Stufen als Treppe, dazu ein Schild wohin es geht
-        for (let i = 0; i < 5; i++) g.fillStyle(0x495057).fillRect(-w / 2 + i * (w / 5), -((i + 1) * h) / 5, w / 5, ((i + 1) * h) / 5);
-        label.setPosition(0, -h - 12).setText(siteName(s.kind)).setColor('#ffd166');
-      }
-      if (s.hp < s.maxHp) this.drawBar(g, -h - 30, 80, s.hp / s.maxHp, 0x52b788);
-      if (s.kind === 'workshop') {
-        for (let i = 0; i < s.bows; i++) g.lineStyle(4, 0xffd166).beginPath().arc(-40 + i * 30, -60, 14, -Math.PI / 2, Math.PI / 2).strokePath();
-        const price = TROOPS.archer.cost ?? {};
-        if (near && s.bows < (data.bowRack ?? 0)) this.drawPrice(g, label, -h - 20, price.gold ?? 0, s.bowPaidGold, t('site.bow'), price);
-      }
-      return;
-    }
-
-    // Noch nicht gebaut: Umriss + Preisschild bzw. Baufortschritt
-    g.lineStyle(3, 0xffffff, 0.5).strokeRect(-w / 2, -h, w, h);
-    if (s.buildProgress > 0) {
-      g.fillStyle(0xdda15e, 0.8).fillRect(-w / 2, -h * s.buildProgress, w, h * s.buildProgress);
-    }
-    if (s.state === 'unpaid' && near) this.drawPrice(g, label, -h - 20, data.cost.gold ?? 0, s.paidGold, siteName(s.kind), data.cost);
-    if (s.state === 'waitingMaterial') label.setPosition(0, -h - 20).setText(`${siteName(s.kind)}: ${missing(this.world.stock, data.cost)}`).setColor('#ff8fa3');
-    if (s.state === 'waitingWorker') label.setPosition(0, -h - 20).setText(s.buildProgress > 0 ? '' : t('site.waitingWorker', { name: siteName(s.kind) })).setColor('#ffffff');
-  }
-
-  /** Münz-Slots (K2C): gefüllt = bezahlt. Baumaterial steht darüber. */
-  private drawPrice(g: Phaser.GameObjects.Graphics, label: Phaser.GameObjects.Text, y: number, total: number, paid: number, name: string, cost: Record<string, number | undefined>): void {
-    const perRow = 10;
-    for (let i = 0; i < total; i++) {
-      const row = Math.floor(i / perRow);
-      const inRow = Math.min(perRow, total - row * perRow);
-      const cx = (i % perRow) * 22 - ((inRow - 1) * 22) / 2;
-      const cy = y - row * 22;
-      g.lineStyle(2, 0xffd166).strokeCircle(cx, cy, 8);
-      if (i < paid) g.fillStyle(0xffd166).fillCircle(cx, cy, 8);
-    }
-    const material = (['wood', 'stone', 'copper'] as const).filter((r) => cost[r]).map((r) => `${cost[r]} ${resourceName(r)}`);
-    const enough = canAfford(this.world.stock, cost);
-    label.setPosition(0, y - Math.ceil(total / perRow) * 22).setText([name, ...material].join(' · ')).setColor(enough ? '#ffffff' : '#ff8fa3');
-  }
-
-  private drawBar(g: Phaser.GameObjects.Graphics, y: number, width: number, fraction: number, color: number): void {
-    g.fillStyle(0x000000, 0.6).fillRect(-width / 2, y, width, 8);
-    g.fillStyle(color).fillRect(-width / 2, y, width * Phaser.Math.Clamp(fraction, 0, 1), 8);
   }
 
   // ---------- Truppen ----------
@@ -405,12 +299,4 @@ export class WorldRenderer {
   }
 }
 
-export const resourceName = (r: 'wood' | 'stone' | 'copper'): string => nameOf('res', r, r);
-export const siteName = (kind: Site['kind']): string => nameOf('site', kind, BUILDINGS[kind].name);
-
-function missing(stock: World['stock'], cost: Record<string, number | undefined>): string {
-  const parts = (['wood', 'stone', 'copper'] as const)
-    .filter((r) => (cost[r] ?? 0) > stock[r])
-    .map((r) => t('site.missing', { n: (cost[r] ?? 0) - stock[r], res: resourceName(r) }));
-  return parts.join(', ') || t('site.ready');
-}
+export { resourceName, siteName } from './siteView';
