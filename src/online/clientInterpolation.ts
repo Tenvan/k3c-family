@@ -1,9 +1,8 @@
 import type { WorldState } from './clientProtocol';
 
 /**
- * Interpolation zwischen den zwei neuesten Zuständen (B-039): Die Darstellung läuft einen Tick hinter dem Server.
- * Bewegliche Einträge (mit `id` und `x`) gleiten linear, alles andere springt zum neueren Zustand.
- * Es gibt keine Extrapolation: Fällt ein Zustand aus, bleiben die Figuren stehen.
+ * Überblendung zwischen zwei Zuständen (B-039, B-277): Bewegliche Einträge (mit `id` und `x`) gleiten linear,
+ * alles andere springt zum neueren Zustand. `alpha` > 1 extrapoliert (die Grenze setzt `clientTimeline.ts`).
  */
 
 const MOVING = ['players', 'troops', 'enemies', 'projectiles'] as const;
@@ -25,16 +24,11 @@ function blendList<T extends Mover>(from: readonly T[], to: readonly T[], alpha:
   });
 }
 
-/** Zustand zwischen `a` (älter) und `b` (neuer): `alpha` 0 = a, 1 = b. */
+/** Zustand zwischen `a` (älter) und `b` (neuer): `alpha` 0 = a, 1 = b, darüber in derselben Richtung weiter. */
 export function interpolate(a: WorldState, b: WorldState, alpha: number): WorldState {
-  if (alpha >= 1) return b;
+  if (alpha === 1) return b;
   const t = Math.max(0, alpha);
   const next: WorldState = { ...b };
   for (const key of MOVING) (next[key] as Mover[]) = blendList(a[key] as Mover[], b[key] as Mover[], t);
   return next;
-}
-
-/** Anteil des Weges von Zustand a nach b: beginnt beim Eintreffen von b und dauert einen Tick. */
-export function blendAlpha(now: number, receivedAt: number, tickMs: number): number {
-  return Math.min(1, Math.max(0, (now - receivedAt) / tickMs));
 }

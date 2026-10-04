@@ -4,6 +4,7 @@ import type { RoomClient } from '../online/clientConnection';
 import type { World } from '../model/types';
 import { DEV_ACTIONS, devMessage, pauseMessage, roomDevMode } from './debugActions';
 import { VERSION_KEY, debugLines, type DebugWorld } from './debugOverlay';
+import type { GameScene } from './GameScene';
 import { HOLD_IDLE, holdStep, listenTaps, type DebugGesture, type HoldState } from './debugGestures';
 import { CheatDialog, DEV_FOCUS_KEY, PAD_FOCUS, focusStep, type FocusEdges, type FocusState } from './debugOverlayPanel';
 
@@ -51,7 +52,7 @@ export class DebugOverlay {
     this.text.setVisible(this.shown);
     this.updateDialog(client, world);
     if (!this.shown) return;
-    const lines = debugLines({ client, protocol: PROTOCOL_VERSION, world, fps: this.scene.game.loop.actualFps, now: performance.now(), version: this.scene.registry.get(VERSION_KEY) as string | undefined });
+    const lines = debugLines({ client, protocol: PROTOCOL_VERSION, world, fps: this.scene.game.loop.actualFps, now: performance.now(), delayMs: (this.scene.scene.get('game') as GameScene | null)?.delayMs, version: this.scene.registry.get(VERSION_KEY) as string | undefined });
     this.text.setText(lines);
   }
 

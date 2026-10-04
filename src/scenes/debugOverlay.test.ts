@@ -78,6 +78,12 @@ describe('debugEnabled (AC-02)', () => {
     expect(debugLines(input()).some((l) => l.startsWith('Zeit'))).toBe(false);
   });
 
+  it('Verzögerung der Zeitleiste in ms nach dem Snapshot-Alter (B-277)', () => {
+    const lines = debugLines(input({ delayMs: 33.3 }));
+    expect(lines[lines.indexOf('letzter Snapshot 31 ms') + 1]).toBe('Puffer 33 ms');
+    expect(debugLines(input()).some((l) => l.startsWith('Puffer'))).toBe(false);
+  });
+
   it('forbidden nach einer Dev-Aktion: Hinweis im Overlay', () => {
     const c = client({ errorCode: 'forbidden', notice: 'Nur im Dev-Mode erlaubt' });
     expect(debugLines(input({ client: c }))).toContain('Dev abgelehnt: Nur im Dev-Mode erlaubt');

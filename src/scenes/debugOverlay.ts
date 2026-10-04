@@ -34,6 +34,8 @@ export interface DebugInput {
   fps: number | null;
   /** `env.now()` des Clients (gleiche Uhr wie `lastSnapshotAt`) */
   now: number;
+  /** Verzögerung der Zeitleiste in ms (B-277); fehlt = keine Zeile */
+  delayMs?: number;
   /** Versionszeile `Client … · Server …` (src/core/version.ts); fehlt = keine Zeile */
   version?: string;
 }
@@ -76,6 +78,7 @@ export function debugLines(i: DebugInput): string[] {
   if (c.status === 'connecting') return [...lines, `${num(i.fps)} FPS`, ...(i.version ? [i.version] : [])];
   const age = c.lastSnapshotAt === null ? null : i.now - c.lastSnapshotAt;
   lines.push(`letzter Snapshot ${num(age)} ms`);
+  if (i.delayMs !== undefined) lines.push(`Puffer ${num(i.delayMs)} ms`);
   if (world) {
     lines.push(`Tag ${world.cycle.day} · ${world.enemies.length} Gegner · ${world.troops.length} Truppen · ${world.players.length} Spieler`);
     if (world.devTimescale !== undefined) lines.push(world.devPaused ? 'Raum angehalten' : `Zeit ${world.devTimescale}×`);

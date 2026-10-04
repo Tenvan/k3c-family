@@ -5,7 +5,7 @@ import { GamepadInput, KeyboardInput, type PlayerInput } from '../input/playerIn
 import { TouchInput, wantsTouchControls } from '../input/touchInput';
 import type { LevelInfo, RoomClient } from '../online/clientConnection';
 import { applyState, createViewWorld } from '../online/clientWorld';
-import { blendAlpha, interpolate } from '../online/clientInterpolation';
+import { Timeline } from '../online/clientTimeline';
 import type { Frame } from '../online/clientConnection';
 import type { GameEvent, World } from '../model/types';
 import { computeLayout, type Cell } from './layout';
@@ -68,7 +68,8 @@ export class GameScene extends Phaser.Scene {
   private nightFx: Phaser.Filters.ColorMatrix[] = [];
   private slots!: LocalSlots<PlayerInput>;
   private level: LevelInfo | null = null;
-  private prev: Frame | null = null;
+  /** Gezeichnete Zeitleiste (B-277); `cur` ist der neueste empfangene Frame (Effekte) */
+  private timeline!: Timeline;
   private cur: Frame | null = null;
   private cells: Cell[] = [];
   private layoutKey = '';
@@ -87,6 +88,11 @@ export class GameScene extends Phaser.Scene {
     return this.data_.client;
   }
 
+  /** Verzögerung der Zeitleiste in ms (Debug-Overlay) */
+  get delayMs(): number {
+    return this.timeline.delayMs;
+  }
+
   init(data: GameSceneData): void {
     this.data_ = data;
     this.pendingEvents.length = 0;
@@ -99,7 +105,8 @@ export class GameScene extends Phaser.Scene {
     this.holders = [];
     this.buildSpots.clear();
     this.level = null;
-    this.prev = this.cur = null;
+    this.timeline = new Timeline(1000 / data.client.tickHz);
+    this.cur = null;
     this.layoutKey = '';
     this.partnerMonarch = null;
     this.menuPress = new MenuPress();
@@ -220,10 +227,11 @@ export class GameScene extends Phaser.Scene {
       if (this.level) this.dropStage(this.level.depth); // neue Stufe: nur deren Einheit neu aufbauen, nichts mit der alten mischen
       this.level = this.client.level;
       this.world_ = undefined;
-      this.prev = this.cur = null;
+      this.timeline = new Timeline(1000 / this.client.tickHz); // Puffer leeren
+      this.cur = null;
     }
     for (const frame of this.client.takeFrames()) {
-      this.prev = this.cur;
+      this.timeline.push(frame);
       this.cur = frame;
       this.pendingEvents.push(...frame.state.events);
       this.spawnEffects(frame.state.events);
@@ -275,9 +283,8 @@ export class GameScene extends Phaser.Scene {
 
   private draw(): void {
     const level = this.client.level;
-    if (!this.cur || !level) return;
-    const alpha = blendAlpha(performance.now(), this.cur.receivedAt, 1000 / this.client.tickHz);
-    const state = this.prev ? interpolate(this.prev.state, this.cur.state, alpha) : this.cur.state;
+    const state = this.timeline.sample(performance.now());
+    if (!state || !level) return;
     if (this.world_) applyState(this.world_, state);
     else {
       this.world_ = createViewWorld(level, state);

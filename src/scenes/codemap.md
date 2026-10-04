@@ -20,7 +20,7 @@ Presentation Layer des Browser-Clients (Phaser 4): Szenen, Kamera-Layout, Render
 
 1. `main.ts` registriert die Szenen; `LoadScene` lädt den Atlas (`preloadSprites`, `createSpriteAnims`) und startet `LobbyScene`.
 2. `LobbyScene` führt `LobbyFlow`/`applyCommand` gegen `RoomClient`; bei Beitritt startet `GameScene` (`GameSceneData`).
-3. `GameScene.update()`: Eingaben aus Keyboard/Gamepad/Touch → `LocalSlots` → Kommandos an `RoomClient`; `takeFrames()` übernimmt Frames, interpoliert (`interpolate`, `applyState`) und sammelt `GameEvent`s.
+3. `GameScene.update()`: Eingaben aus Keyboard/Gamepad/Touch → `LocalSlots` → Kommandos an `RoomClient`; `takeFrames()` schiebt Frames in die `Timeline` und löst `GameEvent`s sofort je Frame aus; `draw()` zeichnet `timeline.sample(now)` über `applyState` (Verzögerung `delayMs` im Debug-Overlay).
 4. `spawnEffects()` je Event: `feedback()` (Shake/Rumble), `effectFor` → `StageEffects.spawn`, `audioCore().onEvent(...)` mit `listeners()` (Kamera-Ausschnitte).
 5. `StageView`/`WorldRenderer` zeichnen die `World` je Stufe in die Layer der Zellen; `showOnly` ordnet Kameras zu.
 6. `HudScene` liest `GameScene.hudCells()` und `pendingEvents`, zeichnet Gold, Vorrat, Meldungen, `RadarLayer` und `DebugOverlay`.
@@ -29,4 +29,4 @@ Presentation Layer des Browser-Clients (Phaser 4): Szenen, Kamera-Layout, Render
 ## Integration
 
 - Konsument: `src/main.ts` (Szenen-Registrierung, `VERSION_KEY`); `src/tools/testScenarios.test.ts`.
-- Abhängigkeiten: `src/online/` (`RoomClient`, `clientWorld`, `clientInterpolation`, `clientProtocol`), `src/model/` (`types`, `data`, `biome`), `src/input/` (`playerInput`, `touchInput`), `src/audio/audioCore`, `src/core/` (`constants`, `texts`, `settings`, `fullscreen`, `clientLog`), `data/sprites.json`, Phaser.
+- Abhängigkeiten: `src/online/` (`RoomClient`, `clientWorld`, `clientTimeline`, `clientProtocol`), `src/model/` (`types`, `data`, `biome`), `src/input/` (`playerInput`, `touchInput`), `src/audio/audioCore`, `src/core/` (`constants`, `texts`, `settings`, `fullscreen`, `clientLog`), `data/sprites.json`, Phaser.
