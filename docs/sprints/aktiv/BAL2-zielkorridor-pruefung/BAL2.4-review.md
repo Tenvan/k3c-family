@@ -1,6 +1,6 @@
 # BAL2.4 · Review und Abnahme des Sprints BAL2
 
-- **Status:** offen
+- **Status:** in Arbeit
 - **Typ:** Review
 - **Agent:** autonom
 - **Branch:** bal2/4-review

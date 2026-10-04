@@ -65,7 +65,7 @@ keine (Zahlen: `docs/rules/zielkorridore.md`, F1 erledigt, Q02)
 | BAL2.1 | `BAL2.1-korridore-bewertung.md` | Umsetzung | autonom | fertig |
 | BAL2.2 | `BAL2.2-task-balance-bericht.md` | Umsetzung | autonom | fertig |
 | BAL2.3 | `BAL2.3-ci-lauf.md` | Umsetzung | autonom | fertig |
-| BAL2.4 | `BAL2.4-review.md` | Review | autonom | offen |
+| BAL2.4 | `BAL2.4-review.md` | Review | autonom | in Arbeit |
 
 Bei `Reife: Entwurf` genügen Stichpunkte mit den Kriterien in Klammern statt Session-Dateien. Vor dem Aktivieren
 wird jede Session als eigene Datei nach `docs/vorlagen/session.md` geschrieben.
