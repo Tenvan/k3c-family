@@ -1,11 +1,11 @@
 # SO3 · PLAT · Hörprobenseite `soundtest.html`
 
-- **Status:** geplant
+- **Status:** aktiv
 - **Domäne:** PLAT
 - **Reife:** bereit
 - **Einschiebbar:** ja
 - **Tickets:** B-169
-- **Start-Commit:** –
+- **Start-Commit:** cfdba1e
 - **Spec:** freigegeben
 - **Revision:** 1
 - **Freigabe:** 2026-10-04, Chat (Ralf), Revision 1, durch 🧑; umfasst B-169 und die Domänen-Ausnahme `public/audio/`; mit Änderungen aus dem Spec-Review (SO1 als Voraussetzung, AC-07 Tastatur/Touch, AC-08 Credits)
@@ -63,7 +63,7 @@ Audio gesperrt → Hinweis zum Entsperren; Kandidat lädt nicht → Eintrag grau
 
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
-| SO3.1 | `SO3.1-seite-rahmen.md` | Umsetzung | autonom | offen |
+| SO3.1 | `SO3.1-seite-rahmen.md` | Umsetzung | autonom | in Arbeit |
 | SO3.2 | `SO3.2-kandidaten-abspielen.md` | Umsetzung | autonom | offen |
 | SO3.3 | `SO3.3-abnahme-tv.md` | Workshop | Mensch | offen |
 | SO3.4 | `SO3.4-review.md` | Review | autonom | offen |

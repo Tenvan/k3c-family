@@ -10,6 +10,7 @@ Reihenfolge in Wellen, Bahnen je Domäne und Zuordnung Mensch/autonom (zwei Acco
 
 | Sprint | Domäne | Thema | Am Ende sichtbar | Ordner |
 |---|---|---|---|---|
+| SO3 | PLAT | Hörprobenseite `soundtest.html` (einschiebbar) | `soundtest.html` auf der Landingpage, Kandidaten am TV hörbar | `aktiv/SO3-hoerprobenseite/` |
 
 ## Offen am Gerät
 
@@ -67,7 +68,6 @@ dann über den Go-Server mit mehreren Räumen und gemischten Spielern.
 | RL1 | INF | Release-Checkliste | bereit | `geplant/RL1-release-checkliste/` |
 | SO1 | CLI | Audio-Kern | bereit | `geplant/SO1-audio-kern/` |
 | SO2 | CLI | SFX-Katalog und Einbau | Entwurf | `geplant/SO2-sfx-katalog/` |
-| SO3 | PLAT | Hörprobenseite `soundtest.html` | bereit | `geplant/SO3-hoerprobenseite/` |
 | SO4 | CLI | Musik je Zustand | Entwurf | `geplant/SO4-musik/` |
 
 Gesamtplan und Begründung: [`../plan-weiterentwicklung.md`](../plan-weiterentwicklung.md). Offene Entscheidungen: [`../fragenkatalog.md`](../fragenkatalog.md).

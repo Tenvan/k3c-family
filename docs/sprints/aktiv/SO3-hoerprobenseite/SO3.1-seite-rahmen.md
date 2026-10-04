@@ -1,6 +1,6 @@
 # SO3.1 · Seite `soundtest.html` mit Seitenrahmen und Landingpage-Eintrag
 
-- **Status:** offen
+- **Status:** in Arbeit
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Branch:** so3/1-seite-rahmen
