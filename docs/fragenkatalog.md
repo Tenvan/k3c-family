@@ -35,6 +35,24 @@ Sprints bleiben `Spec: Entwurf`, bis 🧑 sie je Sprint freigibt.
 | Q20 | Release-Rhythmus | RL1 | 4 | geklärt 2026-10-03 |
 | Q21 | itch.io und Englisch | später | 4 | geklärt 2026-10-03 |
 | Q23 | Reittiere | S1, S7 | 4 | geklärt 2026-10-03 (korrigiert) |
+| Q25 | Markierung von Adern und Plantage-Bäumen | W2.1 | 5 | offen |
+| Q26 | Lage und Bauzeit der neuen Bauplätze | W2.1, W3.1, W3.2 | 5 | offen |
+| Q27 | Tor: Lage und zählt es als Mauer? | W3.1 | 5 | offen |
+| Q28 | Eisenstollen und Kristallhöhle: Lava, Dichte, Ausgänge | W2.2 | 5 | offen |
+| Q29 | Truppen-Limit: Widerspruch und Ort der Prüfung | W3.1, W4.3 | 5 | offen |
+| Q30 | Taverne: Anker, Wanderradius, Rate | W3.1 | 5 | offen |
+| Q31 | Zaubertum-Werte | W3.2 | 5 | offen |
+| Q32 | Heilplatz-Werte und Heilen im Kampf | W3.2, W4.3 | 5 | offen |
+| Q33 | Wiederbeleben: Reichweite, mehrere Helfer, getrennter Monarch | W4.1 | 5 | offen |
+| Q34 | Auswahl am Platz mit einer A-Taste | W4.2, W4.3 | 5 | offen |
+| Q35 | Herstellungszeiten und Bergmann an Adern | W4.2 | 5 | offen |
+| Q36 | Händler: Ort, Ablauf, Preise, Rhythmus | W4.2 | 5 | offen |
+| Q37 | Rüstung: Stufen und Wirkung auf bestehende Truppen | W4.3 | 5 | offen |
+| Q38 | Krieger: Posten und Seitenverteilung | W4.3 | 5 | offen |
+| Q39 | Ereignis `troopLost` | W4.3 | 5 | offen |
+| Q40 | Abgrenzung W3-AC-01 und W4-AC-04/05 | W3, W4 | 5 | offen |
+| Q41 | Teilung von W4.3 | W4.3 | 5 | offen |
+| Q42 | Spielstand-Versionen S1.4 und W1.3 | S1.4, W1.3 | 5 | offen |
 
 ## Beschlüsse vom 2026-10-03 (🧑 im Chat)
 
@@ -140,3 +158,79 @@ Fragen: Wie strikt (Ausschlusskriterium) und welche Packs sind gesetzt?
 **Q21 · itch.io und Englisch** (B-023). Ob und wann. Hängt an Q05 (Sprache), CC-BY-Credits, Lizenz (PolyForm Noncommercial, Spiel kostenlos).
 
 **Q23 · Reittiere** (B-152, B-173). Entschieden am 2026-10-03: Reittiere gibt es **von Anfang an**, jeder Monarch reitet ein Standard-Reittier (Vorbild Kingdom Two Crowns). Offen bleiben nur die Zahlen (Geschwindigkeits- und Sprintfaktor, Standard-Tier) im Workshop F1.
+
+## Block 5 – Phase 2 Wirtschaft (W1–W4)
+
+Gesammelt aus den Session-Dateien von W2 bis W4 (Abschnitte „Vor dem Start mit 🧑 klären“, „offen“, „ungeprüft“, „Vorschlag“). Ohne Antwort bleibt die jeweilige Session `blockiert`. Zahlen mit Quelle sind aus `docs/rules/` oder `data/` hergeleitet; Zahlen ohne Quelle sind **Startwerte für den Balancing-Workshop** (BR1, B-099).
+
+**Q25 · Markierung von Adern und Plantage-Bäumen** (B-114, W2.1). Bauern sammeln heute nur markierte Ressourcen (`findJob` in `engine/sim/units.go`, `markCost` 1–2 Gold in `data/economy.json` › `gatherables`; Regel `materialien-gebaeude.md` § 1). Adern sind unendlich, Plantage-Bäume wachsen alle 30 s neu; offen ist, ob beide wie jede Ressource markiert werden müssen.
+Optionen: (a) Ader einmal markieren (Markierung bleibt, da die Ader nie verschwindet), Plantage-Bäume ohne Markierung; (b) beides je Lieferung bzw. je Baum markieren; (c) beides ohne Markierung.
+🤖 Empfehlung: (a). Markierung der Ader mit dem `markCost` des Materials (Stein 1 Gold wie `rock`, Kupfer 2 Gold wie `copperOre`, Eisen und Kristall 2 Gold als Startwert); die Entscheidung „hier wird abgebaut“ kostet einmal Gold, danach steuern Bauern und Gefahr. Plantage-Bäume ohne Markierung, weil die gebaute Farm schon die Entscheidung ist und 12 Münzen je Minute (6 Plätze, alle 30 s) nur Klickarbeit wären.
+
+**Q26 · Lage und Bauzeit der neuen Bauplätze** (B-114, B-116, W2.1, W3.1, W3.2). `data/hub.json` › `sites` hat feste Offsets (−44 Mauer, −36 Turm, −26 Lager, −16 Werkstatt, 16 Treppe hoch, 24 Treppe runter, 36 Turm, 44 Mauer; Hub ±50, Burg-Radius 5, `homeRadiusUnits` 12). Neu kommen Farm, Kaserne, Taverne, Heilplatz, Schmiede, Rüstkammer (Tor siehe Q27). Ein einmal gewählter Offset darf nie mehr wandern (Zuordnung im Spielstand über `kind@x`, `applySite` in `engine/sim/save.go`). Bauzeiten nennt `materialien-gebaeude.md` § 3.2 für Taverne, Heilplatz, Schmiede und Rüstkammer nicht.
+Optionen: (a) feste Offsets jetzt beschließen (Vorschlag unten); (b) die Sessions setzen vorläufige Offsets, REG verschiebt sie später (Folge: alte Spielstände verlieren die Plätze); (c) Hub verbreitern.
+🤖 Empfehlung: (a) mit Mindestabstand 4 Units (2 × `payRangeUnits` 2): Farm −31 (Plantage-Bäume im Streifen −34 bis −28, ohne Markierung nach Q25 keine Kollision mit Zahlzielen), Taverne −21, Rüstkammer −40, Kaserne 20, Heilplatz 28, Schmiede 32; frei bleibt 40. Bauzeiten aus der Mauer-Tabelle (`materialien-gebaeude.md` § 3.1) und der Kaserne (12 s, `data/buildings.json`): Taverne 12 s (gleiche Stufe und Kosten wie die Kaserne), Heilplatz 12 s (= Mauer Stufe 3), Schmiede 16 s, Rüstkammer 16 s (= Mauer Stufe 4).
+
+**Q27 · Tor: Lage und zählt es als Mauer?** (B-116, W3.1). `gate` steht in `data/buildings.json` (30 Holz + 10 Gold, 250 HP, 6 s), hat aber keinen Platz. Gegner stoppen heute nur vor `wall` (`blockingWall`, `engine/sim/enemies.go`); `outerWall` (Posten der Bogenschützen, `engine/sim/common.go`) und das Angriffsziel von `prefersBuildings` (`enemies.go`) kennen ebenfalls nur `wall`. Wellen kommen von beiden Seiten (vermutet, Portale je Seite ungeprüft).
+Optionen: (a) je Seite ein Tor **außen** vor der Mauer (±48), für Gegner wie eine Mauer (Hindernis und Angriffsziel), aber nicht für `outerWall`; (b) ein Tor innen (±40) als zweite Linie; (c) das Tor ersetzt die Mauer am selben Platz.
+🤖 Empfehlung: (a). Das Tor ist dann die äußerste Linie, die Bogenschützen bleiben hinter der Mauer (kein Umbau von `outerWall`), und `prefersBuildings` greift es wie eine Mauer an. Zwei Plätze kosten zusammen 60 Holz + 20 Gold (Daten wie heute).
+
+**Q28 · Eisenstollen und Kristallhöhle: Lava, Dichte, Ausgänge** (B-115, W2.2). B-115 nennt Lava-Hindernisse für den Eisenstollen, Generator und Sim kennen keine Hindernisse (`engine/level/validate.go`). Zielwerte für die Ressourcendichte gibt es nicht (`docs/rules/zielkorridore.md` ohne Dichte); gemessen sind Wald ≈ 3,8, Höhle ≈ 2,8, Mine ≈ 1,5 endliche Objekte je 100 Units (aus `materialien-gebaeude.md` § 5: 39 Bäume/1035, 23 Felsen/832, 9,4 Objekte/647), obwohl die Regel „nach unten dichter“ sagt. `exitSide` (Höhle `left`, Mine `right`) und Portale (3 ab Tiefe 3) sind nur fortgesetzt.
+Optionen Lava: (a) Chunk-Art `lava` ohne Wirkung, Wirkung mit Regelwerk III/K1; (b) Schaden über Zeit für alle auf Lava; (c) kein Bauen und Markieren auf Lava. Optionen Dichte: (a) „unter Tage nicht abnehmend“ als Regel (Höhle ≤ Mine ≤ Eisenstollen ≤ Kristallhöhle); (b) feste Zielwerte je Biom; (c) Dichte erst mit B-099.
+🤖 Empfehlung: Lava (a), Wirkung als eigenes Ticket für Regelwerk III (der Lava-Golem in `bosse.md` bringt Flächen am Boden ohnehin mit). Dichte (a) mit Untergrenze 2,8 je 100 Units für Mine bis Kristallhöhle (Höhe der Höhle, Startwert), Messung mit 100 Seeds in B-115. Ausgänge: Eisenstollen `left`, Kristallhöhle `right`, 3 Portale, wie in W2.2 vorgeschlagen.
+
+**Q29 · Truppen-Limit: Widerspruch und Ort der Prüfung** (B-116, B-122, W3.1, W4.3). `docs/rules/buerger.md` § 3: Basis 10 je Hub, Kaserne +10, es zählen **nur Kämpfer**. B-116 › Ausnahmefälle sagt dagegen „Landstreicher werden nicht zu Bauern/Truppen“, B-122 › Ausnahmefälle „Bogen bleibt im Regal“. Ein Limit gibt es im Code nicht; Kämpfer entstehen nur über `bowToFetch`/`fetchBow` → `makeArcher` (`engine/sim/units.go`).
+Optionen: (a) Regel gilt, Prüfung beim Waffe-Holen (`bowToFetch`: bei Limit kein Auftrag, Waffe bleibt im Regal, kein Verbrauch); B-116 › Ausnahmefall wird korrigiert; (b) Ticket gilt, Rekrutieren am Camp/an der Taverne wird gesperrt; (c) beides.
+🤖 Empfehlung: (a). Nur so bleiben Adern und Handwerk besetzbar (Begründung der Regel). Eine Zählfunktion „Kämpfer je Welt“ in W3.1 (heute nur `archer`), W4.3 erweitert sie um Krieger und Elite; die Prüfung sitzt an genau einer Stelle (Waffe holen), auch für Schwerter.
+
+**Q30 · Taverne: Anker, Wanderradius, Rate** (B-116, W3.1). Regel: „1 Landstreicher je Tag im Hub“ (`materialien-gebaeude.md` § 3.2, Startwert). Landstreicher entstehen heute nur im Camp (`stepCamps`; `data/economy.json` › `recruitCamp`: höchstens 2, Nachwuchs 25 s, `wanderUnits` 6).
+Optionen: (a) bei jedem `dawn` ein Landstreicher an der Taverne, solange dort weniger als 2 stehen (Obergrenze wie Camp); (b) bei jedem `dawn` genau einer, ohne Obergrenze; (c) die Taverne verhält sich wie ein zweites Camp (25 s Nachwuchs).
+🤖 Empfehlung: (a). Anker = Tavernen-Platz, Wanderradius 6 Units und Obergrenze 2 aus `recruitCamp` übernehmen (als eigene Werte in `data/`, damit REG sie trennen kann); sammelt sich nichts an, bleibt der Hub übersichtlich.
+
+**Q31 · Zaubertum-Werte** (B-116, W3.2). Turm-Stufe 5 macht „Flächenschaden statt Bogen“ (`materialien-gebaeude.md` § 3.1), Zahlen fehlen (B-116 › Offene Fragen). Bezug: Turm Stufe 1 mit 2 Schützen à 15 Schaden/s = 30 Schaden/s auf ein Ziel, Reichweite 10 + 3 (`data/troops.json`, `buildings.json`); Fireball des Zauberers 30 Schaden auf 3 Units (`game-design.md`).
+Optionen: (a) eigener Schuss mit Werten aus `data/` (Schaden, Radius, Reichweite, Takt), keine Schützen mehr auf dem Turm; (b) Schützen bleiben, schießen Flächenpfeile; (c) Wirkung später (Regelwerk III), Turm 5 bleibt Bogen-Turm.
+🤖 Empfehlung: (a) mit Startwerten 40 Schaden, Radius 3 Units, Reichweite 13 Units, alle 1,5 s (≈ 27 Schaden/s je Ziel, ab 2 Zielen über dem Bogen-Turm). Die Schützen steigen beim Ausbau ab und zählen weiter als Kämpfer.
+
+**Q32 · Heilplatz-Werte und Heilen im Kampf** (B-116, B-122, W3.2, W4.3). Regel: „heilt Truppen und Spieler in Reichweite“, keine Regeneration (`buerger.md` § 3); Radius, Menge und Takt stehen nirgends. Bezug: Heal 50 HP je 10 s = 5 HP/s, Group Heal 30 HP in 10 Units (`game-design.md`).
+Optionen: (a) heilt immer, auch im Kampf; (b) heilt nur Ziele ohne Schaden in den letzten 5 s; (c) heilt nur bei Tag bzw. ohne Welle.
+🤖 Empfehlung: (a) mit 5 HP/s, Radius 6 Units um den Platz (Startwerte). Bei Offset 28 (Q26) erreicht er die Posten an Mauer und Turm (±36 bis ±48) nicht; der Heilplatz ist damit ein Rückzugsort, nicht Dauerheilung an der Front, und braucht kein neues „zuletzt getroffen“-Feld.
+
+**Q33 · Wiederbeleben: Reichweite, mehrere Helfer, getrennter Monarch** (B-120, W4.1). `monarch.md` § 5 legt 3 s, 50 % HP und 15 s fest, nicht die Reichweite. Offen sind außerdem mehrere Helfer gleichzeitig und ein getrennter Monarch (`Player.Free`, Q04: unverwundbar und ausgeblendet bis zur Frist).
+Optionen Reichweite: (a) `payRangeUnits` 2; (b) `travel.rangeUnits` 3; (c) eigener Wert. Mehrere Helfer: (a) Fortschritt läuft, solange mindestens einer hält, ohne Beschleunigung; (b) Helfer addieren sich. Getrennt: (a) nicht wiederbelebbar, Respawn nach 15 s läuft; (b) wiederbelebbar.
+🤖 Empfehlung: Reichweite (a) 2 Units als eigener Wert in `data/monarch.json` (gleich weit wie Münzen, passt zum Overlay); mehrere Helfer (a), keiner lässt dabei eine Münze fallen; getrennt (a), weil ein ausgeblendeter Grabstein nicht sichtbar ist.
+
+**Q34 · Auswahl am Platz mit einer A-Taste** (B-121, B-122, B-125, W4.2, W4.3). An Werkstatt (Bogen, Schwert, Bergmann, Baumeister, Handwerker) und Schmiede (Stein-Elite, Kupfer-Elite) gibt es mehrere Angebote; bezahlt wird nur mit A halten am nächsten Zahlziel (`findPayTarget`). `materialien-gebaeude.md` § 3 sagt „es gibt kein Bau-Menü“, Q06 belegt Y mit einem Bau-Menü; B-125 zeigt mehrere Aktionen „die wichtigste zuerst“.
+Optionen: (a) je Angebot ein eigenes Zahlziel neben dem Gebäude (Position wählt, z. B. Bogen links, Schwert rechts der Werkstatt); (b) D-Pad links/rechts wechselt das Angebot am Platz, das Overlay zeigt es; (c) Menü über Y.
+🤖 Empfehlung: (a), keine neue Taste, passt zu „kein Bau-Menü“ und zu den Münz-Slots im Overlay. Ausgebildet bzw. aufgewertet wird der nächste freie Bauer bzw. der nächste Bogenschütze/Krieger zum Gebäude (wie `fetchBow` heute). Den Widerspruch Y-Bau-Menü (Q06) gegen § 3 klärt 🧑 gesondert.
+
+**Q35 · Herstellungszeiten und Bergmann an Adern** (B-121, W4.2). Die Werkstatt fertigt heute ohne Zeit (`stepSites`, `engine/sim/economy.go`); „+50 % Tempo je Handwerker“ (`buerger.md` § 1) braucht eine Zeit. `buerger.md` § 4 nennt als offen, ob ein Bergmann an einer Ader als einer der 2 Bauern zählt, und § 1 „an Adern und Fels“.
+Optionen Zeit: (a) Zeiten für alles (Bogen, Schwert, Elite, Rüstung); (b) Bogen und Schwert sofort wie heute, Zeit nur für Elite und Rüstung; (c) keine Zeiten, Handwerker senkt die Kosten. Optionen Bergmann: (a) zählt als einer der 2, +50 % gilt an Adern, Fels und Kupfererz; (b) zählt nicht mit.
+🤖 Empfehlung: Zeit (a) mit Startwerten Bogen und Schwert 10 s, Elite-Upgrade 20 s, Rüstungsstufe 30 s; Tempo 1 + 0,5 je Handwerker (höchstens 2 → doppelt). Golden ändert sich dadurch (Bogen nicht mehr sofort), Begründung im Commit. Bergmann (a): höchstens 2 an einer Ader bleibt hart, zwei Bergleute liefern 150 % der Zielrate (z. B. Stein 90/min statt 60).
+
+**Q36 · Händler: Ort, Ablauf, Preise, Rhythmus** (B-121, W4.2). `buerger.md` § 1/§ 4: „kommt alle 3 Tage vorbei (häufiger mit Taverne), bleibt einen Tag“, 10 Material = 5 Gold; Ort, Richtung und Preise je Material sind offen. Jede Stufe hat eine eigene Welt mit gleichem Takt (`Island.Stages`), der Vorrat gehört der Insel.
+Optionen: (a) ein Händler je Insel im Hub der Tiefe 0 bei Hub-Mitte +8 Units (frei zwischen Burg-Radius 5 und den Plätzen ab 16), zwei Zahlziele „Kaufen“ (Gold → Material) und „Verkaufen“ (A halten: je Schritt 10 Material aus dem Vorrat gegen 5 Gold in die Börse); (b) ein Händler je Stufe; (c) nur Verkaufen.
+🤖 Empfehlung: (a). Ein Material je Besuch, gewählt per `w.rng` aus den freigeschalteten (Hub-Stufe ≥ Materialstufe), Kurs in beide Richtungen 10 Material = 5 Gold (ein Rundlauf gewinnt nichts, keine Spanne nötig). Ankunft bei `dawn` an Tag 3, 6, 9 …, mit gebauter Taverne auf der Insel alle 2 Tage; Abreise beim nächsten `dawn`.
+
+**Q37 · Rüstung: Stufen und Wirkung auf bestehende Truppen** (B-122, W4.3). `buerger.md` § 2: 100 Eisen + 100 Gold je Stufe, „+20 % HP für alle Truppen“; Anzahl der Stufen und Zeitpunkt der Wirkung fehlen.
+Optionen: (a) 2 Stufen (eine ab Hub-Stufe 4, eine ab 5), additiv auf die Basis-HP (+20 %, +40 %), wirkt sofort auf bestehende und neue Kämpfer; (b) 3 Stufen ab Hub-Stufe 4; (c) nur neue Truppen bekommen sie.
+🤖 Empfehlung: (a). „Alle Truppen“ gelesen als alle Kämpfer (Definition aus § 3); `MaxHP` und `HP` steigen um denselben Betrag, keine Vollheilung. Bauern und Landstreicher bleiben ohne Rüstung (Startwert, ungeprüft gegen den Wortlaut „alle Truppen“).
+
+**Q38 · Krieger: Posten und Seitenverteilung** (B-014, B-122, W4.3). Regel: „Nahkampf an der Frontlinie“, „Kämpfer halten Posten, kein Vorstoß“ (`buerger.md` § 1/§ 3). Bogenschützen verteilt `makeArcher` (`engine/sim/units.go`) auf die Seite mit weniger Schützen, Posten hinter der äußersten Mauer (`outerWall`).
+Optionen: (a) Krieger stehen 1 Unit **vor** der äußersten gebauten Mauer bzw. dem Tor (Q27), ohne Mauer am Rand des Heimbereichs (±12 + 2); (b) direkt hinter der Mauer (Reichweite 1 trifft Gegner an der Mauer); (c) an der Burg.
+🤖 Empfehlung: (a), Seitenverteilung wie `makeArcher` (eigene Zählung der Krieger). Krieger fangen den ersten Ansturm, die Mauer bleibt Rückfalllinie; bei (b) würden Gegner die Mauer schlagen, ohne dass die Krieger sie decken.
+
+**Q39 · Ereignis `troopLost`** (B-122, W4.3). Das Ticket nennt es als Messgröße, Felder und Arten sind offen. `capEvents` begrenzt auf 32 je Tick, `priorityEvent` (`engine/sim/events.go`) bevorzugt Tod, Bau, Zerstörung. Die Kennzahl „Verluste je Welle“ misst laut `zielkorridore.md` die Differenz des Bestands, nicht ein Ereignis.
+Optionen: (a) alle außer Landstreichern, Felder `kind`, `x`, `cause` (Gegner-Art, wie B-182), ohne Priorität; (b) nur Kämpfer, mit Priorität; (c) zusätzlich beim Burgfall.
+🤖 Empfehlung: (a). Ohne Priorität, weil die Kennzahl über den Bestand rechnet und Sound/Anzeige einen verlorenen Bauern verschmerzen; beim Burgfall kein `troopLost` (dort gilt `castleFallen`).
+
+**Q40 · Abgrenzung W3-AC-01 und W4-AC-04/05** (B-116, B-122). W3-AC-01 verlangt „Kaserne-Limit“ und „Heilplatz“ je mit Test, W4-AC-04 „das Limit je Hub zählt nur Kämpfer“, W4-AC-05 „Heilplatz heilt in Reichweite, ohne Heilplatz keine Heilung“. Beide Sprints würden dasselbe bauen.
+Optionen: (a) W3 baut Limit (für Bogenschützen) und Heilplatz vollständig; W4.3 erweitert das Limit um Krieger und Elite und weist AC-05 durch einen Regressionstest plus `troopLost` nach (Spec bleibt); (b) W3 nur Bauplätze, Wirkung in W4 (Revision von W3-AC-01 nötig); (c) Kriterien in W4 streichen (Revision von W4).
+🤖 Empfehlung: (a). Ehrlich abgewogen: AC-04/05 von W4 sind dann zur Hälfte schon erfüllt und der Nachweis wiederholt sich, dafür ändert sich keine Spec und jede Wirkung entsteht im Sprint des Gebäudes. (c) wäre sauberer, kostet aber eine Revision und neue Freigabe von W4; lohnt nur, wenn W4 ohnehin revidiert wird (Q41).
+
+**Q41 · Teilung von W4.3** (B-122, B-014). W4.3 erwartet selbst, den Richtwert von ~400 geänderten Zeilen zu überschreiten (Krieger, Schwert-Regal, Elite, Rüstung, Limit, Heilung, `troopLost`, Golden), und will 🧑 erst nach den Tests fragen.
+Optionen: (a) jetzt teilen: W4.3a Krieger, Schwert-Regal, Limit-Erweiterung, `troopLost` (AC-04 Limit, AC-05 `troopLost`, AC-06 Schwerter); W4.3b Elite, Rüstung, Heilplatz-Nachweis, Golden (AC-04 Elite/Rüstung, AC-05 Heilung, AC-06 Elite, AC-07); Review wird W4.4; (b) erst bei Bedarf teilen (wie geplant); (c) nicht teilen.
+🤖 Empfehlung: (a). Die Größe ist absehbar, eine Teilung mitten in der Session kostet einen Halt; die Kriterien bleiben unverändert, nur die Session-Liste der Sprint-README ändert sich.
+
+**Q42 · Spielstand-Versionen S1.4 und W1.3** (B-202, B-201). Beide Sessions beanspruchen `IslandSaveVersion = 3` und `testdata/saves/v3/` (Code steht auf 2, `engine/sim/island_save.go`). Danach braucht B-201 (Spielstand der Wirtschaft aus W2 bis W4) eine weitere Version.
+Optionen: (a) Reihenfolge des Fahrplans: S1 zuerst (v3), W1.3 bekommt v4; (b) W1 zuerst, S1.4 bekommt v4; (c) beide Änderungen in einer gemeinsamen Version.
+🤖 Empfehlung: (a), weil `docs/sprints/README.md` S1 vor W1 führt und beide SIM sind (nacheinander). B-201 folgt dann mit v5; (c) koppelt zwei Sprints und widerspricht „ein Commit je Session“.
