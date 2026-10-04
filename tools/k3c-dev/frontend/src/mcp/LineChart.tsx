@@ -1,9 +1,9 @@
 import { avgOf, ticks, type Metric, type Point, type Range, type Window } from './series';
 
-const W = 600;
-const H = 180;
-const TOP = 8;
-const BASE = 158; // Grundlinie, darunter die Achse
+// Das SVG streckt sich auf volle Breite (preserveAspectRatio none); Linien und Punkte behalten dank
+// non-scaling-stroke ihre Stärke, Achse und Hinweis stehen als HTML darunter und werden nicht verzerrt.
+const W = 1000;
+const H = 100;
 
 interface Props {
   pts: Point[];
@@ -17,32 +17,30 @@ export function LineChart({ pts, metric, range, w }: Props) {
   const x = (i: number) => (pts.length > 1 ? (i * W) / (pts.length - 1) : 0);
   const vals = metric === 'calls' ? pts.map((p) => p.calls) : pts.map((p) => p.maxMs);
   const peak = Math.max(1, ...vals);
-  const y = (v: number) => BASE - ((BASE - TOP) * v) / peak;
+  const y = (v: number) => H - (H * 0.92 * v) / peak;
   const line = (values: (number | null)[]) => path(values.map((v, i) => (v === null ? null : [x(i), y(v)])));
   const empty = pts.every((p) => p.calls === 0);
   return (
-    <svg viewBox={`0 0 ${W} ${H}`} className="mcp-svg" role="img" aria-label="Verlauf">
-      <line x1={0} x2={W} y1={BASE} y2={BASE} className="chart-base" />
-      {metric === 'calls' ? (
-        <>
-          <path d={`${line(vals)} L ${W} ${BASE} L 0 ${BASE} Z`} className="chart-area" />
-          <path d={line(vals)} className="chart-line" />
-          <path d={line(pts.map((p) => p.errors))} className="chart-err" />
-        </>
-      ) : (
-        <>
-          <path d={line(vals)} className="chart-line" />
-          <path d={line(pts.map(avgOf))} className="chart-avg" />
-          {pts.map((p, i) => (p.outliers > 0 ? <circle key={i} cx={x(i)} cy={y(p.maxMs)} r={3.5} className="chart-dot" /> : null))}
-        </>
-      )}
-      {ticks(range, w).map((t) => (
-        <text key={t.at} x={t.at * W} y={H - 4} className="chart-tick" textAnchor={t.at === 0 ? 'start' : t.at === 1 ? 'end' : 'middle'}>
-          {t.label}
-        </text>
-      ))}
-      {empty && <text x={W / 2} y={BASE / 2} className="chart-empty" textAnchor="middle">Keine Aufrufe im Zeitraum</text>}
-    </svg>
+    <div className="mcp-chart">
+      <svg viewBox={`0 0 ${W} ${H}`} preserveAspectRatio="none" className="mcp-svg" role="img" aria-label="Verlauf">
+        <line x1={0} x2={W} y1={H} y2={H} className="chart-base" />
+        {metric === 'calls' ? (
+          <>
+            <path d={`${line(vals)} L ${W} ${H} L 0 ${H} Z`} className="chart-area" />
+            <path d={line(vals)} className="chart-line" />
+            <path d={line(pts.map((p) => p.errors))} className="chart-err" />
+          </>
+        ) : (
+          <>
+            <path d={line(vals)} className="chart-line" />
+            <path d={line(pts.map(avgOf))} className="chart-avg" />
+            {pts.map((p, i) => (p.outliers > 0 ? <path key={i} d={`M ${x(i)} ${y(p.maxMs)} h 0`} className="chart-dot" /> : null))}
+          </>
+        )}
+      </svg>
+      {empty && <span className="chart-empty">Keine Aufrufe im Zeitraum</span>}
+      <div className="chart-ticks">{ticks(range, w).map((t) => <span key={t.at}>{t.label}</span>)}</div>
+    </div>
   );
 }
 

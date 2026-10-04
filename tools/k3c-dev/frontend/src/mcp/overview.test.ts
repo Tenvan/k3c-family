@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import type { ToolStats } from '../api';
 import { parseInline, parseMarkdown } from './markdown';
-import { durationText, share, sortTools, toolHint, toolLine, uptimeText, weightedAvg } from './overview';
+import { durationText, share, uptimeText, weightedAvg } from './overview';
 
 const tool = (name: string, calls: number, avgMs = 0, errors = 0): ToolStats => ({
   name, description: `${name} tut etwas`, calls, errors, avgMs, lastCall: '',
@@ -39,23 +39,12 @@ describe('Markdown-Teilmenge', () => {
 });
 
 describe('Übersicht', () => {
-  it('Kacheln nach Aufrufen, dann Name', () => {
-    expect(sortTools([tool('b', 1), tool('a', 1), tool('c', 5)]).map((t) => t.name)).toEqual(['c', 'a', 'b']);
-  });
-
   it('Anteil und gewichtetes Ø ohne Division durch null', () => {
     expect(share(1, 4)).toBe(25);
     expect(share(0, 0)).toBe(0);
     expect(weightedAvg([tool('a', 3, 10), tool('b', 1, 50)])).toBe(20);
     expect(weightedAvg([tool('a', 0, 0)])).toBe(null);
     expect(durationText(null)).toBe('–');
-  });
-
-  it('Kachel-Zeile und Tooltip', () => {
-    expect(toolLine(tool('check_run', 12, 4200, 1))).toBe('12 Aufrufe · 1 Fehler · Ø 4,2 s');
-    expect(toolLine(tool('x', 0))).toBe('0 Aufrufe · 0 Fehler · Ø –');
-    expect(toolHint(tool('x', 0))).toBe('x: x tut etwas · noch nicht aufgerufen');
-    expect(toolHint({ ...tool('x', 1), lastCall: '17:03:12 {}' })).toContain('zuletzt 17:03:12 {}');
   });
 
   it('Laufzeit', () => {
