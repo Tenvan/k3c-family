@@ -159,6 +159,7 @@ type Projectile struct {
 	Team     string  `json:"team"` // player, enemy
 	Damage   float64 `json:"damage"`
 	Speed    float64 `json:"speed"`
+	Cause    string  `json:"-"` // Gegnerart des Schützen für playerDown (B-182), ohne Ausgabe
 }
 
 // Pickup ist eine Truhe oder ein Skill-Punkt.

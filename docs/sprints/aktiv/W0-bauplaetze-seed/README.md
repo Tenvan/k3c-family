@@ -60,7 +60,7 @@ Werte nur in `data/`, Logik und Tests in `engine/level/` und `engine/sim/`; dete
 ## Akzeptanzkriterien
 
 - **AC-01** Das Layout jeder Stufe enthält je Seite 5 Mauerlinien mit Mauer-, Turm- (8 Units innen) und Tor-Platz (4 Units außen); Linie 1 liegt fest bei ±44, die Linien 2–5 liegen je Seed 0 bis +4 Units außerhalb ihres Startwerts (aus einem eigenen RNG-Strom), Farm ↔ Turm 2 und Tor k ↔ Turm k+1 immer ≥ 4 Units auseinander; gleicher Seed ergibt gleiche Plätze (Test) (B-206/AC-01).
-- **AC-02** Ressourcen-, Portal- und Camp-Positionen sind gegenüber vor W0 unverändert, `testdata/golden/level-*.json` und `rng.json` bleiben gleich (Test) (B-206/AC-02); Ausnahme seit Revision 2: Camp-Positionen und Level-Golden ändern sich nach AC-08 (Beschluss B-261).
+- **AC-02** Ressourcen-, Portal- und Camp-Positionen sind gegenüber vor W0 unverändert, `testdata/golden/level-*.json` und `rng.json` bleiben gleich (Test) (B-206/AC-02); Ausnahme seit Revision 2: Camp-Chunks und daraus Chunk-Arten, Ressourcen und Level-Golden ändern sich nach AC-08 (Beschluss B-261), Portale nicht.
 - **AC-03** Linie k ist erst ab Hub-Stufe k und nach gebauter Mauer der Linie k−1 derselben Seite bezahlbar (zerstörte Mauer k−1: gebaute Linie k bleibt gültig, neue Linie k+1 wartet auf die Reparatur, Q58), das Tor nur an der äußersten gebauten Linie seiner Seite und erst ab Hub-Stufe 2 (Q27); innere Türme und Tore bleiben nach dem Bau einer äußeren Linie stehen und wirken; geprüft über `World.HubLevel` (Start 1, im Test gesetzt; Q59), da der Hub-Ausbau erst mit W1 kommt (Test) (B-206/AC-03, B-206/AC-04).
 - **AC-04** Jeder Bau aus `docs/rules/materialien-gebaeude.md` § 3 hat genau einen Hub-Platz (Ausnahmen: Mauer, Turm und Tor je Linie, Farm je Seite); alle Zahlziele einschließlich Burg, Händler und Angebots-`dx` halten untereinander ≥ 4 Units Abstand, auch bei voller Streuung der Linien 0…+4 (Test über die Daten) (B-206/AC-05).
 - **AC-05** Die Fixtures `testdata/saves/v1/` und `v2/` sowie ein Spielstand der aktuellen Version laden, alle dort gebauten Plätze bleiben gebaut (Mauer ±44, Turm ±36 an denselben Plätzen, `kind@x`) (Test); Golden-Daten mit Begründung „Q43: Bauplätze aus dem Seed“ aktualisiert; `task check:go` und `task check` grün (B-206/AC-06).
@@ -79,7 +79,7 @@ keine; die vier Widersprüche der Planung sind am 2026-10-04 durch Q56 bis Q59 g
 | W0.1 | `W0.1-platz-daten.md` | Umsetzung | autonom | fertig |
 | W0.2 | `W0.2-linien-generator.md` | Umsetzung | autonom | fertig |
 | W0.3 | `W0.3-plaetze-sim.md` | Umsetzung | autonom | fertig |
-| W0.3b | `W0.3b-ursache-camps.md` | Umsetzung | autonom | offen |
+| W0.3b | `W0.3b-ursache-camps.md` | Umsetzung | autonom | fertig |
 | W0.4 | `W0.4-review.md` | Review | autonom | offen |
 
 Bei `Reife: Entwurf` genügen Stichpunkte mit den Kriterien in Klammern statt Session-Dateien. Vor dem Aktivieren

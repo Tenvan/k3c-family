@@ -85,11 +85,20 @@ func isWorker(w *World, id *int) bool {
 	return false
 }
 
-// applyDamage verteilt Schaden auf ein Ziel per ID. Tod und Zerstörung behandelt der Tick.
+// causeOther ist die Todesursache in playerDown, wenn kein Gegner den Schaden verursacht hat (B-182).
+const causeOther = "other"
+
+// applyDamage verteilt Schaden ohne Gegner als Quelle (Schlag, Skill, Schütze) auf ein Ziel per ID.
 func applyDamage(w *World, targetID int, damage float64) {
+	applyDamageBy(w, targetID, damage, causeOther)
+}
+
+// applyDamageBy verteilt Schaden auf ein Ziel per ID; cause ist die Gegnerart für playerDown (B-182), "" = causeOther.
+// Tod und Zerstörung behandelt der Tick.
+func applyDamageBy(w *World, targetID int, damage float64, cause string) {
 	for _, p := range w.Players {
 		if p.ID == targetID {
-			damagePlayer(w, p, damage)
+			damagePlayer(w, p, damage, cause)
 			return
 		}
 	}
@@ -121,8 +130,8 @@ func applyDamage(w *World, targetID int, damage float64) {
 }
 
 // damagePlayer: Verteidigung (defenseOf, Passive), dann zieht der Schild (Iron Wall) zuerst ab, der Rest geht auf die HP. Solange Last
-// Stand läuft, lässt ein tödlicher Treffer 1 HP stehen.
-func damagePlayer(w *World, p *Player, damage float64) {
+// Stand läuft, lässt ein tödlicher Treffer 1 HP stehen. Der tödliche Treffer setzt `cause` in playerDown.
+func damagePlayer(w *World, p *Player, damage float64, cause string) {
 	if !isAlive(p) {
 		return
 	}
@@ -142,7 +151,10 @@ func damagePlayer(w *World, p *Player, damage float64) {
 	}
 	if p.HP <= 0 {
 		p.HP, p.RespawnIn, p.VX = 0, monarch.RespawnSeconds, 0
-		w.Events = append(w.Events, Event{"type": "playerDown", "player": p.Index})
+		if cause == "" {
+			cause = causeOther
+		}
+		w.Events = append(w.Events, Event{"type": "playerDown", "player": p.Index, "cause": cause})
 	}
 }
 

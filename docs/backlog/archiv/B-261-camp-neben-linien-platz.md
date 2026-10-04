@@ -3,7 +3,7 @@
 - **Domäne:** SIM
 - **Typ:** Frage
 - **Prio:** mittel
-- **Status:** eingeplant
+- **Status:** erledigt
 - **Sprint:** W0
 - **Erstellt:** 2026-10-04
 - **Spec:** Entwurf

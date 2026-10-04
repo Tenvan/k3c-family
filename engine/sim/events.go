@@ -14,6 +14,9 @@ import "math"
 //	buildProgress – Bau fortgeschritten: site (ID), kind, x, percent (25, 50, 75; fertig = built)
 //	revive        – Monarch steht nach der Wartezeit wieder: player, x
 //
+//	playerDown    – Monarch fällt: player, cause (Gegnerart aus data/enemies.json bei Nahkampf und Geschoss,
+//	                sonst "other"; B-182)
+//
 // Auf bestehende Ereignisse abgebildet (Auslegung von Q08, bestätigt mit der Freigabe von F3): Tod = playerDown,
 // Bau fertig = built, Skill = skillPoint, Nacht naht = dusk, Portal = arrived.
 
