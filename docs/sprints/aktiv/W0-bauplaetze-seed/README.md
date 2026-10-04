@@ -1,11 +1,11 @@
 # W0 · SIM · Bauplätze aus dem Seed
 
-- **Status:** geplant
+- **Status:** aktiv
 - **Domäne:** SIM
 - **Reife:** bereit
 - **Einschiebbar:** nein
 - **Tickets:** B-206
-- **Start-Commit:** –
+- **Start-Commit:** 7e2b70c
 - **Spec:** freigegeben
 - **Revision:** 1
 - **Freigabe:** 2026-10-04, Chat, durch 🧑, Revision 1; mit Änderungen aus der Spec-Prüfung
@@ -74,7 +74,7 @@ keine; die vier Widersprüche der Planung sind am 2026-10-04 durch Q56 bis Q59 g
 
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
-| W0.1 | `W0.1-platz-daten.md` | Umsetzung | autonom | offen |
+| W0.1 | `W0.1-platz-daten.md` | Umsetzung | autonom | in Arbeit |
 | W0.2 | `W0.2-linien-generator.md` | Umsetzung | autonom | offen |
 | W0.3 | `W0.3-plaetze-sim.md` | Umsetzung | autonom | offen |
 | W0.4 | `W0.4-review.md` | Review | autonom | offen |
