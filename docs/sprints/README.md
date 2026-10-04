@@ -10,6 +10,7 @@ Reihenfolge in Wellen, Bahnen je Domäne und Zuordnung Mensch/autonom (zwei Acco
 
 | Sprint | Domäne | Thema | Am Ende sichtbar | Ordner |
 |---|---|---|---|---|
+| GR2 | CLI | Grafik-Suche für Lücken | Kandidatenseite `docs/funde/gr2-grafik-funde.html`, neue Packs unter `public/grafik/` | `aktiv/GR2-grafik-suche/` |
 
 ## Offen am Gerät
 
@@ -61,7 +62,6 @@ dann über den Go-Server mit mehreren Räumen und gemischten Spielern.
 |---|---|---|---|---|
 | BAL3 | SIM | Bot-Profile, Sensitivität und Grad-Kurven | Entwurf | `geplant/BAL3-bot-profile-sensitivitaet/` |
 | BAL4 | REG | Abgleich Spielmetrik und Simulator | Entwurf | `geplant/BAL4-metrik-abgleich/` |
-| GR2 | CLI | Grafik-Suche für Lücken | bereit | `geplant/GR2-grafik-suche/` |
 | GR3 | CLI | Grafik im Renderer | bereit | `geplant/GR3-grafik-renderer/` |
 | RL1 | INF | Release-Checkliste | bereit | `geplant/RL1-release-checkliste/` |
 | SO2 | CLI | SFX-Katalog und Einbau | Entwurf | `geplant/SO2-sfx-katalog/` |

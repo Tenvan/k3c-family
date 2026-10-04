@@ -831,5 +831,250 @@
   "file": "vorschau/Fort-of-Illusionx3.png",
   "w": 2685,
   "h": 816
+ },
+ {
+  "pack": "phantasy-dungeon-entrance",
+  "group": "ebenen",
+  "file": "ebenen/dungeon-door-skull.png",
+  "w": 368,
+  "h": 208
+ },
+ {
+  "pack": "phantasy-dungeon-entrance",
+  "group": "ebenen",
+  "file": "ebenen/dungeon-door.png",
+  "w": 368,
+  "h": 208
+ },
+ {
+  "pack": "tent-8",
+  "group": "props",
+  "file": "props/objs.png",
+  "w": 256,
+  "h": 184
+ },
+ {
+  "pack": "16x16-animated-campfire",
+  "group": "props",
+  "file": "props/campfire-16x16.png",
+  "w": 64,
+  "h": 16
+ },
+ {
+  "pack": "warped-super-grotto-escape-pack",
+  "group": "ebenen",
+  "file": "ebenen/back.png",
+  "w": 304,
+  "h": 240
+ },
+ {
+  "pack": "warped-super-grotto-escape-pack",
+  "group": "ebenen",
+  "file": "ebenen/far.png",
+  "w": 352,
+  "h": 240
+ },
+ {
+  "pack": "warped-super-grotto-escape-pack",
+  "group": "ebenen",
+  "file": "ebenen/middle.png",
+  "w": 368,
+  "h": 240
+ },
+ {
+  "pack": "warped-super-grotto-escape-pack",
+  "group": "ebenen",
+  "file": "ebenen/tileset.png",
+  "w": 368,
+  "h": 240
+ },
+ {
+  "pack": "warped-super-grotto-escape-pack",
+  "group": "props",
+  "file": "props/palm.png",
+  "w": 63,
+  "h": 55
+ },
+ {
+  "pack": "warped-super-grotto-escape-pack",
+  "group": "props",
+  "file": "props/plant-big.png",
+  "w": 43,
+  "h": 45
+ },
+ {
+  "pack": "warped-super-grotto-escape-pack",
+  "group": "props",
+  "file": "props/plant.png",
+  "w": 37,
+  "h": 23
+ },
+ {
+  "pack": "warped-super-grotto-escape-pack",
+  "group": "vorschau",
+  "file": "vorschau/super-grotto.png",
+  "w": 1040,
+  "h": 240
+ },
+ {
+  "pack": "wooden-fortress-and-animated-doors",
+  "group": "ebenen",
+  "file": "ebenen/wooden-castle.png",
+  "w": 144,
+  "h": 192
+ },
+ {
+  "pack": "wooden-fortress-and-animated-doors",
+  "group": "props",
+  "file": "props/animated-wooden-castle-door.png",
+  "w": 384,
+  "h": 64
+ },
+ {
+  "pack": "opp2017-castle-tiles",
+  "group": "ebenen",
+  "file": "ebenen/tile-castle-grey.png",
+  "w": 480,
+  "h": 480
+ },
+ {
+  "pack": "opp2017-castle-tiles",
+  "group": "ebenen",
+  "file": "ebenen/tile-castle.png",
+  "w": 480,
+  "h": 480
+ },
+ {
+  "pack": "opp2017-castle-tiles",
+  "group": "vorschau",
+  "file": "vorschau/castle01.png",
+  "w": 800,
+  "h": 320
+ },
+ {
+  "pack": "opp2017-castle-tiles",
+  "group": "vorschau",
+  "file": "vorschau/castle02.png",
+  "w": 800,
+  "h": 320
+ },
+ {
+  "pack": "resource-icons",
+  "group": "ressourcen",
+  "file": "ressourcen/resources-icons.png",
+  "w": 50,
+  "h": 91
+ },
+ {
+  "pack": "item-ruby-banana-star",
+  "group": "props",
+  "file": "props/part-star.png",
+  "w": 64,
+  "h": 16
+ },
+ {
+  "pack": "item-ruby-banana-star",
+  "group": "props",
+  "file": "props/ruby.png",
+  "w": 168,
+  "h": 24
+ },
+ {
+  "pack": "k3c-paletten",
+  "group": "ebenen",
+  "file": "ebenen/fort-tileset.png",
+  "w": 208,
+  "h": 128
+ },
+ {
+  "pack": "k3c-paletten",
+  "group": "props",
+  "file": "props/fort-banner.png",
+  "w": 48,
+  "h": 59
+ },
+ {
+  "pack": "k3c-paletten",
+  "group": "props",
+  "file": "props/fort-closed-door.png",
+  "w": 96,
+  "h": 80
+ },
+ {
+  "pack": "k3c-paletten",
+  "group": "props",
+  "file": "props/fort-door.png",
+  "w": 96,
+  "h": 80
+ },
+ {
+  "pack": "k3c-paletten",
+  "group": "props",
+  "file": "props/tower-eisen.png",
+  "w": 112,
+  "h": 128
+ },
+ {
+  "pack": "k3c-paletten",
+  "group": "props",
+  "file": "props/tower-kristall.png",
+  "w": 112,
+  "h": 128
+ },
+ {
+  "pack": "k3c-paletten",
+  "group": "props",
+  "file": "props/tower-kupfer.png",
+  "w": 112,
+  "h": 128
+ },
+ {
+  "pack": "k3c-paletten",
+  "group": "props",
+  "file": "props/tower-stein.png",
+  "w": 112,
+  "h": 128
+ },
+ {
+  "pack": "k3c-paletten",
+  "group": "tileset-einzeln",
+  "file": "tileset-einzeln/wall-b-eisen.png",
+  "w": 16,
+  "h": 16
+ },
+ {
+  "pack": "k3c-paletten",
+  "group": "tileset-einzeln",
+  "file": "tileset-einzeln/wall-b-kristall.png",
+  "w": 16,
+  "h": 16
+ },
+ {
+  "pack": "k3c-paletten",
+  "group": "tileset-einzeln",
+  "file": "tileset-einzeln/wall-b-kupfer.png",
+  "w": 16,
+  "h": 16
+ },
+ {
+  "pack": "k3c-paletten",
+  "group": "tileset-einzeln",
+  "file": "tileset-einzeln/wall-eisen.png",
+  "w": 16,
+  "h": 16
+ },
+ {
+  "pack": "k3c-paletten",
+  "group": "tileset-einzeln",
+  "file": "tileset-einzeln/wall-kristall.png",
+  "w": 16,
+  "h": 16
+ },
+ {
+  "pack": "k3c-paletten",
+  "group": "tileset-einzeln",
+  "file": "tileset-einzeln/wall-kupfer.png",
+  "w": 16,
+  "h": 16
  }
 ]

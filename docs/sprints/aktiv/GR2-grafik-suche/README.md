@@ -1,14 +1,14 @@
 # GR2 · CLI · Grafik-Suche für Lücken
 
-- **Status:** geplant
+- **Status:** aktiv
 - **Domäne:** CLI
 - **Reife:** bereit
 - **Einschiebbar:** ja
 - **Tickets:** B-162
-- **Start-Commit:** –
+- **Start-Commit:** e317292
 - **Spec:** freigegeben
-- **Revision:** 1
-- **Freigabe:** 2026-10-03, Chat (Ralf), Revision 1, durch 🧑; umfasst B-162; mit Änderungen aus dem Spec-Review (3 Kandidaten nach Q14, Figuren-Lücken als B-193, Reihenfolge nach GR1)
+- **Revision:** 2
+- **Freigabe:** 2026-10-04, Chat (Ralf), Revision 2, durch 🧑 (nicht gewählte Kandidaten in den Bestand, AC-06, für einen späteren Auswahl-Workshop auf einer GrafikManager-Seite, B-252); Revision 1: 2026-10-03, Chat (Ralf); umfasst B-162; mit Änderungen aus dem Spec-Review (3 Kandidaten nach Q14, Figuren-Lücken als B-193, Reihenfolge nach GR1)
 
 ## Ausgangslage
 
@@ -49,6 +49,7 @@ Kein Treffer → Platzhalter bleibt, Vermerk in der Tabelle. Widersprüchliche L
 - **AC-03** Gewählte Assets liegen unter `public/grafik/` mit Lizenzdatei, Index- und Credit-Eintrag, `task test` ist grün (B-162/AC-03).
 - **AC-04** Die Zuordnungstabelle zeigt für jede entschiedene Lücke den neuen Status (B-162/AC-04).
 - **AC-05** `task check` ist grün.
+- **AC-06** Nicht gewählte Kandidaten mit CC0 oder CC-BY liegen ebenfalls unter `public/grafik/` (Gruppe `kandidaten` in `index.json`) mit Lizenzdatei und Credit; sie sind nicht zugeordnet. CC-BY-SA bleibt draußen.
 
 ## Offene Fragen
 
@@ -58,8 +59,8 @@ Kein Treffer → Platzhalter bleibt, Vermerk in der Tabelle. Widersprüchliche L
 
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
-| GR2.1 | `GR2.1-recherche-kandidaten.md` | Umsetzung | autonom | offen |
-| GR2.2 | `GR2.2-workshop-auswahl.md` | Workshop | Mensch | offen |
+| GR2.1 | `GR2.1-recherche-kandidaten.md` | Umsetzung | autonom | fertig |
+| GR2.2 | `GR2.2-workshop-auswahl.md` | Workshop | Mensch | fertig |
 | GR2.3 | `GR2.3-assets-einbinden.md` | Umsetzung | autonom | offen |
 | GR2.4 | `GR2.4-review.md` | Review | autonom | offen |
 

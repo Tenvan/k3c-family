@@ -23,37 +23,37 @@ Viele dieser Objekte gibt es noch nicht im Code (B-112, B-114); dann ist die Her
 
 | Objekt | Herkunft | Pack | Datei/Frame | Stil (Raster, Palette, Skalierung) | Lizenz | Status |
 |---|---|---|---|---|---|---|
-| `hub:1` | `docs/rules/materialien-gebaeude.md` § 2 | `grafik/sunnyland-fort-of-illusion` | wie `castle` (GR1.2): `ebenen/tileset.png` (Burgmauer mit Zinnen), `props/banner.png` | 16 px, SunnyLand-Fort (Blaugrau), ×2; Vermerk: Palette an gothicvania-town angleichen, Entscheidung 🧑 GR1.1 | CC0 1.0 | zugeordnet |
-| `hub:2` | `docs/rules/materialien-gebaeude.md` § 2 | – | – (Burg-Ausbau Stein fehlt) | Ziel: 16 px, Gothicvania, ×2 (Q13) | Ziel: CC0 oder CC-BY | **Lücke: keine Ausbau-Grafik, B-162** |
-| `hub:3` | `docs/rules/materialien-gebaeude.md` § 2 | – | – (Burg-Ausbau Kupfer fehlt) | Ziel: 16 px, Gothicvania, ×2 (Q13) | Ziel: CC0 oder CC-BY | **Lücke: keine Ausbau-Grafik, B-162** |
-| `hub:4` | `docs/rules/materialien-gebaeude.md` § 2 | – | – (Burg-Ausbau Eisen fehlt) | Ziel: 16 px, Gothicvania, ×2 (Q13) | Ziel: CC0 oder CC-BY | **Lücke: keine Ausbau-Grafik, B-162** |
-| `hub:5` | `docs/rules/materialien-gebaeude.md` § 2 | – | – (Burg-Ausbau Kristall fehlt) | Ziel: 16 px, Gothicvania, ×2 (Q13) | Ziel: CC0 oder CC-BY | **Lücke: keine Ausbau-Grafik, B-162** |
+| `hub:1` | `docs/rules/materialien-gebaeude.md` § 2 | `grafik/k3c-paletten` | wie `castle`: `ebenen/fort-tileset.png` (Burgmauer mit Zinnen), `props/fort-banner.png`; abgeleitet von `sunnyland-fort-of-illusion` | 16 px, Gothicvania (Dunkelviolett), ×2; Vermerk: Palette angeglichen (GR2.3, `grafik/k3c-paletten`) | CC0 1.0 | zugeordnet |
+| `hub:2` | `docs/rules/materialien-gebaeude.md` § 2 | `grafik/wooden-fortress-and-animated-doors` | `ebenen/wooden-castle.png` (Palisade 144×192), `props/animated-wooden-castle-door.png` (Tor, 6 Frames 64×64) | 32 px nativ, Reemax (Braun), ×1; Vermerk: Ansicht schräg von oben, nur die Front; Entscheidung 🧑 GR2.2 | CC BY 3.0 (Namensnennung Pflicht) | zugeordnet |
+| `hub:3` | `docs/rules/materialien-gebaeude.md` § 2 | `grafik/opp2017-castle-tiles` | `ebenen/tile-castle.png` (violette Variante, Kacheln 32×32), Bausatz Stufe 3 | 32 px nativ, OPP DB32 (Violett), ×1; Entscheidung 🧑 GR2.2 | CC0 1.0 | zugeordnet |
+| `hub:4` | `docs/rules/materialien-gebaeude.md` § 2 | `grafik/opp2017-castle-tiles` | `ebenen/tile-castle.png` (violette Variante, Kacheln 32×32), Bausatz Stufe 4 | 32 px nativ, OPP DB32 (Violett), ×1; Entscheidung 🧑 GR2.2 | CC0 1.0 | zugeordnet |
+| `hub:5` | `docs/rules/materialien-gebaeude.md` § 2 | `grafik/opp2017-castle-tiles` | `ebenen/tile-castle.png` (violette Variante, Kacheln 32×32), Bausatz Stufe 5; Beispiel `vorschau/castle01.png` | 32 px nativ, OPP DB32 (Violett), ×1; Entscheidung 🧑 GR2.2 | CC0 1.0 | zugeordnet |
 
 ## Mauer-Stufen
 
 | Objekt | Herkunft | Pack | Datei/Frame | Stil (Raster, Palette, Skalierung) | Lizenz | Status |
 |---|---|---|---|---|---|---|
-| `wall:1` | `docs/rules/materialien-gebaeude.md` § 3.1 | – | – (keine Holzmauer im Bestand; `wall` aus GR1.2 zeigt eine Putz-/Steinmauer) | Ziel: 16 px, Gothicvania, ×2 (Q13) | Ziel: CC0 oder CC-BY | **Lücke: keine Holzmauer, B-162** |
+| `wall:1` | `docs/rules/materialien-gebaeude.md` § 3.1 | – | – (Holzmauer: kein Treffer in GR2.2) | Ziel: 16 px, Gothicvania, ×2 (Q13) | Ziel: CC0 oder CC-BY | **Lücke: kein Treffer, Platzhalter, B-162** |
 | `wall:2` | `docs/rules/materialien-gebaeude.md` § 3.1 | `grafik/gothicvania-town` | wie `wall` (GR1.2): `tileset-einzeln/wall.png`, `tileset-einzeln/wall-b.png` (16×16) | 16 px, Gothicvania (Dunkelviolett), ×2 | CC0 1.0 | zugeordnet |
-| `wall:3` | `docs/rules/materialien-gebaeude.md` § 3.1 | – | – (Kandidat: Palettentausch von `wall:2`, Q13 erlaubt Palette) | Ziel: 16 px, Gothicvania, ×2 (Q13) | Ziel: CC0 oder CC-BY | **Lücke: keine Kupfermauer, B-162** |
-| `wall:4` | `docs/rules/materialien-gebaeude.md` § 3.1 | – | – (Kandidat: Palettentausch von `wall:2`) | Ziel: 16 px, Gothicvania, ×2 (Q13) | Ziel: CC0 oder CC-BY | **Lücke: keine Eisenmauer, B-162** |
-| `wall:5` | `docs/rules/materialien-gebaeude.md` § 3.1 | – | – (Warped Caves nur als Hintergrund, GR1.1) | Ziel: 16 px, Gothicvania, ×2 (Q13) | Ziel: CC0 oder CC-BY | **Lücke: keine Kristallmauer, B-162** |
+| `wall:3` | `docs/rules/materialien-gebaeude.md` § 3.1 | `grafik/k3c-paletten` | `tileset-einzeln/wall-kupfer.png`, `tileset-einzeln/wall-b-kupfer.png` (16×16) | 16 px, Gothicvania-Wand, Palettentausch Kupfer (warm-orange), ×2 (GR2.3, Entscheidung 🧑 GR2.2) | CC0 1.0 | zugeordnet |
+| `wall:4` | `docs/rules/materialien-gebaeude.md` § 3.1 | `grafik/k3c-paletten` | `tileset-einzeln/wall-eisen.png`, `tileset-einzeln/wall-b-eisen.png` (16×16) | 16 px, Gothicvania-Wand, Palettentausch Eisen (kühl-grau), ×2 (GR2.3, Entscheidung 🧑 GR2.2) | CC0 1.0 | zugeordnet |
+| `wall:5` | `docs/rules/materialien-gebaeude.md` § 3.1 | `grafik/k3c-paletten` | `tileset-einzeln/wall-kristall.png`, `tileset-einzeln/wall-b-kristall.png` (16×16) | 16 px, Gothicvania-Wand, Palettentausch Kristall (türkis), ×2 (GR2.3, Entscheidung 🧑 GR2.2) | CC0 1.0 | zugeordnet |
 
 ## Turm-Stufen
 
 | Objekt | Herkunft | Pack | Datei/Frame | Stil (Raster, Palette, Skalierung) | Lizenz | Status |
 |---|---|---|---|---|---|---|
-| `tower:1` | `docs/rules/materialien-gebaeude.md` § 3.1 | – | – (kein Holzturm im Bestand; `tower` aus GR1.2 ist ein Steinturm) | Ziel: 16 px, Gothicvania, ×2 (Q13) | Ziel: CC0 oder CC-BY | **Lücke: kein Holzturm, B-162** |
-| `tower:2` | `docs/rules/materialien-gebaeude.md` § 3.1 | `grafik/sunnyland-fort-of-illusion` | wie `tower` (GR1.2): `ebenen/front.png` (Turm mit Kegeldach, 112×128) | 16 px, SunnyLand-Fort (Blaugrau), ×2; Vermerk: Palette an gothicvania-town angleichen, Entscheidung 🧑 GR1.1 | CC0 1.0 | zugeordnet |
-| `tower:3` | `docs/rules/materialien-gebaeude.md` § 3.1 | – | – (Kandidat: Palettentausch von `tower:2`) | Ziel: 16 px, Gothicvania, ×2 (Q13) | Ziel: CC0 oder CC-BY | **Lücke: kein Kupferturm, B-162** |
-| `tower:4` | `docs/rules/materialien-gebaeude.md` § 3.1 | – | – (Kandidat: Palettentausch von `tower:2`) | Ziel: 16 px, Gothicvania, ×2 (Q13) | Ziel: CC0 oder CC-BY | **Lücke: kein Eisenturm, B-162** |
-| `tower:5` | `docs/rules/materialien-gebaeude.md` § 3.1 (Zaubertum) | – | – | Ziel: 16 px, Gothicvania, ×2 (Q13) | Ziel: CC0 oder CC-BY | **Lücke: kein Zaubertum, B-162** |
+| `tower:1` | `docs/rules/materialien-gebaeude.md` § 3.1 | – | – (Holzturm: kein Treffer in GR2.2) | Ziel: 16 px, Gothicvania, ×2 (Q13) | Ziel: CC0 oder CC-BY | **Lücke: kein Treffer, Platzhalter, B-162** |
+| `tower:2` | `docs/rules/materialien-gebaeude.md` § 3.1 | `grafik/k3c-paletten` | wie `tower`: `props/tower-stein.png` (Turm mit Kegeldach, 112×128); abgeleitet von `sunnyland-fort-of-illusion` `ebenen/front.png` | 16 px, Gothicvania (Dunkelviolett), ×2; Vermerk: Palette angeglichen (GR2.3, `grafik/k3c-paletten`) | CC0 1.0 | zugeordnet |
+| `tower:3` | `docs/rules/materialien-gebaeude.md` § 3.1 | `grafik/k3c-paletten` | `props/tower-kupfer.png` (112×128) | 16 px, Fort-Turm, Palettentausch Kupfer (warm-orange), ×2 (GR2.3, Entscheidung 🧑 GR2.2) | CC0 1.0 | zugeordnet |
+| `tower:4` | `docs/rules/materialien-gebaeude.md` § 3.1 | `grafik/k3c-paletten` | `props/tower-eisen.png` (112×128) | 16 px, Fort-Turm, Palettentausch Eisen (kühl-grau), ×2 (GR2.3, Entscheidung 🧑 GR2.2) | CC0 1.0 | zugeordnet |
+| `tower:5` | `docs/rules/materialien-gebaeude.md` § 3.1 (Zaubertum) | – | – (Zaubertum: kein Treffer in GR2.2; der Kristall-Turm `props/tower-kristall.png` aus `grafik/k3c-paletten` liegt bereit) | Ziel: 16 px, Gothicvania, ×2 (Q13) | Ziel: CC0 oder CC-BY | **Lücke: kein Treffer, Platzhalter, B-162** |
 
 ## Materialien und Adern
 
 | Objekt | Herkunft | Pack | Datei/Frame | Stil (Raster, Palette, Skalierung) | Lizenz | Status |
 |---|---|---|---|---|---|---|
-| `material:wood` | `docs/rules/materialien-gebaeude.md` § 1 | – | – (kein Holz-Symbol; Kiste und Fass aus gothicvania-town sind keine Stämme) | Ziel: 16 px, ×2 (Q13) | Ziel: CC0 oder CC-BY | **Lücke: kein Holz-Symbol, B-162** |
+| `material:wood` | `docs/rules/materialien-gebaeude.md` § 1 | `grafik/resource-icons` | `ressourcen/resources-icons.png` (50×91), Zeile 1 Holzstapel, links mit Kontur | ca. 24×13 px, Kutejnikov (Braun), ×2; Vermerk: kein 16-px-Raster; Entscheidung 🧑 GR2.2 | CC0 1.0 | zugeordnet |
 | `material:stone` | `data/economy.json` › `gatherables.rock` | `grafik/various-stones-and-oregem-veins-16x16` | Erz-Sheet Zeile 1, Spalte 6 (Brocken) und 7 (Block) | 16 px, vico (hell, gesättigt), ×2 | CC0 1.0 | zugeordnet |
 | `material:copper` | `data/economy.json` › `gatherables.copperOre` | `grafik/various-stones-and-oregem-veins-16x16` | Erz-Sheet Zeile 2, Spalte 6 (Brocken) und 7 (Barren) | 16 px, vico (hell, gesättigt), ×2 | CC0 1.0 | zugeordnet |
 | `material:iron` | `docs/rules/materialien-gebaeude.md` § 1 | `grafik/various-stones-and-oregem-veins-16x16` | Erz-Sheet Zeile 3, Spalte 6 (Brocken) und 7 (Barren), helles Erz als Eisen gedeutet | 16 px, vico (hell, gesättigt), ×2 | CC0 1.0 | zugeordnet |
@@ -62,7 +62,7 @@ Viele dieser Objekte gibt es noch nicht im Code (B-112, B-114); dann ist die Her
 | `vein:copper` | `docs/rules/materialien-gebaeude.md` § 1 (Adern) | `grafik/various-stones-and-oregem-veins-16x16` | Erz-Sheet Zeile 2, Spalte 1–5 | 16 px, vico (hell, gesättigt), ×2 | CC0 1.0 | zugeordnet |
 | `vein:iron` | `docs/rules/materialien-gebaeude.md` § 1 (Adern) | `grafik/various-stones-and-oregem-veins-16x16` | Erz-Sheet Zeile 3, Spalte 1–5 (helles Erz als Eisen gedeutet) | 16 px, vico (hell, gesättigt), ×2 | CC0 1.0 | zugeordnet |
 | `vein:crystal` | `docs/rules/materialien-gebaeude.md` § 1 (Adern) | `grafik/various-stones-and-oregem-veins-16x16` | Erz-Sheet Zeile 9, Spalte 1–5 | 16 px, vico (hell, gesättigt), ×2 | CC0 1.0 | zugeordnet |
-| `plantation` | `docs/rules/materialien-gebaeude.md` § 1 (Farm-Plantage) | – | – (keine Wachstumsstufen; Kandidaten `gotthicvania-swamp/umgebung/trees.png`, `sunnyland-tall-forest-environment/props/Plant.png`) | Ziel: 16 px, ×2 (Q13) | Ziel: CC0 oder CC-BY | **Lücke: keine Setzlinge und Wachstumsstufen, B-162** |
+| `plantation` | `docs/rules/materialien-gebaeude.md` § 1 (Farm-Plantage) | – | – (kein Treffer in GR2.2; SA-Kandidaten ausgeschlossen) | Ziel: 16 px, ×2 (Q13) | Ziel: CC0 oder CC-BY | **Lücke: kein Treffer, Platzhalter, B-162** |
 
 ## Truhen, Portale, Münzen, Ausgang
 
@@ -71,8 +71,8 @@ Viele dieser Objekte gibt es noch nicht im Code (B-112, B-114); dann ist die Her
 | `pickup:chest` | `data/economy.json` › `chestGold`, Pickup `chest` | `grafik/gold-treasure-icons-16x16` | `icons/8.png` (offene Truhe mit Gold, 16×16); geschlossene Truhe fehlt | 16 px, Bonsaiheldin (gelb/braun), ×2 | CC0 1.0 | zugeordnet |
 | `portal` | `data/biomes/*.json` › `portals` | `grafik/portals-32-x-48` | `portale/portalsSpriteSheet.png`, Frame 32×48, je Zeile eine Farbe (blau, rot, orange, grau) mit 4 Frames | 32 px nativ, Rusher_go (gesättigt), ×1 | CC0 1.0 | zugeordnet |
 | `coin` | `data/economy.json` › `purse` | `grafik/16x16-small-and-medium-coin-animation` | `muenzen/sCoins_1.png`, `muenzen/sCoins_2.png` (Drehung, je 8 Frames 16×16) | 16 px, WolfTech (gelb), ×2 | CC0 1.0 | zugeordnet |
-| `exit` | `src/scenes/worldRenderer.ts` › `drawStatic` (Level-Objekt `exit`) | `grafik/sunnyland-fort-of-illusion` | `props/door.png` (offener Torbogen, 96×80); dieselbe Datei wie `gate` (offen) | 16 px, SunnyLand-Fort (Blaugrau), ×2; Vermerk: Palette an gothicvania-town angleichen, Entscheidung 🧑 GR1.1 | CC0 1.0 | zugeordnet |
-| `pickup:skillPoint` | `src/model/types.ts` › `Pickup` (`skillPoint`) | – | – (kein Symbol für Skillpunkte) | Ziel: 16 px, ×2 (Q13) | Ziel: CC0 oder CC-BY | **Lücke: kein Skillpunkt-Symbol, B-162** |
+| `exit` | `src/scenes/worldRenderer.ts` › `drawStatic` (Level-Objekt `exit`) | `grafik/k3c-paletten` | `props/fort-door.png` (offener Torbogen, 96×80); dieselbe Datei wie `gate` (offen) | 16 px, Gothicvania (Dunkelviolett), ×2; Vermerk: Palette angeglichen (GR2.3, `grafik/k3c-paletten`) | CC0 1.0 | zugeordnet |
+| `pickup:skillPoint` | `src/model/types.ts` › `Pickup` (`skillPoint`) | `grafik/item-ruby-banana-star` | `props/part-star.png` (Stern, 4 Frames 16×16) | 16 px, mieki256 (Gelb), ×2; Entscheidung 🧑 GR2.2 | CC0 1.0 | zugeordnet |
 
 ## Ressourcen und Rekrutierungslager
 
@@ -84,7 +84,7 @@ Endliche Level-Objekte, die `src/scenes/worldRenderer.ts` heute als Formen zeich
 | `node:rock` | `data/economy.json` › `gatherables.rock` | `grafik/various-stones-and-oregem-veins-16x16` | Erz-Sheet Zeile 1, Spalte 2 (Fels ohne Erz; Ader `vein:stone` nutzt dieselbe Zeile) | 16 px, vico (hell, gesättigt), ×2 | CC0 1.0 | zugeordnet |
 | `node:copperOre` | `data/economy.json` › `gatherables.copperOre` | `grafik/various-stones-and-oregem-veins-16x16` | Erz-Sheet Zeile 2, Spalte 1 (Ader `vein:copper` nutzt dieselbe Zeile) | 16 px, vico (hell, gesättigt), ×2 | CC0 1.0 | zugeordnet |
 | `node:bush` | `data/biomes/forest.json` › `resourcesPerChunk` (Deko) | `grafik/sunnyland-tall-forest-environment` | `props/Plant.png` (Farn, 42×27) | 16 px, SunnyLand (Grün, gesättigt), ×2 | CC0 1.0 | zugeordnet |
-| `camp:recruit` | `data/economy.json` › `recruitCamp` | – | – (Zelt und Lagerfeuer; laut B-161 kein Treffer im Bestand) | Ziel: 16 px, Gothicvania, ×2 (Q13) | Ziel: CC0 oder CC-BY | **Lücke: kein Zelt und Lagerfeuer, B-162** |
+| `camp:recruit` | `data/economy.json` › `recruitCamp` | `grafik/tent-8`, `grafik/16x16-animated-campfire` | `props/objs.png` (Zelt aus dem Blatt 256×184) und `props/campfire-16x16.png` (Lagerfeuer, 4 Frames 16×16) | ca. 32 px CDmir (Braun) und 16 px krial (DB16), ×2; Vermerk: Palette anpassen; Entscheidung 🧑 GR2.2 | CC0 1.0 | zugeordnet |
 
 ## Reittiere
 
@@ -137,4 +137,4 @@ Je Bild der Gruppe `icons` in `public/grafik/index.json` eine Zeile; die Verwend
 |---|---|---|---|---|---|---|
 | `bg:forest` | `data/biomes/forest.json` | `grafik/forest-background`, `grafik/sunnyland-tall-forest-environment` | `ebenen/parallax-forest-*.png` (4 Ebenen 272×160); Alternative `ebenen/back.png`, `far.png`, `middle.png` (Tall Forest) | Hintergrund, ansimuz (Braun/Orange bzw. Grün), ×2; Palettenbruch bei Hintergründen erlaubt (Q13) | CC0 1.0 | zugeordnet |
 | `bg:cave` | `data/biomes/cave.json` | `grafik/blue-cave-background`, `grafik/warped-caves-pixel-art-pack` | `ebenen/startcavebg.png` (400×225); Alternative `ebenen/background.png`, `ebenen/middleground.png` (Warped Caves, nur als Höhlen-Hintergrund, GR1.1) | Hintergrund, Blau malerisch bzw. Neon-Violett, ×2; Palettenbruch bei Hintergründen erlaubt (Q13) | CC0 1.0 bzw. CC BY 3.0 | zugeordnet |
-| `bg:mine` | `data/biomes/mine.json` | – | – (laut B-161 kein Treffer im Bestand) | Ziel: Hintergrund ×2, Braun (`palette` in `mine.json`) | Ziel: CC0 oder CC-BY | **Lücke: kein Mine-Hintergrund, B-162** |
+| `bg:mine` | `data/biomes/mine.json` | `grafik/warped-super-grotto-escape-pack` | `ebenen/back.png`, `ebenen/far.png`, `ebenen/middle.png` (3 Parallax-Ebenen, 240 px hoch), `ebenen/tileset.png` | Hintergrund, ansimuz (Dunkelviolett), ×2; Palettenbruch bei Hintergründen erlaubt; Entscheidung 🧑 GR2.2 | CC0 1.0 | zugeordnet |
