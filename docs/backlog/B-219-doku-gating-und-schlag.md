@@ -1,4 +1,4 @@
-# B-218 · Game-Design und Ereignis-Doku nennen Tier-Gating 2/4/6 und den Schlag des Monarchen
+# B-219 · Game-Design und Ereignis-Doku nennen Tier-Gating 2/4/6 und den Schlag des Monarchen
 
 - **Domäne:** REG
 - **Typ:** Schuld
