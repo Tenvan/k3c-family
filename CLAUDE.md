@@ -12,6 +12,8 @@ Zielplattform ist **Edge auf der Xbox** (Gamepad API), gehostet im Heimnetz. Die
 - **Tickets:** `docs/backlog/` (Index `README.md`, ein Ticket pro Datei). Neue Ideen/Probleme sofort als Ticket anlegen,
   nicht nebenbei umsetzen. Erledigte/verworfene liegen in `docs/backlog/archiv/` (nur auf Nachfrage lesen).
 - **Vorlagen sind Pflicht:** Tickets, Sprints und Sessions nur als Kopie von `docs/vorlagen/*.md`; `tests/planning.test.ts` prüft das.
+- **Planung nur über MCP:** Tickets, Sprints und Sessions anlegen und ändern ausschließlich mit `plan_create`, `plan_set`,
+  `plan_section`, `plan_delete` (lesen: `plan_list`, `plan_get`) von k3c-dev; von Hand nur, wenn k3c-dev nicht läuft.
 - **SDD:** Ticket und Sprint-README sind die Spec (Kriterien `AC-01` …), Sessions erfüllen genannte Kriterien.
   Freigabe (`Spec: freigegeben`) und manuelle Abnahmen nur durch den Nutzer. Details: `docs/arbeitsweise.md` › SDD.
 - **Spielstruktur (003):** Ein Raum hat einen Spielstand mit n Inseln, jede Insel n Stufen; Stufen sind pro Spieler frei begehbar und laufen alle weiter. Im Go-Code rechnet ein Raum eine Insel mit mehreren Stufen im selben Takt, Einzelwechsel je Spieler und einem Material-Vorrat je Insel (`engine/sim/island*.go`, SP12–SP14, Protokoll v3); noch offen: mehrere Inseln und Inselwechsel (B-103). Regeln: `docs/rules/stufen.md`.

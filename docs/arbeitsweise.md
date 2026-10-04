@@ -26,6 +26,11 @@ Setzt eine Session ein Ticket auf `erledigt` oder `verworfen`, verschiebt sie es
 `docs/vorlagen/`. `tests/planning.test.ts` prüft Felder, Überschriften, Status passend zum Ordner, Index und Verweise.
 Eine Abweichung lässt `npm test` scheitern.
 
+**Planung nur über k3c-dev (B-205).** Anlegen, Felder ändern, Abschnitte füllen, archivieren, Sprints verschieben und
+Entwürfe löschen laufen über die MCP-Tools `plan_list`, `plan_get`, `plan_create`, `plan_set`, `plan_section`,
+`plan_delete`; sie ziehen Index, Session-Tabelle, Fahrplan und Ordner selbst nach. Handarbeit an diesen Dateien ist nur
+der Rückfall, wenn k3c-dev nicht läuft; dann gelten die Regeln dieses Abschnitts wörtlich.
+
 ## Spec-Driven Development (SDD)
 
 Ticket und Sprint-README **sind** die Spec, eine eigene Spec-Datei gibt es nicht. Das Wie steht in den Sessions.
