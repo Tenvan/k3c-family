@@ -11,6 +11,8 @@
   :root.dark { --bg: #111113; --card: #18191b; --line: #2e3135; --text: #edeef0; --dim: #9b9ea4; --accent: #7b96ff;
     --accent-bg: #7b96ff26; --ok: #3dd68c; --warn: #ffc53d; --err: #ff6369; --info: #70b8ff; --chip: #212225; }
   * { box-sizing: border-box; }
+  :root { scrollbar-width: thin; scrollbar-color: var(--line) transparent; }
+  :hover { scrollbar-color: var(--dim) transparent; }
   html, body { margin: 0; height: 100%; }
   body { background: var(--bg); color: var(--text); font: 14px/1.45 system-ui, "Segoe UI", sans-serif;
     display: flex; flex-direction: column; }
