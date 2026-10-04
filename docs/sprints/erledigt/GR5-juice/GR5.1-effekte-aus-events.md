@@ -1,6 +1,6 @@
 # GR5.1 · Effekte für Treffer, Kill, Münze und Bauen, nur aus Events
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Branch:** gr5/1-effekte-aus-events
@@ -41,9 +41,9 @@ Abschalten und Optionen (GR5.2), Split-Screen-Kamera-Schütteln, Blitzgrenze, Vi
 
 ## Fertig, wenn
 
-- [ ] AC-01: Test der Zuordnung und Beobachtung im Browser-Pane: `hit`, `kill`, `coinPickup` und `built` (bzw. `buildProgress`) lösen je ihren Effekt aus.
-- [ ] AC-03: Die Effekt-Auslösung liest nur Events und ändert keinen Spielzustand (Test der reinen Funktion, `src/scenes/noSim.test.ts` grün).
-- [ ] Unbekannter Event-Typ → kein Fehler (Test).
+- [x] AC-01: Test der Zuordnung und Beobachtung im Browser-Pane: `hit`, `kill`, `coinPickup` und `built` (bzw. `buildProgress`) lösen je ihren Effekt aus.
+- [x] AC-03: Die Effekt-Auslösung liest nur Events und ändert keinen Spielzustand (Test der reinen Funktion, `src/scenes/noSim.test.ts` grün).
+- [x] Unbekannter Event-Typ → kein Fehler (Test).
 
 ## Prüfen
 
@@ -55,4 +55,11 @@ Manuelle Prüfungen (Browser, Xbox, TV) nur, wenn diese Datei sie nennt und 🧑
 
 ## Ergebnis
 
-–
+Umgesetzt: `src/scenes/effects.ts` (reine Zuordnung Event → Effekt, `EFFECT_CONFIG` als eine Stelle für Dauer, Partikel, Grenze `MAX_LIVE_EFFECTS`), `effectsView.ts` (Ring und Partikel in der Stufen-Ebene, Tween, Aufräumen), `stageView.ts` (hält `effects`), `GameScene.ts` (`spawnEffects` aus `frame.state.events`, nicht aus `pendingEvents`).
+
+- AC-01: `effects.test.ts` prüft `hit`, `kill`, `coinPickup`, `coinGive`, `buildProgress`, `built`, `playerDown` je ein Effekt mit Ort in Pixeln. Beobachtung im Browser-Pane nicht gemacht (laut Auftrag keine Browser-Prüfung): 🧑 bitte am Gerät ansehen.
+- AC-03: `effectFor` liest nur das Ereignis, Test „verändert das Ereignis nicht“; `noSim.test.ts` grün.
+- Unbekannter Typ und unbekannter Spieler: `null`, kein Fehler (Test).
+- `task check` grün (49 Testdateien, 892 Tests).
+- Abweichung: `built` und `playerDown` tragen kein `x`; Behelf im Client (letztes `buildProgress`, Spieler-Snapshot), Ticket B-217.
+- Effekte erscheinen in der Stufe des aktuellen `client.level`; Zuordnung per Ereignis-`stage` entfällt, bis B-176 mehrere Stufen im Client liefert.
