@@ -149,6 +149,11 @@ Er lauscht nur an `http://127.0.0.1:5180/mcp` (anderer Port: `K3C_DEV_PORT`). Cl
 eingecheckte `.mcp.json` (gilt so auch in jedem Worktree), freigegeben in `.claude/settings.json`. Läuft k3c-dev nicht,
 fehlen die Tools nur in der Session.
 
+Es läuft genau **eine** Instanz, gestartet aus der Repo-Wurzel; alle Worktrees teilen sie. Der `headersHelper` der
+`.mcp.json` schickt bei jeder Anfrage das Arbeitsverzeichnis der Session (Header `X-K3C-Root`), ohne ihn gelten die MCP-roots
+des Clients. Jedes Tool liest, schreibt, prüft und startet dann nur in diesem Checkout. Dienste eines Worktrees bekommen
+eigene Ports (Versatz 10, 20 …: Vite 5183, Spielserver 8090 …); `svc_status` nennt sie. Ein fremder Ordner wird abgelehnt.
+
 Prüfen: `task check:dev`. Plan für Statistik, Dienste und Oberfläche: Sprints M2–M5 in [`docs/sprints/`](docs/sprints/README.md).
 
 ## CI/CD (GitHub Actions)
