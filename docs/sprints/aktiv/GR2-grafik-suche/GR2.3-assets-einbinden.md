@@ -6,7 +6,7 @@
 - **Branch:** gr2/3-assets-einbinden
 - **Abhängig von:** GR2.2
 - **Tickets:** B-162
-- **Kriterien:** AC-03, AC-04, AC-05
+- **Kriterien:** AC-03, AC-04, AC-05, AC-06
 
 ## Ziel
 
@@ -45,6 +45,7 @@ Einbau in den Renderer (GR3), Atlas (GR4), neue Suche.
 - [ ] AC-03: Gewählte Assets mit Lizenzdatei, Index- und Credit-Eintrag; `task test` grün.
 - [ ] AC-04: Zuordnungstabelle zeigt für jede entschiedene Lücke den neuen Status.
 - [ ] AC-05: `task check` grün.
+- [ ] AC-06: Nicht gewählte CC0-/CC-BY-Kandidaten als Gruppe `kandidaten` im Bestand, mit Lizenzdatei und Credit, nicht zugeordnet (Erweiterung 🧑 2026-10-04).
 
 ## Prüfen
 

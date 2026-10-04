@@ -14,7 +14,7 @@ Der Sprint GR2 ist nach `docs/arbeitsweise.md` › Review-Session geprüft und l
 
 ## Kontext
 
-Leichter Review (nur schwere Befunde im Diff, günstiges Modell). Der Diff berührt `docs/funde/`, `public/grafik/`, Credits und `docs/assets/zuordnung.md`. Besonders prüfen: nur CC0/CC-BY, jede neue Datei mit Lizenzdatei und Credit (CC-BY mit Urheber und Quelle); keine Musik, kein Demo-Code, keine Quelldateien im Repo; nur gewählte Kandidaten eingebunden (Entscheidungen von 🧑 auf der Referenzseite); Tests nicht gelockert (Zahl der Packs angepasst, nicht entfernt).
+Leichter Review (nur schwere Befunde im Diff, günstiges Modell). Der Diff berührt `docs/funde/`, `public/grafik/`, Credits und `docs/assets/zuordnung.md`. Besonders prüfen: nur CC0/CC-BY, jede neue Datei mit Lizenzdatei und Credit (CC-BY mit Urheber und Quelle); keine Musik, kein Demo-Code, keine Quelldateien im Repo; nur gewählte Kandidaten zugeordnet, die übrigen nur als Gruppe `kandidaten` im Bestand (AC-06, Entscheidungen von 🧑 auf der Referenzseite); Tests nicht gelockert (Zahl der Packs angepasst, nicht entfernt).
 
 ## Erlaubte Dateien
 
@@ -29,14 +29,14 @@ Stil, Geschmack der Auswahl, Einbau.
 
 1. Branch anlegen, `Status: in Arbeit`. `task check` grün.
 2. `git fetch && git diff origin/develop...origin/sprint/gr2` lesen (nur den Diff), Befunde nach `docs/arbeitsweise.md` behandeln.
-3. Nachweis je Kriterium AC-01 bis AC-05 aus den Ergebnissen von GR2.1 bis GR2.3 prüfen.
+3. Nachweis je Kriterium AC-01 bis AC-06 aus den Ergebnissen von GR2.1 bis GR2.3 prüfen.
 4. Abnahme (höchstens fünf Zeilen) in die Sprint-README schreiben, mit Versionsvorschlag.
 5. B-162 auf `erledigt` setzen und nach `docs/backlog/archiv/` verschieben (Index-Zeile in „Archiv“).
 6. Sprint-Ordner nach `docs/sprints/erledigt/` verschieben, `Status: erledigt`, Fahrplan in `docs/sprints/README.md` anpassen, PR öffnen.
 
 ## Fertig, wenn
 
-- [ ] AC-01 bis AC-05 haben einen Nachweis im Ergebnis der jeweiligen Session oder sind mit Grund und Ticket verschoben.
+- [ ] AC-01 bis AC-06 haben einen Nachweis im Ergebnis der jeweiligen Session oder sind mit Grund und Ticket verschoben.
 - [ ] Schwere Befunde sind behoben oder als Ticket angelegt; Sprint liegt unter `docs/sprints/erledigt/`.
 
 ## Prüfen
