@@ -3,6 +3,7 @@
 Beschlossen von 🧑 im Workshop R3.3 am 2026-10-02 (Grundlage: [`archiv/ist-monarch-buerger.md`](archiv/ist-monarch-buerger.md); Rahmen: [`monarch.md`](monarch.md), [`wirtschaft.md`](wirtschaft.md), [`materialien-gebaeude.md`](materialien-gebaeude.md)).
 Je Regel: **Regel · Begründung · Verweis auf `data/` · Zielkorridor**. Werte sind **Startwerte**, Feintuning mit dem Balancing-Tester (B-099).
 Zielkorridore gelten im Standardszenario **Normal, Wald-Start, 2 Spieler, Bot „sparsam“, je 100 Seeds**. Alles Material kommt aus dem Insel-Vorrat, Gold zahlen die Spieler. Jede Regel gilt für 2+ Spieler.
+**Begriffe** (Q63, 2026-10-04): **Bürger** sind alle Figuren des Hubs, **Truppen** nur die Kämpfer (Bogenschützen, Krieger, Elite). Code-Namen wie `World.Troops` (alle Hub-Figuren) bleiben als Ausnahme.
 
 ## 1. Figuren
 
@@ -44,8 +45,8 @@ Daten: `data/troops.json` (Kosten), `data/buildings.json`. Die Kosten der Gebäu
 | **Kein Level und keine aktiven Skills für Bürger.** Entwicklung nur über Upgrades der Gebäude (Elite in der Schmiede, Rüstung in der Rüstkammer) und über Berufe. | Wie beim Monarchen: weniger Mechanik. | Zeitpunkt des ersten Elite-Upgrades: vor Tag 10 in 40–70 % (Kennzahl fehlt, B-099) |
 | **Truppen-Limit je Hub:** Basis **10**, Kaserne **+10**; es zählen nur **Kämpfer** (Bogenschützen, Krieger, auch Elite). Bauern, Berufe, Handwerker, Händler und Landstreicher zählen nicht. Geprüft **beim Waffe-Holen** an genau einer Stelle (Bogen und Schwert): bei vollem Limit bleibt die Waffe im Regal; Landstreicher werden weiter zu Bauern (Q29, 2026-10-04). | Adern und Handwerk bleiben besetzbar; jede Stufe hat ihre eigene Besatzung. | Kämpfer je Hub zu Tagesbeginn: Tag 3 ≥ 4, Tag 6 ≥ 8 in ≥ 70 % (aus `World.Troops`) |
 | **Verhalten wie heute:** Bauern (auch Bergleute an Adern) fliehen bei Gefahr in die Burg, Adern ruhen; Kämpfer halten Posten und schießen oder kämpfen in Reichweite. Kein aktiver Vorstoß. | Einfach und verständlich; die Welle bestimmt der Spieler durch Aufbau. | – |
-| **Heilung:** nur am **Heilplatz** (Truppen und Spieler in Reichweite, immer, auch im Kampf; Startwerte 5 HP/s, Radius 6; Q32, 2026-10-04) und durch den Heiler-Skill; **keine Regeneration**. | Der Heilplatz hat Gewicht. | Verluste je Welle: Median höchstens 25 % der Kämpfer (Kennzahl fehlt, B-099) |
-| **Verlust:** Gefallene Truppen sind verloren; Ersatz über Taverne und Rekrutierung. Beim Burgfall wirkt der Niederlage-Modus (`stufen.md` § 4). Ereignis `troopLost` für alle Truppen außer Landstreichern (Felder `kind`, `x`, `cause`), ohne Priorität; beim Burgfall kein `troopLost` (Q39, 2026-10-04). | Verlust hat Gewicht, Ersatz ist möglich. | – |
+| **Heilung:** nur am **Heilplatz** (Truppen, also Kämpfer, und Spieler in Reichweite, immer, auch im Kampf; Startwerte 5 HP/s, Radius 6; Q32, 2026-10-04) und durch den Heiler-Skill; **keine Regeneration**. | Der Heilplatz hat Gewicht. | Verluste je Welle: Median höchstens 25 % der Kämpfer (Kennzahl fehlt, B-099) |
+| **Verlust:** Gefallene Bürger sind verloren; Ersatz über Taverne und Rekrutierung. Beim Burgfall wirkt der Niederlage-Modus (`stufen.md` § 4). Ereignis `troopLost` **nur für Kämpfer** (Felder `kind`, `x`, `cause`), ohne Priorität; beim Burgfall kein `troopLost` (Q39, Q64, 2026-10-04). Ein Ereignis für Bauern und Berufe (`citizenLost`) kommt bei Bedarf später per Ticket. | Verlust hat Gewicht, Ersatz ist möglich. | – |
 
 ## 4. Offen und Annahmen
 
