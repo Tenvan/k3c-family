@@ -34,7 +34,7 @@ Jede Regel gilt für 2+ Spieler (Couch und Online gemischt).
 | Gegnerwerte skalieren je Tiefe multiplikativ (HP ×1,5, Schaden ×1,3, Tempo ×1,1 je Tiefe). | Heutige Umsetzung (`Pow`). | `waves.json` › `depthScaling` | – |
 | Greed stiehlt 5 Gold beim Kontakt mit einem Spieler. | Gold hat Risiko. | `waves.json` › `stealGold` | – |
 | Vorbereitung auf die erste Nacht: Beide Mauern stehen, bevor Tag 1 endet. | Die erste Nacht muss mit Mauern zu schaffen sein (`hub.json` › `startTroops`). | `hub.json`, `buildings.json` | Erste Mauer steht vor Ende Tag 1 in ≥ 90 % der Seeds (Normal) |
-| Truppen überleben Wellen mehrheitlich. | Verlust soll weh tun, aber nicht alles kosten. | `troops.json` | Verluste je Welle: Median höchstens die Hälfte der Truppen (Normal); Messgröße mit B-099 |
+| Truppen behalten in Wellen mehrheitlich ihre Ausrüstung (Verlust = Rückstufung zum Bauern, kein Tod; Q67, 2026-10-04). | Verlust soll weh tun, aber nicht alles kosten. | `troops.json` | Verluste je Welle: Median höchstens die Hälfte der Truppen (Normal); Messgröße mit B-099 |
 
 ## 4. Schwierigkeitsgrade (neu)
 
