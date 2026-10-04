@@ -22,6 +22,9 @@ func (s *Server) observe(next mcp.MethodHandler) mcp.MethodHandler {
 		if !ok || method != "tools/call" {
 			return next(ctx, method, req)
 		}
+		// Jeder Aufruf arbeitet im Checkout seines Clients (Repo-Wurzel oder Worktree), nie in einem fremden.
+		ws, wsErr := s.resolveWorkspace(call)
+		ctx = context.WithValue(ctx, wsKey{}, ws)
 		id := s.stats.begin(call.Params.Name, string(call.Params.Arguments))
 		s.log.Debug("📨 "+call.Params.Name+": start", "ns", "mcp", "tool", call.Params.Name, "args", clipArgs(call.Params.Arguments))
 		defer func() {
@@ -30,6 +33,10 @@ func (s *Server) observe(next mcp.MethodHandler) mcp.MethodHandler {
 			}
 			s.finish(call, id, outcomeOf(res, err))
 		}()
+		if wsErr != nil {
+			res = textResult(wsErr.Error(), true)
+			return res, nil
+		}
 		res, err = next(ctx, method, req)
 		s.addParamHint(call.Params.Name, res)
 		return res, err
