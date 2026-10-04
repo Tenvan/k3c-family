@@ -59,3 +59,27 @@ func TestReportsRotierenAeltesteZuerst(t *testing.T) {
 		}
 	}
 }
+
+// S2.3 (B-150): StoreSession legt session-<zeit>.json an, überschreibt keinen Report derselben Millisekunde und lehnt
+// Nicht-Objekte ab.
+func TestStoreSessionLegtNeueDateiAn(t *testing.T) {
+	dir := t.TempDir()
+	r := &Reports{Dir: dir, Now: func() time.Time { return time.Date(2026, 10, 4, 20, 0, 0, 0, time.UTC) }}
+	a, err := r.StoreSession([]byte(`{"schema":1}`))
+	if err != nil {
+		t.Fatal(err)
+	}
+	b, err := r.StoreSession([]byte(`{"schema":1,"b":true}`))
+	if err != nil {
+		t.Fatal(err)
+	}
+	if filepath.Base(a) != "session-2026-10-04T20-00-00-000Z.json" || a == b {
+		t.Fatalf("Pfade %s, %s", a, b)
+	}
+	if got, _ := os.ReadFile(a); string(got) != `{"schema":1}` {
+		t.Fatalf("erster Report überschrieben: %s", got)
+	}
+	if _, err := r.StoreSession([]byte(`[1]`)); err != ErrInvalid {
+		t.Fatalf("Liste angenommen: %v", err)
+	}
+}
