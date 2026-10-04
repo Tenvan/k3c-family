@@ -1,6 +1,6 @@
 # SO1.3 · Positions-Dämpfung im Split-Screen und Demo-Ereignis
 
-- **Status:** offen
+- **Status:** in Arbeit
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Branch:** so1/3-daempfung-demo
