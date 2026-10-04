@@ -1,6 +1,6 @@
 # GR2.4 · Review und Abnahme des Sprints GR2
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Review
 - **Agent:** autonom
 - **Branch:** gr2/4-review
@@ -36,8 +36,8 @@ Stil, Geschmack der Auswahl, Einbau.
 
 ## Fertig, wenn
 
-- [ ] AC-01 bis AC-06 haben einen Nachweis im Ergebnis der jeweiligen Session oder sind mit Grund und Ticket verschoben.
-- [ ] Schwere Befunde sind behoben oder als Ticket angelegt; Sprint liegt unter `docs/sprints/erledigt/`.
+- [x] AC-01 bis AC-06 haben einen Nachweis im Ergebnis der jeweiligen Session oder sind mit Grund und Ticket verschoben.
+- [x] Schwere Befunde sind behoben oder als Ticket angelegt; Sprint liegt unter `docs/sprints/erledigt/`.
 
 ## Prüfen
 
@@ -47,4 +47,12 @@ task check
 
 ## Ergebnis
 
-–
+Leichter Review am 2026-10-04. `task check` und `task check:go` grün. Diff `origin/develop...origin/sprint/gr2` (nur GR2.3 Teil 2): 93 PNG, 20 `LICENSE.txt`, `CREDITS.md`, `index.json`, `grafikPacks.ts/.test.ts`; keine Musik, kein Demo-Code, keine Quelldateien (nur PNG und TXT).
+
+- **AC-01:** Ergebnis GR2.1 (38 Karten, 11 Abschnitte); abgeglichen.
+- **AC-02:** Ergebnis GR2.2 (alle 11 Abschnitte mit Entscheidung 🧑); abgeglichen.
+- **AC-03, AC-04:** Ergebnis GR2.3 Teil 1 (#126, `git show c345a9f --stat`: 59 Dateien, `grafikPacks.ts`, Zuordnungstabellen); abgeglichen.
+- **AC-05:** `task check` und `task check:go` grün.
+- **AC-06:** jede der 20 Pack-Ordner hat `LICENSE.txt` und Credit-Zeile mit Urheber und Quelle; CC BY 3.0 (`materials-pack`) und CC BY 4.0 (`plants-and-flowers-pixel-art`, `kyrises-free-16x16-rpg-icon-pack`) mit Namensnennung, sonst CC0; alle 93 Index-Einträge Gruppe `kandidaten`; kein Pack in `docs/assets/zuordnung-*.md`; Test-Zahl 21 → 41 angepasst, neuer Test ergänzt (nichts gelockert).
+- Befunde: keine schweren. Nit ohne Ticket: fehlendes Leerzeichen in `grafikPacks.test.ts` (`=renderCredits`).
+- Offen für 🧑: Ansicht `grafiken.html` im Browser-Pane (GR2.3 Schritt 5).

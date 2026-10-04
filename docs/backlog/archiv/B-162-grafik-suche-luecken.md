@@ -3,7 +3,7 @@
 - **Domäne:** CLI
 - **Typ:** Frage
 - **Prio:** mittel
-- **Status:** eingeplant
+- **Status:** erledigt
 - **Sprint:** GR2
 - **Erstellt:** 2026-10-02
 - **Spec:** freigegeben

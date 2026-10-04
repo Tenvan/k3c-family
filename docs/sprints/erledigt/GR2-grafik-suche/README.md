@@ -1,6 +1,6 @@
 # GR2 · CLI · Grafik-Suche für Lücken
 
-- **Status:** aktiv
+- **Status:** erledigt
 - **Domäne:** CLI
 - **Reife:** bereit
 - **Einschiebbar:** ja
@@ -61,12 +61,14 @@ Kein Treffer → Platzhalter bleibt, Vermerk in der Tabelle. Widersprüchliche L
 |---|---|---|---|---|
 | GR2.1 | `GR2.1-recherche-kandidaten.md` | Umsetzung | autonom | fertig |
 | GR2.2 | `GR2.2-workshop-auswahl.md` | Workshop | Mensch | fertig |
-| GR2.3 | `GR2.3-assets-einbinden.md` | Umsetzung | autonom | offen |
-| GR2.4 | `GR2.4-review.md` | Review | autonom | offen |
+| GR2.3 | `GR2.3-assets-einbinden.md` | Umsetzung | autonom | fertig |
+| GR2.4 | `GR2.4-review.md` | Review | autonom | fertig |
 
 Bei `Reife: Entwurf` genügen Stichpunkte mit den Kriterien in Klammern statt Session-Dateien. Vor dem Aktivieren
 wird jede Session als eigene Datei nach `docs/vorlagen/session.md` geschrieben.
 
 ## Abnahme
 
-–
+2026-10-04, Agent (Claude Opus) in GR2.4, leichtes Review. AC-01 bis AC-04: Ergebnisse GR2.1 bis GR2.3 (Teil 1 schon mit #126 auf `develop`; AC-02 Workshop mit 🧑); AC-06: Diff `origin/develop...origin/sprint/gr2` geprüft (20 Packs, 93 PNG, je `LICENSE.txt`, Credit und `lizenzen.html`-Eintrag, nur CC0/CC BY, Gruppe `kandidaten`, in keiner Zuordnungsdatei, Test ergänzt statt gelockert); AC-05: `task check` und `task check:go` grün.
+Schwere Befunde: keine. Offen für 🧑: Ansicht `grafiken.html` im Browser (GR2.3 Schritt 5). B-162 archiviert.
+Version: v0.6.1 vorgeschlagen (Patch: nur Bild-Assets, Credits, Doku und Test, keine neue Funktion; v0.6.1 ist der GR1-Vorschlag, falls dessen Tag noch fehlt, beide zusammen); gesetzt erst nach Bestätigung durch 🧑.
