@@ -60,7 +60,7 @@ Pause im gemeinsamen Raum: 🧑, `docs/fragenkatalog.md Q01`.
 
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
-| S5.1 | `S5.1-einstellungen-speicher.md` | Umsetzung | autonom | in Arbeit |
+| S5.1 | `S5.1-einstellungen-speicher.md` | Umsetzung | autonom | fertig |
 | S5.2 | `S5.2-szene-optionen-pause.md` | Umsetzung | autonom | offen |
 | S5.3 | `S5.3-texte-de-en.md` | Umsetzung | autonom | offen |
 | S5.4 | `S5.4-abnahme-geraet.md` | Workshop | Mensch | offen |
