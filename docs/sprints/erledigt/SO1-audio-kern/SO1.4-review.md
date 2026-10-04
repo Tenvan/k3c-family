@@ -1,6 +1,6 @@
 # SO1.4 · Review und Abnahme des Sprints SO1
 
-- **Status:** in Arbeit
+- **Status:** fertig
 - **Typ:** Review
 - **Agent:** autonom
 - **Branch:** so1/4-review
@@ -36,9 +36,9 @@ Stil, Optimierung, Klangauswahl.
 
 ## Fertig, wenn
 
-- [ ] AC-01 bis AC-03 und AC-05 bis AC-08 haben einen Nachweis im Ergebnis der jeweiligen Session oder sind mit Grund und Ticket verschoben.
-- [ ] AC-04 ist am TV beobachtet oder als `angenommen, Validierung offen (SO1.5)` geführt.
-- [ ] Schwere Befunde sind behoben oder als Ticket angelegt; Sprint liegt unter `docs/sprints/erledigt/`.
+- [x] AC-01 bis AC-03 und AC-05 bis AC-08 haben einen Nachweis im Ergebnis der jeweiligen Session oder sind mit Grund und Ticket verschoben.
+- [x] AC-04 ist am TV beobachtet oder als `angenommen, Validierung offen (SO1.5)` geführt.
+- [x] Schwere Befunde sind behoben oder als Ticket angelegt; Sprint liegt unter `docs/sprints/erledigt/`.
 
 ## Prüfen
 
@@ -48,4 +48,4 @@ task check
 
 ## Ergebnis
 
-–
+Review des Diffs `origin/develop...sprint/so1`: keine schweren Befunde, keine neuen Tickets. Nachweise AC-01 bis AC-08 siehe Abnahme in der Sprint-README; AC-04 als `angenommen, Validierung offen (SO1.5)`, SO1.5 im Fahrplan unter „Offen am Gerät“. `task check` grün (925 Tests), `task check:go` grün bis auf sporadischen Windows-Rename-Fehler im Paket `store` (B-187, Wiederholung grün).
