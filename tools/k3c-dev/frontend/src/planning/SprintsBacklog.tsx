@@ -5,7 +5,7 @@ import { errorText } from '../lib/errors';
 import { loadText, savePref } from '../lib/prefs';
 import { ActionButton, NoticeCard, StatusBadge } from '../ui/parts';
 import { BacklogList, SessionDetail, SprintCard } from './SprintCard';
-import { domains, filterSprints, filterTickets, parseFilter, QUICK, toggle, type PlanFilter } from './planning';
+import { domains, filterSprints, filterTickets, parseFilter, QUICK, sortSprints, toggle, type PlanFilter } from './planning';
 
 const PREF = 'planning-filter';
 
@@ -27,7 +27,7 @@ export function SprintsBacklog() {
   }, []);
   if (error) return <NoticeCard title="Planung nicht geladen" tone="error">{error}</NoticeCard>;
   if (data === null) return <Text color="gray">Lade Planung …</Text>;
-  const sprints = filterSprints(data, filter);
+  const sprints = sortSprints(filterSprints(data, filter), gh?.sprints);
   const tickets = filterTickets(data, filter);
   const select = (nr: string) => setFilter({ ...filter, sel: filter.sel === nr ? '' : nr });
   return (

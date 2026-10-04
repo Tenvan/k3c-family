@@ -44,6 +44,15 @@ export function filterSprints(d: PlanningData, f: PlanFilter): PlanSprint[] {
     has(q, s.id, s.title, s.tickets.join(' '), ...s.sessions.map((x) => `${x.nr} ${x.titel}`)));
 }
 
+/** Sprints mit Worktree zuerst, dann mit offenem Branch (PR offen/Entwurf), sonst Reihenfolge wie geliefert. */
+export function sortSprints(sprints: PlanSprint[], gh?: Record<string, GitHubSprint>): PlanSprint[] {
+  const rank = (s: PlanSprint) => {
+    const st = gh?.[s.id.toUpperCase()]?.state;
+    return s.worktree ? 0 : st === 'offen' || st === 'Entwurf' ? 1 : 2;
+  };
+  return [...sprints].sort((a, b) => rank(a) - rank(b));
+}
+
 export function filterTickets(d: PlanningData, f: PlanFilter): PlanTicket[] {
   const q = f.q.trim().toLowerCase();
   const quick = QUICK.filter((x) => f.quick.includes(x.id) && x.ticket);

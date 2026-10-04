@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import type { PlanSession, PlanningData } from '../api';
-import { EMPTY_FILTER, domains, filterSprints, filterTickets, findSession, ghBadges, groupTickets, isNext, linkedTickets, parseFilter } from './planning';
+import { EMPTY_FILTER, domains, filterSprints, filterTickets, findSession, ghBadges, groupTickets, isNext, linkedTickets, parseFilter, sortSprints } from './planning';
 
 const s = (nr: string, status: string, agent = 'autonom', titel = ''): PlanSession => ({ nr, typ: 'Umsetzung', agent, status, titel });
 const tk = (nr: string, domain: string, prio: string, status = 'offen', sprint = '–') =>
@@ -18,6 +18,15 @@ const DATA: PlanningData = {
   tickets: [tk('B-210', 'SRV', 'hoch', 'eingeplant', 'M8'), tk('B-011', 'CLI', 'mittel'), tk('B-007', 'SIM', 'hoch'),
     tk('B-012', 'SIM', 'niedrig'), tk('B-099', 'SIM', '?'), tk('B-300', 'SRV', 'niedrig', 'offen', 'M8')],
 };
+
+describe('Sortierung', () => {
+  it('Worktree zuerst, dann offener Branch, Rest stabil', () => {
+    const pr = (state: 'offen' | 'gemergt') => ({ number: 1, title: '', url: '', state, ci: '–', merge: '–' } as const);
+    const xs = [DATA.sprints[0], DATA.sprints[1], { ...DATA.sprints[2], worktree: 'sprint/r1' }];
+    expect(sortSprints(xs, { W1: pr('offen'), M8: pr('gemergt') }).map((x) => x.id)).toEqual(['R1', 'W1', 'M8']);
+    expect(sortSprints(DATA.sprints).map((x) => x.id)).toEqual(['M8', 'W1', 'R1']);
+  });
+});
 
 describe('Filter', () => {
   it('blendet Erledigte aus, außer mit Schalter oder Schnellfilter', () => {

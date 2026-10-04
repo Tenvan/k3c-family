@@ -1,0 +1,429 @@
+<!doctype html>
+<html lang="de"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>GR2 Grafik-Funde</title>
+<style>
+:root { --bg:#11151c; --panel:#1c2330; --line:#2e3a4d; --text:#e8edf4; --dim:#8a97aa; --on:#ffd166; --ok:#7bd88f; --mid:#f4b860; --warn:#ff8fa3; }
+* { box-sizing:border-box; }
+body { margin:0; background:var(--bg); color:var(--text); font:16px/1.45 system-ui,sans-serif; }
+main { max-width:1400px; margin:0 auto; padding:24px 20px 140px; }
+h1 { margin:0 0 4px; }
+.sub { color:var(--dim); max-width:80ch; }
+h2 { border-bottom:1px solid var(--line); padding-bottom:6px; margin-top:32px; }
+.grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(270px,1fr)); gap:14px; }
+article { background:var(--panel); border:1px solid var(--line); border-radius:10px; padding:12px; position:relative; }
+article.own { border-style:dashed; }
+article:has(input:checked) { border-color:var(--on); }
+.prev { background:#0b0e13; border-radius:6px; aspect-ratio:4/3; overflow:hidden; display:grid; place-items:center; }
+.prev img { max-width:100%; max-height:100%; image-rendering:pixelated; }
+.prev img.tiny { width:40%; }
+h3 { margin:10px 0 2px; color:var(--on); font-size:1.05rem; }
+.lic { margin:2px 0; font-weight:600; font-size:.9rem; }
+.lic.ok { color:var(--ok); }
+.lic.warn { color:var(--warn); }
+.rate { margin:6px 0 0; font-weight:600; font-size:.9rem; }
+.rate.ok { color:var(--ok); } .rate.mid { color:var(--mid); } .rate.no { color:var(--warn); }
+.hint { margin:4px 0 6px; font-size:.92rem; }
+.meta { margin:4px 0 0; color:var(--dim); font-size:.8rem; }
+a { color:#8ecae6; }
+.pick { position:absolute; top:18px; left:18px; background:rgba(12,16,36,.85); padding:4px 10px; border-radius:999px; font-size:.85rem; z-index:1; cursor:pointer; }
+.gaps { background:var(--panel); border:1px solid var(--line); border-radius:10px; padding:12px 16px; margin:12px 0; }
+.note { color:var(--mid); font-size:.92rem; margin:6px 0 10px; }
+.decide { margin:10px 0 0; padding:8px 12px; background:var(--panel); border:1px solid var(--line); border-radius:8px; display:flex; gap:14px; align-items:center; flex-wrap:wrap; }
+.decide strong { color:var(--on); }
+#bar { position:fixed; left:0; right:0; bottom:0; background:#0b0e13; border-top:1px solid var(--line); padding:10px 20px; display:flex; gap:12px; align-items:center; }
+#bar textarea { flex:1; height:64px; background:var(--panel); color:var(--text); border:1px solid var(--line); border-radius:6px; padding:6px; font:13px monospace; }
+button { font:inherit; background:var(--on); border:0; border-radius:6px; padding:8px 14px; cursor:pointer; }
+</style></head><body><main>
+<h1>GR2 · Grafik-Funde für die Lücken</h1>
+<p class="sub">Kandidaten für die bekannten Grafik-Lücken (B-162, Sprint GR2, Session GR2.1, vorgezogen). Je Lücke drei Web-Kandidaten von OpenGameArt und Kenney.
+Die Lizenz wurde auf jeder Quellseite am 2026-10-04 geprüft: nur CC0 oder CC-BY, bei Mehrfachlizenz ist CC0 bzw. CC-BY wählbar, CC-BY-SA ist mit „SA – 🧑 entscheidet“ markiert.
+Die Stilbewertung folgt Q13 (Raster 16/32 px, Skalierung ×2–×3, Palettenbruch nur bei Hintergründen) und der GR1.1-Vorgabe: Gebäude-Palette ist <strong>Gothicvania Town (dunkelviolett)</strong>.
+Bewertet wurde nach den Vorschaubildern, nicht nach den Pack-Dateien. Vorschauen laden direkt von opengameart.org bzw. kenney.nl. Gestrichelte Karten sind Bestand aus <code>public/grafik/</code> (zusätzlich zu den drei Web-Kandidaten).
+Je Lücke eine Wahl treffen; die Liste unten kopieren und im Chat nennen.</p>
+<div class="gaps"><strong>Hinweis:</strong> Die Lückenliste ist jetzt vollständig (GR1.3): 19 Lücken in <code>docs/assets/zuordnung-welt.md</code> und 5 in <code>docs/assets/zuordnung-objekte.md</code>, hier zu 11 Suchabschnitten zusammengefasst. <code>skill-icon</code> und <code>boss</code> sind „später“ und nicht Teil der Suche.<br>
+<strong>itch.io:</strong> Die itch.io-Seiten blockten den Abruf (Bot-Prüfung), die Lizenz ließ sich dort nicht verifizieren. Deshalb ist kein itch.io-Kandidat aufgenommen; Nachsuche dort nur von Hand.</div>
+
+<section id="werkstatt"><h2>1 · Werkstatt</h2><div class="grid">
+<article class="own">
+  <label class="pick"><input type="radio" name="werkstatt" value="bestand:gothicvania-town/house-a"> Auswahl</label>
+  <a class="prev" href="../../public/grafik/gothicvania-town/props-einzeln/house-a.png" target="_blank" rel="noopener"><img loading="lazy" src="../../public/grafik/gothicvania-town/props-einzeln/house-a.png" alt="Vorschau house-a"></a>
+  <h3>Bestand: Gothicvania Town · house-a</h3>
+  <p class="lic ok">CC0 1.0 (<a href="https://creativecommons.org/publicdomain/zero/1.0/" target="_blank" rel="noopener">Lizenz</a>)</p>
+  <p class="rate ok">passt</p>
+  <p class="hint">Schon im Repo, Referenzpalette; als Werkstatt nur mit Schild oder Werkbank-Prop erkennbar.</p>
+  <p class="meta">Urheber Luis Zuno (ansimuz) · Raster 16 px · <code>public/grafik/gothicvania-town/props-einzeln/house-a.png</code></p>
+</article><article>
+  <label class="pick"><input type="radio" name="werkstatt" value="gothicvania-bridge-expansion-pack-1"> Auswahl</label>
+  <a class="prev" href="https://opengameart.org/content/gothicvania-bridge-expansion-pack-1" target="_blank" rel="noopener"><img loading="lazy" src="https://opengameart.org/sites/default/files/sprites_26.png" alt="Vorschau Gothicvania Bridge Expansion Pack 1"></a>
+  <h3>Gothicvania Bridge Expansion Pack 1</h3>
+  <p class="lic ok">CC0 (<a href="http://creativecommons.org/publicdomain/zero/1.0/" target="_blank" rel="noopener">Lizenz</a>)</p>
+  <p class="rate ok">passt</p>
+  <p class="hint">Fachwerkhaus auf Stelzen, Baum und kachelbarer Burg-Prop vom selben Urheber wie unser Bestand, gleiche dunkle Palette.</p>
+  <p class="meta">Urheber ansimuz · Raster 16 px (Props bis 240 px hoch) · <a href="https://opengameart.org/content/gothicvania-bridge-expansion-pack-1" target="_blank" rel="noopener">Quelle</a></p>
+</article><article>
+  <label class="pick"><input type="radio" name="werkstatt" value="opp2017-village-and-room"> Auswahl</label>
+  <a class="prev" href="https://opengameart.org/content/opp2017-village-and-room" target="_blank" rel="noopener"><img loading="lazy" src="https://opengameart.org/sites/default/files/village01.png" alt="Vorschau OPP2017 Village and room"></a>
+  <h3>OPP2017 – Village and room</h3>
+  <p class="lic ok">CC0 wählbar (auch CC-BY 3.0, CC-BY-SA 3.0, GPL, OGA-BY) (<a href="http://creativecommons.org/publicdomain/zero/1.0/" target="_blank" rel="noopener">Lizenz</a>)</p>
+  <p class="rate mid">passt mit Skalierung</p>
+  <p class="hint">Seitenansicht, 32er-Raster und Marktstände/Häuser passen, aber helle DB32-Palette statt Dunkelviolett.</p>
+  <p class="meta">Urheber Hapiel (Open Pixel Project) · Raster 32 px · <a href="https://opengameart.org/content/opp2017-village-and-room" target="_blank" rel="noopener">Quelle</a></p>
+</article><article>
+  <label class="pick"><input type="radio" name="werkstatt" value="32-pixel-set-log-cabin"> Auswahl</label>
+  <a class="prev" href="https://opengameart.org/content/32-pixel-set-log-cabin" target="_blank" rel="noopener"><img loading="lazy" src="https://opengameart.org/sites/default/files/Cabin.png" alt="Vorschau 32-pixel Set Log Cabin"></a>
+  <h3>32-pixel Set – Log Cabin</h3>
+  <p class="lic ok">CC0 (<a href="http://creativecommons.org/publicdomain/zero/1.0/" target="_blank" rel="noopener">Lizenz</a>)</p>
+  <p class="rate no">passt nicht</p>
+  <p class="hint">Frontale Blockhütte im 32er-Raster, aber Pastellpalette und Veranda-Draufsicht passen nicht zu Gothicvania.</p>
+  <p class="meta">Urheber cyanowl · Raster 32 px · <a href="https://opengameart.org/content/32-pixel-set-log-cabin" target="_blank" rel="noopener">Quelle</a></p>
+</article></div>
+<div class="decide" data-gap="werkstatt"><strong>Entscheidung 🧑 (2026-10-04, Workshop GR2.2 im Chat):</strong> <span class="state">gewählt: Bestand gothicvania-town house-b · eingebunden (GR2.3): Bestand, Zuordnung workshop</span> <label><input type="radio" name="werkstatt" value="kein-treffer"> kein Treffer</label></div></section>
+
+<section id="farm"><h2>2 · Farm</h2><div class="grid">
+<article class="own">
+  <label class="pick"><input type="radio" name="farm" value="bestand:gothicvania-town/house-b"> Auswahl</label>
+  <a class="prev" href="../../public/grafik/gothicvania-town/props-einzeln/house-b.png" target="_blank" rel="noopener"><img loading="lazy" src="../../public/grafik/gothicvania-town/props-einzeln/house-b.png" alt="Vorschau house-b"></a>
+  <h3>Bestand: Gothicvania Town · house-b</h3>
+  <p class="lic ok">CC0 1.0 (<a href="https://creativecommons.org/publicdomain/zero/1.0/" target="_blank" rel="noopener">Lizenz</a>)</p>
+  <p class="rate ok">passt</p>
+  <p class="hint">Hof-Gebäude in Referenzpalette; Felder kämen aus einem der Pflanzen-Kandidaten.</p>
+  <p class="meta">Urheber Luis Zuno (ansimuz) · Raster 16 px · <code>public/grafik/gothicvania-town/props-einzeln/house-b.png</code></p>
+</article><article>
+  <label class="pick"><input type="radio" name="farm" value="kenney-pixel-platformer-farm-expansion"> Auswahl</label>
+  <a class="prev" href="https://kenney.nl/assets/pixel-platformer-farm-expansion" target="_blank" rel="noopener"><img loading="lazy" src="https://kenney.nl/media/pages/assets/pixel-platformer-farm-expansion/774e7e43c1-1668789788/sample.png" alt="Vorschau Pixel Platformer Farm Expansion"></a>
+  <h3>Pixel Platformer: Farm Expansion</h3>
+  <p class="lic ok">CC0 (<a href="http://creativecommons.org/publicdomain/zero/1.0/" target="_blank" rel="noopener">Lizenz</a>)</p>
+  <p class="rate mid">passt mit Skalierung</p>
+  <p class="hint">Seitenansicht mit Feldfrüchten, Zaun und Gewächshaus; 18-px-Raster und helle Herbstpalette brechen mit Gothicvania.</p>
+  <p class="meta">Urheber Kenney · Raster 18 px · <a href="https://kenney.nl/assets/pixel-platformer-farm-expansion" target="_blank" rel="noopener">Quelle</a> · auch <a href="https://opengameart.org/content/pixel-platformer-farm-expansion" target="_blank" rel="noopener">OGA</a></p>
+</article><article>
+  <label class="pick"><input type="radio" name="farm" value="farming-crops-16x16"> Auswahl</label>
+  <a class="prev" href="https://opengameart.org/content/farming-crops-16x16" target="_blank" rel="noopener"><img loading="lazy" src="https://opengameart.org/sites/default/files/Promo_1_0.png" alt="Vorschau Farming crops 16x16"></a>
+  <h3>Farming crops 16x16</h3>
+  <p class="lic ok">CC0 (<a href="http://creativecommons.org/publicdomain/zero/1.0/" target="_blank" rel="noopener">Lizenz</a>)</p>
+  <p class="rate mid">passt mit Skalierung</p>
+  <p class="hint">20 Pflanzen mit je 5 Wachstumsstufen im 16er-Raster, gedämpfte Palette; die Pflanzen sind schräg von oben gezeichnet.</p>
+  <p class="meta">Urheber josehzz · Raster 16 px · <a href="https://opengameart.org/content/farming-crops-16x16" target="_blank" rel="noopener">Quelle</a></p>
+</article><article>
+  <label class="pick"><input type="radio" name="farm" value="crops-cc0"> Auswahl</label>
+  <a class="prev" href="https://opengameart.org/content/crops-cc0" target="_blank" rel="noopener"><img loading="lazy" src="https://opengameart.org/sites/default/files/z_screenshot_1px.png" alt="Vorschau Crops CC0"></a>
+  <h3>Crops CC0</h3>
+  <p class="lic ok">CC0 (<a href="http://creativecommons.org/publicdomain/zero/1.0/" target="_blank" rel="noopener">Lizenz</a>)</p>
+  <p class="rate mid">passt mit Skalierung</p>
+  <p class="hint">Viele Feldfrüchte in Seitenansicht, 16er-Raster, kräftige Farben; als Ernte-Props gut, Gebäude fehlen.</p>
+  <p class="meta">Urheber SnoopethDuckDuck · Raster 16 px · <a href="https://opengameart.org/content/crops-cc0" target="_blank" rel="noopener">Quelle</a></p>
+</article></div>
+<div class="decide" data-gap="farm"><strong>Entscheidung 🧑 (2026-10-04, Workshop GR2.2 im Chat):</strong> <span class="state">gewählt: Bestand gothicvania-town house-a · eingebunden (GR2.3): Bestand, Zuordnung farm</span> <label><input type="radio" name="farm" value="kein-treffer"> kein Treffer</label></div></section>
+
+<section id="kaserne"><h2>3 · Kaserne</h2>
+<p class="note">Vermerk: Ein fertiges Kasernen-Gebäude in Seitenansicht mit erlaubter Lizenz gab die Suche nicht her (nur isometrische oder moderne Kasernen). Die Kandidaten sind Bausätze bzw. Ersatz-Gebäude.</p>
+<div class="grid">
+<article class="own">
+  <label class="pick"><input type="radio" name="kaserne" value="bestand:gothicvania-town/house-c"> Auswahl</label>
+  <a class="prev" href="../../public/grafik/gothicvania-town/props-einzeln/house-c.png" target="_blank" rel="noopener"><img loading="lazy" src="../../public/grafik/gothicvania-town/props-einzeln/house-c.png" alt="Vorschau house-c"></a>
+  <h3>Bestand: Gothicvania Town · house-c</h3>
+  <p class="lic ok">CC0 1.0 (<a href="https://creativecommons.org/publicdomain/zero/1.0/" target="_blank" rel="noopener">Lizenz</a>)</p>
+  <p class="rate ok">passt</p>
+  <p class="hint">Größtes Haus mit Bogenfenstern, in Referenzpalette; als Kaserne mit Fahne oder Waffenständer.</p>
+  <p class="meta">Urheber Luis Zuno (ansimuz) · Raster 16 px · <code>public/grafik/gothicvania-town/props-einzeln/house-c.png</code></p>
+</article><article>
+  <label class="pick"><input type="radio" name="kaserne" value="gothicvania-bridge-expansion-pack-1"> Auswahl</label>
+  <a class="prev" href="https://opengameart.org/content/gothicvania-bridge-expansion-pack-1" target="_blank" rel="noopener"><img loading="lazy" src="https://opengameart.org/sites/default/files/sprites_26.png" alt="Vorschau Gothicvania Bridge Expansion Pack 1"></a>
+  <h3>Gothicvania Bridge Expansion Pack 1 (Burg-Prop)</h3>
+  <p class="lic ok">CC0 (<a href="http://creativecommons.org/publicdomain/zero/1.0/" target="_blank" rel="noopener">Lizenz</a>)</p>
+  <p class="rate ok">passt</p>
+  <p class="hint">Kachelbarer Burgturm mit Banner vom selben Urheber, ergibt eine wehrhafte Kaserne in passender Palette.</p>
+  <p class="meta">Urheber ansimuz · Raster 16 px · <a href="https://opengameart.org/content/gothicvania-bridge-expansion-pack-1" target="_blank" rel="noopener">Quelle</a></p>
+</article><article>
+  <label class="pick"><input type="radio" name="kaserne" value="opp2017-castle-tiles"> Auswahl</label>
+  <a class="prev" href="https://opengameart.org/content/opp2017-castle-tiles" target="_blank" rel="noopener"><img loading="lazy" src="https://opengameart.org/sites/default/files/castle02itch.png" alt="Vorschau OPP2017 Castle tiles"></a>
+  <h3>OPP2017 – Castle tiles</h3>
+  <p class="lic ok">CC0 wählbar (auch CC-BY 3.0, CC-BY-SA 3.0, GPL, OGA-BY) (<a href="http://creativecommons.org/publicdomain/zero/1.0/" target="_blank" rel="noopener">Lizenz</a>)</p>
+  <p class="rate mid">passt mit Skalierung</p>
+  <p class="hint">Burgmauern, Tore, Fenster und Treppen in Seitenansicht, 32er-Raster, in grauer und violetter Variante; Gebäude muss aus Kacheln gebaut werden.</p>
+  <p class="meta">Urheber Hapiel (Open Pixel Project) · Raster 32 px · <a href="https://opengameart.org/content/opp2017-castle-tiles" target="_blank" rel="noopener">Quelle</a></p>
+</article><article>
+  <label class="pick"><input type="radio" name="kaserne" value="castle-set"> Auswahl</label>
+  <a class="prev" href="https://opengameart.org/content/castle-set" target="_blank" rel="noopener"><img loading="lazy" src="https://opengameart.org/sites/default/files/CastleSetPre_3.png" alt="Vorschau Castle Set"></a>
+  <h3>Castle Set</h3>
+  <p class="lic ok">CC0 (<a href="http://creativecommons.org/publicdomain/zero/1.0/" target="_blank" rel="noopener">Lizenz</a>)</p>
+  <p class="rate no">passt nicht</p>
+  <p class="hint">Turm, Mauer, Tor und Fahnen in Seitenansicht, aber grobe, ungerasterte Steintextur; höchstens die Fahnen sind brauchbar.</p>
+  <p class="meta">Urheber Nia Mi · Raster ohne festes Raster · <a href="https://opengameart.org/content/castle-set" target="_blank" rel="noopener">Quelle</a></p>
+</article></div>
+<div class="decide" data-gap="kaserne"><strong>Entscheidung 🧑 (2026-10-04, Workshop GR2.2 im Chat):</strong> <span class="state">gewählt: Bestand gothicvania-town house-c · eingebunden (GR2.3): Bestand, Zuordnung barracks</span> <label><input type="radio" name="kaserne" value="kein-treffer"> kein Treffer</label></div></section>
+
+<section id="treppe"><h2>4 · Treppe hoch / Treppe runter (Stufenwechsel)</h2><div class="grid">
+<article class="own">
+  <label class="pick"><input type="radio" name="treppe" value="bestand:gothicvania-town/stairs"> Auswahl</label>
+  <a class="prev" href="../../public/grafik/gothicvania-town/tileset-einzeln/stairs.png" target="_blank" rel="noopener"><img loading="lazy" src="../../public/grafik/gothicvania-town/tileset-einzeln/stairs.png" alt="Vorschau stairs"></a>
+  <h3>Bestand: Gothicvania Town · stairs*.png</h3>
+  <p class="lic ok">CC0 1.0 (<a href="https://creativecommons.org/publicdomain/zero/1.0/" target="_blank" rel="noopener">Lizenz</a>)</p>
+  <p class="rate ok">passt</p>
+  <p class="hint">Treppen-Kacheln (links, rechts, gespiegelt, mit Wand) in Referenzpalette; „runter“ bräuchte einen dunklen Abgang dazu.</p>
+  <p class="meta">Urheber Luis Zuno (ansimuz) · Raster 16 px · <code>public/grafik/gothicvania-town/tileset-einzeln/stairs*.png</code> (13 Dateien)</p>
+</article><article>
+  <label class="pick"><input type="radio" name="treppe" value="opp2017-castle-tiles"> Auswahl</label>
+  <a class="prev" href="https://opengameart.org/content/opp2017-castle-tiles" target="_blank" rel="noopener"><img loading="lazy" src="https://opengameart.org/sites/default/files/tile_castle_grey.png" alt="Vorschau OPP2017 Castle tiles, Kachelblatt"></a>
+  <h3>OPP2017 – Castle tiles (Treppen, Tore)</h3>
+  <p class="lic ok">CC0 wählbar (auch CC-BY 3.0, CC-BY-SA 3.0, GPL, OGA-BY) (<a href="http://creativecommons.org/publicdomain/zero/1.0/" target="_blank" rel="noopener">Lizenz</a>)</p>
+  <p class="rate mid">passt mit Skalierung</p>
+  <p class="hint">Enthält Steintreppen und Torbögen in Seitenansicht, die violette Variante liegt nah an Gothicvania.</p>
+  <p class="meta">Urheber Hapiel (Open Pixel Project) · Raster 32 px · <a href="https://opengameart.org/content/opp2017-castle-tiles" target="_blank" rel="noopener">Quelle</a></p>
+</article><article>
+  <label class="pick"><input type="radio" name="treppe" value="phantasy-dungeon-entrance"> Auswahl</label>
+  <a class="prev" href="https://opengameart.org/content/phantasy-dungeon-entrance" target="_blank" rel="noopener"><img loading="lazy" src="https://opengameart.org/sites/default/files/dungeon-door-preview.png" alt="Vorschau Phantasy Dungeon Entrance"></a>
+  <h3>Phantasy Dungeon Entrance</h3>
+  <p class="lic ok">CC0 (<a href="http://creativecommons.org/publicdomain/zero/1.0/" target="_blank" rel="noopener">Lizenz</a>)</p>
+  <p class="rate mid">passt mit Skalierung</p>
+  <p class="hint">Frontaler Höhlen-/Verlies-Eingang (368×208) vom Bestands-Urheber, als „Treppe runter“-Schacht ausschneidbar; Palette braun statt violett.</p>
+  <p class="meta">Urheber ansimuz · Raster 16 px, Einzelbild · <a href="https://opengameart.org/content/phantasy-dungeon-entrance" target="_blank" rel="noopener">Quelle</a></p>
+</article><article>
+  <label class="pick"><input type="radio" name="treppe" value="kenney-pixel-platformer"> Auswahl</label>
+  <a class="prev" href="https://kenney.nl/assets/pixel-platformer" target="_blank" rel="noopener"><img loading="lazy" src="https://kenney.nl/media/pages/assets/pixel-platformer/bf585643f0-1696667860/samplea.png" alt="Vorschau Kenney Pixel Platformer"></a>
+  <h3>Pixel Platformer (Leitern)</h3>
+  <p class="lic ok">CC0 (<a href="http://creativecommons.org/publicdomain/zero/1.0/" target="_blank" rel="noopener">Lizenz</a>)</p>
+  <p class="rate mid">passt mit Skalierung</p>
+  <p class="hint">Leiter-Kacheln in Seitenansicht für „hoch“, aber 18-px-Raster und Bonbonpalette; nur nach Umfärben.</p>
+  <p class="meta">Urheber Kenney · Raster 18 px · <a href="https://kenney.nl/assets/pixel-platformer" target="_blank" rel="noopener">Quelle</a></p>
+</article></div>
+<div class="decide" data-gap="treppe"><strong>Entscheidung 🧑 (2026-10-04, Workshop GR2.2 im Chat):</strong> <span class="state">gewählt: hoch = Bestand gothicvania-town stairs*.png, runter = Ausschnitt aus Phantasy Dungeon Entrance (ansimuz, CC0) · eingebunden (GR2.3): public/grafik/phantasy-dungeon-entrance/, Zuordnung stairsUp, stairsDown</span> <label><input type="radio" name="treppe" value="kein-treffer"> kein Treffer</label></div></section>
+
+<section id="lager"><h2>5 · Rekrutierungslager (Landstreicher-Lager)</h2><div class="grid">
+<article>
+  <label class="pick"><input type="radio" name="lager" value="tent-8"> Auswahl</label>
+  <a class="prev" href="https://opengameart.org/content/tent-8" target="_blank" rel="noopener"><img loading="lazy" src="https://opengameart.org/sites/default/files/objs.png" alt="Vorschau Tent (CaveTaxi)"></a>
+  <h3>Tent (CaveTaxi)</h3>
+  <p class="lic ok">CC0 (<a href="http://creativecommons.org/publicdomain/zero/1.0/" target="_blank" rel="noopener">Lizenz</a>)</p>
+  <p class="rate mid">passt mit Skalierung</p>
+  <p class="hint">Zwei Spitzzelte, Strohhütte und Holzschilder in Seitenansicht, Landstreicher-Charme; warme Brauntöne, Palette anpassen.</p>
+  <p class="meta">Urheber CDmir · Raster ca. 32 px (Blatt 256×184) · <a href="https://opengameart.org/content/tent-8" target="_blank" rel="noopener">Quelle</a></p>
+</article><article>
+  <label class="pick"><input type="radio" name="lager" value="16x16-animated-campfire"> Auswahl</label>
+  <a class="prev" href="https://opengameart.org/content/16x16-animated-campfire" target="_blank" rel="noopener"><img loading="lazy" src="https://opengameart.org/sites/default/files/16x16_campfire_enlarged.gif" alt="Vorschau 16x16 Animated Campfire"></a>
+  <h3>16x16 Animated Campfire</h3>
+  <p class="lic ok">CC0 (<a href="http://creativecommons.org/publicdomain/zero/1.0/" target="_blank" rel="noopener">Lizenz</a>)</p>
+  <p class="rate ok">passt</p>
+  <p class="hint">Animiertes Lagerfeuer im 16er-Raster, DB16-Palette, wirkt nachts auf dunklem Grund gut; ergänzt jedes Zelt.</p>
+  <p class="meta">Urheber krial · Raster 16 px · <a href="https://opengameart.org/content/16x16-animated-campfire" target="_blank" rel="noopener">Quelle</a></p>
+</article><article>
+  <label class="pick"><input type="radio" name="lager" value="tent-6"> Auswahl</label>
+  <a class="prev" href="https://opengameart.org/content/tent-6" target="_blank" rel="noopener"><img loading="lazy" src="https://opengameart.org/sites/default/files/tent_4.png" alt="Vorschau Tent (shangri-la)"></a>
+  <h3>Tent</h3>
+  <p class="lic ok">CC0 (<a href="http://creativecommons.org/publicdomain/zero/1.0/" target="_blank" rel="noopener">Lizenz</a>)</p>
+  <p class="rate mid">passt mit Skalierung</p>
+  <p class="hint">Kleines Seitenansicht-Zelt (48×48), schlicht und kindgerecht, aber sandfarben und sehr klein.</p>
+  <p class="meta">Urheber shangri-la · Raster 16 px (48×48) · <a href="https://opengameart.org/content/tent-6" target="_blank" rel="noopener">Quelle</a></p>
+</article></div>
+<div class="decide" data-gap="lager"><strong>Entscheidung 🧑 (2026-10-04, Workshop GR2.2 im Chat):</strong> <span class="state">gewählt: Tent (CaveTaxi, CC0) + 16x16 Animated Campfire (CC0) · eingebunden (GR2.3): public/grafik/tent-8/, public/grafik/16x16-animated-campfire/</span> <label><input type="radio" name="lager" value="kein-treffer"> kein Treffer</label></div></section>
+
+<section id="mine"><h2>6 · Mine-Hintergrund (Parallax)</h2><div class="grid">
+<article>
+  <label class="pick"><input type="radio" name="mine" value="warped-super-grotto-escape-pack"> Auswahl</label>
+  <a class="prev" href="https://opengameart.org/content/warped-super-grotto-escape-pack" target="_blank" rel="noopener"><img loading="lazy" src="https://opengameart.org/sites/default/files/cover_102.png" alt="Vorschau Warped Super Grotto Escape Pack"></a>
+  <h3>Warped: Super Grotto Escape Pack</h3>
+  <p class="lic ok">CC0 (<a href="http://creativecommons.org/publicdomain/zero/1.0/" target="_blank" rel="noopener">Lizenz</a>)</p>
+  <p class="rate ok">passt</p>
+  <p class="hint">Drei Parallax-Ebenen plus Kristall-Deko vom Bestands-Urheber, dunkelviolett; Palettenbruch bei Hintergründen erlaubt. Lizenz der Pack-Datei beim Laden prüfen (wie Warped Caves).</p>
+  <p class="meta">Urheber ansimuz · Raster 16 px · <a href="https://opengameart.org/content/warped-super-grotto-escape-pack" target="_blank" rel="noopener">Quelle</a></p>
+</article><article>
+  <label class="pick"><input type="radio" name="mine" value="cavernous-background"> Auswahl</label>
+  <a class="prev" href="https://opengameart.org/content/cavernous-background" target="_blank" rel="noopener"><img loading="lazy" src="https://opengameart.org/sites/default/files/cavernous.png" alt="Vorschau Cavernous Background"></a>
+  <h3>Cavernous Background</h3>
+  <p class="lic ok">CC0 (<a href="http://creativecommons.org/publicdomain/zero/1.0/" target="_blank" rel="noopener">Lizenz</a>)</p>
+  <p class="rate ok">passt</p>
+  <p class="hint">Höhlenhintergrund 512×288 mit 16 Farben in Blauviolett, ruhig genug hinter Figuren; nur eine Ebene.</p>
+  <p class="meta">Urheber Spring Spring · Raster 16 px, Einzelbild · <a href="https://opengameart.org/content/cavernous-background" target="_blank" rel="noopener">Quelle</a></p>
+</article><article>
+  <label class="pick"><input type="radio" name="mine" value="opp2017-cave-and-mine-cart"> Auswahl</label>
+  <a class="prev" href="https://opengameart.org/content/opp2017-cave-and-mine-cart" target="_blank" rel="noopener"><img loading="lazy" src="https://opengameart.org/sites/default/files/cave_01.png" alt="Vorschau OPP2017 Cave and mine cart"></a>
+  <h3>OPP2017 – Cave and mine cart</h3>
+  <p class="lic ok">CC0 wählbar (auch CC-BY 3.0, CC-BY-SA 3.0, GPL, OGA-BY) (<a href="http://creativecommons.org/publicdomain/zero/1.0/" target="_blank" rel="noopener">Lizenz</a>)</p>
+  <p class="rate mid">passt mit Skalierung</p>
+  <p class="hint">Höhlen-Kacheln mit Lore, Gleisen und Kristallen, dunkle Wand als Hintergrund nutzbar; keine fertigen Parallax-Ebenen.</p>
+  <p class="meta">Urheber Hapiel (Open Pixel Project) · Raster 32 px · <a href="https://opengameart.org/content/opp2017-cave-and-mine-cart" target="_blank" rel="noopener">Quelle</a></p>
+</article></div>
+<div class="decide" data-gap="mine"><strong>Entscheidung 🧑 (2026-10-04, Workshop GR2.2 im Chat):</strong> <span class="state">gewählt: Warped: Super Grotto Escape Pack (ansimuz, CC0) · eingebunden (GR2.3): public/grafik/warped-super-grotto-escape-pack/</span> <label><input type="radio" name="mine" value="kein-treffer"> kein Treffer</label></div></section>
+
+<section id="hub"><h2>7 · Burg / Hub-Stufen 1–5 (Holzpalisade bis Steinburg)</h2>
+<p class="note">Vermerk: Ein Pack mit fünf Ausbaustufen in Seitenansicht und erlaubter Lizenz gab die Suche nicht her. Die Stufen müssten aus mehreren Packs zusammengesetzt werden (z. B. Stufe 1 Palisade, Stufe 3–5 aus Burg-Kacheln).</p>
+<div class="grid">
+<article>
+  <label class="pick"><input type="radio" name="hub" value="opp2017-castle-tiles"> Auswahl</label>
+  <a class="prev" href="https://opengameart.org/content/opp2017-castle-tiles" target="_blank" rel="noopener"><img loading="lazy" src="https://opengameart.org/sites/default/files/castle01.png" alt="Vorschau OPP2017 Castle tiles"></a>
+  <h3>OPP2017 – Castle tiles (Stufe 3–5)</h3>
+  <p class="lic ok">CC0 wählbar (auch CC-BY 3.0, CC-BY-SA 3.0, GPL, OGA-BY) (<a href="http://creativecommons.org/publicdomain/zero/1.0/" target="_blank" rel="noopener">Lizenz</a>)</p>
+  <p class="rate mid">passt mit Skalierung</p>
+  <p class="hint">Mit Zinnen, Türmen und Toren lassen sich größer werdende Steinburgen bauen; violette Variante wählen.</p>
+  <p class="meta">Urheber Hapiel (Open Pixel Project) · Raster 32 px · <a href="https://opengameart.org/content/opp2017-castle-tiles" target="_blank" rel="noopener">Quelle</a></p>
+</article><article>
+  <label class="pick"><input type="radio" name="hub" value="wooden-fortress-and-animated-doors"> Auswahl</label>
+  <a class="prev" href="https://opengameart.org/content/wooden-fortress-and-animated-doors" target="_blank" rel="noopener"><img loading="lazy" src="https://opengameart.org/sites/default/files/woodenwall-preview.png" alt="Vorschau Wooden fortress and animated doors"></a>
+  <h3>Wooden fortress and animated doors (Stufe 1)</h3>
+  <p class="lic ok">CC-BY 3.0 (<a href="http://creativecommons.org/licenses/by/3.0/" target="_blank" rel="noopener">Lizenz</a>)</p>
+  <p class="rate mid">passt mit Skalierung</p>
+  <p class="hint">Holzpalisade mit animiertem Tor, Frontseite im 32er-Raster nutzbar; die Ansicht ist schräg von oben, nur die Wandfront taugt.</p>
+  <p class="meta">Urheber Reemax · Raster 32 px (Tor 64×64) · <a href="https://opengameart.org/content/wooden-fortress-and-animated-doors" target="_blank" rel="noopener">Quelle</a></p>
+</article><article>
+  <label class="pick"><input type="radio" name="hub" value="castles"> Auswahl</label>
+  <a class="prev" href="https://opengameart.org/content/castles" target="_blank" rel="noopener"><img loading="lazy" src="https://opengameart.org/sites/default/files/castles_0.png" alt="Vorschau Castles"></a>
+  <h3>Castles</h3>
+  <p class="lic ok">CC0 (<a href="http://creativecommons.org/publicdomain/zero/1.0/" target="_blank" rel="noopener">Lizenz</a>)</p>
+  <p class="rate no">passt nicht</p>
+  <p class="hint">Kleine Burgen und Türme in Seitenansicht, teils als Ruine (Stufen-Idee), aber winzig und in hellem Rosa-Weiß.</p>
+  <p class="meta">Urheber Blarumyrran · Raster ca. 16 px · <a href="https://opengameart.org/content/castles" target="_blank" rel="noopener">Quelle</a></p>
+</article></div>
+<div class="decide" data-gap="hub"><strong>Entscheidung 🧑 (2026-10-04, Workshop GR2.2 im Chat):</strong> <span class="state">gewählt: Stufe 2 Wooden fortress (CC-BY 3.0), Stufe 3–5 OPP2017 Castle tiles (CC0, violette Variante) · eingebunden (GR2.3): public/grafik/wooden-fortress-and-animated-doors/, public/grafik/opp2017-castle-tiles/</span> <label><input type="radio" name="hub" value="kein-treffer"> kein Treffer</label></div></section>
+
+<section id="material"><h2>8 · Mauer- und Turm-Materialstufen 1–5 (Holz, Stein, Kupfer, Eisen, Kristall)</h2>
+<p class="note">Vermerk: Fertige Mauer-/Turm-Sprites in fünf Materialstufen gibt es nicht; die Kandidaten liefern Material-Texturen zum Belegen. Einen Zauberturm (Turm-Stufe 5) in Seitenansicht mit erlaubter Lizenz fand die Suche nicht.</p>
+<div class="grid">
+<article>
+  <label class="pick"><input type="radio" name="material" value="16x16-block-texture-set"> Auswahl</label>
+  <a class="prev" href="https://opengameart.org/content/16x16-block-texture-set" target="_blank" rel="noopener"><img loading="lazy" src="https://opengameart.org/sites/default/files/preview_1185.png" alt="Vorschau 16x16 Block Texture Set"></a>
+  <h3>16x16 Block Texture Set</h3>
+  <p class="lic ok">CC0 (<a href="http://creativecommons.org/publicdomain/zero/1.0/" target="_blank" rel="noopener">Lizenz</a>)</p>
+  <p class="rate mid">passt mit Skalierung</p>
+  <p class="hint">Viele Block-Texturen (Holz, Stein, Ziegel, Erz, Eis/Kristall) im 16er-Raster, deckt alle fünf Materialien ab; Comfy52-Palette heller als Gothicvania.</p>
+  <p class="meta">Urheber ARoachIFoundOnMyPillow · Raster 16 px · <a href="https://opengameart.org/content/16x16-block-texture-set" target="_blank" rel="noopener">Quelle</a></p>
+</article><article>
+  <label class="pick"><input type="radio" name="material" value="pixel-platformer-metal-expansion"> Auswahl</label>
+  <a class="prev" href="https://opengameart.org/content/pixel-platformer-metal-expansion" target="_blank" rel="noopener"><img loading="lazy" src="https://opengameart.org/sites/default/files/sample_99.png" alt="Vorschau Pixel Platformer Metal Expansion"></a>
+  <h3>Pixel Platformer Metal Expansion</h3>
+  <p class="lic ok">CC0 (<a href="http://creativecommons.org/publicdomain/zero/1.0/" target="_blank" rel="noopener">Lizenz</a>)</p>
+  <p class="rate mid">passt mit Skalierung</p>
+  <p class="hint">Metall- und Glas-Blöcke, Ketten, Leiter in Seitenansicht für Eisen- und Kristallstufe; 18-px-Raster (Kenney-kompatibel), kühle Graupalette.</p>
+  <p class="meta">Urheber Pienkrings · Raster 18 px · <a href="https://opengameart.org/content/pixel-platformer-metal-expansion" target="_blank" rel="noopener">Quelle</a></p>
+</article><article>
+  <label class="pick"><input type="radio" name="material" value="building-block-assets-stone-logs-bricks"> Auswahl</label>
+  <a class="prev" href="https://opengameart.org/content/building-block-assets-stone-logs-bricks" target="_blank" rel="noopener"><img loading="lazy" src="https://opengameart.org/sites/default/files/thumbnail_11.png" alt="Vorschau Building block assets"></a>
+  <h3>Building block assets (stone, logs, bricks)</h3>
+  <p class="lic ok">CC0 (<a href="http://creativecommons.org/publicdomain/zero/1.0/" target="_blank" rel="noopener">Lizenz</a>)</p>
+  <p class="rate no">passt nicht</p>
+  <p class="hint">Holzstämme, Steinquader, Ziegel und Eisenbalken, aber gemalt statt Pixel-Art und mit dicken Konturen.</p>
+  <p class="meta">Urheber Skalman · Raster kein Pixelraster · <a href="https://opengameart.org/content/building-block-assets-stone-logs-bricks" target="_blank" rel="noopener">Quelle</a></p>
+</article></div>
+<div class="decide" data-gap="material"><strong>Entscheidung 🧑 (2026-10-04, Workshop GR2.2 im Chat):</strong> <span class="state">gewählt: Palettentausch der Bestands-Mauer/-Turm (Stein) zu Kupfer, Eisen, Kristall; Holz (Stufe 1) und Zauberturm (Turm 5): kein Treffer · eingebunden (GR2.3): public/grafik/k3c-paletten/ (Kupfer, Eisen, Kristall); Holz und Zauberturm Platzhalter (B-162)</span> <label><input type="radio" name="material" value="kein-treffer"> kein Treffer</label></div></section>
+
+<section id="plantage"><h2>9 · Plantage (Baumschule, Setzlinge)</h2><div class="grid">
+<article>
+  <label class="pick"><input type="radio" name="plantage" value="lpc-fruit-trees"> Auswahl</label>
+  <a class="prev" href="https://opengameart.org/content/lpc-fruit-trees" target="_blank" rel="noopener"><img loading="lazy" src="https://opengameart.org/sites/default/files/fruit-trees-preview-1.png" alt="Vorschau LPC Fruit Trees"></a>
+  <h3>[LPC] Fruit Trees</h3>
+  <p class="lic warn">CC-BY-SA 4.0 / 3.0, GPL 3.0 – SA – 🧑 entscheidet (<a href="http://creativecommons.org/licenses/by-sa/4.0/" target="_blank" rel="noopener">Lizenz</a>)</p>
+  <p class="rate mid">passt mit Skalierung</p>
+  <p class="hint">Obstbäume mit vier Wachstumsstufen und Fruchtstufen, frontal genug für die Seitenansicht; LPC-Palette sattgrün.</p>
+  <p class="meta">Urheber bluecarrot16 · Raster 32 px · <a href="https://opengameart.org/content/lpc-fruit-trees" target="_blank" rel="noopener">Quelle</a></p>
+</article><article>
+  <label class="pick"><input type="radio" name="plantage" value="quick-32px-sprites-bucket-nest-wood-seeds-leaf-sapling"> Auswahl</label>
+  <a class="prev" href="https://opengameart.org/content/quick-32px-sprites-bucket-nest-wood-seeds-leaf-sapling" target="_blank" rel="noopener"><img loading="lazy" src="https://opengameart.org/sites/default/files/prevallprogart.png" alt="Vorschau Quick 32px Sprites"></a>
+  <h3>Quick 32px Sprites: Bucket, Nest, Wood, Seeds, Leaf, Sapling</h3>
+  <p class="lic ok">CC0 (<a href="http://creativecommons.org/publicdomain/zero/1.0/" target="_blank" rel="noopener">Lizenz</a>)</p>
+  <p class="rate mid">passt mit Skalierung</p>
+  <p class="hint">Setzling, Samen und Eimer als 32er-Icons, einfach und kindgerecht; für eine ganze Plantage zu wenig.</p>
+  <p class="meta">Urheber Boysano · Raster 32 px · <a href="https://opengameart.org/content/quick-32px-sprites-bucket-nest-wood-seeds-leaf-sapling" target="_blank" rel="noopener">Quelle</a></p>
+</article><article>
+  <label class="pick"><input type="radio" name="plantage" value="plants-and-flowers-pixel-art"> Auswahl</label>
+  <a class="prev" href="https://opengameart.org/content/plants-and-flowers-pixel-art" target="_blank" rel="noopener"><img loading="lazy" src="https://opengameart.org/sites/default/files/paf-1.png.png" alt="Vorschau Plants and Flowers"></a>
+  <h3>Plants and Flowers – Pixel Art</h3>
+  <p class="lic ok">CC-BY 4.0 (<a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="noopener">Lizenz</a>)</p>
+  <p class="rate mid">passt mit Skalierung</p>
+  <p class="hint">Topfpflanzen, Setzling, Samen und Gießkanne in Seitenansicht, 16er-Raster; helle Farben, Namensnennung nötig.</p>
+  <p class="meta">Urheber peony · Raster 16 px · <a href="https://opengameart.org/content/plants-and-flowers-pixel-art" target="_blank" rel="noopener">Quelle</a></p>
+</article></div>
+<div class="decide" data-gap="plantage"><strong>Entscheidung 🧑 (2026-10-04, Workshop GR2.2 im Chat):</strong> <span class="state">kein Treffer · Platzhalter bleibt (GR2.3, B-162)</span> <label><input type="radio" name="plantage" value="kein-treffer"> kein Treffer</label></div></section>
+
+<section id="holz"><h2>10 · Holz-Symbol (<code>material:wood</code>)</h2>
+<p class="note">Bestand geprüft (<code>public/grafik/index.json</code>): Kein Pack hat ein Holz-Icon; die Erz-Icons aus <code>various-stones-and-oregem-veins-16x16</code> enthalten kein Holz.</p>
+<div class="grid">
+<article>
+  <label class="pick"><input type="radio" name="holz" value="16px-items-and-materials"> Auswahl</label>
+  <a class="prev" href="https://opengameart.org/content/16px-items-and-materials" target="_blank" rel="noopener"><img loading="lazy" src="https://opengameart.org/sites/default/files/materials1_2.png" alt="Vorschau 16px Items and Materials"></a>
+  <h3>16px Items and Materials</h3>
+  <p class="lic warn">CC-BY-SA 4.0 – SA – 🧑 entscheidet (<a href="http://creativecommons.org/licenses/by-sa/4.0/" target="_blank" rel="noopener">Lizenz</a>)</p>
+  <p class="rate ok">passt</p>
+  <p class="hint">Holzstamm und Stammbündel genau im 16er-Raster, dunkle Kontur wie bei den Erz-Icons; dazu Kristalle, Steine und Barren.</p>
+  <p class="meta">Urheber Kelvin Shadewing · Raster 16 px · <a href="https://opengameart.org/content/16px-items-and-materials" target="_blank" rel="noopener">Quelle</a></p>
+</article><article>
+  <label class="pick"><input type="radio" name="holz" value="resource-icons"> Auswahl</label>
+  <a class="prev" href="https://opengameart.org/content/resource-icons" target="_blank" rel="noopener"><img loading="lazy" src="https://opengameart.org/sites/default/files/resources_icons.jpg" alt="Vorschau Resource icons"></a>
+  <h3>Resource icons</h3>
+  <p class="lic ok">CC0 (<a href="http://creativecommons.org/publicdomain/zero/1.0/" target="_blank" rel="noopener">Lizenz</a>)</p>
+  <p class="rate mid">passt mit Skalierung</p>
+  <p class="hint">Holzstapel, Stein, Gold und Edelsteine im selben Pixel-Stil; deutlich größer als 16 px, müsste verkleinert werden (Qualität ungeprüft).</p>
+  <p class="meta">Urheber Kutejnikov · Raster ca. 32 px (ungeprüft) · <a href="https://opengameart.org/content/resource-icons" target="_blank" rel="noopener">Quelle</a></p>
+</article><article>
+  <label class="pick"><input type="radio" name="holz" value="materials-pack"> Auswahl</label>
+  <a class="prev" href="https://opengameart.org/content/materials-pack" target="_blank" rel="noopener"><img loading="lazy" src="https://opengameart.org/sites/default/files/23r2314.png" alt="Vorschau Materials Pack"></a>
+  <h3>Materials Pack</h3>
+  <p class="lic ok">CC-BY 3.0 (<a href="http://creativecommons.org/licenses/by/3.0/" target="_blank" rel="noopener">Lizenz</a>)</p>
+  <p class="rate mid">passt mit Skalierung</p>
+  <p class="hint">Bretter, Stammbündel, Barren und Edelsteine als Material-Icons in gedämpften Tönen; Kontur weicher als bei den Erz-Icons.</p>
+  <p class="meta">Urheber xvideosman · Raster vermutlich 16 px (ungeprüft) · <a href="https://opengameart.org/content/materials-pack" target="_blank" rel="noopener">Quelle</a></p>
+</article></div>
+<div class="decide" data-gap="holz"><strong>Entscheidung 🧑 (2026-10-04, Workshop GR2.2 im Chat):</strong> <span class="state">gewählt: Resource icons (Kutejnikov, CC0) · eingebunden (GR2.3): public/grafik/resource-icons/</span> <label><input type="radio" name="holz" value="kein-treffer"> kein Treffer</label></div></section>
+
+<section id="skillpunkt"><h2>11 · Skillpunkt-Pickup (<code>pickup:skillPoint</code>)</h2><div class="grid">
+<article class="own">
+  <label class="pick"><input type="radio" name="skillpunkt" value="bestand:various-stones-and-oregem-veins-16x16/kristall"> Auswahl</label>
+  <a class="prev" href="../../public/grafik/various-stones-and-oregem-veins-16x16/ressourcen/Stones_ores_gems_without_grass.png" target="_blank" rel="noopener"><img loading="lazy" src="../../public/grafik/various-stones-and-oregem-veins-16x16/ressourcen/Stones_ores_gems_without_grass.png" alt="Vorschau Erz- und Edelstein-Blatt"></a>
+  <h3>Bestand: Various stones and ore/gem veins · Kristall-Spalte</h3>
+  <p class="lic ok">CC0 1.0 (<a href="https://creativecommons.org/publicdomain/zero/1.0/" target="_blank" rel="noopener">Lizenz</a>)</p>
+  <p class="rate ok">passt</p>
+  <p class="hint">Rechte Spalte hat einzelne Kristalle (grün, rot, blau, türkis), schon im Repo; Risiko: verwechselbar mit dem Material Kristall.</p>
+  <p class="meta">Urheber vico · Raster 16 px · <code>public/grafik/various-stones-and-oregem-veins-16x16/ressourcen/Stones_ores_gems_without_grass.png</code></p>
+</article><article>
+  <label class="pick"><input type="radio" name="skillpunkt" value="item-ruby-banana-star"> Auswahl</label>
+  <a class="prev" href="https://opengameart.org/content/item-ruby-banana-star" target="_blank" rel="noopener"><img class="tiny" loading="lazy" src="https://opengameart.org/sites/default/files/part_star_anime.gif" alt="Vorschau Item Star"></a>
+  <h3>Item Ruby, Banana, Star</h3>
+  <p class="lic ok">CC0 (<a href="http://creativecommons.org/publicdomain/zero/1.0/" target="_blank" rel="noopener">Lizenz</a>)</p>
+  <p class="rate ok">passt</p>
+  <p class="hint">Funkelnder Stern als 16×16-Animation (dazu ein rotierender Rubin), klar als Pickup erkennbar und nicht mit Material verwechselbar.</p>
+  <p class="meta">Urheber mieki256 · Raster 16 px (Rubin 24 px) · <a href="https://opengameart.org/content/item-ruby-banana-star" target="_blank" rel="noopener">Quelle</a></p>
+</article><article>
+  <label class="pick"><input type="radio" name="skillpunkt" value="16x16-rpg-items-db32"> Auswahl</label>
+  <a class="prev" href="https://opengameart.org/content/16x16-rpg-items-db32" target="_blank" rel="noopener"><img loading="lazy" src="https://opengameart.org/sites/default/files/rpg_preview_0.png" alt="Vorschau 16x16 RPG Items DB32"></a>
+  <h3>16x16 RPG Items (DB32)</h3>
+  <p class="lic ok">CC0 (<a href="http://creativecommons.org/publicdomain/zero/1.0/" target="_blank" rel="noopener">Lizenz</a>)</p>
+  <p class="rate ok">passt</p>
+  <p class="hint">Edelsteine, Feder, Schriftrolle und Bücher im 16er-Raster mit dunkler Kontur; DB32-Palette nah an den Gold-Icons (DB16).</p>
+  <p class="meta">Urheber ARoachIFoundOnMyPillow · Raster 16 px · <a href="https://opengameart.org/content/16x16-rpg-items-db32" target="_blank" rel="noopener">Quelle</a></p>
+</article><article>
+  <label class="pick"><input type="radio" name="skillpunkt" value="kyrises-free-16x16-rpg-icon-pack"> Auswahl</label>
+  <a class="prev" href="https://opengameart.org/content/kyrises-free-16x16-rpg-icon-pack" target="_blank" rel="noopener"><img loading="lazy" src="https://opengameart.org/sites/default/files/sample_62.png" alt="Vorschau Kyrise's Free 16x16 RPG Icon Pack"></a>
+  <h3>Kyrise's Free 16x16 RPG Icon Pack</h3>
+  <p class="lic ok">CC-BY 4.0 (<a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="noopener">Lizenz</a>)</p>
+  <p class="rate ok">passt</p>
+  <p class="hint">Große Auswahl an Edelsteinen, Büchern und Schriftrollen im 16er-Raster, kräftige Farben; Namensnennung nötig.</p>
+  <p class="meta">Urheber Kyrise · Raster 16 px · <a href="https://opengameart.org/content/kyrises-free-16x16-rpg-icon-pack" target="_blank" rel="noopener">Quelle</a></p>
+</article></div>
+<div class="decide" data-gap="skillpunkt"><strong>Entscheidung 🧑 (2026-10-04, Workshop GR2.2 im Chat):</strong> <span class="state">gewählt: Item Ruby, Banana, Star – Stern (mieki256, CC0) · eingebunden (GR2.3): public/grafik/item-ruby-banana-star/</span> <label><input type="radio" name="skillpunkt" value="kein-treffer"> kein Treffer</label></div></section>
+
+</main>
+<div id="bar"><textarea id="out" readonly placeholder="Auswahl erscheint hier"></textarea><button id="copy">Kopieren</button></div>
+<script>
+const radios = [...document.querySelectorAll('input[type=radio]')];
+const out = document.getElementById('out');
+const KEY = 'gr2-funde';
+let saved = {};
+try { saved = JSON.parse(localStorage.getItem(KEY) || '{}'); } catch (e) { /* kein Speicher */ }
+function update() {
+  const pick = {};
+  radios.filter((r) => r.checked).forEach((r) => { pick[r.name] = r.value; });
+  document.querySelectorAll('.decide').forEach((d) => {
+    const v = pick[d.dataset.gap];
+    const st = d.querySelector('.state');
+    st.dataset.fest ??= st.textContent; // eingetragene Entscheidung 🧑 bleibt ohne Auswahl stehen
+    st.textContent = !v ? st.dataset.fest : v === 'kein-treffer' ? 'kein Treffer' : 'gewählt: ' + v;
+  });
+  try { localStorage.setItem(KEY, JSON.stringify(pick)); } catch (e) { /* kein Speicher */ }
+  const lines = Object.entries(pick).map(([k, v]) => k + ': ' + v);
+  out.value = lines.length ? 'Auswahl GR2 (B-162): ' + lines.join('; ') : '';
+}
+radios.forEach((r) => {
+  if (saved[r.name] === r.value) r.checked = true;
+  r.addEventListener('change', update);
+});
+document.getElementById('copy').onclick = () => { out.select(); if (navigator.clipboard) navigator.clipboard.writeText(out.value); };
+update();
+</script></body></html>

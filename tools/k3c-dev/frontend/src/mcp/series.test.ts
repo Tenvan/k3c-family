@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import type { UsageBucket } from '../api';
-import { avgOf, bars, breakName, header, pointsOf, RANGES, RANGE_SPEC, ticks, toolTotals, windowOf } from './series';
+import { avgOf, header, pointsOf, RANGES, RANGE_SPEC, ticks, windowOf } from './series';
 
 const MIN = 60_000;
 const now = Date.parse('2026-09-30T12:00:30Z');
@@ -46,14 +46,6 @@ describe('Live-Monitore', () => {
     expect(pts.reduce((a, p) => a + p.calls, 0)).toBe(6);
   });
 
-  it('Säulen: Top 5 nach Aufrufen, langsamste nach Höchstdauer', () => {
-    const w = windowOf('1h', now);
-    const list = [minute(1, { a: 1, b: 9, c: 3, d: 2, e: 2, f: 7 }), minute(2, { a: 1 }, { maxMs: { a: 50_000 } })];
-    const totals = toolTotals(list, w);
-    expect(bars(totals, 'calls').map((t) => t.tool)).toEqual(['b', 'f', 'c', 'a', 'd']);
-    expect(bars(totals, 'duration')[0]).toMatchObject({ tool: 'a', maxMs: 50_000 });
-  });
-
   it('Kopfzeilen beider Metriken, leer ohne Division durch null', () => {
     const w = windowOf('15m', now);
     const pts = pointsOf([minute(0, { a: 3 }, { errors: 1, maxMs: { a: 1500 }, outliers: { a: 1 } }), minute(1, { a: 1 })], w);
@@ -71,11 +63,5 @@ describe('Live-Monitore', () => {
     expect(t[4]).toEqual({ at: 1, label: 'jetzt' });
     expect(t[0].label).toMatch(/^\d\d:\d\d$/);
     expect(ticks('7d', windowOf('7d', now))[0].label).toMatch(/^\d\d\.\d\d\.$/);
-  });
-
-  it('Namen brechen nach _ um', () => {
-    expect(breakName('check_run')).toEqual(['check_', 'run']);
-    expect(breakName('workbench_status_x')).toEqual(['workbench_', 'status_', 'x']);
-    expect(breakName('kurz')).toEqual(['kurz']);
   });
 });

@@ -64,35 +64,6 @@ export function pointsOf(minutes: UsageBucket[], w: Window): Point[] {
   return pts;
 }
 
-export interface ToolTotal {
-  tool: string;
-  calls: number;
-  maxMs: number;
-  outliers: number;
-}
-
-/** Summen je Tool im Fenster. */
-export function toolTotals(minutes: UsageBucket[], w: Window): ToolTotal[] {
-  const by = new Map<string, ToolTotal>();
-  for (const m of minutes) {
-    if (m.ts < w.from || m.ts >= w.to) continue;
-    for (const [tool, n] of Object.entries(m.calls)) {
-      const t = by.get(tool) ?? { tool, calls: 0, maxMs: 0, outliers: 0 };
-      t.calls += n;
-      t.maxMs = Math.max(t.maxMs, m.maxMs[tool] ?? 0);
-      t.outliers += m.outliers[tool] ?? 0;
-      by.set(tool, t);
-    }
-  }
-  return [...by.values()];
-}
-
-/** Säulen: bei Aufrufen die Top 5 nach Aufrufen, bei Laufzeit die fünf langsamsten nach Höchstdauer. */
-export function bars(totals: ToolTotal[], metric: Metric, n = 5): ToolTotal[] {
-  const key = metric === 'calls' ? (t: ToolTotal) => t.calls : (t: ToolTotal) => t.maxMs;
-  return [...totals].sort((a, b) => key(b) - key(a) || a.tool.localeCompare(b.tool)).slice(0, n);
-}
-
 /** Kopfzeile des Liniendiagramms. */
 export function header(pts: Point[], metric: Metric): string {
   const calls = pts.reduce((a, p) => a + p.calls, 0);
@@ -125,9 +96,4 @@ export function ticks(range: Range, w: Window): Tick[] {
     : formatTime(new Date(t)));
   const out: Tick[] = [0, 0.25, 0.5, 0.75].map((at) => ({ at, label: label(w.from + at * (w.to - w.from)) }));
   return [...out, { at: 1, label: 'jetzt' }];
-}
-
-/** Lange Namen brechen nach `_` um: `logs_query` → `logs_`, `query`. */
-export function breakName(name: string): string[] {
-  return name.split(/(?<=_)/);
 }
