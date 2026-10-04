@@ -1,6 +1,6 @@
 # BAL1.4 · Review und Abnahme des Sprints BAL1
 
-- **Status:** offen
+- **Status:** in Arbeit
 - **Typ:** Review
 - **Agent:** autonom
 - **Branch:** bal1/4-review

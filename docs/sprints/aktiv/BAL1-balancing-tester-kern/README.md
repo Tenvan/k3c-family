@@ -65,7 +65,7 @@ keine (Ort des Werkzeugs: Tool in k3c-dev, 🧑 2026-10-04)
 | BAL1.1 | `BAL1.1-bots-kennzahlen.md` | Umsetzung | autonom | fertig |
 | BAL1.2 | `BAL1.2-replay-format.md` | Umsetzung | autonom | fertig |
 | BAL1.3 | `BAL1.3-replay-k3c-dev.md` | Umsetzung | autonom | fertig |
-| BAL1.4 | `BAL1.4-review.md` | Review | autonom | offen |
+| BAL1.4 | `BAL1.4-review.md` | Review | autonom | in Arbeit |
 
 Bei `Reife: Entwurf` genügen Stichpunkte mit den Kriterien in Klammern statt Session-Dateien. Vor dem Aktivieren
 wird jede Session als eigene Datei nach `docs/vorlagen/session.md` geschrieben.
