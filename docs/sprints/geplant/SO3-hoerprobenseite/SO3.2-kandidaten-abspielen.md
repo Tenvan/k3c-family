@@ -6,7 +6,7 @@
 - **Branch:** so3/2-kandidaten-abspielen
 - **Abhängig von:** SO3.1, SO1.4
 - **Tickets:** B-169
-- **Kriterien:** AC-02, AC-03, AC-04, AC-06
+- **Kriterien:** AC-02, AC-03, AC-04, AC-06, AC-07, AC-08
 
 ## Ziel
 
@@ -44,6 +44,8 @@ Auswahl der Kandidaten (SO2, SO4), Einbau ins Spiel, Änderungen am Audio-Kern (
 - [ ] AC-02: Liste nach Zustand und Ereignis mit Quelle und Lizenz, Abspielen funktioniert (Nachweis im Browser-Pane).
 - [ ] AC-03: Bedienung mit gemocktem Controller im Browser-Pane, B ohne Wirkung (am TV in SO3.3).
 - [ ] AC-04: Crossfade mit Rampe, Test der reinen Funktion (hörbar am TV in SO3.3).
+- [ ] AC-07: Bedienung mit Tastatur und `?touch=1` im Browser-Pane.
+- [ ] AC-08: keine fremde Audiodatei ohne Quelle und Lizenz in den Credits (B-165).
 - [ ] AC-06: `task check` grün; keine Datei > 400 Zeilen, keine Funktion > 60 Zeilen.
 
 ## Prüfen

@@ -6,9 +6,9 @@
 - **Einschiebbar:** ja
 - **Tickets:** B-011
 - **Start-Commit:** –
-- **Spec:** Entwurf
+- **Spec:** freigegeben
 - **Revision:** 1
-- **Freigabe:** –
+- **Freigabe:** 2026-10-04, Chat (Ralf), Revision 1, durch 🧑; umfasst B-011; mit Änderungen aus dem Spec-Review (Format und Autoplay nach Xbox-Messung B-166, Verweis in AC-03 korrigiert)
 
 ## Ausgangslage
 
@@ -24,7 +24,7 @@ Spieler am TV und Handy; Umsetzung durch Agent; 🧑 hört am TV ab.
 
 ## Anforderungen
 
-B-011 › Anforderungen (Lautstärke einstellbar; Soundeffekte und Musik folgen in SO2 und SO4). Sprint-eigen: `src/audio/` mit Mixer (Busse Musik, Effekte, Ambient), Lautstärke je Gerät im `localStorage`, Format gemäß Ergebnis aus B-166 (ogg mit m4a-Fallback), Sound-Atlas (ein Sprite-Sheet statt vieler Requests), Positions-Dämpfung im Split-Screen (jeder hört seinen Bereich, Warnungen global).
+B-011 › Anforderungen (Lautstärke einstellbar; Soundeffekte und Musik folgen in SO2 und SO4). Sprint-eigen: `src/audio/` mit Mixer (Busse Musik, Effekte, Ambient), Lautstärke je Gerät im `localStorage`, Format gemäß Ergebnis aus B-166 (Xbox-Messung, `docs/game-design.md`: ogg, mp3 und wav ja, m4a nein; also ogg mit mp3-Fallback), Sound-Atlas (ein Sprite-Sheet statt vieler Requests), Positions-Dämpfung im Split-Screen (jeder hört seinen Bereich, Warnungen global).
 
 ## Nicht-Ziele
 
@@ -40,13 +40,13 @@ Erste Taste am Controller → Audio wird entsperrt, Demo-Ton auf ein Ereignis; E
 
 ## Ausnahme- und Fehlerfälle
 
-Browser blockiert Audio bis zur ersten Eingabe → kein Fehler, Ton startet nach der ersten Taste (B-011). `localStorage` nicht verfügbar → Standardlautstärken, kein Absturz.
+Auf der Xbox läuft der `AudioContext` schon vor der ersten Geste, eine Controller-Taste zählt als Geste (B-166). Andere Browser (PC, Handy) blockieren Audio bis zur ersten Eingabe → kein Fehler, Ton startet nach der ersten Taste (B-011 › Ausnahme- und Fehlerfälle). `localStorage` nicht verfügbar → Standardlautstärken, kein Absturz.
 
 ## Akzeptanzkriterien
 
 - **AC-01** Der Mixer hat getrennte Busse Musik, Effekte und Ambient mit eigener Lautstärke (B-011/AC-03).
 - **AC-02** Die Lautstärken werden je Gerät im `localStorage` gespeichert und beim Start gelesen (Test).
-- **AC-03** Vor der ersten Eingabe läuft das Spiel ohne Audio-Fehler, nach der ersten Taste startet der Ton (B-011/AC-03, Ausnahmefall; Test oder Beobachtung).
+- **AC-03** Vor der ersten Eingabe läuft das Spiel ohne Audio-Fehler, nach der ersten Taste startet der Ton (B-011 › Ausnahme- und Fehlerfälle; Test oder Beobachtung).
 - **AC-04** Das Audio-Format entspricht dem Ergebnis aus B-166, mit Fallback (Beobachtung am TV).
 - **AC-05** Die Sounds liegen in einem Sound-Atlas, die Zahl der Audio-Requests beim Start ist dokumentiert.
 - **AC-06** Im Split-Screen mit 2 Spielern hört jeder seinen Bereich, Warnungen sind global (Test auf der Dämpfungsfunktion).

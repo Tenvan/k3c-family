@@ -6,9 +6,9 @@
 - **Status:** eingeplant
 - **Sprint:** SO1
 - **Erstellt:** 2026-09-29
-- **Spec:** Entwurf
+- **Spec:** freigegeben
 - **Revision:** 1
-- **Freigabe:** –
+- **Freigabe:** 2026-10-04, Chat (Ralf), Revision 1, durch 🧑 (mit SO1)
 
 ## Ausgangslage
 
@@ -42,7 +42,7 @@ Die Nacht beginnt → die Musik wechselt; eine Münze fällt → Soundeffekt.
 
 ## Ausnahme- und Fehlerfälle
 
-Browser blockiert Audio bis zur ersten Eingabe → Ton startet nach der ersten Taste, kein Fehler.
+Browser blockiert Audio bis zur ersten Eingabe (PC, Handy; die Xbox spielt laut B-166 schon vorher) → Ton startet nach der ersten Taste, kein Fehler.
 
 ## Akzeptanzkriterien
 
