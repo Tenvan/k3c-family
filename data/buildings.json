@@ -3,10 +3,14 @@
   "wall":      { "name": "Mauer",       "hp": 300,  "buildSeconds": 6,  "unlockDepth": 0, "cost": { "wood": 20, "gold": 5 },  "notes": "Blockiert Gegner" },
   "tower":     { "name": "Turm",        "hp": 200,  "buildSeconds": 10, "archerSlots": 2, "rangeBonus": 3, "unlockDepth": 0, "cost": { "wood": 50, "gold": 20 }, "notes": "Plattform für Bogenschützen" },
   "gate":      { "name": "Tor",         "hp": 250,  "buildSeconds": 6,  "unlockDepth": 0, "cost": { "wood": 30, "gold": 10 }, "notes": "Durchgang für eigene Truppen" },
-  "workshop":  { "name": "Werkstatt",   "hp": 150,  "buildSeconds": 8,  "bowRack": 3, "unlockDepth": 0, "cost": { "wood": 40, "gold": 15 }, "notes": "Waffen-Upgrades (Bogen, Schwert)" },
+  "workshop":  { "name": "Werkstatt",   "hp": 150,  "buildSeconds": 8,  "bowRack": 3, "unlockDepth": 0, "cost": { "wood": 40, "gold": 15 }, "offers": [{ "kind": "craftsman", "dx": -4 }, { "kind": "sword", "dx": 4 }, { "kind": "miner", "dx": 8 }, { "kind": "builder", "dx": 12 }], "notes": "Waffen-Upgrades (Bogen am Platz, Schwert); offers: Angebots-Zahlziele mit festem dx am Gebäude (Q52, Q53), Mechanik ab W4" },
   "storage":   { "name": "Lager",       "hp": 200,  "buildSeconds": 8,  "unlockDepth": 0, "cost": { "stone": 50, "gold": 20 }, "notes": "+300 Kapazität je Rohstoff (nur Insel)" },
   "farm":      { "name": "Farm",        "hp": 100,  "buildSeconds": 8,  "unlockDepth": 0, "cost": { "wood": 30, "gold": 10 }, "notes": "Passive Ressourcen (optional)" },
   "barracks":  { "name": "Kaserne",     "hp": 200,  "buildSeconds": 12, "unlockDepth": 1, "cost": { "stone": 60, "gold": 30 },"notes": "+10 Truppen-Limit" },
   "stairsUp":  { "name": "Treppe hoch", "hp": 500,  "buildSeconds": 20, "unlockDepth": 1, "cost": { "stone": 100, "gold": 50 },"notes": "Verbindung zur Stufe darüber, max. 1 pro Hub" },
-  "stairsDown":{ "name": "Treppe runter","hp": 500, "buildSeconds": 20, "unlockDepth": 1, "cost": { "stone": 100, "gold": 50 },"notes": "Verbindung zur Stufe darunter, max. 1 pro Hub" }
+  "stairsDown":{ "name": "Treppe runter","hp": 500, "buildSeconds": 20, "unlockDepth": 1, "cost": { "stone": 100, "gold": 50 },"notes": "Verbindung zur Stufe darunter, max. 1 pro Hub" },
+  "tavern":    { "name": "Taverne",     "hp": 150,  "buildSeconds": 12, "cost": { "stone": 60, "gold": 30 }, "notes": "Wirkung W3 (Landstreicher bei dawn); Startwert" },
+  "healer":    { "name": "Heilplatz",   "hp": 150,  "buildSeconds": 12, "cost": { "copper": 50, "gold": 30 }, "notes": "Wirkung W3 (heilt Truppen und Spieler); Startwert" },
+  "smithy":    { "name": "Schmiede",    "hp": 250,  "buildSeconds": 16, "cost": { "copper": 80, "gold": 50 }, "offers": [{ "kind": "eliteWarrior", "dx": 4 }], "notes": "Wirkung W3 (Elite-Bogenschütze am Platz, Elite-Krieger als Angebot); Startwert" },
+  "armory":    { "name": "Rüstkammer",  "hp": 350,  "buildSeconds": 16, "cost": { "iron": 100, "gold": 100 }, "notes": "Wirkung W3 (Rüstung am Platz); Startwert" }
 }

@@ -25,6 +25,13 @@ type BuildingData struct {
 	HP, BuildSeconds                 float64
 	Cost                             Cost
 	ArcherSlots, RangeBonus, BowRack int
+	Offers                           []Offer // Angebots-Zahlziele am Gebäude (Q52), Mechanik ab W4
+}
+
+// Offer ist ein Angebots-Zahlziel mit festem Abstand DX zum Platz seines Gebäudes.
+type Offer struct {
+	Kind string
+	DX   float64
 }
 
 // TroopData ist ein Eintrag aus data/troops.json.
@@ -55,6 +62,17 @@ type HubSite struct {
 	OffsetUnits float64
 	FromDepth   int
 	NeedsDeeper bool
+	HubLevel    int // ab dieser Hub-Stufe bezahlbar (§ 3 der Regeln)
+}
+
+// WallLineData sind die Mauerlinien je Seite (Q49, Q50): Linie k (ab 1) steht bei WallUnits[k-1] ab Hub-Mitte,
+// die ersten FixedLines fest, die übrigen je Seed 0 bis JitterOutwardUnits weiter außen.
+type WallLineData struct {
+	WallUnits                        []float64
+	FixedLines                       int
+	JitterOutwardUnits               float64
+	TowerInsetUnits, GateOutsetUnits float64
+	GateHubLevel                     int
 }
 
 var (
@@ -78,9 +96,14 @@ var (
 		}
 	}]("economy.json")
 	hub = load[struct {
-		Sites                              []HubSite
-		IslandSites                        []HubSite // nur Insel-Stufen (island_storage.go)
-		IslandStartStock                   Stock     // Vorrat einer neuen Insel (B-177)
+		Sites            []HubSite
+		IslandSites      []HubSite // nur Insel-Stufen (island_storage.go)
+		IslandStartStock Stock     // Vorrat einer neuen Insel (B-177)
+		WallLines        WallLineData
+		Merchant         struct {
+			BuyOffsetUnits, SellOffsetUnits float64
+			OnlyDepth                       int
+		}
 		CastleRadiusUnits, HomeRadiusUnits float64
 		StartTroops                        struct{ Peasant, Archer int }
 		Travel                             struct{ RangeUnits, Seconds float64 }
