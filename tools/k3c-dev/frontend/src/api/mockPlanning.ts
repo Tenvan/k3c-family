@@ -39,9 +39,9 @@ const tk = (nr: string, title: string, domain: string, prio: string, status: str
   ({ nr, title, domain, typ: 'Idee', prio, status, sprint, spec });
 
 const DATA: PlanningData = {
-  done: 31,
+  done: 2,
   sprints: [
-    { id: 'SP11', title: 'Raspberry Pi', domain: 'SRV', status: 'aktiv', reife: 'bereit', spec: 'freigegeben',
+    { id: 'SP11', title: 'Raspberry Pi', domain: 'SRV', status: 'aktiv', reife: 'bereit', spec: 'freigegeben', worktree: 'sprint/sp11',
       tickets: ['B-028', 'B-035', 'B-042'],
       sessions: [s('SP11.1', 'Umsetzung', 'autonom', 'fertig', '', `# SP11.1 · Image und Compose
 
@@ -61,6 +61,10 @@ Ein ARM-Image des Servers liegt in der Registry.
       sessions: [s('F2.1', '', '', 'entwurf', 'Golden-Task'), s('F2.2', '', '', 'entwurf', 'Spielstand-Migration')] },
     { id: 'S1', title: 'Monarch-Schlag und Skills', domain: 'SIM', status: 'geplant', reife: 'Entwurf', spec: 'Entwurf',
       tickets: ['B-118', 'B-119'], sessions: [s('S1.1', '', '', 'entwurf', 'Schlag und Pool'), s('S1.2', '', '', 'entwurf', 'Skills')] },
+    { id: 'R1', title: 'Regelwerk 1', domain: 'REG', status: 'erledigt', reife: 'bereit', spec: 'freigegeben', tickets: ['B-090'],
+      sessions: [s('R1.1', 'Workshop', 'Mensch', 'fertig'), s('R1.2', 'Review', 'autonom', 'fertig')] },
+    { id: 'M5', title: 'Dev-MCP-Seite', domain: 'DEV', status: 'erledigt', reife: 'bereit', spec: 'freigegeben', tickets: [],
+      sessions: [s('M5.1', 'Umsetzung', 'autonom', 'fertig')] },
   ],
   tickets: [
     tk('B-006', 'Gamepad-Test auf der Xbox ist ausgewertet', 'PLAT', 'hoch', 'eingeplant', 'X1', 'freigegeben'),

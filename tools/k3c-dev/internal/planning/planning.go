@@ -28,11 +28,12 @@ type Sprint struct {
 	ID       string    `json:"id"`
 	Title    string    `json:"title"`
 	Domain   string    `json:"domain"`
-	Status   string    `json:"status"` // aktiv | geplant
+	Status   string    `json:"status"` // aktiv | geplant | erledigt
 	Reife    string    `json:"reife"`
 	Spec     string    `json:"spec"`
 	Tickets  []string  `json:"tickets"`
 	Sessions []Session `json:"sessions"`
+	Worktree string    `json:"worktree,omitempty"` // Branch eines Worktrees, der gerade an diesem Sprint arbeitet
 }
 
 // Ticket ist der Kopf einer Backlog-Datei.
@@ -68,9 +69,12 @@ var (
 // docs/backlog ganz, kommt ein Fehler (falsche Wurzel).
 func Load(root string) (Data, error) {
 	d := Data{Sprints: []Sprint{}, Tickets: []Ticket{}}
-	for _, status := range []string{"aktiv", "geplant"} {
+	for _, status := range []string{"aktiv", "geplant", "erledigt"} {
 		dir := filepath.Join(root, "docs", "sprints", status)
 		entries, err := os.ReadDir(dir)
+		if err != nil && status == "erledigt" {
+			continue // ohne erledigte Sprints geht es auch
+		}
 		if err != nil {
 			return d, fmt.Errorf("sprints nicht lesbar: %w", err)
 		}
@@ -78,14 +82,15 @@ func Load(root string) (Data, error) {
 			if !e.IsDir() {
 				continue
 			}
+			if status == "erledigt" {
+				d.Done++
+			}
 			if sp, ok := loadSprint(filepath.Join(dir, e.Name()), status); ok {
 				d.Sprints = append(d.Sprints, sp)
 			}
 		}
 	}
-	if done, err := os.ReadDir(filepath.Join(root, "docs", "sprints", "erledigt")); err == nil {
-		d.Done = len(done)
-	}
+	markWorktrees(d.Sprints, Worktrees(root))
 	files, err := os.ReadDir(filepath.Join(root, "docs", "backlog"))
 	if err != nil {
 		return d, fmt.Errorf("backlog nicht lesbar: %w", err)
