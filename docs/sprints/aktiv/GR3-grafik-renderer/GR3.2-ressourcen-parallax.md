@@ -1,6 +1,6 @@
 # GR3.2 · Ressourcen, Adern, Plantage und Parallax je Biom, Credits prüfen
 
-- **Status:** offen
+- **Status:** in Arbeit
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Branch:** gr3/2-ressourcen-parallax

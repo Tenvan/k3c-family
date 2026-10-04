@@ -11,6 +11,7 @@ Reihenfolge in Wellen, Bahnen je Domäne und Zuordnung Mensch/autonom (zwei Acco
 | Sprint | Domäne | Thema | Am Ende sichtbar | Ordner |
 |---|---|---|---|---|
 | S2 | SRV | Protokoll für Skills, Speichern beim Verlassen, Spielmetrik | neue Felder in `docs/protocol.md` mit Beispielen unter `testdata/protocol/`, Spielstand nach Trennung mitten in der Nacht, ein Report in `reports/` | `aktiv/S2-protokoll-skills-speichern-metrik/` |
+| GR3 | CLI | Grafik im Renderer | Hub mit Sprites statt Formen, Parallax je Biom, Hub- und Materialstufen unterscheidbar am TV | `aktiv/GR3-grafik-renderer/` |
 
 ## Offen am Gerät
 
@@ -61,7 +62,6 @@ dann über den Go-Server mit mehreren Räumen und gemischten Spielern.
 |---|---|---|---|---|
 | BAL3 | SIM | Bot-Profile, Sensitivität und Grad-Kurven | Entwurf | `geplant/BAL3-bot-profile-sensitivitaet/` |
 | BAL4 | REG | Abgleich Spielmetrik und Simulator | Entwurf | `geplant/BAL4-metrik-abgleich/` |
-| GR3 | CLI | Grafik im Renderer | bereit | `geplant/GR3-grafik-renderer/` |
 | SO2 | CLI | SFX-Katalog und Einbau | Entwurf | `geplant/SO2-sfx-katalog/` |
 | SO4 | CLI | Musik je Zustand | Entwurf | `geplant/SO4-musik/` |
 | DBG3 | PLAT | Dungeon-Master-Seite /dm | Entwurf | `geplant/DBG3-dungeon-master-seite/` |

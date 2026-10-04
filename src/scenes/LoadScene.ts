@@ -3,13 +3,14 @@ import { GAME_HEIGHT, GAME_WIDTH } from '../core/constants';
 import { clientLog } from '../core/clientLog';
 import type { RoomClient } from '../online/clientConnection';
 import { barFill, errorText, progressText } from './loadLogic';
+import { prepareBuildings, preloadBuildings } from './siteView';
 import { createSpriteAnims, preloadSprites } from './sprites';
 
 const STYLE = { fontSize: '36px', color: '#ffffff', stroke: '#000000', strokeThickness: 6, fontStyle: 'bold', align: 'center' };
 const BAR_W = 800;
 const BAR_H = 28;
 
-/** Lädt den Figuren-Atlas mit Fortschrittsbalken, bei einem Ladefehler eine Meldung mit Dateinamen; danach Lobby. Zeichnet nur. */
+/** Lädt den Figuren-Atlas und die Gebäude-Grafiken mit Fortschrittsbalken, bei einem Ladefehler eine Meldung mit Dateinamen; danach Lobby. Zeichnet nur. */
 export class LoadScene extends Phaser.Scene {
   private client!: RoomClient;
 
@@ -43,8 +44,10 @@ export class LoadScene extends Phaser.Scene {
     this.load.once('complete', () => {
       if (failed.length > 0) return;
       createSpriteAnims(this);
+      prepareBuildings(this);
       this.scene.start('lobby', { client: this.client });
     });
     preloadSprites(this);
+    preloadBuildings(this);
   }
 }

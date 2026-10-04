@@ -1,11 +1,11 @@
 # GR3 · CLI · Grafik im Renderer
 
-- **Status:** geplant
+- **Status:** aktiv
 - **Domäne:** CLI
 - **Reife:** bereit
 - **Einschiebbar:** ja
 - **Tickets:** B-010
-- **Start-Commit:** –
+- **Start-Commit:** 46aa69b
 - **Spec:** freigegeben
 - **Revision:** 2
 - **Freigabe:** 2026-10-04, Chat (Ralf), Revision 2, durch 🧑; umfasst B-010; nachgeschärft: Lizenz CC0/CC-BY, „zugeordnet“ statt „alle“, Portale/Truhen/Münzen, Stufen erst mit B-112
@@ -59,8 +59,8 @@ keine
 
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
-| GR3.1 | `GR3.1-gebaeude.md` | Umsetzung | autonom | offen |
-| GR3.2 | `GR3.2-ressourcen-parallax.md` | Umsetzung | autonom | offen |
+| GR3.1 | `GR3.1-gebaeude.md` | Umsetzung | autonom | fertig |
+| GR3.2 | `GR3.2-ressourcen-parallax.md` | Umsetzung | autonom | in Arbeit |
 | GR3.3 | `GR3.3-review.md` | Review | autonom | offen |
 
 Bei `Reife: Entwurf` genügen Stichpunkte mit den Kriterien in Klammern statt Session-Dateien. Vor dem Aktivieren
