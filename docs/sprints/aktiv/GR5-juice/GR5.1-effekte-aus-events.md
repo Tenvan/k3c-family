@@ -61,5 +61,5 @@ Umgesetzt: `src/scenes/effects.ts` (reine Zuordnung Event → Effekt, `EFFECT_CO
 - AC-03: `effectFor` liest nur das Ereignis, Test „verändert das Ereignis nicht“; `noSim.test.ts` grün.
 - Unbekannter Typ und unbekannter Spieler: `null`, kein Fehler (Test).
 - `task check` grün (49 Testdateien, 892 Tests).
-- Abweichung: `built` und `playerDown` tragen kein `x`; Behelf im Client (letztes `buildProgress`, Spieler-Snapshot), Ticket B-216.
+- Abweichung: `built` und `playerDown` tragen kein `x`; Behelf im Client (letztes `buildProgress`, Spieler-Snapshot), Ticket B-217.
 - Effekte erscheinen in der Stufe des aktuellen `client.level`; Zuordnung per Ereignis-`stage` entfällt, bis B-176 mehrere Stufen im Client liefert.
