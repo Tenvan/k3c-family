@@ -203,3 +203,14 @@ func TestPlanungsToolsRoundtrip(t *testing.T) {
 		t.Errorf("Ticket gelöscht: %q", text)
 	}
 }
+
+// TestGhStatusOhneGh: Ohne gh antwortet gh_status mit einem Hinweis statt einem Fehler (B-212). Leerer PATH hält den
+// Test vom Netz fern, auch wenn gh installiert und angemeldet ist.
+func TestGhStatusOhneGh(t *testing.T) {
+	t.Setenv("PATH", "")
+	cs := connect(t, New(Config{Version: "test", Root: t.TempDir()}))
+	text, isErr := callText(t, cs, "gh_status", map[string]any{"force": true})
+	if isErr || !strings.HasPrefix(text, "Hinweis: gh nicht gefunden") {
+		t.Errorf("gh_status: %q (Fehler %v)", text, isErr)
+	}
+}

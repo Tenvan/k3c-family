@@ -1,14 +1,15 @@
 import { IconButton, Text } from '@radix-ui/themes';
-import type { PlanSprint, PlanTicket, PlanningData } from '../api';
+import { backend, type GitHubSprint, type PlanSprint, type PlanTicket, type PlanningData } from '../api';
 import { MarkdownView } from '../ui/MarkdownView';
 import { StatusBadge, Tip, type Tone } from '../ui/parts';
-import { findSession, groupTickets, isNext, linkedTickets } from './planning';
+import { findSession, ghBadges, groupTickets, isNext, linkedTickets } from './planning';
 
 const tone = (status: string): Tone =>
   (({ fertig: 'ok', 'in Arbeit': 'info', blockiert: 'error' }) as Record<string, Tone>)[status] ?? 'neutral';
 
 /** Karte eines Sprints: Kopf mit Status, Spec und Worktree, Fortschritt, Sessions (klickbar), Tickets. */
-export function SprintCard({ sprint: s, sel, onSelect }: { sprint: PlanSprint; sel: string; onSelect: (nr: string) => void }) {
+export function SprintCard({ sprint: s, gh, sel, onSelect }:
+  { sprint: PlanSprint; gh?: GitHubSprint; sel: string; onSelect: (nr: string) => void }) {
   const done = s.sessions.filter((x) => x.status === 'fertig').length;
   const next = s.sessions.find(isNext);
   const cls = ['pl-card', s.status === 'aktiv' && 'is-active', s.status === 'erledigt' && 'is-done', s.worktree && 'is-wt'];
@@ -24,6 +25,7 @@ export function SprintCard({ sprint: s, sel, onSelect }: { sprint: PlanSprint; s
         <StatusBadge tone={s.status === 'aktiv' ? 'info' : 'neutral'}>{s.status}</StatusBadge>
         <StatusBadge tone={s.spec === 'freigegeben' ? 'ok' : 'warn'}>Spec: {s.spec || '–'}</StatusBadge>
       </div>
+      {gh && <GitHubRow pr={gh} />}
       {s.sessions.length > 0 && (
         <div className="pl-progress" title={`${done} von ${s.sessions.length} Sessions fertig`}>
           <div style={{ width: `${(done / s.sessions.length) * 100}%` }} />
@@ -41,6 +43,21 @@ export function SprintCard({ sprint: s, sel, onSelect }: { sprint: PlanSprint; s
         ))}
       </ul>
       {s.tickets.length > 0 && <Text size="1" color="gray">Tickets: {s.tickets.join(', ')}</Text>}
+    </div>
+  );
+}
+
+/** PR, CI und Merge-Stand des Sprints (B-212); der PR-Badge öffnet den PR im Browser. */
+function GitHubRow({ pr }: { pr: GitHubSprint }) {
+  const [first, ...rest] = ghBadges(pr);
+  return (
+    <div className="pl-gh">
+      <Tip content={`${pr.title} – auf GitHub öffnen`}>
+        <button type="button" className="pl-link" onClick={() => backend.openUrl(pr.url)}>
+          <StatusBadge tone={first.tone}>{first.label}</StatusBadge>
+        </button>
+      </Tip>
+      {rest.map((b) => <StatusBadge key={b.label} tone={b.tone}>{b.label}</StatusBadge>)}
     </div>
   );
 }

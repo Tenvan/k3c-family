@@ -3,6 +3,7 @@ package main
 import (
 	"time"
 
+	"k3c/tools/k3c-dev/internal/github"
 	"k3c/tools/k3c-dev/internal/planning"
 )
 
@@ -27,4 +28,10 @@ func (a *App) PlanningDocs() []string {
 func (a *App) PlanningDoc(name string) (string, error) {
 	a.wait()
 	return planning.Doc(a.root, name)
+}
+
+// GitHubStatus liefert PR, CI und Merge-Stand je Sprint aus `gh` (Binding, B-212); force umgeht den Zwischenspeicher.
+func (a *App) GitHubStatus(force bool) github.Data {
+	a.wait()
+	return a.gh.Status(a.ctx, force)
 }

@@ -5,6 +5,7 @@ import (
 
 	"github.com/modelcontextprotocol/go-sdk/mcp"
 
+	"k3c/tools/k3c-dev/internal/github"
 	"k3c/tools/k3c-dev/internal/planning"
 )
 
@@ -21,6 +22,10 @@ type planSectionIn struct {
 	ID      string `json:"id" jsonschema:"Ticket B-123, Sprint M8 oder Session M8.1"`
 	Section string `json:"section" jsonschema:"Abschnitt der Vorlage ohne ##, z. B. Ausgangslage, Ergebnis"`
 	Text    string `json:"text" jsonschema:"neuer Inhalt (Markdown, Unterüberschriften ab ###)"`
+}
+
+type ghStatusIn struct {
+	Force bool `json:"force,omitempty" jsonschema:"Zwischenspeicher (60 s) umgehen"`
 }
 
 type planCreateIn struct {
@@ -73,4 +78,13 @@ func registerPlanning(s *Server) {
 		Description: "Löscht einen Sprint-Entwurf in geplant/ oder eine Session darin. Tickets nie: plan_set Status verworfen.",
 		Annotations: &mcp.ToolAnnotations{DestructiveHint: &yes, OpenWorldHint: &closed},
 	}, func(_ context.Context, in planIDIn) (string, error) { return planning.Delete(s.cfg.Root, in.ID) })
+	gh := github.New(s.cfg.Root)
+	add(s, &mcp.Tool{
+		Name: "gh_status",
+		Description: "GitHub-Stand je Sprint über die gh-CLI: PR (offen, Entwurf, gemergt), CI (grün, rot, läuft), " +
+			"Merge-Konflikt, dazu der letzte CI-Lauf auf develop. 60 s zwischengespeichert, force holt neu.",
+		Annotations: readOnly(),
+	}, func(ctx context.Context, in ghStatusIn) (string, error) {
+		return github.Text(gh.Status(ctx, in.Force)), nil
+	})
 }

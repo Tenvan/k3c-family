@@ -1,9 +1,9 @@
 import { Button, Checkbox, Flex, Text, TextField } from '@radix-ui/themes';
 import { useEffect, useState } from 'react';
-import { backend, type PlanningData } from '../api';
+import { backend, type GitHubData, type PlanningData } from '../api';
 import { errorText } from '../lib/errors';
 import { loadText, savePref } from '../lib/prefs';
-import { NoticeCard } from '../ui/parts';
+import { ActionButton, NoticeCard, StatusBadge } from '../ui/parts';
 import { BacklogList, SessionDetail, SprintCard } from './SprintCard';
 import { domains, filterSprints, filterTickets, parseFilter, QUICK, toggle, type PlanFilter } from './planning';
 
@@ -15,6 +15,7 @@ export function SprintsBacklog() {
   const [data, setData] = useState<PlanningData | null>(null);
   const [error, setError] = useState('');
   const [filter, setFilterState] = useState<PlanFilter>(() => parseFilter(loadText(PREF, '{}')));
+  const [gh, reloadGh] = useGitHub();
   const setFilter = (f: PlanFilter) => {
     setFilterState(f);
     savePref(PREF, JSON.stringify(f));
@@ -32,10 +33,11 @@ export function SprintsBacklog() {
   return (
     <div className="pl-board">
       <FilterBar data={data} filter={filter} setFilter={setFilter} hits={sprints.length + tickets.length} />
+      <GitHubBar gh={gh} reload={reloadGh} />
       <div className="pl-grid">
         <section className="pl-col">
           <h2 className="pl-h">Sprints <small>{sprints.length} von {data.sprints.length} · {data.done} erledigt</small></h2>
-          {sprints.map((s) => <SprintCard key={s.id} sprint={s} sel={filter.sel} onSelect={select} />)}
+          {sprints.map((s) => <SprintCard key={s.id} sprint={s} gh={gh?.sprints[s.id.toUpperCase()]} sel={filter.sel} onSelect={select} />)}
           {sprints.length === 0 && <Text color="gray">Kein Sprint passt zum Filter.</Text>}
         </section>
         <section className="pl-col pl-right">
@@ -47,6 +49,36 @@ export function SprintsBacklog() {
         </section>
       </div>
     </div>
+  );
+}
+
+/** GitHub-Stand: beim Öffnen und bei `planning:changed` aus dem Zwischenspeicher, per Knopf frisch. */
+function useGitHub(): [GitHubData | null, () => Promise<void>] {
+  const [gh, setGh] = useState<GitHubData | null>(null);
+  const load = (force: boolean) => backend.githubStatus(force).then(setGh, () => setGh(null));
+  useEffect(() => {
+    void load(false);
+    return backend.on('planning:changed', () => void load(false));
+  }, []);
+  return [gh, () => load(true)];
+}
+
+/** Kopfzeile: letzter CI-Lauf auf develop, Hinweis von gh, Neu laden. */
+function GitHubBar({ gh, reload }: { gh: GitHubData | null; reload: () => Promise<void> }) {
+  const tone = { grün: 'ok', rot: 'error', läuft: 'warn', '–': 'neutral' } as const;
+  return (
+    <Flex className="pl-ghbar" align="center" gap="2" wrap="wrap">
+      <Text size="1" color="gray">GitHub</Text>
+      {gh?.develop && (
+        <button type="button" className="pl-link" onClick={() => backend.openUrl(gh.develop!.url)} title={gh.develop.created}>
+          <StatusBadge tone={tone[gh.develop.ci]}>develop · CI {gh.develop.ci}</StatusBadge>
+        </button>
+      )}
+      {gh?.develop && <Text size="1" color="gray" className="pl-ellipsis">{gh.develop.title}</Text>}
+      {gh?.error && <StatusBadge tone="warn">{gh.error}</StatusBadge>}
+      {gh === null && <Text size="1" color="gray">lädt …</Text>}
+      <ActionButton size="1" variant="ghost" color="gray" className="pl-count" onClick={reload}>Neu laden</ActionButton>
+    </Flex>
   );
 }
 

@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import type { PlanSession, PlanningData } from '../api';
-import { EMPTY_FILTER, domains, filterSprints, filterTickets, findSession, groupTickets, isNext, linkedTickets, parseFilter } from './planning';
+import { EMPTY_FILTER, domains, filterSprints, filterTickets, findSession, ghBadges, groupTickets, isNext, linkedTickets, parseFilter } from './planning';
 
 const s = (nr: string, status: string, agent = 'autonom', titel = ''): PlanSession => ({ nr, typ: 'Umsetzung', agent, status, titel });
 const tk = (nr: string, domain: string, prio: string, status = 'offen', sprint = '–') =>
@@ -57,5 +57,17 @@ describe('Gruppierung und Auswahl', () => {
   it('gemerkter Filter: kaputt oder falsch getypt ergibt die Vorgabe', () => {
     expect(parseFilter('{kaputt')).toEqual(EMPTY_FILTER);
     expect(parseFilter('{"q":1,"doms":["SRV",2],"sel":"M8.2","done":"ja"}')).toEqual({ ...EMPTY_FILTER, doms: ['SRV'], sel: 'M8.2' });
+  });
+});
+
+describe('GitHub-Stand', () => {
+  const pr = { number: 110, title: 'M8', url: 'u' };
+  it('offener PR: PR, CI und Merge mit passendem Ton', () => {
+    expect(ghBadges({ ...pr, state: 'offen', ci: 'rot', merge: 'Konflikt' })).toEqual([
+      { label: '#110 offen', tone: 'info' }, { label: 'CI rot', tone: 'error' }, { label: 'Konflikt', tone: 'error' }]);
+    expect(ghBadges({ ...pr, state: 'Entwurf', ci: 'läuft', merge: 'konfliktfrei' }).map((b) => b.tone)).toEqual(['neutral', 'warn', 'ok']);
+  });
+  it('gemergter PR ohne Checks: nur der PR', () => {
+    expect(ghBadges({ ...pr, state: 'gemergt', ci: '–', merge: '–' })).toEqual([{ label: '#110 gemergt', tone: 'ok' }]);
   });
 });

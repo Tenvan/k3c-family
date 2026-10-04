@@ -326,6 +326,25 @@ export interface PlanningData {
   done: number;
 }
 
+/** GitHub-Stand eines Sprints (Go: github.SprintPR). */
+export interface GitHubSprint {
+  number: number;
+  title: string;
+  url: string;
+  state: 'offen' | 'Entwurf' | 'gemergt' | 'geschlossen';
+  ci: 'grün' | 'rot' | 'läuft' | '–';
+  merge: 'konfliktfrei' | 'Konflikt' | 'unbekannt' | '–';
+}
+
+/** GitHub-Stand der Sprints aus `gh` (Go: github.Data); error ist ein Hinweis (gh fehlt, nicht angemeldet, veraltet). */
+export interface GitHubData {
+  /** Schlüssel: Sprint-ID in Großbuchstaben, aus dem Branch `sprint/<präfix>`. */
+  sprints: Record<string, GitHubSprint>;
+  develop?: { ci: GitHubSprint['ci']; title: string; url: string; created: string };
+  error?: string;
+  fetched?: string;
+}
+
 /** Lesbare Planungs-Dokumente: Plan (docs/plan-weiterentwicklung.md), Fragenkatalog (docs/fragenkatalog.md) und
  *  Glossar (docs/glossar.md, nur wenn vorhanden). */
 export type PlanDoc = 'plan' | 'fragen' | 'glossar';
@@ -382,6 +401,10 @@ export interface Backend {
   planningData(): Promise<PlanningData>;
   /** Vorhandene Planungs-Dokumente in Umschalter-Reihenfolge; das Glossar nur mit Datei. */
   planningDocs(): Promise<PlanDoc[]>;
+  /** PR, CI und Merge-Stand je Sprint; force umgeht den Zwischenspeicher (60 s). */
+  githubStatus(force: boolean): Promise<GitHubData>;
+  /** Öffnet eine Adresse im Standard-Browser (Wails) bzw. in einem neuen Tab (Mock). */
+  openUrl(url: string): void;
   /** Markdown eines Planungs-Dokuments. */
   planningDoc(name: PlanDoc): Promise<string>;
   /** Abonniert ein Ereignis; die Rückgabe meldet wieder ab. */

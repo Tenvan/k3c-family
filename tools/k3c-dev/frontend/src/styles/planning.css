@@ -56,3 +56,10 @@
 .pl-sticky { position: sticky; top: 0; background: var(--card); padding: 8px 0 6px; border-bottom: 1px solid var(--card-line); }
 .pl-md { line-height: 1.5; font-size: 13px; }
 .pl-md h3, .pl-md h4, .pl-md h5 { margin: 1em 0 0.3em; font-size: 14px; color: var(--title); }
+
+/* GitHub-Stand (B-212): Kopfzeile unter dem Filter, Badges auf der Sprint-Karte. */
+.pl-ghbar { padding: 6px 12px; border-bottom: 1px solid var(--card-line); }
+.pl-gh { display: flex; flex-wrap: wrap; gap: 6px; }
+.pl-link { all: unset; cursor: pointer; border-radius: 999px; }
+.pl-link:focus-visible { outline: 2px solid var(--accent-8); }
+.pl-ellipsis { min-width: 0; max-width: 40ch; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }

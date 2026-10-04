@@ -1,5 +1,6 @@
 // Reine Logik der Ansicht „Sprints & Backlog“: Filter, Gruppierung, nächste Session. Kein React, damit Vitest sie prüft.
-import type { PlanSession, PlanSprint, PlanTicket, PlanningData } from '../api';
+import type { GitHubSprint, PlanSession, PlanSprint, PlanTicket, PlanningData } from '../api';
+import type { Tone } from '../ui/parts';
 
 /** Filter und Auswahl; überleben das Neuladen nach `planning:changed` und werden gemerkt (lib/prefs). */
 export interface PlanFilter {
@@ -83,4 +84,15 @@ export function parseFilter(raw: string): PlanFilter {
   } catch {
     return EMPTY_FILTER;
   }
+}
+
+/** Badges des GitHub-Stands auf der Sprint-Karte: PR, dann CI und Merge (nur wenn bekannt bzw. PR offen). */
+export function ghBadges(p: GitHubSprint): { label: string; tone: Tone }[] {
+  const pr: Record<GitHubSprint['state'], Tone> = { offen: 'info', Entwurf: 'neutral', gemergt: 'ok', geschlossen: 'neutral' };
+  const ci: Record<GitHubSprint['ci'], Tone> = { grün: 'ok', rot: 'error', läuft: 'warn', '–': 'neutral' };
+  const merge: Record<GitHubSprint['merge'], Tone> = { konfliktfrei: 'ok', Konflikt: 'error', unbekannt: 'neutral', '–': 'neutral' };
+  const out = [{ label: `#${p.number} ${p.state}`, tone: pr[p.state] }];
+  if (p.ci !== '–') out.push({ label: `CI ${p.ci}`, tone: ci[p.ci] });
+  if (p.merge !== '–') out.push({ label: p.merge, tone: merge[p.merge] });
+  return out;
 }

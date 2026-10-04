@@ -14,6 +14,7 @@ import (
 
 	"k3c/tools/k3c-dev/internal/applog"
 	"k3c/tools/k3c-dev/internal/console"
+	"k3c/tools/k3c-dev/internal/github"
 	"k3c/tools/k3c-dev/internal/mcpsrv"
 	"k3c/tools/k3c-dev/internal/planning"
 	"k3c/tools/k3c-dev/internal/services"
@@ -67,6 +68,7 @@ type App struct {
 	srv        *mcpsrv.Server
 	tasks      taskState
 	taskRunner *taskrun.Runner
+	gh         *github.Client // GitHub-Stand der Planungsseite (B-212)
 
 	mu  sync.Mutex
 	mcp MCPState
@@ -74,7 +76,7 @@ type App struct {
 
 func newApp(root string, port int) *App {
 	return &App{root: root, port: port, emit: runtime.EventsEmit, usage: configPath("mcp-usage.json"),
-		ready: make(chan struct{})}
+		ready: make(chan struct{}), gh: github.New(root)}
 }
 
 // wait blockiert, bis startup fertig ist; danach sind alle Felder gesetzt und werden nicht mehr geschrieben.
