@@ -17,6 +17,7 @@ import { daylight } from './viewRules';
 import { cellStages } from './cellStages';
 import { PLACEHOLDER_BG, StageView, placeholderLayer, showOnly } from './stageView';
 import { clientLog } from '../core/clientLog';
+import { audioCore } from '../audio/audioCore';
 import { loadSettings } from '../core/settings';
 import { EFFECT_CONFIG, SHAKE, effectFor, type BuildSpots } from './effects';
 import { hurtSeat, rumblePad, runEffect, shakeCell } from './effectRules';
@@ -198,6 +199,7 @@ export class GameScene extends Phaser.Scene {
 
   private trackLastDevice(): void {
     const used = (i: PlayerInput) => i.moveX() !== 0 || i.held('confirm');
+    if (this.allInputs().some(used)) void audioCore().onInput(); // erste Eingabe entsperrt den Ton (SO1.2)
     if (this.touch && used(this.touch)) this.lastDevice = 'touch';
     else if (this.pads.some(used)) this.lastDevice = 'pad';
     else if (used(this.keyboard)) this.lastDevice = 'keyboard';
