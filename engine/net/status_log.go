@@ -49,7 +49,7 @@ func (s *server) statusLog(w http.ResponseWriter, r *http.Request) {
 	case errors.Is(err, os.ErrNotExist):
 		fail(w, http.StatusNotFound, "Log aus")
 	case err != nil:
-		s.log.Error("Log nicht lesbar", "ns", "diag", "err", err)
+		s.log.Error("📄 Log nicht lesbar", "ns", "diag", "err", err)
 		fail(w, http.StatusInternalServerError, "Log nicht lesbar")
 	default:
 		writeJSON(w, http.StatusOK, page)

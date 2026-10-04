@@ -111,13 +111,13 @@ func (s *Server) logRun(name string, res runResult) {
 	attrs := []any{"ns", "check", "target", name, "exit", res.exit, "ms", int64(res.ms())}
 	switch {
 	case res.err != nil:
-		s.log.Error("lauf nicht gestartet", append(attrs, "error", res.err.Error())...)
+		s.log.Error("💥 lauf nicht gestartet", append(attrs, "error", res.err.Error())...)
 	case res.timedOut:
-		s.log.Warn("lauf abgebrochen: zeitlimit", attrs...)
+		s.log.Warn("⏳ lauf abgebrochen: zeitlimit", attrs...)
 	case res.exit != 0:
-		s.log.Warn("lauf beendet", attrs...)
+		s.log.Warn("❌ lauf beendet", attrs...)
 	default:
-		s.log.Info("lauf beendet", attrs...)
+		s.log.Info("✅ lauf beendet", attrs...)
 	}
 }
 

@@ -97,11 +97,11 @@ export function installClientLog(): void {
   installed = true;
   window.addEventListener('error', (e) => {
     const where = e.filename ? ` @ ${e.filename}:${e.lineno}:${e.colno}` : '';
-    clientLog('error', `${e.message}${where}`, undefined, e.error instanceof Error ? e.error.stack : undefined);
+    clientLog('error', `💥 ${e.message}${where}`, undefined, e.error instanceof Error ? e.error.stack : undefined);
   });
   window.addEventListener('unhandledrejection', (e) => {
     const reason = e.reason as unknown;
-    clientLog('error', `Promise abgelehnt: ${text(reason)}`, undefined, reason instanceof Error ? reason.stack : undefined);
+    clientLog('error', `💥 Promise abgelehnt: ${text(reason)}`, undefined, reason instanceof Error ? reason.stack : undefined);
   });
   for (const level of ['warn', 'error'] as const) {
     const original = console[level].bind(console);
@@ -112,7 +112,7 @@ export function installClientLog(): void {
   }
   window.addEventListener('pagehide', flush);
   document.addEventListener('visibilitychange', () => document.hidden && flush());
-  clientLog('info', 'Seite geladen', {
+  clientLog('info', '📂 Seite geladen', {
     ua: navigator.userAgent,
     viewport: `${window.innerWidth}x${window.innerHeight}`,
     dpr: window.devicePixelRatio,

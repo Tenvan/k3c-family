@@ -37,7 +37,7 @@ func (r *Room) noteTick(d time.Duration) {
 	if now.Sub(r.slowLogged) < slowEvery {
 		return
 	}
-	r.log().Warn("Tick zu langsam", "ms", float64(d)/float64(time.Millisecond), "budgetMs", float64(slowTick)/float64(time.Millisecond),
+	r.log().Warn("🐢 Tick zu langsam", "ms", float64(d)/float64(time.Millisecond), "budgetMs", float64(slowTick)/float64(time.Millisecond),
 		"seitLetzterMeldung", r.slowCount, "tick", r.tick, "geraete", r.connected(), "faktor", r.scale())
 	r.slowLogged, r.slowCount = now, 0
 }
@@ -50,7 +50,7 @@ func (m *Manager) logStats() {
 		r.mu.Lock()
 		if n := r.connected(); n > 0 {
 			last, p99 := r.tickMs()
-			r.log().Info("Raum-Takt", "tick", r.tick, "geraete", n, "spieler", r.count(Taken), "tickMs", last, "p99Ms", p99)
+			r.log().Info("💓 Raum-Takt", "tick", r.tick, "geraete", n, "spieler", r.count(Taken), "tickMs", last, "p99Ms", p99)
 		}
 		r.mu.Unlock()
 	}
@@ -59,6 +59,6 @@ func (m *Manager) logStats() {
 // logRejected meldet einen abgelehnten Beitritt (Fehler-Code aus docs/protocol.md); ziel ist Spielstand-Name oder Raum-Code.
 func (m *Manager) logRejected(op, id, ziel string, err error) {
 	if err != nil {
-		m.log().Warn("Beitritt abgelehnt", "ns", "room", "op", op, "device", short(id), "ziel", ziel, "code", err.Error())
+		m.log().Warn("🚫 Beitritt abgelehnt", "ns", "room", "op", op, "device", short(id), "ziel", ziel, "code", err.Error())
 	}
 }
