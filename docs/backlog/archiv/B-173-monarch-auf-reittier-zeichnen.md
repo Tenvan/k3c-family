@@ -3,7 +3,7 @@
 - **Domäne:** CLI
 - **Typ:** Idee
 - **Prio:** hoch
-- **Status:** eingeplant
+- **Status:** erledigt
 - **Sprint:** S7
 - **Erstellt:** 2026-10-03
 - **Spec:** freigegeben
@@ -59,3 +59,5 @@ keine: Standard-Reittier ist das braune Pferd `horse` (Workshop F1.4, 2026-10-03
 ## Notizen
 
 Aus Beschluss Q23 (2026-10-03).
+
+Erledigt mit Sprint S7 (2026-10-04): AC-01 (S7.1), AC-03 (S7.2) mit Nachweis; AC-02 und AC-04 angenommen, Validierung offen (S7.3, am Gerät; im Fahrplan unter „Offen am Gerät“). Abweichung: Das Reittier-Sheet liegt als einzelne Spritesheets `sprites/<sheet>/<anim>.png`, nicht im Atlas.

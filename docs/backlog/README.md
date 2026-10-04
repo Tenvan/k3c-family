@@ -72,7 +72,6 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-250](B-250-audiokern-datei-wiedergabe.md) | CLI | Schuld | niedrig | offen | – | Der Audio-Kern spielt ganze Dateien mit Crossfade, die Hörprobe nutzt ihn |
 | [B-251](B-251-figuren-ganzzahlig-skalieren.md) | CLI | Schuld | niedrig | offen | – | Figuren werden ganzzahlig skaliert und flimmern nicht |
 | [B-170](B-170-release-checkliste.md) | INF | Idee | hoch | eingeplant | RL1 | Eine Release-Checkliste macht jeden Release prüfbar |
-| [B-173](B-173-monarch-auf-reittier-zeichnen.md) | CLI | Idee | hoch | eingeplant | S7 | Der Client zeichnet den Monarchen auf dem Standard-Reittier |
 | [B-176](B-176-protokoll-mehrere-stufen.md) | SRV | Idee | hoch | eingeplant | S2 | Das Protokoll liefert Level und Zustand jeder Stufe, in der ein lokaler Spieler steht |
 | [B-181](B-181-latenz-im-debug-overlay.md) | CLI | Idee | mittel | offen | – | Das Debug-Overlay zeigt die Latenz von Eingabe bis Bild |
 | [B-182](B-182-tod-mit-ursache.md) | SIM | Problem | hoch | offen | – | Das Ereignis playerDown nennt, was den Monarchen getötet hat |
@@ -233,6 +232,7 @@ Zeile in diesen Abschnitt.
 | [B-212](archiv/B-212-github-status-planung.md) | SRV | Idee | mittel | erledigt | M8 | k3c-dev zeigt PR, CI und Merge-Konflikte je Sprint aus GitHub |
 | [B-146](archiv/B-146-optionen-pause-szene.md) | CLI | Idee | hoch | erledigt | S5 | Der Client hat eine Optionen- und Pause-Szene mit getrennter Lautstärke und Barrierefreiheit |
 | [B-172](archiv/B-172-sprachauswahl-de-en.md) | CLI | Idee | mittel | erledigt | S5 | Der Client hat Deutsch und Englisch mit Sprachauswahl in den Optionen |
+| [B-173](archiv/B-173-monarch-auf-reittier-zeichnen.md) | CLI | Idee | hoch | erledigt | S7 | Der Client zeichnet den Monarchen auf dem Standard-Reittier |
 | [B-164](archiv/B-164-juice-treffer-screenshake.md) | CLI | Idee | mittel | erledigt | GR5 | Treffer, Münzen und Bauen haben sichtbare Rückmeldung, Screenshake und Blitze sind abschaltbar |
 | [B-216](archiv/B-216-tier-gating-unerreichbar.md) | REG | Frage | hoch | erledigt | S1 | Tier-Gating 5/10/15 je Linie ist mit einem Punkt je Skill unerreichbar |
 | [B-221](archiv/B-221-s12c-erlaubte-dateien-passive.md) | SIM | Frage | hoch | erledigt | S1 | S1.2c braucht für die Passive weitere erlaubte Dateien |
