@@ -1,11 +1,11 @@
 # RL1 · INF · Release-Checkliste
 
-- **Status:** geplant
+- **Status:** aktiv
 - **Domäne:** INF
 - **Reife:** bereit
 - **Einschiebbar:** ja
 - **Tickets:** B-170
-- **Start-Commit:** –
+- **Start-Commit:** 1fa9529
 - **Spec:** freigegeben
 - **Revision:** 1
 - **Freigabe:** 2026-10-04, Chat (Ralf), Revision 1, durch 🧑; umfasst B-170; mit Änderungen aus dem Spec-Review (Q20-Frage gestrichen, B-170 an Q20 angeglichen)
@@ -57,7 +57,7 @@ keine (Release-Rhythmus: Q20, geklärt 2026-10-03)
 
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
-| RL1.1 | `RL1.1-abschnitt-release.md` | Umsetzung | autonom | offen |
+| RL1.1 | `RL1.1-abschnitt-release.md` | Umsetzung | autonom | fertig |
 | RL1.2 | `RL1.2-probelauf.md` | Workshop | Mensch | offen |
 
 Bei `Reife: Entwurf` genügen Stichpunkte mit den Kriterien in Klammern statt Session-Dateien. Vor dem Aktivieren
