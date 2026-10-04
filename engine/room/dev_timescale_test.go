@@ -99,3 +99,24 @@ func TestDevTimescaleZweiSpielerUndLog(t *testing.T) {
 		t.Fatalf("Log ohne Faktor:\n%s", log)
 	}
 }
+
+// B-231: In der Dev-Pause tickt der Raum ohne Schritt (Zustand bleibt, Tick-Zähler läuft); danach rechnet er weiter.
+// pause ohne paused ist bad_request.
+func TestDevPauseHaeltRaumAn(t *testing.T) {
+	r, p := scaledRoom(t)
+	if err := r.Dev("a", p, DevAction{Action: "pause"}); err != ErrBadRequest {
+		t.Fatalf("ohne paused: %v", err)
+	}
+	on, off := true, false
+	ok(t, r.Dev("a", p, DevAction{Action: "pause", Paused: &on}))
+	before := state(t, r)
+	ticks(r, 10)
+	if state(t, r) != before || r.tick != 10 {
+		t.Fatalf("angehalten: Zustand geändert oder Tick %d", r.tick)
+	}
+	ok(t, r.Dev("a", p, DevAction{Action: "pause", Paused: &off}))
+	ticks(r, 1)
+	if state(t, r) == before {
+		t.Fatal("nach der Pause: Zustand unverändert")
+	}
+}
