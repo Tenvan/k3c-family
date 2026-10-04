@@ -12,7 +12,7 @@
 
 ## Ausgangslage
 
-Es gibt keine Events; das GDD nannte nur „Wölfe bei Vollmond“ (`docs/rules/ist-gegner-bosse.md` § 3).
+Es gibt keine Events; das GDD nannte nur „Wölfe bei Vollmond“ (`docs/rules/archiv/ist-gegner-bosse.md` § 3).
 
 ## Ziel
 
