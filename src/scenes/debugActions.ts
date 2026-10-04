@@ -1,6 +1,6 @@
 import type { DevMessage, DevResource } from '../online/clientProtocol';
 
-/** Dev-Aktionen im Debug-Overlay (B-179): nur Daten und Abbildung auf die Nachricht `dev`, keine Spielregel. */
+/** Dev-Aktionen im Cheat-Dialog (B-179, B-231): nur Daten und Abbildung auf die Nachricht `dev`, keine Spielregel. */
 
 export type DevActionGroup = 'gold' | 'material' | 'zeit';
 
@@ -47,5 +47,5 @@ export function devMessage(key: string, slot: number): DevMessage | null {
 /** Dev-Mode des Raums: nur dann steht `devTimescale` im Zustand (docs/protocol.md › Dev-Aktionen). */
 export const roomDevMode = (state: { devTimescale?: number } | null): boolean => state?.devTimescale !== undefined;
 
-/** Die Aktionsliste erscheint nur bei offenem Overlay und im Dev-Mode des Raums. */
-export const actionsVisible = (s: { overlayOn: boolean; devMode: boolean }): boolean => s.overlayOn && s.devMode;
+/** Raum anhalten bzw. weiterlaufen lassen (Cheat-Dialog, B-231). */
+export const pauseMessage = (paused: boolean): DevMessage => ({ t: 'dev', action: 'pause', paused });

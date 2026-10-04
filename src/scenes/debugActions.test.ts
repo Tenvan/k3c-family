@@ -1,5 +1,6 @@
 import { describe, expect, it } from 'vitest';
-import { DEV_ACTIONS, actionsVisible, devMessage, roomDevMode } from './debugActions';
+import devPause from '../../testdata/protocol/c2s-dev-pause.json';
+import { DEV_ACTIONS, devMessage, pauseMessage, roomDevMode } from './debugActions';
 
 describe('devMessage (B-179/AC-01)', () => {
   it('Beispiele aus testdata/protocol/: Gold und Zeitfaktor wörtlich', () => {
@@ -46,12 +47,10 @@ describe('devMessage (B-179/AC-01)', () => {
   });
 });
 
-describe('actionsVisible (B-179/AC-02)', () => {
-  it('nur bei offenem Overlay und Dev-Mode', () => {
-    expect(actionsVisible({ overlayOn: true, devMode: true })).toBe(true);
-    expect(actionsVisible({ overlayOn: true, devMode: false })).toBe(false);
-    expect(actionsVisible({ overlayOn: false, devMode: true })).toBe(false);
-    expect(actionsVisible({ overlayOn: false, devMode: false })).toBe(false);
+describe('roomDevMode und pauseMessage (B-231)', () => {
+  it('pause hält an und lässt weiterlaufen (c2s-dev-pause.json)', () => {
+    expect(pauseMessage(true)).toEqual(devPause);
+    expect(pauseMessage(false)).toEqual({ t: 'dev', action: 'pause', paused: false });
   });
 
   it('Dev-Mode am Feld devTimescale (s2c-snapshot-delta-timescale.json), auch bei Faktor 1', () => {

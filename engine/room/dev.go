@@ -7,13 +7,14 @@ import (
 )
 
 // DevAction ist eine Dev-Aktion eines Geräts (Nachricht dev, B-178): gold und material brauchen slot und amount,
-// material zusätzlich resource, timescale braucht factor.
+// material zusätzlich resource, timescale braucht factor, pause braucht paused (B-231).
 type DevAction struct {
 	Action   string
 	Slot     *int
 	Amount   int
 	Resource string
 	Factor   int
+	Paused   *bool
 }
 
 // devMaxAmount ist die Obergrenze von amount (gold, material).
@@ -62,6 +63,12 @@ func (r *Room) Dev(id string, peer Peer, a DevAction) error {
 		}
 		r.timescale = a.Factor
 		attrs = append(attrs, "faktor", a.Factor)
+	case "pause":
+		if a.Paused == nil {
+			return ErrBadRequest
+		}
+		r.paused = *a.Paused
+		attrs = append(attrs, "angehalten", r.paused)
 	default:
 		return ErrBadRequest
 	}
@@ -76,6 +83,14 @@ func devPlayer(d *device, a DevAction) (int, bool) {
 	}
 	idx, ok := d.slots[*a.Slot]
 	return idx, ok
+}
+
+// steps sind die Simulationsschritte eines Ticks: 0 in der Dev-Pause, sonst scale() (unter Raum-Sperre).
+func (r *Room) steps() int {
+	if r.paused {
+		return 0
+	}
+	return r.scale()
 }
 
 // scale ist der Faktor des Zeitraffers, mindestens 1 (unter Raum-Sperre).

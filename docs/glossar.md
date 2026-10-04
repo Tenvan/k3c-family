@@ -28,6 +28,7 @@ Regelwerk in [`rules/`](rules/), und das Glossar wird angepasst. Zahlen sind, wo
 | Burg | Hub-Kern in der Hub-Mitte und Basislager; Zahlziel des Hub-Ausbaus, Ort für Respawn und Respec. Fällt sie, wirkt der Niederlage-Modus. | `rules/materialien-gebaeude.md` §§ 2–3, `rules/stufen.md` § 4 |
 | Bürger | Alle Figuren des Hubs, die kein Spieler steuert: Landstreicher, Bauer, Berufe, Kämpfer (Truppen), Händler. Kein Level, keine Skills. Regeltexte sagen „Bürger“, wo alle Figuren gemeint sind. | `rules/buerger.md`, Q63 |
 | Camp | Rekrutierungs-Camp in der Welt mit höchstens 2 Landstreichern (Nachwuchs 25 s); darf innerhalb der Mauerlinien liegen. | `rules/wirtschaft.md` § 1, Q57 |
+| Cheat-Dialog | Modaler Dialog im Spiel mit den wichtigsten Dev-Aktionen für Tester; hält den Raum an, solange er offen ist. Aufruf: Ä, LB + RB 3 s, Doppeltap mit zwei Fingern. | B-231 |
 | Chunk | Abschnitt eines Levels, 50 Units breit; der Generator reiht Chunks links und rechts vom Hub nach `chunkWeights`. | `game-design.md` › Prozedurale Generierung |
 | Couch-Koop | Mehrere Spieler an einem Gerät mit eigener Eingabe und Split-Screen; mit Online-Spielern im selben Raum mischbar. | `game-design.md` › Koop |
 | Couch-Raum | Raum, in dem alle Spieler an einem Gerät sitzen; dort hält die Pause den ganzen Raum an. | `rules/bedienung.md` § 1, Q01 |
@@ -36,7 +37,9 @@ Regelwerk in [`rules/`](rules/), und das Glossar wird angepasst. Zahlen sind, wo
 | Delta | Nachricht `delta`: nur die Änderungen zum vorigen Tick; Gegenstück zum vollen `snap`. | `protocol.md` › Nachrichten |
 | Determinismus | Gleicher Seed und gleiche Eingaben ergeben dasselbe Ergebnis. Zufall nur über `engine/rng` (`rng.New(seed)`), nie `math/rand` oder `Math.random()`. | `CLAUDE.md` › Regeln |
 | Dev-Mode | Entwicklungsmodus des Servers (`K3C_DEV`): erlaubt den Grad Dev, das Debug-Panel und Dev-Aktionen. | `rules/wirtschaft.md` § 4, `protocol.md` |
+| Diagnose | Debug-Anzeige oben links (Raum, Takt, Snapshot, FPS, Version), nur lesend. Aufruf: Ö, RB 3 s, Doppeltap mit einem Finger. | B-093, B-231 |
 | Domäne | Fachbereich, dem ein Sprint genau zugeordnet ist und dessen Dateien er ändert: REG (Regelwerk), SIM (Spiel-Logik Go), SRV (Server), CLI (Client), PLAT (Plattform), INF (Tooling, Arbeitsweise). | `arbeitsweise.md` › Domänen |
+| Dungeon-Master-Seite | Responsive Seite unter `/dm` für Handy und Tablet mit Live-Anpassungen und Diagnose laufender Räume (geplant). | B-232 |
 | Ebene | Spätere Variante: mehrere Inseln je Schwierigkeits-Ebene in freier Reihenfolge, die nächste Ebene öffnet nach k besiegten Inseln. Nicht der Schwierigkeitsgrad. | `rules/stufen.md` § 1 |
 | Einschiebbar | Sprint-Feld: `ja` heißt, der Sprint zählt nicht gegen „höchstens ein aktiver Sprint je Domäne“. | `arbeitsweise.md` › Sprint-Lebenslauf, B-174 |
 | Einzelwechsel | Ein Spieler wechselt allein die Stufe (2 s am Tiefen-Eingang oder an einer Treppe); es gibt keine gemeinsame Reise zwischen Stufen. | `rules/stufen.md` § 1 |

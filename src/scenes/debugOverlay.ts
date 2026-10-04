@@ -23,6 +23,8 @@ export type DebugWorld = {
   players: unknown[];
   /** Zeitraffer des Raums, nur im Dev-Mode im Zustand (docs/protocol.md › Dev-Aktionen) */
   devTimescale?: number;
+  /** Dev-Pause des Raums (Cheat-Dialog, B-231) */
+  devPaused?: boolean;
 };
 
 export interface DebugInput {
@@ -76,7 +78,7 @@ export function debugLines(i: DebugInput): string[] {
   lines.push(`letzter Snapshot ${num(age)} ms`);
   if (world) {
     lines.push(`Tag ${world.cycle.day} · ${world.enemies.length} Gegner · ${world.troops.length} Truppen · ${world.players.length} Spieler`);
-    if (world.devTimescale !== undefined) lines.push(`Zeit ${world.devTimescale}×`);
+    if (world.devTimescale !== undefined) lines.push(world.devPaused ? 'Raum angehalten' : `Zeit ${world.devTimescale}×`);
   }
   if (c.errorCode === 'forbidden') lines.push(`Dev abgelehnt: ${c.notice ?? ''}`);
   lines.push(`${num(i.fps)} FPS`);

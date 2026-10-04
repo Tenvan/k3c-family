@@ -68,6 +68,7 @@ type inMsg struct {
 	Amount   int       `json:"amount"`   // dev: gold, material
 	Resource string    `json:"resource"` // dev: material
 	Factor   int       `json:"factor"`   // dev: timescale
+	Paused   *bool     `json:"paused"`   // dev: pause
 }
 
 type inInput struct {
@@ -135,8 +136,8 @@ type stateMsg struct {
 
 // stateOf ist der Zustand für `snap`: die Welt ohne seed, biome, level, rng, widthUnits, mit events und depth. Das Feld
 // `free` der Spieler (B-059) fällt weg, der Zustand der Monarchen steht in `seats`. timescale > 0 (nur Dev-Mode) steht
-// als `devTimescale` darin.
-func stateOf(w *sim.World, timescale int) map[string]any {
+// als `devTimescale` darin, daneben die Dev-Pause als `devPaused` (B-231).
+func stateOf(w *sim.World, timescale int, paused bool) map[string]any {
 	raw, _ := json.Marshal(w)
 	var s map[string]any
 	_ = json.Unmarshal(raw, &s)
@@ -148,6 +149,7 @@ func stateOf(w *sim.World, timescale int) map[string]any {
 	s["depth"] = w.Biome.Depth
 	if timescale > 0 {
 		s["devTimescale"] = timescale
+		s["devPaused"] = paused // immer mitsenden: das Delta kennt kein Entfernen von Feldern
 	}
 	return s
 }
