@@ -117,6 +117,7 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-274](B-274-testrestore-flackert-windows.md) | SRV | Problem | mittel | offen | – | TestRestore läuft unter Windows auch in task check:all stabil grün |
 | [B-276](B-276-tick-budget-async.md) | SRV | Problem | hoch | eingeplant | N1 | Der Raum-Tick bleibt im Budget, Kodierung und Speichern laufen außerhalb der Raum-Sperre |
 | [B-277](B-277-zeitleiste-vorhersage.md) | CLI | Problem | hoch | eingeplant | N2 | Der Client zeichnet trotz schwankender Zustände flüssig und wartet bei der eigenen Laufbewegung nicht auf den Server |
+| [B-278](B-278-protokoll-langsame-geraete.md) | SRV | Schuld | mittel | offen | – | docs/protocol.md beschreibt, wie der Server langsame Geräte behandelt |
 
 ## Archiv
 

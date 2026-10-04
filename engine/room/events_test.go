@@ -12,9 +12,9 @@ type eventPeer struct {
 	events [][]sim.Event
 }
 
-func (p *eventPeer) State(tick int, w *sim.World, scale int, paused bool) {
-	p.peer.State(tick, w, scale, paused)
-	p.events = append(p.events, append([]sim.Event(nil), w.Events...))
+func (p *eventPeer) State(tick int, s any) {
+	p.peer.State(tick, s)
+	p.events = append(p.events, append([]sim.Event(nil), s.(*sim.World).Events...))
 }
 
 // count zählt die Ereignisse vom Typ typ im letzten Zustand und liefert das letzte davon.

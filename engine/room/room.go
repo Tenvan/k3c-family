@@ -56,11 +56,12 @@ type Seat struct {
 type Options struct{ Grade, Goal, Defeat string }
 
 // Peer ist die Verbindung eines Geräts. Der Raum ruft die Methoden unter seiner Sperre auf: Sie dürfen nicht blockieren
-// und nicht in den Raum oder Manager zurückrufen. State muss w sofort lesen, w gehört danach wieder dem Raum.
+// und nicht in den Raum oder Manager zurückrufen. State bekommt den Zustand aus Manager.Snapshot; Geräte derselben
+// Stufe teilen ihn, er ist unveränderlich.
 type Peer interface {
 	Joined(room, name string, you []Seat)
 	Level(depth int, layout level.Layout)
-	State(tick int, w *sim.World, timescale int, paused bool) // timescale > 0: Feld devTimescale, dazu devPaused (nur Dev-Mode)
+	State(tick int, state any)
 	Seats(you []Seat, monarchs []string)
 	Replaced()         // dieselbe Geräte-ID ist über eine neue Verbindung beigetreten
 	Closed(final bool) // Raum geschlossen; final: Server fährt herunter, die Verbindung endet danach
@@ -167,7 +168,7 @@ func (r *Room) join(id string, peer Peer, slots []int) error {
 	r.syncFree()
 	r.log().Info("👑 Gerät im Raum", "device", short(id), "slots", slots, "wiederverbunden", old != nil, "geraete", r.connected())
 	peer.Joined(r.Code, r.Name, r.seats(d))
-	r.pushState(d)
+	r.pushState(d, nil)
 	r.broadcastSeats()
 	return nil
 }

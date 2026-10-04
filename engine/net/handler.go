@@ -12,6 +12,7 @@ import (
 	"time"
 
 	"k3c/engine/room"
+	"k3c/engine/sim"
 	"k3c/engine/store"
 )
 
@@ -71,6 +72,7 @@ func NewHandler(cfg Config) http.Handler {
 	mux.HandleFunc("/api/clientlog", s.clientLog)
 	if cfg.Rooms != nil {
 		cfg.Rooms.Changed = s.broadcastRooms
+		cfg.Rooms.Snapshot = func(w *sim.World, timescale int, paused bool) any { return stateOf(w, timescale, paused) }
 		mux.HandleFunc("/ws", s.websocket)
 	}
 	mux.HandleFunc("/", s.static)

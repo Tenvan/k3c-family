@@ -194,8 +194,9 @@ func (r *Room) Tick() bool {
 	}
 	r.tick++
 	travelled := false
+	states := map[int]any{} // ein Zustand je Stufe, alle Geräte der Stufe teilen ihn (B-276)
 	for _, d := range r.devices {
-		if d.connected && r.pushState(d) {
+		if d.connected && r.pushState(d, states) {
 			travelled = true
 		}
 	}

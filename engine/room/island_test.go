@@ -155,3 +155,28 @@ func TestStatusZeigtStufen(t *testing.T) {
 		t.Fatalf("Summary.Stages: %s", got)
 	}
 }
+
+// N1/AC-01 (B-276/AC-01): Zwei Geräte auf derselben Stufe teilen einen Zustand je Tick; auf zwei Stufen sind es zwei.
+func TestEinZustandJeStufeUndTick(t *testing.T) {
+	f := newFixture()
+	built := 0
+	f.m.Snapshot = func(w *sim.World, _ int, _ bool) any { built++; return w }
+	x, h := &peer{}, &peer{}
+	r := need(f.m.Create("xbox", x, "geteilt", true, 0, []int{0}, Options{}))(t)
+	need(f.m.Join("handy", h, r.Code, []int{0}))(t)
+	built = 0
+	ticks(r, 1)
+	if built != 1 || x.world != h.world {
+		t.Fatalf("eine Stufe, 2 Geräte: %d Zustände je Tick, geteilt %v", built, x.world == h.world)
+	}
+	moveToExit(t, r, 0)
+	ticks(r, 70)
+	if r.isl.StageOf(0) == r.isl.StageOf(1) {
+		t.Fatal("Stufenwechsel nicht erreicht")
+	}
+	built = 0
+	ticks(r, 1)
+	if built != 2 {
+		t.Fatalf("zwei Stufen: %d Zustände je Tick", built)
+	}
+}

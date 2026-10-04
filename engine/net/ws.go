@@ -3,6 +3,7 @@ package net
 import (
 	"context"
 	"encoding/json"
+	"maps"
 	"net/http"
 	"strconv"
 	"sync"
@@ -13,36 +14,45 @@ import (
 
 	"k3c/engine/level"
 	"k3c/engine/room"
-	"k3c/engine/sim"
 )
 
 // WebSocket /ws nach Protokoll v4. Jede Verbindung hat eine Lese-Schleife (diese Goroutine) und eine
-// Schreib-Goroutine mit gepuffertem Kanal. Ist der Puffer voll, wird die Verbindung geschlossen, das zählt als Abbruch.
+// Schreib-Goroutine mit Warteschlange. Ein Zustand ersetzt einen noch wartenden direkt vor ihm (nur der neueste zählt,
+// B-276); Delta und JSON des Zustands baut erst die Schreib-Goroutine. Ist die Warteschlange voll, wird die
+// Verbindung geschlossen, das zählt als Abbruch.
 
 const (
 	sendBuffer   = 64
 	maxMsgBytes  = 16 << 10
 	maxDeviceLen = 64
 	helloTimeout = 10 * time.Second
+	maxEvents    = 256 // Ereignisse verworfener Zustände, die mit dem neuesten nachgeliefert werden
 )
 
-// out ist eine Nachricht im Sendekanal; mit close statt data schließt die Schreib-Goroutine die Verbindung.
+// out ist eine Nachricht in der Warteschlange: fertige Bytes (data), ein Zustand (state) oder mit close das Schließen.
 type out struct {
 	data   []byte
+	level  bool           // Level: der nächste Zustand ist ein snap
+	state  map[string]any // aus stateOf, unveränderlich und mit den anderen Geräten der Stufe geteilt
+	tick   int
+	events []any // nicht nil: Ereignisse verworfener Zustände samt denen von state
 	close  websocket.StatusCode
 	reason string
 }
 
 // conn ist ein Gerät; es setzt room.Peer um. Die Peer-Methoden laufen unter der Sperre des Raums und schreiben nur
-// in den Sendekanal.
+// in die Warteschlange.
 type conn struct {
 	s      *server
 	ws     *websocket.Conn
 	device string
-	send   chan out
 	cancel context.CancelFunc
-	seq    atomic.Int64 // höchstes verrechnetes seq dieser Verbindung (ack)
-	prev   map[string]any // zuletzt gesendeter Zustand; nil = nächster Zustand ist ein snap (nur unter Raum-Sperre)
+	seq    atomic.Int64   // höchstes verrechnetes seq dieser Verbindung (ack)
+	prev   map[string]any // zuletzt gesendeter Zustand; nil = nächster Zustand ist ein snap (nur Schreib-Goroutine)
+
+	qmu   sync.Mutex
+	queue []out
+	wake  chan struct{} // Länge 1: weckt die Schreib-Goroutine
 
 	mu     sync.Mutex
 	room   *room.Room
@@ -55,12 +65,58 @@ func (c *conn) enqueue(v any) {
 		c.s.log.Error("💥 Nachricht nicht kodierbar", "err", err)
 		return
 	}
-	select {
-	case c.send <- out{data: b}:
-	default:
+	c.push(out{data: b})
+}
+
+// push stellt o hinten an; ein Zustand ersetzt einen wartenden Zustand direkt davor und übernimmt dessen Ereignisse.
+func (c *conn) push(o out) {
+	c.qmu.Lock()
+	n := len(c.queue)
+	switch {
+	case o.state != nil && n > 0 && c.queue[n-1].state != nil:
+		o.events = mergeEvents(c.queue[n-1], o.state)
+		c.queue[n-1] = o
+	case n >= sendBuffer:
+		c.qmu.Unlock()
 		c.s.log.Warn("🐢 Sendepuffer voll, Verbindung zu", "device", c.device)
 		c.cancel()
+		return
+	default:
+		c.queue = append(c.queue, o)
 	}
+	c.qmu.Unlock()
+	select {
+	case c.wake <- struct{}{}:
+	default:
+	}
+}
+
+// pop nimmt die vorderste Nachricht; false: Warteschlange leer.
+func (c *conn) pop() (out, bool) {
+	c.qmu.Lock()
+	defer c.qmu.Unlock()
+	if len(c.queue) == 0 {
+		return out{}, false
+	}
+	o := c.queue[0]
+	c.queue[0] = out{}
+	c.queue = c.queue[1:]
+	return o, true
+}
+
+// mergeEvents sind die Ereignisse des verworfenen Zustands old und des neuen cur, höchstens maxEvents (die neuesten);
+// nil, wenn old keine hatte.
+func mergeEvents(old out, cur map[string]any) []any {
+	prev := old.events
+	if prev == nil {
+		prev, _ = old.state["events"].([]any)
+	}
+	if len(prev) == 0 {
+		return nil
+	}
+	now, _ := cur["events"].([]any)
+	all := append(append(make([]any, 0, len(prev)+len(now)), prev...), now...)
+	return all[max(0, len(all)-maxEvents):]
 }
 
 func (c *conn) Joined(code, name string, you []room.Seat) {
@@ -72,19 +128,39 @@ func (c *conn) Joined(code, name string, you []room.Seat) {
 
 // Level: nach dem Level kommt immer ein voller Zustand (Beitreten, Wiederverbinden, Stufenwechsel).
 func (c *conn) Level(depth int, layout level.Layout) {
-	c.prev = nil
-	c.enqueue(levelMsg{"level", depth, layout})
+	b, err := json.Marshal(levelMsg{"level", depth, layout})
+	if err != nil {
+		c.s.log.Error("💥 Nachricht nicht kodierbar", "err", err)
+		return
+	}
+	c.push(out{data: b, level: true})
 }
 
-// State schickt snap nach Level, sonst delta zum zuletzt gesendeten Zustand.
-func (c *conn) State(tick int, w *sim.World, timescale int, paused bool) {
-	s := stateOf(w, timescale, paused)
-	msg := stateMsg{"snap", tick, c.seq.Load(), s}
-	if c.prev != nil {
-		msg.T, msg.S = "delta", deltaOf(c.prev, s)
+// State stellt den Zustand (aus stateOf über room.Manager.Snapshot) in die Warteschlange; snap oder delta entscheidet
+// die Schreib-Goroutine (stateData).
+func (c *conn) State(tick int, state any) {
+	if s, ok := state.(map[string]any); ok {
+		c.push(out{state: s, tick: tick})
 	}
-	c.prev = s
-	c.enqueue(msg)
+}
+
+// stateData kodiert einen Zustand: snap nach Level, sonst delta zum zuletzt gesendeten; ack ist das seq beim Senden.
+func (c *conn) stateData(o out) []byte {
+	msg := stateMsg{"snap", o.tick, c.seq.Load(), o.state}
+	if c.prev != nil {
+		msg.T, msg.S = "delta", deltaOf(c.prev, o.state)
+	} else if len(o.events) > 0 {
+		msg.S = maps.Clone(o.state) // geteilt: nicht ändern
+	}
+	if len(o.events) > 0 {
+		msg.S["events"] = o.events
+	}
+	c.prev = o.state
+	b, err := json.Marshal(msg)
+	if err != nil {
+		c.s.log.Error("💥 Zustand nicht kodierbar", "err", err)
+	}
+	return b
 }
 
 func (c *conn) Seats(you []room.Seat, monarchs []string) {
@@ -100,11 +176,7 @@ func (c *conn) Replaced() {
 
 // closeAfterSend schließt die Verbindung, sobald alles davor gesendet ist.
 func (c *conn) closeAfterSend(code websocket.StatusCode, reason string) {
-	select {
-	case c.send <- out{close: code, reason: reason}:
-	default:
-		c.cancel() // Puffer voll: sofort schließen
-	}
+	c.push(out{close: code, reason: reason}) // Warteschlange voll: sofort zu
 }
 
 // Closed: Raum abgestürzt oder Server fährt herunter; das Gerät ist danach in keinem Raum. Beim Herunterfahren
@@ -140,18 +212,33 @@ func (c *conn) writer(ctx context.Context) {
 		select {
 		case <-ctx.Done():
 			return
-		case o := <-c.send:
-			if o.data == nil {
-				_ = c.ws.Close(o.close, o.reason)
-				c.cancel()
-				return
-			}
-			if err := c.ws.Write(ctx, websocket.MessageText, o.data); err != nil {
+		case <-c.wake:
+		}
+		for o, ok := c.pop(); ok; o, ok = c.pop() {
+			if !c.write(ctx, o) {
 				c.cancel()
 				return
 			}
 		}
 	}
+}
+
+// write sendet eine Nachricht; false: Die Verbindung ist zu.
+func (c *conn) write(ctx context.Context, o out) bool {
+	if o.close != 0 {
+		_ = c.ws.Close(o.close, o.reason)
+		return false
+	}
+	data := o.data
+	if o.state != nil {
+		if data = c.stateData(o); data == nil {
+			return true
+		}
+	}
+	if o.level {
+		c.prev = nil
+	}
+	return c.ws.Write(ctx, websocket.MessageText, data) == nil
 }
 
 // websocket ist GET /ws.
@@ -175,7 +262,7 @@ func (s *server) websocket(w http.ResponseWriter, r *http.Request) {
 		_ = ws.Close(websocket.StatusPolicyViolation, codeVersion)
 		return
 	}
-	c := &conn{s: s, ws: ws, device: device, send: make(chan out, sendBuffer), cancel: cancel}
+	c := &conn{s: s, ws: ws, device: device, wake: make(chan struct{}, 1), cancel: cancel}
 	go c.writer(ctx)
 	c.enqueue(welcome())
 	s.track(c, true)
