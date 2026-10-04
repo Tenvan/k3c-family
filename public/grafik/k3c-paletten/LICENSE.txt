@@ -1,0 +1,9 @@
+K3C-Paletten: Farbvarianten bestehender Grafiken (GR2.3, B-162). Nur die Farben sind getauscht, die Pixel sind unveraendert (Q13: Nachbearbeitung nur Skalieren und Palette).
+Lizenz der Ableitungen: CC0 1.0 Universal, Public Domain. https://creativecommons.org/publicdomain/zero/1.0/
+
+Abgeleitet von (beide CC0 1.0, Luis Zuno / ansimuz):
+- GothicVania Town, https://opengameart.org/content/gothicvania-town
+  tileset-einzeln/wall.png, wall-b.png -> tileset-einzeln/wall-*-kupfer|eisen|kristall.png
+- SunnyLand Fort of Illusion, https://opengameart.org/node/140912
+  ebenen/front.png -> props/tower-kupfer|eisen|kristall.png und props/tower-stein.png (an GothicVania Town angeglichen)
+  ebenen/tileset.png, props/banner.png, props/door.png, props/closed-door.png -> ebenen/fort-tileset.png, props/fort-*.png (an GothicVania Town angeglichen)

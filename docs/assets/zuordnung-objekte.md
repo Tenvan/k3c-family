@@ -15,16 +15,16 @@ Skalierung ×2 bis ×3, Nachbearbeitung nur Skalieren und Palette.
 
 | Objekt | Herkunft | Pack | Datei/Frame | Stil (Raster, Palette, Skalierung) | Lizenz | Status |
 |---|---|---|---|---|---|---|
-| `castle` | `data/buildings.json` | `grafik/sunnyland-fort-of-illusion` | `ebenen/tileset.png` (Burgmauer mit Zinnen), `props/banner.png` | 16 px, SunnyLand-Fort (Blaugrau), ×2; Vermerk: Palette an gothicvania-town angleichen, Entscheidung 🧑 GR1.1 | CC0 1.0 | zugeordnet |
+| `castle` | `data/buildings.json` | `grafik/k3c-paletten` | `ebenen/fort-tileset.png` (Burgmauer mit Zinnen), `props/fort-banner.png`; abgeleitet von `sunnyland-fort-of-illusion` `ebenen/tileset.png`, `props/banner.png` | 16 px, Gothicvania (Dunkelviolett), ×2; Vermerk: Palette angeglichen (GR2.3, `grafik/k3c-paletten`) | CC0 1.0 | zugeordnet |
 | `wall` | `data/buildings.json` | `grafik/gothicvania-town` | `tileset-einzeln/wall.png`, `tileset-einzeln/wall-b.png` (16×16) | 16 px, Gothicvania (Dunkelviolett), ×2; Vermerk: zeigt Stufe 2 (Stein), Stufen siehe zuordnung-welt.md (`wall:1`/`tower:1` Lücke) | CC0 1.0 | zugeordnet |
-| `tower` | `data/buildings.json` | `grafik/sunnyland-fort-of-illusion` | `ebenen/front.png` (Turm mit Kegeldach, 112×128) | 16 px, SunnyLand-Fort (Blaugrau), ×2; Vermerk: Palette an gothicvania-town angleichen, Entscheidung 🧑 GR1.1; Vermerk: zeigt Stufe 2 (Stein), Stufen siehe zuordnung-welt.md (`wall:1`/`tower:1` Lücke) | CC0 1.0 | zugeordnet |
-| `gate` | `data/buildings.json` | `grafik/sunnyland-fort-of-illusion` | `props/door.png` (offen), `props/closed-door.png` (zu), je 96×80 | 16 px, SunnyLand-Fort (Blaugrau), ×2; Vermerk: Palette an gothicvania-town angleichen, Entscheidung 🧑 GR1.1 | CC0 1.0 | zugeordnet |
-| `workshop` | `data/buildings.json` | – | – | Ziel: 16/32 px, Gothicvania, ×2–×3 (Q13) | Ziel: CC0 oder CC-BY | **Lücke: keine Grafik, B-162** |
+| `tower` | `data/buildings.json` | `grafik/k3c-paletten` | `props/tower-stein.png` (Turm mit Kegeldach, 112×128); abgeleitet von `sunnyland-fort-of-illusion` `ebenen/front.png` | 16 px, Gothicvania (Dunkelviolett), ×2; Vermerk: Palette angeglichen (GR2.3, `grafik/k3c-paletten`); Vermerk: zeigt Stufe 2 (Stein), Stufen siehe zuordnung-welt.md | CC0 1.0 | zugeordnet |
+| `gate` | `data/buildings.json` | `grafik/k3c-paletten` | `props/fort-door.png` (offen), `props/fort-closed-door.png` (zu), je 96×80; abgeleitet von `sunnyland-fort-of-illusion` `props/door.png`, `props/closed-door.png` | 16 px, Gothicvania (Dunkelviolett), ×2; Vermerk: Palette angeglichen (GR2.3, `grafik/k3c-paletten`) | CC0 1.0 | zugeordnet |
+| `workshop` | `data/buildings.json` | `grafik/gothicvania-town` | `props-einzeln/house-b.png` | 16 px, Gothicvania (Dunkelviolett), ×2; Entscheidung 🧑 GR2.2 | CC0 1.0 | zugeordnet |
 | `storage` | `data/buildings.json` | `grafik/gothicvania-town` | `props-einzeln/crate-stack.png` (73×68) | 16 px, Gothicvania (Dunkelviolett), ×2 | CC0 1.0 | zugeordnet |
-| `farm` | `data/buildings.json` | – | – | Ziel: 16/32 px, Gothicvania, ×2–×3 (Q13) | Ziel: CC0 oder CC-BY | **Lücke: keine Grafik, B-162** |
-| `barracks` | `data/buildings.json` | – | – | Ziel: 16/32 px, Gothicvania, ×2–×3 (Q13) | Ziel: CC0 oder CC-BY | **Lücke: keine Grafik, B-162** |
-| `stairsUp` | `data/buildings.json` | – | – | Ziel: 16/32 px, Gothicvania, ×2–×3 (Q13) | Ziel: CC0 oder CC-BY | **Lücke: keine Grafik, B-162** |
-| `stairsDown` | `data/buildings.json` | – | – | Ziel: 16/32 px, Gothicvania, ×2–×3 (Q13) | Ziel: CC0 oder CC-BY | **Lücke: keine Grafik, B-162** |
+| `farm` | `data/buildings.json` | `grafik/gothicvania-town` | `props-einzeln/house-a.png` | 16 px, Gothicvania (Dunkelviolett), ×2; Entscheidung 🧑 GR2.2 | CC0 1.0 | zugeordnet |
+| `barracks` | `data/buildings.json` | `grafik/gothicvania-town` | `props-einzeln/house-c.png` | 16 px, Gothicvania (Dunkelviolett), ×2; Entscheidung 🧑 GR2.2 | CC0 1.0 | zugeordnet |
+| `stairsUp` | `data/buildings.json` | `grafik/gothicvania-town` | `tileset-einzeln/stairs*.png` (Treppen-Kacheln 16×32, 13 Dateien) | 16 px, Gothicvania (Dunkelviolett), ×2; Entscheidung 🧑 GR2.2 | CC0 1.0 | zugeordnet |
+| `stairsDown` | `data/buildings.json` | `grafik/phantasy-dungeon-entrance` | `ebenen/dungeon-door.png` (Ausschnitt Verlies-Eingang aus 368×208), Variante `ebenen/dungeon-door-skull.png` | 16 px, ansimuz (Braun), ×2; Vermerk: Palette weicht ab; Entscheidung 🧑 GR2.2 | CC0 1.0 | zugeordnet |
 
 ## Gegner
 
