@@ -3,7 +3,7 @@
 - **Domäne:** SIM
 - **Typ:** Frage
 - **Prio:** hoch
-- **Status:** offen
+- **Status:** erledigt
 - **Sprint:** S1
 - **Erstellt:** 2026-10-04
 - **Spec:** Entwurf
@@ -71,3 +71,5 @@ gezielt aus `Player.Skills` entfernen? Frost Armor über `enemies.go` oder über
 ## Notizen
 
 Gefunden beim Start von S1.2c (Sprint S1); Umsetzung nicht begonnen, damit `sprint/s1` grün bleibt.
+
+**Ergebnis (2026-10-04):** 🧑 hat im Chat entschieden: Erlaubte Dateien von S1.2c erweitert um die Skill-Testdateien aus S1.2a/S1.2b (Erwartungen an die Passiven anpassen, nicht abschwächen), `engine/sim/skills_tank.go` (B-220 gleich mit erledigen) und `engine/sim/enemies.go` (nur der Frost-Armor-Aufruf in `attack`). Kein Kriterium ändert sich. AC-01 umgesetzt in `S1.2c-passive.md` › Erlaubte Dateien.

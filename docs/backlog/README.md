@@ -112,8 +112,7 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-217](B-217-ereignisse-built-playerdown-ort.md) | SIM | Schuld | niedrig | offen | – | Die Ereignisse `built` und `playerDown` tragen ihren Ort |
 | [B-213](B-213-markdown-listen-haekchen.md) | SRV | Problem | niedrig | offen | – | MarkdownView in k3c-dev zeigt nummerierte Listen und Häkchen wie die alte Planungsseite |
 | [B-219](B-219-doku-gating-und-schlag.md) | REG | Schuld | niedrig | offen | – | Game-Design und Ereignis-Doku nennen Tier-Gating 2/4/6 und den Schlag des Monarchen |
-| [B-220](B-220-schild-ersetzt-nur-groesseren.md) | SIM | Problem | niedrig | offen | – | Ein neuer Schild ersetzt den laufenden nur, wenn er größer ist |
-| [B-221](B-221-s12c-erlaubte-dateien-passive.md) | SIM | Frage | hoch | offen | S1 | S1.2c braucht für die Passive weitere erlaubte Dateien |
+| [B-220](B-220-schild-ersetzt-nur-groesseren.md) | SIM | Problem | niedrig | eingeplant | S1 | Ein neuer Schild ersetzt den laufenden nur, wenn er größer ist |
 
 ## Archiv
 
@@ -238,3 +237,4 @@ Zeile in diesen Abschnitt.
 | [B-172](archiv/B-172-sprachauswahl-de-en.md) | CLI | Idee | mittel | erledigt | S5 | Der Client hat Deutsch und Englisch mit Sprachauswahl in den Optionen |
 | [B-164](archiv/B-164-juice-treffer-screenshake.md) | CLI | Idee | mittel | erledigt | GR5 | Treffer, Münzen und Bauen haben sichtbare Rückmeldung, Screenshake und Blitze sind abschaltbar |
 | [B-216](archiv/B-216-tier-gating-unerreichbar.md) | REG | Frage | hoch | erledigt | S1 | Tier-Gating 5/10/15 je Linie ist mit einem Punkt je Skill unerreichbar |
+| [B-221](archiv/B-221-s12c-erlaubte-dateien-passive.md) | SIM | Frage | hoch | erledigt | S1 | S1.2c braucht für die Passive weitere erlaubte Dateien |
