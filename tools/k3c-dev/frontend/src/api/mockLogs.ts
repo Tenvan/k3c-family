@@ -17,11 +17,13 @@ const VITE_LINES = [
   `${ESC}2m17:03:20${ESC}0m ${ESC}36m[vite]${ESC}0m page reload ${ESC}2mgame.html${ESC}0m`,
 ];
 
+// Format von engine/conlog: Zeit, Level, [ns], Meldung, key=value.
+const k = (key: string) => `${ESC}90m${key}=${ESC}0m`;
 const LOG_LINES = [
-  'time=17:03:01 level=INFO msg="aufruf beendet" ns=mcp tool=logs_query ms=12',
-  'time=17:03:04 level=WARN msg="lauf beendet" ns=check target=task:test exit=1',
-  'time=17:03:09 level=INFO msg="dienst Vite: läuft" ns=svc pid=41232',
-  'time=17:03:11 level=ERROR msg="dienst Spielserver fehlgeschlagen: Port 8080 bereits belegt" ns=svc',
+  `${ESC}90m17:03:01.204${ESC}0m ${ESC}34mINFO ${ESC}0m ${ESC}36m[mcp]${ESC}0m ${ESC}1maufruf beendet${ESC}0m ${k('tool')}logs_query ${k('ms')}12`,
+  `${ESC}90m17:03:04.517${ESC}0m ${ESC}1m${ESC}33mWARN ${ESC}0m ${ESC}36m[check]${ESC}0m ${ESC}1mlauf beendet${ESC}0m ${k('target')}task:test ${k('exit')}1`,
+  `${ESC}90m17:03:09.031${ESC}0m ${ESC}34mINFO ${ESC}0m ${ESC}36m[svc]${ESC}0m ${ESC}1mdienst Vite: läuft${ESC}0m ${k('pid')}41232`,
+  `${ESC}90m17:03:11.882${ESC}0m ${ESC}1m${ESC}31mERROR${ESC}0m ${ESC}36m[svc]${ESC}0m ${ESC}1m${ESC}31mdienst Spielserver fehlgeschlagen${ESC}0m ${k('err')}${ESC}31m"Port 8080 bereits belegt"${ESC}0m`,
 ];
 
 const TEST_LINES = [

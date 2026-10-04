@@ -31,7 +31,7 @@ func TestSchreibtJSONUndSpiegelt(t *testing.T) {
 		t.Errorf("Eintrag: %+v", e)
 	}
 	lines, _ := store.Tail(Source, 0)
-	if len(lines) != 1 || lines[0].Stream != "log" || !strings.Contains(lines[0].Text, "level=WARN") {
+	if len(lines) != 1 || lines[0].Stream != "log" || !strings.Contains(lines[0].Text, "WARN") || !strings.Contains(lines[0].Text, "[check]") {
 		t.Errorf("Spiegel: %+v", lines)
 	}
 }
