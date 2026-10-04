@@ -4,7 +4,6 @@
 package room
 
 import (
-	"encoding/json"
 	"errors"
 	"slices"
 	"strings"
@@ -103,6 +102,7 @@ type Room struct {
 	timescale  int             // Zeitraffer (dev timescale): Schritte je Tick, 0 = 1
 	paused     bool            // Dev-Pause (dev pause, B-231): Ticks rechnen keine Schritte
 	met        *metrics        // Spielmetrik des Raumlaufs (metrics.go); nil = kein Sammler
+	saves      saver           // Spielstände außerhalb der Sperre schreiben (saver.go)
 }
 
 // ValidSlots: Slot 4 oder höher → too_many_slots, sonst leer, negativ oder doppelt → bad_request.
@@ -260,7 +260,6 @@ func (r *Room) broadcastSeats() {
 	}
 }
 
-// save schreibt den Spielstand (docs/protocol.md › Spielstand). Fehler landen im Log, der Raum läuft weiter.
 // dropTestSave löscht den Spielstand eines Testraums (TestPrefix), nachdem der leere Raum aufgeräumt wurde.
 func (r *Room) dropTestSave() {
 	if !strings.HasPrefix(r.Name, TestPrefix) {
@@ -271,33 +270,6 @@ func (r *Room) dropTestSave() {
 	}
 }
 
-func (r *Room) save() {
-	start := time.Now() // Wanduhr nur fürs Log, nicht für den Spielverlauf
-	backup, err := r.store()
-	ms := time.Since(start).Milliseconds()
-	if err != nil {
-		r.log().Error("💥 Spielstand nicht gespeichert", "err", err, "ms", ms)
-		return
-	}
-	if ms > slowSaveMs {
-		r.log().Warn("🐢 Spielstand gespeichert, langsamer als ein Tick", "tick", r.tick, "sicherung", backup, "ms", ms)
-		return
-	}
-	r.log().Debug("💾 Spielstand gespeichert", "tick", r.tick, "sicherung", backup, "ms", ms)
-}
-
-// slowSaveMs ist der Zielwert einer Speicherung (B-147, S2.2): ein Tick bei 30 Hz.
-const slowSaveMs = 1000 / TickHz
-
-// store schreibt den Spielstand und liefert den Namen der Sicherung des vorigen Stands (leer, wenn es keine gab).
-func (r *Room) store() (backup string, err error) {
-	data, err := json.Marshal(r.isl.ToSave(r.m.now().UTC().Format("2006-01-02T15:04:05.000Z07:00")))
-	if err != nil {
-		return "", err
-	}
-	return r.m.Store.Store(r.Name, data)
-}
-
 // SaveNow sichert den Spielstand sofort (Diagnose, B-088) und meldet den Fehler, statt ihn nur zu loggen.
 func (r *Room) SaveNow() (backup string, err error) {
 	r.mu.Lock()
@@ -305,5 +277,10 @@ func (r *Room) SaveNow() (backup string, err error) {
 	if r.closed {
 		return "", ErrClosed
 	}
-	return r.store()
+	r.flush()
+	data, err := r.encode()
+	if err != nil {
+		return "", err
+	}
+	return r.m.Store.Store(r.Name, data)
 }

@@ -214,6 +214,7 @@ func TestPausierterRaumFristenUndAufraeumen(t *testing.T) {
 	ticks(r, 3)
 	saves := f.store.saves
 	r.Drop("xbox", x)
+	waitSaved(r)
 	if f.store.saves != saves+1 {
 		t.Fatal("leerer Raum speichert nicht sofort")
 	}
@@ -348,6 +349,7 @@ func TestSpeicherzeitpunkte(t *testing.T) {
 		}
 	}
 	ticks(r, 70) // 2 s am Tiefen-Eingang
+	waitSaved(r)
 	if r.isl.StageOf(0) != 1 || f.store.saves != saves+1 || !x.has("level 1") {
 		t.Fatalf("Stufenwechsel: Stufe %d, %d Speicherungen, %v", r.isl.StageOf(0), f.store.saves-saves, x.log[len(x.log)-3:])
 	}

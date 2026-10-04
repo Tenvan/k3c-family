@@ -65,10 +65,12 @@ func TestSpeichernBeiVerlassenUndAbbruch(t *testing.T) {
 	tickToNight(t, r)
 	before := s.n
 	r.Leave("handy", h)
+	waitSaved(r)
 	if s.n != before+1 {
 		t.Fatalf("Verlassen bei verbliebenem Gerät: %d Speicherungen", s.n-before)
 	}
 	r.Drop("xbox", x)
+	waitSaved(r)
 	if s.n != before+2 {
 		t.Fatalf("Abbruch des letzten Geräts: %d Speicherungen", s.n-before)
 	}
@@ -101,6 +103,7 @@ func TestSchreibfehlerLaesstStandUnveraendert(t *testing.T) {
 	r = need(f.m.Create("xbox", y, "heil", false, 0, []int{0}, Options{}))(t)
 	ticks(r, 30)
 	r.Leave("xbox", y)
+	waitSaved(r)
 	if now := need(s.Load("heil"))(t); !bytes.Equal(now, prev) {
 		t.Fatal("die Datei hat sich trotz Schreibfehler geändert")
 	}

@@ -18,7 +18,7 @@ Raummodell des Servers (Domain/Service Layer): ein `Room` ist ein laufendes Spie
 
 1. `Manager.Create(id, peer, name, fresh, depth, slots, opts)` → `open` lädt Stand über `Store.Load` oder startet frisch (Level über `engine/level`, `sim.Island`) → `lockedJoin` → Raum bekommt Code und Run-Goroutine.
 2. `Manager.Join(id, peer, code, slots)` → neues Gerät oder Wiederverbinden (altes `Peer` bekommt `Replaced`).
-3. Pro Tick (`Room.Tick`): gesammelte `Input`s je Slot → `sim` rechnet einen `TickHz`-Schritt (im Zeitraffer `scale()` Schritte) → je Gerät `pushState` (`Peer.Level` vor `Peer.State`, wenn die Stufe wechselt; der Zustand entsteht über `Manager.Snapshot` einmal je Stufe und Tick und wird geteilt) → bei Stufenwechsel `save`.
+3. Pro Tick (`Room.Tick`): gesammelte `Input`s je Slot → `sim` rechnet einen `TickHz`-Schritt (im Zeitraffer `scale()` Schritte) → je Gerät `pushState` (`Peer.Level` vor `Peer.State`, wenn die Stufe wechselt; der Zustand entsteht über `Manager.Snapshot` einmal je Stufe und Tick und wird geteilt) → bei Stufenwechsel `save` (`saver.go`: unter der Sperre nur kodieren, Datei in einer Goroutine je Raum, neuester Stand gewinnt; Aufräumen, Herunterfahren und `SaveNow` warten per `flush` und schreiben synchron).
 4. `Drop` (Verbindung weg): Monarchen wechseln auf waiting; `Sweep` gibt sie nach `WaitFor` frei und räumt leere Räume nach `EmptyFor` auf; letzter Abgang → `afterDisconnect` speichert.
 5. Panic im Tick: `safeTick` → `crash` → Raum geschlossen, Geräte bekommen `Closed`, Eintrag in den `Failure`s von `Manager.Status()`.
 6. `Manager.Close()` speichert alle Räume, meldet `room_closed`; Räume mit `TestPrefix` löschen ihren Spielstand.

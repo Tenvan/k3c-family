@@ -59,7 +59,7 @@ keine
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
 | N1.1 | `N1.1-versand-asynchron.md` | Umsetzung | autonom | fertig |
-| N1.2 | `N1.2-speichern-asynchron.md` | Umsetzung | autonom | offen |
+| N1.2 | `N1.2-speichern-asynchron.md` | Umsetzung | autonom | fertig |
 | N1.3 | `N1.3-review.md` | Review | autonom | offen |
 
 ## Abnahme

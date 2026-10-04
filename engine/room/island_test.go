@@ -96,6 +96,7 @@ func TestInselRundlauf(t *testing.T) {
 	moveToExit(t, r, 0)
 	ticks(r, 70)
 	r.Leave("xbox", x)
+	waitSaved(r)
 	got := need(sim.ParseIslandSave(need(s.Load("insel"))(t)))(t)
 	if got.Version != sim.IslandSaveVersion || len(got.Stages) != 3 || len(got.Players) != 2 {
 		t.Fatalf("gespeichert: Version %d, %d Stufen, %d Spieler", got.Version, len(got.Stages), len(got.Players))
@@ -122,6 +123,7 @@ func TestVersion1WirdUeberfuehrtUndGesichert(t *testing.T) {
 		t.Fatal("Gold aus Version 1 fehlt")
 	}
 	r.Leave("xbox", x) // speichert als Version 2
+	waitSaved(r)
 	if got := need(sim.ParseIslandSave(need(s.Load("alt"))(t)))(t); got.Version != sim.IslandSaveVersion {
 		t.Fatalf("Version nach Speichern: %d", got.Version)
 	}
