@@ -7,7 +7,7 @@ saves
 reports
 logs
 certs
-tools
+tools/k3c-dev
 docs
 .omc
 .claude

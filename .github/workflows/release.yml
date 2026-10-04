@@ -20,14 +20,14 @@ jobs:
         with:
           node-version-file: .nvmrc
           cache: npm
+      - uses: actions/setup-go@v7
+        with:
+          go-version-file: go.mod
       - uses: go-task/setup-task@v1
       - run: npm ci
       - run: task typecheck
       - run: task test
       - run: task build
-      - uses: actions/setup-go@v7
-        with:
-          go-version-file: go.mod
       - name: k3c-server bauen (Windows, Linux amd64, Linux arm64)
         run: |
           for target in windows/amd64 linux/amd64 linux/arm64; do
