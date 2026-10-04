@@ -319,15 +319,16 @@ export interface PlanTicket {
   spec: string;
 }
 
-/** Daten der Seite „Sprints & Backlog“ (Go: planning.Data); done zählt die erledigten Sprints. Nur der Mock baut sie. */
+/** Daten der Ansicht „Sprints & Backlog“ (Go: planning.Data, dieselben wie plan_list); done zählt die erledigten Sprints. */
 export interface PlanningData {
   sprints: PlanSprint[];
   tickets: PlanTicket[];
   done: number;
 }
 
-/** Lesbare Planungs-Dokumente: Plan (docs/plan-weiterentwicklung.md) und Fragenkatalog (docs/fragenkatalog.md). */
-export type PlanDoc = 'plan' | 'fragen';
+/** Lesbare Planungs-Dokumente: Plan (docs/plan-weiterentwicklung.md), Fragenkatalog (docs/fragenkatalog.md) und
+ *  Glossar (docs/glossar.md, nur wenn vorhanden). */
+export type PlanDoc = 'plan' | 'fragen' | 'glossar';
 
 /** Ereignisse von Go an die Oberfläche. */
 export interface Events {
@@ -339,7 +340,7 @@ export interface Events {
   'mcp:start': McpCall;
   'mcp:call': McpCall;
   'task:state': TaskRun;
-  /** Eine Datei der Planung (docs/sprints, docs/backlog, Plan, Fragenkatalog) hat sich geändert; ohne Nutzlast. */
+  /** Eine Datei der Planung (docs/sprints, docs/backlog, Plan, Fragenkatalog, Glossar) hat sich geändert; ohne Nutzlast. */
   'planning:changed': null;
 }
 
@@ -377,8 +378,10 @@ export interface Backend {
   taskStart(name: string, args: string[]): Promise<TaskRun>;
   taskStop(name: string): Promise<TaskRun>;
   taskRuns(): Promise<TaskRun[]>;
-  /** Seite „Sprints & Backlog“ als eigenständiges HTML, frisch aus docs/ erzeugt (Go: planning.Page). */
-  planningPage(): Promise<string>;
+  /** Sprints und Tickets frisch aus docs/ (Go: planning.Load). */
+  planningData(): Promise<PlanningData>;
+  /** Vorhandene Planungs-Dokumente in Umschalter-Reihenfolge; das Glossar nur mit Datei. */
+  planningDocs(): Promise<PlanDoc[]>;
   /** Markdown eines Planungs-Dokuments. */
   planningDoc(name: PlanDoc): Promise<string>;
   /** Abonniert ein Ereignis; die Rückgabe meldet wieder ab. */

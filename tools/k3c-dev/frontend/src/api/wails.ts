@@ -1,6 +1,6 @@
 import type {
   Backend, ConsoleLine, ErrorsView, EventName, Events, Info, LevelCounts, LogQuery, LogView, McpCall, McpOverview,
-  McpState, McpUsage, ServicesView, ServiceStatus, Source, TaskCatalog, TaskRun, PlanDoc,
+  McpState, McpUsage, ServicesView, ServiceStatus, Source, TaskCatalog, TaskRun, PlanDoc, PlanningData,
 } from './types';
 
 // Die Wails-Laufzeit legt window.go (Bindings der App) und window.runtime an. Die generierten Dateien unter
@@ -28,7 +28,8 @@ interface GoApp {
   TaskStart(name: string, args: string[]): Promise<TaskRun>;
   TaskStop(name: string): Promise<TaskRun>;
   TaskRuns(): Promise<TaskRun[]>;
-  PlanningPage(): Promise<string>;
+  PlanningData(): Promise<PlanningData>;
+  PlanningDocs(): Promise<PlanDoc[]>;
   PlanningDoc(name: PlanDoc): Promise<string>;
 }
 
@@ -74,7 +75,8 @@ export function wailsBackend(): Backend {
     taskStart: (name, args) => app.TaskStart(name, args),
     taskStop: (name) => app.TaskStop(name),
     taskRuns: () => app.TaskRuns(),
-    planningPage: () => app.PlanningPage(),
+    planningData: () => app.PlanningData(),
+    planningDocs: () => app.PlanningDocs(),
     planningDoc: (name) => app.PlanningDoc(name),
     on: <E extends EventName>(event: E, fn: (data: Events[E]) => void) =>
       runtime.EventsOn(event, (data) => fn(data as Events[E])),

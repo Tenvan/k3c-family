@@ -114,6 +114,7 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-210](B-210-planung-ueber-mcp.md) | SRV | Idee | hoch | eingeplant | M8 | Agenten pflegen Tickets, Sprints und Sessions über MCP-Tools von k3c-dev |
 | [B-211](B-211-planungsseite-react.md) | SRV | Schuld | mittel | eingeplant | M8 | Die Planungsseite von k3c-dev ist eine React-Ansicht aus denselben Daten wie die MCP-Tools |
 | [B-212](B-212-github-status-planung.md) | SRV | Idee | mittel | eingeplant | M8 | k3c-dev zeigt PR, CI und Merge-Konflikte je Sprint aus GitHub |
+| [B-213](B-213-markdown-listen-haekchen.md) | SRV | Problem | niedrig | offen | – | MarkdownView in k3c-dev zeigt nummerierte Listen und Häkchen wie die alte Planungsseite |
 
 ## Archiv
 

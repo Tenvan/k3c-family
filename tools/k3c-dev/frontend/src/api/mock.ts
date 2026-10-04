@@ -60,7 +60,7 @@ export function mockBackend(): Backend {
     taskStart: tasks.taskStart,
     taskStop: tasks.taskStop,
     taskRuns: tasks.taskRuns,
-    ...mockPlanning(),
+    ...mockPlanning(() => emit('planning:changed', null)),
     mcpInstructions: async () => INSTRUCTIONS,
     mcpRestart: async () => {
       mcp = { ...mcp, listening: false, error: '' };
