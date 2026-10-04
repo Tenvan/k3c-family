@@ -1,6 +1,7 @@
 import { BIOMES, type BiomeConfig } from '../model/biome';
 import type { LevelLayout } from '../model/types';
 import { clientLog } from '../core/clientLog';
+import { t } from '../core/texts';
 import { applyDelta } from './clientDelta';
 import {
   INPUT_KEEPALIVE_MS,
@@ -31,14 +32,6 @@ const RETRY_MAX_MS = 4000;
 export const RECONNECT_LIMIT_MS = 120_000;
 /** Anzahl Snapshots für die Takt-Messung des Debug-Overlays */
 const SNAPSHOT_WINDOW = 30;
-
-const TEXT = {
-  reconnecting: 'Verbindung weg, verbinde neu …',
-  lost: 'Server nicht erreichbar',
-  replaced: 'An anderer Stelle geöffnet',
-  version: 'Veraltete Version, Seite neu laden',
-  unknownBiome: 'Unbekanntes Biom, Seite neu laden',
-} as const;
 
 export interface SocketLike {
   send(data: string): void;
@@ -278,7 +271,7 @@ export class RoomClient {
     if (this.closedByUs || this.status === 'ended' || this.status === 'lost') return;
     if (this.status !== 'reconnecting') {
       this.status = 'reconnecting';
-      this.notice = TEXT.reconnecting;
+      this.notice = t('net.reconnecting');
       this.downSince = this.env.now();
       this.attempt = 0;
       clientLog('warn', '🔁 Verbindung abgebrochen, verbinde neu', { room: this.roomCode });
@@ -287,7 +280,7 @@ export class RoomClient {
     if (this.env.now() - this.downSince >= RECONNECT_LIMIT_MS) {
       this.clearRoom();
       this.status = 'lost';
-      this.notice = TEXT.lost;
+      this.notice = t('net.lost');
       this.changed();
       return;
     }
@@ -371,7 +364,7 @@ export class RoomClient {
     this.state = null;
     this.frames = [];
     if (!biome) {
-      this.notice = TEXT.unknownBiome;
+      this.notice = t('net.unknownBiome');
       this.level = null;
       clientLog('error', `💥 Unbekanntes Biom ${layout.biomeId}`, { depth });
       return;
@@ -394,9 +387,9 @@ export class RoomClient {
     clientLog(code === 'bad_request' ? 'error' : 'warn', `🚫 Server-Fehler ${code}: ${message}`, { status: this.status, room: this.roomCode });
     switch (code) {
       case 'replaced':
-        return this.end(TEXT.replaced);
+        return this.end(t('net.replaced'));
       case 'version':
-        return this.end(TEXT.version);
+        return this.end(t('net.version'));
       case 'bad_request':
         return void console.warn(`bad_request: ${message}`);
       case 'forbidden':

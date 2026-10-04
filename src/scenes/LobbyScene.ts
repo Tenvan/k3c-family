@@ -1,5 +1,6 @@
 import Phaser from 'phaser';
 import { GAME_HEIGHT, GAME_WIDTH } from '../core/constants';
+import { t } from '../core/texts';
 import type { RoomClient } from '../online/clientConnection';
 import type { GameSceneData } from './GameScene';
 import { LobbyFlow, applyCommand, entryLabel, lobbyEntries, lobbyNotice, moveSelection, parseStartParams, rowAt, slotsFor, type StartParams } from './lobbyLogic';
@@ -63,12 +64,12 @@ export class LobbyScene extends Phaser.Scene {
   create(): void {
     const K = Phaser.Input.Keyboard.KeyCodes;
     this.keys = this.input.keyboard!.addKeys({ up: K.UP, down: K.DOWN, w: K.W, s: K.S, enter: K.ENTER, space: K.SPACE }) as LobbyScene['keys'];
-    this.add.text(GAME_WIDTH / 2, 80, 'Family Three Crowns', { ...STYLE, fontSize: '56px', strokeThickness: 10 }).setOrigin(0.5);
+    this.add.text(GAME_WIDTH / 2, 80, t('lobby.title'), { ...STYLE, fontSize: '56px', strokeThickness: 10 }).setOrigin(0.5);
     this.notice = this.add.text(GAME_WIDTH / 2, GAME_HEIGHT - 90, '', { ...STYLE, fontSize: '30px', color: '#ffd166', align: 'center' }).setOrigin(0.5);
     // Versionen in einer Zeile zwischen Titel und Liste (Nebeninfo, 24 px nach rules/bedienung.md § 2)
     const versions = ((this.registry.get(VERSION_KEY) as string | undefined) ?? '').replace('\n', ' · ');
     this.add.text(GAME_WIDTH / 2, 128, versions, { ...STYLE, fontSize: '24px', strokeThickness: 4, fontStyle: 'normal', color: '#c8d0e0' }).setOrigin(0.5);
-    this.add.text(GAME_WIDTH / 2, GAME_HEIGHT - 36, 'Pfeile/Stick wählen · A / Enter / Tippen bestätigen', { ...STYLE, fontSize: '20px', strokeThickness: 4 }).setOrigin(0.5);
+    this.add.text(GAME_WIDTH / 2, GAME_HEIGHT - 36, t('lobby.hint'), { ...STYLE, fontSize: '20px', strokeThickness: 4 }).setOrigin(0.5);
     // Touch über das Fenster: das Touch-Overlay des Spiels liegt über dem Canvas, die Ereignisse laufen aber bis hierher.
     const onTap = (e: PointerEvent) => (this.tapped = rowAt(this.scale.transformY(e.pageY), TOP, ROW_H, lobbyEntries(this.client.rooms, this.client.status).length));
     window.addEventListener('pointerdown', onTap);

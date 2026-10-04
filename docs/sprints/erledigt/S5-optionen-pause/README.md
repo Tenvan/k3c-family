@@ -1,6 +1,6 @@
 # S5 · CLI · Optionen- und Pause-Szene
 
-- **Status:** aktiv
+- **Status:** erledigt
 - **Domäne:** CLI
 - **Reife:** bereit
 - **Einschiebbar:** nein
@@ -61,11 +61,15 @@ Pause im gemeinsamen Raum: 🧑, `docs/fragenkatalog.md Q01`.
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
 | S5.1 | `S5.1-einstellungen-speicher.md` | Umsetzung | autonom | fertig |
-| S5.2 | `S5.2-szene-optionen-pause.md` | Umsetzung | autonom | offen |
-| S5.3 | `S5.3-texte-de-en.md` | Umsetzung | autonom | offen |
+| S5.2 | `S5.2-szene-optionen-pause.md` | Umsetzung | autonom | fertig |
+| S5.3 | `S5.3-texte-de-en.md` | Umsetzung | autonom | fertig |
 | S5.4 | `S5.4-abnahme-geraet.md` | Workshop | Mensch | offen |
-| S5.5 | `S5.5-review.md` | Review | autonom | offen |
+| S5.5 | `S5.5-review.md` | Review | autonom | fertig |
 
 ## Abnahme
 
-–
+- 2026-10-04, Review S5.5: AC-01 (S5.1: `settings.ts`, 11 Tests), AC-02 und AC-04 (S5.2: `optionsLogic`, `OptionsScene`, B unbelegt, `shell.ts` unverändert) und AC-06 (S5.3: `texts*.ts`, `textRule.test.ts`) sind umgesetzt und im Diff geprüft; AC-03 Speicher-Teil per Test (S5.1), Neuladen im Browser offen.
+- AC-05, AC-07 und AC-03 (Neuladen): angenommen, Validierung offen (S5.4, 🧑 am Gerät; im Fahrplan unter „Offen am Gerät“). Nichts davon im Browser gesehen.
+- Keine schweren Befunde: Menu-kurz (< 600 ms, View blockiert) kollidiert nicht mit der Home-Kombi (400 ms), mit 2 lokalen Spielern stehen alle Sitzplätze und jedes Gerät bedient die Szene, `localStorage` wirft nie; die Änderung an `loadLogic.ts` und `stageView.ts` (nur Texte, gleiche Domäne) ist nicht schwer. `task check` und `task check:go` grün. Neue Tickets: keine (B-214, B-215 aus S5.2/S5.3 offen).
+- Version: v0.9.0 vorgeschlagen (Minor: neue Optionen- und Pause-Szene sowie Sprachwahl de/en; nach dem offenen Vorschlag S4 v0.8.0, bei gemeinsamem Setzen anpassen).
+

@@ -17,6 +17,8 @@ import { daylight } from './viewRules';
 import { cellStages } from './cellStages';
 import { PLACEHOLDER_BG, StageView, placeholderLayer, showOnly } from './stageView';
 import { DEV_FOCUS_KEY, muteFocused } from './debugOverlayPanel';
+import { MenuPress, idleCommands } from './optionsLogic';
+import { pauseButton } from './pauseButton';
 
 /** Ein Overlay pro Seite, auch über Szenen-Neustarts hinweg */
 let sharedTouch: TouchInput | undefined;
@@ -62,6 +64,7 @@ export class GameScene extends Phaser.Scene {
   private cells: Cell[] = [];
   private layoutKey = '';
   private partnerMonarch: number | null = null;
+  private menuPress = new MenuPress();
 
   constructor() {
     super('game');
@@ -89,6 +92,7 @@ export class GameScene extends Phaser.Scene {
     this.prev = this.cur = null;
     this.layoutKey = '';
     this.partnerMonarch = null;
+    this.menuPress = new MenuPress();
     this.lastDevice = wantsTouchControls() ? 'touch' : 'keyboard';
   }
 
@@ -104,6 +108,10 @@ export class GameScene extends Phaser.Scene {
     gamepads.on('connected', addPad);
     gamepads.on('disconnected', (pad: Phaser.Input.Gamepad.Gamepad) => this.padLost(pad));
     this.scene.launch('hud');
+    if (this.touch) {
+      pauseButton().show(true);
+      this.events.once('shutdown', () => pauseButton().show(false));
+    }
   }
 
   update(): void {
@@ -120,6 +128,8 @@ export class GameScene extends Phaser.Scene {
     if (client.status !== 'room') return;
 
     const seated = client.you.map((s) => s.slot);
+    if (this.scene.isActive('options')) return this.paused(seated); // Optionen offen: Monarchen stehen, nur zeichnen
+    if (this.wantsOptions()) this.scene.launch('options');
     const devFocus = this.registry.get(DEV_FOCUS_KEY) === true; // Dev-Fokus im Debug-Overlay (B-179): Controller bedienen die Liste
     const isPad = (i: PlayerInput | null) => this.pads.includes(i as GamepadInput);
     this.slots.join(devFocus ? inputs.filter((i) => !isPad(i)) : inputs, seated, client, performance.now());
@@ -127,6 +137,19 @@ export class GameScene extends Phaser.Scene {
     if (p.length > 0) client.sendInput(p);
     this.takeFrames();
     this.draw();
+  }
+
+  /** Optionen offen (Client-Anteil der Pause, S5.2): die Monarchen des Geräts stehen, Beitritt und Eingaben ruhen, das Spiel wird weiter gezeichnet. */
+  private paused(seated: number[]): void {
+    this.client.sendInput(idleCommands(seated));
+    this.takeFrames();
+    this.draw();
+  }
+
+  /** Esc, Touch-Schaltfläche oder Menu kurz (Pad, beim Loslassen; View + Menu bleibt „zurück zur Landingpage“) */
+  private wantsOptions(): boolean {
+    const menuShort = this.menuPress.update(this.pads.some((p) => p.held('pause')), this.pads.some((p) => p.held('skillMenu')), performance.now());
+    return this.keyboard.justPressed('pause') || (this.touch !== undefined && pauseButton().take()) || menuShort;
   }
 
   /** Slots, deren Spieler noch auf seinen Beitritt wartet (Taste drücken) */
@@ -157,6 +180,7 @@ export class GameScene extends Phaser.Scene {
   private leaveRoom(): void {
     this.client.leave();
     this.scene.stop('hud');
+    this.scene.stop('options');
     this.scene.start('lobby', { client: this.client, returned: true } satisfies LobbySceneData);
   }
 
