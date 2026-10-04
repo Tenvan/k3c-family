@@ -1,6 +1,6 @@
 # RL1.1 · Abschnitt „Release“ in `docs/arbeitsweise.md`
 
-- **Status:** offen
+- **Status:** in Arbeit
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Branch:** rl1/1-abschnitt-release

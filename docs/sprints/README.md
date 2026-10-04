@@ -10,6 +10,7 @@ Reihenfolge in Wellen, Bahnen je Domäne und Zuordnung Mensch/autonom (zwei Acco
 
 | Sprint | Domäne | Thema | Am Ende sichtbar | Ordner |
 |---|---|---|---|---|
+| RL1 (einschiebbar) | INF | Release-Checkliste | Abschnitt „Release“ in `docs/arbeitsweise.md` und ein Probelauf ohne Tag | `aktiv/RL1-release-checkliste/` |
 
 ## Offen am Gerät
 
@@ -64,7 +65,6 @@ dann über den Go-Server mit mehreren Räumen und gemischten Spielern.
 | GR2 | CLI | Grafik-Suche für Lücken | bereit | `geplant/GR2-grafik-suche/` |
 | GR3 | CLI | Grafik im Renderer | Entwurf | `geplant/GR3-grafik-renderer/` |
 | GR5 | CLI | Juice: Treffer, Screenshake, Münzen | Entwurf | `geplant/GR5-juice/` |
-| RL1 | INF | Release-Checkliste | bereit | `geplant/RL1-release-checkliste/` |
 | SO1 | CLI | Audio-Kern | bereit | `geplant/SO1-audio-kern/` |
 | SO2 | CLI | SFX-Katalog und Einbau | Entwurf | `geplant/SO2-sfx-katalog/` |
 | SO3 | PLAT | Hörprobenseite `soundtest.html` | bereit | `geplant/SO3-hoerprobenseite/` |
