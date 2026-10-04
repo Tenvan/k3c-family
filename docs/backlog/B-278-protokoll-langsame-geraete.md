@@ -29,7 +29,9 @@ Client (CLI), Server (SRV); 🧑 gibt frei.
 ## Anforderungen
 
 - `docs/protocol.md` › Takt: Ein langsames Gerät bekommt höchstens einen Zustand je Tick, `tick` darf springen; `events`
-  eines Deltas kann Ereignisse mehrerer Ticks enthalten (höchstens 256).
+  eines Deltas kann Ereignisse übersprungener Ticks enthalten (höchstens 256).
+- Ein Delta gilt relativ zum **zuletzt an dieses Gerät gesendeten** Zustand, nicht zum Zustand des vorigen Ticks.
+- `ack` ist das höchste seq, das im gesendeten Zustand verrechnet ist (N1.3).
 - Trennung nur bei Stau anderer Nachrichten (64).
 
 ## Nicht-Ziele
@@ -50,7 +52,7 @@ Mehr als 256 Ereignisse in der Pause → die ältesten fehlen.
 
 ## Akzeptanzkriterien
 
-- **AC-01** `docs/protocol.md` › Takt nennt Verwerfen, springenden `tick`, gesammelte `events` und die Trennung bei 64 anderen Nachrichten.
+- **AC-01** `docs/protocol.md` › Takt nennt Verwerfen, springenden `tick`, gesammelte `events` übersprungener Ticks, Delta relativ zum zuletzt gesendeten Zustand und die Trennung bei 64 anderen Nachrichten.
 
 ## Offene Fragen
 
@@ -58,4 +60,4 @@ Behandelt der Client springende Ticks und Ereignisse mehrerer Ticks richtig (ung
 
 ## Notizen
 
-Angelegt in N1.1 (`engine/net/ws.go` › `push`, `mergeEvents`).
+Angelegt in N1.1 (`engine/net/ws.go` › `push`, `mergeEvents`), im Review N1.3 ergänzt (Delta-Bezug, `ack`).

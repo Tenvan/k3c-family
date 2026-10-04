@@ -5,6 +5,7 @@ import (
 	"errors"
 	"log/slog"
 	"strings"
+	"sync"
 	"testing"
 	"time"
 
@@ -18,11 +19,14 @@ import (
 // countStore zählt die Speicherungen und gibt sie an einen echten Ordner weiter; mit fail scheitert Store.
 type countStore struct {
 	*store.Saves
+	mu   sync.Mutex // Store läuft auch in der Schreib-Goroutine des Raums
 	n    int
 	fail error
 }
 
 func (s *countStore) Store(name string, data []byte) (string, error) {
+	s.mu.Lock()
+	defer s.mu.Unlock()
 	s.n++
 	if s.fail != nil {
 		return "", s.fail

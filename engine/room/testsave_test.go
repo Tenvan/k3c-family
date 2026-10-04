@@ -5,12 +5,6 @@ import (
 	"time"
 )
 
-func (s *memStore) Delete(name string) error {
-	delete(s.data, name)
-	s.deleted = append(s.deleted, name)
-	return nil
-}
-
 // B-086: Ein leerer Testraum (Präfix test-) löscht beim Aufräumen seinen Spielstand, andere Räume behalten ihn.
 func TestTestRaumLoeschtSpielstandBeimAufraeumen(t *testing.T) {
 	f := newFixture()

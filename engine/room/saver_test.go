@@ -1,6 +1,8 @@
 package room
 
 import (
+	"runtime"
+	"sync"
 	"testing"
 	"time"
 
@@ -56,10 +58,40 @@ func TestStufenwechselSpeichertImHintergrund(t *testing.T) {
 	}
 }
 
-// Herunterfahren wartet auf eine laufende Hintergrund-Speicherung und speichert danach selbst.
+// firstBlockStore hält nur das erste Store an, bis release geschlossen ist; early meldet ein späteres Store, das vor
+// release begann.
+type firstBlockStore struct {
+	*memStore
+	mu      sync.Mutex
+	calls   int
+	early   bool
+	entered chan struct{}
+	release chan struct{}
+}
+
+func (s *firstBlockStore) Store(name string, data []byte) (string, error) {
+	s.mu.Lock()
+	s.calls++
+	first := s.calls == 1
+	if !first {
+		select {
+		case <-s.release:
+		default:
+			s.early = true
+		}
+	}
+	s.mu.Unlock()
+	if first {
+		close(s.entered)
+		<-s.release
+	}
+	return s.memStore.Store(name, data)
+}
+
+// Herunterfahren wartet auf eine laufende Hintergrund-Speicherung und speichert erst danach selbst.
 func TestHerunterfahrenWartetAufSpeicherung(t *testing.T) {
 	f := newFixture()
-	bs := &blockStore{memStore: f.store, entered: make(chan struct{}, 8), release: make(chan struct{})}
+	bs := &firstBlockStore{memStore: f.store, entered: make(chan struct{}), release: make(chan struct{})}
 	f.m.Store = bs
 	x, h := &peer{}, &peer{}
 	r := need(f.m.Create("xbox", x, "warten", true, 0, []int{0}, Options{}))(t)
@@ -68,14 +100,44 @@ func TestHerunterfahrenWartetAufSpeicherung(t *testing.T) {
 	<-bs.entered
 	closed := make(chan struct{})
 	go func() { f.m.Close(); close(closed) }()
-	select {
-	case <-closed:
-		t.Fatal("Close wartet nicht auf die Hintergrund-Speicherung")
-	default:
+	for r.mu.TryLock() { // warten, bis Close den Raum hält (closeFinal → saveNow)
+		r.mu.Unlock()
+		runtime.Gosched()
 	}
 	close(bs.release)
 	<-closed
-	if f.store.saves != 2 {
-		t.Fatalf("%d Speicherungen, erwartet Hintergrund + Herunterfahren", f.store.saves)
+	if bs.early || f.store.saves != 2 {
+		t.Fatalf("Speichern beim Herunterfahren vor dem Ende der Hintergrund-Speicherung: %v, %d Speicherungen", bs.early, f.store.saves)
+	}
+}
+
+// panicStore panict beim ersten Store.
+type panicStore struct {
+	*memStore
+	panicked bool
+}
+
+func (s *panicStore) Store(name string, data []byte) (string, error) {
+	if !s.panicked {
+		s.panicked = true
+		panic("Platte weg")
+	}
+	return s.memStore.Store(name, data)
+}
+
+// Ein Panic beim Speichern im Hintergrund beendet nicht den Server; die nächste Speicherung läuft.
+func TestPanicBeimSpeichernImHintergrund(t *testing.T) {
+	f := newFixture()
+	r := need(f.m.Create("xbox", &peer{}, "panik", true, 0, []int{0}, Options{}))(t)
+	f.m.Store = &panicStore{memStore: f.store}
+	saves := f.store.saves
+	for range 2 {
+		r.mu.Lock()
+		r.save()
+		r.mu.Unlock()
+		waitSaved(r)
+	}
+	if f.store.saves != saves+1 || r.saves.busy {
+		t.Fatalf("nach dem Panic: %d Speicherungen, busy %v", f.store.saves-saves, r.saves.busy)
 	}
 }

@@ -18,7 +18,7 @@ func deltaOf(prev, cur map[string]any) map[string]any {
 	for k, v := range cur {
 		switch {
 		case k == "events":
-			if len(v.([]any)) > 0 {
+			if l, _ := v.([]any); len(l) > 0 {
 				d[k] = v
 			}
 		case idLists[k]:

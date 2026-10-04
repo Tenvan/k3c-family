@@ -2,6 +2,7 @@ package room
 
 import (
 	"encoding/json"
+	"fmt"
 	"sync"
 	"time"
 )
@@ -36,19 +37,30 @@ func (r *Room) save() {
 	}
 }
 
-// writeSaves schreibt wartende Stände, bis keiner mehr wartet.
+// writeSaves schreibt wartende Stände, bis keiner mehr wartet. Ein Panic beim Schreiben beendet nur diese Goroutine
+// (Log), die nächste Speicherung startet eine neue.
 func (r *Room) writeSaves() {
 	s := &r.saves
-	s.mu.Lock()
-	defer s.mu.Unlock()
-	for s.pending != nil {
+	defer func() {
+		if p := recover(); p != nil {
+			r.log().Error("💥 Spielstand nicht gespeichert, Speichern abgestürzt", "err", fmt.Sprint(p))
+			s.mu.Lock()
+			s.busy = false
+			s.mu.Unlock()
+		}
+	}()
+	for {
+		s.mu.Lock()
 		data, tick := s.pending, s.tick
 		s.pending = nil
+		if data == nil {
+			s.busy = false
+			s.mu.Unlock()
+			return
+		}
 		s.mu.Unlock()
 		r.write(data, tick)
-		s.mu.Lock()
 	}
-	s.busy = false
 }
 
 // flush wartet, bis kein Spielstand mehr aussteht (unter der Raum-Sperre).

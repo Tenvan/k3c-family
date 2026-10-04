@@ -1,6 +1,6 @@
 # N1 · SRV · Raum-Tick im Budget: Versand und Speichern asynchron
 
-- **Status:** aktiv
+- **Status:** erledigt
 - **Domäne:** SRV
 - **Reife:** bereit
 - **Einschiebbar:** ja
@@ -60,8 +60,10 @@ keine
 |---|---|---|---|---|
 | N1.1 | `N1.1-versand-asynchron.md` | Umsetzung | autonom | fertig |
 | N1.2 | `N1.2-speichern-asynchron.md` | Umsetzung | autonom | fertig |
-| N1.3 | `N1.3-review.md` | Review | autonom | offen |
+| N1.3 | `N1.3-review.md` | Review | autonom | fertig |
 
 ## Abnahme
 
-–
+2026-10-04, Agent (Claude Opus 5.5) in N1.3, Review mit unabhängigem Reviewer. AC-01, AC-02, AC-04: Ergebnis N1.1; AC-03: Ergebnis N1.2; AC-05: Ergebnis N1.3 (`-race` nur in der CI, lokal kein cgo).
+Behoben: Panic in Schreib- und Speicher-Goroutine, `ack` beim Senden statt beim Aufbau, `closeCrashed` ohne Flush, Testlücken (siehe N1.3). Neu: B-280; B-278 ergänzt. Offen für 🧑: Messung am Pi (B-042). B-276 archiviert.
+Version: v0.6.1 vorgeschlagen (Patch: Leistung im Server, Protokoll unverändert); gesetzt erst nach Bestätigung durch 🧑.

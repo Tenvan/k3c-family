@@ -109,6 +109,7 @@ func (m *Manager) crash(r *Room, msg string) {
 func (r *Room) closeCrashed() {
 	r.mu.Lock()
 	defer r.mu.Unlock()
+	r.flush() // eine schon begonnene Hintergrund-Speicherung läuft zu Ende, danach keine Goroutine mehr
 	r.closed = true
 	for _, d := range r.devices {
 		if d.connected {

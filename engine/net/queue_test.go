@@ -16,20 +16,13 @@ func queueConn(device string, cancelled *bool) *conn {
 	return &conn{s: s, device: device, wake: make(chan struct{}, 1), cancel: func() { *cancelled = true }}
 }
 
-// drain sendet wie die Schreib-Goroutine (write), nur ohne WebSocket, und liefert die Nachrichten.
+// drain kodiert wie die Schreib-Goroutine (encode), nur ohne WebSocket, und liefert die Nachrichten.
 func drain(t *testing.T, c *conn) []map[string]any {
 	t.Helper()
 	var msgs []map[string]any
 	for o, ok := c.pop(); ok; o, ok = c.pop() {
-		data := o.data
-		if o.state != nil {
-			data = c.stateData(o)
-		}
-		if o.level {
-			c.prev = nil
-		}
 		var m map[string]any
-		if err := json.Unmarshal(data, &m); err != nil {
+		if err := json.Unmarshal(c.encode(o), &m); err != nil {
 			t.Fatal(err)
 		}
 		msgs = append(msgs, m)
@@ -99,5 +92,21 @@ func TestVolleWarteschlangeIstAbbruch(t *testing.T) {
 	}
 	if !cancelled {
 		t.Fatal("nicht getrennt")
+	}
+}
+
+// ack ist das seq beim Aufbau des Zustands (unter der Raum-Sperre), nicht beim Senden: Eine später verrechnete Eingabe
+// bestätigt erst ein späterer Zustand; ersetzt ein Zustand einen wartenden, gilt sein eigenes ack.
+func TestAckIstSeqDesZustands(t *testing.T) {
+	cancelled := false
+	c := queueConn("x", &cancelled)
+	c.seq.Store(3)
+	c.State(1, map[string]any{})
+	c.seq.Store(4)
+	c.State(2, map[string]any{}) // ersetzt Tick 1
+	c.seq.Store(5)              // nach dem Zustand verrechnet
+	msgs := drain(t, c)
+	if len(msgs) != 1 || msgs[0]["tick"] != float64(2) || msgs[0]["ack"] != float64(4) {
+		t.Fatalf("erwartet Tick 2 mit ack 4: %v", msgs)
 	}
 }

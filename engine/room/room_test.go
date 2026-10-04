@@ -10,7 +10,6 @@ import (
 
 	"k3c/engine/level"
 	"k3c/engine/sim"
-	"k3c/engine/store"
 )
 
 // peer schreibt mit, was der Raum schickt.
@@ -35,25 +34,6 @@ func (p *peer) Replaced() { p.log = append(p.log, "replaced") }
 func (p *peer) Closed(bool) { p.log = append(p.log, "closed") }
 
 func (p *peer) has(entry string) bool { return slices.Contains(p.log, entry) }
-
-type memStore struct {
-	data    map[string][]byte
-	saves   int
-	deleted []string
-}
-
-func (s *memStore) Load(name string) ([]byte, error) {
-	if d, ok := s.data[name]; ok {
-		return d, nil
-	}
-	return nil, store.ErrNotFound
-}
-
-func (s *memStore) Store(name string, data []byte) (string, error) {
-	s.data[name] = data
-	s.saves++
-	return "", nil
-}
 
 type fixture struct {
 	m     *Manager
