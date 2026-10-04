@@ -106,6 +106,9 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-202](B-202-spielstand-versionsfolge.md) | SIM | Problem | hoch | offen | – | Die Spielstand-Versionen von S1 und W1 folgen eindeutig aufeinander |
 | [B-203](B-203-gold-schwelle-kennzahl.md) | REG | Frage | niedrig | offen | – | Die Kennzahl „erste Gold-Schwelle“ hat eine feste Schwelle und Bedeutung |
 | [B-204](B-204-test-raeume-sofort-schliessen.md) | SRV | Idee | niedrig | offen | – | Leere Test-Räume schließen sofort statt nach der Leer-Frist |
+| [B-205](B-205-planung-ueber-mcp.md) | SRV | Idee | hoch | eingeplant | M8 | Agenten pflegen Tickets, Sprints und Sessions über MCP-Tools von k3c-dev |
+| [B-206](B-206-planungsseite-react.md) | SRV | Schuld | mittel | eingeplant | M8 | Die Planungsseite von k3c-dev ist eine React-Ansicht aus denselben Daten wie die MCP-Tools |
+| [B-207](B-207-github-status-planung.md) | SRV | Idee | mittel | eingeplant | M8 | k3c-dev zeigt PR, CI und Merge-Konflikte je Sprint aus GitHub |
 
 ## Archiv
 
