@@ -32,7 +32,7 @@ func (r *Room) pushState(d *device) (levelSent bool) {
 	if r.m.Dev {
 		timescale = r.scale()
 	}
-	d.peer.State(r.tick, w, timescale)
+	d.peer.State(r.tick, w, timescale, r.paused)
 	return levelSent
 }
 

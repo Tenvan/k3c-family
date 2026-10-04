@@ -155,7 +155,7 @@ func (r *Room) afterDisconnect() {
 		if r.timescale > 1 {
 			r.log().Info("⏩ Zeitraffer beendet", "faktor", r.timescale)
 		}
-		r.timescale = 1
+		r.timescale, r.paused = 1, false
 		r.save()
 		r.emptySince = r.m.now()
 	}
@@ -184,7 +184,7 @@ func (r *Room) Tick() bool {
 		r.beforeStep()
 	}
 	before := r.depths()
-	for range r.scale() { // Zeitraffer: scale() Schritte mit denselben Eingaben, ein Tick
+	for range r.steps() { // Zeitraffer: scale() Schritte mit denselben Eingaben, ein Tick; Dev-Pause: keiner
 		sim.StepIsland(r.isl, commands, 1.0/TickHz)
 	}
 	r.tick++

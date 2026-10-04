@@ -55,8 +55,8 @@ export interface SlotInput {
 
 /** Dynamischer Weltzustand: alles außer dem Statischen (kommt mit `level`), dazu `events` und `depth`. */
 export type StaticKey = 'seed' | 'biome' | 'level' | 'rng' | 'widthUnits';
-/** `devTimescale`: Faktor des Zeitraffers, nur im Dev-Mode des Servers (docs/protocol.md › Dev-Aktionen). */
-export type WorldState = Omit<World, StaticKey> & { events: GameEvent[]; depth: number; devTimescale?: number };
+/** `devTimescale`: Faktor des Zeitraffers, `devPaused`: Dev-Pause, beide nur im Dev-Mode des Servers (docs/protocol.md › Dev-Aktionen). */
+export type WorldState = Omit<World, StaticKey> & { events: GameEvent[]; depth: number; devTimescale?: number; devPaused?: boolean };
 
 export type ServerMessage =
   | { t: 'welcome'; v: number; tickHz: number; limits: Limits }
@@ -85,4 +85,5 @@ export type DevResource = ResourceKind | 'iron' | 'crystal';
 export type DevMessage =
   | { t: 'dev'; action: 'gold'; slot: number; amount: number }
   | { t: 'dev'; action: 'material'; slot: number; resource: DevResource; amount: number }
-  | { t: 'dev'; action: 'timescale'; factor: number };
+  | { t: 'dev'; action: 'timescale'; factor: number }
+  | { t: 'dev'; action: 'pause'; paused: boolean };

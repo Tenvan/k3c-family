@@ -9,11 +9,11 @@ import (
 	"k3c/engine/room"
 )
 
-// devExamples sind die drei Beispiele der Nachricht dev (testdata/protocol/c2s-dev-*.json), roh gesendet.
+// devExamples sind die Beispiele der Nachricht dev (testdata/protocol/c2s-dev-*.json), roh gesendet.
 func devExamples(t *testing.T) []string {
 	t.Helper()
 	var out []string
-	for _, f := range []string{"gold", "material", "timescale"} {
+	for _, f := range []string{"gold", "material", "timescale", "pause"} {
 		raw, err := os.ReadFile("../../testdata/protocol/c2s-dev-" + f + ".json")
 		if err != nil || !json.Valid(raw) {
 			t.Fatalf("%s: %v", f, err)
