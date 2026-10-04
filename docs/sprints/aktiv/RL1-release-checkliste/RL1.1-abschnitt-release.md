@@ -1,6 +1,6 @@
 # RL1.1 · Abschnitt „Release“ in `docs/arbeitsweise.md`
 
-- **Status:** in Arbeit
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Branch:** rl1/1-abschnitt-release
@@ -37,10 +37,10 @@ Probelauf (RL1.2), Tag setzen, neue Tasks oder CI-Schritte (fehlt ein Befehl, Ti
 
 ## Fertig, wenn
 
-- [ ] AC-01: Abschnitt „Release“ vorhanden, jeder Punkt mit Befehl oder Datei und erwartetem Ergebnis.
-- [ ] AC-02: Liste verweist auf Golden amd64/arm64, `task check:all`, Migration, Dev-Reste, Pi-Image, Version, Credits, Tag-Schema.
-- [ ] AC-04: Rhythmus und Auslöser aus Q20 stehen in der Liste (Verweis auf den Beschluss).
-- [ ] `task check` grün.
+- [x] AC-01: Abschnitt „Release“ vorhanden, jeder Punkt mit Befehl oder Datei und erwartetem Ergebnis.
+- [x] AC-02: Liste verweist auf Golden amd64/arm64, `task check:all`, Migration, Dev-Reste, Pi-Image, Version, Credits, Tag-Schema.
+- [x] AC-04: Rhythmus und Auslöser aus Q20 stehen in der Liste (Verweis auf den Beschluss).
+- [x] `task check` grün.
 
 ## Prüfen
 
@@ -50,4 +50,9 @@ task check
 
 ## Ergebnis
 
-–
+- **AC-01** umgesetzt: `docs/arbeitsweise.md` › „Release“, Tabelle „Punkt · Prüfen mit · Erwartet“, 9 Punkte, 4 Zeilen Auslöser/Regeln darüber.
+- **AC-02** umgesetzt: Golden amd64 (`go`), Golden arm64 (`go-arm64`), `task check:all`, Migration, Dev-Reste, Pi-Image, Version, Credits, Tag-Schema (Verweis).
+- **AC-04** umgesetzt: Auslöser und Rhythmus nach Q20 stehen in der Liste (Verweis auf Q20 und B-180); B-170 trägt die Notiz dazu.
+- Existenzprüfung der Befehle und Dateien (Schritt 3): `task go:test`, `check:all`, `check:race` vorhanden; CI-Jobs `go`, `go-arm64`, `docker`; `release.yml`; `engine/sim/island_save.go`, `save_migration_test.go`, `testdata/saves/v1`, `v2`; `engine/room/dev.go` (`K3C_DEV`); `src/main.ts` (`?dev=1`); `src/tools/credits.test.ts`; `/api/health` liefert `version`. Nichts fehlt, keine neuen Tickets.
+- Ungeprüft (Sache von RL1.2): ob die Punkte grün sind. Der Dev-Rest-Punkt hat keinen eigenen Befehl, nur Datei und Verhalten.
+- `task check` grün (siehe Commit).

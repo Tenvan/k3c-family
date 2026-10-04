@@ -59,3 +59,4 @@ keine (Q20 geklärt 2026-10-03)
 ## Notizen
 
 Quelle: `docs/plan-weiterentwicklung.md` Schiene R, Lücken 16 und 22.
+Q20 (2026-10-03) gilt vor dem Wortlaut des Fragenkatalog-Entwurfs („nach jeder Phase“); die Liste steht seit RL1.1 in `docs/arbeitsweise.md` › „Release“.
