@@ -64,7 +64,7 @@ Auf der Xbox läuft der `AudioContext` schon vor der ersten Geste, eine Controll
 | SO1.1 | `SO1.1-mixer-lautstaerke.md` | Umsetzung | autonom | fertig |
 | SO1.2 | `SO1.2-entsperren-format-atlas.md` | Umsetzung | autonom | fertig |
 | SO1.3 | `SO1.3-daempfung-demo.md` | Umsetzung | autonom | fertig |
-| SO1.4 | `SO1.4-review.md` | Review | autonom | offen |
+| SO1.4 | `SO1.4-review.md` | Review | autonom | in Arbeit |
 | SO1.5 | `SO1.5-hoerprobe-tv.md` | Workshop | Mensch | offen |
 
 Bei `Reife: Entwurf` genügen Stichpunkte mit den Kriterien in Klammern statt Session-Dateien. Vor dem Aktivieren
