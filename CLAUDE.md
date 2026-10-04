@@ -6,6 +6,7 @@ Zielplattform ist **Edge auf der Xbox** (Gamepad API), gehostet im Heimnetz. Die
 - Design & Regeln: `docs/game-design.md` (nur bei Bedarf lesen)
 - Aktueller Stand & nächste Schritte: `docs/roadmap.md`
 - **Arbeitsweise:** `docs/arbeitsweise.md` (Domänen, autonomer Ablauf, Review, Komplexitäts-Budget) – vor jeder Session lesen.
+- **Glossar:** `docs/glossar.md` – verbindliche Begriffe; vor jeder Session lesen, neue Begriffe dort zuerst eintragen.
 - **Branches:** Entwickelt wird auf `develop`, PRs zielen auf `develop`; **ein PR je Sprint** (Branch `sprint/<präfix>`, ein Commit je Session). `main` ist geschützt, nur Releases (Fast-Forward durch den Nutzer).
 - **Sprints:** `docs/sprints/aktiv/` lesen und die nächste offene Session nehmen. `docs/sprints/geplant/` nur beim
   Planen lesen, `docs/sprints/erledigt/` nur auf Nachfrage. Übersicht: `docs/sprints/README.md`.
