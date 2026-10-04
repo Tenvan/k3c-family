@@ -1,6 +1,6 @@
 # SO3.2 · Kandidatenliste, Abspielen, Crossfade-Probe, Controller-Bedienung
 
-- **Status:** offen
+- **Status:** in Arbeit
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Branch:** so3/2-kandidaten-abspielen

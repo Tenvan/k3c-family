@@ -64,7 +64,7 @@ Audio gesperrt → Hinweis zum Entsperren; Kandidat lädt nicht → Eintrag grau
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
 | SO3.1 | `SO3.1-seite-rahmen.md` | Umsetzung | autonom | fertig |
-| SO3.2 | `SO3.2-kandidaten-abspielen.md` | Umsetzung | autonom | offen |
+| SO3.2 | `SO3.2-kandidaten-abspielen.md` | Umsetzung | autonom | in Arbeit |
 | SO3.3 | `SO3.3-abnahme-tv.md` | Workshop | Mensch | offen |
 | SO3.4 | `SO3.4-review.md` | Review | autonom | offen |
 
