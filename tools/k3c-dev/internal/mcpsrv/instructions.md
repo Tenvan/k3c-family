@@ -49,7 +49,7 @@ zurückgeben.
 - Tickets, Sprints und Sessions (`docs/backlog/`, `docs/sprints/`) **nur** über diese Tools ändern, nicht von Hand: sie
   halten Vorlage, Nummer, Index, Session-Tabelle, Fahrplan und Ablage (`archiv/`, `geplant/` → `aktiv/` → `erledigt/`) gleich.
 - `plan_list {kind?, status?, domain?, sprint?, archive?}` für den Überblick, `plan_get {id}` für ein Dokument
-  (`B-205`, `M8`, `M8.1`).
+  (`B-210`, `M8`, `M8.1`).
 - `plan_create {kind, slug, title, id?, fields}`: Ticket (Felder `Domäne`, `Typ`, `Prio`), Sprint (`id`, `Domäne`) oder
   Session (`id` wie `M8.5`) als Kopie der Vorlage; danach die Abschnitte mit `plan_section {id, section, text}` füllen.
 - `plan_set {id, fields}` setzt Kopf-Felder, z. B. `{"Status": "fertig"}`; Ticket `erledigt`/`verworfen` wandert ins

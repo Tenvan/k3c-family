@@ -9,7 +9,7 @@ import (
 	"time"
 )
 
-// NewDoc beschreibt ein neues Ticket, einen Sprint oder eine Session (B-205). ID nur bei Sprint (M9) und Session
+// NewDoc beschreibt ein neues Ticket, einen Sprint oder eine Session (B-210). ID nur bei Sprint (M9) und Session
 // (M9.1); ein Ticket bekommt die nächste freie Nummer.
 type NewDoc struct {
 	Kind   string            `json:"kind"`

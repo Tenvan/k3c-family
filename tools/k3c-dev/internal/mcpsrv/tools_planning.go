@@ -31,7 +31,7 @@ type planCreateIn struct {
 	Fields map[string]string `json:"fields,omitempty" jsonschema:"Kopf-Felder; Ticket braucht Domäne, Typ, Prio; Sprint braucht Domäne"`
 }
 
-// registerPlanning sind die Planungs-Tools (B-205): lesen und schreiben docs/sprints und docs/backlog.
+// registerPlanning sind die Planungs-Tools (B-210): lesen und schreiben docs/sprints und docs/backlog.
 func registerPlanning(s *Server) {
 	closed, destructive, yes := false, false, true
 	write := &mcp.ToolAnnotations{DestructiveHint: &destructive, OpenWorldHint: &closed}

@@ -1,4 +1,4 @@
-# B-206 · Die Planungsseite von k3c-dev ist eine React-Ansicht aus denselben Daten wie die MCP-Tools
+# B-211 · Die Planungsseite von k3c-dev ist eine React-Ansicht aus denselben Daten wie die MCP-Tools
 
 - **Domäne:** SRV
 - **Typ:** Schuld
@@ -8,7 +8,7 @@
 - **Erstellt:** 2026-10-04
 - **Spec:** freigegeben
 - **Revision:** 2
-- **Freigabe:** 2026-10-04, Chat (Ralf), Revision 2 (Ergänzung Glossar), durch 🧑; umfasst B-205, B-206, B-207
+- **Freigabe:** 2026-10-04, Chat (Ralf), Revision 2 (Ergänzung Glossar), durch 🧑; umfasst B-210, B-211, B-212
 
 ## Ausgangslage
 
@@ -33,7 +33,7 @@ Die Seite rendert React aus `planning.Data`, denselben Daten, die `plan_list` li
 
 ## Nicht-Ziele
 
-Bearbeiten in der Oberfläche (ändert nur MCP, B-205); GitHub-Status (B-207); neue Abhängigkeit (Radix und React reichen).
+Bearbeiten in der Oberfläche (ändert nur MCP, B-210); GitHub-Status (B-212); neue Abhängigkeit (Radix und React reichen).
 
 ## Regeln und Einschränkungen
 

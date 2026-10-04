@@ -1,4 +1,4 @@
-# B-205 · Agenten pflegen Tickets, Sprints und Sessions über MCP-Tools von k3c-dev
+# B-210 · Agenten pflegen Tickets, Sprints und Sessions über MCP-Tools von k3c-dev
 
 - **Domäne:** SRV
 - **Typ:** Idee
@@ -8,7 +8,7 @@
 - **Erstellt:** 2026-10-04
 - **Spec:** freigegeben
 - **Revision:** 1
-- **Freigabe:** 2026-10-04, Chat (Ralf), Revision 1, durch 🧑; umfasst B-205, B-206, B-207 (Sprint-Revision 2 bestätigt)
+- **Freigabe:** 2026-10-04, Chat (Ralf), Revision 1, durch 🧑; umfasst B-210, B-211, B-212 (Sprint-Revision 2 bestätigt)
 
 ## Ausgangslage
 
@@ -24,7 +24,7 @@ Agenten (autonome Sessions, Planung), 🧑 (Freigaben bleiben bei 🧑).
 
 ## Anforderungen
 
-- **Lesen:** Liste von Tickets, Sprints und Sessions mit Filter (Art, Status, Domäne, Sprint); ein Dokument als Markdown nach ID (`B-205`, `M8`, `M8.1`).
+- **Lesen:** Liste von Tickets, Sprints und Sessions mit Filter (Art, Status, Domäne, Sprint); ein Dokument als Markdown nach ID (`B-210`, `M8`, `M8.1`).
 - **Anlegen:** Ticket, Sprint (in `geplant/`) und Session als Kopie der Vorlage aus `docs/vorlagen/`, mit nächster freier Nummer (Ticket) bzw. gegebener ID; Index-Zeile, Session-Tabelle und Fahrplan-Zeile entstehen mit.
 - **Ändern:** Kopf-Felder (`Status`, `Prio`, `Sprint`, `Reife`, `Spec`, `Revision`, `Freigabe`, …) und einzelne `## `-Abschnitte. Folgeänderungen laufen mit: Index-Zeile, Session-Status in der Sprint-README, Ticket auf `erledigt`/`verworfen` → `backlog/archiv/` und Index-Abschnitt „Archiv“, Sprint-Status → Ordner `geplant/` ↔ `aktiv/` → `erledigt/` und Fahrplan.
 - **Löschen:** nur Sprints und Sessions mit `Spec: Entwurf` im Ordner `geplant/`; Tickets werden nie gelöscht, sondern `verworfen`.
@@ -33,7 +33,7 @@ Agenten (autonome Sessions, Planung), 🧑 (Freigaben bleiben bei 🧑).
 
 ## Nicht-Ziele
 
-Commits, Push und PRs (bleiben beim Agenten bzw. `git`); Freigabe-Logik (die Zustimmung von 🧑 prüft kein Tool); Bearbeiten in der Oberfläche (B-206 zeigt nur an); erledigte Sprints umschreiben.
+Commits, Push und PRs (bleiben beim Agenten bzw. `git`); Freigabe-Logik (die Zustimmung von 🧑 prüft kein Tool); Bearbeiten in der Oberfläche (B-211 zeigt nur an); erledigte Sprints umschreiben.
 
 ## Regeln und Einschränkungen
 
@@ -41,10 +41,10 @@ Domäne SRV, nur `tools/k3c-dev/`. Pfade entstehen nur aus geprüften IDs (`^B-\
 
 ## Beispiele
 
-- `plan_create {kind: ticket, domain: SRV, typ: Idee, prio: mittel, title: "…", slug: "kurzname"}` → `B-208 angelegt: docs/backlog/B-208-kurzname.md (Index ergänzt)`.
-- `plan_set {id: B-205, fields: {Status: erledigt}}` → Datei nach `backlog/archiv/`, Index-Zeile in „Archiv“.
+- `plan_create {kind: ticket, domain: SRV, typ: Idee, prio: mittel, title: "…", slug: "kurzname"}` → `B-213 angelegt: docs/backlog/B-213-kurzname.md (Index ergänzt)`.
+- `plan_set {id: B-210, fields: {Status: erledigt}}` → Datei nach `backlog/archiv/`, Index-Zeile in „Archiv“.
 - `plan_set {id: M8.1, fields: {Status: fertig}}` → Session-Datei und Zeile der Session-Tabelle auf `fertig`.
-- `plan_section {id: B-208, section: Ausgangslage, text: "…"}` → nur dieser Abschnitt ersetzt.
+- `plan_section {id: B-213, section: Ausgangslage, text: "…"}` → nur dieser Abschnitt ersetzt.
 
 ## Ausnahme- und Fehlerfälle
 

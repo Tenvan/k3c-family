@@ -11,7 +11,7 @@ import (
 	"sync"
 )
 
-// Schreibwege (B-205): Jede Änderung wird erst vollständig berechnet (changeSet) und dann geschrieben; Pfade entstehen
+// Schreibwege (B-210): Jede Änderung wird erst vollständig berechnet (changeSet) und dann geschrieben; Pfade entstehen
 // nur aus geprüften IDs und Kurznamen unter docs/sprints und docs/backlog.
 
 var (

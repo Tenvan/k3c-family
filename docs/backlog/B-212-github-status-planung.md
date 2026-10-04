@@ -1,4 +1,4 @@
-# B-207 · k3c-dev zeigt PR, CI und Merge-Konflikte je Sprint aus GitHub
+# B-212 · k3c-dev zeigt PR, CI und Merge-Konflikte je Sprint aus GitHub
 
 - **Domäne:** SRV
 - **Typ:** Idee
@@ -8,11 +8,11 @@
 - **Erstellt:** 2026-10-04
 - **Spec:** freigegeben
 - **Revision:** 1
-- **Freigabe:** 2026-10-04, Chat (Ralf), Revision 1, durch 🧑; umfasst B-205, B-206, B-207 (Sprint-Revision 2 bestätigt)
+- **Freigabe:** 2026-10-04, Chat (Ralf), Revision 1, durch 🧑; umfasst B-210, B-211, B-212 (Sprint-Revision 2 bestätigt)
 
 ## Ausgangslage
 
-Ob der PR eines Sprints (`sprint/<präfix>` → `develop`) offen ist, die CI grün läuft oder ein Merge-Konflikt besteht, sieht man nur auf GitHub oder per `gh` in der Shell. Die Planungsseite (B-206) kennt nur lokale Worktrees.
+Ob der PR eines Sprints (`sprint/<präfix>` → `develop`) offen ist, die CI grün läuft oder ein Merge-Konflikt besteht, sieht man nur auf GitHub oder per `gh` in der Shell. Die Planungsseite (B-211) kennt nur lokale Worktrees.
 
 ## Ziel
 
