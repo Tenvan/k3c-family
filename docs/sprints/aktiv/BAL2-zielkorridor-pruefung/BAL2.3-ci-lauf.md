@@ -1,6 +1,6 @@
 # BAL2.3 · CI-Lauf mit kleiner Seed-Menge
 
-- **Status:** offen
+- **Status:** in Arbeit
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Branch:** bal2/3-ci-lauf
