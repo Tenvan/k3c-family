@@ -12,7 +12,7 @@
 
 ## Ausgangslage
 
-Es gibt keine Bosse, weder im Code noch in den Daten (`docs/rules/ist-gegner-bosse.md` § 3).
+Es gibt keine Bosse, weder im Code noch in den Daten (`docs/rules/archiv/ist-gegner-bosse.md` § 3).
 
 ## Ziel
 

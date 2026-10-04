@@ -1,6 +1,6 @@
 # Regelwerk: Gegner und Wellen
 
-Beschlossen von 🧑 im Workshop R4.2 am 2026-10-02 (Grundlage: [`ist-gegner-bosse.md`](ist-gegner-bosse.md); Rahmen: [`wirtschaft.md`](wirtschaft.md), [`stufen.md`](stufen.md), [`monarch.md`](monarch.md), [`buerger.md`](buerger.md)).
+Beschlossen von 🧑 im Workshop R4.2 am 2026-10-02 (Grundlage: [`archiv/ist-gegner-bosse.md`](archiv/ist-gegner-bosse.md); Rahmen: [`wirtschaft.md`](wirtschaft.md), [`stufen.md`](stufen.md), [`monarch.md`](monarch.md), [`buerger.md`](buerger.md)).
 Je Regel: **Regel · Begründung · Verweis auf `data/` · Zielkorridor**. Werte sind **Startwerte**, Feintuning mit dem Balancing-Tester (B-099).
 Zielkorridore gelten im Standardszenario **Normal, Wald-Start, 2 Spieler, Bot „sparsam“, je 100 Seeds**. Jede Regel gilt für 2+ Spieler. Bosse und Events: R4.3 (`bosse.md`).
 

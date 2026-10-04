@@ -1,11 +1,11 @@
 # F5 · INF · Doku-Drift, Version und Landing-Kacheln
 
-- **Status:** geplant
+- **Status:** erledigt
 - **Domäne:** INF
 - **Reife:** bereit
 - **Einschiebbar:** nein
 - **Tickets:** B-141, B-079
-- **Start-Commit:** –
+- **Start-Commit:** 605f467
 - **Spec:** freigegeben
 - **Revision:** 1
 - **Freigabe:** 2026-10-03, Chat (Ralf), Revision 1; umfasst B-141, B-079
@@ -59,11 +59,13 @@ Entschieden am 2026-10-03: Es bleiben nur Kacheln mit Parametern, die die Lobby 
 
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
-| F5.1 | `F5.1-doku-drift.md` | Umsetzung | autonom | offen |
-| F5.2 | `F5.2-version-cache.md` | Umsetzung | autonom | offen |
-| F5.3 | `F5.3-landing-kacheln.md` | Umsetzung | autonom | offen |
-| F5.4 | `F5.4-review.md` | Review | autonom | offen |
+| F5.1 | `F5.1-doku-drift.md` | Umsetzung | autonom | fertig |
+| F5.2 | `F5.2-version-cache.md` | Umsetzung | autonom | fertig |
+| F5.3 | `F5.3-landing-kacheln.md` | Umsetzung | autonom | fertig |
+| F5.4 | `F5.4-review.md` | Review | autonom | fertig |
 
 ## Abnahme
 
-–
+- 2026-10-03, Review F5.4: AC-01, AC-02 (F5.1), AC-03 bis AC-05 (F5.2), AC-06 (F5.3) belegt in den Session-Ergebnissen; AC-04 Optik am TV angenommen, Validierung offen (🧑); `task check` und `task check:go` grün (`-race` lokal ohne C-Compiler, die CI prüft es).
+- Keine schweren Befunde; `/api/health` behält `ok: true`, keine Seitenregel berührt, Version enthält kein Geheimnis. Beobachtung ohne Befund: Fußzeile zeigt „Client … · Server …“ statt der Spec-Reihenfolge (nur Reihenfolge, beide Versionen und Abweichung belegt). Keine neuen Tickets; B-141 und B-079 archiviert.
+- Version: v0.6.0 vorgeschlagen (Minor: `/api/health` liefert die Version, Landingpage markiert Versionsabweichung, Kacheln führen in die Lobby; gemeinsam mit F4, für das v0.6.0 schon vorgeschlagen ist, solange es nicht gesetzt ist); gesetzt erst nach Bestätigung durch 🧑.
