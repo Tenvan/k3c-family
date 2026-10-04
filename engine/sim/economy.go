@@ -88,7 +88,7 @@ func nearest[T any](items []*T, pos func(*T) float64, x, r float64, ok func(*T) 
 // findPayTarget: Was würde eine Münze gerade bezahlen? Bauplatz vor Landstreicher vor Ressource.
 func findPayTarget(w *World, p *Player) *payTarget {
 	r := economy.PayRangeUnits
-	if s := nearest(w.Sites, func(s *Site) float64 { return s.X }, p.X, r, sitePayable); s != nil {
+	if s := nearest(w.Sites, func(s *Site) float64 { return s.X }, p.X, r, func(s *Site) bool { return sitePayable(w, s) }); s != nil {
 		return &payTarget{site: s}
 	}
 	if t := nearest(w.Troops, func(t *Troop) float64 { return t.X }, p.X, r, func(t *Troop) bool { return t.Kind == "vagrant" }); t != nil {
@@ -104,9 +104,10 @@ func findPayTarget(w *World, p *Player) *payTarget {
 	return nil
 }
 
-func sitePayable(s *Site) bool {
+// sitePayable: Nimmt der Platz gerade Münzen? Unbezahlte Linien-Plätze nur nach der Linien-Regel (lines.go).
+func sitePayable(w *World, s *Site) bool {
 	if s.State == "unpaid" {
-		return true
+		return lineOpen(w, s)
 	}
 	if s.Kind == "workshop" && s.State == "built" {
 		return s.Bows < buildings["workshop"].BowRack && s.BowPaidGold < troops["archer"].Cost.Gold
@@ -139,7 +140,7 @@ func refundPending(w *World, p *Player) {
 	back := 0
 	switch kind {
 	case "site":
-		if s := siteByID(w, id); s != nil && sitePayable(s) {
+		if s := siteByID(w, id); s != nil && sitePayable(w, s) {
 			if s.State == "unpaid" {
 				back = min(amount, s.PaidGold)
 				s.PaidGold -= back
@@ -188,7 +189,7 @@ func payOneCoin(w *World, p *Player) {
 	p.PayAmount++
 	switch {
 	case target.site != nil:
-		paySite(p, target.site)
+		paySite(w, p, target.site)
 	case target.troop != nil:
 		payVagrant(w, p, target.troop)
 	default:
@@ -201,7 +202,7 @@ func payOneCoin(w *World, p *Player) {
 	}
 }
 
-func paySite(p *Player, s *Site) {
+func paySite(w *World, p *Player, s *Site) {
 	if s.State == "unpaid" {
 		s.PaidGold++
 		if s.PaidGold >= buildings[s.Kind].Cost.Gold {
@@ -210,7 +211,7 @@ func paySite(p *Player, s *Site) {
 	} else {
 		s.BowPaidGold++
 	}
-	if !sitePayable(s) {
+	if !sitePayable(w, s) {
 		clearPending(p)
 	}
 }

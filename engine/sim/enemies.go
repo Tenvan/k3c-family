@@ -253,12 +253,12 @@ func attack(w *World, e *Enemy, t *target) {
 		return
 	}
 	if e.has("ranged") {
-		p := &Projectile{ID: w.newID(), X: e.X, TargetID: t.id, Team: "enemy", Damage: e.Damage, Speed: 20}
+		p := &Projectile{ID: w.newID(), X: e.X, TargetID: t.id, Team: "enemy", Damage: e.Damage, Speed: 20, Cause: e.Kind}
 		w.Projectiles = append(w.Projectiles, p)
 		arrowEvent(w, p, e.ID)
 	} else {
 		emit(w, "strike", Event{"from": e.ID, "x": unitX(e.X)})
-		applyDamage(w, t.id, e.Damage)
+		applyDamageBy(w, t.id, e.Damage, e.Kind)
 		if t.player != nil {
 			frostArmorHit(t.player, e)
 		}
