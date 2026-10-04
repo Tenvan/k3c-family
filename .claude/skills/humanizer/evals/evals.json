@@ -1,0 +1,53 @@
+{
+  "skill": "humanizer",
+  "language": "de",
+  "evals": [
+    {
+      "id": "essay_intro_kilastig",
+      "prompt": "/humanizer KI-gestützte Programmierung ist ein beständiges Zeugnis für das transformative Potenzial großer Sprachmodelle und markiert einen entscheidenden Wendepunkt in der Evolution der Softwareentwicklung. In der heutigen sich rasant entwickelnden technologischen Landschaft prägen diese bahnbrechenden Werkzeuge—angesiedelt an der Schnittstelle von Forschung und Praxis—die Art und Weise, wie Engineers ideieren, iterieren und ausliefern.",
+      "expected_output": "Vier Markdown-Sektionen: Entwurf, KI-Audit, Finale Fassung, Änderungen.",
+      "files": [
+        "SKILL.md",
+        "references/patterns.md"
+      ],
+      "expectations": [
+        "Output enthaelt die vier Markdown-Sektionen: ## Entwurf, ## KI-Audit, ## Finale Fassung, ## Aenderungen",
+        "Bedeutungsaufblaehungen (Zeugnis, Wendepunkt, sich rasant entwickelnde Landschaft) sind in der Finalen Fassung entfernt",
+        "Em-Dash (Geviertstrich) ist durch Halbgeviertstrich mit Leerzeichen oder Komma ersetzt",
+        "Englische Anglizismen (Engineers, ideieren) sind durch deutsche Verben ersetzt",
+        "KI-Audit nennt mindestens einen verbleibenden Tell, ist also nicht leer",
+        "Finale Fassung unterscheidet sich strukturell vom Entwurf, nicht nur stilistisch",
+        "Kernaussage ueber KI-Coding-Assistenten bleibt erhalten"
+      ]
+    },
+    {
+      "id": "marketing_inline_header_liste",
+      "prompt": "/humanizer In der heutigen schnelllebigen Geschäftswelt ist es entscheidend, dass Unternehmen ihre Prozesse optimieren. Unsere Plattform bietet eine umfassende Lösung:\n\n- **Performance:** Die Performance wurde durch optimierte Algorithmen verbessert.\n- **Sicherheit:** Die Sicherheit wurde durch Verschlüsselung erhöht.\n- **Skalierbarkeit:** Die Skalierbarkeit wurde durch eine neue Architektur gesteigert.\n\nZudem ermöglicht unsere Plattform es Unternehmen, nicht nur ihre Effizienz zu steigern, sondern auch ihre Wettbewerbsfähigkeit zu erhöhen.",
+      "expected_output": "Vier Sektionen wie oben. Inline-Header-Liste wird aufgeloest, 'Nicht nur ... sondern auch' entfernt, Einleitungsfloskel weg.",
+      "files": [
+        "SKILL.md",
+        "references/patterns.md"
+      ],
+      "expectations": [
+        "Inline-Header-Liste (Markdown-Listenpunkte mit fettem Begriff plus Doppelpunkt) ist in der Finalen Fassung aufgeloest",
+        "Einleitungsfloskel 'In der heutigen schnelllebigen Geschaeftswelt' entfernt",
+        "Wendung 'nicht nur ... sondern auch' entfernt",
+        "Buzzwords 'umfassend', 'entscheidend', 'optimieren' reduziert oder ersetzt",
+        "Finale Fassung enthaelt mindestens eine konkrete Aussage statt Versprechen (Zahl, Test, Beispiel) oder transparent markierte Luecke",
+        "Anfuehrungszeichen sind durchgehend deutsch (typografisch) oder fehlen ganz, nicht englisch-gerade"
+      ]
+    },
+    {
+      "id": "kein_text_nur_aufruf",
+      "prompt": "/humanizer",
+      "expected_output": "Skill fordert Text an, beginnt nicht mit erfundenem Beispieltext.",
+      "files": [
+        "SKILL.md"
+      ],
+      "expectations": [
+        "Skill antwortet mit einer Aufforderung, Text bereitzustellen, nicht mit halluziniertem Beispieltext",
+        "Antwort verweist auf die Aufruf-Syntax /humanizer mit Text-Argument oder erklaert kurz, dass Eingabe fehlt"
+      ]
+    }
+  ]
+}

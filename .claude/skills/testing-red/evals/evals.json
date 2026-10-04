@@ -1,0 +1,29 @@
+{
+  "skill_name": "testing-red",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Wir wollen testgetrieben anfangen. Schreibe fuer die neue E-Mail-Validierung zuerst nur den naechsten failing test und noch keinen Produktionscode.",
+      "expected_output": "Der Skill leitet aus dem Vorhaben einen einzelnen failing test ab und bleibt strikt in der Red-Phase.",
+      "files": [],
+      "expectations": [
+        "The workflow focuses on one missing behavior at a time.",
+        "No production code is introduced during the run.",
+        "The proposed test is behavior-focused and failure-driven.",
+        "The output makes the expected failure mode explicit."
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "Ein Bugreport beschreibt einen Grenzfall beim CSV-Import. Bitte beginne mit einem failing test, der genau diesen Grenzfall dokumentiert.",
+      "expected_output": "Der Skill verwendet den Problemkontext, formuliert daraus einen praezisen failing test und haelt die Ausfuehrung auf die Red-Phase beschraenkt.",
+      "files": [],
+      "expectations": [
+        "The test is derived from the bug context rather than generic boilerplate.",
+        "The run limits itself to a single failing test.",
+        "The test name expresses the expected behavior clearly.",
+        "The response stays in the Red phase without implementation steps."
+      ]
+    }
+  ]
+}
