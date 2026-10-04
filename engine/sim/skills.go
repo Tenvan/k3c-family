@@ -15,6 +15,13 @@ var skillEffects = map[string]func(w *World, p *Player, e skillEffect) bool{
 	"stun":      castStun,
 	"shield":    castShield,
 	"lastStand": castLastStand,
+	// Zauberer (skills_caster.go) und Heiler (skills_healer.go); Divine Shield nutzt "shield".
+	"areaDamage":     castAreaDamage,
+	"slow":           castSlow,
+	"damageOverTime": castDamageOverTime,
+	"heal":           castHeal,
+	"groupHeal":      castGroupHeal,
+	"reviveTroops":   castReviveTroops,
 }
 
 // stepSkills senkt Abklingzeiten und Skill-Effekte des Spielers und löst den Slot aus cmd.Skill aus. Nur für lebende

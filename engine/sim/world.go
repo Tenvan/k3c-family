@@ -112,6 +112,7 @@ func Step(w *World, commands []PlayerCommand, dt float64) {
 	stepSites(w)
 	stepTroops(w, dt)
 	stepEnemies(w, dt)
+	stepStorms(w, dt)
 	stepProjectiles(w, dt)
 	removeDeadEnemies(w)
 	alive := w.Troops[:0]

@@ -17,10 +17,11 @@ type SkillData struct {
 }
 
 // skillEffect ist die Wirkung eines aktiven Skills; Type wählt die Funktion in skills.go, die übrigen Felder sind
-// Parameter je Typ (Units, Sekunden, HP).
+// Parameter je Typ (Units, Sekunden, HP; Factor und HPFraction als Anteil).
 type skillEffect struct {
-	Type                         string
-	Radius, Range, Duration, HP float64
+	Type                                          string
+	Radius, Range, Duration, HP                   float64
+	Damage, Factor, PerSecond, Amount, HPFraction float64
 }
 
 // presetData ist eine Startverteilung aus monarch.json › presets (Basiswerte liest der Code nicht, S1.1).

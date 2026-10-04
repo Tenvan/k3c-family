@@ -136,6 +136,19 @@ type Enemy struct {
 	Stun     float64 `json:"stun,omitempty"`
 	TauntID  int     `json:"tauntId,omitempty"`
 	TauntFor float64 `json:"tauntFor,omitempty"`
+	// Slow: Faktor der Geschwindigkeit (Ice Wall, skills_caster.go) für SlowFor Sekunden; Angriffe bleiben gleich.
+	Slow    float64 `json:"slow,omitempty"`
+	SlowFor float64 `json:"slowFor,omitempty"`
+}
+
+// Storm ist ein laufender Lightning Storm (skills_caster.go): PerSecond Schaden je Sekunde an Gegnern im Radius um X,
+// noch Left Sekunden; Owner ist die ID des wirkenden Spielers.
+type Storm struct {
+	X         float64 `json:"x"`
+	Radius    float64 `json:"radius"`
+	PerSecond float64 `json:"perSecond"`
+	Left      float64 `json:"left"`
+	Owner     int     `json:"owner"`
 }
 
 // Projectile ist ein Pfeil oder Geschoss.
@@ -220,6 +233,7 @@ type World struct {
 	Camps       []*Camp         `json:"camps"`
 	Portals     []float64       `json:"portals"`
 	SpawnQueue  []QueuedSpawn   `json:"spawnQueue"`
+	Storms      []*Storm        `json:"storms,omitempty"` // laufende Lightning Storms in Wirk-Reihenfolge
 
 	Stock       *Stock  `json:"stock"` // Baumaterial gehört allen (in einer Insel: allen Stufen), Gold hat jeder Spieler selbst
 	SkillPoints int     `json:"skillPoints"`
