@@ -29,14 +29,28 @@ export interface SpriteSpec {
   alpha?: number;
 }
 
+/** Reittier: Sheet, Zoom und Sattelpunkt je Frame (Frame-Pixel, Blick nach rechts). */
+export interface MountData {
+  label: string;
+  sheet: string;
+  scale: number;
+  tint?: string;
+  saddle: Partial<Record<'idle' | 'run', [number, number][]>>;
+}
+
 const DATA = spritesJson as unknown as {
   sheets: Record<string, SheetData>;
+  mounts: Record<string, MountData>;
+  riderWaist: number;
   players: SpriteSpec[];
   troops: Record<string, SpriteSpec>;
   enemies: Record<string, SpriteSpec>;
 };
 
 export const SHEETS = DATA.sheets;
+export const MOUNTS = DATA.mounts;
+/** Anteil der Figurhöhe, der über dem Sattel sichtbar ist */
+export const RIDER_WAIST = DATA.riderWaist;
 export const PLAYER_SPRITES = DATA.players;
 export const TROOP_SPRITES = DATA.troops;
 export const ENEMY_SPRITES = DATA.enemies;

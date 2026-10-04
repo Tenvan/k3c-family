@@ -59,7 +59,7 @@ Reihenfolge wie die Nummern. Voraussetzung: S1.3 hat `data/monarch.json › moun
 
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
-| S7.1 | `S7.1-reittier-pose.md` | Umsetzung | autonom | in Arbeit |
+| S7.1 | `S7.1-reittier-pose.md` | Umsetzung | autonom | fertig |
 | S7.2 | `S7.2-renderer-anbindung.md` | Umsetzung | autonom | offen |
 | S7.3 | `S7.3-abnahme-geraet.md` | Workshop | Mensch | offen |
 | S7.4 | `S7.4-review.md` | Review | autonom | offen |
