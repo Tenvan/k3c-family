@@ -10,6 +10,7 @@ Reihenfolge in Wellen, Bahnen je Domäne und Zuordnung Mensch/autonom (zwei Acco
 
 | Sprint | Domäne | Thema | Am Ende sichtbar | Ordner |
 |---|---|---|---|---|
+| BAL1 | SIM | Balancing-Tester: Kern und Replay (einschiebbar) | ein Befehl im Terminal erzeugt den Kennzahlen-Report, eine Replay-Datei lässt sich in k3c-dev abspielen und liefert denselben Endzustand-Hash | `aktiv/BAL1-balancing-tester-kern/` |
 
 ## Offen am Gerät
 
@@ -56,7 +57,6 @@ dann über den Go-Server mit mehreren Räumen und gemischten Spielern.
 
 | Sprint | Domäne | Thema | Reife | Ordner |
 |---|---|---|---|---|
-| BAL1 | SIM | Balancing-Tester: Kern und Replay | bereit | `geplant/BAL1-balancing-tester-kern/` |
 | BAL2 | SIM | Zielkorridor-Prüfung und `task balance` | bereit | `geplant/BAL2-zielkorridor-pruefung/` |
 | BAL3 | SIM | Bot-Profile, Sensitivität und Grad-Kurven | Entwurf | `geplant/BAL3-bot-profile-sensitivitaet/` |
 | BAL4 | REG | Abgleich Spielmetrik und Simulator | Entwurf | `geplant/BAL4-metrik-abgleich/` |

@@ -1,6 +1,6 @@
 # BAL1.1 · Szenario-Matrix, zwei Bot-Profile, Kennzahlen als JSON
 
-- **Status:** offen
+- **Status:** in Arbeit
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Branch:** bal1/1-bots-kennzahlen
