@@ -17,8 +17,12 @@ type Island struct {
 	// Stock ist der Vorrat der Insel; alle Stufen zeigen auf denselben Wert.
 	Stock *Stock
 	// Options: Grad, Ziel, Niederlage-Modus (island_options.go).
-	Options    IslandOptions
-	nextPlayer int
+	Options IslandOptions
+	// SkillPool: Fund-Pool der Insel (monarch.md § 3), alle Stufen spiegeln ihn nach World.SkillPoints (addPoolPoints).
+	SkillPool int
+	// ChestsOpened zählt die geöffneten Truhen aller Stufen (jede n-te gibt einen Pool-Punkt).
+	ChestsOpened int
+	nextPlayer   int
 	// travel: Reisefortschritt je Spielerindex (island_travel.go); nur über die Stufen- und Spielerlisten iterieren.
 	travel map[int]*islandTravel
 }

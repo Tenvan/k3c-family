@@ -34,7 +34,7 @@ func TestIslandSaveRoundTrip(t *testing.T) {
 	a, b, c := AddIslandPlayer(isl, 0), AddIslandPlayer(isl, 2), AddIslandPlayer(isl, 0)
 	a.Gold, b.Gold, c.Gold = 61, 22, 5
 	builtSite(t, isl.Stages[0], "wall").HP = 123
-	isl.Stages[1].SkillPoints = 3
+	addPoolPoints(isl.Stages[1], 3) // Pool der Insel, alle Stufen spiegeln ihn (S1.4)
 	addStock(isl.Stages[0], "wood", 40)
 	addStock(isl.Stages[2], "copper", 9)
 	runIsland(isl, []PlayerCommand{{MoveX: 1}, {}, {}}, 20)
@@ -51,8 +51,9 @@ func TestIslandSaveRoundTrip(t *testing.T) {
 			t.Errorf("Spieler %d: Index/Gold/Stufe weichen ab", p.Index)
 		}
 	}
-	if loaded.Stock.Wood != isl.Stock.Wood || loaded.Stock.Copper != 9 || loaded.Stages[1].SkillPoints != 3 {
-		t.Errorf("Vorrat oder Skill-Punkte weichen ab: %+v", *loaded.Stock)
+	if loaded.Stock.Wood != isl.Stock.Wood || loaded.Stock.Copper != 9 ||
+		loaded.SkillPool != isl.SkillPool || loaded.SkillPool < 3 || loaded.Stages[0].SkillPoints != loaded.SkillPool {
+		t.Errorf("Vorrat oder Pool weichen ab: %+v, Pool %d (%d)", *loaded.Stock, loaded.SkillPool, isl.SkillPool)
 	}
 	for _, w := range loaded.Stages {
 		if w.Stock != loaded.Stock {

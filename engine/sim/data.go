@@ -85,10 +85,7 @@ var (
 		StartTroops                        struct{ Peasant, Archer int }
 		Travel                             struct{ RangeUnits, Seconds float64 }
 	}]("hub.json")
-	monarch = load[struct {
-		Base                                           struct{ HP, Damage, Speed, Defense float64 }
-		SprintMultiplier, Acceleration, RespawnSeconds float64
-	}]("monarch.json")
+	monarch   = load[monarchData]("monarch.json")
 	enemyData = load[map[string]EnemyData]("enemies.json")
 	waves     = load[struct {
 		Table []struct {

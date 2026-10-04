@@ -97,6 +97,7 @@ func addPlayerAt(w *World, index int) *Player {
 		PayCooldown: 0.5, // der Beitritts-Tastendruck soll nicht gleich eine Münze ausgeben
 	}
 	w.Players = append(w.Players, p)
+	_ = ApplyPreset(w, p, presetFor(index)) // Startverteilung beim Beitritt, soweit Pool-Punkte frei sind
 	return p
 }
 
@@ -107,10 +108,12 @@ func Step(w *World, commands []PlayerCommand, dt float64) {
 	stepCycle(w, dt)
 	stepSpawns(w)
 	stepPlayers(w, commands, dt)
+	stepPassives(w, dt)
 	stepCamps(w, dt)
 	stepSites(w)
 	stepTroops(w, dt)
 	stepEnemies(w, dt)
+	stepStorms(w, dt)
 	stepProjectiles(w, dt)
 	removeDeadEnemies(w)
 	alive := w.Troops[:0]
