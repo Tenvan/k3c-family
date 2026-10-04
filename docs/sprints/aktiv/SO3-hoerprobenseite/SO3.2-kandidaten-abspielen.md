@@ -1,6 +1,6 @@
 # SO3.2 · Kandidatenliste, Abspielen, Crossfade-Probe, Controller-Bedienung
 
-- **Status:** in Arbeit
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Branch:** so3/2-kandidaten-abspielen
@@ -41,12 +41,12 @@ Auswahl der Kandidaten (SO2, SO4), Einbau ins Spiel, Änderungen am Audio-Kern (
 
 ## Fertig, wenn
 
-- [ ] AC-02: Liste nach Zustand und Ereignis mit Quelle und Lizenz, Abspielen funktioniert (Nachweis im Browser-Pane).
-- [ ] AC-03: Bedienung mit gemocktem Controller im Browser-Pane, B ohne Wirkung (am TV in SO3.3).
-- [ ] AC-04: Crossfade mit Rampe, Test der reinen Funktion (hörbar am TV in SO3.3).
-- [ ] AC-07: Bedienung mit Tastatur und `?touch=1` im Browser-Pane.
-- [ ] AC-08: keine fremde Audiodatei ohne Quelle und Lizenz in den Credits (B-165).
-- [ ] AC-06: `task check` grün; keine Datei > 400 Zeilen, keine Funktion > 60 Zeilen.
+- [x] AC-02: Liste nach Zustand und Ereignis mit Quelle und Lizenz, Abspielen funktioniert (Nachweis im Browser-Pane).
+- [x] AC-03: Bedienung mit gemocktem Controller im Browser-Pane, B ohne Wirkung (am TV in SO3.3).
+- [x] AC-04: Crossfade mit Rampe, Test der reinen Funktion (hörbar am TV in SO3.3).
+- [x] AC-07: Bedienung mit Tastatur und `?touch=1` im Browser-Pane.
+- [x] AC-08: keine fremde Audiodatei ohne Quelle und Lizenz in den Credits (B-165).
+- [x] AC-06: `task check` grün; keine Datei > 400 Zeilen, keine Funktion > 60 Zeilen.
 
 ## Prüfen
 
@@ -56,4 +56,12 @@ task check
 
 ## Ergebnis
 
-–
+`public/audio/kandidaten.json` (Liste: Gruppe, Name, Datei, Bus, Quelle, Lizenz) und selbst erzeugte Probe-Stücke `probe-a`/`probe-b` (`.ogg`, `.mp3`, ffmpeg-Befehl in `public/audio/README.md`). `src/tools/soundtestLogic.ts` (reine Logik) mit Test, `src/tools/soundtest.ts` und `soundtest.html` (Liste nach 8 Zuständen und Ereignissen mit Quelle und Lizenz, Abspielen, Stopp, Lautstärke, Überblenden über 2 s). Mixer und Formatwahl (`pickFile`) aus `src/audio/` wiederverwendet; `AudioCore` spielt nur Atlas-Sprites und hält Kontext/Mixer privat, daher eigener Kontext in der Seite (Ticket B-250). Kein `installPadScroll()`: Stick und Steuerkreuz wählen den Eintrag, die Auswahl scrollt selbst.
+
+- AC-02: umgesetzt (Gruppierung und Quelle/Lizenz je Eintrag, `soundtestLogic.test.ts`); Abspielen im Browser-Pane nicht geprüft (Auftrag ohne Browserprüfung), Hören am TV in SO3.3.
+- AC-03: umgesetzt, geprüft per Test `padActions` (Flanke, Taste 1 = B löst nichts aus); gemockter Controller im Browser-Pane nicht geprüft, am TV in SO3.3.
+- AC-04: umgesetzt, geprüft per Test `crossfadeCurves` (Enden 1/0, gleiche Leistung, Schrittweite < 0,05, kein Sprung); Anwendung über `setValueCurveAtTime`. Hören am TV in SO3.3.
+- AC-07: umgesetzt (Tastatur `keyAction`, Touch per Antippen und Knöpfen); Browser-Pane-Prüfung mit `?touch=1` nicht ausgeführt.
+- AC-08: geprüft: nur selbst erzeugte Dateien (`probe-*`, `audio-test/test.*`), keine fremde Datei, kein Credit nötig.
+- AC-06: `task check` grün (54 Dateien, 933 Tests); alle Dateien ≤ 400 Zeilen, Funktionen ≤ 60 Zeilen.
+- Neues Ticket: B-250 (Audio-Kern spielt ganze Dateien mit Crossfade).
