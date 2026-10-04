@@ -56,6 +56,48 @@ func TestAlterSpielstandLaedt(t *testing.T) {
 	}
 }
 
+// W0.3 (Sprint W0 AC-05): Nach dem Laden jedes Fixtures (gespeicherte Mauern und Türme zusätzlich auf built gesetzt)
+// hat jeder gespeicherte Platz (`kind@x`) seinen Zustand wieder, alle übrigen Plätze sind unpaid.
+func TestMigrationGebautePlaetzeBleibenGebaut(t *testing.T) {
+	for v := 1; v <= IslandSaveVersion; v++ {
+		s, err := ParseIslandSave(readFixture(t, v))
+		if err != nil {
+			t.Fatalf("v%d: %v", v, err)
+		}
+		want := map[int]map[string]string{}
+		for i, h := range s.Stages {
+			want[i] = map[string]string{}
+			for j, site := range h.Sites {
+				if site.Kind == "wall" || site.Kind == "tower" {
+					s.Stages[i].Sites[j].State, s.Stages[i].Sites[j].HP = "built", buildings[site.Kind].HP
+				}
+				want[i][key(site.Kind, site.X)] = s.Stages[i].Sites[j].State
+			}
+		}
+		isl, err := FromIslandSave(s, islandSpeed)
+		if err != nil {
+			t.Fatalf("v%d: %v", v, err)
+		}
+		for i, w := range isl.Stages {
+			found := 0
+			for _, site := range w.Sites {
+				state, saved := want[i][key(site.Kind, site.X)]
+				if !saved {
+					state = "unpaid"
+				} else {
+					found++
+				}
+				if site.State != state {
+					t.Errorf("v%d Stufe %d: %s@%v ist %s, erwartet %s", v, i, site.Kind, site.X, site.State, state)
+				}
+			}
+			if found != len(want[i]) {
+				t.Errorf("v%d Stufe %d: %d von %d gespeicherten Plätzen gefunden", v, i, found, len(want[i]))
+			}
+		}
+	}
+}
+
 // B-137/AC-04: Ein Stand mit neuerer Version ergibt einen Fehler mit gefundener und unterstützten Versionen; die
 // Quelldatei bleibt Byte für Byte gleich.
 func TestNeuererSpielstandMeldetKlar(t *testing.T) {
