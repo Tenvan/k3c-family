@@ -66,6 +66,10 @@ Sprints bleiben `Spec: Entwurf`, bis 🧑 sie je Sprint freigibt.
 | Q53 | Ort des Schwert-Zahlziels | W4.3 | 6 | geklärt 2026-10-04 |
 | Q54 | Innere Linie nach dem Bau einer äußeren | W0, W3.1, W4.3 | 6 | geklärt 2026-10-04 |
 | Q55 | Treppen und Händler | W0 | 6 | geklärt 2026-10-04 |
+| Q56 | Streuung der Linien nur nach außen | W0 | 6 | geklärt 2026-10-04 |
+| Q57 | Camps innerhalb der Linien | W0 | 6 | geklärt 2026-10-04 |
+| Q58 | „Linie k−1 gebaut“ bei Zerstörung | W0 | 6 | geklärt 2026-10-04 |
+| Q59 | Hub-Stufe vor W1 | W0, W1.1 | 6 | geklärt 2026-10-04 |
 
 ## Beschlüsse vom 2026-10-03 (🧑 im Chat)
 
@@ -134,7 +138,7 @@ Anlass: 🧑 ändert das Bau-Modell grundsätzlich, „wie in Kingdom Two Crowns
 | Q45 | **Turm-Stufen:** Kosten 75 Stein + 25 Gold, 100 Kupfer + 50 Gold, 125 Eisen + 100 Gold, 150 Kristall + 200 Gold (Stufe 2–5); Bauzeit 15/20/27/33 s (Startwerte). Ausbau am selben Platz. | B-112, W1 |
 | Q46 | **Krieger-Posten** hinter der **äußersten gebauten Sperre**: mit Tor zwischen Mauer und Tor, ohne Tor hinter der Mauer. Ändert Q38. Posten sind keine Bauplätze, sie leiten sich von der äußersten Linie ab. | B-014, B-122, W4.3 |
 | Q47 | Nur das **Tor** „wandert“: je Linie ein fester Tor-Platz (Mauer +4 außen), bezahlbar nur an der äußersten gebauten Linie. | B-116, B-206, W0, W3.1 |
-| Q48 | Linie k ist bezahlbar ab Hub-Stufe k, sobald Linie k−1 derselben Seite gebaut ist (Material egal); jede Seite für sich. | B-112, B-206, W0, W1 |
+| Q48 | Linie k ist bezahlbar ab Hub-Stufe k, sobald Linie k−1 derselben Seite gebaut ist (Material egal); jede Seite für sich. **Präzisiert durch Q58** (maßgeblich ist die Mauer). | B-112, B-206, W0, W1 |
 | Q49 | **5 Linien je Seite** bei ±44/64/84/104/124 (Startwerte), Turm 8 Units innen, Tor 4 Units außen. Linie 1 = heutige Mauer ±44, Turm ±36 (alte Spielstände bleiben kompatibel). Alle Linien liegen unter dem Portal-Mindestabstand 150. Jede Linie hat ihren eigenen Turm-Platz. | B-206, W0 |
 | Q50 | Linie 1 und alle Hub-Plätze fest; Linien 2–5 **streuen je Seed um ±4 Units** über einen **eigenen RNG-Strom** (z. B. `…:sites`), damit Ressourcen, Portale, Camps und Golden-Level unverändert bleiben. | B-206, W0 |
 | Q51 | Hub-Plätze dürfen zwischen Linie 1 und Linie 2 liegen (ungeschützt, bis Linie 2 steht). Die **Farm** ist ein fester Weltplatz je Seite zwischen Linie 1 und 2. | B-114, B-206, W0, W2.1 |
@@ -142,6 +146,10 @@ Anlass: 🧑 ändert das Bau-Modell grundsätzlich, „wie in Kingdom Two Crowns
 | Q53 | Schwert-Zahlziel = Anhang an der Werkstatt, `dx +4`. | B-014, B-122, W4.3 |
 | Q54 | Wird außen eine neue Linie gebaut, bleiben Turm und Tor innen stehen und wirken weiter (zweite Sperre); Krieger stehen nur außen. | B-116, B-122, B-206, W0, W3.1, W4.3 |
 | Q55 | Treppen (+16/+24) und Händler (+8/+12, nur Tiefe 0) bleiben Hub-Plätze. | B-121, B-206, W0 |
+| Q56 | Linien 2–5 streuen je Seed **nur nach außen, 0 bis +4 Units** (ganzzahlig, eigener Wurf je Seite und Linie, eigener RNG-Strom wie Q50). Farm (±52) ↔ Turm 2 (≥ ±56) und Tor k (L_k+4, max. L_k+8) ↔ Turm k+1 (≥ L_k+12) bleiben immer ≥ 4 Units auseinander. Präzisiert Q50 (dort ±4). | B-206, W0 |
+| Q57 | Camps dürfen innerhalb der Linien liegen (in allen Golden-Seeds bei ±75, zwischen Linie 2 und 3). W0 validiert nur **Portale** (außerhalb der äußersten Linie 5 inkl. Streuung) und **misst** Camps (Ergebnis in B-206 › Notizen). Ressourcen, Truhen und Skill-Punkte zwischen den Linien sind erlaubt; die ≥ 4-Units-Regel gilt nur für Plätze und Zahlziele aus den Daten. | B-206, W0 |
+| Q58 | „Linie k−1 gebaut“ (Q48) meint die **Mauer** der Linie k−1. Wird sie zerstört, bleibt eine bereits gebaute Linie k gültig (auch Tor und Turm dort); nur das Bezahlen **neuer** Linien k+1… wartet, bis die Mauer k−1 repariert ist. Präzisiert Q48. | B-206, W0 |
+| Q59 | W0 führt `World.HubLevel` (Start 1) **nur für die Linien- und Tor-Regel** ein; die allgemeine Sperre der Hub-Gebäude nach `hubLevel` kommt mit W1.1. Bis dahin sind neue Hub-Gebäude ohne Wirkung bezahlbar (bewusst hingenommen; W0 und W1 laufen direkt nacheinander). | B-206, W0, W1.1 |
 
 **Folgen für die Planung:** Neuer Sprint **W0 · SIM · Bauplätze aus dem Seed** vor W1 (B-206); er legt Layout, Linien, Tor-Plätze, Farm-Weltplatz und Angebots-Anhänge in Daten und Sim an, ohne den Ressourcen-RNG zu verändern. Neue Tickets: B-206 (SIM, Bauplätze aus Daten und Seed), B-207 (CLI, freie und gesperrte Bauplätze mit Grund), B-208 (SRV, Protokoll trägt die Bauplätze, W5), B-209 (CLI, `src/model/data.ts` kennt alle Platz-Arten). B-112, B-114, B-116, B-121, B-122, B-014, B-201 und B-202 sind angepasst; die Regeln stehen in `materialien-gebaeude.md` §§ 2–4 und `buerger.md`. Die Session-Dateien von W0 bis W4 passt die Sprint-Planung an.
 
@@ -334,3 +342,19 @@ Optionen: (a) Turm und Tor innen bleiben stehen und wirken weiter (zweite Sperre
 **Q55 · Treppen und Händler** (B-121, B-206, W0). Treppen (+16/+24) und Händler (+8, Q36) haben heute Hub-Offsets.
 Optionen: (a) bleiben Hub-Plätze; (b) Treppen als Weltplatz; (c) der Händler wandert mit der äußersten Linie.
 🤖 Empfehlung: (a): Treppen +16/+24, Händler +8/+12, nur Tiefe 0.
+
+**Q56 · Streuung der Linien** (B-206, W0). Q50 ließ Linien 2–5 um ±4 streuen. Farm (±52) und Turm 2 (nominal ±56) sowie Tor k (L_k+4) und Turm k+1 (L_k+12) halten dann bei unabhängiger Streuung nicht die 4 Units Abstand der Zahlziele.
+Optionen: (a) Streuung nur nach außen, 0 bis +4 Units (ganzzahlig, eigener Wurf je Seite und Linie); (b) ±2 mit Mindestabstand 16 zwischen den Linien; (c) keine Streuung.
+🤖 Empfehlung: (a). Farm ↔ Turm 2 (≥ ±56) und Tor k (max. L_k+8) ↔ Turm k+1 (≥ L_k+12) bleiben immer ≥ 4 Units auseinander. **Beschlossen: (a).**
+
+**Q57 · Camps innerhalb der Linien** (B-206, W0). Das Camp liegt in allen Golden-Seeds bei Hub-Mitte ±75, also zwischen Linie 2 und 3; Camps zu verschieben bricht die Golden-Level.
+Optionen: (a) erlaubt, W0 validiert nur Portale (außerhalb der äußersten Linie 5 inkl. Streuung) und misst Camps; (b) das Camp verschwindet, wenn außen eine Linie gebaut wird; (c) Camps hinter Linie 5.
+🤖 Empfehlung: (a). Ressourcen, Truhen und Skill-Punkte zwischen den Linien sind ebenfalls erlaubt; die ≥ 4-Units-Regel gilt nur für Plätze und Zahlziele aus den Daten. **Beschlossen: (a).**
+
+**Q58 · „Linie k−1 gebaut“ bei Zerstörung** (B-206, W0). Q48 verlangt Linie k−1 gebaut; offen ist, was eine zerstörte Mauer bewirkt.
+Optionen: (a) maßgeblich ist die Mauer der Linie k−1; eine bereits gebaute Linie k (mit Tor und Turm) bleibt gültig, nur neue Linien k+1… warten auf die Reparatur der Mauer k−1; (b) eine zerstörte Mauer sperrt alles darüber; (c) einmal gebaut reicht.
+🤖 Empfehlung: (a). **Beschlossen: (a).**
+
+**Q59 · Hub-Stufe vor W1** (B-206, W0, W1.1). Die Hub-Stufe entsteht erst mit B-112 (W1), die Linien-Regel braucht sie in W0.
+Optionen: (a) W0 führt `World.HubLevel` (Start 1) nur für die Linien- und Tor-Regel ein, die allgemeine Sperre der Hub-Gebäude kommt mit W1.1; (b) Sperre aller Hub-Gebäude sofort in W0; (c) W0 und W1 zusammen mergen.
+🤖 Empfehlung: (a); neue Hub-Gebäude sind bis W1.1 ohne Wirkung bezahlbar (bewusst hingenommen, W0 und W1 laufen direkt nacheinander). **Beschlossen: (a).**

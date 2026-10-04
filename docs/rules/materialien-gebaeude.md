@@ -49,20 +49,22 @@ Begründung: Fortschritt über Tiefe und Material, kein reines Goldsparen. Daten
 | Platz-Klasse | Lage | Freischaltung | Quelle |
 |---|---|---|---|
 | **Hub-Platz** | fester Offset zur Hub-Mitte (`data/hub.json`): Burg (Hub-Mitte, Zahlziel des Hub-Ausbaus), Werkstatt, Lager, Kaserne, Taverne, Heilplatz, Schmiede, Rüstkammer, Treppen (+16/+24), Händler (+8/+12, nur Tiefe 0) | Hub-Stufe des Gebäudes (Tabelle unten) | Q43, Q55 |
-| **Mauerlinie** | je Seite 5 Linien mit Mauer-Platz und eigenem Turm-Platz (8 Units innen) | Linie k ab Hub-Stufe k, sobald Linie k−1 derselben Seite gebaut ist (Material egal); jede Seite für sich | Q48, Q49 |
+| **Mauerlinie** | je Seite 5 Linien mit Mauer-Platz und eigenem Turm-Platz (8 Units innen) | Linie k ab Hub-Stufe k, sobald die **Mauer** der Linie k−1 derselben Seite gebaut ist (Material egal); jede Seite für sich | Q48, Q58, Q49 |
 | **Tor-Platz** | je Linie einer, Mauer +4 Units außen | bezahlbar nur an der äußersten gebauten Linie der Seite (Tor ab Hub-Stufe 2) | Q47 |
 | **Farm-Weltplatz** | ein fester Weltplatz je Seite zwischen Linie 1 und 2 | Hub-Stufe 1 | Q51 |
 | **Angebots-Anhang** | Zahlziel mit festem `dx` am Gebäude (`data/buildings.json`), z. B. Schwert an der Werkstatt `dx +4` | entsteht mit dem Bau des Gebäudes | Q52, Q53 |
 
-**Mauerlinien** (Startwerte; Q49, Q50, 2026-10-04): Linie 1 = heutige Mauer ±44 und Turm ±36 (alte Spielstände bleiben kompatibel), fest. Linien 2–5 liegen bei ±64/84/104/124 und **streuen je Seed um ±4 Units** über einen **eigenen RNG-Strom** (z. B. `…:sites`), damit Ressourcen, Portale, Camps und Golden-Level unverändert bleiben. Alle Linien liegen unter dem Portal-Mindestabstand 150.
+**Mauerlinien** (Startwerte; Q49, Q50, 2026-10-04): Linie 1 = heutige Mauer ±44 und Turm ±36 (alte Spielstände bleiben kompatibel), fest. Linien 2–5 liegen bei ±64/84/104/124 und **streuen je Seed nur nach außen um 0 bis +4 Units** (ganzzahlig, eigener Wurf je Seite und Linie; Q56) über einen **eigenen RNG-Strom** (z. B. `…:sites`), damit Ressourcen, Portale, Camps und Golden-Level unverändert bleiben. Alle Linien liegen unter dem Portal-Mindestabstand 150.
 
 | Linie | Mauer | Turm (8 innen) | Tor (4 außen) | Streuung je Seed | bezahlbar ab Hub-Stufe |
 |---|---|---|---|---|---|
 | 1 | ±44 | ±36 | ±48 | fest | 1 |
-| 2 | ±64 | ±56 | ±68 | ±4 | 2 |
-| 3 | ±84 | ±76 | ±88 | ±4 | 3 |
-| 4 | ±104 | ±96 | ±108 | ±4 | 4 |
-| 5 | ±124 | ±116 | ±128 | ±4 | 5 |
+| 2 | ±64 | ±56 | ±68 | 0…+4 | 2 |
+| 3 | ±84 | ±76 | ±88 | 0…+4 | 3 |
+| 4 | ±104 | ±96 | ±108 | 0…+4 | 4 |
+| 5 | ±124 | ±116 | ±128 | 0…+4 | 5 |
+
+Farm (±52) ↔ Turm 2 und Tor k ↔ Turm k+1 bleiben dadurch immer ≥ 4 Units auseinander (Q56). **Zerstörung** (Q58): Maßgeblich ist die Mauer der Linie k−1; wird sie zerstört, bleibt eine bereits gebaute Linie k gültig (auch Tor und Turm), nur das Bezahlen neuer Linien k+1… wartet, bis die Mauer k−1 repariert ist. **Camps** (Q57) dürfen innerhalb der Linien liegen (Golden-Seeds: ±75); validiert werden nur Portale (außerhalb der äußersten Linie 5 inkl. Streuung), Ressourcen und Truhen zwischen den Linien sind erlaubt, die ≥ 4-Units-Regel gilt nur für Plätze und Zahlziele aus den Daten. Bis W1.1 führt W0 `World.HubLevel` (Start 1) nur für die Linien- und Tor-Regel ein (Q59).
 
 Hub-Plätze dürfen zwischen Linie 1 und Linie 2 liegen; sie sind ungeschützt, bis Linie 2 steht (Q51). Wird außen eine neue Linie gebaut, bleiben Turm und Tor innen stehen und wirken weiter als zweite Sperre (Q54). Krieger-Posten sind keine Bauplätze, sie leiten sich von der äußersten gebauten Sperre ab (Q46, `buerger.md` § 1).
 
