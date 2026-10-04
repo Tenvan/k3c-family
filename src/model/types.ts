@@ -36,7 +36,26 @@ export interface Player {
   /** Ziel, an dem gerade gezahlt wird ("site:3"), und wie viel Gold davon noch nicht vollendet ist */
   payKey: string | null;
   payAmount: number;
+  /** Gelernte Skills (IDs, Lernreihenfolge), fehlt = keine (docs/protocol.md › Skills und Aktionen). */
+  skills?: string[];
+  /** Aktive Skills in den Slots 1 bis 4 (Index 0 bis 3, "" = frei), fehlt = keine. */
+  slots?: string[];
+  /** Abklingzeit je Slot in Sekunden, fehlt = 0. */
+  cooldowns?: number[];
+  /** Sekunden bis zum nächsten Schlag, fehlt = 0. */
+  attackCooldown?: number;
+  /** Verfügbare Skill-Punkte (Pool der Insel minus gelernte Skills), vom Server berechnet. */
+  points: number;
+  /** Gültige Aktionen am Ort des Spielers, vom Server berechnet. */
+  actions: PlayerAction[];
 }
+
+/** Eintrag der Aktionsliste; `skill`: Slot 1 bis 4 wie `input.p[].skill`. */
+export type PlayerAction =
+  | { action: 'attack' }
+  | { action: 'skill'; slot: number; skill: string }
+  | { action: 'learn' }
+  | { action: 'respec' };
 
 export interface Coin {
   id: number;

@@ -6,7 +6,7 @@ import levelMsg from '../../testdata/protocol/s2c-level.json';
 import rooms from '../../testdata/protocol/s2c-rooms.json';
 import welcome from '../../testdata/protocol/s2c-welcome.json';
 import { RECONNECT_LIMIT_MS, RoomClient, getDeviceId, type ClientEnv, type SocketLike } from './clientConnection';
-import type { SlotInput } from './clientProtocol';
+import { PROTOCOL_VERSION, type SlotInput } from './clientProtocol';
 
 class FakeSocket implements SocketLike {
   sent: Record<string, unknown>[] = [];
@@ -94,7 +94,7 @@ describe('Handschlag und Geräte-ID (AC-06)', () => {
     const t = setup();
     expect(t.last().sent).toEqual([]);
     t.last().open();
-    expect(t.last().sent).toEqual([{ t: 'hello', v: 3, device: 'dev-1' }]);
+    expect(t.last().sent).toEqual([{ t: 'hello', v: PROTOCOL_VERSION, device: 'dev-1' }]);
     t.last().recv(welcome);
     expect(t.client.status).toBe('lobby');
     expect(t.client.tickHz).toBe(30);
@@ -270,7 +270,7 @@ describe('Wiederverbinden (AC-10)', () => {
     t.advance(1);
     expect(t.socks).toHaveLength(2);
     t.last().open();
-    expect(t.last().sent[0]).toEqual({ t: 'hello', v: 3, device: 'dev-1' });
+    expect(t.last().sent[0]).toEqual({ t: 'hello', v: PROTOCOL_VERSION, device: 'dev-1' });
     t.last().recv(welcome);
     expect(t.last().sent[1]).toEqual({ t: 'join', room: 'KRNZ', slots: [0, 1] });
     t.last().recv({ ...joined, you: [{ slot: 0, monarch: 0, depth: 0 }, { slot: 1, monarch: 1, depth: 0 }] });

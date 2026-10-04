@@ -25,7 +25,23 @@
           "payCooldown": 0,
           "paying": false,
           "payKey": null,
-          "payAmount": 0
+          "payAmount": 0,
+          "skills": [
+            "taunt"
+          ],
+          "slots": [
+            "taunt"
+          ],
+          "cooldowns": [
+            8
+          ],
+          "attackCooldown": 0.3,
+          "points": 1,
+          "actions": [
+            {
+              "action": "learn"
+            }
+          ]
         },
         {
           "id": 59,
@@ -40,7 +56,16 @@
           "payCooldown": 0,
           "paying": false,
           "payKey": null,
-          "payAmount": 0
+          "payAmount": 0,
+          "points": 2,
+          "actions": [
+            {
+              "action": "attack"
+            },
+            {
+              "action": "learn"
+            }
+          ]
         },
         {
           "id": 60,
@@ -55,7 +80,30 @@
           "payCooldown": 0,
           "paying": false,
           "payKey": null,
-          "payAmount": 0
+          "payAmount": 0,
+          "skills": [
+            "heal",
+            "groupHeal"
+          ],
+          "slots": [
+            "heal",
+            "groupHeal"
+          ],
+          "cooldowns": [
+            6.2,
+            0
+          ],
+          "points": 0,
+          "actions": [
+            {
+              "action": "attack"
+            },
+            {
+              "action": "skill",
+              "slot": 2,
+              "skill": "groupHeal"
+            }
+          ]
         }
       ],
       "del": []

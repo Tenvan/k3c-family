@@ -1,6 +1,6 @@
 {
   "t": "welcome",
-  "v": 3,
+  "v": 4,
   "tickHz": 30,
   "limits": { "monarchsPerRoom": 4, "slotsPerDevice": 4, "rooms": 4 }
 }
