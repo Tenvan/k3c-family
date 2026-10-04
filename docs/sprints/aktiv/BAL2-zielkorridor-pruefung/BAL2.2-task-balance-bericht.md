@@ -1,6 +1,6 @@
 # BAL2.2 · `task balance`: Bericht, Seeds, Baseline und Regressions-Vergleich
 
-- **Status:** offen
+- **Status:** in Arbeit
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Branch:** bal2/2-task-balance-bericht
