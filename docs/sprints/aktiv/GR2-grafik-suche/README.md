@@ -58,7 +58,7 @@ Kein Treffer → Platzhalter bleibt, Vermerk in der Tabelle. Widersprüchliche L
 
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
-| GR2.1 | `GR2.1-recherche-kandidaten.md` | Umsetzung | autonom | offen |
+| GR2.1 | `GR2.1-recherche-kandidaten.md` | Umsetzung | autonom | fertig |
 | GR2.2 | `GR2.2-workshop-auswahl.md` | Workshop | Mensch | offen |
 | GR2.3 | `GR2.3-assets-einbinden.md` | Umsetzung | autonom | offen |
 | GR2.4 | `GR2.4-review.md` | Review | autonom | offen |
