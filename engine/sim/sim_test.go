@@ -156,7 +156,7 @@ func TestGoldenLaeufeVollstaendig(t *testing.T) {
 	}
 	for _, want := range []string{
 		"forest-tag", "forest-nacht", "cave-aggression", "forest-ohne-spieler",
-		"forest-aufbau", "cave-aufbau", "forest-raub", "forest-sturm", "cave-belagerung", "mine-welle",
+		"forest-aufbau", "cave-aufbau", "forest-raub", "forest-sturm", "cave-belagerung", "mine-welle", "forest-monarch",
 	} {
 		if !slices.Contains(names, want) {
 			t.Errorf("Golden-Lauf sim-%s fehlt", want)
