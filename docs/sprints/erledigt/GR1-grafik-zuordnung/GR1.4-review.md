@@ -1,6 +1,6 @@
 # GR1.4 · Review und Abnahme des Sprints GR1
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Review
 - **Agent:** autonom
 - **Branch:** gr1/4-review
@@ -36,9 +36,9 @@ Stil, Formulierungen, neue Assets.
 
 ## Fertig, wenn
 
-- [ ] AC-01 bis AC-05 haben einen Nachweis im Ergebnis der jeweiligen Session oder sind mit Grund und Ticket verschoben.
-- [ ] AC-06: `task check` grün.
-- [ ] Schwere Befunde sind behoben oder als Ticket angelegt; Sprint liegt unter `docs/sprints/erledigt/`.
+- [x] AC-01 bis AC-05 haben einen Nachweis im Ergebnis der jeweiligen Session oder sind mit Grund und Ticket verschoben.
+- [x] AC-06: `task check` grün.
+- [x] Schwere Befunde sind behoben oder als Ticket angelegt; Sprint liegt unter `docs/sprints/erledigt/`.
 
 ## Prüfen
 
@@ -48,4 +48,7 @@ task check
 
 ## Ergebnis
 
-–
+Leichtes Review (Agent, Sonnet) über `git diff e317292...HEAD`: keine schweren Befunde. Alle 67 zugeordneten Dateipfade existieren unter `public/`, alle Lizenzen CC0 oder CC-BY und in den CREDITS; der Test liest die echten Daten-Dateien und erkennt leere Tabellen. Hinweis ohne Ticket: Die Lizenzspalte wird nicht gegen „nur CC0/CC-BY“ geprüft.
+
+- **AC-01 bis AC-05:** geprüft – Nachweise in GR1.1 bis GR1.3, Test `src/tools/zuordnung.test.ts` grün.
+- **AC-06:** geprüft – `task check` grün (1046 Tests).

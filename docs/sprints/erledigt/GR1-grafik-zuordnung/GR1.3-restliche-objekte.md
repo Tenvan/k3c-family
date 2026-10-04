@@ -1,6 +1,6 @@
 # GR1.3 · Restliche Spielobjekte erfassen
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Branch:** gr1/3-restliche-objekte
@@ -40,8 +40,8 @@ Neue Assets (GR2), Einbau (GR3), Atlas (GR4), Änderung von `data/` oder `docs/r
 
 ## Fertig, wenn
 
-- [ ] AC-02: Test belegt Zeilen für alle Gruppen aus AC-02, jede mit Status, Stil und Lizenz.
-- [ ] AC-06: `task check` grün; jede Datei ≤ 400 Zeilen.
+- [x] AC-02: Test belegt Zeilen für alle Gruppen aus AC-02, jede mit Status, Stil und Lizenz.
+- [x] AC-06: `task check` grün; jede Datei ≤ 400 Zeilen.
 
 ## Prüfen
 
@@ -51,4 +51,9 @@ task check
 
 ## Ergebnis
 
-–
+Neue Tabelle `docs/assets/zuordnung-welt.md` (ID-Konvention im Kopf: `hub:n`, `wall:n`, `tower:n`, `material:…`, `vein:…`, `node:…`, `pickup:…`, `mount:…`, `icon:…`, `bg:<Biom>` …), 64 Zeilen: 45 zugeordnet, 19 Lücken.
+
+- **AC-02:** geprüft (Test `src/tools/zuordnung.test.ts`) – Hub-, Mauer-, Turm-Stufen je 1–5, fünf Materialien, Adern, Plantage, Truhe, Portal, Münze, 13 Reittiere (aus `data/sprites.json` › mounts), 11 Icons (aus `public/grafik/index.json`), Skill-Icons, Bosse, Hintergründe aller Biome (aus `data/biomes/`), zusätzlich Ressourcen (aus `data/economy.json` › gatherables und Biomen), Rekrutierungslager, Ausgang, Pickups. Rot gesehen mit fehlender Zeile `tower:5` bzw. `node:bush`.
+- Lücken: `hub:2–5`, `wall:1`, `wall:3–5`, `tower:1`, `tower:3–5`, `material:wood`, `plantation`, `bg:mine`, `camp:recruit`, `pickup:skillPoint` (B-162); `skill-icon` (B-124, später); `boss` (B-130, später).
+- Vermerk: `wall`/`tower` in `zuordnung-objekte.md` zeigen Stufe 2 (Stein); Stufe 1 (Holz) ist Lücke. Eisen-Erz = Zeile 3 im Erz-Sheet ist eine Deutung des Agenten (ungeprüft durch 🧑).
+- **AC-06:** geprüft – `task check` grün (56 Dateien, 1046 Tests); alle Dateien ≤ 400 Zeilen.
