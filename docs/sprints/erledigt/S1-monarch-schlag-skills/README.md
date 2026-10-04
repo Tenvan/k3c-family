@@ -1,6 +1,6 @@
 # S1 · SIM · Monarch: Schlag, Fund-Pool und Skills
 
-- **Status:** aktiv
+- **Status:** erledigt
 - **Domäne:** SIM
 - **Reife:** bereit
 - **Einschiebbar:** nein
@@ -68,8 +68,12 @@ S1.2 ist in drei Dateien geteilt (a, b, c), damit jede Session unter dem Richtwe
 | S1.2c | `S1.2c-passive.md` | Umsetzung | autonom | fertig |
 | S1.3 | `S1.3-reittier.md` | Umsetzung | autonom | fertig |
 | S1.4 | `S1.4-spielstand-golden.md` | Umsetzung | autonom | fertig |
-| S1.5 | `S1.5-review.md` | Review | autonom | in Arbeit |
+| S1.5 | `S1.5-review.md` | Review | autonom | fertig |
 
 ## Abnahme
 
-–
+- **2026-10-04 (S1.5):** AC-01, AC-02 (S1.1), AC-03 (S1.2a, S1.2b), AC-04 (S1.2c), AC-07 (S1.3), AC-05, AC-06 (S1.4) mit Nachweis; `task check`, `task check:go` grün (`-race` ohne C-Compiler übersprungen).
+- **Befunde:** keine schweren. Golden: `sim-forest-monarch.json` neu, `campaign-abstieg.json` nur `skills`/`slots` plus Schlüsselreihenfolge eines Ereignisses, `rng.json` unverändert; Spielstand v3: v1/v2 laden, neuere Version abgelehnt, Quelle unverändert.
+- **Tickets:** B-118, B-119, B-022, B-152, B-222 erledigt; B-219 bleibt offen (`game-design.md`, `events.go` nicht erlaubt), B-202 offen bis W1.3; Passiv-Startwerte `provisional` für BAL/BR1 (B-099, B-155).
+- **Offen für 🧑:** gleich großer Schild behält den alten (B-220); Heal nur Monarchen; Resurrection hebt Truppen auf 50 % statt wiederzubeleben.
+- **Version:** v0.6.0 vorgeschlagen (gemeinsamer Tag nach v0.5.0, Minor: neue Spielmechanik in der Simulation).

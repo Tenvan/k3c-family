@@ -131,7 +131,7 @@ Regelwerk in [`rules/`](rules/), und das Glossar wird angepasst. Zahlen sind, wo
 | Snapshot | Zustand der Welt, den der Server an ein Gerät schickt: voll als `snap`, danach als `delta`; der Client zeichnet nur ihn. | `protocol.md` › Nachrichten |
 | Spec | Anforderung eines Tickets oder Sprints (README) mit Akzeptanzkriterien; Status `Entwurf`, `freigegeben` oder `rückwirkend`. | `arbeitsweise.md` › SDD |
 | Spielstand | Gespeicherter Zustand eines Raums (`saves/<name>.json`) mit Seeds, Hubs, Vorrat und Raum-Optionen; Gegner und Level-Layout werden nicht gespeichert. | `protocol.md` › Begriffe, `game-design.md` › Speichern |
-| Spielstand-Version | `IslandSaveVersion` (`engine/sim/island_save.go`), heute 2. Jede Formatänderung erhöht sie und bringt eine Fixture; v3 ist beschlossen (Skills, Hub-Stufe, Platz-Stufe). | `arbeitsweise.md` › Spielstand-Format, Q42 |
+| Spielstand-Version | `IslandSaveVersion` (`engine/sim/island_save.go`), heute 3 (Fund-Pool `skillPool`, je Spieler `skills` und `slots`, S1). Jede Formatänderung erhöht sie und bringt eine Fixture; Hub- und Platz-Stufe kommen mit W1.3 optional in v3 dazu (Q42). | `arbeitsweise.md` › Spielstand-Format, Q42 |
 | Split-Screen | Geteilter Bildschirm für 1–4 lokale Spieler, jeder mit eigener Kamera (`src/scenes/layout.ts`). | `game-design.md` › Koop, `rules/bedienung.md` § 2 |
 | Sprint | 2–4 Sessions einer Domäne auf einem Branch `sprint/<präfix>` mit einem PR; Ordner unter `docs/sprints/` (`geplant/`, `aktiv/`, `erledigt/`). | `arbeitsweise.md` |
 | Standardszenario | Messrahmen der Zielkorridore: Insel 1, Wald-Start, Normal, 2 Spieler, Bot „sparsam“, 100 Seeds. | `rules/zielkorridore.md` |

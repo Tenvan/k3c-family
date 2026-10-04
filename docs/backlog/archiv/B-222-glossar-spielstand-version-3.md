@@ -3,8 +3,8 @@
 - **Domäne:** REG
 - **Typ:** Schuld
 - **Prio:** niedrig
-- **Status:** offen
-- **Sprint:** –
+- **Status:** erledigt
+- **Sprint:** S1
 - **Erstellt:** 2026-10-04
 - **Spec:** Entwurf
 - **Revision:** 1
