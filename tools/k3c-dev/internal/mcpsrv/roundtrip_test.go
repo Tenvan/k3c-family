@@ -2,6 +2,8 @@ package mcpsrv
 
 import (
 	"context"
+	"os"
+	"path/filepath"
 	"slices"
 	"strings"
 	"testing"
@@ -135,5 +137,69 @@ func TestResolvePort(t *testing.T) {
 		if _, err := ResolvePort(raw); err == nil {
 			t.Errorf("ResolvePort(%q) ohne Fehler", raw)
 		}
+	}
+}
+
+const (
+	planIndex = "## Offen\n\n| Nr. | Domäne | Typ | Prio | Status | Sprint | Titel |\n|---|---|---|---|---|---|---|\n\n" +
+		"## Archiv\n\n| Nr. | Domäne | Typ | Prio | Status | Sprint | Titel |\n|---|---|---|---|---|---|---|\n"
+	planRoadmap = "## Aktiv\n\n| Sprint | Domäne | Thema | Am Ende sichtbar | Ordner |\n|---|---|---|---|---|\n\n" +
+		"## Geplant\n\n| Sprint | Domäne | Thema | Am Ende sichtbar | Reife | Ordner |\n|---|---|---|---|---|---|\n\n## Erledigt\n"
+)
+
+// planRepo ist ein docs/ mit den echten Vorlagen, leerem Index und Fahrplan.
+func planRepo(t *testing.T) string {
+	t.Helper()
+	root := t.TempDir()
+	files := map[string]string{"backlog/README.md": planIndex, "sprints/README.md": planRoadmap, "sprints/aktiv/.keep": ""}
+	for _, k := range []string{"ticket", "sprint", "session"} {
+		b, err := os.ReadFile(filepath.Join("..", "..", "..", "..", "docs", "vorlagen", k+".md"))
+		if err != nil {
+			t.Fatal(err)
+		}
+		files["vorlagen/"+k+".md"] = string(b)
+	}
+	for rel, text := range files {
+		p := filepath.Join(root, "docs", filepath.FromSlash(rel))
+		if err := os.MkdirAll(filepath.Dir(p), 0o755); err != nil {
+			t.Fatal(err)
+		}
+		if err := os.WriteFile(p, []byte(text), 0o644); err != nil {
+			t.Fatal(err)
+		}
+	}
+	for _, st := range []string{"geplant", "erledigt"} {
+		if err := os.MkdirAll(filepath.Join(root, "docs", "sprints", st), 0o755); err != nil {
+			t.Fatal(err)
+		}
+	}
+	return root
+}
+
+func TestPlanungsToolsRoundtrip(t *testing.T) {
+	cs := connect(t, New(Config{Version: "test", Root: planRepo(t)}))
+	steps := []struct {
+		tool string
+		args map[string]any
+		want string
+	}{
+		{"plan_create", map[string]any{"kind": "ticket", "slug": "neu", "title": "Neu",
+			"fields": map[string]string{"Domäne": "SRV", "Typ": "Idee", "Prio": "hoch"}}, "B-001 angelegt"},
+		{"plan_section", map[string]any{"id": "B-001", "section": "Ziel", "text": "Ein Ziel."}, "Ziel ersetzt"},
+		{"plan_set", map[string]any{"id": "B-001", "fields": map[string]string{"Prio": "niedrig"}}, "B-001 geändert"},
+		{"plan_get", map[string]any{"id": "B-001"}, "## Ziel\n\nEin Ziel."},
+		{"plan_create", map[string]any{"kind": "sprint", "id": "X1", "slug": "x", "title": "X",
+			"fields": map[string]string{"Domäne": "SRV"}}, "X1 angelegt"},
+		{"plan_list", map[string]any{"domain": "SRV"}, "B-001 SRV Idee niedrig offen"},
+		{"plan_delete", map[string]any{"id": "X1"}, "X1 gelöscht"},
+	}
+	for _, st := range steps {
+		text, isErr := callText(t, cs, st.tool, st.args)
+		if isErr || !strings.Contains(text, st.want) {
+			t.Errorf("%s: %q (Fehler %v), erwartet %q", st.tool, text, isErr, st.want)
+		}
+	}
+	if text, isErr := callText(t, cs, "plan_delete", map[string]any{"id": "B-001"}); !isErr {
+		t.Errorf("Ticket gelöscht: %q", text)
 	}
 }
