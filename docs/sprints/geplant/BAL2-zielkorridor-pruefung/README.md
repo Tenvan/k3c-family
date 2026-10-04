@@ -6,9 +6,9 @@
 - **Einschiebbar:** ja
 - **Tickets:** B-157
 - **Start-Commit:** –
-- **Spec:** Entwurf
+- **Spec:** freigegeben
 - **Revision:** 1
-- **Freigabe:** –
+- **Freigabe:** 2026-10-04, Chat (Ralf), Revision 1, durch 🧑; umfasst B-157 und die Domänen-Ausnahmen `tools/k3c-dev/` und `.github/`; mit Änderungen aus dem Spec-Review (F1-Frage gestrichen, „knapp“ = 5 pp / 10 % bestätigt)
 
 ## Ausgangslage
 
@@ -32,7 +32,9 @@ Neue Bot-Profile und Sensitivität (BAL3), Abgleich mit echten Abenden (BAL4), P
 
 ## Regeln und Einschränkungen
 
-Deterministisch; Datei ≤ 400 Zeilen, Funktion ≤ 60; Aufgaben nur über `task`; Werte in `data/` ändert nur REG mit Beschluss. Voraussetzung: BAL1 und F1.
+Deterministisch; Datei ≤ 400 Zeilen, Funktion ≤ 60; Aufgaben nur über `task`; Werte in `data/` ändert nur REG mit Beschluss. Voraussetzung: BAL1 und F1. Breite von „knapp“ (🧑 2026-10-04): 5 Prozentpunkte bei Anteilen, 10 % der Korridorbreite bei Medianen.
+
+**Domänen-Ausnahme (Freigabe dieser Spec erlaubt sie):** Das Balance-Werkzeug liegt laut BAL1 in k3c-dev (`tools/k3c-dev/internal/`, SRV); BAL2.1 und BAL2.2 dürfen dort ändern. BAL2.3 darf für den CI-Lauf `.github/workflows/` (INF) ändern.
 
 ## Beispiele
 
@@ -54,7 +56,7 @@ Ziel ohne Kennzahl → Ladefehler. Fehlende Baseline → Hinweis. Lauf bricht ab
 
 ## Offene Fragen
 
-- Welche Zahlen haben die Korridore? Entscheidet 🧑 in F1 (`docs/fragenkatalog.md` Q02); blockiert die Freigabe, bis F1 abgeschlossen ist.
+keine (Zahlen: `docs/rules/zielkorridore.md`, F1 erledigt, Q02)
 
 ## Sessions
 

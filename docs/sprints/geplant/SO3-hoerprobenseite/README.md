@@ -6,9 +6,9 @@
 - **Einschiebbar:** ja
 - **Tickets:** B-169
 - **Start-Commit:** –
-- **Spec:** Entwurf
+- **Spec:** freigegeben
 - **Revision:** 1
-- **Freigabe:** –
+- **Freigabe:** 2026-10-04, Chat (Ralf), Revision 1, durch 🧑; umfasst B-169 und die Domänen-Ausnahme `public/audio/`; mit Änderungen aus dem Spec-Review (SO1 als Voraussetzung, AC-07 Tastatur/Touch, AC-08 Credits)
 
 ## Ausgangslage
 
@@ -24,7 +24,7 @@ Eine Seite spielt Kandidaten ab, bedienbar mit Controller. Am Ende sichtbar: `so
 
 ## Anforderungen
 
-B-169 › Anforderungen, darunter die Seiten-Regeln aus `CLAUDE.md`.
+B-169 › Anforderungen, darunter die Seiten-Regeln aus `CLAUDE.md`. Voraussetzung: SO1 (Audio-Kern) für SO3.2.
 
 ## Nicht-Ziele
 
@@ -33,6 +33,8 @@ Audio-Kern (SO1), Katalog (SO2), Musik-Einbau (SO4).
 ## Regeln und Einschränkungen
 
 `installPageChrome()`, Eintrag in `src/landing/pages.ts`, `toggleFullscreen()`, `openPage()` und `goHome()`, B nicht belegen, View + Menu reserviert; `tests/projectRules.test.ts` grün; Datei ≤ 400 Zeilen.
+
+**Domänen-Ausnahme (Freigabe dieser Spec erlaubt sie, wie bei X1):** SO3.2 darf die Kandidatenliste und selbst erzeugte Probetöne unter `public/audio/` (CLI) anlegen.
 
 ## Beispiele
 
@@ -50,6 +52,8 @@ Audio gesperrt → Hinweis zum Entsperren; Kandidat lädt nicht → Eintrag grau
 - **AC-04** Die Crossfade-Probe zwischen zwei Stücken ist ohne Knacken hörbar (B-169/AC-04).
 - **AC-05** Vollbild nur über `toggleFullscreen()`, Seitenwechsel nur über `openPage()` und `goHome()` (B-169/AC-05).
 - **AC-06** `task check` ist grün.
+- **AC-07** Die Seite ist auch mit Tastatur und Touch (`?touch=1`) bedienbar (B-169 › Anforderungen).
+- **AC-08** Jede fremde Audiodatei hat Quelle und Lizenz in den Credits, ohne Credit keine fremde Datei (B-165).
 
 ## Offene Fragen
 

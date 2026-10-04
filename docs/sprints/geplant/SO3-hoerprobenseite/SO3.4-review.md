@@ -36,7 +36,7 @@ Stil, Optimierung, Kandidatenauswahl.
 
 ## Fertig, wenn
 
-- [ ] AC-01, AC-02, AC-05, AC-06 haben einen Nachweis im Ergebnis der jeweiligen Session oder sind mit Grund und Ticket verschoben.
+- [ ] AC-01, AC-02, AC-05 bis AC-08 haben einen Nachweis im Ergebnis der jeweiligen Session oder sind mit Grund und Ticket verschoben.
 - [ ] AC-03 und AC-04 sind abgenommen oder als `angenommen, Validierung offen (SO3.3)` geführt.
 - [ ] Schwere Befunde sind behoben oder als Ticket angelegt; Sprint liegt unter `docs/sprints/erledigt/`.
 

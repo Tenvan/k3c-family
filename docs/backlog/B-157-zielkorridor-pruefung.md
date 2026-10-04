@@ -6,9 +6,9 @@
 - **Status:** eingeplant
 - **Sprint:** BAL2
 - **Erstellt:** 2026-10-02
-- **Spec:** Entwurf
+- **Spec:** freigegeben
 - **Revision:** 1
-- **Freigabe:** –
+- **Freigabe:** 2026-10-04, Chat (Ralf), Revision 1, durch 🧑 (mit BAL2)
 
 ## Ausgangslage
 
@@ -57,7 +57,7 @@ Ziel ohne passende Kennzahl → Fehler beim Laden der Daten. Lauf bricht ab → 
 
 ## Offene Fragen
 
-- Welche Zahlen gelten für die Korridore (Untergrenze, Obergrenze)? Entscheidet 🧑 in F1, `docs/fragenkatalog.md` Q02.
+keine (Zahlen: `docs/rules/zielkorridore.md`, F1, Q02; Breite „knapp“: 5 pp bei Anteilen, 10 % der Korridorbreite bei Medianen, 🧑 2026-10-04)
 
 ## Notizen
 
