@@ -61,7 +61,7 @@ Jeder Spieler hat einen **eigenen Skill-Baum** mit 4 Linien: **Tank, Zauberer, H
 |---|---|---|---|---|
 | Tank | Taunt (10u, CD 15s), Shield Bash (Stun 2s, CD 10s) | Iron Wall (Barriere 500 HP, CD 30s) | Last Stand (überlebt mit 1 HP, CD 120s) | Armor Aura, Thick Skin, Regeneration, Guardian, Fortified |
 | Zauberer | Fireball (30 AoE 3u, CD 8s), Ice Wall (Slow 50%, CD 20s) | Lightning Storm (10/s, 5s, CD 40s) | Meteor (200 AoE 15u, CD 120s) | Arcane Power, Spell Echo, Frost Armor, Elemental Mastery |
-| Heiler | Heal (50 HP, CD 10s), Group Heal (30 HP 10u, CD 30s) | Divine Shield (100 HP Schild, CD 20s) | Resurrection (Truppen 50% HP, CD 180s) | Healing Aura, Speed-/Damage-Blessing, Holy Ground |
+| Heiler | Heal (50 HP, CD 10s), Group Heal (30 HP 10u, CD 30s) | Divine Shield (100 HP Schild, CD 20s) | Resurrection (Monarchen 50% HP, CD 180s; Q66) | Healing Aura, Speed-/Damage-Blessing, Holy Ground |
 | Dieb | Backstab (40 / 80 von hinten, CD 12s), Smoke Bomb (unsichtbar 5s, CD 25s) | Poison Blade (10/s, 5s, CD 15s) | Shadow Strike (Teleport + 150, CD 90s) | Treasure Hunter, Swift, Critical Strike, Evasion, Resource Master, Shadow Step |
 
 Die Skills kommen **erst nach dem Vertical Slice**.
@@ -73,7 +73,7 @@ Bürger sind alle Figuren des Hubs, **Truppen** nur die Kämpfer (Bogenschützen
 - **Landstreicher** im Rekrutierungs-Camp → Münze geben → **Bauer** (folgt, sammelt, baut).
 - Werkstatt: Bauer + Bogen → **Bogenschütze** (Fernkampf, besetzt Türme). Bauer + Schwert → **Krieger** (Nahkampf, Frontlinie).
 - Elite-Upgrades in der Schmiede (Stein/Kupfer), Rüstung in der Rüstkammer (Eisen): +50% HP und Schaden, +20% Angriffstempo bzw. +20 % HP je Stufe. Bürger haben **kein Level und keine Skills**, nur Upgrades und **Berufe** (Bergmann, Baumeister, Handwerker; Händler kommt zu Besuch).
-- Truppen kämpfen automatisch (KI), Bauern fliehen bei Gefahr. **Truppen-Limit je Hub:** Basis 10, Kaserne +10, es zählen nur Kämpfer. Heilung nur am Heilplatz. Details: `rules/buerger.md`. *Krieger, Elite-Upgrades, Kaserne, Limit und Berufe sind beschlossen, aber noch nicht im Code.*
+- Truppen kämpfen automatisch (KI), Bauern fliehen bei Gefahr. **Truppen-Limit je Hub:** Basis 10, Kaserne +10, es zählen nur Kämpfer. Heilung nur am Heilplatz. **Bürger sterben nicht** (Q67–Q69, 2026-10-04, wie im Vorbild): Bei HP 0 lässt ein Bürger mit Ausrüstung sie fallen und wird Bauer, ein Bauer lässt seine Münze fallen und wird Landstreicher; Landstreicher werden nicht angegriffen. Gegner tragen Ausrüstung vom Boden zum Portal. Details: `rules/buerger.md`. *Krieger, Elite-Upgrades, Kaserne, Limit und Berufe sind beschlossen, aber noch nicht im Code.*
 
 ## Gebäude (`data/buildings.json`)
 
