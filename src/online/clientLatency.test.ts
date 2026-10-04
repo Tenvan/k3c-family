@@ -38,4 +38,14 @@ describe('LatencyMeter (B-181/AC-01)', () => {
     m.acked(5, 100);
     expect(m.stats(100)).toBeNull();
   });
+
+  it('Messungen außerhalb des Fensters fallen auch ohne stats() weg (Overlay zu)', () => {
+    const m = new LatencyMeter();
+    for (let i = 1; i <= 3 * 60 * 60; i++) {
+      m.sent(i, i * 50);
+      m.acked(i, i * 50 + 20);
+    }
+    const kept = (m as unknown as { samples: unknown[] }).samples.length;
+    expect(kept).toBeLessThanOrEqual(LATENCY_WINDOW_MS / 50 + 1);
+  });
 });

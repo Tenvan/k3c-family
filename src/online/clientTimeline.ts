@@ -49,6 +49,11 @@ export class Timeline {
   }
 
   push(frame: TimedState): void {
+    const last = this.frames.at(-1);
+    if (last && frame.tick <= last.tick) {
+      if (frame.tick === last.tick) this.frames[this.frames.length - 1] = frame; // gleicher Tick: neuerer Zustand gilt
+      return; // älterer Tick: verwerfen (sonst Division durch 0 bzw. Rücksprung)
+    }
     const o = frame.receivedAt - frame.tick * this.tickMs;
     if (this.offset === null) this.offset = o;
     this.jitter += (Math.abs(o - this.offset) - this.jitter) * SMOOTHING;

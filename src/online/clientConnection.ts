@@ -35,6 +35,11 @@ export const RECONNECT_LIMIT_MS = 120_000;
 const SNAPSHOT_WINDOW = 30;
 /** Kleinster Abstand zweier geänderter Eingaben (angenommen: unter einem Bild bei 60 FPS, B-277) */
 const INPUT_MIN_GAP_MS = 8;
+/** Raster der analogen Laufrichtung (Stufen je Unit, also 0,05): feineres Zittern des Sticks zählt nicht als Änderung (angenommen) */
+const MOVE_STEPS = 20;
+
+/** `moveX` auf 1 / `MOVE_STEPS` gerastert, für Vergleich und Versand (`+ 0` macht aus -0 eine 0). */
+export const roundMoves = (p: SlotInput[]): SlotInput[] => p.map((i) => ({ ...i, moveX: Math.round(i.moveX * MOVE_STEPS) / MOVE_STEPS + 0 }));
 
 export interface SocketLike {
   send(data: string): void;
@@ -204,8 +209,9 @@ export class RoomClient {
    * Eingaben der lokalen Slots. Sendet bei Änderung sofort (Abstand mindestens `INPUT_MIN_GAP_MS`), sonst spätestens nach 500 ms.
    * Aufruf in jedem Frame ist vorgesehen.
    */
-  sendInput(p: SlotInput[]): void {
+  sendInput(raw: SlotInput[]): void {
     if (this.status !== 'room') return;
+    const p = roundMoves(raw);
     const json = JSON.stringify(p);
     const sinceLast = this.env.now() - this.lastInputAt;
     const changed = json !== this.lastInput && sinceLast >= INPUT_MIN_GAP_MS;

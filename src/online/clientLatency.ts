@@ -22,6 +22,7 @@ export class LatencyMeter {
   acked(ack: number, now: number): void {
     while (this.pending.length > 0 && this.pending[0]!.seq <= ack) this.samples.push({ at: now, ms: now - this.pending.shift()!.at });
     while (this.pending.length > 0 && this.pending[0]!.at < now - LATENCY_WINDOW_MS) this.pending.shift(); // nie bestätigt
+    while (this.samples.length > 0 && this.samples[0]!.at < now - LATENCY_WINDOW_MS) this.samples.shift(); // auch ohne stats() (Overlay zu) begrenzt
   }
 
   /** Mittel und p95 (Rang-Methode) der Messungen im Fenster; null ohne Messung. */

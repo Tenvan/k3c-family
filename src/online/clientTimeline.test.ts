@@ -93,4 +93,17 @@ describe('Timeline (B-277/AC-02): Extrapolation begrenzt, Teleport hart', () => 
     expect(xs.every((x) => x === 0 || x === 100)).toBe(true);
     expect(xs.at(-1)).toBe(100);
   });
+
+  it('doppelter oder älterer Tick: kein NaN, kein Rücksprung', () => {
+    const timeline = new Timeline(TICK_MS);
+    timeline.push({ tick: 0, receivedAt: 0, state: state(0) });
+    timeline.push({ tick: 1, receivedAt: TICK_MS, state: state(1) });
+    timeline.push({ tick: 1, receivedAt: TICK_MS, state: state(2) });
+    timeline.push({ tick: 0, receivedAt: TICK_MS, state: state(-5) });
+    for (let now = 0; now <= 200; now += FRAME_MS) {
+      const x = timeline.sample(now)!.players[0]!.x;
+      expect(Number.isFinite(x)).toBe(true);
+      expect(x).toBeGreaterThanOrEqual(0);
+    }
+  });
 });

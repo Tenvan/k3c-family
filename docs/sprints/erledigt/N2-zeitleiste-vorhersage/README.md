@@ -1,6 +1,6 @@
 # N2 · CLI · Flüssige Darstellung: Zeitleiste, Extrapolation, eigene Vorhersage
 
-- **Status:** aktiv
+- **Status:** erledigt
 - **Domäne:** CLI
 - **Reife:** bereit
 - **Einschiebbar:** ja
@@ -63,9 +63,13 @@ keine
 |---|---|---|---|---|
 | N2.1 | `N2.1-zeitleiste.md` | Umsetzung | autonom | fertig |
 | N2.2 | `N2.2-vorhersage-latenz.md` | Umsetzung | autonom | fertig |
-| N2.3 | `N2.3-review.md` | Review | autonom | offen |
+| N2.3 | `N2.3-review.md` | Review | autonom | fertig |
 | N2.4 | `N2.4-abnahme-xbox.md` | Workshop | Mensch | offen |
 
 ## Abnahme
 
-–
+- 2026-10-04, Review N2.3: AC-01, AC-02 (Ergebnis N2.1), AC-03, AC-04, AC-07, AC-08 (Ergebnis N2.2), AC-05 (`task check` grün) mit Nachweis; Ergänzungs-Tests in N2.3.
+- AC-06: angenommen, Validierung offen (N2.4, 🧑 an der Xbox; Fahrplan „Offen am Gerät“).
+- Behoben: Gummiband der Vorhersage unter Latenz (Vorlauf), Latenz-Fenster begrenzt, doppelter Tick, Zeitraffer-Schwelle, keine Vorhersage tot/angehalten, `moveX` gerastert, Glossar. B-278 → B-279 umbenannt (Kollision mit N1).
+- Abhängigkeit: `ack` beim Einreihen statt beim Senden (N1); B-277 und B-181 archiviert, B-279 bleibt offen.
+- Version: v0.11.0 vorgeschlagen (Minor: flüssigere Darstellung im Spiel); gesetzt erst nach Bestätigung durch 🧑.

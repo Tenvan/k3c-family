@@ -1,4 +1,4 @@
-# B-278 · docs/protocol.md beschreibt den Eingabe-Takt so, wie der Client ihn seit N2 sendet
+# B-279 · docs/protocol.md beschreibt den Eingabe-Takt so, wie der Client ihn seit N2 sendet
 
 - **Domäne:** SRV
 - **Typ:** Schuld

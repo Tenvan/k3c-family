@@ -78,7 +78,6 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-251](B-251-figuren-ganzzahlig-skalieren.md) | CLI | Schuld | niedrig | offen | – | Figuren werden ganzzahlig skaliert und flimmern nicht |
 | [B-252](B-252-grafikmanager-seite.md) | PLAT | Idee | mittel | offen | – | Eine GrafikManager-Seite zeigt Bestand, Kandidaten und Zuordnung für die feine Auswahl |
 | [B-176](B-176-protokoll-mehrere-stufen.md) | SRV | Idee | hoch | eingeplant | S2 | Das Protokoll liefert Level und Zustand jeder Stufe, in der ein lokaler Spieler steht |
-| [B-181](B-181-latenz-im-debug-overlay.md) | CLI | Idee | mittel | eingeplant | N2 | Das Debug-Overlay zeigt die Latenz von Eingabe bis Bild |
 | [B-184](B-184-pages-screenshots.md) | PLAT | Idee | niedrig | offen | – | Die Präsentationsseite zeigt echte Bilder aus dem Spiel |
 | [B-185](B-185-verluste-je-welle-angleichen.md) | REG | Schuld | niedrig | offen | – | Wirtschaft nennt denselben Verlust-Korridor je Welle wie die Bürger |
 | [B-186](B-186-autospeichern-takt.md) | SRV | Idee | mittel | offen | – | Der Server speichert alle 60 s und bei Tagesanbruch, das HUD zeigt „gesichert“ |
@@ -116,8 +115,7 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-273](B-273-release-image-dev-mode-aus.md) | INF | Schuld | hoch | offen | – | Das Release-Image startet den Server ohne Dev-Mode |
 | [B-274](B-274-testrestore-flackert-windows.md) | SRV | Problem | mittel | offen | – | TestRestore läuft unter Windows auch in task check:all stabil grün |
 | [B-276](B-276-tick-budget-async.md) | SRV | Problem | hoch | eingeplant | N1 | Der Raum-Tick bleibt im Budget, Kodierung und Speichern laufen außerhalb der Raum-Sperre |
-| [B-277](B-277-zeitleiste-vorhersage.md) | CLI | Problem | hoch | eingeplant | N2 | Der Client zeichnet trotz schwankender Zustände flüssig und wartet bei der eigenen Laufbewegung nicht auf den Server |
-| [B-278](B-278-protokoll-eingabe-takt.md) | SRV | Schuld | niedrig | offen | – | docs/protocol.md beschreibt den Eingabe-Takt so, wie der Client ihn seit N2 sendet |
+| [B-279](B-279-protokoll-eingabe-takt.md) | SRV | Schuld | niedrig | offen | – | docs/protocol.md beschreibt den Eingabe-Takt so, wie der Client ihn seit N2 sendet |
 
 ## Archiv
 
@@ -259,3 +257,5 @@ Zeile in diesen Abschnitt.
 | [B-170](archiv/B-170-release-checkliste.md) | INF | Idee | hoch | erledigt | RL1 | Eine Release-Checkliste macht jeden Release prüfbar |
 | [B-162](archiv/B-162-grafik-suche-luecken.md) | CLI | Frage | mittel | erledigt | GR2 | Für die Grafik-Lücken liegen Kandidaten mit Vorschau, Lizenz und Stilbewertung vor |
 | [B-271](archiv/B-271-s2-3-ohne-todesursache.md) | SRV | Frage | hoch | erledigt | S2 | Der Spielmetrik-Report wartet auf B-182 oder startet ohne Todesursache |
+| [B-181](archiv/B-181-latenz-im-debug-overlay.md) | CLI | Idee | mittel | erledigt | N2 | Das Debug-Overlay zeigt die Latenz von Eingabe bis Bild |
+| [B-277](archiv/B-277-zeitleiste-vorhersage.md) | CLI | Problem | hoch | erledigt | N2 | Der Client zeichnet trotz schwankender Zustände flüssig und wartet bei der eigenen Laufbewegung nicht auf den Server |

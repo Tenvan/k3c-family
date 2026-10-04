@@ -13,7 +13,6 @@ Reihenfolge in Wellen, Bahnen je Domäne und Zuordnung Mensch/autonom (zwei Acco
 | S2 | SRV | Protokoll für Skills, Speichern beim Verlassen, Spielmetrik | neue Felder in `docs/protocol.md` mit Beispielen unter `testdata/protocol/`, Spielstand nach Trennung mitten in der Nacht, ein Report in `reports/` | `aktiv/S2-protokoll-skills-speichern-metrik/` |
 | GR3 | CLI | Grafik im Renderer | Hub mit Sprites statt Formen, Parallax je Biom, Hub- und Materialstufen unterscheidbar am TV | `aktiv/GR3-grafik-renderer/` |
 | N1 | SRV | Raum-Tick im Budget: Versand und Speichern asynchron | Benchmark vorher/nachher, weniger `🐢 Tick zu langsam` im Log | `aktiv/N1-tick-asynchron/` |
-| N2 | CLI | Flüssige Darstellung: Zeitleiste, Extrapolation, eigene Vorhersage | Figuren laufen gleichmäßig, eigener Monarch reagiert sofort, Latenz im Debug-Overlay | `aktiv/N2-zeitleiste-vorhersage/` |
 
 ## Offen am Gerät
 
@@ -33,6 +32,7 @@ Hardware-Sessions (`Agent: Mensch`) aus Sprints, deren Review schon abgeschlosse
 | SO3.3 | Xbox am TV (Hörprobe: Controller bedienen, B frei, View + Menu zurück, Crossfade ohne Knacken, Lautstärke; Browser-Pane-Schritte aus SO3.1/SO3.2 offen) | AC-03, AC-04: Controller-Bedienung und Crossfade am TV bestätigt (angenommen laut Tests) | `erledigt/SO3-hoerprobenseite/` |
 | S7.3 | Xbox am TV und Handy (zwei Spieler im Split-Screen reiten: Reittier animiert, Stehen/Laufen/Sprint verschieden, Sattelsitz) | AC-02, AC-04: Darstellung am TV und Handy abgenommen (angenommen laut Tests; Sichtnachweis fehlt auch aus S7.2) | `erledigt/S7-monarch-reittier/` |
 | RL1.2 | Raspberry Pi und Xbox (Pi-Image ziehen, Versionszeile der Landingpage gegen den Tag) | AC-03: Punkte „Pi-Image“ und „Version stimmt“ am Gerät (angenommen laut CI und Tests) | `erledigt/RL1-release-checkliste/` |
+| N2.4 | Xbox am TV (2 Controller, Split-Screen, Server auf dem Pi; FPS, Latenz, Puffer aus dem Debug-Overlay) | AC-06: kein sichtbares Ruckeln (angenommen laut Tests) | `erledigt/N2-zeitleiste-vorhersage/` |
 
 ## Geplant (in dieser Reihenfolge)
 
@@ -138,3 +138,4 @@ Gesamtplan und Begründung: [`../plan-weiterentwicklung.md`](../plan-weiterentwi
 | W0 | Bauplätze aus dem Seed: feste Hub-Plätze, fünf Mauerlinien je Seite mit Tor, Farm, `cause` in `playerDown`, Camps auf Abstand (B-206, B-182, B-261) | `erledigt/W0-bauplaetze-seed/` |
 | RL1 | Release-Checkliste: Abschnitt „Release“ in `docs/arbeitsweise.md`, Probelauf ohne Tag (B-170; einschiebbar; Pi und Xbox offen) | `erledigt/RL1-release-checkliste/` |
 | GR2 | Grafik-Suche für Lücken: Kandidatenseite, 9 gewählte Packs, 20 nicht gewählte Kandidaten in der Gruppe `kandidaten` (B-162; einschiebbar; Ansicht `grafiken.html` durch 🧑 offen) | `erledigt/GR2-grafik-suche/` |
+| N2 | Flüssige Darstellung: Zeitleiste mit Puffer und Extrapolation, Vorhersage des eigenen Monarchen, Latenz im Debug-Overlay (B-277, B-181; Abnahme am Gerät offen) | `erledigt/N2-zeitleiste-vorhersage/` |

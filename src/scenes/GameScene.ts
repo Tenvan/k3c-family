@@ -297,7 +297,7 @@ export class GameScene extends Phaser.Scene {
     const now = performance.now();
     const sampled = this.timeline.sample(now);
     if (!sampled || !level) return;
-    const state = this.predictor.draw(sampled, now, this.moves, this.client.you); // lokale Monarchen sofort (B-277)
+    const state = this.predictor.draw(sampled, now, this.moves, this.client.you, this.client.latency?.mean ?? null); // lokale Monarchen sofort (B-277)
     if (this.world_) applyState(this.world_, state);
     else {
       this.world_ = createViewWorld(level, state);

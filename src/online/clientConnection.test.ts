@@ -5,7 +5,7 @@ import joined from '../../testdata/protocol/s2c-joined.json';
 import levelMsg from '../../testdata/protocol/s2c-level.json';
 import rooms from '../../testdata/protocol/s2c-rooms.json';
 import welcome from '../../testdata/protocol/s2c-welcome.json';
-import { RECONNECT_LIMIT_MS, RoomClient, getDeviceId, type ClientEnv, type SocketLike } from './clientConnection';
+import { RECONNECT_LIMIT_MS, RoomClient, getDeviceId, roundMoves, type ClientEnv, type SocketLike } from './clientConnection';
 import { PROTOCOL_VERSION, type SlotInput } from './clientProtocol';
 
 class FakeSocket implements SocketLike {
@@ -150,6 +150,20 @@ describe('Eingabe-Takt (AC-07)', () => {
     t.client.sendInput(input(1)); // Lebenszeichen
     expect(inputs()).toHaveLength(4);
     expect(inputs()[3]).toMatchObject({ seq: 4 });
+  });
+
+  it('analoges moveX auf 0,05 gerastert: Zittern des Sticks sendet nicht jeden Frame', () => {
+    expect(roundMoves(input(0.333)).map((i) => i.moveX)).toEqual([0.35]);
+    expect(Object.is(roundMoves(input(-0.01))[0]!.moveX, 0)).toBe(true);
+    const t = inRoom();
+    const inputs = () => t.last().sent.filter((m) => m.t === 'input');
+    t.client.sendInput(input(0.501));
+    for (const x of [0.502, 0.51, 0.49, 0.52]) {
+      t.advance(17);
+      t.client.sendInput(input(x));
+    }
+    expect(inputs()).toHaveLength(1);
+    expect(inputs()[0]).toMatchObject({ p: input(0.5) });
   });
 
   it('Latenz: Zeit bis zum ersten Zustand mit ack ≥ seq, ohne Messung null (B-181)', () => {
