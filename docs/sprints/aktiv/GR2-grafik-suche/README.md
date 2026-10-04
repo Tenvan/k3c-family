@@ -62,7 +62,7 @@ Kein Treffer → Platzhalter bleibt, Vermerk in der Tabelle. Widersprüchliche L
 | GR2.1 | `GR2.1-recherche-kandidaten.md` | Umsetzung | autonom | fertig |
 | GR2.2 | `GR2.2-workshop-auswahl.md` | Workshop | Mensch | fertig |
 | GR2.3 | `GR2.3-assets-einbinden.md` | Umsetzung | autonom | fertig |
-| GR2.4 | `GR2.4-review.md` | Review | autonom | offen |
+| GR2.4 | `GR2.4-review.md` | Review | autonom | in Arbeit |
 
 Bei `Reife: Entwurf` genügen Stichpunkte mit den Kriterien in Klammern statt Session-Dateien. Vor dem Aktivieren
 wird jede Session als eigene Datei nach `docs/vorlagen/session.md` geschrieben.

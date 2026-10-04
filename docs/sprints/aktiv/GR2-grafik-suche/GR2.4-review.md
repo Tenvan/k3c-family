@@ -1,6 +1,6 @@
 # GR2.4 · Review und Abnahme des Sprints GR2
 
-- **Status:** offen
+- **Status:** in Arbeit
 - **Typ:** Review
 - **Agent:** autonom
 - **Branch:** gr2/4-review
