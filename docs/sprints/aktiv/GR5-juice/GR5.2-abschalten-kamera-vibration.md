@@ -1,6 +1,6 @@
 # GR5.2 · Abschalten über Optionen, Split-Screen-Kamera, Blitzgrenze, Vibration
 
-- **Status:** offen
+- **Status:** in Arbeit
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Branch:** gr5/2-abschalten-kamera-vibration
