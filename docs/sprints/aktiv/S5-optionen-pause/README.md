@@ -64,7 +64,7 @@ Pause im gemeinsamen Raum: 🧑, `docs/fragenkatalog.md Q01`.
 | S5.2 | `S5.2-szene-optionen-pause.md` | Umsetzung | autonom | fertig |
 | S5.3 | `S5.3-texte-de-en.md` | Umsetzung | autonom | fertig |
 | S5.4 | `S5.4-abnahme-geraet.md` | Workshop | Mensch | offen |
-| S5.5 | `S5.5-review.md` | Review | autonom | offen |
+| S5.5 | `S5.5-review.md` | Review | autonom | in Arbeit |
 
 ## Abnahme
 
