@@ -1,6 +1,6 @@
 # LT1.2 · CPU in `/api/status`, Bericht, Bewertung und Task `load`
 
-- **Status:** offen
+- **Status:** in Arbeit
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Branch:** lt1/2-status-bericht
