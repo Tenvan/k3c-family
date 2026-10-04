@@ -62,6 +62,9 @@ Spielen auf der Seite; Passwortschutz (eigenes Ticket, sobald die Seite steht); 
 
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
+| DBG3.1 | `DBG3.1-seite-dm.md` | Umsetzung | autonom | offen |
+| DBG3.3 | `DBG3.3-review.md` | Review | autonom | offen |
+| DBG3.2 | `DBG3.2-abnahme-handy.md` | Workshop | Mensch | offen |
 
 Bei `Reife: Entwurf` genügen Stichpunkte mit den Kriterien in Klammern statt Session-Dateien. Vor dem Aktivieren
 wird jede Session als eigene Datei nach `docs/vorlagen/session.md` geschrieben.
