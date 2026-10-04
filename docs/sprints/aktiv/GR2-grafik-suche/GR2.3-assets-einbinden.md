@@ -1,6 +1,6 @@
 # GR2.3 · Gewählte Assets einbinden, Credits, Zuordnung aktualisieren
 
-- **Status:** in Arbeit
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Branch:** gr2/3-assets-einbinden
@@ -42,10 +42,10 @@ Einbau in den Renderer (GR3), Atlas (GR4), neue Suche.
 
 ## Fertig, wenn
 
-- [ ] AC-03: Gewählte Assets mit Lizenzdatei, Index- und Credit-Eintrag; `task test` grün.
-- [ ] AC-04: Zuordnungstabelle zeigt für jede entschiedene Lücke den neuen Status.
-- [ ] AC-05: `task check` grün.
-- [ ] AC-06: Nicht gewählte CC0-/CC-BY-Kandidaten als Gruppe `kandidaten` im Bestand, mit Lizenzdatei und Credit, nicht zugeordnet (Erweiterung 🧑 2026-10-04).
+- [x] AC-03: Gewählte Assets mit Lizenzdatei, Index- und Credit-Eintrag; `task test` grün.
+- [x] AC-04: Zuordnungstabelle zeigt für jede entschiedene Lücke den neuen Status.
+- [x] AC-05: `task check` grün.
+- [x] AC-06: Nicht gewählte CC0-/CC-BY-Kandidaten als Gruppe `kandidaten` im Bestand, mit Lizenzdatei und Credit, nicht zugeordnet (Erweiterung 🧑 2026-10-04).
 
 ## Prüfen
 
@@ -56,4 +56,12 @@ task check
 
 ## Ergebnis
 
-–
+Teil 1 (gewählte Packs, AC-03/AC-04) kam schon mit #126 auf `develop`; Teil 2 (AC-06) am 2026-10-04 auf `sprint/gr2`.
+
+- **AC-03:** umgesetzt – 9 gewählte Packs (inkl. `k3c-paletten`) mit `LICENSE.txt`, Index- und Credit-Eintrag; geprüft mit `src/tools/grafikPacks.test.ts`.
+- **AC-04:** umgesetzt – `docs/assets/zuordnung-welt.md` und `zuordnung-objekte.md` zeigen je entschiedener Lücke „zugeordnet“ oder „kein Treffer, Platzhalter“ (Plantage, Holz-Stufe, Zauberturm); geprüft mit `src/tools/zuordnung.test.ts`.
+- **AC-05:** geprüft – `task check` grün (1130 Tests).
+- **AC-06:** umgesetzt – 20 nicht gewählte Kandidaten (17 × CC0, `materials-pack` CC BY 3.0, `plants-and-flowers-pixel-art` und `kyrises-free-16x16-rpg-icon-pack` CC BY 4.0) mit 93 Bildern in der Gruppe `kandidaten`, je mit `LICENSE.txt`, Credit-Zeile und Lizenzhinweis; neuer Test: Kandidaten-Packs nur in Gruppe `kandidaten` und in keiner Zuordnungsdatei. CC-BY-SA (LPC Fruit Trees, 16px Items) bleibt draußen. Pack-Zahl im Test 21 → 41.
+- Lizenz `materials-pack`: Ein alter Kommentar auf der Quellseite nennt CC-BY-SA 1.0 in der readme; die geladene readme nennt CC BY 3.0 wie die Seite (Vermerk in `CREDITS.md`).
+- Schritt 5 (Ansicht `grafiken.html` im Browser-Pane) nicht gemacht: Browser-Prüfung ohne Freigabe 🧑 für diesen Lauf. Offen für 🧑.
+- Hinweis: k3c-dev (`plan_set`, `check_run`) arbeitete aus diesem Worktree auf der Repo-Wurzel; Status und Prüfung deshalb von Hand bzw. per `task check`.
