@@ -2,7 +2,7 @@
 
 - **Status:** geplant
 - **Domäne:** SIM
-- **Reife:** Entwurf
+- **Reife:** bereit
 - **Einschiebbar:** nein
 - **Tickets:** B-114, B-115, B-012
 - **Start-Commit:** –
@@ -59,12 +59,15 @@ Zahlenwerte der Ressourcendichte: Zielwerte aus den Zielkorridoren (F1) bzw. B-0
 
 ## Sessions
 
-Entwurf. Vor dem Aktivieren jede Session als Datei nach `docs/vorlagen/session.md` schreiben, die Kriterien in Klammern werden ihr Feld `Kriterien`.
+| Nr. | Datei | Typ | Agent | Status |
+|---|---|---|---|---|
+| W2.1 | `W2.1-adern-plantage.md` | Umsetzung | autonom | offen |
+| W2.2 | `W2.2-eisenstollen-kristallhoehle.md` | Umsetzung | autonom | offen |
+| W2.3 | `W2.3-mine-golden.md` | Umsetzung | autonom | offen |
+| W2.4 | `W2.4-review.md` | Review | autonom | offen |
 
-- W2.1 Adern im Level-Generator und Abbaurate, Plantage (AC-01, AC-02).
-- W2.2 Biome Eisenstollen und Kristallhöhle, Stufenbreite und Dichte, fünf Stufen der Insel (AC-03, AC-04).
-- W2.3 Mine vollständig, Golden-Level (AC-05, AC-06).
-- W2.4 Review (Code-Sprint): alle Kriterien prüfen.
+Bei `Reife: Entwurf` genügen Stichpunkte mit den Kriterien in Klammern statt Session-Dateien. Vor dem Aktivieren
+wird jede Session als eigene Datei nach `docs/vorlagen/session.md` geschrieben.
 
 ## Abnahme
 
