@@ -68,7 +68,6 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-154](B-154-protokoll-bosse-events-inselwechsel.md) | SRV | Idee | hoch | eingeplant | K4 | Das Protokoll kennt Bosse, Phasen, Events und den Inselwechsel |
 | [B-155](B-155-balancing-runde-wirtschaft.md) | REG | Idee | hoch | eingeplant | BR1 | Die Wirtschaft ist in einer Balancing-Runde gegen die Zielkorridore abgestimmt |
 | [B-156](B-156-balancing-runde-kampf-bosse.md) | REG | Idee | hoch | eingeplant | BR2 | Kampf, Gegner und Bosse sind in einer Balancing-Runde gegen die Zielkorridore abgestimmt |
-| [B-157](B-157-zielkorridor-pruefung.md) | SIM | Idee | mittel | eingeplant | BAL2 | Der Balancing-Tester prüft Zielkorridore und meldet Pass oder Fail je Kennzahl |
 | [B-158](B-158-bot-profile-sensitivitaet.md) | SIM | Idee | mittel | eingeplant | BAL3 | Der Tester kennt weitere Bot-Profile, Sensitivitäts-Läufe und Kurven je Schwierigkeitsgrad |
 | [B-160](B-160-abgleich-spielmetrik-simulator.md) | REG | Idee | mittel | eingeplant | BAL4 | Spielmetrik echter Abende und Simulatorwerte sind abgeglichen |
 | [B-161](B-161-grafik-zuordnungstabelle.md) | CLI | Idee | hoch | eingeplant | GR1 | Jedes Spielobjekt hat eine Zuordnung zu Asset und Lizenz oder eine dokumentierte Lücke |
@@ -95,6 +94,7 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-195](B-195-debug-overlay-xbox.md) | PLAT | Problem | mittel | offen | – | Das Debug-Overlay lässt sich auf der Xbox öffnen |
 | [B-197](B-197-partner-zelle-schriftgroesse.md) | CLI | Frage | niedrig | offen | – | Die Schriftregel nennt eine Mindestgröße für die Mitspieler-Zelle |
 | [B-198](B-198-platzhaltertext-schrift-katalog.md) | CLI | Schuld | niedrig | offen | – | Der Platzhaltertext einer ungeladenen Stufe liest seine Schrift aus dem Katalog |
+| [B-157](archiv/B-157-zielkorridor-pruefung.md) | SIM | Idee | mittel | erledigt | BAL2 | Der Balancing-Tester prüft Zielkorridore und meldet Pass oder Fail je Kennzahl |
 | [B-159](archiv/B-159-replay-repro-format.md) | SIM | Idee | mittel | erledigt | BAL1 | Ein Lauf ist als Datei aus Seed und Eingaben wiederholbar |
 | [B-199](B-199-raum-fuenf-stufen.md) | SRV | Problem | mittel | offen | – | Ein neuer Raum legt die Insel mit allen Stufen an, für die es ein Biom gibt |
 | [B-200](B-200-aggressionspool-adern.md) | SIM | Problem | mittel | offen | – | Der Aggressionspool unter Tage bleibt auch mit Adern im Wellen-Korridor |

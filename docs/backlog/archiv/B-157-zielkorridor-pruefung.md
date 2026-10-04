@@ -3,7 +3,7 @@
 - **Domäne:** SIM
 - **Typ:** Idee
 - **Prio:** mittel
-- **Status:** eingeplant
+- **Status:** erledigt
 - **Sprint:** BAL2
 - **Erstellt:** 2026-10-02
 - **Spec:** freigegeben
