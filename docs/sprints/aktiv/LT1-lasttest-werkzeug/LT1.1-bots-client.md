@@ -1,6 +1,6 @@
 # LT1.1 · Bots über das Protokoll, Seed und Aufräumen der Test-Räume
 
-- **Status:** offen
+- **Status:** in Arbeit
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Branch:** lt1/1-bots-client
