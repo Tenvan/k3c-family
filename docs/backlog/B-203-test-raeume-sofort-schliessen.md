@@ -1,4 +1,4 @@
-# B-200 · Leere Test-Räume schließen sofort statt nach der Leer-Frist
+# B-203 · Leere Test-Räume schließen sofort statt nach der Leer-Frist
 
 - **Domäne:** SRV
 - **Typ:** Idee
