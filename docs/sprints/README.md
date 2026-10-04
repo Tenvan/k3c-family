@@ -25,6 +25,7 @@ Hardware-Sessions (`Agent: Mensch`) aus Sprints, deren Review schon abgeschlosse
 | S4.3 | Xbox am TV (Viertel-Layout lesbar) oder zwei Eingabegeräte; „zwei Stufen“ erst nach B-176 | AC-04: zwei Spieler in verschiedenen Stufen, Layouts 3 und 4 lesbar | `erledigt/S4-kamera-layouts/` |
 | LT1.3 | Raspberry Pi (Messlauf 2 Räume × 3 Spieler über eine Nacht, `task load`) | AC-06: Messlauf bewertet, B-042 archiviert (angenommen laut Messung 2026-10-03: Nacht 10,2 bis 10,3 ms, Ziel < 10 ms) | `erledigt/LT1-lasttest-werkzeug/` |
 | S5.4 | Xbox am TV und Handy (Optionen/Pause bedienen, englische Texte lesen) | AC-05, AC-07: Szene am TV und Handy abgenommen, englische Texte gelesen | `erledigt/S5-optionen-pause/` |
+| SO1.5 | Xbox am TV (Entsperren nach erster Taste, ogg mit mp3-Fallback, Split-Screen-Dämpfung hören; Browser-Pane-Schritte aus SO1.2/SO1.3 offen) | AC-04: Format mit Fallback am TV beobachtet (angenommen: ogg, mp3-Fallback laut X1, B-166) | `erledigt/SO1-audio-kern/` |
 | GR5 (TV) | Xbox am TV (Effekte sehen, Blitz-Eindruck, Vibration) | AC-01, AC-02, AC-04: Effekte sichtbar, Schalter „aus“ ruhig (angenommen laut Tests) | `erledigt/GR5-juice/` |
 
 ## Geplant (in dieser Reihenfolge)
@@ -66,7 +67,6 @@ dann über den Go-Server mit mehreren Räumen und gemischten Spielern.
 | GR2 | CLI | Grafik-Suche für Lücken | bereit | `geplant/GR2-grafik-suche/` |
 | GR3 | CLI | Grafik im Renderer | Entwurf | `geplant/GR3-grafik-renderer/` |
 | RL1 | INF | Release-Checkliste | bereit | `geplant/RL1-release-checkliste/` |
-| SO1 | CLI | Audio-Kern | bereit | `geplant/SO1-audio-kern/` |
 | SO2 | CLI | SFX-Katalog und Einbau | Entwurf | `geplant/SO2-sfx-katalog/` |
 | SO4 | CLI | Musik je Zustand | Entwurf | `geplant/SO4-musik/` |
 
@@ -132,3 +132,4 @@ Gesamtplan und Begründung: [`../plan-weiterentwicklung.md`](../plan-weiterentwi
 | S5 | Optionen- und Pause-Szene mit getrennter Lautstärke, Screenshake/Flash, Farbschwäche-Symbolen und Sprache de/en (B-146, B-172; Abnahme am Gerät offen) | `erledigt/S5-optionen-pause/` |
 | M8 | k3c-dev VIII: Planung über MCP, React-Planungsseite, GitHub-Status (einschiebbar) | `erledigt/M8-dev-planung-mcp/` |
 | BAL1 | Balancing-Tester: Kern und Replay: Bots, Kennzahlen-Report und Replay-Datei in k3c-dev (B-099 teils, B-159; einschiebbar) | `erledigt/BAL1-balancing-tester-kern/` |
+| SO1 | Audio-Kern: Mixer mit Bus-Lautstärke je Gerät, Entsperren per Eingabe, Sound-Atlas, Positions-Dämpfung, Demo-Ton (B-011 teils; einschiebbar; Hörprobe am TV offen) | `erledigt/SO1-audio-kern/` |

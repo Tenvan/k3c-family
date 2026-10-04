@@ -1,6 +1,6 @@
 # SO1.1 · Mixer mit Bussen und Lautstärke je Gerät
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Branch:** so1/1-mixer-lautstaerke
@@ -39,9 +39,9 @@ Entsperren, Format, Sound-Atlas (SO1.2), Dämpfung und Demo-Ereignis (SO1.3), Op
 
 ## Fertig, wenn
 
-- [ ] AC-01: Test belegt getrennte Busse Musik, Effekte, Ambient mit eigener Lautstärke.
-- [ ] AC-02: Test belegt Speichern und Lesen je Gerät im `localStorage` mit Rückfall.
-- [ ] `task check` grün; keine Datei > 400 Zeilen, keine Funktion > 60 Zeilen.
+- [x] AC-01: Test belegt getrennte Busse Musik, Effekte, Ambient mit eigener Lautstärke.
+- [x] AC-02: Test belegt Speichern und Lesen je Gerät im `localStorage` mit Rückfall.
+- [x] `task check` grün; keine Datei > 400 Zeilen, keine Funktion > 60 Zeilen.
 
 ## Prüfen
 
@@ -51,4 +51,8 @@ task check
 
 ## Ergebnis
 
-–
+Umgesetzt in `src/audio/mixer.ts` (Web Audio API, kein Phaser-Sound: Phaser hat keine eigenen Busse, ein `GainNode` je Bus ist der direkte Weg; keine neue Abhängigkeit). Die Lautstärken hängen in `src/core/settings.ts` (S5.1 lief schon): neues Feld `ambientVolume` (Standard 100 %), kein zweiter Speicher. Optionen-Eintrag für Ambient: B-218. Ticket-Nummern B-216/B-217 sind auf `sprint/s1` und `sprint/gr5` vergeben, daher B-218.
+
+- AC-01: `src/audio/mixer.test.ts` (Busse am Master, Effekte 0 lässt Musik und Ambient unverändert, Begrenzung 0–100 %).
+- AC-02: `src/audio/mixer.test.ts` (Speichern, neuer Mixer liest beim Start; gesperrter und kaputter Speicher → Standard, kein Fehler); `src/core/settings.test.ts` angepasst.
+- `task check` grün (889 Tests); `mixer.ts` 67 Zeilen, keine Funktion > 60 Zeilen.
