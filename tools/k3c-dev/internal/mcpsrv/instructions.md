@@ -57,6 +57,8 @@ zurückgeben.
   Zustimmung von 🧑.
 - `plan_delete {id}` nur für Sprint-Entwürfe in `geplant/` und ihre Sessions; Tickets werden `verworfen`.
 - Commits macht das Tool nicht. Danach `check_run task:test` mit `pattern: planning`.
+- `gh_status {force?}` statt `gh pr list`/`gh run list` in der Shell: je Sprint PR, CI und Merge-Konflikt, dazu der letzte
+  `develop`-Lauf; braucht eine angemeldete GitHub CLI, sonst steht der Hinweis in der Antwort.
 
 ## Zustand
 

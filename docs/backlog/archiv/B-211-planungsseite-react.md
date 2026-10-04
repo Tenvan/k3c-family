@@ -3,7 +3,7 @@
 - **Domäne:** SRV
 - **Typ:** Schuld
 - **Prio:** mittel
-- **Status:** eingeplant
+- **Status:** erledigt
 - **Sprint:** M8
 - **Erstellt:** 2026-10-04
 - **Spec:** freigegeben

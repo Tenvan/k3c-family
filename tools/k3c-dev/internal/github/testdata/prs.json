@@ -1,0 +1,29 @@
+[
+  {"number": 110, "title": "M8 · SRV · k3c-dev VIII", "state": "OPEN", "isDraft": false, "headRefName": "sprint/m8",
+   "mergeable": "MERGEABLE", "mergeStateStatus": "CLEAN", "url": "https://github.com/Tenvan/k3c-family/pull/110",
+   "statusCheckRollup": [
+     {"__typename": "CheckRun", "name": "Go", "status": "COMPLETED", "conclusion": "FAILURE", "startedAt": "2026-10-04T10:00:00Z"},
+     {"__typename": "CheckRun", "name": "Go", "status": "COMPLETED", "conclusion": "SUCCESS", "startedAt": "2026-10-04T10:05:00Z"},
+     {"__typename": "CheckRun", "name": "Build", "status": "COMPLETED", "conclusion": "SKIPPED", "startedAt": "2026-10-04T10:05:00Z"}
+   ]},
+  {"number": 104, "title": "M8 alt", "state": "MERGED", "isDraft": false, "headRefName": "sprint/m8",
+   "mergeable": "UNKNOWN", "mergeStateStatus": "UNKNOWN", "url": "https://github.com/Tenvan/k3c-family/pull/104", "statusCheckRollup": []},
+  {"number": 108, "title": "M7 · Entwurf", "state": "OPEN", "isDraft": true, "headRefName": "sprint/m7",
+   "mergeable": "CONFLICTING", "mergeStateStatus": "DIRTY", "url": "https://github.com/Tenvan/k3c-family/pull/108",
+   "statusCheckRollup": [
+     {"__typename": "CheckRun", "name": "Go", "status": "IN_PROGRESS", "conclusion": "", "startedAt": "2026-10-04T10:06:00Z"},
+     {"__typename": "StatusContext", "context": "extern", "state": "SUCCESS", "startedAt": ""}
+   ]},
+  {"number": 107, "title": "LT1 · Lasttest", "state": "OPEN", "isDraft": false, "headRefName": "sprint/lt1",
+   "mergeable": "UNKNOWN", "mergeStateStatus": "UNKNOWN", "url": "https://github.com/Tenvan/k3c-family/pull/107",
+   "statusCheckRollup": [
+     {"__typename": "CheckRun", "name": "Go", "status": "COMPLETED", "conclusion": "SUCCESS", "startedAt": "2026-10-04T09:00:00Z"},
+     {"__typename": "StatusContext", "context": "extern", "state": "ERROR", "startedAt": ""}
+   ]},
+  {"number": 95, "title": "S5", "state": "MERGED", "isDraft": false, "headRefName": "sprint/s5",
+   "mergeable": "UNKNOWN", "mergeStateStatus": "UNKNOWN", "url": "https://github.com/Tenvan/k3c-family/pull/95", "statusCheckRollup": []},
+  {"number": 90, "title": "S5 alt", "state": "CLOSED", "isDraft": false, "headRefName": "sprint/s5",
+   "mergeable": "UNKNOWN", "mergeStateStatus": "UNKNOWN", "url": "https://github.com/Tenvan/k3c-family/pull/90", "statusCheckRollup": []},
+  {"number": 99, "title": "Fremder Branch", "state": "OPEN", "isDraft": false, "headRefName": "feature/x",
+   "mergeable": "MERGEABLE", "mergeStateStatus": "CLEAN", "url": "https://github.com/Tenvan/k3c-family/pull/99", "statusCheckRollup": []}
+]

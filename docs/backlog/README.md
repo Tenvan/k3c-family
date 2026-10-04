@@ -111,9 +111,7 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-207](B-207-bauplaetze-anzeige.md) | CLI | Idee | mittel | offen | – | Der Client zeigt freie und gesperrte Bauplätze mit Grund (ab Hub-Stufe n, Linie fehlt) |
 | [B-208](B-208-protokoll-bauplaetze.md) | SRV | Idee | mittel | eingeplant | W5 | Das Protokoll trägt die Bauplätze des Layouts sowie Platz- und Hub-Stufe zum Client |
 | [B-209](B-209-client-platz-arten.md) | CLI | Schuld | mittel | offen | – | `src/model/data.ts` kennt alle Platz-Arten aus `hub.json` |
-| [B-210](B-210-planung-ueber-mcp.md) | SRV | Idee | hoch | eingeplant | M8 | Agenten pflegen Tickets, Sprints und Sessions über MCP-Tools von k3c-dev |
-| [B-211](B-211-planungsseite-react.md) | SRV | Schuld | mittel | eingeplant | M8 | Die Planungsseite von k3c-dev ist eine React-Ansicht aus denselben Daten wie die MCP-Tools |
-| [B-212](B-212-github-status-planung.md) | SRV | Idee | mittel | eingeplant | M8 | k3c-dev zeigt PR, CI und Merge-Konflikte je Sprint aus GitHub |
+| [B-213](B-213-markdown-listen-haekchen.md) | SRV | Problem | niedrig | offen | – | MarkdownView in k3c-dev zeigt nummerierte Listen und Häkchen wie die alte Planungsseite |
 
 ## Archiv
 
@@ -230,3 +228,6 @@ Zeile in diesen Abschnitt.
 | [B-196](archiv/B-196-pages-workflows-go-fuer-atlas.md) | INF | Problem | hoch | erledigt | GR4 | Die Pages-Workflows bauen mit Go, weil `task build` den Atlas packt |
 | [B-106](archiv/B-106-kamera-je-stufe.md) | CLI | Idee | hoch | erledigt | S4 | Jeder Spieler sieht seine Stufe, auch wenn die Spieler in verschiedenen Stufen sind |
 | [B-199](archiv/B-199-review-diff-befehl.md) | INF | Schuld | mittel | erledigt | – | Review-Sessions lesen den Sprint-Diff mit dem Befehl aus der Arbeitsweise |
+| [B-210](archiv/B-210-planung-ueber-mcp.md) | SRV | Idee | hoch | erledigt | M8 | Agenten pflegen Tickets, Sprints und Sessions über MCP-Tools von k3c-dev |
+| [B-211](archiv/B-211-planungsseite-react.md) | SRV | Schuld | mittel | erledigt | M8 | Die Planungsseite von k3c-dev ist eine React-Ansicht aus denselben Daten wie die MCP-Tools |
+| [B-212](archiv/B-212-github-status-planung.md) | SRV | Idee | mittel | erledigt | M8 | k3c-dev zeigt PR, CI und Merge-Konflikte je Sprint aus GitHub |

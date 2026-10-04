@@ -1,6 +1,6 @@
-// Package planning liest die Planung des Repos für die Planungs-Seite: aktive und geplante Sprints mit ihren Sessions
-// (docs/sprints/), offene Tickets (docs/backlog/) und zwei Dokumente (Plan, Fragenkatalog). Es liest nur, die Dateien
-// bleiben die Quelle; Format und Vorlagen stehen in docs/arbeitsweise.md.
+// Package planning liest und schreibt die Planung des Repos: aktive und geplante Sprints mit ihren Sessions
+// (docs/sprints/), Tickets (docs/backlog/) und die Dokumente Plan, Fragenkatalog und Glossar. Die Dateien bleiben die
+// Quelle; Format und Vorlagen stehen in docs/arbeitsweise.md, die Schreibwege in store.go (B-210).
 package planning
 
 import (
@@ -55,8 +55,12 @@ type Data struct {
 	Done    int      `json:"done"` // Zahl der erledigten Sprints
 }
 
-// Docs sind die lesbaren Dokumente; der Name kommt von der Oberfläche, der Pfad nie.
-var Docs = map[string]string{"plan": "plan-weiterentwicklung.md", "fragen": "fragenkatalog.md"}
+// Docs sind die lesbaren Dokumente; der Name kommt von der Oberfläche, der Pfad nie. DocOrder ist ihre Reihenfolge im
+// Umschalter; das Glossar erscheint nur, wenn es die Datei gibt (B-211).
+var (
+	Docs     = map[string]string{"plan": "plan-weiterentwicklung.md", "fragen": "fragenkatalog.md", "glossar": "glossar.md"}
+	DocOrder = []string{"plan", "fragen", "glossar"}
+)
 
 var (
 	field   = regexp.MustCompile(`^- \*\*([^:*]+):\*\*\s*(.*)$`)
@@ -135,6 +139,17 @@ func Doc(root, name string) (string, error) {
 	}
 	b, err := os.ReadFile(filepath.Join(root, "docs", file))
 	return string(b), err
+}
+
+// Available nennt die Dokumente aus DocOrder, deren Datei existiert.
+func Available(root string) []string {
+	out := []string{}
+	for _, name := range DocOrder {
+		if _, err := os.Stat(filepath.Join(root, "docs", Docs[name])); err == nil {
+			out = append(out, name)
+		}
+	}
+	return out
 }
 
 // header zerlegt `# SP11 · SRV · Titel` oder `# B-090 · Titel` am Mittelpunkt.

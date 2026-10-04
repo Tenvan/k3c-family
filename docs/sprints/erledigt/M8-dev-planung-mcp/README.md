@@ -1,6 +1,6 @@
 # M8 · SRV · k3c-dev VIII: Planung über MCP, React-Planungsseite, GitHub-Status
 
-- **Status:** aktiv
+- **Status:** erledigt
 - **Domäne:** SRV
 - **Reife:** bereit
 - **Einschiebbar:** ja
@@ -66,10 +66,13 @@ keine
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
 | M8.1 | `M8.1-planung-mcp.md` | Umsetzung | autonom | fertig |
-| M8.2 | `M8.2-planungsseite-react.md` | Umsetzung | autonom | offen |
-| M8.3 | `M8.3-github-status.md` | Umsetzung | autonom | offen |
-| M8.4 | `M8.4-review.md` | Review | autonom | offen |
+| M8.2 | `M8.2-planungsseite-react.md` | Umsetzung | autonom | fertig |
+| M8.3 | `M8.3-github-status.md` | Umsetzung | autonom | fertig |
+| M8.4 | `M8.4-review.md` | Review | autonom | fertig |
 
 ## Abnahme
 
-–
+2026-10-04 · AC-01 bis AC-03 und AC-04: M8.1 (PR #104), AC-05 und AC-06: M8.2, AC-07 und AC-08: M8.3, AC-09: M8.4 (`task check`, `task check:dev`, `golangci-lint` grün).
+Befunde: keine schweren (IDs per Regex, Slugs geprüft, Schreiben nur unter `docs/`, `gh` ohne Shell mit Timeout, Löschen nur für Entwürfe in `geplant/`).
+Neue Tickets: B-213 (entstand in M8.2).
+Version: v0.6.0 vorgeschlagen (Minor, Wirkung im Werkzeug: plan_*-Tools, React-Planungsseite, GitHub-Status)

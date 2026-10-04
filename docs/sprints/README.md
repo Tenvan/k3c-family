@@ -13,7 +13,6 @@ Reihenfolge in Wellen, Bahnen je Domäne und Zuordnung Mensch/autonom (zwei Acco
 | S5 | CLI | Optionen- und Pause-Szene | Einstellungen bleiben nach dem Neuladen erhalten | `aktiv/S5-optionen-pause/` |
 | BAL1 | SIM | Balancing-Tester: Kern und Replay (einschiebbar) | ein Befehl im Terminal erzeugt den Kennzahlen-Report, eine Replay-Datei lässt sich in k3c-dev abspielen und liefert denselben Endzustand-Hash | `aktiv/BAL1-balancing-tester-kern/` |
 | LT1 | SRV | Lasttest-Werkzeug | Messlauf am Pi mit Tabelle und Bewertung gegen das Ziel (< 10 ms) | `aktiv/LT1-lasttest-werkzeug/` |
-| M8 | SRV | k3c-dev VIII: Planung über MCP, React-Planungsseite, GitHub-Status (einschiebbar) | `plan_*`-Tools im MCP-Katalog, Planungsseite in React mit PR-, CI- und Konflikt-Stand je Sprint | `aktiv/M8-dev-planung-mcp/` |
 
 ## Offen am Gerät
 
@@ -129,3 +128,4 @@ Gesamtplan und Begründung: [`../plan-weiterentwicklung.md`](../plan-weiterentwi
 | GR6 | Credits-Seite aus den CREDITS-Dateien mit Vollständigkeits-Test (B-165) | `erledigt/GR6-credits-seite/` |
 | GR4 | Atlas und Lade-Szene (B-163, B-029; Messung an der Xbox offen, GR4.3) | `erledigt/GR4-atlas-ladeszene/` |
 | S4 | Kamera je Stufe und Layouts 1–4: Zelle zeigt Stufe, Radar und HUD je Zelle, Mindest-Schrift (B-106; Abnahme am Gerät offen) | `erledigt/S4-kamera-layouts/` |
+| M8 | k3c-dev VIII: Planung über MCP, React-Planungsseite, GitHub-Status (einschiebbar) | `erledigt/M8-dev-planung-mcp/` |
