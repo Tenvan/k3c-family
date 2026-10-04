@@ -6,13 +6,13 @@
 - **Einschiebbar:** ja
 - **Tickets:** B-010
 - **Start-Commit:** –
-- **Spec:** Entwurf
-- **Revision:** 1
-- **Freigabe:** –
+- **Spec:** freigegeben
+- **Revision:** 2
+- **Freigabe:** 2026-10-04, Chat (Ralf), Revision 2, durch 🧑; umfasst B-010; nachgeschärft: Lizenz CC0/CC-BY, „zugeordnet“ statt „alle“, Portale/Truhen/Münzen, Stufen erst mit B-112
 
 ## Ausgangslage
 
-Gebäude und Bauplätze sind Rechtecke in `src/scenes/worldRenderer.ts`; kein Spiel-Code lädt `public/grafik/`. Zuordnung (GR1) und Lückenschluss (GR2) liegen vor.
+Gebäude und Bauplätze sind Rechtecke in `src/scenes/worldRenderer.ts`; kein Spiel-Code lädt `public/grafik/`. Voraussetzung: Zuordnung (GR1.3) und Lückenschluss (GR2.3) sind fertig.
 
 ## Ziel
 
@@ -44,10 +44,10 @@ Grafik fehlt oder lädt nicht → Platzhalter-Form, keine leere Stelle.
 
 ## Akzeptanzkriterien
 
-- **AC-01** Alle Gebäude, Ressourcen und Parallax-Ebenen, die in der Zuordnungstabelle „zugeordnet“ sind, werden als Sprites gezeichnet (B-010/AC-01).
+- **AC-01** Alle Gebäude, Ressourcen, Portale, Truhen, Münzen und Parallax-Ebenen, die in der Zuordnungstabelle „zugeordnet“ sind, werden als Sprites gezeichnet (B-010/AC-01).
 - **AC-02** Die Credits aller eingebauten Grafiken stehen in `public/` (B-010/AC-02).
 - **AC-03** Fehlt eine Grafik, bleibt die Platzhalter-Form sichtbar (Test oder Beobachtung).
-- **AC-04** Hub-Stufen und Mauer-/Turm-Materialstufen sind am TV unterscheidbar (Beobachtung).
+- **AC-04** Hub-Stufen und Mauer-/Turm-Materialstufen sind unterscheidbar, sobald B-112 sie im Snapshot liefert; vorher genügen Stufe 1 und ein Test der Auswahl Stufe → Sprite. Sicht am TV: Beobachtung durch 🧑, bis dahin `angenommen, Validierung offen`.
 - **AC-05** Wald, Höhle und Mine haben je eigene Parallax-Ebenen oder einen dokumentierten Platzhalter (Beobachtung).
 - **AC-06** `task check` ist grün, mit 2 Spielern im Split-Screen sind keine Darstellungsfehler zu sehen.
 
