@@ -1,6 +1,6 @@
 # BAL1.4 · Review und Abnahme des Sprints BAL1
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Review
 - **Agent:** autonom
 - **Branch:** bal1/4-review
@@ -36,8 +36,8 @@ Stil, Optimierung, Werte in `data/`.
 
 ## Fertig, wenn
 
-- [ ] AC-01 bis AC-07 haben einen Nachweis im Ergebnis der jeweiligen Session oder sind mit Grund und Ticket verschoben.
-- [ ] Schwere Befunde sind behoben oder als Ticket angelegt; Sprint liegt unter `docs/sprints/erledigt/`.
+- [x] AC-01 bis AC-07 haben einen Nachweis im Ergebnis der jeweiligen Session oder sind mit Grund und Ticket verschoben.
+- [x] Schwere Befunde sind behoben oder als Ticket angelegt; Sprint liegt unter `docs/sprints/erledigt/`.
 
 ## Prüfen
 
@@ -49,4 +49,4 @@ task check:dev
 
 ## Ergebnis
 
-–
+Review leicht: `task check`, `task check:go`, `task check:dev` grün. Diff gelesen: Bots nur über `PlayerCommand`, kein `math/rand`/Wanduhr, `engine/sim` und `data/` unverändert, `replay_run` liest nur unterhalb der Repo-Wurzel (Symlinks aufgelöst). Ein schwerer Befund (keine Tick-Obergrenze in `ReadReplay`) im Review-Commit behoben. Nachweise AC-01 bis AC-07 siehe Abnahme in der Sprint-README.
