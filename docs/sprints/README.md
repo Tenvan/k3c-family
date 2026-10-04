@@ -10,7 +10,6 @@ Reihenfolge in Wellen, Bahnen je Domäne und Zuordnung Mensch/autonom (zwei Acco
 
 | Sprint | Domäne | Thema | Am Ende sichtbar | Ordner |
 |---|---|---|---|---|
-| S7 | CLI | Monarch auf dem Standard-Reittier | Zwei Spieler im Split-Screen reiten über die Stufe | `aktiv/S7-monarch-reittier/` |
 
 ## Offen am Gerät
 
@@ -28,6 +27,7 @@ Hardware-Sessions (`Agent: Mensch`) aus Sprints, deren Review schon abgeschlosse
 | SO1.5 | Xbox am TV (Entsperren nach erster Taste, ogg mit mp3-Fallback, Split-Screen-Dämpfung hören; Browser-Pane-Schritte aus SO1.2/SO1.3 offen) | AC-04: Format mit Fallback am TV beobachtet (angenommen: ogg, mp3-Fallback laut X1, B-166) | `erledigt/SO1-audio-kern/` |
 | GR5 (TV) | Xbox am TV (Effekte sehen, Blitz-Eindruck, Vibration) | AC-01, AC-02, AC-04: Effekte sichtbar, Schalter „aus“ ruhig (angenommen laut Tests) | `erledigt/GR5-juice/` |
 | SO3.3 | Xbox am TV (Hörprobe: Controller bedienen, B frei, View + Menu zurück, Crossfade ohne Knacken, Lautstärke; Browser-Pane-Schritte aus SO3.1/SO3.2 offen) | AC-03, AC-04: Controller-Bedienung und Crossfade am TV bestätigt (angenommen laut Tests) | `erledigt/SO3-hoerprobenseite/` |
+| S7.3 | Xbox am TV und Handy (zwei Spieler im Split-Screen reiten: Reittier animiert, Stehen/Laufen/Sprint verschieden, Sattelsitz) | AC-02, AC-04: Darstellung am TV und Handy abgenommen (angenommen laut Tests; Sichtnachweis fehlt auch aus S7.2) | `erledigt/S7-monarch-reittier/` |
 
 ## Geplant (in dieser Reihenfolge)
 
@@ -134,3 +134,4 @@ Gesamtplan und Begründung: [`../plan-weiterentwicklung.md`](../plan-weiterentwi
 | SO1 | Audio-Kern: Mixer mit Bus-Lautstärke je Gerät, Entsperren per Eingabe, Sound-Atlas, Positions-Dämpfung, Demo-Ton (B-011 teils; einschiebbar; Hörprobe am TV offen) | `erledigt/SO1-audio-kern/` |
 | BAL2 | Zielkorridor-Prüfung und `task balance`: Pass/Fail je Kennzahl für 100 feste Seeds, Vergleich mit Baseline, CI-Bericht (B-157; einschiebbar) | `erledigt/BAL2-zielkorridor-pruefung/` |
 | S1 | Monarch: Schlag, Fund-Pool, Skills von Tank, Zauberer und Heiler, Standard-Reittier, Spielstand v3 (B-118, B-119, B-022, B-152) | `erledigt/S1-monarch-schlag-skills/` |
+| S7 | Monarch beritten auf dem Standard-Reittier: `mountPose`, Reittier-Sheet als einzelne Spritesheets (B-173; Abnahme am Gerät offen) | `erledigt/S7-monarch-reittier/` |

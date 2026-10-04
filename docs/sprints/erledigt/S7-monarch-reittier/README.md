@@ -1,6 +1,6 @@
 # S7 · CLI · Monarch auf dem Standard-Reittier
 
-- **Status:** aktiv
+- **Status:** erledigt
 - **Domäne:** CLI
 - **Reife:** bereit
 - **Einschiebbar:** nein
@@ -62,8 +62,11 @@ Reihenfolge wie die Nummern. Voraussetzung: S1.3 hat `data/monarch.json › moun
 | S7.1 | `S7.1-reittier-pose.md` | Umsetzung | autonom | fertig |
 | S7.2 | `S7.2-renderer-anbindung.md` | Umsetzung | autonom | fertig |
 | S7.3 | `S7.3-abnahme-geraet.md` | Workshop | Mensch | offen |
-| S7.4 | `S7.4-review.md` | Review | autonom | in Arbeit |
+| S7.4 | `S7.4-review.md` | Review | autonom | fertig |
 
 ## Abnahme
 
-–
+- **2026-10-04 (S7.4):** AC-01 (S7.1: `mountPose.ts`, 7 Tests), AC-03 (S7.2: Test mit vier Spielern, `noSim.test.ts`) mit Nachweis. AC-02 (Sichtnachweis) und AC-04: angenommen, Validierung offen (S7.3, 🧑 am Gerät; im Fahrplan unter „Offen am Gerät“).
+- **Befunde:** keine schweren: `src/scenes` rechnet nichts (liest `index`, `vx`, `facing`), kein `Math.random()`, Schlüssel aus `MONARCH.mount.sprite`, Rückfall auf die Figur mit Log, LPC-Credits stehen in `public/sprites/CREDITS.md`. `worldRenderer.ts` 402 Rohzeilen, Oxlint (ohne Leer- und Kommentarzeilen) unter 400, grün. Abweichung S7.2 (Reittier-Sheet als einzelne Spritesheets statt Atlas) ist in der Sache unschädlich (`USED` und Atlas unverändert), Ladezeit nur 2 PNGs.
+- **Tickets:** B-173 erledigt; neue Tickets: keine. `task check`, `task check:go` grün (`-race` ohne C-Compiler übersprungen).
+- **Version:** v0.7.0 vorgeschlagen (Minor; v0.6.0 ist seit 2026-10-04 gesetzt: Monarch erscheint beritten, neue Darstellung im Spiel).
