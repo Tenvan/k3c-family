@@ -1,7 +1,7 @@
 import { fullscreenSupported, isFullscreen, onFullscreenChange, toggleLocal } from '../core/fullscreen';
 import { SHELL_MESSAGE, isOpenable, type ShellMessage } from '../core/shell';
 import { PAGES, SECTIONS, type PageEntry } from './pages';
-import { CLIENT, fetchServerBuild, versionLine } from '../core/version';
+import { CLIENT, fetchServerBuild, versionLine, versionMismatch } from '../core/version';
 import { NO_SERVER_HINT, needsServer } from './serverCheck';
 
 /**
@@ -325,7 +325,9 @@ restoreFocus();
 // Ohne Go-Server: Spiel-Kacheln aus; die Kopfzeile zeigt Client- und Server-Version (Tag und Buildzeit).
 void fetchServerBuild().then((server) => {
   if (!server) markNoServer();
-  document.getElementById('version')!.textContent = versionLine(CLIENT, server);
+  const el = document.getElementById('version')!;
+  el.textContent = versionLine(CLIENT, server);
+  el.classList.toggle('mismatch', versionMismatch(CLIENT, server));
 });
 // Direkt-Link / Neuladen mit geöffneter Seite (index.html#game.html?seed=abc)
 if (location.hash.length > 1) openPage(decodeURIComponent(location.hash.slice(1)));

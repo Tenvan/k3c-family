@@ -12,7 +12,7 @@
 
 ## Ausgangslage
 
-Der Hub hat feste Bauplätze mit je einem Gebäude (`data/hub.json`), Mauer und Turm haben nur eine Stufe (Holz); es gibt weder Hub-Ausbau noch Reparatur (`docs/rules/ist-material-gebaeude.md`).
+Der Hub hat feste Bauplätze mit je einem Gebäude (`data/hub.json`), Mauer und Turm haben nur eine Stufe (Holz); es gibt weder Hub-Ausbau noch Reparatur (`docs/rules/archiv/ist-material-gebaeude.md`).
 
 ## Ziel
 

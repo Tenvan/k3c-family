@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { CLIENT, fetchServerBuild, formatBuild, versionLine } from './version';
+import { CLIENT, fetchServerBuild, formatBuild, versionLine, versionMismatch } from './version';
 
 const reply = (status: number, body: string): typeof fetch => (async () => new Response(body, { status })) as unknown as typeof fetch;
 
@@ -17,6 +17,13 @@ describe('Versionsanzeige', () => {
     const c = { version: 'v0.4.0', built: '' };
     expect(versionLine(c, { version: 'v0.3.0', built: '' })).toBe('Client v0.4.0 · Server v0.3.0');
     expect(versionLine(c, null)).toBe('Client v0.4.0 · Server –');
+  });
+
+  it('Abweichung nur bei erreichbarem Server mit anderer Version (AC-04)', () => {
+    const c = { version: 'v0.4.0', built: '' };
+    expect(versionMismatch(c, { version: 'v0.4.0', built: '' })).toBe(false);
+    expect(versionMismatch(c, { version: 'v0.3.0', built: '' })).toBe(true);
+    expect(versionMismatch(c, null)).toBe(false);
   });
 
   it('der Build setzt Version und Buildzeit des Clients', () => {
