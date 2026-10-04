@@ -44,7 +44,7 @@ Typische Session: 30–60 Minuten.
 ## Monarch
 
 - Bewegung nur **horizontal** (links/rechts), Sprint, **kein Springen**.
-- Interagieren (Münze geben, Truhe öffnen, Eingang nutzen; A halten), Bau-Menü, Skill-Menü, **Schlag** (X) und vier Skill-Slots.
+- Interagieren (Münze geben, Truhe öffnen, Eingang nutzen; A halten), Skill-Menü, **Schlag** (X) und vier Skill-Slots. Es gibt **kein Bau-Menü**: Gebäude haben feste Plätze, Angebote je eigenes Zahlziel (Fragenkatalog Q34, 2026-10-04).
 - Hauptrolle ist Truppen-Management. Im Kampf unterstützt er per Skill und mit einem einfachen Schlag, trägt aber nicht den Hauptschaden.
 - Werte: HP 100, Speed 5 Units/s, Verteidigung 5, Schlag 10 Schaden. **Kein Level**, der Monarch wächst nur über Skills.
 - Tod: Der gefallene Monarch bleibt liegen; ein Mitspieler belebt ihn durch A halten (3 s, 50 % HP), sonst Respawn an der Burg nach 15 s, ohne Strafe, Truppen bleiben. Details: `rules/monarch.md`.
@@ -143,12 +143,11 @@ Die festen Eckdaten stehen in `data/biomes/<biom>.json`, der Generator in `engin
 | Schlag | X | E |
 | Skills 1–4 | LB, RB, LT, D-Pad hoch | Q, R, T, Z |
 | Wiederbeleben (neben einem gefallenen Mitspieler) | A halten (3 s) | Leertaste halten |
-| Bau-Menü | Y | B |
 | Skill-Menü | D-Pad runter (nicht View, da View + Menu reserviert ist) | K |
 | Pause (Regel: [`rules/bedienung.md`](rules/bedienung.md) § 1) | Menu (kurz, < 600 ms) | Esc |
 | Vollbild | RS (Stick drücken) | F |
 
-**B bleibt unbelegt**: Edge auf der Xbox nutzt B als „Zurück“. Die Zurück-Falle der Shell hält das ab (Gamepad-Test
+**Y ist frei** (für später; kein Bau-Menü, Fragenkatalog Q06/Q34, 2026-10-04). **B bleibt unbelegt**: Edge auf der Xbox nutzt B als „Zurück“. Die Zurück-Falle der Shell hält das ab (Gamepad-Test
 2026-10-03: B 8× gedrückt, 0 Zurück-Navigationen). Die Skill-Tasten LB, RB, LT und D-Pad hoch hat der Test erkannt.
 
 ### Xbox-Messung

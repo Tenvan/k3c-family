@@ -26,6 +26,8 @@ Spieler und Bauern; Raten balanced B-099.
 
 - **Plantage:** Farm mit 6 Plätzen, je Platz alle 30 s ein Baum (10 Holz) nachwachsend (≈ 12 Holz/min je Farm); Farm-Stufen erhöhen Plätze oder Tempo (Werte mit B-099); `data/buildings.json` › `farm` (`plantation`).
 - **Adern:** neues Level-Objekt (`vein`) je Mine-Stufe, **2 Adern je Stufe**, unendlicher Vorrat; höchstens 2 Bauern gleichzeitig; Zielrate bei 2 Bauern: Stein 60/min, Kupfer 45/min, Eisen 35/min, Kristall 25/min; `data/economy.json` › `veins`, Biom-Daten (`data/biomes/*.json`).
+- **Markierung:** Eine Ader wird **einmal markiert**, die Markierung bleibt (die Ader verschwindet nie); Kosten = `markCost` des Materials: Stein 1, Kupfer 2, Eisen 2, Kristall 2 Gold (Eisen und Kristall Startwert). Plantage-Bäume brauchen **keine Markierung** (Beschluss Q25, 2026-10-04).
+- **Farm-Platz:** Der Hub wächst mit dem Ausbau, Offsets der Farm und des Plantage-Streifens sind Startwerte der Planung (W1), 🧑 bestätigt sie bei der Spec-Freigabe (Beschluss Q26, 2026-10-04).
 - Level-Generator (`engine/level`) setzt die Adern deterministisch; Golden-Level-Daten werden angepasst.
 - Level-Objekte (Bäume, Felsen, Erz), Truhen und Drops bleiben als endlicher Startvorrat.
 - Die Siegvariante „alles abbauen“ zählt nur endliche Objekte (`stufen.md` § 3).
@@ -56,7 +58,7 @@ Kein Bauer frei → Ader ruht. Lager voll → Bauer wartet (B-113). Alle Plantag
 
 ## Offene Fragen
 
-Raten und Plantage-Werte sind Startwerte (Feintuning B-099).
+keine (Raten, Plantage-Werte und `markCost` von Eisen und Kristall sind Startwerte, Feintuning B-099).
 
 ## Notizen
 

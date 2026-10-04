@@ -103,7 +103,9 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-199](B-199-raum-fuenf-stufen.md) | SRV | Problem | mittel | offen | – | Ein neuer Raum legt die Insel mit allen Stufen an, für die es ein Biom gibt |
 | [B-200](B-200-aggressionspool-adern.md) | SIM | Problem | mittel | offen | – | Der Aggressionspool unter Tage bleibt auch mit Adern im Wellen-Korridor |
 | [B-201](B-201-spielstand-wirtschaft.md) | SIM | Schuld | mittel | offen | – | Der Spielstand stellt Plantage, Berufe, Krieger, Elite, Rüstung, Schwerter und Händler nach dem Laden wieder her |
-| [B-202](B-202-spielstand-versionsfolge.md) | SIM | Problem | hoch | offen | – | Die Spielstand-Versionen von S1 und W1 folgen eindeutig aufeinander |
+| [B-202](B-202-spielstand-versionsfolge.md) | SIM | Problem | hoch | offen | – | S1 und W1 teilen sich die Spielstand-Version 3 eindeutig |
+| [B-203](B-203-hinweis-kein-platz.md) | CLI | Idee | mittel | offen | – | Über dem Hub erscheint ein Hinweis, wenn für ein Gebäude kein Platz ist |
+| [B-204](B-204-y-belegung-s3.md) | CLI | Problem | mittel | offen | – | Die Y-Belegung in S3 folgt dem Beschluss „kein Bau-Menü“ |
 
 ## Archiv
 

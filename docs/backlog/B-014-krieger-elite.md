@@ -24,7 +24,7 @@ Spieler (2+ Monarchen gleichzeitig, lokal und online); Umsetzung durch Entwickle
 
 ## Anforderungen
 
-- Krieger (Schwert, Nahkampf).
+- Krieger (Schwert, Nahkampf): Posten direkt hinter der äußersten Mauer, Reichweite 1 trifft Gegner an der Mauer; Seitenverteilung wie bei Bogenschützen als Startwert (Beschluss Q38, 2026-10-04).
 - Elite-Upgrades mit Stein/Kupfer.
 
 ## Nicht-Ziele

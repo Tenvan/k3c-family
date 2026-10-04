@@ -24,9 +24,14 @@ Spieler; Elite- und Rüstungswerte kommen aus Regelwerk III.
 
 ## Anforderungen
 
-- Feste Bauplätze je Gebäude in `data/hub.json`.
-- Tor: eigene Truppen und Spieler passieren, Gegner nicht. Kaserne: Truppen-Limit +10 (Basis 10). Taverne: 1 Landstreicher je Tag im Hub. Heilplatz: heilt Truppen und Spieler in Reichweite. Werkstatt: Schwert (Krieger, B-014) neben Bogen, je bis 3 im Waffenregal.
-- Schmiede (Elite-Upgrades) und Rüstkammer (Rüstung/Waffen) als Gebäude mit Platzhalterwirkung bis Regelwerk III; Zaubertum (Turm-Stufe 5): Flächenschaden statt Bogen.
+- Bauplätze je Gebäude in `data/hub.json`. Der Hub **wächst mit dem Ausbau** (Hub-Stufe und entsprechender Mauerausbau) auf eine Breite, die den freigeschalteten Gebäuden Platz gibt; Breiten und Offsets sind Startwerte der Planung (W1), 🧑 bestätigt sie bei der Spec-Freigabe. Fehlt der Platz, zeigt der Client einen Hinweis (B-203). Bauzeiten: Taverne 12 s, Heilplatz 12 s, Schmiede 16 s, Rüstkammer 16 s (Beschluss Q26, 2026-10-04).
+- Tor: je Seite ein Tor **außen** vor der äußersten Mauer (auf Hub-Stufe 1: ±48); eigene Truppen und Spieler passieren, für Gegner wirkt es wie eine Mauer (Hindernis und Angriffsziel), nicht aber für `outerWall` (Beschluss Q27, 2026-10-04).
+- Kaserne: Truppen-Limit +10 (Basis 10); es zählen nur Kämpfer (in W3: Bogenschützen); geprüft an genau einer Stelle beim Waffe-Holen, bei vollem Limit bleibt die Waffe im Regal (Beschlüsse Q29 und Q40, 2026-10-04).
+- Taverne: bei jedem `dawn` ein Landstreicher an der Taverne, solange dort weniger als 2 stehen; Wanderradius 6; eigene Werte in `data/` (Beschluss Q30, 2026-10-04).
+- Heilplatz: heilt Truppen und Spieler in Reichweite, **immer** (auch im Kampf), 5 HP/s, Radius 6 um den Platz (Startwerte; Beschluss Q32, 2026-10-04). W3 baut Limit und Heilplatz vollständig (Beschluss Q40, 2026-10-04).
+- Werkstatt: Schwert (Krieger, B-014) neben Bogen, je bis 3 im Waffenregal.
+- Schmiede (Elite-Upgrades) und Rüstkammer (Rüstung/Waffen) als Gebäude mit Platzhalterwirkung bis Regelwerk III.
+- Zaubertum (Turm-Stufe 5): eigener Schuss statt Bogen, Startwerte 40 Schaden, Radius 3, Reichweite 13, alle 1,5 s; die Schützen steigen beim Ausbau ab und zählen weiter als Kämpfer (Beschluss Q31, 2026-10-04).
 - Startwerte für Kosten und HP laut `materialien-gebaeude.md` § 3.2.
 
 ## Nicht-Ziele
@@ -43,7 +48,7 @@ Tor gebaut: Monarch und Bauern laufen hindurch, ein Goblin bleibt davor stehen u
 
 ## Ausnahme- und Fehlerfälle
 
-Truppen-Limit erreicht → Landstreicher werden nicht zu Bauern/Truppen, Hinweis (B-117). Gebäude zerstört → Wirkung endet.
+Truppen-Limit erreicht → kein Bauer holt eine Waffe, die Waffe bleibt im Regal, Hinweis (B-117); Landstreicher werden weiter zu Bauern (Beschluss Q29, 2026-10-04). Kein Platz im Hub für ein Gebäude → Hinweis „Kein Platz für <Gebäude>“ über dem Hub (B-203). Gebäude zerstört → Wirkung endet.
 
 ## Akzeptanzkriterien
 
@@ -54,7 +59,7 @@ Truppen-Limit erreicht → Landstreicher werden nicht zu Bauern/Truppen, Hinweis
 
 ## Offene Fragen
 
-Zaubertum: Schaden und Reichweite (Regelwerk III); Schmiede/Rüstkammer-Wirkung.
+Schmiede/Rüstkammer-Wirkung (Regelwerk III, B-122). Hub-Breiten und Offsets je Stufe bestätigt 🧑 bei der Spec-Freigabe (Q26).
 
 ## Notizen
 

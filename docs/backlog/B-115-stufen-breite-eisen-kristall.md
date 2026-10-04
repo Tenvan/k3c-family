@@ -28,6 +28,9 @@ Spieler; REG liefert die Gegner- und Boss-Werte der neuen Stufen (Regelwerk III)
 - Dichter: Ressourcen und Ereignisse je Chunk in Höhle, Mine, Eisenstollen, Kristallhöhle so, dass die Level spielbar bleiben (`validateLevel`-Regeln).
 - Insel-Daten (`data/islands.json`, B-103) führen die fünf Stufen; Tiefen-Eingänge und Treppen verbinden sie.
 - Skalierung der Gegner je Tiefe wie `docs/rules/stufen.md` (Insel-Tabelle).
+- **Lava schadet:** Figuren auf Lava (Spieler, Truppen, Bauern) erleiden 5 Schaden/s (Startwert, Wert in `data/`) (Beschluss Q28, 2026-10-04).
+- **Dichte:** unter Tage nicht abnehmend (Höhle ≤ Mine ≤ Eisenstollen ≤ Kristallhöhle), Untergrenze 2,8 endliche Objekte je 100 Units (Startwert) (Beschluss Q28, 2026-10-04).
+- **Ausgänge:** Eisenstollen `exitSide` `left`, Kristallhöhle `right`; je 3 Portale (Beschluss Q28, 2026-10-04).
 
 ## Nicht-Ziele
 
@@ -54,7 +57,7 @@ Biom ohne Gegner-Pool → Fehler beim Laden, nicht beim Spielen.
 
 ## Offene Fragen
 
-Gegner-Pools und Hindernisse (Lava) der neuen Stufen (Regelwerk III).
+Gegner-Pools der neuen Stufen (Regelwerk III, B-129). Ob Lava auch Gegnern schadet, bestätigt der Balancing-Workshop (🧑, Q28).
 
 ## Notizen
 
