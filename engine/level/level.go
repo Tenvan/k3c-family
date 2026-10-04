@@ -3,6 +3,7 @@
 // Aufbau: [Rand/Ausgang] ... [Portal] ... [Chunks] [HUB] [Chunks] ... [Portal] ... [Ausgang/Rand].
 // Gleicher Seed => gleiches Level wie in TypeScript; geprüft gegen testdata/golden/level-*.json.
 // Die Reihenfolge der RNG-Aufrufe ist Teil des Vertrags und darf sich nicht ändern.
+// Die Mauerlinien (lines.go) streuen aus einem eigenen Strom `<biom>:<seed>:sites` und berühren ihn nicht.
 package level
 
 import (
@@ -35,6 +36,8 @@ type Layout struct {
 	HubCenterUnits  float64  `json:"hubCenterUnits"`
 	Chunks          []Chunk  `json:"chunks"`
 	Entities        []Entity `json:"entities"`
+	// Lines sind die Mauerlinien je Seite (links, dann rechts, je von innen); ohne JSON-Ausgabe bis B-208.
+	Lines []WallLine `json:"-"`
 }
 
 // eventKinds in fester Reihenfolge wie `EVENT_KINDS` in TS.
@@ -85,7 +88,7 @@ func Generate(b Biome, seed string) (Layout, error) {
 	sort.SliceStable(entities, func(i, j int) bool { return entities[i].X < entities[j].X })
 	return Layout{
 		Seed: seed, BiomeID: b.ID, WidthUnits: float64(len(chunks)) * g.cw, ChunkWidthUnits: g.cw,
-		HubCenterUnits: g.hub, Chunks: chunks, Entities: entities,
+		HubCenterUnits: g.hub, Chunks: chunks, Entities: entities, Lines: generateLines(b.ID, seed, g.hub),
 	}, nil
 }
 

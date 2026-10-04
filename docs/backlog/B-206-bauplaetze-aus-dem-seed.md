@@ -67,4 +67,14 @@ keine (Q56–Q59 am 2026-10-04 geklärt).
 
 ## Notizen
 
-Beschlüsse Q43–Q55 vom 2026-10-04, zweite Runde (`docs/fragenkatalog.md`, Block 6). Ersetzt die Breiten- und Offset-Planung aus Q26; die Bauzeiten aus Q26 bleiben (B-116). Q56–Q59 (zweite Runde, Chat 2026-10-04) präzisieren Q48 und Q50. Camp-Messung (Q57): Ergebnis trägt W0.2 nach.
+Beschlüsse Q43–Q55 vom 2026-10-04, zweite Runde (`docs/fragenkatalog.md`, Block 6). Ersetzt die Breiten- und Offset-Planung aus Q26; die Bauzeiten aus Q26 bleiben (B-116). Q56–Q59 (zweite Runde, Chat 2026-10-04) präzisieren Q48 und Q50. Camp-Messung (Q57): Ergebnis siehe unten (W0.2).
+
+**Camp-Messung (W0.2, 2026-10-04):** Seeds 0–499 je Biom, Abstand jedes Camps zum nächsten Linien-Platz (Mauer, Turm oder Tor einer der 10 Linien, mit Streuung aus `…:sites`). Alle Camps liegen innerhalb des äußersten Tors.
+
+| Biom | Camps | Hub-Abstand ±75 / ±125 | Abstand min / Ø / max | davon < 4 Units | davon 0 Units |
+|---|---|---|---|---|---|
+| cave | 500 | 485 / 15 | 0 / 2,78 / 5 | 359 | 2 |
+| forest | 751 | 677 / 74 | 0 / 2,70 / 5 | 540 | 16 |
+| mine | 500 | 490 / 10 | 1 / 2,85 / 5 | 344 | 0 |
+
+Rund 70 % der Camps liegen näher als 4 Units (2 × `payRangeUnits`) an einem Linien-Platz, bei ±125 teils genau auf der Mauer der Linie 5 (124 + Streuung). Folgefrage: B-261.
