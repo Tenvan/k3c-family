@@ -12,7 +12,7 @@
 
 ## Ausgangslage
 
-Die Traits `aoe`, `swarm`, `phases`, `pack`, `stealsWood` und `flying` haben keine Wirkung; es gibt kein Kiting; alle Gegner greifen mit 1/s an (`engine/sim/enemies.go`, `data/waves.json`); das Tor existiert nicht (`docs/rules/ist-gegner-bosse.md`).
+Die Traits `aoe`, `swarm`, `phases`, `pack`, `stealsWood` und `flying` haben keine Wirkung; es gibt kein Kiting; alle Gegner greifen mit 1/s an (`engine/sim/enemies.go`, `data/waves.json`); das Tor existiert nicht (`docs/rules/archiv/ist-gegner-bosse.md`).
 
 ## Ziel
 

@@ -1,6 +1,6 @@
 # Regelwerk: Spielstruktur, Stufen, Niederlage und Ziel
 
-Beschlossen von 🧑 im Workshop R1.3 und in der Klärung B-108 am 2026-10-02 (Grundlage: [`ist-abgleich.md`](ist-abgleich.md), Wirtschaft und Schwierigkeitsgrade: [`wirtschaft.md`](wirtschaft.md)).
+Beschlossen von 🧑 im Workshop R1.3 und in der Klärung B-108 am 2026-10-02 (Grundlage: [`archiv/ist-abgleich.md`](archiv/ist-abgleich.md), Wirtschaft und Schwierigkeitsgrade: [`wirtschaft.md`](wirtschaft.md)).
 Je Regel: **Regel · Begründung · Verweis auf `data/` · Zielkorridor**. Zielkorridore prüft später der Balancing-Tester (B-099) mit dem
 Standardszenario **Wald, 2 Spieler, Bot „sparsam“, Normal, je 100 Seeds**.
 

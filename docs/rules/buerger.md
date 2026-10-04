@@ -1,6 +1,6 @@
 # Regelwerk: Bürger, Berufe, Upgrades und Truppen-Limit
 
-Beschlossen von 🧑 im Workshop R3.3 am 2026-10-02 (Grundlage: [`ist-monarch-buerger.md`](ist-monarch-buerger.md); Rahmen: [`monarch.md`](monarch.md), [`wirtschaft.md`](wirtschaft.md), [`materialien-gebaeude.md`](materialien-gebaeude.md)).
+Beschlossen von 🧑 im Workshop R3.3 am 2026-10-02 (Grundlage: [`archiv/ist-monarch-buerger.md`](archiv/ist-monarch-buerger.md); Rahmen: [`monarch.md`](monarch.md), [`wirtschaft.md`](wirtschaft.md), [`materialien-gebaeude.md`](materialien-gebaeude.md)).
 Je Regel: **Regel · Begründung · Verweis auf `data/` · Zielkorridor**. Werte sind **Startwerte**, Feintuning mit dem Balancing-Tester (B-099).
 Zielkorridore gelten im Standardszenario **Normal, Wald-Start, 2 Spieler, Bot „sparsam“, je 100 Seeds**. Alles Material kommt aus dem Insel-Vorrat, Gold zahlen die Spieler. Jede Regel gilt für 2+ Spieler.
 
