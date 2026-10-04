@@ -16,7 +16,7 @@ Sprints bleiben `Spec: Entwurf`, bis 🧑 sie je Sprint freigibt.
 | Q03 | Mindest-Schriftgröße je Split-Viertel | F1, S4 | 1 | geklärt 2026-10-03 |
 | Q04 | Verbindungsverlust und Eingabe-Latenz | F1 | 1 | geklärt 2026-10-03 |
 | Q05 | Nur Deutsch? | F1 | 1 | geklärt 2026-10-03 |
-| Q06 | Skill-Tasten am Controller | X1, S3 | 1 | geklärt 2026-10-03 |
+| Q06 | Skill-Tasten am Controller | X1, S3 | 1 | geklärt 2026-10-03 (geändert 2026-10-04) |
 | Q08 | Feedback-Events: Liste und Bandbreite | F3, F4, SO1 | 2 | geklärt 2026-10-03 |
 | Q09 | Golden-Hash ändern: wer bestätigt | F2 | 2 | geklärt 2026-10-03 |
 | Q10 | Wann wird gespeichert | S2 | 2 | geklärt 2026-10-03 |
@@ -35,24 +35,24 @@ Sprints bleiben `Spec: Entwurf`, bis 🧑 sie je Sprint freigibt.
 | Q20 | Release-Rhythmus | RL1 | 4 | geklärt 2026-10-03 |
 | Q21 | itch.io und Englisch | später | 4 | geklärt 2026-10-03 |
 | Q23 | Reittiere | S1, S7 | 4 | geklärt 2026-10-03 (korrigiert) |
-| Q25 | Markierung von Adern und Plantage-Bäumen | W2.1 | 5 | offen |
-| Q26 | Lage und Bauzeit der neuen Bauplätze | W2.1, W3.1, W3.2 | 5 | offen |
-| Q27 | Tor: Lage und zählt es als Mauer? | W3.1 | 5 | offen |
-| Q28 | Eisenstollen und Kristallhöhle: Lava, Dichte, Ausgänge | W2.2 | 5 | offen |
-| Q29 | Truppen-Limit: Widerspruch und Ort der Prüfung | W3.1, W4.3 | 5 | offen |
-| Q30 | Taverne: Anker, Wanderradius, Rate | W3.1 | 5 | offen |
-| Q31 | Zaubertum-Werte | W3.2 | 5 | offen |
-| Q32 | Heilplatz-Werte und Heilen im Kampf | W3.2, W4.3 | 5 | offen |
-| Q33 | Wiederbeleben: Reichweite, mehrere Helfer, getrennter Monarch | W4.1 | 5 | offen |
-| Q34 | Auswahl am Platz mit einer A-Taste | W4.2, W4.3 | 5 | offen |
-| Q35 | Herstellungszeiten und Bergmann an Adern | W4.2 | 5 | offen |
-| Q36 | Händler: Ort, Ablauf, Preise, Rhythmus | W4.2 | 5 | offen |
-| Q37 | Rüstung: Stufen und Wirkung auf bestehende Truppen | W4.3 | 5 | offen |
-| Q38 | Krieger: Posten und Seitenverteilung | W4.3 | 5 | offen |
-| Q39 | Ereignis `troopLost` | W4.3 | 5 | offen |
-| Q40 | Abgrenzung W3-AC-01 und W4-AC-04/05 | W3, W4 | 5 | offen |
-| Q41 | Teilung von W4.3 | W4.3 | 5 | offen |
-| Q42 | Spielstand-Versionen S1.4 und W1.3 | S1.4, W1.3 | 5 | offen |
+| Q25 | Markierung von Adern und Plantage-Bäumen | W2.1 | 5 | geklärt 2026-10-04 |
+| Q26 | Lage und Bauzeit der neuen Bauplätze | W2.1, W3.1, W3.2 | 5 | geklärt 2026-10-04 |
+| Q27 | Tor: Lage und zählt es als Mauer? | W3.1 | 5 | geklärt 2026-10-04 |
+| Q28 | Eisenstollen und Kristallhöhle: Lava, Dichte, Ausgänge | W2.2 | 5 | geklärt 2026-10-04 |
+| Q29 | Truppen-Limit: Widerspruch und Ort der Prüfung | W3.1, W4.3 | 5 | geklärt 2026-10-04 |
+| Q30 | Taverne: Anker, Wanderradius, Rate | W3.1 | 5 | geklärt 2026-10-04 |
+| Q31 | Zaubertum-Werte | W3.2 | 5 | geklärt 2026-10-04 |
+| Q32 | Heilplatz-Werte und Heilen im Kampf | W3.2, W4.3 | 5 | geklärt 2026-10-04 |
+| Q33 | Wiederbeleben: Reichweite, mehrere Helfer, getrennter Monarch | W4.1 | 5 | geklärt 2026-10-04 |
+| Q34 | Auswahl am Platz mit einer A-Taste | W4.2, W4.3 | 5 | geklärt 2026-10-04 |
+| Q35 | Herstellungszeiten und Bergmann an Adern | W4.2 | 5 | geklärt 2026-10-04 |
+| Q36 | Händler: Ort, Ablauf, Preise, Rhythmus | W4.2 | 5 | geklärt 2026-10-04 |
+| Q37 | Rüstung: Stufen und Wirkung auf bestehende Truppen | W4.3 | 5 | geklärt 2026-10-04 |
+| Q38 | Krieger: Posten und Seitenverteilung | W4.3 | 5 | geklärt 2026-10-04 |
+| Q39 | Ereignis `troopLost` | W4.3 | 5 | geklärt 2026-10-04 |
+| Q40 | Abgrenzung W3-AC-01 und W4-AC-04/05 | W3, W4 | 5 | geklärt 2026-10-04 |
+| Q41 | Teilung von W4.3 | W4.3 | 5 | geklärt 2026-10-04 |
+| Q42 | Spielstand-Versionen S1.4 und W1.3 | S1.4, W1.3 | 5 | geklärt 2026-10-04 |
 
 ## Beschlüsse vom 2026-10-03 (🧑 im Chat)
 
@@ -63,7 +63,7 @@ Sprints bleiben `Spec: Entwurf`, bis 🧑 sie je Sprint freigibt.
 | Q03 | ≥ 28 px im Vollbild (1080p), ≥ 24 px im Viertel nach Skalierung, Kontrast ≥ 4,5:1; bei 3–4 Spielern Text kürzen statt verkleinern. | B-136, S4, S6 |
 | Q04 | Getrennter Monarch ist **unverwundbar und ausgeblendet** bis zur Frist (WaitFor 60 s), danach frei. Latenz-Ziel Eingabe → Bild ≤ 100 ms im Heim-WLAN, gemessen mit dem Debug-Overlay. | B-144, F1 |
 | Q05 | **Deutsch und Englisch**, Sprachauswahl in den Optionen, neue Texte zentral. Neues Ticket B-172 in S5. | B-145 (erledigt durch Beschluss), B-172, S5 |
-| Q06 | Belegung aus `game-design.md` übernommen: Schlag X, Skills 1–4 LB/RB/LT/D-Pad hoch (Tastatur Q/R/T/Z), Skill-Menü D-Pad runter (K), Bau-Menü Y, Vollbild Stick drücken; B frei, View + Menu reserviert. X1 bestätigt nur noch. | B-026, X1, S3 |
+| Q06 | **Geändert 2026-10-04:** Belegung aus `game-design.md` übernommen: Schlag X, Skills 1–4 LB/RB/LT/D-Pad hoch (Tastatur Q/R/T/Z), Skill-Menü D-Pad runter (K), Vollbild Stick drücken; B frei, View + Menu reserviert. **Kein Bau-Menü** (Regel `materialien-gebaeude.md` § 3, Beschluss zu Q34), **Y ist frei** (für später). X1 bestätigt nur noch. | B-026, X1, S3, B-205 |
 | Q07 | Paket `ghcr.io/tenvan/k3c-family` **öffentlich**, Pi 3 mit 64-Bit-Betriebssystem. (SP11-Spec nennt dies als Annahme; Änderung der freigegebenen Spec nicht nötig.) | SP11 |
 | Q08 | 12 Ereignisse (Treffer, Kill, Münze auf/gegeben, Pfeil, Schlag, Bau-Fortschritt/fertig, Tod, Wiederbeleben, Skill, Nacht naht, Portal), Budget ≤ 200 Byte je Tick und Client im Mittel, im Delta mitgesendet, Benchmark in F4. | B-139, B-140, F3, F4 |
 | Q09 | `task golden:update` plus Begründung im Commit-Text; die Review-Session prüft. Kein Freigabe-Zwang durch 🧑 bei Werteänderungen aus Beschlüssen. | B-137, F2 |
@@ -84,6 +84,31 @@ Sprints bleiben `Spec: Entwurf`, bis 🧑 sie je Sprint freigibt.
 | Q24 | Fragebogen mit 8 Fragen, Daumen hoch/runter plus ein Satz Freitext; Termin und Teilnehmer nennt 🧑, wenn Phase 1 steht. | B-151, P1 |
 
 **Folgen für die Planung (nächste Schritte):** B-135, B-136, B-144 und B-145 sind damit entschieden; F1 trägt die Beschlüsse in `docs/rules/` ein und lässt 🧑 die Zahlen aus Q02 bestätigen. Die Specs der Sprints bleiben `Entwurf` bis zur Freigabe durch 🧑.
+
+## Beschlüsse vom 2026-10-04 (🧑 im Chat)
+
+| Nr. | Beschluss | Wirkt auf |
+|---|---|---|
+| Q25 | Ader wird **einmal markiert** (Markierung bleibt) mit dem `markCost` des Materials: Stein 1, Kupfer 2, Eisen 2, Kristall 2 Gold (Eisen und Kristall Startwert). Plantage-Bäume ohne Markierung. | B-114, W2.1 |
+| Q26 | **Geändert gegenüber Empfehlung:** Der Hub **wächst mit dem Ausbau** (Hub-Stufe und entsprechender Mauerausbau) auf eine Breite, die den mit der Stufe freigeschalteten Gebäuden Platz gibt, wie im Vorbild Kingdom Two Crowns; Erweiterung nur mit entsprechendem Mauerausbau. Fehlt der Platz, erscheint über dem Hub der Hinweis „Kein Platz für <Gebäude>“ (B-207). Breiten je Stufe und Offsets sind Startwerte der Planung (W1), 🧑 bestätigt sie bei der Spec-Freigabe. Bauzeiten: Taverne 12 s, Heilplatz 12 s, Schmiede 16 s, Rüstkammer 16 s. Folge: Mauer- und Tor-Offsets können mit dem Ausbau wandern; die Spielstand-Zuordnung über `kind@x` muss das abdecken (über die gemeinsame v3 aus Q42). | B-112, B-114, B-116, B-207, W1, W2.1, W3.1, W3.2 |
+| Q27 | Je Seite ein **Tor außen** vor der äußersten Mauer (auf Hub-Stufe 1: ±48); für Gegner wie eine Mauer (Hindernis und Angriffsziel), nicht für `outerWall`. | B-116, W3.1 |
+| Q28 | **Geändert gegenüber Empfehlung:** Lava **schadet**: Startwert 5 Schaden/s für Figuren auf Lava (Spieler, Truppen, Bauern; ob Gegner betroffen sind, bestätigt der Balancing-Workshop), Wert in `data/`. Dichte unter Tage nicht abnehmend, Untergrenze 2,8 je 100 Units (Startwert). Ausgänge: Eisenstollen `left`, Kristallhöhle `right`, 3 Portale. | B-115, W2.2 |
+| Q29 | Regel gilt (nur Kämpfer, Basis 10, Kaserne +10). Geprüft beim Waffe-Holen an genau einer Stelle; bei vollem Limit bleibt die Waffe im Regal. Der Ausnahmefall in B-116 („Landstreicher werden nicht zu Bauern/Truppen“) wird korrigiert. | B-116, B-122, W3.1, W4.3 |
+| Q30 | Bei jedem `dawn` ein Landstreicher an der Taverne, solange dort weniger als 2 stehen; Wanderradius 6; eigene Werte in `data/`. | B-116, W3.1 |
+| Q31 | Zaubertum: eigener Schuss, Startwerte 40 Schaden, Radius 3, Reichweite 13, alle 1,5 s; die Schützen steigen ab und zählen weiter als Kämpfer. | B-116, W3.2 |
+| Q32 | Heilplatz heilt **immer** (auch im Kampf), 5 HP/s, Radius 6 um den Platz (Startwerte). | B-116, B-122, W3.2, W4.3 |
+| Q33 | Reichweite des Wiederbelebens 2 Units (eigener Wert in `data/monarch.json`); mehrere Helfer beschleunigen nicht, keiner lässt dabei eine Münze fallen; ein getrennter Monarch (`Player.Free`) ist nicht wiederbelebbar. | B-120, W4.1 |
+| Q34 | Je Angebot ein **eigenes Zahlziel** neben dem Gebäude, keine neue Taste; ausgebildet bzw. aufgewertet wird der nächste freie Bauer bzw. Bogenschütze/Krieger. **Folgebeschluss Y-Taste:** Es gibt **kein Bau-Menü** (Regel `materialien-gebaeude.md` § 3 gilt); Q06 wird angepasst, **Y ist frei** (für später). | B-121, B-122, B-125, B-205, Q06, W4.2, W4.3 |
+| Q35 | Zeiten für alles: Bogen und Schwert 10 s, Elite-Upgrade 20 s, Rüstungsstufe 30 s (Startwerte); +50 % Tempo je Handwerker (höchstens 2). Der Bergmann zählt als einer der 2 an einer Ader, +50 % an Adern, Fels und Kupfererz. Golden ändert sich (Bogen nicht mehr sofort). | B-121, W4.2 |
+| Q36 | Ein Händler je Insel im Hub der Tiefe 0 bei Hub-Mitte +8; Zahlziele „Kaufen“ und „Verkaufen“, Kurs 10 Material = 5 Gold in beide Richtungen; ein Material je Besuch per `w.rng` aus den freigeschalteten; Ankunft bei `dawn` alle 3 Tage, mit Taverne auf der Insel alle 2 Tage; bleibt einen Tag. | B-121, W4.2 |
+| Q37 | 2 Rüstungsstufen (ab Hub-Stufe 4 und 5), +20 % / +40 % auf die Basis-HP, wirkt sofort auf alle Kämpfer (`MaxHP` und `HP` steigen gleich, keine Vollheilung); Bauern und Landstreicher ohne Rüstung. | B-122, W4.3 |
+| Q38 | **Geändert gegenüber Empfehlung:** Krieger stehen **direkt hinter der äußersten Mauer** und treffen Gegner an der Mauer (Reichweite 1). Seitenverteilung wie bei Bogenschützen (`makeArcher`) als Startwert. | B-014, B-122, W4.3 |
+| Q39 | `troopLost` für alle Truppen außer Landstreichern, Felder `kind`, `x`, `cause`; ohne Priorität; kein Ereignis beim Burgfall. | B-122, W4.3 |
+| Q40 | W3 baut Limit (für Bogenschützen) und Heilplatz vollständig; W4.3 erweitert das Limit um Krieger und Elite und weist AC-05 per Regressionstest plus `troopLost` nach. Keine Spec-Revision. | B-116, B-122, W3, W4 |
+| Q41 | W4.3 wird jetzt geteilt: **W4.3a** (Krieger, Schwert-Regal, Limit-Erweiterung, `troopLost`) und **W4.3b** (Elite, Rüstung, Heilplatz-Nachweis, Golden); die Review bleibt **W4.4**. Kriterien unverändert. | B-014, B-122, W4 |
+| Q42 | **Geändert gegenüber Empfehlung:** **Eine gemeinsame Version v3** für S1.4 und W1.3: Wer zuerst landet, hebt `IslandSaveVersion` auf 3 mit Fixture `testdata/saves/v3/`; der Zweite ergänzt seine Felder optional (`omitempty`) in v3 ohne neue Version und erweitert die Fixture. B-201 folgt später mit v4. | B-201, B-202, S1.4, W1.3 |
+
+**Folgen für die Planung:** Die Tickets B-014, B-114, B-115, B-116, B-120, B-121, B-122, B-201 und B-202 tragen die Beschlüsse in Anforderungen und Regeln, die Regeln stehen in `materialien-gebaeude.md`, `buerger.md`, `monarch.md` und `stufen.md`. Neu: B-207 (Hinweis „Kein Platz für <Gebäude>“, CLI) und B-205 (Y-Belegung in S3 folgt „kein Bau-Menü“; die S3-Spec ist freigegeben und wird nicht still geändert). Die Session-Dateien von W1 bis W4, S1.4 (v3 gemeinsam) und die Teilung W4.3a/W4.3b passt die Sprint-Planung an. Offen bleiben die Hub-Breiten und Offsets je Stufe (Startwerte in W1, Bestätigung bei der Spec-Freigabe) und ob Lava auch Gegner schadet (Balancing-Workshop).
 
 ## Block 1 – blockiert F1 und den Spieleabend-Build
 

@@ -45,6 +45,7 @@ Begründung: Alle Skills ohne Menü erreichbar, X bleibt die Hauptaktion im Kamp
 |---|---|---|
 | Ein gefallener Monarch bleibt als **Grabstein** liegen. Ein Mitspieler **belebt ihn wieder**, indem er daneben **A 3 s hält** (Interagieren; es gibt kein Zahlziel in der Nähe): Wiederbelebung am Ort mit **50 % HP**. Ohne Hilfe **Respawn an der Burg der Stufe nach 15 s** mit voller HP. Gilt in jeder Stufe der Insel. | Echtes Koop-Gefühl; der Tod hat Gewicht, ist aber keine Strafe. Bezahlte, nicht fertige Münzen werden wie heute erstattet. | `playerDown` je Welle: Median höchstens 0,5; Anteil Wiederbelebungen an Toden ≥ 30 % (Kennzahl fehlt, B-099) |
 | Der Respawn-Wert ändert sich von 5 s auf 15 s. | Zeit für Hilfe. | `data/monarch.json` › `respawnSeconds` |
+| **Reichweite** des Wiederbelebens 2 Units (eigener Wert in `data/monarch.json`). **Mehrere Helfer** beschleunigen nicht; keiner lässt dabei eine Münze fallen. Ein **getrennter Monarch** (`Player.Free`) ist nicht wiederbelebbar (Q33, 2026-10-04). | Gleich weit wie Münzen; ein ausgeblendeter Grabstein ist nicht sichtbar. | `data/monarch.json` |
 
 ## 6. Offen und Annahmen
 
