@@ -6,7 +6,8 @@ Standardszenario **Wald, 2 Spieler, Bot „sparsam“, Normal, je 100 Seeds**.
 
 > **Wichtig, ändert die bisherige Planung und den Ist-Stand:** Ein Spielstand ist **kein** Hintereinander von Stufen, die alle gemeinsam
 > betreten werden (wie in K2C), sondern: **1 Spielstand/Raum → n Inseln → pro Insel n Stufen.** Die Stufen einer Insel gehören zu
-> **einem** Level und sind **pro Spieler frei begehbar**; jeder Spieler kann sich in einer anderen Stufe aufhalten.
+> **einer** Insel und sind **pro Spieler frei begehbar**; jeder Spieler kann sich in einer anderen Stufe aufhalten.
+> Ein **Level** ist eine Stufe (wie Generator und Code), die Insel ist die Sammlung ihrer Stufen (Q61, 2026-10-04).
 > Im Code ist das heute anders (eine Stufe = eine Welt, alle reisen gemeinsam, `engine/sim/campaign.go`, `travel.go`).
 > Entscheidung: [`../decisions/003-spielstruktur-inseln-stufen.md`](../decisions/003-spielstruktur-inseln-stufen.md).
 
@@ -15,13 +16,13 @@ Standardszenario **Wald, 2 Spieler, Bot „sparsam“, Normal, je 100 Seeds**.
 | Regel | Begründung | Daten | Zielkorridor |
 |---|---|---|---|
 | Ein Raum hat einen Spielstand, der Spielstand hat **n Inseln**, jede Insel hat **n Stufen** (Oberwelt/Wald, Höhle, Mine, Eisenstollen, Kristallhöhle). Die erste Ausbaustufe ist **1 Insel mit 5 Stufen** (zuerst werden Wald, Höhle und Mine gebaut, die beiden tiefsten folgen als Inhalt); weitere Inseln kommen später (`materialien-gebaeude.md` § 1). | Struktur trägt Koop mit freier Wahl des Ortes; wächst über Inseln statt über beliebig viele Stufen. | `data/biomes/*.json` (Stufen), neue Insel-Daten (SIM legt sie an) | – |
-| Die Stufen einer Insel bilden **ein Level** und sind **pro Spieler frei begehbar**: Jeder Spieler wechselt allein über den Tiefen-Eingang (2 s stehen) oder eine gebaute Treppe; es gibt keine gemeinsame Reise. | Spieler sollen verschiedene Aufgaben an verschiedenen Orten übernehmen können. | `data/hub.json` › `travel` | – |
+| Die Stufen einer Insel sind je **ein Level** (der Generator erzeugt je Stufe ein Level aus Biom und Seed; Q61, 2026-10-04) und **pro Spieler frei begehbar**: Jeder Spieler wechselt allein über den Tiefen-Eingang (2 s stehen) oder eine gebaute Treppe; es gibt keine gemeinsame Reise. | Spieler sollen verschiedene Aufgaben an verschiedenen Orten übernehmen können. | `data/hub.json` › `travel` | – |
 | Jede Stufe hat **einen eigenen Hub**, der von Grund auf gebaut wird; alle Hubs bleiben bestehen. | Wie bisher. | `data/hub.json` | – |
 | **Breite der Stufen:** nach unten schmaler, dafür dichter (Startwerte in `materialien-gebaeude.md` § 1). **Dichte unter Tage nicht abnehmend** (Höhle ≤ Mine ≤ Eisenstollen ≤ Kristallhöhle), Untergrenze 2,8 endliche Objekte je 100 Units (Startwert; Q28, 2026-10-04). | Wege, Druck, Rechenzeit. | `data/biomes/*.json` | Dichte je Biom ≥ 2,8 je 100 Units (Messung mit 100 Seeds, B-115) |
-| **Eisenstollen und Kristallhöhle:** Ausgang (`exitSide`) Eisenstollen `left`, Kristallhöhle `right`; je 3 Portale. **Lava schadet:** Figuren auf Lava (Spieler, Truppen, Bauern) erleiden 5 Schaden/s (Startwert); ob Gegner betroffen sind, bestätigt der Balancing-Workshop (Q28, 2026-10-04). | Lava ist eine echte Gefahr der tiefen Stufen. | `data/biomes/ironhold.json`, `crystal.json` (Lava-Schaden als Wert in `data/`, SIM legt an) | – |
-| **Das Baumaterial (Holz, Stein, Kupfer) gehört der Insel:** alle Stufen und Hubs einer Insel teilen einen Vorrat. Eine neue Insel beginnt mit leerem Vorrat. Gold bleibt je Spieler. | Wald liefert Holz, Höhle Stein, Mine Kupfer, gebaut wird überall; so trägt niemand Material von Hub zu Hub. | `World.stock` wird ein Vorrat je Insel (SIM) | Material am Morgen je Rohstoff im Korridor aus B-099 (Messgröße noch offen) |
+| **Eisenstollen und Kristallhöhle:** Ausgang (`exitSide`) Eisenstollen `left`, Kristallhöhle `right`; je 3 Portale. **Lava schadet:** Figuren auf Lava (Spieler und Bürger) erleiden 5 Schaden/s (Startwert); ob Gegner betroffen sind, bestätigt der Balancing-Workshop (Q28, 2026-10-04). | Lava ist eine echte Gefahr der tiefen Stufen. | `data/biomes/ironhold.json`, `crystal.json` (Lava-Schaden als Wert in `data/`, SIM legt an) | – |
+| **Das Baumaterial (Holz, Stein, Kupfer, Eisen, Kristall) gehört der Insel:** alle Stufen und Hubs einer Insel teilen einen Vorrat. Eine neue Insel beginnt mit dem **Startvorrat von 100 Holz** (Startwert, B-177, `materialien-gebaeude.md` § 1). Gold bleibt je Spieler. | Wald liefert Holz, Höhle Stein, Mine Kupfer, Eisenstollen Eisen, Kristallhöhle Kristall, gebaut wird überall; so trägt niemand Material von Hub zu Hub. | `World.stock` wird ein Vorrat je Insel (SIM) | Material am Morgen je Rohstoff im Korridor aus B-099 (Messgröße noch offen) |
 | **Alle Stufen einer Insel laufen weiter**, auch wenn kein Spieler dort ist (eine gemeinsame Zeit, eigene Wellen je Stufe). Ein Hub ohne Verteidiger kann fallen. | Die Entscheidung „wo bin ich?“ ist Spielinhalt. Rechenlast wird mit B-099 und SP11 (Pi 3) gemessen. | – | Rechenzeit je Tick mit 3 Stufen aktiv im Ziel aus B-042 (p99 < 10 ms bei 2 Räumen × 3 Spielern) |
-| **Inselwechsel:** Der Endboss der tiefsten Stufe macht den Weg zur nächsten Insel frei (Boot oder Portal). Der Wechsel erfolgt **gemeinsam**: alle lebenden Spieler stehen am Boot/Portal. Die neue Insel ist eine neue Welt mit eigenen Hubs und leerem Material-Vorrat. | Der Fortschritt bleibt ein gemeinsamer Meilenstein, Inseln folgen einander. | `data/islands.json` (SIM legt an) | – |
+| **Inselwechsel:** Der Endboss der tiefsten Stufe macht den Weg zur nächsten Insel frei (Boot oder Portal). Der Wechsel erfolgt **gemeinsam**: alle lebenden Spieler stehen am Boot/Portal. Die neue Insel ist eine neue Welt mit eigenen Hubs und dem Startvorrat (100 Holz, B-177). | Der Fortschritt bleibt ein gemeinsamer Meilenstein, Inseln folgen einander. | `data/islands.json` (SIM legt an) | – |
 | **Reihenfolge der Inseln:** Klassische Variante **Insel 1 bis n** in fester Reihenfolge aus den Daten; die Anzahl n bleibt offen, bis Insel 1 spielbar ist und der Balancing-Tester Werte liefert. **Später** (Variante „Ebenen“): mehrere Inseln je **Ebene** (Schwierigkeits-Ebene), freie Reihenfolge innerhalb der Ebene; die nächste Ebene öffnet, wenn **mindestens k Inseln der Ebene** besiegt sind (k je Ebene in den Daten), die übrigen bleiben optional. Auch dort ist der Wechsel gemeinsam. | Linear ist einfach zu balancen; Ebenen geben später Wahlfreiheit, ähnlich dem letzten K2C-DLC. | `data/islands.json` | – |
 | Die Wellenstärke einer Stufe skaliert mit der **Anzahl der Spieler der Insel** (Faktor `1 + 0,5 × (Spieler − 1)`), nicht mit den Spielern in genau dieser Stufe. | Einfach und gleichmäßig; ein Spieler allein in der Tiefe trifft die Wellen für alle. | `data/waves.json` | Korridore je Spieleranzahl wie in `wirtschaft.md` |
 | Skalierung der Gegner: je Stufe multiplikativ wie heute (HP ×1,5, Schaden ×1,3, Tempo ×1,1 je Tiefe), und **je Insel eine eigene Tabelle** statt einer Formel. | Jede Insel lässt sich frei abstimmen. | `data/waves.json` › `depthScaling`, neue Insel-Tabellen | – |
@@ -32,8 +33,8 @@ Unverändert (🧑 hat nicht gesondert bestätigt): Unter Tage statt Tag/Nacht: 
 
 ## 3. Bosse und Ziel der Kampagne
 
-- **Minibosse:** je Stufe ein Miniboss. **Endboss:** in der tiefsten Stufe jeder Insel; sein Sieg macht den Weg zur nächsten Insel frei. Boss-Werte und Verhalten legt Regelwerk III fest (`gegner-truppen.md`).
-- **Ziel der Kampagne (Standard):** Der **Endboss der letzten Insel** wird besiegt. In der ersten Ausbaustufe (1 Insel) ist das der Endboss der Mine.
+- **Minibosse:** je Stufe ein Miniboss. **Endboss:** sitzt immer in der **tiefsten Stufe** jeder Insel (Q60, 2026-10-04); sein Sieg macht den Weg zur nächsten Insel frei. Boss-Werte und Verhalten legt Regelwerk III fest (`bosse.md`).
+- **Ziel der Kampagne (Standard):** Der **Endboss der letzten Insel** wird besiegt. In der ersten Ausbaustufe (1 Insel) ist das bis W2 der Endboss der Mine, danach der Kristallhöhle (Q60, 2026-10-04).
 - **Siegvarianten:** Das Ziel ist eine **Raum-Option** (siehe 5), **eine Variante je Raum**; Minibosse gibt es immer. Varianten:
 
 | Variante | Sieg, wenn … | Startwert |
@@ -54,12 +55,12 @@ Fällt die **Burg einer Stufe**, wirkt der **Niederlage-Modus** des Raums (Raum-
 
 | Modus | Wirkung |
 |---|---|
-| **Gold/Material-Verlust** | Gold je Spieler und Material der Insel je −50 %; Bauten und Truppen bleiben. Die Burg steht sofort wieder. |
-| **Stufenverlust** | Hub der gefallenen Stufe wird zurückgesetzt (alle Bauplätze unbezahlt, alle Truppen weg außer Landstreichern, Material der Insel −50 %); Spieler dieser Stufe verlieren 50 % ihres Golds. Die Burg steht sofort wieder. |
+| **Gold/Material-Verlust** | Gold je Spieler und Material der Insel je −50 %; Bauten und Bürger bleiben. Die Burg steht sofort wieder. |
+| **Stufenverlust** | Hub der gefallenen Stufe wird zurückgesetzt (alle Bauplätze unbezahlt, alle Bürger weg außer Landstreichern, Material der Insel −50 %); Spieler dieser Stufe verlieren 50 % ihres Golds. Die Burg steht sofort wieder. |
 | **Komplett verloren** | Game Over: der Raum endet, der Spielstand bleibt wie zuletzt gespeichert. |
 
 Standard je Grad: **Dev und Leicht: Gold/Material-Verlust · Normal und Hart: Stufenverlust · Ultra: Komplett verloren.**
-**Monarch tot:** Respawn an der Burg nach 5 s ohne Strafe (unverändert). Daten: neu `data/difficulty.json` (SIM legt Feld an); `engine/sim/world.go` › `castleFallen` ist der Ist-Stand von „Stufenverlust“. Zielkorridore: siehe `wirtschaft.md` § 4 (Burg hält Nacht 1–5).
+**Monarch tot:** Respawn an der Burg ohne Strafe; heute nach 5 s, Ziel 15 s mit dem Wiederbeleben (B-120, W4.1; `monarch.md` § 5). Daten: neu `data/difficulty.json` (SIM legt Feld an); `engine/sim/world.go` › `castleFallen` ist der Ist-Stand von „Stufenverlust“. Zielkorridore: siehe `wirtschaft.md` § 4 (Burg hält Nacht 1–5).
 
 ## 5. Raum-Optionen
 

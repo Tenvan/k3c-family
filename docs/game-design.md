@@ -6,7 +6,7 @@ Zahlenwerte stehen als Daten in `data/*.json`. Dieses Dokument erklärt das *War
 ## Pitch
 
 2D-Side-Scroller-Strategiespiel im Stil von **Kingdom Two Crowns (K2C)** für **gemischten Koop** (Couch und Online) auf der
-Xbox (Browser/Edge) und weiteren Geräten. Die Monarchen bauen einen Hub aus, rekrutieren Truppen und verteidigen ihn gegen
+Xbox (Browser/Edge) und weiteren Geräten. Die Monarchen bauen einen Hub aus, rekrutieren Bürger und verteidigen ihn gegen
 Portal-Angriffe. Unterschied zu K2C: Die Welt geht **nach unten** (Oberwelt → Höhle → Mine), der Monarch
 kämpft **aktiv** mit Skills mit, und die Level werden **prozedural aus festen Eckdaten** erzeugt.
 
@@ -35,7 +35,7 @@ Typische Session: 30–60 Minuten.
 - **Beitreten** jederzeit mit **A** (Controller), Leertaste (Tastatur) oder der Münz-Taste (Touch).
 - **2–4+ Spieler pro Raum.** Lokale Spieler teilen sich den Bildschirm (Split-Screen, Layout für 1–4 Spieler).
 - **Mehrere Räume** laufen parallel auf dem Server (z. B. ein 2er-Spiel auf der Xbox, ein 3er-Spiel per Handy). Ein Gerät sitzt in einem Raum.
-- Ressourcen: Gold pro Spieler (wie K2C), Baumaterial (Holz/Stein/Kupfer) gemeinsam für den Hub. *So umgesetzt, im Playtest prüfen.*
+- Ressourcen: Gold pro Spieler (wie K2C), Baumaterial (Holz, Stein, Kupfer, Eisen, Kristall) gemeinsam je Insel. *So umgesetzt, im Playtest prüfen.*
 - Jede Regel muss mit 2+ Spielern gleichzeitig funktionieren, egal ob sie auf einem oder mehreren Geräten sitzen.
 - **Die Wellen wachsen mit der Spieleranzahl** (Gegnerzahl ×(1 + 0,5 je Zusatzspieler)), siehe `rules/wirtschaft.md`.
 - **Schwierigkeitsgrade** Dev, Leicht, Normal, Hart, Ultra verändern Wellen und Gegner, nicht die Wirtschaft. Live wählt man den Grad beim Anlegen des Raums, im Dev-Mode lässt er sich im Debug-Panel jederzeit umschalten (wirkt ab der nächsten Welle). Details und Faktoren: `rules/wirtschaft.md`.
@@ -45,9 +45,9 @@ Typische Session: 30–60 Minuten.
 
 - Bewegung nur **horizontal** (links/rechts), Sprint, **kein Springen**.
 - Interagieren (Münze geben, Truhe öffnen, Eingang nutzen; A halten), Skill-Menü, **Schlag** (X) und vier Skill-Slots. Es gibt **kein Bau-Menü**: Gebäude haben feste Plätze, Angebote je eigenes Zahlziel (Fragenkatalog Q34, 2026-10-04).
-- Hauptrolle ist Truppen-Management. Im Kampf unterstützt er per Skill und mit einem einfachen Schlag, trägt aber nicht den Hauptschaden.
+- Hauptrolle ist das Management der Bürger. Im Kampf unterstützt er per Skill und mit einem einfachen Schlag, trägt aber nicht den Hauptschaden.
 - Werte: HP 100, Speed 5 Units/s, Verteidigung 5, Schlag 10 Schaden. **Kein Level**, der Monarch wächst nur über Skills.
-- Tod: Der gefallene Monarch bleibt liegen; ein Mitspieler belebt ihn durch A halten (3 s, 50 % HP), sonst Respawn an der Burg nach 15 s, ohne Strafe, Truppen bleiben. Details: `rules/monarch.md`.
+- Tod: Der gefallene Monarch bleibt liegen; ein Mitspieler belebt ihn durch A halten (3 s, 50 % HP), sonst Respawn an der Burg nach 15 s (heute noch 5 s, Umstellung mit B-120/W4.1), ohne Strafe, Bürger bleiben. Details: `rules/monarch.md`.
 
 ### Skill-System (offene Archetypen-Linien)
 
@@ -66,7 +66,9 @@ Jeder Spieler hat einen **eigenen Skill-Baum** mit 4 Linien: **Tank, Zauberer, H
 
 Die Skills kommen **erst nach dem Vertical Slice**.
 
-## Truppen (`data/troops.json`)
+## Bürger und Truppen (`data/troops.json`)
+
+Bürger sind alle Figuren des Hubs, **Truppen** nur die Kämpfer (Bogenschützen, Krieger, Elite); Code-Namen wie `World.Troops` bleiben (Q63, 2026-10-04).
 
 - **Landstreicher** im Rekrutierungs-Camp → Münze geben → **Bauer** (folgt, sammelt, baut).
 - Werkstatt: Bauer + Bogen → **Bogenschütze** (Fernkampf, besetzt Türme). Bauer + Schwert → **Krieger** (Nahkampf, Frontlinie).
@@ -79,11 +81,11 @@ Der Hub hat **Ausbaustufen 1 bis 5** (Holz, Stein, Kupfer, Eisen, Kristall); jed
 
 ## Welt & Stufen
 
-**Aufbau:** Ein Raum hat einen Spielstand, der Spielstand hat **n Inseln**, jede Insel hat **n Stufen** (Level). Die Stufen einer Insel sind **pro Spieler frei begehbar** (jeder wechselt allein über Tiefen-Eingang oder Treppe) und laufen alle weiter, auch ohne Spieler. Der **Endboss** der tiefsten Stufe macht den Weg zur nächsten Insel frei (gemeinsamer Wechsel); je Stufe gibt es einen **Miniboss**. Das Baumaterial gehört der Insel (alle Stufen teilen einen Vorrat). Die Inseln folgen klassisch als Insel 1 bis n; später sind mehrere Inseln je Ebene wählbar (nächste Ebene nach k besiegten Inseln). Die Stufen werden **nach unten schmaler, dafür dichter**. Erste Ausbaustufe: 1 Insel mit 5 Stufen; die drei Stufen unten kommen zuerst, Eisenstollen (Tiefe 3) und Kristallhöhle (Tiefe 4) folgen. Details: `rules/stufen.md`, Entscheidung `decisions/003-spielstruktur-inseln-stufen.md`.
+**Aufbau:** Ein Raum hat einen Spielstand, der Spielstand hat **n Inseln**, jede Insel hat **n Stufen** (je Stufe ein Level, Q61). Die Stufen einer Insel sind **pro Spieler frei begehbar** (jeder wechselt allein über Tiefen-Eingang oder Treppe) und laufen alle weiter, auch ohne Spieler. Der **Endboss** sitzt immer in der tiefsten Stufe (Q60) und macht den Weg zur nächsten Insel frei (gemeinsamer Wechsel); je Stufe gibt es einen **Miniboss**. Das Baumaterial gehört der Insel (alle Stufen teilen einen Vorrat). Die Inseln folgen klassisch als Insel 1 bis n; später sind mehrere Inseln je Ebene wählbar (nächste Ebene nach k besiegten Inseln). Die Stufen werden **nach unten schmaler, dafür dichter**. Erste Ausbaustufe: 1 Insel mit 5 Stufen; die drei Stufen unten kommen zuerst, Eisenstollen (Tiefe 3) und Kristallhöhle (Tiefe 4) folgen. Details: `rules/stufen.md`, Entscheidung `decisions/003-spielstruktur-inseln-stufen.md`.
 
 | Stufe | Biom | Länge (Units) | Primär-Ressource | Zyklus | Gegner |
 |---|---|---|---|---|---|
-| 0 | Oberwelt (Wald) | 900–1100 | Holz | Tag 10 min / Nacht 5 min, 1 min Dämmerung | Greed, Goblin, Goblin Archer (Elite), Wolf (nachts) |
+| 0 | Oberwelt (Wald) | 900–1100 | Holz | Tag 6, Dämmerung 2, Nacht 4, Morgengrauen 2 min (Startwert, Q65; heute 10/1/5 min bis B-213) | Greed, Goblin, Goblin Archer (Elite), Wolf (nachts) |
 | 1 | Höhle | 700–900 | Stein | Aggressionspool | Fledermaus, Höhlentroll (Elite), Skelett (nachts) |
 | 2 | Mine | 550–700 | Kupfer | Aggressionspool | Zombie, Rattenschwarm, Minengeist (Elite) |
 
@@ -128,7 +130,7 @@ Die festen Eckdaten stehen in `data/biomes/<biom>.json`, der Generator in `engin
 ## Niederlage und Ziel
 
 - **Burg einer Stufe zerstört:** Der **Niederlage-Modus** des Raums entscheidet: *Gold/Material-Verlust* (je −50 %), *Stufenverlust* (Hub der Stufe zurückgesetzt) oder *Komplett verloren* (Game Over). Standard je Schwierigkeitsgrad: Dev/Leicht Gold/Material, Normal/Hart Stufenverlust, Ultra komplett verloren.
-- **Monarch tot:** Respawn am Hub, keine Strafe.
+- **Monarch tot:** Respawn an der Burg, keine Strafe (`rules/monarch.md` § 5).
 - **Ziel:** Standard ist der Endboss der letzten Insel; Varianten als Raum-Option: Gold sammeln, N Tage überleben, alles abbauen, alles ausbauen. Details: `rules/stufen.md`.
 - **Raum-Optionen:** Schwierigkeitsgrad, Ziel und Niederlage-Modus werden beim Anlegen des Raums gewählt.
 
@@ -172,7 +174,7 @@ Gamepad-Test vom 2026-10-03 an der Xbox (Edge 150, zwei Controller, Server `http
 
 ## Speichern
 
-JSON mit Monarch-Zustand (Level, Skills), pro Hub (Gebäude, Truppen, Ressourcen), Fortschritt (freigeschaltete Tiefen)
+JSON mit Monarch-Zustand (Level, Skills), pro Hub (Gebäude, Bürger, Ressourcen), Fortschritt (freigeschaltete Tiefen)
 und den **Seeds** der Stufen. Gegner und Level-Layout werden nicht gespeichert. Speicherort ist der Heimnetz-Server
 (Browser-Speicher auf der Xbox gilt als unzuverlässig), mit Fallback auf localStorage.
 Umgesetzt in `engine/sim/campaign.go` und `engine/store/`: Autosave bei Tagesanbruch und beim Stufenwechsel. Zusätzlich gespeichert wird,
@@ -180,7 +182,7 @@ was aus der Welt schon entfernt wurde (gefällte Bäume, geöffnete Truhen), son
 
 ## Grafik & Audio
 
-- Figuren (Monarchen, Truppen, Gegner): Seitenansicht-Sprites von **LuizMelo (CC0)** für unsere Seite und
+- Figuren (Monarchen, Bürger, Gegner): Seitenansicht-Sprites von **LuizMelo (CC0)** für unsere Seite und
   **Gothicvania von ansimuz (CC0)** für die Gegner (Wolf, Skelett, Zombie, Geist, Fledermaus, Höhlentroll). Zuordnung in
   `data/sprites.json`, Bilder und Credits in `public/sprites/`. Referenz: Testseiten `aufstellung.html` (Rollen) und
   `figuren.html` (alle Figuren, auch ungenutzte).

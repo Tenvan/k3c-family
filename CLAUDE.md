@@ -59,9 +59,9 @@ prüft die Regeln unten automatisch (Seiten eingetragen, `installPageChrome()`, 
 - `data/` – Balancing als JSON (Biome, Gegner, Truppen, Gebäude, Monarch), einzige Quelle für Client (Import) und
   Go-Server (`go:embed`, `data/embed.go`). Werte gehören hierher, nicht in den Code.
 - `engine/` – Go: `sim/` (Simulation, deterministisch), `level/` (Level-Generator), `room/`, `net/` (HTTP, WebSocket `/ws`,
-  Protokoll v2), `store/` (Spielstände → `saves/`, Berichte → `reports/`). `cmd/k3c-server` liefert `dist/` und die API aus.
+  Protokoll v3), `store/` (Spielstände → `saves/`, Berichte → `reports/`). `cmd/k3c-server` liefert `dist/` und die API aus.
 - `src/model/` – Typen und Daten, die der Client vom Server kennt (`World`, `GameEvent`, `BIOMES`, `SaveGame` …), keine Logik.
-- `src/online/` – Client des Go-Servers (`clientConnection.ts`, Protokoll v2): sendet nur Eingaben, zeichnet Snapshots. Ein Monarch pro Gerät.
+- `src/online/` – Client des Go-Servers (`clientConnection.ts`, Protokoll v3): sendet nur Eingaben, zeichnet Snapshots. Ein Monarch pro Gerät.
 - `src/input/` – `PlayerInput`-Abstraktion (Tastatur, Gamepad, Touch-Overlay `touchInput.ts`, per `?touch=1` erzwingbar). Spiel-Code fragt Aktionen ab, nie konkrete Tasten.
 - `src/scenes/` – Phaser-Szenen (`GameScene` = Eingabe, `step()`, Kameras; `worldRenderer.ts` zeichnet den Zustand;
   `HudScene` = bildschirmfeste Anzeigen). Neue Mechanik: Logik + Test in `engine/sim/`, dann nur zeichnen.
