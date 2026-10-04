@@ -8,7 +8,7 @@
 - **Erstellt:** 2026-10-04
 - **Spec:** freigegeben
 - **Revision:** 1
-- **Freigabe:** 2026-10-04, Chat (Ralf), Revision 1, durch 🧑; umfasst B-205, B-206, B-207
+- **Freigabe:** 2026-10-04, Chat (Ralf), Revision 1, durch 🧑; umfasst B-205, B-206, B-207 (Sprint-Revision 2 bestätigt)
 
 ## Ausgangslage
 

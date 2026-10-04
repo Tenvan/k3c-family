@@ -7,8 +7,8 @@
 - **Tickets:** B-205, B-206, B-207
 - **Start-Commit:** c00cbd6
 - **Spec:** freigegeben
-- **Revision:** 1
-- **Freigabe:** 2026-10-04, Chat (Ralf), Revision 1, durch 🧑; umfasst B-205, B-206, B-207
+- **Revision:** 2
+- **Freigabe:** 2026-10-04, Chat (Ralf), Revision 2 (Ergänzung Glossar), durch 🧑; umfasst B-205, B-206, B-207
 
 ## Ausgangslage
 
@@ -52,7 +52,7 @@ B-205, B-206, B-207 › Ausnahme- und Fehlerfälle.
 - **AC-03** Pfad- und Werteprüfung ändert bei ungültiger Eingabe keine Datei (B-205/AC-03).
 - **AC-04** Arbeitsweise, `CLAUDE.md` und MCP-Instructions nennen die Tools als Weg, Handarbeit nur als Rückfall (B-205/AC-04).
 - **AC-05** `page.html`, `page.go` und Binding `PlanningPage` entfallen (B-206/AC-01).
-- **AC-06** React-Planungsseite mit Filter, Karten, Backlog, Detail-Panel und Neuladen ohne Zustandsverlust, im Mock und mit Vitest (B-206/AC-02, B-206/AC-03).
+- **AC-06** React-Planungsseite mit Filter, Karten, Backlog, Detail-Panel und Neuladen ohne Zustandsverlust, im Mock und mit Vitest; Ansicht „Glossar“, wenn `docs/glossar.md` existiert (B-206/AC-02, B-206/AC-03, B-206/AC-04).
 - **AC-07** GitHub-Stand je Sprint aus `gh` mit Tests auf aufgezeichneten Ausgaben und MCP-Tool `gh_status` (B-207/AC-01, B-207/AC-03).
 - **AC-08** Planungsseite zeigt PR, CI, Merge-Status und letzten `develop`-Lauf, im Mock mit allen Zuständen (B-207/AC-02).
 - **AC-09** `task check:dev` und `task check` grün.
