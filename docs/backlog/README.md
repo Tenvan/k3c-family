@@ -58,7 +58,6 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-130](B-130-bosse.md) | SIM | Idee | hoch | eingeplant | K2 | Minibosse und Endboss sind spielbar |
 | [B-131](B-131-events.md) | SIM | Idee | niedrig | eingeplant | K3 | Vollmond, Blutmond und Händler-Überfall sind als Events umgesetzt |
 | [B-132](B-132-anzeige-bosse-events.md) | CLI | Idee | mittel | eingeplant | K5 | Der Client zeigt Gegner-Fähigkeiten, Bosse, Phasen und Events |
-| [B-146](B-146-optionen-pause-szene.md) | CLI | Idee | hoch | eingeplant | S5 | Der Client hat eine Optionen- und Pause-Szene mit getrennter Lautstärke und Barrierefreiheit |
 | [B-147](B-147-speichern-verlassen.md) | SRV | Idee | mittel | eingeplant | S2 | Der Server speichert beim Verlassen und wenn das letzte Gerät getrennt ist, der Spielstand zeigt seinen Speicherstand |
 | [B-148](B-148-onboarding-erste-nacht.md) | CLI | Idee | hoch | eingeplant | S6 | Die erste Nacht wird mit kontextuellen Hinweisen geführt, der Freundlich-Grad kostet keinen Fortschritt |
 | [B-149](B-149-controller-glyphen.md) | CLI | Idee | mittel | eingeplant | S6 | Hinweise zeigen Controller-Glyphen statt Tasten-Text |
@@ -80,7 +79,6 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-168](B-168-musik-je-zustand.md) | CLI | Idee | mittel | eingeplant | SO4 | Die Musik wechselt je Spielzustand mit Crossfade |
 | [B-169](B-169-hoerprobenseite-soundtest.md) | PLAT | Idee | mittel | eingeplant | SO3 | Eine Hörprobenseite spielt Kandidaten für Musik und Effekte ab |
 | [B-170](B-170-release-checkliste.md) | INF | Idee | hoch | eingeplant | RL1 | Eine Release-Checkliste macht jeden Release prüfbar |
-| [B-172](B-172-sprachauswahl-de-en.md) | CLI | Idee | mittel | eingeplant | S5 | Der Client hat Deutsch und Englisch mit Sprachauswahl in den Optionen |
 | [B-173](B-173-monarch-auf-reittier-zeichnen.md) | CLI | Idee | hoch | eingeplant | S7 | Der Client zeichnet den Monarchen auf dem Standard-Reittier |
 | [B-175](B-175-lasttest-werkzeug.md) | SRV | Idee | mittel | eingeplant | LT1 | Ein Lasttest-Werkzeug misst Tick-Dauer und CPU gegen das Pi-Ziel |
 | [B-176](B-176-protokoll-mehrere-stufen.md) | SRV | Idee | hoch | eingeplant | S2 | Das Protokoll liefert Level und Zustand jeder Stufe, in der ein lokaler Spieler steht |
@@ -233,3 +231,5 @@ Zeile in diesen Abschnitt.
 | [B-210](archiv/B-210-planung-ueber-mcp.md) | SRV | Idee | hoch | erledigt | M8 | Agenten pflegen Tickets, Sprints und Sessions über MCP-Tools von k3c-dev |
 | [B-211](archiv/B-211-planungsseite-react.md) | SRV | Schuld | mittel | erledigt | M8 | Die Planungsseite von k3c-dev ist eine React-Ansicht aus denselben Daten wie die MCP-Tools |
 | [B-212](archiv/B-212-github-status-planung.md) | SRV | Idee | mittel | erledigt | M8 | k3c-dev zeigt PR, CI und Merge-Konflikte je Sprint aus GitHub |
+| [B-146](archiv/B-146-optionen-pause-szene.md) | CLI | Idee | hoch | erledigt | S5 | Der Client hat eine Optionen- und Pause-Szene mit getrennter Lautstärke und Barrierefreiheit |
+| [B-172](archiv/B-172-sprachauswahl-de-en.md) | CLI | Idee | mittel | erledigt | S5 | Der Client hat Deutsch und Englisch mit Sprachauswahl in den Optionen |

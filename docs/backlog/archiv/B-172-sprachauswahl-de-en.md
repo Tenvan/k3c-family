@@ -3,7 +3,7 @@
 - **Domäne:** CLI
 - **Typ:** Idee
 - **Prio:** mittel
-- **Status:** eingeplant
+- **Status:** erledigt
 - **Sprint:** S5
 - **Erstellt:** 2026-10-03
 - **Spec:** freigegeben

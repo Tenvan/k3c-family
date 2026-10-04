@@ -10,7 +10,6 @@ Reihenfolge in Wellen, Bahnen je Domäne und Zuordnung Mensch/autonom (zwei Acco
 
 | Sprint | Domäne | Thema | Am Ende sichtbar | Ordner |
 |---|---|---|---|---|
-| S5 | CLI | Optionen- und Pause-Szene | Einstellungen bleiben nach dem Neuladen erhalten | `aktiv/S5-optionen-pause/` |
 | BAL1 | SIM | Balancing-Tester: Kern und Replay (einschiebbar) | ein Befehl im Terminal erzeugt den Kennzahlen-Report, eine Replay-Datei lässt sich in k3c-dev abspielen und liefert denselben Endzustand-Hash | `aktiv/BAL1-balancing-tester-kern/` |
 | LT1 | SRV | Lasttest-Werkzeug | Messlauf am Pi mit Tabelle und Bewertung gegen das Ziel (< 10 ms) | `aktiv/LT1-lasttest-werkzeug/` |
 
@@ -25,6 +24,7 @@ Hardware-Sessions (`Agent: Mensch`) aus Sprints, deren Review schon abgeschlosse
 | GR4.3 | Xbox (Kaltstart, `MAX_TEXTURE_SIZE`) | AC-04: Budget und Texturgröße gemessen (angenommen: 4096) | `erledigt/GR4-atlas-ladeszene/` |
 | DBG2.3 | Controller (PC und Handy geprüft 2026-10-03) | AC-05: Aktionen mit allen drei Eingaben ausprobiert | `erledigt/DBG2-debug-overlay-aktionen/` |
 | S4.3 | Xbox am TV (Viertel-Layout lesbar) oder zwei Eingabegeräte; „zwei Stufen“ erst nach B-176 | AC-04: zwei Spieler in verschiedenen Stufen, Layouts 3 und 4 lesbar | `erledigt/S4-kamera-layouts/` |
+| S5.4 | Xbox am TV und Handy (Optionen/Pause bedienen, englische Texte lesen) | AC-05, AC-07: Szene am TV und Handy abgenommen, englische Texte gelesen | `erledigt/S5-optionen-pause/` |
 
 ## Geplant (in dieser Reihenfolge)
 
@@ -128,4 +128,5 @@ Gesamtplan und Begründung: [`../plan-weiterentwicklung.md`](../plan-weiterentwi
 | GR6 | Credits-Seite aus den CREDITS-Dateien mit Vollständigkeits-Test (B-165) | `erledigt/GR6-credits-seite/` |
 | GR4 | Atlas und Lade-Szene (B-163, B-029; Messung an der Xbox offen, GR4.3) | `erledigt/GR4-atlas-ladeszene/` |
 | S4 | Kamera je Stufe und Layouts 1–4: Zelle zeigt Stufe, Radar und HUD je Zelle, Mindest-Schrift (B-106; Abnahme am Gerät offen) | `erledigt/S4-kamera-layouts/` |
+| S5 | Optionen- und Pause-Szene mit getrennter Lautstärke, Screenshake/Flash, Farbschwäche-Symbolen und Sprache de/en (B-146, B-172; Abnahme am Gerät offen) | `erledigt/S5-optionen-pause/` |
 | M8 | k3c-dev VIII: Planung über MCP, React-Planungsseite, GitHub-Status (einschiebbar) | `erledigt/M8-dev-planung-mcp/` |
