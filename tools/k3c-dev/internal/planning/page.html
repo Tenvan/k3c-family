@@ -99,6 +99,7 @@ const save = () => { try { sessionStorage.setItem(KEY, JSON.stringify(state)); }
 
 const QUICK = [
   { id: 'aktiv', label: 'Aktive Sprints', sprint: (s) => s.status === 'aktiv' },
+  { id: 'erledigt', label: 'Erledigt', sprint: (s) => s.status === 'erledigt' },
   { id: 'agent', label: 'Agent offen', sprint: (s) => s.sessions.some(isNext) },
   { id: 'hoch', label: 'Prio hoch', ticket: (t) => t.prio === 'hoch' },
   { id: 'offen', label: 'Offen', ticket: (t) => t.status === 'offen' },
@@ -148,7 +149,7 @@ function sprintCard(s) {
 }
 
 function renderSprints(q) {
-  const list = DATA.sprints.filter((s) => (state.done || s.status !== 'erledigt') && domOk(s.domain) && quickOk('sprint', s) &&
+  const list = DATA.sprints.filter((s) => (state.done || state.quick.includes('erledigt') || s.status !== 'erledigt') && domOk(s.domain) && quickOk('sprint', s) &&
     has(q, s.id, s.title, s.tickets.join(' '), ...s.sessions.map((x) => x.nr + ' ' + x.titel)));
   document.getElementById('sprints').innerHTML =
     `<h2>Sprints <small>${list.length} von ${DATA.sprints.length} · ${DATA.done} erledigt</small></h2>` +
