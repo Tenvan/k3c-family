@@ -77,7 +77,6 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-161](B-161-grafik-zuordnungstabelle.md) | CLI | Idee | hoch | eingeplant | GR1 | Jedes Spielobjekt hat eine Zuordnung zu Asset und Lizenz oder eine dokumentierte Lücke |
 | [B-162](B-162-grafik-suche-luecken.md) | CLI | Frage | mittel | eingeplant | GR2 | Für die Grafik-Lücken liegen Kandidaten mit Vorschau, Lizenz und Stilbewertung vor |
 | [B-164](B-164-juice-treffer-screenshake.md) | CLI | Idee | mittel | eingeplant | GR5 | Treffer, Münzen und Bauen haben sichtbare Rückmeldung, Screenshake und Blitze sind abschaltbar |
-| [B-165](B-165-credits-seite.md) | PLAT | Idee | mittel | eingeplant | GR6 | Eine Credits-Seite entsteht aus den CREDITS-Dateien, ein Test prüft die Vollständigkeit |
 | [B-167](B-167-sfx-katalog.md) | CLI | Idee | mittel | eingeplant | SO2 | Jedes wichtige Ereignis hat einen Sound mit Quelle und Lizenz |
 | [B-168](B-168-musik-je-zustand.md) | CLI | Idee | mittel | eingeplant | SO4 | Die Musik wechselt je Spielzustand mit Crossfade |
 | [B-169](B-169-hoerprobenseite-soundtest.md) | PLAT | Idee | mittel | eingeplant | SO3 | Eine Hörprobenseite spielt Kandidaten für Musik und Effekte ab |
@@ -210,6 +209,7 @@ Zeile in diesen Abschnitt.
 | [B-166](archiv/B-166-audio-autoplay-formate-xbox.md) | PLAT | Frage | hoch | erledigt | X1 | Audio-Autoplay und Formate auf Edge der Xbox sind geprüft |
 | [B-079](archiv/B-079-landing-kacheln-lobby.md) | PLAT | Schuld | mittel | erledigt | F5 | Die Kacheln der Landingpage passen zum Start über die Lobby |
 | [B-141](archiv/B-141-doku-drift-version.md) | INF | Schuld | mittel | erledigt | F5 | Doku und CLAUDE.md stimmen mit dem Code überein, die Version ist sichtbar |
+| [B-165](archiv/B-165-credits-seite.md) | PLAT | Idee | mittel | erledigt | GR6 | Eine Credits-Seite entsteht aus den CREDITS-Dateien, ein Test prüft die Vollständigkeit |
 | [B-029](archiv/B-029-lade-szene.md) | CLI | Idee | mittel | erledigt | GR4 | Lade-Szene zeigt Fortschritt |
 | [B-163](archiv/B-163-atlas-build-ladezeit.md) | INF | Idee | mittel | erledigt | GR4 | Die Spiel-Grafiken kommen aus einem Atlas, der Kaltstart hat ein Zeitbudget |
 | [B-196](archiv/B-196-pages-workflows-go-fuer-atlas.md) | INF | Problem | hoch | erledigt | GR4 | Die Pages-Workflows bauen mit Go, weil `task build` den Atlas packt |
