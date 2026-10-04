@@ -16,7 +16,10 @@ import type { RadarCell } from './radarView';
 import { daylight } from './viewRules';
 import { cellStages } from './cellStages';
 import { PLACEHOLDER_BG, StageView, placeholderLayer, showOnly } from './stageView';
-import { effectFor, type BuildSpots } from './effects';
+import { clientLog } from '../core/clientLog';
+import { loadSettings } from '../core/settings';
+import { EFFECT_CONFIG, SHAKE, effectFor, type BuildSpots } from './effects';
+import { hurtSeat, rumblePad, runEffect, shakeCell } from './effectRules';
 import { DEV_FOCUS_KEY, muteFocused } from './debugOverlayPanel';
 import { MenuPress, idleCommands } from './optionsLogic';
 import { pauseButton } from './pauseButton';
@@ -54,6 +57,8 @@ export class GameScene extends Phaser.Scene {
   /** Geladene Stufen nach Tiefe; mit dem heutigen Protokoll (B-176 offen) nur die Stufe von `client.level` */
   private stages = new Map<number, StageView>();
   private readonly buildSpots: BuildSpots = new Map();
+  private lastFlashAt: number | null = null;
+  private rumbleWarned = false;
   private holders: Phaser.GameObjects.Layer[] = [];
   private keyboard!: KeyboardInput;
   private touch: TouchInput | undefined;
@@ -226,10 +231,36 @@ export class GameScene extends Phaser.Scene {
   private spawnEffects(events: readonly GameEvent[]): void {
     const view = this.level ? this.stages.get(this.level.depth) : undefined;
     if (!view) return;
+    const settings = loadSettings(); // je Frame gelesen: eine Änderung in den Optionen wirkt ohne Neuladen
     const playerX = (i: number): number | undefined => this.cur?.state.players.find((p) => p.index === i)?.x;
+    const now = performance.now();
     for (const e of events) {
+      this.feedback(e, settings.screenshake);
       const fx = effectFor(e, playerX, this.buildSpots);
-      if (fx) view.effects.spawn(fx);
+      if (!fx) continue;
+      const isFlash = EFFECT_CONFIG[fx.kind].flash;
+      if (!runEffect(isFlash, settings, now, this.lastFlashAt)) continue;
+      if (isFlash) this.lastFlashAt = now;
+      view.effects.spawn(fx);
+    }
+  }
+
+  /** Treffer an einem lokalen Spieler: nur dessen Kamera schüttelt (Schalter `screenshake`), nur dessen Controller vibriert. */
+  private feedback(e: GameEvent, shake: boolean): void {
+    const seat = hurtSeat(e, this.client.you);
+    if (seat === null) return;
+    if (shake) {
+      const cam = this.cameras.cameras[shakeCell(e, this.client.you, this.cells) ?? -1];
+      cam?.shake(SHAKE.durationMs, SHAKE.intensity);
+    }
+    const slot = [...this.client.you].sort((a, b) => a.slot - b.slot)[seat]?.slot ?? -1;
+    const input = this.slots.bound[slot];
+    if (input instanceof GamepadInput) {
+      rumblePad(input.pad.vibration, () => {
+        if (this.rumbleWarned) return;
+        this.rumbleWarned = true;
+        clientLog('info', '🎮 Controller ohne Vibration');
+      });
     }
   }
 

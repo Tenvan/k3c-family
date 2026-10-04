@@ -22,6 +22,15 @@ export const EFFECT_CONFIG: Record<EffectKind, { color: number; radius: number; 
   down: { color: 0xb02030, radius: 40, durationMs: 600, particles: 8, flash: false },
 };
 
+/** Barrierefreiheit (B-164): höchstens 3 Blitze pro Sekunde; ein Blitz im Sperrfenster wird verworfen, nicht aufgeschoben. */
+export const MAX_FLASHES_PER_SECOND = 3;
+export const FLASH_MIN_GAP_MS = Math.ceil(1000 / MAX_FLASHES_PER_SECOND);
+
+/** Schütteln der Kamera des getroffenen Spielers */
+export const SHAKE = { durationMs: 150, intensity: 0.008 };
+/** Vibration des Controllers des getroffenen Spielers */
+export const RUMBLE = { duration: 150, strongMagnitude: 0.6, weakMagnitude: 0.3 };
+
 /** Höchstzahl gleichzeitig lebender Effekte; weitere Ereignisse werden verworfen (kein Wachstum der Objektzahl). */
 export const MAX_LIVE_EFFECTS = 48;
 
