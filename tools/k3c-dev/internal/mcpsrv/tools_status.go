@@ -9,10 +9,12 @@ import (
 )
 
 // workbenchStatus ist das Tool workbench_status: kurz, eine Zeile je Punkt.
-func (s *Server) workbenchStatus(context.Context, struct{}) (string, error) {
+func (s *Server) workbenchStatus(ctx context.Context, _ struct{}) (string, error) {
+	ws := s.ws(ctx)
 	st := s.Stats()
 	lines := []string{
 		fmt.Sprintf("k3c-dev · %s · läuft seit %s", s.URL(), formatUptime(s.stats.uptime())),
+		"Checkout: " + ws.label(),
 		fmt.Sprintf("Aufrufe %d · Fehler %d · Clients %d (max %d) · parallel %d (max %d)",
 			st.TotalCalls, st.Errors, st.Clients, st.PeakClients, st.InFlight, st.PeakInFlight),
 	}
@@ -20,15 +22,15 @@ func (s *Server) workbenchStatus(context.Context, struct{}) (string, error) {
 		u := s.cfg.Usage.Snapshot().Session
 		lines = append(lines, fmt.Sprintf("Sitzung: p95 %s · Ausreißer %d", formatMs(u.P95Ms), u.Outliers))
 	}
-	lines = append(lines, s.serviceSummary(), "Log-Quellen: "+strings.Join(s.LogSources(), ", "))
-	return strings.Join(append(lines, s.runLines()...), "\n"), nil
+	lines = append(lines, s.serviceSummary(ctx), "Log-Quellen: "+strings.Join(logSources(ws.root), ", "))
+	return strings.Join(append(lines, s.runLines(ws)...), "\n"), nil
 }
 
 // runLines nennt den letzten Lauf je check_run-Ziel in Katalog-Reihenfolge.
-func (s *Server) runLines() []string {
+func (s *Server) runLines(ws workspace) []string {
 	var out []string
 	for _, t := range checkTargets {
-		r, ok := s.checks.lastRun(t.name)
+		r, ok := s.checks.lastRun(ws.source(t.name))
 		if !ok {
 			continue
 		}

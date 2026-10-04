@@ -1,9 +1,9 @@
 [
   { "name": "Vite", "tags": ["Spiel", "Client"], "description": "Vite-Dev-Server: liefert den Browser-Client mit Hot Reload aus, leitet /api und /ws an den Go-Server weiter.",
     "command": ["task", "dev", "--", "--strictPort"], "cwd": ".", "port": 5173, "health": "http",
-    "autoRestart": true },
+    "portEnv": "K3C_VITE_PORT", "autoRestart": true },
   { "name": "Spielserver", "tags": ["Spiel", "Backend"], "description": "Go-Spielserver (Engine, API, WebSocket); startet bei Änderungen an Go-Code und data/ neu.",
     "command": ["task", "start"], "cwd": ".", "port": 8080, "health": "http", "log": "k3c-server",
-    "env": { "K3C_HTTP_PORT": "8080" },
+    "portEnv": "K3C_HTTP_PORT",
     "watch": { "paths": ["cmd", "engine", "data", "go.mod", "go.sum"], "ext": [".go", ".json"] } }
 ]

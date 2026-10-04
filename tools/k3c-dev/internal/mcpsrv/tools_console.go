@@ -17,15 +17,22 @@ type tailIn struct {
 }
 
 // consoleTail ist das Tool console_tail: die letzten Zeilen einer Konsolen-Quelle, stderr mit "! " markiert.
-func (s *Server) consoleTail(_ context.Context, in tailIn) (string, error) {
+func (s *Server) consoleTail(ctx context.Context, in tailIn) (string, error) {
+	ws := s.ws(ctx)
 	n := in.Lines
 	if n <= 0 {
 		n = defaultTailLines
 	}
 	n = min(n, maxTailLines)
-	lines, ok := s.console.Tail(in.Source, n)
+	lines, ok := s.console.Tail(ws.consoleSource(in.Source), n)
 	if !ok {
-		return "", fmt.Errorf("unbekannte Quelle %q; bekannt: %s", in.Source, orNone(s.console.Sources()))
+		var own []string
+		for _, name := range s.console.Sources() {
+			if o, mine := ws.ownSource(name); mine {
+				own = append(own, o)
+			}
+		}
+		return "", fmt.Errorf("unbekannte Quelle %q; bekannt: %s", in.Source, orNone(own))
 	}
 	if len(lines) == 0 {
 		return in.Source + " · keine Ausgabe", nil

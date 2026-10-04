@@ -5,9 +5,11 @@ package services
 import (
 	"encoding/json"
 	"fmt"
+	"maps"
 	"os"
 	"path"
 	"regexp"
+	"strconv"
 	"strings"
 )
 
@@ -23,12 +25,16 @@ type Service struct {
 	Log         string            `json:"log,omitempty"`
 	AutoRestart bool              `json:"autoRestart,omitempty"`
 	Env         map[string]string `json:"env,omitempty"`
+	// PortEnv nennt die Umgebungsvariable, in der jeder Dienst den Port dieses Dienstes bekommt (Shift).
+	PortEnv string `json:"portEnv,omitempty"`
 	// Watch: bei Änderungen dieser Dateien startet k3c-dev den Dienst neu (Watch-Modus, B-097); nil = nie.
 	Watch *Watch `json:"watch,omitempty"`
 }
 
 // name ist ein Dienst- bzw. Log-Name: er wird Konsolen-Quelle, MCP-Argument und Dateiname unter logs/.
 var name = regexp.MustCompile(`^[A-Za-z0-9_.-]{1,40}$`)
+
+var envName = regexp.MustCompile(`^[A-Z][A-Z0-9_]{0,63}$`)
 
 // Load liest und prüft die Konfiguration; unbekannte Felder sind ein Fehler.
 func Load(path string) ([]Service, error) {
@@ -70,6 +76,8 @@ func check(s Service, names map[string]bool, ports map[int]bool) error {
 		return fmt.Errorf("health %q: erlaubt sind http und tcp", s.Health)
 	case s.Log != "" && !name.MatchString(s.Log):
 		return fmt.Errorf("log %q ist kein gültiger Name", s.Log)
+	case s.PortEnv != "" && !envName.MatchString(s.PortEnv):
+		return fmt.Errorf("portEnv %q ist kein Variablenname wie K3C_HTTP_PORT", s.PortEnv)
 	case checkWatch(s.Watch) != nil:
 		return checkWatch(s.Watch)
 	case names[s.Name]:
@@ -78,6 +86,28 @@ func check(s Service, names map[string]bool, ports map[int]bool) error {
 		return fmt.Errorf("port %d doppelt", s.Port)
 	}
 	return nil
+}
+
+// Shift verschiebt alle Ports um off (Dienste eines Worktrees neben denen der Repo-Wurzel) und gibt jedem Dienst
+// die Ports aller Dienste mit PortEnv mit, z. B. Vite den Port des Spielservers für seinen Proxy. off 0 ändert
+// nur die Umgebung.
+func Shift(list []Service, off int) []Service {
+	ports := map[string]string{}
+	for _, s := range list {
+		if s.PortEnv != "" {
+			ports[s.PortEnv] = strconv.Itoa(s.Port + off)
+		}
+	}
+	out := make([]Service, len(list))
+	for i, s := range list {
+		s.Port += off
+		env := make(map[string]string, len(s.Env)+len(ports))
+		maps.Copy(env, s.Env)
+		maps.Copy(env, ports)
+		s.Env = env
+		out[i] = s
+	}
+	return out
 }
 
 // HealthURL ist die Adresse der Prüfung, wie sie Karten und svc_status zeigen.

@@ -22,20 +22,9 @@ type stopIn struct {
 	Force   bool   `json:"force,omitempty" jsonschema:"nötig für übernommene Dienste (vor k3c-dev gestartet): beendet deren Prozessbaum"`
 }
 
-// controller liefert den Controller oder den Grund, warum es keinen gibt.
-func (s *Server) controller() (*services.Controller, error) {
-	if s.cfg.Services != nil {
-		return s.cfg.Services, nil
-	}
-	if s.cfg.ServicesErr != nil {
-		return nil, fmt.Errorf("keine Dienste: services.json nicht geladen: %w", s.cfg.ServicesErr)
-	}
-	return nil, errors.New("keine Dienste konfiguriert")
-}
-
 // svcStatus ist das Tool svc_status: eine Zeile je Dienst.
-func (s *Server) svcStatus(context.Context, struct{}) (string, error) {
-	ctl, err := s.controller()
+func (s *Server) svcStatus(ctx context.Context, _ struct{}) (string, error) {
+	ctl, err := s.controller(ctx)
 	if err != nil {
 		return "", err
 	}
@@ -69,15 +58,15 @@ func (s *Server) svcRestart(ctx context.Context, in serviceIn) (string, error) {
 
 // serviceAction führt einen Befehl aus und antwortet mit dem neuen Zustand und der Dauer; bei einem Fehler mit dem
 // Grund und den letzten Konsolenzeilen des Dienstes.
-func (s *Server) serviceAction(_ context.Context, name string, act func(*services.Controller) (services.Status, error)) (string, error) {
-	ctl, err := s.controller()
+func (s *Server) serviceAction(ctx context.Context, name string, act func(*services.Controller) (services.Status, error)) (string, error) {
+	ctl, err := s.controller(ctx)
 	if err != nil {
 		return "", err
 	}
 	began := time.Now()
 	st, err := act(ctl)
 	if err != nil {
-		return "", errors.New(err.Error() + s.consoleExcerpt(name))
+		return "", errors.New(err.Error() + s.consoleExcerpt(s.ws(ctx).source(name)))
 	}
 	return s.serviceLine(ctl, st) + " · " + formatMs(float64(time.Since(began).Milliseconds())), nil
 }
@@ -132,8 +121,8 @@ func levelLine(c services.LevelCounts) string {
 }
 
 // serviceSummary ist die Zeile für workbench_status.
-func (s *Server) serviceSummary() string {
-	ctl, err := s.controller()
+func (s *Server) serviceSummary(ctx context.Context) string {
+	ctl, err := s.controller(ctx)
 	if err != nil {
 		return "Dienste: " + err.Error()
 	}

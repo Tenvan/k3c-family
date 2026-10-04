@@ -19,7 +19,7 @@ func (c *Controller) start(ctx context.Context, u *unit) (Status, error) {
 		return st, fmt.Errorf("%s: %s", u.svc.Name, reason)
 	}
 	c.set(u, func(s *Status) { s.State, s.LastError, s.PID = Starting, "", 0 })
-	c.opts.Console.Reset(u.svc.Name)
+	c.opts.Console.Reset(c.source(u))
 	c.opts.Log.Info("🚀 dienst "+u.svc.Name+": start", "ns", "svc", "command", strings.Join(u.svc.Command, " "),
 		"cwd", u.svc.Cwd, "port", u.svc.Port)
 	var sink *outSink
@@ -27,7 +27,7 @@ func (c *Controller) start(ctx context.Context, u *unit) (Status, error) {
 		sink = openOutSink(c.opts.Root, u.svc.Name, c.opts.Log, c.opts.Now)
 	}
 	p, err := c.opts.Start(u.svc, c.opts.Root, func(stream, text string) {
-		c.opts.Console.Add(u.svc.Name, stream, text)
+		c.opts.Console.Add(c.source(u), stream, text)
 		sink.write(stream, text)
 	})
 	if err != nil {
