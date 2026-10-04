@@ -1,6 +1,6 @@
 # GR1.1 · Workshop: Grafik-Stil je Pack bestätigen
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Workshop
 - **Agent:** Mensch
 - **Branch:** gr1/1-workshop-stil
@@ -36,8 +36,8 @@ Zuordnung einzelner Spielobjekte (GR1.2, GR1.3), Test (GR1.2), neue Assets (GR2)
 
 ## Fertig, wenn
 
-- [ ] AC-05 (Teil Kopf): Kopf von `docs/assets/zuordnung.md` nennt den Stilbeschluss Q13 und „Bestätigt von 🧑“ mit Datum.
-- [ ] Pack-Tabelle mit Raster, Skalierung, Palette und Entscheidung je Pack.
+- [x] AC-05 (Teil Kopf): Kopf von `docs/assets/zuordnung.md` nennt den Stilbeschluss Q13 und „Bestätigt von 🧑“ mit Datum.
+- [x] Pack-Tabelle mit Raster, Skalierung, Palette und Entscheidung je Pack.
 
 ## Prüfen
 
@@ -45,4 +45,10 @@ Manuell durch 🧑 (Gespräch); danach `task check`.
 
 ## Ergebnis
 
-–
+Workshop am 2026-10-04 im Chat (Agent bereitete vor, 🧑 entschied).
+
+- **AC-05 (Teil Kopf):** umgesetzt – `docs/assets/zuordnung.md` nennt Q13 wörtlich und „Bestätigt von 🧑 am 2026-10-04“.
+- **Pack-Tabelle:** umgesetzt – 12 Umgebungs- und 21 Figuren-Packs mit Raster, Skalierung, Palette, Vorschlag und Entscheidung.
+- Passt: alle 33 Packs. Abweichend vom Vorschlag: Figuren mit nicht ganzzahliger Skalierung gelten als „passt“ (Vermerk, neues Ticket B-251); `blue-cave-background` passt als Hintergrund; 32-px-Packs nativ ×1 passen.
+- Zusatzentscheidungen: Burg, Turm, Tor (SunnyLand Fort) zugeordnet, Palette an Gothicvania Town angleichen; Häuser und Treppen aus Gothicvania Town werden Bestands-Kandidaten in GR2.1.
+- `task check`: grün (Lauf zu GR1.2).
