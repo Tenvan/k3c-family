@@ -269,13 +269,22 @@ func (r *Room) dropTestSave() {
 }
 
 func (r *Room) save() {
+	start := time.Now() // Wanduhr nur fürs Log, nicht für den Spielverlauf
 	backup, err := r.store()
+	ms := time.Since(start).Milliseconds()
 	if err != nil {
-		r.log().Error("💥 Spielstand nicht gespeichert", "err", err)
+		r.log().Error("💥 Spielstand nicht gespeichert", "err", err, "ms", ms)
 		return
 	}
-	r.log().Debug("💾 Spielstand gespeichert", "tick", r.tick, "sicherung", backup)
+	if ms > slowSaveMs {
+		r.log().Warn("🐢 Spielstand gespeichert, langsamer als ein Tick", "tick", r.tick, "sicherung", backup, "ms", ms)
+		return
+	}
+	r.log().Debug("💾 Spielstand gespeichert", "tick", r.tick, "sicherung", backup, "ms", ms)
 }
+
+// slowSaveMs ist der Zielwert einer Speicherung (B-147, S2.2): ein Tick bei 30 Hz.
+const slowSaveMs = 1000 / TickHz
 
 // store schreibt den Spielstand und liefert den Namen der Sicherung des vorigen Stands (leer, wenn es keine gab).
 func (r *Room) store() (backup string, err error) {

@@ -63,7 +63,7 @@ Reihenfolge wie die Nummern. Die Protokollversion steigt einmal (S2.1 auf 4, S2.
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
 | S2.1 | `S2.1-protokoll-skills.md` | Umsetzung | autonom | fertig |
-| S2.2 | `S2.2-speichern-verlassen.md` | Umsetzung | autonom | in Arbeit |
+| S2.2 | `S2.2-speichern-verlassen.md` | Umsetzung | autonom | fertig |
 | S2.3 | `S2.3-spielmetrik-report.md` | Umsetzung | autonom | offen |
 | S2.4 | `S2.4-stufen-je-spieler.md` | Umsetzung | autonom | offen |
 | S2.5 | `S2.5-review.md` | Review | autonom | offen |

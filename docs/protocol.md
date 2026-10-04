@@ -130,9 +130,18 @@ Die Grenzen passen zum Raspberry Pi (SP11) und zur Snapshot-Schätzung für 4 Sp
 selbst, ohne Zutun der Geräte:
 
 - bei jedem Stufenwechsel (Tiefen-Eingang, Treppe),
-- sobald kein Gerät mehr verbunden ist,
+- bei jedem Verlassen und Abbruch eines Geräts, auch wenn andere Geräte bleiben (B-147); beim letzten ist der Raum
+  danach leer und pausiert,
 - beim Aufräumen nach 10 min Leere,
 - beim geordneten Beenden des Servers.
+
+Ein Schreibfehler steht im Log (`💥 Spielstand nicht gespeichert`), der vorige Stand bleibt unverändert (atomares
+Schreiben, `engine/store`), der Raum läuft weiter. Jede Speicherung loggt ihre Dauer (`ms`); über einem Tick (33 ms)
+als Warnung. Ein Autospeicher-Takt und Speichern bei Tagesanbruch gibt es nicht (B-186).
+
+Der Stand (Version 4, `engine/sim/island_save.go`) nennt neben der Welt `savedAt` (Zeitpunkt, ISO 8601), `day` (Tag)
+und `phase` (`day`, `dusk`, `night`) beim Speichern sowie je Spieler die Tiefe seiner Stufe (`players[].depth`). `day`
+und `phase` dienen nur der Anzeige; beim Laden gilt `time`. Ein Stand der Version 3 ohne die beiden Felder lädt weiter.
 
 Ein Spielstand speichert die Welt, nicht die Monarchen und nicht die Zuordnung zu Geräten. Ein geöffneter Stand hat
 zunächst **keinen** Monarchen; jeder entsteht beim Beitreten (Schritt 3). Gold gilt pro Index: Monarch n startet mit
@@ -368,6 +377,22 @@ wechselnde Eingaben. Je Tick `JSON.stringify` des vollen Zustands und eines Delt
 ≈ 120 KB/s. Ein Raum mit 4 Geräten sendet mit `delta` ≈ 0,25 MB/s. Für WLAN im Heimnetz reicht JSON mit `delta`; ein
 Binärformat ist nicht nötig. Das Delta wird von vielen Nachkommastellen (`x`, `time`) und ganzen geänderten
 Einträgen bestimmt; Runden auf 2 Stellen wäre die nächste Stellschraube, falls die Messung am Pi (SP11) es verlangt.
+
+## HTTP: Spielstände
+
+`GET /api/saves` (ohne Token, nur lesend wie `GET /api/save`) listet alle Spielstände in `saves/`, nach Name sortiert;
+Sicherungen fehlen. Die Antwort ist immer ein Array. Je Eintrag: `name`, `savedAt`, `version`, `day`, `phase` und
+`depths` (die Tiefen der Spieler aus `players[].depth`, aufsteigend, jede einmal). Felder, die im Stand fehlen (etwa
+`day` und `phase` vor Version 4), fehlen auch im Eintrag; eine unlesbare Datei steht mit `"error": "ungültig"` in der
+Liste. Andere Methoden → `405`. Das WebSocket-Protokoll ändert sich dadurch nicht.
+
+```json
+[
+  { "name": "alt", "savedAt": "2026-10-01T10:00:00Z", "version": 3, "depths": [0] },
+  { "name": "familie", "savedAt": "2026-10-04T22:00:00.000Z", "version": 4, "day": 2, "phase": "night", "depths": [0, 1] },
+  { "name": "kaputt", "error": "ungültig" }
+]
+```
 
 ## Diagnose: CPU im Status (B-175)
 

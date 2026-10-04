@@ -142,7 +142,8 @@ func (r *Room) Closed() bool {
 	return r.closed
 }
 
-// afterDisconnect: Plätze melden; ist kein Gerät mehr verbunden, ist der Raum pausiert und speichert sofort.
+// afterDisconnect: Plätze melden und speichern, bei jedem Verlassen und jedem Abbruch eines Geräts (B-147, S2.2); ist
+// kein Gerät mehr verbunden, ist der Raum zusätzlich pausiert und die Frist EmptyFor läuft.
 // Ein geschlossener Raum speichert nicht (nach einem Absturz ist sein Zustand nicht sicher).
 func (r *Room) afterDisconnect() {
 	if r.closed {
@@ -150,15 +151,17 @@ func (r *Room) afterDisconnect() {
 	}
 	r.syncFree()
 	r.broadcastSeats()
-	if r.connected() == 0 {
-		r.log().Info("💾 Raum leer und pausiert, speichert")
-		if r.timescale > 1 {
-			r.log().Info("⏩ Zeitraffer beendet", "faktor", r.timescale)
-		}
-		r.timescale, r.paused = 1, false
+	if r.connected() > 0 {
 		r.save()
-		r.emptySince = r.m.now()
+		return
 	}
+	r.log().Info("💾 Raum leer und pausiert, speichert")
+	if r.timescale > 1 {
+		r.log().Info("⏩ Zeitraffer beendet", "faktor", r.timescale)
+	}
+	r.timescale, r.paused = 1, false
+	r.save()
+	r.emptySince = r.m.now()
 }
 
 // Tick rechnet einen Schritt mit 1/TickHz Sekunden, im Zeitraffer scale() solche Schritte. Ein Raum ohne verbundenes Gerät ist pausiert und tickt nicht.

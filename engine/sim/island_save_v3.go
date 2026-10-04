@@ -51,11 +51,13 @@ func parseIslandV2(raw []byte) (IslandSave, error) {
 	return s, validateIslandSave(s)
 }
 
+// parseIslandV3 liest Version 3 und 4: Version 4 hat zusätzlich `day` und `phase`, in Version 3 bleiben sie leer.
 func parseIslandV3(raw []byte) (IslandSave, error) {
 	s := IslandSave{Options: DefaultOptions()}
 	if err := decodeIsland(raw, "skillPool", &s); err != nil {
 		return IslandSave{}, err
 	}
+	s.Version = IslandSaveVersion
 	return s, validateIslandSave(s)
 }
 
