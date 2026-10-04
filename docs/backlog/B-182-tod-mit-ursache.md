@@ -3,8 +3,8 @@
 - **Domäne:** SIM
 - **Typ:** Problem
 - **Prio:** hoch
-- **Status:** offen
-- **Sprint:** –
+- **Status:** eingeplant
+- **Sprint:** W0
 - **Erstellt:** 2026-10-03
 - **Spec:** Entwurf
 - **Revision:** 1
@@ -51,7 +51,7 @@ Mehrere Treffer im selben Tick → die Ursache ist der Treffer, der die HP auf 0
 
 ## Offene Fragen
 
-Feldname (`by` ist ein Vorschlag) und ob `hit` dasselbe Feld bekommt; Einplanung (vor S2.3): 🧑.
+Geklärt 2026-10-04: Einplanung als W0.3b (🧑, Chat); Feldname `cause`, wie S2.3 ihn im Report erwartet (`deaths[].cause`); `hit` bekommt kein Feld (Nicht-Ziel von W0.3b).
 
 ## Notizen
 
