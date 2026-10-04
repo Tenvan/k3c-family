@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="de">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>K3C Hörprobe</title>
+    <style>
+      :root { --bg: #11151c; --panel: #1c2330; --line: #2e3a4d; --text: #e8edf4; --dim: #8a97aa; --on: #ffd166; }
+      * { box-sizing: border-box; }
+      html { font-size: clamp(9px, 0.8334vw, 16px); }
+      body { margin: 0; background: var(--bg); color: var(--text); font: 1.25rem/1.4 system-ui, sans-serif; }
+      main { padding: max(4.75rem, 70px) 2rem 2rem; max-width: 115rem; margin: 0 auto; }
+      h1 { font-size: 2.125rem; margin: 0 0 4px; }
+      .sub { color: var(--dim); margin: 0 0 1rem; max-width: 62rem; }
+      #hint { background: var(--panel); border: 2px solid var(--on); border-radius: 0.75rem; padding: 1rem 1.25rem; color: var(--on); }
+      #hint.on { border-color: var(--line); color: var(--dim); }
+    </style>
+  </head>
+  <body>
+    <main>
+      <h1>Hörprobe</h1>
+      <p class="sub">Kandidaten für Musik und Effekte anhören, nach Zustand und Ereignis geordnet, mit Quelle und Lizenz.</p>
+      <p id="hint" role="status">Taste drücken zum Entsperren</p>
+    </main>
+    <script type="module" src="/src/tools/soundtest.ts"></script>
+  </body>
+</html>
