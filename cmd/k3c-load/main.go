@@ -127,8 +127,10 @@ func load(ctx context.Context, c config) ([]*roomRun, error) {
 	defer cancel()
 	runs, bots, err := startRooms(play, c)
 	if err == nil {
-		go newPoller(a, runs, c.night).run(play, c.interval, cancel)
+		polled := make(chan struct{})
+		go func() { defer close(polled); newPoller(a, runs, c.night).run(play, c.interval, cancel) }()
 		<-play.Done()
+		<-polled // der Poller hängt Proben an runs; erst danach liest der Bericht sie
 	}
 	for _, b := range bots {
 		b.stop()
