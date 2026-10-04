@@ -1,11 +1,11 @@
 # S5 · CLI · Optionen- und Pause-Szene
 
-- **Status:** geplant
+- **Status:** aktiv
 - **Domäne:** CLI
 - **Reife:** bereit
 - **Einschiebbar:** nein
 - **Tickets:** B-146, B-172
-- **Start-Commit:** –
+- **Start-Commit:** 9e6849e
 - **Spec:** freigegeben
 - **Revision:** 1
 - **Freigabe:** 2026-10-03, Chat (Ralf), Revision 1; umfasst B-146, B-172
@@ -60,7 +60,7 @@ Pause im gemeinsamen Raum: 🧑, `docs/fragenkatalog.md Q01`.
 
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
-| S5.1 | `S5.1-einstellungen-speicher.md` | Umsetzung | autonom | offen |
+| S5.1 | `S5.1-einstellungen-speicher.md` | Umsetzung | autonom | in Arbeit |
 | S5.2 | `S5.2-szene-optionen-pause.md` | Umsetzung | autonom | offen |
 | S5.3 | `S5.3-texte-de-en.md` | Umsetzung | autonom | offen |
 | S5.4 | `S5.4-abnahme-geraet.md` | Workshop | Mensch | offen |
