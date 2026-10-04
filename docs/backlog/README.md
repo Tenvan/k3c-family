@@ -114,6 +114,7 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-213](B-213-markdown-listen-haekchen.md) | SRV | Problem | niedrig | offen | – | MarkdownView in k3c-dev zeigt nummerierte Listen und Häkchen wie die alte Planungsseite |
 | [B-219](B-219-doku-gating-und-schlag.md) | REG | Schuld | niedrig | offen | – | Game-Design und Ereignis-Doku nennen Tier-Gating 2/4/6 und den Schlag des Monarchen |
 | [B-218](B-218-optionen-ambient-lautstaerke.md) | CLI | Idee | niedrig | offen | – | Die Optionen-Szene regelt auch die Lautstärke des Ambient-Busses |
+| [B-222](B-222-glossar-spielstand-version-3.md) | REG | Schuld | niedrig | offen | – | Das Glossar nennt Spielstand-Version 3 |
 
 ## Archiv
 
