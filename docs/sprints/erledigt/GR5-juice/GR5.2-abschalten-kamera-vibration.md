@@ -1,6 +1,6 @@
 # GR5.2 · Abschalten über Optionen, Split-Screen-Kamera, Blitzgrenze, Vibration
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Branch:** gr5/2-abschalten-kamera-vibration
@@ -41,11 +41,11 @@ Die Optionen-Szene selbst (S5), Event-Liste und Protokoll (F3, F4), Sound (SO2),
 
 ## Fertig, wenn
 
-- [ ] AC-02: Mit Screenshake und Blitz „aus“ in den Einstellungen treten beide nicht auf, mit „an“ sind sie sichtbar (Test der Entscheidung und Beobachtung im Browser-Pane; am TV: Abnahme durch 🧑, im Review als „angenommen, Validierung offen“ geführt).
-- [ ] AC-04: Mit 2 lokalen Spielern schüttelt nur die Kamera des betroffenen Spielers (Test der Zuordnung, Screenshot im Browser-Pane).
-- [ ] AC-05: Die Blitzfrequenz liegt bei höchstens 3 pro Sekunde (Test der Konfiguration und der Entscheidungsfunktion).
-- [ ] AC-06: Controller ohne Vibration (Mock ohne `vibrationActuator`) → keine Ausnahme, Spiel läuft weiter (Test).
-- [ ] AC-07: `task check` grün.
+- [x] AC-02: Mit Screenshake und Blitz „aus“ in den Einstellungen treten beide nicht auf, mit „an“ sind sie sichtbar (Test der Entscheidung und Beobachtung im Browser-Pane; am TV: Abnahme durch 🧑, im Review als „angenommen, Validierung offen“ geführt).
+- [x] AC-04: Mit 2 lokalen Spielern schüttelt nur die Kamera des betroffenen Spielers (Test der Zuordnung, Screenshot im Browser-Pane).
+- [x] AC-05: Die Blitzfrequenz liegt bei höchstens 3 pro Sekunde (Test der Konfiguration und der Entscheidungsfunktion).
+- [x] AC-06: Controller ohne Vibration (Mock ohne `vibrationActuator`) → keine Ausnahme, Spiel läuft weiter (Test).
+- [x] AC-07: `task check` grün.
 
 ## Prüfen
 
@@ -57,4 +57,11 @@ Manuelle Prüfungen (Browser, Xbox, TV) nur, wenn diese Datei sie nennt und 🧑
 
 ## Ergebnis
 
-–
+Umgesetzt: `src/scenes/effectRules.ts` (reine Entscheidungen: `runEffect`, `flashAllowed`, `hurtSeat`, `shakeCell`, `rumblePad`), Konfiguration `FLASH_MIN_GAP_MS` (334 ms), `SHAKE`, `RUMBLE` in `effects.ts`, Anbindung in `GameScene.spawnEffects`/`feedback` (Einstellungen je Frame über `loadSettings()`).
+
+- AC-02: umgesetzt, geprüft per Test `runEffect` (Blitz aus: entfällt, an: läuft); Schalter `screenshake` gatet `camera.shake`. Beobachtung im Browser-Pane nicht gemacht (laut Auftrag); am TV: angenommen, Validierung offen (🧑).
+- AC-04: geprüft per Test `shakeCell` (2 lokale Spieler, 1 Spieler mit Partner-Zelle, Spieler eines anderen Geräts, Gegner). Screenshot im Browser-Pane nicht gemacht (🧑).
+- AC-05: geprüft per Test (Konfiguration 3 pro Sekunde, Simulation im 16-ms-Takt: höchstens 3 Blitze in 1 s; Sperrfenster verwirft).
+- AC-06: geprüft per Test `rumblePad` (Pad ohne `vibrationActuator`, abgelehntes Promise, werfender Actuator: keine Ausnahme); Log höchstens einmal.
+- AC-07: `task check` grün (50 Testdateien, 903 Tests).
+- Vibration nur am Pad des getroffenen Spielers (`hit` mit `target: 'player'`); kein eigener Schalter (die Optionen kennen keinen); Messung auf der Xbox offen (angenommen).

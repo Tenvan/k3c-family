@@ -64,7 +64,7 @@ task check:go
 
 **Festlegung Ausgabe** (wie vorgeschlagen): Läufe nach `reports/balance-<Zeit>.json` und `.md` (gitignoriert, Zeit nur im Dateinamen), Replays verletzter Seeds nach `reports/balance-replays/`; Baseline eingecheckt unter `testdata/balance/baseline.json`, selbst ein Summary-JSON (kein zweites Format), Update nur mit Begründung im Commit.
 
-**Baseline-Begründung:** Erstanlage aus dem vollen Lauf über 100 Seeds mit den Werten aus BAL2.1; sie hält den Ist-Stand fest, auch das Fail von „Burg hält Nacht 1–5“ (B-217).
+**Baseline-Begründung:** Erstanlage aus dem vollen Lauf über 100 Seeds mit den Werten aus BAL2.1; sie hält den Ist-Stand fest, auch das Fail von „Burg hält Nacht 1–5“ (B-218).
 
 **Messung:** voller Lauf `task balance` (100 Seeds, 2 Spieler, `saver`, Wald, 5 Tage = 100 Läufe) 1 min 37 s auf dem Windows-Entwicklungsrechner (ein Kern, sequenziell); `--seeds N` verkürzt (BAL2.3). Ergebnis: Burg hält 47,0 % (Ziel 75–90 %: Fail, 53 Seeds, Liste im Bericht), Erste Mauer 100 % (Pass), zerstörte Gebäude je Welle Median 0 (Pass); Vergleich mit der Baseline: keine Änderung.
 
@@ -74,4 +74,4 @@ task check:go
 - AC-05: `TestVergleichNenntGekippte` (Untergrenze 70 → 85 % als Test-Option: „x: ok → verletzt gekippt“, unverändertes Ziel fehlt), `TestBaselineLesen` (neu, entfällt).
 - `task check`, `task check:go`, `task check:dev` grün (`-race` übersprungen: kein C-Compiler).
 
-Neues Ticket: B-217 (Burg hält nur 47 %, Ursache Bot oder Balance).
+Neues Ticket: B-218 (Burg hält nur 47 %, Ursache Bot oder Balance).

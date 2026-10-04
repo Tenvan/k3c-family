@@ -1,4 +1,4 @@
-# B-217 · Burg hält Nacht 1–5 nur in 47 % der Seeds, Ziel 75–90 %
+# B-218 · Burg hält Nacht 1–5 nur in 47 % der Seeds, Ziel 75–90 %
 
 - **Domäne:** REG
 - **Typ:** Problem
