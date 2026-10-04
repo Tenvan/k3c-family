@@ -60,7 +60,7 @@ keine (Obergrenze der Nachtmessung: Flag `-max-duration`, Standard 60 min, 🧑 
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
 | LT1.1 | `LT1.1-bots-client.md` | Umsetzung | autonom | fertig |
-| LT1.2 | `LT1.2-status-bericht.md` | Umsetzung | autonom | offen |
+| LT1.2 | `LT1.2-status-bericht.md` | Umsetzung | autonom | fertig |
 | LT1.3 | `LT1.3-messlauf-pi.md` | Workshop | Mensch | offen |
 | LT1.4 | `LT1.4-review.md` | Review | autonom | offen |
 

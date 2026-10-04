@@ -34,6 +34,8 @@ type Config struct {
 	Rooms *room.Manager
 	// Conns zählt die offenen WebSocket-Verbindungen, damit der Server beim Beenden auf room_closed warten kann.
 	Conns *sync.WaitGroup
+	// CPU liefert die CPU-Last des Prozesses in Prozent einer CPU für /api/status (B-175); nil = systemCPU, dort nil = kein Feld.
+	CPU func() (float64, bool)
 }
 
 type server struct {
@@ -47,6 +49,9 @@ type server struct {
 
 // NewHandler baut den Handler mit allen Routen.
 func NewHandler(cfg Config) http.Handler {
+	if cfg.CPU == nil {
+		cfg.CPU = systemCPU
+	}
 	s := &server{cfg: cfg, log: cfg.Log, conns: map[*conn]bool{}}
 	if s.log == nil {
 		s.log = slog.New(slog.NewTextHandler(io.Discard, nil))

@@ -4,7 +4,10 @@
 //
 // Aufruf: k3c-load -url http://127.0.0.1:8080 -token … -rooms 2 -players 3 -duration 15m -seed load
 // Das Token kommt aus -token oder K3C_STATUS_TOKEN und steht nie in der Ausgabe.
-// Exit-Code: 0 Lauf beendet; 2 Server nicht erreichbar, Token falsch, Raum abgelehnt oder Bots noch verbunden.
+// -duration night misst bis zur ersten Nacht aller Räume (höchstens -max-duration). Alle -interval wird /api/status gelesen
+// (Tick-Dauer, Phase, CPU); der Bericht liegt als <-out>.json und <-out>.md (Standard reports/load-<Zeit>), auch nach Strg+C.
+// Exit-Code: 0 erreicht oder knapp (Ziel -target-p99); 1 verfehlt; 2 Server nicht erreichbar, Token falsch, Raum abgelehnt,
+// Bots noch verbunden oder keine Messwerte.
 package main
 
 import (
@@ -34,6 +37,11 @@ type config struct {
 	url, token, seed string
 	rooms, players   int
 	duration         time.Duration
+	night            bool                            // -duration night
+	maxDuration      time.Duration                   // Obergrenze der Nachtmessung
+	interval         time.Duration                   // Abstand der Status-Abfragen
+	target           float64                         // Ziel für p99 der Tick-Dauer in ms
+	out              string                          // Basis der Berichtsdateien (ohne Endung)
 	tag              string                          // Lauf-Kennung in Raumnamen und Geräte-IDs (Wanduhr, nicht Teil der Eingaben)
 	sent             func(device string, msg []byte) // Test-Naht: jede gesendete Nachricht; nil = keine
 }
@@ -46,7 +54,11 @@ func parse(args []string, getenv func(string) string, stderr io.Writer) (config,
 	fs.StringVar(&c.token, "token", "", "Diagnose-Token des Servers (Standard: Umgebung "+envToken+")")
 	fs.IntVar(&c.rooms, "rooms", 2, "Anzahl Test-Räume")
 	fs.IntVar(&c.players, "players", 3, "Bots je Raum")
-	fs.DurationVar(&c.duration, "duration", 15*time.Minute, "Dauer des Laufs (z. B. 5m, 1h)")
+	dur := fs.String("duration", "15m", "Dauer des Laufs (z. B. 5m, 1h) oder night (bis zum Ende der ersten Nacht)")
+	fs.DurationVar(&c.maxDuration, "max-duration", 60*time.Minute, "Obergrenze für -duration night")
+	fs.DurationVar(&c.interval, "interval", 5*time.Second, "Abstand der Status-Abfragen")
+	fs.Float64Var(&c.target, "target-p99", 10, "Ziel für p99 der Tick-Dauer in ms")
+	fs.StringVar(&c.out, "out", "", "Bericht ohne Endung (Standard reports/load-<Zeit>), es entstehen .json und .md")
 	fs.StringVar(&c.seed, "seed", "load", "Seed der Bot-Eingaben")
 	if err := fs.Parse(args); err != nil {
 		return c, err
@@ -54,13 +66,23 @@ func parse(args []string, getenv func(string) string, stderr io.Writer) (config,
 	if c.token == "" {
 		c.token = getenv(envToken)
 	}
+	if *dur == "night" {
+		c.night, c.duration = true, c.maxDuration
+	} else if d, err := time.ParseDuration(*dur); err == nil {
+		c.duration = d
+	} else {
+		return c, failf("-duration: %q ist weder eine Dauer noch night", *dur)
+	}
 	switch {
 	case c.token == "":
 		return c, failf("Token fehlt (-token oder %s)", envToken)
-	case c.rooms < 1 || c.players < 1 || c.duration <= 0:
-		return c, failf("-rooms, -players und -duration müssen größer 0 sein")
+	case c.rooms < 1 || c.players < 1 || c.duration <= 0 || c.interval <= 0 || c.target <= 0:
+		return c, failf("-rooms, -players, -duration, -interval und -target-p99 müssen größer 0 sein")
 	}
 	c.url = strings.TrimRight(c.url, "/")
+	if c.out == "" {
+		c.out = "reports/load-" + time.Now().Format("20060102-150405")
+	}
 	c.tag = strconv.FormatInt(time.Now().UnixMilli()%(36*36*36*36*36*36), 36)
 	return c, nil
 }
@@ -72,6 +94,7 @@ func run(ctx context.Context, args []string, getenv func(string) string, stdout,
 		return 2
 	}
 	_, _ = fmt.Fprintf(stdout, "k3c-load: %d Räume × %d Bots, %s gegen %s, Seed %q\n", c.rooms, c.players, c.duration, c.url, c.seed)
+	start := time.Now()
 	runs, err := load(ctx, c)
 	for _, r := range runs {
 		_, _ = fmt.Fprintln(stdout, r)
@@ -81,7 +104,17 @@ func run(ctx context.Context, args []string, getenv func(string) string, stdout,
 		return 2
 	}
 	_, _ = fmt.Fprintln(stdout, "Alle Bots getrennt; der Server räumt die Test-Räume nach seiner Leer-Frist auf.")
-	return 0
+	rep := buildReport(c, start, runs)
+	paths, err := rep.write(c.out)
+	if err != nil {
+		_, _ = fmt.Fprintln(stderr, "k3c-load: Bericht nicht geschrieben:", err)
+		return 2
+	}
+	_, _ = fmt.Fprintf(stdout, "Bericht: %s\n%s", strings.Join(paths, ", "), rep.markdown())
+	if rep.Verdict == ohneDaten {
+		_, _ = fmt.Fprintln(stderr, "k3c-load: keine Messwerte (Lauf kürzer als -interval oder Räume nicht getickt)")
+	}
+	return exitCode(rep.Verdict)
 }
 
 // load prüft Server und Token, startet die Räume, spielt bis Dauer oder Signal und trennt alle Bots.
@@ -94,6 +127,7 @@ func load(ctx context.Context, c config) ([]*roomRun, error) {
 	defer cancel()
 	runs, bots, err := startRooms(play, c)
 	if err == nil {
+		go newPoller(a, runs, c.night).run(play, c.interval, cancel)
 		<-play.Done()
 	}
 	for _, b := range bots {
@@ -105,11 +139,12 @@ func load(ctx context.Context, c config) ([]*roomRun, error) {
 	return runs, a.waitDisconnected(context.WithoutCancel(ctx), roomPrefix(c))
 }
 
-// roomRun ist ein Test-Raum mit der Tick-Reihe, die sein erster Bot empfangen hat (Grundlage für den Bericht, LT1.2).
+// roomRun ist ein Test-Raum mit der Tick-Reihe, die sein erster Bot empfangen hat (Grundlage für den Bericht).
 type roomRun struct {
 	Name, Code string
 	Ticks      []tickPoint
-	Errors     int // Fehler-Nachrichten des Servers während des Spiels
+	Errors     int      // Fehler-Nachrichten des Servers während des Spiels
+	Samples    []sample // Proben aus /api/status (Tick-Dauer, Phase, CPU), alle -interval
 }
 
 type tickPoint struct {
