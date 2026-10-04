@@ -2,7 +2,7 @@
 
 - **Status:** geplant
 - **Domäne:** REG
-- **Reife:** Entwurf
+- **Reife:** bereit
 - **Einschiebbar:** nein
 - **Tickets:** B-008, B-151
 - **Start-Commit:** –
@@ -55,11 +55,14 @@ Termin, Teilnehmer, Fragen: 🧑, `docs/fragenkatalog.md Q24`; Verbindungsverlus
 
 ## Sessions
 
-Entwurf. Vor dem Aktivieren jede Session als Datei nach `docs/vorlagen/session.md` schreiben, die Kriterien in Klammern werden ihr Feld `Kriterien`.
+| Nr. | Datei | Typ | Agent | Status |
+|---|---|---|---|---|
+| P1.1 | `P1.1-workshop-vorlage-fragebogen.md` | Workshop | Mensch | offen |
+| P1.2 | `P1.2-spieleabend-am-tv.md` | Workshop | Mensch | offen |
+| P1.3 | `P1.3-auswertung-abschluss.md` | Umsetzung | autonom | offen |
 
-- P1.1 🧑 Workshop: Termin, Teilnehmer und Fragen festlegen, Vorlage und Fragebogen schreiben und freigeben (AC-01).
-- P1.2 🧑 Spieleabend am TV, Agent protokolliert nach der Vorlage, Reports einsammeln (AC-02, AC-04).
-- P1.3 Auswertung: Balancing-Änderungen in JSON, Wünsche und Fehler als Tickets; schließt den Sprint ab (Doku-Sprint, kein Review) (AC-03, AC-04).
+Bei `Reife: Entwurf` genügen Stichpunkte mit den Kriterien in Klammern statt Session-Dateien. Vor dem Aktivieren
+wird jede Session als eigene Datei nach `docs/vorlagen/session.md` geschrieben.
 
 ## Abnahme
 

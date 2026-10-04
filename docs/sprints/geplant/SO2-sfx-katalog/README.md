@@ -2,7 +2,7 @@
 
 - **Status:** geplant
 - **Domäne:** CLI
-- **Reife:** Entwurf
+- **Reife:** bereit
 - **Einschiebbar:** ja
 - **Tickets:** B-167
 - **Start-Commit:** –
@@ -57,12 +57,16 @@ Sound lädt nicht → stumm und Log-Eintrag, kein Absturz.
 
 ## Sessions
 
-Entwurf. Vor dem Aktivieren jede Session als Datei nach `docs/vorlagen/session.md` schreiben, die Kriterien in Klammern werden ihr Feld `Kriterien`.
+| Nr. | Datei | Typ | Agent | Status |
+|---|---|---|---|---|
+| SO2.1 | `SO2.1-workshop-auswahl.md` | Workshop | Mensch | offen |
+| SO2.2 | `SO2.2-sounds-beschaffen.md` | Umsetzung | autonom | offen |
+| SO2.3 | `SO2.3-einbau-rueckfall.md` | Umsetzung | autonom | offen |
+| SO2.4 | `SO2.4-review.md` | Review | autonom | offen |
+| SO2.5 | `SO2.5-hoerprobe-tv.md` | Workshop | Mensch | offen |
 
-- SO2.1 🧑 Workshop (Agent: Mensch): Quellen, Stil und Ereignisliste bestätigen; Agent legt Katalog an (AC-01).
-- SO2.2 Sounds beschaffen, nach `public/audio/` legen, Credits (AC-02).
-- SO2.3 Einbau über den Audio-Kern, Rückfall bei fehlender Datei (AC-03, AC-04, AC-05).
-- SO2.4 Review (AC-06).
+Bei `Reife: Entwurf` genügen Stichpunkte mit den Kriterien in Klammern statt Session-Dateien. Vor dem Aktivieren
+wird jede Session als eigene Datei nach `docs/vorlagen/session.md` geschrieben.
 
 ## Abnahme
 

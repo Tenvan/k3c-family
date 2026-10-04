@@ -2,7 +2,7 @@
 
 - **Status:** geplant
 - **Domäne:** SIM
-- **Reife:** Entwurf
+- **Reife:** bereit
 - **Einschiebbar:** nein
 - **Tickets:** B-116
 - **Start-Commit:** –
@@ -57,11 +57,14 @@ keine
 
 ## Sessions
 
-Entwurf. Vor dem Aktivieren jede Session als Datei nach `docs/vorlagen/session.md` schreiben, die Kriterien in Klammern werden ihr Feld `Kriterien`.
+| Nr. | Datei | Typ | Agent | Status |
+|---|---|---|---|---|
+| W3.1 | `W3.1-tor-kaserne-taverne.md` | Umsetzung | autonom | offen |
+| W3.2 | `W3.2-heilplatz-zaubertum-golden.md` | Umsetzung | autonom | offen |
+| W3.3 | `W3.3-review.md` | Review | autonom | offen |
 
-- W3.1 Tor, Kaserne-Limit, Taverne mit Daten in `data/buildings.json` (AC-01, AC-02).
-- W3.2 Heilplatz, Zaubertum, Bau und Zerstörung von Schmiede und Rüstkammer, Golden (AC-01, AC-02, AC-03, AC-04).
-- W3.3 Review (Code-Sprint): alle Kriterien prüfen.
+Bei `Reife: Entwurf` genügen Stichpunkte mit den Kriterien in Klammern statt Session-Dateien. Vor dem Aktivieren
+wird jede Session als eigene Datei nach `docs/vorlagen/session.md` geschrieben.
 
 ## Abnahme
 

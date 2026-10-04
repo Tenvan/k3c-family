@@ -2,7 +2,7 @@
 
 - **Status:** geplant
 - **Domäne:** SIM
-- **Reife:** Entwurf
+- **Reife:** bereit
 - **Einschiebbar:** nein
 - **Tickets:** B-120, B-121, B-122, B-014
 - **Start-Commit:** –
@@ -60,12 +60,15 @@ keine
 
 ## Sessions
 
-Entwurf. Vor dem Aktivieren jede Session als Datei nach `docs/vorlagen/session.md` schreiben, die Kriterien in Klammern werden ihr Feld `Kriterien`.
+| Nr. | Datei | Typ | Agent | Status |
+|---|---|---|---|---|
+| W4.1 | `W4.1-wiederbeleben.md` | Umsetzung | autonom | offen |
+| W4.2 | `W4.2-berufe-haendler.md` | Umsetzung | autonom | offen |
+| W4.3 | `W4.3-elite-limit-heilung-golden.md` | Umsetzung | autonom | offen |
+| W4.4 | `W4.4-review.md` | Review | autonom | offen |
 
-- W4.1 Gefallene Monarchen: Grabstein, Wiederbeleben, Respawn (AC-01).
-- W4.2 Berufe und Händler (AC-02, AC-03).
-- W4.3 Krieger, Elite, Rüstung, Limit je Hub, Heilung, Golden (AC-04, AC-05, AC-06, AC-07).
-- W4.4 Review (Code-Sprint): alle Kriterien prüfen.
+Bei `Reife: Entwurf` genügen Stichpunkte mit den Kriterien in Klammern statt Session-Dateien. Vor dem Aktivieren
+wird jede Session als eigene Datei nach `docs/vorlagen/session.md` geschrieben.
 
 ## Abnahme
 
