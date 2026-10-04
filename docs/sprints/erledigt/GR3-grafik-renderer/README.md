@@ -1,6 +1,6 @@
 # GR3 · CLI · Grafik im Renderer
 
-- **Status:** aktiv
+- **Status:** erledigt
 - **Domäne:** CLI
 - **Reife:** bereit
 - **Einschiebbar:** ja
@@ -61,11 +61,14 @@ keine
 |---|---|---|---|---|
 | GR3.1 | `GR3.1-gebaeude.md` | Umsetzung | autonom | fertig |
 | GR3.2 | `GR3.2-ressourcen-parallax.md` | Umsetzung | autonom | fertig |
-| GR3.3 | `GR3.3-review.md` | Review | autonom | in Arbeit |
+| GR3.3 | `GR3.3-review.md` | Review | autonom | fertig |
 
 Bei `Reife: Entwurf` genügen Stichpunkte mit den Kriterien in Klammern statt Session-Dateien. Vor dem Aktivieren
 wird jede Session als eigene Datei nach `docs/vorlagen/session.md` geschrieben.
 
 ## Abnahme
 
-–
+- 2026-10-04, Review GR3.3: AC-01, AC-02, AC-03, AC-05, AC-06 umgesetzt und im Diff geprüft (Nachweise in GR3.1/GR3.2, `task check` und `task check:go` grün, Browser-Pane im Split-Screen).
+- AC-04: Auswahl Stufe → Sprite getestet; ohne Stufe im Snapshot zeigen Mauer und Turm die Stein-Grafik (Holz ist Lücke), bewusste Abweichung. Sicht am TV (AC-04, AC-06): angenommen, Validierung offen (🧑, TV; im Fahrplan unter „Offen am Gerät“).
+- Keine schweren Befunde (kein `Math.random()`, Rückfall auf Platzhalter, Credits vollständig, Dateien ≤ 400). B-010 archiviert, keine neuen Tickets.
+- Version: v0.11.0 vorgeschlagen (Minor: Sprites und Parallax im Spiel; nach den offenen Vorschlägen bis v0.10.0, aktuell v0.6.0, bei gemeinsamem Setzen anpassen).
