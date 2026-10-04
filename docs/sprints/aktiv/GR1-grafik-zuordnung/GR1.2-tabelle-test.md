@@ -1,6 +1,6 @@
 # GR1.2 · Zuordnung für Gebäude, Gegner, Truppen und Vollständigkeits-Test
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Branch:** gr1/2-tabelle-test
@@ -40,11 +40,11 @@ Hub-Stufen, Materialstufen, Materialien, Adern, Plantage, Truhen, Portale, Icons
 
 ## Fertig, wenn
 
-- [ ] AC-01: Test belegt eine Zeile mit Status je ID aus `buildings.json`, `enemies.json`, `troops.json`.
-- [ ] AC-03: Test belegt einen Credit-Eintrag je zugeordnetem Asset.
-- [ ] AC-04: Test belegt fette Markierung und Ticket je Lücke.
-- [ ] AC-05: Jede Zeile nennt Stil und Lizenz (Test).
-- [ ] `task check` grün.
+- [x] AC-01: Test belegt eine Zeile mit Status je ID aus `buildings.json`, `enemies.json`, `troops.json`.
+- [x] AC-03: Test belegt einen Credit-Eintrag je zugeordnetem Asset.
+- [x] AC-04: Test belegt fette Markierung und Ticket je Lücke.
+- [x] AC-05: Jede Zeile nennt Stil und Lizenz (Test).
+- [x] `task check` grün.
 
 ## Prüfen
 
@@ -54,4 +54,10 @@ task check
 
 ## Ergebnis
 
-–
+Tabelle `docs/assets/zuordnung-objekte.md` (26 Zeilen: 21 zugeordnet, 5 Lücken `workshop`, `farm`, `barracks`, `stairsUp`, `stairsDown`, alle **Lücke: keine Grafik, B-162**). Test `src/tools/zuordnung.test.ts` liest alle `docs/assets/zuordnung*.md` und die echten Daten-Dateien.
+
+- **AC-01:** geprüft (Test) – je ID aus `buildings.json`, `enemies.json`, `troops.json` eine Zeile mit Status; rot gesehen bei fehlender Zeile `farm`.
+- **AC-03:** geprüft (Test) – jedes Pack `grafik/…` bzw. `sprites/…` steht in `public/grafik/CREDITS.md` bzw. `public/sprites/CREDITS.md`; rot gesehen mit erfundenem Pack.
+- **AC-04:** geprüft (Test) – Lücke fett, `B-nnn` existiert in `docs/backlog/` (auch Archiv); rot gesehen mit unfetter Lücke und `B-999`.
+- **AC-05:** geprüft (Test) – Stil und Lizenz je Zeile nicht leer; Lücken nennen Zielstil Q13 und Ziel-Lizenz. Vermerke aus GR1.1: Palette angleichen (Burg, Turm, Tor), Skalierung B-251 (`bat`, `ratSwarm`, `caveTroll`, `eliteWarrior`).
+- `task check`: grün (56 Dateien, 981 Tests).
