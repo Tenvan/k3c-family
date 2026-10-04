@@ -1,8 +1,10 @@
 import { describe, expect, it } from 'vitest';
 import credits from '../../public/grafik/CREDITS.md?raw';
 import index from '../../public/grafik/index.json';
-import lizenzen from '../../lizenzen.html?raw';
+import { CREDITS, renderCredits } from './credits';
 import { GRAFIK_PACKS } from './grafikPacks';
+
+const lizenzen = renderCredits(CREDITS.filter((c) => c.root === 'grafik'));
 
 /** Alle Dateien unter public/grafik (Schlüssel: Pfad ab dem Ordner) */
 const files = Object.keys(import.meta.glob('../../public/grafik/**/*', { query: '?url', import: 'default' })).map((p) => p.replace('../../public/grafik/', ''));
@@ -51,9 +53,9 @@ describe('Grafik-Packs (B-087)', () => {
     expect(row).toContain(pack.source);
     expect(row).toContain(pack.license);
     expect(row).toContain(pack.artist.split(' (')[0]!);
-    expect(lizenzen, 'lizenzen.html').toContain(pack.source);
+    expect(lizenzen, 'lizenzen.html').toContain(pack.source.replace(/^https?:\/\//, ''));
     expect(lizenzen).toContain(pack.artist.split(' (')[0]!);
-    expect(lizenzen).toContain(pack.license === 'CC BY 3.0' ? 'CC BY 3.0' : 'CC0 1.0');
+    expect(lizenzen).toContain(pack.license);
   });
 
   it('ein Pack mit abweichender Lizenz trägt einen Hinweis', () => {
