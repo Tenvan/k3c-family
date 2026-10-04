@@ -140,7 +140,7 @@ Anlass: 🧑 ändert das Bau-Modell grundsätzlich, „wie in Kingdom Two Crowns
 | Q47 | Nur das **Tor** „wandert“: je Linie ein fester Tor-Platz (Mauer +4 außen), bezahlbar nur an der äußersten gebauten Linie. | B-116, B-206, W0, W3.1 |
 | Q48 | Linie k ist bezahlbar ab Hub-Stufe k, sobald Linie k−1 derselben Seite gebaut ist (Material egal); jede Seite für sich. **Präzisiert durch Q58** (maßgeblich ist die Mauer). | B-112, B-206, W0, W1 |
 | Q49 | **5 Linien je Seite** bei ±44/64/84/104/124 (Startwerte), Turm 8 Units innen, Tor 4 Units außen. Linie 1 = heutige Mauer ±44, Turm ±36 (alte Spielstände bleiben kompatibel). Alle Linien liegen unter dem Portal-Mindestabstand 150. Jede Linie hat ihren eigenen Turm-Platz. | B-206, W0 |
-| Q50 | Linie 1 und alle Hub-Plätze fest; Linien 2–5 **streuen je Seed um ±4 Units** über einen **eigenen RNG-Strom** (z. B. `…:sites`), damit Ressourcen, Portale, Camps und Golden-Level unverändert bleiben. | B-206, W0 |
+| Q50 | **Präzisiert durch Q56 (nur nach außen, 0…+4):** Linie 1 und alle Hub-Plätze fest; Linien 2–5 **streuen je Seed um ±4 Units** über einen **eigenen RNG-Strom** (z. B. `…:sites`), damit Ressourcen, Portale, Camps und Golden-Level unverändert bleiben. | B-206, W0 |
 | Q51 | Hub-Plätze dürfen zwischen Linie 1 und Linie 2 liegen (ungeschützt, bis Linie 2 steht). Die **Farm** ist ein fester Weltplatz je Seite zwischen Linie 1 und 2. | B-114, B-206, W0, W2.1 |
 | Q52 | Angebots-Zahlziele (Q34: Bogen, Schwert, Berufe, Elite, Rüstung …) sind **Anhänge mit festem `dx` am Gebäude** (`data/buildings.json`) und entstehen mit dem Bau; Test „alle `dx` liegen frei“. | B-121, B-122, B-206, W0, W4.2, W4.3 |
 | Q53 | Schwert-Zahlziel = Anhang an der Werkstatt, `dx +4`. | B-014, B-122, W4.3 |
