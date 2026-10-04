@@ -2,7 +2,7 @@
 
 - **Status:** geplant
 - **Domäne:** CLI
-- **Reife:** Entwurf
+- **Reife:** bereit
 - **Einschiebbar:** nein
 - **Tickets:** B-132, B-105, B-107, B-098
 - **Start-Commit:** –
@@ -59,12 +59,16 @@ keine
 
 ## Sessions
 
-Entwurf. Vor dem Aktivieren jede Session als Datei nach `docs/vorlagen/session.md` schreiben, die Kriterien in Klammern werden ihr Feld `Kriterien`.
+| Nr. | Datei | Typ | Agent | Status |
+|---|---|---|---|---|
+| K5.1 | `K5.1-boss-warnkreis-event.md` | Umsetzung | autonom | offen |
+| K5.2 | `K5.2-anlegen-dialog.md` | Umsetzung | autonom | offen |
+| K5.3 | `K5.3-debug-panel-overlay.md` | Umsetzung | autonom | offen |
+| K5.4 | `K5.4-abnahme-geraet.md` | Workshop | Mensch | offen |
+| K5.5 | `K5.5-review.md` | Review | autonom | offen |
 
-- K5.1 Boss-Leiste, Phasen, Warnkreis, Event-Banner mit reinen Funktionen (AC-01, AC-02).
-- K5.2 Anlegen-Dialog in der Lobby (AC-03).
-- K5.3 Debug-Panel und Debug-Overlay nur mit `?dev=1` (AC-04, AC-05).
-- K5.4 Review (Code-Sprint) und 🧑-Abnahme am Gerät (AC-06).
+Bei `Reife: Entwurf` genügen Stichpunkte mit den Kriterien in Klammern statt Session-Dateien. Vor dem Aktivieren
+wird jede Session als eigene Datei nach `docs/vorlagen/session.md` geschrieben.
 
 ## Abnahme
 

@@ -2,7 +2,7 @@
 
 - **Status:** geplant
 - **Domäne:** CLI
-- **Reife:** Entwurf
+- **Reife:** bereit
 - **Einschiebbar:** ja
 - **Tickets:** B-010
 - **Start-Commit:** –
@@ -57,11 +57,14 @@ keine
 
 ## Sessions
 
-Entwurf. Vor dem Aktivieren jede Session als Datei nach `docs/vorlagen/session.md` schreiben, die Kriterien in Klammern werden ihr Feld `Kriterien`.
+| Nr. | Datei | Typ | Agent | Status |
+|---|---|---|---|---|
+| GR3.1 | `GR3.1-gebaeude.md` | Umsetzung | autonom | offen |
+| GR3.2 | `GR3.2-ressourcen-parallax.md` | Umsetzung | autonom | offen |
+| GR3.3 | `GR3.3-review.md` | Review | autonom | offen |
 
-- GR3.1 Gebäude, Bauplätze, Hub- und Materialstufen als Sprites, Platzhalter-Rückfall (AC-01, AC-03, AC-04).
-- GR3.2 Ressourcen, Adern, Plantage und Parallax je Biom, Credits prüfen (AC-02, AC-05).
-- GR3.3 Review (AC-06).
+Bei `Reife: Entwurf` genügen Stichpunkte mit den Kriterien in Klammern statt Session-Dateien. Vor dem Aktivieren
+wird jede Session als eigene Datei nach `docs/vorlagen/session.md` geschrieben.
 
 ## Abnahme
 

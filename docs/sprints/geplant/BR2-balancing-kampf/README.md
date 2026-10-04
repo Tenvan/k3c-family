@@ -2,7 +2,7 @@
 
 - **Status:** geplant
 - **Domäne:** REG
-- **Reife:** Entwurf
+- **Reife:** bereit
 - **Einschiebbar:** nein
 - **Tickets:** B-156
 - **Start-Commit:** –
@@ -57,11 +57,14 @@ Termin und Teilnehmer: `docs/fragenkatalog.md Q24`; Zahlen der Korridore: `Q02` 
 
 ## Sessions
 
-Entwurf. Vor dem Aktivieren jede Session als Datei nach `docs/vorlagen/session.md` schreiben, die Kriterien in Klammern werden ihr Feld `Kriterien`.
+| Nr. | Datei | Typ | Agent | Status |
+|---|---|---|---|---|
+| BR2.1 | `BR2.1-vorbereitung-messung.md` | Umsetzung | autonom | offen |
+| BR2.2 | `BR2.2-spieleabend-3.md` | Workshop | Mensch | offen |
+| BR2.3 | `BR2.3-auswertung-abschluss.md` | Umsetzung | autonom | offen |
 
-- BR2.1 Vorbereitung: Zielkorridore prüfen, Kennzahlen je Grad messen, Wertänderungen vorschlagen (AC-01, AC-02).
-- BR2.2 🧑 Spieleabend 3 mit Protokoll in `docs/playtests/` (AC-03).
-- BR2.3 Auswertung, Werte nachziehen und begründen, Pass/Fail festhalten; schließt den Sprint ab (Doku-Sprint, kein Review) (AC-02, AC-04).
+Bei `Reife: Entwurf` genügen Stichpunkte mit den Kriterien in Klammern statt Session-Dateien. Vor dem Aktivieren
+wird jede Session als eigene Datei nach `docs/vorlagen/session.md` geschrieben.
 
 ## Abnahme
 

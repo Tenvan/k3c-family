@@ -2,7 +2,7 @@
 
 - **Status:** geplant
 - **Domäne:** SIM
-- **Reife:** Entwurf
+- **Reife:** bereit
 - **Einschiebbar:** ja
 - **Tickets:** B-158
 - **Start-Commit:** –
@@ -57,12 +57,15 @@ Variierter Wert fehlt in den Daten → Fehler mit Pfad. Profil verlangt mehr Spi
 
 ## Sessions
 
-Entwurf. Vor dem Aktivieren jede Session als Datei nach `docs/vorlagen/session.md` schreiben, die Kriterien in Klammern werden ihr Feld `Kriterien`.
+| Nr. | Datei | Typ | Agent | Status |
+|---|---|---|---|---|
+| BAL3.1 | `BAL3.1-workshop-profile.md` | Workshop | Mensch | offen |
+| BAL3.2 | `BAL3.2-profile-kind-bot.md` | Umsetzung | autonom | offen |
+| BAL3.3 | `BAL3.3-sensitivitaet-kurven.md` | Umsetzung | autonom | offen |
+| BAL3.4 | `BAL3.4-review.md` | Review | autonom | offen |
 
-- BAL3.1 🧑 Workshop (Agent: Mensch): Profile, Fehlerrate und Grad-Kurven beschließen, Beschluss dokumentieren (AC-05).
-- BAL3.2 Fünf Profile inklusive Kind-Bot mit Fehlern aus Daten (AC-01, AC-02).
-- BAL3.3 Sensitivitäts-Läufe und Kurven je Schwierigkeitsgrad (AC-03, AC-04).
-- BAL3.4 Review (AC-06).
+Bei `Reife: Entwurf` genügen Stichpunkte mit den Kriterien in Klammern statt Session-Dateien. Vor dem Aktivieren
+wird jede Session als eigene Datei nach `docs/vorlagen/session.md` geschrieben.
 
 ## Abnahme
 

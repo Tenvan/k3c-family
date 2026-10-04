@@ -2,7 +2,7 @@
 
 - **Status:** geplant
 - **Domäne:** CLI
-- **Reife:** Entwurf
+- **Reife:** bereit
 - **Einschiebbar:** ja
 - **Tickets:** B-164
 - **Start-Commit:** –
@@ -58,11 +58,14 @@ keine
 
 ## Sessions
 
-Entwurf. Vor dem Aktivieren jede Session als Datei nach `docs/vorlagen/session.md` schreiben, die Kriterien in Klammern werden ihr Feld `Kriterien`.
+| Nr. | Datei | Typ | Agent | Status |
+|---|---|---|---|---|
+| GR5.1 | `GR5.1-effekte-aus-events.md` | Umsetzung | autonom | offen |
+| GR5.2 | `GR5.2-abschalten-kamera-vibration.md` | Umsetzung | autonom | offen |
+| GR5.3 | `GR5.3-review.md` | Review | autonom | offen |
 
-- GR5.1 Effekte für Treffer, Kill, Münze, Bauen, nur aus Events (AC-01, AC-03).
-- GR5.2 Abschalten über Optionen, Split-Screen-Kamera, Blitzgrenze, Vibration (AC-02, AC-04, AC-05, AC-06).
-- GR5.3 Review (AC-07).
+Bei `Reife: Entwurf` genügen Stichpunkte mit den Kriterien in Klammern statt Session-Dateien. Vor dem Aktivieren
+wird jede Session als eigene Datei nach `docs/vorlagen/session.md` geschrieben.
 
 ## Abnahme
 

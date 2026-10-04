@@ -2,7 +2,7 @@
 
 - **Status:** geplant
 - **Domäne:** REG
-- **Reife:** Entwurf
+- **Reife:** bereit
 - **Einschiebbar:** ja
 - **Tickets:** B-160
 - **Start-Commit:** –
@@ -55,11 +55,14 @@ Zu wenige Sitzungen → „nicht aussagekräftig“, keine Wertänderung.
 
 ## Sessions
 
-Entwurf. Vor dem Aktivieren jede Session als Datei nach `docs/vorlagen/session.md` schreiben, die Kriterien in Klammern werden ihr Feld `Kriterien`.
+| Nr. | Datei | Typ | Agent | Status |
+|---|---|---|---|---|
+| BAL4.1 | `BAL4.1-abgleichtabelle.md` | Umsetzung | autonom | offen |
+| BAL4.2 | `BAL4.2-workshop-abweichungen.md` | Workshop | Mensch | offen |
+| BAL4.3 | `BAL4.3-werte-umsetzen.md` | Umsetzung | autonom | offen |
 
-- BAL4.1 Abgleichtabelle aus Reports und Tester-Läufen erstellen, Markierung „nicht aussagekräftig“ (AC-01, AC-04).
-- BAL4.2 🧑 Workshop (Agent: Mensch): Abweichungen durchgehen, Ursachen und Beschlüsse festhalten (AC-02).
-- BAL4.3 Beschlossene Werte in `data/` umsetzen, `task balance` und `task check:go`; schließt den Sprint ab (AC-03).
+Bei `Reife: Entwurf` genügen Stichpunkte mit den Kriterien in Klammern statt Session-Dateien. Vor dem Aktivieren
+wird jede Session als eigene Datei nach `docs/vorlagen/session.md` geschrieben.
 
 ## Abnahme
 
