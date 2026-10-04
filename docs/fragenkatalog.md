@@ -6,7 +6,7 @@ Optionen und einer **Empfehlung** (🤖), die 🧑 übernimmt oder ändert. Die 
 auf `geklärt` gesetzt. Kein Prozess-Dokument: Der Prozess steht in [`arbeitsweise.md`](arbeitsweise.md), Fragen sind sonst Tickets vom Typ `Frage`.
 
 **Ablauf der nächsten Session (Vorschlag, ca. 90 Minuten):** Block 1 (blockiert F1) → Block 2 (blockiert Phase 1) → Block 3
-(Schienen Grafik/Sound) → Block 4 (Betrieb und später); Block 5 und 6 gehören zu Phase 2. Pro Frage: Option wählen, Zahl nennen, Ticket aktualisieren.
+(Schienen Grafik/Sound) → Block 4 (Betrieb und später); Block 5 und 6 gehören zu Phase 2, Block 7 klärt Begriffe und den Tageszyklus. Pro Frage: Option wählen, Zahl nennen, Ticket aktualisieren.
 Sprints bleiben `Spec: Entwurf`, bis 🧑 sie je Sprint freigibt.
 
 | Nr. | Thema | Blockiert | Block | Status |
@@ -49,7 +49,7 @@ Sprints bleiben `Spec: Entwurf`, bis 🧑 sie je Sprint freigibt.
 | Q36 | Händler: Ort, Ablauf, Preise, Rhythmus | W4.2 | 5 | geklärt 2026-10-04 |
 | Q37 | Rüstung: Stufen und Wirkung auf bestehende Truppen | W4.3 | 5 | geklärt 2026-10-04 |
 | Q38 | Krieger: Posten und Seitenverteilung | W4.3 | 5 | geklärt 2026-10-04 (geändert durch Q46) |
-| Q39 | Ereignis `troopLost` | W4.3 | 5 | geklärt 2026-10-04 |
+| Q39 | Ereignis `troopLost` | W4.3 | 5 | geklärt 2026-10-04 (geändert durch Q64) |
 | Q40 | Abgrenzung W3-AC-01 und W4-AC-04/05 | W3, W4 | 5 | geklärt 2026-10-04 |
 | Q41 | Teilung von W4.3 | W4.3 | 5 | geklärt 2026-10-04 |
 | Q42 | Spielstand-Versionen S1.4 und W1.3 | S1.4, W1.3 | 5 | geklärt 2026-10-04 (ohne wandernde Offsets, Q43) |
@@ -70,6 +70,12 @@ Sprints bleiben `Spec: Entwurf`, bis 🧑 sie je Sprint freigibt.
 | Q57 | Camps innerhalb der Linien | W0 | 6 | geklärt 2026-10-04 |
 | Q58 | „Linie k−1 gebaut“ bei Zerstörung | W0 | 6 | geklärt 2026-10-04 |
 | Q59 | Hub-Stufe vor W1 | W0, W1.1 | 6 | geklärt 2026-10-04 |
+| Q60 | Lage des Endbosses | – | 7 | geklärt 2026-10-04 |
+| Q61 | Level = Stufe oder Insel? | – | 7 | geklärt 2026-10-04 |
+| Q62 | Respawn und Wiederbeleben als Ereignisse | W4.1, W5 | 7 | geklärt 2026-10-04 |
+| Q63 | Begriff „Truppe“ | – | 7 | geklärt 2026-10-04 |
+| Q64 | `troopLost` nur für Kämpfer | W4.3a | 7 | geklärt 2026-10-04 |
+| Q65 | Tageszyklus mit Morgengrauen | B-213 | 7 | geklärt 2026-10-04 |
 
 ## Beschlüsse vom 2026-10-03 (🧑 im Chat)
 
@@ -90,7 +96,7 @@ Sprints bleiben `Spec: Entwurf`, bis 🧑 sie je Sprint freigibt.
 | Q13 | Grundraster 16/32 px, Skalierung ×2 bis ×3; nicht passende Packs sind Lücken, Palettenbruch nur bei Hintergründen. | B-161, GR1 |
 | Q14 | Auswahl auf einer Referenzseite im Browser (G1-Muster), 3 Kandidaten je Lücke. | B-162, GR2 |
 | Q15 | Retro/Chiptune, kindgerecht, Nacht leise; Quellen Kenney, OpenGameArt, freesound (CC0/CC-BY), Retro-SFX per Web Audio als Lückenfüller. | B-167, SO2 |
-| Q16 | 1–2 Stücke je Zustand, 8 Zustände (Tag, Abend, Nacht, Kampf, Tiefe/Höhle, Boss, Lobby, Niederlage/Sieg), Crossfade, Ducking bei Warnungen, Lautheit am TV prüfen. | B-168, B-169, SO3, SO4 |
+| Q16 | 1–2 Stücke je Zustand, 8 Zustände (Tag, Abend = Dämmerung (Q65), Nacht, Kampf, Tiefe/Höhle, Boss, Lobby, Niederlage/Sieg), Crossfade, Ducking bei Warnungen, Lautheit am TV prüfen. | B-168, B-169, SO3, SO4 |
 | Q17 | Restore nur mit Token; Report und Clientlog nur Limits und Rotation; kein Port-Forwarding (dokumentieren). | B-143, F4 |
 | Q18 | Backup-Ziel **USB-Stick am Pi**; Restore-Probe einmal durchspielen. Hinweis: schützt nur vor SD-Karten-Ausfall. | B-142, F4 |
 | Q19 | Pflicht: passiv, sparsam, Mauern zuerst, Wirtschaft zuerst, Koop 2/4 Spieler (später „Kind-Bot“). | B-158, BAL3 |
@@ -108,19 +114,19 @@ Sprints bleiben `Spec: Entwurf`, bis 🧑 sie je Sprint freigibt.
 |---|---|---|
 | Q25 | Ader wird **einmal markiert** (Markierung bleibt) mit dem `markCost` des Materials: Stein 1, Kupfer 2, Eisen 2, Kristall 2 Gold (Eisen und Kristall Startwert). Plantage-Bäume ohne Markierung. | B-114, W2.1 |
 | Q26 | **Ersetzt 2026-10-04 durch Q43** (Bauzeiten gelten weiter: Taverne 12 s, Heilplatz 12 s, Schmiede 16 s, Rüstkammer 16 s); „Hub wächst“, Breiten, wandernde Offsets und der Hinweis „Kein Platz“ entfallen. Ursprünglicher Wortlaut: **Geändert gegenüber Empfehlung:** Der Hub **wächst mit dem Ausbau** (Hub-Stufe und entsprechender Mauerausbau) auf eine Breite, die den mit der Stufe freigeschalteten Gebäuden Platz gibt, wie im Vorbild Kingdom Two Crowns; Erweiterung nur mit entsprechendem Mauerausbau. Fehlt der Platz, erscheint über dem Hub der Hinweis „Kein Platz für <Gebäude>“ (B-207). Breiten je Stufe und Offsets sind Startwerte der Planung (W1), 🧑 bestätigt sie bei der Spec-Freigabe. Bauzeiten: Taverne 12 s, Heilplatz 12 s, Schmiede 16 s, Rüstkammer 16 s. Folge: Mauer- und Tor-Offsets können mit dem Ausbau wandern; die Spielstand-Zuordnung über `kind@x` muss das abdecken (über die gemeinsame v3 aus Q42). | B-112, B-114, B-116, B-207, W1, W2.1, W3.1, W3.2 |
-| Q27 | Je Seite ein **Tor außen** vor der äußersten Mauer (auf Hub-Stufe 1: ±48); für Gegner wie eine Mauer (Hindernis und Angriffsziel), nicht für `outerWall`. **Ergänzt 2026-10-04:** Tor-Platz je Linie (Mauer +4 außen), bezahlbar nur an der äußersten gebauten Linie (Q47). | B-116, W3.1 |
+| Q27 | Je Seite ein **Tor außen** vor der äußersten Mauer (Lage an Linie 1 (±48), baubar ab Hub-Stufe 2); für Gegner wie eine Mauer (Hindernis und Angriffsziel), nicht für `outerWall`. **Ergänzt 2026-10-04:** Tor-Platz je Linie (Mauer +4 außen), bezahlbar nur an der äußersten gebauten Linie (Q47). | B-116, W3.1 |
 | Q28 | **Geändert gegenüber Empfehlung:** Lava **schadet**: Startwert 5 Schaden/s für Figuren auf Lava (Spieler, Truppen, Bauern; ob Gegner betroffen sind, bestätigt der Balancing-Workshop), Wert in `data/`. Dichte unter Tage nicht abnehmend, Untergrenze 2,8 je 100 Units (Startwert). Ausgänge: Eisenstollen `left`, Kristallhöhle `right`, 3 Portale. | B-115, W2.2 |
 | Q29 | Regel gilt (nur Kämpfer, Basis 10, Kaserne +10). Geprüft beim Waffe-Holen an genau einer Stelle; bei vollem Limit bleibt die Waffe im Regal. Der Ausnahmefall in B-116 („Landstreicher werden nicht zu Bauern/Truppen“) wird korrigiert. | B-116, B-122, W3.1, W4.3 |
 | Q30 | Bei jedem `dawn` ein Landstreicher an der Taverne, solange dort weniger als 2 stehen; Wanderradius 6; eigene Werte in `data/`. | B-116, W3.1 |
 | Q31 | Zaubertum: eigener Schuss, Startwerte 40 Schaden, Radius 3, Reichweite 13, alle 1,5 s; die Schützen steigen ab und zählen weiter als Kämpfer. | B-116, W3.2 |
 | Q32 | Heilplatz heilt **immer** (auch im Kampf), 5 HP/s, Radius 6 um den Platz (Startwerte). | B-116, B-122, W3.2, W4.3 |
-| Q33 | Reichweite des Wiederbelebens 2 Units (eigener Wert in `data/monarch.json`); mehrere Helfer beschleunigen nicht, keiner lässt dabei eine Münze fallen; ein getrennter Monarch (`Player.Free`) ist nicht wiederbelebbar. | B-120, W4.1 |
+| Q33 | Reichweite des Wiederbelebens 2 Units (eigener Wert in `data/monarch.json`); mehrere Helfer beschleunigen nicht, keiner lässt dabei eine Münze fallen; ein getrennter Monarch (`Player.Free`) ist nicht wiederbelebbar. **Ergänzt 2026-10-04 (Q62):** Das Wiederbeleben meldet das neue Ereignis `revived`; `revive` bleibt der Respawn nach der Wartezeit. | B-120, W4.1 |
 | Q34 | Je Angebot ein **eigenes Zahlziel** neben dem Gebäude, keine neue Taste; ausgebildet bzw. aufgewertet wird der nächste freie Bauer bzw. Bogenschütze/Krieger. **Folgebeschluss Y-Taste:** Es gibt **kein Bau-Menü** (Regel `materialien-gebaeude.md` § 3 gilt); Q06 wird angepasst, **Y ist frei** (für später). **Ergänzt 2026-10-04:** Die Zahlziele sind Anhänge mit festem `dx` am Gebäude (Q52). | B-121, B-122, B-125, B-205, Q06, W4.2, W4.3 |
 | Q35 | Zeiten für alles: Bogen und Schwert 10 s, Elite-Upgrade 20 s, Rüstungsstufe 30 s (Startwerte); +50 % Tempo je Handwerker (höchstens 2). Der Bergmann zählt als einer der 2 an einer Ader, +50 % an Adern, Fels und Kupfererz. Golden ändert sich (Bogen nicht mehr sofort). | B-121, W4.2 |
 | Q36 | Ein Händler je Insel im Hub der Tiefe 0 bei Hub-Mitte +8; Zahlziele „Kaufen“ und „Verkaufen“, Kurs 10 Material = 5 Gold in beide Richtungen; ein Material je Besuch per `w.rng` aus den freigeschalteten; Ankunft bei `dawn` alle 3 Tage, mit Taverne auf der Insel alle 2 Tage; bleibt einen Tag. | B-121, W4.2 |
 | Q37 | 2 Rüstungsstufen (ab Hub-Stufe 4 und 5), +20 % / +40 % auf die Basis-HP, wirkt sofort auf alle Kämpfer (`MaxHP` und `HP` steigen gleich, keine Vollheilung); Bauern und Landstreicher ohne Rüstung. | B-122, W4.3 |
 | Q38 | **Geändert durch Q46 (2026-10-04):** Posten hinter der äußersten gebauten Sperre (mit Tor zwischen Mauer und Tor). Ursprünglicher Wortlaut: **Geändert gegenüber Empfehlung:** Krieger stehen **direkt hinter der äußersten Mauer** und treffen Gegner an der Mauer (Reichweite 1). Seitenverteilung wie bei Bogenschützen (`makeArcher`) als Startwert. | B-014, B-122, W4.3 |
-| Q39 | `troopLost` für alle Truppen außer Landstreichern, Felder `kind`, `x`, `cause`; ohne Priorität; kein Ereignis beim Burgfall. | B-122, W4.3 |
+| Q39 | **Geändert durch Q64:** nur Kämpfer. Ursprünglicher Wortlaut: `troopLost` für alle Truppen außer Landstreichern, Felder `kind`, `x`, `cause`; ohne Priorität; kein Ereignis beim Burgfall. | B-122, W4.3 |
 | Q40 | W3 baut Limit (für Bogenschützen) und Heilplatz vollständig; W4.3 erweitert das Limit um Krieger und Elite und weist AC-05 per Regressionstest plus `troopLost` nach. Keine Spec-Revision. | B-116, B-122, W3, W4 |
 | Q41 | W4.3 wird jetzt geteilt: **W4.3a** (Krieger, Schwert-Regal, Limit-Erweiterung, `troopLost`) und **W4.3b** (Elite, Rüstung, Heilplatz-Nachweis, Golden); die Review bleibt **W4.4**. Kriterien unverändert. | B-014, B-122, W4 |
 | Q42 | **Geändert gegenüber Empfehlung:** **Eine gemeinsame Version v3** für S1.4 und W1.3: Wer zuerst landet, hebt `IslandSaveVersion` auf 3 mit Fixture `testdata/saves/v3/`; der Zweite ergänzt seine Felder optional (`omitempty`) in v3 ohne neue Version und erweitert die Fixture. B-201 folgt später mit v4. **Ergänzt 2026-10-04:** Wandernde Offsets gibt es nicht mehr (Q43); v3 trägt nur Hub-Stufe und Platz-Stufe, `kind@x` bleibt stabil. | B-201, B-202, S1.4, W1.3 |
@@ -152,6 +158,23 @@ Anlass: 🧑 ändert das Bau-Modell grundsätzlich, „wie in Kingdom Two Crowns
 | Q59 | W0 führt `World.HubLevel` (Start 1) **nur für die Linien- und Tor-Regel** ein; die allgemeine Sperre der Hub-Gebäude nach `hubLevel` kommt mit W1.1. Bis dahin sind neue Hub-Gebäude ohne Wirkung bezahlbar (bewusst hingenommen; W0 und W1 laufen direkt nacheinander). | B-206, W0, W1.1 |
 
 **Folgen für die Planung:** Neuer Sprint **W0 · SIM · Bauplätze aus dem Seed** vor W1 (B-206); er legt Layout, Linien, Tor-Plätze, Farm-Weltplatz und Angebots-Anhänge in Daten und Sim an, ohne den Ressourcen-RNG zu verändern. Neue Tickets: B-206 (SIM, Bauplätze aus Daten und Seed), B-207 (CLI, freie und gesperrte Bauplätze mit Grund), B-208 (SRV, Protokoll trägt die Bauplätze, W5), B-209 (CLI, `src/model/data.ts` kennt alle Platz-Arten). B-112, B-114, B-116, B-121, B-122, B-014, B-201 und B-202 sind angepasst; die Regeln stehen in `materialien-gebaeude.md` §§ 2–4 und `buerger.md`. Die Session-Dateien von W0 bis W4 passt die Sprint-Planung an.
+
+## Beschlüsse vom 2026-10-04, dritte Runde (🧑 im Chat)
+
+Anlass: Beim Anlegen des Glossars fielen Widersprüche zwischen Regelwerk, Spiel-Design und Code auf (Liste „Unklar und Widersprüche“ in [`glossar.md`](glossar.md)). Fragen in Block 7.
+
+| Nr. | Beschluss | Wirkt auf |
+|---|---|---|
+| Q60 | **Endboss:** sitzt immer in der **tiefsten Stufe** der Insel (bis W2 die Mine, danach die Kristallhöhle). | `rules/stufen.md` § 3, `rules/bosse.md` § 1 |
+| Q61 | **Level = eine Stufe** (wie Generator und Code); die Insel ist die Sammlung ihrer Stufen. | `rules/stufen.md` § 1, Glossar |
+| Q62 | **Zwei Ereignisse:** `revive` = Respawn nach der Wartezeit; neues `revived` = Wiederbeleben durch einen Mitspieler (B-120). W4.1 sendet bisher `revive` für beides; `protocol.md` und die Client-Typen folgen mit W5. | B-120, W4.1, W5, Q33 |
+| Q63 | **Truppe = Kämpfer** (Bogenschütze, Krieger, Elite). Alle Figuren des Hubs heißen **Bürger**. Code-Namen (`World.Troops`) bleiben als Ausnahme, im Glossar vermerkt. Regeltexte mit „Truppen“ für alle Figuren heißen „Bürger“. | `rules/*.md`, `game-design.md`, Glossar |
+| Q64 | **`troopLost` nur für Kämpfer** (ändert Q39); ein Ereignis für Bauern und Berufe kommt bei Bedarf später per Ticket (`citizenLost`). | B-122, W4.3a, Q39 |
+| Q65 | **Tageszyklus:** vier Phasen **Tag, Dämmerung, Nacht, Morgengrauen** im Verhältnis 3:1:2:1, Einheit 2 min → Tag 6, Dämmerung 2, Nacht 4, Morgengrauen 2 min (14 min, Startwert, BR1 bestätigt). Heute: `data/biomes/forest.json` › `cycle` 10/1/5 min, `engine/sim/cycle.go` (`day`, `dusk`, `night`). `dawn` (Gold je Spieler, Taverne, Händler, Speichern) fällt bei **Beginn Morgengrauen** (Nacht endet, Gegner ziehen ab). „Abend“ (Musik-Zustand Q16) = Dämmerung. Neues SIM-Ticket B-213 (Zyklus mit Morgengrauen); Folgen für Protokoll, Client und Musik prüft das Ticket. | B-213, BR1, Q16, `rules/wirtschaft.md` § 3, `game-design.md` |
+
+Ohne Frage aus Fakten korrigiert (redaktionell): Startvorrat 100 Holz (B-177) statt „leerer Vorrat“, fünf Materialien statt drei, Farm = Plantage statt „+5 Holz je Tagesanbruch“, Respawn heute 5 s und Ziel 15 s mit B-120/W4.1, `CLAUDE.md` › Struktur „Protokoll v3“, Q27 „Lage an Linie 1 (±48), baubar ab Hub-Stufe 2“.
+
+**Folgen für die Planung:** Die Regeln (`stufen.md`, `monarch.md`, `wirtschaft.md`, `materialien-gebaeude.md`, `buerger.md`), `game-design.md` und das Glossar sind angepasst. Offen ist die Planungsarbeit über k3c-dev: neues Ticket **B-213** (SIM, Tageszyklus mit Morgengrauen); Anpassungen in **B-120** (`revived`, Respawn 15 s), **B-122** (`troopLost` nur Kämpfer), **W4.1** (`revived` statt `revive` beim Wiederbeleben) und **W4.3a** (`troopLost` nur Kämpfer); redaktionelle Korrektur der „Offenen Fragen“ in BAL3, BAL4, GR2, SO2, SO4, S3, S6, S5, BR1, BR2 und P1 auf „geklärt durch Qnn (Datum)“. Wirklich offen bleiben dort: BAL4 Toleranz je Kennzahl, W5 Abgrenzung der Berufe-Felder zu B-123, P1 Termin und Teilnehmer.
 
 ## Block 1 – blockiert F1 und den Spieleabend-Build
 
@@ -358,3 +381,31 @@ Optionen: (a) maßgeblich ist die Mauer der Linie k−1; eine bereits gebaute Li
 **Q59 · Hub-Stufe vor W1** (B-206, W0, W1.1). Die Hub-Stufe entsteht erst mit B-112 (W1), die Linien-Regel braucht sie in W0.
 Optionen: (a) W0 führt `World.HubLevel` (Start 1) nur für die Linien- und Tor-Regel ein, die allgemeine Sperre der Hub-Gebäude kommt mit W1.1; (b) Sperre aller Hub-Gebäude sofort in W0; (c) W0 und W1 zusammen mergen.
 🤖 Empfehlung: (a); neue Hub-Gebäude sind bis W1.1 ohne Wirkung bezahlbar (bewusst hingenommen, W0 und W1 laufen direkt nacheinander). **Beschlossen: (a).**
+
+## Block 7 – Begriffe und Tageszyklus
+
+Anlass: Das Glossar (2026-10-04) sammelte Widersprüche zwischen Regelwerk, Spiel-Design, Protokoll und Code. Ist-Stand: Der Generator erzeugt je Stufe ein Level (`engine/level/`), `World.Troops` zählt alle Hub-Figuren, das Ereignis `revive` meldet den Respawn (`protocol.md` › Ereignisse), der Zyklus kennt `day`, `dusk`, `night` (`engine/sim/cycle.go`, Wald 10/1/5 min). Alle Fragen sind am 2026-10-04 geklärt.
+
+**Q60 · Lage des Endbosses.** `rules/stufen.md` § 3 nennt für die erste Ausbaustufe den „Endboss der Mine“, `rules/bosse.md` § 1 die tiefste Stufe (Kristallhöhle); gebaut sind heute nur Wald, Höhle und Mine.
+Optionen: (a) immer in der tiefsten Stufe der Insel, also bis W2 die Mine, danach die Kristallhöhle; (b) fest in der Kristallhöhle; (c) fest in der Mine.
+🤖 Empfehlung: (a). Die Regel bleibt eine Zeile und gilt auch für spätere Inseln. **Beschlossen: (a).**
+
+**Q61 · Level = Stufe oder Insel?** `rules/stufen.md` § 1 nennt die Stufen einer Insel „ein Level“, `game-design.md` setzt Stufe = Level, der Generator erzeugt je Stufe ein Level aus Biom und Seed.
+Optionen: (a) Level = eine Stufe (wie Generator und Code), die Insel ist die Sammlung ihrer Stufen; (b) Level = Insel; (c) den Begriff Level streichen.
+🤖 Empfehlung: (a), weil Code und Generator so arbeiten. **Beschlossen: (a).**
+
+**Q62 · Respawn und Wiederbeleben als Ereignisse** (B-120, W4.1). Das Ereignis `revive` heißt in `protocol.md` „Monarch steht nach der Wartezeit wieder“ (Respawn); im Regelwerk meint Wiederbeleben die Hilfe eines Mitspielers. W4.1 sendet bisher `revive` für beides.
+Optionen: (a) zwei Ereignisse: `revive` = Respawn, neues `revived` = Wiederbeleben durch einen Mitspieler; (b) ein Ereignis `revive` mit Feld für den Helfer; (c) `revive` umbenennen.
+🤖 Empfehlung: (a). Sound und Anzeige unterscheiden beides ohne Feldprüfung, das bestehende Ereignis bleibt gültig. **Beschlossen: (a).**
+
+**Q63 · Begriff „Truppe“.** `troopLost` und `World.Troops` zählen alle Figuren außer Landstreichern bzw. alle Hub-Figuren; im Regelwerk steht „Truppen“ oft für Kämpfer (z. B. „Truppen überleben Wellen“, Heilplatz).
+Optionen: (a) Truppe = Kämpfer (Bogenschütze, Krieger, Elite), alle Hub-Figuren heißen Bürger, Code-Namen bleiben als Ausnahme; (b) Truppe = alle Hub-Figuren (wie der Code); (c) den Begriff Truppe abschaffen.
+🤖 Empfehlung: (a). Das Truppen-Limit zählt schon heute nur Kämpfer; ein Umbenennen im Code lohnt nicht. **Beschlossen: (a).**
+
+**Q64 · `troopLost` nur für Kämpfer** (B-122, W4.3a). Q39 legte `troopLost` für alle Figuren außer Landstreichern fest; mit Q63 passt der Name nur noch zu Kämpfern.
+Optionen: (a) nur Kämpfer (ändert Q39), ein Ereignis für Bauern und Berufe bei Bedarf später per Ticket (`citizenLost`); (b) wie Q39, Ereignis umbenennen; (c) wie Q39, Name bleibt.
+🤖 Empfehlung: (a). Die Kennzahl „Verluste je Welle“ zählt ohnehin Kämpfer. **Beschlossen: (a).**
+
+**Q65 · Tageszyklus mit Morgengrauen** (B-213, BR1). Heute Tag 10, Dämmerung 1, Nacht 5 min (`data/biomes/forest.json` › `cycle`), `dawn` fällt beim Übergang Nacht → Tag (`engine/sim/cycle.go`). „Abend“ kommt nur als Musik-Zustand vor (Q16). 🧑 wünscht vier Phasen Tag, Dämmerung, Nacht, Morgengrauen im Verhältnis 3:1:2:1.
+Optionen Einheit: (a) 2 min → 6/2/4/2 min (14 min); (b) 1 min → 3/1/2/1 min (7 min); (c) je Biom eigene Werte. Optionen `dawn`: (a) bei Beginn Morgengrauen (Nacht endet, Gegner ziehen ab); (b) bei Beginn Tag; (c) beides (zwei Ereignisse).
+🤖 Empfehlung: Einheit (a), nahe am heutigen Zyklus (16 min); `dawn` (a), damit Gold, Taverne, Händler und Speichern mit dem Ende der Nacht zusammenfallen. „Abend“ (Q16) = Dämmerung. **Beschlossen: Einheit (a), `dawn` (a).**

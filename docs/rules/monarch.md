@@ -10,7 +10,7 @@ Zielkorridore gelten im Standardszenario **Normal, Wald-Start, 2 Spieler, Bot �
 | Regel | Begründung | Daten | Zielkorridor |
 |---|---|---|---|
 | **Kein Level, keine Erfahrung.** Die Stats je Level (`perLevel`, `maxLevel`) entfallen; der Monarch wächst nur über Skills (§ 3). | Weniger Mechanik, Fortschritt ist Entdecken und Verteilen. | `data/monarch.json` (SIM entfernt `perLevel`, `maxLevel`) | – |
-| Basiswerte: HP 100, Tempo 5 Units/s (Sprint ×1,8, Beschleunigung 8), Verteidigung 5 (mindert Schaden auf mindestens 1), Respawn 5 s (§ 5). | Heutiger Stand. | `data/monarch.json` › `base` | – |
+| Basiswerte: HP 100, Tempo 5 Units/s (Sprint ×1,8, Beschleunigung 8), Verteidigung 5 (mindert Schaden auf mindestens 1), Respawn heute 5 s, Ziel 15 s mit dem Wiederbeleben (B-120, W4.1; § 5). | Heutiger Stand. | `data/monarch.json` › `base` | – |
 | **Einfacher Schlag:** Der Monarch kann zusätzlich zu den Skills **zuschlagen** (Taste X), Nahkampf, Schaden 10, Reichweite 1,5 Units, Abklingzeit 0,7 s (Startwerte). Der Hauptschaden bleibt bei Bogenschützen und Kriegern. | Der Monarch ist von Anfang an im Kampf nützlich, ohne ihn zum Hauptkämpfer zu machen. | `data/monarch.json` › `attack` (SIM legt an) | Anteil am Gesamtschaden einer Welle (Monarch) höchstens 20 % (Kennzahl fehlt, B-099) |
 
 ## 2. Klassen und Presets
@@ -44,7 +44,7 @@ Begründung: Alle Skills ohne Menü erreichbar, X bleibt die Hauptaktion im Kamp
 | Regel | Begründung | Zielkorridor |
 |---|---|---|
 | Ein gefallener Monarch bleibt als **Grabstein** liegen. Ein Mitspieler **belebt ihn wieder**, indem er daneben **A 3 s hält** (Interagieren; es gibt kein Zahlziel in der Nähe): Wiederbelebung am Ort mit **50 % HP**. Ohne Hilfe **Respawn an der Burg der Stufe nach 15 s** mit voller HP. Gilt in jeder Stufe der Insel. | Echtes Koop-Gefühl; der Tod hat Gewicht, ist aber keine Strafe. Bezahlte, nicht fertige Münzen werden wie heute erstattet. | `playerDown` je Welle: Median höchstens 0,5; Anteil Wiederbelebungen an Toden ≥ 30 % (Kennzahl fehlt, B-099) |
-| Der Respawn-Wert ändert sich von 5 s auf 15 s. | Zeit für Hilfe. | `data/monarch.json` › `respawnSeconds` |
+| Der Respawn-Wert ändert sich von 5 s auf 15 s (mit B-120, W4.1). **Ereignisse** (Q62, 2026-10-04): `revive` meldet den Respawn nach der Wartezeit, das neue `revived` das Wiederbeleben durch einen Mitspieler. | Zeit für Hilfe; Sound und Anzeige unterscheiden beides. | `data/monarch.json` › `respawnSeconds` |
 | **Reichweite** des Wiederbelebens 2 Units (eigener Wert in `data/monarch.json`). **Mehrere Helfer** beschleunigen nicht; keiner lässt dabei eine Münze fallen. Ein **getrennter Monarch** (`Player.Free`) ist nicht wiederbelebbar (Q33, 2026-10-04). | Gleich weit wie Münzen; ein ausgeblendeter Grabstein ist nicht sichtbar. | `data/monarch.json` |
 
 ## 6. Offen und Annahmen

@@ -1,12 +1,13 @@
 # Glossar
 
-Verbindliche Begriffe für Regeln, Tickets, Sprints, Sessions und Code-Kommentare (Stand 2026-10-04, feste Bauplätze nach Q43–Q59).
+Verbindliche Begriffe für Regeln, Tickets, Sprints, Sessions und Code-Kommentare (Stand 2026-10-04, feste Bauplätze nach Q43–Q59, Begriffe und Tageszyklus nach Q60–Q65).
 Ein neuer Begriff wird **hier zuerst eingetragen**, bevor ihn ein Ticket, eine Session oder eine Regel benutzt. Bei Widerspruch gilt das
 Regelwerk in [`rules/`](rules/), und das Glossar wird angepasst. Zahlen sind, wo nicht anders vermerkt, **Startwerte** (gelten bis zur Prüfung mit B-099).
 
 | Begriff | Bedeutung | Quelle |
 |---|---|---|
 | Abbaurate | Zielrate einer Ader bei 2 Bauern: Stein 60, Kupfer 45, Eisen 35, Kristall 25 je Minute (Startwerte). Sie steuert den Materialfluss, nicht die Fundmenge. | `rules/materialien-gebaeude.md` § 1 |
+| Abend | Kein eigener Begriff: Der Musik-Zustand „Abend“ (Q16) ist die Dämmerung. | Q16, Q65 |
 | AC (Akzeptanzkriterium) | Prüfbares Kriterium einer Spec mit stabiler ID `AC-01`, `AC-02` … (lückenlos, nie umnummeriert). Sprints verweisen auf Ticket-Kriterien als `B-009/AC-01`, Sessions nennen sie im Feld `Kriterien`. | `arbeitsweise.md` › SDD |
 | Ader | Unendliche Quelle für Stein, Kupfer, Eisen oder Kristall, 2 je Stufe. Wird einmal markiert (`markCost`), höchstens 2 Bauern gleichzeitig; zählt nicht für „Alles abbauen“. | `rules/materialien-gebaeude.md` § 1, Q25; `data/economy.json` › `veins` |
 | Aggressionspool | Wellen-Auslöser unter Tage: +1 %/min, +5 % je Kill, +1 % je gesammelter Ressource; bei 100 % kommt eine Welle, danach zurück auf 0. | `rules/stufen.md` § 2, `rules/gegner.md` § 3 |
@@ -25,12 +26,13 @@ Regelwerk in [`rules/`](rules/), und das Glossar wird angepasst. Zahlen sind, wo
 | Bogenschütze | Kämpfer: Bauer plus Bogen aus der Werkstatt. Posten auf einem Turm oder hinter der äußersten Mauer (`outerWall`), Fernkampf. | `rules/buerger.md` § 1 |
 | Börse | Das Gold, das ein Spieler trägt (Beutel, höchstens 100); beim Verkaufen an den Händler fließt Gold hinein. | `rules/wirtschaft.md` § 1 (`purse`), W4.2 |
 | Burg | Hub-Kern in der Hub-Mitte und Basislager; Zahlziel des Hub-Ausbaus, Ort für Respawn und Respec. Fällt sie, wirkt der Niederlage-Modus. | `rules/materialien-gebaeude.md` §§ 2–3, `rules/stufen.md` § 4 |
-| Bürger | Sammelbegriff für die Figuren des Hubs, die kein Spieler steuert: Landstreicher, Bauer, Berufe, Kämpfer, Händler. Kein Level, keine Skills. | `rules/buerger.md` |
+| Bürger | Alle Figuren des Hubs, die kein Spieler steuert: Landstreicher, Bauer, Berufe, Kämpfer (Truppen), Händler. Kein Level, keine Skills. Regeltexte sagen „Bürger“, wo alle Figuren gemeint sind. | `rules/buerger.md`, Q63 |
 | Camp | Rekrutierungs-Camp in der Welt mit höchstens 2 Landstreichern (Nachwuchs 25 s); darf innerhalb der Mauerlinien liegen. | `rules/wirtschaft.md` § 1, Q57 |
 | Chunk | Abschnitt eines Levels, 50 Units breit; der Generator reiht Chunks links und rechts vom Hub nach `chunkWeights`. | `game-design.md` › Prozedurale Generierung |
 | Couch-Koop | Mehrere Spieler an einem Gerät mit eigener Eingabe und Split-Screen; mit Online-Spielern im selben Raum mischbar. | `game-design.md` › Koop |
 | Couch-Raum | Raum, in dem alle Spieler an einem Gerät sitzen; dort hält die Pause den ganzen Raum an. | `rules/bedienung.md` § 1, Q01 |
-| Dämmerung (`dusk`) | Phase des globalen Zyklus zwischen Tag und Nacht (Wald 1 min); Ereignis `dusk` = „Nacht naht“. | `rules/wirtschaft.md` § 3, `engine/sim/cycle.go` |
+| Dämmerung (`dusk`) | Phase des Tageszyklus zwischen Tag und Nacht, Startwert 2 min (heute 1 min, bis B-213); Ereignis `dusk` = „Nacht naht“. Der Musik-Zustand „Abend“ (Q16) ist die Dämmerung. | `rules/wirtschaft.md` § 3, `engine/sim/cycle.go`, Q65 |
+| `dawn` | Ereignis bei Beginn des Morgengrauens (heute bis B-213: Beginn des Tages); siehe Tagesanbruch. | `engine/sim/cycle.go`, Q65 |
 | Delta | Nachricht `delta`: nur die Änderungen zum vorigen Tick; Gegenstück zum vollen `snap`. | `protocol.md` › Nachrichten |
 | Determinismus | Gleicher Seed und gleiche Eingaben ergeben dasselbe Ergebnis. Zufall nur über `engine/rng` (`rng.New(seed)`), nie `math/rand` oder `Math.random()`. | `CLAUDE.md` › Regeln |
 | Dev-Mode | Entwicklungsmodus des Servers (`K3C_DEV`): erlaubt den Grad Dev, das Debug-Panel und Dev-Aktionen. | `rules/wirtschaft.md` § 4, `protocol.md` |
@@ -41,8 +43,8 @@ Regelwerk in [`rules/`](rules/), und das Glossar wird angepasst. Zahlen sind, wo
 | Eisen | Material der Hub-Stufe 4 aus Adern im Eisenstollen; für Eisenmauer, Eisenturm, Rüstkammer, Rüstung. | `rules/materialien-gebaeude.md` § 1 |
 | Eisenstollen | Stufe der Tiefe 3 (Biom `ironhold`, geplant) mit Eisen-Adern, Lava und 3 Portalen. | `rules/stufen.md` § 1, Q28 |
 | Elite | (1) Elite-Gegner: stärkerer Gegner einer Stufe mit genau einer Fähigkeit. (2) Elite-Bogenschütze/-Krieger: Kämpfer nach Upgrade in der Schmiede. | `rules/gegner.md` § 1, `rules/buerger.md` § 1 |
-| Endboss | Boss einer Insel in seinem Bau in der tiefsten Stufe, ausgelöst bei Ankunft eines Spielers; sein Sieg öffnet den Inselwechsel. | `rules/bosse.md` § 1 |
-| Ereignis (Event) | Meldung der Simulation im letzten Tick einer Stufe (`events` in `snap`/`delta`), z. B. `hit`, `kill`, `built`, `playerDown`, `revive`; höchstens 32 je Tick und Stufe. | `protocol.md` › Ereignisse, `engine/sim/events.go` |
+| Endboss | Boss einer Insel in seinem Bau, sitzt immer in der tiefsten Stufe (bis W2 die Mine, danach die Kristallhöhle); ausgelöst bei Ankunft eines Spielers, sein Sieg öffnet den Inselwechsel. | `rules/bosse.md` § 1, `rules/stufen.md` § 3, Q60 |
+| Ereignis (Event) | Meldung der Simulation im letzten Tick einer Stufe (`events` in `snap`/`delta`), z. B. `hit`, `kill`, `built`, `playerDown`, `revive` (Respawn), `revived` (Wiederbeleben, kommt mit W4.1/W5); höchstens 32 je Tick und Stufe. | `protocol.md` › Ereignisse, `engine/sim/events.go`, Q62 |
 | Farm | Gebäude der Hub-Stufe 1 auf einem festen Farm-Weltplatz je Seite zwischen Linie 1 und 2 (±52); wirkt als Plantage. | `rules/materialien-gebaeude.md` § 3, Q51 |
 | Fixture | Kleiner, aus dem Code erzeugter Spielstand je Version unter `testdata/saves/v<n>/`; alte bleiben unverändert, `TestJedeVersionHatFixture` verlangt eines je Version. | `arbeitsweise.md` › Spielstand-Format |
 | Freigabe | Ausdrückliche Zustimmung von 🧑 zu genau einer Revision einer Spec (Feld `Freigabe`: Datum und Quelle); erst dann `Spec: freigegeben`. | `arbeitsweise.md` › SDD |
@@ -52,21 +54,21 @@ Regelwerk in [`rules/`](rules/), und das Glossar wird angepasst. Zahlen sind, wo
 | Grabstein | Gefallener Monarch, der am Ort liegen bleibt, bis er wiederbelebt wird oder respawnt. | `rules/monarch.md` § 5 |
 | Händler | Besucher je Insel im Hub der Tiefe 0 (Hub-Platz +8/+12): kommt bei `dawn` alle 3 Tage (mit Taverne alle 2), bleibt einen Tag, tauscht 10 Material = 5 Gold an „Kaufen“ und „Verkaufen“. | `rules/buerger.md` § 1, Q36, Q55 |
 | Handwerker | Beruf (30 Gold) in Werkstatt, Schmiede oder Rüstkammer (1–2 je Gebäude): +50 % Herstellungstempo je Handwerker. | `rules/buerger.md` § 1, Q35 |
-| Heilplatz | Gebäude der Hub-Stufe 3: heilt Truppen und Spieler im Radius 6 mit 5 HP/s, immer, auch im Kampf. Sonst gibt es keine Regeneration. | `rules/materialien-gebaeude.md` § 3.2, Q32 |
+| Heilplatz | Gebäude der Hub-Stufe 3: heilt Truppen (Kämpfer) und Spieler im Radius 6 mit 5 HP/s, immer, auch im Kampf. Sonst gibt es keine Regeneration. | `rules/materialien-gebaeude.md` § 3.2, Q32 |
 | Heimbereich | Bereich um die Hub-Mitte mit Radius `homeRadiusUnits` (12 Units), in dem Figuren ohne Auftrag wandern. | `data/hub.json`, `engine/sim/units.go`, Fragenkatalog Q38 |
 | Höhle | Stufe der Tiefe 1 (Biom `cave`) mit Stein-Adern; Wellen über den Aggressionspool. | `game-design.md` › Welt & Stufen |
 | Holz | Material der Hub-Stufe 1 aus Bäumen im Wald und aus Farm-Plantagen; Grundgebäude, Holzmauer und -turm, Bogen und Schwert. | `rules/materialien-gebaeude.md` § 1 |
 | Home-Kombi | View + Menu gemeinsam halten (Tastatur Pos1) = zurück zur Landingpage; auf keiner Seite anders belegt. | `CLAUDE.md` › Seiten & Navigation |
-| Hub | Basis einer Stufe mit Burg, eigenen Bauplätzen, Truppen und Hub-Stufe; jede Stufe hat einen eigenen Hub, der von Grund auf gebaut wird. | `rules/stufen.md` § 1 |
+| Hub | Basis einer Stufe mit Burg, eigenen Bauplätzen, Bürgern und Hub-Stufe; jede Stufe hat einen eigenen Hub, der von Grund auf gebaut wird. | `rules/stufen.md` § 1 |
 | Hub-Ausbau | Erhöhen der Hub-Stufe auf 2–5, bezahlt an der Burg mit Gold plus Material der neuen Stufe (z. B. 100 Stein + 50 Gold); ein Bauer baut. | `rules/materialien-gebaeude.md` § 2, Q44 |
 | Hub-Mitte | Seed-abhängige Mitte des Hubs mit der Burg; Hub-Plätze und Mauerlinien sind Offsets von ihr. | `rules/materialien-gebaeude.md` § 3 |
 | Hub-Platz | Bauplatz mit festem Offset zur Hub-Mitte (`data/hub.json`) für Werkstatt, Lager, Kaserne, Taverne, Heilplatz, Schmiede, Rüstkammer, Treppen (+16/+24) und Händler (+8/+12); streut nicht. | Q43, Q55 |
 | Hub-Stufe | Ausbaustufe 1–5 eines Hubs (Holz bis Kristall); Stufe n schaltet Linie n, Mauer- und Turm-Stufe n und die Gebäude der Stufe frei. Code: `World.HubLevel` (ab W0). | `rules/materialien-gebaeude.md` § 2, Q59 |
-| Insel | Teil eines Spielstands mit n Stufen, einem gemeinsamen Material-Vorrat und einem Endboss; heute Insel 1 mit 5 Stufen, davon 3 gebaut. | `rules/stufen.md` § 1, `decisions/003-spielstruktur-inseln-stufen.md` |
+| Insel | Teil eines Spielstands, Sammlung ihrer n Stufen (je Stufe ein Level) mit einem gemeinsamen Material-Vorrat und einem Endboss; heute Insel 1 mit 5 Stufen, davon 3 gebaut. | `rules/stufen.md` § 1, `decisions/003-spielstruktur-inseln-stufen.md`, Q61 |
 | Insel-Vorrat | Gemeinsames Baumaterial aller Stufen und Hubs einer Insel (`World.stock`); Kapazität je Rohstoff 300 je Hub plus 300 je Lager. | `rules/materialien-gebaeude.md` § 1 |
 | Inselwechsel | Gemeinsamer Wechsel aller lebenden Spieler zur nächsten Insel (Boot oder Portal) nach dem Sieg über den Endboss; noch nicht gebaut. | `rules/stufen.md` § 1, B-103 |
 | Kampagne | Das gesamte Spiel eines Spielstands bis zum Ziel des Raums (Standard: Endboss der letzten Insel). | `rules/stufen.md` § 3 |
-| Kämpfer | Truppen, die zum Truppen-Limit zählen: Bogenschützen und Krieger, auch Elite. | `rules/buerger.md` § 3 |
+| Kämpfer | Bürger, die kämpfen und zum Truppen-Limit zählen: Bogenschützen und Krieger, auch Elite. Gleichbedeutend mit Truppe. | `rules/buerger.md` § 3, Q63 |
 | Kaserne | Gebäude der Hub-Stufe 2: Truppen-Limit +10. | `rules/materialien-gebaeude.md` § 3.2 |
 | `kind@x` | Schlüssel aus Art und Position, mit dem der Spielstand Plätze und Level-Objekte zuordnet; bleibt stabil, weil kein Platz wandert. | Q42, B-201, B-202 |
 | Krieger | Kämpfer: Bauer plus Schwert aus der Werkstatt, Nahkampf; Posten hinter der äußersten gebauten Sperre. | `rules/buerger.md` § 1, Q46 |
@@ -77,7 +79,7 @@ Regelwerk in [`rules/`](rules/), und das Glossar wird angepasst. Zahlen sind, wo
 | Landingpage | `index.html`: bleibt dauerhaft offen und zeigt alle anderen Seiten im Vollflächen-iframe, damit Vollbild auf der Xbox erhalten bleibt. | `CLAUDE.md` › Seiten & Navigation |
 | Landstreicher | Nicht rekrutierte Figur aus Camp oder Taverne; eine Münze (1 Gold) macht ihn zum Bauern. | `rules/buerger.md` § 1 |
 | Lava | Boden der tiefen Stufen: Figuren darauf erleiden 5 Schaden/s; ob Gegner betroffen sind, ist offen. | `rules/stufen.md` § 1, Q28 |
-| Level | Aus Biom-Daten und Seed prozedural erzeugte Welt; gespeichert wird nur der Seed. | `game-design.md` › Prozedurale Generierung |
+| Level | Eine Stufe: aus Biom-Daten und Seed prozedural erzeugte Welt (der Generator erzeugt je Stufe ein Level); gespeichert wird nur der Seed. Die Insel ist die Sammlung ihrer Stufen. | `game-design.md` › Prozedurale Generierung, `rules/stufen.md` § 1, Q61 |
 | Linie | Kurz für Mauerlinie; „Linie k“ ist die k-te Linie einer Seite von innen. | Q48, Q49 |
 | Markieren (`markCost`) | Auftrag an Bauern, eine Ressource abzubauen, gegen Gold (Baum, Fels, Erz 1–2 Gold); Adern einmalig mit `markCost` (Stein 1, Kupfer 2, Eisen 2, Kristall 2). Plantage-Bäume ohne Markierung. | `rules/materialien-gebaeude.md` § 1, Q25 |
 | Material | Baumaterial der Insel: Holz, Stein, Kupfer, Eisen, Kristall, eines je Hub-Stufe. Gold ist kein Material. | `rules/materialien-gebaeude.md` § 1 |
@@ -86,9 +88,10 @@ Regelwerk in [`rules/`](rules/), und das Glossar wird angepasst. Zahlen sind, wo
 | Mauerlinie | Je Seite 5 feste Linien bei ±44/64/84/104/124 Units mit Mauer-Platz, Turm-Platz (8 innen) und Tor-Platz (4 außen). Linie k ist ab Hub-Stufe k bezahlbar, wenn die Mauer der Linie k−1 derselben Seite steht. | `rules/materialien-gebaeude.md` § 3, Q48, Q49, Q58 |
 | Mine | Stufe der Tiefe 2 (Biom `mine`) mit Kupfer-Adern und Kupfererz; Wellen über den Aggressionspool. | `game-design.md` › Welt & Stufen |
 | Miniboss | Boss je Stufe; kommt mit Welle 5 (Wald) bzw. Welle 3 (unten) und kehrt nach dem Sieg nie zurück. | `rules/bosse.md` § 1 |
-| Monarch | Figur eines Spielers (Index 0–3), immer beritten; kämpft mit Schlag und Skills, seine Hauptrolle ist das Truppen-Management. | `protocol.md` › Begriffe, `rules/monarch.md` |
+| Monarch | Figur eines Spielers (Index 0–3), immer beritten; kämpft mit Schlag und Skills, seine Hauptrolle ist das Management der Bürger. | `protocol.md` › Begriffe, `rules/monarch.md` |
+| Morgengrauen | Phase des Tageszyklus zwischen Nacht und Tag, Startwert 2 min; beginnt mit `dawn` (Nacht endet, Gegner ziehen ab). Noch nicht gebaut, Code-Name legt B-213 fest. | `rules/wirtschaft.md` § 3, Q65, B-213 |
 | Münze | Ein Gold als Gegenstand: per A-Halten bezahlt (alle 0,25 s, Reichweite 2 Units); fallen gelassen nach 1,5 s für andere aufhebbar. | `rules/wirtschaft.md` § 1 |
-| Nacht | Phase des globalen Zyklus (Wald 5 min); in der Oberwelt kommt eine Welle je Nacht. | `rules/wirtschaft.md` § 3 |
+| Nacht | Phase des Tageszyklus zwischen Dämmerung und Morgengrauen, Startwert 4 min (heute 5 min, bis B-213); in der Oberwelt kommt eine Welle je Nacht. | `rules/wirtschaft.md` § 3, Q65 |
 | Niederlage-Modus | Raum-Option für den Fall einer Burg: Gold/Material-Verlust, Stufenverlust oder Komplett verloren (`defeat`: `resources`, `stage`, `lost`). | `rules/stufen.md` § 4 |
 | Oberwelt | Die Stufe der Tiefe 0, der Wald. | `rules/stufen.md` § 1 |
 | Plantage | Wirkung der Farm: 6 Plätze, je Platz alle 30 s ein Baum mit 10 Holz, ohne Markierung; zählt nicht für „Alles abbauen“. | `rules/materialien-gebaeude.md` § 1, Q25 |
@@ -101,11 +104,13 @@ Regelwerk in [`rules/`](rules/), und das Glossar wird angepasst. Zahlen sind, wo
 | Raum-Option | Beim Anlegen gewählte Einstellung des Raums: Schwierigkeitsgrad, Ziel (Siegvariante), Niederlage-Modus; steht im Spielstand. | `rules/stufen.md` § 5 |
 | Reife | Sprint-Feld: `Entwurf` (Sessions als Stichpunkte) oder `bereit` (jede Session als Datei, jedes Kriterium hat eine Session). | `arbeitsweise.md` › Sprint-Lebenslauf |
 | Reittier | Standard-Pferd (`horse`), das jeder Monarch immer reitet; Tempo- und Sprintfaktor 1,0, kein Auf- und Absteigen. | `rules/monarch.md` § 7 |
-| Respawn | Rückkehr eines gefallenen Monarchen an der Burg seiner Stufe mit voller HP nach 15 s, wenn niemand ihn wiederbelebt. | `rules/monarch.md` § 5 |
+| Respawn | Rückkehr eines gefallenen Monarchen an der Burg seiner Stufe mit voller HP nach der Wartezeit, wenn niemand ihn wiederbelebt: heute 5 s, Ziel 15 s mit B-120/W4.1. Ereignis `revive`. | `rules/monarch.md` §§ 1, 5, Q62 |
 | Respec | Kostenloses Umverteilen der Skill-Punkte an der Burg jedes Hubs, nur am Tag. | `rules/monarch.md` § 3 |
 | Ressource (Gatherable) | Endliches, abbaubares Level-Objekt: Baum, Fels, Kupfererz (Code `ResourceNode`, Arten in `economy.Gatherables`). Adern und Plantagen sind keine Gatherables. | `rules/wirtschaft.md` § 1, W2.1; `data/economy.json` › `gatherables` |
 | Review-Session | Letzte Session eines Code-Sprints: `task check` und `task check:go`, nur den Diff lesen, nur schwere Befunde, Abnahme, PR des Sprints. | `arbeitsweise.md` › Review-Session |
 | Revision | Zähler der Spec-Fassung; jede Änderung erhöht ihn und setzt die Spec auf `Entwurf` zurück. | `arbeitsweise.md` › SDD |
+| `revive` | Ereignis: Monarch steht nach der Wartezeit an der Burg wieder (Respawn). | `protocol.md` › Ereignisse, Q62 |
+| `revived` | Ereignis (geplant, B-120/W4.1, Protokoll mit W5): Monarch wurde von einem Mitspieler wiederbelebt. | Q62, B-120 |
 | Rüstkammer | Gebäude der Hub-Stufe 4: Rüstungsstufen für alle Kämpfer. | `rules/materialien-gebaeude.md` § 3.2 |
 | Rüstungsstufe | Upgrade in der Rüstkammer, 2 Stufen (ab Hub-Stufe 4 und 5): +20 % bzw. +40 % Basis-HP für alle Kämpfer, sofort, ohne Vollheilung. | `rules/buerger.md` § 2, Q37 |
 | Schlag | Einfacher Nahkampfangriff des Monarchen (X bzw. E): 10 Schaden, Reichweite 1,5 Units, Abklingzeit 0,7 s. | `rules/monarch.md` § 1 |
@@ -127,23 +132,24 @@ Regelwerk in [`rules/`](rules/), und das Glossar wird angepasst. Zahlen sind, wo
 | Split-Screen | Geteilter Bildschirm für 1–4 lokale Spieler, jeder mit eigener Kamera (`src/scenes/layout.ts`). | `game-design.md` › Koop, `rules/bedienung.md` § 2 |
 | Sprint | 2–4 Sessions einer Domäne auf einem Branch `sprint/<präfix>` mit einem PR; Ordner unter `docs/sprints/` (`geplant/`, `aktiv/`, `erledigt/`). | `arbeitsweise.md` |
 | Standardszenario | Messrahmen der Zielkorridore: Insel 1, Wald-Start, Normal, 2 Spieler, Bot „sparsam“, 100 Seeds. | `rules/zielkorridore.md` |
-| Startvorrat | 100 Holz im Insel-Vorrat einer neuen Insel (`islandStartStock`). | `rules/materialien-gebaeude.md` § 1, B-177 |
+| Startvorrat | 100 Holz im Insel-Vorrat jeder neuen Insel (`islandStartStock`), auch nach dem Inselwechsel. | `rules/materialien-gebaeude.md` § 1, `rules/stufen.md` § 1, B-177 |
 | Startwert | Vorläufiger Zahlenwert aus Beschluss oder Vorschlag; gilt, bis der Balancing-Tester (B-099) ihn bestätigt oder ändert. | Kopf jeder Datei in `rules/` |
 | Stein | Material der Hub-Stufe 2 aus Adern in der Höhle und endlichen Felsen; für Steinmauer und -turm, Tor, Kaserne, Lager, Taverne, Treppen. | `rules/materialien-gebaeude.md` § 1 |
 | Streuung | Seed-abhängige Verschiebung der Linien 2–5 nur nach außen um 0 bis +4 ganze Units, je Seite und Linie, über einen eigenen RNG-Strom (`…:sites`). Linie 1 und Hub-Plätze streuen nicht. | Q56 (präzisiert Q50) |
 | Stufe | Ort einer Insel in einer Tiefe (0 Wald bis 4 Kristallhöhle) mit eigenem Hub, eigenen Wellen und Biom; pro Spieler frei begehbar, alle laufen weiter. Nicht verwechseln mit Hub-Stufe oder Material-Stufe. | `rules/stufen.md` § 1 |
-| Tag | Phase des globalen Zyklus (Wald 10 min); Respec nur am Tag. | `rules/wirtschaft.md` § 3 |
-| Tagesanbruch (`dawn`) | Übergang von der Nacht zum Tag: +5 Gold je lebendem Spieler, Taverne und Händler, Autosave; Gegner fliehen nur in der Oberwelt. | `rules/wirtschaft.md` § 1, `rules/gegner.md` § 3, Q10 |
+| Tag | Erste Phase des Tageszyklus, Startwert 6 min (heute Wald 10 min, bis B-213); Respec nur am Tag. | `rules/wirtschaft.md` § 3, Q65 |
+| Tagesanbruch (`dawn`) | Ende der Nacht bei Beginn des Morgengrauens (heute bis B-213: Beginn des Tages): Ereignis `dawn` mit +5 Gold je lebendem Spieler, Taverne und Händler, Autosave; Gegner ziehen ab (fliehen nur in der Oberwelt). | `rules/wirtschaft.md` §§ 1, 3, `rules/gegner.md` § 3, Q10, Q65 |
+| Tageszyklus | Globaler Zyklus aus Tag, Dämmerung, Nacht, Morgengrauen im Verhältnis 3:1:2:1, Startwert 6/2/4/2 min (14 min); läuft in allen Stufen. Heute 10/1/5 min ohne Morgengrauen, Umbau mit B-213. | `rules/wirtschaft.md` § 3, `data/biomes/forest.json` › `cycle`, `engine/sim/cycle.go`, Q65 |
 | Taverne | Gebäude der Hub-Stufe 2: bei jedem `dawn` ein Landstreicher, solange dort weniger als 2 stehen. | `rules/materialien-gebaeude.md` § 3.2, Q30 |
 | Tick (Takt) | Ein Rechenschritt eines Raums; ein Raum tickt mit 30 Hz und schickt je Tick einen Zustand an jedes Gerät. | `protocol.md` › Nachrichten |
 | Ticket | Idee, Problem, Schuld oder Frage als Datei `docs/backlog/B-NNN-name.md` nach Vorlage, mit eigener Spec. | `arbeitsweise.md` › Ablage |
 | Tiefe | Index einer Stufe auf der Insel (0 = Wald); Gegner skalieren je Tiefe (`depthScaling`), im Protokoll `depth`. | `rules/stufen.md` § 1, `protocol.md` |
 | Tiefen-Eingang | Eingang am Ende einer Stufe zur nächsttieferen (2 s stehen); nach oben geht es nur über Treppen. | `rules/stufen.md` § 1, `game-design.md` |
-| Tor | Bau auf dem Tor-Platz einer Linie (Mauer +4 außen), ab Hub-Stufe 2: eigene Truppen und Spieler passieren, Gegner nicht. Bezahlbar nur an der äußersten gebauten Linie („wandert“); ein inneres Tor bleibt stehen. | Q27, Q47, Q54 |
+| Tor | Bau auf dem Tor-Platz einer Linie (Mauer +4 außen), ab Hub-Stufe 2: eigene Bürger und Spieler passieren, Gegner nicht. Bezahlbar nur an der äußersten gebauten Linie („wandert“); ein inneres Tor bleibt stehen. | Q27, Q47, Q54 |
 | Treppe | Hub-Platz (+16/+24) ab Hub-Stufe 2, verbindet mit der Stufe darüber bzw. darunter. | `rules/materialien-gebaeude.md` § 3.2, Q55 |
-| `troopLost` | Ereignis, wenn eine Truppe außer einem Landstreicher fällt (Felder `kind`, `x`, `cause`); nicht beim Burgfall. | `rules/buerger.md` § 3, Q39 |
+| `troopLost` | Ereignis, wenn ein Kämpfer fällt (Felder `kind`, `x`, `cause`); nicht beim Burgfall. Für Bauern und Berufe gibt es keines (später bei Bedarf `citizenLost` per Ticket). | `rules/buerger.md` § 3, Q39, Q64 |
 | Truhe | Level-Objekt mit 10–25 Gold; jede 3. gefundene Truhe der Insel gibt einen Skill-Punkt. | `rules/wirtschaft.md` § 1, `rules/monarch.md` § 3 |
-| Truppe | Figur eines Hubs (Landstreicher, Bauern, Berufe, Kämpfer); gehört dem Hub, nicht einem Spieler. | `rules/wirtschaft.md` § 2, `rules/buerger.md` |
+| Truppe | Kämpfer: Bogenschütze, Krieger, Elite. Ausnahme Code: `World.Troops` und `data/troops.json` umfassen alle Bürger; die Namen bleiben. | `rules/buerger.md`, Q63 |
 | Truppen-Limit | Höchstzahl Kämpfer je Hub: 10, mit Kaserne 20; geprüft beim Waffe-Holen, bei vollem Limit bleibt die Waffe im Regal. | `rules/buerger.md` § 3, Q29 |
 | Turm | Bau auf dem Turm-Platz einer Linie (8 Units innen): Posten für 2 Bogenschützen, Material-Stufen 1–5, Stufe 5 ist der Zaubertum. | `rules/materialien-gebaeude.md` § 3.1, Q45 |
 | Unit | Längeneinheit der Welt: 1 Unit = `UNIT_PX` = 32 px (`src/core/constants.ts`). | `CLAUDE.md` › Regeln |
@@ -151,7 +157,7 @@ Regelwerk in [`rules/`](rules/), und das Glossar wird angepasst. Zahlen sind, wo
 | Wald | Stufe der Tiefe 0 (Oberwelt, Biom `forest`) mit Bäumen und Tag-Nacht-Zyklus; eine Welle je Nacht. | `game-design.md` › Welt & Stufen |
 | Welle | Gruppe Gegner aus den Portalen: in der Oberwelt eine je Nacht, unten bei 100 % Aggressionspool. Größe nach Tabelle, Spieleranzahl der Insel und Grad; Zähler je Stufe. | `rules/gegner.md` § 3 |
 | Werkstatt | Gebäude der Hub-Stufe 1: Bogen und Schwert (je bis 3 im Waffenregal), Ausbildung von Bergmann und Baumeister. | `rules/materialien-gebaeude.md` § 3.2, `rules/buerger.md` § 2 |
-| Wiederbeleben | Ein Mitspieler hält 3 s A neben dem Grabstein (Reichweite 2 Units): Der Monarch steht am Ort mit 50 % HP auf. | `rules/monarch.md` § 5, Q33 |
+| Wiederbeleben | Ein Mitspieler hält 3 s A neben dem Grabstein (Reichweite 2 Units): Der Monarch steht am Ort mit 50 % HP auf. Ereignis `revived` (nicht `revive`). | `rules/monarch.md` § 5, Q33, Q62 |
 | Workshop | Session-Typ (meist `Agent: Mensch`), in dem 🧑 Regeln oder Werte beschließt (z. B. R2.2, F1.4). | `vorlagen/session.md`, `rules/` (Köpfe) |
 | Zahlziel | Ort, an dem Münzen per A-Halten etwas bezahlen: Bauplatz, Burg (Hub-Ausbau), Angebots-Anhang, Händler „Kaufen“/„Verkaufen“. Zahlziele halten ≥ 4 Units Abstand zueinander. | Q34, Q44, Q57, W0 › AC-04 |
 | Zaubertum | Turm der Material-Stufe 5: Flächenschaden (40 Schaden, Radius 3, Reichweite 13, alle 1,5 s) statt Bogen; die Schützen steigen ab. | `rules/materialien-gebaeude.md` § 3.1, Q31 |
@@ -159,16 +165,4 @@ Regelwerk in [`rules/`](rules/), und das Glossar wird angepasst. Zahlen sind, wo
 
 ## Unklar und Widersprüche
 
-Gefunden beim Anlegen (2026-10-04); entscheidet 🧑, danach wird die betroffene Datei angepasst.
-
-1. **Endboss von Insel 1:** `rules/stufen.md` § 3 nennt „Endboss der Mine“, `rules/bosse.md` § 1 die Kristallhöhle (tiefste Stufe).
-2. **Startvorrat:** `rules/stufen.md` § 1 (Material, Inselwechsel) sagt „leerer Vorrat“, `rules/materialien-gebaeude.md` § 1 „100 Holz“ (B-177).
-3. **Materialliste:** `rules/stufen.md` § 1, `rules/wirtschaft.md` § 1 und `game-design.md` › Koop nennen nur Holz, Stein, Kupfer, das Regelwerk Material fünf.
-4. **Farm-Wirkung:** `rules/materialien-gebaeude.md` § 5 nennt „+5 Holz je Tagesanbruch“, § 1 und § 3.2 die Plantage.
-5. **Respawn-Zeit:** `rules/monarch.md` § 1 und `rules/stufen.md` § 4 nennen 5 s, `rules/monarch.md` § 5 15 s.
-6. **Level:** `rules/stufen.md` § 1 nennt die Stufen einer Insel „ein Level“, `game-design.md` setzt Stufe = Level, der Generator erzeugt je Stufe ein Level.
-7. **Protokoll-Version:** `CLAUDE.md` › Struktur nennt „Protokoll v2“, `protocol.md` Version 3.
-8. **`revive` vs. Wiederbeleben:** Das Ereignis `revive` heißt in `protocol.md` „Monarch steht nach der Wartezeit wieder“ (Respawn); im Regelwerk meint Wiederbeleben die Hilfe eines Mitspielers.
-9. **Truppe:** `troopLost` und `World.Troops` zählen alle Figuren außer Landstreichern bzw. alle Hub-Figuren; im Regelwerk steht „Truppen“ oft für Kämpfer (z. B. „Truppen überleben Wellen“, Heilplatz).
-10. **Tor auf Hub-Stufe 1:** Q27 nennt ein Tor „auf Hub-Stufe 1: ±48“, Tabelle und Q47 erlauben Tore erst ab Hub-Stufe 2.
-11. **Abend, Gebiet:** „Abend“ kommt nur als Musik-Zustand (Q16) vor, vermutlich die Dämmerung; „Gebiet“ kommt in den Docs nicht vor. Beide stehen bewusst nicht in der Tabelle.
+Keine (geklärt 2026-10-04, Q60–Q65 im [Fragenkatalog](fragenkatalog.md)).
