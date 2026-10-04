@@ -103,8 +103,10 @@ func run(cfg config, log *slog.Logger) error {
 	log.Info("🚀 Server startet", "ns", "main", "version", version, "pid", os.Getpid(), "go", runtime.Version(), "http", cfg.httpPort,
 		"dist", cfg.dist, "saves", cfg.saves, "reports", cfg.reports, "dev", cfg.dev, "logDir", logDir(), "konsolenLevel", consoleLevel().String())
 	saves := &store.Saves{Dir: cfg.saves}
+	reports := &store.Reports{Dir: cfg.reports}
 	rooms := room.NewManager(saves)
 	rooms.Log = log
+	rooms.Sessions = reports // Spielmetrik-Report je Raumlauf (B-150)
 	rooms.Dev = cfg.dev
 	// Testläufe (Spielstände mit Präfix test-, B-086) räumen sich beim Aufräumen des Raums auf; Reste alter Läufe hier.
 	if n, err := saves.Purge(room.TestPrefix, time.Now().Add(-testSaveMaxAge)); err != nil {
@@ -116,7 +118,7 @@ func run(cfg config, log *slog.Logger) error {
 	clientLog, closeClientLog := newNamedLogger(logDir(), clientLogFile, os.Stderr)
 	defer closeClientLog()
 	handler := k3cnet.NewHandler(k3cnet.Config{Dist: cfg.dist, Log: log, ClientLog: clientLog, Version: version, Built: buildTime(), StartedAt: time.Now(),
-		StatusToken: cfg.statusToken, LogDir: logDir(), Saves: saves, Reports: &store.Reports{Dir: cfg.reports}, Rooms: rooms,
+		StatusToken: cfg.statusToken, LogDir: logDir(), Saves: saves, Reports: reports, Rooms: rooms,
 		Conns: conns})
 	if cfg.statusToken == "" {
 		log.Info("🔒 diagnose aus: K3C_STATUS_TOKEN ist nicht gesetzt (/api/status antwortet 404)")

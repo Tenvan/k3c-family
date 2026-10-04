@@ -70,7 +70,6 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-168](B-168-musik-je-zustand.md) | CLI | Idee | mittel | eingeplant | SO4 | Die Musik wechselt je Spielzustand mit Crossfade |
 | [B-250](B-250-audiokern-datei-wiedergabe.md) | CLI | Schuld | niedrig | offen | – | Der Audio-Kern spielt ganze Dateien mit Crossfade, die Hörprobe nutzt ihn |
 | [B-270](B-270-respec-pruefung-ohne-seiteneffekt.md) | SIM | Schuld | mittel | offen | – | Die Sim prüft Respec und Lernen ohne Seiteneffekt |
-| [B-271](B-271-s2-3-ohne-todesursache.md) | SRV | Frage | hoch | offen | S2 | Der Spielmetrik-Report wartet auf B-182 oder startet ohne Todesursache |
 | [B-272](B-272-rotation-session-reports.md) | SRV | Schuld | mittel | offen | – | Die Rotation in reports/ erfasst auch die Spielmetrik-Reports |
 | [B-260](B-260-schutzplatz-ohne-id.md) | SIM | Schuld | niedrig | offen | – | Der Schutzplatz einer Truppe hängt nicht an ihrer Entity-ID |
 | [B-262](B-262-camps-nahe-portalen.md) | SIM | Frage | mittel | offen | – | Camps liegen nach dem Abstand zu den Linien nicht zu nah an den Portalen |
@@ -255,3 +254,4 @@ Zeile in diesen Abschnitt.
 | [B-161](archiv/B-161-grafik-zuordnungstabelle.md) | CLI | Idee | hoch | erledigt | GR1 | Jedes Spielobjekt hat eine Zuordnung zu Asset und Lizenz oder eine dokumentierte Lücke |
 | [B-170](archiv/B-170-release-checkliste.md) | INF | Idee | hoch | erledigt | RL1 | Eine Release-Checkliste macht jeden Release prüfbar |
 | [B-162](archiv/B-162-grafik-suche-luecken.md) | CLI | Frage | mittel | erledigt | GR2 | Für die Grafik-Lücken liegen Kandidaten mit Vorschau, Lizenz und Stilbewertung vor |
+| [B-271](archiv/B-271-s2-3-ohne-todesursache.md) | SRV | Frage | hoch | erledigt | S2 | Der Spielmetrik-Report wartet auf B-182 oder startet ohne Todesursache |

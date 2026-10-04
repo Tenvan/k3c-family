@@ -131,6 +131,7 @@ func (r *Room) Drop(id string, peer Peer) {
 		mo.state, mo.since, mo.input = Waiting, now, sim.PlayerCommand{}
 	}
 	d.connected = false
+	r.met.drop(id)
 	r.log().Info("⏳ Gerät getrennt, Monarchen warten", "device", short(id), "frist", WaitFor.String(), "geraete", r.connected())
 	r.afterDisconnect()
 }
@@ -189,6 +190,7 @@ func (r *Room) Tick() bool {
 	before := r.depths()
 	for range r.steps() { // Zeitraffer: scale() Schritte mit denselben Eingaben, ein Tick; Dev-Pause: keiner
 		sim.StepIsland(r.isl, commands, 1.0/TickHz)
+		r.met.observe(r.isl)
 	}
 	r.tick++
 	travelled := false

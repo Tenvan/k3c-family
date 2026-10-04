@@ -399,3 +399,45 @@ Liste. Andere Methoden → `405`. Das WebSocket-Protokoll ändert sich dadurch n
 
 `GET /api/status` (Token) nennt mit `cpu` die CPU-Last des Server-Prozesses in Prozent einer CPU, gemittelt über das
 Intervall seit dem letzten Aufruf (100 = eine volle CPU). Quelle ist `/proc/self/stat` (Linux); wo es sie nicht gibt, fehlt das Feld.
+
+## Spielmetrik-Report (B-150)
+
+Kein Teil des WebSocket-Protokolls. Endet ein Raumlauf (Aufräumen nach `EmptyFor` oder Herunterfahren des Servers),
+schreibt der Server einen Report nach `reports/session-<UTC-Zeit>.json` (neue Datei, nie überschrieben). Ein Raum ohne
+Tick schreibt keinen, ein abgestürzter auch nicht (Zustand unsicher). Der Sammler liest nach jedem Schritt nur Ereignisse,
+Zyklus, Zeit und Gold; er ändert den Spielverlauf nicht (`TestMetrikAendertSpielverlaufNicht`). Scheitert das Schreiben,
+steht der Fehler im Log und der Raum schließt trotzdem. **Keine Namen:** kein Spielstand-Name, keine `campaignId`,
+Monarchen nur mit Index, Geräte nur mit Kürzel (die ersten 8 Zeichen der Geräte-ID).
+
+Schema 1 (`engine/room/metrics.go`):
+
+| Feld | Bedeutung |
+|---|---|
+| `schema` | Version des Reports, 1; ein neues oder geändertes Feld erhöht sie |
+| `room` | Raum-Code |
+| `startedAt`, `endedAt` | Wanduhr bei Erstellen und Ende des Raums (ISO 8601, UTC) |
+| `playSeconds` | gerechnete Ticks ÷ 30 (ohne Pausen, Zeitraffer zählt je Tick einmal) |
+| `grade`, `goal`, `defeat` | Optionen der Insel |
+| `monarchs` | höchste Zahl Monarchen im Lauf |
+| `devices[]` | Kürzel der Geräte, die beigetreten sind, sortiert |
+| `reached` | `day` (höchster Tag), `maxDepth` (tiefste Stufe mit einem Monarchen) |
+| `nights[]` | je beendete Nacht `day` und `survived` (false, wenn in einer Stufe `castleFallen` kam); eine bei Raumende laufende Nacht fehlt |
+| `deaths[]` | je `playerDown`: `monarch` (Index), `day`, `phase`, `depth`, `cause` (Gegnerart oder `other`, B-182) |
+| `firstBuildSeconds` | simulierte Sekunden bis zum ersten `built`, sonst `null` |
+| `goldPerDay[]` | bei jedem `dawn`: `day` (der neue Tag) und `gold[]` je Monarch-Index |
+| `goldEnd[]` | Gold je Monarch-Index bei Raumende |
+| `disconnects[]` | je Gerät mit Abbrüchen `device` (Kürzel) und `count`, sortiert |
+
+```json
+{
+  "schema": 1, "room": "KRNZ", "startedAt": "2026-10-01T12:00:00.000Z", "endedAt": "2026-10-01T12:40:00.000Z",
+  "playSeconds": 2400, "grade": "normal", "goal": "endboss", "defeat": "stage", "monarchs": 2,
+  "devices": ["handy-ki", "xbox-woh"], "reached": { "day": 2, "maxDepth": 0 },
+  "nights": [{ "day": 1, "survived": true }],
+  "deaths": [{ "monarch": 1, "day": 1, "phase": "night", "depth": 0, "cause": "goblin" }],
+  "firstBuildSeconds": 95.5, "goldPerDay": [{ "day": 2, "gold": [100, 5] }], "goldEnd": [100, 5],
+  "disconnects": [{ "device": "handy-ki", "count": 1 }]
+}
+```
+
+Die Rotation in `reports/` (B-142) erfasst bisher nur `gamepad-*.json`; die Spielmetrik-Reports folgen mit B-272.

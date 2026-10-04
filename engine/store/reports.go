@@ -108,3 +108,25 @@ func (r *Reports) Count() int {
 	files, _ := filepath.Glob(filepath.Join(r.Dir, reportGlob))
 	return len(files)
 }
+
+// StoreSession schreibt einen Spielmetrik-Report (B-150, docs/protocol.md › Spielmetrik-Report) als
+// session-<zeit>.json, ohne eine vorhandene Datei zu überschreiben. Die Antwort ist der Pfad der Datei. Ein Report
+// muss ein JSON-Objekt sein.
+func (r *Reports) StoreSession(data []byte) (string, error) {
+	if len(data) > MaxReportBytes {
+		return "", ErrTooLarge
+	}
+	var report map[string]any
+	if json.Unmarshal(data, &report) != nil || report == nil {
+		return "", ErrInvalid
+	}
+	now := time.Now
+	if r.Now != nil {
+		now = r.Now
+	}
+	if err := os.MkdirAll(r.Dir, 0o755); err != nil {
+		return "", err
+	}
+	stamp := strings.NewReplacer(":", "-", ".", "-").Replace(now().UTC().Format("2006-01-02T15:04:05.000Z"))
+	return writeNew(r.Dir, "session-"+stamp, data)
+}

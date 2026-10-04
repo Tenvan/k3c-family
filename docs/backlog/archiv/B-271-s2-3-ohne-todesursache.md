@@ -3,7 +3,7 @@
 - **Domäne:** SRV
 - **Typ:** Frage
 - **Prio:** hoch
-- **Status:** offen
+- **Status:** erledigt
 - **Sprint:** S2
 - **Erstellt:** 2026-10-04
 - **Spec:** Entwurf
@@ -52,4 +52,4 @@ Möglichkeiten (🧑): (1) B-182 als kleinen SIM-Sprint vor S2.3 ziehen (empfohl
 
 ## Notizen
 
-–
+Überholt (2026-10-04, S2.3): B-182 ist mit W0 erledigt (#127), `playerDown` trägt `cause`. S2.3 lief damit wie geplant (Möglichkeit 1 ohne eigenen Sprint), AC-01 erfüllt.
