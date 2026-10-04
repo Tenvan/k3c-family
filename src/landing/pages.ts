@@ -80,6 +80,13 @@ export const PAGES: PageEntry[] = [
     section: 'test',
   },
   {
+    title: 'Hörprobe',
+    description: 'Kandidaten für Musik und Effekte anhören · nach Zustand und Ereignis, mit Quelle und Lizenz',
+    icon: '🔊',
+    href: 'soundtest.html',
+    section: 'test',
+  },
+  {
     title: 'Lizenzen & Danksagung',
     description: 'Unsere Lizenz (nicht-kommerziell) · Grafiken, Software und ein großes Danke an alle Urheber',
     icon: '📜',

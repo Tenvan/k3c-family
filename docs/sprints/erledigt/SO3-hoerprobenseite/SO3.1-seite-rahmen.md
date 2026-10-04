@@ -1,6 +1,6 @@
 # SO3.1 · Seite `soundtest.html` mit Seitenrahmen und Landingpage-Eintrag
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Branch:** so3/1-seite-rahmen
@@ -38,9 +38,9 @@ Kandidatenliste, Abspielen, Crossfade (SO3.2), Audio-Kern (SO1), Kandidaten selb
 
 ## Fertig, wenn
 
-- [ ] AC-01: `soundtest.html` ruft `installPageChrome()` auf und steht in `src/landing/pages.ts`; `tests/projectRules.test.ts` grün.
-- [ ] AC-05: Vollbild nur über `toggleFullscreen()`, Seitenwechsel nur über `openPage()`/`goHome()` (Test grün).
-- [ ] `task check` grün.
+- [x] AC-01: `soundtest.html` ruft `installPageChrome()` auf und steht in `src/landing/pages.ts`; `tests/projectRules.test.ts` grün.
+- [x] AC-05: Vollbild nur über `toggleFullscreen()`, Seitenwechsel nur über `openPage()`/`goHome()` (Test grün).
+- [x] `task check` grün.
 
 ## Prüfen
 
@@ -50,4 +50,9 @@ task check
 
 ## Ergebnis
 
-–
+`soundtest.html` und `src/tools/soundtest.ts` angelegt (Gerüst mit Hinweis „Taste drücken zum Entsperren“, entsperrt per Taste, Klick/Touch oder Controller-Taste), Kachel „Hörprobe“ in `src/landing/pages.ts` (Abschnitt `test`), `serverCheck.test.ts` ergänzt.
+
+- AC-01: `tests/projectRules.test.ts` grün (Seite eingetragen, `installPageChrome()` im Script).
+- AC-05: Seite nutzt weder `requestFullscreen()` noch `location`; Regeltests grün.
+- `task check` grün (50 Dateien, 905 Tests).
+- Schritt 4 (Browser-Pane-Screenshot) bewusst nicht ausgeführt, Auftrag ohne Browserprüfung; Sicht am TV bleibt SO3.3.

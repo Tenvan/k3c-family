@@ -1,0 +1,5 @@
+[
+  { "gruppe": "Tag", "name": "Probe A (C-Dur-Akkord)", "datei": "audio/probe-a", "bus": "music", "quelle": "selbst erzeugt (ffmpeg, SO3.2)", "lizenz": "kein Credit nötig" },
+  { "gruppe": "Nacht", "name": "Probe B (a-Moll-Akkord)", "datei": "audio/probe-b", "bus": "music", "quelle": "selbst erzeugt (ffmpeg, SO3.2)", "lizenz": "kein Credit nötig" },
+  { "gruppe": "Münze", "name": "Testton 440 Hz", "datei": "audio-test/test", "bus": "sfx", "quelle": "selbst erzeugt (B-166)", "lizenz": "kein Credit nötig" }
+]

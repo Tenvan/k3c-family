@@ -1,11 +1,11 @@
 # SO3 · PLAT · Hörprobenseite `soundtest.html`
 
-- **Status:** geplant
+- **Status:** erledigt
 - **Domäne:** PLAT
 - **Reife:** bereit
 - **Einschiebbar:** ja
 - **Tickets:** B-169
-- **Start-Commit:** –
+- **Start-Commit:** cfdba1e
 - **Spec:** freigegeben
 - **Revision:** 1
 - **Freigabe:** 2026-10-04, Chat (Ralf), Revision 1, durch 🧑; umfasst B-169 und die Domänen-Ausnahme `public/audio/`; mit Änderungen aus dem Spec-Review (SO1 als Voraussetzung, AC-07 Tastatur/Touch, AC-08 Credits)
@@ -63,14 +63,16 @@ Audio gesperrt → Hinweis zum Entsperren; Kandidat lädt nicht → Eintrag grau
 
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
-| SO3.1 | `SO3.1-seite-rahmen.md` | Umsetzung | autonom | offen |
-| SO3.2 | `SO3.2-kandidaten-abspielen.md` | Umsetzung | autonom | offen |
+| SO3.1 | `SO3.1-seite-rahmen.md` | Umsetzung | autonom | fertig |
+| SO3.2 | `SO3.2-kandidaten-abspielen.md` | Umsetzung | autonom | fertig |
 | SO3.3 | `SO3.3-abnahme-tv.md` | Workshop | Mensch | offen |
-| SO3.4 | `SO3.4-review.md` | Review | autonom | offen |
+| SO3.4 | `SO3.4-review.md` | Review | autonom | fertig |
 
 Bei `Reife: Entwurf` genügen Stichpunkte mit den Kriterien in Klammern statt Session-Dateien. Vor dem Aktivieren
 wird jede Session als eigene Datei nach `docs/vorlagen/session.md` geschrieben.
 
 ## Abnahme
 
-–
+2026-10-04, Agent (Claude Opus 5.5) in SO3.4, leichtes Review. AC-01, AC-05: Ergebnis SO3.1; AC-02, AC-06 bis AC-08: Ergebnis SO3.2. AC-03, AC-04: angenommen, Validierung offen (SO3.3, Hörprobe und Controller am TV); ebenso die Browser-Pane-Schritte aus SO3.1/SO3.2 (nicht freigegeben, AC-02 und AC-07 durch Tests belegt).
+Befunde: keine schweren (`installPageChrome()`, Eintrag in `pages.ts`, kein `requestFullscreen()`/`location`, B und View/Menu nicht belegt, kein `Math.random()`, nur selbst erzeugte Audiodateien). Abweichung SO3.2 (eigener AudioContext mit dem Mixer aus SO1 statt `AudioCore`) ist kein schwerer Befund, Ticket B-250 besteht. Neue Tickets: keine. `task check` und `task check:go` grün; Sprint ändert kein Go.
+Version: v0.6.0 vorgeschlagen (gemeinsamer Tag nach v0.5.0, Minor); gesetzt erst nach Bestätigung durch 🧑.
