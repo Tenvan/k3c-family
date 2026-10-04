@@ -66,7 +66,7 @@ Audio gesperrt → Hinweis zum Entsperren; Kandidat lädt nicht → Eintrag grau
 | SO3.1 | `SO3.1-seite-rahmen.md` | Umsetzung | autonom | fertig |
 | SO3.2 | `SO3.2-kandidaten-abspielen.md` | Umsetzung | autonom | fertig |
 | SO3.3 | `SO3.3-abnahme-tv.md` | Workshop | Mensch | offen |
-| SO3.4 | `SO3.4-review.md` | Review | autonom | offen |
+| SO3.4 | `SO3.4-review.md` | Review | autonom | in Arbeit |
 
 Bei `Reife: Entwurf` genügen Stichpunkte mit den Kriterien in Klammern statt Session-Dateien. Vor dem Aktivieren
 wird jede Session als eigene Datei nach `docs/vorlagen/session.md` geschrieben.

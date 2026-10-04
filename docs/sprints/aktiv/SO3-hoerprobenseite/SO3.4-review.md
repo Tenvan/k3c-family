@@ -1,6 +1,6 @@
 # SO3.4 · Review und Abnahme des Sprints SO3
 
-- **Status:** offen
+- **Status:** in Arbeit
 - **Typ:** Review
 - **Agent:** autonom
 - **Branch:** so3/4-review
