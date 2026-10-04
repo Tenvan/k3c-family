@@ -22,18 +22,32 @@ const TEXT = { stroke: '#000000', strokeThickness: 4, fontStyle: 'bold' };
 const SITE_SIZE: Record<Site['kind'], [number, number]> = {
   wall: [36, 150],
   tower: [70, 260],
+  gate: [40, 160],
   workshop: [150, 120],
   storage: [130, 100],
   stairsUp: [110, 110],
   stairsDown: [110, 110],
+  farm: [140, 90],
+  barracks: [150, 130],
+  tavern: [130, 120],
+  healer: [100, 100],
+  smithy: [120, 110],
+  armory: [130, 120],
 };
 const SITE_COLOR: Record<Site['kind'], number> = {
   wall: 0x8d99ae,
   tower: 0x9c6644,
+  gate: 0x7f5539,
   workshop: 0xbc6c25,
   storage: 0x7f5539,
   stairsUp: 0x6c757d,
   stairsDown: 0x343a40,
+  farm: 0xa7c957,
+  barracks: 0x6c584c,
+  tavern: 0xb08968,
+  healer: 0xe5e5e5,
+  smithy: 0x495057,
+  armory: 0x5c677d,
 };
 
 type View = Phaser.GameObjects.Container;
