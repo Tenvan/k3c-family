@@ -76,7 +76,7 @@ keine; die vier Widersprüche der Planung sind am 2026-10-04 durch Q56 bis Q59 g
 |---|---|---|---|---|
 | W0.1 | `W0.1-platz-daten.md` | Umsetzung | autonom | fertig |
 | W0.2 | `W0.2-linien-generator.md` | Umsetzung | autonom | fertig |
-| W0.3 | `W0.3-plaetze-sim.md` | Umsetzung | autonom | in Arbeit |
+| W0.3 | `W0.3-plaetze-sim.md` | Umsetzung | autonom | fertig |
 | W0.4 | `W0.4-review.md` | Review | autonom | offen |
 
 Bei `Reife: Entwurf` genügen Stichpunkte mit den Kriterien in Klammern statt Session-Dateien. Vor dem Aktivieren

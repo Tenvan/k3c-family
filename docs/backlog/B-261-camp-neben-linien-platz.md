@@ -53,3 +53,5 @@ Vorrang des Bauplatzes, Mindestabstand im Generator (ändert Level-Golden) oder 
 ## Notizen
 
 Messung: B-206 › Notizen (W0.2).
+
+**Beschluss 2026-10-04 (🧑, Chat, über den Orchestrator von W0.3):** Camps werden auf Abstand zu den Linien-Plätzen verschoben; Zahlziele halten ≥ 4 Units Abstand wie die übrigen Zahlziele. Das Level-Golden-Update ist durch diesen Beschluss gedeckt (Begründung „B-261: Camps auf Abstand zu Linien-Plätzen“). Umsetzung offen: Die Camp-Platzierung liegt in `engine/level/`, das in W0.3 nicht erlaubt ist; bis dahin gilt in der Sim „Bauplatz vor Landstreicher“ (`findPayTarget`), gesperrte Linien-Plätze nehmen keine Münzen.
