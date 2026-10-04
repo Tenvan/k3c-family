@@ -24,8 +24,8 @@ Spieler; Elite- und Rüstungswerte kommen aus Regelwerk III.
 
 ## Anforderungen
 
-- Bauplätze je Gebäude in `data/hub.json`. Der Hub **wächst mit dem Ausbau** (Hub-Stufe und entsprechender Mauerausbau) auf eine Breite, die den freigeschalteten Gebäuden Platz gibt; Breiten und Offsets sind Startwerte der Planung (W1), 🧑 bestätigt sie bei der Spec-Freigabe. Fehlt der Platz, zeigt der Client einen Hinweis (B-207). Bauzeiten: Taverne 12 s, Heilplatz 12 s, Schmiede 16 s, Rüstkammer 16 s (Beschluss Q26, 2026-10-04).
-- Tor: je Seite ein Tor **außen** vor der äußersten Mauer (auf Hub-Stufe 1: ±48); eigene Truppen und Spieler passieren, für Gegner wirkt es wie eine Mauer (Hindernis und Angriffsziel), nicht aber für `outerWall` (Beschluss Q27, 2026-10-04).
+- Feste Hub-Plätze je Gebäude in `data/hub.json` aus dem Layout von B-206 (W0); kein Platz bewegt sich, Hub-Plätze dürfen zwischen Linie 1 und 2 liegen (Beschlüsse Q43, Q51, 2026-10-04). Bauzeiten: Taverne 12 s, Heilplatz 12 s, Schmiede 16 s, Rüstkammer 16 s (Beschluss Q26, gilt nach Q43).
+- Tor: je Mauerlinie ein fester Tor-Platz 4 Units außen (Linie 1: ±48), bezahlbar nur an der äußersten gebauten Linie (Beschluss Q47, 2026-10-04); eigene Truppen und Spieler passieren, für Gegner wirkt es wie eine Mauer (Hindernis und Angriffsziel), nicht aber für `outerWall` (Beschluss Q27, 2026-10-04). Wird außen eine neue Linie gebaut, bleiben Turm und Tor innen stehen und wirken weiter (Beschluss Q54, 2026-10-04).
 - Kaserne: Truppen-Limit +10 (Basis 10); es zählen nur Kämpfer (in W3: Bogenschützen); geprüft an genau einer Stelle beim Waffe-Holen, bei vollem Limit bleibt die Waffe im Regal (Beschlüsse Q29 und Q40, 2026-10-04).
 - Taverne: bei jedem `dawn` ein Landstreicher an der Taverne, solange dort weniger als 2 stehen; Wanderradius 6; eigene Werte in `data/` (Beschluss Q30, 2026-10-04).
 - Heilplatz: heilt Truppen und Spieler in Reichweite, **immer** (auch im Kampf), 5 HP/s, Radius 6 um den Platz (Startwerte; Beschluss Q32, 2026-10-04). W3 baut Limit und Heilplatz vollständig (Beschluss Q40, 2026-10-04).
@@ -48,7 +48,7 @@ Tor gebaut: Monarch und Bauern laufen hindurch, ein Goblin bleibt davor stehen u
 
 ## Ausnahme- und Fehlerfälle
 
-Truppen-Limit erreicht → kein Bauer holt eine Waffe, die Waffe bleibt im Regal, Hinweis (B-117); Landstreicher werden weiter zu Bauern (Beschluss Q29, 2026-10-04). Kein Platz im Hub für ein Gebäude → Hinweis „Kein Platz für <Gebäude>“ über dem Hub (B-207). Gebäude zerstört → Wirkung endet.
+Truppen-Limit erreicht → kein Bauer holt eine Waffe, die Waffe bleibt im Regal, Hinweis (B-117); Landstreicher werden weiter zu Bauern (Beschluss Q29, 2026-10-04). Tor an einer inneren Linie → nicht bezahlbar (Q47); welcher Platz warum gesperrt ist, zeigt B-207. Gebäude zerstört → Wirkung endet.
 
 ## Akzeptanzkriterien
 
@@ -59,7 +59,7 @@ Truppen-Limit erreicht → kein Bauer holt eine Waffe, die Waffe bleibt im Regal
 
 ## Offene Fragen
 
-Schmiede/Rüstkammer-Wirkung (Regelwerk III, B-122). Hub-Breiten und Offsets je Stufe bestätigt 🧑 bei der Spec-Freigabe (Q26).
+Schmiede/Rüstkammer-Wirkung (Regelwerk III, B-122). Plätze kommen aus B-206 (W0); Hub-Breiten aus Q26 entfallen (Q43).
 
 ## Notizen
 

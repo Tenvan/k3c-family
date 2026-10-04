@@ -34,7 +34,7 @@ Zustand des Wiederbelebens (W4.1: ein geladener Spieler steht lebendig an der Bu
 
 ## Regeln und Einschränkungen
 
-Migrationsregel B-137 (`docs/arbeitsweise.md` › „Spielstand-Format ändern“), Golden nach „Golden aktualisieren“; Datei ≤ 400 Zeilen (`save.go`, `island_save.go`), Funktion ≤ 60. Version **4**: S1.4 und W1.3 teilen sich Version 3, B-201 folgt mit v4 (`testdata/saves/v4/`, Migration aus v3) (Beschluss Q42, 2026-10-04). Die Zuordnung der Plätze über `kind@x` muss wandernde Offsets abdecken (Hub wächst mit dem Ausbau, Beschluss Q26, 2026-10-04); das regelt die gemeinsame v3 (B-202).
+Migrationsregel B-137 (`docs/arbeitsweise.md` › „Spielstand-Format ändern“), Golden nach „Golden aktualisieren“; Datei ≤ 400 Zeilen (`save.go`, `island_save.go`), Funktion ≤ 60. Version **4**: S1.4 und W1.3 teilen sich Version 3, B-201 folgt mit v4 (`testdata/saves/v4/`, Migration aus v3) (Beschluss Q42, 2026-10-04). Die Zuordnung der Plätze über `kind@x` bleibt stabil, weil kein Platz wandert (feste Bauplätze, Beschluss Q43, 2026-10-04; ersetzt Q26).
 
 ## Beispiele
 

@@ -107,6 +107,10 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-203](B-203-gold-schwelle-kennzahl.md) | REG | Frage | niedrig | offen | – | Die Kennzahl „erste Gold-Schwelle“ hat eine feste Schwelle und Bedeutung |
 | [B-204](B-204-test-raeume-sofort-schliessen.md) | SRV | Idee | niedrig | offen | – | Leere Test-Räume schließen sofort statt nach der Leer-Frist |
 | [B-205](B-205-y-belegung-s3.md) | CLI | Problem | mittel | offen | – | Die Y-Belegung in S3 folgt dem Beschluss „kein Bau-Menü“ |
+| [B-206](B-206-bauplaetze-aus-dem-seed.md) | SIM | Idee | hoch | eingeplant | W0 | Alle Bauplätze sind feste Punkte aus Daten und Level-Seed, Mauerlinien schalten je Seite nacheinander frei |
+| [B-207](B-207-bauplaetze-anzeige.md) | CLI | Idee | mittel | offen | – | Der Client zeigt freie und gesperrte Bauplätze mit Grund (ab Hub-Stufe n, Linie fehlt) |
+| [B-208](B-208-protokoll-bauplaetze.md) | SRV | Idee | mittel | eingeplant | W5 | Das Protokoll trägt die Bauplätze des Layouts sowie Platz- und Hub-Stufe zum Client |
+| [B-209](B-209-client-platz-arten.md) | CLI | Schuld | mittel | offen | – | `src/model/data.ts` kennt alle Platz-Arten aus `hub.json` |
 
 ## Archiv
 

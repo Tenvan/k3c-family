@@ -11,7 +11,7 @@ Zielkorridore gelten im Standardszenario **Normal, Wald-Start, 2 Spieler, Bot �
 | **Landstreicher** | im Camp (max. 2, Nachwuchs 25 s) und an der Taverne (bei jedem `dawn` einer, solange dort weniger als 2 stehen, Wanderradius 6; Q30, 2026-10-04) | wandert; eine Münze macht ihn zum Bauern | HP 30, Tempo 1,5 |
 | **Bauer** | Landstreicher + 1 Gold | sammelt, baut, repariert, holt Waffen; bei Gefahr in der Burg | HP 40, Tempo 3 |
 | **Bogenschütze** | Bauer + Bogen (Werkstatt) | Posten auf Turm oder hinter der äußersten Mauer, schießt | HP 50, Schaden 15, Reichweite 10 |
-| **Krieger** | Bauer + Schwert (Werkstatt) | Nahkampf an der Frontlinie: Posten **direkt hinter der äußersten Mauer**, trifft Gegner an der Mauer; Seitenverteilung wie bei Bogenschützen (Startwert; Q38, 2026-10-04) | HP 100, Schaden 20, Reichweite 1 |
+| **Krieger** | Bauer + Schwert (Werkstatt) | Nahkampf an der Frontlinie: Posten hinter der **äußersten gebauten Sperre** – mit Tor zwischen Mauer und Tor, ohne Tor hinter der Mauer; Posten sind keine Bauplätze, sie leiten sich von der äußersten Linie ab, innere Linien bekommen keine Krieger (Q46, Q54, 2026-10-04; ändert Q38); Seitenverteilung wie bei Bogenschützen (Startwert; Q38) | HP 100, Schaden 20, Reichweite 1 |
 | **Elite-Bogenschütze / -Krieger** | Upgrade in der Schmiede | wie oben, stärker | HP 75 / 150, Schaden 23 / 30 |
 | **Bergmann** | Bauer, Ausbildung 20 Gold | an Adern, Fels und Kupfererz, +50 % Abbaurate; zählt als einer der höchstens 2 Bauern an einer Ader (Q35, 2026-10-04) | wie Bauer |
 | **Baumeister** | Bauer, Ausbildung 20 Gold | baut und repariert +50 % schneller | wie Bauer |
@@ -33,7 +33,7 @@ Begründung: Bürger sind Arbeiter und Verteidiger; Spezialisierungen der Bauern
 | Handwerker | 30 Gold | Werkstatt, Schmiede, Rüstkammer |
 | Händler-Tausch | 10 Material = 5 Gold | beim Händler |
 
-**Herstellungszeiten** (Startwerte; Q35, 2026-10-04): Bogen und Schwert 10 s, Elite-Upgrade 20 s, Rüstungsstufe 30 s; je Handwerker +50 % Tempo (höchstens 2). Jedes Angebot hat ein eigenes Zahlziel neben dem Gebäude (Q34, `materialien-gebaeude.md` § 3).
+**Herstellungszeiten** (Startwerte; Q35, 2026-10-04): Bogen und Schwert 10 s, Elite-Upgrade 20 s, Rüstungsstufe 30 s; je Handwerker +50 % Tempo (höchstens 2). Jedes Angebot hat ein eigenes Zahlziel als Anhang mit festem `dx` am Gebäude, das mit dem Bau entsteht; das Schwert-Zahlziel liegt an der Werkstatt bei `dx +4` (Q34, Q52, Q53, 2026-10-04; `materialien-gebaeude.md` § 3).
 
 Daten: `data/troops.json` (Kosten), `data/buildings.json`. Die Kosten der Gebäude selbst: `materialien-gebaeude.md`.
 

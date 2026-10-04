@@ -6,7 +6,7 @@ Optionen und einer **Empfehlung** (🤖), die 🧑 übernimmt oder ändert. Die 
 auf `geklärt` gesetzt. Kein Prozess-Dokument: Der Prozess steht in [`arbeitsweise.md`](arbeitsweise.md), Fragen sind sonst Tickets vom Typ `Frage`.
 
 **Ablauf der nächsten Session (Vorschlag, ca. 90 Minuten):** Block 1 (blockiert F1) → Block 2 (blockiert Phase 1) → Block 3
-(Schienen Grafik/Sound) → Block 4 (Betrieb und später). Pro Frage: Option wählen, Zahl nennen, Ticket aktualisieren.
+(Schienen Grafik/Sound) → Block 4 (Betrieb und später); Block 5 und 6 gehören zu Phase 2. Pro Frage: Option wählen, Zahl nennen, Ticket aktualisieren.
 Sprints bleiben `Spec: Entwurf`, bis 🧑 sie je Sprint freigibt.
 
 | Nr. | Thema | Blockiert | Block | Status |
@@ -36,23 +36,36 @@ Sprints bleiben `Spec: Entwurf`, bis 🧑 sie je Sprint freigibt.
 | Q21 | itch.io und Englisch | später | 4 | geklärt 2026-10-03 |
 | Q23 | Reittiere | S1, S7 | 4 | geklärt 2026-10-03 (korrigiert) |
 | Q25 | Markierung von Adern und Plantage-Bäumen | W2.1 | 5 | geklärt 2026-10-04 |
-| Q26 | Lage und Bauzeit der neuen Bauplätze | W2.1, W3.1, W3.2 | 5 | geklärt 2026-10-04 |
-| Q27 | Tor: Lage und zählt es als Mauer? | W3.1 | 5 | geklärt 2026-10-04 |
+| Q26 | Lage und Bauzeit der neuen Bauplätze | W2.1, W3.1, W3.2 | 5 | geklärt 2026-10-04 (ersetzt durch Q43, Bauzeiten gelten) |
+| Q27 | Tor: Lage und zählt es als Mauer? | W3.1 | 5 | geklärt 2026-10-04 (Tor-Platz je Linie: Q47) |
 | Q28 | Eisenstollen und Kristallhöhle: Lava, Dichte, Ausgänge | W2.2 | 5 | geklärt 2026-10-04 |
 | Q29 | Truppen-Limit: Widerspruch und Ort der Prüfung | W3.1, W4.3 | 5 | geklärt 2026-10-04 |
 | Q30 | Taverne: Anker, Wanderradius, Rate | W3.1 | 5 | geklärt 2026-10-04 |
 | Q31 | Zaubertum-Werte | W3.2 | 5 | geklärt 2026-10-04 |
 | Q32 | Heilplatz-Werte und Heilen im Kampf | W3.2, W4.3 | 5 | geklärt 2026-10-04 |
 | Q33 | Wiederbeleben: Reichweite, mehrere Helfer, getrennter Monarch | W4.1 | 5 | geklärt 2026-10-04 |
-| Q34 | Auswahl am Platz mit einer A-Taste | W4.2, W4.3 | 5 | geklärt 2026-10-04 |
+| Q34 | Auswahl am Platz mit einer A-Taste | W4.2, W4.3 | 5 | geklärt 2026-10-04 (Angebote als `dx`: Q52) |
 | Q35 | Herstellungszeiten und Bergmann an Adern | W4.2 | 5 | geklärt 2026-10-04 |
 | Q36 | Händler: Ort, Ablauf, Preise, Rhythmus | W4.2 | 5 | geklärt 2026-10-04 |
 | Q37 | Rüstung: Stufen und Wirkung auf bestehende Truppen | W4.3 | 5 | geklärt 2026-10-04 |
-| Q38 | Krieger: Posten und Seitenverteilung | W4.3 | 5 | geklärt 2026-10-04 |
+| Q38 | Krieger: Posten und Seitenverteilung | W4.3 | 5 | geklärt 2026-10-04 (geändert durch Q46) |
 | Q39 | Ereignis `troopLost` | W4.3 | 5 | geklärt 2026-10-04 |
 | Q40 | Abgrenzung W3-AC-01 und W4-AC-04/05 | W3, W4 | 5 | geklärt 2026-10-04 |
 | Q41 | Teilung von W4.3 | W4.3 | 5 | geklärt 2026-10-04 |
-| Q42 | Spielstand-Versionen S1.4 und W1.3 | S1.4, W1.3 | 5 | geklärt 2026-10-04 |
+| Q42 | Spielstand-Versionen S1.4 und W1.3 | S1.4, W1.3 | 5 | geklärt 2026-10-04 (ohne wandernde Offsets, Q43) |
+| Q43 | Grundsatz Bau-Modell: feste Bauplätze | W0, W1–W3 | 6 | geklärt 2026-10-04 |
+| Q44 | Hub-Ausbau an der Burg | W1 | 6 | geklärt 2026-10-04 |
+| Q45 | Turm-Stufen: Kosten und Bauzeit | W1 | 6 | geklärt 2026-10-04 |
+| Q46 | Krieger-Posten hinter der äußersten Sperre | W4.3 | 6 | geklärt 2026-10-04 |
+| Q47 | Was wandert mit der äußersten Mauer? | W0, W3.1 | 6 | geklärt 2026-10-04 |
+| Q48 | Freischaltung der Mauerlinien | W0, W1 | 6 | geklärt 2026-10-04 |
+| Q49 | Anzahl und Lage der Mauerlinien | W0 | 6 | geklärt 2026-10-04 |
+| Q50 | Was streut je Seed? | W0 | 6 | geklärt 2026-10-04 |
+| Q51 | Hub-Plätze im Vorfeld, Farm als Weltplatz | W0, W2.1 | 6 | geklärt 2026-10-04 |
+| Q52 | Angebots-Zahlziele als Anhänge | W0, W4.2, W4.3 | 6 | geklärt 2026-10-04 |
+| Q53 | Ort des Schwert-Zahlziels | W4.3 | 6 | geklärt 2026-10-04 |
+| Q54 | Innere Linie nach dem Bau einer äußeren | W0, W3.1, W4.3 | 6 | geklärt 2026-10-04 |
+| Q55 | Treppen und Händler | W0 | 6 | geklärt 2026-10-04 |
 
 ## Beschlüsse vom 2026-10-03 (🧑 im Chat)
 
@@ -90,25 +103,47 @@ Sprints bleiben `Spec: Entwurf`, bis 🧑 sie je Sprint freigibt.
 | Nr. | Beschluss | Wirkt auf |
 |---|---|---|
 | Q25 | Ader wird **einmal markiert** (Markierung bleibt) mit dem `markCost` des Materials: Stein 1, Kupfer 2, Eisen 2, Kristall 2 Gold (Eisen und Kristall Startwert). Plantage-Bäume ohne Markierung. | B-114, W2.1 |
-| Q26 | **Geändert gegenüber Empfehlung:** Der Hub **wächst mit dem Ausbau** (Hub-Stufe und entsprechender Mauerausbau) auf eine Breite, die den mit der Stufe freigeschalteten Gebäuden Platz gibt, wie im Vorbild Kingdom Two Crowns; Erweiterung nur mit entsprechendem Mauerausbau. Fehlt der Platz, erscheint über dem Hub der Hinweis „Kein Platz für <Gebäude>“ (B-207). Breiten je Stufe und Offsets sind Startwerte der Planung (W1), 🧑 bestätigt sie bei der Spec-Freigabe. Bauzeiten: Taverne 12 s, Heilplatz 12 s, Schmiede 16 s, Rüstkammer 16 s. Folge: Mauer- und Tor-Offsets können mit dem Ausbau wandern; die Spielstand-Zuordnung über `kind@x` muss das abdecken (über die gemeinsame v3 aus Q42). | B-112, B-114, B-116, B-207, W1, W2.1, W3.1, W3.2 |
-| Q27 | Je Seite ein **Tor außen** vor der äußersten Mauer (auf Hub-Stufe 1: ±48); für Gegner wie eine Mauer (Hindernis und Angriffsziel), nicht für `outerWall`. | B-116, W3.1 |
+| Q26 | **Ersetzt 2026-10-04 durch Q43** (Bauzeiten gelten weiter: Taverne 12 s, Heilplatz 12 s, Schmiede 16 s, Rüstkammer 16 s); „Hub wächst“, Breiten, wandernde Offsets und der Hinweis „Kein Platz“ entfallen. Ursprünglicher Wortlaut: **Geändert gegenüber Empfehlung:** Der Hub **wächst mit dem Ausbau** (Hub-Stufe und entsprechender Mauerausbau) auf eine Breite, die den mit der Stufe freigeschalteten Gebäuden Platz gibt, wie im Vorbild Kingdom Two Crowns; Erweiterung nur mit entsprechendem Mauerausbau. Fehlt der Platz, erscheint über dem Hub der Hinweis „Kein Platz für <Gebäude>“ (B-207). Breiten je Stufe und Offsets sind Startwerte der Planung (W1), 🧑 bestätigt sie bei der Spec-Freigabe. Bauzeiten: Taverne 12 s, Heilplatz 12 s, Schmiede 16 s, Rüstkammer 16 s. Folge: Mauer- und Tor-Offsets können mit dem Ausbau wandern; die Spielstand-Zuordnung über `kind@x` muss das abdecken (über die gemeinsame v3 aus Q42). | B-112, B-114, B-116, B-207, W1, W2.1, W3.1, W3.2 |
+| Q27 | Je Seite ein **Tor außen** vor der äußersten Mauer (auf Hub-Stufe 1: ±48); für Gegner wie eine Mauer (Hindernis und Angriffsziel), nicht für `outerWall`. **Ergänzt 2026-10-04:** Tor-Platz je Linie (Mauer +4 außen), bezahlbar nur an der äußersten gebauten Linie (Q47). | B-116, W3.1 |
 | Q28 | **Geändert gegenüber Empfehlung:** Lava **schadet**: Startwert 5 Schaden/s für Figuren auf Lava (Spieler, Truppen, Bauern; ob Gegner betroffen sind, bestätigt der Balancing-Workshop), Wert in `data/`. Dichte unter Tage nicht abnehmend, Untergrenze 2,8 je 100 Units (Startwert). Ausgänge: Eisenstollen `left`, Kristallhöhle `right`, 3 Portale. | B-115, W2.2 |
 | Q29 | Regel gilt (nur Kämpfer, Basis 10, Kaserne +10). Geprüft beim Waffe-Holen an genau einer Stelle; bei vollem Limit bleibt die Waffe im Regal. Der Ausnahmefall in B-116 („Landstreicher werden nicht zu Bauern/Truppen“) wird korrigiert. | B-116, B-122, W3.1, W4.3 |
 | Q30 | Bei jedem `dawn` ein Landstreicher an der Taverne, solange dort weniger als 2 stehen; Wanderradius 6; eigene Werte in `data/`. | B-116, W3.1 |
 | Q31 | Zaubertum: eigener Schuss, Startwerte 40 Schaden, Radius 3, Reichweite 13, alle 1,5 s; die Schützen steigen ab und zählen weiter als Kämpfer. | B-116, W3.2 |
 | Q32 | Heilplatz heilt **immer** (auch im Kampf), 5 HP/s, Radius 6 um den Platz (Startwerte). | B-116, B-122, W3.2, W4.3 |
 | Q33 | Reichweite des Wiederbelebens 2 Units (eigener Wert in `data/monarch.json`); mehrere Helfer beschleunigen nicht, keiner lässt dabei eine Münze fallen; ein getrennter Monarch (`Player.Free`) ist nicht wiederbelebbar. | B-120, W4.1 |
-| Q34 | Je Angebot ein **eigenes Zahlziel** neben dem Gebäude, keine neue Taste; ausgebildet bzw. aufgewertet wird der nächste freie Bauer bzw. Bogenschütze/Krieger. **Folgebeschluss Y-Taste:** Es gibt **kein Bau-Menü** (Regel `materialien-gebaeude.md` § 3 gilt); Q06 wird angepasst, **Y ist frei** (für später). | B-121, B-122, B-125, B-205, Q06, W4.2, W4.3 |
+| Q34 | Je Angebot ein **eigenes Zahlziel** neben dem Gebäude, keine neue Taste; ausgebildet bzw. aufgewertet wird der nächste freie Bauer bzw. Bogenschütze/Krieger. **Folgebeschluss Y-Taste:** Es gibt **kein Bau-Menü** (Regel `materialien-gebaeude.md` § 3 gilt); Q06 wird angepasst, **Y ist frei** (für später). **Ergänzt 2026-10-04:** Die Zahlziele sind Anhänge mit festem `dx` am Gebäude (Q52). | B-121, B-122, B-125, B-205, Q06, W4.2, W4.3 |
 | Q35 | Zeiten für alles: Bogen und Schwert 10 s, Elite-Upgrade 20 s, Rüstungsstufe 30 s (Startwerte); +50 % Tempo je Handwerker (höchstens 2). Der Bergmann zählt als einer der 2 an einer Ader, +50 % an Adern, Fels und Kupfererz. Golden ändert sich (Bogen nicht mehr sofort). | B-121, W4.2 |
 | Q36 | Ein Händler je Insel im Hub der Tiefe 0 bei Hub-Mitte +8; Zahlziele „Kaufen“ und „Verkaufen“, Kurs 10 Material = 5 Gold in beide Richtungen; ein Material je Besuch per `w.rng` aus den freigeschalteten; Ankunft bei `dawn` alle 3 Tage, mit Taverne auf der Insel alle 2 Tage; bleibt einen Tag. | B-121, W4.2 |
 | Q37 | 2 Rüstungsstufen (ab Hub-Stufe 4 und 5), +20 % / +40 % auf die Basis-HP, wirkt sofort auf alle Kämpfer (`MaxHP` und `HP` steigen gleich, keine Vollheilung); Bauern und Landstreicher ohne Rüstung. | B-122, W4.3 |
-| Q38 | **Geändert gegenüber Empfehlung:** Krieger stehen **direkt hinter der äußersten Mauer** und treffen Gegner an der Mauer (Reichweite 1). Seitenverteilung wie bei Bogenschützen (`makeArcher`) als Startwert. | B-014, B-122, W4.3 |
+| Q38 | **Geändert durch Q46 (2026-10-04):** Posten hinter der äußersten gebauten Sperre (mit Tor zwischen Mauer und Tor). Ursprünglicher Wortlaut: **Geändert gegenüber Empfehlung:** Krieger stehen **direkt hinter der äußersten Mauer** und treffen Gegner an der Mauer (Reichweite 1). Seitenverteilung wie bei Bogenschützen (`makeArcher`) als Startwert. | B-014, B-122, W4.3 |
 | Q39 | `troopLost` für alle Truppen außer Landstreichern, Felder `kind`, `x`, `cause`; ohne Priorität; kein Ereignis beim Burgfall. | B-122, W4.3 |
 | Q40 | W3 baut Limit (für Bogenschützen) und Heilplatz vollständig; W4.3 erweitert das Limit um Krieger und Elite und weist AC-05 per Regressionstest plus `troopLost` nach. Keine Spec-Revision. | B-116, B-122, W3, W4 |
 | Q41 | W4.3 wird jetzt geteilt: **W4.3a** (Krieger, Schwert-Regal, Limit-Erweiterung, `troopLost`) und **W4.3b** (Elite, Rüstung, Heilplatz-Nachweis, Golden); die Review bleibt **W4.4**. Kriterien unverändert. | B-014, B-122, W4 |
-| Q42 | **Geändert gegenüber Empfehlung:** **Eine gemeinsame Version v3** für S1.4 und W1.3: Wer zuerst landet, hebt `IslandSaveVersion` auf 3 mit Fixture `testdata/saves/v3/`; der Zweite ergänzt seine Felder optional (`omitempty`) in v3 ohne neue Version und erweitert die Fixture. B-201 folgt später mit v4. | B-201, B-202, S1.4, W1.3 |
+| Q42 | **Geändert gegenüber Empfehlung:** **Eine gemeinsame Version v3** für S1.4 und W1.3: Wer zuerst landet, hebt `IslandSaveVersion` auf 3 mit Fixture `testdata/saves/v3/`; der Zweite ergänzt seine Felder optional (`omitempty`) in v3 ohne neue Version und erweitert die Fixture. B-201 folgt später mit v4. **Ergänzt 2026-10-04:** Wandernde Offsets gibt es nicht mehr (Q43); v3 trägt nur Hub-Stufe und Platz-Stufe, `kind@x` bleibt stabil. | B-201, B-202, S1.4, W1.3 |
 
-**Folgen für die Planung:** Die Tickets B-014, B-114, B-115, B-116, B-120, B-121, B-122, B-201 und B-202 tragen die Beschlüsse in Anforderungen und Regeln, die Regeln stehen in `materialien-gebaeude.md`, `buerger.md`, `monarch.md` und `stufen.md`. Neu: B-207 (Hinweis „Kein Platz für <Gebäude>“, CLI) und B-205 (Y-Belegung in S3 folgt „kein Bau-Menü“; die S3-Spec ist freigegeben und wird nicht still geändert). Die Session-Dateien von W1 bis W4, S1.4 (v3 gemeinsam) und die Teilung W4.3a/W4.3b passt die Sprint-Planung an. Offen bleiben die Hub-Breiten und Offsets je Stufe (Startwerte in W1, Bestätigung bei der Spec-Freigabe) und ob Lava auch Gegner schadet (Balancing-Workshop).
+**Folgen für die Planung:** Die Tickets B-014, B-114, B-115, B-116, B-120, B-121, B-122, B-201 und B-202 tragen die Beschlüsse in Anforderungen und Regeln, die Regeln stehen in `materialien-gebaeude.md`, `buerger.md`, `monarch.md` und `stufen.md`. Neu: B-205 (Y-Belegung in S3 folgt „kein Bau-Menü“; die S3-Spec ist freigegeben und wird nicht still geändert). Die Session-Dateien von W1 bis W4, S1.4 (v3 gemeinsam) und die Teilung W4.3a/W4.3b passt die Sprint-Planung an. Offen bleibt, ob Lava auch Gegner schadet (Balancing-Workshop). Hub-Breiten und wandernde Offsets sind mit der zweiten Runde (Q43) entfallen; der einst geplante Hinweis „Kein Platz“ wird nicht gebaut, B-207 zeigt stattdessen freie und gesperrte Bauplätze.
+
+## Beschlüsse vom 2026-10-04, zweite Runde (🧑 im Chat)
+
+Anlass: 🧑 ändert das Bau-Modell grundsätzlich, „wie in Kingdom Two Crowns: Bauen an fixen Punkten in der Welt, die beim Level-Seed verteilt werden“, höchste Priorität. Fragen Q47–Q55 in Block 6.
+
+| Nr. | Beschluss | Wirkt auf |
+|---|---|---|
+| Q43 | **Grundsatz Bau-Modell:** Alles wird an **festen Bauplätzen** gebaut, wie im Vorbild. Hub-Gebäude (Werkstatt, Lager, Farm*, Kaserne, Taverne, Heilplatz, Schmiede, Rüstkammer, Treppen, Händler) haben feste Hub-Plätze (Offset zur Hub-Mitte, `data/hub.json`), freigeschaltet über die Hub-Stufe. Mauern, Türme und Tore stehen auf **Mauerlinien** (feste Weltplätze aus Daten und Seed). Kein Platz bewegt sich. Ersetzt Q26 (außer den Bauzeiten Taverne 12 s, Heilplatz 12 s, Schmiede 16 s, Rüstkammer 16 s) und den Hinweis „Kein Platz“. (*Farm: Weltplatz, Q51.) | B-112, B-114, B-116, B-206, W0, W1–W3 |
+| Q44 | **Hub-Ausbau** auf Stufe 2–5 wird an der **Burg** (Hub-Mitte, wird Zahlziel) bezahlt, ein Bauer baut; Bauzeit 20/30/40/50 s (Startwerte). Kosten wie `materialien-gebaeude.md` § 2. | B-112, W1 |
+| Q45 | **Turm-Stufen:** Kosten 75 Stein + 25 Gold, 100 Kupfer + 50 Gold, 125 Eisen + 100 Gold, 150 Kristall + 200 Gold (Stufe 2–5); Bauzeit 15/20/27/33 s (Startwerte). Ausbau am selben Platz. | B-112, W1 |
+| Q46 | **Krieger-Posten** hinter der **äußersten gebauten Sperre**: mit Tor zwischen Mauer und Tor, ohne Tor hinter der Mauer. Ändert Q38. Posten sind keine Bauplätze, sie leiten sich von der äußersten Linie ab. | B-014, B-122, W4.3 |
+| Q47 | Nur das **Tor** „wandert“: je Linie ein fester Tor-Platz (Mauer +4 außen), bezahlbar nur an der äußersten gebauten Linie. | B-116, B-206, W0, W3.1 |
+| Q48 | Linie k ist bezahlbar ab Hub-Stufe k, sobald Linie k−1 derselben Seite gebaut ist (Material egal); jede Seite für sich. | B-112, B-206, W0, W1 |
+| Q49 | **5 Linien je Seite** bei ±44/64/84/104/124 (Startwerte), Turm 8 Units innen, Tor 4 Units außen. Linie 1 = heutige Mauer ±44, Turm ±36 (alte Spielstände bleiben kompatibel). Alle Linien liegen unter dem Portal-Mindestabstand 150. Jede Linie hat ihren eigenen Turm-Platz. | B-206, W0 |
+| Q50 | Linie 1 und alle Hub-Plätze fest; Linien 2–5 **streuen je Seed um ±4 Units** über einen **eigenen RNG-Strom** (z. B. `…:sites`), damit Ressourcen, Portale, Camps und Golden-Level unverändert bleiben. | B-206, W0 |
+| Q51 | Hub-Plätze dürfen zwischen Linie 1 und Linie 2 liegen (ungeschützt, bis Linie 2 steht). Die **Farm** ist ein fester Weltplatz je Seite zwischen Linie 1 und 2. | B-114, B-206, W0, W2.1 |
+| Q52 | Angebots-Zahlziele (Q34: Bogen, Schwert, Berufe, Elite, Rüstung …) sind **Anhänge mit festem `dx` am Gebäude** (`data/buildings.json`) und entstehen mit dem Bau; Test „alle `dx` liegen frei“. | B-121, B-122, B-206, W0, W4.2, W4.3 |
+| Q53 | Schwert-Zahlziel = Anhang an der Werkstatt, `dx +4`. | B-014, B-122, W4.3 |
+| Q54 | Wird außen eine neue Linie gebaut, bleiben Turm und Tor innen stehen und wirken weiter (zweite Sperre); Krieger stehen nur außen. | B-116, B-122, B-206, W0, W3.1, W4.3 |
+| Q55 | Treppen (+16/+24) und Händler (+8/+12, nur Tiefe 0) bleiben Hub-Plätze. | B-121, B-206, W0 |
+
+**Folgen für die Planung:** Neuer Sprint **W0 · SIM · Bauplätze aus dem Seed** vor W1 (B-206); er legt Layout, Linien, Tor-Plätze, Farm-Weltplatz und Angebots-Anhänge in Daten und Sim an, ohne den Ressourcen-RNG zu verändern. Neue Tickets: B-206 (SIM, Bauplätze aus Daten und Seed), B-207 (CLI, freie und gesperrte Bauplätze mit Grund), B-208 (SRV, Protokoll trägt die Bauplätze, W5), B-209 (CLI, `src/model/data.ts` kennt alle Platz-Arten). B-112, B-114, B-116, B-121, B-122, B-014, B-201 und B-202 sind angepasst; die Regeln stehen in `materialien-gebaeude.md` §§ 2–4 und `buerger.md`. Die Session-Dateien von W0 bis W4 passt die Sprint-Planung an.
 
 ## Block 1 – blockiert F1 und den Spieleabend-Build
 
@@ -259,3 +294,43 @@ Optionen: (a) jetzt teilen: W4.3a Krieger, Schwert-Regal, Limit-Erweiterung, `tr
 **Q42 · Spielstand-Versionen S1.4 und W1.3** (B-202, B-201). Beide Sessions beanspruchen `IslandSaveVersion = 3` und `testdata/saves/v3/` (Code steht auf 2, `engine/sim/island_save.go`). Danach braucht B-201 (Spielstand der Wirtschaft aus W2 bis W4) eine weitere Version.
 Optionen: (a) Reihenfolge des Fahrplans: S1 zuerst (v3), W1.3 bekommt v4; (b) W1 zuerst, S1.4 bekommt v4; (c) beide Änderungen in einer gemeinsamen Version.
 🤖 Empfehlung: (a), weil `docs/sprints/README.md` S1 vor W1 führt und beide SIM sind (nacheinander). B-201 folgt dann mit v5; (c) koppelt zwei Sprints und widerspricht „ein Commit je Session“.
+
+## Block 6 – Bau-Modell (Bauplätze aus dem Seed)
+
+Anlass: 🧑 ersetzt am 2026-10-04 das Modell „Hub wächst, Mauer wandert“ (Q26) durch feste Bauplätze wie im Vorbild Kingdom Two Crowns (Q43; dazu Hub-Ausbau an der Burg Q44, Turm-Stufen Q45, Krieger-Posten Q46, Beschlüsse in der zweiten Runde). Ist-Stand: Bauplätze sind feste Offsets aus `data/hub.json` › `sites` ab der Seed-abhängigen Hub-Mitte (`engine/sim/world.go`), der Spielstand ordnet über `kind@x` zu (`engine/sim/save.go`), `outerWall`/`blockingWall`/`freeTower` arbeiten mit der äußersten gebauten Mauer; der Level-RNG-Strom `rng.New(b.ID+":"+seed)` (`engine/level/level.go`) darf nicht zusätzlich verbraucht werden. Alle Fragen sind am 2026-10-04 geklärt.
+
+**Q47 · Was wandert mit der äußersten Mauer?** (B-116, B-206, W0, W3.1). Im Vorbild rücken einige Bauwerke mit der äußersten Mauer nach außen. Feste Plätze vertragen das nur, wenn je Linie ein eigener Platz existiert.
+Optionen: (a) nur das Tor: je Linie ein fester Tor-Platz, bezahlbar nur an der äußersten gebauten Linie; (b) Tor und Turm wandern; (c) Tor plus ein Wachplatz für Krieger.
+🤖 Empfehlung: (a). Der Turm hat je Linie ohnehin einen eigenen Platz (Q49), Krieger-Posten leiten sich ab (Q46); ein Wachplatz wäre ein Bauplatz ohne Bau.
+
+**Q48 · Freischaltung der Mauerlinien** (B-112, B-206, W0, W1). Mit mehreren Linien je Seite braucht es eine Reihenfolge.
+Optionen: (a) Linie k bezahlbar ab Hub-Stufe k, sobald Linie k−1 derselben Seite gebaut ist (Material egal), jede Seite für sich; (b) zusätzlich muss Linie k−1 die Material-Stufe k−1 haben; (c) alle Linien sofort bezahlbar.
+🤖 Empfehlung: (a). Fortschritt hängt an der Hub-Stufe, die Seiten bleiben unabhängig; (b) zwingt zu Ausbau vor Ausdehnung, (c) macht die Hub-Stufe für Mauern wirkungslos.
+
+**Q49 · Anzahl und Lage der Mauerlinien** (B-206, W0). Heute steht je Seite eine Mauer bei ±44 und ein Turm bei ±36 (`data/hub.json`); Portale halten mindestens 150 Units Abstand.
+Optionen: (a) 5 Linien je Seite im Abstand 20 (±44/64/84/104/124), Turm 8 innen, Tor 4 außen; (b) 3 Linien; (c) Linien je Biom verschieden.
+🤖 Empfehlung: (a). Eine Linie je Hub-Stufe, Linie 1 = heutige Mauer und Turm (alte Spielstände bleiben kompatibel), alle Linien unter 150.
+
+**Q50 · Was streut je Seed?** (B-206, W0). Im Vorbild liegen Bauplätze je Welt anders; ein Streuen über den Level-RNG würde Ressourcen, Portale, Camps und Golden-Level verschieben.
+Optionen: (a) Linie 1 und Hub-Plätze fest, Linien 2–5 streuen ±4 Units über einen eigenen RNG-Strom; (b) nichts streut; (c) alles streut.
+🤖 Empfehlung: (a). Abwechslung ohne Golden-Bruch; der Kern bleibt lernbar.
+
+**Q51 · Hub-Plätze im Vorfeld, Farm als Weltplatz** (B-114, B-206, W0, W2.1). Zwischen Burg und Linie 1 ist nur Platz für wenige Gebäude (±44), Farm mit Plantage-Streifen braucht Breite.
+Optionen: (a) Hub-Plätze dürfen zwischen Linie 1 und 2 liegen (ungeschützt bis Linie 2), Farm als fester Weltplatz je Seite dort; (b) nur die Farm liegt außen; (c) den Kern verbreitern (Linie 1 weiter außen).
+🤖 Empfehlung: (a). Das Vorfeld macht Linie 2 wertvoll; (c) bricht alte Spielstände.
+
+**Q52 · Angebots-Zahlziele als Anhänge** (B-121, B-122, B-206, W0, W4.2, W4.3). Q34 verlangt je Angebot ein eigenes Zahlziel neben dem Gebäude; offen ist, wo es liegt.
+Optionen: (a) Anhang mit festem `dx` am Gebäude (`data/buildings.json`), entsteht mit dem Bau; (b) eigene Hub-Plätze je Angebot; (c) Zahlziele gestapelt am Gebäude.
+🤖 Empfehlung: (a) mit Test „alle `dx` liegen frei“ (kein Zahlziel überlappt ein anderes).
+
+**Q53 · Ort des Schwert-Zahlziels** (B-014, B-122, W4.3). Das Schwert entsteht in der Werkstatt (`buerger.md` § 2).
+Optionen: (a) Anhang an der Werkstatt; (b) neben der Kaserne; (c) an der Mauer.
+🤖 Empfehlung: (a) mit `dx +4`.
+
+**Q54 · Innere Linie nach dem Bau einer äußeren** (B-116, B-122, B-206, W0, W3.1, W4.3). Mit Linie k+1 steht innen weiter Linie k mit Turm und eventuell Tor.
+Optionen: (a) Turm und Tor innen bleiben stehen und wirken weiter (zweite Sperre); (b) das innere Tor wird abgerissen; (c) das Tor wird nach außen verlegt.
+🤖 Empfehlung: (a); Krieger stehen nur an der äußersten Linie (Q46).
+
+**Q55 · Treppen und Händler** (B-121, B-206, W0). Treppen (+16/+24) und Händler (+8, Q36) haben heute Hub-Offsets.
+Optionen: (a) bleiben Hub-Plätze; (b) Treppen als Weltplatz; (c) der Händler wandert mit der äußersten Linie.
+🤖 Empfehlung: (a): Treppen +16/+24, Händler +8/+12, nur Tiefe 0.

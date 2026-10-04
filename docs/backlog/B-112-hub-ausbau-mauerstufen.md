@@ -16,7 +16,7 @@ Der Hub hat feste Bauplätze mit je einem Gebäude (`data/hub.json`), Mauer und 
 
 ## Ziel
 
-Jeder Hub hat Ausbaustufen 1 bis 5 (Gold plus Material der neuen Stufe), der Turm wird am selben Platz, die Mauer auf der mit dem Ausbau wandernden Position (Q26) auf Stufe 1 bis 5 (Holz bis Kristall) ausgebaut, Gebäude schalten mit der Hub-Stufe frei. Nutzen: Fortschritt über Tiefe und Material (`docs/rules/materialien-gebaeude.md` §§ 2–4).
+Jeder Hub hat Ausbaustufen 1 bis 5 (Gold plus Material der neuen Stufe), Mauer und Turm werden an ihren festen Plätzen der Mauerlinien auf Stufe 1 bis 5 (Holz bis Kristall) ausgebaut, Linien und Gebäude schalten mit der Hub-Stufe frei (Q43, Q48). Nutzen: Fortschritt über Tiefe und Material (`docs/rules/materialien-gebaeude.md` §§ 2–4).
 
 ## Beteiligte und Zielgruppen
 
@@ -25,9 +25,10 @@ Spieler (2+ Monarchen) und Bauern; Werte pflegt REG, Feintuning mit B-099 und B-
 ## Anforderungen
 
 - `data/hub.json` › `levels`: Ausbau auf Stufe 2: 100 Stein + 50 Gold, 3: 150 Kupfer + 100 Gold, 4: 200 Eisen + 200 Gold, 5: 250 Kristall + 400 Gold.
-- `data/buildings.json`: Mauer und Turm mit Stufen 1–5 (Kosten, HP, Bauzeit laut `materialien-gebaeude.md` § 3.1); Ausbau läuft beim Turm am selben Bauplatz, die Mauer wandert auf die Position der Stufe (Q26) (Gold zahlen, Material abbuchen, Bauer baut).
+- Der Hub-Ausbau wird an der **Burg** (Hub-Mitte, wird Zahlziel) bezahlt, ein Bauer baut; Bauzeit 20/30/40/50 s für Stufe 2–5 (Startwerte; Beschluss Q44, 2026-10-04).
+- `data/buildings.json`: Mauer und Turm mit Stufen 1–5 (Kosten, HP, Bauzeit laut `materialien-gebaeude.md` § 3.1); Turm Stufe 2–5: 75 Stein + 25 Gold, 100 Kupfer + 50 Gold, 125 Eisen + 100 Gold, 150 Kristall + 200 Gold, Bauzeit 15/20/27/33 s (Startwerte; Beschluss Q45, 2026-10-04). Ausbau läuft bei Mauer und Turm **am selben Platz** (Gold zahlen, Material abbuchen, Bauer baut; Q43).
 - Gebäude und Mauer-/Turm-Stufen der Stufe n sind erst mit Hub-Stufe n baubar (Liste in `materialien-gebaeude.md` § 3).
-- **Der Hub wächst mit dem Ausbau** (Hub-Stufe und entsprechender Mauerausbau) auf eine Breite, die den mit der Stufe freigeschalteten Gebäuden Platz gibt, wie im Vorbild Kingdom Two Crowns; erweitert wird nur mit entsprechendem Mauerausbau. Breiten je Stufe und Offsets sind Startwerte der Planung (W1). Mauer- und Tor-Offsets können dabei wandern; die Spielstand-Zuordnung über `kind@x` deckt das ab (gemeinsame Version 3, B-202). Fehlt der Platz, Hinweis „Kein Platz für <Gebäude>“ über dem Hub (B-207) (Beschluss Q26, 2026-10-04).
+- **Mauerlinien** (Layout aus B-206, Sprint W0): Linie k ist bezahlbar ab Hub-Stufe k, sobald Linie k−1 derselben Seite gebaut ist (Material egal); jede Seite für sich (Beschluss Q48, 2026-10-04). Kein Platz bewegt sich, die Spielstand-Zuordnung über `kind@x` bleibt stabil (Q43; ersetzt „Hub wächst“ aus Q26).
 - Zerstörung: Mauer/Turm verliert die Stufe (neu ab Holzstufe), die Hub-Stufe bleibt; Gold und Material sind verloren.
 - Reparatur: Bauern reparieren beschädigte Gebäude zwischen den Wellen kostenlos (Anteil der Bauzeit).
 - Ereignisse `upgraded` und `repaired` für Anzeige und Messung.
@@ -51,7 +52,7 @@ Material fehlt → Ausbau wartet (Wartezeit sichtbar, B-117). Ausbau während ei
 ## Akzeptanzkriterien
 
 - **AC-01** Test: Ausbau auf Stufe 2 bis 5 bucht Gold und Material laut `hub.json` ab.
-- **AC-02** Test: Mauer-Stufe 2 auf der Position der Stufe (Q26) mit Kosten und HP laut Daten; Stufe 3 braucht Hub-Stufe 3.
+- **AC-02** Test: Mauer-Stufe 2 am selben Platz mit Kosten und HP laut Daten; Stufe 3 braucht Hub-Stufe 3; Linie 2 einer Seite ist erst mit Hub-Stufe 2 und gebauter Linie 1 derselben Seite bezahlbar (Q43, Q48).
 - **AC-03** Test: Gebäude einer höheren Stufe sind vor dem Hub-Ausbau nicht bezahlbar.
 - **AC-04** Test: Zerstörung setzt die Mauer-Stufe zurück, die Hub-Stufe bleibt.
 - **AC-05** Test: Reparatur stellt HP zwischen den Wellen her, ohne Gold und Material.
@@ -59,8 +60,8 @@ Material fehlt → Ausbau wartet (Wartezeit sichtbar, B-117). Ausbau während ei
 
 ## Offene Fragen
 
-Konkrete Hub-Breiten je Stufe und Offsets: Startwerte der Planung (W1), 🧑 bestätigt sie bei der Spec-Freigabe (Q26).
+keine (Hub-Breiten und Offsets aus Q26 entfallen durch Q43; Linien-Lagen kommen aus B-206).
 
 ## Notizen
 
-Aus R2.2 und R2.3. Abhängig von B-100 und B-113. Zahlen sind Startwerte (B-015).
+Aus R2.2 und R2.3. Abhängig von B-100, B-113 und B-206 (Bauplätze, W0). Zahlen sind Startwerte (B-015).

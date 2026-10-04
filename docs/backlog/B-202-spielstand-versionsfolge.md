@@ -31,7 +31,7 @@ Entwickler (SIM), Review-Sessions S1.5 und W1.4; 🧑 hat die gemeinsame Version
 
 - Wer zuerst landet, hebt `IslandSaveVersion` auf 3 und legt die Fixture `testdata/saves/v3/` an (Migration 1 → 3 und 2 → 3) (Beschluss Q42, 2026-10-04).
 - Die zweite Session ergänzt ihre Felder **optional** (`omitempty`) in Version 3, ohne neue Version, und erweitert die Fixture; ein v3-Stand ohne ihre Felder lädt mit Startzustand (Beschluss Q42, 2026-10-04).
-- Die Zuordnung der Plätze über `kind@x` deckt Mauer- und Tor-Offsets ab, die mit dem Hub-Ausbau wandern (Beschluss Q26, 2026-10-04).
+- v3 trägt nur Hub-Stufe und Platz-Stufe; wandernde Offsets gibt es nicht, die Zuordnung der Plätze über `kind@x` bleibt stabil (Beschluss Q43, 2026-10-04; ersetzt Q26).
 - Die Session-Dateien beider Sprints nennen Version 3, denselben Fixture-Ordner und die Regel „wer zuerst landet“.
 - B-201 (Spielstand der Wirtschaft) folgt später mit Version 4 (Beschluss Q42, 2026-10-04).
 

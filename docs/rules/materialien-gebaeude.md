@@ -31,24 +31,42 @@ Fünf Materialien, eines je Hub-Stufe. Das Baumaterial gehört der **Insel** (al
 
 ## 2. Hub-Ausbau (Hub-Stufen 1 bis 5)
 
-Jeder Hub (jede Stufe einer Insel) hat eine **Ausbaustufe 1 bis 5**. Stufe n schaltet frei: Mauer- und Turm-Stufe n und die Gebäude der Stufe n (§ 3). Der Ausbau braucht **Gold plus das Material der neuen Stufe** aus dem Insel-Vorrat; Stufe 1 ist der Anfang.
+Jeder Hub (jede Stufe einer Insel) hat eine **Ausbaustufe 1 bis 5**. Stufe n schaltet frei: Mauer- und Turm-Stufe n und die Gebäude der Stufe n (§ 3). Der Ausbau braucht **Gold plus das Material der neuen Stufe** aus dem Insel-Vorrat; Stufe 1 ist der Anfang. Bezahlt wird an der **Burg** (Hub-Mitte, wird Zahlziel), ein Bauer baut (Q44, 2026-10-04).
 
-| Ausbau auf Stufe | Kosten | Zielkorridor |
-|---|---|---|
-| 2 | 100 Stein + 50 Gold | erreicht vor Tag 5: 60–85 % |
-| 3 | 150 Kupfer + 100 Gold | erreicht vor Tag 10: 40–70 % |
-| 4 | 200 Eisen + 200 Gold | Korridor mit B-099 (Insel 1 Stufe 4 noch nicht gebaut) |
-| 5 | 250 Kristall + 400 Gold | Korridor mit B-099 |
+| Ausbau auf Stufe | Kosten | Bauzeit (Startwert, Q44) | Zielkorridor |
+|---|---|---|---|
+| 2 | 100 Stein + 50 Gold | 20 s | erreicht vor Tag 5: 60–85 % |
+| 3 | 150 Kupfer + 100 Gold | 30 s | erreicht vor Tag 10: 40–70 % |
+| 4 | 200 Eisen + 200 Gold | 40 s | Korridor mit B-099 (Insel 1 Stufe 4 noch nicht gebaut) |
+| 5 | 250 Kristall + 400 Gold | 50 s | Korridor mit B-099 |
 
 Begründung: Fortschritt über Tiefe und Material, kein reines Goldsparen. Daten: neu `data/hub.json` › `levels` (SIM legt an).
 
 ## 3. Gebäude je Hub-Stufe
 
-Plätze sind **fest je Gebäude** wie heute (`data/hub.json` › `sites`, jeder Platz ein Gebäude, neue Plätze je Gebäude kommen in die Daten); es gibt **kein Bau-Menü**, die Taste Y bleibt frei (Q34/Q06, 2026-10-04). Der Turm wird **am selben Platz** auf die nächste Stufe ausgebaut, die Mauer wandert beim Ausbau auf die Position der Stufe (Q26, 2026-10-04).
+**Alles wird an festen Bauplätzen gebaut**, wie im Vorbild Kingdom Two Crowns (Q43, 2026-10-04). Kein Platz bewegt sich; jeder Platz trägt ein Gebäude und wird am selben Ort auf die nächste Stufe ausgebaut. Es gibt **kein Bau-Menü**, die Taste Y bleibt frei (Q34/Q06, 2026-10-04). Umsetzung: B-206 (Sprint W0).
 
-**Der Hub wächst mit dem Ausbau** (Q26, 2026-10-04): Mit Hub-Stufe und entsprechendem Mauerausbau wird der Hub so breit, dass die mit der Stufe freigeschalteten Gebäude Platz haben, wie im Vorbild Kingdom Two Crowns; erweitert wird nur mit entsprechendem Mauerausbau. Fehlt der Platz, erscheint über dem Hub der Hinweis „Kein Platz für <Gebäude>“ (B-207). Breiten je Stufe und Offsets sind **Startwerte der Planung (W1)**, 🧑 bestätigt sie bei der Spec-Freigabe. Mauer- und Tor-Offsets können dabei wandern; die Spielstand-Zuordnung über `kind@x` muss das abdecken (gemeinsame Spielstand-Version 3, B-202).
+| Platz-Klasse | Lage | Freischaltung | Quelle |
+|---|---|---|---|
+| **Hub-Platz** | fester Offset zur Hub-Mitte (`data/hub.json`): Burg (Hub-Mitte, Zahlziel des Hub-Ausbaus), Werkstatt, Lager, Kaserne, Taverne, Heilplatz, Schmiede, Rüstkammer, Treppen (+16/+24), Händler (+8/+12, nur Tiefe 0) | Hub-Stufe des Gebäudes (Tabelle unten) | Q43, Q55 |
+| **Mauerlinie** | je Seite 5 Linien mit Mauer-Platz und eigenem Turm-Platz (8 Units innen) | Linie k ab Hub-Stufe k, sobald Linie k−1 derselben Seite gebaut ist (Material egal); jede Seite für sich | Q48, Q49 |
+| **Tor-Platz** | je Linie einer, Mauer +4 Units außen | bezahlbar nur an der äußersten gebauten Linie der Seite (Tor ab Hub-Stufe 2) | Q47 |
+| **Farm-Weltplatz** | ein fester Weltplatz je Seite zwischen Linie 1 und 2 | Hub-Stufe 1 | Q51 |
+| **Angebots-Anhang** | Zahlziel mit festem `dx` am Gebäude (`data/buildings.json`), z. B. Schwert an der Werkstatt `dx +4` | entsteht mit dem Bau des Gebäudes | Q52, Q53 |
 
-**Auswahl am Platz** (Q34, 2026-10-04): Bietet ein Gebäude mehrere Angebote (Werkstatt, Schmiede, Rüstkammer), hat jedes Angebot ein **eigenes Zahlziel** neben dem Gebäude, keine neue Taste; ausgebildet bzw. aufgewertet wird der nächste freie Bauer bzw. Bogenschütze/Krieger.
+**Mauerlinien** (Startwerte; Q49, Q50, 2026-10-04): Linie 1 = heutige Mauer ±44 und Turm ±36 (alte Spielstände bleiben kompatibel), fest. Linien 2–5 liegen bei ±64/84/104/124 und **streuen je Seed um ±4 Units** über einen **eigenen RNG-Strom** (z. B. `…:sites`), damit Ressourcen, Portale, Camps und Golden-Level unverändert bleiben. Alle Linien liegen unter dem Portal-Mindestabstand 150.
+
+| Linie | Mauer | Turm (8 innen) | Tor (4 außen) | Streuung je Seed | bezahlbar ab Hub-Stufe |
+|---|---|---|---|---|---|
+| 1 | ±44 | ±36 | ±48 | fest | 1 |
+| 2 | ±64 | ±56 | ±68 | ±4 | 2 |
+| 3 | ±84 | ±76 | ±88 | ±4 | 3 |
+| 4 | ±104 | ±96 | ±108 | ±4 | 4 |
+| 5 | ±124 | ±116 | ±128 | ±4 | 5 |
+
+Hub-Plätze dürfen zwischen Linie 1 und Linie 2 liegen; sie sind ungeschützt, bis Linie 2 steht (Q51). Wird außen eine neue Linie gebaut, bleiben Turm und Tor innen stehen und wirken weiter als zweite Sperre (Q54). Krieger-Posten sind keine Bauplätze, sie leiten sich von der äußersten gebauten Sperre ab (Q46, `buerger.md` § 1).
+
+**Auswahl am Platz** (Q34, Q52, 2026-10-04): Bietet ein Gebäude mehrere Angebote (Werkstatt, Schmiede, Rüstkammer), hat jedes Angebot ein **eigenes Zahlziel** als Anhang mit festem `dx` am Gebäude, keine neue Taste; alle `dx` liegen frei (Test). Ausgebildet bzw. aufgewertet wird der nächste freie Bauer bzw. Bogenschütze/Krieger.
 
 | Hub-Stufe | Gebäude |
 |---|---|
@@ -62,15 +80,15 @@ Zusatzgebäude: **Lager** (Stufe 2), Taverne (Stufe 2), Heilplatz (Stufe 3).
 
 ### 3.1 Mauern und Türme (Stufen 1 bis 5)
 
-| Stufe | Material | Mauer: Kosten | Mauer: HP | Mauer: Bauzeit | Turm: HP |
-|---|---|---|---|---|---|
-| 1 | Holz | 20 Holz + 5 Gold | 300 | 6 s | 200 |
-| 2 | Stein | 30 Stein + 10 Gold | 600 | 9 s | 400 |
-| 3 | Kupfer | 40 Kupfer + 20 Gold | 1000 | 12 s | 700 |
-| 4 | Eisen | 50 Eisen + 40 Gold | 1600 | 16 s | 1100 |
-| 5 | Kristall | 60 Kristall + 80 Gold | 2500 | 20 s | 1700 |
+| Stufe | Material | Mauer: Kosten | Mauer: HP | Mauer: Bauzeit | Turm: Kosten | Turm: HP | Turm: Bauzeit |
+|---|---|---|---|---|---|---|---|
+| 1 | Holz | 20 Holz + 5 Gold | 300 | 6 s | 50 Holz + 20 Gold (wie heute) | 200 | wie heute |
+| 2 | Stein | 30 Stein + 10 Gold | 600 | 9 s | 75 Stein + 25 Gold | 400 | 15 s |
+| 3 | Kupfer | 40 Kupfer + 20 Gold | 1000 | 12 s | 100 Kupfer + 50 Gold | 700 | 20 s |
+| 4 | Eisen | 50 Eisen + 40 Gold | 1600 | 16 s | 125 Eisen + 100 Gold | 1100 | 27 s |
+| 5 | Kristall | 60 Kristall + 80 Gold | 2500 | 20 s | 150 Kristall + 200 Gold | 1700 | 33 s |
 
-Turm: Kosten etwa das 2,5-Fache der Mauer, gerundet (der bestehende Turm 50 Holz + 20 Gold bleibt Stufe 1); 2 Bogenplätze, +3 Reichweite. Stufe 5 ist der **Zaubertum**: Flächenschaden statt Bogen, als eigener Schuss mit den Startwerten 40 Schaden, Radius 3, Reichweite 13, alle 1,5 s; die Schützen steigen beim Ausbau ab und zählen weiter als Kämpfer (Q31, 2026-10-04). Daten: `data/buildings.json` (SIM legt Stufen an).
+Turm: Kosten und Bauzeiten der Stufen 2–5 sind Startwerte (Q45, 2026-10-04), Ausbau am selben Platz; 2 Bogenplätze, +3 Reichweite. Stufe 5 ist der **Zaubertum**: Flächenschaden statt Bogen, als eigener Schuss mit den Startwerten 40 Schaden, Radius 3, Reichweite 13, alle 1,5 s; die Schützen steigen beim Ausbau ab und zählen weiter als Kämpfer (Q31, 2026-10-04). Daten: `data/buildings.json` (SIM legt Stufen an).
 Zielkorridor: Erste Mauer vor Ende Tag 1 in ≥ 90 %; erster Turm vor Ende Tag 2 in ≥ 70 %.
 
 ### 3.2 Wirkungen der übrigen Gebäude
@@ -79,15 +97,15 @@ Zielkorridor: Erste Mauer vor Ende Tag 1 in ≥ 90 %; erster Turm vor Ende Tag 2
 |---|---|---|
 | **Burg** | Hub-Kern; fällt sie, wirkt der Niederlage-Modus (`stufen.md` § 4) | HP 1000 |
 | **Mauer** | blockiert Gegner (außer `ignoresWalls`) | siehe 3.1 |
-| **Tor** | eigene Truppen und Spieler passieren, Gegner nicht; je Seite ein Tor **außen** vor der äußersten Mauer (auf Hub-Stufe 1: ±48), für Gegner wie eine Mauer (Hindernis und Angriffsziel), nicht für den Posten der Bogenschützen (`outerWall`) (Q27, 2026-10-04) | Startwerte wie heute (30 Holz + 10 Gold, 250 HP), ab Stufe 2 (Stein) |
-| **Werkstatt** | Bogen und Schwert, je bis 3 im Waffenregal | wie heute (40 Holz + 15 Gold, 150 HP) |
-| **Farm** | Baumplantage: 6 Plätze, je Platz alle 30 s ein Baum (10 Holz), siehe § 1 | wie heute (30 Holz + 10 Gold, 100 HP) |
+| **Tor** | eigene Truppen und Spieler passieren, Gegner nicht; je Linie ein fester Tor-Platz 4 Units außen vor der Mauer (Linie 1: ±48), bezahlbar nur an der äußersten gebauten Linie (Q47, 2026-10-04); für Gegner wie eine Mauer (Hindernis und Angriffsziel), nicht für den Posten der Bogenschützen (`outerWall`) (Q27, 2026-10-04); ein inneres Tor bleibt stehen und wirkt weiter (Q54) | Startwerte wie heute (30 Holz + 10 Gold, 250 HP), ab Stufe 2 (Stein) |
+| **Werkstatt** | Bogen und Schwert, je bis 3 im Waffenregal; Schwert-Zahlziel als Anhang `dx +4` (Q53, 2026-10-04) | wie heute (40 Holz + 15 Gold, 150 HP) |
+| **Farm** | Baumplantage: 6 Plätze, je Platz alle 30 s ein Baum (10 Holz), siehe § 1; fester Weltplatz je Seite zwischen Linie 1 und 2 (Q51, 2026-10-04) | wie heute (30 Holz + 10 Gold, 100 HP) |
 | **Kaserne** | Truppen-Limit +10 (Basis 10, einfach gebaut); Regel und Prüfung beim Waffe-Holen: `buerger.md` § 3 | wie heute (60 Stein + 30 Gold, 200 HP) |
 | **Lager** | +300 Kapazität je Rohstoff für die Insel; Arbeiter bringen Material hierher oder zur Burg | Startwert: 50 Stein + 20 Gold, HP 200, Bauzeit 8 s |
-| **Taverne** | bei jedem `dawn` ein Landstreicher an der Taverne, solange dort weniger als 2 stehen; Wanderradius 6; eigene Werte in `data/` (Q30, 2026-10-04) | Startwert: 60 Stein + 30 Gold, HP 150, Bauzeit 12 s (Q26) |
-| **Heilplatz** | heilt Truppen und Spieler in Reichweite, **immer** (auch im Kampf); Startwerte 5 HP/s, Radius 6 um den Platz (Q32, 2026-10-04) | Startwert: 50 Kupfer + 30 Gold, HP 150, Bauzeit 12 s (Q26) |
-| **Schmiede** | Elite-Upgrades (Werte in `buerger.md`) | Startwert: 80 Kupfer + 50 Gold, HP 250, Bauzeit 16 s (Q26) |
-| **Rüstkammer** | Rüstung und Waffen-Upgrade für alle Truppen (Werte in `buerger.md`) | Startwert: 100 Eisen + 100 Gold, HP 350, Bauzeit 16 s (Q26) |
+| **Taverne** | bei jedem `dawn` ein Landstreicher an der Taverne, solange dort weniger als 2 stehen; Wanderradius 6; eigene Werte in `data/` (Q30, 2026-10-04) | Startwert: 60 Stein + 30 Gold, HP 150, Bauzeit 12 s (Q26, gilt nach Q43) |
+| **Heilplatz** | heilt Truppen und Spieler in Reichweite, **immer** (auch im Kampf); Startwerte 5 HP/s, Radius 6 um den Platz (Q32, 2026-10-04) | Startwert: 50 Kupfer + 30 Gold, HP 150, Bauzeit 12 s (Q26, gilt nach Q43) |
+| **Schmiede** | Elite-Upgrades (Werte in `buerger.md`) | Startwert: 80 Kupfer + 50 Gold, HP 250, Bauzeit 16 s (Q26, gilt nach Q43) |
+| **Rüstkammer** | Rüstung und Waffen-Upgrade für alle Truppen (Werte in `buerger.md`) | Startwert: 100 Eisen + 100 Gold, HP 350, Bauzeit 16 s (Q26, gilt nach Q43) |
 | **Treppen** | Verbindung zur Stufe darüber/darunter, je 1 je Hub, ab Hub-Stufe 2 | 100 Stein + 50 Gold, HP 500, 20 s |
 
 Die Startwerte für Taverne, Heilplatz, Schmiede und Rüstkammer sind **Vorschläge des Agenten** (🧑 hat die Wirkung beschlossen, nicht die Zahlen) und werden mit B-099 geprüft.
@@ -96,7 +114,7 @@ Die Startwerte für Taverne, Heilplatz, Schmiede und Rüstkammer sind **Vorschl�
 
 | Regel | Begründung | Zielkorridor |
 |---|---|---|
-| Ablauf wie heute: Gold zahlen → Material wird automatisch aus dem Insel-Vorrat abgebucht → ein Bauer baut. Ausbau einer Mauer-Stufe läuft genauso; die Mauer wandert dabei auf die Position der Stufe (Q26). | Eine Taste, Material kommt aus dem gemeinsamen Vorrat. | Wartezeit „bezahlt bis gebaut“: Median ≤ 60 s (Kennzahl fehlt, B-099) |
+| Ablauf wie heute: Gold zahlen → Material wird automatisch aus dem Insel-Vorrat abgebucht → ein Bauer baut. Ausbau einer Mauer- oder Turm-Stufe läuft genauso, **am selben Platz**; der Hub-Ausbau wird an der Burg bezahlt (Q43, Q44, 2026-10-04). | Eine Taste, Material kommt aus dem gemeinsamen Vorrat. | Wartezeit „bezahlt bis gebaut“: Median ≤ 60 s (Kennzahl fehlt, B-099) |
 | **Reparatur:** Bauern reparieren beschädigte Gebäude zwischen den Wellen **kostenlos** (Anteil der Bauzeit). | Beschädigte Mauern sollen sich erholen. | Zerstörte Gebäude je Welle 1–5: Median höchstens 1 |
 | **Zerstörung:** Wird ein Gebäude zerstört, ist der Platz leer; **Gold und Material sind verloren**; bei Mauern und Türmen geht die Stufe verloren (neu ab Holzstufe), die Hub-Stufe bleibt. | Verlust tut weh, der Hub-Fortschritt nicht. | – |
 | Wartet ein Bauplatz auf Bauer oder Material, wird das in der Welt angezeigt (CLI-Ticket). | Spieler sollen wissen, was fehlt. | – |
@@ -105,10 +123,10 @@ Die Startwerte für Taverne, Heilplatz, Schmiede und Rüstkammer sind **Vorschl�
 ## 5. Offen und Annahmen
 
 - Die Zahlen für **Stufen 4 und 5** (Eisen, Kristall) und die Stufen selbst werden erst messbar, wenn Insel 1 sie enthält; ihre Zielkorridore folgen mit B-099.
-- Startwerte für Taverne, Heilplatz, Schmiede, Rüstkammer (§ 3.2) und die Turm-Kosten (2,5-faches der Mauer) sind Vorschläge ohne gesonderte Bestätigung.
+- Startwerte für Taverne, Heilplatz, Schmiede, Rüstkammer (§ 3.2) sind Vorschläge ohne gesonderte Bestätigung; Turm-Kosten und -Bauzeiten (§ 3.1) und die Bauzeiten des Hub-Ausbaus (§ 2) hat 🧑 als Startwerte beschlossen (Q44, Q45, 2026-10-04).
 - Elite-Upgrades (Schmiede) und Rüstung/Waffen (Rüstkammer): Werte und Wirkung stehen in `buerger.md` (R3.3). Bürger-Fortschritt gehört zu B-110.
 - Die Wirkung „Farm: +5 Holz je Tagesanbruch“ und „Taverne: 1 Landstreicher je `dawn`, höchstens 2“ sind Startwerte (Wirtschaftsbalance, B-099).
-- Beschlüsse vom 2026-10-04 (Fragenkatalog Q25–Q42): Bauzeiten von Taverne, Heilplatz (12 s), Schmiede und Rüstkammer (16 s) sind beschlossen; Hub-Breiten je Stufe und Offsets sind Startwerte der Planung (W1) und warten auf die Bestätigung durch 🧑 bei der Spec-Freigabe; Zaubertum- und Heilplatz-Werte sind Startwerte.
+- Beschlüsse vom 2026-10-04 (Fragenkatalog Q25–Q42): Bauzeiten von Taverne, Heilplatz (12 s), Schmiede und Rüstkammer (16 s) sind beschlossen; Zaubertum- und Heilplatz-Werte sind Startwerte. Das Modell „Hub wächst“ aus Q26 ist durch feste Bauplätze ersetzt (Q43–Q55, 2026-10-04, zweite Runde); Linien-Lagen und Streuung (§ 3) sind Startwerte, die Offsets der neuen Hub-Plätze legt W0 an (B-206).
 - Das Rate-Modell (Plantage, Adern, Raten) und die Breiten der Eisenstollen und Kristallhöhle sind **Startwerte** (🧑 hat Plantage + Adern beschlossen; Adernzahl 2, Raten und 6 Plätze/30 s hat er mit „Vorschlag“ übernommen). Die Kosten aus R2.2 bleiben, **jeder Hub baut die ganze Liste**.
 - Gemessene Level-Mengen (100 Seeds, Mittel): Wald 39 Bäume (≈ 390 Holz), 3 Felsen; Höhle 23 Felsen (≈ 230 Stein); Mine 6 Felsen, 3,4 Kupfererz (≈ 34 Kupfer, p10 = 0); damit tragen die Level allein die Kosten nicht, deshalb Plantage und Adern.
 - Annahme: Die Kapazität der Insel ist die Summe aus 300 je Hub und 300 je Lager (🧑 hat „Burg als Basislager, Lager erweitern“ gewählt, die Summenbildung über Hubs ist nicht gesondert bestätigt); Startwerte für das Lager (50 Stein + 20 Gold, 8 s) sind ein Vorschlag.
