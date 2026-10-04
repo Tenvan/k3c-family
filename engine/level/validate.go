@@ -51,10 +51,29 @@ func validateChunks(l Layout, b Biome) []string {
 			add("Portal zu nah am Hub (%s Units)", strconv.FormatFloat(dist, 'f', -1, 64))
 		}
 	}
+	errs = append(errs, validatePortalsOutsideLines(l)...)
 	for _, kind := range eventKinds {
 		want, n := b.EventChunks[kind], countKind(l, kind)
 		if n < want.Min || n > want.Max {
 			add("%s: %d (erwartet %d-%d)", kind, n, want.Min, want.Max)
+		}
+	}
+	return errs
+}
+
+// validatePortalsOutsideLines meldet Portale, die nicht außerhalb des äußersten Tors ihrer Seite liegen (Q49, Q57).
+func validatePortalsOutsideLines(l Layout) []string {
+	var errs []string
+	for _, c := range l.Chunks {
+		if c.Kind != "portal" {
+			continue
+		}
+		dx := c.StartUnits + l.ChunkWidthUnits/2 - l.HubCenterUnits
+		for _, line := range l.Lines {
+			if float64(line.Side)*dx > 0 && math.Abs(dx) <= math.Abs(line.Gate-l.HubCenterUnits) {
+				errs = append(errs, fmt.Sprintf("Portal innerhalb der äußersten Linie (%s Units)", strconv.FormatFloat(math.Abs(dx), 'f', -1, 64)))
+				break
+			}
 		}
 	}
 	return errs

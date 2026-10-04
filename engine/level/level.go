@@ -3,6 +3,7 @@
 // Aufbau: [Rand/Ausgang] ... [Portal] ... [Chunks] [HUB] [Chunks] ... [Portal] ... [Ausgang/Rand].
 // Gleicher Seed => gleiches Level wie in TypeScript; geprüft gegen testdata/golden/level-*.json.
 // Die Reihenfolge der RNG-Aufrufe ist Teil des Vertrags und darf sich nicht ändern.
+// Die Mauerlinien (lines.go) streuen aus einem eigenen Strom `<biom>:<seed>:sites` und berühren ihn nicht.
 package level
 
 import (
@@ -35,6 +36,8 @@ type Layout struct {
 	HubCenterUnits  float64  `json:"hubCenterUnits"`
 	Chunks          []Chunk  `json:"chunks"`
 	Entities        []Entity `json:"entities"`
+	// Lines sind die Mauerlinien je Seite (links, dann rechts, je von innen); ohne JSON-Ausgabe bis B-208.
+	Lines []WallLine `json:"-"`
 }
 
 // eventKinds in fester Reihenfolge wie `EVENT_KINDS` in TS.
@@ -85,7 +88,7 @@ func Generate(b Biome, seed string) (Layout, error) {
 	sort.SliceStable(entities, func(i, j int) bool { return entities[i].X < entities[j].X })
 	return Layout{
 		Seed: seed, BiomeID: b.ID, WidthUnits: float64(len(chunks)) * g.cw, ChunkWidthUnits: g.cw,
-		HubCenterUnits: g.hub, Chunks: chunks, Entities: entities,
+		HubCenterUnits: g.hub, Chunks: chunks, Entities: entities, Lines: generateLines(b.ID, seed, g.hub),
 	}, nil
 }
 
@@ -143,7 +146,8 @@ func (g *gen) eligible(left bool) []int {
 	return out
 }
 
-// placeEvents belegt Truhen- und Camp-Chunks; Camps bevorzugt nah am Hub.
+// placeEvents belegt Truhen- und Camp-Chunks; Camps bevorzugt nah am Hub, aber zuerst Chunks, deren Mitte bei jeder
+// Streuung auf Abstand zu allen Linien-Plätzen liegt (B-261). Die Würfe bleiben dieselben, nur die Sortierung ändert sich.
 func (g *gen) placeEvents(seed string) error {
 	for _, kind := range eventKinds {
 		want := g.b.EventChunks[kind]
@@ -153,16 +157,41 @@ func (g *gen) placeEvents(seed string) error {
 			return fmt.Errorf("level zu kurz für %dx %s (Seed %s)", count, kind, seed)
 		}
 		if kind == "recruitCamp" {
-			// Stabil wie Array.prototype.sort: gleich weit entfernte Slots behalten ihre Reihenfolge.
+			// Stabil: gleich gute Slots behalten ihre Reihenfolge aus dem Mischen.
 			sort.SliceStable(slots, func(i, j int) bool {
-				return math.Abs(g.center(slots[i])-g.hub) < math.Abs(g.center(slots[j])-g.hub)
+				di, dj := g.center(slots[i])-g.hub, g.center(slots[j])-g.hub
+				if ci, cj := clearOfLines(di), clearOfLines(dj); ci != cj {
+					return ci
+				}
+				return math.Abs(di) < math.Abs(dj)
 			})
 		}
 		for _, s := range slots[:count] {
 			g.kinds[s] = kind
 		}
 	}
+	g.swapCampsWithChests()
 	return nil
+}
+
+// swapCampsWithChests: Fehlt einem Camp ein freier Chunk auf Abstand zu den Linien (kurzes Level), tauscht es den
+// Chunk mit der hub-nächsten Truhe auf Abstand; Truhen sind keine Zahlziele (B-261). Kein Wurf, nur ein Tausch.
+func (g *gen) swapCampsWithChests() {
+	dist := func(i int) float64 { return math.Abs(g.center(i) - g.hub) }
+	for i, k := range g.kinds {
+		if k != "recruitCamp" || clearOfLines(g.center(i)-g.hub) {
+			continue
+		}
+		best := -1
+		for j, kj := range g.kinds {
+			if kj == "chest" && clearOfLines(g.center(j)-g.hub) && (best < 0 || dist(j) < dist(best)) {
+				best = j
+			}
+		}
+		if best >= 0 {
+			g.kinds[i], g.kinds[best] = "chest", "recruitCamp"
+		}
+	}
 }
 
 // entities setzt Burg, Portale, Ausgang, Ereignisse, Ressourcen und Skill-Punkte.

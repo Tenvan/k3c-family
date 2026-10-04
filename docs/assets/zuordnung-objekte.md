@@ -25,6 +25,10 @@ Skalierung ×2 bis ×3, Nachbearbeitung nur Skalieren und Palette.
 | `barracks` | `data/buildings.json` | `grafik/gothicvania-town` | `props-einzeln/house-c.png` | 16 px, Gothicvania (Dunkelviolett), ×2; Entscheidung 🧑 GR2.2 | CC0 1.0 | zugeordnet |
 | `stairsUp` | `data/buildings.json` | `grafik/gothicvania-town` | `tileset-einzeln/stairs*.png` (Treppen-Kacheln 16×32, 13 Dateien) | 16 px, Gothicvania (Dunkelviolett), ×2; Entscheidung 🧑 GR2.2 | CC0 1.0 | zugeordnet |
 | `stairsDown` | `data/buildings.json` | `grafik/phantasy-dungeon-entrance` | `ebenen/dungeon-door.png` (Ausschnitt Verlies-Eingang aus 368×208), Variante `ebenen/dungeon-door-skull.png` | 16 px, ansimuz (Braun), ×2; Vermerk: Palette weicht ab; Entscheidung 🧑 GR2.2 | CC0 1.0 | zugeordnet |
+| `tavern` | `data/buildings.json` | – | – | Ziel: 16/32 px, Gothicvania, ×2–×3 (Q13) | Ziel: CC0 oder CC-BY | **Lücke: keine Grafik, B-162** |
+| `healer` | `data/buildings.json` | – | – | Ziel: 16/32 px, Gothicvania, ×2–×3 (Q13) | Ziel: CC0 oder CC-BY | **Lücke: keine Grafik, B-162** |
+| `smithy` | `data/buildings.json` | – | – | Ziel: 16/32 px, Gothicvania, ×2–×3 (Q13) | Ziel: CC0 oder CC-BY | **Lücke: keine Grafik, B-162** |
+| `armory` | `data/buildings.json` | – | – | Ziel: 16/32 px, Gothicvania, ×2–×3 (Q13) | Ziel: CC0 oder CC-BY | **Lücke: keine Grafik, B-162** |
 
 ## Gegner
 

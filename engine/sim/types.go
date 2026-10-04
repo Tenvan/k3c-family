@@ -159,6 +159,7 @@ type Projectile struct {
 	Team     string  `json:"team"` // player, enemy
 	Damage   float64 `json:"damage"`
 	Speed    float64 `json:"speed"`
+	Cause    string  `json:"-"` // Gegnerart des Schützen für playerDown (B-182), ohne Ausgabe
 }
 
 // Pickup ist eine Truhe oder ein Skill-Punkt.
@@ -217,6 +218,9 @@ type World struct {
 
 	WidthUnits float64   `json:"widthUnits"`
 	HubX       float64   `json:"hubX"`
+	// HubLevel ist die Hub-Stufe (Start 1); bis W1.1 nur für die Linien- und Tor-Regel (lines.go, Q59), nicht
+	// gespeichert (W1.3) und ohne JSON-Ausgabe (B-208).
+	HubLevel int `json:"-"`
 	Cycle      CycleInfo `json:"cycle"`
 	Aggression *float64  `json:"aggression"` // nur unter Tage (0..100), sonst null
 	Wave       int       `json:"wave"`

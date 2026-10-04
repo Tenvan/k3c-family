@@ -109,7 +109,7 @@ func replayWorld(t *testing.T, file string, from int, each func(tick int, w *sim
 func TestDeltaErgibtJedenVollenZustand(t *testing.T) {
 	var client, prev map[string]any
 	changes := map[string]int{}
-	replayWorld(t, "sim-cave-belagerung.json", 3500, func(tick int, w *sim.World) {
+	replayWorld(t, "sim-cave-belagerung.json", 2400, func(tick int, w *sim.World) {
 		cur := stateOf(w, 0, false)
 		if prev == nil {
 			client, prev = wire(t, cur), cur
