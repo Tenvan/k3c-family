@@ -11,7 +11,7 @@ Network-Client-Schicht (Protocol Adapter) zum Go-Server: WebSocket `/ws`, Protok
 - Reconnect: `dropped()` mit Backoff (`RETRY_FIRST_MS` 500 bis `RETRY_MAX_MS` 4000), Aufgabe nach `RECONNECT_LIMIT_MS` (`lost`); Geräte-ID dauerhaft in `localStorage` (`getDeviceId`).
 - Nachrichtentypen: `clientProtocol.ts` (`PROTOCOL_VERSION` 3, `WS_PATH`, `ServerMessage`, `ClientMessage`, `DevMessage`, `WorldState`, `ErrorCode`, `INPUT_KEEPALIVE_MS`).
 - Delta-Anwendung: `clientDelta.ts` `applyDelta()` (Listen mit `id` als `{set, del}` gemerged, `null` ist ein Wert, `events` pro Tick neu).
-- Darstellung: `clientTimeline.ts` (`Timeline`: Puffer empfangener Zustände, gezeichnet zur geschätzten Server-Zeit minus `delayMs` (1 Tick bis `MAX_DELAY_MS` 150, folgt der Ankunfts-Schwankung), Tempo der Darstellungszeit ±25 %, Extrapolation bis `MAX_EXTRAPOLATE_MS` 100), `clientInterpolation.ts` (`interpolate`, `alpha` > 1 extrapoliert, `TELEPORT_UNITS` ohne Überblendung), `clientWorld.ts` (`createViewWorld`, `applyState` schreibt in dasselbe `World`-Objekt).
+- Darstellung: `clientTimeline.ts` (`Timeline`: Puffer empfangener Zustände, gezeichnet zur geschätzten Server-Zeit minus `delayMs` (1 Tick bis `MAX_DELAY_MS` 150, folgt der Ankunfts-Schwankung), Tempo der Darstellungszeit ±25 %, Extrapolation bis `MAX_EXTRAPOLATE_MS` 100), `clientInterpolation.ts` (`interpolate`, `alpha` > 1 extrapoliert, `TELEPORT_UNITS` ohne Überblendung), `clientPredict.ts` (`Predictor`: Anzeige-Vorhersage des x der lokalen Monarchen, Zug `PULL` zum neuesten Server-x, `SNAP_UNITS` übernimmt, Geschwindigkeit beobachtet, Rückfall `base.speed`), `clientLatency.ts` (`LatencyMeter`: `seq` → erster Zustand mit `ack` ≥ `seq`, Mittel/p95 über 60 s, `RoomClient.latency`), `clientWorld.ts` (`createViewWorld`, `applyState` schreibt in dasselbe `World`-Objekt).
 - `protocol.ts`: ältere Snapshot-Hilfen (`ONLINE_PATH`, `snapshotWorld`, `applySnapshot`, `sanitizeInput`); nur in `src/scenes/noSim.test.ts` referenziert.
 
 ## Flow
@@ -20,7 +20,7 @@ Network-Client-Schicht (Protocol Adapter) zum Go-Server: WebSocket `/ws`, Protok
 2. `rooms` füllt die Lobby; `create`/`join` → `joined {room, you}` → Status `room`; `level {depth, layout}` setzt `LevelInfo`.
 3. `snap` setzt den vollen Zustand, `delta` wird per `applyDelta` darauf angewendet (ohne vorherigen `snap` verworfen); jeder Tick landet als `Frame {tick, ack, receivedAt, state}` in der Queue.
 4. Szene holt pro Frame `takeFrames()`, schiebt sie in die `Timeline` (Ereignisse sofort je Frame), zeichnet `timeline.sample(now)` und schreibt über `applyState` ins `World`.
-5. Eingabe: `sendInput(SlotInput[])` sendet bei Änderung (höchstens `tickHz`) oder als Keepalive alle 500 ms `input {seq, p}`.
+5. Eingabe: `sendInput(SlotInput[])` sendet bei Änderung sofort (Abstand ≥ `INPUT_MIN_GAP_MS` 8) oder als Keepalive alle 500 ms `input {seq, p}`; `seq` und Sendezeit gehen an die Latenz-Messung.
 6. `seats` aktualisiert Slots und Monarchen; `error` → `fail(code, message)` je Fehler-Code; Abbruch → `reconnecting`, erneut `hello` und `join` auf den gemerkten Raum.
 
 ## Integration

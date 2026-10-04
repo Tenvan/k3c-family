@@ -3,6 +3,7 @@ import type { LevelLayout } from '../model/types';
 import { clientLog } from '../core/clientLog';
 import { t } from '../core/texts';
 import { applyDelta } from './clientDelta';
+import { LatencyMeter, type LatencyStats } from './clientLatency';
 import {
   INPUT_KEEPALIVE_MS,
   PROTOCOL_VERSION,
@@ -32,6 +33,8 @@ const RETRY_MAX_MS = 4000;
 export const RECONNECT_LIMIT_MS = 120_000;
 /** Anzahl Snapshots für die Takt-Messung des Debug-Overlays */
 const SNAPSHOT_WINDOW = 30;
+/** Kleinster Abstand zweier geänderter Eingaben (angenommen: unter einem Bild bei 60 FPS, B-277) */
+const INPUT_MIN_GAP_MS = 8;
 
 export interface SocketLike {
   send(data: string): void;
@@ -117,6 +120,7 @@ export class RoomClient {
   private snapshotTimes: number[] = [];
   private loggedStatus: Status | null = null;
   private framesSinceLevel = 0;
+  private readonly latencyMeter = new LatencyMeter();
 
   constructor(private readonly env: ClientEnv) {
     this.open();
@@ -129,6 +133,11 @@ export class RoomClient {
   /** `env.now()` beim letzten Snapshot, null bis zum ersten (Debug-Overlay). */
   get lastSnapshotAt(): number | null {
     return this.snapshotTimes[this.snapshotTimes.length - 1] ?? null;
+  }
+
+  /** Latenz Eingabe → Zustand (Mittel, p95) der letzten 60 s, null ohne Messung (Debug-Overlay, B-181). */
+  get latency(): LatencyStats | null {
+    return this.latencyMeter.stats(this.env.now());
   }
 
   /** Gemessener Snapshot-Takt über die letzten Snapshots, null ohne zwei Messpunkte (Debug-Overlay). */
@@ -192,18 +201,19 @@ export class RoomClient {
   }
 
   /**
-   * Eingaben der lokalen Slots. Sendet bei Änderung (höchstens eine je Tick), sonst spätestens nach 500 ms.
+   * Eingaben der lokalen Slots. Sendet bei Änderung sofort (Abstand mindestens `INPUT_MIN_GAP_MS`), sonst spätestens nach 500 ms.
    * Aufruf in jedem Frame ist vorgesehen.
    */
   sendInput(p: SlotInput[]): void {
     if (this.status !== 'room') return;
     const json = JSON.stringify(p);
     const sinceLast = this.env.now() - this.lastInputAt;
-    const changed = json !== this.lastInput && sinceLast >= 1000 / this.tickHz;
+    const changed = json !== this.lastInput && sinceLast >= INPUT_MIN_GAP_MS;
     if (!changed && sinceLast < INPUT_KEEPALIVE_MS) return;
     this.lastInput = json;
     this.lastInputAt = this.env.now();
     this.send({ t: 'input', seq: ++this.seq, p });
+    this.latencyMeter.sent(this.seq, this.lastInputAt);
   }
 
   /** Alle seit dem letzten Aufruf empfangenen Ticks, älteste zuerst. */
@@ -238,6 +248,7 @@ export class RoomClient {
       this.seq = 0;
       this.lastInput = '';
       this.lastInputAt = -Infinity;
+      this.latencyMeter.reset();
       this.send({ t: 'hello', v: PROTOCOL_VERSION, device: this.env.deviceId });
     };
     sock.onmessage = (e) => {
@@ -386,6 +397,7 @@ export class RoomClient {
 
   private pushFrame(tick: number, ack: number): void {
     const receivedAt = this.env.now();
+    this.latencyMeter.acked(ack, receivedAt);
     if (this.framesSinceLevel++ === 0) clientLog('info', '✅ Erster Zustand nach Level', { tick, sites: (this.state as unknown as WorldState).sites?.map((s) => s.kind) });
     this.frames.push({ tick, ack, receivedAt, state: this.state as unknown as WorldState });
     this.snapshotTimes.push(receivedAt);

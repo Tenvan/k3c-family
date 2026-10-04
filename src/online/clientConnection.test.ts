@@ -127,26 +127,38 @@ describe('Handschlag und Geräte-ID (AC-06)', () => {
 });
 
 describe('Eingabe-Takt (AC-07)', () => {
-  it('sendet bei Änderung (höchstens eine je Tick), sonst spätestens nach 500 ms, seq ab 1', () => {
+  it('sendet eine Änderung sofort, auch kurz nach der letzten; unverändert nur als Lebenszeichen nach 500 ms; seq ab 1 (B-277/AC-04)', () => {
     const t = inRoom();
     const inputs = () => t.last().sent.filter((m) => m.t === 'input');
     t.client.sendInput(input(1));
     expect(inputs()).toHaveLength(1);
     expect(inputs()[0]).toMatchObject({ seq: 1, p: input(1) });
     t.advance(10);
-    t.client.sendInput(input(-1)); // Änderung, aber noch im selben Tick
-    expect(inputs()).toHaveLength(1);
-    t.advance(30);
-    t.client.sendInput(input(-1));
+    t.client.sendInput(input(-1)); // Änderung 10 ms nach der letzten: sofort
     expect(inputs()).toHaveLength(2);
-    expect(inputs()[1]).toMatchObject({ seq: 2 });
-    t.advance(400);
-    t.client.sendInput(input(-1)); // unverändert, noch keine 500 ms
+    expect(inputs()[1]).toMatchObject({ seq: 2, p: input(-1) });
+    t.advance(1);
+    t.client.sendInput(input(1)); // Änderung im selben Bild (1 ms): Drossel INPUT_MIN_GAP_MS
     expect(inputs()).toHaveLength(2);
-    t.advance(100);
-    t.client.sendInput(input(-1)); // Lebenszeichen
+    t.advance(10);
+    t.client.sendInput(input(1));
     expect(inputs()).toHaveLength(3);
-    expect(inputs()[2]).toMatchObject({ seq: 3 });
+    t.advance(400);
+    t.client.sendInput(input(1)); // unverändert, noch keine 500 ms
+    expect(inputs()).toHaveLength(3);
+    t.advance(100);
+    t.client.sendInput(input(1)); // Lebenszeichen
+    expect(inputs()).toHaveLength(4);
+    expect(inputs()[3]).toMatchObject({ seq: 4 });
+  });
+
+  it('Latenz: Zeit bis zum ersten Zustand mit ack ≥ seq, ohne Messung null (B-181)', () => {
+    const t = inRoom();
+    expect(t.client.latency).toBeNull();
+    t.client.sendInput(input(1));
+    t.advance(40);
+    t.last().recv({ ...snapMsg, ack: 1 });
+    expect(t.client.latency).toEqual({ mean: 40, p95: 40 });
   });
 
   it('seq beginnt nach dem Wiederverbinden neu bei 1', () => {

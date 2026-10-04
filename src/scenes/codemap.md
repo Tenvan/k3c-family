@@ -13,14 +13,14 @@ Presentation Layer des Browser-Clients (Phaser 4): Szenen, Kamera-Layout, Render
 - **Radar:** `radar.ts` (reine Marker-Berechnung, `radarRect`) + `radarView.ts` (`RadarLayer`).
 - **Feedback/Juice:** `effects.ts` (`effectFor`, `EFFECT_CONFIG`, Limits), `effectRules.ts` (Blitz-Sperrfenster, Shake/Rumble-Auswahl je Seat), `effectsView.ts` (`StageEffects`, Ring + Partikel).
 - **Schrift:** `fontRules.ts` (`FONTS`-Katalog, Mindestgrößen, `contrastRatio`).
-- **Debug (`?dev`):** `debugOverlay.ts` (Textzeilen), `debugOverlayView.ts` (`DebugOverlay`), `debugOverlayPanel.ts` (`DevActionPanel`, Controller-Fokus), `debugActions.ts` (`DEV_ACTIONS` → `DevMessage`).
+- **Debug (`?dev`):** `debugOverlay.ts` (Textzeilen, u. a. `Puffer … ms` und `Latenz … ms (p95 … ms)`), `debugOverlayView.ts` (`DebugOverlay`), `debugOverlayPanel.ts` (`DevActionPanel`, Controller-Fokus), `debugActions.ts` (`DEV_ACTIONS` → `DevMessage`).
 - `pauseButton.ts`: Touch-Schaltfläche „Optionen“, ein Knopf pro Seite.
 
 ## Flow
 
 1. `main.ts` registriert die Szenen; `LoadScene` lädt den Atlas (`preloadSprites`, `createSpriteAnims`) und startet `LobbyScene`.
 2. `LobbyScene` führt `LobbyFlow`/`applyCommand` gegen `RoomClient`; bei Beitritt startet `GameScene` (`GameSceneData`).
-3. `GameScene.update()`: Eingaben aus Keyboard/Gamepad/Touch → `LocalSlots` → Kommandos an `RoomClient`; `takeFrames()` schiebt Frames in die `Timeline` und löst `GameEvent`s sofort je Frame aus; `draw()` zeichnet `timeline.sample(now)` über `applyState` (Verzögerung `delayMs` im Debug-Overlay).
+3. `GameScene.update()`: Eingaben aus Keyboard/Gamepad/Touch → `LocalSlots` → Kommandos an `RoomClient`; `takeFrames()` schiebt Frames in die `Timeline` und löst `GameEvent`s sofort je Frame aus; `draw()` zeichnet `timeline.sample(now)`, ersetzt das x der lokalen Monarchen durch die Vorhersage (`Predictor` aus den gesendeten Eingaben) und schreibt über `applyState` (Verzögerung `delayMs` im Debug-Overlay).
 4. `spawnEffects()` je Event: `feedback()` (Shake/Rumble), `effectFor` → `StageEffects.spawn`, `audioCore().onEvent(...)` mit `listeners()` (Kamera-Ausschnitte).
 5. `StageView`/`WorldRenderer` zeichnen die `World` je Stufe in die Layer der Zellen; `showOnly` ordnet Kameras zu.
 6. `HudScene` liest `GameScene.hudCells()` und `pendingEvents`, zeichnet Gold, Vorrat, Meldungen, `RadarLayer` und `DebugOverlay`.
@@ -29,4 +29,4 @@ Presentation Layer des Browser-Clients (Phaser 4): Szenen, Kamera-Layout, Render
 ## Integration
 
 - Konsument: `src/main.ts` (Szenen-Registrierung, `VERSION_KEY`); `src/tools/testScenarios.test.ts`.
-- Abhängigkeiten: `src/online/` (`RoomClient`, `clientWorld`, `clientTimeline`, `clientProtocol`), `src/model/` (`types`, `data`, `biome`), `src/input/` (`playerInput`, `touchInput`), `src/audio/audioCore`, `src/core/` (`constants`, `texts`, `settings`, `fullscreen`, `clientLog`), `data/sprites.json`, Phaser.
+- Abhängigkeiten: `src/online/` (`RoomClient`, `clientWorld`, `clientTimeline`, `clientPredict`, `clientProtocol`), `src/model/` (`types`, `data`, `biome`), `src/input/` (`playerInput`, `touchInput`), `src/audio/audioCore`, `src/core/` (`constants`, `texts`, `settings`, `fullscreen`, `clientLog`), `data/sprites.json`, Phaser.

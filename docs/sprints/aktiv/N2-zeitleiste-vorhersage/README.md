@@ -62,7 +62,7 @@ keine
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
 | N2.1 | `N2.1-zeitleiste.md` | Umsetzung | autonom | fertig |
-| N2.2 | `N2.2-vorhersage-latenz.md` | Umsetzung | autonom | offen |
+| N2.2 | `N2.2-vorhersage-latenz.md` | Umsetzung | autonom | fertig |
 | N2.3 | `N2.3-review.md` | Review | autonom | offen |
 | N2.4 | `N2.4-abnahme-xbox.md` | Workshop | Mensch | offen |
 

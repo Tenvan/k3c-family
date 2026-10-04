@@ -1,5 +1,6 @@
 import type { Status } from '../online/clientConnection';
 import type { ErrorCode } from '../online/clientProtocol';
+import type { LatencyStats } from '../online/clientLatency';
 import type { World } from '../model/types';
 
 /** Client-Teil des Overlays: genau die lesbaren Felder von `RoomClient`. */
@@ -14,6 +15,8 @@ export interface DebugClient {
   /** Hinweis und Code des letzten Server-Fehlers (`forbidden` nach einer Dev-Aktion ohne Dev-Mode) */
   notice: string | null;
   errorCode: ErrorCode | null;
+  /** Latenz Eingabe → Zustand der letzten 60 s, null ohne Messung (B-181) */
+  latency: LatencyStats | null;
 }
 
 export type DebugWorld = {
@@ -79,6 +82,7 @@ export function debugLines(i: DebugInput): string[] {
   const age = c.lastSnapshotAt === null ? null : i.now - c.lastSnapshotAt;
   lines.push(`letzter Snapshot ${num(age)} ms`);
   if (i.delayMs !== undefined) lines.push(`Puffer ${num(i.delayMs)} ms`);
+  lines.push(c.latency ? `Latenz ${num(c.latency.mean)} ms (p95 ${num(c.latency.p95)} ms)` : `Latenz ${NONE}`);
   if (world) {
     lines.push(`Tag ${world.cycle.day} · ${world.enemies.length} Gegner · ${world.troops.length} Truppen · ${world.players.length} Spieler`);
     if (world.devTimescale !== undefined) lines.push(world.devPaused ? 'Raum angehalten' : `Zeit ${world.devTimescale}×`);
