@@ -12,6 +12,8 @@ Reihenfolge in Wellen, Bahnen je Domäne und Zuordnung Mensch/autonom (zwei Acco
 |---|---|---|---|---|
 | S2 | SRV | Protokoll für Skills, Speichern beim Verlassen, Spielmetrik | neue Felder in `docs/protocol.md` mit Beispielen unter `testdata/protocol/`, Spielstand nach Trennung mitten in der Nacht, ein Report in `reports/` | `aktiv/S2-protokoll-skills-speichern-metrik/` |
 | GR3 | CLI | Grafik im Renderer | Hub mit Sprites statt Formen, Parallax je Biom, Hub- und Materialstufen unterscheidbar am TV | `aktiv/GR3-grafik-renderer/` |
+| N1 | SRV | Raum-Tick im Budget: Versand und Speichern asynchron | Benchmark vorher/nachher, weniger `🐢 Tick zu langsam` im Log | `aktiv/N1-tick-asynchron/` |
+| N2 | CLI | Flüssige Darstellung: Zeitleiste, Extrapolation, eigene Vorhersage | Figuren laufen gleichmäßig, eigener Monarch reagiert sofort, Latenz im Debug-Overlay | `aktiv/N2-zeitleiste-vorhersage/` |
 
 ## Offen am Gerät
 
