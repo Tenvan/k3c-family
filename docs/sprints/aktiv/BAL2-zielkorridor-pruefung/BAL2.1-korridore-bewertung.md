@@ -1,6 +1,6 @@
 # BAL2.1 · Korridor-Daten laden und bewerten
 
-- **Status:** offen
+- **Status:** in Arbeit
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Branch:** bal2/1-korridore-bewertung

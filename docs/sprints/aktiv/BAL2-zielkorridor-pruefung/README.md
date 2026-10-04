@@ -1,11 +1,11 @@
 # BAL2 · SIM · Zielkorridor-Prüfung und `task balance`
 
-- **Status:** geplant
+- **Status:** aktiv
 - **Domäne:** SIM
 - **Reife:** bereit
 - **Einschiebbar:** ja
 - **Tickets:** B-157
-- **Start-Commit:** –
+- **Start-Commit:** 1fa9529
 - **Spec:** freigegeben
 - **Revision:** 1
 - **Freigabe:** 2026-10-04, Chat (Ralf), Revision 1, durch 🧑; umfasst B-157 und die Domänen-Ausnahmen `tools/k3c-dev/` und `.github/`; mit Änderungen aus dem Spec-Review (F1-Frage gestrichen, „knapp“ = 5 pp / 10 % bestätigt)
@@ -62,7 +62,7 @@ keine (Zahlen: `docs/rules/zielkorridore.md`, F1 erledigt, Q02)
 
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
-| BAL2.1 | `BAL2.1-korridore-bewertung.md` | Umsetzung | autonom | offen |
+| BAL2.1 | `BAL2.1-korridore-bewertung.md` | Umsetzung | autonom | in Arbeit |
 | BAL2.2 | `BAL2.2-task-balance-bericht.md` | Umsetzung | autonom | offen |
 | BAL2.3 | `BAL2.3-ci-lauf.md` | Umsetzung | autonom | offen |
 | BAL2.4 | `BAL2.4-review.md` | Review | autonom | offen |
