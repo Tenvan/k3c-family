@@ -163,7 +163,7 @@ func (c *Controller) restartForChange(ctx context.Context, u *unit, file string)
 	case Stopped, Adopted, Stopping:
 		return
 	}
-	c.opts.Log.Info("dienst "+u.svc.Name+": Neustart wegen Änderung an "+file, "ns", "svc")
+	c.opts.Log.Info("🔁 dienst "+u.svc.Name+": Neustart wegen Änderung an "+file, "ns", "svc")
 	_, err := c.stop(u)
 	if err == nil {
 		_, err = c.start(ctx, u)

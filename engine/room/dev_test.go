@@ -148,7 +148,7 @@ func TestDevLog(t *testing.T) {
 	_ = r.Dev("a", p, DevAction{Action: "gold", Slot: slot(3), Amount: 10}) // abgelehnt, keine Zeile
 	var lines []string
 	for _, l := range strings.Split(out.String(), "\n") {
-		if strings.Contains(l, `msg=Dev-Aktion `) {
+		if strings.Contains(l, `msg="🐛 Dev-Aktion"`) {
 			lines = append(lines, l)
 		}
 	}

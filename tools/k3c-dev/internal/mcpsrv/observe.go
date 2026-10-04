@@ -23,7 +23,7 @@ func (s *Server) observe(next mcp.MethodHandler) mcp.MethodHandler {
 			return next(ctx, method, req)
 		}
 		id := s.stats.begin(call.Params.Name, string(call.Params.Arguments))
-		s.log.Debug(call.Params.Name+": start", "ns", "mcp", "tool", call.Params.Name, "args", clipArgs(call.Params.Arguments))
+		s.log.Debug("📨 "+call.Params.Name+": start", "ns", "mcp", "tool", call.Params.Name, "args", clipArgs(call.Params.Arguments))
 		defer func() {
 			if p := recover(); p != nil {
 				res, err = textResult(fmt.Sprintf("%s: %v", panicText, p), true), nil
@@ -42,9 +42,9 @@ func (s *Server) finish(call *mcp.CallToolRequest, id int64, o outcome) {
 	c, found := s.stats.end(id, o)
 	if !o.ok {
 		// Tool und Fehler in der Meldung, damit logs_errors gleichartige Fehler je Tool gruppiert.
-		s.log.Warn(call.Params.Name+": "+clip(o.err), "ns", "mcp", "tool", call.Params.Name, "ms", c.DurationMs, "ok", false)
+		s.log.Warn("❌ "+call.Params.Name+": "+clip(o.err), "ns", "mcp", "tool", call.Params.Name, "ms", c.DurationMs, "ok", false)
 	} else {
-		s.log.Info(call.Params.Name+": ok", "ns", "mcp", "tool", call.Params.Name, "ms", c.DurationMs, "ok", true)
+		s.log.Info("✅ "+call.Params.Name+": ok", "ns", "mcp", "tool", call.Params.Name, "ms", c.DurationMs, "ok", true)
 	}
 	// Nur Tools aus dem Katalog: erfundene Namen eines Clients ließen Statistik und Datei sonst ohne Grenze wachsen.
 	if _, known := s.params[c.Tool]; found && known && s.cfg.Usage != nil {

@@ -63,13 +63,13 @@ func (s *server) level(w http.ResponseWriter, r *http.Request) {
 	}
 	biome, err := level.LoadBiome(id)
 	if err != nil {
-		s.log.Error("level: Biom nicht ladbar", "biome", id, "error", err.Error())
+		s.log.Error("💥 level: Biom nicht ladbar", "biome", id, "error", err.Error())
 		fail(w, http.StatusInternalServerError, "Biom nicht ladbar")
 		return
 	}
 	layout, err := level.Generate(biome, seed)
 	if err != nil {
-		s.log.Error("level: nicht erzeugbar", "biome", id, "error", err.Error())
+		s.log.Error("💥 level: nicht erzeugbar", "biome", id, "error", err.Error())
 		fail(w, http.StatusInternalServerError, "Level nicht erzeugbar")
 		return
 	}

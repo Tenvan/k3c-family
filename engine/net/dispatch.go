@@ -12,7 +12,7 @@ import (
 func (c *conn) handle(data []byte) {
 	defer func() {
 		if p := recover(); p != nil { // ein Fehler im Raum-Code beendet nur diese Nachricht
-			c.s.log.Error("Nachricht abgestürzt", "device", c.device, "err", fmt.Sprint(p))
+			c.s.log.Error("💥 Nachricht abgestürzt", "device", c.device, "err", fmt.Sprint(p))
 			c.fail(codeBadRequest)
 		}
 	}()
@@ -22,7 +22,7 @@ func (c *conn) handle(data []byte) {
 		return
 	}
 	if m.T != "input" { // input kommt je Tick, alles andere ist selten und zeigt den Ablauf
-		c.s.log.Debug("Nachricht", "ns", "ws", "device", short(c.device), "t", m.T, "room", m.Room, "save", m.Save, "slots", m.Slots)
+		c.s.log.Debug("📨 Nachricht", "ns", "ws", "device", short(c.device), "t", m.T, "room", m.Room, "save", m.Save, "slots", m.Slots)
 	}
 	r := c.current()
 	var err error
@@ -44,7 +44,7 @@ func (c *conn) handle(data []byte) {
 }
 
 func (c *conn) fail(code string) {
-	c.s.log.Warn("Fehler an Gerät", "ns", "ws", "device", short(c.device), "code", code)
+	c.s.log.Warn("🚫 Fehler an Gerät", "ns", "ws", "device", short(c.device), "code", code)
 	c.enqueue(errMsg(code))
 }
 

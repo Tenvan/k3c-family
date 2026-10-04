@@ -245,7 +245,7 @@ export class RoomClient {
   private changed(): void {
     if (this.status !== this.loggedStatus) {
       this.loggedStatus = this.status;
-      clientLog(this.status === 'lost' ? 'error' : 'info', `Verbindung: ${this.status}`, { room: this.roomCode, notice: this.notice, errorCode: this.errorCode });
+      clientLog(this.status === 'lost' ? 'error' : 'info', `🔌 Verbindung: ${this.status}`, { room: this.roomCode, notice: this.notice, errorCode: this.errorCode });
     }
     this.onChange?.();
   }
@@ -274,7 +274,7 @@ export class RoomClient {
       this.notice = t('net.reconnecting');
       this.downSince = this.env.now();
       this.attempt = 0;
-      clientLog('warn', 'Verbindung abgebrochen, verbinde neu', { room: this.roomCode });
+      clientLog('warn', '🔁 Verbindung abgebrochen, verbinde neu', { room: this.roomCode });
       this.changed();
     }
     if (this.env.now() - this.downSince >= RECONNECT_LIMIT_MS) {
@@ -304,7 +304,7 @@ export class RoomClient {
     try {
       msg = JSON.parse(String(data)) as ServerMessage;
     } catch {
-      clientLog('warn', 'Nachricht des Servers nicht lesbar', { start: String(data).slice(0, 120) });
+      clientLog('warn', '💥 Nachricht des Servers nicht lesbar', { start: String(data).slice(0, 120) });
       return;
     }
     this.apply(msg);
@@ -366,17 +366,17 @@ export class RoomClient {
     if (!biome) {
       this.notice = t('net.unknownBiome');
       this.level = null;
-      clientLog('error', `Unbekanntes Biom ${layout.biomeId}`, { depth });
+      clientLog('error', `💥 Unbekanntes Biom ${layout.biomeId}`, { depth });
       return;
     }
     this.level = { depth, layout, biome };
     this.framesSinceLevel = 0;
-    clientLog('info', 'Level empfangen', { depth, biome: biome.id, width: layout.widthUnits });
+    clientLog('info', '📂 Level empfangen', { depth, biome: biome.id, width: layout.widthUnits });
   }
 
   private pushFrame(tick: number, ack: number): void {
     const receivedAt = this.env.now();
-    if (this.framesSinceLevel++ === 0) clientLog('info', 'Erster Zustand nach Level', { tick, sites: (this.state as unknown as WorldState).sites?.map((s) => s.kind) });
+    if (this.framesSinceLevel++ === 0) clientLog('info', '✅ Erster Zustand nach Level', { tick, sites: (this.state as unknown as WorldState).sites?.map((s) => s.kind) });
     this.frames.push({ tick, ack, receivedAt, state: this.state as unknown as WorldState });
     this.snapshotTimes.push(receivedAt);
     if (this.snapshotTimes.length > SNAPSHOT_WINDOW) this.snapshotTimes.shift();
@@ -384,7 +384,7 @@ export class RoomClient {
 
   /** Verhalten je Fehler-Code (docs/protocol.md › Fehler-Codes). */
   private fail(code: string, message: string): void {
-    clientLog(code === 'bad_request' ? 'error' : 'warn', `Server-Fehler ${code}: ${message}`, { status: this.status, room: this.roomCode });
+    clientLog(code === 'bad_request' ? 'error' : 'warn', `🚫 Server-Fehler ${code}: ${message}`, { status: this.status, room: this.roomCode });
     switch (code) {
       case 'replaced':
         return this.end(t('net.replaced'));

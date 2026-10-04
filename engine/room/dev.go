@@ -29,7 +29,7 @@ var devTimescales = []int{1, 2, 4, MaxTimescale}
 // Server ohne Dev-Mode nichts über Felder verrät; die Ablehnung steht als Warnung im Log, jede gelungene Aktion als Info.
 func (r *Room) Dev(id string, peer Peer, a DevAction) error {
 	if !r.m.Dev {
-		r.log().Warn("Dev-Aktion abgelehnt", "device", short(id), "aktion", a.Action)
+		r.log().Warn("🚫 Dev-Aktion abgelehnt", "device", short(id), "aktion", a.Action)
 		return ErrForbidden
 	}
 	r.mu.Lock()
@@ -65,7 +65,7 @@ func (r *Room) Dev(id string, peer Peer, a DevAction) error {
 	default:
 		return ErrBadRequest
 	}
-	r.log().Info("Dev-Aktion", attrs...)
+	r.log().Info("🐛 Dev-Aktion", attrs...)
 	return nil
 }
 
