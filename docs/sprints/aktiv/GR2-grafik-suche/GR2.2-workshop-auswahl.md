@@ -1,6 +1,6 @@
 # GR2.2 · Workshop: Kandidat je Lücke wählen
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Workshop
 - **Agent:** Mensch
 - **Branch:** gr2/2-workshop-auswahl
@@ -33,7 +33,7 @@ Dateien einbinden (GR2.3), neue Suche (bei „keiner gefällt“: Vermerk und op
 
 ## Fertig, wenn
 
-- [ ] AC-02: Je Lücke steht „gewählt: …“ oder „kein Treffer“ auf der Referenzseite, bestätigt von 🧑 mit Datum.
+- [x] AC-02: Je Lücke steht „gewählt: …“ oder „kein Treffer“ auf der Referenzseite, bestätigt von 🧑 mit Datum.
 
 ## Prüfen
 
@@ -41,4 +41,10 @@ Manuell durch 🧑 (Browser).
 
 ## Ergebnis
 
-–
+Workshop am 2026-10-04 im Chat (Agent trug ein, 🧑 entschied in drei Runden; Bestandsbilder direkt gezeigt, weil die Seite sie in der Vorschau nicht lädt).
+
+- **AC-02:** umgesetzt – alle 11 Abschnitte auf `docs/funde/gr2-grafik-funde.html` tragen „Entscheidung 🧑 (2026-10-04)“.
+- Gewählt 10, kein Treffer 1 (Plantage). Teilweise kein Treffer: Holz-Stufe von Mauer/Turm und Zauberturm (Turm 5).
+- Aus dem Bestand (kein Download): Werkstatt house-b, Farm house-a, Kaserne house-c, Treppe hoch stairs*.png, Materialstufen per Palettentausch. Neu zu laden: Phantasy Dungeon Entrance, CaveTaxi-Zelte, Animated Campfire, Super Grotto Escape, Wooden fortress (CC-BY 3.0), OPP2017 Castle tiles, Resource icons, mieki256-Stern.
+- SA-Lizenzen nicht gewählt (LPC Fruit Trees, 16px Items) – SA bleibt draußen.
+- Seiten-Skript: eingetragene Entscheidung bleibt ohne Auswahl stehen.
