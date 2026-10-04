@@ -12,7 +12,7 @@
 
 ## Ausgangslage
 
-Krieger und Elite-Truppen gibt es nur als Daten; es gibt kein Truppen-Limit, keine Heilung außer Respawn und kein Verlust-Ereignis (`docs/rules/ist-monarch-buerger.md` § 3).
+Krieger und Elite-Truppen gibt es nur als Daten; es gibt kein Truppen-Limit, keine Heilung außer Respawn und kein Verlust-Ereignis (`docs/rules/archiv/ist-monarch-buerger.md` § 3).
 
 ## Ziel
 

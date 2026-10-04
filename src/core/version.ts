@@ -25,6 +25,9 @@ export function formatBuild(b: BuildInfo, timeZone?: string): string {
 export const versionLine = (client: BuildInfo, server: BuildInfo | null, sep = ' · ', timeZone?: string): string =>
   `Client ${formatBuild(client, timeZone)}${sep}Server ${server ? formatBuild(server, timeZone) : '–'}`;
 
+/** Client und Server haben verschiedene Versionen (Xbox mit altem Cache); ohne Server keine Abweichung. */
+export const versionMismatch = (client: BuildInfo, server: BuildInfo | null): boolean => server !== null && server.version !== client.version;
+
 /** `api/health` (relativ zur Seite) → Version und Buildzeit des Servers; kein Go-Server (z. B. GitHub Pages) → `null`, nie ein Fehler. */
 export async function fetchServerBuild(fetchFn: typeof fetch = fetch, timeoutMs = 2000): Promise<BuildInfo | null> {
   try {

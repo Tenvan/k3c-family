@@ -7,7 +7,7 @@ export interface PageEntry {
   title: string;
   description: string;
   icon: string;
-  /** Ziel-URL, relativ. Eine Funktion wird erst beim Öffnen ausgewertet (z.B. für Zufalls-Seeds). */
+  /** Ziel-URL, relativ. Eine Funktion wird erst beim Öffnen ausgewertet. */
   href: string | (() => string);
   section: 'play' | 'test' | 'about';
   /** Große Hauptkachel */
@@ -17,45 +17,24 @@ export interface PageEntry {
 export const PAGES: PageEntry[] = [
   {
     title: 'Weiterspielen',
-    description: 'Letzten Spielstand laden · speichert automatisch bei Tagesanbruch',
+    description: 'Lobby öffnen · letzten Spielstand wählen · speichert automatisch bei Tagesanbruch',
     icon: '👑',
-    href: 'game.html?continue=1',
+    href: 'game.html',
     section: 'play',
     primary: true,
   },
   {
     title: 'Neues Spiel',
-    description: 'Oberwelt · Seed „k3c“ · bis zu 2 Spieler · alter Spielstand wird gesichert',
+    description: 'Lobby öffnen · Oberwelt · Seed „k3c“ · bis zu 2 Spieler · alter Spielstand wird gesichert',
     icon: '🏰',
-    href: 'game.html?save=1',
-    section: 'play',
-  },
-  {
-    title: 'Zufälliges Level',
-    description: 'Neue Welt mit zufälligem Seed',
-    icon: '🎲',
-    href: () => `game.html?seed=${Math.random().toString(36).slice(2, 8)}`,
+    href: 'game.html?fresh=1',
     section: 'play',
   },
   {
     title: 'Online spielen',
-    description: 'Mit Handy, Tablet oder PC im selben Raum · ein Monarch pro Gerät',
+    description: 'Lobby öffnen · Raum beitreten oder anlegen · mit Handy, Tablet oder PC, ein Monarch pro Gerät',
     icon: '🌐',
-    href: 'game.html?online=familie',
-    section: 'play',
-  },
-  {
-    title: 'Höhle',
-    description: 'Direkt in Tiefe 1 starten',
-    icon: '🦇',
-    href: 'game.html?depth=1',
-    section: 'play',
-  },
-  {
-    title: 'Mine',
-    description: 'Direkt in Tiefe 2 starten',
-    icon: '⛏️',
-    href: 'game.html?depth=2',
+    href: 'game.html',
     section: 'play',
   },
   {

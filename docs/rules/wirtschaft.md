@@ -1,6 +1,6 @@
 # Regelwerk: Wirtschaft, Koop und Wellen
 
-Beschlossen von 🧑 im Workshop R1.2 am 2026-10-02 (Grundlage: [`ist-abgleich.md`](ist-abgleich.md)).
+Beschlossen von 🧑 im Workshop R1.2 am 2026-10-02 (Grundlage: [`archiv/ist-abgleich.md`](archiv/ist-abgleich.md)).
 Je Regel: **Regel · Begründung · Verweis auf `data/` · Zielkorridor**. Werte stehen in `data/*.json`, hier stehen Regeln und Ziele.
 Zielkorridore prüft später der Balancing-Tester (B-099) mit dem Standardszenario **Wald, 2 Spieler, Bot „sparsam“, je 100 Seeds**, wenn nichts anderes steht.
 Jede Regel gilt für 2+ Spieler (Couch und Online gemischt).
@@ -69,6 +69,6 @@ Gebäude und Material sind in `materialien-gebaeude.md` beschlossen (R2), Bürge
 ## 7. Offen / Annahmen
 
 - **Gold-Beutel, Startgold und Tageseinkommen** bleiben bei den heutigen Werten; das folgt daraus, dass die Grade die Wirtschaft nicht ändern. 🧑 hat das nicht gesondert bestätigt und kann es mit den Messläufen von B-099 ändern.
-- Zielkorridore für Verluste und Wirtschaftsfluss gelten als Startziele; die Kennzahlen dafür fehlen noch (siehe `ist-abgleich.md` › Messgrößen) und kommen mit B-099.
+- Zielkorridore für Verluste und Wirtschaftsfluss gelten als Startziele; die Kennzahlen dafür fehlen noch (siehe `archiv/ist-abgleich.md` › Messgrößen) und kommen mit B-099.
 - **Vollmond und weitere Events:** beschlossen in `bosse.md` § 2.
 - Das Standardszenario (Wald, 2 Spieler, Bot „sparsam“) gilt für alle Korridore; Korridore für Höhle und Mine folgen mit `stufen.md` (R1.3).
