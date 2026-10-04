@@ -8,6 +8,8 @@ import (
 	"path/filepath"
 	"strings"
 	"sync"
+
+	"k3c/engine/conlog"
 )
 
 // logFile ist die JSON-Log-Datei im Log-Ordner (B-066); k3c-dev liest sie als Quelle „k3c-server“.
@@ -43,7 +45,7 @@ func logDir() string {
 	return ""
 }
 
-// newLogger schreibt Text nach stderr und, wenn ein Ordner bestimmt ist und sich öffnen lässt, JSON nach <Ordner>/k3c-server.jsonl.
+// newLogger schreibt farbigen Text (engine/conlog, NO_COLOR schaltet Farben ab) nach stderr und, wenn ein Ordner bestimmt ist und sich öffnen lässt, JSON nach <Ordner>/k3c-server.jsonl.
 // Lässt sich die Datei nicht öffnen, bleibt es bei stderr und eine Warnung sagt warum. Die Funktion schließt die Datei.
 func newLogger(dir string, stderr io.Writer) (*slog.Logger, func()) {
 	return newNamedLogger(dir, logFile, stderr)
@@ -51,7 +53,7 @@ func newLogger(dir string, stderr io.Writer) (*slog.Logger, func()) {
 
 // newNamedLogger ist newLogger für eine beliebige Log-Datei (Server: k3c-server.jsonl, Browser-Meldungen: k3c-client.jsonl).
 func newNamedLogger(dir, file string, stderr io.Writer) (*slog.Logger, func()) {
-	text := slog.NewTextHandler(stderr, &slog.HandlerOptions{Level: consoleLevel()})
+	text := conlog.New(stderr, consoleLevel(), conlog.Color())
 	if dir == "" {
 		return slog.New(text), func() {}
 	}
