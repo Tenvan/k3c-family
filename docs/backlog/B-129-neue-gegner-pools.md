@@ -12,7 +12,7 @@
 
 ## Ausgangslage
 
-Eisenstollen und Kristallhöhle haben noch keine Gegner (`docs/rules/ist-gegner-bosse.md` § 1); B-115 legt die Biome an.
+Eisenstollen und Kristallhöhle haben noch keine Gegner (`docs/rules/archiv/ist-gegner-bosse.md` § 1); B-115 legt die Biome an.
 
 ## Ziel
 

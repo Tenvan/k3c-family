@@ -12,7 +12,7 @@
 
 ## Ausgangslage
 
-Tor, Farm, Kaserne haben keinen Bauplatz und keine Wirkung; Taverne, Heilplatz, Schmiede, Rüstkammer und Zaubertum gibt es nicht; die Werkstatt liefert nur Bögen; es gibt kein Truppen-Limit (`docs/rules/ist-material-gebaeude.md`).
+Tor, Farm, Kaserne haben keinen Bauplatz und keine Wirkung; Taverne, Heilplatz, Schmiede, Rüstkammer und Zaubertum gibt es nicht; die Werkstatt liefert nur Bögen; es gibt kein Truppen-Limit (`docs/rules/archiv/ist-material-gebaeude.md`).
 
 ## Ziel
 
