@@ -61,7 +61,7 @@ Auf der Xbox läuft der `AudioContext` schon vor der ersten Geste, eine Controll
 
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
-| SO1.1 | `SO1.1-mixer-lautstaerke.md` | Umsetzung | autonom | in Arbeit |
+| SO1.1 | `SO1.1-mixer-lautstaerke.md` | Umsetzung | autonom | fertig |
 | SO1.2 | `SO1.2-entsperren-format-atlas.md` | Umsetzung | autonom | offen |
 | SO1.3 | `SO1.3-daempfung-demo.md` | Umsetzung | autonom | offen |
 | SO1.4 | `SO1.4-review.md` | Review | autonom | offen |
