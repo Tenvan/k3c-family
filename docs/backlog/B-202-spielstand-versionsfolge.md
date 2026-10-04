@@ -64,3 +64,5 @@ keine (Beschluss Q42, 2026-10-04).
 ## Notizen
 
 Entstanden bei der Vorbereitung von W2 bis W4 (Fragenkatalog Block 5).
+
+S1.5 (2026-10-04): S1.4 ist zuerst gelandet (Version 3, `testdata/saves/v3/familie.json`), AC-01 und AC-03 erfüllt. Offen bleibt AC-02: W1.3 nennt noch keinen eigenen Test, der einen v3-Stand ohne Hub- und Platz-Stufe lädt; das Ticket bleibt bis W1.3 offen.

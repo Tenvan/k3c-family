@@ -34,6 +34,8 @@ func stepPlayers(w *World, commands []PlayerCommand, dt float64) {
 			continue
 		}
 		movePlayer(w, p, cmd, dt)
+		stepAttack(w, p, cmd, dt)
+		stepSkills(w, p, cmd, dt)
 		p.Paying = cmd.Pay
 		if cmd.Pay && p.PayCooldown <= 0 && p.Gold > 0 {
 			payOneCoin(w, p)
@@ -51,9 +53,9 @@ func stepPlayers(w *World, commands []PlayerCommand, dt float64) {
 func movePlayer(w *World, p *Player, cmd PlayerCommand, dt float64) {
 	mult := 1.0
 	if cmd.Sprint {
-		mult = monarch.SprintMultiplier
+		mult = float64(monarch.SprintMultiplier * MountOf(p).SprintFactor) // Sprint auf dem Reittier
 	}
-	target := float64(cmd.MoveX * monarch.Base.Speed * mult)
+	target := float64(cmd.MoveX * speedOf(w, p) * mult)
 	p.VX += float64((target - p.VX) * (1 - math.Exp(-monarch.Acceleration*dt)))
 	p.X = math.Min(w.WidthUnits, math.Max(0, p.X+float64(p.VX*dt)))
 	if math.Abs(p.VX) > 0.05 {
@@ -268,8 +270,9 @@ func collectPickups(w *World) {
 			gold := w.rng.Int(economy.ChestGold[0], economy.ChestGold[1])
 			giveGold(w, p, gold, pk.X)
 			w.Events = append(w.Events, Event{"type": "chest", "player": p.Index, "gold": gold})
+			chestSkillPoint(w, p)
 		default:
-			w.SkillPoints++
+			addPoolPoints(w, monarch.SkillPointSources.Hidden)
 			w.Events = append(w.Events, Event{"type": "skillPoint", "player": p.Index, "total": w.SkillPoints})
 		}
 	}

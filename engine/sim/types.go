@@ -14,6 +14,8 @@ type PlayerCommand struct {
 	MoveX  float64 `json:"moveX"` // -1 (links) bis 1 (rechts)
 	Sprint bool    `json:"sprint"`
 	Pay    bool    `json:"pay"` // Bezahl-Taste gehalten: Münze geben bzw. fallen lassen
+	Attack bool    `json:"attack,omitempty"` // Schlag (Taste X, monarch.md § 1)
+	Skill  int     `json:"skill,omitempty"`  // aktiven Skill in Slot 1 bis 4 auslösen, 0 = keiner (skills.go)
 }
 
 // Player ist ein Monarch.
@@ -34,6 +36,17 @@ type Player struct {
 	// Free: Niemand steuert diesen Monarchen (vom Raum gesetzt, B-059). Er zählt nicht für den Stufenwechsel und
 	// reist mit. Nur Go, im JSON nur bei true.
 	Free bool `json:"free,omitempty"`
+	// Skills: gelernte Skills (IDs, Lernreihenfolge); Slots: aktive Skills in den Slots 1 bis 4 ("" = frei).
+	Skills         []string `json:"skills,omitempty"`
+	Slots          []string `json:"slots,omitempty"`
+	AttackCooldown float64  `json:"attackCooldown,omitempty"` // Sekunden bis zum nächsten Schlag
+	// Cooldowns: Abklingzeit je Slot (Index 0 bis 3, Sekunden), nil bis zum ersten Skill-Einsatz.
+	Cooldowns []float64 `json:"cooldowns,omitempty"`
+	// Shield: Schild-HP, die applyDamage zuerst abzieht, für ShieldFor Sekunden. LastStandFor: so lange lässt ein
+	// tödlicher Treffer 1 HP stehen.
+	Shield       float64 `json:"shield,omitempty"`
+	ShieldFor    float64 `json:"shieldFor,omitempty"`
+	LastStandFor float64 `json:"lastStandFor,omitempty"`
 }
 
 // Coin ist eine Münze am Boden.
@@ -119,6 +132,23 @@ type Enemy struct {
 	Fleeing     bool     `json:"fleeing"`
 	CarriedGold int      `json:"carriedGold"`
 	HomeX       float64  `json:"homeX"` // Portal, aus dem der Gegner kam
+	// Stun: Sekunden betäubt (kein Schritt, kein Angriff). TauntFor: so lange zielt der Gegner auf den Spieler TauntID.
+	Stun     float64 `json:"stun,omitempty"`
+	TauntID  int     `json:"tauntId,omitempty"`
+	TauntFor float64 `json:"tauntFor,omitempty"`
+	// Slow: Faktor der Geschwindigkeit (Ice Wall, skills_caster.go) für SlowFor Sekunden; Angriffe bleiben gleich.
+	Slow    float64 `json:"slow,omitempty"`
+	SlowFor float64 `json:"slowFor,omitempty"`
+}
+
+// Storm ist ein laufender Lightning Storm (skills_caster.go): PerSecond Schaden je Sekunde an Gegnern im Radius um X,
+// noch Left Sekunden; Owner ist die ID des wirkenden Spielers.
+type Storm struct {
+	X         float64 `json:"x"`
+	Radius    float64 `json:"radius"`
+	PerSecond float64 `json:"perSecond"`
+	Left      float64 `json:"left"`
+	Owner     int     `json:"owner"`
 }
 
 // Projectile ist ein Pfeil oder Geschoss.
@@ -203,6 +233,7 @@ type World struct {
 	Camps       []*Camp         `json:"camps"`
 	Portals     []float64       `json:"portals"`
 	SpawnQueue  []QueuedSpawn   `json:"spawnQueue"`
+	Storms      []*Storm        `json:"storms,omitempty"` // laufende Lightning Storms in Wirk-Reihenfolge
 
 	Stock       *Stock  `json:"stock"` // Baumaterial gehört allen (in einer Insel: allen Stufen), Gold hat jeder Spieler selbst
 	SkillPoints int     `json:"skillPoints"`

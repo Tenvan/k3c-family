@@ -13,6 +13,14 @@ const body = 0.6
 
 func (e *Enemy) has(trait string) bool { return slices.Contains(e.Traits, trait) }
 
+// speed: Laufgeschwindigkeit, solange Ice Wall wirkt mit Slow verlangsamt (skills_caster.go).
+func (e *Enemy) speed() float64 {
+	if e.SlowFor > 0 {
+		return e.Speed * e.Slow
+	}
+	return e.Speed
+}
+
 func spawnEnemy(w *World, kind string, x float64) *Enemy {
 	return spawnScaled(w, kind, x, 1, 1)
 }
@@ -68,11 +76,15 @@ type target struct {
 func stepEnemies(w *World, dt float64) {
 	for _, e := range w.Enemies {
 		e.Cooldown = math.Max(0, e.Cooldown-dt)
+		if stunned(e, dt) {
+			continue
+		}
 		if e.has("fleesAtHalfHp") && e.HP < e.MaxHP/2 {
 			e.Fleeing = true
 		}
+		speed := e.speed()
 		if e.Fleeing {
-			e.X += float64(sign(e.HomeX-e.X) * math.Min(math.Abs(e.HomeX-e.X), e.Speed*1.2*dt))
+			e.X += float64(sign(e.HomeX-e.X) * math.Min(math.Abs(e.HomeX-e.X), speed*1.2*dt))
 			continue
 		}
 		dir := sign(w.HubX - e.X)
@@ -89,7 +101,7 @@ func stepEnemies(w *World, dt float64) {
 			}
 			continue
 		}
-		x := e.X + float64(dir*e.Speed*dt)
+		x := e.X + float64(dir*speed*dt)
 		stop := w.HubX - float64(dir*hub.CastleRadiusUnits)
 		if wall != nil {
 			stop = wall.X - float64(dir*body)
@@ -108,6 +120,22 @@ func stepEnemies(w *World, dt float64) {
 		}
 	}
 	w.Enemies = kept
+}
+
+// stunned senkt Betäubung, Verspottung und Verlangsamung (Skills, skills_tank.go, skills_caster.go); true: der Gegner
+// ist betäubt und tut nichts.
+func stunned(e *Enemy, dt float64) bool {
+	if e.TauntFor = math.Max(0, e.TauntFor-dt); e.TauntFor == 0 {
+		e.TauntID = 0
+	}
+	if e.SlowFor = math.Max(0, e.SlowFor-dt); e.SlowFor == 0 {
+		e.Slow = 0
+	}
+	if e.Stun <= 0 {
+		return false
+	}
+	e.Stun = math.Max(0, e.Stun-dt)
+	return true
 }
 
 func blockingWall(w *World, e *Enemy, dir float64) *Site {
@@ -184,9 +212,15 @@ func (e *Enemy) prefers(c target) bool {
 		((e.has("prefersMonarch") || e.has("stealsGold")) && c.kind == "player")
 }
 
-// chooseTarget: bevorzugte Ziele zuerst, davon das nächste; bei Gleichstand das frühere (wie `reduce` in TS).
+// chooseTarget: ein verspottender Monarch in Reichweite zuerst (Taunt), sonst bevorzugte Ziele, davon das nächste;
+// bei Gleichstand das frühere (wie `reduce` in TS).
 func chooseTarget(w *World, e *Enemy, dir float64, wall *Site) *target {
 	all := candidates(w, e, dir, wall)
+	for _, c := range all {
+		if e.TauntFor > 0 && c.kind == "player" && c.id == e.TauntID {
+			return &c
+		}
+	}
 	pool := []target{}
 	for _, c := range all {
 		if e.prefers(c) {
@@ -225,5 +259,8 @@ func attack(w *World, e *Enemy, t *target) {
 	} else {
 		emit(w, "strike", Event{"from": e.ID, "x": unitX(e.X)})
 		applyDamage(w, t.id, e.Damage)
+		if t.player != nil {
+			frostArmorHit(t.player, e)
+		}
 	}
 }
