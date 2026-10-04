@@ -1,6 +1,6 @@
 # LT1.1 · Bots über das Protokoll, Seed und Aufräumen der Test-Räume
 
-- **Status:** in Arbeit
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Branch:** lt1/1-bots-client
@@ -42,10 +42,10 @@ Status-Abfrage, Bericht, Bewertung, `cpu`, Task `load` (LT1.2); Messlauf am Pi (
 
 ## Fertig, wenn
 
-- [ ] AC-01: Test belegt 2 Räume × 2 Bots gegen In-Prozess-Server mit Tick-Reihe je Raum.
-- [ ] AC-02: Test belegt gleiche Eingabefolge bei gleichem Seed.
-- [ ] AC-05: Test belegt: keine Test-Räume offen, kein Token in der Ausgabe.
-- [ ] `task check:go` grün; keine Datei > 400 Zeilen, keine Funktion > 60 Zeilen.
+- [x] AC-01: Test belegt 2 Räume × 2 Bots gegen In-Prozess-Server mit Tick-Reihe je Raum.
+- [x] AC-02: Test belegt gleiche Eingabefolge bei gleichem Seed.
+- [x] AC-05: Test belegt: keine Test-Räume offen, kein Token in der Ausgabe.
+- [x] `task check:go` grün; keine Datei > 400 Zeilen, keine Funktion > 60 Zeilen.
 
 ## Prüfen
 
@@ -55,4 +55,10 @@ task check:go
 
 ## Ergebnis
 
-–
+2026-10-04, Agent (worker-lt1). `cmd/k3c-load` (`main.go` Flags/Ablauf, `bots.go` Bots und Eingaben, `api.go` Vorprüfung und Aufräum-Prüfung über `/api/status`, `load_test.go`). Bots: je Bot ein Gerät mit Slot 0, `hello` mit `k3cnet.ProtocolVersion`, erster Bot `create` (Spielstand `test-load-<Lauf>-<n>`, neu), weitere `join` per Code; eine `input` je empfangenem `snap`/`delta` (Takt des Servers); Ende per `-duration` oder Strg+C/SIGTERM mit `leave` und normalem Schließen.
+
+- **AC-01 geprüft:** `TestLaufSammeltTicksUndRaeumtAuf` (2 Räume × 2 Bots, 5 s, In-Prozess-Server per `httptest`, Ausgabe nennt je Raum eine Tick-Reihe) und `TestTickReiheJeRaum` (Reihe je Raum steigt, Code gesetzt, keine Fehler-Nachrichten). Die Reihe kommt aus den Zuständen des ersten Bots (Zeit, Tick); Tick-Dauer und Phase aus `/api/status` folgen in LT1.2.
+- **AC-02 geprüft:** `TestGleicherSeedGleicheEingaben`: Zwei Läufe mit Seed `seed-a` senden je Bot dieselbe `input`-Folge (aufgezeichnet vor dem Schreiben auf die Verbindung, gemeinsamer Anfang ≥ 20 Eingaben, weil die Zahl der Zustände mit der Laufzeit schwankt); Seed `seed-b` sendet eine andere.
+- **AC-05 geprüft:** `TestLaufSammeltTicksUndRaeumtAuf`: Nach dem Lauf hat kein Test-Raum ein verbundenes Gerät (das Werkzeug prüft das selbst über `/api/status`, sonst Exit 2); nach der Leer-Frist des Servers (Uhr des Managers vorgestellt, `Sweep`) sind Räume und Test-Spielstände weg; Ausgabe und Fehlertexte enthalten das Token nicht. `TestFehlerOhneRaeume`: falsches Token, Server nicht erreichbar, kein Token → Exit 2, keine Räume, Token nicht in der Ausgabe.
+- **Abweichung:** „Kein Test-Raum offen“ heißt hier: kein Bot mehr verbunden; die leeren Räume schließt der Server wie geplant erst nach `EmptyFor` (10 min) und sie zählen bis dahin gegen die Grenze von 4 Räumen (ein zweiter Lauf direkt danach bekommt `too_many_rooms`, Exit 2). Neues Ticket **B-204**.
+- `task check:go` grün (go test, golangci-lint 0 issues; `-race` lokal übersprungen, kein C-Compiler), `task check` grün (705 Tests). Nach `git merge origin/develop`: `task check` grün (710), `task check:go` lokal mehrmals rot in `engine/store`/`engine/net` mit „rename … Access is denied“ (bekannt, B-187, Code unberührt), `go test -p 1 ./...` und `golangci-lint run` grün. Größte Datei `bots.go` 225 Zeilen, Funktionen < 60 Zeilen (funlen).
