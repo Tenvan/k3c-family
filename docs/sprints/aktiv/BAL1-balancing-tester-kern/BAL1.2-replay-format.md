@@ -1,6 +1,6 @@
 # BAL1.2 · Replay-Format: Aufnahme, Wiedergabe, Versions- und Datenstand-Prüfung
 
-- **Status:** in Arbeit
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Branch:** bal1/2-replay-format
@@ -41,10 +41,10 @@ Aufnahme echter Sitzungen aus dem Browser, Protokoll-Schnittstelle, Wiedergabe i
 
 ## Fertig, wenn
 
-- [ ] AC-03: Test belegt gleichen Endzustand-Hash bei Aufnahme und Wiedergabe.
-- [ ] AC-04: Replay-Datei enthält Seed, Parameter, Datenstand-Hash und Eingaben (Test).
-- [ ] AC-05: Tests für Versions-Fehler und Datenstand-Warnung.
-- [ ] `task check:go` grün.
+- [x] AC-03: Test belegt gleichen Endzustand-Hash bei Aufnahme und Wiedergabe.
+- [x] AC-04: Replay-Datei enthält Seed, Parameter, Datenstand-Hash und Eingaben (Test).
+- [x] AC-05: Tests für Versions-Fehler und Datenstand-Warnung.
+- [x] `task check:go` grün.
 
 ## Prüfen
 
@@ -54,4 +54,10 @@ task check:go
 
 ## Ergebnis
 
-–
+- **Ort:** wie in BAL1.1 entschieden (Domänen-Ausnahme der Sprint-Spec) im Paket `tools/k3c-dev/internal/balance/` statt `engine/balance/` und `cmd/k3c-balance/`: `replay.go` (Format, Lesen, Wiedergabe, Hashes), `replay_test.go`, Aufnahme in `run.go` (`runOne`, gemeinsame Inselerzeugung `newIsland`), Flags in `cmd/main.go`. Keine Beispiel-Datei unter `testdata/replay/` nötig: die Tests nehmen einen Bot-Lauf auf und lesen ihn zurück.
+- **Format (Version 1):** JSON mit `version`, Szenario (`seed`, `players`, `bot`, `depth`, `days`), `dataHash`, `ticks`, `endHash`, `castleFallTick` und `inputs` (je Spieler `PlayerCommand` als Lauflängen `{n, moveX, sprint, pay}`). Datenstand-Hash: SHA-256 über `data.Files` nach Pfad sortiert, mit LF-Zeilenenden. Endzustand-Hash: SHA-256 von `json.Marshal` der Insel (`sim.Island`).
+- **Befehl:** `task balance:run -- … --replay-dir DIR` schreibt je gültigem Lauf `<seed>-p<spieler>-<bot>-d<tiefe>.replay.json`; `--play DATEI` spielt ohne Bot ab und gibt `ticks`, `endHash`, `castleFallTick`, `warnings` als JSON aus (Warnungen zusätzlich auf stderr). Probe: Seed 12, 2 Spieler, sparsam, 1 Tag → 18 KB, Wiedergabe liefert denselben `endHash`.
+- **AC-03** umgesetzt, geprüft mit `TestAufnahmeUndWiedergabeGleicherHash` (Bot-Lauf → Datei → Lesen → Wiedergabe: gleicher Endzustand-Hash, gleiche Ticks, gleicher Burgfall-Tick) und `TestLauflaengenExakt` (Lauflängen ergeben exakt dieselben Befehle je Tick).
+- **AC-04** umgesetzt, geprüft mit `TestDateiEnthaeltSeedParameterHashEingaben` (Version, Seed, Spieler, Bot, Tiefe, Tage, Datenstand-Hash, Eingaben je Spieler).
+- **AC-05** umgesetzt, geprüft mit `TestUnbekannteVersionUndKaputteDatei` (Version 99 → Fehler „unbekannte Version 99“; Typ- und Syntaxfehler → Fehler mit Zeilennummer) und `TestAndererDatenstandWarnt` (Warnung, Wiedergabe läuft bis zum gleichen Endzustand).
+- `task check:go`, `task check:dev`, `task check` grün (2026-10-04, Worktree).
