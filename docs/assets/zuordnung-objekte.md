@@ -25,6 +25,10 @@ Skalierung ×2 bis ×3, Nachbearbeitung nur Skalieren und Palette.
 | `barracks` | `data/buildings.json` | – | – | Ziel: 16/32 px, Gothicvania, ×2–×3 (Q13) | Ziel: CC0 oder CC-BY | **Lücke: keine Grafik, B-162** |
 | `stairsUp` | `data/buildings.json` | – | – | Ziel: 16/32 px, Gothicvania, ×2–×3 (Q13) | Ziel: CC0 oder CC-BY | **Lücke: keine Grafik, B-162** |
 | `stairsDown` | `data/buildings.json` | – | – | Ziel: 16/32 px, Gothicvania, ×2–×3 (Q13) | Ziel: CC0 oder CC-BY | **Lücke: keine Grafik, B-162** |
+| `tavern` | `data/buildings.json` | – | – | Ziel: 16/32 px, Gothicvania, ×2–×3 (Q13) | Ziel: CC0 oder CC-BY | **Lücke: keine Grafik, B-162** |
+| `healer` | `data/buildings.json` | – | – | Ziel: 16/32 px, Gothicvania, ×2–×3 (Q13) | Ziel: CC0 oder CC-BY | **Lücke: keine Grafik, B-162** |
+| `smithy` | `data/buildings.json` | – | – | Ziel: 16/32 px, Gothicvania, ×2–×3 (Q13) | Ziel: CC0 oder CC-BY | **Lücke: keine Grafik, B-162** |
+| `armory` | `data/buildings.json` | – | – | Ziel: 16/32 px, Gothicvania, ×2–×3 (Q13) | Ziel: CC0 oder CC-BY | **Lücke: keine Grafik, B-162** |
 
 ## Gegner
 
