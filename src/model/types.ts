@@ -1,3 +1,4 @@
+import type buildingsJson from '../../data/buildings.json';
 import type { BiomeConfig } from './biome';
 import type { ResourceKind } from './data';
 
@@ -103,7 +104,8 @@ export interface ResourceNode {
   progress: number;
 }
 
-export type SiteKind = 'wall' | 'tower' | 'workshop' | 'storage' | 'stairsUp' | 'stairsDown';
+/** Jedes Gebäude aus data/buildings.json außer der Burg kann ein Bauplatz sein (der Server legt sie aus den Daten an). */
+export type SiteKind = Exclude<keyof typeof buildingsJson, 'castle'>;
 export type SiteState = 'unpaid' | 'waitingMaterial' | 'waitingWorker' | 'built';
 
 export interface Site {

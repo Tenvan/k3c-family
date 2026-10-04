@@ -6,6 +6,7 @@ import monarchJson from '../../data/monarch.json';
 import troopsJson from '../../data/troops.json';
 import wavesJson from '../../data/waves.json';
 import type { Range } from './biome';
+import type { SiteKind } from './types';
 
 /** Typisierter Zugriff auf die Balancing-Daten aus data/. Werte gehören in die JSON, nicht in den Code. */
 
@@ -63,7 +64,7 @@ export const TROOPS = troopsJson as unknown as Record<'vagrant' | 'peasant' | 'a
 export const ENEMIES = enemiesJson as unknown as Record<string, EnemyData>;
 export const MONARCH = monarchJson;
 export const HUB = hubJson as {
-  sites: { kind: 'wall' | 'tower' | 'workshop' | 'storage' | 'stairsUp' | 'stairsDown'; offsetUnits: number; fromDepth?: number; needsDeeper?: boolean }[];
+  sites: { kind: SiteKind; offsetUnits: number; fromDepth?: number; needsDeeper?: boolean }[];
   castleRadiusUnits: number;
   homeRadiusUnits: number;
   startTroops: Partial<Record<'peasant' | 'archer', number>>;
