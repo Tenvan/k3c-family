@@ -1,9 +1,9 @@
 import Phaser from 'phaser';
 import { toggleFullscreen } from '../core/fullscreen';
-import { GAME_HEIGHT, GAME_WIDTH, GROUND_Y, UNIT_PX } from '../core/constants';
+import { GAME_HEIGHT, GAME_WIDTH, UNIT_PX } from '../core/constants';
 import { GamepadInput, KeyboardInput, type PlayerInput } from '../input/playerInput';
 import { TouchInput, wantsTouchControls } from '../input/touchInput';
-import type { RoomClient } from '../online/clientConnection';
+import type { LevelInfo, RoomClient } from '../online/clientConnection';
 import { applyState, createViewWorld } from '../online/clientWorld';
 import { blendAlpha, interpolate } from '../online/clientInterpolation';
 import type { Frame } from '../online/clientConnection';
@@ -14,7 +14,8 @@ import { leavesGame } from './lobbyLogic';
 import { LocalSlots } from './localSlots';
 import type { RadarCell } from './radarView';
 import { daylight } from './viewRules';
-import { WorldRenderer } from './worldRenderer';
+import { cellStages } from './cellStages';
+import { PLACEHOLDER_BG, StageView, placeholderLayer, showOnly } from './stageView';
 import { DEV_FOCUS_KEY, muteFocused } from './debugOverlayPanel';
 
 /** Ein Overlay pro Seite, auch über Szenen-Neustarts hinweg */
@@ -47,13 +48,15 @@ export class GameScene extends Phaser.Scene {
 
   private data_!: GameSceneData;
   private world_: World | undefined;
-  private renderer_!: WorldRenderer;
+  /** Geladene Stufen nach Tiefe; mit dem heutigen Protokoll (B-176 offen) nur die Stufe von `client.level` */
+  private stages = new Map<number, StageView>();
+  private holders: Phaser.GameObjects.Layer[] = [];
   private keyboard!: KeyboardInput;
   private touch: TouchInput | undefined;
   private pads: GamepadInput[] = [];
   private nightFx: Phaser.Filters.ColorMatrix[] = [];
   private slots!: LocalSlots<PlayerInput>;
-  private level: object | null = null;
+  private level: LevelInfo | null = null;
   private prev: Frame | null = null;
   private cur: Frame | null = null;
   private cells: Cell[] = [];
@@ -80,6 +83,8 @@ export class GameScene extends Phaser.Scene {
     this.touch = undefined;
     this.slots = new LocalSlots(data.mock);
     this.world_ = undefined;
+    this.stages = new Map(); // die Szene hat ihre Ebenen beim Neustart schon zerstört
+    this.holders = [];
     this.level = null;
     this.prev = this.cur = null;
     this.layoutKey = '';
@@ -132,12 +137,18 @@ export class GameScene extends Phaser.Scene {
   /** Felder, für die das HUD Werte zeigt: Monarchen der lokalen Spieler, dazu der sichtbare Ausschnitt der Kamera (Radar) */
   hudCells(): RadarCell[] {
     const seats = [...this.client.you].sort((a, b) => a.slot - b.slot);
+    const current = this.world_;
+    const plan = cellStages(this.cells, seats, this.partnerMonarch === null || !current ? null : current.biome.depth, new Set(this.stages.keys()));
     return this.cells.map((cell, i) => {
       const view = this.cameras.cameras[i]?.worldView; // Kamera i gehört zu Feld i (layoutCameras)
+      const depth = plan[i]?.depth ?? null;
       return {
         cell,
         monarch: cell.kind === 'player' ? (seats[cell.seat]?.monarch ?? null) : null,
         view: view ? { fromUnits: view.x / UNIT_PX, spanUnits: view.width / UNIT_PX } : null,
+        depth,
+        // Welt der Stufe dieser Zelle; mit dem heutigen Protokoll (B-176) ist nur die Stufe von `client.level` geladen
+        world: plan[i]?.ready && current?.biome.depth === depth ? current : null,
       };
     });
   }
@@ -171,7 +182,8 @@ export class GameScene extends Phaser.Scene {
 
   private takeFrames(): void {
     if (this.client.level !== this.level) {
-      this.level = this.client.level; // neue Stufe: Darstellung neu aufbauen, nichts mit der alten mischen
+      if (this.level) this.dropStage(this.level.depth); // neue Stufe: nur deren Einheit neu aufbauen, nichts mit der alten mischen
+      this.level = this.client.level;
       this.world_ = undefined;
       this.prev = this.cur = null;
     }
@@ -190,9 +202,9 @@ export class GameScene extends Phaser.Scene {
     if (this.world_) applyState(this.world_, state);
     else {
       this.world_ = createViewWorld(level, state);
-      this.buildWorldView(this.world_);
+      this.loadStage(this.world_);
     }
-    this.renderer_.sync(this.world_);
+    this.stages.get(level.depth)?.renderer.sync(this.world_);
     const brightness = NIGHT_BRIGHTNESS + (1 - NIGHT_BRIGHTNESS) * daylight(this.world_.cycle);
     for (const fx of this.nightFx) fx.colorMatrix.brightness(brightness);
     this.updateLayout(this.world_);
@@ -214,78 +226,70 @@ export class GameScene extends Phaser.Scene {
   private updateLayout(world: World): void {
     const seats = this.client.you.length;
     this.partnerMonarch = seats === 1 ? this.pickPartner(world) : null;
-    const key = `${seats}|${this.partnerMonarch}|${this.client.you.map((s) => s.monarch).join(',')}`;
+    const key = `${seats}|${this.partnerMonarch}|${this.client.you.map((s) => `${s.monarch}:${s.depth}`).join(',')}|${[...this.stages.keys()].join(',')}`;
     if (key === this.layoutKey) return;
     this.layoutKey = key;
     this.cells = computeLayout(seats, this.partnerMonarch !== null);
     this.layoutCameras(world);
   }
 
-  /** Baut alles Sichtbare für die aktuelle Stufe (neu) auf: Hintergrund, Welt-Objekte, Kameras. */
-  private buildWorldView(world: World): void {
-    this.children.removeAll(true);
-    this.cameras.cameras.filter((c) => c !== this.cameras.main).forEach((c) => this.cameras.remove(c));
-    this.nightFx = [];
-
-    const widthPx = world.widthUnits * UNIT_PX;
-    const palette = world.biome.palette;
-    this.drawBackground(world, widthPx);
-    this.add.rectangle(0, GROUND_Y, widthPx, GAME_HEIGHT - GROUND_Y, Phaser.Display.Color.HexStringToColor(palette.ground).color).setOrigin(0, 0);
-    this.renderer_ = new WorldRenderer(this, world);
-
-    const main = this.cameras.main;
-    main.stopFollow();
-    main.setViewport(0, 0, GAME_WIDTH, GAME_HEIGHT).setZoom(1);
-    main.setBounds(0, 0, widthPx, GAME_HEIGHT);
-    main.centerOn(world.hubX * UNIT_PX, GAME_HEIGHT / 2);
-    main.setBackgroundColor(palette.sky);
-    this.addNightFx(main);
+  /** Baut die Einheit der Stufe auf (Hintergrund, Welt-Objekte); die Kameras folgen im nächsten Layout. */
+  private loadStage(world: World): void {
+    this.dropStage(world.biome.depth);
+    this.stages.set(world.biome.depth, new StageView(this, world));
     this.layoutKey = '';
   }
 
-  /** Eine Kamera je Feld; Spieler-Felder folgen ihrem Monarchen, das Feld des Mitspielers dem Partner, */
+  private dropStage(depth: number): void {
+    this.stages.get(depth)?.destroy();
+    this.stages.delete(depth);
+    this.layoutKey = '';
+  }
+
+  /** Eine Kamera je Feld, jede zeigt die Stufe ihres Spielers (`cellStages`); Spieler-Felder folgen ihrem Monarchen, das Feld des Mitspielers dem Partner. */
   private layoutCameras(world: World): void {
-    const widthPx = world.widthUnits * UNIT_PX;
-    this.cameras.cameras.filter((c) => c !== this.cameras.main).forEach((c) => this.cameras.remove(c));
-    this.nightFx = this.nightFx.slice(0, 1);
+    const main = this.cameras.main;
+    this.cameras.cameras.filter((c) => c !== main).forEach((c) => this.cameras.remove(c));
+    this.nightFx = [];
+    this.holders.forEach((h) => h.destroy());
+    this.holders = [];
     const seats = [...this.client.you].sort((a, b) => a.slot - b.slot);
+    const plan = cellStages(this.cells, seats, this.partnerMonarch === null ? null : world.biome.depth, new Set(this.stages.keys()));
+    const own: Phaser.GameObjects.Layer[] = [];
 
     this.cells.forEach((cell, i) => {
-      const cam = i === 0 ? this.cameras.main : this.cameras.add(0, 0, cell.w, cell.h);
-      if (i > 0) this.addNightFx(cam);
+      const cam = i === 0 ? main : this.cameras.add(0, 0, cell.w, cell.h);
+      this.addNightFx(cam);
       cam.setViewport(cell.x, cell.y, cell.w, cell.h);
       cam.setZoom(cell.h / GAME_HEIGHT);
-      cam.setBounds(0, 0, widthPx, GAME_HEIGHT);
-      cam.setBackgroundColor(world.biome.palette.sky);
-      const monarch = cell.kind === 'partner' ? this.partnerMonarch : (seats[cell.seat]?.monarch ?? null);
-      const view = monarch === null ? undefined : this.renderer_.playerView(monarch);
-      if (view) cam.startFollow(view, true, 0.1, 0.1);
+      cam.stopFollow();
+      const stage = plan[i]!.ready ? this.stages.get(plan[i]!.depth!) : undefined;
+      if (stage) {
+        const monarch = cell.kind === 'partner' ? this.partnerMonarch : (seats[cell.seat]?.monarch ?? null);
+        this.aimAtStage(cam, stage, monarch);
+        own.push(stage.layer);
+      } else {
+        const holder = placeholderLayer(this, plan[i]!.depth); // Stufe noch nicht geladen: Platzhalter statt leerer Kamera
+        this.holders.push(holder);
+        cam.removeBounds().centerOn(GAME_WIDTH / 2, GAME_HEIGHT / 2).setBackgroundColor(PLACEHOLDER_BG);
+        own.push(holder);
+      }
     });
+    showOnly(this.cameras.cameras, own, [...[...this.stages.values()].map((s) => s.layer), ...this.holders]);
+  }
+
+  private aimAtStage(cam: Phaser.Cameras.Scene2D.Camera, stage: StageView, monarch: number | null): void {
+    const { world } = stage;
+    cam.setBounds(0, 0, world.widthUnits * UNIT_PX, GAME_HEIGHT);
+    cam.setBackgroundColor(world.biome.palette.sky);
+    cam.centerOn(world.hubX * UNIT_PX, GAME_HEIGHT / 2);
+    const view = monarch === null ? undefined : stage.renderer.playerView(monarch);
+    if (view) cam.startFollow(view, true, 0.1, 0.1);
   }
 
   /** Nacht = Kamera abdunkeln. Nur mit WebGL (Filter), im Canvas-Modus bleibt es hell. */
   private addNightFx(cam: Phaser.Cameras.Scene2D.Camera): void {
     cam.filters.internal.clear(); // die Hauptkamera überlebt einen Szenen-Neustart, sonst stapelt sich die Abdunklung
     this.nightFx.push(cam.filters.internal.addColorMatrix());
-  }
-
-  private drawBackground(world: World, widthPx: number): void {
-    const palette = world.biome.palette;
-    const far = Phaser.Display.Color.HexStringToColor(palette.far).color;
-    const near = Phaser.Display.Color.HexStringToColor(palette.near).color;
-    // Zwei Parallax-Ebenen mit gezackter Silhouette (Berge / Höhlenwände).
-    this.drawRidge(widthPx, far, 0.3, 520, 180);
-    this.drawRidge(widthPx, near, 0.6, 700, 120);
-  }
-
-  private drawRidge(widthPx: number, color: number, scrollFactor: number, baseY: number, amplitude: number): void {
-    const g = this.add.graphics().setScrollFactor(scrollFactor, 1);
-    g.fillStyle(color, 1);
-    const points = [new Phaser.Math.Vector2(0, GROUND_Y)];
-    for (let x = 0; x <= widthPx * scrollFactor + GAME_WIDTH * 2; x += 160) {
-      points.push(new Phaser.Math.Vector2(x, baseY - Math.abs(Math.sin(x * 0.0021) + Math.sin(x * 0.0057)) * amplitude * 0.6));
-    }
-    points.push(new Phaser.Math.Vector2(widthPx * scrollFactor + GAME_WIDTH * 2, GROUND_Y));
-    g.fillPoints(points, true);
   }
 }

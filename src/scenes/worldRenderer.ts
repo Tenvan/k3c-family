@@ -1,6 +1,7 @@
 import Phaser from 'phaser';
 import { GROUND_Y, PLAYER_COLORS, UNIT_PX } from '../core/constants';
 import { BUILDINGS, TROOPS } from '../model/data';
+import { fontStyle } from './fontRules';
 import { canAfford, hasDepth, isOnTower } from './viewRules';
 import { ENEMY_SPRITES, PLAYER_SPRITES, TROOP_SPRITES, face, makeSprite, playAnim, spriteTop } from './sprites';
 import type { Coin, Enemy, Pickup, Player, Projectile, ResourceNode, Site, Troop, World } from '../model/types';
@@ -14,7 +15,7 @@ import type { Coin, Enemy, Pickup, Player, Projectile, ResourceNode, Site, Troop
 const U = UNIT_PX;
 const G = GROUND_Y;
 const PRICE_TAG_RANGE = 6;
-const TEXT = { fontSize: '22px', color: '#ffffff', stroke: '#000000', strokeThickness: 4, fontStyle: 'bold' };
+const TEXT = { stroke: '#000000', strokeThickness: 4, fontStyle: 'bold' };
 
 const SITE_SIZE: Record<Site['kind'], [number, number]> = {
   wall: [36, 150],
@@ -118,25 +119,36 @@ export class WorldRenderer {
   constructor(
     private readonly scene: Phaser.Scene,
     private world: World,
+    /** Ebene der Stufe: alles, was dieser Renderer zeichnet, liegt darin (je Kamera ein-/ausblendbar, S4.1) */
+    private readonly root: Phaser.GameObjects.Layer,
   ) {
     this.drawStatic();
-    this.castleHp = scene.add.container(world.castle.x * U, G - 300, bar(scene, 0, 240, 0x52b788)).setDepth(5);
+    this.castleHp = this.put(scene.add.container(world.castle.x * U, G - 300, bar(scene, 0, 240, 0x52b788)).setDepth(5));
 
-    this.nodes = new Layer((n) => this.createNode(n), (v, n) => this.updateNode(v, n));
-    this.sites = new Layer((s) => this.createSite(s), (v, s) => this.updateSite(v, s));
-    this.pickups = new Layer((p) => this.createPickup(p), () => {});
-    this.coins = new Layer((c) => scene.add.container(c.x * U, G - 8, [scene.add.circle(0, 0, 8, 0xffd166).setStrokeStyle(2, 0x9c6644)]).setDepth(6), () => {});
-    this.troops = new Layer(
+    this.nodes = this.layer((n) => this.createNode(n), (v, n) => this.updateNode(v, n));
+    this.sites = this.layer((s) => this.createSite(s), (v, s) => this.updateSite(v, s));
+    this.pickups = this.layer((p) => this.createPickup(p), () => {});
+    this.coins = this.layer((c) => scene.add.container(c.x * U, G - 8, [scene.add.circle(0, 0, 8, 0xffd166).setStrokeStyle(2, 0x9c6644)]).setDepth(6), () => {});
+    this.troops = this.layer(
       (t) => this.createTroop(t),
       (v, t) => this.updateTroop(v, t),
       (v, t) => v.getData('kind') !== t.kind,
     );
-    this.enemies = new Layer((e) => this.createEnemy(e), (v, e) => this.updateEnemy(v, e));
-    this.players = new Layer((p) => this.createPlayer(p), (v, p) => this.updatePlayer(v, p));
-    this.projectiles = new Layer(
+    this.enemies = this.layer((e) => this.createEnemy(e), (v, e) => this.updateEnemy(v, e));
+    this.players = this.layer((p) => this.createPlayer(p), (v, p) => this.updatePlayer(v, p));
+    this.projectiles = this.layer(
       (p) => scene.add.container(p.x * U, G - 70, [scene.add.rectangle(0, 0, 26, 3, p.team === 'player' ? 0xffffff : 0xff4d6d)]).setDepth(9),
       (v, p) => v.setX(p.x * U),
     );
+  }
+
+  private put<T extends Phaser.GameObjects.GameObject>(o: T): T {
+    this.root.add(o);
+    return o;
+  }
+
+  private layer<T extends { id: number }>(create: (t: T) => View, update: (v: View, t: T) => void, rebuild?: (v: View, t: T) => boolean): Layer<T> {
+    return new Layer((t: T) => this.put(create(t)), update, rebuild);
   }
 
   /** Kamera-Ziel für Spieler i */
@@ -163,23 +175,23 @@ export class WorldRenderer {
   private drawStatic(): void {
     const { scene, world } = this;
     const x = world.castle.x * U;
-    scene.add.rectangle(x, G - 130, 300, 260, 0x6c757d).setStrokeStyle(4, 0x343a40);
-    scene.add.rectangle(x, G - 40, 60, 80, 0x343a40);
-    for (const dx of [-120, -40, 40, 120]) scene.add.rectangle(x + dx, G - 275, 40, 30, 0x6c757d).setStrokeStyle(4, 0x343a40);
+    this.put(scene.add.rectangle(x, G - 130, 300, 260, 0x6c757d).setStrokeStyle(4, 0x343a40));
+    this.put(scene.add.rectangle(x, G - 40, 60, 80, 0x343a40));
+    for (const dx of [-120, -40, 40, 120]) this.put(scene.add.rectangle(x + dx, G - 275, 40, 30, 0x6c757d).setStrokeStyle(4, 0x343a40));
 
     for (const e of world.level.entities) {
       const ex = e.x * U;
       if (e.kind === 'portal') {
-        scene.add.ellipse(ex, G - 110, 110, 220, 0x7b2cbf).setStrokeStyle(6, 0x240046);
+        this.put(scene.add.ellipse(ex, G - 110, 110, 220, 0x7b2cbf).setStrokeStyle(6, 0x240046));
       } else if (e.kind === 'exit') {
-        scene.add.rectangle(ex, G - 90, 160, 180, 0x111111).setStrokeStyle(6, 0x555555);
+        this.put(scene.add.rectangle(ex, G - 90, 160, 180, 0x111111).setStrokeStyle(6, 0x555555));
         const deeper = hasDepth(world.biome.depth + 1);
-        scene.add.text(ex, G - 210, deeper ? `Tiefe ${world.biome.depth + 1}\nalle hierher` : 'verschüttet', { ...TEXT, align: 'center' }).setOrigin(0.5);
+        this.put(scene.add.text(ex, G - 210, deeper ? `Tiefe ${world.biome.depth + 1}\nalle hierher` : 'verschüttet', { ...TEXT, ...fontStyle('exitSign'), align: 'center' }).setOrigin(0.5));
       } else if (e.kind === 'bush') {
-        scene.add.circle(ex, G - 14, 18, 0x40916c); // Deko
+        this.put(scene.add.circle(ex, G - 14, 18, 0x40916c)); // Deko
       } else if (e.kind === 'recruitCamp') {
-        scene.add.triangle(ex, G - 45, 0, 90, 60, 0, 120, 90, 0xe9c46a).setStrokeStyle(3, 0x7f5539);
-        scene.add.circle(ex + 90, G - 10, 14, 0xf77f00); // Lagerfeuer
+        this.put(scene.add.triangle(ex, G - 45, 0, 90, 60, 0, 120, 90, 0xe9c46a).setStrokeStyle(3, 0x7f5539));
+        this.put(scene.add.circle(ex + 90, G - 10, 14, 0xf77f00)); // Lagerfeuer
       }
     }
   }
@@ -215,7 +227,7 @@ export class WorldRenderer {
 
   private createSite(s: Site): View {
     const g = this.scene.add.graphics();
-    const label = this.scene.add.text(0, 0, '', { ...TEXT, fontSize: '20px' }).setOrigin(0.5, 1);
+    const label = this.scene.add.text(0, 0, '', { ...TEXT, ...fontStyle('priceTag') }).setOrigin(0.5, 1);
     return this.scene.add.container(s.x * U, G, [g, label]).setDepth(2);
   }
 
@@ -351,7 +363,7 @@ export class WorldRenderer {
     // Farbiger Punkt unter den Füßen: welcher Monarch gehört zu wem
     const color = PLAYER_COLORS[p.index % PLAYER_COLORS.length];
     const marker = s.add.ellipse(0, 4, 56, 12, color, 0.8);
-    const purse = s.add.text(0, top - 10, '', { ...TEXT, color: '#ffd166', fontSize: '26px' }).setOrigin(0.5, 1);
+    const purse = s.add.text(0, top - 10, '', { ...TEXT, ...fontStyle('purse') }).setOrigin(0.5, 1);
     return s.add.container(p.x * U, G, [marker, sprite, purse, ...bar(s, top - 50, 50, 0x52b788)]).setDepth(10);
   }
 
