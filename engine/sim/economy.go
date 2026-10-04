@@ -34,6 +34,7 @@ func stepPlayers(w *World, commands []PlayerCommand, dt float64) {
 			continue
 		}
 		movePlayer(w, p, cmd, dt)
+		stepAttack(w, p, cmd, dt)
 		p.Paying = cmd.Pay
 		if cmd.Pay && p.PayCooldown <= 0 && p.Gold > 0 {
 			payOneCoin(w, p)
@@ -268,8 +269,9 @@ func collectPickups(w *World) {
 			gold := w.rng.Int(economy.ChestGold[0], economy.ChestGold[1])
 			giveGold(w, p, gold, pk.X)
 			w.Events = append(w.Events, Event{"type": "chest", "player": p.Index, "gold": gold})
+			chestSkillPoint(w, p)
 		default:
-			w.SkillPoints++
+			addPoolPoints(w, monarch.SkillPointSources.Hidden)
 			w.Events = append(w.Events, Event{"type": "skillPoint", "player": p.Index, "total": w.SkillPoints})
 		}
 	}

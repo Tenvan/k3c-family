@@ -14,6 +14,7 @@ type PlayerCommand struct {
 	MoveX  float64 `json:"moveX"` // -1 (links) bis 1 (rechts)
 	Sprint bool    `json:"sprint"`
 	Pay    bool    `json:"pay"` // Bezahl-Taste gehalten: Münze geben bzw. fallen lassen
+	Attack bool    `json:"attack,omitempty"` // Schlag (Taste X, monarch.md § 1)
 }
 
 // Player ist ein Monarch.
@@ -34,6 +35,10 @@ type Player struct {
 	// Free: Niemand steuert diesen Monarchen (vom Raum gesetzt, B-059). Er zählt nicht für den Stufenwechsel und
 	// reist mit. Nur Go, im JSON nur bei true.
 	Free bool `json:"free,omitempty"`
+	// Skills: gelernte Skills (IDs, Lernreihenfolge); Slots: aktive Skills in den Slots 1 bis 4 ("" = frei).
+	Skills         []string `json:"skills,omitempty"`
+	Slots          []string `json:"slots,omitempty"`
+	AttackCooldown float64  `json:"attackCooldown,omitempty"` // Sekunden bis zum nächsten Schlag
 }
 
 // Coin ist eine Münze am Boden.

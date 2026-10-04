@@ -97,6 +97,7 @@ func addPlayerAt(w *World, index int) *Player {
 		PayCooldown: 0.5, // der Beitritts-Tastendruck soll nicht gleich eine Münze ausgeben
 	}
 	w.Players = append(w.Players, p)
+	_ = ApplyPreset(w, p, presetFor(index)) // Startverteilung beim Beitritt, soweit Pool-Punkte frei sind
 	return p
 }
 
