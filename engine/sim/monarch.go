@@ -36,8 +36,7 @@ func poolOf(w *World) int {
 }
 
 // addPoolPoints ist der einzige Weg, Pool-Punkte zu vergeben (Verstecke, Truhen; später Bosse und Meilensteine).
-// Alle Stufen der Insel spiegeln den Pool nach World.SkillPoints. Bis der Pool im Spielstand steht (S1.4), senkt das
-// Spiegeln keinen höheren Zähler einer Stufe aus einem geladenen Stand (dort gab es nur Zähler je Stufe).
+// Alle Stufen der Insel spiegeln den Pool nach World.SkillPoints (der Spielstand speichert den Pool, S1.4).
 func addPoolPoints(w *World, n int) {
 	isl := w.island
 	if isl == nil {
@@ -46,7 +45,7 @@ func addPoolPoints(w *World, n int) {
 	}
 	isl.SkillPool += n
 	for _, s := range isl.Stages {
-		s.SkillPoints = max(s.SkillPoints, isl.SkillPool)
+		s.SkillPoints = isl.SkillPool
 	}
 }
 

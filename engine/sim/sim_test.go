@@ -23,7 +23,7 @@ type goldenRun struct {
 	Dt            float64
 	Ticks         int
 	SnapshotEvery int
-	Setup         *struct{ Stock Stock } // Start-Vorrat nach CreateWorld und AddPlayer
+	Setup         *goldenSetup // nach CreateWorld und AddPlayer
 	Inputs        []struct {
 		Ticks    int
 		Commands []PlayerCommand
@@ -32,6 +32,13 @@ type goldenRun struct {
 		Tick  int
 		World map[string]any
 	}
+}
+
+// goldenSetup: Start-Vorrat, Pool-Punkte und je Spieler die zu lernenden Skills (S1.4).
+type goldenSetup struct {
+	Stock  Stock
+	Pool   int
+	Skills [][]string
 }
 
 func goldenRuns(t *testing.T) []goldenRun {
@@ -46,7 +53,7 @@ func goldenRuns(t *testing.T) []goldenRun {
 		if err == nil {
 			err = json.Unmarshal(raw, &runs[i])
 		}
-		if err != nil || len(runs[i].Snapshots) == 0 || runs[i].SnapshotEvery == 0 {
+		if err != nil || (len(runs[i].Snapshots) == 0 && !*golden.Update) || runs[i].SnapshotEvery == 0 {
 			t.Fatalf("%s unbrauchbar: %v", f, err)
 		}
 		runs[i].path = f
@@ -86,11 +93,11 @@ func replay(t *testing.T, run goldenRun) {
 		AddPlayer(w)
 	}
 	if run.Setup != nil {
-		*w.Stock = run.Setup.Stock
+		applySetup(t, w, run)
 	}
 	snap, tick := 0, 0
 	var got []snapshot
-	compare(t, run, 0, run.Snapshots[0].World, w, &got)
+	compare(t, run, 0, wantAt(t, run, 0, 0), w, &got)
 	for _, seg := range run.Inputs {
 		for range seg.Ticks {
 			Step(w, seg.Commands, run.Dt)
@@ -99,13 +106,10 @@ func replay(t *testing.T, run goldenRun) {
 				continue
 			}
 			snap++
-			if s := run.Snapshots[snap]; s.Tick != tick {
-				t.Fatalf("sim-%s: Snapshot %d hat Tick %d, erwartet %d", run.Name, snap, s.Tick, tick)
-			}
-			compare(t, run, tick, run.Snapshots[snap].World, w, &got)
+			compare(t, run, tick, wantAt(t, run, snap, tick), w, &got)
 		}
 	}
-	if tick != run.Ticks || snap != len(run.Snapshots)-1 {
+	if tick != run.Ticks || (snap != len(run.Snapshots)-1 && !*golden.Update) {
 		t.Fatalf("sim-%s: %d Ticks und %d Snapshots gerechnet, Datei hat %d und %d", run.Name, tick, snap+1, run.Ticks, len(run.Snapshots))
 	}
 	if *golden.Update {
@@ -113,6 +117,30 @@ func replay(t *testing.T, run goldenRun) {
 		f.Set(t, "snapshots", got)
 		f.Write(t, run.path)
 	}
+}
+
+// applySetup setzt Vorrat, Pool und Skills (S1.4: Lauf forest-monarch).
+func applySetup(t *testing.T, w *World, run goldenRun) {
+	*w.Stock = run.Setup.Stock
+	addPoolPoints(w, run.Setup.Pool)
+	for i, ids := range run.Setup.Skills {
+		for _, id := range ids {
+			if err := LearnSkill(w, w.Players[i], id); err != nil {
+				t.Fatalf("sim-%s: %v", run.Name, err)
+			}
+		}
+	}
+}
+
+// wantAt ist der erwartete Snapshot Nummer snap; mit -update gibt es noch keinen (neue Datei ohne snapshots).
+func wantAt(t *testing.T, run goldenRun, snap, tick int) map[string]any {
+	if *golden.Update {
+		return nil
+	}
+	if snap >= len(run.Snapshots) || run.Snapshots[snap].Tick != tick {
+		t.Fatalf("sim-%s: Snapshot %d fehlt oder hat nicht Tick %d", run.Name, snap, tick)
+	}
+	return run.Snapshots[snap].World
 }
 
 func TestGoldenLaeufe(t *testing.T) {
