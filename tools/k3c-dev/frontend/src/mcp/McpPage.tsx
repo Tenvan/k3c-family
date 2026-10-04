@@ -6,7 +6,6 @@ import { CallLog } from './CallLog';
 import { LiveMonitors } from './LiveMonitors';
 import { ServerCards } from './ServerCards';
 import { StatsView } from './StatsView';
-import { ToolTiles } from './ToolTiles';
 import { useMcpData } from './useMcpData';
 
 const VIEWS = ['uebersicht', 'statistik'] as const;
@@ -33,10 +32,7 @@ export function McpPage() {
       {overview && view === 'uebersicht' && (
         <>
           <ServerCards overview={overview} error={data.error} reload={data.reload} />
-          <div className="mcp-band2">
-            <ToolTiles tools={overview.stats.tools} total={overview.stats.totalCalls} />
-            <LiveMonitors minutes={data.usage?.minutes ?? []} />
-          </div>
+          <LiveMonitors minutes={data.usage?.minutes ?? []} />
           <CallLog calls={data.calls} tools={overview.stats.tools.map((t) => t.name)} />
         </>
       )}
