@@ -60,7 +60,7 @@ keine
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
 | GR3.1 | `GR3.1-gebaeude.md` | Umsetzung | autonom | fertig |
-| GR3.2 | `GR3.2-ressourcen-parallax.md` | Umsetzung | autonom | offen |
+| GR3.2 | `GR3.2-ressourcen-parallax.md` | Umsetzung | autonom | in Arbeit |
 | GR3.3 | `GR3.3-review.md` | Review | autonom | offen |
 
 Bei `Reife: Entwurf` genügen Stichpunkte mit den Kriterien in Klammern statt Session-Dateien. Vor dem Aktivieren
