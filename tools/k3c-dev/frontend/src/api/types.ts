@@ -294,7 +294,7 @@ export interface PlanSession {
   text?: string;
 }
 
-/** Aktiver oder geplanter Sprint (Go: planning.Sprint). */
+/** Aktiver, geplanter oder erledigter Sprint (Go: planning.Sprint); worktree = Branch eines Worktrees, der daran arbeitet. */
 export interface PlanSprint {
   id: string;
   title: string;
@@ -304,6 +304,7 @@ export interface PlanSprint {
   spec: string;
   tickets: string[];
   sessions: PlanSession[];
+  worktree?: string;
 }
 
 /** Ticket aus docs/backlog (Go: planning.Ticket). */
