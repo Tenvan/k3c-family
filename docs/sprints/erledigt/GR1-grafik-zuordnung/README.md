@@ -1,6 +1,6 @@
 # GR1 · CLI · Grafik-Zuordnungstabelle
 
-- **Status:** aktiv
+- **Status:** erledigt
 - **Domäne:** CLI
 - **Reife:** bereit
 - **Einschiebbar:** ja
@@ -62,11 +62,13 @@ keine (Grundstil durch Q13 geklärt, 2026-10-03)
 | GR1.1 | `GR1.1-workshop-stil.md` | Workshop | Mensch | fertig |
 | GR1.2 | `GR1.2-tabelle-test.md` | Umsetzung | autonom | fertig |
 | GR1.3 | `GR1.3-restliche-objekte.md` | Umsetzung | autonom | fertig |
-| GR1.4 | `GR1.4-review.md` | Review | autonom | offen |
+| GR1.4 | `GR1.4-review.md` | Review | autonom | fertig |
 
 Bei `Reife: Entwurf` genügen Stichpunkte mit den Kriterien in Klammern statt Session-Dateien. Vor dem Aktivieren
 wird jede Session als eigene Datei nach `docs/vorlagen/session.md` geschrieben.
 
 ## Abnahme
 
-–
+2026-10-04, Agent (Claude Sonnet) in GR1.4, leichtes Review. AC-01, AC-03 bis AC-05: Ergebnis GR1.2 (Tabelle `docs/assets/zuordnung-objekte.md`, Test `src/tools/zuordnung.test.ts`); AC-02: Ergebnis GR1.3 (`docs/assets/zuordnung-welt.md`); AC-05 Kopf: Workshop GR1.1 mit 🧑; AC-06: `task check` grün.
+Schwere Befunde: keine. Neue Tickets: B-251 (Figuren-Skalierung). B-161 archiviert; 24 Lücken gehen an GR2 (B-162), Skill-Icons an B-124, Bosse an B-130.
+Version: v0.6.1 vorgeschlagen (Patch: nur Doku und Test, keine Spieländerung); gesetzt erst nach Bestätigung durch 🧑.

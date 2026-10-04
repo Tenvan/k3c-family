@@ -66,7 +66,6 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-156](B-156-balancing-runde-kampf-bosse.md) | REG | Idee | hoch | eingeplant | BR2 | Kampf, Gegner und Bosse sind in einer Balancing-Runde gegen die Zielkorridore abgestimmt |
 | [B-158](B-158-bot-profile-sensitivitaet.md) | SIM | Idee | mittel | eingeplant | BAL3 | Der Tester kennt weitere Bot-Profile, Sensitivitäts-Läufe und Kurven je Schwierigkeitsgrad |
 | [B-160](B-160-abgleich-spielmetrik-simulator.md) | REG | Idee | mittel | eingeplant | BAL4 | Spielmetrik echter Abende und Simulatorwerte sind abgeglichen |
-| [B-161](B-161-grafik-zuordnungstabelle.md) | CLI | Idee | hoch | eingeplant | GR1 | Jedes Spielobjekt hat eine Zuordnung zu Asset und Lizenz oder eine dokumentierte Lücke |
 | [B-162](B-162-grafik-suche-luecken.md) | CLI | Frage | mittel | eingeplant | GR2 | Für die Grafik-Lücken liegen Kandidaten mit Vorschau, Lizenz und Stilbewertung vor |
 | [B-167](B-167-sfx-katalog.md) | CLI | Idee | mittel | eingeplant | SO2 | Jedes wichtige Ereignis hat einen Sound mit Quelle und Lizenz |
 | [B-168](B-168-musik-je-zustand.md) | CLI | Idee | mittel | eingeplant | SO4 | Die Musik wechselt je Spielzustand mit Crossfade |
@@ -245,3 +244,4 @@ Zeile in diesen Abschnitt.
 | [B-152](archiv/B-152-reittiere-mechanik.md) | SIM | Idee | hoch | erledigt | S1 | Jeder Monarch reitet von Anfang an auf einem Standard-Reittier |
 | [B-222](archiv/B-222-glossar-spielstand-version-3.md) | REG | Schuld | niedrig | erledigt | S1 | Das Glossar nennt Spielstand-Version 3 |
 | [B-231](archiv/B-231-cheat-dialog.md) | CLI | Idee | hoch | erledigt | – | Der Cheat-Dialog ist modal, hält den Raum an und öffnet per Geste auf jedem Gerät |
+| [B-161](archiv/B-161-grafik-zuordnungstabelle.md) | CLI | Idee | hoch | erledigt | GR1 | Jedes Spielobjekt hat eine Zuordnung zu Asset und Lizenz oder eine dokumentierte Lücke |
