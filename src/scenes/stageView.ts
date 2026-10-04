@@ -1,6 +1,8 @@
 import Phaser from 'phaser';
 import { GAME_HEIGHT, GAME_WIDTH, GROUND_Y, UNIT_PX } from '../core/constants';
+import { t } from '../core/texts';
 import type { World } from '../model/types';
+import { StageEffects } from './effectsView';
 import { WorldRenderer } from './worldRenderer';
 
 /** Hintergrundfarbe einer Zelle, deren Stufe noch nicht geladen ist */
@@ -19,6 +21,7 @@ function hex(color: string): number {
 export class StageView {
   readonly layer: Phaser.GameObjects.Layer;
   readonly renderer: WorldRenderer;
+  readonly effects: StageEffects;
 
   constructor(scene: Phaser.Scene, readonly world: World) {
     this.layer = scene.add.layer();
@@ -29,9 +32,11 @@ export class StageView {
     this.layer.add(ridge(scene, widthPx, hex(palette.near), 0.6, 700, 120));
     this.layer.add(scene.add.rectangle(0, GROUND_Y, widthPx, GAME_HEIGHT - GROUND_Y, hex(palette.ground)).setOrigin(0, 0));
     this.renderer = new WorldRenderer(scene, world, this.layer);
+    this.effects = new StageEffects(scene, this.layer);
   }
 
   destroy(): void {
+    this.effects.destroy();
     this.layer.destroy();
   }
 }
@@ -50,7 +55,7 @@ function ridge(scene: Phaser.Scene, widthPx: number, color: number, scrollFactor
 
 /** Text „Stufe n wird geladen“ in der Mitte der Spielfläche; die Kamera der Zelle zentriert dort (`centerOn`). */
 export function placeholderLayer(scene: Phaser.Scene, depth: number | null): Phaser.GameObjects.Layer {
-  const text = depth === null ? 'Stufe wird geladen' : `Stufe ${depth} wird geladen`;
+  const text = depth === null ? t('stage.loading') : t('stage.loadingN', { depth });
   const layer = scene.add.layer();
   layer.add(scene.add.text(GAME_WIDTH / 2, GAME_HEIGHT / 2, text, PLACEHOLDER_TEXT).setOrigin(0.5));
   return layer;

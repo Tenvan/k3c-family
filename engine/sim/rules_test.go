@@ -137,14 +137,17 @@ func TestGoldNichtBeigetretenerSpieler(t *testing.T) {
 
 func leftWall(t *testing.T, w *World) *Site {
 	t.Helper()
+	var wall *Site // Linie 1: die linke Mauer am nächsten zur Hub-Mitte (Plätze liegen nach X sortiert)
 	for _, s := range w.Sites {
 		if s.Kind == "wall" && s.X < w.HubX {
-			s.State, s.HP = "built", s.MaxHP
-			return s
+			wall = s
 		}
 	}
-	t.Fatal("keine linke Mauer")
-	return nil
+	if wall == nil {
+		t.Fatal("keine linke Mauer")
+	}
+	wall.State, wall.HP = "built", wall.MaxHP
+	return wall
 }
 
 func TestMauerHaeltGegnerAuf(t *testing.T) {

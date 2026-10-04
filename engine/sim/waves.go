@@ -101,7 +101,7 @@ func stepProjectiles(w *World, dt float64) {
 			continue
 		}
 		if math.Abs(x-pr.X) <= pr.Speed*dt {
-			applyDamage(w, pr.TargetID, pr.Damage)
+			applyDamageBy(w, pr.TargetID, pr.Damage, pr.Cause)
 			continue
 		}
 		pr.X += float64(sign(x-pr.X) * pr.Speed * dt)

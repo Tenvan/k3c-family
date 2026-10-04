@@ -1,6 +1,7 @@
 import { BIOMES, type BiomeConfig } from '../model/biome';
 import type { LevelLayout } from '../model/types';
 import { clientLog } from '../core/clientLog';
+import { t } from '../core/texts';
 import { applyDelta } from './clientDelta';
 import {
   INPUT_KEEPALIVE_MS,
@@ -31,14 +32,6 @@ const RETRY_MAX_MS = 4000;
 export const RECONNECT_LIMIT_MS = 120_000;
 /** Anzahl Snapshots für die Takt-Messung des Debug-Overlays */
 const SNAPSHOT_WINDOW = 30;
-
-const TEXT = {
-  reconnecting: 'Verbindung weg, verbinde neu …',
-  lost: 'Server nicht erreichbar',
-  replaced: 'An anderer Stelle geöffnet',
-  version: 'Veraltete Version, Seite neu laden',
-  unknownBiome: 'Unbekanntes Biom, Seite neu laden',
-} as const;
 
 export interface SocketLike {
   send(data: string): void;
@@ -179,6 +172,16 @@ export class RoomClient {
     if (this.status === 'room') this.send({ t: 'removeSlot', slot });
   }
 
+  /** Skill für den Monarchen des Slots lernen (Skill-ID aus `data/monarch.json`), nur im Raum. */
+  learn(slot: number, skill: string): void {
+    if (this.status === 'room') this.send({ t: 'learn', slot, skill });
+  }
+
+  /** Skill-Verteilung des Slots zurücksetzen (nur am Tag an der Burg, prüft der Server), nur im Raum. */
+  respec(slot: number): void {
+    if (this.status === 'room') this.send({ t: 'respec', slot });
+  }
+
   /** Raum bewusst verlassen: zurück zur Raumliste, kein Wiederverbinden. */
   leave(): void {
     if (this.status !== 'room') return;
@@ -252,7 +255,7 @@ export class RoomClient {
   private changed(): void {
     if (this.status !== this.loggedStatus) {
       this.loggedStatus = this.status;
-      clientLog(this.status === 'lost' ? 'error' : 'info', `Verbindung: ${this.status}`, { room: this.roomCode, notice: this.notice, errorCode: this.errorCode });
+      clientLog(this.status === 'lost' ? 'error' : 'info', `🔌 Verbindung: ${this.status}`, { room: this.roomCode, notice: this.notice, errorCode: this.errorCode });
     }
     this.onChange?.();
   }
@@ -278,16 +281,16 @@ export class RoomClient {
     if (this.closedByUs || this.status === 'ended' || this.status === 'lost') return;
     if (this.status !== 'reconnecting') {
       this.status = 'reconnecting';
-      this.notice = TEXT.reconnecting;
+      this.notice = t('net.reconnecting');
       this.downSince = this.env.now();
       this.attempt = 0;
-      clientLog('warn', 'Verbindung abgebrochen, verbinde neu', { room: this.roomCode });
+      clientLog('warn', '🔁 Verbindung abgebrochen, verbinde neu', { room: this.roomCode });
       this.changed();
     }
     if (this.env.now() - this.downSince >= RECONNECT_LIMIT_MS) {
       this.clearRoom();
       this.status = 'lost';
-      this.notice = TEXT.lost;
+      this.notice = t('net.lost');
       this.changed();
       return;
     }
@@ -311,7 +314,7 @@ export class RoomClient {
     try {
       msg = JSON.parse(String(data)) as ServerMessage;
     } catch {
-      clientLog('warn', 'Nachricht des Servers nicht lesbar', { start: String(data).slice(0, 120) });
+      clientLog('warn', '💥 Nachricht des Servers nicht lesbar', { start: String(data).slice(0, 120) });
       return;
     }
     this.apply(msg);
@@ -371,19 +374,19 @@ export class RoomClient {
     this.state = null;
     this.frames = [];
     if (!biome) {
-      this.notice = TEXT.unknownBiome;
+      this.notice = t('net.unknownBiome');
       this.level = null;
-      clientLog('error', `Unbekanntes Biom ${layout.biomeId}`, { depth });
+      clientLog('error', `💥 Unbekanntes Biom ${layout.biomeId}`, { depth });
       return;
     }
     this.level = { depth, layout, biome };
     this.framesSinceLevel = 0;
-    clientLog('info', 'Level empfangen', { depth, biome: biome.id, width: layout.widthUnits });
+    clientLog('info', '📂 Level empfangen', { depth, biome: biome.id, width: layout.widthUnits });
   }
 
   private pushFrame(tick: number, ack: number): void {
     const receivedAt = this.env.now();
-    if (this.framesSinceLevel++ === 0) clientLog('info', 'Erster Zustand nach Level', { tick, sites: (this.state as unknown as WorldState).sites?.map((s) => s.kind) });
+    if (this.framesSinceLevel++ === 0) clientLog('info', '✅ Erster Zustand nach Level', { tick, sites: (this.state as unknown as WorldState).sites?.map((s) => s.kind) });
     this.frames.push({ tick, ack, receivedAt, state: this.state as unknown as WorldState });
     this.snapshotTimes.push(receivedAt);
     if (this.snapshotTimes.length > SNAPSHOT_WINDOW) this.snapshotTimes.shift();
@@ -391,12 +394,12 @@ export class RoomClient {
 
   /** Verhalten je Fehler-Code (docs/protocol.md › Fehler-Codes). */
   private fail(code: string, message: string): void {
-    clientLog(code === 'bad_request' ? 'error' : 'warn', `Server-Fehler ${code}: ${message}`, { status: this.status, room: this.roomCode });
+    clientLog(code === 'bad_request' ? 'error' : 'warn', `🚫 Server-Fehler ${code}: ${message}`, { status: this.status, room: this.roomCode });
     switch (code) {
       case 'replaced':
-        return this.end(TEXT.replaced);
+        return this.end(t('net.replaced'));
       case 'version':
-        return this.end(TEXT.version);
+        return this.end(t('net.version'));
       case 'bad_request':
         return void console.warn(`bad_request: ${message}`);
       case 'forbidden':

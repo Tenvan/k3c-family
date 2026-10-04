@@ -6,7 +6,7 @@
 - **Branch:** so2/3-einbau-rueckfall
 - **Abhängig von:** SO2.2
 - **Tickets:** B-167
-- **Kriterien:** AC-03, AC-04, AC-05, AC-06
+- **Kriterien:** AC-03, AC-04, AC-05, AC-06, AC-07
 
 ## Ziel
 

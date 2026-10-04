@@ -90,10 +90,12 @@ Nur so bleibt Vollbild auf der Xbox über Seitenwechsel erhalten. Für **jede** 
 - Jede Mechanik muss mit **2 Spielern gleichzeitig** funktionieren (Split-Screen, eigene Eingabe pro Spieler).
 - Controller-Taste **B** nicht belegen (Edge-Zurück auf der Xbox, wird von der Zurück-Falle geschluckt).
   **View + Menu** gemeinsam = zurück zur Landingpage (reserviert, auf keiner Seite anders belegen).
-- **Logging mit Emojis:** Jede Log-Meldung (Go `slog`, Client `clientLog`) beginnt mit einem passenden Emoji zur Aktion,
-  z. B. 🚀 Start, 🛑 Stopp, 🔁 Neustart, ✅ geschafft, 💥 Absturz, 👑 Spieler kommt, 👋 Spieler geht, 💾 gespeichert,
-  📂 geladen, 🌙 Nacht/Welle, 🏹 Kampf, 🪙 Münzen, 🏗 Bau, 🐛 Dev-Aktion. Nur Emojis aus einem Codepunkt (kein U+FE0F).
-  Das Thema setzt die Konsole selbst aus `ns` (`engine/conlog` › `Topics`); ein neuer `ns` bekommt dort sein Emoji.
+- **Logging mit Emojis:** Jede Log-Meldung (Go `slog`, Client `clientLog`) beginnt mit einem Emoji zur Aktion:
+  🚀 Start · 🛑 Stopp · 🔁 Neustart · ✅ geschafft · ❌ fehlgeschlagen · 💥 Fehler/Absturz · 🚫 abgelehnt · ⏳ Warten/Frist ·
+  🐢 zu langsam · 🔌 verbunden · 👑 Spieler kommt · 👋 geht/getrennt · 💾 gespeichert · 📂 geladen · 🩹 wiederhergestellt ·
+  🧹 aufgeräumt · 📨 Nachricht · 📄 Datei/Log · 🔒 Sicherheit · 🚦 Zustandswechsel · 🤒 ungesund · 💓 Takt · 🏰 Raum ·
+  🪜 Stufenwechsel · ⏩ Zeitraffer · 🌙 Nacht/Welle · 🏹 Kampf · 🪙 Münzen · 🔨 Bau · 🐛 Dev. Nur Emojis aus einem
+  Codepunkt (kein U+FE0F). Das Thema setzt die Konsole selbst aus `ns` (`engine/conlog` › `Topics`); ein neuer `ns` bekommt dort sein Emoji.
 - Klein bleiben: kein Framework-Overhead. Prozess steht nur in `docs/arbeitsweise.md`, keine weiteren Prozess-Dokumente.
   Ein Sprint bleibt in seiner Domäne; Datei ≤ 400 Zeilen, Funktion ≤ 60 Zeilen. Lieber spielbarer Code.
 
@@ -106,3 +108,14 @@ Nur so bleibt Vollbild auf der Xbox über Seitenwechsel erhalten. Für **jede** 
 - Controller mocken: `navigator.getGamepads = () => [pad, null, null, null]` + `gamepadconnected`-Event.
   Das Pad-Objekt braucht `mapping: 'standard'`, 17 `buttons`, 4 `axes`. **Wichtig:** Nach jeder Änderung
   `pad.timestamp = performance.now() + 100000` setzen, sonst ignoriert Phaser das Update.
+
+## Repository Map
+
+A full codemap is available at `codemap.md` in the project root.
+
+Before working on any task, read `codemap.md` to understand:
+- Project architecture and entry points
+- Directory responsibilities and design patterns
+- Data flow and integration points between modules
+
+For deep work on a specific folder, also read that folder's `codemap.md`.

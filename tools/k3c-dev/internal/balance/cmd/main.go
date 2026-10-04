@@ -1,11 +1,14 @@
 // Command k3c-balance spielt eine Szenario-Matrix mit Bots und schreibt die Kennzahlen als JSON (B-099, BAL1.1).
-// Start über `task balance:run -- --seeds 10 --players 2 --bots saver --days 5`.
+// Start über `task balance:run -- --seeds 10 --players 2 --bots saver --days 5`. Mit `--replay-dir DIR` schreibt er je
+// gültigem Lauf eine Replay-Datei, `--play DATEI` spielt eine Datei ohne Bot ab (BAL1.2, B-159).
 package main
 
 import (
+	"encoding/json"
 	"flag"
 	"fmt"
 	"os"
+	"path/filepath"
 	"strconv"
 	"strings"
 
@@ -29,8 +32,27 @@ func run(args []string) error {
 	days := fs.Int("days", 5, "Tage je Lauf")
 	threshold := fs.Int("gold-threshold", 0, "Gold-Schwelle aller Monarchen zusammen (0 = nicht messen)")
 	out := fs.String("out", "", "Datei für das JSON (leer = Standardausgabe)")
+	replayDir := fs.String("replay-dir", "", "Ordner für eine Replay-Datei je gültigem Lauf (leer = keine)")
+	play := fs.String("play", "", "Replay-Datei ohne Bot abspielen statt einer Matrix")
+	var to targetOpts
+	fs.BoolVar(&to.on, "targets", false, "Ziele aus data/balance-targets.json bewerten, Bericht als JSON und Markdown; --seeds N = nur die ersten N, sonst alle")
+	fs.StringVar(&to.dir, "report-dir", "reports", "Ordner für balance-<Zeit>.json und .md (nur mit --targets)")
+	fs.StringVar(&to.baseline, "baseline", "", "Baseline-Datei zum Vergleichen (nur mit --targets)")
+	fs.BoolVar(&to.write, "write-baseline", false, "Bericht nach --baseline schreiben statt vergleichen")
 	if err := fs.Parse(args); err != nil {
 		return err
+	}
+	if to.on {
+		to.replays = *replayDir
+		fs.Visit(func(f *flag.Flag) {
+			if f.Name == "seeds" {
+				to.seeds = *seeds
+			}
+		})
+		return runTargets(to)
+	}
+	if *play != "" {
+		return playFile(*play, *out)
 	}
 	m := balance.Matrix{Seeds: seedNames(*seeds, *seedList), Bots: split(*botList), Days: *days, GoldThreshold: *threshold}
 	var err error
@@ -44,15 +66,71 @@ func run(args []string) error {
 	if err != nil {
 		return err
 	}
+	if err := writeReplays(report, *replayDir); err != nil {
+		return err
+	}
 	b, err := report.JSON()
 	if err != nil {
 		return err
 	}
-	if *out == "" {
-		_, err = os.Stdout.Write(b)
+	return write(*out, b)
+}
+
+// write schreibt nach out oder auf die Standardausgabe.
+func write(out string, b []byte) error {
+	if out == "" {
+		_, err := os.Stdout.Write(b)
 		return err
 	}
-	return os.WriteFile(*out, b, 0o644)
+	return os.WriteFile(out, b, 0o644)
+}
+
+// writeReplays schreibt je gültigem Lauf <seed>-p<spieler>-<bot>-d<tiefe>.replay.json nach dir.
+func writeReplays(r balance.Report, dir string) error {
+	if dir == "" {
+		return nil
+	}
+	if err := os.MkdirAll(dir, 0o755); err != nil {
+		return err
+	}
+	for _, res := range r.Results {
+		if res.Replay == nil {
+			continue
+		}
+		b, err := res.Replay.JSON()
+		if err != nil {
+			return err
+		}
+		name := fmt.Sprintf("%s-p%d-%s-d%d.replay.json", res.Seed, res.Players, res.Bot, res.Depth)
+		if err := os.WriteFile(filepath.Join(dir, name), b, 0o644); err != nil {
+			return err
+		}
+	}
+	return nil
+}
+
+// playFile spielt eine Replay-Datei ab und schreibt Ticks, Endzustand-Hash, Burgfall-Tick und Warnungen als JSON.
+func playFile(path, out string) error {
+	raw, err := os.ReadFile(path)
+	if err != nil {
+		return err
+	}
+	r, err := balance.ReadReplay(raw)
+	if err != nil {
+		return fmt.Errorf("%s: %w", path, err)
+	}
+	pb, err := balance.Play(r)
+	if err != nil {
+		return err
+	}
+	for _, w := range pb.Warnings {
+		fmt.Fprintln(os.Stderr, "k3c-balance: Warnung:", w)
+	}
+	b, err := json.MarshalIndent(pb, "", "  ")
+	if err != nil {
+		return err
+	}
+	return write(out, append(b, '\n'))
 }
 
 func seedNames(n int, list string) []string {

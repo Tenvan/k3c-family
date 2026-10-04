@@ -4,11 +4,11 @@
 - **Domäne:** SRV
 - **Reife:** bereit
 - **Einschiebbar:** nein
-- **Tickets:** B-154
+- **Tickets:** B-154, B-080
 - **Start-Commit:** –
-- **Spec:** Entwurf
+- **Spec:** freigegeben
 - **Revision:** 1
-- **Freigabe:** –
+- **Freigabe:** 2026-10-04, Chat, durch 🧑, Revision 1; mit Änderungen aus der Spec-Prüfung
 
 ## Ausgangslage
 
@@ -50,11 +50,12 @@ Wechsel-Bestätigung vor dem Sieg über den Endboss → `bad_request`.
 - **AC-02** Der Server lehnt die Wechsel-Bestätigung vor dem Sieg über den Endboss ab (Test) (B-154/AC-02).
 - **AC-03** Der Snapshot enthält Boss-HP, Phase, Warnkreis und das aktive Event mit Restzeit (Test auf Testdaten) (B-154/AC-03).
 - **AC-04** Protokollversion erhöht, ältere Clients erhalten `version` (Test) (B-154/AC-04).
-- **AC-05** Bytes je Tick in einer Bosswelle mit 4 Spielern gemessen und notiert, `task check:go` grün (B-154/AC-05).
+- **AC-05** Bytes je Tick in einer Bosswelle mit 4 Spielern gemessen und notiert, höchstens 200 Byte je Tick und Client (Q08), `task check:go` grün (B-154/AC-05).
+- **AC-06** Eine Dev-Aktion wechselt den Schwierigkeitsgrad eines laufenden Raums ab der nächsten Welle, ohne Dev-Mode wird sie abgelehnt (Test) (B-080/AC-02).
 
 ## Offene Fragen
 
-keine
+- Reihenfolge der Versionssprünge K4 und W5: Beide erhöhen die Protokollversion und ändern dieselben Beispiele; K4.1 setzt W5 voraus (Fahrplan), bestätigt 🧑.
 
 ## Sessions
 

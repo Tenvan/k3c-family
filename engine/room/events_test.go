@@ -12,8 +12,8 @@ type eventPeer struct {
 	events [][]sim.Event
 }
 
-func (p *eventPeer) State(tick int, w *sim.World, scale int) {
-	p.peer.State(tick, w, scale)
+func (p *eventPeer) State(tick int, w *sim.World, scale int, paused bool) {
+	p.peer.State(tick, w, scale, paused)
 	p.events = append(p.events, append([]sim.Event(nil), w.Events...))
 }
 

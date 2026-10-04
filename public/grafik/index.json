@@ -831,5 +831,901 @@
   "file": "vorschau/Fort-of-Illusionx3.png",
   "w": 2685,
   "h": 816
+ },
+ {
+  "pack": "phantasy-dungeon-entrance",
+  "group": "ebenen",
+  "file": "ebenen/dungeon-door-skull.png",
+  "w": 368,
+  "h": 208
+ },
+ {
+  "pack": "phantasy-dungeon-entrance",
+  "group": "ebenen",
+  "file": "ebenen/dungeon-door.png",
+  "w": 368,
+  "h": 208
+ },
+ {
+  "pack": "tent-8",
+  "group": "props",
+  "file": "props/objs.png",
+  "w": 256,
+  "h": 184
+ },
+ {
+  "pack": "16x16-animated-campfire",
+  "group": "props",
+  "file": "props/campfire-16x16.png",
+  "w": 64,
+  "h": 16
+ },
+ {
+  "pack": "warped-super-grotto-escape-pack",
+  "group": "ebenen",
+  "file": "ebenen/back.png",
+  "w": 304,
+  "h": 240
+ },
+ {
+  "pack": "warped-super-grotto-escape-pack",
+  "group": "ebenen",
+  "file": "ebenen/far.png",
+  "w": 352,
+  "h": 240
+ },
+ {
+  "pack": "warped-super-grotto-escape-pack",
+  "group": "ebenen",
+  "file": "ebenen/middle.png",
+  "w": 368,
+  "h": 240
+ },
+ {
+  "pack": "warped-super-grotto-escape-pack",
+  "group": "ebenen",
+  "file": "ebenen/tileset.png",
+  "w": 368,
+  "h": 240
+ },
+ {
+  "pack": "warped-super-grotto-escape-pack",
+  "group": "props",
+  "file": "props/palm.png",
+  "w": 63,
+  "h": 55
+ },
+ {
+  "pack": "warped-super-grotto-escape-pack",
+  "group": "props",
+  "file": "props/plant-big.png",
+  "w": 43,
+  "h": 45
+ },
+ {
+  "pack": "warped-super-grotto-escape-pack",
+  "group": "props",
+  "file": "props/plant.png",
+  "w": 37,
+  "h": 23
+ },
+ {
+  "pack": "warped-super-grotto-escape-pack",
+  "group": "vorschau",
+  "file": "vorschau/super-grotto.png",
+  "w": 1040,
+  "h": 240
+ },
+ {
+  "pack": "wooden-fortress-and-animated-doors",
+  "group": "ebenen",
+  "file": "ebenen/wooden-castle.png",
+  "w": 144,
+  "h": 192
+ },
+ {
+  "pack": "wooden-fortress-and-animated-doors",
+  "group": "props",
+  "file": "props/animated-wooden-castle-door.png",
+  "w": 384,
+  "h": 64
+ },
+ {
+  "pack": "opp2017-castle-tiles",
+  "group": "ebenen",
+  "file": "ebenen/tile-castle-grey.png",
+  "w": 480,
+  "h": 480
+ },
+ {
+  "pack": "opp2017-castle-tiles",
+  "group": "ebenen",
+  "file": "ebenen/tile-castle.png",
+  "w": 480,
+  "h": 480
+ },
+ {
+  "pack": "opp2017-castle-tiles",
+  "group": "vorschau",
+  "file": "vorschau/castle01.png",
+  "w": 800,
+  "h": 320
+ },
+ {
+  "pack": "opp2017-castle-tiles",
+  "group": "vorschau",
+  "file": "vorschau/castle02.png",
+  "w": 800,
+  "h": 320
+ },
+ {
+  "pack": "resource-icons",
+  "group": "ressourcen",
+  "file": "ressourcen/resources-icons.png",
+  "w": 50,
+  "h": 91
+ },
+ {
+  "pack": "item-ruby-banana-star",
+  "group": "props",
+  "file": "props/part-star.png",
+  "w": 64,
+  "h": 16
+ },
+ {
+  "pack": "item-ruby-banana-star",
+  "group": "props",
+  "file": "props/ruby.png",
+  "w": 168,
+  "h": 24
+ },
+ {
+  "pack": "k3c-paletten",
+  "group": "ebenen",
+  "file": "ebenen/fort-tileset.png",
+  "w": 208,
+  "h": 128
+ },
+ {
+  "pack": "k3c-paletten",
+  "group": "props",
+  "file": "props/fort-banner.png",
+  "w": 48,
+  "h": 59
+ },
+ {
+  "pack": "k3c-paletten",
+  "group": "props",
+  "file": "props/fort-closed-door.png",
+  "w": 96,
+  "h": 80
+ },
+ {
+  "pack": "k3c-paletten",
+  "group": "props",
+  "file": "props/fort-door.png",
+  "w": 96,
+  "h": 80
+ },
+ {
+  "pack": "k3c-paletten",
+  "group": "props",
+  "file": "props/tower-eisen.png",
+  "w": 112,
+  "h": 128
+ },
+ {
+  "pack": "k3c-paletten",
+  "group": "props",
+  "file": "props/tower-kristall.png",
+  "w": 112,
+  "h": 128
+ },
+ {
+  "pack": "k3c-paletten",
+  "group": "props",
+  "file": "props/tower-kupfer.png",
+  "w": 112,
+  "h": 128
+ },
+ {
+  "pack": "k3c-paletten",
+  "group": "props",
+  "file": "props/tower-stein.png",
+  "w": 112,
+  "h": 128
+ },
+ {
+  "pack": "k3c-paletten",
+  "group": "tileset-einzeln",
+  "file": "tileset-einzeln/wall-b-eisen.png",
+  "w": 16,
+  "h": 16
+ },
+ {
+  "pack": "k3c-paletten",
+  "group": "tileset-einzeln",
+  "file": "tileset-einzeln/wall-b-kristall.png",
+  "w": 16,
+  "h": 16
+ },
+ {
+  "pack": "k3c-paletten",
+  "group": "tileset-einzeln",
+  "file": "tileset-einzeln/wall-b-kupfer.png",
+  "w": 16,
+  "h": 16
+ },
+ {
+  "pack": "k3c-paletten",
+  "group": "tileset-einzeln",
+  "file": "tileset-einzeln/wall-eisen.png",
+  "w": 16,
+  "h": 16
+ },
+ {
+  "pack": "k3c-paletten",
+  "group": "tileset-einzeln",
+  "file": "tileset-einzeln/wall-kristall.png",
+  "w": 16,
+  "h": 16
+ },
+ {
+  "pack": "k3c-paletten",
+  "group": "tileset-einzeln",
+  "file": "tileset-einzeln/wall-kupfer.png",
+  "w": 16,
+  "h": 16
+ },
+ {
+  "pack": "16x16-block-texture-set",
+  "group": "kandidaten",
+  "file": "kandidaten/tilemap.png",
+  "w": 160,
+  "h": 256
+ },
+ {
+  "pack": "16x16-rpg-items-db32",
+  "group": "kandidaten",
+  "file": "kandidaten/item-book-purple.png",
+  "w": 16,
+  "h": 16
+ },
+ {
+  "pack": "16x16-rpg-items-db32",
+  "group": "kandidaten",
+  "file": "kandidaten/item-gem-amber.png",
+  "w": 16,
+  "h": 16
+ },
+ {
+  "pack": "16x16-rpg-items-db32",
+  "group": "kandidaten",
+  "file": "kandidaten/item-gem-amethyst.png",
+  "w": 16,
+  "h": 16
+ },
+ {
+  "pack": "16x16-rpg-items-db32",
+  "group": "kandidaten",
+  "file": "kandidaten/item-gem-diamond-rough.png",
+  "w": 16,
+  "h": 16
+ },
+ {
+  "pack": "16x16-rpg-items-db32",
+  "group": "kandidaten",
+  "file": "kandidaten/item-gem-diamond-smooth.png",
+  "w": 16,
+  "h": 16
+ },
+ {
+  "pack": "16x16-rpg-items-db32",
+  "group": "kandidaten",
+  "file": "kandidaten/item-gem-emerald.png",
+  "w": 16,
+  "h": 16
+ },
+ {
+  "pack": "16x16-rpg-items-db32",
+  "group": "kandidaten",
+  "file": "kandidaten/item-gem-peridot.png",
+  "w": 16,
+  "h": 16
+ },
+ {
+  "pack": "16x16-rpg-items-db32",
+  "group": "kandidaten",
+  "file": "kandidaten/item-gem-quartz.png",
+  "w": 16,
+  "h": 16
+ },
+ {
+  "pack": "16x16-rpg-items-db32",
+  "group": "kandidaten",
+  "file": "kandidaten/item-gem-ruby.png",
+  "w": 16,
+  "h": 16
+ },
+ {
+  "pack": "16x16-rpg-items-db32",
+  "group": "kandidaten",
+  "file": "kandidaten/item-gem-sapphire.png",
+  "w": 16,
+  "h": 16
+ },
+ {
+  "pack": "16x16-rpg-items-db32",
+  "group": "kandidaten",
+  "file": "kandidaten/item-orb.png",
+  "w": 16,
+  "h": 16
+ },
+ {
+  "pack": "16x16-rpg-items-db32",
+  "group": "kandidaten",
+  "file": "kandidaten/item-sack.png",
+  "w": 16,
+  "h": 16
+ },
+ {
+  "pack": "16x16-rpg-items-db32",
+  "group": "kandidaten",
+  "file": "kandidaten/item-scroll.png",
+  "w": 16,
+  "h": 16
+ },
+ {
+  "pack": "16x16-rpg-items-db32",
+  "group": "kandidaten",
+  "file": "kandidaten/potion-fiery.png",
+  "w": 16,
+  "h": 16
+ },
+ {
+  "pack": "16x16-rpg-items-db32",
+  "group": "kandidaten",
+  "file": "kandidaten/potion-purple.png",
+  "w": 16,
+  "h": 16
+ },
+ {
+  "pack": "32-pixel-set-log-cabin",
+  "group": "kandidaten",
+  "file": "kandidaten/cabin.png",
+  "w": 232,
+  "h": 233
+ },
+ {
+  "pack": "32-pixel-set-log-cabin",
+  "group": "kandidaten",
+  "file": "kandidaten/doors-and-grass.png",
+  "w": 224,
+  "h": 147
+ },
+ {
+  "pack": "building-block-assets-stone-logs-bricks",
+  "group": "kandidaten",
+  "file": "kandidaten/brickwall.png",
+  "w": 450,
+  "h": 450
+ },
+ {
+  "pack": "building-block-assets-stone-logs-bricks",
+  "group": "kandidaten",
+  "file": "kandidaten/brickwallbrick.png",
+  "w": 150,
+  "h": 150
+ },
+ {
+  "pack": "building-block-assets-stone-logs-bricks",
+  "group": "kandidaten",
+  "file": "kandidaten/door-frame.png",
+  "w": 150,
+  "h": 150
+ },
+ {
+  "pack": "building-block-assets-stone-logs-bricks",
+  "group": "kandidaten",
+  "file": "kandidaten/door-no-frame.png",
+  "w": 150,
+  "h": 150
+ },
+ {
+  "pack": "building-block-assets-stone-logs-bricks",
+  "group": "kandidaten",
+  "file": "kandidaten/log.png",
+  "w": 150,
+  "h": 150
+ },
+ {
+  "pack": "building-block-assets-stone-logs-bricks",
+  "group": "kandidaten",
+  "file": "kandidaten/small-log.png",
+  "w": 150,
+  "h": 150
+ },
+ {
+  "pack": "building-block-assets-stone-logs-bricks",
+  "group": "kandidaten",
+  "file": "kandidaten/stonebrickwall.png",
+  "w": 450,
+  "h": 450
+ },
+ {
+  "pack": "building-block-assets-stone-logs-bricks",
+  "group": "kandidaten",
+  "file": "kandidaten/stone-block-alt.png",
+  "w": 150,
+  "h": 150
+ },
+ {
+  "pack": "building-block-assets-stone-logs-bricks",
+  "group": "kandidaten",
+  "file": "kandidaten/stone-brick-alt.png",
+  "w": 150,
+  "h": 150
+ },
+ {
+  "pack": "building-block-assets-stone-logs-bricks",
+  "group": "kandidaten",
+  "file": "kandidaten/woodwall.png",
+  "w": 450,
+  "h": 450
+ },
+ {
+  "pack": "castle-set",
+  "group": "kandidaten",
+  "file": "kandidaten/castle-tower.png",
+  "w": 512,
+  "h": 512
+ },
+ {
+  "pack": "castle-set",
+  "group": "kandidaten",
+  "file": "kandidaten/tower.png",
+  "w": 512,
+  "h": 512
+ },
+ {
+  "pack": "castle-set",
+  "group": "kandidaten",
+  "file": "kandidaten/tower-no-door.png",
+  "w": 512,
+  "h": 512
+ },
+ {
+  "pack": "castle-set",
+  "group": "kandidaten",
+  "file": "kandidaten/wall.png",
+  "w": 336,
+  "h": 212
+ },
+ {
+  "pack": "castle-set",
+  "group": "kandidaten",
+  "file": "kandidaten/door.png",
+  "w": 207,
+  "h": 217
+ },
+ {
+  "pack": "castle-set",
+  "group": "kandidaten",
+  "file": "kandidaten/castle-flag.png",
+  "w": 131,
+  "h": 257
+ },
+ {
+  "pack": "castle-set",
+  "group": "kandidaten",
+  "file": "kandidaten/castle-flag-2.png",
+  "w": 131,
+  "h": 257
+ },
+ {
+  "pack": "castle-set",
+  "group": "kandidaten",
+  "file": "kandidaten/castle-flag-3.png",
+  "w": 131,
+  "h": 257
+ },
+ {
+  "pack": "castles",
+  "group": "kandidaten",
+  "file": "kandidaten/castles.png",
+  "w": 286,
+  "h": 282
+ },
+ {
+  "pack": "cavernous-background",
+  "group": "kandidaten",
+  "file": "kandidaten/cavernous.png",
+  "w": 512,
+  "h": 288
+ },
+ {
+  "pack": "crops-cc0",
+  "group": "kandidaten",
+  "file": "kandidaten/0px-all.png",
+  "w": 244,
+  "h": 139
+ },
+ {
+  "pack": "crops-cc0",
+  "group": "kandidaten",
+  "file": "kandidaten/1px-all.png",
+  "w": 244,
+  "h": 139
+ },
+ {
+  "pack": "crops-cc0",
+  "group": "kandidaten",
+  "file": "kandidaten/2px-all.png",
+  "w": 244,
+  "h": 139
+ },
+ {
+  "pack": "farming-crops-16x16",
+  "group": "kandidaten",
+  "file": "kandidaten/crop-spritesheet.png",
+  "w": 192,
+  "h": 160
+ },
+ {
+  "pack": "gothicvania-bridge-expansion-pack-1",
+  "group": "kandidaten",
+  "file": "kandidaten/castle.png",
+  "w": 448,
+  "h": 288
+ },
+ {
+  "pack": "gothicvania-bridge-expansion-pack-1",
+  "group": "kandidaten",
+  "file": "kandidaten/house.png",
+  "w": 256,
+  "h": 224
+ },
+ {
+  "pack": "gothicvania-bridge-expansion-pack-1",
+  "group": "kandidaten",
+  "file": "kandidaten/tree.png",
+  "w": 208,
+  "h": 256
+ },
+ {
+  "pack": "kyrises-free-16x16-rpg-icon-pack",
+  "group": "kandidaten",
+  "file": "kandidaten/spritesheet-16x16.png",
+  "w": 256,
+  "h": 304
+ },
+ {
+  "pack": "kyrises-free-16x16-rpg-icon-pack",
+  "group": "kandidaten",
+  "file": "kandidaten/spritesheet-32x32.png",
+  "w": 512,
+  "h": 608
+ },
+ {
+  "pack": "materials-pack",
+  "group": "kandidaten",
+  "file": "kandidaten/materials.png",
+  "w": 112,
+  "h": 48
+ },
+ {
+  "pack": "opp2017-cave-and-mine-cart",
+  "group": "kandidaten",
+  "file": "kandidaten/bg-cave.png",
+  "w": 128,
+  "h": 128
+ },
+ {
+  "pack": "opp2017-cave-and-mine-cart",
+  "group": "kandidaten",
+  "file": "kandidaten/tile-cave-bg-crystal.png",
+  "w": 480,
+  "h": 64
+ },
+ {
+  "pack": "opp2017-cave-and-mine-cart",
+  "group": "kandidaten",
+  "file": "kandidaten/tile-cave-bg-fluo.png",
+  "w": 512,
+  "h": 192
+ },
+ {
+  "pack": "opp2017-cave-and-mine-cart",
+  "group": "kandidaten",
+  "file": "kandidaten/tile-cave-bg-lava.png",
+  "w": 128,
+  "h": 64
+ },
+ {
+  "pack": "opp2017-cave-and-mine-cart",
+  "group": "kandidaten",
+  "file": "kandidaten/tile-cave-bg-objects.png",
+  "w": 128,
+  "h": 224
+ },
+ {
+  "pack": "opp2017-cave-and-mine-cart",
+  "group": "kandidaten",
+  "file": "kandidaten/tile-cave-bg-rock.png",
+  "w": 448,
+  "h": 480
+ },
+ {
+  "pack": "opp2017-cave-and-mine-cart",
+  "group": "kandidaten",
+  "file": "kandidaten/tile-cave-rail.png",
+  "w": 288,
+  "h": 256
+ },
+ {
+  "pack": "opp2017-cave-and-mine-cart",
+  "group": "kandidaten",
+  "file": "kandidaten/obj-chest.png",
+  "w": 64,
+  "h": 64
+ },
+ {
+  "pack": "opp2017-cave-and-mine-cart",
+  "group": "kandidaten",
+  "file": "kandidaten/obj-largemushroom.png",
+  "w": 64,
+  "h": 96
+ },
+ {
+  "pack": "opp2017-cave-and-mine-cart",
+  "group": "kandidaten",
+  "file": "kandidaten/obj-wallshroom.png",
+  "w": 160,
+  "h": 32
+ },
+ {
+  "pack": "opp2017-cave-and-mine-cart",
+  "group": "kandidaten",
+  "file": "kandidaten/mockup-cave-01.png",
+  "w": 800,
+  "h": 384
+ },
+ {
+  "pack": "opp2017-village-and-room",
+  "group": "kandidaten",
+  "file": "kandidaten/village-house.png",
+  "w": 288,
+  "h": 1248
+ },
+ {
+  "pack": "opp2017-village-and-room",
+  "group": "kandidaten",
+  "file": "kandidaten/village-objects.png",
+  "w": 480,
+  "h": 256
+ },
+ {
+  "pack": "opp2017-village-and-room",
+  "group": "kandidaten",
+  "file": "kandidaten/village-street.png",
+  "w": 288,
+  "h": 96
+ },
+ {
+  "pack": "opp2017-village-and-room",
+  "group": "kandidaten",
+  "file": "kandidaten/village-fountain.png",
+  "w": 224,
+  "h": 224
+ },
+ {
+  "pack": "opp2017-village-and-room",
+  "group": "kandidaten",
+  "file": "kandidaten/room-obj-indoors.png",
+  "w": 544,
+  "h": 64
+ },
+ {
+  "pack": "opp2017-village-and-room",
+  "group": "kandidaten",
+  "file": "kandidaten/room-tile-room.png",
+  "w": 128,
+  "h": 256
+ },
+ {
+  "pack": "opp2017-village-and-room",
+  "group": "kandidaten",
+  "file": "kandidaten/room-tile-wall.png",
+  "w": 288,
+  "h": 352
+ },
+ {
+  "pack": "pixel-platformer-farm-expansion",
+  "group": "kandidaten",
+  "file": "kandidaten/tilemap.png",
+  "w": 303,
+  "h": 132
+ },
+ {
+  "pack": "pixel-platformer-farm-expansion",
+  "group": "kandidaten",
+  "file": "kandidaten/tilemap-packed.png",
+  "w": 288,
+  "h": 126
+ },
+ {
+  "pack": "pixel-platformer-metal-expansion",
+  "group": "kandidaten",
+  "file": "kandidaten/tiles.png",
+  "w": 417,
+  "h": 284
+ },
+ {
+  "pack": "pixel-platformer-metal-expansion",
+  "group": "kandidaten",
+  "file": "kandidaten/tiles-packed.png",
+  "w": 396,
+  "h": 270
+ },
+ {
+  "pack": "pixel-platformer-metal-expansion",
+  "group": "kandidaten",
+  "file": "kandidaten/sample.png",
+  "w": 918,
+  "h": 515
+ },
+ {
+  "pack": "pixel-platformer",
+  "group": "kandidaten",
+  "file": "kandidaten/tilemap-packed.png",
+  "w": 360,
+  "h": 162
+ },
+ {
+  "pack": "pixel-platformer",
+  "group": "kandidaten",
+  "file": "kandidaten/tilemap-backgrounds-packed.png",
+  "w": 192,
+  "h": 72
+ },
+ {
+  "pack": "plants-and-flowers-pixel-art",
+  "group": "kandidaten",
+  "file": "kandidaten/pinkflowers.png",
+  "w": 160,
+  "h": 160
+ },
+ {
+  "pack": "plants-and-flowers-pixel-art",
+  "group": "kandidaten",
+  "file": "kandidaten/orangetree.png",
+  "w": 160,
+  "h": 160
+ },
+ {
+  "pack": "plants-and-flowers-pixel-art",
+  "group": "kandidaten",
+  "file": "kandidaten/aloevera.png",
+  "w": 160,
+  "h": 160
+ },
+ {
+  "pack": "plants-and-flowers-pixel-art",
+  "group": "kandidaten",
+  "file": "kandidaten/lavender.png",
+  "w": 160,
+  "h": 160
+ },
+ {
+  "pack": "plants-and-flowers-pixel-art",
+  "group": "kandidaten",
+  "file": "kandidaten/blueflowers.png",
+  "w": 160,
+  "h": 160
+ },
+ {
+  "pack": "plants-and-flowers-pixel-art",
+  "group": "kandidaten",
+  "file": "kandidaten/greentree.png",
+  "w": 160,
+  "h": 160
+ },
+ {
+  "pack": "plants-and-flowers-pixel-art",
+  "group": "kandidaten",
+  "file": "kandidaten/tulips.png",
+  "w": 160,
+  "h": 160
+ },
+ {
+  "pack": "plants-and-flowers-pixel-art",
+  "group": "kandidaten",
+  "file": "kandidaten/bonsai.png",
+  "w": 160,
+  "h": 160
+ },
+ {
+  "pack": "plants-and-flowers-pixel-art",
+  "group": "kandidaten",
+  "file": "kandidaten/seedling.png",
+  "w": 160,
+  "h": 160
+ },
+ {
+  "pack": "plants-and-flowers-pixel-art",
+  "group": "kandidaten",
+  "file": "kandidaten/wateringcan.png",
+  "w": 160,
+  "h": 160
+ },
+ {
+  "pack": "plants-and-flowers-pixel-art",
+  "group": "kandidaten",
+  "file": "kandidaten/flowerpot.png",
+  "w": 160,
+  "h": 160
+ },
+ {
+  "pack": "plants-and-flowers-pixel-art",
+  "group": "kandidaten",
+  "file": "kandidaten/seedpack.png",
+  "w": 160,
+  "h": 160
+ },
+ {
+  "pack": "plants-and-flowers-pixel-art",
+  "group": "kandidaten",
+  "file": "kandidaten/seed.png",
+  "w": 160,
+  "h": 160
+ },
+ {
+  "pack": "quick-32px-sprites-bucket-nest-wood-seeds-leaf-sapling",
+  "group": "kandidaten",
+  "file": "kandidaten/bucket-strip3.png",
+  "w": 96,
+  "h": 32
+ },
+ {
+  "pack": "quick-32px-sprites-bucket-nest-wood-seeds-leaf-sapling",
+  "group": "kandidaten",
+  "file": "kandidaten/leaf-32x32-1.png",
+  "w": 32,
+  "h": 32
+ },
+ {
+  "pack": "quick-32px-sprites-bucket-nest-wood-seeds-leaf-sapling",
+  "group": "kandidaten",
+  "file": "kandidaten/nest-32x32-1.png",
+  "w": 32,
+  "h": 32
+ },
+ {
+  "pack": "quick-32px-sprites-bucket-nest-wood-seeds-leaf-sapling",
+  "group": "kandidaten",
+  "file": "kandidaten/sapling-32x32-1.png",
+  "w": 32,
+  "h": 32
+ },
+ {
+  "pack": "quick-32px-sprites-bucket-nest-wood-seeds-leaf-sapling",
+  "group": "kandidaten",
+  "file": "kandidaten/seeds-32x32-1.png",
+  "w": 32,
+  "h": 32
+ },
+ {
+  "pack": "quick-32px-sprites-bucket-nest-wood-seeds-leaf-sapling",
+  "group": "kandidaten",
+  "file": "kandidaten/wood-32x32-1.png",
+  "w": 32,
+  "h": 32
+ },
+ {
+  "pack": "tent-6",
+  "group": "kandidaten",
+  "file": "kandidaten/tent.png",
+  "w": 48,
+  "h": 48
  }
 ]

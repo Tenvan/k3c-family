@@ -69,6 +69,8 @@ type Server struct {
 	log     *slog.Logger
 	checks  *checkRuns
 	run     func(context.Context, runSpec) runResult // Test-Naht für check_run
+	wt       worktrees      // Dienste der Worktrees (worktree_services.go)
+	portBusy func(int) bool // Test-Naht für die Vergabe der Worktree-Ports
 
 	mu   sync.Mutex
 	http *http.Server
@@ -91,7 +93,8 @@ func ResolvePort(raw string) (int, error) {
 // New baut den Server mit allen Tools aus dem Katalog; gestartet wird er mit Start.
 func New(cfg Config) *Server {
 	s := &Server{cfg: cfg, stats: newStats(time.Now), params: map[string][]string{},
-		console: cfg.Console, log: cfg.Log, checks: newCheckRuns(), run: runProcess}
+		console: cfg.Console, log: cfg.Log, checks: newCheckRuns(), run: runProcess,
+		wt: worktrees{all: map[string]*worktreeServices{}}, portBusy: portBusy}
 	if s.console == nil {
 		s.console = console.New(console.DefaultCapacity, nil)
 	}
@@ -156,10 +159,10 @@ func (s *Server) Restart() error {
 		return err
 	}
 	if err := s.Start(); err != nil {
-		s.log.Error("neustart fehlgeschlagen", "ns", "mcp", "error", err.Error())
+		s.log.Error("💥 neustart fehlgeschlagen", "ns", "mcp", "error", err.Error())
 		return err
 	}
-	s.log.Info("server neu gestartet", "ns", "mcp", "url", s.URL())
+	s.log.Info("🔁 server neu gestartet", "ns", "mcp", "url", s.URL())
 	return nil
 }
 

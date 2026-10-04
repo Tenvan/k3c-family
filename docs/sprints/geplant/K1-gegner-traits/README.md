@@ -6,9 +6,9 @@
 - **Einschiebbar:** nein
 - **Tickets:** B-128, B-129, B-013
 - **Start-Commit:** –
-- **Spec:** Entwurf
+- **Spec:** freigegeben
 - **Revision:** 1
-- **Freigabe:** –
+- **Freigabe:** 2026-10-04, Chat, durch 🧑, Revision 1; mit Änderungen aus der Spec-Prüfung
 
 ## Ausgangslage
 
@@ -48,7 +48,7 @@ Gegner ohne Eintrag für die Angriffsrate → 1 Angriff je Sekunde.
 
 - **AC-01** Je Trait (aoe, swarm, phases, Kiting) wirkt er laut Daten und deterministisch (Test) (B-128/AC-01).
 - **AC-02** Die Angriffsrate steht je Gegner in den Daten, ohne Eintrag 1/s (Test) (B-128/AC-02).
-- **AC-03** Das Tor blockiert Gegner, eigene Truppen passieren, übrige Gebäude werden nach Regel angegriffen (Test) (B-128/AC-03).
+- **AC-03** Das Tor blockiert Gegner, eigene Bürger und Spieler passieren, übrige Gebäude werden nach Regel angegriffen (Test) (B-128/AC-03).
 - **AC-04** `enemyKilled` wird je Tod gemeldet (Test) (B-128/AC-04).
 - **AC-05** Beide neuen Biome laden gültige Pools (Standard und Elite), Wellen planen aus dem Pool, Skalierung nach Insel-Tabelle (Test) (B-129/AC-01, B-129/AC-02).
 - **AC-06** Alle Gegner aus `enemies.json` verhalten sich wie beschrieben, jedes Verhalten hat einen Test (B-013/AC-01, B-013/AC-02).
@@ -56,7 +56,8 @@ Gegner ohne Eintrag für die Angriffsrate → 1 Angriff je Sekunde.
 
 ## Offene Fragen
 
-keine
+- Warnzeit vor dem Flächenschlag (`aoe`): Wie lange vorher erscheint die Warnung? Klärt K1.1 als Startwert in `data/enemies.json`, 🧑 bestätigt.
+- Namen und Aussehen der neuen Gegner sind vorläufig (B-129 › Offene Fragen, B-010).
 
 ## Sessions
 

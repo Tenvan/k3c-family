@@ -30,7 +30,7 @@ func CreateWorld(b level.Biome, seed string, opts Options) (*World, error) {
 	hubX := lv.HubCenterUnits
 	w := &World{
 		Seed: seed, Biome: b, Level: lv, rng: rng.New(b.ID + ":" + seed + ":sim"),
-		Time: opts.Time, CycleSpeed: speed, NextID: 1, WidthUnits: lv.WidthUnits, HubX: hubX,
+		Time: opts.Time, CycleSpeed: speed, NextID: 1, WidthUnits: lv.WidthUnits, HubX: hubX, HubLevel: 1,
 		Cycle:   cycleAt(globalDayNight, float64(opts.Time*speed)),
 		Players: []*Player{}, Coins: []*Coin{}, Troops: []*Troop{}, Nodes: []*ResourceNode{}, Sites: []*Site{},
 		Castle:  Castle{X: hubX, HP: buildings["castle"].HP, MaxHP: buildings["castle"].HP},
@@ -43,11 +43,8 @@ func CreateWorld(b level.Biome, seed string, opts Options) (*World, error) {
 	}
 	w.Castle.ID = w.newID()
 	placeEntities(w)
-	for _, s := range hub.Sites {
-		if b.Depth < s.FromDepth || (s.NeedsDeeper && !hasDepth(b.Depth+1)) {
-			continue
-		}
-		w.Sites = append(w.Sites, emptySite(w, s.Kind, hubX+s.OffsetUnits))
+	for _, s := range worldSiteSpecs(w) {
+		w.Sites = append(w.Sites, emptySite(w, s.kind, s.x))
 	}
 	for i := range hub.StartTroops.Peasant {
 		t := spawnVagrant(w, hubX, hubX+2+float64(i))
@@ -97,6 +94,7 @@ func addPlayerAt(w *World, index int) *Player {
 		PayCooldown: 0.5, // der Beitritts-Tastendruck soll nicht gleich eine Münze ausgeben
 	}
 	w.Players = append(w.Players, p)
+	_ = ApplyPreset(w, p, presetFor(index)) // Startverteilung beim Beitritt, soweit Pool-Punkte frei sind
 	return p
 }
 
@@ -107,10 +105,12 @@ func Step(w *World, commands []PlayerCommand, dt float64) {
 	stepCycle(w, dt)
 	stepSpawns(w)
 	stepPlayers(w, commands, dt)
+	stepPassives(w, dt)
 	stepCamps(w, dt)
 	stepSites(w)
 	stepTroops(w, dt)
 	stepEnemies(w, dt)
+	stepStorms(w, dt)
 	stepProjectiles(w, dt)
 	removeDeadEnemies(w)
 	alive := w.Troops[:0]

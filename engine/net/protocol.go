@@ -8,11 +8,11 @@ import (
 	"k3c/engine/sim"
 )
 
-// Protokoll v3 (docs/protocol.md, Beispiele in testdata/protocol/). Eine Änderung hier ändert auch das Dokument, die
+// Protokoll v4 (docs/protocol.md, Beispiele in testdata/protocol/). Eine Änderung hier ändert auch das Dokument, die
 // Beispiele und den Client (docs/arbeitsweise.md › Grenzfall Protokoll).
 
 // ProtocolVersion steht nur im Handschlag (hello, welcome).
-const ProtocolVersion = 3
+const ProtocolVersion = 4
 
 // Codes ohne Gegenstück in engine/room.
 const (
@@ -64,10 +64,12 @@ type inMsg struct {
 	Slot     *int      `json:"slot"`
 	Seq      int64     `json:"seq"`
 	P        []inInput `json:"p"`
+	SkillID  string    `json:"skill"`    // learn: Skill-ID (input.p[].skill ist dagegen der Slot)
 	Action   string    `json:"action"`   // dev
 	Amount   int       `json:"amount"`   // dev: gold, material
 	Resource string    `json:"resource"` // dev: material
 	Factor   int       `json:"factor"`   // dev: timescale
+	Paused   *bool     `json:"paused"`   // dev: pause
 }
 
 type inInput struct {
@@ -75,6 +77,8 @@ type inInput struct {
 	MoveX  float64 `json:"moveX"`
 	Sprint bool    `json:"sprint"`
 	Pay    bool    `json:"pay"`
+	Attack bool    `json:"attack"` // gehalten: Schlag, sobald bereit
+	Skill  int     `json:"skill"`  // gehalten: Skill-Slot 1 bis 4 feuert, sobald bereit; 0 = keiner
 }
 
 type errorMsg struct {
@@ -133,10 +137,11 @@ type stateMsg struct {
 	S    map[string]any `json:"s"`
 }
 
-// stateOf ist der Zustand für `snap`: die Welt ohne seed, biome, level, rng, widthUnits, mit events und depth. Das Feld
+// stateOf ist der Zustand für `snap`: die Welt ohne seed, biome, level, rng, widthUnits, mit events und depth, je
+// Spieler mit points und actions (actions.go). Das Feld
 // `free` der Spieler (B-059) fällt weg, der Zustand der Monarchen steht in `seats`. timescale > 0 (nur Dev-Mode) steht
-// als `devTimescale` darin.
-func stateOf(w *sim.World, timescale int) map[string]any {
+// als `devTimescale` darin, daneben die Dev-Pause als `devPaused` (B-231).
+func stateOf(w *sim.World, timescale int, paused bool) map[string]any {
 	raw, _ := json.Marshal(w)
 	var s map[string]any
 	_ = json.Unmarshal(raw, &s)
@@ -145,9 +150,11 @@ func stateOf(w *sim.World, timescale int) map[string]any {
 	for _, p := range s["players"].([]any) {
 		delete(p.(map[string]any), "free")
 	}
+	addActions(w, s["players"].([]any))
 	s["depth"] = w.Biome.Depth
 	if timescale > 0 {
 		s["devTimescale"] = timescale
+		s["devPaused"] = paused // immer mitsenden: das Delta kennt kein Entfernen von Feldern
 	}
 	return s
 }

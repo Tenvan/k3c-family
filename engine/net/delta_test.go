@@ -109,8 +109,8 @@ func replayWorld(t *testing.T, file string, from int, each func(tick int, w *sim
 func TestDeltaErgibtJedenVollenZustand(t *testing.T) {
 	var client, prev map[string]any
 	changes := map[string]int{}
-	replayWorld(t, "sim-cave-belagerung.json", 3500, func(tick int, w *sim.World) {
-		cur := stateOf(w, 0)
+	replayWorld(t, "sim-cave-belagerung.json", 2400, func(tick int, w *sim.World) {
+		cur := stateOf(w, 0, false)
 		if prev == nil {
 			client, prev = wire(t, cur), cur
 			return
@@ -139,8 +139,8 @@ func TestDeltaErgibtJedenVollenZustand(t *testing.T) {
 
 func TestDeltaOhneAenderungIstLeer(t *testing.T) {
 	c := sim.CreateCampaign("leer", "l", 1)
-	s := stateOf(c.CurrentWorld(), 0)
-	if d := deltaOf(s, stateOf(c.CurrentWorld(), 0)); len(d) != 0 {
+	s := stateOf(c.CurrentWorld(), 0, false)
+	if d := deltaOf(s, stateOf(c.CurrentWorld(), 0, false)); len(d) != 0 {
 		t.Fatalf("Delta ohne Änderung: %v", d)
 	}
 }

@@ -34,6 +34,8 @@ type Config struct {
 	Rooms *room.Manager
 	// Conns zählt die offenen WebSocket-Verbindungen, damit der Server beim Beenden auf room_closed warten kann.
 	Conns *sync.WaitGroup
+	// CPU liefert die CPU-Last des Prozesses in Prozent einer CPU für /api/status (B-175); nil = systemCPU, dort nil = kein Feld.
+	CPU func() (float64, bool)
 }
 
 type server struct {
@@ -47,6 +49,9 @@ type server struct {
 
 // NewHandler baut den Handler mit allen Routen.
 func NewHandler(cfg Config) http.Handler {
+	if cfg.CPU == nil {
+		cfg.CPU = systemCPU
+	}
 	s := &server{cfg: cfg, log: cfg.Log, conns: map[*conn]bool{}}
 	if s.log == nil {
 		s.log = slog.New(slog.NewTextHandler(io.Discard, nil))
@@ -54,6 +59,7 @@ func NewHandler(cfg Config) http.Handler {
 	mux := http.NewServeMux()
 	mux.HandleFunc("/api/health", s.health)
 	mux.HandleFunc("/api/save", s.save)
+	mux.HandleFunc("/api/saves", s.saves)
 	mux.HandleFunc("/api/save/backups", s.backups)
 	mux.HandleFunc("/api/save/restore", s.restore)
 	mux.HandleFunc("/api/status", s.status)
@@ -123,7 +129,7 @@ func (s *server) save(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 		if backup != "" {
-			s.log.Info("anderes Spiel, Sicherung angelegt", "ns", "save", "backup", backup)
+			s.log.Info("💾 anderes Spiel, Sicherung angelegt", "ns", "save", "backup", backup)
 		}
 		writeJSON(w, http.StatusOK, map[string]any{"ok": true, "slot": slot, "backup": nullable(backup)})
 	default:
@@ -149,7 +155,7 @@ func (s *server) saveError(w http.ResponseWriter, err error) {
 	case errors.Is(err, store.ErrInvalid):
 		fail(w, http.StatusBadRequest, "Kein Spielstand")
 	default:
-		s.log.Error("spielstand: "+err.Error(), "ns", "save")
+		s.log.Error("💥 spielstand: "+err.Error(), "ns", "save")
 		fail(w, http.StatusInternalServerError, "Speichern fehlgeschlagen")
 	}
 }
@@ -171,10 +177,10 @@ func (s *server) report(w http.ResponseWriter, r *http.Request) {
 	case errors.Is(err, store.ErrInvalid):
 		http.Error(w, "Kein gültiges JSON", http.StatusBadRequest)
 	case err != nil:
-		s.log.Error("bericht: "+err.Error(), "ns", "report")
+		s.log.Error("💥 bericht: "+err.Error(), "ns", "report")
 		http.Error(w, "Speichern fehlgeschlagen", http.StatusInternalServerError)
 	default:
-		s.log.Info("bericht gespeichert", "ns", "report", "file", file)
+		s.log.Info("💾 bericht gespeichert", "ns", "report", "file", file)
 		writeJSON(w, http.StatusOK, map[string]any{"ok": true, "file": file})
 	}
 }

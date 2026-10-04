@@ -14,6 +14,7 @@ import (
 
 	"k3c/tools/k3c-dev/internal/applog"
 	"k3c/tools/k3c-dev/internal/console"
+	"k3c/tools/k3c-dev/internal/github"
 	"k3c/tools/k3c-dev/internal/mcpsrv"
 	"k3c/tools/k3c-dev/internal/planning"
 	"k3c/tools/k3c-dev/internal/services"
@@ -67,6 +68,7 @@ type App struct {
 	srv        *mcpsrv.Server
 	tasks      taskState
 	taskRunner *taskrun.Runner
+	gh         *github.Client // GitHub-Stand der Planungsseite (B-212)
 
 	mu  sync.Mutex
 	mcp MCPState
@@ -74,7 +76,7 @@ type App struct {
 
 func newApp(root string, port int) *App {
 	return &App{root: root, port: port, emit: runtime.EventsEmit, usage: configPath("mcp-usage.json"),
-		ready: make(chan struct{})}
+		ready: make(chan struct{}), gh: github.New(root)}
 }
 
 // wait blockiert, bis startup fertig ist; danach sind alle Felder gesetzt und werden nicht mehr geschrieben.
@@ -99,7 +101,7 @@ func (a *App) startup(ctx context.Context) {
 		fmt.Fprintln(os.Stderr, "k3c-dev: eigenes Log nur im Speicher:", err)
 	}
 	a.tracker = usage.Open(a.usage, time.Now,
-		func(err error) { a.log.Warn(err.Error(), "ns", "usage") })
+		func(err error) { a.log.Warn("📄 "+err.Error(), "ns", "usage") })
 	a.initTasks()
 	a.svcCtx, a.cancel = context.WithCancel(ctx)
 	planning.Watch(a.svcCtx, a.root, planningPoll, func() { a.emit(a.ctx, evPlanning, nil) })
@@ -115,9 +117,9 @@ func (a *App) startup(ctx context.Context) {
 		OnCall:  func(c mcpsrv.Call) { a.emit(a.ctx, evMCPCall, c) }})
 	err = a.srv.Start()
 	if err != nil {
-		a.log.Error("start fehlgeschlagen", "ns", "main", "error", err.Error())
+		a.log.Error("💥 start fehlgeschlagen", "ns", "main", "error", err.Error())
 	} else {
-		a.log.Info("k3c-dev gestartet", "ns", "main", "url", a.srv.URL(), "version", version)
+		a.log.Info("🚀 k3c-dev gestartet", "ns", "main", "url", a.srv.URL(), "version", version)
 	}
 	a.setMCP(err)
 }
@@ -129,20 +131,21 @@ func (a *App) markReady() {
 }
 
 // shutdown bricht laufende Befehle ab (ein Start wartet sonst bis 60 s auf gesund), stoppt die eigenen Dienste
-// (rückwärts; übernommene laufen weiter), dann Server, Statistik und Log.
+// (rückwärts; übernommene laufen weiter) und die der Worktrees, dann Server, Statistik und Log.
 func (a *App) shutdown(context.Context) {
 	a.wait()
-	a.log.Info("k3c-dev beendet", "ns", "main")
+	a.log.Info("🛑 k3c-dev beendet", "ns", "main")
 	a.cancel()
 	// Ein halb gelaufener Testlauf darf die Anwendung nicht überleben, unabhängig von den Diensten.
 	stopCtx, stop := context.WithTimeout(context.Background(), taskStopTimeout)
 	if err := a.taskRunner.StopAll(stopCtx); err != nil {
-		a.log.Warn("Tasks nicht vollständig beendet: "+err.Error(), "ns", "tasks")
+		a.log.Warn("⏳ Tasks nicht vollständig beendet: "+err.Error(), "ns", "tasks")
 	}
 	stop()
 	if a.ctl != nil {
 		a.ctl.StopAll(context.Background())
 	}
+	a.srv.StopWorktreeServices(context.Background())
 	_ = a.srv.Stop()
 	_ = a.tracker.Flush() // ein Fehler steht schon im Log (Rückruf)
 	_ = a.log.Close()
@@ -177,7 +180,7 @@ func (a *App) beforeClose(ctx context.Context) bool {
 	x, y := runtime.WindowGetPosition(ctx)
 	w, h := runtime.WindowGetSize(ctx)
 	if err := saveWindow(configPath("k3c-dev.json"), windowState{X: x, Y: y, Width: w, Height: h}); err != nil {
-		a.log.Warn("fenster nicht gemerkt: "+err.Error(), "ns", "main")
+		a.log.Warn("📄 fenster nicht gemerkt: "+err.Error(), "ns", "main")
 	}
 	return false
 }

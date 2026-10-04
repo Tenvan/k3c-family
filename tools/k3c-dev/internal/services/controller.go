@@ -65,6 +65,7 @@ type Checker func(ctx context.Context, svc Service) error
 type Options struct {
 	Root          string
 	Console       *console.Store
+	Prefix        string // vor jeder Konsolen-Quelle, z. B. "<worktree>/" (leer: Repo-Wurzel)
 	Log           *slog.Logger
 	OnChange      func(Status) // nur melden: darf den Controller nicht aufrufen (läuft teils unter der Befehlssperre)
 	Start         Starter
@@ -198,6 +199,9 @@ func (c *Controller) unit(name string) (*unit, error) {
 	return nil, fmt.Errorf("unbekannter Dienst %q; gültig: %v", name, c.Names())
 }
 
+// source ist die Konsolen-Quelle eines Dienstes.
+func (c *Controller) source(u *unit) string { return c.opts.Prefix + u.svc.Name }
+
 func (u *unit) status() Status {
 	u.mu.Lock()
 	defer u.mu.Unlock()
@@ -213,14 +217,14 @@ func (c *Controller) set(u *unit, change func(*Status)) Status {
 	st := u.st
 	u.mu.Unlock()
 	if st.State != before {
-		c.opts.Log.Info("dienst "+st.Name+": "+string(st.State), "ns", "svc", "pid", st.PID, "grund", st.LastError)
+		c.opts.Log.Info("🚦 dienst "+st.Name+": "+string(st.State), "ns", "svc", "pid", st.PID, "grund", st.LastError)
 	}
 	c.opts.OnChange(st)
 	return st
 }
 
 func (c *Controller) fail(u *unit, reason string) Status {
-	c.opts.Log.Warn("dienst "+u.svc.Name+" fehlgeschlagen: "+reason, "ns", "svc")
+	c.opts.Log.Warn("💥 dienst "+u.svc.Name+" fehlgeschlagen: "+reason, "ns", "svc")
 	return c.set(u, func(s *Status) { s.State, s.LastError, s.PID, s.CPU, s.Memory = Failed, reason, 0, 0, 0 })
 }
 

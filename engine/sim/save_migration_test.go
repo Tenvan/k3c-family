@@ -23,7 +23,7 @@ func readFixture(t *testing.T, version int) []byte {
 	return raw
 }
 
-// B-137/AC-03: Version 1 (Campaign) und 2 (Insel) laden; Seed, Spieler und Hubs stimmen.
+// B-137/AC-03: Version 1 (Campaign), 2, 3 und 4 (Insel) laden; Seed, Spieler und Hubs stimmen.
 func TestAlterSpielstandLaedt(t *testing.T) {
 	cases := []struct {
 		version, stages int // v1: die Tiefen 0..2 kommen als Stufen dazu (islandFromV1)
@@ -32,6 +32,8 @@ func TestAlterSpielstandLaedt(t *testing.T) {
 	}{
 		{1, 3, []int{17, 4}, []int{0, 0}, Stock{Wood: 30}},
 		{2, 2, []int{23, 8}, []int{0, 1}, Stock{Stone: 12}},
+		{3, 2, []int{23, 8}, []int{0, 1}, Stock{Stone: 12}},
+		{4, 2, []int{23, 8}, []int{0, 1}, Stock{Stone: 12}},
 	}
 	for _, c := range cases {
 		s, err := ParseIslandSave(readFixture(t, c.version))
@@ -51,6 +53,48 @@ func TestAlterSpielstandLaedt(t *testing.T) {
 		}
 		if _, err := FromIslandSave(s, islandSpeed); err != nil {
 			t.Fatalf("v%d: Insel aus dem Stand: %v", c.version, err)
+		}
+	}
+}
+
+// W0.3 (Sprint W0 AC-05): Nach dem Laden jedes Fixtures (gespeicherte Mauern und Türme zusätzlich auf built gesetzt)
+// hat jeder gespeicherte Platz (`kind@x`) seinen Zustand wieder, alle übrigen Plätze sind unpaid.
+func TestMigrationGebautePlaetzeBleibenGebaut(t *testing.T) {
+	for v := 1; v <= IslandSaveVersion; v++ {
+		s, err := ParseIslandSave(readFixture(t, v))
+		if err != nil {
+			t.Fatalf("v%d: %v", v, err)
+		}
+		want := map[int]map[string]string{}
+		for i, h := range s.Stages {
+			want[i] = map[string]string{}
+			for j, site := range h.Sites {
+				if site.Kind == "wall" || site.Kind == "tower" {
+					s.Stages[i].Sites[j].State, s.Stages[i].Sites[j].HP = "built", buildings[site.Kind].HP
+				}
+				want[i][key(site.Kind, site.X)] = s.Stages[i].Sites[j].State
+			}
+		}
+		isl, err := FromIslandSave(s, islandSpeed)
+		if err != nil {
+			t.Fatalf("v%d: %v", v, err)
+		}
+		for i, w := range isl.Stages {
+			found := 0
+			for _, site := range w.Sites {
+				state, saved := want[i][key(site.Kind, site.X)]
+				if !saved {
+					state = "unpaid"
+				} else {
+					found++
+				}
+				if site.State != state {
+					t.Errorf("v%d Stufe %d: %s@%v ist %s, erwartet %s", v, i, site.Kind, site.X, site.State, state)
+				}
+			}
+			if found != len(want[i]) {
+				t.Errorf("v%d Stufe %d: %d von %d gespeicherten Plätzen gefunden", v, i, found, len(want[i]))
+			}
 		}
 	}
 }

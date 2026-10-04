@@ -1,5 +1,7 @@
 import Phaser from 'phaser';
 import { GAME_HEIGHT, GAME_WIDTH } from '../core/constants';
+import { nameOf, t } from '../core/texts';
+import { BIOMES } from '../model/biome';
 import { ECONOMY } from '../model/data';
 import type { GameEvent, World } from '../model/types';
 import type { GameScene } from './GameScene';
@@ -9,23 +11,10 @@ import { DebugOverlay } from './debugOverlayView';
 import { gameNotice } from './lobbyLogic';
 import { FONTS, fontStyle } from './fontRules';
 import { RadarLayer, type RadarCell } from './radarView';
-import { RESOURCE_NAMES } from './worldRenderer';
+import { resourceName, siteName } from './worldRenderer';
 
 const STYLE = { stroke: '#000000', strokeThickness: 6, fontStyle: 'bold' };
 const BANNER_SECONDS = 2.8;
-/** Hinweise passend zum zuletzt benutzten Eingabegerät */
-const CONTROL_HINTS = {
-  touch: 'Links/rechts berühren = laufen · Münz-Taste halten = Münzen geben',
-  pad: 'A halten = Münzen geben · RT = sprinten · RS = Vollbild',
-  keyboard: 'Leertaste halten = Münzen geben · Shift = sprinten · F = Vollbild',
-} as const;
-const JOIN_HINTS = {
-  touch: 'Münz-Taste drücken zum Beitreten',
-  pad: 'A drücken zum Beitreten',
-  keyboard: 'Leertaste drücken zum Beitreten',
-} as const;
-const SITE_NAMES = { wall: 'Mauer', tower: 'Turm', workshop: 'Werkstatt', storage: 'Lager', stairsUp: 'Treppe hoch', stairsDown: 'Treppe runter' } as const;
-
 /** Bildschirmfeste Anzeigen: pro Split-Screen-Hälfte Spielerwerte, oben rechts Hub-Vorrat und Tageszeit, Meldungen in der Mitte. */
 export class HudScene extends Phaser.Scene {
   private joinHint!: Phaser.GameObjects.Text;
@@ -61,7 +50,7 @@ export class HudScene extends Phaser.Scene {
       .setOrigin(0.5)
       .setVisible(false);
     this.joinHint = this.add
-      .text(GAME_WIDTH / 2, GAME_HEIGHT / 2, 'Drücke  A  (Controller), Leertaste oder die Münz-Taste zum Beitreten', { ...STYLE, ...fontStyle('joinCenter') })
+      .text(GAME_WIDTH / 2, GAME_HEIGHT / 2, t('hud.joinCenter'), { ...STYLE, ...fontStyle('joinCenter') })
       .setOrigin(0.5);
     this.debug = debugEnabled(location.search) ? new DebugOverlay(this) : null;
     this.controlsHint = this.add.text(GAME_WIDTH - 20, GAME_HEIGHT - 40, '', { ...STYLE, ...fontStyle('controlsHint'), strokeThickness: 4 }).setOrigin(1, 0);
@@ -92,13 +81,13 @@ export class HudScene extends Phaser.Scene {
       return;
     }
     const waiting = !world || game.waitingForJoin();
-    this.controlsHint.setText(CONTROL_HINTS[game.lastDevice]);
-    this.joinHint.setText(world ? JOIN_HINTS[game.lastDevice] : (client.notice ?? 'Verbinde …'));
+    this.controlsHint.setText(t(`hud.hint.${game.lastDevice}`));
+    this.joinHint.setText(world ? t(`hud.join.${game.lastDevice}`) : (client.notice ?? t('net.connecting')));
     this.joinHint.setVisible(waiting || client.you.length < (client.limits?.slotsPerDevice ?? 4));
     this.joinHint.setY(waiting ? GAME_HEIGHT / 2 + 120 : GAME_HEIGHT - 100);
     this.joinHint.setFontSize(waiting ? FONTS.joinCenter.px : FONTS.joinCorner.px);
     const taken = client.monarchs.filter((m) => m !== 'free').length;
-    this.info.setText(client.roomCode ? `Raum ${client.roomCode} · ${client.roomName} · ${taken} Spieler` : '').setVisible(!!client.roomCode).setY(60);
+    this.info.setText(client.roomCode ? t('hud.room', { code: client.roomCode, name: client.roomName, n: taken }) : '').setVisible(!!client.roomCode).setY(60);
   }
 
   /** Gemeinsame Anzeigen stehen je nach Layout oben rechts oder mittig am Kreuzpunkt (B-084). */
@@ -109,15 +98,15 @@ export class HudScene extends Phaser.Scene {
 
   /** Vorrat, Tageszeit, Kampf und Reise. */
   private showWorld(world: World): void {
-    const t = world.travel;
-    const target = t ? (t.via === 'stairsUp' ? 'Aufstieg' : 'Abstieg') + ` in Tiefe ${t.toDepth}` : '';
-    this.travel.setText(t ? `${target}  ${'▮'.repeat(Math.ceil(t.progress * 10))}${'▯'.repeat(10 - Math.ceil(t.progress * 10))}` : '');
-    const stock = (['wood', 'stone', 'copper'] as const).filter((r) => r === world.biome.primaryResource || world.stock[r] > 0).map((r) => `${RESOURCE_NAMES[r]} ${world.stock[r]}`);
-    if (world.skillPoints > 0) stock.push(`Skill-Punkte ${world.skillPoints}`);
+    const tr = world.travel;
+    const target = tr ? t(tr.via === 'stairsUp' ? 'hud.travelUp' : 'hud.travelDown', { depth: tr.toDepth }) : '';
+    this.travel.setText(tr ? `${target}  ${'▮'.repeat(Math.ceil(tr.progress * 10))}${'▯'.repeat(10 - Math.ceil(tr.progress * 10))}` : '');
+    const stock = (['wood', 'stone', 'copper'] as const).filter((r) => r === world.biome.primaryResource || world.stock[r] > 0).map((r) => `${resourceName(r)} ${world.stock[r]}`);
+    if (world.skillPoints > 0) stock.push(t('hud.skillPoints', { n: world.skillPoints }));
     this.shared.setText(stock.join('  ·  '));
     this.clock.setText(clockText(world));
     const enemies = world.enemies.length + world.spawnQueue.length;
-    this.fight.setText(enemies > 0 ? `Welle ${world.wave}: ${enemies} Gegner` : '');
+    this.fight.setText(enemies > 0 ? t('hud.wave', { wave: world.wave, n: enemies }) : '');
   }
 
   private showBanner(game: GameScene, deltaMs: number): void {
@@ -137,7 +126,7 @@ export class HudScene extends Phaser.Scene {
   /** Spielerwerte je Feld, aus der Welt der Stufe dieses Feldes; Feld ohne geladene Stufe zeigt nichts. */
   private showCells(cells: readonly RadarCell[]): void {
     const compact = cells.some((c) => c.cell.w < GAME_WIDTH); // 3 bis 4 Spieler: Text kürzen statt verkleinern (Q03)
-    this.playerLabels.forEach((t) => t.setVisible(false));
+    this.playerLabels.forEach((l) => l.setVisible(false));
     let label = 0;
     for (const { cell, monarch, world } of cells) {
       const p = monarch === null ? undefined : world?.players.find((q) => q.index === monarch);
@@ -145,13 +134,10 @@ export class HudScene extends Phaser.Scene {
       const text = (this.playerLabels[label] ??= this.add.text(0, 0, '', { ...STYLE, ...fontStyle('playerValue') }));
       label += 1;
       text.setVisible(true).setPosition(cell.x + 24, cell.y + 16);
-      const status = p.respawnIn > 0 ? `gefallen · zurück in ${Math.ceil(p.respawnIn)} s` : `HP ${Math.ceil(p.hp)}`;
-      const stage = world.biome.name;
-      text.setText(
-        compact
-          ? `P${p.index + 1} · ${p.gold}/${ECONOMY.purse.maxGold} · ${p.respawnIn > 0 ? `${Math.ceil(p.respawnIn)} s` : status} · ${stage}`
-          : `P${p.index + 1}  ·  Gold ${p.gold}/${ECONOMY.purse.maxGold}  ·  ${status}  ·  ${stage}`,
-      );
+      const status = p.respawnIn > 0 ? t('hud.down', { s: Math.ceil(p.respawnIn) }) : t('hud.hp', { hp: Math.ceil(p.hp) });
+      const stage = nameOf('biome', world.biome.id, world.biome.name);
+      const short = p.respawnIn > 0 ? t('hud.downShort', { s: Math.ceil(p.respawnIn) }) : status;
+      text.setText(t(compact ? 'hud.playerShort' : 'hud.playerFull', { p: p.index + 1, gold: p.gold, max: ECONOMY.purse.maxGold, status: compact ? short : status, stage }));
     }
   }
 }
@@ -163,46 +149,50 @@ function formatTime(seconds: number): string {
 
 function clockText(w: World): string {
   const left = formatTime(w.cycle.secondsLeft / w.cycleSpeed);
-  let time: string;
-  if (w.cycle.phase === 'day') time = `Tag ${w.cycle.day}  ·  Dämmerung in ${left}`;
-  else if (w.cycle.phase === 'dusk') time = `Dämmerung  ·  Nacht in ${left}`;
-  else time = `Nacht ${w.cycle.day}  ·  Morgen in ${left}`;
-  if (w.aggression !== null) time += `  ·  Aggression ${Math.floor(w.aggression)}%`;
+  const key = w.cycle.phase === 'day' ? 'hud.clockDay' : w.cycle.phase === 'dusk' ? 'hud.clockDusk' : 'hud.clockNight';
+  let time = t(key, { day: w.cycle.day, left });
+  if (w.aggression !== null) time += t('hud.aggression', { pct: Math.floor(w.aggression) });
   return time;
+}
+
+/** Der Server nennt den Namen der Daten; die Textdatei übersetzt ihn über die Biom-ID. */
+function biomeName(name: string): string {
+  const biome = BIOMES.find((b) => b.name === name);
+  return biome ? nameOf('biome', biome.id, name) : name;
 }
 
 function eventText(e: GameEvent): string | null {
   switch (e.type) {
     case 'dusk':
-      return 'Nacht naht!';
+      return t('ev.dusk');
     case 'night':
-      return `Nacht ${e.day}`;
+      return t('ev.night', { day: e.day });
     case 'dawn':
-      return `Tag ${e.day}  –  die Sonne geht auf`;
+      return t('ev.dawn', { day: e.day });
     case 'wave':
-      return e.count > 0 ? `Portal öffnet sich!\n${e.count} Gegner kommen` : null;
+      return e.count > 0 ? t('ev.wave', { n: e.count }) : null;
     case 'chest':
-      return `P${e.player + 1} findet ${e.gold} Gold`;
+      return t('ev.chest', { p: e.player + 1, gold: e.gold });
     case 'skillPoint':
-      return 'Skill-Punkt gefunden!';
+      return t('ev.skillPoint');
     case 'recruited':
       return null; // passiert oft, sieht man in der Welt
     case 'armed':
-      return 'Neuer Bogenschütze';
+      return t('ev.armed');
     case 'built':
-      return `${SITE_NAMES[e.kind]} fertig`;
+      return t('ev.built', { name: siteName(e.kind) });
     case 'destroyed':
-      return `${SITE_NAMES[e.kind]} zerstört!`;
+      return t('ev.destroyed', { name: siteName(e.kind) });
     case 'gathered':
       return null;
     case 'goldStolen':
-      return `P${e.player + 1}: ${e.amount} Gold geklaut!`;
+      return t('ev.goldStolen', { p: e.player + 1, amount: e.amount });
     case 'playerDown':
-      return `P${e.player + 1} ist gefallen`;
+      return t('ev.playerDown', { p: e.player + 1 });
     case 'castleFallen':
-      return 'Die Burg ist gefallen!\nGebäude, Truppen und die Hälfte der Vorräte sind verloren';
+      return t('ev.castleFallen');
     case 'arrived':
-      return e.name;
+      return biomeName(e.name);
     default:
       return null;
   }

@@ -19,15 +19,15 @@ func (c *Controller) start(ctx context.Context, u *unit) (Status, error) {
 		return st, fmt.Errorf("%s: %s", u.svc.Name, reason)
 	}
 	c.set(u, func(s *Status) { s.State, s.LastError, s.PID = Starting, "", 0 })
-	c.opts.Console.Reset(u.svc.Name)
-	c.opts.Log.Info("dienst "+u.svc.Name+": start", "ns", "svc", "command", strings.Join(u.svc.Command, " "),
+	c.opts.Console.Reset(c.source(u))
+	c.opts.Log.Info("🚀 dienst "+u.svc.Name+": start", "ns", "svc", "command", strings.Join(u.svc.Command, " "),
 		"cwd", u.svc.Cwd, "port", u.svc.Port)
 	var sink *outSink
 	if u.svc.Log == "" { // mit eigenem Log schreibt der Dienst selbst
 		sink = openOutSink(c.opts.Root, u.svc.Name, c.opts.Log, c.opts.Now)
 	}
 	p, err := c.opts.Start(u.svc, c.opts.Root, func(stream, text string) {
-		c.opts.Console.Add(u.svc.Name, stream, text)
+		c.opts.Console.Add(c.source(u), stream, text)
 		sink.write(stream, text)
 	})
 	if err != nil {
@@ -50,7 +50,7 @@ func (c *Controller) start(ctx context.Context, u *unit) (Status, error) {
 	wctx, cancel := context.WithCancel(context.Background())
 	r.stop = cancel
 	go c.watch(wctx, u, r)
-	c.opts.Log.Info("dienst "+u.svc.Name+" gesund", "ns", "svc", "ms", time.Since(began).Milliseconds(), "pid", p.PID(),
+	c.opts.Log.Info("✅ dienst "+u.svc.Name+" gesund", "ns", "svc", "ms", time.Since(began).Milliseconds(), "pid", p.PID(),
 		"port", u.svc.Port)
 	return c.set(u, func(s *Status) { s.State = Running }), nil
 }
@@ -65,7 +65,7 @@ func (c *Controller) logExit(u *unit, r *run, ran time.Duration) {
 	} else if r.err != nil {
 		code = -1
 	}
-	msg := "dienst " + u.svc.Name + ": prozess beendet"
+	msg := "🛑 dienst " + u.svc.Name + ": prozess beendet"
 	attrs := []any{"ns", "svc", "pid", r.proc.PID(), "exit", code, "ms", ran.Milliseconds(), "durch", "selbst"}
 	if r.killed.Load() {
 		attrs[len(attrs)-1] = "k3c-dev"
@@ -127,14 +127,14 @@ func (c *Controller) killRun(u *unit, r *run) bool {
 		r.stop()
 	}
 	if err := r.proc.Kill(); err != nil {
-		c.opts.Log.Warn("dienst "+u.svc.Name+": beenden: "+err.Error(), "ns", "svc")
+		c.opts.Log.Warn("💥 dienst "+u.svc.Name+": beenden: "+err.Error(), "ns", "svc")
 	}
 	ended := true
 	select {
 	case <-r.done:
 	case <-time.After(c.opts.StopTimeout):
 		ended = false
-		c.opts.Log.Error("dienst "+u.svc.Name+": prozess endet nicht", "ns", "svc", "pid", r.proc.PID())
+		c.opts.Log.Error("💥 dienst "+u.svc.Name+": prozess endet nicht", "ns", "svc", "pid", r.proc.PID())
 	}
 	u.mu.Lock()
 	if u.run == r {
@@ -160,14 +160,14 @@ func (c *Controller) watch(ctx context.Context, u *unit, r *run) {
 			err := c.opts.Check(ctx, u.svc)
 			if err == nil {
 				if unhealthy {
-					c.opts.Log.Info("dienst "+u.svc.Name+": wieder gesund", "ns", "svc", "health", u.svc.HealthURL())
+					c.opts.Log.Info("✅ dienst "+u.svc.Name+": wieder gesund", "ns", "svc", "health", u.svc.HealthURL())
 				}
 				fails, unhealthy = 0, false
 				continue
 			}
 			if fails++; !unhealthy {
 				unhealthy = true
-				c.opts.Log.Warn("dienst "+u.svc.Name+": ungesund", "ns", "svc", "health", u.svc.HealthURL(), "grund", err.Error())
+				c.opts.Log.Warn("🤒 dienst "+u.svc.Name+": ungesund", "ns", "svc", "health", u.svc.HealthURL(), "grund", err.Error())
 			}
 			if fails >= c.opts.FailLimit {
 				c.crashed(u, r, fmt.Sprintf("%d Prüfungen in Folge fehlgeschlagen: %v", fails, err))
@@ -197,7 +197,7 @@ func (c *Controller) crashed(u *unit, r *run, reason string) {
 		c.fail(u, fmt.Sprintf("%s; kein Neustart mehr (%d in %s)", reason, c.opts.RestartLimit, c.opts.RestartWindow))
 		return
 	}
-	c.opts.Log.Warn("dienst "+u.svc.Name+": Neustart nach Ausfall", "ns", "svc", "anlass", "ausfall", "grund", reason)
+	c.opts.Log.Warn("🔁 dienst "+u.svc.Name+": Neustart nach Ausfall", "ns", "svc", "anlass", "ausfall", "grund", reason)
 	c.fail(u, reason+"; Neustart")
 	_, _ = c.start(context.Background(), u)
 }

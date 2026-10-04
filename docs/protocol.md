@@ -1,4 +1,9 @@
-# Protokoll v3
+# Protokoll v4
+
+**Änderungen gegenüber v3 (S2.1, Version 4, B-123):** `input.p[]` nimmt `attack` (gehalten = Schlag) und `skill`
+(Skill-Slot 1–4, 0 = keiner); neue Nachrichten `learn` und `respec`. Jeder Spieler in `players[]` von `snap`/`delta`
+nennt `skills`, `slots`, `cooldowns`, `attackCooldown` (fehlen, solange leer bzw. 0), dazu immer `points` und
+`actions` (siehe *Skills und Aktionen*). `hello.v` muss 4 sein; ein v3-Client erhält `version`.
 
 **Änderungen gegenüber v2 (SP14.2, Version 3):** `you[]` in `joined` und `seats` nennt je Platz die `depth` (Tiefe der Stufe
 des Monarchen, denn jedes Gerät sieht die Stufe seines ersten Monarchen und Spieler anderer Stufen fehlen im Zustand: der
@@ -8,7 +13,7 @@ heißt Standard. Der Server prüft sie beim Anlegen eines neuen Stands (SP14.3):
 Dev-Mode, sonst `normal`; `goal`/`defeat` je Grad), ein unbekannter Wert oder `dev` ohne Dev-Mode (`K3C_DEV=0`) ergibt
 `bad_request`. Die Optionen stehen im Spielstand; für einen vorhandenen Stand (`fresh` false) werden sie ignoriert, ein
 gespeicherter Grad `dev` wird im Live-Modus beim Laden auf `normal` gesetzt. `rooms[]`
-nennt zusätzlich den `grade` des Raums. `hello.v` muss 3 sein; ein v2-Client erhält `version`.
+nennt zusätzlich den `grade` des Raums. In v3 musste `hello.v` 3 sein.
 
 Stand: 2026-09-30 · Sprint SP02 · [Entscheidung 002](decisions/002-protokoll-v2.md) · Zielbild: [Entscheidung 001](decisions/001-server-engine-go.md)
 
@@ -125,9 +130,18 @@ Die Grenzen passen zum Raspberry Pi (SP11) und zur Snapshot-Schätzung für 4 Sp
 selbst, ohne Zutun der Geräte:
 
 - bei jedem Stufenwechsel (Tiefen-Eingang, Treppe),
-- sobald kein Gerät mehr verbunden ist,
+- bei jedem Verlassen und Abbruch eines Geräts, auch wenn andere Geräte bleiben (B-147); beim letzten ist der Raum
+  danach leer und pausiert,
 - beim Aufräumen nach 10 min Leere,
 - beim geordneten Beenden des Servers.
+
+Ein Schreibfehler steht im Log (`💥 Spielstand nicht gespeichert`), der vorige Stand bleibt unverändert (atomares
+Schreiben, `engine/store`), der Raum läuft weiter. Jede Speicherung loggt ihre Dauer (`ms`); über einem Tick (33 ms)
+als Warnung. Ein Autospeicher-Takt und Speichern bei Tagesanbruch gibt es nicht (B-186).
+
+Der Stand (Version 4, `engine/sim/island_save.go`) nennt neben der Welt `savedAt` (Zeitpunkt, ISO 8601), `day` (Tag)
+und `phase` (`day`, `dusk`, `night`) beim Speichern sowie je Spieler die Tiefe seiner Stufe (`players[].depth`). `day`
+und `phase` dienen nur der Anzeige; beim Laden gilt `time`. Ein Stand der Version 3 ohne die beiden Felder lädt weiter.
 
 Ein Spielstand speichert die Welt, nicht die Monarchen und nicht die Zuordnung zu Geräten. Ein geöffneter Stand hat
 zunächst **keinen** Monarchen; jeder entsteht beim Beitreten (Schritt 3). Gold gilt pro Index: Monarch n startet mit
@@ -188,8 +202,8 @@ vollständig und in Reihenfolge, deshalb braucht es keine Wiederholung und keine
 **Version:** Das Feld `v` steht nur im Handschlag (`hello`, `welcome`), nicht in jeder Nachricht. Die Version gilt für
 die ganze Verbindung; jede weitere Nachricht damit auszustatten kostet bei 30 Snapshots pro Sekunde nur Bytes.
 Erste Nachricht nach dem Verbinden ist immer `hello`. Ist sie kein gültiges `hello` (kein JSON, anderer Typ, Feld
-fehlt, `v` nicht 3), antwortet der Server mit `version` und schließt: Ein alter v1-Client schickt zuerst `join`, ein
-v2-Client schickt `v: 2`.
+fehlt, `v` nicht 4), antwortet der Server mit `version` und schließt: Ein alter v1-Client schickt zuerst `join`, ein
+v3-Client schickt `v: 3`.
 
 **Takt:** Ein laufender Raum tickt mit **30 Hz** und schickt jedem seiner Geräte pro Tick genau einen Zustand
 (`snap` oder `delta`). Ein pausierter Raum schickt nichts. Geräte schicken `input`, sobald sich die Eingabe eines Slots
@@ -199,7 +213,7 @@ der Server die Verbindung; das zählt als Abbruch.
 
 | Nachricht | Richtung | Wann | Felder | Beispiel |
 |---|---|---|---|---|
-| `hello` | Gerät → Server | als erste Nachricht | `v` Protokoll-Version (3), `device` Geräte-ID (≤ 64 Zeichen) | `c2s-hello.json` |
+| `hello` | Gerät → Server | als erste Nachricht | `v` Protokoll-Version (4), `device` Geräte-ID (≤ 64 Zeichen) | `c2s-hello.json` |
 | `welcome` | Server → Gerät | Antwort auf passendes `hello` | `v`, `tickHz`, `limits` (Grenzen aus *Grenzen*) | `s2c-welcome.json` |
 | `rooms` | Server → Gerät | nach `welcome`, sobald das Gerät wieder in keinem Raum ist, und bei jeder Änderung, solange es in keinem Raum ist | `rooms[]`: `code`, `name`, `depth`, `grade`, `taken` (besetzt + wartend), `free` (4 − `taken`), `running` | `s2c-rooms.json` |
 | `create` | Gerät → Server | Raum erstellen | `save` Name des Spielstands (`^[a-z0-9-]{1,32}$`), `fresh` neu (true) oder gespeicherten laden, `depth` Startstufe (nur bei `fresh`), `slots[]`, optional `grade`, `goal`, `defeat` (siehe oben) | `c2s-create.json` |
@@ -211,9 +225,11 @@ der Server die Verbindung; das zählt als Abbruch.
 | `seats` | Server → alle Geräte im Raum | wenn sich eine Zuordnung oder ein Monarch-Zustand ändert | `you[]` (eigene Slots mit `monarch` und `depth`), `monarchs[]` je Index `taken`/`waiting`/`free` | `s2c-seats.json` |
 | `addSlot` | Gerät → Server | lokaler Spieler kommt dazu | `slot` 0–3 | `c2s-add-slot.json` |
 | `removeSlot` | Gerät → Server | lokaler Spieler geht | `slot` | `c2s-remove-slot.json` |
-| `input` | Gerät → Server | Eingabe hat sich geändert, sonst mindestens alle 500 ms, höchstens eine pro Tick | `seq` fortlaufend je Verbindung, `p[]`: `slot`, `moveX` (−1…1), `sprint`, `pay` | `c2s-input.json` |
+| `input` | Gerät → Server | Eingabe hat sich geändert, sonst mindestens alle 500 ms, höchstens eine pro Tick | `seq` fortlaufend je Verbindung, `p[]`: `slot`, `moveX` (−1…1), `sprint`, `pay`, `attack` (fehlt = false), `skill` (0–4, fehlt = 0) | `c2s-input.json` |
+| `learn` | Gerät → Server | Skill lernen, im Raum | `slot` (vom Gerät), `skill` Skill-ID aus `data/monarch.json › skills` | `c2s-learn.json` |
+| `respec` | Gerät → Server | Skill-Verteilung zurücksetzen, im Raum | `slot` (vom Gerät) | `c2s-respec.json` |
 | `leave` | Gerät → Server | Raum bewusst verlassen | – | `c2s-leave.json` |
-| `dev` | Gerät → Server | nur im Dev-Mode (siehe *Dev-Aktionen*), im Raum | `action` und je Aktion: `gold` `slot`, `amount`; `material` `slot`, `resource`, `amount`; `timescale` `factor` | `c2s-dev-gold.json`, `c2s-dev-material.json`, `c2s-dev-timescale.json` |
+| `dev` | Gerät → Server | nur im Dev-Mode (siehe *Dev-Aktionen*), im Raum | `action` und je Aktion: `gold` `slot`, `amount`; `material` `slot`, `resource`, `amount`; `timescale` `factor`; `pause` `paused` | `c2s-dev-gold.json`, `c2s-dev-material.json`, `c2s-dev-timescale.json`, `c2s-dev-pause.json` |
 | `error` | Server → Gerät | Fehlerfall, siehe Codes | `code`, `message` (deutsch, für die Anzeige) | `s2c-error.json`, `s2c-error-forbidden.json` |
 
 Die Beispiele stammen aus dem Ablauf *2 Controller an der Xbox + 1 Handy*; `level`, `snap` und `delta` sind aus der
@@ -234,6 +250,34 @@ Vorhersage, B-039).
 **Level-Übertragung:** Ab SP09 hat der Browser keinen Level-Generator mehr. Deshalb schickt der Server das Level
 (`level`) statt nur den Seed. Biom-Werte (Farben, Namen) liest der Client aus `data/` über die Biom-ID.
 
+### Skills und Aktionen
+
+Schlag, Skills und Pool rechnet die Simulation (`engine/sim/monarch.go`, `skills.go`, Regeln `docs/rules/monarch.md`).
+Eingaben sind **gehalten**: `attack` true schlägt, sobald der Schlag bereit ist (`attackCooldown` 0); `skill` n
+(1–4) feuert den Skill in Slot n in jedem Tick, in dem er bereit ist. `skill` außerhalb 0–4 ist `bad_request`, die
+ganze `input` wird verworfen (`ack` bleibt).
+
+`learn` ruft das Lernen der Sim (ein Punkt je Skill, jeder Skill einmal, Tier-Gating; aktive Skills belegen den
+ersten freien Slot), `respec` setzt Skills und Slots zurück (nur am Tag an der Burg). Erfolg hat keine eigene Antwort,
+der nächste Zustand zeigt die Änderung; jede Ablehnung ist `bad_request`.
+
+Felder je Spieler in `players[]` von `snap` und `delta`:
+
+| Feld | Bedeutung | fehlt |
+|---|---|---|
+| `skills` | gelernte Skill-IDs in Lernreihenfolge | keine gelernt |
+| `slots` | aktive Skills in Slot 1–4 (Index 0–3, `""` = frei) | keine belegt |
+| `cooldowns` | Abklingzeit je Slot in Sekunden (Index wie `slots`) | alle 0 |
+| `attackCooldown` | Sekunden bis zum nächsten Schlag | 0 |
+| `points` | verfügbare Punkte: Pool der Insel (`skillPoints`) minus gelernte Skills, vom Server berechnet | nie |
+| `actions` | gültige Aktionen am Ort des Spielers, vom Server berechnet, Liste (leer: `[]`) | nie |
+
+`actions` nennt nur, was der Spieler **an seinem Ort** jetzt tun kann, in fester Reihenfolge: `{ "action": "attack" }`
+(lebt, Schlag bereit), `{ "action": "skill", "slot": n, "skill": id }` je belegtem, bereitem Slot (lebt; `slot` wie
+`input.p[].skill`), `{ "action": "learn" }` (`points` > 0). `respec` ist als Eintrag vorgesehen, fehlt aber, bis die
+Sim eine Prüfung ohne Seiteneffekt bietet (B-270); die Nachricht `respec` wirkt trotzdem. Die Liste nennt keine Taste,
+die Belegung gehört dem Client. Berufe, Tausch, Grabstein und Wiederbeleben kommen später (W5, B-120).
+
 ### Fehler-Codes
 
 | Code | Situation (siehe *Fehlerfälle*) | Verbindung |
@@ -246,9 +290,9 @@ Vorhersage, B-039).
 | `save_not_found` | `create` mit `fresh: false` und einem Namen, den es nicht gibt | bleibt |
 | `room_closed` | Raum abgestürzt oder Server fährt herunter; Gerät geht zurück zur Raumliste | bleibt (beim Herunterfahren: Server schließt) |
 | `replaced` | dieselbe Geräte-ID ist demselben Raum über eine neue Verbindung beigetreten | Server schließt, kein automatisches Neuverbinden |
-| `version` | erste Nachricht ist kein gültiges `hello` oder `v` ist nicht 3 | Server schließt |
+| `version` | erste Nachricht ist kein gültiges `hello` oder `v` ist nicht 4 | Server schließt |
 | `forbidden` | `dev` ohne Dev-Mode am Server; die Warnung steht im Log | bleibt, Nachricht wird verworfen |
-| `bad_request` | kein gültiges JSON, unbekannter Typ, Feld fehlt, Name passt nicht zum Format, ungültiger Slot (doppelt, keine Zahl 0–3, bei `input`/`removeSlot` nicht vom Gerät, bei `addSlot` schon vergeben), ungültige Felder von `dev`, Nachricht passt nicht zum Zustand (`input`, `addSlot`, `removeSlot`, `leave`, `dev` ohne Raum; `create`, `join` im Raum) | bleibt, Nachricht wird verworfen |
+| `bad_request` | kein gültiges JSON, unbekannter Typ, Feld fehlt, Name passt nicht zum Format, ungültiger Slot (doppelt, keine Zahl 0–3, bei `input`/`removeSlot` nicht vom Gerät, bei `addSlot` schon vergeben), ungültige Felder von `dev`, ungültiger Skill-Slot (`input.p[].skill` nicht 0–4), unbekannter Skill, abgelehntes `learn`/`respec` (Slot nicht vom Gerät, Feld fehlt, schon gelernt, keine Punkte, Tier-Gating, Respec nicht am Tag oder nicht an der Burg), Nachricht passt nicht zum Zustand (`input`, `addSlot`, `removeSlot`, `leave`, `dev`, `learn`, `respec` ohne Raum; `create`, `join` im Raum) | bleibt, Nachricht wird verworfen |
 
 `bad_request` ist kein Fehlerfall aus dem Raummodell, sondern Schutz vor kaputten Clients. Die Rückkehr nach 60 s ist
 kein Fehler und hat keinen Code.
@@ -258,7 +302,7 @@ kein Fehler und hat keinen Code.
 `dev` gibt es nur im Dev-Mode des Servers (`K3C_DEV`, vor einem Release aus). Ohne Dev-Mode antwortet der Server
 `forbidden`, noch bevor er die Felder prüft, und warnt im Log. Mit Dev-Mode prüft er die Verbindung und die Felder
 (`amount` ganze Zahl 1…1000); Ungültiges ergibt `bad_request`. Ein älterer Server kennt `dev` nicht und antwortet
-`bad_request`; die Protokollversion bleibt 3. Jede gelungene Aktion steht als Info „Dev-Aktion“ im Log (Gerät,
+`bad_request`; die Protokollversion blieb damit 3. Jede gelungene Aktion steht als Info „Dev-Aktion“ im Log (Gerät,
 Aktion, Werte, Raum).
 
 - `gold`: `amount` Münzen fallen beim Monarchen des eigenen `slot` (an seinem `x`) und werden wie normale Münzen
@@ -273,6 +317,9 @@ Aktion, Werte, Raum).
   Ereignisse des letzten Schritts, die übrigen Felder sind vollständig. Überschreitet ein Tick das Budget von
   1/`tickHz` s, läuft der Raum langsamer (verpasste Ticks fallen weg) und rechnet weiter korrekt; die Warnung
   „Tick zu langsam“ im Log nennt den `faktor`.
+- `pause`: `paused` (true/false, Pflicht) hält den ganzen Raum an (B-231, Cheat-Dialog): Ticks laufen weiter und
+  schicken den Zustand, rechnen aber keinen Schritt; Eingaben wirken erst nach dem Lösen. Im Dev-Mode steht
+  `devPaused` (true/false) wie `devTimescale` in `s`, ohne Dev-Mode fehlt das Feld. Verlässt das letzte Gerät den Raum, ist die Pause aufgehoben.
 
 ### Ereignisse
 
@@ -290,12 +337,13 @@ anderer Stufen kommen nie an. Auf einer Insel trägt jedes Ereignis `stage` (Ind
 | `coinGive` | `player`, `x`, `to` (`site`, `recruit`, `mark`) | Münze bezahlt ein Ziel (nur zu Boden: kein Ereignis) |
 | `buildProgress` | `site`, `kind`, `x`, `percent` (25, 50, 75) | Bau fortgeschritten, fertig = `built` |
 | `revive` | `player`, `x` | Monarch steht nach der Wartezeit wieder |
+| `playerDown` | `player`, `cause` (Gegnerart aus `data/enemies.json` bei Nahkampf und Geschoss, sonst `other`; B-182) | Monarch fällt; `cause` ist ein Zusatzfeld, die Protokollversion bleibt 3 |
 
 Tod, Bau fertig, Skill, Nacht naht und Portal laufen über die älteren Typen `playerDown`, `built`, `skillPoint`,
 `dusk`, `arrived` (`arrived` mit `player` beim Einzelwechsel). Die Simulation begrenzt die Ereignisse je Tick und
 Stufe auf **K = 32** (`maxEventsPerTick`); bei Überlauf gehen Tod und Bau vor, `eventsDropped` in `s` zählt die
 Verworfenen und fehlt bei 0 (zuverlässige Übertragung im Delta: B-190). Ein Client übergeht unbekannte Typen
-(Banner nur für bekannte), deshalb bleibt die Protokollversion 3.
+(Banner nur für bekannte), deshalb blieb die Protokollversion dafür 3.
 
 ### Snapshot-Größe
 
@@ -330,3 +378,66 @@ wechselnde Eingaben. Je Tick `JSON.stringify` des vollen Zustands und eines Delt
 ≈ 120 KB/s. Ein Raum mit 4 Geräten sendet mit `delta` ≈ 0,25 MB/s. Für WLAN im Heimnetz reicht JSON mit `delta`; ein
 Binärformat ist nicht nötig. Das Delta wird von vielen Nachkommastellen (`x`, `time`) und ganzen geänderten
 Einträgen bestimmt; Runden auf 2 Stellen wäre die nächste Stellschraube, falls die Messung am Pi (SP11) es verlangt.
+
+## HTTP: Spielstände
+
+`GET /api/saves` (ohne Token, nur lesend wie `GET /api/save`) listet alle Spielstände in `saves/`, nach Name sortiert;
+Sicherungen fehlen. Die Antwort ist immer ein Array. Je Eintrag: `name`, `savedAt`, `version`, `day`, `phase` und
+`depths` (die Tiefen der Spieler aus `players[].depth`, aufsteigend, jede einmal). Felder, die im Stand fehlen (etwa
+`day` und `phase` vor Version 4), fehlen auch im Eintrag; eine unlesbare Datei steht mit `"error": "ungültig"` in der
+Liste. Andere Methoden → `405`. Das WebSocket-Protokoll ändert sich dadurch nicht.
+
+```json
+[
+  { "name": "alt", "savedAt": "2026-10-01T10:00:00Z", "version": 3, "depths": [0] },
+  { "name": "familie", "savedAt": "2026-10-04T22:00:00.000Z", "version": 4, "day": 2, "phase": "night", "depths": [0, 1] },
+  { "name": "kaputt", "error": "ungültig" }
+]
+```
+
+## Diagnose: CPU im Status (B-175)
+
+`GET /api/status` (Token) nennt mit `cpu` die CPU-Last des Server-Prozesses in Prozent einer CPU, gemittelt über das
+Intervall seit dem letzten Aufruf (100 = eine volle CPU). Quelle ist `/proc/self/stat` (Linux); wo es sie nicht gibt, fehlt das Feld.
+
+## Spielmetrik-Report (B-150)
+
+Kein Teil des WebSocket-Protokolls. Endet ein Raumlauf (Aufräumen nach `EmptyFor` oder Herunterfahren des Servers),
+schreibt der Server einen Report nach `reports/session-<UTC-Zeit>.json` (neue Datei, nie überschrieben). Ein Raum ohne
+Tick schreibt keinen, ein abgestürzter auch nicht (Zustand unsicher). Der Sammler liest nach jedem Schritt nur Ereignisse,
+Zyklus, Zeit und Gold; er ändert den Spielverlauf nicht (`TestMetrikAendertSpielverlaufNicht`). Scheitert das Schreiben,
+steht der Fehler im Log und der Raum schließt trotzdem. **Keine Namen:** kein Spielstand-Name, keine `campaignId`,
+Monarchen nur mit Index, Geräte nur mit Kürzel (die ersten 8 Zeichen der Geräte-ID).
+
+Schema 1 (`engine/room/metrics.go`):
+
+| Feld | Bedeutung |
+|---|---|
+| `schema` | Version des Reports, 1; ein neues oder geändertes Feld erhöht sie |
+| `room` | Raum-Code |
+| `startedAt`, `endedAt` | Wanduhr bei Erstellen und Ende des Raums (ISO 8601, UTC) |
+| `playSeconds` | gerechnete Ticks ÷ 30 (ohne Pausen, Zeitraffer zählt je Tick einmal) |
+| `grade`, `goal`, `defeat` | Optionen der Insel |
+| `monarchs` | höchste Zahl Monarchen im Lauf |
+| `devices[]` | Kürzel der Geräte, die beigetreten sind, sortiert |
+| `reached` | `day` (höchster Tag), `maxDepth` (tiefste Stufe mit einem Monarchen) |
+| `nights[]` | je beendete Nacht `day` und `survived` (false, wenn in einer Stufe `castleFallen` kam); eine bei Raumende laufende Nacht fehlt |
+| `deaths[]` | je `playerDown`: `monarch` (Index), `day`, `phase`, `depth`, `cause` (Gegnerart oder `other`, B-182) |
+| `firstBuildSeconds` | simulierte Sekunden bis zum ersten `built`, sonst `null` |
+| `goldPerDay[]` | bei jedem `dawn`: `day` (der neue Tag) und `gold[]` je Monarch-Index |
+| `goldEnd[]` | Gold je Monarch-Index bei Raumende |
+| `disconnects[]` | je Gerät mit Abbrüchen `device` (Kürzel) und `count`, sortiert |
+
+```json
+{
+  "schema": 1, "room": "KRNZ", "startedAt": "2026-10-01T12:00:00.000Z", "endedAt": "2026-10-01T12:40:00.000Z",
+  "playSeconds": 2400, "grade": "normal", "goal": "endboss", "defeat": "stage", "monarchs": 2,
+  "devices": ["handy-ki", "xbox-woh"], "reached": { "day": 2, "maxDepth": 0 },
+  "nights": [{ "day": 1, "survived": true }],
+  "deaths": [{ "monarch": 1, "day": 1, "phase": "night", "depth": 0, "cause": "goblin" }],
+  "firstBuildSeconds": 95.5, "goldPerDay": [{ "day": 2, "gold": [100, 5] }], "goldEnd": [100, 5],
+  "disconnects": [{ "device": "handy-ki", "count": 1 }]
+}
+```
+
+Die Rotation in `reports/` (B-142) erfasst bisher nur `gamepad-*.json`; die Spielmetrik-Reports folgen mit B-272.

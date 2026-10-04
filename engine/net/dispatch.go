@@ -12,7 +12,7 @@ import (
 func (c *conn) handle(data []byte) {
 	defer func() {
 		if p := recover(); p != nil { // ein Fehler im Raum-Code beendet nur diese Nachricht
-			c.s.log.Error("Nachricht abgestürzt", "device", c.device, "err", fmt.Sprint(p))
+			c.s.log.Error("💥 Nachricht abgestürzt", "device", c.device, "err", fmt.Sprint(p))
 			c.fail(codeBadRequest)
 		}
 	}()
@@ -22,7 +22,7 @@ func (c *conn) handle(data []byte) {
 		return
 	}
 	if m.T != "input" { // input kommt je Tick, alles andere ist selten und zeigt den Ablauf
-		c.s.log.Debug("Nachricht", "ns", "ws", "device", short(c.device), "t", m.T, "room", m.Room, "save", m.Save, "slots", m.Slots)
+		c.s.log.Debug("📨 Nachricht", "ns", "ws", "device", short(c.device), "t", m.T, "room", m.Room, "save", m.Save, "slots", m.Slots)
 	}
 	r := c.current()
 	var err error
@@ -44,7 +44,7 @@ func (c *conn) handle(data []byte) {
 }
 
 func (c *conn) fail(code string) {
-	c.s.log.Warn("Fehler an Gerät", "ns", "ws", "device", short(c.device), "code", code)
+	c.s.log.Warn("🚫 Fehler an Gerät", "ns", "ws", "device", short(c.device), "code", code)
 	c.enqueue(errMsg(code))
 }
 
@@ -85,12 +85,14 @@ func (c *conn) roomMessage(r *room.Room, m inMsg) error {
 		return err
 	case "input":
 		return c.input(r, m)
+	case "learn", "respec":
+		return c.skillMessage(r, m)
 	case "leave":
 		r.Leave(c.device, c)
 		c.left()
 		return nil
 	case "dev":
-		return r.Dev(c.device, c, room.DevAction{Action: m.Action, Slot: m.Slot, Amount: m.Amount, Resource: m.Resource, Factor: m.Factor})
+		return r.Dev(c.device, c, room.DevAction{Action: m.Action, Slot: m.Slot, Amount: m.Amount, Resource: m.Resource, Factor: m.Factor, Paused: m.Paused})
 	}
 	return room.ErrBadRequest
 }
@@ -108,7 +110,10 @@ func (c *conn) input(r *room.Room, m inMsg) error {
 		if _, dup := in[*p.Slot]; dup {
 			return room.ErrBadRequest
 		}
-		in[*p.Slot] = sim.PlayerCommand{MoveX: p.MoveX, Sprint: p.Sprint, Pay: p.Pay}
+		if p.Skill < 0 || p.Skill > 4 {
+			return room.ErrBadRequest // Skill-Slot 1 bis 4, 0 = keiner
+		}
+		in[*p.Slot] = sim.PlayerCommand{MoveX: p.MoveX, Sprint: p.Sprint, Pay: p.Pay, Attack: p.Attack, Skill: p.Skill}
 	}
 	if err := r.Input(c.device, c, in); err != nil {
 		return err
@@ -117,6 +122,19 @@ func (c *conn) input(r *room.Room, m inMsg) error {
 		c.seq.Store(m.Seq)
 	}
 	return nil
+}
+
+// skillMessage: learn (slot, skill) und respec (slot); Erfolg zeigt erst der nächste Zustand.
+func (c *conn) skillMessage(r *room.Room, m inMsg) error {
+	switch {
+	case m.Slot == nil:
+		return room.ErrBadRequest
+	case m.T == "respec":
+		return r.Respec(c.device, c, *m.Slot)
+	case m.SkillID == "":
+		return room.ErrBadRequest
+	}
+	return r.Learn(c.device, c, *m.Slot, m.SkillID)
 }
 
 // left: Das Gerät ist in keinem Raum mehr und bekommt die Raumliste.

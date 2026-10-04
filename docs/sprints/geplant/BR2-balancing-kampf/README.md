@@ -6,9 +6,9 @@
 - **Einschiebbar:** nein
 - **Tickets:** B-156
 - **Start-Commit:** –
-- **Spec:** Entwurf
+- **Spec:** freigegeben
 - **Revision:** 1
-- **Freigabe:** –
+- **Freigabe:** 2026-10-04, Chat, durch 🧑, Revision 1; mit Änderungen aus der Spec-Prüfung
 
 ## Ausgangslage
 
@@ -26,7 +26,7 @@ Familie spielt, 🧑 entscheidet über Werte; der Agent misst und wertet aus.
 
 ## Anforderungen
 
-B-156 › Anforderungen.
+B-156 › Anforderungen. Nach Spieleabend 3 folgt ein Tag mit Release-Checkliste (Q20).
 
 ## Nicht-Ziele
 
@@ -34,7 +34,7 @@ Wirtschaft (BR1), neue Mechaniken, Release (RL1).
 
 ## Regeln und Einschränkungen
 
-Werte nur in `data/`, Begründung in `docs/rules/`; Spieleabende und Freigaben nur durch 🧑. Golden-Daten nach dem Golden-Ablauf (B-137). Der Sprint bleibt in der Domäne REG; Code-Änderungen beschränken sich auf Werte in `data/`.
+Werte nur in `data/`, Begründung in `docs/rules/`; Spieleabende und Freigaben nur durch 🧑. Golden-Daten nach dem Golden-Ablauf (B-137). Der Sprint bleibt in der Domäne REG; Code-Änderungen beschränken sich auf Werte in `data/`. Voraussetzung: BR1 (B-155).
 
 ## Beispiele
 
@@ -49,11 +49,12 @@ Ein Korridor lässt sich nicht erreichen → Abweichung als Ticket, 🧑 entsche
 - **AC-01** Die Zielkorridore für Kampf und Bosse stehen vor der Runde als Zahlen in `docs/rules/` (B-156/AC-01).
 - **AC-02** Jede Wertänderung in `data/` nennt im Commit die betroffenen Kennzahlen, jeder geänderte Wert ist in `docs/rules/` begründet (B-156/AC-02, B-156/AC-03).
 - **AC-03** Spieleabend 3 hat stattgefunden, das Protokoll liegt in `docs/playtests/` (B-156/AC-04).
-- **AC-04** Je Zielkorridor ist Pass oder Fail festgehalten, jede Abweichung hat ein Ticket, `task check` grün (B-156/AC-05).
+- **AC-04** Je Zielkorridor ist Pass oder Fail festgehalten, jede Abweichung hat ein Ticket, `task check` und `task check:go` grün (B-156/AC-05).
+- **AC-05** Nach Spieleabend 3 ist ein Tag mit Release-Checkliste gesetzt, nach Bestätigung durch 🧑 (Q20, B-156/AC-06).
 
 ## Offene Fragen
 
-Termin und Teilnehmer: `docs/fragenkatalog.md Q24`; Zahlen der Korridore: `Q02` (🧑).
+Termin und Teilnehmer: `docs/fragenkatalog.md Q24` (🧑).
 
 ## Sessions
 

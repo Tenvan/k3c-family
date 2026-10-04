@@ -60,7 +60,7 @@ type Options struct{ Grade, Goal, Defeat string }
 type Peer interface {
 	Joined(room, name string, you []Seat)
 	Level(depth int, layout level.Layout)
-	State(tick int, w *sim.World, timescale int) // timescale > 0: Feld devTimescale (nur Dev-Mode)
+	State(tick int, w *sim.World, timescale int, paused bool) // timescale > 0: Feld devTimescale, dazu devPaused (nur Dev-Mode)
 	Seats(you []Seat, monarchs []string)
 	Replaced()         // dieselbe Geräte-ID ist über eine neue Verbindung beigetreten
 	Closed(final bool) // Raum geschlossen; final: Server fährt herunter, die Verbindung endet danach
@@ -100,6 +100,8 @@ type Room struct {
 	slowCount  int             // langsame Ticks seit dieser Meldung
 	beforeStep func()          // Test-Naht: läuft im Tick vor StepIsland
 	timescale  int             // Zeitraffer (dev timescale): Schritte je Tick, 0 = 1
+	paused     bool            // Dev-Pause (dev pause, B-231): Ticks rechnen keine Schritte
+	met        *metrics        // Spielmetrik des Raumlaufs (metrics.go); nil = kein Sammler
 }
 
 // ValidSlots: Slot 4 oder höher → too_many_slots, sonst leer, negativ oder doppelt → bad_request.
@@ -161,8 +163,9 @@ func (r *Room) join(id string, peer Peer, slots []int) error {
 		r.take(d, id, slot, idx)
 	}
 	r.emptySince = time.Time{}
+	r.met.join(id)
 	r.syncFree()
-	r.log().Info("Gerät im Raum", "device", short(id), "slots", slots, "wiederverbunden", old != nil, "geraete", r.connected())
+	r.log().Info("👑 Gerät im Raum", "device", short(id), "slots", slots, "wiederverbunden", old != nil, "geraete", r.connected())
 	peer.Joined(r.Code, r.Name, r.seats(d))
 	r.pushState(d)
 	r.broadcastSeats()
@@ -263,18 +266,27 @@ func (r *Room) dropTestSave() {
 		return
 	}
 	if err := r.m.Store.Delete(r.Name); err != nil {
-		r.m.log().Error("Test-Spielstand nicht gelöscht", "room", r.Code, "save", r.Name, "err", err)
+		r.m.log().Error("💥 Test-Spielstand nicht gelöscht", "room", r.Code, "save", r.Name, "err", err)
 	}
 }
 
 func (r *Room) save() {
+	start := time.Now() // Wanduhr nur fürs Log, nicht für den Spielverlauf
 	backup, err := r.store()
+	ms := time.Since(start).Milliseconds()
 	if err != nil {
-		r.log().Error("Spielstand nicht gespeichert", "err", err)
+		r.log().Error("💥 Spielstand nicht gespeichert", "err", err, "ms", ms)
 		return
 	}
-	r.log().Debug("Spielstand gespeichert", "tick", r.tick, "sicherung", backup)
+	if ms > slowSaveMs {
+		r.log().Warn("🐢 Spielstand gespeichert, langsamer als ein Tick", "tick", r.tick, "sicherung", backup, "ms", ms)
+		return
+	}
+	r.log().Debug("💾 Spielstand gespeichert", "tick", r.tick, "sicherung", backup, "ms", ms)
 }
+
+// slowSaveMs ist der Zielwert einer Speicherung (B-147, S2.2): ein Tick bei 30 Hz.
+const slowSaveMs = 1000 / TickHz
 
 // store schreibt den Spielstand und liefert den Namen der Sicherung des vorigen Stands (leer, wenn es keine gab).
 func (r *Room) store() (backup string, err error) {

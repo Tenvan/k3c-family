@@ -3,14 +3,11 @@
 package main
 
 import (
-	"bufio"
 	"context"
 	"embed"
-	"errors"
 	"fmt"
 	"os"
 	"path/filepath"
-	"strings"
 	"time"
 
 	"github.com/wailsapp/wails/v2"
@@ -44,7 +41,7 @@ func run() error {
 	if err != nil {
 		return err
 	}
-	root, err := findRoot(wd)
+	root, err := mcpsrv.FindRoot(wd)
 	if err != nil {
 		return err
 	}
@@ -85,40 +82,11 @@ func openServices(ctx context.Context, root string, store *console.Store, log *a
 	onChange func(services.Status)) (*services.Controller, error) {
 	list, err := services.Load(filepath.Join(root, "tools", "k3c-dev", "services.json"))
 	if err != nil {
-		log.Error("dienste nicht geladen: "+err.Error(), "ns", "svc")
+		log.Error("💥 dienste nicht geladen: "+err.Error(), "ns", "svc")
 		return nil, err
 	}
-	ctl := services.New(list, services.Options{Root: root, Console: store, Log: log.Logger, OnChange: onChange})
+	ctl := services.New(services.Shift(list, 0), services.Options{Root: root, Console: store, Log: log.Logger, OnChange: onChange})
 	ctl.Adopt(ctx)
 	go ctl.Monitor(ctx, 2*time.Second)
 	return ctl, nil
-}
-
-// findRoot sucht ab dir aufwärts das go.mod des Spiels (module k3c): die Repo-Wurzel.
-func findRoot(dir string) (string, error) {
-	for {
-		if isGameModule(filepath.Join(dir, "go.mod")) {
-			return dir, nil
-		}
-		parent := filepath.Dir(dir)
-		if parent == dir {
-			return "", errors.New("repo-wurzel nicht gefunden: kein go.mod mit \"module k3c\" über dem Arbeitsverzeichnis")
-		}
-		dir = parent
-	}
-}
-
-func isGameModule(path string) bool {
-	f, err := os.Open(path)
-	if err != nil {
-		return false
-	}
-	defer func() { _ = f.Close() }()
-	sc := bufio.NewScanner(f)
-	for sc.Scan() {
-		if line := strings.TrimSpace(sc.Text()); strings.HasPrefix(line, "module ") {
-			return strings.TrimSpace(strings.TrimPrefix(line, "module ")) == "k3c"
-		}
-	}
-	return false
 }

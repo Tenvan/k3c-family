@@ -3,12 +3,12 @@
 - **Domäne:** SRV
 - **Typ:** Idee
 - **Prio:** niedrig
-- **Status:** offen
-- **Sprint:** –
+- **Status:** eingeplant
+- **Sprint:** K4
 - **Erstellt:** 2026-10-01
-- **Spec:** Entwurf
+- **Spec:** freigegeben
 - **Revision:** 1
-- **Freigabe:** –
+- **Freigabe:** 2026-10-04, Chat, durch 🧑, mit Sprint K4
 
 ## Ausgangslage
 
@@ -17,16 +17,17 @@ rechnet der Browser nichts mehr, die Tasten entfallen.
 
 ## Ziel
 
-Entwickler können Gold geben, Stufen wechseln und einen Raum neu starten, ohne den Browser rechnen zu lassen. Nutzen: schnelles
+Entwickler können Gold geben, Stufen und den Schwierigkeitsgrad wechseln und einen Raum neu starten, ohne den Browser rechnen zu lassen. Nutzen: schnelles
 Ausprobieren neuer Mechaniken.
 
 ## Beteiligte und Zielgruppen
 
-Entwickler und Agenten; M6 (MCP-Tools, B-047) ist der nächstliegende Weg.
+Entwickler und Agenten; das Debug-Panel (B-107, K5) nutzt den Gradwechsel.
 
 ## Anforderungen
 
-- Dev-Aktionen laufen als geschützte Server-Aufrufe (Status-Token), nicht als Protokoll-Nachricht für Spieler.
+- Dev-Aktionen laufen als geschützte Server-Aufrufe (Dev-Mode des Raums bzw. Status-Token), nicht als Protokoll-Nachricht für Spieler.
+- Neue Dev-Aktion zum Wechsel des Schwierigkeitsgrads (Dev, Leicht, Normal, Hart, Ultra): wirkt ab der nächsten Welle (`SetGrade`, `engine/sim/island_options.go`), im laufenden Raum erlaubt, ohne Dev-Mode abgelehnt; der Zustand nennt den aktuellen Grad des Raums.
 
 ## Nicht-Ziele
 
@@ -34,7 +35,7 @@ Die Tasten im Browser zurückbringen.
 
 ## Regeln und Einschränkungen
 
-Domäne SRV; Protokoll v2 bleibt unverändert; nur mit Token.
+Domäne SRV; die Spieler-Nachrichten bleiben unverändert, die Dev-Aktion steht in `docs/protocol.md` › Dev-Aktionen (Version mit K4); nur im Dev-Mode bzw. mit Token.
 
 ## Beispiele
 
@@ -42,15 +43,16 @@ MCP-Tool `room_give_gold(KRNZ, 0, 50)` → Monarch 0 hat 50 Gold mehr.
 
 ## Ausnahme- und Fehlerfälle
 
-Ohne Token → abgelehnt.
+Ohne Token bzw. ohne Dev-Mode → abgelehnt; unbekannter Grad → `bad_request`.
 
 ## Akzeptanzkriterien
 
 - **AC-01** Eine Dev-Aktion ändert den Zustand eines Raums und ist im nächsten `delta` sichtbar (Test).
+- **AC-02** Der Gradwechsel per Dev-Aktion wirkt ab der nächsten Welle, ohne Dev-Mode wird er abgelehnt (Test).
 
 ## Offene Fragen
 
-Gehört das in M6 (B-047)? (🧑)
+Geklärt (Spec-Prüfung 2026-10-04): Der Gradwechsel kommt in K4, nicht in M6 (B-047).
 
 ## Notizen
 

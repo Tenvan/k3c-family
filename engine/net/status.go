@@ -34,6 +34,11 @@ func (s *server) status(w http.ResponseWriter, r *http.Request) {
 		"saves":   s.cfg.Saves.Count(), "reports": s.cfg.Reports.Count(),
 		"rooms": []room.Status{}, "failures": []room.Failure{},
 	}
+	if s.cfg.CPU != nil {
+		if pct, ok := s.cfg.CPU(); ok {
+			body["cpu"] = pct
+		}
+	}
 	if s.cfg.Rooms != nil {
 		body["rooms"], body["failures"] = s.cfg.Rooms.Status()
 	}
@@ -110,7 +115,7 @@ func (s *server) restore(w http.ResponseWriter, r *http.Request) {
 		if err != nil {
 			caller = r.RemoteAddr
 		}
-		s.log.Warn("restore abgelehnt", "ns", "save", "path", r.URL.Path, "caller", caller, "reason", restoreDenied[code])
+		s.log.Warn("🚫 restore abgelehnt", "ns", "save", "path", r.URL.Path, "caller", caller, "reason", restoreDenied[code])
 		return
 	}
 	slot, name := slotOf(r), r.URL.Query().Get("backup")
@@ -123,7 +128,7 @@ func (s *server) restore(w http.ResponseWriter, r *http.Request) {
 		s.saveError(w, err)
 		return
 	}
-	s.log.Info("spielstand wiederhergestellt", "ns", "save", "slot", slot, "backup", name)
+	s.log.Info("🩹 spielstand wiederhergestellt", "ns", "save", "slot", slot, "backup", name)
 	writeJSON(w, http.StatusOK, map[string]any{"ok": true, "slot": slot, "restored": name})
 }
 

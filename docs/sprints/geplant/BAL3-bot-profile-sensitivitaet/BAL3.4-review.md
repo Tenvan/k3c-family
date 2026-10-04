@@ -14,7 +14,7 @@ Der Sprint BAL3 ist nach `docs/arbeitsweise.md` › Review-Session geprüft und 
 
 ## Kontext
 
-Leichter Review (nur schwere Befunde im Diff, günstiges Modell). Der Diff berührt das Balance-Paket (Profile, Sensitivität, Kurven), `cmd/k3c-balance/`, `Taskfile.yml`, neue Fehler-Daten in `data/` und die Tester-Dokumentation. Besonders prüfen: Bots greifen nur über `PlayerCommand` zu; Zufall nur über `engine/rng`, kein `math/rand`, keine Wanduhr; Fehlerwahrscheinlichkeiten stammen aus `data/` und entsprechen dem Beschluss in der Dokumentation (BAL3.1); der Sensitivitäts-Lauf ändert keine Datei in `data/`; unbekannter Pfad und zu wenige Spieler ergeben Fehler; mit 2 und 4 Spielern kein falsches Verhalten; kein Kriterium wurde umformuliert; die Spannung zwischen Q19 („Kind-Bot später“) und der Spec ist im Ergebnis von BAL3.1 geklärt.
+Leichter Review (nur schwere Befunde im Diff, günstiges Modell). Der Diff berührt das Balance-Paket (Profile, Sensitivität, Kurven), `cmd/k3c-balance/`, `Taskfile.yml` und die Tester-Dokumentation. Besonders prüfen: Bots greifen nur über `PlayerCommand` zu; Zufall nur über `engine/rng`, kein `math/rand`, keine Wanduhr; kein Kind-Bot und keine Fehler-Daten (B-158/AC-02); der Sensitivitäts-Lauf ändert keine Datei in `data/`; unbekannter Pfad und zu wenige Spieler ergeben Fehler; mit 2 und 4 Spielern kein falsches Verhalten; kein Kriterium wurde umformuliert.
 
 ## Erlaubte Dateien
 

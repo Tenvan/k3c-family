@@ -1,7 +1,9 @@
 import Phaser from 'phaser';
 import { GROUND_Y, PLAYER_COLORS, UNIT_PX } from '../core/constants';
+import { currentLanguage, nameOf, t } from '../core/texts';
 import { BUILDINGS, TROOPS } from '../model/data';
 import { fontStyle } from './fontRules';
+import { createRider, updateRider } from './mountView';
 import { canAfford, hasDepth, isOnTower } from './viewRules';
 import { ENEMY_SPRITES, PLAYER_SPRITES, TROOP_SPRITES, face, makeSprite, playAnim, spriteTop } from './sprites';
 import type { Coin, Enemy, Pickup, Player, Projectile, ResourceNode, Site, Troop, World } from '../model/types';
@@ -20,18 +22,32 @@ const TEXT = { stroke: '#000000', strokeThickness: 4, fontStyle: 'bold' };
 const SITE_SIZE: Record<Site['kind'], [number, number]> = {
   wall: [36, 150],
   tower: [70, 260],
+  gate: [40, 160],
   workshop: [150, 120],
   storage: [130, 100],
   stairsUp: [110, 110],
   stairsDown: [110, 110],
+  farm: [140, 90],
+  barracks: [150, 130],
+  tavern: [130, 120],
+  healer: [100, 100],
+  smithy: [120, 110],
+  armory: [130, 120],
 };
 const SITE_COLOR: Record<Site['kind'], number> = {
   wall: 0x8d99ae,
   tower: 0x9c6644,
+  gate: 0x7f5539,
   workshop: 0xbc6c25,
   storage: 0x7f5539,
   stairsUp: 0x6c757d,
   stairsDown: 0x343a40,
+  farm: 0xa7c957,
+  barracks: 0x6c584c,
+  tavern: 0xb08968,
+  healer: 0xe5e5e5,
+  smithy: 0x495057,
+  armory: 0x5c677d,
 };
 
 type View = Phaser.GameObjects.Container;
@@ -186,7 +202,7 @@ export class WorldRenderer {
       } else if (e.kind === 'exit') {
         this.put(scene.add.rectangle(ex, G - 90, 160, 180, 0x111111).setStrokeStyle(6, 0x555555));
         const deeper = hasDepth(world.biome.depth + 1);
-        this.put(scene.add.text(ex, G - 210, deeper ? `Tiefe ${world.biome.depth + 1}\nalle hierher` : 'verschüttet', { ...TEXT, ...fontStyle('exitSign'), align: 'center' }).setOrigin(0.5));
+        this.put(scene.add.text(ex, G - 210, deeper ? t('exit.deeper', { depth: world.biome.depth + 1 }) : t('exit.blocked'), { ...TEXT, ...fontStyle('exitSign'), align: 'center' }).setOrigin(0.5));
       } else if (e.kind === 'bush') {
         this.put(scene.add.circle(ex, G - 14, 18, 0x40916c)); // Deko
       } else if (e.kind === 'recruitCamp') {
@@ -234,7 +250,7 @@ export class WorldRenderer {
   private updateSite(v: View, s: Site): void {
     const near = this.world.players.some((p) => p.respawnIn <= 0 && Math.abs(p.x - s.x) < PRICE_TAG_RANGE);
     const data = BUILDINGS[s.kind];
-    const key = [s.state, s.paidGold, Math.round(s.buildProgress * 20), Math.round((s.hp / s.maxHp) * 20), s.bows, s.bowPaidGold, near, canAfford(this.world.stock, data.cost)].join('|');
+    const key = [s.state, s.paidGold, Math.round(s.buildProgress * 20), Math.round((s.hp / s.maxHp) * 20), s.bows, s.bowPaidGold, near, canAfford(this.world.stock, data.cost), currentLanguage()].join('|');
     if (v.getData('key') === key) return;
     v.setData('key', key);
 
@@ -251,13 +267,13 @@ export class WorldRenderer {
       if (s.kind === 'stairsUp' || s.kind === 'stairsDown') {
         // Stufen als Treppe, dazu ein Schild wohin es geht
         for (let i = 0; i < 5; i++) g.fillStyle(0x495057).fillRect(-w / 2 + i * (w / 5), -((i + 1) * h) / 5, w / 5, ((i + 1) * h) / 5);
-        label.setPosition(0, -h - 12).setText(s.kind === 'stairsUp' ? 'Treppe hoch' : 'Treppe runter').setColor('#ffd166');
+        label.setPosition(0, -h - 12).setText(siteName(s.kind)).setColor('#ffd166');
       }
       if (s.hp < s.maxHp) this.drawBar(g, -h - 30, 80, s.hp / s.maxHp, 0x52b788);
       if (s.kind === 'workshop') {
         for (let i = 0; i < s.bows; i++) g.lineStyle(4, 0xffd166).beginPath().arc(-40 + i * 30, -60, 14, -Math.PI / 2, Math.PI / 2).strokePath();
         const price = TROOPS.archer.cost ?? {};
-        if (near && s.bows < (data.bowRack ?? 0)) this.drawPrice(g, label, -h - 20, price.gold ?? 0, s.bowPaidGold, 'Bogen', price);
+        if (near && s.bows < (data.bowRack ?? 0)) this.drawPrice(g, label, -h - 20, price.gold ?? 0, s.bowPaidGold, t('site.bow'), price);
       }
       return;
     }
@@ -267,9 +283,9 @@ export class WorldRenderer {
     if (s.buildProgress > 0) {
       g.fillStyle(0xdda15e, 0.8).fillRect(-w / 2, -h * s.buildProgress, w, h * s.buildProgress);
     }
-    if (s.state === 'unpaid' && near) this.drawPrice(g, label, -h - 20, data.cost.gold ?? 0, s.paidGold, data.name, data.cost);
-    if (s.state === 'waitingMaterial') label.setPosition(0, -h - 20).setText(`${data.name}: ${missing(this.world.stock, data.cost)}`).setColor('#ff8fa3');
-    if (s.state === 'waitingWorker') label.setPosition(0, -h - 20).setText(s.buildProgress > 0 ? '' : `${data.name}: wartet auf Bauer`).setColor('#ffffff');
+    if (s.state === 'unpaid' && near) this.drawPrice(g, label, -h - 20, data.cost.gold ?? 0, s.paidGold, siteName(s.kind), data.cost);
+    if (s.state === 'waitingMaterial') label.setPosition(0, -h - 20).setText(`${siteName(s.kind)}: ${missing(this.world.stock, data.cost)}`).setColor('#ff8fa3');
+    if (s.state === 'waitingWorker') label.setPosition(0, -h - 20).setText(s.buildProgress > 0 ? '' : t('site.waitingWorker', { name: siteName(s.kind) })).setColor('#ffffff');
   }
 
   /** Münz-Slots (K2C): gefüllt = bezahlt. Baumaterial steht darüber. */
@@ -283,7 +299,7 @@ export class WorldRenderer {
       g.lineStyle(2, 0xffd166).strokeCircle(cx, cy, 8);
       if (i < paid) g.fillStyle(0xffd166).fillCircle(cx, cy, 8);
     }
-    const material = (['wood', 'stone', 'copper'] as const).filter((r) => cost[r]).map((r) => `${cost[r]} ${RESOURCE_NAMES[r]}`);
+    const material = (['wood', 'stone', 'copper'] as const).filter((r) => cost[r]).map((r) => `${cost[r]} ${resourceName(r)}`);
     const enough = canAfford(this.world.stock, cost);
     label.setPosition(0, y - Math.ceil(total / perRow) * 22).setText([name, ...material].join(' · ')).setColor(enough ? '#ffffff' : '#ff8fa3');
   }
@@ -358,8 +374,9 @@ export class WorldRenderer {
 
   private createPlayer(p: Player): View {
     const s = this.scene;
-    const sprite = makeSprite(s, PLAYER_SPRITES[p.index % PLAYER_SPRITES.length]);
-    const top = spriteTop(sprite);
+    // Beritten (mountView) oder, bei unbekanntem Reittier, die bisherige Figur
+    const sprite = createRider(s, p) ?? makeSprite(s, PLAYER_SPRITES[p.index % PLAYER_SPRITES.length]);
+    const top = sprite.getData('top') as number;
     // Farbiger Punkt unter den Füßen: welcher Monarch gehört zu wem
     const color = PLAYER_COLORS[p.index % PLAYER_COLORS.length];
     const marker = s.add.ellipse(0, 4, 56, 12, color, 0.8);
@@ -368,9 +385,12 @@ export class WorldRenderer {
   }
 
   private updatePlayer(v: View, p: Player): void {
-    const sprite = v.getAt(1) as Sprite;
-    face(sprite, p.facing);
-    playAnim(sprite, Math.abs(p.vx) > 0.05 ? 'run' : 'idle');
+    const fig = v.getAt(1) as Sprite | Phaser.GameObjects.Container;
+    if (fig instanceof Phaser.GameObjects.Container) updateRider(fig, p);
+    else {
+      face(fig, p.facing);
+      playAnim(fig, Math.abs(p.vx) > 0.05 ? 'run' : 'idle');
+    }
     v.setPosition(p.x * U, G);
     v.setAlpha(p.respawnIn > 0 ? 0.25 : 1);
 
@@ -385,11 +405,12 @@ export class WorldRenderer {
   }
 }
 
-export const RESOURCE_NAMES = { wood: 'Holz', stone: 'Stein', copper: 'Kupfer' } as const;
+export const resourceName = (r: 'wood' | 'stone' | 'copper'): string => nameOf('res', r, r);
+export const siteName = (kind: Site['kind']): string => nameOf('site', kind, BUILDINGS[kind].name);
 
 function missing(stock: World['stock'], cost: Record<string, number | undefined>): string {
   const parts = (['wood', 'stone', 'copper'] as const)
     .filter((r) => (cost[r] ?? 0) > stock[r])
-    .map((r) => `${(cost[r] ?? 0) - stock[r]} ${RESOURCE_NAMES[r]} fehlt`);
-  return parts.join(', ') || 'bereit';
+    .map((r) => t('site.missing', { n: (cost[r] ?? 0) - stock[r], res: resourceName(r) }));
+  return parts.join(', ') || t('site.ready');
 }

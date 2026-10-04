@@ -9,6 +9,7 @@ import { GameScene } from './scenes/GameScene';
 import { HudScene } from './scenes/HudScene';
 import { LoadScene } from './scenes/LoadScene';
 import { LobbyScene } from './scenes/LobbyScene';
+import { OptionsScene } from './scenes/OptionsScene';
 import { VERSION_KEY } from './scenes/debugOverlay';
 
 // Seitenrahmen sofort (Home-Button, Zurück-Falle für B).
@@ -32,11 +33,12 @@ function start(server: BuildInfo): void {
 
   // Versionen für Lobby und Debug-Overlay, je eine Zeile für Client und Server (beide lesen sie aus der Registry)
   game.registry.set(VERSION_KEY, versionLine(CLIENT, server, '\n'));
-  clientLog('info', `Phaser gestartet (${game.config.renderType === Phaser.WEBGL ? 'WebGL' : 'Canvas/Auto'})`);
+  clientLog('info', `🚀 Phaser gestartet (${game.config.renderType === Phaser.WEBGL ? 'WebGL' : 'Canvas/Auto'})`);
   game.scene.add('load', LoadScene, true, { client }); // lädt den Atlas, startet dann die Lobby
   game.scene.add('lobby', LobbyScene, false);
   game.scene.add('game', GameScene, false);
   game.scene.add('hud', HudScene, false);
+  game.scene.add('options', OptionsScene, false);
 
   // Nur im Dev-Server oder mit ?dev=1: Zugriff für Debugging über die Browser-Konsole (window.game).
   if (import.meta.env.DEV || new URLSearchParams(location.search).has('dev')) (window as unknown as { game: Phaser.Game; client: typeof client }).game = Object.assign(game, { client });

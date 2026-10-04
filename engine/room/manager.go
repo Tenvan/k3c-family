@@ -44,6 +44,8 @@ type Manager struct {
 	// Changed meldet, dass sich Raumliste oder Plätze geändert haben (für `rooms` an Geräte ohne Raum).
 	// Aufruf ohne gehaltene Sperre.
 	Changed func()
+	// Sessions nimmt den Spielmetrik-Report beim Raumende (B-150); nil = kein Report.
+	Sessions SessionStore
 
 	mu       sync.Mutex
 	rooms    map[string]*Room
@@ -138,9 +140,9 @@ func (m *Manager) create(id string, peer Peer, name string, fresh bool, depth in
 	if len(m.rooms) >= MaxRooms {
 		return nil, ErrTooManyRooms
 	}
-	r := &Room{Code: m.code(), Name: name, m: m, isl: isl, start: startStage(isl, depth), Opts: opts, monarchs: monarchs, devices: map[string]*device{}}
+	r := &Room{Code: m.code(), Name: name, m: m, isl: isl, start: startStage(isl, depth), Opts: opts, monarchs: monarchs, devices: map[string]*device{}, met: newMetrics(m.now())}
 	m.rooms[r.Code] = r
-	r.log().Info("Raum erstellt", "device", short(id), "neu", fresh, "tiefe", depth, "slots", slots, "optionen", opts, "raeume", len(m.rooms))
+	r.log().Info("🏰 Raum erstellt", "device", short(id), "neu", fresh, "tiefe", depth, "slots", slots, "optionen", opts, "raeume", len(m.rooms))
 	if m.ctx != nil {
 		go r.run(m.ctx)
 	}
@@ -188,7 +190,7 @@ func (m *Manager) open(name string, fresh bool, depth int, opts Options) (*sim.I
 // liveGrade setzt den Grad dev im Live-Modus auf normal (nur im Speicher; der Stand bleibt, bis er neu gespeichert wird).
 func (m *Manager) liveGrade(isl *sim.Island, name string) {
 	if isl.Options.Grade == "dev" && !m.Dev {
-		m.log().Warn("Spielstand mit Grad dev im Live-Modus: Grad auf normal gesetzt", "save", name)
+		m.log().Warn("🐛 Spielstand mit Grad dev im Live-Modus: Grad auf normal gesetzt", "save", name)
 		isl.Options.Grade = "normal"
 	}
 }
@@ -287,8 +289,9 @@ func (r *Room) lockedSweep(now time.Time) (changed, remove bool) {
 	defer r.mu.Unlock()
 	changed, remove = r.sweep(now)
 	if remove {
-		r.log().Info("Raum leer seit Frist, wird aufgeräumt", "frist", EmptyFor.String())
+		r.log().Info("🧹 Raum leer seit Frist, wird aufgeräumt", "frist", EmptyFor.String())
 		r.save()
+		r.writeReport()
 		r.closed = true
 		r.dropTestSave()
 	}
@@ -311,8 +314,9 @@ func (m *Manager) Close() {
 func (r *Room) closeFinal() {
 	r.mu.Lock()
 	defer r.mu.Unlock()
-	r.log().Info("Raum schließt (Server fährt herunter)")
+	r.log().Info("🛑 Raum schließt (Server fährt herunter)")
 	r.save()
+	r.writeReport()
 	r.closed = true
 	for _, d := range r.devices {
 		if d.connected {

@@ -16,7 +16,15 @@ import type { RadarCell } from './radarView';
 import { daylight } from './viewRules';
 import { cellStages } from './cellStages';
 import { PLACEHOLDER_BG, StageView, placeholderLayer, showOnly } from './stageView';
+import { clientLog } from '../core/clientLog';
+import { audioCore } from '../audio/audioCore';
+import type { Listener } from '../audio/events';
+import { loadSettings } from '../core/settings';
+import { EFFECT_CONFIG, SHAKE, effectFor, type BuildSpots } from './effects';
+import { hurtSeat, rumblePad, runEffect, shakeCell } from './effectRules';
 import { DEV_FOCUS_KEY, muteFocused } from './debugOverlayPanel';
+import { MenuPress, idleCommands } from './optionsLogic';
+import { pauseButton } from './pauseButton';
 
 /** Ein Overlay pro Seite, auch über Szenen-Neustarts hinweg */
 let sharedTouch: TouchInput | undefined;
@@ -50,6 +58,9 @@ export class GameScene extends Phaser.Scene {
   private world_: World | undefined;
   /** Geladene Stufen nach Tiefe; mit dem heutigen Protokoll (B-176 offen) nur die Stufe von `client.level` */
   private stages = new Map<number, StageView>();
+  private readonly buildSpots: BuildSpots = new Map();
+  private lastFlashAt: number | null = null;
+  private rumbleWarned = false;
   private holders: Phaser.GameObjects.Layer[] = [];
   private keyboard!: KeyboardInput;
   private touch: TouchInput | undefined;
@@ -62,6 +73,7 @@ export class GameScene extends Phaser.Scene {
   private cells: Cell[] = [];
   private layoutKey = '';
   private partnerMonarch: number | null = null;
+  private menuPress = new MenuPress();
 
   constructor() {
     super('game');
@@ -85,10 +97,12 @@ export class GameScene extends Phaser.Scene {
     this.world_ = undefined;
     this.stages = new Map(); // die Szene hat ihre Ebenen beim Neustart schon zerstört
     this.holders = [];
+    this.buildSpots.clear();
     this.level = null;
     this.prev = this.cur = null;
     this.layoutKey = '';
     this.partnerMonarch = null;
+    this.menuPress = new MenuPress();
     this.lastDevice = wantsTouchControls() ? 'touch' : 'keyboard';
   }
 
@@ -104,6 +118,10 @@ export class GameScene extends Phaser.Scene {
     gamepads.on('connected', addPad);
     gamepads.on('disconnected', (pad: Phaser.Input.Gamepad.Gamepad) => this.padLost(pad));
     this.scene.launch('hud');
+    if (this.touch) {
+      pauseButton().show(true);
+      this.events.once('shutdown', () => pauseButton().show(false));
+    }
   }
 
   update(): void {
@@ -120,6 +138,8 @@ export class GameScene extends Phaser.Scene {
     if (client.status !== 'room') return;
 
     const seated = client.you.map((s) => s.slot);
+    if (this.scene.isActive('options')) return this.paused(seated); // Optionen offen: Monarchen stehen, nur zeichnen
+    if (this.wantsOptions()) this.scene.launch('options');
     const devFocus = this.registry.get(DEV_FOCUS_KEY) === true; // Dev-Fokus im Debug-Overlay (B-179): Controller bedienen die Liste
     const isPad = (i: PlayerInput | null) => this.pads.includes(i as GamepadInput);
     this.slots.join(devFocus ? inputs.filter((i) => !isPad(i)) : inputs, seated, client, performance.now());
@@ -127,6 +147,19 @@ export class GameScene extends Phaser.Scene {
     if (p.length > 0) client.sendInput(p);
     this.takeFrames();
     this.draw();
+  }
+
+  /** Optionen offen (Client-Anteil der Pause, S5.2): die Monarchen des Geräts stehen, Beitritt und Eingaben ruhen, das Spiel wird weiter gezeichnet. */
+  private paused(seated: number[]): void {
+    this.client.sendInput(idleCommands(seated));
+    this.takeFrames();
+    this.draw();
+  }
+
+  /** Esc, Touch-Schaltfläche oder Menu kurz (Pad, beim Loslassen; View + Menu bleibt „zurück zur Landingpage“) */
+  private wantsOptions(): boolean {
+    const menuShort = this.menuPress.update(this.pads.some((p) => p.held('pause')), this.pads.some((p) => p.held('skillMenu')), performance.now());
+    return this.keyboard.justPressed('pause') || (this.touch !== undefined && pauseButton().take()) || menuShort;
   }
 
   /** Slots, deren Spieler noch auf seinen Beitritt wartet (Taste drücken) */
@@ -157,6 +190,7 @@ export class GameScene extends Phaser.Scene {
   private leaveRoom(): void {
     this.client.leave();
     this.scene.stop('hud');
+    this.scene.stop('options');
     this.scene.start('lobby', { client: this.client, returned: true } satisfies LobbySceneData);
   }
 
@@ -166,6 +200,7 @@ export class GameScene extends Phaser.Scene {
 
   private trackLastDevice(): void {
     const used = (i: PlayerInput) => i.moveX() !== 0 || i.held('confirm');
+    if (this.allInputs().some(used)) void audioCore().onInput(); // erste Eingabe entsperrt den Ton (SO1.2)
     if (this.touch && used(this.touch)) this.lastDevice = 'touch';
     else if (this.pads.some(used)) this.lastDevice = 'pad';
     else if (used(this.keyboard)) this.lastDevice = 'keyboard';
@@ -191,6 +226,50 @@ export class GameScene extends Phaser.Scene {
       this.prev = this.cur;
       this.cur = frame;
       this.pendingEvents.push(...frame.state.events);
+      this.spawnEffects(frame.state.events);
+    }
+  }
+
+  /** Effekte nur aus den Ereignissen des Frames (nicht aus `pendingEvents`, das die HudScene leert); ändert keinen Zustand. */
+  private spawnEffects(events: readonly GameEvent[]): void {
+    const view = this.level ? this.stages.get(this.level.depth) : undefined;
+    if (!view) return;
+    const settings = loadSettings(); // je Frame gelesen: eine Änderung in den Optionen wirkt ohne Neuladen
+    const playerX = (i: number): number | undefined => this.cur?.state.players.find((p) => p.index === i)?.x;
+    const now = performance.now();
+    for (const e of events) {
+      this.feedback(e, settings.screenshake);
+      const fx = effectFor(e, playerX, this.buildSpots);
+      audioCore().onEvent(e, fx ? fx.x / UNIT_PX : undefined, this.listeners());
+      if (!fx) continue;
+      const isFlash = EFFECT_CONFIG[fx.kind].flash;
+      if (!runEffect(isFlash, settings, now, this.lastFlashAt)) continue;
+      if (isFlash) this.lastFlashAt = now;
+      view.effects.spawn(fx);
+    }
+  }
+
+  /** Sichtbare Ausschnitte der lokalen Spieler für die Positions-Dämpfung des Tons (Mitte und Breite in Units). */
+  private listeners(): Listener[] {
+    return this.hudCells().flatMap((c) => (c.monarch !== null && c.view ? [{ center: c.view.fromUnits + c.view.spanUnits / 2, span: c.view.spanUnits }] : []));
+  }
+
+  /** Treffer an einem lokalen Spieler: nur dessen Kamera schüttelt (Schalter `screenshake`), nur dessen Controller vibriert. */
+  private feedback(e: GameEvent, shake: boolean): void {
+    const seat = hurtSeat(e, this.client.you);
+    if (seat === null) return;
+    if (shake) {
+      const cam = this.cameras.cameras[shakeCell(e, this.client.you, this.cells) ?? -1];
+      cam?.shake(SHAKE.durationMs, SHAKE.intensity);
+    }
+    const slot = [...this.client.you].sort((a, b) => a.slot - b.slot)[seat]?.slot ?? -1;
+    const input = this.slots.bound[slot];
+    if (input instanceof GamepadInput) {
+      rumblePad(input.pad.vibration, () => {
+        if (this.rumbleWarned) return;
+        this.rumbleWarned = true;
+        clientLog('info', '🎮 Controller ohne Vibration');
+      });
     }
   }
 

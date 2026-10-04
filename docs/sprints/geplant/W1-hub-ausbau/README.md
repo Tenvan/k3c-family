@@ -6,13 +6,13 @@
 - **Einschiebbar:** nein
 - **Tickets:** B-112
 - **Start-Commit:** –
-- **Spec:** Entwurf
+- **Spec:** freigegeben
 - **Revision:** 1
-- **Freigabe:** –
+- **Freigabe:** 2026-10-04, Chat, durch 🧑, Revision 1; mit Änderungen aus der Spec-Prüfung
 
 ## Ausgangslage
 
-Der Hub hat feste Bauplätze, Mauer und Turm nur die Holzstufe, es gibt weder Hub-Ausbau noch Reparatur (B-112). Voraussetzung ist der Insel-Vorrat aus dem Lager (SP13).
+Nach W0 (B-206) hat jede Stufe feste Hub-Plätze mit Hub-Stufe aus den Daten und je Seite fünf Mauerlinien mit Mauer-, Turm- und Tor-Platz; `World.HubLevel` (Start 1) steuert bisher nur die Linien- und Tor-Regel, Hub-Gebäude sind noch nicht gesperrt (Q59). Mauer und Turm haben nur die Holzstufe, es gibt weder Hub-Ausbau noch Reparatur (B-112). Voraussetzung sind der Insel-Vorrat aus dem Lager (SP13) und W0.
 
 ## Ziel
 
@@ -34,7 +34,7 @@ Gebäude-Wirkungen (W3), Protokoll (W5), Anzeige (W6, B-117).
 
 ## Regeln und Einschränkungen
 
-Werte nur in `data/`, Logik und Tests in `engine/sim/`; deterministisch (`engine/rng`), mit 2+ Spielern gleichzeitig. Golden-Daten nach dem Golden-Ablauf (B-137) aktualisieren, Spielstand-Änderungen nach der Migrationsregel (B-137). Datei ≤ 400 Zeilen, Funktion ≤ 60, Schichtgrenzen aus `docs/arbeitsweise.md`. Der Sprint bleibt in der Domäne SIM. Quelle: `docs/rules/materialien-gebaeude.md`.
+Werte nur in `data/`, Logik und Tests in `engine/sim/`; deterministisch (`engine/rng`), mit 2+ Spielern gleichzeitig. Golden-Daten nach dem Golden-Ablauf (B-137) aktualisieren, Spielstand-Änderungen nach der Migrationsregel (B-137). Datei ≤ 400 Zeilen, Funktion ≤ 60, Schichtgrenzen aus `docs/arbeitsweise.md`. Der Sprint bleibt in der Domäne SIM. Quelle: `docs/rules/materialien-gebaeude.md`. Begriffe (§ 4): **Reparatur** (kostenlos, Anteil der Bauzeit) gilt nur für beschädigte Gebäude; ein **zerstörtes** Gebäude verliert die Stufe, der Platz ist wieder `unpaid` und wird gegen Bezahlung neu gebaut. „Bis die Mauer k−1 repariert ist“ (Q58) heißt bei zerstörter Mauer: bis sie neu gebaut ist.
 
 ## Beispiele
 
@@ -48,7 +48,7 @@ Material fehlt → Ausbau wartet. Ausbau während einer Welle → erlaubt, der B
 
 - **AC-01** Hub-Ausbau auf Stufe 2 bis 5 bucht Gold und Material laut `hub.json` ab; Gebäude höherer Stufen sind vor dem Ausbau nicht bezahlbar (Test) (B-112/AC-01, B-112/AC-03).
 - **AC-02** Mauer und Turm werden am selben Platz auf Stufe 2 bis 5 ausgebaut, Kosten und HP laut Daten, Stufe 3 braucht Hub-Stufe 3 (Test) (B-112/AC-02).
-- **AC-03** Zerstörung setzt die Mauer-Stufe zurück, die Hub-Stufe bleibt; Reparatur stellt HP zwischen den Wellen ohne Gold und Material her (Test) (B-112/AC-04, B-112/AC-05).
+- **AC-03** Zerstörung setzt die Stufe von Mauer und Turm zurück, die Hub-Stufe bleibt; Reparatur stellt HP zwischen den Wellen ohne Gold und Material her (Test) (B-112/AC-04, B-112/AC-05).
 - **AC-04** Spielstand speichert Hub- und Gebäude-Stufen, Golden-Daten sind aktualisiert, `task check:go` grün (B-112/AC-06).
 
 ## Offene Fragen

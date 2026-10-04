@@ -319,15 +319,35 @@ export interface PlanTicket {
   spec: string;
 }
 
-/** Daten der Seite „Sprints & Backlog“ (Go: planning.Data); done zählt die erledigten Sprints. Nur der Mock baut sie. */
+/** Daten der Ansicht „Sprints & Backlog“ (Go: planning.Data, dieselben wie plan_list); done zählt die erledigten Sprints. */
 export interface PlanningData {
   sprints: PlanSprint[];
   tickets: PlanTicket[];
   done: number;
 }
 
-/** Lesbare Planungs-Dokumente: Plan (docs/plan-weiterentwicklung.md) und Fragenkatalog (docs/fragenkatalog.md). */
-export type PlanDoc = 'plan' | 'fragen';
+/** GitHub-Stand eines Sprints (Go: github.SprintPR). */
+export interface GitHubSprint {
+  number: number;
+  title: string;
+  url: string;
+  state: 'offen' | 'Entwurf' | 'gemergt' | 'geschlossen';
+  ci: 'grün' | 'rot' | 'läuft' | '–';
+  merge: 'konfliktfrei' | 'Konflikt' | 'unbekannt' | '–';
+}
+
+/** GitHub-Stand der Sprints aus `gh` (Go: github.Data); error ist ein Hinweis (gh fehlt, nicht angemeldet, veraltet). */
+export interface GitHubData {
+  /** Schlüssel: Sprint-ID in Großbuchstaben, aus dem Branch `sprint/<präfix>`. */
+  sprints: Record<string, GitHubSprint>;
+  develop?: { ci: GitHubSprint['ci']; title: string; url: string; created: string };
+  error?: string;
+  fetched?: string;
+}
+
+/** Lesbare Planungs-Dokumente: Plan (docs/plan-weiterentwicklung.md), Fragenkatalog (docs/fragenkatalog.md) und
+ *  Glossar (docs/glossar.md, nur wenn vorhanden). */
+export type PlanDoc = 'plan' | 'fragen' | 'glossar';
 
 /** Ereignisse von Go an die Oberfläche. */
 export interface Events {
@@ -339,7 +359,7 @@ export interface Events {
   'mcp:start': McpCall;
   'mcp:call': McpCall;
   'task:state': TaskRun;
-  /** Eine Datei der Planung (docs/sprints, docs/backlog, Plan, Fragenkatalog) hat sich geändert; ohne Nutzlast. */
+  /** Eine Datei der Planung (docs/sprints, docs/backlog, Plan, Fragenkatalog, Glossar) hat sich geändert; ohne Nutzlast. */
   'planning:changed': null;
 }
 
@@ -377,8 +397,14 @@ export interface Backend {
   taskStart(name: string, args: string[]): Promise<TaskRun>;
   taskStop(name: string): Promise<TaskRun>;
   taskRuns(): Promise<TaskRun[]>;
-  /** Seite „Sprints & Backlog“ als eigenständiges HTML, frisch aus docs/ erzeugt (Go: planning.Page). */
-  planningPage(): Promise<string>;
+  /** Sprints und Tickets frisch aus docs/ (Go: planning.Load). */
+  planningData(): Promise<PlanningData>;
+  /** Vorhandene Planungs-Dokumente in Umschalter-Reihenfolge; das Glossar nur mit Datei. */
+  planningDocs(): Promise<PlanDoc[]>;
+  /** PR, CI und Merge-Stand je Sprint; force umgeht den Zwischenspeicher (60 s). */
+  githubStatus(force: boolean): Promise<GitHubData>;
+  /** Öffnet eine Adresse im Standard-Browser (Wails) bzw. in einem neuen Tab (Mock). */
+  openUrl(url: string): void;
   /** Markdown eines Planungs-Dokuments. */
   planningDoc(name: PlanDoc): Promise<string>;
   /** Abonniert ein Ereignis; die Rückgabe meldet wieder ab. */

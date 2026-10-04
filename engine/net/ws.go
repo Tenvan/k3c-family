@@ -16,7 +16,7 @@ import (
 	"k3c/engine/sim"
 )
 
-// WebSocket /ws nach Protokoll v2. Jede Verbindung hat eine Lese-Schleife (diese Goroutine) und eine
+// WebSocket /ws nach Protokoll v4. Jede Verbindung hat eine Lese-Schleife (diese Goroutine) und eine
 // Schreib-Goroutine mit gepuffertem Kanal. Ist der Puffer voll, wird die Verbindung geschlossen, das zählt als Abbruch.
 
 const (
@@ -52,13 +52,13 @@ type conn struct {
 func (c *conn) enqueue(v any) {
 	b, err := json.Marshal(v)
 	if err != nil {
-		c.s.log.Error("Nachricht nicht kodierbar", "err", err)
+		c.s.log.Error("💥 Nachricht nicht kodierbar", "err", err)
 		return
 	}
 	select {
 	case c.send <- out{data: b}:
 	default:
-		c.s.log.Warn("Sendepuffer voll, Verbindung zu", "device", c.device)
+		c.s.log.Warn("🐢 Sendepuffer voll, Verbindung zu", "device", c.device)
 		c.cancel()
 	}
 }
@@ -77,8 +77,8 @@ func (c *conn) Level(depth int, layout level.Layout) {
 }
 
 // State schickt snap nach Level, sonst delta zum zuletzt gesendeten Zustand.
-func (c *conn) State(tick int, w *sim.World, timescale int) {
-	s := stateOf(w, timescale)
+func (c *conn) State(tick int, w *sim.World, timescale int, paused bool) {
+	s := stateOf(w, timescale, paused)
 	msg := stateMsg{"snap", tick, c.seq.Load(), s}
 	if c.prev != nil {
 		msg.T, msg.S = "delta", deltaOf(c.prev, s)
@@ -169,7 +169,7 @@ func (s *server) websocket(w http.ResponseWriter, r *http.Request) {
 	defer cancel()
 	device, ok := handshake(ctx, ws)
 	if !ok {
-		s.log.Warn("WebSocket: Handschlag abgelehnt", "ns", "ws", "remote", r.RemoteAddr, "erwartet", ProtocolVersion, "userAgent", r.UserAgent())
+		s.log.Warn("🚫 WebSocket: Handschlag abgelehnt", "ns", "ws", "remote", r.RemoteAddr, "erwartet", ProtocolVersion, "userAgent", r.UserAgent())
 		b, _ := json.Marshal(errMsg(codeVersion))
 		_ = ws.Write(ctx, websocket.MessageText, b)
 		_ = ws.Close(websocket.StatusPolicyViolation, codeVersion)
@@ -180,7 +180,7 @@ func (s *server) websocket(w http.ResponseWriter, r *http.Request) {
 	c.enqueue(welcome())
 	s.track(c, true)
 	began := time.Now()
-	s.log.Info("WebSocket: Gerät verbunden", "ns", "ws", "device", short(device), "remote", r.RemoteAddr, "verbindungen", s.openConns())
+	s.log.Info("🔌 WebSocket: Gerät verbunden", "ns", "ws", "device", short(device), "remote", r.RemoteAddr, "verbindungen", s.openConns())
 	var readErr error
 	defer func() {
 		s.track(c, false)
@@ -189,7 +189,7 @@ func (s *server) websocket(w http.ResponseWriter, r *http.Request) {
 			room = rm.Code
 			rm.Drop(c.device, c)
 		}
-		s.log.Info("WebSocket: Gerät getrennt", "ns", "ws", "device", short(device), "raum", room, "dauerS", int(time.Since(began).Seconds()),
+		s.log.Info("👋 WebSocket: Gerät getrennt", "ns", "ws", "device", short(device), "raum", room, "dauerS", int(time.Since(began).Seconds()),
 			"grund", closeReason(readErr), "verbindungen", s.openConns())
 		_ = ws.CloseNow()
 	}()

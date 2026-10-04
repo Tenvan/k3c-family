@@ -52,10 +52,6 @@ func TestLoad(t *testing.T) {
 	if d.Sprints[0].Sessions[0].Text != "# SP11.1 · Image" || d.Sprints[0].Sessions[1].Text != "" {
 		t.Fatalf("Session-Text aus der Spalte Datei: %+v", d.Sprints[0].Sessions)
 	}
-	page, err := Page(root)
-	if err != nil || strings.Contains(page, DataMarker) || !strings.Contains(page, `"B-090"`) {
-		t.Fatalf("Seite ohne Daten: %v", err)
-	}
 	if _, err := Load(t.TempDir()); err == nil {
 		t.Fatal("falsche Wurzel muss scheitern")
 	}
@@ -99,5 +95,27 @@ func TestWorktrees(t *testing.T) {
 	markWorktrees(sp, b)
 	if sp[0].Worktree != "sprint/s4" || sp[1].Worktree != "gr4-4-work" || sp[2].Worktree != "" || sp[3].Worktree != "" {
 		t.Fatalf("%+v", sp)
+	}
+}
+
+// TestDocs: Das Glossar erscheint nur mit Datei, die Reihenfolge folgt DocOrder (B-211/AC-04).
+func TestDocs(t *testing.T) {
+	root := t.TempDir()
+	if got := strings.Join(Available(root), ","); got != "" {
+		t.Fatalf("ohne Dateien keine Dokumente: %q", got)
+	}
+	for _, f := range []string{"glossar.md", "plan-weiterentwicklung.md"} {
+		if err := os.MkdirAll(filepath.Join(root, "docs"), 0o755); err != nil {
+			t.Fatal(err)
+		}
+		if err := os.WriteFile(filepath.Join(root, "docs", f), []byte("# "+f), 0o644); err != nil {
+			t.Fatal(err)
+		}
+	}
+	if got := strings.Join(Available(root), ","); got != "plan,glossar" {
+		t.Fatalf("Dokumente: %q", got)
+	}
+	if text, err := Doc(root, "glossar"); err != nil || text != "# glossar.md" {
+		t.Fatalf("Glossar: %q %v", text, err)
 	}
 }

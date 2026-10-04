@@ -11,7 +11,7 @@ describe('Kacheln ohne Server (B-032)', () => {
 
   it('Testseiten und Infoseiten bleiben ohne Server nutzbar (AC-02)', () => {
     const rest = PAGES.filter((p) => p.section !== 'play');
-    expect(rest.map((p) => p.href)).toEqual(expect.arrayContaining(['gamepad-test.html', 'aufstellung.html', 'figuren.html', 'grafiken.html', 'lizenzen.html']));
+    expect(rest.map((p) => p.href)).toEqual(expect.arrayContaining(['gamepad-test.html', 'aufstellung.html', 'figuren.html', 'grafiken.html', 'soundtest.html', 'lizenzen.html']));
     expect(rest.some(needsServer)).toBe(false);
   });
 });

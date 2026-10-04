@@ -1,17 +1,29 @@
 {
-  "notes": "Bauplätze relativ zur Hub-Mitte (Units). Der Hub ist 100 Units breit (±50). fromDepth: erst ab dieser Tiefe; needsDeeper: nur wenn es eine tiefere Stufe gibt. islandStartStock: Vorrat einer neuen Insel (B-177; Spielstände bringen ihren eigenen mit), Startwert 100 Holz = zwei Mauern und ein Turm. startTroops: damit die erste Nacht mit Mauern zu schaffen ist (vorläufiges Balancing). travel: alle Spieler so lange am Tiefen-Eingang bzw. an der Treppe stehen = Stufe wechseln.",
+  "notes": "Bauplätze relativ zur Hub-Mitte (Units). Der Hub ist 100 Units breit (±50). fromDepth: erst ab dieser Tiefe; needsDeeper: nur wenn es eine tiefere Stufe gibt. hubLevel: ab dieser Hub-Stufe bezahlbar (docs/rules/materialien-gebaeude.md § 3; die allgemeine Prüfung kommt mit W1.1). Mauer, Turm und Tor stehen nicht in sites, sondern auf den wallLines (Layout der Stufe, engine/sim/lines.go). wallLines (Q49, Q50, Q56): Mauer-Offsets je Seite (wallUnits, Linie k ab Hub-Stufe k), die ersten fixedLines Linien fest, die übrigen streuen je Seed 0 bis jitterOutwardUnits nach außen; Turm towerInsetUnits innen, Tor gateOutsetUnits außen und ab Hub-Stufe gateHubLevel. merchant (Q55): Zahlziele Kaufen/Verkaufen, nur in Tiefe onlyDepth. islandStartStock: Vorrat einer neuen Insel (B-177; Spielstände bringen ihren eigenen mit), Startwert 100 Holz = zwei Mauern und ein Turm. startTroops: damit die erste Nacht mit Mauern zu schaffen ist (vorläufiges Balancing). travel: alle Spieler so lange am Tiefen-Eingang bzw. an der Treppe stehen = Stufe wechseln.",
   "sites": [
-    { "kind": "wall", "offsetUnits": -44 },
-    { "kind": "tower", "offsetUnits": -36 },
-    { "kind": "workshop", "offsetUnits": -16 },
-    { "kind": "stairsUp", "offsetUnits": 16, "fromDepth": 1 },
-    { "kind": "stairsDown", "offsetUnits": 24, "needsDeeper": true },
-    { "kind": "tower", "offsetUnits": 36 },
-    { "kind": "wall", "offsetUnits": 44 }
+    { "kind": "workshop", "offsetUnits": -16, "hubLevel": 1 },
+    { "kind": "stairsUp", "offsetUnits": 16, "fromDepth": 1, "hubLevel": 2 },
+    { "kind": "stairsDown", "offsetUnits": 24, "needsDeeper": true, "hubLevel": 2 },
+    { "kind": "farm", "offsetUnits": -52, "hubLevel": 1 },
+    { "kind": "healer", "offsetUnits": -40, "hubLevel": 3 },
+    { "kind": "tavern", "offsetUnits": -32, "hubLevel": 2 },
+    { "kind": "barracks", "offsetUnits": 20, "hubLevel": 2 },
+    { "kind": "smithy", "offsetUnits": 28, "hubLevel": 3 },
+    { "kind": "armory", "offsetUnits": 40, "hubLevel": 4 },
+    { "kind": "farm", "offsetUnits": 52, "hubLevel": 1 }
   ],
   "islandSites": [
-    { "kind": "storage", "offsetUnits": -26 }
+    { "kind": "storage", "offsetUnits": -26, "hubLevel": 2 }
   ],
+  "wallLines": {
+    "wallUnits": [44, 64, 84, 104, 124],
+    "fixedLines": 1,
+    "jitterOutwardUnits": 4,
+    "towerInsetUnits": 8,
+    "gateOutsetUnits": 4,
+    "gateHubLevel": 2
+  },
+  "merchant": { "buyOffsetUnits": 8, "sellOffsetUnits": 12, "onlyDepth": 0 },
   "islandStartStock": { "wood": 100 },
   "castleRadiusUnits": 5,
   "homeRadiusUnits": 12,

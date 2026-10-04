@@ -4,55 +4,64 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
+	"slices"
 	"sort"
 )
 
-// Spielstand der Insel (Version 2, B-100). Die Campaign schreibt weiter Version 1 (save.go); der Raum benutzt bis zur
+// Spielstand der Insel (Version 4, B-100, S1.4, S2.2). Die Campaign schreibt weiter Version 1 (save.go); der Raum benutzt bis zur
 // Umstellung (B-133) nur Version 1. Gespeichert wird wie dort nur, was sich nicht aus dem Seed ergibt: Hubs, Truppen,
 // Vorrat, Gold und Entferntes. Flüchtiges (Gegner, Münzen am Boden, Geschosse, Zufallsstand) geht beim Laden verloren.
 
 // IslandSaveVersion ist die Version des Insel-Spielstands.
-const IslandSaveVersion = 2
+const IslandSaveVersion = 4
 
 // IslandSave ist ein Spielstand einer Insel.
 type IslandSave struct {
-	Version    int           `json:"version"`
-	CampaignID string        `json:"campaignId"`
-	SavedAt    string        `json:"savedAt"`
-	Seed       string        `json:"seed"`
-	Time       float64       `json:"time"`
-	Stock      Stock         `json:"stock"`   // Vorrat der Insel (alle Stufen teilen ihn)
-	Options    IslandOptions `json:"options"` // fehlt im Stand: Standard (Normal, Endboss, Stufenverlust)
-	Stages     []HubSave     `json:"stages"`  // je Stufe der Hub, nach Tiefe aufsteigend
-	// StageSkillPoints: Skill-Punkt-Zähler je Stufe (gleiche Reihenfolge); der Pool je Insel folgt mit B-118.
-	StageSkillPoints []int              `json:"stageSkillPoints"`
-	Players          []IslandPlayerSave `json:"players"`
+	Version    int                `json:"version"`
+	CampaignID string             `json:"campaignId"`
+	SavedAt    string             `json:"savedAt"`
+	Day        int                `json:"day,omitempty"`   // Tag der Insel beim Speichern (Version 4, nur Anzeige)
+	Phase      string             `json:"phase,omitempty"` // day, dusk, night beim Speichern (Version 4, nur Anzeige)
+	Seed       string             `json:"seed"`
+	Time       float64            `json:"time"`
+	Stock      Stock              `json:"stock"`     // Vorrat der Insel (alle Stufen teilen ihn)
+	Options    IslandOptions      `json:"options"`   // fehlt im Stand: Standard (Normal, Endboss, Stufenverlust)
+	Stages     []HubSave          `json:"stages"`    // je Stufe der Hub, nach Tiefe aufsteigend
+	SkillPool  int                `json:"skillPool"` // Fund-Pool der Insel (Version 2: Summe der Zähler je Stufe)
+	Players    []IslandPlayerSave `json:"players"`
 }
 
-// IslandPlayerSave ist ein Spieler der Insel: inselweiter Index, Gold und die Tiefe seiner Stufe.
+// IslandPlayerSave ist ein Spieler der Insel: inselweiter Index, Gold, die Tiefe seiner Stufe und seine Verteilung
+// (gelernte Skills in Lernreihenfolge, Slots 1 bis 4).
 type IslandPlayerSave struct {
-	Index int `json:"index"`
-	Gold  int `json:"gold"`
-	Depth int `json:"depth"`
+	Index  int      `json:"index"`
+	Gold   int      `json:"gold"`
+	Depth  int      `json:"depth"`
+	Skills []string `json:"skills,omitempty"`
+	Slots  []string `json:"slots,omitempty"`
 }
 
 // ToSave schreibt den Spielstand. savedAt ist ein Zeitstempel (ISO 8601).
 func (isl *Island) ToSave(savedAt string) IslandSave {
 	s := IslandSave{
 		Version: IslandSaveVersion, CampaignID: isl.ID, SavedAt: savedAt, Seed: isl.Seed, Time: isl.Stages[0].Time,
-		Stock: *isl.Stock, Options: isl.Options, Stages: []HubSave{}, StageSkillPoints: []int{}, Players: []IslandPlayerSave{},
+		Day: isl.Stages[0].Cycle.Day, Phase: isl.Stages[0].Cycle.Phase,
+		Stock: *isl.Stock, Options: isl.Options, Stages: []HubSave{}, SkillPool: isl.SkillPool, Players: []IslandPlayerSave{},
 	}
 	for _, w := range isl.Stages {
 		s.Stages = append(s.Stages, hubSave(w, newWorld(w.Biome.Depth, isl.Seed, Options{})))
-		s.StageSkillPoints = append(s.StageSkillPoints, w.SkillPoints)
 	}
 	for _, p := range isl.Players() {
-		s.Players = append(s.Players, IslandPlayerSave{Index: p.Index, Gold: p.Gold, Depth: isl.Stages[isl.StageOf(p.Index)].Biome.Depth})
+		s.Players = append(s.Players, IslandPlayerSave{
+			Index: p.Index, Gold: p.Gold, Depth: isl.Stages[isl.StageOf(p.Index)].Biome.Depth,
+			Skills: slices.Clone(p.Skills), Slots: slices.Clone(p.Slots),
+		})
 	}
 	return s
 }
 
-// ParseIslandSave liest einen Spielstand der Version 2 oder, überführt, der Version 1 (Campaign).
+// ParseIslandSave liest einen Spielstand der Version 4 oder, überführt, der Version 3 (ohne Tag und Phase), 2 oder 1
+// (Campaign). Tag und Phase wirken beim Laden nicht, die Zeit kommt aus `time`.
 func ParseIslandSave(raw []byte) (IslandSave, error) {
 	var head struct {
 		Version int `json:"version"`
@@ -67,36 +76,20 @@ func ParseIslandSave(raw []byte) (IslandSave, error) {
 			return IslandSave{}, err
 		}
 		return islandFromV1(old), nil
-	case IslandSaveVersion:
+	case 2:
 		return parseIslandV2(raw)
+	case 3, IslandSaveVersion:
+		return parseIslandV3(raw)
 	}
-	return IslandSave{}, fmt.Errorf("spielstand: Version %d, erwartet %d oder %d", head.Version, SaveVersion, IslandSaveVersion)
-}
-
-func parseIslandV2(raw []byte) (IslandSave, error) {
-	var check map[string]json.RawMessage
-	if err := json.Unmarshal(raw, &check); err != nil {
-		return IslandSave{}, fmt.Errorf("spielstand: %w", err)
-	}
-	for _, f := range []string{"campaignId", "seed", "time", "stock", "stages", "stageSkillPoints", "players"} {
-		if v, ok := check[f]; !ok || string(v) == "null" {
-			return IslandSave{}, fmt.Errorf("spielstand: Feld %s fehlt", f)
-		}
-	}
-	var s IslandSave
-	s.Options = DefaultOptions() // Felder, die im Stand fehlen, behalten den Standard
-	if err := json.Unmarshal(raw, &s); err != nil {
-		return IslandSave{}, fmt.Errorf("spielstand: %w", err)
-	}
-	return s, validateIslandSave(s)
+	return IslandSave{}, fmt.Errorf("spielstand: Version %d, erwartet %d, 2, 3 oder %d", head.Version, SaveVersion, IslandSaveVersion)
 }
 
 func validateIslandSave(s IslandSave) error {
 	if err := validateOptions(s.Options); err != nil {
 		return err
 	}
-	if len(s.Stages) == 0 || len(s.StageSkillPoints) != len(s.Stages) {
-		return errors.New("spielstand: Stufen fehlen oder passen nicht zu den Skill-Punkten")
+	if len(s.Stages) == 0 {
+		return errors.New("spielstand: Stufen fehlen")
 	}
 	depths := map[int]bool{}
 	for _, h := range s.Stages {
@@ -112,17 +105,17 @@ func validateIslandSave(s IslandSave) error {
 		}
 		seen[p.Index] = true
 	}
-	return nil
+	return validateSkills(s)
 }
 
 // islandFromV1 überführt einen Stand der Campaign: die Hubs werden Stufen, alle Spieler stehen in der gespeicherten
-// Tiefe, die Vorräte der Hubs zählen zusammen als Vorrat der Insel (Annahme), die Skill-Punkte gehören der Stufe der Spieler.
+// Tiefe, die Vorräte der Hubs zählen zusammen als Vorrat der Insel (Annahme), die Skill-Punkte werden der Pool.
 func islandFromV1(old SaveGame) IslandSave {
 	hubs := append([]HubSave{}, old.Hubs...)
 	sort.SliceStable(hubs, func(i, j int) bool { return hubs[i].Depth < hubs[j].Depth })
 	s := IslandSave{
 		Version: IslandSaveVersion, CampaignID: old.CampaignID, SavedAt: old.SavedAt, Seed: old.Seed, Time: old.Time,
-		Options: DefaultOptions(), Stages: []HubSave{}, StageSkillPoints: []int{}, Players: []IslandPlayerSave{},
+		Options: DefaultOptions(), Stages: []HubSave{}, SkillPool: old.SkillPoints, Players: []IslandPlayerSave{},
 	}
 	present := false
 	for _, h := range hubs {
@@ -142,21 +135,15 @@ func islandFromV1(old SaveGame) IslandSave {
 		hubs = append(hubs, HubSave{Depth: old.Depth, Sites: []SiteSave{}, Troops: []TroopSave{}})
 	}
 	sort.SliceStable(hubs, func(i, j int) bool { return hubs[i].Depth < hubs[j].Depth })
-	for _, h := range hubs {
-		sp := 0
-		if h.Depth == old.Depth {
-			sp = old.SkillPoints
-		}
-		s.Stages = append(s.Stages, h)
-		s.StageSkillPoints = append(s.StageSkillPoints, sp)
-	}
+	s.Stages = append(s.Stages, hubs...)
 	for i, p := range old.Players {
 		s.Players = append(s.Players, IslandPlayerSave{Index: i, Gold: p.Gold, Depth: old.Depth})
 	}
 	return s
 }
 
-// FromIslandSave baut die Insel aus einem Spielstand (aus ParseIslandSave). Gespeicherte Spieler stehen wieder in ihrer Stufe.
+// FromIslandSave baut die Insel aus einem Spielstand (aus ParseIslandSave). Gespeicherte Spieler stehen wieder in ihrer
+// Stufe, mit ihrer gespeicherten Verteilung (das Beitritts-Preset gilt beim Laden nicht).
 func FromIslandSave(s IslandSave, cycleSpeed float64) (*Island, error) {
 	if err := validateIslandSave(s); err != nil {
 		return nil, err
@@ -176,12 +163,13 @@ func FromIslandSave(s IslandSave, cycleSpeed float64) (*Island, error) {
 	isl.Options = s.Options
 	for i, h := range s.Stages {
 		applyHub(isl.Stages[i], h)
-		isl.Stages[i].SkillPoints = s.StageSkillPoints[i]
 	}
 	*isl.Stock = s.Stock // applyHub setzt den Vorrat je Hub; maßgeblich ist der der Insel
+	restorePool(isl, s)
 	for _, p := range s.Players {
 		q := addPlayerAt(isl.Stages[stageByDepth(isl, p.Depth)], p.Index)
 		q.Gold = p.Gold
+		q.Skills, q.Slots = slices.Clone(p.Skills), slices.Clone(p.Slots) // schon geprüft (validateSkills)
 		isl.nextPlayer = max(isl.nextPlayer, p.Index+1)
 	}
 	for _, w := range isl.Stages { // stabile Reihenfolge nach Index

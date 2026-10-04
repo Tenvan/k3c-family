@@ -59,6 +59,8 @@ Lauf bricht ab (Fehler in der Simulation) → Lauf als „ungültig“ im Berich
 - **AC-04** Der Bericht nennt zu jedem verletzten Ziel die Seeds zum Nachspielen.
 - **AC-05** Ein CI-Lauf mit kleiner Seed-Menge erzeugt den Bericht.
 
+Stand 2026-10-04: AC-03 bis AC-05 sind mit BAL2 erfüllt (B-157, BAL2.1 bis BAL2.3). Das Ticket bleibt eingeplant (BAL3).
+
 ## Offene Fragen
 
 - Wie viele Seeds sind genug (Rechenzeit gegen Aussagekraft)? Wird mit den ersten Läufen gemessen.
@@ -66,3 +68,5 @@ Lauf bricht ab (Fehler in der Simulation) → Lauf als „ungültig“ im Berich
 ## Notizen
 
 **Beschluss 🧑 (2026-10-04, Spec-Review BAL1):** Das Werkzeug lebt als Tool in k3c-dev (`tools/k3c-dev/internal/`). Kennzahlen und Zielkorridore: `docs/rules/zielkorridore.md` (F1, Q02). Vorbereitung in R1 abgeschlossen: Zielkorridore stehen in `docs/rules/wirtschaft.md` (§ 1, 3, 4) und `docs/rules/stufen.md` (§ 1, 3); Kennzahlen: `docs/rules/archiv/ist-abgleich.md` › Messgrößen. Antworten auf die Offenen Fragen: Kennzahlen und Ziele siehe diese Dateien (Standardszenario Wald, 2 Spieler, Bot „sparsam“, je 100 Seeds, Normal). R2 (2026-10-02): Zielkorridore für Material und Gebäude stehen in `docs/rules/materialien-gebaeude.md` (§ 1, 2, 3.1, 4). Neue Kennzahlen: Adern-Ausbeute je Minute, Zeit am Lager-Maximum, Material-Ausgaben je Bau, Wartezeit „bezahlt bis gebaut“, Zerstörungen je Welle, Zeitpunkt der Hub-Stufen. R3 (2026-10-02): Zielkorridore für Monarch und Bürger stehen in `docs/rules/monarch.md` und `buerger.md`. Neue Kennzahlen: Skill-Punkte im Pool und je Spieler, Skill-Einsatz, `playerDown` und Wiederbelebungsquote, Anteil des Monarchen am Schaden, Kämpfer je Hub zu Tagesbeginn, Verluste je Welle (`troopLost`), Zeitpunkt des ersten Elite-Upgrades. R4 (2026-10-02): Zielkorridore für Gegner, Wellen, Bosse und Events stehen in `docs/rules/gegner.md` und `bosse.md`. Neue Kennzahlen: `enemyKilled`, Gegner einer Welle besiegt bis Tagesanbruch, Zeit einer Welle (letzter Gegner tot), Schaden an Gebäuden je Welle, `bossSpawned`/`bossDefeated` (Zeitpunkt), Kampfdauer, Event-Ereignisse. Der Tester soll je Schwierigkeitsgrad, je Spieleranzahl 1–4 und mit allen aktiven Stufen einer Insel laufen (B-100, B-101) und die Last messen (SP11).
+
+**Stand (BAL1, 2026-10-04):** Bots, Szenario-Matrix und Kennzahlen je Lauf sind umgesetzt (`tools/k3c-dev/internal/balance`); Bericht und Zielkorridore folgen in BAL2, Sensitivität in BAL3.

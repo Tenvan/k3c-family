@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="de">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>K3C Hörprobe</title>
+    <style>
+      :root { --bg: #11151c; --panel: #1c2330; --line: #2e3a4d; --text: #e8edf4; --dim: #8a97aa; --on: #ffd166; }
+      * { box-sizing: border-box; }
+      html { font-size: clamp(9px, 0.8334vw, 16px); }
+      body { margin: 0; background: var(--bg); color: var(--text); font: 1.25rem/1.4 system-ui, sans-serif; }
+      main { padding: max(4.75rem, 70px) 2rem 2rem; max-width: 115rem; margin: 0 auto; }
+      h1 { font-size: 2.125rem; margin: 0 0 4px; }
+      h2 { font-size: 1.5rem; margin: 1.5rem 0 0.5rem; color: var(--on); }
+      h2 small { color: var(--dim); font-weight: normal; font-size: 1rem; }
+      .sub { color: var(--dim); margin: 0 0 1rem; max-width: 62rem; }
+      #hint { background: var(--panel); border: 2px solid var(--on); border-radius: 0.75rem; padding: 1rem 1.25rem; color: var(--on); }
+      #hint.on { border-color: var(--line); color: var(--dim); }
+      #bar { position: sticky; top: 0; z-index: 2; background: var(--bg); padding: 0.75rem 0; display: flex; flex-wrap: wrap; gap: 0.75rem; align-items: center; }
+      #bar button { font: inherit; background: var(--panel); color: var(--text); border: 2px solid var(--line); border-radius: 0.75rem; padding: 0.6rem 1.2rem; min-height: 3.5rem; cursor: pointer; }
+      #status { color: var(--dim); flex: 1 1 24rem; }
+      .item { display: grid; grid-template-columns: 2.5rem 1fr; gap: 0.25rem 0.75rem; background: var(--panel); border: 2px solid var(--line); border-radius: 0.75rem; padding: 0.75rem 1rem; margin-bottom: 0.5rem; cursor: pointer; }
+      .item.sel { border-color: var(--on); }
+      .item.playing .mark::before { content: "▶"; color: var(--on); }
+      .item.off { opacity: 0.4; cursor: default; }
+      .item .meta { grid-column: 2; color: var(--dim); font-size: 1rem; }
+      #keys { color: var(--dim); font-size: 1rem; margin-top: 1.5rem; }
+    </style>
+  </head>
+  <body>
+    <main>
+      <h1>Hörprobe</h1>
+      <p class="sub">Kandidaten für Musik und Effekte anhören, nach Zustand und Ereignis geordnet, mit Quelle und Lizenz.</p>
+      <p id="hint" role="status">Taste drücken zum Entsperren</p>
+      <div id="bar">
+        <button id="b-stop" type="button">Stopp</button>
+        <button id="b-fade" type="button">Überblenden</button>
+        <button id="b-vold" type="button" aria-label="Leiser">Leiser −</button>
+        <button id="b-volu" type="button" aria-label="Lauter">Lauter +</button>
+        <span id="status" role="status"></span>
+      </div>
+      <div id="list"></div>
+      <p id="keys">Controller: Steuerkreuz/Stick wählt, A spielt, X stoppt, Y überblendet das gewählte Stück ein, LB/RB Lautstärke.
+        Tastatur: Pfeile hoch/runter wählen, Enter spielt, S stoppt, X überblendet, Pfeile links/rechts oder −/+ Lautstärke. Touch: Eintrag antippen, Knöpfe oben.</p>
+    </main>
+    <script type="module" src="/src/tools/soundtest.ts"></script>
+  </body>
+</html>

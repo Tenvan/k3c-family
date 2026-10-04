@@ -81,26 +81,29 @@ func (s *Server) checkRun(ctx context.Context, in checkIn) (string, error) {
 	if err != nil {
 		return "", err
 	}
-	if !s.checks.begin(t.name) {
+	// Sperre, Ergebnis und Konsole je Checkout: Läufe verschiedener Worktrees stören sich nicht.
+	ws := s.ws(ctx)
+	key := ws.source(t.name)
+	if !s.checks.begin(key) {
 		return "", fmt.Errorf("%s läuft bereits; auf das Ende warten, Ausgabe über console_tail check:%s", t.name, t.name)
 	}
-	s.notifyCheck(CheckState{Name: t.name, Running: true, At: time.Now()})
+	s.notifyCheck(CheckState{Name: key, Running: true, At: time.Now()})
 	var res runResult
-	defer func() { s.checks.end(t.name, res) }() // auch nach einer Panik, sonst bliebe das Ziel gesperrt
+	defer func() { s.checks.end(key, res) }() // auch nach einer Panik, sonst bliebe das Ziel gesperrt
 	// Ende melden, solange das Ziel noch gesperrt ist: sonst könnte „läuft“ des nächsten Laufs davor ankommen.
-	defer func() { s.notifyCheck(stateOf(t.name, res)) }()
-	source := "check:" + t.name
+	defer func() { s.notifyCheck(stateOf(key, res)) }()
+	source := "check:" + key
 	s.console.Reset(source)
 	var mu sync.Mutex
 	var output []string
-	res = s.run(ctx, runSpec{dir: filepath.Join(s.cfg.Root, t.dir), args: args, timeout: t.timeout,
+	res = s.run(ctx, runSpec{dir: filepath.Join(ws.root, t.dir), args: args, timeout: t.timeout,
 		out: func(stream, text string) {
 			s.console.Add(source, stream, text)
 			mu.Lock()
 			output = append(output, text)
 			mu.Unlock()
 		}})
-	s.logRun(t.name, res)
+	s.logRun(key, res)
 	if res.err != nil {
 		return "", fmt.Errorf("%s ließ sich nicht starten: %w", t.name, res.err)
 	}
@@ -111,13 +114,13 @@ func (s *Server) logRun(name string, res runResult) {
 	attrs := []any{"ns", "check", "target", name, "exit", res.exit, "ms", int64(res.ms())}
 	switch {
 	case res.err != nil:
-		s.log.Error("lauf nicht gestartet", append(attrs, "error", res.err.Error())...)
+		s.log.Error("💥 lauf nicht gestartet", append(attrs, "error", res.err.Error())...)
 	case res.timedOut:
-		s.log.Warn("lauf abgebrochen: zeitlimit", attrs...)
+		s.log.Warn("⏳ lauf abgebrochen: zeitlimit", attrs...)
 	case res.exit != 0:
-		s.log.Warn("lauf beendet", attrs...)
+		s.log.Warn("❌ lauf beendet", attrs...)
 	default:
-		s.log.Info("lauf beendet", attrs...)
+		s.log.Info("✅ lauf beendet", attrs...)
 	}
 }
 

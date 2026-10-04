@@ -6,9 +6,9 @@
 - **Einschiebbar:** ja
 - **Tickets:** B-158
 - **Start-Commit:** –
-- **Spec:** Entwurf
+- **Spec:** freigegeben
 - **Revision:** 1
-- **Freigabe:** –
+- **Freigabe:** 2026-10-04, Chat, durch 🧑, Revision 1; mit Änderungen aus der Spec-Prüfung
 
 ## Ausgangslage
 
@@ -16,11 +16,11 @@ Nach BAL1 und BAL2 gibt es zwei Bot-Profile und die Korridor-Prüfung. Weitere S
 
 ## Ziel
 
-Der Tester deckt weitere Spielweisen ab und zeigt, welche Kennzahlen bei einer Wertänderung kippen. Am Ende sichtbar: Berichte für fünf neue Profile, ein Sensitivitäts-Bericht und eine Kurve je Schwierigkeitsgrad.
+Der Tester deckt weitere Spielweisen ab und zeigt, welche Kennzahlen bei einer Wertänderung kippen. Am Ende sichtbar: Berichte für vier neue Profile, ein Sensitivitäts-Bericht und eine Kurve je Schwierigkeitsgrad.
 
 ## Beteiligte und Zielgruppen
 
-🧑 wählt Profile und Fehlerrate des Kind-Bots; Entwickler und Agenten führen die Läufe aus; REG nutzt die Berichte in BR1 und BR2.
+🧑 wählt Profile (Q19); Entwickler und Agenten führen die Läufe aus; REG nutzt die Berichte in BR1 und BR2.
 
 ## Anforderungen
 
@@ -28,7 +28,7 @@ B-158 › Anforderungen.
 
 ## Nicht-Ziele
 
-Lernende Bots, automatische Wertsuche, Abgleich mit echten Abenden (BAL4).
+Lernende Bots, automatische Wertsuche, Abgleich mit echten Abenden (BAL4), Kind-Bot (Q19: später).
 
 ## Regeln und Einschränkungen
 
@@ -36,7 +36,7 @@ Deterministisch, kein `math/rand`; Bots nur über `PlayerCommand`; Werte ändert
 
 ## Beispiele
 
-Kind-Bot, 100 Seeds, 2 Spieler → eigener Bericht mit Überlebensquote; `economy.json` › `purse` +25 % → Liste gekippter Kennzahlen.
+„Koop 2 Spieler“, 100 Seeds → eigener Bericht mit Überlebensquote; `economy.json` › `purse` +25 % → Liste gekippter Kennzahlen.
 
 ## Ausnahme- und Fehlerfälle
 
@@ -44,16 +44,16 @@ Variierter Wert fehlt in den Daten → Fehler mit Pfad. Profil verlangt mehr Spi
 
 ## Akzeptanzkriterien
 
-- **AC-01** Jedes der fünf neuen Profile liefert mit gleichem Seed und gleichen Daten byte-gleiche Kennzahlen (B-158/AC-01).
-- **AC-02** Der Kind-Bot macht mit einem Seed immer dieselben Fehler, die Wahrscheinlichkeiten stehen in den Daten (B-158/AC-02).
+- **AC-01** Jedes der vier neuen Profile liefert mit gleichem Seed und gleichen Daten byte-gleiche Kennzahlen (B-158/AC-01).
+- **AC-02** Kein Kind-Bot: Er ist Nicht-Ziel (Q19, später); der Tester enthält kein Fehler-Profil und keine Fehler-Daten dafür (B-158/AC-02).
 - **AC-03** Ein Sensitivitäts-Lauf (±10 %, ±25 %) erzeugt einen Bericht mit gekippten Kennzahlen (B-158/AC-03).
 - **AC-04** Der Bericht enthält je Schwierigkeitsgrad eine Kurve über die Tage (B-158/AC-04).
 - **AC-05** Profile und Grad-Kurven stehen mit Beschluss von 🧑 in der Dokumentation des Testers (B-158/AC-05).
-- **AC-06** `task check:go` ist grün.
+- **AC-06** `task check:dev` ist grün (der Tester liegt unter `tools/k3c-dev`, B-099).
 
 ## Offene Fragen
 
-- Welche Profile und welche Fehlerrate des Kind-Bots? Entscheidet 🧑 (`docs/fragenkatalog.md` Q19); blockiert die Freigabe.
+- Keine. Profile geklärt durch Q19 (`docs/fragenkatalog.md`), Kind-Bot später.
 
 ## Sessions
 

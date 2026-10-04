@@ -1,9 +1,9 @@
 import type { LevelLayout } from '../model/types';
 import type { GameEvent, ResourceKind, World } from '../model/types';
 
-/** Protokoll v3 aus Sicht des Browsers (Vertrag: docs/protocol.md, Beispiele: testdata/protocol/). */
+/** Protokoll v4 aus Sicht des Browsers (Vertrag: docs/protocol.md, Beispiele: testdata/protocol/). */
 
-export const PROTOCOL_VERSION = 3;
+export const PROTOCOL_VERSION = 4;
 export const WS_PATH = '/ws';
 /** Ein Gerät sendet mindestens alle 500 ms eine `input` zur Bestätigung. */
 export const INPUT_KEEPALIVE_MS = 500;
@@ -51,12 +51,16 @@ export interface SlotInput {
   moveX: number;
   sprint: boolean;
   pay: boolean;
+  /** Gehalten: Schlag, sobald bereit (fehlt = false). */
+  attack?: boolean;
+  /** Gehalten: Skill-Slot 1 bis 4 feuert, sobald bereit; 0 = keiner (fehlt = 0). */
+  skill?: number;
 }
 
 /** Dynamischer Weltzustand: alles außer dem Statischen (kommt mit `level`), dazu `events` und `depth`. */
 export type StaticKey = 'seed' | 'biome' | 'level' | 'rng' | 'widthUnits';
-/** `devTimescale`: Faktor des Zeitraffers, nur im Dev-Mode des Servers (docs/protocol.md › Dev-Aktionen). */
-export type WorldState = Omit<World, StaticKey> & { events: GameEvent[]; depth: number; devTimescale?: number };
+/** `devTimescale`: Faktor des Zeitraffers, `devPaused`: Dev-Pause, beide nur im Dev-Mode des Servers (docs/protocol.md › Dev-Aktionen). */
+export type WorldState = Omit<World, StaticKey> & { events: GameEvent[]; depth: number; devTimescale?: number; devPaused?: boolean };
 
 export type ServerMessage =
   | { t: 'welcome'; v: number; tickHz: number; limits: Limits }
@@ -75,6 +79,8 @@ export type ClientMessage =
   | { t: 'addSlot'; slot: number }
   | { t: 'removeSlot'; slot: number }
   | { t: 'input'; seq: number; p: SlotInput[] }
+  | { t: 'learn'; slot: number; skill: string }
+  | { t: 'respec'; slot: number }
   | { t: 'leave' }
   | DevMessage;
 
@@ -85,4 +91,5 @@ export type DevResource = ResourceKind | 'iron' | 'crystal';
 export type DevMessage =
   | { t: 'dev'; action: 'gold'; slot: number; amount: number }
   | { t: 'dev'; action: 'material'; slot: number; resource: DevResource; amount: number }
-  | { t: 'dev'; action: 'timescale'; factor: number };
+  | { t: 'dev'; action: 'timescale'; factor: number }
+  | { t: 'dev'; action: 'pause'; paused: boolean };

@@ -6,9 +6,9 @@
 - **Status:** eingeplant
 - **Sprint:** BAL3
 - **Erstellt:** 2026-10-02
-- **Spec:** Entwurf
+- **Spec:** freigegeben
 - **Revision:** 1
-- **Freigabe:** –
+- **Freigabe:** 2026-10-04, Chat, durch 🧑, mit Sprint BAL3
 
 ## Ausgangslage
 
@@ -16,22 +16,22 @@ BAL1 liefert mindestens zwei Bot-Profile (B-099/AC-02), BAL2 die Zielkorridor-Pr
 
 ## Ziel
 
-Der Tester deckt mehr Spielweisen ab (Wirtschaft zuerst, Mauern zuerst, Koop 2 und 4 Spieler, Kind-Bot mit Fehlern), zeigt per Sensitivitäts-Lauf, welche Kennzahlen bei einer Wertänderung kippen, und liefert Kurven je Schwierigkeitsgrad. Nutzen: Werte werden gegen echte Spielweisen geprüft, nicht gegen einen einzigen Bot.
+Der Tester deckt mehr Spielweisen ab (Wirtschaft zuerst, Mauern zuerst, Koop 2 und 4 Spieler), zeigt per Sensitivitäts-Lauf, welche Kennzahlen bei einer Wertänderung kippen, und liefert Kurven je Schwierigkeitsgrad. Nutzen: Werte werden gegen echte Spielweisen geprüft, nicht gegen einen einzigen Bot.
 
 ## Beteiligte und Zielgruppen
 
-🧑 wählt die Profile und Grad-Kurven (Q19 in `docs/fragenkatalog.md`); Entwickler und Agenten führen die Läufe aus; REG nutzt die Berichte in BR1 und BR2.
+🧑 hat die Profile gewählt (Q19 in `docs/fragenkatalog.md`) und wählt die Grad-Kurven; Entwickler und Agenten führen die Läufe aus; REG nutzt die Berichte in BR1 und BR2.
 
 ## Anforderungen
 
-- Profile: „Wirtschaft zuerst“, „Mauern zuerst“, „Koop 2 Spieler“, „Koop 4 Spieler“, „Kind-Bot mit Fehlern“; jedes spielt nur über `PlayerCommand`.
-- Der Kind-Bot macht Fehler (verpasste Zahlung, späte Reaktion) mit Wahrscheinlichkeiten aus Daten und nur über `engine/rng`.
+- Profile: „Wirtschaft zuerst“, „Mauern zuerst“, „Koop 2 Spieler“, „Koop 4 Spieler“ (Q19); jedes spielt nur über `PlayerCommand`.
+- Kein Kind-Bot in diesem Ticket (Q19: später); ein späteres Ticket bringt ihn mit Fehlern (verpasste Zahlung, späte Reaktion) aus Daten über `engine/rng`.
 - Sensitivität: Ein-Parameter-Variation eines Werts aus `data/*.json` um ±10 % und ±25 % mit Bericht, welche Kennzahlen aus dem Korridor kippen; es wird nichts automatisch geändert.
 - Grad-Kurven: je Schwierigkeitsgrad aus `data/difficulty.json` Kennzahlen über die Tage (z. B. Überleben je Welle) als Tabelle im Bericht.
 
 ## Nicht-Ziele
 
-Lernende Bots, automatische Wertsuche (B-099 „Später, optional“), Abgleich mit echten Abenden (B-160).
+Lernende Bots, automatische Wertsuche (B-099 „Später, optional“), Abgleich mit echten Abenden (B-160), Kind-Bot (Q19: später).
 
 ## Regeln und Einschränkungen
 
@@ -39,7 +39,7 @@ Deterministisch, kein `math/rand`; Werte ändern nur 🧑 mit Beschluss; Datei �
 
 ## Beispiele
 
-Profil „Kind-Bot“ mit Fehlerrate aus den Daten, 100 Seeds, 2 Spieler → Überleben Welle 3 liegt unter dem des Profils „sparsam“; ein Lauf mit `data/economy.json` › `purse` +25 % nennt die gekippten Kennzahlen.
+Profil „Mauern zuerst“, 100 Seeds, 2 Spieler → eigener Bericht mit Überleben Welle 3 neben dem Profil „sparsam“; ein Lauf mit `data/economy.json` › `purse` +25 % nennt die gekippten Kennzahlen.
 
 ## Ausnahme- und Fehlerfälle
 
@@ -47,15 +47,15 @@ Variierter Wert existiert nicht in den Daten → Fehler mit Pfad, kein stiller L
 
 ## Akzeptanzkriterien
 
-- **AC-01** Test: Jedes der fünf neuen Profile liefert mit gleichem Seed und gleichen Daten byte-gleiche Kennzahlen.
-- **AC-02** Test: Der Kind-Bot macht mit einem Seed immer dieselben Fehler; die Fehlerwahrscheinlichkeiten stehen in den Daten.
+- **AC-01** Test: Jedes der vier neuen Profile liefert mit gleichem Seed und gleichen Daten byte-gleiche Kennzahlen.
+- **AC-02** Kein Kind-Bot: Er ist Nicht-Ziel (Q19, später); der Tester enthält kein Fehler-Profil und keine Fehler-Daten dafür.
 - **AC-03** Ein Sensitivitäts-Lauf (±10 %, ±25 % eines Werts) erzeugt einen Bericht mit der Liste gekippter Kennzahlen.
 - **AC-04** Der Bericht enthält je Schwierigkeitsgrad aus `data/difficulty.json` eine Kurve der Kennzahlen über die Tage.
 - **AC-05** Die gewählten Profile und Grad-Kurven stehen mit Beschluss von 🧑 in der Dokumentation des Testers.
 
 ## Offene Fragen
 
-- Welche Profile und welche Fehlerrate des Kind-Bots? Entscheidet 🧑, `docs/fragenkatalog.md` Q19.
+- Keine. Profile geklärt durch Q19 (`docs/fragenkatalog.md`), Kind-Bot später.
 
 ## Notizen
 
