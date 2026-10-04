@@ -13,7 +13,7 @@ func TestZeileOhneFarben(t *testing.T) {
 	log := slog.New(New(&buf, slog.LevelDebug, false)).With("ns", "room").WithGroup("req")
 	log.Error("Raum zu", "code", "FAMILIE", "err", errors.New("weg da"), slog.Group("p", "x", 1), "leer", "")
 	got := buf.String()[len("15:04:05.000 "):]
-	want := `ERROR [room] Raum zu req.code=FAMILIE req.err="weg da" req.p.x=1 req.leer=""` + "\n"
+	want := `ERROR 🏰 [room] Raum zu req.code=FAMILIE req.err="weg da" req.p.x=1 req.leer=""` + "\n"
 	if got != want {
 		t.Errorf("\n got %q\nwant %q", got, want)
 	}

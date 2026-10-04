@@ -29,6 +29,13 @@ const (
 	gray   = "\x1b[90m"
 )
 
+// Topics ordnet jedem Namespace ("ns") ein Emoji zu, das die Konsole vor [ns] setzt: Themen auf einen Blick.
+// Nur Emojis aus einem Codepunkt (ohne U+FE0F), sonst verrutscht die Breite in manchen Terminals. Neuer ns → hier eintragen.
+var Topics = map[string]string{
+	"main": "🚀", "http": "📡", "ws": "🔌", "room": "🏰", "client": "🌐", "save": "💾", "store": "📦",
+	"report": "📊", "diag": "🩺", "svc": "🔧", "check": "🧪", "tasks": "📋", "mcp": "🤖", "usage": "📈",
+}
+
 // Color sagt, ob die Konsole Farben bekommt: aus, sobald NO_COLOR gesetzt ist (https://no-color.org).
 func Color() bool { return os.Getenv("NO_COLOR") == "" }
 
@@ -73,6 +80,9 @@ func (h *Handler) Handle(_ context.Context, r slog.Record) error {
 	})
 	if ns != "" {
 		b.WriteByte(' ')
+		if e, ok := Topics[ns]; ok {
+			b.WriteString(e + " ")
+		}
 		h.paint(&b, cyan, "["+ns+"]")
 	}
 	b.WriteByte(' ')
