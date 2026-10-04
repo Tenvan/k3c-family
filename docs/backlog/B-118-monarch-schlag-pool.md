@@ -12,7 +12,7 @@
 
 ## Ausgangslage
 
-Der Monarch hat keinen Angriff, kein Level und keine Skills; Skill-Punkte sind ein gemeinsamer Zähler (`World.SkillPoints`), `monarch.json` kennt `perLevel`, `maxLevel` und Presets ohne Code (`docs/rules/ist-monarch-buerger.md`).
+Der Monarch hat keinen Angriff, kein Level und keine Skills; Skill-Punkte sind ein gemeinsamer Zähler (`World.SkillPoints`), `monarch.json` kennt `perLevel`, `maxLevel` und Presets ohne Code (`docs/rules/archiv/ist-monarch-buerger.md`).
 
 ## Ziel
 

@@ -1,6 +1,6 @@
 # Regelwerk: Monarch, Klassen, Skills
 
-Beschlossen von 🧑 im Workshop R3.2 am 2026-10-02 (Grundlage: [`ist-monarch-buerger.md`](ist-monarch-buerger.md); Rahmen: [`wirtschaft.md`](wirtschaft.md), [`stufen.md`](stufen.md), [`materialien-gebaeude.md`](materialien-gebaeude.md)).
+Beschlossen von 🧑 im Workshop R3.2 am 2026-10-02 (Grundlage: [`archiv/ist-monarch-buerger.md`](archiv/ist-monarch-buerger.md); Rahmen: [`wirtschaft.md`](wirtschaft.md), [`stufen.md`](stufen.md), [`materialien-gebaeude.md`](materialien-gebaeude.md)).
 Abschnitt 7 (Reittier) **bestätigt von 🧑 am 2026-10-03** im Workshop F1.4.
 Je Regel: **Regel · Begründung · Verweis auf `data/` · Zielkorridor**. Werte sind **Startwerte**, Feintuning mit dem Balancing-Tester (B-099).
 Zielkorridore gelten im Standardszenario **Normal, Wald-Start, 2 Spieler, Bot „sparsam“, je 100 Seeds**. Jede Regel gilt für 2+ Spieler. Die Bürger beschließt R3.3 (`buerger.md`).

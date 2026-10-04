@@ -3,7 +3,7 @@
 - **Domäne:** PLAT
 - **Typ:** Schuld
 - **Prio:** mittel
-- **Status:** eingeplant
+- **Status:** erledigt
 - **Sprint:** F5
 - **Erstellt:** 2026-10-01
 - **Spec:** freigegeben
