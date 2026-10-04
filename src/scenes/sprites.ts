@@ -1,5 +1,6 @@
 import Phaser from 'phaser';
 import spritesJson from '../../data/sprites.json';
+import { MONARCH } from '../model/data';
 
 /**
  * Figuren-Sprites (LuizMelo und Gothicvania, beide CC0). Welche Figur wofür steht, Frame-Größen und Einfärbung stehen in
@@ -59,6 +60,8 @@ const ANIMS: AnimName[] = ['idle', 'run', 'attack'];
 /** Nur Figuren mit einer Rolle laden, die übrigen sind nur für die Referenzseiten da */
 const USED = new Set([...PLAYER_SPRITES, ...Object.values(TROOP_SPRITES), ...Object.values(ENEMY_SPRITES)].map((s) => s.sheet));
 const textureKey = (sheet: string, anim: AnimName) => `${sheet}-${anim}`;
+/** Sheet des Standard-Reittiers (Monarch): liegt nicht im Atlas, sondern als einzelne PNGs `sprites/<sheet>/<anim>.png` */
+const MOUNT_SHEET = MOUNTS[MONARCH.mount.sprite]?.sheet;
 
 /** Schlüssel des Figuren-Atlas (Phaser-Multiatlas aus `task atlas`, Frames `<sheet>-<anim>/<i>`). */
 export const ATLAS_KEY = 'atlas';
@@ -66,6 +69,14 @@ export const ATLAS_KEY = 'atlas';
 /** Im preload() der Lade-Szene aufrufen: ein Multiatlas statt je Sheet und Animation eine PNG. */
 export function preloadSprites(scene: Phaser.Scene): void {
   if (!scene.textures.exists(ATLAS_KEY)) scene.load.multiatlas(ATLAS_KEY, 'atlas/atlas.json', 'atlas/');
+  const d = MOUNT_SHEET ? SHEETS[MOUNT_SHEET] : undefined;
+  if (!MOUNT_SHEET || !d) return;
+  for (const anim of ANIMS) {
+    const key = textureKey(MOUNT_SHEET, anim);
+    if (d.anims[anim] && !scene.textures.exists(key)) {
+      scene.load.spritesheet(key, `sprites/${MOUNT_SHEET}/${anim}.png`, { frameWidth: d.frameWidth, frameHeight: d.frameHeight });
+    }
+  }
 }
 
 /** Nach dem Laden aufrufen. Legt die Animationen einmal global an (Schlüssel `<sheet>-<anim>` wie zuvor). */
@@ -85,6 +96,24 @@ export function createSpriteAnims(scene: Phaser.Scene): void {
         repeat: anim === 'attack' ? 0 : -1,
       });
     }
+  }
+  createMountAnims(scene);
+}
+
+function createMountAnims(scene: Phaser.Scene): void {
+  const d = MOUNT_SHEET ? SHEETS[MOUNT_SHEET] : undefined;
+  if (!MOUNT_SHEET || !d) return;
+  for (const anim of ANIMS) {
+    const a = d.anims[anim];
+    const key = textureKey(MOUNT_SHEET, anim);
+    if (!a || !scene.textures.exists(key) || scene.anims.exists(key)) continue;
+    scene.textures.get(key).setFilter(Phaser.Textures.FilterMode.NEAREST);
+    scene.anims.create({
+      key,
+      frames: scene.anims.generateFrameNumbers(key, { start: 0, end: a.frames - 1 }),
+      frameRate: a.fps,
+      repeat: anim === 'attack' ? 0 : -1,
+    });
   }
 }
 

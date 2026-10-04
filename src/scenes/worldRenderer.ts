@@ -3,6 +3,7 @@ import { GROUND_Y, PLAYER_COLORS, UNIT_PX } from '../core/constants';
 import { currentLanguage, nameOf, t } from '../core/texts';
 import { BUILDINGS, TROOPS } from '../model/data';
 import { fontStyle } from './fontRules';
+import { createRider, updateRider } from './mountView';
 import { canAfford, hasDepth, isOnTower } from './viewRules';
 import { ENEMY_SPRITES, PLAYER_SPRITES, TROOP_SPRITES, face, makeSprite, playAnim, spriteTop } from './sprites';
 import type { Coin, Enemy, Pickup, Player, Projectile, ResourceNode, Site, Troop, World } from '../model/types';
@@ -359,8 +360,9 @@ export class WorldRenderer {
 
   private createPlayer(p: Player): View {
     const s = this.scene;
-    const sprite = makeSprite(s, PLAYER_SPRITES[p.index % PLAYER_SPRITES.length]);
-    const top = spriteTop(sprite);
+    // Beritten (mountView) oder, bei unbekanntem Reittier, die bisherige Figur
+    const sprite = createRider(s, p) ?? makeSprite(s, PLAYER_SPRITES[p.index % PLAYER_SPRITES.length]);
+    const top = sprite.getData('top') as number;
     // Farbiger Punkt unter den Füßen: welcher Monarch gehört zu wem
     const color = PLAYER_COLORS[p.index % PLAYER_COLORS.length];
     const marker = s.add.ellipse(0, 4, 56, 12, color, 0.8);
@@ -369,9 +371,12 @@ export class WorldRenderer {
   }
 
   private updatePlayer(v: View, p: Player): void {
-    const sprite = v.getAt(1) as Sprite;
-    face(sprite, p.facing);
-    playAnim(sprite, Math.abs(p.vx) > 0.05 ? 'run' : 'idle');
+    const fig = v.getAt(1) as Sprite | Phaser.GameObjects.Container;
+    if (fig instanceof Phaser.GameObjects.Container) updateRider(fig, p);
+    else {
+      face(fig, p.facing);
+      playAnim(fig, Math.abs(p.vx) > 0.05 ? 'run' : 'idle');
+    }
     v.setPosition(p.x * U, G);
     v.setAlpha(p.respawnIn > 0 ? 0.25 : 1);
 

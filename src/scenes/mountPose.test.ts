@@ -84,6 +84,22 @@ describe('mountPose', () => {
     expect([mountPose(b, 2, frozen), mountPose(a, 0, frozen)]).toEqual([both[1], both[0]]);
   });
 
+  it('(h) vier Spieler (Split-Screen 1–4): je eigenes Ergebnis, unabhängig voneinander (AC-03)', () => {
+    const four = [
+      { vx: 0, facing: 1 as const },
+      { vx: 5, facing: -1 as const },
+      { vx: 9, facing: 1 as const },
+      { vx: -5, facing: -1 as const },
+    ];
+    const alone = four.map((p, i) => mountPose(p, i, ctx));
+    expect(alone.map((q) => q!.anim)).toEqual(['idle', 'run', 'run', 'run']);
+    expect(alone.map((q) => q!.timeScale)).toEqual([1, 1, expect.closeTo(1.8, 12), 1]);
+    expect(alone.map((q) => q!.flip)).toEqual([false, true, false, true]);
+    // Reihenfolge und Anzahl der übrigen Spieler ändern nichts
+    expect(mountPose(four[2]!, 2, ctx)).toEqual(alone[2]);
+    expect([...four].reverse().map((p, i) => mountPose(p, 3 - i, ctx))).toEqual([...alone].reverse());
+  });
+
   it('(g) echte Daten: Reittier aus monarch.json, jeder Reiter, jedes run-Frame', () => {
     const key = monarch.mount.sprite;
     const real = sprites as unknown as { sheets: Record<string, SheetData>; mounts: Record<string, MountData>; riderWaist: number; players: SpriteSpec[] };
