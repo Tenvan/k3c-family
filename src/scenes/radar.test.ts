@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import { GAME_HEIGHT, GAME_WIDTH } from '../core/constants';
 import { computeLayout, sharedAnchor, SHARED_LINE_HEIGHT, type Cell } from './layout';
-import { radarMarkers, radarRect, RADAR_HEIGHT, RADAR_MAX_WIDTH, TOP_STRIP, type RadarWorld } from './radar';
+import { cellRadar, radarMarkers, radarRect, RADAR_HEIGHT, RADAR_MAX_WIDTH, TOP_STRIP, type RadarWorld } from './radar';
 
 /** Kleines Level: 1000 Units breit, Burg in der Mitte, zwei Portale, ein Ausgang. */
 function world(over: Partial<RadarWorld> = {}): RadarWorld {
@@ -128,5 +128,24 @@ describe('radarRect (B-090/AC-02)', () => {
       const apart = r.x + r.w <= block.x || block.x + block.w <= r.x || r.y + r.h <= block.y || block.y + block.h <= r.y;
       expect(apart).toBe(true);
     }
+  });
+});
+
+describe('cellRadar: Welt der Stufe der Zelle (S4.2, AC-02)', () => {
+  const wood = world({ castle: { x: 100 }, portals: [], players: [{ index: 0, x: 100, respawnIn: 0 }] });
+  const cave = world({ castle: { x: 900 }, portals: [], players: [{ index: 1, x: 900, respawnIn: 0 }] });
+
+  it('zwei Zellen in verschiedenen Stufen bekommen Marker aus ihrer eigenen Welt', () => {
+    const a = cellRadar({ monarch: 0, view, world: wood })!;
+    const b = cellRadar({ monarch: 1, view, world: cave })!;
+    expect(a.markers.filter((m) => m.kind === 'castle').map((m) => m.pos)).toEqual([0.1]);
+    expect(b.markers.filter((m) => m.kind === 'castle').map((m) => m.pos)).toEqual([0.9]);
+    expect(a.markers.filter((m) => m.kind === 'player').map((m) => [m.index, m.own])).toEqual([[0, true]]);
+    expect(b.markers.filter((m) => m.kind === 'player').map((m) => [m.index, m.own])).toEqual([[1, true]]);
+  });
+
+  it('Zelle ohne geladene Stufe oder ohne Kamera-Ausschnitt: kein Radar, kein Absturz', () => {
+    expect(cellRadar({ monarch: 0, view, world: null })).toBeNull();
+    expect(cellRadar({ monarch: 0, view: null, world: wood })).toBeNull();
   });
 });

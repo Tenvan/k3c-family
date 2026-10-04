@@ -3,7 +3,7 @@
 - **Domäne:** CLI
 - **Typ:** Idee
 - **Prio:** hoch
-- **Status:** eingeplant
+- **Status:** erledigt
 - **Sprint:** S4
 - **Erstellt:** 2026-10-02
 - **Spec:** freigegeben
@@ -57,3 +57,5 @@ keine
 ## Notizen
 
 Aus R1.3. Abhängig von B-100 und B-104.
+
+Erledigt mit Sprint S4 (2026-10-03): AC-01 und AC-02 umgesetzt (S4.1, S4.2), AC-03 angenommen, Validierung offen (S4.3, am Gerät); der Betrieb mit zwei Stufen am selben Gerät wartet auf B-176 (Protokoll mit mehreren Stufen, S2).

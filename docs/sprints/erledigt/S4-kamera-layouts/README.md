@@ -1,11 +1,11 @@
 # S4 · CLI · Kamera je Stufe und Layouts 1–4
 
-- **Status:** geplant
+- **Status:** erledigt
 - **Domäne:** CLI
 - **Reife:** bereit
 - **Einschiebbar:** nein
 - **Tickets:** B-106
-- **Start-Commit:** –
+- **Start-Commit:** 605f467
 - **Spec:** freigegeben
 - **Revision:** 1
 - **Freigabe:** 2026-10-03, Chat (Ralf), Revision 1; umfasst B-106
@@ -57,11 +57,14 @@ Mindest-Schriftgröße je Viertel: 🧑, `docs/fragenkatalog.md Q03`, Regel in B
 
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
-| S4.1 | `S4.1-zelle-stufe.md` | Umsetzung | autonom | offen |
-| S4.2 | `S4.2-radar-hud-schrift.md` | Umsetzung | autonom | offen |
+| S4.1 | `S4.1-zelle-stufe.md` | Umsetzung | autonom | fertig |
+| S4.2 | `S4.2-radar-hud-schrift.md` | Umsetzung | autonom | fertig |
 | S4.3 | `S4.3-abnahme-geraet.md` | Workshop | Mensch | offen |
-| S4.4 | `S4.4-review.md` | Review | autonom | offen |
+| S4.4 | `S4.4-review.md` | Review | autonom | fertig |
 
 ## Abnahme
 
-–
+- 2026-10-03, Review S4.4: AC-01 (S4.1: `cellStages` mit 9 Tests, Zeichnen je Zelle über `StageView`) und AC-02 (S4.2: `cellRadar`, HUD je Zelle mit Biom-Name) sind umgesetzt und im Code geprüft; AC-03 (S4.2: `fontRules.test.ts` gegen `bedienung.md` § 2, Mindestwerte nicht gesenkt) ist grün.
+- AC-04: angenommen, Validierung offen (S4.3, 🧑 am Gerät; „zwei Spieler in verschiedenen Stufen“ zusätzlich erst nach B-176, Protokoll mit mehreren Stufen, Sprint S2: verschoben). Heute ist nur die Stufe von `client.level` geladen, andere Zellen zeigen den Platzhalter; nichts davon im Browser gesehen.
+- Keine schweren Befunde (Normalfall eine Stufe, 1–2 Spieler: Welt, Nachtabdunklung, Interpolation und Kamera-Folgen gleichwertig, `src/scenes` nur Darstellung); `task check` grün, `task check:go` entfällt (kein Go im Diff). Offen: B-197, B-198; B-176 bleibt offen.
+- Version: v0.8.0 vorgeschlagen (Minor: Kamera, Radar und HUD je Stufe sowie Mindest-Schrift im Spiel; nach den offenen Vorschlägen F4/F5 v0.6.0 und GR6 v0.7.0, bei gemeinsamem Setzen mit GR4 anpassen).
