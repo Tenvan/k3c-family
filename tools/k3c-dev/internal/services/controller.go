@@ -65,6 +65,7 @@ type Checker func(ctx context.Context, svc Service) error
 type Options struct {
 	Root          string
 	Console       *console.Store
+	Prefix        string // vor jeder Konsolen-Quelle, z. B. "<worktree>/" (leer: Repo-Wurzel)
 	Log           *slog.Logger
 	OnChange      func(Status) // nur melden: darf den Controller nicht aufrufen (läuft teils unter der Befehlssperre)
 	Start         Starter
@@ -197,6 +198,9 @@ func (c *Controller) unit(name string) (*unit, error) {
 	}
 	return nil, fmt.Errorf("unbekannter Dienst %q; gültig: %v", name, c.Names())
 }
+
+// source ist die Konsolen-Quelle eines Dienstes.
+func (c *Controller) source(u *unit) string { return c.opts.Prefix + u.svc.Name }
 
 func (u *unit) status() Status {
 	u.mu.Lock()

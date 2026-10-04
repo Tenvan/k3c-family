@@ -15,8 +15,8 @@ type replayIn struct {
 }
 
 // replayRun ist das Tool replay_run (B-159, BAL1.3): spielt eine Replay-Datei in-process ohne Bot ab.
-func (s *Server) replayRun(_ context.Context, in replayIn) (string, error) {
-	path, err := insideRoot(s.cfg.Root, in.Path)
+func (s *Server) replayRun(ctx context.Context, in replayIn) (string, error) {
+	path, err := insideRoot(s.ws(ctx).root, in.Path)
 	if err != nil {
 		return "", err
 	}
