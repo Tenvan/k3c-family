@@ -61,7 +61,7 @@ keine
 |---|---|---|---|---|
 | GR3.1 | `GR3.1-gebaeude.md` | Umsetzung | autonom | fertig |
 | GR3.2 | `GR3.2-ressourcen-parallax.md` | Umsetzung | autonom | fertig |
-| GR3.3 | `GR3.3-review.md` | Review | autonom | offen |
+| GR3.3 | `GR3.3-review.md` | Review | autonom | in Arbeit |
 
 Bei `Reife: Entwurf` genügen Stichpunkte mit den Kriterien in Klammern statt Session-Dateien. Vor dem Aktivieren
 wird jede Session als eigene Datei nach `docs/vorlagen/session.md` geschrieben.
