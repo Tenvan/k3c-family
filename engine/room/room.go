@@ -101,6 +101,7 @@ type Room struct {
 	beforeStep func()          // Test-Naht: läuft im Tick vor StepIsland
 	timescale  int             // Zeitraffer (dev timescale): Schritte je Tick, 0 = 1
 	paused     bool            // Dev-Pause (dev pause, B-231): Ticks rechnen keine Schritte
+	met        *metrics        // Spielmetrik des Raumlaufs (metrics.go); nil = kein Sammler
 }
 
 // ValidSlots: Slot 4 oder höher → too_many_slots, sonst leer, negativ oder doppelt → bad_request.
@@ -162,6 +163,7 @@ func (r *Room) join(id string, peer Peer, slots []int) error {
 		r.take(d, id, slot, idx)
 	}
 	r.emptySince = time.Time{}
+	r.met.join(id)
 	r.syncFree()
 	r.log().Info("👑 Gerät im Raum", "device", short(id), "slots", slots, "wiederverbunden", old != nil, "geraete", r.connected())
 	peer.Joined(r.Code, r.Name, r.seats(d))

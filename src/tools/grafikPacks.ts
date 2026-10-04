@@ -10,7 +10,7 @@ export interface GrafikPack {
   /** Urheber laut Lizenzdatei des Packs; ohne Angabe der Uploader auf OpenGameArt */
   artist: string;
   /** Lizenz, mit der wir das Pack nutzen */
-  license: 'CC0 1.0' | 'CC BY 3.0';
+  license: 'CC0 1.0' | 'CC BY 3.0' | 'CC BY 4.0';
   /** Hinweis zur Lizenz, wenn Quellseite und Pack sich unterscheiden */
   licenseNote?: string;
   source: string;
@@ -20,6 +20,11 @@ export interface GrafikPack {
 }
 
 const ZUNO = 'Luis Zuno (ansimuz)';
+
+/** Nicht gewählter Kandidat aus GR2 (AC-06): im Bestand, im Spiel nicht zugeordnet, Bilder in der Gruppe `kandidaten`. */
+function kandidat(id: string, name: string, artist: string, license: GrafikPack['license'], source: string, luecke: string, note: string, licenseNote?: string): GrafikPack {
+  return { id, name, artist, license, source, covers: [`Kandidat (nicht gewählt): ${luecke}`], note, ...(licenseNote ? { licenseNote } : {}) };
+}
 
 export const GRAFIK_PACKS: readonly GrafikPack[] = [
   {
@@ -215,4 +220,25 @@ export const GRAFIK_PACKS: readonly GrafikPack[] = [
     covers: ['Mauer und Turm in Kupfer, Eisen, Kristall', 'Burg, Turm, Tor in der Palette von GothicVania Town'],
     note: 'Eigene Ableitung (GR2.3): nur Farben getauscht (Q13). Quellen gothicvania-town (wall.png, wall-b.png) und sunnyland-fort-of-illusion (front.png, tileset.png, banner.png, door.png, closed-door.png), beide CC0.',
   },
+  // Nicht gewählte Kandidaten aus GR2 (AC-06), nicht zugeordnet
+  kandidat('16x16-block-texture-set', '16x16 Block Texture Set', 'ARoachIFoundOnMyPillow (OpenGameArt-Uploader)', 'CC0 1.0', 'https://opengameart.org/content/16x16-block-texture-set', 'Mauer-/Turm-Materialstufen', 'Nur das Tilemap-Sheet (Blöcke, Ziegel, Stein, Holz) übernommen; Einzelkacheln, Pflanzen und Feldfrüchte weggelassen.'),
+  kandidat('16x16-rpg-items-db32', '16x16 RPG Items (DB32)', 'ARoachIFoundOnMyPillow', 'CC0 1.0', 'https://opengameart.org/content/16x16-rpg-items-db32', 'Skillpunkt-Pickup', '15 von 186 Einzel-PNGs (Edelsteine, Orb, Schriftrolle, Buch, Tränke, Beutel) übernommen; Waffen, Rüstung, Essen weggelassen. Das vom Kommentator hochgeladene Sheet nicht übernommen (kein Pack-Bestandteil).'),
+  kandidat('32-pixel-set-log-cabin', '32-pixel Set - Log Cabin', 'cyanowl', 'CC0 1.0', 'https://opengameart.org/content/32-pixel-set-log-cabin', 'Werkstatt', 'Übernommen: Blockhaus, Türen und Gras (Duplikate Cabin_0/doors_and_grass_2 weggelassen); Mehrfachlizenz, CC0 gewählt.'),
+  kandidat('building-block-assets-stone-logs-bricks', 'Building block assets (stone, logs, bricks)', 'Skalman (OpenGameArt-Uploader)', 'CC0 1.0', 'https://opengameart.org/content/building-block-assets-stone-logs-bricks', 'Mauer-/Turm-Materialstufen', 'Stein-, Ziegel-, Holz- und Türbausteine übernommen; Ambos weggelassen.'),
+  kandidat('castle-set', 'Castle Set', 'Nia Mi', 'CC0 1.0', 'https://opengameart.org/content/castle-set', 'Kaserne', 'Alle acht PNGs (Türme, Mauer, Tor, Flaggen) übernommen; XCF und Thumbs.db weggelassen.'),
+  kandidat('castles', 'Castles', 'Blarumyrran (OpenGameArt-Uploader)', 'CC0 1.0', 'https://opengameart.org/content/castles', 'Burg/Hub-Stufen', 'Das Burg-Sheet (16x16) übernommen; die identische Kopie castles_0.png weggelassen.'),
+  kandidat('cavernous-background', 'Cavernous Background', 'Spring Spring', 'CC0 1.0', 'https://opengameart.org/content/cavernous-background', 'Mine-Hintergrund', 'Höhlen-Hintergrund (512x288) übernommen; cavernous_0.png ist byte-identisch und weggelassen.'),
+  kandidat('crops-cc0', 'Crops CC0', 'SnoopethDuckDuck', 'CC0 1.0', 'https://opengameart.org/content/crops-cc0', 'Farm', 'Drei Sammelbilder der Feldfrüchte (0/1/2 px Kontur) übernommen; Einzelbilder, Gold-/Grau-/Shader-Varianten, PDN weggelassen.'),
+  kandidat('farming-crops-16x16', 'Farming crops 16x16', 'josehzz', 'CC0 1.0', 'https://opengameart.org/content/farming-crops-16x16', 'Farm', 'Übernommen: Crop-Spritesheet (20 Pflanzen, 16x16); weggelassen: nichts Relevantes.'),
+  kandidat('gothicvania-bridge-expansion-pack-1', 'Gothicvania Bridge Expansion Pack 1', 'ansimuz (Luis Zuno)', 'CC0 1.0', 'https://opengameart.org/content/gothicvania-bridge-expansion-pack-1', 'Werkstatt/Kaserne', 'Übernommen: Props Burg, Haus, Baum; weggelassen: Preview, Aseprite, Vorschaubild.'),
+  kandidat('kyrises-free-16x16-rpg-icon-pack', 'Kyrise\'s Free 16x16 RPG Icon Pack', 'Kyrise', 'CC BY 4.0', 'https://opengameart.org/content/kyrises-free-16x16-rpg-icon-pack', 'Skillpunkt-Pickup', 'Nur die Spritesheets 16x16 und 32x32 (V1.2) übernommen; Einzelbilder, 48er-Sheet und sample.png weggelassen.', 'Namensnennung: Kyrise\'s Free 16x16 RPG Icon Pack | Graphics made by Kyrise: https://kyrise.itch.io/ (CC BY 4.0).'),
+  kandidat('materials-pack', 'Materials Pack', 'xvideosman (OpenGameArt-Uploader)', 'CC BY 3.0', 'https://opengameart.org/content/materials-pack', 'Holz-Symbol', 'Materials.png (Barren, Erze, Edelsteine) übernommen; Aseprite-Quelldatei und readme weggelassen.', 'Namensnennung: "Materials Pack by xvideosman" (laut readme.txt des Packs), https://opengameart.org/content/materials-pack, CC BY 3.0.'),
+  kandidat('opp2017-cave-and-mine-cart', 'OPP2017 - Cave and mine cart', 'Hapiel (Open Pixel Project)', 'CC0 1.0', 'https://opengameart.org/content/opp2017-cave-and-mine-cart', 'Mine-Hintergrund', 'Höhlen-Hintergründe, Felsen/Kristall/Lava-Kacheln, Schiene, Objekte und Mockup übernommen; Wagen-GIFs, Palette und Beschreibungsdateien weggelassen.', 'Quellseite nennt Mehrfachlizenz (CC-BY 3.0, CC-BY-SA 3.0, GPL 2.0/3.0, OGA-BY 3.0, CC0); das Pack liegt als CC0 bei, genutzt wird CC0.'),
+  kandidat('opp2017-village-and-room', 'OPP2017 - Village and room', 'Hapiel (Open Pixel Project)', 'CC0 1.0', 'https://opengameart.org/content/opp2017-village-and-room', 'Werkstatt', 'Übernommen: Dorf- und Raum-Kacheln (CC0 gewählt, Seite bietet auch CC-BY/SA/GPL); weggelassen: Wolken, Mockups, Palette.'),
+  kandidat('pixel-platformer-farm-expansion', 'Pixel Platformer: Farm Expansion', 'Kenney', 'CC0 1.0', 'https://kenney.nl/assets/pixel-platformer-farm-expansion', 'Farm', 'Übernommen: die beiden Tilemap-Sheets (Standard und gepackt); weggelassen: Einzelkacheln, Construct-Projekt.'),
+  kandidat('pixel-platformer-metal-expansion', 'Pixel Platformer Metal Expansion', 'Pien Krings (Pienkrings)', 'CC0 1.0', 'https://opengameart.org/content/pixel-platformer-metal-expansion', 'Mauer-/Turm-Materialstufen', 'Tile-Sheets (tiles, tiles-packed) und Sample übernommen; Figuren-Sheets und über 300 Einzelkacheln weggelassen.'),
+  kandidat('pixel-platformer', 'Pixel Platformer', 'Kenney', 'CC0 1.0', 'https://kenney.nl/assets/pixel-platformer', 'Treppe (Leitern)', 'Gepackte Kachel- und Hintergrund-Tilemap übernommen; Charakter-Tilemap, Einzelkacheln, Tiled/Construct-Dateien weggelassen.'),
+  kandidat('plants-and-flowers-pixel-art', 'Plants and Flowers - Pixel Art', 'peony', 'CC BY 4.0', 'https://opengameart.org/content/plants-and-flowers-pixel-art', 'Plantage', '13 von 36 PNGs (Bäume, Pflanzen, Gartenwerkzeug/Setzling/Samen) übernommen; Blumen-Einzelbilder weggelassen.', 'Namensnennung: "Plants and Flowers - Pixel Art" von peony, https://opengameart.org/content/plants-and-flowers-pixel-art (CC BY 4.0). Laut Urheber genügt Link und Benutzername.'),
+  kandidat('quick-32px-sprites-bucket-nest-wood-seeds-leaf-sapling', 'Quick 32px Sprites: Bucket, Nest, Wood, Seeds, Leaf, Sapling', 'Boysano', 'CC0 1.0', 'https://opengameart.org/content/quick-32px-sprites-bucket-nest-wood-seeds-leaf-sapling', 'Plantage', 'Alle 6 Einzel-PNGs (Eimer, Nest, Holz, Samen, Blatt, Setzling) übernommen.'),
+  kandidat('tent-6', 'Tent', 'shangri-la', 'CC0 1.0', 'https://opengameart.org/content/tent-6', 'Rekrutierungslager', 'Zelt-Sprite (48x48) übernommen; tent_3.png ist byte-identisch und weggelassen.'),
 ];

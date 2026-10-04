@@ -1,10 +1,13 @@
 import { describe, expect, it } from 'vitest';
 import credits from '../../public/grafik/CREDITS.md?raw';
 import index from '../../public/grafik/index.json';
+import zuordnungObjekte from '../../docs/assets/zuordnung-objekte.md?raw';
+import zuordnungWelt from '../../docs/assets/zuordnung-welt.md?raw';
 import { CREDITS, renderCredits } from './credits';
 import { GRAFIK_PACKS } from './grafikPacks';
 
-const lizenzen = renderCredits(CREDITS.filter((c) => c.root === 'grafik'));
+const zuordnung = zuordnungObjekte + zuordnungWelt;
+const lizenzen =renderCredits(CREDITS.filter((c) => c.root === 'grafik'));
 
 /** Alle Dateien unter public/grafik (Schlüssel: Pfad ab dem Ordner) */
 const files = Object.keys(import.meta.glob('../../public/grafik/**/*', { query: '?url', import: 'default' })).map((p) => p.replace('../../public/grafik/', ''));
@@ -13,9 +16,9 @@ const files = Object.keys(import.meta.glob('../../public/grafik/**/*', { query: 
 const FORBIDDEN = /\.(mp3|ogg|wav|js|html|psd|ase|aseprite|gif|iml|tps|json)$/i;
 
 describe('Grafik-Packs (B-087)', () => {
-  it('hat einundzwanzig Packs mit eindeutiger ID', () => {
-    expect(GRAFIK_PACKS).toHaveLength(21);
-    expect(new Set(GRAFIK_PACKS.map((p) => p.id)).size).toBe(21);
+  it('hat einundvierzig Packs (21 Bestand, 20 Kandidaten) mit eindeutiger ID', () => {
+    expect(GRAFIK_PACKS).toHaveLength(41);
+    expect(new Set(GRAFIK_PACKS.map((p) => p.id)).size).toBe(41);
   });
 
   it.each(GRAFIK_PACKS)('$id: Ordner, LICENSE.txt und Bilder liegen im Repo (AC-01)', (pack) => {
@@ -56,6 +59,15 @@ describe('Grafik-Packs (B-087)', () => {
     expect(lizenzen, 'lizenzen.html').toContain(pack.source.replace(/^https?:\/\//, ''));
     expect(lizenzen).toContain(pack.artist.split(' (')[0]!);
     expect(lizenzen).toContain(pack.license);
+  });
+
+  it('Kandidaten-Packs sind keinem Spielobjekt zugeordnet (GR2 AC-06)', () => {
+    const kandidaten = GRAFIK_PACKS.filter((p) => index.some((i) => i.pack === p.id && i.group === 'kandidaten'));
+    expect(kandidaten).toHaveLength(20);
+    for (const pack of kandidaten) {
+      expect(index.filter((i) => i.pack === pack.id && i.group !== 'kandidaten'), pack.id).toEqual([]);
+      expect(zuordnung, pack.id).not.toContain(`${pack.id}/`);
+    }
   });
 
   it('ein Pack mit abweichender Lizenz trägt einen Hinweis', () => {
