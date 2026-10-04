@@ -111,7 +111,6 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-214](B-214-server-pause.md) | SRV | Idee | mittel | offen | – | Der Server pausiert den Raum im Couch-Raum und schützt den stehenden Monarchen online |
 | [B-215](B-215-texte-eingabe-shell-tools.md) | PLAT | Schuld | niedrig | offen | – | Die Texte von Touch-Overlay, Shell und Werkzeug-Seiten kommen aus den zentralen Textdateien |
 | [B-213](B-213-markdown-listen-haekchen.md) | SRV | Problem | niedrig | offen | – | MarkdownView in k3c-dev zeigt nummerierte Listen und Häkchen wie die alte Planungsseite |
-| [B-216](B-216-tier-gating-unerreichbar.md) | REG | Frage | hoch | offen | – | Tier-Gating 5/10/15 je Linie ist mit einem Punkt je Skill unerreichbar |
 
 ## Archiv
 
@@ -234,3 +233,4 @@ Zeile in diesen Abschnitt.
 | [B-212](archiv/B-212-github-status-planung.md) | SRV | Idee | mittel | erledigt | M8 | k3c-dev zeigt PR, CI und Merge-Konflikte je Sprint aus GitHub |
 | [B-146](archiv/B-146-optionen-pause-szene.md) | CLI | Idee | hoch | erledigt | S5 | Der Client hat eine Optionen- und Pause-Szene mit getrennter Lautstärke und Barrierefreiheit |
 | [B-172](archiv/B-172-sprachauswahl-de-en.md) | CLI | Idee | mittel | erledigt | S5 | Der Client hat Deutsch und Englisch mit Sprachauswahl in den Optionen |
+| [B-216](archiv/B-216-tier-gating-unerreichbar.md) | REG | Frage | hoch | erledigt | S1 | Tier-Gating 5/10/15 je Linie ist mit einem Punkt je Skill unerreichbar |

@@ -7,8 +7,8 @@
 - **Tickets:** B-118, B-119, B-022, B-152
 - **Start-Commit:** 1fa9529
 - **Spec:** freigegeben
-- **Revision:** 1
-- **Freigabe:** 2026-10-03, Chat (Ralf), Revision 1; umfasst B-118, B-119, B-022; B-152 nur AC-02 und AC-03 (AC-01 gehört zu F1)
+- **Revision:** 2
+- **Freigabe:** 2026-10-04, Chat (Ralf), Revision 2, Tier-Gating B-216 (zuvor 2026-10-03, Chat (Ralf), Revision 1; umfasst B-118, B-119, B-022; B-152 nur AC-02 und AC-03, AC-01 gehört zu F1)
 
 ## Ausgangslage
 
@@ -62,7 +62,7 @@ S1.2 ist in drei Dateien geteilt (a, b, c), damit jede Session unter dem Richtwe
 
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
-| S1.1 | `S1.1-schlag-pool.md` | Umsetzung | autonom | blockiert |
+| S1.1 | `S1.1-schlag-pool.md` | Umsetzung | autonom | in Arbeit |
 | S1.2a | `S1.2a-skill-rahmen-tank.md` | Umsetzung | autonom | offen |
 | S1.2b | `S1.2b-skills-zauberer-heiler.md` | Umsetzung | autonom | offen |
 | S1.2c | `S1.2c-passive.md` | Umsetzung | autonom | offen |

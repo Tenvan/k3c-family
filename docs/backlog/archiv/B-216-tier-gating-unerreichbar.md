@@ -3,8 +3,8 @@
 - **Domäne:** REG
 - **Typ:** Frage
 - **Prio:** hoch
-- **Status:** offen
-- **Sprint:** –
+- **Status:** erledigt
+- **Sprint:** S1
 - **Erstellt:** 2026-10-04
 - **Spec:** Entwurf
 - **Revision:** 1
@@ -57,3 +57,5 @@ Welche der Auflösungen oben (oder eine andere)? Entscheidet 🧑; danach kann S
 ## Notizen
 
 Gefunden in S1.1 vor der Umsetzung (Session `Status: blockiert`).
+
+**Ergebnis (2026-10-04):** 🧑 hat im Chat entschieden: Gating je Linie gezählt, `tierPoints: [0, 2, 4, 6]` (gelernte Skills der Linie, jeder Skill weiterhin nur einmal). Damit erreichbar: Tank 2 Tier 1 → Passive → Tier 3 ab 4, Tier 4 ab 6; Zauberer und Heiler ebenso (2 + Passive + Tier 3). AC-01 umgesetzt: `docs/rules/monarch.md` § 3 und S1.1 Test (c) nennen die Regel; Sprint S1 Revision 2.
