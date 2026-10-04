@@ -9,6 +9,7 @@ import { GameScene } from './scenes/GameScene';
 import { HudScene } from './scenes/HudScene';
 import { LoadScene } from './scenes/LoadScene';
 import { LobbyScene } from './scenes/LobbyScene';
+import { OptionsScene } from './scenes/OptionsScene';
 import { VERSION_KEY } from './scenes/debugOverlay';
 
 // Seitenrahmen sofort (Home-Button, Zurück-Falle für B).
@@ -37,6 +38,7 @@ function start(server: BuildInfo): void {
   game.scene.add('lobby', LobbyScene, false);
   game.scene.add('game', GameScene, false);
   game.scene.add('hud', HudScene, false);
+  game.scene.add('options', OptionsScene, false);
 
   // Nur im Dev-Server oder mit ?dev=1: Zugriff für Debugging über die Browser-Konsole (window.game).
   if (import.meta.env.DEV || new URLSearchParams(location.search).has('dev')) (window as unknown as { game: Phaser.Game; client: typeof client }).game = Object.assign(game, { client });
