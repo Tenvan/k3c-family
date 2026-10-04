@@ -1,6 +1,6 @@
 # BAL1.3 · Replay-Wiedergabe in k3c-dev
 
-- **Status:** offen
+- **Status:** in Arbeit
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Branch:** bal1/3-replay-k3c-dev
