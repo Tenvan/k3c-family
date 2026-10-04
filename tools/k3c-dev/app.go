@@ -131,7 +131,7 @@ func (a *App) markReady() {
 }
 
 // shutdown bricht laufende Befehle ab (ein Start wartet sonst bis 60 s auf gesund), stoppt die eigenen Dienste
-// (rückwärts; übernommene laufen weiter), dann Server, Statistik und Log.
+// (rückwärts; übernommene laufen weiter) und die der Worktrees, dann Server, Statistik und Log.
 func (a *App) shutdown(context.Context) {
 	a.wait()
 	a.log.Info("🛑 k3c-dev beendet", "ns", "main")
@@ -145,6 +145,7 @@ func (a *App) shutdown(context.Context) {
 	if a.ctl != nil {
 		a.ctl.StopAll(context.Background())
 	}
+	a.srv.StopWorktreeServices(context.Background())
 	_ = a.srv.Stop()
 	_ = a.tracker.Flush() // ein Fehler steht schon im Log (Rückruf)
 	_ = a.log.Close()

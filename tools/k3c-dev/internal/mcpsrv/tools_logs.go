@@ -49,13 +49,19 @@ type sinceIn struct {
 // k3c-client schreibt der Spielserver (Browser-Meldungen), vite die Ausgabe des Dienstes Vite (k3c-dev).
 var knownSources = []string{applog.Source, "k3c-client", "vite"}
 
-// LogSources sind alle logs/*.jsonl und die bekannten Quellen, sortiert.
-func (s *Server) LogSources() []string {
+// LogSources sind alle logs/*.jsonl der Repo-Wurzel und die bekannten Quellen, sortiert (Oberfläche).
+func (s *Server) LogSources() []string { return logSources(s.cfg.Root) }
+
+// LogPath prüft eine Quelle der Repo-Wurzel gegen die Liste (Oberfläche).
+func (s *Server) LogPath(source string) (string, error) { return s.logPath(s.cfg.Root, source) }
+
+// logSources sind alle logs/*.jsonl unter root und die bekannten Quellen, sortiert.
+func logSources(root string) []string {
 	seen := map[string]bool{}
 	for _, n := range knownSources {
 		seen[n] = true
 	}
-	files, _ := filepath.Glob(filepath.Join(s.cfg.Root, "logs", "*.jsonl"))
+	files, _ := filepath.Glob(filepath.Join(root, "logs", "*.jsonl"))
 	for _, f := range files {
 		seen[strings.TrimSuffix(filepath.Base(f), ".jsonl")] = true
 	}
@@ -67,31 +73,40 @@ func (s *Server) LogSources() []string {
 	return names
 }
 
-// LogPath prüft eine Quelle gegen die Liste; nur so wird aus einem Namen ein Pfad.
-func (s *Server) LogPath(source string) (string, error) {
-	for _, n := range s.LogSources() {
+// logPath prüft eine Quelle gegen die Liste; nur so wird aus einem Namen ein Pfad. Das eigene Log schreibt k3c-dev
+// immer in die Repo-Wurzel, auch für Aufrufe aus einem Worktree.
+func (s *Server) logPath(root, source string) (string, error) {
+	if source == applog.Source {
+		root = s.cfg.Root
+	}
+	for _, n := range logSources(root) {
 		if n == source && sourceName.MatchString(source) {
-			return filepath.Join(s.cfg.Root, "logs", source+".jsonl"), nil
+			return filepath.Join(root, "logs", source+".jsonl"), nil
 		}
 	}
-	return "", fmt.Errorf("unbekannte Log-Quelle %q; gültig: %s", source, strings.Join(s.LogSources(), ", "))
+	return "", fmt.Errorf("unbekannte Log-Quelle %q; gültig: %s", source, strings.Join(logSources(root), ", "))
 }
 
-// logsSources ist das Tool logs_sources: Log-Dateien und Konsolen-Quellen.
-func (s *Server) logsSources(context.Context, struct{}) (string, error) {
+// logsSources ist das Tool logs_sources: Log-Dateien und Konsolen-Quellen des eigenen Checkouts.
+func (s *Server) logsSources(ctx context.Context, _ struct{}) (string, error) {
+	ws := s.ws(ctx)
 	var out []string
-	for _, name := range s.LogSources() {
-		out = append(out, s.logFileLine(name))
+	for _, name := range logSources(ws.root) {
+		out = append(out, s.logFileLine(ws.root, name))
 	}
 	for _, name := range s.console.Sources() {
+		own, ok := ws.ownSource(name)
+		if !ok {
+			continue
+		}
 		lines, _ := s.console.Tail(name, 0)
-		out = append(out, fmt.Sprintf("Konsole %s · %d Zeilen", name, len(lines)))
+		out = append(out, fmt.Sprintf("Konsole %s · %d Zeilen", own, len(lines)))
 	}
 	return strings.Join(out, "\n"), nil
 }
 
-func (s *Server) logFileLine(name string) string {
-	path, _ := s.LogPath(name)
+func (s *Server) logFileLine(root, name string) string {
+	path, _ := s.logPath(root, name)
 	st, err := os.Stat(path)
 	if err != nil {
 		return fmt.Sprintf("Log %s · noch keine Einträge", name)
@@ -105,8 +120,8 @@ func (s *Server) logFileLine(name string) string {
 }
 
 // logsQuery ist das Tool logs_query: gefilterte Einträge, neueste zuerst.
-func (s *Server) logsQuery(_ context.Context, in queryIn) (string, error) {
-	path, err := s.LogPath(in.Source)
+func (s *Server) logsQuery(ctx context.Context, in queryIn) (string, error) {
+	path, err := s.logPath(s.ws(ctx).root, in.Source)
 	if err != nil {
 		return "", err
 	}
@@ -131,8 +146,8 @@ func (s *Server) logsQuery(_ context.Context, in queryIn) (string, error) {
 }
 
 // logsErrors ist das Tool logs_errors: Warnungen und Fehler, gleichartige zu je einer Zeile verdichtet.
-func (s *Server) logsErrors(_ context.Context, in errorsIn) (string, error) {
-	path, err := s.LogPath(in.Source)
+func (s *Server) logsErrors(ctx context.Context, in errorsIn) (string, error) {
+	path, err := s.logPath(s.ws(ctx).root, in.Source)
 	if err != nil {
 		return "", err
 	}
@@ -160,8 +175,8 @@ func (s *Server) logsErrors(_ context.Context, in errorsIn) (string, error) {
 }
 
 // logsSince ist das Tool logs_since: neue Einträge ab einem Byte-Cursor, älteste zuerst, und der nächste Cursor.
-func (s *Server) logsSince(_ context.Context, in sinceIn) (string, error) {
-	path, err := s.LogPath(in.Source)
+func (s *Server) logsSince(ctx context.Context, in sinceIn) (string, error) {
+	path, err := s.logPath(s.ws(ctx).root, in.Source)
 	if err != nil {
 		return "", err
 	}

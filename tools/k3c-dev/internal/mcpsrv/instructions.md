@@ -3,13 +3,24 @@
 Entwickler-Werkzeug des Spiels K3C. Diese Tools ersetzen Shell-Befehle und Dateilesen, weil sie nur das Wichtige
 zurückgeben.
 
+## Worktrees
+
+- Eine k3c-dev-Instanz (aus der Repo-Wurzel) bedient alle Worktrees. Jeder Aufruf gilt dem Checkout, aus dem die
+  Session kommt (Header `X-K3C-Root` aus `.mcp.json`, sonst MCP-roots): Prüfläufe, Planung, Logs, Berichte, Spielstände
+  und Dienste nur dort. `workbench_status` nennt den Checkout in der Zeile `Checkout:`.
+- Dienste eines Worktrees laufen auf eigenen Ports (Versatz 10, 20 …: Vite 5183, Spielserver 8090 …); `svc_status` zeigt
+  sie, `server_status` fragt den Spielserver des eigenen Worktrees. Die Ports der Repo-Wurzel (5173, 8080) nie aus einem
+  Worktree ansprechen.
+- `level_generate`, `sim_run` und `replay_run` rechnen mit der Engine, mit der k3c-dev gebaut ist (Repo-Wurzel), nicht
+  mit geänderter Engine im Worktree; dafür `check_run go:test`.
+
 ## Prüfen
 
 - `check_run` statt `task check`, `task test`, `task typecheck`, `task lint`, `task build`, `task check:go`, `go test`
   oder `golangci-lint` in der Shell. Ziele: `task:check`, `task:test`, `task:typecheck`, `task:lint`, `task:build`,
   `task:check:go`, `go:test`, `go:lint`, `dev:test`. Ein Testmuster (`pattern`) geht bei `task:test`, `go:test` und `dev:test`.
 - Die Antwort ist bei grünem Lauf eine Zeile, sonst Kopfzeile und nur die Fehlerzeilen.
-- Mehr Kontext zu einem Lauf: `console_tail` mit `check:<ziel>`.
+- Mehr Kontext zu einem Lauf: `console_tail` mit `check:<ziel>`. Läufe verschiedener Worktrees sperren sich nicht.
 
 ## Logs
 

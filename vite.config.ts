@@ -13,6 +13,8 @@ function clientVersion(): string {
   }
 }
 
+const serverPort = process.env.K3C_HTTP_PORT ?? '8080';
+
 export default defineConfig({
   // Relative Pfade, damit der Build von jedem Heimnetz-Server/Unterordner aus läuft.
   base: './',
@@ -22,10 +24,11 @@ export default defineConfig({
     __BUILD_TIME__: JSON.stringify(new Date().toISOString()),
   },
   // /api und /ws gehören dem Go-Server (task start, Port 8080); läuft er nicht, meldet Vite den Proxy-Fehler im Terminal.
+  // k3c-dev setzt beide Ports je Worktree (K3C_VITE_PORT, K3C_HTTP_PORT), damit Worktrees nebeneinander laufen.
   server: {
     host: true,
-    port: 5173,
-    proxy: { '/api': 'http://localhost:8080', '/ws': { target: 'ws://localhost:8080', ws: true } },
+    port: Number(process.env.K3C_VITE_PORT ?? 5173),
+    proxy: { '/api': `http://localhost:${serverPort}`, '/ws': { target: `ws://localhost:${serverPort}`, ws: true } },
   },
   preview: { host: true, port: 4173 },
   // .claude/worktrees enthält komplette Checkouts anderer Branches; deren Tests gehören nicht zu diesem Lauf.

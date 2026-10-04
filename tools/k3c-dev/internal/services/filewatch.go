@@ -168,8 +168,8 @@ func (c *Controller) restartForChange(ctx context.Context, u *unit, file string)
 	if err == nil {
 		_, err = c.start(ctx, u)
 	}
-	c.opts.Console.Add(u.svc.Name, "stdout", "k3c-dev: Neustart wegen Änderung an "+file)
+	c.opts.Console.Add(c.source(u), "stdout", "k3c-dev: Neustart wegen Änderung an "+file)
 	if err != nil {
-		c.opts.Console.Add(u.svc.Name, "stderr", "k3c-dev: Neustart fehlgeschlagen: "+err.Error())
+		c.opts.Console.Add(c.source(u), "stderr", "k3c-dev: Neustart fehlgeschlagen: "+err.Error())
 	}
 }
