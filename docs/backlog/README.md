@@ -111,8 +111,7 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-213](B-213-markdown-listen-haekchen.md) | SRV | Problem | niedrig | offen | – | MarkdownView in k3c-dev zeigt nummerierte Listen und Häkchen wie die alte Planungsseite |
 | [B-219](B-219-doku-gating-und-schlag.md) | REG | Schuld | niedrig | offen | – | Game-Design und Ereignis-Doku nennen Tier-Gating 2/4/6 und den Schlag des Monarchen |
 | [B-218](B-218-optionen-ambient-lautstaerke.md) | CLI | Idee | niedrig | offen | – | Die Optionen-Szene regelt auch die Lautstärke des Ambient-Busses |
-| [B-231](B-231-cheat-dialog.md) | CLI | Idee | hoch | offen | – | Der Cheat-Dialog ist modal, hält den Raum an und öffnet per Geste auf jedem Gerät |
-| [B-232](B-232-dungeon-master-seite.md) | PLAT | Idee | mittel | offen | – | Eine Dungeon-Master-Seite unter /dm steuert Räume live vom Handy oder Tablet |
+| [B-232](B-232-dungeon-master-seite.md) | PLAT | Idee | hoch | eingeplant | DBG3 | Eine Dungeon-Master-Seite unter /dm steuert Räume live vom Handy oder Tablet |
 
 ## Archiv
 
@@ -245,3 +244,4 @@ Zeile in diesen Abschnitt.
 | [B-119](archiv/B-119-skills-tank-zauberer-heiler.md) | SIM | Idee | hoch | erledigt | S1 | Die Skills von Tank, Zauberer und Heiler wirken in der Simulation |
 | [B-152](archiv/B-152-reittiere-mechanik.md) | SIM | Idee | hoch | erledigt | S1 | Jeder Monarch reitet von Anfang an auf einem Standard-Reittier |
 | [B-222](archiv/B-222-glossar-spielstand-version-3.md) | REG | Schuld | niedrig | erledigt | S1 | Das Glossar nennt Spielstand-Version 3 |
+| [B-231](archiv/B-231-cheat-dialog.md) | CLI | Idee | hoch | erledigt | – | Der Cheat-Dialog ist modal, hält den Raum an und öffnet per Geste auf jedem Gerät |
