@@ -1,6 +1,6 @@
 # BAL1.2 · Replay-Format: Aufnahme, Wiedergabe, Versions- und Datenstand-Prüfung
 
-- **Status:** offen
+- **Status:** in Arbeit
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Branch:** bal1/2-replay-format

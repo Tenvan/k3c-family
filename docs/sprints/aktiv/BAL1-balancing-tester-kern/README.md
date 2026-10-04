@@ -63,7 +63,7 @@ keine (Ort des Werkzeugs: Tool in k3c-dev, 🧑 2026-10-04)
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
 | BAL1.1 | `BAL1.1-bots-kennzahlen.md` | Umsetzung | autonom | fertig |
-| BAL1.2 | `BAL1.2-replay-format.md` | Umsetzung | autonom | offen |
+| BAL1.2 | `BAL1.2-replay-format.md` | Umsetzung | autonom | in Arbeit |
 | BAL1.3 | `BAL1.3-replay-k3c-dev.md` | Umsetzung | autonom | offen |
 | BAL1.4 | `BAL1.4-review.md` | Review | autonom | offen |
 
