@@ -85,7 +85,7 @@ func openServices(ctx context.Context, root string, store *console.Store, log *a
 	onChange func(services.Status)) (*services.Controller, error) {
 	list, err := services.Load(filepath.Join(root, "tools", "k3c-dev", "services.json"))
 	if err != nil {
-		log.Error("dienste nicht geladen: "+err.Error(), "ns", "svc")
+		log.Error("💥 dienste nicht geladen: "+err.Error(), "ns", "svc")
 		return nil, err
 	}
 	ctl := services.New(list, services.Options{Root: root, Console: store, Log: log.Logger, OnChange: onChange})

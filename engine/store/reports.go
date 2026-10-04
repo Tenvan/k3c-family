@@ -55,7 +55,7 @@ func (r *Reports) Store(data []byte, remote string) (string, error) {
 	if n, err := r.prune(MaxReports - 1); err != nil {
 		return "", err
 	} else if n > 0 {
-		slog.Info("alte Berichte gelöscht", "ns", "report", "anzahl", n)
+		slog.Info("🧹 alte Berichte gelöscht", "ns", "report", "anzahl", n)
 	}
 	base := "gamepad-" + strings.NewReplacer(":", "-", ".", "-").Replace(received)
 	return writeNew(r.Dir, base, out)

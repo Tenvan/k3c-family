@@ -99,7 +99,7 @@ func (c *Controller) stopAdopted(u *unit, force bool) (Status, error) {
 	c.release(u)
 	c.set(u, func(s *Status) { s.State = Stopping })
 	if err := c.opts.KillPID(pid); err != nil {
-		c.opts.Log.Warn("dienst "+u.svc.Name+": übernommenen Prozess beenden: "+err.Error(), "ns", "svc")
+		c.opts.Log.Warn("🛑 dienst "+u.svc.Name+": übernommenen Prozess beenden: "+err.Error(), "ns", "svc")
 	}
 	if !c.waitPortFree(u) {
 		c.adopt(context.Background(), u, pid) // lebt weiter: bleibt übernommen und überwacht
