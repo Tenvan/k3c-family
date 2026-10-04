@@ -1,6 +1,6 @@
 # GR5 · CLI · Juice: Treffer, Screenshake, Münzen
 
-- **Status:** aktiv
+- **Status:** erledigt
 - **Domäne:** CLI
 - **Reife:** bereit
 - **Einschiebbar:** ja
@@ -62,11 +62,14 @@ keine
 |---|---|---|---|---|
 | GR5.1 | `GR5.1-effekte-aus-events.md` | Umsetzung | autonom | fertig |
 | GR5.2 | `GR5.2-abschalten-kamera-vibration.md` | Umsetzung | autonom | fertig |
-| GR5.3 | `GR5.3-review.md` | Review | autonom | in Arbeit |
+| GR5.3 | `GR5.3-review.md` | Review | autonom | fertig |
 
 Bei `Reife: Entwurf` genügen Stichpunkte mit den Kriterien in Klammern statt Session-Dateien. Vor dem Aktivieren
 wird jede Session als eigene Datei nach `docs/vorlagen/session.md` geschrieben.
 
 ## Abnahme
 
-–
+- 2026-10-04, Review GR5.3: AC-01 (GR5.1: `effects.test.ts`, 7 Event-Arten), AC-03 (`effectFor` rein, `noSim.test.ts` grün), AC-04, AC-05, AC-06, AC-07 (GR5.2: Tests `shakeCell`, `flashAllowed` im 16-ms-Takt, `rumblePad`; `task check` und `task check:go` grün) sind umgesetzt und im Diff geprüft.
+- AC-02 (Schalter per Test; Aussehen und Blitz-Eindruck) sowie die Sicht auf AC-01 und AC-04: angenommen, Validierung offen (🧑, TV; im Fahrplan unter „Offen am Gerät“); Vibration auf der Xbox angenommen. Nichts davon im Browser gesehen.
+- Keine schweren Befunde: Effekte nutzen `frame.state.events` (nicht `pendingEvents`), Einstellungen je Frame gelesen, Shake nur an der Zelle des getroffenen lokalen Spielers, kein `Math.random()`, `src/input/` und `settings.ts` unverändert, B nicht belegt. B-164 archiviert; Ticket B-217 (SIM, `built`/`playerDown` ohne Ort, Behelf im Client) bleibt offen.
+- Version: v0.10.0 vorgeschlagen (Minor: sichtbare Effekte im Spiel; nach dem offenen Vorschlag S5 v0.9.0, bei gemeinsamem Setzen anpassen).

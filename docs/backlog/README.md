@@ -73,7 +73,6 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-160](B-160-abgleich-spielmetrik-simulator.md) | REG | Idee | mittel | eingeplant | BAL4 | Spielmetrik echter Abende und Simulatorwerte sind abgeglichen |
 | [B-161](B-161-grafik-zuordnungstabelle.md) | CLI | Idee | hoch | eingeplant | GR1 | Jedes Spielobjekt hat eine Zuordnung zu Asset und Lizenz oder eine dokumentierte Lücke |
 | [B-162](B-162-grafik-suche-luecken.md) | CLI | Frage | mittel | eingeplant | GR2 | Für die Grafik-Lücken liegen Kandidaten mit Vorschau, Lizenz und Stilbewertung vor |
-| [B-164](B-164-juice-treffer-screenshake.md) | CLI | Idee | mittel | eingeplant | GR5 | Treffer, Münzen und Bauen haben sichtbare Rückmeldung, Screenshake und Blitze sind abschaltbar |
 | [B-167](B-167-sfx-katalog.md) | CLI | Idee | mittel | eingeplant | SO2 | Jedes wichtige Ereignis hat einen Sound mit Quelle und Lizenz |
 | [B-168](B-168-musik-je-zustand.md) | CLI | Idee | mittel | eingeplant | SO4 | Die Musik wechselt je Spielzustand mit Crossfade |
 | [B-169](B-169-hoerprobenseite-soundtest.md) | PLAT | Idee | mittel | eingeplant | SO3 | Eine Hörprobenseite spielt Kandidaten für Musik und Effekte ab |
@@ -234,3 +233,4 @@ Zeile in diesen Abschnitt.
 | [B-212](archiv/B-212-github-status-planung.md) | SRV | Idee | mittel | erledigt | M8 | k3c-dev zeigt PR, CI und Merge-Konflikte je Sprint aus GitHub |
 | [B-146](archiv/B-146-optionen-pause-szene.md) | CLI | Idee | hoch | erledigt | S5 | Der Client hat eine Optionen- und Pause-Szene mit getrennter Lautstärke und Barrierefreiheit |
 | [B-172](archiv/B-172-sprachauswahl-de-en.md) | CLI | Idee | mittel | erledigt | S5 | Der Client hat Deutsch und Englisch mit Sprachauswahl in den Optionen |
+| [B-164](archiv/B-164-juice-treffer-screenshake.md) | CLI | Idee | mittel | erledigt | GR5 | Treffer, Münzen und Bauen haben sichtbare Rückmeldung, Screenshake und Blitze sind abschaltbar |

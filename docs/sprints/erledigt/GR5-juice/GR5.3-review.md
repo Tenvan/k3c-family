@@ -1,6 +1,6 @@
 # GR5.3 · Review und Abnahme des Sprints GR5
 
-- **Status:** in Arbeit
+- **Status:** fertig
 - **Typ:** Review
 - **Agent:** autonom
 - **Branch:** gr5/3-review
@@ -36,8 +36,8 @@ Stil, Geschmack bei Stärke und Aussehen der Effekte, Optimierung.
 
 ## Fertig, wenn
 
-- [ ] AC-01 bis AC-07 haben einen Nachweis im Ergebnis der jeweiligen Session oder sind mit Grund und Ticket verschoben; AC-02 ist am TV beobachtet oder als `angenommen, Validierung offen` geführt.
-- [ ] Schwere Befunde sind behoben oder als Ticket angelegt; Sprint liegt unter `docs/sprints/erledigt/`.
+- [x] AC-01 bis AC-07 haben einen Nachweis im Ergebnis der jeweiligen Session oder sind mit Grund und Ticket verschoben; AC-02 ist am TV beobachtet oder als `angenommen, Validierung offen` geführt.
+- [x] Schwere Befunde sind behoben oder als Ticket angelegt; Sprint liegt unter `docs/sprints/erledigt/`.
 
 ## Prüfen
 
@@ -47,4 +47,4 @@ task check
 
 ## Ergebnis
 
-–
+Review abgeschlossen, Abnahme in der Sprint-README; keine schweren Befunde, kein Eingriff in `src/`.
