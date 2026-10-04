@@ -29,6 +29,9 @@ export default defineConfig({
     host: true,
     port: Number(process.env.K3C_VITE_PORT ?? 5173),
     proxy: { '/api': `http://localhost:${serverPort}`, '/ws': { target: `ws://localhost:${serverPort}`, ws: true } },
+    // Worktrees (.claude, zehntausende Dateien) und laufend geschriebene Ausgaben nicht beobachten,
+    // sonst blockiert der Watcher unter Windows die Event-Loop und Anfragen hängen sekundenlang.
+    watch: { ignored: ['**/.claude/**', '**/.omc/**', '**/.work/**', '**/logs/**', '**/reports/**', '**/saves/**', '**/dist/**', '**/_site/**', '**/bin/**'] },
   },
   preview: { host: true, port: 4173 },
   // .claude/worktrees enthält komplette Checkouts anderer Branches; deren Tests gehören nicht zu diesem Lauf.
