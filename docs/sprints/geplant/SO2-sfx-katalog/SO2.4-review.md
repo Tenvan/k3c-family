@@ -28,7 +28,7 @@ Stil, Geschmack der Klänge, Optimierung.
 ## Schritte
 
 1. Branch anlegen, `Status: in Arbeit`. `task check` grün.
-2. `git fetch && git diff <Start-Commit>..origin/develop` lesen (nur den Diff), Befunde nach `docs/arbeitsweise.md` behandeln.
+2. `git fetch && git diff origin/develop...origin/sprint/so2` lesen (nur den Diff), Befunde nach `docs/arbeitsweise.md` behandeln.
 3. Nachweis je Kriterium AC-01 bis AC-06 aus den Ergebnissen von SO2.1 bis SO2.3 (und SO2.5, falls schon da) prüfen.
 4. Abnahme (höchstens fünf Zeilen) in die Sprint-README schreiben, mit Versionsvorschlag.
 5. B-167 auf `erledigt` setzen und nach `docs/backlog/archiv/` verschieben (Index-Zeile in „Archiv“); B-011 bleibt eingeplant (SO4), Notiz „Effekte: SO2 fertig“.

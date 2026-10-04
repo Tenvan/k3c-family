@@ -28,7 +28,7 @@ Stil, Formulierungen, neue Assets.
 ## Schritte
 
 1. Branch anlegen, `Status: in Arbeit`. `task check` grün.
-2. `git fetch && git diff <Start-Commit>..origin/develop` lesen (nur den Diff), Befunde nach `docs/arbeitsweise.md` behandeln.
+2. `git fetch && git diff origin/develop...origin/sprint/gr1` lesen (nur den Diff), Befunde nach `docs/arbeitsweise.md` behandeln.
 3. Nachweis je Kriterium AC-01 bis AC-06 aus den Ergebnissen von GR1.1 bis GR1.3 prüfen.
 4. Abnahme (höchstens fünf Zeilen) in die Sprint-README schreiben, mit Versionsvorschlag.
 5. B-161 auf `erledigt` setzen und nach `docs/backlog/archiv/` verschieben (Index-Zeile in „Archiv“).

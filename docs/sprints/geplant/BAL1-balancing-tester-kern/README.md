@@ -6,9 +6,9 @@
 - **Einschiebbar:** ja
 - **Tickets:** B-099, B-159
 - **Start-Commit:** –
-- **Spec:** Entwurf
+- **Spec:** freigegeben
 - **Revision:** 1
-- **Freigabe:** –
+- **Freigabe:** 2026-10-04, Chat (Ralf), Revision 1, durch 🧑; umfasst B-099, B-159 und die Domänen-Ausnahme `tools/k3c-dev/`; mit Änderungen aus dem Spec-Review (Werkzeug als Tool in k3c-dev, veraltete Fragen in B-099 gestrichen)
 
 ## Ausgangslage
 
@@ -20,7 +20,7 @@ Ein Werkzeug spielt viele deterministische Läufe mit Bots und liefert Kennzahle
 
 ## Beteiligte und Zielgruppen
 
-Entwickler und Agenten nutzen das Werkzeug; 🧑 entscheidet, wo es lebt (siehe Offene Fragen).
+Entwickler und Agenten nutzen das Werkzeug. Es lebt als Tool in k3c-dev (`tools/k3c-dev/internal/`), beschlossen von 🧑 am 2026-10-04.
 
 ## Anforderungen
 
@@ -31,6 +31,8 @@ B-099 › Anforderungen (Szenario-Matrix, Bot-Profile, Kennzahlen je Lauf; Beric
 Zielkorridore und `task balance` (BAL2, B-157), weitere Profile und Sensitivität (BAL3, B-158), Abgleich mit echten Abenden (BAL4, B-160).
 
 ## Regeln und Einschränkungen
+
+**Domänen-Ausnahme (Freigabe dieser Spec erlaubt sie):** Der Tester (Bots, Kennzahlen, Replay) liegt in k3c-dev unter `tools/k3c-dev/internal/` (Domäne SRV); BAL1.1 bis BAL1.3 dürfen dort und am Task in `Taskfile.yml` ändern. Die Simulation selbst bleibt in `engine/sim` und wird nur benutzt.
 
 Deterministisch (`engine/rng`, keine Wanduhr); Bots nur über `PlayerCommand`; Schichtgrenzen und Komplexitäts-Budget aus `docs/arbeitsweise.md`; Aufgaben nur über `task`. Einschiebbar zwischen den Phasen, kein zweiter aktiver Nicht-Einschiebbar-Sprint.
 
@@ -54,7 +56,7 @@ Lauf bricht ab → „ungültig“ mit Seed im Report. Replay-Datei mit unbekann
 
 ## Offene Fragen
 
-- Wo lebt das Werkzeug (Paket `engine/balance` mit eigenem Befehl oder Tool in k3c-dev)? Entscheidet 🧑 bei der Aktivierung (B-099 › Offene Fragen).
+keine (Ort des Werkzeugs: Tool in k3c-dev, 🧑 2026-10-04)
 
 ## Sessions
 

@@ -64,7 +64,7 @@ keine
 |---|---|---|---|---|
 | W4.1 | `W4.1-wiederbeleben.md` | Umsetzung | autonom | offen |
 | W4.2 | `W4.2-berufe-haendler.md` | Umsetzung | autonom | offen |
-| W4.3 | `W4.3-elite-limit-heilung-golden.md` | Umsetzung | autonom | offen |
+| W4.3 | `W4.3-krieger-elite-limit-heilung.md` | Umsetzung | autonom | offen |
 | W4.4 | `W4.4-review.md` | Review | autonom | offen |
 
 Bei `Reife: Entwurf` genügen Stichpunkte mit den Kriterien in Klammern statt Session-Dateien. Vor dem Aktivieren

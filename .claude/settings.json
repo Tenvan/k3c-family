@@ -1,0 +1,14 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(git worktree remove *)",
+      "Bash(git worktree unlock *)",
+      "Bash(git worktree prune)",
+      "Bash(git branch -D *)",
+      "Bash(git push origin --delete *)"
+    ]
+  },
+  "enabledMcpjsonServers": [
+    "k3c-dev"
+  ]
+}

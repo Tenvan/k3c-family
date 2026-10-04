@@ -28,7 +28,7 @@ Stil, Geschmack bei Stärke und Aussehen der Effekte, Optimierung.
 ## Schritte
 
 1. Branch anlegen, `Status: in Arbeit`. `task check` grün.
-2. `git fetch && git diff <Start-Commit>..origin/develop` lesen (nur den Diff), Befunde nach `docs/arbeitsweise.md` behandeln.
+2. `git fetch && git diff origin/develop...origin/sprint/gr5` lesen (nur den Diff), Befunde nach `docs/arbeitsweise.md` behandeln.
 3. Nachweis je Kriterium AC-01 bis AC-07 aus den Ergebnissen von GR5.1 und GR5.2 prüfen.
 4. Abnahme (höchstens fünf Zeilen) in die Sprint-README schreiben, mit Versionsvorschlag.
 5. B-164 auf `erledigt` setzen und nach `docs/backlog/archiv/` verschieben (Index-Zeile in „Archiv“).

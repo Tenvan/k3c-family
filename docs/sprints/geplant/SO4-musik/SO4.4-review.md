@@ -28,7 +28,7 @@ Stil, Geschmack der Stückwahl, Optimierung.
 ## Schritte
 
 1. Branch anlegen, `Status: in Arbeit`. `task check` grün.
-2. `git fetch && git diff <Start-Commit>..origin/develop` lesen (nur den Diff), Befunde nach `docs/arbeitsweise.md` behandeln.
+2. `git fetch && git diff origin/develop...origin/sprint/so4` lesen (nur den Diff), Befunde nach `docs/arbeitsweise.md` behandeln.
 3. Nachweis je Kriterium AC-01 bis AC-06 aus den Ergebnissen von SO4.2 und SO4.3 (und SO4.5, falls schon da) prüfen.
 4. Abnahme (höchstens fünf Zeilen) in die Sprint-README schreiben, mit Versionsvorschlag.
 5. B-168 auf `erledigt` setzen und nach `docs/backlog/archiv/` verschieben (Index-Zeile in „Archiv“); B-011 mit Notiz zum Stand (Musik: SO4 fertig) im Ticket belassen oder archivieren, je nachdem, ob alle Kriterien von B-011 erfüllt sind.

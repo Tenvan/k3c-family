@@ -28,7 +28,7 @@ Stil, Optimierung, Messung am Pi.
 ## Schritte
 
 1. Branch anlegen, `Status: in Arbeit`. `task check` und `task check:go` grün.
-2. `git fetch && git diff <Start-Commit>..origin/develop` lesen (nur den Diff), Befunde nach `docs/arbeitsweise.md` behandeln.
+2. `git fetch && git diff origin/develop...origin/sprint/lt1` lesen (nur den Diff), Befunde nach `docs/arbeitsweise.md` behandeln.
 3. Nachweis je Kriterium AC-01 bis AC-06 aus den Ergebnissen von LT1.1 bis LT1.3 prüfen.
 4. Abnahme (höchstens fünf Zeilen) in die Sprint-README schreiben, mit Versionsvorschlag.
 5. B-175 auf `erledigt` setzen und nach `docs/backlog/archiv/` verschieben (Index-Zeile in „Archiv“).

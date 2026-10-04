@@ -28,7 +28,7 @@ Stil, Geschmack der Grafikauswahl, Optimierung, Atlas.
 ## Schritte
 
 1. Branch anlegen, `Status: in Arbeit`. `task check` grün.
-2. `git fetch && git diff <Start-Commit>..origin/develop` lesen (nur den Diff), Befunde nach `docs/arbeitsweise.md` behandeln.
+2. `git fetch && git diff origin/develop...origin/sprint/gr3` lesen (nur den Diff), Befunde nach `docs/arbeitsweise.md` behandeln.
 3. Nachweis je Kriterium AC-01 bis AC-06 aus den Ergebnissen von GR3.1 und GR3.2 prüfen (AC-06: `task check` grün, 2 Spieler im Split-Screen im Browser-Pane ansehen).
 4. Abnahme (höchstens fünf Zeilen) in die Sprint-README schreiben, mit Versionsvorschlag.
 5. B-010 auf `erledigt` setzen und nach `docs/backlog/archiv/` verschieben (Index-Zeile in „Archiv“).
