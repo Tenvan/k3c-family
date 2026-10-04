@@ -1,5 +1,6 @@
 import Phaser from 'phaser';
 import { GAME_HEIGHT, GAME_WIDTH, GROUND_Y, UNIT_PX } from '../core/constants';
+import { t } from '../core/texts';
 import type { World } from '../model/types';
 import { WorldRenderer } from './worldRenderer';
 
@@ -50,7 +51,7 @@ function ridge(scene: Phaser.Scene, widthPx: number, color: number, scrollFactor
 
 /** Text „Stufe n wird geladen“ in der Mitte der Spielfläche; die Kamera der Zelle zentriert dort (`centerOn`). */
 export function placeholderLayer(scene: Phaser.Scene, depth: number | null): Phaser.GameObjects.Layer {
-  const text = depth === null ? 'Stufe wird geladen' : `Stufe ${depth} wird geladen`;
+  const text = depth === null ? t('stage.loading') : t('stage.loadingN', { depth });
   const layer = scene.add.layer();
   layer.add(scene.add.text(GAME_WIDTH / 2, GAME_HEIGHT / 2, text, PLACEHOLDER_TEXT).setOrigin(0.5));
   return layer;

@@ -1,9 +1,9 @@
 import Phaser from 'phaser';
 import { GAME_HEIGHT, GAME_WIDTH } from '../core/constants';
 import { loadSettings, saveSettings, type Settings } from '../core/settings';
+import { setLanguage, t } from '../core/texts';
 import {
   MenuPress,
-  OPTIONS_TEXT,
   OPTION_IDS,
   OPTION_PAD_KEYS as PAD,
   applyOption,
@@ -34,6 +34,8 @@ export class OptionsScene extends Phaser.Scene {
   private settings!: Settings;
   private selected = 0;
   private rows: Phaser.GameObjects.Text[] = [];
+  private title!: Phaser.GameObjects.Text;
+  private hint!: Phaser.GameObjects.Text;
   private keys!: Record<'up' | 'down' | 'w' | 's' | 'left' | 'right' | 'enter' | 'space' | 'esc', Phaser.Input.Keyboard.Key>;
   private padHeld = new Set<string>();
   private menu = new MenuPress();
@@ -45,6 +47,7 @@ export class OptionsScene extends Phaser.Scene {
 
   create(): void {
     this.settings = loadSettings();
+    setLanguage(this.settings.language);
     this.selected = 0;
     this.padHeld = new Set();
     this.menu = new MenuPress();
@@ -52,8 +55,8 @@ export class OptionsScene extends Phaser.Scene {
     const K = Phaser.Input.Keyboard.KeyCodes;
     this.keys = this.input.keyboard!.addKeys({ up: K.UP, down: K.DOWN, w: K.W, s: K.S, left: K.LEFT, right: K.RIGHT, enter: K.ENTER, space: K.SPACE, esc: K.ESC }) as OptionsScene['keys'];
     this.add.rectangle(0, 0, GAME_WIDTH, GAME_HEIGHT, 0x000000, 0.8).setOrigin(0);
-    this.add.text(GAME_WIDTH / 2, 130, OPTIONS_TEXT.title, { ...STYLE, fontSize: '64px', strokeThickness: 10 }).setOrigin(0.5);
-    this.add.text(GAME_WIDTH / 2, GAME_HEIGHT - 60, OPTIONS_TEXT.hint, { ...STYLE, fontSize: '28px', strokeThickness: 4 }).setOrigin(0.5);
+    this.title = this.add.text(GAME_WIDTH / 2, 130, '', { ...STYLE, fontSize: '64px', strokeThickness: 10 }).setOrigin(0.5);
+    this.hint = this.add.text(GAME_WIDTH / 2, GAME_HEIGHT - 60, '', { ...STYLE, fontSize: '28px', strokeThickness: 4 }).setOrigin(0.5);
     this.rows = OPTION_IDS.map((_, i) => this.add.text(GAME_WIDTH / 2, TOP + i * ROW_H, '', { ...STYLE, fontSize: `${FONT_PX}px` }).setOrigin(0.5));
     // Touch über das Fenster, wie in der Lobby: das Touch-Overlay liegt über dem Canvas, die Ereignisse laufen bis hierher.
     const onTap = (e: PointerEvent) => {
@@ -75,10 +78,15 @@ export class OptionsScene extends Phaser.Scene {
     }
     if (want) {
       const result = applyOption(this.settings, OPTION_IDS[this.selected]!, want);
-      if (result.settings !== this.settings) saveSettings((this.settings = result.settings));
+      if (result.settings !== this.settings) {
+        saveSettings((this.settings = result.settings));
+        setLanguage(this.settings.language);
+      }
       if (result.close) return this.close();
     }
     if (close) return this.close();
+    this.title.setText(t('opt.title'));
+    this.hint.setText(t('opt.hint'));
     this.rows.forEach((row, i) => {
       const id = OPTION_IDS[i]!;
       row.setText(`${i === this.selected ? '▶  ' : '    '}${optionLabel(this.settings, id)}`).setColor(i === this.selected ? '#ffd166' : '#ffffff');

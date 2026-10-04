@@ -1,28 +1,15 @@
 /**
  * Logik der Optionen-Szene ohne Phaser (S5.2, B-146, B-135): Eintragsliste, Auswahl, Werte, „Menu kurz“.
- * `OptionsScene` zeichnet nur und gibt Eingaben weiter. Texte stehen vorerst hier, S5.3 zieht sie in die Textdateien um.
+ * `OptionsScene` zeichnet nur und gibt Eingaben weiter. S5.3 hat sie in die Textdateien (`src/core/texts.*.ts`) umgezogen.
  */
 import { clampVolume, type Settings } from '../core/settings';
+import { t } from '../core/texts';
 import type { SlotCommand } from './localSlots';
 
-export type OptionId = 'music' | 'sfx' | 'screenshake' | 'flash' | 'colorblind' | 'resume';
+export type OptionId = 'music' | 'sfx' | 'screenshake' | 'flash' | 'colorblind' | 'language' | 'resume';
 
 /** Feste Reihenfolge der Einträge */
-export const OPTION_IDS: readonly OptionId[] = ['music', 'sfx', 'screenshake', 'flash', 'colorblind', 'resume'];
-
-export const OPTIONS_TEXT = {
-  title: 'Optionen',
-  music: 'Musik',
-  sfx: 'Effekte',
-  screenshake: 'Wackeln',
-  flash: 'Blitze',
-  colorblind: 'Farbschwäche-Symbole',
-  resume: 'Weiter',
-  on: 'an',
-  off: 'aus',
-  hint: 'Hoch/Runter wählen · Links/Rechts ändern · A / Enter umlegen · Menu / Esc schließen',
-  openButton: 'Optionen',
-} as const;
+export const OPTION_IDS: readonly OptionId[] = ['music', 'sfx', 'screenshake', 'flash', 'colorblind', 'language', 'resume'];
 
 /** Pad-Tasten (standard mapping), die die Szene liest. B (Index 1) bleibt frei: Edge-Zurück auf der Xbox. */
 export const OPTION_PAD_KEYS = { A: 0, VIEW: 8, MENU: 9, UP: 12, DOWN: 13, LEFT: 14, RIGHT: 15 } as const;
@@ -61,6 +48,8 @@ export function applyOption(settings: Settings, id: OptionId, dir: OptionDir): O
       const key = id === 'colorblind' ? 'colorblindSymbols' : id;
       return { settings: { ...settings, [key]: !settings[key] }, close: false };
     }
+    case 'language':
+      return { settings: { ...settings, language: settings.language === 'de' ? 'en' : 'de' }, close: false };
     case 'resume':
       return { settings, close: dir === 'confirm' };
   }
@@ -68,21 +57,22 @@ export function applyOption(settings: Settings, id: OptionId, dir: OptionDir): O
 
 /** Zeilentext, z. B. „Musik  ◀ 70 % ▶“ oder „Blitze  an“. */
 export function optionLabel(settings: Settings, id: OptionId): string {
-  const t = OPTIONS_TEXT;
-  const onOff = (v: boolean) => (v ? t.on : t.off);
+  const onOff = (v: boolean) => t(v ? 'opt.on' : 'opt.off');
   switch (id) {
     case 'music':
-      return `${t.music}  ◀ ${settings.musicVolume} % ▶`;
+      return `${t('opt.music')}  ◀ ${settings.musicVolume} % ▶`;
     case 'sfx':
-      return `${t.sfx}  ◀ ${settings.sfxVolume} % ▶`;
+      return `${t('opt.sfx')}  ◀ ${settings.sfxVolume} % ▶`;
     case 'screenshake':
-      return `${t.screenshake}  ${onOff(settings.screenshake)}`;
+      return `${t('opt.screenshake')}  ${onOff(settings.screenshake)}`;
     case 'flash':
-      return `${t.flash}  ${onOff(settings.flash)}`;
+      return `${t('opt.flash')}  ${onOff(settings.flash)}`;
     case 'colorblind':
-      return `${t.colorblind}  ${onOff(settings.colorblindSymbols)}`;
+      return `${t('opt.colorblind')}  ${onOff(settings.colorblindSymbols)}`;
+    case 'language':
+      return `${t('opt.language')}  ◀ ${t(`lang.${settings.language}`)} ▶`;
     case 'resume':
-      return t.resume;
+      return t('opt.resume');
   }
 }
 

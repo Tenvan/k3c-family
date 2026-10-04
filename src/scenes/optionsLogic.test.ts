@@ -6,7 +6,7 @@ const base: Settings = { ...DEFAULT_SETTINGS };
 
 describe('Einträge', () => {
   it('stehen in fester Reihenfolge', () => {
-    expect(OPTION_IDS).toEqual(['music', 'sfx', 'screenshake', 'flash', 'colorblind', 'resume']);
+    expect(OPTION_IDS).toEqual(['music', 'sfx', 'screenshake', 'flash', 'colorblind', 'language', 'resume']);
   });
 
   it('jeder Eintrag hat einen Text', () => {
@@ -41,6 +41,14 @@ describe('Werte', () => {
     expect(applyOption(a, 'screenshake', 'right').settings.screenshake).toBe(true);
     expect(applyOption(base, 'flash', 'left').settings).toEqual({ ...base, flash: false });
     expect(applyOption(base, 'colorblind', 'confirm').settings).toEqual({ ...base, colorblindSymbols: false });
+  });
+
+  it('Sprache wechselt zwischen Deutsch und English, in jede Richtung', () => {
+    const en = applyOption(base, 'language', 'right').settings;
+    expect(en.language).toBe('en');
+    expect(applyOption(en, 'language', 'left').settings.language).toBe('de');
+    expect(applyOption(base, 'language', 'confirm').close).toBe(false);
+    expect(optionLabel(en, 'language')).toContain('English');
   });
 
   it('nur „Weiter“ mit Bestätigen schließt', () => {

@@ -2,6 +2,7 @@
  * Auswahl- und Befehlslogik der Lobby ohne Phaser (SP08.3): Start-Parameter (B-082), Eintragsliste, Befehle, Hinweise.
  * `LobbyScene` zeichnet nur und gibt Eingaben weiter.
  */
+import { t } from '../core/texts';
 import type { RoomInfo } from '../online/clientProtocol';
 import type { Status } from '../online/clientConnection';
 
@@ -72,11 +73,11 @@ export function moveSelection(selected: number, dir: number, count: number): num
 }
 
 export function entryLabel(e: LobbyEntry, save: string): string {
-  if (e.kind === 'play') return `Spielen  (${save})`;
-  if (e.kind === 'retry') return 'Erneut versuchen';
-  if (e.kind === 'reload') return 'Seite neu laden';
+  if (e.kind === 'play') return t('lobby.play', { save });
+  if (e.kind === 'retry') return t('lobby.retry');
+  if (e.kind === 'reload') return t('lobby.reload');
   const r = e.room;
-  return `${r.code}  ${r.name}  ·  Stufe ${r.depth}  ·  ${r.taken}/4 Plätze  ·  ${r.running ? 'läuft' : 'pausiert'}`;
+  return t('lobby.room', { code: r.code, name: r.name, depth: r.depth, taken: r.taken, state: t(r.running ? 'lobby.running' : 'lobby.paused') });
 }
 
 /** Zeile unter dem Zeiger (Touch), -1 = keine */
@@ -87,7 +88,7 @@ export function rowAt(y: number, top: number, rowHeight: number, count: number):
 
 /** Hinweis der Lobby: Verbindungsstand oder Fehlertext des Servers (jeder Fehler-Code bringt seine `message` mit) */
 export function lobbyNotice(c: { status: Status; notice: string | null }): string | null {
-  if (c.status === 'connecting') return c.notice ?? 'Verbinde …';
+  if (c.status === 'connecting') return c.notice ?? t('net.connecting');
   return c.notice;
 }
 
