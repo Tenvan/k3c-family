@@ -1,11 +1,11 @@
 # BAL2 · SIM · Zielkorridor-Prüfung und `task balance`
 
-- **Status:** geplant
+- **Status:** erledigt
 - **Domäne:** SIM
 - **Reife:** bereit
 - **Einschiebbar:** ja
 - **Tickets:** B-157
-- **Start-Commit:** –
+- **Start-Commit:** 1fa9529
 - **Spec:** freigegeben
 - **Revision:** 1
 - **Freigabe:** 2026-10-04, Chat (Ralf), Revision 1, durch 🧑; umfasst B-157 und die Domänen-Ausnahmen `tools/k3c-dev/` und `.github/`; mit Änderungen aus dem Spec-Review (F1-Frage gestrichen, „knapp“ = 5 pp / 10 % bestätigt)
@@ -62,14 +62,16 @@ keine (Zahlen: `docs/rules/zielkorridore.md`, F1 erledigt, Q02)
 
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
-| BAL2.1 | `BAL2.1-korridore-bewertung.md` | Umsetzung | autonom | offen |
-| BAL2.2 | `BAL2.2-task-balance-bericht.md` | Umsetzung | autonom | offen |
-| BAL2.3 | `BAL2.3-ci-lauf.md` | Umsetzung | autonom | offen |
-| BAL2.4 | `BAL2.4-review.md` | Review | autonom | offen |
+| BAL2.1 | `BAL2.1-korridore-bewertung.md` | Umsetzung | autonom | fertig |
+| BAL2.2 | `BAL2.2-task-balance-bericht.md` | Umsetzung | autonom | fertig |
+| BAL2.3 | `BAL2.3-ci-lauf.md` | Umsetzung | autonom | fertig |
+| BAL2.4 | `BAL2.4-review.md` | Review | autonom | fertig |
 
 Bei `Reife: Entwurf` genügen Stichpunkte mit den Kriterien in Klammern statt Session-Dateien. Vor dem Aktivieren
 wird jede Session als eigene Datei nach `docs/vorlagen/session.md` geschrieben.
 
 ## Abnahme
 
-–
+2026-10-04, Agent (Claude Opus 5.5) in BAL2.4, leichtes Review. AC-01, AC-02: Ergebnis BAL2.1; AC-03 bis AC-05: Ergebnis BAL2.2; AC-06: Ergebnis BAL2.3, CI-Lauf auf dem Sprint-Branch grün, Artefakt `k3c-balance` vorhanden (https://github.com/Tenvan/k3c-family/actions/runs/37204084366); AC-07: `task check`, `task check:go`, `task check:dev` grün.
+Schwere Befunde: keine; `data/` nur um die neue Datei `data/balance-targets.json` ergänzt (Grenzen laut `TestGrenzenWieTabelle` wie `zielkorridore.md`), keine Werte geändert. Nicht messbare Ziele stehen in BAL2.1. B-157 archiviert, B-099 bleibt eingeplant (BAL3); B-230 (Burg hält nur 47 %) bleibt offen.
+Version: v0.6.0 vorgeschlagen (gemeinsamer Tag nach v0.5.0, Minor); gesetzt erst nach Bestätigung durch 🧑.

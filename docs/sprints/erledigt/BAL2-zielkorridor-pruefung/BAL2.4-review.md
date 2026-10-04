@@ -1,6 +1,6 @@
 # BAL2.4 · Review und Abnahme des Sprints BAL2
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Review
 - **Agent:** autonom
 - **Branch:** bal2/4-review
@@ -36,8 +36,8 @@ Stil, Optimierung, Änderung der Korridore (REG).
 
 ## Fertig, wenn
 
-- [ ] AC-01 bis AC-07 haben einen Nachweis im Ergebnis der jeweiligen Session oder sind mit Grund und Ticket verschoben.
-- [ ] Schwere Befunde sind behoben oder als Ticket angelegt; Sprint liegt unter `docs/sprints/erledigt/`.
+- [x] AC-01 bis AC-07 haben einen Nachweis im Ergebnis der jeweiligen Session oder sind mit Grund und Ticket verschoben.
+- [x] Schwere Befunde sind behoben oder als Ticket angelegt; Sprint liegt unter `docs/sprints/erledigt/`.
 
 ## Prüfen
 
@@ -48,4 +48,4 @@ task check
 
 ## Ergebnis
 
-–
+Review leicht: Diff gegen `origin/develop` gelesen, keine schweren Befunde, keine Änderung an Code. AC-01 bis AC-07 nachgewiesen (siehe Abnahme in der Sprint-README). CI-Nachweis AC-06: Lauf 37204084366 grün, Artefakt `k3c-balance`. Checks grün (`task check`, `task check:go`, `task check:dev`).

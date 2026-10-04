@@ -1,6 +1,6 @@
 # BAL2.1 · Korridor-Daten laden und bewerten
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Branch:** bal2/1-korridore-bewertung
@@ -40,9 +40,9 @@ Die bestätigten Zielkorridore liegen als Daten vor und werden geladen; ein Ziel
 
 ## Fertig, wenn
 
-- [ ] AC-01: Test belegt Laden und Ladefehler bei Ziel ohne Kennzahl.
-- [ ] AC-02: Test belegt „im Korridor“, „knapp“ und „verletzt“ mit festen Werten.
-- [ ] `task check:go` grün.
+- [x] AC-01: Test belegt Laden und Ladefehler bei Ziel ohne Kennzahl.
+- [x] AC-02: Test belegt „im Korridor“, „knapp“ und „verletzt“ mit festen Werten.
+- [x] `task check:go` grün.
 
 ## Prüfen
 
@@ -52,4 +52,24 @@ task check:go
 
 ## Ergebnis
 
-–
+**Umgesetzt** (Balance-Paket `tools/k3c-dev/internal/balance/`, nicht `engine/balance`: BAL1 liegt in k3c-dev):
+- `data/balance-targets.json` (neu, über `*.json` schon eingebettet, `embed.go` unverändert): Version, Randbreite (5 pp / 10 %), 100 feste Seeds `"1"`…`"100"`, drei Ziele mit Kennzahl-ID, Szenario (2 Spieler, `saver`, Wald, 5 Tage), Grenzen und Regelbezug. Zahlen aus `zielkorridore.md` § 1 und § 3.
+- `targets.go`: Laden und Prüfen (`LoadTargets`, `DefaultTargets`), Kennzahl-IDs `castleHeld`, `firstWallBeforeDusk1`, `destroyedPerWave`. Unbekannte Kennzahl, falsche Art, unbekannter Bot, fehlende oder verdrehte Grenzen sind Ladefehler.
+- `evaluate.go`: `Targets.Evaluate(Report) []Verdict` (rein): Status `ok`, `knapp`, `verletzt`, `ungültig`, Wert, Seeds zum Nachspielen bei `verletzt`, Seeds abgebrochener Läufe.
+
+**Festlegungen** (ungeprüft durch 🧑, bei Bedarf ändern): „knapp“ = Wert im Korridor, aber höchstens die Randbreite von einer Grenze entfernt (besteht, Ampel gelb); knapp außerhalb zählt als „verletzt“. Die natürlichen Enden eines Anteils (0 %, 100 %) zählen nicht als Grenze für „knapp“. Median bei nur einer Grenze: Randbreite = 10 % vom Betrag der Grenze (Obergrenze 1 → 0,1). Ein abgebrochener Lauf oder fehlende Messwerte machen das Urteil „ungültig“. `FailSeeds` bei Anteilen: unter der Untergrenze die Seeds ohne erfüllte Bedingung, über der Obergrenze die mit erfüllter; bei Medianen die Seeds mit Wert außerhalb. Hinweis: `DataHash` der Replays umfasst alle `data/*.json`, die neue Datei ändert ihn einmalig (nur Warnung beim Abspielen alter Replays).
+
+**Noch nicht messbar** (nicht in der Datei):
+- Gold am Morgen je Spieler (Median): Tester liefert Gold zu Dämmerungsbeginn und als Summe, nicht je Spieler am Morgen.
+- Höhle erreicht vor Tag 6; Hub-Stufe 2 und 3; Abstand der Wellen unter Tage: Szenario hat nur eine Stufe, der Bot `saver` reist nicht, keine Hub-Stufe in den Kennzahlen.
+- Erster Turm vor Ende Tag 2: nur die erste Mauer wird erfasst, kein Turm.
+- Holz ≥ 100 ab Tag 3 und Kämpfer je Hub an Tag 3 und 6: Stand nur zu Dämmerungsbeginn bzw. Wellenbeginn, nicht zu Tagesbeginn.
+- Gegner einer Welle bis Tagesanbruch besiegt, Skill-Punkte nach Tag 10: Kennzahl fehlt.
+- Grad Dev, Leicht, Hart, Ultra (§ 2): Grad-Option fehlt im Szenario.
+- Bosse (K2), Vollmond und Blutmond (K3): Mechanik fehlt.
+- Tick-Dauer p99: Benchmark/Lasttest (LT1), nicht der Tester.
+
+**Nachweis:**
+- AC-01: `TestZielkorridoreLaden` (Datei lädt, 100 Seeds; unbekannte Kennzahl, falsche Art, unbekannter Bot → Fehler).
+- AC-02: `TestBewertungAnteil` (ok, knapp unten und oben, verletzt unten und oben), `TestBewertungMedian` (ok, knapp, verletzt), dazu `TestFailSeedsAnteil`, `TestBewertungUngueltig`, `TestGrenzenWieTabelle` (Datei und Tabelle nennen dieselben Grenzen).
+- `task check`, `task check:go`, `task check:dev` grün (`-race` übersprungen: kein C-Compiler).
