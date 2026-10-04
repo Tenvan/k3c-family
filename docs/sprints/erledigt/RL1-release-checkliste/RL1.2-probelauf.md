@@ -1,6 +1,6 @@
 # RL1.2 · Probelauf der Checkliste ohne Tag, Sprint abschließen
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Workshop
 - **Agent:** Mensch
 - **Branch:** rl1/2-probelauf
@@ -35,8 +35,8 @@ Tag setzen, Befunde beheben (nur Tickets), Änderung der Liste (falls nötig: Ti
 
 ## Fertig, wenn
 
-- [ ] AC-03: Probelauf ohne Tag durchgeführt, Ergebnis je Punkt in der Abnahme; rote Punkte als Tickets.
-- [ ] Sprint liegt unter `docs/sprints/erledigt/`, B-170 archiviert.
+- [x] AC-03: Probelauf ohne Tag durchgeführt, Ergebnis je Punkt in der Abnahme; rote Punkte als Tickets.
+- [x] Sprint liegt unter `docs/sprints/erledigt/`, B-170 archiviert.
 
 ## Prüfen
 
@@ -48,4 +48,18 @@ Manuelle Prüfungen (Pi, Xbox) nur durch 🧑.
 
 ## Ergebnis
 
-–
+Agenten-Teil des Probelaufs, 2026-10-04, Stand `origin/develop` 46aa69b (CI-Lauf 37227816602). Kein Tag gesetzt.
+
+| Punkt | Ergebnis | Beleg |
+|---|---|---|
+| Golden amd64 | grün | CI-Job „Go · Tests · Lint · Cross-Build“ |
+| Golden arm64 | grün | CI-Job „Go · Tests arm64“ |
+| Alles grün (`task check:all`) | rot (flackert) | Windows: `check`, `build`, `check:go`, `check:dev` je einzeln grün; in 1 von 2 Go-Läufen `TestRestore` rot, einzeln 53× grün → B-274. Weitere Fehlläufe ohne Befund im Projekt: Hook-Artefakt `.omc/` im Sprint-Ordner, fehlendes `npm ci` für das k3c-dev-Frontend im frischen Worktree (`task install`) |
+| Spielstand-Migration | grün | `IslandSaveVersion = 4`, Fixtures `testdata/saves/v1`–`v4`, `TestJedeVersionHatFixture` in `go test` grün |
+| Dev-Reste aus | rot | Server: Dev-Mode an, solange `K3C_DEV` ≠ `0`, `Dockerfile`/`compose.yaml` setzen nichts → B-273. Client: Overlay standardmäßig an (`?dev=0` schaltet ab, `src/scenes/debugOverlay.ts`) → bekannt als B-098 (K5); die Checkliste beschreibt den Zielzustand |
+| Pi-Image | grün (CI), Gerät `angenommen, Validierung offen` | CI-Job „Docker · Image amd64/arm64 · Smoke-Test“; `release.yml` für v0.6.0 grün; Pull am Pi nur durch 🧑 |
+| Version stimmt | `angenommen, Validierung offen` | `VERSION` aus `git describe` (Taskfile), `TestHealthMeldetVersion` grün, Landingpage zeigt `versionLine`/`versionMismatch`; Abgleich am Pi und auf der Xbox nur durch 🧑 |
+| Credits vollständig | grün | `src/tools/credits.test.ts` in `task test` grün |
+| Tag-Schema | grün | Verweis auf „Entscheidungen und Versionen“ vorhanden |
+
+Ergebnis: Mit zwei roten Punkten (B-273, B-274) und dem bekannten B-098 wäre ein Tag blockiert. Die Liste selbst brauchte keine Korrektur.

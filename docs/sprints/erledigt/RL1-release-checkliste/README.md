@@ -1,11 +1,11 @@
 # RL1 · INF · Release-Checkliste
 
-- **Status:** geplant
+- **Status:** erledigt
 - **Domäne:** INF
 - **Reife:** bereit
 - **Einschiebbar:** ja
 - **Tickets:** B-170
-- **Start-Commit:** –
+- **Start-Commit:** 1fa9529
 - **Spec:** freigegeben
 - **Revision:** 1
 - **Freigabe:** 2026-10-04, Chat (Ralf), Revision 1, durch 🧑; umfasst B-170; mit Änderungen aus dem Spec-Review (Q20-Frage gestrichen, B-170 an Q20 angeglichen)
@@ -57,12 +57,14 @@ keine (Release-Rhythmus: Q20, geklärt 2026-10-03)
 
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
-| RL1.1 | `RL1.1-abschnitt-release.md` | Umsetzung | autonom | offen |
-| RL1.2 | `RL1.2-probelauf.md` | Workshop | Mensch | offen |
+| RL1.1 | `RL1.1-abschnitt-release.md` | Umsetzung | autonom | fertig |
+| RL1.2 | `RL1.2-probelauf.md` | Workshop | Mensch | fertig |
 
 Bei `Reife: Entwurf` genügen Stichpunkte mit den Kriterien in Klammern statt Session-Dateien. Vor dem Aktivieren
 wird jede Session als eigene Datei nach `docs/vorlagen/session.md` geschrieben.
 
 ## Abnahme
 
-–
+2026-10-04, Agent (Claude Opus 5.5) in RL1.2, Abschluss auf Anweisung von 🧑 (Chat). AC-01, AC-02, AC-04: Ergebnis RL1.1. AC-03: Probelauf ohne Tag durchgeführt (Ergebnis RL1.2, Stand `origin/develop` 46aa69b); Pi-Pull und Versionszeile auf der Xbox angenommen, Validierung offen.
+Rot: Dev-Mode im Release-Image an (B-273), `TestRestore` flackert unter Windows (B-274), Overlay standardmäßig an (B-098, K5). Ein Tag wäre damit blockiert.
+Version: v0.6.1 vorgeschlagen (Doku-Sprint, Patch); gesetzt erst nach Bestätigung durch 🧑 und grüner Checkliste.
