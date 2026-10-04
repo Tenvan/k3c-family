@@ -4,11 +4,11 @@
 - **Domäne:** SRV
 - **Reife:** bereit
 - **Einschiebbar:** nein
-- **Tickets:** B-175
+- **Tickets:** B-175, B-042
 - **Start-Commit:** –
-- **Spec:** Entwurf
+- **Spec:** freigegeben
 - **Revision:** 1
-- **Freigabe:** –
+- **Freigabe:** 2026-10-04, Chat (Ralf), Revision 1, durch 🧑; umfasst B-175, B-042; mit Änderungen aus dem Spec-Review (B-042 im Feld Tickets, Review-Diff korrigiert, `-max-duration` 60 min bestätigt, Protokoll = aktuelle Version)
 
 ## Ausgangslage
 
@@ -53,7 +53,7 @@ Server nicht erreichbar → Exit-Code 2; Ziel verfehlt → Messwerte und Befund 
 
 ## Offene Fragen
 
-keine
+keine (Obergrenze der Nachtmessung: Flag `-max-duration`, Standard 60 min, 🧑 2026-10-04)
 
 ## Sessions
 

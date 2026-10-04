@@ -6,9 +6,9 @@
 - **Einschiebbar:** ja
 - **Tickets:** B-170
 - **Start-Commit:** –
-- **Spec:** Entwurf
+- **Spec:** freigegeben
 - **Revision:** 1
-- **Freigabe:** –
+- **Freigabe:** 2026-10-04, Chat (Ralf), Revision 1, durch 🧑; umfasst B-170; mit Änderungen aus dem Spec-Review (Q20-Frage gestrichen, B-170 an Q20 angeglichen)
 
 ## Ausgangslage
 
@@ -51,7 +51,7 @@ Ein Punkt rot → kein Tag, Befund als Ticket.
 
 ## Offene Fragen
 
-- Release-Rhythmus: Entscheidet 🧑 (`docs/fragenkatalog.md` Q20); blockiert die Freigabe.
+keine (Release-Rhythmus: Q20, geklärt 2026-10-03)
 
 ## Sessions
 

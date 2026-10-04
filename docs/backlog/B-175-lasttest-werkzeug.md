@@ -6,9 +6,9 @@
 - **Status:** eingeplant
 - **Sprint:** LT1
 - **Erstellt:** 2026-10-03
-- **Spec:** Entwurf
+- **Spec:** freigegeben
 - **Revision:** 1
-- **Freigabe:** –
+- **Freigabe:** 2026-10-04, Chat (Ralf), Revision 1, durch 🧑 (mit LT1)
 
 ## Ausgangslage
 
@@ -25,7 +25,7 @@ Ein Werkzeug startet Räume mit scriptbaren Bots gegen einen laufenden Server (z
 ## Anforderungen
 
 - Befehl `task load -- -url <Server> -token <T> -rooms 2 -players 3 -duration 15m` (Werkzeug `cmd/k3c-load`, Go, nur Standardbibliothek plus die vorhandene WebSocket-Bibliothek).
-- Die Bots sprechen **Protokoll v3 über `/ws`** (hello, create, input) wie ein Client, nie über interne Abkürzungen. Ihre Eingaben sind deterministisch aus einem Seed (`engine/rng`), mindestens: Laufen mit Richtungswechsel, Sprint, Münzen geben; Räume mit Präfix `test-` (werden vom Server aufgeräumt).
+- Die Bots sprechen **das aktuelle Protokoll über `/ws`** (hello, create, input) wie ein Client (Version aus `ProtocolVersion`, heute v3), nie über interne Abkürzungen. Ihre Eingaben sind deterministisch aus einem Seed (`engine/rng`), mindestens: Laufen mit Richtungswechsel, Sprint, Münzen geben; Räume mit Präfix `test-` (werden vom Server aufgeräumt).
 - Das Werkzeug fragt `/api/status` alle 5 s ab und führt je Raum eine Reihe aus Zeit, Phase (Tag, Dämmerung, Nacht), Tick, Tick-Dauer last und p99.
 - `/api/status` liefert zusätzlich die CPU-Auslastung des Server-Prozesses (Feld `cpu`, Prozent einer CPU, gemittelt über das letzte Intervall); die Quelle ist plattformabhängig (Linux `/proc/self/stat`, sonst Prozesszeit), fehlt sie, bleibt das Feld weg.
 - Bericht als JSON (Zeitreihe) und als Markdown-Tabelle: je Raum und Phase p99 min, Mittel, max, CPU Mittel und Spitze, Bewertung gegen das Ziel (Parameter `-target-p99 10`): `erreicht` (max < Ziel), `knapp` (Mittel < Ziel ≤ max), `verfehlt` (Mittel ≥ Ziel); Exit-Code 0, 1 bei verfehlt.
