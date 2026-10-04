@@ -1,11 +1,11 @@
 # GR6 · PLAT · Credits-Seite
 
-- **Status:** geplant
+- **Status:** erledigt
 - **Domäne:** PLAT
 - **Reife:** bereit
 - **Einschiebbar:** ja
 - **Tickets:** B-165
-- **Start-Commit:** –
+- **Start-Commit:** 605f467
 - **Spec:** freigegeben
 - **Revision:** 1
 - **Freigabe:** 2026-10-03, Chat (Ralf), Revision 1, durch 🧑; umfasst B-165; mit Änderungen aus dem Spec-Review (CREDITS-Dateien als einzige Quelle, Nicht-Ziel Übersetzung nach Q05)
@@ -57,13 +57,15 @@ keine
 
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
-| GR6.1 | `GR6.1-vollstaendigkeit-datenquelle.md` | Umsetzung | autonom | offen |
-| GR6.2 | `GR6.2-cc-by-seite.md` | Umsetzung | autonom | offen |
-| GR6.3 | `GR6.3-review.md` | Review | autonom | offen |
+| GR6.1 | `GR6.1-vollstaendigkeit-datenquelle.md` | Umsetzung | autonom | fertig |
+| GR6.2 | `GR6.2-cc-by-seite.md` | Umsetzung | autonom | fertig |
+| GR6.3 | `GR6.3-review.md` | Review | autonom | fertig |
 
 Bei `Reife: Entwurf` genügen Stichpunkte mit den Kriterien in Klammern statt Session-Dateien. Vor dem Aktivieren
 wird jede Session als eigene Datei nach `docs/vorlagen/session.md` geschrieben.
 
 ## Abnahme
 
-–
+2026-10-03, Agent (Claude Sonnet) in GR6.3. AC-01, AC-02: Ergebnis GR6.1; AC-03, AC-04: Ergebnis GR6.2 (`src/tools/credits.test.ts`, `task check` grün, 672 Tests). Sichtprüfung am TV: angenommen, Validierung offen (🧑).
+Befunde: keine schweren; CC-BY-Namensnennungen (Warped Caves, LPC-Reittiere) unverändert in den CREDITS-Dateien und auf der Seite, keine zweite Kopie, Test liest die echten Verzeichnisse. Neue Tickets: keine. Ein PR je Sprint.
+Version: v0.7.0 vorgeschlagen (Minor: neue Credits-Seite aus den CREDITS-Dateien mit Vollständigkeits-Test; aktuell v0.5.0, davor stehen F4 v0.6.0 und X1 v0.5.1 aus, bei anderer Reihenfolge entsprechend anpassen); gesetzt erst nach Bestätigung durch 🧑.
