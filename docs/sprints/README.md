@@ -10,6 +10,7 @@ Reihenfolge in Wellen, Bahnen je Domäne und Zuordnung Mensch/autonom (zwei Acco
 
 | Sprint | Domäne | Thema | Am Ende sichtbar | Ordner |
 |---|---|---|---|---|
+| DBG3 | PLAT | Dungeon-Master-Seite /dm (einschiebbar) | `/dm` am Handy: Raum wählen, „Zeit 4×“, Raum am TV läuft schneller | `aktiv/DBG3-dungeon-master-seite/` |
 
 ## Offen am Gerät
 
@@ -63,7 +64,6 @@ dann über den Go-Server mit mehreren Räumen und gemischten Spielern.
 | BAL4 | REG | Abgleich Spielmetrik und Simulator | Entwurf | `geplant/BAL4-metrik-abgleich/` |
 | SO2 | CLI | SFX-Katalog und Einbau | Entwurf | `geplant/SO2-sfx-katalog/` |
 | SO4 | CLI | Musik je Zustand | Entwurf | `geplant/SO4-musik/` |
-| DBG3 | PLAT | Dungeon-Master-Seite /dm | Entwurf | `geplant/DBG3-dungeon-master-seite/` |
 
 Gesamtplan und Begründung: [`../plan-weiterentwicklung.md`](../plan-weiterentwicklung.md). Offene Entscheidungen: [`../fragenkatalog.md`](../fragenkatalog.md).
 
