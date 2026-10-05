@@ -12,7 +12,6 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-007](B-007-skill-baum.md) | SIM | Idee | hoch | offen | – | Skill-Baum mit Tank und Zauberer ist spielbar |
 | [B-008](B-008-spieleabend.md) | REG | Frage | hoch | eingeplant | P1 | Familie hat einen Spieleabend gespielt und Feedback gegeben |
 | [B-011](B-011-sound.md) | CLI | Idee | mittel | eingeplant | SO1 | Spiel hat Sound und Musik |
-| [B-012](B-012-mine.md) | SIM | Idee | mittel | eingeplant | W2 | Mine (Tiefe 2) ist vollständig |
 | [B-013](B-013-gegner-elite.md) | SIM | Idee | mittel | eingeplant | K1 | Restliche Gegner und Elite-KI sind umgesetzt |
 | [B-014](B-014-krieger-elite.md) | SIM | Idee | mittel | eingeplant | W4 | Krieger und Elite-Truppen sind umgesetzt |
 | [B-015](B-015-gebaeude-werte.md) | REG | Problem | mittel | eingeplant | BR1 | Gebäude-HP und -Kosten sind gebalanced |
@@ -38,8 +37,6 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-103](B-103-inseln-bosse.md) | SIM | Idee | mittel | eingeplant | K2 | Inseln mit Endboss und gemeinsamem Inselwechsel sind spielbar |
 | [B-105](B-105-anlegen-dialog-optionen.md) | CLI | Idee | mittel | eingeplant | K5 | Der Anlegen-Dialog der Lobby wählt Grad, Ziel und Niederlage-Modus |
 | [B-107](B-107-debug-panel-gradwechsel.md) | CLI | Idee | mittel | eingeplant | K5 | Ein Debug-Panel im Dev-Mode wechselt den Schwierigkeitsgrad und weitere Optionen |
-| [B-114](B-114-plantage-adern.md) | SIM | Idee | hoch | eingeplant | W2 | Farm-Plantage lässt Holz nachwachsen, Adern liefern Stein bis Kristall unendlich mit Abbaurate |
-| [B-115](B-115-stufen-breite-eisen-kristall.md) | SIM | Idee | mittel | eingeplant | W2 | Die Stufen sind nach unten schmaler und dichter, Eisenstollen und Kristallhöhle sind als Stufen angelegt |
 | [B-116](B-116-gebaeude-wirkungen.md) | SIM | Idee | mittel | eingeplant | W3 | Tor, Kaserne, Taverne, Heilplatz, Schmiede, Rüstkammer und Zaubertum wirken im Spiel |
 | [B-117](B-117-anzeige-bau-lager.md) | CLI | Idee | mittel | eingeplant | W6 | Der Client zeigt Wartezeit, Lagerstand, Hub-Stufe, Adern und Plantage |
 | [B-120](B-120-wiederbeleben.md) | SIM | Idee | mittel | eingeplant | W4 | Gefallene Monarchen bleiben liegen, Mitspieler beleben sie wieder, sonst Respawn nach 15 s |
@@ -117,6 +114,9 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-286](B-286-lasttest-tick-reihe-wackelt.md) | SRV | Problem | niedrig | offen | – | TestTickReiheJeRaum schlägt im Gesamtlauf gelegentlich fehl |
 | [B-287](B-287-hub-ausbau-beutel-maximum.md) | REG | Problem | mittel | offen | – | Hub-Stufe 4 und 5 sind mit dem Beutel-Maximum bezahlbar |
 | [B-288](B-288-alte-spielstaende-ohne-ruecksicht.md) | INF | Schuld | mittel | offen | – | Formatänderungen am Spielstand nehmen keine Rücksicht auf alte Stände |
+| [B-289](B-289-aggressionspool-mit-adern.md) | REG | Problem | mittel | offen | – | Der Aggressionspool steigt mit Adern nicht zu schnell |
+| [B-290](B-290-raum-fuenf-stufen.md) | SRV | Idee | mittel | offen | – | Der Raum erzeugt alle fünf Stufen und der Client kennt Eisenstollen und Kristallhöhle |
+| [B-291](B-291-lava-nicht-auf-mauerlinien.md) | SIM | Problem | mittel | offen | – | Lava liegt nicht auf den Mauerlinien |
 
 ## Archiv
 
@@ -131,6 +131,7 @@ Zeile in diesen Abschnitt.
 | [B-002](archiv/B-002-diagnose-tui.md) | SRV | Idee | mittel | erledigt | SP10 | Diagnose-TUI zeigt den laufenden Server |
 | [B-003](archiv/B-003-server-sprache.md) | SRV | Frage | mittel | erledigt | SP00 | Server-Sprache ist entschieden |
 | [B-009](archiv/B-009-komplexitaet-pruefen.md) | INF | Idee | hoch | erledigt | SP01 | Komplexitäts-Budget wird automatisch geprüft |
+| [B-012](archiv/B-012-mine.md) | SIM | Idee | mittel | erledigt | W2 | Mine (Tiefe 2) ist vollständig |
 | [B-016](archiv/B-016-mehr-lokale-spieler.md) | CLI | Frage | mittel | erledigt | SP08 | Layout für mehr als zwei lokale Spieler ist entschieden |
 | [B-018](archiv/B-018-renderer-aufteilen.md) | CLI | Schuld | mittel | verworfen | – | worldRenderer und GameScene liegen unter 300 Zeilen |
 | [B-020](archiv/B-020-smoke-test.md) | INF | Schuld | niedrig | erledigt | SP03 | Server-Tests laufen lokal wie in der CI |
@@ -196,6 +197,8 @@ Zeile in diesen Abschnitt.
 | [B-109](archiv/B-109-materialien-gebaeude-regelwerk.md) | REG | Idee | hoch | erledigt | R2 | Materialien und Gebäude sind im Regelwerk beschlossen |
 | [B-110](archiv/B-110-skillung-klassen-level.md) | REG | Idee | hoch | erledigt | R3 | Skillung, Klassen und Level von Monarchen und Bürgern sind im Regelwerk beschlossen |
 | [B-017](archiv/B-017-klassen-preset.md) | REG | Frage | mittel | erledigt | R3 | Klassen-Presets pro Spieler sind entschieden |
+| [B-114](archiv/B-114-plantage-adern.md) | SIM | Idee | hoch | erledigt | W2 | Farm-Plantage lässt Holz nachwachsen, Adern liefern Stein bis Kristall unendlich mit Abbaurate |
+| [B-115](archiv/B-115-stufen-breite-eisen-kristall.md) | SIM | Idee | mittel | erledigt | W2 | Die Stufen sind nach unten schmaler und dichter, Eisenstollen und Kristallhöhle sind als Stufen angelegt |
 | [B-127](archiv/B-127-regelwerk-gegner-bosse.md) | REG | Idee | hoch | erledigt | R4 | Gegner, Wellen, Bosse und Events sind im Regelwerk beschlossen |
 | [B-004](archiv/B-004-regelwerk.md) | REG | Idee | hoch | erledigt | – | Regelwerk ist ausführlich diskutiert und ausgearbeitet |
 | [B-100](archiv/B-100-mehrstufen-insel.md) | SIM | Idee | hoch | erledigt | SP12 | Eine Insel hat n Stufen, die alle laufen und pro Spieler begehbar sind |

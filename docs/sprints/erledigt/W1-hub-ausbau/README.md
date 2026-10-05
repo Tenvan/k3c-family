@@ -72,4 +72,4 @@ wird jede Session als eigene Datei nach `docs/vorlagen/session.md` geschrieben.
 - 2026-10-05 (W1.4, autonom): AC-01 (W1.1: `hub_level_test.go`), AC-02 (W1.2: `site_level_test.go`), AC-03 (W1.3: `repair_test.go`), AC-04 (W1.3: `save_migration_test.go`, Fixture `v4`, Golden in W1.1) mit Nachweis; `task check` und `task check:go` grün (`-race` übersprungen, kein C-Compiler).
 - Review des Diffs: keine schweren Befunde (Werte nur in `data/`, deterministisch, 2 Spieler zahlen gemeinsam, Hub-Stufe bleibt bei Zerstörung, v1–v3 unverändert, Golden nur `sim-mine-welle` durch die Hub-Sperre, `rng.json` unverändert). Abweichung W1.3 (Felder optional in v4, Fixture v4) begründet.
 - Neue Tickets aus dem Sprint: B-287 (Hub-Stufe 4/5 mit Beutel-Maximum kaum bezahlbar), B-288 (alte Spielstände ohne Rücksicht); keine weiteren.
-- Version: v0.8.0 vorgeschlagen (Minor: Hub- und Mauer-Ausbau wirken in der Simulation; v0.7.0 gesetzt).
+- Version: v0.8.0 gesetzt (2026-10-05, nach Bestätigung durch 🧑; Minor: Hub- und Mauer-Ausbau wirken in der Simulation).

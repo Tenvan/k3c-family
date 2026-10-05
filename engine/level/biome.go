@@ -34,7 +34,18 @@ type Biome struct {
 	ResourcesPerChunk Ordered[Ordered[[2]int]] `json:"resourcesPerChunk"`
 	Cycle             Cycle                    `json:"cycle"`
 	PrimaryResource   string                   `json:"primaryResource"`
-	Enemies           struct {
+	// Veins: Adern der Stufe (B-114), Count Stück der Art Kind (z. B. stoneVein); ohne Feld keine.
+	Veins struct {
+		Count int    `json:"count"`
+		Kind  string `json:"kind"`
+	} `json:"veins"`
+	// Lava: Chunks der Art „lava“ tragen in der Mitte einen Streifen von WidthUnits, der Figuren DamagePerSecond
+	// Schaden zufügt (B-115, Q28; Wirkung in engine/sim/lava.go). Ohne Feld keine Lava.
+	Lava struct {
+		DamagePerSecond float64 `json:"damagePerSecond"`
+		WidthUnits      float64 `json:"widthUnits"`
+	} `json:"lava"`
+	Enemies struct {
 		Portal []string `json:"portal"`
 		Night  []string `json:"night"`
 	} `json:"enemies"`

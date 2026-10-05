@@ -3,12 +3,12 @@
 - **Domäne:** SIM
 - **Typ:** Idee
 - **Prio:** mittel
-- **Status:** eingeplant
+- **Status:** erledigt
 - **Sprint:** W2
 - **Erstellt:** 2026-10-02
-- **Spec:** Entwurf
+- **Spec:** freigegeben
 - **Revision:** 1
-- **Freigabe:** –
+- **Freigabe:** 2026-10-05, Chat, durch 🧑, Revision 1, mit Sprint W2
 
 ## Ausgangslage
 
@@ -64,3 +64,15 @@ Gegner-Pools der neuen Stufen (Regelwerk III, B-129). Ob Lava auch Gegnern schad
 Aus R2.2 und R2.3. Abhängig von B-100, B-103, B-114 und Regelwerk III.
 
 R4 (2026-10-02): Gegner und Pools der beiden neuen Stufen stehen in `docs/rules/gegner.md`; Umsetzung in B-129 (Daten), Portale ab Tiefe 3 drei.
+
+W2.2 (2026-10-05), Dichte gemessen mit `engine/level/level_test.go` › `TestBreiteUndDichte` (endliche Objekte: Bäume, Felsen, Kupfererz, Truhen, Camps je 100 Units, 100 Seeds):
+
+| Biom | Breite | Dichte vorher | Dichte nachher |
+|---|---|---|---|
+| Wald | 900–1100 | 4,20 | 4,20 |
+| Höhle | 700–900 | 3,16 | 3,16 |
+| Mine | 550–700 | 1,97 | 3,19 (`resourcesPerChunk` angehoben) |
+| Eisenstollen | 480–560 | – | 3,34 |
+| Kristallhöhle | 400–480 | – | 3,67 |
+
+Q28 erfüllt: unter Tage nicht abnehmend, ab der Mine ≥ 2,8.

@@ -223,6 +223,24 @@ func (g *gen) entities(chunks []Chunk) []Entity {
 		c := rng.Pick(g.r, hideouts)
 		out = append(out, Entity{Kind: "skillPoint", X: g.inside(c)})
 	}
+	return append(out, g.veins(chunks)...)
+}
+
+// veins setzt die Adern (B-114) nach allen übrigen Würfen, damit bestehende Seeds gleich bleiben: je Ader ein eigener
+// Ressourcen-Chunk (nicht Hub, Rand, Ausgang, Portal oder Ereignis).
+func (g *gen) veins(chunks []Chunk) []Entity {
+	var spots []Chunk
+	for _, c := range chunks {
+		if c.Kind != "hub" && c.Kind != "edge" && c.Kind != "exit" && c.Kind != "portal" && !isEvent(c.Kind) {
+			spots = append(spots, c)
+		}
+	}
+	var out []Entity
+	for range min(g.b.Veins.Count, len(spots)) {
+		i := g.r.Int(0, len(spots)-1)
+		out = append(out, Entity{Kind: g.b.Veins.Kind, X: g.inside(spots[i])})
+		spots = append(spots[:i], spots[i+1:]...)
+	}
 	return out
 }
 

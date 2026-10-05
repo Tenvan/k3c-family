@@ -169,7 +169,11 @@ func gather(w *World, t *Troop, dt float64) {
 	if !walkTo(t, node.X, dt) {
 		return
 	}
-	g := economy.Gatherables[node.Kind]
+	g, _ := gatherOf(node.Kind)
+	if isVein(node) {
+		gatherVein(t, g, dt)
+		return
+	}
 	node.Progress += dt / g.WorkSeconds
 	if node.Progress >= 1 {
 		nodes := w.Nodes[:0]
@@ -179,6 +183,7 @@ func gather(w *World, t *Troop, dt float64) {
 			}
 		}
 		w.Nodes = nodes
+		node.gone = true
 		t.Job = &Job{Type: "carry", Resource: g.Resource, Amount: g.Amount}
 	}
 }
@@ -215,12 +220,15 @@ func findJob(w *World, t *Troop) *Job {
 	}
 	var node *ResourceNode
 	for _, n := range w.Nodes {
-		if n.Marked && !isWorker(w, n.WorkerID) && !resourceFull(w, economy.Gatherables[n.Kind].Resource) && (node == nil || math.Abs(n.X-w.HubX) < math.Abs(node.X-w.HubX)) {
+		g, _ := gatherOf(n.Kind)
+		if n.Marked && nodeFree(w, n) && !resourceFull(w, g.Resource) && (node == nil || math.Abs(n.X-w.HubX) < math.Abs(node.X-w.HubX)) {
 			node = n
 		}
 	}
 	if node != nil {
-		node.WorkerID = intPtr(t.ID)
+		if !isVein(node) {
+			node.WorkerID = intPtr(t.ID)
+		}
 		return &Job{Type: "gather", NodeID: node.ID}
 	}
 	return nil

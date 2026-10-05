@@ -27,6 +27,7 @@ type BuildingData struct {
 	ArcherSlots, RangeBonus, BowRack int
 	Offers                           []Offer     // Angebots-Zahlziele am Gebäude (Q52), Mechanik ab W4
 	Levels                           []LevelData // Ausbau-Stufen am Platz (Mauer, Turm; hub_level.go)
+	Plantation                       Plantation  // Farm: Bäume wachsen nach (plantation.go)
 }
 
 // Offer ist ein Angebots-Zahlziel mit festem Abstand DX zum Platz seines Gebäudes.
@@ -90,6 +91,7 @@ var (
 			Amount int
 		}
 		Gatherables map[string]Gatherable
+		Veins       map[string]VeinData // Adern (vein.go), nicht in Gatherables
 		Storage     struct{ BasePerHub, PerStorage int }
 		RecruitCamp struct {
 			MaxVagrants                 int
