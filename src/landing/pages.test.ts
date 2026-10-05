@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { PAGES } from './pages';
+import { newGameHref, PAGES } from './pages';
 
 /** Parameter, die game.html kennt: `parseStartParams` in src/scenes/lobbyLogic.ts, dazu `dev` (debugOverlay) und `touch` (touchInput). */
 const KNOWN_PARAMS = ['autostart', 'fresh', 'save', 'mock', 'room', 'dev', 'touch'];
@@ -13,5 +13,19 @@ describe('Landing-Kacheln', () => {
       const unknown = [...new URL(href, 'http://x/').searchParams.keys()].filter((k) => !KNOWN_PARAMS.includes(k));
       expect(unknown, `${p.title}: ${href}`).toEqual([]);
     }
+  });
+
+  it('Neues Spiel (B-292): fresh mit eigenem, gültigem Spielstandnamen je Aufruf', () => {
+    const tile = PAGES.find((p) => p.title === 'Neues Spiel');
+    expect(typeof tile?.href).toBe('function');
+    const a = newGameHref(1_000_000_000_000);
+    const b = newGameHref(1_000_000_000_001);
+    for (const href of [a, b, (tile!.href as () => string)()]) {
+      const params = new URL(href, 'http://x/').searchParams;
+      expect(params.get('fresh')).toBe('1');
+      expect(params.get('save')).toMatch(/^[a-z0-9-]{1,32}$/);
+    }
+    expect(a).not.toBe(b);
+    expect(tile!.description).not.toMatch(/k3c|gesichert/);
   });
 });

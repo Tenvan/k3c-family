@@ -14,6 +14,11 @@ export interface PageEntry {
   primary?: boolean;
 }
 
+/** Start-URL „Neues Spiel“: der Server lehnt `fresh` auf vorhandene Stände ab, deshalb trägt jeder Start einen eigenen Namen (aus der Uhrzeit). */
+export function newGameHref(now: number = Date.now()): string {
+  return `game.html?fresh=1&save=neu-${now.toString(36)}`;
+}
+
 export const PAGES: PageEntry[] = [
   {
     title: 'Weiterspielen',
@@ -25,9 +30,9 @@ export const PAGES: PageEntry[] = [
   },
   {
     title: 'Neues Spiel',
-    description: 'Lobby öffnen · Oberwelt · Seed „k3c“ · bis zu 2 Spieler · alter Spielstand wird gesichert',
+    description: 'Lobby öffnen · Oberwelt · frischer Spielstand mit eigenem Namen · bis zu 2 Spieler · alte Spielstände bleiben',
     icon: '🏰',
-    href: 'game.html?fresh=1',
+    href: () => newGameHref(),
     section: 'play',
   },
   {

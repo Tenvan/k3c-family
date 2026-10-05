@@ -114,6 +114,7 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-289](B-289-aggressionspool-mit-adern.md) | REG | Problem | mittel | offen | – | Der Aggressionspool steigt mit Adern nicht zu schnell |
 | [B-290](B-290-raum-fuenf-stufen.md) | SRV | Idee | mittel | offen | – | Der Raum erzeugt alle fünf Stufen und der Client kennt Eisenstollen und Kristallhöhle |
 | [B-291](B-291-lava-nicht-auf-mauerlinien.md) | SIM | Problem | mittel | offen | – | Lava liegt nicht auf den Mauerlinien |
+| [B-292](B-292-neues-spiel-eindeutiger-name.md) | PLAT | Problem | hoch | offen | – | Die Kachel „Neues Spiel“ startet auch bei vorhandenem Spielstand familie |
 
 ## Archiv
 
