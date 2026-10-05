@@ -1,11 +1,11 @@
 # W3 · SIM · Gebäude-Wirkungen
 
-- **Status:** geplant
+- **Status:** erledigt
 - **Domäne:** SIM
 - **Reife:** bereit
 - **Einschiebbar:** nein
 - **Tickets:** B-116
-- **Start-Commit:** –
+- **Start-Commit:** 6ea06d5
 - **Spec:** freigegeben
 - **Revision:** 1
 - **Freigabe:** 2026-10-04, Chat, durch 🧑, Revision 1; mit Änderungen aus der Spec-Prüfung
@@ -60,13 +60,16 @@ Gebäude zerstört → Wirkung entfällt bis zum Wiederaufbau.
 
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
-| W3.1 | `W3.1-tor-kaserne-taverne.md` | Umsetzung | autonom | offen |
-| W3.2 | `W3.2-heilplatz-zaubertum-schmiede-ruestkammer.md` | Umsetzung | autonom | offen |
-| W3.3 | `W3.3-review.md` | Review | autonom | offen |
+| W3.1 | `W3.1-tor-kaserne-taverne.md` | Umsetzung | autonom | fertig |
+| W3.2 | `W3.2-heilplatz-zaubertum-schmiede-ruestkammer.md` | Umsetzung | autonom | fertig |
+| W3.3 | `W3.3-review.md` | Review | autonom | fertig |
 
 Bei `Reife: Entwurf` genügen Stichpunkte mit den Kriterien in Klammern statt Session-Dateien. Vor dem Aktivieren
 wird jede Session als eigene Datei nach `docs/vorlagen/session.md` geschrieben.
 
 ## Abnahme
 
-–
+- 2026-10-05 (W3.3, autonom): AC-01 (W3.1: `gate_test.go`, `barracks_test.go`, `tavern_test.go`; W3.2: `healing_test.go`, `spell_tower_test.go`), AC-02 (`sites_test.go`), AC-03 (`TestSchmiedeUndRuestkammerZerstoerbarWirkungOffen`), AC-04 (Golden geprüft, ohne Diff; `task check:go` und `task check` grün, `-race` übersprungen) mit Nachweis.
+- Review des Diffs: keine schweren Befunde, keine Befunde behoben; `TestTurmAusbauSchuetzeBleibt` durch Q31 angepasst (nicht gelockert).
+- Neue Tickets: keine.
+- Version: v0.10.0 vorgeschlagen (Minor: Tor, Kaserne-Limit, Taverne, Heilplatz und Zaubertum wirken in der Simulation; letzter Tag v0.8.0, v0.9.0 für W2 vorgeschlagen).

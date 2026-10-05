@@ -59,11 +59,11 @@ type Coin struct {
 
 // Job ist der Auftrag eines Bauern; es sind nur die Felder seines Typs gesetzt (IDs sind nie 0).
 type Job struct {
-	Type     string `json:"type"` // build, repair, gather, carry, fetchBow
-	SiteID   int    `json:"siteId,omitempty"`
-	NodeID   int    `json:"nodeId,omitempty"`
-	Resource string `json:"resource,omitempty"`
-	Amount   int    `json:"amount,omitempty"`
+	Type     string  `json:"type"` // build, repair, gather, carry, fetchBow
+	SiteID   int     `json:"siteId,omitempty"`
+	NodeID   int     `json:"nodeId,omitempty"`
+	Resource string  `json:"resource,omitempty"`
+	Amount   int     `json:"amount,omitempty"`
 	progress float64 // Abbau an einer Ader (vein.go): Fortschritt dieses Bauern, ohne JSON
 }
 
@@ -111,10 +111,11 @@ type Site struct {
 	BowPaidGold   int     `json:"bowPaidGold"` // Werkstatt: bezahltes Gold für den nächsten Bogen
 	// Ausbau (hub_level.go): Level = Stufe des gebauten Platzes (0 = 1), Upgrade = Zustand des Ausbaus auf die nächste
 	// Stufe ("", waitingMaterial, waitingWorker), UpgradePaid = dafür gezahltes Gold.
-	Level       int    `json:"level,omitempty"`
-	Upgrade     string `json:"upgrade,omitempty"`
-	UpgradePaid int    `json:"upgradePaid,omitempty"`
-	plots       []plot // Plantage einer gebauten Farm (plantation.go), ohne JSON
+	Level       int     `json:"level,omitempty"`
+	Upgrade     string  `json:"upgrade,omitempty"`
+	UpgradePaid int     `json:"upgradePaid,omitempty"`
+	plots       []plot  // Plantage einer gebauten Farm (plantation.go), ohne JSON
+	spellIn     float64 // Zaubertum: Sekunden bis zum nächsten Schuss (spell_tower.go), ohne JSON
 }
 
 // Castle ist die Burg in der Hub-Mitte.

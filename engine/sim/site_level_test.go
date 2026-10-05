@@ -89,7 +89,8 @@ func TestMauerStufe3BrauchtHubStufe3(t *testing.T) {
 	}
 }
 
-// Turm-Ausbau am selben Platz (Q45); der Bogenschütze bleibt oben.
+// Turm-Ausbau am selben Platz (Q45); der Bogenschütze bleibt oben, bis der Zaubertum ihn absteigen lässt (Q31,
+// spell_tower_test.go).
 func TestTurmAusbauSchuetzeBleibt(t *testing.T) {
 	w := dayWorld(t)
 	p := AddPlayer(w)
@@ -102,8 +103,8 @@ func TestTurmAusbauSchuetzeBleibt(t *testing.T) {
 	for level := 2; level <= len(buildings["tower"].Levels); level++ {
 		w.HubLevel = level
 		wantLevel(t, tower, level, x, upgradeAt(t, w, []*Player{p}, tower))
-		if archer.TowerID == nil || *archer.TowerID != tower.ID {
-			t.Fatalf("Stufe %d: Schütze nicht mehr auf dem Turm: %+v", level, archer)
+		if spell := level >= buildings["tower"].Spell.FromLevel; spell != (archer.TowerID == nil) {
+			t.Fatalf("Stufe %d: Schütze auf dem Turm = %v, erwartet %v: %+v", level, archer.TowerID != nil, !spell, archer)
 		}
 	}
 }

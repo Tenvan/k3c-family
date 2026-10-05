@@ -12,11 +12,11 @@ func isOnTower(w *World, t *Troop) bool {
 	return tower != nil && math.Abs(tower.X-t.X) < arrive
 }
 
-// freeTower ist der nächste gebaute Turm auf der Seite des Schützen mit freiem Platz.
+// freeTower ist der nächste gebaute Turm auf der Seite des Schützen mit freiem Platz; ein Zaubertum hat keine.
 func freeTower(w *World, t *Troop) *Site {
 	var best *Site
 	for _, s := range w.Sites {
-		if s.Kind != "tower" || s.State != "built" || sign(s.X-w.HubX) != sign(t.AnchorX-w.HubX) {
+		if s.Kind != "tower" || s.State != "built" || isSpellTower(w, s) || sign(s.X-w.HubX) != sign(t.AnchorX-w.HubX) {
 			continue
 		}
 		used := 0
@@ -32,17 +32,27 @@ func freeTower(w *World, t *Troop) *Site {
 	return best
 }
 
-// stepArcher: Posten ist ein freier Platz auf einem Turm, sonst hinter der äußersten Mauer seiner Seite.
-func stepArcher(w *World, t *Troop, dt float64) {
+// archerTower ist der Turm des Schützen (einen freien nimmt er sich); nil ohne Turm. Auf einem fertigen Zaubertum
+// steigt er ab und nimmt einen freien Posten (Q31).
+func archerTower(w *World, t *Troop) *Site {
 	if t.TowerID == nil {
 		if tower := freeTower(w, t); tower != nil {
 			t.TowerID = intPtr(tower.ID)
 		}
 	}
-	var tower *Site
-	if t.TowerID != nil {
-		tower = siteByID(w, *t.TowerID)
+	if t.TowerID == nil {
+		return nil
 	}
+	tower := siteByID(w, *t.TowerID)
+	if tower != nil && isSpellTower(w, tower) {
+		t.TowerID, tower = nil, nil
+	}
+	return tower
+}
+
+// stepArcher: Posten ist ein freier Platz auf einem Turm, sonst hinter der äußersten Mauer seiner Seite.
+func stepArcher(w *World, t *Troop, dt float64) {
+	tower := archerTower(w, t)
 	side := 1.0
 	if t.AnchorX < w.HubX {
 		side = -1

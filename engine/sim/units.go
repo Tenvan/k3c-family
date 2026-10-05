@@ -24,13 +24,7 @@ func spawnVagrant(w *World, campX, x float64) *Troop {
 func stepCamps(w *World, dt float64) {
 	c := economy.RecruitCamp
 	for _, camp := range w.Camps {
-		count := 0
-		for _, t := range w.Troops {
-			if t.Kind == "vagrant" && t.AnchorX == camp.X {
-				count++
-			}
-		}
-		if count >= c.MaxVagrants {
+		if vagrantsAt(w, camp.X) >= c.MaxVagrants {
 			camp.RespawnIn = c.RespawnSeconds
 			continue
 		}
@@ -46,7 +40,7 @@ func stepTroops(w *World, dt float64) {
 	for _, t := range w.Troops {
 		switch t.Kind {
 		case "vagrant":
-			wander(w, t, t.AnchorX, economy.RecruitCamp.WanderUnits, dt)
+			wander(w, t, t.AnchorX, wanderRadius(w, t), dt)
 		case "peasant":
 			stepPeasant(w, t, dt)
 		default:
@@ -263,8 +257,11 @@ func buildJob(w *World, t *Troop) *Job {
 	return nil
 }
 
-// bowToFetch ist die erste Werkstatt mit mehr Bögen im Regal, als andere Bauern schon holen.
+// bowToFetch ist die erste Werkstatt mit mehr Bögen im Regal, als andere Bauern schon holen; nil bei vollem Limit.
 func bowToFetch(w *World, t *Troop) *Site {
+	if fighters(w)+bowsInFlight(w, t) >= troopLimit(w) {
+		return nil // Limit voll (Q29): der Bogen bleibt im Regal
+	}
 	for _, s := range w.Sites {
 		if s.Kind != "workshop" || s.State != "built" || s.Bows == 0 {
 			continue
