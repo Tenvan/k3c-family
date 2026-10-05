@@ -70,6 +70,7 @@ func NewHandler(cfg Config) http.Handler {
 	mux.HandleFunc("/api/report", s.report)
 	mux.HandleFunc("/api/level", s.level)
 	mux.HandleFunc("/api/clientlog", s.clientLog)
+	mux.HandleFunc("/api/dev", s.dev)
 	if cfg.Rooms != nil {
 		cfg.Rooms.Changed = s.broadcastRooms
 		cfg.Rooms.Snapshot = func(w *sim.World, timescale int, paused bool) any { return stateOf(w, timescale, paused) }

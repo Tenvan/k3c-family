@@ -109,7 +109,7 @@ func TestSummary(t *testing.T) {
 	ticks(r, 3)
 	s := r.Summary()
 	want := Summary{Code: "KRNZ", Depth: 0, Tick: 3, Phase: "day", Day: 1, Gold: []int{100, 100},
-		Troops: s.Troops, Enemies: 0, Castle: 1000, Wave: 0, Devices: []DeviceInfo{{ID: "a", Connected: true, Slots: []int{0, 1}}}, Stages: s.Stages}
+		Troops: s.Troops, Enemies: 0, Castle: 1000, Wave: 0, Devices: []DeviceInfo{{ID: "a", Connected: true, Slots: []int{0, 1}}}, Stages: s.Stages, Scale: 1}
 	if !reflect.DeepEqual(s, want) || s.Troops["archer"] != 2 {
 		t.Fatalf("Summary: %+v", s)
 	}

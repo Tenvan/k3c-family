@@ -1,6 +1,6 @@
 # DBG3.1 · Dev-HTTP-API /api/dev mit Welle und Tageszeit
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Branch:** dbg3/1-dev-api
@@ -24,8 +24,8 @@ Aktionen „Welle auslösen“ und „Tageszeit setzen“. Dazu liefert er `/dm`
 ## Erlaubte Dateien
 
 - `engine/sim/dev.go`, `engine/sim/dev_test.go`
-- `engine/room/dev.go`, `engine/room/dev_test.go`
-- `engine/net/dev.go` (neu), `engine/net/dev_test.go`, `engine/net/handler.go`, `engine/net/static.go`
+- `engine/room/dev.go`, `engine/room/dev_test.go`, `engine/room/status.go` (Zeitraffer und Pause in der Diagnose), `engine/room/run_test.go`
+- `engine/net/dev.go` (neu), `engine/net/devpage_test.go` (neu), `engine/net/handler.go`, `engine/net/static.go`
 - `docs/protocol.md` (Abschnitt HTTP), Planungsdateien
 
 ## Nicht-Ziele
@@ -43,10 +43,10 @@ WebSocket-Protokoll ändern; Passwortschutz; Seite `dm.html` (DBG3.2).
 
 ## Fertig, wenn
 
-- [ ] AC-02: `GET /api/dev?room=CODE` liefert die Diagnose (Test).
-- [ ] AC-03: Gold, Material, Zeitraffer und Pause über `POST /api/dev` (Test).
-- [ ] AC-05: Welle und Tageszeit über `POST /api/dev` (Test).
-- [ ] `task check` und `task check:go` grün.
+- [x] AC-02: `GET /api/dev?room=CODE` liefert die Diagnose (Test).
+- [x] AC-03: Gold, Material, Zeitraffer und Pause über `POST /api/dev` (Test).
+- [x] AC-05: Welle und Tageszeit über `POST /api/dev` (Test).
+- [x] `task check` und `task check:go` grün.
 
 ## Prüfen
 
@@ -57,4 +57,9 @@ task check
 
 ## Ergebnis
 
-–
+- AC-02 geprüft (Server-Teil): `TestDevSeiteOhneDevMode` – `GET /api/dev` Liste, `GET /api/dev?room=` Diagnose mit `timescale`/`paused`, auch ohne Dev-Mode.
+- AC-03 geprüft (Server-Teil): `TestDevSeiteAktionen` – gold, material, timescale, pause über `POST /api/dev`; ohne Dev-Mode 403.
+- AC-05 geprüft (Server-Teil): `TestDevStartWave`, `TestDevSetPhase` (Sim), `TestDevSeiteAktionen` (wave, phase → Nacht mit Nachtwelle).
+- `/dm` → `dm.html`: `TestDevSeiteUnterDm` (allgemein: Pfad ohne Endung → `.html`).
+- `task check:go` und `task check` grün (2026-10-05, Agent). Abweichung: `engine/room/status.go` und `run_test.go` zusätzlich erlaubt (Diagnose zeigt Zeitraffer/Pause).
+- Lesen von `/api/dev` braucht kein Token (Spec: ohne Dev-Mode nur Diagnose); Passwortschutz bleibt Offene Frage.

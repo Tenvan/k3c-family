@@ -52,6 +52,10 @@ func (s *server) static(w http.ResponseWriter, r *http.Request) {
 		file = filepath.Join(file, "index.html")
 	}
 	data, err := os.ReadFile(file)
+	if err != nil && filepath.Ext(file) == "" { // /dm → dm.html (B-232)
+		file += ".html"
+		data, err = os.ReadFile(file)
+	}
 	if err != nil {
 		http.Error(w, "Nicht gefunden", http.StatusNotFound)
 		return
