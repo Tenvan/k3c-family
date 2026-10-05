@@ -248,7 +248,7 @@ func chooseTarget(w *World, e *Enemy, dir float64, wall *Site) *target {
 
 func attack(w *World, e *Enemy, t *target) {
 	e.Cooldown = 1 / waves.AttacksPerSecond
-	if p := t.player; p != nil && e.has("stealsGold") && p.Gold > 0 {
+	if p := t.player; p != nil && e.has("stealsGold") && p.Gold > 0 && !w.protectedNight() {
 		amount := min(p.Gold, waves.StealGold)
 		p.Gold -= amount
 		e.CarriedGold += amount

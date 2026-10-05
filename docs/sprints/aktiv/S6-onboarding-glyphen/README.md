@@ -59,7 +59,7 @@ keine
 
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
-| S6.1 | `S6.1-freundlich-grad.md` | Umsetzung | autonom | in Arbeit |
+| S6.1 | `S6.1-freundlich-grad.md` | Umsetzung | autonom | fertig |
 | S6.2 | `S6.2-glyphen.md` | Umsetzung | autonom | offen |
 | S6.3 | `S6.3-hinweise.md` | Umsetzung | autonom | offen |
 | S6.4 | `S6.4-abnahme-kind.md` | Workshop | Mensch | offen |

@@ -20,6 +20,7 @@ type IslandOptions struct {
 type Grade struct {
 	WaveSize, EnemyHP, EnemyDamage float64
 	DefaultDefeat                  string
+	ProtectedNights                int // die ersten n Nächte ohne Verlust (protectedNight), fehlt = 0
 }
 
 var (
@@ -87,6 +88,12 @@ func (isl *Island) waveFactors() (size, hp, damage float64) {
 	g := difficulty[isl.Options.Grade]
 	extra := float64(max(len(isl.Players()), 1) - 1)
 	return float64((1 + waves.PerExtraPlayer*extra) * g.WaveSize), g.EnemyHP, g.EnemyDamage
+}
+
+// protectedNight: Die Stufe gehört zu einer Insel, deren Grad die laufende Nacht schützt (protectedNights, S6.1):
+// Gegner zerstören kein Gebäude, rauben kein Gold, ein Burgfall kostet nichts. Kosten und Einkommen bleiben.
+func (w *World) protectedNight() bool {
+	return w.island != nil && w.Cycle.Phase == "night" && w.Cycle.Day <= difficulty[w.island.Options.Grade].ProtectedNights
 }
 
 // scaled skaliert eine Gegnerzahl: gerundet, mindestens 1 bei Zahl > 0.
