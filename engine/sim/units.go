@@ -142,7 +142,7 @@ func build(w *World, t *Troop, dt float64) {
 		seconds = nextLevel(w, site).BuildSeconds
 	}
 	before := site.BuildProgress
-	site.BuildProgress += dt / math.Max(0.1, seconds)
+	site.BuildProgress += dt * workFactor(t, "builder") / math.Max(0.1, seconds)
 	buildProgressEvent(w, site, before)
 	if site.BuildProgress >= 1 && upgrading {
 		finishUpgrade(w, site)
@@ -165,10 +165,10 @@ func gather(w *World, t *Troop, dt float64) {
 	}
 	g, _ := gatherOf(node.Kind)
 	if isVein(node) {
-		gatherVein(t, g, dt)
+		gatherVein(t, g, dt*mineFactor(t, g.Resource))
 		return
 	}
-	node.Progress += dt / g.WorkSeconds
+	node.Progress += dt * mineFactor(t, g.Resource) / g.WorkSeconds
 	if node.Progress >= 1 {
 		nodes := w.Nodes[:0]
 		for _, n := range w.Nodes {
