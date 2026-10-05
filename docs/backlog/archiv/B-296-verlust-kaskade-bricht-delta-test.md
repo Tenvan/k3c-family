@@ -3,7 +3,7 @@
 - **Domäne:** SRV
 - **Typ:** Frage
 - **Prio:** hoch
-- **Status:** offen
+- **Status:** erledigt
 - **Sprint:** –
 - **Erstellt:** 2026-10-05
 - **Spec:** Entwurf
@@ -70,6 +70,9 @@ weiter; (b) W4.3a darf ausnahmsweise `engine/net/delta_test.go` und `engine/sim/
 Delta-Entfernen folgt mit W5; (c) Felder ohne `omitempty`, W5 zieht `testdata/protocol/` nach.
 
 ## Notizen
+
+**Beschluss 2026-10-05 (🧑, Chat): Option (a).** Zuerst Sprint DL1 (SRV, B-297: `unset` im Delta, Testfenster),
+dann W4.3a; `engine/sim/common.go` (eine Zeile für `disarmed.cause`) ist SIM und steht jetzt in den Erlaubten Dateien von W4.3a.
 
 Gefunden in W4.3a (Sprint W4). Messung: `go test ./engine/net -run TestDelta` meldet „Tick 3057: Zustand weicht ab“;
 ohne `drops` im JSON „Feld castle hat sich im Lauf nie geändert“.
