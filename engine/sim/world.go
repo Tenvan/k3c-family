@@ -118,15 +118,11 @@ func Step(w *World, commands []PlayerCommand, dt float64) {
 	stepStorms(w, dt)
 	stepProjectiles(w, dt)
 	removeDeadEnemies(w)
-	alive := w.Troops[:0]
-	for _, t := range w.Troops {
-		if t.HP > 0 {
-			alive = append(alive, t)
-		} else {
-			releaseJob(w, t)
+	for _, t := range w.Troops { // Bürger sterben nicht: Verlust-Kaskade (Q67, warrior.go)
+		if t.HP <= 0 {
+			loseLayer(w, t)
 		}
 	}
-	w.Troops = alive
 	if w.Castle.HP <= 0 {
 		castleFallen(w)
 	}

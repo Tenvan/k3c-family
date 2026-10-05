@@ -1,24 +1,25 @@
 package sim
 
 // Kaserne und Kämpfer-Limit (B-116, Q29): Es zählen nur Kämpfer, Basis je Hub plus Zuschlag je gebauter Kaserne
-// (data/buildings.json › barracks.troopLimit). Geprüft wird nur beim Waffe-Holen (`bowToFetch`).
+// (data/buildings.json › barracks.troopLimit). Geprüft wird nur beim Waffe-Holen (`weaponToFetch`, warrior.go).
 
-// fighters zählt die Kämpfer der Welt; heute nur Bogenschützen, W4.3a ergänzt Krieger und Elite (Q40).
+// fighters zählt die Kämpfer der Welt: Bogenschützen, Krieger und Elite (Q40); Bauern, Berufe, Landstreicher nicht.
 func fighters(w *World) int {
 	n := 0
 	for _, t := range w.Troops {
-		if t.Kind == "archer" {
+		if isFighter(t.Kind) {
 			n++
 		}
 	}
 	return n
 }
 
-// bowsInFlight zählt die Bauern außer t, die gerade einen Bogen holen; sie werden gleich Kämpfer.
-func bowsInFlight(w *World, t *Troop) int {
+// weaponsInFlight zählt die Bauern außer t, die gerade eine Kämpfer-Waffe holen (Regal oder Boden); sie werden gleich
+// Kämpfer.
+func weaponsInFlight(w *World, t *Troop) int {
 	n := 0
 	for _, o := range w.Troops {
-		if o != t && o.Job != nil && o.Job.Type == "fetchBow" {
+		if o != t && o.Job != nil && fetchesFighterWeapon(w, o.Job) {
 			n++
 		}
 	}

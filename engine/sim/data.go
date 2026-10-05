@@ -25,6 +25,7 @@ type BuildingData struct {
 	HP, BuildSeconds                 float64
 	Cost                             Cost
 	ArcherSlots, RangeBonus, BowRack int
+	SwordRack                        int                // Werkstatt: Schwerter im Regal (warrior.go)
 	Offers                           []Offer            // Angebots-Zahlziele am Gebäude (Q52), Berufe: professions.go
 	CraftSeconds                     map[string]float64 // Herstellungszeit je Stück (Q35, professions.go)
 	Levels                           []LevelData // Ausbau-Stufen am Platz (Mauer, Turm; hub_level.go)
@@ -64,6 +65,7 @@ type TroopData struct {
 	HP, Speed, Damage, Range, AttacksPerSecond float64
 	Cost, RecruitCost                          Cost
 	Professions                                map[string]ProfessionData // nur peasant: Berufe (professions.go)
+	PostUnits                                  float64                   // Krieger: Posten innen vor der Sperre (warrior.go)
 }
 
 // Gatherable ist eine Ressource, die Bauern holen (Baum, Fels, Kupfererz).
