@@ -1,4 +1,4 @@
-# B-299 · Ein Sensitivitäts-Pfad ohne Wirkung ergibt einen Fehler
+# B-301 · Ein Sensitivitäts-Pfad ohne Wirkung ergibt einen Fehler
 
 - **Domäne:** SIM
 - **Typ:** Problem

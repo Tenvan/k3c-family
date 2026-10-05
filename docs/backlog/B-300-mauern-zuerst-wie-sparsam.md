@@ -1,4 +1,4 @@
-# B-298 · Das Profil „Mauern zuerst“ spielt messbar anders als „sparsam“
+# B-300 · Das Profil „Mauern zuerst“ spielt messbar anders als „sparsam“
 
 - **Domäne:** SIM
 - **Typ:** Frage

@@ -71,5 +71,5 @@ wird jede Session als eigene Datei nach `docs/vorlagen/session.md` geschrieben.
 
 2026-10-05, Review BAL3.4 (Sonnet, nur Diff): keine schweren Befunde; `task check:go` und `task check` grün.
 Kriterien: AC-05 in BAL3.1, AC-01 und AC-02 in BAL3.2, AC-03, AC-04 und AC-06 in BAL3.3 nachgewiesen.
-Neue Tickets: B-298 („Mauern zuerst“ spielt wie „sparsam“, Hub-Ausbau fehlt, Frage an 🧑), B-299 (`--vary` auf nicht neu geladene Datei ohne Fehler).
+Neue Tickets: B-300 („Mauern zuerst“ spielt wie „sparsam“, Hub-Ausbau fehlt, Frage an 🧑), B-301 (`--vary` auf nicht neu geladene Datei ohne Fehler).
 Version: v0.12.0 vorgeschlagen (Minor: neue Bot-Profile, Sensitivitäts-Lauf und Grad-Kurven im Werkzeug; aktuell v0.11.0, gemeinsam mit S6); gesetzt erst nach Bestätigung durch 🧑.

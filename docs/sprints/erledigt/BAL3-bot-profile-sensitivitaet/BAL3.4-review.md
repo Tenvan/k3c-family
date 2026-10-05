@@ -52,4 +52,4 @@ task check
 
 - Diff `origin/develop...origin/sprint/bal3` gelesen: keine schweren Befunde. Geprüft: keine Datei in `data/` oder `testdata/` geändert, `sim.UseData` lädt atomar und wird nur vom Tester benutzt, Zurücksetzen per `defer` auch bei Panic, Bericht ohne Wanduhr, keine Map-Iteration in Ausgaben, Bots nur über `PlayerCommand`, `coop2`/`coop4` mit 2 und 4 Spielern, Fehler bei zu wenigen Spielern und unbekanntem Pfad, kein Kind-Bot.
 - AC-01, AC-02: geprüft (BAL3.2, `TestNeueProfileGleicheBytes`). AC-03, AC-04: geprüft (BAL3.3, `TestSensitivityNenntGekippteZiele`, `TestKurvenJeGrad`). AC-05: geprüft (BAL3.1, Tester-README). AC-06: geprüft (`task check:dev`, `task check:go`, `task check` grün).
-- Hinweise ohne Befund als Tickets: B-298, B-299. B-158 archiviert.
+- Hinweise ohne Befund als Tickets: B-300, B-301. B-158 archiviert.
