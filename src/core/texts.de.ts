@@ -120,6 +120,16 @@ export const de = {
   'skill.hint.pad': '◀ ▶ wählen · A bestätigen · {menu} schließen',
   'skill.hint.keyboard': 'A / D wählen · Leertaste bestätigen · {menu} schließen',
   'skill.hint.touch': 'Links/rechts wählen · Münz-Taste bestätigt · {menu} schließt',
+  // Aktionen-Overlay (S3.3)
+  'hint.hold': '{key} halten: {what}',
+  'hint.press': '{key}: {what}',
+  'hint.space': 'Leertaste',
+  'hint.build': '{name} bauen',
+  'hint.pay': '{name} kaufen',
+  'hint.revive': 'Wiederbeleben',
+  'hint.attack': 'Schlag',
+  'hint.learn': 'Skill lernen',
+  'hint.respec': 'Skills zurücksetzen',
   'lang.de': 'Deutsch',
   'lang.en': 'English',
 };

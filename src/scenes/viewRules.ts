@@ -33,3 +33,6 @@ export function daylight(info: CycleInfo): number {
   // Letzte 10% der Nacht: Morgengrauen
   return info.progress > 0.9 ? (info.progress - 0.9) * 10 : 0;
 }
+
+/** Preisschild und Bauen/Zahlen im Aktionen-Overlay erscheinen, wenn ein Monarch so viele Units nah am Ziel steht */
+export const PRICE_TAG_RANGE = 6;

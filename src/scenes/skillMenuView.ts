@@ -5,15 +5,13 @@ import type { Player } from '../model/types';
 import { slotBindings, type Device } from '../input/slotBindings';
 import { fontStyle } from './fontRules';
 import type { RadarCell } from './radarView';
-import { menuEntries, slotViews, type MenuEntry, type SkillMenus } from './skillMenuLogic';
+import { menuEntries, skillName, slotViews, type MenuEntry, type SkillMenus } from './skillMenuLogic';
 
 const STYLE = { stroke: '#000000', strokeThickness: 6, fontStyle: 'bold' };
 /** Sichtbare Menüzeilen um den Cursor (passt auch ins Viertel bei 28 px) */
 const WINDOW = 5;
 const TIERS = ['', 'I', 'II', 'III', 'IV'];
 
-/** Name aus den Texten, sonst aus der ID („shieldBash“ → „Shield Bash“) */
-export const skillName = (id: string): string => nameOf('skill', id, id.replace(/([A-Z])/g, ' $1').replace(/^./, (c) => c.toUpperCase()));
 const lineName = (line: string): string => nameOf('line', line, (MONARCH.lines as Record<string, { name: string }>)[line]?.name ?? line);
 
 function entryText(e: MenuEntry, selected: boolean): string {

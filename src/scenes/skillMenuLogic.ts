@@ -3,6 +3,7 @@
  * Der Client entscheidet nichts: „lernbar“ und „Respec“ kommen aus `points` und `actions` des Servers;
  * eine Ablehnung (Tier-Gating) meldet der Server als `bad_request`.
  */
+import { nameOf } from '../core/texts';
 import { MONARCH } from '../model/data';
 import type { Player } from '../model/types';
 import { SKILL_ACTIONS, type SlotAction } from '../input/slotBindings';
@@ -27,6 +28,9 @@ export interface SlotView {
   /** Sekunden, 0 = bereit */
   cooldown: number;
 }
+
+/** Name aus den Texten, sonst aus der ID („shieldBash“ → „Shield Bash“) */
+export const skillName = (id: string): string => nameOf('skill', id, id.replace(/([A-Z])/g, ' $1').replace(/^./, (c) => c.toUpperCase()));
 
 const has = (p: Player, action: string) => p.actions.some((a) => a.action === action);
 
@@ -102,7 +106,7 @@ export class SkillMenus {
    * Rückgabe: die Eingaben, bei offenem Menü steht der Monarch (kein Laufen, Zahlen, Schlag, Skill).
    */
   route(commands: SlotCommand[], bound: readonly (MenuInput | null)[], player: (slot: number) => Player | undefined, client: MenuClient): SlotCommand[] {
-    for (const slot of [...this.open.keys()]) if (!bound[slot]) this.open.delete(slot);
+    for (const slot of this.open.keys()) if (!bound[slot]) this.open.delete(slot);
     for (const c of commands) {
       const input = bound[c.slot];
       const cmd = input ? this.step(c.slot, input, player(c.slot)) : null;

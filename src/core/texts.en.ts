@@ -110,6 +110,16 @@ export const en: Record<TextKey, string> = {
   'skill.hint.pad': '◀ ▶ select · A confirm · {menu} close',
   'skill.hint.keyboard': 'A / D select · Space confirm · {menu} close',
   'skill.hint.touch': 'Left/right select · coin button confirms · {menu} closes',
+  // Action overlay (S3.3)
+  'hint.hold': 'Hold {key}: {what}',
+  'hint.press': '{key}: {what}',
+  'hint.space': 'Space',
+  'hint.build': 'build {name}',
+  'hint.pay': 'buy {name}',
+  'hint.revive': 'revive',
+  'hint.attack': 'strike',
+  'hint.learn': 'learn skill',
+  'hint.respec': 'reset skills',
   'lang.de': 'Deutsch',
   'lang.en': 'English',
 };

@@ -60,7 +60,7 @@ Skill-Tasten am Controller (LB/RB bestätigen): 🧑, `docs/fragenkatalog.md Q06
 |---|---|---|---|---|
 | S3.1 | `S3.1-eingabe-slots.md` | Umsetzung | autonom | fertig |
 | S3.2 | `S3.2-skill-menue.md` | Umsetzung | autonom | fertig |
-| S3.3 | `S3.3-aktionen-overlay.md` | Umsetzung | autonom | offen |
+| S3.3 | `S3.3-aktionen-overlay.md` | Umsetzung | autonom | fertig |
 | S3.4 | `S3.4-abnahme-geraet.md` | Workshop | Mensch | offen |
 | S3.5 | `S3.5-review.md` | Review | autonom | offen |
 
