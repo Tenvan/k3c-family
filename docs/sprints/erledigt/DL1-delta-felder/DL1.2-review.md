@@ -1,6 +1,6 @@
 # DL1.2 · Review und Abnahme des Sprints DL1
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Review
 - **Agent:** autonom
 - **Branch:** dl1/2-review
@@ -37,8 +37,8 @@ Stil, Optimierung.
 
 ## Fertig, wenn
 
-- [ ] AC-01 bis AC-04 haben einen Nachweis im Ergebnis von DL1.1.
-- [ ] Schwere Befunde behoben oder als Ticket; Sprint liegt unter `docs/sprints/erledigt/`.
+- [x] AC-01 bis AC-04 haben einen Nachweis im Ergebnis von DL1.1.
+- [x] Schwere Befunde behoben oder als Ticket; Sprint liegt unter `docs/sprints/erledigt/`.
 
 ## Prüfen
 
@@ -49,4 +49,6 @@ task check:go
 
 ## Ergebnis
 
-–
+- Leichter Review des Diffs `origin/develop...origin/sprint/dl1`: **keine schweren Befunde.** `null` bleibt Wert (`unsetOf` prüft nur das Fehlen des Schlüssels, Test `deltaOf(cur, cur)`), `events` nie in `unset` (`k != "events"`), Server (`apply` im Go-Test) und Client (`applyDelta`) entfernen dieselben Felder, `unset` ist sortiert und fehlt, wenn leer; der Delta-Test prüft alle bisherigen Felder weiter. Die Burgtreffer-Abweichung in AC-03 läuft weiter über `stateOf`/`deltaOf`/`apply`, `castle` bleibt echt abgedeckt.
+- Geprüft: `tsc`, `oxlint` (0 Fehler), Vitest (1337), `go test ./...`, `golangci-lint` (0 issues) grün; `tests/planning.test.ts` grün.
+- AC-01 bis AC-04 haben ihren Nachweis im Ergebnis von DL1.1. Abnahme und Versionsvorschlag in der Sprint-README; B-297 archiviert, Sprint nach `docs/sprints/erledigt/`.

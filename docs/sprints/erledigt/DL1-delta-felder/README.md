@@ -1,6 +1,6 @@
 # DL1 · SRV · Delta überträgt verschwundene Felder
 
-- **Status:** aktiv
+- **Status:** erledigt
 - **Domäne:** SRV
 - **Reife:** bereit
 - **Einschiebbar:** ja
@@ -62,11 +62,14 @@ keine
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
 | DL1.1 | `DL1.1-unset.md` | Umsetzung | autonom | fertig |
-| DL1.2 | `DL1.2-review.md` | Review | autonom | offen |
+| DL1.2 | `DL1.2-review.md` | Review | autonom | fertig |
 
 Bei `Reife: Entwurf` genügen Stichpunkte mit den Kriterien in Klammern statt Session-Dateien. Vor dem Aktivieren
 wird jede Session als eigene Datei nach `docs/vorlagen/session.md` geschrieben.
 
 ## Abnahme
 
-–
+2026-10-05, Review DL1.2 (leicht, nur schwere Befunde): keine schweren Befunde. tsc, oxlint (0 Fehler), Vitest (1337), `go test`, golangci-lint (0 issues) grün.
+`null` bleibt Wert, `events` nie in `unset`, Server und Client entfernen dieselben Felder; AC-01 bis AC-04 mit Tests und Protokolltext belegt (`delta_test.go`, `clientDelta.test.ts`, `docs/protocol.md`).
+AC-03: Der Test trifft die Burg selbst alle 600 Ticks, weil sie mit W4.3a in keinem Golden-Lauf fällt; `castle` läuft weiter über `deltaOf` und `apply`. B-297 archiviert, W4.3a ist entsperrt.
+Version: v0.12.1 vorgeschlagen (Fehlerkorrektur am Protokoll, Patch nach dem vorgeschlagenen v0.12.0 aus S6; aktuell v0.11.0)
