@@ -1,11 +1,11 @@
 # W3 · SIM · Gebäude-Wirkungen
 
-- **Status:** geplant
+- **Status:** aktiv
 - **Domäne:** SIM
 - **Reife:** bereit
 - **Einschiebbar:** nein
 - **Tickets:** B-116
-- **Start-Commit:** –
+- **Start-Commit:** 6ea06d5
 - **Spec:** freigegeben
 - **Revision:** 1
 - **Freigabe:** 2026-10-04, Chat, durch 🧑, Revision 1; mit Änderungen aus der Spec-Prüfung
@@ -60,7 +60,7 @@ Gebäude zerstört → Wirkung entfällt bis zum Wiederaufbau.
 
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
-| W3.1 | `W3.1-tor-kaserne-taverne.md` | Umsetzung | autonom | offen |
+| W3.1 | `W3.1-tor-kaserne-taverne.md` | Umsetzung | autonom | in Arbeit |
 | W3.2 | `W3.2-heilplatz-zaubertum-schmiede-ruestkammer.md` | Umsetzung | autonom | offen |
 | W3.3 | `W3.3-review.md` | Review | autonom | offen |
 
