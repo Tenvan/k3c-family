@@ -42,4 +42,9 @@ Manuell durch 🧑 an der Xbox.
 
 ## Ergebnis
 
-–
+2026-10-05, **PC-Nachweis, TV offen.** Geprüft von 🧑 (Ralf) im Interview mit Agent (Claude Sonnet 5.5), Branch `sprint/so3`, Chrome am PC mit Controller und Lautsprechern, Dev-Server (`task dev`, Port 5173), Landingpage → Kachel „Hörprobe“.
+
+- **AC-03 am PC: geprüft** (🧑): Controller wählt und spielt, Stopp und Überblenden funktionieren, B ohne Wirkung, View + Menu führt zur Landingpage.
+- **AC-04 am PC: geprüft** (🧑): Crossfade zwischen zwei Stücken ohne Knacken, Lautstärke angenehm.
+- Keine Mängel, keine neuen Tickets.
+- **Offen:** Die Abnahme am TV (Xbox, Edge) fehlt; die Session bleibt `offen`, die Kriterien stehen weiter als „angenommen, Validierung offen“.

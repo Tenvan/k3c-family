@@ -3,7 +3,7 @@
 - **Domäne:** PLAT
 - **Typ:** Idee
 - **Prio:** mittel
-- **Status:** offen
+- **Status:** verworfen
 - **Sprint:** –
 - **Erstellt:** 2026-10-04
 - **Spec:** Entwurf
