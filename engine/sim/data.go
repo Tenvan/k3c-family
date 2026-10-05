@@ -25,7 +25,8 @@ type BuildingData struct {
 	HP, BuildSeconds                 float64
 	Cost                             Cost
 	ArcherSlots, RangeBonus, BowRack int
-	Offers                           []Offer // Angebots-Zahlziele am Gebäude (Q52), Mechanik ab W4
+	Offers                           []Offer     // Angebots-Zahlziele am Gebäude (Q52), Mechanik ab W4
+	Levels                           []LevelData // Ausbau-Stufen am Platz (Mauer, Turm; hub_level.go)
 }
 
 // Offer ist ein Angebots-Zahlziel mit festem Abstand DX zum Platz seines Gebäudes.
@@ -96,6 +97,7 @@ var (
 		}
 	}]("economy.json")
 	hub = load[struct {
+		Levels           []LevelData // Hub-Stufen (hub_level.go)
 		Sites            []HubSite
 		IslandSites      []HubSite // nur Insel-Stufen (island_storage.go)
 		IslandStartStock Stock     // Vorrat einer neuen Insel (B-177)

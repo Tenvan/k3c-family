@@ -31,12 +31,13 @@
         {
           "kind": "wall",
           "x": 456,
-          "state": "unpaid",
-          "paidGold": 0,
-          "buildProgress": 0,
-          "hp": 0,
+          "state": "built",
+          "paidGold": 5,
+          "buildProgress": 1,
+          "hp": 550,
           "bows": 0,
-          "bowPaidGold": 0
+          "bowPaidGold": 0,
+          "level": 2
         },
         {
           "kind": "tower",
@@ -99,6 +100,7 @@
           "bowPaidGold": 0
         }
       ],
+      "hubLevel": 3,
       "troops": [
         {
           "kind": "peasant",
@@ -212,6 +214,19 @@
           "bowPaidGold": 0
         }
       ],
+      "hubLevel": 2,
+      "hubUpgrade": {
+        "kind": "castle",
+        "x": 400,
+        "state": "built",
+        "paidGold": 0,
+        "buildProgress": 0,
+        "hp": 0,
+        "bows": 0,
+        "bowPaidGold": 0,
+        "upgrade": "waitingMaterial",
+        "upgradePaid": 100
+      },
       "troops": [
         {
           "kind": "peasant",

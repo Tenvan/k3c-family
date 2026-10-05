@@ -13,7 +13,7 @@ import (
 type PlayerCommand struct {
 	MoveX  float64 `json:"moveX"` // -1 (links) bis 1 (rechts)
 	Sprint bool    `json:"sprint"`
-	Pay    bool    `json:"pay"` // Bezahl-Taste gehalten: Münze geben bzw. fallen lassen
+	Pay    bool    `json:"pay"`              // Bezahl-Taste gehalten: Münze geben bzw. fallen lassen
 	Attack bool    `json:"attack,omitempty"` // Schlag (Taste X, monarch.md § 1)
 	Skill  int     `json:"skill,omitempty"`  // aktiven Skill in Slot 1 bis 4 auslösen, 0 = keiner (skills.go)
 }
@@ -59,7 +59,7 @@ type Coin struct {
 
 // Job ist der Auftrag eines Bauern; es sind nur die Felder seines Typs gesetzt (IDs sind nie 0).
 type Job struct {
-	Type     string `json:"type"` // build, gather, carry, fetchBow
+	Type     string `json:"type"` // build, repair, gather, carry, fetchBow
 	SiteID   int    `json:"siteId,omitempty"`
 	NodeID   int    `json:"nodeId,omitempty"`
 	Resource string `json:"resource,omitempty"`
@@ -107,6 +107,11 @@ type Site struct {
 	WorkerID      *int    `json:"workerId"`
 	Bows          int     `json:"bows"`        // Werkstatt: fertige Bögen im Regal
 	BowPaidGold   int     `json:"bowPaidGold"` // Werkstatt: bezahltes Gold für den nächsten Bogen
+	// Ausbau (hub_level.go): Level = Stufe des gebauten Platzes (0 = 1), Upgrade = Zustand des Ausbaus auf die nächste
+	// Stufe ("", waitingMaterial, waitingWorker), UpgradePaid = dafür gezahltes Gold.
+	Level       int    `json:"level,omitempty"`
+	Upgrade     string `json:"upgrade,omitempty"`
+	UpgradePaid int    `json:"upgradePaid,omitempty"`
 }
 
 // Castle ist die Burg in der Hub-Mitte.
@@ -216,11 +221,12 @@ type World struct {
 	CycleSpeed float64 `json:"cycleSpeed"` // Faktor für den Tag/Nacht-Zyklus
 	NextID     int     `json:"nextId"`
 
-	WidthUnits float64   `json:"widthUnits"`
-	HubX       float64   `json:"hubX"`
-	// HubLevel ist die Hub-Stufe (Start 1); bis W1.1 nur für die Linien- und Tor-Regel (lines.go, Q59), nicht
-	// gespeichert (W1.3) und ohne JSON-Ausgabe (B-208).
+	WidthUnits float64 `json:"widthUnits"`
+	HubX       float64 `json:"hubX"`
+	// HubLevel ist die Hub-Stufe (Start 1, Ausbau an der Burg: hub_level.go); ohne JSON-Ausgabe (B-208).
 	HubLevel int `json:"-"`
+	// hubSite ist der Zahlplatz für den Hub-Ausbau an der Burg (nicht in Sites, hub_level.go).
+	hubSite    *Site
 	Cycle      CycleInfo `json:"cycle"`
 	Aggression *float64  `json:"aggression"` // nur unter Tage (0..100), sonst null
 	Wave       int       `json:"wave"`

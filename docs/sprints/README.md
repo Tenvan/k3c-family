@@ -44,7 +44,6 @@ dann über den Go-Server mit mehreren Räumen und gemischten Spielern.
 | MON2 | PLAT | Monitoring-Seite mit Dashboard | Kachel „Monitor“, am Handy unter `task load` Ampel, Verläufe mit Perzentilen und Fehler-Zeitleiste | Entwurf | `geplant/MON2-monitoring-seite/` |
 | S6 | CLI | Onboarding „Erste Nacht geführt“ und Controller-Glyphen | Ein Kind spielt die erste Nacht ohne Erklärung | bereit | `geplant/S6-onboarding-glyphen/` |
 | P1 | REG 🧑 | Spieleabend 1 | Protokoll und Folge-Tickets | Entwurf | `geplant/P1-spieleabend-1/` |
-| W1 | SIM | Hub-Ausbau und Mauerstufen | `task check:go` grün, Tests für Ausbau, Zerstörung und Reparatur, aktualisierte Golden-Daten | bereit | `geplant/W1-hub-ausbau/` |
 | W2 | SIM | Plantage, Adern, Stufenbreite und Mine | Tests für Generator, Adern, Plantage und Biome grün, aktualisierte Golden-Level | bereit | `geplant/W2-plantage-adern-stufen/` |
 | W3 | SIM | Gebäude-Wirkungen | Tests je Gebäude grün, Werte aus den Daten, aktualisierte Golden-Daten | bereit | `geplant/W3-gebaeude-wirkungen/` |
 | W4 | SIM | Wiederbeleben, Berufe, Händler, Elite und Limit | Tests je Regel grün, aktualisierte Golden-Daten | bereit | `geplant/W4-buerger-wiederbeleben/` |
@@ -143,3 +142,4 @@ Gesamtplan und Begründung: [`../plan-weiterentwicklung.md`](../plan-weiterentwi
 | N1 | Raum-Tick im Budget: ein Zustandsaufbau je Stufe, Delta/JSON in der Schreib-Goroutine, Spielstand asynchron, Benchmark Faktor ~10 (B-276; einschiebbar; Messung am Pi offen) | `erledigt/N1-tick-asynchron/` |
 | S2 | Protokoll v4 für Skills und mehrere Stufen je Gerät, Speichern bei jedem Verlassen, Spielmetrik-Report (B-123, B-147, B-150, B-176; Rest B-123 → B-283) | `erledigt/S2-protokoll-skills-speichern-metrik/` |
 | S3 | Skill-Menü, Tasten und Aktionen-Overlay | `erledigt/S3-skill-menue-overlay/` |
+| W1 | Hub-Ausbau und Mauerstufen: Hub-Stufe 1–5 an der Burg, Mauer/Turm 1–5 am Platz, Reparatur, Stufen im Spielstand (B-112) | `erledigt/W1-hub-ausbau/` |

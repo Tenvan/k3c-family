@@ -51,6 +51,9 @@ func siteByID(w *World, id int) *Site {
 			return s
 		}
 	}
+	if w.hubSite != nil && w.hubSite.ID == id {
+		return w.hubSite
+	}
 	return nil
 }
 
