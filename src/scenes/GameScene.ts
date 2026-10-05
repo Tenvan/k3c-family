@@ -27,6 +27,7 @@ import { hurtSeat, rumblePad, runEffect, shakeCell } from './effectRules';
 import { DEV_FOCUS_KEY, muteFocused } from './debugOverlayPanel';
 import { MenuPress, idleCommands } from './optionsLogic';
 import { pauseButton } from './pauseButton';
+import { SkillMenus } from './skillMenuLogic';
 
 /** Ein Overlay pro Seite, auch über Szenen-Neustarts hinweg */
 let sharedTouch: TouchInput | undefined;
@@ -68,7 +69,8 @@ export class GameScene extends Phaser.Scene {
   private touch: TouchInput | undefined;
   private pads: GamepadInput[] = [];
   private nightFx: Phaser.Filters.ColorMatrix[] = [];
-  private slots!: LocalSlots<PlayerInput>;
+  /** Eingabe je lokalem Slot (die HudScene liest das Gerät für die Tasten der Skill-Leiste) */
+  slots!: LocalSlots<PlayerInput>;
   private level: LevelInfo | null = null;
   /** Gezeichnete Zeitleiste (B-277); `cur` ist der neueste empfangene Frame (Effekte) */
   private timeline!: Timeline;
@@ -80,6 +82,8 @@ export class GameScene extends Phaser.Scene {
   private layoutKey = '';
   private partnerMonarch: number | null = null;
   private menuPress = new MenuPress();
+  /** Skill-Menüs der lokalen Spieler (S3.2); die HudScene zeichnet sie */
+  skillMenus = new SkillMenus();
 
   constructor() {
     super('game');
@@ -117,6 +121,7 @@ export class GameScene extends Phaser.Scene {
     this.layoutKey = '';
     this.partnerMonarch = null;
     this.menuPress = new MenuPress();
+    this.skillMenus = new SkillMenus();
     this.lastDevice = wantsTouchControls() ? 'touch' : 'keyboard';
   }
 
@@ -157,7 +162,8 @@ export class GameScene extends Phaser.Scene {
     const devFocus = this.registry.get(DEV_FOCUS_KEY) === true; // Dev-Fokus im Debug-Overlay (B-179): Controller bedienen die Liste
     const isPad = (i: PlayerInput | null) => this.pads.includes(i as GamepadInput);
     this.slots.join(devFocus ? inputs.filter((i) => !isPad(i)) : inputs, seated, client, performance.now());
-    const p = muteFocused(this.slots.commands(seated), devFocus, (s) => isPad(this.slots.bound[s] ?? null));
+    const player = (slot: number) => this.world_?.players.find((q) => q.index === client.you.find((s) => s.slot === slot)?.monarch);
+    const p = this.skillMenus.route(muteFocused(this.slots.commands(seated), devFocus, (s) => isPad(this.slots.bound[s] ?? null)), this.slots.bound, player, client);
     this.moves = p;
     if (p.length > 0) client.sendInput(p);
     this.takeFrames();
@@ -174,7 +180,7 @@ export class GameScene extends Phaser.Scene {
 
   /** Esc, Touch-Schaltfläche oder Menu kurz (Pad, beim Loslassen; View + Menu bleibt „zurück zur Landingpage“) */
   private wantsOptions(): boolean {
-    const menuShort = this.menuPress.update(this.pads.some((p) => p.held('pause')), this.pads.some((p) => p.held('skillMenu')), performance.now());
+    const menuShort = this.menuPress.update(this.pads.some((p) => p.held('pause')), this.pads.some((p) => p.viewHeld()), performance.now());
     return this.keyboard.justPressed('pause') || (this.touch !== undefined && pauseButton().take()) || menuShort;
   }
 
@@ -215,7 +221,7 @@ export class GameScene extends Phaser.Scene {
   }
 
   private trackLastDevice(): void {
-    const used = (i: PlayerInput) => i.moveX() !== 0 || i.held('confirm');
+    const used = (i: PlayerInput) => i.moveX() !== 0 || i.held('confirm') || i.held('attack');
     if (this.allInputs().some(used)) void audioCore().onInput(); // erste Eingabe entsperrt den Ton (SO1.2)
     if (this.touch && used(this.touch)) this.lastDevice = 'touch';
     else if (this.pads.some(used)) this.lastDevice = 'pad';

@@ -38,7 +38,7 @@ export function t(key: TextKey, params?: Record<string, string | number>): strin
 }
 
 /** Name aus den Daten (Gebäude, Rohstoff, Biom): `group.id` aus den Textdateien, sonst der Name der Daten. */
-export function nameOf(group: 'site' | 'res' | 'biome', id: string, fallback: string): string {
+export function nameOf(group: 'site' | 'res' | 'biome' | 'skill' | 'line', id: string, fallback: string): string {
   const key = `${group}.${id}`;
   return key in de ? t(key as TextKey) : fallback;
 }

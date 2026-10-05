@@ -5,7 +5,7 @@ import { BUILDINGS, TROOPS } from '../model/data';
 import type { Site, World } from '../model/types';
 import { BUILDING_TEXTURES, STAIRS_UP_TILES, hubTexture, siteTexture } from './buildingSprites';
 import { fontStyle } from './fontRules';
-import { canAfford } from './viewRules';
+import { PRICE_TAG_RANGE, canAfford } from './viewRules';
 
 /**
  * Burg und Bauplätze (GR3.1): zugeordnete Grafik, sonst die Platzhalter-Form. Preisschild, Münz-Slots und Baufortschritt
@@ -18,7 +18,6 @@ type Picture = Phaser.GameObjects.Image | Phaser.GameObjects.TileSprite | Phaser
 const G = GROUND_Y;
 /** Pixel-Art ganzzahlig ×2 (Q13: 16-px-Raster auf UNIT_PX = 32) */
 const ZOOM = 2;
-const PRICE_TAG_RANGE = 6;
 export const TEXT = { stroke: '#000000', strokeThickness: 4, fontStyle: 'bold' };
 
 const SITE_SIZE: Record<Site['kind'], [number, number]> = {

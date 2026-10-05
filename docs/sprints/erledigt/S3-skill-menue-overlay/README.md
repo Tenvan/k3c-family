@@ -1,11 +1,11 @@
 # S3 · CLI · Skill-Menü, Tasten und Aktionen-Overlay
 
-- **Status:** geplant
+- **Status:** erledigt
 - **Domäne:** CLI
 - **Reife:** bereit
 - **Einschiebbar:** nein
 - **Tickets:** B-124, B-125
-- **Start-Commit:** –
+- **Start-Commit:** d00f168
 - **Spec:** freigegeben
 - **Revision:** 1
 - **Freigabe:** 2026-10-03, Chat (Ralf), Revision 1, durch 🧑; umfasst B-124, B-125
@@ -58,15 +58,19 @@ Skill-Tasten am Controller (LB/RB bestätigen): 🧑, `docs/fragenkatalog.md Q06
 
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
-| S3.1 | `S3.1-eingabe-slots.md` | Umsetzung | autonom | offen |
-| S3.2 | `S3.2-skill-menue.md` | Umsetzung | autonom | offen |
-| S3.3 | `S3.3-aktionen-overlay.md` | Umsetzung | autonom | offen |
+| S3.1 | `S3.1-eingabe-slots.md` | Umsetzung | autonom | fertig |
+| S3.2 | `S3.2-skill-menue.md` | Umsetzung | autonom | fertig |
+| S3.3 | `S3.3-aktionen-overlay.md` | Umsetzung | autonom | fertig |
 | S3.4 | `S3.4-abnahme-geraet.md` | Workshop | Mensch | offen |
-| S3.5 | `S3.5-review.md` | Review | autonom | offen |
+| S3.5 | `S3.5-review.md` | Review | autonom | fertig |
 
 Bei `Reife: Entwurf` genügen Stichpunkte mit den Kriterien in Klammern statt Session-Dateien. Vor dem Aktivieren
 wird jede Session als eigene Datei nach `docs/vorlagen/session.md` geschrieben.
 
 ## Abnahme
 
-–
+2026-10-05, Review S3.5 (Diff `src/` gelesen, `task check` und `task check:go` grün): keine schweren Befunde (B unbelegt, View + Menu unverändert, kein `Math.random()`, Menüs und Overlays je Slot getrennt).
+- **AC-01 bis AC-04** nachgewiesen in S3.1 (Slot-Belegung getestet), S3.2 (Menü, Tests für 2 Spieler, Browser-Pane), S3.3 (Aktion → Taste/Text getestet, Overlay im Pane mit 2 Spielern); Wiederbeleben-Teil von AC-04 verschoben (B-120).
+- **AC-05** angenommen, Validierung offen (S3.4); S3.4 steht im Fahrplan unter „Offen am Gerät“, B-124 und B-125 bleiben bis dahin offen.
+- Neue Tickets: B-285 (lernbare Skills im Protokoll, entstand in S3.2).
+- Version: v0.7.0 vorgeschlagen (Sprint mit Wirkung im Spiel; aktuell v0.6.0)
