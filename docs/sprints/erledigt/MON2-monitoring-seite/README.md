@@ -1,11 +1,11 @@
 # MON2 · PLAT · Monitoring-Seite mit Dashboard
 
-- **Status:** geplant
+- **Status:** erledigt
 - **Domäne:** PLAT
-- **Reife:** Entwurf
+- **Reife:** bereit
 - **Einschiebbar:** nein
 - **Tickets:** B-282
-- **Start-Commit:** – (wird beim Aktivieren gesetzt: `git rev-parse --short origin/develop`)
+- **Start-Commit:** 4ab45b8
 - **Spec:** freigegeben
 - **Revision:** 1
 - **Freigabe:** 2026-10-05, Chat, durch 🧑 (umfasst B-282 Revision 1)
@@ -58,19 +58,13 @@ Autonome Umsetzung; 🧑 gibt die Spec frei und nimmt am Handy ab (B-282/AC-05).
 
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
-| MON2.1 | `MON2.1-daten.md` | Umsetzung | autonom | offen |
-| MON2.2 | `MON2.2-seite.md` | Umsetzung | autonom | offen |
-| MON2.3 | `MON2.3-review.md` | Review | autonom | offen |
+| MON2.1 | `MON2.1-daten.md` | Umsetzung | autonom | fertig |
+| MON2.2 | `MON2.2-seite.md` | Umsetzung | autonom | fertig |
+| MON2.3 | `MON2.3-review.md` | Review | autonom | fertig |
 | MON2.4 | `MON2.4-abnahme-handy.md` | Workshop | Mensch | offen |
-
-Reife Entwurf, Stichpunkte (Kriterien in Klammern):
-
-- **MON2.1** Daten-Schicht: Polling mit Delta, Neustart-Erkennung, Perzentile, Ausreißer, Tests (AC-01, AC-02).
-- **MON2.2** Seite: `monitor.html`, Übersicht, Verlauf auf Canvas/SVG, Ereignisse, Token-Eingabe, Fehlerhinweise, Browser-Pane-Nachweis (AC-03, AC-04).
-- **MON2.3** Review (alle Kriterien gegenprüfen).
-- **MON2.4** Abnahme 🧑 am Handy (AC-05).
 
 ## Abnahme
 
-Wird von der Review-Session (Doku-Sprint: letzte Session) ausgefüllt, höchstens fünf Zeilen: Datum, Kriterien
-(Verweis auf Session-Ergebnisse), behobene Befunde, neue Tickets. Bis dahin `–`.
+2026-10-05 · AC-01 bis AC-04 geprüft (Nachweise MON2.1 bis MON2.3; AC-04 im Browser-Pane unter Last); AC-05 angenommen, Validierung offen (MON2.4, Handy); `task check` und `task check:go` grün.
+Keine schweren Befunde (MON2.3): Server-Daten nur über `textContent`, Token nur in `localStorage` und Header (nie URL oder Anzeige), Seiten-Regeln und B-Taste eingehalten. Keine neuen Tickets.
+Version: v0.13.0 vorgeschlagen (Minor: neue Seite `monitor.html`; DBG3 und MON1 schlagen ebenfalls die nächste Minor vor, Tags der Reihe nach v0.11.0, v0.12.0, v0.13.0).
