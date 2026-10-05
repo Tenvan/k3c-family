@@ -37,6 +37,9 @@ type HubSave struct {
 	Wave       int        `json:"wave"`
 	Aggression *float64   `json:"aggression"`
 	Sites      []SiteSave `json:"sites"`
+	// Hub-Stufe (W1.3, 0 = 1) und ein laufender Hub-Ausbau an der Burg (hub_level.go), beide optional.
+	HubLevel   int       `json:"hubLevel,omitempty"`
+	HubUpgrade *SiteSave `json:"hubUpgrade,omitempty"`
 	// Nur Bauern und Bogenschützen. Landstreicher kommen von allein aus den Camps.
 	Troops       []TroopSave `json:"troops"`
 	NodesGone    []string    `json:"nodesGone"` // Schlüssel `kind@x` der abgebauten Bäume/Felsen
@@ -66,6 +69,10 @@ type SiteSave struct {
 	HP            float64 `json:"hp"`
 	Bows          int     `json:"bows"`
 	BowPaidGold   int     `json:"bowPaidGold"`
+	// Ausbau-Stufe (0 = 1) und laufender Ausbau (W1.3, hub_level.go), optional.
+	Level       int    `json:"level,omitempty"`
+	Upgrade     string `json:"upgrade,omitempty"`
+	UpgradePaid int    `json:"upgradePaid,omitempty"`
 }
 
 // key ist `kind@x` mit x wie `x.toFixed(2)` in JS: Gleichstände (nur bei x = n/8) runden weg von 0, Go `FormatFloat`
@@ -111,7 +118,14 @@ func hubSave(w, base *World) HubSave {
 		h.Aggression = &a
 	}
 	for _, s := range w.Sites {
-		h.Sites = append(h.Sites, SiteSave{s.Kind, s.X, s.State, s.PaidGold, s.BuildProgress, s.HP, s.Bows, s.BowPaidGold})
+		h.Sites = append(h.Sites, siteSave(s))
+	}
+	if w.HubLevel > 1 {
+		h.HubLevel = w.HubLevel
+	}
+	if u := w.hubSite; u != nil && (u.Upgrade != "" || u.UpgradePaid > 0) {
+		saved := siteSave(u)
+		h.HubUpgrade = &saved
 	}
 	h.Troops = []TroopSave{}
 	for _, t := range w.Troops {
@@ -123,6 +137,10 @@ func hubSave(w, base *World) HubSave {
 	h.NodesMarked = keys(w.Nodes, func(n *ResourceNode) (string, bool) { return key(n.Kind, n.X), n.Marked })
 	h.PickupsTaken = without(keys(base.Pickups, pickupKey), keys(w.Pickups, pickupKey))
 	return h
+}
+
+func siteSave(s *Site) SiteSave {
+	return SiteSave{s.Kind, s.X, s.State, s.PaidGold, s.BuildProgress, s.HP, s.Bows, s.BowPaidGold, s.Level, s.Upgrade, s.UpgradePaid}
 }
 
 // ToSave schreibt den Spielstand. savedAt ist ein Zeitstempel (ISO 8601).
@@ -210,6 +228,7 @@ func applyHub(w *World, h HubSave) {
 	for _, saved := range h.Sites {
 		applySite(w, saved)
 	}
+	applyHubLevel(w, h)
 	// Start-Truppen durch die gespeicherten ersetzen
 	vagrants := []*Troop{}
 	for _, t := range w.Troops {
@@ -257,9 +276,31 @@ func applySite(w *World, saved SiteSave) {
 		}
 		s.State, s.PaidGold, s.BuildProgress, s.HP = state, saved.PaidGold, saved.BuildProgress, saved.HP
 		s.Bows, s.BowPaidGold, s.WorkerID = saved.Bows, saved.BowPaidGold, nil
+		if levels := buildings[s.Kind].Levels; state == "built" && saved.Level > 1 && saved.Level <= len(levels) {
+			s.Level, s.MaxHP = saved.Level, levels[saved.Level-1].HP
+		}
+		if state == "built" {
+			applyUpgrade(s, saved)
+		}
 		return
 	}
 	// Bauplatz gibt es in dieser Version nicht mehr
+}
+
+// applyHubLevel übernimmt Hub-Stufe und laufenden Hub-Ausbau.
+func applyHubLevel(w *World, h HubSave) {
+	w.HubLevel = max(1, h.HubLevel)
+	if u := h.HubUpgrade; u != nil && w.hubSite != nil {
+		applyUpgrade(w.hubSite, *u)
+	}
+}
+
+// applyUpgrade übernimmt einen laufenden Ausbau eines gebauten Platzes.
+func applyUpgrade(s *Site, saved SiteSave) {
+	if saved.Upgrade == "waitingMaterial" || saved.Upgrade == "waitingWorker" {
+		s.Upgrade, s.BuildProgress = saved.Upgrade, saved.BuildProgress
+	}
+	s.UpgradePaid = saved.UpgradePaid
 }
 
 func set(items []string) map[string]bool {

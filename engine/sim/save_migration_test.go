@@ -99,6 +99,32 @@ func TestMigrationGebautePlaetzeBleibenGebaut(t *testing.T) {
 	}
 }
 
+// W1.3 (Sprint W1 AC-04): Das Fixture v4 trägt Hub-Stufen, eine Mauer der Stufe 2 und einen laufenden Hub-Ausbau;
+// Stände ohne die Felder (v1 bis v3) laden mit Hub- und Platz-Stufe 1. Eine neue Version gibt es dafür nicht (Q42).
+func TestSpielstandStufenAusFixture(t *testing.T) {
+	isl := loadIsland(t, readFixture(t, 4))
+	a, b := isl.Stages[0], isl.Stages[1]
+	if a.HubLevel != 3 || b.HubLevel != 2 || b.hubSite.Upgrade != "waitingMaterial" || b.hubSite.UpgradePaid != 100 {
+		t.Fatalf("Hub-Stufen %d/%d, Ausbau %+v", a.HubLevel, b.HubLevel, b.hubSite)
+	}
+	wall := lineSite(t, a, "wall", -1, 1)
+	if wall.State != "built" || wall.Level != 2 || wall.MaxHP != buildings["wall"].Levels[1].HP || wall.HP != wall.MaxHP-50 {
+		t.Fatalf("Mauer aus v4: %+v", wall)
+	}
+	for v := 1; v < 4; v++ {
+		for _, w := range loadIsland(t, readFixture(t, v)).Stages {
+			for _, s := range w.Sites {
+				if w.HubLevel != 1 || levelOf(w, s) != 1 {
+					t.Fatalf("v%d: Hub-Stufe %d, %s Stufe %d", v, w.HubLevel, s.Kind, levelOf(w, s))
+				}
+			}
+		}
+	}
+	if IslandSaveVersion != 4 {
+		t.Fatalf("Version %d: die Stufen brauchen keine neue Version (Q42)", IslandSaveVersion)
+	}
+}
+
 // B-137/AC-04: Ein Stand mit neuerer Version ergibt einen Fehler mit gefundener und unterstützten Versionen; die
 // Quelldatei bleibt Byte für Byte gleich.
 func TestNeuererSpielstandMeldetKlar(t *testing.T) {

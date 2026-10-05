@@ -85,7 +85,7 @@ func stepPeasant(w *World, t *Troop, dt float64) {
 	}
 	danger := isDangerous(w)
 	// Bei Gefahr: Arbeit außerhalb der Mauern und Ausbauten liegen lassen und in die Burg.
-	if danger && t.Job != nil && (t.Job.Type == "gather" || upgradeJob(w, t.Job)) {
+	if danger && leaveOnDanger(w, t.Job) {
 		releaseJob(w, t)
 	}
 	if t.Job == nil {
@@ -101,11 +101,18 @@ func stepPeasant(w *World, t *Troop, dt float64) {
 		fetchBow(w, t, dt)
 	case "build":
 		build(w, t, dt)
+	case "repair":
+		repair(w, t, dt)
 	case "gather":
 		gather(w, t, dt)
 	case "carry":
 		carry(w, t, dt)
 	}
+}
+
+// leaveOnDanger: Sammeln, Reparatur und Ausbau bleiben bei Gefahr liegen.
+func leaveOnDanger(w *World, j *Job) bool {
+	return j != nil && (j.Type == "gather" || j.Type == "repair" || upgradeJob(w, j))
 }
 
 func fetchBow(w *World, t *Troop, dt float64) {
@@ -219,12 +226,16 @@ func findJob(w *World, t *Troop) *Job {
 	return nil
 }
 
-// siteJob: Bogen holen oder den nächsten wartenden Bauplatz bauen; nil, wenn es nichts zu tun gibt.
+// siteJob: Bogen holen, den nächsten wartenden Bauplatz bauen oder (ohne Gefahr) reparieren; nil, wenn es nichts zu
+// tun gibt.
 func siteJob(w *World, t *Troop) *Job {
 	if s := bowToFetch(w, t); s != nil {
 		return &Job{Type: "fetchBow", SiteID: s.ID}
 	}
-	return buildJob(w, t)
+	if j := buildJob(w, t); j != nil {
+		return j
+	}
+	return repairJob(w, t)
 }
 
 // buildJob: nächster wartender Bauplatz ohne Bauer, Ausbauten nur ohne Gefahr; nil, wenn es keinen gibt.
@@ -272,7 +283,7 @@ func releaseJob(w *World, t *Troop) {
 			n.WorkerID = nil
 		}
 	}
-	if t.Job.Type == "build" {
+	if t.Job.Type == "build" || t.Job.Type == "repair" {
 		if s := siteByID(w, t.Job.SiteID); s != nil && s.WorkerID != nil && *s.WorkerID == t.ID {
 			s.WorkerID = nil
 		}

@@ -59,7 +59,7 @@ type Coin struct {
 
 // Job ist der Auftrag eines Bauern; es sind nur die Felder seines Typs gesetzt (IDs sind nie 0).
 type Job struct {
-	Type     string `json:"type"` // build, gather, carry, fetchBow
+	Type     string `json:"type"` // build, repair, gather, carry, fetchBow
 	SiteID   int    `json:"siteId,omitempty"`
 	NodeID   int    `json:"nodeId,omitempty"`
 	Resource string `json:"resource,omitempty"`
