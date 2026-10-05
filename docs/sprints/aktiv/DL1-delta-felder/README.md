@@ -61,7 +61,7 @@ keine
 
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
-| DL1.1 | `DL1.1-unset.md` | Umsetzung | autonom | in Arbeit |
+| DL1.1 | `DL1.1-unset.md` | Umsetzung | autonom | fertig |
 | DL1.2 | `DL1.2-review.md` | Review | autonom | offen |
 
 Bei `Reife: Entwurf` genügen Stichpunkte mit den Kriterien in Klammern statt Session-Dateien. Vor dem Aktivieren

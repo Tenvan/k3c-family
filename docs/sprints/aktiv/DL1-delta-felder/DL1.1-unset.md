@@ -1,6 +1,6 @@
 # DL1.1 · Delta mit `unset` für verschwundene Felder (Protokoll, beide Enden)
 
-- **Status:** in Arbeit
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Branch:** dl1/1-unset
@@ -54,10 +54,10 @@ Verlust-Kaskade, Änderungen an `engine/sim/`, Protokoll-Version, Anzeige.
 
 ## Fertig, wenn
 
-- [ ] AC-01: Go-Test für `unset` grün.
-- [ ] AC-02: Vitest für `applyDelta` mit `unset` grün.
-- [ ] AC-03: `TestDeltaErgibtJedenVollenZustand` grün, `castle` abgedeckt; Gegenprobe mit W4.3a-Stand im Ergebnis.
-- [ ] AC-04: Protokoll beschrieben; `task check` und `task check:go` grün; keine Datei > 400 Zeilen, keine Funktion > 60.
+- [x] AC-01: Go-Test für `unset` grün.
+- [x] AC-02: Vitest für `applyDelta` mit `unset` grün.
+- [x] AC-03: `TestDeltaErgibtJedenVollenZustand` grün, `castle` abgedeckt; Gegenprobe mit W4.3a-Stand im Ergebnis.
+- [x] AC-04: Protokoll beschrieben; `task check` und `task check:go` grün; keine Datei > 400 Zeilen, keine Funktion > 60.
 
 ## Prüfen
 
@@ -68,4 +68,7 @@ task check:go
 
 ## Ergebnis
 
-–
+- **AC-01 umgesetzt, geprüft** mit `TestDeltaNenntVerschwundeneFelderInUnset` (`engine/net/delta_test.go`): `merchant` und `drops` fehlen → `unset` = `["drops", "merchant"]`, `apply` ergibt genau `cur`; ein Feld auf `null` und `events` stehen nie in `unset`. Server: `deltaOf` mit `unsetOf` (`engine/net/delta.go`).
+- **AC-02 umgesetzt, geprüft** mit Vitest „unset entfernt Felder, der Rest bleibt wie bisher“ (`src/online/clientDelta.test.ts`); `applyDelta` löscht die Felder aus `unset`.
+- **AC-03 umgesetzt, geprüft:** `TestDeltaErgibtJedenVollenZustand` grün, `castle` abgedeckt. **Abweichung von Schritt 4:** Mit W4.3a ändert sich `castle` in keinem der 10 Golden-Läufe (Truppen sterben nicht mehr, im Lauf `sim-cave-belagerung` erst rund 7734 Ticks nach den Eingaben); statt eines anderen Fensters zieht der Test der Burg alle 600 Ticks selbst einen HP ab, damit hängt die Abdeckung nicht am Balancing. Fenster und übrige Felder unverändert. Gegenprobe auf Wegwerf-Branch mit `origin/wip/w4.3a-krieger` gemergt, `go test ./engine/net -run TestDelta -v`: ohne Burgtreffer nur noch „Feld castle hat sich im Lauf nie geändert“ (das frühere „Tick 3057: Zustand weicht ab“ ist weg, erstes `unset` bei Tick 3057 mit `drops`), mit Burgtreffer `ok k3c/engine/net`. Nicht eingecheckt.
+- **AC-04 umgesetzt, geprüft:** `docs/protocol.md` › „Zustand und Delta“ beschreibt `unset`; kein Beispiel nötig (`TestFormWieBeispiele` prüft den Inhalt von `delta` nicht). `task check` (1337 Tests) und `task check:go` (golangci-lint 0 issues; `check:race` lokal ohne C-Compiler übersprungen, prüft die CI) grün.
