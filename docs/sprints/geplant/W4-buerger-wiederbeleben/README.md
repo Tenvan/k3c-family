@@ -6,9 +6,9 @@
 - **Einschiebbar:** nein
 - **Tickets:** B-120, B-121, B-122, B-014
 - **Start-Commit:** –
-- **Spec:** Entwurf
-- **Revision:** 1
-- **Freigabe:** –
+- **Spec:** freigegeben
+- **Revision:** 2
+- **Freigabe:** 2026-10-05, Chat, durch 🧑, Revision 2; mit Änderungen aus der Spec-Prüfung
 
 ## Ausgangslage
 
@@ -50,7 +50,7 @@ Treffer oder Loslassen während des Wiederbelebens → Abbruch; ohne Hilfe Respa
 - **AC-02** Bergmann und Baumeister erhöhen Abbau- und Bautempo um 50 %, Umschulung kostet Gold; Handwerker beschleunigt, höchstens 2 je Gebäude (Test) (B-121/AC-01, B-121/AC-02).
 - **AC-03** Händler erscheint nach Regel, tauscht korrekt und verschwindet nach einem Tag (Test) (B-121/AC-03).
 - **AC-04** Elite-Upgrade und Rüstung wirken mit Werten aus den Daten, das Limit je Hub zählt nur Kämpfer (Test) (B-122/AC-01, B-122/AC-02).
-- **AC-05** Heilplatz heilt in Reichweite, ohne Heilplatz keine Heilung; `troopLost` bei Verlust (Test) (B-122/AC-03, B-122/AC-04).
+- **AC-05** Heilplatz heilt in Reichweite, ohne Heilplatz keine Heilung; Verlust-Kaskade statt Tod und `disarmed` bei Ausrüstungsverlust (Test) (B-122/AC-03, B-122/AC-04).
 - **AC-06** Die Werkstatt bietet Schwerter, das Elite-Upgrade wirkt laut Daten, Tests decken beides ab (B-014/AC-01, B-014/AC-02, B-014/AC-03).
 - **AC-07** `task check:go` grün, Golden-Daten aktualisiert (B-120/AC-04, B-121/AC-04).
 

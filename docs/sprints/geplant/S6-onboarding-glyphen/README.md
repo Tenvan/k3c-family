@@ -6,9 +6,9 @@
 - **Einschiebbar:** nein
 - **Tickets:** B-148, B-149
 - **Start-Commit:** –
-- **Spec:** Entwurf
-- **Revision:** 1
-- **Freigabe:** –
+- **Spec:** freigegeben
+- **Revision:** 2
+- **Freigabe:** 2026-10-05, Chat, durch 🧑, Revision 2; mit Änderungen aus der Spec-Prüfung
 
 ## Ausgangslage
 
@@ -16,7 +16,7 @@ Der Kern-Loop ist für Kinder nicht selbsterklärend, Hinweise sind Text am Rand
 
 ## Ziel
 
-Die erste Nacht läuft geführt mit Hinweisen über den Objekten, der Freundlich-Grad verzeiht Verluste, und alle Hinweise zeigen Controller-Glyphen statt Tasten-Text. Am Ende sichtbar: Ein Kind spielt die erste Nacht ohne Erklärung.
+Die erste Nacht läuft geführt mit Hinweisen über den Objekten, der Grad „Leicht“ verzeiht Verluste, und alle Hinweise zeigen Controller-Glyphen statt Tasten-Text. Am Ende sichtbar: Ein Kind spielt die erste Nacht ohne Erklärung.
 
 ## Beteiligte und Zielgruppen
 
@@ -32,11 +32,11 @@ Vollständiges Tutorial, Ton, neue Tastenbelegung, Balancing der Nächte (B-155)
 
 ## Regeln und Einschränkungen
 
-`CLAUDE.md` (Client zeichnet nur, Werte in `data/`, B-Taste frei); Grad-Werte als Go-Regel mit Sim-Test. Datei ≤ 400 Zeilen, Funktion ≤ 60.
+Die geführte erste Nacht ist optional (Beschluss Q11). `CLAUDE.md` (Client zeichnet nur, Werte in `data/`, B-Taste frei); Grad-Werte als Go-Regel mit Sim-Test. Datei ≤ 400 Zeilen, Funktion ≤ 60.
 
 ## Beispiele
 
-Neues Spiel im Freundlich-Grad: Hinweis „Aufheben“ mit Glyph „A“ über der Münze; die erste Nacht endet ohne Verlust.
+Neues Spiel im Grad „Leicht“: Hinweis „Aufheben“ mit Glyph „A“ über der Münze; die erste Nacht endet ohne Verlust.
 
 ## Ausnahme- und Fehlerfälle
 
@@ -45,7 +45,7 @@ Neues Spiel im Freundlich-Grad: Hinweis „Aufheben“ mit Glyph „A“ über d
 ## Akzeptanzkriterien
 
 - **AC-01** Die Hinweis-Funktion liefert den nächsten Hinweis aus Snapshot-Daten und gesehenen Hinweisen (B-148/AC-01).
-- **AC-02** Im Freundlich-Grad verliert die erste Nacht weder Gold noch Gebäude (B-148/AC-02).
+- **AC-02** Im Grad „Leicht“ verliert die erste Nacht weder Gold noch Gebäude (B-148/AC-02).
 - **AC-03** Hinweise erscheinen über Münze, Bauplatz und beim Nahen der Nacht und verschwinden nach der Handlung (B-148/AC-03).
 - **AC-04** Aktion + Gerät ergibt einen Glyph-Schlüssel, Unbekanntes den Text-Rückfall (B-149/AC-01).
 - **AC-05** Hinweise zeigen Glyphen für Controller, Tastatur und Touch, jede Glyph-Quelle hat einen Credit-Eintrag oder ist selbst gezeichnet (B-149/AC-02, B-149/AC-03).
@@ -53,7 +53,7 @@ Neues Spiel im Freundlich-Grad: Hinweis „Aufheben“ mit Glyph „A“ über d
 
 ## Offene Fragen
 
-Umfang der Führung und Freundlich-Grad: 🧑, `docs/fragenkatalog.md Q11`; Zeichenstil der Glyphen: `docs/fragenkatalog.md Q13`.
+keine
 
 ## Sessions
 

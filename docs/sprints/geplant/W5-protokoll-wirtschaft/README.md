@@ -4,15 +4,15 @@
 - **Domäne:** SRV
 - **Reife:** bereit
 - **Einschiebbar:** nein
-- **Tickets:** B-153
+- **Tickets:** B-153, B-283
 - **Start-Commit:** –
-- **Spec:** Entwurf
-- **Revision:** 1
-- **Freigabe:** –
+- **Spec:** freigegeben
+- **Revision:** 2
+- **Freigabe:** 2026-10-05, Chat, durch 🧑, Revision 2; mit Änderungen aus der Spec-Prüfung
 
 ## Ausgangslage
 
-Die Simulation liefert nach W1 bis W4 Hub-Stufe, Lager, Berufe und Händler; das Protokoll kennt davon nur, was B-123 liefert (B-153).
+Die Simulation liefert nach W1 bis W4 Hub-Stufe, Lager, Berufe und Händler; das Protokoll kennt davon nur, was B-123 liefert; Beruf ausbilden, Tauschen, Berufe der Bürger und Grabstein fehlen und stehen in B-283 (B-153, B-283).
 
 ## Ziel
 
@@ -26,7 +26,7 @@ Entwickler (Client und Server); 🧑 gibt die Spec frei.
 
 ## Anforderungen
 
-B-153 › Anforderungen.
+B-153 › Anforderungen, B-283 › Anforderungen.
 
 ## Nicht-Ziele
 
@@ -46,15 +46,16 @@ Tausch ohne Händler oder Hub-Ausbau ohne Material → `bad_request`.
 
 ## Akzeptanzkriterien
 
-- **AC-01** `docs/protocol.md` beschreibt die neuen Felder, `testdata/protocol/` hat Beispiele, beide Enden parsen sie (Tests) (B-153/AC-01).
-- **AC-02** Der Server lehnt ungültige Eingaben mit `bad_request` ab (Test) (B-153/AC-02).
+- **AC-01** `docs/protocol.md` beschreibt die neuen Felder, `testdata/protocol/` hat Beispiele, beide Enden parsen sie (Tests) (B-153/AC-01, B-283/AC-01).
+- **AC-02** Der Server lehnt ungültige Eingaben mit `bad_request` ab, auch ungültiger Beruf und ungültiger Tausch (Test) (B-153/AC-02, B-283/AC-02).
 - **AC-03** Der Snapshot enthält Hub-Stufe, Lagerstand mit Maximum, Wartegrund und Händler-Zustand (Test auf Testdaten) (B-153/AC-03).
 - **AC-04** Protokollversion erhöht, ältere Clients erhalten `version` (Test) (B-153/AC-04).
 - **AC-05** Bytes je Tick mit 4 Spielern und 3 Stufen gemessen und notiert, `task check:go` grün (B-153/AC-05).
+- **AC-06** Die Ereignisse `revived` (Wiederbeleben durch einen Mitspieler, Q62), `disarmed` (Bürger verliert Ausrüstung) und `equipmentTaken` (Gegner trägt Ausrüstung weg, Q69) stehen in `docs/protocol.md`, in `testdata/protocol/` und in den Client-Typen, beide Enden parsen sie (Test) (Q62, Q69).
 
 ## Offene Fragen
 
-Abgrenzung der Berufe-Felder zu B-123: beim Planen der Protokoll-Sessions klären (🧑 bestätigt).
+keine
 
 ## Sessions
 

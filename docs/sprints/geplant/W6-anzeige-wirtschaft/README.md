@@ -6,9 +6,9 @@
 - **Einschiebbar:** nein
 - **Tickets:** B-117, B-126
 - **Start-Commit:** –
-- **Spec:** Entwurf
+- **Spec:** freigegeben
 - **Revision:** 1
-- **Freigabe:** –
+- **Freigabe:** 2026-10-05, Chat, durch 🧑, Revision 1
 
 ## Ausgangslage
 
