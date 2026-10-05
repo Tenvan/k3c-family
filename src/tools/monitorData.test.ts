@@ -3,6 +3,7 @@ import {
   applyDelta,
   emptyState,
   HOUR_MS,
+  nextOf,
   outlierLimit,
   percentile,
   roomSummaries,
@@ -106,6 +107,12 @@ describe('Auswertung im Fenster und Ampel', () => {
   it('Fenster wählt Punkte, zählt Überschreitungen und lässt „kein Pong“ weg', () => {
     expect(windowValues(s, 5 * 60_000)).toEqual({ tick: [4, 40], rtt: [12, 40], over: 3 });
     expect(windowValues(s, HOUR_MS, 'ROTX')).toEqual({ tick: [40, 5], rtt: [], over: 4 });
+  });
+
+  it('Filter-Knopf läuft zyklisch durch die Auswahl', () => {
+    expect(nextOf(['', 'A', 'B'], '')).toBe('A');
+    expect(nextOf(['', 'A', 'B'], 'B')).toBe('');
+    expect(nextOf(['', 'A'], 'weg')).toBe('');
   });
 
   it('Ampel je Raum', () => {

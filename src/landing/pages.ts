@@ -87,6 +87,13 @@ export const PAGES: PageEntry[] = [
     section: 'test',
   },
   {
+    title: 'Monitor',
+    description: 'Serverzustand: Ampel je Raum, Verläufe mit Perzentilen, Fehler-Zeitleiste (Go-Server mit K3C_STATUS_TOKEN)',
+    icon: '📈',
+    href: 'monitor.html',
+    section: 'test',
+  },
+  {
     title: 'Lizenzen & Danksagung',
     description: 'Unsere Lizenz (nicht-kommerziell) · Grafiken, Software und ein großes Danke an alle Urheber',
     icon: '📜',

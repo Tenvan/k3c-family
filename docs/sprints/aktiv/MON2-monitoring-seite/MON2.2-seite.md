@@ -1,6 +1,6 @@
 # MON2.2 · Seite monitor.html mit Übersicht, Verlauf und Ereignissen
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Branch:** mon2/2-seite
@@ -47,7 +47,7 @@ Neue Kennzahlen im Server, Raum-Steuerung (DBG3), Anzeige im Spiel. Abnahme am H
 
 ## Fertig, wenn
 
-- [ ] AC-03: `monitor.html` in `pages.ts`, `installPageChrome()` aufgerufen, `task check` grün.
+- [x] AC-03: `monitor.html` in `pages.ts`, `installPageChrome()` aufgerufen, `task check` grün.
 - [ ] AC-04: Browser-Pane-Screenshot unter Last mit Übersicht, Verlauf mit Perzentilen und Ereignis-Zeitleiste; 404 und 401
   zeigen den Hinweis (manuell, nur mit Freigabe).
 
@@ -61,4 +61,13 @@ Manuelle Prüfungen (Browser-Pane mit `task load`, AC-04) nur, wenn 🧑 sie fü
 
 ## Ergebnis
 
-–
+- AC-03 geprüft: `monitor.html` mit Kachel „Monitor“ (📈, Abschnitt Tests & Werkzeuge) in `src/landing/pages.ts`,
+  `src/tools/monitor.ts` ruft `installPageChrome()` auf; `tests/projectRules.test.ts` grün, `task check` grün und
+  `task build` baut `dist/monitor.html` (2026-10-05, Agent).
+- AC-04 umgesetzt, nicht geprüft: Übersicht (Ampel, Tick p99, schlechteste RTT, Fehler 5 min), Verlauf (Tick, RTT je Gerät,
+  Heap/CPU auf Canvas; Fenster 5 min / 1 h; p50/p95/p99/Max, Budget-Überschreitungen, Ausreißer rot, Ereignis- und
+  Neustart-Marken), Ereignisse (Filter Raum und Art, Klick springt mit Marke ▼ in den Verlauf), Hinweise für 404, 401
+  (Token-Eingabe) und offline (Ampel grau, Backoff bis 30 s). Der Browser-Pane-Nachweis unter `task load` war für diesen
+  Lauf nicht freigegeben; nachholen in MON2.3 mit Freigabe 🧑, sonst dort als offen führen.
+- Abweichung: Filter als Knöpfe, die zyklisch weiterschalten (statt Auswahllisten), weil sich `<select>` mit dem Controller
+  nicht per A öffnen lässt. Neu gezeichnet wird nur nach einer Antwort oder Bedienung; Polling ruht bei `document.hidden`.

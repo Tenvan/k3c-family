@@ -132,7 +132,10 @@ export function outlierLimit(values: number[]): number {
   return q3 + 1.5 * (q3 - q1);
 }
 
-export const inWindow = <T extends { t: number }>(points: T[], now: number, windowMs: number): T[] =>
+/** Nächster Eintrag nach `current` (zyklisch); unbekanntes `current` → erster. Für Filter-Knöpfe ohne Auswahlliste. */
+export const nextOf = <T>(list: T[], current: T): T => list[(list.indexOf(current) + 1) % list.length];
+
+export const inWindow =<T extends { t: number }>(points: T[], now: number, windowMs: number): T[] =>
   recent(points, now - windowMs);
 
 /** Messwerte im Fenster: Tick = `maxMs` je Sekunde, RTT ohne „kein Pong“; optional nur ein Raum. */
