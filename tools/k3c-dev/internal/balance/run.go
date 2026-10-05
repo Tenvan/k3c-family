@@ -65,10 +65,8 @@ func (m Matrix) Scenarios() ([]Scenario, error) {
 			return nil, fmt.Errorf("matrix: Spieleranzahl muss 1 bis 4 sein, war %d", n)
 		}
 	}
-	for _, b := range m.Bots {
-		if bots[b] == nil {
-			return nil, fmt.Errorf("matrix: unbekannter Bot %q (bekannt: %v)", b, BotNames())
-		}
+	if err := m.checkBots(); err != nil {
+		return nil, err
 	}
 	var out []Scenario
 	for _, seed := range m.Seeds {
@@ -81,6 +79,21 @@ func (m Matrix) Scenarios() ([]Scenario, error) {
 		}
 	}
 	return out, nil
+}
+
+// checkBots: Jeder Bot ist bekannt und hat in jeder Spieleranzahl genug Monarchen.
+func (m Matrix) checkBots() error {
+	for _, b := range m.Bots {
+		if bots[b] == nil {
+			return fmt.Errorf("matrix: unbekannter Bot %q (bekannt: %v)", b, BotNames())
+		}
+		for _, n := range m.Players {
+			if err := checkPlayers(b, n); err != nil {
+				return fmt.Errorf("matrix: %w", err)
+			}
+		}
+	}
+	return nil
 }
 
 // Run spielt alle Läufe der Matrix nacheinander. Ein abgebrochener Lauf erscheint als ungültig, der Rest läuft weiter.

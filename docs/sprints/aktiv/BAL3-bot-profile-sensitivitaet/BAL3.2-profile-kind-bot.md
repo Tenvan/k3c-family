@@ -1,6 +1,6 @@
 # BAL3.2 · Vier Profile ohne Kind-Bot
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Branch:** bal3/2-profile-kind-bot
@@ -40,9 +40,9 @@ Sensitivität und Kurven (BAL3.3), lernende Bots, Änderung bestehender Werte in
 
 ## Fertig, wenn
 
-- [ ] AC-01: Test belegt für jedes der vier neuen Profile byte-gleiche Kennzahlen bei gleichem Seed und gleichen Daten.
-- [ ] AC-02: Kein Kind-Bot, keine Fehler-Daten in `data/` (Q19, später).
-- [ ] `task check:dev` grün; keine Datei > 400 Zeilen, keine Funktion > 60 Zeilen.
+- [x] AC-01: Test belegt für jedes der vier neuen Profile byte-gleiche Kennzahlen bei gleichem Seed und gleichen Daten.
+- [x] AC-02: Kein Kind-Bot, keine Fehler-Daten in `data/` (Q19, später).
+- [x] `task check:dev` grün; keine Datei > 400 Zeilen, keine Funktion > 60 Zeilen.
 
 ## Prüfen
 
@@ -52,4 +52,18 @@ task check:dev
 
 ## Ergebnis
 
-–
+- **AC-01 umgesetzt und geprüft:** Profile `walls`, `economy`, `coop2`, `coop4` in `tools/k3c-dev/internal/balance/bots.go`
+  (Verhalten nach dem Beschluss in `README.md`; `coop*`: gerader `p.Index` → `walls`, ungerader → `economy`). Mindest-Spieler
+  `minPlayers`/`checkPlayers`: Fehler „profil X braucht N Spieler, Szenario hat M“ in `Matrix.Scenarios` und `Target.validate`.
+  Tests in `profiles_test.go`: `TestNeueProfileGleicheBytes` (je Profil zwei Läufe, Seed 1, 1 Tag, 2 bzw. 4 Spieler →
+  `Report.JSON()` byte-gleich und gültig), `TestProfilZuWenigeSpieler` (coop2 mit 1, coop4 mit 2 und 3 Spielern → Fehler,
+  Matrix und Ziel), `TestMauernUndWirtschaftZuerst` (`walls` baut an Tag 1 eine Mauer, `economy` zahlt an Tag 1 ohne Mauer).
+- **AC-02 geprüft:** kein Kind-Bot, kein Fehler-Profil, keine Datei und kein Wert in `data/` geändert.
+- **Mauer-Ausbau:** aus öffentlichen Feldern nachgebildet (`Site.State/Level/Upgrade/UpgradePaid`, `World.HubLevel`,
+  `buildings.json` › `wall.levels`), da `sim.upgradePayable` nicht exportiert ist. Mauer-Stufe 2 braucht Hub-Stufe 2, die kein
+  Profil zahlt; der Ausbau greift in den Läufen daher nie.
+- **Vergleich „Mauern zuerst“ gegen „sparsam“** (`task balance:run -- --seeds 100 --bots walls,saver --players 2 --days 5`,
+  Wald, 100 Seeds, alle gültig): Welle 3 überlebt `walls` 97/100, `saver` 97/100; Burg hält bis Tag 6 je 94/100. Die
+  Kennzahlen sind je Seed identisch, weil `walls` ohne erreichbaren Ausbau dasselbe tut wie `saver`.
+- **Laufzeit:** 1 min 48 s für 200 Läufe à 5 Tage (inkl. Build); Tests des Pakets ≈ 6 s.
+- `task check:dev` grün (0 Lint-Meldungen); größte Datei `bots.go` 210 Zeilen.

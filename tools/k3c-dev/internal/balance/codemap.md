@@ -4,7 +4,7 @@
 Balancing-Tester (B-099, BAL1/BAL2): spielt eine Szenario-Matrix (Seed x Spieleranzahl x Bot x Tiefe) headless gegen die Go-Simulation, sammelt Kennzahlen, bewertet sie gegen Zielkorridore und erzeugt/spielt Replays. Ausgabe ist deterministisch und byte-gleich bei gleichen Daten.
 
 ## Design
-- Strategy: `Bot` (`bots.go`) = `func(*sim.World, *sim.Player) sim.PlayerCommand`, registriert in der Map `bots` (`passive`, `saver`); `BotNames` sortiert. Zufall nur über `engine/rng`.
+- Strategy: `Bot` (`bots.go`) = `func(*sim.World, *sim.Player) sim.PlayerCommand`, registriert in der Map `bots` (`passive`, `saver`, `walls`, `economy`, `coop2`, `coop4`; Verhalten: `README.md`); `BotNames` sortiert, `minPlayers`/`checkPlayers` = Mindest-Spieleranzahl je Profil (Fehler in `Matrix.Scenarios` und `Target.validate`). Zufall nur über `engine/rng`.
 - Matrix/Runner (`run.go`): `Matrix`, `Scenario`, `Result`, `Report`; `Matrix.Scenarios` validiert und zählt auf, `Run`/`runOne` spielen sequenziell, ein abgebrochener Lauf wird als ungültig (`Error`) vermerkt.
 - Collector (`metrics.go`): `collector` beobachtet Welt und `sim.Event`s je Tick und liefert `Metrics` mit `DayMetrics`/`WaveMetrics`.
 - Replay (`replay.go`): `Replay` mit `Span`-Lauflängen je Spieler, `ReadReplay` (Version `ReplayVersion`=1, Zeilennummern in Fehlern), `Play` rechnet ohne Bot nach und vergleicht Endzustand-Hash (`endHash`) und `DataHash` des eingebetteten Datenstands.
