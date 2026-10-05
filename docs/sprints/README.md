@@ -10,7 +10,6 @@ Reihenfolge in Wellen, Bahnen je Domäne und Zuordnung Mensch/autonom (zwei Acco
 
 | Sprint | Domäne | Thema | Am Ende sichtbar | Ordner |
 |---|---|---|---|---|
-| MON2 | PLAT | Monitoring-Seite mit Dashboard | Kachel „Monitor“, am Handy unter `task load` Ampel, Verläufe mit Perzentilen und Fehler-Zeitleiste | `aktiv/MON2-monitoring-seite/` |
 
 ## Offen am Gerät
 
@@ -33,6 +32,7 @@ Hardware-Sessions (`Agent: Mensch`) aus Sprints, deren Review schon abgeschlosse
 | RL1.2 | Raspberry Pi und Xbox (Pi-Image ziehen, Versionszeile der Landingpage gegen den Tag) | AC-03: Punkte „Pi-Image“ und „Version stimmt“ am Gerät (angenommen laut CI und Tests) | `erledigt/RL1-release-checkliste/` |
 | N2.4 | Xbox am TV (2 Controller, Split-Screen, Server auf dem Pi; FPS, Latenz, Puffer aus dem Debug-Overlay) | AC-06: kein sichtbares Ruckeln (angenommen laut Tests) | `erledigt/N2-zeitleiste-vorhersage/` |
 | DBG3.4 | Handy (neben laufendem Spiel am TV, Server mit `K3C_DEV=1`) | AC-04: `/dm` am Handy bedient, 375 px ohne waagerechtes Scrollen (angenommen laut Tests) | `erledigt/DBG3-dungeon-master-seite/` |
+| MON2.4 | Handy (neben `task load` oder am Spieleabend, Server mit `K3C_STATUS_TOKEN`) | AC-05: Monitor am Handy bedient, 375 px ohne waagerechtes Scrollen (angenommen laut Browser-Pane-Nachweis) | `erledigt/MON2-monitoring-seite/` |
 | S3.4 | Xbox am TV, Handy und Tastatur (Schlag, Skill-Slots, Skill-Menü, Aktionen-Overlay bedienen und lesen; Overlay und Preisschild können sich überlappen) | AC-05: Slots, Menü, Tasten und Overlay am Gerät abgenommen (angenommen laut Tests und Browser-Pane) | `erledigt/S3-skill-menue-overlay/` |
 
 ## Geplant (in dieser Reihenfolge)
@@ -144,3 +144,4 @@ Gesamtplan und Begründung: [`../plan-weiterentwicklung.md`](../plan-weiterentwi
 | W3 | Gebäude-Wirkungen: Tor wie Mauer, Kämpfer-Limit mit Kaserne, Taverne, Heilplatz, Zaubertum; Schmiede und Rüstkammer baubar (B-116) | `erledigt/W3-gebaeude-wirkungen/` |
 | DBG3 | Dungeon-Master-Seite `/dm` mit Dev-API, Welle und Tageszeit (B-232; Abnahme am Handy offen) | `erledigt/DBG3-dungeon-master-seite/` |
 | MON1 | Metrik-Sammler: Messreihen je Sekunde, RTT je Gerät, Ereignis-Ring und `GET /api/metrics` mit Token (B-281) | `erledigt/MON1-metrik-sammler/` |
+| MON2 | Monitoring-Seite `monitor.html`: Ampel je Raum, Verläufe mit Perzentilen, Fehler-Zeitleiste (B-282; Abnahme am Handy offen) | `erledigt/MON2-monitoring-seite/` |
