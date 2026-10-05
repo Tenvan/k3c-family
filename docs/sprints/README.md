@@ -10,6 +10,7 @@ Reihenfolge in Wellen, Bahnen je Domäne und Zuordnung Mensch/autonom (zwei Acco
 
 | Sprint | Domäne | Thema | Am Ende sichtbar | Ordner |
 |---|---|---|---|---|
+| W2 | SIM | Plantage, Adern, Stufenbreite und Mine | Tests für Generator, Adern, Plantage und Biome grün, aktualisierte Golden-Level | `aktiv/W2-plantage-adern-stufen/` |
 
 ## Offen am Gerät
 
@@ -44,7 +45,6 @@ dann über den Go-Server mit mehreren Räumen und gemischten Spielern.
 | MON2 | PLAT | Monitoring-Seite mit Dashboard | Kachel „Monitor“, am Handy unter `task load` Ampel, Verläufe mit Perzentilen und Fehler-Zeitleiste | Entwurf | `geplant/MON2-monitoring-seite/` |
 | S6 | CLI | Onboarding „Erste Nacht geführt“ und Controller-Glyphen | Ein Kind spielt die erste Nacht ohne Erklärung | bereit | `geplant/S6-onboarding-glyphen/` |
 | P1 | REG 🧑 | Spieleabend 1 | Protokoll und Folge-Tickets | Entwurf | `geplant/P1-spieleabend-1/` |
-| W2 | SIM | Plantage, Adern, Stufenbreite und Mine | Tests für Generator, Adern, Plantage und Biome grün, aktualisierte Golden-Level | bereit | `geplant/W2-plantage-adern-stufen/` |
 | W3 | SIM | Gebäude-Wirkungen | Tests je Gebäude grün, Werte aus den Daten, aktualisierte Golden-Daten | bereit | `geplant/W3-gebaeude-wirkungen/` |
 | W4 | SIM | Wiederbeleben, Berufe, Händler, Elite und Limit | Tests je Regel grün, aktualisierte Golden-Daten | bereit | `geplant/W4-buerger-wiederbeleben/` |
 | W5 | SRV | Protokoll für Berufe, Händler, Lager und Hub-Stufe | `docs/protocol.md` mit neuen Feldern, Beispiele in `testdata/protocol/`, `task check:go` und `task check` grün | Entwurf | `geplant/W5-protokoll-wirtschaft/` |

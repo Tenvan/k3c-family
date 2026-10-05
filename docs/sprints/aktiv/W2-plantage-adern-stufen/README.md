@@ -1,14 +1,14 @@
 # W2 · SIM · Plantage, Adern, Stufenbreite und Mine
 
-- **Status:** geplant
+- **Status:** aktiv
 - **Domäne:** SIM
 - **Reife:** bereit
 - **Einschiebbar:** nein
 - **Tickets:** B-114, B-115, B-012
-- **Start-Commit:** –
-- **Spec:** Entwurf
+- **Start-Commit:** 3215b03
+- **Spec:** freigegeben
 - **Revision:** 1
-- **Freigabe:** –
+- **Freigabe:** 2026-10-05, Chat, durch 🧑, Revision 1 (umfasst B-114, B-115, B-012 Revision 1)
 
 ## Ausgangslage
 
@@ -61,7 +61,7 @@ Zahlenwerte der Ressourcendichte: Zielwerte aus den Zielkorridoren (F1) bzw. B-0
 
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
-| W2.1 | `W2.1-adern-plantage.md` | Umsetzung | autonom | offen |
+| W2.1 | `W2.1-adern-plantage.md` | Umsetzung | autonom | in Arbeit |
 | W2.2 | `W2.2-eisenstollen-kristallhoehle.md` | Umsetzung | autonom | offen |
 | W2.3 | `W2.3-mine-golden.md` | Umsetzung | autonom | offen |
 | W2.4 | `W2.4-review.md` | Review | autonom | offen |
