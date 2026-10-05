@@ -1,11 +1,11 @@
 # MON2 · PLAT · Monitoring-Seite mit Dashboard
 
-- **Status:** geplant
+- **Status:** aktiv
 - **Domäne:** PLAT
-- **Reife:** Entwurf
+- **Reife:** bereit
 - **Einschiebbar:** nein
 - **Tickets:** B-282
-- **Start-Commit:** – (wird beim Aktivieren gesetzt: `git rev-parse --short origin/develop`)
+- **Start-Commit:** 4ab45b8
 - **Spec:** freigegeben
 - **Revision:** 1
 - **Freigabe:** 2026-10-05, Chat, durch 🧑 (umfasst B-282 Revision 1)
@@ -62,13 +62,6 @@ Autonome Umsetzung; 🧑 gibt die Spec frei und nimmt am Handy ab (B-282/AC-05).
 | MON2.2 | `MON2.2-seite.md` | Umsetzung | autonom | offen |
 | MON2.3 | `MON2.3-review.md` | Review | autonom | offen |
 | MON2.4 | `MON2.4-abnahme-handy.md` | Workshop | Mensch | offen |
-
-Reife Entwurf, Stichpunkte (Kriterien in Klammern):
-
-- **MON2.1** Daten-Schicht: Polling mit Delta, Neustart-Erkennung, Perzentile, Ausreißer, Tests (AC-01, AC-02).
-- **MON2.2** Seite: `monitor.html`, Übersicht, Verlauf auf Canvas/SVG, Ereignisse, Token-Eingabe, Fehlerhinweise, Browser-Pane-Nachweis (AC-03, AC-04).
-- **MON2.3** Review (alle Kriterien gegenprüfen).
-- **MON2.4** Abnahme 🧑 am Handy (AC-05).
 
 ## Abnahme
 
