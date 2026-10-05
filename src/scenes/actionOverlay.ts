@@ -16,11 +16,11 @@ const TOP_FREE_PX = 70;
 /** Hinweis als Zeilenteile: Text vor der Taste, Glyph, Text danach */
 const partsOf = (h: HintView): RowPart[] => [h.around[0], h.glyph, h.around[1]];
 
-/** Bildschirm-Punkt über dem Monarchen bei `xUnits` in der Zelle; außerhalb des Felds `null` */
-function screenAt(cell: Cell, view: Phaser.Geom.Rectangle, xUnits: number): { x: number; y: number } | null {
+/** Bildschirm-Punkt `abovePx` über dem Boden bei `xUnits` in der Zelle (Standard: über dem Monarchen); außerhalb des Felds `null` */
+export function screenAt(cell: Cell, view: Phaser.Geom.Rectangle, xUnits: number, abovePx = ABOVE_GROUND_PX): { x: number; y: number } | null {
   if (view.width === 0) return null;
   const x = cell.x + ((xUnits * UNIT_PX - view.x) * cell.w) / view.width;
-  const y = Math.max(cell.y + TOP_FREE_PX + 40, cell.y + ((GROUND_Y - ABOVE_GROUND_PX - view.y) * cell.h) / view.height);
+  const y = Math.max(cell.y + TOP_FREE_PX + 40, cell.y + ((GROUND_Y - abovePx - view.y) * cell.h) / view.height);
   return x < cell.x || x > cell.x + cell.w ? null : { x, y };
 }
 

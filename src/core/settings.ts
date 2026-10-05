@@ -15,6 +15,8 @@ export interface Settings {
   screenshake: boolean;
   flash: boolean;
   colorblindSymbols: boolean;
+  /** Hinweise der ersten Nacht (S6.3, Beschluss Q11: optional, Standard an) */
+  guideHints: boolean;
   language: Language;
 }
 
@@ -29,6 +31,7 @@ export const DEFAULT_SETTINGS: Readonly<Settings> = Object.freeze({
   screenshake: true,
   flash: true,
   colorblindSymbols: true,
+  guideHints: true,
   language: 'de',
 });
 
@@ -51,6 +54,7 @@ export function normalizeSettings(raw: unknown): Settings {
     screenshake: bool(r.screenshake, d.screenshake),
     flash: bool(r.flash, d.flash),
     colorblindSymbols: bool(r.colorblindSymbols, d.colorblindSymbols),
+    guideHints: bool(r.guideHints, d.guideHints),
     language: r.language === 'en' ? 'en' : 'de',
   };
 }

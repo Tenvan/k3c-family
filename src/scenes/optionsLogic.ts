@@ -6,10 +6,10 @@ import { clampVolume, type Settings } from '../core/settings';
 import { t } from '../core/texts';
 import type { SlotCommand } from './localSlots';
 
-export type OptionId = 'music' | 'sfx' | 'screenshake' | 'flash' | 'colorblind' | 'language' | 'resume' | 'leave';
+export type OptionId = 'music' | 'sfx' | 'screenshake' | 'flash' | 'colorblind' | 'guide' | 'language' | 'resume' | 'leave';
 
 /** Feste Reihenfolge der Einträge */
-export const OPTION_IDS: readonly OptionId[] = ['music', 'sfx', 'screenshake', 'flash', 'colorblind', 'language', 'resume', 'leave'];
+export const OPTION_IDS: readonly OptionId[] = ['music', 'sfx', 'screenshake', 'flash', 'colorblind', 'guide', 'language', 'resume', 'leave'];
 
 /** Registry-Schlüssel: die Optionen melden „Spiel verlassen“, `GameScene` verlässt den Raum (B-293) */
 export const LEAVE_KEY = 'leaveGame';
@@ -20,6 +20,9 @@ export const OPTION_PAD_KEYS = { A: 0, VIEW: 8, MENU: 9, UP: 12, DOWN: 13, LEFT:
 /** Menu kürzer als das gilt als „kurz“; länger bleibt der Kombi View + Menu (Shell) vorbehalten */
 export const MENU_SHORT_MS = 600;
 export const VOLUME_STEP = 10;
+
+/** Schalter-Einträge → Feld der Einstellungen */
+const SWITCHES = { screenshake: 'screenshake', flash: 'flash', colorblind: 'colorblindSymbols', guide: 'guideHints' } as const;
 
 export type OptionDir = 'left' | 'right' | 'confirm';
 
@@ -49,8 +52,9 @@ export function applyOption(settings: Settings, id: OptionId, dir: OptionDir): O
     }
     case 'screenshake':
     case 'flash':
-    case 'colorblind': {
-      const key = id === 'colorblind' ? 'colorblindSymbols' : id;
+    case 'colorblind':
+    case 'guide': {
+      const key = SWITCHES[id];
       return { ...unchanged, settings: { ...settings, [key]: !settings[key] } };
     }
     case 'language':
@@ -76,6 +80,8 @@ export function optionLabel(settings: Settings, id: OptionId): string {
       return `${t('opt.flash')}  ${onOff(settings.flash)}`;
     case 'colorblind':
       return `${t('opt.colorblind')}  ${onOff(settings.colorblindSymbols)}`;
+    case 'guide':
+      return `${t('opt.guide')}  ${onOff(settings.guideHints)}`;
     case 'language':
       return `${t('opt.language')}  ◀ ${t(`lang.${settings.language}`)} ▶`;
     case 'resume':
