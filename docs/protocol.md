@@ -256,7 +256,9 @@ heutigen TS-Simulation erzeugt (Seed `familie`, 3 Spieler, Tick 299/300). **Auß
 `troops`, `nodes`, `sites`, `enemies`, `projectiles`, `pickups`) stehen als `{ "set": [geänderte oder neue Einträge],
 "del": [entfernte ids] }`. Alles ohne `id` (einfache Werte, Objekte wie `cycle`, `castle`, `stock`, `travel`, Listen
 wie `camps`, `portals`, `spawnQueue`) steht bei einer Änderung ganz darin. `null` ist ein Wert (z. B. `travel` endet),
-kein Löschen. Fehlt `events`, gab es im Tick keine. `seq` zählt je Verbindung ab 1, nach einem Wiederverbinden also
+kein Löschen. Felder, die im vorigen Zustand standen und jetzt fehlen (z. B. `merchant`, `drops`), nennt `delta` in
+`unset` (Namen, sortiert, `events` nie); der Client entfernt sie. Fehlt keins, fehlt `unset`. Fehlt `events`, gab es im
+Tick keine. `seq` zählt je Verbindung ab 1, nach einem Wiederverbinden also
 neu. `ack` ist das höchste `seq`, das der Server von **dieser** Verbindung verrechnet hat (Grundlage für eine spätere
 Vorhersage, B-039).
 

@@ -32,7 +32,7 @@ Umgebungs-Assets (B-162), Einbau in den Renderer (B-010), selbst gezeichnete Fig
 
 ## Regeln und Einschränkungen
 
-Lizenzregel Q70 (CC0, CC-BY, OGA-BY, CC-BY-SA; CC-BY-NC nur markiert), Credits sofort; Grundstil nach Q13. Auswahl und Recherche über den ResourcenManager (B-295), sobald er steht.
+Lizenzregel Q70 (CC0, CC-BY, OGA-BY, CC-BY-SA; CC-BY-NC nur markiert), Credits sofort; Grundstil nach Q13. Auswahl und Recherche über den ResourcenManager (B-298), sobald er steht.
 
 ## Beispiele
 

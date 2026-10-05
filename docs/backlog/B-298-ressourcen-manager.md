@@ -1,4 +1,4 @@
-# B-295 · Ein ResourcenManager in k3c-dev ordnet jedem Grafik- und Sound-Slot Assets mit Präferenz zu
+# B-298 · Ein ResourcenManager in k3c-dev ordnet jedem Grafik- und Sound-Slot Assets mit Präferenz zu
 
 - **Domäne:** SRV
 - **Typ:** Idee
@@ -12,11 +12,11 @@
 
 ## Ausgangslage
 
-Die Zuordnung von Grafiken und Sounds läuft über Chat-Fragen, statische Fundseiten (`docs/funde/`) und Markdown-Tabellen (`docs/assets/zuordnung*.md`, `public/audio/kandidaten.json`). Es gibt keine Übersicht aller Stellen, an denen ein Asset eingebaut werden muss, keine Präferenz-Reihenfolge, keine Ausschnitte und keine wiederholbare Web-Recherche. B-252 (Client-Seite, nur Grafik, nur Text-Export) deckt das nicht ab, weil der Client nicht ins Repo schreiben und nicht im Netz suchen darf. Entscheidung 🧑 im Chat am 2026-10-05: Manager in k3c-dev, Mini-Szenen als Dev-Seite im Client (B-296).
+Die Zuordnung von Grafiken und Sounds läuft über Chat-Fragen, statische Fundseiten (`docs/funde/`) und Markdown-Tabellen (`docs/assets/zuordnung*.md`, `public/audio/kandidaten.json`). Es gibt keine Übersicht aller Stellen, an denen ein Asset eingebaut werden muss, keine Präferenz-Reihenfolge, keine Ausschnitte und keine wiederholbare Web-Recherche. B-252 (Client-Seite, nur Grafik, nur Text-Export) deckt das nicht ab, weil der Client nicht ins Repo schreiben und nicht im Netz suchen darf. Entscheidung 🧑 im Chat am 2026-10-05: Manager in k3c-dev, Mini-Szenen als Dev-Seite im Client (B-299).
 
 ## Ziel
 
-🧑 sieht in k3c-dev alle Grafik-Slots und alle Sound-Slots (getrennte Ansichten), wählt je Slot ein oder mehrere Assets aus dem Katalog mit Suche, ordnet sie nach Präferenz, legt bei Grafiken Ausschnitte fest und lässt je Slot nach Alternativen im Netz suchen. Das Ergebnis liegt als Daten im Repo und ist in einer Mini-Szene (B-296) sichtbar.
+🧑 sieht in k3c-dev alle Grafik-Slots und alle Sound-Slots (getrennte Ansichten), wählt je Slot ein oder mehrere Assets aus dem Katalog mit Suche, ordnet sie nach Präferenz, legt bei Grafiken Ausschnitte fest und lässt je Slot nach Alternativen im Netz suchen. Das Ergebnis liegt als Daten im Repo und ist in einer Mini-Szene (B-299) sichtbar.
 
 ## Beteiligte und Zielgruppen
 
@@ -32,7 +32,7 @@ Die Zuordnung von Grafiken und Sounds läuft über Chat-Fragen, statische Fundse
 - **Web-Recherche als Vorschlagsliste** je Slot: Treffer mit Titel, Quelle (Link), Urheber, Lizenz (soweit erkennbar) und Vorschau (Bild bzw. Hörprobe, sonst nur Link). Eine API ist keine Voraussetzung: Treffer kommen aus Such-APIs (z. B. freesound), aus gelesenen Suchseiten (OpenGameArt, itch.io, Kenney, Wikimedia Commons) oder vom Agenten über ein MCP-Tool (Agent sucht im Netz, legt Treffer zum Slot ab). Treffer bleiben je Slot gespeichert, bis 🧑 sie verwirft.
 - **Übernahme**: automatisch nur, wo die Quelle einen direkten Download mit maschinenlesbarer Lizenz bietet; sonst lädt 🧑 manuell herunter und übernimmt die Datei per **Import** (Datei wählen, Treffer zuordnen). Der Import legt sie unter `public/…/kandidaten/` ab und trägt Quelle, Urheber, Lizenz aus dem Treffer in die Credits ein. Lizenz ohne Bestätigung → „Lizenz prüfen“, bis 🧑 bestätigt.
 - **MCP-Tools** für den Agenten: Slots lesen, Zuordnung setzen, Recherche-Treffer anlegen und lesen.
-- Einbettung der Mini-Szenen aus B-296 als iframe vom Vite-Port des Worktrees.
+- Einbettung der Mini-Szenen aus B-299 als iframe vom Vite-Port des Worktrees.
 
 ## Nicht-Ziele
 
@@ -58,7 +58,7 @@ Datei fehlt → Slot zeigt Platzhalter mit Pfad. Quelle nicht erreichbar, Suchse
 - **AC-04** Die Recherche zeigt je Slot Vorschläge mit Link, Quelle und Lizenz, auch von Quellen ohne API; Treffer bleiben gespeichert (Go-Test mit aufgezeichneten Antworten + Beobachtung).
 - **AC-05** Eine manuell geladene Datei lässt sich zu einem Treffer importieren; Ablage und Credit-Eintrag stimmen, unbestätigte Lizenz bleibt „Lizenz prüfen“ (Go-Test).
 - **AC-06** MCP-Tools für Slots, Zuordnung und Recherche-Treffer antworten (`dev:test`).
-- **AC-07** Die Mini-Szene aus B-296 ist eingebettet und zeigt die aktive Zuordnung (Beobachtung).
+- **AC-07** Die Mini-Szene aus B-299 ist eingebettet und zeigt die aktive Zuordnung (Beobachtung).
 
 ## Offene Fragen
 
@@ -68,4 +68,4 @@ Entschieden (🧑, Chat 2026-10-05): B-252 ist verworfen und geht hier auf; das 
 
 ## Notizen
 
-Gegenstück im Client: B-296 (Mini-Szenen). Verwandt: B-252, B-193, B-167, B-168, B-165. Quellen-Übersicht aus dem Chat vom 2026-10-05.
+Gegenstück im Client: B-299 (Mini-Szenen). Verwandt: B-252, B-193, B-167, B-168, B-165. Quellen-Übersicht aus dem Chat vom 2026-10-05.

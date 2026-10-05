@@ -1,4 +1,4 @@
-# B-296 · Eine Dev-Seite zeigt die Asset-Zuordnung je Kategorie als Mini-Szene im Spielmaßstab
+# B-299 · Eine Dev-Seite zeigt die Asset-Zuordnung je Kategorie als Mini-Szene im Spielmaßstab
 
 - **Domäne:** PLAT
 - **Typ:** Idee
@@ -12,7 +12,7 @@
 
 ## Ausgangslage
 
-Der ResourcenManager (B-295) braucht eine Vorschau der Zuordnung im echten Spielmaßstab. Nur der Client-Renderer zeichnet mit `UNIT_PX` und der Skalierung aus `data/sprites.json`; ein Nachbau in k3c-dev würde abweichen. Entscheidung 🧑 im Chat am 2026-10-05.
+Der ResourcenManager (B-298) braucht eine Vorschau der Zuordnung im echten Spielmaßstab. Nur der Client-Renderer zeichnet mit `UNIT_PX` und der Skalierung aus `data/sprites.json`; ein Nachbau in k3c-dev würde abweichen. Entscheidung 🧑 im Chat am 2026-10-05.
 
 ## Ziel
 
@@ -20,7 +20,7 @@ Eine Dev-Seite `assetvorschau.html` zeigt je Kategorie eine Mini-Szene mit den a
 
 ## Beteiligte und Zielgruppen
 
-🧑 beurteilt in k3c-dev (iframe, B-295) oder direkt im Browser; der Agent prüft im Browser-Pane.
+🧑 beurteilt in k3c-dev (iframe, B-298) oder direkt im Browser; der Agent prüft im Browser-Pane.
 
 ## Anforderungen
 
@@ -33,7 +33,7 @@ Eine Dev-Seite `assetvorschau.html` zeigt je Kategorie eine Mini-Szene mit den a
 
 ## Nicht-Ziele
 
-Zuordnung ändern (nur B-295), eigene Mini-Szene je Asset, Spiel-Logik.
+Zuordnung ändern (nur B-298), eigene Mini-Szene je Asset, Spiel-Logik.
 
 ## Regeln und Einschränkungen
 
@@ -62,4 +62,4 @@ Entschieden (🧑, Chat 2026-10-05): Die Seite gibt es nur im Dev-Build, nicht i
 
 ## Notizen
 
-Hängt an B-295 (Slot-Register). Vorhandene Bausteine: `src/tools/grafiken.ts`, `spriteReference.ts`, `soundtestLogic.ts`, `audioProbe.ts`.
+Hängt an B-298 (Slot-Register). Vorhandene Bausteine: `src/tools/grafiken.ts`, `spriteReference.ts`, `soundtestLogic.ts`, `audioProbe.ts`.

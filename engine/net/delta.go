@@ -1,10 +1,14 @@
 package net
 
-import "reflect"
+import (
+	"reflect"
+	"slices"
+)
 
 // Delta nach docs/protocol.md › Zustand und Delta: nur geänderte Felder. Listen mit `id` stehen als
 // {"set": [geänderte oder neue Einträge], "del": [entfernte ids]}, alles andere bei einer Änderung ganz. `null` ist ein
-// Wert. `events` fehlt, wenn es im Tick keine gab.
+// Wert. `events` fehlt, wenn es im Tick keine gab. Felder, die in prev standen und in cur fehlen (außer `events`), stehen
+// sortiert in `unset`; fehlt keins, fehlt `unset`.
 
 // idLists sind die Listen, deren Einträge eine `id` haben.
 var idLists = map[string]bool{
@@ -29,7 +33,22 @@ func deltaOf(prev, cur map[string]any) map[string]any {
 			d[k] = v
 		}
 	}
+	if unset := unsetOf(prev, cur); len(unset) > 0 {
+		d["unset"] = unset
+	}
 	return d
+}
+
+// unsetOf nennt sortiert die Felder aus prev, die in cur fehlen (`events` ausgenommen).
+func unsetOf(prev, cur map[string]any) []string {
+	var unset []string
+	for k := range prev {
+		if _, ok := cur[k]; !ok && k != "events" {
+			unset = append(unset, k)
+		}
+	}
+	slices.Sort(unset)
+	return unset
 }
 
 func listDelta(prev, cur any) (set []any, del []any) {

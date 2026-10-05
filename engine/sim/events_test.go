@@ -1,6 +1,7 @@
 package sim
 
 import (
+	"math"
 	"reflect"
 	"testing"
 )
@@ -226,7 +227,8 @@ func TestEventsTodUndWiederbelebenSpieler1(t *testing.T) {
 	if down["type"] != "playerDown" || down["player"] != 1 {
 		t.Fatalf("Tod: %v", down)
 	}
-	ev := firstEvent(t, eventsOf(w, "revive", 30*10, []PlayerCommand{{}, {}}))
+	steps := int(math.Ceil(monarch.RespawnSeconds/dt)) + 1 // Wartezeit aus den Daten (B-120: 15 s)
+	ev := firstEvent(t, eventsOf(w, "revive", steps, []PlayerCommand{{}, {}}))
 	if ev["player"] != 1 || ev["x"] != unitX(p1.X) {
 		t.Fatalf("revive: %v (Spieler bei %v)", ev, p1.X)
 	}

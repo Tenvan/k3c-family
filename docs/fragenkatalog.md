@@ -206,11 +206,11 @@ Anlass: Ziel des Heiler-Skills Resurrection und was mit Bürgern geschieht, dere
 
 ## Beschlüsse vom 2026-10-05 (🧑 im Chat)
 
-Anlass: ResourcenManager (B-295, B-296). Das Projekt ist source-available (PolyForm Noncommercial, eigene Assets CC-BY-NC), das Repo öffentlich; eine Lizenz muss Weitergabe der Rohdateien, Zuschnitt und unsere eigene Lizenz vertragen.
+Anlass: ResourcenManager (B-298, B-299). Das Projekt ist source-available (PolyForm Noncommercial, eigene Assets CC-BY-NC), das Repo öffentlich; eine Lizenz muss Weitergabe der Rohdateien, Zuschnitt und unsere eigene Lizenz vertragen.
 
 | Nr. | Beschluss | Wirkt auf |
 |---|---|---|
-| Q70 | **Lizenzregel für fremde Assets** (ersetzt „nur CC0 oder CC-BY“ in Q14, Q15 und allen Tickets/Sprints): erlaubt sind **CC0, CC-BY, OGA-BY, CC-BY-SA** und für Schriften **SIL OFL**. **CC-BY-NC** (auch -SA) nur als **markierter Lückenfüller** (blockiert spätere kommerzielle Nutzung). Ein Ausschnitt oder eine Bearbeitung eines SA-Assets steht wieder unter CC-BY-SA (Credit sagt das). GPL bei Grafik/Sound nur, wenn auch CC-BY-SA angeboten wird (dann diese wählen). Nicht erlaubt: **ND** (kein Zuschnitt) und Lizenzen ohne Weitergabe der Rohdateien (Pixabay, Mixkit, CraftPix-Freebies, Zapsplat, Sonniss). Recherche ohne API ist erlaubt: Vorschläge mit Link, 🧑 lädt wertvolle Funde ggf. manuell. | B-295, B-296, B-165, B-167, B-168, B-149, B-193, SO2, SO4, GR3, S6.2, SO3.2, Q14, Q15 |
+| Q70 | **Lizenzregel für fremde Assets** (ersetzt „nur CC0 oder CC-BY“ in Q14, Q15 und allen Tickets/Sprints): erlaubt sind **CC0, CC-BY, OGA-BY, CC-BY-SA** und für Schriften **SIL OFL**. **CC-BY-NC** (auch -SA) nur als **markierter Lückenfüller** (blockiert spätere kommerzielle Nutzung). Ein Ausschnitt oder eine Bearbeitung eines SA-Assets steht wieder unter CC-BY-SA (Credit sagt das). GPL bei Grafik/Sound nur, wenn auch CC-BY-SA angeboten wird (dann diese wählen). Nicht erlaubt: **ND** (kein Zuschnitt) und Lizenzen ohne Weitergabe der Rohdateien (Pixabay, Mixkit, CraftPix-Freebies, Zapsplat, Sonniss). Recherche ohne API ist erlaubt: Vorschläge mit Link, 🧑 lädt wertvolle Funde ggf. manuell. | B-298, B-299, B-165, B-167, B-168, B-149, B-193, SO2, SO4, GR3, S6.2, SO3.2, Q14, Q15 |
 
 **Folgen für die Planung:** Freigegebene Specs (B-167, B-168, B-149, SO2, SO4) nennen noch „CC0 oder CC-BY“; sie gelten ab jetzt sinngemäß nach Q70 und werden bei der nächsten Revision angepasst (Freigabe 🧑).
 

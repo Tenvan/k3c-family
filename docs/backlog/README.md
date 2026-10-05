@@ -115,8 +115,9 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-292](B-292-neues-spiel-eindeutiger-name.md) | PLAT | Problem | hoch | offen | – | Die Kachel „Neues Spiel“ startet auch bei vorhandenem Spielstand familie |
 | [B-293](B-293-spiel-im-menue-verlassen.md) | CLI | Idee | hoch | offen | – | Das Spielmenü hat neben „Weiter“ einen Eintrag „Spiel verlassen“ |
 | [B-294](B-294-hinweis-glyph-muenze-nacht.md) | CLI | Frage | mittel | offen | – | Münze und „Nacht naht“ zeigen in der geführten ersten Nacht keine Glyph |
-| [B-295](B-295-ressourcen-manager.md) | SRV | Idee | mittel | offen | – | Ein ResourcenManager in k3c-dev ordnet jedem Grafik- und Sound-Slot Assets mit Präferenz zu |
-| [B-296](B-296-asset-vorschau-szenen.md) | PLAT | Idee | mittel | offen | – | Eine Dev-Seite zeigt die Asset-Zuordnung je Kategorie als Mini-Szene im Spielmaßstab |
+| [B-295](B-295-handwerker-schmiede-ruestkammer.md) | REG | Frage | mittel | offen | – | Handwerker lassen sich auch für Schmiede und Rüstkammer ausbilden |
+| [B-298](B-298-ressourcen-manager.md) | SRV | Idee | mittel | offen | – | Ein ResourcenManager in k3c-dev ordnet jedem Grafik- und Sound-Slot Assets mit Präferenz zu |
+| [B-299](B-299-asset-vorschau-szenen.md) | PLAT | Idee | mittel | offen | – | Eine Dev-Seite zeigt die Asset-Zuordnung je Kategorie als Mini-Szene im Spielmaßstab |
 
 ## Archiv
 
@@ -276,4 +277,6 @@ Zeile in diesen Abschnitt.
 | [B-232](archiv/B-232-dungeon-master-seite.md) | PLAT | Idee | hoch | erledigt | DBG3 | Eine Dungeon-Master-Seite unter /dm steuert Räume live vom Handy oder Tablet |
 | [B-281](archiv/B-281-monitoring-dashboard.md) | SRV | Idee | hoch | erledigt | MON1 | Der Server sammelt Latenzen, Tick-Dauer und Fehler als Verlauf und liefert sie über /api/metrics |
 | [B-282](archiv/B-282-monitoring-seite.md) | PLAT | Idee | hoch | erledigt | MON2 | Die Monitoring-Seite zeichnet Verläufe, Perzentile und die Fehler-Zeitleiste aus /api/metrics |
+| [B-296](archiv/B-296-verlust-kaskade-bricht-delta-test.md) | SRV | Frage | hoch | erledigt | – | Die Verlust-Kaskade (W4.3a) lässt sich ohne Änderung an `engine/net` nicht grün umsetzen |
+| [B-297](archiv/B-297-delta-entfernt-felder.md) | SRV | Problem | hoch | erledigt | DL1 | Das Delta überträgt, dass ein Feld aus dem Zustand verschwindet |
 | [B-252](archiv/B-252-grafikmanager-seite.md) | PLAT | Idee | mittel | verworfen | – | Eine GrafikManager-Seite zeigt Bestand, Kandidaten und Zuordnung für die feine Auswahl |
