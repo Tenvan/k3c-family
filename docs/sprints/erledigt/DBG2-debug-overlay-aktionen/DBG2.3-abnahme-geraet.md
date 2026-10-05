@@ -1,6 +1,6 @@
 # DBG2.3 · Abnahme am PC, Handy und Controller
 
-- **Status:** blockiert
+- **Status:** fertig
 - **Typ:** Workshop
 - **Agent:** Mensch
 - **Branch:** dbg2/3-abnahme-geraet
@@ -38,7 +38,7 @@ Keine Code-Änderungen; Mängel werden Tickets (Domäne CLI oder SRV), keine Nac
 
 - [x] AC-05: 🧑 bestätigt im Ergebnis mit Datum „Gold droppen, Material geben und Zeitraffer am PC ausprobiert“.
 - [x] AC-05: 🧑 bestätigt dasselbe für das Handy.
-- [ ] AC-05: 🧑 bestätigt dasselbe mit Controller (oder nennt die Mängel als Tickets, dann bleibt die Session `blockiert`).
+- [x] AC-05: 🧑 bestätigt dasselbe mit Controller (oder nennt die Mängel als Tickets, dann bleibt die Session `blockiert`).
 
 ## Prüfen
 
@@ -50,5 +50,8 @@ Manuell durch 🧑 am Gerät; vorher `task check` grün auf dem getesteten Stand
 
 - **AC-05 PC: geprüft** (🧑, Maus und Ö): Overlay öffnet, „Gold 50“ lässt Münzen fallen, Material erhöht den Vorrat, „Zeit 8×“ und „Zeit 1×“ wirken und stehen im Overlay. Mängel: Overlay und Aktionsliste liegen halbtransparent über dem HUD, gewünscht links unten (**B-191**); Ö schließt die Aktionsliste nicht (**B-192**).
 - **AC-05 Handy: geprüft** (🧑, Touch): alle drei Aktionen per Tippen, Schaltflächen treffbar, Lauf-Flächen nicht gestört.
-- **AC-05 Controller: blockiert**, nicht geprüft (kein Gamepad zur Hand). Prüfliste 3 nachholen: Stick-Klick öffnet, RB Fokus (gelber Rahmen), D-Pad wählt, A löst aus ohne Beitritt, Stick im Fokus stumm, B ohne Wirkung, View + Menu zurück. Nach `docs/arbeitsweise.md` › Hardware entkoppelt keine Abhängigkeit für DBG2.4.
-- Schritt 5 (`K3C_DEV=0`, keine Aktionsliste): von 🧑 nicht geprüft; Nachweis bisher nur aus DBG2.2 (Agent, Browser-Pane und Test). Wegen B-192 nach dessen Behebung erneut ansehen.
+- Schritt 5 (`K3C_DEV=0`, keine Aktionsliste): von 🧑 nicht geprüft; Nachweis bisher nur aus DBG2.2 (Agent, Browser-Pane und Test). Nach Behebung von B-192 erneut ansehen.
+
+2026-10-05, Nachtrag Controller, geprüft von 🧑 (Ralf) im Interview mit Agent (Claude Sonnet 5.5), Branch `sprint/dbg2`, Stand `origin/develop` 27b117f, `game.html?dev=1` im Chrome des PCs, Server im Dev-Mode:
+
+- **AC-05 Controller: geprüft** (🧑): Prüfliste Schritte 1–8 alle „ok“: Stick-Klick öffnet das Overlay, RB setzt den Fokus (gelber Rahmen), D-Pad wählt ohne dass der Spieler läuft, A löst Gold, Material und Zeitraffer aus ohne Beitritt, B ohne Wirkung, View + Menu zurück zur Landingpage. Keine neuen Mängel, keine neuen Tickets.
