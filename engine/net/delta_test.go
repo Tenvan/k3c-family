@@ -18,6 +18,12 @@ func apply(prev, d map[string]any) map[string]any {
 	}
 	next["events"] = []any{}
 	for k, v := range d {
+		if k == "unset" {
+			for _, f := range v.([]any) {
+				delete(next, f.(string))
+			}
+			continue
+		}
 		if !idLists[k] {
 			next[k] = v
 			continue
@@ -105,11 +111,15 @@ func replayWorld(t *testing.T, file string, from int, each func(tick int, w *sim
 	}
 }
 
-// Belagerung der Höhle: Gegner, Pfeile, Münzen, tote Truppen und der Fall der Burg.
+// Belagerung der Höhle: Gegner, Pfeile, Münzen und Truppen. Ob Gegner die Burg erreichen, ist Balancing (mit der
+// Verlust-Kaskade aus W4.3a in keinem Golden-Lauf), deshalb trifft der Test die Burg selbst alle 600 Ticks (B-297).
 func TestDeltaErgibtJedenVollenZustand(t *testing.T) {
 	var client, prev map[string]any
 	changes := map[string]int{}
 	replayWorld(t, "sim-cave-belagerung.json", 2400, func(tick int, w *sim.World) {
+		if tick%600 == 0 {
+			w.Castle.HP--
+		}
 		cur := stateOf(w, 0, false)
 		if prev == nil {
 			client, prev = wire(t, cur), cur
@@ -134,6 +144,25 @@ func TestDeltaErgibtJedenVollenZustand(t *testing.T) {
 		if changes[k] == 0 {
 			t.Errorf("Feld %s hat sich im Lauf nie geändert, der Test deckt es nicht ab", k)
 		}
+	}
+}
+
+// Händler reist ab, letzte Ausrüstung aufgehoben: die Felder fehlen im Zustand und stehen in `unset` (B-297).
+func TestDeltaNenntVerschwundeneFelderInUnset(t *testing.T) {
+	prev := map[string]any{
+		"merchant": map[string]any{"x": 3.0}, "drops": []any{map[string]any{"x": 1.0}}, "travel": map[string]any{"to": 1.0},
+		"events": []any{"x"}, "cycle": 1.0,
+	}
+	cur := map[string]any{"travel": nil, "cycle": 2.0}
+	d := wire(t, deltaOf(prev, cur))
+	if want := []any{"drops", "merchant"}; !reflect.DeepEqual(d["unset"], want) {
+		t.Fatalf("unset = %v, erwartet %v", d["unset"], want)
+	}
+	if !reflect.DeepEqual(apply(wire(t, prev), d), map[string]any{"travel": nil, "cycle": 2.0, "events": []any{}}) {
+		t.Fatalf("apply ergibt nicht cur: %v", apply(wire(t, prev), d))
+	}
+	if d := deltaOf(cur, cur); d["unset"] != nil {
+		t.Fatalf("null steht in unset: %v", d)
 	}
 }
 
