@@ -1,6 +1,6 @@
 # W2 · SIM · Plantage, Adern, Stufenbreite und Mine
 
-- **Status:** aktiv
+- **Status:** erledigt
 - **Domäne:** SIM
 - **Reife:** bereit
 - **Einschiebbar:** nein
@@ -64,11 +64,14 @@ Zahlenwerte der Ressourcendichte: Zielwerte aus den Zielkorridoren (F1) bzw. B-0
 | W2.1 | `W2.1-adern-plantage.md` | Umsetzung | autonom | fertig |
 | W2.2 | `W2.2-eisenstollen-kristallhoehle.md` | Umsetzung | autonom | fertig |
 | W2.3 | `W2.3-mine-golden.md` | Umsetzung | autonom | fertig |
-| W2.4 | `W2.4-review.md` | Review | autonom | offen |
+| W2.4 | `W2.4-review.md` | Review | autonom | fertig |
 
 Bei `Reife: Entwurf` genügen Stichpunkte mit den Kriterien in Klammern statt Session-Dateien. Vor dem Aktivieren
 wird jede Session als eigene Datei nach `docs/vorlagen/session.md` geschrieben.
 
 ## Abnahme
 
-–
+- 2026-10-05 (W2.4, autonom): AC-01 (W2.1: `TestAdernJeStufe`), AC-02 (W2.1: `vein_test.go`, `plantation_test.go`), AC-03, AC-04 (W2.2: `TestValidate500Seeds`, `TestInselFuenfStufen`, `TestBreiteUndDichte`), AC-05 (W2.3: `mine_test.go`), AC-06 (Golden aktuell, `task check:go` und `task check` grün, `-race` übersprungen) mit Nachweis.
+- Review des Diffs: keine schweren Befunde, keine Befunde behoben (Werte nur in `data/`, deterministisch, höchstens 2 Bauern je Ader, Startvorrat unberührt, `rng.json` und Spielstand unverändert); begründete Abweichungen in W2.2 erklärt.
+- Neue Tickets aus dem Sprint: B-289 (Aggressionspool mit Adern), B-290 (Raum mit fünf Stufen), B-291 (Lava nicht auf Mauerlinien).
+- Version: v0.9.0 vorgeschlagen (Minor: Adern, Plantage, Eisenstollen, Kristallhöhle und Lava wirken in der Simulation; letzter Tag v0.8.0).
