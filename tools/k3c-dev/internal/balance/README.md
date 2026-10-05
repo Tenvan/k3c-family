@@ -1,7 +1,8 @@
 # Balancing-Tester
 
 Bots spielen eine Szenario-Matrix headless gegen `engine/sim` (B-099, BAL1), `task balance` prüft die Zielkorridore
-(B-157, BAL2). Aufbau: `codemap.md`. Befehle: `task balance`, `task balance:run`, `task balance:baseline`.
+(B-157, BAL2). Aufbau: `codemap.md`. Befehle: `task balance`, `task balance:run`, `task balance:baseline`,
+`task balance:sensitivity` (Sensitivität und Grad-Kurven, z. B. `-- --seeds 10 --vary economy.json:purse.startGold`).
 
 ## Profile und Grad-Kurven
 
@@ -41,4 +42,5 @@ Variation um −25 %, −10 %, +10 %, +25 %; standardmäßig diese vier Werte, w
 - `waves.json` › `perExtraPlayer`
 
 Der Lauf ändert keine Datei in `data/`; die Sim lädt die variierten Daten nur im Speicher (`sim.UseData`, Beschluss
-🧑 2026-10-05). Ein unbekannter Pfad ist ein Fehler mit Pfad.
+🧑 2026-10-05). Ein unbekannter Pfad ist ein Fehler mit Pfad. Pfad-Syntax `datei.json:a.b.c` (Listen über den Index); „gekippt“ heißt:
+die Bewertung eines Ziels aus `data/balance-targets.json` ändert sich gegenüber dem unveränderten Lauf.

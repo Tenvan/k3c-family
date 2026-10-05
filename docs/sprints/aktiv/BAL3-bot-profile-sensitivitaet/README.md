@@ -61,7 +61,7 @@ Variierter Wert fehlt in den Daten → Fehler mit Pfad. Profil verlangt mehr Spi
 |---|---|---|---|---|
 | BAL3.1 | `BAL3.1-workshop-profile.md` | Workshop | Mensch | fertig |
 | BAL3.2 | `BAL3.2-profile-kind-bot.md` | Umsetzung | autonom | fertig |
-| BAL3.3 | `BAL3.3-sensitivitaet-kurven.md` | Umsetzung | autonom | offen |
+| BAL3.3 | `BAL3.3-sensitivitaet-kurven.md` | Umsetzung | autonom | fertig |
 | BAL3.4 | `BAL3.4-review.md` | Review | autonom | offen |
 
 Bei `Reife: Entwurf` genügen Stichpunkte mit den Kriterien in Klammern statt Session-Dateien. Vor dem Aktivieren

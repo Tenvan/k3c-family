@@ -2,6 +2,7 @@ package sim
 
 import (
 	"encoding/json"
+	"errors"
 	"fmt"
 	"io/fs"
 	"path"
@@ -154,14 +155,39 @@ var (
 
 func load[T any](name string) T {
 	var v T
-	raw, err := data.Files.ReadFile(name)
+	if err := loadFrom(data.Files, name, &v); err != nil {
+		panic(err)
+	}
+	return v
+}
+
+// loadFrom liest name aus fsys in ein frisches *dst; bei Fehler bleibt *dst unverändert.
+func loadFrom[T any](fsys fs.FS, name string, dst *T) error {
+	var v T
+	raw, err := fs.ReadFile(fsys, name)
 	if err == nil {
 		err = json.Unmarshal(raw, &v)
 	}
 	if err != nil {
-		panic(fmt.Sprintf("data/%s: %v", name, err))
+		return fmt.Errorf("data/%s: %w", name, err)
 	}
-	return v
+	*dst = v
+	return nil
+}
+
+// UseData lädt buildings, troops, economy, hub, monarch, enemies und waves aus fsys neu (Sensitivitäts-Lauf des
+// Balancing-Testers, BAL3.3); `UseData(data.Files)` stellt den eingebetteten Stand wieder her. Nicht neu geladen
+// werden difficulty, biomes und daraus abgeleitete Werte (skillCatalog). Bei einem Fehler bleibt alles unverändert.
+// Nicht nebenläufig zu laufenden Simulationen aufrufen.
+func UseData(fsys fs.FS) error {
+	b, t, e, h, m, en, w := buildings, troops, economy, hub, monarch, enemyData, waves
+	if err := errors.Join(loadFrom(fsys, "buildings.json", &b), loadFrom(fsys, "troops.json", &t),
+		loadFrom(fsys, "economy.json", &e), loadFrom(fsys, "hub.json", &h), loadFrom(fsys, "monarch.json", &m),
+		loadFrom(fsys, "enemies.json", &en), loadFrom(fsys, "waves.json", &w)); err != nil {
+		return err
+	}
+	buildings, troops, economy, hub, monarch, enemyData, waves = b, t, e, h, m, en, w
+	return nil
 }
 
 func loadBiomes() []level.Biome {

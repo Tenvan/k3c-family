@@ -3,6 +3,7 @@ package balance
 import (
 	"encoding/json"
 	"fmt"
+	"io/fs"
 	"math"
 	"slices"
 
@@ -48,8 +49,8 @@ func BotNames() []string {
 	return names
 }
 
-// prices sind die Werte aus data/, die ein Bot zum Entscheiden braucht (nur gelesen).
-var prices = loadPrices()
+// prices sind die Werte aus data/, die ein Bot zum Entscheiden braucht (nur gelesen; withData tauscht sie).
+var prices = must(loadPrices(data.Files))
 
 type priceList struct {
 	wallGold, recruitGold int
@@ -57,27 +58,37 @@ type priceList struct {
 	payRange              float64
 }
 
-func loadPrices() priceList {
+func must(p priceList, err error) priceList {
+	if err != nil {
+		panic(err)
+	}
+	return p
+}
+
+func loadPrices(fsys fs.FS) (priceList, error) {
 	var b map[string]struct {
 		Cost   struct{ Gold int }
 		Levels []struct{ Cost struct{ Gold int } }
 	}
 	var t map[string]struct{ RecruitCost struct{ Gold int } }
 	var e struct{ PayRangeUnits float64 }
-	for name, v := range map[string]any{"buildings.json": &b, "troops.json": &t, "economy.json": &e} {
-		raw, err := data.Files.ReadFile(name)
+	for _, f := range []struct {
+		name string
+		v    any
+	}{{"buildings.json", &b}, {"troops.json", &t}, {"economy.json", &e}} {
+		raw, err := fs.ReadFile(fsys, f.name)
 		if err == nil {
-			err = json.Unmarshal(raw, v)
+			err = json.Unmarshal(raw, f.v)
 		}
 		if err != nil {
-			panic(fmt.Sprintf("balance: data/%s: %v", name, err))
+			return priceList{}, fmt.Errorf("balance: data/%s: %w", f.name, err)
 		}
 	}
 	levels := make([]int, len(b["wall"].Levels))
 	for i, l := range b["wall"].Levels {
 		levels[i] = l.Cost.Gold
 	}
-	return priceList{wallGold: b["wall"].Cost.Gold, recruitGold: max(1, t["vagrant"].RecruitCost.Gold), wallLevelGold: levels, payRange: e.PayRangeUnits}
+	return priceList{wallGold: b["wall"].Cost.Gold, recruitGold: max(1, t["vagrant"].RecruitCost.Gold), wallLevelGold: levels, payRange: e.PayRangeUnits}, nil
 }
 
 func passive(*sim.World, *sim.Player) sim.PlayerCommand { return sim.PlayerCommand{} }
