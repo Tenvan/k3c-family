@@ -42,4 +42,9 @@ Manuell durch 🧑 an der Xbox.
 
 ## Ergebnis
 
-–
+2026-10-05, **PC-Nachweis, TV offen.** Geprüft von 🧑 (Ralf) im Interview mit Agent (Claude Sonnet 5.5), Branch `sprint/so1`, Chrome am PC mit Controller und Lautsprechern, Dev-Server (`task dev`), `game.html`.
+
+- **AC-04 am PC: geprüft** (🧑): vor der ersten Taste kein Ton und keine Fehlermeldung; nach A (Beitreten) ist der Demo-Ton beim Bauen hörbar; im Split-Screen mit zwei Spielern hört der jeweilige Spieler seinen Bau deutlich, der andere leiser.
+- Welches Format (ogg oder mp3) gespielt hat, wurde nicht ausgelesen; dazu gibt es keine Messung für § 11.6.
+- Keine Mängel, keine neuen Tickets.
+- **Offen:** Entsperren, Format mit Fallback und Dämpfung am TV (Xbox, Edge) fehlen; die Session bleibt `offen`, `plan-weiterentwicklung.md` § 11.6 behält die Annahme.
