@@ -64,7 +64,7 @@ keine
 |---|---|---|---|---|
 | W4.1 | `W4.1-wiederbeleben.md` | Umsetzung | autonom | fertig |
 | W4.2 | `W4.2-berufe-haendler.md` | Umsetzung | autonom | fertig |
-| W4.3a | `W4.3a-krieger-schwert-limit.md` | Umsetzung | autonom | offen |
+| W4.3a | `W4.3a-krieger-schwert-limit.md` | Umsetzung | autonom | in Arbeit |
 | W4.3b | `W4.3b-elite-ruestung-heilung-golden.md` | Umsetzung | autonom | offen |
 | W4.4 | `W4.4-review.md` | Review | autonom | offen |
 
