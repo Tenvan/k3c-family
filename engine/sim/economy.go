@@ -99,7 +99,7 @@ func findPayTarget(w *World, p *Player) *payTarget {
 		return &payTarget{troop: t}
 	}
 	markable := func(n *ResourceNode) bool {
-		_, ok := economy.Gatherables[n.Kind]
+		_, ok := gatherOf(n.Kind)
 		return !n.Marked && ok
 	}
 	if n := nearest(w.Nodes, func(n *ResourceNode) float64 { return n.X }, p.X, r, markable); n != nil {
@@ -207,7 +207,7 @@ func payOneCoin(w *World, p *Player) {
 	default:
 		n := target.node
 		n.PaidGold++
-		if n.PaidGold >= economy.Gatherables[n.Kind].MarkCost {
+		if g, _ := gatherOf(n.Kind); n.PaidGold >= g.MarkCost {
 			n.Marked = true
 			clearPending(p)
 		}

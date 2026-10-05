@@ -19,6 +19,7 @@
     "oreVein": { "copperOre": [2, 4] }
   },
   "primaryResource": "copper",
+  "veins": { "count": 2, "kind": "copperVein" },
   "enemies": { "portal": ["zombie", "ratSwarm", "mineGhost"], "night": [] },
   "cycle": { "type": "aggressionPool", "percentPerMinute": 1, "percentPerKill": 5, "percentPerGather": 1 },
   "palette": { "sky": "#2b1a12", "far": "#4a2f1d", "near": "#7a4a2a", "ground": "#8c5a3c" }

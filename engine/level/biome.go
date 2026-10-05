@@ -34,6 +34,11 @@ type Biome struct {
 	ResourcesPerChunk Ordered[Ordered[[2]int]] `json:"resourcesPerChunk"`
 	Cycle             Cycle                    `json:"cycle"`
 	PrimaryResource   string                   `json:"primaryResource"`
+	// Veins: Adern der Stufe (B-114), Count Stück der Art Kind (z. B. stoneVein); ohne Feld keine.
+	Veins struct {
+		Count int    `json:"count"`
+		Kind  string `json:"kind"`
+	} `json:"veins"`
 	Enemies           struct {
 		Portal []string `json:"portal"`
 		Night  []string `json:"night"`

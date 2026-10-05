@@ -89,6 +89,16 @@ func countKind(l Layout, kind string) int {
 	return n
 }
 
+func countEntities(l Layout, kind string) int {
+	n := 0
+	for _, e := range l.Entities {
+		if e.Kind == kind {
+			n++
+		}
+	}
+	return n
+}
+
 func validateEntities(l Layout, b Biome) []string {
 	var errs []string
 	skillPoints, castles, outside := 0, 0, false
@@ -109,6 +119,9 @@ func validateEntities(l Layout, b Biome) []string {
 	}
 	if outside {
 		errs = append(errs, "Entity außerhalb des Levels")
+	}
+	if b.Veins.Count > 0 && countEntities(l, b.Veins.Kind) != b.Veins.Count {
+		errs = append(errs, fmt.Sprintf("falsche Anzahl Adern: %d", countEntities(l, b.Veins.Kind)))
 	}
 	return errs
 }

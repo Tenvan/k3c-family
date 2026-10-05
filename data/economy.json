@@ -12,6 +12,12 @@
     "rock":      { "resource": "stone",  "amount": 10, "workSeconds": 6, "markCost": 1 },
     "copperOre": { "resource": "copper", "amount": 10, "workSeconds": 8, "markCost": 2 }
   },
+  "veins": {
+    "stoneVein":   { "resource": "stone",   "amount": 10, "workSeconds": 20, "markCost": 1, "maxWorkers": 2 },
+    "copperVein":  { "resource": "copper",  "amount": 15, "workSeconds": 40, "markCost": 2, "maxWorkers": 2 },
+    "ironVein":    { "resource": "iron",    "amount": 7,  "workSeconds": 24, "markCost": 2, "maxWorkers": 2 },
+    "crystalVein": { "resource": "crystal", "amount": 5,  "workSeconds": 24, "markCost": 2, "maxWorkers": 2 }
+  },
   "storage": { "basePerHub": 300, "perStorage": 300 },
   "recruitCamp": { "maxVagrants": 2, "respawnSeconds": 25, "wanderUnits": 6 }
 }

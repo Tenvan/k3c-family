@@ -60,7 +60,7 @@ func CreateWorld(b level.Biome, seed string, opts Options) (*World, error) {
 // placeEntities legt Ressourcen, Truhen, Skill-Punkte, Camps und Portale aus dem Level an.
 func placeEntities(w *World) {
 	for _, e := range w.Level.Entities {
-		switch _, gatherable := economy.Gatherables[e.Kind]; {
+		switch _, gatherable := gatherOf(e.Kind); {
 		case gatherable:
 			w.Nodes = append(w.Nodes, &ResourceNode{ID: w.newID(), Kind: e.Kind, X: e.X})
 		case e.Kind == "chest" || e.Kind == "skillPoint":
@@ -109,6 +109,7 @@ func Step(w *World, commands []PlayerCommand, dt float64) {
 	stepPassives(w, dt)
 	stepCamps(w, dt)
 	stepSites(w)
+	stepPlantations(w, dt)
 	stepTroops(w, dt)
 	stepEnemies(w, dt)
 	stepStorms(w, dt)

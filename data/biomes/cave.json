@@ -20,6 +20,7 @@
     "chasm": { "rock": [0, 2] }
   },
   "primaryResource": "stone",
+  "veins": { "count": 2, "kind": "stoneVein" },
   "enemies": { "portal": ["bat", "caveTroll"], "night": ["skeleton"] },
   "cycle": { "type": "aggressionPool", "percentPerMinute": 1, "percentPerKill": 5, "percentPerGather": 1 },
   "palette": { "sky": "#1b1b24", "far": "#2e2e3a", "near": "#44444f", "ground": "#5c5c66" }

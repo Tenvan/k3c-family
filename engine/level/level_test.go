@@ -135,3 +135,33 @@ func TestHubInDerMitte(t *testing.T) {
 		}
 	}
 }
+
+// W2.1 (B-114/AC-01): Biome mit Adern haben über 500 Seeds genau so viele, gleicher Seed gleiche Adern; die Adern
+// kommen nach allen übrigen Würfen, alle anderen Objekte bleiben gleich.
+func TestAdernJeStufe(t *testing.T) {
+	withVeins := 0
+	for _, id := range biomeIDs(t) {
+		b := biome(t, id)
+		if b.Veins.Count == 0 {
+			continue
+		}
+		withVeins++
+		bare := b
+		bare.Veins.Count = 0
+		for seed := range 500 {
+			l, _ := Generate(b, strconv.Itoa(seed))
+			if n := countEntities(l, b.Veins.Kind); n != b.Veins.Count {
+				t.Fatalf("Biom %s, Seed %d: %d Adern, erwartet %d", id, seed, n, b.Veins.Count)
+			}
+			again, _ := Generate(b, strconv.Itoa(seed))
+			without, _ := Generate(bare, strconv.Itoa(seed))
+			rest := slices.DeleteFunc(slices.Clone(l.Entities), func(e Entity) bool { return e.Kind == b.Veins.Kind })
+			if !slices.Equal(l.Entities, again.Entities) || !slices.Equal(rest, without.Entities) {
+				t.Fatalf("Biom %s, Seed %d: Adern nicht reproduzierbar oder verschieben andere Objekte", id, seed)
+			}
+		}
+	}
+	if withVeins < 2 || biome(t, "forest").Veins.Count != 0 {
+		t.Errorf("%d Biome mit Adern, Wald %d Adern", withVeins, biome(t, "forest").Veins.Count)
+	}
+}

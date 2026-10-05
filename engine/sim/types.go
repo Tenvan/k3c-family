@@ -64,6 +64,7 @@ type Job struct {
 	NodeID   int    `json:"nodeId,omitempty"`
 	Resource string `json:"resource,omitempty"`
 	Amount   int    `json:"amount,omitempty"`
+	progress float64 // Abbau an einer Ader (vein.go): Fortschritt dieses Bauern, ohne JSON
 }
 
 // Troop ist eine eigene Einheit: vagrant, peasant oder archer.
@@ -92,6 +93,7 @@ type ResourceNode struct {
 	Marked   bool    `json:"marked"`
 	WorkerID *int    `json:"workerId"`
 	Progress float64 `json:"progress"`
+	gone     bool    // abgebaut und aus Nodes entfernt (Plantage, plantation.go)
 }
 
 // Site ist ein Bauplatz im Hub. State: unpaid, waitingMaterial, waitingWorker, built.
@@ -112,6 +114,7 @@ type Site struct {
 	Level       int    `json:"level,omitempty"`
 	Upgrade     string `json:"upgrade,omitempty"`
 	UpgradePaid int    `json:"upgradePaid,omitempty"`
+	plots       []plot // Plantage einer gebauten Farm (plantation.go), ohne JSON
 }
 
 // Castle ist die Burg in der Hub-Mitte.

@@ -117,6 +117,7 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-286](B-286-lasttest-tick-reihe-wackelt.md) | SRV | Problem | niedrig | offen | – | TestTickReiheJeRaum schlägt im Gesamtlauf gelegentlich fehl |
 | [B-287](B-287-hub-ausbau-beutel-maximum.md) | REG | Problem | mittel | offen | – | Hub-Stufe 4 und 5 sind mit dem Beutel-Maximum bezahlbar |
 | [B-288](B-288-alte-spielstaende-ohne-ruecksicht.md) | INF | Schuld | mittel | offen | – | Formatänderungen am Spielstand nehmen keine Rücksicht auf alte Stände |
+| [B-289](B-289-aggressionspool-mit-adern.md) | REG | Problem | mittel | offen | – | Der Aggressionspool steigt mit Adern nicht zu schnell |
 
 ## Archiv
 
