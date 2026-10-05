@@ -84,6 +84,9 @@ type Troop struct {
 	Cooldown float64 `json:"cooldown"`
 	TowerID  *int    `json:"towerId"`
 	PaidGold int     `json:"paidGold"` // Landstreicher: bereits bezahltes Rekrutierungs-Gold
+	// Profession: Beruf eines Bauern (miner, builder, craftsman; professions.go), WorkSite: Gebäude eines Handwerkers.
+	Profession string `json:"profession,omitempty"`
+	WorkSite   int    `json:"workSite,omitempty"`
 	// carried: Material, das ein Träger in einer Insel bei vollem Maximum behält, während er einen Bauauftrag übernimmt.
 	carried *Job
 }
@@ -113,6 +116,10 @@ type Site struct {
 	WorkerID      *int    `json:"workerId"`
 	Bows          int     `json:"bows"`        // Werkstatt: fertige Bögen im Regal
 	BowPaidGold   int     `json:"bowPaidGold"` // Werkstatt: bezahltes Gold für den nächsten Bogen
+	// CraftDone: Spielzeit, zu der der Bogen in Arbeit im Regal liegt (0 = keiner in Arbeit); OfferPaid: bezahltes
+	// Gold je Angebot (Index wie buildings[Kind].Offers). Beides professions.go.
+	CraftDone float64 `json:"craftDone,omitempty"`
+	OfferPaid []int   `json:"offerPaid,omitempty"`
 	// Ausbau (hub_level.go): Level = Stufe des gebauten Platzes (0 = 1), Upgrade = Zustand des Ausbaus auf die nächste
 	// Stufe ("", waitingMaterial, waitingWorker), UpgradePaid = dafür gezahltes Gold.
 	Level       int     `json:"level,omitempty"`
@@ -256,6 +263,7 @@ type World struct {
 	Stock       *Stock  `json:"stock"` // Baumaterial gehört allen (in einer Insel: allen Stufen), Gold hat jeder Spieler selbst
 	SkillPoints int     `json:"skillPoints"`
 	Travel      *Travel `json:"travel"`
+	Merchant    *Merchant `json:"merchant,omitempty"` // Händler, nur in Tiefe 0 (merchant.go)
 	Events      []Event `json:"events"` // wird bei jedem Step geleert
 	// EventsDropped zählt die Ereignisse, die die Obergrenze je Tick in diesem Step verworfen hat (capEvents).
 	EventsDropped int `json:"eventsDropped,omitempty"` // 0 fehlt im JSON (Protokoll-Beispiele unverändert, Übertragung: B-190)
