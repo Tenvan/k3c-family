@@ -9,7 +9,7 @@ const MB = 1024 * 1024;
 const wait = (ms: number) => new Promise((r) => setTimeout(r, ms));
 
 function initial(now: number): ServiceStatus[] {
-  const base = { description: '', health: '', log: '', pid: 0, startedAt: '', restarts: 0, lastError: '', cpu: 0, memory: 0, seq: 1 };
+  const base = { description: '', health: '', log: '', pid: 0, startedAt: '', restarts: 0, lastError: '', changeFile: '', changeAt: '', cpu: 0, memory: 0, seq: 1 };
   const svc = (name: string, port: number, rest: Partial<ServiceStatus>): ServiceStatus => ({
     ...base, name, port, health: `http://127.0.0.1:${port}/`, state: 'gestoppt', ...rest,
   });
@@ -63,6 +63,7 @@ export function mockServices(emit: Emit) {
 
   return {
     services: async (): Promise<ServicesView> => ({ services: list.map((s) => ({ ...s })), error: '' }),
+    servicesReload: async (): Promise<ServicesView> => ({ services: list.map((s) => ({ ...s })), error: '' }),
     serviceStart: start,
     serviceStop: stop,
     serviceRestart: async (name: string) => {

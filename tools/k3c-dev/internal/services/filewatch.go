@@ -164,6 +164,8 @@ func (c *Controller) restartForChange(ctx context.Context, u *unit, file string)
 		return
 	}
 	c.opts.Log.Info("🔁 dienst "+u.svc.Name+": Neustart wegen Änderung an "+file, "ns", "svc")
+	at := c.opts.Now()
+	c.set(u, func(s *Status) { s.ChangeFile, s.ChangeAt = file, at }) // sofort sichtbar, auch während des Builds
 	_, err := c.stop(u)
 	if err == nil {
 		_, err = c.start(ctx, u)

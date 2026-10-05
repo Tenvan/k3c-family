@@ -32,6 +32,9 @@ export interface ServiceStatus {
   startedAt: string;
   restarts: number;
   lastError: string;
+  /** Letzter Neustart wegen einer Dateiänderung (Watch-Modus): Datei und ISO-Zeit; leer, wenn es keinen gab. */
+  changeFile: string;
+  changeAt: string;
   cpu: number;
   memory: number;
   /** Zählt je Dienst jede Änderung; ein Ereignis mit kleinerer Seq als der gesehenen ist veraltet. */
@@ -370,6 +373,8 @@ export interface Backend {
   readonly mock: boolean;
   info(): Promise<Info>;
   services(): Promise<ServicesView>;
+  /** Liest services.json neu; ein Fehler (kaputte Datei) kommt als Ablehnung. */
+  servicesReload(): Promise<ServicesView>;
   /** Befehle warten auf das Ergebnis; ein Fehler kommt als Ablehnung mit dem Text aus Go. */
   serviceStart(name: string): Promise<ServiceStatus>;
   serviceStop(name: string, force: boolean): Promise<ServiceStatus>;
