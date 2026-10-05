@@ -148,6 +148,7 @@ func damagePlayer(w *World, p *Player, damage float64, cause string) {
 		}
 	}
 	p.HP -= dealt
+	p.hit = p.hit || dealt > 0 // bricht ein Wiederbeleben ab, bei dem p hilft (revive.go)
 	hitEvent(w, "player", p.Index, p.X, dealt)
 	if p.HP <= 0 && p.LastStandFor > 0 {
 		p.HP = 1

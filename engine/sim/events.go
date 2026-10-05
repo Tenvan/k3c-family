@@ -13,6 +13,7 @@ import "math"
 //	coinGive      – Münze gegeben: player, x, to (site, recruit, mark); fällt sie nur zu Boden, kein Ereignis
 //	buildProgress – Bau fortgeschritten: site (ID), kind, x, percent (25, 50, 75; fertig = built)
 //	revive        – Monarch steht nach der Wartezeit wieder: player, x
+//	revived       – Monarch von einem Mitspieler wiederbelebt (A halten, revive.go; Q62): player, x
 //
 //	playerDown    – Monarch fällt: player, cause (Gegnerart aus data/enemies.json bei Nahkampf und Geschoss,
 //	                sonst "other"; B-182)

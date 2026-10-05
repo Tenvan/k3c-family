@@ -17,6 +17,7 @@ type payTarget struct {
 }
 
 func stepPlayers(w *World, commands []PlayerCommand, dt float64) {
+	stepRevive(w, commands, dt)
 	for _, p := range w.Players {
 		var cmd PlayerCommand
 		if p.Index < len(commands) {
@@ -37,7 +38,7 @@ func stepPlayers(w *World, commands []PlayerCommand, dt float64) {
 		stepAttack(w, p, cmd, dt)
 		stepSkills(w, p, cmd, dt)
 		p.Paying = cmd.Pay
-		if cmd.Pay && p.PayCooldown <= 0 && p.Gold > 0 {
+		if cmd.Pay && !p.reviving && p.PayCooldown <= 0 && p.Gold > 0 {
 			payOneCoin(w, p)
 			p.PayCooldown = economy.PayIntervalSeconds
 		}
@@ -64,7 +65,7 @@ func movePlayer(w *World, p *Player, cmd PlayerCommand, dt float64) {
 }
 
 func respawn(w *World, p *Player) {
-	p.RespawnIn, p.HP, p.VX = 0, p.MaxHP, 0
+	p.RespawnIn, p.HP, p.VX, p.ReviveProgress = 0, p.MaxHP, 0, 0
 	p.X = w.HubX + 3
 	if p.Index%2 == 0 {
 		p.X = w.HubX - 3

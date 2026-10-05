@@ -47,6 +47,10 @@ type Player struct {
 	Shield       float64 `json:"shield,omitempty"`
 	ShieldFor    float64 `json:"shieldFor,omitempty"`
 	LastStandFor float64 `json:"lastStandFor,omitempty"`
+	// ReviveProgress: Sekunden, die ein Mitspieler diesen Gefallenen schon wiederbelebt (revive.go, B-120).
+	ReviveProgress float64 `json:"reviveProgress,omitempty"`
+	reviving       bool    // belebt in diesem Tick jemanden wieder (lässt keine Münze fallen), ohne JSON
+	hit            bool    // seit dem letzten stepRevive wirksam getroffen, ohne JSON
 }
 
 // Coin ist eine Münze am Boden.
