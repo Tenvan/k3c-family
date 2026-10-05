@@ -28,6 +28,17 @@ type BuildingData struct {
 	Offers                           []Offer     // Angebots-Zahlziele am Gebäude (Q52), Mechanik ab W4
 	Levels                           []LevelData // Ausbau-Stufen am Platz (Mauer, Turm; hub_level.go)
 	Plantation                       Plantation  // Farm: Bäume wachsen nach (plantation.go)
+	TroopLimit                       TroopLimit  // Kaserne: Kämpfer-Limit je Hub (barracks.go)
+	Vagrants                         Vagrants    // Taverne: Landstreicher je dawn (tavern.go)
+}
+
+// TroopLimit: Kämpfer je Hub, Base ohne Kaserne, PerBuilding mehr je gebauter Kaserne (Q29).
+type TroopLimit struct{ Base, PerBuilding int }
+
+// Vagrants: PerDawn Landstreicher je dawn an einer gebauten Taverne, solange dort weniger als Max stehen (Q30).
+type Vagrants struct {
+	PerDawn, Max int
+	WanderUnits  float64
 }
 
 // Offer ist ein Angebots-Zahlziel mit festem Abstand DX zum Platz seines Gebäudes.

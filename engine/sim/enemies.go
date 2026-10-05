@@ -138,10 +138,14 @@ func stunned(e *Enemy, dt float64) bool {
 	return true
 }
 
+// isBarrier: Eine gebaute Mauer oder ein gebautes Tor hält Gegner auf und ist ihr Angriffsziel (Q27). Spieler und
+// Truppen kennen keine Hindernisse, sie passieren beides; `outerWall` (Posten der Schützen) bleibt bei der Mauer.
+func isBarrier(s *Site) bool { return (s.Kind == "wall" || s.Kind == "gate") && s.State == "built" }
+
 func blockingWall(w *World, e *Enemy, dir float64) *Site {
 	var best *Site
 	for _, s := range w.Sites {
-		if s.Kind != "wall" || s.State != "built" {
+		if !isBarrier(s) {
 			continue
 		}
 		ahead := s.X <= e.X+body && s.X > w.HubX
