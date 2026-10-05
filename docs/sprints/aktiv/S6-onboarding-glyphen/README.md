@@ -1,11 +1,11 @@
 # S6 · CLI · Onboarding „Erste Nacht geführt“ und Controller-Glyphen
 
-- **Status:** geplant
+- **Status:** aktiv
 - **Domäne:** CLI
 - **Reife:** bereit
 - **Einschiebbar:** nein
 - **Tickets:** B-148, B-149
-- **Start-Commit:** –
+- **Start-Commit:** 27b117f
 - **Spec:** freigegeben
 - **Revision:** 2
 - **Freigabe:** 2026-10-05, Chat, durch 🧑, Revision 2; mit Änderungen aus der Spec-Prüfung
@@ -59,7 +59,7 @@ keine
 
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
-| S6.1 | `S6.1-freundlich-grad.md` | Umsetzung | autonom | offen |
+| S6.1 | `S6.1-freundlich-grad.md` | Umsetzung | autonom | in Arbeit |
 | S6.2 | `S6.2-glyphen.md` | Umsetzung | autonom | offen |
 | S6.3 | `S6.3-hinweise.md` | Umsetzung | autonom | offen |
 | S6.4 | `S6.4-abnahme-kind.md` | Workshop | Mensch | offen |
