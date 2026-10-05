@@ -22,7 +22,8 @@ Ein Sensitivitäts-Lauf variiert einen Wert aus `data/*.json` um ±10 % und ±25
 
 ## Erlaubte Dateien
 
-- `engine/balance/` (Sensitivität, Kurven, Bericht, Tests), `cmd/k3c-balance/` (Befehl und Flags)
+- `tools/k3c-dev/internal/balance/` (Sensitivität, Kurven, Bericht, Tests, Befehl und Flags unter `cmd/`)
+- `engine/sim/data.go` und ein Test dazu: nur `UseData(fs.FS) error`, das die Datenvariablen aus einem anderen Dateisystem neu lädt (Beschluss 🧑 2026-10-05, BAL3.1)
 - `Taskfile.yml` (nur Task für die Sensitivität, EXE mit festem Pfad, kein `go run`, kein Teil von `task check`)
 - `docs/sprints/` (nur Status dieser Session), `docs/backlog/` (nur Status und neue Tickets)
 

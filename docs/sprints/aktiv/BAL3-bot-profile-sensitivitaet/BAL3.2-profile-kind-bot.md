@@ -23,7 +23,7 @@ Der Tester kennt die Profile „Wirtschaft zuerst“, „Mauern zuerst“, „Ko
 
 ## Erlaubte Dateien
 
-- `engine/balance/` (Profile, Tests), `cmd/k3c-balance/` (nur Profil-Auswahl)
+- `tools/k3c-dev/internal/balance/` (Profile, Tests; `cmd/` nur Profil-Auswahl)
 - `docs/sprints/` (nur Status dieser Session), `docs/backlog/` (nur Status und neue Tickets)
 
 ## Nicht-Ziele

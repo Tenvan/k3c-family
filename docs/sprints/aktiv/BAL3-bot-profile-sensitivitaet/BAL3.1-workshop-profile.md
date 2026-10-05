@@ -1,6 +1,6 @@
 # BAL3.1 · Workshop: Profile, Fehlerrate und Grad-Kurven beschließen
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Workshop
 - **Agent:** Mensch
 - **Branch:** bal3/1-workshop-profile
@@ -40,8 +40,8 @@ Kein Code, keine Änderung von `data/*.json`, keine Änderung der Spec oder der 
 
 ## Fertig, wenn
 
-- [ ] AC-05: Die Tester-Dokumentation nennt Profile und Grad-Kurven mit „Beschlossen von 🧑 am <Datum>“.
-- [ ] Unbeantwortete Fragen sind als Ticket oder Offene Frage geführt.
+- [x] AC-05: Die Tester-Dokumentation nennt Profile und Grad-Kurven mit „Beschlossen von 🧑 am <Datum>“.
+- [x] Unbeantwortete Fragen sind als Ticket oder Offene Frage geführt.
 
 ## Prüfen
 
@@ -49,4 +49,9 @@ Manuell durch 🧑 (Gespräch); danach `task check`.
 
 ## Ergebnis
 
-–
+2026-10-05, Workshop im Chat (🧑 hat je Frage aus vier Optionen gewählt, jeweils die Empfehlung).
+
+- AC-05: umgesetzt – `tools/k3c-dev/internal/balance/README.md` › „Profile und Grad-Kurven“ mit „Beschlossen von 🧑 am 2026-10-05“: Koop = Rollen teilen (Mauern/Wirtschaft im Wechsel), Grad-Kurven = Burg hält, zerstörte Gebäude und Gold zur Dämmerung je Nacht 1–5, Sensitivität = vier Kernwerte.
+- Zusatzbeschluss: Der Sensitivitäts-Lauf darf die Sim-Daten im Speicher neu laden (`sim.UseData` in `engine/sim/data.go`); BAL3.3 bekommt diese Datei als erlaubte Datei.
+- Ort der Tester-Dokumentation: das Paket liegt seit BAL1 unter `tools/k3c-dev/internal/balance/`, nicht unter `engine/balance/`.
+- Keine offenen Fragen übrig.

@@ -1,11 +1,11 @@
 # BAL3 · SIM · Bot-Profile, Sensitivität und Grad-Kurven
 
-- **Status:** geplant
+- **Status:** aktiv
 - **Domäne:** SIM
 - **Reife:** bereit
 - **Einschiebbar:** ja
 - **Tickets:** B-158
-- **Start-Commit:** –
+- **Start-Commit:** ada3483
 - **Spec:** freigegeben
 - **Revision:** 1
 - **Freigabe:** 2026-10-04, Chat, durch 🧑, Revision 1; mit Änderungen aus der Spec-Prüfung
@@ -59,7 +59,7 @@ Variierter Wert fehlt in den Daten → Fehler mit Pfad. Profil verlangt mehr Spi
 
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
-| BAL3.1 | `BAL3.1-workshop-profile.md` | Workshop | Mensch | offen |
+| BAL3.1 | `BAL3.1-workshop-profile.md` | Workshop | Mensch | fertig |
 | BAL3.2 | `BAL3.2-profile-kind-bot.md` | Umsetzung | autonom | offen |
 | BAL3.3 | `BAL3.3-sensitivitaet-kurven.md` | Umsetzung | autonom | offen |
 | BAL3.4 | `BAL3.4-review.md` | Review | autonom | offen |
