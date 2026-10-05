@@ -63,7 +63,7 @@ Zahlenwerte der Ressourcendichte: Zielwerte aus den Zielkorridoren (F1) bzw. B-0
 |---|---|---|---|---|
 | W2.1 | `W2.1-adern-plantage.md` | Umsetzung | autonom | fertig |
 | W2.2 | `W2.2-eisenstollen-kristallhoehle.md` | Umsetzung | autonom | fertig |
-| W2.3 | `W2.3-mine-golden.md` | Umsetzung | autonom | offen |
+| W2.3 | `W2.3-mine-golden.md` | Umsetzung | autonom | fertig |
 | W2.4 | `W2.4-review.md` | Review | autonom | offen |
 
 Bei `Reife: Entwurf` genügen Stichpunkte mit den Kriterien in Klammern statt Session-Dateien. Vor dem Aktivieren
