@@ -16,7 +16,7 @@ const lostAdopted = "übernommener Prozess nicht mehr erreichbar"
 // Adopt übernimmt beim Programmstart Dienste, deren Prüfung schon besteht: ohne Konsole, ohne Auto-Restart,
 // Stopp nur mit force.
 func (c *Controller) Adopt(ctx context.Context) {
-	for _, u := range c.units {
+	for _, u := range c.list() {
 		u.cmd.Lock()
 		if u.status().State == Stopped && c.opts.Check(ctx, u.svc) == nil {
 			pid, _ := c.opts.Listen(ctx, u.svc.Port)
@@ -151,7 +151,7 @@ func (c *Controller) Monitor(ctx context.Context, every time.Duration) {
 // Überwachung. Gemessen wird der Prozess, der am Port lauscht: der eigene Start ist oft nur eine Hülle (npm.cmd →
 // cmd.exe → node), CPU und Speicher braucht aber der Server selbst.
 func (c *Controller) sampleAll(ctx context.Context) {
-	for _, u := range c.units {
+	for _, u := range c.list() {
 		st := u.status()
 		if (st.State != Running && st.State != Adopted) || st.PID <= 0 {
 			continue

@@ -71,6 +71,12 @@
   overflow-wrap: anywhere;
 }
 
+.svc-link {
+  color: inherit;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
 .svc-metrics,
 .svc-log {
   margin: 0;

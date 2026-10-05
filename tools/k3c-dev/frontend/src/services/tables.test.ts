@@ -4,7 +4,7 @@ import { applyStatus, badgeFor, buttonsFor, levelShares, metricsOf, orderLine } 
 
 const svc = (over: Partial<ServiceStatus> = {}): ServiceStatus => ({
   name: 'Vite', description: '', port: 5173, health: 'http://127.0.0.1:5173/', log: '', state: 'gestoppt', pid: 0, startedAt: '',
-  restarts: 0, lastError: '', cpu: 0, memory: 0, seq: 1, ...over,
+  restarts: 0, lastError: '', changeFile: '', changeAt: '', cpu: 0, memory: 0, seq: 1, ...over,
 });
 
 describe('Dienste-Tabellen', () => {

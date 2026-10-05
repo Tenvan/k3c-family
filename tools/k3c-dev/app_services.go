@@ -3,6 +3,7 @@ package main
 import (
 	"errors"
 	"fmt"
+	"path/filepath"
 
 	"k3c/tools/k3c-dev/internal/services"
 )
@@ -36,6 +37,23 @@ func (a *App) controller() (*services.Controller, error) {
 		return nil, a.servicesErr()
 	}
 	return a.ctl, nil
+}
+
+// ServicesReload liest services.json neu und gleicht die Dienste ab (Binding). Läuft ein geänderter Dienst, gilt
+// seine neue Konfiguration erst nach dem nächsten Start (Error der Ansicht bleibt leer, der Hinweis steht im Log).
+func (a *App) ServicesReload() (ServicesView, error) {
+	ctl, err := a.controller()
+	if err != nil {
+		return ServicesView{}, fmt.Errorf("%w; k3c-dev neu starten", err)
+	}
+	list, err := services.Load(filepath.Join(a.root, "tools", "k3c-dev", "services.json"))
+	if err != nil {
+		a.log.Error("💥 dienste nicht neu geladen: "+err.Error(), "ns", "svc")
+		return ServicesView{}, err
+	}
+	pending := ctl.Reload(a.svcCtx, services.Shift(list, 0))
+	a.log.Info("🔁 dienste neu geladen", "ns", "svc", "erstBeimNaechstenStart", pending)
+	return ServicesView{Services: ctl.Statuses()}, nil
 }
 
 // ServiceStart startet einen Dienst und wartet, bis er gesund ist (Binding). Den Zustand unterwegs melden Ereignisse.
