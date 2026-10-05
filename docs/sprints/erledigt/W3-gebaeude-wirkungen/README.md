@@ -72,4 +72,4 @@ wird jede Session als eigene Datei nach `docs/vorlagen/session.md` geschrieben.
 - 2026-10-05 (W3.3, autonom): AC-01 (W3.1: `gate_test.go`, `barracks_test.go`, `tavern_test.go`; W3.2: `healing_test.go`, `spell_tower_test.go`), AC-02 (`sites_test.go`), AC-03 (`TestSchmiedeUndRuestkammerZerstoerbarWirkungOffen`), AC-04 (Golden geprüft, ohne Diff; `task check:go` und `task check` grün, `-race` übersprungen) mit Nachweis.
 - Review des Diffs: keine schweren Befunde, keine Befunde behoben; `TestTurmAusbauSchuetzeBleibt` durch Q31 angepasst (nicht gelockert).
 - Neue Tickets: keine.
-- Version: v0.10.0 vorgeschlagen (Minor: Tor, Kaserne-Limit, Taverne, Heilplatz und Zaubertum wirken in der Simulation; letzter Tag v0.8.0, v0.9.0 für W2 vorgeschlagen).
+- Version: v0.10.0 gesetzt (2026-10-05, auf `3a6446a`, `task check:all` und CI grün; Minor: Tor, Kaserne-Limit, Taverne, Heilplatz und Zaubertum wirken in der Simulation; Tag davor v0.8.1).
