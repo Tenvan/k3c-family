@@ -4,7 +4,7 @@ Die Nicht-kommerziell-Lizenz des Projekts (`LICENSE`) gilt **nicht** für diese 
 Aus den Packs sind nur die PNG-Bilder der Umgebung und die Lizenzdatei übernommen (`LICENSE.txt` je Ordner, bei Packs ohne eigene Lizenzdatei ein Hinweis auf die Lizenzangabe der Quellseite).
 Nicht übernommen: Musik, Demo-Code, PSD-/Aseprite-Quellen, GIFs, Figuren-Sprites. Alle Packs stammen von https://opengameart.org (zwei Kenney-Packs von https://kenney.nl) und wurden am 2026-10-01 bzw. 2026-10-04 geprüft und geladen.
 
-Stand der Verwendung: noch nicht im Spiel, nur auf der Seite `grafiken.html` zu sehen (B-087); der Einbau folgt mit B-010.
+Stand der Verwendung: im Spiel seit B-010 (Sprint GR3) für Gebäude und Bauplätze, Ressourcen, Portal, Ausgang, Rekrutierungslager, Truhe, Stern, Münzen und die Hintergründe von Wald, Höhle und Mine; alle Packs zusätzlich auf der Seite `grafiken.html` (B-087).
 
 Lizenz **CC0 1.0** (gemeinfrei): Namensnennung nicht nötig, aber erwünscht. Ausnahmen **Warped Caves**, **Wooden fortress** und **Materials Pack** (CC BY 3.0) sowie **Plants and Flowers** und **Kyrise's Icon Pack** (CC BY 4.0, siehe unten): dort ist die Namensnennung Pflicht.
 

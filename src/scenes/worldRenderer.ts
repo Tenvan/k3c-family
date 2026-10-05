@@ -3,15 +3,15 @@ import { GROUND_Y, PLAYER_COLORS, UNIT_PX } from '../core/constants';
 import { t } from '../core/texts';
 import { fontStyle } from './fontRules';
 import { createRider, updateRider } from './mountView';
+import { objectImage } from './objectView';
 import { TEXT, createSiteView, drawCastle, updateSiteView } from './siteView';
 import { hasDepth, isOnTower } from './viewRules';
 import { ENEMY_SPRITES, PLAYER_SPRITES, TROOP_SPRITES, face, makeSprite, playAnim, spriteTop } from './sprites';
 import type { Coin, Enemy, Pickup, Player, Projectile, ResourceNode, Site, Troop, World } from '../model/types';
 
 /**
- * Zeichnet den Simulationszustand. Figuren (Monarchen, Truppen, Gegner) sind animierte Sprites (sprites.ts),
- * Burg und Bauplätze zeichnet siteView.ts, Ressourcen sind noch Platzhalter-Formen. Hält pro Entität (id) ein Phaser-Objekt
- * und legt an/entfernt sie passend zum Zustand.
+ * Zeichnet den Simulationszustand: Figuren als animierte Sprites (sprites.ts), Burg und Bauplätze über siteView.ts,
+ * Ressourcen, Portal, Truhe und Münzen über objectView.ts. Hält pro Entität (id) ein Phaser-Objekt und legt an/entfernt sie.
  */
 
 const U = UNIT_PX;
@@ -111,7 +111,7 @@ export class WorldRenderer {
     this.nodes = this.layer((n) => this.createNode(n), (v, n) => this.updateNode(v, n));
     this.sites = this.layer((s) => createSiteView(scene, s), (v, s) => updateSiteView(scene, v, s, this.world));
     this.pickups = this.layer((p) => this.createPickup(p), () => {});
-    this.coins = this.layer((c) => scene.add.container(c.x * U, G - 8, [scene.add.circle(0, 0, 8, 0xffd166).setStrokeStyle(2, 0x9c6644)]).setDepth(6), () => {});
+    this.coins = this.layer((c) => scene.add.container(c.x * U, G - 8, [objectImage(scene, 'coin', 0, 8) ?? scene.add.circle(0, 0, 8, 0xffd166).setStrokeStyle(2, 0x9c6644)]).setDepth(6), () => {});
     this.troops = this.layer(
       (t) => this.createTroop(t),
       (v, t) => this.updateTroop(v, t),
@@ -162,16 +162,16 @@ export class WorldRenderer {
     for (const e of world.level.entities) {
       const ex = e.x * U;
       if (e.kind === 'portal') {
-        this.put(scene.add.ellipse(ex, G - 110, 110, 220, 0x7b2cbf).setStrokeStyle(6, 0x240046));
+        this.put(objectImage(scene, 'portal', ex, G) ?? scene.add.ellipse(ex, G - 110, 110, 220, 0x7b2cbf).setStrokeStyle(6, 0x240046));
       } else if (e.kind === 'exit') {
-        this.put(scene.add.rectangle(ex, G - 90, 160, 180, 0x111111).setStrokeStyle(6, 0x555555));
+        this.put(objectImage(scene, 'exit', ex, G) ?? scene.add.rectangle(ex, G - 90, 160, 180, 0x111111).setStrokeStyle(6, 0x555555));
         const deeper = hasDepth(world.biome.depth + 1);
         this.put(scene.add.text(ex, G - 210, deeper ? t('exit.deeper', { depth: world.biome.depth + 1 }) : t('exit.blocked'), { ...TEXT, ...fontStyle('exitSign'), align: 'center' }).setOrigin(0.5));
       } else if (e.kind === 'bush') {
-        this.put(scene.add.circle(ex, G - 14, 18, 0x40916c)); // Deko
+        this.put(objectImage(scene, 'node:bush', ex, G) ?? scene.add.circle(ex, G - 14, 18, 0x40916c)); // Deko
       } else if (e.kind === 'recruitCamp') {
-        this.put(scene.add.triangle(ex, G - 45, 0, 90, 60, 0, 120, 90, 0xe9c46a).setStrokeStyle(3, 0x7f5539));
-        this.put(scene.add.circle(ex + 90, G - 10, 14, 0xf77f00)); // Lagerfeuer
+        this.put(objectImage(scene, 'camp:recruit', ex, G) ?? scene.add.triangle(ex, G - 45, 0, 90, 60, 0, 120, 90, 0xe9c46a).setStrokeStyle(3, 0x7f5539));
+        this.put(objectImage(scene, 'camp:recruit:fire', ex + 90, G) ?? scene.add.circle(ex + 90, G - 10, 14, 0xf77f00)); // Lagerfeuer
       }
     }
   }
@@ -181,7 +181,9 @@ export class WorldRenderer {
   private createNode(n: ResourceNode): View {
     const s = this.scene;
     const parts: Phaser.GameObjects.GameObject[] = [];
-    if (n.kind === 'tree') {
+    const sprite = objectImage(s, `node:${n.kind}`, 0, 0); // Grafik aus der Zuordnung (GR3.2), sonst Platzhalter-Form
+    if (sprite) parts.push(sprite);
+    else if (n.kind === 'tree') {
       parts.push(s.add.rectangle(0, -40, 14, 80, 0x6b4226), s.add.triangle(0, -110, 0, 90, 40, 0, 80, 90, 0x2d6a4f));
     } else if (n.kind === 'rock') {
       parts.push(s.add.ellipse(0, -16, 50, 34, 0x8d99ae));
@@ -257,10 +259,8 @@ export class WorldRenderer {
 
   private createPickup(p: Pickup): View {
     const s = this.scene;
-    const shape =
-      p.kind === 'chest'
-        ? s.add.rectangle(0, -18, 44, 36, 0x9c6644).setStrokeStyle(3, 0x5c3d2e)
-        : s.add.star(0, -60, 5, 8, 18, 0xffd60a).setStrokeStyle(2, 0xffffff);
+    const chest = p.kind === 'chest';
+    const shape = objectImage(s, `pickup:${p.kind}`, 0, chest ? 0 : -44) ?? (chest ? s.add.rectangle(0, -18, 44, 36, 0x9c6644).setStrokeStyle(3, 0x5c3d2e) : s.add.star(0, -60, 5, 8, 18, 0xffd60a).setStrokeStyle(2, 0xffffff));
     return s.add.container(p.x * U, G, [shape]).setDepth(3);
   }
 
