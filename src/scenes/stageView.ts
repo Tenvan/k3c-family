@@ -3,6 +3,7 @@ import { GAME_HEIGHT, GAME_WIDTH, GROUND_Y, UNIT_PX } from '../core/constants';
 import { t } from '../core/texts';
 import type { World } from '../model/types';
 import { StageEffects } from './effectsView';
+import { backgroundLayers } from './objectView';
 import { WorldRenderer } from './worldRenderer';
 
 /** Hintergrundfarbe einer Zelle, deren Stufe noch nicht geladen ist */
@@ -27,9 +28,9 @@ export class StageView {
     this.layer = scene.add.layer();
     const widthPx = world.widthUnits * UNIT_PX;
     const palette = world.biome.palette;
-    // Zwei Parallax-Ebenen mit gezackter Silhouette (Berge / Höhlenwände).
-    this.layer.add(ridge(scene, widthPx, hex(palette.far), 0.3, 520, 180));
-    this.layer.add(ridge(scene, widthPx, hex(palette.near), 0.6, 700, 120));
+    // Parallax-Ebenen des Bioms (GR3.2); ohne Grafik zwei gezackte Silhouetten (Berge / Höhlenwände).
+    const fallback = (): Phaser.GameObjects.GameObject[] => [ridge(scene, widthPx, hex(palette.far), 0.3, 520, 180), ridge(scene, widthPx, hex(palette.near), 0.6, 700, 120)];
+    for (const o of backgroundLayers(scene, world.biome.id, widthPx) ?? fallback()) this.layer.add(o);
     this.layer.add(scene.add.rectangle(0, GROUND_Y, widthPx, GAME_HEIGHT - GROUND_Y, hex(palette.ground)).setOrigin(0, 0));
     this.renderer = new WorldRenderer(scene, world, this.layer);
     this.effects = new StageEffects(scene, this.layer);

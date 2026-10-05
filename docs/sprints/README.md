@@ -11,7 +11,6 @@ Reihenfolge in Wellen, Bahnen je Domäne und Zuordnung Mensch/autonom (zwei Acco
 | Sprint | Domäne | Thema | Am Ende sichtbar | Ordner |
 |---|---|---|---|---|
 | S2 | SRV | Protokoll für Skills, Speichern beim Verlassen, Spielmetrik | neue Felder in `docs/protocol.md` mit Beispielen unter `testdata/protocol/`, Spielstand nach Trennung mitten in der Nacht, ein Report in `reports/` | `aktiv/S2-protokoll-skills-speichern-metrik/` |
-| GR3 | CLI | Grafik im Renderer | Hub mit Sprites statt Formen, Parallax je Biom, Hub- und Materialstufen unterscheidbar am TV | `aktiv/GR3-grafik-renderer/` |
 | N1 | SRV | Raum-Tick im Budget: Versand und Speichern asynchron | Benchmark vorher/nachher, weniger `🐢 Tick zu langsam` im Log | `aktiv/N1-tick-asynchron/` |
 
 ## Offen am Gerät
@@ -28,6 +27,7 @@ Hardware-Sessions (`Agent: Mensch`) aus Sprints, deren Review schon abgeschlosse
 | LT1.3 | Raspberry Pi (Messlauf 2 Räume × 3 Spieler über eine Nacht, `task load`) | AC-06: Messlauf bewertet, B-042 archiviert (angenommen laut Messung 2026-10-03: Nacht 10,2 bis 10,3 ms, Ziel < 10 ms) | `erledigt/LT1-lasttest-werkzeug/` |
 | S5.4 | Xbox am TV und Handy (Optionen/Pause bedienen, englische Texte lesen) | AC-05, AC-07: Szene am TV und Handy abgenommen, englische Texte gelesen | `erledigt/S5-optionen-pause/` |
 | SO1.5 | Xbox am TV (Entsperren nach erster Taste, ogg mit mp3-Fallback, Split-Screen-Dämpfung hören; Browser-Pane-Schritte aus SO1.2/SO1.3 offen) | AC-04: Format mit Fallback am TV beobachtet (angenommen: ogg, mp3-Fallback laut X1, B-166) | `erledigt/SO1-audio-kern/` |
+| GR3 (TV) | Xbox am TV (Hub-Stufen und Materialstufen unterscheidbar, 2 Spieler im Split-Screen, Parallax je Biom ansehen) | AC-04, AC-06: Sicht am TV abgenommen (angenommen laut Tests und Browser-Pane) | `erledigt/GR3-grafik-renderer/` |
 | GR5 (TV) | Xbox am TV (Effekte sehen, Blitz-Eindruck, Vibration) | AC-01, AC-02, AC-04: Effekte sichtbar, Schalter „aus“ ruhig (angenommen laut Tests) | `erledigt/GR5-juice/` |
 | SO3.3 | Xbox am TV (Hörprobe: Controller bedienen, B frei, View + Menu zurück, Crossfade ohne Knacken, Lautstärke; Browser-Pane-Schritte aus SO3.1/SO3.2 offen) | AC-03, AC-04: Controller-Bedienung und Crossfade am TV bestätigt (angenommen laut Tests) | `erledigt/SO3-hoerprobenseite/` |
 | S7.3 | Xbox am TV und Handy (zwei Spieler im Split-Screen reiten: Reittier animiert, Stehen/Laufen/Sprint verschieden, Sattelsitz) | AC-02, AC-04: Darstellung am TV und Handy abgenommen (angenommen laut Tests; Sichtnachweis fehlt auch aus S7.2) | `erledigt/S7-monarch-reittier/` |
@@ -138,4 +138,5 @@ Gesamtplan und Begründung: [`../plan-weiterentwicklung.md`](../plan-weiterentwi
 | W0 | Bauplätze aus dem Seed: feste Hub-Plätze, fünf Mauerlinien je Seite mit Tor, Farm, `cause` in `playerDown`, Camps auf Abstand (B-206, B-182, B-261) | `erledigt/W0-bauplaetze-seed/` |
 | RL1 | Release-Checkliste: Abschnitt „Release“ in `docs/arbeitsweise.md`, Probelauf ohne Tag (B-170; einschiebbar; Pi und Xbox offen) | `erledigt/RL1-release-checkliste/` |
 | GR2 | Grafik-Suche für Lücken: Kandidatenseite, 9 gewählte Packs, 20 nicht gewählte Kandidaten in der Gruppe `kandidaten` (B-162; einschiebbar; Ansicht `grafiken.html` durch 🧑 offen) | `erledigt/GR2-grafik-suche/` |
+| GR3 | Grafik im Renderer: Gebäude, Ressourcen, Portale, Truhen, Münzen und Parallax je Biom als Sprites mit Platzhalter-Rückfall (B-010; Sicht am TV offen) | `erledigt/GR3-grafik-renderer/` |
 | N2 | Flüssige Darstellung: Zeitleiste mit Puffer und Extrapolation, Vorhersage des eigenen Monarchen, Latenz im Debug-Overlay (B-277, B-181; Abnahme am Gerät offen) | `erledigt/N2-zeitleiste-vorhersage/` |

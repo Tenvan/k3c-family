@@ -11,7 +11,6 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-275](B-275-worktree-unter-claude.md) | SRV | Problem | mittel | offen | – | k3c-dev und Vite arbeiten in Worktrees unter `.claude/worktrees/` richtig |
 | [B-007](B-007-skill-baum.md) | SIM | Idee | hoch | offen | – | Skill-Baum mit Tank und Zauberer ist spielbar |
 | [B-008](B-008-spieleabend.md) | REG | Frage | hoch | eingeplant | P1 | Familie hat einen Spieleabend gespielt und Feedback gegeben |
-| [B-010](B-010-grafik-gebaeude.md) | CLI | Idee | mittel | eingeplant | GR3 | Gebäude, Ressourcen und Hintergrund haben Grafiken |
 | [B-011](B-011-sound.md) | CLI | Idee | mittel | eingeplant | SO1 | Spiel hat Sound und Musik |
 | [B-012](B-012-mine.md) | SIM | Idee | mittel | eingeplant | W2 | Mine (Tiefe 2) ist vollständig |
 | [B-013](B-013-gegner-elite.md) | SIM | Idee | mittel | eingeplant | K1 | Restliche Gegner und Elite-KI sind umgesetzt |
@@ -125,6 +124,7 @@ Zeile in diesen Abschnitt.
 
 | Nr. | Domäne | Typ | Prio | Status | Sprint | Titel |
 |---|---|---|---|---|---|---|
+| [B-010](archiv/B-010-grafik-gebaeude.md) | CLI | Idee | mittel | erledigt | GR3 | Gebäude, Ressourcen und Hintergrund haben Grafiken |
 | [B-001](archiv/B-001-server-framework.md) | SRV | Idee | niedrig | erledigt | SP00 | Server bekommt ein tragfähiges Framework, falls mehr Leistung nötig wird |
 | [B-002](archiv/B-002-diagnose-tui.md) | SRV | Idee | mittel | erledigt | SP10 | Diagnose-TUI zeigt den laufenden Server |
 | [B-003](archiv/B-003-server-sprache.md) | SRV | Frage | mittel | erledigt | SP00 | Server-Sprache ist entschieden |
