@@ -1,6 +1,6 @@
 # DBG2 · CLI · Debug-Overlay: Gold, Material, Zeitraffer
 
-- **Status:** aktiv
+- **Status:** erledigt
 - **Domäne:** CLI
 - **Reife:** bereit
 - **Einschiebbar:** nein
@@ -60,12 +60,12 @@ Siehe Ticket › Offene Fragen.
 |---|---|---|---|---|
 | DBG2.1 | `DBG2.1-aktionen-logik.md` | Umsetzung | autonom | fertig |
 | DBG2.2 | `DBG2.2-overlay-bedienung.md` | Umsetzung | autonom | fertig |
-| DBG2.3 | `DBG2.3-abnahme-geraet.md` | Workshop | Mensch | blockiert |
+| DBG2.3 | `DBG2.3-abnahme-geraet.md` | Workshop | Mensch | fertig |
 | DBG2.4 | `DBG2.4-review.md` | Review | autonom | fertig |
 
 ## Abnahme
 
 - 2026-10-03, Review DBG2.4 (getrennter Review-Agent): AC-01 bis AC-04 belegt in den Ergebnissen DBG2.1, DBG2.2 und DBG2.4; `task check` und `task check:go` grün.
-- AC-05 angenommen, Validierung offen (DBG2.3, Abnahme am PC, Handy und Controller; Fahrplan › Offen am Gerät).
+- AC-05 geprüft am PC, Handy (2026-10-03) und Controller (2026-10-05) durch 🧑, siehe DBG2.3. Schritt 5 (`K3C_DEV=0`) nach B-192 erneut ansehen.
 - Keine schweren Befunde; keine neuen Tickets. B-179 archiviert.
 - Version: v0.5.0 gesetzt (2026-10-03, Bestätigung 🧑; Minor: Dev-Aktionen im Debug-Overlay; gemeinsam mit DBG1, solange v0.5.0 nicht gesetzt ist).

@@ -26,7 +26,8 @@ type BuildingData struct {
 	HP, BuildSeconds                 float64
 	Cost                             Cost
 	ArcherSlots, RangeBonus, BowRack int
-	Offers                           []Offer     // Angebots-Zahlziele am Gebäude (Q52), Mechanik ab W4
+	Offers                           []Offer            // Angebots-Zahlziele am Gebäude (Q52), Berufe: professions.go
+	CraftSeconds                     map[string]float64 // Herstellungszeit je Stück (Q35, professions.go)
 	Levels                           []LevelData // Ausbau-Stufen am Platz (Mauer, Turm; hub_level.go)
 	Plantation                       Plantation  // Farm: Bäume wachsen nach (plantation.go)
 	TroopLimit                       TroopLimit  // Kaserne: Kämpfer-Limit je Hub (barracks.go)
@@ -63,6 +64,7 @@ type Offer struct {
 type TroopData struct {
 	HP, Speed, Damage, Range, AttacksPerSecond float64
 	Cost, RecruitCost                          Cost
+	Professions                                map[string]ProfessionData // nur peasant: Berufe (professions.go)
 }
 
 // Gatherable ist eine Ressource, die Bauern holen (Baum, Fels, Kupfererz).
@@ -120,6 +122,7 @@ var (
 			MaxVagrants                 int
 			RespawnSeconds, WanderUnits float64
 		}
+		Merchant MerchantData // Händler (merchant.go)
 	}]("economy.json")
 	hub = load[struct {
 		Levels           []LevelData // Hub-Stufen (hub_level.go)

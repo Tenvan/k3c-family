@@ -55,6 +55,7 @@ func stepCycle(w *World, dt float64) {
 		}
 		payDawnIncome(w)
 		tavernDawn(w)
+		merchantDawn(w)
 	}
 	if w.Aggression != nil && w.Biome.Cycle.Type == "aggressionPool" {
 		*w.Aggression = math.Min(100, *w.Aggression+float64(w.Biome.Cycle.PercentPerMinute/60*dt*w.CycleSpeed))

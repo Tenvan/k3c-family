@@ -10,9 +10,13 @@ import "math"
 //	arrow         – Geschoss abgeschossen: from, to (IDs), x, team (player, enemy)
 //	strike        – Nahkampf-Schlag eines Gegners: from, x
 //	coinPickup    – Münze aufgehoben: player (Index), x
-//	coinGive      – Münze gegeben: player, x, to (site, recruit, mark); fällt sie nur zu Boden, kein Ereignis
+//	coinGive      – Münze gegeben: player, x, to (site, recruit, mark, offer, merchant); fällt sie nur zu Boden, kein Ereignis
 //	buildProgress – Bau fortgeschritten: site (ID), kind, x, percent (25, 50, 75; fertig = built)
 //	revive        – Monarch steht nach der Wartezeit wieder: player, x
+//	revived       – Monarch von einem Mitspieler wiederbelebt (A halten, revive.go; Q62): player, x
+//	trained       – Bauer ausgebildet (professions.go): kind (miner, builder, craftsman), x
+//	merchantArrived – Händler kommt (merchant.go): resource, x (Zahlziel Kaufen); merchantLeft – Händler reist ab
+//	traded        – Tausch am Händler: player, resource, amount (+ gekauft, − verkauft), gold (− bezahlt, + erhalten)
 //
 //	playerDown    – Monarch fällt: player, cause (Gegnerart aus data/enemies.json bei Nahkampf und Geschoss,
 //	                sonst "other"; B-182)

@@ -9,14 +9,17 @@ import (
 // Monarchen, Münzen und alles, was man bezahlt (Port von src/world/sim/economy.ts). A halten gibt im Takt Münzen an
 // das nächste bezahlbare Ziel in Reichweite. Ohne Ziel fällt die Münze auf den Boden (so gibt man anderen Gold).
 
-// payTarget ist genau eins von site, troop (Landstreicher) oder node.
+// payTarget ist genau eins von site, troop (Landstreicher), node, offer (Beruf) oder merchant ("buy", "sell").
 type payTarget struct {
-	site  *Site
-	troop *Troop
-	node  *ResourceNode
+	site     *Site
+	troop    *Troop
+	node     *ResourceNode
+	offer    *offerTarget
+	merchant string
 }
 
 func stepPlayers(w *World, commands []PlayerCommand, dt float64) {
+	stepRevive(w, commands, dt)
 	for _, p := range w.Players {
 		var cmd PlayerCommand
 		if p.Index < len(commands) {
@@ -37,7 +40,7 @@ func stepPlayers(w *World, commands []PlayerCommand, dt float64) {
 		stepAttack(w, p, cmd, dt)
 		stepSkills(w, p, cmd, dt)
 		p.Paying = cmd.Pay
-		if cmd.Pay && p.PayCooldown <= 0 && p.Gold > 0 {
+		if cmd.Pay && !p.reviving && p.PayCooldown <= 0 && (p.Gold > 0 || merchantAt(w, p.X) == "sell") {
 			payOneCoin(w, p)
 			p.PayCooldown = economy.PayIntervalSeconds
 		}
@@ -64,7 +67,7 @@ func movePlayer(w *World, p *Player, cmd PlayerCommand, dt float64) {
 }
 
 func respawn(w *World, p *Player) {
-	p.RespawnIn, p.HP, p.VX = 0, p.MaxHP, 0
+	p.RespawnIn, p.HP, p.VX, p.ReviveProgress = 0, p.MaxHP, 0, 0
 	p.X = w.HubX + 3
 	if p.Index%2 == 0 {
 		p.X = w.HubX - 3
@@ -95,6 +98,12 @@ func findPayTarget(w *World, p *Player) *payTarget {
 	if s != nil {
 		return &payTarget{site: s}
 	}
+	if o := findOffer(w, p.X); o != nil {
+		return &payTarget{offer: o}
+	}
+	if side := merchantAt(w, p.X); side != "" {
+		return &payTarget{merchant: side}
+	}
 	if t := nearest(w.Troops, func(t *Troop) float64 { return t.X }, p.X, r, func(t *Troop) bool { return t.Kind == "vagrant" }); t != nil {
 		return &payTarget{troop: t}
 	}
@@ -118,7 +127,7 @@ func sitePayable(w *World, s *Site) bool {
 		return true
 	}
 	if s.Kind == "workshop" && s.State == "built" {
-		return s.Bows < buildings["workshop"].BowRack && s.BowPaidGold < troops["archer"].Cost.Gold
+		return s.Bows+bowsCrafting(s) < buildings["workshop"].BowRack && s.BowPaidGold < troops["archer"].Cost.Gold
 	}
 	return false
 }
@@ -128,6 +137,10 @@ func keyOf(t *payTarget) string {
 	switch {
 	case t == nil:
 		return ""
+	case t.offer != nil:
+		return t.offer.key()
+	case t.merchant != "":
+		return "merchant:" + t.merchant
 	case t.site != nil:
 		return "site:" + strconv.Itoa(t.site.ID)
 	case t.troop != nil:
@@ -148,19 +161,11 @@ func refundPending(w *World, p *Player) {
 	back := 0
 	switch kind {
 	case "site":
-		if s := siteByID(w, id); s != nil && sitePayable(w, s) {
-			switch {
-			case s.State == "unpaid":
-				back = min(amount, s.PaidGold)
-				s.PaidGold -= back
-			case upgradePayable(w, s):
-				back = min(amount, s.UpgradePaid)
-				s.UpgradePaid -= back
-			default:
-				back = min(amount, s.BowPaidGold)
-				s.BowPaidGold -= back
-			}
-		}
+		back = refundSite(w, id, amount)
+	case "offer":
+		back = refundOffer(w, idText, amount)
+	case "merchant":
+		back = refundMerchant(w, amount)
 	case "vagrant":
 		if t := troopByID(w, id); t != nil && t.Kind == "vagrant" {
 			back = min(amount, t.PaidGold)
@@ -177,14 +182,36 @@ func refundPending(w *World, p *Player) {
 	}
 }
 
+// refundSite zieht bis zu amount Münzen aus Bau, Ausbau oder Bogen des Platzes id zurück und liefert die Anzahl.
+func refundSite(w *World, id, amount int) int {
+	s := siteByID(w, id)
+	if s == nil || !sitePayable(w, s) {
+		return 0
+	}
+	paid := &s.BowPaidGold
+	switch {
+	case s.State == "unpaid":
+		paid = &s.PaidGold
+	case upgradePayable(w, s):
+		paid = &s.UpgradePaid
+	}
+	back := min(amount, *paid)
+	*paid -= back
+	return back
+}
+
 func clearPending(p *Player) {
 	p.PayKey, p.PayAmount = nil, 0
 }
 
 func payOneCoin(w *World, p *Player) {
 	target := findPayTarget(w, p)
-	// Am fertig bezahlten Bauplatz nichts fallen lassen (sonst verliert man beim Festhalten Münzen).
-	if target == nil && nearest(w.Sites, func(s *Site) float64 { return s.X }, p.X, economy.PayRangeUnits, func(*Site) bool { return true }) != nil {
+	// Am fertig bezahlten Bauplatz oder vollen Angebot nichts fallen lassen (sonst verliert man beim Festhalten Münzen).
+	if target == nil && (nearOffer(w, p.X) || nearest(w.Sites, func(s *Site) float64 { return s.X }, p.X, economy.PayRangeUnits, func(*Site) bool { return true }) != nil) {
+		return
+	}
+	if target != nil && target.merchant != "" {
+		payMerchant(w, p, target.merchant)
 		return
 	}
 	p.Gold--
@@ -192,7 +219,9 @@ func payOneCoin(w *World, p *Player) {
 		w.Coins = append(w.Coins, &Coin{ID: w.newID(), X: p.X, BlockedPlayerID: intPtr(p.ID), BlockedUntil: w.Time + economy.DropPickupDelaySeconds})
 		return
 	}
-	coinGiveEvent(w, p, target)
+	if target.offer == nil { // payOffer meldet selbst (to: offer)
+		coinGiveEvent(w, p, target)
+	}
 	key := keyOf(target)
 	if p.PayKey == nil || *p.PayKey != key {
 		refundPending(w, p)
@@ -200,6 +229,8 @@ func payOneCoin(w *World, p *Player) {
 	p.PayKey = &key
 	p.PayAmount++
 	switch {
+	case target.offer != nil:
+		payOffer(w, p, target.offer)
 	case target.site != nil:
 		paySite(w, p, target.site)
 	case target.troop != nil:
@@ -328,21 +359,20 @@ func spend(s *Stock, c Cost) {
 	s.Crystal -= c.Crystal
 }
 
-// stepSites: Bezahlte Bauplätze ziehen das Material aus dem Hub-Vorrat, sobald genug da ist. Werkstatt fertigt Bögen.
+// stepSites: Bezahlte Bauplätze ziehen das Material aus dem Hub-Vorrat, sobald genug da ist. Werkstatt fertigt Bögen
+// (mit Herstellungszeit), voll bezahlte Angebote bilden Bauern aus (professions.go).
 func stepSites(w *World) {
-	bow := troops["archer"].Cost
 	for _, s := range w.Sites {
 		if s.State == "waitingMaterial" && canAfford(*w.Stock, buildings[s.Kind].Cost) {
 			spend(w.Stock, buildings[s.Kind].Cost)
 			s.State = "waitingWorker"
 		}
-		if s.Kind == "workshop" && s.State == "built" && s.BowPaidGold >= bow.Gold && canAfford(*w.Stock, bow) {
-			spend(w.Stock, bow)
-			s.BowPaidGold = 0
-			s.Bows++
+		if s.Kind == "workshop" && s.State == "built" {
+			stepBowCraft(w, s)
 		}
 	}
 	eachSite(w, func(s *Site) { stepUpgrade(w, s) })
+	stepOffers(w)
 }
 
 // payDawnIncome: morgens Steuern für jeden lebenden Monarchen.
