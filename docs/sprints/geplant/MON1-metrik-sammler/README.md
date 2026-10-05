@@ -58,7 +58,13 @@ Autonome Umsetzung; 🧑 entscheidet das Zeitfenster (Offene Fragen) und gibt di
 
 ## Sessions
 
-Reife Entwurf, Stichpunkte:
+| Nr. | Datei | Typ | Agent | Status |
+|---|---|---|---|---|
+| MON1.1 | `MON1.1-sammler.md` | Umsetzung | autonom | offen |
+| MON1.2 | `MON1.2-endpunkt.md` | Umsetzung | autonom | offen |
+| MON1.3 | `MON1.3-review.md` | Review | autonom | offen |
+
+Reife Entwurf, Stichpunkte (Kriterien in Klammern):
 
 - **MON1.1** Sammler: Ring-Puffer, 1-s-Ticker, Zähler im Tick, RTT- und Warteschlangen-Reihen je Gerät, Benchmark (AC-01, AC-03, AC-04).
 - **MON1.2** Ereignis-Ring und `GET /api/metrics?since=` mit Token, Doku (AC-02, AC-05, AC-06).

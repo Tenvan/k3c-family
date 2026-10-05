@@ -56,7 +56,14 @@ Autonome Umsetzung; 🧑 gibt die Spec frei und nimmt am Handy ab (B-282/AC-05).
 
 ## Sessions
 
-Reife Entwurf, Stichpunkte:
+| Nr. | Datei | Typ | Agent | Status |
+|---|---|---|---|---|
+| MON2.1 | `MON2.1-daten.md` | Umsetzung | autonom | offen |
+| MON2.2 | `MON2.2-seite.md` | Umsetzung | autonom | offen |
+| MON2.3 | `MON2.3-review.md` | Review | autonom | offen |
+| MON2.4 | `MON2.4-abnahme-handy.md` | Workshop | Mensch | offen |
+
+Reife Entwurf, Stichpunkte (Kriterien in Klammern):
 
 - **MON2.1** Daten-Schicht: Polling mit Delta, Neustart-Erkennung, Perzentile, Ausreißer, Tests (AC-01, AC-02).
 - **MON2.2** Seite: `monitor.html`, Übersicht, Verlauf auf Canvas/SVG, Ereignisse, Token-Eingabe, Fehlerhinweise, Browser-Pane-Nachweis (AC-03, AC-04).
