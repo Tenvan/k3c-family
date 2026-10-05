@@ -3,7 +3,7 @@
 - **Domäne:** CLI
 - **Typ:** Problem
 - **Prio:** hoch
-- **Status:** eingeplant
+- **Status:** erledigt
 - **Sprint:** N2
 - **Erstellt:** 2026-10-04
 - **Spec:** freigegeben

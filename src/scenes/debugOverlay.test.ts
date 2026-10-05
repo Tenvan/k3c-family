@@ -11,6 +11,7 @@ const client = (over: Partial<DebugClient> = {}): DebugClient => ({
   offlineSince: null,
   notice: null,
   errorCode: null,
+  latency: null,
   ...over,
 });
 const world: DebugWorld = { cycle: { day: 2 }, enemies: [1, 2, 3], troops: [1], players: [1, 2] };
@@ -22,6 +23,7 @@ describe('debugLines (AC-01)', () => {
       'Raum FAMILIE · Gerät a3f1',
       'verbunden · v2 · 30 Hz (Soll 30)',
       'letzter Snapshot 31 ms',
+      'Latenz –',
       'Tag 2 · 3 Gegner · 1 Truppen · 2 Spieler',
       '60 FPS',
     ]);
@@ -40,7 +42,7 @@ describe('debugLines (AC-01)', () => {
   it('fehlende Werte werden zu –', () => {
     const c = client({ roomCode: null, deviceId: '', snapshotHz: null, lastSnapshotAt: null });
     const lines = debugLines(input({ client: c, world: null, fps: null }));
-    expect(lines).toEqual(['Raum – · Gerät –', 'verbunden · v2 · – Hz (Soll 30)', 'letzter Snapshot – ms', '– FPS']);
+    expect(lines).toEqual(['Raum – · Gerät –', 'verbunden · v2 · – Hz (Soll 30)', 'letzter Snapshot – ms', 'Latenz –', '– FPS']);
   });
 
   it('getrennt ohne Zeitpunkt: –', () => {
@@ -76,6 +78,17 @@ describe('debugEnabled (AC-02)', () => {
     expect(debugLines(input({ world: { ...world, devTimescale: 8 } }))).toContain('Zeit 8×');
     expect(debugLines(input({ world: { ...world, devTimescale: 1 } }))).toContain('Zeit 1×');
     expect(debugLines(input()).some((l) => l.startsWith('Zeit'))).toBe(false);
+  });
+
+  it('Verzögerung der Zeitleiste in ms nach dem Snapshot-Alter (B-277)', () => {
+    const lines = debugLines(input({ delayMs: 33.3 }));
+    expect(lines[lines.indexOf('letzter Snapshot 31 ms') + 1]).toBe('Puffer 33 ms');
+    expect(debugLines(input()).some((l) => l.startsWith('Puffer'))).toBe(false);
+  });
+
+  it('Latenz: Mittel und p95 in ms, ohne Messung – (B-181/AC-02)', () => {
+    expect(debugLines(input({ client: client({ latency: { mean: 61.6, p95: 110.2 } }) }))).toContain('Latenz 62 ms (p95 110 ms)');
+    expect(debugLines(input())).toContain('Latenz –');
   });
 
   it('forbidden nach einer Dev-Aktion: Hinweis im Overlay', () => {
