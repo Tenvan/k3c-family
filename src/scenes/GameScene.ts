@@ -174,7 +174,7 @@ export class GameScene extends Phaser.Scene {
 
   /** Esc, Touch-Schaltfläche oder Menu kurz (Pad, beim Loslassen; View + Menu bleibt „zurück zur Landingpage“) */
   private wantsOptions(): boolean {
-    const menuShort = this.menuPress.update(this.pads.some((p) => p.held('pause')), this.pads.some((p) => p.held('skillMenu')), performance.now());
+    const menuShort = this.menuPress.update(this.pads.some((p) => p.held('pause')), this.pads.some((p) => p.viewHeld()), performance.now());
     return this.keyboard.justPressed('pause') || (this.touch !== undefined && pauseButton().take()) || menuShort;
   }
 
@@ -215,7 +215,7 @@ export class GameScene extends Phaser.Scene {
   }
 
   private trackLastDevice(): void {
-    const used = (i: PlayerInput) => i.moveX() !== 0 || i.held('confirm');
+    const used = (i: PlayerInput) => i.moveX() !== 0 || i.held('confirm') || i.held('attack');
     if (this.allInputs().some(used)) void audioCore().onInput(); // erste Eingabe entsperrt den Ton (SO1.2)
     if (this.touch && used(this.touch)) this.lastDevice = 'touch';
     else if (this.pads.some(used)) this.lastDevice = 'pad';

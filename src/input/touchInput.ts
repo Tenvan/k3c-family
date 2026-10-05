@@ -1,7 +1,10 @@
 import { toggleFullscreen } from '../core/fullscreen';
 import type { Action, PlayerInput } from './playerInput';
+import { SLOT_ACTIONS, slotBindings, type SlotAction } from './slotBindings';
 
-type TouchKey = 'left' | 'right' | 'sprint' | 'confirm' | 'fullscreen';
+type TouchKey = 'left' | 'right' | 'sprint' | 'confirm' | 'fullscreen' | SlotAction;
+/** Aktionen, die per Bildschirmtaste ausgelöst werden (Laufen und Sprint fragt `PlayerInput` eigens ab) */
+const TOUCH_ACTIONS: readonly Action[] = ['confirm', ...SLOT_ACTIONS];
 
 /** Touch-Steuerung nötig? Handy/Tablet, oder per ?touch=1 erzwingbar (zum Testen am PC). */
 export function wantsTouchControls(): boolean {
@@ -26,11 +29,22 @@ const CSS = `
   .k3c-touch .a { --s: 22vmin; background: rgba(63,185,80,.5); }
   .k3c-touch .small { --s: 10vmin; }
   .k3c-touch .col { display: flex; flex-direction: column; gap: 1.5vmin; align-items: center; }
+  .k3c-touch .skills { display: grid; grid-template-columns: repeat(3, auto); gap: 1.5vmin; }
 `;
+
+const SKILL_ARIA: Record<string, string> = { skill1: 'Skill 1', skill2: 'Skill 2', skill3: 'Skill 3', skill4: 'Skill 4', skillMenu: 'Skill-Menü' };
+
+/** Kleine Tasten für Skill-Slot 1–4 und das Skill-Menü (Belegung aus `slotBindings`) */
+function skillButtons(): string {
+  return slotBindings('touch')
+    .filter((b) => b.action !== 'attack')
+    .map((b) => `<button class="small" data-k="${b.key}" aria-label="${SKILL_ARIA[b.action]}">${b.label}</button>`)
+    .join('');
+}
 
 /**
  * Eingabe per Touch: linke Bildschirmhälfte berühren = nach links laufen, rechte = nach rechts.
- * Dazu Bildschirmtasten für Münz-Taste (= A) und » sprinten. Die Tasten liegen über der Lauf-Fläche.
+ * Dazu Bildschirmtasten für Münz-Taste (= A), Schlag, Skill-Slots 1–4, Skill-Menü und » sprinten. Die Tasten liegen über der Lauf-Fläche.
  * DOM-Overlay statt Phaser, damit mehrere Finger gleichzeitig funktionieren (laufen + Münzen geben).
  */
 export class TouchInput implements PlayerInput {
@@ -47,6 +61,8 @@ export class TouchInput implements PlayerInput {
     root.innerHTML = `
       <div class="grp">
         <div class="col"><button class="small" data-k="fullscreen" aria-label="Vollbild">⛶</button><button class="small" data-k="sprint" aria-label="Sprinten">»</button></div>
+        <div class="skills">${skillButtons()}</div>
+        <button data-k="attack" aria-label="Schlag">${slotBindings('touch')[0]?.label ?? ''}</button>
         <button class="a" data-k="confirm" aria-label="Münzen geben / beitreten">🪙</button>
       </div>`;
     const zone = document.createElement('div');
@@ -134,10 +150,10 @@ export class TouchInput implements PlayerInput {
   }
 
   justPressed(action: Action): boolean {
-    return action === 'confirm' && this.pressed.has('confirm');
+    return TOUCH_ACTIONS.includes(action) && this.pressed.has(action as TouchKey);
   }
 
   held(action: Action): boolean {
-    return action === 'confirm' && this.down.has('confirm');
+    return TOUCH_ACTIONS.includes(action) && this.down.has(action as TouchKey);
   }
 }

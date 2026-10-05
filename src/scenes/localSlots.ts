@@ -2,11 +2,12 @@
  * Lokale Spieler eines Geräts (Slots 0–3, Protokoll v2): welche Eingabe steuert welchen Slot, wann `addSlot`, `removeSlot` und `leave`.
  * Ohne Phaser, damit es getestet werden kann (SP08 AC-02, AC-11).
  */
+import { heldSkill, type SlotAction } from '../input/slotBindings';
 import { MAX_LOCAL_PLAYERS } from './layout';
 
 export interface SlotInputDevice {
   justPressed(action: 'confirm'): boolean;
-  held(action: 'confirm'): boolean;
+  held(action: 'confirm' | SlotAction): boolean;
   moveX(): number;
   sprint(): boolean;
 }
@@ -21,6 +22,9 @@ export interface SlotCommand {
   moveX: number;
   sprint: boolean;
   pay: boolean;
+  /** Nur gesetzt, wenn gehalten (Protokoll: fehlt = false bzw. 0) */
+  attack?: true;
+  skill?: number;
 }
 
 /** Ein neuer lokaler Spieler muss binnen dieser Zeit vom Server bestätigt werden, sonst wird sein Gerät wieder frei */
@@ -78,9 +82,18 @@ export class LocalSlots<I extends SlotInputDevice> {
     const result: SlotCommand[] = [];
     for (const slot of seated) {
       const input = this.bound[slot];
-      if (input) result.push({ slot, moveX: Math.max(-1, Math.min(1, input.moveX())), sprint: input.sprint(), pay: input.held('confirm') });
+      if (input) result.push(command(slot, input));
       else if (this.mock.includes(slot)) result.push({ slot, moveX: 0, sprint: false, pay: false });
     }
     return result;
   }
+}
+
+/** Eingabe eines bedienten Slots; `attack` und `skill` nur, wenn gehalten (Schlag, Skill-Slot 1–4) */
+function command(slot: number, input: SlotInputDevice): SlotCommand {
+  const c: SlotCommand = { slot, moveX: Math.max(-1, Math.min(1, input.moveX())), sprint: input.sprint(), pay: input.held('confirm') };
+  if (input.held('attack')) c.attack = true;
+  const skill = heldSkill((a) => input.held(a));
+  if (skill > 0) c.skill = skill;
+  return c;
 }

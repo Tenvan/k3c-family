@@ -4,8 +4,9 @@ import { ADD_SLOT_TIMEOUT_MS, LocalSlots, type SlotInputDevice } from './localSl
 class Pad implements SlotInputDevice {
   confirm = false;
   x = 0;
+  holding = new Set<string>();
   justPressed = () => this.confirm;
-  held = () => this.confirm;
+  held = (action: string) => (action === 'confirm' ? this.confirm : this.holding.has(action));
   moveX = () => this.x;
   sprint = () => false;
 }
@@ -106,5 +107,19 @@ describe('LocalSlots', () => {
 
   it('ein Platz ohne Spieler sendet keine Eingabe', () => {
     expect(new LocalSlots<Pad>().commands([0])).toEqual([]);
+  });
+
+  it('Schlag und gehaltener Skill-Slot gehen mit, nur wenn gehalten (B-124/AC-02)', () => {
+    const { client } = host();
+    const slots = new LocalSlots<Pad>();
+    const a = new Pad();
+    slots.join([press(a)], [0], client, 0);
+    a.confirm = false;
+    expect(slots.commands([0])).toEqual([{ slot: 0, moveX: 0, sprint: false, pay: false }]);
+    a.holding = new Set(['attack', 'skill1']);
+    expect(slots.commands([0])).toEqual([{ slot: 0, moveX: 0, sprint: false, pay: false, attack: true, skill: 1 }]);
+    a.holding = new Set(['skill4']);
+    expect(slots.commands([0])[0]).toMatchObject({ skill: 4 });
+    expect(slots.commands([0])[0]).not.toHaveProperty('attack');
   });
 });
