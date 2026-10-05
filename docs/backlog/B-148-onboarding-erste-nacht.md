@@ -1,4 +1,4 @@
-# B-148 · Die erste Nacht wird mit kontextuellen Hinweisen geführt, der Freundlich-Grad kostet keinen Fortschritt
+# B-148 · Die erste Nacht wird mit kontextuellen Hinweisen geführt, der Grad „Leicht“ kostet keinen Fortschritt
 
 - **Domäne:** CLI
 - **Typ:** Idee
@@ -6,9 +6,9 @@
 - **Status:** eingeplant
 - **Sprint:** S6
 - **Erstellt:** 2026-10-02
-- **Spec:** Entwurf
-- **Revision:** 1
-- **Freigabe:** –
+- **Spec:** freigegeben
+- **Revision:** 2
+- **Freigabe:** 2026-10-05, Chat, durch 🧑, Revision 2, mit Sprint S6
 
 ## Ausgangslage
 
@@ -16,17 +16,17 @@ Der Kern-Loop (Münzen sammeln, bezahlen, bauen, die Nacht überstehen) ist für
 
 ## Ziel
 
-Die erste Nacht läuft „geführt“: Hinweise erscheinen über den Objekten genau dann, wenn sie gebraucht werden, und ein Freundlich-Grad macht Verluste ungefährlich. Nutzen: Kinder verstehen den Spielablauf ohne Handbuch (Plan Lücke 6).
+Die erste Nacht läuft „geführt“: Hinweise erscheinen über den Objekten genau dann, wenn sie gebraucht werden, und ein Grad „Leicht“ macht Verluste ungefährlich. Nutzen: Kinder verstehen den Spielablauf ohne Handbuch (Plan Lücke 6).
 
 ## Beteiligte und Zielgruppen
 
-Kinder und Eltern am TV; 🧑 entscheidet Umfang und Freundlich-Grad und nimmt am Gerät ab.
+Kinder und Eltern am TV; 🧑 entscheidet Umfang und Grad „Leicht“ und nimmt am Gerät ab.
 
 ## Anforderungen
 
-- Kontextuelle Hinweise über den Objekten (Münze aufheben, Bauplatz bezahlen, Nacht naht, Bauer zuweisen); jeder Hinweis erscheint höchstens einmal je Gerät und verschwindet nach der Handlung.
+- Die geführte erste Nacht ist optional (Beschluss Q11). Kontextuelle Hinweise über den Objekten (Münze aufheben, Bauplatz bezahlen, Nacht naht, Bauer zuweisen); jeder Hinweis erscheint höchstens einmal je Gerät und verschwindet nach der Handlung.
 - Welcher Hinweis gezeigt wird, entscheidet eine reine Funktion aus Snapshot-Daten und bereits gesehenen Hinweisen; der Client rechnet keine Spielregeln.
-- Freundlich-Grad in `data/difficulty.json` (Werte nur dort): die erste Nacht ohne Verlust von Gold, Krone und Gebäuden; Aktivierung über die Gradwahl.
+- Grad „Leicht“ in `data/difficulty.json` (Werte nur dort): die erste Nacht ohne Verlust von Gold, Krone und Gebäuden; Aktivierung über die Gradwahl.
 - „Gesehen“-Merkung je Gerät im `localStorage` (mit try/catch); in den Optionen (B-146) rücksetzbar.
 - Funktioniert mit 2+ lokalen Spielern (Hinweise je Zelle), Mindestschrift je Split-Viertel nach B-136.
 
@@ -40,7 +40,7 @@ Vollständiges Tutorial über mehrere Nächte, Ton (B-011), Controller-Glyphen i
 
 ## Beispiele
 
-Neues Spiel im Freundlich-Grad: über der ersten Münze erscheint „Aufheben“, über dem Bauplatz „Bezahlen“; nach dem Bauen verschwinden sie; die erste Nacht endet auch bei Niederlage ohne Verlust.
+Neues Spiel im Grad „Leicht“: über der ersten Münze erscheint „Aufheben“, über dem Bauplatz „Bezahlen“; nach dem Bauen verschwinden sie; die erste Nacht endet auch bei Niederlage ohne Verlust.
 
 ## Ausnahme- und Fehlerfälle
 
@@ -49,13 +49,13 @@ Neues Spiel im Freundlich-Grad: über der ersten Münze erscheint „Aufheben“
 ## Akzeptanzkriterien
 
 - **AC-01** Test: Die Hinweis-Funktion liefert aus Snapshot-Daten und gesehenen Hinweisen genau den nächsten Hinweis; ein gesehener erscheint nicht erneut.
-- **AC-02** Test (Go): Im Freundlich-Grad verliert die erste Nacht weder Gold noch Gebäude; die Werte stehen in `data/difficulty.json`.
+- **AC-02** Test (Go): Im Grad „Leicht“ verliert die erste Nacht weder Gold noch Gebäude; die Werte stehen in `data/difficulty.json`.
 - **AC-03** Hinweise erscheinen über Münze, Bauplatz und beim Nahen der Nacht (Beobachtung am Gerät) und verschwinden nach der Handlung.
 - **AC-04** 🧑 hat mit mindestens einem Kind eine erste Nacht gespielt und die Führung abgenommen.
 
 ## Offene Fragen
 
-Umfang der Führung und was der Freundlich-Grad genau abfedert: 🧑, `docs/fragenkatalog.md Q11`.
+Umfang der Führung und was der Grad „Leicht“ genau abfedert: 🧑, `docs/fragenkatalog.md Q11`.
 
 ## Notizen
 

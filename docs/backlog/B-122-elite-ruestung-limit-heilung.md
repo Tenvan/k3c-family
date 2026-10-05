@@ -6,9 +6,9 @@
 - **Status:** eingeplant
 - **Sprint:** W4
 - **Erstellt:** 2026-10-02
-- **Spec:** Entwurf
-- **Revision:** 1
-- **Freigabe:** –
+- **Spec:** freigegeben
+- **Revision:** 2
+- **Freigabe:** 2026-10-05, Chat, durch 🧑, Revision 2, mit Sprint W4
 
 ## Ausgangslage
 
@@ -28,9 +28,9 @@ Spieler; Messung mit B-099.
 - Auswahl am Platz: je Angebot ein eigenes Zahlziel als Anhang mit festem `dx` am Gebäude (keine neue Taste); aufgewertet wird der nächste Bogenschütze bzw. Krieger (Beschlüsse Q34, Q52, 2026-10-04).
 - Rüstungs-Upgrade in der Rüstkammer: 100 Eisen + 100 Gold je Stufe, **2 Stufen** (ab Hub-Stufe 4 und 5), +20 % / +40 % auf die Basis-HP; wirkt sofort auf alle Kämpfer (`MaxHP` und `HP` steigen um denselben Betrag, keine Vollheilung); Bauern und Landstreicher bleiben ohne Rüstung (Beschluss Q37, 2026-10-04).
 - Truppen-Limit je Hub: Basis 10, Kaserne +10, nur Kämpfer zählen. W3 baut es für Bogenschützen, dieses Ticket erweitert es um Krieger und Elite; geprüft an genau einer Stelle beim Waffe-Holen, auch für Schwerter (Beschlüsse Q29 und Q40, 2026-10-04).
-- Heilung am Heilplatz (Truppen und Spieler in Reichweite) und durch den Heiler-Skill (B-119); keine Regeneration. Der Heilplatz entsteht vollständig in W3 (B-116); hier Nachweis per Regressionstest plus `troopLost` (Beschluss Q40, 2026-10-04).
-- Ereignis `troopLost` für Verluste (Messgröße für B-099): für alle Truppen außer Landstreichern, Felder `kind`, `x`, `cause`; ohne Priorität; kein Ereignis beim Burgfall (Beschluss Q39, 2026-10-04).
-- Umsetzung in zwei Sessions: W4.3a (Krieger, Schwert-Regal, Limit-Erweiterung, `troopLost`) und W4.3b (Elite, Rüstung, Heilplatz-Nachweis, Golden); Kriterien unverändert (Beschluss Q41, 2026-10-04).
+- Heilung am Heilplatz (Truppen und Spieler in Reichweite) und durch den Heiler-Skill (B-119); keine Regeneration. Der Heilplatz entsteht vollständig in W3 (B-116); hier Nachweis per Regressionstest (Beschluss Q40, 2026-10-04).
+- Verlust-Kaskade statt Tod und Ereignis `disarmed` (Messgröße für B-099): Bürger sterben nicht, Ausrüstung fällt zu Boden, der Bürger wird Bauer, ein Bauer wird Landstreicher; `disarmed` mit `kind`, `x`, `cause`; ohne Priorität; kein Ereignis beim Burgfall (Beschlüsse Q67, Q68, Q69, 2026-10-04; ersetzen Q39).
+- Umsetzung in zwei Sessions: W4.3a (Krieger, Schwert-Regal, Limit-Erweiterung, Verlust-Kaskade) und W4.3b (Elite, Rüstung, Heilplatz-Nachweis, Golden); Kriterien unverändert (Beschluss Q41, 2026-10-04).
 
 ## Nicht-Ziele
 
@@ -53,7 +53,7 @@ Limit erreicht → Hinweis (B-126), keine Verschwendung von Material (Bogen blei
 - **AC-01** Test: Elite-Upgrade und Rüstung wirken mit Kosten und Werten aus den Daten.
 - **AC-02** Test: Limit je Hub (Basis, Kaserne), nur Kämpfer zählen.
 - **AC-03** Test: Heilplatz heilt in Reichweite, ohne Heilplatz keine Heilung.
-- **AC-04** Test: `troopLost` bei Verlust; Golden-Daten aktualisiert; `task check:go` grün.
+- **AC-04** Test: Verlust-Kaskade und `disarmed` bei Verlust; Golden-Daten aktualisiert; `task check:go` grün.
 
 ## Offene Fragen
 
