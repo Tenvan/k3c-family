@@ -1,11 +1,11 @@
 # W1 · SIM · Hub-Ausbau und Mauerstufen
 
-- **Status:** geplant
+- **Status:** aktiv
 - **Domäne:** SIM
 - **Reife:** bereit
 - **Einschiebbar:** nein
 - **Tickets:** B-112
-- **Start-Commit:** –
+- **Start-Commit:** ef16c9a
 - **Spec:** freigegeben
 - **Revision:** 1
 - **Freigabe:** 2026-10-04, Chat, durch 🧑, Revision 1; mit Änderungen aus der Spec-Prüfung
@@ -59,7 +59,7 @@ keine
 
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
-| W1.1 | `W1.1-hub-ausbau.md` | Umsetzung | autonom | offen |
+| W1.1 | `W1.1-hub-ausbau.md` | Umsetzung | autonom | in Arbeit |
 | W1.2 | `W1.2-mauer-turm-stufen.md` | Umsetzung | autonom | offen |
 | W1.3 | `W1.3-zerstoerung-reparatur-spielstand.md` | Umsetzung | autonom | offen |
 | W1.4 | `W1.4-review.md` | Review | autonom | offen |
