@@ -1,5 +1,6 @@
 {
   "t": "delta",
+  "stage": 0,
   "tick": 301,
   "ack": 42,
   "s": {

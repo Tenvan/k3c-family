@@ -42,6 +42,8 @@ export interface SlotSeat {
   monarch: number;
   /** Tiefe der Stufe, in der der Monarch steht. */
   depth: number;
+  /** Index der Stufe: gehört zum Strom mit diesem `stage` (B-176). Der Server sendet es immer; im Typ optional, weil Szenen-Tests Plätze ohne Stufe bauen. */
+  stage?: number;
 }
 
 export type MonarchState = 'taken' | 'waiting' | 'free';
@@ -66,9 +68,9 @@ export type ServerMessage =
   | { t: 'welcome'; v: number; tickHz: number; limits: Limits }
   | { t: 'rooms'; rooms: RoomInfo[] }
   | { t: 'joined'; room: string; name: string; you: SlotSeat[] }
-  | { t: 'level'; depth: number; layout: LevelLayout }
-  | { t: 'snap'; tick: number; ack: number; s: WorldState }
-  | { t: 'delta'; tick: number; ack: number; s: Record<string, unknown> }
+  | { t: 'level'; stage: number; depth: number; layout: LevelLayout }
+  | { t: 'snap'; stage: number; tick: number; ack: number; s: WorldState }
+  | { t: 'delta'; stage: number; tick: number; ack: number; s: Record<string, unknown> }
   | { t: 'seats'; you: SlotSeat[]; monarchs: MonarchState[] }
   | { t: 'error'; code: ErrorCode; message: string };
 

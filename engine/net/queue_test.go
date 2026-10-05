@@ -101,10 +101,10 @@ func TestAckIstSeqDesZustands(t *testing.T) {
 	cancelled := false
 	c := queueConn("x", &cancelled)
 	c.seq.Store(3)
-	c.State(1, map[string]any{})
+	c.State(1, 0, map[string]any{})
 	c.seq.Store(4)
-	c.State(2, map[string]any{}) // ersetzt Tick 1
-	c.seq.Store(5)              // nach dem Zustand verrechnet
+	c.State(2, 0, map[string]any{}) // ersetzt Tick 1
+	c.seq.Store(5)                  // nach dem Zustand verrechnet
 	msgs := drain(t, c)
 	if len(msgs) != 1 || msgs[0]["tick"] != float64(2) || msgs[0]["ack"] != float64(4) {
 		t.Fatalf("erwartet Tick 2 mit ack 4: %v", msgs)

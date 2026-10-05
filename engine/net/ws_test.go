@@ -134,7 +134,7 @@ func TestWebSocketXboxUndHandy(t *testing.T) {
 	srv, m := wsServer(t)
 	x := hello(t, srv, "xbox")
 	create(x, "familie", 0)
-	if j := x.entered(); j["room"] != "KRNZ" || j["name"] != "familie" || fmt.Sprint(j["you"]) != "[map[depth:0 monarch:0 slot:0]]" {
+	if j := x.entered(); j["room"] != "KRNZ" || j["name"] != "familie" || fmt.Sprint(j["you"]) != "[map[depth:0 monarch:0 slot:0 stage:0]]" {
 		t.Fatalf("joined: %v", j)
 	}
 	x.expect("seats")
@@ -144,7 +144,7 @@ func TestWebSocketXboxUndHandy(t *testing.T) {
 	}
 	h := hello(t, srv, "handy")
 	joinRoom(h, "KRNZ", 0)
-	if j := h.entered(); fmt.Sprint(j["you"]) != "[map[depth:0 monarch:2 slot:0]]" {
+	if j := h.entered(); fmt.Sprint(j["you"]) != "[map[depth:0 monarch:2 slot:0 stage:0]]" {
 		t.Fatalf("Handy: %v", j)
 	}
 	x.expect("seats")

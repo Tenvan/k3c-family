@@ -126,15 +126,17 @@ type seatsMsg struct {
 
 type levelMsg struct {
 	T      string `json:"t"`
+	Stage  int    `json:"stage"` // Index der Stufe in Island.Stages, Schlüssel des Stroms (B-176)
 	Depth  int    `json:"depth"`
 	Layout any    `json:"layout"`
 }
 
 type stateMsg struct {
-	T    string         `json:"t"` // snap oder delta
-	Tick int            `json:"tick"`
-	Ack  int64          `json:"ack"`
-	S    map[string]any `json:"s"`
+	T     string         `json:"t"` // snap oder delta
+	Stage int            `json:"stage"`
+	Tick  int            `json:"tick"`
+	Ack   int64          `json:"ack"`
+	S     map[string]any `json:"s"`
 }
 
 // stateOf ist der Zustand für `snap`: die Welt ohne seed, biome, level, rng, widthUnits, mit events und depth, je

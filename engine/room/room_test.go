@@ -24,8 +24,8 @@ func (p *peer) Joined(room, name string, you []Seat) {
 	p.you = you
 	p.log = append(p.log, fmt.Sprintf("joined %s %s %v", room, name, you))
 }
-func (p *peer) Level(depth int, _ level.Layout) { p.log = append(p.log, fmt.Sprintf("level %d", depth)) }
-func (p *peer) State(tick int, s any) { p.world, _ = s.(*sim.World); p.log = append(p.log, fmt.Sprintf("state %d", tick)) }
+func (p *peer) Level(_, depth int, _ level.Layout) { p.log = append(p.log, fmt.Sprintf("level %d", depth)) }
+func (p *peer) State(tick, _ int, s any) { p.world, _ = s.(*sim.World); p.log = append(p.log, fmt.Sprintf("state %d", tick)) }
 func (p *peer) Seats(you []Seat, monarchs []string) {
 	p.you, p.monarchs = you, monarchs
 	p.log = append(p.log, "seats")
@@ -114,12 +114,12 @@ func TestXboxUndHandy(t *testing.T) {
 	f := newFixture()
 	x, h := &peer{}, &peer{}
 	r := need(f.m.Create("xbox", x, "familie", true, 0, []int{0}, Options{}))(t)
-	if r.Code != "KRNZ" || !x.has("joined KRNZ familie [{0 0 0}]") || !x.has("level 0") || !x.has("state 0") {
+	if r.Code != "KRNZ" || !x.has("joined KRNZ familie [{0 0 0 0}]") || !x.has("level 0") || !x.has("state 0") {
 		t.Fatalf("Erstellen: %v", x.log)
 	}
 	ok(t, r.AddSlot("xbox", r.peerOf("xbox"), 1))
 	need(f.m.Join("handy", h, "KRNZ", []int{0}))(t)
-	if fmt.Sprint(h.you) != "[{0 2 0}]" || fmt.Sprint(x.monarchs) != "[taken taken taken]" {
+	if fmt.Sprint(h.you) != "[{0 2 0 0}]" || fmt.Sprint(x.monarchs) != "[taken taken taken]" {
 		t.Fatalf("Handy %v, Plätze %v", h.you, x.monarchs)
 	}
 	ownMovement(t, r)
@@ -131,7 +131,7 @@ func TestXboxUndHandy(t *testing.T) {
 	f.wait(10 * time.Second)
 	h2 := &peer{}
 	need(f.m.Join("handy", h2, "KRNZ", []int{0}))(t)
-	if fmt.Sprint(h2.you) != "[{0 2 0}]" || !h2.has("level 0") {
+	if fmt.Sprint(h2.you) != "[{0 2 0 0}]" || !h2.has("level 0") {
 		t.Fatalf("Wiederverbinden: %v", h2.log)
 	}
 	// Controller 2 geht: Monarch 1 frei; ein neues Gerät bekommt ihn.
@@ -141,7 +141,7 @@ func TestXboxUndHandy(t *testing.T) {
 	}
 	z := &peer{}
 	need(f.m.Join("tablet", z, "KRNZ", []int{0}))(t)
-	if fmt.Sprint(z.you) != "[{0 1 0}]" {
+	if fmt.Sprint(z.you) != "[{0 1 0 0}]" {
 		t.Fatalf("neues Gerät bekommt %v", z.you)
 	}
 }
@@ -154,13 +154,13 @@ func TestWiederverbindenMitGeaendertenSlots(t *testing.T) {
 	x2 := &peer{}
 	need(f.m.Join("xbox", x2, r.Code, []int{1, 2}))(t)
 	// Slot 1 behält Monarch 1, Slot 0 fällt weg (Monarch 0 frei), Slot 2 bekommt den kleinsten freien: 0.
-	if fmt.Sprint(x2.you) != "[{1 1 0} {2 0 0}]" || fmt.Sprint(x2.monarchs) != "[taken taken]" {
+	if fmt.Sprint(x2.you) != "[{1 1 0 0} {2 0 0 0}]" || fmt.Sprint(x2.monarchs) != "[taken taken]" {
 		t.Fatalf("mehr/weniger Slots: %v %v", x2.you, x2.monarchs)
 	}
 	r.Drop("xbox", x2)
 	x3 := &peer{}
 	need(f.m.Join("xbox", x3, r.Code, []int{1}))(t)
-	if fmt.Sprint(x3.you) != "[{1 1 0}]" || fmt.Sprint(x3.monarchs) != "[free taken]" {
+	if fmt.Sprint(x3.you) != "[{1 1 0 0}]" || fmt.Sprint(x3.monarchs) != "[free taken]" {
 		t.Fatalf("weniger Slots: %v %v", x3.you, x3.monarchs)
 	}
 }
@@ -182,7 +182,7 @@ func TestNach60SekundenFreiUndBevorzugt(t *testing.T) {
 	// Rückkehr nach der Frist: normales Beitreten, die alten Monarchen werden bevorzugt.
 	h2 := &peer{}
 	need(f.m.Join("handy", h2, r.Code, []int{1, 0}))(t)
-	if fmt.Sprint(h2.you) != "[{0 1 0} {1 2 0}]" {
+	if fmt.Sprint(h2.you) != "[{0 1 0 0} {1 2 0 0}]" {
 		t.Fatalf("Rückkehr: %v", h2.you)
 	}
 }
@@ -256,7 +256,7 @@ func TestErsetzteVerbindung(t *testing.T) {
 	a, b := &peer{}, &peer{}
 	r := need(f.m.Create("tab", a, "tabs", true, 0, []int{0}, Options{}))(t)
 	need(f.m.Join("tab", b, r.Code, []int{0}))(t)
-	if !a.has("replaced") || fmt.Sprint(b.you) != "[{0 0 0}]" {
+	if !a.has("replaced") || fmt.Sprint(b.you) != "[{0 0 0 0}]" {
 		t.Fatalf("alte %v, neue %v", a.log, b.you)
 	}
 	r.Drop("tab", a) // die alte Verbindung bricht ab: ohne Wirkung
@@ -311,7 +311,7 @@ func TestGeladenerStand(t *testing.T) {
 	x := &peer{}
 	r := need(f.m.Create("xbox", x, "gold", false, 0, []int{1}, Options{}))(t)
 	players := r.isl.Players()
-	if len(players) != 2 || players[0].Gold != 33 || players[1].Gold != 44 || fmt.Sprint(x.you) != "[{1 0 0}]" ||
+	if len(players) != 2 || players[0].Gold != 33 || players[1].Gold != 44 || fmt.Sprint(x.you) != "[{1 0 0 0}]" ||
 		fmt.Sprint(x.monarchs) != "[taken free]" || !players[1].Free {
 		t.Fatalf("Monarchen nach Laden: %d, Gold %v, Plätze %v", len(players), players[0].Gold, x.monarchs)
 	}
