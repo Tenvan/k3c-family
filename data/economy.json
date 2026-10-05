@@ -19,5 +19,6 @@
     "crystalVein": { "resource": "crystal", "amount": 5,  "workSeconds": 24, "markCost": 2, "maxWorkers": 2 }
   },
   "storage": { "basePerHub": 300, "perStorage": 300 },
-  "recruitCamp": { "maxVagrants": 2, "respawnSeconds": 25, "wanderUnits": 6 }
+  "recruitCamp": { "maxVagrants": 2, "respawnSeconds": 25, "wanderUnits": 6 },
+  "merchant": { "everyDays": 3, "everyDaysWithTavern": 2, "stayDays": 1, "material": 10, "gold": 5, "materials": ["wood", "stone", "copper", "iron", "crystal"] }
 }

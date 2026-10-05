@@ -45,6 +45,8 @@ type MountData struct {
 type monarchData struct {
 	Base                                           struct{ HP, Damage, Speed, Defense float64 }
 	SprintMultiplier, Acceleration, RespawnSeconds float64
+	// Revive: Wiederbeleben durch einen Mitspieler (monarch.md § 5, B-120): Dauer, HP-Anteil, Reichweite in Units.
+	Revive struct{ Seconds, HPFraction, RangeUnits float64 }
 	Mount                                          MountData
 	Attack                                         struct{ Damage, Range, Cooldown float64 }
 	// TierPoints: Tier n verlangt TierPoints[n-1] gelernte Skills der Linie (Beschluss 🧑 2026-10-04, B-216).
