@@ -58,7 +58,7 @@ Autonome Umsetzung; 🧑 gibt die Spec frei und nimmt am Handy ab (B-282/AC-05).
 
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
-| MON2.1 | `MON2.1-daten.md` | Umsetzung | autonom | offen |
+| MON2.1 | `MON2.1-daten.md` | Umsetzung | autonom | fertig |
 | MON2.2 | `MON2.2-seite.md` | Umsetzung | autonom | offen |
 | MON2.3 | `MON2.3-review.md` | Review | autonom | offen |
 | MON2.4 | `MON2.4-abnahme-handy.md` | Workshop | Mensch | offen |

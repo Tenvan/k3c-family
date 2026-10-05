@@ -1,6 +1,6 @@
 # MON2.1 · Daten-Schicht: Delta, Neustart, Perzentile, Ausreißer
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Branch:** mon2/1-daten
@@ -46,9 +46,9 @@ Seite, Zeichnen, Token-Speicher (MON2.2). Keine Änderung am Server (`engine/`);
 
 ## Fertig, wenn
 
-- [ ] AC-01: `monitorData.test.ts` prüft Perzentile und Ausreißer über eine feste Reihe.
-- [ ] AC-02: `monitorData.test.ts` prüft Delta-Anhängen, Verwerfen bei neuem `startedAt` und das 1-h-Fenster.
-- [ ] `task check` grün.
+- [x] AC-01: `monitorData.test.ts` prüft Perzentile und Ausreißer über eine feste Reihe.
+- [x] AC-02: `monitorData.test.ts` prüft Delta-Anhängen, Verwerfen bei neuem `startedAt` und das 1-h-Fenster.
+- [x] `task check` grün.
 
 ## Prüfen
 
@@ -58,4 +58,11 @@ task check
 
 ## Ergebnis
 
-–
+- AC-01 geprüft: `src/tools/monitorData.test.ts` › „Perzentile und Ausreißer“ – Reihe 1..20 ms plus 90 ms ergibt
+  p50 11, p95 20, p99 90, Max 90 (Nearest-Rank); Tukey-Zaun 31 ms markiert nur die 90.
+- AC-02 geprüft: `src/tools/monitorData.test.ts` › „Delta-Puffer“ – Anhängen, neuer `startedAt` verwirft alte Reihen und
+  merkt den Neustart, Punkte älter als 1 h vor `now` und leere Reihen fallen weg.
+- Zusätzlich getestet: Fenster-Auswahl mit Budget-Überschreitungen, Ampel je Raum (`roomSummaries`), `fetchMetrics`
+  (Bearer, 404/401/offline mit gemocktem fetch), Backoff 3 s bis 30 s.
+- `task check` grün (2026-10-05, Agent). Gebaut gegen die API-Beschreibung auf `origin/sprint/mon1` (MON1 noch nicht in
+  `develop`).
