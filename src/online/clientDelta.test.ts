@@ -44,6 +44,15 @@ describe('applyDelta', () => {
     expect(applyDelta({}, { coins: { set: [{ id: 5 }], del: [] } }).coins).toEqual([{ id: 5 }]);
   });
 
+  it('unset entfernt Felder, der Rest bleibt wie bisher', () => {
+    const next = applyDelta({ ...base, merchant: { x: 3 }, drops: [] }, { unset: ['drops', 'merchant'], time: 2 });
+    expect(next).not.toHaveProperty('merchant');
+    expect(next).not.toHaveProperty('drops');
+    expect(next.time).toBe(2);
+    expect(next.travel).toBe(base.travel);
+    expect(next.players).toBe(base.players);
+  });
+
   it('devTimescale aus dem Beispiel wird übernommen, der Rest bleibt', () => {
     const next = applyDelta({ ...base, devTimescale: 1 }, timescaleMsg.s);
     expect(next.devTimescale).toBe(4);

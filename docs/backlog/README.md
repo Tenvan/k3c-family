@@ -277,3 +277,4 @@ Zeile in diesen Abschnitt.
 | [B-281](archiv/B-281-monitoring-dashboard.md) | SRV | Idee | hoch | erledigt | MON1 | Der Server sammelt Latenzen, Tick-Dauer und Fehler als Verlauf und liefert sie über /api/metrics |
 | [B-282](archiv/B-282-monitoring-seite.md) | PLAT | Idee | hoch | erledigt | MON2 | Die Monitoring-Seite zeichnet Verläufe, Perzentile und die Fehler-Zeitleiste aus /api/metrics |
 | [B-296](archiv/B-296-verlust-kaskade-bricht-delta-test.md) | SRV | Frage | hoch | erledigt | – | Die Verlust-Kaskade (W4.3a) lässt sich ohne Änderung an `engine/net` nicht grün umsetzen |
+| [B-297](archiv/B-297-delta-entfernt-felder.md) | SRV | Problem | hoch | erledigt | DL1 | Das Delta überträgt, dass ein Feld aus dem Zustand verschwindet |
