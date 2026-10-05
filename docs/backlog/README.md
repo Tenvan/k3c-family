@@ -46,7 +46,6 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-120](B-120-wiederbeleben.md) | SIM | Idee | mittel | eingeplant | W4 | Gefallene Monarchen bleiben liegen, Mitspieler beleben sie wieder, sonst Respawn nach 15 s |
 | [B-121](B-121-berufe-haendler.md) | SIM | Idee | mittel | eingeplant | W4 | Bauern haben Berufe (Bergmann, Baumeister, Handwerker), und ein Händler tauscht Material gegen Gold |
 | [B-122](B-122-elite-ruestung-limit-heilung.md) | SIM | Idee | mittel | eingeplant | W4 | Elite-Upgrades, Rüstung, Truppen-Limit je Hub und Heilung der Truppen sind umgesetzt |
-| [B-123](B-123-protokoll-skills-aktionen.md) | SRV | Idee | hoch | eingeplant | S2 | Das Protokoll kennt Schlag, Skills, Pool, Berufe und die gültigen Aktionen je Spieler |
 | [B-124](B-124-skill-menue-tasten.md) | CLI | Idee | hoch | eingeplant | S3 | Der Client hat Schlag, Skill-Slots, Skill-Menü und die Tasten für Controller, Tastatur und Touch |
 | [B-125](B-125-aktionen-overlay.md) | CLI | Idee | hoch | eingeplant | S3 | Gültige Aktionen erscheinen überall in der Welt als Overlay am Ort |
 | [B-126](B-126-buerger-ui.md) | CLI | Idee | mittel | eingeplant | W6 | Der Client zeigt Berufe, Ausbildung, Händler, Truppen-Limit und Heilung |
@@ -55,10 +54,8 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-130](B-130-bosse.md) | SIM | Idee | hoch | eingeplant | K2 | Minibosse und Endboss sind spielbar |
 | [B-131](B-131-events.md) | SIM | Idee | niedrig | eingeplant | K3 | Vollmond, Blutmond und Händler-Überfall sind als Events umgesetzt |
 | [B-132](B-132-anzeige-bosse-events.md) | CLI | Idee | mittel | eingeplant | K5 | Der Client zeigt Gegner-Fähigkeiten, Bosse, Phasen und Events |
-| [B-147](B-147-speichern-verlassen.md) | SRV | Idee | mittel | eingeplant | S2 | Der Server speichert beim Verlassen und wenn das letzte Gerät getrennt ist, der Spielstand zeigt seinen Speicherstand |
 | [B-148](B-148-onboarding-erste-nacht.md) | CLI | Idee | hoch | eingeplant | S6 | Die erste Nacht wird mit kontextuellen Hinweisen geführt, der Freundlich-Grad kostet keinen Fortschritt |
 | [B-149](B-149-controller-glyphen.md) | CLI | Idee | mittel | eingeplant | S6 | Hinweise zeigen Controller-Glyphen statt Tasten-Text |
-| [B-150](B-150-spielmetrik-report.md) | SRV | Idee | mittel | eingeplant | S2 | Der Server schreibt je Sitzung einen Spielmetrik-Report nach reports/ |
 | [B-151](B-151-spieleabend-fragebogen.md) | REG | Idee | mittel | eingeplant | P1 | Der Spieleabend hat einen kindgerechten Fragebogen und eine Playtest-Vorlage |
 | [B-153](B-153-protokoll-berufe-haendler-lager-hub.md) | SRV | Idee | hoch | eingeplant | W5 | Das Protokoll kennt Berufe, Händler, Lagerstand, Hub-Stufe und Wartegrund |
 | [B-154](B-154-protokoll-bosse-events-inselwechsel.md) | SRV | Idee | hoch | eingeplant | K4 | Das Protokoll kennt Bosse, Phasen, Events und den Inselwechsel |
@@ -76,7 +73,6 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-263](B-263-snapshot-groesse-plaetze.md) | SRV | Problem | niedrig | offen | – | Der Welt-Snapshot bleibt mit 39 Plätzen je Stufe im Budget |
 | [B-251](B-251-figuren-ganzzahlig-skalieren.md) | CLI | Schuld | niedrig | offen | – | Figuren werden ganzzahlig skaliert und flimmern nicht |
 | [B-252](B-252-grafikmanager-seite.md) | PLAT | Idee | mittel | offen | – | Eine GrafikManager-Seite zeigt Bestand, Kandidaten und Zuordnung für die feine Auswahl |
-| [B-176](B-176-protokoll-mehrere-stufen.md) | SRV | Idee | hoch | eingeplant | S2 | Das Protokoll liefert Level und Zustand jeder Stufe, in der ein lokaler Spieler steht |
 | [B-184](B-184-pages-screenshots.md) | PLAT | Idee | niedrig | offen | – | Die Präsentationsseite zeigt echte Bilder aus dem Spiel |
 | [B-185](B-185-verluste-je-welle-angleichen.md) | REG | Schuld | niedrig | offen | – | Wirtschaft nennt denselben Verlust-Korridor je Welle wie die Bürger |
 | [B-186](B-186-autospeichern-takt.md) | SRV | Idee | mittel | offen | – | Der Server speichert alle 60 s und bei Tagesanbruch, das HUD zeigt „gesichert“ |
@@ -113,11 +109,11 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-232](B-232-dungeon-master-seite.md) | PLAT | Idee | hoch | eingeplant | DBG3 | Eine Dungeon-Master-Seite unter /dm steuert Räume live vom Handy oder Tablet |
 | [B-273](B-273-release-image-dev-mode-aus.md) | INF | Schuld | hoch | offen | – | Das Release-Image startet den Server ohne Dev-Mode |
 | [B-274](B-274-testrestore-flackert-windows.md) | SRV | Problem | mittel | offen | – | TestRestore läuft unter Windows auch in task check:all stabil grün |
-| [B-278](B-278-protokoll-langsame-geraete.md) | SRV | Schuld | mittel | offen | – | docs/protocol.md beschreibt, wie der Server langsame Geräte behandelt |
 | [B-280](B-280-warteschlange-nicht-zustaende.md) | SRV | Problem | niedrig | offen | – | Die Warteschlange einer Verbindung läuft nicht voll, wenn andere Nachrichten zwischen Zuständen stehen |
-| [B-279](B-279-protokoll-eingabe-takt.md) | SRV | Schuld | niedrig | offen | – | docs/protocol.md beschreibt den Eingabe-Takt so, wie der Client ihn seit N2 sendet |
 | [B-281](B-281-monitoring-dashboard.md) | SRV | Idee | hoch | eingeplant | MON1 | Der Server sammelt Latenzen, Tick-Dauer und Fehler als Verlauf und liefert sie über /api/metrics |
 | [B-282](B-282-monitoring-seite.md) | PLAT | Idee | hoch | eingeplant | MON2 | Die Monitoring-Seite zeichnet Verläufe, Perzentile und die Fehler-Zeitleiste aus /api/metrics |
+| [B-283](B-283-protokoll-berufe-tausch-grabstein.md) | SRV | Idee | mittel | offen | – | Das Protokoll kennt Beruf ausbilden, Tauschen, Berufe der Bürger und Grabstein/Wiederbeleben |
+| [B-284](B-284-lasttest-eingaben-flake.md) | SRV | Problem | niedrig | offen | – | TestGleicherSeedGleicheEingaben scheitert nicht, wenn task check:go parallel läuft |
 
 ## Archiv
 
@@ -263,3 +259,9 @@ Zeile in diesen Abschnitt.
 | [B-181](archiv/B-181-latenz-im-debug-overlay.md) | CLI | Idee | mittel | erledigt | N2 | Das Debug-Overlay zeigt die Latenz von Eingabe bis Bild |
 | [B-277](archiv/B-277-zeitleiste-vorhersage.md) | CLI | Problem | hoch | erledigt | N2 | Der Client zeichnet trotz schwankender Zustände flüssig und wartet bei der eigenen Laufbewegung nicht auf den Server |
 | [B-276](archiv/B-276-tick-budget-async.md) | SRV | Problem | hoch | erledigt | N1 | Der Raum-Tick bleibt im Budget, Kodierung und Speichern laufen außerhalb der Raum-Sperre |
+| [B-278](archiv/B-278-protokoll-langsame-geraete.md) | SRV | Schuld | mittel | erledigt | S2 | docs/protocol.md beschreibt, wie der Server langsame Geräte behandelt |
+| [B-279](archiv/B-279-protokoll-eingabe-takt.md) | SRV | Schuld | niedrig | erledigt | S2 | docs/protocol.md beschreibt den Eingabe-Takt so, wie der Client ihn seit N2 sendet |
+| [B-123](archiv/B-123-protokoll-skills-aktionen.md) | SRV | Idee | hoch | erledigt | S2 | Das Protokoll kennt Schlag, Skills, Pool, Berufe und die gültigen Aktionen je Spieler |
+| [B-147](archiv/B-147-speichern-verlassen.md) | SRV | Idee | mittel | erledigt | S2 | Der Server speichert beim Verlassen und wenn das letzte Gerät getrennt ist, der Spielstand zeigt seinen Speicherstand |
+| [B-150](archiv/B-150-spielmetrik-report.md) | SRV | Idee | mittel | erledigt | S2 | Der Server schreibt je Sitzung einen Spielmetrik-Report nach reports/ |
+| [B-176](archiv/B-176-protokoll-mehrere-stufen.md) | SRV | Idee | hoch | erledigt | S2 | Das Protokoll liefert Level und Zustand jeder Stufe, in der ein lokaler Spieler steht |

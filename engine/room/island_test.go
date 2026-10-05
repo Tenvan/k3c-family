@@ -15,7 +15,7 @@ import (
 )
 
 // moveToExit stellt Monarch i an den Tiefen-Eingang seiner Stufe (Ausgang nach unten).
-func moveToExit(t *testing.T, r *Room, i int) {
+func moveToExit(t testing.TB, r *Room, i int) {
 	t.Helper()
 	w := r.isl.Stages[r.isl.StageOf(i)]
 	for _, e := range w.Level.Entities {

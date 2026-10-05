@@ -1,5 +1,11 @@
 # Protokoll v4
 
+**Änderungen in v4 (S2.4, B-176):** Ein Gerät bekommt Level und Zustand **jeder** Stufe, in der einer seiner Slots
+steht, je Stufe ein eigener Strom. `level`, `snap` und `delta` tragen auf oberster Ebene `stage` (Index der Stufe auf
+der Insel, 0…n−1, Schlüssel des Stroms); `you[]` in `joined` und `seats` nennt je Platz `stage`. `depth` bleibt in
+`level`, `s` und `you[]`. Regeln: *Mehrere Stufen je Gerät*. Die Version bleibt 4: S2.1 und S2.4 erhöhen sie gemeinsam
+einmal (kein Release dazwischen, ein v4-Client ohne `stage` wurde nie ausgeliefert).
+
 **Änderungen gegenüber v3 (S2.1, Version 4, B-123):** `input.p[]` nimmt `attack` (gehalten = Schlag) und `skill`
 (Skill-Slot 1–4, 0 = keiner); neue Nachrichten `learn` und `respec`. Jeder Spieler in `players[]` von `snap`/`delta`
 nennt `skills`, `slots`, `cooldowns`, `attackCooldown` (fehlen, solange leer bzw. 0), dazu immer `points` und
@@ -205,11 +211,18 @@ Erste Nachricht nach dem Verbinden ist immer `hello`. Ist sie kein gültiges `he
 fehlt, `v` nicht 4), antwortet der Server mit `version` und schließt: Ein alter v1-Client schickt zuerst `join`, ein
 v3-Client schickt `v: 3`.
 
-**Takt:** Ein laufender Raum tickt mit **30 Hz** und schickt jedem seiner Geräte pro Tick genau einen Zustand
-(`snap` oder `delta`). Ein pausierter Raum schickt nichts. Geräte schicken `input`, sobald sich die Eingabe eines Slots
-ändert, und sonst mindestens alle 500 ms zur Bestätigung; höchstens eine `input` pro Tick. Der Server rechnet mit der
-zuletzt empfangenen Eingabe. Hinweis für SP07: Kommt ein Gerät mit dem Lesen nicht nach (Sendepuffer voll), schließt
-der Server die Verbindung; das zählt als Abbruch.
+**Takt:** Ein laufender Raum tickt mit **30 Hz** und schickt jedem seiner Geräte pro Tick und Stufe des Geräts höchstens
+einen Zustand (`snap` oder `delta`, Stufen aufsteigend). Ein pausierter Raum schickt nichts. Geräte schicken `input`
+sofort, sobald sich die Eingabe eines Slots ändert (im Client mindestens 8 ms Abstand, `INPUT_MIN_GAP_MS`, also bis zu
+einer je Bild), und sonst mindestens alle 500 ms zur Bestätigung. Der Server rechnet mit der zuletzt empfangenen Eingabe
+und begrenzt die Rate nicht (B-279).
+
+**Langsame Geräte (B-278):** Kommt ein Gerät mit dem Lesen nicht nach, ersetzt der Server einen noch nicht gesendeten
+Zustand durch den neueren **derselben Stufe**: `tick` darf springen, und `events` des neuen Zustands enthält die
+Ereignisse der übersprungenen Ticks dieser Stufe (höchstens 256, die ältesten fallen weg). Ein `delta` gilt immer
+relativ zum **zuletzt an dieses Gerät gesendeten** Zustand seiner Stufe, nicht zum Zustand des vorigen Ticks. `ack` ist
+das höchste `seq`, das im gesendeten Zustand verrechnet ist. Getrennt wird erst, wenn sich 64 andere Nachrichten stauen;
+das zählt als Abbruch.
 
 | Nachricht | Richtung | Wann | Felder | Beispiel |
 |---|---|---|---|---|
@@ -218,11 +231,11 @@ der Server die Verbindung; das zählt als Abbruch.
 | `rooms` | Server → Gerät | nach `welcome`, sobald das Gerät wieder in keinem Raum ist, und bei jeder Änderung, solange es in keinem Raum ist | `rooms[]`: `code`, `name`, `depth`, `grade`, `taken` (besetzt + wartend), `free` (4 − `taken`), `running` | `s2c-rooms.json` |
 | `create` | Gerät → Server | Raum erstellen | `save` Name des Spielstands (`^[a-z0-9-]{1,32}$`), `fresh` neu (true) oder gespeicherten laden, `depth` Startstufe (nur bei `fresh`), `slots[]`, optional `grade`, `goal`, `defeat` (siehe oben) | `c2s-create.json` |
 | `join` | Gerät → Server | Raum beitreten oder wiederverbinden | `room` Code, `slots[]` | `c2s-join.json` |
-| `joined` | Server → Gerät | nach erfolgreichem `create`/`join` | `room`, `name`, `you[]`: `slot` → `monarch`, `depth` | `s2c-joined.json` |
-| `level` | Server → Gerät | nach `joined` und nach jedem Stufenwechsel, vor dem ersten Zustand der Stufe | `depth`, `layout` (Level: Biom-ID, Breite, Chunks, Objekte) | `s2c-level.json` |
-| `snap` | Server → Gerät | voller Zustand: nach `level` (Beitreten, Wiederverbinden, Stufenwechsel) | `tick`, `ack`, `s` (Zustand der Welt ohne Statisches, mit `events` und `depth`) | `s2c-snapshot-full.json` |
-| `delta` | Server → Gerät | jeder weitere Tick | `tick`, `ack`, `s` (nur Änderungen zum vorigen Tick) | `s2c-snapshot-delta.json` |
-| `seats` | Server → alle Geräte im Raum | wenn sich eine Zuordnung oder ein Monarch-Zustand ändert | `you[]` (eigene Slots mit `monarch` und `depth`), `monarchs[]` je Index `taken`/`waiting`/`free` | `s2c-seats.json` |
+| `joined` | Server → Gerät | nach erfolgreichem `create`/`join` | `room`, `name`, `you[]`: `slot` → `monarch`, `depth`, `stage` | `s2c-joined.json` |
+| `level` | Server → Gerät | nach `joined` und sobald eine Stufe für das Gerät neu ist, vor dem ersten Zustand der Stufe | `stage`, `depth`, `layout` (Level: Biom-ID, Breite, Chunks, Objekte) | `s2c-level.json` |
+| `snap` | Server → Gerät | voller Zustand einer Stufe: nach ihrem `level` (Beitreten, Wiederverbinden, Stufenwechsel) | `stage`, `tick`, `ack`, `s` (Zustand der Welt ohne Statisches, mit `events` und `depth`) | `s2c-snapshot-full.json` |
+| `delta` | Server → Gerät | jeder weitere Tick, je Stufe | `stage`, `tick`, `ack`, `s` (nur Änderungen zum zuletzt gesendeten Zustand dieser Stufe) | `s2c-snapshot-delta.json` |
+| `seats` | Server → alle Geräte im Raum | wenn sich eine Zuordnung, ein Monarch-Zustand oder eine Stufe ändert | `you[]` (eigene Slots mit `monarch`, `depth` und `stage`), `monarchs[]` je Index `taken`/`waiting`/`free` | `s2c-seats.json` |
 | `addSlot` | Gerät → Server | lokaler Spieler kommt dazu | `slot` 0–3 | `c2s-add-slot.json` |
 | `removeSlot` | Gerät → Server | lokaler Spieler geht | `slot` | `c2s-remove-slot.json` |
 | `input` | Gerät → Server | Eingabe hat sich geändert, sonst mindestens alle 500 ms, höchstens eine pro Tick | `seq` fortlaufend je Verbindung, `p[]`: `slot`, `moveX` (−1…1), `sprint`, `pay`, `attack` (fehlt = false), `skill` (0–4, fehlt = 0) | `c2s-input.json` |
@@ -246,6 +259,24 @@ wie `camps`, `portals`, `spawnQueue`) steht bei einer Änderung ganz darin. `nul
 kein Löschen. Fehlt `events`, gab es im Tick keine. `seq` zählt je Verbindung ab 1, nach einem Wiederverbinden also
 neu. `ack` ist das höchste `seq`, das der Server von **dieser** Verbindung verrechnet hat (Grundlage für eine spätere
 Vorhersage, B-039).
+
+### Mehrere Stufen je Gerät
+
+(S2.4, B-176) Ein Gerät bekommt einen Strom je Stufe, in der mindestens einer seiner Slots steht (`you[].stage`); ein
+Gerät ohne Slots bekommt keinen. Stufen ohne eigenen Slot kommen nie an.
+
+- **Reihenfolge:** je Tick und Stufe genau ein `snap` oder `delta`, Stufen aufsteigend nach `stage`. Je Stufe gilt
+  `level` → `snap` → `delta` …; der Client hält Zustand und `delta` je `stage` getrennt und verwirft ein `delta` ohne
+  `snap` seiner Stufe.
+- **Neue Stufe:** Kommt ein Slot in eine Stufe, die das Gerät noch nicht hat, beginnt ihr Strom mit `level` und `snap`
+  vor dem ersten `delta`.
+- **Ende eines Stroms:** keine eigene Nachricht. Verlässt der letzte Slot des Geräts eine Stufe, kommen für sie keine
+  Zustände mehr; `seats` (nach jedem Stufenwechsel gesendet) nennt die Stufen der Slots, der Client verwirft Ströme, die
+  dort nicht mehr vorkommen. Kommt ein Slot zurück, beginnt der Strom wieder mit `level` und `snap`.
+- **Wiederverbinden:** `level` und `snap` aller Stufen des Geräts, aufsteigend, danach `seats`.
+- **Neue Slots** (`addSlot`, Beitreten) kommen in die Stufe des kleinsten Slots des Geräts.
+- **Client heute:** `RoomClient.level` und `takeFrames()` liefern die Stufe des kleinsten eigenen Slots,
+  `stages()`, `levelOf(stage)` und `takeFramesOf(stage)` die übrigen (Kamera je Stufe: B-106).
 
 **Level-Übertragung:** Ab SP09 hat der Browser keinen Level-Generator mehr. Deshalb schickt der Server das Level
 (`level`) statt nur den Seed. Biom-Werte (Farben, Namen) liest der Client aus `data/` über die Biom-ID.
@@ -360,7 +391,20 @@ Stufe und Tick, erste 1800 Ticks nach dem Aufwärmen, schneller Zyklus mit Näch
 | `events` | 4,3 Byte | 52 Byte |
 | ganzer Zustand (`snap`) | 7,8 KB | 13,6 KB |
 
-Ereignisse brauchen damit ≈ 0,13 KB/s je Client (2 % des Budgets). Die Tabelle unten ist die ältere Messung mit
+Ereignisse brauchen damit ≈ 0,13 KB/s je Client (2 % des Budgets).
+
+**Je Gerät (S2.4, B-176/AC-04):** Mit mehreren Stufen gilt das Budget **je Gerät**, also für die Summe über seine
+Stufen. Geprüft von `TestStufenEreignisBudgetJeGeraet` (`engine/room/stages_bench_test.go`): ein Gerät, zwei Spieler in
+Stufe 0 und 1 (Seed `bench`, schneller Zyklus 60, aufgewärmt bis in die Nacht, Eingaben laufen und bezahlen),
+1800 Ticks. Ist-Wert (2026-10-05, Intel Core Ultra 7 165H, `go test -bench Stufen -run '^$' ./engine/room`):
+
+| je Tick und Gerät (2 Stufen) | Mittel | p99 |
+|---|---|---|
+| `events` (beide Stufen) | 10,5 Byte | 54 Byte |
+| ganzer Zustand beider Stufen (Obergrenze `snap`) | 23,6 KB | 25,7 KB |
+
+Ereignisse ≈ 0,32 KB/s je Gerät (5 % des Budgets). Der ganze Zustand ist die Obergrenze je Tick (zwei `snap`); die
+`delta` danach sind kleiner, das Delta baut erst `engine/net` und wird im Raum nicht gemessen. Die Tabelle unten ist die ältere Messung mit
 der TS-Simulation (Historie).
 
 **Messweg:** Wegwerf-Skript (nicht eingecheckt) mit der heutigen TS-Simulation: `createCampaign` mit 4× `joinPlayer`,

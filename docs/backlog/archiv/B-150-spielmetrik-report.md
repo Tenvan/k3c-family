@@ -3,7 +3,7 @@
 - **Domäne:** SRV
 - **Typ:** Idee
 - **Prio:** mittel
-- **Status:** eingeplant
+- **Status:** erledigt
 - **Sprint:** S2
 - **Erstellt:** 2026-10-02
 - **Spec:** freigegeben

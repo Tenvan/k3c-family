@@ -49,18 +49,20 @@ type Seat struct {
 	Slot    int `json:"slot"`
 	Monarch int `json:"monarch"`
 	Depth   int `json:"depth"` // Tiefe der Stufe, in der der Monarch steht
+	Stage   int `json:"stage"` // Index der Stufe in Island.Stages: gehört zum Strom mit diesem stage (B-176)
 }
 
 // Options sind die Raum-Optionen aus `create` (leer = Standard). Der Manager prüft sie beim Anlegen eines neuen Stands und setzt sie auf die Insel.
 type Options struct{ Grade, Goal, Defeat string }
 
 // Peer ist die Verbindung eines Geräts. Der Raum ruft die Methoden unter seiner Sperre auf: Sie dürfen nicht blockieren
-// und nicht in den Raum oder Manager zurückrufen. State bekommt den Zustand aus Manager.Snapshot; Geräte derselben
-// Stufe teilen ihn, er ist unveränderlich.
+// und nicht in den Raum oder Manager zurückrufen. Level und State tragen die Stufe (Index in Island.Stages), je Stufe
+// ein eigener Strom (B-176). State bekommt den Zustand aus Manager.Snapshot; Geräte derselben Stufe teilen ihn, er ist
+// unveränderlich.
 type Peer interface {
 	Joined(room, name string, you []Seat)
-	Level(depth int, layout level.Layout)
-	State(tick int, state any)
+	Level(stage, depth int, layout level.Layout)
+	State(tick, stage int, state any)
 	Seats(you []Seat, monarchs []string)
 	Replaced()         // dieselbe Geräte-ID ist über eine neue Verbindung beigetreten
 	Closed(final bool) // Raum geschlossen; final: Server fährt herunter, die Verbindung endet danach
@@ -78,7 +80,7 @@ type device struct {
 	peer      Peer
 	slots     map[int]int // Slot → Monarch
 	connected bool
-	stage     int // Stufe, deren Level das Gerät zuletzt bekam (-1: noch keine)
+	stages    map[int]bool // Stufen, deren Level das Gerät bekam und deren Strom läuft
 }
 
 // Room ist ein laufendes Spiel: eine Insel, ein Spielstand, ein Code. Monarch i ist der Insel-Spieler mit Index i.
@@ -89,7 +91,7 @@ type Room struct {
 	m          *Manager
 	isl        *sim.Island
 	Opts       Options // angeforderte Raum-Optionen (gelten nur für neue Stände)
-	start      int // Startstufe: dort treten neue Geräte ohne Spieler ein
+	start      int     // Startstufe: dort treten neue Geräte ohne Spieler ein
 	monarchs   []*monarch
 	devices    map[string]*device
 	tick       int
@@ -154,7 +156,7 @@ func (r *Room) join(id string, peer Peer, slots []int) error {
 			}
 		}
 	}
-	d := &device{peer: peer, slots: keep, connected: true, stage: -1}
+	d := &device{peer: peer, slots: keep, connected: true, stages: map[int]bool{}}
 	r.devices[id] = d
 	for _, slot := range slots {
 		idx, ok := keep[slot]
@@ -229,7 +231,8 @@ func (r *Room) connected() int {
 func (r *Room) seats(d *device) []Seat {
 	out := []Seat{}
 	for slot, idx := range d.slots {
-		out = append(out, Seat{slot, idx, r.isl.Stages[r.isl.StageOf(idx)].Biome.Depth})
+		st := r.isl.StageOf(idx)
+		out = append(out, Seat{slot, idx, r.isl.Stages[st].Biome.Depth, st})
 	}
 	slices.SortFunc(out, func(a, b Seat) int { return a.Slot - b.Slot })
 	return out

@@ -18,8 +18,8 @@ import (
 )
 
 // WebSocket /ws nach Protokoll v4. Jede Verbindung hat eine Lese-Schleife (diese Goroutine) und eine
-// Schreib-Goroutine mit Warteschlange. Ein Zustand ersetzt einen noch wartenden direkt vor ihm (nur der neueste zählt,
-// B-276); Delta und JSON des Zustands baut erst die Schreib-Goroutine. Ist die Warteschlange voll, wird die
+// Schreib-Goroutine mit Warteschlange. Ein Zustand ersetzt einen noch wartenden derselben Stufe am Ende der Warteschlange
+// (nur der neueste zählt, B-276; je Stufe ein Strom, B-176); Delta und JSON des Zustands baut erst die Schreib-Goroutine. Ist die Warteschlange voll, wird die
 // Verbindung geschlossen, das zählt als Abbruch.
 
 const (
@@ -33,7 +33,8 @@ const (
 // out ist eine Nachricht in der Warteschlange: fertige Bytes (data), ein Zustand (state) oder mit close das Schließen.
 type out struct {
 	data   []byte
-	level  bool           // Level: der nächste Zustand ist ein snap
+	level  bool           // Level: der nächste Zustand dieser Stufe ist ein snap
+	stage  int            // Stufe von Level und Zustand
 	state  map[string]any // aus stateOf, unveränderlich und mit den anderen Geräten der Stufe geteilt
 	tick   int
 	ack    int64 // höchstes verrechnetes seq beim Aufbau des Zustands (unter der Raum-Sperre)
@@ -49,10 +50,10 @@ type conn struct {
 	ws     *websocket.Conn
 	device string
 	cancel context.CancelFunc
-	seq    atomic.Int64   // höchstes verrechnetes seq dieser Verbindung (ack)
-	prev   map[string]any // zuletzt gesendeter Zustand; nil = nächster Zustand ist ein snap (nur Schreib-Goroutine)
+	seq    atomic.Int64           // höchstes verrechnetes seq dieser Verbindung (ack)
+	prev   map[int]map[string]any // je Stufe der zuletzt gesendete Zustand; fehlt = nächster ist ein snap (nur Schreib-Goroutine)
 
-	qmu   sync.Mutex
+	qmu    sync.Mutex
 	queue  []out
 	warned bool          // verworfene Ereignisse schon gemeldet (einmal je Verbindung)
 	wake   chan struct{} // Länge 1: weckt die Schreib-Goroutine
@@ -71,14 +72,14 @@ func (c *conn) enqueue(v any) {
 	c.push(out{data: b})
 }
 
-// push stellt o hinten an; ein Zustand ersetzt einen wartenden Zustand direkt davor und übernimmt dessen Ereignisse.
+// push stellt o hinten an; ein Zustand ersetzt einen wartenden derselben Stufe (waiting) und übernimmt dessen Ereignisse.
 func (c *conn) push(o out) {
 	c.qmu.Lock()
-	n, lost := len(c.queue), 0
+	n, lost, i := len(c.queue), 0, c.waiting(o)
 	switch {
-	case o.state != nil && n > 0 && c.queue[n-1].state != nil:
-		o.events, lost = mergeEvents(c.queue[n-1], o.state)
-		c.queue[n-1] = o
+	case i >= 0:
+		o.events, lost = mergeEvents(c.queue[i], o.state)
+		c.queue[i] = o
 		if lost > 0 && c.warned {
 			lost = 0
 		}
@@ -99,6 +100,17 @@ func (c *conn) push(o out) {
 	case c.wake <- struct{}{}:
 	default:
 	}
+}
+
+// waiting ist der Platz des wartenden Zustands derselben Stufe, den der Zustand o ersetzt: gesucht nur in den Zuständen
+// am Ende der Warteschlange, damit er kein Level und keine andere Nachricht überholt; -1: keiner.
+func (c *conn) waiting(o out) int {
+	for i := len(c.queue) - 1; o.state != nil && i >= 0 && c.queue[i].state != nil; i-- {
+		if c.queue[i].stage == o.stage {
+			return i
+		}
+	}
+	return -1
 }
 
 // pop nimmt die vorderste Nachricht; false: Warteschlange leer.
@@ -137,29 +149,29 @@ func (c *conn) Joined(code, name string, you []room.Seat) {
 	c.enqueue(joinedMsg{"joined", code, name, you})
 }
 
-// Level: nach dem Level kommt immer ein voller Zustand (Beitreten, Wiederverbinden, Stufenwechsel).
-func (c *conn) Level(depth int, layout level.Layout) {
-	b, err := json.Marshal(levelMsg{"level", depth, layout})
+// Level: nach dem Level kommt immer ein voller Zustand der Stufe (Beitreten, Wiederverbinden, neue Stufe).
+func (c *conn) Level(stage, depth int, layout level.Layout) {
+	b, err := json.Marshal(levelMsg{"level", stage, depth, layout})
 	if err != nil {
 		c.s.log.Error("💥 Nachricht nicht kodierbar", "err", err)
 		return
 	}
-	c.push(out{data: b, level: true})
+	c.push(out{data: b, level: true, stage: stage})
 }
 
 // State stellt den Zustand (aus stateOf über room.Manager.Snapshot) in die Warteschlange; snap oder delta entscheidet
 // die Schreib-Goroutine (stateData). ack wird hier gelesen, damit es nur seqs bestätigt, die im Zustand stecken.
-func (c *conn) State(tick int, state any) {
+func (c *conn) State(tick, stage int, state any) {
 	if s, ok := state.(map[string]any); ok {
-		c.push(out{state: s, tick: tick, ack: c.seq.Load()})
+		c.push(out{state: s, tick: tick, stage: stage, ack: c.seq.Load()})
 	}
 }
 
-// stateData kodiert einen Zustand: snap nach Level, sonst delta zum zuletzt gesendeten; nil: nicht kodierbar.
+// stateData kodiert einen Zustand: snap nach Level, sonst delta zum zuletzt gesendeten derselben Stufe; nil: nicht kodierbar.
 func (c *conn) stateData(o out) []byte {
-	msg := stateMsg{"snap", o.tick, o.ack, o.state}
-	if c.prev != nil {
-		msg.T, msg.S = "delta", deltaOf(c.prev, o.state)
+	msg := stateMsg{"snap", o.stage, o.tick, o.ack, o.state}
+	if prev := c.prev[o.stage]; prev != nil {
+		msg.T, msg.S = "delta", deltaOf(prev, o.state)
 	} else if len(o.events) > 0 {
 		msg.S = maps.Clone(o.state) // geteilt: nicht ändern
 	}
@@ -171,7 +183,10 @@ func (c *conn) stateData(o out) []byte {
 		c.s.log.Error("💥 Zustand nicht kodierbar", "ns", "ws", "err", err)
 		return nil
 	}
-	c.prev = o.state
+	if c.prev == nil {
+		c.prev = map[int]map[string]any{}
+	}
+	c.prev[o.stage] = o.state
 	return b
 }
 
@@ -255,14 +270,15 @@ func (c *conn) write(ctx context.Context, o out) bool {
 	return c.ws.Write(ctx, websocket.MessageText, data) == nil
 }
 
-// encode sind die Bytes einer Nachricht (ein Zustand als snap oder delta); ein Level setzt prev zurück. nil: nichts senden.
+// encode sind die Bytes einer Nachricht (ein Zustand als snap oder delta); ein Level setzt prev seiner Stufe zurück.
+// nil: nichts senden.
 func (c *conn) encode(o out) []byte {
 	data := o.data
 	if o.state != nil {
 		data = c.stateData(o)
 	}
 	if o.level {
-		c.prev = nil
+		delete(c.prev, o.stage)
 	}
 	return data
 }

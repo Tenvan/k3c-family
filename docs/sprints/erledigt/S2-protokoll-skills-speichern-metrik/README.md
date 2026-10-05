@@ -1,6 +1,6 @@
 # S2 · SRV · Protokoll für Skills, Speichern beim Verlassen, Spielmetrik
 
-- **Status:** aktiv
+- **Status:** erledigt
 - **Domäne:** SRV
 - **Reife:** bereit
 - **Einschiebbar:** nein
@@ -65,9 +65,12 @@ Reihenfolge wie die Nummern. Die Protokollversion steigt einmal (S2.1 auf 4, S2.
 | S2.1 | `S2.1-protokoll-skills.md` | Umsetzung | autonom | fertig |
 | S2.2 | `S2.2-speichern-verlassen.md` | Umsetzung | autonom | fertig |
 | S2.3 | `S2.3-spielmetrik-report.md` | Umsetzung | autonom | fertig |
-| S2.4 | `S2.4-stufen-je-spieler.md` | Umsetzung | autonom | offen |
-| S2.5 | `S2.5-review.md` | Review | autonom | offen |
+| S2.4 | `S2.4-stufen-je-spieler.md` | Umsetzung | autonom | fertig |
+| S2.5 | `S2.5-review.md` | Review | autonom | fertig |
 
 ## Abnahme
 
-–
+2026-10-05, Review S2.5 (reviewer-s25, nicht der Umsetzer). AC-01, AC-02: S2.1 (Beruf und Tausch aus B-123/AC-02 verschoben → B-283); AC-03, AC-04: S2.2; AC-05, AC-06: S2.3; AC-07: S2.4 (Ereignisse 10,5 Byte je Tick und Gerät, im Budget Q08).
+Keine schweren Befunde im Diff (S2.4) und in den Stichproben (S2.1–S2.3); neue Tickets B-283 (Rest B-123), B-284 (Flake im Lasttest-Test).
+Bestätigung durch 🧑 offen: B-278 und B-279 wurden in S2.4 mit `Spec: rückwirkend` ohne Freigabe erledigt und archiviert.
+Version: v0.7.0 vorgeschlagen (Minor: Protokoll v4, Speichern beim Verlassen und Spielmetrik-Report wirken im Server; aktuell v0.6.0, die Nummer vergibt 🧑 beim Release); nicht gesetzt (Bestätigung durch 🧑 offen).

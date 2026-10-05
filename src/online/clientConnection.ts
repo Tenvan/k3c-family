@@ -1,8 +1,5 @@
-import { BIOMES, type BiomeConfig } from '../model/biome';
-import type { LevelLayout } from '../model/types';
 import { clientLog } from '../core/clientLog';
 import { t } from '../core/texts';
-import { applyDelta } from './clientDelta';
 import { LatencyMeter, type LatencyStats } from './clientLatency';
 import {
   INPUT_KEEPALIVE_MS,
@@ -17,8 +14,10 @@ import {
   type ServerMessage,
   type SlotInput,
   type SlotSeat,
-  type WorldState,
 } from './clientProtocol';
+import { StageStreams, type Frame, type LevelInfo } from './clientStages';
+
+export type { Frame, LevelInfo } from './clientStages';
 
 /**
  * Client für Protokoll v2 (docs/protocol.md), ohne Phaser. Zustandsautomat:
@@ -60,21 +59,6 @@ export interface ClientEnv {
 
 export type Status = 'connecting' | 'lobby' | 'room' | 'reconnecting' | 'ended' | 'lost';
 
-/** Ein Tick: voller Zustand (nicht verändern, Teile werden mit früheren Frames geteilt). */
-export interface Frame {
-  tick: number;
-  ack: number;
-  /** `env.now()` beim Empfang, Grundlage der Interpolation */
-  receivedAt: number;
-  state: WorldState;
-}
-
-export interface LevelInfo {
-  depth: number;
-  layout: LevelLayout;
-  biome: BiomeConfig;
-}
-
 function randomId(): string {
   const bytes = crypto.getRandomValues(new Uint8Array(16));
   return Array.from(bytes, (b) => b.toString(16).padStart(2, '0')).join('');
@@ -107,7 +91,6 @@ export class RoomClient {
   roomName = '';
   you: SlotSeat[] = [];
   monarchs: MonarchState[] = [];
-  level: LevelInfo | null = null;
   /** Wird nach jeder Änderung aufgerufen (Anzeige aktualisieren) */
   onChange: (() => void) | null = null;
 
@@ -120,11 +103,10 @@ export class RoomClient {
   private lastInput = '';
   private lastInputAt = -Infinity;
   private slotsWanted: number[] = [];
-  private state: Record<string, unknown> | null = null;
-  private frames: Frame[] = [];
+  private readonly streams = new StageStreams();
   private snapshotTimes: number[] = [];
+  private lastTick = -1;
   private loggedStatus: Status | null = null;
-  private framesSinceLevel = 0;
   private readonly latencyMeter = new LatencyMeter();
 
   constructor(private readonly env: ClientEnv) {
@@ -133,6 +115,25 @@ export class RoomClient {
 
   get deviceId(): string {
     return this.env.deviceId;
+  }
+
+  /** Level der Stufe des kleinsten eigenen Slots (ohne Slots: kleinste Stufe mit Strom), null ohne Level. */
+  get level(): LevelInfo | null {
+    return this.streams.levelOf(this.mainStage());
+  }
+
+  /** Stufen mit Strom, aufsteigend (eine je Stufe mit eigenem Slot, B-176). */
+  stages(): number[] {
+    return this.streams.stages();
+  }
+
+  levelOf(stage: number): LevelInfo | null {
+    return this.streams.levelOf(stage);
+  }
+
+  /** Alle seit dem letzten Aufruf empfangenen Ticks der Stufe, älteste zuerst. */
+  takeFramesOf(stage: number): Frame[] {
+    return this.streams.takeFramesOf(stage);
   }
 
   /** `env.now()` beim letzten Snapshot, null bis zum ersten (Debug-Overlay). */
@@ -222,11 +223,13 @@ export class RoomClient {
     this.latencyMeter.sent(this.seq, this.lastInputAt);
   }
 
-  /** Alle seit dem letzten Aufruf empfangenen Ticks, älteste zuerst. */
+  /** Alle seit dem letzten Aufruf empfangenen Ticks der Stufe des kleinsten eigenen Slots, älteste zuerst. */
   takeFrames(): Frame[] {
-    const frames = this.frames;
-    this.frames = [];
-    return frames;
+    return this.streams.takeFramesOf(this.mainStage());
+  }
+
+  private mainStage(): number {
+    return this.you[0]?.stage ?? this.streams.stages()[0] ?? -1;
   }
 
   /** Nach `lost` (Server nicht erreichbar) erneut versuchen. */
@@ -287,9 +290,7 @@ export class RoomClient {
     this.roomName = '';
     this.you = [];
     this.monarchs = [];
-    this.level = null;
-    this.state = null;
-    this.frames = [];
+    this.streams.clear();
     this.slotsWanted = [];
   }
 
@@ -358,21 +359,17 @@ export class RoomClient {
         this.setConnected('room');
         break;
       case 'level':
-        this.setLevel(msg.depth, msg.layout);
+        if (!this.streams.level(msg.stage, msg.depth, msg.layout)) this.notice = t('net.unknownBiome');
         break;
       case 'snap':
-        this.state = msg.s as unknown as Record<string, unknown>;
-        this.pushFrame(msg.tick, msg.ack);
-        break;
       case 'delta':
-        if (!this.state) return void console.warn('delta ohne snap verworfen');
-        this.state = applyDelta(this.state, msg.s);
-        this.pushFrame(msg.tick, msg.ack);
+        this.pushFrame(this.streams.state(msg, this.env.now()));
         break;
       case 'seats':
         this.you = msg.you;
         this.monarchs = msg.monarchs;
         this.slotsWanted = msg.you.map((s) => s.slot);
+        this.streams.keep(msg.you);
         break;
       case 'error':
         this.fail(msg.code, msg.message);
@@ -386,27 +383,13 @@ export class RoomClient {
     this.errorCode = null;
   }
 
-  private setLevel(depth: number, layout: LevelLayout): void {
-    const biome = BIOMES.find((b) => b.id === layout.biomeId);
-    this.state = null;
-    this.frames = [];
-    if (!biome) {
-      this.notice = t('net.unknownBiome');
-      this.level = null;
-      clientLog('error', `💥 Unbekanntes Biom ${layout.biomeId}`, { depth });
-      return;
-    }
-    this.level = { depth, layout, biome };
-    this.framesSinceLevel = 0;
-    clientLog('info', '📂 Level empfangen', { depth, biome: biome.id, width: layout.widthUnits });
-  }
-
-  private pushFrame(tick: number, ack: number): void {
-    const receivedAt = this.env.now();
-    this.latencyMeter.acked(ack, receivedAt);
-    if (this.framesSinceLevel++ === 0) clientLog('info', '✅ Erster Zustand nach Level', { tick, sites: (this.state as unknown as WorldState).sites?.map((s) => s.kind) });
-    this.frames.push({ tick, ack, receivedAt, state: this.state as unknown as WorldState });
-    this.snapshotTimes.push(receivedAt);
+  /** Latenz (jede Stufe trägt `ack`, ein schon bestätigtes zählt nicht doppelt) und Takt (einmal je Tick, über alle Stufen). */
+  private pushFrame(frame: Frame | null): void {
+    if (!frame) return;
+    this.latencyMeter.acked(frame.ack, frame.receivedAt);
+    if (frame.tick === this.lastTick) return;
+    this.lastTick = frame.tick;
+    this.snapshotTimes.push(frame.receivedAt);
     if (this.snapshotTimes.length > SNAPSHOT_WINDOW) this.snapshotTimes.shift();
   }
 

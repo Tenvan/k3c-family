@@ -3,7 +3,7 @@
 - **Domäne:** SRV
 - **Typ:** Idee
 - **Prio:** hoch
-- **Status:** eingeplant
+- **Status:** erledigt
 - **Sprint:** S2
 - **Erstellt:** 2026-10-02
 - **Spec:** freigegeben
@@ -58,3 +58,5 @@ Entschieden mit der Freigabe von S2 (2026-10-03): nur der Ort des Spielers.
 ## Notizen
 
 Aus R3.2 und R3.3. Zusammen mit B-104 (Stufe je Spieler) planen.
+
+Abschluss S2 (Review S2.5, 2026-10-05): umgesetzt sind Schlag, Skills, Pool, `learn`, `respec` und die Aktionsliste. Beruf ausbilden, Tauschen, Berufe der Bürger und Grabstein/Wiederbeleben (Rest von AC-02) folgen mit B-283.

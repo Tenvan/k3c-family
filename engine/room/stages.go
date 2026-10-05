@@ -1,11 +1,17 @@
 package room
 
-import "k3c/engine/sim"
+import (
+	"maps"
+	"slices"
 
-// Stufen der Insel im Raum: Monarch i ist der Insel-Spieler mit Index i; jedes Gerät sieht die Stufe seines ersten
-// (kleinster Slot) Monarchen.
+	"k3c/engine/sim"
+)
 
-// deviceStage ist die Stufe des Geräts: die des Monarchen im kleinsten Slot, ohne Slots die Startstufe des Raums.
+// Stufen der Insel im Raum: Monarch i ist der Insel-Spieler mit Index i; jedes Gerät bekommt Level und Zustand jeder
+// Stufe, in der einer seiner Slots steht (B-176).
+
+// deviceStage ist die Stufe für neue Slots des Geräts: die des Monarchen im kleinsten Slot, ohne Slots die Startstufe
+// des Raums.
 func (r *Room) deviceStage(d *device) int {
 	first := -1
 	for slot := range d.slots {
@@ -19,24 +25,37 @@ func (r *Room) deviceStage(d *device) int {
 	return r.isl.StageOf(d.slots[first])
 }
 
-// pushState schickt dem Gerät den Zustand seiner Stufe, bei Stufenwechsel (oder beim ersten Mal) vorher das Level.
-// states sind die in diesem Tick schon gebauten Zustände je Stufe (nil: nur für dieses Gerät bauen).
-// true: Das Level wurde gesendet.
+// deviceStages sind die Stufen der Slots des Geräts, aufsteigend und ohne Doppelte.
+func (r *Room) deviceStages(d *device) []int {
+	out := []int{}
+	for _, idx := range d.slots {
+		out = append(out, r.isl.StageOf(idx))
+	}
+	slices.Sort(out)
+	return slices.Compact(out)
+}
+
+// pushState schickt dem Gerät den Zustand jeder seiner Stufen (aufsteigend), einer neuen Stufe vorher das Level; Stufen
+// ohne Slot fallen aus der Menge, ihr Strom endet. states sind die in diesem Tick schon gebauten Zustände je Stufe
+// (nil: nur für dieses Gerät bauen). true: Mindestens ein Level wurde gesendet.
 func (r *Room) pushState(d *device, states map[int]any) (levelSent bool) {
-	s := r.deviceStage(d)
-	w := r.isl.Stages[s]
-	if s != d.stage {
-		d.peer.Level(w.Biome.Depth, w.Level)
-		d.stage, levelSent = s, true
-	}
-	st, ok := states[s]
-	if !ok {
-		st = r.snapshot(w)
-		if states != nil {
-			states[s] = st
+	now := r.deviceStages(d)
+	maps.DeleteFunc(d.stages, func(s int, _ bool) bool { return !slices.Contains(now, s) })
+	for _, s := range now {
+		w := r.isl.Stages[s]
+		if !d.stages[s] {
+			d.peer.Level(s, w.Biome.Depth, w.Level)
+			d.stages[s], levelSent = true, true
 		}
+		st, ok := states[s]
+		if !ok {
+			st = r.snapshot(w)
+			if states != nil {
+				states[s] = st
+			}
+		}
+		d.peer.State(r.tick, s, st)
 	}
-	d.peer.State(r.tick, st)
 	return levelSent
 }
 
