@@ -100,6 +100,7 @@ type Room struct {
 	durations  []time.Duration // letzte Tick-Dauern (run.go)
 	slowLogged time.Time       // letzte Meldung eines langsamen Ticks (logging.go)
 	slowCount  int             // langsame Ticks seit dieser Meldung
+	secTicks   int             // Ticks seit dem letzten Punkt der Messreihe (monitor.go)
 	beforeStep func()          // Test-Naht: läuft im Tick vor StepIsland
 	timescale  int             // Zeitraffer (dev timescale): Schritte je Tick, 0 = 1
 	paused     bool            // Dev-Pause (dev pause, B-231): Ticks rechnen keine Schritte
