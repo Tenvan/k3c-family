@@ -10,7 +10,6 @@ import (
 
 	"k3c/engine/level"
 	"k3c/engine/sim"
-	"k3c/engine/store"
 )
 
 // peer schreibt mit, was der Raum schickt.
@@ -26,7 +25,7 @@ func (p *peer) Joined(room, name string, you []Seat) {
 	p.log = append(p.log, fmt.Sprintf("joined %s %s %v", room, name, you))
 }
 func (p *peer) Level(depth int, _ level.Layout) { p.log = append(p.log, fmt.Sprintf("level %d", depth)) }
-func (p *peer) State(tick int, w *sim.World, _ int, _ bool) { p.world = w; p.log = append(p.log, fmt.Sprintf("state %d", tick)) }
+func (p *peer) State(tick int, s any) { p.world, _ = s.(*sim.World); p.log = append(p.log, fmt.Sprintf("state %d", tick)) }
 func (p *peer) Seats(you []Seat, monarchs []string) {
 	p.you, p.monarchs = you, monarchs
 	p.log = append(p.log, "seats")
@@ -35,25 +34,6 @@ func (p *peer) Replaced() { p.log = append(p.log, "replaced") }
 func (p *peer) Closed(bool) { p.log = append(p.log, "closed") }
 
 func (p *peer) has(entry string) bool { return slices.Contains(p.log, entry) }
-
-type memStore struct {
-	data    map[string][]byte
-	saves   int
-	deleted []string
-}
-
-func (s *memStore) Load(name string) ([]byte, error) {
-	if d, ok := s.data[name]; ok {
-		return d, nil
-	}
-	return nil, store.ErrNotFound
-}
-
-func (s *memStore) Store(name string, data []byte) (string, error) {
-	s.data[name] = data
-	s.saves++
-	return "", nil
-}
 
 type fixture struct {
 	m     *Manager
@@ -214,6 +194,7 @@ func TestPausierterRaumFristenUndAufraeumen(t *testing.T) {
 	ticks(r, 3)
 	saves := f.store.saves
 	r.Drop("xbox", x)
+	waitSaved(r)
 	if f.store.saves != saves+1 {
 		t.Fatal("leerer Raum speichert nicht sofort")
 	}
@@ -348,6 +329,7 @@ func TestSpeicherzeitpunkte(t *testing.T) {
 		}
 	}
 	ticks(r, 70) // 2 s am Tiefen-Eingang
+	waitSaved(r)
 	if r.isl.StageOf(0) != 1 || f.store.saves != saves+1 || !x.has("level 1") {
 		t.Fatalf("Stufenwechsel: Stufe %d, %d Speicherungen, %v", r.isl.StageOf(0), f.store.saves-saves, x.log[len(x.log)-3:])
 	}

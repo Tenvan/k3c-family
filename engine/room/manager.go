@@ -46,6 +46,9 @@ type Manager struct {
 	Changed func()
 	// Sessions nimmt den Spielmetrik-Report beim Raumende (B-150); nil = kein Report.
 	Sessions SessionStore
+	// Snapshot baut den Zustand einer Stufe für Peer.State, unter der Raum-Sperre einmal je Stufe und Tick (B-276);
+	// engine/net setzt ihn. timescale > 0 nur im Dev-Mode. nil = die Welt selbst (Tests in diesem Paket).
+	Snapshot func(w *sim.World, timescale int, paused bool) any
 
 	mu       sync.Mutex
 	rooms    map[string]*Room
@@ -290,7 +293,7 @@ func (r *Room) lockedSweep(now time.Time) (changed, remove bool) {
 	changed, remove = r.sweep(now)
 	if remove {
 		r.log().Info("🧹 Raum leer seit Frist, wird aufgeräumt", "frist", EmptyFor.String())
-		r.save()
+		r.saveNow()
 		r.writeReport()
 		r.closed = true
 		r.dropTestSave()
@@ -315,7 +318,7 @@ func (r *Room) closeFinal() {
 	r.mu.Lock()
 	defer r.mu.Unlock()
 	r.log().Info("🛑 Raum schließt (Server fährt herunter)")
-	r.save()
+	r.saveNow()
 	r.writeReport()
 	r.closed = true
 	for _, d := range r.devices {

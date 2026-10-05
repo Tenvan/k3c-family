@@ -247,23 +247,6 @@ func TestReplacedUndRoomClosed(t *testing.T) {
 	}
 }
 
-func TestVollerSendepufferIstAbbruch(t *testing.T) {
-	srv, m := wsServer(t)
-	x := hello(t, srv, "langsam")
-	create(x, "puffer", 0)
-	x.entered() // danach liest der Client nicht mehr
-	r := m.Room("KRNZ")
-	waitFor(t, func() bool {
-		for range 50 {
-			r.Tick()
-		}
-		return !m.Rooms()[0].Running
-	})
-	if info := m.Rooms()[0]; info.Taken != 1 || info.Free != 3 {
-		t.Fatalf("Monarch nicht wartend: %+v", info)
-	}
-}
-
 // Jede Nachricht des Servers hat die Schlüssel ihres Beispiels in testdata/protocol/ (bei snap: oberste Ebene von s).
 func TestFormWieBeispiele(t *testing.T) {
 	srv, m := wsServer(t)

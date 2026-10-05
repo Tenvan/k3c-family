@@ -3,7 +3,7 @@
 - **Domäne:** SRV
 - **Typ:** Problem
 - **Prio:** hoch
-- **Status:** eingeplant
+- **Status:** erledigt
 - **Sprint:** N1
 - **Erstellt:** 2026-10-04
 - **Spec:** freigegeben

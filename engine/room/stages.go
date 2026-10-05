@@ -20,20 +20,36 @@ func (r *Room) deviceStage(d *device) int {
 }
 
 // pushState schickt dem Gerät den Zustand seiner Stufe, bei Stufenwechsel (oder beim ersten Mal) vorher das Level.
+// states sind die in diesem Tick schon gebauten Zustände je Stufe (nil: nur für dieses Gerät bauen).
 // true: Das Level wurde gesendet.
-func (r *Room) pushState(d *device) (levelSent bool) {
+func (r *Room) pushState(d *device, states map[int]any) (levelSent bool) {
 	s := r.deviceStage(d)
 	w := r.isl.Stages[s]
 	if s != d.stage {
 		d.peer.Level(w.Biome.Depth, w.Level)
 		d.stage, levelSent = s, true
 	}
+	st, ok := states[s]
+	if !ok {
+		st = r.snapshot(w)
+		if states != nil {
+			states[s] = st
+		}
+	}
+	d.peer.State(r.tick, st)
+	return levelSent
+}
+
+// snapshot baut den Zustand der Stufe w über Manager.Snapshot.
+func (r *Room) snapshot(w *sim.World) any {
+	if r.m.Snapshot == nil {
+		return w
+	}
 	timescale := 0 // ohne Dev-Mode fehlt devTimescale im Zustand
 	if r.m.Dev {
 		timescale = r.scale()
 	}
-	d.peer.State(r.tick, w, timescale, r.paused)
-	return levelSent
+	return r.m.Snapshot(w, timescale, r.paused)
 }
 
 // startStage ist die Startstufe einer geöffneten Insel: die Stufe des ersten Spielers, sonst die mit dieser Tiefe.

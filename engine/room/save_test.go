@@ -5,6 +5,7 @@ import (
 	"errors"
 	"log/slog"
 	"strings"
+	"sync"
 	"testing"
 	"time"
 
@@ -18,11 +19,14 @@ import (
 // countStore zählt die Speicherungen und gibt sie an einen echten Ordner weiter; mit fail scheitert Store.
 type countStore struct {
 	*store.Saves
+	mu   sync.Mutex // Store läuft auch in der Schreib-Goroutine des Raums
 	n    int
 	fail error
 }
 
 func (s *countStore) Store(name string, data []byte) (string, error) {
+	s.mu.Lock()
+	defer s.mu.Unlock()
 	s.n++
 	if s.fail != nil {
 		return "", s.fail
@@ -65,10 +69,12 @@ func TestSpeichernBeiVerlassenUndAbbruch(t *testing.T) {
 	tickToNight(t, r)
 	before := s.n
 	r.Leave("handy", h)
+	waitSaved(r)
 	if s.n != before+1 {
 		t.Fatalf("Verlassen bei verbliebenem Gerät: %d Speicherungen", s.n-before)
 	}
 	r.Drop("xbox", x)
+	waitSaved(r)
 	if s.n != before+2 {
 		t.Fatalf("Abbruch des letzten Geräts: %d Speicherungen", s.n-before)
 	}
@@ -101,6 +107,7 @@ func TestSchreibfehlerLaesstStandUnveraendert(t *testing.T) {
 	r = need(f.m.Create("xbox", y, "heil", false, 0, []int{0}, Options{}))(t)
 	ticks(r, 30)
 	r.Leave("xbox", y)
+	waitSaved(r)
 	if now := need(s.Load("heil"))(t); !bytes.Equal(now, prev) {
 		t.Fatal("die Datei hat sich trotz Schreibfehler geändert")
 	}
