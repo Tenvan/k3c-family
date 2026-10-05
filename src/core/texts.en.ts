@@ -93,6 +93,7 @@ export const en: Record<TextKey, string> = {
   'opt.flash': 'Flashes',
   'opt.colorblind': 'Colorblind symbols',
   'opt.language': 'Language',
+  'opt.guide': 'Hints (first night)',
   'opt.resume': 'Resume',
   'opt.leave': 'Leave game',
   'opt.on': 'on',
@@ -121,6 +122,11 @@ export const en: Record<TextKey, string> = {
   'hint.attack': 'strike',
   'hint.learn': 'learn skill',
   'hint.respec': 'reset skills',
+  // Guided first night (S6.3): hints above objects, {key} = glyph
+  'guide.coin': 'Walk over it: pick up the coin',
+  'guide.pay': 'Hold {key}: pay for the build site',
+  'guide.dusk': 'Night is coming! Back to the castle',
+  'guide.recruit': 'Hold {key}: give a coin, he becomes a peasant',
   'lang.de': 'Deutsch',
   'lang.en': 'English',
 };

@@ -126,7 +126,9 @@ func applyDamageBy(w *World, targetID int, damage float64, cause string) {
 	if s := siteByID(w, targetID); s != nil && s.State == "built" {
 		s.HP -= damage
 		hitEvent(w, "site", s.ID, s.X, damage)
-		if s.HP <= 0 {
+		if s.HP <= 0 && w.protectedNight() {
+			s.HP = 1
+		} else if s.HP <= 0 {
 			destroySite(w, s)
 		}
 	}

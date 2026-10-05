@@ -103,6 +103,7 @@ export const de = {
   'opt.flash': 'Blitze',
   'opt.colorblind': 'Farbschwäche-Symbole',
   'opt.language': 'Sprache',
+  'opt.guide': 'Hinweise (erste Nacht)',
   'opt.resume': 'Weiter',
   'opt.leave': 'Spiel verlassen',
   'opt.on': 'an',
@@ -131,6 +132,11 @@ export const de = {
   'hint.attack': 'Schlag',
   'hint.learn': 'Skill lernen',
   'hint.respec': 'Skills zurücksetzen',
+  // Geführte erste Nacht (S6.3): Hinweise über den Objekten, {key} = Glyph
+  'guide.coin': 'Hinlaufen: Münze aufheben',
+  'guide.pay': '{key} halten: Bauplatz bezahlen',
+  'guide.dusk': 'Die Nacht naht! Zurück zur Burg',
+  'guide.recruit': '{key} halten: Münze geben, er wird Bauer',
   'lang.de': 'Deutsch',
   'lang.en': 'English',
 };

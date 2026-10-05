@@ -13,6 +13,7 @@ import { FONTS, fontStyle } from './fontRules';
 import { RadarLayer, type RadarCell } from './radarView';
 import { SkillMenuLayer } from './skillMenuView';
 import { ActionOverlay } from './actionOverlay';
+import { GuideOverlay } from './guideOverlay';
 import { GamepadInput, type PlayerInput } from '../input/playerInput';
 import { TouchInput } from '../input/touchInput';
 import type { Device } from '../input/slotBindings';
@@ -35,6 +36,7 @@ export class HudScene extends Phaser.Scene {
   private radar!: RadarLayer;
   private skills!: SkillMenuLayer;
   private actions!: ActionOverlay;
+  private guide!: GuideOverlay;
   private bannerQueue: string[] = [];
   private bannerLeft = 0;
 
@@ -49,6 +51,7 @@ export class HudScene extends Phaser.Scene {
     this.radar = new RadarLayer(this);
     this.skills = new SkillMenuLayer(this);
     this.actions = new ActionOverlay(this);
+    this.guide = new GuideOverlay(this);
 
     const shared = { ...STYLE, ...fontStyle('shared') };
     this.shared = this.add.text(GAME_WIDTH - 24, 16, '', shared).setOrigin(1, 0);
@@ -80,6 +83,7 @@ export class HudScene extends Phaser.Scene {
     const slotOf = (seat: number) => seats[seat]?.slot;
     const device = (slot: number) => deviceOf(game.slots.bound[slot]) ?? game.lastDevice;
     this.actions.draw(cells, game.cameras.cameras, slotOf, device);
+    this.guide.draw(cells, game.cameras.cameras, slotOf, device);
     this.skills.draw(cells, game.skillMenus, slotOf, device);
     this.showWorld(cells.find((c) => c.cell.kind === 'player' && c.world)?.world ?? world); // gemeinsamer Block: Stufe der ersten Zelle dieses Geräts
     this.placeShared(game);

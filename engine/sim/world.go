@@ -135,10 +135,22 @@ func Step(w *World, commands []PlayerCommand, dt float64) {
 }
 
 // castleFallen: Niederlage laut GDD. Respawn am Hub, Gebäude bleiben zerstört, 50 % der Ressourcen und alle Truppen
-// verloren. Die Burg selbst steht danach wieder (sonst wäre das Spiel vorbei).
+// verloren. Die Burg selbst steht danach wieder (sonst wäre das Spiel vorbei). In einer geschützten Nacht
+// (protectedNight) bleiben Gebäude, Ressourcen, Gold und Truppen.
 func castleFallen(w *World) {
 	w.Events = append(w.Events, Event{"type": "castleFallen"})
 	w.Castle.HP = w.Castle.MaxHP
+	if !w.protectedNight() {
+		castleLosses(w)
+	}
+	for _, p := range w.Players {
+		respawn(w, p)
+	}
+	w.Enemies, w.SpawnQueue, w.Projectiles = []*Enemy{}, []QueuedSpawn{}, []*Projectile{}
+}
+
+// castleLosses: die Verluste eines Burgfalls (castleFallen).
+func castleLosses(w *World) {
 	w.hubSite = newHubSite(w) // ein laufender Hub-Ausbau ist verloren, die Hub-Stufe bleibt
 	for _, s := range w.Sites {
 		id := s.ID
@@ -148,7 +160,6 @@ func castleFallen(w *World) {
 	*w.Stock = Stock{Wood: w.Stock.Wood / 2, Stone: w.Stock.Stone / 2, Copper: w.Stock.Copper / 2, Iron: w.Stock.Iron / 2, Crystal: w.Stock.Crystal / 2}
 	for _, p := range w.Players {
 		p.Gold /= 2
-		respawn(w, p)
 	}
 	for _, n := range w.Nodes {
 		n.WorkerID = nil
@@ -160,5 +171,4 @@ func castleFallen(w *World) {
 		}
 	}
 	w.Troops = vagrants
-	w.Enemies, w.SpawnQueue, w.Projectiles = []*Enemy{}, []QueuedSpawn{}, []*Projectile{}
 }

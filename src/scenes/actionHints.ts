@@ -6,7 +6,8 @@
 import { nameOf, t } from '../core/texts';
 import { BUILDINGS } from '../model/data';
 import type { Player, Site, World } from '../model/types';
-import { slotBindings, type Device, type SlotAction } from '../input/slotBindings';
+import type { Action, Device, SlotAction } from '../input/slotBindings';
+import { glyphOf, type Glyph } from './glyphs';
 import { skillName } from './skillMenuLogic';
 import { PRICE_TAG_RANGE } from './viewRules';
 
@@ -20,31 +21,33 @@ export type Hint =
   | { action: 'respec' };
 
 export interface HintView {
-  /** Tastensymbol des Geräts (bis S6 Text, danach Glyphe) */
+  /** Tastensymbol des Geräts als Text */
   key: string;
+  /** Tastensymbol als Glyph (S6.2) */
+  glyph: Glyph;
+  /** Zeile vor und nach der Taste, damit das Overlay die Glyph dazwischen setzt */
+  around: [string, string];
   /** ganze Zeile, z. B. „A halten: Mauer bauen“ */
   text: string;
   /** größer = wichtiger, steht zuerst und groß */
   weight: number;
 }
 
-const confirmKey = (device: Device): string => (device === 'pad' ? 'A' : device === 'touch' ? '🪙' : t('hint.space'));
 const siteName = (kind: Site['kind']): string => nameOf('site', kind, BUILDINGS[kind].name);
 const WEIGHT: Record<Hint['action'], number> = { revive: 5, build: 4, pay: 4, attack: 2, skill: 1, learn: 1, respec: 1 };
 
-const slotKey = (device: Device, action: SlotAction): string => slotBindings(device).find((b) => b.action === action)?.label ?? '';
-
-function keyOf(h: Hint, device: Device): string {
+/** Taste eines Hinweises als Aktion der Belegung (`slotBindings.ts`) */
+function actionOf(h: Hint): Action {
   switch (h.action) {
     case 'attack':
-      return slotKey(device, 'attack');
+      return 'attack';
     case 'skill':
-      return slotKey(device, `skill${h.slot}` as SlotAction);
+      return `skill${h.slot}` as SlotAction;
     case 'learn':
     case 'respec':
-      return slotKey(device, 'skillMenu');
+      return 'skillMenu';
     default:
-      return confirmKey(device);
+      return 'confirm';
   }
 }
 
@@ -63,9 +66,10 @@ function whatOf(h: Hint): string {
 
 /** Aktion → Taste und Text für ein Gerät; Bestätigen-Aktionen (A, Leertaste, Münz-Taste) werden gehalten */
 export function hintView(h: Hint, device: Device): HintView {
-  const key = keyOf(h, device);
-  const hold = h.action === 'revive' || h.action === 'build' || h.action === 'pay';
-  return { key, text: t(hold ? 'hint.hold' : 'hint.press', { key, what: whatOf(h) }), weight: WEIGHT[h.action] };
+  const glyph = glyphOf(actionOf(h), device);
+  const line = (key: string) => t(h.action === 'revive' || h.action === 'build' || h.action === 'pay' ? 'hint.hold' : 'hint.press', { key, what: whatOf(h) });
+  const [before = '', after = ''] = line('\u0000').split('\u0000'); // Platzhalter ohne Leerzeichen, sonst zerfällt der Text
+  return { key: glyph.label, glyph, around: [before, after], text: line(glyph.label), weight: WEIGHT[h.action] };
 }
 
 /** Bauen bzw. Zahlen am nächsten Ziel in Reichweite des Preisschilds (gleiche Bedingung wie `siteView.ts`) */

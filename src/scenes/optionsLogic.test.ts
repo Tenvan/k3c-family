@@ -6,7 +6,7 @@ const base: Settings = { ...DEFAULT_SETTINGS };
 
 describe('Einträge', () => {
   it('stehen in fester Reihenfolge', () => {
-    expect(OPTION_IDS).toEqual(['music', 'sfx', 'screenshake', 'flash', 'colorblind', 'language', 'resume', 'leave']);
+    expect(OPTION_IDS).toEqual(['music', 'sfx', 'screenshake', 'flash', 'colorblind', 'guide', 'language', 'resume', 'leave']);
   });
 
   it('jeder Eintrag hat einen Text', () => {
@@ -41,6 +41,7 @@ describe('Werte', () => {
     expect(applyOption(a, 'screenshake', 'right').settings.screenshake).toBe(true);
     expect(applyOption(base, 'flash', 'left').settings).toEqual({ ...base, flash: false });
     expect(applyOption(base, 'colorblind', 'confirm').settings).toEqual({ ...base, colorblindSymbols: false });
+    expect(applyOption(base, 'guide', 'confirm').settings).toEqual({ ...base, guideHints: false });
   });
 
   it('Sprache wechselt zwischen Deutsch und English, in jede Richtung', () => {
