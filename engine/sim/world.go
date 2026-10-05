@@ -42,6 +42,7 @@ func CreateWorld(b level.Biome, seed string, opts Options) (*World, error) {
 		w.Aggression = new(float64)
 	}
 	w.Castle.ID = w.newID()
+	w.hubSite = newHubSite(w)
 	placeEntities(w)
 	for _, s := range worldSiteSpecs(w) {
 		w.Sites = append(w.Sites, emptySite(w, s.kind, s.x))
@@ -134,6 +135,7 @@ func Step(w *World, commands []PlayerCommand, dt float64) {
 func castleFallen(w *World) {
 	w.Events = append(w.Events, Event{"type": "castleFallen"})
 	w.Castle.HP = w.Castle.MaxHP
+	w.hubSite = newHubSite(w) // ein laufender Hub-Ausbau ist verloren, die Hub-Stufe bleibt
 	for _, s := range w.Sites {
 		id := s.ID
 		*s = *emptySite(w, s.Kind, s.X) // verbraucht wie in TS eine ID je Bauplatz

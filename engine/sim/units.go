@@ -84,8 +84,8 @@ func stepPeasant(w *World, t *Troop, dt float64) {
 		t.Job = findJob(w, t)
 	}
 	danger := isDangerous(w)
-	// Bei Gefahr: Arbeit außerhalb der Mauern liegen lassen und in die Burg.
-	if danger && t.Job != nil && t.Job.Type == "gather" {
+	// Bei Gefahr: Arbeit außerhalb der Mauern und Ausbauten liegen lassen und in die Burg.
+	if danger && t.Job != nil && (t.Job.Type == "gather" || upgradeJob(w, t.Job)) {
 		releaseJob(w, t)
 	}
 	if t.Job == nil {
@@ -127,7 +127,8 @@ func fetchBow(w *World, t *Troop, dt float64) {
 
 func build(w *World, t *Troop, dt float64) {
 	site := siteByID(w, t.Job.SiteID)
-	if site == nil || site.State != "waitingWorker" {
+	upgrading := site != nil && site.Upgrade == "waitingWorker"
+	if site == nil || (site.State != "waitingWorker" && !upgrading) {
 		t.Job = nil
 		return
 	}
@@ -135,10 +136,17 @@ func build(w *World, t *Troop, dt float64) {
 		return
 	}
 	b := buildings[site.Kind]
+	seconds := b.BuildSeconds
+	if upgrading {
+		seconds = nextLevel(w, site).BuildSeconds
+	}
 	before := site.BuildProgress
-	site.BuildProgress += dt / math.Max(0.1, b.BuildSeconds)
+	site.BuildProgress += dt / math.Max(0.1, seconds)
 	buildProgressEvent(w, site, before)
-	if site.BuildProgress >= 1 {
+	if site.BuildProgress >= 1 && upgrading {
+		finishUpgrade(w, site)
+		t.Job = nil
+	} else if site.BuildProgress >= 1 {
 		site.State, site.BuildProgress, site.HP, site.MaxHP, site.WorkerID = "built", 1, b.HP, b.HP, nil
 		t.Job = nil
 		w.Events = append(w.Events, Event{"type": "built", "kind": site.Kind})
@@ -219,14 +227,16 @@ func siteJob(w *World, t *Troop) *Job {
 	return buildJob(w, t)
 }
 
-// buildJob: nächster wartender Bauplatz ohne Bauer; nil, wenn es keinen gibt.
+// buildJob: nächster wartender Bauplatz ohne Bauer, Ausbauten nur ohne Gefahr; nil, wenn es keinen gibt.
 func buildJob(w *World, t *Troop) *Job {
 	var site *Site
-	for _, s := range w.Sites {
-		if s.State == "waitingWorker" && !isWorker(w, s.WorkerID) && (site == nil || math.Abs(s.X-t.X) < math.Abs(site.X-t.X)) {
+	danger := isDangerous(w)
+	eachSite(w, func(s *Site) {
+		waiting := s.State == "waitingWorker" || (s.Upgrade == "waitingWorker" && !danger)
+		if waiting && !isWorker(w, s.WorkerID) && (site == nil || math.Abs(s.X-t.X) < math.Abs(site.X-t.X)) {
 			site = s
 		}
-	}
+	})
 	if site != nil {
 		site.WorkerID = intPtr(t.ID)
 		return &Job{Type: "build", SiteID: site.ID}

@@ -88,7 +88,11 @@ func nearest[T any](items []*T, pos func(*T) float64, x, r float64, ok func(*T) 
 // findPayTarget: Was würde eine Münze gerade bezahlen? Bauplatz vor Landstreicher vor Ressource.
 func findPayTarget(w *World, p *Player) *payTarget {
 	r := economy.PayRangeUnits
-	if s := nearest(w.Sites, func(s *Site) float64 { return s.X }, p.X, r, func(s *Site) bool { return sitePayable(w, s) }); s != nil {
+	s := nearest(w.Sites, func(s *Site) float64 { return s.X }, p.X, r, func(s *Site) bool { return sitePayable(w, s) })
+	if h := w.hubSite; h != nil && math.Abs(h.X-p.X) <= r && sitePayable(w, h) && (s == nil || math.Abs(h.X-p.X) < math.Abs(s.X-p.X)) {
+		s = h
+	}
+	if s != nil {
 		return &payTarget{site: s}
 	}
 	if t := nearest(w.Troops, func(t *Troop) float64 { return t.X }, p.X, r, func(t *Troop) bool { return t.Kind == "vagrant" }); t != nil {
@@ -104,10 +108,14 @@ func findPayTarget(w *World, p *Player) *payTarget {
 	return nil
 }
 
-// sitePayable: Nimmt der Platz gerade Münzen? Unbezahlte Linien-Plätze nur nach der Linien-Regel (lines.go).
+// sitePayable: Nimmt der Platz gerade Münzen? Unbezahlte Plätze erst ab ihrer Hub-Stufe, Linien-Plätze nach der
+// Linien-Regel (lines.go); gebaute für den Ausbau auf die nächste Stufe (hub_level.go).
 func sitePayable(w *World, s *Site) bool {
 	if s.State == "unpaid" {
-		return lineOpen(w, s)
+		return w.HubLevel >= siteHubLevel(w, s) && lineOpen(w, s)
+	}
+	if upgradePayable(w, s) {
+		return true
 	}
 	if s.Kind == "workshop" && s.State == "built" {
 		return s.Bows < buildings["workshop"].BowRack && s.BowPaidGold < troops["archer"].Cost.Gold
@@ -141,10 +149,14 @@ func refundPending(w *World, p *Player) {
 	switch kind {
 	case "site":
 		if s := siteByID(w, id); s != nil && sitePayable(w, s) {
-			if s.State == "unpaid" {
+			switch {
+			case s.State == "unpaid":
 				back = min(amount, s.PaidGold)
 				s.PaidGold -= back
-			} else {
+			case upgradePayable(w, s):
+				back = min(amount, s.UpgradePaid)
+				s.UpgradePaid -= back
+			default:
 				back = min(amount, s.BowPaidGold)
 				s.BowPaidGold -= back
 			}
@@ -203,12 +215,15 @@ func payOneCoin(w *World, p *Player) {
 }
 
 func paySite(w *World, p *Player, s *Site) {
-	if s.State == "unpaid" {
+	switch {
+	case s.State == "unpaid":
 		s.PaidGold++
 		if s.PaidGold >= buildings[s.Kind].Cost.Gold {
 			s.State = "waitingMaterial"
 		}
-	} else {
+	case upgradePayable(w, s):
+		payUpgrade(w, s)
+	default:
 		s.BowPaidGold++
 	}
 	if !sitePayable(w, s) {
@@ -327,6 +342,7 @@ func stepSites(w *World) {
 			s.Bows++
 		}
 	}
+	eachSite(w, func(s *Site) { stepUpgrade(w, s) })
 }
 
 // payDawnIncome: morgens Steuern für jeden lebenden Monarchen.
