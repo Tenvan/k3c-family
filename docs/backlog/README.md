@@ -116,6 +116,7 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-292](B-292-neues-spiel-eindeutiger-name.md) | PLAT | Problem | hoch | offen | – | Die Kachel „Neues Spiel“ startet auch bei vorhandenem Spielstand familie |
 | [B-293](B-293-spiel-im-menue-verlassen.md) | CLI | Idee | hoch | offen | – | Das Spielmenü hat neben „Weiter“ einen Eintrag „Spiel verlassen“ |
 | [B-295](B-295-handwerker-schmiede-ruestkammer.md) | REG | Frage | mittel | offen | – | Handwerker lassen sich auch für Schmiede und Rüstkammer ausbilden |
+| [B-296](B-296-verlust-kaskade-bricht-delta-test.md) | SRV | Frage | hoch | offen | – | Die Verlust-Kaskade (W4.3a) lässt sich ohne Änderung an `engine/net` nicht grün umsetzen |
 
 ## Archiv
 
