@@ -1,6 +1,6 @@
 # GR5 · CLI · Juice: Treffer, Screenshake, Münzen
 
-- **Status:** erledigt
+- **Status:** aktiv
 - **Domäne:** CLI
 - **Reife:** bereit
 - **Einschiebbar:** ja
@@ -63,6 +63,7 @@ keine
 | GR5.1 | `GR5.1-effekte-aus-events.md` | Umsetzung | autonom | fertig |
 | GR5.2 | `GR5.2-abschalten-kamera-vibration.md` | Umsetzung | autonom | fertig |
 | GR5.3 | `GR5.3-review.md` | Review | autonom | fertig |
+| GR5.4 | `GR5.4-abnahme-tv.md` | Workshop | Mensch | offen |
 
 Bei `Reife: Entwurf` genügen Stichpunkte mit den Kriterien in Klammern statt Session-Dateien. Vor dem Aktivieren
 wird jede Session als eigene Datei nach `docs/vorlagen/session.md` geschrieben.

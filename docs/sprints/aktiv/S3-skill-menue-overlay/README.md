@@ -1,6 +1,6 @@
 # S3 · CLI · Skill-Menü, Tasten und Aktionen-Overlay
 
-- **Status:** erledigt
+- **Status:** aktiv
 - **Domäne:** CLI
 - **Reife:** bereit
 - **Einschiebbar:** nein

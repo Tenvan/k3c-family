@@ -1,6 +1,6 @@
 # DBG3 · PLAT · Dungeon-Master-Seite /dm
 
-- **Status:** erledigt
+- **Status:** aktiv
 - **Domäne:** PLAT
 - **Reife:** bereit
 - **Einschiebbar:** ja

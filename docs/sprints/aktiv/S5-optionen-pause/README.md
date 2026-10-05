@@ -1,6 +1,6 @@
 # S5 · CLI · Optionen- und Pause-Szene
 
-- **Status:** erledigt
+- **Status:** aktiv
 - **Domäne:** CLI
 - **Reife:** bereit
 - **Einschiebbar:** nein

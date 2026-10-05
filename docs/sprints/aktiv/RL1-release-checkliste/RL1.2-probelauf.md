@@ -1,6 +1,6 @@
 # RL1.2 · Probelauf der Checkliste ohne Tag, Sprint abschließen
 
-- **Status:** fertig
+- **Status:** offen
 - **Typ:** Workshop
 - **Agent:** Mensch
 - **Branch:** rl1/2-probelauf

@@ -1,6 +1,6 @@
 # DBG2 · CLI · Debug-Overlay: Gold, Material, Zeitraffer
 
-- **Status:** erledigt
+- **Status:** aktiv
 - **Domäne:** CLI
 - **Reife:** bereit
 - **Einschiebbar:** nein

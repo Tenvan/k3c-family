@@ -1,6 +1,6 @@
 # N2 · CLI · Flüssige Darstellung: Zeitleiste, Extrapolation, eigene Vorhersage
 
-- **Status:** erledigt
+- **Status:** aktiv
 - **Domäne:** CLI
 - **Reife:** bereit
 - **Einschiebbar:** ja

@@ -1,6 +1,6 @@
 # RL1 · INF · Release-Checkliste
 
-- **Status:** erledigt
+- **Status:** aktiv
 - **Domäne:** INF
 - **Reife:** bereit
 - **Einschiebbar:** ja
@@ -58,7 +58,7 @@ keine (Release-Rhythmus: Q20, geklärt 2026-10-03)
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
 | RL1.1 | `RL1.1-abschnitt-release.md` | Umsetzung | autonom | fertig |
-| RL1.2 | `RL1.2-probelauf.md` | Workshop | Mensch | fertig |
+| RL1.2 | `RL1.2-probelauf.md` | Workshop | Mensch | offen |
 
 Bei `Reife: Entwurf` genügen Stichpunkte mit den Kriterien in Klammern statt Session-Dateien. Vor dem Aktivieren
 wird jede Session als eigene Datei nach `docs/vorlagen/session.md` geschrieben.

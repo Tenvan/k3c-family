@@ -1,6 +1,6 @@
 # SO1 · CLI · Audio-Kern
 
-- **Status:** erledigt
+- **Status:** aktiv
 - **Domäne:** CLI
 - **Reife:** bereit
 - **Einschiebbar:** ja

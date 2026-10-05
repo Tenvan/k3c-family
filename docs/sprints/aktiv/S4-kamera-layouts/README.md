@@ -1,6 +1,6 @@
 # S4 · CLI · Kamera je Stufe und Layouts 1–4
 
-- **Status:** erledigt
+- **Status:** aktiv
 - **Domäne:** CLI
 - **Reife:** bereit
 - **Einschiebbar:** nein

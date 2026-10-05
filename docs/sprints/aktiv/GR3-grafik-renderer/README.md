@@ -1,6 +1,6 @@
 # GR3 · CLI · Grafik im Renderer
 
-- **Status:** erledigt
+- **Status:** aktiv
 - **Domäne:** CLI
 - **Reife:** bereit
 - **Einschiebbar:** ja
@@ -62,6 +62,7 @@ keine
 | GR3.1 | `GR3.1-gebaeude.md` | Umsetzung | autonom | fertig |
 | GR3.2 | `GR3.2-ressourcen-parallax.md` | Umsetzung | autonom | fertig |
 | GR3.3 | `GR3.3-review.md` | Review | autonom | fertig |
+| GR3.4 | `GR3.4-abnahme-tv.md` | Workshop | Mensch | offen |
 
 Bei `Reife: Entwurf` genügen Stichpunkte mit den Kriterien in Klammern statt Session-Dateien. Vor dem Aktivieren
 wird jede Session als eigene Datei nach `docs/vorlagen/session.md` geschrieben.

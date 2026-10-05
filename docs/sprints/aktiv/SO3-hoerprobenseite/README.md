@@ -1,6 +1,6 @@
 # SO3 · PLAT · Hörprobenseite `soundtest.html`
 
-- **Status:** erledigt
+- **Status:** aktiv
 - **Domäne:** PLAT
 - **Reife:** bereit
 - **Einschiebbar:** ja

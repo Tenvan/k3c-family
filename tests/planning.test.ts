@@ -125,7 +125,19 @@ function crowdedDomains(active: Record<string, string>[]) {
   return [...count].filter(([, n]) => n > 1).map(([d]) => d);
 }
 
+/** Sprint wartet nur noch aufs Gerät: alle offenen Sessions sind Mensch-Sessions (Hardware entkoppelt). */
+function waitsForDevice(readme: string) {
+  const open = sessionRows(readme).filter((r) => !['fertig', 'verworfen'].includes(r.status));
+  return open.length > 0 && open.every((r) => r.agent === 'Mensch');
+}
+
 describe('Regel: je Domäne ein aktiver Sprint', () => {
+  it('ein Sprint, der nur noch auf Mensch-Sessions wartet, sperrt die Domäne nicht', () => {
+    const table = (rows: string) => `## Sessions\n\n| Nr. | Datei | Typ | Agent | Status |\n|---|---|---|---|---|\n${rows}\n`;
+    expect(waitsForDevice(table('| X1.1 | `a.md` | Umsetzung | autonom | fertig |\n| X1.2 | `b.md` | Workshop | Mensch | offen |'))).toBe(true);
+    expect(waitsForDevice(table('| X1.1 | `a.md` | Umsetzung | autonom | offen |\n| X1.2 | `b.md` | Workshop | Mensch | offen |'))).toBe(false);
+  });
+
   it('zwei aktive Sprints verschiedener Domänen sind erlaubt', () => {
     expect(crowdedDomains([{ Domäne: 'SRV', Einschiebbar: 'nein' }, { Domäne: 'INF', Einschiebbar: 'nein' }])).toEqual([]);
   });
@@ -153,9 +165,9 @@ describe('Sprints', () => {
   });
 
   it('je Domäne höchstens ein aktiver Sprint (ohne einschiebbare), nur mit Reife bereit und freigegebener Spec', () => {
-    const active = sprints.filter((s) => s.state === 'aktiv').map((s) => meta(read(`${s.path}/README.md`)));
-    expect(crowdedDomains(active)).toEqual([]);
-    for (const fields of active) {
+    const active = sprints.filter((s) => s.state === 'aktiv').map((s) => read(`${s.path}/README.md`));
+    expect(crowdedDomains(active.filter((t) => !waitsForDevice(t)).map(meta))).toEqual([]);
+    for (const fields of active.map(meta)) {
       expect(fields.Reife).toBe('bereit');
       expect(fields.Spec, 'aktiver Sprint braucht Spec freigegeben oder rückwirkend').not.toBe('Entwurf');
     }
