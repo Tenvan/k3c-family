@@ -61,7 +61,7 @@ Autonome Umsetzung; 🧑 entscheidet das Zeitfenster (Offene Fragen) und gibt di
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
 | MON1.1 | `MON1.1-sammler.md` | Umsetzung | autonom | fertig |
-| MON1.2 | `MON1.2-endpunkt.md` | Umsetzung | autonom | offen |
+| MON1.2 | `MON1.2-endpunkt.md` | Umsetzung | autonom | fertig |
 | MON1.3 | `MON1.3-review.md` | Review | autonom | offen |
 
 ## Abnahme

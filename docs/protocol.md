@@ -444,6 +444,43 @@ Liste. Andere Methoden → `405`. Das WebSocket-Protokoll ändert sich dadurch n
 `GET /api/status` (Token) nennt mit `cpu` die CPU-Last des Server-Prozesses in Prozent einer CPU, gemittelt über das
 Intervall seit dem letzten Aufruf (100 = eine volle CPU). Quelle ist `/proc/self/stat` (Linux); wo es sie nicht gibt, fehlt das Feld.
 
+## Diagnose: Verläufe über /api/metrics (B-281)
+
+Kein Teil des WebSocket-Protokolls. `GET /api/metrics?since=<Unix-ms>` liefert die Messreihen und Diagnose-Ereignisse des
+Servers (Glossar) mit Zeit **nach** `since`, also nur das Delta seit der letzten Abfrage. Schutz wie `/api/status`:
+`Authorization: Bearer <K3C_STATUS_TOKEN>`; ohne gesetztes Token 404, fehlendes oder falsches Token 401, andere Methode
+als GET 405. Fehlt `since`, ist es ungültig oder liegt vor dem Start, kommt der ganze Puffer; ein neuer `startedAt`
+zeigt einen Neustart an (alte Punkte verwerfen). Kein Push: Die Seite pollt (z. B. alle 5 s mit `since` = `now` der
+letzten Antwort).
+
+- **Puffer:** je Reihe 3600 Punkte (1 h bei einem Punkt je Sekunde), älteste fallen raus. Eine Reihe, deren letzter Punkt
+  älter als 1 h ist (Raum geschlossen, Gerät weg), verschwindet. Reihen ohne neuen Punkt fehlen in der Antwort.
+- **`server`:** je Sekunde `heapMB`, `gcPauseMs` (Summe der GC-Pausen im Intervall), `goroutines`, `cpu` (Prozent einer
+  CPU, `-1` = unbekannt, nur Linux misst), `saveMs` (längste Speicherung eines Spielstands im Intervall, 0 = keine).
+- **`rooms`:** je Raum-Code die Tick-Dauern des Intervalls: `maxMs`, `p99Ms`, `over` (Ticks länger als ein Takt, 33,3 ms).
+  Ein Punkt nur, wenn der Raum im Intervall getickt hat.
+- **`devices`:** je Gerät (Kürzel, erste 8 Zeichen der Geräte-ID) `room` (Raum beim letzten Punkt, leer = in keinem Raum) und
+  `points` mit `rttMs` (WebSocket-Ping, `-1` = kein Pong innerhalb 1 s), `queue` (wartende Nachrichten) und `dropped`
+  (ersetzte Zustände seit dem letzten Punkt).
+- **`events`:** die letzten 200 Diagnose-Ereignisse mit `room` (leer = ohne Raum), `kind` (`crash` Absturz, `slow`
+  🐢-Tick, höchstens einer je 10 s und Raum, `drop` Trennung, `client` Client-Fehler aus `/api/clientlog`) und `text`
+  (höchstens 200 Bytes).
+- Zeiten (`startedAt`, `now`, `t`) sind Unix-Millisekunden.
+
+```json
+{
+  "startedAt": 1791212400000,
+  "now": 1791216845000,
+  "server": [{ "t": 1791216844000, "heapMB": 6.2, "gcPauseMs": 0.04, "goroutines": 23, "cpu": 3.5, "saveMs": 0 }],
+  "rooms": { "KRNZ": [{ "t": 1791216844000, "maxMs": 4.1, "p99Ms": 4.1, "over": 0 }] },
+  "devices": {
+    "xbox-a1b": { "room": "KRNZ", "points": [{ "t": 1791216844310, "rttMs": 12.4, "queue": 0, "dropped": 0 }] },
+    "handy-7f": { "room": "KRNZ", "points": [{ "t": 1791216844702, "rttMs": 41.0, "queue": 1, "dropped": 2 }] }
+  },
+  "events": [{ "t": 1791216843120, "room": "KRNZ", "kind": "drop", "text": "handy-7f" }]
+}
+```
+
 ## Spielmetrik-Report (B-150)
 
 Kein Teil des WebSocket-Protokolls. Endet ein Raumlauf (Aufräumen nach `EmptyFor` oder Herunterfahren des Servers),

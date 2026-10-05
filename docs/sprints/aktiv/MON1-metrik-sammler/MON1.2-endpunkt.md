@@ -1,6 +1,6 @@
 # MON1.2 · Diagnose-Ereignisse und GET /api/metrics
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Branch:** mon1/2-endpunkt
@@ -42,10 +42,10 @@ Seite (MON2), WebSocket-Push, Speicherung über einen Neustart, pprof, Protokoll
 
 ## Fertig, wenn
 
-- [ ] AC-02: Test: `/api/metrics?since=` liefert `startedAt` und nur neuere Punkte; ohne Token 404, falsches Token 401.
-- [ ] AC-05: Test: nach Absturz, 🐢-Tick und Trennung je ein Eintrag mit Zeit, Raum und Art.
-- [ ] AC-06: `docs/protocol.md` beschreibt `/api/metrics` mit Beispielantwort.
-- [ ] AC-07: `task check:go` grün; dazu `task check` grün, keine Datei > 400 Zeilen, keine Funktion > 60 Zeilen.
+- [x] AC-02: Test: `/api/metrics?since=` liefert `startedAt` und nur neuere Punkte; ohne Token 404, falsches Token 401.
+- [x] AC-05: Test: nach Absturz, 🐢-Tick und Trennung je ein Eintrag mit Zeit, Raum und Art.
+- [x] AC-06: `docs/protocol.md` beschreibt `/api/metrics` mit Beispielantwort.
+- [x] AC-07: `task check:go` grün; dazu `task check` grün, keine Datei > 400 Zeilen, keine Funktion > 60 Zeilen.
 
 ## Prüfen
 
@@ -56,4 +56,8 @@ task check
 
 ## Ergebnis
 
-–
+- **AC-02** umgesetzt, geprüft: `GET /api/metrics` (`engine/net/metrics.go`, eine Zeile in `handler.go`). `TestMetricsDelta` (`engine/net/metrics_test.go`): `since` liefert nur neuere Punkte und Ereignisse, dazu `startedAt` und `now`; ohne oder mit ungültigem `since` alles. `TestMetricsNurMitToken`: ohne gesetztes Token 404, fehlendes oder falsches Token 401, POST 405.
+- **AC-05** umgesetzt, geprüft: Ereignis-Ring (200) im `Monitor` (`engine/room/monitor.go`); Quellen `Manager.crash`, `noteTick` (nur bei der 🐢-Meldung, höchstens einmal je 10 s), `Room.Drop`, `clientLog` (Stufe `error`). `TestDiagnoseEreignisse`: nach 🐢-Tick, Trennung und Absturz je ein Eintrag mit Zeit, Raum und Art, Ring bleibt bei 200, Text gekürzt; `TestClientFehlerAlsEreignis`: Client-Fehler ohne Raum, Warnung nicht.
+- **AC-06** umgesetzt: `docs/protocol.md` › „Diagnose: Verläufe über /api/metrics (B-281)“ mit Feldern, Fehlerfällen und Beispielantwort.
+- **AC-07** geprüft: `task check:go` (0 issues; `-race` lokal ohne C-Compiler übersprungen, prüft die CI) und `task check` (1269 Tests) grün.
+- `startedAt` ist der Start des Sammlers (`NewManager` beim Serverstart), nicht `Config.StartedAt`; beide liegen beim Start zusammen.

@@ -5,6 +5,7 @@ import (
 	"maps"
 	"runtime"
 	"slices"
+	"strings"
 	"sync"
 	"time"
 )
@@ -47,7 +48,22 @@ type DevicePoint struct {
 	Dropped uint16  `json:"dropped"` // verworfene Zustände seit dem letzten Punkt
 }
 
+// Event ist ein Diagnose-Ereignis (Glossar): Absturz, 🐢-Tick, Trennung oder Client-Fehler.
+type Event struct {
+	T    int64  `json:"t"`
+	Room string `json:"room"` // leer = ohne Raum (Client-Fehler)
+	Kind string `json:"kind"` // crash, slow, drop, client
+	Text string `json:"text"` // höchstens eventText Bytes
+}
+
+// Diagnose-Ereignisse: die letzten Events im Ring, Text gekürzt.
+const (
+	Events    = 200
+	eventText = 200
+)
+
 func (p ServerPoint) at() int64 { return p.T }
+func (e Event) at() int64       { return e.T }
 func (p RoomPoint) at() int64   { return p.T }
 func (p DevicePoint) at() int64 { return p.T }
 
@@ -107,6 +123,7 @@ type Metrics struct {
 	Server    []ServerPoint           `json:"server"`
 	Rooms     map[string][]RoomPoint  `json:"rooms"`
 	Devices   map[string]DeviceSeries `json:"devices"`
+	Events    []Event                 `json:"events"`
 }
 
 // Monitor hält die Messreihen; alle Methoden sind sicher für mehrere Goroutinen. Eigene Sperre, nie über einer anderen.
@@ -119,6 +136,7 @@ type Monitor struct {
 	server  *ring[ServerPoint]
 	rooms   map[string]*ring[RoomPoint]
 	devices map[string]*deviceRing
+	events  *ring[Event]
 	saveMax time.Duration // längste Speicherung seit dem letzten Punkt
 	gcPause uint64        // PauseTotalNs beim letzten Punkt
 	gcSeen  bool          // gcPause gesetzt (erster Punkt ohne GC-Pause)
@@ -127,7 +145,17 @@ type Monitor struct {
 // NewMonitor legt einen leeren Sammler an; started ist der Start des Servers.
 func NewMonitor(started time.Time) *Monitor {
 	return &Monitor{started: started.UnixMilli(), server: newRing[ServerPoint](Window), rooms: map[string]*ring[RoomPoint]{},
-		devices: map[string]*deviceRing{}}
+		devices: map[string]*deviceRing{}, events: newRing[Event](Events)}
+}
+
+// Event nimmt ein Diagnose-Ereignis auf; der Text wird auf eventText Bytes gekürzt.
+func (mon *Monitor) Event(at time.Time, room, kind, text string) {
+	if len(text) > eventText {
+		text = strings.ToValidUTF8(text[:eventText], "") + "…"
+	}
+	mon.mu.Lock()
+	defer mon.mu.Unlock()
+	mon.events.add(Event{at.UnixMilli(), room, kind, text})
 }
 
 // Device hängt einen Punkt an die Reihe des Geräts (Kürzel) an.
@@ -155,7 +183,7 @@ func (mon *Monitor) Since(t int64, now time.Time) Metrics {
 	mon.mu.Lock()
 	defer mon.mu.Unlock()
 	out := Metrics{StartedAt: mon.started, Now: now.UnixMilli(), Server: mon.server.since(t), Rooms: map[string][]RoomPoint{},
-		Devices: map[string]DeviceSeries{}}
+		Devices: map[string]DeviceSeries{}, Events: mon.events.since(t)}
 	for code, r := range mon.rooms {
 		if p := r.since(t); len(p) > 0 {
 			out.Rooms[code] = p
