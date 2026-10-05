@@ -5,7 +5,9 @@ import { GamepadInput, KeyboardInput, type PlayerInput } from '../input/playerIn
 import { TouchInput, wantsTouchControls } from '../input/touchInput';
 import type { LevelInfo, RoomClient } from '../online/clientConnection';
 import { applyState, createViewWorld } from '../online/clientWorld';
-import { blendAlpha, interpolate } from '../online/clientInterpolation';
+import { Timeline } from '../online/clientTimeline';
+import { Predictor } from '../online/clientPredict';
+import type { SlotInput } from '../online/clientProtocol';
 import type { Frame } from '../online/clientConnection';
 import type { GameEvent, World } from '../model/types';
 import { computeLayout, type Cell } from './layout';
@@ -68,7 +70,11 @@ export class GameScene extends Phaser.Scene {
   private nightFx: Phaser.Filters.ColorMatrix[] = [];
   private slots!: LocalSlots<PlayerInput>;
   private level: LevelInfo | null = null;
-  private prev: Frame | null = null;
+  /** Gezeichnete Zeitleiste (B-277); `cur` ist der neueste empfangene Frame (Effekte) */
+  private timeline!: Timeline;
+  /** Anzeige-Vorhersage der lokalen Monarchen (B-277) aus den zuletzt gesendeten Eingaben `moves` */
+  private predictor!: Predictor;
+  private moves: SlotInput[] = [];
   private cur: Frame | null = null;
   private cells: Cell[] = [];
   private layoutKey = '';
@@ -87,6 +93,11 @@ export class GameScene extends Phaser.Scene {
     return this.data_.client;
   }
 
+  /** Verzögerung der Zeitleiste in ms (Debug-Overlay) */
+  get delayMs(): number {
+    return this.timeline.delayMs;
+  }
+
   init(data: GameSceneData): void {
     this.data_ = data;
     this.pendingEvents.length = 0;
@@ -99,7 +110,10 @@ export class GameScene extends Phaser.Scene {
     this.holders = [];
     this.buildSpots.clear();
     this.level = null;
-    this.prev = this.cur = null;
+    this.timeline = new Timeline(1000 / data.client.tickHz);
+    this.predictor = new Predictor(1000 / data.client.tickHz);
+    this.moves = [];
+    this.cur = null;
     this.layoutKey = '';
     this.partnerMonarch = null;
     this.menuPress = new MenuPress();
@@ -144,6 +158,7 @@ export class GameScene extends Phaser.Scene {
     const isPad = (i: PlayerInput | null) => this.pads.includes(i as GamepadInput);
     this.slots.join(devFocus ? inputs.filter((i) => !isPad(i)) : inputs, seated, client, performance.now());
     const p = muteFocused(this.slots.commands(seated), devFocus, (s) => isPad(this.slots.bound[s] ?? null));
+    this.moves = p;
     if (p.length > 0) client.sendInput(p);
     this.takeFrames();
     this.draw();
@@ -151,7 +166,8 @@ export class GameScene extends Phaser.Scene {
 
   /** Optionen offen (Client-Anteil der Pause, S5.2): die Monarchen des Geräts stehen, Beitritt und Eingaben ruhen, das Spiel wird weiter gezeichnet. */
   private paused(seated: number[]): void {
-    this.client.sendInput(idleCommands(seated));
+    this.moves = idleCommands(seated);
+    this.client.sendInput(this.moves);
     this.takeFrames();
     this.draw();
   }
@@ -220,10 +236,13 @@ export class GameScene extends Phaser.Scene {
       if (this.level) this.dropStage(this.level.depth); // neue Stufe: nur deren Einheit neu aufbauen, nichts mit der alten mischen
       this.level = this.client.level;
       this.world_ = undefined;
-      this.prev = this.cur = null;
+      this.timeline = new Timeline(1000 / this.client.tickHz); // Puffer leeren
+      this.predictor = new Predictor(1000 / this.client.tickHz);
+      this.cur = null;
     }
     for (const frame of this.client.takeFrames()) {
-      this.prev = this.cur;
+      this.timeline.push(frame);
+      this.predictor.observe(frame, this.client.you);
       this.cur = frame;
       this.pendingEvents.push(...frame.state.events);
       this.spawnEffects(frame.state.events);
@@ -275,9 +294,10 @@ export class GameScene extends Phaser.Scene {
 
   private draw(): void {
     const level = this.client.level;
-    if (!this.cur || !level) return;
-    const alpha = blendAlpha(performance.now(), this.cur.receivedAt, 1000 / this.client.tickHz);
-    const state = this.prev ? interpolate(this.prev.state, this.cur.state, alpha) : this.cur.state;
+    const now = performance.now();
+    const sampled = this.timeline.sample(now);
+    if (!sampled || !level) return;
+    const state = this.predictor.draw(sampled, now, this.moves, this.client.you, this.client.latency?.mean ?? null); // lokale Monarchen sofort (B-277)
     if (this.world_) applyState(this.world_, state);
     else {
       this.world_ = createViewWorld(level, state);

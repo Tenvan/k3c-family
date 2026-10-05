@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { blendAlpha, interpolate } from './clientInterpolation';
+import { interpolate } from './clientInterpolation';
 import type { WorldState } from './clientProtocol';
 
 function state(players: { id: number; x: number }[], extra: Partial<Record<string, unknown>> = {}): WorldState {
@@ -14,6 +14,11 @@ describe('interpolate', () => {
     expect(interpolate(a, b, 0).players[0]?.x).toBe(10);
     expect(interpolate(a, b, 0.5).players[0]?.x).toBe(11);
     expect(interpolate(a, b, 1)).toBe(b);
+  });
+
+  it('alpha über 1 läuft in derselben Richtung weiter (Extrapolation)', () => {
+    expect(interpolate(a, b, 1.5).players[0]?.x).toBe(13);
+    expect(interpolate(a, state([{ id: 1, x: 200 }]), 1.5).players[0]?.x).toBe(200);
   });
 
   it('neue Einträge erscheinen am Ziel, alles andere springt zum neueren Zustand', () => {
@@ -34,14 +39,5 @@ describe('interpolate', () => {
     const q = state([], { projectiles: [{ id: 3, x: 4, y: 20 }] });
     expect(interpolate(p, q, 0.5).projectiles[0]).toMatchObject({ x: 2, y: 15 });
     expect((p.projectiles[0] as { x: number }).x).toBe(0);
-  });
-});
-
-describe('blendAlpha', () => {
-  it('beginnt beim Eintreffen, dauert einen Tick und bleibt bei Ausfall am Ziel stehen', () => {
-    expect(blendAlpha(100, 100, 33)).toBe(0);
-    expect(blendAlpha(116.5, 100, 33)).toBeCloseTo(0.5);
-    expect(blendAlpha(500, 100, 33)).toBe(1);
-    expect(blendAlpha(90, 100, 33)).toBe(0);
   });
 });

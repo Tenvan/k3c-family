@@ -38,7 +38,7 @@ Regelwerk in [`rules/`](rules/), und das Glossar wird angepasst. Zahlen sind, wo
 | Delta | Nachricht `delta`: nur die Änderungen zum vorigen Tick; Gegenstück zum vollen `snap`. | `protocol.md` › Nachrichten |
 | Determinismus | Gleicher Seed und gleiche Eingaben ergeben dasselbe Ergebnis. Zufall nur über `engine/rng` (`rng.New(seed)`), nie `math/rand` oder `Math.random()`. | `CLAUDE.md` › Regeln |
 | Dev-Mode | Entwicklungsmodus des Servers (`K3C_DEV`): erlaubt den Grad Dev, das Debug-Panel und Dev-Aktionen. | `rules/wirtschaft.md` § 4, `protocol.md` |
-| Diagnose | Debug-Anzeige oben links (Raum, Takt, Snapshot, FPS, Version), nur lesend. Aufruf: Ö, RB 3 s, Doppeltap mit einem Finger. | B-093, B-231 |
+| Diagnose | Debug-Anzeige oben links (Raum, Takt, Snapshot, Puffer, Latenz, FPS, Version), nur lesend. Aufruf: Ö, RB 3 s, Doppeltap mit einem Finger. | B-093, B-231 |
 | `disarmed` | Ereignis (geplant): Ein Bürger verliert seine Ausrüstung (Felder `kind`, `x`, `cause`); ersetzt `troopLost`. | `rules/buerger.md` § 3, Q69 |
 | Domäne | Fachbereich, dem ein Sprint genau zugeordnet ist und dessen Dateien er ändert: REG (Regelwerk), SIM (Spiel-Logik Go), SRV (Server), CLI (Client), PLAT (Plattform), INF (Tooling, Arbeitsweise). | `arbeitsweise.md` › Domänen |
 | Dungeon-Master-Seite | Responsive Seite unter `/dm` für Handy und Tablet mit Live-Anpassungen und Diagnose laufender Räume (geplant). | B-232 |
@@ -51,6 +51,7 @@ Regelwerk in [`rules/`](rules/), und das Glossar wird angepasst. Zahlen sind, wo
 | Endboss | Boss einer Insel in seinem Bau, sitzt immer in der tiefsten Stufe (bis W2 die Mine, danach die Kristallhöhle); ausgelöst bei Ankunft eines Spielers, sein Sieg öffnet den Inselwechsel. | `rules/bosse.md` § 1, `rules/stufen.md` § 3, Q60 |
 | `equipmentTaken` | Ereignis (geplant): Ein Gegner hat Ausrüstung zum Portal getragen, sie ist verloren. | `rules/buerger.md` § 3, `rules/gegner.md` § 4, Q68, Q69 |
 | Ereignis (Event) | Meldung der Simulation im letzten Tick einer Stufe (`events` in `snap`/`delta`), z. B. `hit`, `kill`, `built`, `playerDown`, `revive` (Respawn), `revived` (Wiederbeleben, kommt mit W4.1/W5), `disarmed` und `equipmentTaken` (geplant, Q69); höchstens 32 je Tick und Stufe. | `protocol.md` › Ereignisse, `engine/sim/events.go`, Q62 |
+| Extrapolation | Läuft die Zeitleiste leer, laufen Figuren mit ihrer letzten Bewegung höchstens 100 ms weiter (angenommen) und bleiben dann stehen. | B-277 |
 | Farm | Gebäude der Hub-Stufe 1 auf einem festen Farm-Weltplatz je Seite zwischen Linie 1 und 2 (±52); wirkt als Plantage. | `rules/materialien-gebaeude.md` § 3, Q51 |
 | Fixture | Kleiner, aus dem Code erzeugter Spielstand je Version unter `testdata/saves/v<n>/`; alte bleiben unverändert, `TestJedeVersionHatFixture` verlangt eines je Version. | `arbeitsweise.md` › Spielstand-Format |
 | Freigabe | Ausdrückliche Zustimmung von 🧑 zu genau einer Revision einer Spec (Feld `Freigabe`: Datum und Quelle); erst dann `Spec: freigegeben`. | `arbeitsweise.md` › SDD |
@@ -84,6 +85,7 @@ Regelwerk in [`rules/`](rules/), und das Glossar wird angepasst. Zahlen sind, wo
 | Lager | Gebäude der Hub-Stufe 2: +300 Kapazität je Rohstoff für die Insel; Arbeiter bringen Material hierher oder zur Burg. | `rules/materialien-gebaeude.md` § 3.2 |
 | Landingpage | `index.html`: bleibt dauerhaft offen und zeigt alle anderen Seiten im Vollflächen-iframe, damit Vollbild auf der Xbox erhalten bleibt. | `CLAUDE.md` › Seiten & Navigation |
 | Landstreicher | Nicht rekrutierte Figur aus Camp oder Taverne; eine Münze (1 Gold) macht ihn zum Bauern. Wird nicht angegriffen; ein Bauer, der seine Münze verliert, wird Landstreicher und läuft zum Camp. | `rules/buerger.md` §§ 1, 3, Q67 |
+| Latenz | Zeit von einer gesendeten Eingabe (`seq`) bis zum ersten Zustand mit `ack` ≥ `seq`, Mittel und p95 über 60 s. Diagnose-Zeile „Latenz 62 ms (p95 110 ms)“, ohne Messung „Latenz –“. | B-181, `src/online/clientLatency.ts` |
 | Lava | Boden der tiefen Stufen: Figuren darauf erleiden 5 Schaden/s; ob Gegner betroffen sind, ist offen. | `rules/stufen.md` § 1, Q28 |
 | Level | Eine Stufe: aus Biom-Daten und Seed prozedural erzeugte Welt (der Generator erzeugt je Stufe ein Level); gespeichert wird nur der Seed. Die Insel ist die Sammlung ihrer Stufen. | `game-design.md` › Prozedurale Generierung, `rules/stufen.md` § 1, Q61 |
 | Linie | Kurz für Mauerlinie; „Linie k“ ist die k-te Linie einer Seite von innen. | Q48, Q49 |
@@ -106,6 +108,7 @@ Regelwerk in [`rules/`](rules/), und das Glossar wird angepasst. Zahlen sind, wo
 | Posten | Standplatz eines Kämpfers: Bogenschützen auf dem Turm oder hinter der äußersten Mauer, Krieger hinter der äußersten gebauten Sperre. Posten sind keine Bauplätze. | `rules/buerger.md` § 1, Q46 |
 | Preset | Startverteilung der Skill-Punkte beim Beitritt (Tank, Zauberer, Heiler, Dieb); keine feste Klasse. | `rules/monarch.md` § 2 |
 | Protokoll | Nachrichten zwischen Gerät und Server über WebSocket `/ws`, heute Version 3 (`hello.v` = 3). Eine Änderung bekommt eine eigene Session für beide Enden. | `protocol.md`, `arbeitsweise.md` › Grenzfälle |
+| Puffer (Verzögerung) | Zeit, um die die Zeitleiste hinter der geschätzten Server-Zeit zeichnet: 1 Tick plus die doppelte Ankunfts-Schwankung, höchstens 150 ms (angenommen). Diagnose-Zeile „Puffer 33 ms“. | B-277 |
 | Raum | Ein laufendes Spiel auf dem Server mit genau einem Spielstand und einem Code aus 4 Buchstaben; tickt unabhängig von anderen Räumen. | `protocol.md` › Begriffe |
 | Raum-Option | Beim Anlegen gewählte Einstellung des Raums: Schwierigkeitsgrad, Ziel (Siegvariante), Niederlage-Modus; steht im Spielstand. | `rules/stufen.md` § 5 |
 | Reife | Sprint-Feld: `Entwurf` (Sessions als Stichpunkte) oder `bereit` (jede Session als Datei, jedes Kriterium hat eine Session). | `arbeitsweise.md` › Sprint-Lebenslauf |
@@ -161,6 +164,7 @@ Regelwerk in [`rules/`](rules/), und das Glossar wird angepasst. Zahlen sind, wo
 | Turm | Bau auf dem Turm-Platz einer Linie (8 Units innen): Posten für 2 Bogenschützen, Material-Stufen 1–5, Stufe 5 ist der Zaubertum. | `rules/materialien-gebaeude.md` § 3.1, Q45 |
 | Unit | Längeneinheit der Welt: 1 Unit = `UNIT_PX` = 32 px (`src/core/constants.ts`). | `CLAUDE.md` › Regeln |
 | Verlust-Kaskade (Rückstufung) | Statt Tod: Ein Treffer auf 0 HP kostet einen Bürger die nächste Schicht. Mit Ausrüstung → fällt zu Boden, er wird Bauer (volle HP, nicht mehr im Truppen-Limit); Bauer → Münze fällt, er wird Landstreicher; Landstreicher werden nicht angegriffen. Wie im Vorbild Kingdom Two Crowns. | `rules/buerger.md` § 3, Q67 |
+| Vorhersage | Anzeige-Vorhersage des eigenen Monarchen: Nur seine x-Position läuft im Client sofort mit der Eingabe und wird weich zum Server-Zustand (plus Vorlauf um die Latenz) zurückgeführt. Keine Spiel-Logik; fremde Figuren werden nicht vorhergesagt. | B-039, B-277, `src/online/clientPredict.ts` |
 | Vorlage | Pflicht-Kopiervorlage für Ticket, Sprint und Session in `docs/vorlagen/`; `tests/planning.test.ts` prüft sie. | `arbeitsweise.md` › Ablage |
 | Wald | Stufe der Tiefe 0 (Oberwelt, Biom `forest`) mit Bäumen und Tag-Nacht-Zyklus; eine Welle je Nacht. | `game-design.md` › Welt & Stufen |
 | Welle | Gruppe Gegner aus den Portalen: in der Oberwelt eine je Nacht, unten bei 100 % Aggressionspool. Größe nach Tabelle, Spieleranzahl der Insel und Grad; Zähler je Stufe. | `rules/gegner.md` § 3 |
@@ -169,6 +173,7 @@ Regelwerk in [`rules/`](rules/), und das Glossar wird angepasst. Zahlen sind, wo
 | Workshop | Session-Typ (meist `Agent: Mensch`), in dem 🧑 Regeln oder Werte beschließt (z. B. R2.2, F1.4). | `vorlagen/session.md`, `rules/` (Köpfe) |
 | Zahlziel | Ort, an dem Münzen per A-Halten etwas bezahlen: Bauplatz, Burg (Hub-Ausbau), Angebots-Anhang, Händler „Kaufen“/„Verkaufen“. Zahlziele halten ≥ 4 Units Abstand zueinander. | Q34, Q44, Q57, W0 › AC-04 |
 | Zaubertum | Turm der Material-Stufe 5: Flächenschaden (40 Schaden, Radius 3, Reichweite 13, alle 1,5 s) statt Bogen; die Schützen steigen ab. | `rules/materialien-gebaeude.md` § 3.1, Q31 |
+| Zeitleiste | Puffer der empfangenen Zustände im Client: gezeichnet wird zur geschätzten Server-Zeit minus der Verzögerung, zwischen zwei Zuständen interpoliert; Stufenwechsel leert sie. | B-277, `src/online/clientTimeline.ts` |
 | Zielkorridor | Kennzahl mit Unter- und Obergrenze im Standardszenario; Pass/Fail für das Balancing. | `rules/zielkorridore.md` |
 
 ## Unklar und Widersprüche
