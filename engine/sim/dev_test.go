@@ -57,3 +57,43 @@ func TestDevAddStock(t *testing.T) {
 		t.Fatal("unbekannter Spieler angenommen")
 	}
 }
+
+// B-232/AC-05: Dev-Welle startet sofort eine Welle in der Stufe des Spielers.
+func TestDevStartWave(t *testing.T) {
+	isl := mustIsland(t, "dev-welle", []int{0})
+	p := AddIslandPlayer(isl, 0)
+	w := isl.Stages[0]
+	if !DevStartWave(isl, p.Index) || w.Wave != 1 || len(w.SpawnQueue) == 0 {
+		t.Fatalf("Welle %d, %d Gegner geplant", w.Wave, len(w.SpawnQueue))
+	}
+	if DevStartWave(isl, 7) {
+		t.Fatal("unbekannter Spieler angenommen")
+	}
+}
+
+// B-232/AC-05: Dev-Tageszeit springt zur nächsten Phase; die Nacht bringt ihre Welle, der Tag den nächsten Tag.
+func TestDevSetPhase(t *testing.T) {
+	isl := mustIsland(t, "dev-phase", []int{0})
+	AddIslandPlayer(isl, 0)
+	w := isl.Stages[0]
+	StepIsland(isl, nil, 1.0/30)
+	for _, c := range []struct {
+		phase string
+		day   int
+	}{{"night", 1}, {"night", 2}, {"dusk", 3}, {"day", 4}} {
+		wave := w.Wave
+		if !DevSetPhase(isl, c.phase) {
+			t.Fatalf("%s abgelehnt", c.phase)
+		}
+		StepIsland(isl, nil, 1.0/30)
+		if w.Cycle.Phase != c.phase || w.Cycle.Day != c.day {
+			t.Fatalf("%s: Phase %s Tag %d, erwartet Tag %d", c.phase, w.Cycle.Phase, w.Cycle.Day, c.day)
+		}
+		if c.phase == "night" && w.Wave != wave+1 {
+			t.Fatalf("Nacht ohne Welle: %d", w.Wave)
+		}
+	}
+	if DevSetPhase(isl, "mittag") {
+		t.Fatal("unbekannte Phase angenommen")
+	}
+}
