@@ -3,6 +3,7 @@ import { GAME_HEIGHT, GAME_WIDTH } from '../core/constants';
 import { loadSettings, saveSettings, type Settings } from '../core/settings';
 import { setLanguage, t } from '../core/texts';
 import {
+  LEAVE_KEY,
   MenuPress,
   OPTION_IDS,
   OPTION_PAD_KEYS as PAD,
@@ -83,6 +84,10 @@ export class OptionsScene extends Phaser.Scene {
         setLanguage(this.settings.language);
       }
       if (result.close) return this.close();
+      if (result.leave) {
+        this.registry.set(LEAVE_KEY, true); // GameScene verlässt den Raum und schließt diese Szene
+        return;
+      }
     }
     if (close) return this.close();
     this.title.setText(t('opt.title'));

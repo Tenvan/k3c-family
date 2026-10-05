@@ -104,6 +104,7 @@ export const de = {
   'opt.colorblind': 'Farbschwäche-Symbole',
   'opt.language': 'Sprache',
   'opt.resume': 'Weiter',
+  'opt.leave': 'Spiel verlassen',
   'opt.on': 'an',
   'opt.off': 'aus',
   'opt.hint': 'Hoch/Runter wählen · Links/Rechts ändern · A / Enter umlegen · Menu / Esc schließen',

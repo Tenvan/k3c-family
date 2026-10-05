@@ -6,7 +6,7 @@ const base: Settings = { ...DEFAULT_SETTINGS };
 
 describe('Einträge', () => {
   it('stehen in fester Reihenfolge', () => {
-    expect(OPTION_IDS).toEqual(['music', 'sfx', 'screenshake', 'flash', 'colorblind', 'language', 'resume']);
+    expect(OPTION_IDS).toEqual(['music', 'sfx', 'screenshake', 'flash', 'colorblind', 'language', 'resume', 'leave']);
   });
 
   it('jeder Eintrag hat einen Text', () => {
@@ -55,6 +55,16 @@ describe('Werte', () => {
     expect(applyOption(base, 'resume', 'confirm').close).toBe(true);
     expect(applyOption(base, 'resume', 'left').close).toBe(false);
     expect(applyOption(base, 'flash', 'confirm').close).toBe(false);
+  });
+
+  it('nur „Spiel verlassen“ mit Bestätigen verlässt (B-293)', () => {
+    expect(applyOption(base, 'leave', 'confirm')).toEqual({ settings: base, close: false, leave: true });
+    expect(applyOption(base, 'leave', 'left').leave).toBe(false);
+    expect(applyOption(base, 'leave', 'right').leave).toBe(false);
+    for (const id of OPTION_IDS.filter((i) => i !== 'leave')) {
+      for (const dir of ['left', 'right', 'confirm'] as const) expect(applyOption(base, id, dir).leave).toBe(false);
+    }
+    expect(optionLabel(base, 'leave')).toBe('Spiel verlassen');
   });
 
   it('Antippen: Drittel links, Mitte, rechts', () => {
