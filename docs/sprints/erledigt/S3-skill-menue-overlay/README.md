@@ -73,4 +73,4 @@ wird jede Session als eigene Datei nach `docs/vorlagen/session.md` geschrieben.
 - **AC-01 bis AC-04** nachgewiesen in S3.1 (Slot-Belegung getestet), S3.2 (Menü, Tests für 2 Spieler, Browser-Pane), S3.3 (Aktion → Taste/Text getestet, Overlay im Pane mit 2 Spielern); Wiederbeleben-Teil von AC-04 verschoben (B-120).
 - **AC-05** angenommen, Validierung offen (S3.4); S3.4 steht im Fahrplan unter „Offen am Gerät“, B-124 und B-125 bleiben bis dahin offen.
 - Neue Tickets: B-285 (lernbare Skills im Protokoll, entstand in S3.2).
-- Version: v0.7.0 vorgeschlagen (Sprint mit Wirkung im Spiel; aktuell v0.6.0)
+- Version: v0.7.0 gesetzt (2026-10-05, nach Bestätigung durch 🧑; `task check:all` grün)
