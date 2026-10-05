@@ -1,11 +1,11 @@
 # MON1 · SRV · Metrik-Sammler und /api/metrics
 
-- **Status:** geplant
+- **Status:** aktiv
 - **Domäne:** SRV
-- **Reife:** Entwurf
+- **Reife:** bereit
 - **Einschiebbar:** nein
 - **Tickets:** B-281
-- **Start-Commit:** – (wird beim Aktivieren gesetzt: `git rev-parse --short origin/develop`)
+- **Start-Commit:** 3a6446a
 - **Spec:** freigegeben
 - **Revision:** 1
 - **Freigabe:** 2026-10-05, Chat, durch 🧑 (umfasst B-281 Revision 1)
@@ -60,15 +60,9 @@ Autonome Umsetzung; 🧑 entscheidet das Zeitfenster (Offene Fragen) und gibt di
 
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
-| MON1.1 | `MON1.1-sammler.md` | Umsetzung | autonom | offen |
+| MON1.1 | `MON1.1-sammler.md` | Umsetzung | autonom | in Arbeit |
 | MON1.2 | `MON1.2-endpunkt.md` | Umsetzung | autonom | offen |
 | MON1.3 | `MON1.3-review.md` | Review | autonom | offen |
-
-Reife Entwurf, Stichpunkte (Kriterien in Klammern):
-
-- **MON1.1** Sammler: Ring-Puffer, 1-s-Ticker, Zähler im Tick, RTT- und Warteschlangen-Reihen je Gerät, Benchmark (AC-01, AC-03, AC-04).
-- **MON1.2** Ereignis-Ring und `GET /api/metrics?since=` mit Token, Doku (AC-02, AC-05, AC-06).
-- **MON1.3** Review (AC-07, alle Kriterien gegenprüfen).
 
 ## Abnahme
 

@@ -10,6 +10,7 @@ Reihenfolge in Wellen, Bahnen je Domäne und Zuordnung Mensch/autonom (zwei Acco
 
 | Sprint | Domäne | Thema | Am Ende sichtbar | Ordner |
 |---|---|---|---|---|
+| MON1 | SRV | Metrik-Sammler und /api/metrics | `/api/metrics` liefert Verläufe und Ereignisse als Delta, Benchmark ≤ 1 % Tick-Mehrkosten | `aktiv/MON1-metrik-sammler/` |
 
 ## Offen am Gerät
 
@@ -40,7 +41,6 @@ dann über den Go-Server mit mehreren Räumen und gemischten Spielern.
 
 | Sprint | Domäne | Thema | Am Ende sichtbar | Reife | Ordner |
 |---|---|---|---|---|---|
-| MON1 | SRV | Metrik-Sammler und /api/metrics | `/api/metrics` liefert Verläufe und Ereignisse als Delta, Benchmark ≤ 1 % Tick-Mehrkosten | Entwurf | `geplant/MON1-metrik-sammler/` |
 | MON2 | PLAT | Monitoring-Seite mit Dashboard | Kachel „Monitor“, am Handy unter `task load` Ampel, Verläufe mit Perzentilen und Fehler-Zeitleiste | Entwurf | `geplant/MON2-monitoring-seite/` |
 | S6 | CLI | Onboarding „Erste Nacht geführt“ und Controller-Glyphen | Ein Kind spielt die erste Nacht ohne Erklärung | bereit | `geplant/S6-onboarding-glyphen/` |
 | P1 | REG 🧑 | Spieleabend 1 | Protokoll und Folge-Tickets | Entwurf | `geplant/P1-spieleabend-1/` |
