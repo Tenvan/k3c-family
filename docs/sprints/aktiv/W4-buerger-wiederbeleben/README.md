@@ -1,11 +1,11 @@
 # W4 · SIM · Wiederbeleben, Berufe, Händler, Elite und Limit
 
-- **Status:** geplant
+- **Status:** aktiv
 - **Domäne:** SIM
 - **Reife:** bereit
 - **Einschiebbar:** nein
 - **Tickets:** B-120, B-121, B-122, B-014
-- **Start-Commit:** –
+- **Start-Commit:** 27b117f
 - **Spec:** freigegeben
 - **Revision:** 2
 - **Freigabe:** 2026-10-05, Chat, durch 🧑, Revision 2; mit Änderungen aus der Spec-Prüfung
@@ -62,7 +62,7 @@ keine
 
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
-| W4.1 | `W4.1-wiederbeleben.md` | Umsetzung | autonom | offen |
+| W4.1 | `W4.1-wiederbeleben.md` | Umsetzung | autonom | in Arbeit |
 | W4.2 | `W4.2-berufe-haendler.md` | Umsetzung | autonom | offen |
 | W4.3a | `W4.3a-krieger-schwert-limit.md` | Umsetzung | autonom | offen |
 | W4.3b | `W4.3b-elite-ruestung-heilung-golden.md` | Umsetzung | autonom | offen |
