@@ -1,4 +1,4 @@
-# B-281 · Das Protokoll kennt Beruf ausbilden, Tauschen, Berufe der Bürger und Grabstein/Wiederbeleben
+# B-283 · Das Protokoll kennt Beruf ausbilden, Tauschen, Berufe der Bürger und Grabstein/Wiederbeleben
 
 - **Domäne:** SRV
 - **Typ:** Idee

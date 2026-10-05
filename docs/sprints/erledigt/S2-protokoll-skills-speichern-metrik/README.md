@@ -70,7 +70,7 @@ Reihenfolge wie die Nummern. Die Protokollversion steigt einmal (S2.1 auf 4, S2.
 
 ## Abnahme
 
-2026-10-05, Review S2.5 (reviewer-s25, nicht der Umsetzer). AC-01, AC-02: S2.1 (Beruf und Tausch aus B-123/AC-02 verschoben → B-281); AC-03, AC-04: S2.2; AC-05, AC-06: S2.3; AC-07: S2.4 (Ereignisse 10,5 Byte je Tick und Gerät, im Budget Q08).
-Keine schweren Befunde im Diff (S2.4) und in den Stichproben (S2.1–S2.3); neue Tickets B-281 (Rest B-123), B-282 (Flake im Lasttest-Test).
+2026-10-05, Review S2.5 (reviewer-s25, nicht der Umsetzer). AC-01, AC-02: S2.1 (Beruf und Tausch aus B-123/AC-02 verschoben → B-283); AC-03, AC-04: S2.2; AC-05, AC-06: S2.3; AC-07: S2.4 (Ereignisse 10,5 Byte je Tick und Gerät, im Budget Q08).
+Keine schweren Befunde im Diff (S2.4) und in den Stichproben (S2.1–S2.3); neue Tickets B-283 (Rest B-123), B-284 (Flake im Lasttest-Test).
 Bestätigung durch 🧑 offen: B-278 und B-279 wurden in S2.4 mit `Spec: rückwirkend` ohne Freigabe erledigt und archiviert.
 Version: v0.7.0 vorgeschlagen (Minor: Protokoll v4, Speichern beim Verlassen und Spielmetrik-Report wirken im Server; aktuell v0.6.0, die Nummer vergibt 🧑 beim Release); nicht gesetzt (Bestätigung durch 🧑 offen).

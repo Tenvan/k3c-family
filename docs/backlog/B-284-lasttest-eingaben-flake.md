@@ -1,4 +1,4 @@
-# B-282 · TestGleicherSeedGleicheEingaben scheitert nicht, wenn task check:go parallel läuft
+# B-284 · TestGleicherSeedGleicheEingaben scheitert nicht, wenn task check:go parallel läuft
 
 - **Domäne:** SRV
 - **Typ:** Problem

@@ -110,8 +110,10 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-273](B-273-release-image-dev-mode-aus.md) | INF | Schuld | hoch | offen | – | Das Release-Image startet den Server ohne Dev-Mode |
 | [B-274](B-274-testrestore-flackert-windows.md) | SRV | Problem | mittel | offen | – | TestRestore läuft unter Windows auch in task check:all stabil grün |
 | [B-280](B-280-warteschlange-nicht-zustaende.md) | SRV | Problem | niedrig | offen | – | Die Warteschlange einer Verbindung läuft nicht voll, wenn andere Nachrichten zwischen Zuständen stehen |
-| [B-281](B-281-protokoll-berufe-tausch-grabstein.md) | SRV | Idee | mittel | offen | – | Das Protokoll kennt Beruf ausbilden, Tauschen, Berufe der Bürger und Grabstein/Wiederbeleben |
-| [B-282](B-282-lasttest-eingaben-flake.md) | SRV | Problem | niedrig | offen | – | TestGleicherSeedGleicheEingaben scheitert nicht, wenn task check:go parallel läuft |
+| [B-281](B-281-monitoring-dashboard.md) | SRV | Idee | hoch | eingeplant | MON1 | Der Server sammelt Latenzen, Tick-Dauer und Fehler als Verlauf und liefert sie über /api/metrics |
+| [B-282](B-282-monitoring-seite.md) | PLAT | Idee | hoch | eingeplant | MON2 | Die Monitoring-Seite zeichnet Verläufe, Perzentile und die Fehler-Zeitleiste aus /api/metrics |
+| [B-283](B-283-protokoll-berufe-tausch-grabstein.md) | SRV | Idee | mittel | offen | – | Das Protokoll kennt Beruf ausbilden, Tauschen, Berufe der Bürger und Grabstein/Wiederbeleben |
+| [B-284](B-284-lasttest-eingaben-flake.md) | SRV | Problem | niedrig | offen | – | TestGleicherSeedGleicheEingaben scheitert nicht, wenn task check:go parallel läuft |
 
 ## Archiv
 
