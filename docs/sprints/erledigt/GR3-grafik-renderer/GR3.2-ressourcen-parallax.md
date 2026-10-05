@@ -1,6 +1,6 @@
 # GR3.2 · Ressourcen, Adern, Plantage und Parallax je Biom, Credits prüfen
 
-- **Status:** in Arbeit
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Branch:** gr3/2-ressourcen-parallax
@@ -42,10 +42,10 @@ Gebäude und Stufen (GR3.1), neue Grafiken (GR2), Atlas-Werkzeug (GR4), Effekte 
 
 ## Fertig, wenn
 
-- [ ] AC-02: Jedes eingebaute Pack hat Urheber, Lizenz und Quelle in `public/grafik/CREDITS.md`; `src/tools/credits.test.ts` ist grün.
-- [ ] AC-05: Wald, Höhle und Mine zeigen je eigene Parallax-Ebenen im Browser-Pane (Screenshot) oder der Platzhalter ist im Ergebnis mit Ticket dokumentiert.
-- [ ] AC-06: `task check` grün, mit 2 Spielern im Split-Screen keine Darstellungsfehler (Browser-Pane).
-- [ ] AC-01: Ressourcen, Portale, Truhen, Münzen und Parallax-Ebenen sind Sprites, wo die Zuordnung `zugeordnet` sagt (Screenshot je Biom), sonst Platzhalter.
+- [x] AC-02: Jedes eingebaute Pack hat Urheber, Lizenz und Quelle in `public/grafik/CREDITS.md`; `src/tools/credits.test.ts` ist grün.
+- [x] AC-05: Wald, Höhle und Mine zeigen je eigene Parallax-Ebenen im Browser-Pane (Screenshot) oder der Platzhalter ist im Ergebnis mit Ticket dokumentiert.
+- [x] AC-06: `task check` grün, mit 2 Spielern im Split-Screen keine Darstellungsfehler (Browser-Pane).
+- [x] AC-01: Ressourcen, Portale, Truhen, Münzen und Parallax-Ebenen sind Sprites, wo die Zuordnung `zugeordnet` sagt (Screenshot je Biom), sonst Platzhalter.
 
 ## Prüfen
 
@@ -57,4 +57,10 @@ Manuelle Prüfungen (Browser, Xbox, TV) nur, wenn diese Datei sie nennt und 🧑
 
 ## Ergebnis
 
-–
+Umsetzung durch Executor-Agent, Browser-Prüfung durch die Hauptsession (Freigabe 🧑 2026-10-04), Vite 5193 + Spielserver 8100, 2 Spieler (`game.html?autostart=1&mock=1`). Die Lobby startet fest in der Oberwelt, deshalb Höhle und Mine geprüft, indem die Ebenen per Dev-Konsole (`backgroundLayers(scene, 'cave' | 'mine', …)`) in die laufende Stufe gesetzt wurden.
+
+- **AC-01:** umgesetzt, geprüft im Browser-Pane: Baum (`gotthicvania-swamp/umgebung/trees.png`, ×2 laut Zuordnung), Fels und Kupfer (Erz-Sheet), Busch, Portal (animiert, ×1 laut Zuordnung), Ausgang, Rekrutierungslager (Zelt aus `tent-8/props/objs.png` + animiertes Lagerfeuer), Truhe, Stern, Münzen als Sprites. Rückfall auf die alte Form, wenn Zuordnung oder Textur fehlt (Test `worldSprites.test.ts`). Adern (B-114) und Plantage (B-162, Lücke) sind nicht im Snapshot und bleiben Platzhalter.
+- **AC-02:** geprüft – alle eingebauten Packs stehen in `public/grafik/CREDITS.md`, Kopf auf „im Spiel seit B-010 (GR3)“ aktualisiert, Warped-Caves-Namensnennung unverändert; `credits.test.ts` grün.
+- **AC-05:** umgesetzt – Wald 4 Ebenen (`forest-background`, ×3), Höhle 1 Ebene (`blue-cave-background`, ×2), Mine 3 Ebenen (`warped-super-grotto-escape-pack`, ×2) als TileSprite mit ScrollFactor, im Split-Screen auf beiden Kameras; `ridge()` nur noch als Rückfall. Kein Biom ist Platzhalter.
+- **AC-06:** `task check` grün (1159 Tests); im Split-Screen keine Darstellungsfehler. Hinweis: Bei Kamera-Zoom 0,5 reichen die Ebenen nicht bis oben, darüber steht die Himmelsfarbe des Bioms (Wald hellblau, Höhle und Mine dunkel).
+- Laden: alle 16 Welt-Dateien in `LoadScene` (klein, keine Trennung je Biom). Neue Dateien `src/scenes/worldSprites.ts` (86 Zeilen), `objectView.ts` (52); `worldRenderer.ts` bleibt bei 302 Zeilen.

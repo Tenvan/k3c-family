@@ -3,6 +3,7 @@ import { GAME_HEIGHT, GAME_WIDTH } from '../core/constants';
 import { clientLog } from '../core/clientLog';
 import type { RoomClient } from '../online/clientConnection';
 import { barFill, errorText, progressText } from './loadLogic';
+import { prepareWorld, preloadWorld } from './objectView';
 import { prepareBuildings, preloadBuildings } from './siteView';
 import { createSpriteAnims, preloadSprites } from './sprites';
 
@@ -45,9 +46,11 @@ export class LoadScene extends Phaser.Scene {
       if (failed.length > 0) return;
       createSpriteAnims(this);
       prepareBuildings(this);
+      prepareWorld(this);
       this.scene.start('lobby', { client: this.client });
     });
     preloadSprites(this);
     preloadBuildings(this);
+    preloadWorld(this);
   }
 }
