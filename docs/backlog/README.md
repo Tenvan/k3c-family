@@ -101,7 +101,6 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-213](B-213-markdown-listen-haekchen.md) | SRV | Problem | niedrig | offen | – | MarkdownView in k3c-dev zeigt nummerierte Listen und Häkchen wie die alte Planungsseite |
 | [B-219](B-219-doku-gating-und-schlag.md) | REG | Schuld | niedrig | offen | – | Game-Design und Ereignis-Doku nennen Tier-Gating 2/4/6 und den Schlag des Monarchen |
 | [B-218](B-218-optionen-ambient-lautstaerke.md) | CLI | Idee | niedrig | offen | – | Die Optionen-Szene regelt auch die Lautstärke des Ambient-Busses |
-| [B-232](B-232-dungeon-master-seite.md) | PLAT | Idee | hoch | eingeplant | DBG3 | Eine Dungeon-Master-Seite unter /dm steuert Räume live vom Handy oder Tablet |
 | [B-273](B-273-release-image-dev-mode-aus.md) | INF | Schuld | hoch | offen | – | Das Release-Image startet den Server ohne Dev-Mode |
 | [B-274](B-274-testrestore-flackert-windows.md) | SRV | Problem | mittel | offen | – | TestRestore läuft unter Windows auch in task check:all stabil grün |
 | [B-280](B-280-warteschlange-nicht-zustaende.md) | SRV | Problem | niedrig | offen | – | Die Warteschlange einer Verbindung läuft nicht voll, wenn andere Nachrichten zwischen Zuständen stehen |
@@ -272,3 +271,4 @@ Zeile in diesen Abschnitt.
 | [B-176](archiv/B-176-protokoll-mehrere-stufen.md) | SRV | Idee | hoch | erledigt | S2 | Das Protokoll liefert Level und Zustand jeder Stufe, in der ein lokaler Spieler steht |
 | [B-112](archiv/B-112-hub-ausbau-mauerstufen.md) | SIM | Idee | hoch | erledigt | W1 | Der Hub wird in fünf Stufen ausgebaut, Mauern und Türme haben fünf Materialstufen |
 | [B-116](archiv/B-116-gebaeude-wirkungen.md) | SIM | Idee | mittel | erledigt | W3 | Tor, Kaserne, Taverne, Heilplatz, Schmiede, Rüstkammer und Zaubertum wirken im Spiel |
+| [B-232](archiv/B-232-dungeon-master-seite.md) | PLAT | Idee | hoch | erledigt | DBG3 | Eine Dungeon-Master-Seite unter /dm steuert Räume live vom Handy oder Tablet |

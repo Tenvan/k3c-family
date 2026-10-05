@@ -439,6 +439,21 @@ Liste. Andere Methoden → `405`. Das WebSocket-Protokoll ändert sich dadurch n
 ]
 ```
 
+## HTTP: Dungeon-Master-Seite (B-232)
+
+`/api/dev` dient der Seite `/dm` (der Server liefert `/dm` als `dm.html`). Kein Token, kein Gerät; Lesen geht immer,
+Aktionen nur im Dev-Mode (`K3C_DEV`), sonst `403`.
+
+| Aufruf | Antwort |
+|---|---|
+| `GET /api/dev` | `{"dev": true, "rooms": [Raumliste wie rooms]}` |
+| `GET /api/dev?room=CODE` | `{"dev": true, "room": Diagnose}` (wie `/api/status?room=` plus `timescale`, `paused`), `404` ohne Raum |
+| `POST /api/dev?room=CODE` | Body wie die Nachricht `dev` ohne `t`, `slot` ist der Index des Monarchen; `{"ok": true, "room": Diagnose}`, `400` bei ungültiger Aktion |
+
+Zusätzlich zu den Aktionen der Nachricht `dev`: `{"action":"wave","slot":0}` startet sofort eine Welle in der Stufe des
+Monarchen, `{"action":"phase","phase":"night"}` springt alle Stufen zum Beginn der nächsten Phase `day`, `dusk` oder
+`night`; der Wechsel und seine Ereignisse (Nachtwelle, Morgen-Einkommen) folgen im nächsten Schritt.
+
 ## Diagnose: CPU im Status (B-175)
 
 `GET /api/status` (Token) nennt mit `cpu` die CPU-Last des Server-Prozesses in Prozent einer CPU, gemittelt über das

@@ -3,12 +3,12 @@
 - **Domäne:** PLAT
 - **Typ:** Idee
 - **Prio:** hoch
-- **Status:** eingeplant
+- **Status:** erledigt
 - **Sprint:** DBG3
 - **Erstellt:** 2026-10-04
-- **Spec:** Entwurf
-- **Revision:** 1
-- **Freigabe:** –
+- **Spec:** freigegeben
+- **Revision:** 2
+- **Freigabe:** 2026-10-05, Chat, durch 🧑 (mit Sprint DBG3 Revision 2)
 
 ## Ausgangslage
 
@@ -28,7 +28,7 @@ laufenden Räumen und Diagnosedaten, ohne das Spielbild zu stören.
 
 - Aufruf über die URL `/dm` (nicht über die Landingpage-Kacheln), responsive für Handy und Tablet.
 - Raum wählen, Diagnose (Takt, Verbindungen, Spieler, Welle, Zeit) live anzeigen.
-- Live-Anpassungen über Dev-Aktionen des Servers (Gold, Material, Zeitraffer, Pause, später Grad B-107, Neustart B-080).
+- Live-Anpassungen über Dev-Aktionen des Servers (Gold, Material, Zeitraffer, Pause, Welle auslösen, Tageszeit setzen; später Grad B-107, Neustart B-080).
 - Später passwortgeschützt.
 
 ## Nicht-Ziele
@@ -37,8 +37,8 @@ Spielen auf der Seite; Passwortschutz in der ersten Fassung (eigenes Ticket, sob
 
 ## Regeln und Einschränkungen
 
-Dev-Aktionen nur im Dev-Mode des Servers. Die Seite ist kein Spiel-Gerät mit Monarch; ob sie per WebSocket als
-Beobachter oder per HTTP-API arbeitet, ist offen (Protokoll-Änderung = eigene Session, `docs/arbeitsweise.md`).
+Dev-Aktionen nur im Dev-Mode des Servers. Die Seite ist kein Spiel-Gerät mit Monarch und arbeitet über eine HTTP-API
+`/api/dev` (Entscheidung 🧑 2026-10-05, kein Protokoll-Bump).
 Seiten-Regeln aus `CLAUDE.md` gelten, soweit die Seite in der Shell läuft.
 
 ## Beispiele
@@ -55,11 +55,10 @@ Server ohne Dev-Mode → Seite zeigt nur Diagnose, Aktionen ausgegraut. Raum ges
 - **AC-02** Die Seite zeigt Diagnosedaten eines gewählten Raums und aktualisiert sie live.
 - **AC-03** Mindestens Gold, Material, Zeitraffer und Pause wirken über die Seite (Test).
 - **AC-04** 🧑 hat die Seite am Handy abgenommen.
+- **AC-05** Welle auslösen und Tageszeit setzen wirken über die Seite (Test).
 
 ## Offene Fragen
 
-- Zugang: WebSocket als Beobachter (Protokoll-Erweiterung) oder HTTP-API (`/api/dev/...`)? (🧑)
-- Welche Live-Anpassungen über die heutigen Dev-Aktionen hinaus (Grad, Welle auslösen, Tageszeit, Gegner)? (🧑)
 - Passwortschutz: Zeitpunkt und Art (🧑).
 
 ## Notizen

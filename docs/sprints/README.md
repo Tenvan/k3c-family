@@ -32,6 +32,7 @@ Hardware-Sessions (`Agent: Mensch`) aus Sprints, deren Review schon abgeschlosse
 | S7.3 | Xbox am TV und Handy (zwei Spieler im Split-Screen reiten: Reittier animiert, Stehen/Laufen/Sprint verschieden, Sattelsitz) | AC-02, AC-04: Darstellung am TV und Handy abgenommen (angenommen laut Tests; Sichtnachweis fehlt auch aus S7.2) | `erledigt/S7-monarch-reittier/` |
 | RL1.2 | Raspberry Pi und Xbox (Pi-Image ziehen, Versionszeile der Landingpage gegen den Tag) | AC-03: Punkte „Pi-Image“ und „Version stimmt“ am Gerät (angenommen laut CI und Tests) | `erledigt/RL1-release-checkliste/` |
 | N2.4 | Xbox am TV (2 Controller, Split-Screen, Server auf dem Pi; FPS, Latenz, Puffer aus dem Debug-Overlay) | AC-06: kein sichtbares Ruckeln (angenommen laut Tests) | `erledigt/N2-zeitleiste-vorhersage/` |
+| DBG3.4 | Handy (neben laufendem Spiel am TV, Server mit `K3C_DEV=1`) | AC-04: `/dm` am Handy bedient, 375 px ohne waagerechtes Scrollen (angenommen laut Tests) | `erledigt/DBG3-dungeon-master-seite/` |
 | S3.4 | Xbox am TV, Handy und Tastatur (Schlag, Skill-Slots, Skill-Menü, Aktionen-Overlay bedienen und lesen; Overlay und Preisschild können sich überlappen) | AC-05: Slots, Menü, Tasten und Overlay am Gerät abgenommen (angenommen laut Tests und Browser-Pane) | `erledigt/S3-skill-menue-overlay/` |
 
 ## Geplant (in dieser Reihenfolge)
@@ -63,7 +64,6 @@ dann über den Go-Server mit mehreren Räumen und gemischten Spielern.
 | BAL4 | REG | Abgleich Spielmetrik und Simulator | Entwurf | `geplant/BAL4-metrik-abgleich/` |
 | SO2 | CLI | SFX-Katalog und Einbau | Entwurf | `geplant/SO2-sfx-katalog/` |
 | SO4 | CLI | Musik je Zustand | Entwurf | `geplant/SO4-musik/` |
-| DBG3 | PLAT | Dungeon-Master-Seite /dm | Entwurf | `geplant/DBG3-dungeon-master-seite/` |
 
 Gesamtplan und Begründung: [`../plan-weiterentwicklung.md`](../plan-weiterentwicklung.md). Offene Entscheidungen: [`../fragenkatalog.md`](../fragenkatalog.md).
 
@@ -143,3 +143,4 @@ Gesamtplan und Begründung: [`../plan-weiterentwicklung.md`](../plan-weiterentwi
 | W1 | Hub-Ausbau und Mauerstufen: Hub-Stufe 1–5 an der Burg, Mauer/Turm 1–5 am Platz, Reparatur, Stufen im Spielstand (B-112) | `erledigt/W1-hub-ausbau/` |
 | W2 | Plantage, Adern, Eisenstollen und Kristallhöhle, Lava, fünf Stufen, Mine-Dichte (B-114, B-115, B-012) | `erledigt/W2-plantage-adern-stufen/` |
 | W3 | Gebäude-Wirkungen: Tor wie Mauer, Kämpfer-Limit mit Kaserne, Taverne, Heilplatz, Zaubertum; Schmiede und Rüstkammer baubar (B-116) | `erledigt/W3-gebaeude-wirkungen/` |
+| DBG3 | Dungeon-Master-Seite `/dm` mit Dev-API, Welle und Tageszeit (B-232; Abnahme am Handy offen) | `erledigt/DBG3-dungeon-master-seite/` |
