@@ -1,4 +1,4 @@
-# B-286 · Hub-Stufe 4 und 5 sind mit dem Beutel-Maximum bezahlbar
+# B-287 · Hub-Stufe 4 und 5 sind mit dem Beutel-Maximum bezahlbar
 
 - **Domäne:** REG
 - **Typ:** Problem

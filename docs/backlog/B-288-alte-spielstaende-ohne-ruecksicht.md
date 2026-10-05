@@ -1,4 +1,4 @@
-# B-287 · Formatänderungen am Spielstand nehmen keine Rücksicht auf alte Stände
+# B-288 · Formatänderungen am Spielstand nehmen keine Rücksicht auf alte Stände
 
 - **Domäne:** INF
 - **Typ:** Schuld

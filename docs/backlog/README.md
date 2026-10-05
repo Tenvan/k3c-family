@@ -115,8 +115,9 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-283](B-283-protokoll-berufe-tausch-grabstein.md) | SRV | Idee | mittel | offen | – | Das Protokoll kennt Beruf ausbilden, Tauschen, Berufe der Bürger und Grabstein/Wiederbeleben |
 | [B-284](B-284-lasttest-eingaben-flake.md) | SRV | Problem | niedrig | offen | – | TestGleicherSeedGleicheEingaben scheitert nicht, wenn task check:go parallel läuft |
 | [B-285](B-285-lernbare-skills-im-protokoll.md) | SRV | Problem | mittel | offen | – | Der Server nennt je Spieler die lernbaren Skills |
-| [B-286](B-286-hub-ausbau-beutel-maximum.md) | REG | Problem | mittel | offen | – | Hub-Stufe 4 und 5 sind mit dem Beutel-Maximum bezahlbar |
-| [B-287](B-287-alte-spielstaende-ohne-ruecksicht.md) | INF | Schuld | mittel | offen | – | Formatänderungen am Spielstand nehmen keine Rücksicht auf alte Stände |
+| [B-286](B-286-lasttest-tick-reihe-wackelt.md) | SRV | Problem | niedrig | offen | – | TestTickReiheJeRaum schlägt im Gesamtlauf gelegentlich fehl |
+| [B-287](B-287-hub-ausbau-beutel-maximum.md) | REG | Problem | mittel | offen | – | Hub-Stufe 4 und 5 sind mit dem Beutel-Maximum bezahlbar |
+| [B-288](B-288-alte-spielstaende-ohne-ruecksicht.md) | INF | Schuld | mittel | offen | – | Formatänderungen am Spielstand nehmen keine Rücksicht auf alte Stände |
 
 ## Archiv
 
