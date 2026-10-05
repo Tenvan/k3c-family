@@ -1,6 +1,6 @@
 # MON1.3 · Review
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Review
 - **Agent:** autonom
 - **Branch:** mon1/3-review
@@ -37,8 +37,8 @@ Stil, Benennung, Vereinfachungen; Seite (MON2).
 
 ## Fertig, wenn
 
-- [ ] Alle Kriterien AC-01 … AC-07 mit Nachweis (Session-Ergebnisse), AC-07: `task check:go` grün.
-- [ ] Abnahme ausgefüllt, PR offen.
+- [x] Alle Kriterien AC-01 … AC-07 mit Nachweis (Session-Ergebnisse), AC-07: `task check:go` grün.
+- [x] Abnahme ausgefüllt, PR offen.
 
 ## Prüfen
 
@@ -49,4 +49,6 @@ task check:go
 
 ## Ergebnis
 
-–
+- `task check` (1273 Tests) und `task check:go` (0 issues) grün; `-race` lokal ohne C-Compiler übersprungen, prüft die CI.
+- Diff `origin/develop...origin/sprint/mon1` gelesen: keine schweren Befunde. Geprüft: `/api/metrics` nur über `authorized` (ohne Token 404, falsch 401, Methode 405), `since` ungültig = alles (kein Fehlerpfad), Geräte nur als 8-stelliges Kürzel; Ring-Puffer fest begrenzt (3600/200), Reihen ohne Punkt im Fenster fallen weg; Ping-Ticker endet mit dem Verbindungs-Kontext; Sperren: `Sample` nimmt `m.mu` dann `r.mu` (wie `logStats`), `Monitor.mu` nie darüber; keine Zufallswerte in der Simulation.
+- AC-01 bis AC-07: Nachweise in MON1.1 und MON1.2 (Ergebnis), AC-03 nur mit dem Benchmark `BenchmarkTickMonitor` (+8 µs bei 1000-facher Sammelrate).

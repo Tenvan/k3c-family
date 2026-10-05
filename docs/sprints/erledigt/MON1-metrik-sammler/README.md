@@ -1,6 +1,6 @@
 # MON1 · SRV · Metrik-Sammler und /api/metrics
 
-- **Status:** aktiv
+- **Status:** erledigt
 - **Domäne:** SRV
 - **Reife:** bereit
 - **Einschiebbar:** nein
@@ -62,9 +62,10 @@ Autonome Umsetzung; 🧑 entscheidet das Zeitfenster (Offene Fragen) und gibt di
 |---|---|---|---|---|
 | MON1.1 | `MON1.1-sammler.md` | Umsetzung | autonom | fertig |
 | MON1.2 | `MON1.2-endpunkt.md` | Umsetzung | autonom | fertig |
-| MON1.3 | `MON1.3-review.md` | Review | autonom | offen |
+| MON1.3 | `MON1.3-review.md` | Review | autonom | fertig |
 
 ## Abnahme
 
-Wird von der Review-Session (Doku-Sprint: letzte Session) ausgefüllt, höchstens fünf Zeilen: Datum, Kriterien
-(Verweis auf Session-Ergebnisse), behobene Befunde, neue Tickets. Bis dahin `–`.
+2026-10-05 · AC-01 bis AC-07 laut MON1.1 und MON1.2 geprüft (Nachweise dort); `task check` und `task check:go` grün, `-race` prüft die CI.
+Keine schweren Befunde (MON1.3): Token-Schutz von `/api/metrics` (404/401/405), Ring-Puffer und Ping-Goroutine (endet mit der Verbindung) ohne Leck, Sperrreihenfolge wie bisher (`m.mu` vor `r.mu`, `Monitor.mu` Blatt). Keine neuen Tickets.
+Version: v0.11.0 vorgeschlagen (Minor: neue Server-API `/api/metrics`; wird DBG3 zuerst als v0.11.0 getaggt, dann v0.12.0).
