@@ -1,11 +1,11 @@
 # S3 · CLI · Skill-Menü, Tasten und Aktionen-Overlay
 
-- **Status:** geplant
+- **Status:** aktiv
 - **Domäne:** CLI
 - **Reife:** bereit
 - **Einschiebbar:** nein
 - **Tickets:** B-124, B-125
-- **Start-Commit:** –
+- **Start-Commit:** d00f168
 - **Spec:** freigegeben
 - **Revision:** 1
 - **Freigabe:** 2026-10-03, Chat (Ralf), Revision 1, durch 🧑; umfasst B-124, B-125
@@ -58,7 +58,7 @@ Skill-Tasten am Controller (LB/RB bestätigen): 🧑, `docs/fragenkatalog.md Q06
 
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
-| S3.1 | `S3.1-eingabe-slots.md` | Umsetzung | autonom | offen |
+| S3.1 | `S3.1-eingabe-slots.md` | Umsetzung | autonom | in Arbeit |
 | S3.2 | `S3.2-skill-menue.md` | Umsetzung | autonom | offen |
 | S3.3 | `S3.3-aktionen-overlay.md` | Umsetzung | autonom | offen |
 | S3.4 | `S3.4-abnahme-geraet.md` | Workshop | Mensch | offen |
