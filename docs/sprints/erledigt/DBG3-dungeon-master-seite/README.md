@@ -1,6 +1,6 @@
 # DBG3 · PLAT · Dungeon-Master-Seite /dm
 
-- **Status:** aktiv
+- **Status:** erledigt
 - **Domäne:** PLAT
 - **Reife:** bereit
 - **Einschiebbar:** ja
@@ -68,10 +68,11 @@ Spielen auf der Seite; Passwortschutz (eigenes Ticket, sobald die Seite steht); 
 |---|---|---|---|---|
 | DBG3.1 | `DBG3.1-dev-api.md` | Umsetzung | autonom | fertig |
 | DBG3.2 | `DBG3.2-seite-dm.md` | Umsetzung | autonom | fertig |
-| DBG3.3 | `DBG3.3-review.md` | Review | autonom | offen |
+| DBG3.3 | `DBG3.3-review.md` | Review | autonom | fertig |
 | DBG3.4 | `DBG3.4-abnahme-handy.md` | Workshop | Mensch | offen |
 
 ## Abnahme
 
-Wird von der Review-Session ausgefüllt, höchstens fünf Zeilen: Datum, Kriterien (Verweis auf Session-Ergebnisse),
-behobene Befunde, neue Tickets. Bis dahin `–`.
+2026-10-05 · AC-01 bis AC-03, AC-05 laut DBG3.1/DBG3.2 geprüft; AC-04 angenommen, Validierung offen (DBG3.4, Handy).
+Keine schweren Befunde (DBG3.3); `/api/dev` liest ohne Token, Passwortschutz bleibt Offene Frage. Keine neuen Tickets.
+Version: v0.11.0 vorgeschlagen (Minor: neue Server-API `/api/dev` und Seite `/dm`).

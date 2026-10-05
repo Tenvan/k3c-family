@@ -1,6 +1,6 @@
 # DBG3.3 · Review
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Review
 - **Agent:** autonom
 - **Branch:** dbg3/3-review
@@ -32,8 +32,8 @@ Stil, Benennung, Vereinfachungen.
 
 ## Fertig, wenn
 
-- [ ] Alle Kriterien mit Nachweis oder Verweis auf DBG3.4.
-- [ ] PR offen.
+- [x] Alle Kriterien mit Nachweis oder Verweis auf DBG3.4.
+- [x] PR offen.
 
 ## Prüfen
 
@@ -44,4 +44,9 @@ task check:go
 
 ## Ergebnis
 
-–
+- `task check` grün (1273 Tests), `task check:go` grün (golangci-lint 0 issues; `-race` nur in der CI), 2026-10-05, Review-Agent (Sonnet).
+- Diff `origin/develop...sprint/dbg3` gelesen: keine schweren Befunde. Geprüft: `/api/dev` (nur GET/POST, Body ≤ 4 KB,
+  403 ohne Dev-Mode vor jeder Feldprüfung, Eingaben per Whitelist), WebSocket-Weg `Room.Dev` unverändert, `DevSetPhase`
+  ohne rng und ohne Division durch 0, `.html`-Fallback erst nach `resolve` (bleibt in `dist`), Seite nur mit `textContent`.
+- Unter der Schwelle: `GET /api/dev` ohne Token (laut Spec gewollt), Passwortschutz bleibt Offene Frage.
+- AC-01 bis AC-03, AC-05: Nachweise in DBG3.1/DBG3.2; AC-04 angenommen, Validierung offen (DBG3.4).

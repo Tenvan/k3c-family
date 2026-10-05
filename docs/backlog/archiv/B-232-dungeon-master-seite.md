@@ -3,7 +3,7 @@
 - **Domäne:** PLAT
 - **Typ:** Idee
 - **Prio:** hoch
-- **Status:** eingeplant
+- **Status:** erledigt
 - **Sprint:** DBG3
 - **Erstellt:** 2026-10-04
 - **Spec:** freigegeben
