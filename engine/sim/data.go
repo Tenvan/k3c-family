@@ -30,6 +30,17 @@ type BuildingData struct {
 	Plantation                       Plantation  // Farm: Bäume wachsen nach (plantation.go)
 	TroopLimit                       TroopLimit  // Kaserne: Kämpfer-Limit je Hub (barracks.go)
 	Vagrants                         Vagrants    // Taverne: Landstreicher je dawn (tavern.go)
+	Heal                             Heal        // Heilplatz (healing.go)
+	Spell                            Spell       // Turm ab Stufe FromLevel: Zaubertum (spell_tower.go)
+}
+
+// Heal: HPPerSecond für Bürger und lebende Spieler im Radius um den gebauten Heilplatz (Q32).
+type Heal struct{ HPPerSecond, RadiusUnits float64 }
+
+// Spell: Zaubertum (Q31), eigener Schuss mit Flächenschaden statt Bogen ab Turm-Stufe FromLevel.
+type Spell struct {
+	FromLevel                                        int
+	Damage, RadiusUnits, RangeUnits, IntervalSeconds float64
 }
 
 // TroopLimit: Kämpfer je Hub, Base ohne Kaserne, PerBuilding mehr je gebauter Kaserne (Q29).

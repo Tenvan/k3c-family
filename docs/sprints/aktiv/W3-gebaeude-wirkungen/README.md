@@ -61,7 +61,7 @@ Gebäude zerstört → Wirkung entfällt bis zum Wiederaufbau.
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
 | W3.1 | `W3.1-tor-kaserne-taverne.md` | Umsetzung | autonom | fertig |
-| W3.2 | `W3.2-heilplatz-zaubertum-schmiede-ruestkammer.md` | Umsetzung | autonom | offen |
+| W3.2 | `W3.2-heilplatz-zaubertum-schmiede-ruestkammer.md` | Umsetzung | autonom | fertig |
 | W3.3 | `W3.3-review.md` | Review | autonom | offen |
 
 Bei `Reife: Entwurf` genügen Stichpunkte mit den Kriterien in Klammern statt Session-Dateien. Vor dem Aktivieren

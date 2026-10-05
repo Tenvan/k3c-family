@@ -1,8 +1,12 @@
 package sim
 
 import (
+	"encoding/json"
 	"math"
+	"strings"
 	"testing"
+
+	"k3c/data"
 )
 
 // W3 (B-116/AC-02, Sprint W3 AC-02): Kosten, HP, Bauzeit, Hub-Stufe und Platz der Gebäude kommen aus den Daten.
@@ -88,8 +92,8 @@ func wantHubBuildFromData(t *testing.T, kind string) *World {
 	return w
 }
 
-func TestKaserneUndTaverneAusDenDaten(t *testing.T) {
-	for _, kind := range []string{"barracks", "tavern"} {
+func TestHubGebaeudeAusDenDaten(t *testing.T) {
+	for _, kind := range []string{"barracks", "tavern", "healer", "smithy", "armory"} {
 		wantHubBuildFromData(t, kind)
 	}
 }
@@ -109,4 +113,28 @@ func TestTorAusDenDaten(t *testing.T) {
 	}
 	w.HubLevel = hub.WallLines.GateHubLevel
 	wantBuiltFromData(t, gate, buildNew(t, w, players, gate))
+}
+
+// W3.2 (B-116/AC-03, Sprint W3 AC-03): Schmiede und Rüstkammer lassen sich bauen (oben, ab ihrer Hub-Stufe) und
+// zerstören, ohne Wirkung; ihre Daten tragen den Vermerk „Wirkung offen“.
+func TestSchmiedeUndRuestkammerZerstoerbarWirkungOffen(t *testing.T) {
+	raw, err := data.Files.ReadFile("buildings.json")
+	if err != nil {
+		t.Fatal(err)
+	}
+	var notes map[string]struct{ Notes string }
+	if err := json.Unmarshal(raw, &notes); err != nil {
+		t.Fatal(err)
+	}
+	for _, kind := range []string{"smithy", "armory"} {
+		if !strings.Contains(notes[kind].Notes, "Wirkung offen") {
+			t.Errorf("%s: Vermerk „Wirkung offen“ fehlt in den Daten: %q", kind, notes[kind].Notes)
+		}
+		w := wantHubBuildFromData(t, kind)
+		s, _ := hubSiteOf(t, w, kind)
+		destroySite(w, s)
+		if s.State != "unpaid" || s.HP != 0 || len(w.Events) == 0 || w.Events[len(w.Events)-1]["type"] != "destroyed" {
+			t.Errorf("%s: nach der Zerstörung %+v, Ereignisse %v", kind, s, w.Events)
+		}
+	}
 }
