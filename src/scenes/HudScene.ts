@@ -11,6 +11,10 @@ import { DebugOverlay } from './debugOverlayView';
 import { gameNotice } from './lobbyLogic';
 import { FONTS, fontStyle } from './fontRules';
 import { RadarLayer, type RadarCell } from './radarView';
+import { SkillMenuLayer } from './skillMenuView';
+import { GamepadInput, type PlayerInput } from '../input/playerInput';
+import { TouchInput } from '../input/touchInput';
+import type { Device } from '../input/slotBindings';
 import { resourceName, siteName } from './worldRenderer';
 
 const STYLE = { stroke: '#000000', strokeThickness: 6, fontStyle: 'bold' };
@@ -28,6 +32,7 @@ export class HudScene extends Phaser.Scene {
   private travel!: Phaser.GameObjects.Text;
   private playerLabels: Phaser.GameObjects.Text[] = [];
   private radar!: RadarLayer;
+  private skills!: SkillMenuLayer;
   private bannerQueue: string[] = [];
   private bannerLeft = 0;
 
@@ -40,6 +45,7 @@ export class HudScene extends Phaser.Scene {
     this.bannerQueue = [];
     this.bannerLeft = 0;
     this.radar = new RadarLayer(this);
+    this.skills = new SkillMenuLayer(this);
 
     const shared = { ...STYLE, ...fontStyle('shared') };
     this.shared = this.add.text(GAME_WIDTH - 24, 16, '', shared).setOrigin(1, 0);
@@ -67,6 +73,8 @@ export class HudScene extends Phaser.Scene {
     const cells = game.hudCells();
     this.showCells(cells);
     this.radar.draw(cells);
+    const seats = [...game.client.you].sort((a, b) => a.slot - b.slot); // Reihenfolge wie `hudCells` (cell.seat)
+    this.skills.draw(cells, game.skillMenus, (seat) => seats[seat]?.slot, (slot) => deviceOf(game.slots.bound[slot]) ?? game.lastDevice);
     this.showWorld(cells.find((c) => c.cell.kind === 'player' && c.world)?.world ?? world); // gemeinsamer Block: Stufe der ersten Zelle dieses Geräts
     this.placeShared(game);
     this.showBanner(game, deltaMs);
@@ -140,6 +148,13 @@ export class HudScene extends Phaser.Scene {
       text.setText(t(compact ? 'hud.playerShort' : 'hud.playerFull', { p: p.index + 1, gold: p.gold, max: ECONOMY.purse.maxGold, status: compact ? short : status, stage }));
     }
   }
+}
+
+/** Gerät einer Eingabe, damit jede Skill-Leiste die Tasten ihres Spielers zeigt */
+function deviceOf(input: PlayerInput | null | undefined): Device | undefined {
+  if (input instanceof GamepadInput) return 'pad';
+  if (input instanceof TouchInput) return 'touch';
+  return input ? 'keyboard' : undefined;
 }
 
 function formatTime(seconds: number): string {

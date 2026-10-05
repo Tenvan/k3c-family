@@ -108,6 +108,18 @@ export const de = {
   'opt.off': 'aus',
   'opt.hint': 'Hoch/Runter wählen · Links/Rechts ändern · A / Enter umlegen · Menu / Esc schließen',
   'opt.openButton': 'Optionen',
+  // Skill-Menü und Skill-Leiste (S3.2)
+  'skill.title': 'Skills  ·  {n} Punkte frei',
+  'skill.learned': 'gelernt',
+  'skill.learnable': 'lernen',
+  'skill.locked': '–',
+  'skill.passive': 'passiv',
+  'skill.respec': 'Alle Skills zurücksetzen (Respec)',
+  'skill.free': '–',
+  'skill.ready': 'bereit',
+  'skill.hint.pad': '◀ ▶ wählen · A bestätigen · {menu} schließen',
+  'skill.hint.keyboard': 'A / D wählen · Leertaste bestätigen · {menu} schließen',
+  'skill.hint.touch': 'Links/rechts wählen · Münz-Taste bestätigt · {menu} schließt',
   'lang.de': 'Deutsch',
   'lang.en': 'English',
 };

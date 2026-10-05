@@ -98,6 +98,18 @@ export const en: Record<TextKey, string> = {
   'opt.off': 'off',
   'opt.hint': 'Up/Down select · Left/Right change · A / Enter toggle · Menu / Esc close',
   'opt.openButton': 'Options',
+  // Skill menu and skill bar (S3.2)
+  'skill.title': 'Skills  ·  {n} points free',
+  'skill.learned': 'learned',
+  'skill.learnable': 'learn',
+  'skill.locked': '–',
+  'skill.passive': 'passive',
+  'skill.respec': 'Reset all skills (respec)',
+  'skill.free': '–',
+  'skill.ready': 'ready',
+  'skill.hint.pad': '◀ ▶ select · A confirm · {menu} close',
+  'skill.hint.keyboard': 'A / D select · Space confirm · {menu} close',
+  'skill.hint.touch': 'Left/right select · coin button confirms · {menu} closes',
   'lang.de': 'Deutsch',
   'lang.en': 'English',
 };

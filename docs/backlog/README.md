@@ -114,6 +114,7 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-282](B-282-monitoring-seite.md) | PLAT | Idee | hoch | eingeplant | MON2 | Die Monitoring-Seite zeichnet Verläufe, Perzentile und die Fehler-Zeitleiste aus /api/metrics |
 | [B-283](B-283-protokoll-berufe-tausch-grabstein.md) | SRV | Idee | mittel | offen | – | Das Protokoll kennt Beruf ausbilden, Tauschen, Berufe der Bürger und Grabstein/Wiederbeleben |
 | [B-284](B-284-lasttest-eingaben-flake.md) | SRV | Problem | niedrig | offen | – | TestGleicherSeedGleicheEingaben scheitert nicht, wenn task check:go parallel läuft |
+| [B-285](B-285-lernbare-skills-im-protokoll.md) | SRV | Problem | mittel | offen | – | Der Server nennt je Spieler die lernbaren Skills |
 
 ## Archiv
 
