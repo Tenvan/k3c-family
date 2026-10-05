@@ -1,6 +1,6 @@
 # MON1.1 · Sammler mit Messreihen je Raum, Gerät und Server
 
-- **Status:** in Arbeit
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Branch:** mon1/1-sammler
@@ -44,10 +44,10 @@ Ereignis-Ring und `/api/metrics` (MON1.2), Seite (MON2), Protokolländerung, Log
 
 ## Fertig, wenn
 
-- [ ] AC-01: Test füllt den Ring über seine Größe, Länge bleibt fest, älteste Punkte fallen raus.
-- [ ] AC-03: Benchmark mit aktivem Sammler höchstens 1 % bzw. 20 µs langsamer, Ergebnis in B-281 › Notizen.
-- [ ] AC-04: Test mit 2 Geräten liefert zwei getrennte RTT- und Warteschlangen-Reihen.
-- [ ] AC-07: `task check:go` grün; dazu `task check` grün, keine Datei > 400 Zeilen, keine Funktion > 60 Zeilen.
+- [x] AC-01: Test füllt den Ring über seine Größe, Länge bleibt fest, älteste Punkte fallen raus.
+- [x] AC-03: Benchmark mit aktivem Sammler höchstens 1 % bzw. 20 µs langsamer, Ergebnis in B-281 › Notizen.
+- [x] AC-04: Test mit 2 Geräten liefert zwei getrennte RTT- und Warteschlangen-Reihen.
+- [x] AC-07: `task check:go` grün; dazu `task check` grün, keine Datei > 400 Zeilen, keine Funktion > 60 Zeilen.
 
 ## Prüfen
 
@@ -58,4 +58,9 @@ task check
 
 ## Ergebnis
 
-–
+- **AC-01** umgesetzt, geprüft: `TestRingFestBegrenzt` (`engine/room/monitor_test.go`) füllt den Ring mit 3610 Punkten, Länge bleibt 3600, die ersten 10 sind raus; `TestReiheEndetMitDemFenster`: Reihen geschlossener Räume und getrennter Geräte fallen nach einem Fenster weg; `TestMonitorSpeicherbudget`: 4 Räume × 4 Geräte < 2 MB.
+- **AC-03** umgesetzt, geprüft: `BenchmarkTickMonitor` (`engine/net/monitor_bench_test.go`), Sammler 1000-mal so oft wie im Betrieb: +8 µs im Mittel (406 → 415 µs, im Rauschen), unter 20 µs; Zahlen in B-281 › Notizen. Im Tick nur ein Zähler (`secTicks` in `safeTick`), der Punkt je Sekunde kommt aus einem eigenen Ticker in `Manager.Run` (`Manager.Sample`).
+- **AC-04** umgesetzt, geprüft: `TestZweiGeraeteGetrennteReihen` (`engine/net/ping_test.go`): zwei Geräte über echte WebSockets, je eine Reihe mit RTT, Warteschlange, verworfenen Zuständen und Raum.
+- **AC-07** geprüft: `task check:go` (0 issues, alle Go-Tests grün; `-race` lokal ohne C-Compiler übersprungen, prüft die CI) und `task check` (1269 Tests) grün.
+- RTT-Quelle (Offene Frage B-281): eigener WebSocket-Ping (`engine/net/ping.go`), Begründung in B-281.
+- Abweichung: `short` von `engine/net/ws.go` nach `ping.go` verschoben (ws.go sonst über 400 Zeilen). Planung von Hand, weil k3c-dev auf die Repo-Wurzel zeigt.

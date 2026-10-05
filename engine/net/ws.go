@@ -56,6 +56,7 @@ type conn struct {
 	qmu    sync.Mutex
 	queue  []out
 	warned bool          // verworfene Ereignisse schon gemeldet (einmal je Verbindung)
+	drops  int           // ersetzte (verworfene) Zustände seit dem letzten Punkt der Messreihe (ping.go)
 	wake   chan struct{} // Länge 1: weckt die Schreib-Goroutine
 
 	mu     sync.Mutex
@@ -80,6 +81,7 @@ func (c *conn) push(o out) {
 	case i >= 0:
 		o.events, lost = mergeEvents(c.queue[i], o.state)
 		c.queue[i] = o
+		c.drops++
 		if lost > 0 && c.warned {
 			lost = 0
 		}
@@ -306,6 +308,7 @@ func (s *server) websocket(w http.ResponseWriter, r *http.Request) {
 	}
 	c := &conn{s: s, ws: ws, device: device, wake: make(chan struct{}, 1), cancel: cancel}
 	go c.writer(ctx)
+	go c.pinger(ctx, pingEvery)
 	c.enqueue(welcome())
 	s.track(c, true)
 	began := time.Now()
@@ -370,14 +373,6 @@ func (s *server) broadcastRooms() {
 			c.enqueue(msg)
 		}
 	}
-}
-
-// short kürzt eine Geräte-ID für das Log.
-func short(id string) string {
-	if len(id) > 8 {
-		return id[:8]
-	}
-	return id
 }
 
 // closeReason nennt, warum die Lese-Schleife endete: Statuscode der Gegenstelle, sonst der Fehlertext.

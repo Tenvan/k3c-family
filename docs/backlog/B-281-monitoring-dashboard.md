@@ -76,8 +76,10 @@ Eine Seite im Browser (PC, Handy) zeigt den laufenden Server als Dashboard: Verl
 ## Offene Fragen
 
 - ~~Zeitfenster/Auflösung~~ entschieden 2026-10-05 (🧑): 1 h bei 1 s (3600 Punkte je Reihe), keine Verdichtung.
-- RTT-Quelle: Zeitleiste aus N2 oder eigener Ping? Klärt MON1.1 per Messung.
+- ~~RTT-Quelle~~ geklärt in MON1.1: eigener WebSocket-Ping des Servers je Sekunde (Kontrollframe, Browser antworten selbst, kein Protokollwechsel). Die Zeitleiste aus N2 (`ack`) misst nur der Client (Glossar „Latenz“), dem Server fehlt sie.
 
 ## Notizen
 
 Bausteine vorhanden: `room.Manager.Status()` (Tick last/p99, `failures`), `engine/net/cpu.go`, `tick_bench_test.go`, `task load` (LT1). Verwandt: B-181 (Latenz im Overlay), B-194 (Ruckeln Xbox), B-280/B-190 (Warteschlange), B-150 (Spielmetrik-Report), B-232/DBG3. Verworfen: Prometheus-Exporter (Abhängigkeit + externer Stack, Overkill fürs Heimnetz).
+
+**Benchmark AC-03 (MON1.1, 2026-10-05, Windows-PC, 22 Kerne):** `go test ./engine/net/ -run '^$' -bench TickMonitor -benchtime=3s -count=4`. „ohne“ 408, 416, 400, 401 µs/Tick (Mittel 406 µs); „mit“ (Sammler 1000-mal so oft wie im Betrieb: jede Millisekunde `Sample` und 4 Geräte-Punkte) 434, 395, 397, 433 µs (Mittel 415 µs). Unterschied +8 µs im Mittel, unter 20 µs, und im Rauschen (zwei „mit“-Läufe schneller als jeder „ohne“-Lauf). Im Betrieb (1 Punkt/s) entfällt davon rechnerisch ein Tausendstel; im Tick selbst kommt nur ein Inkrement (`secTicks`) dazu.

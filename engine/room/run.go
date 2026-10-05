@@ -32,6 +32,8 @@ func (m *Manager) Run(ctx context.Context) {
 	defer sweep.Stop()
 	stats := time.NewTicker(statsEvery)
 	defer stats.Stop()
+	sample := time.NewTicker(sampleEvery) // Messreihen (B-281), außerhalb der Raum-Ticks
+	defer sample.Stop()
 	for {
 		select {
 		case <-ctx.Done():
@@ -40,6 +42,8 @@ func (m *Manager) Run(ctx context.Context) {
 			m.safeSweep()
 		case <-stats.C:
 			m.logStats()
+		case <-sample.C:
+			m.Sample()
 		}
 	}
 }
@@ -86,6 +90,7 @@ func (r *Room) safeTick() (alive bool) {
 	took := time.Since(start)
 	r.noteTick(took)
 	r.durations = append(r.durations, took)
+	r.secTicks++
 	if len(r.durations) > durations {
 		r.durations = r.durations[1:]
 	}
