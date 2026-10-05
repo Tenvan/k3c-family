@@ -8,7 +8,7 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 
 | Nr. | Domäne | Typ | Prio | Status | Sprint | Titel |
 |---|---|---|---|---|---|---|
-| [B-275](B-275-worktree-unter-claude.md) | SRV | Problem | mittel | offen | – | k3c-dev und Vite arbeiten in Worktrees unter `.claude/worktrees/` richtig |
+| [B-275](B-275-worktree-unter-claude.md) | SRV | Problem | hoch | offen | – | k3c-dev und Vite arbeiten in Worktrees unter `.claude/worktrees/` richtig |
 | [B-007](B-007-skill-baum.md) | SIM | Idee | hoch | offen | – | Skill-Baum mit Tank und Zauberer ist spielbar |
 | [B-008](B-008-spieleabend.md) | REG | Frage | hoch | eingeplant | P1 | Familie hat einen Spieleabend gespielt und Feedback gegeben |
 | [B-011](B-011-sound.md) | CLI | Idee | mittel | eingeplant | SO1 | Spiel hat Sound und Musik |
