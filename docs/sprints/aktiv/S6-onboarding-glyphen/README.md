@@ -1,11 +1,11 @@
 # S6 · CLI · Onboarding „Erste Nacht geführt“ und Controller-Glyphen
 
-- **Status:** geplant
+- **Status:** aktiv
 - **Domäne:** CLI
 - **Reife:** bereit
 - **Einschiebbar:** nein
 - **Tickets:** B-148, B-149
-- **Start-Commit:** –
+- **Start-Commit:** 27b117f
 - **Spec:** freigegeben
 - **Revision:** 2
 - **Freigabe:** 2026-10-05, Chat, durch 🧑, Revision 2; mit Änderungen aus der Spec-Prüfung
@@ -59,15 +59,19 @@ keine
 
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
-| S6.1 | `S6.1-freundlich-grad.md` | Umsetzung | autonom | offen |
-| S6.2 | `S6.2-glyphen.md` | Umsetzung | autonom | offen |
-| S6.3 | `S6.3-hinweise.md` | Umsetzung | autonom | offen |
+| S6.1 | `S6.1-freundlich-grad.md` | Umsetzung | autonom | fertig |
+| S6.2 | `S6.2-glyphen.md` | Umsetzung | autonom | fertig |
+| S6.3 | `S6.3-hinweise.md` | Umsetzung | autonom | fertig |
 | S6.4 | `S6.4-abnahme-kind.md` | Workshop | Mensch | offen |
-| S6.5 | `S6.5-review.md` | Review | autonom | offen |
+| S6.5 | `S6.5-review.md` | Review | autonom | fertig |
 
 Bei `Reife: Entwurf` genügen Stichpunkte mit den Kriterien in Klammern statt Session-Dateien. Vor dem Aktivieren
 wird jede Session als eigene Datei nach `docs/vorlagen/session.md` geschrieben.
 
 ## Abnahme
 
-–
+2026-10-05, Review S6.5 (leicht, nur schwere Befunde): keine schweren Befunde, nichts zu beheben. tsc, oxlint (0 Fehler), Vitest (1333), `go test`, golangci-lint (0 issues) grün.
+AC-01, AC-02, AC-04 mit Tests belegt (`guideHints.test.ts`, `difficulty_protect_test.go` samt Gegenprobe, `glyphs.test.ts`); AC-03, AC-05 umgesetzt, Tests grün, Sicht angenommen, Validierung offen (S6.4; Browser-Pane-Lauf nicht freigegeben).
+AC-06 angenommen, Validierung offen (S6.4); S6.4 steht im Fahrplan unter „Offen am Gerät“, der Sprint bleibt aktiv, B-148 und B-149 bleiben eingeplant.
+Neues Ticket: B-294 (Frage: Münze und „Nacht naht“ ohne Glyph, 🧑 entscheidet bei S6.4).
+Version: v0.12.0 vorgeschlagen (neues Feature: geführte erste Nacht und Glyphen; aktuell v0.11.0)

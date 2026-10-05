@@ -1,8 +1,9 @@
 import Phaser from 'phaser';
 import { GAME_WIDTH, GROUND_Y, UNIT_PX } from '../core/constants';
 import type { Device } from '../input/slotBindings';
-import { playerHints } from './actionHints';
+import { playerHints, type HintView } from './actionHints';
 import { fontStyle } from './fontRules';
+import { GlyphRow, type RowPart } from './glyphView';
 import type { Cell } from './layout';
 import type { RadarCell } from './radarView';
 
@@ -12,11 +13,14 @@ const ABOVE_GROUND_PX = 280;
 /** Oben frei für den Home-Button */
 const TOP_FREE_PX = 70;
 
-/** Bildschirm-Punkt über dem Monarchen bei `xUnits` in der Zelle; außerhalb des Felds `null` */
-function screenAt(cell: Cell, view: Phaser.Geom.Rectangle, xUnits: number): { x: number; y: number } | null {
+/** Hinweis als Zeilenteile: Text vor der Taste, Glyph, Text danach */
+const partsOf = (h: HintView): RowPart[] => [h.around[0], h.glyph, h.around[1]];
+
+/** Bildschirm-Punkt `abovePx` über dem Boden bei `xUnits` in der Zelle (Standard: über dem Monarchen); außerhalb des Felds `null` */
+export function screenAt(cell: Cell, view: Phaser.Geom.Rectangle, xUnits: number, abovePx = ABOVE_GROUND_PX): { x: number; y: number } | null {
   if (view.width === 0) return null;
   const x = cell.x + ((xUnits * UNIT_PX - view.x) * cell.w) / view.width;
-  const y = Math.max(cell.y + TOP_FREE_PX + 40, cell.y + ((GROUND_Y - ABOVE_GROUND_PX - view.y) * cell.h) / view.height);
+  const y = Math.max(cell.y + TOP_FREE_PX + 40, cell.y + ((GROUND_Y - abovePx - view.y) * cell.h) / view.height);
   return x < cell.x || x > cell.x + cell.w ? null : { x, y };
 }
 
@@ -25,14 +29,14 @@ function screenAt(cell: Cell, view: Phaser.Geom.Rectangle, xUnits: number): { x:
  * kleiner darunter, mit den Tasten des Geräts dieses Spielers. Gezeichnet im HUD-Raum, damit die Schrift fest bleibt (Q03).
  */
 export class ActionOverlay {
-  private main: Phaser.GameObjects.Text[] = [];
-  private rest: Phaser.GameObjects.Text[] = [];
+  private main: GlyphRow[] = [];
+  private rest: GlyphRow[] = [];
 
   constructor(private readonly scene: Phaser.Scene) {}
 
   /** `cameras[i]` gehört zu `cells[i]` (layoutCameras); `slotOf`/`deviceOf` wie bei der Skill-Leiste */
   draw(cells: readonly RadarCell[], cameras: readonly Phaser.Cameras.Scene2D.Camera[], slotOf: (seat: number) => number | undefined, deviceOf: (slot: number) => Device): void {
-    for (const list of [this.main, this.rest]) list.forEach((o) => o.setVisible(false)); // forEach überspringt Lücken (Feld ohne Overlay)
+    for (const list of [this.main, this.rest]) list.forEach((o) => o.box.setVisible(false)); // forEach überspringt Lücken (Feld ohne Overlay)
     const compact = cells.some((c) => c.cell.w < GAME_WIDTH); // 3 bis 4 Spieler: nur die wichtigste Aktion (kürzen statt verkleinern)
     cells.forEach(({ cell, monarch, world }, i) => {
       const p = monarch === null ? undefined : world?.players.find((q) => q.index === monarch);
@@ -42,11 +46,10 @@ export class ActionOverlay {
       const hints = playerHints(world, p, deviceOf(slot));
       if (hints.length === 0) return;
       const { x, y } = at;
-      const main = (this.main[i] ??= this.scene.add.text(0, 0, '', { ...STYLE, ...fontStyle('playerValue') }).setOrigin(0.5, 1));
-      main.setText(hints[0]!.text).setPosition(x, y).setVisible(true);
+      (this.main[i] ??= new GlyphRow(this.scene, { ...STYLE, ...fontStyle('playerValue') }, 'bottom')).set(partsOf(hints[0]!), x, y);
       if (compact || hints.length < 2) return;
-      const rest = (this.rest[i] ??= this.scene.add.text(0, 0, '', { ...STYLE, ...fontStyle('controlsHint'), strokeThickness: 4 }).setOrigin(0.5, 0));
-      rest.setText(hints.slice(1).map((h) => h.text).join('  ·  ')).setPosition(x, y + 4).setVisible(true);
+      const parts = hints.slice(1).flatMap((h, j) => (j === 0 ? partsOf(h) : ['  ·  ', ...partsOf(h)]));
+      (this.rest[i] ??= new GlyphRow(this.scene, { ...STYLE, ...fontStyle('controlsHint'), strokeThickness: 4 }, 'top')).set(parts, x, y + 4);
     });
   }
 }

@@ -1,5 +1,6 @@
 import Phaser from 'phaser';
 import { GAME_HEIGHT, GAME_WIDTH } from '../core/constants';
+import { guideSeen } from '../core/guideSeen';
 import { loadSettings, saveSettings, type Settings } from '../core/settings';
 import { setLanguage, t } from '../core/texts';
 import {
@@ -15,7 +16,7 @@ import {
 } from './optionsLogic';
 
 const TOP = 230;
-const ROW_H = 96;
+const ROW_H = 86; // 9 Zeilen über dem Hinweis unten
 const FONT_PX = 40; // ≥ 28 px (Q03)
 const STICK = 0.5;
 const STYLE = { fontFamily: 'sans-serif', fontStyle: 'bold', color: '#ffffff', stroke: '#000000', strokeThickness: 6 };
@@ -80,6 +81,7 @@ export class OptionsScene extends Phaser.Scene {
     if (want) {
       const result = applyOption(this.settings, OPTION_IDS[this.selected]!, want);
       if (result.settings !== this.settings) {
+        if (result.settings.guideHints && !this.settings.guideHints) guideSeen.reset(); // wieder an = alle Hinweise erneut (Q11)
         saveSettings((this.settings = result.settings));
         setLanguage(this.settings.language);
       }

@@ -39,6 +39,11 @@ describe('hintView: Aktion → Taste und Text je Gerät (B-125/AC-01)', () => {
     expect(hintView({ action: 'skill', slot: 2, skill: 'shieldBash' }, 'keyboard').text).toBe('R: Shield Bash');
   });
 
+  it('Text um die Glyph bleibt erhalten (S6.2)', () => {
+    expect(hintView({ action: 'build', name: 'Mauer' }, 'pad').around).toEqual(['', ' halten: Mauer bauen']);
+    expect(hintView({ action: 'attack' }, 'pad').around).toEqual(['', ': Schlag']);
+  });
+
   it('Wichtigkeit: Wiederbeleben vor Bauen/Zahlen vor Schlag vor Skills', () => {
     const w = (h: Hint) => hintView(h, 'pad').weight;
     expect(w(ALL[0]!)).toBeGreaterThan(w(ALL[1]!));
