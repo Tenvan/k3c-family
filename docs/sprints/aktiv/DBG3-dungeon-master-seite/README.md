@@ -67,7 +67,7 @@ Spielen auf der Seite; Passwortschutz (eigenes Ticket, sobald die Seite steht); 
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
 | DBG3.1 | `DBG3.1-dev-api.md` | Umsetzung | autonom | fertig |
-| DBG3.2 | `DBG3.2-seite-dm.md` | Umsetzung | autonom | offen |
+| DBG3.2 | `DBG3.2-seite-dm.md` | Umsetzung | autonom | fertig |
 | DBG3.3 | `DBG3.3-review.md` | Review | autonom | offen |
 | DBG3.4 | `DBG3.4-abnahme-handy.md` | Workshop | Mensch | offen |
 

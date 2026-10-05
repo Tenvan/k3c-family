@@ -1,6 +1,6 @@
 # DBG3.2 · Seite /dm mit Raumliste, Diagnose und Dev-Aktionen
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Branch:** dbg3/2-seite-dm
@@ -35,10 +35,10 @@ Spielen auf der Seite, Passwortschutz, Abnahme am Gerät (DBG3.4).
 
 ## Fertig, wenn
 
-- [ ] AC-01: Seite gebaut, Layout ohne feste Breiten > 375 px.
-- [ ] AC-02: Diagnose wird im Sekundentakt neu geholt.
-- [ ] AC-03, AC-05: Knöpfe schicken die Aktionen (Test der Anfragen).
-- [ ] `task check` grün.
+- [x] AC-01: Seite gebaut, Layout ohne feste Breiten > 375 px.
+- [x] AC-02: Diagnose wird im Sekundentakt neu geholt.
+- [x] AC-03, AC-05: Knöpfe schicken die Aktionen (Test der Anfragen).
+- [x] `task check` grün.
 
 ## Prüfen
 
@@ -48,4 +48,9 @@ task check
 
 ## Ergebnis
 
-–
+- AC-01 umgesetzt: `dm.html` (eigener Vite-Eingang, Server liefert `/dm` laut DBG3.1); einspaltig, Raster `minmax(8.5rem, 1fr)`,
+  keine festen Breiten, Knöpfe ≥ 44 px. Sichtprüfung auf 375 px offen für DBG3.4 (Browser-Prüfung nicht freigegeben).
+- AC-02 umgesetzt: Diagnose (Takt, Zeit, Welle, Burg, Gold, Truppen, Verbindungen, Stufen) im Sekundentakt; Raum weg → Raumliste.
+- AC-03, AC-05 geprüft: `src/tools/dmApi.test.ts` – alle Knöpfe schicken gold, material, timescale, pause, wave, phase als POST;
+  Wirkung am Server aus DBG3.1. Ohne Dev-Mode sind die Knöpfe ausgegraut.
+- `task check` grün (2026-10-05, Agent). `tests/projectRules.test.ts` nimmt `dm.html` aus (Spec Revision 2).

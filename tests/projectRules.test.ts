@@ -19,7 +19,8 @@ function filesIn(dir: string, keep: (name: string) => boolean): string[] {
 }
 const sourceFiles = (dir: string) => filesIn(dir, (n) => n.endsWith('.ts') && !n.endsWith('.test.ts'));
 
-const htmlPages = readdirSync(ROOT).filter((f) => f.endsWith('.html') && f !== 'index.html');
+// dm.html läuft außerhalb der Shell, Aufruf über /dm (B-232).
+const htmlPages = readdirSync(ROOT).filter((f) => f.endsWith('.html') && f !== 'index.html' && f !== 'dm.html');
 const hrefs = PAGES.map((p) => (typeof p.href === 'function' ? p.href() : p.href).split('?')[0]);
 
 describe('Seiten & Navigation', () => {
