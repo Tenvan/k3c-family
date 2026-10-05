@@ -26,6 +26,7 @@ Reihenfolge in Wellen, Bahnen je Domäne und Zuordnung Mensch/autonom (zwei Acco
 | RL1 | INF | Release-Checkliste: Abschnitt „Release“ in `docs/arbeitsweise.md`, Probelauf ohne Tag (B-170; einschiebbar; Pi und Xbox offen) | – | `aktiv/RL1-release-checkliste/` |
 | MON2 | PLAT | Monitoring-Seite `monitor.html`: Ampel je Raum, Verläufe mit Perzentilen, Fehler-Zeitleiste (B-282; Abnahme am Handy offen) | – | `aktiv/MON2-monitoring-seite/` |
 | S6 | CLI | Onboarding „Erste Nacht geführt“ und Controller-Glyphen (B-148, B-149; Abnahme am TV offen) | – | `aktiv/S6-onboarding-glyphen/` |
+| DL1 | SRV | Delta überträgt verschwundene Felder (`unset`), Delta-Test deckt `castle` mit W4.3a ab (B-297; einschiebbar, entsperrt W4.3a) | – | `aktiv/DL1-delta-felder/` |
 
 ## Offen am Gerät
 

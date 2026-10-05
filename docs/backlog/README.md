@@ -116,6 +116,7 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-292](B-292-neues-spiel-eindeutiger-name.md) | PLAT | Problem | hoch | offen | – | Die Kachel „Neues Spiel“ startet auch bei vorhandenem Spielstand familie |
 | [B-293](B-293-spiel-im-menue-verlassen.md) | CLI | Idee | hoch | offen | – | Das Spielmenü hat neben „Weiter“ einen Eintrag „Spiel verlassen“ |
 | [B-294](B-294-hinweis-glyph-muenze-nacht.md) | CLI | Frage | mittel | offen | – | Münze und „Nacht naht“ zeigen in der geführten ersten Nacht keine Glyph |
+| [B-297](B-297-delta-entfernt-felder.md) | SRV | Problem | hoch | eingeplant | DL1 | Das Delta überträgt, dass ein Feld aus dem Zustand verschwindet |
 
 ## Archiv
 
