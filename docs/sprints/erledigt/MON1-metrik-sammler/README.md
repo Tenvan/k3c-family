@@ -1,11 +1,11 @@
 # MON1 · SRV · Metrik-Sammler und /api/metrics
 
-- **Status:** geplant
+- **Status:** erledigt
 - **Domäne:** SRV
-- **Reife:** Entwurf
+- **Reife:** bereit
 - **Einschiebbar:** nein
 - **Tickets:** B-281
-- **Start-Commit:** – (wird beim Aktivieren gesetzt: `git rev-parse --short origin/develop`)
+- **Start-Commit:** 3a6446a
 - **Spec:** freigegeben
 - **Revision:** 1
 - **Freigabe:** 2026-10-05, Chat, durch 🧑 (umfasst B-281 Revision 1)
@@ -60,17 +60,12 @@ Autonome Umsetzung; 🧑 entscheidet das Zeitfenster (Offene Fragen) und gibt di
 
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
-| MON1.1 | `MON1.1-sammler.md` | Umsetzung | autonom | offen |
-| MON1.2 | `MON1.2-endpunkt.md` | Umsetzung | autonom | offen |
-| MON1.3 | `MON1.3-review.md` | Review | autonom | offen |
-
-Reife Entwurf, Stichpunkte (Kriterien in Klammern):
-
-- **MON1.1** Sammler: Ring-Puffer, 1-s-Ticker, Zähler im Tick, RTT- und Warteschlangen-Reihen je Gerät, Benchmark (AC-01, AC-03, AC-04).
-- **MON1.2** Ereignis-Ring und `GET /api/metrics?since=` mit Token, Doku (AC-02, AC-05, AC-06).
-- **MON1.3** Review (AC-07, alle Kriterien gegenprüfen).
+| MON1.1 | `MON1.1-sammler.md` | Umsetzung | autonom | fertig |
+| MON1.2 | `MON1.2-endpunkt.md` | Umsetzung | autonom | fertig |
+| MON1.3 | `MON1.3-review.md` | Review | autonom | fertig |
 
 ## Abnahme
 
-Wird von der Review-Session (Doku-Sprint: letzte Session) ausgefüllt, höchstens fünf Zeilen: Datum, Kriterien
-(Verweis auf Session-Ergebnisse), behobene Befunde, neue Tickets. Bis dahin `–`.
+2026-10-05 · AC-01 bis AC-07 laut MON1.1 und MON1.2 geprüft (Nachweise dort); `task check` und `task check:go` grün, `-race` prüft die CI.
+Keine schweren Befunde (MON1.3): Token-Schutz von `/api/metrics` (404/401/405), Ring-Puffer und Ping-Goroutine (endet mit der Verbindung) ohne Leck, Sperrreihenfolge wie bisher (`m.mu` vor `r.mu`, `Monitor.mu` Blatt). Keine neuen Tickets.
+Version: v0.11.0 vorgeschlagen (Minor: neue Server-API `/api/metrics`; wird DBG3 zuerst als v0.11.0 getaggt, dann v0.12.0).

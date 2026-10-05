@@ -41,6 +41,9 @@ type Status struct {
 	StartedAt time.Time `json:"startedAt"`
 	Restarts  int       `json:"restarts"`
 	LastError string    `json:"lastError"`
+	// ChangeFile und ChangeAt: letzter Neustart wegen einer Dateiänderung (Watch-Modus); die Karte zeigt ihn dauerhaft.
+	ChangeFile string    `json:"changeFile"`
+	ChangeAt   time.Time `json:"changeAt"`
 	CPU       float64   `json:"cpu"`    // Prozent, alle 2 s gemessen (Monitor)
 	Memory    uint64    `json:"memory"` // RSS in Bytes
 	// Seq zählt je Dienst jede Änderung. OnChange-Rückrufe kommen ungeordnet an (Messung und Befehl laufen
@@ -159,7 +162,8 @@ type run struct {
 // Controller ist der eine Steuerpunkt aller Dienste.
 type Controller struct {
 	opts  Options
-	units []*unit // Reihenfolge der Konfiguration
+	mu    sync.RWMutex // schützt units (Reload ändert die Liste)
+	units []*unit      // Reihenfolge der Konfiguration; lesen nur über list()
 }
 
 // New legt einen Controller an; kein Dienst läuft danach.
@@ -167,15 +171,23 @@ func New(list []Service, opts Options) *Controller {
 	opts.defaults()
 	c := &Controller{opts: opts}
 	for _, s := range list {
-		c.units = append(c.units, &unit{svc: s, st: Status{Name: s.Name, Desc: s.Description, Tags: s.Tags, Port: s.Port, Health: s.HealthURL(), Log: s.Log, State: Stopped}})
+		c.units = append(c.units, c.newUnit(s))
 	}
 	return c
 }
 
+// list liefert eine Kopie der Dienstliste in der Reihenfolge der Konfiguration.
+func (c *Controller) list() []*unit {
+	c.mu.RLock()
+	defer c.mu.RUnlock()
+	return slices.Clone(c.units)
+}
+
 // Statuses liefert alle Dienste in der Reihenfolge der Konfiguration.
 func (c *Controller) Statuses() []Status {
-	out := make([]Status, len(c.units))
-	for i, u := range c.units {
+	units := c.list()
+	out := make([]Status, len(units))
+	for i, u := range units {
 		out[i] = u.status()
 	}
 	return out
@@ -183,15 +195,16 @@ func (c *Controller) Statuses() []Status {
 
 // Names liefert die Dienstnamen in der Reihenfolge der Konfiguration.
 func (c *Controller) Names() []string {
-	out := make([]string, len(c.units))
-	for i, u := range c.units {
+	units := c.list()
+	out := make([]string, len(units))
+	for i, u := range units {
 		out[i] = u.svc.Name
 	}
 	return out
 }
 
 func (c *Controller) unit(name string) (*unit, error) {
-	for _, u := range c.units {
+	for _, u := range c.list() {
 		if u.svc.Name == name {
 			return u, nil
 		}
@@ -274,9 +287,10 @@ func (c *Controller) Restart(ctx context.Context, name string) (Status, error) {
 
 // StartAll startet alle Dienste parallel, die nicht schon laufen, starten oder übernommen sind.
 func (c *Controller) StartAll(ctx context.Context) error {
-	errs := make([]error, len(c.units))
+	units := c.list()
+	errs := make([]error, len(units))
 	var wg sync.WaitGroup
-	for i, u := range c.units {
+	for i, u := range units {
 		if st := u.status().State; st == Running || st == Starting || st == Adopted {
 			continue
 		}
@@ -288,7 +302,7 @@ func (c *Controller) StartAll(ctx context.Context) error {
 
 // StopAll stoppt alle eigenen Dienste in umgekehrter Reihenfolge der Konfiguration; übernommene bleiben.
 func (c *Controller) StopAll(ctx context.Context) {
-	for _, u := range slices.Backward(c.units) {
+	for _, u := range slices.Backward(c.list()) {
 		_, _ = c.Stop(ctx, u.svc.Name, false)
 	}
 }

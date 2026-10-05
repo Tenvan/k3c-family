@@ -62,7 +62,7 @@ export function ServiceCard({ s, selected, onSelect }: Props) {
       </div>
       <RoleTags tags={s.tags} />
       {s.description && <p className="svc-desc">{s.description}</p>}
-      <code className="svc-health">{s.health}</code>
+      <HealthUrl url={s.health} />
       <Metrics s={s} />
       {s.log && <LogBox name={s.name} />}
       <Notes s={s} error={error} />
@@ -76,10 +76,25 @@ export function ServiceCard({ s, selected, onSelect }: Props) {
   );
 }
 
+/** Health-Adresse; http-Adressen öffnen per Klick im Browser (tcp bleibt Text). */
+function HealthUrl({ url }: { url: string }) {
+  if (!url.startsWith('http')) return <code className="svc-health">{url}</code>;
+  return (
+    <code className="svc-health">
+      <a className="svc-link" href={url} onClick={(e) => { e.preventDefault(); e.stopPropagation(); backend.openUrl(url); }}>
+        {url}
+      </a>
+    </code>
+  );
+}
+
+const timeOf = (iso: string) => new Date(iso).toLocaleTimeString('de-DE');
+
 function Notes({ s, error }: { s: ServiceStatus; error: string }) {
   return (
     <>
       {s.restarts > 0 && <p className="svc-note">Neustarts: {s.restarts}</p>}
+      {s.changeFile && <p className="svc-note">Neu gebaut {timeOf(s.changeAt)} · Änderung an {s.changeFile}</p>}
       {s.lastError && <p className="svc-error">{s.lastError}</p>}
       {s.state === 'übernommen' && <p className="svc-hint">{ADOPTED_HINT}</p>}
       {error && <p className="svc-error">{error}</p>}

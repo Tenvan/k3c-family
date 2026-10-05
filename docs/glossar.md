@@ -40,6 +40,7 @@ Regelwerk in [`rules/`](rules/), und das Glossar wird angepasst. Zahlen sind, wo
 | Determinismus | Gleicher Seed und gleiche Eingaben ergeben dasselbe Ergebnis. Zufall nur über `engine/rng` (`rng.New(seed)`), nie `math/rand` oder `Math.random()`. | `CLAUDE.md` › Regeln |
 | Dev-Mode | Entwicklungsmodus des Servers (`K3C_DEV`): erlaubt den Grad Dev, das Debug-Panel und Dev-Aktionen. | `rules/wirtschaft.md` § 4, `protocol.md` |
 | Diagnose | Debug-Anzeige oben links (Raum, Takt, Snapshot, Puffer, Latenz, FPS, Version), nur lesend. Aufruf: Ö, RB 3 s, Doppeltap mit einem Finger. | B-093, B-231 |
+| Diagnose-Ereignis | Eintrag der Fehler-Zeitleiste des Servers (`/api/metrics` › `events`): Absturz, 🐢-Tick, Trennung oder Client-Fehler mit Zeit, Raum und Art; die letzten 200. Nicht das Ereignis der Simulation. | B-281, `engine/room/monitor.go` |
 | `disarmed` | Ereignis (geplant): Ein Bürger verliert seine Ausrüstung (Felder `kind`, `x`, `cause`); ersetzt `troopLost`. | `rules/buerger.md` § 3, Q69 |
 | Domäne | Fachbereich, dem ein Sprint genau zugeordnet ist und dessen Dateien er ändert: REG (Regelwerk), SIM (Spiel-Logik Go), SRV (Server), CLI (Client), PLAT (Plattform), INF (Tooling, Arbeitsweise). | `arbeitsweise.md` › Domänen |
 | Dungeon-Master-Seite | Responsive Seite unter `/dm` für Handy und Tablet mit Live-Anpassungen und Diagnose laufender Räume (geplant). | B-232 |
@@ -95,6 +96,7 @@ Regelwerk in [`rules/`](rules/), und das Glossar wird angepasst. Zahlen sind, wo
 | Material-Stufe | Stufe 1–5 einer Mauer oder eines Turms nach Material (Holz bis Kristall); Ausbau am selben Platz. Bei Zerstörung geht sie verloren (neu ab Holz). | `rules/materialien-gebaeude.md` §§ 3.1, 4 |
 | Mauer | Bau auf dem Mauer-Platz einer Linie; blockiert Gegner außer `ignoresWalls`; Material-Stufen 1–5. | `rules/materialien-gebaeude.md` §§ 3.1–3.2 |
 | Mauerlinie | Je Seite 5 feste Linien bei ±44/64/84/104/124 Units mit Mauer-Platz, Turm-Platz (8 innen) und Tor-Platz (4 außen). Linie k ist ab Hub-Stufe k bezahlbar, wenn die Mauer der Linie k−1 derselben Seite steht. | `rules/materialien-gebaeude.md` § 3, Q48, Q49, Q58 |
+| Messreihe | Verlauf einer Kennzahl im Server (Tick-Dauer je Raum, RTT und Warteschlange je Gerät, Heap, CPU …): ein Punkt je Sekunde in einem Ring-Puffer fester Größe (3600 = 1 h), älteste Punkte fallen raus. Ausgabe über `/api/metrics`. | B-281, `engine/room/monitor.go` |
 | Mine | Stufe der Tiefe 2 (Biom `mine`) mit Kupfer-Adern und Kupfererz; Wellen über den Aggressionspool. | `game-design.md` › Welt & Stufen |
 | Miniboss | Boss je Stufe; kommt mit Welle 5 (Wald) bzw. Welle 3 (unten) und kehrt nach dem Sieg nie zurück. | `rules/bosse.md` § 1 |
 | Monarch | Figur eines Spielers (Index 0–3), immer beritten; kämpft mit Schlag und Skills, seine Hauptrolle ist das Management der Bürger. | `protocol.md` › Begriffe, `rules/monarch.md` |
@@ -123,6 +125,7 @@ Regelwerk in [`rules/`](rules/), und das Glossar wird angepasst. Zahlen sind, wo
 | Revision | Zähler der Spec-Fassung; jede Änderung erhöht ihn und setzt die Spec auf `Entwurf` zurück. | `arbeitsweise.md` › SDD |
 | `revive` | Ereignis: Monarch steht nach der Wartezeit an der Burg wieder (Respawn). | `protocol.md` › Ereignisse, Q62 |
 | `revived` | Ereignis (geplant, B-120/W4.1, Protokoll mit W5): Monarch wurde von einem Mitspieler wiederbelebt. | Q62, B-120 |
+| RTT (Ping) | Umlaufzeit eines WebSocket-Pings vom Server zum Gerät und zurück, vom Server einmal je Sekunde gemessen (Messreihe je Gerät). Nicht die Latenz (die misst der Client über `ack`). | B-281, `engine/net/ping.go` |
 | Rüstkammer | Gebäude der Hub-Stufe 4: Rüstungsstufen für alle Kämpfer. | `rules/materialien-gebaeude.md` § 3.2 |
 | Rüstungsstufe | Upgrade in der Rüstkammer, 2 Stufen (ab Hub-Stufe 4 und 5): +20 % bzw. +40 % Basis-HP für alle Kämpfer, sofort, ohne Vollheilung. | `rules/buerger.md` § 2, Q37 |
 | Schlag | Einfacher Nahkampfangriff des Monarchen (X bzw. E): 10 Schaden, Reichweite 1,5 Units, Abklingzeit 0,7 s. | `rules/monarch.md` § 1 |

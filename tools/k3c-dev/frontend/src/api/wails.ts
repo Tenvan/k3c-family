@@ -8,6 +8,7 @@ import type {
 interface GoApp {
   Info(): Promise<Info>;
   Services(): Promise<ServicesView>;
+  ServicesReload(): Promise<ServicesView>;
   ServiceStart(name: string): Promise<ServiceStatus>;
   ServiceStop(name: string, force: boolean): Promise<ServiceStatus>;
   ServiceRestart(name: string): Promise<ServiceStatus>;
@@ -57,6 +58,7 @@ export function wailsBackend(): Backend {
     mock: false,
     info: () => app.Info(),
     services: () => app.Services(),
+    servicesReload: () => app.ServicesReload(),
     serviceStart: (name) => app.ServiceStart(name),
     serviceStop: (name, force) => app.ServiceStop(name, force),
     serviceRestart: (name) => app.ServiceRestart(name),

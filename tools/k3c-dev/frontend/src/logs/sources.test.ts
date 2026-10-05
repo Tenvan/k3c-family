@@ -4,7 +4,7 @@ import { describe, logFor, otherGroups, tagsOf } from './sources';
 
 const svc = (name: string, log = ''): ServiceStatus => ({
   name, log, description: '', port: 1, health: '', state: 'läuft', pid: 0, startedAt: '', restarts: 0, lastError: '',
-  cpu: 0, memory: 0, seq: 1,
+  changeFile: '', changeAt: '', cpu: 0, memory: 0, seq: 1,
 });
 const src = (name: string, kind: string): Source => ({ name, kind, state: '', detail: '' });
 

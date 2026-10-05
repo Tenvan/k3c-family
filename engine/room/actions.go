@@ -132,6 +132,7 @@ func (r *Room) Drop(id string, peer Peer) {
 	}
 	d.connected = false
 	r.met.drop(id)
+	r.m.Monitor.Event(now, r.Code, "drop", short(id))
 	r.log().Info("⏳ Gerät getrennt, Monarchen warten", "device", short(id), "frist", WaitFor.String(), "geraete", r.connected())
 	r.afterDisconnect()
 }

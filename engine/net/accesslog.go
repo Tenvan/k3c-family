@@ -145,6 +145,9 @@ func (s *server) clientLog(w http.ResponseWriter, r *http.Request) {
 			attrs = append(attrs, "ctx", clip(e.Ctx, clientMaxText))
 		}
 		log.Log(r.Context(), levelOf(e.Level), clip(e.Msg, clientMaxText), attrs...)
+		if s.cfg.Rooms != nil && levelOf(e.Level) == slog.LevelError {
+			s.cfg.Rooms.Monitor.Event(time.Now(), "", "client", short(e.Dev)+": "+e.Msg)
+		}
 	}
 	w.WriteHeader(http.StatusNoContent)
 }

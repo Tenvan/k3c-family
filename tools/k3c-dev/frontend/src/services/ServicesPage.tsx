@@ -12,14 +12,14 @@ import { NoticeCard } from '../ui/parts';
 import { ServiceCard } from './ServiceCard';
 import { applyStatus, orderLine } from './tables';
 
-type Bulk = 'start' | 'stop';
+type Bulk = 'start' | 'stop' | 'reload';
 
 /**
  * Reiter `Dienste & Logs` (B-068, B-064): links Sammelaktionen, Dienst-Karten und die übrigen Quellen, rechts
  * Konsole und Log der gewählten Quelle.
  */
 export function ServicesPage() {
-  const { view, loadError } = useServices();
+  const { view, setView, loadError } = useServices();
   const { sources, error: srcError } = useSources();
   const [wanted, setWanted] = useState(() => loadText('source', ''));
   const choose = (name: string) => {
@@ -35,7 +35,7 @@ export function ServicesPage() {
   return (
     <div className="svc-page">
       <div className="svc-side">
-        <BulkBar names={view.services.map((s) => s.name)} />
+        <BulkBar names={view.services.map((s) => s.name)} onReload={setView} />
         {view.services.map((s) => (
           <ServiceCard key={s.name} s={s} selected={s.name === selected?.name} onSelect={() => choose(s.name)} />
         ))}
@@ -68,18 +68,19 @@ function useServices() {
     );
     return off;
   }, []);
-  return { view, loadError };
+  return { view, setView, loadError };
 }
 
 /** Kopf: Überschrift, Startreihenfolge, Alle starten / Alle stoppen. */
-function BulkBar({ names }: { names: string[] }) {
+function BulkBar({ names, onReload }: { names: string[]; onReload: (v: ServicesView) => void }) {
   const [bulk, setBulk] = useState<Bulk | null>(null);
   const [error, setError] = useState('');
   const run = async (kind: Bulk) => {
     setBulk(kind);
     setError('');
     try {
-      await (kind === 'start' ? backend.servicesStartAll() : backend.servicesStopAll());
+      if (kind === 'reload') onReload(await backend.servicesReload());
+      else await (kind === 'start' ? backend.servicesStartAll() : backend.servicesStopAll());
     } catch (e) {
       setError(errorText(e));
     } finally {
@@ -91,6 +92,10 @@ function BulkBar({ names }: { names: string[] }) {
       <Flex justify="between" align="center" gap="3">
         <Heading size="5">Dienste</Heading>
         <Flex gap="2">
+          <Button size="1" variant="soft" loading={bulk === 'reload'} disabled={bulk !== null} onClick={() => void run('reload')}
+            title="services.json neu einlesen">
+            Neu laden
+          </Button>
           <Button size="1" loading={bulk === 'start'} disabled={bulk !== null} onClick={() => void run('start')}>
             Alle starten
           </Button>

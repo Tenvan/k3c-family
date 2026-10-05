@@ -49,6 +49,8 @@ type Manager struct {
 	// Snapshot baut den Zustand einer Stufe für Peer.State, unter der Raum-Sperre einmal je Stufe und Tick (B-276);
 	// engine/net setzt ihn. timescale > 0 nur im Dev-Mode. nil = die Welt selbst (Tests in diesem Paket).
 	Snapshot func(w *sim.World, timescale int, paused bool) any
+	// Monitor hält die Messreihen (B-281); NewManager legt ihn an.
+	Monitor *Monitor
 
 	mu       sync.Mutex
 	rooms    map[string]*Room
@@ -58,7 +60,9 @@ type Manager struct {
 }
 
 // NewManager legt einen Manager ohne Räume an.
-func NewManager(s Store) *Manager { return &Manager{Store: s, rooms: map[string]*Room{}} }
+func NewManager(s Store) *Manager {
+	return &Manager{Store: s, rooms: map[string]*Room{}, Monitor: NewMonitor(time.Now())}
+}
 
 func (m *Manager) now() time.Time {
 	if m.Now == nil {
