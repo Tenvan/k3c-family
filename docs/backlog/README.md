@@ -49,7 +49,7 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-130](B-130-bosse.md) | SIM | Idee | hoch | eingeplant | K2 | Minibosse und Endboss sind spielbar |
 | [B-131](B-131-events.md) | SIM | Idee | niedrig | eingeplant | K3 | Vollmond, Blutmond und Händler-Überfall sind als Events umgesetzt |
 | [B-132](B-132-anzeige-bosse-events.md) | CLI | Idee | mittel | eingeplant | K5 | Der Client zeigt Gegner-Fähigkeiten, Bosse, Phasen und Events |
-| [B-148](B-148-onboarding-erste-nacht.md) | CLI | Idee | hoch | eingeplant | S6 | Die erste Nacht wird mit kontextuellen Hinweisen geführt, der Freundlich-Grad kostet keinen Fortschritt |
+| [B-148](B-148-onboarding-erste-nacht.md) | CLI | Idee | hoch | eingeplant | S6 | Die erste Nacht wird mit kontextuellen Hinweisen geführt, der Grad „Leicht“ kostet keinen Fortschritt |
 | [B-149](B-149-controller-glyphen.md) | CLI | Idee | mittel | eingeplant | S6 | Hinweise zeigen Controller-Glyphen statt Tasten-Text |
 | [B-151](B-151-spieleabend-fragebogen.md) | REG | Idee | mittel | eingeplant | P1 | Der Spieleabend hat einen kindgerechten Fragebogen und eine Playtest-Vorlage |
 | [B-153](B-153-protokoll-berufe-haendler-lager-hub.md) | SRV | Idee | hoch | eingeplant | W5 | Das Protokoll kennt Berufe, Händler, Lagerstand, Hub-Stufe und Wartegrund |
@@ -104,8 +104,7 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-273](B-273-release-image-dev-mode-aus.md) | INF | Schuld | hoch | offen | – | Das Release-Image startet den Server ohne Dev-Mode |
 | [B-274](B-274-testrestore-flackert-windows.md) | SRV | Problem | mittel | offen | – | TestRestore läuft unter Windows auch in task check:all stabil grün |
 | [B-280](B-280-warteschlange-nicht-zustaende.md) | SRV | Problem | niedrig | offen | – | Die Warteschlange einer Verbindung läuft nicht voll, wenn andere Nachrichten zwischen Zuständen stehen |
-| [B-282](B-282-monitoring-seite.md) | PLAT | Idee | hoch | eingeplant | MON2 | Die Monitoring-Seite zeichnet Verläufe, Perzentile und die Fehler-Zeitleiste aus /api/metrics |
-| [B-283](B-283-protokoll-berufe-tausch-grabstein.md) | SRV | Idee | mittel | offen | – | Das Protokoll kennt Beruf ausbilden, Tauschen, Berufe der Bürger und Grabstein/Wiederbeleben |
+| [B-283](B-283-protokoll-berufe-tausch-grabstein.md) | SRV | Idee | mittel | eingeplant | W5 | Das Protokoll kennt Beruf ausbilden, Tauschen, Berufe der Bürger und Grabstein/Wiederbeleben |
 | [B-284](B-284-lasttest-eingaben-flake.md) | SRV | Problem | niedrig | offen | – | TestGleicherSeedGleicheEingaben scheitert nicht, wenn task check:go parallel läuft |
 | [B-285](B-285-lernbare-skills-im-protokoll.md) | SRV | Problem | mittel | offen | – | Der Server nennt je Spieler die lernbaren Skills |
 | [B-286](B-286-lasttest-tick-reihe-wackelt.md) | SRV | Problem | niedrig | offen | – | TestTickReiheJeRaum schlägt im Gesamtlauf gelegentlich fehl |
@@ -114,6 +113,8 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-289](B-289-aggressionspool-mit-adern.md) | REG | Problem | mittel | offen | – | Der Aggressionspool steigt mit Adern nicht zu schnell |
 | [B-290](B-290-raum-fuenf-stufen.md) | SRV | Idee | mittel | offen | – | Der Raum erzeugt alle fünf Stufen und der Client kennt Eisenstollen und Kristallhöhle |
 | [B-291](B-291-lava-nicht-auf-mauerlinien.md) | SIM | Problem | mittel | offen | – | Lava liegt nicht auf den Mauerlinien |
+| [B-292](B-292-neues-spiel-eindeutiger-name.md) | PLAT | Problem | hoch | offen | – | Die Kachel „Neues Spiel“ startet auch bei vorhandenem Spielstand familie |
+| [B-293](B-293-spiel-im-menue-verlassen.md) | CLI | Idee | hoch | offen | – | Das Spielmenü hat neben „Weiter“ einen Eintrag „Spiel verlassen“ |
 
 ## Archiv
 
@@ -272,3 +273,4 @@ Zeile in diesen Abschnitt.
 | [B-116](archiv/B-116-gebaeude-wirkungen.md) | SIM | Idee | mittel | erledigt | W3 | Tor, Kaserne, Taverne, Heilplatz, Schmiede, Rüstkammer und Zaubertum wirken im Spiel |
 | [B-232](archiv/B-232-dungeon-master-seite.md) | PLAT | Idee | hoch | erledigt | DBG3 | Eine Dungeon-Master-Seite unter /dm steuert Räume live vom Handy oder Tablet |
 | [B-281](archiv/B-281-monitoring-dashboard.md) | SRV | Idee | hoch | erledigt | MON1 | Der Server sammelt Latenzen, Tick-Dauer und Fehler als Verlauf und liefert sie über /api/metrics |
+| [B-282](archiv/B-282-monitoring-seite.md) | PLAT | Idee | hoch | erledigt | MON2 | Die Monitoring-Seite zeichnet Verläufe, Perzentile und die Fehler-Zeitleiste aus /api/metrics |

@@ -14,6 +14,11 @@ export interface PageEntry {
   primary?: boolean;
 }
 
+/** Start-URL „Neues Spiel“: der Server lehnt `fresh` auf vorhandene Stände ab, deshalb trägt jeder Start einen eigenen Namen (aus der Uhrzeit). */
+export function newGameHref(now: number = Date.now()): string {
+  return `game.html?fresh=1&save=neu-${now.toString(36)}`;
+}
+
 export const PAGES: PageEntry[] = [
   {
     title: 'Weiterspielen',
@@ -25,9 +30,9 @@ export const PAGES: PageEntry[] = [
   },
   {
     title: 'Neues Spiel',
-    description: 'Lobby öffnen · Oberwelt · Seed „k3c“ · bis zu 2 Spieler · alter Spielstand wird gesichert',
+    description: 'Lobby öffnen · Oberwelt · frischer Spielstand mit eigenem Namen · bis zu 2 Spieler · alte Spielstände bleiben',
     icon: '🏰',
-    href: 'game.html?fresh=1',
+    href: () => newGameHref(),
     section: 'play',
   },
   {
@@ -84,6 +89,13 @@ export const PAGES: PageEntry[] = [
     description: 'Kandidaten für Musik und Effekte anhören · nach Zustand und Ereignis, mit Quelle und Lizenz',
     icon: '🔊',
     href: 'soundtest.html',
+    section: 'test',
+  },
+  {
+    title: 'Monitor',
+    description: 'Serverzustand: Ampel je Raum, Verläufe mit Perzentilen, Fehler-Zeitleiste (Go-Server mit K3C_STATUS_TOKEN)',
+    icon: '📈',
+    href: 'monitor.html',
     section: 'test',
   },
   {

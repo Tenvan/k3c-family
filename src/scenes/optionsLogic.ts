@@ -6,10 +6,13 @@ import { clampVolume, type Settings } from '../core/settings';
 import { t } from '../core/texts';
 import type { SlotCommand } from './localSlots';
 
-export type OptionId = 'music' | 'sfx' | 'screenshake' | 'flash' | 'colorblind' | 'language' | 'resume';
+export type OptionId = 'music' | 'sfx' | 'screenshake' | 'flash' | 'colorblind' | 'language' | 'resume' | 'leave';
 
 /** Feste Reihenfolge der Einträge */
-export const OPTION_IDS: readonly OptionId[] = ['music', 'sfx', 'screenshake', 'flash', 'colorblind', 'language', 'resume'];
+export const OPTION_IDS: readonly OptionId[] = ['music', 'sfx', 'screenshake', 'flash', 'colorblind', 'language', 'resume', 'leave'];
+
+/** Registry-Schlüssel: die Optionen melden „Spiel verlassen“, `GameScene` verlässt den Raum (B-293) */
+export const LEAVE_KEY = 'leaveGame';
 
 /** Pad-Tasten (standard mapping), die die Szene liest. B (Index 1) bleibt frei: Edge-Zurück auf der Xbox. */
 export const OPTION_PAD_KEYS = { A: 0, VIEW: 8, MENU: 9, UP: 12, DOWN: 13, LEFT: 14, RIGHT: 15 } as const;
@@ -29,29 +32,33 @@ export interface OptionResult {
   settings: Settings;
   /** „Weiter“ bestätigt: Szene schließen */
   close: boolean;
+  /** „Spiel verlassen“ bestätigt: Raum verlassen, zurück zur Lobby */
+  leave: boolean;
 }
 
 /** Links/Rechts ändert Regler um 10 % (0–100) und kippt Schalter; Bestätigen kippt Schalter oder wählt „Weiter“. */
 export function applyOption(settings: Settings, id: OptionId, dir: OptionDir): OptionResult {
-  const unchanged = { settings, close: false };
+  const unchanged = { settings, close: false, leave: false };
   switch (id) {
     case 'music':
     case 'sfx': {
       if (dir === 'confirm') return unchanged;
       const key = id === 'music' ? 'musicVolume' : 'sfxVolume';
       const value = clampVolume(settings[key] + (dir === 'left' ? -VOLUME_STEP : VOLUME_STEP), settings[key]);
-      return { settings: { ...settings, [key]: value }, close: false };
+      return { ...unchanged, settings: { ...settings, [key]: value } };
     }
     case 'screenshake':
     case 'flash':
     case 'colorblind': {
       const key = id === 'colorblind' ? 'colorblindSymbols' : id;
-      return { settings: { ...settings, [key]: !settings[key] }, close: false };
+      return { ...unchanged, settings: { ...settings, [key]: !settings[key] } };
     }
     case 'language':
-      return { settings: { ...settings, language: settings.language === 'de' ? 'en' : 'de' }, close: false };
+      return { ...unchanged, settings: { ...settings, language: settings.language === 'de' ? 'en' : 'de' } };
     case 'resume':
-      return { settings, close: dir === 'confirm' };
+      return { ...unchanged, close: dir === 'confirm' };
+    case 'leave':
+      return { ...unchanged, leave: dir === 'confirm' };
   }
 }
 
@@ -73,6 +80,8 @@ export function optionLabel(settings: Settings, id: OptionId): string {
       return `${t('opt.language')}  ◀ ${t(`lang.${settings.language}`)} ▶`;
     case 'resume':
       return t('opt.resume');
+    case 'leave':
+      return t('opt.leave');
   }
 }
 

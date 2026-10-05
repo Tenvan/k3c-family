@@ -94,6 +94,7 @@ export const en: Record<TextKey, string> = {
   'opt.colorblind': 'Colorblind symbols',
   'opt.language': 'Language',
   'opt.resume': 'Resume',
+  'opt.leave': 'Leave game',
   'opt.on': 'on',
   'opt.off': 'off',
   'opt.hint': 'Up/Down select · Left/Right change · A / Enter toggle · Menu / Esc close',

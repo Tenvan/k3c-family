@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="de">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>K3C Monitor</title>
+    <style>
+      :root { --bg: #11151c; --panel: #1c2330; --line: #2e3a4d; --text: #e8edf4; --dim: #8a97aa; --on: #ffd166; --bad: #ff6b6b; }
+      * { box-sizing: border-box; }
+      body { margin: 0; background: var(--bg); color: var(--text); font: 16px/1.4 system-ui, sans-serif; }
+      main { padding: max(4.75rem, 70px) 12px 12px; max-width: 64rem; margin: 0 auto; }
+      h1 { font-size: 1.4rem; margin: 0 0 4px; }
+      h2 { font-size: 1.05rem; margin: 14px 0 6px; color: var(--on); }
+      .dim { color: var(--dim); font-size: 0.9rem; }
+      .bad { color: var(--bad); }
+      .bar { display: flex; flex-wrap: wrap; gap: 6px; margin: 8px 0; }
+      .bar > * { flex: 1 1 7rem; }
+      button, input { font: inherit; color: var(--text); background: var(--panel); border: 1px solid var(--line);
+        border-radius: 8px; padding: 8px; min-height: 44px; }
+      button:focus-visible, input:focus-visible { outline: 2px solid var(--on); }
+      button.on { border-color: var(--on); }
+      .rooms { display: grid; grid-template-columns: repeat(auto-fill, minmax(15rem, 1fr)); gap: 6px; }
+      .rooms button { text-align: left; width: 100%; }
+      .light { display: inline-block; width: 0.9em; height: 0.9em; border-radius: 50%; margin-right: 6px; vertical-align: -0.1em; }
+      .green { background: #06d6a0; } .yellow { background: #ffd166; } .red { background: #ef476f; } .grey { background: #5c6778; }
+      table { width: 100%; border-collapse: collapse; font-variant-numeric: tabular-nums; }
+      th, td { padding: 4px 6px; border-bottom: 1px solid var(--line); text-align: right; }
+      th:first-child, td:first-child { text-align: left; color: var(--dim); }
+      canvas { display: block; width: 100%; height: 160px; background: var(--panel); border-radius: 8px; }
+      #events button { display: block; width: 100%; text-align: left; margin-bottom: 4px; overflow-wrap: anywhere; }
+      [hidden] { display: none !important; }
+    </style>
+  </head>
+  <body>
+    <main>
+      <h1>📈 Monitor</h1>
+      <p id="status" class="dim" role="status">Verbinde …</p>
+      <form id="login" class="bar" hidden>
+        <input id="token" type="password" autocomplete="off" placeholder="K3C_STATUS_TOKEN" aria-label="Token" />
+        <button type="submit">Token speichern</button>
+      </form>
+      <div class="bar" id="tabs">
+        <button type="button" data-view="overview">Übersicht</button>
+        <button type="button" data-view="history">Verlauf</button>
+        <button type="button" data-view="events">Ereignisse</button>
+      </div>
+      <section id="overview"></section>
+      <section id="history" hidden>
+        <div class="bar">
+          <button type="button" id="window">Fenster 5 min</button>
+          <button type="button" id="room"></button>
+        </div>
+        <table id="stats"></table>
+        <h2>Tick-Dauer (max je s)</h2>
+        <canvas id="c-tick"></canvas>
+        <h2>RTT je Gerät</h2>
+        <canvas id="c-rtt"></canvas>
+        <h2>Server: Heap und CPU</h2>
+        <canvas id="c-server"></canvas>
+        <p class="dim">Rote Punkte: Ausreißer. Striche unten: Diagnose-Ereignisse. Gestrichelt: Neustart. ▼: gewähltes Ereignis.</p>
+      </section>
+      <section id="events-view" hidden>
+        <div class="bar">
+          <button type="button" id="ev-room"></button>
+          <button type="button" id="ev-kind"></button>
+        </div>
+        <div id="events"></div>
+      </section>
+      <p class="dim">Controller: Steuerkreuz/Stick wählt, A bestätigt. Touch und Maus: antippen.</p>
+    </main>
+    <script type="module" src="/src/tools/monitor.ts"></script>
+  </body>
+</html>

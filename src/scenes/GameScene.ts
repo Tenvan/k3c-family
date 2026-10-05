@@ -13,6 +13,7 @@ import type { GameEvent, World } from '../model/types';
 import { computeLayout, type Cell } from './layout';
 import type { LobbySceneData } from './LobbyScene';
 import { leavesGame } from './lobbyLogic';
+import { LEAVE_KEY } from './optionsLogic';
 import { LocalSlots } from './localSlots';
 import type { RadarCell } from './radarView';
 import { daylight } from './viewRules';
@@ -156,6 +157,7 @@ export class GameScene extends Phaser.Scene {
     if (leavesGame(client.status)) return this.leaveRoom(); // Raum geschlossen, 120 s ohne Verbindung, an anderer Stelle geöffnet: zurück zur Lobby
     if (client.status !== 'room') return;
 
+    if (this.registry.get(LEAVE_KEY) === true) return this.leaveRoom(); // „Spiel verlassen“ im Menü (B-293)
     const seated = client.you.map((s) => s.slot);
     if (this.scene.isActive('options')) return this.paused(seated); // Optionen offen: Monarchen stehen, nur zeichnen
     if (this.wantsOptions()) this.scene.launch('options');
@@ -210,6 +212,7 @@ export class GameScene extends Phaser.Scene {
 
   /** Raum verlassen und zurück zur Lobby (die Hinweise zum Grund zeigt sie selbst) */
   private leaveRoom(): void {
+    this.registry.set(LEAVE_KEY, false);
     this.client.leave();
     this.scene.stop('hud');
     this.scene.stop('options');

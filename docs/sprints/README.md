@@ -24,6 +24,7 @@ Reihenfolge in Wellen, Bahnen je Domäne und Zuordnung Mensch/autonom (zwei Acco
 | SO1 | CLI | Audio-Kern: Mixer mit Bus-Lautstärke je Gerät, Entsperren per Eingabe, Sound-Atlas, Positions-Dämpfung, Demo-Ton (B-011 teils; einschiebbar; Hörprobe am TV offen) | – | `aktiv/SO1-audio-kern/` |
 | SO3 | PLAT | Hörprobenseite `soundtest.html` | – | `aktiv/SO3-hoerprobenseite/` |
 | RL1 | INF | Release-Checkliste: Abschnitt „Release“ in `docs/arbeitsweise.md`, Probelauf ohne Tag (B-170; einschiebbar; Pi und Xbox offen) | – | `aktiv/RL1-release-checkliste/` |
+| MON2 | PLAT | Monitoring-Seite `monitor.html`: Ampel je Raum, Verläufe mit Perzentilen, Fehler-Zeitleiste (B-282; Abnahme am Handy offen) | – | `aktiv/MON2-monitoring-seite/` |
 
 ## Offen am Gerät
 
@@ -46,6 +47,7 @@ Hardware-Sessions (`Agent: Mensch`) aus Sprints, deren Review schon abgeschlosse
 | RL1.2 | Raspberry Pi und Xbox (Pi-Image ziehen, Versionszeile der Landingpage gegen den Tag) | AC-03: Punkte „Pi-Image“ und „Version stimmt“ am Gerät (angenommen laut CI und Tests) | `aktiv/RL1-release-checkliste/` |
 | N2.4 | Xbox am TV (2 Controller, Split-Screen, Server auf dem Pi; FPS, Latenz, Puffer aus dem Debug-Overlay) | AC-06: kein sichtbares Ruckeln (angenommen laut Tests) | `aktiv/N2-zeitleiste-vorhersage/` |
 | DBG3.4 | Handy (neben laufendem Spiel am TV, Server mit `K3C_DEV=1`) | AC-04: `/dm` am Handy bedient, 375 px ohne waagerechtes Scrollen (angenommen laut Tests) | `aktiv/DBG3-dungeon-master-seite/` |
+| MON2.4 | Handy (neben `task load` oder am Spieleabend, Server mit `K3C_STATUS_TOKEN`) | AC-05: Monitor am Handy bedient, 375 px ohne waagerechtes Scrollen (angenommen laut Browser-Pane-Nachweis) | `aktiv/MON2-monitoring-seite/` |
 | S3.4 | Xbox am TV, Handy und Tastatur (Schlag, Skill-Slots, Skill-Menü, Aktionen-Overlay bedienen und lesen; Overlay und Preisschild können sich überlappen) | AC-05: Slots, Menü, Tasten und Overlay am Gerät abgenommen (angenommen laut Tests und Browser-Pane) | `aktiv/S3-skill-menue-overlay/` |
 
 ## Geplant (in dieser Reihenfolge)
@@ -55,12 +57,11 @@ dann über den Go-Server mit mehreren Räumen und gemischten Spielern.
 
 | Sprint | Domäne | Thema | Am Ende sichtbar | Reife | Ordner |
 |---|---|---|---|---|---|
-| MON2 | PLAT | Monitoring-Seite mit Dashboard | Kachel „Monitor“, am Handy unter `task load` Ampel, Verläufe mit Perzentilen und Fehler-Zeitleiste | Entwurf | `geplant/MON2-monitoring-seite/` |
 | S6 | CLI | Onboarding „Erste Nacht geführt“ und Controller-Glyphen | Ein Kind spielt die erste Nacht ohne Erklärung | bereit | `geplant/S6-onboarding-glyphen/` |
 | P1 | REG 🧑 | Spieleabend 1 | Protokoll und Folge-Tickets | Entwurf | `geplant/P1-spieleabend-1/` |
 | W4 | SIM | Wiederbeleben, Berufe, Händler, Elite und Limit | Tests je Regel grün, aktualisierte Golden-Daten | bereit | `geplant/W4-buerger-wiederbeleben/` |
-| W5 | SRV | Protokoll für Berufe, Händler, Lager und Hub-Stufe | `docs/protocol.md` mit neuen Feldern, Beispiele in `testdata/protocol/`, `task check:go` und `task check` grün | Entwurf | `geplant/W5-protokoll-wirtschaft/` |
-| W6 | CLI | Anzeigen für Bau, Lager, Hub und Bürger | HUD und Bauplätze am TV, von 🧑 abgenommen | Entwurf | `geplant/W6-anzeige-wirtschaft/` |
+| W5 | SRV | Protokoll für Berufe, Händler, Lager und Hub-Stufe | `docs/protocol.md` mit neuen Feldern, Beispiele in `testdata/protocol/`, `task check:go` und `task check` grün | bereit | `geplant/W5-protokoll-wirtschaft/` |
+| W6 | CLI | Anzeigen für Bau, Lager, Hub und Bürger | HUD und Bauplätze am TV, von 🧑 abgenommen | bereit | `geplant/W6-anzeige-wirtschaft/` |
 | BR1 | REG 🧑 | Balancing-Runde Wirtschaft und Spieleabend 2 | Pass/Fail je Kennzahl, Begründungen in `docs/rules/`, Protokoll in `docs/playtests/` | Entwurf | `geplant/BR1-balancing-wirtschaft/` |
 | K1 | SIM | Gegner-Traits, neue Gegner und Elite-KI | Tests je Trait und Gegner grün, aktualisierte Golden-Daten | bereit | `geplant/K1-gegner-traits/` |
 | K2 | SIM | Bosse, Siegvarianten und Inselwechsel | Tests je Boss, Siegvariante und Modus grün, Spielstand mit besiegten Bossen und aktueller Insel | Entwurf | `geplant/K2-bosse-siege-inseln/` |
