@@ -60,7 +60,7 @@ keine
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
 | W1.1 | `W1.1-hub-ausbau.md` | Umsetzung | autonom | fertig |
-| W1.2 | `W1.2-mauer-turm-stufen.md` | Umsetzung | autonom | offen |
+| W1.2 | `W1.2-mauer-turm-stufen.md` | Umsetzung | autonom | fertig |
 | W1.3 | `W1.3-zerstoerung-reparatur-spielstand.md` | Umsetzung | autonom | offen |
 | W1.4 | `W1.4-review.md` | Review | autonom | offen |
 
