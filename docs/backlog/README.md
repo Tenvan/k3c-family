@@ -116,6 +116,8 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-278](B-278-protokoll-langsame-geraete.md) | SRV | Schuld | mittel | offen | – | docs/protocol.md beschreibt, wie der Server langsame Geräte behandelt |
 | [B-280](B-280-warteschlange-nicht-zustaende.md) | SRV | Problem | niedrig | offen | – | Die Warteschlange einer Verbindung läuft nicht voll, wenn andere Nachrichten zwischen Zuständen stehen |
 | [B-279](B-279-protokoll-eingabe-takt.md) | SRV | Schuld | niedrig | offen | – | docs/protocol.md beschreibt den Eingabe-Takt so, wie der Client ihn seit N2 sendet |
+| [B-281](B-281-monitoring-dashboard.md) | SRV | Idee | hoch | eingeplant | MON1 | Der Server sammelt Latenzen, Tick-Dauer und Fehler als Verlauf und liefert sie über /api/metrics |
+| [B-282](B-282-monitoring-seite.md) | PLAT | Idee | hoch | eingeplant | MON2 | Die Monitoring-Seite zeichnet Verläufe, Perzentile und die Fehler-Zeitleiste aus /api/metrics |
 
 ## Archiv
 
