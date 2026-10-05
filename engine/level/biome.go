@@ -39,7 +39,13 @@ type Biome struct {
 		Count int    `json:"count"`
 		Kind  string `json:"kind"`
 	} `json:"veins"`
-	Enemies           struct {
+	// Lava: Chunks der Art „lava“ tragen in der Mitte einen Streifen von WidthUnits, der Figuren DamagePerSecond
+	// Schaden zufügt (B-115, Q28; Wirkung in engine/sim/lava.go). Ohne Feld keine Lava.
+	Lava struct {
+		DamagePerSecond float64 `json:"damagePerSecond"`
+		WidthUnits      float64 `json:"widthUnits"`
+	} `json:"lava"`
+	Enemies struct {
 		Portal []string `json:"portal"`
 		Night  []string `json:"night"`
 	} `json:"enemies"`

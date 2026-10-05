@@ -258,6 +258,8 @@ type World struct {
 	// noTravel: Die Stufe gehört zu einer Insel, deren Spieler einzeln wechseln (island_travel.go); der gemeinsame
 	// Stufenwechsel der Campaign (stepTravel) ist dort aus.
 	noTravel bool
+	// lavaIn: Sekunden bis zum nächsten Lava-Schaden (lava.go).
+	lavaIn float64
 	// island: die Insel, zu der die Stufe gehört (nil bei Campaign und einzelnen Welten: keine Optionen, Faktor 1,
 	// kein Lager-Maximum).
 	island *Island

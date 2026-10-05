@@ -165,3 +165,41 @@ func TestAdernJeStufe(t *testing.T) {
 		t.Errorf("%d Biome mit Adern, Wald %d Adern", withVeins, biome(t, "forest").Veins.Count)
 	}
 }
+
+// density sind die endlichen Objekte (Bäume, Felsen, Erz, Truhen, Camps) je 100 Units, gemittelt über 100 Seeds.
+func density(t *testing.T, id string) float64 {
+	t.Helper()
+	finite := map[string]bool{"tree": true, "rock": true, "copperOre": true, "chest": true, "recruitCamp": true}
+	objects, width := 0, 0.0
+	for seed := range 100 {
+		l, _ := Generate(biome(t, id), strconv.Itoa(seed))
+		for _, e := range l.Entities {
+			if finite[e.Kind] {
+				objects++
+			}
+		}
+		width += l.WidthUnits
+	}
+	return 100 * float64(objects) / width
+}
+
+// W2.2 (B-115/AC-02, Sprint W2 AC-04, Beschluss Q28): Breiten laut materialien-gebaeude.md § 1, Dichte unter Tage
+// nicht abnehmend und ab der Mine mindestens 2,8 endliche Objekte je 100 Units.
+func TestBreiteUndDichte(t *testing.T) {
+	widths := map[string]Range{"forest": {900, 1100}, "cave": {700, 900}, "mine": {550, 700}, "ironhold": {480, 560}, "crystal": {400, 480}}
+	for id, want := range widths {
+		if got := biome(t, id).LengthUnits; got != want {
+			t.Errorf("%s: Breite %v, laut Regel %v", id, got, want)
+		}
+	}
+	prev := 0.0
+	for i, id := range []string{"cave", "mine", "ironhold", "crystal"} {
+		d := density(t, id)
+		t.Logf("%s: %.2f endliche Objekte je 100 Units", id, d)
+		if d < prev || (i > 0 && d < 2.8) {
+			t.Errorf("%s: Dichte %.2f (davor %.2f), erwartet nicht abnehmend und ≥ 2,8", id, d, prev)
+		}
+		prev = d
+	}
+	t.Logf("forest: %.2f endliche Objekte je 100 Units", density(t, "forest"))
+}

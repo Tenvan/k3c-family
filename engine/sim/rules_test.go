@@ -77,11 +77,12 @@ func TestTreppenNurWoSieHinfuehren(t *testing.T) {
 		}
 		return out
 	}
-	forest, mine := kinds(newWorld(0, "x", Options{})), newWorld(2, "x", Options{})
-	if forest["stairsUp"] || !forest["stairsDown"] || !kinds(mine)["stairsUp"] || kinds(mine)["stairsDown"] {
-		t.Errorf("Treppen falsch: forest %v, mine %v", forest, kinds(mine))
+	// Tiefste Stufe ist seit W2.2 die Kristallhöhle (Tiefe 4), nicht mehr die Mine.
+	forest, deepest := kinds(newWorld(0, "x", Options{})), newWorld(4, "x", Options{})
+	if forest["stairsUp"] || !forest["stairsDown"] || !kinds(deepest)["stairsUp"] || kinds(deepest)["stairsDown"] {
+		t.Errorf("Treppen falsch: forest %v, tiefste %v", forest, kinds(deepest))
 	}
-	if pts := travelPoints(mine); len(pts) != 0 {
+	if pts := travelPoints(deepest); len(pts) != 0 {
 		t.Errorf("tiefste Stufe hat Ausgänge: %+v", pts)
 	}
 }

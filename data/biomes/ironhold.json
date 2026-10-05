@@ -1,0 +1,27 @@
+{
+  "id": "ironhold",
+  "name": "Tiefe 3 (Eisenstollen)",
+  "depth": 3,
+  "lengthUnits": { "min": 480, "max": 560 },
+  "chunkWidthUnits": 25,
+  "hubWidthUnits": 100,
+  "exitSide": "left",
+  "portals": { "count": 3, "minDistanceFromHubUnits": 135 },
+  "chunkWeights": { "gallery": 4, "forge": 2, "lava": 1 },
+  "eventChunks": {
+    "chest": { "min": 1, "max": 2 },
+    "recruitCamp": { "min": 1, "max": 1 }
+  },
+  "skillPoints": { "min": 3, "max": 5 },
+  "resourcesPerChunk": {
+    "gallery": { "rock": [1, 2], "copperOre": [0, 1] },
+    "forge": { "copperOre": [1, 2] },
+    "lava": {}
+  },
+  "primaryResource": "iron",
+  "veins": { "count": 2, "kind": "ironVein" },
+  "lava": { "damagePerSecond": 5, "widthUnits": 8 },
+  "enemies": { "portal": [], "night": [] },
+  "cycle": { "type": "aggressionPool", "percentPerMinute": 1, "percentPerKill": 5, "percentPerGather": 1 },
+  "palette": { "sky": "#1f0f0a", "far": "#3a1a10", "near": "#5a2a18", "ground": "#6b3a26" }
+}

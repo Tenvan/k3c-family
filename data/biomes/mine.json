@@ -14,9 +14,9 @@
   },
   "skillPoints": { "min": 3, "max": 5 },
   "resourcesPerChunk": {
-    "shaft": { "rock": [1, 3] },
-    "rails": { "rock": [1, 2], "copperOre": [0, 1] },
-    "oreVein": { "copperOre": [2, 4] }
+    "shaft": { "rock": [3, 4] },
+    "rails": { "rock": [2, 3], "copperOre": [1, 2] },
+    "oreVein": { "copperOre": [4, 6] }
   },
   "primaryResource": "copper",
   "veins": { "count": 2, "kind": "copperVein" },
