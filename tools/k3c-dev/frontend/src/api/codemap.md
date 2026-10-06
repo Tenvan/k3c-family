@@ -6,9 +6,9 @@ Backend-Vertrag der Oberfläche (Port/Adapter): typisiert alle Aufrufe und Ereig
 
 ## Design
 
-- Ports: `types.ts` definiert `Backend` (Request/Response-Methoden, `on()` für Events, `openUrl()`, Flag `mock`), die DTOs (`ServiceStatus`, `Source`, `ConsoleLine`, `LogView`, `ErrorsView`, `McpOverview`, `McpUsage`, `TaskRun`, `PlanningData`, `GitHubData` …) und das Event-Mapping `Events`/`EventName` (`service:state`, `console:line`, `mcp:call`, `task:state`, `planning:changed` …). Kommentare nennen den Go-Gegentyp.
-- Adapter Wails: `wails.ts` – `hasWails()` prüft `window.go.main.App` + `window.runtime`; `wailsBackend()` delegiert 1:1 an das `GoApp`-Interface und `EventsOn`. Die generierten `wailsjs/`-Dateien werden bewusst nicht importiert (Typecheck ohne Wails-CLI).
-- Adapter Mock: `mock.ts` (`mockBackend()`) mit Event-Emitter und Listener-Map, zusammengesetzt aus Teil-Mocks je Seite: `mockServices.ts`, `mockLogs.ts`, `mockLogFiles.ts`, `mockMcp.ts`, `mockTasks.ts`, `mockPlanning.ts` (erfundene Daten, simulierte Events).
+- Ports: `types.ts` definiert `Backend` (Request/Response-Methoden, `on()` für Events, `openUrl()`, Flag `mock`), die DTOs (`ServiceStatus`, `Source`, `ConsoleLine`, `LogView`, `ErrorsView`, `McpOverview`, `McpUsage`, `TaskRun`, `PlanningData` mit `PlanSprint`/`PlanSession`/`PlanTicket` (Felder `prio`, `env`, `worktree`, `deps`), `GitHubData` …) und das Event-Mapping `Events`/`EventName` (`service:state`, `console:line`, `mcp:call`, `task:state`, `planning:changed` …). Kommentare nennen den Go-Gegentyp.
+- Adapter Wails: `wails.ts` – `hasWails()` prüft `window.go.main.App` + `window.runtime`; `wailsBackend()` delegiert 1:1 an das `GoApp`-Interface (u. a. `ServicesReload`, `PlanningSet`, `GitHubStatus`), `openUrl` über `runtime.BrowserOpenURL`, Ereignisse über `EventsOn`. Die generierten `wailsjs/`-Dateien werden bewusst nicht importiert (Typecheck ohne Wails-CLI).
+- Adapter Mock: `mock.ts` (`mockBackend()`) mit Event-Emitter und Listener-Map, zusammengesetzt aus Teil-Mocks je Seite: `mockServices.ts`, `mockLogs.ts`, `mockLogFiles.ts`, `mockMcp.ts`, `mockTasks.ts`, `mockPlanning.ts` (`mockPlanning(changed)`: Sprints, Tickets, GitHub-Stand; `planningSet` ändert Kopf-Felder im Speicher und löst `planning:changed` aus), `mockServices.ts` (`mockServices(emit)`: Dienste, `servicesReload`, simulierte `service:state`-Ereignisse). Alle Daten sind erfunden.
 - Factory/Singleton: `index.ts` exportiert `backend` (Wails wenn vorhanden, sonst Mock) und re-exportiert die Typen.
 
 ## Flow

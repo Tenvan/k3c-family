@@ -2,11 +2,11 @@
 
 ## Responsibility
 
-CLI entry point und Composition Root des Go-Servers: liefert `dist/` aus, stellt HTTP-/WebSocket-API, Spielstände und Berichte bereit und hostet die Räume (Online-Modus).
+CLI entry point und Composition Root des Go-Servers: liefert `dist/` aus, stellt HTTP-/WebSocket-API, Spielstände und Berichte bereit und hostet die Räume (Online-Modus) samt Messreihen (`/api/metrics`) und Dev-Seite (`/api/dev`).
 
 ## Design
 
-- `main.go`: `config` aus der Umgebung (`K3C_HTTP_PORT`, `K3C_HTTPS_PORT`, `K3C_DIST`, `K3C_SAVES_DIR`, `K3C_REPORTS_DIR`, `K3C_CERTS_DIR`, `K3C_STATUS_TOKEN`, `K3C_DEV`); `run` verdrahtet `store.Saves`, `room.Manager` und `k3cnet.NewHandler` (Dependency Wiring); `-health` dient als Docker-HEALTHCHECK (`checkHealth`).
+- `main.go`: `config` aus der Umgebung (`K3C_HTTP_PORT`, `K3C_HTTPS_PORT`, `K3C_DIST`, `K3C_SAVES_DIR`, `K3C_REPORTS_DIR`, `K3C_CERTS_DIR`, `K3C_STATUS_TOKEN`, `K3C_DEV`; Dev-Mode an, solange nicht `0`); `run` verdrahtet `store.Saves`, `store.Reports`, `room.Manager` (`Log`, `Sessions` = Reports für die Spielmetrik, `Dev`) und `k3cnet.NewHandler` (Dependency Wiring); `-health` dient als Docker-HEALTHCHECK (`checkHealth`).
 - Version und Buildzeit per `-ldflags` (`version`, `built`, Fallback `buildTime` = Änderungszeit der EXE).
 - `logging.go`: `newLogger`/`newNamedLogger` mit `fanout` (zwei `slog.Handler`: farbige Konsole via `engine/conlog` + JSON-Datei), `rotating` (eine Vorgänger-Generation, `maxClientLogBytes`), `consoleLevel` (`K3C_LOG_LEVEL`), `logDir` (`K3C_LOG_DIR` oder vorhandener `logs/`).
 
