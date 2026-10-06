@@ -1,4 +1,6 @@
-# Protokoll v4
+# Protokoll v5
+
+**Änderungen gegenüber v4 (W5, Version 5, B-153, B-283):** `snap`/`delta` nennen den Wirtschaftsstand (`stockMax`, `hubLevel`, `hubUpgrade`, `danger`, `merchant`, `drops`, Berufe der Bürger; siehe *Wirtschaft: Hub, Lager, Wartegrund, Händler*) und die Ereignisse `revived`, `disarmed`, `equipmentTaken`. Keine neuen Nachrichten: Hub-Ausbau, Tausch beim Händler und Berufswahl bleiben Bezahlen am Ort über `input.pay` (B-330). `hello.v` muss 5 sein; ein v4-Client erhält `version`.
 
 **Änderungen in v4 (S2.4, B-176):** Ein Gerät bekommt Level und Zustand **jeder** Stufe, in der einer seiner Slots
 steht, je Stufe ein eigener Strom. `level`, `snap` und `delta` tragen auf oberster Ebene `stage` (Index der Stufe auf
@@ -208,8 +210,8 @@ vollständig und in Reihenfolge, deshalb braucht es keine Wiederholung und keine
 **Version:** Das Feld `v` steht nur im Handschlag (`hello`, `welcome`), nicht in jeder Nachricht. Die Version gilt für
 die ganze Verbindung; jede weitere Nachricht damit auszustatten kostet bei 30 Snapshots pro Sekunde nur Bytes.
 Erste Nachricht nach dem Verbinden ist immer `hello`. Ist sie kein gültiges `hello` (kein JSON, anderer Typ, Feld
-fehlt, `v` nicht 4), antwortet der Server mit `version` und schließt: Ein alter v1-Client schickt zuerst `join`, ein
-v3-Client schickt `v: 3`.
+fehlt, `v` nicht 5), antwortet der Server mit `version` und schließt: Ein alter v1-Client schickt zuerst `join`, ein
+v4-Client schickt `v: 4`.
 
 **Takt:** Ein laufender Raum tickt mit **30 Hz** und schickt jedem seiner Geräte pro Tick und Stufe des Geräts höchstens
 einen Zustand (`snap` oder `delta`, Stufen aufsteigend). Ein pausierter Raum schickt nichts. Geräte schicken `input`
@@ -226,7 +228,7 @@ das zählt als Abbruch.
 
 | Nachricht | Richtung | Wann | Felder | Beispiel |
 |---|---|---|---|---|
-| `hello` | Gerät → Server | als erste Nachricht | `v` Protokoll-Version (4), `device` Geräte-ID (≤ 64 Zeichen) | `c2s-hello.json` |
+| `hello` | Gerät → Server | als erste Nachricht | `v` Protokoll-Version (5), `device` Geräte-ID (≤ 64 Zeichen) | `c2s-hello.json` |
 | `welcome` | Server → Gerät | Antwort auf passendes `hello` | `v`, `tickHz`, `limits` (Grenzen aus *Grenzen*) | `s2c-welcome.json` |
 | `rooms` | Server → Gerät | nach `welcome`, sobald das Gerät wieder in keinem Raum ist, und bei jeder Änderung, solange es in keinem Raum ist | `rooms[]`: `code`, `name`, `depth`, `grade`, `taken` (besetzt + wartend), `free` (4 − `taken`), `running` | `s2c-rooms.json` |
 | `create` | Gerät → Server | Raum erstellen | `save` Name des Spielstands (`^[a-z0-9-]{1,32}$`), `fresh` neu (true) oder gespeicherten laden, `depth` Startstufe (nur bei `fresh`), `slots[]`, optional `grade`, `goal`, `defeat` (siehe oben) | `c2s-create.json` |
@@ -359,7 +361,7 @@ Geprüft von `TestWirtschaftZustand`, `TestWirtschaftDelta`, `TestWirtschaftBeis
 | `save_not_found` | `create` mit `fresh: false` und einem Namen, den es nicht gibt | bleibt |
 | `room_closed` | Raum abgestürzt oder Server fährt herunter; Gerät geht zurück zur Raumliste | bleibt (beim Herunterfahren: Server schließt) |
 | `replaced` | dieselbe Geräte-ID ist demselben Raum über eine neue Verbindung beigetreten | Server schließt, kein automatisches Neuverbinden |
-| `version` | erste Nachricht ist kein gültiges `hello` oder `v` ist nicht 4 | Server schließt |
+| `version` | erste Nachricht ist kein gültiges `hello` oder `v` ist nicht 5 | Server schließt |
 | `forbidden` | `dev` ohne Dev-Mode am Server; die Warnung steht im Log | bleibt, Nachricht wird verworfen |
 | `bad_request` | kein gültiges JSON, unbekannter Typ, Feld fehlt, Name passt nicht zum Format, ungültiger Slot (doppelt, keine Zahl 0–3, bei `input`/`removeSlot` nicht vom Gerät, bei `addSlot` schon vergeben), ungültige Felder von `dev`, ungültiger Skill-Slot (`input.p[].skill` nicht 0–4), unbekannter Skill, abgelehntes `learn`/`respec` (Slot nicht vom Gerät, Feld fehlt, schon gelernt, keine Punkte, Tier-Gating, Respec nicht am Tag oder nicht an der Burg), Nachricht passt nicht zum Zustand (`input`, `addSlot`, `removeSlot`, `leave`, `dev`, `learn`, `respec` ohne Raum; `create`, `join` im Raum) | bleibt, Nachricht wird verworfen |
 
@@ -433,6 +435,16 @@ Stufe und Tick, erste 1800 Ticks nach dem Aufwärmen, schneller Zyklus mit Näch
 | ganzer Zustand (`snap`) | 7,8 KB | 13,6 KB |
 
 Ereignisse brauchen damit ≈ 0,13 KB/s je Client (2 % des Budgets).
+
+**Vor und nach W5 (B-153/AC-05, 2026-10-06, Intel Core Ultra 7 165H, gleicher Benchmark, 3 Stufen, 4 Spieler):** vorher Stand `e26de644` (W5.1), nachher Stand W5.2 (Protokoll v5).
+
+| je Stufe und Tick | vorher Mittel | vorher p99 | nachher Mittel | nachher p99 |
+|---|---|---|---|---|
+| `events` | 4,4 Byte | 52 Byte | 4,4 Byte | 52 Byte |
+| ganzer Zustand (`World`-JSON) | 13 068 Byte | 18 063 Byte | 13 066 Byte | 18 063 Byte |
+| Wirtschaftsstand oben im Zustand (`EconomyOf`, neu in W5.1) | – | – | 113 Byte | 122 Byte |
+
+Der Benchmark misst das JSON der Welt; die Felder aus `sim.EconomyOf`, die `stateOf` (`engine/net/protocol.go`) oben in den Zustand legt, sind darin nicht enthalten und wurden mit derselben Insel und denselben 1800 Ticks einzeln gemessen (Wegwerf-Test). Ein `snap` wächst durch W5 also um ≈ 0,1 KB (≈ 1 %); die neuen Felder der Welt (`merchant`, `drops`, Berufe) standen schon vorher im `World`-JSON. Für den ganzen Zustand ist keine Grenze beschlossen.
 
 **Je Gerät (S2.4, B-176/AC-04):** Mit mehreren Stufen gilt das Budget **je Gerät**, also für die Summe über seine
 Stufen. Geprüft von `TestStufenEreignisBudgetJeGeraet` (`engine/room/stages_bench_test.go`): ein Gerät, zwei Spieler in

@@ -63,7 +63,7 @@ keine
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
 | W5.1 | `W5.1-felder.md` | Umsetzung | autonom | fertig |
-| W5.2 | `W5.2-eingaben-version-bytes.md` | Umsetzung | autonom | offen |
+| W5.2 | `W5.2-eingaben-version-bytes.md` | Umsetzung | autonom | fertig |
 | W5.3 | `W5.3-review.md` | Review | autonom | offen |
 
 Bei `Reife: Entwurf` genügen Stichpunkte mit den Kriterien in Klammern statt Session-Dateien. Vor dem Aktivieren

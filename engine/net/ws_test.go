@@ -177,7 +177,8 @@ func waitFor(t *testing.T, ok func() bool) {
 func TestHandschlagFalsch(t *testing.T) {
 	srv, _ := wsServer(t)
 	for _, first := range []string{`kein json`, `{"t":"join","room":"KRNZ","slots":[0]}`, `{"t":"hello","v":1,"device":"x"}`, `{"t":"hello","v":2,"device":"x"}`,
-		`{"t":"hello","v":4,"device":""}`, `{"t":"hello","v":4,"device":"` + strings.Repeat("x", 65) + `"}`} {
+		`{"t":"hello","v":4,"device":"x"}`, // v4-Client vor W5.2
+		`{"t":"hello","v":5,"device":""}`, `{"t":"hello","v":5,"device":"` + strings.Repeat("x", 65) + `"}`} {
 		c := dial(t, srv)
 		c.send(first)
 		if m := c.next(); m["code"] != "version" {

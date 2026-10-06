@@ -46,9 +46,9 @@ function room() {
 }
 
 describe('Protokoll v4: Skills und Aktionen', () => {
-  it('hello trägt v 4, welcome aus dem Beispiel auch', () => {
-    expect(PROTOCOL_VERSION).toBe(4);
-    expect(lobby().sock.sent[0]).toEqual({ t: 'hello', v: 4, device: 'dev-1' });
+  it('hello trägt v 5 (W5.2), welcome aus dem Beispiel auch', () => {
+    expect(PROTOCOL_VERSION).toBe(5);
+    expect(lobby().sock.sent[0]).toEqual({ t: 'hello', v: 5, device: 'dev-1' });
     expect(welcome.v).toBe(PROTOCOL_VERSION);
   });
 

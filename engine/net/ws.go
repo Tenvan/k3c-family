@@ -17,7 +17,7 @@ import (
 	"k3c/engine/room"
 )
 
-// WebSocket /ws nach Protokoll v4. Jede Verbindung hat eine Lese-Schleife (diese Goroutine) und eine
+// WebSocket /ws nach Protokoll v5. Jede Verbindung hat eine Lese-Schleife (diese Goroutine) und eine
 // Schreib-Goroutine mit Warteschlange. Ein Zustand ersetzt einen noch wartenden derselben Stufe am Ende der Warteschlange
 // (nur der neueste zählt, B-276; je Stufe ein Strom, B-176); Delta und JSON des Zustands baut erst die Schreib-Goroutine. Ist die Warteschlange voll, wird die
 // Verbindung geschlossen, das zählt als Abbruch.
