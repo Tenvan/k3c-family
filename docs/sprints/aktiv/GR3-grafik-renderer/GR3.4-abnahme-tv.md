@@ -14,6 +14,10 @@
 
 ## Kontext
 
+**Controller zurückgestellt (B-314, 2026-10-06):** 🧑 prüft vorerst nur am PC mit Tastatur und Maus (1 Spieler; 2 Spieler an einer Tastatur erst mit B-316). Controller-, Vibrations- und Xbox-Schritte dieser Session sind nach B-314 verschoben; die Kriterien bleiben, ihr Controller-Anteil gilt als `angenommen, Validierung offen (B-314)`.
+
+**Spielstand (B-315):** Für die Sicht auf alle Gebäude in allen Ausbaustufen braucht 🧑 einen voll ausgebauten Spielstand aus dem Level-Betrachter (B-315); bis dahin ist nur Stufe 1 sichtbar (Protokoll liefert die Stufen erst mit B-208).
+
 Ein Agent nimmt diese Session nicht und bereitet sie nicht vor. Dauer etwa 15 Minuten. Hardware-Session nach `docs/arbeitsweise.md` › Hardware entkoppelt: keine Abhängigkeit des Reviews GR3.3. Bis zur Abnahme gelten AC-04 und AC-06 als `angenommen, Validierung offen (GR3.4)`. Ohne Stufe im Snapshot zeigen Mauer und Turm die Stein-Grafik (bewusste Abweichung aus GR3.3, kein Mangel).
 
 ## Erlaubte Dateien
@@ -42,4 +46,4 @@ Manuell durch 🧑 an der Xbox.
 
 ## Ergebnis
 
-–
+2026-10-06, **Tastatur und Maus (Sammelaussage):** 🧑 (Ralf) im Chat: „Alle Tastatur und Maussteuerungen liefen bisher wie definiert.“ Gilt für den Tastatur- und Maus-Anteil dieser Session am PC; Darstellung, Ton und Controller (B-314) sind damit nicht abgenommen, die Session bleibt `offen`.

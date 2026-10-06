@@ -122,6 +122,9 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-302](B-302-aufraeumen-branches-worktrees.md) | INF | Schuld | mittel | offen | – | Lokale Branches und Worktrees werden an festen Meilensteinen aufgeräumt |
 | [B-312](B-312-wiederaufheben-begrenzen.md) | SIM | Problem | hoch | offen | – | Sofortiges Wiederaufheben fallengelassener Ausrüstung macht die Burg bei passivem Spiel unverwundbar |
 | [B-313](B-313-vermerk-wirkung-offen-test.md) | SIM | Frage | hoch | offen | – | W4.3b kann den Vermerk „Wirkung offen“ nur mit einer Änderung an sites_test.go ersetzen |
+| [B-314](B-314-controller-pruefungen-zurueckgestellt.md) | PLAT | Schuld | niedrig | offen | – | Alle Controller-Prüfungen sind gesammelt nachgeholt |
+| [B-315](B-315-spielstand-voll-ausgebaut.md) | SRV | Idee | hoch | offen | – | Der Level-Betrachter erzeugt einen Spielstand mit allen Gebäuden voll ausgebaut |
+| [B-316](B-316-tastatur-zwei-spieler.md) | PLAT | Idee | hoch | offen | – | Zwei Spieler spielen an einer Tastatur im Split-Screen |
 
 ## Archiv
 
