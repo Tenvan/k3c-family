@@ -1,6 +1,6 @@
 # W10 · SRV · Kämpfer-Zahl und Truppen-Limit im Zustand
 
-- **Status:** aktiv
+- **Status:** erledigt
 - **Domäne:** SRV
 - **Prio:** hoch
 - **Reife:** bereit
@@ -65,11 +65,14 @@ keine
 |---|---|---|---|---|
 | W10.1 | `W10.1-economy-kaempfer.md` | Umsetzung | autonom | fertig |
 | W10.2 | `W10.2-protokoll.md` | Umsetzung | autonom | fertig |
-| W10.3 | `W10.3-review.md` | Review | autonom | offen |
+| W10.3 | `W10.3-review.md` | Review | autonom | fertig |
 
 Bei `Reife: Entwurf` genügen Stichpunkte mit den Kriterien in Klammern statt Session-Dateien. Vor dem Aktivieren
 wird jede Session als eigene Datei nach `docs/vorlagen/session.md` geschrieben.
 
 ## Abnahme
 
-–
+- 2026-10-06 (W10.3, autonom): AC-01 (W10.1: B-332 Variante A, W6.1 abhängig von W10), AC-02 (W10.1: `TestEconomyKaempferUndLimit`, Golden und Welt-JSON unverändert), AC-03 (W10.2: `TestKaempferZustandUndDelta`, `TestFormWieBeispiele`, `TestWirtschaftBeispiel`, `clientWirtschaft.test.ts` mit und ohne die Felder) mit Nachweis.
+- Review des Diffs: keine schweren Befunde, keine behoben; in `engine/sim/` nur `economy_view*.go`, Regel nur in `barracks.go`, Version bleibt 5.
+- Neue Tickets: keine. B-332 erledigt und archiviert.
+- Version: v0.14.1 vorgeschlagen (Patch: zwei zusätzliche optionale Zustandsfelder, Version bleibt 5, keine sichtbare Wirkung, bis W6 sie zeigt); gesetzt erst nach Bestätigung durch 🧑.

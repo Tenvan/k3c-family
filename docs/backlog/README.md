@@ -127,7 +127,6 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-328](B-328-feuergeist-flammen-flaeche.md) | SIM | Frage | niedrig | offen | K1 | Der Feuergeist hinterlässt eine Flammen-Fläche |
 | [B-329](B-329-figuren-neue-gegner.md) | CLI | Schuld | niedrig | offen | – | Die sechs neuen Gegner zeigen eigene Figuren statt Platzhalter |
 | [B-331](B-331-einheitlicher-grafikstil-pipeline.md) | CLI | Idee | mittel | offen | – | Alle Grafiken laufen durch eine Pipeline mit Ziel-Palette und gleicher Pixeldichte |
-| [B-332](B-332-truppen-limit-im-zustand.md) | SRV | Frage | hoch | eingeplant | W10 | Kämpfer-Zahl und Truppen-Limit stehen im Zustand |
 
 ## Archiv
 
@@ -139,6 +138,7 @@ Zeile in diesen Abschnitt.
 |---|---|---|---|---|---|---|
 | [B-153](archiv/B-153-protokoll-berufe-haendler-lager-hub.md) | SRV | Idee | hoch | erledigt | W5 | Das Protokoll kennt Berufe, Händler, Lagerstand, Hub-Stufe und Wartegrund |
 | [B-283](archiv/B-283-protokoll-berufe-tausch-grabstein.md) | SRV | Idee | mittel | erledigt | W5 | Das Protokoll kennt Beruf ausbilden, Tauschen, Berufe der Bürger und Grabstein/Wiederbeleben |
+| [B-332](archiv/B-332-truppen-limit-im-zustand.md) | SRV | Frage | hoch | erledigt | W10 | Kämpfer-Zahl und Truppen-Limit stehen im Zustand |
 | [B-330](archiv/B-330-wirtschaft-eingaben-ohne-sim-funktion.md) | SIM | Frage | hoch | erledigt | W5 | Für Hub-Ausbau, Tausch und Berufswahl ist entschieden, ob es eigene Eingaben gibt |
 | [B-014](archiv/B-014-krieger-elite.md) | SIM | Idee | mittel | erledigt | W4 | Krieger und Elite-Truppen sind umgesetzt |
 | [B-120](archiv/B-120-wiederbeleben.md) | SIM | Idee | mittel | erledigt | W4 | Gefallene Monarchen bleiben liegen, Mitspieler beleben sie wieder, sonst Respawn nach 15 s |
