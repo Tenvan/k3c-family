@@ -1,12 +1,12 @@
 # W5 · SRV · Protokoll für Berufe, Händler, Lager und Hub-Stufe
 
-- **Status:** geplant
+- **Status:** aktiv
 - **Domäne:** SRV
 - **Prio:** hoch
 - **Reife:** bereit
 - **Einschiebbar:** nein
 - **Tickets:** B-153, B-283
-- **Start-Commit:** –
+- **Start-Commit:** e26de644
 - **Spec:** freigegeben
 - **Revision:** 2
 - **Freigabe:** 2026-10-05, Chat, durch 🧑, Revision 2; mit Änderungen aus der Spec-Prüfung
@@ -62,7 +62,7 @@ keine
 
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
-| W5.1 | `W5.1-felder.md` | Umsetzung | autonom | offen |
+| W5.1 | `W5.1-felder.md` | Umsetzung | autonom | blockiert |
 | W5.2 | `W5.2-eingaben-version-bytes.md` | Umsetzung | autonom | offen |
 | W5.3 | `W5.3-review.md` | Review | autonom | offen |
 
