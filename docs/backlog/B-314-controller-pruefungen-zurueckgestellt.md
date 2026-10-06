@@ -3,8 +3,8 @@
 - **Domäne:** PLAT
 - **Typ:** Schuld
 - **Prio:** niedrig
-- **Status:** offen
-- **Sprint:** –
+- **Status:** eingeplant
+- **Sprint:** HW1
 - **Erstellt:** 2026-10-06
 - **Spec:** Entwurf
 - **Revision:** 1

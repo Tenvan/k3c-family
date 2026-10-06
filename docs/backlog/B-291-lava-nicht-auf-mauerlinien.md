@@ -3,8 +3,8 @@
 - **Domäne:** SIM
 - **Typ:** Problem
 - **Prio:** mittel
-- **Status:** offen
-- **Sprint:** –
+- **Status:** eingeplant
+- **Sprint:** LV1
 - **Erstellt:** 2026-10-05
 - **Spec:** Entwurf
 - **Revision:** 1

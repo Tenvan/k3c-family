@@ -3,8 +3,8 @@
 - **Domäne:** SRV
 - **Typ:** Schuld
 - **Prio:** mittel
-- **Status:** offen
-- **Sprint:** –
+- **Status:** eingeplant
+- **Sprint:** ST1
 - **Erstellt:** 2026-10-04
 - **Spec:** Entwurf
 - **Revision:** 1

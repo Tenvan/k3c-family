@@ -3,8 +3,8 @@
 - **Domäne:** INF
 - **Typ:** Idee
 - **Prio:** niedrig
-- **Status:** offen
-- **Sprint:** –
+- **Status:** eingeplant
+- **Sprint:** PB1
 - **Erstellt:** 2026-09-29
 - **Spec:** Entwurf
 - **Revision:** 1

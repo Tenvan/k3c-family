@@ -8,29 +8,29 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 
 | Nr. | Domäne | Typ | Prio | Status | Sprint | Titel |
 |---|---|---|---|---|---|---|
-| [B-275](B-275-worktree-unter-claude.md) | SRV | Problem | hoch | offen | – | k3c-dev und Vite arbeiten in Worktrees unter `.claude/worktrees/` richtig |
-| [B-007](B-007-skill-baum.md) | SIM | Idee | hoch | offen | – | Skill-Baum mit Tank und Zauberer ist spielbar |
+| [B-275](B-275-worktree-unter-claude.md) | SRV | Problem | hoch | eingeplant | M9 | k3c-dev und Vite arbeiten in Worktrees unter `.claude/worktrees/` richtig |
+| [B-007](B-007-skill-baum.md) | SIM | Idee | hoch | eingeplant | SK1 | Skill-Baum mit Tank und Zauberer ist spielbar |
 | [B-008](B-008-spieleabend.md) | REG | Frage | hoch | eingeplant | P1 | Familie hat einen Spieleabend gespielt und Feedback gegeben |
 | [B-011](B-011-sound.md) | CLI | Idee | mittel | eingeplant | SO1 | Spiel hat Sound und Musik |
 | [B-013](B-013-gegner-elite.md) | SIM | Idee | mittel | eingeplant | K1 | Restliche Gegner und Elite-KI sind umgesetzt |
 | [B-014](B-014-krieger-elite.md) | SIM | Idee | mittel | eingeplant | W4 | Krieger und Elite-Truppen sind umgesetzt |
 | [B-015](B-015-gebaeude-werte.md) | REG | Problem | mittel | eingeplant | BR1 | Gebäude-HP und -Kosten sind gebalanced |
-| [B-019](B-019-test-abdeckung.md) | INF | Idee | niedrig | offen | – | Test-Abdeckung der Engine ist sichtbar |
-| [B-023](B-023-itch-io.md) | INF | Idee | niedrig | offen | – | Spiel ist auf itch.io veröffentlicht |
-| [B-024](B-024-tiefe-3-4.md) | REG | Idee | niedrig | offen | – | Tiefe 3 und 4 sind beschrieben |
-| [B-037](B-037-lobby.md) | CLI | Idee | mittel | offen | – | Lobby zeigt Räume und startet Spiele |
-| [B-040](B-040-server-finden.md) | SRV | Idee | niedrig | offen | – | Geräte finden den Server im Heimnetz |
-| [B-041](B-041-wails-starter.md) | SRV | Idee | niedrig | offen | – | Wails-Starter für Windows existiert |
+| [B-019](B-019-test-abdeckung.md) | INF | Idee | niedrig | eingeplant | CI1 | Test-Abdeckung der Engine ist sichtbar |
+| [B-023](B-023-itch-io.md) | INF | Idee | niedrig | eingeplant | PB1 | Spiel ist auf itch.io veröffentlicht |
+| [B-024](B-024-tiefe-3-4.md) | REG | Idee | niedrig | eingeplant | RG2 | Tiefe 3 und 4 sind beschrieben |
+| [B-037](B-037-lobby.md) | CLI | Idee | mittel | eingeplant | LB1 | Lobby zeigt Räume und startet Spiele |
+| [B-040](B-040-server-finden.md) | SRV | Idee | niedrig | eingeplant | BT1 | Geräte finden den Server im Heimnetz |
+| [B-041](B-041-wails-starter.md) | SRV | Idee | niedrig | eingeplant | BT1 | Wails-Starter für Windows existiert |
 | [B-042](B-042-pi-leistungsziel.md) | SRV | Frage | hoch | eingeplant | LT1 | Pi-Modell und Leistungsziel sind festgelegt |
-| [B-048](B-048-standardbibliothek-in-001.md) | SRV | Frage | niedrig | offen | – | Die Wahl der Go-Standardbibliothek ist dort festgehalten, wo B-001 auf sie verweist |
-| [B-053](B-053-ci-lauf-sp01.md) | INF | Problem | hoch | offen | – | Die CI hat die Prüfungen aus SP01 einmal grün durchlaufen |
-| [B-058](B-058-execution-policy.md) | INF | Frage | niedrig | offen | – | requirements.md empfiehlt keine Sicherheitseinstellung ohne Entscheidung von 🧑 |
-| [B-075](B-075-golden-spielstand-hub.md) | SIM | Schuld | mittel | offen | – | Der Golden-Spielstand enthält einen gebauten und veränderten Hub |
+| [B-048](B-048-standardbibliothek-in-001.md) | SRV | Frage | niedrig | eingeplant | BT1 | Die Wahl der Go-Standardbibliothek ist dort festgehalten, wo B-001 auf sie verweist |
+| [B-053](B-053-ci-lauf-sp01.md) | INF | Problem | hoch | eingeplant | CI1 | Die CI hat die Prüfungen aus SP01 einmal grün durchlaufen |
+| [B-058](B-058-execution-policy.md) | INF | Frage | niedrig | eingeplant | RP1 | requirements.md empfiehlt keine Sicherheitseinstellung ohne Entscheidung von 🧑 |
+| [B-075](B-075-golden-spielstand-hub.md) | SIM | Schuld | mittel | eingeplant | W7 | Der Golden-Spielstand enthält einen gebauten und veränderten Hub |
 | [B-080](B-080-dev-tasten-server.md) | SRV | Idee | niedrig | eingeplant | K4 | Dev-Tasten (Gold, Stufe, Neustart) wirken über den Server |
 | [B-090](B-090-radar.md) | CLI | Idee | mittel | eingeplant | U1 | Ein Radar im HUD zeigt Burg, Portale, Ausgang, Mitspieler und Gegner |
 | [B-092](B-092-level-betrachter.md) | PLAT | Idee | mittel | eingeplant | U3 | Eine Testseite zeigt ein generiertes Level (Seed und Biom) ohne zu spielen |
-| [B-094](B-094-npm-reste.md) | INF | Schuld | niedrig | offen | – | Im Repo liegen keine Alt-Binaries und keine npm-Skripte mehr |
-| [B-095](B-095-start-mit-seed-und-tiefe.md) | SRV | Idee | niedrig | offen | – | Ein neues Spiel startet per URL mit eigenem Seed und gewählter Tiefe |
+| [B-094](B-094-npm-reste.md) | INF | Schuld | niedrig | eingeplant | RP1 | Im Repo liegen keine Alt-Binaries und keine npm-Skripte mehr |
+| [B-095](B-095-start-mit-seed-und-tiefe.md) | SRV | Idee | niedrig | eingeplant | BT1 | Ein neues Spiel startet per URL mit eigenem Seed und gewählter Tiefe |
 | [B-098](B-098-debug-overlay-standard-zurueck.md) | CLI | Schuld | niedrig | eingeplant | K5 | Das Debug-Overlay ist vor dem Release wieder nur mit ?dev=1 verfügbar |
 | [B-099](B-099-balancing-tester.md) | SIM | Idee | mittel | eingeplant | BAL1 | Ein automatischer Balancing-Tester prüft Regeln und Werte gegen messbare Ziele |
 | [B-102](B-102-siegvarianten-niederlage.md) | SIM | Idee | mittel | eingeplant | K2 | Siegvarianten und Niederlage-Modi der Raum-Optionen sind umgesetzt |
@@ -59,73 +59,73 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-160](B-160-abgleich-spielmetrik-simulator.md) | REG | Idee | mittel | eingeplant | BAL4 | Spielmetrik echter Abende und Simulatorwerte sind abgeglichen |
 | [B-167](B-167-sfx-katalog.md) | CLI | Idee | mittel | eingeplant | SO2 | Jedes wichtige Ereignis hat einen Sound mit Quelle und Lizenz |
 | [B-168](B-168-musik-je-zustand.md) | CLI | Idee | mittel | eingeplant | SO4 | Die Musik wechselt je Spielzustand mit Crossfade |
-| [B-250](B-250-audiokern-datei-wiedergabe.md) | CLI | Schuld | niedrig | offen | – | Der Audio-Kern spielt ganze Dateien mit Crossfade, die Hörprobe nutzt ihn |
-| [B-270](B-270-respec-pruefung-ohne-seiteneffekt.md) | SIM | Schuld | mittel | offen | – | Die Sim prüft Respec und Lernen ohne Seiteneffekt |
-| [B-272](B-272-rotation-session-reports.md) | SRV | Schuld | mittel | offen | – | Die Rotation in reports/ erfasst auch die Spielmetrik-Reports |
-| [B-260](B-260-schutzplatz-ohne-id.md) | SIM | Schuld | niedrig | offen | – | Der Schutzplatz einer Truppe hängt nicht an ihrer Entity-ID |
-| [B-262](B-262-camps-nahe-portalen.md) | SIM | Frage | mittel | offen | – | Camps liegen nach dem Abstand zu den Linien nicht zu nah an den Portalen |
-| [B-263](B-263-snapshot-groesse-plaetze.md) | SRV | Problem | niedrig | offen | – | Der Welt-Snapshot bleibt mit 39 Plätzen je Stufe im Budget |
-| [B-251](B-251-figuren-ganzzahlig-skalieren.md) | CLI | Schuld | niedrig | offen | – | Figuren werden ganzzahlig skaliert und flimmern nicht |
-| [B-184](B-184-pages-screenshots.md) | PLAT | Idee | niedrig | offen | – | Die Präsentationsseite zeigt echte Bilder aus dem Spiel |
-| [B-185](B-185-verluste-je-welle-angleichen.md) | REG | Schuld | niedrig | offen | – | Wirtschaft nennt denselben Verlust-Korridor je Welle wie die Bürger |
-| [B-186](B-186-autospeichern-takt.md) | SRV | Idee | mittel | offen | – | Der Server speichert alle 60 s und bei Tagesanbruch, das HUD zeigt „gesichert“ |
-| [B-187](B-187-speichern-windows-rename.md) | SRV | Problem | mittel | offen | – | Speichern übersteht unter Windows eine kurz gesperrte Zieldatei |
-| [B-188](B-188-client-rohstoffe-eisen-kristall.md) | CLI | Schuld | niedrig | offen | – | Der Client kennt alle fünf Rohstoffe des Servers |
-| [B-189](B-189-toter-gegner-flieht-ins-portal.md) | SIM | Problem | mittel | offen | – | Ein besiegter Gegner verschwindet nicht im Portal, sondern lässt sein Gold fallen |
-| [B-190](B-190-events-dropped-im-protokoll.md) | SRV | Problem | niedrig | offen | – | Der Client erfährt zuverlässig, wie viele Ereignisse verworfen wurden |
-| [B-191](B-191-debug-overlay-links-unten.md) | CLI | Problem | mittel | offen | – | Debug-Overlay und Aktionsliste verdecken das HUD nicht |
-| [B-192](B-192-aktionsliste-schliesst-mit-oe.md) | CLI | Problem | hoch | offen | – | Die Dev-Aktionsliste schließt sich mit Ö |
-| [B-193](B-193-figuren-luecken-suche.md) | CLI | Idee | mittel | offen | – | Figuren-Lücken unter public/sprites/ haben Kandidaten und eine Auswahl |
-| [B-194](B-194-splitscreen-ruckelt-xbox.md) | CLI | Problem | hoch | offen | – | Der Split-Screen läuft auf der Xbox flüssig |
-| [B-195](B-195-debug-overlay-xbox.md) | PLAT | Problem | mittel | offen | – | Das Debug-Overlay lässt sich auf der Xbox öffnen |
-| [B-197](B-197-partner-zelle-schriftgroesse.md) | CLI | Frage | niedrig | offen | – | Die Schriftregel nennt eine Mindestgröße für die Mitspieler-Zelle |
-| [B-198](B-198-platzhaltertext-schrift-katalog.md) | CLI | Schuld | niedrig | offen | – | Der Platzhaltertext einer ungeladenen Stufe liest seine Schrift aus dem Katalog |
+| [B-250](B-250-audiokern-datei-wiedergabe.md) | CLI | Schuld | niedrig | eingeplant | SO5 | Der Audio-Kern spielt ganze Dateien mit Crossfade, die Hörprobe nutzt ihn |
+| [B-270](B-270-respec-pruefung-ohne-seiteneffekt.md) | SIM | Schuld | mittel | eingeplant | SK1 | Die Sim prüft Respec und Lernen ohne Seiteneffekt |
+| [B-272](B-272-rotation-session-reports.md) | SRV | Schuld | mittel | eingeplant | ST1 | Die Rotation in reports/ erfasst auch die Spielmetrik-Reports |
+| [B-260](B-260-schutzplatz-ohne-id.md) | SIM | Schuld | niedrig | eingeplant | LV1 | Der Schutzplatz einer Truppe hängt nicht an ihrer Entity-ID |
+| [B-262](B-262-camps-nahe-portalen.md) | SIM | Frage | mittel | eingeplant | LV1 | Camps liegen nach dem Abstand zu den Linien nicht zu nah an den Portalen |
+| [B-263](B-263-snapshot-groesse-plaetze.md) | SRV | Problem | niedrig | eingeplant | NT1 | Der Welt-Snapshot bleibt mit 39 Plätzen je Stufe im Budget |
+| [B-251](B-251-figuren-ganzzahlig-skalieren.md) | CLI | Schuld | niedrig | eingeplant | GR7 | Figuren werden ganzzahlig skaliert und flimmern nicht |
+| [B-184](B-184-pages-screenshots.md) | PLAT | Idee | niedrig | eingeplant | PG1 | Die Präsentationsseite zeigt echte Bilder aus dem Spiel |
+| [B-185](B-185-verluste-je-welle-angleichen.md) | REG | Schuld | niedrig | eingeplant | RG2 | Wirtschaft nennt denselben Verlust-Korridor je Welle wie die Bürger |
+| [B-186](B-186-autospeichern-takt.md) | SRV | Idee | mittel | eingeplant | ST1 | Der Server speichert alle 60 s und bei Tagesanbruch, das HUD zeigt „gesichert“ |
+| [B-187](B-187-speichern-windows-rename.md) | SRV | Problem | mittel | eingeplant | ST1 | Speichern übersteht unter Windows eine kurz gesperrte Zieldatei |
+| [B-188](B-188-client-rohstoffe-eisen-kristall.md) | CLI | Schuld | niedrig | eingeplant | W8 | Der Client kennt alle fünf Rohstoffe des Servers |
+| [B-189](B-189-toter-gegner-flieht-ins-portal.md) | SIM | Problem | mittel | eingeplant | LV1 | Ein besiegter Gegner verschwindet nicht im Portal, sondern lässt sein Gold fallen |
+| [B-190](B-190-events-dropped-im-protokoll.md) | SRV | Problem | niedrig | eingeplant | NT1 | Der Client erfährt zuverlässig, wie viele Ereignisse verworfen wurden |
+| [B-191](B-191-debug-overlay-links-unten.md) | CLI | Problem | mittel | eingeplant | U5 | Debug-Overlay und Aktionsliste verdecken das HUD nicht |
+| [B-192](B-192-aktionsliste-schliesst-mit-oe.md) | CLI | Problem | hoch | eingeplant | U5 | Die Dev-Aktionsliste schließt sich mit Ö |
+| [B-193](B-193-figuren-luecken-suche.md) | CLI | Idee | mittel | eingeplant | GR7 | Figuren-Lücken unter public/sprites/ haben Kandidaten und eine Auswahl |
+| [B-194](B-194-splitscreen-ruckelt-xbox.md) | CLI | Problem | hoch | eingeplant | PF1 | Der Split-Screen läuft auf der Xbox flüssig |
+| [B-195](B-195-debug-overlay-xbox.md) | PLAT | Problem | mittel | eingeplant | PL1 | Das Debug-Overlay lässt sich auf der Xbox öffnen |
+| [B-197](B-197-partner-zelle-schriftgroesse.md) | CLI | Frage | niedrig | eingeplant | GR7 | Die Schriftregel nennt eine Mindestgröße für die Mitspieler-Zelle |
+| [B-198](B-198-platzhaltertext-schrift-katalog.md) | CLI | Schuld | niedrig | eingeplant | GR7 | Der Platzhaltertext einer ungeladenen Stufe liest seine Schrift aus dem Katalog |
 | [B-157](archiv/B-157-zielkorridor-pruefung.md) | SIM | Idee | mittel | erledigt | BAL2 | Der Balancing-Tester prüft Zielkorridore und meldet Pass oder Fail je Kennzahl |
 | [B-159](archiv/B-159-replay-repro-format.md) | SIM | Idee | mittel | erledigt | BAL1 | Ein Lauf ist als Datei aus Seed und Eingaben wiederholbar |
-| [B-199](B-199-raum-fuenf-stufen.md) | SRV | Problem | mittel | offen | – | Ein neuer Raum legt die Insel mit allen Stufen an, für die es ein Biom gibt |
-| [B-200](B-200-aggressionspool-adern.md) | SIM | Problem | mittel | offen | – | Der Aggressionspool unter Tage bleibt auch mit Adern im Wellen-Korridor |
-| [B-201](B-201-spielstand-wirtschaft.md) | SIM | Schuld | mittel | offen | – | Der Spielstand stellt Plantage, Berufe, Krieger, Elite, Rüstung, Schwerter und Händler nach dem Laden wieder her |
-| [B-202](B-202-spielstand-versionsfolge.md) | SIM | Problem | hoch | offen | – | S1 und W1 teilen sich die Spielstand-Version 3 eindeutig |
-| [B-203](B-203-gold-schwelle-kennzahl.md) | REG | Frage | niedrig | offen | – | Die Kennzahl „erste Gold-Schwelle“ hat eine feste Schwelle und Bedeutung |
-| [B-204](B-204-test-raeume-sofort-schliessen.md) | SRV | Idee | niedrig | offen | – | Leere Test-Räume schließen sofort statt nach der Leer-Frist |
-| [B-205](B-205-y-belegung-s3.md) | CLI | Problem | mittel | offen | – | Die Y-Belegung in S3 folgt dem Beschluss „kein Bau-Menü“ |
-| [B-207](B-207-bauplaetze-anzeige.md) | CLI | Idee | mittel | offen | – | Der Client zeigt freie und gesperrte Bauplätze mit Grund (ab Hub-Stufe n, Linie fehlt) |
+| [B-199](B-199-raum-fuenf-stufen.md) | SRV | Problem | mittel | eingeplant | SV1 | Ein neuer Raum legt die Insel mit allen Stufen an, für die es ein Biom gibt |
+| [B-200](B-200-aggressionspool-adern.md) | SIM | Problem | mittel | eingeplant | LV1 | Der Aggressionspool unter Tage bleibt auch mit Adern im Wellen-Korridor |
+| [B-201](B-201-spielstand-wirtschaft.md) | SIM | Schuld | mittel | eingeplant | W7 | Der Spielstand stellt Plantage, Berufe, Krieger, Elite, Rüstung, Schwerter und Händler nach dem Laden wieder her |
+| [B-202](B-202-spielstand-versionsfolge.md) | SIM | Problem | hoch | eingeplant | W7 | S1 und W1 teilen sich die Spielstand-Version 3 eindeutig |
+| [B-203](B-203-gold-schwelle-kennzahl.md) | REG | Frage | niedrig | eingeplant | RG2 | Die Kennzahl „erste Gold-Schwelle“ hat eine feste Schwelle und Bedeutung |
+| [B-204](B-204-test-raeume-sofort-schliessen.md) | SRV | Idee | niedrig | eingeplant | SV1 | Leere Test-Räume schließen sofort statt nach der Leer-Frist |
+| [B-205](B-205-y-belegung-s3.md) | CLI | Problem | mittel | eingeplant | S8 | Die Y-Belegung in S3 folgt dem Beschluss „kein Bau-Menü“ |
+| [B-207](B-207-bauplaetze-anzeige.md) | CLI | Idee | mittel | eingeplant | W8 | Der Client zeigt freie und gesperrte Bauplätze mit Grund (ab Hub-Stufe n, Linie fehlt) |
 | [B-208](B-208-protokoll-bauplaetze.md) | SRV | Idee | mittel | eingeplant | W5 | Das Protokoll trägt die Bauplätze des Layouts sowie Platz- und Hub-Stufe zum Client |
-| [B-209](B-209-client-platz-arten.md) | CLI | Schuld | mittel | offen | – | `src/model/data.ts` kennt alle Platz-Arten aus `hub.json` |
-| [B-214](B-214-server-pause.md) | SRV | Idee | mittel | offen | – | Der Server pausiert den Raum im Couch-Raum und schützt den stehenden Monarchen online |
-| [B-215](B-215-texte-eingabe-shell-tools.md) | PLAT | Schuld | niedrig | offen | – | Die Texte von Touch-Overlay, Shell und Werkzeug-Seiten kommen aus den zentralen Textdateien |
-| [B-230](B-230-burg-haelt-nur-47-prozent.md) | REG | Problem | mittel | offen | – | Burg hält Nacht 1–5 nur in 47 % der Seeds (Bot saver), Ziel 75–90 %: Ursache klären |
-| [B-217](B-217-ereignisse-built-playerdown-ort.md) | SIM | Schuld | niedrig | offen | – | Die Ereignisse `built` und `playerDown` tragen ihren Ort |
-| [B-213](B-213-markdown-listen-haekchen.md) | SRV | Problem | niedrig | offen | – | MarkdownView in k3c-dev zeigt nummerierte Listen und Häkchen wie die alte Planungsseite |
-| [B-219](B-219-doku-gating-und-schlag.md) | REG | Schuld | niedrig | offen | – | Game-Design und Ereignis-Doku nennen Tier-Gating 2/4/6 und den Schlag des Monarchen |
-| [B-218](B-218-optionen-ambient-lautstaerke.md) | CLI | Idee | niedrig | offen | – | Die Optionen-Szene regelt auch die Lautstärke des Ambient-Busses |
-| [B-273](B-273-release-image-dev-mode-aus.md) | INF | Schuld | hoch | offen | – | Das Release-Image startet den Server ohne Dev-Mode |
-| [B-274](B-274-testrestore-flackert-windows.md) | SRV | Problem | mittel | offen | – | TestRestore läuft unter Windows auch in task check:all stabil grün |
-| [B-280](B-280-warteschlange-nicht-zustaende.md) | SRV | Problem | niedrig | offen | – | Die Warteschlange einer Verbindung läuft nicht voll, wenn andere Nachrichten zwischen Zuständen stehen |
+| [B-209](B-209-client-platz-arten.md) | CLI | Schuld | mittel | eingeplant | W8 | `src/model/data.ts` kennt alle Platz-Arten aus `hub.json` |
+| [B-214](B-214-server-pause.md) | SRV | Idee | mittel | eingeplant | RM1 | Der Server pausiert den Raum im Couch-Raum und schützt den stehenden Monarchen online |
+| [B-215](B-215-texte-eingabe-shell-tools.md) | PLAT | Schuld | niedrig | eingeplant | PL1 | Die Texte von Touch-Overlay, Shell und Werkzeug-Seiten kommen aus den zentralen Textdateien |
+| [B-230](B-230-burg-haelt-nur-47-prozent.md) | REG | Problem | mittel | eingeplant | RG1 | Burg hält Nacht 1–5 nur in 47 % der Seeds (Bot saver), Ziel 75–90 %: Ursache klären |
+| [B-217](B-217-ereignisse-built-playerdown-ort.md) | SIM | Schuld | niedrig | eingeplant | LV1 | Die Ereignisse `built` und `playerDown` tragen ihren Ort |
+| [B-213](B-213-markdown-listen-haekchen.md) | SRV | Problem | niedrig | eingeplant | M9 | MarkdownView in k3c-dev zeigt nummerierte Listen und Häkchen wie die alte Planungsseite |
+| [B-219](B-219-doku-gating-und-schlag.md) | REG | Schuld | niedrig | eingeplant | RG2 | Game-Design und Ereignis-Doku nennen Tier-Gating 2/4/6 und den Schlag des Monarchen |
+| [B-218](B-218-optionen-ambient-lautstaerke.md) | CLI | Idee | niedrig | eingeplant | SO5 | Die Optionen-Szene regelt auch die Lautstärke des Ambient-Busses |
+| [B-273](B-273-release-image-dev-mode-aus.md) | INF | Schuld | hoch | eingeplant | CI1 | Das Release-Image startet den Server ohne Dev-Mode |
+| [B-274](B-274-testrestore-flackert-windows.md) | SRV | Problem | mittel | eingeplant | NT1 | TestRestore läuft unter Windows auch in task check:all stabil grün |
+| [B-280](B-280-warteschlange-nicht-zustaende.md) | SRV | Problem | niedrig | eingeplant | NT1 | Die Warteschlange einer Verbindung läuft nicht voll, wenn andere Nachrichten zwischen Zuständen stehen |
 | [B-283](B-283-protokoll-berufe-tausch-grabstein.md) | SRV | Idee | mittel | eingeplant | W5 | Das Protokoll kennt Beruf ausbilden, Tauschen, Berufe der Bürger und Grabstein/Wiederbeleben |
-| [B-284](B-284-lasttest-eingaben-flake.md) | SRV | Problem | niedrig | offen | – | TestGleicherSeedGleicheEingaben scheitert nicht, wenn task check:go parallel läuft |
-| [B-285](B-285-lernbare-skills-im-protokoll.md) | SRV | Problem | mittel | offen | – | Der Server nennt je Spieler die lernbaren Skills |
-| [B-286](B-286-lasttest-tick-reihe-wackelt.md) | SRV | Problem | niedrig | offen | – | TestTickReiheJeRaum schlägt im Gesamtlauf gelegentlich fehl |
-| [B-287](B-287-hub-ausbau-beutel-maximum.md) | REG | Problem | mittel | offen | – | Hub-Stufe 4 und 5 sind mit dem Beutel-Maximum bezahlbar |
-| [B-288](B-288-alte-spielstaende-ohne-ruecksicht.md) | INF | Schuld | mittel | offen | – | Formatänderungen am Spielstand nehmen keine Rücksicht auf alte Stände |
-| [B-289](B-289-aggressionspool-mit-adern.md) | REG | Problem | mittel | offen | – | Der Aggressionspool steigt mit Adern nicht zu schnell |
-| [B-290](B-290-raum-fuenf-stufen.md) | SRV | Idee | mittel | offen | – | Der Raum erzeugt alle fünf Stufen und der Client kennt Eisenstollen und Kristallhöhle |
-| [B-291](B-291-lava-nicht-auf-mauerlinien.md) | SIM | Problem | mittel | offen | – | Lava liegt nicht auf den Mauerlinien |
-| [B-292](B-292-neues-spiel-eindeutiger-name.md) | PLAT | Problem | hoch | offen | – | Die Kachel „Neues Spiel“ startet auch bei vorhandenem Spielstand familie |
-| [B-293](B-293-spiel-im-menue-verlassen.md) | CLI | Idee | hoch | offen | – | Das Spielmenü hat neben „Weiter“ einen Eintrag „Spiel verlassen“ |
-| [B-294](B-294-hinweis-glyph-muenze-nacht.md) | CLI | Frage | mittel | offen | – | Münze und „Nacht naht“ zeigen in der geführten ersten Nacht keine Glyph |
-| [B-295](B-295-handwerker-schmiede-ruestkammer.md) | REG | Frage | mittel | offen | – | Handwerker lassen sich auch für Schmiede und Rüstkammer ausbilden |
-| [B-298](B-298-ressourcen-manager.md) | SRV | Idee | mittel | offen | – | Ein ResourcenManager in k3c-dev ordnet jedem Grafik- und Sound-Slot Assets mit Präferenz zu |
-| [B-299](B-299-asset-vorschau-szenen.md) | PLAT | Idee | mittel | offen | – | Eine Dev-Seite zeigt die Asset-Zuordnung je Kategorie als Mini-Szene im Spielmaßstab |
-| [B-300](B-300-mauern-zuerst-wie-sparsam.md) | SIM | Frage | mittel | offen | – | Das Profil „Mauern zuerst“ spielt messbar anders als „sparsam“ |
-| [B-301](B-301-vary-ohne-wirkung.md) | SIM | Problem | niedrig | offen | – | Ein Sensitivitäts-Pfad ohne Wirkung ergibt einen Fehler |
-| [B-302](B-302-aufraeumen-branches-worktrees.md) | INF | Schuld | mittel | offen | – | Lokale Branches und Worktrees werden an festen Meilensteinen aufgeräumt |
-| [B-312](B-312-wiederaufheben-begrenzen.md) | SIM | Problem | hoch | offen | – | Sofortiges Wiederaufheben fallengelassener Ausrüstung macht die Burg bei passivem Spiel unverwundbar |
-| [B-313](B-313-vermerk-wirkung-offen-test.md) | SIM | Frage | hoch | offen | – | W4.3b kann den Vermerk „Wirkung offen“ nur mit einer Änderung an sites_test.go ersetzen |
-| [B-314](B-314-controller-pruefungen-zurueckgestellt.md) | PLAT | Schuld | niedrig | offen | – | Alle Controller-Prüfungen sind gesammelt nachgeholt |
-| [B-315](B-315-spielstand-voll-ausgebaut.md) | SRV | Idee | hoch | offen | – | Der Level-Betrachter erzeugt einen Spielstand mit allen Gebäuden voll ausgebaut |
-| [B-316](B-316-tastatur-zwei-spieler.md) | PLAT | Idee | hoch | offen | – | Zwei Spieler spielen an einer Tastatur im Split-Screen |
-| [B-317](B-317-cheat-dialog-fokus-tastatur.md) | CLI | Problem | hoch | offen | – | Der Cheat-Dialog zeigt den Fokus und lässt sich mit Pfeiltasten, Leertaste und Controller bedienen |
+| [B-284](B-284-lasttest-eingaben-flake.md) | SRV | Problem | niedrig | eingeplant | NT1 | TestGleicherSeedGleicheEingaben scheitert nicht, wenn task check:go parallel läuft |
+| [B-285](B-285-lernbare-skills-im-protokoll.md) | SRV | Problem | mittel | eingeplant | RM1 | Der Server nennt je Spieler die lernbaren Skills |
+| [B-286](B-286-lasttest-tick-reihe-wackelt.md) | SRV | Problem | niedrig | eingeplant | NT1 | TestTickReiheJeRaum schlägt im Gesamtlauf gelegentlich fehl |
+| [B-287](B-287-hub-ausbau-beutel-maximum.md) | REG | Problem | mittel | eingeplant | RG1 | Hub-Stufe 4 und 5 sind mit dem Beutel-Maximum bezahlbar |
+| [B-288](B-288-alte-spielstaende-ohne-ruecksicht.md) | INF | Schuld | mittel | eingeplant | RP1 | Formatänderungen am Spielstand nehmen keine Rücksicht auf alte Stände |
+| [B-289](B-289-aggressionspool-mit-adern.md) | REG | Problem | mittel | eingeplant | RG1 | Der Aggressionspool steigt mit Adern nicht zu schnell |
+| [B-290](B-290-raum-fuenf-stufen.md) | SRV | Idee | mittel | eingeplant | SV1 | Der Raum erzeugt alle fünf Stufen und der Client kennt Eisenstollen und Kristallhöhle |
+| [B-291](B-291-lava-nicht-auf-mauerlinien.md) | SIM | Problem | mittel | eingeplant | LV1 | Lava liegt nicht auf den Mauerlinien |
+| [B-292](B-292-neues-spiel-eindeutiger-name.md) | PLAT | Problem | hoch | eingeplant | PL1 | Die Kachel „Neues Spiel“ startet auch bei vorhandenem Spielstand familie |
+| [B-293](B-293-spiel-im-menue-verlassen.md) | CLI | Idee | hoch | eingeplant | S8 | Das Spielmenü hat neben „Weiter“ einen Eintrag „Spiel verlassen“ |
+| [B-294](B-294-hinweis-glyph-muenze-nacht.md) | CLI | Frage | mittel | eingeplant | S8 | Münze und „Nacht naht“ zeigen in der geführten ersten Nacht keine Glyph |
+| [B-295](B-295-handwerker-schmiede-ruestkammer.md) | REG | Frage | mittel | eingeplant | RG2 | Handwerker lassen sich auch für Schmiede und Rüstkammer ausbilden |
+| [B-298](B-298-ressourcen-manager.md) | SRV | Idee | mittel | eingeplant | M10 | Ein ResourcenManager in k3c-dev ordnet jedem Grafik- und Sound-Slot Assets mit Präferenz zu |
+| [B-299](B-299-asset-vorschau-szenen.md) | PLAT | Idee | mittel | eingeplant | DBG4 | Eine Dev-Seite zeigt die Asset-Zuordnung je Kategorie als Mini-Szene im Spielmaßstab |
+| [B-300](B-300-mauern-zuerst-wie-sparsam.md) | SIM | Frage | mittel | eingeplant | BAL5 | Das Profil „Mauern zuerst“ spielt messbar anders als „sparsam“ |
+| [B-301](B-301-vary-ohne-wirkung.md) | SIM | Problem | niedrig | eingeplant | BAL5 | Ein Sensitivitäts-Pfad ohne Wirkung ergibt einen Fehler |
+| [B-302](B-302-aufraeumen-branches-worktrees.md) | INF | Schuld | mittel | eingeplant | RP1 | Lokale Branches und Worktrees werden an festen Meilensteinen aufgeräumt |
+| [B-312](B-312-wiederaufheben-begrenzen.md) | SIM | Problem | hoch | eingeplant | W7 | Sofortiges Wiederaufheben fallengelassener Ausrüstung macht die Burg bei passivem Spiel unverwundbar |
+| [B-313](B-313-vermerk-wirkung-offen-test.md) | SIM | Frage | hoch | eingeplant | W7 | W4.3b kann den Vermerk „Wirkung offen“ nur mit einer Änderung an sites_test.go ersetzen |
+| [B-314](B-314-controller-pruefungen-zurueckgestellt.md) | PLAT | Schuld | niedrig | eingeplant | HW1 | Alle Controller-Prüfungen sind gesammelt nachgeholt |
+| [B-315](B-315-spielstand-voll-ausgebaut.md) | SRV | Idee | hoch | eingeplant | SV1 | Der Level-Betrachter erzeugt einen Spielstand mit allen Gebäuden voll ausgebaut |
+| [B-316](B-316-tastatur-zwei-spieler.md) | PLAT | Idee | hoch | eingeplant | PL1 | Zwei Spieler spielen an einer Tastatur im Split-Screen |
+| [B-317](B-317-cheat-dialog-fokus-tastatur.md) | CLI | Problem | hoch | eingeplant | U5 | Der Cheat-Dialog zeigt den Fokus und lässt sich mit Pfeiltasten, Leertaste und Controller bedienen |
 
 ## Archiv
 

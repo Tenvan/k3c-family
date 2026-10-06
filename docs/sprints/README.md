@@ -69,6 +69,21 @@ dann über den Go-Server mit mehreren Räumen und gemischten Spielern.
 | K4 | SRV | hoch | Protokoll für Bosse, Events und Inselwechsel | `docs/protocol.md` mit neuen Feldern, Beispiele in `testdata/protocol/`, `task check:go` und `task check` grün | bereit | `geplant/K4-protokoll-kampf/` |
 | K5 | CLI | mittel | Anzeigen für Kampf, Bosse und Events, Anlegen-Dialog, Debug-Panel | Boss-Leiste, Warnkreis und Event-Banner am TV, Lobby-Dialog, von 🧑 abgenommen | bereit | `geplant/K5-anzeige-kampf/` |
 | BR2 | REG 🧑 | hoch | Balancing-Runde Kampf und Bosse und Spieleabend 3 | Pass/Fail je Kennzahl, Begründungen in `docs/rules/`, Protokoll in `docs/playtests/` | Entwurf | `geplant/BR2-balancing-kampf/` |
+| M9 | SRV | hoch | k3c-dev in Worktrees und Markdown-Ansicht | Planung, Prüfläufe und Dienste treffen den Worktree der Session; Session-Dateien lesbar im Detail-Panel | Entwurf | `geplant/M9-dev-worktrees/` |
+| SV1 | SRV | hoch | Raum mit allen Stufen, Voll-Ausbau-Spielstand, leere Test-Räume | Neuer Raum mit allen fünf Stufen, Level-Betrachter startet einen voll ausgebauten Spielstand | Entwurf | `geplant/SV1-raeume-stufen-testspielstand/` |
+| ST1 | SRV | mittel | Speichern alle 60 s, unter Windows robust, Rotation der Spielmetrik | HUD zeigt „gesichert“, Spielstände überstehen gesperrte Dateien, `reports/` bleibt begrenzt | Entwurf | `geplant/ST1-speichern-robust/` |
+| RM1 | SRV | mittel | Raum-Pause im Couch-Raum und lernbare Skills vom Server | Pause hält den Couch-Raum an; Skill-Menü zeigt nur, was der Server annimmt | Entwurf | `geplant/RM1-pause-lernbare-skills/` |
+| W7 | SIM | hoch | Ausrüstung ohne Unverwundbarkeit, Spielstand vollständig | Passive Burg kann fallen, Spielstand stellt W2–W4 wieder her, Golden-Hub geprüft | Entwurf | `geplant/W7-ausruestung-spielstand/` |
+| LV1 | SIM | mittel | Level und Gegner: Lava, Camps, Adern-Takt, Orte und IDs | Keine Lava auf Linien, Camps mit Abstand, besiegte Gegner lassen Gold fallen, Ereignisse mit Ort | Entwurf | `geplant/LV1-level-gegner-korrektur/` |
+| SK1 | SIM | hoch | Skill-Baum mit Tank und Zauberer, Respec-Regeln abfragbar | Skill-Baum spielbar, Respec und Lernen ohne Seiteneffekt prüfbar | Entwurf | `geplant/SK1-skill-baum/` |
+| RG1 | REG | mittel | Werte-Runde: Burg hält Nacht, Hub-Stufe 4–5, Adern-Takt | Beschlüsse in `docs/rules/`, geänderte Werte in `data/`, `task balance` grün | Entwurf | `geplant/RG1-werte-burg-hub-adern/` |
+| U5 | CLI | hoch | Debug-Overlay und Cheat-Dialog bedienbar | Ö schließt Overlay und Liste, HUD bleibt lesbar, Cheat-Dialog mit Fokus und Controller | Entwurf | `geplant/U5-debug-overlay-bedienbar/` |
+| S8 | CLI | hoch | Spielmenü „Spiel verlassen“, Y-Belegung und Glyphen-Entscheidung | Spielmenü verlässt ins Lobby, Y ohne Bau-Menü, Glyph-Entscheidung umgesetzt | Entwurf | `geplant/S8-spielmenue-bedienung/` |
+| W8 | CLI | mittel | Bauplätze mit Grund und alle Rohstoffe im Client | Gesperrte Plätze zeigen den Grund, Client-Typen passen zu `hub.json` und den fünf Rohstoffen | Entwurf | `geplant/W8-bauplaetze-rohstoffe-client/` |
+| PF1 | CLI | hoch | Split-Screen flüssig auf der Xbox | Zwei Spieler im Split-Screen ohne sichtbares Ruckeln auf der Xbox | Entwurf | `geplant/PF1-splitscreen-leistung/` |
+| LB1 | CLI | mittel | Lobby zeigt Räume und startet Spiele | Lobby listet offene Räume, Beitritt ohne Raumcode | Entwurf | `geplant/LB1-lobby/` |
+| PL1 | PLAT | hoch | Neues Spiel, zwei Spieler an einer Tastatur, Overlay auf der Xbox, zentrale Texte | „Neues Spiel“ startet immer neu, zwei Tastatur-Spieler, Overlay per Controller | Entwurf | `geplant/PL1-start-tastatur-koop-texte/` |
+| CI1 | INF | hoch | CI-Nachweis, Release-Image ohne Dev-Mode, Test-Abdeckung | CI grün mit SP01-Prüfungen, Release-Image lehnt Dev-Aktionen ab, Abdeckung im CI-Bericht | Entwurf | `geplant/CI1-ci-release-image/` |
 
 **Einschiebbar** (Schienen Balancing, Grafik, Sound, Betrieb; unabhängig vom Engine-Fortschritt, jeweils zwischen zwei Sprints):
 
@@ -77,6 +92,18 @@ dann über den Go-Server mit mehreren Räumen und gemischten Spielern.
 | BAL4 | REG | mittel | Abgleich Spielmetrik und Simulator | Entwurf | `geplant/BAL4-metrik-abgleich/` |
 | SO2 | CLI | mittel | SFX-Katalog und Einbau | Entwurf | `geplant/SO2-sfx-katalog/` |
 | SO4 | CLI | mittel | Musik je Zustand | Entwurf | `geplant/SO4-musik/` |
+| M10 | SRV | mittel | Ressourcen-Manager für Grafik- und Sound-Slots in k3c-dev | Entwurf | `geplant/M10-ressourcen-manager/` |
+| NT1 | SRV | mittel | Stabile Tests, Warteschlange und Snapshot-Budget | Entwurf | `geplant/NT1-netz-tests-stabil/` |
+| BT1 | SRV | niedrig | Server im Heimnetz finden, Windows-Starter, Start mit Seed | Entwurf | `geplant/BT1-heimnetz-start/` |
+| BAL5 | SIM | mittel | Balancing-Tester: Profil „Mauern zuerst“ und Sensitivität ohne Wirkung | Entwurf | `geplant/BAL5-balancing-tester-nachschaerfen/` |
+| RG2 | REG | mittel | Regelwerk-Klärungen: Korridore, Kennzahl, Tier-Gating, Handwerker, Tiefe 3–4 | Entwurf | `geplant/RG2-regelwerk-klaerungen/` |
+| GR7 | CLI | mittel | Figuren-Lücken, ganzzahlige Skalierung und Schrift | Entwurf | `geplant/GR7-figuren-schrift/` |
+| SO5 | CLI | niedrig | Audio-Kern: ganze Dateien mit Crossfade, Ambient-Lautstärke | Entwurf | `geplant/SO5-audio-kern-dateien/` |
+| HW1 | PLAT | niedrig | Zurückgestellte Controller-Prüfungen nachholen | Entwurf | `geplant/HW1-controller-pruefungen/` |
+| PG1 | PLAT | niedrig | Präsentationsseite mit echten Spielbildern | Entwurf | `geplant/PG1-praesentation-bilder/` |
+| DBG4 | PLAT | mittel | Dev-Seite Asset-Vorschau im Spielmaßstab | Entwurf | `geplant/DBG4-asset-vorschau/` |
+| RP1 | INF | mittel | Repo-Hygiene: Branches aufräumen, Altlasten, Regeln | Entwurf | `geplant/RP1-repo-hygiene/` |
+| PB1 | INF | niedrig | Veröffentlichung auf itch.io | Entwurf | `geplant/PB1-itch-io/` |
 
 Gesamtplan und Begründung: [`../plan-weiterentwicklung.md`](../plan-weiterentwicklung.md). Offene Entscheidungen: [`../fragenkatalog.md`](../fragenkatalog.md).
 

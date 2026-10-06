@@ -3,8 +3,8 @@
 - **Domäne:** CLI
 - **Typ:** Schuld
 - **Prio:** niedrig
-- **Status:** offen
-- **Sprint:** –
+- **Status:** eingeplant
+- **Sprint:** W8
 - **Erstellt:** 2026-10-03
 - **Spec:** Entwurf
 - **Revision:** 1

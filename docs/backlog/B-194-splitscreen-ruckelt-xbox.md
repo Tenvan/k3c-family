@@ -3,8 +3,8 @@
 - **Domäne:** CLI
 - **Typ:** Problem
 - **Prio:** hoch
-- **Status:** offen
-- **Sprint:** –
+- **Status:** eingeplant
+- **Sprint:** PF1
 - **Erstellt:** 2026-10-03
 - **Spec:** Entwurf
 - **Revision:** 1

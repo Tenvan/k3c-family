@@ -3,8 +3,8 @@
 - **Domäne:** INF
 - **Typ:** Frage
 - **Prio:** niedrig
-- **Status:** offen
-- **Sprint:** –
+- **Status:** eingeplant
+- **Sprint:** RP1
 - **Erstellt:** 2026-09-30
 - **Spec:** Entwurf
 - **Revision:** 1

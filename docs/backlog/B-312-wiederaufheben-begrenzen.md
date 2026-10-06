@@ -3,8 +3,8 @@
 - **Domäne:** SIM
 - **Typ:** Problem
 - **Prio:** hoch
-- **Status:** offen
-- **Sprint:** –
+- **Status:** eingeplant
+- **Sprint:** W7
 - **Erstellt:** 2026-10-06
 - **Spec:** Entwurf
 - **Revision:** 1

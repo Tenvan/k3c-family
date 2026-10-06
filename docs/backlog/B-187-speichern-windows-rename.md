@@ -3,8 +3,8 @@
 - **Domäne:** SRV
 - **Typ:** Problem
 - **Prio:** mittel
-- **Status:** offen
-- **Sprint:** –
+- **Status:** eingeplant
+- **Sprint:** ST1
 - **Erstellt:** 2026-10-03
 - **Spec:** Entwurf
 - **Revision:** 1

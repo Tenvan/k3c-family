@@ -3,8 +3,8 @@
 - **Domäne:** PLAT
 - **Typ:** Problem
 - **Prio:** hoch
-- **Status:** offen
-- **Sprint:** –
+- **Status:** eingeplant
+- **Sprint:** PL1
 - **Erstellt:** 2026-10-05
 - **Spec:** Entwurf
 - **Revision:** 1
