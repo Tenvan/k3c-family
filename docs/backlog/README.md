@@ -124,7 +124,6 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-320](B-320-reiter-sattel-beim-laufen.md) | CLI | Problem | mittel | eingeplant | GR7 | Der Reiter sitzt beim Laufen und Sprinten auf dem Sattel, nicht auf der Kruppe |
 | [B-321](B-321-schlag-skill-ohne-ziel-ereignis.md) | SIM | Problem | mittel | eingeplant | SK1 | Schlag ohne Treffer und Skill ohne Ziel erzeugen ein Ereignis |
 | [B-322](B-322-texte-werkzeug-seiten.md) | PLAT | Schuld | niedrig | eingeplant | PL2 | Die Werkzeug-Seiten holen ihre Texte aus den zentralen Textdateien |
-| [B-323](B-323-welt-spiegelt-lager-hub-ausbau.md) | SIM | Frage | hoch | eingeplant | W9 | Die Welt spiegelt Lager-Maximum, Hub-Ausbau mit Kosten und Wartegrund „Gefahr“ für das Protokoll |
 | [B-324](B-324-client-typen-gegnerdaten.md) | CLI | Schuld | niedrig | offen | – | Die Client-Typen der Gegner- und Wellendaten passen zu den JSON-Dateien |
 | [B-327](B-327-golden-tiefe-stufen.md) | SIM | Frage | niedrig | offen | K1 | Golden-Läufe decken Eisenstollen und Kristallhöhle ab |
 | [B-328](B-328-feuergeist-flammen-flaeche.md) | SIM | Frage | niedrig | offen | K1 | Der Feuergeist hinterlässt eine Flammen-Fläche |
@@ -300,6 +299,7 @@ Zeile in diesen Abschnitt.
 | [B-311](archiv/B-311-passive-burg-faellt-nicht.md) | REG | Frage | hoch | erledigt | – | Mit der Verlust-Kaskade fällt die Burg bei passivem Spiel nie |
 | [B-325](archiv/B-325-gebaeude-ziel-upgrade-test.md) | SIM | Frage | mittel | erledigt | – | K1.2 darf den Testaufbau des Elite-Bogenschützen anpassen |
 | [B-326](archiv/B-326-k1-3-grafik-luecken-neue-gegner.md) | SIM | Frage | hoch | erledigt | – | K1.3 darf den sechs neuen Gegnern Platzhalter-Sprites und Zuordnungs-Zeilen geben |
+| [B-323](archiv/B-323-welt-spiegelt-lager-hub-ausbau.md) | SIM | Frage | hoch | erledigt | W9 | Die Welt spiegelt Lager-Maximum, Hub-Ausbau mit Kosten und Wartegrund „Gefahr“ für das Protokoll |
 | [B-013](archiv/B-013-gegner-elite.md) | SIM | Idee | mittel | erledigt | K1 | Restliche Gegner und Elite-KI sind umgesetzt |
 | [B-128](archiv/B-128-traits-kiting-angriffsrate.md) | SIM | Idee | mittel | erledigt | K1 | Die Gegner-Traits aoe, swarm, phases und Kiting wirken, die Angriffsrate steht je Gegner in den Daten |
 | [B-129](archiv/B-129-neue-gegner-pools.md) | SIM | Idee | mittel | erledigt | K1 | Eisenstollen und Kristallhöhle haben ihre Gegner und Pools |

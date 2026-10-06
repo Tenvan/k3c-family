@@ -1,6 +1,6 @@
 # W9 · SIM · Welt spiegelt Lager-Maximum, Hub-Ausbau und Gefahr
 
-- **Status:** aktiv
+- **Status:** erledigt
 - **Domäne:** SIM
 - **Prio:** hoch
 - **Reife:** bereit
@@ -59,11 +59,14 @@ keine
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
 | W9.1 | `W9.1-welt-spiegeln.md` | Umsetzung | autonom | fertig |
-| W9.2 | `W9.2-review.md` | Review | autonom | offen |
+| W9.2 | `W9.2-review.md` | Review | autonom | fertig |
 
 Bei `Reife: Entwurf` genügen Stichpunkte mit den Kriterien in Klammern statt Session-Dateien. Vor dem Aktivieren
 wird jede Session als eigene Datei nach `docs/vorlagen/session.md` geschrieben.
 
 ## Abnahme
 
-–
+- 2026-10-06 (W9.2, autonom): AC-01 (W9.1: `economy_view_test.go`, `sim.EconomyOf` statt Weltfeldern, von der Spec erlaubt; Grund: neue Welt-Schlüssel brächen `TestFormWieBeispiele`), AC-02 (Welt-JSON und Golden unverändert, `task check` und `task check:go` grün) mit Nachweis.
+- Review des Diffs: keine schweren Befunde, keine behoben; Hinweis: `danger` ist ein Wert der Stufe, kein Wert je Bauplatz, `waitingWorker` plus `danger` heißt Gefahr.
+- Neue Tickets: keine.
+- Version: v0.14.0 vorgeschlagen (Minor: neue Schnittstelle `sim.EconomyOf` für W5.1, kein geändertes Spielverhalten); gesetzt erst nach Bestätigung durch 🧑.
