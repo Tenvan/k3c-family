@@ -29,11 +29,7 @@ func List(root string, f Filter) (string, error) {
 	}
 	var out []string
 	if f.Kind != "ticket" {
-		order := map[string]int{"aktiv": 0, "geplant": 1, "erledigt": 2}
-		sort.SliceStable(d.Sprints, func(i, j int) bool { // je Status nach Prio, sonst Fahrplan-Reihenfolge
-			a, b := d.Sprints[i], d.Sprints[j]
-			return order[a.Status] < order[b.Status] || order[a.Status] == order[b.Status] && prioRank(a.Prio) < prioRank(b.Prio)
-		})
+		sortByPrio(d.Sprints)
 		for _, s := range d.Sprints {
 			if match(f.Status, s.Status) && match(f.Domain, s.Domain) && match(f.Sprint, s.ID) {
 				out = append(out, sprintLines(s)...)
@@ -104,6 +100,15 @@ func SprintPrio(root, tickets string) string {
 }
 
 var reTicketRef = regexp.MustCompile(`B-\d{3}`)
+
+// sortByPrio ordnet je Status (aktiv, geplant, erledigt) nach Prio, sonst bleibt die Fahrplan-Reihenfolge.
+func sortByPrio(sprints []Sprint) {
+	order := map[string]int{"aktiv": 0, "geplant": 1, "erledigt": 2}
+	sort.SliceStable(sprints, func(i, j int) bool {
+		a, b := sprints[i], sprints[j]
+		return order[a.Status] < order[b.Status] || order[a.Status] == order[b.Status] && prioRank(a.Prio) < prioRank(b.Prio)
+	})
+}
 
 func prioRank(p string) int {
 	if i := slices.Index(prios, p); i >= 0 {

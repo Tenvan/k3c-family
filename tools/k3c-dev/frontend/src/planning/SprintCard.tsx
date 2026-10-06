@@ -18,6 +18,7 @@ export function SprintCard({ sprint: s, gh, sel, onSelect }:
       <div className="pl-head">
         <strong>{s.id}</strong>
         <span className="pl-dim">{s.domain}</span>
+        {s.prio && <StatusBadge tone={s.prio === 'hoch' ? 'warn' : 'neutral'}>Prio {s.prio}</StatusBadge>}
         <span className="pl-title">{s.title}</span>
         {s.worktree && (
           <Tip content="Ein Worktree arbeitet gerade an diesem Sprint"><StatusBadge tone="ok">⚙ {s.worktree}</StatusBadge></Tip>
