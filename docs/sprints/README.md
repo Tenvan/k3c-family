@@ -27,6 +27,7 @@ Reihenfolge in Wellen, Bahnen je Domäne und Zuordnung Mensch/autonom (zwei Acco
 | MON2 | PLAT | hoch | Monitoring-Seite `monitor.html`: Ampel je Raum, Verläufe mit Perzentilen, Fehler-Zeitleiste (B-282; Abnahme am Handy offen) | – | `aktiv/MON2-monitoring-seite/` |
 | S6 | CLI | hoch | Onboarding „Erste Nacht geführt“ und Controller-Glyphen (B-148, B-149; Abnahme am TV offen) | – | `aktiv/S6-onboarding-glyphen/` |
 | W5 | SRV | hoch | Protokoll für Berufe, Händler, Lager und Hub-Stufe (B-153, B-283) | – | `aktiv/W5-protokoll-wirtschaft/` |
+| K1 | SIM | mittel | Gegner-Traits, neue Gegner und Elite-KI | – | `aktiv/K1-gegner-traits/` |
 
 ## Offen am Gerät
 
@@ -62,7 +63,6 @@ dann über den Go-Server mit mehreren Räumen und gemischten Spielern.
 | P1 | REG 🧑 | hoch | Spieleabend 1 | Protokoll und Folge-Tickets | Entwurf | `geplant/P1-spieleabend-1/` |
 | W6 | CLI | mittel | Anzeigen für Bau, Lager, Hub und Bürger | HUD und Bauplätze am TV, von 🧑 abgenommen | bereit | `geplant/W6-anzeige-wirtschaft/` |
 | BR1 | REG 🧑 | hoch | Balancing-Runde Wirtschaft und Spieleabend 2 | Pass/Fail je Kennzahl, Begründungen in `docs/rules/`, Protokoll in `docs/playtests/` | Entwurf | `geplant/BR1-balancing-wirtschaft/` |
-| K1 | SIM | mittel | Gegner-Traits, neue Gegner und Elite-KI | Tests je Trait und Gegner grün, aktualisierte Golden-Daten | bereit | `geplant/K1-gegner-traits/` |
 | K2 | SIM | hoch | Bosse, Siegvarianten und Inselwechsel | Tests je Boss, Siegvariante und Modus grün, Spielstand mit besiegten Bossen und aktueller Insel | bereit | `geplant/K2-bosse-siege-inseln/` |
 | K3 | SIM | niedrig | Events Vollmond, Blutmond und Händler-Überfall | Tests je Event grün, aktualisierte Golden-Daten | bereit | `geplant/K3-events/` |
 | K4 | SRV | hoch | Protokoll für Bosse, Events und Inselwechsel | `docs/protocol.md` mit neuen Feldern, Beispiele in `testdata/protocol/`, `task check:go` und `task check` grün | bereit | `geplant/K4-protokoll-kampf/` |

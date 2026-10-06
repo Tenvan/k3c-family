@@ -1,12 +1,12 @@
 # K1 · SIM · Gegner-Traits, neue Gegner und Elite-KI
 
-- **Status:** geplant
+- **Status:** aktiv
 - **Domäne:** SIM
 - **Prio:** mittel
 - **Reife:** bereit
 - **Einschiebbar:** nein
 - **Tickets:** B-128, B-129, B-013
-- **Start-Commit:** –
+- **Start-Commit:** e26de644
 - **Spec:** freigegeben
 - **Revision:** 1
 - **Freigabe:** 2026-10-04, Chat, durch 🧑, Revision 1; mit Änderungen aus der Spec-Prüfung
@@ -64,8 +64,8 @@ Gegner ohne Eintrag für die Angriffsrate → 1 Angriff je Sekunde.
 
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
-| K1.1 | `K1.1-traits-angriffsrate.md` | Umsetzung | autonom | offen |
-| K1.2 | `K1.2-tor-enemykilled.md` | Umsetzung | autonom | offen |
+| K1.1 | `K1.1-traits-angriffsrate.md` | Umsetzung | autonom | fertig |
+| K1.2 | `K1.2-tor-enemykilled.md` | Umsetzung | autonom | blockiert |
 | K1.3 | `K1.3-neue-gegner-pools-golden.md` | Umsetzung | autonom | offen |
 | K1.4 | `K1.4-review.md` | Review | autonom | offen |
 

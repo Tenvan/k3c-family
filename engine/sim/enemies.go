@@ -36,6 +36,9 @@ func spawnScaled(w *World, kind string, x, hpFactor, damageFactor float64) *Enem
 		Damage: math.Round(d.Damage * math.Pow(s.Damage, depth) * damageFactor), Speed: d.Speed * math.Pow(s.Speed, depth),
 		Range: d.Range, Traits: d.Traits, HomeX: x,
 	}
+	if e.has("phases") {
+		e.Spawned = w.Time
+	}
 	w.Enemies = append(w.Enemies, e)
 	return e
 }
@@ -69,13 +72,13 @@ func sendEnemiesHome(w *World) {
 type target struct {
 	id     int
 	x      float64
-	kind   string // player, troop, wall, castle, site
+	kind   string // player, troop, wall (Mauer oder Tor), castle, site (Turm), building (übrige Gebäude)
 	player *Player
 }
 
 func stepEnemies(w *World, dt float64) {
 	for _, e := range w.Enemies {
-		e.Cooldown = math.Max(0, e.Cooldown-dt)
+		e.Cooldown, e.AoeIn = math.Max(0, e.Cooldown-dt), math.Max(0, e.AoeIn-dt)
 		if stunned(e, dt) {
 			continue
 		}
@@ -95,21 +98,12 @@ func stepEnemies(w *World, dt float64) {
 		if !e.has("ignoresWalls") {
 			wall = blockingWall(w, e, dir)
 		}
-		if t := chooseTarget(w, e, dir, wall); t != nil {
-			if e.Cooldown <= 0 {
-				attack(w, e, t)
-			}
-			continue
+		t := chooseTarget(w, e, dir, wall)
+		if t != nil && e.Cooldown <= 0 {
+			strike(w, e, t)
 		}
-		x := e.X + float64(dir*speed*dt)
-		stop := w.HubX - float64(dir*hub.CastleRadiusUnits)
-		if wall != nil {
-			stop = wall.X - float64(dir*body)
-		}
-		if dir > 0 {
-			e.X = math.Min(x, stop)
-		} else {
-			e.X = math.Max(x, stop)
+		if !kite(w, e, dt) && t == nil {
+			advance(w, e, dir, wall, speed*dt)
 		}
 	}
 	// Geflohene Gegner verschwinden im Portal (mitsamt geklautem Gold).
@@ -120,6 +114,20 @@ func stepEnemies(w *World, dt float64) {
 		}
 	}
 	w.Enemies = kept
+}
+
+// advance: geradeaus Richtung Burg, höchstens bis zur Mauer oder zum Burgrand.
+func advance(w *World, e *Enemy, dir float64, wall *Site, step float64) {
+	x := e.X + float64(dir*step)
+	stop := w.HubX - float64(dir*hub.CastleRadiusUnits)
+	if wall != nil {
+		stop = wall.X - float64(dir*body)
+	}
+	if dir > 0 {
+		e.X = math.Min(x, stop)
+	} else {
+		e.X = math.Max(x, stop)
+	}
 }
 
 // stunned senkt Betäubung, Verspottung und Verlangsamung (Skills, skills_tank.go, skills_caster.go); true: der Gegner
@@ -141,6 +149,12 @@ func stunned(e *Enemy, dt float64) bool {
 // isBarrier: Eine gebaute Mauer oder ein gebautes Tor hält Gegner auf und ist ihr Angriffsziel (Q27). Spieler und
 // Truppen kennen keine Hindernisse, sie passieren beides; `outerWall` (Posten der Schützen) bleibt bei der Mauer.
 func isBarrier(s *Site) bool { return (s.Kind == "wall" || s.Kind == "gate") && s.State == "built" }
+
+// isBuilding: übrige gebaute Gebäude (Heilplatz, Taverne, Lager, Schmiede, Rüstkammer, Werkstatt, Farm, Kaserne) sind
+// Ziele der Gegner (gegner.md § 4). Mauer und Tor halten auf, Türme sind Ziele der Fernkämpfer, Treppen Reisepunkte.
+func isBuilding(s *Site) bool {
+	return s.State == "built" && !isBarrier(s) && !slices.Contains([]string{"tower", "stairsUp", "stairsDown"}, s.Kind)
+}
 
 func blockingWall(w *World, e *Enemy, dir float64) *Site {
 	var best *Site
@@ -176,7 +190,7 @@ func (r reach) inRange(x float64) bool {
 }
 
 // candidates sammelt alle Ziele in Reichweite, in der Reihenfolge von `chooseTarget` in TS:
-// Spieler, Truppen, Mauer, Türme (nur Fernkämpfer), Burg.
+// Spieler, Truppen, Mauer oder Tor, Türme (nur Fernkämpfer), übrige Gebäude, Burg.
 func candidates(w *World, e *Enemy, dir float64, wall *Site) []target {
 	r := reach{e, e.has("ranged"), dir, wall}
 	out := []target{}
@@ -199,8 +213,11 @@ func buildingTargets(w *World, r reach) []target {
 		out = append(out, target{r.wall.ID, r.wall.X, "wall", nil})
 	}
 	for _, s := range w.Sites {
-		if r.ranged && s.Kind == "tower" && s.State == "built" && r.inRange(s.X) {
+		switch {
+		case r.ranged && s.Kind == "tower" && s.State == "built" && r.inRange(s.X):
 			out = append(out, target{s.ID, s.X, "site", nil})
+		case isBuilding(s) && r.inRange(s.X):
+			out = append(out, target{s.ID, s.X, "building", nil})
 		}
 	}
 	if math.Abs(w.Castle.X-r.e.X) <= r.e.Range+hub.CastleRadiusUnits+0.1 && r.reachable(w.Castle.X) {
@@ -210,14 +227,15 @@ func buildingTargets(w *World, r reach) []target {
 }
 
 func (e *Enemy) prefers(c target) bool {
-	return (e.has("prefersBuildings") && (c.kind == "wall" || c.kind == "castle" || c.kind == "site")) ||
+	return (e.has("prefersBuildings") && slices.Contains([]string{"wall", "castle", "site", "building"}, c.kind)) ||
 		(e.has("prefersTowers") && c.kind == "site") ||
 		(e.has("prefersTroops") && c.kind == "troop") ||
 		((e.has("prefersMonarch") || e.has("stealsGold")) && c.kind == "player")
 }
 
 // chooseTarget: ein verspottender Monarch in Reichweite zuerst (Taunt), sonst bevorzugte Ziele, davon das nächste;
-// bei Gleichstand das frühere (wie `reduce` in TS).
+// bei Gleichstand das frühere (wie `reduce` in TS). Ohne bevorzugte Ziele: übrige Gebäude nur, wenn nichts anderes in
+// Reichweite ist (gegner.md § 4).
 func chooseTarget(w *World, e *Enemy, dir float64, wall *Site) *target {
 	all := candidates(w, e, dir, wall)
 	for _, c := range all {
@@ -230,6 +248,9 @@ func chooseTarget(w *World, e *Enemy, dir float64, wall *Site) *target {
 		if e.prefers(c) {
 			pool = append(pool, c)
 		}
+	}
+	if len(pool) == 0 {
+		pool = slices.DeleteFunc(slices.Clone(all), func(c target) bool { return c.kind == "building" })
 	}
 	if len(pool) == 0 {
 		pool = all
@@ -247,7 +268,7 @@ func chooseTarget(w *World, e *Enemy, dir float64, wall *Site) *target {
 }
 
 func attack(w *World, e *Enemy, t *target) {
-	e.Cooldown = 1 / waves.AttacksPerSecond
+	e.Cooldown = 1 / attackRate(e.Kind)
 	if p := t.player; p != nil && e.has("stealsGold") && p.Gold > 0 && !w.protectedNight() {
 		amount := min(p.Gold, waves.StealGold)
 		p.Gold -= amount
