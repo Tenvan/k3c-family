@@ -1,6 +1,6 @@
 # K1 · SIM · Gegner-Traits, neue Gegner und Elite-KI
 
-- **Status:** aktiv
+- **Status:** erledigt
 - **Domäne:** SIM
 - **Prio:** mittel
 - **Reife:** bereit
@@ -67,11 +67,14 @@ Gegner ohne Eintrag für die Angriffsrate → 1 Angriff je Sekunde.
 | K1.1 | `K1.1-traits-angriffsrate.md` | Umsetzung | autonom | fertig |
 | K1.2 | `K1.2-tor-enemykilled.md` | Umsetzung | autonom | fertig |
 | K1.3 | `K1.3-neue-gegner-pools-golden.md` | Umsetzung | autonom | fertig |
-| K1.4 | `K1.4-review.md` | Review | autonom | offen |
+| K1.4 | `K1.4-review.md` | Review | autonom | fertig |
 
 Bei `Reife: Entwurf` genügen Stichpunkte mit den Kriterien in Klammern statt Session-Dateien. Vor dem Aktivieren
 wird jede Session als eigene Datei nach `docs/vorlagen/session.md` geschrieben.
 
 ## Abnahme
 
-–
+- 2026-10-06 (K1.4, autonom): AC-01 und AC-02 (K1.1: `enemies_traits_test.go`), AC-03 und AC-04 (K1.2: `enemies_targets_test.go`, `TestGegnerKillJeTod`; `kill` = `enemyKilled` laut Spec-Freigabe), AC-05 und AC-06 (K1.3: `enemies_pools_test.go`, `enemies_behaviour_test.go`), AC-07 (Golden je Regel erklärt, `rng.json` unverändert; `task check` und `task check:go` grün) mit Nachweis.
+- Review des Diffs: keine schweren Befunde, keine behoben; Hinweis: Warnzeit vor dem Flächenschlag offen (K5/BR2).
+- Neue Tickets: keine im Review (aus K1.3: B-327 Golden tiefe Stufen, B-328 Feuergeist-Fläche, B-329 Figuren).
+- Version: v0.13.0 vorgeschlagen (Minor: Traits, Angriffsrate, Gebäudeziele und sechs neue Gegner wirken im Spiel; letzter Tag v0.12.0).
