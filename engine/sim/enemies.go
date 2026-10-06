@@ -72,7 +72,7 @@ func sendEnemiesHome(w *World) {
 type target struct {
 	id     int
 	x      float64
-	kind   string // player, troop, wall, castle, site
+	kind   string // player, troop, wall (Mauer oder Tor), castle, site (Turm), building (übrige Gebäude)
 	player *Player
 }
 
@@ -150,6 +150,12 @@ func stunned(e *Enemy, dt float64) bool {
 // Truppen kennen keine Hindernisse, sie passieren beides; `outerWall` (Posten der Schützen) bleibt bei der Mauer.
 func isBarrier(s *Site) bool { return (s.Kind == "wall" || s.Kind == "gate") && s.State == "built" }
 
+// isBuilding: übrige gebaute Gebäude (Heilplatz, Taverne, Lager, Schmiede, Rüstkammer, Werkstatt, Farm, Kaserne) sind
+// Ziele der Gegner (gegner.md § 4). Mauer und Tor halten auf, Türme sind Ziele der Fernkämpfer, Treppen Reisepunkte.
+func isBuilding(s *Site) bool {
+	return s.State == "built" && !isBarrier(s) && !slices.Contains([]string{"tower", "stairsUp", "stairsDown"}, s.Kind)
+}
+
 func blockingWall(w *World, e *Enemy, dir float64) *Site {
 	var best *Site
 	for _, s := range w.Sites {
@@ -184,7 +190,7 @@ func (r reach) inRange(x float64) bool {
 }
 
 // candidates sammelt alle Ziele in Reichweite, in der Reihenfolge von `chooseTarget` in TS:
-// Spieler, Truppen, Mauer, Türme (nur Fernkämpfer), Burg.
+// Spieler, Truppen, Mauer oder Tor, Türme (nur Fernkämpfer), übrige Gebäude, Burg.
 func candidates(w *World, e *Enemy, dir float64, wall *Site) []target {
 	r := reach{e, e.has("ranged"), dir, wall}
 	out := []target{}
@@ -207,8 +213,11 @@ func buildingTargets(w *World, r reach) []target {
 		out = append(out, target{r.wall.ID, r.wall.X, "wall", nil})
 	}
 	for _, s := range w.Sites {
-		if r.ranged && s.Kind == "tower" && s.State == "built" && r.inRange(s.X) {
+		switch {
+		case r.ranged && s.Kind == "tower" && s.State == "built" && r.inRange(s.X):
 			out = append(out, target{s.ID, s.X, "site", nil})
+		case isBuilding(s) && r.inRange(s.X):
+			out = append(out, target{s.ID, s.X, "building", nil})
 		}
 	}
 	if math.Abs(w.Castle.X-r.e.X) <= r.e.Range+hub.CastleRadiusUnits+0.1 && r.reachable(w.Castle.X) {
@@ -218,14 +227,15 @@ func buildingTargets(w *World, r reach) []target {
 }
 
 func (e *Enemy) prefers(c target) bool {
-	return (e.has("prefersBuildings") && (c.kind == "wall" || c.kind == "castle" || c.kind == "site")) ||
+	return (e.has("prefersBuildings") && slices.Contains([]string{"wall", "castle", "site", "building"}, c.kind)) ||
 		(e.has("prefersTowers") && c.kind == "site") ||
 		(e.has("prefersTroops") && c.kind == "troop") ||
 		((e.has("prefersMonarch") || e.has("stealsGold")) && c.kind == "player")
 }
 
 // chooseTarget: ein verspottender Monarch in Reichweite zuerst (Taunt), sonst bevorzugte Ziele, davon das nächste;
-// bei Gleichstand das frühere (wie `reduce` in TS).
+// bei Gleichstand das frühere (wie `reduce` in TS). Ohne bevorzugte Ziele: übrige Gebäude nur, wenn nichts anderes in
+// Reichweite ist (gegner.md § 4).
 func chooseTarget(w *World, e *Enemy, dir float64, wall *Site) *target {
 	all := candidates(w, e, dir, wall)
 	for _, c := range all {
@@ -238,6 +248,9 @@ func chooseTarget(w *World, e *Enemy, dir float64, wall *Site) *target {
 		if e.prefers(c) {
 			pool = append(pool, c)
 		}
+	}
+	if len(pool) == 0 {
+		pool = slices.DeleteFunc(slices.Clone(all), func(c target) bool { return c.kind == "building" })
 	}
 	if len(pool) == 0 {
 		pool = all

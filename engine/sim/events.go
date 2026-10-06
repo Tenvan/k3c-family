@@ -6,7 +6,7 @@ import "math"
 // Orte `x` in Units; auf einer Insel trägt jedes Ereignis zusätzlich `stage` (Index der Stufe, StepIsland).
 //
 //	hit           – Schaden wirkt: x, target (player, troop, enemy, castle, site), id (Spieler: Index, sonst ID), damage
-//	kill          – Gegner besiegt: kind, x, gold (gestreute Münzen)
+//	kill          – Gegner besiegt: kind, x, gold (gestreute Münzen); je Tod, mit Priorität (`enemyKilled` aus B-128)
 //	arrow         – Geschoss abgeschossen: from, to (IDs), x, team (player, enemy)
 //	strike        – Nahkampf-Schlag eines Gegners: from, x
 //	coinPickup    – Münze aufgehoben: player (Index), x
@@ -70,12 +70,14 @@ func buildProgressEvent(w *World, s *Site, before float64) {
 
 // maxEventsPerTick ist die Obergrenze K je Tick und Stufe. Vorläufig, 🧑 bestätigt mit der Freigabe bzw. F4 (Benchmark):
 // Gemessen über alle Golden-Läufe nach F3.2: größter Tick 19 Ereignisse (forest-nacht, forest-tag), Mittel ≤ 0,1 je Tick.
+// `kill` hat Priorität (K1.2, B-128/AC-04): Jeder Tod eines Gegners wird gemeldet, auch wenn Flächenschlag oder Schwarm
+// viele Treffer im selben Tick erzeugen.
 const maxEventsPerTick = 32
 
 // priorityEvent: Tod und Bau gehen bei Überlauf vor (B-139/AC-03).
 func priorityEvent(ev Event) bool {
 	switch ev["type"] {
-	case "playerDown", "castleFallen", "built", "buildProgress", "destroyed":
+	case "playerDown", "castleFallen", "built", "buildProgress", "destroyed", "kill":
 		return true
 	}
 	return false
