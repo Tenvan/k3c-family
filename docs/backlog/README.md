@@ -125,6 +125,7 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-314](B-314-controller-pruefungen-zurueckgestellt.md) | PLAT | Schuld | niedrig | offen | – | Alle Controller-Prüfungen sind gesammelt nachgeholt |
 | [B-315](B-315-spielstand-voll-ausgebaut.md) | SRV | Idee | hoch | offen | – | Der Level-Betrachter erzeugt einen Spielstand mit allen Gebäuden voll ausgebaut |
 | [B-316](B-316-tastatur-zwei-spieler.md) | PLAT | Idee | hoch | offen | – | Zwei Spieler spielen an einer Tastatur im Split-Screen |
+| [B-317](B-317-cheat-dialog-fokus-tastatur.md) | CLI | Problem | hoch | offen | – | Der Cheat-Dialog zeigt den Fokus und lässt sich mit Pfeiltasten, Leertaste und Controller bedienen |
 
 ## Archiv
 
