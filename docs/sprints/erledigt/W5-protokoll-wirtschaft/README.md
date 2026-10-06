@@ -1,6 +1,6 @@
 # W5 · SRV · Protokoll für Berufe, Händler, Lager und Hub-Stufe
 
-- **Status:** aktiv
+- **Status:** erledigt
 - **Domäne:** SRV
 - **Prio:** hoch
 - **Reife:** bereit
@@ -64,11 +64,14 @@ keine
 |---|---|---|---|---|
 | W5.1 | `W5.1-felder.md` | Umsetzung | autonom | fertig |
 | W5.2 | `W5.2-eingaben-version-bytes.md` | Umsetzung | autonom | fertig |
-| W5.3 | `W5.3-review.md` | Review | autonom | offen |
+| W5.3 | `W5.3-review.md` | Review | autonom | fertig |
 
 Bei `Reife: Entwurf` genügen Stichpunkte mit den Kriterien in Klammern statt Session-Dateien. Vor dem Aktivieren
 wird jede Session als eigene Datei nach `docs/vorlagen/session.md` geschrieben.
 
 ## Abnahme
 
-–
+- 2026-10-06 (W5.3, autonom): AC-01, AC-03, AC-06 (W5.1: `TestWirtschaftZustand`, `TestFormWieBeispiele`, `clientWirtschaft.test.ts`), AC-04, AC-05 (W5.2: `TestHandschlagFalsch` mit v4, Bytes vorher/nachher in `docs/protocol.md`) mit Nachweis; AC-02 verworfen (B-330, Variante B).
+- Review des Diffs: keine schweren Befunde, keine behoben; `engine/sim/` unverändert, Version in Server, Client, Dokument und Beispielen 5. Die Änderung an `src/online/clientSkills.test.ts` (nur Version 4 → 5, außerhalb der erlaubten Dateien) ist als zwingende Folge des Versionssprungs abgenommen.
+- Neue Tickets: keine. B-153 und B-283 erledigt und archiviert (Berufe, Grabstein und Wiederbeleben stehen als `troops[].profession`, `drops`, `revived`).
+- Version: v0.14.0 vorgeschlagen (Minor: Protokoll v5, Clients der Version 4 werden abgewiesen, neue Zustandsfelder und Ereignisse); gesetzt erst nach Bestätigung durch 🧑.
