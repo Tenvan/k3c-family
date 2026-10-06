@@ -58,7 +58,7 @@ keine
 
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
-| W9.1 | `W9.1-welt-spiegeln.md` | Umsetzung | autonom | in Arbeit |
+| W9.1 | `W9.1-welt-spiegeln.md` | Umsetzung | autonom | fertig |
 | W9.2 | `W9.2-review.md` | Review | autonom | offen |
 
 Bei `Reife: Entwurf` genügen Stichpunkte mit den Kriterien in Klammern statt Session-Dateien. Vor dem Aktivieren
