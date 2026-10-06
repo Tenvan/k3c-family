@@ -11,6 +11,7 @@ Supervisor für Entwicklungs-Dienste (Vite-Dev-Server, Go-Spielserver) aus `serv
 - `lifecycle.go`: `start`, `awaitHealthy`, `stop`, `killRun`, `watch`, `crashed`, `allowRestart` (Restart-Limit).
 - `runtime.go`: Produktiv-Implementierung `ProcStarter` (über `proc`), `HealthCheck` (HTTP). `system.go`: `PortListener`, `NewSampler` (gopsutil; `Metrics`).
 - `adopt.go`: `Adopt` übernimmt Prozesse auf belegten Ports, `Monitor`/`sampleAll`, `LogLevels` (`LevelCounts`). `filewatch.go`: Polling-Snapshot (`fileSig`) und `restartForChange`.
+- `reload.go`: `Controller.Reload` gleicht die Units mit einer neu gelesenen `services.json` ab (neue kommen dazu, entfernte eigene werden gestoppt, übernommene laufen weiter, Reihenfolge folgt der Liste); ein laufender Dienst mit geänderter Konfiguration behält die alte bis zum nächsten Start und wird als `pending` gemeldet (`sameConfig`, `newUnit`).
 - `outlog.go`: `outSink` leitet Prozessausgabe in die Konsole (`console.Store`) und ins JSONL-Log (`applog`), erkennt Level (`outLevel`, ANSI-Strip).
 
 ## Flow
@@ -23,5 +24,5 @@ Supervisor für Entwicklungs-Dienste (Vite-Dev-Server, Go-Spielserver) aus `serv
 
 ## Integration
 
-- Konsumenten: MCP-Tools `svc_status`, `svc_start`, `svc_stop`, `svc_restart` (`internal/mcpsrv/tools_services.go`, `worktree_services.go`); Wails-Bindings `Services`, `ServiceStart`, `ServiceStop`, `ServiceRestart`, `ServicesStartAll`, `ServicesStopAll`, `ServiceLogLevels` (`app_services.go`); `main.go` (`openServices`).
+- Konsumenten: MCP-Tools `svc_status`, `svc_start`, `svc_stop`, `svc_restart` (`internal/mcpsrv/tools_services.go`, `worktree_services.go`); Wails-Bindings `Services`, `ServiceStart`, `ServiceStop`, `ServiceRestart`, `ServicesStartAll`, `ServicesStopAll`, `ServicesReload`, `ServiceLogLevels` (`app_services.go`); `main.go` (`openServices`).
 - Abhängigkeiten: `internal/proc`, `internal/console`, `internal/applog`, gopsutil (process/net); Konfig `tools/k3c-dev/services.json`.
