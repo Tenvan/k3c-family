@@ -14,6 +14,10 @@ type Economy struct {
 	HubUpgrade *HubUpgrade `json:"hubUpgrade,omitempty"`
 	// Danger: Nacht oder Gegner da, Bau und Ausbau warten (`waitingWorker` heißt dann Gefahr, nicht „kein Bauer“).
 	Danger bool `json:"danger,omitempty"`
+	// Fighters ist die Zahl der Kämpfer der Stufe, TroopLimit ihr Truppen-Limit (barracks.go; B-331, W10.1). Noch
+	// ohne JSON-Namen: stateOf (engine/net) übernimmt jedes JSON-Feld in den Zustand, das Protokoll folgt in W10.2.
+	Fighters   int `json:"-"`
+	TroopLimit int `json:"-"`
 }
 
 // HubUpgrade sind Kosten und Stand des Ausbaus auf die nächste Hub-Stufe (hub_level.go).
@@ -26,7 +30,7 @@ type HubUpgrade struct {
 
 // EconomyOf liest den Wirtschaftsstand der Stufe w ab.
 func EconomyOf(w *World) Economy {
-	e := Economy{HubLevel: w.HubLevel, Danger: isDangerous(w)}
+	e := Economy{HubLevel: w.HubLevel, Danger: isDangerous(w), Fighters: fighters(w), TroopLimit: troopLimit(w)}
 	if limit, ok := capacity(w); ok {
 		e.StockMax = limit
 	}

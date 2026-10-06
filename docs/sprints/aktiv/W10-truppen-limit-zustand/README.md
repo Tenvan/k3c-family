@@ -63,7 +63,7 @@ keine
 
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
-| W10.1 | `W10.1-economy-kaempfer.md` | Umsetzung | autonom | in Arbeit |
+| W10.1 | `W10.1-economy-kaempfer.md` | Umsetzung | autonom | fertig |
 | W10.2 | `W10.2-protokoll.md` | Umsetzung | autonom | offen |
 | W10.3 | `W10.3-review.md` | Review | autonom | offen |
 

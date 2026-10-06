@@ -59,3 +59,28 @@ func TestEconomyOhneInselUndStufe5(t *testing.T) {
 		t.Errorf("Stufe 5 ohne Kosten: %v", got)
 	}
 }
+
+// W10.1 (B-331, Sprint W10 AC-02): Kämpfer-Zahl und Truppen-Limit aus fighters und troopLimit, noch nicht im JSON.
+func TestEconomyKaempferUndLimit(t *testing.T) {
+	w := quietWorld(t)
+	l := buildings["barracks"].TroopLimit
+	if e := EconomyOf(w); e.Fighters != 0 || e.TroopLimit != l.Base {
+		t.Errorf("ohne Kämpfer und Kaserne: %d/%d, erwartet 0/%d", e.Fighters, e.TroopLimit, l.Base)
+	}
+	makeArcher(w, spawnVagrant(w, w.HubX, w.HubX))
+	makeArcher(w, spawnVagrant(w, w.HubX, w.HubX))
+	spawnVagrant(w, w.HubX+30, w.HubX+30) // zählt nicht
+	barracks := buildSite(t, w, "barracks")
+	if e := EconomyOf(w); e.Fighters != 2 || e.TroopLimit != l.Base+l.PerBuilding {
+		t.Errorf("2 Bogenschützen, Kaserne: %d/%d, erwartet 2/%d", e.Fighters, e.TroopLimit, l.Base+l.PerBuilding)
+	}
+	destroySite(w, barracks)
+	if e := EconomyOf(w); e.TroopLimit != l.Base {
+		t.Errorf("zerstörte Kaserne zählt nicht: %d", e.TroopLimit)
+	}
+	for k := range economyJSON(t, w) {
+		if k == "fighters" || k == "troopLimit" || k == "Fighters" || k == "TroopLimit" {
+			t.Errorf("Feld %s schon im JSON (Protokoll erst W10.2)", k)
+		}
+	}
+}
