@@ -120,6 +120,7 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-300](B-300-mauern-zuerst-wie-sparsam.md) | SIM | Frage | mittel | offen | – | Das Profil „Mauern zuerst“ spielt messbar anders als „sparsam“ |
 | [B-301](B-301-vary-ohne-wirkung.md) | SIM | Problem | niedrig | offen | – | Ein Sensitivitäts-Pfad ohne Wirkung ergibt einen Fehler |
 | [B-312](B-312-wiederaufheben-begrenzen.md) | SIM | Problem | hoch | offen | – | Sofortiges Wiederaufheben fallengelassener Ausrüstung macht die Burg bei passivem Spiel unverwundbar |
+| [B-313](B-313-vermerk-wirkung-offen-test.md) | SIM | Frage | hoch | offen | – | W4.3b kann den Vermerk „Wirkung offen“ nur mit einer Änderung an sites_test.go ersetzen |
 
 ## Archiv
 
