@@ -63,8 +63,9 @@ type Coin struct {
 
 // Job ist der Auftrag eines Bauern; es sind nur die Felder seines Typs gesetzt (IDs sind nie 0).
 type Job struct {
-	Type     string  `json:"type"` // build, repair, gather, carry, fetchBow
+	Type     string  `json:"type"` // build, repair, gather, carry, fetchBow, fetchSword, pickup (Ausrüstung, warrior.go)
 	SiteID   int     `json:"siteId,omitempty"`
+	DropID   int     `json:"dropId,omitempty"`
 	NodeID   int     `json:"nodeId,omitempty"`
 	Resource string  `json:"resource,omitempty"`
 	Amount   int     `json:"amount,omitempty"`
@@ -87,6 +88,7 @@ type Troop struct {
 	// Profession: Beruf eines Bauern (miner, builder, craftsman; professions.go), WorkSite: Gebäude eines Handwerkers.
 	Profession string `json:"profession,omitempty"`
 	WorkSite   int    `json:"workSite,omitempty"`
+	hitBy      string // Gegnerart des letzten Treffers für disarmed (warrior.go), ohne JSON
 	// carried: Material, das ein Träger in einer Insel bei vollem Maximum behält, während er einen Bauauftrag übernimmt.
 	carried *Job
 }
@@ -120,6 +122,10 @@ type Site struct {
 	// Gold je Angebot (Index wie buildings[Kind].Offers). Beides professions.go.
 	CraftDone float64 `json:"craftDone,omitempty"`
 	OfferPaid []int   `json:"offerPaid,omitempty"`
+	// Schwerter der Werkstatt (warrior.go), wie Bows, BowPaidGold und CraftDone.
+	Swords        int     `json:"swords,omitempty"`
+	SwordPaidGold int     `json:"swordPaidGold,omitempty"`
+	SwordDone     float64 `json:"swordDone,omitempty"`
 	// Ausbau (hub_level.go): Level = Stufe des gebauten Platzes (0 = 1), Upgrade = Zustand des Ausbaus auf die nächste
 	// Stufe ("", waitingMaterial, waitingWorker), UpgradePaid = dafür gezahltes Gold.
 	Level       int     `json:"level,omitempty"`
@@ -264,6 +270,7 @@ type World struct {
 	SkillPoints int     `json:"skillPoints"`
 	Travel      *Travel `json:"travel"`
 	Merchant    *Merchant `json:"merchant,omitempty"` // Händler, nur in Tiefe 0 (merchant.go)
+	Drops       []*Drop   `json:"drops,omitempty"`    // Ausrüstung am Boden (warrior.go)
 	Events      []Event `json:"events"` // wird bei jedem Step geleert
 	// EventsDropped zählt die Ereignisse, die die Obergrenze je Tick in diesem Step verworfen hat (capEvents).
 	EventsDropped int `json:"eventsDropped,omitempty"` // 0 fehlt im JSON (Protokoll-Beispiele unverändert, Übertragung: B-190)

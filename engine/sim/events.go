@@ -16,6 +16,9 @@ import "math"
 //	revived       – Monarch von einem Mitspieler wiederbelebt (A halten, revive.go; Q62): player, x
 //	trained       – Bauer ausgebildet (professions.go): kind (miner, builder, craftsman), x
 //	merchantArrived – Händler kommt (merchant.go): resource, x (Zahlziel Kaufen); merchantLeft – Händler reist ab
+//	disarmed      – Bürger verliert seine Ausrüstung (Verlust-Kaskade, warrior.go; Q67, Q69): kind (Figur oder
+//	                Beruf), x, cause (Gegnerart wie playerDown); ohne Priorität, nicht beim Burgfall
+//	equipmentTaken – Gegner trägt Ausrüstung weg (Q68, Q69); nur angelegt, das Aufheben durch Gegner baut K1
 //	traded        – Tausch am Händler: player, resource, amount (+ gekauft, − verkauft), gold (− bezahlt, + erhalten)
 //
 //	playerDown    – Monarch fällt: player, cause (Gegnerart aus data/enemies.json bei Nahkampf und Geschoss,
@@ -51,6 +54,8 @@ func coinGiveEvent(w *World, p *Player, t *payTarget) {
 		to = "site"
 	case t.troop != nil:
 		to = "recruit"
+	case t.sword != nil:
+		to = "offer"
 	}
 	emit(w, "coinGive", Event{"player": p.Index, "x": unitX(p.X), "to": to})
 }

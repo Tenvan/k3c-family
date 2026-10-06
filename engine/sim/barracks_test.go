@@ -65,7 +65,43 @@ func TestKaserneZerstoertKaempferBleiben(t *testing.T) {
 	}
 	other := spawnVagrant(w, w.HubX, w.HubX)
 	other.Kind = "peasant"
-	if bowToFetch(w, other) != nil {
+	if weaponToFetch(w, other) != nil {
 		t.Error("über dem Limit gibt es trotzdem einen Abhol-Auftrag")
+	}
+}
+
+// W4.3a (Q40): Das Limit zählt Bogenschützen und Krieger gemischt; Bauern mit Beruf und Landstreicher nicht. Bei
+// vollem Limit bleibt das Schwert im Regal.
+func TestLimitZaehltBogenschuetzenUndKrieger(t *testing.T) {
+	w := dayWorld(t)
+	AddPlayer(w)
+	AddPlayer(w)
+	l := buildings["barracks"].TroopLimit
+	for i := range l.Base {
+		makeFighter(w, spawnVagrant(w, w.HubX, w.HubX), []string{"archer", "warrior"}[i%2])
+	}
+	addPeasant(w, w.HubX, "miner")
+	spawnVagrant(w, w.HubX+30, w.HubX+30)
+	workshop := buildSite(t, w, "workshop")
+	workshop.Swords = 1
+	peasant := w.Troops[0]
+	run(w, 20)
+	if peasant.Kind != "peasant" || workshop.Swords != 1 || fighters(w) != l.Base {
+		t.Fatalf("Limit voll: Bauer ist %s, Schwerter im Regal %d, Kämpfer %d/%d", peasant.Kind, workshop.Swords,
+			fighters(w), l.Base)
+	}
+	buildSite(t, w, "barracks")
+	if runUntil(w, 30, func() bool { return peasant.Kind == "warrior" }) < 0 || workshop.Swords != 0 {
+		t.Fatalf("mit Kaserne: Bauer ist %s, Schwerter im Regal %d", peasant.Kind, workshop.Swords)
+	}
+	for range l.Base + l.PerBuilding - fighters(w) {
+		makeFighter(w, spawnVagrant(w, w.HubX, w.HubX), "warrior")
+	}
+	workshop.Swords = 1
+	extra := addPeasant(w, w.HubX, "")
+	run(w, 20)
+	if extra.Kind != "peasant" || workshop.Swords != 1 || fighters(w) != l.Base+l.PerBuilding {
+		t.Errorf("Limit mit Kaserne: Bauer ist %s, Schwerter im Regal %d, Kämpfer %d/%d", extra.Kind,
+			workshop.Swords, fighters(w), l.Base+l.PerBuilding)
 	}
 }

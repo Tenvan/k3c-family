@@ -16,6 +16,7 @@ type payTarget struct {
 	node     *ResourceNode
 	offer    *offerTarget
 	merchant string
+	sword    *Site // Schwert-Zahlziel der Werkstatt (warrior.go)
 }
 
 func stepPlayers(w *World, commands []PlayerCommand, dt float64) {
@@ -101,6 +102,9 @@ func findPayTarget(w *World, p *Player) *payTarget {
 	if o := findOffer(w, p.X); o != nil {
 		return &payTarget{offer: o}
 	}
+	if s := swordAt(w, p.X, true); s != nil {
+		return &payTarget{sword: s}
+	}
 	if side := merchantAt(w, p.X); side != "" {
 		return &payTarget{merchant: side}
 	}
@@ -141,6 +145,8 @@ func keyOf(t *payTarget) string {
 		return t.offer.key()
 	case t.merchant != "":
 		return "merchant:" + t.merchant
+	case t.sword != nil:
+		return "sword:" + strconv.Itoa(t.sword.ID)
 	case t.site != nil:
 		return "site:" + strconv.Itoa(t.site.ID)
 	case t.troop != nil:
@@ -166,6 +172,8 @@ func refundPending(w *World, p *Player) {
 		back = refundOffer(w, idText, amount)
 	case "merchant":
 		back = refundMerchant(w, amount)
+	case "sword":
+		back = refundSword(w, id, amount)
 	case "vagrant":
 		if t := troopByID(w, id); t != nil && t.Kind == "vagrant" {
 			back = min(amount, t.PaidGold)
@@ -207,7 +215,7 @@ func clearPending(p *Player) {
 func payOneCoin(w *World, p *Player) {
 	target := findPayTarget(w, p)
 	// Am fertig bezahlten Bauplatz oder vollen Angebot nichts fallen lassen (sonst verliert man beim Festhalten Münzen).
-	if target == nil && (nearOffer(w, p.X) || nearest(w.Sites, func(s *Site) float64 { return s.X }, p.X, economy.PayRangeUnits, func(*Site) bool { return true }) != nil) {
+	if target == nil && nearFullTarget(w, p.X) {
 		return
 	}
 	if target != nil && target.merchant != "" {
@@ -231,6 +239,8 @@ func payOneCoin(w *World, p *Player) {
 	switch {
 	case target.offer != nil:
 		payOffer(w, p, target.offer)
+	case target.sword != nil:
+		paySword(p, target.sword)
 	case target.site != nil:
 		paySite(w, p, target.site)
 	case target.troop != nil:
@@ -369,6 +379,7 @@ func stepSites(w *World) {
 		}
 		if s.Kind == "workshop" && s.State == "built" {
 			stepBowCraft(w, s)
+			stepSwordCraft(w, s)
 		}
 	}
 	eachSite(w, func(s *Site) { stepUpgrade(w, s) })
