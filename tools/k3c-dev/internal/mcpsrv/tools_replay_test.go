@@ -9,7 +9,8 @@ import (
 	"k3c/tools/k3c-dev/internal/balance"
 )
 
-// recordReplay nimmt einen Bot-Lauf auf (passiv verliert die Burg in Nacht 1) und schreibt ihn nach dir/name.
+// recordReplay nimmt einen Bot-Lauf auf und schreibt ihn nach dir/name. Seit der Verlust-Kaskade (W4.3a, Q67) heben die
+// Start-Bogenschützen ihren Bogen wieder auf, die passive Burg fällt in keinem Lauf mehr (Burgfall-Tick „keiner“).
 func recordReplay(t *testing.T, dir, name string) balance.Replay {
 	t.Helper()
 	rep, err := balance.Run(balance.Matrix{Seeds: []string{"2"}, Players: []int{1}, Bots: []string{"passive"}, Depths: []int{0}, Days: 1})
@@ -33,9 +34,6 @@ func TestReplayRunGleicherHashUndBurgfall(t *testing.T) {
 		t.Fatal(err)
 	}
 	r := recordReplay(t, filepath.Join(root, "replays"), "2.replay.json")
-	if r.CastleFallTick == nil {
-		t.Fatal("Aufnahme ohne Burgfall: Test braucht einen Burgfall-Tick")
-	}
 	cs := connect(t, New(Config{Version: "test", Root: root}))
 
 	text, isErr := callText(t, cs, "replay_run", map[string]any{"path": "replays/2.replay.json"})

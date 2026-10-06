@@ -119,6 +119,7 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-298](B-298-ressourcen-manager.md) | SRV | Idee | mittel | offen | – | Ein ResourcenManager in k3c-dev ordnet jedem Grafik- und Sound-Slot Assets mit Präferenz zu |
 | [B-299](B-299-asset-vorschau-szenen.md) | PLAT | Idee | mittel | offen | – | Eine Dev-Seite zeigt die Asset-Zuordnung je Kategorie als Mini-Szene im Spielmaßstab |
 | [B-310](B-310-elite-verhalten-ausserhalb-erlaubter-dateien.md) | SIM | Frage | hoch | offen | – | Elite-Werte wirken nur mit Änderungen außerhalb der Erlaubten Dateien von W4.3b |
+| [B-311](B-311-passive-burg-faellt-nicht.md) | REG | Frage | hoch | offen | – | Mit der Verlust-Kaskade fällt die Burg bei passivem Spiel nie |
 
 ## Archiv
 
