@@ -7,7 +7,13 @@ Configuration Data: einzige Quelle für Balancing-Werte (JSON) für den TS-Clien
 ## Design
 
 - `embed.go`: Package `data` mit `Files embed.FS` über `*.json` und `biomes/*.json`.
-- Dateien: `buildings.json`, `troops.json`, `enemies.json`, `waves.json` (Tabelle ab `fromWave`), `economy.json` (Börse, Reichweiten, Drops), `monarch.json` (Basiswerte, Level, Presets), `hub.json` (Bauplätze, Inselstart, Starttruppen), `difficulty.json` (Faktoren je Grad), `sprites.json` (Sheets, Skalierung, Reittiere), `balance-targets.json` (Zielkorridore und Seeds für Balancing-Läufe); `biomes/` siehe eigene codemap.
+- `buildings.json`: Schlüssel je Gebäude (`castle`, `wall`, `tower`, `gate`, `workshop`, `storage`, `farm`, `barracks`, `stairsUp`, `stairsDown`, `tavern`, `healer`, `smithy`, `armory`) mit `hp`, `buildSeconds`, `cost`, `unlockDepth`; je nach Gebäude `levels` (Ausbaustufen), `spell` (Turm), `offers`/`craftSeconds` (Werkstatt), `plantation` (Farm), `troopLimit` (Kaserne), `vagrants` (Taverne).
+- `troops.json`: `vagrant`, `peasant` (mit `professions`: `miner`, `builder`, `craftsman`), `archer`, `warrior`, `eliteArcher`, `eliteWarrior`; Kampfwerte, `upgradeFrom`, `cost`.
+- `enemies.json`: je Gegner `depth`, `tier` (`standard|elite`), Kampfwerte, `attacksPerSecond`, `gold`, `traits`; Trait-Parameter `kiteDistance`, `aoe`, `swarmSize`, `phases`. `waves.json`: Tabelle ab `fromWave` (`standard`, `elite`), `spawnSpreadSeconds`, `perExtraPlayer`, `depthScaling`, `stealGold` (Angriffsrate steht je Gegner, nicht mehr hier).
+- `economy.json`: `purse`, Reichweiten und Intervalle, `chestGold`, `enemyResourceDrop`, `gatherables` (Baum, Fels, Kupfererz), `veins` (`stoneVein`, `copperVein`, `ironVein`, `crystalVein` mit `maxWorkers`), `storage`, `recruitCamp`, `merchant`.
+- `monarch.json`: `base`, `sprintMultiplier`, `revive`, `mount`, `attack`, `tierPoints`, `skillPointSources`, `lines` (`tank`, `mage`, `healer`, `thief`) und `skills` je Skill.
+- `hub.json`: `levels` (Burgausbau), `sites` und `islandSites` (Bauplätze), `wallLines`, `merchant`, `islandStartStock`, Radien, `startTroops`, `travel`. `difficulty.json`: `grades` (`dev`, `easy`, `normal`, `hard`, `ultra`) mit `waveSize`, `enemyHp`, `enemyDamage`, `defaultDefeat`, bei `easy` zusätzlich `protectedNights`.
+- `sprites.json` (Sheets, Skalierung, Reittiere) und `balance-targets.json` (`margin`, `seeds`, `targets` für Balancing-Läufe). `biomes/`: siehe eigene codemap.
 
 ## Flow
 

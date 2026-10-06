@@ -7,7 +7,7 @@ Browser-Client (TypeScript + Phaser 4) von K3C. Reiner Thin Client: sendet Einga
 - `main.ts` ist der Composition Root für `game.html`: `installPageChrome()` und `installClientLog()`, dann Server-Build per `fetchServerBuild()` prüfen, `createRoomClient()` anlegen und das `Phaser.Game` mit den Szenen `load`, `lobby`, `game`, `hud` (plus Options) aufbauen.
 - Schichten in Unterordnern:
   - `model/` – Domain Model (Typen, `data/*.json`-Zugriff), ohne Logik
-  - `online/` – Protocol Adapter zum Server (`/ws`, Protokoll v3)
+  - `online/` – Protocol Adapter zum Server (`/ws`, Protokoll v4)
   - `input/` – Adapter für Tastatur, Gamepad und Touch hinter `PlayerInput`
   - `scenes/` – Presentation Layer (Phaser-Szenen, Rendering)
   - `audio/` – Web-Audio aus `GameEvent`s
