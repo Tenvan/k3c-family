@@ -14,6 +14,8 @@
 
 ## Kontext
 
+**Controller zurückgestellt (B-314, 2026-10-06):** 🧑 prüft vorerst nur am PC mit Tastatur und Maus (1 Spieler; 2 Spieler an einer Tastatur erst mit B-316). Controller-, Vibrations- und Xbox-Schritte dieser Session sind nach B-314 verschoben; die Kriterien bleiben, ihr Controller-Anteil gilt als `angenommen, Validierung offen (B-314)`.
+
 Ein Agent nimmt diese Session nicht und bereitet sie nicht vor. Dauer etwa 10 Minuten. Hardware-Session nach `docs/arbeitsweise.md` › Hardware entkoppelt: keine Abhängigkeit des Reviews SO1.4. Bis dahin gilt die Annahme aus `docs/plan-weiterentwicklung.md` § 11.6 (Ton erst nach erster Eingabe, mp3 mit Fallback). Weicht das Ergebnis ab, entsteht ein Ticket (CLI) und § 11.6 bekommt den Messwert.
 
 ## Erlaubte Dateien
@@ -48,3 +50,5 @@ Manuell durch 🧑 an der Xbox.
 - Welches Format (ogg oder mp3) gespielt hat, wurde nicht ausgelesen; dazu gibt es keine Messung für § 11.6.
 - Keine Mängel, keine neuen Tickets.
 - **Offen:** Entsperren, Format mit Fallback und Dämpfung am TV (Xbox, Edge) fehlen; die Session bleibt `offen`, `plan-weiterentwicklung.md` § 11.6 behält die Annahme.
+
+2026-10-06, **Tastatur und Maus (Sammelaussage):** 🧑 (Ralf) im Chat: „Alle Tastatur und Maussteuerungen liefen bisher wie definiert.“ Gilt für den Tastatur- und Maus-Anteil dieser Session am PC; Darstellung, Ton und Controller (B-314) sind damit nicht abgenommen, die Session bleibt `offen`.

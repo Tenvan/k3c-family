@@ -14,6 +14,8 @@
 
 ## Kontext
 
+**Controller zurückgestellt (B-314, 2026-10-06):** 🧑 prüft vorerst nur am PC mit Tastatur und Maus (1 Spieler; 2 Spieler an einer Tastatur erst mit B-316). Controller-, Vibrations- und Xbox-Schritte dieser Session sind nach B-314 verschoben; die Kriterien bleiben, ihr Controller-Anteil gilt als `angenommen, Validierung offen (B-314)`.
+
 Ein Agent nimmt diese Session nicht und bereitet sie nicht vor. Dauer etwa 10 Minuten. Hardware-Session nach `docs/arbeitsweise.md` › Hardware entkoppelt: keine Abhängigkeit des Reviews SO3.4. Zu prüfen: Seite über die Landingpage öffnen, A entsperrt Audio, Stick/D-Pad wählt, A spielt, Stopp und Überblenden funktionieren, B tut nichts, View + Menu führt zur Landingpage; Crossfade zwischen zwei Stücken ohne Knacken; Lautstärke am TV angenehm.
 
 ## Erlaubte Dateien
@@ -48,3 +50,5 @@ Manuell durch 🧑 an der Xbox.
 - **AC-04 am PC: geprüft** (🧑): Crossfade zwischen zwei Stücken ohne Knacken, Lautstärke angenehm.
 - Keine Mängel, keine neuen Tickets.
 - **Offen:** Die Abnahme am TV (Xbox, Edge) fehlt; die Session bleibt `offen`, die Kriterien stehen weiter als „angenommen, Validierung offen“.
+
+2026-10-06, **Tastatur und Maus (Sammelaussage):** 🧑 (Ralf) im Chat: „Alle Tastatur und Maussteuerungen liefen bisher wie definiert.“ Gilt für den Tastatur- und Maus-Anteil dieser Session am PC; Darstellung, Ton und Controller (B-314) sind damit nicht abgenommen, die Session bleibt `offen`.

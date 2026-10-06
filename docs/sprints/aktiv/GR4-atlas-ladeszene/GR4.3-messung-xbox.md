@@ -14,6 +14,8 @@
 
 ## Kontext
 
+**Controller zurückgestellt (B-314, 2026-10-06):** 🧑 prüft vorerst nur am PC mit Tastatur und Maus (1 Spieler; 2 Spieler an einer Tastatur erst mit B-316). Controller-, Vibrations- und Xbox-Schritte dieser Session sind nach B-314 verschoben; die Kriterien bleiben, ihr Controller-Anteil gilt als `angenommen, Validierung offen (B-314)`.
+
 Hardware-Session nach `docs/arbeitsweise.md` › Hardware entkoppelt: keine Abhängigkeit des Reviews GR4.4. Dauer etwa 15 Minuten. „Kaltstart“ = Browser-Cache geleert bzw. erster Aufruf nach Neustart von Edge. Der Startwert des Budgets kommt aus der ersten Messung (B-163 › Anforderungen), 🧑 legt den Wert fest. Messen mit Stoppuhr oder über die Gamepad-Testseite (`gamepad-test.html`, Berichte nach `reports/`), falls sie dafür eine Zeitmessung bietet; sonst Stoppuhr, dreimal, Median.
 
 ## Erlaubte Dateien
@@ -43,4 +45,4 @@ Manuell durch 🧑 an der Xbox.
 
 ## Ergebnis
 
-–
+2026-10-06, **Tastatur und Maus (Sammelaussage):** 🧑 (Ralf) im Chat: „Alle Tastatur und Maussteuerungen liefen bisher wie definiert.“ Gilt für den Tastatur- und Maus-Anteil dieser Session am PC; Darstellung, Ton und Controller (B-314) sind damit nicht abgenommen, die Session bleibt `offen`.
