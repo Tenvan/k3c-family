@@ -20,10 +20,11 @@ const ids = (value: string) => value.match(/B-\d{3}/g) ?? [];
 
 const DOMAINS = ['REG', 'SIM', 'SRV', 'CLI', 'PLAT', 'INF'];
 const SPEC = ['Entwurf', 'freigegeben', 'rückwirkend'];
+const PRIO = ['hoch', 'mittel', 'niedrig', '?']; // Rangfolge: hoch zuerst
 const ALLOWED = {
-  ticket: { Domäne: DOMAINS, Typ: ['Idee', 'Problem', 'Schuld', 'Frage'], Prio: ['hoch', 'mittel', 'niedrig', '?'],
+  ticket: { Domäne: DOMAINS, Typ: ['Idee', 'Problem', 'Schuld', 'Frage'], Prio: PRIO,
     Status: ['offen', 'eingeplant', 'erledigt', 'verworfen'], Spec: SPEC },
-  sprint: { Status: ['geplant', 'aktiv', 'erledigt'], Domäne: DOMAINS, Reife: ['Entwurf', 'bereit'], Einschiebbar: ['nein', 'ja'],
+  sprint: { Status: ['geplant', 'aktiv', 'erledigt'], Domäne: DOMAINS, Prio: PRIO, Reife: ['Entwurf', 'bereit'], Einschiebbar: ['nein', 'ja'],
     Spec: SPEC },
   session: { Status: ['offen', 'in Arbeit', 'fertig', 'blockiert'], Typ: ['Umsetzung', 'Review', 'Workshop'], Agent: ['autonom', 'Mensch'] },
 } as const;
@@ -63,6 +64,10 @@ const ticketFiles = (folder: string) =>
 /** Offene und eingeplante Tickets liegen in backlog/, erledigte und verworfene in backlog/archiv/. */
 const tickets = [...ticketFiles(''), ...ticketFiles('archiv')].map((t) => ({ ...t, path: 'backlog/' + t.rel }));
 const ticketIds = new Set(tickets.map((t) => t.file.slice(0, 5)));
+/** Sprint-Prio = höchste Prio seiner Tickets; ohne Tickets frei wählbar. */
+const ticketPrio = (id: string) => meta(read(tickets.find((t) => t.file.startsWith(id))?.path ?? '')).Prio ?? '?';
+const sprintPrio = (value: string) =>
+  ids(value).map(ticketPrio).reduce((best, p) => (PRIO.indexOf(p) >= 0 && PRIO.indexOf(p) < PRIO.indexOf(best) ? p : best), '?');
 const ticketCriteria = (id: string) => criteria(read(tickets.find((t) => t.file.startsWith(id))?.path ?? ''));
 
 describe('Backlog', () => {
@@ -158,6 +163,7 @@ describe('Sprints', () => {
     expect(text, `${path}: Domäne in der Überschrift`).toMatch(new RegExp(`^# ${id} · ${fields.Domäne} · `));
     expect(fields.Status, `${path}: Status passt zum Ordner`).toBe(state);
     for (const ticket of ids(fields.Tickets)) expect(ticketIds, `${path}: ${ticket}`).toContain(ticket);
+    if (ids(fields.Tickets).length) expect(fields.Prio, `${path}: Prio = höchste Prio der Tickets`).toBe(sprintPrio(fields.Tickets));
     for (const [ref, ticket, ac] of text.matchAll(/(B-\d{3})\/(AC-\d{2})/g)) {
       expect(ticketCriteria(ticket), `${path}: ${ref}`).toContain(ac);
     }

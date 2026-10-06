@@ -25,6 +25,8 @@ describe('Sortierung', () => {
     const xs = [DATA.sprints[0], DATA.sprints[1], { ...DATA.sprints[2], worktree: 'sprint/r1' }];
     expect(sortSprints(xs, { W1: pr('offen'), M8: pr('gemergt') }).map((x) => x.id)).toEqual(['R1', 'W1', 'M8']);
     expect(sortSprints(DATA.sprints).map((x) => x.id)).toEqual(['M8', 'W1', 'R1']);
+    const geplant = (id: string, prio: string) => ({ ...DATA.sprints[1], id, prio });
+    expect(sortSprints([geplant('A', 'niedrig'), geplant('B', '?'), geplant('C', 'hoch')]).map((x) => x.id)).toEqual(['C', 'A', 'B']);
   });
 });
 

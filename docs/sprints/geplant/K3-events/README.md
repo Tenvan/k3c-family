@@ -2,6 +2,7 @@
 
 - **Status:** geplant
 - **Domäne:** SIM
+- **Prio:** niedrig
 - **Reife:** bereit
 - **Einschiebbar:** nein
 - **Tickets:** B-131

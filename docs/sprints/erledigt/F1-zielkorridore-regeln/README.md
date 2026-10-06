@@ -2,6 +2,7 @@
 
 - **Status:** erledigt
 - **Domäne:** REG
+- **Prio:** hoch
 - **Reife:** bereit
 - **Einschiebbar:** nein
 - **Tickets:** B-134, B-135, B-136, B-144, B-145

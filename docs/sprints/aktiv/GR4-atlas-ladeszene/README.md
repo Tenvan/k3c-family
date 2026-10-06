@@ -2,6 +2,7 @@
 
 - **Status:** aktiv
 - **Domäne:** INF
+- **Prio:** mittel
 - **Reife:** bereit
 - **Einschiebbar:** ja
 - **Tickets:** B-163, B-029

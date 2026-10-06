@@ -2,6 +2,7 @@
 
 - **Status:** erledigt
 - **Domäne:** SRV
+- **Prio:** hoch
 - **Reife:** bereit
 - **Einschiebbar:** ja
 - **Tickets:** B-276

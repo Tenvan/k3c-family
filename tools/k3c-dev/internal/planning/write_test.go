@@ -241,3 +241,20 @@ func checkConsistent(t *testing.T, root string) {
 		}
 	}
 }
+
+func TestSprintPrioFolgtTickets(t *testing.T) {
+	root := tempRepo(t)
+	must(t)(Create(root, NewDoc{Kind: "ticket", Slug: "neu", Title: "Neu", Fields: map[string]string{"Domäne": "SRV", "Typ": "Idee", "Prio": "hoch"}}))
+	must(t)(Create(root, NewDoc{Kind: "sprint", ID: "X3", Slug: "p", Title: "P", Fields: map[string]string{"Domäne": "SRV", "Tickets": "B-001, B-002 teils"}}))
+	if !strings.Contains(doc(t, root, "sprints/geplant/X3-p/README.md"), "- **Prio:** hoch\n") {
+		t.Fatal("Prio nicht aus den Tickets abgeleitet")
+	}
+	must(t)(Set(root, "X3", map[string]string{"Tickets": "B-001"}))
+	if !strings.Contains(doc(t, root, "sprints/geplant/X3-p/README.md"), "- **Prio:** ?\n") {
+		t.Fatal("Prio folgt geänderten Tickets nicht")
+	}
+	must(t)(Create(root, NewDoc{Kind: "sprint", ID: "X4", Slug: "q", Title: "Q", Fields: map[string]string{"Domäne": "SIM", "Tickets": "B-002"}}))
+	if out := must(t)(List(root, Filter{Kind: "sprint"})); strings.Index(out, "X4 ") > strings.Index(out, "X3 ") {
+		t.Fatalf("hohe Prio nicht zuerst:\n%s", out)
+	}
+}

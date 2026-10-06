@@ -2,6 +2,7 @@
 
 - **Status:** geplant
 - **Domäne:** SRV
+- **Prio:** hoch
 - **Reife:** bereit
 - **Einschiebbar:** nein
 - **Tickets:** B-153, B-283

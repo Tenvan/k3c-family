@@ -3,8 +3,8 @@
 - **Domäne:** INF
 - **Typ:** Schuld
 - **Prio:** mittel
-- **Status:** offen
-- **Sprint:** –
+- **Status:** eingeplant
+- **Sprint:** RP1
 - **Erstellt:** 2026-10-05
 - **Spec:** Entwurf
 - **Revision:** 1

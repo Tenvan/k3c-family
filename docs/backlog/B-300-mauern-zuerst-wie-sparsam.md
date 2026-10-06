@@ -3,8 +3,8 @@
 - **Domäne:** SIM
 - **Typ:** Frage
 - **Prio:** mittel
-- **Status:** offen
-- **Sprint:** –
+- **Status:** eingeplant
+- **Sprint:** BAL5
 - **Erstellt:** 2026-10-05
 - **Spec:** Entwurf
 - **Revision:** 1

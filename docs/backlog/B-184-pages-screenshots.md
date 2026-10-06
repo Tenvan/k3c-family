@@ -3,8 +3,8 @@
 - **Domäne:** PLAT
 - **Typ:** Idee
 - **Prio:** niedrig
-- **Status:** offen
-- **Sprint:** –
+- **Status:** eingeplant
+- **Sprint:** PG1
 - **Erstellt:** 2026-10-03
 - **Spec:** Entwurf
 - **Revision:** 1

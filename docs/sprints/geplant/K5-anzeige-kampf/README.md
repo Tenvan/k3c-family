@@ -2,6 +2,7 @@
 
 - **Status:** geplant
 - **Domäne:** CLI
+- **Prio:** mittel
 - **Reife:** bereit
 - **Einschiebbar:** nein
 - **Tickets:** B-132, B-105, B-107, B-098

@@ -2,6 +2,7 @@
 
 - **Status:** geplant
 - **Domäne:** CLI
+- **Prio:** mittel
 - **Reife:** bereit
 - **Einschiebbar:** ja
 - **Tickets:** B-168

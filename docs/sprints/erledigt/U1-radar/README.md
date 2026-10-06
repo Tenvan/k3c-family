@@ -2,6 +2,7 @@
 
 - **Status:** erledigt
 - **Domäne:** CLI
+- **Prio:** mittel
 - **Reife:** bereit
 - **Einschiebbar:** nein
 - **Tickets:** B-090

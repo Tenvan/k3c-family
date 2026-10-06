@@ -2,6 +2,7 @@
 
 - **Status:** erledigt
 - **Domäne:** SRV
+- **Prio:** hoch
 - **Reife:** bereit
 - **Einschiebbar:** nein
 - **Tickets:** B-140, B-142, B-143

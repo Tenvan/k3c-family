@@ -111,6 +111,7 @@ Regelwerk in [`rules/`](rules/), und das Glossar wird angepasst. Zahlen sind, wo
 | Portal | Ausgangspunkt der Gegnerwellen: 2 je Stufe, ab Tiefe 3 drei; mindestens 150 Units vom Hub und außerhalb der Linie 5 inklusive Streuung. | `rules/gegner.md` § 3, Q49, Q57 |
 | Posten | Standplatz eines Kämpfers: Bogenschützen auf dem Turm oder hinter der äußersten Mauer, Krieger hinter der äußersten gebauten Sperre. Posten sind keine Bauplätze. | `rules/buerger.md` § 1, Q46 |
 | Preset | Startverteilung der Skill-Punkte beim Beitritt (Tank, Zauberer, Heiler, Dieb); keine feste Klasse. | `rules/monarch.md` § 2 |
+| Prio | Dringlichkeit eines Tickets (`hoch`, `mittel`, `niedrig`, `?`); ein Sprint trägt die höchste Prio seiner Tickets und wird danach abgearbeitet. | `arbeitsweise.md` › Sprint-Lebenslauf |
 | Protokoll | Nachrichten zwischen Gerät und Server über WebSocket `/ws`, heute Version 3 (`hello.v` = 3). Eine Änderung bekommt eine eigene Session für beide Enden. | `protocol.md`, `arbeitsweise.md` › Grenzfälle |
 | Puffer (Verzögerung) | Zeit, um die die Zeitleiste hinter der geschätzten Server-Zeit zeichnet: 1 Tick plus die doppelte Ankunfts-Schwankung, höchstens 150 ms (angenommen). Diagnose-Zeile „Puffer 33 ms“. | B-277 |
 | Raum | Ein laufendes Spiel auf dem Server mit genau einem Spielstand und einem Code aus 4 Buchstaben; tickt unabhängig von anderen Räumen. | `protocol.md` › Begriffe |

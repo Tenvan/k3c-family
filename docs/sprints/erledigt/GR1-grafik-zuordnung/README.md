@@ -2,6 +2,7 @@
 
 - **Status:** erledigt
 - **Domäne:** CLI
+- **Prio:** hoch
 - **Reife:** bereit
 - **Einschiebbar:** ja
 - **Tickets:** B-161

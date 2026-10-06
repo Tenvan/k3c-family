@@ -44,13 +44,17 @@ export function filterSprints(d: PlanningData, f: PlanFilter): PlanSprint[] {
     has(q, s.id, s.title, s.tickets.join(' '), ...s.sessions.map((x) => `${x.nr} ${x.titel}`)));
 }
 
-/** Sprints mit Worktree zuerst, dann mit offenem Branch (PR offen/Entwurf), sonst Reihenfolge wie geliefert. */
+const STATES = ['aktiv', 'geplant', 'erledigt'];
+export const prioRank = (p = '') => (PRIO.includes(p) ? PRIO.indexOf(p) : PRIO.length);
+
+/** Sprints mit Worktree zuerst, dann mit offenem Branch (PR offen/Entwurf), dann je Status nach Prio, sonst wie geliefert. */
 export function sortSprints(sprints: PlanSprint[], gh?: Record<string, GitHubSprint>): PlanSprint[] {
   const rank = (s: PlanSprint) => {
     const st = gh?.[s.id.toUpperCase()]?.state;
     return s.worktree ? 0 : st === 'offen' || st === 'Entwurf' ? 1 : 2;
   };
-  return [...sprints].sort((a, b) => rank(a) - rank(b));
+  return [...sprints].sort((a, b) =>
+    rank(a) - rank(b) || STATES.indexOf(a.status) - STATES.indexOf(b.status) || prioRank(a.prio) - prioRank(b.prio));
 }
 
 export function filterTickets(d: PlanningData, f: PlanFilter): PlanTicket[] {
@@ -61,7 +65,7 @@ export function filterTickets(d: PlanningData, f: PlanFilter): PlanTicket[] {
 
 /** Tickets je Domäne (alphabetisch), darin nach Prio und Nummer. */
 export function groupTickets(tickets: PlanTicket[]): [string, PlanTicket[]][] {
-  const rank = (t: PlanTicket) => (PRIO.includes(t.prio) ? PRIO.indexOf(t.prio) : PRIO.length);
+  const rank = (t: PlanTicket) => prioRank(t.prio);
   const groups = new Map<string, PlanTicket[]>();
   for (const t of tickets) groups.set(t.domain || '–', [...(groups.get(t.domain || '–') ?? []), t]);
   return [...groups.entries()]

@@ -3,8 +3,8 @@
 - **Domäne:** CLI
 - **Typ:** Frage
 - **Prio:** niedrig
-- **Status:** offen
-- **Sprint:** –
+- **Status:** eingeplant
+- **Sprint:** GR7
 - **Erstellt:** 2026-10-03
 - **Spec:** Entwurf
 - **Revision:** 1

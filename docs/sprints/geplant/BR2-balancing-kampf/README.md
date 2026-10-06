@@ -2,6 +2,7 @@
 
 - **Status:** geplant
 - **Domäne:** REG
+- **Prio:** hoch
 - **Reife:** bereit
 - **Einschiebbar:** nein
 - **Tickets:** B-156

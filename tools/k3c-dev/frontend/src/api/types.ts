@@ -302,6 +302,7 @@ export interface PlanSprint {
   id: string;
   title: string;
   domain: string;
+  prio?: string; // höchste Prio der Tickets
   status: string;
   reife: string;
   spec: string;

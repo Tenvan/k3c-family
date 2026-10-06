@@ -3,8 +3,8 @@
 - **Domäne:** SRV
 - **Typ:** Idee
 - **Prio:** niedrig
-- **Status:** offen
-- **Sprint:** –
+- **Status:** eingeplant
+- **Sprint:** BT1
 - **Erstellt:** 2026-09-30
 - **Spec:** Entwurf
 - **Revision:** 1

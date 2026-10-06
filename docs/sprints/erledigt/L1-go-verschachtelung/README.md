@@ -2,6 +2,7 @@
 
 - **Status:** erledigt
 - **Domäne:** INF
+- **Prio:** mittel
 - **Reife:** bereit
 - **Einschiebbar:** ja
 - **Tickets:** B-054

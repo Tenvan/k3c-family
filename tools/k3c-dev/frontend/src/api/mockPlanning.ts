@@ -40,7 +40,7 @@ const tk = (nr: string, title: string, domain: string, prio: string, status: str
 const DATA: PlanningData = {
   done: 2,
   sprints: [
-    { id: 'SP11', title: 'Raspberry Pi', domain: 'SRV', status: 'aktiv', reife: 'bereit', spec: 'freigegeben', worktree: 'sprint/sp11',
+    { id: 'SP11', title: 'Raspberry Pi', domain: 'SRV', prio: 'hoch', status: 'aktiv', reife: 'bereit', spec: 'freigegeben', worktree: 'sprint/sp11',
       tickets: ['B-028', 'B-035', 'B-042'],
       sessions: [s('SP11.1', 'Umsetzung', 'autonom', 'fertig', '', `# SP11.1 · Image und Compose
 
@@ -51,7 +51,7 @@ const DATA: PlanningData = {
 Ein ARM-Image des Servers liegt in der Registry.
 `), s('SP11.2', 'Workshop', 'Mensch', 'offen', '', SP11_2),
         s('SP11.3', 'Workshop', 'Mensch', 'offen'), s('SP11.4', 'Review', 'autonom', 'offen')] },
-    { id: 'F1', title: 'Zielkorridore und Bedienungsregeln', domain: 'REG', status: 'geplant', reife: 'Entwurf', spec: 'Entwurf',
+    { id: 'F1', title: 'Zielkorridore und Bedienungsregeln', domain: 'REG', prio: 'mittel', status: 'geplant', reife: 'Entwurf', spec: 'Entwurf',
       tickets: ['B-134', 'B-135', 'B-136'],
       sessions: [s('F1.1', '', '', 'entwurf', 'Workshop Zielkorridore'), s('F1.2', '', '', 'entwurf', 'Workshop Bedienung 1'),
         s('F1.3', '', '', 'entwurf', 'Workshop Bedienung 2')] },
