@@ -8,8 +8,8 @@
 - **Sprint:** W5
 - **Erstellt:** 2026-10-05
 - **Spec:** freigegeben
-- **Revision:** 1
-- **Freigabe:** 2026-10-05, Chat, durch 🧑, mit Sprint W5
+- **Revision:** 2
+- **Freigabe:** 2026-10-06, Chat, durch 🧑, Revision 2; B-330 Variante B
 
 ## Ausgangslage
 
@@ -28,7 +28,7 @@ Entwickler (Client und Server); 🧑 entscheidet, ob das in B-153 aufgeht.
 
 ## Anforderungen
 
-- c2s: Beruf ausbilden und Tauschen, serverseitig geprüft (`bad_request` ohne Zustandsänderung).
+- c2s: keine; Beruf ausbilden und Tauschen bleiben `input.pay` am Ort (B-330, Entscheidung 🧑 2026-10-06).
 - s2c: Berufe der Bürger, Grabstein und Wiederbeleben je Monarch.
 - `docs/protocol.md`, Beispiele unter `testdata/protocol/`, beide Enden parsen sie.
 
@@ -42,16 +42,16 @@ Protokolländerung in einer eigenen Session, beide Enden gemeinsam (`docs/arbeit
 
 ## Beispiele
 
-Ein Gerät bildet einen Bürger zum Bergmann aus → der Server prüft Gold und Ort, der Beruf steht im nächsten `delta`.
+Ein Spieler hält A am Angebot des Bergwerks → die Sim bildet einen Bürger zum Bergmann aus, der Beruf steht im nächsten `delta` (`troops[].profession`).
 
 ## Ausnahme- und Fehlerfälle
 
-Unbekannter Beruf, fremder Slot oder kein Gold → `bad_request`, Zustand unverändert.
+nicht relevant: keine neuen Eingaben (B-330); ohne Gold oder fern vom Angebot passiert am Ort nichts (Sim).
 
 ## Akzeptanzkriterien
 
 - **AC-01** `docs/protocol.md` beschreibt die Felder, `testdata/protocol/` hat Beispiele, beide Enden parsen sie (Tests).
-- **AC-02** Test: Der Server lehnt ungültigen Beruf und ungültigen Tausch mit `bad_request` ab.
+- **AC-02** verworfen (B-330, Entscheidung 🧑 2026-10-06): ~~Test: Der Server lehnt ungültigen Beruf und ungültigen Tausch mit `bad_request` ab.~~
 
 ## Offene Fragen
 

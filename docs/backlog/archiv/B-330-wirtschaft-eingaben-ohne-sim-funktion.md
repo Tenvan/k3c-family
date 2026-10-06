@@ -4,12 +4,12 @@
 - **Typ:** Frage
 - **Prio:** hoch
 - **Umgebung:** offline
-- **Status:** offen
+- **Status:** erledigt
 - **Sprint:** W5
 - **Erstellt:** 2026-10-06
-- **Spec:** Entwurf
+- **Spec:** freigegeben
 - **Revision:** 1
-- **Freigabe:** –
+- **Freigabe:** 2026-10-06, Chat, durch 🧑, Revision 1; Variante B
 
 ## Ausgangslage
 
@@ -50,8 +50,10 @@ nicht relevant: Frage-Ticket, die Fehlerfälle sind Teil der Entscheidung.
 
 ## Offene Fragen
 
-Variante A oder B (🧑). Bei A: Sprint und Reihenfolge des SIM-Teils vor W5.2.
+keine (entschieden, siehe Notizen)
 
 ## Notizen
+
+**Entscheidung** (🧑, 2026-10-06, Chat): **Variante B.** Hub-Ausbau, Tausch beim Händler und Berufswahl bleiben Bezahlen am Ort (`input.pay`), keine neuen Nachrichten; die Fehlerfälle dazu sind aus W5 (README Revision 3, AC-02 verworfen) und B-153/B-283 (Revision 2, AC-02 verworfen) gestrichen, W5.2 erhöht nur die Version und misst die Bytes. Die Felder `kind` und `x` von `equipmentTaken` sind bestätigt (vorläufig bis B-312). Die Wahl gilt als Freigabe der neuen Revisionen.
 
 Gefunden in W5.2 (Stand `c07ce5d4`). Version 4 auf beiden Enden; Bytes vorher aus W5.1: `stateB/tick` 13068, p99 18063.
