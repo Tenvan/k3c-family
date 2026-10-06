@@ -52,7 +52,7 @@ Tastatur-Ghosting bei vielen gleichzeitigen Tasten → Layout so wählen, dass �
 
 ## Offene Fragen
 
-- Genaues Layout Spieler 2: 🧑 (Vorschlag oben).
+Entschieden 2026-10-06 (🧑, Chat): Belegung laut Vorschlag. Spieler 1 links: A/D, Shift, Leertaste, E, Q, R, T, Z, K. Spieler 2 rechts: Pfeiltasten, Strg rechts, Enter, Ziffernblock. Spieler 2 tritt mit seiner Bestätigen-Taste bei.
 
 ## Notizen
 

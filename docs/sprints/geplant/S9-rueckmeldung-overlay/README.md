@@ -3,7 +3,7 @@
 - **Status:** geplant
 - **Domäne:** CLI
 - **Prio:** hoch
-- **Reife:** Entwurf
+- **Reife:** bereit
 - **Einschiebbar:** nein
 - **Tickets:** B-319, B-318
 - **Start-Commit:** –
@@ -35,6 +35,10 @@ Neue Skills, Skill-Menü-Umbau (S3).
 
 CLI; nach S3. Schriftgrößen aus dem Katalog (`FONTS`), B nicht belegen.
 
+- Beschluss 🧑 2026-10-06 (Chat): „Ein Element je Weltposition“ gilt je Bildschirmzelle; jeder Spieler sieht in seiner Zelle nur seinen eigenen Hinweis (B-319).
+- Beschluss 🧑 2026-10-06 (Chat): Die Rückmeldung für Schlag und Skills ist ein Server-Ereignis (`strike` auch ohne Treffer, `castFailed`), der Client zeichnet nur. Das Ereignis erzeugt die SIM (`engine/sim/`), das Protokoll überträgt es; S9 bleibt CLI, das Protokoll bekommt eine eigene Session (S9.2, Grenzfall Protokoll) (B-318).
+- Das Erzeugen in `engine/sim/` (`monarch.go` › `stepAttack`, `skills.go` › `castSkill`) gehört zur Domäne SIM und passt nicht in diesen CLI-Sprint; das übernimmt B-321 in SK1.3, Voraussetzung von S9.2.
+
 ## Beispiele
 
 Zwei Ziele nah beieinander → nur der Hinweis des nächsten; Schlag ins Leere → kurzer Schwung sichtbar.
@@ -46,19 +50,22 @@ Hinweis und Preisschild an derselben Position → Preisschild gewinnt, Hinweis e
 ## Akzeptanzkriterien
 
 - **AC-01** Das Aktionen-Overlay zeigt je Spieler nur einen Hinweis, 24 px, nie über einem Preisschild (B-319/AC-01, B-319/AC-02, B-319/AC-03, B-319/AC-04).
-- **AC-02** Schlag und Skills zeigen auch ohne Ziel sichtbar, dass die Taste ankam (B-318/AC-01, B-318/AC-02, B-318/AC-03).
+- **AC-02** Schlag und Skills zeigen auch ohne Ziel sichtbar, dass die Taste ankam: Der Client zeichnet die Server-Ereignisse `strike` (Monarch, mit und ohne Treffer) und `castFailed` („kein Ziel“, keine Abklingzeit) je Monarch getrennt (B-318/AC-01, B-318/AC-02, B-318/AC-03).
+- **AC-03** `task check` und `task check:go` grün; `src/scenes` rechnet nichts (`noSim.test.ts`).
 
 ## Offene Fragen
 
-keine
+- Nicht mehr blockierend: Das SIM-Ticket ist B-321 (eingeplant in SK1.3, Felder `strike` mit `hit`, `castFailed` mit `from`, `slot`, `x`); S9.2 und S9.3 starten nach SK1.3.
 
 ## Sessions
 
-Entwurf. Vor dem Aktivieren jede Session als Datei nach `docs/vorlagen/session.md` schreiben, die Kriterien in Klammern werden ihr Feld `Kriterien`.
-
-- S9.1 Ein Hinweis je Spieler und Weltposition (AC-01).
-- S9.2 Rückmeldung für Schlag und Skills ohne Ziel (AC-02).
-- S9.3 Review (Code-Sprint): alle Kriterien prüfen.
+| Nr. | Datei | Typ | Agent | Status |
+|---|---|---|---|---|
+| S9.1 | `S9.1-ein-hinweis.md` | Umsetzung | autonom | offen |
+| S9.2 | `S9.2-protokoll-rueckmeldung.md` | Umsetzung | autonom | offen |
+| S9.3 | `S9.3-rueckmeldung-zeichnen.md` | Umsetzung | autonom | offen |
+| S9.4 | `S9.4-review.md` | Review | autonom | offen |
+| S9.5 | `S9.5-pc-abnahme.md` | Workshop | Mensch | offen |
 
 ## Abnahme
 

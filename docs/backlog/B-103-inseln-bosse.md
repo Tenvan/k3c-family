@@ -53,7 +53,9 @@ Spieler tot beim Wechsel zählt nicht (wie heute). Nur ein Spieler am Boot → W
 
 ## Offene Fragen
 
-Anzahl n der Inseln (offen, mit Insel 1); Boss-Werte (Regelwerk III).
+Anzahl n der Inseln (offen, mit Insel 1; `docs/rules/stufen.md` § 7), nicht blockierend für K2.
+
+Entschieden 2026-10-06 (🧑, `docs/rules/bosse.md` § 1 und § 1.1): Boss-Werte sind die vorläufigen Startwerte des Regelwerks (Miniboss etwa 8× HP und 2× Schaden, Endboss etwa 30× HP, 3 Phasen).
 
 ## Notizen
 

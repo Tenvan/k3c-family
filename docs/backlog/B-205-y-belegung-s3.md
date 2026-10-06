@@ -51,7 +51,7 @@ S3.1 ist bereits umgesetzt, bevor die Session angepasst ist → Y-Belegung als A
 
 ## Offene Fragen
 
-Ob die Änderung von S3.1 als Revision 2 der S3-Spec mit neuer Freigabe läuft oder als redaktionelle Korrektur gilt, entscheidet 🧑.
+Entschieden 2026-10-06 (🧑, Chat): redaktionelle Korrektur ohne neue S3-Revision; S8 korrigiert Code und den S3-Text (S3-Dateien sind erlaubte Planungs-Dateien der Session S8.2).
 
 ## Notizen
 

@@ -49,7 +49,7 @@ nicht relevant, Ursache noch offen.
 
 ## Offene Fragen
 
-Auf welcher Seite wurde es versucht (`game.html`, `testing.html`)? Mit `?dev=0` in der Adresse? Klärt 🧑.
+Auf welcher Seite wurde es versucht (`game.html`, `testing.html`)? Mit `?dev=0` in der Adresse? Klärt 🧑. Nicht blockierend (🧑, Chat, 2026-10-06): PL1.1 stellt das Problem zuerst auf `game.html` und `testing.html`, mit und ohne `?dev=0`, nach.
 
 ## Notizen
 

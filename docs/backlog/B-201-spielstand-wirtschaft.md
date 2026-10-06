@@ -53,7 +53,7 @@ Gespeicherte Truppenart, die der Server nicht kennt → Ladefehler mit Meldung, 
 
 ## Offene Fragen
 
-Zeitpunkt: direkt nach W4 oder gebündelt mit W5 (Protokoll)? Entscheidet 🧑 beim Planen.
+Entschieden 2026-10-06 (🧑, Chat): direkt nach W4 im Sprint W7, nicht mit W5 gebündelt.
 
 ## Notizen
 

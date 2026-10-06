@@ -51,7 +51,7 @@ Handy im Hochformat: Liste bricht um, bleibt unten und treffbar.
 
 ## Offene Fragen
 
-Genaue Lage bei Touch: über oder neben dem linken Lauf-Feld (🧑).
+Entschieden 2026-10-06 (🧑, Chat): Bei Touch liegen Debug-Overlay und Aktionsliste rechts neben dem linken Lauf-Feld, unten mittig; das HUD oben bleibt frei.
 
 ## Notizen
 

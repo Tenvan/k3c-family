@@ -3,7 +3,7 @@
 - **Status:** geplant
 - **Domäne:** PLAT
 - **Prio:** hoch
-- **Reife:** Entwurf
+- **Reife:** bereit
 - **Einschiebbar:** nein
 - **Tickets:** B-292, B-316, B-195, B-215
 - **Start-Commit:** –
@@ -21,7 +21,7 @@ Jede Mechanik ist am PC mit zwei Spielern prüfbar, „Neues Spiel“ verhält s
 
 ## Beteiligte und Zielgruppen
 
-🧑 testet am PC und an der Xbox; Agent baut in `src/input/`, `src/landing/`, `src/core/`.
+🧑 testet am PC und an der Xbox (PL1.5); Agent baut in `src/input/`, `src/landing/`, `src/core/` und bindet die zweite Tastatur in `src/scenes/GameScene.ts` ein.
 
 ## Anforderungen
 
@@ -29,15 +29,20 @@ B-292 › Anforderungen; B-316 › Anforderungen; B-195 › Anforderungen; B-215
 
 ## Nicht-Ziele
 
-Controller-Prüfungen nachholen (HW1).
+Controller-Prüfungen nachholen (HW1). Werkzeug-Seiten `src/tools/` übersetzen (eigenes Ticket, siehe Beschluss). Server oder Protokoll ändern. Hilfe, Glyphen und Overlay in `src/scenes/` umbauen (bei Bedarf Ticket, Domäne CLI).
 
 ## Regeln und Einschränkungen
 
-PLAT; View + Menu reserviert, B nicht belegen.
+PLAT; View + Menu reserviert, B nicht belegen; reservierte Tasten Pos1, F, Esc, Ö, Ä bleiben.
+
+- Beschluss 🧑 2026-10-06 (Chat): Tastatur-Belegung laut Vorschlag in B-316. Spieler 1 links: A/D, Shift, Leertaste, E, Q, R, T, Z, K. Spieler 2 rechts: Pfeiltasten, Strg rechts, Enter, Ziffernblock. Spieler 2 tritt mit seiner Bestätigen-Taste bei.
+- Beschluss 🧑 2026-10-06 (Chat): Die Werkzeug-Seiten (`src/tools/`) werden auch übersetzt. Weil PL1 damit größer als 4 Sessions würde, plant PL1 nur Touch-Overlay und Shell; die Werkzeug-Seiten bekommen ein eigenes Ticket.
+- Beschluss 🧑 2026-10-06 (Chat): Die Rückfrage aus B-195 (Seite, `?dev=0`) bleibt offen und blockiert nicht; PL1.1 reproduziert das Problem zuerst.
+- B-292 ist im Code schon umgesetzt (Commit `f07d6fae`); PL1.1 belegt nur den Nachweis.
 
 ## Beispiele
 
-Tastatur: Spieler 1 WASD, Spieler 2 Pfeiltasten → zwei Monarchen im Split-Screen.
+Tastatur: Spieler 1 drückt Leertaste, Spieler 2 drückt Enter → zwei Monarchen im Split-Screen; A/D bewegt nur Spieler 1, Pfeile nur Spieler 2.
 
 ## Ausnahme- und Fehlerfälle
 
@@ -48,20 +53,22 @@ Belegung kollidiert mit Dev-Tasten → Dev-Taste weicht, Hinweis in der Doku.
 - **AC-01** Die Kachel „Neues Spiel“ startet auch bei vorhandenem Spielstand familie (B-292/AC-01, B-292/AC-02, B-292/AC-03).
 - **AC-02** Zwei Spieler spielen an einer Tastatur im Split-Screen (B-316/AC-01, B-316/AC-02).
 - **AC-03** Das Debug-Overlay lässt sich auf der Xbox öffnen (B-195/AC-01, B-195/AC-02).
-- **AC-04** Die Texte von Touch-Overlay, Shell und Werkzeug-Seiten kommen aus den zentralen Textdateien (B-215/AC-01, B-215/AC-02).
+- **AC-04** Die Texte von Touch-Overlay und Shell kommen aus den zentralen Textdateien (B-215/AC-01, B-215/AC-02).
 
 ## Offene Fragen
 
-keine
+- B-195: Auf welcher Seite und ob mit `?dev=0` versucht wurde, klärt 🧑 (nicht blockierend, PL1.1 stellt alle Fälle nach).
+- Grenzfall Domäne: PL1.2 ändert in `src/scenes/GameScene.ts` (CLI) nur Erzeugen, `update()` und Eingabeliste der zweiten Tastatur-Instanz. Vorschlag der Planung, 🧑 bestätigt mit der Spec-Freigabe (nicht blockierend).
 
 ## Sessions
 
-Entwurf. Vor dem Aktivieren jede Session als Datei nach `docs/vorlagen/session.md` schreiben, die Kriterien in Klammern werden ihr Feld `Kriterien`.
-
-- PL1.1 „Neues Spiel“ startet immer neu (AC-01).
-- PL1.2 Zwei Spieler an einer Tastatur (AC-02).
-- PL1.3 Overlay auf der Xbox, Texte zentral (AC-03, AC-04).
-- PL1.4 Review (Code-Sprint): alle Kriterien prüfen.
+| Nr. | Datei | Typ | Agent | Status |
+|---|---|---|---|---|
+| PL1.1 | `PL1.1-neues-spiel-overlay-ursache.md` | Umsetzung | autonom | offen |
+| PL1.2 | `PL1.2-zwei-spieler-tastatur.md` | Umsetzung | autonom | offen |
+| PL1.3 | `PL1.3-texte-touch-shell.md` | Umsetzung | autonom | offen |
+| PL1.4 | `PL1.4-review.md` | Review | autonom | offen |
+| PL1.5 | `PL1.5-abnahme-pc-xbox.md` | Umsetzung | Mensch | offen |
 
 ## Abnahme
 

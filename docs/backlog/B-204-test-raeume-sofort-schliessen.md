@@ -49,7 +49,7 @@ Ein Test-Raum mit wartendem Gerät → bleibt bis zum Ende der Wartefrist offen.
 
 ## Offene Fragen
 
-Braucht die Testseite (B-086) den leeren Test-Raum länger als bis zum nächsten Sweep? Entscheidet 🧑.
+Braucht die Testseite (B-086) den leeren Test-Raum länger als bis zum nächsten Sweep? Entscheidet 🧑. Vermutet nein (2026-10-06); SV1.1 prüft es.
 
 ## Notizen
 

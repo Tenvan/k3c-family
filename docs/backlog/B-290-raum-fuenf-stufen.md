@@ -50,7 +50,7 @@ Unbekanntes Biom im Client → klarer Fehler statt Absturz.
 
 ## Offene Fragen
 
-Kommt das mit K2/B-103 (Inseldaten) oder vorher (🧑)?
+Entschieden 2026-10-06 (🧑, Chat): vorher, in SV1 ohne Inseldaten; der Client-Anteil ist eine eigene Session (Grenzfall Protokoll/Client).
 
 ## Notizen
 

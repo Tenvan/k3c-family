@@ -55,7 +55,7 @@ Zwei Ziele gleich weit entfernt → das wichtigere nach Gewicht (`weight` in `ac
 
 ## Offene Fragen
 
-- Zwei Spieler am selben Ort im Split-Screen: Gilt „ein Element je Weltposition“ je Bildschirmzelle oder für die ganze Welt? Vorschlag je Zelle (jeder sieht seinen Hinweis in seiner Zelle), 🧑.
+- Entschieden 2026-10-06 (🧑, Chat): „Ein Element je Weltposition“ gilt je Bildschirmzelle; jeder Spieler sieht in seiner Zelle nur seinen eigenen Hinweis.
 
 ## Notizen
 

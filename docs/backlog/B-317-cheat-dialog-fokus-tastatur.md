@@ -57,7 +57,7 @@ Server ohne Dev-Mode → Hinweis bleibt, Markierung und Feedback funktionieren t
 
 ## Offene Fragen
 
-- Warum der Controller auf der Xbox nicht wirkt: Vermutung, dass Edge das D-Pad für die Navigation zwischen HTML-Buttons nutzt (Spatial Navigation) oder die Gamepad-Abfrage der HUD-Szene leer ist. Klären in der Umsetzung, Bericht über `gamepad-test.html`.
+- Entschieden 2026-10-06 (🧑, Chat): Warum der Controller auf der Xbox nicht wirkt, klärt die Umsetzung über einen Bericht von `gamepad-test.html`; die Vermutung (Edge nutzt das D-Pad für Spatial Navigation zwischen HTML-Buttons oder die Gamepad-Abfrage der HUD-Szene ist leer) bleibt bis dahin ungeprüft.
 
 ## Notizen
 

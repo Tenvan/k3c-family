@@ -53,7 +53,7 @@ Zwei Siegbedingungen gleichzeitig erfüllt → ein `victory` je Tick. Game Over 
 
 ## Offene Fragen
 
-Zählt „Gold sammeln“ nur eingesammeltes Gold oder auch Drops anderer Spieler (R1.3: Summe aller eingesammelten Münzen)?
+Entschieden 2026-10-06 (🧑, `docs/rules/stufen.md` § 3): „Gold sammeln“ zählt die Summe aller von den Spielern eingesammelten Münzen, gleich wer sie fallen ließ (N = 1000).
 
 ## Notizen
 
