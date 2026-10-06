@@ -173,6 +173,7 @@ Regelwerk in [`rules/`](rules/), und das Glossar wird angepasst. Zahlen sind, wo
 | Vorlage | Pflicht-Kopiervorlage für Ticket, Sprint und Session in `docs/vorlagen/`; `tests/planning.test.ts` prüft sie. | `arbeitsweise.md` › Ablage |
 | Wald | Stufe der Tiefe 0 (Oberwelt, Biom `forest`) mit Bäumen und Tag-Nacht-Zyklus; eine Welle je Nacht. | `game-design.md` › Welt & Stufen |
 | Welle | Gruppe Gegner aus den Portalen: in der Oberwelt eine je Nacht, unten bei 100 % Aggressionspool. Größe nach Tabelle, Spieleranzahl der Insel und Grad; Zähler je Stufe. | `rules/gegner.md` § 3 |
+| Weltposition | Eine x-Stelle der Welt in Units. Je Weltposition zeigt die Welt höchstens **ein** Anzeige-Element (Hinweis des Aktionen-Overlays, Preisschild, Meldung); treffen mehrere zusammen, gilt nur das wichtigste bzw. nächste. | `rules/monarch.md` § 4, Beschluss 🧑 2026-10-06 (S3.4) |
 | Werkstatt | Gebäude der Hub-Stufe 1: Bogen und Schwert (je bis 3 im Waffenregal), Ausbildung von Bergmann und Baumeister. | `rules/materialien-gebaeude.md` § 3.2, `rules/buerger.md` § 2 |
 | Wiederbeleben | Ein Mitspieler hält 3 s A neben dem Grabstein (Reichweite 2 Units): Der Monarch steht am Ort mit 50 % HP auf. Ereignis `revived` (nicht `revive`). | `rules/monarch.md` § 5, Q33, Q62 |
 | Workshop | Session-Typ (meist `Agent: Mensch`), in dem 🧑 Regeln oder Werte beschließt (z. B. R2.2, F1.4). | `vorlagen/session.md`, `rules/` (Köpfe) |
