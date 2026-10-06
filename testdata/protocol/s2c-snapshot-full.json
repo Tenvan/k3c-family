@@ -685,6 +685,17 @@
       "stone": 0,
       "copper": 0
     },
+    "stockMax": 300,
+    "hubLevel": 1,
+    "hubUpgrade": {
+      "gold": 50,
+      "material": {
+        "wood": 0,
+        "stone": 100,
+        "copper": 0
+      },
+      "paid": 0
+    },
     "skillPoints": 2,
     "travel": null,
     "events": [],
