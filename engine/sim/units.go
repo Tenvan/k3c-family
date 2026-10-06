@@ -43,6 +43,8 @@ func stepTroops(w *World, dt float64) {
 			wander(w, t, t.AnchorX, wanderRadius(w, t), dt)
 		case "peasant":
 			stepPeasant(w, t, dt)
+		case "warrior":
+			stepWarrior(w, t, dt)
 		default:
 			stepArcher(w, t, dt)
 		}
@@ -91,8 +93,8 @@ func stepPeasant(w *World, t *Troop, dt float64) {
 		return
 	}
 	switch t.Job.Type {
-	case "fetchBow":
-		fetchBow(w, t, dt)
+	case "fetchBow", "fetchSword", "pickup":
+		fetchWeapon(w, t, dt)
 	case "build":
 		build(w, t, dt)
 	case "repair":
@@ -107,23 +109,6 @@ func stepPeasant(w *World, t *Troop, dt float64) {
 // leaveOnDanger: Sammeln, Reparatur und Ausbau bleiben bei Gefahr liegen.
 func leaveOnDanger(w *World, j *Job) bool {
 	return j != nil && (j.Type == "gather" || j.Type == "repair" || upgradeJob(w, j))
-}
-
-func fetchBow(w *World, t *Troop, dt float64) {
-	site := siteByID(w, t.Job.SiteID)
-	if site == nil || site.State != "built" {
-		t.Job = nil
-		return
-	}
-	if !walkTo(t, site.X, dt) {
-		return
-	}
-	t.Job = nil
-	if site.Bows > 0 {
-		site.Bows--
-		makeArcher(w, t)
-		w.Events = append(w.Events, Event{"type": "armed"})
-	}
 }
 
 func build(w *World, t *Troop, dt float64) {
@@ -231,8 +216,8 @@ func findJob(w *World, t *Troop) *Job {
 // siteJob: Bogen holen, den nächsten wartenden Bauplatz bauen oder (ohne Gefahr) reparieren; nil, wenn es nichts zu
 // tun gibt.
 func siteJob(w *World, t *Troop) *Job {
-	if s := bowToFetch(w, t); s != nil {
-		return &Job{Type: "fetchBow", SiteID: s.ID}
+	if j := weaponToFetch(w, t); j != nil {
+		return j
 	}
 	if j := buildJob(w, t); j != nil {
 		return j
@@ -257,28 +242,6 @@ func buildJob(w *World, t *Troop) *Job {
 	return nil
 }
 
-// bowToFetch ist die erste Werkstatt mit mehr Bögen im Regal, als andere Bauern schon holen; nil bei vollem Limit.
-func bowToFetch(w *World, t *Troop) *Site {
-	if fighters(w)+bowsInFlight(w, t) >= troopLimit(w) {
-		return nil // Limit voll (Q29): der Bogen bleibt im Regal
-	}
-	for _, s := range w.Sites {
-		if s.Kind != "workshop" || s.State != "built" || s.Bows == 0 {
-			continue
-		}
-		fetching := 0
-		for _, o := range w.Troops {
-			if o != t && o.Job != nil && o.Job.Type == "fetchBow" && o.Job.SiteID == s.ID {
-				fetching++
-			}
-		}
-		if fetching < s.Bows {
-			return s
-		}
-	}
-	return nil
-}
-
 func releaseJob(w *World, t *Troop) {
 	if t.Job == nil {
 		return
@@ -296,11 +259,15 @@ func releaseJob(w *World, t *Troop) {
 	t.Job = nil
 }
 
-// makeArcher befördert zum Bogenschützen. Die Seite wird so gewählt, dass beide Seiten gleich stark besetzt sind.
-func makeArcher(w *World, t *Troop) {
+// makeArcher befördert zum Bogenschützen.
+func makeArcher(w *World, t *Troop) { makeFighter(w, t, "archer") }
+
+// makeFighter befördert zur Figur kind (Werte aus troops.json). Die Seite wird so gewählt, dass beide Seiten mit
+// dieser Figur gleich stark besetzt sind (Krieger zählen für sich, Q38).
+func makeFighter(w *World, t *Troop, kind string) {
 	left, right := 0, 0
 	for _, o := range w.Troops {
-		if o == t || o.Kind != "archer" {
+		if o == t || o.Kind != kind {
 			continue
 		}
 		if o.AnchorX < w.HubX {
@@ -313,6 +280,6 @@ func makeArcher(w *World, t *Troop) {
 	if left <= right {
 		side = -1
 	}
-	t.Kind, t.HP, t.MaxHP = "archer", troops["archer"].HP, troops["archer"].HP
-	t.Cooldown, t.Job, t.AnchorX = 0, nil, w.HubX+side
+	t.Kind, t.HP, t.MaxHP = kind, troops[kind].HP, troops[kind].HP
+	t.Cooldown, t.Job, t.AnchorX, t.Profession, t.WorkSite = 0, nil, w.HubX+side, "", 0
 }

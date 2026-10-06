@@ -119,6 +119,8 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-299](B-299-asset-vorschau-szenen.md) | PLAT | Idee | mittel | offen | – | Eine Dev-Seite zeigt die Asset-Zuordnung je Kategorie als Mini-Szene im Spielmaßstab |
 | [B-300](B-300-mauern-zuerst-wie-sparsam.md) | SIM | Frage | mittel | offen | – | Das Profil „Mauern zuerst“ spielt messbar anders als „sparsam“ |
 | [B-301](B-301-vary-ohne-wirkung.md) | SIM | Problem | niedrig | offen | – | Ein Sensitivitäts-Pfad ohne Wirkung ergibt einen Fehler |
+| [B-312](B-312-wiederaufheben-begrenzen.md) | SIM | Problem | hoch | offen | – | Sofortiges Wiederaufheben fallengelassener Ausrüstung macht die Burg bei passivem Spiel unverwundbar |
+| [B-313](B-313-vermerk-wirkung-offen-test.md) | SIM | Frage | hoch | offen | – | W4.3b kann den Vermerk „Wirkung offen“ nur mit einer Änderung an sites_test.go ersetzen |
 
 ## Archiv
 
@@ -282,3 +284,5 @@ Zeile in diesen Abschnitt.
 | [B-296](archiv/B-296-verlust-kaskade-bricht-delta-test.md) | SRV | Frage | hoch | erledigt | – | Die Verlust-Kaskade (W4.3a) lässt sich ohne Änderung an `engine/net` nicht grün umsetzen |
 | [B-297](archiv/B-297-delta-entfernt-felder.md) | SRV | Problem | hoch | erledigt | DL1 | Das Delta überträgt, dass ein Feld aus dem Zustand verschwindet |
 | [B-252](archiv/B-252-grafikmanager-seite.md) | PLAT | Idee | mittel | verworfen | – | Eine GrafikManager-Seite zeigt Bestand, Kandidaten und Zuordnung für die feine Auswahl |
+| [B-310](archiv/B-310-elite-verhalten-ausserhalb-erlaubter-dateien.md) | SIM | Frage | hoch | erledigt | – | Elite-Werte wirken nur mit Änderungen außerhalb der Erlaubten Dateien von W4.3b |
+| [B-311](archiv/B-311-passive-burg-faellt-nicht.md) | REG | Frage | hoch | erledigt | – | Mit der Verlust-Kaskade fällt die Burg bei passivem Spiel nie |

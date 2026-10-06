@@ -107,7 +107,7 @@ func applyDamageBy(w *World, targetID int, damage float64, cause string) {
 	}
 	if t := troopByID(w, targetID); t != nil {
 		damage = troopDamage(w, t, damage)
-		t.HP -= damage
+		t.HP, t.hitBy = t.HP-damage, cause
 		hitEvent(w, "troop", t.ID, t.X, damage)
 		return
 	}
