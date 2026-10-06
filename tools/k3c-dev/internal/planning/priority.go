@@ -143,21 +143,30 @@ func effective[T any](items []T, id func(T) string, deps func(T) []string, less 
 	}
 	eff := make([]int, len(items))
 	for i := range items {
-		best, seen, stack := i, map[int]bool{i: true}, []int{i}
-		for len(stack) > 0 {
-			n := stack[len(stack)-1]
-			stack = stack[:len(stack)-1]
-			for _, u := range users[n] {
-				if !seen[u] {
-					seen[u] = true
-					stack = append(stack, u)
-					if less(items[u], items[best]) {
-						best = u
-					}
-				}
+		eff[i] = i
+		for _, u := range waiting(users, i) {
+			if less(items[u], items[eff[i]]) {
+				eff[i] = u
 			}
 		}
-		eff[i] = best
 	}
 	return eff
+}
+
+// waiting liefert alle Einträge, die direkt oder indirekt auf i warten.
+func waiting(users [][]int, i int) []int {
+	var out []int
+	seen, stack := map[int]bool{i: true}, []int{i}
+	for len(stack) > 0 {
+		n := stack[len(stack)-1]
+		stack = stack[:len(stack)-1]
+		for _, u := range users[n] {
+			if !seen[u] {
+				seen[u] = true
+				stack = append(stack, u)
+				out = append(out, u)
+			}
+		}
+	}
+	return out
 }
