@@ -52,7 +52,7 @@ Abklingzeit läuft → kein neues Feedback außer der Anzeige der Abklingzeit.
 
 ## Offene Fragen
 
-- Ereignis vom Server (`strike` auch ohne Treffer, `castFailed`) oder rein aus der eigenen Eingabe im Client: Entscheidung in der Planung, Vorschlag Server-Ereignis (Client rechnet nichts).
+- Entschieden 2026-10-06 (🧑, Chat): Server-Ereignis (`strike` auch ohne Treffer, `castFailed`), der Client zeichnet nur. Das Ereignis erzeugt die SIM (`engine/sim/`), das Protokoll überträgt es (eigene Session S9.2); das Erzeugen braucht ein eigenes SIM-Ticket als Voraussetzung.
 
 ## Notizen
 

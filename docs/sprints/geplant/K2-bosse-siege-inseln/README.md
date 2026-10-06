@@ -3,7 +3,7 @@
 - **Status:** geplant
 - **Domäne:** SIM
 - **Prio:** hoch
-- **Reife:** Entwurf
+- **Reife:** bereit
 - **Einschiebbar:** nein
 - **Tickets:** B-130, B-102, B-103
 - **Start-Commit:** –
@@ -37,6 +37,8 @@ Events (K3), Protokoll (K4), Anzeige (K5), Balancing (BR2).
 
 Werte nur in `data/`, Logik und Tests in `engine/sim/`; deterministisch (`engine/rng`), mit 2+ Spielern gleichzeitig. Golden-Daten nach dem Golden-Ablauf (B-137) aktualisieren, Spielstand-Änderungen nach der Migrationsregel (B-137). Datei ≤ 400 Zeilen, Funktion ≤ 60, Schichtgrenzen aus `docs/arbeitsweise.md`. Der Sprint bleibt in der Domäne SIM. Quelle: `docs/rules/bosse.md`, `docs/rules/stufen.md`.
 
+Beantwortet aus dem Regelwerk (Stand 2026-10-06): Boss-Namen und alle Boss-Zahlen sind vorläufige Startwerte, 🧑 hat sie als „Vorschlag“ bestätigt (`docs/rules/bosse.md` § 1.1 und Annahmen), endgültige Werte kommen über B-099/BR2. „Gold sammeln“ zählt die Summe aller eingesammelten Münzen der Spieler (`docs/rules/stufen.md` § 3, N = 1000). Die Reihenfolge der Inseln ist fest aus den Daten (`docs/rules/stufen.md` § 1).
+
 ## Beispiele
 
 Endboss besiegt → Inselwechsel frei → alle lebenden Spieler am Punkt → neue Insel mit neuer Tabelle.
@@ -58,16 +60,20 @@ Nicht alle lebenden Spieler am Punkt → Wechsel wartet. Komplett verloren → R
 
 ## Offene Fragen
 
-keine
+- Anzahl n der Inseln und Inhalt weiterer Inseln (`docs/rules/stufen.md` § 1 und § 7: offen, bis Insel 1 spielbar ist; entscheidet 🧑). Nicht blockierend: `data/islands.json` enthält nur Insel 1, der Wechsel-Test (K2.3a) nutzt eine zweite Insel aus der Testdatei, der Code kennt keine feste Anzahl.
 
 ## Sessions
 
-Entwurf. Vor dem Aktivieren jede Session als Datei nach `docs/vorlagen/session.md` schreiben, die Kriterien in Klammern werden ihr Feld `Kriterien`.
-
-- K2.1 Minibosse und Endboss mit Phasen, Skalierung, Spielstand (AC-01, AC-02, AC-03, AC-04).
-- K2.2 Siegvarianten und Niederlage-Modi (AC-05, AC-06).
-- K2.3 Inseln und gemeinsamer Inselwechsel, Golden (AC-07, AC-08).
-- K2.4 Review (Code-Sprint): alle Kriterien prüfen.
+| Nr. | Datei | Typ | Agent | Status |
+|---|---|---|---|---|
+| K2.1a | `K2.1a-boss-rahmen-minibosse.md` | Umsetzung | autonom | offen |
+| K2.1b | `K2.1b-minibosse-flaechen.md` | Umsetzung | autonom | offen |
+| K2.1c | `K2.1c-endboss.md` | Umsetzung | autonom | offen |
+| K2.2a | `K2.2a-siegvarianten.md` | Umsetzung | autonom | offen |
+| K2.2b | `K2.2b-niederlage-modi.md` | Umsetzung | autonom | offen |
+| K2.3a | `K2.3a-inselwechsel.md` | Umsetzung | autonom | offen |
+| K2.3b | `K2.3b-spielstand-golden.md` | Umsetzung | autonom | offen |
+| K2.4 | `K2.4-review.md` | Review | autonom | offen |
 
 ## Abnahme
 

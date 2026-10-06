@@ -56,7 +56,7 @@ Spieler stirbt im Bosskampf → wie üblich Wiederbeleben/Respawn. Stufenverlust
 
 ## Offene Fragen
 
-Boss-Namen und Fähigkeiten-Zahlen (Startwerte, B-099).
+Entschieden 2026-10-06 (🧑, `docs/rules/bosse.md` § 1.1 und Annahmen): Boss-Namen und Fähigkeiten-Zahlen sind vorläufige Startwerte, von 🧑 als „Vorschlag“ bestätigt; endgültige Werte über B-099.
 
 ## Notizen
 

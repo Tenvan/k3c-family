@@ -52,7 +52,7 @@ Zu wenig Skill-Punkte oder Tier nicht freigeschaltet → Skill nicht wählbar, P
 
 ## Offene Fragen
 
-Skill-Tasten (B-026) und Klassen-Presets (B-017) sind noch nicht entschieden (🧑).
+Entschieden 2026-10-06 (🧑, Chat): Skill-Tasten (B-026) und Presets (B-017) sind erledigt (archiviert); Grundlage `docs/rules/monarch.md`, S1 und S3. SK1 plant nur, was nach S1 fehlt.
 
 ## Notizen
 

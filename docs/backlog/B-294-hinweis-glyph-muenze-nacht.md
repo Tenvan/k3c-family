@@ -48,7 +48,7 @@ nicht relevant: reine Darstellungsfrage.
 
 ## Offene Fragen
 
-Genügt Text ohne Glyph für Münze und „Nacht naht“? Entscheider: 🧑.
+Entschieden 2026-10-06 (🧑, Chat): Bild statt Glyph – Münzsymbol bzw. Mond vor dem Text, aus vorhandenen Packs unter `public/` (Zuordnung in `docs/assets/`); umgesetzt in S8.2.
 
 ## Notizen
 

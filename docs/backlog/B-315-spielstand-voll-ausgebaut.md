@@ -53,8 +53,8 @@ Eine Stufe hat keine Grafik → Platzhalter-Form wie im Renderer (GR3/AC-03), ke
 
 ## Offene Fragen
 
-- Aufteilung: SRV (Spielstand erzeugen, Dev-API) und PLAT (Knopf im Level-Betrachter) als zwei Sprints oder eine Domänen-Ausnahme: 🧑.
-- „Alle Level“ heißt alle Inselstufen eines Raums; zusätzlich alle Biome? 🧑.
+- Entschieden 2026-10-06 (🧑, Chat): Spielstand und Dev-API (SRV) sowie der Knopf im Level-Betrachter (PLAT) kommen in SV1; der Knopf ist eine eigene Session als Domänen-Ausnahme.
+- Entschieden 2026-10-06 (🧑, Chat): „Alle Level“ heißt alle Inselstufen eines Raums, nicht alle Biome.
 
 ## Notizen
 

@@ -53,8 +53,9 @@ nicht relevant: Mechanismus noch offen.
 
 ## Offene Fragen
 
-Welcher Mechanismus (entscheidet 🧑)? Zum Beispiel eine Wartezeit vor dem Wiederaufheben, Kosten, Abnutzung der
-Ausrüstung oder Gegner tragen sie früher weg (K1, `equipmentTaken`).
+Entschieden 2026-10-06 (🧑, Chat): Gegner tragen fallengelassene Ausrüstung weg (Ereignis `equipmentTaken`, in
+`engine/sim/events.go` bisher nur angelegt). Keine Wartezeit vor dem Wiederaufheben. Die nötigen Werte kommen mit
+vorläufigen Zahlen als neue Felder nach `data/`, REG legt sie später fest.
 
 ## Notizen
 

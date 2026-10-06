@@ -50,7 +50,7 @@ Die Shell läuft auf Seiten ohne Spiel (Landingpage): `t()` liest die Sprache da
 
 ## Offene Fragen
 
-Bleiben die Werkzeug-Seiten (`src/tools/`) deutsch? Entscheidet 🧑.
+Entschieden 2026-10-06 (🧑, Chat): Die Werkzeug-Seiten (`src/tools/`) werden auch übersetzt. PL1 plant nur Touch-Overlay und Shell (sonst mehr als 4 Sessions); die Werkzeug-Seiten bekommen ein eigenes Ticket.
 
 ## Notizen
 

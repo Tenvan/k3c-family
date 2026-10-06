@@ -3,8 +3,8 @@
 - **Domäne:** CLI
 - **Typ:** Problem
 - **Prio:** mittel
-- **Status:** offen
-- **Sprint:** –
+- **Status:** eingeplant
+- **Sprint:** GR7
 - **Erstellt:** 2026-10-06
 - **Spec:** Entwurf
 - **Revision:** 1

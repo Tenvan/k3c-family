@@ -52,7 +52,9 @@ Header fehlt → k3c-dev meldet den gewählten Checkout deutlich, statt still di
 
 ## Offene Fragen
 
-Warum kommt der Header aus diesem Worktree nicht an (`headersHelper` in `.mcp.json` mit `process.cwd()`)? Ungeprüft; vermutet: Die Desktop-App startet den Helper mit der Wurzel als cwd oder schickt ihn nicht. Soll ein schreibendes Tool ohne Header ablehnen oder nur den Checkout nennen? Ablehnen bricht Clients ohne `headersHelper`; das entscheidet 🧑.
+Warum kommt der Header aus diesem Worktree nicht an (`headersHelper` in `.mcp.json` mit `process.cwd()`)? Ungeprüft; vermutet: Die Desktop-App startet den Helper mit der Wurzel als cwd oder schickt ihn nicht. M9.1 klärt es (M9/AC-03).
+
+Entschieden 2026-10-06 (🧑, Chat): Fehlt der Header, schreibt das Tool trotzdem in die Wurzel und nennt in der Antwort immer den Checkout. Es lehnt nicht ab.
 
 ## Notizen
 

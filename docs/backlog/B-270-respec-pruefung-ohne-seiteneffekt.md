@@ -52,7 +52,7 @@ Unbekannte Skill-ID → Fehler wie bei `LearnSkill`.
 
 ## Offene Fragen
 
-Soll Respec ohne gelernte Skills als erlaubt gelten (heute: ja, ohne Wirkung)? Entscheidet 🧑.
+Entschieden 2026-10-06 (🧑, Chat): Respec ohne gelernte Skills ist erlaubt, ohne Wirkung (wie heute).
 
 ## Notizen
 

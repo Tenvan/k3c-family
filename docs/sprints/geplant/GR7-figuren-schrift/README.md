@@ -5,7 +5,7 @@
 - **Prio:** mittel
 - **Reife:** Entwurf
 - **Einschiebbar:** ja
-- **Tickets:** B-193, B-251, B-198, B-197
+- **Tickets:** B-193, B-251, B-198, B-197, B-320
 - **Start-Commit:** –
 - **Spec:** Entwurf
 - **Revision:** 1
@@ -49,6 +49,7 @@ Keine passende Figur → Lücke bleibt mit Ticket, Platzhalter-Rückfall.
 - **AC-02** Figuren werden ganzzahlig skaliert und flimmern nicht (B-251/AC-01).
 - **AC-03** Der Platzhaltertext einer ungeladenen Stufe liest seine Schrift aus dem Katalog (B-198/AC-01).
 - **AC-04** Die Schriftregel nennt eine Mindestgröße für die Mitspieler-Zelle (B-197/AC-01).
+- **AC-05** Der Reiter sitzt beim Laufen und Sprinten auf dem Sattel, nicht auf der Kruppe (B-320/AC-01, B-320/AC-02).
 
 ## Offene Fragen
 
@@ -60,7 +61,8 @@ Entwurf. Vor dem Aktivieren jede Session als Datei nach `docs/vorlagen/session.m
 
 - GR7.1 Ganzzahlige Skalierung, Platzhaltertext aus dem Katalog (AC-02, AC-03, AC-04).
 - GR7.2 Figuren-Kandidaten und Auswahl (🧑) (AC-01).
-- GR7.3 Review (Code-Sprint): alle Kriterien prüfen.
+- GR7.3 Sattelsitz des Reiters beim Laufen und Sprinten (AC-05).
+- GR7.4 Review (Code-Sprint): alle Kriterien prüfen.
 
 ## Abnahme
 

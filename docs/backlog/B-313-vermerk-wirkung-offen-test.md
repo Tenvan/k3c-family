@@ -56,9 +56,9 @@ nicht relevant: reine Freigabe-Frage, kein Laufzeitfall.
 
 ## Offene Fragen
 
-Welcher Weg (entscheidet 🧑)? (a) `engine/sim/sites_test.go` (nur dieser Test: Vermerk-Prüfung entfernen, Name ohne
-„WirkungOffen“) in die Erlaubten Dateien von W4.3b aufnehmen (empfohlen, ein paar Zeilen); (b) Vermerk „Wirkung offen“
-bleibt stehen, W4.3b ergänzt nur die neuen Felder (Schritt 2 dann ohne Vermerk-Ersatz).
+Entschieden 2026-10-06 (🧑, Chat): Weg (a). `engine/sim/sites_test.go` kommt in die Erlaubten Dateien, nur dieser
+Test: Vermerk-Prüfung raus, Testname ohne „WirkungOffen“. W7 ändert keine W4-Dateien; W7.1 prüft, ob W4.3b schon
+erledigt ist, und ändert den Test sonst selbst.
 
 ## Notizen
 
