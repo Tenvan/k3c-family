@@ -685,6 +685,8 @@
       "stone": 0,
       "copper": 0
     },
+    "fighters": 2,
+    "troopLimit": 10,
     "stockMax": 300,
     "hubLevel": 1,
     "hubUpgrade": {

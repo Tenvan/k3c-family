@@ -48,6 +48,7 @@
         "stage": 0
       }
     ],
+    "fighters": 2,
     "hubLevel": 1,
     "hubUpgrade": {
       "gold": 50,
@@ -1026,6 +1027,7 @@
     "stockMax": 1200,
     "time": 13.599999999999962,
     "travel": null,
+    "troopLimit": 10,
     "troops": [
       {
         "anchorX": 375,

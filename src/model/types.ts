@@ -285,6 +285,9 @@ export interface World {
   merchant?: Merchant;
   drops?: Drop[];
   armorLevel?: number;
+  /** Kämpfer der Stufe und ihr Truppen-Limit (B-332), für den Limit-Text „Kämpfer/Limit“. */
+  fighters?: number;
+  troopLimit?: number;
 
   /** Alle Spieler stehen an einem Tiefen-Eingang / einer Treppe: Fortschritt 0..1, bei 1 wechselt die Kampagne die Stufe. */
   travel: Travel | null;

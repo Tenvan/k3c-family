@@ -1,6 +1,6 @@
 # Protokoll v5
 
-**Änderungen gegenüber v4 (W5, Version 5, B-153, B-283):** `snap`/`delta` nennen den Wirtschaftsstand (`stockMax`, `hubLevel`, `hubUpgrade`, `danger`, `merchant`, `drops`, Berufe der Bürger; siehe *Wirtschaft: Hub, Lager, Wartegrund, Händler*) und die Ereignisse `revived`, `disarmed`, `equipmentTaken`. Keine neuen Nachrichten: Hub-Ausbau, Tausch beim Händler und Berufswahl bleiben Bezahlen am Ort über `input.pay` (B-330). `hello.v` muss 5 sein; ein v4-Client erhält `version`.
+**Änderungen gegenüber v4 (W5, Version 5, B-153, B-283):** `snap`/`delta` nennen den Wirtschaftsstand (`stockMax`, `hubLevel`, `hubUpgrade`, `danger`, `merchant`, `drops`, Berufe der Bürger; siehe *Wirtschaft: Hub, Lager, Wartegrund, Händler*) und die Ereignisse `revived`, `disarmed`, `equipmentTaken`. Keine neuen Nachrichten: Hub-Ausbau, Tausch beim Händler und Berufswahl bleiben Bezahlen am Ort über `input.pay` (B-330). `hello.v` muss 5 sein; ein v4-Client erhält `version`. Nachgetragen ohne neue Version (W10.2, B-332): `fighters` und `troopLimit` im Zustand, Zusatzfelder wie `playerDown.cause`.
 
 **Änderungen in v4 (S2.4, B-176):** Ein Gerät bekommt Level und Zustand **jeder** Stufe, in der einer seiner Slots
 steht, je Stufe ein eigener Strom. `level`, `snap` und `delta` tragen auf oberster Ebene `stage` (Index der Stufe auf
@@ -321,7 +321,7 @@ die Belegung gehört dem Client. Berufe, Tausch, Grabstein und Wiederbeleben kom
 behandelt sie deshalb alle als optional. Im `delta` stehen sie wie jedes Feld ohne `id` bei einer Änderung ganz (außer
 `drops`, Liste mit `id`); fehlt eins jetzt, steht es in `unset`. Mengen sind Stück, Gold sind Münzen.
 
-Felder oben in `s` (`stockMax`, `hubLevel`, `hubUpgrade`, `danger` aus `sim.EconomyOf`, `engine/sim/economy_view.go`,
+Felder oben in `s` (`stockMax`, `hubLevel`, `hubUpgrade`, `danger`, `fighters`, `troopLimit` aus `sim.EconomyOf`, `engine/sim/economy_view.go`,
 vom Server je Stufe abgelesen; die übrigen aus der Welt):
 
 | Feld | Bedeutung | fehlt |
@@ -331,6 +331,8 @@ vom Server je Stufe abgelesen; die übrigen aus der Welt):
 | `hubLevel` | Hub-Stufe 1 bis 5 | nie (älterer Server) |
 | `hubUpgrade` | Ausbau auf die nächste Hub-Stufe: `gold` (Kosten), `material` (Kosten, Form wie `stock`), `paid` (bezahltes Gold), `state` (`waitingMaterial`, `waitingWorker`; fehlt, solange Gold offen ist) | auf Stufe 5 |
 | `danger` | `true`: Nacht oder Gegner da, Bau und Ausbau warten | keine Gefahr |
+| `fighters` | Zahl der Kämpfer der Stufe (für „Kämpfer/Limit“; W10.2, B-332) | nie (älterer Server); 0 ist ein Wert |
+| `troopLimit` | Truppen-Limit der Stufe (Regel `docs/rules/buerger.md` § 3, zerstörte Kaserne zählt nicht) | nie (älterer Server) |
 | `merchant` | anwesender Händler: `resource` (sein Material), `leaves` (Tag der Abreise), `buyPaid` (Gold des laufenden Kaufs, fehlt bei 0) | kein Händler (nur Tiefe 0) |
 | `drops` | Ausrüstung am Boden, Liste mit `id`: `kind` (Figur oder Beruf), `x`, `workSite` (fehlt bei 0) | keine |
 | `armorLevel` | Rüstungsstufe der Kämpfer des Hubs | 0 |
@@ -346,7 +348,7 @@ des Arbeitsplatzes, fehlt = keiner). Berufswahl, Tausch und Hub-Ausbau als Einga
 Beispiel: `s2c-snapshot-wirtschaft.json` (Insel `w5-wirtschaft`, 3 Stufen, 4 Spieler, Stufe 0, Tick 408; Zustand aus
 `wirtschaftsInsel` in `engine/net/wirtschaft_test.go`: Hub-Ausbau bezahlt und wartet auf Material, Lager gebaut und
 gefüllt, Händler da, ein Bauer mit Beruf; die drei Ereignisse in `events` sind von Hand ergänzt, siehe *Ereignisse*).
-Geprüft von `TestWirtschaftZustand`, `TestWirtschaftDelta`, `TestWirtschaftBeispiel` und
+Geprüft von `TestWirtschaftZustand`, `TestWirtschaftDelta`, `TestKaempferZustandUndDelta`, `TestWirtschaftBeispiel` und
 `src/online/clientWirtschaft.test.ts`.
 
 ### Fehler-Codes

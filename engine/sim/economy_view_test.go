@@ -78,9 +78,7 @@ func TestEconomyKaempferUndLimit(t *testing.T) {
 	if e := EconomyOf(w); e.TroopLimit != l.Base {
 		t.Errorf("zerstörte Kaserne zählt nicht: %d", e.TroopLimit)
 	}
-	for k := range economyJSON(t, w) {
-		if k == "fighters" || k == "troopLimit" || k == "Fighters" || k == "TroopLimit" {
-			t.Errorf("Feld %s schon im JSON (Protokoll erst W10.2)", k)
-		}
+	if j := economyJSON(t, w); j["fighters"] != 2.0 || j["troopLimit"] != float64(l.Base) {
+		t.Errorf("JSON fighters/troopLimit: %v %v (W10.2)", j["fighters"], j["troopLimit"])
 	}
 }

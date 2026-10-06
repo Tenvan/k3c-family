@@ -24,6 +24,8 @@ describe('Wirtschaft im Zustand', () => {
     expect(w.merchant).toEqual({ resource: 'stone', leaves: 3 });
     expect(w.troops.some((t) => t.profession === 'builder')).toBe(true);
     expect(w.danger).toBeUndefined();
+    expect(w.fighters).toBe(2);
+    expect(w.troopLimit).toBe(10);
   });
 
   it('delta ändert die Felder, unset entfernt den Händler, drops kommen als Liste mit id', () => {
@@ -42,11 +44,13 @@ describe('Wirtschaft im Zustand', () => {
   });
 
   it('ein Zustand ohne die Felder (älterer Server) bleibt gültig', () => {
-    const { hubLevel: _h, hubUpgrade: _u, stockMax: _m, merchant: _r, ...old } = snap;
+    const { hubLevel: _h, hubUpgrade: _u, stockMax: _m, merchant: _r, fighters: _f, troopLimit: _l, ...old } = snap;
     const w = world(old);
     expect(w.hubLevel).toBeUndefined();
     expect(w.hubUpgrade).toBeUndefined();
     expect(w.stockMax).toBeUndefined();
+    expect(w.fighters).toBeUndefined();
+    expect(w.troopLimit).toBeUndefined();
     expect(w.stock).toEqual(snap.stock);
   });
 
