@@ -67,7 +67,7 @@ func stepArcher(w *World, t *Troop, dt float64) {
 	walkTo(t, post, dt)
 
 	t.Cooldown = math.Max(0, t.Cooldown-dt)
-	a := troops["archer"]
+	a := troops[t.Kind]
 	reach := a.Range
 	if isOnTower(w, t) {
 		reach += float64(buildings["tower"].RangeBonus)

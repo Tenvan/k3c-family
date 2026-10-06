@@ -35,6 +35,14 @@ type BuildingData struct {
 	Vagrants                         Vagrants    // Taverne: Landstreicher je dawn (tavern.go)
 	Heal                             Heal        // Heilplatz (healing.go)
 	Spell                            Spell       // Turm ab Stufe FromLevel: Zaubertum (spell_tower.go)
+	Armor                            []ArmorStage // Rüstkammer: Rüstungsstufen (upgrades.go)
+}
+
+// ArmorStage: Rüstungsstufe ab HubLevel, HPBonus als Anteil der Basis-HP aller Kämpfer (Q37).
+type ArmorStage struct {
+	HubLevel int
+	HPBonus  float64
+	Cost     Cost
 }
 
 // Heal: HPPerSecond für Bürger und lebende Spieler im Radius um den gebauten Heilplatz (Q32).
@@ -67,6 +75,7 @@ type TroopData struct {
 	Cost, RecruitCost                          Cost
 	Professions                                map[string]ProfessionData // nur peasant: Berufe (professions.go)
 	PostUnits                                  float64                   // Krieger: Posten innen vor der Sperre (warrior.go)
+	UpgradeFrom                                string                    // Elite: aus dieser Figur aufgewertet (upgrades.go)
 }
 
 // Gatherable ist eine Ressource, die Bauern holen (Baum, Fels, Kupfererz).
