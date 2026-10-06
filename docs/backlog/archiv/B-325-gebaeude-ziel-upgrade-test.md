@@ -4,7 +4,7 @@
 - **Typ:** Frage
 - **Prio:** mittel
 - **Umgebung:** offline
-- **Status:** offen
+- **Status:** erledigt
 - **Sprint:** K1
 - **Erstellt:** 2026-10-06
 - **Spec:** Entwurf
@@ -50,6 +50,8 @@ nicht relevant: reine Freigabe einer Datei.
 ## Offene Fragen
 
 Darf K1.2 `engine/sim/upgrades_test.go` anpassen (Startpunkt des Skeletts)? 🧑
+
+**Entscheidung 🧑 2026-10-06 (Chat):** „B-325: Test anpassen“. Umgesetzt in K1.2: Skelett startet bei `HubX+20` statt `HubX+40`, Prüfungen unverändert; `task check:go` grün.
 
 ## Notizen
 

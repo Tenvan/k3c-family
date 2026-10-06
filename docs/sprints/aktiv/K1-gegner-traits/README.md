@@ -65,7 +65,7 @@ Gegner ohne Eintrag für die Angriffsrate → 1 Angriff je Sekunde.
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
 | K1.1 | `K1.1-traits-angriffsrate.md` | Umsetzung | autonom | fertig |
-| K1.2 | `K1.2-tor-enemykilled.md` | Umsetzung | autonom | blockiert |
+| K1.2 | `K1.2-tor-enemykilled.md` | Umsetzung | autonom | fertig |
 | K1.3 | `K1.3-neue-gegner-pools-golden.md` | Umsetzung | autonom | offen |
 | K1.4 | `K1.4-review.md` | Review | autonom | offen |
 

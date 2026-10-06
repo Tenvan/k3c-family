@@ -129,7 +129,6 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-322](B-322-texte-werkzeug-seiten.md) | PLAT | Schuld | niedrig | eingeplant | PL2 | Die Werkzeug-Seiten holen ihre Texte aus den zentralen Textdateien |
 | [B-323](B-323-welt-spiegelt-lager-hub-ausbau.md) | SIM | Frage | hoch | offen | – | Die Welt spiegelt Lager-Maximum, Hub-Ausbau mit Kosten und Wartegrund „Gefahr“ für das Protokoll |
 | [B-324](B-324-client-typen-gegnerdaten.md) | CLI | Schuld | niedrig | offen | – | Die Client-Typen der Gegner- und Wellendaten passen zu den JSON-Dateien |
-| [B-325](B-325-gebaeude-ziel-upgrade-test.md) | SIM | Frage | mittel | offen | K1 | K1.2 darf den Testaufbau des Elite-Bogenschützen anpassen |
 
 ## Archiv
 
@@ -299,3 +298,4 @@ Zeile in diesen Abschnitt.
 | [B-252](archiv/B-252-grafikmanager-seite.md) | PLAT | Idee | mittel | verworfen | – | Eine GrafikManager-Seite zeigt Bestand, Kandidaten und Zuordnung für die feine Auswahl |
 | [B-310](archiv/B-310-elite-verhalten-ausserhalb-erlaubter-dateien.md) | SIM | Frage | hoch | erledigt | – | Elite-Werte wirken nur mit Änderungen außerhalb der Erlaubten Dateien von W4.3b |
 | [B-311](archiv/B-311-passive-burg-faellt-nicht.md) | REG | Frage | hoch | erledigt | – | Mit der Verlust-Kaskade fällt die Burg bei passivem Spiel nie |
+| [B-325](archiv/B-325-gebaeude-ziel-upgrade-test.md) | SIM | Frage | mittel | erledigt | – | K1.2 darf den Testaufbau des Elite-Bogenschützen anpassen |
