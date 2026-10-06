@@ -4,12 +4,12 @@
 - **Typ:** Frage
 - **Prio:** hoch
 - **Umgebung:** offline
-- **Status:** offen
-- **Sprint:** W6
+- **Status:** eingeplant
+- **Sprint:** W10
 - **Erstellt:** 2026-10-06
-- **Spec:** Entwurf
+- **Spec:** freigegeben
 - **Revision:** 1
-- **Freigabe:** –
+- **Freigabe:** 2026-10-06, Chat, durch 🧑, Revision 1; B-331 Variante A, Domänen-Ausnahme SIM economy_view
 
 ## Ausgangslage
 
@@ -50,7 +50,7 @@ Variante A: 12 Kämpfer, eine Kaserne gebaut → Zustand `fighters: 12, troopLim
 
 ## Offene Fragen
 
-Variante A oder B (🧑).
+Variante A oder B (🧑). **Entschieden 2026-10-06 (🧑, Chat): Variante A → Sprint W10 (SRV, einschiebbar); Domänen-Ausnahme SIM nur für `engine/sim/economy_view*.go`. W6.1 wartet auf W10.**
 
 ## Notizen
 

@@ -27,6 +27,7 @@ Reihenfolge in Wellen, Bahnen je Domäne und Zuordnung Mensch/autonom (zwei Acco
 | MON2 | PLAT | hoch | Monitoring-Seite `monitor.html`: Ampel je Raum, Verläufe mit Perzentilen, Fehler-Zeitleiste (B-282; Abnahme am Handy offen) | – | `aktiv/MON2-monitoring-seite/` |
 | S6 | CLI | hoch | Onboarding „Erste Nacht geführt“ und Controller-Glyphen (B-148, B-149; Abnahme am TV offen) | – | `aktiv/S6-onboarding-glyphen/` |
 | W6 | CLI | mittel | Anzeigen für Bau, Lager, Hub und Bürger (B-117, B-126) | HUD und Bauplätze am TV, von 🧑 abgenommen | `aktiv/W6-anzeige-wirtschaft/` |
+| W10 | SRV | hoch | Kämpfer-Zahl und Truppen-Limit im Zustand: `sim.EconomyOf` und Protokoll v5 nennen `fighters`, `troopLimit` (B-331; einschiebbar, Domänen-Ausnahme SIM `economy_view`) | `fighters` und `troopLimit` in `docs/protocol.md` und `testdata/protocol/` | `aktiv/W10-truppen-limit-zustand/` |
 
 ## Offen am Gerät
 
