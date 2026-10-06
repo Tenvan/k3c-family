@@ -59,7 +59,8 @@ func wantElite(t *testing.T, kind string, at func(*Site) float64) (*World, *Troo
 
 func TestUpgradeEliteBogenschuetze(t *testing.T) {
 	w, _ := wantElite(t, "eliteArcher", func(s *Site) float64 { return s.X })
-	spawnEnemy(w, "skeleton", w.HubX+40)
+	// Start in Reichweite, vor der Schmiede: Sonst greift das Skelett sie an (gegner.md § 4, B-325).
+	spawnEnemy(w, "skeleton", w.HubX+20)
 	for tm := 0.0; tm < 20 && len(w.Projectiles) == 0; tm += dt {
 		Step(w, nil, dt)
 	}
