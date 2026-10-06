@@ -17,7 +17,7 @@ Zielplattform ist **Edge auf der Xbox** (Gamepad API), gehostet im Heimnetz. Die
   `plan_section`, `plan_delete` (lesen: `plan_list`, `plan_get`) von k3c-dev; von Hand nur, wenn k3c-dev nicht läuft.
 - **SDD:** Ticket und Sprint-README sind die Spec (Kriterien `AC-01` …), Sessions erfüllen genannte Kriterien.
   Freigabe (`Spec: freigegeben`) und manuelle Abnahmen nur durch den Nutzer. Details: `docs/arbeitsweise.md` › SDD.
-- **Spielstruktur (003):** Ein Raum hat einen Spielstand mit n Inseln, jede Insel n Stufen; Stufen sind pro Spieler frei begehbar und laufen alle weiter. Im Go-Code rechnet ein Raum eine Insel mit mehreren Stufen im selben Takt, Einzelwechsel je Spieler und einem Material-Vorrat je Insel (`engine/sim/island*.go`, SP12–SP14, Protokoll v3); noch offen: mehrere Inseln und Inselwechsel (B-103). Regeln: `docs/rules/stufen.md`.
+- **Spielstruktur (003):** Ein Raum hat einen Spielstand mit n Inseln, jede Insel n Stufen; Stufen sind pro Spieler frei begehbar und laufen alle weiter. Im Go-Code rechnet ein Raum eine Insel mit mehreren Stufen im selben Takt, Einzelwechsel je Spieler und einem Material-Vorrat je Insel (`engine/sim/island*.go`, SP12–SP14); noch offen: mehrere Inseln und Inselwechsel (B-103). Regeln: `docs/rules/stufen.md`.
 - Architektur-Entscheidungen: `docs/decisions/` – **001: Die Spiel-Engine wandert auf einen Go-Server**, der Browser
   wird reiner Client. Umgesetzt (SP09): Es gibt keine TS-Simulation mehr, neue Mechaniken entstehen in `engine/` (Go).
 - Altes Godot-Projekt (nur Referenz): `C:\WORKSPACE\FamilyCrowns`
@@ -35,6 +35,7 @@ task check         # Lint + Typecheck + Tests (vor jedem Abschluss)
 task check:go      # go test + golangci-lint (Rechner mit Go)
 task check:dev     # k3c-dev: Frontend, go test, golangci-lint
 task check:all     # alles inklusive Build
+task golden:update # testdata/golden/ neu schreiben, nur bei gewollter Regel-/Wertänderung (Begründung in den Commit)
 task k3c-dev       # Entwickler-Werkzeug k3c-dev als Fenster starten (wails dev; EXE: task k3c-dev:build)
 task build         # Typecheck + Produktions-Build nach dist/
 task pages         # GitHub-Pages-Seite nach _site/ (site/ + dist unter app/)
@@ -59,9 +60,11 @@ prüft die Regeln unten automatisch (Seiten eingetragen, `installPageChrome()`, 
 - `data/` – Balancing als JSON (Biome, Gegner, Truppen, Gebäude, Monarch), einzige Quelle für Client (Import) und
   Go-Server (`go:embed`, `data/embed.go`). Werte gehören hierher, nicht in den Code.
 - `engine/` – Go: `sim/` (Simulation, deterministisch), `level/` (Level-Generator), `room/`, `net/` (HTTP, WebSocket `/ws`,
-  Protokoll v3), `store/` (Spielstände → `saves/`, Berichte → `reports/`). `cmd/k3c-server` liefert `dist/` und die API aus.
+  Protokoll laut `docs/protocol.md`), `store/` (Spielstände → `saves/`, Berichte → `reports/`).
+- `cmd/` – Go-Binaries: `k3c-server` (liefert `dist/` und die API aus), `k3c-load` (Lasttest), `k3c-tui`.
+  `tools/k3c-dev` – Entwickler-Werkzeug (Wails-Fenster + MCP-Server `k3c-dev`).
 - `src/model/` – Typen und Daten, die der Client vom Server kennt (`World`, `GameEvent`, `BIOMES`, `SaveGame` …), keine Logik.
-- `src/online/` – Client des Go-Servers (`clientConnection.ts`, Protokoll v3): sendet nur Eingaben, zeichnet Snapshots. Ein Monarch pro Gerät.
+- `src/online/` – Client des Go-Servers (`clientConnection.ts`, Version in `clientProtocol.ts`): sendet nur Eingaben, zeichnet Snapshots. Ein Monarch pro Gerät.
 - `src/input/` – `PlayerInput`-Abstraktion (Tastatur, Gamepad, Touch-Overlay `touchInput.ts`, per `?touch=1` erzwingbar). Spiel-Code fragt Aktionen ab, nie konkrete Tasten.
 - `src/scenes/` – Phaser-Szenen (`GameScene` = Eingabe, `step()`, Kameras; `worldRenderer.ts` zeichnet den Zustand;
   `HudScene` = bildschirmfeste Anzeigen). Neue Mechanik: Logik + Test in `engine/sim/`, dann nur zeichnen.
