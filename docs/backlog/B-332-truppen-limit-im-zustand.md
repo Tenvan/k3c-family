@@ -1,4 +1,4 @@
-# B-331 · Kämpfer-Zahl und Truppen-Limit stehen im Zustand
+# B-332 · Kämpfer-Zahl und Truppen-Limit stehen im Zustand
 
 - **Domäne:** SRV
 - **Typ:** Frage
