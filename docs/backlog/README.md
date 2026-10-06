@@ -12,7 +12,6 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-007](B-007-skill-baum.md) | SIM | Idee | hoch | eingeplant | SK1 | Skill-Baum mit Tank und Zauberer ist spielbar |
 | [B-008](B-008-spieleabend.md) | REG | Frage | hoch | eingeplant | P1 | Familie hat einen Spieleabend gespielt und Feedback gegeben |
 | [B-011](B-011-sound.md) | CLI | Idee | mittel | eingeplant | SO1 | Spiel hat Sound und Musik |
-| [B-013](B-013-gegner-elite.md) | SIM | Idee | mittel | eingeplant | K1 | Restliche Gegner und Elite-KI sind umgesetzt |
 | [B-015](B-015-gebaeude-werte.md) | REG | Problem | mittel | eingeplant | BR1 | Gebäude-HP und -Kosten sind gebalanced |
 | [B-019](B-019-test-abdeckung.md) | INF | Idee | niedrig | eingeplant | CI1 | Test-Abdeckung der Engine ist sichtbar |
 | [B-023](B-023-itch-io.md) | INF | Idee | niedrig | eingeplant | PB1 | Spiel ist auf itch.io veröffentlicht |
@@ -40,8 +39,6 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-124](B-124-skill-menue-tasten.md) | CLI | Idee | hoch | eingeplant | S3 | Der Client hat Schlag, Skill-Slots, Skill-Menü und die Tasten für Controller, Tastatur und Touch |
 | [B-125](B-125-aktionen-overlay.md) | CLI | Idee | hoch | eingeplant | S3 | Gültige Aktionen erscheinen überall in der Welt als Overlay am Ort |
 | [B-126](B-126-buerger-ui.md) | CLI | Idee | mittel | eingeplant | W6 | Der Client zeigt Berufe, Ausbildung, Händler, Truppen-Limit und Heilung |
-| [B-128](B-128-traits-kiting-angriffsrate.md) | SIM | Idee | mittel | eingeplant | K1 | Die Gegner-Traits aoe, swarm, phases und Kiting wirken, die Angriffsrate steht je Gegner in den Daten |
-| [B-129](B-129-neue-gegner-pools.md) | SIM | Idee | mittel | eingeplant | K1 | Eisenstollen und Kristallhöhle haben ihre Gegner und Pools |
 | [B-130](B-130-bosse.md) | SIM | Idee | hoch | eingeplant | K2 | Minibosse und Endboss sind spielbar |
 | [B-131](B-131-events.md) | SIM | Idee | niedrig | eingeplant | K3 | Vollmond, Blutmond und Händler-Überfall sind als Events umgesetzt |
 | [B-132](B-132-anzeige-bosse-events.md) | CLI | Idee | mittel | eingeplant | K5 | Der Client zeigt Gegner-Fähigkeiten, Bosse, Phasen und Events |
@@ -129,6 +126,9 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-322](B-322-texte-werkzeug-seiten.md) | PLAT | Schuld | niedrig | eingeplant | PL2 | Die Werkzeug-Seiten holen ihre Texte aus den zentralen Textdateien |
 | [B-323](B-323-welt-spiegelt-lager-hub-ausbau.md) | SIM | Frage | hoch | offen | – | Die Welt spiegelt Lager-Maximum, Hub-Ausbau mit Kosten und Wartegrund „Gefahr“ für das Protokoll |
 | [B-324](B-324-client-typen-gegnerdaten.md) | CLI | Schuld | niedrig | offen | – | Die Client-Typen der Gegner- und Wellendaten passen zu den JSON-Dateien |
+| [B-327](B-327-golden-tiefe-stufen.md) | SIM | Frage | niedrig | offen | K1 | Golden-Läufe decken Eisenstollen und Kristallhöhle ab |
+| [B-328](B-328-feuergeist-flammen-flaeche.md) | SIM | Frage | niedrig | offen | K1 | Der Feuergeist hinterlässt eine Flammen-Fläche |
+| [B-329](B-329-figuren-neue-gegner.md) | CLI | Schuld | niedrig | offen | – | Die sechs neuen Gegner zeigen eigene Figuren statt Platzhalter |
 
 ## Archiv
 
@@ -299,3 +299,7 @@ Zeile in diesen Abschnitt.
 | [B-310](archiv/B-310-elite-verhalten-ausserhalb-erlaubter-dateien.md) | SIM | Frage | hoch | erledigt | – | Elite-Werte wirken nur mit Änderungen außerhalb der Erlaubten Dateien von W4.3b |
 | [B-311](archiv/B-311-passive-burg-faellt-nicht.md) | REG | Frage | hoch | erledigt | – | Mit der Verlust-Kaskade fällt die Burg bei passivem Spiel nie |
 | [B-325](archiv/B-325-gebaeude-ziel-upgrade-test.md) | SIM | Frage | mittel | erledigt | – | K1.2 darf den Testaufbau des Elite-Bogenschützen anpassen |
+| [B-326](archiv/B-326-k1-3-grafik-luecken-neue-gegner.md) | SIM | Frage | hoch | erledigt | – | K1.3 darf den sechs neuen Gegnern Platzhalter-Sprites und Zuordnungs-Zeilen geben |
+| [B-013](archiv/B-013-gegner-elite.md) | SIM | Idee | mittel | erledigt | K1 | Restliche Gegner und Elite-KI sind umgesetzt |
+| [B-128](archiv/B-128-traits-kiting-angriffsrate.md) | SIM | Idee | mittel | erledigt | K1 | Die Gegner-Traits aoe, swarm, phases und Kiting wirken, die Angriffsrate steht je Gegner in den Daten |
+| [B-129](archiv/B-129-neue-gegner-pools.md) | SIM | Idee | mittel | erledigt | K1 | Eisenstollen und Kristallhöhle haben ihre Gegner und Pools |

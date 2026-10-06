@@ -1,5 +1,5 @@
 {
-  "_comment": "Sprites: LuizMelo (CC0, unsere Seite) und Gothicvania von ansimuz (CC0, Gegner), Bilder in public/sprites/<sheet>/<anim>.png. origin = Fußpunkt im Frame, height = Figurhöhe in Frame-Pixeln, scale = Vergrößerung. label/side = Name und Seite (ours/enemy) für die Referenzseiten. Pro Figur: tint = Einfärbung, scale = zusätzlicher Faktor, y = Pixel über dem Boden. mounts = Reittiere: saddle = Sattelpunkt pro Frame (Frame-Pixel, Blick nach rechts), dort sitzt der Reiter mit der Hüfte; riderWaist = Schnitt durch die Figur (Anteil der Höhe von oben).",
+  "_comment": "Sprites: LuizMelo (CC0, unsere Seite) und Gothicvania von ansimuz (CC0, Gegner), Bilder in public/sprites/<sheet>/<anim>.png. origin = Fußpunkt im Frame, height = Figurhöhe in Frame-Pixeln, scale = Vergrößerung. label/side = Name und Seite (ours/enemy) für die Referenzseiten. Pro Figur: tint = Einfärbung, scale = zusätzlicher Faktor, y = Pixel über dem Boden. mounts = Reittiere: saddle = Sattelpunkt pro Frame (Frame-Pixel, Blick nach rechts), dort sitzt der Reiter mit der Hüfte; riderWaist = Schnitt durch die Figur (Anteil der Höhe von oben). Platzhalter (B-326, echte Figuren B-329): lavaSlime, ironBeetle, fireSpirit, crystalSpider, shardling, crystalGuardian nutzen vorhandene Sheets mit Tönung.",
   "sheets": {
     "medieval-king": {
       "label": "König",
@@ -1109,6 +1109,30 @@
     "mineGhost": {
       "sheet": "ghost",
       "alpha": 0.85
+    },
+    "lavaSlime": {
+      "sheet": "mushroom",
+      "tint": "#e63946"
+    },
+    "ironBeetle": {
+      "sheet": "hell-hound",
+      "tint": "#8f8f8f"
+    },
+    "fireSpirit": {
+      "sheet": "ghost",
+      "tint": "#f4a261"
+    },
+    "crystalSpider": {
+      "sheet": "hell-hound",
+      "tint": "#4ea8de"
+    },
+    "shardling": {
+      "sheet": "mushroom",
+      "tint": "#a9def9"
+    },
+    "crystalGuardian": {
+      "sheet": "hell-gato",
+      "tint": "#4361ee"
     }
   },
   "mounts": {

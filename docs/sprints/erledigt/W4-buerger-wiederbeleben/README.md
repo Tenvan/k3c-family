@@ -79,4 +79,4 @@ wird jede Session als eigene Datei nach `docs/vorlagen/session.md` geschrieben.
 - 2026-10-06 (W4.4, autonom): AC-01 (W4.1: `revive_test.go`), AC-02 und AC-03 (W4.2: `professions_test.go`, `merchant_test.go`), AC-04 bis AC-06 (W4.3a: `barracks_test.go`, `warrior_test.go`, `disarm_test.go`; W4.3b: `upgrades_test.go`, `healing_w4_test.go`), AC-07 (Golden je Regel erklärt, `rng.json` unverändert; `task check:go` und `task check` grün) mit Nachweis.
 - Review des Diffs: keine schweren Befunde, keine behoben; Hinweis: Spielstand lädt Krieger, Elite, Berufe, Rüstung und Händler noch nicht (B-201, W7).
 - Neue Tickets: keine.
-- Version: v0.12.0 vorgeschlagen (Minor: Wiederbeleben, Berufe, Händler, Krieger, Elite, Rüstung und Limit wirken in der Simulation; letzter Tag v0.11.0).
+- Version: v0.12.0 gesetzt (2026-10-06)

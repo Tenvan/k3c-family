@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"io/fs"
 	"path"
+	"slices"
 	"sort"
 	"strings"
 
@@ -216,6 +217,9 @@ func loadBiomes() []level.Biome {
 	out := make([]level.Biome, 0, len(files))
 	for _, f := range files {
 		b, err := level.LoadBiome(strings.TrimSuffix(path.Base(f), ".json"))
+		if err == nil {
+			err = checkPool(b, enemyData)
+		}
 		if err != nil {
 			panic(err)
 		}
@@ -223,6 +227,23 @@ func loadBiomes() []level.Biome {
 	}
 	sort.SliceStable(out, func(i, j int) bool { return out[i].Depth < out[j].Depth })
 	return out
+}
+
+// checkPool: Jeder Gegner in `enemies.portal` und `enemies.night` steht in enemies.json, der Portal-Pool hat mindestens
+// einen Standard- und einen Elite-Gegner; der Nacht-Pool darf leer sein (B-129).
+func checkPool(b level.Biome, enemies map[string]EnemyData) error {
+	tiers := map[string]bool{}
+	for i, k := range slices.Concat(b.Enemies.Portal, b.Enemies.Night) {
+		d, ok := enemies[k]
+		if !ok {
+			return fmt.Errorf("data/biomes/%s.json: unbekannter Gegner %q", b.ID, k)
+		}
+		tiers[d.Tier] = tiers[d.Tier] || i < len(b.Enemies.Portal)
+	}
+	if !tiers["standard"] || !tiers["elite"] {
+		return fmt.Errorf("data/biomes/%s.json: Portal-Pool braucht Standard- und Elite-Gegner", b.ID)
+	}
+	return nil
 }
 
 // firstDayNight ist der globale Zyklus: der des ersten Tag/Nacht-Bioms (Oberwelt), wie `globalDayNight()` in TS.
