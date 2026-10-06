@@ -22,7 +22,8 @@ type Matrix struct {
 	Depths  []int    `json:"depths"` // Tiefe = Biom (0 Wald, 1 Höhle, …)
 	Days    int      `json:"days"`
 	// GoldThreshold: Schwelle für Metrics.GoldThresholdTick (Gold aller Monarchen zusammen); 0 = nicht messen.
-	GoldThreshold int `json:"goldThreshold"`
+	GoldThreshold int    `json:"goldThreshold"`
+	Grade         string `json:"grade,omitempty"` // Schwierigkeitsgrad aller Läufe, leer = normal (Grad-Kurven, BAL3.3)
 }
 
 // Scenario ist ein einzelner Lauf.
@@ -32,6 +33,7 @@ type Scenario struct {
 	Bot     string `json:"bot"`
 	Depth   int    `json:"depth"`
 	Days    int    `json:"days"`
+	Grade   string `json:"grade,omitempty"` // leer = normal; steht so auch im Replay
 }
 
 // Result ist ein Lauf mit Kennzahlen; ein ungültiger Lauf hat Error statt Metrics.
@@ -65,22 +67,35 @@ func (m Matrix) Scenarios() ([]Scenario, error) {
 			return nil, fmt.Errorf("matrix: Spieleranzahl muss 1 bis 4 sein, war %d", n)
 		}
 	}
-	for _, b := range m.Bots {
-		if bots[b] == nil {
-			return nil, fmt.Errorf("matrix: unbekannter Bot %q (bekannt: %v)", b, BotNames())
-		}
+	if err := m.checkBots(); err != nil {
+		return nil, err
 	}
 	var out []Scenario
 	for _, seed := range m.Seeds {
 		for _, n := range m.Players {
 			for _, b := range m.Bots {
 				for _, d := range m.Depths {
-					out = append(out, Scenario{Seed: seed, Players: n, Bot: b, Depth: d, Days: m.Days})
+					out = append(out, Scenario{Seed: seed, Players: n, Bot: b, Depth: d, Days: m.Days, Grade: m.Grade})
 				}
 			}
 		}
 	}
 	return out, nil
+}
+
+// checkBots: Jeder Bot ist bekannt und hat in jeder Spieleranzahl genug Monarchen.
+func (m Matrix) checkBots() error {
+	for _, b := range m.Bots {
+		if bots[b] == nil {
+			return fmt.Errorf("matrix: unbekannter Bot %q (bekannt: %v)", b, BotNames())
+		}
+		for _, n := range m.Players {
+			if err := checkPlayers(b, n); err != nil {
+				return fmt.Errorf("matrix: %w", err)
+			}
+		}
+	}
+	return nil
 }
 
 // Run spielt alle Läufe der Matrix nacheinander. Ein abgebrochener Lauf erscheint als ungültig, der Rest läuft weiter.
@@ -143,6 +158,11 @@ func newIsland(sc Scenario) (*sim.Island, error) {
 	isl, err := sim.CreateIsland(sc.Seed, []int{sc.Depth}, 1)
 	if err != nil {
 		return nil, err
+	}
+	if sc.Grade != "" {
+		if err := sim.SetGrade(isl, sc.Grade, true); err != nil {
+			return nil, err
+		}
 	}
 	for range sc.Players {
 		sim.AddIslandPlayer(isl, 0)

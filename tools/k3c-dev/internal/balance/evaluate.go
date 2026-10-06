@@ -74,6 +74,11 @@ func (g Target) value(vals []float64) float64 {
 		}
 		return 100 * sum / float64(len(vals))
 	}
+	return median(vals)
+}
+
+// median der Werte (nicht leer); bei gerader Anzahl der Mittelwert der beiden mittleren.
+func median(vals []float64) float64 {
 	s := slices.Sorted(slices.Values(vals))
 	if n := len(s); n%2 == 0 {
 		return (s[n/2-1] + s[n/2]) / 2
