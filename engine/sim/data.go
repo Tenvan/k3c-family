@@ -86,12 +86,17 @@ type Gatherable struct {
 	MarkCost    int
 }
 
-// EnemyData ist ein Eintrag aus data/enemies.json.
+// EnemyData ist ein Eintrag aus data/enemies.json; Trait-Parameter in enemies_traits.go (gegner.md § 2).
 type EnemyData struct {
 	Tier                     string // standard, elite
 	HP, Damage, Speed, Range float64
 	Gold                     [2]int
 	Traits                   []string
+	AttacksPerSecond         float64 // ohne Eintrag 1 (attackRate)
+	Aoe                      struct{ Radius, IntervalSeconds float64 }
+	SwarmSize                int
+	Phases                   struct{ EverySeconds, DurationSeconds float64 }
+	KiteDistance             float64
 }
 
 // HubSite ist ein Bauplatz relativ zur Hub-Mitte.
@@ -150,7 +155,7 @@ var (
 		Travel                             struct{ RangeUnits, Seconds float64 }
 	}]("hub.json")
 	monarch   = load[monarchData]("monarch.json")
-	enemyData = load[map[string]EnemyData]("enemies.json")
+	enemyData = loadEnemyData()
 	waves     = load[struct {
 		Table []struct {
 			FromWave        int
@@ -159,7 +164,6 @@ var (
 		SpawnSpreadSeconds float64
 		PerExtraPlayer     float64 // Wellenfaktor je Zusatzspieler einer Insel
 		DepthScaling       struct{ HP, Damage, Speed float64 }
-		AttacksPerSecond   float64
 		StealGold          int
 	}]("waves.json")
 	// biomes in der Reihenfolge von `BIOMES` in TS (Oberwelt zuerst, dann nach Tiefe).
@@ -197,7 +201,7 @@ func UseData(fsys fs.FS) error {
 	b, t, e, h, m, en, w := buildings, troops, economy, hub, monarch, enemyData, waves
 	if err := errors.Join(loadFrom(fsys, "buildings.json", &b), loadFrom(fsys, "troops.json", &t),
 		loadFrom(fsys, "economy.json", &e), loadFrom(fsys, "hub.json", &h), loadFrom(fsys, "monarch.json", &m),
-		loadFrom(fsys, "enemies.json", &en), loadFrom(fsys, "waves.json", &w)); err != nil {
+		loadEnemies(fsys, &en), loadFrom(fsys, "waves.json", &w)); err != nil {
 		return err
 	}
 	buildings, troops, economy, hub, monarch, enemyData, waves = b, t, e, h, m, en, w

@@ -113,8 +113,10 @@ func applyDamageBy(w *World, targetID int, damage float64, cause string) {
 	}
 	for _, e := range w.Enemies {
 		if e.ID == targetID {
-			e.HP -= damage
-			hitEvent(w, "enemy", e.ID, e.X, damage)
+			if !invulnerable(w, e) { // Phase (`phases`): kein Schaden, kein hit
+				e.HP -= damage
+				hitEvent(w, "enemy", e.ID, e.X, damage)
+			}
 			return
 		}
 	}

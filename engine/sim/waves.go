@@ -51,10 +51,20 @@ func planWave(b level.Biome, wave int, r *rng.Rng, portals []float64, night bool
 			picks = append(picks, rng.Pick(r, elite))
 		}
 	}
-	out := make([]spawnOrder, len(picks))
+	return spawnOrders(picks, portals, r)
+}
+
+// spawnOrders verteilt die Plätze reihum auf die Portale und staffelt sie über `spawnSpreadSeconds`.
+func spawnOrders(picks []string, portals []float64, r *rng.Rng) []spawnOrder {
+	out := make([]spawnOrder, 0, len(picks))
 	for i, kind := range picks {
 		delay := float64(float64(i)/math.Max(1, float64(len(picks)))*waves.SpawnSpreadSeconds) + r.Next()
-		out[i] = spawnOrder{kind, portals[i%len(portals)], delay}
+		x := portals[i%len(portals)]
+		out = append(out, spawnOrder{kind, x, delay})
+		// Schwarm-Platz (`swarm`): swarmSize Gegner am selben Portal, die übrigen je eine Zufalls-Sekunde später.
+		for n := 1; slices.Contains(enemyData[kind].Traits, "swarm") && n < enemyData[kind].SwarmSize; n++ {
+			out = append(out, spawnOrder{kind, x, delay + r.Next()})
+		}
 	}
 	return out
 }

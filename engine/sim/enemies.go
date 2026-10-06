@@ -36,6 +36,9 @@ func spawnScaled(w *World, kind string, x, hpFactor, damageFactor float64) *Enem
 		Damage: math.Round(d.Damage * math.Pow(s.Damage, depth) * damageFactor), Speed: d.Speed * math.Pow(s.Speed, depth),
 		Range: d.Range, Traits: d.Traits, HomeX: x,
 	}
+	if e.has("phases") {
+		e.Spawned = w.Time
+	}
 	w.Enemies = append(w.Enemies, e)
 	return e
 }
@@ -75,7 +78,7 @@ type target struct {
 
 func stepEnemies(w *World, dt float64) {
 	for _, e := range w.Enemies {
-		e.Cooldown = math.Max(0, e.Cooldown-dt)
+		e.Cooldown, e.AoeIn = math.Max(0, e.Cooldown-dt), math.Max(0, e.AoeIn-dt)
 		if stunned(e, dt) {
 			continue
 		}
@@ -95,21 +98,12 @@ func stepEnemies(w *World, dt float64) {
 		if !e.has("ignoresWalls") {
 			wall = blockingWall(w, e, dir)
 		}
-		if t := chooseTarget(w, e, dir, wall); t != nil {
-			if e.Cooldown <= 0 {
-				attack(w, e, t)
-			}
-			continue
+		t := chooseTarget(w, e, dir, wall)
+		if t != nil && e.Cooldown <= 0 {
+			strike(w, e, t)
 		}
-		x := e.X + float64(dir*speed*dt)
-		stop := w.HubX - float64(dir*hub.CastleRadiusUnits)
-		if wall != nil {
-			stop = wall.X - float64(dir*body)
-		}
-		if dir > 0 {
-			e.X = math.Min(x, stop)
-		} else {
-			e.X = math.Max(x, stop)
+		if !kite(w, e, dt) && t == nil {
+			advance(w, e, dir, wall, speed*dt)
 		}
 	}
 	// Geflohene Gegner verschwinden im Portal (mitsamt geklautem Gold).
@@ -120,6 +114,20 @@ func stepEnemies(w *World, dt float64) {
 		}
 	}
 	w.Enemies = kept
+}
+
+// advance: geradeaus Richtung Burg, höchstens bis zur Mauer oder zum Burgrand.
+func advance(w *World, e *Enemy, dir float64, wall *Site, step float64) {
+	x := e.X + float64(dir*step)
+	stop := w.HubX - float64(dir*hub.CastleRadiusUnits)
+	if wall != nil {
+		stop = wall.X - float64(dir*body)
+	}
+	if dir > 0 {
+		e.X = math.Min(x, stop)
+	} else {
+		e.X = math.Max(x, stop)
+	}
 }
 
 // stunned senkt Betäubung, Verspottung und Verlangsamung (Skills, skills_tank.go, skills_caster.go); true: der Gegner
@@ -247,7 +255,7 @@ func chooseTarget(w *World, e *Enemy, dir float64, wall *Site) *target {
 }
 
 func attack(w *World, e *Enemy, t *target) {
-	e.Cooldown = 1 / waves.AttacksPerSecond
+	e.Cooldown = 1 / attackRate(e.Kind)
 	if p := t.player; p != nil && e.has("stealsGold") && p.Gold > 0 && !w.protectedNight() {
 		amount := min(p.Gold, waves.StealGold)
 		p.Gold -= amount

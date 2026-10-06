@@ -167,6 +167,9 @@ type Enemy struct {
 	// Slow: Faktor der Geschwindigkeit (Ice Wall, skills_caster.go) für SlowFor Sekunden; Angriffe bleiben gleich.
 	Slow    float64 `json:"slow,omitempty"`
 	SlowFor float64 `json:"slowFor,omitempty"`
+	// AoeIn: Sekunden bis zum nächsten Flächenschlag (`aoe`); Spawned: Spawn-Zeit, nur bei `phases` (enemies_traits.go).
+	AoeIn   float64 `json:"aoeIn,omitempty"`
+	Spawned float64 `json:"spawned,omitempty"`
 }
 
 // Storm ist ein laufender Lightning Storm (skills_caster.go): PerSecond Schaden je Sekunde an Gegnern im Radius um X,
