@@ -3,6 +3,7 @@
 - **Domäne:** SRV
 - **Typ:** Idee
 - **Prio:** mittel
+- **Umgebung:** offline
 - **Status:** erledigt
 - **Sprint:** M8
 - **Erstellt:** 2026-10-04

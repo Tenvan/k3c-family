@@ -3,6 +3,7 @@
 - **Status:** offen
 - **Typ:** Workshop
 - **Agent:** Mensch
+- **Umgebung:** live
 - **Branch:** so1/5-hoerprobe-tv
 - **Abhängig von:** SO1.3
 - **Tickets:** B-011, B-166

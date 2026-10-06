@@ -3,6 +3,7 @@
 - **Status:** fertig
 - **Typ:** Review
 - **Agent:** autonom
+- **Umgebung:** live
 - **Branch:** gr5/3-review
 - **Abhängig von:** GR5.2
 - **Tickets:** B-164

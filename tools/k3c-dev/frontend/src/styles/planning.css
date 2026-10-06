@@ -37,12 +37,14 @@
 .pl-progress { height: 5px; border-radius: 3px; background: var(--gray-a4); overflow: hidden; }
 .pl-progress div { height: 100%; background: var(--ok); }
 .pl-sessions { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 2px; }
-.pl-sessions button { all: unset; box-sizing: border-box; width: 100%; display: flex; align-items: center; gap: 8px;
+.pl-row { box-sizing: border-box; width: 100%; display: flex; align-items: center; gap: 8px;
   font-size: 13px; padding: 3px 6px; border-radius: 6px; cursor: pointer; }
-.pl-sessions button:hover { background: var(--gray-a3); }
-.pl-sessions button:focus-visible { outline: 2px solid var(--accent-8); }
-.pl-sessions li.is-next button { box-shadow: inset 3px 0 var(--accent-9); }
-.pl-sessions li.is-sel button { background: var(--accent-a3); outline: 1px solid var(--accent-9); }
+.pl-row .pl-title { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.pl-row:hover { background: var(--gray-a3); }
+.pl-row:focus-visible { outline: 2px solid var(--accent-8); }
+.pl-sessions li.is-next .pl-row { box-shadow: inset 3px 0 var(--accent-9); }
+.pl-sessions li.is-sel .pl-row { background: var(--accent-a3); outline: 1px solid var(--accent-9); }
+.pl-nocheck { width: 16px; flex: none; }
 
 .pl-group { margin: 10px 0 2px; font-weight: 600; }
 .pl-group span { color: var(--dim); font-weight: 400; }
@@ -63,3 +65,15 @@
 .pl-link { all: unset; cursor: pointer; border-radius: 999px; }
 .pl-link:focus-visible { outline: 2px solid var(--accent-8); }
 .pl-ellipsis { min-width: 0; max-width: 40ch; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+
+/* Prompts, Auswahl, Abhängigkeiten (wie ErpApi-Workbench). */
+.pl-copy { display: inline-flex; align-items: center; gap: 2px; }
+.pl-deps { font-size: 12px; color: var(--dim); white-space: nowrap; }
+.pl-dep, .pl-textlink { all: unset; cursor: pointer; color: var(--accent-11); }
+.pl-dep:hover, .pl-textlink:hover { text-decoration: underline; }
+.pl-dep:focus-visible, .pl-textlink:focus-visible { outline: 2px solid var(--accent-8); }
+.pl-textlink { font-size: 12px; }
+.pl-picked, .pl-target { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; }
+.pl-picked { padding: 6px 10px; border: 1px solid var(--accent-9); border-radius: 8px; background: var(--accent-a2);
+  position: sticky; top: -12px; z-index: 1; }
+.pl-target { margin: 6px 0; }

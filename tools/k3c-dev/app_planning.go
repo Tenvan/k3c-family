@@ -35,3 +35,10 @@ func (a *App) GitHubStatus(force bool) github.Data {
 	a.wait()
 	return a.gh.Status(a.ctx, force)
 }
+
+// PlanningSet ändert ein Kopf-Feld (Prio eines Tickets, Agent einer Session …) wie plan_set (Binding); die Oberfläche
+// lädt danach über `planning:changed` neu.
+func (a *App) PlanningSet(id, field, value string) (string, error) {
+	a.wait()
+	return planning.Set(a.root, id, map[string]string{field: value})
+}

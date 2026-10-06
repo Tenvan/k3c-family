@@ -3,6 +3,7 @@
 - **Domäne:** CLI
 - **Typ:** Problem
 - **Prio:** mittel
+- **Umgebung:** live
 - **Status:** eingeplant
 - **Sprint:** GR7
 - **Erstellt:** 2026-10-06

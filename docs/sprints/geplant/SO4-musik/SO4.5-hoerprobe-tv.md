@@ -3,6 +3,7 @@
 - **Status:** offen
 - **Typ:** Workshop
 - **Agent:** Mensch
+- **Umgebung:** live
 - **Branch:** so4/5-hoerprobe-tv
 - **Abhängig von:** SO4.3
 - **Tickets:** B-168

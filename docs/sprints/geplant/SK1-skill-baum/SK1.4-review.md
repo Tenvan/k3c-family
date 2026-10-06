@@ -3,6 +3,7 @@
 - **Status:** offen
 - **Typ:** Review
 - **Agent:** autonom
+- **Umgebung:** offline
 - **Branch:** sk1/4-review
 - **Abhängig von:** SK1.2, SK1.3
 - **Tickets:** B-007, B-270, B-321

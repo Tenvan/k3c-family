@@ -3,6 +3,7 @@
 - **Status:** offen
 - **Typ:** Review
 - **Agent:** autonom
+- **Umgebung:** live
 - **Branch:** so2/4-review
 - **Abhängig von:** SO2.3
 - **Tickets:** B-167

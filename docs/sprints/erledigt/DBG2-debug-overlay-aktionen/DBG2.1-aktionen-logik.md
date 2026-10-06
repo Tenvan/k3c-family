@@ -3,6 +3,7 @@
 - **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
+- **Umgebung:** live
 - **Branch:** dbg2/1-aktionen-logik
 - **Abhängig von:** DBG1 (Protokoll `dev` auf dem Server und in `docs/protocol.md`, Ticket B-178; erledigt, sonst fehlen Nachricht und Zustandsfeld)
 - **Tickets:** B-179

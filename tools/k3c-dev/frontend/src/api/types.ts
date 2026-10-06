@@ -295,6 +295,10 @@ export interface PlanSession {
   titel: string;
   /** Markdown der Session-Datei; fehlt bei Entwürfen ohne Datei. */
   text?: string;
+  /** Session-IDs aus „Abhängig von“. */
+  deps?: string[];
+  /** Feld „Umgebung“: offline (worktree-tauglich) | live | ?. */
+  env?: string;
 }
 
 /** Aktiver, geplanter oder erledigter Sprint (Go: planning.Sprint); worktree = Branch eines Worktrees, der daran arbeitet. */
@@ -302,7 +306,9 @@ export interface PlanSprint {
   id: string;
   title: string;
   domain: string;
-  prio?: string; // höchste Prio der Tickets
+  prio?: string; // live die höchste Prio der Tickets (Go: planning.rank)
+  /** Sprints, auf deren Sessions dieser wartet; die Liste kommt nach Abhängigkeit und Prio geordnet. */
+  deps?: string[];
   status: string;
   reife: string;
   spec: string;
@@ -318,6 +324,8 @@ export interface PlanTicket {
   domain: string;
   typ: string;
   prio: string;
+  /** Umgebung: offline | live | ? */
+  env: string;
   status: string;
   sprint: string;
   spec: string;
@@ -407,6 +415,8 @@ export interface Backend {
   planningData(): Promise<PlanningData>;
   /** Vorhandene Planungs-Dokumente in Umschalter-Reihenfolge; das Glossar nur mit Datei. */
   planningDocs(): Promise<PlanDoc[]>;
+  /** Setzt ein Kopf-Feld wie plan_set (Prio, Agent …); Antwort sind die Hinweise der Nacharbeit. */
+  planningSet(id: string, field: string, value: string): Promise<string>;
   /** PR, CI und Merge-Stand je Sprint; force umgeht den Zwischenspeicher (60 s). */
   githubStatus(force: boolean): Promise<GitHubData>;
   /** Öffnet eine Adresse im Standard-Browser (Wails) bzw. in einem neuen Tab (Mock). */

@@ -3,6 +3,7 @@
 - **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
+- **Umgebung:** live
 - **Branch:** gr5/1-effekte-aus-events
 - **Abhängig von:** –
 - **Tickets:** B-164

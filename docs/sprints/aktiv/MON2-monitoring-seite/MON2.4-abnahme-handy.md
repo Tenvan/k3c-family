@@ -3,6 +3,7 @@
 - **Status:** offen
 - **Typ:** Workshop
 - **Agent:** Mensch
+- **Umgebung:** live
 - **Branch:** mon2/4-abnahme-handy
 - **Abhängig von:** –
 - **Tickets:** B-282

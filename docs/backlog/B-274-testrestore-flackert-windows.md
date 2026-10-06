@@ -3,6 +3,7 @@
 - **Domäne:** SRV
 - **Typ:** Problem
 - **Prio:** mittel
+- **Umgebung:** offline
 - **Status:** eingeplant
 - **Sprint:** NT1
 - **Erstellt:** 2026-10-04

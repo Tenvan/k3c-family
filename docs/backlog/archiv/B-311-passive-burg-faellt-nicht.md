@@ -3,6 +3,7 @@
 - **Domäne:** REG
 - **Typ:** Frage
 - **Prio:** hoch
+- **Umgebung:** offline
 - **Status:** erledigt
 - **Sprint:** –
 - **Erstellt:** 2026-10-06

@@ -3,6 +3,7 @@
 - **Status:** offen
 - **Typ:** Umsetzung
 - **Agent:** autonom
+- **Umgebung:** offline
 - **Branch:** sv1/1-alle-stufen-test-raeume
 - **Abhängig von:** –
 - **Tickets:** B-199, B-290, B-204

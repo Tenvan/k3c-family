@@ -3,6 +3,7 @@
 - **Domäne:** PLAT
 - **Typ:** Frage
 - **Prio:** hoch
+- **Umgebung:** live
 - **Status:** erledigt
 - **Sprint:** X1
 - **Erstellt:** 2026-09-29

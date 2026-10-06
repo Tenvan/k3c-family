@@ -3,6 +3,7 @@
 - **Domäne:** INF
 - **Typ:** Problem
 - **Prio:** mittel
+- **Umgebung:** live
 - **Status:** erledigt
 - **Sprint:** F2
 - **Erstellt:** 2026-09-30

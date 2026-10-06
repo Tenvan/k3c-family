@@ -3,6 +3,7 @@
 - **Status:** offen
 - **Typ:** Workshop
 - **Agent:** Mensch
+- **Umgebung:** live
 - **Branch:** gr4/3-messung-xbox
 - **Abhängig von:** GR4.2
 - **Tickets:** B-163

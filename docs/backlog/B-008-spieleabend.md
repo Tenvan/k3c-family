@@ -3,6 +3,7 @@
 - **Domäne:** REG
 - **Typ:** Frage
 - **Prio:** hoch
+- **Umgebung:** live
 - **Status:** eingeplant
 - **Sprint:** P1
 - **Erstellt:** 2026-09-29

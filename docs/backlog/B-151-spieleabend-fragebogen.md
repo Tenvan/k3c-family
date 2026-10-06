@@ -3,6 +3,7 @@
 - **Domäne:** REG
 - **Typ:** Idee
 - **Prio:** mittel
+- **Umgebung:** live
 - **Status:** eingeplant
 - **Sprint:** P1
 - **Erstellt:** 2026-10-02

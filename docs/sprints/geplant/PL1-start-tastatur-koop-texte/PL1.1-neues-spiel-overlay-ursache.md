@@ -3,6 +3,7 @@
 - **Status:** offen
 - **Typ:** Umsetzung
 - **Agent:** autonom
+- **Umgebung:** live
 - **Branch:** pl1/1-neues-spiel-overlay
 - **Abhängig von:** –
 - **Tickets:** B-292, B-195

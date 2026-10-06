@@ -3,6 +3,7 @@
 - **Domäne:** SRV
 - **Typ:** Idee
 - **Prio:** mittel
+- **Umgebung:** live
 - **Status:** eingeplant
 - **Sprint:** ST1
 - **Erstellt:** 2026-10-03

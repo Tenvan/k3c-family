@@ -3,6 +3,7 @@
 - **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
+- **Umgebung:** live
 - **Branch:** dbg3/2-seite-dm
 - **Abhängig von:** DBG3.1
 - **Tickets:** B-232

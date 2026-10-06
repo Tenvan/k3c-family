@@ -3,6 +3,7 @@
 - **Status:** offen
 - **Typ:** Umsetzung
 - **Agent:** autonom
+- **Umgebung:** offline
 - **Branch:** sk1/3-ereignis-ohne-ziel
 - **Abhängig von:** SK1.1 (gleiche Datei `monarch.go`)
 - **Tickets:** B-321

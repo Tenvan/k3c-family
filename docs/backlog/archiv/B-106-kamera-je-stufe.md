@@ -3,6 +3,7 @@
 - **Domäne:** CLI
 - **Typ:** Idee
 - **Prio:** hoch
+- **Umgebung:** live
 - **Status:** erledigt
 - **Sprint:** S4
 - **Erstellt:** 2026-10-02

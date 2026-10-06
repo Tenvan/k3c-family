@@ -1,6 +1,7 @@
 // Reine Logik der Ansicht „Sprints & Backlog“: Filter, Gruppierung, nächste Session. Kein React, damit Vitest sie prüft.
 import type { GitHubSprint, PlanSession, PlanSprint, PlanTicket, PlanningData } from '../api';
 import type { Tone } from '../ui/parts';
+import { worktreeOk } from './prompts';
 
 /** Filter und Auswahl; überleben das Neuladen nach `planning:changed` und werden gemerkt (lib/prefs). */
 export interface PlanFilter {
@@ -22,6 +23,8 @@ export const QUICK: { id: string; label: string; sprint?: (s: PlanSprint) => boo
   { id: 'aktiv', label: 'Aktive Sprints', sprint: (s) => s.status === 'aktiv' },
   { id: 'erledigt', label: 'Erledigt', sprint: (s) => s.status === 'erledigt' },
   { id: 'agent', label: 'Agent offen', sprint: (s) => s.sessions.some(isNext) },
+  { id: 'autonom', label: 'Autonom', sprint: (s) => s.sessions.some((x) => x.agent === 'autonom' && x.status !== 'fertig' && x.status !== 'entwurf') },
+  { id: 'worktree', label: 'Worktree-tauglich', sprint: (s) => s.sessions.some(worktreeOk), ticket: (t) => t.env === 'offline' },
   { id: 'hoch', label: 'Prio hoch', ticket: (t) => t.prio === 'hoch' },
   { id: 'offen', label: 'Offen', ticket: (t) => t.status === 'offen' },
   { id: 'eingeplant', label: 'Eingeplant', ticket: (t) => t.status === 'eingeplant' },
@@ -47,14 +50,14 @@ export function filterSprints(d: PlanningData, f: PlanFilter): PlanSprint[] {
 const STATES = ['aktiv', 'geplant', 'erledigt'];
 export const prioRank = (p = '') => (PRIO.includes(p) ? PRIO.indexOf(p) : PRIO.length);
 
-/** Sprints mit Worktree zuerst, dann mit offenem Branch (PR offen/Entwurf), dann je Status nach Prio, sonst wie geliefert. */
+/** Sprints mit Worktree zuerst, dann mit offenem Branch (PR offen/Entwurf), dann je Status wie geliefert: Go ordnet
+ *  nach Abhängigkeit und Prio, eine Voraussetzung erbt die Prio ihrer Abnehmer (planning.rank). */
 export function sortSprints(sprints: PlanSprint[], gh?: Record<string, GitHubSprint>): PlanSprint[] {
   const rank = (s: PlanSprint) => {
     const st = gh?.[s.id.toUpperCase()]?.state;
     return s.worktree ? 0 : st === 'offen' || st === 'Entwurf' ? 1 : 2;
   };
-  return [...sprints].sort((a, b) =>
-    rank(a) - rank(b) || STATES.indexOf(a.status) - STATES.indexOf(b.status) || prioRank(a.prio) - prioRank(b.prio));
+  return [...sprints].sort((a, b) => rank(a) - rank(b) || STATES.indexOf(a.status) - STATES.indexOf(b.status));
 }
 
 export function filterTickets(d: PlanningData, f: PlanFilter): PlanTicket[] {

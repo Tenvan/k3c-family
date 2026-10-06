@@ -3,6 +3,7 @@
 - **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
+- **Umgebung:** offline
 - **Branch:** bal3/3-sensitivitaet-kurven
 - **Abhängig von:** BAL3.2
 - **Tickets:** B-158

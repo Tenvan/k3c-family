@@ -3,6 +3,7 @@
 - **Domäne:** SIM
 - **Typ:** Frage
 - **Prio:** hoch
+- **Umgebung:** offline
 - **Status:** eingeplant
 - **Sprint:** W7
 - **Erstellt:** 2026-10-06

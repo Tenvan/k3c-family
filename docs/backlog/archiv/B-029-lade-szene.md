@@ -3,6 +3,7 @@
 - **Domäne:** CLI
 - **Typ:** Idee
 - **Prio:** mittel
+- **Umgebung:** live
 - **Status:** erledigt
 - **Sprint:** GR4
 - **Erstellt:** 2026-09-29

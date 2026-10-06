@@ -3,6 +3,7 @@
 - **Status:** fertig
 - **Typ:** Review
 - **Agent:** autonom
+- **Umgebung:** offline
 - **Branch:** dl1/2-review
 - **Abhängig von:** DL1.1
 - **Tickets:** B-297

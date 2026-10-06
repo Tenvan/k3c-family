@@ -3,6 +3,7 @@
 - **Domäne:** CLI
 - **Typ:** Frage
 - **Prio:** mittel
+- **Umgebung:** live
 - **Status:** erledigt
 - **Sprint:** SP08
 - **Erstellt:** 2026-09-29

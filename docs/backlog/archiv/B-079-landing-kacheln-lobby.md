@@ -3,6 +3,7 @@
 - **Domäne:** PLAT
 - **Typ:** Schuld
 - **Prio:** mittel
+- **Umgebung:** live
 - **Status:** erledigt
 - **Sprint:** F5
 - **Erstellt:** 2026-10-01

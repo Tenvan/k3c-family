@@ -3,6 +3,7 @@
 - **Domäne:** SIM
 - **Typ:** Idee
 - **Prio:** hoch
+- **Umgebung:** live
 - **Status:** erledigt
 - **Sprint:** H1
 - **Erstellt:** 2026-10-03

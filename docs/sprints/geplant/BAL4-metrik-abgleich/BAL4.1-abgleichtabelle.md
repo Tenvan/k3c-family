@@ -3,6 +3,7 @@
 - **Status:** offen
 - **Typ:** Umsetzung
 - **Agent:** autonom
+- **Umgebung:** offline
 - **Branch:** bal4/1-abgleichtabelle
 - **Abhängig von:** –
 - **Tickets:** B-160

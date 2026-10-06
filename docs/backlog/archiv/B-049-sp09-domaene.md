@@ -3,6 +3,7 @@
 - **Domäne:** INF
 - **Typ:** Frage
 - **Prio:** niedrig
+- **Umgebung:** offline
 - **Status:** erledigt
 - **Sprint:** SP09
 - **Erstellt:** 2026-09-30

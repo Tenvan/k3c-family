@@ -3,6 +3,7 @@
 - **Status:** offen
 - **Typ:** Workshop
 - **Agent:** Mensch
+- **Umgebung:** live
 - **Branch:** br2/2-spieleabend-3
 - **Abhängig von:** –
 - **Tickets:** B-156

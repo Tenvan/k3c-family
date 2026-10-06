@@ -3,6 +3,7 @@
 - **Status:** offen
 - **Typ:** Umsetzung
 - **Agent:** autonom
+- **Umgebung:** live
 - **Branch:** pf1/1-profil
 - **Abhängig von:** –
 - **Tickets:** B-194

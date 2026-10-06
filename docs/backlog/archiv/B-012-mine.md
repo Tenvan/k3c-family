@@ -3,6 +3,7 @@
 - **Domäne:** SIM
 - **Typ:** Idee
 - **Prio:** mittel
+- **Umgebung:** offline
 - **Status:** erledigt
 - **Sprint:** W2
 - **Erstellt:** 2026-09-29

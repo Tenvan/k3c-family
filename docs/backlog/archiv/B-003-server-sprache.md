@@ -3,6 +3,7 @@
 - **Domäne:** SRV
 - **Typ:** Frage
 - **Prio:** mittel
+- **Umgebung:** live
 - **Status:** erledigt
 - **Sprint:** SP00
 - **Erstellt:** 2026-09-29

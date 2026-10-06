@@ -3,6 +3,7 @@
 - **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
+- **Umgebung:** offline
 - **Branch:** lt1/2-status-bericht
 - **Abhängig von:** LT1.1
 - **Tickets:** B-175

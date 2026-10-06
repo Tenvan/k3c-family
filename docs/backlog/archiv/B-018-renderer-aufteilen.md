@@ -3,6 +3,7 @@
 - **Domäne:** CLI
 - **Typ:** Schuld
 - **Prio:** mittel
+- **Umgebung:** live
 - **Status:** verworfen
 - **Sprint:** –
 - **Erstellt:** 2026-09-29

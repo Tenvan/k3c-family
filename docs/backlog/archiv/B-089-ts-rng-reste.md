@@ -3,6 +3,7 @@
 - **Domäne:** CLI
 - **Typ:** Schuld
 - **Prio:** niedrig
+- **Umgebung:** live
 - **Status:** erledigt
 - **Sprint:** –
 - **Erstellt:** 2026-10-01

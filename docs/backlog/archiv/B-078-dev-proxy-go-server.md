@@ -3,6 +3,7 @@
 - **Domäne:** INF
 - **Typ:** Schuld
 - **Prio:** hoch
+- **Umgebung:** live
 - **Status:** erledigt
 - **Sprint:** SP09
 - **Erstellt:** 2026-10-01

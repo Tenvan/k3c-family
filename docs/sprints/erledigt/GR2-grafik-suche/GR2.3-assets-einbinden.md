@@ -3,6 +3,7 @@
 - **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
+- **Umgebung:** live
 - **Branch:** gr2/3-assets-einbinden
 - **Abhängig von:** GR2.2
 - **Tickets:** B-162

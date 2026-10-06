@@ -3,6 +3,7 @@
 - **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
+- **Umgebung:** live
 - **Branch:** dbg3/1-dev-api
 - **Abhängig von:** –
 - **Tickets:** B-232

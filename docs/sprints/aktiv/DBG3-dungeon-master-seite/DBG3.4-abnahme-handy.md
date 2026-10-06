@@ -3,6 +3,7 @@
 - **Status:** offen
 - **Typ:** Workshop
 - **Agent:** Mensch
+- **Umgebung:** live
 - **Branch:** dbg3/4-abnahme-handy
 - **Abhängig von:** –
 - **Tickets:** B-232

@@ -39,7 +39,7 @@ func List(root string, f Filter) (string, error) {
 	if f.Kind != "sprint" {
 		for _, t := range d.Tickets {
 			if match(f.Status, t.Status) && match(f.Domain, t.Domain) && match(f.Sprint, t.Sprint) {
-				out = append(out, fmt.Sprintf("%s %s %s %s %s %s · %s", t.Nr, t.Domain, t.Typ, t.Prio, t.Status, t.Sprint, t.Title))
+				out = append(out, fmt.Sprintf("%s %s %s %s %s %s %s · %s", t.Nr, t.Domain, t.Typ, t.Prio, t.Env, t.Status, t.Sprint, t.Title))
 			}
 		}
 	}
@@ -64,7 +64,7 @@ func sprintLines(s Sprint) []string {
 		return out
 	}
 	for _, x := range s.Sessions {
-		out = append(out, strings.TrimRight(fmt.Sprintf("  %s %s %s %s %s", x.Nr, x.Typ, x.Agent, x.Status, x.Titel), " "))
+		out = append(out, strings.TrimRight(fmt.Sprintf("  %s %s %s %s %s %s", x.Nr, x.Typ, x.Agent, x.Env, x.Status, x.Titel), " "))
 	}
 	return out
 }

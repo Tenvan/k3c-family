@@ -3,6 +3,7 @@
 - **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
+- **Umgebung:** live
 - **Branch:** gr3/1-gebaeude
 - **Abhängig von:** GR1.3, GR2.3
 - **Tickets:** B-010

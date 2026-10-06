@@ -3,6 +3,7 @@
 - **Status:** fertig
 - **Typ:** Workshop
 - **Agent:** Mensch
+- **Umgebung:** live
 - **Branch:** bal3/1-workshop-profile
 - **Abhängig von:** –
 - **Tickets:** B-158

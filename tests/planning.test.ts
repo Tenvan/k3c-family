@@ -21,12 +21,13 @@ const ids = (value: string) => value.match(/B-\d{3}/g) ?? [];
 const DOMAINS = ['REG', 'SIM', 'SRV', 'CLI', 'PLAT', 'INF'];
 const SPEC = ['Entwurf', 'freigegeben', 'rückwirkend'];
 const PRIO = ['hoch', 'mittel', 'niedrig', '?']; // Rangfolge: hoch zuerst
+const ENV = ['offline', 'live', '?']; // Umgebung: offline ist worktree-tauglich
 const ALLOWED = {
-  ticket: { Domäne: DOMAINS, Typ: ['Idee', 'Problem', 'Schuld', 'Frage'], Prio: PRIO,
+  ticket: { Domäne: DOMAINS, Typ: ['Idee', 'Problem', 'Schuld', 'Frage'], Prio: PRIO, Umgebung: ENV,
     Status: ['offen', 'eingeplant', 'erledigt', 'verworfen'], Spec: SPEC },
   sprint: { Status: ['geplant', 'aktiv', 'erledigt'], Domäne: DOMAINS, Prio: PRIO, Reife: ['Entwurf', 'bereit'], Einschiebbar: ['nein', 'ja'],
     Spec: SPEC },
-  session: { Status: ['offen', 'in Arbeit', 'fertig', 'blockiert'], Typ: ['Umsetzung', 'Review', 'Workshop'], Agent: ['autonom', 'Mensch'] },
+  session: { Status: ['offen', 'in Arbeit', 'fertig', 'blockiert'], Typ: ['Umsetzung', 'Review', 'Workshop'], Agent: ['autonom', 'Mensch'], Umgebung: ENV },
 } as const;
 type Kind = keyof typeof ALLOWED;
 

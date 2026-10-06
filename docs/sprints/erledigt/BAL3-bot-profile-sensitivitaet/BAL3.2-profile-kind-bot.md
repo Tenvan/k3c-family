@@ -3,6 +3,7 @@
 - **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
+- **Umgebung:** offline
 - **Branch:** bal3/2-profile-kind-bot
 - **Abhängig von:** BAL3.1
 - **Tickets:** B-158

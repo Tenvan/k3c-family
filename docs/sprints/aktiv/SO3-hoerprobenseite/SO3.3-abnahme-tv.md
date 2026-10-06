@@ -3,6 +3,7 @@
 - **Status:** offen
 - **Typ:** Workshop
 - **Agent:** Mensch
+- **Umgebung:** live
 - **Branch:** so3/3-abnahme-tv
 - **Abhängig von:** SO3.2
 - **Tickets:** B-169

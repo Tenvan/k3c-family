@@ -3,6 +3,7 @@
 - **Domäne:** REG
 - **Typ:** Idee
 - **Prio:** hoch
+- **Umgebung:** live
 - **Status:** eingeplant
 - **Sprint:** BR2
 - **Erstellt:** 2026-10-02

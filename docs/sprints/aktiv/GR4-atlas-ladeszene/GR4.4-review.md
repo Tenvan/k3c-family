@@ -3,6 +3,7 @@
 - **Status:** fertig
 - **Typ:** Review
 - **Agent:** autonom
+- **Umgebung:** offline
 - **Branch:** gr4/4-review
 - **Abhängig von:** GR4.2
 - **Tickets:** B-163, B-029

@@ -3,6 +3,7 @@
 - **Status:** offen
 - **Typ:** Umsetzung
 - **Agent:** autonom
+- **Umgebung:** live
 - **Branch:** sv1/4-knopf-level-betrachter
 - **Abhängig von:** SV1.3
 - **Tickets:** B-315

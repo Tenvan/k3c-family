@@ -3,6 +3,7 @@
 - **Status:** offen
 - **Typ:** Workshop
 - **Agent:** Mensch
+- **Umgebung:** live
 - **Branch:** so4/1-workshop-stuecke
 - **Abhängig von:** SO1.4, SO3.2
 - **Tickets:** B-168

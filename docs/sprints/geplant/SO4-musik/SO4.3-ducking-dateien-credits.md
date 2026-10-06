@@ -3,6 +3,7 @@
 - **Status:** offen
 - **Typ:** Umsetzung
 - **Agent:** autonom
+- **Umgebung:** live
 - **Branch:** so4/3-ducking-dateien-credits
 - **Abhängig von:** SO4.2, SO2.3
 - **Tickets:** B-168

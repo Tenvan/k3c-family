@@ -3,6 +3,7 @@
 - **Status:** offen
 - **Typ:** Umsetzung
 - **Agent:** autonom
+- **Umgebung:** live
 - **Branch:** so2/2-sounds-beschaffen
 - **Abhängig von:** SO2.1
 - **Tickets:** B-167

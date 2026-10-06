@@ -3,6 +3,7 @@
 - **Domäne:** SIM
 - **Typ:** Schuld
 - **Prio:** mittel
+- **Umgebung:** offline
 - **Status:** eingeplant
 - **Sprint:** SK1
 - **Erstellt:** 2026-10-04

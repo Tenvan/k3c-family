@@ -3,6 +3,7 @@
 - **Domäne:** REG
 - **Typ:** Schuld
 - **Prio:** niedrig
+- **Umgebung:** offline
 - **Status:** eingeplant
 - **Sprint:** RG2
 - **Erstellt:** 2026-10-04

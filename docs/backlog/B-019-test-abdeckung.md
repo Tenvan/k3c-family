@@ -3,6 +3,7 @@
 - **Domäne:** INF
 - **Typ:** Idee
 - **Prio:** niedrig
+- **Umgebung:** offline
 - **Status:** eingeplant
 - **Sprint:** CI1
 - **Erstellt:** 2026-09-29

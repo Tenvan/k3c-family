@@ -3,6 +3,7 @@
 - **Domäne:** REG | SIM | SRV | CLI | PLAT | INF
 - **Typ:** Idee | Problem | Schuld | Frage
 - **Prio:** hoch | mittel | niedrig | ?
+- **Umgebung:** offline | live | ? (offline: ohne laufende Dienste prüfbar – Code, Unit-/Mock-Tests, Werkzeuge ohne Serverzugriff, worktree-tauglich; live: braucht laufenden Server, Browser oder Gerät)
 - **Status:** offen | eingeplant | erledigt | verworfen
 - **Sprint:** – (oder SP01, R1 …)
 - **Erstellt:** JJJJ-MM-TT

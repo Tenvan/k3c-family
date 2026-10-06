@@ -3,6 +3,7 @@
 - **Domäne:** SRV
 - **Typ:** Idee
 - **Prio:** hoch
+- **Umgebung:** offline
 - **Status:** eingeplant
 - **Sprint:** K4
 - **Erstellt:** 2026-10-02

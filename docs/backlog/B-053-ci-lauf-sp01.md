@@ -3,6 +3,7 @@
 - **Domäne:** INF
 - **Typ:** Problem
 - **Prio:** hoch
+- **Umgebung:** offline
 - **Status:** eingeplant
 - **Sprint:** CI1
 - **Erstellt:** 2026-09-30

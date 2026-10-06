@@ -3,6 +3,7 @@
 - **Status:** offen
 - **Typ:** Umsetzung
 - **Agent:** autonom
+- **Umgebung:** offline
 - **Branch:** sv1/2-client-biome
 - **Abhängig von:** SV1.1
 - **Tickets:** B-290

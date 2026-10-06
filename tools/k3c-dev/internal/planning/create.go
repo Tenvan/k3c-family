@@ -64,7 +64,7 @@ func createTicket(c *changeSet, in NewDoc, tpl string) error {
 	if err != nil {
 		return err
 	}
-	text, err := fromTemplate(c, "ticket", tpl, nr+" · "+in.Title, map[string]string{"Status": "offen", "Sprint": "–",
+	text, err := fromTemplate(c, "ticket", tpl, nr+" · "+in.Title, map[string]string{"Status": "offen", "Umgebung": "?", "Sprint": "–",
 		"Erstellt": time.Now().Format("2006-01-02"), "Spec": "Entwurf", "Revision": "1", "Freigabe": "–"}, in.Fields)
 	if err != nil {
 		return err
@@ -145,7 +145,7 @@ func createSession(c *changeSet, in NewDoc, tpl string) error {
 		return fmt.Errorf("Session %s gibt es schon", in.ID)
 	}
 	text, err := fromTemplate(c, "session", tpl, in.ID+" · "+in.Title, map[string]string{"Status": "offen",
-		"Typ": "Umsetzung", "Agent": "autonom", "Branch": strings.ToLower(m[1]) + "/" + m[2] + "-" + in.Slug,
+		"Typ": "Umsetzung", "Agent": "autonom", "Umgebung": "?", "Branch": strings.ToLower(m[1]) + "/" + m[2] + "-" + in.Slug,
 		"Abhängig von": "–", "Tickets": "–", "Kriterien": "–"}, in.Fields)
 	if err != nil {
 		return err

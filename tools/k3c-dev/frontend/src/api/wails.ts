@@ -31,6 +31,7 @@ interface GoApp {
   TaskRuns(): Promise<TaskRun[]>;
   PlanningData(): Promise<PlanningData>;
   PlanningDocs(): Promise<PlanDoc[]>;
+  PlanningSet(id: string, field: string, value: string): Promise<string>;
   PlanningDoc(name: PlanDoc): Promise<string>;
   GitHubStatus(force: boolean): Promise<GitHubData>;
 }
@@ -81,6 +82,7 @@ export function wailsBackend(): Backend {
     taskRuns: () => app.TaskRuns(),
     planningData: () => app.PlanningData(),
     planningDocs: () => app.PlanningDocs(),
+    planningSet: (id, field, value) => app.PlanningSet(id, field, value),
     planningDoc: (name) => app.PlanningDoc(name),
     githubStatus: (force) => app.GitHubStatus(force),
     openUrl: (url) => runtime.BrowserOpenURL(url),

@@ -3,6 +3,7 @@
 - **Domäne:** REG
 - **Typ:** Frage
 - **Prio:** mittel
+- **Umgebung:** live
 - **Status:** erledigt
 - **Sprint:** F1
 - **Erstellt:** 2026-10-02

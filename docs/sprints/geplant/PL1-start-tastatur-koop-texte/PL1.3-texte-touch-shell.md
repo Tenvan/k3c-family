@@ -3,6 +3,7 @@
 - **Status:** offen
 - **Typ:** Umsetzung
 - **Agent:** autonom
+- **Umgebung:** live
 - **Branch:** pl1/3-texte-touch-shell
 - **Abhängig von:** –
 - **Tickets:** B-215

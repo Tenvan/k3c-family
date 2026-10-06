@@ -3,6 +3,7 @@
 - **Domäne:** INF
 - **Typ:** Idee
 - **Prio:** mittel
+- **Umgebung:** live
 - **Status:** erledigt
 - **Sprint:** –
 - **Erstellt:** 2026-10-03

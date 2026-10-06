@@ -3,6 +3,7 @@
 - **Domäne:** SIM
 - **Typ:** Frage
 - **Prio:** mittel
+- **Umgebung:** offline
 - **Status:** eingeplant
 - **Sprint:** BAL5
 - **Erstellt:** 2026-10-05

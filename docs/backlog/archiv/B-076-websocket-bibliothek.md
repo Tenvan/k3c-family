@@ -3,6 +3,7 @@
 - **Domäne:** INF
 - **Typ:** Frage
 - **Prio:** hoch
+- **Umgebung:** live
 - **Status:** erledigt
 - **Sprint:** SP07
 - **Erstellt:** 2026-10-01

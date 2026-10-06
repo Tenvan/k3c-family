@@ -3,6 +3,7 @@
 - **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
+- **Umgebung:** live
 - **Branch:** dbg2/2-overlay-bedienung
 - **Abhängig von:** DBG2.1
 - **Tickets:** B-179

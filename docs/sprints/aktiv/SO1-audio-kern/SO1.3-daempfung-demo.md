@@ -3,6 +3,7 @@
 - **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
+- **Umgebung:** live
 - **Branch:** so1/3-daempfung-demo
 - **Abhängig von:** SO1.2
 - **Tickets:** B-011

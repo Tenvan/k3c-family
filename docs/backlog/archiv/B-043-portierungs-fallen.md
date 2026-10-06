@@ -3,6 +3,7 @@
 - **Domäne:** SIM
 - **Typ:** Problem
 - **Prio:** hoch
+- **Umgebung:** offline
 - **Status:** erledigt
 - **Sprint:** SP06
 - **Erstellt:** 2026-09-30

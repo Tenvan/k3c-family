@@ -138,6 +138,10 @@ Grenzfälle:
 - **Prio:** Jeder Sprint trägt die **höchste Prio seiner Tickets** (ohne Tickets frei gewählt). `plan_create` und
   `plan_set` (mit `Tickets`) leiten sie ab, `tests/planning.test.ts` prüft sie. Ändert sich die Prio eines Tickets, zieht
   die Sprint-Prio mit. Aktiviert und abgearbeitet wird nach Prio, bei Gleichstand in Fahrplan-Reihenfolge.
+- **Umgebung:** Ticket und Session tragen `offline` (ohne laufende Dienste prüfbar: Code, Unit-/Mock-Tests, Werkzeuge
+  ohne Serverzugriff) oder `live` (braucht laufenden Server, Browser oder Gerät); `?` nur bis zur Einordnung beim
+  Einplanen. Nur Sessions mit `Agent: autonom` und `Umgebung: offline` dürfen in einem eigenen Worktree ohne Rückfrage
+  laufen; `live` arbeitet im Checkout mit den laufenden Diensten.
 - **Klein:** 2–4 Sessions. In Code-Sprints ist die letzte das **Review**; Doku- und Planungs-Sprints (nur `docs/`)
   haben keins, ihre letzte Session schließt den Sprint ab (Schritte 4–5 der Review-Session). Mehr Arbeit → zweiter Sprint.
 - **Blockade** (🧑 fehlt): Sprint bleibt aktiv, blockierte Session `Status: blockiert`. Ein einschiebbarer Sprint oder

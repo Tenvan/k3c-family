@@ -3,6 +3,7 @@
 - **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
+- **Umgebung:** offline
 - **Branch:** bal2/2-task-balance-bericht
 - **Abhängig von:** BAL2.1
 - **Tickets:** B-157

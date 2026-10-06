@@ -3,6 +3,7 @@
 - **Domäne:** SIM
 - **Typ:** Idee
 - **Prio:** niedrig
+- **Umgebung:** offline
 - **Status:** eingeplant
 - **Sprint:** K3
 - **Erstellt:** 2026-10-02

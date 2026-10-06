@@ -3,6 +3,7 @@
 - **Status:** offen
 - **Typ:** Workshop
 - **Agent:** Mensch
+- **Umgebung:** live
 - **Branch:** rl1/2-probelauf
 - **Abhängig von:** RL1.1
 - **Tickets:** B-170

@@ -3,6 +3,7 @@
 - **Domäne:** CLI
 - **Typ:** Idee
 - **Prio:** niedrig
+- **Umgebung:** live
 - **Status:** eingeplant
 - **Sprint:** SO5
 - **Erstellt:** 2026-10-04

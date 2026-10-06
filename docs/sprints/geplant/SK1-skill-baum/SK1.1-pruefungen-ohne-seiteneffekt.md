@@ -3,6 +3,7 @@
 - **Status:** offen
 - **Typ:** Umsetzung
 - **Agent:** autonom
+- **Umgebung:** offline
 - **Branch:** sk1/1-pruefungen-ohne-seiteneffekt
 - **Abhängig von:** –
 - **Tickets:** B-270
