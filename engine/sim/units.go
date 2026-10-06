@@ -43,7 +43,7 @@ func stepTroops(w *World, dt float64) {
 			wander(w, t, t.AnchorX, wanderRadius(w, t), dt)
 		case "peasant":
 			stepPeasant(w, t, dt)
-		case "warrior":
+		case "warrior", "eliteWarrior":
 			stepWarrior(w, t, dt)
 		default:
 			stepArcher(w, t, dt)
@@ -280,6 +280,6 @@ func makeFighter(w *World, t *Troop, kind string) {
 	if left <= right {
 		side = -1
 	}
-	t.Kind, t.HP, t.MaxHP = kind, troops[kind].HP, troops[kind].HP
+	t.Kind, t.HP, t.MaxHP = kind, armoredHP(w, kind), armoredHP(w, kind) // mit der Rüstung des Hubs (upgrades.go)
 	t.Cooldown, t.Job, t.AnchorX, t.Profession, t.WorkSite = 0, nil, w.HubX+side, "", 0
 }

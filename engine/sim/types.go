@@ -117,11 +117,13 @@ type Site struct {
 	MaxHP         float64 `json:"maxHp"`
 	WorkerID      *int    `json:"workerId"`
 	Bows          int     `json:"bows"`        // Werkstatt: fertige Bögen im Regal
-	BowPaidGold   int     `json:"bowPaidGold"` // Werkstatt: bezahltes Gold für den nächsten Bogen
-	// CraftDone: Spielzeit, zu der der Bogen in Arbeit im Regal liegt (0 = keiner in Arbeit); OfferPaid: bezahltes
-	// Gold je Angebot (Index wie buildings[Kind].Offers). Beides professions.go.
+	BowPaidGold   int     `json:"bowPaidGold"` // bezahltes Gold für das Produkt am Platz (Werkstatt: Bogen; upgrades.go)
+	// CraftDone: Spielzeit, zu der das Produkt am Platz fertig ist (Werkstatt: Bogen im Regal, Schmiede:
+	// Elite-Bogenschütze, Rüstkammer: Rüstungsstufe; 0 = keins in Arbeit); OfferPaid: bezahltes Gold je Angebot (Index
+	// wie buildings[Kind].Offers); OfferDone: wie CraftDone für das Elite-Krieger-Angebot der Schmiede (upgrades.go).
 	CraftDone float64 `json:"craftDone,omitempty"`
 	OfferPaid []int   `json:"offerPaid,omitempty"`
+	OfferDone float64 `json:"offerDone,omitempty"`
 	// Schwerter der Werkstatt (warrior.go), wie Bows, BowPaidGold und CraftDone.
 	Swords        int     `json:"swords,omitempty"`
 	SwordPaidGold int     `json:"swordPaidGold,omitempty"`
@@ -246,6 +248,8 @@ type World struct {
 	HubX       float64 `json:"hubX"`
 	// HubLevel ist die Hub-Stufe (Start 1, Ausbau an der Burg: hub_level.go); ohne JSON-Ausgabe (B-208).
 	HubLevel int `json:"-"`
+	// ArmorLevel ist die Rüstungsstufe der Kämpfer dieses Hubs (0 = keine, Rüstkammer: upgrades.go).
+	ArmorLevel int `json:"armorLevel,omitempty"`
 	// hubSite ist der Zahlplatz für den Hub-Ausbau an der Burg (nicht in Sites, hub_level.go).
 	hubSite    *Site
 	Cycle      CycleInfo `json:"cycle"`

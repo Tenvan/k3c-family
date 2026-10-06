@@ -99,7 +99,7 @@ func findPayTarget(w *World, p *Player) *payTarget {
 	if s != nil {
 		return &payTarget{site: s}
 	}
-	if o := findOffer(w, p.X); o != nil {
+	if o := offerAt(w, p.X); o != nil {
 		return &payTarget{offer: o}
 	}
 	if s := swordAt(w, p.X, true); s != nil {
@@ -122,7 +122,7 @@ func findPayTarget(w *World, p *Player) *payTarget {
 }
 
 // sitePayable: Nimmt der Platz gerade Münzen? Unbezahlte Plätze erst ab ihrer Hub-Stufe, Linien-Plätze nach der
-// Linien-Regel (lines.go); gebaute für den Ausbau auf die nächste Stufe (hub_level.go).
+// Linien-Regel (lines.go); gebaute für den Ausbau auf die nächste Stufe (hub_level.go) oder ihr Produkt (upgrades.go).
 func sitePayable(w *World, s *Site) bool {
 	if s.State == "unpaid" {
 		return w.HubLevel >= siteHubLevel(w, s) && lineOpen(w, s)
@@ -130,10 +130,7 @@ func sitePayable(w *World, s *Site) bool {
 	if upgradePayable(w, s) {
 		return true
 	}
-	if s.Kind == "workshop" && s.State == "built" {
-		return s.Bows+bowsCrafting(s) < buildings["workshop"].BowRack && s.BowPaidGold < troops["archer"].Cost.Gold
-	}
-	return false
+	return s.State == "built" && placePayable(w, s)
 }
 
 // keyOf ist der Schlüssel eines Ziels ("site:3"), "" für kein Ziel.
@@ -215,7 +212,7 @@ func clearPending(p *Player) {
 func payOneCoin(w *World, p *Player) {
 	target := findPayTarget(w, p)
 	// Am fertig bezahlten Bauplatz oder vollen Angebot nichts fallen lassen (sonst verliert man beim Festhalten Münzen).
-	if target == nil && nearFullTarget(w, p.X) {
+	if target == nil && (nearFullTarget(w, p.X) || eliteOfferAt(w, p.X, false) != nil) {
 		return
 	}
 	if target != nil && target.merchant != "" {
@@ -238,7 +235,7 @@ func payOneCoin(w *World, p *Player) {
 	p.PayAmount++
 	switch {
 	case target.offer != nil:
-		payOffer(w, p, target.offer)
+		payAnyOffer(w, p, target.offer)
 	case target.sword != nil:
 		paySword(p, target.sword)
 	case target.site != nil:
@@ -370,7 +367,8 @@ func spend(s *Stock, c Cost) {
 }
 
 // stepSites: Bezahlte Bauplätze ziehen das Material aus dem Hub-Vorrat, sobald genug da ist. Werkstatt fertigt Bögen
-// (mit Herstellungszeit), voll bezahlte Angebote bilden Bauern aus (professions.go).
+// (mit Herstellungszeit), voll bezahlte Angebote bilden Bauern aus (professions.go), Schmiede und Rüstkammer werten
+// auf (upgrades.go).
 func stepSites(w *World) {
 	for _, s := range w.Sites {
 		if s.State == "waitingMaterial" && canAfford(*w.Stock, buildings[s.Kind].Cost) {
@@ -384,6 +382,7 @@ func stepSites(w *World) {
 	}
 	eachSite(w, func(s *Site) { stepUpgrade(w, s) })
 	stepOffers(w)
+	stepCrafts(w)
 }
 
 // payDawnIncome: morgens Steuern für jeden lebenden Monarchen.
