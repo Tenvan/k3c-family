@@ -8,5 +8,11 @@
   "caveTroll":    { "name": "Höhlentroll",   "depth": 1, "tier": "elite",    "hp": 200, "damage": 30, "speed": 2, "range": 2,  "attacksPerSecond": 1, "gold": [50, 80], "traits": ["aoe", "prefersBuildings"], "aoe": { "radius": 3, "intervalSeconds": 4 } },
   "zombie":       { "name": "Zombie",        "depth": 2, "tier": "standard", "hp": 100, "damage": 20, "speed": 2, "range": 1,  "attacksPerSecond": 1, "gold": [15, 25], "traits": [] },
   "ratSwarm":     { "name": "Rattenschwarm", "depth": 2, "tier": "standard", "hp": 20,  "damage": 5,  "speed": 6, "range": 1,  "attacksPerSecond": 1, "gold": [1, 2],   "traits": ["swarm"], "swarmSize": 4 },
-  "mineGhost":    { "name": "Minengeist",    "depth": 2, "tier": "elite",    "hp": 80,  "damage": 25, "speed": 4, "range": 1,  "attacksPerSecond": 1, "gold": [30, 50], "traits": ["ignoresWalls", "prefersMonarch", "phases"], "phases": { "everySeconds": 8, "durationSeconds": 2 } }
+  "mineGhost":    { "name": "Minengeist",    "depth": 2, "tier": "elite",    "hp": 80,  "damage": 25, "speed": 4, "range": 1,  "attacksPerSecond": 1, "gold": [30, 50], "traits": ["ignoresWalls", "prefersMonarch", "phases"], "phases": { "everySeconds": 8, "durationSeconds": 2 } },
+  "lavaSlime":       { "name": "Lavaschleim",     "depth": 3, "tier": "standard", "hp": 120, "damage": 25, "speed": 3, "range": 1, "attacksPerSecond": 1, "gold": [15, 25], "traits": [] },
+  "ironBeetle":      { "name": "Eisenkäfer",      "depth": 3, "tier": "standard", "hp": 90,  "damage": 18, "speed": 5, "range": 1, "attacksPerSecond": 1, "gold": [3, 5],   "traits": [] },
+  "fireSpirit":      { "name": "Feuergeist",      "depth": 3, "tier": "elite",    "hp": 150, "damage": 35, "speed": 3, "range": 8, "attacksPerSecond": 1, "gold": [30, 50], "traits": ["ranged", "kiting"], "kiteDistance": 8 },
+  "crystalSpider":   { "name": "Kristallspinne",  "depth": 4, "tier": "standard", "hp": 110, "damage": 28, "speed": 5, "range": 1, "attacksPerSecond": 1, "gold": [15, 25], "traits": [] },
+  "shardling":       { "name": "Splitterwicht",   "depth": 4, "tier": "standard", "hp": 60,  "damage": 15, "speed": 6, "range": 1, "attacksPerSecond": 1, "gold": [1, 2],   "traits": ["swarm"], "swarmSize": 4 },
+  "crystalGuardian": { "name": "Kristallwächter", "depth": 4, "tier": "elite",    "hp": 350, "damage": 45, "speed": 2, "range": 2, "attacksPerSecond": 1, "gold": [50, 80], "traits": ["aoe"], "aoe": { "radius": 3, "intervalSeconds": 4 } }
 }

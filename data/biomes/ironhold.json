@@ -21,7 +21,7 @@
   "primaryResource": "iron",
   "veins": { "count": 2, "kind": "ironVein" },
   "lava": { "damagePerSecond": 5, "widthUnits": 8 },
-  "enemies": { "portal": [], "night": [] },
+  "enemies": { "portal": ["lavaSlime", "ironBeetle", "fireSpirit"], "night": [] },
   "cycle": { "type": "aggressionPool", "percentPerMinute": 1, "percentPerKill": 5, "percentPerGather": 1 },
   "palette": { "sky": "#1f0f0a", "far": "#3a1a10", "near": "#5a2a18", "ground": "#6b3a26" }
 }
