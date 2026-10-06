@@ -12,7 +12,7 @@ import (
 func buildNew(t *testing.T, w *World, players []*Player, s *Site) float64 {
 	t.Helper()
 	cost := buildings[s.Kind].Cost
-	*w.Stock = materialOnly(cost)
+	*w.Stock = materialOf(cost)
 	share := cost.Gold / len(players)
 	for i, p := range players {
 		p.Gold = share

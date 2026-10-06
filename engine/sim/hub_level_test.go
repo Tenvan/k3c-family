@@ -17,11 +17,6 @@ func dayWorld(t *testing.T) *World {
 	return w
 }
 
-// materialOnly sind die Materialkosten ohne Gold als Vorrat.
-func materialOnly(c Cost) Stock {
-	return Stock{Wood: c.Wood, Stone: c.Stone, Copper: c.Copper, Iron: c.Iron, Crystal: c.Crystal}
-}
-
 // payAt lässt die Spieler an x zahlen, bis done gilt oder seconds um sind; false bei Zeitablauf.
 func payAt(w *World, players []*Player, x float64, seconds float64, done func() bool) bool {
 	cmds := make([]PlayerCommand, len(w.Players))
@@ -57,7 +52,7 @@ func TestHubAusbauStufe2Bis5(t *testing.T) {
 	const spare = 7
 	for n := 2; n <= len(hub.Levels); n++ {
 		lv := hub.Levels[n-1]
-		*w.Stock = materialOnly(lv.Cost)
+		*w.Stock = materialOf(lv.Cost)
 		w.Stock.Wood += spare
 		p.Gold = lv.Cost.Gold
 		seconds := 1.2*float64(lv.Cost.Gold)*economy.PayIntervalSeconds + 5 // Takt auf ganze Ticks gerundet
@@ -88,7 +83,7 @@ func TestHubAusbauWartetAufMaterial(t *testing.T) {
 	if w.hubSite.Upgrade != "waitingMaterial" || w.HubLevel != 1 {
 		t.Fatalf("ohne Material: %+v, Hub-Stufe %d", w.hubSite, w.HubLevel)
 	}
-	*w.Stock = materialOnly(lv.Cost)
+	*w.Stock = materialOf(lv.Cost)
 	if runUntil(w, 2*lv.BuildSeconds+1, func() bool { return w.HubLevel == 2 }) < 0 {
 		t.Fatalf("mit Material nicht ausgebaut: %+v", w.hubSite)
 	}
@@ -99,7 +94,7 @@ func TestHubAusbauNachDerGefahr(t *testing.T) {
 	w := dayWorld(t)
 	p := AddPlayer(w)
 	lv := hub.Levels[1]
-	*w.Stock = materialOnly(lv.Cost)
+	*w.Stock = materialOf(lv.Cost)
 	p.Gold = lv.Cost.Gold
 	e := spawnEnemy(w, "goblin", w.WidthUnits-1)
 	e.Stun = math.Inf(1)
