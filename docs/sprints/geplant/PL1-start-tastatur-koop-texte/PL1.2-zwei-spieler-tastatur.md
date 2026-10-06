@@ -3,6 +3,7 @@
 - **Status:** offen
 - **Typ:** Umsetzung
 - **Agent:** autonom
+- **Umgebung:** live
 - **Branch:** pl1/2-zwei-spieler-tastatur
 - **Abhängig von:** –
 - **Tickets:** B-316

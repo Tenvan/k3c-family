@@ -190,7 +190,7 @@ func TestPlanungsToolsRoundtrip(t *testing.T) {
 		{"plan_get", map[string]any{"id": "B-001"}, "## Ziel\n\nEin Ziel."},
 		{"plan_create", map[string]any{"kind": "sprint", "id": "X1", "slug": "x", "title": "X",
 			"fields": map[string]string{"Domäne": "SRV"}}, "X1 angelegt"},
-		{"plan_list", map[string]any{"domain": "SRV"}, "B-001 SRV Idee niedrig offen"},
+		{"plan_list", map[string]any{"domain": "SRV"}, "B-001 SRV Idee niedrig ? offen"},
 		{"plan_delete", map[string]any{"id": "X1"}, "X1 gelöscht"},
 	}
 	for _, st := range steps {

@@ -3,6 +3,7 @@
 - **Domäne:** CLI
 - **Typ:** Problem
 - **Prio:** mittel
+- **Umgebung:** offline
 - **Status:** eingeplant
 - **Sprint:** S8
 - **Erstellt:** 2026-10-04

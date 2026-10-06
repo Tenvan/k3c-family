@@ -3,6 +3,7 @@
 - **Domäne:** INF
 - **Typ:** Problem
 - **Prio:** niedrig
+- **Umgebung:** offline
 - **Status:** verworfen
 - **Sprint:** –
 - **Erstellt:** 2026-09-30

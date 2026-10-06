@@ -3,6 +3,7 @@
 - **Domäne:** REG
 - **Typ:** Idee
 - **Prio:** hoch
+- **Umgebung:** offline
 - **Status:** erledigt
 - **Sprint:** R3
 - **Erstellt:** 2026-10-02

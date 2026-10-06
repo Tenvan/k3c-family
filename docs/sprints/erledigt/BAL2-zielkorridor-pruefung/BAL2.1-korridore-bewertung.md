@@ -3,6 +3,7 @@
 - **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
+- **Umgebung:** offline
 - **Branch:** bal2/1-korridore-bewertung
 - **Abhängig von:** BAL1.4
 - **Tickets:** B-157

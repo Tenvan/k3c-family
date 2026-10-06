@@ -3,8 +3,8 @@ import type { GitHubData, GitHubSprint, PlanDoc, PlanningData, PlanSession, Plan
 // Erfundene Planung für den Mock: ein aktiver Sprint mit Session-Tabelle, geplante Entwürfe, Tickets und drei kurze
 // Dokumente in denselben Markdown-Formen wie docs/plan-weiterentwicklung.md, docs/fragenkatalog.md und docs/glossar.md.
 
-const s = (nr: string, typ: string, agent: string, status: string, titel = '', text?: string): PlanSession =>
-  ({ nr, typ, agent, status, titel, text });
+const s = (nr: string, typ: string, agent: string, status: string, titel = '', text?: string, deps?: string[],
+  env = agent === 'Mensch' ? 'live' : 'offline'): PlanSession => ({ nr, typ, agent, status, titel, text, deps, env });
 
 const SP11_2 = `# SP11.2 · Pi einrichten
 
@@ -35,7 +35,7 @@ Der Server läuft auf dem Raspberry Pi im Docker und ist im Heimnetz unter Port 
 - [x] AC-03: Neustart des Pi startet den Container mit.
 `;
 const tk = (nr: string, title: string, domain: string, prio: string, status: string, sprint: string, spec = 'Entwurf'): PlanTicket =>
-  ({ nr, title, domain, typ: 'Idee', prio, status, sprint, spec });
+  ({ nr, title, domain, typ: 'Idee', prio, env: ['CLI', 'PLAT'].includes(domain) ? 'live' : 'offline', status, sprint, spec });
 
 const DATA: PlanningData = {
   done: 2,
@@ -50,16 +50,30 @@ const DATA: PlanningData = {
 
 Ein ARM-Image des Servers liegt in der Registry.
 `), s('SP11.2', 'Workshop', 'Mensch', 'offen', '', SP11_2),
-        s('SP11.3', 'Workshop', 'Mensch', 'offen'), s('SP11.4', 'Review', 'autonom', 'offen')] },
-    { id: 'F1', title: 'Zielkorridore und Bedienungsregeln', domain: 'REG', prio: 'mittel', status: 'geplant', reife: 'Entwurf', spec: 'Entwurf',
+        s('SP11.3', 'Umsetzung', 'autonom', 'offen', 'Healthcheck im Compose', `# SP11.3 · Healthcheck
+
+- **Status:** offen
+`, ['SP11.1']),
+        s('SP11.4', 'Review', 'autonom', 'offen', '', `# SP11.4 · Review
+
+- **Status:** offen
+`, ['SP11.2', 'SP11.3'])] },
+    { id: 'F1', title: 'Zielkorridore und Bedienungsregeln', domain: 'REG', prio: 'hoch', status: 'geplant', reife: 'Entwurf', spec: 'Entwurf',
       tickets: ['B-134', 'B-135', 'B-136'],
       sessions: [s('F1.1', '', '', 'entwurf', 'Workshop Zielkorridore'), s('F1.2', '', '', 'entwurf', 'Workshop Bedienung 1'),
         s('F1.3', '', '', 'entwurf', 'Workshop Bedienung 2')] },
-    { id: 'F2', title: 'Golden-Ablauf, Migration, Determinismus', domain: 'INF', status: 'geplant', reife: 'Entwurf', spec: 'Entwurf',
+    { id: 'F2', title: 'Golden-Ablauf, Migration, Determinismus', domain: 'INF', prio: 'hoch', status: 'geplant', reife: 'Entwurf', spec: 'Entwurf',
       tickets: ['B-137', 'B-071'],
       sessions: [s('F2.1', '', '', 'entwurf', 'Golden-Task'), s('F2.2', '', '', 'entwurf', 'Spielstand-Migration')] },
-    { id: 'S1', title: 'Monarch-Schlag und Skills', domain: 'SIM', status: 'geplant', reife: 'Entwurf', spec: 'Entwurf',
-      tickets: ['B-118', 'B-119'], sessions: [s('S1.1', '', '', 'entwurf', 'Schlag und Pool'), s('S1.2', '', '', 'entwurf', 'Skills')] },
+    { id: 'S1', title: 'Monarch-Schlag und Skills', domain: 'SIM', status: 'geplant', reife: 'bereit', spec: 'freigegeben', deps: ['F2'],
+      tickets: ['B-118', 'B-119'], sessions: [s('S1.1', 'Umsetzung', 'autonom', 'offen', 'Schlag und Pool', `# S1.1 · Schlag und Pool
+
+- **Status:** offen
+`, ['F2.1']),
+        s('S1.2', 'Workshop', 'Mensch', 'offen', 'Skills am TV ausprobieren', `# S1.2 · Skills
+
+- **Status:** offen
+`, ['S1.1'])] },
     { id: 'R1', title: 'Regelwerk 1', domain: 'REG', status: 'erledigt', reife: 'bereit', spec: 'freigegeben', tickets: ['B-090'],
       sessions: [s('R1.1', 'Workshop', 'Mensch', 'fertig'), s('R1.2', 'Review', 'autonom', 'fertig')] },
     { id: 'M5', title: 'Dev-MCP-Seite', domain: 'DEV', status: 'erledigt', reife: 'bereit', spec: 'freigegeben', tickets: [],
@@ -145,6 +159,24 @@ const GITHUB: GitHubData = {
 
 const DOCS: Record<PlanDoc, string> = { plan: PLAN, fragen: FRAGEN, glossar: GLOSSAR };
 
+const RANK = ['hoch', 'mittel', 'niedrig'];
+
+/** Wie planning.Set in Go: Prio eines Tickets (Sprint-Prio folgt live) oder Agent/Status einer Session. */
+function setField(id: string, field: string, value: string) {
+  const t = DATA.tickets.find((x) => x.nr === id);
+  if (t && field === 'Prio') t.prio = value;
+  if (t && field === 'Umgebung') t.env = value;
+  for (const sp of DATA.sprints) {
+    const x = sp.sessions.find((y) => y.nr === id);
+    if (x && field === 'Agent') x.agent = value;
+    if (x && field === 'Status') x.status = value;
+    if (x && field === 'Umgebung') x.env = value;
+    const best = sp.tickets.map((nr) => DATA.tickets.find((y) => y.nr === nr)?.prio ?? '').filter((p) => RANK.includes(p))
+      .sort((a, b) => RANK.indexOf(a) - RANK.indexOf(b))[0];
+    if (best) sp.prio = best;
+  }
+}
+
 /** changed meldet `planning:changed`: alle 15 s wechselt SP11.3 zwischen offen und in Arbeit, wie ein Agent an docs/. */
 export function mockPlanning(changed: () => void) {
   setInterval(() => {
@@ -155,6 +187,11 @@ export function mockPlanning(changed: () => void) {
   return {
     planningData: async (): Promise<PlanningData> => structuredClone(DATA), // wie planning.Load in Go: jedes Mal frisch
     planningDocs: async (): Promise<PlanDoc[]> => ['plan', 'fragen', 'glossar'],
+    planningSet: async (id: string, field: string, value: string): Promise<string> => {
+      setField(id, field, value);
+      changed();
+      return `${id}: ${field} = ${value}`;
+    },
     planningDoc: async (name: PlanDoc): Promise<string> => DOCS[name],
     githubStatus: async (): Promise<GitHubData> => structuredClone(GITHUB),
     openUrl: (url: string) => void window.open(url, '_blank', 'noopener'),

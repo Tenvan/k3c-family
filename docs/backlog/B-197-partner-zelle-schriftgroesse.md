@@ -3,6 +3,7 @@
 - **Domäne:** CLI
 - **Typ:** Frage
 - **Prio:** niedrig
+- **Umgebung:** offline
 - **Status:** eingeplant
 - **Sprint:** GR7
 - **Erstellt:** 2026-10-03

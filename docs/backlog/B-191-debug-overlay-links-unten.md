@@ -3,6 +3,7 @@
 - **Domäne:** CLI
 - **Typ:** Problem
 - **Prio:** mittel
+- **Umgebung:** live
 - **Status:** eingeplant
 - **Sprint:** U5
 - **Erstellt:** 2026-10-03

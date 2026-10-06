@@ -3,6 +3,7 @@
 - **Domäne:** REG
 - **Typ:** Problem
 - **Prio:** mittel
+- **Umgebung:** live
 - **Status:** eingeplant
 - **Sprint:** BR1
 - **Erstellt:** 2026-09-29

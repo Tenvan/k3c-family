@@ -3,6 +3,7 @@
 - **Status:** offen
 - **Typ:** Umsetzung
 - **Agent:** autonom
+- **Umgebung:** offline
 - **Branch:** sv1/3-spielstand-voll-ausgebaut
 - **Abhängig von:** SV1.1
 - **Tickets:** B-315

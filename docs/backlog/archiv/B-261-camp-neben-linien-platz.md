@@ -3,6 +3,7 @@
 - **Domäne:** SIM
 - **Typ:** Frage
 - **Prio:** mittel
+- **Umgebung:** offline
 - **Status:** erledigt
 - **Sprint:** W0
 - **Erstellt:** 2026-10-04

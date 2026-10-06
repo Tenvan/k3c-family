@@ -3,6 +3,7 @@
 - **Domäne:** CLI
 - **Typ:** Frage
 - **Prio:** mittel
+- **Umgebung:** live
 - **Status:** eingeplant
 - **Sprint:** S8
 - **Erstellt:** 2026-10-05

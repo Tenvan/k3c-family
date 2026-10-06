@@ -4,7 +4,10 @@ import { backend, type GitHubData, type PlanningData } from '../api';
 import { errorText } from '../lib/errors';
 import { loadText, savePref } from '../lib/prefs';
 import { ActionButton, NoticeCard, StatusBadge } from '../ui/parts';
-import { BacklogList, SessionDetail, SprintCard } from './SprintCard';
+import { BacklogList, SessionDetail } from './Backlog';
+import { SprintCard } from './SprintCard';
+import { CopyPrompt } from './PromptParts';
+import { openSessions, promptSessions, worktreeVariant } from './prompts';
 import { domains, filterSprints, filterTickets, parseFilter, QUICK, sortSprints, toggle, type PlanFilter } from './planning';
 
 const PREF = 'planning-filter';
@@ -16,6 +19,7 @@ export function SprintsBacklog() {
   const [error, setError] = useState('');
   const [filter, setFilterState] = useState<PlanFilter>(() => parseFilter(loadText(PREF, '{}')));
   const [gh, reloadGh] = useGitHub();
+  const [checked, setChecked] = useState<ReadonlySet<string>>(new Set()); // markierte Sessions (Nr.)
   const setFilter = (f: PlanFilter) => {
     setFilterState(f);
     savePref(PREF, JSON.stringify(f));
@@ -30,6 +34,9 @@ export function SprintsBacklog() {
   const sprints = sortSprints(filterSprints(data, filter), gh?.sprints);
   const tickets = filterTickets(data, filter);
   const select = (nr: string) => setFilter({ ...filter, sel: filter.sel === nr ? '' : nr });
+  const check = (nr: string, on: boolean) => setChecked((cur) => { const n = new Set(cur); if (on) n.add(nr); else n.delete(nr); return n; });
+  // in Planungs-Reihenfolge; fertige oder verschwundene fallen heraus
+  const picked = sprints.flatMap(openSessions).filter((it) => checked.has(it.session.nr));
   return (
     <div className="pl-board">
       <FilterBar data={data} filter={filter} setFilter={setFilter} hits={sprints.length + tickets.length} />
@@ -37,7 +44,16 @@ export function SprintsBacklog() {
       <div className="pl-grid">
         <section className="pl-col">
           <h2 className="pl-h">Sprints <small>{sprints.length} von {data.sprints.length} · {data.done} erledigt</small></h2>
-          {sprints.map((s) => <SprintCard key={s.id} sprint={s} gh={gh?.sprints[s.id.toUpperCase()]} sel={filter.sel} onSelect={select} />)}
+          {picked.length > 0 && (
+            <div className="pl-picked">
+              <Text size="1" weight="medium">{picked.length} Session{picked.length > 1 ? 's' : ''} markiert</Text>
+              <CopyPrompt prompt={promptSessions(picked)} what={`${picked.length} markierte Sessions`} variants={[worktreeVariant(picked)]} />
+              <button type="button" className="pl-textlink" onClick={() => setChecked(new Set())}>Auswahl aufheben</button>
+            </div>
+          )}
+          {sprints.map((s) => (
+            <SprintCard key={s.id} sprint={s} gh={gh?.sprints[s.id.toUpperCase()]} sel={filter.sel} onSelect={select} checked={checked} onCheck={check} />
+          ))}
           {sprints.length === 0 && <Text color="gray">Kein Sprint passt zum Filter.</Text>}
         </section>
         <section className="pl-col pl-right">
@@ -45,7 +61,7 @@ export function SprintsBacklog() {
             <h2 className="pl-h">Backlog <small>{tickets.length} von {data.tickets.length} offenen Tickets</small></h2>
             <BacklogList data={data} tickets={tickets} sel={filter.sel} />
           </div>
-          <SessionDetail data={data} sel={filter.sel} onClose={() => setFilter({ ...filter, sel: '' })} />
+          <SessionDetail data={data} sel={filter.sel} onSelect={select} onClose={() => setFilter({ ...filter, sel: '' })} />
         </section>
       </div>
     </div>

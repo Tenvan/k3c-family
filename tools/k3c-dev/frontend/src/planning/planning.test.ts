@@ -4,7 +4,7 @@ import { EMPTY_FILTER, domains, filterSprints, filterTickets, findSession, ghBad
 
 const s = (nr: string, status: string, agent = 'autonom', titel = ''): PlanSession => ({ nr, typ: 'Umsetzung', agent, status, titel });
 const tk = (nr: string, domain: string, prio: string, status = 'offen', sprint = '–') =>
-  ({ nr, title: `Ticket ${nr}`, domain, typ: 'Idee', prio, status, sprint, spec: 'Entwurf' });
+  ({ nr, title: `Ticket ${nr}`, domain, typ: 'Idee', prio, env: 'offline', status, sprint, spec: 'Entwurf' });
 
 const DATA: PlanningData = {
   done: 1,
@@ -26,7 +26,8 @@ describe('Sortierung', () => {
     expect(sortSprints(xs, { W1: pr('offen'), M8: pr('gemergt') }).map((x) => x.id)).toEqual(['R1', 'W1', 'M8']);
     expect(sortSprints(DATA.sprints).map((x) => x.id)).toEqual(['M8', 'W1', 'R1']);
     const geplant = (id: string, prio: string) => ({ ...DATA.sprints[1], id, prio });
-    expect(sortSprints([geplant('A', 'niedrig'), geplant('B', '?'), geplant('C', 'hoch')]).map((x) => x.id)).toEqual(['C', 'A', 'B']);
+    // Prio und Abhängigkeit ordnet Go; innerhalb eines Status bleibt die gelieferte Reihenfolge.
+    expect(sortSprints([geplant('A', 'niedrig'), geplant('B', '?'), geplant('C', 'hoch')]).map((x) => x.id)).toEqual(['A', 'B', 'C']);
   });
 });
 

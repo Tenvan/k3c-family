@@ -3,6 +3,7 @@
 - **Domäne:** REG
 - **Typ:** Idee
 - **Prio:** niedrig
+- **Umgebung:** offline
 - **Status:** eingeplant
 - **Sprint:** RG2
 - **Erstellt:** 2026-09-29

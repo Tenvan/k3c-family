@@ -3,6 +3,7 @@
 - **Status:** offen
 - **Typ:** Workshop
 - **Agent:** Mensch
+- **Umgebung:** live
 - **Branch:** lt1/3-messlauf-pi
 - **Abhängig von:** LT1.2
 - **Tickets:** B-175, B-042

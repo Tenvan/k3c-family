@@ -3,6 +3,7 @@
 - **Status:** fertig
 - **Typ:** Workshop
 - **Agent:** Mensch
+- **Umgebung:** live
 - **Branch:** gr1/1-workshop-stil
 - **Abhängig von:** –
 - **Tickets:** B-161

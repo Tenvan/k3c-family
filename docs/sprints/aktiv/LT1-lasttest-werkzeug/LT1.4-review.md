@@ -3,6 +3,7 @@
 - **Status:** fertig
 - **Typ:** Review
 - **Agent:** autonom
+- **Umgebung:** offline
 - **Branch:** lt1/4-review
 - **Abhängig von:** LT1.2
 - **Tickets:** B-175

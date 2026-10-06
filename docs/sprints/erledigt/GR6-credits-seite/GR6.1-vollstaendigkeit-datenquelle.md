@@ -3,6 +3,7 @@
 - **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
+- **Umgebung:** live
 - **Branch:** gr6/1-credits-daten
 - **Abhängig von:** –
 - **Tickets:** B-165

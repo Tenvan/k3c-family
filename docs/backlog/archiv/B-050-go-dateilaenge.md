@@ -3,6 +3,7 @@
 - **Domäne:** INF
 - **Typ:** Schuld
 - **Prio:** mittel
+- **Umgebung:** offline
 - **Status:** erledigt
 - **Sprint:** SP01
 - **Erstellt:** 2026-09-30

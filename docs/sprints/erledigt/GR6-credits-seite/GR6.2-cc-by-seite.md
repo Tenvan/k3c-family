@@ -3,6 +3,7 @@
 - **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
+- **Umgebung:** live
 - **Branch:** gr6/2-cc-by-seite
 - **Abhängig von:** GR6.1
 - **Tickets:** B-165

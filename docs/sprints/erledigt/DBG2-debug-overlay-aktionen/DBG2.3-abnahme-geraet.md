@@ -3,6 +3,7 @@
 - **Status:** fertig
 - **Typ:** Workshop
 - **Agent:** Mensch
+- **Umgebung:** live
 - **Branch:** dbg2/3-abnahme-geraet
 - **Abhängig von:** DBG2.1, DBG2.2
 - **Tickets:** B-179

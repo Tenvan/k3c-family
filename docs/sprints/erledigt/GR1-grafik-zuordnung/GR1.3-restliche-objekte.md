@@ -3,6 +3,7 @@
 - **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
+- **Umgebung:** live
 - **Branch:** gr1/3-restliche-objekte
 - **Abhängig von:** GR1.2
 - **Tickets:** B-161

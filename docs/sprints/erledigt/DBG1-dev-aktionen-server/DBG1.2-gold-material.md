@@ -3,6 +3,7 @@
 - **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
+- **Umgebung:** offline
 - **Branch:** dbg1/2-gold-material
 - **Abhängig von:** DBG1.1
 - **Tickets:** B-178

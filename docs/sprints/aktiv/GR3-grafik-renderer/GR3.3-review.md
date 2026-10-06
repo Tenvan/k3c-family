@@ -3,6 +3,7 @@
 - **Status:** fertig
 - **Typ:** Review
 - **Agent:** autonom
+- **Umgebung:** live
 - **Branch:** gr3/3-review
 - **Abhängig von:** GR3.2
 - **Tickets:** B-010

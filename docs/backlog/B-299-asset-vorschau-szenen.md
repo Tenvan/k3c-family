@@ -3,6 +3,7 @@
 - **Domäne:** PLAT
 - **Typ:** Idee
 - **Prio:** mittel
+- **Umgebung:** live
 - **Status:** eingeplant
 - **Sprint:** DBG4
 - **Erstellt:** 2026-10-05

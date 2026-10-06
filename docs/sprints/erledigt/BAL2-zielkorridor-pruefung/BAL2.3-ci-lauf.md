@@ -3,6 +3,7 @@
 - **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
+- **Umgebung:** offline
 - **Branch:** bal2/3-ci-lauf
 - **Abhängig von:** BAL2.2
 - **Tickets:** B-157

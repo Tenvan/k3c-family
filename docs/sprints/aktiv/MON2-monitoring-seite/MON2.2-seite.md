@@ -3,6 +3,7 @@
 - **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
+- **Umgebung:** live
 - **Branch:** mon2/2-seite
 - **Abhängig von:** MON2.1
 - **Tickets:** B-282

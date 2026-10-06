@@ -3,6 +3,7 @@
 - **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
+- **Umgebung:** offline
 - **Branch:** bal1/2-replay-format
 - **Abhängig von:** BAL1.1
 - **Tickets:** B-159

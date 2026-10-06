@@ -3,6 +3,7 @@
 - **Status:** offen
 - **Typ:** Umsetzung
 - **Agent:** autonom
+- **Umgebung:** live
 - **Branch:** so2/3-einbau-rueckfall
 - **Abhängig von:** SO2.2
 - **Tickets:** B-167

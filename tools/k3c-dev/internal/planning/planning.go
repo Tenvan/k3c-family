@@ -18,9 +18,11 @@ type Session struct {
 	Typ    string `json:"typ"`
 	Agent  string `json:"agent"`
 	Status string `json:"status"`
-	Titel  string `json:"titel"`
-	File   string `json:"-"`              // Spalte „Datei“ der Tabelle, relativ zum Sprint-Ordner
-	Text   string `json:"text,omitempty"` // Inhalt der Session-Datei (Markdown) für das Detail-Panel
+	Titel  string   `json:"titel"`
+	File   string   `json:"-"`              // Spalte „Datei“ der Tabelle, relativ zum Sprint-Ordner
+	Text   string   `json:"text,omitempty"` // Inhalt der Session-Datei (Markdown) für das Detail-Panel
+	Deps   []string `json:"deps,omitempty"` // Session-IDs aus „Abhängig von“
+	Env    string   `json:"env,omitempty"`  // Feld „Umgebung“ der Session-Datei: offline | live | ?
 }
 
 // Sprint ist die Kopfzeile und Session-Tabelle einer Sprint-README.
@@ -28,7 +30,8 @@ type Sprint struct {
 	ID       string    `json:"id"`
 	Title    string    `json:"title"`
 	Domain   string    `json:"domain"`
-	Prio     string    `json:"prio"`   // höchste Prio seiner Tickets (SprintPrio)
+	Prio     string    `json:"prio"`   // live die höchste Prio seiner Tickets, sonst die aus der README (rank)
+	Deps     []string  `json:"deps,omitempty"` // Sprints, auf deren Sessions seine Sessions warten
 	Status   string    `json:"status"` // aktiv | geplant | erledigt
 	Reife    string    `json:"reife"`
 	Spec     string    `json:"spec"`
@@ -44,6 +47,7 @@ type Ticket struct {
 	Domain string `json:"domain"`
 	Typ    string `json:"typ"`
 	Prio   string `json:"prio"`
+	Env    string `json:"env"` // offline | live | ?
 	Status string `json:"status"`
 	Sprint string `json:"sprint"`
 	Spec   string `json:"spec"`
@@ -111,6 +115,7 @@ func Load(root string) (Data, error) {
 		d.Tickets = append(d.Tickets, ParseTicket(string(text)))
 	}
 	sort.Slice(d.Tickets, func(i, j int) bool { return d.Tickets[i].Nr < d.Tickets[j].Nr })
+	rank(&d)
 	return d, nil
 }
 
@@ -209,7 +214,7 @@ func ParseSprint(text, dir, status string) Sprint {
 func ParseTicket(text string) Ticket {
 	lines := strings.Split(strings.ReplaceAll(text, "\r\n", "\n"), "\n")
 	f := fields(lines)
-	t := Ticket{Domain: f["Domäne"], Typ: f["Typ"], Prio: f["Prio"], Status: f["Status"], Sprint: f["Sprint"], Spec: f["Spec"]}
+	t := Ticket{Domain: f["Domäne"], Typ: f["Typ"], Prio: f["Prio"], Env: f["Umgebung"], Status: f["Status"], Sprint: f["Sprint"], Spec: f["Spec"]}
 	if h := header(lines); len(h) >= 2 {
 		t.Nr, t.Title = h[0], strings.Join(h[1:], " · ")
 	}

@@ -3,6 +3,7 @@
 - **Status:** fertig
 - **Typ:** Review
 - **Agent:** autonom
+- **Umgebung:** offline
 - **Branch:** mon1/3-review
 - **Abhängig von:** MON1.1, MON1.2
 - **Tickets:** B-281

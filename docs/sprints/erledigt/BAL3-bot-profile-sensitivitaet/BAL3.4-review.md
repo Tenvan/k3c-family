@@ -3,6 +3,7 @@
 - **Status:** fertig
 - **Typ:** Review
 - **Agent:** autonom
+- **Umgebung:** offline
 - **Branch:** bal3/4-review
 - **Abhängig von:** BAL3.3
 - **Tickets:** B-158

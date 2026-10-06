@@ -3,6 +3,7 @@
 - **Domäne:** SRV
 - **Typ:** Frage
 - **Prio:** hoch
+- **Umgebung:** live
 - **Status:** eingeplant
 - **Sprint:** LT1
 - **Erstellt:** 2026-09-30

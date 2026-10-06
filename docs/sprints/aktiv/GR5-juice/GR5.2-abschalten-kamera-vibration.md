@@ -3,6 +3,7 @@
 - **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
+- **Umgebung:** live
 - **Branch:** gr5/2-abschalten-kamera-vibration
 - **Abhängig von:** GR5.1, S5.1
 - **Tickets:** B-164

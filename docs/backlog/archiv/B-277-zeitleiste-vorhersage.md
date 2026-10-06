@@ -3,6 +3,7 @@
 - **Domäne:** CLI
 - **Typ:** Problem
 - **Prio:** hoch
+- **Umgebung:** live
 - **Status:** erledigt
 - **Sprint:** N2
 - **Erstellt:** 2026-10-04

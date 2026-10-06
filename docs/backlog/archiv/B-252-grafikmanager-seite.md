@@ -3,6 +3,7 @@
 - **Domäne:** PLAT
 - **Typ:** Idee
 - **Prio:** mittel
+- **Umgebung:** live
 - **Status:** verworfen
 - **Sprint:** –
 - **Erstellt:** 2026-10-04

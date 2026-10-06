@@ -3,6 +3,7 @@
 - **Status:** offen
 - **Typ:** Workshop
 - **Agent:** Mensch
+- **Umgebung:** live
 - **Branch:** gr5/4-abnahme-tv
 - **Abhängig von:** GR5.3
 - **Tickets:** B-164

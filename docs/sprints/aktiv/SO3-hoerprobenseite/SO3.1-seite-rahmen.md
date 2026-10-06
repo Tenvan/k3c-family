@@ -3,6 +3,7 @@
 - **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
+- **Umgebung:** live
 - **Branch:** so3/1-seite-rahmen
 - **Abhängig von:** –
 - **Tickets:** B-169

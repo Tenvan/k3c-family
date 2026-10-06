@@ -3,6 +3,7 @@
 - **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
+- **Umgebung:** offline
 - **Branch:** bal1/3-replay-k3c-dev
 - **Abhängig von:** BAL1.2
 - **Tickets:** B-159

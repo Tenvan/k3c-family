@@ -3,6 +3,7 @@
 - **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
+- **Umgebung:** offline
 - **Branch:** dl1/1-unset
 - **Abhängig von:** –
 - **Tickets:** B-297

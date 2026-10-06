@@ -3,6 +3,7 @@
 - **Domäne:** PLAT
 - **Typ:** Problem
 - **Prio:** hoch
+- **Umgebung:** live
 - **Status:** eingeplant
 - **Sprint:** PL1
 - **Erstellt:** 2026-10-05

@@ -3,6 +3,7 @@
 - **Domäne:** INF
 - **Typ:** Problem
 - **Prio:** hoch
+- **Umgebung:** offline
 - **Status:** erledigt
 - **Sprint:** GR4
 - **Erstellt:** 2026-10-03

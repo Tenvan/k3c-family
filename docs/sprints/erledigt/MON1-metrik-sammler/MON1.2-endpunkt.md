@@ -3,6 +3,7 @@
 - **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
+- **Umgebung:** offline
 - **Branch:** mon1/2-endpunkt
 - **Abhängig von:** MON1.1
 - **Tickets:** B-281

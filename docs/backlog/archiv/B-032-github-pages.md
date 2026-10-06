@@ -3,6 +3,7 @@
 - **Domäne:** PLAT
 - **Typ:** Problem
 - **Prio:** mittel
+- **Umgebung:** live
 - **Status:** erledigt
 - **Sprint:** SP09
 - **Erstellt:** 2026-09-29

@@ -3,6 +3,7 @@
 - **Status:** offen
 - **Typ:** Umsetzung
 - **Agent:** autonom
+- **Umgebung:** offline
 - **Branch:** br1/1-vorbereitung-messung
 - **Abhängig von:** –
 - **Tickets:** B-155, B-015

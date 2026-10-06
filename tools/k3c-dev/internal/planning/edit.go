@@ -13,13 +13,16 @@ var (
 	domains = []string{"REG", "SIM", "SRV", "CLI", "PLAT", "INF"}
 	specs   = []string{"Entwurf", "freigegeben", "rückwirkend"}
 	prios   = []string{"hoch", "mittel", "niedrig", "?"} // Rangfolge: hoch zuerst
+	// Envs: offline = ohne laufende Dienste prüfbar (Code, Mock-Tests, Werkzeuge ohne Server), worktree-tauglich;
+	// live = braucht laufende Server, Browser oder Gerät; ? = noch nicht eingeordnet.
+	Envs = []string{"offline", "live", "?"}
 	// allowed sind die Auswahlfelder je Art, wie in tests/planning.test.ts.
 	allowed = map[string]map[string][]string{
 		"ticket": {"Domäne": domains, "Typ": {"Idee", "Problem", "Schuld", "Frage"}, "Prio": prios,
-			"Status": {"offen", "eingeplant", "erledigt", "verworfen"}, "Spec": specs},
+			"Umgebung": Envs, "Status": {"offen", "eingeplant", "erledigt", "verworfen"}, "Spec": specs},
 		"sprint": {"Status": States, "Domäne": domains, "Prio": prios, "Reife": {"Entwurf", "bereit"}, "Einschiebbar": {"nein", "ja"}, "Spec": specs},
 		"session": {"Status": {"offen", "in Arbeit", "fertig", "blockiert"}, "Typ": {"Umsetzung", "Review", "Workshop"},
-			"Agent": {"autonom", "Mensch"}},
+			"Agent": {"autonom", "Mensch"}, "Umgebung": Envs},
 	}
 	reRevision = regexp.MustCompile(`^\d+$`)
 )

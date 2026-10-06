@@ -3,6 +3,7 @@
 - **Domäne:** SRV
 - **Typ:** Problem
 - **Prio:** niedrig
+- **Umgebung:** offline
 - **Status:** eingeplant
 - **Sprint:** M9
 - **Erstellt:** 2026-10-04

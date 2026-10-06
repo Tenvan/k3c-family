@@ -3,6 +3,7 @@
 - **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
+- **Umgebung:** offline
 - **Branch:** dbg1/1-protokoll
 - **Abhängig von:** –
 - **Tickets:** B-178

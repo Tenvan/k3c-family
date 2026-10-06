@@ -3,6 +3,7 @@
 - **Domäne:** SRV
 - **Typ:** Schuld
 - **Prio:** mittel
+- **Umgebung:** offline
 - **Status:** eingeplant
 - **Sprint:** ST1
 - **Erstellt:** 2026-10-04

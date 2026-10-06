@@ -3,6 +3,7 @@
 - **Status:** fertig
 - **Typ:** Review
 - **Agent:** autonom
+- **Umgebung:** offline
 - **Branch:** dbg1/4-review
 - **Abhängig von:** DBG1.3
 - **Tickets:** B-178

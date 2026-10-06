@@ -3,6 +3,7 @@
 - **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
+- **Umgebung:** live
 - **Branch:** rl1/1-abschnitt-release
 - **Abhängig von:** –
 - **Tickets:** B-170

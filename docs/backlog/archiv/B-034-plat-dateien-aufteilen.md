@@ -3,6 +3,7 @@
 - **Domäne:** PLAT
 - **Typ:** Schuld
 - **Prio:** niedrig
+- **Umgebung:** live
 - **Status:** verworfen
 - **Sprint:** –
 - **Erstellt:** 2026-09-30

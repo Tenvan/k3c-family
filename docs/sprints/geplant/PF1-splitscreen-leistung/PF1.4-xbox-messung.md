@@ -3,6 +3,7 @@
 - **Status:** offen
 - **Typ:** Umsetzung
 - **Agent:** Mensch
+- **Umgebung:** live
 - **Branch:** pf1/4-xbox-messung
 - **Abhängig von:** PF1.3
 - **Tickets:** B-194

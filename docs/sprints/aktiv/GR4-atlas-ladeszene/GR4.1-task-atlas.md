@@ -3,6 +3,7 @@
 - **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
+- **Umgebung:** offline
 - **Branch:** gr4/1-task-atlas
 - **Abhängig von:** –
 - **Tickets:** B-163

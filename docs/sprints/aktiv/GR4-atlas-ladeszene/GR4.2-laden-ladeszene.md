@@ -3,6 +3,7 @@
 - **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
+- **Umgebung:** live
 - **Branch:** gr4/2-laden-ladeszene
 - **Abhängig von:** GR4.1
 - **Tickets:** B-163, B-029

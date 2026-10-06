@@ -3,6 +3,7 @@
 - **Status:** offen | in Arbeit | fertig | blockiert
 - **Typ:** Umsetzung | Review | Workshop
 - **Agent:** autonom | Mensch
+- **Umgebung:** offline | live | ? (offline: ohne laufende Dienste prüfbar – Code, Unit-/Mock-Tests, Werkzeuge ohne Serverzugriff, worktree-tauglich; live: braucht laufenden Server, Browser oder Gerät)
 - **Branch:** sp00/1-kurzname
 - **Abhängig von:** – (oder SP00.1, B-000)
 - **Tickets:** B-000

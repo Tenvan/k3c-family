@@ -3,6 +3,7 @@
 - **Domäne:** REG
 - **Typ:** Problem
 - **Prio:** mittel
+- **Umgebung:** offline
 - **Status:** eingeplant
 - **Sprint:** RG1
 - **Erstellt:** 2026-10-05

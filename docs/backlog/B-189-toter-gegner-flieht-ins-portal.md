@@ -3,6 +3,7 @@
 - **Domäne:** SIM
 - **Typ:** Problem
 - **Prio:** mittel
+- **Umgebung:** offline
 - **Status:** eingeplant
 - **Sprint:** LV1
 - **Erstellt:** 2026-10-03

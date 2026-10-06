@@ -3,6 +3,7 @@
 - **Domäne:** PLAT
 - **Typ:** Schuld
 - **Prio:** niedrig
+- **Umgebung:** live
 - **Status:** eingeplant
 - **Sprint:** PL2
 - **Erstellt:** 2026-10-06

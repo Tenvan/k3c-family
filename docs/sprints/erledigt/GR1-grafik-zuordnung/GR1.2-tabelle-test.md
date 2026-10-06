@@ -3,6 +3,7 @@
 - **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
+- **Umgebung:** live
 - **Branch:** gr1/2-tabelle-test
 - **Abhängig von:** GR1.1
 - **Tickets:** B-161

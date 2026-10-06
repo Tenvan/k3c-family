@@ -3,6 +3,7 @@
 - **Status:** offen
 - **Typ:** Workshop
 - **Agent:** Mensch
+- **Umgebung:** live
 - **Branch:** gr3/4-abnahme-tv
 - **Abhängig von:** GR3.3
 - **Tickets:** B-010

@@ -3,6 +3,7 @@
 - **Status:** offen
 - **Typ:** Umsetzung
 - **Agent:** autonom
+- **Umgebung:** offline
 - **Branch:** sk1/2-skill-baum-nachweis
 - **Abhängig von:** SK1.1
 - **Tickets:** B-007

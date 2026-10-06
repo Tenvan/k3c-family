@@ -3,6 +3,7 @@
 - **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
+- **Umgebung:** offline
 - **Branch:** lt1/1-bots-client
 - **Abhängig von:** –
 - **Tickets:** B-175

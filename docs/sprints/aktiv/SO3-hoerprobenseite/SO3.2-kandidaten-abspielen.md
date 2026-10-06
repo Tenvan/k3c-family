@@ -3,6 +3,7 @@
 - **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
+- **Umgebung:** live
 - **Branch:** so3/2-kandidaten-abspielen
 - **Abhängig von:** SO3.1, SO1.4
 - **Tickets:** B-169

@@ -3,6 +3,7 @@
 - **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
+- **Umgebung:** live
 - **Branch:** so1/2-entsperren-format-atlas
 - **Abhängig von:** SO1.1
 - **Tickets:** B-011

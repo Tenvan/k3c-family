@@ -3,6 +3,7 @@
 - **Status:** offen
 - **Typ:** Review
 - **Agent:** autonom
+- **Umgebung:** live
 - **Branch:** pf1/3-review
 - **Abhängig von:** PF1.2
 - **Tickets:** B-194

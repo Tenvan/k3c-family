@@ -3,6 +3,7 @@
 - **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
+- **Umgebung:** live
 - **Branch:** gr2/1-recherche-kandidaten
 - **Abhängig von:** GR1.3
 - **Tickets:** B-162

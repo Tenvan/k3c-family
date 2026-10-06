@@ -3,6 +3,7 @@
 - **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
+- **Umgebung:** offline
 - **Branch:** bal1/1-bots-kennzahlen
 - **Abhängig von:** –
 - **Tickets:** B-099

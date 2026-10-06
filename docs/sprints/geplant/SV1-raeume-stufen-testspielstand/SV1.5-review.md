@@ -3,6 +3,7 @@
 - **Status:** offen
 - **Typ:** Review
 - **Agent:** autonom
+- **Umgebung:** offline
 - **Branch:** sv1/5-review
 - **Abhängig von:** SV1.4
 - **Tickets:** B-315, B-199, B-290, B-204

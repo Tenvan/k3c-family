@@ -3,6 +3,7 @@
 - **Domäne:** INF
 - **Typ:** Schuld
 - **Prio:** niedrig
+- **Umgebung:** offline
 - **Status:** verworfen
 - **Sprint:** –
 - **Erstellt:** 2026-09-30

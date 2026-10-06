@@ -3,6 +3,7 @@
 - **Status:** offen
 - **Typ:** Umsetzung
 - **Agent:** autonom
+- **Umgebung:** offline
 - **Branch:** br2/3-auswertung-abschluss
 - **Abhängig von:** BR2.1, BR2.2
 - **Tickets:** B-156
