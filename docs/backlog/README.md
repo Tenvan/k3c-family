@@ -126,6 +126,8 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-315](B-315-spielstand-voll-ausgebaut.md) | SRV | Idee | hoch | eingeplant | SV1 | Der Level-Betrachter erzeugt einen Spielstand mit allen Gebäuden voll ausgebaut |
 | [B-316](B-316-tastatur-zwei-spieler.md) | PLAT | Idee | hoch | eingeplant | PL1 | Zwei Spieler spielen an einer Tastatur im Split-Screen |
 | [B-317](B-317-cheat-dialog-fokus-tastatur.md) | CLI | Problem | hoch | eingeplant | U5 | Der Cheat-Dialog zeigt den Fokus und lässt sich mit Pfeiltasten, Leertaste und Controller bedienen |
+| [B-318](B-318-schlag-skill-feedback.md) | CLI | Problem | mittel | eingeplant | S9 | Schlag und Skills zeigen auch ohne Ziel sichtbar, dass die Taste ankam |
+| [B-319](B-319-ein-hinweis-je-weltposition.md) | CLI | Problem | hoch | eingeplant | S9 | Das Aktionen-Overlay zeigt je Spieler nur einen Hinweis, 24 px, nie über einem Preisschild |
 
 ## Archiv
 
