@@ -106,6 +106,7 @@ Regelwerk in [`rules/`](rules/), und das Glossar wird angepasst. Zahlen sind, wo
 | Nacht | Phase des Tageszyklus zwischen Dämmerung und Morgengrauen, Startwert 4 min (heute 5 min, bis B-213); in der Oberwelt kommt eine Welle je Nacht. | `rules/wirtschaft.md` § 3, Q65 |
 | Niederlage-Modus | Raum-Option für den Fall einer Burg: Gold/Material-Verlust, Stufenverlust oder Komplett verloren (`defeat`: `resources`, `stage`, `lost`). | `rules/stufen.md` § 4 |
 | Oberwelt | Die Stufe der Tiefe 0, der Wald. | `rules/stufen.md` § 1 |
+| Pixeldichte | Größe eines Quell-Pixels im Spiel, gemessen am 16-px-Raster (Q13). Assets mit gröberen oder feineren Pixeln wirken fremd, auch bei gleicher Palette. | B-331 |
 | Plantage | Wirkung der Farm: 6 Plätze, je Platz alle 30 s ein Baum mit 10 Holz, ohne Markierung; zählt nicht für „Alles abbauen“. | `rules/materialien-gebaeude.md` § 1, Q25 |
 | Platz-Stufe | Gespeicherte Stufe eines Bauplatzes im Spielstand v3 (`SiteSave`). | B-202, Q42 |
 | Portal | Ausgangspunkt der Gegnerwellen: 2 je Stufe, ab Tiefe 3 drei; mindestens 150 Units vom Hub und außerhalb der Linie 5 inklusive Streuung. | `rules/gegner.md` § 3, Q49, Q57 |
@@ -182,6 +183,7 @@ Regelwerk in [`rules/`](rules/), und das Glossar wird angepasst. Zahlen sind, wo
 | Zahlziel | Ort, an dem Münzen per A-Halten etwas bezahlen: Bauplatz, Burg (Hub-Ausbau), Angebots-Anhang, Händler „Kaufen“/„Verkaufen“. Zahlziele halten ≥ 4 Units Abstand zueinander. | Q34, Q44, Q57, W0 › AC-04 |
 | Zaubertum | Turm der Material-Stufe 5: Flächenschaden (40 Schaden, Radius 3, Reichweite 13, alle 1,5 s) statt Bogen; die Schützen steigen ab. | `rules/materialien-gebaeude.md` § 3.1, Q31 |
 | Zeitleiste | Puffer der empfangenen Zustände im Client: gezeichnet wird zur geschätzten Server-Zeit minus der Verzögerung, zwischen zwei Zuständen interpoliert; Stufenwechsel leert sie. | B-277, `src/online/clientTimeline.ts` |
+| Ziel-Palette | Feste Farbliste, auf die jede Grafik umgerechnet wird; festgelegt in der Stil-Bibel. | B-331 |
 | Zielkorridor | Kennzahl mit Unter- und Obergrenze im Standardszenario; Pass/Fail für das Balancing. | `rules/zielkorridore.md` |
 
 ## Unklar und Widersprüche
