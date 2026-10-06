@@ -90,6 +90,10 @@ export interface Troop {
   towerId: number | null;
   /** Landstreicher: bereits bezahltes Rekrutierungs-Gold */
   paidGold: number;
+  /** Beruf eines Bauern (`miner`, `builder`, `craftsman`); fehlt = keiner. */
+  profession?: string;
+  /** Arbeitsplatz (Site-ID) des Berufs; fehlt = keiner. */
+  workSite?: number;
 }
 
 /** Baum, Fels, Kupfererz: per Münze markieren, dann holt ein Bauer die Ressource. */
@@ -123,6 +127,36 @@ export interface Site {
   bows: number;
   /** Werkstatt: bereits bezahltes Gold für den nächsten Bogen */
   bowPaidGold: number;
+  /** Ausbau-Stufe (Mauer, Turm); fehlt = 1. */
+  level?: number;
+  /** Wartegrund des laufenden Ausbaus; fehlt = kein Ausbau oder Gold offen. */
+  upgrade?: 'waitingMaterial' | 'waitingWorker';
+  /** Bezahltes Gold des laufenden Ausbaus; fehlt = 0. */
+  upgradePaid?: number;
+}
+
+/** Ausbau auf die nächste Hub-Stufe (docs/protocol.md › Wirtschaft), vom Server berechnet. */
+export interface HubUpgrade {
+  gold: number;
+  material: Partial<Record<ResourceKind | 'iron' | 'crystal', number>>;
+  paid: number;
+  /** Fehlt, solange Gold offen ist. */
+  state?: 'waitingMaterial' | 'waitingWorker';
+}
+
+/** Anwesender Händler: Material, Abreisetag, Gold des laufenden Kaufs (fehlt = 0). */
+export interface Merchant {
+  resource: string;
+  leaves: number;
+  buyPaid?: number;
+}
+
+/** Ausrüstung am Boden (Figur oder Beruf, Verlust-Kaskade). */
+export interface Drop {
+  id: number;
+  kind: string;
+  x: number;
+  workSite?: number;
 }
 
 export interface Castle {
@@ -203,6 +237,9 @@ export type GameEvent = (
   | { type: 'coinGive'; player: number; x: number; to: 'site' | 'recruit' | 'mark' }
   | { type: 'buildProgress'; site: number; kind: SiteKind; x: number; percent: 25 | 50 | 75 }
   | { type: 'revive'; player: number; x: number }
+  | { type: 'revived'; player: number; x: number }
+  | { type: 'disarmed'; kind: string; x: number; cause: string }
+  | { type: 'equipmentTaken'; kind: string; x: number }
 ) & { stage?: number };
 
 export interface World {
@@ -238,6 +275,16 @@ export interface World {
   /** Baumaterial gehört allen gemeinsam (Hub-Vorrat), Gold hat jeder Spieler selbst. */
   stock: Stock;
   skillPoints: number;
+
+  /** Wirtschaft (docs/protocol.md › Wirtschaft), alle vom Server; fehlt = nicht vorhanden bzw. älterer Server. */
+  stockMax?: number;
+  hubLevel?: number;
+  hubUpgrade?: HubUpgrade;
+  /** Nacht oder Gegner: Bau und Ausbau warten (`waitingWorker` heißt dann Gefahr). */
+  danger?: boolean;
+  merchant?: Merchant;
+  drops?: Drop[];
+  armorLevel?: number;
 
   /** Alle Spieler stehen an einem Tiefen-Eingang / einer Treppe: Fortschritt 0..1, bei 1 wechselt die Kampagne die Stufe. */
   travel: Travel | null;

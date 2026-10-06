@@ -139,7 +139,8 @@ type stateMsg struct {
 	S     map[string]any `json:"s"`
 }
 
-// stateOf ist der Zustand für `snap`: die Welt ohne seed, biome, level, rng, widthUnits, mit events und depth, je
+// stateOf ist der Zustand für `snap`: die Welt ohne seed, biome, level, rng, widthUnits, mit events und depth, oben
+// mit dem Wirtschaftsstand aus sim.EconomyOf (stockMax, hubLevel, hubUpgrade, danger; W5.1), je
 // Spieler mit points und actions (actions.go). Das Feld
 // `free` der Spieler (B-059) fällt weg, der Zustand der Monarchen steht in `seats`. timescale > 0 (nur Dev-Mode) steht
 // als `devTimescale` darin, daneben die Dev-Pause als `devPaused` (B-231).
@@ -147,6 +148,8 @@ func stateOf(w *sim.World, timescale int, paused bool) map[string]any {
 	raw, _ := json.Marshal(w)
 	var s map[string]any
 	_ = json.Unmarshal(raw, &s)
+	raw, _ = json.Marshal(sim.EconomyOf(w))
+	_ = json.Unmarshal(raw, &s) // ergänzt s um die Felder der Wirtschaft, Werte unverändert aus der Sim
 	delete(s, "seed")
 	delete(s, "widthUnits")
 	for _, p := range s["players"].([]any) {

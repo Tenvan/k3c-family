@@ -233,7 +233,7 @@ das zählt als Abbruch.
 | `join` | Gerät → Server | Raum beitreten oder wiederverbinden | `room` Code, `slots[]` | `c2s-join.json` |
 | `joined` | Server → Gerät | nach erfolgreichem `create`/`join` | `room`, `name`, `you[]`: `slot` → `monarch`, `depth`, `stage` | `s2c-joined.json` |
 | `level` | Server → Gerät | nach `joined` und sobald eine Stufe für das Gerät neu ist, vor dem ersten Zustand der Stufe | `stage`, `depth`, `layout` (Level: Biom-ID, Breite, Chunks, Objekte) | `s2c-level.json` |
-| `snap` | Server → Gerät | voller Zustand einer Stufe: nach ihrem `level` (Beitreten, Wiederverbinden, Stufenwechsel) | `stage`, `tick`, `ack`, `s` (Zustand der Welt ohne Statisches, mit `events` und `depth`) | `s2c-snapshot-full.json` |
+| `snap` | Server → Gerät | voller Zustand einer Stufe: nach ihrem `level` (Beitreten, Wiederverbinden, Stufenwechsel) | `stage`, `tick`, `ack`, `s` (Zustand der Welt ohne Statisches, mit `events` und `depth`) | `s2c-snapshot-full.json`, `s2c-snapshot-wirtschaft.json` |
 | `delta` | Server → Gerät | jeder weitere Tick, je Stufe | `stage`, `tick`, `ack`, `s` (nur Änderungen zum zuletzt gesendeten Zustand dieser Stufe) | `s2c-snapshot-delta.json` |
 | `seats` | Server → alle Geräte im Raum | wenn sich eine Zuordnung, ein Monarch-Zustand oder eine Stufe ändert | `you[]` (eigene Slots mit `monarch`, `depth` und `stage`), `monarchs[]` je Index `taken`/`waiting`/`free` | `s2c-seats.json` |
 | `addSlot` | Gerät → Server | lokaler Spieler kommt dazu | `slot` 0–3 | `c2s-add-slot.json` |
@@ -248,12 +248,12 @@ das zählt als Abbruch.
 Die Beispiele stammen aus dem Ablauf *2 Controller an der Xbox + 1 Handy*; `level`, `snap` und `delta` sind aus der
 heutigen TS-Simulation erzeugt (Seed `familie`, 3 Spieler, Tick 299/300). **Außerhalb des Ablaufs:** der zweite Raum
 `BWTQ` in `s2c-rooms.json` (zeigt einen pausierten Raum), `s2c-error.json` (`room_full` kommt im Ablauf nicht vor) sowie
-`c2s-dev-*.json` und `s2c-error-forbidden.json` (Dev-Aktionen).
+`c2s-dev-*.json` und `s2c-error-forbidden.json` (Dev-Aktionen) sowie `s2c-snapshot-wirtschaft.json` (siehe *Wirtschaft*).
 
 **Zustand und Delta:** `s` in `snap` hat die Felder der Welt ohne `seed`, `biome`, `level`, `rng`, `widthUnits`
 (wie v1), dazu `events` des Ticks (leer: `[]`) und `depth`, die Stufe des Zustands (gleich `level.depth`).
 `delta` enthält nur geänderte Felder; ein Feld, das fehlt, ist unverändert. Listen mit `id` (`players`, `coins`,
-`troops`, `nodes`, `sites`, `enemies`, `projectiles`, `pickups`) stehen als `{ "set": [geänderte oder neue Einträge],
+`troops`, `nodes`, `sites`, `enemies`, `projectiles`, `pickups`, `drops`) stehen als `{ "set": [geänderte oder neue Einträge],
 "del": [entfernte ids] }`. Alles ohne `id` (einfache Werte, Objekte wie `cycle`, `castle`, `stock`, `travel`, Listen
 wie `camps`, `portals`, `spawnQueue`) steht bei einer Änderung ganz darin. `null` ist ein Wert (z. B. `travel` endet),
 kein Löschen. Felder, die im vorigen Zustand standen und jetzt fehlen (z. B. `merchant`, `drops`), nennt `delta` in
@@ -310,6 +310,42 @@ Felder je Spieler in `players[]` von `snap` und `delta`:
 `input.p[].skill`), `{ "action": "learn" }` (`points` > 0). `respec` ist als Eintrag vorgesehen, fehlt aber, bis die
 Sim eine Prüfung ohne Seiteneffekt bietet (B-270); die Nachricht `respec` wirkt trotzdem. Die Liste nennt keine Taste,
 die Belegung gehört dem Client. Berufe, Tausch, Grabstein und Wiederbeleben kommen später (W5, B-120).
+
+### Wirtschaft: Hub, Lager, Wartegrund, Händler
+
+(W5.1, B-153) Die Simulation rechnet alle Werte (`engine/sim`, Regeln `docs/rules/materialien-gebaeude.md`,
+`docs/rules/buerger.md`); der Zustand nennt Zahlen und Namen, keine Regeln und keine Texte. Ein Feld, das fehlt, heißt
+„nicht vorhanden“ (kein Händler, kein Beruf, kein Ausbau); ein älterer Server sendet die Felder gar nicht, der Client
+behandelt sie deshalb alle als optional. Im `delta` stehen sie wie jedes Feld ohne `id` bei einer Änderung ganz (außer
+`drops`, Liste mit `id`); fehlt eins jetzt, steht es in `unset`. Mengen sind Stück, Gold sind Münzen.
+
+Felder oben in `s` (`stockMax`, `hubLevel`, `hubUpgrade`, `danger` aus `sim.EconomyOf`, `engine/sim/economy_view.go`,
+vom Server je Stufe abgelesen; die übrigen aus der Welt):
+
+| Feld | Bedeutung | fehlt |
+|---|---|---|
+| `stock` | Vorrat der Insel je Rohstoff (`wood`, `stone`, `copper`, `iron`, `crystal`; Eisen und Kristall fehlen bei 0), alle Stufen gleich | nie |
+| `stockMax` | Lager-Maximum je Rohstoff (ein Wert für alle) | ohne Insel (unbegrenzt) |
+| `hubLevel` | Hub-Stufe 1 bis 5 | nie (älterer Server) |
+| `hubUpgrade` | Ausbau auf die nächste Hub-Stufe: `gold` (Kosten), `material` (Kosten, Form wie `stock`), `paid` (bezahltes Gold), `state` (`waitingMaterial`, `waitingWorker`; fehlt, solange Gold offen ist) | auf Stufe 5 |
+| `danger` | `true`: Nacht oder Gegner da, Bau und Ausbau warten | keine Gefahr |
+| `merchant` | anwesender Händler: `resource` (sein Material), `leaves` (Tag der Abreise), `buyPaid` (Gold des laufenden Kaufs, fehlt bei 0) | kein Händler (nur Tiefe 0) |
+| `drops` | Ausrüstung am Boden, Liste mit `id`: `kind` (Figur oder Beruf), `x`, `workSite` (fehlt bei 0) | keine |
+| `armorLevel` | Rüstungsstufe der Kämpfer des Hubs | 0 |
+
+**Wartegrund je Bauplatz:** `sites[].state` (`unpaid`, `waitingMaterial`, `waitingWorker`, `built`) für den Bau,
+`sites[].upgrade` (`waitingMaterial`, `waitingWorker`; fehlt ohne Ausbau oder solange Gold offen) mit `upgradePaid` und
+`level` (fehlt = 1) für den Ausbau von Mauer und Turm, `hubUpgrade.state` für den Hub. `waitingWorker` heißt bei
+`danger` „Gefahr“, sonst „kein Bauer“; den Text bildet der Client.
+
+**Berufe:** `troops[].profession` (`miner`, `builder`, `craftsman`; fehlt = keiner) und `troops[].workSite` (Site-ID
+des Arbeitsplatzes, fehlt = keiner). Berufswahl, Tausch und Hub-Ausbau als Eingabe stehen in W5.2.
+
+Beispiel: `s2c-snapshot-wirtschaft.json` (Insel `w5-wirtschaft`, 3 Stufen, 4 Spieler, Stufe 0, Tick 408; Zustand aus
+`wirtschaftsInsel` in `engine/net/wirtschaft_test.go`: Hub-Ausbau bezahlt und wartet auf Material, Lager gebaut und
+gefüllt, Händler da, ein Bauer mit Beruf; die drei Ereignisse in `events` sind von Hand ergänzt, siehe *Ereignisse*).
+Geprüft von `TestWirtschaftZustand`, `TestWirtschaftDelta`, `TestWirtschaftBeispiel` und
+`src/online/clientWirtschaft.test.ts`.
 
 ### Fehler-Codes
 
@@ -370,6 +406,9 @@ anderer Stufen kommen nie an. Auf einer Insel trägt jedes Ereignis `stage` (Ind
 | `coinGive` | `player`, `x`, `to` (`site`, `recruit`, `mark`) | Münze bezahlt ein Ziel (nur zu Boden: kein Ereignis) |
 | `buildProgress` | `site`, `kind`, `x`, `percent` (25, 50, 75) | Bau fortgeschritten, fertig = `built` |
 | `revive` | `player`, `x` | Monarch steht nach der Wartezeit wieder |
+| `revived` | `player`, `x` | Monarch von einem Mitspieler wiederbelebt (Q62) |
+| `disarmed` | `kind` (Figur oder Beruf), `x`, `cause` (Gegnerart wie bei `playerDown`, sonst `other`) | Bürger verliert seine Ausrüstung, sie fällt als `drops`-Eintrag zu Boden (Q69); nicht beim Burgfall |
+| `equipmentTaken` | `kind` (wie `drops[].kind`), `x` | Gegner trägt Ausrüstung weg (Q69); vorläufige Felder, die Sim sendet es noch nicht (B-312) |
 | `playerDown` | `player`, `cause` (Gegnerart aus `data/enemies.json` bei Nahkampf und Geschoss, sonst `other`; B-182) | Monarch fällt; `cause` ist ein Zusatzfeld, die Protokollversion bleibt 3 |
 
 Tod, Bau fertig, Skill, Nacht naht und Portal laufen über die älteren Typen `playerDown`, `built`, `skillPoint`,

@@ -13,7 +13,7 @@ import (
 // idLists sind die Listen, deren Einträge eine `id` haben.
 var idLists = map[string]bool{
 	"players": true, "coins": true, "troops": true, "nodes": true, "sites": true, "enemies": true,
-	"projectiles": true, "pickups": true,
+	"projectiles": true, "pickups": true, "drops": true,
 }
 
 // deltaOf liefert die Änderungen von prev zu cur (beide aus stateOf).
