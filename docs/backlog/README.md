@@ -119,6 +119,7 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-299](B-299-asset-vorschau-szenen.md) | PLAT | Idee | mittel | offen | – | Eine Dev-Seite zeigt die Asset-Zuordnung je Kategorie als Mini-Szene im Spielmaßstab |
 | [B-300](B-300-mauern-zuerst-wie-sparsam.md) | SIM | Frage | mittel | offen | – | Das Profil „Mauern zuerst“ spielt messbar anders als „sparsam“ |
 | [B-301](B-301-vary-ohne-wirkung.md) | SIM | Problem | niedrig | offen | – | Ein Sensitivitäts-Pfad ohne Wirkung ergibt einen Fehler |
+| [B-302](B-302-aufraeumen-branches-worktrees.md) | INF | Schuld | mittel | offen | – | Lokale Branches und Worktrees werden an festen Meilensteinen aufgeräumt |
 
 ## Archiv
 
