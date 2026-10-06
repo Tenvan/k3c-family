@@ -149,6 +149,9 @@ func (g Target) validate() error {
 	case g.Players < 1 || g.Players > 4 || g.Days < 1:
 		return fmt.Errorf("players 1 bis 4 und days ab 1 nötig, war %d und %d", g.Players, g.Days)
 	}
+	if err := checkPlayers(g.Bot, g.Players); err != nil {
+		return err
+	}
 	return g.validateBounds()
 }
 

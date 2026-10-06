@@ -35,10 +35,7 @@ type Change struct {
 
 // RunTargets spielt alle Szenarien der Ziele über die ersten n Seeds der Datei (0 = alle).
 func (t *Targets) RunTargets(n int) (Report, error) {
-	seedList := t.Seeds
-	if n > 0 && n < len(seedList) {
-		seedList = seedList[:n]
-	}
+	seedList := t.seedList(n)
 	var rep Report
 	done := map[Scenario]bool{}
 	for _, g := range t.Targets {
@@ -57,6 +54,14 @@ func (t *Targets) RunTargets(n int) (Report, error) {
 		rep.Results = append(rep.Results, r.Results...)
 	}
 	return rep, nil
+}
+
+// seedList: die ersten n Seeds der Datei (0 = alle).
+func (t *Targets) seedList(n int) []string {
+	if n > 0 && n < len(t.Seeds) {
+		return t.Seeds[:n]
+	}
+	return t.Seeds
 }
 
 // Summarize bewertet einen Bericht gegen die Ziele.

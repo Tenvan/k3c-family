@@ -223,6 +223,13 @@ tasks:
       - cd {{.DEV}} && go build -o ../../bin/k3c-balance{{exeExt}} ./internal/balance/cmd
       - ./bin/k3c-balance{{exeExt}} --targets --write-baseline --baseline testdata/balance/baseline.json {{.CLI_ARGS}}
 
+  balance:sensitivity:
+    desc: 'Sensitivität und Grad-Kurven: Werte aus data/ um ±10/±25 % nur im Speicher ändern, gekippte Ziele und Kurven je Grad nach reports/sensitivity-<Zeit>.json und .md (z. B. `task balance:sensitivity -- --seeds 10 --vary economy.json:purse.startGold`; kein Teil von `task check`)'
+    deps: [tmp]
+    cmds:
+      - cd {{.DEV}} && go build -o ../../bin/k3c-balance{{exeExt}} ./internal/balance/cmd
+      - ./bin/k3c-balance{{exeExt}} --sensitivity --curves {{.CLI_ARGS}}
+
   balance:run:
     desc: 'Balancing-Tester: Bots spielen eine Szenario-Matrix, Kennzahlen als JSON (z. B. `task balance:run -- --seeds 10 --bots saver --days 5`)'
     deps: [tmp]

@@ -1,11 +1,11 @@
 # BAL3 · SIM · Bot-Profile, Sensitivität und Grad-Kurven
 
-- **Status:** geplant
+- **Status:** erledigt
 - **Domäne:** SIM
 - **Reife:** bereit
 - **Einschiebbar:** ja
 - **Tickets:** B-158
-- **Start-Commit:** –
+- **Start-Commit:** ada3483
 - **Spec:** freigegeben
 - **Revision:** 1
 - **Freigabe:** 2026-10-04, Chat, durch 🧑, Revision 1; mit Änderungen aus der Spec-Prüfung
@@ -59,14 +59,17 @@ Variierter Wert fehlt in den Daten → Fehler mit Pfad. Profil verlangt mehr Spi
 
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
-| BAL3.1 | `BAL3.1-workshop-profile.md` | Workshop | Mensch | offen |
-| BAL3.2 | `BAL3.2-profile-kind-bot.md` | Umsetzung | autonom | offen |
-| BAL3.3 | `BAL3.3-sensitivitaet-kurven.md` | Umsetzung | autonom | offen |
-| BAL3.4 | `BAL3.4-review.md` | Review | autonom | offen |
+| BAL3.1 | `BAL3.1-workshop-profile.md` | Workshop | Mensch | fertig |
+| BAL3.2 | `BAL3.2-profile-kind-bot.md` | Umsetzung | autonom | fertig |
+| BAL3.3 | `BAL3.3-sensitivitaet-kurven.md` | Umsetzung | autonom | fertig |
+| BAL3.4 | `BAL3.4-review.md` | Review | autonom | fertig |
 
 Bei `Reife: Entwurf` genügen Stichpunkte mit den Kriterien in Klammern statt Session-Dateien. Vor dem Aktivieren
 wird jede Session als eigene Datei nach `docs/vorlagen/session.md` geschrieben.
 
 ## Abnahme
 
-–
+2026-10-05, Review BAL3.4 (Sonnet, nur Diff): keine schweren Befunde; `task check:go` und `task check` grün.
+Kriterien: AC-05 in BAL3.1, AC-01 und AC-02 in BAL3.2, AC-03, AC-04 und AC-06 in BAL3.3 nachgewiesen.
+Neue Tickets: B-300 („Mauern zuerst“ spielt wie „sparsam“, Hub-Ausbau fehlt, Frage an 🧑), B-301 (`--vary` auf nicht neu geladene Datei ohne Fehler).
+Version: v0.12.0 vorgeschlagen (Minor: neue Bot-Profile, Sensitivitäts-Lauf und Grad-Kurven im Werkzeug; aktuell v0.11.0, gemeinsam mit S6); gesetzt erst nach Bestätigung durch 🧑.

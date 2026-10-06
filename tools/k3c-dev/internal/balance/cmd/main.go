@@ -1,6 +1,7 @@
 // Command k3c-balance spielt eine Szenario-Matrix mit Bots und schreibt die Kennzahlen als JSON (B-099, BAL1.1).
 // Start über `task balance:run -- --seeds 10 --players 2 --bots saver --days 5`. Mit `--replay-dir DIR` schreibt er je
-// gültigem Lauf eine Replay-Datei, `--play DATEI` spielt eine Datei ohne Bot ab (BAL1.2, B-159).
+// gültigem Lauf eine Replay-Datei, `--play DATEI` spielt eine Datei ohne Bot ab (BAL1.2, B-159). `--sensitivity` und
+// `--curves` schreiben den Sensitivitäts-Bericht (`task balance:sensitivity`, BAL3.3).
 package main
 
 import (
@@ -36,19 +37,20 @@ func run(args []string) error {
 	play := fs.String("play", "", "Replay-Datei ohne Bot abspielen statt einer Matrix")
 	var to targetOpts
 	fs.BoolVar(&to.on, "targets", false, "Ziele aus data/balance-targets.json bewerten, Bericht als JSON und Markdown; --seeds N = nur die ersten N, sonst alle")
-	fs.StringVar(&to.dir, "report-dir", "reports", "Ordner für balance-<Zeit>.json und .md (nur mit --targets)")
+	fs.StringVar(&to.dir, "report-dir", "reports", "Ordner für balance-<Zeit>.json und .md (--targets) bzw. sensitivity-<Zeit>.* (--sensitivity, --curves)")
 	fs.StringVar(&to.baseline, "baseline", "", "Baseline-Datei zum Vergleichen (nur mit --targets)")
 	fs.BoolVar(&to.write, "write-baseline", false, "Bericht nach --baseline schreiben statt vergleichen")
+	var so sensOpts
+	so.register(fs)
 	if err := fs.Parse(args); err != nil {
 		return err
 	}
+	if so.vary || so.curves {
+		so.dir, so.seeds = to.dir, explicitSeeds(fs, *seeds)
+		return runSensitivity(so)
+	}
 	if to.on {
-		to.replays = *replayDir
-		fs.Visit(func(f *flag.Flag) {
-			if f.Name == "seeds" {
-				to.seeds = *seeds
-			}
-		})
+		to.replays, to.seeds = *replayDir, explicitSeeds(fs, *seeds)
 		return runTargets(to)
 	}
 	if *play != "" {
@@ -74,6 +76,17 @@ func run(args []string) error {
 		return err
 	}
 	return write(*out, b)
+}
+
+// explicitSeeds: n, wenn --seeds gesetzt ist, sonst 0 (= alle Seeds aus data/balance-targets.json).
+func explicitSeeds(fs *flag.FlagSet, n int) int {
+	set := 0
+	fs.Visit(func(f *flag.Flag) {
+		if f.Name == "seeds" {
+			set = n
+		}
+	})
+	return set
 }
 
 // write schreibt nach out oder auf die Standardausgabe.
