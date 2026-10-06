@@ -69,4 +69,4 @@ wird jede Session als eigene Datei nach `docs/vorlagen/session.md` geschrieben.
 - 2026-10-06 (W9.2, autonom): AC-01 (W9.1: `economy_view_test.go`, `sim.EconomyOf` statt Weltfeldern, von der Spec erlaubt; Grund: neue Welt-Schlüssel brächen `TestFormWieBeispiele`), AC-02 (Welt-JSON und Golden unverändert, `task check` und `task check:go` grün) mit Nachweis.
 - Review des Diffs: keine schweren Befunde, keine behoben; Hinweis: `danger` ist ein Wert der Stufe, kein Wert je Bauplatz, `waitingWorker` plus `danger` heißt Gefahr.
 - Neue Tickets: keine.
-- Version: v0.14.0 vorgeschlagen (Minor: neue Schnittstelle `sim.EconomyOf` für W5.1, kein geändertes Spielverhalten); gesetzt erst nach Bestätigung durch 🧑.
+- Version: v0.13.1 vorgeschlagen (Patch: neue Lese-Schnittstelle `sim.EconomyOf` für W5.1, kein geändertes Verhalten im Spiel, Server oder Werkzeug); gesetzt erst nach Bestätigung durch 🧑.
