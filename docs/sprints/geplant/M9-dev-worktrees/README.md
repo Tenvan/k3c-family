@@ -13,7 +13,7 @@
 
 ## Ausgangslage
 
-k3c-dev bedient aus Worktrees unter `.claude/worktrees/` noch die Repo-Wurzel (B-275, Rückfall B-318); MarkdownView zeigt nummerierte Listen und Häkchen falsch (B-213).
+k3c-dev bedient aus Worktrees unter `.claude/worktrees/` noch die Repo-Wurzel (B-275); MarkdownView zeigt nummerierte Listen und Häkchen falsch (B-213).
 
 ## Ziel
 
