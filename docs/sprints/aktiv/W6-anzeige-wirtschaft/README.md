@@ -1,12 +1,12 @@
 # W6 · CLI · Anzeigen für Bau, Lager, Hub und Bürger
 
-- **Status:** geplant
+- **Status:** aktiv
 - **Domäne:** CLI
 - **Prio:** mittel
 - **Reife:** bereit
 - **Einschiebbar:** nein
 - **Tickets:** B-117, B-126
-- **Start-Commit:** –
+- **Start-Commit:** 82297cda
 - **Spec:** freigegeben
 - **Revision:** 1
 - **Freigabe:** 2026-10-05, Chat, durch 🧑, Revision 1
@@ -60,7 +60,7 @@ keine
 
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
-| W6.1 | `W6.1-reine-funktionen.md` | Umsetzung | autonom | offen |
+| W6.1 | `W6.1-reine-funktionen.md` | Umsetzung | autonom | fertig |
 | W6.2 | `W6.2-hud-bauplaetze.md` | Umsetzung | autonom | offen |
 | W6.3 | `W6.3-buerger-ui.md` | Umsetzung | autonom | offen |
 | W6.4 | `W6.4-abnahme-geraet.md` | Workshop | Mensch | offen |

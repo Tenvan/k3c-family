@@ -136,6 +136,29 @@ func TestWirtschaftDelta(t *testing.T) {
 	}
 }
 
+// W10.2 (B-332/AC-03): Der Zustand nennt Kämpfer-Zahl und Truppen-Limit; ändert sich die Kämpfer-Zahl, nennt das Delta
+// fighters, und 0 Kämpfer ist ein Wert, kein unset.
+func TestKaempferZustandUndDelta(t *testing.T) {
+	_, w := wirtschaftsInsel(t)
+	w.Events = []sim.Event{}
+	prev := stateOf(w, 0, false)
+	if s := asJSON(t, prev).(map[string]any); s["fighters"] != 2.0 || s["troopLimit"] != 10.0 {
+		t.Errorf("fighters/troopLimit: %v %v", s["fighters"], s["troopLimit"])
+	}
+	for _, tr := range w.Troops {
+		if tr.Kind == "archer" {
+			tr.Kind = "vagrant"
+		}
+	}
+	d := asJSON(t, deltaOf(prev, stateOf(w, 0, false))).(map[string]any)
+	if d["fighters"] != 0.0 || d["unset"] != nil {
+		t.Errorf("fighters/unset: %v %v", d["fighters"], d["unset"])
+	}
+	if _, ok := d["troopLimit"]; ok {
+		t.Errorf("troopLimit unverändert, steht aber im Delta")
+	}
+}
+
 // Das Beispiel s2c-snapshot-wirtschaft.json hat die Schlüssel des Zustands (rekursiv, erste Listeneinträge) und die
 // Ereignisse revived, disarmed und equipmentTaken mit ihren Feldern (AC-01, AC-06).
 func TestWirtschaftBeispiel(t *testing.T) {
