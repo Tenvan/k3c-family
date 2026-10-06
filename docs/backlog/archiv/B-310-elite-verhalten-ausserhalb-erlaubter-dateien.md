@@ -3,7 +3,7 @@
 - **Domäne:** SIM
 - **Typ:** Frage
 - **Prio:** hoch
-- **Status:** offen
+- **Status:** erledigt
 - **Sprint:** –
 - **Erstellt:** 2026-10-05
 - **Spec:** Entwurf
@@ -65,5 +65,7 @@ Welcher Weg (entscheidet 🧑)? (a) Beide Zeilen in die Erlaubten Dateien von W4
 Zeile); (b) Elite nur über HP und Rüstung, Schaden und Reichweite folgen später (widerspricht W4-AC-04/AC-06).
 
 ## Notizen
+
+**Beschluss 2026-10-06 (🧑, Chat): Option (a), Q71.** Beide Zeilen stehen jetzt in den Erlaubten Dateien von W4.3b.
 
 Gefunden zu Beginn von W4.3b (Schritt 1, Code-Stand prüfen); umgesetzt ist in W4.3b noch nichts.

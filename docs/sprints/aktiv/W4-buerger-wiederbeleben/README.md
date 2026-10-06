@@ -65,7 +65,7 @@ keine
 | W4.1 | `W4.1-wiederbeleben.md` | Umsetzung | autonom | fertig |
 | W4.2 | `W4.2-berufe-haendler.md` | Umsetzung | autonom | fertig |
 | W4.3a | `W4.3a-krieger-schwert-limit.md` | Umsetzung | autonom | fertig |
-| W4.3b | `W4.3b-elite-ruestung-heilung-golden.md` | Umsetzung | autonom | blockiert |
+| W4.3b | `W4.3b-elite-ruestung-heilung-golden.md` | Umsetzung | autonom | offen |
 | W4.4 | `W4.4-review.md` | Review | autonom | offen |
 
 W4.3 ist in zwei Dateien geteilt (a, b; Beschluss Q41, 2026-10-04), damit jede Session unter dem Richtwert von ca. 400 Code-Zeilen bleibt; die Nummern W4.1, W4.2 und W4.4 bleiben wie geplant. AC-04, AC-05 und AC-06 erfüllen W4.3a und W4.3b je zu ihrem Teil (abgegrenzt in den Session-Dateien).

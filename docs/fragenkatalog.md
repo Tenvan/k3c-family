@@ -463,3 +463,10 @@ Optionen für Gegner: (a) ein Gegner hebt sie auf und trägt sie zum Portal, dor
 **Q69 · Elite-Waffen und Ereignisse** (W4.3a, W4.3b, Q39, Q64). `troopLost` setzt einen Tod voraus, den es nach Q67 nicht mehr gibt; offen ist auch, was aus einer Elite-Waffe wird.
 Optionen: (a) Elite-Waffen fallen mit ihrer Stufe zu Boden; `troopLost` entfällt, neu `disarmed` (Felder `kind`, `x`, `cause`) beim Verlust der Ausrüstung und `equipmentTaken`, wenn ein Gegner Ausrüstung wegträgt; (b) die Elite-Stufe verfällt beim Verlust; (c) `troopLost` bleibt.
 🤖 Empfehlung: (a). Das Upgrade bleibt zurückholbar, die Ereignisse heißen nach dem, was wirklich geschieht. **Beschlossen: (a).** Ein Ereignis für „Bauer verliert Münze“ ist nicht beschlossen (offen).
+
+## Beschlüsse vom 2026-10-06 (🧑 im Chat)
+
+| Nr. | Beschluss | Wirkt auf |
+|---|---|---|
+| Q71 | **Elite-Werte über die Art:** `stepArcher` liest `troops[t.Kind]`, `stepTroops` schickt `eliteWarrior` ins Krieger-Verhalten; beide Zeilen gehören zu W4.3b (B-310, Option a). | W4.3b, B-310 |
+| Q72 | **Die Burg kann bei passivem Spiel fallen.** Das sofortige Wiederaufheben fallengelassener Ausrüstung (Q68) darf die Burg nicht unverwundbar machen; wie es begrenzt wird, klärt das Folge-Ticket. | B-311, Folge-Ticket, `rules/zielkorridore.md`, BR1 |

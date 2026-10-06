@@ -3,7 +3,7 @@
 - **Domäne:** REG
 - **Typ:** Frage
 - **Prio:** hoch
-- **Status:** offen
+- **Status:** erledigt
 - **Sprint:** –
 - **Erstellt:** 2026-10-06
 - **Spec:** Entwurf
@@ -58,6 +58,8 @@ nicht relevant (Frage)
 Soll die Burg bei passivem Spiel fallen können (🧑)?
 
 ## Notizen
+
+**Beschluss 2026-10-06 (🧑, Chat): Ja, die Burg kann bei passivem Spiel fallen (Q72).** Umsetzung als Folge-Ticket B-312 (SIM), Mechanismus dort offen.
 
 Gefunden beim CI-Fix für PR #164 (Sprint W4). Mit K1 (`equipmentTaken`: Gegner tragen Ausrüstung weg) könnte sich das
 von selbst ändern.
