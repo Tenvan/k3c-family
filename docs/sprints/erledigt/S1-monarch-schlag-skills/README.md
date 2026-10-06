@@ -2,6 +2,7 @@
 
 - **Status:** erledigt
 - **Domäne:** SIM
+- **Prio:** hoch
 - **Reife:** bereit
 - **Einschiebbar:** nein
 - **Tickets:** B-118, B-119, B-022, B-152

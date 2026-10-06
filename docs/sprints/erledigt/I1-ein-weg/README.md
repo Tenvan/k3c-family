@@ -2,6 +2,7 @@
 
 - **Status:** erledigt
 - **Domäne:** INF
+- **Prio:** hoch
 - **Reife:** bereit
 - **Einschiebbar:** nein
 - **Tickets:** B-073, B-070, B-072, B-051

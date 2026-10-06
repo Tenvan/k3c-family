@@ -2,6 +2,7 @@
 
 - **Status:** geplant
 - **Domäne:** CLI
+- **Prio:** mittel
 - **Reife:** bereit
 - **Einschiebbar:** nein
 - **Tickets:** B-117, B-126

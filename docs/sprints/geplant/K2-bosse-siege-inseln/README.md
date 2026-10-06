@@ -2,6 +2,7 @@
 
 - **Status:** geplant
 - **Domäne:** SIM
+- **Prio:** hoch
 - **Reife:** Entwurf
 - **Einschiebbar:** nein
 - **Tickets:** B-130, B-102, B-103

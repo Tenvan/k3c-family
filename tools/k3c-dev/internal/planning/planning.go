@@ -28,6 +28,7 @@ type Sprint struct {
 	ID       string    `json:"id"`
 	Title    string    `json:"title"`
 	Domain   string    `json:"domain"`
+	Prio     string    `json:"prio"`   // höchste Prio seiner Tickets (SprintPrio)
 	Status   string    `json:"status"` // aktiv | geplant | erledigt
 	Reife    string    `json:"reife"`
 	Spec     string    `json:"spec"`
@@ -176,7 +177,7 @@ func fields(lines []string) map[string]string {
 func ParseSprint(text, dir, status string) Sprint {
 	lines := strings.Split(strings.ReplaceAll(text, "\r\n", "\n"), "\n")
 	f := fields(lines)
-	s := Sprint{ID: strings.SplitN(dir, "-", 2)[0], Title: dir, Domain: f["Domäne"], Status: status, Reife: f["Reife"],
+	s := Sprint{ID: strings.SplitN(dir, "-", 2)[0], Title: dir, Domain: f["Domäne"], Prio: f["Prio"], Status: status, Reife: f["Reife"],
 		Spec: f["Spec"], Tickets: []string{}, Sessions: []Session{}}
 	if h := header(lines); len(h) >= 3 {
 		s.ID, s.Domain, s.Title = h[0], h[1], strings.Join(h[2:], " · ")

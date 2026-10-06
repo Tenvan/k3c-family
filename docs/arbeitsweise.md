@@ -70,7 +70,8 @@ Eine Session muss **ohne Rückfragen und ohne Planungs-Werkzeuge** abzuarbeiten 
 
 1. `docs/sprints/aktiv/*/README.md` lesen. Liegt `sprint/<präfix>` schon auf `origin` (`git ls-remote --heads origin
    sprint/<präfix>`), gilt der Stand der Sprint-Dateien dort (`git show origin/sprint/<präfix>:<Pfad>`), sonst der von
-   `develop`. Die erste Session mit `Status: offen`, `Agent: autonom` und erledigten Abhängigkeiten nehmen.
+   `develop`. Die erste Session mit `Status: offen`, `Agent: autonom` und erledigten Abhängigkeiten nehmen, aus dem Sprint
+   mit der höchsten **Prio** (hoch vor mittel vor niedrig vor `?`, bei Gleichstand Fahrplan-Reihenfolge).
    Gibt es keine: **nichts tun** und das melden.
 2. Sprint-Branch auschecken (fehlt er: von `origin/develop` anlegen, die erste Session setzt `Start-Commit`).
    Session-Datei vollständig lesen, `Status: in Arbeit` setzen, committen und sofort `git push -u origin sprint/<präfix>`
@@ -134,6 +135,9 @@ Grenzfälle:
 4. **Abschließen:** Erledigt ist ein Sprint erst, wenn **alle** Sessions `fertig` oder `verworfen` sind. Die letzte
    davon (meist das Review, sonst die letzte Hardware-Session) verschiebt den Ordner nach `sprints/erledigt/` und setzt `Status: erledigt`.
 
+- **Prio:** Jeder Sprint trägt die **höchste Prio seiner Tickets** (ohne Tickets frei gewählt). `plan_create` und
+  `plan_set` (mit `Tickets`) leiten sie ab, `tests/planning.test.ts` prüft sie. Ändert sich die Prio eines Tickets, zieht
+  die Sprint-Prio mit. Aktiviert und abgearbeitet wird nach Prio, bei Gleichstand in Fahrplan-Reihenfolge.
 - **Klein:** 2–4 Sessions. In Code-Sprints ist die letzte das **Review**; Doku- und Planungs-Sprints (nur `docs/`)
   haben keins, ihre letzte Session schließt den Sprint ab (Schritte 4–5 der Review-Session). Mehr Arbeit → zweiter Sprint.
 - **Blockade** (🧑 fehlt): Sprint bleibt aktiv, blockierte Session `Status: blockiert`. Ein einschiebbarer Sprint oder

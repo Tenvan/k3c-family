@@ -2,6 +2,7 @@
 
 - **Status:** erledigt
 - **Domäne:** CLI
+- **Prio:** hoch
 - **Reife:** bereit
 - **Einschiebbar:** nein
 - **Tickets:** B-179

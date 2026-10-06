@@ -2,6 +2,7 @@
 
 - **Status:** erledigt
 - **Domäne:** SRV
+- **Prio:** mittel
 - **Reife:** bereit
 - **Einschiebbar:** ja
 - **Tickets:** B-067

@@ -3,6 +3,8 @@ package planning
 import (
 	"fmt"
 	"os"
+	"regexp"
+	"slices"
 	"sort"
 	"strings"
 )
@@ -27,6 +29,11 @@ func List(root string, f Filter) (string, error) {
 	}
 	var out []string
 	if f.Kind != "ticket" {
+		order := map[string]int{"aktiv": 0, "geplant": 1, "erledigt": 2}
+		sort.SliceStable(d.Sprints, func(i, j int) bool { // je Status nach Prio, sonst Fahrplan-Reihenfolge
+			a, b := d.Sprints[i], d.Sprints[j]
+			return order[a.Status] < order[b.Status] || order[a.Status] == order[b.Status] && prioRank(a.Prio) < prioRank(b.Prio)
+		})
 		for _, s := range d.Sprints {
 			if match(f.Status, s.Status) && match(f.Domain, s.Domain) && match(f.Sprint, s.ID) {
 				out = append(out, sprintLines(s)...)
@@ -55,7 +62,7 @@ func sprintLines(s Sprint) []string {
 			done++
 		}
 	}
-	out := []string{fmt.Sprintf("%s %s %s Reife %s Spec %s · %s · Sessions %d/%d", s.ID, s.Domain, s.Status, s.Reife, s.Spec,
+	out := []string{fmt.Sprintf("%s %s %s Prio %s Reife %s Spec %s · %s · Sessions %d/%d", s.ID, s.Domain, s.Status, s.Prio, s.Reife, s.Spec,
 		s.Title, done, len(s.Sessions))}
 	if s.Status == "erledigt" {
 		return out
@@ -78,4 +85,29 @@ func archived(root string) []Ticket {
 	}
 	sort.Slice(out, func(i, j int) bool { return out[i].Nr < out[j].Nr })
 	return out
+}
+
+// SprintPrio ist die höchste Prio der genannten Tickets (offen oder archiviert); ohne bekannte Prio `?`.
+func SprintPrio(root, tickets string) string {
+	d, _ := Load(root)
+	prio := map[string]string{}
+	for _, t := range append(d.Tickets, archived(root)...) {
+		prio[t.Nr] = t.Prio
+	}
+	best := "?"
+	for _, id := range reTicketRef.FindAllString(tickets, -1) { // auch „B-011 teils“
+		if p := prio[id]; prioRank(p) < prioRank(best) {
+			best = p
+		}
+	}
+	return best
+}
+
+var reTicketRef = regexp.MustCompile(`B-\d{3}`)
+
+func prioRank(p string) int {
+	if i := slices.Index(prios, p); i >= 0 {
+		return i
+	}
+	return len(prios)
 }

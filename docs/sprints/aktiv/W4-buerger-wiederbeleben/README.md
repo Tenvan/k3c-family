@@ -2,6 +2,7 @@
 
 - **Status:** aktiv
 - **Domäne:** SIM
+- **Prio:** mittel
 - **Reife:** bereit
 - **Einschiebbar:** nein
 - **Tickets:** B-120, B-121, B-122, B-014

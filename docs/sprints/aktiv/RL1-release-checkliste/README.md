@@ -2,6 +2,7 @@
 
 - **Status:** aktiv
 - **Domäne:** INF
+- **Prio:** hoch
 - **Reife:** bereit
 - **Einschiebbar:** ja
 - **Tickets:** B-170

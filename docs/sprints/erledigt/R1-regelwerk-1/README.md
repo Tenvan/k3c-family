@@ -2,6 +2,7 @@
 
 - **Status:** erledigt
 - **Domäne:** REG
+- **Prio:** hoch
 - **Reife:** bereit
 - **Einschiebbar:** ja
 - **Tickets:** B-004, B-005, B-021, B-025

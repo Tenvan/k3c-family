@@ -4,28 +4,29 @@ Alle Sprints mit Ordner und Status. Arbeitsweise: [`../arbeitsweise.md`](../arbe
 **Lesen:** `aktiv/` immer, `geplant/` beim Planen, `erledigt/` nur auf Nachfrage.
 Jede Sprint-README ist eine Spec (SDD); aktiv wird ein Sprint erst mit `Spec: freigegeben` durch 🧑.
 Je Domäne ein aktiver Sprint (B-174); einschiebbare zählen nicht mit.
+Prio eines Sprints = höchste Prio seiner Tickets; abgearbeitet wird nach Prio, bei Gleichstand in Tabellen-Reihenfolge.
 Reihenfolge in Wellen, Bahnen je Domäne und Zuordnung Mensch/autonom (zwei Accounts): [`../plan-weiterentwicklung.md`](../plan-weiterentwicklung.md) § 11.
 
 ## Aktiv
 
-| Sprint | Domäne | Thema | Am Ende sichtbar | Ordner |
-|---|---|---|---|---|
-| GR3 | CLI | Grafik im Renderer: Gebäude, Ressourcen, Portale, Truhen, Münzen und Parallax je Biom als Sprites mit Platzhalter-Rückfall (B-010; Sicht am TV offen) | – | `aktiv/GR3-grafik-renderer/` |
-| GR5 | CLI | Juice: Treffer, Screenshake, Münzen (B-164; Abnahme am TV offen) | – | `aktiv/GR5-juice/` |
-| GR4 | INF | Atlas und Lade-Szene (B-163, B-029; Messung an der Xbox offen, GR4.3) | – | `aktiv/GR4-atlas-ladeszene/` |
-| DBG3 | PLAT | Dungeon-Master-Seite `/dm` mit Dev-API, Welle und Tageszeit (B-232; Abnahme am Handy offen) | – | `aktiv/DBG3-dungeon-master-seite/` |
-| LT1 | SRV | Lasttest-Werkzeug `task load`: Bots, Tick-Dauer und CPU im Bericht, Bewertung gegen < 10 ms (B-175; Messlauf am Pi offen) | – | `aktiv/LT1-lasttest-werkzeug/` |
-| N2 | CLI | Flüssige Darstellung: Zeitleiste mit Puffer und Extrapolation, Vorhersage des eigenen Monarchen, Latenz im Debug-Overlay (B-277, B-181; Abnahme am Gerät offen) | – | `aktiv/N2-zeitleiste-vorhersage/` |
-| S3 | CLI | Skill-Menü, Tasten und Aktionen-Overlay | – | `aktiv/S3-skill-menue-overlay/` |
-| S4 | CLI | Kamera je Stufe und Layouts 1–4: Zelle zeigt Stufe, Radar und HUD je Zelle, Mindest-Schrift (B-106; Abnahme am Gerät offen) | – | `aktiv/S4-kamera-layouts/` |
-| S5 | CLI | Optionen- und Pause-Szene mit getrennter Lautstärke, Screenshake/Flash, Farbschwäche-Symbolen und Sprache de/en (B-146, B-172; Abnahme am Gerät offen) | – | `aktiv/S5-optionen-pause/` |
-| S7 | CLI | Monarch beritten auf dem Standard-Reittier: `mountPose`, Reittier-Sheet als einzelne Spritesheets (B-173; Abnahme am Gerät offen) | – | `aktiv/S7-monarch-reittier/` |
-| SO1 | CLI | Audio-Kern: Mixer mit Bus-Lautstärke je Gerät, Entsperren per Eingabe, Sound-Atlas, Positions-Dämpfung, Demo-Ton (B-011 teils; einschiebbar; Hörprobe am TV offen) | – | `aktiv/SO1-audio-kern/` |
-| SO3 | PLAT | Hörprobenseite `soundtest.html` | – | `aktiv/SO3-hoerprobenseite/` |
-| RL1 | INF | Release-Checkliste: Abschnitt „Release“ in `docs/arbeitsweise.md`, Probelauf ohne Tag (B-170; einschiebbar; Pi und Xbox offen) | – | `aktiv/RL1-release-checkliste/` |
-| MON2 | PLAT | Monitoring-Seite `monitor.html`: Ampel je Raum, Verläufe mit Perzentilen, Fehler-Zeitleiste (B-282; Abnahme am Handy offen) | – | `aktiv/MON2-monitoring-seite/` |
-| S6 | CLI | Onboarding „Erste Nacht geführt“ und Controller-Glyphen (B-148, B-149; Abnahme am TV offen) | – | `aktiv/S6-onboarding-glyphen/` |
-| W4 | SIM | Wiederbeleben, Berufe, Händler, Elite und Limit | – | `aktiv/W4-buerger-wiederbeleben/` |
+| Sprint | Domäne | Prio | Thema | Am Ende sichtbar | Ordner |
+|---|---|---|---|---|---|
+| GR3 | CLI | mittel | Grafik im Renderer: Gebäude, Ressourcen, Portale, Truhen, Münzen und Parallax je Biom als Sprites mit Platzhalter-Rückfall (B-010; Sicht am TV offen) | – | `aktiv/GR3-grafik-renderer/` |
+| GR5 | CLI | mittel | Juice: Treffer, Screenshake, Münzen (B-164; Abnahme am TV offen) | – | `aktiv/GR5-juice/` |
+| GR4 | INF | mittel | Atlas und Lade-Szene (B-163, B-029; Messung an der Xbox offen, GR4.3) | – | `aktiv/GR4-atlas-ladeszene/` |
+| DBG3 | PLAT | hoch | Dungeon-Master-Seite `/dm` mit Dev-API, Welle und Tageszeit (B-232; Abnahme am Handy offen) | – | `aktiv/DBG3-dungeon-master-seite/` |
+| LT1 | SRV | hoch | Lasttest-Werkzeug `task load`: Bots, Tick-Dauer und CPU im Bericht, Bewertung gegen < 10 ms (B-175; Messlauf am Pi offen) | – | `aktiv/LT1-lasttest-werkzeug/` |
+| N2 | CLI | hoch | Flüssige Darstellung: Zeitleiste mit Puffer und Extrapolation, Vorhersage des eigenen Monarchen, Latenz im Debug-Overlay (B-277, B-181; Abnahme am Gerät offen) | – | `aktiv/N2-zeitleiste-vorhersage/` |
+| S3 | CLI | hoch | Skill-Menü, Tasten und Aktionen-Overlay | – | `aktiv/S3-skill-menue-overlay/` |
+| S4 | CLI | hoch | Kamera je Stufe und Layouts 1–4: Zelle zeigt Stufe, Radar und HUD je Zelle, Mindest-Schrift (B-106; Abnahme am Gerät offen) | – | `aktiv/S4-kamera-layouts/` |
+| S5 | CLI | hoch | Optionen- und Pause-Szene mit getrennter Lautstärke, Screenshake/Flash, Farbschwäche-Symbolen und Sprache de/en (B-146, B-172; Abnahme am Gerät offen) | – | `aktiv/S5-optionen-pause/` |
+| S7 | CLI | hoch | Monarch beritten auf dem Standard-Reittier: `mountPose`, Reittier-Sheet als einzelne Spritesheets (B-173; Abnahme am Gerät offen) | – | `aktiv/S7-monarch-reittier/` |
+| SO1 | CLI | mittel | Audio-Kern: Mixer mit Bus-Lautstärke je Gerät, Entsperren per Eingabe, Sound-Atlas, Positions-Dämpfung, Demo-Ton (B-011 teils; einschiebbar; Hörprobe am TV offen) | – | `aktiv/SO1-audio-kern/` |
+| SO3 | PLAT | mittel | Hörprobenseite `soundtest.html` | – | `aktiv/SO3-hoerprobenseite/` |
+| RL1 | INF | hoch | Release-Checkliste: Abschnitt „Release“ in `docs/arbeitsweise.md`, Probelauf ohne Tag (B-170; einschiebbar; Pi und Xbox offen) | – | `aktiv/RL1-release-checkliste/` |
+| MON2 | PLAT | hoch | Monitoring-Seite `monitor.html`: Ampel je Raum, Verläufe mit Perzentilen, Fehler-Zeitleiste (B-282; Abnahme am Handy offen) | – | `aktiv/MON2-monitoring-seite/` |
+| S6 | CLI | hoch | Onboarding „Erste Nacht geführt“ und Controller-Glyphen (B-148, B-149; Abnahme am TV offen) | – | `aktiv/S6-onboarding-glyphen/` |
+| W4 | SIM | mittel | Wiederbeleben, Berufe, Händler, Elite und Limit | – | `aktiv/W4-buerger-wiederbeleben/` |
 
 ## Offen am Gerät
 
@@ -56,26 +57,26 @@ Hardware-Sessions (`Agent: Mensch`) aus Sprints, deren Review schon abgeschlosse
 Der Weg zur Go-Engine ([Entscheidung 001](../decisions/001-server-engine-go.md)). Nach SP08 spielt man wieder am TV,
 dann über den Go-Server mit mehreren Räumen und gemischten Spielern.
 
-| Sprint | Domäne | Thema | Am Ende sichtbar | Reife | Ordner |
-|---|---|---|---|---|---|
-| P1 | REG 🧑 | Spieleabend 1 | Protokoll und Folge-Tickets | Entwurf | `geplant/P1-spieleabend-1/` |
-| W5 | SRV | Protokoll für Berufe, Händler, Lager und Hub-Stufe | `docs/protocol.md` mit neuen Feldern, Beispiele in `testdata/protocol/`, `task check:go` und `task check` grün | bereit | `geplant/W5-protokoll-wirtschaft/` |
-| W6 | CLI | Anzeigen für Bau, Lager, Hub und Bürger | HUD und Bauplätze am TV, von 🧑 abgenommen | bereit | `geplant/W6-anzeige-wirtschaft/` |
-| BR1 | REG 🧑 | Balancing-Runde Wirtschaft und Spieleabend 2 | Pass/Fail je Kennzahl, Begründungen in `docs/rules/`, Protokoll in `docs/playtests/` | Entwurf | `geplant/BR1-balancing-wirtschaft/` |
-| K1 | SIM | Gegner-Traits, neue Gegner und Elite-KI | Tests je Trait und Gegner grün, aktualisierte Golden-Daten | bereit | `geplant/K1-gegner-traits/` |
-| K2 | SIM | Bosse, Siegvarianten und Inselwechsel | Tests je Boss, Siegvariante und Modus grün, Spielstand mit besiegten Bossen und aktueller Insel | Entwurf | `geplant/K2-bosse-siege-inseln/` |
-| K3 | SIM | Events Vollmond, Blutmond und Händler-Überfall | Tests je Event grün, aktualisierte Golden-Daten | bereit | `geplant/K3-events/` |
-| K4 | SRV | Protokoll für Bosse, Events und Inselwechsel | `docs/protocol.md` mit neuen Feldern, Beispiele in `testdata/protocol/`, `task check:go` und `task check` grün | bereit | `geplant/K4-protokoll-kampf/` |
-| K5 | CLI | Anzeigen für Kampf, Bosse und Events, Anlegen-Dialog, Debug-Panel | Boss-Leiste, Warnkreis und Event-Banner am TV, Lobby-Dialog, von 🧑 abgenommen | bereit | `geplant/K5-anzeige-kampf/` |
-| BR2 | REG 🧑 | Balancing-Runde Kampf und Bosse und Spieleabend 3 | Pass/Fail je Kennzahl, Begründungen in `docs/rules/`, Protokoll in `docs/playtests/` | Entwurf | `geplant/BR2-balancing-kampf/` |
+| Sprint | Domäne | Prio | Thema | Am Ende sichtbar | Reife | Ordner |
+|---|---|---|---|---|---|---|
+| P1 | REG 🧑 | hoch | Spieleabend 1 | Protokoll und Folge-Tickets | Entwurf | `geplant/P1-spieleabend-1/` |
+| W5 | SRV | hoch | Protokoll für Berufe, Händler, Lager und Hub-Stufe | `docs/protocol.md` mit neuen Feldern, Beispiele in `testdata/protocol/`, `task check:go` und `task check` grün | bereit | `geplant/W5-protokoll-wirtschaft/` |
+| W6 | CLI | mittel | Anzeigen für Bau, Lager, Hub und Bürger | HUD und Bauplätze am TV, von 🧑 abgenommen | bereit | `geplant/W6-anzeige-wirtschaft/` |
+| BR1 | REG 🧑 | hoch | Balancing-Runde Wirtschaft und Spieleabend 2 | Pass/Fail je Kennzahl, Begründungen in `docs/rules/`, Protokoll in `docs/playtests/` | Entwurf | `geplant/BR1-balancing-wirtschaft/` |
+| K1 | SIM | mittel | Gegner-Traits, neue Gegner und Elite-KI | Tests je Trait und Gegner grün, aktualisierte Golden-Daten | bereit | `geplant/K1-gegner-traits/` |
+| K2 | SIM | hoch | Bosse, Siegvarianten und Inselwechsel | Tests je Boss, Siegvariante und Modus grün, Spielstand mit besiegten Bossen und aktueller Insel | Entwurf | `geplant/K2-bosse-siege-inseln/` |
+| K3 | SIM | niedrig | Events Vollmond, Blutmond und Händler-Überfall | Tests je Event grün, aktualisierte Golden-Daten | bereit | `geplant/K3-events/` |
+| K4 | SRV | hoch | Protokoll für Bosse, Events und Inselwechsel | `docs/protocol.md` mit neuen Feldern, Beispiele in `testdata/protocol/`, `task check:go` und `task check` grün | bereit | `geplant/K4-protokoll-kampf/` |
+| K5 | CLI | mittel | Anzeigen für Kampf, Bosse und Events, Anlegen-Dialog, Debug-Panel | Boss-Leiste, Warnkreis und Event-Banner am TV, Lobby-Dialog, von 🧑 abgenommen | bereit | `geplant/K5-anzeige-kampf/` |
+| BR2 | REG 🧑 | hoch | Balancing-Runde Kampf und Bosse und Spieleabend 3 | Pass/Fail je Kennzahl, Begründungen in `docs/rules/`, Protokoll in `docs/playtests/` | Entwurf | `geplant/BR2-balancing-kampf/` |
 
 **Einschiebbar** (Schienen Balancing, Grafik, Sound, Betrieb; unabhängig vom Engine-Fortschritt, jeweils zwischen zwei Sprints):
 
-| Sprint | Domäne | Thema | Reife | Ordner |
-|---|---|---|---|---|
-| BAL4 | REG | Abgleich Spielmetrik und Simulator | Entwurf | `geplant/BAL4-metrik-abgleich/` |
-| SO2 | CLI | SFX-Katalog und Einbau | Entwurf | `geplant/SO2-sfx-katalog/` |
-| SO4 | CLI | Musik je Zustand | Entwurf | `geplant/SO4-musik/` |
+| Sprint | Domäne | Prio | Thema | Reife | Ordner |
+|---|---|---|---|---|---|
+| BAL4 | REG | mittel | Abgleich Spielmetrik und Simulator | Entwurf | `geplant/BAL4-metrik-abgleich/` |
+| SO2 | CLI | mittel | SFX-Katalog und Einbau | Entwurf | `geplant/SO2-sfx-katalog/` |
+| SO4 | CLI | mittel | Musik je Zustand | Entwurf | `geplant/SO4-musik/` |
 
 Gesamtplan und Begründung: [`../plan-weiterentwicklung.md`](../plan-weiterentwicklung.md). Offene Entscheidungen: [`../fragenkatalog.md`](../fragenkatalog.md).
 

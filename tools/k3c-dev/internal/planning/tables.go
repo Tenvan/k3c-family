@@ -129,7 +129,7 @@ func syncRoadmap(c *changeSet, sp Sprint, f map[string]string, oldDir, newDir st
 	if !ok {
 		return fmt.Errorf("sprints/README.md: Tabelle für %s fehlt", sp.Status)
 	}
-	known := map[string]string{"Sprint": sp.ID, "Domäne": sp.Domain, "Reife": sp.Reife,
+	known := map[string]string{"Sprint": sp.ID, "Domäne": sp.Domain, "Prio": sp.Prio, "Reife": sp.Reife,
 		"Ordner": "`" + strings.TrimPrefix(newDir, "sprints/") + "/`"}
 	row := make([]string, len(t.header))
 	for k, h := range t.header {

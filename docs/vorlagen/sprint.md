@@ -2,6 +2,7 @@
 
 - **Status:** geplant | aktiv | erledigt
 - **Domäne:** REG | SIM | SRV | CLI | PLAT | INF
+- **Prio:** hoch | mittel | niedrig | ? (höchste Prio der Tickets; `plan_create` setzt sie)
 - **Reife:** Entwurf | bereit
 - **Einschiebbar:** nein | ja
 - **Tickets:** B-000, B-000

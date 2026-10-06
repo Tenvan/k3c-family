@@ -12,11 +12,12 @@ import (
 var (
 	domains = []string{"REG", "SIM", "SRV", "CLI", "PLAT", "INF"}
 	specs   = []string{"Entwurf", "freigegeben", "rückwirkend"}
+	prios   = []string{"hoch", "mittel", "niedrig", "?"} // Rangfolge: hoch zuerst
 	// allowed sind die Auswahlfelder je Art, wie in tests/planning.test.ts.
 	allowed = map[string]map[string][]string{
-		"ticket": {"Domäne": domains, "Typ": {"Idee", "Problem", "Schuld", "Frage"}, "Prio": {"hoch", "mittel", "niedrig", "?"},
+		"ticket": {"Domäne": domains, "Typ": {"Idee", "Problem", "Schuld", "Frage"}, "Prio": prios,
 			"Status": {"offen", "eingeplant", "erledigt", "verworfen"}, "Spec": specs},
-		"sprint": {"Status": States, "Domäne": domains, "Reife": {"Entwurf", "bereit"}, "Einschiebbar": {"nein", "ja"}, "Spec": specs},
+		"sprint": {"Status": States, "Domäne": domains, "Prio": prios, "Reife": {"Entwurf", "bereit"}, "Einschiebbar": {"nein", "ja"}, "Spec": specs},
 		"session": {"Status": {"offen", "in Arbeit", "fertig", "blockiert"}, "Typ": {"Umsetzung", "Review", "Workshop"},
 			"Agent": {"autonom", "Mensch"}},
 	}
@@ -130,6 +131,9 @@ func Set(root, id string, values map[string]string) (string, error) {
 	text, err := c.read(r.rel)
 	if err != nil {
 		return "", err
+	}
+	if _, ok := values["Prio"]; r.kind == "sprint" && !ok && values["Tickets"] != "" {
+		values["Prio"] = SprintPrio(root, values["Tickets"]) // Prio folgt den Tickets
 	}
 	if text, err = setFields(root, r.kind, text, values); err != nil {
 		return "", err

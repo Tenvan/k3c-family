@@ -2,6 +2,7 @@
 
 - **Status:** aktiv
 - **Domäne:** CLI
+- **Prio:** hoch
 - **Reife:** bereit
 - **Einschiebbar:** ja
 - **Tickets:** B-277, B-181

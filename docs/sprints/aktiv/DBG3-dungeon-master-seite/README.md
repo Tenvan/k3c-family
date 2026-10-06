@@ -2,6 +2,7 @@
 
 - **Status:** aktiv
 - **Domäne:** PLAT
+- **Prio:** hoch
 - **Reife:** bereit
 - **Einschiebbar:** ja
 - **Tickets:** B-232

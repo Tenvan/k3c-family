@@ -2,6 +2,7 @@
 
 - **Status:** erledigt
 - **Domäne:** SIM
+- **Prio:** mittel
 - **Reife:** bereit
 - **Einschiebbar:** nein
 - **Tickets:** B-116

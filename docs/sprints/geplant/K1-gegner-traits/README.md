@@ -2,6 +2,7 @@
 
 - **Status:** geplant
 - **Domäne:** SIM
+- **Prio:** mittel
 - **Reife:** bereit
 - **Einschiebbar:** nein
 - **Tickets:** B-128, B-129, B-013

@@ -2,6 +2,7 @@
 
 - **Status:** aktiv
 - **Domäne:** SRV
+- **Prio:** hoch
 - **Reife:** bereit
 - **Einschiebbar:** nein
 - **Tickets:** B-175, B-042

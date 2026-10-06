@@ -2,6 +2,7 @@
 
 - **Status:** erledigt
 - **Domäne:** PLAT
+- **Prio:** mittel
 - **Reife:** bereit
 - **Einschiebbar:** nein
 - **Tickets:** B-092

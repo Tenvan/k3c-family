@@ -2,6 +2,7 @@
 
 - **Status:** aktiv
 - **Domäne:** PLAT
+- **Prio:** mittel
 - **Reife:** bereit
 - **Einschiebbar:** ja
 - **Tickets:** B-169
