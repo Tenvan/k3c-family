@@ -129,9 +129,9 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-322](B-322-texte-werkzeug-seiten.md) | PLAT | Schuld | niedrig | eingeplant | PL2 | Die Werkzeug-Seiten holen ihre Texte aus den zentralen Textdateien |
 | [B-323](B-323-welt-spiegelt-lager-hub-ausbau.md) | SIM | Frage | hoch | offen | – | Die Welt spiegelt Lager-Maximum, Hub-Ausbau mit Kosten und Wartegrund „Gefahr“ für das Protokoll |
 | [B-324](B-324-client-typen-gegnerdaten.md) | CLI | Schuld | niedrig | offen | – | Die Client-Typen der Gegner- und Wellendaten passen zu den JSON-Dateien |
-| [B-326](B-326-k1-3-grafik-luecken-neue-gegner.md) | SIM | Frage | hoch | offen | K1 | K1.3 darf den sechs neuen Gegnern Platzhalter-Sprites und Zuordnungs-Zeilen geben |
 | [B-327](B-327-golden-tiefe-stufen.md) | SIM | Frage | niedrig | offen | K1 | Golden-Läufe decken Eisenstollen und Kristallhöhle ab |
 | [B-328](B-328-feuergeist-flammen-flaeche.md) | SIM | Frage | niedrig | offen | K1 | Der Feuergeist hinterlässt eine Flammen-Fläche |
+| [B-329](B-329-figuren-neue-gegner.md) | CLI | Schuld | niedrig | offen | – | Die sechs neuen Gegner zeigen eigene Figuren statt Platzhalter |
 
 ## Archiv
 
@@ -302,3 +302,4 @@ Zeile in diesen Abschnitt.
 | [B-310](archiv/B-310-elite-verhalten-ausserhalb-erlaubter-dateien.md) | SIM | Frage | hoch | erledigt | – | Elite-Werte wirken nur mit Änderungen außerhalb der Erlaubten Dateien von W4.3b |
 | [B-311](archiv/B-311-passive-burg-faellt-nicht.md) | REG | Frage | hoch | erledigt | – | Mit der Verlust-Kaskade fällt die Burg bei passivem Spiel nie |
 | [B-325](archiv/B-325-gebaeude-ziel-upgrade-test.md) | SIM | Frage | mittel | erledigt | – | K1.2 darf den Testaufbau des Elite-Bogenschützen anpassen |
+| [B-326](archiv/B-326-k1-3-grafik-luecken-neue-gegner.md) | SIM | Frage | hoch | erledigt | – | K1.3 darf den sechs neuen Gegnern Platzhalter-Sprites und Zuordnungs-Zeilen geben |

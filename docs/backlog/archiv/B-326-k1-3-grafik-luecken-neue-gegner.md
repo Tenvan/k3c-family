@@ -4,7 +4,7 @@
 - **Typ:** Frage
 - **Prio:** hoch
 - **Umgebung:** offline
-- **Status:** offen
+- **Status:** erledigt
 - **Sprint:** K1
 - **Erstellt:** 2026-10-06
 - **Spec:** Entwurf
@@ -50,6 +50,8 @@ nicht relevant: reine Freigabe einer Datei.
 ## Offene Fragen
 
 Darf K1.3 Platzhalter-Sprites in `data/sprites.json` und die Zeilen in `docs/assets/zuordnung-objekte.md` eintragen, und welche Sprites? 🧑
+
+**Entscheidung 🧑 2026-10-06 (Chat):** „Platzhalter erlauben“. Umgesetzt in K1.3 nach dem Vorschlag: Lavaschleim `mushroom` `#e63946`, Eisenkäfer `hell-hound` `#8f8f8f`, Feuergeist `ghost` `#f4a261`, Kristallspinne `hell-hound` `#4ea8de`, Splitterwicht `mushroom` `#a9def9`, Kristallwächter `hell-gato` `#4361ee`; Zeilen `zugeordnet` mit Vermerk „Platzhalter“. Echte Figuren: B-329. `task check` grün.
 
 ## Notizen
 
