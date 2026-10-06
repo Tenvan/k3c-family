@@ -60,7 +60,7 @@ func TestEconomyOhneInselUndStufe5(t *testing.T) {
 	}
 }
 
-// W10.1 (B-331, Sprint W10 AC-02): Kämpfer-Zahl und Truppen-Limit aus fighters und troopLimit, noch nicht im JSON.
+// W10.1 (B-332, Sprint W10 AC-02): Kämpfer-Zahl und Truppen-Limit aus fighters und troopLimit, noch nicht im JSON.
 func TestEconomyKaempferUndLimit(t *testing.T) {
 	w := quietWorld(t)
 	l := buildings["barracks"].TroopLimit

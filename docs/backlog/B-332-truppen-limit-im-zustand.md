@@ -1,4 +1,4 @@
-# B-331 · Kämpfer-Zahl und Truppen-Limit stehen im Zustand
+# B-332 · Kämpfer-Zahl und Truppen-Limit stehen im Zustand
 
 - **Domäne:** SRV
 - **Typ:** Frage
@@ -9,7 +9,7 @@
 - **Erstellt:** 2026-10-06
 - **Spec:** freigegeben
 - **Revision:** 1
-- **Freigabe:** 2026-10-06, Chat, durch 🧑, Revision 1; B-331 Variante A, Domänen-Ausnahme SIM economy_view
+- **Freigabe:** 2026-10-06, Chat, durch 🧑, Revision 1; B-332 Variante A, Domänen-Ausnahme SIM economy_view
 
 ## Ausgangslage
 

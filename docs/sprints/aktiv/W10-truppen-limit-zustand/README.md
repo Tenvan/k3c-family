@@ -5,15 +5,15 @@
 - **Prio:** hoch
 - **Reife:** bereit
 - **Einschiebbar:** ja
-- **Tickets:** B-331
+- **Tickets:** B-332
 - **Start-Commit:** f6ad680
 - **Spec:** freigegeben
 - **Revision:** 1
-- **Freigabe:** 2026-10-06, Chat, durch 🧑, Revision 1; B-331 Variante A, Domänen-Ausnahme SIM economy_view
+- **Freigabe:** 2026-10-06, Chat, durch 🧑, Revision 1; B-332 Variante A, Domänen-Ausnahme SIM economy_view
 
 ## Ausgangslage
 
-W6.1 braucht für den Limit-Text „Kämpfer/Limit“ die Zahl der Kämpfer und das Truppen-Limit je Stufe. Der Zustand v5 nennt beides nicht: `fighters(w)` und `troopLimit(w)` (`engine/sim/barracks.go`) sind unexportiert, `sim.EconomyOf` (`engine/sim/economy_view.go`) liefert nur `stockMax`, `hubLevel`, `hubUpgrade`, `danger` (B-331). Entscheidung 🧑 2026-10-06: Variante A.
+W6.1 braucht für den Limit-Text „Kämpfer/Limit“ die Zahl der Kämpfer und das Truppen-Limit je Stufe. Der Zustand v5 nennt beides nicht: `fighters(w)` und `troopLimit(w)` (`engine/sim/barracks.go`) sind unexportiert, `sim.EconomyOf` (`engine/sim/economy_view.go`) liefert nur `stockMax`, `hubLevel`, `hubUpgrade`, `danger` (B-332). Entscheidung 🧑 2026-10-06: Variante A.
 
 ## Ziel
 
@@ -27,7 +27,7 @@ Entwickler SRV (Umsetzung, mit Domänen-Ausnahme SIM für `engine/sim/economy_vi
 
 ## Anforderungen
 
-B-331 › Anforderungen, Variante A.
+B-332 › Anforderungen, Variante A.
 
 ## Nicht-Ziele
 
@@ -43,17 +43,17 @@ Limit-Text und Anzeige im HUD (W6.1, W6.3); Änderung der Limit-Regel (`docs/rul
 
 ## Beispiele
 
-12 Kämpfer, eine Kaserne gebaut → Zustand `fighters: 12, troopLimit: 20` (B-331 › Beispiele). Ohne Kaserne, keine Kämpfer → `fighters: 0, troopLimit: 10`.
+12 Kämpfer, eine Kaserne gebaut → Zustand `fighters: 12, troopLimit: 20` (B-332 › Beispiele). Ohne Kaserne, keine Kämpfer → `fighters: 0, troopLimit: 10`.
 
 ## Ausnahme- und Fehlerfälle
 
-Älterer Server ohne die Felder → Client-Typ hat sie optional, kein Fehler (B-331 › Ausnahme- und Fehlerfälle). Zerstörte Kaserne zählt nicht (Regel in `troopLimit`).
+Älterer Server ohne die Felder → Client-Typ hat sie optional, kein Fehler (B-332 › Ausnahme- und Fehlerfälle). Zerstörte Kaserne zählt nicht (Regel in `troopLimit`).
 
 ## Akzeptanzkriterien
 
-- **AC-01** Variante A ist in B-331 mit Datum durch 🧑 festgehalten, W6 ist angepasst (W6.1 hängt von W10 ab) (B-331/AC-01).
-- **AC-02** `sim.EconomyOf` liefert Kämpfer-Zahl und Truppen-Limit der Stufe, abgelesen aus `fighters(w)` und `troopLimit(w)`; ein Go-Test in `engine/sim/` belegt es; Welt-JSON und Golden unverändert (B-331 › Anforderungen, Variante A).
-- **AC-03** Der Server sendet `fighters` und `troopLimit` oben in `s` (`snap`, `delta`); `docs/protocol.md` › Wirtschaft, `testdata/protocol/` und `src/model/types.ts` (optional) nennen sie; Version bleibt 5; ein Client-Test belegt den Zustand ohne die Felder (B-331 › Anforderungen, Ausnahme- und Fehlerfälle).
+- **AC-01** Variante A ist in B-332 mit Datum durch 🧑 festgehalten, W6 ist angepasst (W6.1 hängt von W10 ab) (B-332/AC-01).
+- **AC-02** `sim.EconomyOf` liefert Kämpfer-Zahl und Truppen-Limit der Stufe, abgelesen aus `fighters(w)` und `troopLimit(w)`; ein Go-Test in `engine/sim/` belegt es; Welt-JSON und Golden unverändert (B-332 › Anforderungen, Variante A).
+- **AC-03** Der Server sendet `fighters` und `troopLimit` oben in `s` (`snap`, `delta`); `docs/protocol.md` › Wirtschaft, `testdata/protocol/` und `src/model/types.ts` (optional) nennen sie; Version bleibt 5; ein Client-Test belegt den Zustand ohne die Felder (B-332 › Anforderungen, Ausnahme- und Fehlerfälle).
 
 ## Offene Fragen
 

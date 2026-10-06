@@ -14,7 +14,7 @@ type Economy struct {
 	HubUpgrade *HubUpgrade `json:"hubUpgrade,omitempty"`
 	// Danger: Nacht oder Gegner da, Bau und Ausbau warten (`waitingWorker` heißt dann Gefahr, nicht „kein Bauer“).
 	Danger bool `json:"danger,omitempty"`
-	// Fighters ist die Zahl der Kämpfer der Stufe, TroopLimit ihr Truppen-Limit (barracks.go; B-331, W10.1). Noch
+	// Fighters ist die Zahl der Kämpfer der Stufe, TroopLimit ihr Truppen-Limit (barracks.go; B-332, W10.1). Noch
 	// ohne JSON-Namen: stateOf (engine/net) übernimmt jedes JSON-Feld in den Zustand, das Protokoll folgt in W10.2.
 	Fighters   int `json:"-"`
 	TroopLimit int `json:"-"`
