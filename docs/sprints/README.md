@@ -27,6 +27,7 @@ Reihenfolge in Wellen, Bahnen je Domäne und Zuordnung Mensch/autonom (zwei Acco
 | MON2 | PLAT | hoch | Monitoring-Seite `monitor.html`: Ampel je Raum, Verläufe mit Perzentilen, Fehler-Zeitleiste (B-282; Abnahme am Handy offen) | – | `aktiv/MON2-monitoring-seite/` |
 | S6 | CLI | hoch | Onboarding „Erste Nacht geführt“ und Controller-Glyphen (B-148, B-149; Abnahme am TV offen) | – | `aktiv/S6-onboarding-glyphen/` |
 | W5 | SRV | hoch | Protokoll für Berufe, Händler, Lager und Hub-Stufe (B-153, B-283) | – | `aktiv/W5-protokoll-wirtschaft/` |
+| W9 | SIM | hoch | Welt spiegelt Lager-Maximum, Hub-Ausbau und Gefahr (B-323, vor W5.1, einschiebbar) | – | `aktiv/W9-welt-spiegel-wirtschaft/` |
 
 ## Offen am Gerät
 
@@ -59,7 +60,6 @@ dann über den Go-Server mit mehreren Räumen und gemischten Spielern.
 
 | Sprint | Domäne | Prio | Thema | Am Ende sichtbar | Reife | Ordner |
 |---|---|---|---|---|---|---|
-| W9 | SIM | hoch | Welt spiegelt Lager-Maximum, Hub-Ausbau und Gefahr (B-323, vor W5.1, einschiebbar) | Go-Test liest die Werte aus der Welt, `task check:go` grün | bereit | `geplant/W9-welt-spiegel-wirtschaft/` |
 | P1 | REG 🧑 | hoch | Spieleabend 1 | Protokoll und Folge-Tickets | Entwurf | `geplant/P1-spieleabend-1/` |
 | W6 | CLI | mittel | Anzeigen für Bau, Lager, Hub und Bürger | HUD und Bauplätze am TV, von 🧑 abgenommen | bereit | `geplant/W6-anzeige-wirtschaft/` |
 | BR1 | REG 🧑 | hoch | Balancing-Runde Wirtschaft und Spieleabend 2 | Pass/Fail je Kennzahl, Begründungen in `docs/rules/`, Protokoll in `docs/playtests/` | Entwurf | `geplant/BR1-balancing-wirtschaft/` |

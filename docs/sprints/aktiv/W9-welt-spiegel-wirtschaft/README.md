@@ -1,12 +1,12 @@
 # W9 · SIM · Welt spiegelt Lager-Maximum, Hub-Ausbau und Gefahr
 
-- **Status:** geplant
+- **Status:** aktiv
 - **Domäne:** SIM
 - **Prio:** hoch
 - **Reife:** bereit
 - **Einschiebbar:** ja
 - **Tickets:** B-323
-- **Start-Commit:** –
+- **Start-Commit:** 305fb379
 - **Spec:** freigegeben
 - **Revision:** 1
 - **Freigabe:** 2026-10-06, Chat, durch 🧑, Revision 1
@@ -58,7 +58,7 @@ keine
 
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
-| W9.1 | `W9.1-welt-spiegeln.md` | Umsetzung | autonom | offen |
+| W9.1 | `W9.1-welt-spiegeln.md` | Umsetzung | autonom | in Arbeit |
 | W9.2 | `W9.2-review.md` | Review | autonom | offen |
 
 Bei `Reife: Entwurf` genügen Stichpunkte mit den Kriterien in Klammern statt Session-Dateien. Vor dem Aktivieren
