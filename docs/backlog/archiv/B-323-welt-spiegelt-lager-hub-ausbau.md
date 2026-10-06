@@ -4,12 +4,12 @@
 - **Typ:** Frage
 - **Prio:** hoch
 - **Umgebung:** offline
-- **Status:** offen
-- **Sprint:** –
+- **Status:** erledigt
+- **Sprint:** W9
 - **Erstellt:** 2026-10-06
-- **Spec:** Entwurf
+- **Spec:** freigegeben
 - **Revision:** 1
-- **Freigabe:** –
+- **Freigabe:** 2026-10-06, Chat, durch 🧑, Revision 1
 
 ## Ausgangslage
 
@@ -56,7 +56,7 @@ Welt ohne Insel (Campaign): kein Maximum (Feld fehlt). Hub-Stufe 5: keine Ausbau
 
 ## Offene Fragen
 
-Welcher Weg (🧑)?
+Welcher Weg (🧑)? **Entschieden 2026-10-06 (🧑, Chat): Weg 1, eigene SIM-Session vor W5.1 → Sprint W9.**
 
 1. **Eigene SIM-Session vor W5.1** (Vorschlag): spiegelt die Werte in `World` (z. B. `stockMax`, `hubLevel`, `hubUpgrade`, Wartegrund „Gefahr“ am Bauplatz); W5.1 läuft danach unverändert. Golden-Diff möglich, weil neue Felder im JSON stehen.
 2. **W5.1 macht die Spiegelung selbst in `engine/sim/`:** Spec-Revision von W5 (Erlaubte Dateien, Domänen-Ausnahme).

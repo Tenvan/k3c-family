@@ -13,7 +13,7 @@ func upgradeAt(t *testing.T, w *World, players []*Player, s *Site) float64 {
 	if lv == nil {
 		t.Fatalf("%s@%v Stufe %d nicht ausbaubar", s.Kind, s.X, levelOf(w, s))
 	}
-	*w.Stock = materialOnly(lv.Cost)
+	*w.Stock = materialOf(lv.Cost)
 	share := lv.Cost.Gold / len(players)
 	for i, p := range players {
 		p.Gold = share

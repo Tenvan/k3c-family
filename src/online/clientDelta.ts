@@ -4,7 +4,7 @@ type State = Record<string, unknown>;
 type Entry = { id: number };
 
 /** Listen, deren Einträge eine `id` haben: im Delta als `{ set, del }`. */
-const ID_LISTS = new Set(['players', 'coins', 'troops', 'nodes', 'sites', 'enemies', 'projectiles', 'pickups']);
+const ID_LISTS = new Set(['players', 'coins', 'troops', 'nodes', 'sites', 'enemies', 'projectiles', 'pickups', 'drops']);
 
 function mergeList(old: Entry[] | undefined, change: { set?: Entry[]; del?: number[] }): Entry[] {
   const removed = new Set(change.del ?? []);

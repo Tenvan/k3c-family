@@ -4,12 +4,12 @@
 - **Typ:** Idee
 - **Prio:** hoch
 - **Umgebung:** offline
-- **Status:** eingeplant
+- **Status:** erledigt
 - **Sprint:** W5
 - **Erstellt:** 2026-10-02
 - **Spec:** freigegeben
-- **Revision:** 1
-- **Freigabe:** 2026-10-05, Chat, durch 🧑, mit Sprint W5
+- **Revision:** 2
+- **Freigabe:** 2026-10-06, Chat, durch 🧑, Revision 2; B-330 Variante B
 
 ## Ausgangslage
 
@@ -17,7 +17,7 @@ Die Simulation bekommt in W1 bis W4 Hub-Stufen, Lager, Berufe und Händler (B-11
 
 ## Ziel
 
-Der Client erhält Hub-Stufe mit Ausbaukosten, Lagerstand mit Maximum je Rohstoff, Wartegrund je Bauplatz und den Zustand des Händlers; Eingaben für Hub-Ausbau und Händlertausch sind serverseitig geprüft. Nutzen: B-117 und B-126 können ohne Rechnen im Client zeichnen.
+Der Client erhält Hub-Stufe mit Ausbaukosten, Lagerstand mit Maximum je Rohstoff, Wartegrund je Bauplatz und den Zustand des Händlers. Hub-Ausbau und Händlertausch bleiben Bezahlen am Ort über `input.pay` (B-330, Variante B). Nutzen: B-117 und B-126 können ohne Rechnen im Client zeichnen.
 
 ## Beteiligte und Zielgruppen
 
@@ -26,8 +26,8 @@ Entwickler (Client und Server); eigene Session laut `docs/arbeitsweise.md` › P
 ## Anforderungen
 
 - Zustand (s2c): Hub-Stufe und Ausbaukosten je Hub, Lagerstand und Maximum je Rohstoff, Wartegrund je Bauplatz (Bauer fehlt, Material fehlt, Gefahr), Händler (anwesend, Angebot, Rest der Zeit); Berufe der Bürger, soweit B-123 sie nicht schon liefert.
-- Eingaben (c2s): Hub ausbauen, beim Händler tauschen; Berufswahl nur, soweit B-123 sie nicht schon enthält.
-- Protokollversion erhöhen, Testdaten in `testdata/protocol/`, serverseitige Prüfung aller Eingaben.
+- Eingaben (c2s): keine neuen; Hub ausbauen, beim Händler tauschen und Berufswahl bleiben `input.pay` am Ort (B-330, Entscheidung 🧑 2026-10-06).
+- Protokollversion erhöhen, Testdaten in `testdata/protocol/`.
 - Snapshot-Größe messen (`engine/sim/island_bench_test.go`), Delta-tauglich (`engine/net/delta.go`).
 
 ## Nicht-Ziele
@@ -44,14 +44,14 @@ Darstellung (B-117, B-126), Simulation (B-112, B-121), Feedback-Events (B-140), 
 
 ## Ausnahme- und Fehlerfälle
 
-Tausch ohne Händler, Hub-Ausbau ohne Material oder unbekannter Beruf → `bad_request`.
+nicht relevant: keine neuen Eingaben (B-330). Am Ort ohne Händler passiert nichts, ohne Material wartet der Hub-Ausbau (Sim, W1).
 
 ## Akzeptanzkriterien
 
 - **AC-01** `docs/protocol.md` beschreibt die neuen Felder (Hub-Stufe, Lager, Wartegrund, Händler); `testdata/protocol/` hat Beispiele; beide Enden parsen sie (Tests).
-- **AC-02** Der Server lehnt ungültige Eingaben (Hub-Ausbau ohne Material, Tausch ohne Händler, unbekannter Beruf) mit `bad_request` ab (Test in `engine/net/`).
+- **AC-02** verworfen (B-330, Entscheidung 🧑 2026-10-06): ~~Der Server lehnt ungültige Eingaben (Hub-Ausbau ohne Material, Tausch ohne Händler, unbekannter Beruf) mit `bad_request` ab (Test in `engine/net/`).~~
 - **AC-03** Der Snapshot einer Insel mit Hub-Ausbau, gefülltem Lager und Händler enthält Hub-Stufe, Lagerstand mit Maximum, Wartegrund und Händler-Zustand (Test auf Testdaten).
-- **AC-04** Protokollversion erhöht; ein älterer Client erhält `version` (Test).
+- **AC-04** Protokollversion erhöht (wegen der neuen Felder); ein älterer Client erhält `version` (Test).
 - **AC-05** Bytes je Tick mit 4 Spielern und 3 Stufen vor und nach der Änderung gemessen und in den Notizen festgehalten; `task check:go` grün.
 
 ## Offene Fragen
