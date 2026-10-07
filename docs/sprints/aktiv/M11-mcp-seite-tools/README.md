@@ -58,7 +58,7 @@ keine
 
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
-| M11.1 | `M11.1-tools-zeitfilter.md` | Umsetzung | autonom | in Arbeit |
+| M11.1 | `M11.1-tools-zeitfilter.md` | Umsetzung | autonom | fertig |
 | M11.2 | `M11.2-review.md` | Review | autonom | offen |
 
 ## Abnahme
