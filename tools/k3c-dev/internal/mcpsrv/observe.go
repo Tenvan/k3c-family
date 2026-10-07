@@ -24,6 +24,7 @@ func (s *Server) observe(next mcp.MethodHandler) mcp.MethodHandler {
 		}
 		// Jeder Aufruf arbeitet im Checkout seines Clients (Repo-Wurzel oder Worktree), nie in einem fremden.
 		ws, wsErr := s.resolveWorkspace(call)
+		header := headerRoot(call) != ""
 		ctx = context.WithValue(ctx, wsKey{}, ws)
 		id := s.stats.begin(call.Params.Name, string(call.Params.Arguments))
 		s.log.Debug("📨 "+call.Params.Name+": start", "ns", "mcp", "tool", call.Params.Name, "args", clipArgs(call.Params.Arguments))
@@ -31,7 +32,7 @@ func (s *Server) observe(next mcp.MethodHandler) mcp.MethodHandler {
 			if p := recover(); p != nil {
 				res, err = textResult(fmt.Sprintf("%s: %v", panicText, p), true), nil
 			}
-			s.finish(call, id, outcomeOf(res, err))
+			s.finish(call, id, outcomeOf(res, err), ws, header)
 		}()
 		if wsErr != nil {
 			res = textResult(wsErr.Error(), true)
@@ -39,19 +40,22 @@ func (s *Server) observe(next mcp.MethodHandler) mcp.MethodHandler {
 		}
 		res, err = next(ctx, method, req)
 		s.addParamHint(call.Params.Name, res)
+		addCheckout(call.Params.Name, res, ws)
 		return res, err
 	}
 }
 
 // finish schließt einen Aufruf ab: Zähler und Aufruf-Log, eigenes Log bei Fehlern, Nutzungsstatistik mit den rohen
-// Argumenten (das Aufruf-Log kürzt sie, gekürztes JSON ließe sich nicht mehr normieren).
-func (s *Server) finish(call *mcp.CallToolRequest, id int64, o outcome) {
+// Argumenten (das Aufruf-Log kürzt sie, gekürztes JSON ließe sich nicht mehr normieren). header und checkout im Log
+// zeigen je Aufruf, ob X-K3C-Root ankam und welcher Checkout galt (B-275).
+func (s *Server) finish(call *mcp.CallToolRequest, id int64, o outcome, ws workspace, header bool) {
 	c, found := s.stats.end(id, o)
+	attrs := []any{"ns", "mcp", "tool", call.Params.Name, "ms", c.DurationMs, "ok", o.ok, "header", header, "checkout", ws.label()}
 	if !o.ok {
 		// Tool und Fehler in der Meldung, damit logs_errors gleichartige Fehler je Tool gruppiert.
-		s.log.Warn("❌ "+call.Params.Name+": "+clip(o.err), "ns", "mcp", "tool", call.Params.Name, "ms", c.DurationMs, "ok", false)
+		s.log.Warn("❌ "+call.Params.Name+": "+clip(o.err), attrs...)
 	} else {
-		s.log.Info("✅ "+call.Params.Name+": ok", "ns", "mcp", "tool", call.Params.Name, "ms", c.DurationMs, "ok", true)
+		s.log.Info("✅ "+call.Params.Name+": ok", attrs...)
 	}
 	// Nur Tools aus dem Katalog: erfundene Namen eines Clients ließen Statistik und Datei sonst ohne Grenze wachsen.
 	if _, known := s.params[c.Tool]; found && known && s.cfg.Usage != nil {

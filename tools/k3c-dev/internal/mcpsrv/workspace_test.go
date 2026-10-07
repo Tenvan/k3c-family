@@ -1,11 +1,14 @@
 package mcpsrv
 
 import (
+	"bytes"
 	"context"
+	"log/slog"
 	"os"
 	"net/http"
 	"path/filepath"
 	"strings"
+	"sync"
 	"testing"
 
 	"github.com/modelcontextprotocol/go-sdk/mcp"
@@ -137,5 +140,65 @@ func TestWorktreeDiensteMitEigenenPorts(t *testing.T) {
 	}
 	if text, _ := callText(t, connectWithHeader(t, s, main), "svc_status", nil); !strings.Contains(text, "keine Dienste") {
 		t.Errorf("Wurzel ohne Controller sieht Worktree-Dienste: %q", text)
+	}
+}
+
+// lockedLog sammelt das JSON-Log des Servers; der Server schreibt aus eigenen Goroutinen.
+type lockedLog struct {
+	mu  sync.Mutex
+	buf bytes.Buffer
+}
+
+func (l *lockedLog) Write(p []byte) (int, error) {
+	l.mu.Lock()
+	defer l.mu.Unlock()
+	return l.buf.Write(p)
+}
+
+func (l *lockedLog) lines(tool string) []string {
+	l.mu.Lock()
+	defer l.mu.Unlock()
+	var out []string
+	for _, line := range strings.Split(l.buf.String(), "\n") {
+		if strings.Contains(line, `"tool":"`+tool+`"`) {
+			out = append(out, line)
+		}
+	}
+	return out
+}
+
+// B-275/AC-03: Ein schreibendes Tool ohne Header schreibt in die Wurzel und nennt sie; mit Header auf einen Worktree
+// unter .claude/worktrees/ schreibt es nur dort. Das Log vermerkt je Aufruf, ob der Header da war.
+func TestSchreibendesToolNenntCheckout(t *testing.T) {
+	main, wt, _ := repoWithWorktree(t)
+	ticket := filepath.Join("docs", "backlog", "B-001-x.md")
+	for _, dir := range []string{main, wt} {
+		writeFile(t, filepath.Join(dir, ticket), "# B-001 · X\n\n- **Status:** offen\n\n## Ausgangslage\n\nalt\n")
+	}
+	logs := &lockedLog{}
+	s := New(Config{Root: main, Version: "test", Log: slog.New(slog.NewJSONHandler(logs, nil))})
+	section := func(text string) map[string]any {
+		return map[string]any{"id": "B-001", "section": "Ausgangslage", "text": text}
+	}
+	if text, isErr := callText(t, connect(t, s), "plan_section", section("aus der Wurzel")); isErr || !strings.Contains(text, "Checkout: Repo-Wurzel "+main) {
+		t.Errorf("ohne Header: %q", text)
+	}
+	if text, isErr := callText(t, connectWithHeader(t, s, wt), "plan_section", section("aus dem Worktree")); isErr || !strings.Contains(text, "Checkout: Worktree wt1") {
+		t.Errorf("mit Header: %q", text)
+	}
+	read := func(dir string) string {
+		b, err := os.ReadFile(filepath.Join(dir, ticket))
+		if err != nil {
+			t.Fatal(err)
+		}
+		return string(b)
+	}
+	if m, w := read(main), read(wt); !strings.Contains(m, "aus der Wurzel") || strings.Contains(m, "aus dem Worktree") || !strings.Contains(w, "aus dem Worktree") {
+		t.Errorf("Wurzel:\n%s\nWorktree:\n%s", m, w)
+	}
+	got := logs.lines("plan_section")
+	if len(got) != 2 || !strings.Contains(got[0], `"header":false`) || !strings.Contains(got[0], `"checkout":"Repo-Wurzel `) ||
+		!strings.Contains(got[1], `"header":true`) || !strings.Contains(got[1], `"checkout":"Worktree wt1 (`) {
+		t.Errorf("Log je Aufruf:\n%s", strings.Join(got, "\n"))
 	}
 }

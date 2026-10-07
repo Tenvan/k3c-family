@@ -71,11 +71,33 @@ const HeaderRoot = "X-K3C-Root"
 // resolveWorkspace ordnet einen Aufruf seinem Checkout zu. Ohne Header (Tests, andere Clients) gilt die Repo-Wurzel;
 // ein genannter Ordner, der kein Checkout dieses Repos ist, ist ein Fehler.
 func (s *Server) resolveWorkspace(req *mcp.CallToolRequest) (workspace, error) {
-	extra := req.GetExtra()
-	if s.cfg.Root == "" || extra == nil || extra.Header.Get(HeaderRoot) == "" {
+	dir := headerRoot(req)
+	if s.cfg.Root == "" || dir == "" {
 		return workspace{root: s.cfg.Root}, nil
 	}
-	return s.workspaceOf(filepath.Clean(extra.Header.Get(HeaderRoot)))
+	return s.workspaceOf(filepath.Clean(dir))
+}
+
+// headerRoot ist der Wert von X-K3C-Root; leer, wenn der Client ihn nicht schickt (In-Memory-Transport, fremde Clients).
+func headerRoot(req *mcp.CallToolRequest) string {
+	if extra := req.GetExtra(); extra != nil {
+		return extra.Header.Get(HeaderRoot)
+	}
+	return ""
+}
+
+// writeTools ändern Dateien oder Dienste. Ihre Antwort nennt immer den Checkout, auch wenn der Header fehlt und die
+// Repo-Wurzel gilt (Beschluss 🧑 2026-10-06, B-275): nicht ablehnen, aber nie still in die Wurzel schreiben.
+var writeTools = map[string]bool{"plan_create": true, "plan_set": true, "plan_section": true, "plan_delete": true,
+	"svc_start": true, "svc_stop": true, "svc_restart": true}
+
+// addCheckout hängt an die Antwort eines schreibenden Tools die Zeile "Checkout: …".
+func addCheckout(tool string, res mcp.Result, ws workspace) {
+	r, ok := res.(*mcp.CallToolResult)
+	if !ok || r == nil || !writeTools[tool] {
+		return
+	}
+	r.Content = append(r.Content, &mcp.TextContent{Text: "Checkout: " + ws.label()})
 }
 
 // workspaceOf ordnet einen Ordner einem Checkout zu: der Repo-Wurzel selbst oder einem ihrer Git-Worktrees.
