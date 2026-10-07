@@ -1,6 +1,6 @@
 # BR1.1 · Vorbereitung: Korridore prüfen, Kennzahlen messen, Wertänderungen vorschlagen
 
-- **Status:** offen
+- **Status:** in Arbeit
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Umgebung:** offline
