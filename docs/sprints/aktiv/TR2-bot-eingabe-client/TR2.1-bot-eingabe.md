@@ -1,6 +1,6 @@
 # TR2.1 · `BotInput` und `?botfeed` im Client
 
-- **Status:** offen
+- **Status:** in Arbeit
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Umgebung:** offline

@@ -1,12 +1,12 @@
 # TR2 · PLAT · Bot-Eingabe im Client für Testläufe
 
-- **Status:** geplant
+- **Status:** aktiv
 - **Domäne:** PLAT
 - **Prio:** hoch
 - **Reife:** bereit
 - **Einschiebbar:** ja
 - **Tickets:** B-349
-- **Start-Commit:** –
+- **Start-Commit:** 4048467
 - **Spec:** freigegeben
 - **Revision:** 1
 - **Freigabe:** 2026-10-07, Chat, durch 🧑, Revision 1 (mit TR1)
@@ -58,7 +58,7 @@ keine
 
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
-| TR2.1 | `TR2.1-bot-eingabe.md` | Umsetzung | autonom | offen |
+| TR2.1 | `TR2.1-bot-eingabe.md` | Umsetzung | autonom | in Arbeit |
 | TR2.2 | `TR2.2-review.md` | Review | autonom | offen |
 
 ## Abnahme
