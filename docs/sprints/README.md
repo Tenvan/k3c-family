@@ -45,6 +45,7 @@ dann über den Go-Server mit mehreren Räumen und gemischten Spielern.
 
 | Sprint | Domäne | Prio | Thema | Am Ende sichtbar | Reife | Ordner |
 |---|---|---|---|---|---|---|
+| M11 | SRV | hoch | MCP-Seite: alle Tools mit Aufruf-Statistik, Zeitfilter der Statistik (B-350; einschiebbar) | Workbench, Reiter MCP | bereit | `geplant/M11-mcp-seite-tools/` |
 | TR2 | PLAT | hoch | Bot-Eingabe im Client für Testläufe (B-349; einschiebbar) | Bots steuern Monarchen im Browser | bereit | `geplant/TR2-bot-eingabe-client/` |
 | P1 | REG 🧑 | hoch | Spieleabend 1 | Protokoll und Folge-Tickets | Entwurf | `geplant/P1-spieleabend-1/` |
 | BR1 | REG 🧑 | hoch | Balancing-Runde Wirtschaft und Spieleabend 2 | Pass/Fail je Kennzahl, Begründungen in `docs/rules/`, Protokoll in `docs/playtests/` | Entwurf | `geplant/BR1-balancing-wirtschaft/` |

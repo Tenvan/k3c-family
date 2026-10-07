@@ -132,6 +132,7 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-343](B-343-bau-vor-dem-ausgang.md) | SIM | Frage | mittel | offen | – | Der Bau des Endbosses liegt an der inneren Kante des Ausgangs-Chunks |
 | [B-348](B-348-sim-test-workbench.md) | SRV | Idee | hoch | eingeplant | TR1 | Jeder Testlauf startet und läuft über das MCP-Tool `sim_test` |
 | [B-349](B-349-bot-eingabe-client.md) | PLAT | Idee | hoch | eingeplant | TR2 | Bots steuern im Client die Monarchen über die Bot-Eingabe |
+| [B-350](B-350-mcp-seite-tools-zeitfilter.md) | SRV | Idee | hoch | eingeplant | M11 | Die MCP-Seite zeigt alle Tools mit Aufruf-Statistik und filtert die Statistik nach Zeit |
 
 ## Archiv
 
