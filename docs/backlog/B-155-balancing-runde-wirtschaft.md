@@ -2,7 +2,7 @@
 
 - **Domäne:** REG
 - **Typ:** Idee
-- **Prio:** hoch
+- **Prio:** niedrig
 - **Umgebung:** live
 - **Status:** eingeplant
 - **Sprint:** BR1

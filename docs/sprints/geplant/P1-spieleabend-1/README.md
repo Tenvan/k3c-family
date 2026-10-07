@@ -2,7 +2,7 @@
 
 - **Status:** geplant
 - **Domäne:** REG
-- **Prio:** hoch
+- **Prio:** niedrig
 - **Reife:** bereit
 - **Einschiebbar:** nein
 - **Tickets:** B-008, B-151

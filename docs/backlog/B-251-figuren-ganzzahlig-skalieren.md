@@ -2,7 +2,7 @@
 
 - **Domäne:** CLI
 - **Typ:** Schuld
-- **Prio:** niedrig
+- **Prio:** hoch
 - **Umgebung:** live
 - **Status:** eingeplant
 - **Sprint:** GR7

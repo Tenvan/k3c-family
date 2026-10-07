@@ -2,7 +2,7 @@
 
 - **Status:** geplant
 - **Domäne:** CLI
-- **Prio:** mittel
+- **Prio:** hoch
 - **Reife:** Entwurf
 - **Einschiebbar:** ja
 - **Tickets:** B-193, B-251, B-198, B-197, B-320

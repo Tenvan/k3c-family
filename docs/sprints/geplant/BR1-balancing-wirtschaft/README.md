@@ -1,8 +1,8 @@
 # BR1 · REG · Balancing-Runde Wirtschaft und Spieleabend 2
 
-- **Status:** aktiv
+- **Status:** geplant
 - **Domäne:** REG
-- **Prio:** hoch
+- **Prio:** niedrig
 - **Reife:** bereit
 - **Einschiebbar:** nein
 - **Tickets:** B-155, B-015

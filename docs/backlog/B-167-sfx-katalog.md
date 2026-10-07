@@ -2,7 +2,7 @@
 
 - **Domäne:** CLI
 - **Typ:** Idee
-- **Prio:** mittel
+- **Prio:** hoch
 - **Umgebung:** live
 - **Status:** eingeplant
 - **Sprint:** SO2
