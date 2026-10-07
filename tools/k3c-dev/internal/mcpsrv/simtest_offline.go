@@ -39,7 +39,7 @@ type balanceSummary struct {
 }
 
 func (s *Server) runOffline(ctx context.Context, run *simRun, spec simSpec) {
-	dir := filepath.Join("reports", "simtest-"+run.id)
+	dir := simReportDir(run)
 	exe := filepath.Join("bin", "k3c-balance")
 	if runtime.GOOS == "windows" {
 		exe += ".exe"
@@ -66,20 +66,20 @@ func (s *Server) runOffline(ctx context.Context, run *simRun, spec simSpec) {
 			mu.Lock()
 			lines := append([]string{st.phase + ": " + failed}, tail...)
 			mu.Unlock()
-			s.finishOffline(run, "fehler", "", lines, dir)
+			s.finishRun(run, "fehler", "", lines, dir)
 			return
 		}
 	}
 	sum, err := readBalanceSummary(filepath.Join(run.root, dir))
 	if err != nil {
-		s.finishOffline(run, "fehler", "", []string{err.Error()}, dir)
+		s.finishRun(run, "fehler", "", []string{err.Error()}, dir)
 		return
 	}
 	verdict := "Fail"
 	if sum.Pass {
 		verdict = "Pass"
 	}
-	s.finishOffline(run, "fertig", verdict, sum.lines(), dir)
+	s.finishRun(run, "fertig", verdict, sum.lines(), dir)
 }
 
 func offlineArgs(exe, dir string, seeds int) []string {
@@ -105,8 +105,8 @@ func stepFailed(ctx context.Context, res runResult) string {
 	return ""
 }
 
-// finishOffline schreibt den eigenen Bericht (Kopf und Kennzahlen) und setzt das Ende im Register.
-func (s *Server) finishOffline(run *simRun, state, verdict string, lines []string, dir string) {
+// finishRun schreibt den eigenen Bericht (Kopf und Kennzahlen) und setzt das Ende im Register.
+func (s *Server) finishRun(run *simRun, state, verdict string, lines []string, dir string) {
 	report := filepath.ToSlash(filepath.Join(dir, "simtest.md"))
 	s.sims.finish(run, state, verdict, lines, report)
 	s.sims.mu.Lock()

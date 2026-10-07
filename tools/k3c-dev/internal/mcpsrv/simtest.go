@@ -64,6 +64,13 @@ func (r *simRuns) setPhase(run *simRun, phase string) {
 	run.phase = phase
 }
 
+// setLines setzt die Kennzahlen eines laufenden Laufs (Zwischenstand im Status).
+func (r *simRuns) setLines(run *simRun, lines []string) {
+	r.mu.Lock()
+	defer r.mu.Unlock()
+	run.lines = lines
+}
+
 // finish setzt das Ende; ein Abbruch über stop gewinnt gegen ein späteres „fertig“ des Runners.
 func (r *simRuns) finish(run *simRun, state, verdict string, lines []string, report string) {
 	r.mu.Lock()
@@ -100,7 +107,7 @@ func (s *Server) simTest(ctx context.Context, in simTestIn) (string, error) {
 	root := s.ws(ctx).root
 	switch in.Action {
 	case "start":
-		return s.simStart(root, in)
+		return s.simStart(ctx, root, in)
 	case "status":
 		return s.simStatus(root, in.ID)
 	case "stop":
@@ -111,12 +118,12 @@ func (s *Server) simTest(ctx context.Context, in simTestIn) (string, error) {
 	return "", fmt.Errorf("action %q unbekannt: start, status, stop oder list", in.Action)
 }
 
-func (s *Server) simStart(root string, in simTestIn) (string, error) {
+func (s *Server) simStart(ctx context.Context, root string, in simTestIn) (string, error) {
 	spec, err := in.spec()
 	if err != nil {
 		return "", err
 	}
-	runner, err := s.simRunner(spec)
+	runner, err := s.simRunner(ctx, spec)
 	if err != nil {
 		return "", err
 	}
@@ -126,7 +133,7 @@ func (s *Server) simStart(root string, in simTestIn) (string, error) {
 		return "", fmt.Errorf("schon %d Läufe in diesem Checkout; mit sim_test stop einen beenden", maxRunsPerRoot)
 	}
 	s.sims.next++
-	ctx, cancel := context.WithCancel(context.Background()) // nicht der Kontext des Aufrufs: der Lauf überlebt ihn
+	runCtx, cancel := context.WithCancel(context.Background()) // nicht der Kontext des Aufrufs: der Lauf überlebt ihn
 	run := &simRun{id: fmt.Sprintf("run-%d", s.sims.next), root: root, desc: spec.label(), started: time.Now(),
 		state: "läuft", phase: "start", cancel: cancel}
 	s.sims.runs = append(s.sims.runs, run)
@@ -134,7 +141,7 @@ func (s *Server) simStart(root string, in simTestIn) (string, error) {
 	s.log.Info("🚀 testlauf gestartet", "ns", "simtest", "id", run.id, "mode", run.desc)
 	go func() {
 		defer cancel()
-		runner(ctx, run)
+		runner(runCtx, run)
 		s.sims.mu.Lock()
 		state, verdict := run.state, run.verdict
 		s.sims.mu.Unlock()

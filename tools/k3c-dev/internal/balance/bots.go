@@ -49,6 +49,12 @@ func BotNames() []string {
 	return names
 }
 
+// BotByName liefert das Profil mit diesem Namen (Testläufe online, internal/botdev).
+func BotByName(name string) (Bot, bool) {
+	b, ok := bots[name]
+	return b, ok
+}
+
 // prices sind die Werte aus data/, die ein Bot zum Entscheiden braucht (nur gelesen; withData tauscht sie).
 var prices = must(loadPrices(data.Files))
 

@@ -66,7 +66,9 @@ zurückgeben.
   der Shell. `sim_test {action: start, mode, clients, focus, …}` kehrt sofort mit einer ID zurück; `sim_test {action:
   status, id}` zeigt den Lauf in höchstens 10 Zeilen, `stop` bricht ab, `list` zeigt die Läufe des Checkouts.
 - `mode: offline` (Standard, Mocks im Prozess) baut den Balancing-Tester im Checkout und bewertet die Ziele aus
-  `data/balance-targets.json` (`seeds` optional); `mode: online` mit `clients` 0 (headless) bis 4 folgt mit TR1.2/TR1.3.
+  `data/balance-targets.json` (`seeds` optional). `mode: online, clients: 0` startet `rooms` × `players` Bot-Geräte
+  (`bots`, Standard 1 × 2 `saver`, `duration` 5m) gegen den Spielserver des Checkouts (vorher `svc_start server`) und
+  misst Tick p99, CPU, Trennungen und Fehler; `clients` 1–4 folgt mit TR1.3.
 - Der volle Bericht liegt unter `reports/simtest-<id>/` (`simtest.md` und der Bericht des Testers), lesbar mit `report_read`.
 
 ## Planung

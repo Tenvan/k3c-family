@@ -75,6 +75,7 @@ type Status struct {
 	Reports  int       `json:"reports"`
 	Rooms    []Room    `json:"rooms"`
 	Failures []Failure `json:"failures"`
+	CPU      *float64  `json:"cpu"` // Prozent einer CPU; fehlt, wo der Server keine Quelle hat (B-175)
 }
 
 // Summary ist /api/status?room=CODE.

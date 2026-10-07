@@ -83,9 +83,10 @@ func (in simTestIn) spec() (simSpec, error) {
 	return s, s.checkMode()
 }
 
-// checkMode lehnt Kombinationen ab, die der Modus nicht kann.
-func (s simSpec) checkMode() error {
+// checkMode lehnt Kombinationen ab, die der Modus nicht kann, und füllt die Standards von online.
+func (s *simSpec) checkMode() error {
 	if s.mode == "online" {
+		s.onlineDefaults()
 		return nil
 	}
 	switch {
@@ -100,10 +101,38 @@ func (s simSpec) checkMode() error {
 	return nil
 }
 
-// simRunner wählt den Runner des Modus.
-func (s *Server) simRunner(spec simSpec) (func(context.Context, *simRun), error) {
-	if spec.mode == "online" {
-		return nil, fmt.Errorf("sim_test start abgelehnt: mode online folgt mit TR1.2 (headless) und TR1.3 (Clients)")
+// simRunner wählt den Runner des Modus; online prüft er vorher, ob der Spielserver des Checkouts antwortet.
+func (s *Server) simRunner(ctx context.Context, spec simSpec) (func(context.Context, *simRun), error) {
+	if spec.mode == "offline" {
+		return func(ctx context.Context, run *simRun) { s.runOffline(ctx, run, spec) }, nil
 	}
-	return func(ctx context.Context, run *simRun) { s.runOffline(ctx, run, spec) }, nil
+	if spec.clients > 0 {
+		return nil, fmt.Errorf("sim_test start abgelehnt: clients 1–4 folgen mit TR1.3; jetzt clients 0 (headless)")
+	}
+	c, err := s.serverClient(ctx)
+	if err == nil {
+		_, err = c.Status(ctx)
+	}
+	if err != nil {
+		return nil, fmt.Errorf("sim_test start abgelehnt: Spielserver des Checkouts antwortet nicht, erst svc_start server (%v)", oneLine(err))
+	}
+	return func(ctx context.Context, run *simRun) { s.runOnline(ctx, run, spec, c) }, nil
 }
+
+// onlineDefaults füllt fehlende Werte für online: 1 Raum, 2 Bots saver, 5 min.
+func (s *simSpec) onlineDefaults() {
+	if s.rooms == 0 {
+		s.rooms = 1
+	}
+	if s.players == 0 {
+		s.players = 2
+	}
+	if s.bots == "" {
+		s.bots = "saver"
+	}
+	if s.duration == 0 {
+		s.duration = 5 * time.Minute
+	}
+}
+
+func oneLine(err error) string { return strings.ReplaceAll(err.Error(), "\n", " ") }

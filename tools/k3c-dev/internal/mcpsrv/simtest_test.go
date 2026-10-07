@@ -116,15 +116,17 @@ func TestSimTestStatusHoechstensZehnZeilen(t *testing.T) {
 func TestSimTestHoechstensZweiLaeufe(t *testing.T) {
 	s, _ := fakeServer(t, nil)
 	s.run = func(ctx context.Context, _ runSpec) runResult { <-ctx.Done(); return runResult{} }
-	start(t, s, simTestIn{})
-	start(t, s, simTestIn{})
+	a, b := start(t, s, simTestIn{}), start(t, s, simTestIn{})
 	if _, err := s.simTest(context.Background(), simTestIn{Action: "start"}); err == nil {
 		t.Error("dritter Lauf gestartet")
 	}
 	s.sims.cancelAll()
+	waitDone(t, s, a)
+	waitDone(t, s, b)
 }
 
 func TestSimTestLehntAb(t *testing.T) {
+	t.Setenv("K3C_SERVER_URL", "http://127.0.0.1:1") // kein Spielserver
 	s, started := fakeServer(t, func(runSpec) runResult { return runResult{} })
 	cases := []simTestIn{
 		{Action: "starten"},
