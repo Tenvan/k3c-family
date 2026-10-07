@@ -6,7 +6,7 @@
 - **Umgebung:** live
 - **Branch:** pl1/5-abnahme
 - **Abhängig von:** PL1.4
-- **Tickets:** B-292, B-316, B-195, B-215
+- **Tickets:** B-316, B-195, B-215
 - **Kriterien:** AC-01, AC-02, AC-03, AC-04
 
 ## Ziel
@@ -14,6 +14,8 @@
 🧑 hat die manuellen Kriterien am PC und an der Xbox geprüft; die Ergebnisse stehen hier, der Sprint kann danach abgeschlossen werden.
 
 ## Kontext
+
+**2026-10-07:** B-292 („Neues Spiel“) ist nach LP1 gewechselt (Beschluss 🧑); alle B-292-Schritte und die PL1/AC-01-Punkte dieser Session entfallen.
 
 - Geprüft wird der Stand von `develop` nach dem Merge des Sprint-PRs (Main Checkout, Heimnetz-Server).
 - B-292/AC-02: Server mit vorhandenem Stand `familie`; „Neues Spiel“ erreicht die Lobby ohne Fehlerhinweis, „Spielen“ erzeugt einen Raum (Server-Log `🏰 Raum erstellt`, kein `save_exists`).

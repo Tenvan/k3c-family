@@ -63,4 +63,4 @@ Termin und Teilnehmer des Spieleabends: `docs/fragenkatalog.md Q24` (🧑).
 
 Aus Plan Phase 3 (B2). Nach B-155.
 
-Hinweis aus K2.1a (B-338): Ein Miniboss bringt eine unverteidigte Burg zu Fall (Goblin-Anführer im Wald ab Welle 5, im Mine-Test zweimal in 300 s); Burgfall halbiert den Vorrat der ganzen Insel. Boss-Stärke im Korridor prüfen (`data/bosses.json`).
+Hinweis aus K2.1a (B-340): Ein Miniboss bringt eine unverteidigte Burg zu Fall (Goblin-Anführer im Wald ab Welle 5, im Mine-Test zweimal in 300 s); Burgfall halbiert den Vorrat der ganzen Insel. Boss-Stärke im Korridor prüfen (`data/bosses.json`).

@@ -69,3 +69,4 @@ wird jede Session als eigene Datei nach `docs/vorlagen/session.md` geschrieben.
 2026-10-04, Agent (Claude Opus 5.5) in RL1.2, Abschluss auf Anweisung von 🧑 (Chat). AC-01, AC-02, AC-04: Ergebnis RL1.1. AC-03: Probelauf ohne Tag durchgeführt (Ergebnis RL1.2, Stand `origin/develop` 46aa69b); Pi-Pull und Versionszeile auf der Xbox angenommen, Validierung offen.
 Rot: Dev-Mode im Release-Image an (B-273), `TestRestore` flackert unter Windows (B-274), Overlay standardmäßig an (B-098, K5). Ein Tag wäre damit blockiert.
 Version: v0.6.1 vorgeschlagen (Doku-Sprint, Patch); gesetzt erst nach Bestätigung durch 🧑 und grüner Checkliste.
+2026-10-07, RL1.2: Versionszeile am PC grün (Client = Server, 🧑); Pi-Pull und Version am Pi und auf der Xbox weiter angenommen, Validierung offen.

@@ -5,6 +5,13 @@ import { newGameHref, PAGES } from './pages';
 const KNOWN_PARAMS = ['autostart', 'fresh', 'save', 'mock', 'room', 'dev', 'touch'];
 
 describe('Landing-Kacheln', () => {
+  it('nur Spieler-Kacheln und genau eine kleine Kachel zur Entwicklerseite (B-335/AC-01)', () => {
+    expect(PAGES.map((p) => p.title)).toEqual(['Weiterspielen', 'Neues Spiel', 'Online spielen', 'Lizenzen & Danksagung', 'Entwicklung']);
+    const small = PAGES.filter((p) => p.small);
+    expect(small.map((p) => p.href)).toEqual(['dev.html']);
+    expect(small[0]!.primary).toBeFalsy();
+  });
+
   it('Kacheln mit Ziel game.html nutzen nur der Lobby bekannte Parameter', () => {
     const games = PAGES.filter((p) => (typeof p.href === 'function' ? p.href() : p.href).startsWith('game.html'));
     expect(games.length).toBeGreaterThan(0);

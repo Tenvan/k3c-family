@@ -11,21 +11,14 @@ Reihenfolge in Wellen, Bahnen je Domäne und Zuordnung Mensch/autonom (zwei Acco
 
 | Sprint | Domäne | Prio | Thema | Am Ende sichtbar | Ordner |
 |---|---|---|---|---|---|
-| GR3 | CLI | mittel | Grafik im Renderer: Gebäude, Ressourcen, Portale, Truhen, Münzen und Parallax je Biom als Sprites mit Platzhalter-Rückfall (B-010; Sicht am TV offen) | – | `aktiv/GR3-grafik-renderer/` |
-| GR5 | CLI | mittel | Juice: Treffer, Screenshake, Münzen (B-164; Abnahme am TV offen) | – | `aktiv/GR5-juice/` |
-| GR4 | INF | mittel | Atlas und Lade-Szene (B-163, B-029; Messung an der Xbox offen, GR4.3) | – | `aktiv/GR4-atlas-ladeszene/` |
 | DBG3 | PLAT | hoch | Dungeon-Master-Seite `/dm` mit Dev-API, Welle und Tageszeit (B-232; Abnahme am Handy offen) | – | `aktiv/DBG3-dungeon-master-seite/` |
 | LT1 | SRV | hoch | Lasttest-Werkzeug `task load`: Bots, Tick-Dauer und CPU im Bericht, Bewertung gegen < 10 ms (B-175; Messlauf am Pi offen) | – | `aktiv/LT1-lasttest-werkzeug/` |
-| S3 | CLI | hoch | Skill-Menü, Tasten und Aktionen-Overlay | – | `aktiv/S3-skill-menue-overlay/` |
-| S4 | CLI | hoch | Kamera je Stufe und Layouts 1–4: Zelle zeigt Stufe, Radar und HUD je Zelle, Mindest-Schrift (B-106; Abnahme am Gerät offen) | – | `aktiv/S4-kamera-layouts/` |
-| S5 | CLI | hoch | Optionen- und Pause-Szene mit getrennter Lautstärke, Screenshake/Flash, Farbschwäche-Symbolen und Sprache de/en (B-146, B-172; Abnahme am Gerät offen) | – | `aktiv/S5-optionen-pause/` |
-| S7 | CLI | hoch | Monarch beritten auf dem Standard-Reittier: `mountPose`, Reittier-Sheet als einzelne Spritesheets (B-173; Abnahme am Gerät offen) | – | `aktiv/S7-monarch-reittier/` |
 | SO1 | CLI | mittel | Audio-Kern: Mixer mit Bus-Lautstärke je Gerät, Entsperren per Eingabe, Sound-Atlas, Positions-Dämpfung, Demo-Ton (B-011 teils; einschiebbar; Hörprobe am TV offen) | – | `aktiv/SO1-audio-kern/` |
 | SO3 | PLAT | mittel | Hörprobenseite `soundtest.html` | – | `aktiv/SO3-hoerprobenseite/` |
 | RL1 | INF | hoch | Release-Checkliste: Abschnitt „Release“ in `docs/arbeitsweise.md`, Probelauf ohne Tag (B-170; einschiebbar; Pi und Xbox offen) | – | `aktiv/RL1-release-checkliste/` |
 | MON2 | PLAT | hoch | Monitoring-Seite `monitor.html`: Ampel je Raum, Verläufe mit Perzentilen, Fehler-Zeitleiste (B-282; Abnahme am Handy offen) | – | `aktiv/MON2-monitoring-seite/` |
-| S6 | CLI | hoch | Onboarding „Erste Nacht geführt“ und Controller-Glyphen (B-148, B-149; Abnahme am TV offen) | – | `aktiv/S6-onboarding-glyphen/` |
 | W6 | CLI | mittel | Anzeigen für Bau, Lager, Hub und Bürger (B-117, B-126) | HUD und Bauplätze am TV, von 🧑 abgenommen | `aktiv/W6-anzeige-wirtschaft/` |
+| LP1 | PLAT | hoch | Landingpage für Spieler, Entwicklerseite für Werkzeuge | – | `aktiv/LP1-landingpage-aufraeumen/` |
 | K2 | SIM | hoch | Bosse, Siegvarianten und Inselwechsel | Tests je Boss, Siegvariante und Modus grün, Spielstand mit besiegten Bossen und aktueller Insel | `aktiv/K2-bosse-siege-inseln/` |
 
 ## Offen am Gerät
@@ -36,21 +29,13 @@ Hardware-Sessions (`Agent: Mensch`) aus Sprints, deren Review schon abgeschlosse
 
 | Session | Gerät | Kriterium (angenommen) | Ordner |
 |---|---|---|---|
-| GR4.3 | Xbox (Kaltstart, `MAX_TEXTURE_SIZE`) | AC-04: Budget und Texturgröße gemessen (angenommen: 4096) | `aktiv/GR4-atlas-ladeszene/` |
-| S6.4 | TV mit Kind (erste Nacht im Grad „leicht“) | AC-06: Führung und Glyphen am TV abgenommen (angenommen: Hinweise verständlich, Glyphen im Split-Viertel lesbar) | `aktiv/S6-onboarding-glyphen/` |
-| S4.3 | Xbox am TV (Viertel-Layout lesbar) oder zwei Eingabegeräte; „zwei Stufen“ erst nach B-176 | AC-04: zwei Spieler in verschiedenen Stufen, Layouts 3 und 4 lesbar | `aktiv/S4-kamera-layouts/` |
 | LT1.3 | Raspberry Pi (Messlauf 2 Räume × 3 Spieler über eine Nacht, `task load`) | AC-06: Messlauf bewertet, B-042 archiviert (angenommen laut Messung 2026-10-03: Nacht 10,2 bis 10,3 ms, Ziel < 10 ms) | `aktiv/LT1-lasttest-werkzeug/` |
-| S5.4 | Xbox am TV und Handy (Optionen/Pause bedienen, englische Texte lesen) | AC-05, AC-07: Szene am TV und Handy abgenommen, englische Texte gelesen | `aktiv/S5-optionen-pause/` |
 | SO1.5 | Xbox am TV (Entsperren nach erster Taste, ogg mit mp3-Fallback, Split-Screen-Dämpfung hören; Browser-Pane-Schritte aus SO1.2/SO1.3 offen) | AC-04: Format mit Fallback am TV beobachtet (angenommen: ogg, mp3-Fallback laut X1, B-166) | `aktiv/SO1-audio-kern/` |
-| GR3.4 | Xbox am TV (Hub-Stufen und Materialstufen unterscheidbar, 2 Spieler im Split-Screen, Parallax je Biom ansehen) | AC-04, AC-06: Sicht am TV abgenommen (angenommen laut Tests und Browser-Pane) | `aktiv/GR3-grafik-renderer/` |
-| GR5.4 | Xbox am TV (Effekte sehen, Blitz-Eindruck, Vibration) | AC-01, AC-02, AC-04: Effekte sichtbar, Schalter „aus“ ruhig (angenommen laut Tests) | `aktiv/GR5-juice/` |
 | SO3.3 | Xbox am TV (Hörprobe: Controller bedienen, B frei, View + Menu zurück, Crossfade ohne Knacken, Lautstärke; Browser-Pane-Schritte aus SO3.1/SO3.2 offen) | AC-03, AC-04: Controller-Bedienung und Crossfade am TV bestätigt (angenommen laut Tests) | `aktiv/SO3-hoerprobenseite/` |
-| S7.3 | Xbox am TV und Handy (zwei Spieler im Split-Screen reiten: Reittier animiert, Stehen/Laufen/Sprint verschieden, Sattelsitz) | AC-02, AC-04: Darstellung am TV und Handy abgenommen (angenommen laut Tests; Sichtnachweis fehlt auch aus S7.2) | `aktiv/S7-monarch-reittier/` |
 | RL1.2 | Raspberry Pi und Xbox (Pi-Image ziehen, Versionszeile der Landingpage gegen den Tag) | AC-03: Punkte „Pi-Image“ und „Version stimmt“ am Gerät (angenommen laut CI und Tests) | `aktiv/RL1-release-checkliste/` |
-| N2.4 | Xbox am TV (2 Controller, Split-Screen, Server auf dem Pi; FPS, Latenz, Puffer aus dem Debug-Overlay) | AC-06: kein sichtbares Ruckeln (angenommen laut Tests) | `aktiv/N2-zeitleiste-vorhersage/` |
 | DBG3.4 | Handy (neben laufendem Spiel am TV, Server mit `K3C_DEV=1`) | AC-04: `/dm` am Handy bedient, 375 px ohne waagerechtes Scrollen (angenommen laut Tests) | `aktiv/DBG3-dungeon-master-seite/` |
 | MON2.4 | Handy (neben `task load` oder am Spieleabend, Server mit `K3C_STATUS_TOKEN`) | AC-05: Monitor am Handy bedient, 375 px ohne waagerechtes Scrollen (angenommen laut Browser-Pane-Nachweis) | `aktiv/MON2-monitoring-seite/` |
-| S3.4 | Xbox am TV, Handy und Tastatur (Schlag, Skill-Slots, Skill-Menü, Aktionen-Overlay bedienen und lesen; Overlay und Preisschild können sich überlappen) | AC-05: Slots, Menü, Tasten und Overlay am Gerät abgenommen (angenommen laut Tests und Browser-Pane) | `aktiv/S3-skill-menue-overlay/` |
+| LP1.4 | PC mit Tastatur (Landingpage ↔ Entwicklerseite) | AC-04: Landingpage und Entwicklerseite am PC bedient (angenommen: Pfeile/Enter/Home wie im Browser-Pane-Nachweis LP1.2/LP1.3) | `aktiv/LP1-landingpage-aufraeumen/` |
 
 ## Geplant (in dieser Reihenfolge)
 
@@ -179,3 +164,11 @@ Gesamtplan und Begründung: [`../plan-weiterentwicklung.md`](../plan-weiterentwi
 | W5 | Protokoll v5: Hub-Stufe, Lager, Wartegrund, Händler, Berufe und Ereignisse im Zustand; Eingaben bleiben `input.pay` (B-153, B-283, B-330) | `erledigt/W5-protokoll-wirtschaft/` |
 | W10 | Kämpfer-Zahl und Truppen-Limit im Zustand: `fighters`, `troopLimit` in `sim.EconomyOf` und Protokoll v5 (B-332; einschiebbar) | `erledigt/W10-truppen-limit-zustand/` |
 | N2 | Flüssige Darstellung: Zeitleiste mit Puffer und Extrapolation, Vorhersage des eigenen Monarchen, Latenz im Debug-Overlay (B-277, B-181; Abnahme am Gerät offen) | `erledigt/N2-zeitleiste-vorhersage/` |
+| S3 | Skill-Menü, Tasten und Aktionen-Overlay | `erledigt/S3-skill-menue-overlay/` |
+| S4 | Kamera je Stufe und Layouts 1–4: Zelle zeigt Stufe, Radar und HUD je Zelle, Mindest-Schrift (B-106; Abnahme am Gerät offen) | `erledigt/S4-kamera-layouts/` |
+| S5 | Optionen- und Pause-Szene mit getrennter Lautstärke, Screenshake/Flash, Farbschwäche-Symbolen und Sprache de/en (B-146, B-172; Abnahme am Gerät offen) | `erledigt/S5-optionen-pause/` |
+| S6 | Onboarding „Erste Nacht geführt“ und Controller-Glyphen (B-148, B-149; Abnahme am TV offen) | `erledigt/S6-onboarding-glyphen/` |
+| S7 | Monarch beritten auf dem Standard-Reittier: `mountPose`, Reittier-Sheet als einzelne Spritesheets (B-173; Abnahme am Gerät offen) | `erledigt/S7-monarch-reittier/` |
+| GR3 | Grafik im Renderer: Gebäude, Ressourcen, Portale, Truhen, Münzen und Parallax je Biom als Sprites mit Platzhalter-Rückfall (B-010; Sicht am TV offen) | `erledigt/GR3-grafik-renderer/` |
+| GR4 | Atlas und Lade-Szene (B-163, B-029; Messung an der Xbox offen, GR4.3) | `erledigt/GR4-atlas-ladeszene/` |
+| GR5 | Juice: Treffer, Screenshake, Münzen (B-164; Abnahme am TV offen) | `erledigt/GR5-juice/` |

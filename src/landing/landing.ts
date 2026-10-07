@@ -40,7 +40,7 @@ function render(): void {
     grid.className = 'grid';
     for (const page of pages) {
       const a = document.createElement('a');
-      a.className = `card${page.primary ? ' primary' : ''}`;
+      a.className = `card${page.primary ? ' primary' : ''}${page.small ? ' small' : ''}`;
       a.href = typeof page.href === 'string' ? page.href : '#';
       a.dataset.title = page.title;
       if (needsServer(page)) a.dataset.needsServer = '';
