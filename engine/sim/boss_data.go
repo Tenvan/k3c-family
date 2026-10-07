@@ -22,10 +22,14 @@ type BossData struct {
 }
 
 // BossAbility: `summon` ruft Count Gegner Enemy, `aoe` trifft alles im Radius um den Boss; beides alle IntervalSeconds.
+// `flameTrail` legt alle IntervalSeconds eine Bodenfläche (Radius, DamagePerSecond, DurationSeconds) an den Ort des
+// Bosses, `shardThrow` wirft alle IntervalSeconds ein Geschoss, dessen Einschlag alles im Radius trifft
+// (boss_abilities.go).
 type BossAbility struct {
-	Type, Enemy             string
-	Count                   int
-	Radius, IntervalSeconds float64
+	Type, Enemy                      string
+	Count                            int
+	Radius, IntervalSeconds          float64
+	DamagePerSecond, DurationSeconds float64
 }
 
 var bosses = loadBossData()
@@ -86,9 +90,11 @@ func checkAbility(a BossAbility) error {
 		return fmt.Errorf("ohne Intervall der Fähigkeit")
 	case a.Type == "summon" && (!known || a.Count <= 0):
 		return fmt.Errorf("summon braucht bekannten Gegner und Anzahl > 0")
-	case a.Type == "aoe" && a.Radius <= 0:
-		return fmt.Errorf("aoe ohne Radius")
-	case a.Type != "summon" && a.Type != "aoe":
+	case (a.Type == "aoe" || a.Type == "shardThrow") && a.Radius <= 0:
+		return fmt.Errorf("%s ohne Radius", a.Type)
+	case a.Type == "flameTrail" && (a.Radius <= 0 || a.DamagePerSecond <= 0 || a.DurationSeconds <= 0):
+		return fmt.Errorf("flameTrail braucht Radius, Schaden und Dauer > 0")
+	case !slices.Contains([]string{"summon", "aoe", "flameTrail", "shardThrow"}, a.Type):
 		return fmt.Errorf("unbekannte Fähigkeit %q", a.Type)
 	}
 	return nil

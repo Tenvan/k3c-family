@@ -7,7 +7,8 @@ import "math"
 //
 //	hit           – Schaden wirkt: x, target (player, troop, enemy, castle, site), id (Spieler: Index, sonst ID), damage
 //	kill          – Gegner besiegt: kind, x, gold (gestreute Münzen); je Tod, mit Priorität (`enemyKilled` aus B-128)
-//	arrow         – Geschoss abgeschossen: from, to (IDs), x, team (player, enemy)
+//	arrow         – Geschoss abgeschossen: from, to (IDs), x, team (player, enemy); auch der Splitter-Wurf (Splash: je
+//	                getroffenem Ziel ein `hit`). Flächen der Flammenspur melden nur ihre `hit` (boss_abilities.go)
 //	strike        – Nahkampf-Schlag eines Gegners: from, x
 //	coinPickup    – Münze aufgehoben: player (Index), x
 //	coinGive      – Münze gegeben: player, x, to (site, recruit, mark, offer, merchant); fällt sie nur zu Boden, kein Ereignis

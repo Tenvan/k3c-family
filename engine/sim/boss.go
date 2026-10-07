@@ -36,13 +36,14 @@ func spawnBoss(w *World, b *BossData, x float64) *Enemy {
 	e := spawnScaled(w, b.Base, x, b.HPFactor*hp, b.DamageFactor*damage)
 	e.Kind, e.Boss, e.Traits, e.Range = b.ID, true, nil, b.Range
 	e.Speed = b.Speed * math.Pow(waves.DepthScaling.Speed, float64(w.Biome.Depth))
-	e.AoeIn = b.Ability.IntervalSeconds
+	armBoss(e, b.Ability)
 	emit(w, "bossSpawned", Event{"boss": b.ID, "x": unitX(x)})
 	return e
 }
 
 // bossAbility (nur Bosse): Ist die Fähigkeit fällig (Enemy.AoeIn zählt bei Bossen bis zur nächsten), ruft `summon` Gegner an den
-// Ort des Bosses; `aoe` schlägt, sobald ein Ziel im Radius steht, und trifft alle Ziele dort je einmal.
+// Ort des Bosses; `aoe` schlägt, sobald ein Ziel im Radius steht, und trifft alle Ziele dort je einmal; `flameTrail`
+// und `shardThrow` stehen in boss_abilities.go.
 func bossAbility(w *World, e *Enemy) {
 	if !e.Boss || e.AoeIn > 0 {
 		return
@@ -56,6 +57,10 @@ func bossAbility(w *World, e *Enemy) {
 	case "summon":
 		e.AoeIn = a.IntervalSeconds
 		summon(w, e, a)
+	case "flameTrail":
+		flameTrail(w, e, a)
+	case "shardThrow":
+		shardThrow(w, e, a)
 	case "aoe":
 		targets := aoeTargets(w, e.X, a.Radius)
 		if len(targets) == 0 {
