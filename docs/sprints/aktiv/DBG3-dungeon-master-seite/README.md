@@ -77,3 +77,5 @@ Spielen auf der Seite; Passwortschutz (eigenes Ticket, sobald die Seite steht); 
 2026-10-05 · AC-01 bis AC-03, AC-05 laut DBG3.1/DBG3.2 geprüft; AC-04 angenommen, Validierung offen (DBG3.4, Handy).
 Keine schweren Befunde (DBG3.3); `/api/dev` liest ohne Token, Passwortschutz bleibt Offene Frage. Keine neuen Tickets.
 Version: v0.11.0 vorgeschlagen (Minor: neue Server-API `/api/dev` und Seite `/dm`).
+
+2026-10-07 · AC-04 am PC durch 🧑 geprüft (DBG3.4, zwei Browserfenster); Abnahme am Handy weiter offen.
