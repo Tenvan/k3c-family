@@ -129,6 +129,7 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-331](B-331-einheitlicher-grafikstil-pipeline.md) | CLI | Idee | mittel | offen | – | Alle Grafiken laufen durch eine Pipeline mit Ziel-Palette und gleicher Pixeldichte |
 | [B-333](B-333-pause-anzeige.md) | CLI | Idee | mittel | offen | – | Der Client zeigt einen angehaltenen Raum deutlich an und hält die Figuren-Animationen an |
 | [B-334](B-334-performance-modus.md) | CLI | Idee | hoch | offen | – | Der Client misst Leistung in einem Performance-Modus automatisch und überträgt die Werte an den Server |
+| [B-335](B-335-landingpage-spieler-entwicklung.md) | PLAT | Idee | hoch | offen | – | Die Landingpage zeigt nur Spieler-Kacheln, Entwicklungs-, Performance- und Balancing-Aufrufe liegen auf einer eigenen Entwicklerseite |
 
 ## Archiv
 
