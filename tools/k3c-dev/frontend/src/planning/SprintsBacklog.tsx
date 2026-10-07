@@ -7,7 +7,7 @@ import { ActionButton, NoticeCard, StatusBadge } from '../ui/parts';
 import { BacklogList, SessionDetail } from './Backlog';
 import { SprintCard } from './SprintCard';
 import { CopyPrompt } from './PromptParts';
-import { openSessions, promptSessions, worktreeVariant } from './prompts';
+import { openSessions, promptSessions } from './prompts';
 import { domains, filterSprints, filterTickets, parseFilter, QUICK, sortSprints, toggle, type PlanFilter } from './planning';
 
 const PREF = 'planning-filter';
@@ -47,7 +47,7 @@ export function SprintsBacklog() {
           {picked.length > 0 && (
             <div className="pl-picked">
               <Text size="1" weight="medium">{picked.length} Session{picked.length > 1 ? 's' : ''} markiert</Text>
-              <CopyPrompt prompt={promptSessions(picked)} what={`${picked.length} markierte Sessions`} variants={[worktreeVariant(picked)]} />
+              <CopyPrompt prompt={promptSessions(picked)} what={`${picked.length} markierte Sessions`} />
               <button type="button" className="pl-textlink" onClick={() => setChecked(new Set())}>Auswahl aufheben</button>
             </div>
           )}

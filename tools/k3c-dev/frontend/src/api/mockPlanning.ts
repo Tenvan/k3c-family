@@ -193,6 +193,7 @@ export function mockPlanning(changed: () => void) {
       return `${id}: ${field} = ${value}`;
     },
     planningDoc: async (name: PlanDoc): Promise<string> => DOCS[name],
+    openInClaude: async (prompt: string): Promise<void> => { console.info('[mock] openInClaude', prompt.length, 'Zeichen'); },
     githubStatus: async (): Promise<GitHubData> => structuredClone(GITHUB),
     openUrl: (url: string) => void window.open(url, '_blank', 'noopener'),
   };

@@ -1,38 +1,52 @@
 import { DropdownMenu, IconButton } from '@radix-ui/themes';
 import { Fragment, useState, type ReactNode } from 'react';
-import type { PromptVariant } from './prompts';
+import { backend } from '../api';
 
 const stop = { onClick: (e: { stopPropagation(): void }) => e.stopPropagation(), onKeyDown: (e: { stopPropagation(): void }) => e.stopPropagation() };
 
-/** Kopiert einen Prompt zum Weiterarbeiten; zeigt 1,6 s lang ✓ bzw. ✕. Mit `variants` öffnet ▾ daneben ein Menü mit
- *  weiteren Prompts (etwa „Autonom im Worktree“); der Klick auf ⧉ bleibt der einfache Weg. */
-export function CopyPrompt({ prompt, what, variants = [] }: { prompt: string; what: string; variants?: PromptVariant[] }) {
-  const [state, setState] = useState<'idle' | 'ok' | 'fail'>('idle');
-  const write = (text: string) => {
-    navigator.clipboard.writeText(text).then(() => setState('ok'), () => setState('fail'));
+/** Claude-Funke in Claude-Orange: zwölf spitze Strahlen, abwechselnd lang und kurz. */
+function ClaudeIcon() {
+  return (
+    <svg aria-hidden="true" height="15" viewBox="0 0 24 24" width="15">
+      <g fill="#D97757">
+        {Array.from({ length: 12 }, (_, i) => (
+          <path key={i} d={i % 2 ? 'M12 4.5 L13 11 L12 12.5 L11 11 Z' : 'M12 1.5 L13.2 10.8 L12 12.5 L10.8 10.8 Z'} transform={`rotate(${i * 30} 12 12)`} />
+        ))}
+      </g>
+    </svg>
+  );
+}
+
+type Feedback = 'idle' | 'ok' | 'fail';
+
+/** Zeigt 1,6 s lang ✓ bzw. ✕ statt des Symbols. */
+function useFeedback() {
+  const [state, setState] = useState<Feedback>('idle');
+  const settle = (task: Promise<unknown>) => {
+    task.then(() => setState('ok'), () => setState('fail'));
     window.setTimeout(() => setState('idle'), 1600);
   };
+  return [state, settle] as const;
+}
+
+const toneOf = (f: Feedback) => (f === 'ok' ? 'green' : f === 'fail' ? 'red' : 'gray');
+const iconOf = (f: Feedback, idle: ReactNode) => (f === 'ok' ? '✓' : f === 'fail' ? '✕' : idle);
+
+/** Prompt zum Weiterarbeiten, zwei Wege: ⧉ kopiert ihn, der Claude-Funke öffnet ihn als neue Code-Session in
+ *  Claude Desktop (Deep Link, schickt nicht ab). */
+export function CopyPrompt({ prompt, what }: { prompt: string; what: string }) {
+  const [copied, settleCopy] = useFeedback();
+  const [opened, settleOpen] = useFeedback();
   return (
     <span className="pl-copy" {...stop}>
-      <IconButton size="1" variant="ghost" color={state === 'ok' ? 'green' : state === 'fail' ? 'red' : 'gray'}
-        aria-label={`Prompt kopieren: ${what}`} title={`Prompt zum Weiterarbeiten kopieren: ${what}`} onClick={() => write(prompt)}>
-        {state === 'ok' ? '✓' : state === 'fail' ? '✕' : '⧉'}
+      <IconButton size="1" variant="ghost" color={toneOf(copied)} aria-label={`Prompt kopieren: ${what}`}
+        title={`Prompt kopieren: ${what}`} onClick={() => settleCopy(navigator.clipboard.writeText(prompt))}>
+        {iconOf(copied, '⧉')}
       </IconButton>
-      {variants.length > 0 && (
-        <DropdownMenu.Root>
-          <DropdownMenu.Trigger>
-            <IconButton size="1" variant="ghost" color="gray" aria-label={`Weitere Prompts: ${what}`} title="Weitere Prompts">▾</IconButton>
-          </DropdownMenu.Trigger>
-          <DropdownMenu.Content size="1">
-            <DropdownMenu.Item onSelect={() => write(prompt)}>Prompt kopieren</DropdownMenu.Item>
-            {variants.map((v) => (
-              <DropdownMenu.Item key={v.label} disabled={!!v.blocked} title={v.blocked} onSelect={() => write(v.prompt)}>
-                {v.label}{v.blocked ? ` (${v.blocked})` : ''}
-              </DropdownMenu.Item>
-            ))}
-          </DropdownMenu.Content>
-        </DropdownMenu.Root>
-      )}
+      <IconButton size="1" variant="ghost" color={toneOf(opened)} aria-label={`In Claude öffnen: ${what}`}
+        title={`In Claude öffnen (neue Code-Session): ${what}`} onClick={() => settleOpen(backend.openInClaude(prompt))}>
+        {iconOf(opened, <ClaudeIcon />)}
+      </IconButton>
     </span>
   );
 }

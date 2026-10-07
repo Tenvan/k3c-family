@@ -18,7 +18,7 @@ interface Props {
 export function Header({ mcp, mock, dark, onDark }: Props) {
   return (
     <header className="header">
-      <span className="header-title">K3C Dev</span>
+      <span className="header-title">K3C Workbench</span>
       <Tabs.List className="header-tabs">
         {PAGES.map((p) => (
           <Tabs.Trigger key={p} value={p}>

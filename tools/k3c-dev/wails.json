@@ -6,5 +6,6 @@
   "frontend:build": "npx tsc --noEmit && npx vite build",
   "frontend:dev:watcher": "npx vite",
   "frontend:dev:serverUrl": "auto",
-  "author": { "name": "Ralf Stich" }
+  "author": { "name": "Ralf Stich" },
+  "info": { "productName": "K3C Workbench" }
 }

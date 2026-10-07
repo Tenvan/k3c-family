@@ -34,6 +34,7 @@ interface GoApp {
   PlanningSet(id: string, field: string, value: string): Promise<string>;
   PlanningDoc(name: PlanDoc): Promise<string>;
   GitHubStatus(force: boolean): Promise<GitHubData>;
+  OpenInClaude(prompt: string): Promise<void>;
 }
 
 interface WailsRuntime {
@@ -85,6 +86,7 @@ export function wailsBackend(): Backend {
     planningSet: (id, field, value) => app.PlanningSet(id, field, value),
     planningDoc: (name) => app.PlanningDoc(name),
     githubStatus: (force) => app.GitHubStatus(force),
+    openInClaude: (prompt) => app.OpenInClaude(prompt),
     openUrl: (url) => runtime.BrowserOpenURL(url),
     on: <E extends EventName>(event: E, fn: (data: Events[E]) => void) =>
       runtime.EventsOn(event, (data) => fn(data as Events[E])),
