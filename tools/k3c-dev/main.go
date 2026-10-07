@@ -56,7 +56,7 @@ func run() error {
 func windowOptions(app *App) *options.App {
 	win, placed := loadWindow(configPath("k3c-dev.json"))
 	return &options.App{
-		Title: "K3C Dev", Width: win.Width, Height: win.Height, MinWidth: minWidth, MinHeight: minHeight,
+		Title: "K3C Workbench", Width: win.Width, Height: win.Height, MinWidth: minWidth, MinHeight: minHeight,
 		StartHidden:      true,
 		BackgroundColour: &options.RGBA{R: 0x0b, G: 0x10, B: 0x26, A: 0xff}, // --night-1
 		AssetServer:      &assetserver.Options{Assets: assets},

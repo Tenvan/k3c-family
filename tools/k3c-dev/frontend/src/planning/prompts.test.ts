@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import type { PlanSession, PlanSprint, PlanTicket } from '../api';
-import { backlogPrompt, openSessions, promptSession, promptSessions, promptSprint, worktreeBlocked, worktreeVariant } from './prompts';
+import { backlogPrompt, openSessions, promptSession, promptSessions, promptSprint } from './prompts';
 
 const s = (nr: string, status: string, agent = 'autonom', env = 'offline'): PlanSession =>
   ({ nr, typ: 'Umsetzung', agent, env, status, titel: `Titel ${nr}`, text: 'Geheimer Inhalt' });
@@ -23,16 +23,6 @@ describe('Prompts nennen nur IDs und Anweisung', () => {
     const items = [...openSessions(M8), ...openSessions(W1)];
     expect(items.map((it) => it.session.nr)).toEqual(['M8.2', 'M8.3', 'M8.5', 'W1.1']);
     expect(promptSessions(items)).toContain('Sprint M8 (Worktree sprint/m8):\n- M8.2\n- M8.3\n- M8.5\nSprint W1:\n- W1.1');
-  });
-
-  it('Worktree nur mit autonomen Sessions, andere werden genannt', () => {
-    const v = worktreeVariant(openSessions(M8));
-    expect(v.blocked).toBe('');
-    expect(v.prompt).toContain('- M8.2');
-    expect(v.prompt).toContain('nicht bearbeiten: M8.3, M8.5.');
-    expect(v.prompt).not.toContain('- M8.3');
-    expect(worktreeBlocked([{ sprint: M8, session: M8.sessions[2] }])).toBe('keine Session ist autonom · offline');
-    expect(worktreeBlocked([])).toBe('keine offene Session');
   });
 
   it('Backlog-Prompt: Sprint oder neuer Sprint, Singular und Plural', () => {

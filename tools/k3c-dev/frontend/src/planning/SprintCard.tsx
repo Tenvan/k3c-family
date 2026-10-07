@@ -3,7 +3,7 @@ import { backend, type GitHubSprint, type PlanSession, type PlanSprint } from '.
 import { StatusBadge, Tip, type Tone } from '../ui/parts';
 import { ghBadges, isNext } from './planning';
 import { CopyPrompt, DepLinks } from './PromptParts';
-import { openSessions, pickable, promptSession, promptSprint, worktreeVariant } from './prompts';
+import { pickable, promptSession, promptSprint } from './prompts';
 
 export const tone = (status: string): Tone =>
   (({ fertig: 'ok', 'in Arbeit': 'info', blockiert: 'error' }) as Record<string, Tone>)[status] ?? 'neutral';
@@ -51,7 +51,7 @@ export function SprintCard({ sprint: s, gh, sel, onSelect, checked, onCheck }: P
         )}
         <StatusBadge tone={s.status === 'aktiv' ? 'info' : 'neutral'}>{s.status}</StatusBadge>
         <StatusBadge tone={s.spec === 'freigegeben' ? 'ok' : 'warn'}>Spec: {s.spec || '–'}</StatusBadge>
-        {s.status !== 'erledigt' && <CopyPrompt prompt={promptSprint(s)} what={`Sprint ${s.id}`} variants={[worktreeVariant(openSessions(s))]} />}
+        {s.status !== 'erledigt' && <CopyPrompt prompt={promptSprint(s)} what={`Sprint ${s.id}`} />}
       </div>
       {gh && <GitHubRow pr={gh} />}
       {s.sessions.length > 0 && (
@@ -86,7 +86,7 @@ function SessionRow({ sprint: s, x, onSelect, checked, onCheck }:
       <span className="pl-title">{x.titel || [x.typ, x.agent].filter(Boolean).join(' · ')}</span>
       {open && <ModeBadge agent={x.agent} env={x.env} />}
       {open && <DepLinks ids={x.deps} title="Abhängig von" onPick={onSelect} />}
-      {open && <CopyPrompt prompt={promptSession(s, x)} what={x.nr} variants={[worktreeVariant([{ sprint: s, session: x }])]} />}
+      {open && <CopyPrompt prompt={promptSession(s, x)} what={x.nr} />}
     </div>
   );
 }

@@ -419,6 +419,8 @@ export interface Backend {
   planningSet(id: string, field: string, value: string): Promise<string>;
   /** PR, CI und Merge-Stand je Sprint; force umgeht den Zwischenspeicher (60 s). */
   githubStatus(force: boolean): Promise<GitHubData>;
+  /** Öffnet den Prompt als neue Code-Session in Claude Desktop (Deep Link, schickt nicht ab). */
+  openInClaude(prompt: string): Promise<void>;
   /** Öffnet eine Adresse im Standard-Browser (Wails) bzw. in einem neuen Tab (Mock). */
   openUrl(url: string): void;
   /** Markdown eines Planungs-Dokuments. */

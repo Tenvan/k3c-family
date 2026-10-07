@@ -8,13 +8,6 @@ export interface Picked {
   session: PlanSession;
 }
 
-/** Weitere Variante im Menü des Kopierbuttons; `blocked` nennt den Grund, warum sie nicht geht. */
-export interface PromptVariant {
-  label: string;
-  prompt: string;
-  blocked?: string;
-}
-
 const where = (s: PlanSprint) => `Sprint ${s.id}${s.worktree ? ` (Worktree ${s.worktree})` : ''}`;
 
 /** Offen und mit Session-Datei: markierbar und mit eigenem Prompt. */
@@ -56,36 +49,6 @@ export function promptSessions(items: Picked[]): string {
     'Lies jede Session-Datei (`plan_get`), bevor du mit ihr beginnst. Status nur per `plan_set` ändern.'
   );
 }
-
-/** Warum die Worktree-Variante nicht geht; leer, wenn sie geht. */
-export function worktreeBlocked(items: Picked[]): string {
-  if (items.length === 0) return 'keine offene Session';
-  if (!items.some((it) => worktreeOk(it.session))) return 'keine Session ist autonom · offline';
-  return '';
-}
-
-/** Prompt, die autonomen Sessions ohne Rückfrage in je einem Worktree auf dem Sprint-Branch abzuarbeiten; andere
- *  werden genannt, nicht bearbeitet. */
-export function promptWorktree(items: Picked[]): string {
-  const ok = items.filter((it) => worktreeOk(it.session));
-  const skipped = items.filter((it) => !worktreeOk(it.session));
-  return (
-    `Arbeite ${these(ok.length)} autonom und ohne Rückfragen in einem eigenen Worktree ab:\n${groups(ok)}\n` +
-    (skipped.length ? `Nicht im Worktree (nicht autonom · offline oder blockiert), nicht bearbeiten: ${skipped.map((it) => it.session.nr).join(', ')}.\n` : '') +
-    'Regeln (docs/arbeitsweise.md › Branches und Autonomer Ablauf):\n' +
-    '1. Je Sprint ein Worktree auf dem Sprint-Branch `sprint/<präfix>` (fehlt er: von `origin/develop`). Mit `workbench_status` prüfen, dass k3c-dev den Worktree bedient, sonst Shell-Befehle.\n' +
-    '2. Nur offline arbeiten und nur die „Erlaubten Dateien“ der Session ändern: Code, Unit-/Mock-Tests, Doku. Keine laufenden ' +
-    'Dienste (`svc_*`), kein Browser, keine Geräte. Braucht eine Session doch Live-Dienste oder eine Entscheidung: ' +
-    '`Status: blockiert` mit Grund, Ticket vom Typ Frage, nicht raten und mit der nächsten weitermachen.\n' +
-    '3. Reihenfolge wie gelistet. Je Session `check_run task:check` grün, `Status: fertig` per `plan_set`, ein Commit mit der Session im Titel.\n' +
-    '4. Zum Schluss `git merge origin/develop` und push auf den Sprint-Branch. Kein PR, außer die letzte Session des Sprints ist dabei.\n' +
-    '5. Kurz berichten: erledigt, blockiert (mit Grund), gepushte Branches.'
-  );
-}
-
-/** Menüeintrag „Autonom im Worktree“ für den Kopierbutton. */
-export const worktreeVariant = (items: Picked[]): PromptVariant =>
-  ({ label: 'Autonom im Worktree abarbeiten', prompt: promptWorktree(items), blocked: worktreeBlocked(items) });
 
 /** Ziel der Übernahme aus dem Backlog: ein vorhandener Sprint (ID) oder ein neu zu formender. */
 export type SprintTarget = { kind: 'sprint'; id: string } | { kind: 'new' };

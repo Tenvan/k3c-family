@@ -7,7 +7,7 @@ import { MarkdownView } from '../ui/MarkdownView';
 import { StatusBadge } from '../ui/parts';
 import { findSession, groupTickets, linkedTickets } from './planning';
 import { CopyPrompt, DepLinks, FieldMenu } from './PromptParts';
-import { backlogPrompt, NEW_SPRINT, pickable, promptSession, worktreeVariant, type SprintTarget } from './prompts';
+import { backlogPrompt, NEW_SPRINT, pickable, promptSession, type SprintTarget } from './prompts';
 import { ModeBadge, prioTone, tone } from './SprintCard';
 
 const PRIOS = ['hoch', 'mittel', 'niedrig', '?'];
@@ -107,7 +107,7 @@ export function SessionDetail({ data, sel, onSelect, onClose }:
           </>
         ) : <ModeBadge agent={x.agent} env={x.env} />}
         <DepLinks ids={x.deps} title="Abhängig von" onPick={onSelect} />
-        {open && <CopyPrompt prompt={promptSession(sprint, x)} what={x.nr} variants={[worktreeVariant([{ sprint, session: x }])]} />}
+        {open && <CopyPrompt prompt={promptSession(sprint, x)} what={x.nr} />}
         <IconButton size="1" variant="ghost" color="gray" onClick={onClose} aria-label="Schließen">×</IconButton>
       </div>
       <div className="pl-md">
