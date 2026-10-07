@@ -10,7 +10,10 @@ function BlockView({ b, offset }: { b: Block; offset: number }) {
     const H = `h${Math.min(6, b.level + offset)}` as 'h2' | 'h3' | 'h4' | 'h5' | 'h6';
     return <H><Inlines list={b.inline} /></H>;
   }
-  if (b.kind === 'ul') return <ul>{b.items.map((item, i) => <li key={i}><Inlines list={item} /></li>)}</ul>;
+  if (b.kind === 'ul' || b.kind === 'ol') {
+    const L = b.kind;
+    return <L>{b.items.map((item, i) => <li key={i}><Inlines list={item} /></li>)}</L>;
+  }
   if (b.kind === 'pre') return <pre>{b.text}</pre>;
   if (b.kind === 'table') {
     return (

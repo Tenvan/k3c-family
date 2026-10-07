@@ -6,8 +6,11 @@ zurückgeben.
 ## Worktrees
 
 - Eine k3c-dev-Instanz (aus der Repo-Wurzel) bedient alle Worktrees. Jeder Aufruf gilt dem Checkout, aus dem die
-  Session kommt (Header `X-K3C-Root` aus `.mcp.json`, sonst MCP-roots): Prüfläufe, Planung, Logs, Berichte, Spielstände
+  Session kommt (Header `X-K3C-Root` aus `.mcp.json`): Prüfläufe, Planung, Logs, Berichte, Spielstände
   und Dienste nur dort. `workbench_status` nennt den Checkout in der Zeile `Checkout:`.
+- Fehlt der Header, gilt die Repo-Wurzel. Schreibende Tools (`plan_create`, `plan_set`, `plan_section`, `plan_delete`,
+  `svc_start`, `svc_stop`, `svc_restart`) lehnen nicht ab, nennen aber immer den Checkout in der letzten Zeile `Checkout:`. Steht dort aus einem Worktree die
+  Repo-Wurzel, kam der Header nicht an (B-275): die Änderung in der Wurzel zurücknehmen und im Worktree von Hand machen.
 - Dienste eines Worktrees laufen auf eigenen Ports (Versatz 10, 20 …: Vite 5183, Spielserver 8090 …); `svc_status` zeigt
   sie, `server_status` fragt den Spielserver des eigenen Worktrees. Die Ports der Repo-Wurzel (5173, 8080) nie aus einem
   Worktree ansprechen.

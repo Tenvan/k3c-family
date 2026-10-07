@@ -7,9 +7,9 @@
 - **Status:** eingeplant
 - **Sprint:** M9
 - **Erstellt:** 2026-10-04
-- **Spec:** Entwurf
+- **Spec:** freigegeben
 - **Revision:** 1
-- **Freigabe:** –
+- **Freigabe:** 2026-10-07, Chat, durch 🧑, Revision 1; Domänen-Ausnahme INF vite.config.ts (M9.2) bestätigt
 
 ## Ausgangslage
 
