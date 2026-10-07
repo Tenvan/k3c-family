@@ -24,6 +24,7 @@ import "math"
 //	bossSpawned   – Boss erscheint (boss.go): boss (ID aus data/bosses.json), x
 //	bossDefeated  – Boss besiegt, Belohnung gegeben (boss.go): boss, x; statt `kill`
 //	bossPhase     – Endboss wechselt in die nächste Phase, je Wechsel einmal (boss_endboss.go): boss, phase (ab 2)
+//	victory       – Ziel der Insel erreicht, genau einmal je Insel, in Stufe 0 (victory.go): goal (Variante), day
 //
 //	playerDown    – Monarch fällt: player, cause (Gegnerart aus data/enemies.json bei Nahkampf und Geschoss,
 //	                sonst "other"; B-182)

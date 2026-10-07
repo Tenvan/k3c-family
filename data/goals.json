@@ -1,0 +1,5 @@
+{
+  "notes": "Startwerte der Siegvarianten (docs/rules/stufen.md § 3, B-102): gold = Summe der eingesammelten Münzen aller Spieler der Insel, days = so viele Tage überleben (Sieg, wenn Tag days + 1 beginnt). Endboss, alles abbauen und alles ausbauen haben keinen Wert.",
+  "gold": 1000,
+  "days": 20
+}

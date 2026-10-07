@@ -265,3 +265,10 @@ func hasDepth(depth int) bool {
 	}
 	return false
 }
+
+// Goals sind die Startwerte der Siegvarianten aus data/goals.json (victory.go).
+type Goals struct {
+	Gold, Days int
+}
+
+var goals = load[Goals]("goals.json")
