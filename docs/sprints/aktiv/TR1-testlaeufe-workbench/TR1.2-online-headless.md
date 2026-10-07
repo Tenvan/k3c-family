@@ -1,6 +1,6 @@
 # TR1.2 · `sim_test` online headless: Bot-Geräte gegen den Spielserver
 
-- **Status:** offen
+- **Status:** in Arbeit
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Umgebung:** offline
