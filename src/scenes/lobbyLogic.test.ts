@@ -18,7 +18,7 @@ import {
 
 const room = { code: 'KRNZ', name: 'familie', depth: 1, grade: 'normal', taken: 2, free: 2, running: true };
 const lobby = { status: 'lobby' as Status, errorCode: null };
-const params = (p: Partial<StartParams> = {}): StartParams => ({ autostart: false, fresh: false, save: 'familie', mock: 0, room: null, ...p });
+const params = (p: Partial<StartParams> = {}): StartParams => ({ autostart: false, fresh: false, save: 'familie', mock: 0, room: null, players: 1, ...p });
 
 describe('Start-Parameter (AC-14, B-082/AC-01)', () => {
   it('gültige Werte', () => {
@@ -28,6 +28,7 @@ describe('Start-Parameter (AC-14, B-082/AC-01)', () => {
       save: 'test-ab12',
       mock: 3,
       room: 'KRNZ',
+      players: 1,
     });
   });
 
@@ -191,6 +192,15 @@ describe('Lobby ohne Verbindung (B-083)', () => {
     expect(lobbyEntries([room], 'connecting')).toEqual([]);
     expect(lobbyEntries([room], 'reconnecting')).toEqual([]);
     expect(lobbyEntries([room], 'lobby').map((e) => e.kind)).toEqual(['play', 'room']);
+  });
+
+  it('?room und ?players=n treten mit den Slots 0…n-1 bei, ohne ?players mit einem (B-353/AC-02)', () => {
+    expect(parseStartParams('?room=ABCD&players=3').players).toBe(3);
+    for (const q of ['players=0', 'players=5', 'players=x', '']) expect(parseStartParams(`?${q}`).players).toBe(1);
+    expect(new LobbyFlow(parseStartParams('?room=ABCD&players=3')).step(lobby)).toEqual({ t: 'join', room: 'ABCD', slots: [0, 1, 2] });
+    expect(new LobbyFlow(parseStartParams('?room=ABCD')).step(lobby)).toEqual({ t: 'join', room: 'ABCD', slots: [0] });
+    expect(new LobbyFlow(parseStartParams('?autostart=1&players=2')).step(lobby)).toMatchObject({ t: 'create', slots: [0, 1] });
+    expect(slotsFor(2, 2)).toEqual([0, 1, 2]);
   });
 
   it('beschriftet die Aktionen und sendet für sie keinen Befehl an den Server', () => {

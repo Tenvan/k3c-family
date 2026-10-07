@@ -122,4 +122,27 @@ describe('LocalSlots', () => {
     expect(slots.commands([0])[0]).toMatchObject({ skill: 4 });
     expect(slots.commands([0])[0]).not.toHaveProperty('attack');
   });
+
+  it('feste Eingaben (Bots) steuern ihre Slots ohne Beitritt per Taste (B-353/AC-01)', () => {
+    const { calls, client } = host();
+    const [a, b] = [new Pad(), new Pad()];
+    a.x = -1;
+    b.x = 0.5;
+    b.holding.add('attack');
+    const slots = new LocalSlots<Pad>([], [a, b]);
+    expect(slots.waiting([0, 1])).toBe(false);
+    slots.join([], [0, 1], client, 0);
+    expect(slots.commands([0, 1])).toEqual([
+      { slot: 0, moveX: -1, sprint: false, pay: false },
+      { slot: 1, moveX: 0.5, sprint: false, pay: false, attack: true },
+    ]);
+    const pad = new Pad();
+    slots.join([press(pad)], [0, 1], client, 10); // ein echter Controller bekommt den nächsten freien Slot
+    expect([slots.bound[0], slots.bound[1], slots.bound[2]]).toEqual([a, b, pad]);
+    expect(calls).toEqual(['add2']);
+  });
+
+  it('ohne feste Eingaben bleibt alles wie bisher', () => {
+    expect(new LocalSlots<Pad>([], []).bound.every((b) => b === null)).toBe(true);
+  });
 });

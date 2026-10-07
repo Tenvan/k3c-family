@@ -21,6 +21,7 @@ Reihenfolge in Wellen, Bahnen je Domäne und Zuordnung Mensch/autonom (zwei Acco
 | LP1 | PLAT | hoch | Landingpage für Spieler, Entwicklerseite für Werkzeuge | – | `aktiv/LP1-landingpage-aufraeumen/` |
 | K2 | SIM | hoch | Bosse, Siegvarianten und Inselwechsel | Tests je Boss, Siegvariante und Modus grün, Spielstand mit besiegten Bossen und aktueller Insel | `aktiv/K2-bosse-siege-inseln/` |
 | M11 | SRV | hoch | MCP-Seite: alle Tools mit Aufruf-Statistik, Zeitfilter der Statistik (B-350; einschiebbar) | Workbench, Reiter MCP | `aktiv/M11-mcp-seite-tools/` |
+| TR3 | CLI | hoch | Bot-Eingabe im Spiel einbinden (B-353; einschiebbar) | `sim_test` mit Client zeigt bewegte Monarchen | `aktiv/TR3-bot-eingabe-spiel/` |
 
 ## Offen am Gerät
 
@@ -45,7 +46,6 @@ dann über den Go-Server mit mehreren Räumen und gemischten Spielern.
 
 | Sprint | Domäne | Prio | Thema | Am Ende sichtbar | Reife | Ordner |
 |---|---|---|---|---|---|---|
-| TR3 | CLI | hoch | Bot-Eingabe im Spiel einbinden (B-353; einschiebbar) | `sim_test` mit Client zeigt bewegte Monarchen | bereit | `geplant/TR3-bot-eingabe-spiel/` |
 | BR1 | REG 🧑 | niedrig | Balancing-Runde Wirtschaft und Spieleabend 2 (BR1.1 erledigt; zurückgestellt am 2026-10-07, Vorrang Performance, Grafik und Sound) | Pass/Fail je Kennzahl, Begründungen in `docs/rules/`, Protokoll in `docs/playtests/` | bereit | `geplant/BR1-balancing-wirtschaft/` |
 | P1 | REG 🧑 | niedrig | Spieleabend 1 | Protokoll und Folge-Tickets | Entwurf | `geplant/P1-spieleabend-1/` |
 | K3 | SIM | niedrig | Events Vollmond, Blutmond und Händler-Überfall | Tests je Event grün, aktualisierte Golden-Daten | bereit | `geplant/K3-events/` |
