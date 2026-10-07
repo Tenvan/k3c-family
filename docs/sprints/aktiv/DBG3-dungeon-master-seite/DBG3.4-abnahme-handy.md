@@ -47,5 +47,6 @@ Am Gerät, siehe Schritte.
 - **Schritt 2 (🧑):** Zeit 4×, Pause, Weiter, 1× wirken sichtbar im Spiel.
 - **Schritt 3 (🧑):** +50 Gold und +20 Material kommen im Spiel an.
 - **Schritt 4 (🧑):** Dämmerung, Nacht (Nachtwelle startet), Welle +1 und Tag wirken im Spiel.
-- **AC-04 am PC: geprüft** (🧑). Keine Abweichungen, keine neuen Tickets.
+- **AC-04 am PC: geprüft** (🧑). Keine Abweichungen von der Spec.
+- **Neues Ticket:** B-333 (CLI): Bei Pause fehlt im Spielbild eine Pause-Anzeige, und die Figuren-Animationen laufen weiter (Anmerkung 🧑).
 - **Offen:** Die Abnahme am Handy (neben Spiel am TV oder PC) fehlt; die Session bleibt `offen`, AC-04 steht weiter als „angenommen, Validierung offen“.
