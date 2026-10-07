@@ -1,12 +1,12 @@
 # PJ1 · INF · Projekte, Rang und Domäne je Session in Regeln, Vorlagen und Planungstest
 
-- **Status:** geplant
+- **Status:** aktiv
 - **Domäne:** INF
 - **Prio:** hoch
 - **Reife:** bereit
 - **Einschiebbar:** nein
 - **Tickets:** B-355, B-356, B-338
-- **Start-Commit:** – (wird beim Aktivieren gesetzt: `git rev-parse --short origin/develop`)
+- **Start-Commit:** ffac0f9
 - **Spec:** freigegeben
 - **Revision:** 1
 - **Freigabe:** 2026-10-07, Chat, durch 🧑, Revision 1
@@ -70,7 +70,7 @@ keine
 
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
-| PJ1.1 | `PJ1.1-regeln-glossar.md` | Umsetzung | autonom | offen |
+| PJ1.1 | `PJ1.1-regeln-glossar.md` | Umsetzung | autonom | in Arbeit |
 | PJ1.2 | `PJ1.2-vorlagen-felder.md` | Umsetzung | autonom | offen |
 | PJ1.3 | `PJ1.3-planungstest-regeln.md` | Umsetzung | autonom | offen |
 | PJ1.4 | `PJ1.4-review.md` | Review | autonom | offen |

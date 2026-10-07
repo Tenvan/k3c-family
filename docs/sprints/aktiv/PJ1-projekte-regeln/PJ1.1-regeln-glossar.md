@@ -1,6 +1,6 @@
 # PJ1.1 · Arbeitsweise und Glossar für Projekte, Rang und Domäne je Session
 
-- **Status:** offen
+- **Status:** in Arbeit
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Umgebung:** offline
