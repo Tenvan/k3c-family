@@ -4,7 +4,7 @@
 - **Typ:** Idee
 - **Prio:** hoch
 - **Umgebung:** live
-- **Status:** eingeplant
+- **Status:** erledigt
 - **Sprint:** S3
 - **Erstellt:** 2026-10-02
 - **Spec:** freigegeben
@@ -58,3 +58,5 @@ keine
 ## Notizen
 
 Aus R3.2 (Zusatz von 🧑). Abhängig von B-123.
+
+2026-10-07: Ohne Abnahme am Gerät abgeschlossen (Entscheidung 🧑); das Abnahme-Kriterium geht in die Gesamtprüfung B-337/AC-05 über.

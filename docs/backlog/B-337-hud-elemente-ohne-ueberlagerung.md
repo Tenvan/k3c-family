@@ -54,6 +54,7 @@ Sehr kleine Zelle (Handy, 4 Spieler) → Rangfolge blendet unwichtige Elemente a
 - **AC-02** Alle HUD-Anzeigen laufen über diese Elemente; Hintergrund und Rahmen sind je Element schaltbar (Test oder Code-Nachweis).
 - **AC-03** Mindest-Schriftgröße je Layout bleibt eingehalten (`fontRules.test.ts` grün).
 - **AC-04** 🧑 hat am PC (1 und 4 Spieler, `?touch=1`) keine Überlagerung im HUD gesehen.
+- **AC-05** Gesamtabnahme Anzeige und Bedienung: 🧑 hat die Prüfliste unten (Notizen › Prüfliste Gesamtabnahme) vollständig durchlaufen; Ergebnis je Punkt mit Datum und Gerät, Mängel als Tickets. Ersetzt die am 2026-10-07 verworfenen Abnahmen S3.4, S4.3, S5.4, S6.4, S7.3, GR3.4, GR4.3, GR5.4.
 
 ## Offene Fragen
 
@@ -64,3 +65,17 @@ Sehr kleine Zelle (Handy, 4 Spieler) → Rangfolge blendet unwichtige Elemente a
 ## Notizen
 
 Vorschlag 🧑 (2026-10-07, nach S5.4/B-336): „Alle HUD-Anzeigen sollten eigene Elemente (mit optional Hintergrund und Rahmen) sein, bei denen Überlagerungen vermieden werden.“ Verwandt: B-191, B-336 (AC-04), B-090 (Radar), B-136 (Mindest-Schrift).
+
+### Prüfliste Gesamtabnahme (AC-05)
+
+Entscheidung 🧑 (2026-10-07): Bis B-337 umgesetzt ist, keine weiteren Anzeige- und Touch/Tasten-Abnahmen; alle bisherigen und offenen sind geschlossen, diese Liste ersetzt sie. Gerät je Durchgang vorher festhalten (PC mit Tastatur und `?touch=1`; Xbox/TV und Controller nach B-314; Handy). Je Punkt: grün, Mangel (Ticket) oder nicht geprüft.
+
+1. **HUD und Layouts** (aus S4.3, B-106): 1–4 Spieler (Testseite mit Mock-Spielern); keine Überlagerung (AC-01 bis AC-04); zwei Spieler in verschiedenen Stufen: Stufe, Radar und HUD je Zelle, Nacht je Zelle; Viertel-Layout lesbar, am TV aus 2–3 m.
+2. **Optionen und Pause** (aus S5.4, B-146, B-172; B-336): öffnen und schließen mit Tastatur (Esc, Pos1), Touch (☰, „Weiter“) und Controller (Menu kurz, View + Menu, B ohne Wirkung); alle Einträge einstellen; Werte nach Neuladen erhalten; Englisch lesen, Sprache bleibt.
+3. **Schlag, Skills, Skill-Menü, Aktionen-Overlay** (aus S3.4, B-124, B-125; Mängel B-318, B-319): je Gerät Schlag, Skill-Slots, Skill-Menü öffnen, Punkt lernen, Respec an der Burg; Overlay-Hinweise passend zum Gerät, ein Hinweis je Spieler, zwei Spieler lesbar.
+4. **Onboarding und Glyphen** (aus S6.4, B-148, B-149): neuer Raum im Grad „leicht“, Hinweise zurückgesetzt, erste Nacht ohne Erklärung (am TV möglichst mit Kind); Hinweise verstanden, Glyphen lesbar, auch im Split-Viertel.
+5. **Monarch auf dem Reittier** (aus S7.3, B-173; Mangel B-320): stehen, laufen links/rechts, sprinten; Reiter bleibt im Sattel, Goldbeutel und HP über dem Reiter; zwei Spieler im Split-Screen; gefallener Monarch kommt beritten zurück.
+6. **Grafik im Renderer** (aus GR3.4, B-010): Hub-Stufen, Mauer- und Turm-Materialstufen unterscheidbar; Parallax je Biom ohne Darstellungsfehler; zwei Spieler im Split-Screen.
+7. **Juice** (aus GR5.4, B-164): Treffer, Kill, Münze aufheben und geben, Bau fertig, Tod sichtbar; Screenshake nur in der Kamera des Betroffenen; mit Screenshake und Blitz „aus“ ruhig; Vibration (Controller, B-314).
+8. **Lade-Szene und Kaltstart** (aus GR4.3, B-163): Zeit vom Öffnen bis zum Menü dreimal messen (Cache geleert), Budget festlegen; auf der Xbox `MAX_TEXTURE_SIZE` ablesen (angenommen 4096).
+9. **Pause-Anzeige** (B-333, sobald umgesetzt): angehaltener Raum zeigt eine Anzeige, Figuren-Animationen stehen.

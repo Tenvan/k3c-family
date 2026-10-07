@@ -1,6 +1,6 @@
 # GR3 · CLI · Grafik im Renderer
 
-- **Status:** aktiv
+- **Status:** erledigt
 - **Domäne:** CLI
 - **Prio:** mittel
 - **Reife:** bereit
@@ -63,7 +63,7 @@ keine
 | GR3.1 | `GR3.1-gebaeude.md` | Umsetzung | autonom | fertig |
 | GR3.2 | `GR3.2-ressourcen-parallax.md` | Umsetzung | autonom | fertig |
 | GR3.3 | `GR3.3-review.md` | Review | autonom | fertig |
-| GR3.4 | `GR3.4-abnahme-tv.md` | Workshop | Mensch | offen |
+| GR3.4 | `GR3.4-abnahme-tv.md` | Workshop | Mensch | fertig |
 
 Bei `Reife: Entwurf` genügen Stichpunkte mit den Kriterien in Klammern statt Session-Dateien. Vor dem Aktivieren
 wird jede Session als eigene Datei nach `docs/vorlagen/session.md` geschrieben.
@@ -74,3 +74,4 @@ wird jede Session als eigene Datei nach `docs/vorlagen/session.md` geschrieben.
 - AC-04: Auswahl Stufe → Sprite getestet; ohne Stufe im Snapshot zeigen Mauer und Turm die Stein-Grafik (Holz ist Lücke), bewusste Abweichung. Sicht am TV (AC-04, AC-06): angenommen, Validierung offen (🧑, TV; im Fahrplan unter „Offen am Gerät“).
 - Keine schweren Befunde (kein `Math.random()`, Rückfall auf Platzhalter, Credits vollständig, Dateien ≤ 400). B-010 archiviert, keine neuen Tickets.
 - Version: v0.11.0 vorgeschlagen (Minor: Sprites und Parallax im Spiel; nach den offenen Vorschlägen bis v0.10.0, aktuell v0.6.0, bei gemeinsamem Setzen anpassen).
+- 2026-10-07: Sprint auf Entscheidung 🧑 abgeschlossen. Die offene Abnahme am Gerät ist nicht durchgeführt (verworfen) und geht in die Gesamtprüfung B-337/AC-05 über; keine weiteren Anzeige- und Touch/Tasten-Abnahmen bis zur Umsetzung von B-337.
