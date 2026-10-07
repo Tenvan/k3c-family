@@ -20,6 +20,8 @@ import "math"
 //	                Beruf), x, cause (Gegnerart wie playerDown); ohne Priorität, nicht beim Burgfall
 //	equipmentTaken – Gegner trägt Ausrüstung weg (Q68, Q69); nur angelegt, das Aufheben durch Gegner baut K1
 //	traded        – Tausch am Händler: player, resource, amount (+ gekauft, − verkauft), gold (− bezahlt, + erhalten)
+//	bossSpawned   – Boss erscheint (boss.go): boss (ID aus data/bosses.json), x
+//	bossDefeated  – Boss besiegt, Belohnung gegeben (boss.go): boss, x; statt `kill`
 //
 //	playerDown    – Monarch fällt: player, cause (Gegnerart aus data/enemies.json bei Nahkampf und Geschoss,
 //	                sonst "other"; B-182)

@@ -170,6 +170,9 @@ type Enemy struct {
 	// AoeIn: Sekunden bis zum nächsten Flächenschlag (`aoe`); Spawned: Spawn-Zeit, nur bei `phases` (enemies_traits.go).
 	AoeIn   float64 `json:"aoeIn,omitempty"`
 	Spawned float64 `json:"spawned,omitempty"`
+	// Boss: Miniboss oder Endboss (boss.go); Kind ist dann die Boss-ID aus data/bosses.json, AoeIn zählt bis zur
+	// nächsten Fähigkeit. Bosse fliehen nie.
+	Boss bool `json:"boss,omitempty"`
 }
 
 // Storm ist ein laufender Lightning Storm (skills_caster.go): PerSecond Schaden je Sekunde an Gegnern im Radius um X,
@@ -273,12 +276,12 @@ type World struct {
 	SpawnQueue  []QueuedSpawn   `json:"spawnQueue"`
 	Storms      []*Storm        `json:"storms,omitempty"` // laufende Lightning Storms in Wirk-Reihenfolge
 
-	Stock       *Stock  `json:"stock"` // Baumaterial gehört allen (in einer Insel: allen Stufen), Gold hat jeder Spieler selbst
-	SkillPoints int     `json:"skillPoints"`
-	Travel      *Travel `json:"travel"`
+	Stock       *Stock    `json:"stock"` // Baumaterial gehört allen (in einer Insel: allen Stufen), Gold hat jeder Spieler selbst
+	SkillPoints int       `json:"skillPoints"`
+	Travel      *Travel   `json:"travel"`
 	Merchant    *Merchant `json:"merchant,omitempty"` // Händler, nur in Tiefe 0 (merchant.go)
 	Drops       []*Drop   `json:"drops,omitempty"`    // Ausrüstung am Boden (warrior.go)
-	Events      []Event `json:"events"` // wird bei jedem Step geleert
+	Events      []Event   `json:"events"`             // wird bei jedem Step geleert
 	// EventsDropped zählt die Ereignisse, die die Obergrenze je Tick in diesem Step verworfen hat (capEvents).
 	EventsDropped int `json:"eventsDropped,omitempty"` // 0 fehlt im JSON (Protokoll-Beispiele unverändert, Übertragung: B-190)
 

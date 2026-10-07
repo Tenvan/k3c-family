@@ -61,10 +61,10 @@ func stepSpawns(w *World) {
 	}
 }
 
-// sendEnemiesHome: Bei Tagesanbruch fliehen alle Gegner zurück zu ihren Portalen (K2C).
+// sendEnemiesHome: Bei Tagesanbruch fliehen alle Gegner zurück zu ihren Portalen (K2C), Bosse bleiben.
 func sendEnemiesHome(w *World) {
 	for _, e := range w.Enemies {
-		e.Fleeing = true
+		e.Fleeing = !e.Boss
 	}
 	w.SpawnQueue = []QueuedSpawn{}
 }
@@ -82,6 +82,7 @@ func stepEnemies(w *World, dt float64) {
 		if stunned(e, dt) {
 			continue
 		}
+		bossAbility(w, e)
 		if e.has("fleesAtHalfHp") && e.HP < e.MaxHP/2 {
 			e.Fleeing = true
 		}

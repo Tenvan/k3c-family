@@ -1,0 +1,23 @@
+{
+  "notes": "Bosse (docs/rules/bosse.md § 1, § 1.1). kind: mini (Miniboss je Stufe) oder end (Endboss, K2.1c). depth: Stufe. wave: Welle der Stufe, mit der ein Miniboss über das erste Portal kommt. base: Standardgegner der Stufe als Bezug; hpFactor und damageFactor gelten relativ zu ihm, dazu Tiefen-Skalierung, Grad (enemyHp, enemyDamage) und Spielerfaktor der Insel auf die HP. speed in Units/s vor Tiefen-Skalierung, range in Units. ability: summon (enemy, count je intervalSeconds; Schwarm-Gegner zählen als ganzer Schwarm) oder aoe (radius um den Boss, alle intervalSeconds). reward: Gold als Münzen am Ort, Material der Stufe direkt in den Insel-Vorrat (Rest über dem Lager-Maximum verfällt); Skill-Punkte aus monarch.json › skillPointSources. Namen, Tempo, Reichweite, Intervalle und die Anzahl der Ratten-Königin sind vorläufig (B-099).",
+  "bosses": [
+    {
+      "id": "goblinLeader", "name": "Goblin-Anführer", "kind": "mini", "depth": 0, "wave": 5,
+      "base": "goblin", "hpFactor": 8, "damageFactor": 2, "speed": 3, "range": 1,
+      "ability": { "type": "summon", "enemy": "goblin", "count": 2, "intervalSeconds": 10 },
+      "reward": { "gold": 100, "material": 50 }
+    },
+    {
+      "id": "trollKing", "name": "Troll-König", "kind": "mini", "depth": 1, "wave": 3,
+      "base": "skeleton", "hpFactor": 8, "damageFactor": 2, "speed": 2, "range": 2,
+      "ability": { "type": "aoe", "radius": 3, "intervalSeconds": 4 },
+      "reward": { "gold": 100, "material": 50 }
+    },
+    {
+      "id": "ratQueen", "name": "Ratten-Königin", "kind": "mini", "depth": 2, "wave": 3,
+      "base": "zombie", "hpFactor": 8, "damageFactor": 2, "speed": 2, "range": 1,
+      "ability": { "type": "summon", "enemy": "ratSwarm", "count": 2, "intervalSeconds": 10 },
+      "reward": { "gold": 100, "material": 50 }
+    }
+  ]
+}
