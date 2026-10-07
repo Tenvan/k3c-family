@@ -4,8 +4,8 @@
 - **Typ:** Problem
 - **Prio:** hoch
 - **Umgebung:** offline
-- **Status:** offen
-- **Sprint:** –
+- **Status:** eingeplant
+- **Sprint:** RG3
 - **Erstellt:** 2026-10-07
 - **Spec:** Entwurf
 - **Revision:** 1

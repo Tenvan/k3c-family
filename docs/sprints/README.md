@@ -67,6 +67,8 @@ dann über den Go-Server mit mehreren Räumen und gemischten Spielern.
 | PL1 | PLAT | hoch | Neues Spiel, zwei Spieler an einer Tastatur, Overlay auf der Xbox, zentrale Texte | „Neues Spiel“ startet immer neu, zwei Tastatur-Spieler, Overlay per Controller | bereit | `geplant/PL1-start-tastatur-koop-texte/` |
 | CI1 | INF | hoch | CI-Nachweis, Release-Image ohne Dev-Mode, Test-Abdeckung | CI grün mit SP01-Prüfungen, Release-Image lehnt Dev-Aktionen ab, Abdeckung im CI-Bericht | Entwurf | `geplant/CI1-ci-release-image/` |
 | S9 | CLI | hoch | Rückmeldung für Schlag und Skills, ein Hinweis je Spieler | Jeder Tastendruck auf Schlag oder Skill ist sichtbar, das Aktionen-Overlay zeigt je Spieler einen Hinweis | bereit | `geplant/S9-rueckmeldung-overlay/` |
+| U6 | CLI | hoch | HUD ohne Überlagerung, Optionen per Touch | Optionen per Touch bedienbar, HUD bei 1–4 Spielern ohne Überlagerung, Gesamtabnahme Anzeige | Entwurf | `geplant/U6-hud-ohne-ueberlagerung/` |
+| RG3 | REG | hoch | Miniboss Wald: Burg hält Nacht 5 | `task balance`: Burg hält Nacht 1–5 im Korridor, Grad-Kurven monoton | Entwurf | `geplant/RG3-miniboss-wald-nacht-5/` |
 
 **Einschiebbar** (Schienen Balancing, Grafik, Sound, Betrieb; unabhängig vom Engine-Fortschritt, jeweils zwischen zwei Sprints):
 
@@ -88,6 +90,8 @@ dann über den Go-Server mit mehreren Räumen und gemischten Spielern.
 | RP1 | INF | mittel | Repo-Hygiene: Branches aufräumen, Altlasten, Regeln | Entwurf | `geplant/RP1-repo-hygiene/` |
 | PB1 | INF | niedrig | Veröffentlichung auf itch.io | Entwurf | `geplant/PB1-itch-io/` |
 | PL2 | PLAT | niedrig | Werkzeug-Seiten in der gewählten Sprache | Entwurf | `geplant/PL2-texte-werkzeug-seiten/` |
+| PM1 | CLI | hoch | Leistung messen: Diagnose-Zeile und Performance-Modus | Entwurf | `geplant/PM1-leistung-messen/` |
+| BAL6 | SIM | hoch | Balancing-Tester misst die Wirtschaft | Entwurf | `geplant/BAL6-tester-misst-wirtschaft/` |
 
 Gesamtplan und Begründung: [`../plan-weiterentwicklung.md`](../plan-weiterentwicklung.md). Offene Entscheidungen: [`../fragenkatalog.md`](../fragenkatalog.md).
 
