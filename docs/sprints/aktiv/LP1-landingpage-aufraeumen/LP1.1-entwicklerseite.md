@@ -1,6 +1,6 @@
 # LP1.1 · Landingpage teilen, Entwicklerseite dev.html
 
-- **Status:** in Arbeit
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Umgebung:** live
@@ -45,9 +45,9 @@ Texte übersetzen (B-215/PL2); Werkzeug-Seiten selbst ändern; Performance-Modi 
 
 ## Fertig, wenn
 
-- [ ] AC-01: `pages.test.ts` prüft die vier Spieler-Kacheln und genau eine kleine Kachel `dev.html`.
-- [ ] AC-02: `devTiles.test.ts` prüft Abschnitte und Vollständigkeit (alle früheren Werkzeug-Kacheln plus `dm.html`).
-- [ ] AC-03: `task check` grün; `projectRules.test.ts` deckt `dev.html` ab.
+- [x] AC-01: `pages.test.ts` prüft die vier Spieler-Kacheln und genau eine kleine Kachel `dev.html`.
+- [x] AC-02: `devTiles.test.ts` prüft Abschnitte und Vollständigkeit (alle früheren Werkzeug-Kacheln plus `dm.html`).
+- [x] AC-03: `task check` grün; `projectRules.test.ts` deckt `dev.html` ab.
 
 ## Prüfen
 
@@ -57,5 +57,10 @@ task check
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+2026-10-07, Agent (Claude Opus 5.5), Branch `sprint/lp1`.
+
+- **AC-01 geprüft:** `src/landing/pages.ts` enthält nur Weiterspielen, Neues Spiel, Online spielen, Lizenzen & Danksagung und die kleine Kachel „Entwicklung“ (`dev.html`, `small: true`, CSS `.card.small` in `index.html`); Test in `pages.test.ts`. Browser-Pane: Landingpage zeigt genau diese fünf Kacheln.
+- **AC-02 geprüft:** `src/tools/devTiles.ts` (`DEV_SECTIONS`: Entwicklung mit 8 Kacheln inkl. Dungeon Master, Performance mit Monitor, Balancing leer mit „Noch keine Aufrufe.“), Seite `dev.html` + `src/tools/dev.ts`; Test `devTiles.test.ts` (4 Tests). Browser-Pane: „Entwicklung“ öffnet `dev.html` im Rahmen, drei Abschnitte, 9 Kacheln; „Monitor“ öffnet über `openPage()`, „Dungeon Master“ ruft `window.open(…/dm.html, '_blank')`; keine Konsolenfehler.
+- **AC-03 geprüft:** `task check` grün; `tests/projectRules.test.ts` verlangt jede Seite in `PAGES` oder `DEV_TILES` und prüft Kachel-Ziele gegen alle `*.html` (wegen `dm.html`).
+- **Abweichung Erlaubte Dateien:** zusätzlich `src/landing/serverCheck.test.ts` (Erwartung der Nicht-Spiel-Kacheln: jetzt `lizenzen.html`, `dev.html`) und `src/tools/testTiles.test.ts` (Level-Betrachter steht jetzt auf der Entwicklerseite) angepasst; beides Tests derselben Domäne, die sonst an der gewollten Änderung scheitern.
+- Codemaps (`src/landing`, `src/tools`) und `CLAUDE.md` (Seiten-Regel Punkt 2) nachgezogen. Keine neuen Tickets.

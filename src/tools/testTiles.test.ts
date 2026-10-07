@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import { isOpenable } from '../core/shell';
-import { PAGES } from '../landing/pages';
+import { DEV_TILES } from './devTiles';
 import { SCENARIOS } from './testScenarios';
 import { LEVEL_TILES, nextFocus } from './testTiles';
 
@@ -10,10 +10,10 @@ describe('Abschnitt „Level“ der Testseite (B-092/AC-06)', () => {
     for (const tile of LEVEL_TILES) expect(tile.description.length).toBeGreaterThan(0);
   });
 
-  it('das Ziel ist eine Seite, die die Shell öffnet, und steht auf der Landingpage', () => {
+  it('das Ziel ist eine Seite, die die Shell öffnet, und steht auf der Entwicklerseite', () => {
     for (const tile of LEVEL_TILES) {
       expect(isOpenable(tile.href)).toBe(true);
-      expect(PAGES.some((p) => p.href === tile.href)).toBe(true);
+      expect(DEV_TILES.some((t) => t.href === tile.href)).toBe(true);
     }
   });
 });
