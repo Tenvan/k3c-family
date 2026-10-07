@@ -18,7 +18,7 @@ Ein Sim-Test zeigt das Beispiel aus B-007 (Spieler 1 Taunt, Spieler 2 Fireball, 
 - Beschluss 🧑 2026-10-06: Skill-Tasten (B-026) und Presets (B-017) sind entschieden und archiviert, Grundlage `docs/rules/monarch.md`, S1 und S3. Geplant wird nur, was nach S1 wirklich fehlt.
 - Schon da (S1, `docs/sprints/erledigt/S1-monarch-schlag-skills/`, Abnahme 2026-10-04): Fund-Pool, Verteilung je Spieler, Tier-Gating, Respec (`engine/sim/monarch.go`), aktive Skills Tank (`engine/sim/skills_tank.go`: `castTaunt`, `castStun`, `castShield`, `castLastStand`) und Zauberer (`engine/sim/skills_caster.go`: Fireball/Meteor, Ice Wall, Lightning Storm), Werte in `data/monarch.json`, Tests in `engine/sim/skills_*_test.go` und `engine/sim/monarch_test.go`. Spielstand v3 speichert Pool, Verteilung und Skills (S1 AC-05, B-022).
 - Lücke: `TestSkillsZweiSpielerGetrennt` (`engine/sim/skills_test.go`) prüft zwei Spieler, aber beide mit Tank-Skills. Ein Test mit zwei Linien gleichzeitig (Beispiel B-007) fehlt.
-- B-007/AC-02 (im Client bedienbar) ist CLI und läuft in S3 (`docs/sprints/aktiv/S3-skill-menue-overlay/`, B-124, B-125): AC-01 bis AC-04 dort nachgewiesen, Abnahme am Gerät (S3.4) offen. Diese Session verweist nur darauf, sie ändert keinen Client-Code.
+- B-007/AC-02 (im Client bedienbar) ist CLI und läuft in S3 (`docs/sprints/erledigt/S3-skill-menue-overlay/`, B-124, B-125): AC-01 bis AC-04 dort nachgewiesen, Abnahme am Gerät (S3.4) offen. Diese Session verweist nur darauf, sie ändert keinen Client-Code.
 - Hilfen: `mustLearn` (`engine/sim/monarch_test.go`), `tankPlayer` (`engine/sim/skills_test.go`), `casterPlayer`, `toughEnemy`, `lost` (`engine/sim/skills_caster_test.go`).
 
 ## Erlaubte Dateien

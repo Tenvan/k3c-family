@@ -1,6 +1,6 @@
 # S5 · CLI · Optionen- und Pause-Szene
 
-- **Status:** aktiv
+- **Status:** erledigt
 - **Domäne:** CLI
 - **Prio:** hoch
 - **Reife:** bereit
@@ -64,7 +64,7 @@ Pause im gemeinsamen Raum: 🧑, `docs/fragenkatalog.md Q01`.
 | S5.1 | `S5.1-einstellungen-speicher.md` | Umsetzung | autonom | fertig |
 | S5.2 | `S5.2-szene-optionen-pause.md` | Umsetzung | autonom | fertig |
 | S5.3 | `S5.3-texte-de-en.md` | Umsetzung | autonom | fertig |
-| S5.4 | `S5.4-abnahme-geraet.md` | Workshop | Mensch | offen |
+| S5.4 | `S5.4-abnahme-geraet.md` | Workshop | Mensch | fertig |
 | S5.5 | `S5.5-review.md` | Review | autonom | fertig |
 
 ## Abnahme
@@ -75,3 +75,4 @@ Pause im gemeinsamen Raum: 🧑, `docs/fragenkatalog.md Q01`.
 - Version: v0.9.0 vorgeschlagen (Minor: neue Optionen- und Pause-Szene sowie Sprachwahl de/en; nach dem offenen Vorschlag S4 v0.8.0, bei gemeinsamem Setzen anpassen).
 
 - 2026-10-07, S5.4: Touch am PC (`?touch=1`) geprüft, Mangel: Optionen per Touch nicht schließbar, Touch-Overlay verdeckt das Menü → B-336; AC-05 bleibt offen.
+- 2026-10-07: Sprint auf Entscheidung 🧑 abgeschlossen. Die offene Abnahme am Gerät ist nicht durchgeführt (verworfen) und geht in die Gesamtprüfung B-337/AC-05 über; keine weiteren Anzeige- und Touch/Tasten-Abnahmen bis zur Umsetzung von B-337.

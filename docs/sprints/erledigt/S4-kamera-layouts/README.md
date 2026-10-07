@@ -1,6 +1,6 @@
 # S4 · CLI · Kamera je Stufe und Layouts 1–4
 
-- **Status:** aktiv
+- **Status:** erledigt
 - **Domäne:** CLI
 - **Prio:** hoch
 - **Reife:** bereit
@@ -60,7 +60,7 @@ Mindest-Schriftgröße je Viertel: 🧑, `docs/fragenkatalog.md Q03`, Regel in B
 |---|---|---|---|---|
 | S4.1 | `S4.1-zelle-stufe.md` | Umsetzung | autonom | fertig |
 | S4.2 | `S4.2-radar-hud-schrift.md` | Umsetzung | autonom | fertig |
-| S4.3 | `S4.3-abnahme-geraet.md` | Workshop | Mensch | offen |
+| S4.3 | `S4.3-abnahme-geraet.md` | Workshop | Mensch | fertig |
 | S4.4 | `S4.4-review.md` | Review | autonom | fertig |
 
 ## Abnahme
@@ -70,3 +70,4 @@ Mindest-Schriftgröße je Viertel: 🧑, `docs/fragenkatalog.md Q03`, Regel in B
 - Keine schweren Befunde (Normalfall eine Stufe, 1–2 Spieler: Welt, Nachtabdunklung, Interpolation und Kamera-Folgen gleichwertig, `src/scenes` nur Darstellung); `task check` grün, `task check:go` entfällt (kein Go im Diff). Offen: B-197, B-198; B-176 bleibt offen.
 - Version: v0.8.0 vorgeschlagen (Minor: Kamera, Radar und HUD je Stufe sowie Mindest-Schrift im Spiel; nach den offenen Vorschlägen F4/F5 v0.6.0 und GR6 v0.7.0, bei gemeinsamem Setzen mit GR4 anpassen).
 - 2026-10-07, S4.3: AC-04 am PC durch 🧑 geprüft (Testseite mit Mock-Spielern: zwei Stufen je Zelle, Layouts mit 3 und 4 Spielern lesbar); Lesbarkeit am TV mit echten Spielern weiter offen.
+- 2026-10-07: Sprint auf Entscheidung 🧑 abgeschlossen. Die offene Abnahme am Gerät ist nicht durchgeführt (verworfen) und geht in die Gesamtprüfung B-337/AC-05 über; keine weiteren Anzeige- und Touch/Tasten-Abnahmen bis zur Umsetzung von B-337.

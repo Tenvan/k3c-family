@@ -1,6 +1,6 @@
 # GR5 · CLI · Juice: Treffer, Screenshake, Münzen
 
-- **Status:** aktiv
+- **Status:** erledigt
 - **Domäne:** CLI
 - **Prio:** mittel
 - **Reife:** bereit
@@ -64,7 +64,7 @@ keine
 | GR5.1 | `GR5.1-effekte-aus-events.md` | Umsetzung | autonom | fertig |
 | GR5.2 | `GR5.2-abschalten-kamera-vibration.md` | Umsetzung | autonom | fertig |
 | GR5.3 | `GR5.3-review.md` | Review | autonom | fertig |
-| GR5.4 | `GR5.4-abnahme-tv.md` | Workshop | Mensch | offen |
+| GR5.4 | `GR5.4-abnahme-tv.md` | Workshop | Mensch | fertig |
 
 Bei `Reife: Entwurf` genügen Stichpunkte mit den Kriterien in Klammern statt Session-Dateien. Vor dem Aktivieren
 wird jede Session als eigene Datei nach `docs/vorlagen/session.md` geschrieben.
@@ -75,3 +75,4 @@ wird jede Session als eigene Datei nach `docs/vorlagen/session.md` geschrieben.
 - AC-02 (Schalter per Test; Aussehen und Blitz-Eindruck) sowie die Sicht auf AC-01 und AC-04: angenommen, Validierung offen (🧑, TV; im Fahrplan unter „Offen am Gerät“); Vibration auf der Xbox angenommen. Nichts davon im Browser gesehen.
 - Keine schweren Befunde: Effekte nutzen `frame.state.events` (nicht `pendingEvents`), Einstellungen je Frame gelesen, Shake nur an der Zelle des getroffenen lokalen Spielers, kein `Math.random()`, `src/input/` und `settings.ts` unverändert, B nicht belegt. B-164 archiviert; Ticket B-217 (SIM, `built`/`playerDown` ohne Ort, Behelf im Client) bleibt offen.
 - Version: v0.10.0 vorgeschlagen (Minor: sichtbare Effekte im Spiel; nach dem offenen Vorschlag S5 v0.9.0, bei gemeinsamem Setzen anpassen).
+- 2026-10-07: Sprint auf Entscheidung 🧑 abgeschlossen. Die offene Abnahme am Gerät ist nicht durchgeführt (verworfen) und geht in die Gesamtprüfung B-337/AC-05 über; keine weiteren Anzeige- und Touch/Tasten-Abnahmen bis zur Umsetzung von B-337.

@@ -1,6 +1,6 @@
 # S3 · CLI · Skill-Menü, Tasten und Aktionen-Overlay
 
-- **Status:** aktiv
+- **Status:** erledigt
 - **Domäne:** CLI
 - **Prio:** hoch
 - **Reife:** bereit
@@ -62,7 +62,7 @@ Skill-Tasten am Controller (LB/RB bestätigen): 🧑, `docs/fragenkatalog.md Q06
 | S3.1 | `S3.1-eingabe-slots.md` | Umsetzung | autonom | fertig |
 | S3.2 | `S3.2-skill-menue.md` | Umsetzung | autonom | fertig |
 | S3.3 | `S3.3-aktionen-overlay.md` | Umsetzung | autonom | fertig |
-| S3.4 | `S3.4-abnahme-geraet.md` | Workshop | Mensch | blockiert |
+| S3.4 | `S3.4-abnahme-geraet.md` | Workshop | Mensch | fertig |
 | S3.5 | `S3.5-review.md` | Review | autonom | fertig |
 
 Bei `Reife: Entwurf` genügen Stichpunkte mit den Kriterien in Klammern statt Session-Dateien. Vor dem Aktivieren
@@ -75,3 +75,4 @@ wird jede Session als eigene Datei nach `docs/vorlagen/session.md` geschrieben.
 - **AC-05** angenommen, Validierung offen (S3.4); S3.4 steht im Fahrplan unter „Offen am Gerät“, B-124 und B-125 bleiben bis dahin offen.
 - Neue Tickets: B-285 (lernbare Skills im Protokoll, entstand in S3.2).
 - Version: v0.7.0 gesetzt (2026-10-05, nach Bestätigung durch 🧑; `task check:all` grün)
+- 2026-10-07: Sprint auf Entscheidung 🧑 abgeschlossen. Die offene Abnahme am Gerät ist nicht durchgeführt (verworfen) und geht in die Gesamtprüfung B-337/AC-05 über; keine weiteren Anzeige- und Touch/Tasten-Abnahmen bis zur Umsetzung von B-337.

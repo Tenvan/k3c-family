@@ -1,6 +1,6 @@
 # GR5.4 · Abnahme am TV
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Workshop
 - **Agent:** Mensch
 - **Umgebung:** live
@@ -47,3 +47,6 @@ Manuell durch 🧑 an der Xbox.
 ## Ergebnis
 
 2026-10-06, **Tastatur und Maus (Sammelaussage):** 🧑 (Ralf) im Chat: „Alle Tastatur und Maussteuerungen liefen bisher wie definiert.“ Gilt für den Tastatur- und Maus-Anteil dieser Session am PC; Darstellung, Ton und Controller (B-314) sind damit nicht abgenommen, die Session bleibt `offen`.
+
+
+2026-10-07, **Nicht abgenommen, verworfen auf Entscheidung 🧑 (Ralf, Chat).** `Status: fertig` nur, weil die Session-Vorlage kein `verworfen` kennt (B-338). Bis zur Umsetzung von B-337 (HUD-Elemente ohne Überlagerung) finden keine weiteren Anzeige- und Touch/Tasten-Abnahmen statt; alle bisherigen und offenen werden geschlossen. Die Abnahme dieser Session geht vollständig in die neue Gesamtprüfung **B-337/AC-05** über (Prüfliste dort). Bisherige Nachweise oben bleiben als Vorgeschichte stehen.
