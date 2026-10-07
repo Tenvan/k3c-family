@@ -74,3 +74,4 @@ Pause im gemeinsamen Raum: 🧑, `docs/fragenkatalog.md Q01`.
 - Keine schweren Befunde: Menu-kurz (< 600 ms, View blockiert) kollidiert nicht mit der Home-Kombi (400 ms), mit 2 lokalen Spielern stehen alle Sitzplätze und jedes Gerät bedient die Szene, `localStorage` wirft nie; die Änderung an `loadLogic.ts` und `stageView.ts` (nur Texte, gleiche Domäne) ist nicht schwer. `task check` und `task check:go` grün. Neue Tickets: keine (B-214, B-215 aus S5.2/S5.3 offen).
 - Version: v0.9.0 vorgeschlagen (Minor: neue Optionen- und Pause-Szene sowie Sprachwahl de/en; nach dem offenen Vorschlag S4 v0.8.0, bei gemeinsamem Setzen anpassen).
 
+- 2026-10-07, S5.4: Touch am PC (`?touch=1`) geprüft, Mangel: Optionen per Touch nicht schließbar, Touch-Overlay verdeckt das Menü → B-336; AC-05 bleibt offen.
