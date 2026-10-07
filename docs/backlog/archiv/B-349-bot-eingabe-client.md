@@ -4,7 +4,7 @@
 - **Typ:** Idee
 - **Prio:** hoch
 - **Umgebung:** live
-- **Status:** eingeplant
+- **Status:** erledigt
 - **Sprint:** TR2
 - **Erstellt:** 2026-10-07
 - **Spec:** freigegeben
@@ -40,7 +40,7 @@ Regeln aus `CLAUDE.md` › Seiten & Navigation und Eingabe: Taste B unbelegt, Ho
 
 ## Beispiele
 
-`game.html?botfeed=ws://127.0.0.1:5180/bot/run-4&players=2` → zwei Monarchen bewegen sich nach den Bot-Kommandos.
+`game.html?botfeed=ws://127.0.0.1:5180/bot/4/0&players=2` → zwei Monarchen bewegen sich nach den Bot-Kommandos.
 
 ## Ausnahme- und Fehlerfälle
 
