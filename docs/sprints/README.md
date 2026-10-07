@@ -19,7 +19,6 @@ Reihenfolge in Wellen, Bahnen je Domäne und Zuordnung Mensch/autonom (zwei Acco
 | MON2 | PLAT | hoch | Monitoring-Seite `monitor.html`: Ampel je Raum, Verläufe mit Perzentilen, Fehler-Zeitleiste (B-282; Abnahme am Handy offen) | – | `aktiv/MON2-monitoring-seite/` |
 | W6 | CLI | mittel | Anzeigen für Bau, Lager, Hub und Bürger (B-117, B-126) | HUD und Bauplätze am TV, von 🧑 abgenommen | `aktiv/W6-anzeige-wirtschaft/` |
 | LP1 | PLAT | hoch | Landingpage für Spieler, Entwicklerseite für Werkzeuge | – | `aktiv/LP1-landingpage-aufraeumen/` |
-| M9 | SRV | hoch | k3c-dev in Worktrees und Markdown-Ansicht | Planung, Prüfläufe und Dienste treffen den Worktree der Session; Session-Dateien lesbar im Detail-Panel | `aktiv/M9-dev-worktrees/` |
 | K2 | SIM | hoch | Bosse, Siegvarianten und Inselwechsel | Tests je Boss, Siegvariante und Modus grün, Spielstand mit besiegten Bossen und aktueller Insel | `aktiv/K2-bosse-siege-inseln/` |
 
 ## Offen am Gerät
@@ -172,3 +171,4 @@ Gesamtplan und Begründung: [`../plan-weiterentwicklung.md`](../plan-weiterentwi
 | GR3 | Grafik im Renderer: Gebäude, Ressourcen, Portale, Truhen, Münzen und Parallax je Biom als Sprites mit Platzhalter-Rückfall (B-010; Sicht am TV offen) | `erledigt/GR3-grafik-renderer/` |
 | GR4 | Atlas und Lade-Szene (B-163, B-029; Messung an der Xbox offen, GR4.3) | `erledigt/GR4-atlas-ladeszene/` |
 | GR5 | Juice: Treffer, Screenshake, Münzen (B-164; Abnahme am TV offen) | `erledigt/GR5-juice/` |
+| M9 | k3c-dev in Worktrees und Markdown-Ansicht: Checkout in Antworten, Vite-Watcher, nummerierte Listen (B-275, B-213; Ursache des fehlenden Headers: B-341) | `erledigt/M9-dev-worktrees/` |

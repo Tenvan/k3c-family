@@ -1,6 +1,6 @@
 # M9 · SRV · k3c-dev in Worktrees und Markdown-Ansicht
 
-- **Status:** aktiv
+- **Status:** erledigt
 - **Domäne:** SRV
 - **Prio:** hoch
 - **Reife:** bereit
@@ -65,11 +65,14 @@ Header `X-K3C-Root` fehlt → Repo-Wurzel wie heute, die Antwort schreibender To
 | M9.1 | `M9.1-checkout-header.md` | Umsetzung | autonom | fertig |
 | M9.2 | `M9.2-vite-worktree.md` | Umsetzung | autonom | fertig |
 | M9.3 | `M9.3-markdown-listen.md` | Umsetzung | autonom | fertig |
-| M9.4 | `M9.4-review.md` | Review | autonom | offen |
+| M9.4 | `M9.4-review.md` | Review | autonom | fertig |
 
 Bei `Reife: Entwurf` genügen Stichpunkte mit den Kriterien in Klammern statt Session-Dateien. Vor dem Aktivieren
 wird jede Session als eigene Datei nach `docs/vorlagen/session.md` geschrieben.
 
 ## Abnahme
 
-–
+- 2026-10-07, Review M9.4: AC-01 (Ergebnis M9.1: Test `TestWorkspaceAusHeader`; M9.2: Vite-Probe ohne Port, Live-Probe mit Port entfiel), AC-02 (M9.3: Vitest), AC-04 (`task check:dev`, `task check` grün) mit Nachweis; kein schwerer Befund.
+- AC-03: verschoben, die Ursache des fehlenden Headers ist offline eingegrenzt und nur live messbar: B-341 (die Log-Felder `header` und `checkout` entscheiden mit einem Aufruf aus einem Worktree).
+- B-275 und B-213 archiviert.
+Version: v0.14.1 vorgeschlagen (Patch: nur Entwickler-Werkzeug k3c-dev und Dev-Server-Konfiguration ohne Änderung am Spiel; aktuell v0.14.0); gesetzt erst nach Bestätigung durch 🧑.

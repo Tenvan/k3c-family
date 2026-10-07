@@ -8,7 +8,6 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 
 | Nr. | Domäne | Typ | Prio | Status | Sprint | Titel |
 |---|---|---|---|---|---|---|
-| [B-275](B-275-worktree-unter-claude.md) | SRV | Problem | hoch | eingeplant | M9 | k3c-dev und Vite arbeiten in Worktrees unter `.claude/worktrees/` richtig |
 | [B-007](B-007-skill-baum.md) | SIM | Idee | hoch | eingeplant | SK1 | Skill-Baum mit Tank und Zauberer ist spielbar |
 | [B-008](B-008-spieleabend.md) | REG | Frage | hoch | eingeplant | P1 | Familie hat einen Spieleabend gespielt und Feedback gegeben |
 | [B-011](B-011-sound.md) | CLI | Idee | mittel | eingeplant | SO1 | Spiel hat Sound und Musik |
@@ -84,7 +83,6 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-215](B-215-texte-eingabe-shell-tools.md) | PLAT | Schuld | niedrig | eingeplant | PL1 | Die Texte von Touch-Overlay, Shell und Werkzeug-Seiten kommen aus den zentralen Textdateien |
 | [B-230](B-230-burg-haelt-nur-47-prozent.md) | REG | Problem | mittel | eingeplant | RG1 | Burg hält Nacht 1–5 nur in 47 % der Seeds (Bot saver), Ziel 75–90 %: Ursache klären |
 | [B-217](B-217-ereignisse-built-playerdown-ort.md) | SIM | Schuld | niedrig | eingeplant | LV1 | Die Ereignisse `built` und `playerDown` tragen ihren Ort |
-| [B-213](B-213-markdown-listen-haekchen.md) | SRV | Problem | niedrig | eingeplant | M9 | MarkdownView in k3c-dev zeigt nummerierte Listen und Häkchen wie die alte Planungsseite |
 | [B-219](B-219-doku-gating-und-schlag.md) | REG | Schuld | niedrig | eingeplant | RG2 | Game-Design und Ereignis-Doku nennen Tier-Gating 2/4/6 und den Schlag des Monarchen |
 | [B-218](B-218-optionen-ambient-lautstaerke.md) | CLI | Idee | niedrig | eingeplant | SO5 | Die Optionen-Szene regelt auch die Lautstärke des Ambient-Busses |
 | [B-273](B-273-release-image-dev-mode-aus.md) | INF | Schuld | hoch | eingeplant | CI1 | Das Release-Image startet den Server ohne Dev-Mode |
@@ -316,3 +314,5 @@ Zeile in diesen Abschnitt.
 | [B-149](archiv/B-149-controller-glyphen.md) | CLI | Idee | mittel | erledigt | S6 | Hinweise zeigen Controller-Glyphen statt Tasten-Text |
 | [B-292](archiv/B-292-neues-spiel-eindeutiger-name.md) | PLAT | Problem | hoch | erledigt | LP1 | Die Kachel „Neues Spiel“ startet auch bei vorhandenem Spielstand familie |
 | [B-340](archiv/B-340-mine-test-miniboss.md) | SIM | Frage | hoch | erledigt | K2 | K2.1a darf den Mine-Test an den Miniboss anpassen |
+| [B-275](archiv/B-275-worktree-unter-claude.md) | SRV | Problem | hoch | erledigt | M9 | k3c-dev und Vite arbeiten in Worktrees unter `.claude/worktrees/` richtig |
+| [B-213](archiv/B-213-markdown-listen-haekchen.md) | SRV | Problem | niedrig | erledigt | M9 | MarkdownView in k3c-dev zeigt nummerierte Listen und Häkchen wie die alte Planungsseite |
