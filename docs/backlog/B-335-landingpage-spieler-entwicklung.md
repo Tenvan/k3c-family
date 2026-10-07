@@ -4,12 +4,12 @@
 - **Typ:** Idee
 - **Prio:** hoch
 - **Umgebung:** live
-- **Status:** offen
-- **Sprint:** –
+- **Status:** eingeplant
+- **Sprint:** LP1
 - **Erstellt:** 2026-10-07
-- **Spec:** Entwurf
+- **Spec:** freigegeben
 - **Revision:** 1
-- **Freigabe:** –
+- **Freigabe:** 2026-10-07, Chat, durch 🧑 (mit Sprint LP1)
 
 ## Ausgangslage
 
@@ -56,9 +56,11 @@ Aufruf einer Werkzeugseite direkt per URL bleibt möglich. Ein Abschnitt ohne Ka
 
 ## Offene Fragen
 
-- Welche Kacheln zählen als Spieler-Kacheln (v. a. Unsere Aufstellung, Alle Figuren, Lizenzen)? 🧑
-- Wird `testing.html` zur Entwicklerseite ausgebaut oder bleibt sie eine Kachel darin? 🧑
-- `/dm` als Kachel: läuft heute außerhalb der Shell (DBG3); öffnet die Kachel sie im Rahmen oder als eigenes Fenster? Beim Einplanen klären.
+keine. Entschieden von 🧑 (2026-10-07, Chat):
+
+- Spieler-Kacheln: Weiterspielen, Neues Spiel, Online spielen, Lizenzen & Danksagung; Unsere Aufstellung und Alle Figuren wandern auf die Entwicklerseite.
+- Neue Seite `dev.html`; `testing.html` bleibt eigene Seite und Kachel darauf.
+- `/dm` öffnet als neues Fenster bzw. Tab.
 
 ## Notizen
 

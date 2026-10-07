@@ -81,7 +81,7 @@ Nur so bleibt Vollbild auf der Xbox über Seitenwechsel erhalten. Für **jede** 
 1. Im Script **`installPageChrome()`** aus `src/core/shell.ts` aufrufen. Das liefert den sichtbaren **Home-Button**
    (oben mittig), **View + Menu** gemeinsam halten bzw. **Pos1** = zurück, und die Zurück-Falle für B.
    Oben ca. 70 px frei lassen, damit der Home-Button nichts verdeckt.
-2. In `src/landing/pages.ts` eintragen. Sonst ist die Seite vom Controller aus nicht erreichbar.
+2. Spieler-Seiten in `src/landing/pages.ts` eintragen, Werkzeug-Seiten in `src/tools/devTiles.ts` (Entwicklerseite `dev.html`, B-335). Sonst ist die Seite vom Controller aus nicht erreichbar.
 3. Vollbild nur über `toggleFullscreen()` aus `src/core/fullscreen.ts`. Nie `requestFullscreen()` direkt
    oder `this.scale.toggleFullscreen()`, das würde nur das iframe betreffen.
 4. Seiten nie per Link oder `location` untereinander wechseln, außer über `openPage()` aus `src/core/shell.ts` (die Shell öffnet nur `name.html` dieses Ordners). Zurück zur Übersicht immer über `goHome()`.

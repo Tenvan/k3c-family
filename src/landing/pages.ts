@@ -1,7 +1,8 @@
 /**
- * Alle Seiten, die auf der Landingpage erscheinen.
+ * Seiten der Landingpage: nur Spieler-Kacheln und eine kleine Kachel zur Entwicklerseite (B-335).
  * Neue Seite: `<name>.html` im Projektordner anlegen (wird automatisch gebaut), im Script `installPageChrome()`
- * aus src/core/shell.ts aufrufen (Home-Button + Rückweg) und hier eintragen. Siehe Regel in CLAUDE.md.
+ * aus src/core/shell.ts aufrufen (Home-Button + Rückweg) und hier eintragen, Werkzeug-Seiten in
+ * `src/tools/devTiles.ts`. Siehe Regel in CLAUDE.md.
  */
 export interface PageEntry {
   title: string;
@@ -9,9 +10,11 @@ export interface PageEntry {
   icon: string;
   /** Ziel-URL, relativ. Eine Funktion wird erst beim Öffnen ausgewertet. */
   href: string | (() => string);
-  section: 'play' | 'test' | 'about';
+  section: 'play' | 'about';
   /** Große Hauptkachel */
   primary?: boolean;
+  /** Kleine, unauffällige Kachel (Zugang zur Entwicklerseite) */
+  small?: boolean;
 }
 
 /** Start-URL „Neues Spiel“: der Server lehnt `fresh` auf vorhandene Stände ab, deshalb trägt jeder Start einen eigenen Namen (aus der Uhrzeit). */
@@ -43,72 +46,23 @@ export const PAGES: PageEntry[] = [
     section: 'play',
   },
   {
-    title: 'Gamepad-Test',
-    description: 'Controller, B-Taste, Vollbild, Vibration, FPS · Bericht an den PC',
-    icon: '🎮',
-    href: 'gamepad-test.html',
-    section: 'test',
-  },
-  {
-    title: 'Testing',
-    description: 'Test-Szenarien starten · 1 bis 4 Spieler mit Mock-Spielern (Go-Server nötig)',
-    icon: '🧪',
-    href: 'testing.html',
-    section: 'test',
-  },
-  {
-    title: 'Level-Betrachter',
-    description: 'Seed und Biom wählen, das generierte Level ansehen · Warnungen der Prüfung (Go-Server nötig)',
-    icon: '🗺️',
-    href: 'leveltest.html',
-    section: 'test',
-  },
-  {
-    title: 'Unsere Aufstellung',
-    description: 'Jede Rolle im Spiel mit ihrer Figur · Monarchen, Truppen, Gegner',
-    icon: '🛡️',
-    href: 'aufstellung.html',
-    section: 'test',
-  },
-  {
-    title: 'Alle Figuren',
-    description: 'Alle Sprites aus LuizMelo und Gothicvania, auch ungenutzte',
-    icon: '🧙',
-    href: 'figuren.html',
-    section: 'test',
-  },
-  {
-    title: 'Alle Grafiken',
-    description: 'Gewählte CC0-Packs für Gebäude, Ressourcen und Hintergründe · mit Urheber, Lizenz und Quelle',
-    icon: '🏰',
-    href: 'grafiken.html',
-    section: 'test',
-  },
-  {
-    title: 'Hörprobe',
-    description: 'Kandidaten für Musik und Effekte anhören · nach Zustand und Ereignis, mit Quelle und Lizenz',
-    icon: '🔊',
-    href: 'soundtest.html',
-    section: 'test',
-  },
-  {
-    title: 'Monitor',
-    description: 'Serverzustand: Ampel je Raum, Verläufe mit Perzentilen, Fehler-Zeitleiste (Go-Server mit K3C_STATUS_TOKEN)',
-    icon: '📈',
-    href: 'monitor.html',
-    section: 'test',
-  },
-  {
     title: 'Lizenzen & Danksagung',
     description: 'Unsere Lizenz (nicht-kommerziell) · Grafiken, Software und ein großes Danke an alle Urheber',
     icon: '📜',
     href: 'lizenzen.html',
     section: 'about',
   },
+  {
+    title: 'Entwicklung',
+    description: 'Werkzeuge für Entwicklung, Performance und Balancing',
+    icon: '🛠️',
+    href: 'dev.html',
+    section: 'about',
+    small: true,
+  },
 ];
 
 export const SECTIONS: Record<PageEntry['section'], string> = {
   play: 'Spielen',
-  test: 'Tests & Werkzeuge',
   about: 'Über das Spiel',
 };
