@@ -1,12 +1,12 @@
 # TR3 · CLI · Bot-Eingabe im Spiel einbinden
 
-- **Status:** geplant
+- **Status:** aktiv
 - **Domäne:** CLI
 - **Prio:** hoch
 - **Reife:** bereit
 - **Einschiebbar:** ja
 - **Tickets:** B-353
-- **Start-Commit:** –
+- **Start-Commit:** 3a4d923
 - **Spec:** freigegeben
 - **Revision:** 1
 - **Freigabe:** 2026-10-07, Chat, durch 🧑, Revision 1 (mit B-353)
@@ -59,7 +59,7 @@ keine
 
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
-| TR3.1 | `TR3.1-bot-eingabe-einbinden.md` | Umsetzung | autonom | offen |
+| TR3.1 | `TR3.1-bot-eingabe-einbinden.md` | Umsetzung | autonom | in Arbeit |
 | TR3.2 | `TR3.2-review.md` | Review | autonom | offen |
 
 ## Abnahme

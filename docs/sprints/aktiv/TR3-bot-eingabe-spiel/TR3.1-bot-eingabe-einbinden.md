@@ -1,6 +1,6 @@
 # TR3.1 · Bot-Eingaben in GameScene und Lobby
 
-- **Status:** offen
+- **Status:** in Arbeit
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Umgebung:** live
