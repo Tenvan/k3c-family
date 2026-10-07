@@ -2,7 +2,7 @@
 
 - **Domäne:** REG
 - **Typ:** Problem
-- **Prio:** mittel
+- **Prio:** niedrig
 - **Umgebung:** live
 - **Status:** eingeplant
 - **Sprint:** BR1

@@ -2,7 +2,7 @@
 
 - **Domäne:** CLI
 - **Typ:** Frage
-- **Prio:** niedrig
+- **Prio:** hoch
 - **Umgebung:** offline
 - **Status:** eingeplant
 - **Sprint:** GR7

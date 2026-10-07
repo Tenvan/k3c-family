@@ -21,7 +21,6 @@ Reihenfolge in Wellen, Bahnen je Domäne und Zuordnung Mensch/autonom (zwei Acco
 | LP1 | PLAT | hoch | Landingpage für Spieler, Entwicklerseite für Werkzeuge | – | `aktiv/LP1-landingpage-aufraeumen/` |
 | K2 | SIM | hoch | Bosse, Siegvarianten und Inselwechsel | Tests je Boss, Siegvariante und Modus grün, Spielstand mit besiegten Bossen und aktueller Insel | `aktiv/K2-bosse-siege-inseln/` |
 | M11 | SRV | hoch | MCP-Seite: alle Tools mit Aufruf-Statistik, Zeitfilter der Statistik (B-350; einschiebbar) | Workbench, Reiter MCP | `aktiv/M11-mcp-seite-tools/` |
-| BR1 | REG 🧑 | hoch | Balancing-Runde Wirtschaft und Spieleabend 2 | Pass/Fail je Kennzahl, Begründungen in `docs/rules/`, Protokoll in `docs/playtests/` | `aktiv/BR1-balancing-wirtschaft/` |
 
 ## Offen am Gerät
 
@@ -47,11 +46,12 @@ dann über den Go-Server mit mehreren Räumen und gemischten Spielern.
 | Sprint | Domäne | Prio | Thema | Am Ende sichtbar | Reife | Ordner |
 |---|---|---|---|---|---|---|
 | TR2 | PLAT | hoch | Bot-Eingabe im Client für Testläufe (B-349; einschiebbar) | Bots steuern Monarchen im Browser | bereit | `geplant/TR2-bot-eingabe-client/` |
-| P1 | REG 🧑 | hoch | Spieleabend 1 | Protokoll und Folge-Tickets | Entwurf | `geplant/P1-spieleabend-1/` |
+| BR1 | REG 🧑 | niedrig | Balancing-Runde Wirtschaft und Spieleabend 2 (BR1.1 erledigt; zurückgestellt am 2026-10-07, Vorrang Performance, Grafik und Sound) | Pass/Fail je Kennzahl, Begründungen in `docs/rules/`, Protokoll in `docs/playtests/` | bereit | `geplant/BR1-balancing-wirtschaft/` |
+| P1 | REG 🧑 | niedrig | Spieleabend 1 | Protokoll und Folge-Tickets | Entwurf | `geplant/P1-spieleabend-1/` |
 | K3 | SIM | niedrig | Events Vollmond, Blutmond und Händler-Überfall | Tests je Event grün, aktualisierte Golden-Daten | bereit | `geplant/K3-events/` |
 | K4 | SRV | hoch | Protokoll für Bosse, Events und Inselwechsel | `docs/protocol.md` mit neuen Feldern, Beispiele in `testdata/protocol/`, `task check:go` und `task check` grün | bereit | `geplant/K4-protokoll-kampf/` |
 | K5 | CLI | mittel | Anzeigen für Kampf, Bosse und Events, Anlegen-Dialog, Debug-Panel | Boss-Leiste, Warnkreis und Event-Banner am TV, Lobby-Dialog, von 🧑 abgenommen | bereit | `geplant/K5-anzeige-kampf/` |
-| BR2 | REG 🧑 | hoch | Balancing-Runde Kampf und Bosse und Spieleabend 3 | Pass/Fail je Kennzahl, Begründungen in `docs/rules/`, Protokoll in `docs/playtests/` | Entwurf | `geplant/BR2-balancing-kampf/` |
+| BR2 | REG 🧑 | niedrig | Balancing-Runde Kampf und Bosse und Spieleabend 3 | Pass/Fail je Kennzahl, Begründungen in `docs/rules/`, Protokoll in `docs/playtests/` | Entwurf | `geplant/BR2-balancing-kampf/` |
 | SV1 | SRV | hoch | Raum mit allen Stufen, Voll-Ausbau-Spielstand, leere Test-Räume | Neuer Raum mit allen fünf Stufen, Level-Betrachter startet einen voll ausgebauten Spielstand | bereit | `geplant/SV1-raeume-stufen-testspielstand/` |
 | ST1 | SRV | mittel | Speichern alle 60 s, unter Windows robust, Rotation der Spielmetrik | HUD zeigt „gesichert“, Spielstände überstehen gesperrte Dateien, `reports/` bleibt begrenzt | Entwurf | `geplant/ST1-speichern-robust/` |
 | RM1 | SRV | mittel | Raum-Pause im Couch-Raum und lernbare Skills vom Server | Pause hält den Couch-Raum an; Skill-Menü zeigt nur, was der Server annimmt | Entwurf | `geplant/RM1-pause-lernbare-skills/` |
@@ -73,15 +73,15 @@ dann über den Go-Server mit mehreren Räumen und gemischten Spielern.
 | Sprint | Domäne | Prio | Thema | Reife | Ordner |
 |---|---|---|---|---|---|
 | BAL4 | REG | mittel | Abgleich Spielmetrik und Simulator | Entwurf | `geplant/BAL4-metrik-abgleich/` |
-| SO2 | CLI | mittel | SFX-Katalog und Einbau | Entwurf | `geplant/SO2-sfx-katalog/` |
-| SO4 | CLI | mittel | Musik je Zustand | Entwurf | `geplant/SO4-musik/` |
+| SO2 | CLI | hoch | SFX-Katalog und Einbau | Entwurf | `geplant/SO2-sfx-katalog/` |
+| SO4 | CLI | hoch | Musik je Zustand | Entwurf | `geplant/SO4-musik/` |
 | M10 | SRV | mittel | Ressourcen-Manager für Grafik- und Sound-Slots in k3c-dev | Entwurf | `geplant/M10-ressourcen-manager/` |
 | NT1 | SRV | mittel | Stabile Tests, Warteschlange und Snapshot-Budget | Entwurf | `geplant/NT1-netz-tests-stabil/` |
 | BT1 | SRV | niedrig | Server im Heimnetz finden, Windows-Starter, Start mit Seed | Entwurf | `geplant/BT1-heimnetz-start/` |
 | BAL5 | SIM | mittel | Balancing-Tester: Profil „Mauern zuerst“ und Sensitivität ohne Wirkung | Entwurf | `geplant/BAL5-balancing-tester-nachschaerfen/` |
 | RG2 | REG | mittel | Regelwerk-Klärungen: Korridore, Kennzahl, Tier-Gating, Handwerker, Tiefe 3–4 | Entwurf | `geplant/RG2-regelwerk-klaerungen/` |
-| GR7 | CLI | mittel | Figuren-Lücken, ganzzahlige Skalierung und Schrift | Entwurf | `geplant/GR7-figuren-schrift/` |
-| SO5 | CLI | niedrig | Audio-Kern: ganze Dateien mit Crossfade, Ambient-Lautstärke | Entwurf | `geplant/SO5-audio-kern-dateien/` |
+| GR7 | CLI | hoch | Figuren-Lücken, ganzzahlige Skalierung und Schrift | Entwurf | `geplant/GR7-figuren-schrift/` |
+| SO5 | CLI | hoch | Audio-Kern: ganze Dateien mit Crossfade, Ambient-Lautstärke | Entwurf | `geplant/SO5-audio-kern-dateien/` |
 | HW1 | PLAT | niedrig | Zurückgestellte Controller-Prüfungen nachholen | Entwurf | `geplant/HW1-controller-pruefungen/` |
 | PG1 | PLAT | niedrig | Präsentationsseite mit echten Spielbildern | Entwurf | `geplant/PG1-praesentation-bilder/` |
 | DBG4 | PLAT | mittel | Dev-Seite Asset-Vorschau im Spielmaßstab | Entwurf | `geplant/DBG4-asset-vorschau/` |
