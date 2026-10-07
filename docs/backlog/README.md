@@ -130,7 +130,6 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-341](B-341-header-ursache-live-messen.md) | SRV | Problem | mittel | offen | – | Die Ursache für den fehlenden Header `X-K3C-Root` aus Worktrees ist live gemessen |
 | [B-342](B-342-w6-2-siteview-erlaubt.md) | CLI | Frage | mittel | offen | – | W6.2 darf den Bauplatz-Wartegrund in `siteView.ts` anbinden |
 | [B-343](B-343-bau-vor-dem-ausgang.md) | SIM | Frage | mittel | offen | – | Der Bau des Endbosses liegt an der inneren Kante des Ausgangs-Chunks |
-| [B-348](B-348-sim-test-workbench.md) | SRV | Idee | hoch | eingeplant | TR1 | Jeder Testlauf startet und läuft über das MCP-Tool `sim_test` |
 | [B-349](B-349-bot-eingabe-client.md) | PLAT | Idee | hoch | eingeplant | TR2 | Bots steuern im Client die Monarchen über die Bot-Eingabe |
 | [B-350](B-350-mcp-seite-tools-zeitfilter.md) | SRV | Idee | hoch | eingeplant | M11 | Die MCP-Seite zeigt alle Tools mit Aufruf-Statistik und filtert die Statistik nach Zeit |
 | [B-346](B-346-miniboss-wald-kippt-nacht-5.md) | REG | Problem | hoch | offen | – | Der Miniboss Wald kippt Nacht 5 in fast jedem Seed |
@@ -324,3 +323,4 @@ Zeile in diesen Abschnitt.
 | [B-340](archiv/B-340-mine-test-miniboss.md) | SIM | Frage | hoch | erledigt | K2 | K2.1a darf den Mine-Test an den Miniboss anpassen |
 | [B-275](archiv/B-275-worktree-unter-claude.md) | SRV | Problem | hoch | erledigt | M9 | k3c-dev und Vite arbeiten in Worktrees unter `.claude/worktrees/` richtig |
 | [B-213](archiv/B-213-markdown-listen-haekchen.md) | SRV | Problem | niedrig | erledigt | M9 | MarkdownView in k3c-dev zeigt nummerierte Listen und Häkchen wie die alte Planungsseite |
+| [B-348](archiv/B-348-sim-test-workbench.md) | SRV | Idee | hoch | erledigt | TR1 | Jeder Testlauf startet und läuft über das MCP-Tool `sim_test` |
