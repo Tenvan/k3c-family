@@ -295,7 +295,7 @@ Folgen für die Bahnen (11.1): Die PLAT-Bahn ist nach **X1.1** frei (GR6, SO3 wa
 
 ### 11.7 Startanweisungen für 🧑 (Spur M, neue Session ohne Vorwissen)
 
-Für Sessions hier, wenn der aktuelle Stand unbekannt ist. **Prompt M0 immer zuerst**; er nennt den nächsten Schritt und welcher der Prompts M1–M3 dafür passt. Platzhalter in `<…>` ersetzen.
+Für Sessions hier, wenn der aktuelle Stand unbekannt ist. **Prompt M0 immer zuerst**; er nennt den nächsten Schritt und welcher der Prompts M1–M3 dafür passt. M4 (Repo aufräumen) läuft unabhängig davon, wann immer 🧑 will. Platzhalter in `<…>` ersetzen.
 
 **M0: Lagebericht** (ändert nichts):
 
@@ -334,6 +334,20 @@ Lies CLAUDE.md, docs/arbeitsweise.md (Hardware entkoppelt) und docs/plan-weitere
 Ich habe jetzt <Gerät> da. Liste alle Hardware-Sessions für dieses Gerät, deren Vorbereitung gemergt und die noch offen sind, und frage, welche ich mache (Mehrfachauswahl).
 Je Session: Anleitung zum Aufbau (URL im Heimnetz, task-Befehl, wo Berichte landen, z. B. reports/*.json), dann Prüfliste Schritt für Schritt. Werte Berichte selbst aus.
 Danach: Ergebnis in die Session-Datei, in 11.6 die Annahme durch den Messwert ersetzen (Datum, Session); weicht ein Wert ab, ein Ticket in der passenden Domäne. task check, PR öffnen, nicht mergen.
+```
+
+**M4: Repo aufräumen** (regelmäßig, z. B. nach einer Merge-Runde; ändert nur Git-Verwaltung, keine Dateien im Repo):
+
+```text
+Lies CLAUDE.md und docs/arbeitsweise.md, Abschnitt Branches. Räume meinen Repo-Ordner von alten Worktrees und Branches auf. Nichts löschen ohne meine Bestätigung.
+1. Bestand ermitteln: git fetch --prune, git worktree list, git branch -vv, git branch -r, gh pr list --state all --limit 100 (Kopf-Branch, Status, Merge-Datum). Ordner unter .claude/worktrees/ ohne Eintrag in git worktree list mitzählen.
+2. Je Worktree und je Branch einordnen:
+   - aufräumbar: PR gemergt oder geschlossen, oder Upstream auf origin weg („gone“), oder Branch-Stand in origin/develop enthalten (auch per Squash: gleicher Inhalt, PR gemergt); Worktree ohne uncommittete Änderungen und ohne laufende Dienste (svc_status von k3c-dev).
+   - behalten: develop, main, der aktuell ausgecheckte Branch, Branches mit offenem PR, Worktrees mit uncommitteten oder ungepushten Änderungen, alles von heute.
+   - unklar: alles andere, mit Grund (z. B. ungepushte Commits ohne PR).
+3. Zeig mir eine Tabelle (Worktree/Branch, lokal/remote, letzter Commit mit Datum, PR mit Status, Einordnung) und frag per Auswahl: alle aufräumbaren löschen, einzeln auswählen (Mehrfachauswahl), nichts tun. Unklare nur einzeln und nur nach Rückfrage.
+4. Nach meiner Bestätigung: Dienste des Worktrees stoppen (svc_stop), git worktree remove <pfad> (bei Fehlschlag nicht --force, sondern melden), git worktree prune, lokale Branches mit git branch -d (-D nur für squash-gemergte, die ich bestätigt habe), remote Branches gemergter PRs mit git push origin --delete <branch>, nie develop oder main.
+5. Zum Schluss erneut git worktree list und git branch -vv zeigen und kurz melden, was entfernt wurde und was bleibt (mit Grund). Kein Commit, kein PR.
 ```
 
 PRs der Spur A mergt 🧑 selbst in der Reihenfolge aus M0, Punkt 1.

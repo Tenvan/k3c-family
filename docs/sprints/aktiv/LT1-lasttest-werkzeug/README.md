@@ -74,3 +74,4 @@ wird jede Session als eigene Datei nach `docs/vorlagen/session.md` geschrieben.
 - AC-06: angenommen, Validierung offen (LT1.3, 🧑 am Pi; B-042 bleibt eingeplant bis zur Messung, angenommen laut Messung 2026-10-03: Nacht 10,2 bis 10,3 ms, Ziel < 10 ms).
 - Ein Befund behoben (SRV): Der Poller konnte nach dem Ende des Laufs noch Proben anhängen, während der Bericht las (Datenwettlauf); `load` wartet jetzt auf ihn. Keine Tickets neu; `task check` und `task check:go` grün; Token, `test-`-Räume, Schichtgrenzen und `go.mod` geprüft.
 - Version: v0.9.0 vorgeschlagen (Minor, Wirkung im Werkzeug/Server: `task load` und `cpu` in `/api/status`; nach den offenen Vorschlägen bis v0.8.0 bei gemeinsamem Setzen anpassen).
+- 2026-10-07, LT1.3: Messlauf 2 × 3 über eine Nacht am Entwicklungs-PC „erreicht“ (p99 max 8,45 ms, ohne CPU-Werte unter Windows); Pi-Lauf weiter offen, AC-06 bleibt „angenommen, Validierung offen“.

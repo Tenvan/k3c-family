@@ -6,7 +6,7 @@
 - **Umgebung:** live
 - **Branch:** pl1/1-neues-spiel-overlay
 - **Abhängig von:** –
-- **Tickets:** B-292, B-195
+- **Tickets:** B-195
 - **Kriterien:** AC-01, AC-03
 
 ## Ziel
@@ -14,6 +14,8 @@
 Der Nachweis für „Neues Spiel startet immer neu“ (B-292/AC-01, AC-03) liegt vor, und die Ursache, warum das Debug-Overlay auf der Xbox nicht aufgeht, steht mit Code-Pfad und Beobachtung in B-195; liegt die Ursache in der Eingabe (PLAT), ist sie behoben.
 
 ## Kontext
+
+**2026-10-07:** B-292 („Neues Spiel“) ist nach LP1 gewechselt (Beschluss 🧑); alle B-292-Schritte und die PL1/AC-01-Punkte dieser Session entfallen.
 
 - **B-292 ist im Code schon umgesetzt** (Commit `f07d6fae`, PR #153): `src/landing/pages.ts` › `newGameHref(now)` liefert `game.html?fresh=1&save=neu-<Zeit base36>`, die Kachel „Neues Spiel“ hat `href: () => newGameHref()` und die Beschreibung „… frischer Spielstand mit eigenem Namen … alte Spielstände bleiben“. `src/landing/pages.test.ts` prüft `fresh=1` und den Namen. Diese Session prüft nur nach (Format `^[a-z0-9-]{1,32}$`, zwei Zeitpunkte = zwei Namen, Beschreibung ohne „Seed k3c“ und ohne „alter Spielstand wird gesichert“) und ergänzt den Test, falls ein Teil fehlt. B-292/AC-02 (Browser mit vorhandenem Stand `familie`) prüft 🧑 in PL1.5.
 - **B-195, Stand im Code:** Das Ticket nennt noch LS (Taste 10). Heute öffnet `src/scenes/debugOverlayView.ts` die Diagnose mit Ö, RB 3 s halten oder Doppeltap mit einem Finger, den Cheat-Dialog mit Ä, LB + RB 3 s halten oder Doppeltap mit zwei Fingern (B-093, B-231; `src/scenes/debugGestures.ts`: `HOLD_MS = 3000`, `holdStep`). Erzeugt wird das Overlay nur, wenn `debugEnabled(location.search)` gilt (`src/scenes/debugOverlay.ts`: `?dev=0` schaltet ab). Die Pad-Indizes stehen in `src/input/slotBindings.ts` › `PAD` (LB 4, RB 5).

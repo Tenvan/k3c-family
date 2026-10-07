@@ -3,6 +3,7 @@ import { existsSync, readdirSync, readFileSync, statSync } from 'node:fs';
 import { join, relative, resolve, sep } from 'node:path';
 import { describe, expect, it } from 'vitest';
 import { PAGES } from '../src/landing/pages';
+import { DEV_TILES } from '../src/tools/devTiles';
 
 const ROOT = resolve(__dirname, '..');
 const read = (file: string) => readFileSync(join(ROOT, file), 'utf8');
@@ -19,17 +20,19 @@ function filesIn(dir: string, keep: (name: string) => boolean): string[] {
 }
 const sourceFiles = (dir: string) => filesIn(dir, (n) => n.endsWith('.ts') && !n.endsWith('.test.ts'));
 
-// dm.html läuft außerhalb der Shell, Aufruf über /dm (B-232).
-const htmlPages = readdirSync(ROOT).filter((f) => f.endsWith('.html') && f !== 'index.html' && f !== 'dm.html');
-const hrefs = PAGES.map((p) => (typeof p.href === 'function' ? p.href() : p.href).split('?')[0]);
+// dm.html läuft außerhalb der Shell, Aufruf über /dm (B-232) oder die Entwicklerseite (neues Fenster, B-335).
+const allHtml = readdirSync(ROOT).filter((f) => f.endsWith('.html'));
+const htmlPages = allHtml.filter((f) => f !== 'index.html' && f !== 'dm.html');
+// Eine Seite steht auf der Landingpage (Spieler) oder auf der Entwicklerseite (Werkzeuge, B-335).
+const hrefs = [...PAGES.map((p) => (typeof p.href === 'function' ? p.href() : p.href)), ...DEV_TILES.map((t) => t.href)].map((h) => h.split('?')[0]);
 
 describe('Seiten & Navigation', () => {
-  it.each(htmlPages)('%s ist in src/landing/pages.ts eingetragen', (page) => {
+  it.each(htmlPages)('%s ist in src/landing/pages.ts oder src/tools/devTiles.ts eingetragen', (page) => {
     expect(hrefs).toContain(page);
   });
 
   it('jede Kachel zeigt auf eine vorhandene Seite', () => {
-    for (const href of hrefs) expect(htmlPages).toContain(href);
+    for (const href of hrefs) expect(allHtml).toContain(href);
   });
 
   it.each(htmlPages)('%s ruft installPageChrome() auf', (page) => {

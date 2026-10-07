@@ -43,4 +43,18 @@ Manuell durch 🧑 am Pi.
 
 ## Ergebnis
 
-–
+2026-10-07, **PC-Nachweis, Pi offen.** Auf Entscheidung 🧑 (Ralf, Interview mit Agent Claude Opus 5.5) ausgewertet: Messlauf gegen den Spielserver am Entwicklungs-PC (Windows, k3c-dev, `task start`), nicht am Pi. Gestartet vom Agenten: `task load -- -url http://localhost:8080 -token <Test-Token> -rooms 2 -players 3 -duration night`, Exit-Code 0. Parallel liefen ein eigener Raum von 🧑 (Abnahmen MON2.4/N2.4) und Vite. Bericht: `reports/load-20261007-065254.md` / `.json` (lokal, nicht im Repo).
+
+| Raum | Phase | Proben | p99 min (ms) | p99 Mittel (ms) | p99 max (ms) | CPU Mittel (%) | CPU Spitze (%) | Bewertung |
+|---|---|---|---|---|---|---|---|---|
+| test-load-xmt4vj-0 | day | 120 | 1.26 | 1.62 | 8.45 | – | – | erreicht |
+| test-load-xmt4vj-0 | dusk | 12 | 1.43 | 1.77 | 2.26 | – | – | erreicht |
+| test-load-xmt4vj-0 | night | 61 | 1.26 | 1.88 | 4.79 | – | – | erreicht |
+| test-load-xmt4vj-1 | day | 120 | 1.08 | 1.50 | 6.85 | – | – | erreicht |
+| test-load-xmt4vj-1 | dusk | 12 | 1.28 | 1.42 | 1.64 | – | – | erreicht |
+| test-load-xmt4vj-1 | night | 61 | 1.29 | 1.94 | 7.72 | – | – | erreicht |
+
+**Gesamt am PC: erreicht** (Ziel p99 < 10 ms). CPU fehlt, weil `/api/status` unter Windows keine CPU-Quelle hat (B-175/AC-04: „wo die Quelle existiert“).
+
+- **AC-06: nicht erfüllt.** Der PC-Lauf belegt nur, dass Werkzeug und Bewertung durchlaufen; er sagt nichts über den Pi (Handmessung 2026-10-03: Nacht 10,2 bis 10,3 ms). Der Pi-Lauf fehlt; B-042 bleibt eingeplant und wird nicht archiviert. Die Session bleibt `offen`.
+- Keine neuen Tickets.
