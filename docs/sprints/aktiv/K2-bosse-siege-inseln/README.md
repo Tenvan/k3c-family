@@ -72,7 +72,7 @@ Nicht alle lebenden Spieler am Punkt → Wechsel wartet. Komplett verloren → R
 | K2.2a | `K2.2a-siegvarianten.md` | Umsetzung | autonom | fertig |
 | K2.2b | `K2.2b-niederlage-modi.md` | Umsetzung | autonom | fertig |
 | K2.3a | `K2.3a-inselwechsel.md` | Umsetzung | autonom | fertig |
-| K2.3b | `K2.3b-spielstand-golden.md` | Umsetzung | autonom | offen |
+| K2.3b | `K2.3b-spielstand-golden.md` | Umsetzung | autonom | in Arbeit |
 | K2.4 | `K2.4-review.md` | Review | autonom | offen |
 
 ## Abnahme
