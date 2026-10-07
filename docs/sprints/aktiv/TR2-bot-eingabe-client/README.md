@@ -58,7 +58,7 @@ keine
 
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
-| TR2.1 | `TR2.1-bot-eingabe.md` | Umsetzung | autonom | in Arbeit |
+| TR2.1 | `TR2.1-bot-eingabe.md` | Umsetzung | autonom | fertig |
 | TR2.2 | `TR2.2-review.md` | Review | autonom | offen |
 
 ## Abnahme

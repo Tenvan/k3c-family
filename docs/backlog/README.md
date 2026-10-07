@@ -136,6 +136,7 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-347](B-347-tester-misst-wirtschaft.md) | SIM | Schuld | hoch | offen | – | Der Balancing-Tester misst die Wirtschafts-Kennzahlen |
 | [B-351](B-351-client-diagnose-zeile.md) | CLI | Idee | hoch | offen | – | Der Client schreibt FPS, Latenz und Puffer regelmäßig als Diagnose-Zeile ins Client-Log |
 | [B-352](B-352-botfeed-lan-zuschauer.md) | SRV | Idee | niedrig | offen | – | `sim_test` hängt sich an Clients auf der Xbox an, ohne einen Platz im Raum zu belegen |
+| [B-353](B-353-bot-eingabe-einbinden.md) | CLI | Idee | hoch | offen | – | Das Spiel fragt die Bot-Eingabe ab und setzt ihre Spieler ohne Tastendruck in den Raum |
 
 ## Archiv
 
