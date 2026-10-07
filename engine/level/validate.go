@@ -52,6 +52,7 @@ func validateChunks(l Layout, b Biome) []string {
 		}
 	}
 	errs = append(errs, validatePortalsOutsideLines(l)...)
+	errs = append(errs, validateLair(l, b)...)
 	for _, kind := range eventKinds {
 		want, n := b.EventChunks[kind], countKind(l, kind)
 		if n < want.Min || n > want.Max {
@@ -77,6 +78,28 @@ func validatePortalsOutsideLines(l Layout) []string {
 		}
 	}
 	return errs
+}
+
+// validateLair: Biome mit `lair` haben genau einen Bau, an der inneren Kante des Ausgangs-Chunks und mit dem Hub-Abstand
+// eines Portals; alle anderen keinen.
+func validateLair(l Layout, b Biome) []string {
+	want := 0
+	if b.Lair {
+		want = 1
+	}
+	if n := countEntities(l, "lair"); n != want {
+		return []string{fmt.Sprintf("%d Bau erwartet, %d gefunden", want, n)}
+	}
+	edge := l.ChunkWidthUnits
+	if b.ExitSide == "right" {
+		edge = l.WidthUnits - l.ChunkWidthUnits
+	}
+	for _, e := range l.Entities {
+		if e.Kind == "lair" && (e.X != edge || math.Abs(e.X-l.HubCenterUnits) < b.Portals.MinDistanceFromHubUnits) {
+			return []string{fmt.Sprintf("Bau nicht vor dem Ausgang (%s Units)", strconv.FormatFloat(e.X, 'f', -1, 64))}
+		}
+	}
+	return nil
 }
 
 func countKind(l Layout, kind string) int {

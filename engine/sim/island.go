@@ -24,6 +24,10 @@ type Island struct {
 	ChestsOpened int
 	// DefeatedBosses: IDs der besiegten Bosse in Reihenfolge des Siegs (boss.go); ein besiegter Boss kommt nie wieder.
 	DefeatedBosses []string
+	// EndbossDefeated: Der Endboss der Insel ist besiegt (Siegvariante, Inselwechsel); endboss ist der laufende Kampf
+	// gegen ihn (boss_endboss.go), nil solange er wartet oder nach dem Sieg.
+	EndbossDefeated bool
+	endboss         *endbossFight
 	nextPlayer     int
 	// travel: Reisefortschritt je Spielerindex (island_travel.go); nur über die Stufen- und Spielerlisten iterieren.
 	travel map[int]*islandTravel

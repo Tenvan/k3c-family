@@ -130,6 +130,7 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-338](B-338-session-status-verworfen.md) | INF | Schuld | niedrig | offen | – | Sessions können den Status verworfen tragen |
 | [B-339](B-339-glyphen-je-plattform.md) | CLI | Idee | mittel | offen | – | Spiel und Seiten zeigen Tastensymbole passend zum gerade benutzten Controller (Xbox, PlayStation, weitere) |
 | [B-341](B-341-header-ursache-live-messen.md) | SRV | Problem | mittel | offen | – | Die Ursache für den fehlenden Header `X-K3C-Root` aus Worktrees ist live gemessen |
+| [B-343](B-343-bau-vor-dem-ausgang.md) | SIM | Frage | mittel | offen | – | Der Bau des Endbosses liegt an der inneren Kante des Ausgangs-Chunks |
 
 ## Archiv
 

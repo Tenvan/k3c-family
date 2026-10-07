@@ -1,6 +1,7 @@
 // Package level ist der prozedurale Level-Generator (Port von src/world/levelGenerator.ts).
 //
 // Aufbau: [Rand/Ausgang] ... [Portal] ... [Chunks] [HUB] [Chunks] ... [Portal] ... [Ausgang/Rand].
+// Biome mit `lair` bekommen zusätzlich den Bau des Endbosses vor dem Ausgang (lairX, ohne Würfel).
 // Gleicher Seed => gleiches Level wie in TypeScript; geprüft gegen testdata/golden/level-*.json.
 // Die Reihenfolge der RNG-Aufrufe ist Teil des Vertrags und darf sich nicht ändern.
 // Die Mauerlinien (lines.go) streuen aus einem eigenen Strom `<biom>:<seed>:sites` und berühren ihn nicht.
@@ -85,6 +86,9 @@ func Generate(b Biome, seed string) (Layout, error) {
 		chunks[i] = Chunk{Index: i, Kind: k, StartUnits: float64(i) * g.cw}
 	}
 	entities := g.entities(chunks)
+	if b.Lair {
+		entities = append(entities, Entity{Kind: "lair", X: g.lairX()})
+	}
 	sort.SliceStable(entities, func(i, j int) bool { return entities[i].X < entities[j].X })
 	return Layout{
 		Seed: seed, BiomeID: b.ID, WidthUnits: float64(len(chunks)) * g.cw, ChunkWidthUnits: g.cw,
@@ -144,6 +148,16 @@ func (g *gen) eligible(left bool) []int {
 		}
 	}
 	return out
+}
+
+// lairX: Der Bau des Endbosses (docs/rules/bosse.md § 1: „am Ende vor dem Eingang“, K2.1c) liegt an der inneren Kante
+// des Ausgangs-Chunks. Er belegt kein eigenes Chunk und würfelt nicht: Portale, Ereignisse, Ressourcen und die Dichte
+// bleiben, wie sie ohne Bau wären.
+func (g *gen) lairX() float64 {
+	if g.b.ExitSide == "right" {
+		return float64(len(g.kinds)-1) * g.cw
+	}
+	return g.cw
 }
 
 // placeEvents belegt Truhen- und Camp-Chunks; Camps bevorzugt nah am Hub, aber zuerst Chunks, deren Mitte bei jeder

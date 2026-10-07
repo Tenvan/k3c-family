@@ -113,6 +113,7 @@ func Step(w *World, commands []PlayerCommand, dt float64) {
 	stepTroops(w, dt)
 	stepHealing(w, dt)
 	stepSpellTowers(w, dt)
+	stepEndboss(w, dt)
 	stepEnemies(w, dt)
 	stepLava(w, dt)
 	stepHazards(w, dt)

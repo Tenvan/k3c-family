@@ -203,3 +203,51 @@ func TestBreiteUndDichte(t *testing.T) {
 	}
 	t.Logf("forest: %.2f endliche Objekte je 100 Units", density(t, "forest"))
 }
+
+// K2.1c (B-130/AC-02): Die Kristallhöhle hat über 500 Seeds genau einen Bau vor dem Ausgang; ohne Bau entsteht dasselbe
+// Level ohne die Entität (kein Würfel). Alle übrigen Biome haben keinen Bau.
+func TestLairNurInDerKristallhoehle(t *testing.T) {
+	for _, id := range biomeIDs(t) {
+		b := biome(t, id)
+		if b.Lair != (id == "crystal") {
+			t.Fatalf("Biom %s: lair = %v", id, b.Lair)
+		}
+		bare := b
+		bare.Lair = false
+		for seed := range 500 {
+			l, _ := Generate(b, strconv.Itoa(seed))
+			without, _ := Generate(bare, strconv.Itoa(seed))
+			rest := slices.DeleteFunc(slices.Clone(l.Entities), func(e Entity) bool { return e.Kind == "lair" })
+			if !slices.Equal(rest, without.Entities) || !slices.Equal(l.Chunks, without.Chunks) {
+				t.Fatalf("Biom %s, Seed %d: Bau verschiebt andere Objekte", id, seed)
+			}
+			want := 0
+			if b.Lair {
+				want = 1
+			}
+			if n := countEntities(l, "lair"); n != want {
+				t.Fatalf("Biom %s, Seed %d: %d Bau, erwartet %d", id, seed, n, want)
+			}
+		}
+	}
+}
+
+func TestValidateMeldetFalschenBau(t *testing.T) {
+	b := biome(t, "crystal")
+	l, err := Generate(b, "bau")
+	if err != nil {
+		t.Fatal(err)
+	}
+	for i, e := range l.Entities {
+		if e.Kind == "lair" {
+			l.Entities[i].X = l.HubCenterUnits
+		}
+	}
+	if got := Validate(l, b); !slices.Equal(got, []string{"Bau nicht vor dem Ausgang (" + strconv.FormatFloat(l.HubCenterUnits, 'f', -1, 64) + " Units)"}) {
+		t.Errorf("Validate = %q", got)
+	}
+	l.Entities = slices.DeleteFunc(l.Entities, func(e Entity) bool { return e.Kind == "lair" })
+	if got := Validate(l, b); !slices.Equal(got, []string{"1 Bau erwartet, 0 gefunden"}) {
+		t.Errorf("Validate ohne Bau = %q", got)
+	}
+}

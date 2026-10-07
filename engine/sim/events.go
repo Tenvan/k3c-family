@@ -23,6 +23,7 @@ import "math"
 //	traded        – Tausch am Händler: player, resource, amount (+ gekauft, − verkauft), gold (− bezahlt, + erhalten)
 //	bossSpawned   – Boss erscheint (boss.go): boss (ID aus data/bosses.json), x
 //	bossDefeated  – Boss besiegt, Belohnung gegeben (boss.go): boss, x; statt `kill`
+//	bossPhase     – Endboss wechselt in die nächste Phase, je Wechsel einmal (boss_endboss.go): boss, phase (ab 2)
 //
 //	playerDown    – Monarch fällt: player, cause (Gegnerart aus data/enemies.json bei Nahkampf und Geschoss,
 //	                sonst "other"; B-182)

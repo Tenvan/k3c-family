@@ -39,6 +39,8 @@ type Biome struct {
 		Count int    `json:"count"`
 		Kind  string `json:"kind"`
 	} `json:"veins"`
+	// Lair: Das Level hat den Bau des Endbosses (Chunk und Entität `lair`, level.go › placeLair); ohne Feld keinen.
+	Lair bool `json:"lair"`
 	// Lava: Chunks der Art „lava“ tragen in der Mitte einen Streifen von WidthUnits, der Figuren DamagePerSecond
 	// Schaden zufügt (B-115, Q28; Wirkung in engine/sim/lava.go). Ohne Feld keine Lava.
 	Lava struct {
