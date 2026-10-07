@@ -60,6 +60,15 @@ zurückgeben.
 - `replay_run {path}` spielt eine Replay-Datei (`task balance:run -- --replay-dir DIR`) ohne Bot ab: Endzustand-Hash,
   Burgfall-Tick, Vergleich mit der Aufnahme; `path` relativ zur Repo-Wurzel, Dateien außerhalb werden abgelehnt.
 
+## Testläufe
+
+- **Jeder Testlauf** (Balancing, Performance, Stabilität) läuft über `sim_test`, nie über `task balance`/`task load` in
+  der Shell. `sim_test {action: start, mode, clients, focus, …}` kehrt sofort mit einer ID zurück; `sim_test {action:
+  status, id}` zeigt den Lauf in höchstens 10 Zeilen, `stop` bricht ab, `list` zeigt die Läufe des Checkouts.
+- `mode: offline` (Standard, Mocks im Prozess) baut den Balancing-Tester im Checkout und bewertet die Ziele aus
+  `data/balance-targets.json` (`seeds` optional); `mode: online` mit `clients` 0 (headless) bis 4 folgt mit TR1.2/TR1.3.
+- Der volle Bericht liegt unter `reports/simtest-<id>/` (`simtest.md` und der Bericht des Testers), lesbar mit `report_read`.
+
 ## Planung
 
 - Tickets, Sprints und Sessions (`docs/backlog/`, `docs/sprints/`) **nur** über diese Tools ändern, nicht von Hand: sie

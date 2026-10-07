@@ -68,6 +68,7 @@ type Server struct {
 	console *console.Store
 	log     *slog.Logger
 	checks  *checkRuns
+	sims    simRuns // Testläufe von sim_test (simtest.go)
 	run     func(context.Context, runSpec) runResult // Test-Naht für check_run
 	wt       worktrees      // Dienste der Worktrees (worktree_services.go)
 	portBusy func(int) bool // Test-Naht für die Vergabe der Worktree-Ports
@@ -134,6 +135,7 @@ func (s *Server) Start() error {
 // Stop schließt den HTTP-Server (offene Streams bekommen stopTimeout) und alle Sessions, damit sie nach einem
 // Neustart nicht weiter als Clients zählen.
 func (s *Server) Stop() error {
+	s.sims.cancelAll()
 	s.mu.Lock()
 	srv := s.http
 	s.http = nil

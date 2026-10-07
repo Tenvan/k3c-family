@@ -1,6 +1,6 @@
 # TR1.1 · `sim_test` mit Lauf-Register und Modus offline
 
-- **Status:** in Arbeit
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Umgebung:** offline
@@ -44,10 +44,10 @@ Modus `online` (TR1.2, TR1.3), Änderung der Bot-Profile, Oberfläche der Workbe
 
 ## Fertig, wenn
 
-- [ ] AC-01: Test: `start` kehrt sofort mit ID zurück, `status` ≤ 10 Zeilen, `stop` beendet und schreibt einen Bericht, `list` zeigt Läufe.
-- [ ] AC-02: Test: offline mit Seeds bewertet die Ziele aus `data/balance-targets.json`, Bericht unter `reports/`.
-- [ ] AC-05: Test: ungültige Werte (z. B. `players: 9`, unbekannter Bot) und `offline` mit Clients werden mit einer Zeile Grund abgelehnt.
-- [ ] AC-06: Regel steht in `CLAUDE.md` und `docs/arbeitsweise.md`.
+- [x] AC-01: Test: `start` kehrt sofort mit ID zurück, `status` ≤ 10 Zeilen, `stop` beendet und schreibt einen Bericht, `list` zeigt Läufe.
+- [x] AC-02: Test: offline mit Seeds bewertet die Ziele aus `data/balance-targets.json`, Bericht unter `reports/`.
+- [x] AC-05: Test: ungültige Werte (z. B. `players: 9`, unbekannter Bot) und `offline` mit Clients werden mit einer Zeile Grund abgelehnt.
+- [x] AC-06: Regel steht in `CLAUDE.md` und `docs/arbeitsweise.md`.
 
 ## Prüfen
 
@@ -58,4 +58,15 @@ task check
 
 ## Ergebnis
 
-–
+- **AC-01 umgesetzt, geprüft** (`go test ./internal/mcpsrv -run SimTest`): `sim_test` mit `start`, `status`, `stop` und `list` (`simtest.go`).
+  - `TestSimTestStartSofortUndStop`: `start` kehrt sofort mit ID zurück, der Lauf überlebt den Aufruf; `stop` bricht ab und hinterlässt `reports/simtest-<id>/simtest.md`.
+  - `TestSimTestStatusHoechstensZehnZeilen`.
+  - `TestSimTestHoechstensZweiLaeufe`: höchstens 2 Läufe je Checkout.
+  - Beim Ende der Workbench (`Stop`) werden laufende Läufe abgebrochen.
+- **AC-02 umgesetzt, geprüft:** `mode: offline` baut den Balancing-Tester im Checkout (`bin/k3c-balance`, fester Pfad, rechnet mit der Engine des Worktrees) und ruft ihn mit `--targets` auf. Der Bericht des Testers und `simtest.md` liegen unter `reports/simtest-<id>/`.
+  - `TestSimTestOfflineBewertetZiele` mit Fake-Prozessen.
+  - Echter Lauf mit 3 Seeds am 2026-10-07 nach 6 s fertig: Burg hält Nacht 1–5 0 % (Fail), Erste Mauer 100 % (Pass), Zerstörte Gebäude 0 (Pass).
+- **AC-05 umgesetzt, geprüft:** `TestSimTestLehntAb` prüft 14 Fälle, darunter unbekannte Aktion oder Modus, Werte außerhalb der Grenzen, unbekannter Bot oder Focus, `offline` mit Clients, `offline` mit perf und `offline` mit Spielern. Jeder Fall wird mit einer Zeile Grund abgelehnt, ohne Prozessstart. `online` lehnt bis TR1.2/TR1.3 mit Hinweis ab.
+- **AC-06 umgesetzt:** Die Regel steht in `CLAUDE.md` („k3c-dev zuerst“) und `docs/arbeitsweise.md` (Autonomer Ablauf), die Instruktionen der Workbench haben den Abschnitt „Testläufe“.
+- **Abweichung:** Der Status zeigt die Phase (bauen, rechnen) und die Dauer, aber keinen Fortschritt n/N je Seed, weil der Tester erst am Ende berichtet. Ein Fortschrittsausgang im Tester folgt, falls er gebraucht wird; YAGNI.
+- `task check:dev` ist grün (0 Lint-Befunde), der Planungstest ebenfalls. Die laufende Workbench kennt `sim_test` erst nach einem Neubau aus `develop`.

@@ -62,7 +62,7 @@ keine
 
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
-| TR1.1 | `TR1.1-register-offline.md` | Umsetzung | autonom | in Arbeit |
+| TR1.1 | `TR1.1-register-offline.md` | Umsetzung | autonom | fertig |
 | TR1.2 | `TR1.2-online-headless.md` | Umsetzung | autonom | offen |
 | TR1.3 | `TR1.3-online-clients.md` | Umsetzung | autonom | offen |
 | TR1.4 | `TR1.4-review.md` | Review | autonom | offen |

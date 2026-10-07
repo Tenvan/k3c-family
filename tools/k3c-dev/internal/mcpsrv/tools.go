@@ -66,6 +66,7 @@ func register(s *Server) {
 	}, s.savesList)
 	registerServer(s)
 	registerEngine(s)
+	registerSimTest(s)
 	registerServices(s)
 	registerPlanning(s)
 }
