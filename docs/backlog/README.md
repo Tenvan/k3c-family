@@ -128,7 +128,6 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-329](B-329-figuren-neue-gegner.md) | CLI | Schuld | niedrig | offen | – | Die sechs neuen Gegner zeigen eigene Figuren statt Platzhalter |
 | [B-331](B-331-einheitlicher-grafikstil-pipeline.md) | CLI | Idee | mittel | offen | – | Alle Grafiken laufen durch eine Pipeline mit Ziel-Palette und gleicher Pixeldichte |
 | [B-333](B-333-pause-anzeige.md) | CLI | Idee | mittel | offen | – | Der Client zeigt einen angehaltenen Raum deutlich an und hält die Figuren-Animationen an |
-| [B-338](B-338-mine-test-miniboss.md) | SIM | Frage | hoch | offen | K2 | K2.1a darf den Mine-Test an den Miniboss anpassen |
 
 ## Archiv
 
@@ -308,3 +307,4 @@ Zeile in diesen Abschnitt.
 | [B-013](archiv/B-013-gegner-elite.md) | SIM | Idee | mittel | erledigt | K1 | Restliche Gegner und Elite-KI sind umgesetzt |
 | [B-128](archiv/B-128-traits-kiting-angriffsrate.md) | SIM | Idee | mittel | erledigt | K1 | Die Gegner-Traits aoe, swarm, phases und Kiting wirken, die Angriffsrate steht je Gegner in den Daten |
 | [B-129](archiv/B-129-neue-gegner-pools.md) | SIM | Idee | mittel | erledigt | K1 | Eisenstollen und Kristallhöhle haben ihre Gegner und Pools |
+| [B-338](archiv/B-338-mine-test-miniboss.md) | SIM | Frage | hoch | erledigt | K2 | K2.1a darf den Mine-Test an den Miniboss anpassen |

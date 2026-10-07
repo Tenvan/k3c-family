@@ -51,6 +51,7 @@ func TestMineLevelHatKupfer(t *testing.T) {
 // die Ader liefert weiter.
 func TestMineKupferBisInDenVorrat(t *testing.T) {
 	isl := mustIsland(t, "mine", []int{0, 1, 2})
+	isl.DefeatedBosses = []string{"goblinLeader", "trollKing", "ratQueen"} // Lieferkette ohne Minibosse prüfen (B-338)
 	w := isl.Stages[2]
 	w.Troops, w.CycleSpeed = []*Troop{}, 1e-6
 	p0, p1 := AddIslandPlayer(isl, 2), AddIslandPlayer(isl, 2)

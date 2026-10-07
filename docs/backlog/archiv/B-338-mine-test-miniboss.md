@@ -4,7 +4,7 @@
 - **Typ:** Frage
 - **Prio:** hoch
 - **Umgebung:** offline
-- **Status:** offen
+- **Status:** erledigt
 - **Sprint:** K2
 - **Erstellt:** 2026-10-07
 - **Spec:** Entwurf
@@ -50,6 +50,7 @@ nicht relevant: reine Test-Anpassung.
 ## Offene Fragen
 
 - Darf K2.1a `engine/sim/mine_test.go` wie vorgeschlagen ändern (Erlaubte Dateien erweitern)? Entscheidet 🧑.
+  - **Entschieden** (🧑, 2026-10-07, Chat): „Test anpassen“. K2.1a ändert nur den Testaufbau von `mine_test.go`, die Prüfungen bleiben; die Boss-Stärke geht als Balancing-Hinweis an BR2 (B-156 › Notizen). Umsetzung: Die Ursache war der Goblin-Anführer auf Stufe 0 (Wald), nicht die Ratten-Königin; der Test merkt daher alle drei Minibosse als besiegt vor.
 
 ## Notizen
 
