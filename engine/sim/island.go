@@ -34,6 +34,13 @@ type Island struct {
 	GoldCollected int
 	Won           bool
 	hadFinite     bool
+	// Number: Index der Insel in data/islands.json (0 = Insel 1); Scaling: ihre Tabelle der Gegner-Skalierung.
+	// GateOpen: Wechselpunkt offen, SwitchReady: alle stehen dort, der Raum tauscht die Insel (island_switch.go).
+	Number         int
+	Scaling        struct{ HP, Damage, Speed float64 }
+	GateOpen       bool
+	SwitchReady    bool
+	switchProgress float64
 	// Over: Niederlage-Modus „Komplett verloren“ (defeat.go); die Insel ist zu Ende, StepIsland ändert nichts mehr.
 	Over       bool
 	nextPlayer int
@@ -58,6 +65,7 @@ func createIsland(seed string, depths []int, cycleSpeed, startTime float64) (*Is
 		return nil, fmt.Errorf("insel: keine Stufen")
 	}
 	isl := &Island{ID: seed, Seed: seed, CycleSpeed: cycleSpeed, Stock: &Stock{}, Options: DefaultOptions(), travel: map[int]*islandTravel{}}
+	isl.Scaling = islandDefs[0].DepthScaling
 	for _, d := range depths {
 		if !hasDepth(d) {
 			return nil, fmt.Errorf("insel: unbekannte Tiefe %d", d)
@@ -99,6 +107,7 @@ func StepIsland(isl *Island, commands []PlayerCommand, dt float64) {
 	}
 	if !isl.Over {
 		stepIslandTravel(isl, dt)
+		stepIslandSwitch(isl, dt)
 		checkVictory(isl)
 	}
 	for i, w := range isl.Stages { // nach dem Wechsel, damit auch `arrived` seine Stufe trägt

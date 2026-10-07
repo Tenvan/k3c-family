@@ -1,5 +1,5 @@
 {
-  "notes": "Wellen laut GDD. Ab 'fromWave' gilt die Zeile. Spawns werden über 'spawnSpreadSeconds' verteilt.",
+  "notes": "Wellen laut GDD. Ab 'fromWave' gilt die Zeile. Spawns werden über 'spawnSpreadSeconds' verteilt. depthScaling gilt nur für Welten ohne Insel (Campaign, Golden-Läufe); Inseln skalieren nach ihrer Tabelle in islands.json.",
   "table": [
     { "fromWave": 1,  "standard": [5, 10],  "elite": [0, 0] },
     { "fromWave": 6,  "standard": [10, 15], "elite": [1, 2] },
