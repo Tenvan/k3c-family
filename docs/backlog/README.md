@@ -121,19 +121,19 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-329](B-329-figuren-neue-gegner.md) | CLI | Schuld | niedrig | offen | – | Die sechs neuen Gegner zeigen eigene Figuren statt Platzhalter |
 | [B-331](B-331-einheitlicher-grafikstil-pipeline.md) | CLI | Idee | mittel | offen | – | Alle Grafiken laufen durch eine Pipeline mit Ziel-Palette und gleicher Pixeldichte |
 | [B-333](B-333-pause-anzeige.md) | CLI | Idee | mittel | offen | – | Der Client zeigt einen angehaltenen Raum deutlich an und hält die Figuren-Animationen an |
-| [B-334](B-334-performance-modus.md) | CLI | Idee | hoch | offen | – | Der Client misst Leistung in einem Performance-Modus automatisch und überträgt die Werte an den Server |
+| [B-334](B-334-performance-modus.md) | CLI | Idee | hoch | eingeplant | PM1 | Der Client misst Leistung in einem Performance-Modus automatisch und überträgt die Werte an den Server |
 | [B-335](B-335-landingpage-spieler-entwicklung.md) | PLAT | Idee | hoch | eingeplant | LP1 | Die Landingpage zeigt nur Spieler-Kacheln, Entwicklungs-, Performance- und Balancing-Aufrufe liegen auf einer eigenen Entwicklerseite |
-| [B-336](B-336-touch-optionen-schliessen.md) | CLI | Problem | hoch | offen | – | Die Optionen-Szene lässt sich per Touch vollständig bedienen und schließen, ohne vom Touch-Overlay verdeckt zu werden |
-| [B-337](B-337-hud-elemente-ohne-ueberlagerung.md) | CLI | Idee | hoch | offen | – | Jede HUD-Anzeige ist ein eigenes Element mit optionalem Hintergrund und Rahmen, und HUD-Elemente überlagern sich nicht |
+| [B-336](B-336-touch-optionen-schliessen.md) | CLI | Problem | hoch | eingeplant | U6 | Die Optionen-Szene lässt sich per Touch vollständig bedienen und schließen, ohne vom Touch-Overlay verdeckt zu werden |
+| [B-337](B-337-hud-elemente-ohne-ueberlagerung.md) | CLI | Idee | hoch | eingeplant | U6 | Jede HUD-Anzeige ist ein eigenes Element mit optionalem Hintergrund und Rahmen, und HUD-Elemente überlagern sich nicht |
 | [B-338](B-338-session-status-verworfen.md) | INF | Schuld | niedrig | offen | – | Sessions können den Status verworfen tragen |
 | [B-339](B-339-glyphen-je-plattform.md) | CLI | Idee | mittel | offen | – | Spiel und Seiten zeigen Tastensymbole passend zum gerade benutzten Controller (Xbox, PlayStation, weitere) |
 | [B-341](B-341-header-ursache-live-messen.md) | SRV | Problem | mittel | offen | – | Die Ursache für den fehlenden Header `X-K3C-Root` aus Worktrees ist live gemessen |
 | [B-342](B-342-w6-2-siteview-erlaubt.md) | CLI | Frage | mittel | offen | – | W6.2 darf den Bauplatz-Wartegrund in `siteView.ts` anbinden |
 | [B-343](B-343-bau-vor-dem-ausgang.md) | SIM | Frage | mittel | offen | – | Der Bau des Endbosses liegt an der inneren Kante des Ausgangs-Chunks |
 | [B-350](B-350-mcp-seite-tools-zeitfilter.md) | SRV | Idee | hoch | eingeplant | M11 | Die MCP-Seite zeigt alle Tools mit Aufruf-Statistik und filtert die Statistik nach Zeit |
-| [B-346](B-346-miniboss-wald-kippt-nacht-5.md) | REG | Problem | hoch | offen | – | Der Miniboss Wald kippt Nacht 5 in fast jedem Seed |
-| [B-347](B-347-tester-misst-wirtschaft.md) | SIM | Schuld | hoch | offen | – | Der Balancing-Tester misst die Wirtschafts-Kennzahlen |
-| [B-351](B-351-client-diagnose-zeile.md) | CLI | Idee | hoch | offen | – | Der Client schreibt FPS, Latenz und Puffer regelmäßig als Diagnose-Zeile ins Client-Log |
+| [B-346](B-346-miniboss-wald-kippt-nacht-5.md) | REG | Problem | hoch | eingeplant | RG3 | Der Miniboss Wald kippt Nacht 5 in fast jedem Seed |
+| [B-347](B-347-tester-misst-wirtschaft.md) | SIM | Schuld | hoch | eingeplant | BAL6 | Der Balancing-Tester misst die Wirtschafts-Kennzahlen |
+| [B-351](B-351-client-diagnose-zeile.md) | CLI | Idee | hoch | eingeplant | PM1 | Der Client schreibt FPS, Latenz und Puffer regelmäßig als Diagnose-Zeile ins Client-Log |
 | [B-352](B-352-botfeed-lan-zuschauer.md) | SRV | Idee | niedrig | offen | – | `sim_test` hängt sich an Clients auf der Xbox an, ohne einen Platz im Raum zu belegen |
 | [B-353](B-353-bot-eingabe-einbinden.md) | CLI | Idee | hoch | eingeplant | TR3 | Das Spiel fragt die Bot-Eingabe ab und setzt ihre Spieler ohne Tastendruck in den Raum |
 | [B-354](B-354-bot-eingabe-impulse-frist.md) | PLAT | Problem | mittel | offen | – | Die Bot-Eingabe verliert keine kurzen Drücke und hält bei stummem Feed an |

@@ -4,8 +4,8 @@
 - **Typ:** Schuld
 - **Prio:** hoch
 - **Umgebung:** offline
-- **Status:** offen
-- **Sprint:** –
+- **Status:** eingeplant
+- **Sprint:** BAL6
 - **Erstellt:** 2026-10-07
 - **Spec:** Entwurf
 - **Revision:** 1
