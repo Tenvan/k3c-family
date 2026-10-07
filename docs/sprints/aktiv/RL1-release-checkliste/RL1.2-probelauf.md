@@ -64,3 +64,8 @@ Agenten-Teil des Probelaufs, 2026-10-04, Stand `origin/develop` 46aa69b (CI-Lauf
 | Tag-Schema | grün | Verweis auf „Entscheidungen und Versionen“ vorhanden |
 
 Ergebnis: Mit zwei roten Punkten (B-273, B-274) und dem bekannten B-098 wäre ein Tag blockiert. Die Liste selbst brauchte keine Korrektur.
+
+2026-10-07, **Version am PC: grün (PC-Nachweis, Pi und Xbox offen).** Geprüft von 🧑 (Ralf) im Interview mit Agent (Claude Opus 5.5), Branch `sprint/rl1`: Landingpage über Vite (Port 5173), Spielserver über k3c-dev (Port 8080, `/api/health` meldet `v0.14.0-2-g92f4ae3-dirty`). Die Versionszeile nennt für Client und Server dieselbe Version, ohne Abweichungs-Markierung. Ohne ausgecheckten Tag ist das eine `git describe`-Version; der Abgleich mit dem Tag selbst ist erst beim echten Release möglich.
+
+- **Pi-Image (Pull am Pi)** und **Version stimmt am Pi und auf der Xbox:** weiter `angenommen, Validierung offen`; die Session bleibt `offen`.
+- Rote Punkte unverändert eingeplant: B-273 (CI1), B-274 (NT1), B-098 (K5). Keine neuen Tickets.
