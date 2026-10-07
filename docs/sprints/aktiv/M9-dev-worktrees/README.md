@@ -63,7 +63,7 @@ Header `X-K3C-Root` fehlt → Repo-Wurzel wie heute, die Antwort schreibender To
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
 | M9.1 | `M9.1-checkout-header.md` | Umsetzung | autonom | fertig |
-| M9.2 | `M9.2-vite-worktree.md` | Umsetzung | autonom | offen |
+| M9.2 | `M9.2-vite-worktree.md` | Umsetzung | autonom | fertig |
 | M9.3 | `M9.3-markdown-listen.md` | Umsetzung | autonom | offen |
 | M9.4 | `M9.4-review.md` | Review | autonom | offen |
 

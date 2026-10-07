@@ -1,7 +1,7 @@
 import { configDefaults, defineConfig } from 'vitest/config';
 import { execFileSync } from 'node:child_process';
 import { readdirSync } from 'node:fs';
-import { resolve } from 'node:path';
+import { isAbsolute, relative, resolve } from 'node:path';
 
 /** Version des Clients: K3C_VERSION (Dockerfile, ohne .git), sonst `git describe`, sonst `dev`. */
 function clientVersion(): string {
@@ -14,6 +14,13 @@ function clientVersion(): string {
 }
 
 const serverPort = process.env.K3C_HTTP_PORT ?? '8080';
+
+// Nur das eigene .claude/ (Worktrees) ignorieren: Ein Glob auf .claude träfe jede Datei, wenn diese Wurzel selbst darunter liegt (B-275).
+const claudeDir = resolve(__dirname, '.claude');
+function inClaudeDir(file: string): boolean {
+  const rel = relative(claudeDir, file);
+  return !rel.startsWith('..') && !isAbsolute(rel);
+}
 
 export default defineConfig({
   // Relative Pfade, damit der Build von jedem Heimnetz-Server/Unterordner aus läuft.
@@ -29,9 +36,9 @@ export default defineConfig({
     host: true,
     port: Number(process.env.K3C_VITE_PORT ?? 5173),
     proxy: { '/api': `http://localhost:${serverPort}`, '/ws': { target: `ws://localhost:${serverPort}`, ws: true } },
-    // Worktrees (.claude, zehntausende Dateien) und laufend geschriebene Ausgaben nicht beobachten,
+    // Worktrees im eigenen .claude/ (zehntausende Dateien) und laufend geschriebene Ausgaben nicht beobachten,
     // sonst blockiert der Watcher unter Windows die Event-Loop und Anfragen hängen sekundenlang.
-    watch: { ignored: ['**/.claude/**', '**/.omc/**', '**/.work/**', '**/logs/**', '**/reports/**', '**/saves/**', '**/dist/**', '**/_site/**', '**/bin/**'] },
+    watch: { ignored: [inClaudeDir, '**/.omc/**', '**/.work/**', '**/logs/**', '**/reports/**', '**/saves/**', '**/dist/**', '**/_site/**', '**/bin/**'] },
   },
   preview: { host: true, port: 4173 },
   // .claude/worktrees enthält komplette Checkouts anderer Branches; deren Tests gehören nicht zu diesem Lauf.
