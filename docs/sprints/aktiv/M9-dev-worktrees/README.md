@@ -1,15 +1,15 @@
 # M9 · SRV · k3c-dev in Worktrees und Markdown-Ansicht
 
-- **Status:** geplant
+- **Status:** aktiv
 - **Domäne:** SRV
 - **Prio:** hoch
 - **Reife:** bereit
 - **Einschiebbar:** nein
 - **Tickets:** B-275, B-213
-- **Start-Commit:** –
-- **Spec:** Entwurf
+- **Start-Commit:** 7fe4f05
+- **Spec:** freigegeben
 - **Revision:** 1
-- **Freigabe:** –
+- **Freigabe:** 2026-10-07, Chat, durch 🧑, Revision 1; Domänen-Ausnahme INF vite.config.ts (M9.2) bestätigt
 
 ## Ausgangslage
 
@@ -56,13 +56,13 @@ Header `X-K3C-Root` fehlt → Repo-Wurzel wie heute, die Antwort schreibender To
 
 ## Offene Fragen
 
-- Domänen-Ausnahme für `vite.config.ts` (INF) in M9.2: bestätigt 🧑 mit der Spec-Freigabe (nicht blockierend für M9.1 und M9.3).
+- Domänen-Ausnahme für `vite.config.ts` (INF) in M9.2: bestätigt 🧑 mit der Spec-Freigabe 2026-10-07.
 
 ## Sessions
 
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
-| M9.1 | `M9.1-checkout-header.md` | Umsetzung | autonom | offen |
+| M9.1 | `M9.1-checkout-header.md` | Umsetzung | autonom | in Arbeit |
 | M9.2 | `M9.2-vite-worktree.md` | Umsetzung | autonom | offen |
 | M9.3 | `M9.3-markdown-listen.md` | Umsetzung | autonom | offen |
 | M9.4 | `M9.4-review.md` | Review | autonom | offen |
