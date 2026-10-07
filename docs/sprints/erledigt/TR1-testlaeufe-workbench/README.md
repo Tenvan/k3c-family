@@ -71,4 +71,4 @@ keine
 
 2026-10-07: Kriterien siehe Ergebnisse TR1.1–TR1.3; AC-04 Browser-Nachweis verschoben (B-349/TR2.1, B-351).
 Keine schweren Befunde offen (zwei in TR1.3 vor dem Merge behoben). Neue Tickets: B-351, B-352.
-Version: v0.15.0 vorgeschlagen (neues Werkzeug `sim_test` in der Workbench).
+Version: v0.15.0 vorgeschlagen (neues Werkzeug `sim_test`), nicht gesetzt (Entscheidung 🧑, 2026-10-07).
