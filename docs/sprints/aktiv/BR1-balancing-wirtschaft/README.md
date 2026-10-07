@@ -62,7 +62,7 @@ Termin und Teilnehmer: `docs/fragenkatalog.md Q24` (🧑).
 
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
-| BR1.1 | `BR1.1-vorbereitung-messung.md` | Umsetzung | autonom | in Arbeit |
+| BR1.1 | `BR1.1-vorbereitung-messung.md` | Umsetzung | autonom | fertig |
 | BR1.2 | `BR1.2-spieleabend-2.md` | Workshop | Mensch | offen |
 | BR1.3 | `BR1.3-auswertung-abschluss.md` | Umsetzung | autonom | offen |
 

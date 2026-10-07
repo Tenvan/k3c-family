@@ -1,6 +1,6 @@
 # BR1.1 · Vorbereitung: Korridore prüfen, Kennzahlen messen, Wertänderungen vorschlagen
 
-- **Status:** in Arbeit
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Umgebung:** offline
@@ -43,9 +43,9 @@ Wertänderungen in `data/*.json` (BR1.3), Spieleabend (BR1.2), Kampf und Bosse (
 
 ## Fertig, wenn
 
-- [ ] AC-01: `docs/rules/` nennt die Zielkorridore der Wirtschaft als Zahlen je Kennzahl (Datei und Abschnitt im Ergebnis).
-- [ ] AC-02: Eine Vorschlagsliste nennt je Wertänderung die betroffenen Kennzahlen (vor und nach) und die Begründung; `data/` ist unverändert (`git status` zeigt keine Änderung in `data/`).
-- [ ] Die Messung vor der Runde ist mit Befehl, Datum und Commit festgehalten.
+- [x] AC-01: `docs/rules/` nennt die Zielkorridore der Wirtschaft als Zahlen je Kennzahl (Datei und Abschnitt im Ergebnis).
+- [x] AC-02: Eine Vorschlagsliste nennt je Wertänderung die betroffenen Kennzahlen (vor und nach) und die Begründung; `data/` ist unverändert (`git status` zeigt keine Änderung in `data/`).
+- [x] Die Messung vor der Runde ist mit Befehl, Datum und Commit festgehalten.
 
 ## Prüfen
 
@@ -55,4 +55,10 @@ task check
 
 ## Ergebnis
 
-–
+- **Voraussetzung:** W1 bis W5, W9 und W10 (Simulation der Wirtschaft) sind erledigt. W6 (Anzeigen im Client) ist noch aktiv; 🧑 hat am 2026-10-07 im Chat entschieden, dass die Messung nicht daran hängt. Der Tester (BAL1 bis BAL3, `task balance`) ist vorhanden.
+- **AC-01 umgesetzt:** Die Korridore stehen in `docs/rules/zielkorridore.md` › „Balancing-Runde Wirtschaft (BR1)“ › „Korridore der Wirtschaft“: 10 Kennzahlen aus § 1–3 mit Quelle `wirtschaft.md`, `materialien-gebaeude.md` oder `buerger.md`. Die Zeitgrenzen sind an Tag und Phase gebunden und je Zyklus umgerechnet: nach Q65 (14-min-Tag) und nach dem heutigen Code (16 min, bis B-213); Entscheidung von 🧑 am 2026-10-07 im Chat. Die Zahlen in § 1–3 sind unverändert.
+- **Messung** (2026-10-07, Commit `69fce4a`): `task balance` (`reports/balance-20261007-145615.md`), Rohmetriken über 10 Tage (`k3c-balance --seeds 100 --days 10`), Grad-Kurven (`reports/sensitivity-20261007-150222.md`). Tabelle „Messung vor der Runde“: Pass bei erster Mauer (100 %) und bei zerstörten Gebäuden (Median 0). Fail bei „Burg hält Nacht 1–5“ (4 %, Ursache Miniboss Wald in Welle 5, B-346), bei „Gold am Morgen“ (am Maximum) und bei „Holz ≥ 100“ (1–11 %).
+- **Nicht messbar** (B-347): erster Turm, Hub-Stufe 2 und 3, Kämpfer je Hub (nur eine Näherung). Gold und Holz misst der Tester nur zur Dämmerung statt bei `dawn`. Der Bot `saver` baut weder Turm noch Farm, rekrutiert nicht und baut den Hub nicht aus.
+- **AC-02 umgesetzt:** Die Vorschlagsliste im selben Abschnitt nennt `purse.startGold` 100 → 60; `dawnGoldPerPlayer` und `islandStartStock` bleiben, die Boss-Werte gehen an BR2 (B-346). Je Vorschlag stehen die Kennzahlen vorher und erwartet sowie die Begründung. Die Begründungen von HP und Kosten je Gebäude (B-015) sind vorbereitet, Verweis in `materialien-gebaeude.md` § 5. `data/` ist unverändert.
+- **Neue Tickets:** B-346 (Miniboss Wald, REG), B-347 (Tester misst die Wirtschaft, SIM). Ohne B-347 kann BR1.3 nur gegen 3 Kennzahlen prüfen.
+- `task check` ist grün.

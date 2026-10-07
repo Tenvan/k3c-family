@@ -130,6 +130,8 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-341](B-341-header-ursache-live-messen.md) | SRV | Problem | mittel | offen | – | Die Ursache für den fehlenden Header `X-K3C-Root` aus Worktrees ist live gemessen |
 | [B-342](B-342-w6-2-siteview-erlaubt.md) | CLI | Frage | mittel | offen | – | W6.2 darf den Bauplatz-Wartegrund in `siteView.ts` anbinden |
 | [B-343](B-343-bau-vor-dem-ausgang.md) | SIM | Frage | mittel | offen | – | Der Bau des Endbosses liegt an der inneren Kante des Ausgangs-Chunks |
+| [B-346](B-346-miniboss-wald-kippt-nacht-5.md) | REG | Problem | hoch | offen | – | Der Miniboss Wald kippt Nacht 5 in fast jedem Seed |
+| [B-347](B-347-tester-misst-wirtschaft.md) | SIM | Schuld | hoch | offen | – | Der Balancing-Tester misst die Wirtschafts-Kennzahlen |
 
 ## Archiv
 
