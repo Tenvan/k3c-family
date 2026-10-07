@@ -70,7 +70,7 @@ keine (Kachel-Zuordnung, Aufbau der Entwicklerseite und `/dm` von 🧑 am 2026-1
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
 | LP1.1 | `LP1.1-entwicklerseite.md` | Umsetzung | autonom | fertig |
-| LP1.2 | `LP1.2-neues-spiel-nachweis.md` | Umsetzung | autonom | offen |
+| LP1.2 | `LP1.2-neues-spiel-nachweis.md` | Umsetzung | autonom | fertig |
 | LP1.3 | `LP1.3-review.md` | Review | autonom | offen |
 | LP1.4 | `LP1.4-abnahme-pc.md` | Workshop | Mensch | offen |
 
