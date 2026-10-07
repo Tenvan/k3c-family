@@ -1,6 +1,6 @@
 import { installPageChrome, openPage } from '../core/shell';
 import { DEV_SECTIONS, type DevTile } from './devTiles';
-import { nextFocus } from './testTiles';
+import { type FocusKey, nextFocus } from './testTiles';
 
 installPageChrome();
 
@@ -70,17 +70,31 @@ function padKeys(): Set<string> {
   return keys;
 }
 
+/** Fokus eine Kachel weiter oder zurück (Controller und Pfeiltasten). */
+function moveFocus(key: FocusKey): void {
+  const buttons = [...document.querySelectorAll<HTMLButtonElement>('main button')];
+  const at = buttons.indexOf(document.activeElement as HTMLButtonElement);
+  buttons[nextFocus(buttons.length, at, key)]?.focus();
+}
+
 function pollPad(): void {
   const next = padKeys();
   const edge = (name: string) => next.has(name) && !held.has(name);
-  const buttons = [...document.querySelectorAll<HTMLButtonElement>('main button')];
-  const at = buttons.indexOf(document.activeElement as HTMLButtonElement);
-  if (edge('next')) buttons[nextFocus(buttons.length, at, 'next')]?.focus();
-  if (edge('prev')) buttons[nextFocus(buttons.length, at, 'prev')]?.focus();
+  if (edge('next')) moveFocus('next');
+  if (edge('prev')) moveFocus('prev');
   if (edge('a')) (document.activeElement as HTMLElement | null)?.click();
   held = next;
   requestAnimationFrame(pollPad);
 }
+
+// Tastatur wie auf der Landingpage: Pfeile wählen, Enter öffnet (Enter klickt den fokussierten Knopf von selbst).
+const ARROWS: Record<string, FocusKey> = { ArrowLeft: 'prev', ArrowUp: 'prev', ArrowRight: 'next', ArrowDown: 'next' };
+document.addEventListener('keydown', (e) => {
+  const key = ARROWS[e.key];
+  if (!key) return;
+  e.preventDefault();
+  moveFocus(key);
+});
 
 root.querySelector('button')?.focus();
 requestAnimationFrame(pollPad);
