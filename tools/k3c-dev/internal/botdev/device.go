@@ -41,6 +41,7 @@ type Device struct {
 	stage   int
 	states  map[int]map[string]any
 	firstX  *float64
+	world   *sim.World // zuletzt dekodierter Zustand der eigenen Stufe (Beobachter, World)
 	stopped bool
 	stats   Stats
 }
@@ -206,6 +207,7 @@ func (d *Device) onState(m inMsg) (sim.PlayerCommand, bool) {
 		d.stats.Errors++
 		return sim.PlayerCommand{}, false
 	}
+	d.world = w
 	for _, p := range w.Players {
 		if p.Index == d.monarch {
 			d.track(p.X)
@@ -220,6 +222,14 @@ func (d *Device) track(x float64) {
 		d.firstX = &x
 	}
 	d.stats.Moved = d.stats.Moved || x != *d.firstX
+}
+
+// World liefert den zuletzt empfangenen Zustand der eigenen Stufe (nil vor dem ersten) und den eigenen Monarchen.
+// Der Zustand wird nach dem Dekodieren nicht mehr geändert; der Aufrufer liest ihn nur.
+func (d *Device) World() (*sim.World, int) {
+	d.mu.Lock()
+	defer d.mu.Unlock()
+	return d.world, d.monarch
 }
 
 // Stats liefert eine Kopie der Zähler.

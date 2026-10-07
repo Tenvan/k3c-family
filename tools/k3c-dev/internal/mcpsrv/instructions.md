@@ -68,7 +68,12 @@ zurückgeben.
 - `mode: offline` (Standard, Mocks im Prozess) baut den Balancing-Tester im Checkout und bewertet die Ziele aus
   `data/balance-targets.json` (`seeds` optional). `mode: online, clients: 0` startet `rooms` × `players` Bot-Geräte
   (`bots`, Standard 1 × 2 `saver`, `duration` 5m) gegen den Spielserver des Checkouts (vorher `svc_start server`) und
-  misst Tick p99, CPU, Trennungen und Fehler; `clients` 1–4 folgt mit TR1.3.
+  misst Tick p99, CPU, Trennungen und Fehler.
+- `mode: online, clients: 1`–`4` öffnet je Client einen Raum mit einem Beobachter-Bot der Workbench (belegt einen Platz,
+  daher `players` 1–3) und startet Edge oder Chrome headless mit `game.html?room=…&players=…&botfeed=…` am Vite-Port
+  des Checkouts (vorher `svc_start` für Vite und Spielserver). Bots steuern die Monarchen über den Bot-Feed
+  (`/bot/<id>/<n>`, nur Loopback); FPS und Latenz kommen aus dem Log `k3c-client`. `attach: <Raumcode>` mit `clients: 1`
+  startet keinen Browser: den Client auf diesem Rechner mit der Feed-Adresse aus dem Status öffnen.
 - Der volle Bericht liegt unter `reports/simtest-<id>/` (`simtest.md` und der Bericht des Testers), lesbar mit `report_read`.
 
 ## Planung
