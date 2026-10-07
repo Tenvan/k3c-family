@@ -6,7 +6,7 @@
 - **Umgebung:** live
 - **Branch:** pl1/4-review
 - **Abhängig von:** PL1.1, PL1.2, PL1.3
-- **Tickets:** B-292, B-316, B-195, B-215
+- **Tickets:** B-316, B-195, B-215
 - **Kriterien:** alle
 
 ## Ziel
@@ -14,6 +14,8 @@
 Der Sprint-Diff ist geprüft, jedes Kriterium hat einen Nachweis, ist als „offen in PL1.5“ vermerkt oder mit Grund und Ticket verschoben, und der eine PR des Sprints ist offen.
 
 ## Kontext
+
+**2026-10-07:** B-292 („Neues Spiel“) ist nach LP1 gewechselt (Beschluss 🧑); alle B-292-Schritte und die PL1/AC-01-Punkte dieser Session entfallen.
 
 - Ablauf und Befund-Behandlung: `docs/arbeitsweise.md` › Review-Session.
 - Nachweise kommen aus den Ergebnissen von PL1.1 (AC-01, AC-03), PL1.2 (AC-02) und PL1.3 (AC-04). Die manuellen Teile (B-292/AC-02, B-316/AC-02, B-195/AC-02, B-215/AC-02) prüft 🧑 in PL1.5.

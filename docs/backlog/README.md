@@ -102,7 +102,7 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-289](B-289-aggressionspool-mit-adern.md) | REG | Problem | mittel | eingeplant | RG1 | Der Aggressionspool steigt mit Adern nicht zu schnell |
 | [B-290](B-290-raum-fuenf-stufen.md) | SRV | Idee | mittel | eingeplant | SV1 | Der Raum erzeugt alle fünf Stufen und der Client kennt Eisenstollen und Kristallhöhle |
 | [B-291](B-291-lava-nicht-auf-mauerlinien.md) | SIM | Problem | mittel | eingeplant | LV1 | Lava liegt nicht auf den Mauerlinien |
-| [B-292](B-292-neues-spiel-eindeutiger-name.md) | PLAT | Problem | hoch | eingeplant | PL1 | Die Kachel „Neues Spiel“ startet auch bei vorhandenem Spielstand familie |
+| [B-292](B-292-neues-spiel-eindeutiger-name.md) | PLAT | Problem | hoch | eingeplant | LP1 | Die Kachel „Neues Spiel“ startet auch bei vorhandenem Spielstand familie |
 | [B-293](B-293-spiel-im-menue-verlassen.md) | CLI | Idee | hoch | eingeplant | S8 | Das Spielmenü hat neben „Weiter“ einen Eintrag „Spiel verlassen“ |
 | [B-294](B-294-hinweis-glyph-muenze-nacht.md) | CLI | Frage | mittel | eingeplant | S8 | Münze und „Nacht naht“ zeigen in der geführten ersten Nacht keine Glyph |
 | [B-295](B-295-handwerker-schmiede-ruestkammer.md) | REG | Frage | mittel | eingeplant | RG2 | Handwerker lassen sich auch für Schmiede und Rüstkammer ausbilden |
@@ -129,7 +129,7 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-331](B-331-einheitlicher-grafikstil-pipeline.md) | CLI | Idee | mittel | offen | – | Alle Grafiken laufen durch eine Pipeline mit Ziel-Palette und gleicher Pixeldichte |
 | [B-333](B-333-pause-anzeige.md) | CLI | Idee | mittel | offen | – | Der Client zeigt einen angehaltenen Raum deutlich an und hält die Figuren-Animationen an |
 | [B-334](B-334-performance-modus.md) | CLI | Idee | hoch | offen | – | Der Client misst Leistung in einem Performance-Modus automatisch und überträgt die Werte an den Server |
-| [B-335](B-335-landingpage-spieler-entwicklung.md) | PLAT | Idee | hoch | offen | – | Die Landingpage zeigt nur Spieler-Kacheln, Entwicklungs-, Performance- und Balancing-Aufrufe liegen auf einer eigenen Entwicklerseite |
+| [B-335](B-335-landingpage-spieler-entwicklung.md) | PLAT | Idee | hoch | eingeplant | LP1 | Die Landingpage zeigt nur Spieler-Kacheln, Entwicklungs-, Performance- und Balancing-Aufrufe liegen auf einer eigenen Entwicklerseite |
 | [B-336](B-336-touch-optionen-schliessen.md) | CLI | Problem | hoch | offen | – | Die Optionen-Szene lässt sich per Touch vollständig bedienen und schließen, ohne vom Touch-Overlay verdeckt zu werden |
 
 ## Archiv

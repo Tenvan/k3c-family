@@ -5,11 +5,11 @@
 - **Prio:** hoch
 - **Umgebung:** live
 - **Status:** eingeplant
-- **Sprint:** PL1
+- **Sprint:** LP1
 - **Erstellt:** 2026-10-05
-- **Spec:** Entwurf
+- **Spec:** freigegeben
 - **Revision:** 1
-- **Freigabe:** –
+- **Freigabe:** 2026-10-07, Chat, durch 🧑 (mit Sprint LP1)
 
 ## Ausgangslage
 
