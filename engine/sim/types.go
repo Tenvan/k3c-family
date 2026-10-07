@@ -194,6 +194,19 @@ type Projectile struct {
 	Damage   float64 `json:"damage"`
 	Speed    float64 `json:"speed"`
 	Cause    string  `json:"-"` // Gegnerart des Schützen für playerDown (B-182), ohne Ausgabe
+	// Splash: Radius in Units, in dem der Einschlag alle Ziele trifft (Splitter-Wurf, boss_abilities.go); 0 = nur das Ziel.
+	Splash float64 `json:"splash,omitempty"`
+}
+
+// Hazard ist eine Bodenfläche (Flammenspur, boss_abilities.go): DamagePerSecond an Spielern, Truppen und Gebäuden
+// (außer der Burg) im Radius um X, noch SecondsLeft Sekunden.
+type Hazard struct {
+	X               float64 `json:"x"`
+	Radius          float64 `json:"radius"`
+	DamagePerSecond float64 `json:"damagePerSecond"`
+	SecondsLeft     float64 `json:"secondsLeft"`
+	Cause           string  `json:"-"` // Boss-ID für playerDown
+	tickIn          float64 // Sekunden bis zum nächsten Schaden
 }
 
 // Pickup ist eine Truhe oder ein Skill-Punkt.
@@ -274,7 +287,8 @@ type World struct {
 	Camps       []*Camp         `json:"camps"`
 	Portals     []float64       `json:"portals"`
 	SpawnQueue  []QueuedSpawn   `json:"spawnQueue"`
-	Storms      []*Storm        `json:"storms,omitempty"` // laufende Lightning Storms in Wirk-Reihenfolge
+	Storms      []*Storm        `json:"storms,omitempty"`  // laufende Lightning Storms in Wirk-Reihenfolge
+	Hazards     []*Hazard       `json:"hazards,omitempty"` // Bodenflächen in Entstehungs-Reihenfolge (boss_abilities.go)
 
 	Stock       *Stock    `json:"stock"` // Baumaterial gehört allen (in einer Insel: allen Stufen), Gold hat jeder Spieler selbst
 	SkillPoints int       `json:"skillPoints"`

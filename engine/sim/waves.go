@@ -112,7 +112,11 @@ func stepProjectiles(w *World, dt float64) {
 			continue
 		}
 		if math.Abs(x-pr.X) <= pr.Speed*dt {
-			applyDamageBy(w, pr.TargetID, pr.Damage, pr.Cause)
+			if pr.Splash > 0 {
+				hitSplash(w, pr, x) // Splitter-Wurf (boss_abilities.go)
+			} else {
+				applyDamageBy(w, pr.TargetID, pr.Damage, pr.Cause)
+			}
 			continue
 		}
 		pr.X += float64(sign(x-pr.X) * pr.Speed * dt)

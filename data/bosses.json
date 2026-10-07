@@ -1,5 +1,5 @@
 {
-  "notes": "Bosse (docs/rules/bosse.md § 1, § 1.1). kind: mini (Miniboss je Stufe) oder end (Endboss, K2.1c). depth: Stufe. wave: Welle der Stufe, mit der ein Miniboss über das erste Portal kommt. base: Standardgegner der Stufe als Bezug; hpFactor und damageFactor gelten relativ zu ihm, dazu Tiefen-Skalierung, Grad (enemyHp, enemyDamage) und Spielerfaktor der Insel auf die HP. speed in Units/s vor Tiefen-Skalierung, range in Units. ability: summon (enemy, count je intervalSeconds; Schwarm-Gegner zählen als ganzer Schwarm) oder aoe (radius um den Boss, alle intervalSeconds). reward: Gold als Münzen am Ort, Material der Stufe direkt in den Insel-Vorrat (Rest über dem Lager-Maximum verfällt); Skill-Punkte aus monarch.json › skillPointSources. Namen, Tempo, Reichweite, Intervalle und die Anzahl der Ratten-Königin sind vorläufig (B-099).",
+  "notes": "Bosse (docs/rules/bosse.md § 1, § 1.1). kind: mini (Miniboss je Stufe) oder end (Endboss, K2.1c). depth: Stufe. wave: Welle der Stufe, mit der ein Miniboss über das erste Portal kommt. base: Standardgegner der Stufe als Bezug; hpFactor und damageFactor gelten relativ zu ihm, dazu Tiefen-Skalierung, Grad (enemyHp, enemyDamage) und Spielerfaktor der Insel auf die HP. speed in Units/s vor Tiefen-Skalierung, range in Units. ability: summon (enemy, count je intervalSeconds; Schwarm-Gegner zählen als ganzer Schwarm), aoe (radius um den Boss, alle intervalSeconds), flameTrail (Bodenfläche mit radius, damagePerSecond und durationSeconds an den Ort des Bosses, alle intervalSeconds, wenn dort noch keine liegt) oder shardThrow (Fernkampf bis range: jedes Geschoss trifft beim Einschlag alles im radius, alle intervalSeconds). reward: Gold als Münzen am Ort, Material der Stufe direkt in den Insel-Vorrat (Rest über dem Lager-Maximum verfällt); Skill-Punkte aus monarch.json › skillPointSources. endBosses (K2.1c): Endboss je Insel in seinem Bau (Biom mit lair, level.go) in der Stufe depth; er wartet unverwundbar, bis ein lebender Spieler näher als lair.triggerUnits ist, und kämpft dann am Bau (speed 0). phases in Reihenfolge: die erste gilt ab dem Erscheinen, jede weitere ab belowHpPercent der HP; eine Phase ohne ability behält die vorige, tempo beschleunigt Takt von Angriff und Fähigkeit und die Laufgeschwindigkeit. Namen, Tempo, Reichweite, Intervalle, triggerUnits, die Schwelle der Phase 2, der Schaden und die Beschwörung des Endbosses, die Anzahl der Ratten-Königin und die Werte von Flammenspur und Splitter-Wurf sind vorläufig (B-099).",
   "bosses": [
     {
       "id": "goblinLeader", "name": "Goblin-Anführer", "kind": "mini", "depth": 0, "wave": 5,
@@ -18,6 +18,31 @@
       "base": "zombie", "hpFactor": 8, "damageFactor": 2, "speed": 2, "range": 1,
       "ability": { "type": "summon", "enemy": "ratSwarm", "count": 2, "intervalSeconds": 10 },
       "reward": { "gold": 100, "material": 50 }
+    },
+    {
+      "id": "lavaGolem", "name": "Lava-Golem", "kind": "mini", "depth": 3, "wave": 3,
+      "base": "lavaSlime", "hpFactor": 8, "damageFactor": 2, "speed": 2, "range": 1,
+      "ability": { "type": "flameTrail", "radius": 1.5, "damagePerSecond": 10, "durationSeconds": 5, "intervalSeconds": 1 },
+      "reward": { "gold": 100, "material": 50 }
+    },
+    {
+      "id": "shardTitan", "name": "Splitter-Titan", "kind": "mini", "depth": 4, "wave": 3,
+      "base": "crystalSpider", "hpFactor": 8, "damageFactor": 2, "speed": 2, "range": 8,
+      "ability": { "type": "shardThrow", "radius": 2, "intervalSeconds": 2 },
+      "reward": { "gold": 100, "material": 50 }
+    }
+  ],
+  "endBosses": [
+    {
+      "id": "crystalHeartWarden", "name": "Kristallherz-Wächter", "kind": "end", "depth": 4,
+      "base": "crystalSpider", "hpFactor": 30, "damageFactor": 2, "speed": 0, "range": 2,
+      "lair": { "triggerUnits": 15 },
+      "phases": [
+        { "ability": { "type": "summon", "enemy": "crystalSpider", "count": 2, "intervalSeconds": 10 } },
+        { "belowHpPercent": 60, "ability": { "type": "aoe", "radius": 5, "intervalSeconds": 6 } },
+        { "belowHpPercent": 25, "tempo": 1.5 }
+      ],
+      "reward": { "gold": 500, "material": 250 }
     }
   ]
 }

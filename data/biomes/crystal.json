@@ -19,6 +19,7 @@
   },
   "primaryResource": "crystal",
   "veins": { "count": 2, "kind": "crystalVein" },
+  "lair": true,
   "enemies": { "portal": ["crystalSpider", "shardling", "crystalGuardian"], "night": [] },
   "cycle": { "type": "aggressionPool", "percentPerMinute": 1, "percentPerKill": 5, "percentPerGather": 1 },
   "palette": { "sky": "#0d1626", "far": "#1a2a44", "near": "#2a4466", "ground": "#3a5a80" }

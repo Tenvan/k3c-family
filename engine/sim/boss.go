@@ -8,7 +8,8 @@ import (
 // Bosse (docs/rules/bosse.md § 1): Ein Miniboss kommt mit seiner Welle über das erste Portal der Stufe, nutzt seine
 // Fähigkeit, flieht nie und gibt beim Tod seine Belohnung. Ein besiegter Boss steht in Island.DefeatedBosses und kommt
 // nie wieder (auch nicht nach einem Burgfall). Bosse verbrauchen beim Erscheinen kein rng; nur die Münzen der
-// Belohnung werden wie jeder Drop gestreut. Bosse gibt es nur auf Inseln (der Merker gehört der Insel).
+// Belohnung werden wie jeder Drop gestreut. Bosse gibt es nur auf Inseln (der Merker gehört der Insel). Der Endboss
+// wartet in seinem Bau (boss_endboss.go).
 
 // triggerBoss: Am Wellenstart erscheint der Miniboss der Stufe ab seiner Welle, solange er nicht besiegt ist und
 // kein Boss der Stufe lebt.
@@ -25,24 +26,27 @@ func triggerBoss(w *World) {
 }
 
 // spawnBoss stellt den Boss bei x auf: Werte des Bezugs-Gegners × Boss-Faktoren, mit Tiefen-Skalierung, Grad
-// (enemyHp, enemyDamage) und Spielerfaktor der Insel auf die HP; die Wellengröße des Grads gilt nicht.
+// (enemyHp, enemyDamage) und Spielerfaktor der Insel auf die HP; die Wellengröße des Grads gilt nicht. Der
+// Spielerfaktor wirkt auf die gerundeten HP, damit 3 Spieler genau doppelt so viele HP ergeben wie einer.
 func spawnBoss(w *World, b *BossData, x float64) *Enemy {
 	hp, damage, players := 1.0, 1.0, 1
 	if isl := w.island; isl != nil {
 		g := difficulty[isl.Options.Grade]
 		hp, damage, players = g.EnemyHP, g.EnemyDamage, max(len(isl.Players()), 1)
 	}
-	hp *= 1 + waves.PerExtraPlayer*float64(players-1)
 	e := spawnScaled(w, b.Base, x, b.HPFactor*hp, b.DamageFactor*damage)
+	e.HP = math.Round(e.HP * (1 + waves.PerExtraPlayer*float64(players-1)))
+	e.MaxHP = e.HP
 	e.Kind, e.Boss, e.Traits, e.Range = b.ID, true, nil, b.Range
 	e.Speed = b.Speed * math.Pow(waves.DepthScaling.Speed, float64(w.Biome.Depth))
-	e.AoeIn = b.Ability.IntervalSeconds
+	armBoss(e, b.Ability)
 	emit(w, "bossSpawned", Event{"boss": b.ID, "x": unitX(x)})
 	return e
 }
 
-// bossAbility (nur Bosse): Ist die Fähigkeit fällig (Enemy.AoeIn zählt bei Bossen bis zur nächsten), ruft `summon` Gegner an den
-// Ort des Bosses; `aoe` schlägt, sobald ein Ziel im Radius steht, und trifft alle Ziele dort je einmal.
+// bossAbility (nur Bosse): Ist die Fähigkeit (beim Endboss die seiner Phase, boss_endboss.go) fällig (Enemy.AoeIn zählt bei Bossen bis zur nächsten), ruft `summon` Gegner an den
+// Ort des Bosses; `aoe` schlägt, sobald ein Ziel im Radius steht, und trifft alle Ziele dort je einmal; `flameTrail`
+// und `shardThrow` stehen in boss_abilities.go.
 func bossAbility(w *World, e *Enemy) {
 	if !e.Boss || e.AoeIn > 0 {
 		return
@@ -51,11 +55,15 @@ func bossAbility(w *World, e *Enemy) {
 	if b == nil {
 		return
 	}
-	a := b.Ability
+	a := bossAbilityOf(w, b)
 	switch a.Type {
 	case "summon":
 		e.AoeIn = a.IntervalSeconds
 		summon(w, e, a)
+	case "flameTrail":
+		flameTrail(w, e, a)
+	case "shardThrow":
+		shardThrow(w, e, a)
 	case "aoe":
 		targets := aoeTargets(w, e.X, a.Radius)
 		if len(targets) == 0 {
@@ -105,5 +113,6 @@ func bossDefeated(w *World, e *Enemy) {
 	if isl := w.island; isl != nil && !slices.Contains(isl.DefeatedBosses, b.ID) {
 		isl.DefeatedBosses = append(isl.DefeatedBosses, b.ID)
 	}
+	endbossDefeated(w, b)
 	emit(w, "bossDefeated", Event{"boss": b.ID, "x": unitX(e.X)})
 }

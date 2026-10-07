@@ -24,7 +24,17 @@ type Island struct {
 	ChestsOpened int
 	// DefeatedBosses: IDs der besiegten Bosse in Reihenfolge des Siegs (boss.go); ein besiegter Boss kommt nie wieder.
 	DefeatedBosses []string
-	nextPlayer     int
+	// EndbossDefeated: Der Endboss der Insel ist besiegt (Siegvariante, Inselwechsel); endboss ist der laufende Kampf
+	// gegen ihn (boss_endboss.go), nil solange er wartet oder nach dem Sieg.
+	EndbossDefeated bool
+	endboss         *endbossFight
+	// GoldCollected: Münzen, die Spieler auf der Insel aufgehoben haben, jede Aufnahme zählt (Siegvariante gold,
+	// victory.go). Won: Die Insel hat ihr Ziel erreicht, `victory` kam schon. hadFinite: Es stand ein endliches
+	// Ressourcenobjekt (mineAll). Nur im Speicher, der Spielstand folgt mit K2.3b.
+	GoldCollected int
+	Won           bool
+	hadFinite     bool
+	nextPlayer    int
 	// travel: Reisefortschritt je Spielerindex (island_travel.go); nur über die Stufen- und Spielerlisten iterieren.
 	travel map[int]*islandTravel
 }
@@ -80,6 +90,7 @@ func StepIsland(isl *Island, commands []PlayerCommand, dt float64) {
 		Step(w, commands, dt)
 	}
 	stepIslandTravel(isl, dt)
+	checkVictory(isl)
 	for i, w := range isl.Stages { // nach dem Wechsel, damit auch `arrived` seine Stufe trägt
 		for _, ev := range w.Events {
 			ev["stage"] = i

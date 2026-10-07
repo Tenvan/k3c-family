@@ -300,6 +300,9 @@ func collectCoins(w *World) {
 			kept = append(kept, c)
 		} else {
 			taker.Gold++
+			if w.island != nil {
+				w.island.GoldCollected++ // Siegvariante gold (victory.go)
+			}
 			emit(w, "coinPickup", Event{"player": taker.Index, "x": unitX(c.X)})
 		}
 	}
