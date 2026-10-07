@@ -90,6 +90,8 @@ widerspricht dem Code oder einer Regel):
 `Status: blockiert`, im **Ergebnis** Grund und bisherigen Stand notieren, ein Ticket vom Typ `Frage` anlegen,
 bisherigen Stand auf den Sprint-Branch pushen und einen **Entwurfs-PR** des Sprints öffnen (falls noch keiner offen ist), **aufhören**. Nicht raten, nicht um die Regeln herum arbeiten.
 
+**Testläufe** (Balancing, Performance, Stabilität) startet und überwacht ein Agent nur über das MCP-Tool `sim_test` der Workbench (B-348), nie in der Shell; ohne laufende Workbench wartet der Testlauf.
+
 Eine Session pro Lauf. Eine Review-Session nie im selben Lauf wie eine Umsetzung. Sessions mit `Agent: Mensch`
 (Xbox-Test, Workshop, Spieleabend) nimmt ein Agent nicht; er darf sie nur vorbereiten, wenn die Datei das verlangt.
 

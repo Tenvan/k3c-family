@@ -3,6 +3,7 @@ module k3c/tools/k3c-dev
 go 1.27.0
 
 require (
+	github.com/coder/websocket v1.8.15
 	github.com/modelcontextprotocol/go-sdk v1.8.0
 	github.com/shirou/gopsutil/v4 v4.26.8
 	github.com/wailsapp/wails/v2 v2.16.0

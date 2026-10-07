@@ -20,6 +20,7 @@ Reihenfolge in Wellen, Bahnen je Domäne und Zuordnung Mensch/autonom (zwei Acco
 | W6 | CLI | mittel | Anzeigen für Bau, Lager, Hub und Bürger (B-117, B-126) | HUD und Bauplätze am TV, von 🧑 abgenommen | `aktiv/W6-anzeige-wirtschaft/` |
 | LP1 | PLAT | hoch | Landingpage für Spieler, Entwicklerseite für Werkzeuge | – | `aktiv/LP1-landingpage-aufraeumen/` |
 | K2 | SIM | hoch | Bosse, Siegvarianten und Inselwechsel | Tests je Boss, Siegvariante und Modus grün, Spielstand mit besiegten Bossen und aktueller Insel | `aktiv/K2-bosse-siege-inseln/` |
+| TR1 | SRV | hoch | Testläufe über `sim_test` in der Workbench: offline/online, headless/1–4 Clients (B-348) | `sim_test` startet und überwacht Balancing-, Performance- und Stabilitätsläufe | `aktiv/TR1-testlaeufe-workbench/` |
 | M11 | SRV | hoch | MCP-Seite: alle Tools mit Aufruf-Statistik, Zeitfilter der Statistik (B-350; einschiebbar) | Workbench, Reiter MCP | `aktiv/M11-mcp-seite-tools/` |
 | BR1 | REG 🧑 | hoch | Balancing-Runde Wirtschaft und Spieleabend 2 | Pass/Fail je Kennzahl, Begründungen in `docs/rules/`, Protokoll in `docs/playtests/` | `aktiv/BR1-balancing-wirtschaft/` |
 
@@ -46,6 +47,7 @@ dann über den Go-Server mit mehreren Räumen und gemischten Spielern.
 
 | Sprint | Domäne | Prio | Thema | Am Ende sichtbar | Reife | Ordner |
 |---|---|---|---|---|---|---|
+| TR2 | PLAT | hoch | Bot-Eingabe im Client für Testläufe (B-349; einschiebbar) | Bots steuern Monarchen im Browser | bereit | `geplant/TR2-bot-eingabe-client/` |
 | P1 | REG 🧑 | hoch | Spieleabend 1 | Protokoll und Folge-Tickets | Entwurf | `geplant/P1-spieleabend-1/` |
 | K3 | SIM | niedrig | Events Vollmond, Blutmond und Händler-Überfall | Tests je Event grün, aktualisierte Golden-Daten | bereit | `geplant/K3-events/` |
 | K4 | SRV | hoch | Protokoll für Bosse, Events und Inselwechsel | `docs/protocol.md` mit neuen Feldern, Beispiele in `testdata/protocol/`, `task check:go` und `task check` grün | bereit | `geplant/K4-protokoll-kampf/` |

@@ -48,7 +48,9 @@ Die Gamepad-Testseite (`gamepad-test.html`) schickt Berichte von der Xbox nach `
 **k3c-dev zuerst:** Sind die MCP-Tools `mcp__k3c-dev__*` verbunden, gehen Prüfungen über `check_run` (statt `task check`,
 `task test`, `go test` …), Dienste über `svc_start`/`svc_stop` (nie `task dev`/`task start` in der Shell), Logs über
 `logs_errors`/`logs_query`, Berichte und Spielstände über `reports_list`/`report_read`/`saves_list`, Balancing über
-`sim_run`/`level_generate`. Die Shell-Befehle unten nur, wenn k3c-dev nicht läuft.
+`sim_run`/`level_generate`. **Jeder autonome Testlauf** (Balancing, Performance von Server und Client, Stabilität;
+offline, online, headless oder mit Clients) startet und läuft **nur über `sim_test`** (`start`, `status`, `stop`, `list`),
+nie über `task balance`, `task load` oder Binaries in der Shell (B-348). Die Shell-Befehle unten nur, wenn k3c-dev nicht läuft.
 
 **Tasks und Ausführungen laufen ausschließlich über `task`** (Neues in `Taskfile.yml`, nicht in `package.json`).
 Vor jedem Abschluss: `task check` muss grün sein.
