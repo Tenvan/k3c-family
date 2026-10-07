@@ -3,7 +3,7 @@
 - **Status:** offen
 - **Typ:** Review
 - **Agent:** autonom
-- **Umgebung:** offline
+- **Umgebung:** live
 - **Branch:** tr3/2-review
 - **Abhängig von:** TR3.1
 - **Tickets:** B-353
@@ -11,7 +11,7 @@
 
 ## Ziel
 
-TR3 ist nach `docs/arbeitsweise.md` › Review-Session geprüft, B-353 archiviert, der PR des Sprints offen.
+TR3 ist nach `docs/arbeitsweise.md` › Review-Session geprüft, AC-03 per `sim_test` nachgewiesen, B-353 archiviert, der PR des Sprints offen.
 
 ## Kontext
 
@@ -30,7 +30,8 @@ Stil, neue Funktionen.
 
 1. `Status: in Arbeit`, `task check` grün.
 2. Diff `origin/develop...origin/sprint/tr3` lesen, Befunde behandeln.
-3. Abnahme, B-353 archivieren, Sprint nach `erledigt/`, Fahrplan, merge, push, PR.
+3. AC-03 (aus TR3.1 verschoben): `sim_test` mit `mode: online`, `clients: 1`, `players: 2` aus einem Checkout, dessen Vite den Stand von `sprint/tr3` ausliefert (`workbench_status` › `Checkout:` prüfen); Feed-Zähler und Positionen der Client-Monarchen im Bericht nachsehen. Geht das nicht, AC-03 `blockiert` mit Grund.
+4. Abnahme, B-353 archivieren, Sprint nach `erledigt/`, Fahrplan, merge, push, PR.
 
 ## Fertig, wenn
 

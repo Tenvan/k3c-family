@@ -59,7 +59,7 @@ keine
 
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
-| TR3.1 | `TR3.1-bot-eingabe-einbinden.md` | Umsetzung | autonom | in Arbeit |
+| TR3.1 | `TR3.1-bot-eingabe-einbinden.md` | Umsetzung | autonom | fertig |
 | TR3.2 | `TR3.2-review.md` | Review | autonom | offen |
 
 ## Abnahme

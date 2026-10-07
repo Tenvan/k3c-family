@@ -1,6 +1,6 @@
 # TR3.1 · Bot-Eingaben in GameScene und Lobby
 
-- **Status:** in Arbeit
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Umgebung:** live
@@ -41,9 +41,9 @@
 
 ## Fertig, wenn
 
-- [ ] AC-01: Test in `localSlots.test.ts` grün.
-- [ ] AC-02: Test in `lobbyLogic.test.ts` grün.
-- [ ] AC-03: `sim_test`-Bericht mit bewegten Monarchen des Clients.
+- [x] AC-01: Test in `localSlots.test.ts` grün.
+- [x] AC-02: Test in `lobbyLogic.test.ts` grün.
+- [ ] AC-03: `sim_test`-Bericht mit bewegten Monarchen des Clients (verschoben auf TR3.2).
 
 ## Prüfen
 
@@ -55,4 +55,9 @@ task check
 
 ## Ergebnis
 
-–
+- **AC-01** (B-353/AC-01): umgesetzt, geprüft mit `localSlots.test.ts` (feste Eingaben binden Slot i ohne `confirm`, senden ihre Kommandos, ein echter Controller bekommt den nächsten freien Slot; ohne feste Eingaben unverändert).
+- **AC-02** (B-353/AC-02): umgesetzt, geprüft mit `lobbyLogic.test.ts` (`?room=…&players=3` → Slots 0–2, ohne `?players` Slot 0, ungültige Werte = 1, `?autostart` mit `players`).
+- **AC-03** verschoben auf TR3.2 (Entscheidung 🧑, 2026-10-07): k3c-dev meldet aus dem Worktree `Checkout: Repo-Wurzel` (B-341), `sim_test` würde den Code der Wurzel öffnen, nicht diesen. Die Review prüft den Lauf, sobald TR3 auf `develop` und im Wurzel-Checkout ist.
+- Umsetzung: `LocalSlots` nimmt feste Eingaben je Slot (`fixed`), `pageBots()` holt die Bot-Eingaben einmal je Seite; `StartParams.players` und `slotsFor(mock, players)`; `GameScene` verdrahtet nur (keine neue Zeile, durch zusammengelegte Importe 399 statt 403 Zeilen). `LobbyScene` unverändert: Bot-Slots sind keine Mock-Slots.
+- `task check` grün (80 Dateien, 1531 Tests), in der Shell wegen B-341.
+

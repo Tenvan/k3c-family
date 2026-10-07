@@ -2,6 +2,7 @@
  * Lokale Spieler eines Geräts (Slots 0–3, Protokoll v2): welche Eingabe steuert welchen Slot, wann `addSlot`, `removeSlot` und `leave`.
  * Ohne Phaser, damit es getestet werden kann (SP08 AC-02, AC-11).
  */
+import { botInputs, type BotInput } from '../input/botInput';
 import { heldSkill, type SlotAction } from '../input/slotBindings';
 import { MAX_LOCAL_PLAYERS } from './layout';
 
@@ -36,8 +37,13 @@ export class LocalSlots<I extends SlotInputDevice> {
   /** Slots, die `addSlot` gesendet haben und auf die Bestätigung warten (Slot → Zeitpunkt) */
   private readonly adding = new Map<number, number>();
 
-  /** `mock`: Slots ohne Eingabe, die nur stehen (Testseite) */
-  constructor(private readonly mock: readonly number[] = []) {}
+  /** `mock`: Slots ohne Eingabe, die nur stehen (Testseite); `fixed`: Eingabe i steuert Slot i ohne Beitritt per Taste (Bots, B-353) */
+  constructor(
+    private readonly mock: readonly number[] = [],
+    fixed: readonly I[] = [],
+  ) {
+    fixed.forEach((input, slot) => (this.bound[slot] = input));
+  }
 
   /** Platz am Server ohne Spieler, der ihn bedient (ein Mock steuert niemand) */
   waiting(seated: readonly number[]): boolean {
@@ -87,6 +93,13 @@ export class LocalSlots<I extends SlotInputDevice> {
     }
     return result;
   }
+}
+
+let bots: BotInput[] | undefined;
+
+/** Bot-Eingaben der Seite (`?botfeed=…&players=n`, B-353), einmal je Seite; ohne Parameter keine */
+export function pageBots(): BotInput[] {
+  return (bots ??= botInputs(window.location.search, window.location.hostname));
 }
 
 /** Eingabe eines bedienten Slots; `attack` und `skill` nur, wenn gehalten (Schlag, Skill-Slot 1–4) */

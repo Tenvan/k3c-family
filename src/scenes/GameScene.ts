@@ -3,18 +3,17 @@ import { toggleFullscreen } from '../core/fullscreen';
 import { GAME_HEIGHT, GAME_WIDTH, UNIT_PX } from '../core/constants';
 import { GamepadInput, KeyboardInput, type PlayerInput } from '../input/playerInput';
 import { TouchInput, wantsTouchControls } from '../input/touchInput';
-import type { LevelInfo, RoomClient } from '../online/clientConnection';
+import type { Frame, LevelInfo, RoomClient } from '../online/clientConnection';
 import { applyState, createViewWorld } from '../online/clientWorld';
 import { Timeline } from '../online/clientTimeline';
 import { Predictor } from '../online/clientPredict';
 import type { SlotInput } from '../online/clientProtocol';
-import type { Frame } from '../online/clientConnection';
 import type { GameEvent, World } from '../model/types';
 import { computeLayout, type Cell } from './layout';
 import type { LobbySceneData } from './LobbyScene';
 import { leavesGame } from './lobbyLogic';
-import { LEAVE_KEY } from './optionsLogic';
-import { LocalSlots } from './localSlots';
+import { LEAVE_KEY, MenuPress, idleCommands } from './optionsLogic';
+import { LocalSlots, pageBots } from './localSlots';
 import type { RadarCell } from './radarView';
 import { daylight } from './viewRules';
 import { cellStages } from './cellStages';
@@ -26,15 +25,12 @@ import { loadSettings } from '../core/settings';
 import { EFFECT_CONFIG, SHAKE, effectFor, type BuildSpots } from './effects';
 import { hurtSeat, rumblePad, runEffect, shakeCell } from './effectRules';
 import { DEV_FOCUS_KEY, muteFocused } from './debugOverlayPanel';
-import { MenuPress, idleCommands } from './optionsLogic';
 import { pauseButton } from './pauseButton';
 import { SkillMenus } from './skillMenuLogic';
 
 /** Ein Overlay pro Seite, auch über Szenen-Neustarts hinweg */
 let sharedTouch: TouchInput | undefined;
-function touchControls(): TouchInput {
-  return (sharedTouch ??= new TouchInput());
-}
+const touchControls = (): TouchInput => (sharedTouch ??= new TouchInput());
 
 export interface GameSceneData {
   /** Verbindung zum Server (Protokoll v2): der Browser rechnet nichts, er sendet Eingaben und zeichnet */
@@ -109,7 +105,7 @@ export class GameScene extends Phaser.Scene {
     this.pads = [];
     this.nightFx = [];
     this.touch = undefined;
-    this.slots = new LocalSlots(data.mock);
+    this.slots = new LocalSlots<PlayerInput>(data.mock, pageBots()); // Bots (`?botfeed`) sind fest an ihre Slots gebunden
     this.world_ = undefined;
     this.stages = new Map(); // die Szene hat ihre Ebenen beim Neustart schon zerstört
     this.holders = [];
@@ -146,7 +142,7 @@ export class GameScene extends Phaser.Scene {
 
   update(): void {
     this.keyboard.update();
-    this.pads.forEach((p) => p.update());
+    [...this.pads, ...pageBots()].forEach((p) => p.update());
     this.touch?.update();
     this.trackLastDevice();
 
