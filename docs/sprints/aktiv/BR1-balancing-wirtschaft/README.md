@@ -1,12 +1,12 @@
 # BR1 · REG · Balancing-Runde Wirtschaft und Spieleabend 2
 
-- **Status:** geplant
+- **Status:** aktiv
 - **Domäne:** REG
 - **Prio:** hoch
 - **Reife:** bereit
 - **Einschiebbar:** nein
 - **Tickets:** B-155, B-015
-- **Start-Commit:** –
+- **Start-Commit:** edb2a8f
 - **Spec:** freigegeben
 - **Revision:** 1
 - **Freigabe:** 2026-10-04, Chat, durch 🧑, Revision 1; mit Änderungen aus der Spec-Prüfung
@@ -62,7 +62,7 @@ Termin und Teilnehmer: `docs/fragenkatalog.md Q24` (🧑).
 
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
-| BR1.1 | `BR1.1-vorbereitung-messung.md` | Umsetzung | autonom | offen |
+| BR1.1 | `BR1.1-vorbereitung-messung.md` | Umsetzung | autonom | fertig |
 | BR1.2 | `BR1.2-spieleabend-2.md` | Workshop | Mensch | offen |
 | BR1.3 | `BR1.3-auswertung-abschluss.md` | Umsetzung | autonom | offen |
 
