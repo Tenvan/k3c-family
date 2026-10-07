@@ -268,7 +268,7 @@
   white-space: nowrap;
 }
 
-.mcp-share-inline {
+.mcp-share.mcp-share-inline {
   display: inline-block;
   width: 60px;
   margin: 0 4px 0 0;
@@ -320,4 +320,55 @@
   text-overflow: ellipsis;
   white-space: nowrap;
   color: var(--dim);
+}
+
+/* Tool-Kacheln der Übersicht (B-350) */
+.mcp-tool-tiles {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap: 8px;
+}
+
+.mcp-tile {
+  padding: 8px 10px;
+  border: 1px solid var(--card-line);
+  border-radius: 8px;
+  min-width: 0;
+}
+
+.mcp-tile-name {
+  font: 600 13px 'Cascadia Mono', Consolas, monospace;
+  overflow-wrap: anywhere;
+}
+
+.mcp-share {
+  display: block;
+  height: 4px;
+  margin: 6px 0;
+  border-radius: 2px;
+  background: var(--card-line);
+  overflow: hidden;
+}
+
+.mcp-share span {
+  display: block;
+  height: 100%;
+  background: var(--gold);
+}
+
+.mcp-tile-line {
+  color: var(--dim);
+  font-size: 12px;
+}
+
+.mcp-tile-bad {
+  color: var(--error);
+}
+
+.mcp-tile-last {
+  color: var(--dim);
+  font-size: 11px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }

@@ -15,12 +15,13 @@ export interface Kpi {
 
 const HOUR = 3_600_000;
 
-/** Fehlerquote in Prozent; ohne Aufrufe `–`. */
+/** Fehlerquote in Prozent; ohne Aufrufe oder ohne Fehlerzahl (Zeitraum, NaN) `–`. */
 export function rateText(errors: number, calls: number): string {
-  return calls > 0 ? formatPercent((100 * errors) / calls) : '–';
+  return calls > 0 && Number.isFinite(errors) ? formatPercent((100 * errors) / calls) : '–';
 }
 
-const dur = (ms: number, calls: number) => (calls > 0 ? formatDuration(ms) : '–');
+/** Dauer; ohne Aufrufe oder ohne Wert (Zeitraum, NaN) `–`. */
+export const dur = (ms: number, calls: number) => (calls > 0 && Number.isFinite(ms) ? formatDuration(ms) : '–');
 
 /** Die zehn Kennzahl-Kacheln eines Bereichs. */
 export function kpis(s: UsageScope, now: number): Kpi[] {
@@ -75,8 +76,8 @@ export function nextSort(cur: Sort, key: SortKey): Sort {
 function value(t: ToolUsage, key: SortKey): number | string {
   if (key === 'name') return t.name;
   if (key === 'share') return t.calls;
-  if (key === 'rate') return t.calls > 0 ? t.errors / t.calls : 0;
-  return t[key];
+  const v = key === 'rate' ? (t.calls > 0 ? t.errors / t.calls : 0) : t[key];
+  return Number.isNaN(v) ? -Infinity : v; // unbekannte Werte (Zeitraum) unten
 }
 
 /** Tool-Tabelle sortiert; bei Gleichstand nach Name. */
