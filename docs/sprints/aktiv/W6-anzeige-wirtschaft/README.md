@@ -60,7 +60,7 @@ keine
 
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
-| W6.1 | `W6.1-reine-funktionen.md` | Umsetzung | autonom | offen |
+| W6.1 | `W6.1-reine-funktionen.md` | Umsetzung | autonom | fertig |
 | W6.2 | `W6.2-hud-bauplaetze.md` | Umsetzung | autonom | offen |
 | W6.3 | `W6.3-buerger-ui.md` | Umsetzung | autonom | offen |
 | W6.4 | `W6.4-abnahme-geraet.md` | Workshop | Mensch | offen |
