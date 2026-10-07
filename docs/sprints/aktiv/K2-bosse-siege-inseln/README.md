@@ -67,7 +67,7 @@ Nicht alle lebenden Spieler am Punkt → Wechsel wartet. Komplett verloren → R
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
 | K2.1a | `K2.1a-boss-rahmen-minibosse.md` | Umsetzung | autonom | fertig |
-| K2.1b | `K2.1b-minibosse-flaechen.md` | Umsetzung | autonom | offen |
+| K2.1b | `K2.1b-minibosse-flaechen.md` | Umsetzung | autonom | in Arbeit |
 | K2.1c | `K2.1c-endboss.md` | Umsetzung | autonom | offen |
 | K2.2a | `K2.2a-siegvarianten.md` | Umsetzung | autonom | offen |
 | K2.2b | `K2.2b-niederlage-modi.md` | Umsetzung | autonom | offen |
