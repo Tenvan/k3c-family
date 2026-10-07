@@ -16,7 +16,6 @@ Reihenfolge in Wellen, Bahnen je Domäne und Zuordnung Mensch/autonom (zwei Acco
 | GR4 | INF | mittel | Atlas und Lade-Szene (B-163, B-029; Messung an der Xbox offen, GR4.3) | – | `aktiv/GR4-atlas-ladeszene/` |
 | DBG3 | PLAT | hoch | Dungeon-Master-Seite `/dm` mit Dev-API, Welle und Tageszeit (B-232; Abnahme am Handy offen) | – | `aktiv/DBG3-dungeon-master-seite/` |
 | LT1 | SRV | hoch | Lasttest-Werkzeug `task load`: Bots, Tick-Dauer und CPU im Bericht, Bewertung gegen < 10 ms (B-175; Messlauf am Pi offen) | – | `aktiv/LT1-lasttest-werkzeug/` |
-| N2 | CLI | hoch | Flüssige Darstellung: Zeitleiste mit Puffer und Extrapolation, Vorhersage des eigenen Monarchen, Latenz im Debug-Overlay (B-277, B-181; Abnahme am Gerät offen) | – | `aktiv/N2-zeitleiste-vorhersage/` |
 | S3 | CLI | hoch | Skill-Menü, Tasten und Aktionen-Overlay | – | `aktiv/S3-skill-menue-overlay/` |
 | S4 | CLI | hoch | Kamera je Stufe und Layouts 1–4: Zelle zeigt Stufe, Radar und HUD je Zelle, Mindest-Schrift (B-106; Abnahme am Gerät offen) | – | `aktiv/S4-kamera-layouts/` |
 | S5 | CLI | hoch | Optionen- und Pause-Szene mit getrennter Lautstärke, Screenshake/Flash, Farbschwäche-Symbolen und Sprache de/en (B-146, B-172; Abnahme am Gerät offen) | – | `aktiv/S5-optionen-pause/` |
@@ -179,3 +178,4 @@ Gesamtplan und Begründung: [`../plan-weiterentwicklung.md`](../plan-weiterentwi
 | W9 | Welt spiegelt Lager-Maximum, Hub-Ausbau und Gefahr über `sim.EconomyOf` (B-323; einschiebbar) | `erledigt/W9-welt-spiegel-wirtschaft/` |
 | W5 | Protokoll v5: Hub-Stufe, Lager, Wartegrund, Händler, Berufe und Ereignisse im Zustand; Eingaben bleiben `input.pay` (B-153, B-283, B-330) | `erledigt/W5-protokoll-wirtschaft/` |
 | W10 | Kämpfer-Zahl und Truppen-Limit im Zustand: `fighters`, `troopLimit` in `sim.EconomyOf` und Protokoll v5 (B-332; einschiebbar) | `erledigt/W10-truppen-limit-zustand/` |
+| N2 | Flüssige Darstellung: Zeitleiste mit Puffer und Extrapolation, Vorhersage des eigenen Monarchen, Latenz im Debug-Overlay (B-277, B-181; Abnahme am Gerät offen) | `erledigt/N2-zeitleiste-vorhersage/` |
