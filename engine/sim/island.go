@@ -22,7 +22,9 @@ type Island struct {
 	SkillPool int
 	// ChestsOpened zählt die geöffneten Truhen aller Stufen (jede n-te gibt einen Pool-Punkt).
 	ChestsOpened int
-	nextPlayer   int
+	// DefeatedBosses: IDs der besiegten Bosse in Reihenfolge des Siegs (boss.go); ein besiegter Boss kommt nie wieder.
+	DefeatedBosses []string
+	nextPlayer     int
 	// travel: Reisefortschritt je Spielerindex (island_travel.go); nur über die Stufen- und Spielerlisten iterieren.
 	travel map[int]*islandTravel
 }

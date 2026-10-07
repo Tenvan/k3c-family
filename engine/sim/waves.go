@@ -80,6 +80,7 @@ func startWave(w *World) {
 		w.SpawnQueue = append(w.SpawnQueue, QueuedSpawn{Kind: s.kind, X: s.x, At: w.Time + s.delay, hpFactor: hp, damageFactor: damage})
 	}
 	w.Events = append(w.Events, Event{"type": "wave", "wave": w.Wave, "count": len(plan)})
+	triggerBoss(w)
 }
 
 // targetX ist die Position des Ziels eines Geschosses (Gegner, Spieler, Truppen, Bauplätze, Burg).
@@ -120,7 +121,8 @@ func stepProjectiles(w *World, dt float64) {
 	w.Projectiles = kept
 }
 
-// removeDeadEnemies: Besiegte Gegner droppen Gold (plus geklautes Gold), manchmal auch die Stufen-Ressource.
+// removeDeadEnemies: Besiegte Gegner droppen Gold (plus geklautes Gold), manchmal auch die Stufen-Ressource; ein Boss
+// gibt stattdessen seine Belohnung (bossDefeated, ohne Würfel für den Drop).
 func removeDeadEnemies(w *World) {
 	kept := w.Enemies[:0]
 	for _, e := range w.Enemies {
@@ -128,17 +130,26 @@ func removeDeadEnemies(w *World) {
 			kept = append(kept, e)
 			continue
 		}
-		gold := enemyData[e.Kind].Gold
-		dropped := w.rng.Int(gold[0], gold[1]) + e.CarriedGold
-		scatterCoins(w, e.X, dropped)
-		emit(w, "kill", Event{"kind": e.Kind, "x": unitX(e.X), "gold": dropped})
-		drop := economy.EnemyResourceDrop
-		if w.rng.Next() < drop.Chance && addStock(w, w.Biome.PrimaryResource, drop.Amount) {
-			w.Events = append(w.Events, Event{"type": "gathered", "resource": w.Biome.PrimaryResource, "amount": drop.Amount})
+		if e.Boss {
+			bossDefeated(w, e)
+		} else {
+			enemyDrop(w, e)
 		}
 		if w.Aggression != nil && w.Biome.Cycle.Type == "aggressionPool" {
 			*w.Aggression = math.Min(100, *w.Aggression+w.Biome.Cycle.PercentPerKill)
 		}
 	}
 	w.Enemies = kept
+}
+
+// enemyDrop: Gold laut Daten plus geklautes Gold als Münzen, mit Chance die Stufen-Ressource in den Vorrat.
+func enemyDrop(w *World, e *Enemy) {
+	gold := enemyData[e.Kind].Gold
+	dropped := w.rng.Int(gold[0], gold[1]) + e.CarriedGold
+	scatterCoins(w, e.X, dropped)
+	emit(w, "kill", Event{"kind": e.Kind, "x": unitX(e.X), "gold": dropped})
+	drop := economy.EnemyResourceDrop
+	if w.rng.Next() < drop.Chance && addStock(w, w.Biome.PrimaryResource, drop.Amount) {
+		w.Events = append(w.Events, Event{"type": "gathered", "resource": w.Biome.PrimaryResource, "amount": drop.Amount})
+	}
 }

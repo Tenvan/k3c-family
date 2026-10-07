@@ -314,3 +314,4 @@ Zeile in diesen Abschnitt.
 | [B-148](archiv/B-148-onboarding-erste-nacht.md) | CLI | Idee | hoch | erledigt | S6 | Die erste Nacht wird mit kontextuellen Hinweisen geführt, der Grad „Leicht“ kostet keinen Fortschritt |
 | [B-149](archiv/B-149-controller-glyphen.md) | CLI | Idee | mittel | erledigt | S6 | Hinweise zeigen Controller-Glyphen statt Tasten-Text |
 | [B-292](archiv/B-292-neues-spiel-eindeutiger-name.md) | PLAT | Problem | hoch | erledigt | LP1 | Die Kachel „Neues Spiel“ startet auch bei vorhandenem Spielstand familie |
+| [B-340](archiv/B-340-mine-test-miniboss.md) | SIM | Frage | hoch | erledigt | K2 | K2.1a darf den Mine-Test an den Miniboss anpassen |

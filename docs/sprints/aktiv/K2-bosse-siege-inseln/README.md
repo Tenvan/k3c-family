@@ -1,15 +1,15 @@
 # K2 · SIM · Bosse, Siegvarianten und Inselwechsel
 
-- **Status:** geplant
+- **Status:** aktiv
 - **Domäne:** SIM
 - **Prio:** hoch
 - **Reife:** bereit
 - **Einschiebbar:** nein
 - **Tickets:** B-130, B-102, B-103
-- **Start-Commit:** –
-- **Spec:** Entwurf
+- **Start-Commit:** 7fe4f05
+- **Spec:** freigegeben
 - **Revision:** 1
-- **Freigabe:** –
+- **Freigabe:** 2026-10-07, Chat, durch 🧑, Revision 1
 
 ## Ausgangslage
 
@@ -66,7 +66,7 @@ Nicht alle lebenden Spieler am Punkt → Wechsel wartet. Komplett verloren → R
 
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
-| K2.1a | `K2.1a-boss-rahmen-minibosse.md` | Umsetzung | autonom | offen |
+| K2.1a | `K2.1a-boss-rahmen-minibosse.md` | Umsetzung | autonom | fertig |
 | K2.1b | `K2.1b-minibosse-flaechen.md` | Umsetzung | autonom | offen |
 | K2.1c | `K2.1c-endboss.md` | Umsetzung | autonom | offen |
 | K2.2a | `K2.2a-siegvarianten.md` | Umsetzung | autonom | offen |
