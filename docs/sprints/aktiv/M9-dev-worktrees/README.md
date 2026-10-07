@@ -65,7 +65,7 @@ Header `X-K3C-Root` fehlt → Repo-Wurzel wie heute, die Antwort schreibender To
 | M9.1 | `M9.1-checkout-header.md` | Umsetzung | autonom | fertig |
 | M9.2 | `M9.2-vite-worktree.md` | Umsetzung | autonom | fertig |
 | M9.3 | `M9.3-markdown-listen.md` | Umsetzung | autonom | fertig |
-| M9.4 | `M9.4-review.md` | Review | autonom | offen |
+| M9.4 | `M9.4-review.md` | Review | autonom | in Arbeit |
 
 Bei `Reife: Entwurf` genügen Stichpunkte mit den Kriterien in Klammern statt Session-Dateien. Vor dem Aktivieren
 wird jede Session als eigene Datei nach `docs/vorlagen/session.md` geschrieben.
