@@ -2,7 +2,7 @@
 
 - **Domäne:** CLI
 - **Typ:** Problem
-- **Prio:** mittel
+- **Prio:** hoch
 - **Umgebung:** live
 - **Status:** eingeplant
 - **Sprint:** GR7

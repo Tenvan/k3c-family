@@ -2,7 +2,7 @@
 
 - **Status:** geplant
 - **Domäne:** CLI
-- **Prio:** niedrig
+- **Prio:** hoch
 - **Reife:** Entwurf
 - **Einschiebbar:** ja
 - **Tickets:** B-250, B-218

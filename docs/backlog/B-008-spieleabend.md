@@ -2,7 +2,7 @@
 
 - **Domäne:** REG
 - **Typ:** Frage
-- **Prio:** hoch
+- **Prio:** niedrig
 - **Umgebung:** live
 - **Status:** eingeplant
 - **Sprint:** P1
