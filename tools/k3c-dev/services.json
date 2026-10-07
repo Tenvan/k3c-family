@@ -4,6 +4,6 @@
     "portEnv": "K3C_VITE_PORT", "autoRestart": true },
   { "name": "Spielserver", "tags": ["Spiel", "Backend"], "description": "Go-Spielserver (Engine, API, WebSocket); startet bei Änderungen an Go-Code und data/ neu.",
     "command": ["task", "start"], "cwd": ".", "port": 8080, "health": "http", "log": "k3c-server",
-    "portEnv": "K3C_HTTP_PORT",
+    "portEnv": "K3C_HTTP_PORT", "env": { "K3C_STATUS_TOKEN": "TEST_TOKEN" },
     "watch": { "paths": ["cmd", "engine", "data", "go.mod", "go.sum"], "ext": [".go", ".json"] } }
 ]
