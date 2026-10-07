@@ -1,6 +1,6 @@
 # TR1.3 · `sim_test` online mit 1–4 Clients: Bot-Feed und Browser
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Umgebung:** live
@@ -39,8 +39,8 @@ Client-Code (TR2), Messung auf Xbox oder TV (Mensch), neue Client-Kennzahlen (CL
 
 ## Fertig, wenn
 
-- [ ] AC-04: Test mit Fake-Client: Kommandos kommen je Slot an, Status zeigt FPS und Latenz aus dem Client-Log; Nachweis im Browser nach TR2.1.
-- [ ] AC-05: Test: `clients` > 0 ohne Browser oder ohne Vite-Dienst lehnt mit einer Zeile Grund ab.
+- [x] AC-04: Test mit Fake-Client: Kommandos kommen je Slot an, Status zeigt FPS und Latenz aus dem Client-Log; Nachweis im Browser nach TR2.1.
+- [x] AC-05: Test: `clients` > 0 ohne Browser oder ohne Vite-Dienst lehnt mit einer Zeile Grund ab.
 
 ## Prüfen
 
@@ -52,4 +52,8 @@ Manuelle Prüfung im Browser nur mit Freigabe durch 🧑 für diesen Lauf.
 
 ## Ergebnis
 
-–
+- **AC-04** umgesetzt, geprüft mit `TestSimTestClientsFakeClient` (Fake-Client in Go: 2 Clients × 2 Spieler bekommen Kommandos je Slot 0 und 1; Status zeigt Feed, FPS, Latenz, Puffer aus dem Client-Log) und `botfeed`-Tests (Nachricht je Slot, nur Loopback, Origin vom Vite-Port). **Nachweis im Browser verschoben:** TR2.1 (B-349) ist noch nicht umgesetzt, und der Client schreibt heute keine FPS-/Latenz-Zeile ins Client-Log → neues Ticket B-351 (CLI).
+- **AC-05** umgesetzt, geprüft mit `TestSimTestClientsAblehnung`: ohne Browser, ohne Vite, `players` 4, `rooms` mit Clients, `attach` falsch → je eine Zeile Grund.
+- **Zustand für den Bot:** über ein Beobachter-Gerät (`botdev`) je Client-Raum, nicht über den Client. Grund: Das Protokoll v5 kennt keinen Beitritt ohne Platz (`room.ValidSlots`), und der Zustand über den Feed bräuchte eine Erweiterung von B-349 (Client-Code, nicht diese Domäne). Folge: Der Beobachter belegt einen Platz und spielt als Bot mit, daher mit Clients `players` 1–3; Slot k des Clients ist sein k-ter Monarch nach Index. Zuschauer ohne Platz und Feed im LAN (Xbox-`attach`) → B-352.
+- Neu: `internal/botfeed` (Route `/bot/<lauf>/<n>`), `internal/browser` (Edge/Chrome aus fester Liste, `--headless=new`, eigenes Profil unter `.work/`), `mcpsrv/simtest_clients.go`, `simtest_clientlog.go`; `attach: <Raumcode>` (nur `clients: 1`). Review (code-reviewer): zwei schwere Funde (doppeltes `Wait`, Beobachter nicht gestoppt) und zwei kleinere behoben.
+- `task check:dev` grün (2026-10-07, im Worktree per Shell: der MCP-Header `X-K3C-Root` kam nicht an, `workbench_status` zeigte die Repo-Wurzel, B-341). Der Worktree basierte auf `main`; Branch neu von `origin/develop` angelegt.

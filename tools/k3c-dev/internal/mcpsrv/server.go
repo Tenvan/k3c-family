@@ -18,6 +18,8 @@ import (
 	"github.com/modelcontextprotocol/go-sdk/mcp"
 
 	"k3c/tools/k3c-dev/internal/applog"
+	"k3c/tools/k3c-dev/internal/botfeed"
+	"k3c/tools/k3c-dev/internal/browser"
 	"k3c/tools/k3c-dev/internal/console"
 	"k3c/tools/k3c-dev/internal/services"
 	"k3c/tools/k3c-dev/internal/usage"
@@ -68,10 +70,14 @@ type Server struct {
 	console *console.Store
 	log     *slog.Logger
 	checks  *checkRuns
-	sims    simRuns // Testläufe von sim_test (simtest.go)
-	run     func(context.Context, runSpec) runResult // Test-Naht für check_run
-	wt       worktrees      // Dienste der Worktrees (worktree_services.go)
-	portBusy func(int) bool // Test-Naht für die Vergabe der Worktree-Ports
+	sims    simRuns      // Testläufe von sim_test (simtest.go)
+	feeds   *botfeed.Hub // Bot-Feeds der Läufe mit Clients (simtest_clients.go), Route /bot/
+	// findBrowser und launch starten die Clients von sim_test; Test-Naht.
+	findBrowser func() (string, error)
+	launch      func(ctx context.Context, exe, profile, url string) (stop func(), err error)
+	run         func(context.Context, runSpec) runResult // Test-Naht für check_run
+	wt          worktrees                                // Dienste der Worktrees (worktree_services.go)
+	portBusy    func(int) bool                           // Test-Naht für die Vergabe der Worktree-Ports
 
 	mu   sync.Mutex
 	http *http.Server
@@ -95,7 +101,8 @@ func ResolvePort(raw string) (int, error) {
 func New(cfg Config) *Server {
 	s := &Server{cfg: cfg, stats: newStats(time.Now), params: map[string][]string{},
 		console: cfg.Console, log: cfg.Log, checks: newCheckRuns(), run: runProcess,
-		wt: worktrees{all: map[string]*worktreeServices{}}, portBusy: portBusy}
+		wt: worktrees{all: map[string]*worktreeServices{}}, portBusy: portBusy,
+		feeds: botfeed.NewHub(), findBrowser: browser.Find, launch: launchBrowser}
 	if s.console == nil {
 		s.console = console.New(console.DefaultCapacity, nil)
 	}
@@ -126,6 +133,7 @@ func (s *Server) Start() error {
 	mux := http.NewServeMux()
 	mux.Handle("/mcp", forceChunked(mcp.NewStreamableHTTPHandler(func(*http.Request) *mcp.Server { return s.mcp },
 		&mcp.StreamableHTTPOptions{SessionTimeout: sessionTimeout})))
+	mux.Handle(botfeed.Prefix, s.feeds)
 	srv := &http.Server{Handler: mux, ReadHeaderTimeout: 10 * time.Second}
 	s.http, s.addr = srv, ln.Addr().String()
 	go func() { _ = srv.Serve(ln) }()

@@ -3,6 +3,7 @@ package mcpsrv
 import (
 	"context"
 	"fmt"
+	"regexp"
 	"slices"
 	"strings"
 	"time"
@@ -22,6 +23,7 @@ type simTestIn struct {
 	Seeds    int      `json:"seeds,omitempty" jsonschema:"Seeds, 1 bis 200; offline ohne Angabe alle aus data/balance-targets.json"`
 	Duration string   `json:"duration,omitempty" jsonschema:"Dauer online, z. B. 5m, höchstens 2h"`
 	Focus    []string `json:"focus,omitempty" jsonschema:"balance, perf, stability; offline nur balance (Standard)"`
+	Attach   string   `json:"attach,omitempty" jsonschema:"Raumcode laufender Clients (online, clients 1): kein Browser-Start, Clients mit der Feed-Adresse aus dem Status öffnen"`
 }
 
 // simSpec ist ein geprüfter Start.
@@ -30,12 +32,16 @@ type simSpec struct {
 	clients        int
 	players, rooms int
 	bots           string
+	attach         string // Raumcode laufender Clients, leer = Browser starten
 	seeds          int
 	duration       time.Duration
 	focus          []string
 }
 
-var simFocus = []string{"balance", "perf", "stability"}
+var (
+	simFocus = []string{"balance", "perf", "stability"}
+	roomCode = regexp.MustCompile(`^[A-Z]{4}$`)
+)
 
 func (s simSpec) label() string {
 	clients := "headless"
@@ -48,7 +54,7 @@ func (s simSpec) label() string {
 // spec prüft die Parameter von start; jeder Fehler ist eine Zeile mit Grund.
 func (in simTestIn) spec() (simSpec, error) {
 	s := simSpec{mode: in.Mode, clients: in.Clients, players: in.Players, rooms: in.Rooms, bots: in.Bots,
-		seeds: in.Seeds, focus: in.Focus}
+		seeds: in.Seeds, focus: in.Focus, attach: strings.ToUpper(in.Attach)}
 	if s.mode == "" {
 		s.mode = "offline"
 	}
@@ -83,11 +89,26 @@ func (in simTestIn) spec() (simSpec, error) {
 	return s, s.checkMode()
 }
 
+// checkAttach: attach hängt sich an genau einen laufenden Raum (online, ein Client).
+func (s simSpec) checkAttach() error {
+	switch {
+	case s.attach == "":
+		return nil
+	case s.mode != "online" || s.clients != 1:
+		return fmt.Errorf("sim_test start abgelehnt: attach nur mit mode online und clients 1")
+	case !roomCode.MatchString(s.attach):
+		return fmt.Errorf("sim_test start abgelehnt: attach: Raumcode aus 4 Buchstaben")
+	}
+	return nil
+}
+
 // checkMode lehnt Kombinationen ab, die der Modus nicht kann, und füllt die Standards von online.
 func (s *simSpec) checkMode() error {
+	if err := s.checkAttach(); err != nil {
+		return err
+	}
 	if s.mode == "online" {
-		s.onlineDefaults()
-		return nil
+		return s.onlineCheck()
 	}
 	switch {
 	case s.clients > 0:
@@ -106,9 +127,6 @@ func (s *Server) simRunner(ctx context.Context, spec simSpec) (func(context.Cont
 	if spec.mode == "offline" {
 		return func(ctx context.Context, run *simRun) { s.runOffline(ctx, run, spec) }, nil
 	}
-	if spec.clients > 0 {
-		return nil, fmt.Errorf("sim_test start abgelehnt: clients 1–4 folgen mit TR1.3; jetzt clients 0 (headless)")
-	}
 	c, err := s.serverClient(ctx)
 	if err == nil {
 		_, err = c.Status(ctx)
@@ -116,7 +134,26 @@ func (s *Server) simRunner(ctx context.Context, spec simSpec) (func(context.Cont
 	if err != nil {
 		return nil, fmt.Errorf("sim_test start abgelehnt: Spielserver des Checkouts antwortet nicht, erst svc_start server (%v)", oneLine(err))
 	}
+	if spec.clients > 0 {
+		return s.clientsRunner(ctx, spec, c)
+	}
 	return func(ctx context.Context, run *simRun) { s.runOnline(ctx, run, spec, c) }, nil
+}
+
+// onlineCheck prüft die Kombinationen mit Clients und füllt die Standards. Mit Clients hat jeder Client seinen Raum,
+// in dem das Beobachter-Gerät der Workbench einen der 4 Plätze belegt (simtest_clients.go).
+func (s *simSpec) onlineCheck() error {
+	switch {
+	case s.clients > 0 && s.rooms != 0:
+		return fmt.Errorf("sim_test start abgelehnt: rooms ergibt sich aus clients (ein Raum je Client)")
+	case s.clients > 0 && s.players > 3:
+		return fmt.Errorf("sim_test start abgelehnt: players 1 bis 3 mit Clients, das Beobachter-Gerät belegt einen Platz")
+	}
+	s.onlineDefaults()
+	if s.clients > 0 {
+		s.rooms = s.clients
+	}
+	return nil
 }
 
 // onlineDefaults füllt fehlende Werte für online: 1 Raum, 2 Bots saver, 5 min.
