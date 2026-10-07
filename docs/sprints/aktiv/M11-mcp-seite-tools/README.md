@@ -1,12 +1,12 @@
 # M11 · SRV · MCP-Seite: alle Tools mit Statistik, Zeitfilter
 
-- **Status:** geplant
+- **Status:** aktiv
 - **Domäne:** SRV
 - **Prio:** hoch
 - **Reife:** bereit
 - **Einschiebbar:** ja
 - **Tickets:** B-350
-- **Start-Commit:** –
+- **Start-Commit:** edb2a8f
 - **Spec:** freigegeben
 - **Revision:** 1
 - **Freigabe:** 2026-10-07, Chat, durch 🧑, Revision 1
@@ -58,7 +58,7 @@ keine
 
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
-| M11.1 | `M11.1-tools-zeitfilter.md` | Umsetzung | autonom | offen |
+| M11.1 | `M11.1-tools-zeitfilter.md` | Umsetzung | autonom | in Arbeit |
 | M11.2 | `M11.2-review.md` | Review | autonom | offen |
 
 ## Abnahme
