@@ -34,6 +34,7 @@ Hardware-Sessions (`Agent: Mensch`) aus Sprints, deren Review schon abgeschlosse
 | RL1.2 | Raspberry Pi und Xbox (Pi-Image ziehen, Versionszeile der Landingpage gegen den Tag) | AC-03: Punkte „Pi-Image“ und „Version stimmt“ am Gerät (angenommen laut CI und Tests) | `aktiv/RL1-release-checkliste/` |
 | DBG3.4 | Handy (neben laufendem Spiel am TV, Server mit `K3C_DEV=1`) | AC-04: `/dm` am Handy bedient, 375 px ohne waagerechtes Scrollen (angenommen laut Tests) | `aktiv/DBG3-dungeon-master-seite/` |
 | MON2.4 | Handy (neben `task load` oder am Spieleabend, Server mit `K3C_STATUS_TOKEN`) | AC-05: Monitor am Handy bedient, 375 px ohne waagerechtes Scrollen (angenommen laut Browser-Pane-Nachweis) | `aktiv/MON2-monitoring-seite/` |
+| LP1.4 | PC mit Tastatur (Landingpage ↔ Entwicklerseite) | AC-04: Landingpage und Entwicklerseite am PC bedient (angenommen: Pfeile/Enter/Home wie im Browser-Pane-Nachweis LP1.2/LP1.3) | `aktiv/LP1-landingpage-aufraeumen/` |
 
 ## Geplant (in dieser Reihenfolge)
 

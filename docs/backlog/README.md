@@ -98,7 +98,6 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-289](B-289-aggressionspool-mit-adern.md) | REG | Problem | mittel | eingeplant | RG1 | Der Aggressionspool steigt mit Adern nicht zu schnell |
 | [B-290](B-290-raum-fuenf-stufen.md) | SRV | Idee | mittel | eingeplant | SV1 | Der Raum erzeugt alle fünf Stufen und der Client kennt Eisenstollen und Kristallhöhle |
 | [B-291](B-291-lava-nicht-auf-mauerlinien.md) | SIM | Problem | mittel | eingeplant | LV1 | Lava liegt nicht auf den Mauerlinien |
-| [B-292](B-292-neues-spiel-eindeutiger-name.md) | PLAT | Problem | hoch | eingeplant | LP1 | Die Kachel „Neues Spiel“ startet auch bei vorhandenem Spielstand familie |
 | [B-293](B-293-spiel-im-menue-verlassen.md) | CLI | Idee | hoch | eingeplant | S8 | Das Spielmenü hat neben „Weiter“ einen Eintrag „Spiel verlassen“ |
 | [B-294](B-294-hinweis-glyph-muenze-nacht.md) | CLI | Frage | mittel | eingeplant | S8 | Münze und „Nacht naht“ zeigen in der geführten ersten Nacht keine Glyph |
 | [B-295](B-295-handwerker-schmiede-ruestkammer.md) | REG | Frage | mittel | eingeplant | RG2 | Handwerker lassen sich auch für Schmiede und Rüstkammer ausbilden |
@@ -129,6 +128,7 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-336](B-336-touch-optionen-schliessen.md) | CLI | Problem | hoch | offen | – | Die Optionen-Szene lässt sich per Touch vollständig bedienen und schließen, ohne vom Touch-Overlay verdeckt zu werden |
 | [B-337](B-337-hud-elemente-ohne-ueberlagerung.md) | CLI | Idee | hoch | offen | – | Jede HUD-Anzeige ist ein eigenes Element mit optionalem Hintergrund und Rahmen, und HUD-Elemente überlagern sich nicht |
 | [B-338](B-338-session-status-verworfen.md) | INF | Schuld | niedrig | offen | – | Sessions können den Status verworfen tragen |
+| [B-339](B-339-glyphen-je-plattform.md) | CLI | Idee | mittel | offen | – | Spiel und Seiten zeigen Tastensymbole passend zum gerade benutzten Controller (Xbox, PlayStation, weitere) |
 
 ## Archiv
 
@@ -312,3 +312,4 @@ Zeile in diesen Abschnitt.
 | [B-125](archiv/B-125-aktionen-overlay.md) | CLI | Idee | hoch | erledigt | S3 | Gültige Aktionen erscheinen überall in der Welt als Overlay am Ort |
 | [B-148](archiv/B-148-onboarding-erste-nacht.md) | CLI | Idee | hoch | erledigt | S6 | Die erste Nacht wird mit kontextuellen Hinweisen geführt, der Grad „Leicht“ kostet keinen Fortschritt |
 | [B-149](archiv/B-149-controller-glyphen.md) | CLI | Idee | mittel | erledigt | S6 | Hinweise zeigen Controller-Glyphen statt Tasten-Text |
+| [B-292](archiv/B-292-neues-spiel-eindeutiger-name.md) | PLAT | Problem | hoch | erledigt | LP1 | Die Kachel „Neues Spiel“ startet auch bei vorhandenem Spielstand familie |

@@ -70,8 +70,8 @@ keine (Kachel-Zuordnung, Aufbau der Entwicklerseite und `/dm` von 🧑 am 2026-1
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
 | LP1.1 | `LP1.1-entwicklerseite.md` | Umsetzung | autonom | fertig |
-| LP1.2 | `LP1.2-neues-spiel-nachweis.md` | Umsetzung | autonom | offen |
-| LP1.3 | `LP1.3-review.md` | Review | autonom | offen |
+| LP1.2 | `LP1.2-neues-spiel-nachweis.md` | Umsetzung | autonom | fertig |
+| LP1.3 | `LP1.3-review.md` | Review | autonom | fertig |
 | LP1.4 | `LP1.4-abnahme-pc.md` | Workshop | Mensch | offen |
 
 Bei `Reife: Entwurf` genügen Stichpunkte mit den Kriterien in Klammern statt Session-Dateien. Vor dem Aktivieren
@@ -79,5 +79,6 @@ wird jede Session als eigene Datei nach `docs/vorlagen/session.md` geschrieben.
 
 ## Abnahme
 
-Wird von der Review-Session (Doku-Sprint: letzte Session) ausgefüllt, höchstens fünf Zeilen: Datum, Kriterien
-(Verweis auf Session-Ergebnisse), behobene Befunde, neue Tickets. Bis dahin `–`.
+2026-10-07, Review LP1.3 (Agent Claude Opus 5.5): AC-01, AC-03 (LP1.1: `pages.test.ts`, `projectRules.test.ts`, `task check` grün), AC-02 (LP1.1 `devTiles.test.ts`, LP1.2 alle neun Kacheln im Browser-Pane), AC-05 (LP1.2: B-292/AC-01–03, Log `🏰 Raum erstellt`, kein `save_exists`) mit Nachweis; AC-04 angenommen, Validierung offen (LP1.4, 🧑 am PC).
+Behoben (schwer, hätte LP1.4 verhindert): Entwicklerseite war mit der Tastatur nur per Tab bedienbar; Pfeiltasten wählen jetzt wie auf der Landingpage. Grenzfall `projectRules.test.ts` geprüft: nur die Seiten-Prüfung geändert. B-292 archiviert; neues Ticket B-339 (Frage 🧑: Tastensymbole je Controller-Familie).
+Version: v0.15.0 vorgeschlagen (Minor: neue Entwicklerseite, Landingpage nur für Spieler).
