@@ -1,6 +1,6 @@
 # TR2 · PLAT · Bot-Eingabe im Client für Testläufe
 
-- **Status:** aktiv
+- **Status:** erledigt
 - **Domäne:** PLAT
 - **Prio:** hoch
 - **Reife:** bereit
@@ -59,8 +59,10 @@ keine
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
 | TR2.1 | `TR2.1-bot-eingabe.md` | Umsetzung | autonom | fertig |
-| TR2.2 | `TR2.2-review.md` | Review | autonom | offen |
+| TR2.2 | `TR2.2-review.md` | Review | autonom | fertig |
 
 ## Abnahme
 
-–
+2026-10-07: Kriterien siehe Ergebnisse TR2.1 und TR2.2 (AC-01, AC-02 per Test). Einbindung ins Spiel und Browser-Nachweis → B-353 (TR3).
+Keine schweren Befunde; leichte Befunde zu `botInput.ts` → B-354. Neue Tickets: B-353, B-354.
+

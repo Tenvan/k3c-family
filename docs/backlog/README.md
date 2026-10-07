@@ -130,13 +130,13 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-341](B-341-header-ursache-live-messen.md) | SRV | Problem | mittel | offen | – | Die Ursache für den fehlenden Header `X-K3C-Root` aus Worktrees ist live gemessen |
 | [B-342](B-342-w6-2-siteview-erlaubt.md) | CLI | Frage | mittel | offen | – | W6.2 darf den Bauplatz-Wartegrund in `siteView.ts` anbinden |
 | [B-343](B-343-bau-vor-dem-ausgang.md) | SIM | Frage | mittel | offen | – | Der Bau des Endbosses liegt an der inneren Kante des Ausgangs-Chunks |
-| [B-349](B-349-bot-eingabe-client.md) | PLAT | Idee | hoch | eingeplant | TR2 | Bots steuern im Client die Monarchen über die Bot-Eingabe |
 | [B-350](B-350-mcp-seite-tools-zeitfilter.md) | SRV | Idee | hoch | eingeplant | M11 | Die MCP-Seite zeigt alle Tools mit Aufruf-Statistik und filtert die Statistik nach Zeit |
 | [B-346](B-346-miniboss-wald-kippt-nacht-5.md) | REG | Problem | hoch | offen | – | Der Miniboss Wald kippt Nacht 5 in fast jedem Seed |
 | [B-347](B-347-tester-misst-wirtschaft.md) | SIM | Schuld | hoch | offen | – | Der Balancing-Tester misst die Wirtschafts-Kennzahlen |
 | [B-351](B-351-client-diagnose-zeile.md) | CLI | Idee | hoch | offen | – | Der Client schreibt FPS, Latenz und Puffer regelmäßig als Diagnose-Zeile ins Client-Log |
 | [B-352](B-352-botfeed-lan-zuschauer.md) | SRV | Idee | niedrig | offen | – | `sim_test` hängt sich an Clients auf der Xbox an, ohne einen Platz im Raum zu belegen |
 | [B-353](B-353-bot-eingabe-einbinden.md) | CLI | Idee | hoch | eingeplant | TR3 | Das Spiel fragt die Bot-Eingabe ab und setzt ihre Spieler ohne Tastendruck in den Raum |
+| [B-354](B-354-bot-eingabe-impulse-frist.md) | PLAT | Problem | mittel | offen | – | Die Bot-Eingabe verliert keine kurzen Drücke und hält bei stummem Feed an |
 
 ## Archiv
 
@@ -325,3 +325,4 @@ Zeile in diesen Abschnitt.
 | [B-275](archiv/B-275-worktree-unter-claude.md) | SRV | Problem | hoch | erledigt | M9 | k3c-dev und Vite arbeiten in Worktrees unter `.claude/worktrees/` richtig |
 | [B-213](archiv/B-213-markdown-listen-haekchen.md) | SRV | Problem | niedrig | erledigt | M9 | MarkdownView in k3c-dev zeigt nummerierte Listen und Häkchen wie die alte Planungsseite |
 | [B-348](archiv/B-348-sim-test-workbench.md) | SRV | Idee | hoch | erledigt | TR1 | Jeder Testlauf startet und läuft über das MCP-Tool `sim_test` |
+| [B-349](archiv/B-349-bot-eingabe-client.md) | PLAT | Idee | hoch | erledigt | TR2 | Bots steuern im Client die Monarchen über die Bot-Eingabe |
