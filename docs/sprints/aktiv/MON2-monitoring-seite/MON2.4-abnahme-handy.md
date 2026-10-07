@@ -42,4 +42,9 @@ Am Gerät, siehe Schritte.
 
 ## Ergebnis
 
-–
+2026-10-07, **PC-Nachweis, Handy offen.** Geprüft von 🧑 (Ralf) im Interview mit Agent (Claude Opus 5.5), Branch `sprint/mon2`. Browser am PC, Landingpage über Vite (Port 5173) → Kachel „Monitor“; Spielserver über k3c-dev mit Test-Token (`K3C_STATUS_TOKEN`), Last über `task load -- -url http://localhost:8080 -rooms 2 -players 3 -duration night`.
+
+- **Schritt 1 (🧑):** Kachel „Monitor“ öffnet die Seite, Token angenommen und nirgends sichtbar, Übersicht mit Ampel und Zahlen passend zur Last; Fenster auf Handybreite ohne waagerechtes Scrollen.
+- **Schritt 2 (🧑):** Verlauf mit Diagramm und p50/p95/p99/Max, Wechsel 5 min ↔ 1 h und Raumwahl wirken; Ereignisliste mit Filtern, ein angetipptes Ereignis springt in den Verlauf und ist markiert.
+- **AC-05 am PC: geprüft** (🧑). Keine Abweichungen, keine neuen Tickets.
+- **Offen:** Die Abnahme am Handy fehlt; die Session bleibt `offen`, AC-05 steht weiter als „angenommen, Validierung offen“.
