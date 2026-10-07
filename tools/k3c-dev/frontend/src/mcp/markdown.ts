@@ -1,4 +1,4 @@
-// Markdown-Teilmenge für den Instructions-Dialog (B-065) und die Planungs-Dokumente: Überschriften, Listen, Tabellen,
+// Markdown-Teilmenge für den Instructions-Dialog (B-065) und die Planungs-Dokumente: Überschriften, Listen (auch nummeriert, Häkchen ☐/☑), Tabellen,
 // Absätze, Codeblöcke, `code`, **fett** und [Links] (nur als Text, die Seite navigiert nicht). Ergibt einen Baum, den React als Elemente rendert, nie einen HTML-String.
 
 export interface Inline {
@@ -11,6 +11,7 @@ export type Block =
   | { kind: 'table'; head: Inline[][]; rows: Inline[][][] }
   | { kind: 'p'; inline: Inline[] }
   | { kind: 'ul'; items: Inline[][] }
+  | { kind: 'ol'; items: Inline[][] }
   | { kind: 'pre'; text: string };
 
 const INLINE = /`([^`]+)`|\*\*([^*]+)\*\*|\[([^\]]+)\]\([^)]*\)/g;
@@ -18,6 +19,8 @@ const HEADING = /^(#{1,4})\s+(.*)$/;
 const ROW = /^\s*\|(.*)\|\s*$/;
 const RULE = /^[\s|:-]+$/; // Trennzeile einer Tabelle
 const ITEM = /^\s*[-*]\s+(.*)$/;
+const NUMBERED = /^(\d+)\.\s+(.*)$/; // nur am Zeilenanfang, nicht verschachtelt
+const CHECK = /^\[([ xX])\]\s/;
 
 /** Zerlegt eine Zeile in Text, `code` und **fett**. */
 export function parseInline(text: string): Inline[] {
@@ -38,12 +41,13 @@ interface State {
   blocks: Block[];
   para: string[]; // Zeilen des offenen Absatzes
   items: string[]; // Punkte der offenen Liste
+  list: 'ul' | 'ol'; // Art der offenen Liste
   rows: string[][]; // Zeilen der offenen Tabelle, die erste ist der Kopf
 }
 
 function flush(st: State) {
   if (st.para.length) st.blocks.push({ kind: 'p', inline: parseInline(st.para.join(' ')) });
-  if (st.items.length) st.blocks.push({ kind: 'ul', items: st.items.map(parseInline) });
+  if (st.items.length) st.blocks.push({ kind: st.list, items: st.items.map(parseInline) });
   if (st.rows.length) {
     const [head, ...rows] = st.rows;
     st.blocks.push({ kind: 'table', head: head.map(parseInline), rows: rows.map((r) => r.map(parseInline)) });
@@ -53,10 +57,24 @@ function flush(st: State) {
   st.rows = [];
 }
 
+/** `[ ] ` bzw. `[x] ` am Anfang eines Listenpunkts wird ☐ bzw. ☑. */
+function check(text: string): string {
+  return text.replace(CHECK, (_, x: string) => (x === ' ' ? '☐ ' : '☑ '));
+}
+
+/** Listenpunkt der Zeile mit Art; eine Zahl mitten in einem Absatz beginnt nur mit `1.` eine Liste (wie CommonMark). */
+function listItem(st: State, raw: string): { list: 'ul' | 'ol'; text: string } | null {
+  const ul = ITEM.exec(raw);
+  if (ul) return { list: 'ul', text: ul[1] };
+  const ol = NUMBERED.exec(raw);
+  if (!ol || (st.para.length && ol[1] !== '1')) return null;
+  return { list: 'ol', text: ol[2] };
+}
+
 /** Eine Zeile außerhalb eines Codeblocks. */
 function line(st: State, raw: string) {
   const heading = HEADING.exec(raw);
-  const item = ITEM.exec(raw);
+  const item = listItem(st, raw);
   const row = ROW.exec(raw);
   if (row) {
     if (!st.rows.length) flush(st);
@@ -70,8 +88,9 @@ function line(st: State, raw: string) {
     flush(st);
     st.blocks.push({ kind: 'h', level: heading[1].length as 1 | 2 | 3 | 4, inline: parseInline(heading[2]) });
   } else if (item) {
-    if (st.para.length) flush(st);
-    st.items.push(item[1]);
+    if (st.para.length || (st.items.length && st.list !== item.list)) flush(st);
+    st.list = item.list;
+    st.items.push(check(item.text));
   } else if (st.items.length && /^\s+/.test(raw)) {
     st.items[st.items.length - 1] += ` ${raw.trim()}`; // eingerückte Folgezeile eines Punkts
   } else {
@@ -82,7 +101,7 @@ function line(st: State, raw: string) {
 
 /** Zerlegt den Text in Blöcke. */
 export function parseMarkdown(src: string): Block[] {
-  const st: State = { blocks: [], para: [], items: [], rows: [] };
+  const st: State = { blocks: [], para: [], items: [], list: 'ul', rows: [] };
   let code: string[] | null = null;
   for (const raw of src.replace(/\r\n/g, '\n').split('\n')) {
     if (raw.trimStart().startsWith('```')) {
