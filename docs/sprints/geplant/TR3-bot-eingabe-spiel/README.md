@@ -7,9 +7,9 @@
 - **Einschiebbar:** ja
 - **Tickets:** B-353
 - **Start-Commit:** –
-- **Spec:** Entwurf
+- **Spec:** freigegeben
 - **Revision:** 1
-- **Freigabe:** –
+- **Freigabe:** 2026-10-07, Chat, durch 🧑, Revision 1 (mit B-353)
 
 ## Ausgangslage
 
