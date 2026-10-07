@@ -4,7 +4,7 @@
 - **Typ:** Idee
 - **Prio:** mittel
 - **Umgebung:** live
-- **Status:** eingeplant
+- **Status:** erledigt
 - **Sprint:** S6
 - **Erstellt:** 2026-10-02
 - **Spec:** freigegeben
@@ -60,3 +60,5 @@ Zeichenstil der Glyphen (selbst gezeichnet oder Pack): 🧑, `docs/fragenkatalog
 ## Notizen
 
 Aus Plan Phase 1 (S3-Zusatz „Controller-Glyphen statt Text“, hier in S6 umgesetzt, weil der Sprint-Plan die CLI-Sprints so schneidet).
+
+2026-10-07: Ohne Abnahme am Gerät abgeschlossen (Entscheidung 🧑); das Abnahme-Kriterium geht in die Gesamtprüfung B-337/AC-05 über.

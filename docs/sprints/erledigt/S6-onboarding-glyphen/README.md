@@ -1,6 +1,6 @@
 # S6 · CLI · Onboarding „Erste Nacht geführt“ und Controller-Glyphen
 
-- **Status:** aktiv
+- **Status:** erledigt
 - **Domäne:** CLI
 - **Prio:** hoch
 - **Reife:** bereit
@@ -63,7 +63,7 @@ keine
 | S6.1 | `S6.1-freundlich-grad.md` | Umsetzung | autonom | fertig |
 | S6.2 | `S6.2-glyphen.md` | Umsetzung | autonom | fertig |
 | S6.3 | `S6.3-hinweise.md` | Umsetzung | autonom | fertig |
-| S6.4 | `S6.4-abnahme-kind.md` | Workshop | Mensch | offen |
+| S6.4 | `S6.4-abnahme-kind.md` | Workshop | Mensch | fertig |
 | S6.5 | `S6.5-review.md` | Review | autonom | fertig |
 
 Bei `Reife: Entwurf` genügen Stichpunkte mit den Kriterien in Klammern statt Session-Dateien. Vor dem Aktivieren
@@ -76,3 +76,5 @@ AC-01, AC-02, AC-04 mit Tests belegt (`guideHints.test.ts`, `difficulty_protect_
 AC-06 angenommen, Validierung offen (S6.4); S6.4 steht im Fahrplan unter „Offen am Gerät“, der Sprint bleibt aktiv, B-148 und B-149 bleiben eingeplant.
 Neues Ticket: B-294 (Frage: Münze und „Nacht naht“ ohne Glyph, 🧑 entscheidet bei S6.4).
 Version: v0.12.0 vorgeschlagen (neues Feature: geführte erste Nacht und Glyphen; aktuell v0.11.0)
+
+2026-10-07: Sprint auf Entscheidung 🧑 abgeschlossen. Die offene Abnahme am Gerät ist nicht durchgeführt (verworfen) und geht in die Gesamtprüfung B-337/AC-05 über; keine weiteren Anzeige- und Touch/Tasten-Abnahmen bis zur Umsetzung von B-337.

@@ -4,7 +4,7 @@
 - **Typ:** Idee
 - **Prio:** hoch
 - **Umgebung:** live
-- **Status:** eingeplant
+- **Status:** erledigt
 - **Sprint:** S6
 - **Erstellt:** 2026-10-02
 - **Spec:** freigegeben
@@ -61,3 +61,5 @@ Umfang der Führung und was der Grad „Leicht“ genau abfedert: 🧑, `docs/fr
 ## Notizen
 
 Aus Plan Phase 1 (S6) und Lücke 6. Die Grad-Werte brauchen eine kleine Go-Änderung; sprengt sie das Budget, als SIM-Ticket abspalten.
+
+2026-10-07: Ohne Abnahme am Gerät abgeschlossen (Entscheidung 🧑); das Abnahme-Kriterium geht in die Gesamtprüfung B-337/AC-05 über.
