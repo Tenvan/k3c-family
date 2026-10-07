@@ -1,6 +1,6 @@
 # PJ1.1 · Arbeitsweise und Glossar für Projekte, Rang und Domäne je Session
 
-- **Status:** in Arbeit
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Umgebung:** offline
@@ -40,9 +40,9 @@ Vorlagen, `tests/planning.test.ts`, Felder in Planungsdateien (PJ1.2, PJ1.3); `d
 
 ## Fertig, wenn
 
-- [ ] AC-02: `docs/arbeitsweise.md` nennt die Ebenen, den Rang, die Auswahl der nächsten Session über den Rang und „je Projekt ein aktiver Sprint“; Sprint-Prio und `Einschiebbar` haben keine Wirkung mehr (Übergang beschrieben).
-- [ ] AC-06: `docs/arbeitsweise.md` beschreibt Domäne je Session, Sperre je Domäne auf Session-Ebene, Sprint-Größe 3–6, Review über alle Domänen; Glossar `Domäne`, `Sprint`, `Session` angeglichen.
-- [ ] `task test -- planning` grün (Glossar sortiert, Verweise vorhanden).
+- [x] AC-02: `docs/arbeitsweise.md` nennt die Ebenen, den Rang, die Auswahl der nächsten Session über den Rang und „je Projekt ein aktiver Sprint“; Sprint-Prio und `Einschiebbar` haben keine Wirkung mehr (Übergang beschrieben).
+- [x] AC-06: `docs/arbeitsweise.md` beschreibt Domäne je Session, Sperre je Domäne auf Session-Ebene, Sprint-Größe 3–6, Review über alle Domänen; Glossar `Domäne`, `Sprint`, `Session` angeglichen.
+- [x] `task test -- planning` grün (Glossar sortiert, Verweise vorhanden).
 
 ## Prüfen
 
@@ -54,4 +54,9 @@ Manuelle Prüfungen (Browser, Xbox, TV) nur, wenn diese Datei sie nennt und 🧑
 
 ## Ergebnis
 
-–
+- **AC-02 umgesetzt:** `docs/arbeitsweise.md` hat die Kopfzeile Projekt → Sprint → Session, `projekte/` in der Ablage und im Lesen, den neuen Abschnitt „Projekte und Rang“ (Status, Rang als einzige Reihenfolge, Sprint-Tabelle, höchstens ein aktiver Sprint je Projekt, Ticket-Prio innerhalb des Projekts, ABN). Der autonome Ablauf (Schritt 1) wählt über den Rang. Im Sprint-Lebenslauf ersetzt „Reihenfolge“ die Sprint-Prio, `Einschiebbar` ist aus Aktivieren und Blockade entfernt. Neu ist der Absatz „Übergang Projekte (bis PJ3, B-359)“: Für Sprints mit `Projekt: –` gelten Prio, Fahrplan und „ein aktiver Sprint je Domäne“ weiter, die Felder `Prio` und `Einschiebbar` entfallen mit PJ2.
+- **AC-06 umgesetzt:** „Domänen“ gilt je Session, ein Sprint darf mehrere Domänen nacheinander haben, Sperre je Domäne auf Session-Ebene (auch in Schritt 1). Sprint-Größe 3–6, die Review-Session liest den Diff aller Domänen und trägt die Domäne der letzten Umsetzung. Commit-Titel nehmen die Domäne der Session. Die Feature-Kette ist als Sessions eines Sprints erlaubt, `verworfen` ist beschrieben (B-338).
+- **Glossar angeglichen:** `Domäne`, `Sprint`, `Session` (mit `verworfen`), `Prio`, `Einschiebbar` (ohne Wirkung, entfällt mit PJ2), `Projekt` und `Rang` (Zusatz „Geplant“ entfernt).
+- **Geprüft:** `check_run task:test planning` ist grün.
+- **Hinweis:** `projekte/README.md` wird in der Arbeitsweise schon verlinkt, die Datei entsteht erst in PJ1.2. Verweise auf `plan-weiterentwicklung.md` § 11.5/11.6 (Golden, Hardware) bleiben bis PJ3 stehen.
+- **Abweichung:** Der Merge von #218 enthielt den Commit mit Freigabe und Session-Dateien nicht. Er wurde als erster Commit auf `sprint/pj1` übernommen (cherry-pick `f8b7717`), danach folgte die Aktivierung.
