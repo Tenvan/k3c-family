@@ -69,6 +69,9 @@ dann über den Go-Server mit mehreren Räumen und gemischten Spielern.
 | S9 | CLI | hoch | Rückmeldung für Schlag und Skills, ein Hinweis je Spieler | Jeder Tastendruck auf Schlag oder Skill ist sichtbar, das Aktionen-Overlay zeigt je Spieler einen Hinweis | bereit | `geplant/S9-rueckmeldung-overlay/` |
 | U6 | CLI | hoch | HUD ohne Überlagerung, Optionen per Touch | Optionen per Touch bedienbar, HUD bei 1–4 Spielern ohne Überlagerung, Gesamtabnahme Anzeige | Entwurf | `geplant/U6-hud-ohne-ueberlagerung/` |
 | RG3 | REG | hoch | Miniboss Wald: Burg hält Nacht 5 | `task balance`: Burg hält Nacht 1–5 im Korridor, Grad-Kurven monoton | Entwurf | `geplant/RG3-miniboss-wald-nacht-5/` |
+| PJ1 | INF | hoch | Projekte, Rang und Domäne je Session in Regeln, Vorlagen und Planungstest | – | Entwurf | `geplant/PJ1-projekte-regeln/` |
+| PJ2 | SRV | hoch | k3c-dev plant mit Projekten: plan-Tools und Planungsseite | – | Entwurf | `geplant/PJ2-projekte-k3c-dev/` |
+| PJ3 | INF | hoch | Planung in Projekte umziehen und aufräumen | – | Entwurf | `geplant/PJ3-planung-umziehen/` |
 
 **Einschiebbar** (Schienen Balancing, Grafik, Sound, Betrieb; unabhängig vom Engine-Fortschritt, jeweils zwischen zwei Sprints):
 

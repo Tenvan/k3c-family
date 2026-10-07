@@ -2,10 +2,10 @@
 
 - **Domäne:** INF
 - **Typ:** Schuld
-- **Prio:** niedrig
+- **Prio:** hoch
 - **Umgebung:** offline
-- **Status:** offen
-- **Sprint:** –
+- **Status:** eingeplant
+- **Sprint:** PJ1
 - **Erstellt:** 2026-10-07
 - **Spec:** Entwurf
 - **Revision:** 1
