@@ -11,6 +11,7 @@ Die Reihenfolge der Arbeit ist allein der Projekt-Rang: [`../projekte/README.md`
 |---|---|---|---|---|---|
 | W6 | CLI | WRT | Anzeigen für Bau, Lager, Hub und Bürger (B-117, B-126) | HUD und Bauplätze am TV, von 🧑 abgenommen | `aktiv/W6-anzeige-wirtschaft/` |
 | K2 | SIM | KMP | Bosse, Siegvarianten und Inselwechsel | Tests je Boss, Siegvariante und Modus grün, Spielstand mit besiegten Bossen und aktueller Insel | `aktiv/K2-bosse-siege-inseln/` |
+| PL2 | PLAT | WZG | Werkzeug-Seiten in der gewählten Sprache | – | `aktiv/PL2-texte-werkzeug-seiten/` |
 
 ## Offen am Gerät
 
@@ -22,7 +23,6 @@ Abnahmen am Gerät (`Agent: Mensch`) sammelt das Projekt ABN im Sprint HW1: [`..
 
 | Sprint | Domäne | Projekt | Thema | Am Ende sichtbar | Reife | Ordner |
 |---|---|---|---|---|---|---|
-| PL2 | PLAT | WZG | Werkzeug-Seiten in der gewählten Sprache | – | Entwurf | `geplant/PL2-texte-werkzeug-seiten/` |
 | DV1 | INF | WZG | Domäne DEV für k3c-dev, Sprint ohne Prio und Einschiebbar | – | Entwurf | `geplant/DV1-domaene-dev-werkzeug/` |
 | PM1 | CLI | LST | Leistung messen: Diagnose-Zeile und Performance-Modus | – | Entwurf | `geplant/PM1-leistung-messen/` |
 | PF1 | CLI | LST | Split-Screen flüssig auf der Xbox | Zwei Spieler im Split-Screen ohne sichtbares Ruckeln auf der Xbox | bereit | `geplant/PF1-splitscreen-leistung/` |

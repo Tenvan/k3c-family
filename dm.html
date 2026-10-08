@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>K3C Dungeon Master</title>
+    <title data-t="dm.pageTitle">K3C Dungeon Master</title>
     <style>
       :root { --bg: #11151c; --panel: #1c2330; --line: #2e3a4d; --text: #e8edf4; --dim: #8a97aa; --on: #ffd166; --bad: #ff6b6b; }
       * { box-sizing: border-box; }
@@ -26,14 +26,14 @@
   <body>
     <main>
       <h1>🐛 Dungeon Master</h1>
-      <p id="mode" class="dim">Verbinde …</p>
+      <p id="mode" class="dim" data-t="monitor.connecting">Verbinde …</p>
       <section id="list"></section>
       <section id="room" hidden>
-        <button id="back">← Raumliste</button>
+        <button id="back" data-t="dm.back">← Raumliste</button>
         <h2 id="title"></h2>
         <table id="diag"></table>
-        <h2>Aktionen</h2>
-        <label class="dim">Monarch <select id="slot"></select></label>
+        <h2 data-t="dm.actions">Aktionen</h2>
+        <label class="dim"><span data-t="dm.monarchLabel">Monarch</span> <select id="slot"></select></label>
         <div id="actions" class="grid"></div>
         <p id="msg" class="dim"></p>
       </section>

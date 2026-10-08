@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>K3C Gamepad-Test</title>
+    <title data-t="pad.pageTitle">K3C Gamepad-Test</title>
     <style>
       :root { --bg: #11151c; --panel: #1c2330; --line: #2e3a4d; --text: #e8edf4; --dim: #8a97aa; --on: #ffd166; --ok: #52b788; --bad: #e76f51; }
       * { box-sizing: border-box; }
@@ -60,8 +60,8 @@
   </head>
   <body>
     <main>
-      <h1>K3C Gamepad-Test</h1>
-      <p class="sub">
+      <h1 data-t="pad.pageTitle">K3C Gamepad-Test</h1>
+      <p class="sub" data-t-html="pad.sub">
         Controller verbinden und auf jedem eine Taste drücken. Grüner Strich = Taste wurde schon einmal erkannt.
         Steuerung per Controller: <kbd>Y</kbd> Bericht senden · <kbd>X</kbd> Vibration · <kbd>View</kbd> FPS-Test · <kbd>Menu</kbd> Vollbild versuchen.
         Audiotest: erst den Abschnitt Audio ablesen, dann <kbd>A</kbd> drücken (Geste) und danach <kbd>Y</kbd> zum Senden.
@@ -71,30 +71,30 @@
       <div class="cols">
        <div class="col">
         <section>
-          <h2>Aktionen</h2>
-          <button id="btn-fullscreen">Vollbild</button>
-          <button id="btn-perf">FPS-Test starten</button>
-          <button id="btn-rumble">Vibration testen</button>
-          <button id="btn-report">Bericht an Server senden</button>
+          <h2 data-t="pad.h.actions">Aktionen</h2>
+          <button id="btn-fullscreen" data-t="pad.btn.fullscreen">Vollbild</button>
+          <button id="btn-perf" data-t="pad.btn.perf">FPS-Test starten</button>
+          <button id="btn-rumble" data-t="pad.btn.rumble">Vibration testen</button>
+          <button id="btn-report" data-t="pad.btn.report">Bericht an Server senden</button>
           <p id="report-status" class="sub" style="margin:8px 0 0"></p>
         </section>
         <section>
-          <h2>Umgebung</h2>
+          <h2 data-t="pad.h.env">Umgebung</h2>
           <dl id="env"></dl>
         </section>
         <section>
-          <h2>Audio</h2>
-          <button id="btn-audio">Audio entsperren und Testton</button>
+          <h2 data-t="pad.h.audio">Audio</h2>
+          <button id="btn-audio" data-t="pad.btn.audio">Audio entsperren und Testton</button>
           <dl id="audio"></dl>
         </section>
         <section>
-          <h2>Controller</h2>
-          <div id="pads"><p class="sub">Noch kein Controller erkannt. Taste auf dem Controller drücken.</p></div>
+          <h2 data-t="pad.h.pads">Controller</h2>
+          <div id="pads"><p class="sub" data-t="pad.none">Noch kein Controller erkannt. Taste auf dem Controller drücken.</p></div>
         </section>
        </div>
        <div class="col">
         <section class="grow">
-          <h2>Ereignisse</h2>
+          <h2 data-t="pad.h.log">Ereignisse</h2>
           <div id="log"></div>
         </section>
        </div>

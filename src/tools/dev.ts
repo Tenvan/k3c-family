@@ -1,8 +1,10 @@
 import { installPageChrome, openPage } from '../core/shell';
 import { DEV_SECTIONS, type DevTile } from './devTiles';
+import { applyTexts, t } from './texts';
 import { type FocusKey, nextFocus } from './testTiles';
 
 installPageChrome();
+applyTexts();
 
 const root = document.getElementById('sections')!;
 const note = document.getElementById('note')!;
@@ -10,14 +12,14 @@ const note = document.getElementById('note')!;
 /** Öffnet eine Kachel: Shell-Seiten über `openPage()`, Seiten außerhalb der Shell (`external`) in einem neuen Fenster. */
 function launch(tile: DevTile): void {
   if (!tile.external) {
-    note.textContent = `Öffne „${tile.title}“ …`;
+    note.textContent = t('tool.opening', { title: tile.title });
     openPage(tile.href);
     return;
   }
   const url = new URL(tile.href, location.href).href;
   // Ohne `noopener`: nur so meldet `window.open` eine Pop-up-Sperre mit `null`. Die Seite stammt aus diesem Ordner.
   const win = window.open(url, '_blank');
-  note.textContent = win ? `„${tile.title}“ öffnet in einem neuen Fenster.` : `Neues Fenster gesperrt: ${url} bitte von Hand öffnen.`;
+  note.textContent = win ? t('dev.opensWindow', { title: tile.title }) : t('dev.blocked', { url });
 }
 
 function tileButton(tile: DevTile): HTMLButtonElement {

@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>K3C Monitor</title>
+    <title data-t="monitor.pageTitle">K3C Monitor</title>
     <style>
       :root { --bg: #11151c; --panel: #1c2330; --line: #2e3a4d; --text: #e8edf4; --dim: #8a97aa; --on: #ffd166; --bad: #ff6b6b; }
       * { box-sizing: border-box; }
@@ -34,30 +34,30 @@
   <body>
     <main>
       <h1>📈 Monitor</h1>
-      <p id="status" class="dim" role="status">Verbinde …</p>
+      <p id="status" class="dim" role="status" data-t="monitor.connecting">Verbinde …</p>
       <form id="login" class="bar" hidden>
         <input id="token" type="password" autocomplete="off" placeholder="K3C_STATUS_TOKEN" aria-label="Token" />
-        <button type="submit">Token speichern</button>
+        <button type="submit" data-t="monitor.saveToken">Token speichern</button>
       </form>
       <div class="bar" id="tabs">
-        <button type="button" data-view="overview">Übersicht</button>
-        <button type="button" data-view="history">Verlauf</button>
-        <button type="button" data-view="events">Ereignisse</button>
+        <button type="button" data-view="overview" data-t="monitor.tab.overview">Übersicht</button>
+        <button type="button" data-view="history" data-t="monitor.tab.history">Verlauf</button>
+        <button type="button" data-view="events" data-t="monitor.tab.events">Ereignisse</button>
       </div>
       <section id="overview"></section>
       <section id="history" hidden>
         <div class="bar">
-          <button type="button" id="window">Fenster 5 min</button>
+          <button type="button" id="window" data-t="monitor.window5m">Fenster 5 min</button>
           <button type="button" id="room"></button>
         </div>
         <table id="stats"></table>
-        <h2>Tick-Dauer (max je s)</h2>
+        <h2 data-t="monitor.h.tick">Tick-Dauer (max je s)</h2>
         <canvas id="c-tick"></canvas>
-        <h2>RTT je Gerät</h2>
+        <h2 data-t="monitor.h.rtt">RTT je Gerät</h2>
         <canvas id="c-rtt"></canvas>
-        <h2>Server: Heap und CPU</h2>
+        <h2 data-t="monitor.h.server">Server: Heap und CPU</h2>
         <canvas id="c-server"></canvas>
-        <p class="dim">Rote Punkte: Ausreißer. Striche unten: Diagnose-Ereignisse. Gestrichelt: Neustart. ▼: gewähltes Ereignis.</p>
+        <p class="dim" data-t="monitor.legend">Rote Punkte: Ausreißer. Striche unten: Diagnose-Ereignisse. Gestrichelt: Neustart. ▼: gewähltes Ereignis.</p>
       </section>
       <section id="events-view" hidden>
         <div class="bar">
@@ -66,7 +66,7 @@
         </div>
         <div id="events"></div>
       </section>
-      <p class="dim">Controller: Steuerkreuz/Stick wählt, A bestätigt. Touch und Maus: antippen.</p>
+      <p class="dim" data-t="monitor.keys">Controller: Steuerkreuz/Stick wählt, A bestätigt. Touch und Maus: antippen.</p>
     </main>
     <script type="module" src="/src/tools/monitor.ts"></script>
   </body>

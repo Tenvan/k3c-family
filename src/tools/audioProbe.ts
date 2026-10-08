@@ -3,6 +3,8 @@
  * ohne Geste, Dekodierung je Format und Latenz. Das Ergebnis steht als Feld `audio` im Bericht (X1.3 liest es so).
  */
 
+import { t, textOf } from './texts';
+
 export const FORMATS = ['ogg', 'm4a', 'mp3', 'wav'] as const;
 export type Format = (typeof FORMATS)[number];
 export type GestureVia = 'controller' | 'taste' | 'klick';
@@ -60,18 +62,25 @@ export function buildAudioReport(input: AudioProbeInput): AudioReport | null {
   };
 }
 
+/** Anzeigewert des Abspielversuchs: Der Bericht behält die Kennungen (`gespielt`, `blockiert`, `fehler: …`), nur die Anzeige wird übersetzt. */
+function autoplayText(value: string): string {
+  if (value === 'gespielt') return t('audio.played');
+  if (value === 'blockiert') return t('audio.blocked');
+  return value.startsWith('fehler: ') ? t('audio.error', { name: value.slice('fehler: '.length) }) : value;
+}
+
 /** Anzeigezeilen `[Bezeichnung, Wert, ok?]` wie in der Umgebung der Testseite. */
 export function audioRows(audio: AudioReport | null): [string, string, boolean?][] {
-  if (!audio) return [['Audio', 'kein Audio (kein AudioContext)', false]];
-  const ms = (v: number | null) => (v === null ? 'unbekannt' : `${Math.round(v * 1000)} ms`);
+  if (!audio) return [['Audio', t('audio.none'), false]];
+  const ms = (v: number | null) => (v === null ? t('audio.unknown') : `${Math.round(v * 1000)} ms`);
   const after = audio.contextState.afterFirstGesture;
   return [
-    ['Zustand vor Geste', audio.contextState.beforeGesture, audio.contextState.beforeGesture === 'running'],
-    ['Zustand nach Geste', after ?? 'noch keine Geste', after === null ? undefined : after === 'running'],
-    ['Gesten', audio.gestures.map((g) => `${g.via}: ${g.state}`).join(', ') || '–'],
-    ['Abspielen ohne Geste', audio.autoplayWithoutGesture],
-    ...FORMATS.map((f): [string, string, boolean] => [`Format ${f}`, audio.formats[f] ? 'ja' : 'nein', audio.formats[f]]),
-    ['Latenz', `Basis ${ms(audio.baseLatency)} · Ausgabe ${ms(audio.outputLatency)}`],
+    [t('audio.beforeGesture'), audio.contextState.beforeGesture, audio.contextState.beforeGesture === 'running'],
+    [t('audio.afterGesture'), after ?? t('audio.noGestureYet'), after === null ? undefined : after === 'running'],
+    [t('audio.gestures'), audio.gestures.map((g) => `${textOf(`audio.via.${g.via}`, g.via)}: ${g.state}`).join(', ') || '–'],
+    [t('audio.autoplay'), autoplayText(audio.autoplayWithoutGesture)],
+    ...FORMATS.map((f): [string, string, boolean] => [t('audio.format', { format: f }), audio.formats[f] ? t('audio.yes') : t('audio.no'), audio.formats[f]]),
+    [t('audio.latency'), t('audio.latencyValue', { base: ms(audio.baseLatency), out: ms(audio.outputLatency) })],
   ];
 }
 

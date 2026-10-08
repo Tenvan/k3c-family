@@ -3,9 +3,12 @@
  * Die Landingpage (`src/landing/pages.ts`) zeigt nur Spieler-Kacheln und eine kleine Kachel hierher.
  * Neue Werkzeug-Seite: `<name>.html` anlegen, `installPageChrome()` aufrufen und hier eintragen (Regel in CLAUDE.md).
  */
+import { t, textOf } from './texts';
+
 export interface DevTile {
-  title: string;
-  description: string;
+  /** Titel und Beschreibung stehen in den Textdateien (`tile.<name>.title`/`.desc`) und werden beim Lesen übersetzt */
+  readonly title: string;
+  readonly description: string;
   icon: string;
   /** Ziel `name.html` dieses Ordners; geöffnet über `openPage()`, mit `external` in einem neuen Fenster */
   href: string;
@@ -15,63 +18,52 @@ export interface DevTile {
 
 export interface DevSection {
   id: 'dev' | 'perf' | 'balance';
-  title: string;
+  /** Aus der gewählten Sprache gelesen, nicht beim Laden des Moduls */
+  readonly title: string;
   tiles: readonly DevTile[];
   /** Hinweis, solange der Abschnitt keine Kacheln hat */
-  empty: string;
+  readonly empty: string;
 }
 
+/** Kachel mit Text aus `tile.<name>.title` und `tile.<name>.desc`; der Text wird erst beim Lesen aufgelöst. */
+export function tile(name: string, icon: string, href: string, external?: true): DevTile {
+  return {
+    get title() {
+      return textOf(`tile.${name}.title`, name);
+    },
+    get description() {
+      return textOf(`tile.${name}.desc`, '');
+    },
+    icon,
+    href,
+    ...(external && { external }),
+  };
+}
+
+const section = (id: DevSection['id'], tiles: readonly DevTile[]): DevSection => ({
+  id,
+  get title() {
+    return t(`dev.section.${id}`);
+  },
+  tiles,
+  get empty() {
+    return t('dev.empty');
+  },
+});
+
 export const DEV_SECTIONS: readonly DevSection[] = [
-  {
-    id: 'dev',
-    title: 'Entwicklung',
-    empty: 'Noch keine Aufrufe.',
-    tiles: [
-      { title: 'Testing', description: 'Test-Szenarien starten · 1 bis 4 Spieler mit Mock-Spielern (Go-Server nötig)', icon: '🧪', href: 'testing.html' },
-      {
-        title: 'Level-Betrachter',
-        description: 'Seed und Biom wählen, das generierte Level ansehen · Warnungen der Prüfung (Go-Server nötig)',
-        icon: '🗺️',
-        href: 'leveltest.html',
-      },
-      { title: 'Gamepad-Test', description: 'Controller, B-Taste, Vollbild, Vibration, FPS · Bericht an den PC', icon: '🎮', href: 'gamepad-test.html' },
-      { title: 'Unsere Aufstellung', description: 'Jede Rolle im Spiel mit ihrer Figur · Monarchen, Truppen, Gegner', icon: '🛡️', href: 'aufstellung.html' },
-      { title: 'Alle Figuren', description: 'Alle Sprites aus LuizMelo und Gothicvania, auch ungenutzte', icon: '🧙', href: 'figuren.html' },
-      {
-        title: 'Alle Grafiken',
-        description: 'Gewählte CC0-Packs für Gebäude, Ressourcen und Hintergründe · mit Urheber, Lizenz und Quelle',
-        icon: '🏰',
-        href: 'grafiken.html',
-      },
-      {
-        title: 'Hörprobe',
-        description: 'Kandidaten für Musik und Effekte anhören · nach Zustand und Ereignis, mit Quelle und Lizenz',
-        icon: '🔊',
-        href: 'soundtest.html',
-      },
-      {
-        title: 'Dungeon Master',
-        description: 'Laufende Räume beobachten und steuern: Zeit, Pause, Gold, Material, Welle, Tageszeit · neues Fenster (Dev-Mode des Servers)',
-        icon: '🎲',
-        href: 'dm.html',
-        external: true,
-      },
-    ],
-  },
-  {
-    id: 'perf',
-    title: 'Performance',
-    empty: 'Noch keine Aufrufe.',
-    tiles: [
-      {
-        title: 'Monitor',
-        description: 'Serverzustand: Ampel je Raum, Verläufe mit Perzentilen, Fehler-Zeitleiste (Go-Server mit K3C_STATUS_TOKEN)',
-        icon: '📈',
-        href: 'monitor.html',
-      },
-    ],
-  },
-  { id: 'balance', title: 'Balancing', empty: 'Noch keine Aufrufe.', tiles: [] },
+  section('dev', [
+    tile('testing', '🧪', 'testing.html'),
+    tile('level', '🗺️', 'leveltest.html'),
+    tile('gamepad', '🎮', 'gamepad-test.html'),
+    tile('aufstellung', '🛡️', 'aufstellung.html'),
+    tile('figuren', '🧙', 'figuren.html'),
+    tile('grafiken', '🏰', 'grafiken.html'),
+    tile('sound', '🔊', 'soundtest.html'),
+    tile('dm', '🎲', 'dm.html', true),
+  ]),
+  section('perf', [tile('monitor', '📈', 'monitor.html')]),
+  section('balance', []),
 ];
 
 /** Alle Kacheln der Entwicklerseite in Anzeigereihenfolge. */

@@ -1,4 +1,5 @@
 // Credits aus den CREDITS.md-Dateien (einzige Quelle, B-165): Parser und HTML-Ausgabe für lizenzen.html.
+import { t } from './texts';
 import grafik from '../../public/grafik/CREDITS.md?raw';
 import sprites from '../../public/sprites/CREDITS.md?raw';
 
@@ -56,7 +57,7 @@ export function renderCredits(credits: readonly Credit[]): string {
     const link = /^https?:\/\//.test(c.source)
       ? `<a href="${esc(c.source)}" target="_blank" rel="noopener">${esc(c.source.replace(/^https?:\/\//, ''))}</a>`
       : esc(c.source);
-    return `<tr${isCcBy(c) ? ' class="by"' : ''}><td>${esc(c.title)}</td><td>${esc(c.author)}</td><td>${isCcBy(c) ? `<strong>${esc(c.license)}</strong> (Namensnennung)` : esc(c.license)}</td><td>${link}</td></tr>`;
+    return `<tr${isCcBy(c) ? ' class="by"' : ''}><td>${esc(c.title)}</td><td>${esc(c.author)}</td><td>${isCcBy(c) ? `<strong>${esc(c.license)}</strong> (${t('credits.attribution')})` : esc(c.license)}</td><td>${link}</td></tr>`;
   });
-  return `<table><thead><tr><th>Werk</th><th>Urheber:innen</th><th>Lizenz</th><th>Quelle</th></tr></thead><tbody>${rows.join('')}</tbody></table>`;
+  return `<table><thead><tr><th>${t('credits.work')}</th><th>${t('credits.author')}</th><th>${t('credits.license')}</th><th>${t('credits.source')}</th></tr></thead><tbody>${rows.join('')}</tbody></table>`;
 }

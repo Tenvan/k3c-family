@@ -8,9 +8,9 @@
 - **Sprint:** PL2
 - **Projekt:** WZG
 - **Erstellt:** 2026-10-06
-- **Spec:** Entwurf
+- **Spec:** freigegeben
 - **Revision:** 1
-- **Freigabe:** –
+- **Freigabe:** 2026-10-08 Chat (mit PL2)
 
 ## Ausgangslage
 
