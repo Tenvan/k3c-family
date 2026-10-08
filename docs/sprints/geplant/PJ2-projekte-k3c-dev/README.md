@@ -8,9 +8,9 @@
 - **Einschiebbar:** nein
 - **Tickets:** B-357, B-358
 - **Start-Commit:** – (wird beim Aktivieren gesetzt: `git rev-parse --short origin/develop`)
-- **Spec:** Entwurf
+- **Spec:** freigegeben
 - **Revision:** 1
-- **Freigabe:** –
+- **Freigabe:** 2026-10-08, Chat, durch 🧑, Revision 1
 
 ## Ausgangslage
 
@@ -65,8 +65,8 @@ Siehe `B-357 › Ausnahme- und Fehlerfälle` und `B-358 › Ausnahme- und Fehler
 
 ## Offene Fragen
 
-- **Sprint-Prio im Übergang** (Vorschlag, 🧑 bestätigt mit der Freigabe): Die Tools ordnen Sprints mit Projekt nach Rang, leiten `Prio` aber für Sprints ohne Projekt weiter ab, weil `tests/planning.test.ts` (INF) die Ableitung noch prüft; Wegfall der Felder `Prio`/`Einschiebbar` in Vorlage und Test als INF-Ticket bzw. in PJ3 (PJ2.2).
-- **ABN ohne Rang** (Vorschlag): Laut Arbeitsweise läuft `ABN` ohne Rang neben der Rangfolge, der Planungstest verlangt für aktive Projekte aber einen Rang. PJ2 erkennt `ABN` am Kürzel, zeigt es als eigenen Bereich und nimmt es aus der Rang-Verschiebung heraus; die Regel im Test klärt PJ3 (B-359), wenn ABN angelegt wird.
+- **Sprint-Prio im Übergang** (von 🧑 mit der Freigabe 2026-10-08 bestätigt): Die Tools ordnen Sprints mit Projekt nach Rang, leiten `Prio` aber für Sprints ohne Projekt weiter ab, weil `tests/planning.test.ts` (INF) die Ableitung noch prüft; Wegfall der Felder `Prio`/`Einschiebbar` in Vorlage und Test als INF-Ticket bzw. in PJ3 (PJ2.2).
+- **ABN ohne Rang** (von 🧑 mit der Freigabe 2026-10-08 bestätigt): Laut Arbeitsweise läuft `ABN` ohne Rang neben der Rangfolge, der Planungstest verlangt für aktive Projekte aber einen Rang. PJ2 erkennt `ABN` am Kürzel, zeigt es als eigenen Bereich und nimmt es aus der Rang-Verschiebung heraus; die Regel im Test klärt PJ3 (B-359), wenn ABN angelegt wird.
 
 ## Sessions
 
