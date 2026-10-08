@@ -7,7 +7,10 @@ import { foldAll } from './fold';
 import { errorText } from '../lib/errors';
 import { loadText, savePref } from '../lib/prefs';
 import { ActionButton, NoticeCard, StatusBadge } from '../ui/parts';
-import { BacklogList, SessionDetail } from './Backlog';
+import { BacklogList } from './Backlog';
+import { PlanDetail } from './Detail';
+import { unfold } from './fold';
+import { findSession } from './planning';
 import { SprintCard } from './SprintCard';
 import { CopyPrompt } from './PromptParts';
 import { openSessions, promptSessions } from './prompts';
@@ -37,11 +40,20 @@ export function SprintsBacklog() {
   const sprints = sortSprints(filterSprints(data, filter), gh?.sprints);
   const tickets = filterTickets(data, filter);
   const select = (nr: string) => setFilter({ ...filter, sel: filter.sel === nr ? '' : nr });
+  const pick = (id: string) => setFilter({ ...filter, sel: id });
+  // Auswahl von außen (Detail, Abhängigkeits-Link): Projekt und Sprint klappen auf, die Zeile scrollt in Sicht.
+  const reveal = (id: string) => {
+    pick(id);
+    const sprint = findSession(data, id)?.sprint ?? data.sprints.find((s) => s.id === id);
+    unfold([sprint?.project ?? '', sprint?.id ?? '', id].filter(Boolean));
+    setTimeout(() => document.getElementById(`pl-sp-${sprint?.id ?? id}`)?.scrollIntoView({ block: 'nearest', behavior: 'smooth' }), 0);
+  };
   const check = (nr: string, on: boolean) => setChecked((cur) => { const n = new Set(cur); if (on) n.add(nr); else n.delete(nr); return n; });
   // in Planungs-Reihenfolge; fertige oder verschwundene fallen heraus
   const picked = sprints.flatMap(openSessions).filter((it) => checked.has(it.session.nr));
   const card = (s: PlanSprint) => (
-    <SprintCard key={s.id} sprint={s} gh={gh?.sprints[s.id.toUpperCase()]} sel={filter.sel} onSelect={select} checked={checked} onCheck={check} />
+    <SprintCard key={s.id} sprint={s} gh={gh?.sprints[s.id.toUpperCase()]} sel={filter.sel} onSelect={select} onPick={pick} checked={checked}
+      onCheck={check} />
   );
   return (
     <div className="pl-board">
@@ -58,7 +70,7 @@ export function SprintsBacklog() {
             </div>
           )}
           {data.projects?.length
-            ? <ProjectsView data={data} sprints={sprints} tickets={tickets} sel={filter.sel} renderSprint={card} reload={load} />
+            ? <ProjectsView data={data} sprints={sprints} tickets={tickets} sel={filter.sel} onPick={pick} renderSprint={card} reload={load} />
             : sprints.map(card)}
           {sprints.length === 0 && <Text color="gray">Kein Sprint passt zum Filter.</Text>}
         </section>
@@ -67,7 +79,7 @@ export function SprintsBacklog() {
             <h2 className="pl-h">Backlog <small>{tickets.length} von {data.tickets.length} offenen Tickets</small></h2>
             <BacklogList data={data} tickets={tickets} sel={filter.sel} />
           </div>
-          <SessionDetail data={data} sel={filter.sel} onSelect={select} onClose={() => setFilter({ ...filter, sel: '' })} />
+          <PlanDetail data={data} sel={filter.sel} onSelect={reveal} onClose={() => setFilter({ ...filter, sel: '' })} />
         </section>
       </div>
     </div>

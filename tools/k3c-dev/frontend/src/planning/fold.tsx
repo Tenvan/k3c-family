@@ -36,6 +36,25 @@ export function useFold(id: string): [boolean, () => void] {
   return [folded, toggle];
 }
 
+/** Klappt die genannten Karten auf (Auswahl von außen: Sprint-Chip, Detail, Abhängigkeits-Link). */
+export const unfold = (ids: string[]) => {
+  const cur = read();
+  const changed = ids.filter((id) => cur.delete(id)).length > 0; // filter statt some: alle löschen, nicht nur das erste
+  if (changed) write(cur);
+};
+
+/**
+ * Klick auf den Kopf einer Karte (Workbench-Spec § 1 › Einklappen): schaltet auf/zu und wählt aus. Knöpfe, Links und
+ * Menüs im Kopf reichen den Klick nicht weiter.
+ */
+export function headClick(toggle: () => void, select: () => void) {
+  return (e: React.MouseEvent) => {
+    if ((e.target as HTMLElement).closest('button, a, input, [role="menuitem"], [role="checkbox"]')) return;
+    toggle();
+    select();
+  };
+}
+
 /** Alle genannten Karten ein- oder ausklappen. */
 export const foldAll = (ids: string[], fold: boolean) => write(fold ? new Set(ids) : new Set());
 
@@ -43,7 +62,7 @@ export const foldAll = (ids: string[], fold: boolean) => write(fold ? new Set(id
 export function FoldButton({ folded, onToggle, what }: { folded: boolean; onToggle: () => void; what: string }) {
   return (
     <button type="button" className="pl-fold" aria-expanded={!folded} aria-label={`${what} ${folded ? 'aufklappen' : 'einklappen'}`}
-      onClick={onToggle}>
+      onClick={(e) => { e.stopPropagation(); onToggle(); }}>
       {folded ? '▸' : '▾'}
     </button>
   );
