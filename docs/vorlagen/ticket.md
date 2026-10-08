@@ -1,6 +1,6 @@
 # B-000 · Kurzer Titel als Aussage
 
-- **Domäne:** REG | SIM | SRV | CLI | PLAT | INF
+- **Domäne:** REG | SIM | SRV | CLI | PLAT | INF | DEV
 - **Typ:** Idee | Problem | Schuld | Frage
 - **Prio:** hoch | mittel | niedrig | ?
 - **Umgebung:** offline | live | ? (offline: ohne laufende Dienste prüfbar – Code, Unit-/Mock-Tests, Werkzeuge ohne Serverzugriff, worktree-tauglich; live: braucht laufenden Server, Browser oder Gerät)

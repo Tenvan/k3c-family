@@ -3,9 +3,7 @@
 - **Status:** erledigt
 - **Projekt:** –
 - **Domäne:** REG
-- **Prio:** hoch
 - **Reife:** bereit
-- **Einschiebbar:** ja
 - **Tickets:** B-004, B-005, B-021, B-025
 - **Start-Commit:** cf35ecc
 - **Spec:** freigegeben

@@ -3,9 +3,7 @@
 - **Status:** geplant
 - **Projekt:** SND
 - **Domäne:** CLI
-- **Prio:** hoch
 - **Reife:** bereit
-- **Einschiebbar:** ja
 - **Tickets:** B-167
 - **Start-Commit:** –
 - **Spec:** freigegeben

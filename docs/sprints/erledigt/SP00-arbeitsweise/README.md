@@ -3,9 +3,7 @@
 - **Status:** erledigt
 - **Projekt:** –
 - **Domäne:** INF
-- **Prio:** hoch
 - **Reife:** bereit
-- **Einschiebbar:** nein
 - **Tickets:** B-001, B-003, B-044, B-045
 - **Start-Commit:** df6e1de
 - **Spec:** rückwirkend

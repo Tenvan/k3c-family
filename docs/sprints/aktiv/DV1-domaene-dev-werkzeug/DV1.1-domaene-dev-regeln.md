@@ -1,6 +1,6 @@
 # DV1.1 · Domäne DEV in Arbeitsweise, Glossar und Planungstest, Sprints ohne Prio und Einschiebbar
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** INF
@@ -62,5 +62,7 @@ Keine manuellen Prüfungen.
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+- AC-01 geprüft: `docs/arbeitsweise.md` › Domänen hat die Zeile `DEV` (Entwickler-Werkzeug: `tools/k3c-dev/`, `cmd/k3c-load/`, `cmd/k3c-tui/`, `src/tools/`); SRV nennt nur noch `engine/room/`, `engine/net/`, `engine/store/`, `cmd/k3c-server/`, Docker; PLAT ohne `src/tools/`. Glossar `Domäne` nennt DEV, `Einschiebbar` als entfallen (B-361). Vorlagen `sprint.md`, `session.md`, `ticket.md` und `DOMAINS` in `tests/planningDocs.ts` kennen `DEV`.
+- AC-02 geprüft: `docs/vorlagen/sprint.md` ohne `Prio`/`Einschiebbar`, `ALLOWED.sprint` ohne beide Felder, Prio-Prüfung (`sprintPrio`/`ticketPrio`) aus `tests/planning.test.ts` entfernt (Ticket-Prio bleibt). Beide Kopf-Zeilen aus allen 133 Sprint-READMEs (geplant, aktiv, erledigt) per Skript entfernt, nur im Kopf, CRLF erhalten; Fahrplan-Hinweis `**Einschiebbar** …` gelöscht. `grep -rn "\*\*Prio:\*\*\|\*\*Einschiebbar:\*\*" docs/sprints` trifft nur noch Schritt 5 dieser Session-Datei (Anleitungstext, keine Kopf-Zeile), in keiner README. `task test -- planning` grün (check_run).
+- `task check` grün (check_run).
+- Abweichungen: `docs/arbeitsweise.md` Sprint-Lebenslauf: „entfallen mit B-361“ → „sind entfallen (B-361)“; sonst keine Stellen, die Sprint-Prio/Einschiebbar als gültig beschreiben. Keine neuen Tickets. Manuell geprüft: niemand (keine manuellen Prüfungen).

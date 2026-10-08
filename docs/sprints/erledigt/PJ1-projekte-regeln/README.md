@@ -3,9 +3,7 @@
 - **Status:** erledigt
 - **Projekt:** PRZ
 - **Domäne:** INF
-- **Prio:** hoch
 - **Reife:** bereit
-- **Einschiebbar:** nein
 - **Tickets:** B-355, B-356, B-338
 - **Start-Commit:** ffac0f9
 - **Spec:** freigegeben

@@ -3,9 +3,7 @@
 - **Status:** geplant
 - **Projekt:** BAL
 - **Domäne:** REG
-- **Prio:** hoch
 - **Reife:** Entwurf
-- **Einschiebbar:** nein
 - **Tickets:** B-230, B-287, B-289, B-346
 - **Start-Commit:** –
 - **Spec:** Entwurf

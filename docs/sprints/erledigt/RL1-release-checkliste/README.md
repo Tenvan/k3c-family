@@ -3,9 +3,7 @@
 - **Status:** erledigt
 - **Projekt:** REL
 - **Domäne:** INF
-- **Prio:** hoch
 - **Reife:** bereit
-- **Einschiebbar:** ja
 - **Tickets:** B-170
 - **Start-Commit:** 1fa9529
 - **Spec:** freigegeben

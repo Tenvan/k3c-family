@@ -3,9 +3,7 @@
 - **Status:** geplant
 - **Projekt:** GRA
 - **Domäne:** SRV
-- **Prio:** mittel
 - **Reife:** Entwurf
-- **Einschiebbar:** ja
 - **Tickets:** B-298, B-299
 - **Start-Commit:** –
 - **Spec:** Entwurf

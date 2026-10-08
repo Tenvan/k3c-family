@@ -3,9 +3,7 @@
 - **Status:** geplant
 - **Projekt:** KMP
 - **Domäne:** SIM
-- **Prio:** mittel
 - **Reife:** Entwurf
-- **Einschiebbar:** nein
 - **Tickets:** B-291, B-262, B-200, B-189, B-217, B-260
 - **Start-Commit:** –
 - **Spec:** Entwurf

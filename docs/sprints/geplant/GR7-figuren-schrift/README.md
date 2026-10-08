@@ -3,9 +3,7 @@
 - **Status:** geplant
 - **Projekt:** GRA
 - **Domäne:** CLI
-- **Prio:** hoch
 - **Reife:** Entwurf
-- **Einschiebbar:** ja
 - **Tickets:** B-193, B-251, B-198, B-197, B-320
 - **Start-Commit:** –
 - **Spec:** Entwurf

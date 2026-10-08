@@ -3,9 +3,7 @@
 - **Status:** geplant
 - **Projekt:** REL
 - **Domäne:** INF
-- **Prio:** hoch
 - **Reife:** Entwurf
-- **Einschiebbar:** nein
 - **Tickets:** B-273, B-053, B-019
 - **Start-Commit:** –
 - **Spec:** Entwurf

@@ -3,9 +3,7 @@
 - **Status:** geplant
 - **Projekt:** KMP
 - **Domäne:** SRV
-- **Prio:** hoch
 - **Reife:** bereit
-- **Einschiebbar:** nein
 - **Tickets:** B-154, B-080
 - **Start-Commit:** –
 - **Spec:** freigegeben

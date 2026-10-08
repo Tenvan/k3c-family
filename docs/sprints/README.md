@@ -19,8 +19,6 @@ Abnahmen am Gerät (`Agent: Mensch`) sammelt das Projekt ABN im Sprint HW1: [`..
 
 ## Geplant (nach Projekt-Rang)
 
-**Einschiebbar** ordnet nicht mehr: einschiebbare Sprints stehen in derselben Tabelle an ihrem Platz im Projekt (Feld entfällt mit B-361).
-
 | Sprint | Domäne | Projekt | Thema | Am Ende sichtbar | Reife | Ordner |
 |---|---|---|---|---|---|---|
 | PM1 | CLI | LST | Leistung messen: Diagnose-Zeile und Performance-Modus | – | Entwurf | `geplant/PM1-leistung-messen/` |

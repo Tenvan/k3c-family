@@ -3,9 +3,7 @@
 - **Status:** erledigt
 - **Projekt:** TST
 - **Domäne:** SRV
-- **Prio:** hoch
 - **Reife:** bereit
-- **Einschiebbar:** nein
 - **Tickets:** B-175, B-042
 - **Start-Commit:** 9e6849e
 - **Spec:** freigegeben

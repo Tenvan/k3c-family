@@ -22,15 +22,14 @@ export const none = (value: string | undefined) => !value || value.startsWith('�
 /** Abschnitt `## Name` bis zur nächsten Unterüberschrift. */
 export const section = (text: string, name: string) => text.split(new RegExp(`^## ${name}$`, 'm'))[1]?.split(/^## /m)[0] ?? '';
 
-export const DOMAINS = ['REG', 'SIM', 'SRV', 'CLI', 'PLAT', 'INF'];
+export const DOMAINS = ['REG', 'SIM', 'SRV', 'CLI', 'PLAT', 'INF', 'DEV'];
 export const SPEC = ['Entwurf', 'freigegeben', 'rückwirkend'];
 export const PRIO = ['hoch', 'mittel', 'niedrig', '?']; // Rangfolge: hoch zuerst
 const ENV = ['offline', 'live', '?']; // Umgebung: offline ist worktree-tauglich
 const ALLOWED = {
   ticket: { Domäne: DOMAINS, Typ: ['Idee', 'Problem', 'Schuld', 'Frage'], Prio: PRIO, Umgebung: ENV,
     Status: ['offen', 'eingeplant', 'erledigt', 'verworfen'], Spec: SPEC },
-  sprint: { Status: ['geplant', 'aktiv', 'erledigt'], Prio: PRIO, Reife: ['Entwurf', 'bereit'], Einschiebbar: ['nein', 'ja'],
-    Spec: SPEC },
+  sprint: { Status: ['geplant', 'aktiv', 'erledigt'], Reife: ['Entwurf', 'bereit'], Spec: SPEC },
   session: { Status: ['offen', 'in Arbeit', 'fertig', 'blockiert', 'verworfen'], Typ: ['Umsetzung', 'Review', 'Workshop'],
     Agent: ['autonom', 'Mensch'], Domäne: DOMAINS, Umgebung: ENV },
   projekt: { Status: ['aktiv', 'ruht', 'erledigt'] },

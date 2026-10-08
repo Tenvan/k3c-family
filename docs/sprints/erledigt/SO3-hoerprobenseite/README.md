@@ -3,9 +3,7 @@
 - **Status:** erledigt
 - **Projekt:** SND
 - **Domäne:** PLAT
-- **Prio:** mittel
 - **Reife:** bereit
-- **Einschiebbar:** ja
 - **Tickets:** B-169
 - **Start-Commit:** cfdba1e
 - **Spec:** freigegeben

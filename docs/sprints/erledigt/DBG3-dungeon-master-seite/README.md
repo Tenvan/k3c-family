@@ -3,9 +3,7 @@
 - **Status:** erledigt
 - **Projekt:** WZG
 - **Domäne:** PLAT
-- **Prio:** hoch
 - **Reife:** bereit
-- **Einschiebbar:** ja
 - **Tickets:** B-232
 - **Start-Commit:** 3a6446a
 - **Spec:** freigegeben

@@ -3,9 +3,7 @@
 - **Status:** erledigt
 - **Projekt:** WZG
 - **Domäne:** SRV
-- **Prio:** hoch
 - **Reife:** bereit
-- **Einschiebbar:** ja
 - **Tickets:** B-350
 - **Start-Commit:** edb2a8f
 - **Spec:** freigegeben

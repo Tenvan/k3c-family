@@ -3,9 +3,7 @@
 - **Status:** erledigt
 - **Projekt:** PRZ
 - **Domäne:** SRV
-- **Prio:** hoch
 - **Reife:** bereit
-- **Einschiebbar:** nein
 - **Tickets:** B-357, B-358
 - **Start-Commit:** e5c81de
 - **Spec:** freigegeben

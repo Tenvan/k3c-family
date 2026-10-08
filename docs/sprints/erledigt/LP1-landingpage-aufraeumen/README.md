@@ -3,9 +3,7 @@
 - **Status:** erledigt
 - **Projekt:** BED
 - **Domäne:** PLAT
-- **Prio:** hoch
 - **Reife:** bereit
-- **Einschiebbar:** ja
 - **Tickets:** B-335, B-292
 - **Start-Commit:** 19c176e
 - **Spec:** freigegeben

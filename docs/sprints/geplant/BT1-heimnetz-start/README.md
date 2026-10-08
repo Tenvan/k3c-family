@@ -3,9 +3,7 @@
 - **Status:** geplant
 - **Projekt:** REL
 - **Domäne:** SRV
-- **Prio:** niedrig
 - **Reife:** Entwurf
-- **Einschiebbar:** ja
 - **Tickets:** B-040, B-041, B-095, B-048
 - **Start-Commit:** –
 - **Spec:** Entwurf

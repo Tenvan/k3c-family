@@ -3,9 +3,7 @@
 - **Status:** geplant
 - **Projekt:** BAL
 - **Domäne:** REG
-- **Prio:** mittel
 - **Reife:** bereit
-- **Einschiebbar:** ja
 - **Tickets:** B-160
 - **Start-Commit:** –
 - **Spec:** Entwurf

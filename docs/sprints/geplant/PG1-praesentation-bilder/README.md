@@ -3,9 +3,7 @@
 - **Status:** geplant
 - **Projekt:** REL
 - **Domäne:** PLAT
-- **Prio:** niedrig
 - **Reife:** Entwurf
-- **Einschiebbar:** ja
 - **Tickets:** B-184
 - **Start-Commit:** –
 - **Spec:** Entwurf
