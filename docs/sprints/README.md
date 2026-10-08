@@ -60,6 +60,7 @@ dann über den Go-Server mit mehreren Räumen und gemischten Spielern.
 | CI1 | INF | hoch | CI-Nachweis, Release-Image ohne Dev-Mode, Test-Abdeckung | CI grün mit SP01-Prüfungen, Release-Image lehnt Dev-Aktionen ab, Abdeckung im CI-Bericht | Entwurf | `geplant/CI1-ci-release-image/` |
 | S9 | CLI | hoch | Rückmeldung für Schlag und Skills, ein Hinweis je Spieler | Jeder Tastendruck auf Schlag oder Skill ist sichtbar, das Aktionen-Overlay zeigt je Spieler einen Hinweis | bereit | `geplant/S9-rueckmeldung-overlay/` |
 | U6 | CLI | hoch | HUD ohne Überlagerung, Optionen per Touch | Optionen per Touch bedienbar, HUD bei 1–4 Spielern ohne Überlagerung, Gesamtabnahme Anzeige | Entwurf | `geplant/U6-hud-ohne-ueberlagerung/` |
+| DV1 | INF | hoch | Domäne DEV für k3c-dev, Sprint ohne Prio und Einschiebbar | – | Entwurf | `geplant/DV1-domaene-dev-werkzeug/` |
 
 **Einschiebbar** (Schienen Balancing, Grafik, Sound, Betrieb; unabhängig vom Engine-Fortschritt, jeweils zwischen zwei Sprints):
 

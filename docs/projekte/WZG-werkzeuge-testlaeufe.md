@@ -1,12 +1,12 @@
-# WZG · Werkzeuge & Testläufe
+# WZG · Werkzeuge
 
 - **Status:** aktiv
-- **Rang:** 8
+- **Rang:** 2
 - **Ziel-Tickets:** –
 
 ## Ziel
 
-Die Entwickler-Werkzeuge (k3c-dev, Testläufe mit Bots, Werkzeug-Seiten) decken Planung, Tests und Diagnose ab.
+Die Entwickler-Werkzeuge (k3c-dev mit MCP und Planung, Werkzeug-Seiten unter `src/tools/`) decken Planung, Prüfung und Diagnose ab.
 
 ## Sprints
 
@@ -15,15 +15,14 @@ In Abarbeitungs-Reihenfolge; der erste nicht erledigte Sprint ist der nächste. 
 | Sprint | Thema | Status |
 |---|---|---|
 | M11 | MCP-Seite: alle Tools mit Statistik, Zeitfilter | erledigt |
-| TR3 | Bot-Eingabe im Spiel einbinden | erledigt |
 | DBG3 | Dungeon-Master-Seite /dm | erledigt |
-| LT1 | Lasttest-Werkzeug | erledigt |
 | MON2 | Monitoring-Seite mit Dashboard | erledigt |
 | PL2 | Werkzeug-Seiten in der gewählten Sprache | geplant |
+| DV1 | Domäne DEV für k3c-dev, Sprint ohne Prio und Einschiebbar | geplant |
 
 ## Nicht-Ziele
 
-Was zu einem anderen Projekt gehört, mit Kürzel.
+Testläufe mit Bots, `sim_test` und Lasttest gehören zu TST (abgetrennt 2026-10-08).
 
 ## Notizen
 
