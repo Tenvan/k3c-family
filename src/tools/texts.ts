@@ -23,6 +23,11 @@ export interface TextTarget {
 
 const isKey = (key: string | undefined): key is ToolTextKey => key !== undefined && key in de;
 
+/** Text zu einem zusammengesetzten Schlüssel (`grafik.group.${id}`); ohne Eintrag der Rückfall, z. B. die ID aus den Daten. */
+export function textOf(key: string, fallback: string): string {
+  return isKey(key) ? t(key) : fallback;
+}
+
 /**
  * Setzt die statischen Texte einer Seite: `data-t` den Inhalt, `data-t-aria` das `aria-label`, `data-t-placeholder` den Platzhalter.
  * Ein unbekannter Schlüssel lässt den Text im HTML stehen.

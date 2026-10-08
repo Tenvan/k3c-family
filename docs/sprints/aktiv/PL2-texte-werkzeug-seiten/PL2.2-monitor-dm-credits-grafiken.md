@@ -1,6 +1,6 @@
 # PL2.2 · Monitor, Dungeon Master, Credits und Grafiken in der gewählten Sprache
 
-- **Status:** in Arbeit
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** PLAT
@@ -54,5 +54,7 @@ Manuelle Prüfungen (Browser, Xbox, TV) nur, wenn diese Datei sie nennt und 🧑
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+- **AC-01 umgesetzt (Teil Monitor, DM, Grafiken, Credits), geprüft:** `task check` grün (`check_run`, 1745 Tests). `monitor.ts`, `monitorChart.ts`, `dm.ts`, `dmApi.ts`, `grafiken.ts`, `credits.ts` stehen nicht mehr in `OFFEN` und bestehen `textRule.test.ts`; `texts.test.ts` prüft alle neuen Schlüssel auf Englisch mit gleichen Platzhaltern.
+- Gegenprobe vom Agenten im Browser-Pane (Vite, ohne Go-Server) mit `language: en`: `monitor.html`, `dm.html` und `grafiken.html` englisch, Tab-Titel eingeschlossen. Ersetzt nicht die Abnahme in PL2.5.
+- **Abweichungen:** Der Regeltest überspringt jetzt Zeilen mit `querySelector` (CSS-Selektor) und `.font =` (Schrift-Angabe), die er sonst als Zwei-Wort-Text meldet. Datum und Zahlen der Monitoring-Seite formatieren nach der gewählten Sprache statt fest `de-DE`. Material-Namen der DM-Knöpfe kommen über `nameOf('res', …)` aus den Spieltexten. Neu `textOf()` in `src/tools/texts.ts` für zusammengesetzte Schlüssel (Bild-Gruppen der Grafik-Seite). Nicht übersetzt (Daten): Ereignis-Texte des Servers, Pack-Daten aus `grafikPacks.ts`.
+- Neue Tickets: keine.

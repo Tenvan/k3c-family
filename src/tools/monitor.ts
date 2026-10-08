@@ -3,6 +3,7 @@
  * Pollt nur, solange die Seite sichtbar ist; zeichnet nur nach einer Antwort oder Bedienung neu.
  */
 import { installPageChrome } from '../core/shell';
+import { currentLanguage } from '../core/texts';
 import { fetchMetrics, nextDelay } from './monitorApi';
 import { drawChart, PALETTE, type ChartLine, type ChartMark } from './monitorChart';
 import {
@@ -21,14 +22,18 @@ import {
   type Stats,
 } from './monitorData';
 import { nextFocus } from './testTiles';
+import { applyTexts, t } from './texts';
 
 installPageChrome();
+applyTexts();
 
 const $ = <T extends HTMLElement>(id: string) => document.getElementById(id) as T;
 const TOKEN_KEY = 'k3c-monitor-token';
 const VIEWS = { overview: 'overview', history: 'history', events: 'events-view' } as const;
 type View = keyof typeof VIEWS;
-const KINDS: Record<EventKind, string> = { crash: '💥 Absturz', slow: '🐢 langsamer Tick', drop: '👋 Trennung', client: '📨 Client-Fehler' };
+const KINDS: Record<EventKind, string> = {
+  crash: t('monitor.kind.crash'), slow: t('monitor.kind.slow'), drop: t('monitor.kind.drop'), client: t('monitor.kind.client'),
+};
 const KIND_COLOR: Record<EventKind, string> = { crash: '#ef476f', slow: '#ffd166', drop: '#8a97aa', client: '#b388ff' };
 
 let state = emptyState();
@@ -44,8 +49,8 @@ let offline = false;
 let timer = 0;
 let busy = false;
 
-const fmt = (v: number) => v.toLocaleString('de-DE', { maximumFractionDigits: 1 });
-const clock = (t: number) => new Date(t).toLocaleTimeString('de-DE');
+const fmt = (v: number) => v.toLocaleString(currentLanguage(), { maximumFractionDigits: 1 });
+const clock = (t: number) => new Date(t).toLocaleTimeString(currentLanguage());
 
 function loadToken(): string {
   try {
@@ -90,16 +95,16 @@ function showView(next: View): void {
 function renderOverview(): void {
   const box = $('overview');
   const rooms = roomSummaries(state);
-  box.replaceChildren(el('h2', 'Räume (letzte 5 min)'));
-  if (rooms.length === 0) box.append(el('p', 'Kein Raum aktiv.', 'dim'));
+  box.replaceChildren(el('h2', t('monitor.rooms')));
+  if (rooms.length === 0) box.append(el('p', t('monitor.noRoom'), 'dim'));
   const grid = el('div', '', 'rooms');
   for (const r of rooms) {
     const b = el('button') as HTMLButtonElement;
     b.type = 'button';
-    const rtt = r.worstRtt === null ? '–' : r.worstRtt < 0 ? 'kein Pong' : `${fmt(r.worstRtt)} ms`;
+    const rtt = r.worstRtt === null ? '–' : r.worstRtt < 0 ? t('monitor.noPong') : `${fmt(r.worstRtt)} ms`;
     const tick = r.tickP99 === null ? '–' : `${fmt(r.tickP99)} ms`;
     b.append(el('span', '', `light ${offline ? 'grey' : r.light}`), el('strong', r.code), el('br'));
-    b.append(el('span', `Tick p99 ${tick} · RTT ${rtt} · Fehler ${r.errors}`, 'dim'));
+    b.append(el('span', t('monitor.roomLine', { tick, rtt, errors: r.errors }), 'dim'));
     b.onclick = () => {
       historyRoom = r.code;
       showView('history');
@@ -110,7 +115,7 @@ function renderOverview(): void {
   const last = state.server[state.server.length - 1];
   if (last) {
     const cpu = last.cpu < 0 ? '–' : `${fmt(last.cpu)} %`;
-    box.append(el('h2', 'Server'), el('p', `Heap ${fmt(last.heapMB)} MB · CPU ${cpu} · Goroutinen ${last.goroutines}`, 'dim'));
+    box.append(el('h2', 'Server'), el('p', t('monitor.serverLine', { heap: fmt(last.heapMB), cpu, goroutines: last.goroutines }), 'dim'));
   }
 }
 
@@ -125,7 +130,7 @@ function marks(room: string): ChartMark[] {
   const events = inWindow(state.events, state.now, windowMs).filter((e) => !room || e.room === room || !e.room);
   return [
     ...events.map((e) => ({ t: e.t, color: KIND_COLOR[e.kind] })),
-    ...state.restarts.map((t) => ({ t, color: '#e8edf4', label: 'Neustart' })),
+    ...state.restarts.map((at) => ({ t: at, color: '#e8edf4', label: t('monitor.restart') })),
   ];
 }
 
@@ -143,7 +148,7 @@ function historyLines(room: string): { tick: ChartLine[]; rtt: ChartLine[]; serv
     }));
   const srv = win(state.server);
   const server = [
-    { label: 'Heap MB', color: PALETTE[0], points: srv.map((p) => ({ t: p.t, v: p.heapMB })) },
+    { label: t('monitor.heapMB'), color: PALETTE[0], points: srv.map((p) => ({ t: p.t, v: p.heapMB })) },
     { label: 'CPU %', color: PALETTE[1], points: srv.filter((p) => p.cpu >= 0).map((p) => ({ t: p.t, v: p.cpu })) },
   ];
   return { tick, rtt, server };
@@ -154,17 +159,17 @@ function roomChoices(): string[] {
   return ['', ...[...new Set([...Object.keys(state.rooms), ...state.events.map((e) => e.room)])].filter(Boolean).sort()];
 }
 
-const roomLabel = (room: string) => `Raum: ${room || 'alle'}`;
+const roomLabel = (room: string) => t('monitor.roomFilter', { room: room || t('monitor.all') });
 
 function renderHistory(): void {
   const room = historyRoom;
   $('room').textContent = roomLabel(room);
-  $('window').textContent = windowMs === HOUR_MS ? 'Fenster 1 h' : 'Fenster 5 min';
+  $('window').textContent = t(windowMs === HOUR_MS ? 'monitor.window1h' : 'monitor.window5m');
   const v = windowValues(state, windowMs, room);
   const head = el('tr');
   head.append(...['', 'p50', 'p95', 'p99', 'Max'].map((h) => el('th', h)));
   const over = el('tr');
-  over.append(el('td', 'Budget überschritten'), el('td', `${v.over} Ticks`));
+  over.append(el('td', t('monitor.overBudget')), el('td', t('monitor.ticks', { n: v.over })));
   over.lastElementChild?.setAttribute('colspan', '4');
   $('stats').replaceChildren(head, statsRow('Tick', stats(v.tick), 'ms'), statsRow('RTT', stats(v.rtt), 'ms'), over);
   const lines = historyLines(room);
@@ -185,12 +190,12 @@ function renderEvents(): void {
   const room = evRoom;
   const kind = evKind;
   $('ev-room').textContent = roomLabel(room);
-  $('ev-kind').textContent = `Art: ${kind ? KINDS[kind as EventKind] : 'alle'}`;
+  $('ev-kind').textContent = t('monitor.kindFilter', { kind: kind ? KINDS[kind as EventKind] : t('monitor.all') });
   const list = state.events.filter((e) => (!room || e.room === room) && (!kind || e.kind === kind)).reverse();
   const box = $('events');
-  box.replaceChildren(...(list.length === 0 ? [el('p', 'Keine Ereignisse in der letzten Stunde.', 'dim')] : []));
+  box.replaceChildren(...(list.length === 0 ? [el('p', t('monitor.noEvents'), 'dim')] : []));
   for (const e of list) {
-    const b = el('button', `${clock(e.t)} · ${KINDS[e.kind] ?? e.kind}${e.room ? ` · Raum ${e.room}` : ''} · ${e.text}`);
+    const b = el('button', `${clock(e.t)} · ${KINDS[e.kind] ?? e.kind}${e.room ? t('monitor.eventRoom', { room: e.room }) : ''} · ${e.text}`);
     (b as HTMLButtonElement).type = 'button';
     b.onclick = () => jumpTo(e);
     box.append(b);
@@ -219,21 +224,21 @@ function askToken(text: string): void {
 
 async function poll(): Promise<void> {
   timer = 0;
-  if (!token) return askToken('🔒 Token eingeben (K3C_STATUS_TOKEN des Servers).');
+  if (!token) return askToken(t('monitor.tokenAsk'));
   busy = true;
   const res = await fetchMetrics(token, state.now);
   busy = false;
-  if (res.kind === 'unauthorized') return askToken('🔒 Token fehlt oder ist falsch, bitte neu eingeben.');
+  if (res.kind === 'unauthorized') return askToken(t('monitor.tokenBad'));
   offline = res.kind === 'offline';
   if (res.kind === 'ok') {
     state = applyDelta(state, res.data);
     failures = 0;
-    setStatus(`✅ Stand ${clock(state.now)} · Server seit ${clock(state.startedAt)}`);
+    setStatus(t('monitor.ok', { now: clock(state.now), since: clock(state.startedAt) }));
   } else {
     failures++;
     const wait = Math.round(nextDelay(failures) / 1000);
-    if (res.kind === 'off') setStatus('🚫 Diagnose aus, K3C_STATUS_TOKEN am Server setzen.', true);
-    else setStatus(`❌ Server nicht erreichbar, nächster Versuch in ${wait} s.`, true);
+    if (res.kind === 'off') setStatus(t('monitor.off'), true);
+    else setStatus(t('monitor.offline', { wait }), true);
   }
   render();
   schedule();

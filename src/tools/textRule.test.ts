@@ -3,14 +3,14 @@ import { describe, expect, it } from 'vitest';
 /**
  * PL2 AC-01 (B-322/AC-01): Die Werkzeug-Seiten holen ihre Texte aus `src/tools/texts.*.ts`. Wie `src/scenes/textRule.test.ts`:
  * Kein Zeichenketten-Literal mit Umlaut, ß oder zwei Wörtern mit Leerzeichen; HTML-Tags im Literal zählen nicht.
- * Ausgenommen: Kommentare, CSS-Werte (mit `;`), Zeilen mit `clientLog(` oder `console.`, die Textdateien selbst.
+ * Ausgenommen: Kommentare, CSS-Werte (mit `;`), Zeilen mit `clientLog(`, `console.`, `querySelector` (Selektor) oder `.font =`, die Textdateien selbst.
  */
 const sources = import.meta.glob(['./*.ts'], { query: '?raw', import: 'default', eager: true }) as Record<string, string>;
 
-/** Noch nicht umgestellt (PL2.2, PL2.3 leeren die Liste). */
+/** Noch nicht umgestellt (PL2.3 leert die Liste). */
 const OFFEN = [
-  './audioProbe.ts', './credits.ts', './dev.ts', './devTiles.ts', './dm.ts', './dmApi.ts', './gamepadTest.ts', './grafiken.ts', './monitor.ts',
-  './monitorChart.ts', './selection.ts', './spriteReference.ts', './testing.ts', './testScenarios.ts', './testTiles.ts',
+  './audioProbe.ts', './dev.ts', './devTiles.ts', './gamepadTest.ts', './selection.ts', './spriteReference.ts', './testing.ts',
+  './testScenarios.ts', './testTiles.ts',
 ];
 /** Reine Daten, keine Oberflächen-Texte. */
 const DATEN: Record<string, string> = {
@@ -42,7 +42,7 @@ function literals(src: string): string[] {
   const out: string[] = [];
   let inBlock = false;
   for (const line of src.split('\n')) {
-    if (/clientLog\(|console\./.test(line)) continue;
+    if (/clientLog\(|console\.|querySelector|\.font = /.test(line)) continue;
     let i = 0;
     while (i < line.length) {
       const two = line.slice(i, i + 2);
@@ -91,6 +91,7 @@ describe('Keine deutschen Text-Literale in den Werkzeug-Seiten (PL2 AC-01)', () 
       "clientLog('warn', 'Nachricht des Servers nicht lesbar');",
       "const c = { fontFamily: 'sans-serif', color: '#ffffff', k: t('level.load') };",
       'el.innerHTML = `<span class="mark"></span><span class="name"></span>`;',
+      "const items = document.querySelectorAll('main button, main input'); ctx.font = '12px system-ui, sans-serif';",
       "/* ein Block mit zwei Wörtern */ const d = 'wood';",
     ].join('\n');
     expect(germanLiterals(src)).toEqual(['Nacht naht!', ' wartet auf Bauer']);

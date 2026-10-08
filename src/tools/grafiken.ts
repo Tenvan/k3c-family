@@ -2,8 +2,10 @@ import { installPageChrome } from '../core/shell';
 import { GRAFIK_PACKS, type GrafikPack } from './grafikPacks';
 import { installSelection, type Selection } from './selection';
 import { installPadScroll } from './spriteReference';
+import { applyTexts, t, textOf } from './texts';
 
 installPageChrome();
+applyTexts();
 installPadScroll();
 
 interface ImageEntry {
@@ -15,18 +17,6 @@ interface ImageEntry {
 }
 
 const ZOOMS = [1, 2, 3, 4];
-const GROUP_TITLES: Record<string, string> = {
-  ebenen: 'Ebenen und Tilesets',
-  umgebung: 'Umgebung',
-  props: 'Props',
-  'props-einzeln': 'Props einzeln',
-  'tileset-einzeln': 'Tileset einzeln',
-  ressourcen: 'Ressourcen',
-  portale: 'Portale',
-  muenzen: 'Münzen',
-  icons: 'Symbole',
-  vorschau: 'Vorschau',
-};
 
 function el<K extends keyof HTMLElementTagNameMap>(tag: K, className?: string, text?: string): HTMLElementTagNameMap[K] {
   const node = document.createElement(tag);
@@ -36,7 +26,7 @@ function el<K extends keyof HTMLElementTagNameMap>(tag: K, className?: string, t
 }
 
 function renderZoom(root: HTMLElement): void {
-  root.append(el('span', undefined, 'Vergrößerung'));
+  root.append(el('span', undefined, t('grafik.zoom')));
   for (const z of ZOOMS) {
     const button = el('button', undefined, `${z}×`);
     button.type = 'button';
@@ -59,7 +49,7 @@ function renderImage(entry: ImageEntry, selection: Selection): HTMLElement {
   img.width = entry.w;
   img.height = entry.h;
   img.style.width = `calc(${entry.w}px * var(--z))`;
-  img.addEventListener('error', () => img.replaceWith(el('div', 'missing', 'Bild fehlt')));
+  img.addEventListener('error', () => img.replaceWith(el('div', 'missing', t('grafik.missing'))));
   figure.append(img, el('figcaption', undefined, `${entry.file.split('/').pop()} · ${entry.w}×${entry.h}`));
   return figure;
 }
@@ -73,7 +63,7 @@ function renderPack(pack: GrafikPack, images: ImageEntry[], selection: Selection
   title.style.paddingLeft = '7rem';
   section.append(title);
   const meta = el('p', 'meta');
-  const link = el('a', undefined, 'Quelle');
+  const link = el('a', undefined, t('grafik.source'));
   link.href = pack.source;
   link.target = '_blank';
   link.rel = 'noopener';
@@ -85,7 +75,7 @@ function renderPack(pack: GrafikPack, images: ImageEntry[], selection: Selection
   if (pack.licenseNote) section.append(el('p', 'warn', pack.licenseNote));
   const groups = [...new Set(images.map((i) => i.group))];
   for (const group of groups) {
-    section.append(el('h3', undefined, GROUP_TITLES[group] ?? group));
+    section.append(el('h3', undefined, textOf(`grafik.group.${group}`, group)));
     const row = el('div', 'imgs');
     images.filter((i) => i.group === group).forEach((i) => row.append(renderImage(i, selection)));
     section.append(row);
@@ -101,7 +91,7 @@ async function main(): Promise<void> {
     const selection = installSelection('k3c-auswahl-grafiken', 'Grafiken');
     for (const pack of GRAFIK_PACKS) root.append(renderPack(pack, index.filter((i) => i.pack === pack.id), selection));
   } catch {
-    root.append(el('p', 'missing', 'Die Bildliste grafik/index.json lässt sich nicht laden.'));
+    root.append(el('p', 'missing', t('grafik.noIndex')));
   }
 }
 

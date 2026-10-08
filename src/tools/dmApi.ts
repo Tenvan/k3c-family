@@ -1,4 +1,6 @@
 /** Zugriff der Dungeon-Master-Seite auf `/api/dev` (B-232, docs/protocol.md › HTTP: Dungeon-Master-Seite). */
+import { nameOf } from '../core/texts';
+import { t } from './texts';
 
 export interface DmRoom {
   code: string;
@@ -34,21 +36,21 @@ export type FetchLike = (
 
 const defaultFetch: FetchLike = (url, init) => fetch(url, init);
 
-/** Knöpfe der Seite; `slot` setzt die Seite für Aktionen, die einen Monarchen brauchen. */
+/** Knöpfe der Seite (Beschriftung beim Laden in der gewählten Sprache); `slot` setzt die Seite für Aktionen, die einen Monarchen brauchen. */
 export const DM_ACTIONS: { label: string; action: DmAction; needsSlot?: boolean }[] = [
-  { label: '🪙 +50 Gold', action: { action: 'gold', amount: 50 }, needsSlot: true },
+  { label: t('dm.gold'), action: { action: 'gold', amount: 50 }, needsSlot: true },
   ...['wood', 'stone', 'copper', 'iron', 'crystal'].map((resource) => ({
-    label: `📦 +20 ${resource}`,
+    label: t('dm.material', { resource: nameOf('res', resource, resource) }),
     action: { action: 'material', amount: 20, resource },
     needsSlot: true,
   })),
-  ...[1, 2, 4, 8].map((factor) => ({ label: `⏩ Zeit ${factor}×`, action: { action: 'timescale', factor } })),
-  { label: '⏸ Pause', action: { action: 'pause', paused: true } },
-  { label: '▶ Weiter', action: { action: 'pause', paused: false } },
-  { label: '🌙 Welle', action: { action: 'wave' }, needsSlot: true },
-  { label: '☀ Tag', action: { action: 'phase', phase: 'day' } },
-  { label: '🌆 Dämmerung', action: { action: 'phase', phase: 'dusk' } },
-  { label: '🌑 Nacht', action: { action: 'phase', phase: 'night' } },
+  ...[1, 2, 4, 8].map((factor) => ({ label: t('dm.timescale', { factor }), action: { action: 'timescale', factor } })),
+  { label: t('dm.pause'), action: { action: 'pause', paused: true } },
+  { label: t('dm.resume'), action: { action: 'pause', paused: false } },
+  { label: t('dm.wave'), action: { action: 'wave' }, needsSlot: true },
+  { label: t('dm.day'), action: { action: 'phase', phase: 'day' } },
+  { label: t('dm.dusk'), action: { action: 'phase', phase: 'dusk' } },
+  { label: t('dm.night'), action: { action: 'phase', phase: 'night' } },
 ];
 
 export const devUrl = (room?: string): string => (room ? `/api/dev?room=${encodeURIComponent(room)}` : '/api/dev');
@@ -83,8 +85,8 @@ export async function sendAction(room: string, action: DmAction, f: FetchLike = 
     const res = await f(devUrl(room), { method: 'POST', body: JSON.stringify(action) });
     if (res.ok) return null;
     const body = (await res.json().catch(() => null)) as { error?: string } | null;
-    return body?.error ?? `Fehler ${res.status}`;
+    return body?.error ?? t('level.httpError', { status: res.status });
   } catch {
-    return 'Server nicht erreichbar';
+    return t('dm.unreachable');
   }
 }

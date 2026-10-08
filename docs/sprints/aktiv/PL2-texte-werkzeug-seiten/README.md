@@ -57,7 +57,7 @@ keine
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
 | PL2.1 | `PL2.1-text-regel-level-sound.md` | Umsetzung | autonom | fertig |
-| PL2.2 | `PL2.2-monitor-dm-credits-grafiken.md` | Umsetzung | autonom | in Arbeit |
+| PL2.2 | `PL2.2-monitor-dm-credits-grafiken.md` | Umsetzung | autonom | fertig |
 | PL2.3 | `PL2.3-restliche-werkzeug-seiten.md` | Umsetzung | autonom | offen |
 | PL2.4 | `PL2.4-review.md` | Review | autonom | offen |
 | PL2.5 | `PL2.5-abnahme-sprachwechsel.md` | Umsetzung | Mensch | offen |
