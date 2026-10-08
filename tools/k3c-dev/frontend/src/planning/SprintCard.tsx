@@ -1,7 +1,7 @@
 import { Checkbox } from '@radix-ui/themes';
 import { backend, type GitHubSprint, type PlanSession, type PlanSprint } from '../api';
 import { StatusBadge, Tip, type Tone } from '../ui/parts';
-import { FoldButton, useFold } from './fold';
+import { FoldButton, headClick, useFold } from './fold';
 import { ghBadges, isNext } from './planning';
 import { CopyPrompt, DepLinks } from './PromptParts';
 import { pickable, promptSession, promptSprint } from './prompts';
@@ -19,6 +19,11 @@ export function ModeBadge({ agent = '', env = '' }: { agent?: string; env?: stri
 
 export const prioTone = (p = ''): Tone => (p === 'hoch' ? 'error' : p === 'mittel' ? 'warn' : 'neutral');
 
+/** Klassen einer Sprint-Karte: aktiv, erledigt, im Worktree, ausgewählt. */
+const cardClass = (s: PlanSprint, sel: string) =>
+  ['pl-card', 'pl-sprint', s.status === 'aktiv' && 'is-active', s.status === 'erledigt' && 'is-done', s.worktree && 'is-wt', sel === s.id && 'is-sel']
+    .filter(Boolean).join(' ');
+
 /** Sprung zu einer Sprint-Karte (Sprint-Abhängigkeit). */
 export const scrollToSprint = (id: string) =>
   document.getElementById(`pl-sp-${id}`)?.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
@@ -28,6 +33,8 @@ interface Props {
   gh?: GitHubSprint;
   sel: string;
   onSelect: (nr: string) => void;
+  /** Wählt den Sprint für das Detail (Klick auf den Kopf). */
+  onPick?: (id: string) => void;
   /** Markierte Sessions (Nr.) für den Sammel-Prompt. */
   checked: ReadonlySet<string>;
   onCheck: (nr: string, on: boolean) => void;
@@ -35,14 +42,13 @@ interface Props {
 
 /** Karte eines Sprints: Kopf mit Prio, Abhängigkeiten, Status, Spec, Worktree und Prompt, Fortschritt, Sessions
  *  (klickbar, markierbar, je mit Prompt), Tickets. */
-export function SprintCard({ sprint: s, gh, sel, onSelect, checked, onCheck }: Props) {
+export function SprintCard({ sprint: s, gh, sel, onSelect, onPick, checked, onCheck }: Props) {
   const done = s.sessions.filter((x) => x.status === 'fertig').length;
   const next = s.sessions.find(isNext);
   const [folded, toggle] = useFold(s.id);
-  const cls = ['pl-card', 'pl-sprint', s.status === 'aktiv' && 'is-active', s.status === 'erledigt' && 'is-done', s.worktree && 'is-wt'];
   return (
-    <div id={`pl-sp-${s.id}`} className={cls.filter(Boolean).join(' ')}>
-      <div className="pl-head">
+    <div id={`pl-sp-${s.id}`} className={cardClass(s, sel)}>
+      <div className="pl-head pl-clickable" onClick={headClick(toggle, () => onPick?.(s.id))}>
         <FoldButton folded={folded} onToggle={toggle} what={`Sprint ${s.id}`} />
         <strong>{s.id}</strong>
         <span className="pl-dim">{s.domain}</span>

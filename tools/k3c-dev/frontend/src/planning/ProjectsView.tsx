@@ -12,23 +12,24 @@ interface Props {
   sprints: PlanSprint[];
   tickets: PlanTicket[];
   sel: string;
+  onPick: (id: string) => void;
   renderSprint: (s: PlanSprint) => ReactNode;
   /** Lädt die Planung neu (nach einer Rang-Änderung). */
   reload: () => Promise<unknown>;
 }
 
 /** Arbeit nach Projekten (B-358): aktive nach Rang, ABN, „Ohne Projekt“, ruhende und erledigte eingeklappt. */
-export function ProjectsView({ data, sprints, tickets, sel, renderSprint, reload }: Props) {
+export function ProjectsView({ data, sprints, tickets, sel, onPick, renderSprint, reload }: Props) {
   const [error, setError] = useState<{ id: string; text: string } | null>(null);
   const move = (id: string, to: number) =>
     void moveRank((i, f, v) => backend.planningSet(i, f, v), id, to, reload).then((text) => setError(text ? { id, text } : null));
   return (
     <ProjectSections groups={groupProjects(data, sprints, tickets)} count={rankedCount(data.projects)} error={error}
-      onMove={move} data={data} sel={sel} renderSprint={renderSprint} />
+      onMove={move} data={data} sel={sel} onPick={onPick} renderSprint={renderSprint} />
   );
 }
 
-interface SectionProps extends Pick<Props, 'data' | 'sel' | 'renderSprint'> {
+interface SectionProps extends Pick<Props, 'data' | 'sel' | 'renderSprint'>, Partial<Pick<Props, 'onPick'>> {
   groups: ProjectGroups;
   count: number;
   error: { id: string; text: string } | null;
@@ -36,8 +37,8 @@ interface SectionProps extends Pick<Props, 'data' | 'sel' | 'renderSprint'> {
 }
 
 /** Bereiche der Projekt-Ansicht ohne Zustand, damit ein Test sie statisch rendert. */
-export function ProjectSections({ groups: g, count, error, onMove, data, sel, renderSprint }: SectionProps) {
-  const card = { data, sel, renderSprint };
+export function ProjectSections({ groups: g, count, error, onMove, data, sel, onPick, renderSprint }: SectionProps) {
+  const card = { data, sel, onPick, renderSprint };
   return (
     <>
       {g.active.map((v) => (

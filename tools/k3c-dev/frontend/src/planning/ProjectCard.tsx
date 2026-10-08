@@ -5,7 +5,7 @@ import { NoticeCard } from '../ui/parts';
 import { BacklogList } from './Backlog';
 import { CopyPrompt } from './PromptParts';
 import { promptSession } from './prompts';
-import { FoldButton, useFold } from './fold';
+import { FoldButton, headClick, unfold, useFold } from './fold';
 import { scrollToSprint } from './SprintCard';
 import { sessionProgress, stepRank, type ProjectView } from './projects';
 
@@ -18,19 +18,21 @@ interface Props {
   onMove?: (to: number) => void;
   data: PlanningData;
   sel: string;
+  /** Wählt Projekt oder Sprint für das Detail (ohne Umschalten der Auswahl). */
+  onPick?: (id: string) => void;
   renderSprint: (s: PlanSprint) => ReactNode;
 }
 
 /** Karte eines Projekts: Rang mit hoch/runter, Sprints in Reihenfolge mit Status und Fortschritt, nächste Session,
  *  darunter die Sprint-Karten der offenen Sprints und aufklappbar die Tickets ohne Sprint. */
-export function ProjectCard({ view, count, error, onMove, data, sel, renderSprint }: Props) {
+export function ProjectCard({ view, count, error, onMove, data, sel, onPick, renderSprint }: Props) {
   const { project: p, next } = view;
   const up = count === undefined ? null : stepRank(p, -1, count);
   const down = count === undefined ? null : stepRank(p, 1, count);
   const [folded, toggle] = useFold(p.id);
   return (
-    <div id={`pl-pj-${p.id}`} className={`pl-card pl-project is-${p.status}${folded ? ' is-folded' : ''}`}>
-      <div className="pl-head pl-project-head">
+    <div id={`pl-pj-${p.id}`} className={`pl-card pl-project is-${p.status}${folded ? ' is-folded' : ''}${sel === p.id ? ' is-sel' : ''}`}>
+      <div className="pl-head pl-project-head pl-clickable" onClick={headClick(toggle, () => onPick?.(p.id))}>
         <FoldButton folded={folded} onToggle={toggle} what={`Projekt ${p.id}`} />
         <span className="pl-rank" title={p.rang === '–' ? 'ohne Rang' : `Rang ${p.rang}`}>{p.rang === '–' ? '·' : p.rang}</span>
         <strong className="pl-project-id">{p.id}</strong>
@@ -45,7 +47,7 @@ export function ProjectCard({ view, count, error, onMove, data, sel, renderSprin
       </div>
       {error && <NoticeCard title="Rang nicht geändert" tone="error">{error}</NoticeCard>}
       <Flex gap="1" wrap="wrap" className="pl-chips">
-        {view.sprints.map((s) => <SprintChip key={s.id} s={s} onPick={() => { if (folded) toggle(); setTimeout(() => scrollToSprint(s.id), 0); }} />)}
+        {view.sprints.map((s) => <SprintChip key={s.id} s={s} onPick={() => { onPick?.(s.id); unfold([p.id, s.id]); setTimeout(() => scrollToSprint(s.id), 0); }} />)}
       </Flex>
       {!folded && next && (
         <Flex gap="2" align="center" wrap="wrap">

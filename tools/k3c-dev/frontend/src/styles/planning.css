@@ -103,3 +103,8 @@
 .pl-fold:hover { background: var(--gray-a4); color: var(--gray-12); }
 .pl-project.is-folded .pl-project-head { border-bottom: 0; padding-bottom: 0; }
 .pl-foldall { margin-left: auto; display: inline-flex; gap: 10px; font-size: 12px; font-weight: 400; }
+
+/* Workbench-Spec § 1: Kopf klickbar (auf/zu und auswählen), gewählte Karte mit Ring in Akzentfarbe. */
+.pl-clickable { cursor: pointer; }
+.pl-card.is-sel { box-shadow: 0 0 0 2px var(--accent-9); }
+.pl-detail-list { margin: 8px 0; padding-left: 18px; display: flex; flex-direction: column; gap: 4px; }
