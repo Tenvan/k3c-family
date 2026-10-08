@@ -1,6 +1,7 @@
 import { Button, Checkbox, Flex, Text, TextField } from '@radix-ui/themes';
 import { useEffect, useState } from 'react';
-import { backend, type GitHubData, type PlanningData } from '../api';
+import { backend, type GitHubData, type PlanningData, type PlanSprint } from '../api';
+import { ProjectsView } from './ProjectsView';
 import { errorText } from '../lib/errors';
 import { loadText, savePref } from '../lib/prefs';
 import { ActionButton, NoticeCard, StatusBadge } from '../ui/parts';
@@ -24,8 +25,8 @@ export function SprintsBacklog() {
     setFilterState(f);
     savePref(PREF, JSON.stringify(f));
   };
+  const load = () => backend.planningData().then((d) => { setData(d); setError(''); }, (e) => setError(errorText(e)));
   useEffect(() => {
-    const load = () => backend.planningData().then((d) => { setData(d); setError(''); }, (e) => setError(errorText(e)));
     void load();
     return backend.on('planning:changed', () => void load()); // Wächter in Go: Datei in docs/ geändert
   }, []);
@@ -37,6 +38,9 @@ export function SprintsBacklog() {
   const check = (nr: string, on: boolean) => setChecked((cur) => { const n = new Set(cur); if (on) n.add(nr); else n.delete(nr); return n; });
   // in Planungs-Reihenfolge; fertige oder verschwundene fallen heraus
   const picked = sprints.flatMap(openSessions).filter((it) => checked.has(it.session.nr));
+  const card = (s: PlanSprint) => (
+    <SprintCard key={s.id} sprint={s} gh={gh?.sprints[s.id.toUpperCase()]} sel={filter.sel} onSelect={select} checked={checked} onCheck={check} />
+  );
   return (
     <div className="pl-board">
       <FilterBar data={data} filter={filter} setFilter={setFilter} hits={sprints.length + tickets.length} />
@@ -47,13 +51,13 @@ export function SprintsBacklog() {
           {picked.length > 0 && (
             <div className="pl-picked">
               <Text size="1" weight="medium">{picked.length} Session{picked.length > 1 ? 's' : ''} markiert</Text>
-              <CopyPrompt prompt={promptSessions(picked)} what={`${picked.length} markierte Sessions`} />
+              <CopyPrompt prompt={promptSessions(picked, data.projects)} what={`${picked.length} markierte Sessions`} />
               <button type="button" className="pl-textlink" onClick={() => setChecked(new Set())}>Auswahl aufheben</button>
             </div>
           )}
-          {sprints.map((s) => (
-            <SprintCard key={s.id} sprint={s} gh={gh?.sprints[s.id.toUpperCase()]} sel={filter.sel} onSelect={select} checked={checked} onCheck={check} />
-          ))}
+          {data.projects?.length
+            ? <ProjectsView data={data} sprints={sprints} tickets={tickets} sel={filter.sel} renderSprint={card} reload={load} />
+            : sprints.map(card)}
           {sprints.length === 0 && <Text color="gray">Kein Sprint passt zum Filter.</Text>}
         </section>
         <section className="pl-col pl-right">
