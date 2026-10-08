@@ -1,15 +1,16 @@
 # PJ1 · INF · Projekte, Rang und Domäne je Session in Regeln, Vorlagen und Planungstest
 
-- **Status:** geplant
+- **Status:** erledigt
+- **Projekt:** –
 - **Domäne:** INF
 - **Prio:** hoch
-- **Reife:** Entwurf
+- **Reife:** bereit
 - **Einschiebbar:** nein
 - **Tickets:** B-355, B-356, B-338
-- **Start-Commit:** – (wird beim Aktivieren gesetzt: `git rev-parse --short origin/develop`)
-- **Spec:** Entwurf
+- **Start-Commit:** ffac0f9
+- **Spec:** freigegeben
 - **Revision:** 1
-- **Freigabe:** –
+- **Freigabe:** 2026-10-07, Chat, durch 🧑, Revision 1
 
 ## Ausgangslage
 
@@ -68,13 +69,17 @@ keine
 
 ## Sessions
 
-Entwurf. Vor dem Aktivieren jede Session als Datei nach `docs/vorlagen/session.md` schreiben, die Kriterien in Klammern werden ihr Feld `Kriterien`.
-
-- PJ1.1 Regeln und Glossar: `docs/arbeitsweise.md` (Ebenen, Rang, Auswahl, Domäne je Session, Sperre, Größe 3–6, Review über alle Domänen), `docs/glossar.md` (AC-02, AC-06, Glossar-Teil von AC-01).
-- PJ1.2 Vorlagen und Planungstest: `docs/vorlagen/projekt.md`, Felder `Projekt` und `Domäne`, `verworfen`, `docs/projekte/README.md`, `tests/planning.test.ts` mit Negativtests, Feld `Domäne` in allen Session-Dateien (AC-01, AC-03, AC-04, AC-05, AC-07, AC-08, AC-09).
-- PJ1.3 Review (Code-Sprint): alle Kriterien prüfen.
+| Nr. | Datei | Typ | Agent | Status |
+|---|---|---|---|---|
+| PJ1.1 | `PJ1.1-regeln-glossar.md` | Umsetzung | autonom | fertig |
+| PJ1.2 | `PJ1.2-vorlagen-felder.md` | Umsetzung | autonom | fertig |
+| PJ1.3 | `PJ1.3-planungstest-regeln.md` | Umsetzung | autonom | fertig |
+| PJ1.4 | `PJ1.4-review.md` | Review | autonom | fertig |
 
 ## Abnahme
 
-Wird von der Review-Session (Doku-Sprint: letzte Session) ausgefüllt, höchstens fünf Zeilen: Datum, Kriterien
-(Verweis auf Session-Ergebnisse), behobene Befunde, neue Tickets. Bis dahin `–`.
+2026-10-08, Review PJ1.4: AC-01, AC-02, AC-06 und AC-09 siehe PJ1.1 und PJ1.2, AC-03, AC-05 und AC-08 siehe PJ1.2, AC-04 und AC-07 siehe PJ1.3 (alle mit Nachweis, nichts umformuliert).
+Diff: 876 Dateien, je Planungsdatei genau eine Feldzeile; `task check` grün (`check:go` entfällt, keine Go-Änderung).
+Übergangsregel („je Domäne ein aktiver Sprint“ nur für Sprints mit `Projekt: –`) in Arbeitsweise und Test deckungsgleich.
+Behobene Befunde: keine (keine schweren Befunde). Neue Tickets: keine. B-338 bleibt `eingeplant` (AC-02 gehört zu PJ2).
+Version: v0.14.1 vorgeschlagen (Patch: Doku, Planung und Planungstest)

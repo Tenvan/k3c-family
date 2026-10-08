@@ -6,6 +6,7 @@
 - **Umgebung:** offline
 - **Status:** erledigt
 - **Sprint:** SP14
+- **Projekt:** –
 - **Erstellt:** 2026-10-02
 - **Spec:** freigegeben
 - **Revision:** 1

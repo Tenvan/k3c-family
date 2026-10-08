@@ -1,6 +1,7 @@
 # SP00 · INF · Arbeitsweise einführen
 
 - **Status:** erledigt
+- **Projekt:** –
 - **Domäne:** INF
 - **Prio:** hoch
 - **Reife:** bereit

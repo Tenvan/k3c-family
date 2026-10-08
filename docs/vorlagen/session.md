@@ -1,8 +1,9 @@
 # SP00.1 · Titel der Session
 
-- **Status:** offen | in Arbeit | fertig | blockiert
+- **Status:** offen | in Arbeit | fertig | blockiert | verworfen (Grund im Ergebnis)
 - **Typ:** Umsetzung | Review | Workshop
 - **Agent:** autonom | Mensch
+- **Domäne:** REG | SIM | SRV | CLI | PLAT | INF (genau eine; die Session ändert nur deren Dateien)
 - **Umgebung:** offline | live | ? (offline: ohne laufende Dienste prüfbar – Code, Unit-/Mock-Tests, Werkzeuge ohne Serverzugriff, worktree-tauglich; live: braucht laufenden Server, Browser oder Gerät)
 - **Branch:** sp00/1-kurzname
 - **Abhängig von:** – (oder SP00.1, B-000)

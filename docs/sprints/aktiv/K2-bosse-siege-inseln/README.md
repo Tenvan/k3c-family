@@ -1,6 +1,7 @@
 # K2 · SIM · Bosse, Siegvarianten und Inselwechsel
 
 - **Status:** aktiv
+- **Projekt:** –
 - **Domäne:** SIM
 - **Prio:** hoch
 - **Reife:** bereit

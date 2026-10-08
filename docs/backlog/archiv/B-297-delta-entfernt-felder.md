@@ -6,6 +6,7 @@
 - **Umgebung:** offline
 - **Status:** erledigt
 - **Sprint:** DL1
+- **Projekt:** –
 - **Erstellt:** 2026-10-05
 - **Spec:** freigegeben
 - **Revision:** 1

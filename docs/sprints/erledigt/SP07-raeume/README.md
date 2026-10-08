@@ -1,6 +1,7 @@
 # SP07 · SRV · Räume & WebSocket (Protokoll v2) in Go
 
 - **Status:** erledigt
+- **Projekt:** –
 - **Domäne:** SRV
 - **Prio:** hoch
 - **Reife:** bereit

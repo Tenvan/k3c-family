@@ -1,6 +1,7 @@
 # M7 · SRV · k3c-dev VII: Seiten Tasks, Planung und Git
 
 - **Status:** erledigt
+- **Projekt:** –
 - **Domäne:** SRV
 - **Prio:** mittel
 - **Reife:** bereit

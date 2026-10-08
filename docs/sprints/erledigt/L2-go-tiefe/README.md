@@ -1,6 +1,7 @@
 # L2 · INF · Go-Tiefe wie TypeScript zählen
 
 - **Status:** erledigt
+- **Projekt:** –
 - **Domäne:** INF
 - **Prio:** mittel
 - **Reife:** bereit

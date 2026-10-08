@@ -6,6 +6,7 @@
 - **Umgebung:** offline
 - **Status:** erledigt
 - **Sprint:** W9
+- **Projekt:** –
 - **Erstellt:** 2026-10-06
 - **Spec:** freigegeben
 - **Revision:** 1

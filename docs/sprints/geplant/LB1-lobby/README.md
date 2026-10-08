@@ -1,6 +1,7 @@
 # LB1 · CLI · Lobby zeigt Räume und startet Spiele
 
 - **Status:** geplant
+- **Projekt:** –
 - **Domäne:** CLI
 - **Prio:** mittel
 - **Reife:** Entwurf

@@ -3,6 +3,7 @@
 - **Status:** offen
 - **Typ:** Workshop
 - **Agent:** Mensch
+- **Domäne:** REG
 - **Umgebung:** offline
 - **Branch:** bal4/2-workshop-abweichungen
 - **Abhängig von:** BAL4.1

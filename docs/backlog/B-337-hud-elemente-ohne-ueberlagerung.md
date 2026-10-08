@@ -6,6 +6,7 @@
 - **Umgebung:** live
 - **Status:** eingeplant
 - **Sprint:** U6
+- **Projekt:** –
 - **Erstellt:** 2026-10-07
 - **Spec:** Entwurf
 - **Revision:** 1

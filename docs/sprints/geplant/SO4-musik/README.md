@@ -1,6 +1,7 @@
 # SO4 · CLI · Musik je Zustand
 
 - **Status:** geplant
+- **Projekt:** –
 - **Domäne:** CLI
 - **Prio:** hoch
 - **Reife:** bereit

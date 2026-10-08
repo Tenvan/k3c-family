@@ -1,6 +1,7 @@
 # GR2 · CLI · Grafik-Suche für Lücken
 
 - **Status:** erledigt
+- **Projekt:** –
 - **Domäne:** CLI
 - **Prio:** mittel
 - **Reife:** bereit

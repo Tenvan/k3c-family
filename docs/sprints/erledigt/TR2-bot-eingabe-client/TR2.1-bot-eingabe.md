@@ -3,6 +3,7 @@
 - **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
+- **Domäne:** PLAT
 - **Umgebung:** offline
 - **Branch:** tr2/1-bot-eingabe
 - **Abhängig von:** –

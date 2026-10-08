@@ -6,6 +6,7 @@
 - **Umgebung:** offline
 - **Status:** eingeplant
 - **Sprint:** M11
+- **Projekt:** –
 - **Erstellt:** 2026-10-07
 - **Spec:** freigegeben
 - **Revision:** 1

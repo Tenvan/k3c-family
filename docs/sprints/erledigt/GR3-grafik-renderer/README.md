@@ -1,6 +1,7 @@
 # GR3 · CLI · Grafik im Renderer
 
 - **Status:** erledigt
+- **Projekt:** –
 - **Domäne:** CLI
 - **Prio:** mittel
 - **Reife:** bereit

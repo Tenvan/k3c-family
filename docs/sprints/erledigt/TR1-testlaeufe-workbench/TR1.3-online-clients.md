@@ -3,6 +3,7 @@
 - **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
+- **Domäne:** SRV
 - **Umgebung:** live
 - **Branch:** tr1/3-online-clients
 - **Abhängig von:** TR1.2, TR2.1 (Bot-Eingabe im Client, B-349) für den Nachweis im Browser

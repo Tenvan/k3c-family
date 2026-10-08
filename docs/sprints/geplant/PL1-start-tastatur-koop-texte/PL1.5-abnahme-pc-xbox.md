@@ -3,6 +3,7 @@
 - **Status:** offen
 - **Typ:** Umsetzung
 - **Agent:** Mensch
+- **Domäne:** PLAT
 - **Umgebung:** live
 - **Branch:** pl1/5-abnahme
 - **Abhängig von:** PL1.4

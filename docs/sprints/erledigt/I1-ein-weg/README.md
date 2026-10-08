@@ -1,6 +1,7 @@
 # I1 · INF · Ein Weg für alle Befehle: `task`
 
 - **Status:** erledigt
+- **Projekt:** –
 - **Domäne:** INF
 - **Prio:** hoch
 - **Reife:** bereit

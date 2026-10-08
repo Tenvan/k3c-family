@@ -1,6 +1,7 @@
 # S4 · CLI · Kamera je Stufe und Layouts 1–4
 
 - **Status:** erledigt
+- **Projekt:** –
 - **Domäne:** CLI
 - **Prio:** hoch
 - **Reife:** bereit

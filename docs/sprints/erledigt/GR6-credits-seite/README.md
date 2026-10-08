@@ -1,6 +1,7 @@
 # GR6 · PLAT · Credits-Seite
 
 - **Status:** erledigt
+- **Projekt:** –
 - **Domäne:** PLAT
 - **Prio:** mittel
 - **Reife:** bereit

@@ -69,7 +69,6 @@ dann über den Go-Server mit mehreren Räumen und gemischten Spielern.
 | S9 | CLI | hoch | Rückmeldung für Schlag und Skills, ein Hinweis je Spieler | Jeder Tastendruck auf Schlag oder Skill ist sichtbar, das Aktionen-Overlay zeigt je Spieler einen Hinweis | bereit | `geplant/S9-rueckmeldung-overlay/` |
 | U6 | CLI | hoch | HUD ohne Überlagerung, Optionen per Touch | Optionen per Touch bedienbar, HUD bei 1–4 Spielern ohne Überlagerung, Gesamtabnahme Anzeige | Entwurf | `geplant/U6-hud-ohne-ueberlagerung/` |
 | RG3 | REG | hoch | Miniboss Wald: Burg hält Nacht 5 | `task balance`: Burg hält Nacht 1–5 im Korridor, Grad-Kurven monoton | Entwurf | `geplant/RG3-miniboss-wald-nacht-5/` |
-| PJ1 | INF | hoch | Projekte, Rang und Domäne je Session in Regeln, Vorlagen und Planungstest | – | Entwurf | `geplant/PJ1-projekte-regeln/` |
 | PJ2 | SRV | hoch | k3c-dev plant mit Projekten: plan-Tools und Planungsseite | – | Entwurf | `geplant/PJ2-projekte-k3c-dev/` |
 | PJ3 | INF | hoch | Planung in Projekte umziehen und aufräumen | – | Entwurf | `geplant/PJ3-planung-umziehen/` |
 
@@ -183,3 +182,4 @@ Gesamtplan und Begründung: [`../plan-weiterentwicklung.md`](../plan-weiterentwi
 | M9 | k3c-dev in Worktrees und Markdown-Ansicht: Checkout in Antworten, Vite-Watcher, nummerierte Listen (B-275, B-213; Ursache des fehlenden Headers: B-341) | `erledigt/M9-dev-worktrees/` |
 | TR1 | Testläufe über `sim_test` in der Workbench: offline/online, headless/1–4 Clients (B-348; Browser-Nachweis nach TR2.1) | `erledigt/TR1-testlaeufe-workbench/` |
 | TR2 | Bot-Eingabe im Client: `BotInput` und `?botfeed` in `src/input/` (B-349; Einbindung ins Spiel: B-353, TR3) | `erledigt/TR2-bot-eingabe-client/` |
+| PJ1 | Projekte, Rang und Domäne je Session in Regeln, Vorlagen und Planungstest | `erledigt/PJ1-projekte-regeln/` |

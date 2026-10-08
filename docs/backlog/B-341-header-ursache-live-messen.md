@@ -6,6 +6,7 @@
 - **Umgebung:** live
 - **Status:** offen
 - **Sprint:** –
+- **Projekt:** –
 - **Erstellt:** 2026-10-07
 - **Spec:** Entwurf
 - **Revision:** 1

@@ -1,6 +1,7 @@
 # LP1 · PLAT · Landingpage für Spieler, Entwicklerseite für Werkzeuge
 
 - **Status:** aktiv
+- **Projekt:** –
 - **Domäne:** PLAT
 - **Prio:** hoch
 - **Reife:** bereit

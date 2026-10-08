@@ -1,6 +1,7 @@
 # M8 · SRV · k3c-dev VIII: Planung über MCP, React-Planungsseite, GitHub-Status
 
 - **Status:** erledigt
+- **Projekt:** –
 - **Domäne:** SRV
 - **Prio:** hoch
 - **Reife:** bereit

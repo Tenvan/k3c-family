@@ -1,6 +1,7 @@
 # M5 · SRV · k3c-dev V: MCP-Seite mit Monitoren und Statistik
 
 - **Status:** erledigt
+- **Projekt:** –
 - **Domäne:** SRV
 - **Prio:** mittel
 - **Reife:** bereit

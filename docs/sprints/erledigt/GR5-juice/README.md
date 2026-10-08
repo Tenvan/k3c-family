@@ -1,6 +1,7 @@
 # GR5 · CLI · Juice: Treffer, Screenshake, Münzen
 
 - **Status:** erledigt
+- **Projekt:** –
 - **Domäne:** CLI
 - **Prio:** mittel
 - **Reife:** bereit

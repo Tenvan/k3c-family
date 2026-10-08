@@ -3,6 +3,7 @@
 - **Status:** offen
 - **Typ:** Workshop
 - **Agent:** Mensch
+- **Domäne:** PLAT
 - **Umgebung:** live
 - **Branch:** dbg3/4-abnahme-handy
 - **Abhängig von:** –

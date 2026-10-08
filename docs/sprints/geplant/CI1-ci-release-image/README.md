@@ -1,6 +1,7 @@
 # CI1 · INF · CI-Nachweis, Release-Image ohne Dev-Mode, Test-Abdeckung
 
 - **Status:** geplant
+- **Projekt:** –
 - **Domäne:** INF
 - **Prio:** hoch
 - **Reife:** Entwurf

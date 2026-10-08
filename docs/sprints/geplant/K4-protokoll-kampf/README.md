@@ -1,6 +1,7 @@
 # K4 · SRV · Protokoll für Bosse, Events und Inselwechsel
 
 - **Status:** geplant
+- **Projekt:** –
 - **Domäne:** SRV
 - **Prio:** hoch
 - **Reife:** bereit

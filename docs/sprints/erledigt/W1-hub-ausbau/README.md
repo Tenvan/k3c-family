@@ -1,6 +1,7 @@
 # W1 · SIM · Hub-Ausbau und Mauerstufen
 
 - **Status:** erledigt
+- **Projekt:** –
 - **Domäne:** SIM
 - **Prio:** hoch
 - **Reife:** bereit

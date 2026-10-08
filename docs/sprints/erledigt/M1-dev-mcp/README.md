@@ -1,6 +1,7 @@
 # M1 · SRV · k3c-dev I: MCP-Kern über HTTP
 
 - **Status:** erledigt
+- **Projekt:** –
 - **Domäne:** SRV
 - **Prio:** mittel
 - **Reife:** bereit

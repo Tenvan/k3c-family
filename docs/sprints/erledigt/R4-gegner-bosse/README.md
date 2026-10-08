@@ -1,6 +1,7 @@
 # R4 · REG · Regelwerk III – Gegner, Wellen, Bosse, Events
 
 - **Status:** erledigt
+- **Projekt:** –
 - **Domäne:** REG
 - **Prio:** hoch
 - **Reife:** bereit

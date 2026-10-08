@@ -1,6 +1,7 @@
 # BT1 · SRV · Server im Heimnetz finden, Windows-Starter, Start mit Seed
 
 - **Status:** geplant
+- **Projekt:** –
 - **Domäne:** SRV
 - **Prio:** niedrig
 - **Reife:** Entwurf

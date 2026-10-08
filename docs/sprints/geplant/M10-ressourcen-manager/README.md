@@ -1,6 +1,7 @@
 # M10 · SRV · Ressourcen-Manager für Grafik- und Sound-Slots in k3c-dev
 
 - **Status:** geplant
+- **Projekt:** –
 - **Domäne:** SRV
 - **Prio:** mittel
 - **Reife:** Entwurf

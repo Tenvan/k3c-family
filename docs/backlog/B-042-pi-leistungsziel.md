@@ -6,6 +6,7 @@
 - **Umgebung:** live
 - **Status:** eingeplant
 - **Sprint:** LT1
+- **Projekt:** –
 - **Erstellt:** 2026-09-30
 - **Spec:** freigegeben
 - **Revision:** 1

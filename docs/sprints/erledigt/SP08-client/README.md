@@ -1,6 +1,7 @@
 # SP08 · CLI · Browser als reiner Client
 
 - **Status:** erledigt
+- **Projekt:** –
 - **Domäne:** CLI
 - **Prio:** hoch
 - **Reife:** bereit

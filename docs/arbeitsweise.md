@@ -1,15 +1,19 @@
 # Arbeitsweise
 
-**Ticket** ([`backlog/`](backlog/)) → **Sprint** (eine Domäne, 2–4 Sessions) → **Session** (ein Commit). **Ein PR je Sprint.**
+**Projekt** (Thema mit Rang) → **Sprint** (3–6 Sessions, ein PR) → **Session** (eine Domäne, ein Commit).
+**Tickets** ([`backlog/`](backlog/)) gehören zu einem Projekt und werden in Sprints eingeplant. **Ein PR je Sprint.**
 Ein Code-Sprint ist erst fertig, wenn seine **Review-Session** ihn abgenommen hat (leicht, siehe unten).
-Übersicht aller Sprints: [`sprints/README.md`](sprints/README.md). Zielbild: [`decisions/001-server-engine-go.md`](decisions/001-server-engine-go.md).
+Übersicht der Projekte: [`projekte/README.md`](projekte/README.md), aller Sprints: [`sprints/README.md`](sprints/README.md).
+Zielbild: [`decisions/001-server-engine-go.md`](decisions/001-server-engine-go.md).
 
 ## Ablage
 
 ```text
 docs/
   arbeitsweise.md             diese Datei (einzige Prozess-Beschreibung)
-  vorlagen/                   Pflicht-Vorlagen: ticket.md, sprint.md, session.md
+  vorlagen/                   Pflicht-Vorlagen: projekt.md, ticket.md, sprint.md, session.md
+  projekte/README.md          Rangliste aller Projekte
+  projekte/XXX-name.md        ein Projekt: Ziel, Status, Rang, Sprints in Reihenfolge
   backlog/README.md           Index aller Tickets (eine Zeile pro Ticket)
   backlog/B-NNN-kurzname.md   ein offenes oder eingeplantes Ticket pro Datei
   backlog/archiv/B-NNN-…      erledigte und verworfene Tickets (gleicher Dateiname, per `git mv`)
@@ -19,7 +23,7 @@ docs/
   sprints/erledigt/…          abgeschlossene Sprints
 ```
 
-**Lesen:** `sprints/aktiv/` immer, `sprints/geplant/` nur beim Planen, `sprints/erledigt/` und `backlog/archiv/` nur auf ausdrückliche Nachfrage.
+**Lesen:** `projekte/README.md` und `sprints/aktiv/` immer, `sprints/geplant/` nur beim Planen, `sprints/erledigt/` und `backlog/archiv/` nur auf ausdrückliche Nachfrage.
 Setzt eine Session ein Ticket auf `erledigt` oder `verworfen`, verschiebt sie es nach `backlog/archiv/` und die Index-Zeile in den Abschnitt „Archiv“.
 
 **Vorlagen sind Pflicht.** Jedes Ticket, jeder Sprint und jede Session entsteht als Kopie der Vorlage aus
@@ -70,9 +74,11 @@ Eine Session muss **ohne Rückfragen und ohne Planungs-Werkzeuge** abzuarbeiten 
 
 1. `docs/sprints/aktiv/*/README.md` lesen. Liegt `sprint/<präfix>` schon auf `origin` (`git ls-remote --heads origin
    sprint/<präfix>`), gilt der Stand der Sprint-Dateien dort (`git show origin/sprint/<präfix>:<Pfad>`), sonst der von
-   `develop`. Die erste Session mit `Status: offen`, `Agent: autonom` und erledigten Abhängigkeiten nehmen, aus dem Sprint
-   mit der höchsten **Prio** (hoch vor mittel vor niedrig vor `?`, bei Gleichstand Fahrplan-Reihenfolge).
-   Gibt es keine: **nichts tun** und das melden.
+   `develop`. Die nächste Session ergibt sich aus dem **Rang** (`projekte/README.md`): aktives Projekt mit dem kleinsten
+   Rang → sein aktiver Sprint → erste Session mit `Status: offen`, `Agent: autonom` und erledigten Abhängigkeiten.
+   Gibt es dort keine, kommt das Projekt mit dem nächsten Rang. Die **Domäne** der Session darf nicht gesperrt sein:
+   Steht auf einem anderen Sprint-Branch (`git ls-remote --heads origin 'sprint/*'`) eine Session derselben Domäne auf
+   `in Arbeit`, die nächste passende Session nehmen. Gibt es keine: **nichts tun** und das melden.
 2. Sprint-Branch auschecken (fehlt er: von `origin/develop` anlegen, die erste Session setzt `Start-Commit`).
    Session-Datei vollständig lesen, `Status: in Arbeit` setzen, committen und sofort `git push -u origin sprint/<präfix>`
    (beansprucht die Session; scheitert der Push, hat ein anderer Lauf sie: neu holen und bei 1. beginnen).
@@ -97,8 +103,11 @@ Eine Session pro Lauf. Eine Review-Session nie im selben Lauf wie eine Umsetzung
 
 ## Domänen
 
-Jeder Sprint gehört zu **genau einer Domäne** und ändert nur deren Dateien (plus Tests und Doku dazu).
-Was eine andere Domäne braucht, wird ein Ticket.
+Jede **Session** gehört zu **genau einer Domäne** (Feld `Domäne`) und ändert nur deren Dateien (plus Tests und Doku dazu).
+Ein Sprint darf Sessions mehrerer Domänen **nacheinander** enthalten (z. B. SIM → SRV → CLI); sein Feld `Domäne` nennt
+sie in der Reihenfolge der Sessions. Was eine Domäne außerhalb des Sprints braucht, wird ein Ticket.
+**Sperre:** Eine Session `in Arbeit` sperrt ihre Domäne; parallele Läufe arbeiten nur in verschiedenen Domänen
+(siehe Autonomer Ablauf, Schritt 1).
 
 | Kürzel | Domäne | Dateien |
 |---|---|---|
@@ -118,36 +127,54 @@ Grenzfälle:
 - **Alt-Engine löschen (SP09, B-049):** INF löscht `src/world/`, `src/online/room.ts`, `src/online/wsServer.ts`, `server/*.mjs`,
   `vite.server.config.ts` und zieht dafür Importe in `src/scenes/`, `src/online/`, `src/core/`, Dev-Server, `Taskfile.yml`, CI,
   `tools/k3c-dev/services.json` und die Landingpage-Hinweise für GitHub Pages (B-032) nach. Neue Funktionen gehören nicht dazu.
-- **Feature-Kette:** Ein neues Spielelement läuft als REG → SIM → CLI in direkt aufeinanderfolgenden Sprints.
+- **Feature-Kette:** Ein neues Spielelement läuft als REG → SIM → CLI, als Sessions eines Sprints oder als
+  aufeinanderfolgende Sprints desselben Projekts.
+
+## Projekte und Rang
+
+Ein **Projekt** bündelt die Sprints eines Themas (z. B. Grafik, Sound, Leistung & Stabilität) in fester Reihenfolge.
+Datei `projekte/XXX-name.md` nach Vorlage, `XXX` = Kürzel aus drei Großbuchstaben.
+
+- **Status:** `aktiv` (wird abgearbeitet), `ruht` (zurückgestellt, wird nie gewählt) oder `erledigt`.
+- **Rang:** Nur aktive Projekte haben einen Rang, eindeutig und lückenlos ab 1; er ist die **einzige Reihenfolge** der
+  Arbeit. Den Rang setzt 🧑. `ruht` und `erledigt` tragen `Rang: –`.
+- **Sprints:** Die Tabelle im Projekt nennt seine Sprints in Abarbeitungs-Reihenfolge; jeder Sprint nennt sein Projekt
+  im Feld `Projekt`. Je Projekt ist **höchstens ein Sprint aktiv**; ein Sprint, in dem nur noch Sessions mit
+  `Agent: Mensch` offen sind, zählt nicht.
+- **Tickets** tragen ihr Projekt im Feld `Projekt`, auch ohne Sprint. Die **Ticket-Prio** ordnet Tickets innerhalb eines
+  Projekts beim Einplanen. `Ziel-Tickets` eines Projekts beschreiben das Thema als Ganzes (z. B. B-011).
+- **Abnahmen am Gerät** sammelt das Projekt `ABN` ohne Rang; es läuft neben der Rangfolge, wann immer ein Gerät da ist.
 
 ## Sprint-Lebenslauf
 
 1. **Geplant:** Ordner `sprints/geplant/SPnn-name/` mit `README.md` nach Vorlage, `Spec: Entwurf`. `Reife: Entwurf`
    erlaubt Stichpunkte für die Sessions, die Kriterien stehen trotzdem schon fest.
 2. **Bereit machen** (Planung, meist am Ende des vorigen Reviews): Tickets sichten und bewerten, Offene Fragen klären,
-   jede Session als Datei nach Vorlage schreiben (Feld `Kriterien`), `Reife: bereit`. Nur der **nächste** Sprint je Domäne wird so
-   detailliert. Danach 🧑 um Freigabe der Spec bitten.
+   jede Session als Datei nach Vorlage schreiben (Felder `Domäne`, `Kriterien`), `Reife: bereit`. Nur der **nächste** Sprint je
+   Projekt wird so detailliert. Danach 🧑 um Freigabe der Spec bitten.
 3. **Aktivieren** (meist in der Review-Session des vorigen Sprints), nur mit `Spec: freigegeben`:
    `git mv docs/sprints/geplant/SPnn-name docs/sprints/aktiv/`,
-   `Status: aktiv`, Fahrplan in `sprints/README.md` anpassen. Höchstens ein aktiver Sprint **je Domäne**;
-   einschiebbare Sprints (`Einschiebbar: ja`) zählen nicht mit (B-174).
+   `Status: aktiv`, Fahrplan in `sprints/README.md` anpassen. Höchstens ein aktiver Sprint **je Projekt**; aktiviert
+   wird der nächste Sprint aus der Tabelle des Projekts.
    Die Aktivierung ist der erste Commit auf `sprint/<präfix>`; ein Sprint mit Branch auf `origin`
    (`git ls-remote --heads origin 'sprint/*'`) gilt als aktiv, auch solange sein PR noch offen ist.
    Das Feld `Start-Commit` setzt die **erste Session** des Sprints: `git rev-parse --short origin/develop` beim Anlegen des Sprint-Branchs.
 4. **Abschließen:** Erledigt ist ein Sprint erst, wenn **alle** Sessions `fertig` oder `verworfen` sind. Die letzte
    davon (meist das Review, sonst die letzte Hardware-Session) verschiebt den Ordner nach `sprints/erledigt/` und setzt `Status: erledigt`.
 
-- **Prio:** Jeder Sprint trägt die **höchste Prio seiner Tickets** (ohne Tickets frei gewählt). `plan_create` und
-  `plan_set` (mit `Tickets`) leiten sie ab, `tests/planning.test.ts` prüft sie. Ändert sich die Prio eines Tickets, zieht
-  die Sprint-Prio mit. Aktiviert und abgearbeitet wird nach Prio, bei Gleichstand in Fahrplan-Reihenfolge.
+- **Reihenfolge:** Aktiviert und abgearbeitet wird nach dem **Rang** der Projekte und der Sprint-Tabelle im Projekt
+  (Abschnitt „Projekte und Rang“). Eine Sprint-Prio gibt es nicht mehr; die Prio gehört zum Ticket.
 - **Umgebung:** Ticket und Session tragen `offline` (ohne laufende Dienste prüfbar: Code, Unit-/Mock-Tests, Werkzeuge
   ohne Serverzugriff) oder `live` (braucht laufenden Server, Browser oder Gerät); `?` nur bis zur Einordnung beim
   Einplanen. Nur Sessions mit `Agent: autonom` und `Umgebung: offline` dürfen in einem eigenen Worktree ohne Rückfrage
   laufen; `live` arbeitet im Checkout mit den laufenden Diensten.
-- **Klein:** 2–4 Sessions. In Code-Sprints ist die letzte das **Review**; Doku- und Planungs-Sprints (nur `docs/`)
-  haben keins, ihre letzte Session schließt den Sprint ab (Schritte 4–5 der Review-Session). Mehr Arbeit → zweiter Sprint.
-- **Blockade** (🧑 fehlt): Sprint bleibt aktiv, blockierte Session `Status: blockiert`. Ein einschiebbarer Sprint oder
-  der nächste Sprint einer anderen Domäne darf vorgezogen werden.
+- **Klein:** 3–6 Sessions. In Code-Sprints ist die letzte das **Review**; Doku- und Planungs-Sprints (nur `docs/`)
+  haben keins, ihre letzte Session schließt den Sprint ab (Schritte 4–5 der Review-Session). Mehr Arbeit → nächster
+  Sprint im selben Projekt.
+- **Blockade** (🧑 fehlt): Sprint bleibt aktiv, blockierte Session `Status: blockiert`. Die Arbeit geht im Projekt mit
+  dem nächsten Rang weiter (Autonomer Ablauf, Schritt 1).
+- **Verworfen:** Eine Session, die nicht mehr durchgeführt wird, bekommt `Status: verworfen` mit Grund im Ergebnis
+  (z. B. in ein anderes Projekt verschoben); sie zählt beim Abschließen wie `fertig` (B-338).
 - **Hardware entkoppelt** (Beschluss 🧑 2026-10-03): Alles, was ein Gerät braucht (Xbox, TV, Pi, Handy, Controller),
   wartet nicht auf die App und die App wartet nicht darauf. Bis zur Validierung gelten die **angenommenen Werte**
   (`plan-weiterentwicklung.md` § 11.6); Code und Doku nennen sie „angenommen (Quelle)“. Eine Hardware-Session
@@ -156,11 +183,15 @@ Grenzfälle:
   der Sprint bleibt aber **aktiv**, bis die Hardware-Session fertig ist (entkoppelt heißt: weiter zum nächsten Sprint,
   nicht erledigt). Offene Hardware-Sessions stehen im Fahrplan unter „Offen am Gerät“ und werden erledigt, wenn das
   Gerät da ist; weicht das Ergebnis von der Annahme ab, entsteht ein Ticket (die Arbeit dahinter läuft weiter). Ein
-  aktiver Sprint, in dem nur noch Sessions mit `Agent: Mensch` offen sind, sperrt seine Domäne nicht (`tests/planning.test.ts`).
+  aktiver Sprint, in dem nur noch Sessions mit `Agent: Mensch` offen sind, zählt nicht als aktiver Sprint seines
+  Projekts (`tests/planning.test.ts`).
 - **Richtwert Session:** ein Commit mit ≤ ~400 geänderten Code-Zeilen (ohne Bilder, Daten-JSON, Lockfiles).
 - **Übergang:** Sprints, die vor dieser Regel (2026-10-03) schon Session-PRs hatten (F4), schließen nach altem Ablauf ab
   (Review-Session mit eigenem PR). Ab dem nächsten aktivierten Sprint gilt ein PR je Sprint.
-- **Commit-Titel** mit Domäne: `feat(sim): Taunt`, `fix(srv): Raum aufräumen`, `docs(reg): Wirtschaft v1`.
+- **Übergang Projekte (bis PJ3, B-359):** Solange Sprints und Tickets noch `Projekt: –` tragen, gilt für diese Sprints
+  die alte Reihenfolge (Prio, dann Fahrplan) und „höchstens ein aktiver Sprint je Domäne“. Die Sprint-Felder `Prio`
+  und `Einschiebbar` stehen noch in den Dateien, weil k3c-dev sie liest; sie entfallen mit PJ2 (B-357).
+- **Commit-Titel** mit der Domäne der Session: `feat(sim): Taunt`, `fix(srv): Raum aufräumen`, `docs(reg): Wirtschaft v1`.
 
 ## Review-Session (Sprint-Abnahme) 🔍
 
@@ -168,7 +199,8 @@ Leicht und billig: Die Automatik prüft die Komplexität, das Review sucht nur *
 Modell (z. B. Sonnet) reicht.
 
 1. `task check` und `task check:go` → grün. Damit gelten die Grenzen aus dem Komplexitäts-Budget als geprüft.
-2. `git fetch && git diff origin/develop...origin/sprint/<präfix>` lesen (alles, was der Sprint ändert), **nur den Diff**, nicht jede Datei vollständig.
+2. `git fetch && git diff origin/develop...origin/sprint/<präfix>` lesen (alles, was der Sprint ändert, in **allen**
+   Domänen seiner Sessions), **nur den Diff**, nicht jede Datei vollständig.
 3. Nur diese Befunde zählen:
    - falsches Verhalten oder Datenverlust (Spielstände, Berichte, Dateien)
    - Sicherheit: Pfade, Shell-Aufrufe, ungeprüfte Eingaben von außen
@@ -176,8 +208,8 @@ Modell (z. B. Sonnet) reicht.
    - Regeln aus `CLAUDE.md` verletzt (Seiten, Vollbild, B-Taste)
    - ein Kriterium der Spec ohne Nachweis oder umformuliert, damit es zum Code passt
 
-   Stil, Doku, Benennung, mögliche Vereinfachungen sind **kein** Befund. Schwere Befunde in der Domäne im Review-Commit
-   beheben, außerhalb → Ticket. Das Review läuft auf dem Sprint-Branch, nie im selben Lauf wie eine Umsetzung.
+   Stil, Doku, Benennung, mögliche Vereinfachungen sind **kein** Befund. Schwere Befunde in den Domänen des Sprints
+   im Review-Commit beheben, außerhalb → Ticket. Die Review-Session trägt die Domäne der letzten Umsetzungs-Session. Das Review läuft auf dem Sprint-Branch, nie im selben Lauf wie eine Umsetzung.
 4. **Abnahme** in der Sprint-README, höchstens fünf Zeilen: Datum, Kriterien (Verweis auf die Session-Ergebnisse,
    `verschoben` mit Ticket), behobene Befunde, neue Tickets.
 5. Sind alle anderen Sessions fertig: Sprint-Ordner nach `sprints/erledigt/` verschieben, `Status: erledigt`; sonst bleibt

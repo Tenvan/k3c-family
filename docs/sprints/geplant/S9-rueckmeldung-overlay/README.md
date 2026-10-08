@@ -1,6 +1,7 @@
 # S9 · CLI · Rückmeldung für Schlag und Skills, ein Hinweis je Spieler
 
 - **Status:** geplant
+- **Projekt:** –
 - **Domäne:** CLI
 - **Prio:** hoch
 - **Reife:** bereit

@@ -6,6 +6,7 @@
 - **Umgebung:** offline
 - **Status:** erledigt
 - **Sprint:** –
+- **Projekt:** –
 - **Erstellt:** 2026-10-06
 - **Spec:** Entwurf
 - **Revision:** 1

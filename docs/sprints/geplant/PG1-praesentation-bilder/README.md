@@ -1,6 +1,7 @@
 # PG1 · PLAT · Präsentationsseite mit echten Spielbildern
 
 - **Status:** geplant
+- **Projekt:** –
 - **Domäne:** PLAT
 - **Prio:** niedrig
 - **Reife:** Entwurf

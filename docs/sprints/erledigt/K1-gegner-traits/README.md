@@ -1,6 +1,7 @@
 # K1 · SIM · Gegner-Traits, neue Gegner und Elite-KI
 
 - **Status:** erledigt
+- **Projekt:** –
 - **Domäne:** SIM
 - **Prio:** mittel
 - **Reife:** bereit

@@ -1,6 +1,7 @@
 # U1 · CLI · Radar im HUD
 
 - **Status:** erledigt
+- **Projekt:** –
 - **Domäne:** CLI
 - **Prio:** mittel
 - **Reife:** bereit

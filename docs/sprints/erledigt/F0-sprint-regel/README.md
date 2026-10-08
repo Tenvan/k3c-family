@@ -1,6 +1,7 @@
 # F0 · INF · Parallele Sprints je Domäne
 
 - **Status:** erledigt
+- **Projekt:** –
 - **Domäne:** INF
 - **Prio:** hoch
 - **Reife:** bereit

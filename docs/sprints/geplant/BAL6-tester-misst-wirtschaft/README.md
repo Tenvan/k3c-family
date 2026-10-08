@@ -1,6 +1,7 @@
 # BAL6 · SIM · Balancing-Tester misst die Wirtschaft
 
 - **Status:** geplant
+- **Projekt:** –
 - **Domäne:** SIM
 - **Prio:** hoch
 - **Reife:** Entwurf

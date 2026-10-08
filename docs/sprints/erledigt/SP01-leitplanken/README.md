@@ -1,6 +1,7 @@
 # SP01 · INF · Leitplanken + Go-Gerüst
 
 - **Status:** erledigt
+- **Projekt:** –
 - **Domäne:** INF
 - **Prio:** hoch
 - **Reife:** bereit

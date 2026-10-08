@@ -6,6 +6,7 @@
 - **Umgebung:** live
 - **Status:** erledigt
 - **Sprint:** TR2
+- **Projekt:** –
 - **Erstellt:** 2026-10-07
 - **Spec:** freigegeben
 - **Revision:** 1

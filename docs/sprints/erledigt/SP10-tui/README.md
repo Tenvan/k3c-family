@@ -1,6 +1,7 @@
 # SP10 · SRV · Diagnose-TUI
 
 - **Status:** erledigt
+- **Projekt:** –
 - **Domäne:** SRV
 - **Prio:** mittel
 - **Reife:** bereit

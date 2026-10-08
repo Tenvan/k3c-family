@@ -3,6 +3,7 @@
 - **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
+- **Domäne:** CLI
 - **Umgebung:** live
 - **Branch:** gr5/2-abschalten-kamera-vibration
 - **Abhängig von:** GR5.1, S5.1

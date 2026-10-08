@@ -1,6 +1,7 @@
 # W5 · SRV · Protokoll für Berufe, Händler, Lager und Hub-Stufe
 
 - **Status:** erledigt
+- **Projekt:** –
 - **Domäne:** SRV
 - **Prio:** hoch
 - **Reife:** bereit

@@ -3,6 +3,7 @@
 - **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
+- **Domäne:** INF
 - **Umgebung:** live
 - **Branch:** gr4/2-laden-ladeszene
 - **Abhängig von:** GR4.1

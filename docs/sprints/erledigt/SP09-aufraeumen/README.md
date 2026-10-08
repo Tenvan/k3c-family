@@ -1,6 +1,7 @@
 # SP09 · INF · Aufräumen: TS-Simulation und Node-Server löschen
 
 - **Status:** erledigt
+- **Projekt:** –
 - **Domäne:** INF
 - **Prio:** hoch
 - **Reife:** bereit

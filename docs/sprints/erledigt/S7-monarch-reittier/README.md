@@ -1,6 +1,7 @@
 # S7 · CLI · Monarch auf dem Standard-Reittier
 
 - **Status:** erledigt
+- **Projekt:** –
 - **Domäne:** CLI
 - **Prio:** hoch
 - **Reife:** bereit

@@ -1,6 +1,7 @@
 # S2 · SRV · Protokoll für Skills, Speichern beim Verlassen, Spielmetrik
 
 - **Status:** erledigt
+- **Projekt:** –
 - **Domäne:** SRV
 - **Prio:** hoch
 - **Reife:** bereit

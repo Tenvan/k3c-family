@@ -6,6 +6,7 @@
 - **Umgebung:** live
 - **Status:** eingeplant
 - **Sprint:** DBG4
+- **Projekt:** –
 - **Erstellt:** 2026-10-05
 - **Spec:** Entwurf
 - **Revision:** 1

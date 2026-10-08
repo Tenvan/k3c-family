@@ -6,6 +6,7 @@
 - **Umgebung:** offline
 - **Status:** erledigt
 - **Sprint:** GR4
+- **Projekt:** –
 - **Erstellt:** 2026-10-03
 - **Spec:** Entwurf
 - **Revision:** 1

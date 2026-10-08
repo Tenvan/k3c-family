@@ -6,6 +6,7 @@
 - **Umgebung:** live
 - **Status:** eingeplant
 - **Sprint:** GR7
+- **Projekt:** –
 - **Erstellt:** 2026-10-04
 - **Spec:** Entwurf
 - **Revision:** 1

@@ -1,6 +1,7 @@
 # SP03 · SRV · Go-Server Basis
 
 - **Status:** erledigt
+- **Projekt:** –
 - **Domäne:** SRV
 - **Prio:** hoch
 - **Reife:** bereit

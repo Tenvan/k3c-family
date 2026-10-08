@@ -3,6 +3,7 @@
 - **Status:** fertig
 - **Typ:** Workshop
 - **Agent:** Mensch
+- **Domäne:** INF
 - **Umgebung:** live
 - **Branch:** gr4/3-messung-xbox
 - **Abhängig von:** GR4.2

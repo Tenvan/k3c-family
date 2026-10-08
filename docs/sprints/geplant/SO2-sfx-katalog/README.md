@@ -1,6 +1,7 @@
 # SO2 · CLI · SFX-Katalog und Einbau
 
 - **Status:** geplant
+- **Projekt:** –
 - **Domäne:** CLI
 - **Prio:** hoch
 - **Reife:** bereit

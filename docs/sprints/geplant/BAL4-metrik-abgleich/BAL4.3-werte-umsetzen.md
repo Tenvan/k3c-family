@@ -3,6 +3,7 @@
 - **Status:** offen
 - **Typ:** Umsetzung
 - **Agent:** autonom
+- **Domäne:** REG
 - **Umgebung:** offline
 - **Branch:** bal4/3-werte-umsetzen
 - **Abhängig von:** BAL4.2

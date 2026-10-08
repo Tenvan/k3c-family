@@ -1,6 +1,7 @@
 # S8 · CLI · Spielmenü „Spiel verlassen“, Y-Belegung und Glyphen-Entscheidung
 
 - **Status:** geplant
+- **Projekt:** –
 - **Domäne:** CLI
 - **Prio:** hoch
 - **Reife:** bereit
