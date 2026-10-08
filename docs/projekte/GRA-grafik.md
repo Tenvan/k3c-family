@@ -1,7 +1,7 @@
 # GRA · Grafik
 
 - **Status:** aktiv
-- **Rang:** 4
+- **Rang:** 3
 - **Ziel-Tickets:** –
 
 ## Ziel

@@ -188,9 +188,8 @@ Datei `projekte/XXX-name.md` nach Vorlage, `XXX` = Kürzel aus drei Großbuchsta
 - **Richtwert Session:** ein Commit mit ≤ ~400 geänderten Code-Zeilen (ohne Bilder, Daten-JSON, Lockfiles).
 - **Übergang:** Sprints, die vor dieser Regel (2026-10-03) schon Session-PRs hatten (F4), schließen nach altem Ablauf ab
   (Review-Session mit eigenem PR). Ab dem nächsten aktivierten Sprint gilt ein PR je Sprint.
-- **Übergang Projekte (bis PJ3, B-359):** Solange Sprints und Tickets noch `Projekt: –` tragen, gilt für diese Sprints
-  die alte Reihenfolge (Prio, dann Fahrplan) und „höchstens ein aktiver Sprint je Domäne“. Die Sprint-Felder `Prio`
-  und `Einschiebbar` stehen noch in den Dateien, weil k3c-dev sie liest; sie entfallen mit PJ2 (B-357).
+- **Projekt Pflicht (seit PJ3, B-359):** Jeder aktive und geplante Sprint und jedes offene Ticket trägt ein Projekt
+  (`tests/planning.test.ts`). Die Sprint-Felder `Prio` und `Einschiebbar` ordnen nichts mehr; sie entfallen mit B-361.
 - **Commit-Titel** mit der Domäne der Session: `feat(sim): Taunt`, `fix(srv): Raum aufräumen`, `docs(reg): Wirtschaft v1`.
 
 ## Review-Session (Sprint-Abnahme) 🔍

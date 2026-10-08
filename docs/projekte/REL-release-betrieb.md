@@ -1,7 +1,7 @@
 # REL · Release & Betrieb
 
 - **Status:** aktiv
-- **Rang:** 11
+- **Rang:** 10
 - **Ziel-Tickets:** –
 
 ## Ziel

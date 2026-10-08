@@ -3,10 +3,10 @@
 - **Status:** geplant
 - **Projekt:** ABN
 - **Domäne:** PLAT, SRV, INF, CLI
-- **Prio:** niedrig
+- **Prio:** hoch
 - **Reife:** Entwurf
 - **Einschiebbar:** ja
-- **Tickets:** B-314
+- **Tickets:** B-314, B-042, B-090, B-092, B-335
 - **Start-Commit:** –
 - **Spec:** Entwurf
 - **Revision:** 1

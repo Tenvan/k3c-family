@@ -1,6 +1,6 @@
 # PJ3 · INF · Planung in Projekte umziehen und aufräumen
 
-- **Status:** aktiv
+- **Status:** erledigt
 - **Projekt:** PRZ
 - **Domäne:** INF
 - **Prio:** hoch
@@ -74,9 +74,11 @@ Beim Bereitmachen 2026-10-08 aufgefallen, alle Vorschläge von 🧑 mit der Frei
 | PJ3.1 | `PJ3.1-projekte-anlegen.md` | Umsetzung | autonom | fertig |
 | PJ3.2 | `PJ3.2-sprints-schliessen-zusammenlegen.md` | Umsetzung | autonom | fertig |
 | PJ3.3 | `PJ3.3-fahrplan-strenge-pruefung.md` | Umsetzung | autonom | fertig |
-| PJ3.4 | `PJ3.4-review.md` | Review | autonom | offen |
+| PJ3.4 | `PJ3.4-review.md` | Review | autonom | fertig |
 
 ## Abnahme
 
-Wird von der Review-Session (Doku-Sprint: letzte Session) ausgefüllt, höchstens fünf Zeilen: Datum, Kriterien
-(Verweis auf Session-Ergebnisse), behobene Befunde, neue Tickets. Bis dahin `–`.
+2026-10-08, Review PJ3.4 (Subagent, getrennt von der Umsetzung): AC-01 bis AC-06 erfüllt laut PJ3.1–PJ3.3 › Ergebnis und Review; `task check`, `task check:go` grün. Abweichung AC-01: GRA ohne neuen Sprint „Figuren und Pipeline“ (Nicht-Ziel: keine neuen Sprint-Inhalte), B-329/B-331 liegen in GRA zum Einplanen; WZ heißt WZG; RG1 trägt Prio hoch aus RG3.
+Behoben: HW1 › Tickets um B-042, B-090, B-092, B-335 ergänzt; Übergangsabsatz in `arbeitsweise.md` durch „Projekt Pflicht“ ersetzt; Beispieltest `waitsForDevice` nach `planningProjects.test.ts`. PRZ erledigt, Ränge 1–10.
+Neue Tickets: B-366 (Fahrplan-Spalte Projekt in k3c-dev), B-367 (Begriffe Spur/Bahn, Glossar). SO4: Spec nach Zusammenlegung `Entwurf`, neue Freigabe durch 🧑 nötig.
+Version: Patch (nur Planung und Test).

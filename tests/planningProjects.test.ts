@@ -58,6 +58,12 @@ const S = (id: string, projekt: string, active = false, domains = ['SIM'], sessi
   ({ id, projekt, active, domains, sessionDomains });
 
 describe('Regeln für Projekte (Beispiele)', () => {
+  it('ein Sprint, der nur noch auf Mensch-Sessions wartet, zählt nicht als aktiv', () => {
+    const table = (rows: string) => `## Sessions\n\n| Nr. | Datei | Typ | Agent | Status |\n|---|---|---|---|---|\n${rows}\n`;
+    expect(waitsForDevice(table('| X1.1 | `a.md` | Umsetzung | autonom | fertig |\n| X1.2 | `b.md` | Workshop | Mensch | offen |'))).toBe(true);
+    expect(waitsForDevice(table('| X1.1 | `a.md` | Umsetzung | autonom | offen |\n| X1.2 | `b.md` | Workshop | Mensch | offen |'))).toBe(false);
+  });
+
   it('Ränge lückenlos ab 1, nur aktive Projekte haben einen', () => {
     expect(rankErrors([P('GRA', 'aktiv', '1'), P('SND', 'aktiv', '2'), P('BAL', 'ruht', '–')])).toEqual([]);
     expect(rankErrors([P('GRA', 'aktiv', '1'), P('SND', 'aktiv', '1')])).toHaveLength(1);
