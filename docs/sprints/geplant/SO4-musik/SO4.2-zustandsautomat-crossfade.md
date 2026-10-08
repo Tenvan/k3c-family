@@ -6,7 +6,7 @@
 - **Domäne:** CLI
 - **Umgebung:** live
 - **Branch:** so4/2-zustandsautomat-crossfade
-- **Abhängig von:** SO4.1, SO1.4
+- **Abhängig von:** SO4.1, SO1.4, SO4.6
 - **Tickets:** B-168
 - **Kriterien:** AC-01, AC-02, AC-05
 

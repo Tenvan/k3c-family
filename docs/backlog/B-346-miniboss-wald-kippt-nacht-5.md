@@ -5,8 +5,8 @@
 - **Prio:** hoch
 - **Umgebung:** offline
 - **Status:** eingeplant
-- **Sprint:** RG3
-- **Projekt:** –
+- **Sprint:** RG1
+- **Projekt:** BAL
 - **Erstellt:** 2026-10-07
 - **Spec:** Entwurf
 - **Revision:** 1

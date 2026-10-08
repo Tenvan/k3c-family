@@ -1,7 +1,7 @@
 # PM1 · CLI · Leistung messen: Diagnose-Zeile und Performance-Modus
 
 - **Status:** geplant
-- **Projekt:** –
+- **Projekt:** LST
 - **Domäne:** CLI
 - **Prio:** hoch
 - **Reife:** Entwurf

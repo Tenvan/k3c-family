@@ -6,7 +6,7 @@
 - **Umgebung:** live
 - **Status:** eingeplant
 - **Sprint:** BAL4
-- **Projekt:** –
+- **Projekt:** BAL
 - **Erstellt:** 2026-10-02
 - **Spec:** Entwurf
 - **Revision:** 1

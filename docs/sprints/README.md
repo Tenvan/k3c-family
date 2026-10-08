@@ -11,15 +11,9 @@ Reihenfolge in Wellen, Bahnen je Domäne und Zuordnung Mensch/autonom (zwei Acco
 
 | Sprint | Domäne | Prio | Thema | Am Ende sichtbar | Ordner |
 |---|---|---|---|---|---|
-| DBG3 | PLAT | hoch | Dungeon-Master-Seite `/dm` mit Dev-API, Welle und Tageszeit (B-232; Abnahme am Handy offen) | – | `aktiv/DBG3-dungeon-master-seite/` |
-| LT1 | SRV | hoch | Lasttest-Werkzeug `task load`: Bots, Tick-Dauer und CPU im Bericht, Bewertung gegen < 10 ms (B-175; Messlauf am Pi offen) | – | `aktiv/LT1-lasttest-werkzeug/` |
-| SO1 | CLI | mittel | Audio-Kern: Mixer mit Bus-Lautstärke je Gerät, Entsperren per Eingabe, Sound-Atlas, Positions-Dämpfung, Demo-Ton (B-011 teils; einschiebbar; Hörprobe am TV offen) | – | `aktiv/SO1-audio-kern/` |
-| SO3 | PLAT | mittel | Hörprobenseite `soundtest.html` | – | `aktiv/SO3-hoerprobenseite/` |
-| RL1 | INF | hoch | Release-Checkliste: Abschnitt „Release“ in `docs/arbeitsweise.md`, Probelauf ohne Tag (B-170; einschiebbar; Pi und Xbox offen) | – | `aktiv/RL1-release-checkliste/` |
-| MON2 | PLAT | hoch | Monitoring-Seite `monitor.html`: Ampel je Raum, Verläufe mit Perzentilen, Fehler-Zeitleiste (B-282; Abnahme am Handy offen) | – | `aktiv/MON2-monitoring-seite/` |
 | W6 | CLI | mittel | Anzeigen für Bau, Lager, Hub und Bürger (B-117, B-126) | HUD und Bauplätze am TV, von 🧑 abgenommen | `aktiv/W6-anzeige-wirtschaft/` |
-| LP1 | PLAT | hoch | Landingpage für Spieler, Entwicklerseite für Werkzeuge | – | `aktiv/LP1-landingpage-aufraeumen/` |
 | K2 | SIM | hoch | Bosse, Siegvarianten und Inselwechsel | Tests je Boss, Siegvariante und Modus grün, Spielstand mit besiegten Bossen und aktueller Insel | `aktiv/K2-bosse-siege-inseln/` |
+| PJ3 | INF | hoch | Planung in Projekte umziehen und aufräumen | – | `aktiv/PJ3-planung-umziehen/` |
 
 ## Offen am Gerät
 
@@ -44,19 +38,19 @@ dann über den Go-Server mit mehreren Räumen und gemischten Spielern.
 
 | Sprint | Domäne | Prio | Thema | Am Ende sichtbar | Reife | Ordner |
 |---|---|---|---|---|---|---|
-| BR1 | REG 🧑 | niedrig | Balancing-Runde Wirtschaft und Spieleabend 2 (BR1.1 erledigt; zurückgestellt am 2026-10-07, Vorrang Performance, Grafik und Sound) | Pass/Fail je Kennzahl, Begründungen in `docs/rules/`, Protokoll in `docs/playtests/` | bereit | `geplant/BR1-balancing-wirtschaft/` |
-| P1 | REG 🧑 | niedrig | Spieleabend 1 | Protokoll und Folge-Tickets | Entwurf | `geplant/P1-spieleabend-1/` |
+| BR1 | REG | niedrig | Balancing-Runde Wirtschaft und Spieleabend 2 (BR1.1 erledigt; zurückgestellt am 2026-10-07, Vorrang Performance, Grafik und Sound) | Pass/Fail je Kennzahl, Begründungen in `docs/rules/`, Protokoll in `docs/playtests/` | bereit | `geplant/BR1-balancing-wirtschaft/` |
+| P1 | REG | niedrig | Spieleabend 1 | Protokoll und Folge-Tickets | bereit | `geplant/P1-spieleabend-1/` |
 | K3 | SIM | niedrig | Events Vollmond, Blutmond und Händler-Überfall | Tests je Event grün, aktualisierte Golden-Daten | bereit | `geplant/K3-events/` |
 | K4 | SRV | hoch | Protokoll für Bosse, Events und Inselwechsel | `docs/protocol.md` mit neuen Feldern, Beispiele in `testdata/protocol/`, `task check:go` und `task check` grün | bereit | `geplant/K4-protokoll-kampf/` |
 | K5 | CLI | mittel | Anzeigen für Kampf, Bosse und Events, Anlegen-Dialog, Debug-Panel | Boss-Leiste, Warnkreis und Event-Banner am TV, Lobby-Dialog, von 🧑 abgenommen | bereit | `geplant/K5-anzeige-kampf/` |
-| BR2 | REG 🧑 | niedrig | Balancing-Runde Kampf und Bosse und Spieleabend 3 | Pass/Fail je Kennzahl, Begründungen in `docs/rules/`, Protokoll in `docs/playtests/` | Entwurf | `geplant/BR2-balancing-kampf/` |
+| BR2 | REG | niedrig | Balancing-Runde Kampf und Bosse und Spieleabend 3 | Pass/Fail je Kennzahl, Begründungen in `docs/rules/`, Protokoll in `docs/playtests/` | bereit | `geplant/BR2-balancing-kampf/` |
 | SV1 | SRV | hoch | Raum mit allen Stufen, Voll-Ausbau-Spielstand, leere Test-Räume | Neuer Raum mit allen fünf Stufen, Level-Betrachter startet einen voll ausgebauten Spielstand | bereit | `geplant/SV1-raeume-stufen-testspielstand/` |
 | ST1 | SRV | mittel | Speichern alle 60 s, unter Windows robust, Rotation der Spielmetrik | HUD zeigt „gesichert“, Spielstände überstehen gesperrte Dateien, `reports/` bleibt begrenzt | Entwurf | `geplant/ST1-speichern-robust/` |
 | RM1 | SRV | mittel | Raum-Pause im Couch-Raum und lernbare Skills vom Server | Pause hält den Couch-Raum an; Skill-Menü zeigt nur, was der Server annimmt | Entwurf | `geplant/RM1-pause-lernbare-skills/` |
 | W7 | SIM | hoch | Ausrüstung ohne Unverwundbarkeit, Spielstand vollständig | Passive Burg kann fallen, Spielstand stellt W2–W4 wieder her, Golden-Hub geprüft | bereit | `geplant/W7-ausruestung-spielstand/` |
 | LV1 | SIM | mittel | Level und Gegner: Lava, Camps, Adern-Takt, Orte und IDs | Keine Lava auf Linien, Camps mit Abstand, besiegte Gegner lassen Gold fallen, Ereignisse mit Ort | Entwurf | `geplant/LV1-level-gegner-korrektur/` |
 | SK1 | SIM | hoch | Skill-Baum mit Tank und Zauberer, Respec-Regeln abfragbar | Skill-Baum spielbar, Respec und Lernen ohne Seiteneffekt prüfbar | bereit | `geplant/SK1-skill-baum/` |
-| RG1 | REG | mittel | Werte-Runde: Burg hält Nacht, Hub-Stufe 4–5, Adern-Takt | Beschlüsse in `docs/rules/`, geänderte Werte in `data/`, `task balance` grün | Entwurf | `geplant/RG1-werte-burg-hub-adern/` |
+| RG1 | REG | hoch | Werte-Runde: Burg hält Nacht, Hub-Stufe 4–5, Adern-Takt | Beschlüsse in `docs/rules/`, geänderte Werte in `data/`, `task balance` grün | Entwurf | `geplant/RG1-werte-burg-hub-adern/` |
 | U5 | CLI | hoch | Debug-Overlay und Cheat-Dialog bedienbar | Ö schließt Overlay und Liste, HUD bleibt lesbar, Cheat-Dialog mit Fokus und Controller | bereit | `geplant/U5-debug-overlay-bedienbar/` |
 | S8 | CLI | hoch | Spielmenü „Spiel verlassen“, Y-Belegung und Glyphen-Entscheidung | Spielmenü verlässt ins Lobby, Y ohne Bau-Menü, Glyph-Entscheidung umgesetzt | bereit | `geplant/S8-spielmenue-bedienung/` |
 | W8 | CLI | mittel | Bauplätze mit Grund und alle Rohstoffe im Client | Gesperrte Plätze zeigen den Grund, Client-Typen passen zu `hub.json` und den fünf Rohstoffen | Entwurf | `geplant/W8-bauplaetze-rohstoffe-client/` |
@@ -66,26 +60,21 @@ dann über den Go-Server mit mehreren Räumen und gemischten Spielern.
 | CI1 | INF | hoch | CI-Nachweis, Release-Image ohne Dev-Mode, Test-Abdeckung | CI grün mit SP01-Prüfungen, Release-Image lehnt Dev-Aktionen ab, Abdeckung im CI-Bericht | Entwurf | `geplant/CI1-ci-release-image/` |
 | S9 | CLI | hoch | Rückmeldung für Schlag und Skills, ein Hinweis je Spieler | Jeder Tastendruck auf Schlag oder Skill ist sichtbar, das Aktionen-Overlay zeigt je Spieler einen Hinweis | bereit | `geplant/S9-rueckmeldung-overlay/` |
 | U6 | CLI | hoch | HUD ohne Überlagerung, Optionen per Touch | Optionen per Touch bedienbar, HUD bei 1–4 Spielern ohne Überlagerung, Gesamtabnahme Anzeige | Entwurf | `geplant/U6-hud-ohne-ueberlagerung/` |
-| RG3 | REG | hoch | Miniboss Wald: Burg hält Nacht 5 | `task balance`: Burg hält Nacht 1–5 im Korridor, Grad-Kurven monoton | Entwurf | `geplant/RG3-miniboss-wald-nacht-5/` |
-| PJ3 | INF | hoch | Planung in Projekte umziehen und aufräumen | – | Entwurf | `geplant/PJ3-planung-umziehen/` |
 
 **Einschiebbar** (Schienen Balancing, Grafik, Sound, Betrieb; unabhängig vom Engine-Fortschritt, jeweils zwischen zwei Sprints):
 
 | Sprint | Domäne | Prio | Thema | Reife | Ordner |
 |---|---|---|---|---|---|
-| BAL4 | REG | mittel | Abgleich Spielmetrik und Simulator | Entwurf | `geplant/BAL4-metrik-abgleich/` |
-| SO2 | CLI | hoch | SFX-Katalog und Einbau | Entwurf | `geplant/SO2-sfx-katalog/` |
-| SO4 | CLI | hoch | Musik je Zustand | Entwurf | `geplant/SO4-musik/` |
+| BAL4 | REG | mittel | Abgleich Spielmetrik und Simulator | bereit | `geplant/BAL4-metrik-abgleich/` |
+| SO2 | CLI | hoch | SFX-Katalog und Einbau | bereit | `geplant/SO2-sfx-katalog/` |
+| SO4 | CLI | hoch | Musik je Zustand | bereit | `geplant/SO4-musik/` |
 | M10 | SRV | mittel | Ressourcen-Manager für Grafik- und Sound-Slots in k3c-dev | Entwurf | `geplant/M10-ressourcen-manager/` |
 | NT1 | SRV | mittel | Stabile Tests, Warteschlange und Snapshot-Budget | Entwurf | `geplant/NT1-netz-tests-stabil/` |
 | BT1 | SRV | niedrig | Server im Heimnetz finden, Windows-Starter, Start mit Seed | Entwurf | `geplant/BT1-heimnetz-start/` |
-| BAL5 | SIM | mittel | Balancing-Tester: Profil „Mauern zuerst“ und Sensitivität ohne Wirkung | Entwurf | `geplant/BAL5-balancing-tester-nachschaerfen/` |
 | RG2 | REG | mittel | Regelwerk-Klärungen: Korridore, Kennzahl, Tier-Gating, Handwerker, Tiefe 3–4 | Entwurf | `geplant/RG2-regelwerk-klaerungen/` |
 | GR7 | CLI | hoch | Figuren-Lücken, ganzzahlige Skalierung und Schrift | Entwurf | `geplant/GR7-figuren-schrift/` |
-| SO5 | CLI | hoch | Audio-Kern: ganze Dateien mit Crossfade, Ambient-Lautstärke | Entwurf | `geplant/SO5-audio-kern-dateien/` |
-| HW1 | PLAT | niedrig | Zurückgestellte Controller-Prüfungen nachholen | Entwurf | `geplant/HW1-controller-pruefungen/` |
+| HW1 | PLAT, SRV, INF, CLI | niedrig | Zurückgestellte Controller-Prüfungen nachholen | Entwurf | `geplant/HW1-controller-pruefungen/` |
 | PG1 | PLAT | niedrig | Präsentationsseite mit echten Spielbildern | Entwurf | `geplant/PG1-praesentation-bilder/` |
-| DBG4 | PLAT | mittel | Dev-Seite Asset-Vorschau im Spielmaßstab | Entwurf | `geplant/DBG4-asset-vorschau/` |
 | RP1 | INF | mittel | Repo-Hygiene: Branches aufräumen, Altlasten, Regeln | Entwurf | `geplant/RP1-repo-hygiene/` |
 | PB1 | INF | niedrig | Veröffentlichung auf itch.io | Entwurf | `geplant/PB1-itch-io/` |
 | PL2 | PLAT | niedrig | Werkzeug-Seiten in der gewählten Sprache | Entwurf | `geplant/PL2-texte-werkzeug-seiten/` |
@@ -183,3 +172,10 @@ Gesamtplan und Begründung: [`../plan-weiterentwicklung.md`](../plan-weiterentwi
 | PJ2 | k3c-dev plant mit Projekten: plan-Tools und Planungsseite | `erledigt/PJ2-projekte-k3c-dev/` |
 | TR3 | Bot-Eingabe im Spiel einbinden (B-353; einschiebbar) | `erledigt/TR3-bot-eingabe-spiel/` |
 | M11 | MCP-Seite: alle Tools mit Aufruf-Statistik, Zeitfilter der Statistik (B-350; einschiebbar) | `erledigt/M11-mcp-seite-tools/` |
+| DBG3 | Dungeon-Master-Seite `/dm` mit Dev-API, Welle und Tageszeit (B-232; Abnahme am Handy offen) | `erledigt/DBG3-dungeon-master-seite/` |
+| LP1 | Landingpage für Spieler, Entwicklerseite für Werkzeuge | `erledigt/LP1-landingpage-aufraeumen/` |
+| LT1 | Lasttest-Werkzeug `task load`: Bots, Tick-Dauer und CPU im Bericht, Bewertung gegen < 10 ms (B-175; Messlauf am Pi offen) | `erledigt/LT1-lasttest-werkzeug/` |
+| MON2 | Monitoring-Seite `monitor.html`: Ampel je Raum, Verläufe mit Perzentilen, Fehler-Zeitleiste (B-282; Abnahme am Handy offen) | `erledigt/MON2-monitoring-seite/` |
+| RL1 | Release-Checkliste: Abschnitt „Release“ in `docs/arbeitsweise.md`, Probelauf ohne Tag (B-170; einschiebbar; Pi und Xbox offen) | `erledigt/RL1-release-checkliste/` |
+| SO1 | Audio-Kern: Mixer mit Bus-Lautstärke je Gerät, Entsperren per Eingabe, Sound-Atlas, Positions-Dämpfung, Demo-Ton (B-011 teils; einschiebbar; Hörprobe am TV offen) | `erledigt/SO1-audio-kern/` |
+| SO3 | Hörprobenseite `soundtest.html` | `erledigt/SO3-hoerprobenseite/` |

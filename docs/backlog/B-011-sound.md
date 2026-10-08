@@ -4,9 +4,9 @@
 - **Typ:** Idee
 - **Prio:** mittel
 - **Umgebung:** live
-- **Status:** eingeplant
-- **Sprint:** SO1
-- **Projekt:** –
+- **Status:** offen
+- **Sprint:** –
+- **Projekt:** SND
 - **Erstellt:** 2026-09-29
 - **Spec:** freigegeben
 - **Revision:** 1

@@ -6,7 +6,7 @@
 - **Umgebung:** offline
 - **Status:** eingeplant
 - **Sprint:** RG1
-- **Projekt:** –
+- **Projekt:** BAL
 - **Erstellt:** 2026-10-04
 - **Spec:** Entwurf
 - **Revision:** 1

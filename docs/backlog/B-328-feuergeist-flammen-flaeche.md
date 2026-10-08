@@ -5,8 +5,8 @@
 - **Prio:** niedrig
 - **Umgebung:** offline
 - **Status:** offen
-- **Sprint:** K1
-- **Projekt:** –
+- **Sprint:** –
+- **Projekt:** KMP
 - **Erstellt:** 2026-10-06
 - **Spec:** Entwurf
 - **Revision:** 1

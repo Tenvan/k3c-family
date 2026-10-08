@@ -2,6 +2,8 @@ import { Button, Checkbox, Flex, Text, TextField } from '@radix-ui/themes';
 import { useEffect, useState } from 'react';
 import { backend, type GitHubData, type PlanningData, type PlanSprint } from '../api';
 import { ProjectsView } from './ProjectsView';
+import { rankedCount } from './projects';
+import { foldAll } from './fold';
 import { errorText } from '../lib/errors';
 import { loadText, savePref } from '../lib/prefs';
 import { ActionButton, NoticeCard, StatusBadge } from '../ui/parts';
@@ -47,7 +49,7 @@ export function SprintsBacklog() {
       <GitHubBar gh={gh} reload={reloadGh} />
       <div className="pl-grid">
         <section className="pl-col">
-          <h2 className="pl-h">Sprints <small>{sprints.length} von {data.sprints.length} · {data.done} erledigt</small></h2>
+          <ColumnHead data={data} shown={sprints} />
           {picked.length > 0 && (
             <div className="pl-picked">
               <Text size="1" weight="medium">{picked.length} Session{picked.length > 1 ? 's' : ''} markiert</Text>
@@ -131,5 +133,26 @@ function FilterBar({ data, filter, setFilter, hits }:
       </Text>
       <Text size="1" color="gray" className="pl-count">{hits} Treffer</Text>
     </Flex>
+  );
+}
+
+/** Alle Projekte und Sprints auf einmal ein- oder ausklappen (B-364). */
+function FoldAll({ ids }: { ids: string[] }) {
+  return (
+    <span className="pl-foldall">
+      <button type="button" className="pl-textlink" onClick={() => foldAll(ids, true)}>alle einklappen</button>
+      <button type="button" className="pl-textlink" onClick={() => foldAll(ids, false)}>alle aufklappen</button>
+    </span>
+  );
+}
+
+/** Kopf der linken Spalte: mit Projekten „Projekte“, sonst „Sprints“ (B-364). */
+function ColumnHead({ data, shown }: { data: PlanningData; shown: PlanSprint[] }) {
+  const count = <>{shown.length} von {data.sprints.length} · {data.done} erledigt</>;
+  if (!data.projects?.length) return <h2 className="pl-h">Sprints <small>{count}</small></h2>;
+  return (
+    <h2 className="pl-h">Projekte <small>{rankedCount(data.projects)} nach Rang · Sprints {count}</small>
+      <FoldAll ids={['area:ABN', 'area:ohne', ...data.projects.map((p) => p.id), ...shown.map((s) => s.id)]} />
+    </h2>
   );
 }

@@ -1,7 +1,7 @@
 # PJ2 · SRV · k3c-dev plant mit Projekten: plan-Tools und Planungsseite
 
 - **Status:** erledigt
-- **Projekt:** –
+- **Projekt:** PRZ
 - **Domäne:** SRV
 - **Prio:** hoch
 - **Reife:** bereit

@@ -6,7 +6,7 @@
 - **Umgebung:** live
 - **Status:** eingeplant
 - **Sprint:** W8
-- **Projekt:** –
+- **Projekt:** WRT
 - **Erstellt:** 2026-10-04
 - **Spec:** Entwurf
 - **Revision:** 1

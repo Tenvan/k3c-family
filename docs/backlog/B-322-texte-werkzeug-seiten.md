@@ -6,7 +6,7 @@
 - **Umgebung:** live
 - **Status:** eingeplant
 - **Sprint:** PL2
-- **Projekt:** –
+- **Projekt:** WZG
 - **Erstellt:** 2026-10-06
 - **Spec:** Entwurf
 - **Revision:** 1

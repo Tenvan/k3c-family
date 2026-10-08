@@ -1,7 +1,7 @@
 # W7 · SIM · Ausrüstung ohne Unverwundbarkeit, Spielstand vollständig
 
 - **Status:** geplant
-- **Projekt:** –
+- **Projekt:** WRT
 - **Domäne:** SIM
 - **Prio:** hoch
 - **Reife:** bereit

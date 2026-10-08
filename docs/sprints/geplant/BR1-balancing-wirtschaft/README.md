@@ -1,7 +1,7 @@
 # BR1 · REG · Balancing-Runde Wirtschaft und Spieleabend 2
 
 - **Status:** geplant
-- **Projekt:** –
+- **Projekt:** BAL
 - **Domäne:** REG
 - **Prio:** niedrig
 - **Reife:** bereit

@@ -10,7 +10,7 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 |---|---|---|---|---|---|---|
 | [B-007](B-007-skill-baum.md) | SIM | Idee | hoch | eingeplant | SK1 | Skill-Baum mit Tank und Zauberer ist spielbar |
 | [B-008](B-008-spieleabend.md) | REG | Frage | niedrig | eingeplant | P1 | Familie hat einen Spieleabend gespielt und Feedback gegeben |
-| [B-011](B-011-sound.md) | CLI | Idee | mittel | eingeplant | SO1 | Spiel hat Sound und Musik |
+| [B-011](B-011-sound.md) | CLI | Idee | mittel | offen | – | Spiel hat Sound und Musik |
 | [B-015](B-015-gebaeude-werte.md) | REG | Problem | niedrig | eingeplant | BR1 | Gebäude-HP und -Kosten sind gebalanced |
 | [B-019](B-019-test-abdeckung.md) | INF | Idee | niedrig | eingeplant | CI1 | Test-Abdeckung der Engine ist sichtbar |
 | [B-023](B-023-itch-io.md) | INF | Idee | niedrig | eingeplant | PB1 | Spiel ist auf itch.io veröffentlicht |
@@ -18,18 +18,18 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-037](B-037-lobby.md) | CLI | Idee | mittel | eingeplant | LB1 | Lobby zeigt Räume und startet Spiele |
 | [B-040](B-040-server-finden.md) | SRV | Idee | niedrig | eingeplant | BT1 | Geräte finden den Server im Heimnetz |
 | [B-041](B-041-wails-starter.md) | SRV | Idee | niedrig | eingeplant | BT1 | Wails-Starter für Windows existiert |
-| [B-042](B-042-pi-leistungsziel.md) | SRV | Frage | hoch | eingeplant | LT1 | Pi-Modell und Leistungsziel sind festgelegt |
+| [B-042](B-042-pi-leistungsziel.md) | SRV | Frage | hoch | eingeplant | HW1 | Pi-Modell und Leistungsziel sind festgelegt |
 | [B-048](B-048-standardbibliothek-in-001.md) | SRV | Frage | niedrig | eingeplant | BT1 | Die Wahl der Go-Standardbibliothek ist dort festgehalten, wo B-001 auf sie verweist |
 | [B-053](B-053-ci-lauf-sp01.md) | INF | Problem | hoch | eingeplant | CI1 | Die CI hat die Prüfungen aus SP01 einmal grün durchlaufen |
 | [B-058](B-058-execution-policy.md) | INF | Frage | niedrig | eingeplant | RP1 | requirements.md empfiehlt keine Sicherheitseinstellung ohne Entscheidung von 🧑 |
 | [B-075](B-075-golden-spielstand-hub.md) | SIM | Schuld | mittel | eingeplant | W7 | Der Golden-Spielstand enthält einen gebauten und veränderten Hub |
 | [B-080](B-080-dev-tasten-server.md) | SRV | Idee | niedrig | eingeplant | K4 | Dev-Tasten (Gold, Stufe, Neustart) wirken über den Server |
-| [B-090](B-090-radar.md) | CLI | Idee | mittel | eingeplant | U1 | Ein Radar im HUD zeigt Burg, Portale, Ausgang, Mitspieler und Gegner |
-| [B-092](B-092-level-betrachter.md) | PLAT | Idee | mittel | eingeplant | U3 | Eine Testseite zeigt ein generiertes Level (Seed und Biom) ohne zu spielen |
+| [B-090](B-090-radar.md) | CLI | Idee | mittel | eingeplant | HW1 | Ein Radar im HUD zeigt Burg, Portale, Ausgang, Mitspieler und Gegner |
+| [B-092](B-092-level-betrachter.md) | PLAT | Idee | mittel | eingeplant | HW1 | Eine Testseite zeigt ein generiertes Level (Seed und Biom) ohne zu spielen |
 | [B-094](B-094-npm-reste.md) | INF | Schuld | niedrig | eingeplant | RP1 | Im Repo liegen keine Alt-Binaries und keine npm-Skripte mehr |
 | [B-095](B-095-start-mit-seed-und-tiefe.md) | SRV | Idee | niedrig | eingeplant | BT1 | Ein neues Spiel startet per URL mit eigenem Seed und gewählter Tiefe |
 | [B-098](B-098-debug-overlay-standard-zurueck.md) | CLI | Schuld | niedrig | eingeplant | K5 | Das Debug-Overlay ist vor dem Release wieder nur mit ?dev=1 verfügbar |
-| [B-099](B-099-balancing-tester.md) | SIM | Idee | mittel | eingeplant | BAL1 | Ein automatischer Balancing-Tester prüft Regeln und Werte gegen messbare Ziele |
+| [B-099](B-099-balancing-tester.md) | SIM | Idee | mittel | offen | – | Ein automatischer Balancing-Tester prüft Regeln und Werte gegen messbare Ziele |
 | [B-102](B-102-siegvarianten-niederlage.md) | SIM | Idee | mittel | eingeplant | K2 | Siegvarianten und Niederlage-Modi der Raum-Optionen sind umgesetzt |
 | [B-103](B-103-inseln-bosse.md) | SIM | Idee | mittel | eingeplant | K2 | Inseln mit Endboss und gemeinsamem Inselwechsel sind spielbar |
 | [B-105](B-105-anlegen-dialog-optionen.md) | CLI | Idee | mittel | eingeplant | K5 | Der Anlegen-Dialog der Lobby wählt Grad, Ziel und Niederlage-Modus |
@@ -46,7 +46,7 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-160](B-160-abgleich-spielmetrik-simulator.md) | REG | Idee | mittel | eingeplant | BAL4 | Spielmetrik echter Abende und Simulatorwerte sind abgeglichen |
 | [B-167](B-167-sfx-katalog.md) | CLI | Idee | hoch | eingeplant | SO2 | Jedes wichtige Ereignis hat einen Sound mit Quelle und Lizenz |
 | [B-168](B-168-musik-je-zustand.md) | CLI | Idee | hoch | eingeplant | SO4 | Die Musik wechselt je Spielzustand mit Crossfade |
-| [B-250](B-250-audiokern-datei-wiedergabe.md) | CLI | Schuld | hoch | eingeplant | SO5 | Der Audio-Kern spielt ganze Dateien mit Crossfade, die Hörprobe nutzt ihn |
+| [B-250](B-250-audiokern-datei-wiedergabe.md) | CLI | Schuld | hoch | eingeplant | SO4 | Der Audio-Kern spielt ganze Dateien mit Crossfade, die Hörprobe nutzt ihn |
 | [B-270](B-270-respec-pruefung-ohne-seiteneffekt.md) | SIM | Schuld | mittel | eingeplant | SK1 | Die Sim prüft Respec und Lernen ohne Seiteneffekt |
 | [B-272](B-272-rotation-session-reports.md) | SRV | Schuld | mittel | eingeplant | ST1 | Die Rotation in reports/ erfasst auch die Spielmetrik-Reports |
 | [B-260](B-260-schutzplatz-ohne-id.md) | SIM | Schuld | niedrig | eingeplant | LV1 | Der Schutzplatz einer Truppe hängt nicht an ihrer Entity-ID |
@@ -77,14 +77,14 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-204](B-204-test-raeume-sofort-schliessen.md) | SRV | Idee | niedrig | eingeplant | SV1 | Leere Test-Räume schließen sofort statt nach der Leer-Frist |
 | [B-205](B-205-y-belegung-s3.md) | CLI | Problem | mittel | eingeplant | S8 | Die Y-Belegung in S3 folgt dem Beschluss „kein Bau-Menü“ |
 | [B-207](B-207-bauplaetze-anzeige.md) | CLI | Idee | mittel | eingeplant | W8 | Der Client zeigt freie und gesperrte Bauplätze mit Grund (ab Hub-Stufe n, Linie fehlt) |
-| [B-208](B-208-protokoll-bauplaetze.md) | SRV | Idee | mittel | eingeplant | W5 | Das Protokoll trägt die Bauplätze des Layouts sowie Platz- und Hub-Stufe zum Client |
+| [B-208](B-208-protokoll-bauplaetze.md) | SRV | Idee | mittel | offen | – | Das Protokoll trägt die Bauplätze des Layouts sowie Platz- und Hub-Stufe zum Client |
 | [B-209](B-209-client-platz-arten.md) | CLI | Schuld | mittel | eingeplant | W8 | `src/model/data.ts` kennt alle Platz-Arten aus `hub.json` |
-| [B-214](B-214-server-pause.md) | SRV | Idee | mittel | eingeplant | RM1 | Der Server pausiert den Raum im Couch-Raum und schützt den stehenden Monarchen online |
+| [B-214](B-214-server-pause.md) | SRV | Idee | mittel | offen | – | Der Server pausiert den Raum im Couch-Raum und schützt den stehenden Monarchen online |
 | [B-215](B-215-texte-eingabe-shell-tools.md) | PLAT | Schuld | niedrig | eingeplant | PL1 | Die Texte von Touch-Overlay, Shell und Werkzeug-Seiten kommen aus den zentralen Textdateien |
-| [B-230](B-230-burg-haelt-nur-47-prozent.md) | REG | Problem | mittel | eingeplant | RG1 | Burg hält Nacht 1–5 nur in 47 % der Seeds (Bot saver), Ziel 75–90 %: Ursache klären |
+| [B-230](B-230-burg-haelt-nur-47-prozent.md) | REG | Problem | mittel | eingeplant | RG1 | Burg hält Nacht 1–5 nur in 47 % der Seeds, Ziel 75–90 % |
 | [B-217](B-217-ereignisse-built-playerdown-ort.md) | SIM | Schuld | niedrig | eingeplant | LV1 | Die Ereignisse `built` und `playerDown` tragen ihren Ort |
 | [B-219](B-219-doku-gating-und-schlag.md) | REG | Schuld | niedrig | eingeplant | RG2 | Game-Design und Ereignis-Doku nennen Tier-Gating 2/4/6 und den Schlag des Monarchen |
-| [B-218](B-218-optionen-ambient-lautstaerke.md) | CLI | Idee | hoch | eingeplant | SO5 | Die Optionen-Szene regelt auch die Lautstärke des Ambient-Busses |
+| [B-218](B-218-optionen-ambient-lautstaerke.md) | CLI | Idee | hoch | eingeplant | SO4 | Die Optionen-Szene regelt auch die Lautstärke des Ambient-Busses |
 | [B-273](B-273-release-image-dev-mode-aus.md) | INF | Schuld | hoch | eingeplant | CI1 | Das Release-Image startet den Server ohne Dev-Mode |
 | [B-274](B-274-testrestore-flackert-windows.md) | SRV | Problem | mittel | eingeplant | NT1 | TestRestore läuft unter Windows auch in task check:all stabil grün |
 | [B-280](B-280-warteschlange-nicht-zustaende.md) | SRV | Problem | niedrig | eingeplant | NT1 | Die Warteschlange einer Verbindung läuft nicht voll, wenn andere Nachrichten zwischen Zuständen stehen |
@@ -100,9 +100,9 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-294](B-294-hinweis-glyph-muenze-nacht.md) | CLI | Frage | mittel | eingeplant | S8 | Münze und „Nacht naht“ zeigen in der geführten ersten Nacht keine Glyph |
 | [B-295](B-295-handwerker-schmiede-ruestkammer.md) | REG | Frage | mittel | eingeplant | RG2 | Handwerker lassen sich auch für Schmiede und Rüstkammer ausbilden |
 | [B-298](B-298-ressourcen-manager.md) | SRV | Idee | mittel | eingeplant | M10 | Ein ResourcenManager in k3c-dev ordnet jedem Grafik- und Sound-Slot Assets mit Präferenz zu |
-| [B-299](B-299-asset-vorschau-szenen.md) | PLAT | Idee | mittel | eingeplant | DBG4 | Eine Dev-Seite zeigt die Asset-Zuordnung je Kategorie als Mini-Szene im Spielmaßstab |
-| [B-300](B-300-mauern-zuerst-wie-sparsam.md) | SIM | Frage | mittel | eingeplant | BAL5 | Das Profil „Mauern zuerst“ spielt messbar anders als „sparsam“ |
-| [B-301](B-301-vary-ohne-wirkung.md) | SIM | Problem | niedrig | eingeplant | BAL5 | Ein Sensitivitäts-Pfad ohne Wirkung ergibt einen Fehler |
+| [B-299](B-299-asset-vorschau-szenen.md) | PLAT | Idee | mittel | eingeplant | M10 | Eine Dev-Seite zeigt die Asset-Zuordnung je Kategorie als Mini-Szene im Spielmaßstab |
+| [B-300](B-300-mauern-zuerst-wie-sparsam.md) | SIM | Frage | mittel | eingeplant | BAL6 | Das Profil „Mauern zuerst“ spielt messbar anders als „sparsam“ |
+| [B-301](B-301-vary-ohne-wirkung.md) | SIM | Problem | niedrig | eingeplant | BAL6 | Ein Sensitivitäts-Pfad ohne Wirkung ergibt einen Fehler |
 | [B-302](B-302-aufraeumen-branches-worktrees.md) | INF | Schuld | mittel | eingeplant | RP1 | Lokale Branches und Worktrees werden an festen Meilensteinen aufgeräumt |
 | [B-312](B-312-wiederaufheben-begrenzen.md) | SIM | Problem | hoch | eingeplant | W7 | Sofortiges Wiederaufheben fallengelassener Ausrüstung macht die Burg bei passivem Spiel unverwundbar |
 | [B-313](B-313-vermerk-wirkung-offen-test.md) | SIM | Frage | hoch | eingeplant | W7 | W4.3b kann den Vermerk „Wirkung offen“ nur mit einer Änderung an sites_test.go ersetzen |
@@ -116,20 +116,20 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-321](B-321-schlag-skill-ohne-ziel-ereignis.md) | SIM | Problem | mittel | eingeplant | SK1 | Schlag ohne Treffer und Skill ohne Ziel erzeugen ein Ereignis |
 | [B-322](B-322-texte-werkzeug-seiten.md) | PLAT | Schuld | niedrig | eingeplant | PL2 | Die Werkzeug-Seiten holen ihre Texte aus den zentralen Textdateien |
 | [B-324](B-324-client-typen-gegnerdaten.md) | CLI | Schuld | niedrig | offen | – | Die Client-Typen der Gegner- und Wellendaten passen zu den JSON-Dateien |
-| [B-327](B-327-golden-tiefe-stufen.md) | SIM | Frage | niedrig | offen | K1 | Golden-Läufe decken Eisenstollen und Kristallhöhle ab |
-| [B-328](B-328-feuergeist-flammen-flaeche.md) | SIM | Frage | niedrig | offen | K1 | Der Feuergeist hinterlässt eine Flammen-Fläche |
+| [B-327](B-327-golden-tiefe-stufen.md) | SIM | Frage | niedrig | offen | – | Golden-Läufe decken Eisenstollen und Kristallhöhle ab |
+| [B-328](B-328-feuergeist-flammen-flaeche.md) | SIM | Frage | niedrig | offen | – | Der Feuergeist hinterlässt eine Flammen-Fläche |
 | [B-329](B-329-figuren-neue-gegner.md) | CLI | Schuld | niedrig | offen | – | Die sechs neuen Gegner zeigen eigene Figuren statt Platzhalter |
 | [B-331](B-331-einheitlicher-grafikstil-pipeline.md) | CLI | Idee | mittel | offen | – | Alle Grafiken laufen durch eine Pipeline mit Ziel-Palette und gleicher Pixeldichte |
 | [B-333](B-333-pause-anzeige.md) | CLI | Idee | mittel | offen | – | Der Client zeigt einen angehaltenen Raum deutlich an und hält die Figuren-Animationen an |
 | [B-334](B-334-performance-modus.md) | CLI | Idee | hoch | eingeplant | PM1 | Der Client misst Leistung in einem Performance-Modus automatisch und überträgt die Werte an den Server |
-| [B-335](B-335-landingpage-spieler-entwicklung.md) | PLAT | Idee | hoch | eingeplant | LP1 | Die Landingpage zeigt nur Spieler-Kacheln, Entwicklungs-, Performance- und Balancing-Aufrufe liegen auf einer eigenen Entwicklerseite |
+| [B-335](B-335-landingpage-spieler-entwicklung.md) | PLAT | Idee | hoch | eingeplant | HW1 | Die Landingpage zeigt nur Spieler-Kacheln, Entwicklungs-, Performance- und Balancing-Aufrufe liegen auf einer eigenen Entwicklerseite |
 | [B-336](B-336-touch-optionen-schliessen.md) | CLI | Problem | hoch | eingeplant | U6 | Die Optionen-Szene lässt sich per Touch vollständig bedienen und schließen, ohne vom Touch-Overlay verdeckt zu werden |
 | [B-337](B-337-hud-elemente-ohne-ueberlagerung.md) | CLI | Idee | hoch | eingeplant | U6 | Jede HUD-Anzeige ist ein eigenes Element mit optionalem Hintergrund und Rahmen, und HUD-Elemente überlagern sich nicht |
 | [B-339](B-339-glyphen-je-plattform.md) | CLI | Idee | mittel | offen | – | Spiel und Seiten zeigen Tastensymbole passend zum gerade benutzten Controller (Xbox, PlayStation, weitere) |
 | [B-341](B-341-header-ursache-live-messen.md) | SRV | Problem | mittel | offen | – | Die Ursache für den fehlenden Header `X-K3C-Root` aus Worktrees ist live gemessen |
 | [B-342](B-342-w6-2-siteview-erlaubt.md) | CLI | Frage | mittel | offen | – | W6.2 darf den Bauplatz-Wartegrund in `siteView.ts` anbinden |
 | [B-343](B-343-bau-vor-dem-ausgang.md) | SIM | Frage | mittel | offen | – | Der Bau des Endbosses liegt an der inneren Kante des Ausgangs-Chunks |
-| [B-346](B-346-miniboss-wald-kippt-nacht-5.md) | REG | Problem | hoch | eingeplant | RG3 | Der Miniboss Wald kippt Nacht 5 in fast jedem Seed |
+| [B-346](B-346-miniboss-wald-kippt-nacht-5.md) | REG | Problem | hoch | eingeplant | RG1 | Der Miniboss Wald kippt Nacht 5 in fast jedem Seed |
 | [B-347](B-347-tester-misst-wirtschaft.md) | SIM | Schuld | hoch | eingeplant | BAL6 | Der Balancing-Tester misst die Wirtschafts-Kennzahlen |
 | [B-351](B-351-client-diagnose-zeile.md) | CLI | Idee | hoch | eingeplant | PM1 | Der Client schreibt FPS, Latenz und Puffer regelmäßig als Diagnose-Zeile ins Client-Log |
 | [B-352](B-352-botfeed-lan-zuschauer.md) | SRV | Idee | niedrig | offen | – | `sim_test` hängt sich an Clients auf der Xbox an, ohne einen Platz im Raum zu belegen |
@@ -138,6 +138,8 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-360](B-360-plan-set-fehlendes-feld.md) | SRV | Problem | niedrig | offen | – | plan_set lehnt ein Feld ab, das in der Datei fehlt, statt es still zu übergehen |
 | [B-361](B-361-sprint-prio-felder-entfallen.md) | INF | Schuld | mittel | offen | – | Die Sprint-Felder Prio und Einschiebbar entfallen in Vorlage, Planungstest und plan-Tools |
 | [B-362](B-362-k3c-dev-token-dienst.md) | SRV | Problem | hoch | offen | – | k3c-dev fragt den selbst gestarteten Spielserver mit dessen Token an |
+| [B-363](B-363-planung-flags-bearbeiten.md) | SRV | Idee | mittel | offen | – | Die Planungsseite ändert Prio, Umgebung, Agent und Projekt direkt im Detail |
+| [B-365](B-365-domaene-dev-werkzeug.md) | INF | Idee | hoch | offen | – | Das Entwickler-Werkzeug k3c-dev hat eine eigene Domäne statt SRV |
 
 ## Archiv
 
@@ -334,3 +336,4 @@ Zeile in diesen Abschnitt.
 | [B-338](archiv/B-338-session-status-verworfen.md) | INF | Schuld | hoch | erledigt | PJ1 | Sessions können den Status verworfen tragen |
 | [B-353](archiv/B-353-bot-eingabe-einbinden.md) | CLI | Idee | hoch | erledigt | TR3 | Das Spiel fragt die Bot-Eingabe ab und setzt ihre Spieler ohne Tastendruck in den Raum |
 | [B-350](archiv/B-350-mcp-seite-tools-zeitfilter.md) | SRV | Idee | hoch | erledigt | M11 | Die MCP-Seite zeigt alle Tools mit Aufruf-Statistik und filtert die Statistik nach Zeit |
+| [B-364](archiv/B-364-planung-hierarchie-optik.md) | SRV | Idee | mittel | erledigt | – | Die Planungsseite zeigt Projekt, Sprint und Session als klar unterscheidbare Ebenen |

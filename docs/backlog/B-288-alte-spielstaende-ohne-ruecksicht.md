@@ -6,7 +6,7 @@
 - **Umgebung:** offline
 - **Status:** eingeplant
 - **Sprint:** RP1
-- **Projekt:** –
+- **Projekt:** REL
 - **Erstellt:** 2026-10-05
 - **Spec:** Entwurf
 - **Revision:** 1

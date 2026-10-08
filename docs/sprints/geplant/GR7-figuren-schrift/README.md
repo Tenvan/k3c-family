@@ -1,7 +1,7 @@
 # GR7 · CLI · Figuren-Lücken, ganzzahlige Skalierung und Schrift
 
 - **Status:** geplant
-- **Projekt:** –
+- **Projekt:** GRA
 - **Domäne:** CLI
 - **Prio:** hoch
 - **Reife:** Entwurf

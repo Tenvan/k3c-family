@@ -6,7 +6,7 @@
 - **Umgebung:** offline
 - **Status:** eingeplant
 - **Sprint:** K3
-- **Projekt:** –
+- **Projekt:** KMP
 - **Erstellt:** 2026-10-02
 - **Spec:** freigegeben
 - **Revision:** 1

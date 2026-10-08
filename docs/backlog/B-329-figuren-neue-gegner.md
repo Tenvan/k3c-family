@@ -6,7 +6,7 @@
 - **Umgebung:** offline
 - **Status:** offen
 - **Sprint:** –
-- **Projekt:** –
+- **Projekt:** GRA
 - **Erstellt:** 2026-10-06
 - **Spec:** Entwurf
 - **Revision:** 1

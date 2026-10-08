@@ -1,7 +1,7 @@
 # ST1 · SRV · Speichern alle 60 s, unter Windows robust, Rotation der Spielmetrik
 
 - **Status:** geplant
-- **Projekt:** –
+- **Projekt:** LST
 - **Domäne:** SRV
 - **Prio:** mittel
 - **Reife:** Entwurf

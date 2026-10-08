@@ -1,7 +1,7 @@
 # PJ1 · INF · Projekte, Rang und Domäne je Session in Regeln, Vorlagen und Planungstest
 
 - **Status:** erledigt
-- **Projekt:** –
+- **Projekt:** PRZ
 - **Domäne:** INF
 - **Prio:** hoch
 - **Reife:** bereit

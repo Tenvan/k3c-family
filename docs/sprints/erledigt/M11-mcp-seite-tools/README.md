@@ -1,7 +1,7 @@
 # M11 · SRV · MCP-Seite: alle Tools mit Statistik, Zeitfilter
 
 - **Status:** erledigt
-- **Projekt:** –
+- **Projekt:** WZG
 - **Domäne:** SRV
 - **Prio:** hoch
 - **Reife:** bereit

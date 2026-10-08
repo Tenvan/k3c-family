@@ -5,8 +5,8 @@
 - **Prio:** niedrig
 - **Umgebung:** offline
 - **Status:** eingeplant
-- **Sprint:** BAL5
-- **Projekt:** –
+- **Sprint:** BAL6
+- **Projekt:** BAL
 - **Erstellt:** 2026-10-05
 - **Spec:** Entwurf
 - **Revision:** 1

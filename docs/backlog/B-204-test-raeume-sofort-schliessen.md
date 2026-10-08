@@ -6,7 +6,7 @@
 - **Umgebung:** offline
 - **Status:** eingeplant
 - **Sprint:** SV1
-- **Projekt:** –
+- **Projekt:** WRT
 - **Erstellt:** 2026-10-04
 - **Spec:** Entwurf
 - **Revision:** 1

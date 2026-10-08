@@ -5,8 +5,8 @@
 - **Prio:** hoch
 - **Umgebung:** live
 - **Status:** eingeplant
-- **Sprint:** SO5
-- **Projekt:** –
+- **Sprint:** SO4
+- **Projekt:** SND
 - **Erstellt:** 2026-10-04
 - **Spec:** Entwurf
 - **Revision:** 1

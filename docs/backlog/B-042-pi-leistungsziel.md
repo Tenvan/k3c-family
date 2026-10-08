@@ -5,8 +5,8 @@
 - **Prio:** hoch
 - **Umgebung:** live
 - **Status:** eingeplant
-- **Sprint:** LT1
-- **Projekt:** –
+- **Sprint:** HW1
+- **Projekt:** ABN
 - **Erstellt:** 2026-09-30
 - **Spec:** freigegeben
 - **Revision:** 1

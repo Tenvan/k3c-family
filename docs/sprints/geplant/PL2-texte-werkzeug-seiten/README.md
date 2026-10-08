@@ -1,7 +1,7 @@
 # PL2 · PLAT · Werkzeug-Seiten in der gewählten Sprache
 
 - **Status:** geplant
-- **Projekt:** –
+- **Projekt:** WZG
 - **Domäne:** PLAT
 - **Prio:** niedrig
 - **Reife:** Entwurf

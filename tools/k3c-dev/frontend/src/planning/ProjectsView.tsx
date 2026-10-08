@@ -2,6 +2,7 @@ import { Text } from '@radix-ui/themes';
 import { useState, type ReactNode } from 'react';
 import { backend, type PlanningData, type PlanSprint, type PlanTicket } from '../api';
 import { BacklogList } from './Backlog';
+import { FoldButton, useFold } from './fold';
 import { ProjectCard } from './ProjectCard';
 import { groupProjects, moveRank, rankedCount, type ProjectGroups } from './projects';
 
@@ -44,20 +45,20 @@ export function ProjectSections({ groups: g, count, error, onMove, data, sel, re
           onMove={(to) => onMove(v.project.id, to)} {...card} />
       ))}
       {g.abn && (
-        <section className="pl-card" data-area="abn">
-          <h3 className="pl-h">Abnahmen am Gerät (ABN) <small>ohne Rang</small></h3>
+        <FoldSection id="ABN" area="abn" className="pl-card pl-project is-abn"
+          title={<>Abnahmen am Gerät (ABN) <small>ohne Rang · {g.abnOpen.length} offen</small></>}>
           {g.abnOpen.map(({ sprint, session }) => (
             <Text key={session.nr} size="1">{session.nr} · {session.titel} <Text color="gray">({sprint.id})</Text></Text>
           ))}
           {g.abnOpen.length === 0 && <Text size="1" color="gray">Keine offene Abnahme.</Text>}
-        </section>
+        </FoldSection>
       )}
       {(g.without.sprints.length > 0 || g.without.tickets.length > 0) && (
-        <section data-area="ohne">
-          <h3 className="pl-h">Ohne Projekt <small>{g.without.sprints.length} Sprints · {g.without.tickets.length} Tickets</small></h3>
+        <FoldSection id="ohne" area="ohne"
+          title={<>Ohne Projekt <small>{g.without.sprints.length} Sprints · {g.without.tickets.length} Tickets</small></>}>
           {g.without.sprints.map(renderSprint)}
           {g.without.tickets.length > 0 && <BacklogList data={data} tickets={g.without.tickets} sel={sel} />}
-        </section>
+        </FoldSection>
       )}
       {g.folded.length > 0 && (
         <details data-area="eingeklappt">
@@ -66,5 +67,17 @@ export function ProjectSections({ groups: g, count, error, onMove, data, sel, re
         </details>
       )}
     </>
+  );
+}
+
+/** Bereich mit Pfeil zum Einklappen (ABN, Ohne Projekt; B-364). */
+function FoldSection({ id, area, className, title, children }:
+  { id: string; area: string; className?: string; title: ReactNode; children: ReactNode }) {
+  const [folded, toggle] = useFold(`area:${id}`);
+  return (
+    <section className={className} data-area={area}>
+      <h3 className="pl-h"><FoldButton folded={folded} onToggle={toggle} what={id} />{title}</h3>
+      {!folded && children}
+    </section>
   );
 }

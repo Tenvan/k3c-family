@@ -1,7 +1,7 @@
 # W6 · CLI · Anzeigen für Bau, Lager, Hub und Bürger
 
 - **Status:** aktiv
-- **Projekt:** –
+- **Projekt:** WRT
 - **Domäne:** CLI
 - **Prio:** mittel
 - **Reife:** bereit

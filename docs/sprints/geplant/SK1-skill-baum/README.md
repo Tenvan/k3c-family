@@ -1,7 +1,7 @@
 # SK1 · SIM · Skill-Baum mit Tank und Zauberer, Respec-Regeln abfragbar
 
 - **Status:** geplant
-- **Projekt:** –
+- **Projekt:** SKL
 - **Domäne:** SIM
 - **Prio:** hoch
 - **Reife:** bereit

@@ -1,7 +1,7 @@
 # RG2 · REG · Regelwerk-Klärungen: Korridore, Kennzahl, Tier-Gating, Handwerker, Tiefe 3–4
 
 - **Status:** geplant
-- **Projekt:** –
+- **Projekt:** BAL
 - **Domäne:** REG
 - **Prio:** mittel
 - **Reife:** Entwurf

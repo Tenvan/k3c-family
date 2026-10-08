@@ -1,7 +1,7 @@
 # K3 · SIM · Events Vollmond, Blutmond und Händler-Überfall
 
 - **Status:** geplant
-- **Projekt:** –
+- **Projekt:** KMP
 - **Domäne:** SIM
 - **Prio:** niedrig
 - **Reife:** bereit

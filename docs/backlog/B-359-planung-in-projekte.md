@@ -6,11 +6,11 @@
 - **Umgebung:** offline
 - **Status:** eingeplant
 - **Sprint:** PJ3
-- **Projekt:** –
+- **Projekt:** PRZ
 - **Erstellt:** 2026-10-07
-- **Spec:** Entwurf
+- **Spec:** freigegeben
 - **Revision:** 1
-- **Freigabe:** –
+- **Freigabe:** 2026-10-08, Chat, durch 🧑, Revision 1
 
 ## Ausgangslage
 

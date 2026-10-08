@@ -6,7 +6,7 @@
 - **Umgebung:** live
 - **Status:** eingeplant
 - **Sprint:** SV1
-- **Projekt:** –
+- **Projekt:** WRT
 - **Erstellt:** 2026-10-06
 - **Spec:** Entwurf
 - **Revision:** 1
