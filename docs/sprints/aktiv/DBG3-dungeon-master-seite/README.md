@@ -1,7 +1,7 @@
 # DBG3 · PLAT · Dungeon-Master-Seite /dm
 
 - **Status:** aktiv
-- **Projekt:** –
+- **Projekt:** WZG
 - **Domäne:** PLAT
 - **Prio:** hoch
 - **Reife:** bereit

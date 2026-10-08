@@ -1,7 +1,7 @@
 # BAL5 · SIM · Balancing-Tester: Profil „Mauern zuerst“ und Sensitivität ohne Wirkung
 
 - **Status:** geplant
-- **Projekt:** –
+- **Projekt:** BAL
 - **Domäne:** SIM
 - **Prio:** mittel
 - **Reife:** Entwurf

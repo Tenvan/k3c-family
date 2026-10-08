@@ -1,7 +1,7 @@
 # K5 · CLI · Anzeigen für Kampf, Bosse und Events, Anlegen-Dialog, Debug-Panel
 
 - **Status:** geplant
-- **Projekt:** –
+- **Projekt:** KMP
 - **Domäne:** CLI
 - **Prio:** mittel
 - **Reife:** bereit

@@ -1,7 +1,7 @@
 # RG3 · REG · Miniboss Wald: Burg hält Nacht 5
 
 - **Status:** geplant
-- **Projekt:** –
+- **Projekt:** BAL
 - **Domäne:** REG
 - **Prio:** hoch
 - **Reife:** Entwurf

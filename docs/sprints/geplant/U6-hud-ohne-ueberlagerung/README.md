@@ -1,7 +1,7 @@
 # U6 · CLI · HUD ohne Überlagerung, Optionen per Touch
 
 - **Status:** geplant
-- **Projekt:** –
+- **Projekt:** BED
 - **Domäne:** CLI
 - **Prio:** hoch
 - **Reife:** Entwurf

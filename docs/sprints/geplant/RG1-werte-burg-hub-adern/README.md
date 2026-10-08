@@ -1,7 +1,7 @@
 # RG1 · REG · Werte-Runde: Burg hält Nacht, Hub-Stufe 4–5, Adern-Takt
 
 - **Status:** geplant
-- **Projekt:** –
+- **Projekt:** BAL
 - **Domäne:** REG
 - **Prio:** mittel
 - **Reife:** Entwurf

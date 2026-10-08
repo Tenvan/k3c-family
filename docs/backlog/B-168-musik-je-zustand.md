@@ -6,7 +6,7 @@
 - **Umgebung:** live
 - **Status:** eingeplant
 - **Sprint:** SO4
-- **Projekt:** –
+- **Projekt:** SND
 - **Erstellt:** 2026-10-02
 - **Spec:** freigegeben
 - **Revision:** 1

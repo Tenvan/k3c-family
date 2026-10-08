@@ -6,7 +6,7 @@
 - **Umgebung:** live
 - **Status:** eingeplant
 - **Sprint:** P1
-- **Projekt:** –
+- **Projekt:** BAL
 - **Erstellt:** 2026-09-29
 - **Spec:** freigegeben
 - **Revision:** 1

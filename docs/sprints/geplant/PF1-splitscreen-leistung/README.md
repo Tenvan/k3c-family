@@ -1,7 +1,7 @@
 # PF1 · CLI · Split-Screen flüssig auf der Xbox
 
 - **Status:** geplant
-- **Projekt:** –
+- **Projekt:** LST
 - **Domäne:** CLI
 - **Prio:** hoch
 - **Reife:** bereit

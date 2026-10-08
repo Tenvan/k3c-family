@@ -45,12 +45,12 @@ dann über den Go-Server mit mehreren Räumen und gemischten Spielern.
 
 | Sprint | Domäne | Prio | Thema | Am Ende sichtbar | Reife | Ordner |
 |---|---|---|---|---|---|---|
-| BR1 | REG 🧑 | niedrig | Balancing-Runde Wirtschaft und Spieleabend 2 (BR1.1 erledigt; zurückgestellt am 2026-10-07, Vorrang Performance, Grafik und Sound) | Pass/Fail je Kennzahl, Begründungen in `docs/rules/`, Protokoll in `docs/playtests/` | bereit | `geplant/BR1-balancing-wirtschaft/` |
-| P1 | REG 🧑 | niedrig | Spieleabend 1 | Protokoll und Folge-Tickets | Entwurf | `geplant/P1-spieleabend-1/` |
+| BR1 | REG | niedrig | Balancing-Runde Wirtschaft und Spieleabend 2 (BR1.1 erledigt; zurückgestellt am 2026-10-07, Vorrang Performance, Grafik und Sound) | Pass/Fail je Kennzahl, Begründungen in `docs/rules/`, Protokoll in `docs/playtests/` | bereit | `geplant/BR1-balancing-wirtschaft/` |
+| P1 | REG | niedrig | Spieleabend 1 | Protokoll und Folge-Tickets | bereit | `geplant/P1-spieleabend-1/` |
 | K3 | SIM | niedrig | Events Vollmond, Blutmond und Händler-Überfall | Tests je Event grün, aktualisierte Golden-Daten | bereit | `geplant/K3-events/` |
 | K4 | SRV | hoch | Protokoll für Bosse, Events und Inselwechsel | `docs/protocol.md` mit neuen Feldern, Beispiele in `testdata/protocol/`, `task check:go` und `task check` grün | bereit | `geplant/K4-protokoll-kampf/` |
 | K5 | CLI | mittel | Anzeigen für Kampf, Bosse und Events, Anlegen-Dialog, Debug-Panel | Boss-Leiste, Warnkreis und Event-Banner am TV, Lobby-Dialog, von 🧑 abgenommen | bereit | `geplant/K5-anzeige-kampf/` |
-| BR2 | REG 🧑 | niedrig | Balancing-Runde Kampf und Bosse und Spieleabend 3 | Pass/Fail je Kennzahl, Begründungen in `docs/rules/`, Protokoll in `docs/playtests/` | Entwurf | `geplant/BR2-balancing-kampf/` |
+| BR2 | REG | niedrig | Balancing-Runde Kampf und Bosse und Spieleabend 3 | Pass/Fail je Kennzahl, Begründungen in `docs/rules/`, Protokoll in `docs/playtests/` | bereit | `geplant/BR2-balancing-kampf/` |
 | SV1 | SRV | hoch | Raum mit allen Stufen, Voll-Ausbau-Spielstand, leere Test-Räume | Neuer Raum mit allen fünf Stufen, Level-Betrachter startet einen voll ausgebauten Spielstand | bereit | `geplant/SV1-raeume-stufen-testspielstand/` |
 | ST1 | SRV | mittel | Speichern alle 60 s, unter Windows robust, Rotation der Spielmetrik | HUD zeigt „gesichert“, Spielstände überstehen gesperrte Dateien, `reports/` bleibt begrenzt | Entwurf | `geplant/ST1-speichern-robust/` |
 | RM1 | SRV | mittel | Raum-Pause im Couch-Raum und lernbare Skills vom Server | Pause hält den Couch-Raum an; Skill-Menü zeigt nur, was der Server annimmt | Entwurf | `geplant/RM1-pause-lernbare-skills/` |
@@ -73,9 +73,9 @@ dann über den Go-Server mit mehreren Räumen und gemischten Spielern.
 
 | Sprint | Domäne | Prio | Thema | Reife | Ordner |
 |---|---|---|---|---|---|
-| BAL4 | REG | mittel | Abgleich Spielmetrik und Simulator | Entwurf | `geplant/BAL4-metrik-abgleich/` |
-| SO2 | CLI | hoch | SFX-Katalog und Einbau | Entwurf | `geplant/SO2-sfx-katalog/` |
-| SO4 | CLI | hoch | Musik je Zustand | Entwurf | `geplant/SO4-musik/` |
+| BAL4 | REG | mittel | Abgleich Spielmetrik und Simulator | bereit | `geplant/BAL4-metrik-abgleich/` |
+| SO2 | CLI | hoch | SFX-Katalog und Einbau | bereit | `geplant/SO2-sfx-katalog/` |
+| SO4 | CLI | hoch | Musik je Zustand | bereit | `geplant/SO4-musik/` |
 | M10 | SRV | mittel | Ressourcen-Manager für Grafik- und Sound-Slots in k3c-dev | Entwurf | `geplant/M10-ressourcen-manager/` |
 | NT1 | SRV | mittel | Stabile Tests, Warteschlange und Snapshot-Budget | Entwurf | `geplant/NT1-netz-tests-stabil/` |
 | BT1 | SRV | niedrig | Server im Heimnetz finden, Windows-Starter, Start mit Seed | Entwurf | `geplant/BT1-heimnetz-start/` |

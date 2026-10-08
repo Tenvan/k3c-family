@@ -1,6 +1,6 @@
 # PJ3.1 · Projekte anlegen, Sprints und Tickets zuordnen
 
-- **Status:** in Arbeit
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** INF
@@ -61,5 +61,9 @@ task test -- planning
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+- **AC-01 geprüft:** `plan_list kind=projekt`: LST, GRA, SND, BED, WRT, SKL, KMP, WZG, REL mit Rang 1–9, PRZ Rang 10 (PJ1 → PJ2 → PJ3), ABN ohne Rang (HW1), BAL ruht (RG1, RG3, BAL6, BAL5, RG2, P1, BAL4, BR1, BR2); Sprint-Reihenfolgen wie B-359, zusammenzulegende Sprints direkt hinter ihrem Ziel, die sieben zu schließenden Sprints im Projekt ihres Themas (DBG3, LT1, MON2 → WZG; LP1 → BED; RL1 → REL; SO1, SO3 → SND). M11 und TR3 (seit 2026-10-08 erledigt) stehen in WZG.
+- **AC-04 geprüft:** B-090 und B-092 (U1/U3 erledigt, nur die TV-Abnahme offen) → `Projekt: ABN`, `Sprint: HW1`; B-208 → `Sprint: –`, `Status: offen`, WRT (Umsetzung durch W5 laut Abnahme nicht belegt); B-327, B-328 → KMP ohne Sprint (K1 erledigt); B-099 → BAL ohne Sprint, `offen`. Ziel-Tickets: SND `B-011`, BAL `B-099`.
+- **Tickets:** Alle 129 offenen Tickets haben ein Projekt (Sprint-Tickets nach ihrem Sprint, die übrigen nach B-359 bzw. Thema: B-341, B-352, B-354, B-360, B-361, B-362 → WZG; B-324, B-343 → KMP; B-333, B-339 → BED; B-342 → WRT; B-329, B-331 → GRA). Kein Frage-Ticket nötig. B-214 steht bis PJ3.2 noch bei SKL (RM1).
+- **Abweichungen:** Das Kürzel `WZ` aus B-359 verletzt die Regel „drei Großbuchstaben“ (Tool lehnt ab) → `WZG`. `tests/planningProjects.test.ts` (INF, nicht unter Erlaubte Dateien) nimmt ABN aus der Rang-Prüfung, sonst rot („Ränge –, 1 … 10“); das war als Klärung in PJ3 vorgesehen (PJ2 › Offene Fragen, ABN ohne Rang), mit zwei Testfällen. Die Spalte „Ziel“ in `docs/projekte/README.md` zieht das Tool nicht nach, von Hand gefüllt.
+- **Neue Tickets:** B-363 (Planungsseite: Prio, Umgebung, Agent, Projekt im Detail ändern, Wunsch 🧑).
+- `check_run task:test pattern=planning` grün (2026-10-08).

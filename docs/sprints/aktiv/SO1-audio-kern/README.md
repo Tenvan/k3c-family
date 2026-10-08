@@ -1,7 +1,7 @@
 # SO1 · CLI · Audio-Kern
 
 - **Status:** aktiv
-- **Projekt:** –
+- **Projekt:** SND
 - **Domäne:** CLI
 - **Prio:** mittel
 - **Reife:** bereit

@@ -12,10 +12,10 @@ type SessionInfo = { id: string; domain: string; status: string };
 const projectSprints = (text: string) =>
   [...section(text, 'Sprints').matchAll(/^\| (\S+) \| .+ \| .+ \|$/gm)].map((m) => m[1]).filter((id) => /^[A-Z]+\d+$/.test(id));
 
-/** Ränge der aktiven Projekte lückenlos ab 1, ruhende und erledigte ohne Rang. */
+/** Ränge der aktiven Projekte lückenlos ab 1, ruhende und erledigte ohne Rang; ABN läuft ohne Rang neben der Rangfolge. */
 function rankErrors(projects: Project[]): string[] {
-  const errors = projects.filter((p) => p.status !== 'aktiv' && !none(p.rang)).map((p) => `${p.id}: ${p.status} mit Rang`);
-  const ranks = projects.filter((p) => p.status === 'aktiv').map((p) => p.rang).sort((a, b) => Number(a) - Number(b));
+  const errors = projects.filter((p) => (p.status !== 'aktiv' || p.id === 'ABN') && !none(p.rang)).map((p) => `${p.id}: ${p.status} mit Rang`);
+  const ranks = projects.filter((p) => p.status === 'aktiv' && p.id !== 'ABN').map((p) => p.rang).sort((a, b) => Number(a) - Number(b));
   if (ranks.join() !== ranks.map((_, i) => String(i + 1)).join()) errors.push(`Ränge ${ranks.join(', ')} statt 1 … ${ranks.length}`);
   return errors;
 }
@@ -63,6 +63,8 @@ describe('Regeln für Projekte (Beispiele)', () => {
     expect(rankErrors([P('GRA', 'aktiv', '1'), P('SND', 'aktiv', '1')])).toHaveLength(1);
     expect(rankErrors([P('GRA', 'aktiv', '1'), P('SND', 'aktiv', '3')])).toHaveLength(1);
     expect(rankErrors([P('GRA', 'aktiv', '1'), P('BAL', 'ruht', '2')])).toEqual(['BAL: ruht mit Rang']);
+    expect(rankErrors([P('GRA', 'aktiv', '1'), P('ABN', 'aktiv', '–')])).toEqual([]);
+    expect(rankErrors([P('GRA', 'aktiv', '1'), P('ABN', 'aktiv', '2')])).toEqual(['ABN: aktiv mit Rang']);
   });
 
   it('Sprint und Sprint-Tabelle des Projekts nennen sich gegenseitig', () => {

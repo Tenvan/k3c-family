@@ -6,7 +6,7 @@
 - **Umgebung:** live
 - **Status:** eingeplant
 - **Sprint:** U5
-- **Projekt:** –
+- **Projekt:** BED
 - **Erstellt:** 2026-10-03
 - **Spec:** Entwurf
 - **Revision:** 1

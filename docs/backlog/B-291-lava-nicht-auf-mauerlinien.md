@@ -6,7 +6,7 @@
 - **Umgebung:** offline
 - **Status:** eingeplant
 - **Sprint:** LV1
-- **Projekt:** –
+- **Projekt:** KMP
 - **Erstellt:** 2026-10-05
 - **Spec:** Entwurf
 - **Revision:** 1

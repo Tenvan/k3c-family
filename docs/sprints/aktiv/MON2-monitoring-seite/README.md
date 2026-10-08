@@ -1,7 +1,7 @@
 # MON2 · PLAT · Monitoring-Seite mit Dashboard
 
 - **Status:** aktiv
-- **Projekt:** –
+- **Projekt:** WZG
 - **Domäne:** PLAT
 - **Prio:** hoch
 - **Reife:** bereit

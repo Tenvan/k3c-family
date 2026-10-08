@@ -1,7 +1,7 @@
 # W8 · CLI · Bauplätze mit Grund und alle Rohstoffe im Client
 
 - **Status:** geplant
-- **Projekt:** –
+- **Projekt:** WRT
 - **Domäne:** CLI
 - **Prio:** mittel
 - **Reife:** Entwurf

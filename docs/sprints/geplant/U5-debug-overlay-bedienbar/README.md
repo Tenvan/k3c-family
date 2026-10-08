@@ -1,7 +1,7 @@
 # U5 · CLI · Debug-Overlay und Cheat-Dialog bedienbar
 
 - **Status:** geplant
-- **Projekt:** –
+- **Projekt:** BED
 - **Domäne:** CLI
 - **Prio:** hoch
 - **Reife:** bereit

@@ -1,7 +1,7 @@
 # PL1 · PLAT · Neues Spiel, zwei Spieler an einer Tastatur, Overlay auf der Xbox, zentrale Texte
 
 - **Status:** geplant
-- **Projekt:** –
+- **Projekt:** BED
 - **Domäne:** PLAT
 - **Prio:** hoch
 - **Reife:** bereit

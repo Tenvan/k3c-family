@@ -1,7 +1,7 @@
 # SO5 · CLI · Audio-Kern: ganze Dateien mit Crossfade, Ambient-Lautstärke
 
 - **Status:** geplant
-- **Projekt:** –
+- **Projekt:** SND
 - **Domäne:** CLI
 - **Prio:** hoch
 - **Reife:** Entwurf

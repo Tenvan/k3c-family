@@ -6,7 +6,7 @@
 - **Umgebung:** offline
 - **Status:** eingeplant
 - **Sprint:** RM1
-- **Projekt:** –
+- **Projekt:** SKL
 - **Erstellt:** 2026-10-04
 - **Spec:** Entwurf
 - **Revision:** 1

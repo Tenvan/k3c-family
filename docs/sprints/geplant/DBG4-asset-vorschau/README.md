@@ -1,7 +1,7 @@
 # DBG4 · PLAT · Dev-Seite Asset-Vorschau im Spielmaßstab
 
 - **Status:** geplant
-- **Projekt:** –
+- **Projekt:** GRA
 - **Domäne:** PLAT
 - **Prio:** mittel
 - **Reife:** Entwurf

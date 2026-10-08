@@ -1,7 +1,7 @@
 # SO3 · PLAT · Hörprobenseite `soundtest.html`
 
 - **Status:** aktiv
-- **Projekt:** –
+- **Projekt:** SND
 - **Domäne:** PLAT
 - **Prio:** mittel
 - **Reife:** bereit

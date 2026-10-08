@@ -6,7 +6,7 @@
 - **Umgebung:** offline
 - **Status:** eingeplant
 - **Sprint:** NT1
-- **Projekt:** –
+- **Projekt:** LST
 - **Erstellt:** 2026-10-04
 - **Spec:** Entwurf
 - **Revision:** 1

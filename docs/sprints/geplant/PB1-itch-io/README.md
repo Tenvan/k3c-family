@@ -1,7 +1,7 @@
 # PB1 · INF · Veröffentlichung auf itch.io
 
 - **Status:** geplant
-- **Projekt:** –
+- **Projekt:** REL
 - **Domäne:** INF
 - **Prio:** niedrig
 - **Reife:** Entwurf

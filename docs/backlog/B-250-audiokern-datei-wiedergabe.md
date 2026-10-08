@@ -6,7 +6,7 @@
 - **Umgebung:** live
 - **Status:** eingeplant
 - **Sprint:** SO5
-- **Projekt:** –
+- **Projekt:** SND
 - **Erstellt:** 2026-10-04
 - **Spec:** Entwurf
 - **Revision:** 1

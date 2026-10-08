@@ -1,7 +1,7 @@
 # BAL4 · REG · Abgleich Spielmetrik und Simulator
 
 - **Status:** geplant
-- **Projekt:** –
+- **Projekt:** BAL
 - **Domäne:** REG
 - **Prio:** mittel
 - **Reife:** bereit

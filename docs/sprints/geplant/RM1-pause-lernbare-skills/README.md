@@ -1,7 +1,7 @@
 # RM1 · SRV · Raum-Pause im Couch-Raum und lernbare Skills vom Server
 
 - **Status:** geplant
-- **Projekt:** –
+- **Projekt:** SKL
 - **Domäne:** SRV
 - **Prio:** mittel
 - **Reife:** Entwurf

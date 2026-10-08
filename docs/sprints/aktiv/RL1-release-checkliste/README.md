@@ -1,7 +1,7 @@
 # RL1 · INF · Release-Checkliste
 
 - **Status:** aktiv
-- **Projekt:** –
+- **Projekt:** REL
 - **Domäne:** INF
 - **Prio:** hoch
 - **Reife:** bereit
