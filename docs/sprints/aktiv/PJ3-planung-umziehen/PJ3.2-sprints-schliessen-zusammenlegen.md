@@ -1,6 +1,6 @@
 # PJ3.2 · Sprints schließen, zusammenlegen, RM1 teilen
 
-- **Status:** offen
+- **Status:** in Arbeit
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** INF

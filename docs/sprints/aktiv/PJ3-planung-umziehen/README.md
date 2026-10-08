@@ -72,7 +72,7 @@ Beim Bereitmachen 2026-10-08 aufgefallen, alle Vorschläge von 🧑 mit der Frei
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
 | PJ3.1 | `PJ3.1-projekte-anlegen.md` | Umsetzung | autonom | fertig |
-| PJ3.2 | `PJ3.2-sprints-schliessen-zusammenlegen.md` | Umsetzung | autonom | offen |
+| PJ3.2 | `PJ3.2-sprints-schliessen-zusammenlegen.md` | Umsetzung | autonom | in Arbeit |
 | PJ3.3 | `PJ3.3-fahrplan-strenge-pruefung.md` | Umsetzung | autonom | offen |
 | PJ3.4 | `PJ3.4-review.md` | Review | autonom | offen |
 
