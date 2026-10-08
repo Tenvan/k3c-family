@@ -79,3 +79,27 @@
   background: linear-gradient(var(--accent-a2), var(--accent-a2)), var(--card); /* deckend, sonst scheint die Karte durch */
   position: sticky; top: -12px; z-index: 1; }
 .pl-target { margin: 6px 0; }
+
+/* Ebenen der Projekt-Ansicht (B-364): Projekt = getönte Fläche mit Akzentkante, Sprint = ruhige Panel-Fläche darin,
+   Session = Zeile ohne eigene Fläche. Sprint-Chips eckig, Status-Badges der Sessions rund. */
+.pl-project { gap: 8px; padding: 12px 14px 14px; background: var(--accent-a2); border-color: var(--accent-a6);
+  border-left: 4px solid var(--accent-9); }
+.pl-project.is-ruht, .pl-project.is-erledigt { background: var(--gray-a2); border-color: var(--gray-a5); border-left-color: var(--gray-8); }
+.pl-project.is-abn { border-left-color: var(--amber-9); background: var(--amber-a2); border-color: var(--amber-a5); }
+.pl-project-head { padding-bottom: 6px; border-bottom: 1px solid var(--accent-a5); }
+.pl-project-head .pl-title { font-size: 16px; font-weight: 700; color: var(--title); }
+.pl-project-id { font: 700 13px 'Cascadia Mono', Consolas, monospace; letter-spacing: 0.04em; }
+.pl-rank { min-width: 24px; height: 24px; padding: 0 6px; box-sizing: border-box; border-radius: 6px; display: inline-flex;
+  align-items: center; justify-content: center; font-weight: 700; background: var(--accent-9); color: var(--accent-contrast); }
+.pl-project .pl-card { background: var(--color-panel-solid); border-color: var(--gray-a5); }
+.pl-project .pl-card.is-active { border-color: var(--accent-9); }
+.pl-chip { font: 600 11px 'Cascadia Mono', Consolas, monospace; padding: 2px 8px; border-radius: 4px; cursor: pointer;
+  border: 1px solid var(--gray-a6); background: var(--color-panel-solid); color: var(--gray-12); }
+.pl-chip:hover { border-color: var(--accent-8); }
+.pl-chip.is-aktiv { border-color: var(--accent-9); color: var(--accent-11); }
+.pl-chip.is-erledigt { color: var(--ok); border-color: color-mix(in srgb, var(--ok) 45%, transparent); }
+.pl-fold { width: 20px; height: 20px; padding: 0; border: 0; border-radius: 4px; background: transparent; color: var(--dim);
+  cursor: pointer; font-size: 13px; line-height: 1; }
+.pl-fold:hover { background: var(--gray-a4); color: var(--gray-12); }
+.pl-project.is-folded .pl-project-head { border-bottom: 0; padding-bottom: 0; }
+.pl-foldall { margin-left: auto; display: inline-flex; gap: 10px; font-size: 12px; font-weight: 400; }

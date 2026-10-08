@@ -4,7 +4,7 @@
 - **Typ:** Idee
 - **Prio:** mittel
 - **Umgebung:** offline
-- **Status:** offen
+- **Status:** erledigt
 - **Sprint:** –
 - **Projekt:** WZG
 - **Erstellt:** 2026-10-08
@@ -60,4 +60,4 @@ Ungültige oder seltene Situation → gewolltes Verhalten. Passt nichts: `nicht 
 
 ## Notizen
 
-Links, Messwerte, verworfene Ansätze. Darf leer bleiben (`–`).
+2026-10-08 auf Wunsch von 🧑 direkt in PJ3 umgesetzt (eigener Commit auf `sprint/pj3`, Domäne SRV außerhalb des INF-Sprints): Überschrift „Projekte · n nach Rang · Sprints …“, Projekt-Karte mit Akzentkante, getönter Fläche und Rang-Kachel, Sprint-Karten als ruhige Panel-Fläche darin, Sessions ohne Fläche, Sprint-Chips eckig und anklickbar (springen zum Sprint), ABN amber, ruhend/erledigt grau. Zusätzlich (Wunsch 🧑): Projekte, Sprints, ABN und „Ohne Projekt“ einklappbar, gemerkt in den Prefs, „alle einklappen/aufklappen“ an der Überschrift. Geprüft: `dev:test` grün, Browser-Pane mit Mock-Daten (Agent).

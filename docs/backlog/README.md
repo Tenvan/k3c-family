@@ -139,7 +139,7 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-361](B-361-sprint-prio-felder-entfallen.md) | INF | Schuld | mittel | offen | – | Die Sprint-Felder Prio und Einschiebbar entfallen in Vorlage, Planungstest und plan-Tools |
 | [B-362](B-362-k3c-dev-token-dienst.md) | SRV | Problem | hoch | offen | – | k3c-dev fragt den selbst gestarteten Spielserver mit dessen Token an |
 | [B-363](B-363-planung-flags-bearbeiten.md) | SRV | Idee | mittel | offen | – | Die Planungsseite ändert Prio, Umgebung, Agent und Projekt direkt im Detail |
-| [B-364](B-364-planung-hierarchie-optik.md) | SRV | Idee | mittel | offen | – | Die Planungsseite zeigt Projekt, Sprint und Session als klar unterscheidbare Ebenen |
+| [B-365](B-365-domaene-dev-werkzeug.md) | INF | Idee | hoch | offen | – | Das Entwickler-Werkzeug k3c-dev hat eine eigene Domäne statt SRV |
 
 ## Archiv
 
@@ -336,3 +336,4 @@ Zeile in diesen Abschnitt.
 | [B-338](archiv/B-338-session-status-verworfen.md) | INF | Schuld | hoch | erledigt | PJ1 | Sessions können den Status verworfen tragen |
 | [B-353](archiv/B-353-bot-eingabe-einbinden.md) | CLI | Idee | hoch | erledigt | TR3 | Das Spiel fragt die Bot-Eingabe ab und setzt ihre Spieler ohne Tastendruck in den Raum |
 | [B-350](archiv/B-350-mcp-seite-tools-zeitfilter.md) | SRV | Idee | hoch | erledigt | M11 | Die MCP-Seite zeigt alle Tools mit Aufruf-Statistik und filtert die Statistik nach Zeit |
+| [B-364](archiv/B-364-planung-hierarchie-optik.md) | SRV | Idee | mittel | erledigt | – | Die Planungsseite zeigt Projekt, Sprint und Session als klar unterscheidbare Ebenen |

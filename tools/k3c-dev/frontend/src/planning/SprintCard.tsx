@@ -1,6 +1,7 @@
 import { Checkbox } from '@radix-ui/themes';
 import { backend, type GitHubSprint, type PlanSession, type PlanSprint } from '../api';
 import { StatusBadge, Tip, type Tone } from '../ui/parts';
+import { FoldButton, useFold } from './fold';
 import { ghBadges, isNext } from './planning';
 import { CopyPrompt, DepLinks } from './PromptParts';
 import { pickable, promptSession, promptSprint } from './prompts';
@@ -37,10 +38,12 @@ interface Props {
 export function SprintCard({ sprint: s, gh, sel, onSelect, checked, onCheck }: Props) {
   const done = s.sessions.filter((x) => x.status === 'fertig').length;
   const next = s.sessions.find(isNext);
-  const cls = ['pl-card', s.status === 'aktiv' && 'is-active', s.status === 'erledigt' && 'is-done', s.worktree && 'is-wt'];
+  const [folded, toggle] = useFold(s.id);
+  const cls = ['pl-card', 'pl-sprint', s.status === 'aktiv' && 'is-active', s.status === 'erledigt' && 'is-done', s.worktree && 'is-wt'];
   return (
     <div id={`pl-sp-${s.id}`} className={cls.filter(Boolean).join(' ')}>
       <div className="pl-head">
+        <FoldButton folded={folded} onToggle={toggle} what={`Sprint ${s.id}`} />
         <strong>{s.id}</strong>
         <span className="pl-dim">{s.domain}</span>
         {s.prio && <Tip content="Prio: höchste der Tickets"><StatusBadge tone={prioTone(s.prio)}>Prio {s.prio}</StatusBadge></Tip>}
@@ -59,14 +62,14 @@ export function SprintCard({ sprint: s, gh, sel, onSelect, checked, onCheck }: P
           <div style={{ width: `${(done / s.sessions.length) * 100}%` }} />
         </div>
       )}
-      <ul className="pl-sessions">
+      {!folded && <ul className="pl-sessions">
         {s.sessions.map((x) => (
           <li key={x.nr} className={[x === next && 'is-next', x.nr === sel && 'is-sel'].filter(Boolean).join(' ')}>
             <SessionRow sprint={s} x={x} onSelect={onSelect} checked={checked.has(x.nr)} onCheck={(on) => onCheck(x.nr, on)} />
           </li>
         ))}
-      </ul>
-      {s.tickets.length > 0 && <span className="pl-dim">Tickets: {s.tickets.join(', ')}</span>}
+      </ul>}
+      {!folded && s.tickets.length > 0 && <span className="pl-dim">Tickets: {s.tickets.join(', ')}</span>}
     </div>
   );
 }
