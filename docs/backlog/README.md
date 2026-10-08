@@ -141,6 +141,7 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-365](B-365-domaene-dev-werkzeug.md) | INF | Idee | hoch | eingeplant | DV1 | Das Entwickler-Werkzeug k3c-dev hat eine eigene Domäne statt SRV |
 | [B-366](B-366-fahrplan-spalte-projekt.md) | SRV | Schuld | mittel | offen | – | k3c-dev füllt im Fahrplan die Spalte Projekt und ordnet nach Rang |
 | [B-367](B-367-doku-nachzug-projekte.md) | INF | Schuld | niedrig | offen | – | Begriffe aus den alten Bahnen und Spuren sind nach PJ3 ersetzt und neue Projekt-Begriffe im Glossar |
+| [B-368](B-368-planung-erpapi-ablage.md) | SRV | Schuld | mittel | offen | – | Die Planung liegt in der ErpApi-Ablage und k3c-dev bedient sie mit den Planungs-Tools der Workbench-Spec |
 
 ## Archiv
 
