@@ -1,6 +1,6 @@
 # PJ1.3 · Planungstest für Projekte, Rang und Domänen-Sperre
 
-- **Status:** in Arbeit
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** INF
@@ -48,9 +48,9 @@ Projekte anlegen (PJ3), strenge Pflicht „jeder Sprint hat ein Projekt“ (PJ3,
 
 ## Fertig, wenn
 
-- [ ] AC-04: Regeln 1–5 und die Übersicht geprüft, je Regel ein Negativtest.
-- [ ] AC-07: Regeln 6–8 geprüft, je Regel ein Negativtest.
-- [ ] `task test -- planning` und `task check` grün.
+- [x] AC-04: Regeln 1–5 und die Übersicht geprüft, je Regel ein Negativtest.
+- [x] AC-07: Regeln 6–8 geprüft, je Regel ein Negativtest.
+- [x] `task test -- planning` und `task check` grün.
 
 ## Prüfen
 
@@ -63,4 +63,23 @@ Manuelle Prüfungen (Browser, Xbox, TV) nur, wenn diese Datei sie nennt und 🧑
 
 ## Ergebnis
 
-–
+- **AC-04 umgesetzt, geprüft:** Neues `tests/planningProjects.test.ts` mit den Regeln 1–5 und der Übersicht:
+  - Jede Projekt-Datei folgt der Vorlage (`checkTemplate('projekt')`), hat ein Kürzel aus drei Großbuchstaben und den passenden Dateinamen.
+  - `rankErrors`: Ränge eindeutig und lückenlos ab 1, `ruht` und `erledigt` ohne Rang.
+  - `linkErrors`: Sprint ↔ Sprint-Tabelle in beide Richtungen.
+  - `crowdedProjects`: höchstens ein aktiver Sprint je Projekt; Sprints, die nur aufs Gerät warten, zählen nicht.
+  - Tickets nennen nur bestehende Projekte, die Übersicht nennt jedes Projekt.
+  - Je Regel gibt es Beispiele mit Negativfällen (`Regeln für Projekte (Beispiele)`).
+- **AC-07 umgesetzt, geprüft:**
+  - `domainListOk`: Sprint-Domänen = Domänen der Sessions in Reihenfolge, gilt bei `Reife: bereit`.
+  - `busyDomains`: höchstens eine Session je Domäne `in Arbeit`.
+  - Übergang (Regel 8): „je Domäne ein aktiver Sprint“ in `planning.test.ts` gilt nur noch für aktive Sprints mit `Projekt: –`.
+  - Je Regel Negativfälle.
+- **Gegenprobe mit echten Daten:** Ein vorübergehendes `docs/projekte/GRA-grafik.md` (Vorlage mit GR7) machte den Test rot:
+  - mit Rang 2: „Ränge 2 statt 1 … 1“ und „Übersicht nennt GRA-grafik.md nicht“;
+  - mit Rang 1: „GRA: GR7 nennt Projekt –“.
+
+  Die Datei ist wieder gelöscht. Dabei hat die Vorlage `projekt.md` selbst die Vorlagenprüfung bestanden.
+- **Aufbau:** Gemeinsame Hilfen stehen in `tests/planningDocs.ts` (Lesen, `meta`, `checkTemplate`, `sessionRows`, `waitsForDevice`, `sprints`, `none`, `section`), ohne Kopien. Die Größen: `planning.test.ts` 154, `planningDocs.ts` 66 und `planningProjects.test.ts` 153 Zeilen.
+- **Geprüft:** `check_run task:test planning` und `check_run task:check` sind grün.
+- **Abweichung bei den erlaubten Dateien:** `tests/planningDocs.ts` war nicht genannt. Die Session erlaubt das Auslagern ausdrücklich („Hilfsfunktionen gemeinsam nutzen, keine Kopien“), und das gemeinsame Modul ist die Umsetzung davon.
