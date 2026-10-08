@@ -2,6 +2,7 @@ import Phaser from 'phaser';
 import { toggleFullscreen as requestFullscreenToggle } from '../core/fullscreen';
 import { installPageChrome } from '../core/shell';
 import { audioRows, startAudioProbe, type AudioReport } from './audioProbe';
+import { applyTexts, t } from './texts';
 
 /**
  * Gamepad-Testseite für Edge auf der Xbox (Schritt 0 der Roadmap).
@@ -10,6 +11,7 @@ import { audioRows, startAudioProbe, type AudioReport } from './audioProbe';
 
 const BUTTON_NAMES = ['A', 'B', 'X', 'Y', 'LB', 'RB', 'LT', 'RT', 'View', 'Menu', 'LS', 'RS', '↑', '↓', '←', '→', 'Xbox'];
 const AXIS_NAMES = ['LS X', 'LS Y', 'RS X', 'RS Y'];
+applyTexts();
 const BTN = { A: 0, Y: 3, X: 2, VIEW: 8, MENU: 9 } as const;
 const PERF_STEPS = [100, 300, 600, 1000, 2000, 4000];
 const PERF_STEP_SECONDS = 4;
@@ -90,12 +92,12 @@ function log(message: string): void {
 
 function renderEnv(): void {
   const rows: [string, string, boolean?][] = [
-    ['Secure Context', report.isSecureContext ? 'ja (HTTPS/localhost)' : 'nein (HTTP)', report.isSecureContext],
-    ['Gamepad API', report.gamepadApi ? 'vorhanden' : 'fehlt', report.gamepadApi],
-    ['Fullscreen API', report.fullscreenApi ? 'vorhanden' : 'fehlt', report.fullscreenApi],
+    [t('pad.env.secure'), report.isSecureContext ? t('pad.env.secureYes') : t('pad.env.secureNo'), report.isSecureContext],
+    [t('pad.env.gamepadApi'), report.gamepadApi ? t('pad.env.present') : t('pad.env.missing'), report.gamepadApi],
+    [t('pad.env.fullscreenApi'), report.fullscreenApi ? t('pad.env.present') : t('pad.env.missing'), report.fullscreenApi],
     ['WebGL', report.webgl, report.webgl.startsWith('webgl')],
-    ['Bildschirm', `${report.screen} · Fenster ${innerWidth}x${innerHeight} · DPR ${devicePixelRatio}`],
-    ['Zurück-Navigationen', String(report.backNavigations), report.backNavigations === 0],
+    [t('pad.env.screen'), t('pad.env.screenValue', { screen: report.screen, w: innerWidth, h: innerHeight, dpr: devicePixelRatio })],
+    [t('pad.env.back'), String(report.backNavigations), report.backNavigations === 0],
     ['Browser', report.userAgent],
   ];
   if (report.gamepadInputEmulation !== undefined) rows.splice(3, 0, ['gamepadInputEmulation', report.gamepadInputEmulation]);
@@ -121,38 +123,38 @@ function escapeHtml(s: string): string {
 addEventListener('keydown', (e) => {
   const entry = `key="${e.key}" code="${e.code}" keyCode=${e.keyCode}`;
   if (!report.keyEvents.includes(entry)) report.keyEvents.push(entry);
-  log(`Taste: ${entry}`);
+  log(t('pad.log.key', { entry }));
   void audio.gesture('taste');
 });
 document.addEventListener('visibilitychange', () => {
   report.visibilityChanges++;
-  log(`Sichtbarkeit: ${document.visibilityState}`);
+  log(t('pad.log.visibility', { state: document.visibilityState }));
 });
-addEventListener('gamepadconnected', (e) => log(`🎮 verbunden: #${e.gamepad.index} ${e.gamepad.id}`));
-addEventListener('gamepaddisconnected', (e) => log(`🎮 getrennt: #${e.gamepad.index} ${e.gamepad.id}`));
-document.addEventListener('fullscreenchange', () => log(`Vollbild: ${document.fullscreenElement ? 'an' : 'aus'}`));
+addEventListener('gamepadconnected', (e) => log(t('pad.log.connected', { index: e.gamepad.index, id: e.gamepad.id })));
+addEventListener('gamepaddisconnected', (e) => log(t('pad.log.disconnected', { index: e.gamepad.index, id: e.gamepad.id })));
+document.addEventListener('fullscreenchange', () => log(t('pad.log.fullscreen', { state: document.fullscreenElement ? t('pad.on') : t('pad.off') })));
 
 // ---------- Aktionen ----------
 async function toggleFullscreen(via: string): Promise<void> {
   // Läuft über die Shell (Landingpage), damit Vollbild auch beim Seitenwechsel erhalten bleibt.
   const error = await requestFullscreenToggle();
   report.fullscreenAttempts.push(error ? { via, ok: false, error } : { via, ok: true });
-  log(error ? `Vollbild über ${via} fehlgeschlagen: ${error}` : `Vollbild über ${via}: ok`);
+  log(error ? t('pad.log.fsFailed', { via, error }) : t('pad.log.fsOk', { via }));
 }
 
 async function rumble(): Promise<void> {
   const pads = navigator.getGamepads().filter((p): p is Gamepad => !!p);
-  if (pads.length === 0) return log('Vibration: kein Controller');
+  if (pads.length === 0) return log(t('pad.log.rumbleNone'));
   for (const pad of pads) {
     const actuator = (pad as Gamepad & { vibrationActuator?: GamepadHapticActuator }).vibrationActuator;
     try {
-      if (!actuator) throw new Error('kein vibrationActuator');
+      if (!actuator) throw new Error('vibrationActuator-missing');
       await actuator.playEffect('dual-rumble', { duration: 400, strongMagnitude: 1, weakMagnitude: 0.6 });
       report.rumble.push({ pad: pad.index, ok: true });
-      log(`Vibration #${pad.index}: ok`);
+      log(t('pad.log.rumbleOk', { index: pad.index }));
     } catch (err) {
       report.rumble.push({ pad: pad.index, ok: false, error: String(err) });
-      log(`Vibration #${pad.index}: ${String(err)}`);
+      log(t('pad.log.rumbleError', { index: pad.index, error: String(err) }));
     }
   }
 }
@@ -160,16 +162,16 @@ async function rumble(): Promise<void> {
 async function sendReport(): Promise<void> {
   report.viewport = `${innerWidth}x${innerHeight}`;
   report.audio = audio.report(); // Latenz und Zustand zum Zeitpunkt des Sendens
-  statusEl.textContent = 'Sende …';
+  statusEl.textContent = t('pad.sending');
   try {
     const res = await fetch('/api/report', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(report) });
     if (!res.ok) throw new Error(`HTTP ${res.status}`);
-    statusEl.textContent = `✔ Bericht gespeichert (${new Date().toLocaleTimeString()})`;
-    statusEl.className = 'sub ok';
-    log('Bericht gesendet');
+    statusEl.textContent = t('pad.sent', { time: new Date().toLocaleTimeString() });
+    statusEl.classList.replace('bad', 'ok') || statusEl.classList.add('ok');
+    log(t('pad.log.reportSent'));
   } catch (err) {
-    statusEl.textContent = `✘ Senden fehlgeschlagen: ${String(err)}`;
-    statusEl.className = 'sub bad';
+    statusEl.textContent = t('pad.sendFailed', { error: String(err) });
+    statusEl.classList.replace('ok', 'bad') || statusEl.classList.add('bad');
   }
 }
 
@@ -213,7 +215,7 @@ function pollPads(): void {
     // View/Menu lösen erst beim Loslassen aus, und nur wenn sie nicht Teil der Kombi View+Menu (= zur Startseite) waren.
     if (pressed.has(BTN.VIEW) && pressed.has(BTN.MENU)) comboUsed.add(pad.index);
     const released = (i: number) => !pressed.has(i) && before.has(i) && !comboUsed.has(pad.index);
-    for (const i of pressed) if (!before.has(i)) log(`#${pad.index} ${BUTTON_NAMES[i] ?? `Taste ${i}`} gedrückt`);
+    for (const i of pressed) if (!before.has(i)) log(t('pad.log.pressed', { index: pad.index, name: BUTTON_NAMES[i] ?? t('pad.buttonN', { i }) }));
 
     padActions(justPressed, released);
     if (!pressed.has(BTN.VIEW) && !pressed.has(BTN.MENU)) comboUsed.delete(pad.index);
@@ -248,7 +250,7 @@ function renderPads(pads: Gamepad[]): void {
       const axes = pad.axes
         .map((v, i) => {
           const left = v < 0 ? 50 + v * 50 : 50;
-          return `<span>${AXIS_NAMES[i] ?? `Achse ${i}`}</span><div class="bar"><i style="left:${left}%;width:${Math.abs(v) * 50}%"></i></div><span>${v.toFixed(2)}</span>`;
+          return `<span>${AXIS_NAMES[i] ?? t('pad.axis', { i })}</span><div class="bar"><i style="left:${left}%;width:${Math.abs(v) * 50}%"></i></div><span>${v.toFixed(2)}</span>`;
         })
         .join('');
       return `<div class="pad"><div class="pad-title">#${pad.index} · ${escapeHtml(pad.id)} · mapping: ${pad.mapping || '(leer)'}</div><div class="buttons">${buttons}</div><div class="axes">${axes}</div></div>`;
@@ -266,7 +268,7 @@ function togglePerf(): void {
     perfGame.destroy(true);
     perfGame = null;
     perfEl.classList.remove('active');
-    log(`FPS-Test beendet: ${report.perf.map((p) => `${p.sprites}→${p.avgFps}`).join(', ') || 'keine Werte'}`);
+    log(t('pad.log.perfEnd', { values: report.perf.map((p) => `${p.sprites}→${p.avgFps}`).join(', ') || t('pad.noValues') }));
     return;
   }
   perfEl.classList.add('active');
@@ -326,8 +328,8 @@ class PerfScene extends Phaser.Scene {
 
     const done = this.stepIndex >= PERF_STEPS.length;
     perfHud.textContent = done
-      ? `Fertig · ${report.perf.map((p) => `${p.sprites}: ${p.avgFps} FPS`).join(' · ')} · View = zurück`
-      : `${this.sprites.length} Sprites · ${Math.round(this.game.loop.actualFps)} FPS · Stufe ${this.stepIndex + 1}/${PERF_STEPS.length} · View = abbrechen`;
+      ? t('pad.perf.done', { values: report.perf.map((p) => `${p.sprites}: ${p.avgFps} FPS`).join(' · ') })
+      : t('pad.perf.running', { n: this.sprites.length, fps: Math.round(this.game.loop.actualFps), step: this.stepIndex + 1, steps: PERF_STEPS.length });
 
     if (!done && time - this.stepStart > (PERF_STEP_SECONDS + 1) * 1000) {
       const avg = this.samples.reduce((a, b) => a + b, 0) / Math.max(1, this.samples.length);
@@ -342,13 +344,13 @@ class PerfScene extends Phaser.Scene {
 installPageChrome({
   onBack: () => {
     report.backNavigations++;
-    log('⚠ Zurück-Navigation ausgelöst (B-Taste?)');
+    log(t('pad.log.back'));
     renderEnv();
   },
 });
 renderEnv();
-renderRows('audio', [['Audio', 'Probelauf läuft …']]);
-log(report.gamepadApi ? 'Bereit. Taste auf einem Controller drücken.' : 'Gamepad API nicht verfügbar!');
+renderRows('audio', [['Audio', t('pad.audioRunning')]]);
+log(report.gamepadApi ? t('pad.log.ready') : t('pad.log.noApi'));
 requestAnimationFrame(pollPads);
 
 if (import.meta.env.DEV) (window as unknown as { k3cReport: typeof report }).k3cReport = report;

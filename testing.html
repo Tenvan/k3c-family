@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>K3C Testing</title>
+    <title data-t="test.pageTitle">K3C Testing</title>
     <style>
       :root { --bg: #11151c; --panel: #1c2330; --line: #2e3a4d; --text: #e8edf4; --dim: #8a97aa; --on: #ffd166; }
       * { box-sizing: border-box; }
@@ -24,14 +24,14 @@
   </head>
   <body>
     <main>
-      <h1>Testing</h1>
-      <p class="sub">Test-Szenarien starten oder ein Level ansehen. Du bist Spieler 1, die übrigen Spieler sind Mock-Spieler am selben Gerät: Sie erscheinen sofort und stehen still. Voraussetzung: der Go-Server läuft (<code>task serve:go</code>).</p>
+      <h1 data-t="test.title">Testing</h1>
+      <p class="sub" data-t-html="test.sub">Test-Szenarien starten oder ein Level ansehen. Du bist Spieler 1, die übrigen Spieler sind Mock-Spieler am selben Gerät: Sie erscheinen sofort und stehen still. Voraussetzung: der Go-Server läuft (<code>task serve:go</code>).</p>
       <section>
-        <h2>Spieler</h2>
+        <h2 data-t="test.h.players">Spieler</h2>
         <div id="scenarios" class="grid"></div>
       </section>
       <section>
-        <h2>Level</h2>
+        <h2 data-t="test.h.level">Level</h2>
         <div id="levels" class="grid"></div>
         <p id="note"></p>
       </section>

@@ -7,11 +7,6 @@ import { describe, expect, it } from 'vitest';
  */
 const sources = import.meta.glob(['./*.ts'], { query: '?raw', import: 'default', eager: true }) as Record<string, string>;
 
-/** Noch nicht umgestellt (PL2.3 leert die Liste). */
-const OFFEN = [
-  './audioProbe.ts', './dev.ts', './devTiles.ts', './gamepadTest.ts', './selection.ts', './spriteReference.ts', './testing.ts',
-  './testScenarios.ts', './testTiles.ts',
-];
 /** Reine Daten, keine Oberflächen-Texte. */
 const DATEN: Record<string, string> = {
   './grafikPacks.ts': 'Urheber, Lizenzen und Recherche-Notizen der Grafik-Packs',
@@ -69,19 +64,15 @@ const germanLiterals = (src: string): string[] =>
 
 describe('Keine deutschen Text-Literale in den Werkzeug-Seiten (PL2 AC-01)', () => {
   const all = Object.entries(sources).filter(([name]) => !name.endsWith('.test.ts') && !TEXT_FILES.test(name));
-  const checked = all.filter(([name]) => !OFFEN.includes(name) && !(name in DATEN));
+  const checked = all.filter(([name]) => !(name in DATEN));
 
-  it('findet die Dateien, und jeder Eintrag in OFFEN und DATEN existiert', () => {
+  it('findet die Dateien, und jeder Eintrag in DATEN existiert', () => {
     expect(checked.map(([n]) => n)).toEqual(expect.arrayContaining(['./leveltest.ts', './soundtest.ts']));
-    for (const name of [...OFFEN, ...Object.keys(DATEN)]) expect(sources[name], name).toBeDefined();
+    for (const name of Object.keys(DATEN)) expect(sources[name], name).toBeDefined();
   });
 
   it.each(checked)('%s', (_name, text) => {
     expect(germanLiterals(text)).toEqual([]);
-  });
-
-  it.each(OFFEN)('%s ist noch offen (sonst aus OFFEN streichen)', (name) => {
-    expect(germanLiterals(sources[name]!).length).toBeGreaterThan(0);
   });
 
   it('erkennt ein deutsches Literal, nicht aber Kommentar, Log, HTML-Gerüst oder Code-Wert', () => {

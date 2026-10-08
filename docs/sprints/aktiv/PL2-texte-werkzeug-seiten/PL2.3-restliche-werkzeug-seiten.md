@@ -1,6 +1,6 @@
 # PL2.3 · Restliche Werkzeug-Seiten (Dev, Testen, Gamepad, Figuren, Aufstellung, Lizenzen)
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** PLAT
@@ -41,8 +41,8 @@ Lizenz- und Urheber-Daten übersetzen; Log-Meldungen; Seiten außerhalb von `src
 
 ## Fertig, wenn
 
-- [ ] AC-01: `textRule.test.ts` grün ohne Liste `OFFEN`; nur reine Daten-Module stehen in `DATEN`.
-- [ ] `task check` grün.
+- [x] AC-01: `textRule.test.ts` grün ohne Liste `OFFEN`; nur reine Daten-Module stehen in `DATEN`.
+- [x] `task check` grün.
 
 ## Prüfen
 
@@ -54,5 +54,9 @@ Manuelle Prüfungen (Browser, Xbox, TV) nur, wenn diese Datei sie nennt und 🧑
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+- AC-01 geprüft: `task check` grün; `textRule.test.ts` ohne Liste `OFFEN`, `DATEN` nennt nur `grafikPacks.ts` und `soundtestLogic.ts` (reine Daten).
+- Umgestellt: `dev`, `testing` mit Kacheln (`devTiles.ts`, `testTiles.ts`, `testScenarios.ts` lesen Titel per Getter zur Laufzeit), `gamepadTest`, `audioProbe`, `selection`, `spriteReference`, `figuren`, `aufstellung`, `lizenzen` samt HTML.
+- Neu: `data-t-html` in `applyTexts()` für Texte mit eigenem HTML (`<kbd>`, Links); Lizenz-, Urheber- und Quellen-Daten bleiben unübersetzt.
+- Abweichung: Fehlertext `kein vibrationActuator` im Bericht heißt jetzt `vibrationActuator-missing` (kein Leerzeichen, Regeltest). Berichtswerte `gespielt`/`blockiert`/`fehler: …` und die Wege `klick`/`taste` bleiben im Bericht deutsch, nur die Anzeige wird übersetzt.
+- Manuell geprüft: nichts (Sprachwechsel am Gerät: PL2.5).
+- Neue Tickets: keine.

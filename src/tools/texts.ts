@@ -18,6 +18,7 @@ export function t(key: ToolTextKey, params?: Record<string, string | number>): s
 export interface TextTarget {
   dataset: Record<string, string | undefined>;
   textContent: string | null;
+  innerHTML?: string;
   setAttribute(name: string, value: string): void;
 }
 
@@ -29,13 +30,15 @@ export function textOf(key: string, fallback: string): string {
 }
 
 /**
- * Setzt die statischen Texte einer Seite: `data-t` den Inhalt, `data-t-aria` das `aria-label`, `data-t-placeholder` den Platzhalter.
+ * Setzt die statischen Texte einer Seite: `data-t` den Inhalt, `data-t-html` den Inhalt mit eigenem HTML (nur Texte aus unseren Tabellen),
+ * `data-t-aria` das `aria-label`, `data-t-placeholder` den Platzhalter.
  * Ein unbekannter Schlüssel lässt den Text im HTML stehen.
  */
 export function applyTexts(root: { querySelectorAll(sel: string): Iterable<TextTarget> } = document as never): void {
-  for (const el of root.querySelectorAll('[data-t], [data-t-aria], [data-t-placeholder]')) {
-    const { t: text, tAria: aria, tPlaceholder: placeholder } = el.dataset;
+  for (const el of root.querySelectorAll('[data-t], [data-t-html], [data-t-aria], [data-t-placeholder]')) {
+    const { t: text, tHtml: html, tAria: aria, tPlaceholder: placeholder } = el.dataset;
     if (isKey(text)) el.textContent = t(text);
+    if (isKey(html)) el.innerHTML = t(html);
     if (isKey(aria)) el.setAttribute('aria-label', t(aria));
     if (isKey(placeholder)) el.setAttribute('placeholder', t(placeholder));
   }

@@ -7,6 +7,7 @@ import enemiesJson from '../../data/enemies.json';
 import spritesJson from '../../data/sprites.json';
 import troopsJson from '../../data/troops.json';
 import type { Selection } from './selection';
+import { t } from './texts';
 
 type AnimName = 'idle' | 'run' | 'attack';
 
@@ -76,7 +77,7 @@ function mountCards(): Card[] {
 }
 
 const sheetNote = (s: Sheet) => `${s.pack}`;
-const tintNote = (spec: Spec) => (spec.tint ? ` · eingefärbt ${spec.tint}` : '') + (spec.alpha !== undefined ? ' · durchscheinend' : '');
+const tintNote = (spec: Spec) => (spec.tint ? ` · ${t('sprite.tinted', { tint: spec.tint })}` : '') + (spec.alpha !== undefined ? ` · ${t('sprite.translucent')}` : '');
 
 /** Alle Figuren beider Sets, nach Seite getrennt. */
 export function allFigures(): Group[] {
@@ -84,11 +85,11 @@ export function allFigures(): Group[] {
   const cards = (side: Sheet['side']) =>
     Object.entries(DATA.sheets)
       .filter(([, s]) => s.side === side)
-      .map(([id, s]) => ({ title: s.label, note: `${sheetNote(s)}${used.has(id) ? '' : ' · noch ohne Rolle'}`, spec: { sheet: id } }));
+      .map(([id, s]) => ({ title: s.label, note: `${sheetNote(s)}${used.has(id) ? '' : ` · ${t('sprite.noRole')}`}`, spec: { sheet: id } }));
   return [
-    { title: 'Unsere Seite', cards: cards('ours') },
-    { title: 'Gegenseite', cards: cards('enemy') },
-    { title: 'Reittiere (mit König 1)', cards: mountCards() },
+    { title: t('sprite.ours'), cards: cards('ours') },
+    { title: t('sprite.enemy'), cards: cards('enemy') },
+    { title: t('sprite.mountsKing'), cards: mountCards() },
   ];
 }
 
@@ -97,12 +98,12 @@ export function lineup(): Group[] {
   const card = (title: string, spec: Spec): Card => ({ title, note: `${DATA.sheets[spec.sheet].label} · ${sheetNote(DATA.sheets[spec.sheet])}${tintNote(spec)}`, spec });
   const used = usedSheets();
   return [
-    { title: 'Monarchen', cards: DATA.players.map((s, i) => card(`Spieler ${i + 1}`, s)) },
-    { title: 'Truppen', cards: Object.entries(DATA.troops).map(([k, s]) => card(TROOP_NAMES[k]?.name ?? k, s)) },
-    { title: 'Gegner', cards: Object.entries(DATA.enemies).map(([k, s]) => card(`${ENEMY_NAMES[k]?.name ?? k} · Tiefe ${ENEMY_NAMES[k]?.depth ?? '?'}`, s)) },
-    { title: 'Reittiere (noch nicht im Spiel)', cards: mountCards(), fit: true },
+    { title: t('sprite.monarchs'), cards: DATA.players.map((s, i) => card(t('sprite.player', { n: i + 1 }), s)) },
+    { title: t('sprite.troops'), cards: Object.entries(DATA.troops).map(([k, s]) => card(TROOP_NAMES[k]?.name ?? k, s)) },
+    { title: t('sprite.enemies'), cards: Object.entries(DATA.enemies).map(([k, s]) => card(t('sprite.depth', { name: ENEMY_NAMES[k]?.name ?? k, depth: ENEMY_NAMES[k]?.depth ?? '?' }), s)) },
+    { title: t('sprite.mountsLater'), cards: mountCards(), fit: true },
     {
-      title: 'Reserve (noch ohne Rolle)',
+      title: t('sprite.reserve'),
       fit: true,
       cards: Object.keys(DATA.sheets)
         .filter((id) => !used.has(id) && DATA.sheets[id].side !== 'mount')
@@ -217,7 +218,7 @@ export function renderReference(root: HTMLElement, groups: Group[], sameScale: b
       el.append(canvas);
       const id = card.mount ? DATA.mounts[card.mount].sheet : card.spec.sheet;
       if (selection) el.append(selection.box(id));
-      el.insertAdjacentHTML('beforeend', `<h3>${card.title}</h3><p>${card.note}</p><p class="dim">${id} · im Spiel ${Math.round(size(card)[0])} px hoch</p>`);
+      el.insertAdjacentHTML('beforeend', `<h3>${card.title}</h3><p>${card.note}</p><p class="dim">${t('sprite.height', { id, px: Math.round(size(card)[0]) })}</p>`);
       grid.append(el);
       const k = sameScale && !group.fit ? common : fit(card);
       const live: Live = { canvas, sheet: s, spec: card.spec, strips: {}, zoom: inGame(card.spec) * k, offset: lives.length * 370 };

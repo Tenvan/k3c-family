@@ -88,7 +88,7 @@ async function main(): Promise<void> {
   const root = document.getElementById('packs')!;
   try {
     const index = (await (await fetch('grafik/index.json')).json()) as ImageEntry[];
-    const selection = installSelection('k3c-auswahl-grafiken', 'Grafiken');
+    const selection = installSelection('k3c-auswahl-grafiken', t('sel.grafiken'));
     for (const pack of GRAFIK_PACKS) root.append(renderPack(pack, index.filter((i) => i.pack === pack.id), selection));
   } catch {
     root.append(el('p', 'missing', t('grafik.noIndex')));
