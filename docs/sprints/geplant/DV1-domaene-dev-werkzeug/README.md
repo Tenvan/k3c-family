@@ -1,12 +1,12 @@
-# DV1 · INF · Domäne DEV für k3c-dev, Sprint ohne Prio und Einschiebbar
+# DV1 · INF, SRV · Domäne DEV für k3c-dev, Sprint ohne Prio und Einschiebbar
 
 - **Status:** geplant
 - **Projekt:** WZG
-- **Domäne:** INF
+- **Domäne:** INF, SRV
 - **Prio:** hoch
-- **Reife:** Entwurf
+- **Reife:** bereit
 - **Einschiebbar:** nein
-- **Tickets:** B-365, B-361
+- **Tickets:** B-365, B-361, B-362
 - **Start-Commit:** – (wird beim Aktivieren gesetzt: `git rev-parse --short origin/develop`)
 - **Spec:** Entwurf
 - **Revision:** 1
@@ -14,11 +14,11 @@
 
 ## Ausgangslage
 
-k3c-dev (`tools/k3c-dev/`) gehört heute zur Domäne SRV. Sprints am Werkzeug sperren deshalb Server-Arbeit, obwohl sie keine Dateien mit ihr teilen (B-365). Außerdem tragen Sprints noch `Prio` und `Einschiebbar`, obwohl die Reihenfolge seit PJ2 aus dem Projekt-Rang kommt. Vorlage, Planungstest und plan-Tools verlangen bzw. schreiben beide Felder weiter (B-361).
+k3c-dev (`tools/k3c-dev/`) gehört heute zur Domäne SRV. Sprints am Werkzeug sperren deshalb Server-Arbeit, obwohl sie keine Dateien mit ihr teilen (B-365). Außerdem tragen Sprints noch `Prio` und `Einschiebbar`, obwohl die Reihenfolge seit PJ2 aus dem Projekt-Rang kommt. Vorlage, Planungstest und plan-Tools verlangen bzw. schreiben beide Felder weiter (B-361). Die Server-Tools von k3c-dev scheitern mit 401 am selbst gestarteten Spielserver, weil sie dessen Token nicht kennen (B-362).
 
 ## Ziel
 
-Arbeit am Entwickler-Werkzeug läuft in einer eigenen Domäne `DEV` und sperrt SRV nicht mehr, und Sprints planen sich nur noch über den Rang ohne `Prio`/`Einschiebbar`. Am Ende sichtbar: `plan_list domain: DEV` listet die offenen Werkzeug-Tickets, die Planungsseite hat einen Filter-Chip `DEV`, ein neuer Sprint aus `plan_create` hat weder `Prio` noch `Einschiebbar`, und `task check` ist grün.
+Arbeit am Entwickler-Werkzeug läuft in einer eigenen Domäne `DEV` und sperrt SRV nicht mehr, Sprints planen sich nur noch über den Rang ohne `Prio`/`Einschiebbar`, und die Server-Tools von k3c-dev erreichen den selbst gestarteten Spielserver mit dessen Token. Am Ende sichtbar: `plan_list domain: DEV` listet die offenen Werkzeug-Tickets, die Planungsseite hat einen Filter-Chip `DEV`, ein neuer Sprint aus `plan_create` hat weder `Prio` noch `Einschiebbar`, `server_status` antwortet ohne gesetztes `K3C_STATUS_TOKEN`, und `task check` ist grün.
 
 ## Beteiligte und Zielgruppen
 
@@ -26,17 +26,18 @@ Agenten planen und arbeiten parallel an Werkzeug und Server. 🧑 entscheidet di
 
 ## Anforderungen
 
-B-365 › Anforderungen; B-361 › Anforderungen. Sprint-eigen: Beide Tickets ändern dieselben Stellen (Vorlagen, `tests/planning.test.ts`/`tests/planningDocs.ts`, `tools/k3c-dev/internal/planning/`) und werden deshalb in einem Durchgang geändert. Zuerst Regeln, Vorlagen und Test (INF), danach die plan-Tools.
+B-365 › Anforderungen; B-361 › Anforderungen; B-362 › Anforderungen. Sprint-eigen: B-365 und B-361 ändern dieselben Stellen (Vorlagen, `tests/planning.test.ts`/`tests/planningDocs.ts`, `tools/k3c-dev/internal/planning/`) und werden deshalb in einem Durchgang geändert: zuerst Regeln, Vorlagen und Test (INF), danach die plan-Tools. B-362 ist unabhängig davon und läuft als eigene Session nach der Umstellung, schon in der Domäne `DEV`.
 
 ## Nicht-Ziele
 
-Erledigte Tickets und Sprints auf `DEV` umschreiben (bleiben SRV). Ticket-Prio (bleibt). Weitere Funktionen von k3c-dev (B-360, B-362, B-363). Die Werkzeug-Seiten unter `src/tools/` gehören nur dazu, wenn 🧑 das in B-365 › Offene Fragen so entscheidet.
+Erledigte Tickets und Sprints auf `DEV` umschreiben (bleiben bei ihrer alten Domäne). Ticket-Prio (bleibt). Weitere Funktionen von k3c-dev (B-360, B-363, B-366). Fachliche Änderungen an `cmd/k3c-load`, `cmd/k3c-tui` oder `src/tools/`; sie wechseln nur die Domäne.
 
 ## Regeln und Einschränkungen
 
-- Erst nach PJ3 (B-359): B-361 setzt voraus, dass alle offenen Sprints ein Projekt haben.
-- Domäne je Session: INF für Regeln, Glossar, Vorlagen und Planungstest, SRV (nach DV1.2: `DEV`) für `tools/k3c-dev/`. Neue Begriffe zuerst ins Glossar.
-- Planung nur über die plan-Tools. Steht in `workbench_status` die Repo-Wurzel, gilt der Rückfall von Hand im Worktree (B-275).
+- PJ3 (B-359) ist erledigt: alle offenen Sprints haben ein Projekt.
+- Domäne je Session: INF für Regeln, Glossar, Vorlagen und Planungstest (DV1.1), SRV für `tools/k3c-dev/` (DV1.2; die Domäne `DEV` gibt es erst, wenn DV1.2 die plan-Tools umgestellt hat). Neue Begriffe zuerst ins Glossar.
+- Zwischen DV1.1 und DV1.2 schreiben die alten plan-Tools weiter `Prio`/`Einschiebbar`, wenn die Datei das Feld hat; da DV1.1 die Felder aus allen Sprint-Dateien entfernt, übergehen sie es still (B-360). Kein `plan_create {kind: sprint}` in dieser Zeit.
+- Planung nur über die plan-Tools. Das Entfernen der beiden Kopf-Felder aus allen Sprint-READMEs ist eine Formatumstellung ohne Tool und läuft in DV1.1 von Hand (Planungs-Dateien).
 - Datei ≤ 400, Funktion ≤ 60 Zeilen, keine neue Abhängigkeit. Go-Tests für die plan-Tools, Vitest für den Planungstest.
 
 ## Beispiele
@@ -59,19 +60,21 @@ Erledigte Tickets und Sprints auf `DEV` umschreiben (bleiben SRV). Ticket-Prio (
 - **AC-03** `plan_create`/`plan_set` akzeptieren `Domäne: DEV`, und `task test -- planning` ist mit einem Ticket in `DEV` grün (`B-365/AC-02`, Go-Test).
 - **AC-04** `plan_create {kind: sprint}` und `plan_set` schreiben weder `Prio` noch `Einschiebbar` (`B-361/AC-02`, Go-Test).
 - **AC-05** Offene Tickets am Werkzeug tragen `DEV` (`B-365/AC-03`).
+- **AC-06** Ohne `K3C_STATUS_TOKEN` in der Umgebung von k3c-dev antworten `server_status` und `sim_test start mode=online` gegen den per `svc_start` gestarteten Spielserver ohne 401 (`B-362/AC-01`, Go-Test mit Fake-Server).
+- **AC-07** Ein gesetztes `K3C_STATUS_TOKEN` hat weiter Vorrang (`B-362/AC-02`, Go-Test).
 
 ## Offene Fragen
 
-- Kürzel `DEV` oder `TOOL`? Gehören `cmd/k3c-load`, `cmd/k3c-tui` und `src/tools/` dazu? (B-365, 🧑, blockiert DV1.1)
-- Fällt die Fahrplan-Spalte `Prio` in `docs/sprints/README.md` weg? (B-361, 🧑; hängt an PJ3.3, das sie durch `Projekt` ersetzt)
+keine. Entschieden von 🧑 am 2026-10-08: Kürzel `DEV`; zu `DEV` gehören `tools/k3c-dev/`, `cmd/k3c-load/`, `cmd/k3c-tui/` und `src/tools/`. Die Fahrplan-Spalte `Prio` ist schon mit PJ3.3 entfallen.
 
 ## Sessions
 
-Entwurf. Vor dem Aktivieren jede Session als Datei nach `docs/vorlagen/session.md` schreiben, die Kriterien in Klammern werden ihr Feld `Kriterien`.
-
-- DV1.1 (INF) Domäne `DEV` in Arbeitsweise, Glossar und Planungstest; Vorlage und Sprint-Dateien ohne `Prio`/`Einschiebbar` (AC-01, AC-02).
-- DV1.2 (SRV) plan-Tools: Domänenliste mit `DEV`, Filter-Chip, kein `Prio`/`Einschiebbar` mehr; offene Werkzeug-Tickets auf `DEV` umstellen (AC-03, AC-04, AC-05).
-- DV1.3 Review (Code-Sprint): alle Kriterien prüfen.
+| Nr. | Datei | Typ | Agent | Status |
+|---|---|---|---|---|
+| DV1.1 | `DV1.1-domaene-dev-regeln.md` | Umsetzung | autonom | offen |
+| DV1.2 | `DV1.2-plan-tools-dev.md` | Umsetzung | autonom | offen |
+| DV1.3 | `DV1.3-token-dienst.md` | Umsetzung | autonom | offen |
+| DV1.4 | `DV1.4-review.md` | Review | autonom | offen |
 
 ## Abnahme
 

@@ -22,7 +22,7 @@ Abnahmen am Gerät (`Agent: Mensch`) sammelt das Projekt ABN im Sprint HW1: [`..
 
 | Sprint | Domäne | Projekt | Thema | Am Ende sichtbar | Reife | Ordner |
 |---|---|---|---|---|---|---|
-| DV1 | INF | WZG | Domäne DEV für k3c-dev, Sprint ohne Prio und Einschiebbar | – | Entwurf | `geplant/DV1-domaene-dev-werkzeug/` |
+| DV1 | INF, SRV | WZG | Domäne DEV für k3c-dev, Sprint ohne Prio und Einschiebbar | – | bereit | `geplant/DV1-domaene-dev-werkzeug/` |
 | PM1 | CLI | LST | Leistung messen: Diagnose-Zeile und Performance-Modus | – | Entwurf | `geplant/PM1-leistung-messen/` |
 | PF1 | CLI | LST | Split-Screen flüssig auf der Xbox | Zwei Spieler im Split-Screen ohne sichtbares Ruckeln auf der Xbox | bereit | `geplant/PF1-splitscreen-leistung/` |
 | NT1 | SRV | LST | Stabile Tests, Warteschlange und Snapshot-Budget | – | Entwurf | `geplant/NT1-netz-tests-stabil/` |

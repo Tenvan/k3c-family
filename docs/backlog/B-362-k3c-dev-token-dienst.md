@@ -4,8 +4,8 @@
 - **Typ:** Problem
 - **Prio:** hoch
 - **Umgebung:** offline
-- **Status:** offen
-- **Sprint:** –
+- **Status:** eingeplant
+- **Sprint:** DV1
 - **Projekt:** WZG
 - **Erstellt:** 2026-10-08
 - **Spec:** Entwurf
@@ -22,27 +22,30 @@ Ohne gesetztes `K3C_STATUS_TOKEN` in der Umgebung von k3c-dev nutzen die Server-
 
 ## Beteiligte und Zielgruppen
 
-Wer spielt, entwickelt, betreibt oder entscheidet (🧑)? Keine Verantwortlichen erfinden.
+Agenten und 🧑 nutzen die Server-Tools von k3c-dev (`server_status`, `rooms_list`, `room_snapshot`, `sim_test mode=online`) gegen den Spielserver, den k3c-dev selbst gestartet hat.
 
 ## Anforderungen
 
-- Was das Ergebnis können muss, auch Qualität (deterministisch, 2+ Spieler, Leistung).
+- `serverClient` (`tools/k3c-dev/internal/mcpsrv/worktree_services.go`) nimmt `K3C_STATUS_TOKEN` in dieser Reihenfolge: Umgebung von k3c-dev, sonst die `env` des Dienstes `Spielserver` aus `services.json`, sonst leer.
+- Gilt in der Repo-Wurzel und im Worktree gleich (im Worktree kommen die Ports weiter aus dem Versatz).
+- Das Token erscheint in keiner Antwort und keinem Log.
 
 ## Nicht-Ziele
 
-Was ausdrücklich nicht dazugehört, mit Ticket-Nummer, falls es später kommt.
+Token-Verwaltung oder neue Token im Spielserver; Adresse/Port-Logik (bleibt wie sie ist); B-341 (Header `X-K3C-Root`).
 
 ## Regeln und Einschränkungen
 
-Regeln aus `CLAUDE.md`, Entscheidungen (`docs/decisions/`), Domäne, Komplexitäts-Budget, Verträge (Protokoll, Spielstand).
+Nur `tools/k3c-dev/` (Domäne SRV, nach DV1.2 `DEV`). Datei ≤ 400, Funktion ≤ 60 Zeilen, keine neue Abhängigkeit. Test ohne echten Server (Fake über `httptest`).
 
 ## Beispiele
 
-Typische Situation → erwartetes Ergebnis. Passt nichts: `nicht relevant` mit Grund.
+- k3c-dev ohne `K3C_STATUS_TOKEN`, Dienst `Spielserver` mit `env.K3C_STATUS_TOKEN = TEST_TOKEN` → Anfrage trägt `TEST_TOKEN`, `server_status` antwortet ohne 401.
+- k3c-dev mit `K3C_STATUS_TOKEN=ABC` → Anfrage trägt `ABC`.
 
 ## Ausnahme- und Fehlerfälle
 
-Ungültige oder seltene Situation → gewolltes Verhalten. Passt nichts: `nicht relevant` mit Grund.
+Kein Dienst `Spielserver` oder ohne `env`-Token → leeres Token wie bisher; der Server antwortet 401, die bestehende Meldung „Token prüfen (K3C_STATUS_TOKEN)“ bleibt.
 
 ## Akzeptanzkriterien
 

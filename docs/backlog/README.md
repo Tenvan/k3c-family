@@ -135,7 +135,7 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-354](B-354-bot-eingabe-impulse-frist.md) | PLAT | Problem | mittel | offen | – | Die Bot-Eingabe verliert keine kurzen Drücke und hält bei stummem Feed an |
 | [B-360](B-360-plan-set-fehlendes-feld.md) | SRV | Problem | niedrig | offen | – | plan_set lehnt ein Feld ab, das in der Datei fehlt, statt es still zu übergehen |
 | [B-361](B-361-sprint-prio-felder-entfallen.md) | INF | Schuld | mittel | eingeplant | DV1 | Die Sprint-Felder Prio und Einschiebbar entfallen in Vorlage, Planungstest und plan-Tools |
-| [B-362](B-362-k3c-dev-token-dienst.md) | SRV | Problem | hoch | offen | – | k3c-dev fragt den selbst gestarteten Spielserver mit dessen Token an |
+| [B-362](B-362-k3c-dev-token-dienst.md) | SRV | Problem | hoch | eingeplant | DV1 | k3c-dev fragt den selbst gestarteten Spielserver mit dessen Token an |
 | [B-363](B-363-planung-flags-bearbeiten.md) | SRV | Idee | mittel | offen | – | Die Planungsseite ändert Prio, Umgebung, Agent und Projekt direkt im Detail |
 | [B-365](B-365-domaene-dev-werkzeug.md) | INF | Idee | hoch | eingeplant | DV1 | Das Entwickler-Werkzeug k3c-dev hat eine eigene Domäne statt SRV |
 | [B-366](B-366-fahrplan-spalte-projekt.md) | SRV | Schuld | mittel | offen | – | k3c-dev füllt im Fahrplan die Spalte Projekt und ordnet nach Rang |

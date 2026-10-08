@@ -26,9 +26,9 @@ Wer spielt, entwickelt, betreibt oder entscheidet (🧑)? Keine Verantwortlichen
 
 ## Anforderungen
 
-- `docs/arbeitsweise.md` › Domänen: Zeile `DEV` (Dateien `tools/k3c-dev/`, ggf. Werkzeug-Binaries unter `cmd/`), SRV ohne k3c-dev; Glossar-Eintrag.
+- `docs/arbeitsweise.md` › Domänen: Zeile `DEV` mit den Dateien `tools/k3c-dev/`, `cmd/k3c-load/`, `cmd/k3c-tui/` und `src/tools/` (Beschluss 🧑 2026-10-08); SRV ohne k3c-dev und ohne diese Binaries (nur noch `cmd/k3c-server/`), PLAT ohne `src/tools/`; Glossar-Eintrag.
 - Planungstest (`tests/planningDocs.ts`, Vorlagen) und plan-Tools (Domänenliste, Filter) kennen `DEV`; Filter-Chip auf der Planungsseite.
-- Offene Tickets und geplante Sprints am Werkzeug auf `DEV` umstellen (B-360, B-362, B-363, PL2? nach Dateien prüfen); erledigte bleiben.
+- Offene Tickets und geplante Sprints, die nur diese Dateien ändern, auf `DEV` umstellen (nach Dateien prüfen); erledigte bleiben.
 
 ## Nicht-Ziele
 
@@ -54,8 +54,7 @@ Ungültige oder seltene Situation → gewolltes Verhalten. Passt nichts: `nicht 
 
 ## Offene Fragen
 
-- Kürzel: `DEV` oder `TOOL`? (Vorschlag `DEV`, passt zu k3c-dev.)
-- Gehören `cmd/k3c-load`, `cmd/k3c-tui` und die Werkzeug-Seiten unter `src/tools/` (heute PLAT) mit dazu?
+keine. Entschieden von 🧑 am 2026-10-08: Kürzel `DEV`; dazu gehören `tools/k3c-dev/`, `cmd/k3c-load/`, `cmd/k3c-tui/` und `src/tools/`.
 
 ## Notizen
 
