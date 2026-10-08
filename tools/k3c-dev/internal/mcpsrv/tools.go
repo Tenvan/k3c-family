@@ -23,32 +23,7 @@ func register(s *Server) {
 			"Ersetzt task check, task test und go test in der Shell. Volle Ausgabe: console_tail check:<ziel>.",
 		Annotations: &mcp.ToolAnnotations{DestructiveHint: &destructive, OpenWorldHint: &closed},
 	}, s.checkRun)
-	add(s, &mcp.Tool{
-		Name:        "console_tail",
-		Description: "Letzte Zeilen einer Konsolen-Quelle, z. B. check:task:test (volle Ausgabe eines Prüflaufs).",
-		Annotations: readOnly(),
-	}, s.consoleTail)
-	add(s, &mcp.Tool{
-		Name:        "logs_sources",
-		Description: "Alle Log-Quellen (logs/*.jsonl mit Größe und letztem Eintrag) und Konsolen-Quellen.",
-		Annotations: readOnly(),
-	}, s.logsSources)
-	add(s, &mcp.Tool{
-		Name: "logs_query",
-		Description: "Einträge einer Log-Quelle, neueste zuerst, gefiltert nach minLevel, ns, pattern (Regex auf die " +
-			"Meldung) und since; statt die Datei zu lesen.",
-		Annotations: readOnly(),
-	}, s.logsQuery)
-	add(s, &mcp.Tool{
-		Name:        "logs_errors",
-		Description: "Warnungen und Fehler einer Log-Quelle, gleichartige Meldungen zu je einer Zeile verdichtet (Standard: ab WARN, 24h).",
-		Annotations: readOnly(),
-	}, s.logsErrors)
-	add(s, &mcp.Tool{
-		Name:        "logs_since",
-		Description: "Neue Einträge einer Log-Quelle ab einem Byte-Cursor, älteste zuerst, mit dem Cursor für den nächsten Aufruf.",
-		Annotations: readOnly(),
-	}, s.logsSince)
+	registerLogs(s)
 	add(s, &mcp.Tool{
 		Name:        "reports_list",
 		Description: "Xbox-Berichte der Gamepad-Testseite (reports/*.json), neueste zuerst: Datum, Gerät, Controller, FPS.",
@@ -69,6 +44,52 @@ func register(s *Server) {
 	registerSimTest(s)
 	registerServices(s)
 	registerPlanning(s)
+}
+
+// registerLogs sind die Tools der Seite Dienste & Logs (Workbench-Spec § 2): Konsole, Logdateien, Fehler.
+func registerLogs(s *Server) {
+	add(s, &mcp.Tool{
+		Name: "console_tail",
+		Description: "Flüchtiger Konsolenpuffer eines Dienstes oder Laufs (z. B. Vite, check:task:test), stderr mit \"! \"; " +
+			"since liefert nur neuere Zeilen. Nutze es bei: Startfehler, Rohausgabe eines Prüflaufs. Statt: Ausgabe in der Shell mitlesen.",
+		Annotations: readOnly(),
+	}, s.consoleTail)
+	add(s, &mcp.Tool{
+		Name: "logs_services",
+		Description: "Dienste mit Logdatei (logs/*.jsonl mit Größe und letztem Eintrag) und Konsolen-Quellen. " +
+			"Nutze es bei: welcher Name gilt für service. Statt: ls logs/.",
+		Annotations: readOnly(),
+	}, s.logsSources)
+	add(s, &mcp.Tool{
+		Name: "logs_stats",
+		Description: "Zahl der Einträge je Level oder Namensraum (groupBy) seit since, für einen oder alle Dienste. " +
+			"Nutze es bei: Überblick, ob ein Dienst auffällig viel warnt. Statt: Zeilen zählen mit grep.",
+		Annotations: readOnly(),
+	}, s.logsStats)
+	add(s, &mcp.Tool{
+		Name: "logs_errors",
+		Description: "Warnungen und Fehler, gleichartige Meldungen zu je einer Zeile verdichtet (Standard: ab WARN, 24h, alle Dienste). " +
+			"Nutze es bei: erste Fehlersuche. Statt: Logdatei lesen.",
+		Annotations: readOnly(),
+	}, s.logsErrors)
+	add(s, &mcp.Tool{
+		Name: "logs_query",
+		Description: "Logzeilen eines Dienstes, neueste zuerst, gefiltert nach level, ns, pattern (Regex auf die Meldung) und since. " +
+			"Nutze es bei: gezielte Suche. Statt: Datei lesen oder grep.",
+		Annotations: readOnly(),
+	}, s.logsQuery)
+	add(s, &mcp.Tool{
+		Name: "logs_context",
+		Description: "Zeilen um einen Zeitpunkt ts (before/after), älteste zuerst, \">\" markiert die erste Zeile ab ts. " +
+			"Nutze es bei: was geschah vor und nach einem Fehler. Statt: Datei an der Stelle öffnen.",
+		Annotations: readOnly(),
+	}, s.logsContext)
+	add(s, &mcp.Tool{
+		Name: "logs_since",
+		Description: "Neue Zeilen eines Dienstes ab einem Byte-Cursor, älteste zuerst, mit dem Cursor für den nächsten Aufruf. " +
+			"Nutze es bei: Tailing während eines Tests. Statt: tail -f.",
+		Annotations: readOnly(),
+	}, s.logsSince)
 }
 
 // registerEngine sind die In-process-Tools (B-047): rechnen mit engine/level und engine/sim, ohne laufenden Server.

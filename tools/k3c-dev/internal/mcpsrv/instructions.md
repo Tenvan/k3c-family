@@ -27,9 +27,9 @@ zurückgeben.
 
 ## Logs
 
-- `logs_sources` zeigt alle Quellen. Log-Dateien liegen unter `logs/*.jsonl`, `k3c-dev` ist das eigene Log.
+- `logs_services` zeigt alle Quellen. Log-Dateien liegen unter `logs/*.jsonl`, `k3c-dev` ist das eigene Log.
 - `logs_errors` zuerst: Warnungen und Fehler, gleichartige zu einer Zeile verdichtet.
-- `logs_query` für einzelne Einträge (Filter `minLevel`, `ns`, `pattern`, `since`, `limit`).
+- `logs_query` für einzelne Einträge (Filter `level`, `ns`, `pattern`, `since`, `limit`).
 - `logs_since` zum Mitlesen: den `cursor` aus der letzten Antwort wieder mitgeben.
 
 ## Dienste
