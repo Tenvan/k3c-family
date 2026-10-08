@@ -1,6 +1,6 @@
 # PJ3.1 · Projekte anlegen, Sprints und Tickets zuordnen
 
-- **Status:** offen
+- **Status:** in Arbeit
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** INF
