@@ -190,14 +190,22 @@ func TestPlanungsToolsRoundtrip(t *testing.T) {
 		{"plan_get", map[string]any{"id": "B-001"}, "## Ziel\n\nEin Ziel."},
 		{"plan_create", map[string]any{"kind": "sprint", "id": "X1", "slug": "x", "title": "X",
 			"fields": map[string]string{"Domäne": "SRV"}}, "X1 angelegt"},
+		{"plan_create", map[string]any{"kind": "ticket", "slug": "dev", "title": "Werkzeug",
+			"fields": map[string]string{"Domäne": "DEV", "Typ": "Idee", "Prio": "mittel"}}, "B-002 angelegt"},
+		{"plan_list", map[string]any{"domain": "DEV"}, "B-002 DEV Idee mittel"},
 		{"plan_list", map[string]any{"domain": "SRV"}, "B-001 SRV Idee niedrig ? offen"},
-		{"plan_delete", map[string]any{"id": "X1"}, "X1 gelöscht"},
 	}
 	for _, st := range steps {
 		text, isErr := callText(t, cs, st.tool, st.args)
 		if isErr || !strings.Contains(text, st.want) {
 			t.Errorf("%s: %q (Fehler %v), erwartet %q", st.tool, text, isErr, st.want)
 		}
+	}
+	if text, isErr := callText(t, cs, "plan_set", map[string]any{"id": "X1", "fields": map[string]string{"Prio": "hoch"}}); !isErr || !strings.Contains(text, "unbekanntes Feld") {
+		t.Errorf("Prio am Sprint gesetzt: %q", text)
+	}
+	if text, isErr := callText(t, cs, "plan_delete", map[string]any{"id": "X1"}); isErr || !strings.Contains(text, "X1 gelöscht") {
+		t.Errorf("plan_delete X1: %q", text)
 	}
 	if text, isErr := callText(t, cs, "plan_delete", map[string]any{"id": "B-001"}); !isErr {
 		t.Errorf("Ticket gelöscht: %q", text)

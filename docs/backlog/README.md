@@ -88,7 +88,7 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-273](B-273-release-image-dev-mode-aus.md) | INF | Schuld | hoch | eingeplant | CI1 | Das Release-Image startet den Server ohne Dev-Mode |
 | [B-274](B-274-testrestore-flackert-windows.md) | SRV | Problem | mittel | eingeplant | NT1 | TestRestore läuft unter Windows auch in task check:all stabil grün |
 | [B-280](B-280-warteschlange-nicht-zustaende.md) | SRV | Problem | niedrig | eingeplant | NT1 | Die Warteschlange einer Verbindung läuft nicht voll, wenn andere Nachrichten zwischen Zuständen stehen |
-| [B-284](B-284-lasttest-eingaben-flake.md) | SRV | Problem | niedrig | eingeplant | NT1 | TestGleicherSeedGleicheEingaben scheitert nicht, wenn task check:go parallel läuft |
+| [B-284](B-284-lasttest-eingaben-flake.md) | DEV | Problem | niedrig | eingeplant | NT1 | TestGleicherSeedGleicheEingaben scheitert nicht, wenn task check:go parallel läuft |
 | [B-285](B-285-lernbare-skills-im-protokoll.md) | SRV | Problem | mittel | eingeplant | RM1 | Der Server nennt je Spieler die lernbaren Skills |
 | [B-286](B-286-lasttest-tick-reihe-wackelt.md) | SRV | Problem | niedrig | eingeplant | NT1 | TestTickReiheJeRaum schlägt im Gesamtlauf gelegentlich fehl |
 | [B-287](B-287-hub-ausbau-beutel-maximum.md) | REG | Problem | mittel | eingeplant | RG1 | Hub-Stufe 4 und 5 sind mit dem Beutel-Maximum bezahlbar |
@@ -125,7 +125,7 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-336](B-336-touch-optionen-schliessen.md) | CLI | Problem | hoch | eingeplant | U6 | Die Optionen-Szene lässt sich per Touch vollständig bedienen und schließen, ohne vom Touch-Overlay verdeckt zu werden |
 | [B-337](B-337-hud-elemente-ohne-ueberlagerung.md) | CLI | Idee | hoch | eingeplant | U6 | Jede HUD-Anzeige ist ein eigenes Element mit optionalem Hintergrund und Rahmen, und HUD-Elemente überlagern sich nicht |
 | [B-339](B-339-glyphen-je-plattform.md) | CLI | Idee | mittel | offen | – | Spiel und Seiten zeigen Tastensymbole passend zum gerade benutzten Controller (Xbox, PlayStation, weitere) |
-| [B-341](B-341-header-ursache-live-messen.md) | SRV | Problem | mittel | offen | – | Die Ursache für den fehlenden Header `X-K3C-Root` aus Worktrees ist live gemessen |
+| [B-341](B-341-header-ursache-live-messen.md) | DEV | Problem | mittel | offen | – | Die Ursache für den fehlenden Header `X-K3C-Root` aus Worktrees ist live gemessen |
 | [B-342](B-342-w6-2-siteview-erlaubt.md) | CLI | Frage | mittel | offen | – | W6.2 darf den Bauplatz-Wartegrund in `siteView.ts` anbinden |
 | [B-343](B-343-bau-vor-dem-ausgang.md) | SIM | Frage | mittel | offen | – | Der Bau des Endbosses liegt an der inneren Kante des Ausgangs-Chunks |
 | [B-346](B-346-miniboss-wald-kippt-nacht-5.md) | REG | Problem | hoch | eingeplant | RG1 | Der Miniboss Wald kippt Nacht 5 in fast jedem Seed |
@@ -133,12 +133,12 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-351](B-351-client-diagnose-zeile.md) | CLI | Idee | hoch | eingeplant | PM1 | Der Client schreibt FPS, Latenz und Puffer regelmäßig als Diagnose-Zeile ins Client-Log |
 | [B-352](B-352-botfeed-lan-zuschauer.md) | SRV | Idee | niedrig | offen | – | `sim_test` hängt sich an Clients auf der Xbox an, ohne einen Platz im Raum zu belegen |
 | [B-354](B-354-bot-eingabe-impulse-frist.md) | PLAT | Problem | mittel | offen | – | Die Bot-Eingabe verliert keine kurzen Drücke und hält bei stummem Feed an |
-| [B-360](B-360-plan-set-fehlendes-feld.md) | SRV | Problem | niedrig | offen | – | plan_set lehnt ein Feld ab, das in der Datei fehlt, statt es still zu übergehen |
+| [B-360](B-360-plan-set-fehlendes-feld.md) | DEV | Problem | niedrig | offen | – | plan_set lehnt ein Feld ab, das in der Datei fehlt, statt es still zu übergehen |
 | [B-361](B-361-sprint-prio-felder-entfallen.md) | INF | Schuld | mittel | eingeplant | DV1 | Die Sprint-Felder Prio und Einschiebbar entfallen in Vorlage, Planungstest und plan-Tools |
-| [B-362](B-362-k3c-dev-token-dienst.md) | SRV | Problem | hoch | eingeplant | DV1 | k3c-dev fragt den selbst gestarteten Spielserver mit dessen Token an |
-| [B-363](B-363-planung-flags-bearbeiten.md) | SRV | Idee | mittel | offen | – | Die Planungsseite ändert Prio, Umgebung, Agent und Projekt direkt im Detail |
+| [B-362](B-362-k3c-dev-token-dienst.md) | DEV | Problem | hoch | eingeplant | DV1 | k3c-dev fragt den selbst gestarteten Spielserver mit dessen Token an |
+| [B-363](B-363-planung-flags-bearbeiten.md) | DEV | Idee | mittel | offen | – | Die Planungsseite ändert Prio, Umgebung, Agent und Projekt direkt im Detail |
 | [B-365](B-365-domaene-dev-werkzeug.md) | INF | Idee | hoch | eingeplant | DV1 | Das Entwickler-Werkzeug k3c-dev hat eine eigene Domäne statt SRV |
-| [B-366](B-366-fahrplan-spalte-projekt.md) | SRV | Schuld | mittel | offen | – | k3c-dev füllt im Fahrplan die Spalte Projekt und ordnet nach Rang |
+| [B-366](B-366-fahrplan-spalte-projekt.md) | DEV | Schuld | mittel | offen | – | k3c-dev füllt im Fahrplan die Spalte Projekt und ordnet nach Rang |
 | [B-367](B-367-doku-nachzug-projekte.md) | INF | Schuld | niedrig | offen | – | Begriffe aus den alten Bahnen und Spuren sind nach PJ3 ersetzt und neue Projekt-Begriffe im Glossar |
 | [B-368](B-368-planung-erpapi-ablage.md) | SRV | Schuld | mittel | offen | – | Die Planung liegt in der ErpApi-Ablage und k3c-dev bedient sie mit den Planungs-Tools der Workbench-Spec |
 | [B-369](B-369-texte-landingpage.md) | PLAT | Schuld | niedrig | offen | – | Die Landingpage zeigt ihre Texte in der gewählten Sprache |

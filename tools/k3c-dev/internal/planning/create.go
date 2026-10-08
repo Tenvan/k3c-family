@@ -109,14 +109,8 @@ func createSprint(c *changeSet, in NewDoc, tpl string) error {
 		return fmt.Errorf("Sprint %s gibt es schon", in.ID)
 	}
 	dom := in.Fields["Domäne"]
-	if in.Fields == nil {
-		in.Fields = map[string]string{}
-	}
-	if in.Fields["Prio"] == "" {
-		in.Fields["Prio"] = SprintPrio(c.root, in.Fields["Tickets"])
-	}
 	text, err := fromTemplate(c, "sprint", tpl, in.ID+" · "+dom+" · "+in.Title, map[string]string{"Status": "geplant",
-		"Projekt": "–", "Reife": "Entwurf", "Einschiebbar": "nein", "Tickets": "–", "Spec": "Entwurf", "Revision": "1", "Freigabe": "–"}, in.Fields)
+		"Projekt": "–", "Reife": "Entwurf", "Tickets": "–", "Spec": "Entwurf", "Revision": "1", "Freigabe": "–"}, in.Fields)
 	if err != nil {
 		return err
 	}

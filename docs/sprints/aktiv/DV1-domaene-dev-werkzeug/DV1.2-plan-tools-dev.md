@@ -1,6 +1,6 @@
 # DV1.2 · plan-Tools mit Domäne DEV und ohne Sprint-Prio, Werkzeug-Tickets auf DEV
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** SRV
@@ -62,5 +62,10 @@ Keine manuellen Prüfungen. Die neuen plan-Tools wirken erst nach einem Neustart
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+- AC-03 geprüft: `TestDomaeneDEV` (Go) legt ein Ticket in `DEV` an, setzt ein SRV-Ticket per `Set` auf `DEV` (Index nachgezogen), `TOOL` wird mit der Liste `REG, SIM, SRV, CLI, PLAT, INF, DEV` abgelehnt; `TestPlanungsToolsRoundtrip` legt per `plan_create` ein DEV-Ticket an und findet es mit `plan_list domain: DEV`. `task test -- planning` grün mit sechs Tickets in `DEV`.
+- AC-04 geprüft: `TestSprintOhnePrioUndEinschiebbar` (Go): `Create` sprint und `Set` Tickets schreiben weder `Prio` noch `Einschiebbar`, `Set` mit `Prio` oder `Einschiebbar` am Sprint wird abgelehnt (unbekanntes Feld, nichts geändert); `plan_set X1 {Prio}` im Roundtrip ebenfalls abgelehnt. `SprintPrio`, `Sprint.Prio`, `maxPrio`, `prioRank` und der Einschiebbar-Zweig in `roadmapMarker` entfallen; Sprints ohne Projekt stehen in Fahrplan-Reihenfolge hinter denen mit Projekt.
+- AC-05 geprüft: `plan_list domain: DEV` listet B-284, B-341, B-360, B-362, B-363, B-366; DV1.3 und DV1.4 tragen `DEV`, DV1 damit `INF, SRV, DEV` (Feld, Überschrift, Fahrplan).
+- Nicht umgestellt (Arbeit nicht ganz in DEV-Dateien): B-092, B-299 (Seiten, PLAT), B-298 (`data/assets.json`, `public/`), B-099 (`engine/sim`, `data/`), B-286 (Fehlerquelle evtl. im Server), B-352 (Protokoll, `engine/room`), B-368 (auch `tests/planning.test.ts`, `arbeitsweise.md`, `CLAUDE.md`), B-315, B-080 (Server). Geplante Sprints: keine Session mit Datei nur in DEV-Dateien (M10 nur Entwürfe).
+- Prüfungen: `check_run dev:test` grün, `check_run task:check` grün, `golangci-lint run` in `tools/k3c-dev` 0 issues, `tsc --noEmit` im Frontend sauber.
+- Abweichung: Die Umstellung der Tickets und Sessions auf `DEV` lief von Hand (Feld, Index-Zeile, Sprint-Domäne, Fahrplan-Zeile), weil k3c-dev noch mit altem Code lief und `Domäne: DEV` ablehnte; danach `task test -- planning` grün. k3c-dev nicht neu gestartet. Das abschließende `plan_set DV1.2 {Status: fertig}` setzte die Sprint-Domäne mit dem alten Code auf `INF, SRV` zurück (DEV unbekannt); von Hand wieder auf `INF, SRV, DEV` gestellt. Bis zum Neustart von k3c-dev tut das jeder `plan_set`/`plan_create` an einer DV1-Session erneut. Frontend: Sprint-Karte ohne Prio-Badge, Mock mit DEV-Ticket B-363 (Chip `DEV`), `projects.test.ts` erwartet es unter „Ohne Projekt“.
+- Neue Tickets: keine.

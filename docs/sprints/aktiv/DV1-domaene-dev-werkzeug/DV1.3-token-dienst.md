@@ -3,7 +3,7 @@
 - **Status:** offen
 - **Typ:** Umsetzung
 - **Agent:** autonom
-- **Domäne:** SRV
+- **Domäne:** DEV
 - **Umgebung:** offline
 - **Branch:** dv1/3-token-dienst
 - **Abhängig von:** DV1.2

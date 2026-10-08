@@ -1,6 +1,6 @@
 # B-363 · Die Planungsseite ändert Prio, Umgebung, Agent und Projekt direkt im Detail
 
-- **Domäne:** SRV
+- **Domäne:** DEV
 - **Typ:** Idee
 - **Prio:** mittel
 - **Umgebung:** offline

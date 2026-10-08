@@ -43,7 +43,7 @@ func registerPlanning(s *Server) {
 	add(s, &mcp.Tool{
 		Name: "plan_list",
 		Description: "Sprints mit Sessions und Tickets als je eine Zeile, filterbar nach kind, status, domain, sprint, projekt; " +
-			"archive mit erledigten Tickets. Sprints mit Projekt nach Rang und Platz im Projekt, ohne Projekt nach Prio. " +
+			"archive mit erledigten Tickets. Sprints mit Projekt nach Rang und Platz im Projekt, ohne Projekt dahinter. " +
 			"kind projekt: Projekte nach Rang mit Sprints und Fortschritt. " +
 			"Nutze es bei: Überblick über Sprints, Sessions und Tickets. Statt: docs/sprints und docs/backlog durchsuchen.",
 		Annotations: readOnly(),
@@ -67,7 +67,7 @@ func registerPlanning(s *Server) {
 	})
 	add(s, &mcp.Tool{
 		Name: "plan_set",
-		Description: "Setzt Kopf-Felder (Status, Prio, Sprint, Projekt, Reife, Spec, Revision, Freigabe …) und zieht nach: Index, " +
+		Description: "Setzt Kopf-Felder (Status, Prio, Sprint, Projekt, Reife, Spec, Revision, Freigabe …; Sprints haben keine Prio) und zieht nach: Index, " +
 			"Session-Tabelle, Fahrplan, Archiv bei erledigt/verworfen, Sprint-Ordner beim Status, Sprint-Tabelle des Projekts. " +
 			"Session: Status (auch verworfen), Domäne (Feld, Überschrift und Fahrplan des Sprints folgen; am Sprint nicht setzbar). " +
 			"Projekt: Status, Rang (die anderen rücken lückenlos), Sprints (neue Reihenfolge, kommagetrennt). " +

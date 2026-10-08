@@ -1,8 +1,8 @@
-# DV1 · INF, SRV · Domäne DEV für k3c-dev, Sprint ohne Prio und Einschiebbar
+# DV1 · INF, SRV, DEV · Domäne DEV für k3c-dev, Sprint ohne Prio und Einschiebbar
 
 - **Status:** aktiv
 - **Projekt:** WZG
-- **Domäne:** INF, SRV
+- **Domäne:** INF, SRV, DEV
 - **Reife:** bereit
 - **Tickets:** B-365, B-361, B-362
 - **Start-Commit:** e9869ba
@@ -70,7 +70,7 @@ keine. Entschieden von 🧑 am 2026-10-08: Kürzel `DEV`; zu `DEV` gehören `too
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
 | DV1.1 | `DV1.1-domaene-dev-regeln.md` | Umsetzung | autonom | fertig |
-| DV1.2 | `DV1.2-plan-tools-dev.md` | Umsetzung | autonom | offen |
+| DV1.2 | `DV1.2-plan-tools-dev.md` | Umsetzung | autonom | fertig |
 | DV1.3 | `DV1.3-token-dienst.md` | Umsetzung | autonom | offen |
 | DV1.4 | `DV1.4-review.md` | Review | autonom | offen |
 

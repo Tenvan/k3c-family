@@ -105,14 +105,12 @@ func syncIndex(c *changeSet, t Ticket, rel string) error {
 }
 
 // roadmapMarker ist die Fahrplan-Tabelle für einen Sprint-Ordner (docs/sprints/README.md).
-func roadmapMarker(state, einschiebbar string) func(string) bool {
-	switch {
-	case state == "aktiv":
+func roadmapMarker(state string) func(string) bool {
+	switch state {
+	case "aktiv":
 		return heading("## Aktiv")
-	case state == "erledigt":
+	case "erledigt":
 		return heading("## Erledigt")
-	case einschiebbar == "ja":
-		return heading("**Einschiebbar**")
 	}
 	return heading("## Geplant")
 }
@@ -125,11 +123,11 @@ func syncRoadmap(c *changeSet, sp Sprint, f map[string]string, oldDir, newDir st
 		return err
 	}
 	lines, old, at := takeRoadmapRow(splitLines(text), sp.ID, oldDir)
-	t, ok := findTable(lines, roadmapMarker(sp.Status, f["Einschiebbar"]))
+	t, ok := findTable(lines, roadmapMarker(sp.Status))
 	if !ok {
 		return fmt.Errorf("sprints/README.md: Tabelle für %s fehlt", sp.Status)
 	}
-	known := map[string]string{"Sprint": sp.ID, "Domäne": sp.Domain, "Prio": sp.Prio, "Reife": sp.Reife,
+	known := map[string]string{"Sprint": sp.ID, "Domäne": sp.Domain, "Reife": sp.Reife,
 		"Ordner": "`" + strings.TrimPrefix(newDir, "sprints/") + "/`"}
 	row := make([]string, len(t.header))
 	for k, h := range t.header {

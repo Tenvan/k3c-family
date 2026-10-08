@@ -1,6 +1,6 @@
 # B-360 · plan_set lehnt ein Feld ab, das in der Datei fehlt, statt es still zu übergehen
 
-- **Domäne:** SRV
+- **Domäne:** DEV
 - **Typ:** Problem
 - **Prio:** niedrig
 - **Umgebung:** offline

@@ -3,8 +3,7 @@ package planning
 import (
 	"fmt"
 	"os"
-	"regexp"
-	"slices"
+
 	"sort"
 	"strings"
 )
@@ -13,7 +12,7 @@ import (
 type Filter struct {
 	Kind    string `json:"kind,omitempty" jsonschema:"ticket, sprint, projekt oder leer für Sprints und Tickets"`
 	Status  string `json:"status,omitempty" jsonschema:"Status, z. B. aktiv, geplant, offen, eingeplant, erledigt"`
-	Domain  string `json:"domain,omitempty" jsonschema:"Domäne: REG, SIM, SRV, CLI, PLAT, INF"`
+	Domain  string `json:"domain,omitempty" jsonschema:"Domäne: REG, SIM, SRV, CLI, PLAT, INF, DEV"`
 	Sprint  string `json:"sprint,omitempty" jsonschema:"Sprint-ID: nur dieser Sprint und seine Tickets"`
 	Projekt string `json:"projekt,omitempty" jsonschema:"Projekt-Kürzel: nur dieses Projekt, seine Sprints und Tickets"`
 	Archive bool   `json:"archive,omitempty" jsonschema:"auch erledigte und verworfene Tickets aus backlog/archiv"`
@@ -102,7 +101,7 @@ func sprintLines(s Sprint) []string {
 			done++
 		}
 	}
-	out := []string{fmt.Sprintf("%s %s %s Prio %s Reife %s Spec %s · %s · Sessions %d/%d", s.ID, s.Domain, s.Status, s.Prio, s.Reife, s.Spec,
+	out := []string{fmt.Sprintf("%s %s %s Reife %s Spec %s · %s · Sessions %d/%d", s.ID, s.Domain, s.Status, s.Reife, s.Spec,
 		s.Title, done, len(s.Sessions))}
 	if s.Status == "erledigt" {
 		return out
@@ -127,24 +126,6 @@ func archived(root string) []Ticket {
 	return out
 }
 
-// SprintPrio ist die höchste Prio der genannten Tickets (offen oder archiviert); ohne bekannte Prio `?`.
-func SprintPrio(root, tickets string) string {
-	d, _ := Load(root)
-	prio := map[string]string{}
-	for _, t := range append(d.Tickets, archived(root)...) {
-		prio[t.Nr] = t.Prio
-	}
-	best := "?"
-	for _, id := range reTicketRef.FindAllString(tickets, -1) { // auch „B-011 teils“
-		if p := prio[id]; prioRank(p) < prioRank(best) {
-			best = p
-		}
-	}
-	return best
-}
-
-var reTicketRef = regexp.MustCompile(`B-\d{3}`)
-
 // sortSprints ordnet je Status (aktiv, geplant, erledigt) nach sprintOrder, sonst bleibt die Fahrplan-Reihenfolge.
 func sortSprints(sprints []Sprint, ps []Project) {
 	order := map[string]int{"aktiv": 0, "geplant": 1, "erledigt": 2}
@@ -153,11 +134,4 @@ func sortSprints(sprints []Sprint, ps []Project) {
 		a, b := sprints[i], sprints[j]
 		return order[a.Status] < order[b.Status] || order[a.Status] == order[b.Status] && less(a, b)
 	})
-}
-
-func prioRank(p string) int {
-	if i := slices.Index(prios, p); i >= 0 {
-		return i
-	}
-	return len(prios)
 }

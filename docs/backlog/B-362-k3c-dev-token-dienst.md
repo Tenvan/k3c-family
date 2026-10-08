@@ -1,6 +1,6 @@
 # B-362 · k3c-dev fragt den selbst gestarteten Spielserver mit dessen Token an
 
-- **Domäne:** SRV
+- **Domäne:** DEV
 - **Typ:** Problem
 - **Prio:** hoch
 - **Umgebung:** offline
