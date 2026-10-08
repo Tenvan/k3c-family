@@ -11,6 +11,7 @@ Liest und schreibt die Planung des Repos (`docs/`: Tickets, Sprints, Sessions, R
 - Schreib-API: `Create` (`create.go`, aus `docs/vorlagen/*.md`, `NewDoc`), `Set`/`Section` (`edit.go`, Feldprüfung gegen Vorlage via `checkValue`), `Delete`, `Get`, `List` mit `Filter` (`list.go`).
 - Konsistenz `tables.go`: Markdown-Tabellen (`mdTable`, `placeRow`, `removeRow`) für `syncIndex` (Backlog-README), `syncRoadmap`, `syncSessionRow`.
 - Priorität/Reihenfolge `priority.go`: `rank` setzt je Sprint die höchste Prio seiner Tickets, liest je Session `Umgebung` und `Abhängig von` (`sessionMeta`) und leitet daraus `Sprint.Deps` ab; `Order` sortiert generisch topologisch nach Abhängigkeit, dann Prio (Voraussetzung erbt die Prio ihrer Abnehmer, Zyklus wird gebrochen); `maxPrio`, `sprintOf`. In `list.go`: `SprintPrio`, `sortByPrio`, `prioRank`.
+- Projekte `projects.go` (B-357): `Project`, `ParseProject`, `loadProjects` (`Data.Projects`), `createProject`, `setProject` (Status, Rang, Sprints), `rerank`/`rankOrder` (Ränge der aktiven Projekte lückenlos, `ABN` ohne Rang), `deleteProject`, `checkProjectRef` (Feld `Projekt` an Sprint und Ticket). `projects_tables.go`: `syncOverview` (`docs/projekte/README.md` aus den Projekt-Dateien), `reorderSprints`, `syncProjectSprint` (Sprint-Tabelle des Projekts folgt `Projekt` und Status des Sprints).
 - `watch.go`: `Stamp` (Änderungs-Fingerprint) und `Watch` (Polling) für Live-Refresh; `worktree.go`: `Worktrees` (git worktree list --porcelain) und `markWorktrees`.
 
 ## Flow

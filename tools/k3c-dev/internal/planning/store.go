@@ -27,7 +27,7 @@ var States = []string{"geplant", "aktiv", "erledigt"}
 
 // ref ist ein aufgelöstes Planungs-Dokument; rel ist der Pfad relativ zu docs/ mit `/`.
 type ref struct {
-	kind  string // ticket | sprint | session
+	kind  string // ticket | sprint | session | projekt
 	id    string
 	rel   string // Datei (beim Sprint die README)
 	dir   string // Sprint-Ordner relativ zu docs/ (Sprint und Session)
@@ -49,6 +49,10 @@ func resolve(root, id string) (ref, error) {
 		if r, ok := findSprint(root, id); ok {
 			return r, nil
 		}
+	case reProjectID.MatchString(id):
+		if f := findEntry(docsPath(root, "projekte"), id+"-", false); f != "" {
+			return ref{kind: "projekt", id: id, rel: "projekte/" + f}, nil
+		}
 	case reSession.MatchString(id):
 		sp, ok := findSprint(root, reSession.FindStringSubmatch(id)[1])
 		if !ok {
@@ -58,7 +62,7 @@ func resolve(root, id string) (ref, error) {
 			return ref{kind: "session", id: id, rel: sp.dir + "/" + f, dir: sp.dir, state: sp.state}, nil
 		}
 	default:
-		return ref{}, fmt.Errorf("ungültige ID %q (B-123, M8 oder M8.1)", id)
+		return ref{}, fmt.Errorf("ungültige ID %q (B-123, M8, M8.1 oder Projekt GRA)", id)
 	}
 	return ref{}, fmt.Errorf("%s nicht gefunden", id)
 }

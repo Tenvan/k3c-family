@@ -1,6 +1,6 @@
 # PJ2.1 · Projekte in den plan-Tools
 
-- **Status:** in Arbeit
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** SRV
@@ -48,11 +48,11 @@ Domäne je Session, `verworfen`, Sprint-Prio (PJ2.2); Oberfläche (PJ2.3); Vorla
 
 ## Fertig, wenn
 
-- [ ] AC-01: Go-Tests für `plan_create`, `plan_get`, `plan_list` und `plan_section` mit Projekten grün.
-- [ ] AC-02: Tests für Rang-Verschiebung und Statuswechsel: Ränge der aktiven Projekte lückenlos ab 1, ruhende und erledigte mit `–`.
-- [ ] AC-03: Test für `Projekt` und `Sprints`: Sprint-Tabelle und `docs/projekte/README.md` gepflegt; Probelauf mit `task test -- planning` grün (Schritt 9).
-- [ ] Jede Ablehnung aus B-357 › Ausnahme- und Fehlerfälle getestet, nichts geändert.
-- [ ] `check_run dev:test` und `check_run task:check` grün.
+- [x] AC-01: Go-Tests für `plan_create`, `plan_get`, `plan_list` und `plan_section` mit Projekten grün.
+- [x] AC-02: Tests für Rang-Verschiebung und Statuswechsel: Ränge der aktiven Projekte lückenlos ab 1, ruhende und erledigte mit `–`.
+- [x] AC-03: Test für `Projekt` und `Sprints`: Sprint-Tabelle und `docs/projekte/README.md` gepflegt; Probelauf mit `task test -- planning` grün (Schritt 9).
+- [x] Jede Ablehnung aus B-357 › Ausnahme- und Fehlerfälle getestet, nichts geändert.
+- [x] `check_run dev:test` und `check_run task:check` grün.
 
 ## Prüfen
 
@@ -65,4 +65,10 @@ Manuelle Prüfungen (Browser, Xbox, TV) nur, wenn diese Datei sie nennt und 🧑
 
 ## Ergebnis
 
-–
+- **AC-01 geprüft:** `projects_test.go` (`TestProjektAnlegenLesenListen`, `TestProjektOhneRangABN`): `plan_create`/`Create` mit `kind: projekt` legt `docs/projekte/<KÜRZEL>-slug.md` nach Vorlage an und ergänzt die Übersicht; `Get`, `Section` und `List` (`kind: projekt`, Filter `projekt`) arbeiten mit Projekten; `go test ./internal/...` grün.
+- **AC-02 geprüft:** `TestProjektRangLueckenlos` (Rang-Verschiebung, `ruht`, `erledigt`, zurück zu `aktiv`) und `TestProjektOhneRangABN`: Ränge der aktiven Projekte lückenlos ab 1, ruhende und erledigte mit `–`, `ABN` ohne Rang (Beschluss der Freigabe).
+- **AC-03 geprüft:** `TestProjektZuordnung` (Sprint und Ticket mit `Projekt`, `Sprints` als neue Reihenfolge, Status des Sprints folgt in der Tabelle, Löschen nur ohne Sprints und Tickets) mit `checkProjects` (Regeln aus `tests/planningProjects.test.ts` in Go). Probelauf gegen den echten Planungstest: zwei Projekte `TST`/`TSU` angelegt, K3 und K4 zugeordnet, Reihenfolge und Rang geändert, `vitest run planning` 483 grün; Probe danach verworfen.
+- **Ablehnungen:** `TestProjektAblehnungAendertNichts` deckt B-357 › Ausnahme- und Fehlerfälle ab (unbekanntes Kürzel, Rang 0/über n/ruhend, `Sprints` fremd oder unvollständig, Löschen mit Sprint), Dateien bleiben unverändert.
+- **Geprüft:** `task check:dev` und `task check` grün im Worktree (Shell: `check_run` lief ohne Header `X-K3C-Root` in der Repo-Wurzel, B-275; ein dort versehentlich angelegter Entwurf von PJ2.1 wurde zurückgenommen).
+- **Abweichungen:** `plan_create` setzt für Ticket und Sprint jetzt `Projekt: –` als Vorgabe (vorher blieb der Platzhalter der Vorlage stehen). Bestehende Session-Tests in `write_test.go` geben `Domäne` mit, weil die Vorlage sie seit PJ1 verlangt (Pflicht-Prüfung folgt in PJ2.2). Rund 470 Zeilen Code ohne Tests, etwas über dem Richtwert.
+- **Neues Ticket:** B-360 (`plan_set` übergeht Felder, die in einer Datei fehlen, still).

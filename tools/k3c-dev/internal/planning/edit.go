@@ -23,6 +23,7 @@ var (
 		"sprint": {"Status": States, "Domäne": domains, "Prio": prios, "Reife": {"Entwurf", "bereit"}, "Einschiebbar": {"nein", "ja"}, "Spec": specs},
 		"session": {"Status": {"offen", "in Arbeit", "fertig", "blockiert"}, "Typ": {"Umsetzung", "Review", "Workshop"},
 			"Agent": {"autonom", "Mensch"}, "Umgebung": Envs},
+		"projekt": {"Status": {"aktiv", "ruht", "erledigt"}},
 	}
 	reRevision = regexp.MustCompile(`^\d+$`)
 )
@@ -119,7 +120,7 @@ func setFields(root, kind, text string, values map[string]string) (string, error
 	return text, nil
 }
 
-// Set ändert Kopf-Felder eines Dokuments und zieht Index, Session-Tabelle, Fahrplan und Ordner nach.
+// Set ändert Kopf-Felder eines Dokuments und zieht Index, Session-Tabelle, Fahrplan, Ordner und Projekte nach.
 func Set(root, id string, values map[string]string) (string, error) {
 	writeMu.Lock()
 	defer writeMu.Unlock()
@@ -131,6 +132,17 @@ func Set(root, id string, values map[string]string) (string, error) {
 		return "", fmt.Errorf("die Domäne eines Sprints steht in Überschrift und Branch; neuen Sprint anlegen")
 	}
 	c := newChangeSet(root)
+	if r.kind == "projekt" {
+		if err := setProject(c, r, values); err != nil {
+			return "", err
+		}
+		return strings.Join(c.notes, "\n"), c.apply()
+	}
+	if v, ok := values["Projekt"]; ok {
+		if err := checkProjectRef(c, v); err != nil {
+			return "", err
+		}
+	}
 	text, err := c.read(r.rel)
 	if err != nil {
 		return "", err
@@ -191,6 +203,9 @@ func followSprint(c *changeSet, r ref, text string) error {
 	}
 	c.write(dir+"/README.md", text)
 	c.notes = append(c.notes, r.id+" geändert: docs/"+dir+"/ (Fahrplan nachgezogen)")
+	if err := syncProjectSprint(c, sp); err != nil {
+		return err
+	}
 	return syncRoadmap(c, sp, f, r.dir, dir)
 }
 

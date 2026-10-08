@@ -140,6 +140,7 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-357](B-357-k3c-dev-projekte.md) | SRV | Idee | hoch | eingeplant | PJ2 | Die plan-Tools von k3c-dev legen Projekte an, ordnen Sprints und Tickets zu und setzen den Rang |
 | [B-358](B-358-workbench-projekte.md) | SRV | Idee | hoch | eingeplant | PJ2 | Die Planungsseite der Workbench zeigt Projekte nach Rang mit ihren Sprints |
 | [B-359](B-359-planung-in-projekte.md) | INF | Schuld | hoch | eingeplant | PJ3 | Die offene Planung ist in Projekte umgezogen, erledigte und zusammengelegte Sprints sind abgeschlossen |
+| [B-360](B-360-plan-set-fehlendes-feld.md) | SRV | Problem | niedrig | offen | – | plan_set lehnt ein Feld ab, das in der Datei fehlt, statt es still zu übergehen |
 
 ## Archiv
 
