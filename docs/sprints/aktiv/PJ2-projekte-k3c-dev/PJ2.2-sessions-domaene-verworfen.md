@@ -1,6 +1,6 @@
 # PJ2.2 · Sessions mit Domäne und verworfen, Sprint-Domänen abgeleitet
 
-- **Status:** offen
+- **Status:** in Arbeit
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** SRV

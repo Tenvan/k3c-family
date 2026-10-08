@@ -73,7 +73,7 @@ Siehe `B-357 › Ausnahme- und Fehlerfälle` und `B-358 › Ausnahme- und Fehler
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
 | PJ2.1 | `PJ2.1-projekte-plan-tools.md` | Umsetzung | autonom | fertig |
-| PJ2.2 | `PJ2.2-sessions-domaene-verworfen.md` | Umsetzung | autonom | offen |
+| PJ2.2 | `PJ2.2-sessions-domaene-verworfen.md` | Umsetzung | autonom | in Arbeit |
 | PJ2.3 | `PJ2.3-planungsseite-projekte.md` | Umsetzung | autonom | offen |
 | PJ2.4 | `PJ2.4-review.md` | Review | autonom | offen |
 
