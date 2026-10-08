@@ -1,6 +1,6 @@
 # M11 · SRV · MCP-Seite: alle Tools mit Statistik, Zeitfilter
 
-- **Status:** aktiv
+- **Status:** erledigt
 - **Projekt:** –
 - **Domäne:** SRV
 - **Prio:** hoch
@@ -60,8 +60,9 @@ keine
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
 | M11.1 | `M11.1-tools-zeitfilter.md` | Umsetzung | autonom | fertig |
-| M11.2 | `M11.2-review.md` | Review | autonom | offen |
+| M11.2 | `M11.2-review.md` | Review | autonom | fertig |
 
 ## Abnahme
 
-–
+2026-10-08: AC-01 und AC-02 geprüft (M11.1, Review M11.2 gegen `df0284c5`, `dev:test` grün). Keine schweren Befunde, keine neuen Tickets.
+Version: v0.15.1 vorgeschlagen (Patch: Review ohne neue Funktion, Code kam mit #210).
