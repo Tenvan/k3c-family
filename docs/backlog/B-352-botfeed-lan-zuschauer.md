@@ -6,7 +6,7 @@
 - **Umgebung:** live
 - **Status:** offen
 - **Sprint:** –
-- **Projekt:** WZG
+- **Projekt:** TST
 - **Erstellt:** 2026-10-07
 - **Spec:** Entwurf
 - **Revision:** 1

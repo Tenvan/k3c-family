@@ -1,7 +1,7 @@
 # PRZ · Arbeitsweise
 
 - **Status:** aktiv
-- **Rang:** 10
+- **Rang:** 1
 - **Ziel-Tickets:** –
 
 ## Ziel

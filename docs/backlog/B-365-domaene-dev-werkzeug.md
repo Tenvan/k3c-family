@@ -4,8 +4,8 @@
 - **Typ:** Idee
 - **Prio:** hoch
 - **Umgebung:** offline
-- **Status:** offen
-- **Sprint:** –
+- **Status:** eingeplant
+- **Sprint:** DV1
 - **Projekt:** WZG
 - **Erstellt:** 2026-10-08
 - **Spec:** Entwurf

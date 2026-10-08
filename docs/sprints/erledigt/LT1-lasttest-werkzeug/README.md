@@ -1,7 +1,7 @@
 # LT1 · SRV · Lasttest-Werkzeug
 
 - **Status:** erledigt
-- **Projekt:** WZG
+- **Projekt:** TST
 - **Domäne:** SRV
 - **Prio:** hoch
 - **Reife:** bereit

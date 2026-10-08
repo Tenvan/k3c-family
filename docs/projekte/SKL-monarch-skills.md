@@ -1,7 +1,7 @@
 # SKL · Monarch & Skills
 
 - **Status:** aktiv
-- **Rang:** 6
+- **Rang:** 9
 - **Ziel-Tickets:** –
 
 ## Ziel

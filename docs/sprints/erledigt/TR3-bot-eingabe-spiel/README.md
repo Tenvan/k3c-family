@@ -1,7 +1,7 @@
 # TR3 · CLI · Bot-Eingabe im Spiel einbinden
 
 - **Status:** erledigt
-- **Projekt:** WZG
+- **Projekt:** TST
 - **Domäne:** CLI
 - **Prio:** hoch
 - **Reife:** bereit
