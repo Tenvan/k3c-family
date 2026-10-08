@@ -1,6 +1,6 @@
 # PJ1.3 · Planungstest für Projekte, Rang und Domänen-Sperre
 
-- **Status:** offen
+- **Status:** in Arbeit
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** INF
