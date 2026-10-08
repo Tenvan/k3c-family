@@ -22,7 +22,7 @@ export interface TextTarget {
   setAttribute(name: string, value: string): void;
 }
 
-const isKey = (key: string | undefined): key is ToolTextKey => key !== undefined && key in de;
+const isKey = (key: string | undefined): key is ToolTextKey => key !== undefined && Object.hasOwn(de, key);
 
 /** Text zu einem zusammengesetzten Schlüssel (`grafik.group.${id}`); ohne Eintrag der Rückfall, z. B. die ID aus den Daten. */
 export function textOf(key: string, fallback: string): string {

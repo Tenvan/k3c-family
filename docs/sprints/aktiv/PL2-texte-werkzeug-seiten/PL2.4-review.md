@@ -1,6 +1,6 @@
 # PL2.4 · Review und Abschluss
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Review
 - **Agent:** autonom
 - **Domäne:** PLAT
@@ -36,8 +36,8 @@ Stil, Benennung, Vereinfachungen; manuelle Prüfung im Browser.
 
 ## Fertig, wenn
 
-- [ ] AC-01: Nachweise aus PL2.1–PL2.3 vorhanden, B-322/AC-02 als `angenommen, Validierung offen (PL2.5)`.
-- [ ] `task check` und `task check:go` grün, PR offen.
+- [x] AC-01: Nachweise aus PL2.1–PL2.3 vorhanden, B-322/AC-02 als `angenommen, Validierung offen (PL2.5)`.
+- [x] `task check` und `task check:go` grün, PR offen.
 
 ## Prüfen
 
@@ -48,5 +48,7 @@ task check:go
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+- AC-01 geprüft: Nachweise aus PL2.1–PL2.3 vorhanden; B-322/AC-02 als `angenommen, Validierung offen (PL2.5)`.
+- `task check` und `task check:go` grün. Review durch eigenen Agenten (nicht der Autor): keine schweren Befunde; ein Kleinbefund (`Object.hasOwn` in `texts.ts`) behoben.
+- Manuell geprüft: nichts.
+- Abweichungen: keine. Neue Tickets: keine.
