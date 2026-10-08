@@ -1,6 +1,6 @@
 # PJ3.4 · Review
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Review
 - **Agent:** autonom
 - **Domäne:** INF
@@ -40,9 +40,9 @@ Stil, Benennung, neue Zuordnungen nach eigenem Geschmack; Reviews anderer Sprint
 
 ## Fertig, wenn
 
-- [ ] AC-01 bis AC-06: je Kriterium Nachweis in der Abnahme.
-- [ ] PRZ erledigt, PJ3 in `docs/sprints/erledigt/`, B-359 archiviert.
-- [ ] `task check` und `task check:go` grün, PR offen.
+- [x] AC-01 bis AC-06: je Kriterium Nachweis in der Abnahme.
+- [x] PRZ erledigt, PJ3 in `docs/sprints/erledigt/`, B-359 archiviert.
+- [x] `task check` und `task check:go` grün, PR offen.
 
 ## Prüfen
 
@@ -55,5 +55,10 @@ Keine manuellen Prüfungen.
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+2026-10-08, Review durch eigenen Subagenten (nicht der Umsetzer von PJ3.3), Diff ab Start-Commit 6c7837b (PJ3.1/PJ3.2 schon per #225 in develop).
+
+- **AC-01 geprüft** mit Abweichung (GRA-Sprint „Figuren und Pipeline“ nicht angelegt, Tickets in GRA), **AC-02 bis AC-06 geprüft**: Belege in PJ3 › Abnahme.
+- Schwere Befunde: HW1 › Tickets unvollständig (behoben per `plan_set`); GRA-Sprint fehlt (als Abweichung in der Abnahme, Nicht-Ziel).
+- Leichte Befunde behoben: Übergangsabsatz `arbeitsweise.md`, Beispieltest `waitsForDevice`. Ticket B-367 für Begriffe in § 11.5/11.6 und Glossar.
+- Kontext-Abweichung: Ränge nach PRZ jetzt 1–10 (TST aus #226), nicht 1–9.
+- `check_run task:check` und `task:check:go` grün.

@@ -8,9 +8,9 @@
 - **Einschiebbar:** ja
 - **Tickets:** B-168, B-250, B-218
 - **Start-Commit:** –
-- **Spec:** Entwurf
+- **Spec:** freigegeben
 - **Revision:** 2
-- **Freigabe:** –
+- **Freigabe:** 2026-10-08, Chat, durch 🧑, Revision 2
 
 ## Ausgangslage
 

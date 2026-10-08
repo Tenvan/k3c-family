@@ -149,7 +149,7 @@ GR1 (früh), GR2 (parallel) ──→ GR3 ab Phase 2 (W1 braucht Hub-Grafiken)
 BAL1 ab Phase 1 (parallel) → BAL2 vor B1
 P1 → W1…W6 → B1 (Spieleabend 2) → G1b…G5 → B2 (Spieleabend 3) → Release v0.x
 ```
-Ein aktiver Sprint je Domäne (ab F0, B-174; vorher einer insgesamt); Schienen GR/SO/BAL laufen als einschiebbare Sprints (`Einschiebbar: ja`) oder zwischen Sprints, nie als Nebenarbeit. Reihenfolge, Wellen und Zuordnung Mensch/autonom: § 11.
+Historisch (Stand 2026-10-03). Die Reihenfolge steht heute nur im Projekt-Rang: § 11.
 
 ## 7. Akzeptanzkriterien dieses Plans (testbar)
 
@@ -187,75 +187,9 @@ Ein aktiver Sprint je Domäne (ab F0, B-174; vorher einer insgesamt); Schienen G
 - Dieser Plan ändert nichts am Code; Umsetzung erst nach ausdrücklicher Freigabe.
 - Nicht verifiziert (Annahmen): Edge/Xbox-Autoplay und ogg-Dekodierung, Pi-3-Leistung bei Events, Eignung der vorhandenen Packs in `public/grafik` für Hub-Stufen 1–5.
 
-## 11. Zwei Spuren: Mensch (hier) und autonom (zweiter Account)
+## 11. Reihenfolge der Arbeit
 
-Stand 2026-10-03. Ziel: Auf dem zweiten Account laufen möglichst viele autonome Sessions parallel, hier laufen nur die Schritte, die 🧑 braucht (Freigaben, Workshops, Abnahmen, Tests am Gerät). Grundlage ist die Domänen-Regel der Arbeitsweise: Jeder Sprint ändert nur Dateien seiner Domäne, Sprints verschiedener Domänen können deshalb gleichzeitig laufen. Dafür braucht es die Regeländerung **F0 (B-174)**: je Domäne ein aktiver Sprint, Sessions per Branch beanspruchen. Ohne F0 darf neben SP11 (SRV, wartet auf den Pi) kein weiterer nicht einschiebbarer Sprint aktiv sein.
-
-### 11.1 Bahnen (je Domäne eine Reihenfolge, nacheinander)
-
-| Domäne | Reihenfolge der Sprints | Sperre durch 🧑 |
-|---|---|---|
-| INF | F0 → F2 → F5 → GR4 → RL1 | RL1.1, RL1.3 (Checkliste abnehmen) |
-| REG | F1.1–F1.3 → **F1.4** → F1.5 … später BAL4 → BR1 → BR2 | F1.4, BAL4.2, BR1.2, BR2.2, P1 |
-| SIM | H1 → F3 → BAL1 → S1 → BAL2 → W1 → W2 → W3 → W4 → K1 → K2 → K3 → BAL3 | BAL3.1 (Bot-Profile) |
-| SRV | DBG1 → F4 → S2 → LT1 → W5 → K4 | keine: LT1.3 (Messlauf am Pi) läuft in der Hardware-Bahn (11.6) |
-| CLI | DBG2 → S5 → S4 → S3 → S7 → S6 → SO1 → W6 → K5 | keine: die Abnahmen am Gerät (DBG2.3, S3.4, S4.3, S5.4, S6.4, S7.3, W6.4, K5.4) laufen in der Hardware-Bahn (11.6) |
-| PLAT | X1.1 (autonom, Audio-Abschnitt) → GR6 → SO3; X1.2 (🧑 Xbox-Test) und X1.3 laufen in der Hardware-Bahn (11.6) | keine (X1.2 sperrt die Bahn nicht) |
-| Asset-Schiene (einschiebbar, CLI/INF) | GR1 → GR2 → GR3 → GR5, SO2, SO4 | GR1.1, GR2.2, GR4.3, SO2.1, SO4.1 (Stil und Auswahl) |
-
-Die Asset-Schiene zählt nach Regel nicht als aktiver Sprint, teilt sich aber Dateien mit der CLI-Bahn (`src/scenes/worldRenderer.ts`): GR3 läuft nie gleichzeitig mit S4, S7, W6 oder K5.
-
-### 11.2 Wellen (Abhängigkeiten berücksichtigt)
-
-| Welle | Voraussetzung | Spur A (autonom, 2. Account, parallel je Bahn) | Spur M (🧑 hier) |
-|---|---|---|---|
-| **W0** jetzt | – | **F0.1 → F0.2** (INF) ‖ **X1.1** (PLAT, Audio-Abschnitt der Testseite, nach Freigabe X1). Währenddessen „Bereit machen“ (11.4) für F3, F4, S4, S5, S1. | Freigabe Spec **X1** (neue Spec mit Audio-Test, damit X1.1 starten kann); **SP11.2** Pi einrichten (läuft); **X1.2** Xbox-Test (Gamepad und Audio, B-166), sobald der autonome **X1.1** den Audio-Abschnitt gebaut hat |
-| **W1** | F0 erledigt | **F1.1 → F1.2 → F1.3** (REG) ‖ **F2.1 → F2.4** (INF: Golden-Ablauf, Migration, Determinismus) ‖ SP11.1 liegt schon fertig | **F1.4** Workshop (Zielkorridore, Reittier, Bedienungszahlen); Freigabe-Paket 1: F2, F5, F3; **LT1.3** Messlauf am Pi (nach dem Lasttest-Werkzeug) |
-| **W2** | F1.4, F2 erledigt | **F1.5** (REG) ‖ **F5.1 → F5.4** (INF) ‖ **F3.1 → F3.3** (SIM, Feedback-Events) ‖ **S5.1 → S5.3, S5.5** (CLI) ‖ **SP11.4** Review (SRV, nach SP11.3) | Freigabe-Paket 2: S5, S4, F4, S1; **S5.4** Abnahme; **X1.3** Auswertung beauftragen |
-| **W3** | F3 erledigt | **BAL1** (SIM) ‖ **F4.1 → F4.4** (SRV, nach SP11 und F3) ‖ **S4.1, S4.2, S4.4** (CLI) ‖ **GR6** (PLAT, nach X1) ‖ **GR1.2 → GR1.4** (Asset) | **S4.3** Abnahme; **GR1.1** Stil-Zuordnung (Q13 ist entschieden: nur bestätigen); Freigabe-Paket 3: S2, S3, S7, GR1, GR2 |
-| **W4** | F4, BAL1 erledigt | **S1.1 → S1.5** (SIM) ‖ **GR2.1, GR2.3, GR2.4** (Asset, nach GR2.2) ‖ **GR4** (INF) | **GR2.2** Auswahl der Grafik-Kandidaten (Referenzseite) |
-| **W5** | S1 erledigt | **S2.1 → S2.4** (SRV) ‖ **S7.1, S7.2, S7.4** (CLI) ‖ **BAL2** (SIM, braucht F1.4) ‖ **SO1.1 → SO1.4** (Asset/CLI, wenn S7 nicht läuft) | **S7.3** Abnahme; **B-166**-Ergebnis in SO1 übernehmen |
-| **W6** | S2, S5 erledigt | **S3.1 → S3.3, S3.5** (CLI) ‖ **W1** (SIM) ‖ **SO3** (PLAT) ‖ **GR3** (Asset, nur wenn S3 es nicht stört) | **S3.4** Abnahme am Gerät (Tasten aus Q06 bestätigen) |
-| **W7** | S3, S5 erledigt | **S6** (CLI, Hinweise, Glyphen) ‖ **W2** (SIM) ‖ **SO2, SO4** (Asset, nach 🧑-Auswahl) ‖ **GR5** | **S6.4** Abnahme; **SO2.1**, **SO4.1** Hörproben und Auswahl |
-| **W8** | S1–S7, SO1 erledigt | **RL1.2** Vorbereitung ‖ Doku für den Spieleabend | **P1.1, P1.2 Spieleabend 1**, Fragebogen auswerten |
-| **W9** Phase 2 | P1 (nur für Werte) | SIM: **W2 → W3 → W4**, SRV **W5**, CLI **W6**, REG **BAL4** | **W6.4** Abnahme, **BR1.2** Balancing + Spieleabend 2 |
-| **W10** Phase 3 | W4 erledigt | SIM **K1 → K2 → K3**, SRV **K4**, CLI **K5**, SIM **BAL3** | **K5.4** Abnahme, **BR2.2** Balancing + Spieleabend 3, **RL1.1, RL1.3** |
-
-Die Wellen sind keine Termine, sondern Reihenfolgen: Eine Bahn rückt vor, sobald ihre Voraussetzung erledigt ist; die Spur M gibt vorher frei, was die Spur A als Nächstes braucht.
-
-### 11.3 Was 🧑 hier priorisiert (Spur M, in dieser Reihenfolge)
-
-1. **Freigabe F0** (ein Satz „F0 freigegeben“): entsperrt alle parallelen Bahnen.
-2. **Hardware-Bahn (11.6)**, wann immer ein Gerät da ist: X1.2 (Xbox), LT1.3 (Pi), Abnahmen am TV oder Handy. Nichts wartet darauf; bis dahin gelten die angenommenen Werte.
-3. **F1.4 Workshop** (45 Minuten, sobald F1.1–F1.3 durch sind): entsperrt S1, S4, S5, BAL2.
-4. **Freigabe-Pakete** (Spec lesen und freigeben; jedes Paket entsperrt die nächste Welle): Paket 1 F2, F5, F3 · Paket 2 S5, S4, F4, S1 · Paket 3 S2, S3, S7, GR1, GR2, SO1 · Paket 4 S6, SO2–SO4, W1–W6, BAL2, BAL3.
-5. **Abnahmen am Gerät** (kurz, je Sprint, Hardware-Bahn 11.6): DBG2.3, S5.4, S4.3, S7.3, S3.4, S6.4; sie blockieren weder Review noch nächsten Sprint.
-6. **Auswahl-Termine** Grafik und Sound (GR2.2, SO2.1, SO4.1), **Spieleabende** P1, BR1, BR2.
-
-### 11.4 Startanweisungen für den zweiten Account (Spur A)
-
-Es gibt **zwei getrennte Aufträge**. Jeder Lauf bekommt genau einen davon; kopiert wird nur der Inhalt des jeweiligen Codeblocks.
-
-**Auftrag 1: Eine Session ausführen** (Standard, so oft wiederholen, wie Sessions bereitstehen):
-
-```text
-Lies CLAUDE.md und docs/arbeitsweise.md. Lies docs/sprints/README.md (Fahrplan) und alle docs/sprints/aktiv/*/README.md.
-1. Suche in den aktiven Sprints die erste Session mit Status offen, Agent autonom und erledigten Abhängigkeiten, deren Branch (Feld Branch der Session-Datei) noch nicht auf origin existiert (git ls-remote --heads origin <Branch>).
-2. Gibt es keine: Nimm aus docs/sprints/geplant/ den ersten Sprint in der Reihenfolge des Fahrplans mit Spec freigegeben, Reife bereit, erledigten Voraussetzungen (Plan, Abschnitt 11.2) und einer Domäne ohne aktiven Sprint. Aktiviere ihn nach docs/arbeitsweise.md (git mv nach docs/sprints/aktiv/, Status aktiv, Fahrplan anpassen) und nimm dessen erste autonome Session.
-3. Gibt es auch das nicht: nichts tun und melden, welche Freigabe, welches Bereit-machen oder welche Mensch-Session fehlt.
-4. Führe genau die gefundene Session nach docs/arbeitsweise.md, Abschnitt Autonomer Ablauf, aus. Vor dem PR: git fetch und git rebase origin/develop. PR öffnen, nicht mergen.
-```
-
-**Auftrag 2: Einen Sprint bereit machen** (nur wenn ein Sprint `Reife: Entwurf` hat und als Nächstes gebraucht wird; `<ID>` durch die Sprint-Nummer ersetzen, z. B. `F4`; Reihenfolge der Sprints: F4, S5, S4, S1, S2, BAL1, GR1, W1):
-
-```text
-Lies CLAUDE.md und docs/arbeitsweise.md. Mache den Sprint <ID> nach docs/arbeitsweise.md, Abschnitt Sprint-Lebenslauf, Schritt 2 bereit.
-Der Sprint liegt unter docs/sprints/geplant/<ID>-*/. Offene Fragen sind in docs/fragenkatalog.md, Abschnitt Beschlüsse, beantwortet; erfinde keine weiteren Entscheidungen.
-Schreibe jede Session als Datei nach docs/vorlagen/session.md (Stilvorbild: docs/sprints/geplant/F2-golden-migration-determinismus/), ersetze in der Sprint-README den Abschnitt Sessions durch die Tabelle, setze Reife bereit.
-Spec und Freigabe nicht ändern. Prüfe mit: npx vitest run tests/planning.test.ts. PR öffnen, nicht mergen.
-```
-
-Auftrag 2 braucht keinen aktiven Sprint und keine Freigabe; Auftrag 1 aktiviert nur Sprints, deren Spec 🧑 freigegeben hat und die `Reife: bereit` haben.
+Seit PJ3 (B-359, 2026-10-08) bestimmt allein der **Projekt-Rang** die Reihenfolge: [`projekte/README.md`](projekte/README.md), Regeln in [`arbeitsweise.md`](arbeitsweise.md) › Projekte und Rang. Die früheren Abschnitte 11.1–11.4 und 11.7 (Bahnen je Domäne, Wellen, zwei Spuren, Startanweisungen) sind damit entfallen; 11.5 und 11.6 bleiben, weil die Arbeitsweise auf sie verweist.
 
 ### 11.5 Regeln gegen Reibung zwischen den Accounts
 
@@ -269,6 +203,8 @@ Auftrag 2 braucht keinen aktiven Sprint und keine Freigabe; Auftrag 1 aktiviert 
 ### 11.6 Hardware-Bahn: Geräte entkoppelt (Beschluss 🧑 2026-10-03)
 
 Xbox, TV, Pi, Handy und Controller stehen nicht immer bereit. Deshalb gilt (`arbeitsweise.md` › Hardware entkoppelt): Die App wird mit den **angenommenen Werten** unten gebaut, Hardware-Sessions sind keine Abhängigkeit einer App-Session oder eines Reviews und werden erledigt, sobald das Gerät da ist. Weicht ein Messwert ab, entsteht ein Ticket in der passenden Domäne; die Annahme wird hier durch den Messwert (mit Datum und Session) ersetzt.
+
+Offene Hardware-Sessions sammelt seit PJ3 das Projekt ABN (Sprint HW1, [`projekte/ABN-abnahmen-geraet.md`](projekte/ABN-abnahmen-geraet.md)); die Liste unten ist der Stand 2026-10-03.
 
 | Gerät | Angenommen bis zur Validierung | Quelle der Annahme | Validiert in |
 |---|---|---|---|
@@ -290,64 +226,3 @@ Xbox, TV, Pi, Handy und Controller stehen nicht immer bereit. Deshalb gilt (`arb
 | S7.3 Abnahme Reittier | TV | S7.2 gemergt | nichts (S7.4 hängt nicht mehr daran) |
 | S3.4, S6.4, W6.4, K5.4 Abnahmen | TV | jeweilige Umsetzung gemergt | nichts; die Session-Dateien werden beim Bereitmachen nach dieser Regel geschrieben |
 | LT1.3 Messlauf | Pi | LT1-Werkzeug gemergt | nichts; F4 und S2 bauen mit dem Benchmark |
-
-Folgen für die Bahnen (11.1): Die PLAT-Bahn ist nach **X1.1** frei (GR6, SO3 warten nicht auf den Xbox-Test); in der CLI-Bahn rückt der nächste Sprint nach dem Review vor, auch wenn die Abnahme am Gerät noch offen ist.
-
-### 11.7 Startanweisungen für 🧑 (Spur M, neue Session ohne Vorwissen)
-
-Für Sessions hier, wenn der aktuelle Stand unbekannt ist. **Prompt M0 immer zuerst**; er nennt den nächsten Schritt und welcher der Prompts M1–M3 dafür passt. M4 (Repo aufräumen) läuft unabhängig davon, wann immer 🧑 will. Platzhalter in `<…>` ersetzen.
-
-**M0: Lagebericht** (ändert nichts):
-
-```text
-Lies CLAUDE.md, docs/arbeitsweise.md, docs/sprints/README.md (Fahrplan), alle docs/sprints/aktiv/*/README.md und docs/plan-weiterentwicklung.md, Abschnitt 11.
-Ermittle den Stand per git fetch, git log origin/develop und gh pr list. Ändere keine Dateien.
-Melde kurz:
-1. Offene PRs der Spur A in der Merge-Reihenfolge der Bahnen (11.1, 11.5), je PR: Sprint/Session, Review erledigt ja/nein, mergebar.
-2. Was auf mich wartet, in der Priorität von 11.3: Freigaben (Sprints mit Reife bereit und Spec Entwurf), Workshops, Mensch-Sessions mit erledigten Abhängigkeiten, Hardware-Sessions aus 11.6, deren Vorbereitung gemergt ist (getrennt nach Gerät).
-3. Welche Bahn der Spur A gerade steht und welche meiner Aufgaben sie entsperrt.
-4. Den einen nächsten Schritt mit dem passenden Prompt (M1, M2 oder M3) und eingesetzter ID.
-```
-
-**M1: Spec freigeben** (`<IDs>` z. B. `F2, F5, F3` oder ein Freigabe-Paket aus 11.3):
-
-```text
-Lies CLAUDE.md und docs/arbeitsweise.md, Abschnitt SDD. Lies für jeden Sprint <IDs> die Sprint-README und die verlinkten Tickets.
-Fasse je Sprint in höchstens zehn Zeilen zusammen: Ziel, Kriterien AC-xx, Abhängigkeiten, was danach am Gerät sichtbar ist, offene Fragen oder Widersprüche zu docs/fragenkatalog.md (Beschlüsse).
-Frage mich je Sprint per Auswahl: freigeben, mit Änderung freigeben, zurückstellen.
-Setze nur bei meiner Freigabe Spec freigegeben (Datum, „durch 🧑“) in Sprint-README und Tickets, Änderungen nur wie von mir genannt. Prüfe mit npx vitest run tests/planning.test.ts. PR öffnen, nicht mergen.
-```
-
-**M2: Mensch-Session führen** (Workshop, Auswahl, Spieleabend, Abnahme am PC; `<ID>` z. B. `F1.4`, `GR2.2`, `S5.4`):
-
-```text
-Lies CLAUDE.md und docs/arbeitsweise.md. Lies die Session-Datei <ID> unter docs/sprints/aktiv/ (oder geplant/), ihre Sprint-README und die genannten Tickets und Regeln.
-Prüfe, ob die Abhängigkeiten der Session erledigt (gemergt) sind; wenn nicht, melde, was fehlt, und höre auf.
-Führe die Session mit mir als Interview: je Entscheidung eine Frage per Auswahl mit Vorschlag (Vorschlag aus docs/rules/*.md und docs/fragenkatalog.md), bei Abnahmen eine Prüfliste Schritt für Schritt (was ich tue, was ich sehen muss). Starte nötige Seiten selbst (task dev, Browser-Pane), Eingaben am Gerät mache ich.
-Trage Ergebnisse in die Session-Datei (Ergebnis, Status erledigt) und wo vorgesehen in docs/rules/ oder docs/fragenkatalog.md ein. Jede Abweichung oder neue Idee wird ein Ticket nach docs/vorlagen/ticket.md. task check, PR öffnen, nicht mergen.
-```
-
-**M3: Hardware-Session** (`<Gerät>`: Xbox, TV, Pi, Handy; Sessions aus 11.6):
-
-```text
-Lies CLAUDE.md, docs/arbeitsweise.md (Hardware entkoppelt) und docs/plan-weiterentwicklung.md, Abschnitt 11.6.
-Ich habe jetzt <Gerät> da. Liste alle Hardware-Sessions für dieses Gerät, deren Vorbereitung gemergt und die noch offen sind, und frage, welche ich mache (Mehrfachauswahl).
-Je Session: Anleitung zum Aufbau (URL im Heimnetz, task-Befehl, wo Berichte landen, z. B. reports/*.json), dann Prüfliste Schritt für Schritt. Werte Berichte selbst aus.
-Danach: Ergebnis in die Session-Datei, in 11.6 die Annahme durch den Messwert ersetzen (Datum, Session); weicht ein Wert ab, ein Ticket in der passenden Domäne. task check, PR öffnen, nicht mergen.
-```
-
-**M4: Repo aufräumen** (regelmäßig, z. B. nach einer Merge-Runde; ändert nur Git-Verwaltung, keine Dateien im Repo):
-
-```text
-Lies CLAUDE.md und docs/arbeitsweise.md, Abschnitt Branches. Räume meinen Repo-Ordner von alten Worktrees und Branches auf. Nichts löschen ohne meine Bestätigung.
-1. Bestand ermitteln: git fetch --prune, git worktree list, git branch -vv, git branch -r, gh pr list --state all --limit 100 (Kopf-Branch, Status, Merge-Datum). Ordner unter .claude/worktrees/ ohne Eintrag in git worktree list mitzählen.
-2. Je Worktree und je Branch einordnen:
-   - aufräumbar: PR gemergt oder geschlossen, oder Upstream auf origin weg („gone“), oder Branch-Stand in origin/develop enthalten (auch per Squash: gleicher Inhalt, PR gemergt); Worktree ohne uncommittete Änderungen und ohne laufende Dienste (svc_status von k3c-dev).
-   - behalten: develop, main, der aktuell ausgecheckte Branch, Branches mit offenem PR, Worktrees mit uncommitteten oder ungepushten Änderungen, alles von heute.
-   - unklar: alles andere, mit Grund (z. B. ungepushte Commits ohne PR).
-3. Zeig mir eine Tabelle (Worktree/Branch, lokal/remote, letzter Commit mit Datum, PR mit Status, Einordnung) und frag per Auswahl: alle aufräumbaren löschen, einzeln auswählen (Mehrfachauswahl), nichts tun. Unklare nur einzeln und nur nach Rückfrage.
-4. Nach meiner Bestätigung: Dienste des Worktrees stoppen (svc_stop), git worktree remove <pfad> (bei Fehlschlag nicht --force, sondern melden), git worktree prune, lokale Branches mit git branch -d (-D nur für squash-gemergte, die ich bestätigt habe), remote Branches gemergter PRs mit git push origin --delete <branch>, nie develop oder main.
-5. Zum Schluss erneut git worktree list und git branch -vv zeigen und kurz melden, was entfernt wurde und was bleibt (mit Grund). Kein Commit, kein PR.
-```
-
-PRs der Spur A mergt 🧑 selbst in der Reihenfolge aus M0, Punkt 1.
