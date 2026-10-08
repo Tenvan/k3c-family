@@ -4,7 +4,7 @@ import { readdirSync, readFileSync } from 'node:fs';
 import { join, resolve } from 'node:path';
 import { describe, expect, it } from 'vitest';
 import {
-  checkTemplate, DOCS, DOMAINS, ids, meta, none, PRIO, read, sessionRows, sprints, title, waitsForDevice,
+  checkTemplate, DOCS, DOMAINS, ids, meta, none, PRIO, read, sessionRows, sprints, title,
 } from './planningDocs';
 
 /** Akzeptanzkriterien `- **AC-01** …` im gleichnamigen Abschnitt. */
@@ -77,30 +77,6 @@ function checkSessions(path: string, sprintId: string, sprintCriteria: string[])
   for (const ac of sprintCriteria) expect(covered.has(ac), `${path}: ${ac} hat keine Session`).toBe(true);
 }
 
-/** Domänen mit mehr als einem aktiven, nicht einschiebbaren Sprint (B-174). */
-function crowdedDomains(active: Record<string, string>[]) {
-  const count = new Map<string, number>();
-  for (const f of active.filter((f) => f.Einschiebbar === 'nein')) count.set(f.Domäne, (count.get(f.Domäne) ?? 0) + 1);
-  return [...count].filter(([, n]) => n > 1).map(([d]) => d);
-}
-
-describe('Regel: je Domäne ein aktiver Sprint (Übergang: nur Sprints ohne Projekt)', () => {
-  it('ein Sprint, der nur noch auf Mensch-Sessions wartet, sperrt die Domäne nicht', () => {
-    const table = (rows: string) => `## Sessions\n\n| Nr. | Datei | Typ | Agent | Status |\n|---|---|---|---|---|\n${rows}\n`;
-    expect(waitsForDevice(table('| X1.1 | `a.md` | Umsetzung | autonom | fertig |\n| X1.2 | `b.md` | Workshop | Mensch | offen |'))).toBe(true);
-    expect(waitsForDevice(table('| X1.1 | `a.md` | Umsetzung | autonom | offen |\n| X1.2 | `b.md` | Workshop | Mensch | offen |'))).toBe(false);
-  });
-
-  it('zwei aktive Sprints verschiedener Domänen sind erlaubt', () => {
-    expect(crowdedDomains([{ Domäne: 'SRV', Einschiebbar: 'nein' }, { Domäne: 'INF', Einschiebbar: 'nein' }])).toEqual([]);
-  });
-
-  it('zwei nicht einschiebbare Sprints der gleichen Domäne sind ein Fehler', () => {
-    const active = [{ Domäne: 'SIM', Einschiebbar: 'nein' }, { Domäne: 'SIM', Einschiebbar: 'nein' }, { Domäne: 'SIM', Einschiebbar: 'ja' }];
-    expect(crowdedDomains(active)).toEqual(['SIM']);
-  });
-});
-
 describe('Sprints', () => {
   it.each(sprints)('$path folgt der Vorlage', ({ state, dir, path }) => {
     const text = read(`${path}/README.md`);
@@ -121,14 +97,20 @@ describe('Sprints', () => {
     if (fields.Reife === 'bereit') checkSessions(path, id, acs);
   });
 
-  it('je Domäne höchstens ein aktiver Sprint ohne Projekt (ohne einschiebbare), nur mit Reife bereit und freigegebener Spec', () => {
-    const active = sprints.filter((s) => s.state === 'aktiv').map((s) => read(`${s.path}/README.md`));
-    const withoutProject = active.filter((t) => !waitsForDevice(t)).map(meta).filter((f) => none(f.Projekt));
-    expect(crowdedDomains(withoutProject)).toEqual([]);
-    for (const fields of active.map(meta)) {
-      expect(fields.Reife).toBe('bereit');
-      expect(fields.Spec, 'aktiver Sprint braucht Spec freigegeben oder rückwirkend').not.toBe('Entwurf');
+  it('aktive Sprints haben Reife bereit und eine freigegebene Spec', () => {
+    for (const s of sprints.filter((s) => s.state === 'aktiv')) {
+      const fields = meta(read(`${s.path}/README.md`));
+      expect(fields.Reife, s.path).toBe('bereit');
+      expect(fields.Spec, `${s.path}: aktiver Sprint braucht Spec freigegeben oder rückwirkend`).not.toBe('Entwurf');
     }
+  });
+
+  it('jeder aktive und geplante Sprint und jedes offene Ticket hat ein Projekt (B-359)', () => {
+    const open = [
+      ...sprints.filter((s) => s.state !== 'erledigt').map((s) => `${s.path}/README.md`),
+      ...tickets.filter((t) => !t.folder).map((t) => t.path),
+    ];
+    expect(open.filter((path) => none(meta(read(path)).Projekt))).toEqual([]);
   });
 
   it('Fahrplan nennt jeden Sprint-Ordner', () => {

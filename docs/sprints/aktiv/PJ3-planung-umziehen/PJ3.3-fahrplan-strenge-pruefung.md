@@ -1,6 +1,6 @@
 # PJ3.3 · Fahrplan nach Projekten, § 11 und CLAUDE.md, strenge Prüfung
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** INF
@@ -46,9 +46,9 @@ k3c-dev ändern (Fahrplan-Spalte `Projekt` im Tool → Ticket SRV), Felder `Prio
 
 ## Fertig, wenn
 
-- [ ] AC-05: Fahrplan mit Spalte `Projekt` nach Rang sortiert und Verweis auf `docs/projekte/README.md`; § 11 verweist auf `docs/projekte/README.md` (11.5/11.6 bleiben); `CLAUDE.md` nennt Projekte und Rang.
-- [ ] AC-06: Die strenge Prüfung ist im Test, `task test -- planning` ist grün; ein Probe-Sprint mit `Projekt: –` macht ihn rot (Probe danach verworfen).
-- [ ] `task check` grün.
+- [x] AC-05: Fahrplan mit Spalte `Projekt` nach Rang sortiert und Verweis auf `docs/projekte/README.md`; § 11 verweist auf `docs/projekte/README.md` (11.5/11.6 bleiben); `CLAUDE.md` nennt Projekte und Rang.
+- [x] AC-06: Die strenge Prüfung ist im Test, `task test -- planning` ist grün; ein Probe-Sprint mit `Projekt: –` macht ihn rot (Probe danach verworfen).
+- [x] `task check` grün.
 
 ## Prüfen
 
@@ -60,5 +60,10 @@ task check
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+2026-10-08, autonom (Claude), Checkout Repo-Wurzel.
+
+- **AC-05 umgesetzt, geprüft:** `docs/sprints/README.md` mit Spalte `Projekt` statt `Prio`, Zeilen nach Projekt-Rang und Sprint-Tabelle des Projekts (ABN, dann ruhendes BAL zuletzt), Kopftext verweist auf `../projekte/README.md`; „Offen am Gerät“ verweist auf ABN/HW1 und § 11.6. `plan_set` ohne Wirkung (`Reife: bereit`) auf SO2 (einschiebbar) und K4: Zeilen bleiben an ihrem Platz, Spalte `Projekt` bleibt erhalten. § 11 in `docs/plan-weiterentwicklung.md` ist ein Verweis auf `projekte/README.md`; 11.5 und 11.6 bleiben (Verweise aus `arbeitsweise.md` und Sessions gültig, `grep "§ 11"` vorher/nachher nur 11.5/11.6 und § 11 selbst), 11.6 nennt ABN/HW1. `CLAUDE.md` Zeile „Projekte und Sprints“ nennt Projekt-Rang.
+- **AC-06 umgesetzt, geprüft:** `tests/planning.test.ts` verlangt für jeden Sprint in `aktiv/`/`geplant/` und jedes Ticket in `backlog/` ein Projekt; Übergangsregel „je Domäne ein aktiver Sprint“ samt `crowdedDomains` entfernt. Probe `PB1` mit `Projekt: –`: Test rot (auch `planningProjects`), Probe verworfen; `task test -- planning` grün.
+- `check_run task:check` grün.
+- **Abweichung:** Geplante und einschiebbare Sprints stehen in einer Tabelle; die Zeile `**Einschiebbar** …` steht als Marker direkt davor, damit `roadmapMarker` dieselbe Tabelle trifft (entfällt mit B-361/B-366).
+- **Neues Ticket:** B-366 (SRV, WZG): k3c-dev füllt die Spalte `Projekt` und sortiert nach Rang.
