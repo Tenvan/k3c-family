@@ -80,6 +80,6 @@ Siehe `B-357 › Ausnahme- und Fehlerfälle` und `B-358 › Ausnahme- und Fehler
 ## Abnahme
 
 2026-10-08: AC-01 bis AC-03 geprüft in PJ2.1, AC-04/AC-05 in PJ2.2 (AC-04 mit Übergangsregel zur Prio, Rest B-361), AC-06 bis AC-09 in PJ2.3.
-Behobener Befund: Panic bei Sprint-README ohne Überschrift in `syncSprintDomain` (PJ2.4).
+Behobener Befund: Panic bei Sprint-README ohne Überschrift in `syncSprintDomain` (PJ2.4). CI-Fix außerhalb SRV: Root-Job nutzt `task install`, damit die Komponententests von k3c-dev (React, Radix) laufen (`.github/workflows/ci.yml`, INF).
 Neue Tickets: B-361 (Sprint-Felder Prio und Einschiebbar entfallen). Browser-Abnahme der Planungsseite durch 🧑 offen.
 Version: v0.15.0 vorgeschlagen (Minor: neue Wirkung im Werkzeug k3c-dev).
