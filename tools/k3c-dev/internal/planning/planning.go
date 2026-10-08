@@ -23,6 +23,7 @@ type Session struct {
 	Text   string   `json:"text,omitempty"` // Inhalt der Session-Datei (Markdown) für das Detail-Panel
 	Deps   []string `json:"deps,omitempty"` // Session-IDs aus „Abhängig von“
 	Env    string   `json:"env,omitempty"`  // Feld „Umgebung“ der Session-Datei: offline | live | ?
+	Domain string   `json:"domain,omitempty"` // Feld „Domäne“ der Session-Datei
 }
 
 // Sprint ist die Kopfzeile und Session-Tabelle einer Sprint-README.

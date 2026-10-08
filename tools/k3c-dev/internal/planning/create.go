@@ -166,7 +166,10 @@ func createSession(c *changeSet, in NewDoc, tpl string) error {
 	c.crlf[rel] = c.crlf["vorlagen/session.md"]
 	c.notes = append(c.notes, in.ID+" angelegt: docs/"+rel+" (Session-Tabelle ergänzt)")
 	f := headFields(text)
-	return syncSessionRow(c, sp.dir+"/README.md", Session{Nr: in.ID, File: file, Typ: f["Typ"], Agent: f["Agent"], Status: f["Status"]})
+	if err := syncSessionRow(c, sp.dir+"/README.md", Session{Nr: in.ID, File: file, Typ: f["Typ"], Agent: f["Agent"], Status: f["Status"]}); err != nil {
+		return err
+	}
+	return syncSprintDomain(c, sp.dir, sp.state)
 }
 
 // Delete löscht einen Sprint-Entwurf in geplant/, eine Session darin oder ein Projekt ohne Sprints und Tickets;
@@ -209,6 +212,9 @@ func Delete(root, id string) (string, error) {
 	} else {
 		c.write(r.dir+"/README.md", joinLines(removeRow(splitLines(readme), "| "+r.id+" |")))
 		c.remove = append(c.remove, r.rel)
+		if err := syncSprintDomain(c, r.dir, r.state); err != nil {
+			return "", err
+		}
 	}
 	return r.id + " gelöscht: docs/" + r.rel, c.apply()
 }

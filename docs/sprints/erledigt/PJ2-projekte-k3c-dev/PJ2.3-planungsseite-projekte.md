@@ -1,6 +1,6 @@
 # PJ2.3 · Planungsseite nach Projekten
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** SRV
@@ -43,11 +43,11 @@ Drag & Drop, Projekte auf der Seite anlegen oder löschen, Zeitachsen (B-358 ›
 
 ## Fertig, wenn
 
-- [ ] AC-06: Komponententest mit Mock-Daten: Projekte nach Rang mit Sprints, Fortschritt und nächster Session; ohne Projekte die bisherige Ansicht.
-- [ ] AC-07: Test: „hoch“/„runter“ ruft `PlanningSet` mit dem neuen Rang und lädt neu, an den Rändern deaktiviert, Ablehnung zeigt den Grund.
-- [ ] AC-08: Test: ruhende und erledigte eingeklappt, `ABN` und „Ohne Projekt“ als eigene Bereiche.
-- [ ] AC-09: `prompts.test.ts`: Vorschläge in Rang-Reihenfolge.
-- [ ] `check_run dev:test` und `check_run task:check` grün.
+- [x] AC-06: Komponententest mit Mock-Daten: Projekte nach Rang mit Sprints, Fortschritt und nächster Session; ohne Projekte die bisherige Ansicht.
+- [x] AC-07: Test: „hoch“/„runter“ ruft `PlanningSet` mit dem neuen Rang und lädt neu, an den Rändern deaktiviert, Ablehnung zeigt den Grund.
+- [x] AC-08: Test: ruhende und erledigte eingeklappt, `ABN` und „Ohne Projekt“ als eigene Bereiche.
+- [x] AC-09: `prompts.test.ts`: Vorschläge in Rang-Reihenfolge.
+- [x] `check_run dev:test` und `check_run task:check` grün.
 
 ## Prüfen
 
@@ -60,4 +60,9 @@ Manuelle Prüfungen (Browser, Xbox, TV) nur, wenn diese Datei sie nennt und 🧑
 
 ## Ergebnis
 
-–
+- **AC-06** umgesetzt, geprüft mit `ProjectsView.test.tsx` (statisch gerendert mit Mock-Daten: BET, SKL, RGW nach Rang, Sprint-Chips mit Status und Fortschritt `SP11 · aktiv · 1/4`, „Nächste Session: SP11.3“) und `projects.test.ts` (`groupProjects`, `nextSession` mit `verworfen` und Abhängigkeiten; ohne Projekte alle Bereiche leer, `SprintsBacklog` zeigt dann die bisherige Sprint-Liste).
+- **AC-07** umgesetzt, geprüft mit `projects.test.ts` (`moveRank` ruft `planningSet(id, "Rang", n)` und lädt neu; Ablehnung liefert den Grund ohne Neuladen; `stepRank` am Rand und ohne Rang `null`) und `ProjectsView.test.tsx` (Knöpfe am Rand `disabled`, Meldung „Rang nicht geändert“ mit Grund).
+- **AC-08** umgesetzt, geprüft mit beiden Tests: ruhende und erledigte in eingeklapptem `<details>` ohne Rang-Knöpfe, `ABN` mit offener Mensch-Session X1.1, „Ohne Projekt“ mit M5 und B-011.
+- **AC-09** umgesetzt, geprüft mit `prompts.test.ts`: `promptSessions(items, projects)` ordnet nach Projekt-Rang und Tabellenplatz, Sprints ohne Projekt zuletzt (`byRank`).
+- Komponententests ohne neue Abhängigkeit: `react-dom/server` und `vi.mock('../api')` (keine DOM-Umgebung im Runner). Keine neue CSS: Darstellung über vorhandene Klassen und Radix, weil `styles/` nicht zu den erlaubten Dateien gehört.
+- `check_run dev:test` und `check_run task:check` grün. Browser-Abnahme durch 🧑 steht aus (Nicht-Ziel dieser Session).

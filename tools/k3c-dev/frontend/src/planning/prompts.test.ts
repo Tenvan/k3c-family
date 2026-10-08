@@ -25,6 +25,16 @@ describe('Prompts nennen nur IDs und Anweisung', () => {
     expect(promptSessions(items)).toContain('Sprint M8 (Worktree sprint/m8):\n- M8.2\n- M8.3\n- M8.5\nSprint W1:\n- W1.1');
   });
 
+  it('markierte Sessions nach Rang der Projekte, ohne Projekt zuletzt (AC-09)', () => {
+    const projects = [{ id: 'BET', title: 'B', status: 'aktiv', rang: '2', sprints: ['W1'] },
+      { id: 'SKL', title: 'S', status: 'aktiv', rang: '1', sprints: ['M9', 'M8'] }];
+    const M9 = sp('M9', [s('M9.1', 'offen')]);
+    const X2 = sp('X2', [s('X2.1', 'offen')]);
+    const items = [...openSessions(X2), ...openSessions(W1), ...openSessions(M8), ...openSessions(M9)];
+    expect(promptSessions(items, projects)).toContain(
+      'Sprint M9:\n- M9.1\nSprint M8 (Worktree sprint/m8):\n- M8.2\n- M8.3\n- M8.5\nSprint W1:\n- W1.1\nSprint X2:\n- X2.1');
+  });
+
   it('Backlog-Prompt: Sprint oder neuer Sprint, Singular und Plural', () => {
     const one = backlogPrompt([tk('B-007')], { kind: 'sprint', id: 'M8' });
     expect(one).toContain('Nimm das Backlog-Ticket B-007 in den Sprint M8 auf.');

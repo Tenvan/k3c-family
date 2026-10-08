@@ -49,7 +49,7 @@ func match(want, have string) bool { return want == "" || strings.EqualFold(want
 
 func sprintList(d Data, f Filter) []string {
 	var out []string
-	sortByPrio(d.Sprints)
+	sortSprints(d.Sprints, d.Projects)
 	for _, s := range d.Sprints {
 		if match(f.Status, s.Status) && match(f.Domain, s.Domain) && match(f.Sprint, s.ID) && match(f.Projekt, s.Project) {
 			out = append(out, sprintLines(s)...)
@@ -98,7 +98,7 @@ func projectLines(d Data, f Filter) []string {
 func sprintLines(s Sprint) []string {
 	done := 0
 	for _, x := range s.Sessions {
-		if x.Status == "fertig" {
+		if x.Status == "fertig" || x.Status == "verworfen" {
 			done++
 		}
 	}
@@ -108,7 +108,7 @@ func sprintLines(s Sprint) []string {
 		return out
 	}
 	for _, x := range s.Sessions {
-		out = append(out, strings.TrimRight(fmt.Sprintf("  %s %s %s %s %s %s", x.Nr, x.Typ, x.Agent, x.Env, x.Status, x.Titel), " "))
+		out = append(out, strings.TrimRight(fmt.Sprintf("  %s %s %s %s %s %s %s", x.Nr, x.Domain, x.Typ, x.Agent, x.Env, x.Status, x.Titel), " "))
 	}
 	return out
 }
@@ -145,12 +145,13 @@ func SprintPrio(root, tickets string) string {
 
 var reTicketRef = regexp.MustCompile(`B-\d{3}`)
 
-// sortByPrio ordnet je Status (aktiv, geplant, erledigt) nach Prio, sonst bleibt die Fahrplan-Reihenfolge.
-func sortByPrio(sprints []Sprint) {
+// sortSprints ordnet je Status (aktiv, geplant, erledigt) nach sprintOrder, sonst bleibt die Fahrplan-Reihenfolge.
+func sortSprints(sprints []Sprint, ps []Project) {
 	order := map[string]int{"aktiv": 0, "geplant": 1, "erledigt": 2}
+	less := sprintOrder(ps)
 	sort.SliceStable(sprints, func(i, j int) bool {
 		a, b := sprints[i], sprints[j]
-		return order[a.Status] < order[b.Status] || order[a.Status] == order[b.Status] && prioRank(a.Prio) < prioRank(b.Prio)
+		return order[a.Status] < order[b.Status] || order[a.Status] == order[b.Status] && less(a, b)
 	})
 }
 

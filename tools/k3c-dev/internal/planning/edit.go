@@ -21,8 +21,8 @@ var (
 		"ticket": {"Domäne": domains, "Typ": {"Idee", "Problem", "Schuld", "Frage"}, "Prio": prios,
 			"Umgebung": Envs, "Status": {"offen", "eingeplant", "erledigt", "verworfen"}, "Spec": specs},
 		"sprint": {"Status": States, "Domäne": domains, "Prio": prios, "Reife": {"Entwurf", "bereit"}, "Einschiebbar": {"nein", "ja"}, "Spec": specs},
-		"session": {"Status": {"offen", "in Arbeit", "fertig", "blockiert"}, "Typ": {"Umsetzung", "Review", "Workshop"},
-			"Agent": {"autonom", "Mensch"}, "Umgebung": Envs},
+		"session": {"Status": {"offen", "in Arbeit", "fertig", "blockiert", "verworfen"}, "Typ": {"Umsetzung", "Review", "Workshop"},
+			"Agent": {"autonom", "Mensch"}, "Umgebung": Envs, "Domäne": domains},
 		"projekt": {"Status": {"aktiv", "ruht", "erledigt"}},
 	}
 	reRevision = regexp.MustCompile(`^\d+$`)
@@ -129,7 +129,7 @@ func Set(root, id string, values map[string]string) (string, error) {
 		return "", err
 	}
 	if r.kind == "sprint" && values["Domäne"] != "" {
-		return "", fmt.Errorf("die Domäne eines Sprints steht in Überschrift und Branch; neuen Sprint anlegen")
+		return "", fmt.Errorf("die Domäne eines Sprints ist aus seinen Sessions abgeleitet; Domäne der Sessions setzen")
 	}
 	c := newChangeSet(root)
 	if r.kind == "projekt" {
@@ -171,7 +171,10 @@ func follow(c *changeSet, r ref, text string) error {
 	c.write(r.rel, text)
 	c.notes = append(c.notes, r.id+" geändert: docs/"+r.rel)
 	s := Session{Nr: r.id, File: path.Base(r.rel), Typ: f["Typ"], Agent: f["Agent"], Status: f["Status"]}
-	return syncSessionRow(c, r.dir+"/README.md", s)
+	if err := syncSessionRow(c, r.dir+"/README.md", s); err != nil {
+		return err
+	}
+	return syncSprintDomain(c, r.dir, r.state)
 }
 
 func followTicket(c *changeSet, r ref, text string) error {

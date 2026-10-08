@@ -1,10 +1,11 @@
 import type { GitHubData, GitHubSprint, PlanDoc, PlanningData, PlanSession, PlanTicket } from './types';
+import { setRank, withProjects } from './mockProjects';
 
 // Erfundene Planung für den Mock: ein aktiver Sprint mit Session-Tabelle, geplante Entwürfe, Tickets und drei kurze
 // Dokumente in denselben Markdown-Formen wie docs/plan-weiterentwicklung.md, docs/fragenkatalog.md und docs/glossar.md.
 
 const s = (nr: string, typ: string, agent: string, status: string, titel = '', text?: string, deps?: string[],
-  env = agent === 'Mensch' ? 'live' : 'offline'): PlanSession => ({ nr, typ, agent, status, titel, text, deps, env });
+  env = agent === 'Mensch' ? 'live' : 'offline'): PlanSession => ({ nr, typ, agent, status, titel, text, deps, env, domain: 'SRV' });
 
 const SP11_2 = `# SP11.2 · Pi einrichten
 
@@ -37,7 +38,7 @@ Der Server läuft auf dem Raspberry Pi im Docker und ist im Heimnetz unter Port 
 const tk = (nr: string, title: string, domain: string, prio: string, status: string, sprint: string, spec = 'Entwurf'): PlanTicket =>
   ({ nr, title, domain, typ: 'Idee', prio, env: ['CLI', 'PLAT'].includes(domain) ? 'live' : 'offline', status, sprint, spec });
 
-const DATA: PlanningData = {
+const DATA: PlanningData = withProjects({
   done: 2,
   sprints: [
     { id: 'SP11', title: 'Raspberry Pi', domain: 'SRV', prio: 'hoch', status: 'aktiv', reife: 'bereit', spec: 'freigegeben', worktree: 'sprint/sp11',
@@ -88,7 +89,7 @@ Ein ARM-Image des Servers liegt in der Registry.
     tk('B-134', 'Jede Kennzahl hat einen Zielkorridor als Zahl', 'REG', 'hoch', 'eingeplant', 'F1'),
     tk('B-137', 'Golden-Hashes ändern sich nur mit Begründung', 'INF', 'hoch', 'eingeplant', 'F2'),
   ],
-};
+});
 
 const PLAN = `# Plan: K3C nach den Grundlagen
 
@@ -163,6 +164,7 @@ const RANK = ['hoch', 'mittel', 'niedrig'];
 
 /** Wie planning.Set in Go: Prio eines Tickets (Sprint-Prio folgt live) oder Agent/Status einer Session. */
 function setField(id: string, field: string, value: string) {
+  if (field === 'Rang') return setRank(DATA, id, value);
   const t = DATA.tickets.find((x) => x.nr === id);
   if (t && field === 'Prio') t.prio = value;
   if (t && field === 'Umgebung') t.env = value;
@@ -176,6 +178,9 @@ function setField(id: string, field: string, value: string) {
     if (best) sp.prio = best;
   }
 }
+
+/** Frische Kopie der Mock-Planung für Tests. */
+export const mockPlanningData = (): PlanningData => structuredClone(DATA);
 
 /** changed meldet `planning:changed`: alle 15 s wechselt SP11.3 zwischen offen und in Arbeit, wie ein Agent an docs/. */
 export function mockPlanning(changed: () => void) {

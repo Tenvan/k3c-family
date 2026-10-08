@@ -129,7 +129,7 @@ func TestEntwurfLoeschen(t *testing.T) {
 	root := tempRepo(t)
 	must(t)(Create(root, NewDoc{Kind: "sprint", ID: "X2", Slug: "weg", Title: "Weg", Fields: map[string]string{"Domäne": "SIM", "Einschiebbar": "ja"}}))
 	must(t)(Create(root, NewDoc{Kind: "session", ID: "X2.1", Slug: "a", Title: "A", Fields: map[string]string{"Domäne": "SRV"}}))
-	if !strings.Contains(doc(t, root, "sprints/README.md"), "| X2 | SIM | Weg | Entwurf | `geplant/X2-weg/` |\n\n## Erledigt") {
+	if !strings.Contains(doc(t, root, "sprints/README.md"), "| X2 | SRV | Weg | Entwurf | `geplant/X2-weg/` |\n\n## Erledigt") {
 		t.Fatal("Einschiebbar-Zeile fehlt")
 	}
 	must(t)(Delete(root, "X2.1"))

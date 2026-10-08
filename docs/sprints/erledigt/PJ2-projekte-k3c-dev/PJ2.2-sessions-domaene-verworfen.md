@@ -1,6 +1,6 @@
 # PJ2.2 · Sessions mit Domäne und verworfen, Sprint-Domänen abgeleitet
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** SRV
@@ -44,9 +44,9 @@ Vorlagen und `tests/planning*.ts` (INF); Oberfläche (PJ2.3); Sprints umziehen o
 
 ## Fertig, wenn
 
-- [ ] AC-04: Tests für `Domäne` je Session (lesen, schreiben), abgeleitete Sprint-Domänen samt Überschrift und Ordnung nach Rang statt Prio grün.
-- [ ] AC-05: Test `plan_set` mit `Status: verworfen` an einer Session grün.
-- [ ] `check_run dev:test` und `check_run task:check` grün.
+- [x] AC-04: Tests für `Domäne` je Session (lesen, schreiben), abgeleitete Sprint-Domänen samt Überschrift und Ordnung nach Rang statt Prio grün.
+- [x] AC-05: Test `plan_set` mit `Status: verworfen` an einer Session grün.
+- [x] `check_run dev:test` und `check_run task:check` grün.
 
 ## Prüfen
 
@@ -59,4 +59,7 @@ Manuelle Prüfungen (Browser, Xbox, TV) nur, wenn diese Datei sie nennt und 🧑
 
 ## Ergebnis
 
-–
+- **AC-04** umgesetzt, geprüft mit `domains_test.go`: `TestSprintDomaeneFolgtSessions` (SIM, SRV, SIM → `SIM, SRV` in Feld, Überschrift und Fahrplan; Domäne ändern und Session löschen → Sprint folgt; `Session.Domain` beim Laden), `TestSessionDomaeneUndVerworfen` (Domäne Pflicht und geprüft, Sprint-Domäne direkt abgelehnt, nichts geändert), `TestProjektSprintVorPrio` (Projekt-Sprints nach Rang und Tabellenplatz vor Sprint ohne Projekt mit Prio `hoch`, in `plan_list` und `Load`). Ableitung in `domains.go` (`syncSprintDomain`), Ordnung in `priority.go` (`sprintOrder`).
+- **Abweichung Prio (Beschluss 🧑 2026-10-08 im Chat):** `tests/planning.test.ts` verlangt die Ticket-Prio für **jeden** Sprint mit Tickets, auch mit Projekt. Deshalb schreiben `plan_create`/`plan_set` das Feld `Prio` weiter für alle Sprints; geordnet wird bei Sprints mit Projekt aber nur nach Rang. `Einschiebbar` bleibt beim Anlegen `nein`, weil die Vorlage sonst einen Platzhalter hinterlässt. Wegfall beider Felder: B-361 (INF, nicht in B-359).
+- **AC-05** umgesetzt, geprüft mit `TestSessionDomaeneUndVerworfen` (`Status: verworfen` angenommen, Session-Tabelle nachgezogen, zählt im Fortschritt wie `fertig`).
+- `task check:dev` und `task check` grün (Shell-Rückfall, k3c-dev lief nicht). Frontend: nur Feld `domain` in `types.ts` und Mock.
