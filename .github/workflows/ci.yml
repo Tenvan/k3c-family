@@ -25,11 +25,15 @@ jobs:
         with:
           node-version-file: .nvmrc
           cache: npm
+          cache-dependency-path: |
+            package-lock.json
+            tools/k3c-dev/frontend/package-lock.json
       - uses: actions/setup-go@v7
         with:
           go-version-file: go.mod
       - uses: go-task/setup-task@v1
-      - run: npm ci
+      # Wie lokal: Client und Frontend von k3c-dev, dessen Komponententests (React, Radix) laufen in task test mit.
+      - run: task install
       - run: task lint
       - run: task typecheck
       - run: task test
