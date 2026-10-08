@@ -1,6 +1,6 @@
 # RL1.2 · Probelauf der Checkliste ohne Tag, Sprint abschließen
 
-- **Status:** offen
+- **Status:** verworfen
 - **Typ:** Workshop
 - **Agent:** Mensch
 - **Domäne:** INF
@@ -70,3 +70,5 @@ Ergebnis: Mit zwei roten Punkten (B-273, B-274) und dem bekannten B-098 wäre ei
 
 - **Pi-Image (Pull am Pi)** und **Version stimmt am Pi und auf der Xbox:** weiter `angenommen, Validierung offen`; die Session bleibt `offen`.
 - Rote Punkte unverändert eingeplant: B-273 (CI1), B-274 (NT1), B-098 (K5). Keine neuen Tickets.
+
+2026-10-08, **verworfen (PJ3.2, B-359):** Die Abnahme am Gerät ist nach HW1.7 verschoben (Projekt ABN); bisherige Nachweise oben gelten weiter.

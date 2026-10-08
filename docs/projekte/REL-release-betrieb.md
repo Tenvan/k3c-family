@@ -14,7 +14,7 @@ In Abarbeitungs-Reihenfolge; der erste nicht erledigte Sprint ist der nächste. 
 
 | Sprint | Thema | Status |
 |---|---|---|
-| RL1 | Release-Checkliste | aktiv |
+| RL1 | Release-Checkliste | erledigt |
 | CI1 | CI-Nachweis, Release-Image ohne Dev-Mode, Test-Abdeckung | geplant |
 | RP1 | Repo-Hygiene: Branches aufräumen, Altlasten, Regeln | geplant |
 | BT1 | Server im Heimnetz finden, Windows-Starter, Start mit Seed | geplant |

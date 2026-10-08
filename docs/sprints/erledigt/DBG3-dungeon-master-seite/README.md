@@ -1,6 +1,6 @@
 # DBG3 · PLAT · Dungeon-Master-Seite /dm
 
-- **Status:** aktiv
+- **Status:** erledigt
 - **Projekt:** WZG
 - **Domäne:** PLAT
 - **Prio:** hoch
@@ -71,7 +71,7 @@ Spielen auf der Seite; Passwortschutz (eigenes Ticket, sobald die Seite steht); 
 | DBG3.1 | `DBG3.1-dev-api.md` | Umsetzung | autonom | fertig |
 | DBG3.2 | `DBG3.2-seite-dm.md` | Umsetzung | autonom | fertig |
 | DBG3.3 | `DBG3.3-review.md` | Review | autonom | fertig |
-| DBG3.4 | `DBG3.4-abnahme-handy.md` | Workshop | Mensch | offen |
+| DBG3.4 | `DBG3.4-abnahme-handy.md` | Workshop | Mensch | verworfen |
 
 ## Abnahme
 
@@ -80,3 +80,4 @@ Keine schweren Befunde (DBG3.3); `/api/dev` liest ohne Token, Passwortschutz ble
 Version: v0.11.0 vorgeschlagen (Minor: neue Server-API `/api/dev` und Seite `/dm`).
 
 2026-10-07 · AC-04 am PC durch 🧑 geprüft (DBG3.4, zwei Browserfenster); Abnahme am Handy weiter offen.
+2026-10-08, PJ3.2 (B-359): AC-04 angenommen, Validierung in HW1.3 (Projekt ABN); Sprint geschlossen.

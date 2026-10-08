@@ -1,6 +1,6 @@
 # SO3.3 · Abnahme am TV: Bedienung und Crossfade hören
 
-- **Status:** offen
+- **Status:** verworfen
 - **Typ:** Workshop
 - **Agent:** Mensch
 - **Domäne:** PLAT
@@ -54,3 +54,5 @@ Manuell durch 🧑 an der Xbox.
 - **Offen:** Die Abnahme am TV (Xbox, Edge) fehlt; die Session bleibt `offen`, die Kriterien stehen weiter als „angenommen, Validierung offen“.
 
 2026-10-06, **Tastatur und Maus (Sammelaussage):** 🧑 (Ralf) im Chat: „Alle Tastatur und Maussteuerungen liefen bisher wie definiert.“ Gilt für den Tastatur- und Maus-Anteil dieser Session am PC; Darstellung, Ton und Controller (B-314) sind damit nicht abgenommen, die Session bleibt `offen`.
+
+2026-10-08, **verworfen (PJ3.2, B-359):** Die Abnahme am Gerät ist nach HW1.9 verschoben (Projekt ABN); bisherige Nachweise oben gelten weiter.

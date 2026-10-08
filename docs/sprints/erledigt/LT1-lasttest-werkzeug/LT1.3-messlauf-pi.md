@@ -1,6 +1,6 @@
 # LT1.3 · Messlauf am Pi über eine Nacht
 
-- **Status:** offen
+- **Status:** verworfen
 - **Typ:** Workshop
 - **Agent:** Mensch
 - **Domäne:** SRV
@@ -59,3 +59,5 @@ Manuell durch 🧑 am Pi.
 
 - **AC-06: nicht erfüllt.** Der PC-Lauf belegt nur, dass Werkzeug und Bewertung durchlaufen; er sagt nichts über den Pi (Handmessung 2026-10-03: Nacht 10,2 bis 10,3 ms). Der Pi-Lauf fehlt; B-042 bleibt eingeplant und wird nicht archiviert. Die Session bleibt `offen`.
 - Keine neuen Tickets.
+
+2026-10-08, **verworfen (PJ3.2, B-359):** Die Abnahme am Gerät ist nach HW1.5 verschoben (Projekt ABN); bisherige Nachweise oben gelten weiter.

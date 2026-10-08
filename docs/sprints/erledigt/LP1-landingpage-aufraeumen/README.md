@@ -1,6 +1,6 @@
 # LP1 · PLAT · Landingpage für Spieler, Entwicklerseite für Werkzeuge
 
-- **Status:** aktiv
+- **Status:** erledigt
 - **Projekt:** BED
 - **Domäne:** PLAT
 - **Prio:** hoch
@@ -73,7 +73,7 @@ keine (Kachel-Zuordnung, Aufbau der Entwicklerseite und `/dm` von 🧑 am 2026-1
 | LP1.1 | `LP1.1-entwicklerseite.md` | Umsetzung | autonom | fertig |
 | LP1.2 | `LP1.2-neues-spiel-nachweis.md` | Umsetzung | autonom | fertig |
 | LP1.3 | `LP1.3-review.md` | Review | autonom | fertig |
-| LP1.4 | `LP1.4-abnahme-pc.md` | Workshop | Mensch | offen |
+| LP1.4 | `LP1.4-abnahme-pc.md` | Workshop | Mensch | verworfen |
 
 Bei `Reife: Entwurf` genügen Stichpunkte mit den Kriterien in Klammern statt Session-Dateien. Vor dem Aktivieren
 wird jede Session als eigene Datei nach `docs/vorlagen/session.md` geschrieben.
@@ -83,3 +83,4 @@ wird jede Session als eigene Datei nach `docs/vorlagen/session.md` geschrieben.
 2026-10-07, Review LP1.3 (Agent Claude Opus 5.5): AC-01, AC-03 (LP1.1: `pages.test.ts`, `projectRules.test.ts`, `task check` grün), AC-02 (LP1.1 `devTiles.test.ts`, LP1.2 alle neun Kacheln im Browser-Pane), AC-05 (LP1.2: B-292/AC-01–03, Log `🏰 Raum erstellt`, kein `save_exists`) mit Nachweis; AC-04 angenommen, Validierung offen (LP1.4, 🧑 am PC).
 Behoben (schwer, hätte LP1.4 verhindert): Entwicklerseite war mit der Tastatur nur per Tab bedienbar; Pfeiltasten wählen jetzt wie auf der Landingpage. Grenzfall `projectRules.test.ts` geprüft: nur die Seiten-Prüfung geändert. B-292 archiviert; neues Ticket B-339 (Frage 🧑: Tastensymbole je Controller-Familie).
 Version: v0.15.0 vorgeschlagen (Minor: neue Entwicklerseite, Landingpage nur für Spieler).
+2026-10-08, PJ3.2 (B-359): AC-04 angenommen, Validierung in HW1.4 (Projekt ABN); Sprint geschlossen.

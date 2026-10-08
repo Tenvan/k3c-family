@@ -1,6 +1,6 @@
 # LT1 · SRV · Lasttest-Werkzeug
 
-- **Status:** aktiv
+- **Status:** erledigt
 - **Projekt:** WZG
 - **Domäne:** SRV
 - **Prio:** hoch
@@ -63,7 +63,7 @@ keine (Obergrenze der Nachtmessung: Flag `-max-duration`, Standard 60 min, 🧑 
 |---|---|---|---|---|
 | LT1.1 | `LT1.1-bots-client.md` | Umsetzung | autonom | fertig |
 | LT1.2 | `LT1.2-status-bericht.md` | Umsetzung | autonom | fertig |
-| LT1.3 | `LT1.3-messlauf-pi.md` | Workshop | Mensch | offen |
+| LT1.3 | `LT1.3-messlauf-pi.md` | Workshop | Mensch | verworfen |
 | LT1.4 | `LT1.4-review.md` | Review | autonom | fertig |
 
 Bei `Reife: Entwurf` genügen Stichpunkte mit den Kriterien in Klammern statt Session-Dateien. Vor dem Aktivieren
@@ -76,3 +76,4 @@ wird jede Session als eigene Datei nach `docs/vorlagen/session.md` geschrieben.
 - Ein Befund behoben (SRV): Der Poller konnte nach dem Ende des Laufs noch Proben anhängen, während der Bericht las (Datenwettlauf); `load` wartet jetzt auf ihn. Keine Tickets neu; `task check` und `task check:go` grün; Token, `test-`-Räume, Schichtgrenzen und `go.mod` geprüft.
 - Version: v0.9.0 vorgeschlagen (Minor, Wirkung im Werkzeug/Server: `task load` und `cpu` in `/api/status`; nach den offenen Vorschlägen bis v0.8.0 bei gemeinsamem Setzen anpassen).
 - 2026-10-07, LT1.3: Messlauf 2 × 3 über eine Nacht am Entwicklungs-PC „erreicht“ (p99 max 8,45 ms, ohne CPU-Werte unter Windows); Pi-Lauf weiter offen, AC-06 bleibt „angenommen, Validierung offen“.
+2026-10-08, PJ3.2 (B-359): AC-06 angenommen, Validierung in HW1.5 (Projekt ABN); Sprint geschlossen.

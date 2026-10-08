@@ -1,6 +1,6 @@
 # PJ3.2 · Sprints schließen, zusammenlegen, RM1 teilen
 
-- **Status:** in Arbeit
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** INF
@@ -56,5 +56,8 @@ task test -- planning
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+- **AC-02 geprüft:** DBG3, LP1, LT1, MON2, RL1, SO1, SO3 liegen in `docs/sprints/erledigt/`. Ihre Gerät-Sessions (DBG3.4, LP1.4, LT1.3, MON2.4, RL1.2, SO1.5, SO3.3) sind `verworfen` mit Vermerk im Ergebnis und stehen als HW1.3–HW1.9 in HW1 (Inhalt übernommen, bisherige PC-Nachweise verwiesen); HW1 hat dafür AC-02 bis AC-08 (angehängt, AC-01 unverändert). Jede Abnahme der alten Sprints hat die Zeile „AC-xx angenommen, Validierung in HW1.n“. B-042 und B-335 → `Sprint: HW1`, Projekt ABN; B-011 (Ziel-Ticket SND) ohne Sprint, `offen`. `docs/sprints/aktiv/` enthält nur noch K2, W6, PJ3.
+- **AC-03 geprüft:** RG3 → RG1 (B-346, AC-04), BAL5 → BAL6 (B-300, B-301, AC-02/AC-03), SO5 → SO4 (B-250, B-218, AC-08/AC-09, neue Session SO4.6; SO4.2 und SO4.4 hängen von ihr ab, weil SO5 „vor SO4“ geplant war), DBG4 → M10 (B-299, AC-02); Ziele mit `Revision: 2`, SO4 zurück auf `Spec: Entwurf`, `Freigabe: –`; Quellen mit `plan_delete` gelöscht. Widersprüchliche Nicht-Ziele in BAL6 und M10 angepasst. RM1: B-214 → ohne Sprint, Projekt BED, `offen`; RM1 behält B-285, AC-01 „entfällt, B-214 an BED“, `Revision: 2`.
+- **Werkzeug:** `plan_set {Sprint}` am Ticket zieht das Feld `Tickets` des Sprints nicht nach (von Hand per `plan_set`); Vermerke an Session-Ergebnissen und Abnahmen per Anhängen. Kein Ticket, weil B-360/B-363 das Tool ohnehin anfassen; Befund für das Review.
+- **Neue Tickets:** B-364 (Planungsseite: Ebenen Projekt/Sprint/Session optisch unterscheiden, Wunsch 🧑).
+- `check_run task:test pattern=planning` grün (2026-10-08).

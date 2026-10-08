@@ -16,7 +16,6 @@ In Abarbeitungs-Reihenfolge; der erste nicht erledigte Sprint ist der nächste. 
 |---|---|---|
 | GR7 | Figuren-Lücken, ganzzahlige Skalierung und Schrift | geplant |
 | M10 | Ressourcen-Manager für Grafik- und Sound-Slots in k3c-dev | geplant |
-| DBG4 | Dev-Seite Asset-Vorschau im Spielmaßstab | geplant |
 
 ## Nicht-Ziele
 

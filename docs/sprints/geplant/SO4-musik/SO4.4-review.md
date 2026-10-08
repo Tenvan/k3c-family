@@ -6,7 +6,7 @@
 - **Domäne:** CLI
 - **Umgebung:** live
 - **Branch:** so4/4-review
-- **Abhängig von:** SO4.3
+- **Abhängig von:** SO4.3, SO4.6
 - **Tickets:** B-168
 - **Kriterien:** alle
 

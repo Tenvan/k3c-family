@@ -3,13 +3,13 @@
 - **Status:** geplant
 - **Projekt:** BAL
 - **Domäne:** REG
-- **Prio:** mittel
+- **Prio:** hoch
 - **Reife:** Entwurf
 - **Einschiebbar:** nein
-- **Tickets:** B-230, B-287, B-289
+- **Tickets:** B-230, B-287, B-289, B-346
 - **Start-Commit:** –
 - **Spec:** Entwurf
-- **Revision:** 1
+- **Revision:** 2
 - **Freigabe:** –
 
 ## Ausgangslage
@@ -26,7 +26,7 @@ Burg, Hub-Ausbau und Wellen-Takt liegen im Zielkorridor, mit Beschluss von 🧑.
 
 ## Anforderungen
 
-B-230 › Anforderungen; B-287 › Anforderungen; B-289 › Anforderungen.
+B-230 › Anforderungen; B-287 › Anforderungen; B-289 › Anforderungen; B-346 › Anforderungen (aus RG3, PJ3).
 
 ## Nicht-Ziele
 
@@ -49,6 +49,7 @@ Korridor nicht erreichbar → Korridor per Beschluss anpassen, nie still.
 - **AC-01** Burg hält Nacht 1–5 nur in 47 % der Seeds, Ziel 75–90 % (B-230/AC-01).
 - **AC-02** Hub-Stufe 4 und 5 sind mit dem Beutel-Maximum bezahlbar (B-287/AC-01).
 - **AC-03** Der Aggressionspool steigt mit Adern nicht zu schnell (B-289/AC-01).
+- **AC-04** `task balance` zeigt „Burg hält Nacht 1–5“ im Korridor 75–90 % (Normal), die Grad-Kurven sind monoton (B-346/AC-01; aus RG3 AC-01, PJ3).
 
 ## Offene Fragen
 
@@ -58,8 +59,8 @@ Korridor nicht erreichbar → Korridor per Beschluss anpassen, nie still.
 
 Entwurf. Vor dem Aktivieren jede Session als Datei nach `docs/vorlagen/session.md` schreiben, die Kriterien in Klammern werden ihr Feld `Kriterien`.
 
-- RG1.1 Messung und Ursachen für Burg, Hub-Kosten, Adern-Takt (AC-01, AC-02, AC-03).
-- RG1.2 Workshop (🧑): Beschlüsse und Werte in `data/`, letzte Session schließt ab (AC-01, AC-02, AC-03).
+- RG1.1 Messung und Ursachen für Burg, Hub-Kosten, Adern-Takt; Messung und Ursache Nacht 5 (Miniboss Wald), Erklärung der Grad-Kurve, Wertvorschlag (AC-01, AC-02, AC-03, AC-04).
+- RG1.2 Workshop (🧑): Beschlüsse und Werte in `data/` (auch `data/bosses.json`), letzte Session schließt ab (AC-01, AC-02, AC-03, AC-04).
 
 ## Abnahme
 

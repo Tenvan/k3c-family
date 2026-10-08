@@ -16,9 +16,9 @@ In Abarbeitungs-Reihenfolge; der erste nicht erledigte Sprint ist der nächste. 
 |---|---|---|
 | M11 | MCP-Seite: alle Tools mit Statistik, Zeitfilter | erledigt |
 | TR3 | Bot-Eingabe im Spiel einbinden | erledigt |
-| DBG3 | Dungeon-Master-Seite /dm | aktiv |
-| LT1 | Lasttest-Werkzeug | aktiv |
-| MON2 | Monitoring-Seite mit Dashboard | aktiv |
+| DBG3 | Dungeon-Master-Seite /dm | erledigt |
+| LT1 | Lasttest-Werkzeug | erledigt |
+| MON2 | Monitoring-Seite mit Dashboard | erledigt |
 | PL2 | Werkzeug-Seiten in der gewählten Sprache | geplant |
 
 ## Nicht-Ziele

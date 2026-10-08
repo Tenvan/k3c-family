@@ -1,6 +1,6 @@
 # SO1.5 · Hörprobe am TV: Entsperren, Format, Split-Screen
 
-- **Status:** offen
+- **Status:** verworfen
 - **Typ:** Workshop
 - **Agent:** Mensch
 - **Domäne:** CLI
@@ -54,3 +54,5 @@ Manuell durch 🧑 an der Xbox.
 - **Offen:** Entsperren, Format mit Fallback und Dämpfung am TV (Xbox, Edge) fehlen; die Session bleibt `offen`, `plan-weiterentwicklung.md` § 11.6 behält die Annahme.
 
 2026-10-06, **Tastatur und Maus (Sammelaussage):** 🧑 (Ralf) im Chat: „Alle Tastatur und Maussteuerungen liefen bisher wie definiert.“ Gilt für den Tastatur- und Maus-Anteil dieser Session am PC; Darstellung, Ton und Controller (B-314) sind damit nicht abgenommen, die Session bleibt `offen`.
+
+2026-10-08, **verworfen (PJ3.2, B-359):** Die Abnahme am Gerät ist nach HW1.8 verschoben (Projekt ABN); bisherige Nachweise oben gelten weiter.

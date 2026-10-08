@@ -6,10 +6,10 @@
 - **Prio:** mittel
 - **Reife:** Entwurf
 - **Einschiebbar:** nein
-- **Tickets:** B-214, B-285
+- **Tickets:** B-285
 - **Start-Commit:** –
 - **Spec:** Entwurf
-- **Revision:** 1
+- **Revision:** 2
 - **Freigabe:** –
 
 ## Ausgangslage
@@ -26,7 +26,7 @@ Spielende am TV und Handy; Agent baut Server und Protokoll.
 
 ## Anforderungen
 
-B-214 › Anforderungen; B-285 › Anforderungen.
+B-285 › Anforderungen. (B-214 ist seit PJ3 ohne Sprint im Projekt BED.)
 
 ## Nicht-Ziele
 
@@ -46,7 +46,7 @@ Pause im gemischten Raum → nur Schutz des Monarchen, kein Anhalten.
 
 ## Akzeptanzkriterien
 
-- **AC-01** Der Server pausiert den Raum im Couch-Raum und schützt den stehenden Monarchen online (B-214/AC-01, B-214/AC-02).
+- **AC-01** entfällt, B-214 an BED (PJ3, 2026-10-08). Vorher: Der Server pausiert den Raum im Couch-Raum und schützt den stehenden Monarchen online (B-214/AC-01, B-214/AC-02).
 - **AC-02** Der Server nennt je Spieler die lernbaren Skills (B-285/AC-01, B-285/AC-02).
 
 ## Offene Fragen
@@ -57,7 +57,7 @@ keine
 
 Entwurf. Vor dem Aktivieren jede Session als Datei nach `docs/vorlagen/session.md` schreiben, die Kriterien in Klammern werden ihr Feld `Kriterien`.
 
-- RM1.1 Pause im Couch-Raum, Schutz online (AC-01).
+- RM1.1 entfällt (Pause im Couch-Raum, B-214 an BED, PJ3).
 - RM1.2 Lernbare Skills je Spieler im Protokoll (AC-02).
 - RM1.3 Review (Code-Sprint): alle Kriterien prüfen.
 

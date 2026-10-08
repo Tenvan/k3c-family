@@ -1,6 +1,6 @@
 # SO1 · CLI · Audio-Kern
 
-- **Status:** aktiv
+- **Status:** erledigt
 - **Projekt:** SND
 - **Domäne:** CLI
 - **Prio:** mittel
@@ -67,7 +67,7 @@ Auf der Xbox läuft der `AudioContext` schon vor der ersten Geste, eine Controll
 | SO1.2 | `SO1.2-entsperren-format-atlas.md` | Umsetzung | autonom | fertig |
 | SO1.3 | `SO1.3-daempfung-demo.md` | Umsetzung | autonom | fertig |
 | SO1.4 | `SO1.4-review.md` | Review | autonom | fertig |
-| SO1.5 | `SO1.5-hoerprobe-tv.md` | Workshop | Mensch | offen |
+| SO1.5 | `SO1.5-hoerprobe-tv.md` | Workshop | Mensch | verworfen |
 
 Bei `Reife: Entwurf` genügen Stichpunkte mit den Kriterien in Klammern statt Session-Dateien. Vor dem Aktivieren
 wird jede Session als eigene Datei nach `docs/vorlagen/session.md` geschrieben.
@@ -77,3 +77,4 @@ wird jede Session als eigene Datei nach `docs/vorlagen/session.md` geschrieben.
 2026-10-04, Agent (Claude Opus 5.5) in SO1.4, leichtes Review. AC-01, AC-02: Ergebnis SO1.1; AC-03, AC-05: Ergebnis SO1.2; AC-06 bis AC-08: Ergebnis SO1.3 (Tests, kein Browser-Pane). AC-04: angenommen, Validierung offen (SO1.5, Hörprobe am TV); ebenso die Browser-Pane-Beobachtung zu AC-03 und AC-07 (SO1.2, SO1.3: keine Freigabe durch 🧑).
 Befunde: keine schweren (kein Audio vor der ersten Eingabe, `localStorage` und `AudioContext` mit try/catch, kein `Math.random()`, Töne selbst erzeugt: kein Credit nötig). Neue Tickets: keine. B-011 bleibt eingeplant (SO2, SO4). `task check:go`: `TestSavesDelete` und `TestGleichzeitigesSpeichern` scheitern auf Windows sporadisch (B-187), im Wiederholungslauf grün; Sprint ändert kein Go.
 Version: v0.6.0 vorgeschlagen (gemeinsamer Tag nach v0.5.0, Minor); gesetzt erst nach Bestätigung durch 🧑.
+2026-10-08, PJ3.2 (B-359): AC-04 angenommen, Validierung in HW1.8 (Projekt ABN); Sprint geschlossen.

@@ -1,6 +1,6 @@
 # DBG3.4 · Abnahme am Handy
 
-- **Status:** offen
+- **Status:** verworfen
 - **Typ:** Workshop
 - **Agent:** Mensch
 - **Domäne:** PLAT
@@ -51,3 +51,5 @@ Am Gerät, siehe Schritte.
 - **AC-04 am PC: geprüft** (🧑). Keine Abweichungen von der Spec.
 - **Neues Ticket:** B-333 (CLI): Bei Pause fehlt im Spielbild eine Pause-Anzeige, und die Figuren-Animationen laufen weiter (Anmerkung 🧑).
 - **Offen:** Die Abnahme am Handy (neben Spiel am TV oder PC) fehlt; die Session bleibt `offen`, AC-04 steht weiter als „angenommen, Validierung offen“.
+
+2026-10-08, **verworfen (PJ3.2, B-359):** Die Abnahme am Gerät ist nach HW1.3 verschoben (Projekt ABN); bisherige Nachweise oben gelten weiter.

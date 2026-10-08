@@ -1,6 +1,6 @@
 # LP1.4 · Abnahme am PC
 
-- **Status:** offen
+- **Status:** verworfen
 - **Typ:** Workshop
 - **Agent:** Mensch
 - **Domäne:** PLAT
@@ -45,3 +45,5 @@ Manuell durch 🧑 am PC, siehe Schritte.
 
 Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
 `AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+
+2026-10-08, **verworfen (PJ3.2, B-359):** Die Abnahme am Gerät ist nach HW1.4 verschoben (Projekt ABN); bisherige Nachweise oben gelten weiter.

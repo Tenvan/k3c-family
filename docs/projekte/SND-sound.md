@@ -14,11 +14,10 @@ In Abarbeitungs-Reihenfolge; der erste nicht erledigte Sprint ist der nächste. 
 
 | Sprint | Thema | Status |
 |---|---|---|
-| SO1 | Audio-Kern | aktiv |
-| SO3 | Hörprobenseite `soundtest.html` | aktiv |
+| SO1 | Audio-Kern | erledigt |
+| SO3 | Hörprobenseite `soundtest.html` | erledigt |
 | SO2 | SFX-Katalog und Einbau | geplant |
 | SO4 | Musik je Zustand | geplant |
-| SO5 | Audio-Kern: ganze Dateien mit Crossfade, Ambient-Lautstärke | geplant |
 
 ## Nicht-Ziele
 

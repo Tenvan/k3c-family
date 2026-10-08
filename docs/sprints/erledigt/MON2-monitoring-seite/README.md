@@ -1,6 +1,6 @@
 # MON2 · PLAT · Monitoring-Seite mit Dashboard
 
-- **Status:** aktiv
+- **Status:** erledigt
 - **Projekt:** WZG
 - **Domäne:** PLAT
 - **Prio:** hoch
@@ -63,7 +63,7 @@ Autonome Umsetzung; 🧑 gibt die Spec frei und nimmt am Handy ab (B-282/AC-05).
 | MON2.1 | `MON2.1-daten.md` | Umsetzung | autonom | fertig |
 | MON2.2 | `MON2.2-seite.md` | Umsetzung | autonom | fertig |
 | MON2.3 | `MON2.3-review.md` | Review | autonom | fertig |
-| MON2.4 | `MON2.4-abnahme-handy.md` | Workshop | Mensch | offen |
+| MON2.4 | `MON2.4-abnahme-handy.md` | Workshop | Mensch | verworfen |
 
 ## Abnahme
 
@@ -72,3 +72,4 @@ Keine schweren Befunde (MON2.3): Server-Daten nur über `textContent`, Token nur
 Version: v0.13.0 vorgeschlagen (Minor: neue Seite `monitor.html`; DBG3 und MON1 schlagen ebenfalls die nächste Minor vor, Tags der Reihe nach v0.11.0, v0.12.0, v0.13.0).
 
 2026-10-07 · AC-05 am PC unter `task load` durch 🧑 geprüft (MON2.4); Abnahme am Handy weiter offen.
+2026-10-08, PJ3.2 (B-359): AC-05 angenommen, Validierung in HW1.6 (Projekt ABN); Sprint geschlossen.

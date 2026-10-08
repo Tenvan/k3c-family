@@ -1,6 +1,6 @@
 # RL1 · INF · Release-Checkliste
 
-- **Status:** aktiv
+- **Status:** erledigt
 - **Projekt:** REL
 - **Domäne:** INF
 - **Prio:** hoch
@@ -60,7 +60,7 @@ keine (Release-Rhythmus: Q20, geklärt 2026-10-03)
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
 | RL1.1 | `RL1.1-abschnitt-release.md` | Umsetzung | autonom | fertig |
-| RL1.2 | `RL1.2-probelauf.md` | Workshop | Mensch | offen |
+| RL1.2 | `RL1.2-probelauf.md` | Workshop | Mensch | verworfen |
 
 Bei `Reife: Entwurf` genügen Stichpunkte mit den Kriterien in Klammern statt Session-Dateien. Vor dem Aktivieren
 wird jede Session als eigene Datei nach `docs/vorlagen/session.md` geschrieben.
@@ -71,3 +71,4 @@ wird jede Session als eigene Datei nach `docs/vorlagen/session.md` geschrieben.
 Rot: Dev-Mode im Release-Image an (B-273), `TestRestore` flackert unter Windows (B-274), Overlay standardmäßig an (B-098, K5). Ein Tag wäre damit blockiert.
 Version: v0.6.1 vorgeschlagen (Doku-Sprint, Patch); gesetzt erst nach Bestätigung durch 🧑 und grüner Checkliste.
 2026-10-07, RL1.2: Versionszeile am PC grün (Client = Server, 🧑); Pi-Pull und Version am Pi und auf der Xbox weiter angenommen, Validierung offen.
+2026-10-08, PJ3.2 (B-359): AC-03 (Gerät-Punkte) angenommen, Validierung in HW1.7 (Projekt ABN); Sprint geschlossen.
