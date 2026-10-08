@@ -1,6 +1,6 @@
 # TR3.2 · Review und Abnahme des Sprints TR3
 
-- **Status:** offen
+- **Status:** in Arbeit
 - **Typ:** Review
 - **Agent:** autonom
 - **Domäne:** CLI
