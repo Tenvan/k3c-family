@@ -60,7 +60,7 @@ func TestSvcToolsStartStatusStop(t *testing.T) {
 	if text, _ = callText(t, cs, "workbench_status", nil); !strings.Contains(text, "Dienste: Vite läuft (5173) · Spielserver gestoppt (8080)") {
 		t.Errorf("workbench_status: %q", text)
 	}
-	if text, isErr = callText(t, cs, "svc_restart", map[string]any{"service": "Vite"}); isErr || !strings.HasPrefix(text, "Vite · läuft") {
+	if text, isErr = callText(t, cs, "svc_restart", map[string]any{"service": "Vite", "confirm": true}); isErr || !strings.HasPrefix(text, "Vite · läuft") {
 		t.Errorf("svc_restart: %q", text)
 	}
 	if text, isErr = callText(t, cs, "svc_stop", map[string]any{"service": "Vite"}); isErr || !strings.HasPrefix(text, "Vite · gestoppt · Port 5173") {
@@ -98,8 +98,52 @@ func TestSvcToolsOhneDienste(t *testing.T) {
 	if _, err := s.svcStatus(context.Background(), struct{}{}); err == nil || !strings.Contains(err.Error(), "services.json nicht geladen") {
 		t.Errorf("kaputte Konfiguration: %v", err)
 	}
-	if _, err := New(Config{Version: "test"}).svcStart(context.Background(), serviceIn{Service: "Vite"}); err == nil ||
+	if _, err := New(Config{Version: "test"}).svcStart(context.Background(), startIn{Service: "Vite"}); err == nil ||
 		err.Error() != "keine Dienste konfiguriert" {
 		t.Errorf("ohne Controller: %v", err)
+	}
+}
+
+func TestSvcToolsHealthPortsUrlsAll(t *testing.T) {
+	var healthy, busy atomic.Bool
+	healthy.Store(true)
+	s, _ := serviceServer(t, &healthy, &busy)
+	cs := connect(t, s)
+	if text, _ := callText(t, cs, "svc_health", map[string]any{"service": "Vite"}); text != "Vite · gesund · http://127.0.0.1:5173/" {
+		t.Errorf("svc_health gesund: %q", text)
+	}
+	healthy.Store(false)
+	busy.Store(true)
+	if text, _ := callText(t, cs, "svc_health", map[string]any{"service": "Vite"}); !strings.Contains(text, "ungesund") || !strings.Contains(text, "PID 4711") {
+		t.Errorf("svc_health ungesund: %q", text)
+	}
+	if text, _ := callText(t, cs, "ports_status", nil); !strings.HasPrefix(text, "5173 · Vite · PID 4711\n8080 · Spielserver · PID 4711") {
+		t.Errorf("ports_status: %q", text)
+	}
+	if text, _ := callText(t, cs, "get_urls", map[string]any{"target": "spielserver"}); text != "Spielserver · http://localhost:8080/ · Health http://127.0.0.1:8080/" {
+		t.Errorf("get_urls: %q", text)
+	}
+	if text, isErr := callText(t, cs, "get_urls", map[string]any{"target": "x"}); !isErr || !strings.Contains(text, "gültig: Vite, Spielserver, mcp") {
+		t.Errorf("get_urls unbekannt: %q", text)
+	}
+}
+
+func TestSvcToolsConfirmWaitAll(t *testing.T) {
+	var healthy, busy atomic.Bool
+	s, _ := serviceServer(t, &healthy, &busy)
+	cs := connect(t, s)
+	if text, isErr := callText(t, cs, "svc_restart", map[string]any{"service": "Vite"}); !isErr || !strings.Contains(text, "confirm=true") {
+		t.Errorf("svc_restart ohne confirm: %q", text)
+	}
+	if text, isErr := callText(t, cs, "svc_start", map[string]any{"service": "Vite", "waitSeconds": 99}); !isErr || !strings.Contains(text, "erlaubt 1–60") {
+		t.Errorf("waitSeconds: %q", text)
+	}
+	healthy.Store(true)
+	busy.Store(false)
+	if text, isErr := callText(t, cs, "svc_start_all", nil); isErr || strings.Count(text, "läuft") != 2 {
+		t.Errorf("svc_start_all: %q", text)
+	}
+	if text, isErr := callText(t, cs, "svc_stop_all", nil); isErr || strings.Count(text, "gestoppt") != 2 {
+		t.Errorf("svc_stop_all: %q", text)
 	}
 }

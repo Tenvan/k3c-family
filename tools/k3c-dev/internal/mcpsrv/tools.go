@@ -118,31 +118,66 @@ func registerServer(s *Server) {
 	}, s.roomSnapshot)
 }
 
-// registerServices sind die Dienste-Tools (B-067); Start ist nicht zerstörerisch, Stopp und Neustart schon.
+// registerServices sind die Dienste-Tools (B-067, Workbench-Spec § 2); Start ist nicht zerstörerisch, Stopp und Neustart schon.
 func registerServices(s *Server) {
 	no, yes, closed := false, true, false
+	start := &mcp.ToolAnnotations{DestructiveHint: &no, OpenWorldHint: &closed}
+	stop := &mcp.ToolAnnotations{DestructiveHint: &yes, OpenWorldHint: &closed}
 	add(s, &mcp.Tool{
 		Name: "svc_status",
 		Description: "Alle Dienste (Vite, Spielserver …) mit Zustand, Port, PID, CPU, Speicher, Laufzeit, Neustarts, " +
-			"Log-Level der letzten 60 min und letztem Fehler.",
+			"Log-Level der letzten 60 min und letztem Fehler. Nutze es bei: jeder Arbeit an der laufenden Umgebung, als ersten Aufruf. " +
+			"Statt: tasklist, netstat oder Raten.",
 		Annotations: readOnly(),
 	}, s.svcStatus)
 	add(s, &mcp.Tool{
+		Name: "svc_health",
+		Description: "Prüft einen Dienst sofort mit seiner Health-Prüfung, ohne ihn zu ändern; ungesund mit Grund und Belegung des Ports. " +
+			"Nutze es bei: Dienst läuft laut svc_status, antwortet aber nicht. Statt: curl auf den Port.",
+		Annotations: readOnly(),
+	}, s.svcHealth)
+	add(s, &mcp.Tool{
 		Name: "svc_start",
-		Description: "Startet einen Dienst und wartet, bis er gesund ist (höchstens 60 s). Statt task dev oder " +
-			"task start in der Shell; Ausgabe über console_tail <Dienst>.",
-		Annotations: &mcp.ToolAnnotations{DestructiveHint: &no, OpenWorldHint: &closed},
+		Description: "Startet einen Dienst und wartet, bis er gesund ist (waitSeconds, höchstens 60 s). " +
+			"Nutze es bei: Dienst gestoppt oder fehlgeschlagen. Statt: task dev oder task start in der Shell; Ausgabe über console_tail <Dienst>.",
+		Annotations: start,
 	}, s.svcStart)
 	add(s, &mcp.Tool{
-		Name:        "svc_stop",
-		Description: "Stoppt einen Dienst samt Prozessbaum; übernommene (vor k3c-dev gestartete) nur mit force.",
-		Annotations: &mcp.ToolAnnotations{DestructiveHint: &yes, OpenWorldHint: &closed},
+		Name: "svc_stop",
+		Description: "Stoppt einen Dienst samt Prozessbaum; übernommene (vor k3c-dev gestartete) nur mit force. " +
+			"Nutze es bei: Port freigeben, Dienst beenden. Statt: taskkill oder Stop-Process.",
+		Annotations: stop,
 	}, s.svcStop)
 	add(s, &mcp.Tool{
-		Name:        "svc_restart",
-		Description: "Startet einen eigenen Dienst neu und wartet, bis er gesund ist.",
-		Annotations: &mcp.ToolAnnotations{DestructiveHint: &yes, OpenWorldHint: &closed},
+		Name: "svc_restart",
+		Description: "Startet einen eigenen Dienst neu und wartet, bis er gesund ist; verlangt confirm=true. " +
+			"Nutze es bei: Dienst hängt oder braucht neue Konfiguration. Statt: Stopp und Start von Hand in der Shell.",
+		Annotations: stop,
 	}, s.svcRestart)
+	add(s, &mcp.Tool{
+		Name: "svc_start_all",
+		Description: "Startet alle Dienste, die nicht laufen, und wartet, bis sie gesund sind; antwortet mit svc_status. " +
+			"Nutze es bei: Umgebung frisch hochfahren. Statt: mehrere task-Befehle in der Shell.",
+		Annotations: start,
+	}, s.svcStartAll)
+	add(s, &mcp.Tool{
+		Name: "svc_stop_all",
+		Description: "Stoppt alle eigenen Dienste in umgekehrter Startreihenfolge; übernommene bleiben. " +
+			"Nutze es bei: Umgebung herunterfahren. Statt: Prozesse einzeln beenden.",
+		Annotations: stop,
+	}, s.svcStopAll)
+	add(s, &mcp.Tool{
+		Name: "ports_status",
+		Description: "Belegung der Dev-Ports (Dienste und MCP), auch durch fremde Prozesse, mit PID. " +
+			"Nutze es bei: Start scheitert an belegtem Port. Statt: netstat -ano oder Get-NetTCPConnection.",
+		Annotations: readOnly(),
+	}, s.portsStatus)
+	add(s, &mcp.Tool{
+		Name: "get_urls",
+		Description: "Erreichbare Adressen je Dienst und des MCP-Servers (target: Dienst oder mcp). " +
+			"Nutze es bei: vor jedem HTTP-Aufruf und jeder Browserprüfung, gerade im Worktree mit versetzten Ports. Statt: Ports raten.",
+		Annotations: readOnly(),
+	}, s.getURLs)
 }
 
 // readOnly sind die Annotations eines Tools, das nur liest.

@@ -89,7 +89,7 @@ func headerRoot(req *mcp.CallToolRequest) string {
 // writeTools ändern Dateien oder Dienste. Ihre Antwort nennt immer den Checkout, auch wenn der Header fehlt und die
 // Repo-Wurzel gilt (Beschluss 🧑 2026-10-06, B-275): nicht ablehnen, aber nie still in die Wurzel schreiben.
 var writeTools = map[string]bool{"plan_create": true, "plan_set": true, "plan_section": true, "plan_delete": true,
-	"svc_start": true, "svc_stop": true, "svc_restart": true}
+	"svc_start": true, "svc_stop": true, "svc_restart": true, "svc_start_all": true, "svc_stop_all": true}
 
 // addCheckout hängt an die Antwort eines schreibenden Tools die Zeile "Checkout: …".
 func addCheckout(tool string, res mcp.Result, ws workspace) {
