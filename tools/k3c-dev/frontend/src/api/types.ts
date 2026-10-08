@@ -299,6 +299,8 @@ export interface PlanSession {
   deps?: string[];
   /** Feld „Umgebung“: offline (worktree-tauglich) | live | ?. */
   env?: string;
+  /** Feld „Domäne“ der Session-Datei: REG, SIM, SRV, CLI, PLAT oder INF. */
+  domain?: string;
 }
 
 /** Aktiver, geplanter oder erledigter Sprint (Go: planning.Sprint); worktree = Branch eines Worktrees, der daran arbeitet. */

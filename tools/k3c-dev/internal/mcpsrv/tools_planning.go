@@ -33,7 +33,7 @@ type planCreateIn struct {
 	ID     string            `json:"id,omitempty" jsonschema:"Sprint M9, Session M9.1 oder Projekt-Kürzel GRA; beim Ticket leer (nächste freie Nummer)"`
 	Slug   string            `json:"slug" jsonschema:"Kurzname für Datei oder Ordner: a-z, 0-9, -"`
 	Title  string            `json:"title" jsonschema:"Titel, beim Ticket als Aussage"`
-	Fields map[string]string `json:"fields,omitempty" jsonschema:"Kopf-Felder; Ticket braucht Domäne, Typ, Prio; Sprint braucht Domäne"`
+	Fields map[string]string `json:"fields,omitempty" jsonschema:"Kopf-Felder; Ticket braucht Domäne, Typ, Prio; Sprint und Session brauchen Domäne (die Sprint-Domäne folgt danach den Sessions)"`
 }
 
 // registerPlanning sind die Planungs-Tools (B-210): lesen und schreiben docs/sprints und docs/backlog.
@@ -43,7 +43,8 @@ func registerPlanning(s *Server) {
 	add(s, &mcp.Tool{
 		Name: "plan_list",
 		Description: "Sprints mit Sessions und Tickets als je eine Zeile, filterbar nach kind, status, domain, sprint, projekt; " +
-			"archive mit erledigten Tickets. kind projekt: Projekte nach Rang mit Sprints und Fortschritt.",
+			"archive mit erledigten Tickets. Sprints mit Projekt nach Rang und Platz im Projekt, ohne Projekt nach Prio. " +
+			"kind projekt: Projekte nach Rang mit Sprints und Fortschritt.",
 		Annotations: readOnly(),
 	}, func(ctx context.Context, in planning.Filter) (string, error) {
 		return planning.List(s.ws(ctx).root, in)
@@ -65,6 +66,7 @@ func registerPlanning(s *Server) {
 		Name: "plan_set",
 		Description: "Setzt Kopf-Felder (Status, Prio, Sprint, Projekt, Reife, Spec, Revision, Freigabe …) und zieht nach: Index, " +
 			"Session-Tabelle, Fahrplan, Archiv bei erledigt/verworfen, Sprint-Ordner beim Status, Sprint-Tabelle des Projekts. " +
+			"Session: Status (auch verworfen), Domäne (Feld, Überschrift und Fahrplan des Sprints folgen; am Sprint nicht setzbar). " +
 			"Projekt: Status, Rang (die anderen rücken lückenlos), Sprints (neue Reihenfolge, kommagetrennt).",
 		Annotations: write,
 	}, func(ctx context.Context, in planSetIn) (string, error) {

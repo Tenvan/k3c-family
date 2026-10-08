@@ -3,19 +3,21 @@ package planning
 import (
 	"regexp"
 	"slices"
+	"strconv"
 	"strings"
 )
 
-// Priorität und Abhängigkeiten wie in der ErpApi-Workbench: Ein Sprint erbt live die höchste Prio seiner Tickets,
-// seine Abhängigkeiten folgen aus dem Feld „Abhängig von“ seiner Sessions (SP12.3 → Sprint SP12). Sortiert wird
-// nach Abhängigkeit, dann Prio; eine Voraussetzung erbt dabei die Prio ihrer Abnehmer.
+// Reihenfolge der Sprints: Abhängigkeiten folgen aus dem Feld „Abhängig von“ ihrer Sessions (SP12.3 → Sprint SP12).
+// Sprints eines Projekts ordnet der Rang des Projekts und ihr Platz in seiner Sprint-Tabelle, nie die Prio; danach
+// kommen Sprints ohne Projekt nach der Prio ihrer Tickets (Übergang bis PJ3). Eine Voraussetzung erbt dabei den Platz
+// ihrer Abnehmer.
 
 var sessionRef = regexp.MustCompile(`\b[A-Z]+\d+\.\d+\b`)
 
-// sessionMeta liest Umgebung und die Session-IDs aus „Abhängig von“ einer Session-Datei.
-func sessionMeta(text string) (env string, deps []string) {
+// sessionMeta liest Umgebung, Domäne und die Session-IDs aus „Abhängig von“ einer Session-Datei.
+func sessionMeta(text string) (env, domain string, deps []string) {
 	f := fields(strings.Split(strings.ReplaceAll(text, "\r\n", "\n"), "\n"))
-	return f["Umgebung"], sessionRef.FindAllString(f["Abhängig von"], -1)
+	return f["Umgebung"], f["Domäne"], sessionRef.FindAllString(f["Abhängig von"], -1)
 }
 
 // sprintOf: `GR5.2` → `GR5`.
@@ -32,8 +34,8 @@ func maxPrio(ps ...string) string {
 	return strings.TrimSuffix(best, "?")
 }
 
-// rank setzt Deps und die geerbte Prio aller Sprints und ordnet die offenen nach Abhängigkeit und Prio; erledigte
-// folgen in der bisherigen Reihenfolge.
+// rank setzt Deps und die geerbte Prio aller Sprints und ordnet die offenen nach Abhängigkeit und sprintOrder;
+// erledigte folgen in der bisherigen Reihenfolge.
 func rank(d *Data) {
 	prio := map[string]string{}
 	for _, t := range d.Tickets {
@@ -49,7 +51,7 @@ func rank(d *Data) {
 			s.Prio = p
 		}
 		for i, x := range s.Sessions {
-			s.Sessions[i].Env, s.Sessions[i].Deps = sessionMeta(x.Text)
+			s.Sessions[i].Env, s.Sessions[i].Domain, s.Sessions[i].Deps = sessionMeta(x.Text)
 			for _, dep := range s.Sessions[i].Deps {
 				if id := sprintOf(dep); id != s.ID && !slices.Contains(s.Deps, id) {
 					s.Deps = append(s.Deps, id)
@@ -62,9 +64,33 @@ func rank(d *Data) {
 			open = append(open, s)
 		}
 	}
-	open = Order(open, func(s Sprint) string { return s.ID }, func(s Sprint) []string { return s.Deps },
-		func(a, b Sprint) bool { return prioRank(a.Prio) < prioRank(b.Prio) })
+	open = Order(open, func(s Sprint) string { return s.ID }, func(s Sprint) []string { return s.Deps }, sprintOrder(d.Projects))
 	d.Sprints = append(open, done...)
+}
+
+// noRank ordnet Projekte ohne Rang (ABN, ruhend, erledigt) hinter die mit Rang.
+const noRank = 1 << 20
+
+// sprintOrder vergleicht zwei Sprints: zuerst die aus einer Projekt-Tabelle nach (Rang, Tabellenplatz), dann die ohne
+// Projekt nach Prio.
+func sprintOrder(ps []Project) func(a, b Sprint) bool {
+	at := map[string][2]int{}
+	for _, p := range ps {
+		r, err := strconv.Atoi(p.Rang)
+		if err != nil {
+			r = noRank
+		}
+		for i, id := range p.Sprints {
+			at[id] = [2]int{r, i}
+		}
+	}
+	key := func(s Sprint) []int {
+		if a, ok := at[s.ID]; ok {
+			return []int{0, a[0], a[1]}
+		}
+		return []int{1, prioRank(s.Prio), 0}
+	}
+	return func(a, b Sprint) bool { return slices.Compare(key(a), key(b)) < 0 }
 }
 
 // Order sortiert topologisch nach Abhängigkeiten; unter den jeweils freien Einträgen entscheidet less, bei Gleichstand

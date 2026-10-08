@@ -4,7 +4,7 @@ import type { GitHubData, GitHubSprint, PlanDoc, PlanningData, PlanSession, Plan
 // Dokumente in denselben Markdown-Formen wie docs/plan-weiterentwicklung.md, docs/fragenkatalog.md und docs/glossar.md.
 
 const s = (nr: string, typ: string, agent: string, status: string, titel = '', text?: string, deps?: string[],
-  env = agent === 'Mensch' ? 'live' : 'offline'): PlanSession => ({ nr, typ, agent, status, titel, text, deps, env });
+  env = agent === 'Mensch' ? 'live' : 'offline'): PlanSession => ({ nr, typ, agent, status, titel, text, deps, env, domain: 'SRV' });
 
 const SP11_2 = `# SP11.2 · Pi einrichten
 
