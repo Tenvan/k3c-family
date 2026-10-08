@@ -34,7 +34,7 @@ func tempRepo(t *testing.T) string {
 			t.Fatal(err)
 		}
 	}
-	for _, k := range []string{"ticket", "sprint", "session"} {
+	for _, k := range []string{"ticket", "sprint", "session", "projekt"} {
 		b, err := os.ReadFile(filepath.Join("..", "..", "..", "..", "docs", "vorlagen", k+".md"))
 		if err != nil {
 			t.Fatal(err)
@@ -44,6 +44,7 @@ func tempRepo(t *testing.T) string {
 	w("backlog/README.md", indexMD)
 	w("backlog/B-001-alt.md", "# B-001 · Altes Ticket\n\n- **Status:** offen\n")
 	w("sprints/README.md", roadmapMD)
+	w("projekte/README.md", projekteMD)
 	for _, st := range States {
 		if err := os.MkdirAll(filepath.Join(root, "docs", "sprints", st), 0o755); err != nil {
 			t.Fatal(err)
@@ -96,7 +97,7 @@ func TestTicketAnlegenAendernArchivieren(t *testing.T) {
 func TestSprintUndSessionLebenslauf(t *testing.T) {
 	root := tempRepo(t)
 	must(t)(Create(root, NewDoc{Kind: "sprint", ID: "X1", Slug: "test", Title: "Test-Sprint", Fields: map[string]string{"Domäne": "SRV"}}))
-	must(t)(Create(root, NewDoc{Kind: "session", ID: "X1.1", Slug: "eins", Title: "Erste"}))
+	must(t)(Create(root, NewDoc{Kind: "session", ID: "X1.1", Slug: "eins", Title: "Erste", Fields: map[string]string{"Domäne": "SRV"}}))
 	must(t)(Set(root, "X1.1", map[string]string{"Status": "fertig"}))
 	readme := doc(t, root, "sprints/geplant/X1-test/README.md")
 	if !strings.Contains(readme, "| X1.1 | `X1.1-eins.md` | Umsetzung | autonom | fertig |") {
@@ -127,7 +128,7 @@ func TestSprintUndSessionLebenslauf(t *testing.T) {
 func TestEntwurfLoeschen(t *testing.T) {
 	root := tempRepo(t)
 	must(t)(Create(root, NewDoc{Kind: "sprint", ID: "X2", Slug: "weg", Title: "Weg", Fields: map[string]string{"Domäne": "SIM", "Einschiebbar": "ja"}}))
-	must(t)(Create(root, NewDoc{Kind: "session", ID: "X2.1", Slug: "a", Title: "A"}))
+	must(t)(Create(root, NewDoc{Kind: "session", ID: "X2.1", Slug: "a", Title: "A", Fields: map[string]string{"Domäne": "SRV"}}))
 	if !strings.Contains(doc(t, root, "sprints/README.md"), "| X2 | SIM | Weg | Entwurf | `geplant/X2-weg/` |\n\n## Erledigt") {
 		t.Fatal("Einschiebbar-Zeile fehlt")
 	}

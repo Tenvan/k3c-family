@@ -1,16 +1,16 @@
 # PJ2 · SRV · k3c-dev plant mit Projekten: plan-Tools und Planungsseite
 
-- **Status:** geplant
+- **Status:** aktiv
 - **Projekt:** –
 - **Domäne:** SRV
 - **Prio:** hoch
-- **Reife:** Entwurf
+- **Reife:** bereit
 - **Einschiebbar:** nein
 - **Tickets:** B-357, B-358
-- **Start-Commit:** – (wird beim Aktivieren gesetzt: `git rev-parse --short origin/develop`)
-- **Spec:** Entwurf
+- **Start-Commit:** e5c81de
+- **Spec:** freigegeben
 - **Revision:** 1
-- **Freigabe:** –
+- **Freigabe:** 2026-10-08, Chat, durch 🧑, Revision 1
 
 ## Ausgangslage
 
@@ -65,16 +65,17 @@ Siehe `B-357 › Ausnahme- und Fehlerfälle` und `B-358 › Ausnahme- und Fehler
 
 ## Offene Fragen
 
-keine
+- **Sprint-Prio im Übergang** (von 🧑 mit der Freigabe 2026-10-08 bestätigt): Die Tools ordnen Sprints mit Projekt nach Rang, leiten `Prio` aber für Sprints ohne Projekt weiter ab, weil `tests/planning.test.ts` (INF) die Ableitung noch prüft; Wegfall der Felder `Prio`/`Einschiebbar` in Vorlage und Test als INF-Ticket bzw. in PJ3 (PJ2.2).
+- **ABN ohne Rang** (von 🧑 mit der Freigabe 2026-10-08 bestätigt): Laut Arbeitsweise läuft `ABN` ohne Rang neben der Rangfolge, der Planungstest verlangt für aktive Projekte aber einen Rang. PJ2 erkennt `ABN` am Kürzel, zeigt es als eigenen Bereich und nimmt es aus der Rang-Verschiebung heraus; die Regel im Test klärt PJ3 (B-359), wenn ABN angelegt wird.
 
 ## Sessions
 
-Entwurf. Vor dem Aktivieren jede Session als Datei nach `docs/vorlagen/session.md` schreiben, die Kriterien in Klammern werden ihr Feld `Kriterien`.
-
-- PJ2.1 Projekte in den `plan_*`-Tools: anlegen, lesen, listen, Rang, Zuordnung von Sprints und Tickets (AC-01, AC-02, AC-03).
-- PJ2.2 Sessions mit Domäne und `verworfen`, Sprint-Domänen ableiten, Sprint-Prio und `Einschiebbar` entfernen (AC-04, AC-05).
-- PJ2.3 Planungsseite nach Projekten, Rang per Knopf, Prompts nach Rang (AC-06, AC-07, AC-08, AC-09).
-- PJ2.4 Review (Code-Sprint): alle Kriterien prüfen.
+| Nr. | Datei | Typ | Agent | Status |
+|---|---|---|---|---|
+| PJ2.1 | `PJ2.1-projekte-plan-tools.md` | Umsetzung | autonom | fertig |
+| PJ2.2 | `PJ2.2-sessions-domaene-verworfen.md` | Umsetzung | autonom | offen |
+| PJ2.3 | `PJ2.3-planungsseite-projekte.md` | Umsetzung | autonom | offen |
+| PJ2.4 | `PJ2.4-review.md` | Review | autonom | offen |
 
 ## Abnahme
 

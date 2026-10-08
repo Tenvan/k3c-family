@@ -9,8 +9,8 @@ import (
 	"time"
 )
 
-// NewDoc beschreibt ein neues Ticket, einen Sprint oder eine Session (B-210). ID nur bei Sprint (M9) und Session
-// (M9.1); ein Ticket bekommt die nächste freie Nummer.
+// NewDoc beschreibt ein neues Ticket, einen Sprint, eine Session (B-210) oder ein Projekt (B-357). ID bei Sprint (M9),
+// Session (M9.1) und Projekt (GRA); ein Ticket bekommt die nächste freie Nummer.
 type NewDoc struct {
 	Kind   string            `json:"kind"`
 	ID     string            `json:"id,omitempty"`
@@ -30,9 +30,9 @@ func Create(root string, in NewDoc) (string, error) {
 		return "", err
 	}
 	mk, ok := map[string]func(*changeSet, NewDoc, string) error{
-		"ticket": createTicket, "sprint": createSprint, "session": createSession}[in.Kind]
+		"ticket": createTicket, "sprint": createSprint, "session": createSession, "projekt": createProject}[in.Kind]
 	if !ok {
-		return "", fmt.Errorf("unbekannte Art %q: ticket, sprint oder session", in.Kind)
+		return "", fmt.Errorf("unbekannte Art %q: ticket, sprint, session oder projekt", in.Kind)
 	}
 	c := newChangeSet(root)
 	tpl, err := c.read("vorlagen/" + in.Kind + ".md")
@@ -64,7 +64,7 @@ func createTicket(c *changeSet, in NewDoc, tpl string) error {
 	if err != nil {
 		return err
 	}
-	text, err := fromTemplate(c, "ticket", tpl, nr+" · "+in.Title, map[string]string{"Status": "offen", "Umgebung": "?", "Sprint": "–",
+	text, err := fromTemplate(c, "ticket", tpl, nr+" · "+in.Title, map[string]string{"Status": "offen", "Umgebung": "?", "Sprint": "–", "Projekt": "–",
 		"Erstellt": time.Now().Format("2006-01-02"), "Spec": "Entwurf", "Revision": "1", "Freigabe": "–"}, in.Fields)
 	if err != nil {
 		return err
@@ -72,6 +72,9 @@ func createTicket(c *changeSet, in NewDoc, tpl string) error {
 	t := ParseTicket(text)
 	if t.Status != "offen" && t.Status != "eingeplant" {
 		return fmt.Errorf("ein neues Ticket ist offen oder eingeplant")
+	}
+	if err := checkProjectRef(c, t.Project); err != nil {
+		return err
 	}
 	rel := "backlog/" + nr + "-" + in.Slug + ".md"
 	c.write(rel, text)
@@ -113,7 +116,7 @@ func createSprint(c *changeSet, in NewDoc, tpl string) error {
 		in.Fields["Prio"] = SprintPrio(c.root, in.Fields["Tickets"])
 	}
 	text, err := fromTemplate(c, "sprint", tpl, in.ID+" · "+dom+" · "+in.Title, map[string]string{"Status": "geplant",
-		"Reife": "Entwurf", "Einschiebbar": "nein", "Tickets": "–", "Spec": "Entwurf", "Revision": "1", "Freigabe": "–"}, in.Fields)
+		"Projekt": "–", "Reife": "Entwurf", "Einschiebbar": "nein", "Tickets": "–", "Spec": "Entwurf", "Revision": "1", "Freigabe": "–"}, in.Fields)
 	if err != nil {
 		return err
 	}
@@ -129,7 +132,14 @@ func createSprint(c *changeSet, in NewDoc, tpl string) error {
 	c.write(dir+"/README.md", text)
 	c.crlf[dir+"/README.md"] = c.crlf["vorlagen/sprint.md"]
 	c.notes = append(c.notes, in.ID+" angelegt: docs/"+dir+"/ (Fahrplan ergänzt)")
-	return syncRoadmap(c, ParseSprint(text, path.Base(dir), "geplant"), headFields(text), "", dir)
+	sp := ParseSprint(text, path.Base(dir), "geplant")
+	if err := checkProjectRef(c, sp.Project); err != nil {
+		return err
+	}
+	if err := syncProjectSprint(c, sp); err != nil {
+		return err
+	}
+	return syncRoadmap(c, sp, headFields(text), "", dir)
 }
 
 func createSession(c *changeSet, in NewDoc, tpl string) error {
@@ -159,7 +169,8 @@ func createSession(c *changeSet, in NewDoc, tpl string) error {
 	return syncSessionRow(c, sp.dir+"/README.md", Session{Nr: in.ID, File: file, Typ: f["Typ"], Agent: f["Agent"], Status: f["Status"]})
 }
 
-// Delete löscht einen Sprint-Entwurf in geplant/ oder eine Session darin; Tickets werden verworfen, nie gelöscht.
+// Delete löscht einen Sprint-Entwurf in geplant/, eine Session darin oder ein Projekt ohne Sprints und Tickets;
+// Tickets werden verworfen, nie gelöscht.
 func Delete(root, id string) (string, error) {
 	writeMu.Lock()
 	defer writeMu.Unlock()
@@ -171,6 +182,12 @@ func Delete(root, id string) (string, error) {
 		return "", fmt.Errorf("ein Ticket wird nicht gelöscht: plan_set mit Status verworfen")
 	}
 	c := newChangeSet(root)
+	if r.kind == "projekt" {
+		if err := deleteProject(c, r); err != nil {
+			return "", err
+		}
+		return r.id + " gelöscht: docs/" + r.rel, c.apply()
+	}
 	readme, err := c.read(r.dir + "/README.md")
 	if err != nil {
 		return "", err
@@ -186,6 +203,9 @@ func Delete(root, id string) (string, error) {
 		lines, _, _ := takeRoadmapRow(splitLines(text), r.id, r.dir)
 		c.write("sprints/README.md", joinLines(lines))
 		c.remove = append(c.remove, r.dir)
+		if err := syncProjectSprint(c, Sprint{ID: r.id, Project: "–"}); err != nil {
+			return "", err
+		}
 	} else {
 		c.write(r.dir+"/README.md", joinLines(removeRow(splitLines(readme), "| "+r.id+" |")))
 		c.remove = append(c.remove, r.rel)
