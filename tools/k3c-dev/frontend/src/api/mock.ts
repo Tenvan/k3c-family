@@ -46,6 +46,8 @@ export function mockBackend(): Backend {
     emit('service:state', st);
     emit('source:state', serviceSource(st));
   });
+  // Wie ein Agent über notify_ui: zeigt im Mock, wo Hinweise erscheinen.
+  setTimeout(() => emit('ui:notify', { level: 'info', title: 'Mock: Hinweise von Agenten', text: 'notify_ui erscheint hier.' }), 1500);
   const mcpTools = mockMcp((event, call) => emit(event, call), () => mcp);
   const tasks = mockTasks((event, run) => emit(event, run), (lines) => emit('console:line', lines));
   const logs = mockLogs((lines) => emit('console:line', lines), (src) => emit('source:state', src));

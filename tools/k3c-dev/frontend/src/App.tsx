@@ -7,6 +7,7 @@ import { McpPage } from './mcp/McpPage';
 import { PlanningPage } from './planning/PlanningPage';
 import { ServicesPage } from './services/ServicesPage';
 import { TasksPage } from './tasks/TasksPage';
+import { Notices } from './ui/Notices';
 
 const MODES = ['dark', 'light'] as const;
 
@@ -54,6 +55,7 @@ export function App() {
           </Tabs.Content>
         </main>
       </Tabs.Root>
+      <Notices />
     </Theme>
   );
 }

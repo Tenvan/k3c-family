@@ -57,11 +57,6 @@ export function dotTone(src: Source): Tone {
   return 'neutral';
 }
 
-/** Gewählte Quelle: die gemerkte, solange es sie gibt, sonst die erste. */
-export function pickSource(list: Source[], wanted: string): string {
-  return list.some((s) => s.name === wanted) ? wanted : (list[0]?.name ?? '');
-}
-
 /** Übernimmt eine gemeldete Quelle: ersetzt sie oder hängt sie an (ein Lauf erscheint beim ersten Mal). */
 export function upsertSource(list: Source[], src: Source): Source[] {
   const i = list.findIndex((s) => s.name === src.name);
