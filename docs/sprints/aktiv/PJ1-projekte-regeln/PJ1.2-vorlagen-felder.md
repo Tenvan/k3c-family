@@ -1,6 +1,6 @@
 # PJ1.2 · Vorlagen mit Projekt, Domäne und verworfen, Felder in allen Planungsdateien
 
-- **Status:** offen
+- **Status:** in Arbeit
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Umgebung:** offline
