@@ -1,6 +1,6 @@
 # PL2.2 · Monitor, Dungeon Master, Credits und Grafiken in der gewählten Sprache
 
-- **Status:** offen
+- **Status:** in Arbeit
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** PLAT
