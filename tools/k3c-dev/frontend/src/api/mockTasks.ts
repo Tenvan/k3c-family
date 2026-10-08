@@ -1,4 +1,4 @@
-import type { ConsoleLine, TaskCatalog, TaskInfo, TaskNamespace, TaskRun } from './types';
+import type { ConsoleLine, TaskCatalog, TaskGates, TaskGateState, TaskInfo, TaskNamespace, TaskRun } from './types';
 
 // Erfundener Task-Katalog und Läufe für den Mock: Namen wie im Taskfile des Repos. `task:test` läuft ~3 s und endet
 // grün, `lint` endet rot, `dev` läuft bis zum Stopp (Dauerläufer). Die Ausgabe liegt unter `task:<name>` wie in Go.
@@ -53,6 +53,35 @@ const SCRIPTS: Record<string, string[]> = {
     `${ESC}32m➜${ESC}0m  ${ESC}1mLocal${ESC}0m:   ${ESC}36mhttp://localhost:5173/${ESC}0m`,
   ],
 };
+
+/** Freigabe-Schloss wie in Go (taskgate): Datei plus Laufzeit-Schalter bis zum Beenden. */
+export function mockGates() {
+  const file = new Set(['check', 'test', 'lint', 'build', 'check:go', 'check:dev']);
+  const runtime = new Map<string, boolean>();
+  const state = (name: string): TaskGateState => {
+    const set = runtime.get(name);
+    if (set === undefined) return file.has(name) ? 'open' : 'closed';
+    return set ? 'open-temp' : 'closed-temp';
+  };
+  const gates = (): TaskGates => ({ states: Object.fromEntries(TASKS.map((x) => [x.name, state(x.name)])), pending: runtime.size });
+  return {
+    taskGates: async () => gates(),
+    taskGateToggle: async (name: string) => {
+      const next = !state(name).startsWith('open');
+      if (next === file.has(name)) runtime.delete(name);
+      else runtime.set(name, next);
+      return gates();
+    },
+    taskGateSave: async () => {
+      for (const [name, on] of runtime) {
+        if (on) file.add(name);
+        else file.delete(name);
+      }
+      runtime.clear();
+      return gates();
+    },
+  };
+}
 
 export function mockTasks(emit: (event: 'task:state', run: TaskRun) => void, emitLines: (l: ConsoleLine[]) => void) {
   let catalog: TaskCatalog = { namespaces: group(TASKS), count: TASKS.length, loadedAt: new Date().toISOString(), error: '' };

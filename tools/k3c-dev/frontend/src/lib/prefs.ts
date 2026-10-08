@@ -28,3 +28,23 @@ export function savePref(key: string, value: string): void {
     // nicht merkbar, siehe oben
   }
 }
+
+/**
+ * JSON-Wert mit Prüfung (Workbench-Spec › Gemerkter Zustand): ein unlesbarer oder veralteter Wert gilt als nicht
+ * gemerkt, statt die Seite zu stören. Schlüssel `<seite>.<was>`, z. B. `tasks.favorites`.
+ */
+export function loadJSON<T>(key: string, valid: (v: unknown) => v is T, fallback: T): T {
+  try {
+    const v: unknown = JSON.parse(localStorage.getItem(PREFIX + key) ?? 'null');
+    return valid(v) ? v : fallback;
+  } catch {
+    return fallback;
+  }
+}
+
+export function saveJSON(key: string, value: unknown): void {
+  savePref(key, JSON.stringify(value));
+}
+
+/** Prüfung für loadJSON: eine Liste von Texten. */
+export const isStringList = (v: unknown): v is string[] => Array.isArray(v) && v.every((x) => typeof x === 'string');
