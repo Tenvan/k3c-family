@@ -41,13 +41,7 @@ export function SprintsBacklog() {
   const tickets = filterTickets(data, filter);
   const select = (nr: string) => setFilter({ ...filter, sel: filter.sel === nr ? '' : nr });
   const pick = (id: string) => setFilter({ ...filter, sel: id });
-  // Auswahl von außen (Detail, Abhängigkeits-Link): Projekt und Sprint klappen auf, die Zeile scrollt in Sicht.
-  const reveal = (id: string) => {
-    pick(id);
-    const sprint = findSession(data, id)?.sprint ?? data.sprints.find((s) => s.id === id);
-    unfold([sprint?.project ?? '', sprint?.id ?? '', id].filter(Boolean));
-    setTimeout(() => document.getElementById(`pl-sp-${sprint?.id ?? id}`)?.scrollIntoView({ block: 'nearest', behavior: 'smooth' }), 0);
-  };
+  const reveal = (id: string) => { pick(id); revealIn(data, id); };
   const check = (nr: string, on: boolean) => setChecked((cur) => { const n = new Set(cur); if (on) n.add(nr); else n.delete(nr); return n; });
   // in Planungs-Reihenfolge; fertige oder verschwundene fallen heraus
   const picked = sprints.flatMap(openSessions).filter((it) => checked.has(it.session.nr));
@@ -84,6 +78,13 @@ export function SprintsBacklog() {
       </div>
     </div>
   );
+}
+
+/** Auswahl von außen (Detail, Abhängigkeits-Link): Projekt und Sprint klappen auf, die Karte scrollt in Sicht. */
+function revealIn(data: PlanningData, id: string) {
+  const sprint = findSession(data, id)?.sprint ?? data.sprints.find((s) => s.id === id);
+  unfold([sprint?.project ?? '', sprint?.id ?? '', id].filter(Boolean));
+  setTimeout(() => document.getElementById(`pl-sp-${sprint?.id ?? id}`)?.scrollIntoView({ block: 'nearest', behavior: 'smooth' }), 0);
 }
 
 /** GitHub-Stand: beim Öffnen und bei `planning:changed` aus dem Zwischenspeicher, per Knopf frisch. */

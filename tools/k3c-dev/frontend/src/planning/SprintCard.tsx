@@ -19,6 +19,11 @@ export function ModeBadge({ agent = '', env = '' }: { agent?: string; env?: stri
 
 export const prioTone = (p = ''): Tone => (p === 'hoch' ? 'error' : p === 'mittel' ? 'warn' : 'neutral');
 
+/** Klassen einer Sprint-Karte: aktiv, erledigt, im Worktree, ausgewählt. */
+const cardClass = (s: PlanSprint, sel: string) =>
+  ['pl-card', 'pl-sprint', s.status === 'aktiv' && 'is-active', s.status === 'erledigt' && 'is-done', s.worktree && 'is-wt', sel === s.id && 'is-sel']
+    .filter(Boolean).join(' ');
+
 /** Sprung zu einer Sprint-Karte (Sprint-Abhängigkeit). */
 export const scrollToSprint = (id: string) =>
   document.getElementById(`pl-sp-${id}`)?.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
@@ -41,10 +46,8 @@ export function SprintCard({ sprint: s, gh, sel, onSelect, onPick, checked, onCh
   const done = s.sessions.filter((x) => x.status === 'fertig').length;
   const next = s.sessions.find(isNext);
   const [folded, toggle] = useFold(s.id);
-  const cls = ['pl-card', 'pl-sprint', s.status === 'aktiv' && 'is-active', s.status === 'erledigt' && 'is-done', s.worktree && 'is-wt',
-    sel === s.id && 'is-sel'];
   return (
-    <div id={`pl-sp-${s.id}`} className={cls.filter(Boolean).join(' ')}>
+    <div id={`pl-sp-${s.id}`} className={cardClass(s, sel)}>
       <div className="pl-head pl-clickable" onClick={headClick(toggle, () => onPick?.(s.id))}>
         <FoldButton folded={folded} onToggle={toggle} what={`Sprint ${s.id}`} />
         <strong>{s.id}</strong>
