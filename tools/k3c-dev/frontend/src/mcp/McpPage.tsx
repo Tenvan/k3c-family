@@ -12,7 +12,7 @@ import { useMcpData } from './useMcpData';
 const VIEWS = ['uebersicht', 'statistik'] as const;
 type View = (typeof VIEWS)[number];
 
-/** Reiter `MCP` (B-065): Unteransichten Übersicht und Statistik. */
+/** Reiter `MCP` (B-065, Workbench-Spec § 3): Umschalter Widgets | Statistiken (gemerkt). */
 export function McpPage() {
   const [view, setView] = useState<View>(() => loadPref('mcpView', VIEWS, 'uebersicht'));
   const data = useMcpData();
@@ -25,16 +25,18 @@ export function McpPage() {
   return (
     <div className="mcp-page">
       <SegmentedControl.Root value={view} onValueChange={choose} className="mcp-views">
-        <SegmentedControl.Item value="uebersicht">Übersicht</SegmentedControl.Item>
-        <SegmentedControl.Item value="statistik">Statistik</SegmentedControl.Item>
+        <SegmentedControl.Item value="uebersicht">Widgets</SegmentedControl.Item>
+        <SegmentedControl.Item value="statistik">Statistiken</SegmentedControl.Item>
       </SegmentedControl.Root>
       {!overview && !data.error && <Text color="gray">Lade MCP-Daten …</Text>}
       {!overview && data.error && <NoticeCard title="MCP-Daten nicht geladen" tone="error">{data.error}</NoticeCard>}
       {overview && view === 'uebersicht' && (
         <>
           <ServerCards overview={overview} error={data.error} reload={data.reload} />
-          <ToolTiles tools={overview.stats.tools} />
-          <LiveMonitors minutes={data.usage?.minutes ?? []} />
+          <div className="mcp-band2">
+            <ToolTiles tools={overview.stats.tools} />
+            <LiveMonitors minutes={data.usage?.minutes ?? []} tools={overview.stats.tools} />
+          </div>
           <CallLog calls={data.calls} tools={overview.stats.tools.map((t) => t.name)} />
         </>
       )}

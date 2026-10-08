@@ -1,4 +1,4 @@
-import { Flex, Select, Switch, Text } from '@radix-ui/themes';
+import { Flex, SegmentedControl, Select, Switch, Text } from '@radix-ui/themes';
 import { Fragment, useState } from 'react';
 import type { McpCall } from '../api';
 import { formatDuration, formatTime } from '../lib/format';
@@ -9,14 +9,18 @@ import { buildGraph, callFooter, filterCalls, prettyArgs, type Row } from './lan
 const LANE = 14;
 const ROW = 26;
 const ALL = 'ALLE'; // Radix Select erlaubt keinen leeren Wert
+/** Live zeigt die jüngsten Aufrufe, Alle die ganze Aufzeichnung der Sitzung (Workbench-Spec § 3). */
+const LIVE_LIMIT = 100;
 
 /** Band 3 (B-065): Aufruf-Log mit Start- und Endzeile je Aufruf und Graph-Spuren. */
 export function CallLog({ calls, tools }: { calls: McpCall[]; tools: string[] }) {
   const [saved, setTool] = useState(() => loadText('callTool', ''));
   const tool = tools.length > 0 && !tools.includes(saved) ? '' : saved; // gemerktes Tool nicht mehr im Katalog → alle
   const [errorsOnly, setErrorsOnly] = useState(() => loadText('callErrors', '') === '1');
+  const [scope, setScope] = useState(() => (loadText('mcp.callScope', 'live') === 'alle' ? 'alle' : 'live'));
   const [open, setOpen] = useState<Set<string>>(new Set());
-  const shown = filterCalls(calls, { tool, errorsOnly });
+  const filtered = filterCalls(calls, { tool, errorsOnly });
+  const shown = scope === 'live' ? filtered.slice(0, LIVE_LIMIT) : filtered;
   const graph = buildGraph(shown);
   const toggle = (key: string) => setOpen((s) => {
     const next = new Set(s);
@@ -35,6 +39,10 @@ export function CallLog({ calls, tools }: { calls: McpCall[]; tools: string[] })
               {tools.map((t) => <Select.Item key={t} value={t}>{t}</Select.Item>)}
             </Select.Content>
           </Select.Root>
+          <SegmentedControl.Root size="1" value={scope} onValueChange={(v) => { setScope(v); savePref('mcp.callScope', v); }}>
+            <SegmentedControl.Item value="live">Live</SegmentedControl.Item>
+            <SegmentedControl.Item value="alle">Alle</SegmentedControl.Item>
+          </SegmentedControl.Root>
           <Text as="label" size="1">
             <Flex gap="2" align="center">
               <Switch size="1" checked={errorsOnly} onCheckedChange={(v) => { setErrorsOnly(v); savePref('callErrors', v ? '1' : ''); }} />

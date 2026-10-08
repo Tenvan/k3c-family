@@ -12,13 +12,6 @@
   align-self: flex-start;
 }
 
-.mcp-band1 {
-  display: grid;
-  grid-template-columns: 2fr 1fr;
-  gap: 14px;
-  flex: none;
-}
-
 .mcp-log {
   flex: 1 1 auto;
   min-height: 0;
@@ -27,15 +20,6 @@
 .mcp-log .mcp-log-body {
   flex: 1;
   min-height: 0;
-}
-
-.mcp-band1 .mcp-card {
-  gap: 8px;
-  padding: 10px 14px;
-}
-
-.mcp-band1 .mcp-kpis dd {
-  font-size: 16px;
 }
 
 .mcp-card {
@@ -330,9 +314,10 @@
 }
 
 .mcp-tile {
-  padding: 8px 10px;
+  padding: 6px 10px;
   border: 1px solid var(--card-line);
   border-radius: 8px;
+  background: var(--card);
   min-width: 0;
 }
 
@@ -365,10 +350,25 @@
   color: var(--error);
 }
 
-.mcp-tile-last {
-  color: var(--dim);
-  font-size: 11px;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+
+/* Workbench-Spec § 3: Serverkarte mit zwei Kennzahlengruppen, Band aus Tool-Kacheln (links) und Live-Monitoren
+   (rechts), Aufruf-Log mit der Resthöhe; keine Rahmen um die Bänder, die Karten tragen ihre Titel selbst. */
+.mcp-server { flex: none; gap: 8px; padding: 10px 14px; }
+.mcp-server .mcp-kpis dd { font-size: 16px; }
+.mcp-kpi-groups { display: grid; grid-template-columns: 3fr 2fr; gap: 14px; }
+.mcp-kpi-groups > :last-child { border-left: 1px solid var(--card-line); padding-left: 14px; }
+.mcp-band2 { display: grid; grid-template-columns: minmax(0, 1fr) minmax(320px, 40%); gap: 14px; flex: none; align-items: start; }
+.mcp-tools { max-height: 240px; overflow: auto; }
+.mcp-live-body { display: flex; gap: 12px; align-items: stretch; }
+.mcp-live-body > :last-child { flex: 1; min-width: 0; }
+.mcp-top { display: flex; gap: 6px; align-items: flex-end; flex: none; }
+.mcp-top-col { display: flex; flex-direction: column; align-items: center; gap: 4px; width: 34px; }
+.mcp-top-bar { height: 80px; width: 14px; display: flex; align-items: flex-end; background: var(--card-line); border-radius: 3px; overflow: hidden; }
+.mcp-top-fill { display: block; width: 100%; background: var(--gold); }
+.mcp-top-bad { background: var(--error); }
+.mcp-top-name { font-size: 9px; color: var(--dim); writing-mode: vertical-rl; transform: rotate(180deg); max-height: 70px; overflow: hidden; }
+.mcp-tip { white-space: pre-line; }
+@media (max-width: 900px) {
+  .mcp-band2, .mcp-kpi-groups { grid-template-columns: 1fr; }
+  .mcp-kpi-groups > :last-child { border-left: none; padding-left: 0; }
 }
