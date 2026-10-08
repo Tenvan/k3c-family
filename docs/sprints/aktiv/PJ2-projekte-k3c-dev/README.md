@@ -1,13 +1,13 @@
 # PJ2 · SRV · k3c-dev plant mit Projekten: plan-Tools und Planungsseite
 
-- **Status:** geplant
+- **Status:** aktiv
 - **Projekt:** –
 - **Domäne:** SRV
 - **Prio:** hoch
 - **Reife:** bereit
 - **Einschiebbar:** nein
 - **Tickets:** B-357, B-358
-- **Start-Commit:** – (wird beim Aktivieren gesetzt: `git rev-parse --short origin/develop`)
+- **Start-Commit:** e5c81de
 - **Spec:** freigegeben
 - **Revision:** 1
 - **Freigabe:** 2026-10-08, Chat, durch 🧑, Revision 1
@@ -72,7 +72,7 @@ Siehe `B-357 › Ausnahme- und Fehlerfälle` und `B-358 › Ausnahme- und Fehler
 
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
-| PJ2.1 | `PJ2.1-projekte-plan-tools.md` | Umsetzung | autonom | offen |
+| PJ2.1 | `PJ2.1-projekte-plan-tools.md` | Umsetzung | autonom | in Arbeit |
 | PJ2.2 | `PJ2.2-sessions-domaene-verworfen.md` | Umsetzung | autonom | offen |
 | PJ2.3 | `PJ2.3-planungsseite-projekte.md` | Umsetzung | autonom | offen |
 | PJ2.4 | `PJ2.4-review.md` | Review | autonom | offen |

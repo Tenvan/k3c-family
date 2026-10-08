@@ -1,6 +1,6 @@
 # PJ2.1 · Projekte in den plan-Tools
 
-- **Status:** offen
+- **Status:** in Arbeit
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** SRV
