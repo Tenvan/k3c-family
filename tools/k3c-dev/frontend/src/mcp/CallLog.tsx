@@ -14,9 +14,9 @@ const LIVE_LIMIT = 100;
 
 /** Band 3 (B-065): Aufruf-Log mit Start- und Endzeile je Aufruf und Graph-Spuren. */
 export function CallLog({ calls, tools }: { calls: McpCall[]; tools: string[] }) {
-  const [saved, setTool] = useState(() => loadText('callTool', ''));
+  const [saved, setTool] = useState(() => loadText('mcp.callTool', ''));
   const tool = tools.length > 0 && !tools.includes(saved) ? '' : saved; // gemerktes Tool nicht mehr im Katalog → alle
-  const [errorsOnly, setErrorsOnly] = useState(() => loadText('callErrors', '') === '1');
+  const [errorsOnly, setErrorsOnly] = useState(() => loadText('mcp.callErrors', '') === '1');
   const [scope, setScope] = useState(() => (loadText('mcp.callScope', 'live') === 'alle' ? 'alle' : 'live'));
   const [open, setOpen] = useState<Set<string>>(new Set());
   const filtered = filterCalls(calls, { tool, errorsOnly });
@@ -32,7 +32,7 @@ export function CallLog({ calls, tools }: { calls: McpCall[]; tools: string[] })
       <Flex justify="between" align="center" gap="3" wrap="wrap">
         <span className="mcp-card-title">Aufruf-Log</span>
         <Flex gap="3" align="center">
-          <Select.Root size="1" value={tool || ALL} onValueChange={(v) => { const t = v === ALL ? '' : v; setTool(t); savePref('callTool', t); }}>
+          <Select.Root size="1" value={tool || ALL} onValueChange={(v) => { const t = v === ALL ? '' : v; setTool(t); savePref('mcp.callTool', t); }}>
             <Select.Trigger aria-label="Tool" />
             <Select.Content>
               <Select.Item value={ALL}>Alle Tools</Select.Item>
@@ -45,7 +45,7 @@ export function CallLog({ calls, tools }: { calls: McpCall[]; tools: string[] })
           </SegmentedControl.Root>
           <Text as="label" size="1">
             <Flex gap="2" align="center">
-              <Switch size="1" checked={errorsOnly} onCheckedChange={(v) => { setErrorsOnly(v); savePref('callErrors', v ? '1' : ''); }} />
+              <Switch size="1" checked={errorsOnly} onCheckedChange={(v) => { setErrorsOnly(v); savePref('mcp.callErrors', v ? '1' : ''); }} />
               nur Fehler
             </Flex>
           </Text>

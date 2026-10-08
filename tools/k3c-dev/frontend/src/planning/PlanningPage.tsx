@@ -13,7 +13,7 @@ const LABEL: Record<PlanDoc, string> = { plan: 'Plan', fragen: 'Fragenkatalog', 
  *  Liste der Dokumente kommt aus Go und wird bei `planning:changed` neu gelesen: ein neues glossar.md erscheint so von selbst. */
 export function PlanningPage() {
   const [docs, setDocs] = useState<PlanDoc[]>([]);
-  const [view, setView] = useState(() => loadText('planning', 'sprints'));
+  const [view, setView] = useState(() => loadText('planning.view', 'sprints'));
   useEffect(() => {
     const load = () => backend.planningDocs().then(setDocs, () => setDocs([]));
     void load();
@@ -21,7 +21,7 @@ export function PlanningPage() {
   }, []);
   const choose = (v: string) => {
     setView(v);
-    savePref('planning', v);
+    savePref('planning.view', v);
   };
   const doc = docs.find((d) => d === view); // gemerkte Ansicht ohne Datei → Sprints & Backlog
   return (

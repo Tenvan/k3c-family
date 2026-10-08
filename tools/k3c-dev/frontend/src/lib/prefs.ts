@@ -1,7 +1,8 @@
-// Gemerkte Einstellungen der Oberfläche (Reiter, Farbmodus) in localStorage. Der Zugriff kann werfen (gesperrte
-// Website-Daten); dann gilt die Vorgabe und nichts wird gemerkt.
+// Gemerkte Einstellungen der Oberfläche (Reiter, Farbmodus) in localStorage, Schlüssel `k3c-dev.<seite>.<was>`
+// (Workbench-Spec › Gemerkter Zustand). Der Zugriff kann werfen (gesperrte Website-Daten); dann gilt die Vorgabe und
+// nichts wird gemerkt. Freitext-Filter werden nicht gemerkt.
 
-const PREFIX = 'k3c-dev:';
+const PREFIX = 'k3c-dev.';
 
 export function loadPref<T extends string>(key: string, allowed: readonly T[], fallback: T): T {
   try {

@@ -21,10 +21,10 @@ type Bulk = 'start' | 'stop' | 'reload';
 export function ServicesPage() {
   const { view, setView, loadError } = useServices();
   const { sources, error: srcError } = useSources();
-  const [wanted, setWanted] = useState(() => loadText('source', ''));
+  const [wanted, setWanted] = useState(() => loadText('services.source', ''));
   const choose = (name: string) => {
     setWanted(name);
-    savePref('source', name);
+    savePref('services.source', name);
   };
 
   if (loadError) return <NoticeCard title="Dienste nicht geladen" tone="error">{loadError}</NoticeCard>;

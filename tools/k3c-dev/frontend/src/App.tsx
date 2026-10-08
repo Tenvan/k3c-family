@@ -16,8 +16,8 @@ const systemMode = (): (typeof MODES)[number] =>
   window.matchMedia?.('(prefers-color-scheme: light)').matches ? 'light' : 'dark';
 
 export function App() {
-  const [page, setPage] = useState<Page>(() => loadPref('page', PAGES, 'dienste'));
-  const [mode, setMode] = useState(() => loadPref('mode', MODES, systemMode()));
+  const [page, setPage] = useState<Page>(() => loadPref('app.page', PAGES, 'dienste'));
+  const [mode, setMode] = useState(() => loadPref('app.mode', MODES, systemMode()));
   const [mcp, setMcp] = useState<McpState | null>(null);
 
   useEffect(() => {
@@ -27,13 +27,13 @@ export function App() {
   }, []);
 
   useEffect(() => {
-    savePref('mode', mode);
+    savePref('app.mode', mode);
   }, [mode]);
 
   const choose = (value: string) => {
     const next = PAGES.includes(value as Page) ? (value as Page) : 'dienste';
     setPage(next);
-    savePref('page', next);
+    savePref('app.page', next);
   };
 
   return (

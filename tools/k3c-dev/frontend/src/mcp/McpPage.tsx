@@ -14,12 +14,12 @@ type View = (typeof VIEWS)[number];
 
 /** Reiter `MCP` (B-065, Workbench-Spec § 3): Umschalter Widgets | Statistiken (gemerkt). */
 export function McpPage() {
-  const [view, setView] = useState<View>(() => loadPref('mcpView', VIEWS, 'uebersicht'));
+  const [view, setView] = useState<View>(() => loadPref('mcp.view', VIEWS, 'uebersicht'));
   const data = useMcpData();
   const choose = (v: string) => {
     const next = VIEWS.includes(v as View) ? (v as View) : 'uebersicht';
     setView(next);
-    savePref('mcpView', next);
+    savePref('mcp.view', next);
   };
   const { overview } = data;
   return (

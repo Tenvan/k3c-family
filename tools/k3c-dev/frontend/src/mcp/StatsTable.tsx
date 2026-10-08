@@ -11,7 +11,7 @@ const COLUMNS: [SortKey, string][] = [
 ];
 
 function loadSort(): Sort {
-  const [key, dir] = loadText('statSort', '').split(':');
+  const [key, dir] = loadText('mcp.statSort', '').split(':');
   return SORT_KEYS.includes(key as SortKey) ? { key: key as SortKey, desc: dir !== 'asc' } : DEFAULT_SORT;
 }
 
@@ -22,7 +22,7 @@ export function StatsTable({ scope }: { scope: UsageScope }) {
   const click = (key: SortKey) => {
     const next = nextSort(sort, key);
     setSort(next);
-    savePref('statSort', `${next.key}:${next.desc ? 'desc' : 'asc'}`);
+    savePref('mcp.statSort', `${next.key}:${next.desc ? 'desc' : 'asc'}`);
   };
   if (scope.tools.length === 0) return <section className="mcp-card"><p className="mcp-empty">Noch keine Aufrufe.</p></section>;
   return (
