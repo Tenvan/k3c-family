@@ -17,8 +17,9 @@ Alle übrigen Werkzeug-Seiten folgen der gewählten Sprache; die Liste `OFFEN` i
 ## Kontext
 
 - Werkzeug aus PL2.1: `src/tools/texts.ts` (`t()`, `applyTexts()`), Tabellen `src/tools/texts.de.ts`/`texts.en.ts`, Regeltest `src/tools/textRule.test.ts` mit `OFFEN` und `DATEN`. Vorbild: `src/tools/leveltest.ts` mit `leveltest.html`.
-- Dateien dieser Session: `dev.ts`, `devTiles.ts`, `dev.html`; `testing.ts`, `testTiles.ts`, `testScenarios.ts`, `testing.html`; `gamepadTest.ts`, `gamepad-test.html`; `selection.ts`; `spriteReference.ts`; `figuren.ts`, `figuren.html`; `aufstellung.ts`, `aufstellung.html`; `lizenzen.ts`, `lizenzen.html` (Credits-Seite).
-- Kachel-Titel in `devTiles.ts`/`testTiles.ts` werden zur Laufzeit über `t()` gelesen, nicht beim Laden des Moduls, sonst greift ein Sprachwechsel erst nach Neuladen nicht.
+- Dateien dieser Session: `dev.ts`, `devTiles.ts`, `dev.html`; `testing.ts`, `testTiles.ts`, `testScenarios.ts`, `testing.html`; `gamepadTest.ts`, `audioProbe.ts`, `gamepad-test.html`; `selection.ts`; `spriteReference.ts`; `figuren.ts`, `figuren.html`; `aufstellung.ts`, `aufstellung.html`; `lizenzen.ts`, `lizenzen.html` (Credits-Seite).
+- `audioProbe.ts` liefert Zeilen für die Berichte des Gamepad-Tests (`reports/*.json`); die Beschriftungen werden übersetzt, die Auswertung der Berichte darf daran nicht hängen.
+- Kachel-Titel in `devTiles.ts`/`testTiles.ts` werden zur Laufzeit über `t()` gelesen, nicht beim Laden des Moduls.
 - Lizenztexte, Urheber und Quellen sind Daten und bleiben unübersetzt.
 
 ## Erlaubte Dateien

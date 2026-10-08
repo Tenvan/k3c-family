@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>K3C Hörprobe</title>
+    <title data-t="sound.pageTitle">K3C Hörprobe</title>
     <style>
       :root { --bg: #11151c; --panel: #1c2330; --line: #2e3a4d; --text: #e8edf4; --dim: #8a97aa; --on: #ffd166; }
       * { box-sizing: border-box; }
@@ -29,18 +29,18 @@
   </head>
   <body>
     <main>
-      <h1>Hörprobe</h1>
-      <p class="sub">Kandidaten für Musik und Effekte anhören, nach Zustand und Ereignis geordnet, mit Quelle und Lizenz.</p>
-      <p id="hint" role="status">Taste drücken zum Entsperren</p>
+      <h1 data-t="sound.title">Hörprobe</h1>
+      <p class="sub" data-t="sound.sub">Kandidaten für Musik und Effekte anhören, nach Zustand und Ereignis geordnet, mit Quelle und Lizenz.</p>
+      <p id="hint" role="status" data-t="sound.pressKey">Taste drücken zum Entsperren</p>
       <div id="bar">
-        <button id="b-stop" type="button">Stopp</button>
-        <button id="b-fade" type="button">Überblenden</button>
-        <button id="b-vold" type="button" aria-label="Leiser">Leiser −</button>
-        <button id="b-volu" type="button" aria-label="Lauter">Lauter +</button>
+        <button id="b-stop" type="button" data-t="sound.stop">Stopp</button>
+        <button id="b-fade" type="button" data-t="sound.fade">Überblenden</button>
+        <button id="b-vold" type="button" aria-label="Leiser" data-t="sound.volDown" data-t-aria="sound.volDownAria">Leiser −</button>
+        <button id="b-volu" type="button" aria-label="Lauter" data-t="sound.volUp" data-t-aria="sound.volUpAria">Lauter +</button>
         <span id="status" role="status"></span>
       </div>
       <div id="list"></div>
-      <p id="keys">Controller: Steuerkreuz/Stick wählt, A spielt, X stoppt, Y überblendet das gewählte Stück ein, LB/RB Lautstärke.
+      <p id="keys" data-t="sound.keys">Controller: Steuerkreuz/Stick wählt, A spielt, X stoppt, Y überblendet das gewählte Stück ein, LB/RB Lautstärke.
         Tastatur: Pfeile hoch/runter wählen, Enter spielt, S stoppt, X überblendet, Pfeile links/rechts oder −/+ Lautstärke. Touch: Eintrag antippen, Knöpfe oben.</p>
     </main>
     <script type="module" src="/src/tools/soundtest.ts"></script>

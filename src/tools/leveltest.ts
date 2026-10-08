@@ -1,9 +1,12 @@
 import { installPageChrome, openPage } from '../core/shell';
+import { nameOf } from '../core/texts';
 import { BIOMES } from '../model/biome';
 import { fetchLevel } from './levelApi';
 import { levelModel, seedFromBytes, startTarget, type LevelModel } from './levelView';
+import { applyTexts, t } from './texts';
 
 installPageChrome();
+applyTexts();
 
 const byId = <T extends HTMLElement>(id: string) => document.getElementById(id) as T;
 const seedInput = byId<HTMLInputElement>('seed');
@@ -16,7 +19,6 @@ const strip = byId('strip');
 const legend = byId('legend');
 const warnings = byId('warnings');
 
-const REPLACES = 'Der Start öffnet den Spielstand mit dem Seed als Namen: gibt es ihn schon, wird er weitergespielt, sonst entsteht ein neues Spiel mit diesem Level.';
 const COLORS: Record<string, string> = {
   castle: '#ffd166',
   portal: '#b388ff',
@@ -38,7 +40,7 @@ let scale = 6; // Pixel je Unit
 let model: LevelModel | null = null;
 let request = 0;
 
-for (const b of BIOMES) biomeSelect.add(new Option(`${b.name} (Tiefe ${b.depth})`, b.id));
+for (const b of BIOMES) biomeSelect.add(new Option(nameOf('biome', b.id, b.name), b.id));
 
 const colorOf = (kind: string) => COLORS[kind] ?? FALLBACK_COLOR;
 
@@ -54,7 +56,7 @@ function drawChunks(m: LevelModel): void {
   for (const c of m.chunks) {
     const el = box(`chunk${c.kind === 'hub' ? ' hub' : SPECIAL_CHUNKS.has(c.kind) ? ' special' : ''}`, c.from * scale, (c.to - c.from) * scale);
     el.textContent = `${c.index} ${c.kind}`;
-    el.title = `Abschnitt ${c.index}: ${c.kind} (${c.from}–${c.to} Units)`;
+    el.title = t('level.chunkTitle', { index: c.index, kind: c.kind, from: c.from, to: c.to });
     strip.append(el);
   }
 }
@@ -64,7 +66,7 @@ function drawObjects(m: LevelModel): void {
     const size = BIG_KINDS.has(o.kind) ? 22 : 10;
     const el = box('marker', o.x * scale - size / 2);
     el.style.cssText += `;top:${BIG_KINDS.has(o.kind) ? 0.5 : 3.25}rem;width:${size}px;height:${size}px;background:${colorOf(o.kind)}`;
-    el.title = `${o.kind} bei ${o.x} Units`;
+    el.title = t('level.objectTitle', { kind: o.kind, x: o.x });
     strip.append(el);
   }
 }
@@ -78,7 +80,7 @@ function drawLevel(m: LevelModel | null): void {
   drawChunks(m);
   drawObjects(m);
   const hub = box('hubline', m.hubCenterUnits * scale);
-  hub.title = `Hub-Mitte bei ${m.hubCenterUnits} Units`;
+  hub.title = t('level.hubTitle', { x: m.hubCenterUnits });
   strip.append(hub);
   for (const [kind, count] of m.counts) {
     const item = document.createElement('li');
@@ -97,12 +99,12 @@ function drawLevel(m: LevelModel | null): void {
 function updateStart(): void {
   const target = startTarget(seedInput.value, biomeSelect.value);
   startButton.disabled = 'reason' in target;
-  startNote.textContent = 'reason' in target ? `Im Spiel starten nicht möglich: ${target.reason}.` : REPLACES;
+  startNote.textContent = 'reason' in target ? t('level.cannotStart', { reason: target.reason }) : t('level.replaces');
 }
 
 async function load(): Promise<void> {
   const mine = ++request;
-  note.textContent = 'Lade …';
+  note.textContent = t('level.loading');
   const result = await fetchLevel(seedInput.value, biomeSelect.value);
   if (mine !== request) return; // eine neuere Anfrage läuft schon
   updateStart();
@@ -114,8 +116,10 @@ async function load(): Promise<void> {
   }
   model = levelModel(result.level);
   drawLevel(model);
-  const biome = BIOMES.find((b) => b.id === model!.biomeId)?.name ?? model.biomeId;
-  note.textContent = `Seed „${model.seed}“ · ${biome} · ${model.widthUnits} Units · ${model.chunks.length} Abschnitte · ${model.objects.length} Objekte`;
+  const biome = nameOf('biome', model.biomeId, BIOMES.find((b) => b.id === model!.biomeId)?.name ?? model.biomeId);
+  note.textContent = t('level.summary', {
+    seed: model.seed, biome, width: model.widthUnits, chunks: model.chunks.length, objects: model.objects.length,
+  });
 }
 
 function zoom(factor: number): void {

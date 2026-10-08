@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>K3C Level-Betrachter</title>
+    <title data-t="level.pageTitle">K3C Level-Betrachter</title>
     <style>
       :root { --bg: #11151c; --panel: #1c2330; --line: #2e3a4d; --text: #e8edf4; --dim: #8a97aa; --on: #ffd166; --bad: #ff8fa3; }
       * { box-sizing: border-box; }
@@ -37,21 +37,21 @@
   </head>
   <body>
     <main>
-      <h1>Level-Betrachter</h1>
-      <p class="sub">Zeigt das Level, das ein Raum mit diesem Seed und Biom bekäme, ohne zu spielen. Voraussetzung: der Go-Server läuft (<code>task start</code>).</p>
+      <h1 data-t="level.title">Level-Betrachter</h1>
+      <p class="sub"><span data-t="level.sub">Zeigt das Level, das ein Raum mit diesem Seed und Biom bekäme, ohne zu spielen. Voraussetzung: der Go-Server läuft</span> (<code>task start</code>).</p>
       <div class="controls">
-        <label>Seed <input id="seed" type="text" value="k3c" autocomplete="off" spellcheck="false" maxlength="64" /></label>
-        <label>Biom <select id="biome"></select></label>
-        <button id="random" type="button">Zufälliger Seed</button>
-        <button id="load" type="button">Laden</button>
-        <button id="start" type="button">Im Spiel starten</button>
+        <label><span data-t="level.seed">Seed</span> <input id="seed" type="text" value="k3c" autocomplete="off" spellcheck="false" maxlength="64" /></label>
+        <label><span data-t="level.biome">Biom</span> <select id="biome"></select></label>
+        <button id="random" type="button" data-t="level.random">Zufälliger Seed</button>
+        <button id="load" type="button" data-t="level.load">Laden</button>
+        <button id="start" type="button" data-t="level.start">Im Spiel starten</button>
       </div>
       <p id="note" role="status"></p>
       <p id="startNote"></p>
       <div id="viewport"><div id="strip"></div></div>
       <ul id="legend"></ul>
       <ul id="warnings"></ul>
-      <p class="keys">Scrollen: linker Stick oder Pfeiltasten · Zoom: LB/RB oder + / − · Auswahl: Steuerkreuz hoch/runter, A drücken</p>
+      <p class="keys" data-t="level.keys">Scrollen: linker Stick oder Pfeiltasten · Zoom: LB/RB oder + / − · Auswahl: Steuerkreuz hoch/runter, A drücken</p>
     </main>
     <script type="module" src="/src/tools/leveltest.ts"></script>
   </body>

@@ -5,8 +5,10 @@ import {
   crossfadeCurves, fileFor, groupCandidates, keyAction, moveSelection, padActions, parseCandidates, stepVolume,
   type Action, type Candidate, type PadState,
 } from './soundtestLogic';
+import { applyTexts, t } from './texts';
 
 installPageChrome();
+applyTexts();
 // Kein installPadScroll(): Stick und Steuerkreuz wählen hier den Eintrag, die Auswahl scrollt selbst (scrollIntoView).
 
 const FADE_SECONDS = 2;
@@ -45,7 +47,7 @@ function render(): void {
     const h = document.createElement('h2');
     h.textContent = `${g.title} `;
     const kind = document.createElement('small');
-    kind.textContent = g.kind;
+    kind.textContent = t(g.kind === 'Zustand' ? 'sound.kindState' : 'sound.kindEvent');
     h.append(kind);
     listEl.append(h);
     for (const cand of g.items) {
@@ -55,8 +57,8 @@ function render(): void {
       div.className = `item${idx === selected ? ' sel' : ''}${voice?.entry === e ? ' playing' : ''}${e.failed ? ' off' : ''}`;
       div.dataset.idx = String(idx);
       div.innerHTML = `<span class="mark"></span><span class="name"></span><span class="meta"></span>`;
-      (div.querySelector('.name') as HTMLElement).textContent = e.failed ? `${cand.name} (lädt nicht)` : cand.name;
-      (div.querySelector('.meta') as HTMLElement).textContent = `Quelle: ${cand.quelle} · Lizenz: ${cand.lizenz}`;
+      (div.querySelector('.name') as HTMLElement).textContent = e.failed ? t('sound.failed', { name: cand.name }) : cand.name;
+      (div.querySelector('.meta') as HTMLElement).textContent = t('sound.meta', { source: cand.quelle, license: cand.lizenz });
       div.addEventListener('click', () => {
         selected = idx;
         act('play');
@@ -65,13 +67,14 @@ function render(): void {
     }
   }
   listEl.querySelector('.sel')?.scrollIntoView({ block: 'nearest' });
-  say(`${voice ? `Spielt: ${voice.entry.cand.name}` : 'Stille'} · Lautstärke ${volume()} %`);
+  const state = voice ? t('sound.playing', { name: voice.entry.cand.name }) : t('sound.silence');
+  say(t('sound.status', { state, volume: volume() }));
 }
 
 async function load(e: Entry): Promise<void> {
   if (e.buffer || e.failed || !ctx) return;
   try {
-    if (!e.url) throw new Error('kein abspielbares Format');
+    if (!e.url) throw new Error(t('sound.noFormat'));
     const res = await fetch(e.url);
     if (!res.ok) throw new Error(`HTTP ${res.status}`);
     e.buffer = await ctx.decodeAudioData(await res.arrayBuffer());
@@ -155,7 +158,7 @@ async function unlock(): Promise<void> {
   }
   const running = ctx?.state === 'running';
   hint.classList.toggle('on', running);
-  hint.textContent = running ? 'Audio entsperrt' : 'Audio gesperrt: Taste drücken, Bildschirm antippen oder A am Controller';
+  hint.textContent = t(running ? 'sound.unlocked' : 'sound.locked');
 }
 
 function padState(p: Gamepad): PadState {

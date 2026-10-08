@@ -1,6 +1,6 @@
 # PL2.1 · Text-Regel für `src/tools/`, Level-Betrachter und Hörprobe
 
-- **Status:** in Arbeit
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** PLAT
@@ -58,5 +58,7 @@ Manuelle Prüfungen (Browser, Xbox, TV) nur, wenn diese Datei sie nennt und 🧑
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+- **AC-01 umgesetzt (Teil Level-Betrachter, Hörprobe), geprüft:** `task check` grün (`check_run`, 1655 Tests). `src/tools/textRule.test.ts` prüft alle Module unter `src/tools/` außer `OFFEN` und `DATEN`; `src/tools/texts.test.ts` belegt Englisch, Rückfall auf Deutsch und `applyTexts` (`data-t`, `data-t-aria`, `data-t-placeholder`).
+- Gegenprobe vom Agenten im Browser-Pane (Vite, ohne Go-Server): `soundtest.html` und `leveltest.html` mit `language: en` vollständig englisch, Tab-Titel eingeschlossen; ohne Einstellung deutsch. Ersetzt nicht die Abnahme in PL2.5.
+- **Abweichungen:** `audioProbe.ts` gehört zum Gamepad-Test und bleibt für PL2.3 in `OFFEN`. Der Regeltest entfernt HTML-Tags vor der Prüfung und findet dadurch die deutschen Tabellenköpfe in `credits.ts`, die vorher nicht auffielen; die Datei steht in `OFFEN` für PL2.2. `soundtestLogic.ts` steht in `DATEN`, weil Zustände und Ereignisse die Gruppen-Namen aus `public/audio/kandidaten.json` sind. Biom-Namen im Level-Betrachter kommen jetzt über `nameOf('biome', …)` aus den Spieltexten.
+- Neue Tickets: keine.
