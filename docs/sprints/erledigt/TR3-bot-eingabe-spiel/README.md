@@ -1,6 +1,6 @@
 # TR3 · CLI · Bot-Eingabe im Spiel einbinden
 
-- **Status:** aktiv
+- **Status:** erledigt
 - **Projekt:** –
 - **Domäne:** CLI
 - **Prio:** hoch
@@ -61,8 +61,9 @@ keine
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
 | TR3.1 | `TR3.1-bot-eingabe-einbinden.md` | Umsetzung | autonom | fertig |
-| TR3.2 | `TR3.2-review.md` | Review | autonom | offen |
+| TR3.2 | `TR3.2-review.md` | Review | autonom | fertig |
 
 ## Abnahme
 
-–
+2026-10-08: AC-01/AC-02 geprüft (TR3.1, Tests), AC-03 geprüft in TR3.2 (`sim_test` run-1, Pass). Keine schweren Befunde. Neues Ticket: B-362 (Token des Spielservers in k3c-dev).
+Version: v0.15.1 vorgeschlagen (Patch: Abnahme ohne neue Funktion, Code kam mit #217).
