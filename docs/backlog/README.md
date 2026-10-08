@@ -134,11 +134,11 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-347](B-347-tester-misst-wirtschaft.md) | SIM | Schuld | hoch | eingeplant | BAL6 | Der Balancing-Tester misst die Wirtschafts-Kennzahlen |
 | [B-351](B-351-client-diagnose-zeile.md) | CLI | Idee | hoch | eingeplant | PM1 | Der Client schreibt FPS, Latenz und Puffer regelmäßig als Diagnose-Zeile ins Client-Log |
 | [B-352](B-352-botfeed-lan-zuschauer.md) | SRV | Idee | niedrig | offen | – | `sim_test` hängt sich an Clients auf der Xbox an, ohne einen Platz im Raum zu belegen |
-| [B-353](B-353-bot-eingabe-einbinden.md) | CLI | Idee | hoch | eingeplant | TR3 | Das Spiel fragt die Bot-Eingabe ab und setzt ihre Spieler ohne Tastendruck in den Raum |
 | [B-354](B-354-bot-eingabe-impulse-frist.md) | PLAT | Problem | mittel | offen | – | Die Bot-Eingabe verliert keine kurzen Drücke und hält bei stummem Feed an |
 | [B-359](B-359-planung-in-projekte.md) | INF | Schuld | hoch | eingeplant | PJ3 | Die offene Planung ist in Projekte umgezogen, erledigte und zusammengelegte Sprints sind abgeschlossen |
 | [B-360](B-360-plan-set-fehlendes-feld.md) | SRV | Problem | niedrig | offen | – | plan_set lehnt ein Feld ab, das in der Datei fehlt, statt es still zu übergehen |
 | [B-361](B-361-sprint-prio-felder-entfallen.md) | INF | Schuld | mittel | offen | – | Die Sprint-Felder Prio und Einschiebbar entfallen in Vorlage, Planungstest und plan-Tools |
+| [B-362](B-362-k3c-dev-token-dienst.md) | SRV | Problem | hoch | offen | – | k3c-dev fragt den selbst gestarteten Spielserver mit dessen Token an |
 
 ## Archiv
 
@@ -333,3 +333,4 @@ Zeile in diesen Abschnitt.
 | [B-357](archiv/B-357-k3c-dev-projekte.md) | SRV | Idee | hoch | erledigt | PJ2 | Die plan-Tools von k3c-dev legen Projekte an, ordnen Sprints und Tickets zu und setzen den Rang |
 | [B-358](archiv/B-358-workbench-projekte.md) | SRV | Idee | hoch | erledigt | PJ2 | Die Planungsseite der Workbench zeigt Projekte nach Rang mit ihren Sprints |
 | [B-338](archiv/B-338-session-status-verworfen.md) | INF | Schuld | hoch | erledigt | PJ1 | Sessions können den Status verworfen tragen |
+| [B-353](archiv/B-353-bot-eingabe-einbinden.md) | CLI | Idee | hoch | erledigt | TR3 | Das Spiel fragt die Bot-Eingabe ab und setzt ihre Spieler ohne Tastendruck in den Raum |
