@@ -114,7 +114,6 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-319](B-319-ein-hinweis-je-weltposition.md) | CLI | Problem | hoch | eingeplant | S9 | Das Aktionen-Overlay zeigt je Spieler nur einen Hinweis, 24 px, nie über einem Preisschild |
 | [B-320](B-320-reiter-sattel-beim-laufen.md) | CLI | Problem | hoch | eingeplant | GR7 | Der Reiter sitzt beim Laufen und Sprinten auf dem Sattel, nicht auf der Kruppe |
 | [B-321](B-321-schlag-skill-ohne-ziel-ereignis.md) | SIM | Problem | mittel | eingeplant | SK1 | Schlag ohne Treffer und Skill ohne Ziel erzeugen ein Ereignis |
-| [B-322](B-322-texte-werkzeug-seiten.md) | PLAT | Schuld | niedrig | eingeplant | PL2 | Die Werkzeug-Seiten holen ihre Texte aus den zentralen Textdateien |
 | [B-324](B-324-client-typen-gegnerdaten.md) | CLI | Schuld | niedrig | offen | – | Die Client-Typen der Gegner- und Wellendaten passen zu den JSON-Dateien |
 | [B-327](B-327-golden-tiefe-stufen.md) | SIM | Frage | niedrig | offen | – | Golden-Läufe decken Eisenstollen und Kristallhöhle ab |
 | [B-328](B-328-feuergeist-flammen-flaeche.md) | SIM | Frage | niedrig | offen | – | Der Feuergeist hinterlässt eine Flammen-Fläche |
@@ -142,6 +141,7 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-366](B-366-fahrplan-spalte-projekt.md) | SRV | Schuld | mittel | offen | – | k3c-dev füllt im Fahrplan die Spalte Projekt und ordnet nach Rang |
 | [B-367](B-367-doku-nachzug-projekte.md) | INF | Schuld | niedrig | offen | – | Begriffe aus den alten Bahnen und Spuren sind nach PJ3 ersetzt und neue Projekt-Begriffe im Glossar |
 | [B-368](B-368-planung-erpapi-ablage.md) | SRV | Schuld | mittel | offen | – | Die Planung liegt in der ErpApi-Ablage und k3c-dev bedient sie mit den Planungs-Tools der Workbench-Spec |
+| [B-369](B-369-texte-landingpage.md) | PLAT | Schuld | niedrig | offen | – | Die Landingpage zeigt ihre Texte in der gewählten Sprache |
 
 ## Archiv
 
@@ -340,3 +340,4 @@ Zeile in diesen Abschnitt.
 | [B-350](archiv/B-350-mcp-seite-tools-zeitfilter.md) | SRV | Idee | hoch | erledigt | M11 | Die MCP-Seite zeigt alle Tools mit Aufruf-Statistik und filtert die Statistik nach Zeit |
 | [B-364](archiv/B-364-planung-hierarchie-optik.md) | SRV | Idee | mittel | erledigt | – | Die Planungsseite zeigt Projekt, Sprint und Session als klar unterscheidbare Ebenen |
 | [B-359](archiv/B-359-planung-in-projekte.md) | INF | Schuld | hoch | erledigt | PJ3 | Die offene Planung ist in Projekte umgezogen, erledigte und zusammengelegte Sprints sind abgeschlossen |
+| [B-322](archiv/B-322-texte-werkzeug-seiten.md) | PLAT | Schuld | niedrig | erledigt | PL2 | Die Werkzeug-Seiten holen ihre Texte aus den zentralen Textdateien |

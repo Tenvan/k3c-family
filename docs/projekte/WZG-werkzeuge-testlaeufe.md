@@ -17,7 +17,7 @@ In Abarbeitungs-Reihenfolge; der erste nicht erledigte Sprint ist der nächste. 
 | M11 | MCP-Seite: alle Tools mit Statistik, Zeitfilter | erledigt |
 | DBG3 | Dungeon-Master-Seite /dm | erledigt |
 | MON2 | Monitoring-Seite mit Dashboard | erledigt |
-| PL2 | Werkzeug-Seiten in der gewählten Sprache | aktiv |
+| PL2 | Werkzeug-Seiten in der gewählten Sprache | erledigt |
 | DV1 | Domäne DEV für k3c-dev, Sprint ohne Prio und Einschiebbar | geplant |
 
 ## Nicht-Ziele
