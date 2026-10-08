@@ -1,6 +1,6 @@
 # PJ1.4 · Review
 
-- **Status:** in Arbeit
+- **Status:** fertig
 - **Typ:** Review
 - **Agent:** autonom
 - **Domäne:** INF
@@ -51,4 +51,9 @@ Manuelle Prüfungen (Browser, Xbox, TV) nur, wenn diese Datei sie nennt und 🧑
 
 ## Ergebnis
 
-–
+- **Nachweis:** AC-01 bis AC-09 haben je einen Nachweis in PJ1.1 (AC-02, AC-06), PJ1.2 (AC-01, AC-03, AC-05, AC-08, AC-09) und PJ1.3 (AC-04, AC-07); kein Kriterium umformuliert.
+- **Diff:** `git diff --numstat origin/develop...origin/sprint/pj1 -- docs/backlog docs/sprints` weicht nur bei B-338, B-355, B-356, dem Fahrplan, den PJ1-Sprintdateien selbst ab; alle anderen Planungsdateien haben genau eine eingefügte Feldzeile.
+- **Übergangsregel:** Arbeitsweise („Übergang Projekte“) und `tests/planning.test.ts` (Regel 8: ein aktiver Sprint je Domäne nur für `Projekt: –`) passen zusammen.
+- **Befunde:** keine schweren; keine neuen Tickets. Dokumentierte Abweichungen: `tests/planningDocs.ts` als gemeinsame Hilfen, Freigabe-Commit per cherry-pick, `Prio`/`Einschiebbar` bleiben bis PJ2.
+- **Geprüft:** `check_run task:check` grün (vor und nach den Änderungen); `task check:go` nicht betroffen, da keine Go-Änderung.
+- **Version:** v0.14.1 vorgeschlagen (aktuell v0.14.0), kein Tag gesetzt.

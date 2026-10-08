@@ -1,6 +1,6 @@
 # PJ1 · INF · Projekte, Rang und Domäne je Session in Regeln, Vorlagen und Planungstest
 
-- **Status:** aktiv
+- **Status:** erledigt
 - **Projekt:** –
 - **Domäne:** INF
 - **Prio:** hoch
@@ -74,9 +74,12 @@ keine
 | PJ1.1 | `PJ1.1-regeln-glossar.md` | Umsetzung | autonom | fertig |
 | PJ1.2 | `PJ1.2-vorlagen-felder.md` | Umsetzung | autonom | fertig |
 | PJ1.3 | `PJ1.3-planungstest-regeln.md` | Umsetzung | autonom | fertig |
-| PJ1.4 | `PJ1.4-review.md` | Review | autonom | in Arbeit |
+| PJ1.4 | `PJ1.4-review.md` | Review | autonom | fertig |
 
 ## Abnahme
 
-Wird von der Review-Session (Doku-Sprint: letzte Session) ausgefüllt, höchstens fünf Zeilen: Datum, Kriterien
-(Verweis auf Session-Ergebnisse), behobene Befunde, neue Tickets. Bis dahin `–`.
+2026-10-08, Review PJ1.4: AC-01, AC-02, AC-06 und AC-09 siehe PJ1.1 und PJ1.2, AC-03, AC-05 und AC-08 siehe PJ1.2, AC-04 und AC-07 siehe PJ1.3 (alle mit Nachweis, nichts umformuliert).
+Diff: 876 Dateien, je Planungsdatei genau eine Feldzeile; `task check` grün (`check:go` entfällt, keine Go-Änderung).
+Übergangsregel („je Domäne ein aktiver Sprint“ nur für Sprints mit `Projekt: –`) in Arbeitsweise und Test deckungsgleich.
+Behobene Befunde: keine (keine schweren Befunde). Neue Tickets: keine. B-338 bleibt `eingeplant` (AC-02 gehört zu PJ2).
+Version: v0.14.1 vorgeschlagen (Patch: Doku, Planung und Planungstest)

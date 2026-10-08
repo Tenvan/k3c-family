@@ -137,8 +137,6 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-352](B-352-botfeed-lan-zuschauer.md) | SRV | Idee | niedrig | offen | – | `sim_test` hängt sich an Clients auf der Xbox an, ohne einen Platz im Raum zu belegen |
 | [B-353](B-353-bot-eingabe-einbinden.md) | CLI | Idee | hoch | eingeplant | TR3 | Das Spiel fragt die Bot-Eingabe ab und setzt ihre Spieler ohne Tastendruck in den Raum |
 | [B-354](B-354-bot-eingabe-impulse-frist.md) | PLAT | Problem | mittel | offen | – | Die Bot-Eingabe verliert keine kurzen Drücke und hält bei stummem Feed an |
-| [B-355](B-355-projekte-mit-rang.md) | INF | Idee | hoch | eingeplant | PJ1 | Projekte bündeln Sprints zu Themen und werden nach Rang abgearbeitet |
-| [B-356](B-356-domaene-je-session.md) | INF | Idee | hoch | eingeplant | PJ1 | Eine Session gehört zu genau einer Domäne, ein Sprint darf mehrere Domänen nacheinander enthalten |
 | [B-357](B-357-k3c-dev-projekte.md) | SRV | Idee | hoch | eingeplant | PJ2 | Die plan-Tools von k3c-dev legen Projekte an, ordnen Sprints und Tickets zu und setzen den Rang |
 | [B-358](B-358-workbench-projekte.md) | SRV | Idee | hoch | eingeplant | PJ2 | Die Planungsseite der Workbench zeigt Projekte nach Rang mit ihren Sprints |
 | [B-359](B-359-planung-in-projekte.md) | INF | Schuld | hoch | eingeplant | PJ3 | Die offene Planung ist in Projekte umgezogen, erledigte und zusammengelegte Sprints sind abgeschlossen |
@@ -331,3 +329,5 @@ Zeile in diesen Abschnitt.
 | [B-213](archiv/B-213-markdown-listen-haekchen.md) | SRV | Problem | niedrig | erledigt | M9 | MarkdownView in k3c-dev zeigt nummerierte Listen und Häkchen wie die alte Planungsseite |
 | [B-348](archiv/B-348-sim-test-workbench.md) | SRV | Idee | hoch | erledigt | TR1 | Jeder Testlauf startet und läuft über das MCP-Tool `sim_test` |
 | [B-349](archiv/B-349-bot-eingabe-client.md) | PLAT | Idee | hoch | erledigt | TR2 | Bots steuern im Client die Monarchen über die Bot-Eingabe |
+| [B-355](archiv/B-355-projekte-mit-rang.md) | INF | Idee | hoch | erledigt | PJ1 | Projekte bündeln Sprints zu Themen und werden nach Rang abgearbeitet |
+| [B-356](archiv/B-356-domaene-je-session.md) | INF | Idee | hoch | erledigt | PJ1 | Eine Session gehört zu genau einer Domäne, ein Sprint darf mehrere Domänen nacheinander enthalten |
