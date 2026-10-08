@@ -8,9 +8,9 @@
 - **Einschiebbar:** nein
 - **Tickets:** B-359
 - **Start-Commit:** – (wird beim Aktivieren gesetzt: `git rev-parse --short origin/develop`)
-- **Spec:** Entwurf
+- **Spec:** freigegeben
 - **Revision:** 1
-- **Freigabe:** –
+- **Freigabe:** 2026-10-08, Chat, durch 🧑, Revision 1
 
 ## Ausgangslage
 
@@ -59,7 +59,7 @@ Siehe `B-359 › Ausnahme- und Fehlerfälle`.
 
 ## Offene Fragen
 
-Beim Bereitmachen 2026-10-08 aufgefallen; Vorschlag steht in den Sessions, Bestätigung mit der Freigabe:
+Beim Bereitmachen 2026-10-08 aufgefallen, alle Vorschläge von 🧑 mit der Freigabe 2026-10-08 bestätigt:
 
 - **Zwei aktive Sprints in WZ:** M11 und TR3 sind aktiv mit offenem Review; der Planungstest erlaubt je Projekt einen. Vorschlag: PJ3.1 hängt von M11.2 und TR3.2 ab (autonom, SRV und CLI, parallel zu nichts in INF).
 - **PRZ während PJ3:** Ein erledigtes Projekt mit aktivem Sprint widerspricht der Regel. Vorschlag: PRZ aktiv mit Rang 10 (hinter REL), PJ3.4 setzt es auf `erledigt`.
