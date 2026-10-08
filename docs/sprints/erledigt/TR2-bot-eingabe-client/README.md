@@ -1,6 +1,7 @@
 # TR2 · PLAT · Bot-Eingabe im Client für Testläufe
 
 - **Status:** erledigt
+- **Projekt:** –
 - **Domäne:** PLAT
 - **Prio:** hoch
 - **Reife:** bereit

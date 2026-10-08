@@ -3,6 +3,7 @@
 - **Status:** offen
 - **Typ:** Review
 - **Agent:** autonom
+- **Domäne:** SIM
 - **Umgebung:** offline
 - **Branch:** sk1/4-review
 - **Abhängig von:** SK1.2, SK1.3

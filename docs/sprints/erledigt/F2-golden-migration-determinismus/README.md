@@ -1,6 +1,7 @@
 # F2 · INF · Golden-Ablauf, Spielstand-Migration und Determinismus
 
 - **Status:** erledigt
+- **Projekt:** –
 - **Domäne:** INF
 - **Prio:** hoch
 - **Reife:** bereit

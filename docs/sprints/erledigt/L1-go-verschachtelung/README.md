@@ -1,6 +1,7 @@
 # L1 · INF · Go-Verschachtelung als Tiefe prüfen
 
 - **Status:** erledigt
+- **Projekt:** –
 - **Domäne:** INF
 - **Prio:** mittel
 - **Reife:** bereit

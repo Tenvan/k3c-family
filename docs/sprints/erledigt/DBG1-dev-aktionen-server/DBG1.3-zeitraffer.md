@@ -3,6 +3,7 @@
 - **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
+- **Domäne:** SRV
 - **Umgebung:** offline
 - **Branch:** dbg1/3-zeitraffer
 - **Abhängig von:** DBG1.2

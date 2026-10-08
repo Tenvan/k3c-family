@@ -3,6 +3,7 @@
 - **Status:** offen
 - **Typ:** Review
 - **Agent:** autonom
+- **Domäne:** CLI
 - **Umgebung:** live
 - **Branch:** tr3/2-review
 - **Abhängig von:** TR3.1

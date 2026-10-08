@@ -3,6 +3,7 @@
 - **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
+- **Domäne:** PLAT
 - **Umgebung:** live
 - **Branch:** gr6/2-cc-by-seite
 - **Abhängig von:** GR6.1

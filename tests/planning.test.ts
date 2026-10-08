@@ -25,9 +25,10 @@ const ENV = ['offline', 'live', '?']; // Umgebung: offline ist worktree-tauglich
 const ALLOWED = {
   ticket: { Domäne: DOMAINS, Typ: ['Idee', 'Problem', 'Schuld', 'Frage'], Prio: PRIO, Umgebung: ENV,
     Status: ['offen', 'eingeplant', 'erledigt', 'verworfen'], Spec: SPEC },
-  sprint: { Status: ['geplant', 'aktiv', 'erledigt'], Domäne: DOMAINS, Prio: PRIO, Reife: ['Entwurf', 'bereit'], Einschiebbar: ['nein', 'ja'],
+  sprint: { Status: ['geplant', 'aktiv', 'erledigt'], Prio: PRIO, Reife: ['Entwurf', 'bereit'], Einschiebbar: ['nein', 'ja'],
     Spec: SPEC },
-  session: { Status: ['offen', 'in Arbeit', 'fertig', 'blockiert'], Typ: ['Umsetzung', 'Review', 'Workshop'], Agent: ['autonom', 'Mensch'], Umgebung: ENV },
+  session: { Status: ['offen', 'in Arbeit', 'fertig', 'blockiert', 'verworfen'], Typ: ['Umsetzung', 'Review', 'Workshop'],
+    Agent: ['autonom', 'Mensch'], Domäne: DOMAINS, Umgebung: ENV },
 } as const;
 type Kind = keyof typeof ALLOWED;
 
@@ -161,6 +162,9 @@ describe('Sprints', () => {
     const acs = checkSpec(text, fields, path);
     const id = title(text) ?? '';
     expect(dir.startsWith(`${id}-`), `${path}: Ordnername beginnt mit ${id}-`).toBe(true);
+    const domains = fields.Domäne.split(/,\s*/);
+    for (const d of domains) expect(DOMAINS, `${path}: Domäne "${d}"`).toContain(d);
+    expect(new Set(domains).size, `${path}: Domänen ohne Dopplung`).toBe(domains.length);
     expect(text, `${path}: Domäne in der Überschrift`).toMatch(new RegExp(`^# ${id} · ${fields.Domäne} · `));
     expect(fields.Status, `${path}: Status passt zum Ordner`).toBe(state);
     for (const ticket of ids(fields.Tickets)) expect(ticketIds, `${path}: ${ticket}`).toContain(ticket);

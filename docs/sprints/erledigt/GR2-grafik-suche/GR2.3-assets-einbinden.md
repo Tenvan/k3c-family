@@ -3,6 +3,7 @@
 - **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
+- **Domäne:** CLI
 - **Umgebung:** live
 - **Branch:** gr2/3-assets-einbinden
 - **Abhängig von:** GR2.2

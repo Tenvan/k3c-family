@@ -3,6 +3,7 @@
 - **Status:** offen
 - **Typ:** Umsetzung
 - **Agent:** autonom
+- **Domäne:** CLI
 - **Umgebung:** live
 - **Branch:** so4/2-zustandsautomat-crossfade
 - **Abhängig von:** SO4.1, SO1.4

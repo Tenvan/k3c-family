@@ -3,6 +3,7 @@
 - **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
+- **Domäne:** PLAT
 - **Umgebung:** live
 - **Branch:** lp1/1-entwicklerseite
 - **Abhängig von:** –

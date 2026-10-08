@@ -1,6 +1,7 @@
 # RP1 · INF · Repo-Hygiene: Branches aufräumen, Altlasten, Regeln
 
 - **Status:** geplant
+- **Projekt:** –
 - **Domäne:** INF
 - **Prio:** mittel
 - **Reife:** Entwurf

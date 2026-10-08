@@ -1,6 +1,7 @@
 # MON1 · SRV · Metrik-Sammler und /api/metrics
 
 - **Status:** erledigt
+- **Projekt:** –
 - **Domäne:** SRV
 - **Prio:** hoch
 - **Reife:** bereit

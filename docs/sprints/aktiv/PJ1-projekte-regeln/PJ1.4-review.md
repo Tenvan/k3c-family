@@ -3,6 +3,7 @@
 - **Status:** offen
 - **Typ:** Review
 - **Agent:** autonom
+- **Domäne:** INF
 - **Umgebung:** offline
 - **Branch:** pj1/4-review
 - **Abhängig von:** PJ1.3

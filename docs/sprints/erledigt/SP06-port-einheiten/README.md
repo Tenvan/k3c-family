@@ -1,6 +1,7 @@
 # SP06 · SIM · Port II – Gegner, Wellen, Reisen, Kampagne
 
 - **Status:** erledigt
+- **Projekt:** –
 - **Domäne:** SIM
 - **Prio:** hoch
 - **Reife:** bereit

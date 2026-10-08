@@ -3,6 +3,7 @@
 - **Status:** offen
 - **Typ:** Workshop
 - **Agent:** Mensch
+- **Domäne:** SRV
 - **Umgebung:** live
 - **Branch:** lt1/3-messlauf-pi
 - **Abhängig von:** LT1.2

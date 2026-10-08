@@ -3,6 +3,7 @@
 - **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
+- **Domäne:** SRV
 - **Umgebung:** offline
 - **Branch:** tr1/2-online-headless
 - **Abhängig von:** TR1.1

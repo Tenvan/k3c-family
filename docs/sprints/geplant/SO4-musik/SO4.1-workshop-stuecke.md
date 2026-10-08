@@ -3,6 +3,7 @@
 - **Status:** offen
 - **Typ:** Workshop
 - **Agent:** Mensch
+- **Domäne:** CLI
 - **Umgebung:** live
 - **Branch:** so4/1-workshop-stuecke
 - **Abhängig von:** SO1.4, SO3.2

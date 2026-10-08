@@ -1,6 +1,7 @@
 # M6 · SRV · k3c-dev VI: MCP-Tools für Räume und Simulation
 
 - **Status:** erledigt
+- **Projekt:** –
 - **Domäne:** SRV
 - **Prio:** mittel
 - **Reife:** bereit

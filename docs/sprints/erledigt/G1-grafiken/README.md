@@ -1,6 +1,7 @@
 # G1 · PLAT · Referenzseite für die gewählten Grafik-Packs
 
 - **Status:** erledigt
+- **Projekt:** –
 - **Domäne:** PLAT
 - **Prio:** mittel
 - **Reife:** bereit

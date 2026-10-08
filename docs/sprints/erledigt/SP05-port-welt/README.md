@@ -1,6 +1,7 @@
 # SP05 · SIM · Port I – Welt, Zyklus, Truppen, Wirtschaft
 
 - **Status:** erledigt
+- **Projekt:** –
 - **Domäne:** SIM
 - **Prio:** hoch
 - **Reife:** bereit

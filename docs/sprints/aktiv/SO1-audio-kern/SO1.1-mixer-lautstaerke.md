@@ -3,6 +3,7 @@
 - **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
+- **Domäne:** CLI
 - **Umgebung:** live
 - **Branch:** so1/1-mixer-lautstaerke
 - **Abhängig von:** –

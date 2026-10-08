@@ -6,6 +6,7 @@
 - **Umgebung:** offline
 - **Status:** offen
 - **Sprint:** K1
+- **Projekt:** –
 - **Erstellt:** 2026-10-06
 - **Spec:** Entwurf
 - **Revision:** 1

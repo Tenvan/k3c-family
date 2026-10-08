@@ -1,6 +1,7 @@
 # U4 · CLI · Debug-Overlay
 
 - **Status:** erledigt
+- **Projekt:** –
 - **Domäne:** CLI
 - **Prio:** mittel
 - **Reife:** bereit

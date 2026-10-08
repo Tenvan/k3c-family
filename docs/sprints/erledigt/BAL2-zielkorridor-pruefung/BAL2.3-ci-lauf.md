@@ -3,6 +3,7 @@
 - **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
+- **Domäne:** SIM
 - **Umgebung:** offline
 - **Branch:** bal2/3-ci-lauf
 - **Abhängig von:** BAL2.2

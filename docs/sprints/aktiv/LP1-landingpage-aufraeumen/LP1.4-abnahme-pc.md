@@ -3,6 +3,7 @@
 - **Status:** offen
 - **Typ:** Workshop
 - **Agent:** Mensch
+- **Domäne:** PLAT
 - **Umgebung:** live
 - **Branch:** lp1/4-abnahme-pc
 - **Abhängig von:** LP1.1, LP1.2

@@ -3,6 +3,7 @@
 - **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
+- **Domäne:** PLAT
 - **Umgebung:** live
 - **Branch:** lp1/2-neues-spiel-nachweis
 - **Abhängig von:** LP1.1

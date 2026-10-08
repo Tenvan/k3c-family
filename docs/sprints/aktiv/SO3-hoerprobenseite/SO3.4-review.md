@@ -3,6 +3,7 @@
 - **Status:** fertig
 - **Typ:** Review
 - **Agent:** autonom
+- **Domäne:** PLAT
 - **Umgebung:** live
 - **Branch:** so3/4-review
 - **Abhängig von:** SO3.2

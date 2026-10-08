@@ -3,6 +3,7 @@
 - **Status:** fertig
 - **Typ:** Review
 - **Agent:** autonom
+- **Domäne:** PLAT
 - **Umgebung:** offline
 - **Branch:** tr2/2-review
 - **Abhängig von:** TR2.1

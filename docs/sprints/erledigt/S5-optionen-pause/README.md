@@ -1,6 +1,7 @@
 # S5 · CLI · Optionen- und Pause-Szene
 
 - **Status:** erledigt
+- **Projekt:** –
 - **Domäne:** CLI
 - **Prio:** hoch
 - **Reife:** bereit

@@ -1,6 +1,7 @@
 # W10 · SRV · Kämpfer-Zahl und Truppen-Limit im Zustand
 
 - **Status:** erledigt
+- **Projekt:** –
 - **Domäne:** SRV
 - **Prio:** hoch
 - **Reife:** bereit

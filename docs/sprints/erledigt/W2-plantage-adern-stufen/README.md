@@ -1,6 +1,7 @@
 # W2 · SIM · Plantage, Adern, Stufenbreite und Mine
 
 - **Status:** erledigt
+- **Projekt:** –
 - **Domäne:** SIM
 - **Prio:** hoch
 - **Reife:** bereit

@@ -1,6 +1,7 @@
 # PJ3 · INF · Planung in Projekte umziehen und aufräumen
 
 - **Status:** geplant
+- **Projekt:** –
 - **Domäne:** INF
 - **Prio:** hoch
 - **Reife:** Entwurf

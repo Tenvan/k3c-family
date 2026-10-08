@@ -1,6 +1,7 @@
 # S6 · CLI · Onboarding „Erste Nacht geführt“ und Controller-Glyphen
 
 - **Status:** erledigt
+- **Projekt:** –
 - **Domäne:** CLI
 - **Prio:** hoch
 - **Reife:** bereit

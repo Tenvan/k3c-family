@@ -3,6 +3,7 @@
 - **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
+- **Domäne:** INF
 - **Umgebung:** live
 - **Branch:** rl1/1-abschnitt-release
 - **Abhängig von:** –

@@ -1,6 +1,7 @@
 # W0 · SIM · Bauplätze aus dem Seed
 
 - **Status:** erledigt
+- **Projekt:** –
 - **Domäne:** SIM
 - **Prio:** hoch
 - **Reife:** bereit

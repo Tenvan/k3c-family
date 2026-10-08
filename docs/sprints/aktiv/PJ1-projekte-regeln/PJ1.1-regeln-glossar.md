@@ -3,6 +3,7 @@
 - **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
+- **Domäne:** INF
 - **Umgebung:** offline
 - **Branch:** pj1/1-regeln-glossar
 - **Abhängig von:** –

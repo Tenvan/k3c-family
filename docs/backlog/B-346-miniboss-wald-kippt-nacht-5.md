@@ -6,6 +6,7 @@
 - **Umgebung:** offline
 - **Status:** eingeplant
 - **Sprint:** RG3
+- **Projekt:** –
 - **Erstellt:** 2026-10-07
 - **Spec:** Entwurf
 - **Revision:** 1

@@ -1,6 +1,7 @@
 # SP11 · SRV · Raspberry Pi
 
 - **Status:** erledigt
+- **Projekt:** –
 - **Domäne:** SRV
 - **Prio:** hoch
 - **Reife:** bereit

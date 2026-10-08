@@ -3,6 +3,7 @@
 - **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
+- **Domäne:** REG
 - **Umgebung:** offline
 - **Branch:** br1/1-vorbereitung-messung
 - **Abhängig von:** –

@@ -3,6 +3,7 @@
 - **Status:** offen
 - **Typ:** Umsetzung
 - **Agent:** autonom
+- **Domäne:** INF
 - **Umgebung:** offline
 - **Branch:** pj1/3-planungstest-regeln
 - **Abhängig von:** PJ1.2

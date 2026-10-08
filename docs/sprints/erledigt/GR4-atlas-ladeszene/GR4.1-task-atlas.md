@@ -3,6 +3,7 @@
 - **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
+- **Domäne:** INF
 - **Umgebung:** offline
 - **Branch:** gr4/1-task-atlas
 - **Abhängig von:** –

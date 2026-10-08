@@ -3,6 +3,7 @@
 - **Status:** offen
 - **Typ:** Review
 - **Agent:** autonom
+- **Domäne:** PLAT
 - **Umgebung:** live
 - **Branch:** pl1/4-review
 - **Abhängig von:** PL1.1, PL1.2, PL1.3

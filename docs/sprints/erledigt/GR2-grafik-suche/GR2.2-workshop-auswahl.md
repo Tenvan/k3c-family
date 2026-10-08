@@ -3,6 +3,7 @@
 - **Status:** fertig
 - **Typ:** Workshop
 - **Agent:** Mensch
+- **Domäne:** CLI
 - **Umgebung:** live
 - **Branch:** gr2/2-workshop-auswahl
 - **Abhängig von:** GR2.1

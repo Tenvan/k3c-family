@@ -3,6 +3,7 @@
 - **Status:** offen
 - **Typ:** Umsetzung
 - **Agent:** autonom
+- **Domäne:** SRV
 - **Umgebung:** live
 - **Branch:** sv1/4-knopf-level-betrachter
 - **Abhängig von:** SV1.3

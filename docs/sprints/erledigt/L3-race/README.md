@@ -1,6 +1,7 @@
 # L3 · INF · Race-Detector für die nebenläufigen Go-Pakete
 
 - **Status:** erledigt
+- **Projekt:** –
 - **Domäne:** INF
 - **Prio:** hoch
 - **Reife:** bereit

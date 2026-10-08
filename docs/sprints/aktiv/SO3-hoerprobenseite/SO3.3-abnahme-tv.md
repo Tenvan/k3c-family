@@ -3,6 +3,7 @@
 - **Status:** offen
 - **Typ:** Workshop
 - **Agent:** Mensch
+- **Domäne:** PLAT
 - **Umgebung:** live
 - **Branch:** so3/3-abnahme-tv
 - **Abhängig von:** SO3.2

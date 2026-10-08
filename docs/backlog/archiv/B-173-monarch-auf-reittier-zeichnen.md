@@ -6,6 +6,7 @@
 - **Umgebung:** live
 - **Status:** erledigt
 - **Sprint:** S7
+- **Projekt:** –
 - **Erstellt:** 2026-10-03
 - **Spec:** freigegeben
 - **Revision:** 1

@@ -3,6 +3,7 @@
 - **Status:** offen
 - **Typ:** Workshop
 - **Agent:** Mensch
+- **Domäne:** CLI
 - **Umgebung:** live
 - **Branch:** so2/5-hoerprobe-tv
 - **Abhängig von:** SO2.3

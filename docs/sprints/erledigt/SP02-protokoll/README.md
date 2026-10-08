@@ -1,6 +1,7 @@
 # SP02 · SRV · Protokoll v2 & Raummodell
 
 - **Status:** erledigt
+- **Projekt:** –
 - **Domäne:** SRV
 - **Prio:** hoch
 - **Reife:** bereit

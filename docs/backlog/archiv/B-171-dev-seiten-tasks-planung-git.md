@@ -6,6 +6,7 @@
 - **Umgebung:** live
 - **Status:** erledigt
 - **Sprint:** M7
+- **Projekt:** –
 - **Erstellt:** 2026-10-03
 - **Spec:** rückwirkend
 - **Revision:** 2

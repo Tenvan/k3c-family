@@ -1,8 +1,9 @@
 # PJ1.2 · Vorlagen mit Projekt, Domäne und verworfen, Felder in allen Planungsdateien
 
-- **Status:** in Arbeit
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
+- **Domäne:** INF
 - **Umgebung:** offline
 - **Branch:** pj1/2-vorlagen-felder
 - **Abhängig von:** PJ1.1
@@ -46,12 +47,12 @@ Neue Prüfregeln für Rang, Projekt-Zuordnung und Domänen-Sperre (PJ1.3); Proje
 
 ## Fertig, wenn
 
-- [ ] AC-01: `docs/vorlagen/projekt.md` und `docs/projekte/README.md` existieren (Glossar-Teil in PJ1.1).
-- [ ] AC-03: Vorlagen Sprint und Ticket haben `Projekt`, alle Sprints und Tickets tragen es.
-- [ ] AC-05: Vorlage Session hat `Domäne`, Vorlage Sprint nennt `Domäne` als Liste.
-- [ ] AC-08: Alle Session-Dateien tragen `Domäne` = Domäne ihres Sprints.
-- [ ] AC-09: Vorlage und Test erlauben `verworfen` für Sessions.
-- [ ] `task test -- planning` und `task check` grün.
+- [x] AC-01: `docs/vorlagen/projekt.md` und `docs/projekte/README.md` existieren (Glossar-Teil in PJ1.1).
+- [x] AC-03: Vorlagen Sprint und Ticket haben `Projekt`, alle Sprints und Tickets tragen es.
+- [x] AC-05: Vorlage Session hat `Domäne`, Vorlage Sprint nennt `Domäne` als Liste.
+- [x] AC-08: Alle Session-Dateien tragen `Domäne` = Domäne ihres Sprints.
+- [x] AC-09: Vorlage und Test erlauben `verworfen` für Sessions.
+- [x] `task test -- planning` und `task check` grün.
 
 ## Prüfen
 
@@ -64,4 +65,12 @@ Manuelle Prüfungen (Browser, Xbox, TV) nur, wenn diese Datei sie nennt und 🧑
 
 ## Ergebnis
 
-–
+- **AC-01 umgesetzt:** `docs/vorlagen/projekt.md` (Felder `Status`, `Rang`, `Ziel-Tickets`; Abschnitte Ziel, Sprints, Nicht-Ziele, Notizen) und `docs/projekte/README.md` (Abschnitte Aktiv, Ruht, Erledigt, noch ohne Projekte) angelegt. Den Glossar-Teil hat PJ1.1 erledigt.
+- **AC-03 umgesetzt:** Die Vorlagen für Ticket (nach `Sprint`) und Sprint (nach `Status`) haben das Feld `Projekt: – (oder Kürzel …)`. Alle 314 Tickets und 136 Sprint-READMEs tragen `- **Projekt:** –`.
+- **AC-05 umgesetzt:** Die Vorlage Session hat `Domäne` (nach `Agent`, genau eine). In der Vorlage Sprint heißt es bei `Domäne` „eine oder mehrere, kommagetrennt“. Bei `Prio` und `Einschiebbar` steht der Übergangshinweis (gilt nur ohne Projekt, entfällt mit PJ2).
+- **AC-08 umgesetzt:** Alle 415 Session-Dateien tragen `- **Domäne:**` mit der Domäne ihres Sprints. Geprüft mit `git diff --numstat`: Jede Planungsdatei hat genau +1 Zeile, nur die Vorlagen weichen ab. Stichproben aus `backlog/archiv/` (B-001), `sprints/erledigt/` (K1.1) und `sprints/aktiv/` (W6) sind in Ordnung.
+- **AC-09 umgesetzt:** Die Vorlage Session erlaubt `verworfen`, ebenso `tests/planning.test.ts` (`ALLOWED.session.Status`).
+- **Test angepasst:** Session-`Domäne` steht in `ALLOWED`. Die Sprint-`Domäne` darf eine Liste sein, jedes Element aus `DOMAINS` und ohne Dopplung.
+- **Geprüft:** `task test -- planning` ist grün, `task check` ist grün (1543 Tests). Beides lief in der Shell, weil k3c-dev nicht erreichbar war (ECONNREFUSED).
+- **Werkzeug:** Die Felder setzte ein einmaliges Node-Skript im Scratchpad, das nicht eingecheckt ist. Es fügt die Zeile nach dem Bezugsfeld ein und behält das Zeilenende der Datei. Der erste Lauf brach nach den Tickets an einem Regex-Fehler ab, der zweite Lauf war idempotent und hat Sprints und Sessions ergänzt.
+- **Hinweis für PJ2:** `plan_create` übernimmt Felder ohne Vorgabe als Vorlagentext. Eine neue Session bekäme `Domäne: REG | SIM | …` und wäre damit ungültig. Bis PJ2 deshalb `Domäne` beim Anlegen immer mitgeben.

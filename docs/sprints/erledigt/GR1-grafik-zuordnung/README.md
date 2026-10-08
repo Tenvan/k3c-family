@@ -1,6 +1,7 @@
 # GR1 · CLI · Grafik-Zuordnungstabelle
 
 - **Status:** erledigt
+- **Projekt:** –
 - **Domäne:** CLI
 - **Prio:** hoch
 - **Reife:** bereit

@@ -3,6 +3,7 @@
 - **Status:** offen
 - **Typ:** Workshop
 - **Agent:** Mensch
+- **Domäne:** INF
 - **Umgebung:** live
 - **Branch:** rl1/2-probelauf
 - **Abhängig von:** RL1.1

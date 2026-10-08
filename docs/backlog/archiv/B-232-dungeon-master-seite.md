@@ -6,6 +6,7 @@
 - **Umgebung:** live
 - **Status:** erledigt
 - **Sprint:** DBG3
+- **Projekt:** –
 - **Erstellt:** 2026-10-04
 - **Spec:** freigegeben
 - **Revision:** 2

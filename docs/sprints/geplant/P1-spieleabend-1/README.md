@@ -1,6 +1,7 @@
 # P1 · REG · Spieleabend 1
 
 - **Status:** geplant
+- **Projekt:** –
 - **Domäne:** REG
 - **Prio:** niedrig
 - **Reife:** bereit
