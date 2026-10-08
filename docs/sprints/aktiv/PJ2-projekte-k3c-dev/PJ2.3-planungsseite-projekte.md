@@ -1,6 +1,6 @@
 # PJ2.3 · Planungsseite nach Projekten
 
-- **Status:** offen
+- **Status:** in Arbeit
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** SRV
