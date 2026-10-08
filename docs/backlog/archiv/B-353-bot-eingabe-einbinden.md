@@ -4,7 +4,7 @@
 - **Typ:** Idee
 - **Prio:** hoch
 - **Umgebung:** live
-- **Status:** eingeplant
+- **Status:** erledigt
 - **Sprint:** TR3
 - **Projekt:** –
 - **Erstellt:** 2026-10-07
