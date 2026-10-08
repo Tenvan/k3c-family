@@ -97,7 +97,8 @@ func registerSimTest(s *Server) {
 		Name: "sim_test",
 		Description: "Jeder Testlauf (Balancing, Performance, Stabilität) über ein Tool: action start (sofort zurück mit ID), " +
 			"status (≤ 10 Zeilen), stop, list. mode offline (Mocks im Prozess) oder online (Spielserver des Checkouts), " +
-			"clients 0 = headless, 1–4 = laufende Clients mit Bot-Eingabe; focus balance, perf, stability. Bericht unter reports/simtest-<id>/.",
+			"clients 0 = headless, 1–4 = laufende Clients mit Bot-Eingabe; focus balance, perf, stability. Bericht unter reports/simtest-<id>/. " +
+			"Nutze es bei: jedem Balancing-, Performance- oder Stabilitätslauf. Statt: task balance, task load oder Binaries in der Shell.",
 		Annotations: &mcp.ToolAnnotations{OpenWorldHint: new(bool)},
 	}, s.simTest)
 }

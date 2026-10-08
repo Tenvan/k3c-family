@@ -11,32 +11,43 @@ import (
 // Ein neues Tool kommt nur hier hinzu; Zähler, Parameter-Hinweis und Oberfläche lesen es von hier.
 func register(s *Server) {
 	add(s, &mcp.Tool{
-		Name:        "workbench_status",
-		Description: "Zustand von k3c-dev: Adresse, Laufzeit, Aufrufe, Fehler, Clients und parallele Aufrufe.",
+		Name: "workbench_status",
+		Description: "Zustand von k3c-dev: Adresse, Laufzeit, Aufrufe, Fehler, Clients und parallele Aufrufe. " +
+			"Nutze es bei: Werkzeug antwortet seltsam, welcher Checkout gilt, Versionen. Statt: Prozesse und Ports von Hand prüfen.",
 		Annotations: readOnly(),
 	}, s.workbenchStatus)
+	add(s, &mcp.Tool{
+		Name: "notify_ui",
+		Description: "Zeigt dem Nutzer einen Hinweis in der Oberfläche von k3c-dev (level info, success, warn oder error). " +
+			"Nutze es bei: lange Arbeit fertig, Entscheidung oder Freigabe nötig. Statt: auf den Chat hoffen.",
+		Annotations: &mcp.ToolAnnotations{OpenWorldHint: new(bool)},
+	}, s.notifyUI)
 	closed, destructive := false, false
 	add(s, &mcp.Tool{
 		Name: "check_run",
 		Description: "Führt eine Prüfung aus einem festen Katalog aus (task:check, task:test, task:typecheck, task:lint, " +
 			"task:build, task:check:go, go:test, go:lint, dev:test) und antwortet mit Exit-Code, Dauer und nur den Fehlerzeilen. " +
-			"Ersetzt task check, task test und go test in der Shell. Volle Ausgabe: console_tail check:<ziel>.",
+			"Ersetzt task check, task test und go test in der Shell. Volle Ausgabe: console_tail check:<ziel>. " +
+			"Nutze es bei: jeder Prüfung vor einem Abschluss. Statt: task check, task test, go test oder golangci-lint in der Shell; volle Ausgabe über console_tail check:<ziel>.",
 		Annotations: &mcp.ToolAnnotations{DestructiveHint: &destructive, OpenWorldHint: &closed},
 	}, s.checkRun)
 	registerLogs(s)
 	add(s, &mcp.Tool{
-		Name:        "reports_list",
-		Description: "Xbox-Berichte der Gamepad-Testseite (reports/*.json), neueste zuerst: Datum, Gerät, Controller, FPS.",
+		Name: "reports_list",
+		Description: "Xbox-Berichte der Gamepad-Testseite (reports/*.json), neueste zuerst: Datum, Gerät, Controller, FPS. " +
+			"Nutze es bei: neue Berichte von der Xbox finden. Statt: ls reports/.",
 		Annotations: readOnly(),
 	}, s.reportsList)
 	add(s, &mcp.Tool{
-		Name:        "report_read",
-		Description: "Ein Xbox-Bericht verdichtet: Controller mit gesehenen Tasten, FPS je Sprite-Stufe, Vollbild, Zurück-Navigationen.",
+		Name: "report_read",
+		Description: "Ein Xbox-Bericht verdichtet: Controller mit gesehenen Tasten, FPS je Sprite-Stufe, Vollbild, Zurück-Navigationen. " +
+			"Nutze es bei: Controller- oder FPS-Befund eines Berichts. Statt: JSON-Datei lesen.",
 		Annotations: readOnly(),
 	}, s.reportRead)
 	add(s, &mcp.Tool{
-		Name:        "saves_list",
-		Description: "Spielstände (saves/ oder K3C_SAVES_DIR) mit Stufe, Tag, Spielern und Datum, Sicherungen eingeschlossen.",
+		Name: "saves_list",
+		Description: "Spielstände (saves/ oder K3C_SAVES_DIR) mit Stufe, Tag, Spielern und Datum, Sicherungen eingeschlossen. " +
+			"Nutze es bei: welcher Spielstand existiert und wie weit er ist. Statt: saves/ durchsuchen.",
 		Annotations: readOnly(),
 	}, s.savesList)
 	registerServer(s)
@@ -98,19 +109,22 @@ func registerEngine(s *Server) {
 	add(s, &mcp.Tool{
 		Name: "level_generate",
 		Description: "Erzeugt ein Level in-process (engine/level, kein Server nötig): Kopfzeile, eine Zeile je Abschnitt, " +
-			"Objekte nach Art, Warnungen der Prüfung. Gleicher Seed ergibt dasselbe Level wie im Spiel.",
+			"Objekte nach Art, Warnungen der Prüfung. Gleicher Seed ergibt dasselbe Level wie im Spiel. " +
+			"Nutze es bei: Level eines Seeds prüfen. Statt: Server starten und Level-Betrachter öffnen.",
 		Annotations: readOnlyEngine(),
 	}, s.levelGenerate)
 	add(s, &mcp.Tool{
 		Name: "sim_run",
 		Description: "Deterministischer Simulationslauf in-process (engine/sim, kein Server nötig), höchstens 100000 Ticks (30/s): " +
-			"Tag, Welle, Gold, Truppen, Verluste, Ende. Optional Eingaben je Monarch und Tick-Bereich (höchstens 100 Segmente).",
+			"Tag, Welle, Gold, Truppen, Verluste, Ende. Optional Eingaben je Monarch und Tick-Bereich (höchstens 100 Segmente). " +
+			"Nutze es bei: kurzer deterministischer Regel-Check. Statt: go run oder ein Spiel von Hand.",
 		Annotations: readOnlyEngine(),
 	}, s.simRun)
 	add(s, &mcp.Tool{
 		Name: "replay_run",
 		Description: "Spielt eine Replay-Datei des Balancing-Testers (task balance:run -- --replay-dir) in-process ohne Bot ab: " +
-			"Endzustand-Hash, Burgfall-Tick, Vergleich mit der Aufnahme, Warnung bei anderem Datenstand. Nur Dateien im Repo.",
+			"Endzustand-Hash, Burgfall-Tick, Vergleich mit der Aufnahme, Warnung bei anderem Datenstand. Nur Dateien im Repo. " +
+			"Nutze es bei: Replay nachrechnen oder Abweichung finden. Statt: Balancing-Binary in der Shell.",
 		Annotations: readOnlyEngine(),
 	}, s.replayRun)
 }
@@ -125,17 +139,20 @@ func registerServer(s *Server) {
 	add(s, &mcp.Tool{
 		Name: "server_status",
 		Description: "Laufender Go-Server über /api/status: Version, Laufzeit, Räume, Spielstände, Berichte, letzte Abstürze. " +
-			"Token K3C_STATUS_TOKEN, Adresse K3C_SERVER_URL oder 127.0.0.1:K3C_HTTP_PORT.",
+			"Token K3C_STATUS_TOKEN, Adresse K3C_SERVER_URL oder 127.0.0.1:K3C_HTTP_PORT. " +
+			"Nutze es bei: läuft der Spielserver, welche Version, letzte Abstürze. Statt: curl /api/status.",
 		Annotations: ro,
 	}, s.serverStatus)
 	add(s, &mcp.Tool{
-		Name:        "rooms_list",
-		Description: "Laufende Räume des Go-Servers, eine Zeile je Raum: Geräte, Monarchen, Tick und Tick-Dauer (letzter, p99).",
+		Name: "rooms_list",
+		Description: "Laufende Räume des Go-Servers, eine Zeile je Raum: Geräte, Monarchen, Tick und Tick-Dauer (letzter, p99). " +
+			"Nutze es bei: welche Räume laufen und wie schnell sie ticken. Statt: Monitor-Seite oder curl.",
 		Annotations: ro,
 	}, s.roomsList)
 	add(s, &mcp.Tool{
-		Name:        "room_snapshot",
-		Description: "Verdichteter Zustand eines Raums: Tiefe, Tag/Nacht, Welle, Gold je Monarch, Truppen, Gegner, Burg-HP.",
+		Name: "room_snapshot",
+		Description: "Verdichteter Zustand eines Raums: Tiefe, Tag/Nacht, Welle, Gold je Monarch, Truppen, Gegner, Burg-HP. " +
+			"Nutze es bei: Zustand eines Raums während eines Tests. Statt: Dungeon-Master-Seite oder curl.",
 		Annotations: ro,
 	}, s.roomSnapshot)
 }

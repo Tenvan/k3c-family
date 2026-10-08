@@ -32,6 +32,7 @@ const (
 	evMCPStart     = "mcp:start"
 	evMCPCall      = "mcp:call"
 	evTaskState    = "task:state"
+	evNotify       = "ui:notify" // Hinweis eines Agenten (notify_ui)
 	evPlanning     = "planning:changed"
 )
 
@@ -116,7 +117,11 @@ func (a *App) startup(ctx context.Context) {
 		Log: a.log.Logger, Usage: a.tracker, Services: a.ctl, ServicesErr: a.svcErr, Tasks: a,
 		OnCheck: func(st mcpsrv.CheckState) { a.emit(a.ctx, evSourceState, checkSource(st)) },
 		OnStart: func(c mcpsrv.Call) { a.emit(a.ctx, evMCPStart, c) },
-		OnCall:  func(c mcpsrv.Call) { a.emit(a.ctx, evMCPCall, c) }})
+		OnCall:  func(c mcpsrv.Call) { a.emit(a.ctx, evMCPCall, c) },
+		OnNotify: func(n mcpsrv.Notice) {
+			a.log.Info("📨 Hinweis an die Oberfläche: "+n.Title, "ns", "mcp", "level", n.Level)
+			a.emit(a.ctx, evNotify, n)
+		}})
 	err = a.srv.Start()
 	if err != nil {
 		a.log.Error("💥 start fehlgeschlagen", "ns", "main", "error", err.Error())
