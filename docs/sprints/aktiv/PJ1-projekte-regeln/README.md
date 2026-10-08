@@ -74,7 +74,7 @@ keine
 | PJ1.1 | `PJ1.1-regeln-glossar.md` | Umsetzung | autonom | fertig |
 | PJ1.2 | `PJ1.2-vorlagen-felder.md` | Umsetzung | autonom | fertig |
 | PJ1.3 | `PJ1.3-planungstest-regeln.md` | Umsetzung | autonom | fertig |
-| PJ1.4 | `PJ1.4-review.md` | Review | autonom | offen |
+| PJ1.4 | `PJ1.4-review.md` | Review | autonom | in Arbeit |
 
 ## Abnahme
 
