@@ -43,6 +43,7 @@ func register(s *Server) {
 	registerEngine(s)
 	registerSimTest(s)
 	registerServices(s)
+	registerTasks(s)
 	registerPlanning(s)
 }
 

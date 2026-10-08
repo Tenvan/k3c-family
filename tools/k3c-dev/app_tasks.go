@@ -3,10 +3,12 @@ package main
 import (
 	"context"
 	"fmt"
+	"path/filepath"
 	"sync"
 	"time"
 
 	"k3c/tools/k3c-dev/internal/taskcat"
+	"k3c/tools/k3c-dev/internal/taskgate"
 	"k3c/tools/k3c-dev/internal/taskrun"
 )
 
@@ -35,8 +37,13 @@ type taskState struct {
 
 func taskSource(name string) string { return "task:" + name }
 
-// initTasks legt den Runner an; die Ausgabe jedes Laufs liegt als Konsolen-Quelle `task:<name>` im Puffer.
+// initTasks legt Runner und Freigabe-Schloss an; die Ausgabe jedes Laufs liegt als Konsolen-Quelle `task:<name>` im Puffer.
 func (a *App) initTasks() {
+	gate, err := taskgate.Load(filepath.Join(a.root, "tools", "k3c-dev", taskgate.FileName))
+	if err != nil {
+		a.log.Warn("💥 Task-Freigaben nicht lesbar, alles gesperrt: "+err.Error(), "ns", "tasks")
+	}
+	a.taskGate = gate
 	a.taskRunner = taskrun.New(taskrun.Options{
 		Root:  a.root,
 		Out:   func(name, stream, text string) { a.store.Add(taskSource(name), stream, text) },
@@ -128,4 +135,50 @@ func (a *App) TaskStop(name string) (taskrun.Run, error) {
 func (a *App) TaskRuns() []taskrun.Run {
 	a.wait()
 	return a.taskRunner.All()
+}
+
+// TaskList ist der Katalog für task_list (MCP); nach einem Ladefehler der letzte bekannte Stand mit dem Fehler.
+func (a *App) TaskList() ([]taskcat.Task, error) {
+	a.wait()
+	a.tasks.mu.Lock()
+	defer a.tasks.mu.Unlock()
+	if !a.tasks.loaded {
+		a.loadTasksLocked()
+	}
+	return a.tasks.tasks, a.tasks.err
+}
+
+// TaskState ist der Zustand des Freigabe-Schlosses eines Tasks (MCP).
+func (a *App) TaskState(name string) taskgate.State { return a.taskGate.State(name) }
+
+// TaskGates ist der Stand aller Schlösser der Tasks-Seite.
+type TaskGates struct {
+	States  map[string]taskgate.State `json:"states"`
+	Pending int                       `json:"pending"` // Laufzeit-Schalter, die „Schalter übernehmen“ schreibt
+}
+
+// TaskGatesView liefert die Schlösser aller Tasks im Katalog (Binding).
+func (a *App) TaskGatesView() TaskGates {
+	tasks, _ := a.TaskList()
+	g := TaskGates{States: make(map[string]taskgate.State, len(tasks)), Pending: a.taskGate.Pending()}
+	for _, t := range tasks {
+		g.States[t.Name] = a.taskGate.State(t.Name)
+	}
+	return g
+}
+
+// TaskGateToggle schaltet das Schloss eines Tasks bis zum Beenden um (Binding).
+func (a *App) TaskGateToggle(name string) TaskGates {
+	st := a.taskGate.Toggle(name)
+	a.log.Info("🔒 Task-Freigabe "+name+": "+string(st), "ns", "tasks")
+	return a.TaskGatesView()
+}
+
+// TaskGateSave schreibt die Laufzeit-Schalter in die Freigabedatei (Binding).
+func (a *App) TaskGateSave() (TaskGates, error) {
+	if err := a.taskGate.Save(); err != nil {
+		return a.TaskGatesView(), err
+	}
+	a.log.Info("💾 Task-Freigaben übernommen", "ns", "tasks")
+	return a.TaskGatesView(), nil
 }

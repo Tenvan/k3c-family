@@ -1,0 +1,17 @@
+{
+  "allowed": [
+    "atlas",
+    "build",
+    "check",
+    "check:all",
+    "check:dev",
+    "check:go",
+    "dev:frontend",
+    "go:lint",
+    "go:test",
+    "lint",
+    "pages",
+    "test",
+    "typecheck"
+  ]
+}

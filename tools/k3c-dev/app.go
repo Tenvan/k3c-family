@@ -18,6 +18,7 @@ import (
 	"k3c/tools/k3c-dev/internal/mcpsrv"
 	"k3c/tools/k3c-dev/internal/planning"
 	"k3c/tools/k3c-dev/internal/services"
+	"k3c/tools/k3c-dev/internal/taskgate"
 	"k3c/tools/k3c-dev/internal/taskrun"
 	"k3c/tools/k3c-dev/internal/usage"
 )
@@ -68,6 +69,7 @@ type App struct {
 	srv        *mcpsrv.Server
 	tasks      taskState
 	taskRunner *taskrun.Runner
+	taskGate   *taskgate.Gate // Freigabe-Schloss der Tasks (task_start)
 	gh         *github.Client // GitHub-Stand der Planungsseite (B-212)
 
 	mu  sync.Mutex
@@ -111,7 +113,7 @@ func (a *App) startup(ctx context.Context) {
 			a.emit(a.ctx, evSourceState, serviceSource(st))
 		})
 	a.srv = mcpsrv.New(mcpsrv.Config{Root: a.root, Port: a.port, Version: version, Console: store,
-		Log: a.log.Logger, Usage: a.tracker, Services: a.ctl, ServicesErr: a.svcErr,
+		Log: a.log.Logger, Usage: a.tracker, Services: a.ctl, ServicesErr: a.svcErr, Tasks: a,
 		OnCheck: func(st mcpsrv.CheckState) { a.emit(a.ctx, evSourceState, checkSource(st)) },
 		OnStart: func(c mcpsrv.Call) { a.emit(a.ctx, evMCPStart, c) },
 		OnCall:  func(c mcpsrv.Call) { a.emit(a.ctx, evMCPCall, c) }})
