@@ -4,7 +4,7 @@
 - **Projekt:** –
 - **Domäne:** INF
 - **Prio:** hoch
-- **Reife:** Entwurf
+- **Reife:** bereit
 - **Einschiebbar:** nein
 - **Tickets:** B-359
 - **Start-Commit:** – (wird beim Aktivieren gesetzt: `git rev-parse --short origin/develop`)
@@ -59,16 +59,22 @@ Siehe `B-359 › Ausnahme- und Fehlerfälle`.
 
 ## Offene Fragen
 
-keine
+Beim Bereitmachen 2026-10-08 aufgefallen; Vorschlag steht in den Sessions, Bestätigung mit der Freigabe:
+
+- **Zwei aktive Sprints in WZ:** M11 und TR3 sind aktiv mit offenem Review; der Planungstest erlaubt je Projekt einen. Vorschlag: PJ3.1 hängt von M11.2 und TR3.2 ab (autonom, SRV und CLI, parallel zu nichts in INF).
+- **PRZ während PJ3:** Ein erledigtes Projekt mit aktivem Sprint widerspricht der Regel. Vorschlag: PRZ aktiv mit Rang 10 (hinter REL), PJ3.4 setzt es auf `erledigt`.
+- **Fahrplan „nach Projekten“:** k3c-dev findet die Fahrplan-Tabellen über die Überschriften Aktiv/Geplant/Erledigt. Vorschlag: Diese bleiben, `Prio` wird zur Spalte `Projekt`, Zeilen nach Rang sortiert; dass das Tool die Spalte selbst füllt, wird ein SRV-Ticket.
+- **SO4 verliert seine Freigabe**, weil SO5 darin aufgeht (B-359 › Regeln): Spec zurück auf `Entwurf`, neue Freigabe nötig.
+- **Tickets ohne Sprint und ohne Zuordnung in B-359** ordnet PJ3.1 nach Thema zu; was nicht passt, sammelt ein Frage-Ticket.
 
 ## Sessions
 
-Entwurf. Vor dem Aktivieren jede Session als Datei nach `docs/vorlagen/session.md` schreiben, die Kriterien in Klammern werden ihr Feld `Kriterien`.
-
-- PJ3.1 Projekte anlegen, Sprints und Tickets zuordnen, Ziel-Tickets setzen, veraltete Tickets bereinigen (AC-01, AC-04).
-- PJ3.2 Sieben Sprints schließen mit Gerät-Sessions nach HW1, Sprints zusammenlegen, RM1 teilen (AC-02, AC-03).
-- PJ3.3 Fahrplan nach Projekten, § 11 und `CLAUDE.md`, strenge Prüfung einschalten (AC-05, AC-06).
-- PJ3.4 Review (Code-Sprint wegen `tests/planning.test.ts`): alle Kriterien prüfen.
+| Nr. | Datei | Typ | Agent | Status |
+|---|---|---|---|---|
+| PJ3.1 | `PJ3.1-projekte-anlegen.md` | Umsetzung | autonom | offen |
+| PJ3.2 | `PJ3.2-sprints-schliessen-zusammenlegen.md` | Umsetzung | autonom | offen |
+| PJ3.3 | `PJ3.3-fahrplan-strenge-pruefung.md` | Umsetzung | autonom | offen |
+| PJ3.4 | `PJ3.4-review.md` | Review | autonom | offen |
 
 ## Abnahme
 
