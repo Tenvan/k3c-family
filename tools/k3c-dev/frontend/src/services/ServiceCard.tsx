@@ -4,7 +4,6 @@ import { backend, type ServiceStatus } from '../api';
 import { errorText } from '../lib/errors';
 import { StatusBadge } from '../ui/parts';
 import { RoleTags } from '../logs/RoleTags';
-import { LogBox } from './LogBox';
 import { badgeFor, buttonsFor, metricsOf, type Command } from './tables';
 
 const ADOPTED_HINT =
@@ -44,9 +43,11 @@ export function ServiceCard({ s, selected, onSelect }: Props) {
     if (cmd === 'stop' && s.state === 'übernommen') setConfirm(true);
     else void run(cmd);
   };
+  // Nur die ausgelöste Aktion lädt; Stopp bleibt bedienbar, auch während ein Start hängt (Workbench-Spec § 2).
+  const blocked = (cmd: Command) =>
+    cmd === 'stop' ? busy === 'stop' || !(allowed.includes('stop') || busy === 'start') : busy !== null || !allowed.includes(cmd);
   const button = (cmd: Command, label: string, color?: 'red') => (
-    <Button size="2" variant="soft" color={color} loading={busy === cmd}
-      disabled={busy !== null || !allowed.includes(cmd)} onClick={() => press(cmd)}>
+    <Button size="2" variant="soft" color={color} loading={busy === cmd} disabled={blocked(cmd)} onClick={() => press(cmd)}>
       {label}
     </Button>
   );
@@ -64,7 +65,6 @@ export function ServiceCard({ s, selected, onSelect }: Props) {
       {s.description && <p className="svc-desc">{s.description}</p>}
       <HealthUrl url={s.health} />
       <Metrics s={s} />
-      {s.log && <LogBox name={s.name} />}
       <Notes s={s} error={error} />
       <Flex gap="2" mt="auto">
         {button('start', 'Start')}
@@ -76,11 +76,12 @@ export function ServiceCard({ s, selected, onSelect }: Props) {
   );
 }
 
-/** Health-Adresse; http-Adressen öffnen per Klick im Browser (tcp bleibt Text). */
+/** Health-Ziel mit vollem Wert im Tooltip; ohne Adresse „process“. http-Adressen öffnen per Klick im Browser. */
 function HealthUrl({ url }: { url: string }) {
-  if (!url.startsWith('http')) return <code className="svc-health">{url}</code>;
+  if (!url) return <code className="svc-health" title="Prüfung: Prozess läuft">process</code>;
+  if (!url.startsWith('http')) return <code className="svc-health" title={url}>{url}</code>;
   return (
-    <code className="svc-health">
+    <code className="svc-health" title={url}>
       <a className="svc-link" href={url} onClick={(e) => { e.preventDefault(); e.stopPropagation(); backend.openUrl(url); }}>
         {url}
       </a>

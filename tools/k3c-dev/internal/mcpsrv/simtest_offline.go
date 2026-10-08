@@ -107,8 +107,8 @@ func stepFailed(ctx context.Context, res runResult) string {
 
 // finishRun schreibt den eigenen Bericht (Kopf und Kennzahlen) und setzt das Ende im Register.
 func (s *Server) finishRun(run *simRun, state, verdict string, lines []string, dir string) {
-	report := filepath.ToSlash(filepath.Join(dir, "simtest.md"))
-	s.sims.finish(run, state, verdict, lines, report)
+	// Den Bericht erst nennen, wenn die Datei steht: status zeigt „Bericht:“ nur mit run.report.
+	s.sims.finish(run, state, verdict, lines, "")
 	s.sims.mu.Lock()
 	text := "# Testlauf " + run.id + "\n\n" + run.head(time.Now()) + "\n\n- " + strings.Join(run.lines, "\n- ") + "\n"
 	s.sims.mu.Unlock()
@@ -120,6 +120,9 @@ func (s *Server) finishRun(run *simRun, state, verdict string, lines []string, d
 	if err != nil {
 		s.log.Error("❌ testlauf-bericht nicht geschrieben", "ns", "simtest", "id", run.id, "error", err.Error())
 	}
+	s.sims.mu.Lock()
+	run.report = filepath.ToSlash(filepath.Join(dir, "simtest.md"))
+	s.sims.mu.Unlock()
 }
 
 // readBalanceSummary liest den neuesten reports/…/balance-*.json des Laufs.

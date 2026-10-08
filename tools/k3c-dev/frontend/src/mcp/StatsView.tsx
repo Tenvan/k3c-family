@@ -17,14 +17,14 @@ const isRange = (c: Choice): c is Range => (RANGES as readonly string[]).include
 /** Unteransicht `Statistik` (B-065, B-350): Kacheln, Tool-Tabelle und Seitenspalte für Sitzung, Gesamtzeit oder einen
  *  Zeitraum (15 min bis 7 T, aus der Minuten-Zeitreihe). */
 export function StatsView({ usage }: { usage: McpUsage }) {
-  const [choice, setChoice] = useState<Choice>(() => loadPref('statScope', CHOICES, 'session'));
+  const [choice, setChoice] = useState<Choice>(() => loadPref('mcp.statScope', CHOICES, 'session'));
   const now = useNow(30_000);
   const names = usage.allTime.tools.map((t) => t.name);
   const scope = isRange(choice) ? rangeScope(usage.minutes, names, choice, now) : usage[choice];
   return (
     <div className="mcp-stats">
       <SegmentedControl.Root size="1" value={choice} className="mcp-views"
-        onValueChange={(v) => { setChoice(v as Choice); savePref('statScope', v); }}>
+        onValueChange={(v) => { setChoice(v as Choice); savePref('mcp.statScope', v); }}>
         <SegmentedControl.Item value="session">Sitzung</SegmentedControl.Item>
         <SegmentedControl.Item value="allTime">All time</SegmentedControl.Item>
         {RANGES.map((r) => <SegmentedControl.Item key={r} value={r}>{RANGE_SPEC[r].label}</SegmentedControl.Item>)}

@@ -6,7 +6,7 @@ Logs-Bereich der Dienste-Seite: Quellenleiste sowie je Quelle Konsole (Live-Puff
 
 ## Design
 
-- Pure Logik (testbar, ohne React): `lines.ts` (`mergeLines` mit Lücken-Erkennung über `seq`, `visibleLines`, `markOf`, `dotTone`, `pickSource`, `MAX_LINES`), `sources.ts` (`Group`, `logFor`, `otherGroups`, `describe`, `tagsOf`), `logview.ts` (`TABS`, `LIMITS`, `LEVEL_FILTERS`, `tabEnabled`, `pickTab`), `ansi.ts` (`parseAnsi` SGR → `Span[]`, `stripAnsi`; Text bleibt Text, nie HTML).
+- Pure Logik (testbar, ohne React): `lines.ts` (`mergeLines` mit Lücken-Erkennung über `seq`, `visibleLines`, `markOf`, `dotTone`, `MAX_LINES`), `sources.ts` (`Group`, `logFor`, `otherGroups`, `describe`, `tagsOf`), `logview.ts` (`TABS`, `LIMITS`, `LEVEL_FILTERS`, `tabEnabled`, `pickTab`), `ansi.ts` (`parseAnsi` SGR → `Span[]`, `stripAnsi`; Text bleibt Text, nie HTML).
 - Data-Hooks: `useSources.ts` (Quellenliste), `useConsole.ts` (Tail laden, `console:line` anhängen, bei Lücke oder Zustandswechsel gebündelt nachladen, 300 ms), `useLogQuery.ts` (`logsQuery`).
 - Präsentation: `SourceBar.tsx`, `SourcePanel.tsx` (Radix `Tabs` `konsole`/`log`/`fehler`, Reiter via `prefs`), `ConsoleView.tsx`, `LogTab.tsx` (Filter, debounced), `ErrorsTab.tsx` (`logsErrors`), `RoleTags.tsx` (Farbe je Einordnung).
 

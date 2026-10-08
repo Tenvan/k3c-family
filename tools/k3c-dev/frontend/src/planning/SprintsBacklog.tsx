@@ -13,7 +13,7 @@ import { CopyPrompt } from './PromptParts';
 import { openSessions, promptSessions } from './prompts';
 import { domains, filterSprints, filterTickets, parseFilter, QUICK, sortSprints, toggle, type PlanFilter } from './planning';
 
-const PREF = 'planning-filter';
+const PREF = 'planning.filter';
 
 /** Sprints & Backlog aus planning.Data (dieselben Daten wie plan_list). Lädt bei `planning:changed` neu; Filter und
  *  Auswahl bleiben dabei stehen und werden gemerkt. */

@@ -58,6 +58,8 @@ type Config struct {
 	// Services führt die Dienste (B-067); ServicesErr ist der Grund, falls services.json nicht geladen wurde.
 	Services    *services.Controller
 	ServicesErr error
+	Tasks       TaskHost     // optional: Tasks-Seite für task_* (Workbench-Spec § 4)
+	OnNotify    func(Notice) // optional: Hinweis an den Nutzer in der Oberfläche (notify_ui)
 }
 
 // Server hält den MCP-Server und den HTTP-Server, der ihn ausliefert. Der HTTP-Teil lässt sich neu starten,

@@ -3,7 +3,10 @@ package mcpsrv
 import (
 	"context"
 	"fmt"
+	"slices"
 	"strings"
+
+	"k3c/tools/k3c-dev/internal/console"
 )
 
 const (
@@ -12,8 +15,9 @@ const (
 )
 
 type tailIn struct {
-	Source string `json:"source" jsonschema:"Quelle, z. B. check:task:test"`
-	Lines  int    `json:"lines,omitempty" jsonschema:"Zahl der letzten Zeilen, Standard 50, höchstens 500"`
+	Source string `json:"service" jsonschema:"Dienst oder Lauf, z. B. Vite oder check:task:test"`
+	Lines  int    `json:"limit,omitempty" jsonschema:"Zahl der letzten Zeilen, Standard 50, höchstens 500"`
+	Since  int64  `json:"since,omitempty" jsonschema:"nur Zeilen nach dieser Nummer (Nr. aus der letzten Antwort)"`
 }
 
 // consoleTail ist das Tool console_tail: die letzten Zeilen einer Konsolen-Quelle, stderr mit "! " markiert.
@@ -24,7 +28,11 @@ func (s *Server) consoleTail(ctx context.Context, in tailIn) (string, error) {
 		n = defaultTailLines
 	}
 	n = min(n, maxTailLines)
-	lines, ok := s.console.Tail(ws.consoleSource(in.Source), n)
+	want := n
+	if in.Since > 0 {
+		want = 0 // ab dem Cursor: alle holen, danach die ersten n nach dem Cursor
+	}
+	lines, ok := s.console.Tail(ws.consoleSource(in.Source), want)
 	if !ok {
 		var own []string
 		for _, name := range s.console.Sources() {
@@ -33,6 +41,10 @@ func (s *Server) consoleTail(ctx context.Context, in tailIn) (string, error) {
 			}
 		}
 		return "", fmt.Errorf("unbekannte Quelle %q; bekannt: %s", in.Source, orNone(own))
+	}
+	if in.Since > 0 {
+		lines = slices.DeleteFunc(slices.Clone(lines), func(l console.Line) bool { return l.Seq <= in.Since })
+		lines = lines[:min(n, len(lines))]
 	}
 	if len(lines) == 0 {
 		return in.Source + " · keine Ausgabe", nil

@@ -4,7 +4,7 @@ import { loadText, savePref } from '../lib/prefs';
 // Eingeklappte Projekte und Sprints der Planungsseite (B-364), gemerkt in den Prefs. Ein Ereignis hält alle Karten
 // gleich, wenn „alle ein-/ausklappen“ die Liste auf einmal setzt.
 
-const KEY = 'planning-fold';
+const KEY = 'planning.fold';
 const EVENT = 'k3c-dev:planning-fold';
 
 function read(): Set<string> {
