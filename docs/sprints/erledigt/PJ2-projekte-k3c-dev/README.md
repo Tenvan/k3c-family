@@ -1,6 +1,6 @@
 # PJ2 · SRV · k3c-dev plant mit Projekten: plan-Tools und Planungsseite
 
-- **Status:** aktiv
+- **Status:** erledigt
 - **Projekt:** –
 - **Domäne:** SRV
 - **Prio:** hoch
@@ -75,9 +75,11 @@ Siehe `B-357 › Ausnahme- und Fehlerfälle` und `B-358 › Ausnahme- und Fehler
 | PJ2.1 | `PJ2.1-projekte-plan-tools.md` | Umsetzung | autonom | fertig |
 | PJ2.2 | `PJ2.2-sessions-domaene-verworfen.md` | Umsetzung | autonom | fertig |
 | PJ2.3 | `PJ2.3-planungsseite-projekte.md` | Umsetzung | autonom | fertig |
-| PJ2.4 | `PJ2.4-review.md` | Review | autonom | in Arbeit |
+| PJ2.4 | `PJ2.4-review.md` | Review | autonom | fertig |
 
 ## Abnahme
 
-Wird von der Review-Session (Doku-Sprint: letzte Session) ausgefüllt, höchstens fünf Zeilen: Datum, Kriterien
-(Verweis auf Session-Ergebnisse), behobene Befunde, neue Tickets. Bis dahin `–`.
+2026-10-08: AC-01 bis AC-03 geprüft in PJ2.1, AC-04/AC-05 in PJ2.2 (AC-04 mit Übergangsregel zur Prio, Rest B-361), AC-06 bis AC-09 in PJ2.3.
+Behobener Befund: Panic bei Sprint-README ohne Überschrift in `syncSprintDomain` (PJ2.4).
+Neue Tickets: B-361 (Sprint-Felder Prio und Einschiebbar entfallen). Browser-Abnahme der Planungsseite durch 🧑 offen.
+Version: v0.15.0 vorgeschlagen (Minor: neue Wirkung im Werkzeug k3c-dev).

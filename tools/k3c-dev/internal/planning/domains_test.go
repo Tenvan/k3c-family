@@ -1,6 +1,7 @@
 package planning
 
 import (
+	"os"
 	"strings"
 	"testing"
 )
@@ -61,6 +62,21 @@ func TestSessionDomaeneUndVerworfen(t *testing.T) {
 		if snapshot(t, root) != before {
 			t.Errorf("%s: Dateien geändert", name)
 		}
+	}
+	readme := docsPath(root, "sprints/geplant/X6-s/README.md")
+	orig, err := os.ReadFile(readme)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if err := os.WriteFile(readme, []byte(strings.Replace(string(orig), "# X6 ·", "X6 ·", 1)), 0o644); err != nil {
+		t.Fatal(err)
+	}
+	broken := snapshot(t, root)
+	if _, err := Set(root, "X6.1", map[string]string{"Domäne": "SIM"}); err == nil || snapshot(t, root) != broken {
+		t.Fatalf("README ohne Überschrift: Fehler erwartet, nichts geändert (%v)", err)
+	}
+	if err := os.WriteFile(readme, orig, 0o644); err != nil {
+		t.Fatal(err)
 	}
 	must(t)(Set(root, "X6.1", map[string]string{"Status": "verworfen"}))
 	if !strings.Contains(doc(t, root, "sprints/geplant/X6-s/README.md"), "| X6.1 | `X6.1-s.md` | Umsetzung | autonom | verworfen |") {

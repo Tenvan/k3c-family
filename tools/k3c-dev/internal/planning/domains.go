@@ -1,6 +1,7 @@
 package planning
 
 import (
+	"fmt"
 	"path"
 	"slices"
 	"strings"
@@ -33,7 +34,11 @@ func syncSprintDomain(c *changeSet, dir, state string) error {
 		return nil
 	}
 	lines := splitLines(setField(readme, "Domäne", want))
-	lines[findRow(lines, "# ")] = "# " + sp.ID + " · " + want + " · " + sp.Title
+	h := findRow(lines, "# ")
+	if h < 0 {
+		return fmt.Errorf("%s/README.md: Überschrift `# %s · … · …` fehlt", dir, sp.ID)
+	}
+	lines[h] = "# " + sp.ID + " · " + want + " · " + sp.Title
 	text := joinLines(lines)
 	c.write(dir+"/README.md", text)
 	sp.Domain = want

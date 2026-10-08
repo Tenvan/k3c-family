@@ -1,6 +1,6 @@
 # PJ2.4 · Review
 
-- **Status:** in Arbeit
+- **Status:** fertig
 - **Typ:** Review
 - **Agent:** autonom
 - **Domäne:** SRV
@@ -52,4 +52,8 @@ Manuelle Prüfungen (Browser, Xbox, TV) nur, wenn diese Datei sie nennt und 🧑
 
 ## Ergebnis
 
-–
+- Alle Kriterien haben einen Nachweis: AC-01 bis AC-03 in PJ2.1, AC-04 und AC-05 in PJ2.2, AC-06 bis AC-09 in PJ2.3. AC-04 mit der von 🧑 beschlossenen Übergangsregel: Das Feld `Prio` wird weiter geschrieben, geordnet wird nach Rang. Den Wegfall der Felder übernimmt B-361.
+- `task check` und `task check:dev` grün. Gelesen: `git diff origin/develop...sprint/pj2` (PJ2.2, PJ2.3; PJ2.1 ist schon mit #220 auf `develop`).
+- Schwerer Befund behoben: `syncSprintDomain` griff bei einer Sprint-README ohne `# `-Überschrift auf Index −1 zu (Panic im MCP-Server). Jetzt gibt es eine Ablehnung ohne Änderung, mit Test in `TestSessionDomaeneUndVerworfen`.
+- Schreibwege geprüft: Pfade nur aus `resolve` (geprüfte IDs) und Dateinamen der Session-Tabelle ohne `/` oder `\`; jede Ablehnung schreibt nichts (changeSet); Ränge lückenlos (PJ2.1); das Tool schreibt `Domäne` und `Prio` passend zu `tests/planning*.ts`.
+- Hinweis: Das Review lief auf Anweisung von 🧑 in derselben Unterhaltung wie PJ2.2/PJ2.3.
