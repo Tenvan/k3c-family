@@ -18,7 +18,7 @@ In Abarbeitungs-Reihenfolge; der erste nicht erledigte Sprint ist der nächste. 
 | DBG3 | Dungeon-Master-Seite /dm | erledigt |
 | MON2 | Monitoring-Seite mit Dashboard | erledigt |
 | PL2 | Werkzeug-Seiten in der gewählten Sprache | erledigt |
-| DV1 | Domäne DEV für k3c-dev, Sprint ohne Prio und Einschiebbar | geplant |
+| DV1 | Domäne DEV für k3c-dev, Sprint ohne Prio und Einschiebbar | aktiv |
 
 ## Nicht-Ziele
 

@@ -1,16 +1,16 @@
 # DV1 · INF, SRV · Domäne DEV für k3c-dev, Sprint ohne Prio und Einschiebbar
 
-- **Status:** geplant
+- **Status:** aktiv
 - **Projekt:** WZG
 - **Domäne:** INF, SRV
 - **Prio:** hoch
 - **Reife:** bereit
 - **Einschiebbar:** nein
 - **Tickets:** B-365, B-361, B-362
-- **Start-Commit:** – (wird beim Aktivieren gesetzt: `git rev-parse --short origin/develop`)
-- **Spec:** Entwurf
+- **Start-Commit:** e9869ba
+- **Spec:** freigegeben
 - **Revision:** 1
-- **Freigabe:** –
+- **Freigabe:** 2026-10-08, 🧑 im Chat (Revision 1 mit B-362)
 
 ## Ausgangslage
 

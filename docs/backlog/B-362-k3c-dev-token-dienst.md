@@ -8,9 +8,9 @@
 - **Sprint:** DV1
 - **Projekt:** WZG
 - **Erstellt:** 2026-10-08
-- **Spec:** Entwurf
+- **Spec:** freigegeben
 - **Revision:** 1
-- **Freigabe:** –
+- **Freigabe:** 2026-10-08, 🧑 im Chat (mit DV1)
 
 ## Ausgangslage
 
