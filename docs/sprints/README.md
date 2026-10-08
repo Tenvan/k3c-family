@@ -21,6 +21,7 @@ Reihenfolge in Wellen, Bahnen je Domäne und Zuordnung Mensch/autonom (zwei Acco
 | LP1 | PLAT | hoch | Landingpage für Spieler, Entwicklerseite für Werkzeuge | – | `aktiv/LP1-landingpage-aufraeumen/` |
 | K2 | SIM | hoch | Bosse, Siegvarianten und Inselwechsel | Tests je Boss, Siegvariante und Modus grün, Spielstand mit besiegten Bossen und aktueller Insel | `aktiv/K2-bosse-siege-inseln/` |
 | TR3 | CLI | hoch | Bot-Eingabe im Spiel einbinden (B-353; einschiebbar) | `sim_test` mit Client zeigt bewegte Monarchen | `aktiv/TR3-bot-eingabe-spiel/` |
+| PJ3 | INF | hoch | Planung in Projekte umziehen und aufräumen | – | `aktiv/PJ3-planung-umziehen/` |
 
 ## Offen am Gerät
 
@@ -68,7 +69,6 @@ dann über den Go-Server mit mehreren Räumen und gemischten Spielern.
 | S9 | CLI | hoch | Rückmeldung für Schlag und Skills, ein Hinweis je Spieler | Jeder Tastendruck auf Schlag oder Skill ist sichtbar, das Aktionen-Overlay zeigt je Spieler einen Hinweis | bereit | `geplant/S9-rueckmeldung-overlay/` |
 | U6 | CLI | hoch | HUD ohne Überlagerung, Optionen per Touch | Optionen per Touch bedienbar, HUD bei 1–4 Spielern ohne Überlagerung, Gesamtabnahme Anzeige | Entwurf | `geplant/U6-hud-ohne-ueberlagerung/` |
 | RG3 | REG | hoch | Miniboss Wald: Burg hält Nacht 5 | `task balance`: Burg hält Nacht 1–5 im Korridor, Grad-Kurven monoton | Entwurf | `geplant/RG3-miniboss-wald-nacht-5/` |
-| PJ3 | INF | hoch | Planung in Projekte umziehen und aufräumen | – | bereit | `geplant/PJ3-planung-umziehen/` |
 
 **Einschiebbar** (Schienen Balancing, Grafik, Sound, Betrieb; unabhängig vom Engine-Fortschritt, jeweils zwischen zwei Sprints):
 

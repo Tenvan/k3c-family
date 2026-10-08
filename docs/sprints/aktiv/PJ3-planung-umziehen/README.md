@@ -1,13 +1,13 @@
 # PJ3 · INF · Planung in Projekte umziehen und aufräumen
 
-- **Status:** geplant
+- **Status:** aktiv
 - **Projekt:** –
 - **Domäne:** INF
 - **Prio:** hoch
 - **Reife:** bereit
 - **Einschiebbar:** nein
 - **Tickets:** B-359
-- **Start-Commit:** – (wird beim Aktivieren gesetzt: `git rev-parse --short origin/develop`)
+- **Start-Commit:** 6c7837b
 - **Spec:** freigegeben
 - **Revision:** 1
 - **Freigabe:** 2026-10-08, Chat, durch 🧑, Revision 1
