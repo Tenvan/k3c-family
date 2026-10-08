@@ -1,16 +1,16 @@
 # PL2 · PLAT · Werkzeug-Seiten in der gewählten Sprache
 
-- **Status:** geplant
+- **Status:** aktiv
 - **Projekt:** WZG
 - **Domäne:** PLAT
 - **Prio:** niedrig
-- **Reife:** Entwurf
+- **Reife:** bereit
 - **Einschiebbar:** ja
 - **Tickets:** B-322
-- **Start-Commit:** –
-- **Spec:** Entwurf
+- **Start-Commit:** 07f98fc5
+- **Spec:** freigegeben
 - **Revision:** 1
-- **Freigabe:** –
+- **Freigabe:** 2026-10-08 Chat (PL2 vor PL1 vorgezogen)
 
 ## Ausgangslage
 
@@ -54,11 +54,13 @@ keine
 
 ## Sessions
 
-Entwurf. Vor dem Aktivieren jede Session als Datei nach `docs/vorlagen/session.md` schreiben, die Kriterien in Klammern werden ihr Feld `Kriterien`.
-
-- PL2.1 Text-Regel für `src/tools/` und erste Seiten (Level-Betrachter, Hörprobe) (AC-01).
-- PL2.2 Restliche Werkzeug-Seiten (Monitor, DM, Credits, Grafiken) (AC-01).
-- PL2.3 Review (Code-Sprint): alle Kriterien prüfen.
+| Nr. | Datei | Typ | Agent | Status |
+|---|---|---|---|---|
+| PL2.1 | `PL2.1-text-regel-level-sound.md` | Umsetzung | autonom | in Arbeit |
+| PL2.2 | `PL2.2-monitor-dm-credits-grafiken.md` | Umsetzung | autonom | offen |
+| PL2.3 | `PL2.3-restliche-werkzeug-seiten.md` | Umsetzung | autonom | offen |
+| PL2.4 | `PL2.4-review.md` | Review | autonom | offen |
+| PL2.5 | `PL2.5-abnahme-sprachwechsel.md` | Umsetzung | Mensch | offen |
 
 ## Abnahme
 
