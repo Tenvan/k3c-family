@@ -11,7 +11,6 @@ Die Reihenfolge der Arbeit ist allein der Projekt-Rang: [`../projekte/README.md`
 |---|---|---|---|---|---|
 | W6 | CLI | WRT | Anzeigen für Bau, Lager, Hub und Bürger (B-117, B-126) | HUD und Bauplätze am TV, von 🧑 abgenommen | `aktiv/W6-anzeige-wirtschaft/` |
 | K2 | SIM | KMP | Bosse, Siegvarianten und Inselwechsel | Tests je Boss, Siegvariante und Modus grün, Spielstand mit besiegten Bossen und aktueller Insel | `aktiv/K2-bosse-siege-inseln/` |
-| PL2 | PLAT | WZG | Werkzeug-Seiten in der gewählten Sprache | – | `aktiv/PL2-texte-werkzeug-seiten/` |
 
 ## Offen am Gerät
 
@@ -160,3 +159,4 @@ Gesamtplan und Begründung: [`../plan-weiterentwicklung.md`](../plan-weiterentwi
 | SO1 | Audio-Kern: Mixer mit Bus-Lautstärke je Gerät, Entsperren per Eingabe, Sound-Atlas, Positions-Dämpfung, Demo-Ton (B-011 teils; einschiebbar; Hörprobe am TV offen) | `erledigt/SO1-audio-kern/` |
 | SO3 | Hörprobenseite `soundtest.html` | `erledigt/SO3-hoerprobenseite/` |
 | PJ3 | Planung in Projekte umziehen und aufräumen | `erledigt/PJ3-planung-umziehen/` |
+| PL2 | Werkzeug-Seiten in der gewählten Sprache | `erledigt/PL2-texte-werkzeug-seiten/` |

@@ -4,7 +4,7 @@
 - **Typ:** Schuld
 - **Prio:** niedrig
 - **Umgebung:** live
-- **Status:** eingeplant
+- **Status:** erledigt
 - **Sprint:** PL2
 - **Projekt:** WZG
 - **Erstellt:** 2026-10-06

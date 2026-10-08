@@ -1,6 +1,6 @@
 # PL2.5 · Abnahme: Werkzeug-Seiten nach Sprachwechsel
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** Mensch
 - **Domäne:** PLAT
@@ -43,5 +43,7 @@ Manuell durch 🧑 im Browser (PC oder Xbox).
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+2026-10-08, geprüft von 🧑 am PC (Chrome/Edge, Dev-Server, Sprachwahl über die Optionen im Spiel).
+
+- **AC-01 geprüft** (B-322/AC-02): Nach Wechsel auf English zeigten alle Werkzeug-Seiten (Lizenzen, Entwicklerseite mit allen Kacheln, Monitor, DM) Englisch; nach Rückwechsel auf Deutsch war die Stichprobe deutsch. PC-Nachweis; Xbox nicht geprüft (Session erlaubt PC oder Xbox).
+- **Abweichung:** Die Landingpage blieb deutsch. Sie liegt außerhalb von PL2 (`src/tools/`) und B-215 → neues Ticket B-369.
