@@ -1,11 +1,11 @@
 # K3 · SIM · Events Vollmond, Blutmond und Händler-Überfall
 
-- **Status:** geplant
+- **Status:** aktiv
 - **Projekt:** KMP
 - **Domäne:** SIM
 - **Reife:** bereit
 - **Tickets:** B-131
-- **Start-Commit:** –
+- **Start-Commit:** 1ac1824
 - **Spec:** freigegeben
 - **Revision:** 1
 - **Freigabe:** 2026-10-05, Chat, durch 🧑, Revision 1
@@ -58,7 +58,7 @@ keine
 
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
-| K3.1 | `K3.1-vollmond-blutmond.md` | Umsetzung | autonom | offen |
+| K3.1 | `K3.1-vollmond-blutmond.md` | Umsetzung | autonom | in Arbeit |
 | K3.2 | `K3.2-haendler-ueberfall-golden.md` | Umsetzung | autonom | offen |
 | K3.3 | `K3.3-review.md` | Review | autonom | offen |
 

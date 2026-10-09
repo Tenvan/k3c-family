@@ -13,6 +13,7 @@ Die Reihenfolge der Arbeit ist allein der Projekt-Rang: [`../projekte/README.md`
 | U5 | CLI | BED | Debug-Overlay und Cheat-Dialog bedienbar | Ö schließt Overlay und Liste, HUD bleibt lesbar, Cheat-Dialog mit Fokus und Controller | `aktiv/U5-debug-overlay-bedienbar/` |
 | S8 | CLI | BED | Spielmenü „Spiel verlassen“, Y-Belegung und Glyphen-Entscheidung | Spielmenü verlässt ins Lobby, Y ohne Bau-Menü, Glyph-Entscheidung umgesetzt | `aktiv/S8-spielmenue-bedienung/` |
 | PL1 | PLAT | BED | Neues Spiel, zwei Spieler an einer Tastatur, Overlay auf der Xbox, zentrale Texte | „Neues Spiel“ startet immer neu, zwei Tastatur-Spieler, Overlay per Controller | `aktiv/PL1-start-tastatur-koop-texte/` |
+| K3 | SIM | KMP | Events Vollmond, Blutmond und Händler-Überfall | Tests je Event grün, aktualisierte Golden-Daten | `aktiv/K3-events/` |
 
 ## Offen am Gerät
 
@@ -40,7 +41,6 @@ Abnahmen am Gerät (`Agent: Mensch`) sammelt das Projekt ABN im Sprint HW1: [`..
 | RM1 | SRV | SKL | Raum-Pause im Couch-Raum und lernbare Skills vom Server | Pause hält den Couch-Raum an; Skill-Menü zeigt nur, was der Server annimmt | Entwurf | `geplant/RM1-pause-lernbare-skills/` |
 | K4 | SRV | KMP | Protokoll für Bosse, Events und Inselwechsel | `docs/protocol.md` mit neuen Feldern, Beispiele in `testdata/protocol/`, `task check:go` und `task check` grün | bereit | `geplant/K4-protokoll-kampf/` |
 | K5 | CLI | KMP | Anzeigen für Kampf, Bosse und Events, Anlegen-Dialog, Debug-Panel | Boss-Leiste, Warnkreis und Event-Banner am TV, Lobby-Dialog, von 🧑 abgenommen | bereit | `geplant/K5-anzeige-kampf/` |
-| K3 | SIM | KMP | Events Vollmond, Blutmond und Händler-Überfall | Tests je Event grün, aktualisierte Golden-Daten | bereit | `geplant/K3-events/` |
 | LV1 | SIM | KMP | Level und Gegner: Lava, Camps, Adern-Takt, Orte und IDs | Keine Lava auf Linien, Camps mit Abstand, besiegte Gegner lassen Gold fallen, Ereignisse mit Ort | Entwurf | `geplant/LV1-level-gegner-korrektur/` |
 | CI1 | INF | REL | CI-Nachweis, Release-Image ohne Dev-Mode, Test-Abdeckung | CI grün mit SP01-Prüfungen, Release-Image lehnt Dev-Aktionen ab, Abdeckung im CI-Bericht | Entwurf | `geplant/CI1-ci-release-image/` |
 | RP1 | INF | REL | Repo-Hygiene: Branches aufräumen, Altlasten, Regeln | – | Entwurf | `geplant/RP1-repo-hygiene/` |
