@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import { DEV_ACTIONS } from './debugActions';
-import { focusStep, muteFocused, PAD_FOCUS, type FocusState } from './debugOverlayPanel';
+import { CHEAT_CSS, diagGesture, focusStep, muteFocused, PAD_FOCUS, type FocusState } from './debugOverlayPanel';
 
 const on: FocusState = { index: 0, seat: 0 };
 
@@ -42,5 +42,26 @@ describe('muteFocused', () => {
 
   it('ohne Fokus unverändert', () => {
     expect(muteFocused(cmds, false, () => true)).toBe(cmds);
+  });
+});
+
+describe('Ö und verborgener Dialog (B-192)', () => {
+  it('verborgener Dialog hat display:none, keine spätere Regel am Wurzel-Element setzt display', () => {
+    const rules = [...CHEAT_CSS.matchAll(/([^{}]+)\{([^}]*)\}/g)].map((m) => ({ sel: m[1].trim(), body: m[2] }));
+    const hidden = rules.findIndex((r) => r.sel === '.k3c-cheat[hidden]');
+    expect(hidden).toBeGreaterThan(-1);
+    expect(rules[hidden].body).toBe('display:none');
+    const later = rules.slice(hidden + 1).filter((r) => !r.sel.includes(' ') && r.sel.startsWith('.k3c-cheat') && /display\s*:/.test(r.body));
+    expect(later).toEqual([]);
+  });
+
+  it('Ö schließt bei offenem Dialog zuerst den Dialog, die Info-Zeilen bleiben', () => {
+    expect(diagGesture(true, true)).toEqual({ shown: true, open: false });
+    expect(diagGesture(false, true)).toEqual({ shown: false, open: false });
+  });
+
+  it('Ö schaltet ohne Dialog die Info-Zeilen', () => {
+    expect(diagGesture(false, false)).toEqual({ shown: true, open: false });
+    expect(diagGesture(true, false)).toEqual({ shown: false, open: false });
   });
 });

@@ -34,7 +34,9 @@ Neue Dev-Aktionen, Xbox-Zugang zum Overlay (B-195, PL1).
 
 CLI; B nicht belegen, View + Menu reserviert. `src/scenes` rechnet nichts (`noSim.test.ts`), Datei ≤ 400, Funktion ≤ 60 Zeilen.
 
-Beschluss 🧑 2026-10-06 (Chat): Bei Touch liegen Debug-Overlay und Aktionsliste rechts neben dem linken Lauf-Feld, unten mittig; das HUD oben bleibt frei (B-191).
+Beschluss 🧑 2026-10-06 (Chat): Bei Touch liegen Debug-Overlay und Aktionsliste rechts neben dem linken Lauf-Feld, unten mittig; das HUD oben bleibt frei (B-191). **Ersetzt** durch den Beschluss vom 2026-10-09.
+
+Beschluss 🧑 2026-10-09 (Chat, U5.1): Die Info-Zeilen liegen auch bei Touch links unten über der Skill-Zeile. Unten mittig liegen die Touch-Tasten über dem Canvas, darüber Beitritts-Hinweis und Reise-Text; das Lauf-Feld ist der ganze Bildschirm (geteilt an der Mitte), der Phaser-Text fängt keine Touches ab.
 
 Beschluss 🧑 2026-10-06 (Chat): Die Ursache, warum der Controller auf der Xbox nicht wirkt, klärt die Umsetzung über einen Bericht von `gamepad-test.html`; die Vermutung (Edge nutzt das D-Pad für Spatial Navigation zwischen HTML-Buttons) ist ungeprüft (B-317).
 
@@ -63,7 +65,7 @@ Dialog offen und Ö → Dialog zuerst zu, Overlay bleibt.
 
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
-| U5.1 | `U5.1-oe-hud-frei.md` | Umsetzung | autonom | in Arbeit |
+| U5.1 | `U5.1-oe-hud-frei.md` | Umsetzung | autonom | fertig |
 | U5.2 | `U5.2-cheat-dialog-fokus.md` | Umsetzung | autonom | offen |
 | U5.3 | `U5.3-review.md` | Review | autonom | offen |
 | U5.4 | `U5.4-abnahme-pc-handy-xbox.md` | Umsetzung | Mensch | offen |

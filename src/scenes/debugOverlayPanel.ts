@@ -30,6 +30,11 @@ export function focusStep(s: FocusState, e: FocusEdges, open: boolean, seats: nu
   return { state: { index, seat }, fire: e.A ? index : null };
 }
 
+/** Ö (Geste `diag`): Bei offenem Dialog schließt sie zuerst den Dialog, die Info-Zeilen bleiben; sonst schaltet sie die Zeilen (B-192). */
+export function diagGesture(shown: boolean, open: boolean): { shown: boolean; open: boolean } {
+  return open ? { shown, open: false } : { shown: !shown, open };
+}
+
 /** Bei offenem Dialog stehen die Spieler am Controller still (keine Bewegung, kein Sprint, keine Münzen). */
 export function muteFocused(commands: SlotCommand[], focus: boolean, isPad: (slot: number) => boolean): SlotCommand[] {
   if (!focus) return commands;
@@ -39,7 +44,7 @@ export function muteFocused(commands: SlotCommand[], focus: boolean, isPad: (slo
 /** Registry-Schlüssel: Cheat-Dialog offen (GameScene sperrt dann die Controller-Spieler) */
 export const DEV_FOCUS_KEY = 'devFocus';
 
-const CSS = `
+export const CHEAT_CSS = `
 .k3c-cheat{position:fixed;inset:0;z-index:11;display:flex;align-items:center;justify-content:center;background:rgba(0,0,0,.35)}
 .k3c-cheat[hidden]{display:none}
 .k3c-cheat .box{width:80vw;height:80vh;box-sizing:border-box;overflow:auto;display:flex;flex-direction:column;gap:2vmin;padding:3vmin;
@@ -61,11 +66,11 @@ export class CheatDialog {
   private readonly buttons: HTMLButtonElement[] = [];
 
   constructor(onAction: (index: number) => void, onSeat: () => void, onClose: () => void) {
-    this.style.textContent = CSS;
+    this.style.textContent = CHEAT_CSS;
     this.root.className = 'k3c-cheat';
     const box = document.createElement('div');
     box.className = 'box';
-    box.innerHTML = '<h2>Cheats · Raum angehalten</h2><div class="hint">Controller: D-Pad wählen · A auslösen · LB + RB schließt. Tastatur: Ä schließt.</div>';
+    box.innerHTML = '<h2>Cheats · Raum angehalten</h2><div class="hint">Controller: D-Pad wählen · A auslösen · LB + RB schließt. Tastatur: Ä oder Ö schließt.</div>';
     this.note.className = 'hint';
     const tap = (b: HTMLButtonElement, fn: () => void): void => b.addEventListener('pointerdown', (ev) => (ev.preventDefault(), fn()));
     tap(this.seatButton, onSeat);

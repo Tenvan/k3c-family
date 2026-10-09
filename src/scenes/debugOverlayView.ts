@@ -1,4 +1,5 @@
 import Phaser from 'phaser';
+import { GAME_HEIGHT } from '../core/constants';
 import { PROTOCOL_VERSION } from '../online/clientProtocol';
 import type { RoomClient } from '../online/clientConnection';
 import type { World } from '../model/types';
@@ -6,16 +7,18 @@ import { DEV_ACTIONS, devMessage, pauseMessage, roomDevMode } from './debugActio
 import { VERSION_KEY, debugLines, type DebugWorld } from './debugOverlay';
 import type { GameScene } from './GameScene';
 import { HOLD_IDLE, holdStep, listenTaps, type DebugGesture, type HoldState } from './debugGestures';
-import { CheatDialog, DEV_FOCUS_KEY, PAD_FOCUS, focusStep, type FocusEdges, type FocusState } from './debugOverlayPanel';
+import { CheatDialog, DEV_FOCUS_KEY, PAD_FOCUS, diagGesture, focusStep, type FocusEdges, type FocusState } from './debugOverlayPanel';
 
 /** Schultertasten (standard mapping). B (1) und View + Menu (8 + 9) bleiben unberührt. */
 const PAD_LB = 4;
 const PAD_RB = 5;
+/** Unterkante der Info-Zeilen: über der Skill-Zeile links unten (GAME_HEIGHT - 56), HUD oben bleibt frei (B-191). */
+const TEXT_BOTTOM = GAME_HEIGHT - 70;
 // Deutsche Tastatur: keyCode 192 ist Ö (Phaser BACKTICK), 222 ist Ä (Phaser QUOTES).
 
 /**
  * Debug-Anzeige und Cheat-Dialog (B-093, B-231). Ö, RB 3 s halten oder Doppeltap mit einem Finger schaltet die
- * Diagnose (Text oben links). Ä, LB + RB 3 s halten oder Doppeltap mit zwei Fingern öffnet den Cheat-Dialog: modal,
+ * Diagnose (Text links unten; bei offenem Dialog schließt Ö zuerst den Dialog). Ä, LB + RB 3 s halten oder Doppeltap mit zwei Fingern öffnet den Cheat-Dialog: modal,
  * der Raum steht (Dev-Aktion `pause`), bis er schließt. Wird nur erzeugt, wenn `debugEnabled` gilt.
  */
 export class DebugOverlay {
@@ -37,7 +40,8 @@ export class DebugOverlay {
     this.diagKey = scene.input.keyboard?.addKey(K.BACKTICK);
     this.cheatKey = scene.input.keyboard?.addKey(K.QUOTES);
     this.text = scene.add
-      .text(20, 96, '', { fontSize: '20px', color: '#9be564', stroke: '#000000', strokeThickness: 4, fontStyle: 'bold' })
+      .text(20, TEXT_BOTTOM, '', { fontSize: '20px', color: '#9be564', stroke: '#000000', strokeThickness: 4, fontStyle: 'bold' })
+      .setOrigin(0, 1)
       .setVisible(false);
     this.unlisten = listenTaps((g) => this.gestures.push(g));
     scene.events.once(Phaser.Scenes.Events.SHUTDOWN, () => this.destroy());
@@ -46,8 +50,11 @@ export class DebugOverlay {
   update(client: RoomClient, world: World | null): void {
     this.client = client;
     for (const g of this.takeGestures()) {
-      if (g === 'diag') this.shown = !this.shown;
-      else this.setOpen(!this.open);
+      if (g === 'diag') {
+        const next = diagGesture(this.shown, this.open);
+        this.shown = next.shown;
+        this.setOpen(next.open);
+      } else this.setOpen(!this.open);
     }
     this.text.setVisible(this.shown);
     this.updateDialog(client, world);
