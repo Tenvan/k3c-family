@@ -1,4 +1,4 @@
-# B-371 · check_run go:test und task:check:go brechen im MCP-Aufruf mit Timeout ab
+# B-372 · check_run go:test und task:check:go brechen im MCP-Aufruf mit Timeout ab
 
 - **Domäne:** SRV
 - **Typ:** Problem
