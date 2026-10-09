@@ -6,9 +6,9 @@
 - **Reife:** bereit
 - **Tickets:** B-336, B-337
 - **Start-Commit:** –
-- **Spec:** Entwurf
+- **Spec:** freigegeben
 - **Revision:** 1
-- **Freigabe:** –
+- **Freigabe:** 2026-10-09, 🧑 im Chat, Revision 1, Vorschläge unter Offene Fragen übernommen
 
 ## Ausgangslage
 
@@ -58,13 +58,13 @@ B-336 › Ausnahme- und Fehlerfälle; B-337 › Ausnahme- und Fehlerfälle (sehr
 
 ## Offene Fragen
 
-- Stil von Hintergrund und Rahmen (Deckkraft, Farbe, Ecken; passend zu B-331): 🧑, blockiert U6.2.
-- Rangfolge beim Ausblenden (Pflichtanzeigen): 🧑, blockiert U6.2.
+- Stil von Hintergrund und Rahmen (Deckkraft, Farbe, Ecken; passend zu B-331): 🧑, blockiert U6.2 (bei der Freigabe 2026-10-09 ohne Vorschlag, weiter offen).
+- Rangfolge beim Ausblenden (Pflichtanzeigen): 🧑, blockiert U6.2 (bei der Freigabe 2026-10-09 ohne Vorschlag, weiter offen).
 - Soll der ☰-Knopf die Szene auch schließen (Umschalter)? 🧑, nicht blockierend.
 - Gerät für die Gesamtabnahme (AC-08): je Durchgang vorher erfragen; Xbox und Controller erst nach B-314.
-- Grenzfall Touch-Overlay (U6.1): Vorschlag: Die Optionen-Szene blendet `.k3c-zone` und `.k3c-touch` über ihre Klassen per `style.display` aus (CLI), `src/input/touchInput.ts` bleibt unverändert; Alternative wäre eine PLAT-Session mit `TouchInput.show()`. 🧑, gilt mit der Freigabe der Spec.
+- Grenzfall Touch-Overlay (U6.1): Vorschlag: Die Optionen-Szene blendet `.k3c-zone` und `.k3c-touch` über ihre Klassen per `style.display` aus (CLI), `src/input/touchInput.ts` bleibt unverändert; Alternative wäre eine PLAT-Session mit `TouchInput.show()`. Übernommen mit der Freigabe 2026-10-09.
 - Browser-Pane für U6.1 (AC-01 bis AC-03 verlangen Nachweise mit `?touch=1`): 🧑 gibt sie je Lauf frei, sonst ist U6.1 blockiert.
-- Nur bildschirmfeste Anzeigen werden HUD-Elemente; Aktionen-Overlay, geführte Hinweise und Preisschilder bleiben weltgebunden (Vorschlag nach B-337 › Nicht-Ziele). 🧑, gilt mit der Freigabe der Spec.
+- Nur bildschirmfeste Anzeigen werden HUD-Elemente; Aktionen-Overlay, geführte Hinweise und Preisschilder bleiben weltgebunden (Vorschlag nach B-337 › Nicht-Ziele). Übernommen mit der Freigabe 2026-10-09.
 
 ## Sessions
 

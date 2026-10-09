@@ -6,9 +6,9 @@
 - **Reife:** bereit
 - **Tickets:** B-037
 - **Start-Commit:** –
-- **Spec:** Entwurf
+- **Spec:** freigegeben
 - **Revision:** 1
-- **Freigabe:** –
+- **Freigabe:** 2026-10-09, 🧑 im Chat, Revision 1, Vorschläge unter Offene Fragen übernommen
 
 ## Ausgangslage
 
@@ -49,8 +49,8 @@ Server nicht erreichbar → Hinweis, Wiederholen-Knopf.
 ## Offene Fragen
 
 - Stand: B-037/AC-01 bis AC-03 sind seit SP08 umgesetzt (Raumliste und Beitritt in `LobbyScene`), offen ist AC-04 (Spielstand wählen). LB1.1 setzt das um und belegt alle vier.
-- Spielstand-Einträge (Vorschlag, gilt mit der Freigabe der Spec): Die Lobby liest `GET /api/saves`, zeigt die neuesten sechs Spielstände nach `savedAt` unter den Räumen, ohne unlesbare und ohne solche, die schon als Raum offen sind; Auswahl sendet `create` mit `fresh: false`. 🧑
-- „Spielen (Name)“ bleibt oben als Start mit `?save` bzw. `familie` (Vorschlag, gilt mit der Freigabe). 🧑
+- Spielstand-Einträge (übernommen mit der Freigabe 2026-10-09): Die Lobby liest `GET /api/saves`, zeigt die neuesten sechs Spielstände nach `savedAt` unter den Räumen, ohne unlesbare und ohne solche, die schon als Raum offen sind; Auswahl sendet `create` mit `fresh: false`. 🧑
+- „Spielen (Name)“ bleibt oben als Start mit `?save` bzw. `familie` (übernommen mit der Freigabe 2026-10-09). 🧑
 
 ## Sessions
 
