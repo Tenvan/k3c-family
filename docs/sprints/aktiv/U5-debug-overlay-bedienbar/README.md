@@ -1,14 +1,14 @@
 # U5 · CLI · Debug-Overlay und Cheat-Dialog bedienbar
 
-- **Status:** geplant
+- **Status:** aktiv
 - **Projekt:** BED
 - **Domäne:** CLI
 - **Reife:** bereit
 - **Tickets:** B-192, B-317, B-191
-- **Start-Commit:** –
-- **Spec:** Entwurf
+- **Start-Commit:** 07e3c329
+- **Spec:** freigegeben
 - **Revision:** 1
-- **Freigabe:** –
+- **Freigabe:** 2026-10-09, 🧑 im Chat (Revision 1, Übergangsregeln zu den offenen Fragen)
 
 ## Ausgangslage
 
@@ -63,7 +63,7 @@ Dialog offen und Ö → Dialog zuerst zu, Overlay bleibt.
 
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
-| U5.1 | `U5.1-oe-hud-frei.md` | Umsetzung | autonom | offen |
+| U5.1 | `U5.1-oe-hud-frei.md` | Umsetzung | autonom | in Arbeit |
 | U5.2 | `U5.2-cheat-dialog-fokus.md` | Umsetzung | autonom | offen |
 | U5.3 | `U5.3-review.md` | Review | autonom | offen |
 | U5.4 | `U5.4-abnahme-pc-handy-xbox.md` | Umsetzung | Mensch | offen |
