@@ -21,6 +21,8 @@ type NightEvent struct {
 	RewardGold   int     // fullMoon: Münzen am Hub bei Tagesanbruch, wenn die Burg hielt
 	DamageFactor float64 // bloodMoon: Schaden beim Angriff
 	DropFactor   float64 // bloodMoon: Gold-Drop beim Tod
+	// merchantRaid (events_merchant.go): jeder EveryVisits-te Händler-Besuch, RewardMaterial bei Schutz.
+	EveryVisits, RewardMaterial int
 }
 
 var nightEvents = loadNightEvents()
@@ -38,10 +40,12 @@ func loadNightEvents() []NightEvent {
 
 // checkNightEvents: Vollmond und Blutmond vorhanden, Rhythmen > 0, Gegnerarten bekannt, Faktoren > 0.
 func checkNightEvents(events []NightEvent) error {
-	full, blood := findEvent(events, "fullMoon"), findEvent(events, "bloodMoon")
+	full, blood, raid := findEvent(events, "fullMoon"), findEvent(events, "bloodMoon"), findEvent(events, "merchantRaid")
 	switch {
-	case full == nil || blood == nil:
-		return fmt.Errorf("data/events.json: fullMoon und bloodMoon fehlen")
+	case full == nil || blood == nil || raid == nil:
+		return fmt.Errorf("data/events.json: fullMoon, bloodMoon und merchantRaid fehlen")
+	case raid.EveryVisits <= 0 || raid.RewardMaterial < 0:
+		return fmt.Errorf("data/events.json: merchantRaid braucht everyVisits > 0")
 	case full.EveryNights <= 0 || blood.EveryNights <= 0:
 		return fmt.Errorf("data/events.json: everyNights muss > 0 sein")
 	case !knownEnemy(full.Kind) || !knownEnemy(full.Elite):
@@ -71,7 +75,7 @@ func bloodMoon() *NightEvent { return findEvent(nightEvents, "bloodMoon") }
 
 // eventInNight: Das Event läuft in Nacht n der Insel (Nacht n = Cycle.Day n, die Nacht gehört zum Tag davor).
 func eventInNight(w *World, ev *NightEvent, n int) bool {
-	return w.island != nil && n > 0 && n%ev.EveryNights == 0
+	return w.island != nil && n > 0 && ev.EveryNights > 0 && n%ev.EveryNights == 0 // ohne Nacht-Rhythmus: merchantRaid
 }
 
 // eventActive: Das Event läuft jetzt (Phase night).

@@ -21,6 +21,8 @@ type Merchant struct {
 	Resource string  `json:"resource"`
 	Leaves   int     `json:"leaves"`
 	BuyPaid  int     `json:"buyPaid,omitempty"`
+	// Raid: Dieser Besuch wird überfallen (events_merchant.go); Gegner greifen den Händler zuerst an.
+	Raid bool `json:"raid,omitempty"`
 	// HP, MaxHP: nicht im Zustand (Protokoll unverändert, Anzeige mit K4/K5); gespeichert über MerchantSave.
 	HP    float64 `json:"-"`
 	MaxHP float64 `json:"-"`
@@ -31,6 +33,7 @@ type MerchantSave struct {
 	Resource string  `json:"resource"`
 	Leaves   int     `json:"leaves"`
 	BuyPaid  int     `json:"buyPaid,omitempty"`
+	Raid     bool    `json:"raid,omitempty"`
 	HP       float64 `json:"hp"`
 	MaxHP    float64 `json:"maxHp"`
 }
@@ -61,10 +64,12 @@ func merchantDawn(w *World) {
 		w.island.MerchantVisits++ // Besuche zählen, Rhythmus des Händler-Überfalls (K3.2)
 	}
 	emit(w, "merchantArrived", Event{"resource": w.Merchant.Resource, "x": unitX(merchantX(w, "buy"))})
+	merchantRaidStart(w) // jeder 4. Besuch (events_merchant.go)
 }
 
 // merchantLeaves: Der Händler reist ab (typ merchantLeft) oder flieht (merchantFled); ein halber Kauf fällt als Münzen.
 func merchantLeaves(w *World, typ string) {
+	merchantRaidEnd(w, typ == "merchantLeft")
 	for range w.Merchant.BuyPaid {
 		w.Coins = append(w.Coins, &Coin{ID: w.newID(), X: merchantX(w, "buy")})
 	}

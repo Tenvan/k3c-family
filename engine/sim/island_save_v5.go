@@ -45,7 +45,7 @@ func restoreProgress(isl *Island, s IslandSave) {
 		for _, w := range isl.Stages {
 			if w.Biome.Depth == hub.Merchant.OnlyDepth {
 				m := s.Merchant
-				w.Merchant = &Merchant{Resource: m.Resource, Leaves: m.Leaves, BuyPaid: m.BuyPaid, HP: m.HP, MaxHP: m.MaxHP}
+				w.Merchant = &Merchant{Resource: m.Resource, Leaves: m.Leaves, BuyPaid: m.BuyPaid, HP: m.HP, MaxHP: m.MaxHP, Raid: m.Raid}
 			}
 		}
 	}
@@ -55,7 +55,7 @@ func restoreProgress(isl *Island, s IslandSave) {
 func savedMerchant(isl *Island) *MerchantSave {
 	for _, w := range isl.Stages {
 		if m := w.Merchant; m != nil {
-			return &MerchantSave{Resource: m.Resource, Leaves: m.Leaves, BuyPaid: m.BuyPaid, HP: m.HP, MaxHP: m.MaxHP}
+			return &MerchantSave{Resource: m.Resource, Leaves: m.Leaves, BuyPaid: m.BuyPaid, HP: m.HP, MaxHP: m.MaxHP, Raid: m.Raid}
 		}
 	}
 	return nil

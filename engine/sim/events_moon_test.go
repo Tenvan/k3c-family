@@ -199,12 +199,20 @@ func TestMondEventsAusDenDaten(t *testing.T) {
 	if *findEvent(v.Events, "fullMoon") != *fullMoon() || *findEvent(v.Events, "bloodMoon") != *bloodMoon() {
 		t.Error("Werte stammen aus data/events.json")
 	}
-	bad := []NightEvent{{ID: "fullMoon", EveryNights: 7, Kind: "wolf", Elite: "unbekannt"}, {ID: "bloodMoon", EveryNights: 13, DamageFactor: 1, DropFactor: 1}}
+	bad := []NightEvent{{ID: "fullMoon", EveryNights: 7, Kind: "wolf", Elite: "unbekannt"}, {ID: "bloodMoon", EveryNights: 13, DamageFactor: 1, DropFactor: 1}, {ID: "merchantRaid", EveryVisits: 4}}
 	if checkNightEvents(bad) == nil {
 		t.Error("unbekannter Elite-Gegner wird abgelehnt")
 	}
-	bad[0].Elite, bad[1].EveryNights = "alphaWolf", 0
+	bad[0].Elite = "alphaWolf"
+	if err := checkNightEvents(bad); err != nil {
+		t.Fatalf("gültige Events abgelehnt: %v", err)
+	}
+	bad[1].EveryNights = 0
 	if checkNightEvents(bad) == nil {
 		t.Error("Rhythmus 0 wird abgelehnt")
+	}
+	bad[1].EveryNights, bad[2].EveryVisits = 13, 0
+	if checkNightEvents(bad) == nil {
+		t.Error("merchantRaid ohne everyVisits wird abgelehnt")
 	}
 }

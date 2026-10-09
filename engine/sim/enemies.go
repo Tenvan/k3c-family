@@ -250,6 +250,11 @@ func chooseTarget(w *World, e *Enemy, dir float64, wall *Site) *target {
 			return &c
 		}
 	}
+	for _, c := range all { // Händler-Überfall: der Händler zuerst (events_merchant.go)
+		if c.kind == "merchant" && w.Merchant.Raid {
+			return &c
+		}
+	}
 	pool := []target{}
 	for _, c := range all {
 		if e.prefers(c) {

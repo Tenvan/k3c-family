@@ -77,11 +77,16 @@ func startWave(w *World) {
 	}
 	plan := planWave(w.Biome, w.Wave, w.rng, w.Portals, w.Cycle.Phase == "night", size)
 	plan = append(plan, fullMoonExtra(w, plan)...) // Vollmond (events_moon.go)
+	queueWave(w, plan, hp, damage)
+	w.Events = append(w.Events, Event{"type": "wave", "wave": w.Wave, "count": len(plan)})
+	triggerBoss(w)
+}
+
+// queueWave stellt die Plätze einer Welle mit den Faktoren der Insel in die Warteschlange (startWave, Händler-Überfall).
+func queueWave(w *World, plan []spawnOrder, hp, damage float64) {
 	for _, s := range plan {
 		w.SpawnQueue = append(w.SpawnQueue, QueuedSpawn{Kind: s.kind, X: s.x, At: w.Time + s.delay, hpFactor: hp, damageFactor: damage})
 	}
-	w.Events = append(w.Events, Event{"type": "wave", "wave": w.Wave, "count": len(plan)})
-	triggerBoss(w)
 }
 
 // targetX ist die Position des Ziels eines Geschosses (Gegner, Spieler, Truppen, Bauplätze, Burg).
