@@ -67,9 +67,13 @@ Dialog offen und Ö → Dialog zuerst zu, Overlay bleibt.
 |---|---|---|---|---|
 | U5.1 | `U5.1-oe-hud-frei.md` | Umsetzung | autonom | fertig |
 | U5.2 | `U5.2-cheat-dialog-fokus.md` | Umsetzung | autonom | fertig |
-| U5.3 | `U5.3-review.md` | Review | autonom | in Arbeit |
+| U5.3 | `U5.3-review.md` | Review | autonom | fertig |
 | U5.4 | `U5.4-abnahme-pc-handy-xbox.md` | Umsetzung | Mensch | offen |
 
 ## Abnahme
 
-–
+Review 2026-10-09 (U5.3, eigener Review-Agent): `task check` grün; ein schwerer Befund behoben: Bei offenem Cheat-Dialog lief das Skill-Menü weiter, Leertaste/A hätte Skills lernen oder zurücksetzen können (`GameScene`: `route` ohne Eingaben, Menüs schließen).
+- AC-01, AC-03 geprüft (U5.1); AC-02 geprüft für Tests und Browser-Pane (U5.2); AC-05 geprüft. B-192 erledigt.
+- Verschoben nach U5.4: B-191/AC-02, B-317/AC-03, B-317/AC-04 und AC-04 (Xbox-Prüfung; Befund und Prüfauftrag im Ergebnis von U5.2).
+- Neue Tickets: keine.
+- Version: v0.15.0 vorgeschlagen (neue Bedienung des Cheat-Dialogs mit Tastatur und Klick); nicht gesetzt (wartet auf Bestätigung 🧑).

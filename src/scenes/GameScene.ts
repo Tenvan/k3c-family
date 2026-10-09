@@ -160,7 +160,8 @@ export class GameScene extends Phaser.Scene {
     const devFocus = this.registry.get(DEV_FOCUS_KEY) === true; // Cheat-Dialog offen (B-179, B-317): Controller und Tastatur bedienen ihn
     this.slots.join(devFocus ? [] : inputs, seated, client, performance.now());
     const player = (slot: number) => this.world_?.players.find((q) => q.index === client.you.find((s) => s.slot === slot)?.monarch);
-    const p = this.skillMenus.route(muteFocused(this.slots.commands(seated), devFocus), this.slots.bound, player, client);
+    // Dialog offen: ohne Eingaben schließen die Skill-Menüs, Leertaste/A im Dialog lernt keinen Skill (Review U5.3)
+    const p = this.skillMenus.route(muteFocused(this.slots.commands(seated), devFocus), devFocus ? [] : this.slots.bound, player, client);
     this.moves = p;
     if (p.length > 0) client.sendInput(p);
     this.takeFrames();

@@ -61,7 +61,6 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-189](B-189-toter-gegner-flieht-ins-portal.md) | SIM | Problem | mittel | eingeplant | LV1 | Ein besiegter Gegner verschwindet nicht im Portal, sondern lässt sein Gold fallen |
 | [B-190](B-190-events-dropped-im-protokoll.md) | SRV | Problem | niedrig | eingeplant | NT1 | Der Client erfährt zuverlässig, wie viele Ereignisse verworfen wurden |
 | [B-191](B-191-debug-overlay-links-unten.md) | CLI | Problem | mittel | eingeplant | U5 | Debug-Overlay und Aktionsliste verdecken das HUD nicht |
-| [B-192](B-192-aktionsliste-schliesst-mit-oe.md) | CLI | Problem | hoch | eingeplant | U5 | Die Dev-Aktionsliste schließt sich mit Ö |
 | [B-193](B-193-figuren-luecken-suche.md) | CLI | Idee | hoch | eingeplant | GR7 | Figuren-Lücken unter public/sprites/ haben Kandidaten und eine Auswahl |
 | [B-194](B-194-splitscreen-ruckelt-xbox.md) | CLI | Problem | hoch | eingeplant | PF1 | Der Split-Screen läuft auf der Xbox flüssig |
 | [B-195](B-195-debug-overlay-xbox.md) | PLAT | Problem | mittel | eingeplant | PL1 | Das Debug-Overlay lässt sich auf der Xbox öffnen |
@@ -341,3 +340,4 @@ Zeile in diesen Abschnitt.
 | [B-365](archiv/B-365-domaene-dev-werkzeug.md) | INF | Idee | hoch | erledigt | DV1 | Das Entwickler-Werkzeug k3c-dev hat eine eigene Domäne statt SRV |
 | [B-361](archiv/B-361-sprint-prio-felder-entfallen.md) | INF | Schuld | mittel | erledigt | DV1 | Die Sprint-Felder Prio und Einschiebbar entfallen in Vorlage, Planungstest und plan-Tools |
 | [B-362](archiv/B-362-k3c-dev-token-dienst.md) | DEV | Problem | hoch | erledigt | DV1 | k3c-dev fragt den selbst gestarteten Spielserver mit dessen Token an |
+| [B-192](archiv/B-192-aktionsliste-schliesst-mit-oe.md) | CLI | Problem | hoch | erledigt | U5 | Die Dev-Aktionsliste schließt sich mit Ö |
