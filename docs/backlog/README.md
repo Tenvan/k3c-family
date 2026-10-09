@@ -140,6 +140,7 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-372](B-372-check-run-timeout-go.md) | SRV | Problem | mittel | offen | – | check_run go:test und task:check:go brechen im MCP-Aufruf mit Timeout ab |
 | [B-374](B-374-preisschild-taste.md) | CLI | Frage | mittel | offen | – | Das Preisschild nennt die Taste zum Bezahlen |
 | [B-377](B-377-beispiel-rueckmeldung-servertest.md) | SRV | Schuld | niedrig | offen | – | Ein Server-Test prüft das Beispiel der Rückmeldungs-Ereignisse gegen die Simulation |
+| [B-378](B-378-castfailed-einmal-je-druck.md) | SIM | Problem | mittel | offen | – | Eine gehaltene Skill-Taste ohne Ziel meldet castFailed einmal je Tastendruck |
 
 ## Archiv
 
