@@ -1,11 +1,11 @@
 # K4 · SRV · Protokoll für Bosse, Events und Inselwechsel
 
-- **Status:** geplant
+- **Status:** aktiv
 - **Projekt:** KMP
 - **Domäne:** SRV
 - **Reife:** bereit
 - **Tickets:** B-154, B-080
-- **Start-Commit:** –
+- **Start-Commit:** 0a5accd6
 - **Spec:** freigegeben
 - **Revision:** 1
 - **Freigabe:** 2026-10-04, Chat, durch 🧑, Revision 1; mit Änderungen aus der Spec-Prüfung
