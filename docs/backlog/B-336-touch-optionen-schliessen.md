@@ -8,9 +8,9 @@
 - **Sprint:** U6
 - **Projekt:** BED
 - **Erstellt:** 2026-10-07
-- **Spec:** Entwurf
+- **Spec:** freigegeben
 - **Revision:** 1
-- **Freigabe:** –
+- **Freigabe:** 2026-10-09, 🧑 im Chat, mit Sprint U6 Revision 1
 
 ## Ausgangslage
 

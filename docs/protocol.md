@@ -405,7 +405,8 @@ anderer Stufen kommen nie an. Auf einer Insel trägt jedes Ereignis `stage` (Ind
 | `hit` | `x`, `target` (`player`, `troop`, `enemy`, `castle`, `site`), `id` (Spieler: Index, sonst ID), `damage` | Schaden wirkt |
 | `kill` | `kind`, `x`, `gold` | Gegner besiegt, `gold` gestreute Münzen |
 | `arrow` | `from`, `to` (IDs), `x`, `team` (`player`, `enemy`) | Geschoss abgeschossen |
-| `strike` | `from`, `x` | Nahkampf-Schlag eines Gegners |
+| `strike` | `from`, `x`, beim Monarchen `hit` (`false` = ins Leere, setzt trotzdem die Abklingzeit; B-321) | Nahkampf-Schlag eines Gegners (ohne `hit`) oder eines Monarchen (`from` = Spieler-ID) |
+| `castFailed` | `from` (Spieler-ID), `slot` (0 bis 3), `x` | Bereiter Skill ohne Ziel: nichts geschieht, keine Abklingzeit (B-321, B-318) |
 | `coinPickup` | `player`, `x` | Münze aufgehoben |
 | `coinGive` | `player`, `x`, `to` (`site`, `recruit`, `mark`) | Münze bezahlt ein Ziel (nur zu Boden: kein Ereignis) |
 | `buildProgress` | `site`, `kind`, `x`, `percent` (25, 50, 75) | Bau fortgeschritten, fertig = `built` |
@@ -419,7 +420,7 @@ Tod, Bau fertig, Skill, Nacht naht und Portal laufen über die älteren Typen `p
 `dusk`, `arrived` (`arrived` mit `player` beim Einzelwechsel). Die Simulation begrenzt die Ereignisse je Tick und
 Stufe auf **K = 32** (`maxEventsPerTick`); bei Überlauf gehen Tod und Bau vor, `eventsDropped` in `s` zählt die
 Verworfenen und fehlt bei 0 (zuverlässige Übertragung im Delta: B-190). Ein Client übergeht unbekannte Typen
-(Banner nur für bekannte), deshalb blieb die Protokollversion dafür 3.
+(Banner nur für bekannte), deshalb blieb die Protokollversion dafür 3. Gilt auch für `castFailed` und das Zusatzfeld `hit` an `strike` (S9.2): Version bleibt 5.
 
 ### Snapshot-Größe
 

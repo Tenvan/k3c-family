@@ -9,7 +9,8 @@ import "math"
 //	kill          – Gegner besiegt: kind, x, gold (gestreute Münzen); je Tod, mit Priorität (`enemyKilled` aus B-128)
 //	arrow         – Geschoss abgeschossen: from, to (IDs), x, team (player, enemy); auch der Splitter-Wurf (Splash: je
 //	                getroffenem Ziel ein `hit`). Flächen der Flammenspur melden nur ihre `hit` (boss_abilities.go)
-//	strike        – Nahkampf-Schlag eines Gegners: from, x
+//	strike        – Nahkampf-Schlag: from, x; beim Monarchen zusätzlich hit (false = ins Leere, B-321), beim Gegner kein hit
+//	castFailed    – bereiter Skill ohne Ziel (skills.go; B-321): from, slot (0 bis 3), x; ohne Abklingzeit
 //	coinPickup    – Münze aufgehoben: player (Index), x
 //	coinGive      – Münze gegeben: player, x, to (site, recruit, mark, offer, merchant); fällt sie nur zu Boden, kein Ereignis
 //	buildProgress – Bau fortgeschritten: site (ID), kind, x, percent (25, 50, 75; fertig = built)

@@ -1,7 +1,7 @@
 import Phaser from 'phaser';
-import { GAME_WIDTH, GROUND_Y, UNIT_PX } from '../core/constants';
+import { GROUND_Y, UNIT_PX } from '../core/constants';
 import type { Device } from '../input/slotBindings';
-import { playerHints, type HintView } from './actionHints';
+import { HINT_FONT, playerHint, type HintView } from './actionHints';
 import { fontStyle } from './fontRules';
 import { GlyphRow, type RowPart } from './glyphView';
 import type { Cell } from './layout';
@@ -25,31 +25,25 @@ export function screenAt(cell: Cell, view: Phaser.Geom.Rectangle, xUnits: number
 }
 
 /**
- * Aktionen-Overlay (S3.3): je Spielerfeld über dem eigenen Monarchen die wichtigste gültige Aktion groß, die übrigen
- * kleiner darunter, mit den Tasten des Geräts dieses Spielers. Gezeichnet im HUD-Raum, damit die Schrift fest bleibt (Q03).
+ * Aktionen-Overlay (S3.3, B-319): je Spielerfeld über dem eigenen Monarchen genau ein Hinweis in Nebeninfo-Größe, mit den
+ * Tasten des Geräts dieses Spielers; am Preisschild keiner. Gezeichnet im HUD-Raum, damit die Schrift fest bleibt (Q03).
  */
 export class ActionOverlay {
-  private main: GlyphRow[] = [];
-  private rest: GlyphRow[] = [];
+  private rows: GlyphRow[] = [];
 
   constructor(private readonly scene: Phaser.Scene) {}
 
   /** `cameras[i]` gehört zu `cells[i]` (layoutCameras); `slotOf`/`deviceOf` wie bei der Skill-Leiste */
   draw(cells: readonly RadarCell[], cameras: readonly Phaser.Cameras.Scene2D.Camera[], slotOf: (seat: number) => number | undefined, deviceOf: (slot: number) => Device): void {
-    for (const list of [this.main, this.rest]) list.forEach((o) => o.box.setVisible(false)); // forEach überspringt Lücken (Feld ohne Overlay)
-    const compact = cells.some((c) => c.cell.w < GAME_WIDTH); // 3 bis 4 Spieler: nur die wichtigste Aktion (kürzen statt verkleinern)
+    this.rows.forEach((o) => o.box.setVisible(false)); // forEach überspringt Lücken (Feld ohne Overlay)
     cells.forEach(({ cell, monarch, world }, i) => {
       const p = monarch === null ? undefined : world?.players.find((q) => q.index === monarch);
       const slot = slotOf(cell.seat);
       const at = p && cameras[i] ? screenAt(cell, cameras[i].worldView, p.x) : null;
       if (!p || !world || slot === undefined || !at) return;
-      const hints = playerHints(world, p, deviceOf(slot));
-      if (hints.length === 0) return;
-      const { x, y } = at;
-      (this.main[i] ??= new GlyphRow(this.scene, { ...STYLE, ...fontStyle('playerValue') }, 'bottom')).set(partsOf(hints[0]!), x, y);
-      if (compact || hints.length < 2) return;
-      const parts = hints.slice(1).flatMap((h, j) => (j === 0 ? partsOf(h) : ['  ·  ', ...partsOf(h)]));
-      (this.rest[i] ??= new GlyphRow(this.scene, { ...STYLE, ...fontStyle('controlsHint'), strokeThickness: 4 }, 'top')).set(parts, x, y + 4);
+      const hint = playerHint(world, p, deviceOf(slot));
+      if (!hint) return;
+      (this.rows[i] ??= new GlyphRow(this.scene, { ...STYLE, ...fontStyle(HINT_FONT), strokeThickness: 4 }, 'bottom')).set(partsOf(hint), at.x, at.y);
     });
   }
 }

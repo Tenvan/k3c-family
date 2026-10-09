@@ -10,8 +10,8 @@ import (
 // einen Skill oder ein Passiv, jeden höchstens einmal. Verfügbar sind Pool der Insel minus gelernte Skills; wer spät
 // beitritt, hat damit alle bisherigen Punkte.
 
-// stepAttack: Schlag (Taste X) auf den nächsten lebenden Gegner in Reichweite, beide Seiten. Ohne Gegner kein Effekt
-// und keine Abklingzeit. Nur für lebende Monarchen aufgerufen.
+// stepAttack: Schlag (Taste X) auf den nächsten lebenden Gegner in Reichweite, beide Seiten. Ohne Gegner gilt dieselbe
+// Abklingzeit, `strike` meldet es mit hit false (B-321). Nur für lebende Monarchen aufgerufen.
 func stepAttack(w *World, p *Player, cmd PlayerCommand, dt float64) {
 	p.AttackCooldown = math.Max(0, p.AttackCooldown-dt)
 	if !cmd.Attack || p.AttackCooldown > 0 {
@@ -19,11 +19,11 @@ func stepAttack(w *World, p *Player, cmd PlayerCommand, dt float64) {
 	}
 	a := monarch.Attack
 	e := nearest(w.Enemies, func(e *Enemy) float64 { return e.X }, p.X, a.Range, func(e *Enemy) bool { return e.HP > 0 })
+	p.AttackCooldown = a.Cooldown
+	emit(w, "strike", Event{"from": p.ID, "x": unitX(p.X), "hit": e != nil})
 	if e == nil {
 		return
 	}
-	p.AttackCooldown = a.Cooldown
-	emit(w, "strike", Event{"from": p.ID, "x": unitX(p.X)})
 	applyDamage(w, e.ID, float64(a.Damage*damageMultOf(w, p, false)))
 }
 

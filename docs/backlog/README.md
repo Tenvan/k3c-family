@@ -108,18 +108,17 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-318](B-318-schlag-skill-feedback.md) | CLI | Problem | mittel | eingeplant | S9 | Schlag und Skills zeigen auch ohne Ziel sichtbar, dass die Taste ankam |
 | [B-319](B-319-ein-hinweis-je-weltposition.md) | CLI | Problem | hoch | eingeplant | S9 | Das Aktionen-Overlay zeigt je Spieler nur einen Hinweis, 24 px, nie über einem Preisschild |
 | [B-320](B-320-reiter-sattel-beim-laufen.md) | CLI | Problem | hoch | eingeplant | GR7 | Der Reiter sitzt beim Laufen und Sprinten auf dem Sattel, nicht auf der Kruppe |
-| [B-321](B-321-schlag-skill-ohne-ziel-ereignis.md) | SIM | Problem | mittel | eingeplant | SK1 | Schlag ohne Treffer und Skill ohne Ziel erzeugen ein Ereignis |
 | [B-324](B-324-client-typen-gegnerdaten.md) | CLI | Schuld | niedrig | offen | – | Die Client-Typen der Gegner- und Wellendaten passen zu den JSON-Dateien |
 | [B-327](B-327-golden-tiefe-stufen.md) | SIM | Frage | niedrig | offen | – | Golden-Läufe decken Eisenstollen und Kristallhöhle ab |
 | [B-328](B-328-feuergeist-flammen-flaeche.md) | SIM | Frage | niedrig | offen | – | Der Feuergeist hinterlässt eine Flammen-Fläche |
 | [B-329](B-329-figuren-neue-gegner.md) | CLI | Schuld | niedrig | offen | – | Die sechs neuen Gegner zeigen eigene Figuren statt Platzhalter |
 | [B-331](B-331-einheitlicher-grafikstil-pipeline.md) | CLI | Idee | mittel | offen | – | Alle Grafiken laufen durch eine Pipeline mit Ziel-Palette und gleicher Pixeldichte |
-| [B-333](B-333-pause-anzeige.md) | CLI | Idee | mittel | offen | – | Der Client zeigt einen angehaltenen Raum deutlich an und hält die Figuren-Animationen an |
+| [B-333](B-333-pause-anzeige.md) | CLI | Idee | mittel | eingeplant | AZ1 | Der Client zeigt einen angehaltenen Raum deutlich an und hält die Figuren-Animationen an |
 | [B-334](B-334-performance-modus.md) | CLI | Idee | hoch | eingeplant | PM1 | Der Client misst Leistung in einem Performance-Modus automatisch und überträgt die Werte an den Server |
 | [B-335](B-335-landingpage-spieler-entwicklung.md) | PLAT | Idee | hoch | eingeplant | HW1 | Die Landingpage zeigt nur Spieler-Kacheln, Entwicklungs-, Performance- und Balancing-Aufrufe liegen auf einer eigenen Entwicklerseite |
 | [B-336](B-336-touch-optionen-schliessen.md) | CLI | Problem | hoch | eingeplant | U6 | Die Optionen-Szene lässt sich per Touch vollständig bedienen und schließen, ohne vom Touch-Overlay verdeckt zu werden |
 | [B-337](B-337-hud-elemente-ohne-ueberlagerung.md) | CLI | Idee | hoch | eingeplant | U6 | Jede HUD-Anzeige ist ein eigenes Element mit optionalem Hintergrund und Rahmen, und HUD-Elemente überlagern sich nicht |
-| [B-339](B-339-glyphen-je-plattform.md) | CLI | Idee | mittel | offen | – | Spiel und Seiten zeigen Tastensymbole passend zum gerade benutzten Controller (Xbox, PlayStation, weitere) |
+| [B-339](B-339-glyphen-je-plattform.md) | CLI | Idee | mittel | eingeplant | GL1 | Spiel und Seiten zeigen Tastensymbole passend zum gerade benutzten Controller (Xbox, PlayStation, weitere) |
 | [B-341](B-341-header-ursache-live-messen.md) | DEV | Problem | mittel | offen | – | Die Ursache für den fehlenden Header `X-K3C-Root` aus Worktrees ist live gemessen |
 | [B-342](B-342-w6-2-siteview-erlaubt.md) | CLI | Frage | mittel | offen | – | W6.2 darf den Bauplatz-Wartegrund in `siteView.ts` anbinden |
 | [B-343](B-343-bau-vor-dem-ausgang.md) | SIM | Frage | mittel | offen | – | Der Bau des Endbosses liegt an der inneren Kante des Ausgangs-Chunks |
@@ -135,11 +134,14 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-366](B-366-fahrplan-spalte-projekt.md) | DEV | Schuld | mittel | offen | – | k3c-dev füllt im Fahrplan die Spalte Projekt und ordnet nach Rang |
 | [B-367](B-367-doku-nachzug-projekte.md) | INF | Schuld | niedrig | offen | – | Begriffe aus den alten Bahnen und Spuren sind nach PJ3 ersetzt und neue Projekt-Begriffe im Glossar |
 | [B-368](B-368-planung-erpapi-ablage.md) | SRV | Schuld | mittel | offen | – | Die Planung liegt in der ErpApi-Ablage und k3c-dev bedient sie mit den Planungs-Tools der Workbench-Spec |
-| [B-369](B-369-texte-landingpage.md) | PLAT | Schuld | niedrig | offen | – | Die Landingpage zeigt ihre Texte in der gewählten Sprache |
+| [B-369](B-369-texte-landingpage.md) | PLAT | Schuld | niedrig | eingeplant | GL1 | Die Landingpage zeigt ihre Texte in der gewählten Sprache |
 | [B-370](B-370-mond-bild-nacht-hinweis.md) | CLI | Frage | niedrig | offen | – | Der Hinweis „Die Nacht naht“ zeigt ein Mond-Bild vor dem Text |
-| [B-371](B-371-glyphen-tastatur-2.md) | CLI | Problem | mittel | offen | – | Hinweise und Glyphen zeigen für Spieler 2 an der Tastatur dessen Tasten |
+| [B-371](B-371-glyphen-tastatur-2.md) | CLI | Problem | mittel | eingeplant | AZ1 | Hinweise und Glyphen zeigen für Spieler 2 an der Tastatur dessen Tasten |
 | [B-372](B-372-check-run-timeout-go.md) | SRV | Problem | mittel | offen | – | check_run go:test und task:check:go brechen im MCP-Aufruf mit Timeout ab |
 | [B-373](B-373-haendler-angreifbar-besuchszaehler.md) | SIM | Idee | mittel | eingeplant | K3 | Der Händler ist eine angreifbare Figur mit Besuchszähler im Spielstand |
+| [B-374](B-374-preisschild-taste.md) | CLI | Frage | mittel | offen | – | Das Preisschild nennt die Taste zum Bezahlen |
+| [B-377](B-377-beispiel-rueckmeldung-servertest.md) | SRV | Schuld | niedrig | offen | – | Ein Server-Test prüft das Beispiel der Rückmeldungs-Ereignisse gegen die Simulation |
+| [B-378](B-378-castfailed-einmal-je-druck.md) | SIM | Problem | mittel | offen | – | Eine gehaltene Skill-Taste ohne Ziel meldet castFailed einmal je Tastendruck |
 
 ## Archiv
 
@@ -347,3 +349,4 @@ Zeile in diesen Abschnitt.
 | [B-130](archiv/B-130-bosse.md) | SIM | Idee | hoch | erledigt | K2 | Minibosse und Endboss sind spielbar |
 | [B-102](archiv/B-102-siegvarianten-niederlage.md) | SIM | Idee | mittel | erledigt | K2 | Siegvarianten und Niederlage-Modi der Raum-Optionen sind umgesetzt |
 | [B-103](archiv/B-103-inseln-bosse.md) | SIM | Idee | mittel | erledigt | K2 | Inseln mit Endboss und gemeinsamem Inselwechsel sind spielbar |
+| [B-321](archiv/B-321-schlag-skill-ohne-ziel-ereignis.md) | SIM | Problem | mittel | erledigt | S9 | Schlag ohne Treffer und Skill ohne Ziel erzeugen ein Ereignis |

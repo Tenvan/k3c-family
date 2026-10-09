@@ -158,6 +158,7 @@ export const en: Record<TextKey, string> = {
   'hint.pay': 'buy {name}',
   'hint.revive': 'revive',
   'hint.attack': 'strike',
+  'cast.noTarget': 'no target',
   'hint.learn': 'learn skill',
   'hint.respec': 'reset skills',
   // Guided first night (S6.3): hints above objects, {key} = glyph

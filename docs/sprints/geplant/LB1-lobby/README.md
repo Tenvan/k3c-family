@@ -3,12 +3,12 @@
 - **Status:** geplant
 - **Projekt:** BED
 - **Domäne:** CLI
-- **Reife:** Entwurf
+- **Reife:** bereit
 - **Tickets:** B-037
 - **Start-Commit:** –
-- **Spec:** Entwurf
+- **Spec:** freigegeben
 - **Revision:** 1
-- **Freigabe:** –
+- **Freigabe:** 2026-10-09, 🧑 im Chat, Revision 1, Vorschläge unter Offene Fragen übernommen
 
 ## Ausgangslage
 
@@ -48,14 +48,16 @@ Server nicht erreichbar → Hinweis, Wiederholen-Knopf.
 
 ## Offene Fragen
 
-keine
+- Stand: B-037/AC-01 bis AC-03 sind seit SP08 umgesetzt (Raumliste und Beitritt in `LobbyScene`), offen ist AC-04 (Spielstand wählen). LB1.1 setzt das um und belegt alle vier.
+- Spielstand-Einträge (übernommen mit der Freigabe 2026-10-09): Die Lobby liest `GET /api/saves`, zeigt die neuesten sechs Spielstände nach `savedAt` unter den Räumen, ohne unlesbare und ohne solche, die schon als Raum offen sind; Auswahl sendet `create` mit `fresh: false`. 🧑
+- „Spielen (Name)“ bleibt oben als Start mit `?save` bzw. `familie` (übernommen mit der Freigabe 2026-10-09). 🧑
 
 ## Sessions
 
-Entwurf. Vor dem Aktivieren jede Session als Datei nach `docs/vorlagen/session.md` schreiben, die Kriterien in Klammern werden ihr Feld `Kriterien`.
-
-- LB1.1 Raumliste und Beitritt (AC-01).
-- LB1.2 Review (Code-Sprint): alle Kriterien prüfen.
+| Nr. | Datei | Typ | Agent | Status |
+|---|---|---|---|---|
+| LB1.1 | `LB1.1-raumliste-spielstand.md` | Umsetzung | autonom | offen |
+| LB1.2 | `LB1.2-review.md` | Review | autonom | offen |
 
 ## Abnahme
 

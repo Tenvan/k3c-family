@@ -4,13 +4,13 @@
 - **Typ:** Problem
 - **Prio:** mittel
 - **Umgebung:** offline
-- **Status:** eingeplant
-- **Sprint:** SK1
-- **Projekt:** SKL
+- **Status:** erledigt
+- **Sprint:** S9
+- **Projekt:** BED
 - **Erstellt:** 2026-10-06
-- **Spec:** Entwurf
+- **Spec:** freigegeben
 - **Revision:** 1
-- **Freigabe:** –
+- **Freigabe:** 2026-10-09, 🧑 im Chat, mit Sprint S9 Revision 2
 
 ## Ausgangslage
 
@@ -65,3 +65,5 @@ keine
 ## Notizen
 
 Vorgeschlagen bei der Planung von S9 (2026-10-06), Voraussetzung für B-318.
+
+Erledigt in S9.1a (Nachweis dort), abgenommen im Review S9.4 (2026-10-09).
