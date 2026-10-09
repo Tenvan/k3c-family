@@ -1,7 +1,7 @@
 import Phaser from 'phaser';
 import { toggleFullscreen } from '../core/fullscreen';
 import { GAME_HEIGHT, GAME_WIDTH, UNIT_PX } from '../core/constants';
-import { GamepadInput, KeyboardInput, type PlayerInput } from '../input/playerInput';
+import { GamepadInput, keyboardPlayers, type KeyboardInput, type PlayerInput } from '../input/playerInput';
 import { TouchInput, wantsTouchControls } from '../input/touchInput';
 import type { Frame, LevelInfo, RoomClient } from '../online/clientConnection';
 import { applyState, createViewWorld } from '../online/clientWorld';
@@ -62,7 +62,7 @@ export class GameScene extends Phaser.Scene {
   private lastFlashAt: number | null = null;
   private rumbleWarned = false;
   private holders: Phaser.GameObjects.Layer[] = [];
-  private keyboard!: KeyboardInput;
+  private keyboards!: [KeyboardInput, KeyboardInput]; // Spieler 1 und 2 an einer Tastatur (B-316)
   private touch: TouchInput | undefined;
   private pads: GamepadInput[] = [];
   private nightFx: Phaser.Filters.ColorMatrix[] = [];
@@ -123,7 +123,7 @@ export class GameScene extends Phaser.Scene {
   }
 
   create(): void {
-    this.keyboard = new KeyboardInput(this.input.keyboard!);
+    this.keyboards = keyboardPlayers(this.input.keyboard!);
     if (wantsTouchControls()) this.touch = touchControls();
     // Browser melden Gamepads erst nach dem ersten Tastendruck. Alle bekannten + neue Pads beobachten.
     const gamepads = this.input.gamepad!;
@@ -141,8 +141,7 @@ export class GameScene extends Phaser.Scene {
   }
 
   update(): void {
-    this.keyboard.update();
-    [...this.pads, ...pageBots()].forEach((p) => p.update());
+    [...this.keyboards, ...this.pads, ...pageBots()].forEach((p) => p.update());
     this.touch?.update();
     this.trackLastDevice();
 
@@ -179,7 +178,7 @@ export class GameScene extends Phaser.Scene {
   /** Esc, Touch-Schaltfläche oder Menu kurz (Pad, beim Loslassen; View + Menu bleibt „zurück zur Landingpage“) */
   private wantsOptions(): boolean {
     const menuShort = this.menuPress.update(this.pads.some((p) => p.held('pause')), this.pads.some((p) => p.viewHeld()), performance.now());
-    return this.keyboard.justPressed('pause') || (this.touch !== undefined && pauseButton().take()) || menuShort;
+    return this.keyboards[0].justPressed('pause') || (this.touch !== undefined && pauseButton().take()) || menuShort;
   }
 
   /** Slots, deren Spieler noch auf seinen Beitritt wartet (Taste drücken) */
@@ -216,7 +215,7 @@ export class GameScene extends Phaser.Scene {
   }
 
   private allInputs(): PlayerInput[] {
-    return [this.keyboard, ...this.pads, ...(this.touch ? [this.touch] : [])];
+    return [...this.keyboards, ...this.pads, ...(this.touch ? [this.touch] : [])];
   }
 
   private trackLastDevice(): void {
@@ -224,7 +223,7 @@ export class GameScene extends Phaser.Scene {
     if (this.allInputs().some(used)) void audioCore().onInput(); // erste Eingabe entsperrt den Ton (SO1.2)
     if (this.touch && used(this.touch)) this.lastDevice = 'touch';
     else if (this.pads.some(used)) this.lastDevice = 'pad';
-    else if (used(this.keyboard)) this.lastDevice = 'keyboard';
+    else if (this.keyboards.some(used)) this.lastDevice = 'keyboard';
   }
 
   /** Controller getrennt: sein Spieler verlässt den Raum (Monarch wird frei); der letzte Spieler verlässt den Raum ganz. */
