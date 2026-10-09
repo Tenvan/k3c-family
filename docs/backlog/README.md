@@ -74,7 +74,6 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-202](B-202-spielstand-versionsfolge.md) | SIM | Problem | hoch | eingeplant | W7 | S1 und W1 teilen sich die Spielstand-Version 3 eindeutig |
 | [B-203](B-203-gold-schwelle-kennzahl.md) | REG | Frage | niedrig | eingeplant | RG2 | Die Kennzahl „erste Gold-Schwelle“ hat eine feste Schwelle und Bedeutung |
 | [B-204](B-204-test-raeume-sofort-schliessen.md) | SRV | Idee | niedrig | eingeplant | SV1 | Leere Test-Räume schließen sofort statt nach der Leer-Frist |
-| [B-205](B-205-y-belegung-s3.md) | CLI | Problem | mittel | eingeplant | S8 | Die Y-Belegung in S3 folgt dem Beschluss „kein Bau-Menü“ |
 | [B-207](B-207-bauplaetze-anzeige.md) | CLI | Idee | mittel | eingeplant | W8 | Der Client zeigt freie und gesperrte Bauplätze mit Grund (ab Hub-Stufe n, Linie fehlt) |
 | [B-208](B-208-protokoll-bauplaetze.md) | SRV | Idee | mittel | offen | – | Das Protokoll trägt die Bauplätze des Layouts sowie Platz- und Hub-Stufe zum Client |
 | [B-209](B-209-client-platz-arten.md) | CLI | Schuld | mittel | eingeplant | W8 | `src/model/data.ts` kennt alle Platz-Arten aus `hub.json` |
@@ -138,6 +137,7 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-367](B-367-doku-nachzug-projekte.md) | INF | Schuld | niedrig | offen | – | Begriffe aus den alten Bahnen und Spuren sind nach PJ3 ersetzt und neue Projekt-Begriffe im Glossar |
 | [B-368](B-368-planung-erpapi-ablage.md) | SRV | Schuld | mittel | offen | – | Die Planung liegt in der ErpApi-Ablage und k3c-dev bedient sie mit den Planungs-Tools der Workbench-Spec |
 | [B-369](B-369-texte-landingpage.md) | PLAT | Schuld | niedrig | offen | – | Die Landingpage zeigt ihre Texte in der gewählten Sprache |
+| [B-370](B-370-mond-bild-nacht-hinweis.md) | CLI | Frage | niedrig | offen | – | Der Hinweis „Die Nacht naht“ zeigt ein Mond-Bild vor dem Text |
 | [B-371](B-371-glyphen-tastatur-2.md) | CLI | Problem | mittel | offen | – | Hinweise und Glyphen zeigen für Spieler 2 an der Tastatur dessen Tasten |
 
 ## Archiv
@@ -342,3 +342,4 @@ Zeile in diesen Abschnitt.
 | [B-361](archiv/B-361-sprint-prio-felder-entfallen.md) | INF | Schuld | mittel | erledigt | DV1 | Die Sprint-Felder Prio und Einschiebbar entfallen in Vorlage, Planungstest und plan-Tools |
 | [B-362](archiv/B-362-k3c-dev-token-dienst.md) | DEV | Problem | hoch | erledigt | DV1 | k3c-dev fragt den selbst gestarteten Spielserver mit dessen Token an |
 | [B-192](archiv/B-192-aktionsliste-schliesst-mit-oe.md) | CLI | Problem | hoch | erledigt | U5 | Die Dev-Aktionsliste schließt sich mit Ö |
+| [B-205](archiv/B-205-y-belegung-s3.md) | CLI | Problem | mittel | erledigt | S8 | Die Y-Belegung in S3 folgt dem Beschluss „kein Bau-Menü“ |

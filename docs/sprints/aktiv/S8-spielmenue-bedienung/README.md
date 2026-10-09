@@ -1,14 +1,14 @@
 # S8 · CLI · Spielmenü „Spiel verlassen“, Y-Belegung und Glyphen-Entscheidung
 
-- **Status:** geplant
+- **Status:** aktiv
 - **Projekt:** BED
 - **Domäne:** CLI
 - **Reife:** bereit
 - **Tickets:** B-293, B-205, B-294
-- **Start-Commit:** –
-- **Spec:** Entwurf
+- **Start-Commit:** edf3f1b1
+- **Spec:** freigegeben
 - **Revision:** 1
-- **Freigabe:** –
+- **Freigabe:** 2026-10-09, 🧑 im Chat
 
 ## Ausgangslage
 
@@ -60,11 +60,15 @@ Verbindung weg beim Verlassen → Lobby trotzdem, Meldung 👋.
 
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
-| S8.1 | `S8.1-spiel-verlassen.md` | Umsetzung | autonom | offen |
-| S8.2 | `S8.2-y-und-hinweisbilder.md` | Umsetzung | autonom | offen |
-| S8.3 | `S8.3-review.md` | Review | autonom | offen |
+| S8.1 | `S8.1-spiel-verlassen.md` | Umsetzung | autonom | fertig |
+| S8.2 | `S8.2-y-und-hinweisbilder.md` | Umsetzung | autonom | fertig |
+| S8.3 | `S8.3-review.md` | Review | autonom | fertig |
 | S8.4 | `S8.4-browser-abnahme.md` | Workshop | Mensch | offen |
 
 ## Abnahme
 
-–
+Review 2026-10-09 (S8.3, eigener Review-Agent): keine schweren Befunde, `task check` und `task check:go` grün.
+- AC-01 geprüft (S8.1: Test „Leave game“, Rechnung 938 < 1006 px), B-293/AC-02 offen bis S8.4; AC-02 geprüft (S8.2), B-205 erledigt; AC-04 geprüft.
+- AC-03: Münze geprüft (S8.2, `grafik:coinIcon`), Ansicht offen bis S8.4; Mond verschoben nach B-370 (kein Bild unter `public/`, Entscheidung 🧑).
+- Neue Tickets: B-370.
+- Version: v0.15.1 vorgeschlagen (Bild im Münz-Hinweis, Texte und Nachweise); nicht gesetzt (wartet auf Bestätigung 🧑).

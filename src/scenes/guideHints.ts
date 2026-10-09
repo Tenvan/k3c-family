@@ -11,6 +11,17 @@ export type GuideId = 'coin' | 'pay' | 'dusk' | 'recruit';
 /** Reihenfolge, wenn mehrere passen (B-148 › Anforderungen) */
 export const GUIDE_ORDER: readonly GuideId[] = ['coin', 'pay', 'dusk', 'recruit'];
 
+/** Bild vor dem Hinweistext: Textur-Key und feste Pixel-Art-Skalierung (Zuordnung `docs/assets/zuordnung-welt.md` › `guide:coin`) */
+export interface GuideImage {
+  image: string;
+  scale: number;
+}
+
+/** Bild vor dem Text (B-294): Münze mit dem Münzbild; die Nacht bekommt erst mit einem Mond-Bild eins (B-370) */
+export function guideImage(id: GuideId): GuideImage | null {
+  return id === 'coin' ? { image: 'grafik:coinIcon', scale: 4 } : null; // Münze 6 px im 16-px-Bild → 24 px, etwa Texthöhe
+}
+
 export interface GuideHint {
   id: GuideId;
   /** Ort in der Welt (Units), über dem der Hinweis steht */
