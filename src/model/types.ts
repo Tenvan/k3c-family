@@ -232,7 +232,8 @@ export type GameEvent = (
   | { type: 'hit'; x: number; target: 'player' | 'troop' | 'enemy' | 'castle' | 'site'; id: number; damage: number }
   | { type: 'kill'; kind: string; x: number; gold: number }
   | { type: 'arrow'; from: number; to: number; x: number; team: 'player' | 'enemy' }
-  | { type: 'strike'; from: number; x: number }
+  | { type: 'strike'; from: number; x: number; hit?: boolean }
+  | { type: 'castFailed'; from: number; slot: number; x: number }
   | { type: 'coinPickup'; player: number; x: number }
   | { type: 'coinGive'; player: number; x: number; to: 'site' | 'recruit' | 'mark' }
   | { type: 'buildProgress'; site: number; kind: SiteKind; x: number; percent: 25 | 50 | 75 }

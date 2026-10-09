@@ -1,0 +1,13 @@
+{
+  "t": "delta",
+  "stage": 0,
+  "tick": 301,
+  "ack": 42,
+  "s": {
+    "events": [
+      { "type": "strike", "from": 1, "x": 414, "hit": false },
+      { "type": "strike", "from": 1, "x": 414, "hit": true },
+      { "type": "castFailed", "from": 1, "slot": 2, "x": 414 }
+    ]
+  }
+}

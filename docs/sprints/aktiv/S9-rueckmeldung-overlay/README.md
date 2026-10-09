@@ -63,7 +63,7 @@ Hinweis und Preisschild an derselben Position → Preisschild gewinnt, Hinweis e
 |---|---|---|---|---|
 | S9.1 | `S9.1-ein-hinweis.md` | Umsetzung | autonom | fertig |
 | S9.1a | `S9.1a-ereignis-ohne-ziel.md` | Umsetzung | autonom | fertig |
-| S9.2 | `S9.2-protokoll-rueckmeldung.md` | Umsetzung | autonom | offen |
+| S9.2 | `S9.2-protokoll-rueckmeldung.md` | Umsetzung | autonom | fertig |
 | S9.3 | `S9.3-rueckmeldung-zeichnen.md` | Umsetzung | autonom | offen |
 | S9.4 | `S9.4-review.md` | Review | autonom | offen |
 | S9.5 | `S9.5-pc-abnahme.md` | Workshop | Mensch | offen |
