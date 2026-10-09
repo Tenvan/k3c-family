@@ -286,6 +286,22 @@ export interface TaskRun {
   reason: string;
 }
 
+/** Freigabe-Schloss eines Tasks (Go: taskgate.State): Datei offen/zu, `-temp` = Laufzeit-Schalter bis zum Beenden. */
+export type TaskGateState = 'open' | 'closed' | 'open-temp' | 'closed-temp';
+
+/** Schlösser aller Tasks (Go: TaskGates); pending = Schalter, die „Schalter übernehmen“ in die Datei schreibt. */
+export interface TaskGates {
+  states: Record<string, TaskGateState>;
+  pending: number;
+}
+
+/** Hinweis eines Agenten an den Nutzer (Go: mcpsrv.Notice, Tool notify_ui). */
+export interface Notice {
+  level: 'info' | 'success' | 'warn' | 'error';
+  title: string;
+  text?: string;
+}
+
 /** Eine Session eines Sprints (Go: planning.Session); Status `entwurf` bei Stichpunkten ohne Tabelle. */
 export interface PlanSession {
   nr: string;
@@ -299,6 +315,8 @@ export interface PlanSession {
   deps?: string[];
   /** Feld „Umgebung“: offline (worktree-tauglich) | live | ?. */
   env?: string;
+  /** Feld „Domäne“ der Session-Datei: REG, SIM, SRV, CLI, PLAT, INF oder DEV. */
+  domain?: string;
 }
 
 /** Aktiver, geplanter oder erledigter Sprint (Go: planning.Sprint); worktree = Branch eines Worktrees, der daran arbeitet. */
@@ -306,8 +324,7 @@ export interface PlanSprint {
   id: string;
   title: string;
   domain: string;
-  prio?: string; // live die höchste Prio der Tickets (Go: planning.rank)
-  /** Sprints, auf deren Sessions dieser wartet; die Liste kommt nach Abhängigkeit und Prio geordnet. */
+  /** Sprints, auf deren Sessions dieser wartet; die Liste kommt nach Abhängigkeit, Projekt-Rang und Platz geordnet. */
   deps?: string[];
   status: string;
   reife: string;
@@ -315,6 +332,8 @@ export interface PlanSprint {
   tickets: string[];
   sessions: PlanSession[];
   worktree?: string;
+  /** Feld „Projekt“: Kürzel oder `–`. */
+  project?: string;
 }
 
 /** Ticket aus docs/backlog (Go: planning.Ticket). */
@@ -329,10 +348,24 @@ export interface PlanTicket {
   status: string;
   sprint: string;
   spec: string;
+  /** Feld „Projekt“: Kürzel oder `–`. */
+  project?: string;
+}
+
+/** Projekt aus docs/projekte (Go: planning.Project); rang ist eine Zahl ab 1 oder `–` (ruht, erledigt, ABN). */
+export interface PlanProject {
+  id: string;
+  title: string;
+  status: string; // aktiv | ruht | erledigt
+  rang: string;
+  /** Sprint-IDs in Abarbeitungs-Reihenfolge (Tabelle des Projekts). */
+  sprints: string[];
 }
 
 /** Daten der Ansicht „Sprints & Backlog“ (Go: planning.Data, dieselben wie plan_list); done zählt die erledigten Sprints. */
 export interface PlanningData {
+  /** Aktive nach Rang (ABN danach), dann ruhende, dann erledigte; leer vor PJ3. */
+  projects?: PlanProject[];
   sprints: PlanSprint[];
   tickets: PlanTicket[];
   done: number;
@@ -371,6 +404,8 @@ export interface Events {
   'mcp:start': McpCall;
   'mcp:call': McpCall;
   'task:state': TaskRun;
+  /** Hinweis eines Agenten (notify_ui). */
+  'ui:notify': Notice;
   /** Eine Datei der Planung (docs/sprints, docs/backlog, Plan, Fragenkatalog, Glossar) hat sich geändert; ohne Nutzlast. */
   'planning:changed': null;
 }
@@ -411,6 +446,12 @@ export interface Backend {
   taskStart(name: string, args: string[]): Promise<TaskRun>;
   taskStop(name: string): Promise<TaskRun>;
   taskRuns(): Promise<TaskRun[]>;
+  /** Freigabe-Schlösser aller Tasks (task_start nur bei offenem Schloss). */
+  taskGates(): Promise<TaskGates>;
+  /** Kehrt das Schloss bis zum Beenden um. */
+  taskGateToggle(name: string): Promise<TaskGates>;
+  /** Schreibt die Laufzeit-Schalter in tools/k3c-dev/task-freigaben.json. */
+  taskGateSave(): Promise<TaskGates>;
   /** Sprints und Tickets frisch aus docs/ (Go: planning.Load). */
   planningData(): Promise<PlanningData>;
   /** Vorhandene Planungs-Dokumente in Umschalter-Reihenfolge; das Glossar nur mit Datei. */

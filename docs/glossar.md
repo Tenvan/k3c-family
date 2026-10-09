@@ -27,6 +27,8 @@ Regelwerk in [`rules/`](rules/), und das Glossar wird angepasst. Zahlen sind, wo
 | Biom | Thema und Eckdaten einer Stufe (Länge, Chunks, Ressourcen, Gegner, Zyklus) in `data/biomes/<biom>.json`: heute `forest`, `cave`, `mine`; geplant `ironhold`, `crystal`. | `game-design.md` › Welt & Stufen, `rules/stufen.md` § 1 |
 | Bogenschütze | Kämpfer: Bauer plus Bogen aus der Werkstatt. Posten auf einem Turm oder hinter der äußersten Mauer (`outerWall`), Fernkampf. | `rules/buerger.md` § 1 |
 | Börse | Das Gold, das ein Spieler trägt (Beutel, höchstens 100); beim Verkaufen an den Händler fließt Gold hinein. | `rules/wirtschaft.md` § 1 (`purse`), W4.2 |
+| Bot-Eingabe (`BotInput`) | Eingabe-Quelle im Client für Testläufe: Die Aktionen der lokalen Spieler kommen aus dem Bot-Feed der Workbench (`?botfeed=…`); der Client entscheidet nichts. | B-349 |
+| Bot-Feed | WebSocket der Workbench je Testlauf, über den Bots die Kommandos je Slot an einen Client schicken; nur Loopback. | B-348, B-349 |
 | Burg | Hub-Kern in der Hub-Mitte und Basislager; Zahlziel des Hub-Ausbaus, Ort für Respawn und Respec. Fällt sie, wirkt der Niederlage-Modus. | `rules/materialien-gebaeude.md` §§ 2–3, `rules/stufen.md` § 4 |
 | Bürger | Alle Figuren des Hubs, die kein Spieler steuert: Landstreicher, Bauer, Berufe, Kämpfer (Truppen), Händler. Kein Level, keine Skills. Regeltexte sagen „Bürger“, wo alle Figuren gemeint sind. Bürger sterben nicht, siehe Verlust-Kaskade. | `rules/buerger.md`, Q63, Q67 |
 | Camp | Rekrutierungs-Camp in der Welt mit höchstens 2 Landstreichern (Nachwuchs 25 s); darf innerhalb der Mauerlinien liegen. | `rules/wirtschaft.md` § 1, Q57 |
@@ -42,10 +44,10 @@ Regelwerk in [`rules/`](rules/), und das Glossar wird angepasst. Zahlen sind, wo
 | Diagnose | Debug-Anzeige oben links (Raum, Takt, Snapshot, Puffer, Latenz, FPS, Version), nur lesend. Aufruf: Ö, RB 3 s, Doppeltap mit einem Finger. | B-093, B-231 |
 | Diagnose-Ereignis | Eintrag der Fehler-Zeitleiste des Servers (`/api/metrics` › `events`): Absturz, 🐢-Tick, Trennung oder Client-Fehler mit Zeit, Raum und Art; die letzten 200. Nicht das Ereignis der Simulation. | B-281, `engine/room/monitor.go` |
 | `disarmed` | Ereignis (geplant): Ein Bürger verliert seine Ausrüstung (Felder `kind`, `x`, `cause`); ersetzt `troopLost`. | `rules/buerger.md` § 3, Q69 |
-| Domäne | Fachbereich, dem ein Sprint genau zugeordnet ist und dessen Dateien er ändert: REG (Regelwerk), SIM (Spiel-Logik Go), SRV (Server), CLI (Client), PLAT (Plattform), INF (Tooling, Arbeitsweise). | `arbeitsweise.md` › Domänen |
+| Domäne | Fachbereich, dem eine Session genau zugeordnet ist und dessen Dateien sie ändert: REG (Regelwerk), SIM (Spiel-Logik Go), SRV (Server), CLI (Client), PLAT (Plattform), INF (Tooling, Arbeitsweise), DEV (Entwickler-Werkzeug: `tools/k3c-dev/`, `cmd/k3c-load/`, `cmd/k3c-tui/`, `src/tools/`). Ein Sprint nennt die Domänen seiner Sessions; eine Session `in Arbeit` sperrt ihre Domäne für parallele Läufe. | `arbeitsweise.md` › Domänen, B-356 |
 | Dungeon-Master-Seite | Responsive Seite unter `/dm` für Handy und Tablet mit Live-Anpassungen und Diagnose laufender Räume (geplant). | B-232 |
 | Ebene | Spätere Variante: mehrere Inseln je Schwierigkeits-Ebene in freier Reihenfolge, die nächste Ebene öffnet nach k besiegten Inseln. Nicht der Schwierigkeitsgrad. | `rules/stufen.md` § 1 |
-| Einschiebbar | Sprint-Feld: `ja` heißt, der Sprint zählt nicht gegen „höchstens ein aktiver Sprint je Domäne“. | `arbeitsweise.md` › Sprint-Lebenslauf, B-174 |
+| Einschiebbar | Entfallenes Sprint-Feld (B-174, entfallen mit B-361, wie die Sprint-`Prio`). Die Reihenfolge kommt aus dem Rang der Projekte. | `arbeitsweise.md` › Sprint-Lebenslauf |
 | Einzelwechsel | Ein Spieler wechselt allein die Stufe (2 s am Tiefen-Eingang oder an einer Treppe); es gibt keine gemeinsame Reise zwischen Stufen. | `rules/stufen.md` § 1 |
 | Eisen | Material der Hub-Stufe 4 aus Adern im Eisenstollen; für Eisenmauer, Eisenturm, Rüstkammer, Rüstung. | `rules/materialien-gebaeude.md` § 1 |
 | Eisenstollen | Stufe der Tiefe 3 (Biom `ironhold`, geplant) mit Eisen-Adern, Lava und 3 Portalen. | `rules/stufen.md` § 1, Q28 |
@@ -88,6 +90,7 @@ Regelwerk in [`rules/`](rules/), und das Glossar wird angepasst. Zahlen sind, wo
 | Landingpage | `index.html`: bleibt dauerhaft offen und zeigt alle anderen Seiten im Vollflächen-iframe, damit Vollbild auf der Xbox erhalten bleibt. | `CLAUDE.md` › Seiten & Navigation |
 | Landstreicher | Nicht rekrutierte Figur aus Camp oder Taverne; eine Münze (1 Gold) macht ihn zum Bauern. Wird nicht angegriffen; ein Bauer, der seine Münze verliert, wird Landstreicher und läuft zum Camp. | `rules/buerger.md` §§ 1, 3, Q67 |
 | Latenz | Zeit von einer gesendeten Eingabe (`seq`) bis zum ersten Zustand mit `ack` ≥ `seq`, Mittel und p95 über 60 s. Diagnose-Zeile „Latenz 62 ms (p95 110 ms)“, ohne Messung „Latenz –“. | B-181, `src/online/clientLatency.ts` |
+| Lauf-Modus | Kombination eines Testlaufs aus `mode` (`offline` mit Mocks im Prozess, `online` gegen den Spielserver) und `clients` (0 = headless, 1–4 = laufende Clients mit Bot-Eingabe). | B-348 |
 | Lava | Boden der tiefen Stufen: Figuren darauf erleiden 5 Schaden/s; ob Gegner betroffen sind, ist offen. | `rules/stufen.md` § 1, Q28 |
 | Level | Eine Stufe: aus Biom-Daten und Seed prozedural erzeugte Welt (der Generator erzeugt je Stufe ein Level); gespeichert wird nur der Seed. Die Insel ist die Sammlung ihrer Stufen. | `game-design.md` › Prozedurale Generierung, `rules/stufen.md` § 1, Q61 |
 | Linie | Kurz für Mauerlinie; „Linie k“ ist die k-te Linie einer Seite von innen. | Q48, Q49 |
@@ -112,9 +115,11 @@ Regelwerk in [`rules/`](rules/), und das Glossar wird angepasst. Zahlen sind, wo
 | Portal | Ausgangspunkt der Gegnerwellen: 2 je Stufe, ab Tiefe 3 drei; mindestens 150 Units vom Hub und außerhalb der Linie 5 inklusive Streuung. | `rules/gegner.md` § 3, Q49, Q57 |
 | Posten | Standplatz eines Kämpfers: Bogenschützen auf dem Turm oder hinter der äußersten Mauer, Krieger hinter der äußersten gebauten Sperre. Posten sind keine Bauplätze. | `rules/buerger.md` § 1, Q46 |
 | Preset | Startverteilung der Skill-Punkte beim Beitritt (Tank, Zauberer, Heiler, Dieb); keine feste Klasse. | `rules/monarch.md` § 2 |
-| Prio | Dringlichkeit eines Tickets (`hoch`, `mittel`, `niedrig`, `?`); ein Sprint trägt die höchste Prio seiner Tickets und wird danach abgearbeitet. | `arbeitsweise.md` › Sprint-Lebenslauf |
+| Prio | Dringlichkeit eines Tickets (`hoch`, `mittel`, `niedrig`, `?`); ordnet Tickets innerhalb eines Projekts beim Einplanen. Die Reihenfolge der Sprints kommt aus dem Rang. | `arbeitsweise.md` › Projekte und Rang |
+| Projekt | Thema über mehrere Sprints (z. B. Grafik, Sound, Leistung & Stabilität) mit Kürzel aus drei Großbuchstaben, Status `aktiv`, `ruht` oder `erledigt` und Rang; hält seine Sprints in fester Reihenfolge. Ebenen: Projekt → Sprint → Session. | `arbeitsweise.md` › Projekte und Rang, B-355 |
 | Protokoll | Nachrichten zwischen Gerät und Server über WebSocket `/ws`, heute Version 3 (`hello.v` = 3). Eine Änderung bekommt eine eigene Session für beide Enden. | `protocol.md`, `arbeitsweise.md` › Grenzfälle |
 | Puffer (Verzögerung) | Zeit, um die die Zeitleiste hinter der geschätzten Server-Zeit zeichnet: 1 Tick plus die doppelte Ankunfts-Schwankung, höchstens 150 ms (angenommen). Diagnose-Zeile „Puffer 33 ms“. | B-277 |
+| Rang | Reihenfolge der aktiven Projekte (1 = zuerst, lückenlos), von 🧑 gesetzt; bestimmt, welcher Sprint und welche Session als Nächstes drankommt. | `arbeitsweise.md` › Projekte und Rang, B-355 |
 | Raum | Ein laufendes Spiel auf dem Server mit genau einem Spielstand und einem Code aus 4 Buchstaben; tickt unabhängig von anderen Räumen. | `protocol.md` › Begriffe |
 | Raum-Option | Beim Anlegen gewählte Einstellung des Raums: Schwierigkeitsgrad, Ziel (Siegvariante), Niederlage-Modus; steht im Spielstand. | `rules/stufen.md` § 5 |
 | Reife | Sprint-Feld: `Entwurf` (Sessions als Stichpunkte) oder `bereit` (jede Session als Datei, jedes Kriterium hat eine Session). | `arbeitsweise.md` › Sprint-Lebenslauf |
@@ -135,7 +140,7 @@ Regelwerk in [`rules/`](rules/), und das Glossar wird angepasst. Zahlen sind, wo
 | Schwierigkeitsgrad | Raum-Option Dev, Leicht, Normal, Hart, Ultra (`grade`); ändert nur Wellen und Gegner, nicht die Wirtschaft. Dev nur im Dev-Mode. | `rules/wirtschaft.md` § 4 |
 | SDD | Spec-Driven Development: Ticket und Sprint-README sind die Spec mit Kriterien, Sessions erfüllen genannte Kriterien. | `arbeitsweise.md` › SDD |
 | Seed | Zahl, aus der der Generator ein Level deterministisch erzeugt; gespeichert wird nur der Seed. | `game-design.md` › Prozedurale Generierung |
-| Session | Arbeitsschritt eines Sprints als Datei nach Vorlage mit genau einem Commit; Typ Umsetzung, Review oder Workshop, Agent autonom oder Mensch. | `arbeitsweise.md`, `vorlagen/session.md` |
+| Session | Arbeitsschritt eines Sprints als Datei nach Vorlage mit genau einem Commit in genau einer Domäne; Typ Umsetzung, Review oder Workshop, Agent autonom oder Mensch; Status `offen`, `in Arbeit`, `fertig`, `blockiert` oder `verworfen`. | `arbeitsweise.md`, `vorlagen/session.md` |
 | Shell | Seiten-Rahmen aus `src/core/shell.ts`: Landingpage mit iframe, auf jeder anderen Seite `installPageChrome()` mit Home-Button, Home-Kombi und Zurück-Falle für B. | `CLAUDE.md` › Seiten & Navigation |
 | Siegvariante | Ziel des Raums (`goal`): Endboss (Standard), Gold sammeln, Tage überleben, Alles abbauen, Alles ausbauen. | `rules/stufen.md` § 3 |
 | Sim (Engine) | Die Spiel-Logik in Go (`engine/sim/`, `engine/level/`), rechnet deterministisch auf dem Server; der Browser zeichnet nur. | `decisions/001-server-engine-go.md`, `CLAUDE.md` |
@@ -147,7 +152,7 @@ Regelwerk in [`rules/`](rules/), und das Glossar wird angepasst. Zahlen sind, wo
 | Spielstand | Gespeicherter Zustand eines Raums (`saves/<name>.json`) mit Seeds, Hubs, Vorrat und Raum-Optionen; Gegner und Level-Layout werden nicht gespeichert. | `protocol.md` › Begriffe, `game-design.md` › Speichern |
 | Spielstand-Version | `IslandSaveVersion` (`engine/sim/island_save.go`), heute 3 (Fund-Pool `skillPool`, je Spieler `skills` und `slots`, S1). Jede Formatänderung erhöht sie und bringt eine Fixture; Hub- und Platz-Stufe kommen mit W1.3 optional in v3 dazu (Q42). | `arbeitsweise.md` › Spielstand-Format, Q42 |
 | Split-Screen | Geteilter Bildschirm für 1–4 lokale Spieler, jeder mit eigener Kamera (`src/scenes/layout.ts`). | `game-design.md` › Koop, `rules/bedienung.md` § 2 |
-| Sprint | 2–4 Sessions einer Domäne auf einem Branch `sprint/<präfix>` mit einem PR; Ordner unter `docs/sprints/` (`geplant/`, `aktiv/`, `erledigt/`). | `arbeitsweise.md` |
+| Sprint | 3–6 Sessions eines Projekts, auch aus mehreren Domänen nacheinander, auf einem Branch `sprint/<präfix>` mit einem PR; Ordner unter `docs/sprints/` (`geplant/`, `aktiv/`, `erledigt/`). | `arbeitsweise.md` |
 | Standardszenario | Messrahmen der Zielkorridore: Insel 1, Wald-Start, Normal, 2 Spieler, Bot „sparsam“, 100 Seeds. | `rules/zielkorridore.md` |
 | Startvorrat | 100 Holz im Insel-Vorrat jeder neuen Insel (`islandStartStock`), auch nach dem Inselwechsel. | `rules/materialien-gebaeude.md` § 1, `rules/stufen.md` § 1, B-177 |
 | Startwert | Vorläufiger Zahlenwert aus Beschluss oder Vorschlag; gilt, bis der Balancing-Tester (B-099) ihn bestätigt oder ändert. | Kopf jeder Datei in `rules/` |
@@ -158,6 +163,7 @@ Regelwerk in [`rules/`](rules/), und das Glossar wird angepasst. Zahlen sind, wo
 | Tagesanbruch (`dawn`) | Ende der Nacht bei Beginn des Morgengrauens (heute bis B-213: Beginn des Tages): Ereignis `dawn` mit +5 Gold je lebendem Spieler, Taverne und Händler, Autosave; Gegner ziehen ab (fliehen nur in der Oberwelt). | `rules/wirtschaft.md` §§ 1, 3, `rules/gegner.md` § 3, Q10, Q65 |
 | Tageszyklus | Globaler Zyklus aus Tag, Dämmerung, Nacht, Morgengrauen im Verhältnis 3:1:2:1, Startwert 6/2/4/2 min (14 min); läuft in allen Stufen. Heute 10/1/5 min ohne Morgengrauen, Umbau mit B-213. | `rules/wirtschaft.md` § 3, `data/biomes/forest.json` › `cycle`, `engine/sim/cycle.go`, Q65 |
 | Taverne | Gebäude der Hub-Stufe 2: bei jedem `dawn` ein Landstreicher, solange dort weniger als 2 stehen. | `rules/materialien-gebaeude.md` § 3.2, Q30 |
+| Testlauf (`sim_test`) | Lauf über das MCP-Tool `sim_test` der Workbench für Balancing, Performance oder Stabilität, mit Lauf-ID, Status und Bericht unter `reports/`; jeder autonome Testlauf geht darüber. | B-348 |
 | Tick (Takt) | Ein Rechenschritt eines Raums; ein Raum tickt mit 30 Hz und schickt je Tick einen Zustand an jedes Gerät. | `protocol.md` › Nachrichten |
 | Ticket | Idee, Problem, Schuld oder Frage als Datei `docs/backlog/B-NNN-name.md` nach Vorlage, mit eigener Spec. | `arbeitsweise.md` › Ablage |
 | Tiefe | Index einer Stufe auf der Insel (0 = Wald); Gegner skalieren je Tiefe (`depthScaling`), im Protokoll `depth`. | `rules/stufen.md` § 1, `protocol.md` |

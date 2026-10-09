@@ -3,6 +3,7 @@
 - **Status:** fertig
 - **Typ:** Workshop
 - **Agent:** Mensch
+- **Domäne:** CLI
 - **Umgebung:** live
 - **Branch:** gr1/1-workshop-stil
 - **Abhängig von:** –

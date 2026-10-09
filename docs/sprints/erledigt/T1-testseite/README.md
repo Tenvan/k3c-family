@@ -1,10 +1,9 @@
 # T1 · PLAT · Testseite mit Szenarien und Mock-Spielern
 
 - **Status:** erledigt
+- **Projekt:** –
 - **Domäne:** PLAT
-- **Prio:** mittel
 - **Reife:** bereit
-- **Einschiebbar:** ja
 - **Tickets:** B-081
 - **Start-Commit:** 59389cd
 - **Spec:** freigegeben

@@ -1,10 +1,9 @@
 # W10 · SRV · Kämpfer-Zahl und Truppen-Limit im Zustand
 
 - **Status:** erledigt
+- **Projekt:** –
 - **Domäne:** SRV
-- **Prio:** hoch
 - **Reife:** bereit
-- **Einschiebbar:** ja
 - **Tickets:** B-332
 - **Start-Commit:** f6ad680
 - **Spec:** freigegeben

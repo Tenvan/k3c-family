@@ -5,7 +5,8 @@
 - **Prio:** mittel
 - **Umgebung:** live
 - **Status:** eingeplant
-- **Sprint:** DBG4
+- **Sprint:** M10
+- **Projekt:** GRA
 - **Erstellt:** 2026-10-05
 - **Spec:** Entwurf
 - **Revision:** 1

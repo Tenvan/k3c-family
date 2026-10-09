@@ -25,8 +25,8 @@ const (
 var sourceName = regexp.MustCompile(`^[A-Za-z0-9_.-]+$`)
 
 type queryIn struct {
-	Source   string `json:"source" jsonschema:"Log-Quelle, z. B. k3c-dev"`
-	MinLevel string `json:"minLevel,omitempty" jsonschema:"DEBUG, INFO, WARN oder ERROR"`
+	Source   string `json:"service" jsonschema:"Dienst mit Logdatei aus logs_services, z. B. k3c-server"`
+	MinLevel string `json:"level,omitempty" jsonschema:"Mindest-Level: DEBUG, INFO, WARN oder ERROR"`
 	NS       string `json:"ns,omitempty" jsonschema:"nur dieser Bereich, z. B. mcp"`
 	Pattern  string `json:"pattern,omitempty" jsonschema:"regulärer Ausdruck auf die Meldung"`
 	Since    string `json:"since,omitempty" jsonschema:"Dauer wie 30m, 24h, 7d oder Zeitpunkt RFC 3339"`
@@ -34,13 +34,13 @@ type queryIn struct {
 }
 
 type errorsIn struct {
-	Source   string `json:"source" jsonschema:"Log-Quelle, z. B. k3c-dev"`
-	MinLevel string `json:"minLevel,omitempty" jsonschema:"Standard WARN"`
+	Source   string `json:"service,omitempty" jsonschema:"Dienst mit Logdatei aus logs_services; leer: alle"`
+	MinLevel string `json:"level,omitempty" jsonschema:"Mindest-Level, Standard WARN"`
 	Since    string `json:"since,omitempty" jsonschema:"Standard 24h"`
 }
 
 type sinceIn struct {
-	Source string `json:"source" jsonschema:"Log-Quelle, z. B. k3c-dev"`
+	Source string `json:"service" jsonschema:"Dienst mit Logdatei aus logs_services, z. B. k3c-server"`
 	Cursor int64  `json:"cursor,omitempty" jsonschema:"Byte-Cursor aus der letzten Antwort, 0 = Anfang"`
 	Limit  int    `json:"limit,omitempty" jsonschema:"höchstens so viele Einträge, Standard 100, höchstens 500"`
 }
@@ -87,7 +87,7 @@ func (s *Server) logPath(root, source string) (string, error) {
 	return "", fmt.Errorf("unbekannte Log-Quelle %q; gültig: %s", source, strings.Join(logSources(root), ", "))
 }
 
-// logsSources ist das Tool logs_sources: Log-Dateien und Konsolen-Quellen des eigenen Checkouts.
+// logsSources ist das Tool logs_services: Log-Dateien und Konsolen-Quellen des eigenen Checkouts.
 func (s *Server) logsSources(ctx context.Context, _ struct{}) (string, error) {
 	ws := s.ws(ctx)
 	var out []string
@@ -147,7 +147,7 @@ func (s *Server) logsQuery(ctx context.Context, in queryIn) (string, error) {
 
 // logsErrors ist das Tool logs_errors: Warnungen und Fehler, gleichartige zu je einer Zeile verdichtet.
 func (s *Server) logsErrors(ctx context.Context, in errorsIn) (string, error) {
-	path, err := s.logPath(s.ws(ctx).root, in.Source)
+	paths, err := s.logPaths(s.ws(ctx).root, in.Source)
 	if err != nil {
 		return "", err
 	}
@@ -161,7 +161,7 @@ func (s *Server) logsErrors(ctx context.Context, in errorsIn) (string, error) {
 	if q.Since, err = parseSince(in.Since, time.Now()); err != nil {
 		return "", err
 	}
-	res, err := logs.Scan(path, q)
+	res, err := scanAll(paths, q)
 	if err != nil {
 		return "", err
 	}
@@ -264,4 +264,37 @@ func formatBytes(n int64) string {
 	default:
 		return strings.Replace(fmt.Sprintf("%.1f MB", float64(n)/(1<<20)), ".", ",", 1)
 	}
+}
+
+// logPaths sind die Dateien eines Dienstes oder, ohne Namen, aller Log-Quellen des Checkouts.
+func (s *Server) logPaths(root, source string) ([]string, error) {
+	names := []string{source}
+	if source == "" {
+		names = logSources(root)
+	}
+	paths := make([]string, 0, len(names))
+	for _, n := range names {
+		p, err := s.logPath(root, n)
+		if err != nil {
+			return nil, err
+		}
+		paths = append(paths, p)
+	}
+	return paths, nil
+}
+
+// scanAll liest mehrere Dateien mit derselben Abfrage und fasst die Ergebnisse zusammen (neueste zuerst je Datei).
+func scanAll(paths []string, q logs.Query) (logs.Result, error) {
+	all := logs.Result{Entries: []logs.Entry{}}
+	for _, p := range paths {
+		res, err := logs.Scan(p, q)
+		if err != nil {
+			return all, err
+		}
+		all.Entries = append(all.Entries, res.Entries...)
+		all.BytesRead += res.BytesRead
+		all.BudgetHit = all.BudgetHit || res.BudgetHit
+		all.Skipped += res.Skipped
+	}
+	return all, nil
 }

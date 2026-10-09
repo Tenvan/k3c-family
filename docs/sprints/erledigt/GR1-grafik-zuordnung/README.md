@@ -1,10 +1,9 @@
 # GR1 · CLI · Grafik-Zuordnungstabelle
 
 - **Status:** erledigt
+- **Projekt:** –
 - **Domäne:** CLI
-- **Prio:** hoch
 - **Reife:** bereit
-- **Einschiebbar:** ja
 - **Tickets:** B-161
 - **Start-Commit:** e317292
 - **Spec:** freigegeben

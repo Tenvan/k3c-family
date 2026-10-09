@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import type { ConsoleLine, Source } from '../api';
 import { color256, parseAnsi, stripAnsi } from './ansi';
-import { dotTone, markOf, mergeLines, pickSource, upsertSource, visibleLines } from './lines';
+import { dotTone, markOf, mergeLines, upsertSource, visibleLines } from './lines';
 
 const E = '\u001b[';
 const line = (seq: number, text = `Zeile ${seq}`): ConsoleLine => ({ source: 'Vite', stream: 'stdout', text, seq });
@@ -87,13 +87,6 @@ describe('Quellen', () => {
     expect(dotTone(src('server', 'log', 'empty'))).toBe('neutral');
     expect(dotTone(src('x', 'run', 'rätselhaft'))).toBe('neutral');
     expect(dotTone(src('x', 'neu', 'ok'))).toBe('neutral');
-  });
-
-  it('gemerkte Auswahl, verschwundene fällt auf die erste zurück', () => {
-    const list = [src('Vite', 'service', 'läuft'), src('k3c-dev', 'log', 'entries')];
-    expect(pickSource(list, 'k3c-dev')).toBe('k3c-dev');
-    expect(pickSource(list, 'check:weg')).toBe('Vite');
-    expect(pickSource([], 'Vite')).toBe('');
   });
 
   it('ein neuer Lauf erscheint, ein bekannter wird ersetzt', () => {

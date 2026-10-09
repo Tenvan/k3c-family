@@ -2,18 +2,25 @@
  * Test-Szenarien der Testseite (B-081): Daten plus eine reine Funktion für die Start-URL von `game.html`.
  * Die Parameter stammen aus B-082 (`?autostart=1&fresh=1&save=NAME&mock=N`); Mock-Spieler sind lokale Slots desselben Geräts.
  */
+import { t } from './texts';
+
 export interface Scenario {
   id: string;
-  title: string;
-  description: string;
+  /** Aus der gewählten Sprache gelesen */
+  readonly title: string;
+  readonly description: string;
   /** Spieler an diesem Gerät, der erste ist echt, der Rest sind Mock-Spieler ohne Eingabe */
   players: number;
 }
 
 export const SCENARIOS: readonly Scenario[] = [1, 2, 3, 4].map((n) => ({
   id: `players-${n}`,
-  title: n === 1 ? '1 Spieler' : `${n} Spieler`,
-  description: n === 1 ? 'Vollbild, keine Mock-Spieler' : `Du und ${n - 1} Mock-Spieler (stehen still) · ${{ 2: 'zwei Streifen', 3: 'zwei oben, einer breit unten', 4: '2×2-Raster' }[n]}`,
+  get title() {
+    return n === 1 ? t('test.sc.one.title') : t('test.sc.n.title', { n });
+  },
+  get description() {
+    return n === 1 ? t('test.sc.one.desc') : t('test.sc.n.desc', { mocks: n - 1, layout: t(`test.layout.${n as 2 | 3 | 4}`) });
+  },
   players: n,
 }));
 

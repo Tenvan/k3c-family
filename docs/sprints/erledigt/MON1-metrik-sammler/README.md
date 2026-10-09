@@ -1,10 +1,9 @@
 # MON1 · SRV · Metrik-Sammler und /api/metrics
 
 - **Status:** erledigt
+- **Projekt:** –
 - **Domäne:** SRV
-- **Prio:** hoch
 - **Reife:** bereit
-- **Einschiebbar:** nein
 - **Tickets:** B-281
 - **Start-Commit:** 3a6446a
 - **Spec:** freigegeben

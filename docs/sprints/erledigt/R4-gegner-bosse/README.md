@@ -1,10 +1,9 @@
 # R4 · REG · Regelwerk III – Gegner, Wellen, Bosse, Events
 
 - **Status:** erledigt
+- **Projekt:** –
 - **Domäne:** REG
-- **Prio:** hoch
 - **Reife:** bereit
-- **Einschiebbar:** ja
 - **Tickets:** B-127
 - **Start-Commit:** d65d93e
 - **Spec:** freigegeben

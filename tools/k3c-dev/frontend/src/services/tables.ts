@@ -35,6 +35,16 @@ const BUTTONS: Record<string, readonly Command[]> = {
   stoppt: [],
 };
 
+/**
+ * Gezeigte Quelle (Workbench-Spec § 2 › Auswahl): die gemerkte, wenn es sie gibt; sonst der erste laufende Dienst, dann
+ * der erste Dienst, dann die erste Quelle überhaupt.
+ */
+export function preferredSource(sources: string[], services: Pick<ServiceStatus, 'name' | 'state'>[], wanted: string): string {
+  if (sources.includes(wanted)) return wanted;
+  const known = services.filter((s) => sources.includes(s.name));
+  return known.find((s) => s.state === 'läuft')?.name ?? known[0]?.name ?? sources[0] ?? '';
+}
+
 /** Freie Knöpfe eines Zustands; bei einem unbekannten keiner. */
 export function buttonsFor(state: string): readonly Command[] {
   return BUTTONS[state] ?? [];

@@ -1,10 +1,9 @@
 # K1 · SIM · Gegner-Traits, neue Gegner und Elite-KI
 
 - **Status:** erledigt
+- **Projekt:** –
 - **Domäne:** SIM
-- **Prio:** mittel
 - **Reife:** bereit
-- **Einschiebbar:** nein
 - **Tickets:** B-128, B-129, B-013
 - **Start-Commit:** e26de644
 - **Spec:** freigegeben

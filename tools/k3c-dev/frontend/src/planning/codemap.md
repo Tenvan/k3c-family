@@ -10,6 +10,7 @@ Reiter Planung: Ansicht der Projektplanung (Sprints, Sessions, Backlog-Tickets m
 - Container: `PlanningPage.tsx` (Umschalter Sprints & Backlog / Dokumente `PlanDoc`: `plan`, `fragen`, `glossar`), `SprintsBacklog.tsx` (Filterleiste, `GitHubBar`, markierte Sessions für Sammel-Prompts, Planungsdaten + GitHub-Status).
 - Prompt-Texte: `prompts.ts` (ohne React) mit `promptSprint`, `promptSession`, `promptSessions`, `openSessions`, `pickable`, `backlogPrompt` (Tickets in `SprintTarget` einplanen, `NEW_SPRINT`). Die Prompts nennen nur IDs und Anweisung; Inhalt liest der Agent per `plan_*`.
 - Präsentation: `SprintCard.tsx` (`SprintCard`, `ModeBadge`, `tone`, `prioTone`, `scrollToSprint`), `Backlog.tsx` (`BacklogList` mit Mehrfachauswahl und gemerktem Sprint-Ziel, `SessionDetail`), `PromptParts.tsx` (`CopyPrompt`: kopieren oder „In Claude öffnen“, `DepLinks`, `FieldMenu` zum direkten Ändern); Markdown über `ui/MarkdownView`.
+- Projekte (B-358): `projects.ts` (ohne React) mit `groupProjects` (aktive nach Rang, `ABN`, „Ohne Projekt“, ruhende/erledigte), `nextSession`, `sessionProgress`, `stepRank`/`rankedCount`/`moveRank` (Rang per `planningSet`, danach neu laden) und `byRank` (Ordnung der Sammel-Prompts). `ProjectsView.tsx` (`ProjectSections` zustandslos, testbar per `renderToStaticMarkup`) und `ProjectCard.tsx`; ohne Projekte bleibt die Sprint-Liste.
 - Live-Update-Pattern: Ein Go-Watcher meldet `planning:changed`, die Ansichten laden neu.
 
 ## Flow

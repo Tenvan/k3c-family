@@ -14,7 +14,7 @@ const PRIOS = ['hoch', 'mittel', 'niedrig', '?'];
 const AGENTS = ['autonom', 'Mensch'];
 const ENVS = ['offline', 'live', '?'];
 const envTone = (e = '') => (e === 'offline' ? 'ok' : e === 'live' ? 'info' : 'neutral');
-const TARGET = 'planning-target';
+const TARGET = 'planning.target';
 
 /** Kopf-Feld setzen; ein Fehler (z. B. unbekannter Wert) erscheint als Hinweis, der Rest kommt über `planning:changed`. */
 const set = (id: string, field: string, value: string) => backend.planningSet(id, field, value).catch((e) => window.alert(errorText(e)));

@@ -6,6 +6,7 @@
 - **Umgebung:** live
 - **Status:** eingeplant
 - **Sprint:** HW1
+- **Projekt:** ABN
 - **Erstellt:** 2026-10-06
 - **Spec:** Entwurf
 - **Revision:** 1

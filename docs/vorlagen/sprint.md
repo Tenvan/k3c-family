@@ -1,10 +1,9 @@
 # SP00 · DOM · Titel des Sprints
 
 - **Status:** geplant | aktiv | erledigt
-- **Domäne:** REG | SIM | SRV | CLI | PLAT | INF
-- **Prio:** hoch | mittel | niedrig | ? (höchste Prio der Tickets; `plan_create` setzt sie)
+- **Projekt:** – (oder Kürzel des Projekts, z. B. GRA; der Sprint steht in dessen Sprint-Tabelle)
+- **Domäne:** REG | SIM | SRV | CLI | PLAT | INF | DEV (eine oder mehrere, kommagetrennt in der Reihenfolge der Sessions)
 - **Reife:** Entwurf | bereit
-- **Einschiebbar:** nein | ja
 - **Tickets:** B-000, B-000
 - **Start-Commit:** – (wird beim Aktivieren gesetzt: `git rev-parse --short origin/develop`)
 - **Spec:** Entwurf | freigegeben | rückwirkend

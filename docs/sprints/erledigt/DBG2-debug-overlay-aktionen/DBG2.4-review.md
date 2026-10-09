@@ -3,6 +3,7 @@
 - **Status:** fertig
 - **Typ:** Review
 - **Agent:** autonom
+- **Domäne:** CLI
 - **Umgebung:** live
 - **Branch:** dbg2/4-review
 - **Abhängig von:** DBG2.2 (DBG2.3 am Gerät ist keine Abhängigkeit, `docs/arbeitsweise.md` › Hardware entkoppelt)

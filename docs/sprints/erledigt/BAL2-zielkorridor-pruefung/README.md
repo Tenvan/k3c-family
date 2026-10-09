@@ -1,10 +1,9 @@
 # BAL2 · SIM · Zielkorridor-Prüfung und `task balance`
 
 - **Status:** erledigt
+- **Projekt:** –
 - **Domäne:** SIM
-- **Prio:** mittel
 - **Reife:** bereit
-- **Einschiebbar:** ja
 - **Tickets:** B-157
 - **Start-Commit:** 1fa9529
 - **Spec:** freigegeben

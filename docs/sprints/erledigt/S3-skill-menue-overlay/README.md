@@ -1,10 +1,9 @@
 # S3 · CLI · Skill-Menü, Tasten und Aktionen-Overlay
 
 - **Status:** erledigt
+- **Projekt:** –
 - **Domäne:** CLI
-- **Prio:** hoch
 - **Reife:** bereit
-- **Einschiebbar:** nein
 - **Tickets:** B-124, B-125
 - **Start-Commit:** d00f168
 - **Spec:** freigegeben

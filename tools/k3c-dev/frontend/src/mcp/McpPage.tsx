@@ -6,33 +6,37 @@ import { CallLog } from './CallLog';
 import { LiveMonitors } from './LiveMonitors';
 import { ServerCards } from './ServerCards';
 import { StatsView } from './StatsView';
+import { ToolTiles } from './ToolTiles';
 import { useMcpData } from './useMcpData';
 
 const VIEWS = ['uebersicht', 'statistik'] as const;
 type View = (typeof VIEWS)[number];
 
-/** Reiter `MCP` (B-065): Unteransichten Übersicht und Statistik. */
+/** Reiter `MCP` (B-065, Workbench-Spec § 3): Umschalter Widgets | Statistiken (gemerkt). */
 export function McpPage() {
-  const [view, setView] = useState<View>(() => loadPref('mcpView', VIEWS, 'uebersicht'));
+  const [view, setView] = useState<View>(() => loadPref('mcp.view', VIEWS, 'uebersicht'));
   const data = useMcpData();
   const choose = (v: string) => {
     const next = VIEWS.includes(v as View) ? (v as View) : 'uebersicht';
     setView(next);
-    savePref('mcpView', next);
+    savePref('mcp.view', next);
   };
   const { overview } = data;
   return (
     <div className="mcp-page">
       <SegmentedControl.Root value={view} onValueChange={choose} className="mcp-views">
-        <SegmentedControl.Item value="uebersicht">Übersicht</SegmentedControl.Item>
-        <SegmentedControl.Item value="statistik">Statistik</SegmentedControl.Item>
+        <SegmentedControl.Item value="uebersicht">Widgets</SegmentedControl.Item>
+        <SegmentedControl.Item value="statistik">Statistiken</SegmentedControl.Item>
       </SegmentedControl.Root>
       {!overview && !data.error && <Text color="gray">Lade MCP-Daten …</Text>}
       {!overview && data.error && <NoticeCard title="MCP-Daten nicht geladen" tone="error">{data.error}</NoticeCard>}
       {overview && view === 'uebersicht' && (
         <>
           <ServerCards overview={overview} error={data.error} reload={data.reload} />
-          <LiveMonitors minutes={data.usage?.minutes ?? []} />
+          <div className="mcp-band2">
+            <ToolTiles tools={overview.stats.tools} />
+            <LiveMonitors minutes={data.usage?.minutes ?? []} tools={overview.stats.tools} />
+          </div>
           <CallLog calls={data.calls} tools={overview.stats.tools.map((t) => t.name)} />
         </>
       )}

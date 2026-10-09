@@ -1,11 +1,12 @@
 # B-284 · TestGleicherSeedGleicheEingaben scheitert nicht, wenn task check:go parallel läuft
 
-- **Domäne:** SRV
+- **Domäne:** DEV
 - **Typ:** Problem
 - **Prio:** niedrig
 - **Umgebung:** offline
 - **Status:** eingeplant
 - **Sprint:** NT1
+- **Projekt:** LST
 - **Erstellt:** 2026-10-05
 - **Spec:** Entwurf
 - **Revision:** 1

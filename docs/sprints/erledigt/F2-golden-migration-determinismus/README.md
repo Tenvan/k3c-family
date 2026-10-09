@@ -1,10 +1,9 @@
 # F2 · INF · Golden-Ablauf, Spielstand-Migration und Determinismus
 
 - **Status:** erledigt
+- **Projekt:** –
 - **Domäne:** INF
-- **Prio:** hoch
 - **Reife:** bereit
-- **Einschiebbar:** nein
 - **Tickets:** B-137, B-138, B-071
 - **Start-Commit:** f6bb3c3
 - **Spec:** freigegeben

@@ -107,17 +107,17 @@ func TestWorktreeTrenntKonsoleUndDateien(t *testing.T) {
 	s.console.Add("check:wt1/task:test", "stdout", "aus dem Worktree")
 	s.console.Add("check:task:test", "stdout", "aus der Wurzel")
 	cw, cm := connectWithHeader(t, s, wt), connectWithHeader(t, s, main)
-	if text, _ := callText(t, cw, "console_tail", map[string]any{"source": "check:task:test"}); !strings.Contains(text, "aus dem Worktree") {
+	if text, _ := callText(t, cw, "console_tail", map[string]any{"service": "check:task:test"}); !strings.Contains(text, "aus dem Worktree") {
 		t.Errorf("Worktree liest fremde Konsole: %q", text)
 	}
-	if text, _ := callText(t, cm, "console_tail", map[string]any{"source": "check:task:test"}); !strings.Contains(text, "aus der Wurzel") {
+	if text, _ := callText(t, cm, "console_tail", map[string]any{"service": "check:task:test"}); !strings.Contains(text, "aus der Wurzel") {
 		t.Errorf("Wurzel liest fremde Konsole: %q", text)
 	}
-	if text, _ := callText(t, cw, "logs_sources", nil); !strings.Contains(text, "nur-im-worktree") || strings.Count(text, "Konsole check:task:test ·") != 1 {
-		t.Errorf("logs_sources im Worktree: %q", text)
+	if text, _ := callText(t, cw, "logs_services", nil); !strings.Contains(text, "nur-im-worktree") || strings.Count(text, "Konsole check:task:test ·") != 1 {
+		t.Errorf("logs_services im Worktree: %q", text)
 	}
-	if text, _ := callText(t, cm, "logs_sources", nil); strings.Contains(text, "nur-im-worktree") || strings.Contains(text, "wt1/") {
-		t.Errorf("logs_sources in der Wurzel: %q", text)
+	if text, _ := callText(t, cm, "logs_services", nil); strings.Contains(text, "nur-im-worktree") || strings.Contains(text, "wt1/") {
+		t.Errorf("logs_services in der Wurzel: %q", text)
 	}
 }
 

@@ -1,15 +1,14 @@
 # SO4 · CLI · Musik je Zustand
 
 - **Status:** geplant
+- **Projekt:** SND
 - **Domäne:** CLI
-- **Prio:** mittel
 - **Reife:** bereit
-- **Einschiebbar:** ja
-- **Tickets:** B-168
+- **Tickets:** B-168, B-250, B-218
 - **Start-Commit:** –
 - **Spec:** freigegeben
-- **Revision:** 1
-- **Freigabe:** 2026-10-04, Chat, durch 🧑, Revision 1; mit Änderungen aus der Spec-Prüfung
+- **Revision:** 2
+- **Freigabe:** 2026-10-08, Chat, durch 🧑, Revision 2
 
 ## Ausgangslage
 
@@ -25,7 +24,7 @@ Die Musik wechselt je Spielzustand mit Crossfade. Am Ende sichtbar: Die 8 Zustä
 
 ## Anforderungen
 
-B-168 › Anforderungen.
+B-168 › Anforderungen; B-250 › Anforderungen; B-218 › Anforderungen (B-250, B-218 aus SO5, PJ3).
 
 ## Nicht-Ziele
 
@@ -52,6 +51,8 @@ Stück fehlt → vorheriger Zustand oder Stille, kein Absturz.
 - **AC-05** Die Lautstärke des Busses „Musik“ ist getrennt von den Effekten einstellbar (B-168/AC-05).
 - **AC-06** `task check` ist grün.
 - **AC-07** Die Lautheit der Musik ist am TV geprüft (Q16) (B-168/AC-06).
+- **AC-08** Der Audio-Kern spielt ganze Dateien mit Crossfade, die Hörprobe nutzt ihn (B-250/AC-01; aus SO5 AC-01, PJ3).
+- **AC-09** Die Optionen-Szene regelt auch die Lautstärke des Ambient-Busses (B-218/AC-01; aus SO5 AC-02, PJ3).
 
 ## Offene Fragen
 
@@ -66,6 +67,7 @@ Stück fehlt → vorheriger Zustand oder Stille, kein Absturz.
 | SO4.3 | `SO4.3-ducking-dateien-credits.md` | Umsetzung | autonom | offen |
 | SO4.4 | `SO4.4-review.md` | Review | autonom | offen |
 | SO4.5 | `SO4.5-hoerprobe-tv.md` | Workshop | Mensch | offen |
+| SO4.6 | `SO4.6-audiokern-dateien-ambient.md` | Umsetzung | autonom | offen |
 
 Bei `Reife: Entwurf` genügen Stichpunkte mit den Kriterien in Klammern statt Session-Dateien. Vor dem Aktivieren
 wird jede Session als eigene Datei nach `docs/vorlagen/session.md` geschrieben.

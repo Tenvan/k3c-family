@@ -1,10 +1,9 @@
 # GR6 · PLAT · Credits-Seite
 
 - **Status:** erledigt
+- **Projekt:** –
 - **Domäne:** PLAT
-- **Prio:** mittel
 - **Reife:** bereit
-- **Einschiebbar:** ja
 - **Tickets:** B-165
 - **Start-Commit:** 605f467
 - **Spec:** freigegeben

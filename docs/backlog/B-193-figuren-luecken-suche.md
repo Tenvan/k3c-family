@@ -2,10 +2,11 @@
 
 - **Domäne:** CLI
 - **Typ:** Idee
-- **Prio:** mittel
+- **Prio:** hoch
 - **Umgebung:** live
 - **Status:** eingeplant
 - **Sprint:** GR7
+- **Projekt:** GRA
 - **Erstellt:** 2026-10-03
 - **Spec:** Entwurf
 - **Revision:** 1

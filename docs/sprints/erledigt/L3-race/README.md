@@ -1,10 +1,9 @@
 # L3 · INF · Race-Detector für die nebenläufigen Go-Pakete
 
 - **Status:** erledigt
+- **Projekt:** –
 - **Domäne:** INF
-- **Prio:** hoch
 - **Reife:** bereit
-- **Einschiebbar:** ja
 - **Tickets:** B-077
 - **Start-Commit:** 657951e
 - **Spec:** freigegeben

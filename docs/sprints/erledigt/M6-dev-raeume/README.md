@@ -1,10 +1,9 @@
 # M6 · SRV · k3c-dev VI: MCP-Tools für Räume und Simulation
 
 - **Status:** erledigt
+- **Projekt:** –
 - **Domäne:** SRV
-- **Prio:** mittel
 - **Reife:** bereit
-- **Einschiebbar:** ja
 - **Tickets:** B-047
 - **Start-Commit:** 9de807c
 - **Spec:** freigegeben

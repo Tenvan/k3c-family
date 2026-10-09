@@ -7,7 +7,7 @@
 /** Text der Auswahl; leer, wenn nichts gewählt ist. IDs ohne Doppelte, in der Reihenfolge der Wahl. */
 export function formatSelection(label: string, ids: readonly string[]): string {
   const unique = [...new Set(ids)];
-  return unique.length ? `Auswahl ${label}: ${unique.join(', ')}` : '';
+  return unique.length ? t('sel.text', { label, ids: unique.join(', ') }) : '';
 }
 
 /** Gespeicherte IDs lesen; kaputte oder fremde Werte ergeben eine leere Liste. */
@@ -19,6 +19,8 @@ export function parseSaved(raw: string | null): string[] {
     return [];
   }
 }
+
+import { t } from './texts';
 
 export interface Selection {
   /** Kästchen für eine ID; gleiche IDs auf einer Seite bleiben gleich geschaltet. */
@@ -46,14 +48,14 @@ export function installSelection(key: string, label: string): Selection {
   style.textContent = STYLE;
   const out = document.createElement('textarea');
   out.readOnly = true;
-  out.placeholder = 'Kästchen „Auswahl“ ankreuzen, der Text erscheint hier zum Kopieren';
+  out.placeholder = t('sel.placeholder');
   const copy = document.createElement('button');
   copy.type = 'button';
-  copy.textContent = 'Kopieren';
+  copy.textContent = t('sel.copy');
   const clear = document.createElement('button');
   clear.type = 'button';
   clear.className = 'k3c-clear';
-  clear.textContent = 'Leeren';
+  clear.textContent = t('sel.clear');
   const bar = document.createElement('div');
   bar.className = 'k3c-bar';
   bar.append(out, copy, clear);
@@ -90,7 +92,7 @@ export function installSelection(key: string, label: string): Selection {
       const wrap = document.createElement('label');
       wrap.className = 'k3c-pick';
       wrap.title = `ID: ${id}`;
-      wrap.append(input, 'Auswahl');
+      wrap.append(input, t('sel.pick'));
       return wrap;
     },
   };

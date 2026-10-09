@@ -1,10 +1,9 @@
 # S4 · CLI · Kamera je Stufe und Layouts 1–4
 
 - **Status:** erledigt
+- **Projekt:** –
 - **Domäne:** CLI
-- **Prio:** hoch
 - **Reife:** bereit
-- **Einschiebbar:** nein
 - **Tickets:** B-106
 - **Start-Commit:** 605f467
 - **Spec:** freigegeben

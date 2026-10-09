@@ -3,6 +3,7 @@
 - **Status:** offen
 - **Typ:** Workshop
 - **Agent:** Mensch
+- **Domäne:** REG
 - **Umgebung:** live
 - **Branch:** br1/2-spieleabend-2
 - **Abhängig von:** –

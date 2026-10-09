@@ -6,6 +6,7 @@
 - **Umgebung:** live
 - **Status:** eingeplant
 - **Sprint:** K5
+- **Projekt:** KMP
 - **Erstellt:** 2026-10-02
 - **Spec:** freigegeben
 - **Revision:** 1

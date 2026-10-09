@@ -1,10 +1,9 @@
 # K5 · CLI · Anzeigen für Kampf, Bosse und Events, Anlegen-Dialog, Debug-Panel
 
 - **Status:** geplant
+- **Projekt:** KMP
 - **Domäne:** CLI
-- **Prio:** mittel
 - **Reife:** bereit
-- **Einschiebbar:** nein
 - **Tickets:** B-132, B-105, B-107, B-098
 - **Start-Commit:** –
 - **Spec:** freigegeben

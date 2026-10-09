@@ -1,10 +1,9 @@
 # SV1 · SRV · Raum mit allen Stufen, Voll-Ausbau-Spielstand, leere Test-Räume
 
 - **Status:** geplant
+- **Projekt:** WRT
 - **Domäne:** SRV
-- **Prio:** hoch
 - **Reife:** bereit
-- **Einschiebbar:** nein
 - **Tickets:** B-315, B-199, B-290, B-204
 - **Start-Commit:** –
 - **Spec:** Entwurf

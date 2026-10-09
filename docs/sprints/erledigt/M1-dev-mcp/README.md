@@ -1,10 +1,9 @@
 # M1 · SRV · k3c-dev I: MCP-Kern über HTTP
 
 - **Status:** erledigt
+- **Projekt:** –
 - **Domäne:** SRV
-- **Prio:** mittel
 - **Reife:** bereit
-- **Einschiebbar:** ja
 - **Tickets:** B-046
 - **Start-Commit:** 7ff19d6
 - **Spec:** freigegeben

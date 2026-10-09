@@ -4,7 +4,7 @@ import { backend } from '../api';
 import { errorText } from '../lib/errors';
 import { MarkdownView } from '../ui/MarkdownView';
 
-/** Knopf `Instructions` mit Dialog: der Text, den jeder Client beim Verbinden bekommt, als React-Elemente. */
+/** Knopf `Systemprompt` mit Dialog (MCP-instructions): der Text, den jeder Client beim Verbinden bekommt, als React-Elemente. */
 export function InstructionsDialog() {
   const [text, setText] = useState<string | null>(null);
   const [error, setError] = useState('');
@@ -19,10 +19,10 @@ export function InstructionsDialog() {
   return (
     <Dialog.Root onOpenChange={(open) => void load(open)}>
       <Dialog.Trigger>
-        <Button size="1" variant="soft">Instructions</Button>
+        <Button size="1" variant="soft">Systemprompt</Button>
       </Dialog.Trigger>
       <Dialog.Content maxWidth="760px" className="mcp-instructions">
-        <Dialog.Title>Instructions für Agenten</Dialog.Title>
+        <Dialog.Title>Systemprompt für Agenten (MCP-instructions)</Dialog.Title>
         {error && <p className="svc-error">{error}</p>}
         {text !== null && <MarkdownView source={text} headingOffset={1} />}
         <Flex justify="end" mt="4">

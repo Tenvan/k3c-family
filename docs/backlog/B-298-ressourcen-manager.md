@@ -6,6 +6,7 @@
 - **Umgebung:** live
 - **Status:** eingeplant
 - **Sprint:** M10
+- **Projekt:** GRA
 - **Erstellt:** 2026-10-05
 - **Spec:** Entwurf
 - **Revision:** 1

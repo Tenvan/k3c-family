@@ -1,10 +1,9 @@
 # SP08 · CLI · Browser als reiner Client
 
 - **Status:** erledigt
+- **Projekt:** –
 - **Domäne:** CLI
-- **Prio:** hoch
 - **Reife:** bereit
-- **Einschiebbar:** nein
 - **Tickets:** B-016, B-037, B-039, B-061, B-082
 - **Start-Commit:** 98a4907
 - **Spec:** freigegeben

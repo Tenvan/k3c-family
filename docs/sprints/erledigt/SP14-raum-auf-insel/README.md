@@ -1,10 +1,9 @@
 # SP14 · SRV · Raum auf Insel
 
 - **Status:** erledigt
+- **Projekt:** –
 - **Domäne:** SRV
-- **Prio:** hoch
 - **Reife:** bereit
-- **Einschiebbar:** ja
 - **Tickets:** B-133, B-104
 - **Start-Commit:** febf4ee
 - **Spec:** freigegeben

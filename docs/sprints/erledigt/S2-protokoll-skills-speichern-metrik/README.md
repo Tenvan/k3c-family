@@ -1,10 +1,9 @@
 # S2 · SRV · Protokoll für Skills, Speichern beim Verlassen, Spielmetrik
 
 - **Status:** erledigt
+- **Projekt:** –
 - **Domäne:** SRV
-- **Prio:** hoch
 - **Reife:** bereit
-- **Einschiebbar:** nein
 - **Tickets:** B-123, B-147, B-150, B-176
 - **Start-Commit:** 7e2b70c
 - **Spec:** freigegeben

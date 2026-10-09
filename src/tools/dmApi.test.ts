@@ -1,5 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import { DM_ACTIONS, devUrl, fetchDiagnose, fetchRooms, sendAction, type FetchLike } from './dmApi';
+import { t } from './texts';
 
 /** Antwortet mit status und body und merkt sich die Anfragen. */
 function fake(status: number, body: unknown) {
@@ -41,6 +42,6 @@ describe('dmApi (B-232)', () => {
     expect(await sendAction('KRNZ', { action: 'pause' }, fake(403, { error: 'Nur im Dev-Mode erlaubt' }).f)).toBe(
       'Nur im Dev-Mode erlaubt',
     );
-    expect(await sendAction('KRNZ', { action: 'pause' }, offline)).toBe('Server nicht erreichbar');
+    expect(await sendAction('KRNZ', { action: 'pause' }, offline)).toBe(t('dm.unreachable'));
   });
 });

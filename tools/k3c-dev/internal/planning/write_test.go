@@ -18,7 +18,6 @@ const indexMD = "# Backlog\n\n## Offen\n\n| Nr. | Domäne | Typ | Prio | Status 
 const roadmapMD = "# Fahrplan\n\n## Aktiv\n\n| Sprint | Domäne | Thema | Am Ende sichtbar | Ordner |\n|---|---|---|---|---|\n\n" +
 	"## Offen am Gerät\n\n| Session | Gerät | Kriterium | Ordner |\n|---|---|---|---|\n| X1.3 | Xbox | AC-04 | `erledigt/X1-test/` |\n\n" +
 	"## Geplant (in dieser Reihenfolge)\n\n| Sprint | Domäne | Thema | Am Ende sichtbar | Reife | Ordner |\n|---|---|---|---|---|---|\n\n" +
-	"**Einschiebbar** (…):\n\n| Sprint | Domäne | Thema | Reife | Ordner |\n|---|---|---|---|---|\n\n" +
 	"## Erledigt\n\n| Sprint | Thema | Ordner |\n|---|---|---|\n"
 
 // tempRepo legt docs/ mit den echten Vorlagen, einem Ticket, Index und Fahrplan an.
@@ -34,7 +33,7 @@ func tempRepo(t *testing.T) string {
 			t.Fatal(err)
 		}
 	}
-	for _, k := range []string{"ticket", "sprint", "session"} {
+	for _, k := range []string{"ticket", "sprint", "session", "projekt"} {
 		b, err := os.ReadFile(filepath.Join("..", "..", "..", "..", "docs", "vorlagen", k+".md"))
 		if err != nil {
 			t.Fatal(err)
@@ -44,6 +43,7 @@ func tempRepo(t *testing.T) string {
 	w("backlog/README.md", indexMD)
 	w("backlog/B-001-alt.md", "# B-001 · Altes Ticket\n\n- **Status:** offen\n")
 	w("sprints/README.md", roadmapMD)
+	w("projekte/README.md", projekteMD)
 	for _, st := range States {
 		if err := os.MkdirAll(filepath.Join(root, "docs", "sprints", st), 0o755); err != nil {
 			t.Fatal(err)
@@ -96,7 +96,7 @@ func TestTicketAnlegenAendernArchivieren(t *testing.T) {
 func TestSprintUndSessionLebenslauf(t *testing.T) {
 	root := tempRepo(t)
 	must(t)(Create(root, NewDoc{Kind: "sprint", ID: "X1", Slug: "test", Title: "Test-Sprint", Fields: map[string]string{"Domäne": "SRV"}}))
-	must(t)(Create(root, NewDoc{Kind: "session", ID: "X1.1", Slug: "eins", Title: "Erste"}))
+	must(t)(Create(root, NewDoc{Kind: "session", ID: "X1.1", Slug: "eins", Title: "Erste", Fields: map[string]string{"Domäne": "SRV"}}))
 	must(t)(Set(root, "X1.1", map[string]string{"Status": "fertig"}))
 	readme := doc(t, root, "sprints/geplant/X1-test/README.md")
 	if !strings.Contains(readme, "| X1.1 | `X1.1-eins.md` | Umsetzung | autonom | fertig |") {
@@ -126,10 +126,10 @@ func TestSprintUndSessionLebenslauf(t *testing.T) {
 
 func TestEntwurfLoeschen(t *testing.T) {
 	root := tempRepo(t)
-	must(t)(Create(root, NewDoc{Kind: "sprint", ID: "X2", Slug: "weg", Title: "Weg", Fields: map[string]string{"Domäne": "SIM", "Einschiebbar": "ja"}}))
-	must(t)(Create(root, NewDoc{Kind: "session", ID: "X2.1", Slug: "a", Title: "A"}))
-	if !strings.Contains(doc(t, root, "sprints/README.md"), "| X2 | SIM | Weg | Entwurf | `geplant/X2-weg/` |\n\n## Erledigt") {
-		t.Fatal("Einschiebbar-Zeile fehlt")
+	must(t)(Create(root, NewDoc{Kind: "sprint", ID: "X2", Slug: "weg", Title: "Weg", Fields: map[string]string{"Domäne": "SIM"}}))
+	must(t)(Create(root, NewDoc{Kind: "session", ID: "X2.1", Slug: "a", Title: "A", Fields: map[string]string{"Domäne": "SRV"}}))
+	if !strings.Contains(doc(t, root, "sprints/README.md"), "| X2 | SRV | Weg | – | Entwurf | `geplant/X2-weg/` |\n\n## Erledigt") {
+		t.Fatal("Fahrplan-Zeile fehlt")
 	}
 	must(t)(Delete(root, "X2.1"))
 	if strings.Contains(doc(t, root, "sprints/geplant/X2-weg/README.md"), "X2.1") {
@@ -242,19 +242,46 @@ func checkConsistent(t *testing.T, root string) {
 	}
 }
 
-func TestSprintPrioFolgtTickets(t *testing.T) {
+// TestDomaeneDEV: Ein Ticket in DEV lässt sich anlegen und per Set umstellen; eine unbekannte Domäne wird mit der Liste
+// der gültigen abgelehnt (DV1 AC-03).
+func TestDomaeneDEV(t *testing.T) {
+	root := tempRepo(t)
+	must(t)(Create(root, NewDoc{Kind: "ticket", Slug: "werkzeug", Title: "Werkzeug", Fields: map[string]string{"Domäne": "DEV", "Typ": "Idee", "Prio": "hoch"}}))
+	must(t)(Create(root, NewDoc{Kind: "ticket", Slug: "server", Title: "Server", Fields: map[string]string{"Domäne": "SRV", "Typ": "Idee", "Prio": "hoch"}}))
+	must(t)(Set(root, "B-003", map[string]string{"Domäne": "DEV"}))
+	if index := doc(t, root, "backlog/README.md"); !strings.Contains(index, "| [B-003](B-003-server.md) | DEV |") {
+		t.Fatalf("Index:\n%s", index)
+	}
+	if out := must(t)(List(root, Filter{Kind: "ticket", Domain: "DEV"})); !strings.Contains(out, "B-002 DEV") || !strings.Contains(out, "B-003 DEV") {
+		t.Fatalf("Liste DEV:\n%s", out)
+	}
+	_, err := Create(root, NewDoc{Kind: "ticket", Slug: "tool", Title: "x", Fields: map[string]string{"Domäne": "TOOL", "Typ": "Idee", "Prio": "hoch"}})
+	if err == nil || !strings.Contains(err.Error(), "REG, SIM, SRV, CLI, PLAT, INF, DEV") {
+		t.Fatalf("TOOL: %v", err)
+	}
+	checkConsistent(t, root)
+}
+
+// TestSprintOhnePrioUndEinschiebbar: plan_create und plan_set schreiben an Sprints weder Prio noch Einschiebbar, ein
+// Prio am Sprint wird abgelehnt (DV1 AC-04).
+func TestSprintOhnePrioUndEinschiebbar(t *testing.T) {
 	root := tempRepo(t)
 	must(t)(Create(root, NewDoc{Kind: "ticket", Slug: "neu", Title: "Neu", Fields: map[string]string{"Domäne": "SRV", "Typ": "Idee", "Prio": "hoch"}}))
 	must(t)(Create(root, NewDoc{Kind: "sprint", ID: "X3", Slug: "p", Title: "P", Fields: map[string]string{"Domäne": "SRV", "Tickets": "B-001, B-002 teils"}}))
-	if !strings.Contains(doc(t, root, "sprints/geplant/X3-p/README.md"), "- **Prio:** hoch\n") {
-		t.Fatal("Prio nicht aus den Tickets abgeleitet")
+	must(t)(Set(root, "X3", map[string]string{"Tickets": "B-002"}))
+	if readme := doc(t, root, "sprints/geplant/X3-p/README.md"); strings.Contains(readme, "Prio") || strings.Contains(readme, "Einschiebbar") {
+		t.Fatalf("README:\n%s", readme)
 	}
-	must(t)(Set(root, "X3", map[string]string{"Tickets": "B-001"}))
-	if !strings.Contains(doc(t, root, "sprints/geplant/X3-p/README.md"), "- **Prio:** ?\n") {
-		t.Fatal("Prio folgt geänderten Tickets nicht")
+	before := snapshot(t, root)
+	for _, f := range []string{"Prio", "Einschiebbar"} {
+		if _, err := Set(root, "X3", map[string]string{f: "ja"}); err == nil || snapshot(t, root) != before {
+			t.Errorf("%s am Sprint: Fehler erwartet, nichts geändert (%v)", f, err)
+		}
 	}
-	must(t)(Create(root, NewDoc{Kind: "sprint", ID: "X4", Slug: "q", Title: "Q", Fields: map[string]string{"Domäne": "SIM", "Tickets": "B-002"}}))
-	if out := must(t)(List(root, Filter{Kind: "sprint"})); strings.Index(out, "X4 ") > strings.Index(out, "X3 ") {
-		t.Fatalf("hohe Prio nicht zuerst:\n%s", out)
+	if _, ok := allowed["sprint"]["Prio"]; ok {
+		t.Error("Prio im Sprint-Schema")
+	}
+	if out := must(t)(List(root, Filter{Kind: "sprint"})); strings.Contains(out, "Prio") {
+		t.Fatalf("Liste:\n%s", out)
 	}
 }

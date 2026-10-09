@@ -6,6 +6,7 @@
 - **Umgebung:** live
 - **Status:** erledigt
 - **Sprint:** SP00
+- **Projekt:** –
 - **Erstellt:** 2026-09-30
 - **Spec:** rückwirkend
 - **Revision:** 1

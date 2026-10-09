@@ -3,6 +3,7 @@
 - **Status:** fertig
 - **Typ:** Workshop
 - **Agent:** Mensch
+- **Domäne:** CLI
 - **Umgebung:** live
 - **Branch:** gr3/4-abnahme-tv
 - **Abhängig von:** GR3.3

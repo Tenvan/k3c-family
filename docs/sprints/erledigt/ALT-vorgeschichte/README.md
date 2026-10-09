@@ -1,10 +1,9 @@
 # ALT · INF · Vorgeschichte vor der Sprint-Einteilung
 
 - **Status:** erledigt
+- **Projekt:** –
 - **Domäne:** INF
-- **Prio:** ?
 - **Reife:** Entwurf
-- **Einschiebbar:** nein
 - **Tickets:** –
 - **Start-Commit:** –
 - **Spec:** rückwirkend

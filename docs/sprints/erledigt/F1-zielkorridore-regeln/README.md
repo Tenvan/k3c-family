@@ -1,10 +1,9 @@
 # F1 · REG · Zielkorridore und Bedienungsregeln
 
 - **Status:** erledigt
+- **Projekt:** –
 - **Domäne:** REG
-- **Prio:** hoch
 - **Reife:** bereit
-- **Einschiebbar:** nein
 - **Tickets:** B-134, B-135, B-136, B-144, B-145
 - **Start-Commit:** 54c1657
 - **Spec:** freigegeben

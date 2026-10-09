@@ -4,8 +4,9 @@
 - **Typ:** Idee
 - **Prio:** mittel
 - **Umgebung:** offline
-- **Status:** eingeplant
-- **Sprint:** RM1
+- **Status:** offen
+- **Sprint:** –
+- **Projekt:** BED
 - **Erstellt:** 2026-10-04
 - **Spec:** Entwurf
 - **Revision:** 1

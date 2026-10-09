@@ -1,10 +1,9 @@
 # GR5 · CLI · Juice: Treffer, Screenshake, Münzen
 
 - **Status:** erledigt
+- **Projekt:** –
 - **Domäne:** CLI
-- **Prio:** mittel
 - **Reife:** bereit
-- **Einschiebbar:** ja
 - **Tickets:** B-164
 - **Start-Commit:** 1fa9529
 - **Spec:** freigegeben

@@ -6,6 +6,7 @@
 - **Umgebung:** live
 - **Status:** eingeplant
 - **Sprint:** LB1
+- **Projekt:** BED
 - **Erstellt:** 2026-09-30
 - **Spec:** freigegeben
 - **Revision:** 1

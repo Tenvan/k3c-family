@@ -14,15 +14,16 @@ import (
 
 // Session ist eine Zeile der Session-Tabelle eines Sprints. Ein Entwurf hat nur Stichpunkte: Status "entwurf".
 type Session struct {
-	Nr     string `json:"nr"`
-	Typ    string `json:"typ"`
-	Agent  string `json:"agent"`
-	Status string `json:"status"`
+	Nr     string   `json:"nr"`
+	Typ    string   `json:"typ"`
+	Agent  string   `json:"agent"`
+	Status string   `json:"status"`
 	Titel  string   `json:"titel"`
 	File   string   `json:"-"`              // Spalte „Datei“ der Tabelle, relativ zum Sprint-Ordner
 	Text   string   `json:"text,omitempty"` // Inhalt der Session-Datei (Markdown) für das Detail-Panel
 	Deps   []string `json:"deps,omitempty"` // Session-IDs aus „Abhängig von“
 	Env    string   `json:"env,omitempty"`  // Feld „Umgebung“ der Session-Datei: offline | live | ?
+	Domain string   `json:"domain,omitempty"` // Feld „Domäne“ der Session-Datei
 }
 
 // Sprint ist die Kopfzeile und Session-Tabelle einer Sprint-README.
@@ -30,9 +31,9 @@ type Sprint struct {
 	ID       string    `json:"id"`
 	Title    string    `json:"title"`
 	Domain   string    `json:"domain"`
-	Prio     string    `json:"prio"`   // live die höchste Prio seiner Tickets, sonst die aus der README (rank)
+	Project  string    `json:"project"`        // Feld „Projekt“: Kürzel oder –
 	Deps     []string  `json:"deps,omitempty"` // Sprints, auf deren Sessions seine Sessions warten
-	Status   string    `json:"status"` // aktiv | geplant | erledigt
+	Status   string    `json:"status"`         // aktiv | geplant | erledigt
 	Reife    string    `json:"reife"`
 	Spec     string    `json:"spec"`
 	Tickets  []string  `json:"tickets"`
@@ -42,22 +43,24 @@ type Sprint struct {
 
 // Ticket ist der Kopf einer Backlog-Datei.
 type Ticket struct {
-	Nr     string `json:"nr"`
-	Title  string `json:"title"`
-	Domain string `json:"domain"`
-	Typ    string `json:"typ"`
-	Prio   string `json:"prio"`
-	Env    string `json:"env"` // offline | live | ?
-	Status string `json:"status"`
-	Sprint string `json:"sprint"`
-	Spec   string `json:"spec"`
+	Nr      string `json:"nr"`
+	Title   string `json:"title"`
+	Domain  string `json:"domain"`
+	Typ     string `json:"typ"`
+	Prio    string `json:"prio"`
+	Env     string `json:"env"` // offline | live | ?
+	Status  string `json:"status"`
+	Sprint  string `json:"sprint"`
+	Project string `json:"project"` // Feld „Projekt“: Kürzel oder –
+	Spec    string `json:"spec"`
 }
 
 // Data ist der Stand für die Oberfläche; die Listen sind nie nil.
 type Data struct {
-	Sprints []Sprint `json:"sprints"`
-	Tickets []Ticket `json:"tickets"`
-	Done    int      `json:"done"` // Zahl der erledigten Sprints
+	Projects []Project `json:"projects"` // aktive nach Rang (ABN danach), dann ruhende, dann erledigte
+	Sprints  []Sprint  `json:"sprints"`
+	Tickets  []Ticket  `json:"tickets"`
+	Done     int       `json:"done"` // Zahl der erledigten Sprints
 }
 
 // Docs sind die lesbaren Dokumente; der Name kommt von der Oberfläche, der Pfad nie. DocOrder ist ihre Reihenfolge im
@@ -77,7 +80,7 @@ var (
 // Load liest die Planung unter root/docs. Eine unlesbare Datei überspringt nur ihren Eintrag; fehlt docs/sprints oder
 // docs/backlog ganz, kommt ein Fehler (falsche Wurzel).
 func Load(root string) (Data, error) {
-	d := Data{Sprints: []Sprint{}, Tickets: []Ticket{}}
+	d := Data{Projects: loadProjects(root), Sprints: []Sprint{}, Tickets: []Ticket{}}
 	for _, status := range []string{"aktiv", "geplant", "erledigt"} {
 		dir := filepath.Join(root, "docs", "sprints", status)
 		entries, err := os.ReadDir(dir)
@@ -182,7 +185,7 @@ func fields(lines []string) map[string]string {
 func ParseSprint(text, dir, status string) Sprint {
 	lines := strings.Split(strings.ReplaceAll(text, "\r\n", "\n"), "\n")
 	f := fields(lines)
-	s := Sprint{ID: strings.SplitN(dir, "-", 2)[0], Title: dir, Domain: f["Domäne"], Prio: f["Prio"], Status: status, Reife: f["Reife"],
+	s := Sprint{ID: strings.SplitN(dir, "-", 2)[0], Title: dir, Domain: f["Domäne"], Project: f["Projekt"], Status: status, Reife: f["Reife"],
 		Spec: f["Spec"], Tickets: []string{}, Sessions: []Session{}}
 	if h := header(lines); len(h) >= 3 {
 		s.ID, s.Domain, s.Title = h[0], h[1], strings.Join(h[2:], " · ")
@@ -214,7 +217,7 @@ func ParseSprint(text, dir, status string) Sprint {
 func ParseTicket(text string) Ticket {
 	lines := strings.Split(strings.ReplaceAll(text, "\r\n", "\n"), "\n")
 	f := fields(lines)
-	t := Ticket{Domain: f["Domäne"], Typ: f["Typ"], Prio: f["Prio"], Env: f["Umgebung"], Status: f["Status"], Sprint: f["Sprint"], Spec: f["Spec"]}
+	t := Ticket{Domain: f["Domäne"], Typ: f["Typ"], Prio: f["Prio"], Env: f["Umgebung"], Status: f["Status"], Sprint: f["Sprint"], Project: f["Projekt"], Spec: f["Spec"]}
 	if h := header(lines); len(h) >= 2 {
 		t.Nr, t.Title = h[0], strings.Join(h[1:], " · ")
 	}

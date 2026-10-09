@@ -1,10 +1,9 @@
 # W0 · SIM · Bauplätze aus dem Seed
 
 - **Status:** erledigt
+- **Projekt:** –
 - **Domäne:** SIM
-- **Prio:** hoch
 - **Reife:** bereit
-- **Einschiebbar:** nein
 - **Tickets:** B-206, B-182, B-261
 - **Start-Commit:** 7e2b70c
 - **Spec:** freigegeben

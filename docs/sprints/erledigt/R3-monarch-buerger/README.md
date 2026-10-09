@@ -1,10 +1,9 @@
 # R3 · REG · Regelwerk II – Monarch, Bürger, Klassen, Level, Skills
 
 - **Status:** erledigt
+- **Projekt:** –
 - **Domäne:** REG
-- **Prio:** hoch
 - **Reife:** bereit
-- **Einschiebbar:** ja
 - **Tickets:** B-110, B-017
 - **Start-Commit:** 2038474
 - **Spec:** freigegeben

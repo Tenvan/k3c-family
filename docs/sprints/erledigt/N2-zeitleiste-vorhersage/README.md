@@ -1,10 +1,9 @@
 # N2 · CLI · Flüssige Darstellung: Zeitleiste, Extrapolation, eigene Vorhersage
 
 - **Status:** erledigt
+- **Projekt:** –
 - **Domäne:** CLI
-- **Prio:** hoch
 - **Reife:** bereit
-- **Einschiebbar:** ja
 - **Tickets:** B-277, B-181
 - **Start-Commit:** 33ae378
 - **Spec:** freigegeben

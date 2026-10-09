@@ -1,10 +1,9 @@
 # M4 · SRV · k3c-dev IV: Oberfläche mit Dienste- und Logs-Seite
 
 - **Status:** erledigt
+- **Projekt:** –
 - **Domäne:** SRV
-- **Prio:** mittel
 - **Reife:** bereit
-- **Einschiebbar:** ja
 - **Tickets:** B-064, B-068
 - **Start-Commit:** 2795d18
 - **Spec:** freigegeben

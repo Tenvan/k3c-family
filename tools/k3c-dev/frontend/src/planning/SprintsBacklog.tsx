@@ -1,16 +1,22 @@
 import { Button, Checkbox, Flex, Text, TextField } from '@radix-ui/themes';
 import { useEffect, useState } from 'react';
-import { backend, type GitHubData, type PlanningData } from '../api';
+import { backend, type GitHubData, type PlanningData, type PlanSprint } from '../api';
+import { ProjectsView } from './ProjectsView';
+import { rankedCount } from './projects';
+import { foldAll } from './fold';
 import { errorText } from '../lib/errors';
 import { loadText, savePref } from '../lib/prefs';
 import { ActionButton, NoticeCard, StatusBadge } from '../ui/parts';
-import { BacklogList, SessionDetail } from './Backlog';
+import { BacklogList } from './Backlog';
+import { PlanDetail } from './Detail';
+import { unfold } from './fold';
+import { findSession } from './planning';
 import { SprintCard } from './SprintCard';
 import { CopyPrompt } from './PromptParts';
 import { openSessions, promptSessions } from './prompts';
 import { domains, filterSprints, filterTickets, parseFilter, QUICK, sortSprints, toggle, type PlanFilter } from './planning';
 
-const PREF = 'planning-filter';
+const PREF = 'planning.filter';
 
 /** Sprints & Backlog aus planning.Data (dieselben Daten wie plan_list). Lädt bei `planning:changed` neu; Filter und
  *  Auswahl bleiben dabei stehen und werden gemerkt. */
@@ -24,8 +30,8 @@ export function SprintsBacklog() {
     setFilterState(f);
     savePref(PREF, JSON.stringify(f));
   };
+  const load = () => backend.planningData().then((d) => { setData(d); setError(''); }, (e) => setError(errorText(e)));
   useEffect(() => {
-    const load = () => backend.planningData().then((d) => { setData(d); setError(''); }, (e) => setError(errorText(e)));
     void load();
     return backend.on('planning:changed', () => void load()); // Wächter in Go: Datei in docs/ geändert
   }, []);
@@ -34,26 +40,32 @@ export function SprintsBacklog() {
   const sprints = sortSprints(filterSprints(data, filter), gh?.sprints);
   const tickets = filterTickets(data, filter);
   const select = (nr: string) => setFilter({ ...filter, sel: filter.sel === nr ? '' : nr });
+  const pick = (id: string) => setFilter({ ...filter, sel: id });
+  const reveal = (id: string) => { pick(id); revealIn(data, id); };
   const check = (nr: string, on: boolean) => setChecked((cur) => { const n = new Set(cur); if (on) n.add(nr); else n.delete(nr); return n; });
   // in Planungs-Reihenfolge; fertige oder verschwundene fallen heraus
   const picked = sprints.flatMap(openSessions).filter((it) => checked.has(it.session.nr));
+  const card = (s: PlanSprint) => (
+    <SprintCard key={s.id} sprint={s} gh={gh?.sprints[s.id.toUpperCase()]} sel={filter.sel} onSelect={select} onPick={pick} checked={checked}
+      onCheck={check} />
+  );
   return (
     <div className="pl-board">
       <FilterBar data={data} filter={filter} setFilter={setFilter} hits={sprints.length + tickets.length} />
       <GitHubBar gh={gh} reload={reloadGh} />
       <div className="pl-grid">
         <section className="pl-col">
-          <h2 className="pl-h">Sprints <small>{sprints.length} von {data.sprints.length} · {data.done} erledigt</small></h2>
+          <ColumnHead data={data} shown={sprints} />
           {picked.length > 0 && (
             <div className="pl-picked">
               <Text size="1" weight="medium">{picked.length} Session{picked.length > 1 ? 's' : ''} markiert</Text>
-              <CopyPrompt prompt={promptSessions(picked)} what={`${picked.length} markierte Sessions`} />
+              <CopyPrompt prompt={promptSessions(picked, data.projects)} what={`${picked.length} markierte Sessions`} />
               <button type="button" className="pl-textlink" onClick={() => setChecked(new Set())}>Auswahl aufheben</button>
             </div>
           )}
-          {sprints.map((s) => (
-            <SprintCard key={s.id} sprint={s} gh={gh?.sprints[s.id.toUpperCase()]} sel={filter.sel} onSelect={select} checked={checked} onCheck={check} />
-          ))}
+          {data.projects?.length
+            ? <ProjectsView data={data} sprints={sprints} tickets={tickets} sel={filter.sel} onPick={pick} renderSprint={card} reload={load} />
+            : sprints.map(card)}
           {sprints.length === 0 && <Text color="gray">Kein Sprint passt zum Filter.</Text>}
         </section>
         <section className="pl-col pl-right">
@@ -61,11 +73,18 @@ export function SprintsBacklog() {
             <h2 className="pl-h">Backlog <small>{tickets.length} von {data.tickets.length} offenen Tickets</small></h2>
             <BacklogList data={data} tickets={tickets} sel={filter.sel} />
           </div>
-          <SessionDetail data={data} sel={filter.sel} onSelect={select} onClose={() => setFilter({ ...filter, sel: '' })} />
+          <PlanDetail data={data} sel={filter.sel} onSelect={reveal} onClose={() => setFilter({ ...filter, sel: '' })} />
         </section>
       </div>
     </div>
   );
+}
+
+/** Auswahl von außen (Detail, Abhängigkeits-Link): Projekt und Sprint klappen auf, die Karte scrollt in Sicht. */
+function revealIn(data: PlanningData, id: string) {
+  const sprint = findSession(data, id)?.sprint ?? data.sprints.find((s) => s.id === id);
+  unfold([sprint?.project ?? '', sprint?.id ?? '', id].filter(Boolean));
+  setTimeout(() => document.getElementById(`pl-sp-${sprint?.id ?? id}`)?.scrollIntoView({ block: 'nearest', behavior: 'smooth' }), 0);
 }
 
 /** GitHub-Stand: beim Öffnen und bei `planning:changed` aus dem Zwischenspeicher, per Knopf frisch. */
@@ -127,5 +146,26 @@ function FilterBar({ data, filter, setFilter, hits }:
       </Text>
       <Text size="1" color="gray" className="pl-count">{hits} Treffer</Text>
     </Flex>
+  );
+}
+
+/** Alle Projekte und Sprints auf einmal ein- oder ausklappen (B-364). */
+function FoldAll({ ids }: { ids: string[] }) {
+  return (
+    <span className="pl-foldall">
+      <button type="button" className="pl-textlink" onClick={() => foldAll(ids, true)}>alle einklappen</button>
+      <button type="button" className="pl-textlink" onClick={() => foldAll(ids, false)}>alle aufklappen</button>
+    </span>
+  );
+}
+
+/** Kopf der linken Spalte: mit Projekten „Projekte“, sonst „Sprints“ (B-364). */
+function ColumnHead({ data, shown }: { data: PlanningData; shown: PlanSprint[] }) {
+  const count = <>{shown.length} von {data.sprints.length} · {data.done} erledigt</>;
+  if (!data.projects?.length) return <h2 className="pl-h">Sprints <small>{count}</small></h2>;
+  return (
+    <h2 className="pl-h">Projekte <small>{rankedCount(data.projects)} nach Rang · Sprints {count}</small>
+      <FoldAll ids={['area:ABN', 'area:ohne', ...data.projects.map((p) => p.id), ...shown.map((s) => s.id)]} />
+    </h2>
   );
 }

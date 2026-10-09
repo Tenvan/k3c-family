@@ -2,10 +2,11 @@
 
 - **Domäne:** REG
 - **Typ:** Frage
-- **Prio:** hoch
+- **Prio:** niedrig
 - **Umgebung:** live
 - **Status:** eingeplant
 - **Sprint:** P1
+- **Projekt:** BAL
 - **Erstellt:** 2026-09-29
 - **Spec:** freigegeben
 - **Revision:** 1

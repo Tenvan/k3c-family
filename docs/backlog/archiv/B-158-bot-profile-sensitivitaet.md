@@ -6,6 +6,7 @@
 - **Umgebung:** offline
 - **Status:** erledigt
 - **Sprint:** BAL3
+- **Projekt:** –
 - **Erstellt:** 2026-10-02
 - **Spec:** freigegeben
 - **Revision:** 1

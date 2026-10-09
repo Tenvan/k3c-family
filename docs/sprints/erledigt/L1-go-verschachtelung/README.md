@@ -1,10 +1,9 @@
 # L1 · INF · Go-Verschachtelung als Tiefe prüfen
 
 - **Status:** erledigt
+- **Projekt:** –
 - **Domäne:** INF
-- **Prio:** mittel
 - **Reife:** bereit
-- **Einschiebbar:** ja
 - **Tickets:** B-054
 - **Start-Commit:** 20c5530
 - **Spec:** freigegeben

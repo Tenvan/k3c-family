@@ -1,10 +1,9 @@
 # PB1 · INF · Veröffentlichung auf itch.io
 
 - **Status:** geplant
+- **Projekt:** REL
 - **Domäne:** INF
-- **Prio:** niedrig
 - **Reife:** Entwurf
-- **Einschiebbar:** ja
 - **Tickets:** B-023
 - **Start-Commit:** –
 - **Spec:** Entwurf

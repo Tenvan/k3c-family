@@ -1,10 +1,9 @@
 # W5 · SRV · Protokoll für Berufe, Händler, Lager und Hub-Stufe
 
 - **Status:** erledigt
+- **Projekt:** –
 - **Domäne:** SRV
-- **Prio:** hoch
 - **Reife:** bereit
-- **Einschiebbar:** nein
 - **Tickets:** B-153, B-283
 - **Start-Commit:** e26de644
 - **Spec:** freigegeben

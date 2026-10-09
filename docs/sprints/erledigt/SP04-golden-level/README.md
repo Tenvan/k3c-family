@@ -1,10 +1,9 @@
 # SP04 · SIM · Golden-Tests, RNG, Level-Generator in Go
 
 - **Status:** erledigt
+- **Projekt:** –
 - **Domäne:** SIM
-- **Prio:** hoch
 - **Reife:** bereit
-- **Einschiebbar:** nein
 - **Tickets:** B-043
 - **Start-Commit:** 4f4cb2f
 - **Spec:** freigegeben

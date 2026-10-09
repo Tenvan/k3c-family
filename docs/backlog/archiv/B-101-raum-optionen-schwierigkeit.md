@@ -6,6 +6,7 @@
 - **Umgebung:** live
 - **Status:** erledigt
 - **Sprint:** SP13
+- **Projekt:** –
 - **Erstellt:** 2026-10-02
 - **Spec:** freigegeben
 - **Revision:** 1

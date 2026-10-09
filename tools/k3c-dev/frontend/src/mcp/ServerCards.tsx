@@ -4,7 +4,7 @@ import { backend, type McpOverview } from '../api';
 import { errorText } from '../lib/errors';
 import { formatNumber } from '../lib/format';
 import { useNow } from '../lib/useNow';
-import { ActionButton, StatusBadge } from '../ui/parts';
+import { ActionButton, StatusBadge, Tip } from '../ui/parts';
 import { InstructionsDialog } from './InstructionsDialog';
 import { durationText, uptimeText, weightedAvg } from './overview';
 
@@ -14,7 +14,10 @@ interface Props {
   reload: () => Promise<void>;
 }
 
-/** Band 1 (B-065): Karten `MCP-Server` und `Verbindungen`. */
+/**
+ * Serverkarte (Workbench-Spec § 3): Titel · URL · Status-Badge · Neustart (immer bedienbar) · Systemprompt ·
+ * Aktualisieren; darunter Aufrufe/Fehler/Dauer und Verbindungen (Details im Tooltip); Fehler als Zeile.
+ */
 export function ServerCards({ overview, error, reload }: Props) {
   const now = useNow(30_000);
   const [restartError, setRestartError] = useState('');
@@ -29,40 +32,40 @@ export function ServerCards({ overview, error, reload }: Props) {
     }
   };
   const problem = restartError || (!mcp.listening && mcp.error) || '';
+  const url = `http://${mcp.addr}/mcp`;
+  const connections = `Clients max ${formatNumber(stats.peakClients)} · parallel max ${formatNumber(stats.peakInFlight)}`;
   return (
-    <div className="mcp-band1">
-      <section className="mcp-card">
-        <Flex justify="between" align="center" gap="3" wrap="wrap">
-          <Flex align="center" gap="3">
-            <span className="mcp-card-title">MCP-Server</span>
-            <code className="mcp-addr">http://{mcp.addr}/mcp</code>
+    <section className="mcp-card mcp-server">
+      <Flex justify="between" align="center" gap="3" wrap="wrap">
+        <Flex align="center" gap="3" wrap="wrap">
+          <span className="mcp-card-title">MCP-Server</span>
+          <code className="mcp-addr" title={url}>{url}</code>
+          <Tip content={`Laufzeit ${uptimeText(stats.startedAt, now)}`}>
             <StatusBadge tone={mcp.listening ? 'ok' : 'error'}>{mcp.listening ? 'Lauscht' : 'Fehler'}</StatusBadge>
-          </Flex>
-          <Flex gap="2">
-            <ActionButton size="1" variant="soft" onClick={restart}>Neu starten</ActionButton>
-            <InstructionsDialog />
-            <ActionButton size="1" variant="soft" color="gray" onClick={reload}>Aktualisieren</ActionButton>
-          </Flex>
+          </Tip>
+          <ActionButton size="1" variant="soft" onClick={restart}>Neustart</ActionButton>
         </Flex>
+        <Flex gap="2">
+          <InstructionsDialog />
+          <ActionButton size="1" variant="soft" color="gray" onClick={reload}>Aktualisieren</ActionButton>
+        </Flex>
+      </Flex>
+      <div className="mcp-kpi-groups">
         <dl className="mcp-kpis">
-          <Kpi label="LAUFZEIT" value={uptimeText(stats.startedAt, now)} />
           <Kpi label="AUFRUFE" value={formatNumber(stats.totalCalls)} />
           <Kpi label="FEHLER" value={formatNumber(stats.errors)} bad={stats.errors > 0} />
           <Kpi label="Ø DAUER" value={durationText(weightedAvg(stats.tools))} />
         </dl>
-        {problem && <p className="svc-error">{problem}</p>}
-        {error && <p className="svc-error">Nachladen fehlgeschlagen: {error}</p>}
-      </section>
-      <section className="mcp-card">
-        <span className="mcp-card-title">Verbindungen</span>
-        <dl className="mcp-kpis">
-          <Kpi label="CLIENTS" value={formatNumber(stats.clients)} />
-          <Kpi label="CLIENTS MAX" value={formatNumber(stats.peakClients)} />
-          <Kpi label="PARALLEL" value={formatNumber(stats.inFlight)} />
-          <Kpi label="PARALLEL MAX" value={formatNumber(stats.peakInFlight)} />
-        </dl>
-      </section>
-    </div>
+        <Tip content={connections}>
+          <dl className="mcp-kpis" aria-label={`Verbindungen: ${connections}`}>
+            <Kpi label="CLIENTS" value={formatNumber(stats.clients)} />
+            <Kpi label="PARALLEL" value={formatNumber(stats.inFlight)} />
+          </dl>
+        </Tip>
+      </div>
+      {problem && <p className="svc-error">{problem}</p>}
+      {error && <p className="svc-error">Nachladen fehlgeschlagen: {error}</p>}
+    </section>
   );
 }
 

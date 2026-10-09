@@ -1,10 +1,9 @@
 # SP05 · SIM · Port I – Welt, Zyklus, Truppen, Wirtschaft
 
 - **Status:** erledigt
+- **Projekt:** –
 - **Domäne:** SIM
-- **Prio:** hoch
 - **Reife:** bereit
-- **Einschiebbar:** nein
 - **Tickets:** B-043
 - **Start-Commit:** f015b3c
 - **Spec:** freigegeben

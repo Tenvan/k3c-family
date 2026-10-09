@@ -2,10 +2,11 @@
 
 - **Domäne:** CLI
 - **Typ:** Idee
-- **Prio:** mittel
+- **Prio:** hoch
 - **Umgebung:** live
 - **Status:** eingeplant
 - **Sprint:** SO2
+- **Projekt:** SND
 - **Erstellt:** 2026-10-02
 - **Spec:** freigegeben
 - **Revision:** 1

@@ -3,6 +3,7 @@
 - **Status:** offen
 - **Typ:** Umsetzung
 - **Agent:** autonom
+- **Domäne:** REG
 - **Umgebung:** offline
 - **Branch:** bal4/1-abgleichtabelle
 - **Abhängig von:** –

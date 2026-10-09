@@ -4,8 +4,9 @@
 - **Typ:** Idee
 - **Prio:** mittel
 - **Umgebung:** offline
-- **Status:** eingeplant
-- **Sprint:** W5
+- **Status:** offen
+- **Sprint:** –
+- **Projekt:** WRT
 - **Erstellt:** 2026-10-04
 - **Spec:** Entwurf
 - **Revision:** 1

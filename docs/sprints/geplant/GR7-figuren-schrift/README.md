@@ -1,10 +1,9 @@
 # GR7 · CLI · Figuren-Lücken, ganzzahlige Skalierung und Schrift
 
 - **Status:** geplant
+- **Projekt:** GRA
 - **Domäne:** CLI
-- **Prio:** mittel
 - **Reife:** Entwurf
-- **Einschiebbar:** ja
 - **Tickets:** B-193, B-251, B-198, B-197, B-320
 - **Start-Commit:** –
 - **Spec:** Entwurf

@@ -1,10 +1,9 @@
 # S6 · CLI · Onboarding „Erste Nacht geführt“ und Controller-Glyphen
 
 - **Status:** erledigt
+- **Projekt:** –
 - **Domäne:** CLI
-- **Prio:** hoch
 - **Reife:** bereit
-- **Einschiebbar:** nein
 - **Tickets:** B-148, B-149
 - **Start-Commit:** 27b117f
 - **Spec:** freigegeben

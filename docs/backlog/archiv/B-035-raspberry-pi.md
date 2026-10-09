@@ -6,6 +6,7 @@
 - **Umgebung:** live
 - **Status:** erledigt
 - **Sprint:** SP11
+- **Projekt:** –
 - **Erstellt:** 2026-09-30
 - **Spec:** Entwurf
 - **Revision:** 1

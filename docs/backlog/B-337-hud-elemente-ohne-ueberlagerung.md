@@ -4,8 +4,9 @@
 - **Typ:** Idee
 - **Prio:** hoch
 - **Umgebung:** live
-- **Status:** offen
-- **Sprint:** –
+- **Status:** eingeplant
+- **Sprint:** U6
+- **Projekt:** BED
 - **Erstellt:** 2026-10-07
 - **Spec:** Entwurf
 - **Revision:** 1

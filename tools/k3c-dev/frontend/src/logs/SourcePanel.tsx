@@ -14,12 +14,12 @@ const LABELS: Record<Tab, string> = { konsole: 'Konsole', log: 'Log', fehler: 'F
  * (`log`; leer: nur Konsole).
  */
 export function SourcePanel({ source, log }: { source: Source; log: string }) {
-  const [wanted, setWanted] = useState<Tab>(() => loadPref('logTab', TABS, 'konsole'));
+  const [wanted, setWanted] = useState<Tab>(() => loadPref('logs.tab', TABS, 'konsole'));
   const tab = pickTab(wanted, log !== ''); // der gemerkte Reiter bleibt gemerkt, auch wenn er hier nicht geht
   const choose = (value: string) => {
     const next = TABS.includes(value as Tab) ? (value as Tab) : 'konsole';
     setWanted(next);
-    savePref('logTab', next);
+    savePref('logs.tab', next);
   };
   return (
     <Tabs.Root className="src-panel" value={tab} onValueChange={choose}>

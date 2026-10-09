@@ -1,11 +1,12 @@
 # B-000 · Kurzer Titel als Aussage
 
-- **Domäne:** REG | SIM | SRV | CLI | PLAT | INF
+- **Domäne:** REG | SIM | SRV | CLI | PLAT | INF | DEV
 - **Typ:** Idee | Problem | Schuld | Frage
 - **Prio:** hoch | mittel | niedrig | ?
 - **Umgebung:** offline | live | ? (offline: ohne laufende Dienste prüfbar – Code, Unit-/Mock-Tests, Werkzeuge ohne Serverzugriff, worktree-tauglich; live: braucht laufenden Server, Browser oder Gerät)
 - **Status:** offen | eingeplant | erledigt | verworfen
 - **Sprint:** – (oder SP01, R1 …)
+- **Projekt:** – (oder Kürzel eines Projekts, z. B. GRA; gilt auch ohne Sprint)
 - **Erstellt:** JJJJ-MM-TT
 - **Spec:** Entwurf | freigegeben | rückwirkend
 - **Revision:** 1

@@ -1,5 +1,6 @@
-import { describe, expect, it } from 'vitest';
+import { afterEach, describe, expect, it } from 'vitest';
 import { DEFAULT_SETTINGS, type Settings } from '../core/settings';
+import { setLanguage } from '../core/texts';
 import { MenuPress, OPTION_IDS, OPTION_PAD_KEYS, applyOption, idleCommands, moveOption, optionLabel, tapDir } from './optionsLogic';
 
 const base: Settings = { ...DEFAULT_SETTINGS };
@@ -66,6 +67,15 @@ describe('Werte', () => {
       for (const dir of ['left', 'right', 'confirm'] as const) expect(applyOption(base, id, dir).leave).toBe(false);
     }
     expect(optionLabel(base, 'leave')).toBe('Spiel verlassen');
+  });
+
+  describe('„Spiel verlassen“ auf Englisch (B-293/AC-01)', () => {
+    afterEach(() => setLanguage('de'));
+
+    it('der Eintrag heißt „Leave game“', () => {
+      setLanguage('en');
+      expect(optionLabel({ ...base, language: 'en' }, 'leave')).toBe('Leave game');
+    });
   });
 
   it('Antippen: Drittel links, Mitte, rechts', () => {

@@ -6,6 +6,7 @@
 - **Umgebung:** live
 - **Status:** eingeplant
 - **Sprint:** PF1
+- **Projekt:** LST
 - **Erstellt:** 2026-10-03
 - **Spec:** Entwurf
 - **Revision:** 1

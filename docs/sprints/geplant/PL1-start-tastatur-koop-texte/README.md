@@ -1,10 +1,9 @@
 # PL1 · PLAT · Neues Spiel, zwei Spieler an einer Tastatur, Overlay auf der Xbox, zentrale Texte
 
 - **Status:** geplant
+- **Projekt:** BED
 - **Domäne:** PLAT
-- **Prio:** hoch
 - **Reife:** bereit
-- **Einschiebbar:** nein
 - **Tickets:** B-316, B-195, B-215
 - **Start-Commit:** –
 - **Spec:** Entwurf

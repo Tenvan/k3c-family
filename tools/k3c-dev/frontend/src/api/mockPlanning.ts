@@ -1,10 +1,11 @@
 import type { GitHubData, GitHubSprint, PlanDoc, PlanningData, PlanSession, PlanTicket } from './types';
+import { setRank, withProjects } from './mockProjects';
 
 // Erfundene Planung für den Mock: ein aktiver Sprint mit Session-Tabelle, geplante Entwürfe, Tickets und drei kurze
 // Dokumente in denselben Markdown-Formen wie docs/plan-weiterentwicklung.md, docs/fragenkatalog.md und docs/glossar.md.
 
 const s = (nr: string, typ: string, agent: string, status: string, titel = '', text?: string, deps?: string[],
-  env = agent === 'Mensch' ? 'live' : 'offline'): PlanSession => ({ nr, typ, agent, status, titel, text, deps, env });
+  env = agent === 'Mensch' ? 'live' : 'offline'): PlanSession => ({ nr, typ, agent, status, titel, text, deps, env, domain: 'SRV' });
 
 const SP11_2 = `# SP11.2 · Pi einrichten
 
@@ -37,10 +38,10 @@ Der Server läuft auf dem Raspberry Pi im Docker und ist im Heimnetz unter Port 
 const tk = (nr: string, title: string, domain: string, prio: string, status: string, sprint: string, spec = 'Entwurf'): PlanTicket =>
   ({ nr, title, domain, typ: 'Idee', prio, env: ['CLI', 'PLAT'].includes(domain) ? 'live' : 'offline', status, sprint, spec });
 
-const DATA: PlanningData = {
+const DATA: PlanningData = withProjects({
   done: 2,
   sprints: [
-    { id: 'SP11', title: 'Raspberry Pi', domain: 'SRV', prio: 'hoch', status: 'aktiv', reife: 'bereit', spec: 'freigegeben', worktree: 'sprint/sp11',
+    { id: 'SP11', title: 'Raspberry Pi', domain: 'SRV', status: 'aktiv', reife: 'bereit', spec: 'freigegeben', worktree: 'sprint/sp11',
       tickets: ['B-028', 'B-035', 'B-042'],
       sessions: [s('SP11.1', 'Umsetzung', 'autonom', 'fertig', '', `# SP11.1 · Image und Compose
 
@@ -58,11 +59,11 @@ Ein ARM-Image des Servers liegt in der Registry.
 
 - **Status:** offen
 `, ['SP11.2', 'SP11.3'])] },
-    { id: 'F1', title: 'Zielkorridore und Bedienungsregeln', domain: 'REG', prio: 'hoch', status: 'geplant', reife: 'Entwurf', spec: 'Entwurf',
+    { id: 'F1', title: 'Zielkorridore und Bedienungsregeln', domain: 'REG', status: 'geplant', reife: 'Entwurf', spec: 'Entwurf',
       tickets: ['B-134', 'B-135', 'B-136'],
       sessions: [s('F1.1', '', '', 'entwurf', 'Workshop Zielkorridore'), s('F1.2', '', '', 'entwurf', 'Workshop Bedienung 1'),
         s('F1.3', '', '', 'entwurf', 'Workshop Bedienung 2')] },
-    { id: 'F2', title: 'Golden-Ablauf, Migration, Determinismus', domain: 'INF', prio: 'hoch', status: 'geplant', reife: 'Entwurf', spec: 'Entwurf',
+    { id: 'F2', title: 'Golden-Ablauf, Migration, Determinismus', domain: 'INF', status: 'geplant', reife: 'Entwurf', spec: 'Entwurf',
       tickets: ['B-137', 'B-071'],
       sessions: [s('F2.1', '', '', 'entwurf', 'Golden-Task'), s('F2.2', '', '', 'entwurf', 'Spielstand-Migration')] },
     { id: 'S1', title: 'Monarch-Schlag und Skills', domain: 'SIM', status: 'geplant', reife: 'bereit', spec: 'freigegeben', deps: ['F2'],
@@ -87,8 +88,9 @@ Ein ARM-Image des Servers liegt in der Registry.
     tk('B-112', 'Hub-Ausbau mit Mauerstufen', 'SIM', 'mittel', 'offen', '–'),
     tk('B-134', 'Jede Kennzahl hat einen Zielkorridor als Zahl', 'REG', 'hoch', 'eingeplant', 'F1'),
     tk('B-137', 'Golden-Hashes ändern sich nur mit Begründung', 'INF', 'hoch', 'eingeplant', 'F2'),
+    tk('B-363', 'k3c-dev zeigt den Stand der Dienste', 'DEV', 'mittel', 'offen', '–'),
   ],
-};
+});
 
 const PLAN = `# Plan: K3C nach den Grundlagen
 
@@ -137,7 +139,7 @@ Verbindliche Begriffe für Regeln, Tickets, Sprints und Sessions.
 | Begriff | Bedeutung | Quelle |
 |---|---|---|
 | Ader | Unendliche Quelle für Stein, Kupfer, Eisen oder Kristall, 2 je Stufe. | \`rules/materialien-gebaeude.md\` § 1 |
-| Einschiebbar | Sprint-Feld: \`ja\` zählt nicht gegen „ein aktiver Sprint je Domäne“. | \`arbeitsweise.md\` |
+| DEV | Domäne Entwickler-Werkzeug: k3c-dev, k3c-load, k3c-tui, Werkzeug-Seiten. | \`arbeitsweise.md\` |
 | Hub | Basis einer Stufe mit Burg, Bauplätzen und Truppen. | \`rules/stufen.md\` § 1 |
 
 ## Unklar und Widersprüche
@@ -159,10 +161,9 @@ const GITHUB: GitHubData = {
 
 const DOCS: Record<PlanDoc, string> = { plan: PLAN, fragen: FRAGEN, glossar: GLOSSAR };
 
-const RANK = ['hoch', 'mittel', 'niedrig'];
-
-/** Wie planning.Set in Go: Prio eines Tickets (Sprint-Prio folgt live) oder Agent/Status einer Session. */
+/** Wie planning.Set in Go: Prio eines Tickets oder Agent/Status einer Session; Sprints haben keine Prio. */
 function setField(id: string, field: string, value: string) {
+  if (field === 'Rang') return setRank(DATA, id, value);
   const t = DATA.tickets.find((x) => x.nr === id);
   if (t && field === 'Prio') t.prio = value;
   if (t && field === 'Umgebung') t.env = value;
@@ -171,11 +172,11 @@ function setField(id: string, field: string, value: string) {
     if (x && field === 'Agent') x.agent = value;
     if (x && field === 'Status') x.status = value;
     if (x && field === 'Umgebung') x.env = value;
-    const best = sp.tickets.map((nr) => DATA.tickets.find((y) => y.nr === nr)?.prio ?? '').filter((p) => RANK.includes(p))
-      .sort((a, b) => RANK.indexOf(a) - RANK.indexOf(b))[0];
-    if (best) sp.prio = best;
   }
 }
+
+/** Frische Kopie der Mock-Planung für Tests. */
+export const mockPlanningData = (): PlanningData => structuredClone(DATA);
 
 /** changed meldet `planning:changed`: alle 15 s wechselt SP11.3 zwischen offen und in Arbeit, wie ein Agent an docs/. */
 export function mockPlanning(changed: () => void) {

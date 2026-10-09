@@ -1,10 +1,9 @@
 # SP09 · INF · Aufräumen: TS-Simulation und Node-Server löschen
 
 - **Status:** erledigt
+- **Projekt:** –
 - **Domäne:** INF
-- **Prio:** hoch
 - **Reife:** bereit
-- **Einschiebbar:** nein
 - **Tickets:** B-032, B-049, B-078
 - **Start-Commit:** bee8e44
 - **Spec:** freigegeben

@@ -3,6 +3,7 @@
 - **Status:** fertig
 - **Typ:** Workshop
 - **Agent:** Mensch
+- **Domäne:** SIM
 - **Umgebung:** live
 - **Branch:** bal3/1-workshop-profile
 - **Abhängig von:** –

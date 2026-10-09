@@ -7,7 +7,7 @@ import { screenAt } from './actionOverlay';
 import { fontStyle } from './fontRules';
 import { glyphOf } from './glyphs';
 import { GlyphRow, type RowPart } from './glyphView';
-import { stepGuide, type GuideHint } from './guideHints';
+import { guideImage, stepGuide, type GuideHint } from './guideHints';
 import type { RadarCell } from './radarView';
 
 const STYLE = { stroke: '#000000', strokeThickness: 6, fontStyle: 'bold', ...fontStyle('playerValue') }; // 28 px, HUD-fest (Q03)
@@ -15,10 +15,12 @@ const STYLE = { stroke: '#000000', strokeThickness: 6, fontStyle: 'bold', ...fon
 const OBJECT_PX = 160;
 const PLAYER_PX = 370;
 
-/** Hinweis als Zeilenteile; `{key}` im Text wird zur Glyph der Bestätigen-Taste des Geräts */
+/** Hinweis als Zeilenteile; `{key}` im Text wird zur Glyph der Bestätigen-Taste des Geräts, ein Bild steht davor (B-294) */
 function partsOf(h: GuideHint, device: Device): RowPart[] {
   const [before = '', after] = t(`guide.${h.id}`, {}).split('{key}');
-  return after === undefined ? [before] : [before, glyphOf('confirm', device), after];
+  const text: RowPart[] = after === undefined ? [before] : [before, glyphOf('confirm', device), after];
+  const image = guideImage(h.id);
+  return image ? [image, ...text] : text;
 }
 
 /**

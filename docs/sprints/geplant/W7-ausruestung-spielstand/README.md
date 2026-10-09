@@ -1,10 +1,9 @@
 # W7 · SIM · Ausrüstung ohne Unverwundbarkeit, Spielstand vollständig
 
 - **Status:** geplant
+- **Projekt:** WRT
 - **Domäne:** SIM
-- **Prio:** hoch
 - **Reife:** bereit
-- **Einschiebbar:** nein
 - **Tickets:** B-312, B-313, B-202, B-201, B-075
 - **Start-Commit:** –
 - **Spec:** Entwurf

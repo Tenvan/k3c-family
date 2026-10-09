@@ -10,9 +10,9 @@ import (
 )
 
 var (
-	domains = []string{"REG", "SIM", "SRV", "CLI", "PLAT", "INF"}
+	domains = []string{"REG", "SIM", "SRV", "CLI", "PLAT", "INF", "DEV"}
 	specs   = []string{"Entwurf", "freigegeben", "rückwirkend"}
-	prios   = []string{"hoch", "mittel", "niedrig", "?"} // Rangfolge: hoch zuerst
+	prios   = []string{"hoch", "mittel", "niedrig", "?"}
 	// Envs: offline = ohne laufende Dienste prüfbar (Code, Mock-Tests, Werkzeuge ohne Server), worktree-tauglich;
 	// live = braucht laufende Server, Browser oder Gerät; ? = noch nicht eingeordnet.
 	Envs = []string{"offline", "live", "?"}
@@ -20,9 +20,10 @@ var (
 	allowed = map[string]map[string][]string{
 		"ticket": {"Domäne": domains, "Typ": {"Idee", "Problem", "Schuld", "Frage"}, "Prio": prios,
 			"Umgebung": Envs, "Status": {"offen", "eingeplant", "erledigt", "verworfen"}, "Spec": specs},
-		"sprint": {"Status": States, "Domäne": domains, "Prio": prios, "Reife": {"Entwurf", "bereit"}, "Einschiebbar": {"nein", "ja"}, "Spec": specs},
-		"session": {"Status": {"offen", "in Arbeit", "fertig", "blockiert"}, "Typ": {"Umsetzung", "Review", "Workshop"},
-			"Agent": {"autonom", "Mensch"}, "Umgebung": Envs},
+		"sprint": {"Status": States, "Domäne": domains, "Reife": {"Entwurf", "bereit"}, "Spec": specs},
+		"session": {"Status": {"offen", "in Arbeit", "fertig", "blockiert", "verworfen"}, "Typ": {"Umsetzung", "Review", "Workshop"},
+			"Agent": {"autonom", "Mensch"}, "Umgebung": Envs, "Domäne": domains},
+		"projekt": {"Status": {"aktiv", "ruht", "erledigt"}},
 	}
 	reRevision = regexp.MustCompile(`^\d+$`)
 )
@@ -119,7 +120,7 @@ func setFields(root, kind, text string, values map[string]string) (string, error
 	return text, nil
 }
 
-// Set ändert Kopf-Felder eines Dokuments und zieht Index, Session-Tabelle, Fahrplan und Ordner nach.
+// Set ändert Kopf-Felder eines Dokuments und zieht Index, Session-Tabelle, Fahrplan, Ordner und Projekte nach.
 func Set(root, id string, values map[string]string) (string, error) {
 	writeMu.Lock()
 	defer writeMu.Unlock()
@@ -128,15 +129,23 @@ func Set(root, id string, values map[string]string) (string, error) {
 		return "", err
 	}
 	if r.kind == "sprint" && values["Domäne"] != "" {
-		return "", fmt.Errorf("die Domäne eines Sprints steht in Überschrift und Branch; neuen Sprint anlegen")
+		return "", fmt.Errorf("die Domäne eines Sprints ist aus seinen Sessions abgeleitet; Domäne der Sessions setzen")
 	}
 	c := newChangeSet(root)
+	if r.kind == "projekt" {
+		if err := setProject(c, r, values); err != nil {
+			return "", err
+		}
+		return strings.Join(c.notes, "\n"), c.apply()
+	}
+	if v, ok := values["Projekt"]; ok {
+		if err := checkProjectRef(c, v); err != nil {
+			return "", err
+		}
+	}
 	text, err := c.read(r.rel)
 	if err != nil {
 		return "", err
-	}
-	if _, ok := values["Prio"]; r.kind == "sprint" && !ok && values["Tickets"] != "" {
-		values["Prio"] = SprintPrio(root, values["Tickets"]) // Prio folgt den Tickets
 	}
 	if text, err = setFields(root, r.kind, text, values); err != nil {
 		return "", err
@@ -159,7 +168,10 @@ func follow(c *changeSet, r ref, text string) error {
 	c.write(r.rel, text)
 	c.notes = append(c.notes, r.id+" geändert: docs/"+r.rel)
 	s := Session{Nr: r.id, File: path.Base(r.rel), Typ: f["Typ"], Agent: f["Agent"], Status: f["Status"]}
-	return syncSessionRow(c, r.dir+"/README.md", s)
+	if err := syncSessionRow(c, r.dir+"/README.md", s); err != nil {
+		return err
+	}
+	return syncSprintDomain(c, r.dir, r.state)
 }
 
 func followTicket(c *changeSet, r ref, text string) error {
@@ -191,6 +203,9 @@ func followSprint(c *changeSet, r ref, text string) error {
 	}
 	c.write(dir+"/README.md", text)
 	c.notes = append(c.notes, r.id+" geändert: docs/"+dir+"/ (Fahrplan nachgezogen)")
+	if err := syncProjectSprint(c, sp); err != nil {
+		return err
+	}
 	return syncRoadmap(c, sp, f, r.dir, dir)
 }
 

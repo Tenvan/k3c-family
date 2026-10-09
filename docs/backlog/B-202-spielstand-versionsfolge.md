@@ -6,6 +6,7 @@
 - **Umgebung:** offline
 - **Status:** eingeplant
 - **Sprint:** W7
+- **Projekt:** WRT
 - **Erstellt:** 2026-10-04
 - **Spec:** Entwurf
 - **Revision:** 1

@@ -1,10 +1,9 @@
 # P1 · REG · Spieleabend 1
 
 - **Status:** geplant
+- **Projekt:** BAL
 - **Domäne:** REG
-- **Prio:** hoch
 - **Reife:** bereit
-- **Einschiebbar:** nein
 - **Tickets:** B-008, B-151
 - **Start-Commit:** –
 - **Spec:** freigegeben

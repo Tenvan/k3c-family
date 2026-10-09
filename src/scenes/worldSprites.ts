@@ -17,6 +17,7 @@ export const WORLD_TEXTURES: Record<string, WorldFile> = {
   'grafik:portals': { file: 'portals-32-x-48/portale/portalsSpriteSheet.png', frameWidth: 32, frameHeight: 48 },
   'grafik:exit': { file: 'k3c-paletten/props/fort-door.png' },
   'grafik:chest': { file: 'gold-treasure-icons-16x16/icons/8.png' },
+  'grafik:coinIcon': { file: 'gold-treasure-icons-16x16/icons/2.png' }, // Münze von vorn, Hinweis der ersten Nacht (B-294)
   'grafik:star': { file: 'item-ruby-banana-star/props/part-star.png', frameWidth: 16, frameHeight: 16 },
   'grafik:tent': { file: 'tent-8/props/objs.png' },
   'grafik:campfire': { file: '16x16-animated-campfire/props/campfire-16x16.png', frameWidth: 16, frameHeight: 16 },

@@ -1,6 +1,7 @@
 // Prompt-Texte zum Weiterarbeiten im Chat, je Sprint, Session, markierter Auswahl und Backlog-Ticket (wie die
 // ErpApi-Workbench). Sie nennen nur IDs und die Anweisung; Inhalt und Stand liest der Agent selbst (plan_*-Tools).
-import type { PlanSession, PlanSprint, PlanTicket } from '../api';
+import type { PlanProject, PlanSession, PlanSprint, PlanTicket } from '../api';
+import { byRank } from './projects';
 
 /** Eine markierte Session samt Sprint. */
 export interface Picked {
@@ -33,7 +34,7 @@ export function promptSession(s: PlanSprint, x: PlanSession): string {
   );
 }
 
-/** Sessions je Sprint gruppiert, in der Reihenfolge der Planung (Abhängigkeit, dann Prio). */
+/** Sessions je Sprint gruppiert, in der Reihenfolge der Liste. */
 function groups(items: Picked[]): string {
   const bySprint = new Map<string, Picked[]>();
   items.forEach((it) => bySprint.set(it.sprint.id, [...(bySprint.get(it.sprint.id) ?? []), it]));
@@ -42,10 +43,10 @@ function groups(items: Picked[]): string {
 
 const these = (n: number) => (n > 1 ? `diese ${n} Sessions` : 'diese Session');
 
-/** Prompt für mehrere markierte Sessions im Hauptcheckout. */
-export function promptSessions(items: Picked[]): string {
+/** Prompt für mehrere markierte Sessions im Hauptcheckout, nach Rang der Projekte geordnet (byRank). */
+export function promptSessions(items: Picked[], projects: PlanProject[] = []): string {
   return (
-    `Arbeite ${these(items.length)} der Reihe nach ab:\n${groups(items)}\n` +
+    `Arbeite ${these(items.length)} der Reihe nach ab:\n${groups(byRank(items, projects))}\n` +
     'Lies jede Session-Datei (`plan_get`), bevor du mit ihr beginnst. Status nur per `plan_set` ändern.'
   );
 }

@@ -1,10 +1,9 @@
 # X1 · PLAT · Xbox-Machbarkeit
 
 - **Status:** erledigt
+- **Projekt:** –
 - **Domäne:** PLAT
-- **Prio:** hoch
 - **Reife:** bereit
-- **Einschiebbar:** ja
 - **Tickets:** B-006, B-026, B-166
 - **Start-Commit:** 6c8ba2a
 - **Spec:** freigegeben

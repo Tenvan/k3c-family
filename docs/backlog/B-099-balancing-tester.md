@@ -4,8 +4,9 @@
 - **Typ:** Idee
 - **Prio:** mittel
 - **Umgebung:** offline
-- **Status:** eingeplant
-- **Sprint:** BAL1
+- **Status:** offen
+- **Sprint:** –
+- **Projekt:** BAL
 - **Erstellt:** 2026-10-02
 - **Spec:** freigegeben
 - **Revision:** 1

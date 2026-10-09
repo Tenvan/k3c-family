@@ -1,10 +1,9 @@
 # SO2 · CLI · SFX-Katalog und Einbau
 
 - **Status:** geplant
+- **Projekt:** SND
 - **Domäne:** CLI
-- **Prio:** mittel
 - **Reife:** bereit
-- **Einschiebbar:** ja
 - **Tickets:** B-167
 - **Start-Commit:** –
 - **Spec:** freigegeben

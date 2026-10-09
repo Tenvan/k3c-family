@@ -6,6 +6,7 @@
 - **Umgebung:** offline
 - **Status:** eingeplant
 - **Sprint:** CI1
+- **Projekt:** REL
 - **Erstellt:** 2026-09-30
 - **Spec:** Entwurf
 - **Revision:** 1

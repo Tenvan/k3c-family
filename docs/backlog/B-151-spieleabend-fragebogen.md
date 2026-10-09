@@ -2,10 +2,11 @@
 
 - **Domäne:** REG
 - **Typ:** Idee
-- **Prio:** mittel
+- **Prio:** niedrig
 - **Umgebung:** live
 - **Status:** eingeplant
 - **Sprint:** P1
+- **Projekt:** BAL
 - **Erstellt:** 2026-10-02
 - **Spec:** freigegeben
 - **Revision:** 1

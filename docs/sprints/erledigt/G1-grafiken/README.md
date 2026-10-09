@@ -1,10 +1,9 @@
 # G1 · PLAT · Referenzseite für die gewählten Grafik-Packs
 
 - **Status:** erledigt
+- **Projekt:** –
 - **Domäne:** PLAT
-- **Prio:** mittel
 - **Reife:** bereit
-- **Einschiebbar:** ja
 - **Tickets:** B-087
 - **Start-Commit:** 657658d
 - **Spec:** freigegeben

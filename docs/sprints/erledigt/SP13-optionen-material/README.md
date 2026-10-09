@@ -1,10 +1,9 @@
 # SP13 · SIM · Raum-Optionen, Grade und Material-Lager
 
 - **Status:** erledigt
+- **Projekt:** –
 - **Domäne:** SIM
-- **Prio:** hoch
 - **Reife:** bereit
-- **Einschiebbar:** ja
 - **Tickets:** B-101, B-113
 - **Start-Commit:** 1874d9d
 - **Spec:** freigegeben

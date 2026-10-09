@@ -1,10 +1,9 @@
 # F5 · INF · Doku-Drift, Version und Landing-Kacheln
 
 - **Status:** erledigt
+- **Projekt:** –
 - **Domäne:** INF
-- **Prio:** mittel
 - **Reife:** bereit
-- **Einschiebbar:** nein
 - **Tickets:** B-141, B-079
 - **Start-Commit:** 605f467
 - **Spec:** freigegeben

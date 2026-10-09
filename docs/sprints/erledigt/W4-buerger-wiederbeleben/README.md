@@ -1,10 +1,9 @@
 # W4 · SIM · Wiederbeleben, Berufe, Händler, Elite und Limit
 
 - **Status:** erledigt
+- **Projekt:** –
 - **Domäne:** SIM
-- **Prio:** mittel
 - **Reife:** bereit
-- **Einschiebbar:** nein
 - **Tickets:** B-120, B-121, B-122, B-014
 - **Start-Commit:** 27b117f
 - **Spec:** freigegeben

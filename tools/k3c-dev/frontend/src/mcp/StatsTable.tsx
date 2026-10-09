@@ -3,7 +3,7 @@ import type { ToolUsage, UsageScope } from '../api';
 import { formatDuration, formatNumber, formatPercent } from '../lib/format';
 import { loadText, savePref } from '../lib/prefs';
 import { share } from './overview';
-import { DEFAULT_SORT, nextSort, rateText, SORT_KEYS, sortTools, type Sort, type SortKey } from './stats';
+import { DEFAULT_SORT, dur, nextSort, rateText, SORT_KEYS, sortTools, type Sort, type SortKey } from './stats';
 
 const COLUMNS: [SortKey, string][] = [
   ['name', 'Tool'], ['calls', 'Aufrufe'], ['share', 'Anteil'], ['errors', 'Fehler'], ['rate', 'Quote'], ['avgMs', 'Ø'],
@@ -11,7 +11,7 @@ const COLUMNS: [SortKey, string][] = [
 ];
 
 function loadSort(): Sort {
-  const [key, dir] = loadText('statSort', '').split(':');
+  const [key, dir] = loadText('mcp.statSort', '').split(':');
   return SORT_KEYS.includes(key as SortKey) ? { key: key as SortKey, desc: dir !== 'asc' } : DEFAULT_SORT;
 }
 
@@ -22,7 +22,7 @@ export function StatsTable({ scope }: { scope: UsageScope }) {
   const click = (key: SortKey) => {
     const next = nextSort(sort, key);
     setSort(next);
-    savePref('statSort', `${next.key}:${next.desc ? 'desc' : 'asc'}`);
+    savePref('mcp.statSort', `${next.key}:${next.desc ? 'desc' : 'asc'}`);
   };
   if (scope.tools.length === 0) return <section className="mcp-card"><p className="mcp-empty">Noch keine Aufrufe.</p></section>;
   return (
@@ -57,13 +57,13 @@ function ToolRow({ t, total, onClick }: { t: ToolUsage; total: number; onClick: 
       <td className="mcp-log-tool">{t.name}</td>
       <td>{formatNumber(t.calls)}</td>
       <td><span className="mcp-share mcp-share-inline"><span style={{ width: `${pct}%` }} /></span> {formatPercent(pct)}</td>
-      <td className={t.errors > 0 ? 'svc-error-count' : undefined}>{formatNumber(t.errors)}</td>
+      <td className={t.errors > 0 ? 'svc-error-count' : undefined}>{Number.isFinite(t.errors) ? formatNumber(t.errors) : '–'}</td>
       <td>{rateText(t.errors, t.calls)}</td>
-      <td>{formatDuration(t.avgMs)}</td>
-      <td>{formatDuration(t.p50Ms)}</td>
-      <td>{formatDuration(t.p95Ms)}</td>
-      <td>{formatDuration(t.maxMs)}</td>
-      <td>{formatDuration(t.sumMs)}</td>
+      <td>{dur(t.avgMs, t.calls)}</td>
+      <td>{dur(t.p50Ms, t.calls)}</td>
+      <td>{dur(t.p95Ms, t.calls)}</td>
+      <td>{dur(t.maxMs, t.calls)}</td>
+      <td>{dur(t.sumMs, t.calls)}</td>
       <td className={t.outliers > 0 ? 'svc-error-count' : undefined}>{formatNumber(t.outliers)}</td>
     </tr>
   );

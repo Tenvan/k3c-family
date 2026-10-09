@@ -3,7 +3,7 @@ import { mockLogs } from './mockLogs';
 import { mockMcp } from './mockMcp';
 import { mockServices } from './mockServices';
 import { mockPlanning } from './mockPlanning';
-import { mockTasks } from './mockTasks';
+import { mockGates, mockTasks } from './mockTasks';
 import type { Backend, EventName, Events, Info, McpState, ServiceStatus, Source } from './types';
 
 // Mock ohne Wails-Laufzeit (`npx vite` im Frontend): erfundene Daten, damit die Oberfläche im Browser testbar ist.
@@ -46,6 +46,8 @@ export function mockBackend(): Backend {
     emit('service:state', st);
     emit('source:state', serviceSource(st));
   });
+  // Wie ein Agent über notify_ui: zeigt im Mock, wo Hinweise erscheinen.
+  setTimeout(() => emit('ui:notify', { level: 'info', title: 'Mock: Hinweise von Agenten', text: 'notify_ui erscheint hier.' }), 1500);
   const mcpTools = mockMcp((event, call) => emit(event, call), () => mcp);
   const tasks = mockTasks((event, run) => emit(event, run), (lines) => emit('console:line', lines));
   const logs = mockLogs((lines) => emit('console:line', lines), (src) => emit('source:state', src));
@@ -60,6 +62,7 @@ export function mockBackend(): Backend {
     taskStart: tasks.taskStart,
     taskStop: tasks.taskStop,
     taskRuns: tasks.taskRuns,
+    ...mockGates(),
     ...mockPlanning(() => emit('planning:changed', null)),
     mcpInstructions: async () => INSTRUCTIONS,
     mcpRestart: async () => {

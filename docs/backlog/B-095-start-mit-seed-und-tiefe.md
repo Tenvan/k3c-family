@@ -6,6 +6,7 @@
 - **Umgebung:** offline
 - **Status:** eingeplant
 - **Sprint:** BT1
+- **Projekt:** REL
 - **Erstellt:** 2026-10-02
 - **Spec:** Entwurf
 - **Revision:** 1

@@ -1,10 +1,9 @@
 # SP01 · INF · Leitplanken + Go-Gerüst
 
 - **Status:** erledigt
+- **Projekt:** –
 - **Domäne:** INF
-- **Prio:** hoch
 - **Reife:** bereit
-- **Einschiebbar:** nein
 - **Tickets:** B-009, B-033, B-050, B-052
 - **Start-Commit:** 918f385
 - **Spec:** freigegeben

@@ -1,10 +1,9 @@
 # U3 · PLAT · Level-Betrachter
 
 - **Status:** erledigt
+- **Projekt:** –
 - **Domäne:** PLAT
-- **Prio:** mittel
 - **Reife:** bereit
-- **Einschiebbar:** nein
 - **Tickets:** B-092
 - **Start-Commit:** 4d824fa
 - **Spec:** freigegeben

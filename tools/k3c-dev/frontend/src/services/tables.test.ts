@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import type { ServiceStatus } from '../api';
-import { applyStatus, badgeFor, buttonsFor, levelShares, metricsOf, orderLine } from './tables';
+import { applyStatus, badgeFor, buttonsFor, levelShares, metricsOf, orderLine, preferredSource } from './tables';
 
 const svc = (over: Partial<ServiceStatus> = {}): ServiceStatus => ({
   name: 'Vite', description: '', port: 5173, health: 'http://127.0.0.1:5173/', log: '', state: 'gestoppt', pid: 0, startedAt: '',
@@ -61,5 +61,21 @@ describe('Dienste-Tabellen', () => {
       startedAt: new Date(now - (2 * 60 + 13) * 60_000).toISOString() });
     expect(metricsOf(running, now)).toEqual({ pid: '41232', cpu: '3,1 %', memory: '480,0 MB', uptime: '2 h 13 min' });
     expect(metricsOf(svc({ state: 'läuft', pid: 7, startedAt: '0001-01-01T00:00:00Z' }), now).uptime).toBe('–');
+  });
+});
+
+describe('preferredSource (Workbench-Spec § 2 › Auswahl)', () => {
+  const services = [{ name: 'Vite', state: 'gestoppt' }, { name: 'Spielserver', state: 'läuft' }];
+  const sources = ['Vite', 'Spielserver', 'k3c-dev'];
+
+  it('nimmt die gemerkte Quelle, solange es sie gibt', () => {
+    expect(preferredSource(sources, services, 'k3c-dev')).toBe('k3c-dev');
+  });
+
+  it('fällt auf den ersten laufenden Dienst, dann den ersten Dienst, dann die erste Quelle zurück', () => {
+    expect(preferredSource(sources, services, 'weg')).toBe('Spielserver');
+    expect(preferredSource(sources, [{ name: 'Vite', state: 'gestoppt' }], 'weg')).toBe('Vite');
+    expect(preferredSource(['k3c-dev'], [], 'weg')).toBe('k3c-dev');
+    expect(preferredSource([], [], 'weg')).toBe('');
   });
 });

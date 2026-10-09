@@ -1,10 +1,9 @@
 # BR2 · REG · Balancing-Runde Kampf und Bosse und Spieleabend 3
 
 - **Status:** geplant
+- **Projekt:** BAL
 - **Domäne:** REG
-- **Prio:** hoch
 - **Reife:** bereit
-- **Einschiebbar:** nein
 - **Tickets:** B-156
 - **Start-Commit:** –
 - **Spec:** freigegeben

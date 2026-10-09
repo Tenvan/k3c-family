@@ -1,10 +1,9 @@
 # GR4 · INF · Atlas und Lade-Szene
 
 - **Status:** erledigt
+- **Projekt:** –
 - **Domäne:** INF
-- **Prio:** mittel
 - **Reife:** bereit
-- **Einschiebbar:** ja
 - **Tickets:** B-163, B-029
 - **Start-Commit:** 605f467
 - **Spec:** freigegeben

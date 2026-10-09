@@ -1,47 +1,11 @@
 // Prüft die Planungs-Dateien gegen die Pflicht-Vorlagen in docs/vorlagen/ (siehe docs/arbeitsweise.md).
-import { existsSync, readdirSync, readFileSync, statSync } from 'node:fs';
+// Projekte, Rang und Domänen-Sperre: planningProjects.test.ts; gemeinsame Hilfen: planningDocs.ts.
+import { readdirSync, readFileSync } from 'node:fs';
 import { join, resolve } from 'node:path';
 import { describe, expect, it } from 'vitest';
-
-const DOCS = resolve(__dirname, '../docs');
-// Zeilenenden vereinheitlichen: unter Windows checkt Git mit CRLF aus.
-const read = (path: string) => readFileSync(join(DOCS, path), 'utf8').replace(/\r\n/g, '\n');
-const dirs = (path: string) =>
-  existsSync(join(DOCS, path)) ? readdirSync(join(DOCS, path)).filter((n) => statSync(join(DOCS, path, n)).isDirectory()) : [];
-
-/** Felder aus der Liste `- **Feld:** Wert` vor der ersten Unterüberschrift. */
-function meta(text: string): Record<string, string> {
-  const head = text.split(/^## /m)[0];
-  return Object.fromEntries([...head.matchAll(/^- \*\*(.+?):\*\* (.*)$/gm)].map((m) => [m[1], m[2].trim()]));
-}
-const headings = (text: string) => [...text.matchAll(/^## (.+)$/gm)].map((m) => m[1].trim());
-const title = (text: string) => /^# (\S+) · /.exec(text)?.[1];
-const ids = (value: string) => value.match(/B-\d{3}/g) ?? [];
-
-const DOMAINS = ['REG', 'SIM', 'SRV', 'CLI', 'PLAT', 'INF'];
-const SPEC = ['Entwurf', 'freigegeben', 'rückwirkend'];
-const PRIO = ['hoch', 'mittel', 'niedrig', '?']; // Rangfolge: hoch zuerst
-const ENV = ['offline', 'live', '?']; // Umgebung: offline ist worktree-tauglich
-const ALLOWED = {
-  ticket: { Domäne: DOMAINS, Typ: ['Idee', 'Problem', 'Schuld', 'Frage'], Prio: PRIO, Umgebung: ENV,
-    Status: ['offen', 'eingeplant', 'erledigt', 'verworfen'], Spec: SPEC },
-  sprint: { Status: ['geplant', 'aktiv', 'erledigt'], Domäne: DOMAINS, Prio: PRIO, Reife: ['Entwurf', 'bereit'], Einschiebbar: ['nein', 'ja'],
-    Spec: SPEC },
-  session: { Status: ['offen', 'in Arbeit', 'fertig', 'blockiert'], Typ: ['Umsetzung', 'Review', 'Workshop'], Agent: ['autonom', 'Mensch'], Umgebung: ENV },
-} as const;
-type Kind = keyof typeof ALLOWED;
-
-/** Gleiche Felder und Überschriften wie die Vorlage, erlaubte Werte in den Auswahlfeldern. */
-function checkTemplate(kind: Kind, text: string, where: string): Record<string, string> {
-  const template = read(`vorlagen/${kind}.md`);
-  const fields = meta(text);
-  expect(Object.keys(fields), `${where}: Felder`).toEqual(Object.keys(meta(template)));
-  expect(headings(text), `${where}: Überschriften`).toEqual(headings(template));
-  for (const [field, values] of Object.entries(ALLOWED[kind])) {
-    expect(values as readonly string[], `${where}: ${field} = "${fields[field]}"`).toContain(fields[field]);
-  }
-  return fields;
-}
+import {
+  checkTemplate, DOCS, DOMAINS, ids, meta, none, read, sessionRows, sprints, title,
+} from './planningDocs';
 
 /** Akzeptanzkriterien `- **AC-01** …` im gleichnamigen Abschnitt. */
 function criteria(text: string): string[] {
@@ -65,10 +29,6 @@ const ticketFiles = (folder: string) =>
 /** Offene und eingeplante Tickets liegen in backlog/, erledigte und verworfene in backlog/archiv/. */
 const tickets = [...ticketFiles(''), ...ticketFiles('archiv')].map((t) => ({ ...t, path: 'backlog/' + t.rel }));
 const ticketIds = new Set(tickets.map((t) => t.file.slice(0, 5)));
-/** Sprint-Prio = höchste Prio seiner Tickets; ohne Tickets frei wählbar. */
-const ticketPrio = (id: string) => meta(read(tickets.find((t) => t.file.startsWith(id))?.path ?? '')).Prio ?? '?';
-const sprintPrio = (value: string) =>
-  ids(value).map(ticketPrio).reduce((best, p) => (PRIO.indexOf(p) >= 0 && PRIO.indexOf(p) < PRIO.indexOf(best) ? p : best), '?');
 const ticketCriteria = (id: string) => criteria(read(tickets.find((t) => t.file.startsWith(id))?.path ?? ''));
 
 describe('Backlog', () => {
@@ -89,17 +49,6 @@ describe('Backlog', () => {
     }
   });
 });
-
-const STATES = ['geplant', 'aktiv', 'erledigt'] as const;
-const sprints = STATES.flatMap((state) => dirs(`sprints/${state}`).map((dir) => ({ state, dir, path: `sprints/${state}/${dir}` })));
-
-/** Session-Tabelle der Sprint-README: Nr., Datei, Typ, Agent, Status. */
-function sessionRows(text: string) {
-  const section = text.split(/^## Sessions$/m)[1]?.split(/^## /m)[0] ?? '';
-  return [...section.matchAll(/^\| (\S+) \| `(.+?)` \| (.+?) \| (.+?) \| (.+?) \|$/gm)].map((m) => ({
-    id: m[1], file: m[2], typ: m[3], agent: m[4], status: m[5],
-  }));
-}
 
 /** Jede Session verweist nur auf Kriterien des Sprints, und jedes Kriterium hat eine Session. */
 function checkSessions(path: string, sprintId: string, sprintCriteria: string[]) {
@@ -124,36 +73,6 @@ function checkSessions(path: string, sprintId: string, sprintCriteria: string[])
   for (const ac of sprintCriteria) expect(covered.has(ac), `${path}: ${ac} hat keine Session`).toBe(true);
 }
 
-/** Domänen mit mehr als einem aktiven, nicht einschiebbaren Sprint (B-174). */
-function crowdedDomains(active: Record<string, string>[]) {
-  const count = new Map<string, number>();
-  for (const f of active.filter((f) => f.Einschiebbar === 'nein')) count.set(f.Domäne, (count.get(f.Domäne) ?? 0) + 1);
-  return [...count].filter(([, n]) => n > 1).map(([d]) => d);
-}
-
-/** Sprint wartet nur noch aufs Gerät: alle offenen Sessions sind Mensch-Sessions (Hardware entkoppelt). */
-function waitsForDevice(readme: string) {
-  const open = sessionRows(readme).filter((r) => !['fertig', 'verworfen'].includes(r.status));
-  return open.length > 0 && open.every((r) => r.agent === 'Mensch');
-}
-
-describe('Regel: je Domäne ein aktiver Sprint', () => {
-  it('ein Sprint, der nur noch auf Mensch-Sessions wartet, sperrt die Domäne nicht', () => {
-    const table = (rows: string) => `## Sessions\n\n| Nr. | Datei | Typ | Agent | Status |\n|---|---|---|---|---|\n${rows}\n`;
-    expect(waitsForDevice(table('| X1.1 | `a.md` | Umsetzung | autonom | fertig |\n| X1.2 | `b.md` | Workshop | Mensch | offen |'))).toBe(true);
-    expect(waitsForDevice(table('| X1.1 | `a.md` | Umsetzung | autonom | offen |\n| X1.2 | `b.md` | Workshop | Mensch | offen |'))).toBe(false);
-  });
-
-  it('zwei aktive Sprints verschiedener Domänen sind erlaubt', () => {
-    expect(crowdedDomains([{ Domäne: 'SRV', Einschiebbar: 'nein' }, { Domäne: 'INF', Einschiebbar: 'nein' }])).toEqual([]);
-  });
-
-  it('zwei nicht einschiebbare Sprints der gleichen Domäne sind ein Fehler', () => {
-    const active = [{ Domäne: 'SIM', Einschiebbar: 'nein' }, { Domäne: 'SIM', Einschiebbar: 'nein' }, { Domäne: 'SIM', Einschiebbar: 'ja' }];
-    expect(crowdedDomains(active)).toEqual(['SIM']);
-  });
-});
-
 describe('Sprints', () => {
   it.each(sprints)('$path folgt der Vorlage', ({ state, dir, path }) => {
     const text = read(`${path}/README.md`);
@@ -161,23 +80,32 @@ describe('Sprints', () => {
     const acs = checkSpec(text, fields, path);
     const id = title(text) ?? '';
     expect(dir.startsWith(`${id}-`), `${path}: Ordnername beginnt mit ${id}-`).toBe(true);
+    const domains = fields.Domäne.split(/,\s*/);
+    for (const d of domains) expect(DOMAINS, `${path}: Domäne "${d}"`).toContain(d);
+    expect(new Set(domains).size, `${path}: Domänen ohne Dopplung`).toBe(domains.length);
     expect(text, `${path}: Domäne in der Überschrift`).toMatch(new RegExp(`^# ${id} · ${fields.Domäne} · `));
     expect(fields.Status, `${path}: Status passt zum Ordner`).toBe(state);
     for (const ticket of ids(fields.Tickets)) expect(ticketIds, `${path}: ${ticket}`).toContain(ticket);
-    if (ids(fields.Tickets).length) expect(fields.Prio, `${path}: Prio = höchste Prio der Tickets`).toBe(sprintPrio(fields.Tickets));
     for (const [ref, ticket, ac] of text.matchAll(/(B-\d{3})\/(AC-\d{2})/g)) {
       expect(ticketCriteria(ticket), `${path}: ${ref}`).toContain(ac);
     }
     if (fields.Reife === 'bereit') checkSessions(path, id, acs);
   });
 
-  it('je Domäne höchstens ein aktiver Sprint (ohne einschiebbare), nur mit Reife bereit und freigegebener Spec', () => {
-    const active = sprints.filter((s) => s.state === 'aktiv').map((s) => read(`${s.path}/README.md`));
-    expect(crowdedDomains(active.filter((t) => !waitsForDevice(t)).map(meta))).toEqual([]);
-    for (const fields of active.map(meta)) {
-      expect(fields.Reife).toBe('bereit');
-      expect(fields.Spec, 'aktiver Sprint braucht Spec freigegeben oder rückwirkend').not.toBe('Entwurf');
+  it('aktive Sprints haben Reife bereit und eine freigegebene Spec', () => {
+    for (const s of sprints.filter((s) => s.state === 'aktiv')) {
+      const fields = meta(read(`${s.path}/README.md`));
+      expect(fields.Reife, s.path).toBe('bereit');
+      expect(fields.Spec, `${s.path}: aktiver Sprint braucht Spec freigegeben oder rückwirkend`).not.toBe('Entwurf');
     }
+  });
+
+  it('jeder aktive und geplante Sprint und jedes offene Ticket hat ein Projekt (B-359)', () => {
+    const open = [
+      ...sprints.filter((s) => s.state !== 'erledigt').map((s) => `${s.path}/README.md`),
+      ...tickets.filter((t) => !t.folder).map((t) => t.path),
+    ];
+    expect(open.filter((path) => none(meta(read(path)).Projekt))).toEqual([]);
   });
 
   it('Fahrplan nennt jeden Sprint-Ordner', () => {

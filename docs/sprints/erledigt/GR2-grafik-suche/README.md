@@ -1,10 +1,9 @@
 # GR2 · CLI · Grafik-Suche für Lücken
 
 - **Status:** erledigt
+- **Projekt:** –
 - **Domäne:** CLI
-- **Prio:** mittel
 - **Reife:** bereit
-- **Einschiebbar:** ja
 - **Tickets:** B-162
 - **Start-Commit:** e317292
 - **Spec:** freigegeben

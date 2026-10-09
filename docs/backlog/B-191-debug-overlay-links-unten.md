@@ -6,6 +6,7 @@
 - **Umgebung:** live
 - **Status:** eingeplant
 - **Sprint:** U5
+- **Projekt:** BED
 - **Erstellt:** 2026-10-03
 - **Spec:** Entwurf
 - **Revision:** 1
@@ -52,7 +53,7 @@ Handy im Hochformat: Liste bricht um, bleibt unten und treffbar.
 
 ## Offene Fragen
 
-Entschieden 2026-10-06 (🧑, Chat): Bei Touch liegen Debug-Overlay und Aktionsliste rechts neben dem linken Lauf-Feld, unten mittig; das HUD oben bleibt frei.
+Entschieden 2026-10-06 (🧑, Chat): Bei Touch liegen Debug-Overlay und Aktionsliste rechts neben dem linken Lauf-Feld, unten mittig; das HUD oben bleibt frei. **Ersetzt** am 2026-10-09 (🧑, Chat, U5.1): Auch bei Touch links unten, weil unten mittig die Touch-Tasten liegen und darüber Beitritts-Hinweis und Reise-Text.
 
 ## Notizen
 

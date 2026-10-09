@@ -1,5 +1,9 @@
 import { describe, expect, it } from 'vitest';
-import { fetchLevel, INVALID_ANSWER, levelUrl, SERVER_UNREACHABLE, type FetchLike } from './levelApi';
+import { fetchLevel, levelUrl, type FetchLike } from './levelApi';
+import { t } from './texts';
+
+const SERVER_UNREACHABLE = t('level.unreachable');
+const INVALID_ANSWER = t('level.invalid');
 
 const answer = (status: number, body: unknown): FetchLike => async () => ({ ok: status >= 200 && status < 300, status, json: async () => body });
 

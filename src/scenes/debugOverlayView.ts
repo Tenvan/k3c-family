@@ -1,4 +1,5 @@
 import Phaser from 'phaser';
+import { GAME_HEIGHT } from '../core/constants';
 import { PROTOCOL_VERSION } from '../online/clientProtocol';
 import type { RoomClient } from '../online/clientConnection';
 import type { World } from '../model/types';
@@ -6,28 +7,32 @@ import { DEV_ACTIONS, devMessage, pauseMessage, roomDevMode } from './debugActio
 import { VERSION_KEY, debugLines, type DebugWorld } from './debugOverlay';
 import type { GameScene } from './GameScene';
 import { HOLD_IDLE, holdStep, listenTaps, type DebugGesture, type HoldState } from './debugGestures';
-import { CheatDialog, DEV_FOCUS_KEY, PAD_FOCUS, focusStep, type FocusEdges, type FocusState } from './debugOverlayPanel';
+import { CheatDialog, DEV_FOCUS_KEY, KEY_FOCUS, PAD_FOCUS, diagGesture, focusEdges, focusStep, type FocusEdges, type FocusState } from './debugOverlayPanel';
 
 /** Schultertasten (standard mapping). B (1) und View + Menu (8 + 9) bleiben unberührt. */
 const PAD_LB = 4;
 const PAD_RB = 5;
+/** Unterkante der Info-Zeilen: über der Skill-Zeile links unten (GAME_HEIGHT - 56), HUD oben bleibt frei (B-191). */
+const TEXT_BOTTOM = GAME_HEIGHT - 70;
 // Deutsche Tastatur: keyCode 192 ist Ö (Phaser BACKTICK), 222 ist Ä (Phaser QUOTES).
 
 /**
  * Debug-Anzeige und Cheat-Dialog (B-093, B-231). Ö, RB 3 s halten oder Doppeltap mit einem Finger schaltet die
- * Diagnose (Text oben links). Ä, LB + RB 3 s halten oder Doppeltap mit zwei Fingern öffnet den Cheat-Dialog: modal,
+ * Diagnose (Text links unten; bei offenem Dialog schließt Ö zuerst den Dialog). Ä, LB + RB 3 s halten oder Doppeltap mit zwei Fingern öffnet den Cheat-Dialog: modal,
  * der Raum steht (Dev-Aktion `pause`), bis er schließt. Wird nur erzeugt, wenn `debugEnabled` gilt.
  */
 export class DebugOverlay {
   private readonly text: Phaser.GameObjects.Text;
   private readonly diagKey: Phaser.Input.Keyboard.Key | undefined;
   private readonly cheatKey: Phaser.Input.Keyboard.Key | undefined;
+  private readonly focusKeys = new Map<number, Phaser.Input.Keyboard.Key>();
   private readonly unlisten: () => void;
   private shown = false;
   private open = false;
   private hold: HoldState = HOLD_IDLE;
   private gestures: DebugGesture[] = [];
   private padPrev = new Set<number>();
+  private pick: number | null = null;
   private fs: FocusState = { index: 0, seat: 0 };
   private dialog: CheatDialog | null = null;
   private client: RoomClient | null = null;
@@ -36,8 +41,13 @@ export class DebugOverlay {
     const K = Phaser.Input.Keyboard.KeyCodes;
     this.diagKey = scene.input.keyboard?.addKey(K.BACKTICK);
     this.cheatKey = scene.input.keyboard?.addKey(K.QUOTES);
+    for (const code of Object.values(KEY_FOCUS).flat()) {
+      const key = scene.input.keyboard?.addKey(code, false); // ohne preventDefault: Pfeile und Leertaste gehören weiter dem Spiel
+      if (key) this.focusKeys.set(code, key);
+    }
     this.text = scene.add
-      .text(20, 96, '', { fontSize: '20px', color: '#9be564', stroke: '#000000', strokeThickness: 4, fontStyle: 'bold' })
+      .text(20, TEXT_BOTTOM, '', { fontSize: '20px', color: '#9be564', stroke: '#000000', strokeThickness: 4, fontStyle: 'bold' })
+      .setOrigin(0, 1)
       .setVisible(false);
     this.unlisten = listenTaps((g) => this.gestures.push(g));
     scene.events.once(Phaser.Scenes.Events.SHUTDOWN, () => this.destroy());
@@ -46,8 +56,11 @@ export class DebugOverlay {
   update(client: RoomClient, world: World | null): void {
     this.client = client;
     for (const g of this.takeGestures()) {
-      if (g === 'diag') this.shown = !this.shown;
-      else this.setOpen(!this.open);
+      if (g === 'diag') {
+        const next = diagGesture(this.shown, this.open);
+        this.shown = next.shown;
+        this.setOpen(next.open);
+      } else this.setOpen(!this.open);
     }
     this.text.setVisible(this.shown);
     this.updateDialog(client, world);
@@ -81,10 +94,11 @@ export class DebugOverlay {
   }
 
   private updateDialog(client: RoomClient, world: World | null): void {
-    const { state, fire } = focusStep(this.fs, this.padEdges(), this.open, this.slots().length);
+    const { state, fire } = focusStep(this.fs, this.edges(), this.open, this.slots().length, this.pick);
     this.fs = state;
+    this.pick = null;
     if (fire !== null) this.fire(fire);
-    if (this.open) this.dialog ??= new CheatDialog((i) => this.fire(i), () => this.nextSeat(), () => this.setOpen(false));
+    if (this.open) this.dialog ??= new CheatDialog((i) => (this.pick = i), () => this.nextSeat(), () => this.setOpen(false));
     const devMode = client.status === 'room' && roomDevMode(world as DebugWorld | null);
     const note = devMode ? '' : 'Server ohne Dev-Mode: Cheats und Pause wirken nicht.';
     this.dialog?.render(this.open, this.fs, `Spieler ${this.seat() + 1}`, note);
@@ -106,17 +120,21 @@ export class DebugOverlay {
   private fire(index: number): void {
     const message = devMessage(DEV_ACTIONS[index]?.key ?? '', this.slots()[this.seat()] ?? 0);
     if (message) this.client?.sendDev(message);
+    this.dialog?.flash(index);
   }
 
-  /** Neu gedrückte Bedien-Tasten (irgendein Controller). */
-  private padEdges(): FocusEdges {
+  /** Neu gedrückte Bedien-Tasten: irgendein Controller und die Tastatur. */
+  private edges(): FocusEdges {
     const pads = this.scene.input.gamepad?.gamepads ?? [];
     const now = new Set<number>();
     for (const b of Object.values(PAD_FOCUS)) if (pads.some((p) => p?.buttons[b]?.pressed)) now.add(b);
-    const edges: FocusEdges = {};
-    for (const [name, b] of Object.entries(PAD_FOCUS)) edges[name as keyof typeof PAD_FOCUS] = now.has(b) && !this.padPrev.has(b);
+    const prev = this.padPrev;
     this.padPrev = now;
-    return edges;
+    const key = (code: number): boolean => {
+      const k = this.focusKeys.get(code);
+      return k !== undefined && Phaser.Input.Keyboard.JustDown(k);
+    };
+    return focusEdges((b) => now.has(b) && !prev.has(b), key);
   }
 
   /** Szene endet (zurück zur Lobby): Raum weiterlaufen lassen, Dialog und Touch-Lauscher entfernen, Eingabesperre lösen. */

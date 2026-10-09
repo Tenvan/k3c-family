@@ -35,10 +35,15 @@ func (s *Server) svcStatus(ctx context.Context, _ struct{}) (string, error) {
 	return strings.Join(lines, "\n"), nil
 }
 
-// svcStart ist das Tool svc_start.
-func (s *Server) svcStart(ctx context.Context, in serviceIn) (string, error) {
+// svcStart ist das Tool svc_start; waitSeconds begrenzt das Warten auf Health.
+func (s *Server) svcStart(ctx context.Context, in startIn) (string, error) {
+	wctx, cancel, err := waitCtx(ctx, in.WaitSeconds)
+	if err != nil {
+		return "", err
+	}
+	defer cancel()
 	return s.serviceAction(ctx, in.Service, func(ctl *services.Controller) (services.Status, error) {
-		return ctl.Start(ctx, in.Service)
+		return ctl.Start(wctx, in.Service)
 	})
 }
 
@@ -49,10 +54,18 @@ func (s *Server) svcStop(ctx context.Context, in stopIn) (string, error) {
 	})
 }
 
-// svcRestart ist das Tool svc_restart.
-func (s *Server) svcRestart(ctx context.Context, in serviceIn) (string, error) {
+// svcRestart ist das Tool svc_restart; ohne confirm=true lehnt es ab.
+func (s *Server) svcRestart(ctx context.Context, in restartIn) (string, error) {
+	if !in.Confirm {
+		return "", errors.New("svc_restart braucht confirm=true (der Dienst ist während des Neustarts nicht erreichbar)")
+	}
+	wctx, cancel, err := waitCtx(ctx, in.WaitSeconds)
+	if err != nil {
+		return "", err
+	}
+	defer cancel()
 	return s.serviceAction(ctx, in.Service, func(ctl *services.Controller) (services.Status, error) {
-		return ctl.Restart(ctx, in.Service)
+		return ctl.Restart(wctx, in.Service)
 	})
 }
 

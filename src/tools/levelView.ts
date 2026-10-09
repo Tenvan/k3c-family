@@ -1,4 +1,5 @@
 import type { LevelLayout } from '../model/types';
+import { t } from './texts';
 
 /**
  * Level-Betrachter (B-092): reine Funktionen für die Seite `leveltest.html`. Aus der Antwort von `GET /api/level`
@@ -35,8 +36,6 @@ export interface LevelModel {
   warnings: string[];
 }
 
-const INCOMPLETE = 'Antwort unvollständig';
-
 function emptyModel(res: Partial<LevelResponse>): LevelModel {
   return {
     seed: String(res.seed ?? ''),
@@ -46,7 +45,7 @@ function emptyModel(res: Partial<LevelResponse>): LevelModel {
     chunks: [],
     objects: [],
     counts: [],
-    warnings: [...(res.warnings ?? []), INCOMPLETE],
+    warnings: [...(res.warnings ?? []), t('level.incomplete')],
   };
 }
 
@@ -81,8 +80,8 @@ export type StartTarget = { url: string } | { reason: string };
  * eines neuen Spiels aus dem Namen des Spielstands nimmt und beim Autostart immer in Tiefe 0 beginnt (B-095).
  */
 export function startTarget(seed: string, biomeId: string): StartTarget {
-  if (biomeId !== 'forest') return { reason: 'Start nur für den Wald (Tiefe 0)' };
-  if (!SAVE_NAME.test(seed)) return { reason: 'Seed muss aus Kleinbuchstaben, Ziffern und - bestehen (höchstens 32 Zeichen)' };
+  if (biomeId !== 'forest') return { reason: t('level.forestOnly') };
+  if (!SAVE_NAME.test(seed)) return { reason: t('level.badSeed') };
   const params = new URLSearchParams({ autostart: '1', save: seed });
   return { url: `game.html?${params.toString()}` };
 }

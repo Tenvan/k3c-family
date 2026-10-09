@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>K3C Lizenzen &amp; Danksagung</title>
+    <title data-t="lic.pageTitle">K3C Lizenzen &amp; Danksagung</title>
     <style>
       :root { --bg: #11151c; --panel: #1c2330; --line: #2e3a4d; --text: #e8edf4; --dim: #8a97aa; --on: #ffd166; }
       * { box-sizing: border-box; }
@@ -32,105 +32,70 @@
   </head>
   <body>
     <main>
-      <h1>Lizenzen &amp; Danksagung</h1>
-      <p class="sub">
+      <h1 data-t="lic.title">Lizenzen &amp; Danksagung</h1>
+      <p class="sub" data-t="lic.sub">
         Family Three Crowns (K3C) ist ein Familienprojekt und steht auf den Schultern vieler großzügiger Menschen.
         Hier steht, unter welcher Lizenz unser Spiel läuft und wem wir für Grafiken, Bibliotheken und Werkzeuge danken.
         Scrollen mit Stick oder Steuerkreuz.
       </p>
 
       <section>
-        <h2>Unsere Lizenz</h2>
+        <h2 data-t="lic.h.ours">Unsere Lizenz</h2>
         <div class="box key">
-          <p>
-            <strong>Quelltext:</strong>
-            <a href="https://polyformproject.org/licenses/noncommercial/1.0.0" target="_blank" rel="noopener">PolyForm Noncommercial License 1.0.0</a>
-            · Datei <code>LICENSE</code><br />
-            <strong>Eigene Grafiken, Animationen, Sounds und Musik:</strong>
-            <a href="https://creativecommons.org/licenses/by-nc/4.0/deed.de" target="_blank" rel="noopener">CC BY-NC 4.0</a>
-            · Datei <code>LICENSE-ASSETS</code>
-          </p>
-          <p>Copyright © 2026 Ralf Stich. Der Quelltext ist offen einsehbar (<em>source-available</em>), aber <strong>nicht</strong> frei für kommerzielle Nutzung.</p>
+          <p data-t-html="lic.boxCode"></p>
+          <p data-t-html="lic.boxCopy"></p>
         </div>
         <ul>
-          <li class="ok">Spielen, Lernen, Ausprobieren, Verändern und Weitergeben zu privaten, familiären, Hobby-, Forschungs- und Bildungszwecken.</li>
-          <li class="ok">Weitergabe mit Namensnennung und mit dem Lizenztext.</li>
-          <li class="no">Verkaufen, Vermieten, Werbung oder Bezahlmodelle, Einbau in ein kommerzielles Produkt oder eine bezahlte Dienstleistung.</li>
+          <li class="ok" data-t="lic.ok1">Spielen, Lernen, Ausprobieren, Verändern und Weitergeben zu privaten, familiären, Hobby-, Forschungs- und Bildungszwecken.</li>
+          <li class="ok" data-t="lic.ok2">Weitergabe mit Namensnennung und mit dem Lizenztext.</li>
+          <li class="no" data-t="lic.no1">Verkaufen, Vermieten, Werbung oder Bezahlmodelle, Einbau in ein kommerzielles Produkt oder eine bezahlte Dienstleistung.</li>
         </ul>
-        <p class="dim">Kommerzielle Nutzung ist nur mit schriftlicher Erlaubnis von Ralf Stich möglich. Es gilt der jeweilige Lizenztext, diese Zusammenfassung ersetzt ihn nicht.</p>
-        <p class="dim">
-          Die Nicht-kommerziell-Klausel gilt nur für unsere eigene Arbeit. Das Fremdmaterial unten behält seine ursprüngliche Lizenz
-          und bleibt für alle so nutzbar, wie die Urheber:innen es erlaubt haben.
-        </p>
+        <p class="dim" data-t="lic.dim1"></p>
+        <p class="dim" data-t="lic.dim2"></p>
       </section>
 
       <section>
-        <h2>Grafiken</h2>
-        <p>
-          Alle Figuren im Spiel stammen von talentierten Pixel-Künstler:innen, die ihre Arbeit der Allgemeinheit schenken.
-          Ohne sie gäbe es dieses Spiel in dieser Form nicht. <strong>Vielen herzlichen Dank!</strong>
-          Jede Figur wurde von uns zugeschnitten, teils gespiegelt, zu Streifen zusammengesetzt oder eingefärbt.
-        </p>
+        <h2 data-t="lic.h.graphics">Grafiken</h2>
+        <p data-t-html="lic.graphics"></p>
 
-        <p class="dim">Die Einträge stehen in <code>public/grafik/CREDITS.md</code> und <code>public/sprites/CREDITS.md</code>; diese Seite liest sie von dort.</p>
+        <p class="dim" data-t-html="lic.creditsNote"></p>
         <div id="credits-grafik"></div>
 
-        <p class="dim">
-          Warped Caves Pixel Art Pack: Artwork created by Luis Zuno (@ansimuz). Die Quellseite nennt CC0, die Lizenzdatei im Pack CC BY 3.0;
-          wir nutzen es vorsichtig unter <a href="https://creativecommons.org/licenses/by/3.0/deed.de" target="_blank" rel="noopener">CC BY 3.0</a> (Namensnennung Pflicht).
-        </p>
+        <p class="dim" data-t-html="lic.warped"></p>
 
-        <h3>Hinweise zu Reittieren (CC BY 3.0, Namensnennung Pflicht)</h3>
-        <p>
-          Pferde, Einhorn, Pegasus, Hirsch, Elefant und Wölfe sind unter <a href="https://creativecommons.org/licenses/by/3.0/deed.de" target="_blank" rel="noopener">Creative Commons Namensnennung 3.0</a>
-          lizenziert. Wir nutzen sie ausschließlich unter CC BY 3.0 (nicht unter den dort ebenfalls angebotenen GPL-Varianten).
-          Änderungen durch uns: aus den Sheets herausgeschnitten, auf Blickrichtung rechts gebracht, zugeschnitten, teils eingefärbt;
-          darauf sitzt im Spiel ein Reiter.
-        </p>
-        <p class="dim">
-          Bezogen über <a href="https://github.com/hckr/endless-horse-run" target="_blank" rel="noopener">hckr/endless-horse-run</a> (LPC Horses)
-          und die Sammlung von AntumDeluge. Die Pferde gehören zur Liberated Pixel Cup (LPC) Community von
-          <a href="https://opengameart.org" target="_blank" rel="noopener">OpenGameArt.org</a>. Danke an alle, die dort ihre Werke teilen!
-        </p>
-        <p class="dim">Vollständige Tabelle mit Ordnern: <code>public/sprites/CREDITS.md</code>.</p>
+        <h3 data-t="lic.h.mounts">Hinweise zu Reittieren (CC BY 3.0, Namensnennung Pflicht)</h3>
+        <p data-t-html="lic.mounts"></p>
+        <p class="dim" data-t-html="lic.mountsSource"></p>
+        <p class="dim" data-t-html="lic.mountsTable"></p>
       </section>
 
       <section>
-        <h2>Sound &amp; Musik</h2>
-        <p>
-          Das Spiel hat derzeit <strong>keinen Ton</strong>, daher gibt es hier noch nichts zu danken.
-          Sobald Soundeffekte oder Musik einziehen, stehen Urheber:innen, Lizenz und Quelle an dieser Stelle,
-          eigene Aufnahmen unter CC BY-NC 4.0.
-        </p>
+        <h2 data-t="lic.h.sound">Sound &amp; Musik</h2>
+        <p data-t-html="lic.sound"></p>
       </section>
 
       <section>
-        <h2>Software</h2>
-        <p>Diese Bausteine laufen im Spiel oder bauen es. Danke an alle, die sie pflegen.</p>
+        <h2 data-t="lic.h.software">Software</h2>
+        <p data-t="lic.softwareIntro"></p>
         <table>
-          <thead><tr><th>Baustein</th><th>Wofür</th><th>Lizenz</th></tr></thead>
+          <thead><tr><th data-t="lic.th.part">Baustein</th><th data-t="lic.th.purpose">Wofür</th><th data-t="lic.th.license">Lizenz</th></tr></thead>
           <tbody>
-            <tr><td><a href="https://phaser.io" target="_blank" rel="noopener">Phaser</a> (Phaser Studio Inc.)</td><td>Spiel-Engine im Browser</td><td>MIT</td></tr>
-            <tr><td><a href="https://github.com/websockets/ws" target="_blank" rel="noopener">ws</a></td><td>WebSocket für den Online-Modus (Node-Server)</td><td>MIT</td></tr>
-            <tr><td><a href="https://github.com/coder/websocket" target="_blank" rel="noopener">coder/websocket</a> (Coder)</td><td>WebSocket im Go-Server</td><td>ISC</td></tr>
-            <tr><td><a href="https://vite.dev" target="_blank" rel="noopener">Vite</a></td><td>Dev-Server und Build</td><td>MIT</td></tr>
-            <tr><td><a href="https://www.typescriptlang.org" target="_blank" rel="noopener">TypeScript</a> (Microsoft)</td><td>Programmiersprache</td><td>Apache-2.0</td></tr>
-            <tr><td><a href="https://vitest.dev" target="_blank" rel="noopener">Vitest</a> · <a href="https://oxc.rs" target="_blank" rel="noopener">Oxlint</a></td><td>Tests und Lint</td><td>MIT</td></tr>
-            <tr><td><a href="https://go.dev" target="_blank" rel="noopener">Go</a></td><td>Server und Spiel-Engine der Zukunft</td><td>BSD-3-Clause</td></tr>
+            <tr><td><a href="https://phaser.io" target="_blank" rel="noopener">Phaser</a> (Phaser Studio Inc.)</td><td data-t="lic.sw.phaser"></td><td>MIT</td></tr>
+            <tr><td><a href="https://github.com/websockets/ws" target="_blank" rel="noopener">ws</a></td><td data-t="lic.sw.ws"></td><td>MIT</td></tr>
+            <tr><td><a href="https://github.com/coder/websocket" target="_blank" rel="noopener">coder/websocket</a> (Coder)</td><td data-t="lic.sw.coder"></td><td>ISC</td></tr>
+            <tr><td><a href="https://vite.dev" target="_blank" rel="noopener">Vite</a></td><td data-t="lic.sw.vite"></td><td>MIT</td></tr>
+            <tr><td><a href="https://www.typescriptlang.org" target="_blank" rel="noopener">TypeScript</a> (Microsoft)</td><td data-t="lic.sw.ts"></td><td>Apache-2.0</td></tr>
+            <tr><td><a href="https://vitest.dev" target="_blank" rel="noopener">Vitest</a> · <a href="https://oxc.rs" target="_blank" rel="noopener">Oxlint</a></td><td data-t="lic.sw.tests"></td><td>MIT</td></tr>
+            <tr><td><a href="https://go.dev" target="_blank" rel="noopener">Go</a></td><td data-t="lic.sw.go"></td><td>BSD-3-Clause</td></tr>
           </tbody>
         </table>
-        <p class="dim">Weitere Werkzeuge nur für die Entwicklung (z. B. in <code>tools/k3c-dev</code>) liefern wir nicht mit dem Spiel aus; ihre Lizenzen liegen in den jeweiligen Paketen.</p>
+        <p class="dim" data-t-html="lic.softwareNote"></p>
       </section>
 
       <section>
-        <h2>Danke</h2>
-        <p>
-          Von Herzen an <strong>LuizMelo</strong>, <strong>ansimuz</strong>, <strong>bluecarrot16</strong>, <strong>Jordan Irwin (AntumDeluge)</strong>,
-          <strong>lawnjelly</strong>, <strong>Calciumtrice</strong>, <strong>lemmling</strong>, <strong>Bonsaiheldin</strong>, <strong>vico</strong>, <strong>Rusher_go</strong> und <strong>WolfTech</strong>, an die Plattformen
-          <strong>itch.io</strong> und <strong>OpenGameArt.org</strong> und an alle Open-Source-Entwickler:innen oben.
-          Wer Freude an ihren Werken hat: Schaut bei ihnen vorbei und unterstützt sie, wenn ihr könnt.
-        </p>
-        <p class="dim">Fehlt eine Nennung oder ist etwas falsch zugeordnet? Bitte melden, wir korrigieren es umgehend.</p>
+        <h2 data-t="lic.h.thanks">Danke</h2>
+        <p data-t-html="lic.thanks"></p>
+        <p class="dim" data-t="lic.thanksNote"></p>
       </section>
     </main>
     <script type="module" src="/src/tools/lizenzen.ts"></script>

@@ -1,10 +1,9 @@
 # H1 · SIM · Holz-Startvorrat
 
 - **Status:** erledigt
+- **Projekt:** –
 - **Domäne:** SIM
-- **Prio:** hoch
 - **Reife:** bereit
-- **Einschiebbar:** nein
 - **Tickets:** B-177
 - **Start-Commit:** fc8aa19
 - **Spec:** freigegeben

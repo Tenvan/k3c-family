@@ -1,10 +1,9 @@
 # SP07 · SRV · Räume & WebSocket (Protokoll v2) in Go
 
 - **Status:** erledigt
+- **Projekt:** –
 - **Domäne:** SRV
-- **Prio:** hoch
 - **Reife:** bereit
-- **Einschiebbar:** nein
 - **Tickets:** B-030, B-031, B-036, B-038, B-060, B-076
 - **Start-Commit:** 3a3c9d5
 - **Spec:** freigegeben

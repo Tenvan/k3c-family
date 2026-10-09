@@ -1,10 +1,9 @@
 # W6 · CLI · Anzeigen für Bau, Lager, Hub und Bürger
 
 - **Status:** aktiv
+- **Projekt:** WRT
 - **Domäne:** CLI
-- **Prio:** mittel
 - **Reife:** bereit
-- **Einschiebbar:** nein
 - **Tickets:** B-117, B-126
 - **Start-Commit:** 82297cda
 - **Spec:** freigegeben

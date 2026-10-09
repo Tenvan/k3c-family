@@ -1,10 +1,9 @@
 # M5 · SRV · k3c-dev V: MCP-Seite mit Monitoren und Statistik
 
 - **Status:** erledigt
+- **Projekt:** –
 - **Domäne:** SRV
-- **Prio:** mittel
 - **Reife:** bereit
-- **Einschiebbar:** ja
 - **Tickets:** B-065
 - **Start-Commit:** 3b6ef83
 - **Spec:** freigegeben

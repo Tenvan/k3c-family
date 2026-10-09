@@ -1,10 +1,9 @@
 # U2 · SRV · Level-Abfrage per HTTP
 
 - **Status:** erledigt
+- **Projekt:** –
 - **Domäne:** SRV
-- **Prio:** mittel
 - **Reife:** bereit
-- **Einschiebbar:** nein
 - **Tickets:** B-091
 - **Start-Commit:** a0ed852
 - **Spec:** freigegeben
