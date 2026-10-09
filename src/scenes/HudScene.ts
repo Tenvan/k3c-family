@@ -14,6 +14,7 @@ import { RadarLayer, type RadarCell } from './radarView';
 import { SkillMenuLayer } from './skillMenuView';
 import { ActionOverlay } from './actionOverlay';
 import { GuideOverlay } from './guideOverlay';
+import { pauseButton } from './pauseButton';
 import { GamepadInput, type PlayerInput } from '../input/playerInput';
 import { TouchInput } from '../input/touchInput';
 import type { Device } from '../input/slotBindings';
@@ -105,7 +106,11 @@ export class HudScene extends Phaser.Scene {
     this.joinHint.setY(waiting ? GAME_HEIGHT / 2 + 120 : GAME_HEIGHT - 100);
     this.joinHint.setFontSize(waiting ? FONTS.joinCenter.px : FONTS.joinCorner.px);
     const taken = client.monarchs.filter((m) => m !== 'free').length;
-    this.info.setText(client.roomCode ? t('hud.room', { code: client.roomCode, name: client.roomName, n: taken }) : '').setVisible(!!client.roomCode).setY(60);
+    this.info.setText(client.roomCode ? t('hud.room', { code: client.roomCode, name: client.roomName, n: taken }) : '').setVisible(!!client.roomCode);
+    // ☰ bei Touch oben links: die Raum-Zeile steht rechts daneben auf Höhe seiner Oberkante, unter dem Home-Button (B-336)
+    const button = pauseButton().rect();
+    if (button) this.info.setPosition(this.scale.transformX(button.right) + 16, this.scale.transformY(button.top));
+    else this.info.setPosition(20, 60);
   }
 
   /** Gemeinsame Anzeigen stehen je nach Layout oben rechts oder mittig am Kreuzpunkt (B-084). */

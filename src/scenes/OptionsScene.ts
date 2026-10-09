@@ -11,15 +11,31 @@ import {
   applyOption,
   moveOption,
   optionLabel,
-  tapDir,
+  tapOption,
   type OptionDir,
 } from './optionsLogic';
+import { pauseButton } from './pauseButton';
 
 const TOP = 230;
 const ROW_H = 86; // 9 Zeilen über dem Hinweis unten
 const FONT_PX = 40; // ≥ 28 px (Q03)
 const STICK = 0.5;
 const STYLE = { fontFamily: 'sans-serif', fontStyle: 'bold', color: '#ffffff', stroke: '#000000', strokeThickness: 6 };
+
+/**
+ * Touch-Overlay (`.k3c-zone`, `.k3c-touch`) und ☰ verdecken die Zeilen (B-336): solange die Szene offen ist ausblenden.
+ * `src/input/touchInput.ts` (PLAT) bleibt unverändert; die Rückgabe stellt die vorigen Werte wieder her.
+ */
+function hideTouchControls(): () => void {
+  const els = [...document.querySelectorAll<HTMLElement>('.k3c-zone, .k3c-touch')];
+  const before = els.map((el) => el.style.display);
+  els.forEach((el) => (el.style.display = 'none'));
+  const restoreButton = pauseButton().suspend();
+  return () => {
+    els.forEach((el, i) => (el.style.display = before[i] ?? ''));
+    restoreButton();
+  };
+}
 
 function keyAction(k: OptionsScene['keys']): OptionDir | null {
   const down = Phaser.Input.Keyboard.JustDown;
@@ -60,13 +76,18 @@ export class OptionsScene extends Phaser.Scene {
     this.title = this.add.text(GAME_WIDTH / 2, 130, '', { ...STYLE, fontSize: '64px', strokeThickness: 10 }).setOrigin(0.5);
     this.hint = this.add.text(GAME_WIDTH / 2, GAME_HEIGHT - 60, '', { ...STYLE, fontSize: '28px', strokeThickness: 4 }).setOrigin(0.5);
     this.rows = OPTION_IDS.map((_, i) => this.add.text(GAME_WIDTH / 2, TOP + i * ROW_H, '', { ...STYLE, fontSize: `${FONT_PX}px` }).setOrigin(0.5));
-    // Touch über das Fenster, wie in der Lobby: das Touch-Overlay liegt über dem Canvas, die Ereignisse laufen bis hierher.
+    // Touch über das Fenster, wie in der Lobby; das Touch-Overlay ist ausgeblendet, solange die Szene offen ist.
     const onTap = (e: PointerEvent) => {
       const row = Math.round((this.scale.transformY(e.pageY) - TOP) / ROW_H);
-      if (row >= 0 && row < OPTION_IDS.length) this.tapped = { row, dir: tapDir(this.scale.transformX(e.pageX), GAME_WIDTH) };
+      const id = OPTION_IDS[row];
+      if (id) this.tapped = { row, dir: tapOption(id, this.scale.transformX(e.pageX), GAME_WIDTH) };
     };
     window.addEventListener('pointerdown', onTap);
-    this.events.once('shutdown', () => window.removeEventListener('pointerdown', onTap));
+    const restoreTouch = hideTouchControls();
+    this.events.once('shutdown', () => {
+      window.removeEventListener('pointerdown', onTap);
+      restoreTouch();
+    });
   }
 
   update(): void {

@@ -97,6 +97,11 @@ export function tapDir(x: number, width: number): OptionDir {
   return x > (width * 2) / 3 ? 'right' : 'confirm';
 }
 
+/** Tippen auf eine Zeile: „Weiter“ und „Spiel verlassen“ bestätigen in jedem Drittel (B-336), sonst gilt `tapDir`. */
+export function tapOption(id: OptionId, x: number, width: number): OptionDir {
+  return id === 'resume' || id === 'leave' ? 'confirm' : tapDir(x, width);
+}
+
 /**
  * „Menu kurz“: wertet die Taste erst beim Loslassen aus. Öffnet nur, wenn die Haltedauer unter `MENU_SHORT_MS` lag
  * und View in der Zeit nie gehalten wurde (sonst ist es die Kombi „zurück zur Landingpage“).
