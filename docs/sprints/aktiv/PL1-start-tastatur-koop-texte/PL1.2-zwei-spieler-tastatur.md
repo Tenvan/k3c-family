@@ -1,6 +1,6 @@
 # PL1.2 · Zwei Spieler an einer Tastatur
 
-- **Status:** offen
+- **Status:** in Arbeit
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** PLAT
