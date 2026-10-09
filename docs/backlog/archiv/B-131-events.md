@@ -4,7 +4,7 @@
 - **Typ:** Idee
 - **Prio:** niedrig
 - **Umgebung:** offline
-- **Status:** eingeplant
+- **Status:** erledigt
 - **Sprint:** K3
 - **Projekt:** KMP
 - **Erstellt:** 2026-10-02

@@ -34,7 +34,6 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-107](B-107-debug-panel-gradwechsel.md) | CLI | Idee | mittel | eingeplant | K5 | Ein Debug-Panel im Dev-Mode wechselt den Schwierigkeitsgrad und weitere Optionen |
 | [B-117](B-117-anzeige-bau-lager.md) | CLI | Idee | mittel | eingeplant | W6 | Der Client zeigt Wartezeit, Lagerstand, Hub-Stufe, Adern und Plantage |
 | [B-126](B-126-buerger-ui.md) | CLI | Idee | mittel | eingeplant | W6 | Der Client zeigt Berufe, Ausbildung, Händler, Truppen-Limit und Heilung |
-| [B-131](B-131-events.md) | SIM | Idee | niedrig | eingeplant | K3 | Vollmond, Blutmond und Händler-Überfall sind als Events umgesetzt |
 | [B-132](B-132-anzeige-bosse-events.md) | CLI | Idee | mittel | eingeplant | K5 | Der Client zeigt Gegner-Fähigkeiten, Bosse, Phasen und Events |
 | [B-151](B-151-spieleabend-fragebogen.md) | REG | Idee | niedrig | eingeplant | P1 | Der Spieleabend hat einen kindgerechten Fragebogen und eine Playtest-Vorlage |
 | [B-154](B-154-protokoll-bosse-events-inselwechsel.md) | SRV | Idee | hoch | eingeplant | K4 | Das Protokoll kennt Bosse, Phasen, Events und den Inselwechsel |
@@ -138,10 +137,12 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-370](B-370-mond-bild-nacht-hinweis.md) | CLI | Frage | niedrig | offen | – | Der Hinweis „Die Nacht naht“ zeigt ein Mond-Bild vor dem Text |
 | [B-371](B-371-glyphen-tastatur-2.md) | CLI | Problem | mittel | eingeplant | AZ1 | Hinweise und Glyphen zeigen für Spieler 2 an der Tastatur dessen Tasten |
 | [B-372](B-372-check-run-timeout-go.md) | SRV | Problem | mittel | offen | – | check_run go:test und task:check:go brechen im MCP-Aufruf mit Timeout ab |
-| [B-373](B-373-haendler-angreifbar-besuchszaehler.md) | SIM | Idee | mittel | eingeplant | K3 | Der Händler ist eine angreifbare Figur mit Besuchszähler im Spielstand |
 | [B-374](B-374-preisschild-taste.md) | CLI | Frage | mittel | offen | – | Das Preisschild nennt die Taste zum Bezahlen |
 | [B-377](B-377-beispiel-rueckmeldung-servertest.md) | SRV | Schuld | niedrig | offen | – | Ein Server-Test prüft das Beispiel der Rückmeldungs-Ereignisse gegen die Simulation |
 | [B-378](B-378-castfailed-einmal-je-druck.md) | SIM | Problem | mittel | offen | – | Eine gehaltene Skill-Taste ohne Ziel meldet castFailed einmal je Tastendruck |
+| [B-379](B-379-vollmond-belohnung-nur-stufe-0.md) | SIM | Problem | mittel | offen | – | Die Vollmond-Belohnung gilt für die Stufen, in denen gespielt wird |
+| [B-380](B-380-blutmond-boss-faehigkeiten.md) | SIM | Problem | niedrig | offen | – | Der Blutmond verstärkt auch die Flächenangriffe der Bosse |
+| [B-381](B-381-protokoll-haendler-raid-hp.md) | SRV | Problem | niedrig | offen | – | Das Protokoll beschreibt Überfall und HP des Händlers |
 
 ## Archiv
 
@@ -350,3 +351,5 @@ Zeile in diesen Abschnitt.
 | [B-102](archiv/B-102-siegvarianten-niederlage.md) | SIM | Idee | mittel | erledigt | K2 | Siegvarianten und Niederlage-Modi der Raum-Optionen sind umgesetzt |
 | [B-103](archiv/B-103-inseln-bosse.md) | SIM | Idee | mittel | erledigt | K2 | Inseln mit Endboss und gemeinsamem Inselwechsel sind spielbar |
 | [B-321](archiv/B-321-schlag-skill-ohne-ziel-ereignis.md) | SIM | Problem | mittel | erledigt | S9 | Schlag ohne Treffer und Skill ohne Ziel erzeugen ein Ereignis |
+| [B-131](archiv/B-131-events.md) | SIM | Idee | niedrig | erledigt | K3 | Vollmond, Blutmond und Händler-Überfall sind als Events umgesetzt |
+| [B-373](archiv/B-373-haendler-angreifbar-besuchszaehler.md) | SIM | Idee | mittel | erledigt | K3 | Der Händler ist eine angreifbare Figur mit Besuchszähler im Spielstand |

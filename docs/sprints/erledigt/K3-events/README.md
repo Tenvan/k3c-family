@@ -1,6 +1,6 @@
 # K3 · SIM · Events Vollmond, Blutmond und Händler-Überfall
 
-- **Status:** aktiv
+- **Status:** erledigt
 - **Projekt:** KMP
 - **Domäne:** SIM
 - **Reife:** bereit
@@ -63,11 +63,14 @@ Revision 2 (2026-10-09): K3.2 war blockiert, weil der Händler aus W4.2 weder an
 | K3.1 | `K3.1-vollmond-blutmond.md` | Umsetzung | autonom | fertig |
 | K3.2a | `K3.2a-haendler-figur-besuche.md` | Umsetzung | autonom | fertig |
 | K3.2 | `K3.2-haendler-ueberfall-golden.md` | Umsetzung | autonom | fertig |
-| K3.3 | `K3.3-review.md` | Review | autonom | offen |
+| K3.3 | `K3.3-review.md` | Review | autonom | fertig |
 
 Bei `Reife: Entwurf` genügen Stichpunkte mit den Kriterien in Klammern statt Session-Dateien. Vor dem Aktivieren
 wird jede Session als eigene Datei nach `docs/vorlagen/session.md` geschrieben.
 
 ## Abnahme
 
-–
+2026-10-09, Review K3.3: AC-01 K3.1 (a–g) und K3.2 (`JederVierteBesuch`), AC-02 K3.2 (b–f), AC-03 Golden geprüft ohne Diff (Events nur auf Inseln, kein rng-Aufruf ohne Insel, `rng.json` unverändert), AC-04 und AC-05 K3.2a › Ergebnis.
+`task check` (MCP) und `task check:go` (Shell, B-372) grün. Keine schweren Befunde; Spielstand v6 mit Fixture und Ladetest, alte Stände laden mit Zähler 0.
+Leicht, als Ticket: B-379 (Vollmond-Belohnung nur in Stufe 0), B-380 (Blutmond ohne Boss-Flächenangriffe), B-381 (`merchant.raid`/HP im Protokoll, zu K4).
+Version: v0.15.0 vorgeschlagen (Minor: Vollmond, Blutmond und Händler-Überfall wirken im Spiel; v0.16.0, falls K2 vorher getaggt wird); gesetzt erst nach Bestätigung durch 🧑.
