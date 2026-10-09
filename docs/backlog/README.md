@@ -122,7 +122,7 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-342](B-342-w6-2-siteview-erlaubt.md) | CLI | Frage | mittel | offen | – | W6.2 darf den Bauplatz-Wartegrund in `siteView.ts` anbinden |
 | [B-343](B-343-bau-vor-dem-ausgang.md) | SIM | Frage | mittel | offen | – | Der Bau des Endbosses liegt an der inneren Kante des Ausgangs-Chunks |
 | [B-344](B-344-raum-speichert-nicht-nach-game-over.md) | SRV | Idee | hoch | offen | – | Der Raum speichert nach „Komplett verloren“ nicht mehr |
-| [B-345](B-345-raum-tauscht-insel.md) | SRV | Idee | hoch | offen | – | Der Raum tauscht die Insel bei `SwitchReady` |
+| [B-345](B-345-raum-tauscht-insel.md) | SRV | Idee | hoch | eingeplant | K4 | Der Raum tauscht die Insel bei `SwitchReady` |
 | [B-346](B-346-miniboss-wald-kippt-nacht-5.md) | REG | Problem | hoch | eingeplant | RG1 | Der Miniboss Wald kippt Nacht 5 in fast jedem Seed |
 | [B-347](B-347-tester-misst-wirtschaft.md) | SIM | Schuld | hoch | eingeplant | BAL6 | Der Balancing-Tester misst die Wirtschafts-Kennzahlen |
 | [B-351](B-351-client-diagnose-zeile.md) | CLI | Idee | hoch | eingeplant | PM1 | Der Client schreibt FPS, Latenz und Puffer regelmäßig als Diagnose-Zeile ins Client-Log |
@@ -144,7 +144,6 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-380](B-380-blutmond-boss-faehigkeiten.md) | SIM | Problem | niedrig | offen | – | Der Blutmond verstärkt auch die Flächenangriffe der Bosse |
 | [B-381](B-381-protokoll-haendler-raid-hp.md) | SRV | Problem | niedrig | offen | – | Das Protokoll beschreibt Überfall und HP des Händlers |
 | [B-383](B-383-sim-zustand-boss-event-wechsel.md) | SIM | Problem | mittel | eingeplant | K4 | Die Welt stellt Boss-Phase, Warnkreis, Event-Restzeit und Inselwechsel für das Protokoll bereit |
-| [B-384](B-384-inselwechsel-bestaetigung-sim.md) | SIM | Frage | mittel | offen | – | Inselwechsel: Wechsel-Bestätigung (confirmIsland) passt nicht zum Presence-Wechsel der Sim |
 
 ## Archiv
 
@@ -154,6 +153,7 @@ Zeile in diesen Abschnitt.
 
 | Nr. | Domäne | Typ | Prio | Status | Sprint | Titel |
 |---|---|---|---|---|---|---|
+| [B-384](archiv/B-384-inselwechsel-bestaetigung-sim.md) | SIM | Frage | mittel | erledigt | – | Inselwechsel: Wechsel-Bestätigung (confirmIsland) passt nicht zum Presence-Wechsel der Sim |
 | [B-153](archiv/B-153-protokoll-berufe-haendler-lager-hub.md) | SRV | Idee | hoch | erledigt | W5 | Das Protokoll kennt Berufe, Händler, Lagerstand, Hub-Stufe und Wartegrund |
 | [B-283](archiv/B-283-protokoll-berufe-tausch-grabstein.md) | SRV | Idee | mittel | erledigt | W5 | Das Protokoll kennt Beruf ausbilden, Tauschen, Berufe der Bürger und Grabstein/Wiederbeleben |
 | [B-332](archiv/B-332-truppen-limit-im-zustand.md) | SRV | Frage | hoch | erledigt | W10 | Kämpfer-Zahl und Truppen-Limit stehen im Zustand |

@@ -4,7 +4,7 @@
 - **Typ:** Frage
 - **Prio:** mittel
 - **Umgebung:** offline
-- **Status:** offen
+- **Status:** erledigt
 - **Sprint:** –
 - **Projekt:** KMP
 - **Erstellt:** 2026-10-09
@@ -49,6 +49,8 @@ Bestätigung vor dem Sieg über den Endboss → `bad_request`.
 - **AC-01** Entscheidung 🧑 A oder B steht im Sprint K4 (Spec-Änderung) bzw. als SIM-Session.
 
 ## Offene Fragen
+
+Entschieden 2026-10-09 (🧑): Variante A – Anwesenheit am Wechselpunkt reicht, keine Wechsel-Bestätigung; umgesetzt über K4 Revision 3 (K4.2, B-345).
 
 A oder B? 🧑. Ebenso: AC-06 (Dev-Aktion Schwierigkeitsgrad, B-080/AC-02) steht in der README, aber in keinem Schritt und keiner erlaubten Datei von K4.2.
 

@@ -4,13 +4,13 @@
 - **Typ:** Idee
 - **Prio:** hoch
 - **Umgebung:** offline
-- **Status:** offen
-- **Sprint:** –
+- **Status:** eingeplant
+- **Sprint:** K4
 - **Projekt:** KMP
 - **Erstellt:** 2026-10-07
-- **Spec:** Entwurf
+- **Spec:** freigegeben
 - **Revision:** 1
-- **Freigabe:** –
+- **Freigabe:** 2026-10-09, 🧑 im Chat, mit Sprint K4 Revision 3
 
 ## Ausgangslage
 
