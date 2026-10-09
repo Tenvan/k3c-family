@@ -5,12 +5,12 @@
 - **Prio:** mittel
 - **Umgebung:** offline
 - **Status:** eingeplant
-- **Sprint:** SK1
-- **Projekt:** SKL
+- **Sprint:** S9
+- **Projekt:** BED
 - **Erstellt:** 2026-10-06
-- **Spec:** Entwurf
+- **Spec:** freigegeben
 - **Revision:** 1
-- **Freigabe:** –
+- **Freigabe:** 2026-10-09, 🧑 im Chat, mit Sprint S9 Revision 2
 
 ## Ausgangslage
 

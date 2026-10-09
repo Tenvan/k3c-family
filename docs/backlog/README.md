@@ -108,7 +108,7 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-318](B-318-schlag-skill-feedback.md) | CLI | Problem | mittel | eingeplant | S9 | Schlag und Skills zeigen auch ohne Ziel sichtbar, dass die Taste ankam |
 | [B-319](B-319-ein-hinweis-je-weltposition.md) | CLI | Problem | hoch | eingeplant | S9 | Das Aktionen-Overlay zeigt je Spieler nur einen Hinweis, 24 px, nie über einem Preisschild |
 | [B-320](B-320-reiter-sattel-beim-laufen.md) | CLI | Problem | hoch | eingeplant | GR7 | Der Reiter sitzt beim Laufen und Sprinten auf dem Sattel, nicht auf der Kruppe |
-| [B-321](B-321-schlag-skill-ohne-ziel-ereignis.md) | SIM | Problem | mittel | eingeplant | SK1 | Schlag ohne Treffer und Skill ohne Ziel erzeugen ein Ereignis |
+| [B-321](B-321-schlag-skill-ohne-ziel-ereignis.md) | SIM | Problem | mittel | eingeplant | S9 | Schlag ohne Treffer und Skill ohne Ziel erzeugen ein Ereignis |
 | [B-324](B-324-client-typen-gegnerdaten.md) | CLI | Schuld | niedrig | offen | – | Die Client-Typen der Gegner- und Wellendaten passen zu den JSON-Dateien |
 | [B-327](B-327-golden-tiefe-stufen.md) | SIM | Frage | niedrig | offen | – | Golden-Läufe decken Eisenstollen und Kristallhöhle ab |
 | [B-328](B-328-feuergeist-flammen-flaeche.md) | SIM | Frage | niedrig | offen | – | Der Feuergeist hinterlässt eine Flammen-Fläche |
