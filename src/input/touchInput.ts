@@ -1,4 +1,5 @@
 import { toggleFullscreen } from '../core/fullscreen';
+import { t } from '../core/texts';
 import type { Action, PlayerInput } from './playerInput';
 import { SLOT_ACTIONS, slotBindings, type SlotAction } from './slotBindings';
 
@@ -32,13 +33,11 @@ const CSS = `
   .k3c-touch .skills { display: grid; grid-template-columns: repeat(3, auto); gap: 1.5vmin; }
 `;
 
-const SKILL_ARIA: Record<string, string> = { skill1: 'Skill 1', skill2: 'Skill 2', skill3: 'Skill 3', skill4: 'Skill 4', skillMenu: 'Skill-Menü' };
-
 /** Kleine Tasten für Skill-Slot 1–4 und das Skill-Menü (Belegung aus `slotBindings`) */
 function skillButtons(): string {
   return slotBindings('touch')
     .filter((b) => b.action !== 'attack')
-    .map((b) => `<button class="small" data-k="${b.key}" aria-label="${SKILL_ARIA[b.action]}">${b.label}</button>`)
+    .map((b) => `<button class="small" data-k="${b.key}" aria-label="${t(`touch.${b.action}`)}">${b.label}</button>`)
     .join('');
 }
 
@@ -60,10 +59,10 @@ export class TouchInput implements PlayerInput {
     root.className = 'k3c-touch';
     root.innerHTML = `
       <div class="grp">
-        <div class="col"><button class="small" data-k="fullscreen" aria-label="Vollbild">⛶</button><button class="small" data-k="sprint" aria-label="Sprinten">»</button></div>
+        <div class="col"><button class="small" data-k="fullscreen" aria-label="${t('touch.fullscreen')}">⛶</button><button class="small" data-k="sprint" aria-label="${t('touch.sprint')}">»</button></div>
         <div class="skills">${skillButtons()}</div>
-        <button data-k="attack" aria-label="Schlag">${slotBindings('touch')[0]?.label ?? ''}</button>
-        <button class="a" data-k="confirm" aria-label="Münzen geben / beitreten">🪙</button>
+        <button data-k="attack" aria-label="${t('touch.attack')}">${slotBindings('touch')[0]?.label ?? ''}</button>
+        <button class="a" data-k="confirm" aria-label="${t('touch.confirm')}">🪙</button>
       </div>`;
     const zone = document.createElement('div');
     zone.className = 'k3c-zone';

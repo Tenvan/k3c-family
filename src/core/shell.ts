@@ -9,6 +9,8 @@
  * Läuft die Seite ausnahmsweise ohne Shell (direkt aufgerufen), führt Home per Link zur Landingpage.
  */
 
+import { t } from './texts';
+
 export const SHELL_MESSAGE = {
   home: 'k3c:home',
   fullscreen: 'k3c:fullscreen',
@@ -129,9 +131,9 @@ function addHomeButton(): void {
   const button = document.createElement('a');
   button.className = 'k3c-home';
   button.href = './';
-  button.title = 'Zurück zur Startseite (View + Menu, Pos1)';
+  button.title = t('shell.homeTitle');
   button.innerHTML = `<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 11 12 3l9 8M5 9.5V21h5v-6h4v6h5V9.5"/></svg>
-    <span>Start</span><small>View+Menu</small>`;
+    <span>${t('shell.home')}</span><small>View+Menu</small>`;
   button.addEventListener('click', (e) => {
     e.preventDefault();
     goHome();
