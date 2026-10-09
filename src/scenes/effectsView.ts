@@ -1,4 +1,5 @@
 import Phaser from 'phaser';
+import { UNIT_PX } from '../core/constants';
 import { fontStyle } from './fontRules';
 import { EFFECT_CONFIG, MAX_LIVE_EFFECTS, type Effect } from './effects';
 
@@ -26,9 +27,14 @@ export class StageEffects {
     }
   }
 
-  /** Kurzer Text am Monarchen, steigt auf und blendet aus; zählt wie eine Form gegen die Höchstzahl. */
+  /**
+   * Kurzer Text am Monarchen, steigt auf und blendet aus; zählt wie eine Form gegen die Höchstzahl. Ein gehaltener Skill
+   * meldet `castFailed` je Tick (B-321, keine Abklingzeit): Steht derselbe Text schon an dieser Stelle, kein zweiter (ein
+   * Element je Weltposition, B-319).
+   */
   private label(effect: Effect): void {
     if (this.live + 1 > MAX_LIVE_EFFECTS) return;
+    for (const t of this.texts) if (t.text === effect.text && Math.abs(t.x - effect.x) < UNIT_PX) return;
     const text = this.scene.add.text(effect.x, effect.y, effect.text ?? '', { ...fontStyle('controlsHint'), fontStyle: 'bold', stroke: '#000000', strokeThickness: 4 }).setOrigin(0.5).setDepth(1000);
     this.layer.add(text);
     this.live++;

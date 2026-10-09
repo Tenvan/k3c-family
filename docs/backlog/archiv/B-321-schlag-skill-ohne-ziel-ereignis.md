@@ -4,7 +4,7 @@
 - **Typ:** Problem
 - **Prio:** mittel
 - **Umgebung:** offline
-- **Status:** eingeplant
+- **Status:** erledigt
 - **Sprint:** S9
 - **Projekt:** BED
 - **Erstellt:** 2026-10-06
@@ -65,3 +65,5 @@ keine
 ## Notizen
 
 Vorgeschlagen bei der Planung von S9 (2026-10-06), Voraussetzung für B-318.
+
+Erledigt in S9.1a (Nachweis dort), abgenommen im Review S9.4 (2026-10-09).

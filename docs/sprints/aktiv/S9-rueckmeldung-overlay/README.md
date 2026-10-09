@@ -65,9 +65,13 @@ Hinweis und Preisschild an derselben Position → Preisschild gewinnt, Hinweis e
 | S9.1a | `S9.1a-ereignis-ohne-ziel.md` | Umsetzung | autonom | fertig |
 | S9.2 | `S9.2-protokoll-rueckmeldung.md` | Umsetzung | autonom | fertig |
 | S9.3 | `S9.3-rueckmeldung-zeichnen.md` | Umsetzung | autonom | fertig |
-| S9.4 | `S9.4-review.md` | Review | autonom | offen |
+| S9.4 | `S9.4-review.md` | Review | autonom | fertig |
 | S9.5 | `S9.5-pc-abnahme.md` | Workshop | Mensch | offen |
 
 ## Abnahme
 
-–
+- 2026-10-09 (S9.4, Review): AC-01 geprüft (S9.1), AC-02 geprüft (S9.2, S9.3), AC-03 geprüft (S9.1–S9.4, `task check`, `task check:go`), AC-04 geprüft (S9.1a; Golden nur `attackCooldown`).
+- Angenommen, Validierung offen (S9.5): B-319/AC-04 und B-318/AC-03 (Beobachtung am PC); der Sprint bleibt aktiv, bis S9.5 fertig ist.
+- Behoben: gehaltener Skill ohne Ziel stapelte „kein Ziel“ je Tick übereinander (`effectsView.ts`, Test). B-321 archiviert.
+- Neue Tickets: B-377 (Server-Test für das Beispiel der Rückmeldungs-Ereignisse).
+- Version: v0.17.0 vorgeschlagen (Minor: neue Rückmeldung im Spiel; nach den offenen Vorschlägen v0.15.0 U5 und v0.16.0 PL1); nicht gesetzt (wartet auf Bestätigung 🧑).
