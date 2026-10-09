@@ -53,7 +53,11 @@ func castSkill(w *World, p *Player, slot int) {
 	e, cd := s.Effect, s.Cooldown
 	mult := damageMultOf(w, p, true) // Passive (passives.go): Zauberschaden, Abklingzeit, Spell Echo
 	e.Damage, e.PerSecond = float64(e.Damage*mult), float64(e.PerSecond*mult)
-	if !ok || cast == nil || !cast(w, p, e) {
+	if !ok || cast == nil {
+		return
+	}
+	if !cast(w, p, e) {
+		emit(w, "castFailed", Event{"from": p.ID, "slot": slot, "x": unitX(p.X)}) // kein Ziel: keine Abklingzeit (B-321)
 		return
 	}
 	if s.Line == "mage" {

@@ -2,7 +2,9 @@ import { beforeEach, describe, expect, it } from 'vitest';
 import { setLanguage } from '../core/texts';
 import type { Player, Site, World } from '../model/types';
 import type { Device } from '../input/slotBindings';
-import { hintView, playerHints, type Hint } from './actionHints';
+import { GAME_WIDTH } from '../core/constants';
+import { HINT_FONT, hintView, playerHint, type Hint } from './actionHints';
+import { FONTS, minFontPx } from './fontRules';
 
 const player = (over: Partial<Player> = {}): Player =>
   ({ id: 0, index: 0, x: 10, vx: 0, facing: 1, gold: 0, hp: 100, maxHp: 100, respawnIn: 0, payCooldown: 0, paying: false, payKey: null, payAmount: 0, points: 0, actions: [], ...over }) as Player;
@@ -53,19 +55,31 @@ describe('hintView: Aktion → Taste und Text je Gerät (B-125/AC-01)', () => {
   });
 });
 
-describe('playerHints', () => {
-  it('unbezahlter Bauplatz in Reichweite: Bauen zuerst, dann Schlag aus actions', () => {
-    const hints = playerHints(world([site({})]), player({ actions: [{ action: 'skill', slot: 1, skill: 'taunt' }, { action: 'attack' }] }), 'pad');
-    expect(hints.map((h) => h.text)).toEqual(['A halten: Mauer bauen', 'X: Schlag', 'LB: Taunt']);
+describe('playerHint: ein Hinweis je Spieler (B-319)', () => {
+  const skill = { action: 'skill', slot: 1, skill: 'taunt' } as const;
+
+  it('höchstens ein Hinweis; die Server-Aktionen stehen am Spieler, bei Gleichstand gewinnt das Gewicht (AC-01)', () => {
+    expect(playerHint(world([]), player({ actions: [skill, { action: 'attack' }] }), 'pad')?.text).toBe('X: Schlag');
+    expect(playerHint(world([]), player({ actions: [{ action: 'learn' }] }), 'keyboard')?.text).toBe('K: Skill lernen');
+    expect(playerHint(world([]), player(), 'pad')).toBeNull();
   });
 
-  it('Werkstatt mit freiem Regal: Bogen kaufen; außer Reichweite: nichts', () => {
+  it('im Bereich eines Preisschilds kein Hinweis, das Preisschild trägt die Aktion (AC-02)', () => {
+    expect(playerHint(world([site({})]), player({ actions: [{ action: 'attack' }] }), 'pad')).toBeNull();
     const shop = site({ kind: 'workshop', state: 'built', bows: 0 });
-    expect(playerHints(world([shop]), player(), 'keyboard').map((h) => h.text)).toEqual(['Leertaste halten: Bogen kaufen']);
-    expect(playerHints(world([site({ x: 40 })]), player(), 'pad')).toEqual([]);
+    expect(playerHint(world([shop]), player({ actions: [{ action: 'attack' }] }), 'pad')).toBeNull();
+    expect(playerHint(world([site({ x: 40 })]), player({ actions: [{ action: 'attack' }] }), 'pad')?.text).toBe('X: Schlag');
+    const full = site({ kind: 'workshop', state: 'built', bows: 99 });
+    expect(playerHint(world([full]), player({ actions: [{ action: 'attack' }] }), 'pad')?.text).toBe('X: Schlag');
   });
 
-  it('gefallener Monarch hat keine Aktionen', () => {
-    expect(playerHints(world([site({})]), player({ respawnIn: 3, actions: [{ action: 'attack' }] }), 'pad')).toEqual([]);
+  it('gefallener Monarch hat keinen Hinweis', () => {
+    expect(playerHint(world([]), player({ respawnIn: 3, actions: [{ action: 'attack' }] }), 'pad')).toBeNull();
+  });
+
+  it('Schrift ist Nebeninfo nach bedienung.md § 2: 24 px bei 1–2 Spielern, mindestens 20 px im Viertel (AC-03)', () => {
+    expect(FONTS[HINT_FONT].art).toBe('side');
+    expect(FONTS[HINT_FONT].px).toBe(minFontPx(2, { w: GAME_WIDTH, kind: 'player' }, 'side'));
+    expect(FONTS[HINT_FONT].px).toBeGreaterThanOrEqual(minFontPx(4, { w: GAME_WIDTH / 2, kind: 'player' }, 'side')!);
   });
 });

@@ -1,14 +1,17 @@
 import { GROUND_Y, UNIT_PX } from '../core/constants';
+import { t } from '../core/texts';
 import type { GameEvent } from '../model/types';
 
 /** Art eines Effekts; je Feedback-Event genau eine (B-164, GR5.1). */
-export type EffectKind = 'hit' | 'kill' | 'coin' | 'coinGive' | 'build' | 'built' | 'down';
+export type EffectKind = 'hit' | 'kill' | 'coin' | 'coinGive' | 'build' | 'built' | 'down' | 'swing' | 'noTarget';
 
 export interface Effect {
   kind: EffectKind;
   /** Ort in Pixeln der Stufen-Ebene */
   x: number;
   y: number;
+  /** Nur `noTarget`: Text, der statt der Ringe am Monarchen erscheint */
+  text?: string;
 }
 
 /** Aussehen und Grenzen aller Effekte an einer Stelle (GR5.2 hängt hier Blitzgrenze und Schalter ein). */
@@ -20,6 +23,8 @@ export const EFFECT_CONFIG: Record<EffectKind, { color: number; radius: number; 
   build: { color: 0xc8b078, radius: 26, durationMs: 300, particles: 4, flash: false },
   built: { color: 0x7be07b, radius: 44, durationMs: 500, particles: 8, flash: false },
   down: { color: 0xb02030, radius: 40, durationMs: 600, particles: 8, flash: false },
+  swing: { color: 0xdddddd, radius: 18, durationMs: 140, particles: 0, flash: false },
+  noTarget: { color: 0xffffff, radius: 0, durationMs: 700, particles: 0, flash: false },
 };
 
 /** Barrierefreiheit (B-164): höchstens 3 Blitze pro Sekunde; ein Blitz im Sperrfenster wird verworfen, nicht aufgeschoben. */
@@ -55,6 +60,9 @@ export function effectFor(e: GameEvent, playerX: (player: number) => number | un
     case 'buildProgress': spots.set(e.kind, e.x); return at('build', e.x, 60);
     case 'built': return at('built', spots.get(e.kind), 60);
     case 'playerDown': return at('down', playerX(e.player));
+    // `hit` fehlt nur beim Schlag eines Gegners (Protokoll): nur der Monarch holt aus, der Treffer kommt als eigenes `hit`
+    case 'strike': return e.hit === undefined ? null : at('swing', e.x);
+    case 'castFailed': { const fx = at('noTarget', e.x, 90); return fx && { ...fx, text: t('cast.noTarget') }; }
     default: return null;
   }
 }

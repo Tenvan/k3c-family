@@ -23,9 +23,10 @@ func TestMonarchSchlagReichweiteUndAbklingzeit(t *testing.T) {
 	p := AddPlayer(w)
 	far := spawnEnemy(w, "goblin", p.X-2)
 	stepAttack(w, p, strikeCmd, dt)
-	if far.HP != far.MaxHP || p.AttackCooldown != 0 {
-		t.Fatalf("Gegner in 2 Units getroffen oder Abklingzeit ohne Treffer: HP %v, CD %v", far.HP, p.AttackCooldown)
+	if far.HP != far.MaxHP || p.AttackCooldown != 0.7 { // Schlag ins Leere: keine Wirkung, aber Abklingzeit (B-321)
+		t.Fatalf("Gegner in 2 Units getroffen oder keine Abklingzeit beim Schlag ins Leere: HP %v, CD %v", far.HP, p.AttackCooldown)
 	}
+	p.AttackCooldown = 0
 	e := spawnEnemy(w, "goblin", p.X+1.5)
 	stepAttack(w, p, strikeCmd, dt)
 	if e.HP != e.MaxHP-10 || far.HP != far.MaxHP || p.AttackCooldown != 0.7 {
@@ -48,9 +49,10 @@ func TestMonarchSchlagReichweiteUndAbklingzeit(t *testing.T) {
 func TestMonarchSchlagEreignisse(t *testing.T) {
 	w := quietWorld(t)
 	p := AddPlayer(w)
-	if ev := eventsOf(w, "strike", 3, []PlayerCommand{strikeCmd}); len(ev) != 0 || p.AttackCooldown != 0 {
+	if ev := eventsOf(w, "strike", 3, []PlayerCommand{strikeCmd}); len(ev) != 1 || ev[0]["hit"] != false || p.AttackCooldown == 0 {
 		t.Fatalf("ohne Gegner: %v, CD %v", ev, p.AttackCooldown)
 	}
+	p.AttackCooldown = 0
 	e := spawnEnemy(w, "goblin", p.X+1)
 	Step(w, []PlayerCommand{strikeCmd}, dt)
 	var strike, hit Event
