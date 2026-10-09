@@ -1,14 +1,14 @@
 # PL1 · PLAT · Neues Spiel, zwei Spieler an einer Tastatur, Overlay auf der Xbox, zentrale Texte
 
-- **Status:** geplant
+- **Status:** aktiv
 - **Projekt:** BED
 - **Domäne:** PLAT
 - **Reife:** bereit
 - **Tickets:** B-316, B-195, B-215
-- **Start-Commit:** –
-- **Spec:** Entwurf
+- **Start-Commit:** edf3f1b1
+- **Spec:** freigegeben
 - **Revision:** 1
-- **Freigabe:** –
+- **Freigabe:** 2026-10-09, 🧑 im Chat (inkl. Grenzfall Domäne PL1.2 in GameScene)
 
 ## Ausgangslage
 
@@ -63,7 +63,7 @@ Belegung kollidiert mit Dev-Tasten → Dev-Taste weicht, Hinweis in der Doku.
 
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
-| PL1.1 | `PL1.1-neues-spiel-overlay-ursache.md` | Umsetzung | autonom | offen |
+| PL1.1 | `PL1.1-neues-spiel-overlay-ursache.md` | Umsetzung | autonom | in Arbeit |
 | PL1.2 | `PL1.2-zwei-spieler-tastatur.md` | Umsetzung | autonom | offen |
 | PL1.3 | `PL1.3-texte-touch-shell.md` | Umsetzung | autonom | offen |
 | PL1.4 | `PL1.4-review.md` | Review | autonom | offen |

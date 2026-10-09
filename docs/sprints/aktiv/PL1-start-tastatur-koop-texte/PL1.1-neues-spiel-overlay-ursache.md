@@ -1,6 +1,6 @@
 # PL1.1 · „Neues Spiel“ nachweisen, Ursache Overlay auf der Xbox
 
-- **Status:** offen
+- **Status:** in Arbeit
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** PLAT
