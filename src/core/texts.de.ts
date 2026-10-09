@@ -168,6 +168,7 @@ export const de = {
   'hint.pay': '{name} kaufen',
   'hint.revive': 'Wiederbeleben',
   'hint.attack': 'Schlag',
+  'cast.noTarget': 'kein Ziel',
   'hint.learn': 'Skill lernen',
   'hint.respec': 'Skills zurücksetzen',
   // Geführte erste Nacht (S6.3): Hinweise über den Objekten, {key} = Glyph
