@@ -66,9 +66,13 @@ Belegung kollidiert mit Dev-Tasten → Dev-Taste weicht, Hinweis in der Doku.
 | PL1.1 | `PL1.1-neues-spiel-overlay-ursache.md` | Umsetzung | autonom | fertig |
 | PL1.2 | `PL1.2-zwei-spieler-tastatur.md` | Umsetzung | autonom | fertig |
 | PL1.3 | `PL1.3-texte-touch-shell.md` | Umsetzung | autonom | fertig |
-| PL1.4 | `PL1.4-review.md` | Review | autonom | in Arbeit |
+| PL1.4 | `PL1.4-review.md` | Review | autonom | fertig |
 | PL1.5 | `PL1.5-abnahme-pc-xbox.md` | Umsetzung | Mensch | offen |
 
 ## Abnahme
 
-–
+Review 2026-10-09 (PL1.4, eigener Review-Agent): keine schweren Befunde, `task check` grün.
+- AC-01 entfällt (B-292 in LP1); AC-02 geprüft (PL1.2, Test und Browser-Pane), AC-04 geprüft (PL1.3); AC-03 Ursache im Browser nicht nachstellbar (PL1.1, B-195 › Notizen). Offen in PL1.5: B-316/AC-02, B-195/AC-02, B-215/AC-02.
+- Kleinbefund behoben: Spieler 2 läuft mit Pfeilen nach `code`, sonst lief er bei NumLock aus mit Ziffernblock 4 (keyCode 37) nach links.
+- Neue Tickets: B-371 (Glyphen für Spieler 2, CLI).
+- Version: v0.16.0 vorgeschlagen (zwei Spieler an einer Tastatur, englische Shell und Touch-Tasten); nicht gesetzt (wartet auf Bestätigung 🧑).

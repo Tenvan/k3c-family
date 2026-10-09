@@ -11,6 +11,7 @@ describe('Zwei Spieler an einer Tastatur (B-316)', () => {
     for (const id of ids(KEYBOARD_2)) expect(one).not.toContain(id);
     // Strg (17), Enter (13) und Pfeile (37/39) gehören nur Spieler 2, auch über den keyCode
     for (const code of [13, 17, 37, 39]) expect(keyCodes(KEYBOARD_1)).not.toContain(code);
+    expect(ids(KEYBOARD_2)).toEqual(expect.arrayContaining(['code:ArrowLeft', 'code:ArrowRight']));
   });
 
   it('Laufen, Sprint, Beitreten und alle Slot-Aktionen sind in beiden belegt', () => {
@@ -39,5 +40,9 @@ describe('Zwei Spieler an einer Tastatur (B-316)', () => {
     expect(keyMatches({ code: 'Numpad1' }, { keyCode: 35, code: 'Numpad1' })).toBe(true); // NumLock aus
     expect(keyMatches({ keyCode: 13 }, { keyCode: 13, code: 'NumpadEnter' })).toBe(true);
     expect(keyMatches({ keyCode: 90 }, { keyCode: 90, code: 'KeyY' })).toBe(true); // QWERTZ: Z liegt auf KeyY
+    // NumLock aus: Ziffernblock 4 meldet keyCode 37 – Skill 4 von Spieler 2 lässt ihn nicht nach links laufen (Review PL1.4)
+    const numpad4 = { keyCode: 37, code: 'Numpad4' };
+    expect(KEYBOARD_2.left.some((s) => keyMatches(s, numpad4))).toBe(false);
+    expect(KEYBOARD_2.actions.skill4?.some((s) => keyMatches(s, numpad4))).toBe(true);
   });
 });

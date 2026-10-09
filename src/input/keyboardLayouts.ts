@@ -28,10 +28,13 @@ export const KEYBOARD_1: KeyboardLayout = {
   actions: Object.fromEntries(Object.entries(KEY_ACTIONS).map(([a, name]) => [a, [key(keyCodeOf(name))]])),
 };
 
-/** Spieler 2 rechts: Pfeile, Strg rechts, Enter, Ziffernblock 0 = Schlag, 1–4 = Skills, 5 = Skill-Menü */
+/**
+ * Spieler 2 rechts: Pfeile, Strg rechts, Enter, Ziffernblock 0 = Schlag, 1–4 = Skills, 5 = Skill-Menü.
+ * Pfeile nach `code`: ohne NumLock meldet Ziffernblock 4 den keyCode des Pfeils links.
+ */
 export const KEYBOARD_2: KeyboardLayout = {
-  left: [key(37)],
-  right: [key(39)],
+  left: [code('ArrowLeft')],
+  right: [code('ArrowRight')],
   sprint: [code('ControlRight')],
   actions: {
     confirm: [key(13)],
