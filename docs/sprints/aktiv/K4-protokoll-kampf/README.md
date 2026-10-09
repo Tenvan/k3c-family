@@ -1,14 +1,14 @@
-# K4 · SRV · Protokoll für Bosse, Events und Inselwechsel
+# K4 · SIM, SRV · Protokoll für Bosse, Events und Inselwechsel
 
 - **Status:** aktiv
 - **Projekt:** KMP
-- **Domäne:** SRV
+- **Domäne:** SIM, SRV
 - **Reife:** bereit
-- **Tickets:** B-154, B-080
+- **Tickets:** B-154, B-080, B-383
 - **Start-Commit:** 0a5accd6
 - **Spec:** freigegeben
-- **Revision:** 1
-- **Freigabe:** 2026-10-04, Chat, durch 🧑, Revision 1; mit Änderungen aus der Spec-Prüfung
+- **Revision:** 2
+- **Freigabe:** 2026-10-09, 🧑 im Chat, Revision 2 (B-383 als SIM-Session K4.1a vorgezogen)
 
 ## Ausgangslage
 
@@ -52,8 +52,11 @@ Wechsel-Bestätigung vor dem Sieg über den Endboss → `bad_request`.
 - **AC-04** Protokollversion erhöht, ältere Clients erhalten `version` (Test) (B-154/AC-04).
 - **AC-05** Bytes je Tick in einer Bosswelle mit 4 Spielern gemessen und notiert, höchstens 200 Byte je Tick und Client (Q08), `task check:go` grün (B-154/AC-05).
 - **AC-06** Eine Dev-Aktion wechselt den Schwierigkeitsgrad eines laufenden Raums ab der nächsten Welle, ohne Dev-Mode wird sie abgelehnt (Test) (B-080/AC-02).
+- **AC-07** Die Welt stellt Endboss-Phase, Warnkreis, aktives Event mit Restzeit und Inselwechsel als Felder bereit (Test in `engine/sim/`) (B-383/AC-01).
 
 ## Offene Fragen
+
+- Revision 2 (2026-10-09): K4.1 war blockiert, weil die Sim Phase, Warnkreis, Event und Inselwechsel nicht in der Welt bereitstellt (B-383). Beschluss 🧑: neue SIM-Session K4.1a vor K4.1, Feldnamen nach Vorschlag (siehe K4.1a).
 
 - Reihenfolge der Versionssprünge K4 und W5: Beide erhöhen die Protokollversion und ändern dieselben Beispiele; K4.1 setzt W5 voraus (Fahrplan), bestätigt 🧑.
 
@@ -61,7 +64,8 @@ Wechsel-Bestätigung vor dem Sieg über den Endboss → `bad_request`.
 
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
-| K4.1 | `K4.1-felder.md` | Umsetzung | autonom | blockiert |
+| K4.1a | `K4.1a-sim-zustand-spiegeln.md` | Umsetzung | autonom | offen |
+| K4.1 | `K4.1-felder.md` | Umsetzung | autonom | offen |
 | K4.2 | `K4.2-eingabe-version-bytes.md` | Umsetzung | autonom | offen |
 | K4.3 | `K4.3-review.md` | Review | autonom | offen |
 

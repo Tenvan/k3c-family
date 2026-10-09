@@ -4,13 +4,13 @@
 - **Typ:** Problem
 - **Prio:** mittel
 - **Umgebung:** offline
-- **Status:** offen
-- **Sprint:** –
+- **Status:** eingeplant
+- **Sprint:** K4
 - **Projekt:** KMP
 - **Erstellt:** 2026-10-09
-- **Spec:** Entwurf
+- **Spec:** freigegeben
 - **Revision:** 1
-- **Freigabe:** –
+- **Freigabe:** 2026-10-09, 🧑 im Chat, mit Sprint K4 Revision 2
 
 ## Ausgangslage
 
@@ -53,7 +53,7 @@ Kein Boss, kein Event, kein Wechsel → Felder fehlen.
 
 ## Offene Fragen
 
-Namen der Felder und Form des Warnkreises (🧑 oder SIM-Session).
+Entschieden 2026-10-09 (🧑, Vorschlag übernommen): am Boss-Gegner `phase` (Endboss, ab 1) und `warn {x, r, in}` (Units, Sekunden bis zum nächsten Flächenschlag); in der Welt `event {id, secondsLeft}` (Restzeit aus dem Zyklus, in der Sim berechnet) und `islandSwitch {open, progress, ready}`; alles `omitempty`.
 
 ## Notizen
 
