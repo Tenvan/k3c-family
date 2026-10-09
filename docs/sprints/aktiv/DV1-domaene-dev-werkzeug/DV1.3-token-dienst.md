@@ -1,6 +1,6 @@
 # DV1.3 · Server-Tools nehmen das Token des gestarteten Spielservers
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** DEV
@@ -40,9 +40,9 @@ Kein neues Token, keine Änderung am Spielserver, an `services.json` oder an der
 
 ## Fertig, wenn
 
-- [ ] AC-06: Go-Test mit Fake-Server grün: ohne Umgebungs-Token kommt das Dienst-Token an, kein 401 (deckt `server_status` und den Online-Start von `sim_test` über denselben `serverClient`).
-- [ ] AC-07: Go-Test grün: gesetztes `K3C_STATUS_TOKEN` hat Vorrang.
-- [ ] `task check:dev` grün.
+- [x] AC-06: Go-Test mit Fake-Server grün: ohne Umgebungs-Token kommt das Dienst-Token an, kein 401 (deckt `server_status` und den Online-Start von `sim_test` über denselben `serverClient`).
+- [x] AC-07: Go-Test grün: gesetztes `K3C_STATUS_TOKEN` hat Vorrang.
+- [x] `task check:dev` grün.
 
 ## Prüfen
 
@@ -54,5 +54,9 @@ Keine manuellen Prüfungen.
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+- AC-06 geprüft: `TestServerClientNimmtDienstToken` (Go, `httptest`-Fake mit 401 ohne `TEST_TOKEN`): ohne `K3C_STATUS_TOKEN` schickt `server_status` `Bearer TEST_TOKEN` aus der `env` des Dienstes `Spielserver`, das Token steht nicht in der Ausgabe. `serverClient` gilt gleich für Repo-Wurzel und Worktree, deckt damit auch `rooms_list`, `room_snapshot` und `sim_test mode=online`.
+- AC-07 geprüft: `TestServerClientUmgebungHatVorrang`: mit `K3C_STATUS_TOKEN=ABC` kommt `Bearer ABC` an.
+- Umsetzung: `withServiceToken` in `worktree_services.go` ergänzt die Lese-Funktion für `FromEnv` nur bei leerem `EnvToken` um das Dienst-Token (Controller-`Configs()`).
+- Prüfungen: `task check:dev` grün (Frontend, `go test`, `golangci-lint` 0 issues), per Shell, weil k3c-dev die Repo-Wurzel statt des Worktrees bediente (B-275); Status ebenso von Hand.
+- Abweichung: Einmal scheiterte `TestPlanungsToolsRoundtrip` mit `rename … .plan-… : Access is denied.` (Windows), drei Wiederholungen grün; gleiches Muster wie B-187, nicht Teil dieser Session.
+- Neue Tickets: keine.
