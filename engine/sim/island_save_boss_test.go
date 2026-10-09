@@ -84,17 +84,19 @@ func TestSpielstandBossStufenverlust(t *testing.T) {
 	}
 }
 
-// (d) Ältere Versionen laden mit leerer Bossliste, Insel 0 und Zählern 0; das Fixture v5 mit seinem Boss.
+// (d) Versionen vor 5 laden mit leerer Bossliste, Insel 0 und Zählern 0; die Fixtures ab v5 mit ihrem Boss.
 func TestSpielstandBossAlteVersionen(t *testing.T) {
-	for v := 1; v < IslandSaveVersion; v++ {
+	for v := 1; v < 5; v++ {
 		got := loadIsland(t, readFixture(t, v))
 		if got.Number != 0 || len(got.DefeatedBosses) != 0 || got.GoldCollected != 0 || got.EndbossDefeated || got.Won {
 			t.Errorf("v%d: Insel %d, Bosse %v, Münzen %d", v, got.Number, got.DefeatedBosses, got.GoldCollected)
 		}
 	}
-	got := loadIsland(t, readFixture(t, IslandSaveVersion))
-	if !slices.Equal(got.DefeatedBosses, []string{"goblinLeader"}) || got.GoldCollected != 37 || got.EndbossDefeated {
-		t.Errorf("v%d: Bosse %v, Münzen %d, Endboss %v", IslandSaveVersion, got.DefeatedBosses, got.GoldCollected, got.EndbossDefeated)
+	for v := 5; v <= IslandSaveVersion; v++ {
+		got := loadIsland(t, readFixture(t, v))
+		if !slices.Equal(got.DefeatedBosses, []string{"goblinLeader"}) || got.GoldCollected != 37 || got.EndbossDefeated {
+			t.Errorf("v%d: Bosse %v, Münzen %d, Endboss %v", v, got.DefeatedBosses, got.GoldCollected, got.EndbossDefeated)
+		}
 	}
 }
 

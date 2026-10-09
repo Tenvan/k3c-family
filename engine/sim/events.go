@@ -17,6 +17,7 @@ import "math"
 //	revived       – Monarch von einem Mitspieler wiederbelebt (A halten, revive.go; Q62): player, x
 //	trained       – Bauer ausgebildet (professions.go): kind (miner, builder, craftsman), x
 //	merchantArrived – Händler kommt (merchant.go): resource, x (Zahlziel Kaufen); merchantLeft – Händler reist ab
+//	merchantFled  – Händler bei 0 HP geflohen, ein halber Kauf fällt als Münzen (merchant.go, B-373); hit mit target merchant
 //	disarmed      – Bürger verliert seine Ausrüstung (Verlust-Kaskade, warrior.go; Q67, Q69): kind (Figur oder
 //	                Beruf), x, cause (Gegnerart wie playerDown); ohne Priorität, nicht beim Burgfall
 //	equipmentTaken – Gegner trägt Ausrüstung weg (Q68, Q69); nur angelegt, das Aufheben durch Gegner baut K1

@@ -8,12 +8,12 @@ import (
 	"sort"
 )
 
-// Spielstand der Insel (Version 5, B-100, S1.4, S2.2, K2.3b). Die Campaign schreibt weiter Version 1 (save.go); der Raum benutzt bis zur
+// Spielstand der Insel (Version 6, B-100, S1.4, S2.2, K2.3b, K3.2a). Die Campaign schreibt weiter Version 1 (save.go); der Raum benutzt bis zur
 // Umstellung (B-133) nur Version 1. Gespeichert wird wie dort nur, was sich nicht aus dem Seed ergibt: Hubs, Truppen,
 // Vorrat, Gold und Entferntes. Flüchtiges (Gegner, Münzen am Boden, Geschosse, Zufallsstand) geht beim Laden verloren.
 
 // IslandSaveVersion ist die Version des Insel-Spielstands.
-const IslandSaveVersion = 5
+const IslandSaveVersion = 6
 
 // IslandSave ist ein Spielstand einer Insel.
 type IslandSave struct {
@@ -34,6 +34,9 @@ type IslandSave struct {
 	DefeatedBosses []string `json:"defeatedBosses,omitempty"`
 	GoldCollected  int      `json:"goldCollected,omitempty"`
 	Won            bool     `json:"won,omitempty"`
+	// Version 6 (B-373): Besuche des Händlers und der anwesende Händler (Material, Abreisetag, HP).
+	MerchantVisits int           `json:"merchantVisits,omitempty"`
+	Merchant       *MerchantSave `json:"merchant,omitempty"`
 }
 
 // IslandPlayerSave ist ein Spieler der Insel: inselweiter Index, Gold, die Tiefe seiner Stufe und seine Verteilung
@@ -55,6 +58,7 @@ func (isl *Island) ToSave(savedAt string) IslandSave {
 		Day: isl.Stages[0].Cycle.Day, Phase: isl.Stages[0].Cycle.Phase,
 		Stock: *isl.Stock, Options: isl.Options, Stages: []HubSave{}, SkillPool: isl.SkillPool, Players: []IslandPlayerSave{},
 		Island: isl.Number, DefeatedBosses: slices.Clone(isl.DefeatedBosses), GoldCollected: isl.GoldCollected, Won: isl.Won,
+		MerchantVisits: isl.MerchantVisits, Merchant: savedMerchant(isl),
 	}
 	for _, w := range isl.Stages {
 		s.Stages = append(s.Stages, hubSave(w, newWorld(w.Biome.Depth, isl.Seed, Options{})))
@@ -68,7 +72,8 @@ func (isl *Island) ToSave(savedAt string) IslandSave {
 	return s
 }
 
-// ParseIslandSave liest einen Spielstand der Version 5 oder, überführt, der Version 4 (ohne Bosse und Insel), 3 (ohne
+// ParseIslandSave liest einen Spielstand der Version 6 oder, überführt, der Version 5 (ohne Händler), 4 (ohne Bosse und
+// Insel), 3 (ohne
 // Tag und Phase), 2 oder 1 (Campaign). Tag und Phase wirken beim Laden nicht, die Zeit kommt aus `time`.
 func ParseIslandSave(raw []byte) (IslandSave, error) {
 	var head struct {
@@ -86,10 +91,10 @@ func ParseIslandSave(raw []byte) (IslandSave, error) {
 		return islandFromV1(old), nil
 	case 2:
 		return parseIslandV2(raw)
-	case 3, 4, IslandSaveVersion:
+	case 3, 4, 5, IslandSaveVersion:
 		return parseIslandV3(raw)
 	}
-	return IslandSave{}, fmt.Errorf("spielstand: Version %d, erwartet %d, 2, 3, 4 oder %d", head.Version, SaveVersion, IslandSaveVersion)
+	return IslandSave{}, fmt.Errorf("spielstand: Version %d, erwartet %d, 2, 3, 4, 5 oder %d", head.Version, SaveVersion, IslandSaveVersion)
 }
 
 func validateIslandSave(s IslandSave) error {

@@ -75,7 +75,7 @@ func sendEnemiesHome(w *World) {
 type target struct {
 	id     int
 	x      float64
-	kind   string // player, troop, wall (Mauer oder Tor), castle, site (Turm), building (übrige Gebäude)
+	kind   string // player, troop, merchant, wall (Mauer oder Tor), castle, site (Turm), building (übrige Gebäude)
 	player *Player
 }
 
@@ -207,6 +207,9 @@ func candidates(w *World, e *Enemy, dir float64, wall *Site) []target {
 		if t.Kind != "vagrant" && (r.ranged || !isOnTower(w, t)) && r.inRange(t.X) {
 			out = append(out, target{t.ID, t.X, "troop", nil})
 		}
+	}
+	if x := merchantX(w, "buy"); w.Merchant != nil && r.inRange(x) {
+		out = append(out, target{merchantID, x, "merchant", nil})
 	}
 	return append(out, buildingTargets(w, r)...)
 }

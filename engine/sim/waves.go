@@ -102,6 +102,9 @@ func targetX(w *World, id int) (float64, bool) {
 	if s := siteByID(w, id); s != nil {
 		return s.X, true
 	}
+	if id == merchantID && w.Merchant != nil { // Händler (merchant.go)
+		return merchantX(w, "buy"), true
+	}
 	return w.Castle.X, w.Castle.ID == id
 }
 

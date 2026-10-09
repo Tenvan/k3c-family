@@ -61,7 +61,7 @@ Revision 2 (2026-10-09): K3.2 war blockiert, weil der Händler aus W4.2 weder an
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
 | K3.1 | `K3.1-vollmond-blutmond.md` | Umsetzung | autonom | fertig |
-| K3.2a | `K3.2a-haendler-figur-besuche.md` | Umsetzung | autonom | offen |
+| K3.2a | `K3.2a-haendler-figur-besuche.md` | Umsetzung | autonom | fertig |
 | K3.2 | `K3.2-haendler-ueberfall-golden.md` | Umsetzung | autonom | offen |
 | K3.3 | `K3.3-review.md` | Review | autonom | offen |
 

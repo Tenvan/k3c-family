@@ -20,5 +20,5 @@
   },
   "storage": { "basePerHub": 300, "perStorage": 300 },
   "recruitCamp": { "maxVagrants": 2, "respawnSeconds": 25, "wanderUnits": 6 },
-  "merchant": { "everyDays": 3, "everyDaysWithTavern": 2, "stayDays": 1, "material": 10, "gold": 5, "materials": ["wood", "stone", "copper", "iron", "crystal"] }
+  "merchant": { "hp": 100, "everyDays": 3, "everyDaysWithTavern": 2, "stayDays": 1, "material": 10, "gold": 5, "materials": ["wood", "stone", "copper", "iron", "crystal"] }
 }
