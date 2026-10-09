@@ -1,4 +1,4 @@
-# B-372 · Das Preisschild nennt die Taste zum Bezahlen
+# B-374 · Das Preisschild nennt die Taste zum Bezahlen
 
 - **Domäne:** CLI
 - **Typ:** Frage
@@ -55,4 +55,4 @@ Braucht das Preisschild die Taste, oder genügen Preis und Münzkreise (🧑)? B
 
 ## Notizen
 
-Aus S9.1. Nummer von Hand B-372, weil B-370 (`sprint/s8`) und B-371 (`sprint/pl1`) auf offenen Sprint-Branches vergeben sind.
+Aus S9.1. Nummer von Hand B-372 (wegen Doppelvergabe 2026-10-09 umnummeriert auf B-374), weil B-370 (`sprint/s8`) und B-371 (`sprint/pl1`) auf offenen Sprint-Branches vergeben sind.

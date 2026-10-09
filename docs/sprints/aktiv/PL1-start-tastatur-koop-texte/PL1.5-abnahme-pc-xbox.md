@@ -34,9 +34,13 @@ Code ändern; Mängel hier beheben (→ Ticket).
 
 ## Schritte
 
-1. Am PC: „Neues Spiel“ mit vorhandenem Stand `familie` starten (B-292/AC-02).
-2. Am PC: zwei Spieler an einer Tastatur (Leertaste, Enter), beide bewegen und handeln unabhängig (B-316/AC-02).
-3. An der Xbox: Debug-Overlay mit dem Controller öffnen und schließen (B-195/AC-02).
+1. Am PC: „Neues Spiel“ mit vorhandenem Stand `familie` starten (B-292/AC-02; entfällt seit 2026-10-07, liegt in LP1).
+2. Am PC: zwei Spieler an einer Tastatur (Leertaste, Enter), beide bewegen und handeln unabhängig (B-316/AC-02). Dabei Spieler 2 gezielt Strg rechts (Sprint) zusammen mit Ziffernblock 0–5 drücken, mit NumLock an und aus: Zoom, Tab oder andere Browser-Reaktion notieren (Review PL1.4, ungeprüft).
+3. An der Xbox (B-195/AC-02), Seite über die Landingpage öffnen, Adresse ohne `?dev=0`:
+   a. `gamepad-test.html`: RB und LB je 3 s halten, Bericht senden (zeigt, ob Edge die Schultertasten als Tasten 199/200 meldet oder selbst nutzt).
+   b. `game.html`, beitreten, RB 3 s halten → Info-Zeilen links unten; noch einmal → aus.
+   c. LB + RB 3 s halten → Cheat-Dialog; LB + RB kurz → zu.
+   d. Je Schritt notieren: nichts passiert, Browser reagiert (Tab, Zurück, Fokus), oder Overlay reagiert. Geht nichts: Bericht aus a. an den Agenten, Befund als Ticket.
 4. Sprache auf English, neu laden: Home-Button und Touch-Tasten prüfen (B-215/AC-02).
 5. Ergebnis je Punkt schreiben, Mängel als Ticket. Sind alle Kriterien belegt: Tickets archivieren, Sprint nach `docs/sprints/erledigt/`, Fahrplan in `docs/sprints/README.md` anpassen.
 

@@ -30,6 +30,9 @@ func spawnScaled(w *World, kind string, x, hpFactor, damageFactor float64) *Enem
 	d := enemyData[kind]
 	depth := float64(w.Biome.Depth)
 	s := waves.DepthScaling
+	if w.island != nil {
+		s = w.island.Scaling // Tabelle der Insel (island_data.go)
+	}
 	hp := math.Round(d.HP * math.Pow(s.HP, depth) * hpFactor)
 	e := &Enemy{
 		ID: w.newID(), Kind: kind, X: x, HP: hp, MaxHP: hp,

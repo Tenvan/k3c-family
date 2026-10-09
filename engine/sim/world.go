@@ -132,14 +132,13 @@ func Step(w *World, commands []PlayerCommand, dt float64) {
 	capEvents(w)
 }
 
-// castleFallen: Niederlage laut GDD. Respawn am Hub, Gebäude bleiben zerstört, 50 % der Ressourcen und alle Truppen
-// verloren. Die Burg selbst steht danach wieder (sonst wäre das Spiel vorbei). In einer geschützten Nacht
-// (protectedNight) bleiben Gebäude, Ressourcen, Gold und Truppen.
+// castleFallen: Die Burg fällt. Respawn am Hub, die Burg steht danach wieder; die Verluste folgen dem Niederlage-Modus
+// der Insel (defeat.go). In einer geschützten Nacht (protectedNight) bleiben Gebäude, Ressourcen, Gold und Truppen.
 func castleFallen(w *World) {
 	w.Events = append(w.Events, Event{"type": "castleFallen"})
 	w.Castle.HP = w.Castle.MaxHP
 	if !w.protectedNight() {
-		castleLosses(w)
+		defeatLosses(w)
 	}
 	for _, p := range w.Players {
 		respawn(w, p)
@@ -147,7 +146,7 @@ func castleFallen(w *World) {
 	w.Enemies, w.SpawnQueue, w.Projectiles = []*Enemy{}, []QueuedSpawn{}, []*Projectile{}
 }
 
-// castleLosses: die Verluste eines Burgfalls (castleFallen).
+// castleLosses: Stufenverlust. Bauplätze der Stufe leer, Vorrat und Gold ihrer Spieler −50 %, Truppen außer Landstreichern weg.
 func castleLosses(w *World) {
 	w.hubSite = newHubSite(w) // ein laufender Hub-Ausbau ist verloren, die Hub-Stufe bleibt
 	for _, s := range w.Sites {
@@ -155,7 +154,7 @@ func castleLosses(w *World) {
 		*s = *emptySite(w, s.Kind, s.X) // verbraucht wie in TS eine ID je Bauplatz
 		s.ID = id
 	}
-	*w.Stock = Stock{Wood: w.Stock.Wood / 2, Stone: w.Stock.Stone / 2, Copper: w.Stock.Copper / 2, Iron: w.Stock.Iron / 2, Crystal: w.Stock.Crystal / 2}
+	halveStock(w.Stock)
 	for _, p := range w.Players {
 		p.Gold /= 2
 	}

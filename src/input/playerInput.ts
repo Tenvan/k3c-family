@@ -1,6 +1,7 @@
 import Phaser from 'phaser';
 
-import { KEY_ACTIONS, PAD, PAD_ACTIONS, type Action } from './slotBindings';
+import { KEYBOARD_1, KEYBOARD_2, keyMatches, layoutKeys, type KeyboardLayout, type KeySpec } from './keyboardLayouts';
+import { PAD, PAD_ACTIONS, type Action } from './slotBindings';
 
 export type { Action } from './slotBindings';
 
@@ -66,32 +67,55 @@ export class GamepadInput implements PlayerInput {
   }
 }
 
+type KeyHit = { keyCode: number; code: string };
+
+/**
+ * Ein Spieler an der Tastatur mit seinem Layout (`keyboardLayouts.ts`, B-316). Liest die Tastenereignisse der Szene mit
+ * `code`, damit Strg rechts, Enter und Ziffernblock dem richtigen Spieler gehören; Autorepeat löst nichts neu aus.
+ */
 export class KeyboardInput implements PlayerInput {
-  readonly label = 'Tastatur';
-  private keys: Record<'left' | 'right' | 'altLeft' | 'altRight' | 'sprint' | Action, Phaser.Input.Keyboard.Key>;
+  /** gehaltene Tasten: `code` → keyCode */
+  private down = new Map<string, number>();
+  /** seit dem letzten `update` neu gedrückt (auch kurz getippt und schon wieder losgelassen) */
+  private fresh: KeyHit[] = [];
   private pressed = new Set<Action>();
 
-  constructor(keyboard: Phaser.Input.Keyboard.KeyboardPlugin) {
-    const K = Phaser.Input.Keyboard.KeyCodes;
-    const actions = Object.fromEntries(Object.entries(KEY_ACTIONS).map(([action, key]) => [action, K[key as keyof typeof K]]));
-    this.keys = keyboard.addKeys({ left: K.A, right: K.D, altLeft: K.LEFT, altRight: K.RIGHT, sprint: K.SHIFT, ...actions }) as KeyboardInput['keys'];
+  constructor(
+    keyboard: Phaser.Input.Keyboard.KeyboardPlugin,
+    private readonly layout: KeyboardLayout = KEYBOARD_1,
+    readonly label = 'Tastatur',
+  ) {
+    keyboard.addCapture(layoutKeys(layout).flatMap((k) => ('keyCode' in k ? [k.keyCode] : []))); // kein Scrollen der Seite
+    const id = (e: KeyboardEvent): string => e.code || e.key;
+    keyboard.on('keydown', (e: KeyboardEvent) => {
+      if (!e.repeat) this.fresh.push({ keyCode: e.keyCode, code: id(e) });
+      this.down.set(id(e), e.keyCode);
+    });
+    keyboard.on('keyup', (e: KeyboardEvent) => this.down.delete(id(e)));
+    const clear = (): void => this.down.clear(); // Fenster verliert den Fokus: kein Hängenbleiben
+    keyboard.scene.game.events.on(Phaser.Core.Events.BLUR, clear);
+    keyboard.scene.events.once(Phaser.Scenes.Events.SHUTDOWN, () => keyboard.scene.game.events.off(Phaser.Core.Events.BLUR, clear));
   }
 
   update(): void {
     this.pressed.clear();
-    for (const action of Object.keys(KEY_ACTIONS) as Action[]) {
-      if (Phaser.Input.Keyboard.JustDown(this.keys[action])) this.pressed.add(action);
+    for (const [action, specs] of Object.entries(this.layout.actions) as [Action, readonly KeySpec[]][]) {
+      if (this.fresh.some((hit) => specs.some((s) => keyMatches(s, hit)))) this.pressed.add(action);
     }
+    this.fresh = [];
+  }
+
+  private isDown(specs: readonly KeySpec[]): boolean {
+    for (const [code, keyCode] of this.down) if (specs.some((s) => keyMatches(s, { keyCode, code }))) return true;
+    return false;
   }
 
   moveX(): number {
-    const left = this.keys.left.isDown || this.keys.altLeft.isDown;
-    const right = this.keys.right.isDown || this.keys.altRight.isDown;
-    return (right ? 1 : 0) - (left ? 1 : 0);
+    return (this.isDown(this.layout.right) ? 1 : 0) - (this.isDown(this.layout.left) ? 1 : 0);
   }
 
   sprint(): boolean {
-    return this.keys.sprint.isDown;
+    return this.isDown(this.layout.sprint);
   }
 
   justPressed(action: Action): boolean {
@@ -99,6 +123,11 @@ export class KeyboardInput implements PlayerInput {
   }
 
   held(action: Action): boolean {
-    return this.keys[action].isDown;
+    return this.isDown(this.layout.actions[action] ?? []);
   }
+}
+
+/** Zwei Spieler an einer Tastatur (B-316): Spieler 1 links, Spieler 2 rechts (`keyboardLayouts.ts`) */
+export function keyboardPlayers(keyboard: Phaser.Input.Keyboard.KeyboardPlugin): [KeyboardInput, KeyboardInput] {
+  return [new KeyboardInput(keyboard), new KeyboardInput(keyboard, KEYBOARD_2, 'Tastatur 2')];
 }

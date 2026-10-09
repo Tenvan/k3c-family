@@ -30,13 +30,10 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-095](B-095-start-mit-seed-und-tiefe.md) | SRV | Idee | niedrig | eingeplant | BT1 | Ein neues Spiel startet per URL mit eigenem Seed und gewählter Tiefe |
 | [B-098](B-098-debug-overlay-standard-zurueck.md) | CLI | Schuld | niedrig | eingeplant | K5 | Das Debug-Overlay ist vor dem Release wieder nur mit ?dev=1 verfügbar |
 | [B-099](B-099-balancing-tester.md) | SIM | Idee | mittel | offen | – | Ein automatischer Balancing-Tester prüft Regeln und Werte gegen messbare Ziele |
-| [B-102](B-102-siegvarianten-niederlage.md) | SIM | Idee | mittel | eingeplant | K2 | Siegvarianten und Niederlage-Modi der Raum-Optionen sind umgesetzt |
-| [B-103](B-103-inseln-bosse.md) | SIM | Idee | mittel | eingeplant | K2 | Inseln mit Endboss und gemeinsamem Inselwechsel sind spielbar |
 | [B-105](B-105-anlegen-dialog-optionen.md) | CLI | Idee | mittel | eingeplant | K5 | Der Anlegen-Dialog der Lobby wählt Grad, Ziel und Niederlage-Modus |
 | [B-107](B-107-debug-panel-gradwechsel.md) | CLI | Idee | mittel | eingeplant | K5 | Ein Debug-Panel im Dev-Mode wechselt den Schwierigkeitsgrad und weitere Optionen |
 | [B-117](B-117-anzeige-bau-lager.md) | CLI | Idee | mittel | eingeplant | W6 | Der Client zeigt Wartezeit, Lagerstand, Hub-Stufe, Adern und Plantage |
 | [B-126](B-126-buerger-ui.md) | CLI | Idee | mittel | eingeplant | W6 | Der Client zeigt Berufe, Ausbildung, Händler, Truppen-Limit und Heilung |
-| [B-130](B-130-bosse.md) | SIM | Idee | hoch | eingeplant | K2 | Minibosse und Endboss sind spielbar |
 | [B-131](B-131-events.md) | SIM | Idee | niedrig | eingeplant | K3 | Vollmond, Blutmond und Händler-Überfall sind als Events umgesetzt |
 | [B-132](B-132-anzeige-bosse-events.md) | CLI | Idee | mittel | eingeplant | K5 | Der Client zeigt Gegner-Fähigkeiten, Bosse, Phasen und Events |
 | [B-151](B-151-spieleabend-fragebogen.md) | REG | Idee | niedrig | eingeplant | P1 | Der Spieleabend hat einen kindgerechten Fragebogen und eine Playtest-Vorlage |
@@ -74,7 +71,6 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-202](B-202-spielstand-versionsfolge.md) | SIM | Problem | hoch | eingeplant | W7 | S1 und W1 teilen sich die Spielstand-Version 3 eindeutig |
 | [B-203](B-203-gold-schwelle-kennzahl.md) | REG | Frage | niedrig | eingeplant | RG2 | Die Kennzahl „erste Gold-Schwelle“ hat eine feste Schwelle und Bedeutung |
 | [B-204](B-204-test-raeume-sofort-schliessen.md) | SRV | Idee | niedrig | eingeplant | SV1 | Leere Test-Räume schließen sofort statt nach der Leer-Frist |
-| [B-205](B-205-y-belegung-s3.md) | CLI | Problem | mittel | eingeplant | S8 | Die Y-Belegung in S3 folgt dem Beschluss „kein Bau-Menü“ |
 | [B-207](B-207-bauplaetze-anzeige.md) | CLI | Idee | mittel | eingeplant | W8 | Der Client zeigt freie und gesperrte Bauplätze mit Grund (ab Hub-Stufe n, Linie fehlt) |
 | [B-208](B-208-protokoll-bauplaetze.md) | SRV | Idee | mittel | offen | – | Das Protokoll trägt die Bauplätze des Layouts sowie Platz- und Hub-Stufe zum Client |
 | [B-209](B-209-client-platz-arten.md) | CLI | Schuld | mittel | eingeplant | W8 | `src/model/data.ts` kennt alle Platz-Arten aus `hub.json` |
@@ -127,6 +123,8 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-341](B-341-header-ursache-live-messen.md) | DEV | Problem | mittel | offen | – | Die Ursache für den fehlenden Header `X-K3C-Root` aus Worktrees ist live gemessen |
 | [B-342](B-342-w6-2-siteview-erlaubt.md) | CLI | Frage | mittel | offen | – | W6.2 darf den Bauplatz-Wartegrund in `siteView.ts` anbinden |
 | [B-343](B-343-bau-vor-dem-ausgang.md) | SIM | Frage | mittel | offen | – | Der Bau des Endbosses liegt an der inneren Kante des Ausgangs-Chunks |
+| [B-344](B-344-raum-speichert-nicht-nach-game-over.md) | SRV | Idee | hoch | offen | – | Der Raum speichert nach „Komplett verloren“ nicht mehr |
+| [B-345](B-345-raum-tauscht-insel.md) | SRV | Idee | hoch | offen | – | Der Raum tauscht die Insel bei `SwitchReady` |
 | [B-346](B-346-miniboss-wald-kippt-nacht-5.md) | REG | Problem | hoch | eingeplant | RG1 | Der Miniboss Wald kippt Nacht 5 in fast jedem Seed |
 | [B-347](B-347-tester-misst-wirtschaft.md) | SIM | Schuld | hoch | eingeplant | BAL6 | Der Balancing-Tester misst die Wirtschafts-Kennzahlen |
 | [B-351](B-351-client-diagnose-zeile.md) | CLI | Idee | hoch | eingeplant | PM1 | Der Client schreibt FPS, Latenz und Puffer regelmäßig als Diagnose-Zeile ins Client-Log |
@@ -138,7 +136,10 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-367](B-367-doku-nachzug-projekte.md) | INF | Schuld | niedrig | offen | – | Begriffe aus den alten Bahnen und Spuren sind nach PJ3 ersetzt und neue Projekt-Begriffe im Glossar |
 | [B-368](B-368-planung-erpapi-ablage.md) | SRV | Schuld | mittel | offen | – | Die Planung liegt in der ErpApi-Ablage und k3c-dev bedient sie mit den Planungs-Tools der Workbench-Spec |
 | [B-369](B-369-texte-landingpage.md) | PLAT | Schuld | niedrig | offen | – | Die Landingpage zeigt ihre Texte in der gewählten Sprache |
-| [B-372](B-372-preisschild-taste.md) | CLI | Frage | mittel | offen | – | Das Preisschild nennt die Taste zum Bezahlen |
+| [B-370](B-370-mond-bild-nacht-hinweis.md) | CLI | Frage | niedrig | offen | – | Der Hinweis „Die Nacht naht“ zeigt ein Mond-Bild vor dem Text |
+| [B-371](B-371-glyphen-tastatur-2.md) | CLI | Problem | mittel | offen | – | Hinweise und Glyphen zeigen für Spieler 2 an der Tastatur dessen Tasten |
+| [B-372](B-372-check-run-timeout-go.md) | SRV | Problem | mittel | offen | – | check_run go:test und task:check:go brechen im MCP-Aufruf mit Timeout ab |
+| [B-374](B-374-preisschild-taste.md) | CLI | Frage | mittel | offen | – | Das Preisschild nennt die Taste zum Bezahlen |
 
 ## Archiv
 
@@ -342,3 +343,7 @@ Zeile in diesen Abschnitt.
 | [B-361](archiv/B-361-sprint-prio-felder-entfallen.md) | INF | Schuld | mittel | erledigt | DV1 | Die Sprint-Felder Prio und Einschiebbar entfallen in Vorlage, Planungstest und plan-Tools |
 | [B-362](archiv/B-362-k3c-dev-token-dienst.md) | DEV | Problem | hoch | erledigt | DV1 | k3c-dev fragt den selbst gestarteten Spielserver mit dessen Token an |
 | [B-192](archiv/B-192-aktionsliste-schliesst-mit-oe.md) | CLI | Problem | hoch | erledigt | U5 | Die Dev-Aktionsliste schließt sich mit Ö |
+| [B-205](archiv/B-205-y-belegung-s3.md) | CLI | Problem | mittel | erledigt | S8 | Die Y-Belegung in S3 folgt dem Beschluss „kein Bau-Menü“ |
+| [B-130](archiv/B-130-bosse.md) | SIM | Idee | hoch | erledigt | K2 | Minibosse und Endboss sind spielbar |
+| [B-102](archiv/B-102-siegvarianten-niederlage.md) | SIM | Idee | mittel | erledigt | K2 | Siegvarianten und Niederlage-Modi der Raum-Optionen sind umgesetzt |
+| [B-103](archiv/B-103-inseln-bosse.md) | SIM | Idee | mittel | erledigt | K2 | Inseln mit Endboss und gemeinsamem Inselwechsel sind spielbar |

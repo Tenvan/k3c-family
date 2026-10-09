@@ -25,6 +25,11 @@ import "math"
 //	bossDefeated  – Boss besiegt, Belohnung gegeben (boss.go): boss, x; statt `kill`
 //	bossPhase     – Endboss wechselt in die nächste Phase, je Wechsel einmal (boss_endboss.go): boss, phase (ab 2)
 //	victory       – Ziel der Insel erreicht, genau einmal je Insel, in Stufe 0 (victory.go): goal (Variante), day
+//	gameOver      – Burg gefallen im Niederlage-Modus „Komplett verloren“ (defeat.go): ohne Felder außer stage; danach
+//	                ruht die Insel (Island.Over), nach `castleFallen` im selben Tick
+//	islandGateOpen – Endboss besiegt, Wechselpunkt zur nächsten Insel offen, in der tiefsten Stufe (island_switch.go):
+//	                island (Index der nächsten Insel), x (Burg)
+//	islandSwitch  – alle lebenden Spieler stehen am Wechselpunkt, der Raum tauscht die Insel: island
 //
 //	playerDown    – Monarch fällt: player, cause (Gegnerart aus data/enemies.json bei Nahkampf und Geschoss,
 //	                sonst "other"; B-182)
