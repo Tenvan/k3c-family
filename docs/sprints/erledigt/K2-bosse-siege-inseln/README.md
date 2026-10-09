@@ -1,6 +1,6 @@
 # K2 · SIM · Bosse, Siegvarianten und Inselwechsel
 
-- **Status:** aktiv
+- **Status:** erledigt
 - **Projekt:** KMP
 - **Domäne:** SIM
 - **Reife:** bereit
@@ -72,8 +72,11 @@ Nicht alle lebenden Spieler am Punkt → Wechsel wartet. Komplett verloren → R
 | K2.2b | `K2.2b-niederlage-modi.md` | Umsetzung | autonom | fertig |
 | K2.3a | `K2.3a-inselwechsel.md` | Umsetzung | autonom | fertig |
 | K2.3b | `K2.3b-spielstand-golden.md` | Umsetzung | autonom | fertig |
-| K2.4 | `K2.4-review.md` | Review | autonom | in Arbeit |
+| K2.4 | `K2.4-review.md` | Review | autonom | fertig |
 
 ## Abnahme
 
-–
+2026-10-09, Review K2.4: AC-01 bis AC-08 mit Nachweis in K2.1a–K2.3b › Ergebnis; `task check` und `task check:go` grün.
+Keine schweren Befunde; leicht: `GateOpen` nicht im Spielstand (Ereignis nach Laden erneut, ohne Wirkung).
+Offen außerhalb SIM: B-344, B-345 (SRV), Anzeige über K4/K5. Neues Ticket: B-371 (`check_run` Timeout).
+Version: v0.x Minor vorgeschlagen (Bosse, Siege, Niederlage-Modi und Inselwechsel wirken im Spiel).
