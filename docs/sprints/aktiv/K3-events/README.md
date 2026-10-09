@@ -59,7 +59,7 @@ keine
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
 | K3.1 | `K3.1-vollmond-blutmond.md` | Umsetzung | autonom | fertig |
-| K3.2 | `K3.2-haendler-ueberfall-golden.md` | Umsetzung | autonom | offen |
+| K3.2 | `K3.2-haendler-ueberfall-golden.md` | Umsetzung | autonom | blockiert |
 | K3.3 | `K3.3-review.md` | Review | autonom | offen |
 
 Bei `Reife: Entwurf` genügen Stichpunkte mit den Kriterien in Klammern statt Session-Dateien. Vor dem Aktivieren

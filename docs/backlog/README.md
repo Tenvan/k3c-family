@@ -139,6 +139,7 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-370](B-370-mond-bild-nacht-hinweis.md) | CLI | Frage | niedrig | offen | – | Der Hinweis „Die Nacht naht“ zeigt ein Mond-Bild vor dem Text |
 | [B-371](B-371-glyphen-tastatur-2.md) | CLI | Problem | mittel | offen | – | Hinweise und Glyphen zeigen für Spieler 2 an der Tastatur dessen Tasten |
 | [B-372](B-372-check-run-timeout-go.md) | SRV | Problem | mittel | offen | – | check_run go:test und task:check:go brechen im MCP-Aufruf mit Timeout ab |
+| [B-373](B-373-haendler-angreifbar-besuchszaehler.md) | SIM | Frage | mittel | offen | K3 | Der Händler ist eine angreifbare Figur mit Besuchszähler im Spielstand |
 
 ## Archiv
 
