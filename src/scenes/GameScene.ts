@@ -157,11 +157,11 @@ export class GameScene extends Phaser.Scene {
     const seated = client.you.map((s) => s.slot);
     if (this.scene.isActive('options')) return this.paused(seated); // Optionen offen: Monarchen stehen, nur zeichnen
     if (this.wantsOptions()) this.scene.launch('options');
-    const devFocus = this.registry.get(DEV_FOCUS_KEY) === true; // Dev-Fokus im Debug-Overlay (B-179): Controller bedienen die Liste
-    const isPad = (i: PlayerInput | null) => this.pads.includes(i as GamepadInput);
-    this.slots.join(devFocus ? inputs.filter((i) => !isPad(i)) : inputs, seated, client, performance.now());
+    const devFocus = this.registry.get(DEV_FOCUS_KEY) === true; // Cheat-Dialog offen (B-179, B-317): Controller und Tastatur bedienen ihn
+    this.slots.join(devFocus ? [] : inputs, seated, client, performance.now());
     const player = (slot: number) => this.world_?.players.find((q) => q.index === client.you.find((s) => s.slot === slot)?.monarch);
-    const p = this.skillMenus.route(muteFocused(this.slots.commands(seated), devFocus, (s) => isPad(this.slots.bound[s] ?? null)), this.slots.bound, player, client);
+    // Dialog offen: ohne Eingaben schließen die Skill-Menüs, Leertaste/A im Dialog lernt keinen Skill (Review U5.3)
+    const p = this.skillMenus.route(muteFocused(this.slots.commands(seated), devFocus), devFocus ? [] : this.slots.bound, player, client);
     this.moves = p;
     if (p.length > 0) client.sendInput(p);
     this.takeFrames();

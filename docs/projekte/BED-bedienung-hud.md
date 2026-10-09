@@ -15,7 +15,7 @@ In Abarbeitungs-Reihenfolge; der erste nicht erledigte Sprint ist der nächste. 
 | Sprint | Thema | Status |
 |---|---|---|
 | LP1 | Landingpage für Spieler, Entwicklerseite für Werkzeuge | erledigt |
-| U5 | Debug-Overlay und Cheat-Dialog bedienbar | geplant |
+| U5 | Debug-Overlay und Cheat-Dialog bedienbar | aktiv |
 | S8 | Spielmenü „Spiel verlassen“, Y-Belegung und Glyphen-Entscheidung | geplant |
 | S9 | Rückmeldung für Schlag und Skills, ein Hinweis je Spieler | geplant |
 | U6 | HUD ohne Überlagerung, Optionen per Touch | geplant |

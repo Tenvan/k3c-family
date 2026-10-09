@@ -1,14 +1,14 @@
 # U5 · CLI · Debug-Overlay und Cheat-Dialog bedienbar
 
-- **Status:** geplant
+- **Status:** aktiv
 - **Projekt:** BED
 - **Domäne:** CLI
 - **Reife:** bereit
 - **Tickets:** B-192, B-317, B-191
-- **Start-Commit:** –
-- **Spec:** Entwurf
+- **Start-Commit:** 07e3c329
+- **Spec:** freigegeben
 - **Revision:** 1
-- **Freigabe:** –
+- **Freigabe:** 2026-10-09, 🧑 im Chat (Revision 1, Übergangsregeln zu den offenen Fragen)
 
 ## Ausgangslage
 
@@ -34,7 +34,9 @@ Neue Dev-Aktionen, Xbox-Zugang zum Overlay (B-195, PL1).
 
 CLI; B nicht belegen, View + Menu reserviert. `src/scenes` rechnet nichts (`noSim.test.ts`), Datei ≤ 400, Funktion ≤ 60 Zeilen.
 
-Beschluss 🧑 2026-10-06 (Chat): Bei Touch liegen Debug-Overlay und Aktionsliste rechts neben dem linken Lauf-Feld, unten mittig; das HUD oben bleibt frei (B-191).
+Beschluss 🧑 2026-10-06 (Chat): Bei Touch liegen Debug-Overlay und Aktionsliste rechts neben dem linken Lauf-Feld, unten mittig; das HUD oben bleibt frei (B-191). **Ersetzt** durch den Beschluss vom 2026-10-09.
+
+Beschluss 🧑 2026-10-09 (Chat, U5.1): Die Info-Zeilen liegen auch bei Touch links unten über der Skill-Zeile. Unten mittig liegen die Touch-Tasten über dem Canvas, darüber Beitritts-Hinweis und Reise-Text; das Lauf-Feld ist der ganze Bildschirm (geteilt an der Mitte), der Phaser-Text fängt keine Touches ab.
 
 Beschluss 🧑 2026-10-06 (Chat): Die Ursache, warum der Controller auf der Xbox nicht wirkt, klärt die Umsetzung über einen Bericht von `gamepad-test.html`; die Vermutung (Edge nutzt das D-Pad für Spatial Navigation zwischen HTML-Buttons) ist ungeprüft (B-317).
 
@@ -63,11 +65,15 @@ Dialog offen und Ö → Dialog zuerst zu, Overlay bleibt.
 
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
-| U5.1 | `U5.1-oe-hud-frei.md` | Umsetzung | autonom | offen |
-| U5.2 | `U5.2-cheat-dialog-fokus.md` | Umsetzung | autonom | offen |
-| U5.3 | `U5.3-review.md` | Review | autonom | offen |
+| U5.1 | `U5.1-oe-hud-frei.md` | Umsetzung | autonom | fertig |
+| U5.2 | `U5.2-cheat-dialog-fokus.md` | Umsetzung | autonom | fertig |
+| U5.3 | `U5.3-review.md` | Review | autonom | fertig |
 | U5.4 | `U5.4-abnahme-pc-handy-xbox.md` | Umsetzung | Mensch | offen |
 
 ## Abnahme
 
-–
+Review 2026-10-09 (U5.3, eigener Review-Agent): `task check` grün; ein schwerer Befund behoben: Bei offenem Cheat-Dialog lief das Skill-Menü weiter, Leertaste/A hätte Skills lernen oder zurücksetzen können (`GameScene`: `route` ohne Eingaben, Menüs schließen).
+- AC-01, AC-03 geprüft (U5.1); AC-02 geprüft für Tests und Browser-Pane (U5.2); AC-05 geprüft. B-192 erledigt.
+- Verschoben nach U5.4: B-191/AC-02, B-317/AC-03, B-317/AC-04 und AC-04 (Xbox-Prüfung; Befund und Prüfauftrag im Ergebnis von U5.2).
+- Neue Tickets: keine.
+- Version: v0.15.0 vorgeschlagen (neue Bedienung des Cheat-Dialogs mit Tastatur und Klick); nicht gesetzt (wartet auf Bestätigung 🧑).
