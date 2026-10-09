@@ -65,7 +65,7 @@ Wechsel-Bestätigung vor dem Sieg über den Endboss → `bad_request`.
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
 | K4.1a | `K4.1a-sim-zustand-spiegeln.md` | Umsetzung | autonom | fertig |
-| K4.1 | `K4.1-felder.md` | Umsetzung | autonom | offen |
+| K4.1 | `K4.1-felder.md` | Umsetzung | autonom | fertig |
 | K4.2 | `K4.2-eingabe-version-bytes.md` | Umsetzung | autonom | offen |
 | K4.3 | `K4.3-review.md` | Review | autonom | offen |
 

@@ -235,7 +235,7 @@ das zählt als Abbruch.
 | `join` | Gerät → Server | Raum beitreten oder wiederverbinden | `room` Code, `slots[]` | `c2s-join.json` |
 | `joined` | Server → Gerät | nach erfolgreichem `create`/`join` | `room`, `name`, `you[]`: `slot` → `monarch`, `depth`, `stage` | `s2c-joined.json` |
 | `level` | Server → Gerät | nach `joined` und sobald eine Stufe für das Gerät neu ist, vor dem ersten Zustand der Stufe | `stage`, `depth`, `layout` (Level: Biom-ID, Breite, Chunks, Objekte) | `s2c-level.json` |
-| `snap` | Server → Gerät | voller Zustand einer Stufe: nach ihrem `level` (Beitreten, Wiederverbinden, Stufenwechsel) | `stage`, `tick`, `ack`, `s` (Zustand der Welt ohne Statisches, mit `events` und `depth`) | `s2c-snapshot-full.json`, `s2c-snapshot-wirtschaft.json` |
+| `snap` | Server → Gerät | voller Zustand einer Stufe: nach ihrem `level` (Beitreten, Wiederverbinden, Stufenwechsel) | `stage`, `tick`, `ack`, `s` (Zustand der Welt ohne Statisches, mit `events` und `depth`) | `s2c-snapshot-full.json`, `s2c-snapshot-wirtschaft.json`, `s2c-snapshot-boss.json`, `s2c-snapshot-event.json` |
 | `delta` | Server → Gerät | jeder weitere Tick, je Stufe | `stage`, `tick`, `ack`, `s` (nur Änderungen zum zuletzt gesendeten Zustand dieser Stufe) | `s2c-snapshot-delta.json` |
 | `seats` | Server → alle Geräte im Raum | wenn sich eine Zuordnung, ein Monarch-Zustand oder eine Stufe ändert | `you[]` (eigene Slots mit `monarch`, `depth` und `stage`), `monarchs[]` je Index `taken`/`waiting`/`free` | `s2c-seats.json` |
 | `addSlot` | Gerät → Server | lokaler Spieler kommt dazu | `slot` 0–3 | `c2s-add-slot.json` |
@@ -394,6 +394,24 @@ Aktion, Werte, Raum).
   schicken den Zustand, rechnen aber keinen Schritt; Eingaben wirken erst nach dem Lösen. Im Dev-Mode steht
   `devPaused` (true/false) wie `devTimescale` in `s`, ohne Dev-Mode fehlt das Feld. Verlässt das letzte Gerät den Raum, ist die Pause aufgehoben.
 
+### Kampf: Bosse, Events, Inselwechsel
+
+Der Zustand nennt den Kampf mit Feldern der Sim (`engine/sim/state_mirror.go`); der Client rechnet nichts, HP-Anteil,
+Phasen-Text und Zeitanzeige entstehen aus den Feldern. Zeiten in Sekunden, Orte in Units. **Fehlt ein Feld, trifft es nicht zu** (kein Boss, kein Event, kein Wechselpunkt); im Delta steht ein geändertes Feld ganz, ein verschwundenes in
+`unset`. Alle Felder sind additiv, die Protokollversion bleibt 5.
+
+| Feld | Inhalt | Fehlt, wenn |
+|---|---|---|
+| `enemies[].boss` | `true` bei Mini- und Endboss; `kind` ist die Boss-ID (`data/bosses.json`), `hp`/`maxHp` die Lebenspunkte | kein Boss |
+| `enemies[].phase` | Phase des Endbosses, ab 1 | kein Endboss |
+| `enemies[].warn` | nächster Flächenschlag: `x` Mitte, `r` Radius (Units), `in` Sekunden bis zum Schlag (= `aoeIn`) | Boss ohne Flächenschlag in dieser Phase |
+| `nightEvents` | Liste der laufenden Nacht-Events `[{id, secondsLeft}]` (`id` aus `data/events.json`: `fullMoon`, `bloodMoon`; Nacht 91 hat beide), `secondsLeft` = Restzeit der Nacht; heißt nicht `events`, das sind die Ereignisse des Ticks | kein Event |
+| `islandSwitch` | Wechselpunkt zur nächsten Insel: `open`, `progress` (0..1), `ready`; in allen Stufen der Insel gleich | Endboss nicht besiegt |
+
+Beispiele: `s2c-snapshot-boss.json` (Endboss in Phase 2 mit Warnkreis) und `s2c-snapshot-event.json` (Vollmond-Nacht,
+Wechselpunkt halb gefüllt), auf dem Zustand von `s2c-snapshot-full.json` aufgebaut. Geprüft von `TestKampfZustand`,
+`TestKampfDelta`, `TestKampfBeispiele` und `src/online/clientKampf.test.ts`. Die Eingabe für den Inselwechsel steht in K4.2.
+
 ### Ereignisse
 
 `events` in `s` von `snap` und `delta` sind die Ereignisse des letzten Ticks **der Stufe des Geräts**; Ereignisse
@@ -415,6 +433,15 @@ anderer Stufen kommen nie an. Auf einer Insel trägt jedes Ereignis `stage` (Ind
 | `disarmed` | `kind` (Figur oder Beruf), `x`, `cause` (Gegnerart wie bei `playerDown`, sonst `other`) | Bürger verliert seine Ausrüstung, sie fällt als `drops`-Eintrag zu Boden (Q69); nicht beim Burgfall |
 | `equipmentTaken` | `kind` (wie `drops[].kind`), `x` | Gegner trägt Ausrüstung weg (Q69); Felder bestätigt 🧑 2026-10-06, Sim sendet ab B-312 |
 | `playerDown` | `player`, `cause` (Gegnerart aus `data/enemies.json` bei Nahkampf und Geschoss, sonst `other`; B-182) | Monarch fällt; `cause` ist ein Zusatzfeld, die Protokollversion bleibt 3 |
+| `bossSpawned` | `boss`, `x` | Boss erscheint |
+| `bossPhase` | `boss`, `phase` (ab 2) | Endboss wechselt die Phase |
+| `bossDefeated` | `boss`, `x` | Boss besiegt |
+| `eventStarted` | `event`, `day`, bei `merchantRaid` `visit` | Nacht-Event oder Händler-Überfall beginnt |
+| `eventEnded` | `event`, `day`, bei `merchantRaid` `protected`, `resource`, `amount` | Event endet |
+| `islandGateOpen` | `island`, `x` | Wechselpunkt der Insel offen |
+| `islandSwitch` | `island` | Alle stehen am Wechselpunkt, die Insel wechselt |
+| `victory` | `goal`, `day` | Siegbedingung erreicht |
+| `gameOver` | – | Niederlage |
 
 Tod, Bau fertig, Skill, Nacht naht und Portal laufen über die älteren Typen `playerDown`, `built`, `skillPoint`,
 `dusk`, `arrived` (`arrived` mit `player` beim Einzelwechsel). Die Simulation begrenzt die Ereignisse je Tick und
