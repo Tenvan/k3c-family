@@ -52,7 +52,6 @@ export function SprintCard({ sprint: s, gh, sel, onSelect, onPick, checked, onCh
         <FoldButton folded={folded} onToggle={toggle} what={`Sprint ${s.id}`} />
         <strong>{s.id}</strong>
         <span className="pl-dim">{s.domain}</span>
-        {s.prio && <Tip content="Prio: höchste der Tickets"><StatusBadge tone={prioTone(s.prio)}>Prio {s.prio}</StatusBadge></Tip>}
         <DepLinks ids={s.deps} title="Wartet auf Sessions dieser Sprints" onPick={scrollToSprint} />
         <span className="pl-title">{s.title}</span>
         {s.worktree && (

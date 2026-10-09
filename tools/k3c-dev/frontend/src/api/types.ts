@@ -315,7 +315,7 @@ export interface PlanSession {
   deps?: string[];
   /** Feld „Umgebung“: offline (worktree-tauglich) | live | ?. */
   env?: string;
-  /** Feld „Domäne“ der Session-Datei: REG, SIM, SRV, CLI, PLAT oder INF. */
+  /** Feld „Domäne“ der Session-Datei: REG, SIM, SRV, CLI, PLAT, INF oder DEV. */
   domain?: string;
 }
 
@@ -324,8 +324,7 @@ export interface PlanSprint {
   id: string;
   title: string;
   domain: string;
-  prio?: string; // live die höchste Prio der Tickets (Go: planning.rank)
-  /** Sprints, auf deren Sessions dieser wartet; die Liste kommt nach Abhängigkeit und Prio geordnet. */
+  /** Sprints, auf deren Sessions dieser wartet; die Liste kommt nach Abhängigkeit, Projekt-Rang und Platz geordnet. */
   deps?: string[];
   status: string;
   reife: string;

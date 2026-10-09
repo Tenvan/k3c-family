@@ -3,9 +3,7 @@
 - **Status:** erledigt
 - **Projekt:** –
 - **Domäne:** SRV
-- **Prio:** mittel
 - **Reife:** bereit
-- **Einschiebbar:** nein
 - **Tickets:** B-002
 - **Start-Commit:** 5c2559a
 - **Spec:** freigegeben

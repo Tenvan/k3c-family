@@ -8,9 +8,9 @@ import (
 )
 
 // Reihenfolge der Sprints: Abhängigkeiten folgen aus dem Feld „Abhängig von“ ihrer Sessions (SP12.3 → Sprint SP12).
-// Sprints eines Projekts ordnet der Rang des Projekts und ihr Platz in seiner Sprint-Tabelle, nie die Prio; danach
-// kommen Sprints ohne Projekt nach der Prio ihrer Tickets (Übergang bis PJ3). Eine Voraussetzung erbt dabei den Platz
-// ihrer Abnehmer.
+// Sprints eines Projekts ordnet der Rang des Projekts und ihr Platz in seiner Sprint-Tabelle; danach kommen Sprints
+// ohne Projekt in Fahrplan-Reihenfolge (seit PJ3 hat jeder offene Sprint ein Projekt). Eine Voraussetzung erbt dabei
+// den Platz ihrer Abnehmer.
 
 var sessionRef = regexp.MustCompile(`\b[A-Z]+\d+\.\d+\b`)
 
@@ -23,33 +23,11 @@ func sessionMeta(text string) (env, domain string, deps []string) {
 // sprintOf: `GR5.2` → `GR5`.
 func sprintOf(nr string) string { return strings.SplitN(nr, ".", 2)[0] }
 
-// maxPrio liefert die höchste bewertete Prio (hoch, mittel, niedrig), leer wenn keine bewertet ist.
-func maxPrio(ps ...string) string {
-	best := "?"
-	for _, p := range ps {
-		if prioRank(p) < prioRank(best) {
-			best = p
-		}
-	}
-	return strings.TrimSuffix(best, "?")
-}
-
-// rank setzt Deps und die geerbte Prio aller Sprints und ordnet die offenen nach Abhängigkeit und sprintOrder;
+// rank setzt Deps aller Sprints und ordnet die offenen nach Abhängigkeit und sprintOrder;
 // erledigte folgen in der bisherigen Reihenfolge.
 func rank(d *Data) {
-	prio := map[string]string{}
-	for _, t := range d.Tickets {
-		prio[t.Nr] = t.Prio
-	}
 	var open, done []Sprint
 	for _, s := range d.Sprints {
-		var ps []string
-		for _, t := range s.Tickets {
-			ps = append(ps, prio[t])
-		}
-		if p := maxPrio(ps...); p != "" {
-			s.Prio = p
-		}
 		for i, x := range s.Sessions {
 			s.Sessions[i].Env, s.Sessions[i].Domain, s.Sessions[i].Deps = sessionMeta(x.Text)
 			for _, dep := range s.Sessions[i].Deps {
@@ -72,7 +50,7 @@ func rank(d *Data) {
 const noRank = 1 << 20
 
 // sprintOrder vergleicht zwei Sprints: zuerst die aus einer Projekt-Tabelle nach (Rang, Tabellenplatz), dann die ohne
-// Projekt nach Prio.
+// Projekt in bisheriger Reihenfolge.
 func sprintOrder(ps []Project) func(a, b Sprint) bool {
 	at := map[string][2]int{}
 	for _, p := range ps {
@@ -88,7 +66,7 @@ func sprintOrder(ps []Project) func(a, b Sprint) bool {
 		if a, ok := at[s.ID]; ok {
 			return []int{0, a[0], a[1]}
 		}
-		return []int{1, prioRank(s.Prio), 0}
+		return []int{1, 0, 0}
 	}
 	return func(a, b Sprint) bool { return slices.Compare(key(a), key(b)) < 0 }
 }

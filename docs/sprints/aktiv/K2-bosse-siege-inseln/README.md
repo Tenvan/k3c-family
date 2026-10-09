@@ -3,9 +3,7 @@
 - **Status:** aktiv
 - **Projekt:** KMP
 - **Domäne:** SIM
-- **Prio:** hoch
 - **Reife:** bereit
-- **Einschiebbar:** nein
 - **Tickets:** B-130, B-102, B-103
 - **Start-Commit:** 7fe4f05
 - **Spec:** freigegeben

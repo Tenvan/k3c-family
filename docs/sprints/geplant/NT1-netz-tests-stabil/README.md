@@ -3,9 +3,7 @@
 - **Status:** geplant
 - **Projekt:** LST
 - **Domäne:** SRV
-- **Prio:** mittel
 - **Reife:** Entwurf
-- **Einschiebbar:** ja
 - **Tickets:** B-274, B-284, B-286, B-280, B-190, B-263
 - **Start-Commit:** –
 - **Spec:** Entwurf

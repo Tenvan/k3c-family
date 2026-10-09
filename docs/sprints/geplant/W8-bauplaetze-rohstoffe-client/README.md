@@ -3,9 +3,7 @@
 - **Status:** geplant
 - **Projekt:** WRT
 - **Domäne:** CLI
-- **Prio:** mittel
 - **Reife:** Entwurf
-- **Einschiebbar:** nein
 - **Tickets:** B-207, B-209, B-188
 - **Start-Commit:** –
 - **Spec:** Entwurf

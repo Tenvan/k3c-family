@@ -3,9 +3,7 @@
 - **Status:** erledigt
 - **Projekt:** TST
 - **Domäne:** CLI
-- **Prio:** hoch
 - **Reife:** bereit
-- **Einschiebbar:** ja
 - **Tickets:** B-353
 - **Start-Commit:** 3a4d923
 - **Spec:** freigegeben

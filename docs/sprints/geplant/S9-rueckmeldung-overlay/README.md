@@ -3,9 +3,7 @@
 - **Status:** geplant
 - **Projekt:** BED
 - **Domäne:** CLI
-- **Prio:** hoch
 - **Reife:** bereit
-- **Einschiebbar:** nein
 - **Tickets:** B-319, B-318
 - **Start-Commit:** –
 - **Spec:** Entwurf

@@ -3,9 +3,7 @@
 - **Status:** erledigt
 - **Projekt:** –
 - **Domäne:** SIM
-- **Prio:** hoch
 - **Reife:** bereit
-- **Einschiebbar:** nein
 - **Tickets:** B-114, B-115, B-012
 - **Start-Commit:** 3215b03
 - **Spec:** freigegeben

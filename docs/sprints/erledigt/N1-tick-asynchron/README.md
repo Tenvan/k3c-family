@@ -3,9 +3,7 @@
 - **Status:** erledigt
 - **Projekt:** –
 - **Domäne:** SRV
-- **Prio:** hoch
 - **Reife:** bereit
-- **Einschiebbar:** ja
 - **Tickets:** B-276
 - **Start-Commit:** 33ae378
 - **Spec:** freigegeben

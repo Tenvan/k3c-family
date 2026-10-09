@@ -3,9 +3,7 @@
 - **Status:** geplant
 - **Projekt:** LST
 - **Domäne:** CLI
-- **Prio:** hoch
 - **Reife:** bereit
-- **Einschiebbar:** nein
 - **Tickets:** B-194
 - **Start-Commit:** –
 - **Spec:** Entwurf

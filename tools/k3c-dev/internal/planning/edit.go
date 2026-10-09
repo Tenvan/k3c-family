@@ -10,9 +10,9 @@ import (
 )
 
 var (
-	domains = []string{"REG", "SIM", "SRV", "CLI", "PLAT", "INF"}
+	domains = []string{"REG", "SIM", "SRV", "CLI", "PLAT", "INF", "DEV"}
 	specs   = []string{"Entwurf", "freigegeben", "rückwirkend"}
-	prios   = []string{"hoch", "mittel", "niedrig", "?"} // Rangfolge: hoch zuerst
+	prios   = []string{"hoch", "mittel", "niedrig", "?"}
 	// Envs: offline = ohne laufende Dienste prüfbar (Code, Mock-Tests, Werkzeuge ohne Server), worktree-tauglich;
 	// live = braucht laufende Server, Browser oder Gerät; ? = noch nicht eingeordnet.
 	Envs = []string{"offline", "live", "?"}
@@ -20,7 +20,7 @@ var (
 	allowed = map[string]map[string][]string{
 		"ticket": {"Domäne": domains, "Typ": {"Idee", "Problem", "Schuld", "Frage"}, "Prio": prios,
 			"Umgebung": Envs, "Status": {"offen", "eingeplant", "erledigt", "verworfen"}, "Spec": specs},
-		"sprint": {"Status": States, "Domäne": domains, "Prio": prios, "Reife": {"Entwurf", "bereit"}, "Einschiebbar": {"nein", "ja"}, "Spec": specs},
+		"sprint": {"Status": States, "Domäne": domains, "Reife": {"Entwurf", "bereit"}, "Spec": specs},
 		"session": {"Status": {"offen", "in Arbeit", "fertig", "blockiert", "verworfen"}, "Typ": {"Umsetzung", "Review", "Workshop"},
 			"Agent": {"autonom", "Mensch"}, "Umgebung": Envs, "Domäne": domains},
 		"projekt": {"Status": {"aktiv", "ruht", "erledigt"}},
@@ -146,9 +146,6 @@ func Set(root, id string, values map[string]string) (string, error) {
 	text, err := c.read(r.rel)
 	if err != nil {
 		return "", err
-	}
-	if _, ok := values["Prio"]; r.kind == "sprint" && !ok && values["Tickets"] != "" {
-		values["Prio"] = SprintPrio(root, values["Tickets"]) // Prio folgt den Tickets
 	}
 	if text, err = setFields(root, r.kind, text, values); err != nil {
 		return "", err

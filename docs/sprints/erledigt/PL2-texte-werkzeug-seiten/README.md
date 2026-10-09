@@ -3,9 +3,7 @@
 - **Status:** erledigt
 - **Projekt:** WZG
 - **Domäne:** PLAT
-- **Prio:** niedrig
 - **Reife:** bereit
-- **Einschiebbar:** ja
 - **Tickets:** B-322
 - **Start-Commit:** 07f98fc5
 - **Spec:** freigegeben

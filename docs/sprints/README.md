@@ -18,11 +18,8 @@ Abnahmen am Gerät (`Agent: Mensch`) sammelt das Projekt ABN im Sprint HW1: [`..
 
 ## Geplant (nach Projekt-Rang)
 
-**Einschiebbar** ordnet nicht mehr: einschiebbare Sprints stehen in derselben Tabelle an ihrem Platz im Projekt (Feld entfällt mit B-361).
-
 | Sprint | Domäne | Projekt | Thema | Am Ende sichtbar | Reife | Ordner |
 |---|---|---|---|---|---|---|
-| DV1 | INF | WZG | Domäne DEV für k3c-dev, Sprint ohne Prio und Einschiebbar | – | Entwurf | `geplant/DV1-domaene-dev-werkzeug/` |
 | PM1 | CLI | LST | Leistung messen: Diagnose-Zeile und Performance-Modus | – | Entwurf | `geplant/PM1-leistung-messen/` |
 | PF1 | CLI | LST | Split-Screen flüssig auf der Xbox | Zwei Spieler im Split-Screen ohne sichtbares Ruckeln auf der Xbox | bereit | `geplant/PF1-splitscreen-leistung/` |
 | NT1 | SRV | LST | Stabile Tests, Warteschlange und Snapshot-Budget | – | Entwurf | `geplant/NT1-netz-tests-stabil/` |
@@ -160,3 +157,4 @@ Gesamtplan und Begründung: [`../plan-weiterentwicklung.md`](../plan-weiterentwi
 | SO3 | Hörprobenseite `soundtest.html` | `erledigt/SO3-hoerprobenseite/` |
 | PJ3 | Planung in Projekte umziehen und aufräumen | `erledigt/PJ3-planung-umziehen/` |
 | PL2 | Werkzeug-Seiten in der gewählten Sprache | `erledigt/PL2-texte-werkzeug-seiten/` |
+| DV1 | Domäne DEV für k3c-dev, Sprint ohne Prio und Einschiebbar | `erledigt/DV1-domaene-dev-werkzeug/` |

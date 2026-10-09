@@ -3,9 +3,7 @@
 - **Status:** erledigt
 - **Projekt:** SND
 - **Domäne:** CLI
-- **Prio:** mittel
 - **Reife:** bereit
-- **Einschiebbar:** ja
 - **Tickets:** B-011
 - **Start-Commit:** 1fa9529
 - **Spec:** freigegeben

@@ -3,9 +3,7 @@
 - **Status:** geplant
 - **Projekt:** SKL
 - **Domäne:** SIM
-- **Prio:** hoch
 - **Reife:** bereit
-- **Einschiebbar:** nein
 - **Tickets:** B-007, B-270, B-321
 - **Start-Commit:** –
 - **Spec:** Entwurf

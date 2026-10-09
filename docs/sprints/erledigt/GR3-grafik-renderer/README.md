@@ -3,9 +3,7 @@
 - **Status:** erledigt
 - **Projekt:** –
 - **Domäne:** CLI
-- **Prio:** mittel
 - **Reife:** bereit
-- **Einschiebbar:** ja
 - **Tickets:** B-010
 - **Start-Commit:** 46aa69b
 - **Spec:** freigegeben

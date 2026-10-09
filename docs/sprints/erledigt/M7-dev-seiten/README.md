@@ -3,9 +3,7 @@
 - **Status:** erledigt
 - **Projekt:** –
 - **Domäne:** SRV
-- **Prio:** mittel
 - **Reife:** bereit
-- **Einschiebbar:** ja
 - **Tickets:** B-171
 - **Start-Commit:** 433dd07
 - **Spec:** rückwirkend

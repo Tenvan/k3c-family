@@ -1,6 +1,6 @@
 # B-366 · k3c-dev füllt im Fahrplan die Spalte Projekt und ordnet nach Rang
 
-- **Domäne:** SRV
+- **Domäne:** DEV
 - **Typ:** Schuld
 - **Prio:** mittel
 - **Umgebung:** offline

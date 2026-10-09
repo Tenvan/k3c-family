@@ -25,7 +25,7 @@ describe('Projekte nach Rang (B-358)', () => {
     expect(g.abn?.project.id).toBe('ABN');
     expect(g.abnOpen.map((it) => it.session.nr)).toEqual(['X1.1']);
     expect(g.without.sprints.map((s) => s.id)).toEqual(['M5']);
-    expect(g.without.tickets.map((t) => t.nr)).toEqual(['B-011']);
+    expect(g.without.tickets.map((t) => t.nr)).toEqual(['B-011', 'B-363']);
   });
 
   it('ohne Projekte bleiben alle Bereiche leer (bisherige Ansicht)', () => {

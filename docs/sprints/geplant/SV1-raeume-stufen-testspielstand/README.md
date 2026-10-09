@@ -3,9 +3,7 @@
 - **Status:** geplant
 - **Projekt:** WRT
 - **Domäne:** SRV
-- **Prio:** hoch
 - **Reife:** bereit
-- **Einschiebbar:** nein
 - **Tickets:** B-315, B-199, B-290, B-204
 - **Start-Commit:** –
 - **Spec:** Entwurf

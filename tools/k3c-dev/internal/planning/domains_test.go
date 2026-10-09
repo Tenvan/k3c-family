@@ -87,9 +87,9 @@ func TestSessionDomaeneUndVerworfen(t *testing.T) {
 	}
 }
 
-// TestProjektSprintVorPrio: Ein Sprint mit Projekt (Rang 1) steht vor einem ohne Projekt mit Prio hoch; innerhalb des
-// Projekts zählt der Platz in der Sprint-Tabelle (AC-04).
-func TestProjektSprintVorPrio(t *testing.T) {
+// TestProjektSprintVorSprintOhneProjekt: Sprints mit Projekt stehen vor einem ohne Projekt, egal welche Prio seine
+// Tickets haben; innerhalb des Projekts zählt der Platz in der Sprint-Tabelle (AC-04, DV1 B-361).
+func TestProjektSprintVorSprintOhneProjekt(t *testing.T) {
 	root := tempRepo(t)
 	must(t)(Create(root, NewDoc{Kind: "ticket", Slug: "h", Title: "Hoch", Fields: map[string]string{"Domäne": "SRV", "Typ": "Idee", "Prio": "hoch"}}))
 	newProject(t, root, "GRA", "grafik")
@@ -101,9 +101,8 @@ func TestProjektSprintVorPrio(t *testing.T) {
 	if i9, i8, i7 := strings.Index(out, "X9 "), strings.Index(out, "X8 "), strings.Index(out, "X7 "); i9 > i8 || i8 > i7 {
 		t.Fatalf("Reihenfolge:\n%s", out)
 	}
-	d := load(t, root)
-	if d.Sprints[0].ID != "X9" || d.Sprints[2].ID != "X7" || d.Sprints[2].Prio != "hoch" {
-		t.Fatalf("Load: %s %s %s (%s)", d.Sprints[0].ID, d.Sprints[1].ID, d.Sprints[2].ID, d.Sprints[2].Prio)
+	if d := load(t, root); d.Sprints[0].ID != "X9" || d.Sprints[2].ID != "X7" {
+		t.Fatalf("Load: %s %s %s", d.Sprints[0].ID, d.Sprints[1].ID, d.Sprints[2].ID)
 	}
 }
 

@@ -3,9 +3,7 @@
 - **Status:** geplant
 - **Projekt:** BAL
 - **Domäne:** SIM
-- **Prio:** hoch
 - **Reife:** Entwurf
-- **Einschiebbar:** ja
 - **Tickets:** B-347, B-300, B-301
 - **Start-Commit:** –
 - **Spec:** Entwurf

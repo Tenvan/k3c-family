@@ -113,10 +113,11 @@ sie in der Reihenfolge der Sessions. Was eine Domäne außerhalb des Sprints bra
 |---|---|---|
 | **REG** | Regelwerk & Balancing | `docs/game-design.md`, `docs/rules/`, `docs/playtests/`, **Werte** in `data/*.json` |
 | **SIM** | Spiel-Logik (Go) | `engine/sim/`, `engine/level/`, **neue Felder** in `data/*.json` |
-| **SRV** | Server & Betrieb (Go), Entwickler-MCP | `engine/room/`, `engine/net/`, `engine/store/`, `cmd/`, Entwickler-Werkzeug `tools/k3c-dev/` (eigenes Go-Modul mit Oberfläche), Docker |
+| **SRV** | Server & Betrieb (Go) | `engine/room/`, `engine/net/`, `engine/store/`, `cmd/k3c-server/`, Docker |
 | **CLI** | Client: Darstellung, HUD, Grafik, Audio, Verbindung | `src/scenes/`, `public/`, `src/online/client.ts`, `src/core/saveStore.ts` |
-| **PLAT** | Plattform: Eingabe, Shell, Seiten | `src/input/`, `src/core/shell.ts`, `src/core/fullscreen.ts`, `src/landing/`, `src/tools/`, `*.html`, Pages-Präsentation `site/` |
+| **PLAT** | Plattform: Eingabe, Shell, Seiten | `src/input/`, `src/core/shell.ts`, `src/core/fullscreen.ts`, `src/landing/`, `*.html`, Pages-Präsentation `site/` |
 | **INF** | Frameworks, Tooling, CI, Repo-Aufbau, Arbeitsweise | `package.json`, `go.mod`, `vite*.ts`, `tsconfig.json`, Lint-Konfiguration, `.github/`, `tests/projectRules.test.ts`, `tests/planning.test.ts`, `docs/arbeitsweise.md`, `docs/vorlagen/` |
+| **DEV** | Entwickler-Werkzeug | `tools/k3c-dev/` (eigenes Go-Modul mit Oberfläche, MCP-Server), `cmd/k3c-load/`, `cmd/k3c-tui/`, Werkzeug-Seiten `src/tools/` |
 
 Grenzfälle:
 
@@ -189,7 +190,7 @@ Datei `projekte/XXX-name.md` nach Vorlage, `XXX` = Kürzel aus drei Großbuchsta
 - **Übergang:** Sprints, die vor dieser Regel (2026-10-03) schon Session-PRs hatten (F4), schließen nach altem Ablauf ab
   (Review-Session mit eigenem PR). Ab dem nächsten aktivierten Sprint gilt ein PR je Sprint.
 - **Projekt Pflicht (seit PJ3, B-359):** Jeder aktive und geplante Sprint und jedes offene Ticket trägt ein Projekt
-  (`tests/planning.test.ts`). Die Sprint-Felder `Prio` und `Einschiebbar` ordnen nichts mehr; sie entfallen mit B-361.
+  (`tests/planning.test.ts`). Die Sprint-Felder `Prio` und `Einschiebbar` sind entfallen (B-361).
 - **Commit-Titel** mit der Domäne der Session: `feat(sim): Taunt`, `fix(srv): Raum aufräumen`, `docs(reg): Wirtschaft v1`.
 
 ## Review-Session (Sprint-Abnahme) 🔍

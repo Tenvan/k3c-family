@@ -3,9 +3,7 @@
 - **Status:** geplant
 - **Projekt:** SKL
 - **Domäne:** SRV
-- **Prio:** mittel
 - **Reife:** Entwurf
-- **Einschiebbar:** nein
 - **Tickets:** B-285
 - **Start-Commit:** –
 - **Spec:** Entwurf

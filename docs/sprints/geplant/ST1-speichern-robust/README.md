@@ -3,9 +3,7 @@
 - **Status:** geplant
 - **Projekt:** LST
 - **Domäne:** SRV
-- **Prio:** mittel
 - **Reife:** Entwurf
-- **Einschiebbar:** nein
 - **Tickets:** B-186, B-187, B-272
 - **Start-Commit:** –
 - **Spec:** Entwurf

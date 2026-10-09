@@ -1,6 +1,6 @@
 # B-341 · Die Ursache für den fehlenden Header `X-K3C-Root` aus Worktrees ist live gemessen
 
-- **Domäne:** SRV
+- **Domäne:** DEV
 - **Typ:** Problem
 - **Prio:** mittel
 - **Umgebung:** live

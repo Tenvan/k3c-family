@@ -4,13 +4,13 @@
 - **Typ:** Schuld
 - **Prio:** mittel
 - **Umgebung:** offline
-- **Status:** eingeplant
+- **Status:** erledigt
 - **Sprint:** DV1
 - **Projekt:** WZG
 - **Erstellt:** 2026-10-08
-- **Spec:** Entwurf
+- **Spec:** freigegeben
 - **Revision:** 1
-- **Freigabe:** –
+- **Freigabe:** 2026-10-08, 🧑 im Chat (mit DV1)
 
 ## Ausgangslage
 
@@ -53,7 +53,7 @@ Sprint ohne Projekt nach dem Umzug → Planungstest meldet ihn (Regel aus B-359)
 
 ## Offene Fragen
 
-Ob die Fahrplan-Spalte `Prio` in `docs/sprints/README.md` mit entfällt (🧑).
+keine. Die Fahrplan-Spalte `Prio` in `docs/sprints/README.md` ist schon mit PJ3.3 entfallen (Spalte `Projekt`); mit B-361 fällt nur noch die Marker-Zeile `**Einschiebbar**` weg.
 
 ## Notizen
 
