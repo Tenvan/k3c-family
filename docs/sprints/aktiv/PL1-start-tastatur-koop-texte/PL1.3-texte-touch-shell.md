@@ -1,6 +1,6 @@
 # PL1.3 · Texte von Touch-Overlay und Shell zentral
 
-- **Status:** offen
+- **Status:** in Arbeit
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** PLAT
