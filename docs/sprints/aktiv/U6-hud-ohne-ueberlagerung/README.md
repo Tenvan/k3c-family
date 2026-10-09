@@ -1,11 +1,11 @@
 # U6 · CLI · HUD ohne Überlagerung, Optionen per Touch
 
-- **Status:** geplant
+- **Status:** aktiv
 - **Projekt:** BED
 - **Domäne:** CLI
 - **Reife:** bereit
 - **Tickets:** B-336, B-337
-- **Start-Commit:** –
+- **Start-Commit:** f77ff97a
 - **Spec:** freigegeben
 - **Revision:** 1
 - **Freigabe:** 2026-10-09, 🧑 im Chat, Revision 1, Vorschläge unter Offene Fragen übernommen
@@ -70,7 +70,7 @@ B-336 › Ausnahme- und Fehlerfälle; B-337 › Ausnahme- und Fehlerfälle (sehr
 
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
-| U6.1 | `U6.1-optionen-per-touch.md` | Umsetzung | autonom | offen |
+| U6.1 | `U6.1-optionen-per-touch.md` | Umsetzung | autonom | in Arbeit |
 | U6.2 | `U6.2-hud-elemente-layout.md` | Umsetzung | autonom | offen |
 | U6.3 | `U6.3-review.md` | Review | autonom | offen |
 | U6.4 | `U6.4-abnahme-gesamt.md` | Workshop | Mensch | offen |
