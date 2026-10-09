@@ -1,8 +1,18 @@
 import Phaser from 'phaser';
 import { GLYPH_COLORS, glyphPx, type Glyph } from './glyphs';
 
-/** Teil einer Zeile: Text oder Tasten-Glyph */
-export type RowPart = string | Glyph;
+/** Bild aus einer geladenen Textur (Pixel-Art); ohne `scale` ganzzahlig auf Zeilenhöhe skaliert */
+export interface RowImage {
+  image: string;
+  frame?: number;
+  scale?: number;
+}
+
+/** Teil einer Zeile: Text, Tasten-Glyph oder Bild */
+export type RowPart = string | Glyph | RowImage;
+
+/** Abstand zwischen Bild und Text */
+const IMAGE_GAP = 8;
 
 const OUTLINE = 0x000000;
 const FONT = { fontStyle: 'bold' };
@@ -83,7 +93,12 @@ export class GlyphRow {
     this.box.removeAll(true);
     let cx = 0;
     for (const part of parts) {
-      if (typeof part !== 'string' && part.key !== null) {
+      if (typeof part !== 'string' && 'image' in part) {
+        const img = this.scene.add.image(cx, 0, part.image, part.frame).setOrigin(0, 0.5);
+        img.setScale(part.scale ?? Math.max(1, Math.floor(h / img.height)));
+        this.box.add(img);
+        cx += img.displayWidth + IMAGE_GAP;
+      } else if (typeof part !== 'string' && part.key !== null) {
         const [objs, w] = drawGlyph(this.scene, { key: part.key, label: part.label }, h);
         this.box.add(objs.map((o) => (o as Phaser.GameObjects.Graphics).setX((o as Phaser.GameObjects.Graphics).x + cx)));
         cx += w;

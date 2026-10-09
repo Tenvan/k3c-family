@@ -61,7 +61,7 @@ Verbindung weg beim Verlassen → Lobby trotzdem, Meldung 👋.
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
 | S8.1 | `S8.1-spiel-verlassen.md` | Umsetzung | autonom | fertig |
-| S8.2 | `S8.2-y-und-hinweisbilder.md` | Umsetzung | autonom | in Arbeit |
+| S8.2 | `S8.2-y-und-hinweisbilder.md` | Umsetzung | autonom | fertig |
 | S8.3 | `S8.3-review.md` | Review | autonom | offen |
 | S8.4 | `S8.4-browser-abnahme.md` | Workshop | Mensch | offen |
 
