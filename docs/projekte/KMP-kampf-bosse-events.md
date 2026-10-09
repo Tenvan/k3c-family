@@ -14,7 +14,7 @@ In Abarbeitungs-Reihenfolge; der erste nicht erledigte Sprint ist der nächste. 
 
 | Sprint | Thema | Status |
 |---|---|---|
-| K2 | Bosse, Siegvarianten und Inselwechsel | aktiv |
+| K2 | Bosse, Siegvarianten und Inselwechsel | erledigt |
 | K4 | Protokoll für Bosse, Events und Inselwechsel | geplant |
 | K5 | Anzeigen für Kampf, Bosse und Events, Anlegen-Dialog, Debug-Panel | geplant |
 | K3 | Events Vollmond, Blutmond und Händler-Überfall | geplant |

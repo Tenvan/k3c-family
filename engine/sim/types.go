@@ -37,9 +37,11 @@ type Player struct {
 	// reist mit. Nur Go, im JSON nur bei true.
 	Free bool `json:"free,omitempty"`
 	// Skills: gelernte Skills (IDs, Lernreihenfolge); Slots: aktive Skills in den Slots 1 bis 4 ("" = frei).
-	Skills         []string `json:"skills,omitempty"`
-	Slots          []string `json:"slots,omitempty"`
-	AttackCooldown float64  `json:"attackCooldown,omitempty"` // Sekunden bis zum nächsten Schlag
+	Skills []string `json:"skills,omitempty"`
+	Slots  []string `json:"slots,omitempty"`
+	// SkillBase: Zahl der Skills beim Betreten der Insel (NextIsland); sie zählen nicht gegen den Pool der neuen Insel.
+	SkillBase      int     `json:"skillBase,omitempty"`
+	AttackCooldown float64 `json:"attackCooldown,omitempty"` // Sekunden bis zum nächsten Schlag
 	// Cooldowns: Abklingzeit je Slot (Index 0 bis 3, Sekunden), nil bis zum ersten Skill-Einsatz.
 	Cooldowns []float64 `json:"cooldowns,omitempty"`
 	// Shield: Schild-HP, die applyDamage zuerst abzieht, für ShieldFor Sekunden. LastStandFor: so lange lässt ein

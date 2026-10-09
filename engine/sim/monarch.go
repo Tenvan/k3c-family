@@ -63,7 +63,8 @@ func chestSkillPoint(w *World, p *Player) {
 }
 
 // AvailablePoints sind die Punkte, die der Spieler noch verteilen kann.
-func AvailablePoints(w *World, p *Player) int { return poolOf(w) - len(p.Skills) }
+// Mitgebrachte Skills einer früheren Insel (SkillBase) zählen nicht.
+func AvailablePoints(w *World, p *Player) int { return poolOf(w) - (len(p.Skills) - p.SkillBase) }
 
 // lineCount zählt die gelernten Skills einer Linie.
 func lineCount(p *Player, line string) int {
@@ -118,7 +119,7 @@ func Respec(w *World, p *Player) error {
 	if math.Abs(p.X-w.Castle.X) > hub.CastleRadiusUnits {
 		return fmt.Errorf("respec nur an der Burg")
 	}
-	p.Skills, p.Slots = nil, nil
+	p.Skills, p.Slots, p.SkillBase = nil, nil, 0
 	return nil
 }
 

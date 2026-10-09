@@ -27,7 +27,7 @@ func nightIsland(t *testing.T) *Island {
 func TestIslandSaveV4Rundlauf(t *testing.T) {
 	isl := nightIsland(t)
 	s := isl.ToSave("2026-10-04T22:00:00Z")
-	if s.Version != 4 || s.Phase != "night" || s.Day != isl.Stages[0].Cycle.Day || s.Day < 1 {
+	if s.Version != IslandSaveVersion || s.Phase != "night" || s.Day != isl.Stages[0].Cycle.Day || s.Day < 1 {
 		t.Fatalf("Version %d, Tag %d, Phase %q", s.Version, s.Day, s.Phase)
 	}
 	if len(s.Players) != 2 || s.Players[0].Depth != 0 || s.Players[1].Depth != 1 {

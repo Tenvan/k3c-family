@@ -2,11 +2,12 @@ package sim
 
 // Siegvarianten der Raum-Optionen (B-102, docs/rules/stufen.md § 3): Das Ziel der Insel (Options.Goal) beendet das
 // Spiel mit dem Ereignis `victory`, genau einmal (Island.Won). Danach rechnet die Simulation weiter; was der Raum
-// anzeigt, entscheidet das Protokoll (K4). Auf mehreren Inseln wirkt das Ziel mit K2.3a; bis dahin gilt: erfüllt → Sieg.
+// anzeigt, entscheidet das Protokoll (K4). Jede Variante gilt nur auf der letzten Insel
+// der Daten (Kampagnensieg); vorher öffnet der Endboss den Inselwechsel (island_switch.go).
 
 // checkVictory prüft das Ziel der Insel nach dem Tick aller Stufen und meldet den Sieg in Stufe 0.
 func checkVictory(isl *Island) {
-	if isl.Won || len(isl.Stages) == 0 || !goalReached(isl) {
+	if isl.Won || len(isl.Stages) == 0 || !isl.isLast() || !goalReached(isl) {
 		return
 	}
 	isl.Won = true
