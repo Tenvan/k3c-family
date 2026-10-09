@@ -1,6 +1,6 @@
 # PL1.3 · Texte von Touch-Overlay und Shell zentral
 
-- **Status:** in Arbeit
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** PLAT
@@ -44,9 +44,9 @@ Werkzeug-Seiten `src/tools/` (eigenes Ticket); weitere Sprachen; Texte in `src/s
 
 ## Fertig, wenn
 
-- [ ] AC-04: `src/core/platformTextRule.test.ts` grün; `touchInput.ts` und `shell.ts` enthalten kein deutsches Text-Literal, die Texte stehen in `texts.de.ts` und `texts.en.ts` (B-215/AC-01).
-- [ ] AC-04: `texts.test.ts` belegt Englisch und den Rückfall auf Deutsch für die neuen Schlüssel (Vorbereitung für B-215/AC-02, Abnahme in PL1.5).
-- [ ] `task check` grün; keine Datei über 400 Zeilen, keine Funktion über 60.
+- [x] AC-04: `src/core/platformTextRule.test.ts` grün; `touchInput.ts` und `shell.ts` enthalten kein deutsches Text-Literal, die Texte stehen in `texts.de.ts` und `texts.en.ts` (B-215/AC-01).
+- [x] AC-04: `texts.test.ts` belegt Englisch und den Rückfall auf Deutsch für die neuen Schlüssel (Vorbereitung für B-215/AC-02, Abnahme in PL1.5).
+- [x] `task check` grün; keine Datei über 400 Zeilen, keine Funktion über 60.
 
 ## Prüfen
 
@@ -59,4 +59,8 @@ Manuelle Prüfungen (Browser, Xbox, TV) nur, wenn diese Datei sie nennt und 🧑
 
 ## Ergebnis
 
-–
+- AC-04 geprüft (B-215/AC-01): `src/core/platformTextRule.test.ts` – erst rot („Zurück zur Startseite …“, „Skill-Menü“, „Münzen geben / beitreten“), dann grün. Neue Schlüssel `shell.home`, `shell.homeTitle`, `touch.fullscreen`, `touch.sprint`, `touch.attack`, `touch.confirm`, `touch.skill1`–`touch.skill4`, `touch.skillMenu` in `texts.de.ts`/`texts.en.ts`; `touchInput.ts` und `shell.ts` nutzen `t()` (auch für die Ein-Wort-Labels, die die Regel nicht fängt).
+- AC-04 geprüft (Vorbereitung B-215/AC-02): `texts.test.ts` › „Shell und Touch-Overlay (B-215)“: Englisch „Back to start (View + Menu, Home)“, „Coins / join“, „Skill menu“; Sprache `fr` → Deutsch. Browser-Pane mit Sprache English und `?touch=1`: Home-Titel englisch, Touch-Tasten „Fullscreen, Sprint, Skill 1–4, Skill menu, Strike, Coins / join“; Sprache danach zurück auf Deutsch.
+- `task check` grün (`check_run task:check`).
+- Abweichung: Die Regel weicht von `src/scenes/textRule.test.ts` an zwei Stellen ab, sonst schlüge sie auf Code-Werte an: Zeilen mit `font` gelten als CSS („Segoe UI“), und in HTML-Markup (`<…>`) zählen nur Umlaute und ß (Tag- und Attributnamen wären sonst „zwei Wörter“). Selbsttest belegt beides. Browser mit Freigabe 🧑 für BED (2026-10-09).
+- Neue Tickets: keine.
