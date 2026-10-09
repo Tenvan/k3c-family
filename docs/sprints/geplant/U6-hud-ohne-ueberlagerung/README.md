@@ -3,12 +3,12 @@
 - **Status:** geplant
 - **Projekt:** BED
 - **Domäne:** CLI
-- **Reife:** Entwurf
+- **Reife:** bereit
 - **Tickets:** B-336, B-337
 - **Start-Commit:** –
-- **Spec:** Entwurf
+- **Spec:** freigegeben
 - **Revision:** 1
-- **Freigabe:** –
+- **Freigabe:** 2026-10-09, 🧑 im Chat, Revision 1, Vorschläge unter Offene Fragen übernommen
 
 ## Ausgangslage
 
@@ -58,19 +58,22 @@ B-336 › Ausnahme- und Fehlerfälle; B-337 › Ausnahme- und Fehlerfälle (sehr
 
 ## Offene Fragen
 
-- Stil von Hintergrund und Rahmen (Deckkraft, Farbe, Ecken; passend zu B-331): 🧑, blockiert U6.2.
-- Rangfolge beim Ausblenden (Pflichtanzeigen): 🧑, blockiert U6.2.
+- Stil von Hintergrund und Rahmen (Deckkraft, Farbe, Ecken; passend zu B-331): 🧑, blockiert U6.2 (bei der Freigabe 2026-10-09 ohne Vorschlag, weiter offen).
+- Rangfolge beim Ausblenden (Pflichtanzeigen): 🧑, blockiert U6.2 (bei der Freigabe 2026-10-09 ohne Vorschlag, weiter offen).
 - Soll der ☰-Knopf die Szene auch schließen (Umschalter)? 🧑, nicht blockierend.
 - Gerät für die Gesamtabnahme (AC-08): je Durchgang vorher erfragen; Xbox und Controller erst nach B-314.
+- Grenzfall Touch-Overlay (U6.1): Vorschlag: Die Optionen-Szene blendet `.k3c-zone` und `.k3c-touch` über ihre Klassen per `style.display` aus (CLI), `src/input/touchInput.ts` bleibt unverändert; Alternative wäre eine PLAT-Session mit `TouchInput.show()`. Übernommen mit der Freigabe 2026-10-09.
+- Browser-Pane für U6.1 (AC-01 bis AC-03 verlangen Nachweise mit `?touch=1`): 🧑 gibt sie je Lauf frei, sonst ist U6.1 blockiert.
+- Nur bildschirmfeste Anzeigen werden HUD-Elemente; Aktionen-Overlay, geführte Hinweise und Preisschilder bleiben weltgebunden (Vorschlag nach B-337 › Nicht-Ziele). Übernommen mit der Freigabe 2026-10-09.
 
 ## Sessions
 
-Entwurf. Vor dem Aktivieren jede Session als Datei nach `docs/vorlagen/session.md` schreiben, die Kriterien in Klammern werden ihr Feld `Kriterien`.
-
-- U6.1 Optionen-Szene per Touch bedienbar und schließbar, Overlay verdeckt nichts (AC-01, AC-02, AC-03).
-- U6.2 HUD-Elemente mit Layout-Funktion, Hintergrund und Rahmen (AC-04, AC-05, AC-06).
-- U6.3 Review (Code-Sprint): alle Kriterien prüfen.
-- U6.4 Workshop (🧑): Abnahme Touch und HUD, dann Gesamtabnahme nach Prüfliste B-337 (AC-07, AC-08).
+| Nr. | Datei | Typ | Agent | Status |
+|---|---|---|---|---|
+| U6.1 | `U6.1-optionen-per-touch.md` | Umsetzung | autonom | offen |
+| U6.2 | `U6.2-hud-elemente-layout.md` | Umsetzung | autonom | offen |
+| U6.3 | `U6.3-review.md` | Review | autonom | offen |
+| U6.4 | `U6.4-abnahme-gesamt.md` | Workshop | Mensch | offen |
 
 ## Abnahme
 
