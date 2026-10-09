@@ -1,12 +1,13 @@
 /**
  * Aktionen-Overlay (S3.3, B-125): Aktion und Gerät → Taste, Text und Gewicht, ohne Phaser, damit es getestet werden kann.
- * Der Client rechnet nichts: Schlag, Skills, Lernen und Respec kommen aus `actions` des Servers; Bauen und Zahlen aus
- * derselben Bedingung wie das Preisschild (`siteView.ts`, unbezahlter Bauplatz bzw. Bogen-Regal in Reichweite).
+ * Der Client rechnet nichts: Schlag, Skills, Lernen und Respec kommen aus `actions` des Servers; im Bereich eines
+ * Preisschilds (`siteView.ts`, unbezahlter Bauplatz bzw. Bogen-Regal) zeigt das Overlay keinen Hinweis (B-319).
  */
-import { nameOf, t } from '../core/texts';
+import { t } from '../core/texts';
 import { BUILDINGS } from '../model/data';
-import type { Player, Site, World } from '../model/types';
+import type { Player, World } from '../model/types';
 import type { Action, Device, SlotAction } from '../input/slotBindings';
+import type { FontName } from './fontRules';
 import { glyphOf, type Glyph } from './glyphs';
 import { skillName } from './skillMenuLogic';
 import { PRICE_TAG_RANGE } from './viewRules';
@@ -33,7 +34,6 @@ export interface HintView {
   weight: number;
 }
 
-const siteName = (kind: Site['kind']): string => nameOf('site', kind, BUILDINGS[kind].name);
 const WEIGHT: Record<Hint['action'], number> = { revive: 5, build: 4, pay: 4, attack: 2, skill: 1, learn: 1, respec: 1 };
 
 /** Taste eines Hinweises als Aktion der Belegung (`slotBindings.ts`) */
@@ -72,22 +72,23 @@ export function hintView(h: Hint, device: Device): HintView {
   return { key: glyph.label, glyph, around: [before, after], text: line(glyph.label), weight: WEIGHT[h.action] };
 }
 
-/** Bauen bzw. Zahlen am nächsten Ziel in Reichweite des Preisschilds (gleiche Bedingung wie `siteView.ts`) */
-function siteHint(world: World, p: Player): Hint | null {
+/** Schrift des Hinweises: Nebeninfo (`docs/rules/bedienung.md` § 2, B-319) */
+export const HINT_FONT: FontName = 'controlsHint';
+
+/** Steht der Spieler im Bereich eines Preisschilds (gleiche Bedingung wie `siteView.ts`: unbezahlter Bauplatz bzw. Bogen-Regal)? */
+function atPriceTag(world: World, p: Player): boolean {
   const rack = BUILDINGS.workshop.bowRack ?? 0;
-  const near = world.sites.filter((s) => Math.abs(s.x - p.x) < PRICE_TAG_RANGE).sort((a, b) => Math.abs(a.x - p.x) - Math.abs(b.x - p.x));
-  for (const s of near) {
-    if (s.state === 'unpaid') return { action: 'build', name: siteName(s.kind) };
-    if (s.state === 'built' && s.kind === 'workshop' && s.bows < rack) return { action: 'pay', name: t('site.bow') };
-  }
-  return null;
+  return world.sites.some(
+    (s) => Math.abs(s.x - p.x) < PRICE_TAG_RANGE && (s.state === 'unpaid' || (s.state === 'built' && s.kind === 'workshop' && s.bows < rack)),
+  );
 }
 
-/** Gültige Aktionen eines Spielers, wichtigste zuerst; ein gefallener Monarch hat keine */
-export function playerHints(world: World, p: Player, device: Device): HintView[] {
-  if (p.respawnIn > 0) return [];
-  const site = siteHint(world, p);
-  const hints: Hint[] = site ? [site] : [];
-  for (const a of p.actions) hints.push(a);
-  return hints.map((h) => hintView(h, device)).sort((a, b) => b.weight - a.weight);
+/**
+ * Ein Hinweis je Spieler (B-319, „ein Element je Weltposition“ je Bildschirmzelle): im Bereich eines Preisschilds keiner,
+ * das Preisschild trägt die Aktion. Die Server-Aktionen (`actions`) haben keinen eigenen Ort und stehen am Spieler
+ * (Entfernung 0); bei Gleichstand gewinnt das höhere Gewicht. Ein gefallener Monarch hat keinen.
+ */
+export function playerHint(world: World, p: Player, device: Device): HintView | null {
+  if (p.respawnIn > 0 || atPriceTag(world, p)) return null;
+  return p.actions.map((h) => hintView(h, device)).sort((a, b) => b.weight - a.weight)[0] ?? null;
 }

@@ -138,6 +138,7 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-367](B-367-doku-nachzug-projekte.md) | INF | Schuld | niedrig | offen | – | Begriffe aus den alten Bahnen und Spuren sind nach PJ3 ersetzt und neue Projekt-Begriffe im Glossar |
 | [B-368](B-368-planung-erpapi-ablage.md) | SRV | Schuld | mittel | offen | – | Die Planung liegt in der ErpApi-Ablage und k3c-dev bedient sie mit den Planungs-Tools der Workbench-Spec |
 | [B-369](B-369-texte-landingpage.md) | PLAT | Schuld | niedrig | offen | – | Die Landingpage zeigt ihre Texte in der gewählten Sprache |
+| [B-372](B-372-preisschild-taste.md) | CLI | Frage | mittel | offen | – | Das Preisschild nennt die Taste zum Bezahlen |
 
 ## Archiv
 
