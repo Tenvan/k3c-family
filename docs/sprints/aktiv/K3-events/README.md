@@ -4,11 +4,11 @@
 - **Projekt:** KMP
 - **Domäne:** SIM
 - **Reife:** bereit
-- **Tickets:** B-131
+- **Tickets:** B-131, B-373
 - **Start-Commit:** 1ac1824
 - **Spec:** freigegeben
-- **Revision:** 1
-- **Freigabe:** 2026-10-05, Chat, durch 🧑, Revision 1
+- **Revision:** 2
+- **Freigabe:** 2026-10-09, Chat, durch 🧑, Revision 2 (HP 100, speichern, Session K3.2a)
 
 ## Ausgangslage
 
@@ -49,17 +49,20 @@ Händler-Überfall ohne Händler-Besuch → kein Überfall.
 - **AC-01** Auslöser nach Rhythmus (7., 13., jeder 4. Besuch), Wirkung auf Wellen, Schaden und Drops laut Daten (Test) (B-131/AC-01).
 - **AC-02** Händler-Überfall nur bei Besuch, Belohnung bei Schutz (Test) (B-131/AC-02).
 - **AC-03** Golden-Daten aktualisiert, `task check:go` grün (B-131/AC-03).
+- **AC-04** Der Händler ist eine angreifbare Figur mit 100 HP, die bei 0 abreist (Test) (B-373/AC-01).
+- **AC-05** Besuchszähler je Insel und anwesender Händler überstehen Speichern und Laden, alte Stände laden (Test) (B-373/AC-02).
 
 ## Offene Fragen
 
-keine
+Revision 2 (2026-10-09): K3.2 war blockiert, weil der Händler aus W4.2 weder angreifbar ist noch Besuche zählt (B-373). 🧑 hat entschieden: HP 100, anwesender Händler wird gespeichert, neue Session K3.2a vor K3.2.
 
 ## Sessions
 
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
 | K3.1 | `K3.1-vollmond-blutmond.md` | Umsetzung | autonom | fertig |
-| K3.2 | `K3.2-haendler-ueberfall-golden.md` | Umsetzung | autonom | blockiert |
+| K3.2a | `K3.2a-haendler-figur-besuche.md` | Umsetzung | autonom | offen |
+| K3.2 | `K3.2-haendler-ueberfall-golden.md` | Umsetzung | autonom | offen |
 | K3.3 | `K3.3-review.md` | Review | autonom | offen |
 
 Bei `Reife: Entwurf` genügen Stichpunkte mit den Kriterien in Klammern statt Session-Dateien. Vor dem Aktivieren

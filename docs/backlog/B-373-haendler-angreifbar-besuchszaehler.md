@@ -1,16 +1,16 @@
 # B-373 · Der Händler ist eine angreifbare Figur mit Besuchszähler im Spielstand
 
 - **Domäne:** SIM
-- **Typ:** Frage
+- **Typ:** Idee
 - **Prio:** mittel
 - **Umgebung:** offline
-- **Status:** offen
+- **Status:** eingeplant
 - **Sprint:** K3
 - **Projekt:** KMP
 - **Erstellt:** 2026-10-09
-- **Spec:** Entwurf
+- **Spec:** freigegeben
 - **Revision:** 1
-- **Freigabe:** –
+- **Freigabe:** 2026-10-09, Chat, durch 🧑, mit Sprint K3 Revision 2
 
 ## Ausgangslage
 
@@ -53,9 +53,7 @@ Burgfall während des Besuchs: Händler bleibt bzw. reist ab laut Entscheidung; 
 
 ## Offene Fragen
 
-- Händler-HP (Vorschlag 100, vorläufig, BR2) und ob Spieler/Truppen ihn heilen.
-- Wird ein anwesender Händler gespeichert (Vorschlag: ja, mit HP und Abreisetag)?
-- Einplanen: als neue Session in K3 vor K3.2 (Spec-Revision K3 + Freigabe) oder als eigener SIM-Sprint vor K3.
+Entschieden von 🧑 am 2026-10-09 (Chat): Händler-HP 100 (vorläufig, BR2); ein anwesender Händler wird mit HP und Abreisetag gespeichert; Umsetzung als Session K3.2a vor K3.2. Heilen durch Spieler oder Truppen: nicht vorgesehen.
 
 ## Notizen
 
