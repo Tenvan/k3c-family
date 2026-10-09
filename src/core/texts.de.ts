@@ -177,6 +177,18 @@ export const de = {
   'guide.recruit': '{key} halten: Münze geben, er wird Bauer',
   'lang.de': 'Deutsch',
   'lang.en': 'English',
+  // Shell (Home-Button) und Touch-Overlay (B-215)
+  'shell.home': 'Start',
+  'shell.homeTitle': 'Zurück zur Startseite (View + Menu, Pos1)',
+  'touch.fullscreen': 'Vollbild',
+  'touch.sprint': 'Sprinten',
+  'touch.attack': 'Schlag',
+  'touch.confirm': 'Münzen geben / beitreten',
+  'touch.skill1': 'Skill 1',
+  'touch.skill2': 'Skill 2',
+  'touch.skill3': 'Skill 3',
+  'touch.skill4': 'Skill 4',
+  'touch.skillMenu': 'Skill-Menü',
 };
 
 export type TextKey = keyof typeof de;

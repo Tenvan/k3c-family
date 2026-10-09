@@ -56,3 +56,8 @@ Auf welcher Seite wurde es versucht (`game.html`, `testing.html`)? Mit `?dev=0` 
 ## Notizen
 
 Gemeldet von 🧑 nach X1.2. Die Domäne hängt von der Ursache ab (Eingabe PLAT oder Overlay CLI).
+
+**Befund PL1.1 (2026-10-09, Browser-Pane, Shell mit iframe, gemockter Controller):**
+- Code-Pfad heute: `HudScene` erzeugt `DebugOverlay` nur, wenn `debugEnabled(location.search)` (`src/scenes/debugOverlay.ts`: alles außer `?dev=0`). Gesten in `src/scenes/debugOverlayView.ts` › `takeGestures` über `holdStep` (`debugGestures.ts`): RB 3 s = Diagnose, LB + RB 3 s = Cheat-Dialog, LB + RB kurz schließt; Ö/Ä an der Tastatur. Die Pads kommen aus `hud.input.gamepad` (Phaser `refreshPads` je Frame, also auch für Pads, die vor dem Start der HUD-Szene verbunden waren). Der LS-Weg (Taste 10) aus dem Ticket ist seit B-231 (Commit `5c03798d`, 2026-10-04) ersetzt.
+- Vier Fälle: `game.html` → Overlay erzeugt, HUD sieht das Pad, RB 3 s zeigt die Diagnose, LB + RB 3 s öffnet den Dialog, LB + RB kurz schließt, Ö und Ä wirken. `game.html?dev=0` → kein Overlay (gewollt). Testszenario (`testing.html` → `game.html?autostart=1&fresh=1&save=…&mock=1`) → wie `game.html`. `testing.html?dev=0` → `scenarioUrl` reicht `dev` nicht weiter, also wie ohne `?dev=0`; nur `?dev=0` am Spiel selbst schaltet ab.
+- Ursache im Browser nicht nachstellbar; weder `src/input/` noch der heutige Overlay-Code zeigen einen Fehler. Vermutet (ungeprüft): Am 2026-10-03 lief auf der Xbox noch der LS-Weg; oder Edge auf der Xbox nutzt LB/RB bzw. die Tasten-Emulation (keyCode 195–218, Bericht `gamepad-2026-10-03T16-19-33-906Z.json`; LS-Klick 209 fehlt dort) selbst. Prüfung an der Xbox in PL1.5 (Schritt 3).

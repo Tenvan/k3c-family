@@ -1,6 +1,6 @@
 # PL1.4 · Review
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Review
 - **Agent:** autonom
 - **Domäne:** PLAT
@@ -43,9 +43,9 @@ Neue Funktionen; manuelle Abnahmen am PC oder an der Xbox (PL1.5); Werkzeug-Seit
 
 ## Fertig, wenn
 
-- [ ] AC-01 bis AC-04 haben einen Nachweis im Ergebnis der jeweiligen Session, sind als „offen in PL1.5“ vermerkt oder mit Grund und Ticket verschoben.
-- [ ] Schwere Befunde sind behoben oder als Ticket angelegt.
-- [ ] `task check` grün; PR des Sprints offen.
+- [x] AC-01 bis AC-04 haben einen Nachweis im Ergebnis der jeweiligen Session, sind als „offen in PL1.5“ vermerkt oder mit Grund und Ticket verschoben.
+- [x] Schwere Befunde sind behoben oder als Ticket angelegt.
+- [x] `task check` grün; PR des Sprints offen.
 
 ## Prüfen
 
@@ -57,4 +57,10 @@ Manuelle Prüfungen (Browser, Xbox, TV) nur, wenn diese Datei sie nennt und 🧑
 
 ## Ergebnis
 
-–
+- Kriterien: AC-01 entfällt (B-292 in LP1). AC-02 geprüft (PL1.2: `keyboardLayouts.test.ts`, Browser-Pane), AC-03 Ursache im Browser nicht nachstellbar, offen gelegt in B-195 › Notizen (PL1.1), AC-04 geprüft (PL1.3: `platformTextRule.test.ts`, `texts.test.ts`). Offen in PL1.5: B-316/AC-02, B-195/AC-02, B-215/AC-02.
+- Review durch eigenen Agenten (Sonnet, nicht der Autor), nur der Diff: keine schweren Befunde. Geprüft u. a.: keine doppelten Listener bei Szenen-Neustart (Plugin entfernt sie beim Shutdown, BLUR abgemeldet), Pause/Vollbild bei Spieler 1, kein Konflikt mit dem Cheat-Dialog (bei offenem Dialog alle Spieler stumm), `src/core` ohne Import aus `src/scenes`, `GameScene.ts` 398 Zeilen, B-371 ohne Kollision mit B-370 auf `sprint/s8`.
+- Kleinbefund behoben: Pfeile von Spieler 2 nach `code` (`ArrowLeft`/`ArrowRight`), Test für Ziffernblock 4 ohne NumLock (keyCode 37).
+- Kleinbefunde offen: Strg rechts plus Ziffernblock könnte Browser-Kürzel auslösen (ungeprüft) → Prüfpunkt in PL1.5 › Schritt 2; die Text-Regel prüft in Markup nur Umlaute (begründet, Selbsttest).
+- `task check` grün. Tickets bleiben bis PL1.5 offen.
+- Abweichung: Review im selben Lauf wie PL1.1–PL1.3 (Auftrag 🧑: BED autonom abarbeiten), deshalb an einen eigenen Agenten gegeben.
+- Neue Tickets: keine.

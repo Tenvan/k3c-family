@@ -40,6 +40,16 @@ describe('t() (AC-02)', () => {
     expect(t('opt.title')).toBe('Optionen');
   });
 
+  it('Shell und Touch-Overlay (B-215): Englisch, unbekannte Sprache → Deutsch', () => {
+    setLanguage('en');
+    expect(t('shell.homeTitle')).toBe('Back to start (View + Menu, Home)');
+    expect(t('touch.confirm')).toBe('Coins / join');
+    expect(t('touch.skillMenu')).toBe('Skill menu');
+    setLanguage('fr');
+    expect(t('shell.homeTitle')).toBe('Zurück zur Startseite (View + Menu, Pos1)');
+    expect(t('touch.confirm')).toBe('Münzen geben / beitreten');
+  });
+
   it('fehlender englischer Text → Deutsch', () => {
     const saved = en['opt.title'];
     delete (en as Partial<typeof en>)['opt.title'];

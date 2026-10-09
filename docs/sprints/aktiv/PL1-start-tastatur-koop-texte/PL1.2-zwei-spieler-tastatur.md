@@ -1,6 +1,6 @@
 # PL1.2 · Zwei Spieler an einer Tastatur
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** PLAT
@@ -45,9 +45,9 @@ Tastenbelegung frei einstellbar; Controller-Änderungen; Umbau von Hilfe, Glyphe
 
 ## Fertig, wenn
 
-- [ ] AC-02: Ein Test in `src/input/` belegt: keine gemeinsame Taste in den Layouts, jede Aktion in beiden belegt (B-316/AC-01).
-- [ ] AC-02: Im Browser-Pane treten zwei Tastatur-Spieler bei (Leertaste, Enter) und bewegen sich unabhängig (Beobachtung im Ergebnis; die Abnahme B-316/AC-02 macht 🧑 in PL1.5).
-- [ ] `task check` grün; keine Datei über 400 Zeilen, keine Funktion über 60.
+- [x] AC-02: Ein Test in `src/input/` belegt: keine gemeinsame Taste in den Layouts, jede Aktion in beiden belegt (B-316/AC-01).
+- [x] AC-02: Im Browser-Pane treten zwei Tastatur-Spieler bei (Leertaste, Enter) und bewegen sich unabhängig (Beobachtung im Ergebnis; die Abnahme B-316/AC-02 macht 🧑 in PL1.5).
+- [x] `task check` grün; keine Datei über 400 Zeilen, keine Funktion über 60.
 
 ## Prüfen
 
@@ -60,4 +60,10 @@ Manuelle Prüfungen (Browser, Xbox, TV) nur, wenn diese Datei sie nennt und 🧑
 
 ## Ergebnis
 
-–
+- AC-02 geprüft (B-316/AC-01, Test `src/input/keyboardLayouts.test.ts`): keine gemeinsame Taste (auch Strg, Enter, Pfeile nicht über den keyCode in Layout 1), Laufen, Sprint, `confirm` und alle Slot-Aktionen in beiden Layouts, keine Taste doppelt, Layout 2 ohne Pos1/F/Esc/Ö/Ä, Pause und Vollbild nur bei Spieler 1; Strg rechts und Ziffernblock zählen nach `code` (Ziffernblock auch ohne NumLock), Buchstaben nach keyCode (QWERTZ-Z).
+- Belegung: Spieler 1 A/D, Shift, Leertaste, E, Q, R, T, Z, K, Esc, F (wie bisher, ohne Pfeile). Spieler 2 ←/→, Strg rechts = Sprint, Enter (Haupt- und Ziffernblock) = Beitreten/Münzen, Ziffernblock 0 = Schlag, 1–4 = Skill 1–4, 5 = Skill-Menü.
+- Umsetzung: `KeyboardInput` bekommt das Layout und liest die Tastenereignisse der Szene (`keydown`/`keyup` des Phaser-Keyboard-Plugins mit `code`), Autorepeat löst nichts neu aus, ein kurzer Tipp innerhalb eines Frames zählt, Fokusverlust leert die gehaltenen Tasten. `keyboardPlayers()` erzeugt beide; `GameScene` hält sie als Paar (`keyboards`) in `update()`, Eingabeliste, Pause (nur Spieler 1) und `lastDevice`.
+- AC-02 Beobachtung (Browser-Pane, `game.html`, Loop getaktet): Leertaste und Enter → zwei Monarchen (Slots 0 und 1), zwei Kameras im Split-Screen; D → nur Slot 0 läuft, ← → nur Slot 1; D und ← gleichzeitig → beide unabhängig; Strg rechts + → → Sprint nur Slot 1, Strg links → kein Sprint, Shift → Sprint Slot 0.
+- `task check` grün (`check_run task:check`); `GameScene.ts` 398 Zeilen (vorher 399), `playerInput.ts` 133, `keyboardLayouts.ts` 55.
+- Abweichung: Neben Erzeugen, `update()` und Eingabeliste ändert `GameScene.ts` auch Pause und `lastDevice` (eine Zeile je Stelle, nötig durch das Paar `keyboards`, sonst wäre die Datei über 400 Zeilen). Hinweise und Glyphen zeigen für Spieler 2 noch die Tasten von Spieler 1 → B-371 (CLI). Browser mit Freigabe 🧑 für BED (2026-10-09).
+- Neue Tickets: B-371 (Nummer von Hand, B-370 ist auf `sprint/s8` vergeben).
