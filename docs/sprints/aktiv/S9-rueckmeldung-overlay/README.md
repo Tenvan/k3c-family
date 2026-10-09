@@ -1,14 +1,14 @@
 # S9 · CLI · Rückmeldung für Schlag und Skills, ein Hinweis je Spieler
 
-- **Status:** geplant
+- **Status:** aktiv
 - **Projekt:** BED
 - **Domäne:** CLI
 - **Reife:** bereit
 - **Tickets:** B-319, B-318
-- **Start-Commit:** –
-- **Spec:** Entwurf
+- **Start-Commit:** edf3f1b1
+- **Spec:** freigegeben
 - **Revision:** 1
-- **Freigabe:** –
+- **Freigabe:** 2026-10-09, 🧑 im Chat
 
 ## Ausgangslage
 
@@ -60,7 +60,7 @@ Hinweis und Preisschild an derselben Position → Preisschild gewinnt, Hinweis e
 
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
-| S9.1 | `S9.1-ein-hinweis.md` | Umsetzung | autonom | offen |
+| S9.1 | `S9.1-ein-hinweis.md` | Umsetzung | autonom | in Arbeit |
 | S9.2 | `S9.2-protokoll-rueckmeldung.md` | Umsetzung | autonom | offen |
 | S9.3 | `S9.3-rueckmeldung-zeichnen.md` | Umsetzung | autonom | offen |
 | S9.4 | `S9.4-review.md` | Review | autonom | offen |
