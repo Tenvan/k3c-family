@@ -75,7 +75,7 @@ func sendEnemiesHome(w *World) {
 type target struct {
 	id     int
 	x      float64
-	kind   string // player, troop, wall (Mauer oder Tor), castle, site (Turm), building (übrige Gebäude)
+	kind   string // player, troop, merchant, wall (Mauer oder Tor), castle, site (Turm), building (übrige Gebäude)
 	player *Player
 }
 
@@ -208,6 +208,9 @@ func candidates(w *World, e *Enemy, dir float64, wall *Site) []target {
 			out = append(out, target{t.ID, t.X, "troop", nil})
 		}
 	}
+	if x := merchantX(w, "buy"); w.Merchant != nil && r.inRange(x) {
+		out = append(out, target{merchantID, x, "merchant", nil})
+	}
 	return append(out, buildingTargets(w, r)...)
 }
 
@@ -247,6 +250,11 @@ func chooseTarget(w *World, e *Enemy, dir float64, wall *Site) *target {
 			return &c
 		}
 	}
+	for _, c := range all { // Händler-Überfall: der Händler zuerst (events_merchant.go)
+		if c.kind == "merchant" && w.Merchant.Raid {
+			return &c
+		}
+	}
 	pool := []target{}
 	for _, c := range all {
 		if e.prefers(c) {
@@ -282,12 +290,12 @@ func attack(w *World, e *Enemy, t *target) {
 		return
 	}
 	if e.has("ranged") {
-		p := &Projectile{ID: w.newID(), X: e.X, TargetID: t.id, Team: "enemy", Damage: e.Damage, Speed: 20, Cause: e.Kind}
+		p := &Projectile{ID: w.newID(), X: e.X, TargetID: t.id, Team: "enemy", Damage: moonDamage(w, e.Damage), Speed: 20, Cause: e.Kind}
 		w.Projectiles = append(w.Projectiles, p)
 		arrowEvent(w, p, e.ID)
 	} else {
 		emit(w, "strike", Event{"from": e.ID, "x": unitX(e.X)})
-		applyDamageBy(w, t.id, e.Damage, e.Kind)
+		applyDamageBy(w, t.id, moonDamage(w, e.Damage), e.Kind) // Blutmond (events_moon.go)
 		if t.player != nil {
 			frostArmorHit(t.player, e)
 		}

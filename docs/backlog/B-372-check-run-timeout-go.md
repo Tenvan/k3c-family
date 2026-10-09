@@ -14,7 +14,7 @@
 
 ## Ausgangslage
 
-`check_run` mit `go:test` und `task:check:go` endet im MCP-Aufruf mit „The operation timed out.“ (2026-10-08 PJ3.4, 2026-10-09 K2.4), obwohl `task check:go` in der Shell grün durchläuft (`k3c-load` ~21 s, `engine/net` ~21 s, dazu Lint). Agenten müssen dann auf die Shell ausweichen. Zusätzlich lehnen laufende k3c-dev-Instanzen die Domäne `DEV` aus DV1 noch ab (alter Build), und `console_tail` hat andere Parameter als in den Server-Anweisungen beschrieben.
+`check_run` mit `go:test` und `task:check:go` endet im MCP-Aufruf mit „The operation timed out.“ (2026-10-08 PJ3.4, 2026-10-09 K2.4), obwohl `task check:go` in der Shell grün durchläuft (`k3c-load` ~21 s, `engine/net` ~21 s, dazu Lint). Agenten müssen dann auf die Shell ausweichen. Zusätzlich lehnen laufende k3c-dev-Instanzen die Domäne `DEV` aus DV1 noch ab (alter Build), und `console_tail` hat andere Parameter als in den Server-Anweisungen beschrieben. Außerdem (2026-10-09): `plan_set` an Sprints verlangt noch das Feld `Prio` (seit B-361 entfernt, „unbekanntes Feld“), und `plan_create` lehnt Session-IDs mit Buchstaben wie `K3.2a` ab (K2 nutzt sie seit K2.1a).
 
 ## Ziel
 

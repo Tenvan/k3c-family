@@ -120,6 +120,10 @@ func applyDamageBy(w *World, targetID int, damage float64, cause string) {
 			return
 		}
 	}
+	if targetID == merchantID && w.Merchant != nil {
+		damageMerchant(w, damage)
+		return
+	}
 	if w.Castle.ID == targetID {
 		w.Castle.HP -= damage
 		hitEvent(w, "castle", w.Castle.ID, w.Castle.X, damage)

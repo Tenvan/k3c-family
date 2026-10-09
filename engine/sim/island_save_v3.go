@@ -51,8 +51,8 @@ func parseIslandV2(raw []byte) (IslandSave, error) {
 	return s, validateIslandSave(s)
 }
 
-// parseIslandV3 liest Version 3 bis 5: Version 4 hat zusätzlich `day` und `phase`, Version 5 Bosse, Insel und Zähler
-// (island_save_v5.go); was fehlt, bleibt leer.
+// parseIslandV3 liest Version 3 bis 6: Version 4 hat zusätzlich `day` und `phase`, Version 5 Bosse, Insel und Zähler,
+// Version 6 den Händler (island_save_v5.go); was fehlt, bleibt leer.
 func parseIslandV3(raw []byte) (IslandSave, error) {
 	s := IslandSave{Options: DefaultOptions()}
 	if err := decodeIsland(raw, "skillPool", &s); err != nil {

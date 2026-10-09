@@ -136,6 +136,9 @@ func Step(w *World, commands []PlayerCommand, dt float64) {
 // der Insel (defeat.go). In einer geschützten Nacht (protectedNight) bleiben Gebäude, Ressourcen, Gold und Truppen.
 func castleFallen(w *World) {
 	w.Events = append(w.Events, Event{"type": "castleFallen"})
+	if w.Cycle.Phase == "night" {
+		w.castleFellNight = w.Cycle.Day // keine Vollmond-Belohnung für diese Nacht (events_moon.go)
+	}
 	w.Castle.HP = w.Castle.MaxHP
 	if !w.protectedNight() {
 		defeatLosses(w)

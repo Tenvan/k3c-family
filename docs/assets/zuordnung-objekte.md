@@ -36,6 +36,7 @@ Skalierung ×2 bis ×3, Nachbearbeitung nur Skalieren und Palette.
 |---|---|---|---|---|---|---|
 | `greed` | `data/enemies.json` | `sprites/goblin` | `idle/run/attack.png`, Frame 150×150, Tönung `#c77dff` | Figur 36 px, LuizMelo, ×2,25 | CC0 1.0 | zugeordnet |
 | `wolf` | `data/enemies.json` | `sprites/hell-hound` | `idle/run/attack.png`, Frame 50×44 | Figur 24 px, Gothicvania, ×3 | CC0 1.0 | zugeordnet |
+| `alphaWolf` | `data/enemies.json` | `sprites/hell-hound` | `idle/run/attack.png`, Frame 50×44, Tönung `#e0e0ff` (vorläufig wie Wolf, B-010) | Figur 24 px, Gothicvania, ×3 | CC0 1.0 | zugeordnet |
 | `goblin` | `data/enemies.json` | `sprites/goblin` | `idle/run/attack.png`, Frame 150×150 | Figur 36 px, LuizMelo, ×2,25 | CC0 1.0 | zugeordnet |
 | `goblinArcher` | `data/enemies.json` | `sprites/goblin` | `idle/run/attack.png`, Frame 150×150, Tönung `#74c69d` | Figur 36 px, LuizMelo, ×2,25 | CC0 1.0 | zugeordnet |
 | `skeleton` | `data/enemies.json` | `sprites/cemetery-skeleton` | `idle/run/attack.png`, Frame 34×46 | Figur 40 px, Gothicvania, ×2,5 | CC0 1.0 | zugeordnet |

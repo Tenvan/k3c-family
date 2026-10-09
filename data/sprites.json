@@ -1080,6 +1080,10 @@
     "wolf": {
       "sheet": "hell-hound"
     },
+    "alphaWolf": {
+      "sheet": "hell-hound",
+      "tint": "#e0e0ff"
+    },
     "goblin": {
       "sheet": "goblin"
     },

@@ -76,11 +76,17 @@ func startWave(w *World) {
 		size, hp, damage = w.island.waveFactors()
 	}
 	plan := planWave(w.Biome, w.Wave, w.rng, w.Portals, w.Cycle.Phase == "night", size)
+	plan = append(plan, fullMoonExtra(w, plan)...) // Vollmond (events_moon.go)
+	queueWave(w, plan, hp, damage)
+	w.Events = append(w.Events, Event{"type": "wave", "wave": w.Wave, "count": len(plan)})
+	triggerBoss(w)
+}
+
+// queueWave stellt die Plätze einer Welle mit den Faktoren der Insel in die Warteschlange (startWave, Händler-Überfall).
+func queueWave(w *World, plan []spawnOrder, hp, damage float64) {
 	for _, s := range plan {
 		w.SpawnQueue = append(w.SpawnQueue, QueuedSpawn{Kind: s.kind, X: s.x, At: w.Time + s.delay, hpFactor: hp, damageFactor: damage})
 	}
-	w.Events = append(w.Events, Event{"type": "wave", "wave": w.Wave, "count": len(plan)})
-	triggerBoss(w)
 }
 
 // targetX ist die Position des Ziels eines Geschosses (Gegner, Spieler, Truppen, Bauplätze, Burg).
@@ -100,6 +106,9 @@ func targetX(w *World, id int) (float64, bool) {
 	}
 	if s := siteByID(w, id); s != nil {
 		return s.X, true
+	}
+	if id == merchantID && w.Merchant != nil { // Händler (merchant.go)
+		return merchantX(w, "buy"), true
 	}
 	return w.Castle.X, w.Castle.ID == id
 }
@@ -149,7 +158,7 @@ func removeDeadEnemies(w *World) {
 // enemyDrop: Gold laut Daten plus geklautes Gold als Münzen, mit Chance die Stufen-Ressource in den Vorrat.
 func enemyDrop(w *World, e *Enemy) {
 	gold := enemyData[e.Kind].Gold
-	dropped := w.rng.Int(gold[0], gold[1]) + e.CarriedGold
+	dropped := moonDrop(w, w.rng.Int(gold[0], gold[1])) + e.CarriedGold // Blutmond: Drop × Faktor, geklautes Gold nicht
 	scatterCoins(w, e.X, dropped)
 	emit(w, "kill", Event{"kind": e.Kind, "x": unitX(e.X), "gold": dropped})
 	drop := economy.EnemyResourceDrop

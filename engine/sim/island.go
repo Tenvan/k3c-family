@@ -42,8 +42,10 @@ type Island struct {
 	SwitchReady    bool
 	switchProgress float64
 	// Over: Niederlage-Modus „Komplett verloren“ (defeat.go); die Insel ist zu Ende, StepIsland ändert nichts mehr.
-	Over       bool
-	nextPlayer int
+	Over bool
+	// MerchantVisits: Ankünfte des Händlers auf der Insel (merchant.go), Rhythmus des Händler-Überfalls (K3.2).
+	MerchantVisits int
+	nextPlayer     int
 	// travel: Reisefortschritt je Spielerindex (island_travel.go); nur über die Stufen- und Spielerlisten iterieren.
 	travel map[int]*islandTravel
 }

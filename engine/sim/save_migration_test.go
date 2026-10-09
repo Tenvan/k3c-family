@@ -35,6 +35,7 @@ func TestAlterSpielstandLaedt(t *testing.T) {
 		{3, 2, []int{23, 8}, []int{0, 1}, Stock{Stone: 12}},
 		{4, 2, []int{23, 8}, []int{0, 1}, Stock{Stone: 12}},
 		{5, 2, []int{23, 8}, []int{0, 1}, Stock{Stone: 12}},
+		{6, 2, []int{23, 8}, []int{0, 1}, Stock{Stone: 12}},
 	}
 	for _, c := range cases {
 		s, err := ParseIslandSave(readFixture(t, c.version))

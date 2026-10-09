@@ -1,0 +1,8 @@
+{
+  "notes": "Events der Nacht (docs/rules/bosse.md § 2, B-131). everyNights: jede n-te Nacht (Nacht n = Cycle.Day n in der Phase night). fullMoon: zusätzliche Gegner der Art kind = wolfShare × gezogene dieser Art (aufgerundet) plus ein elite-Gegner, rewardGold bei Tagesanbruch, wenn die Burg hielt. bloodMoon: Schaden ×damageFactor beim Angriff, Gold-Drop ×dropFactor, nur in dieser Nacht. merchantRaid: jeder everyVisits-te Händler-Besuch einer Insel bringt eine Welle der Stufe, Gegner greifen zuerst den Händler an; lebt er bei der Abreise, kommen rewardMaterial seines Materials in den Vorrat. Werte vorläufig (BR2). Gilt nur auf Inseln.",
+  "events": [
+    { "id": "fullMoon", "everyNights": 7, "kind": "wolf", "wolfShare": 0.5, "elite": "alphaWolf", "rewardGold": 50 },
+    { "id": "bloodMoon", "everyNights": 13, "damageFactor": 1.3, "dropFactor": 2 },
+    { "id": "merchantRaid", "everyVisits": 4, "rewardMaterial": 100 }
+  ]
+}

@@ -18,6 +18,7 @@ import "math"
 //	revived       – Monarch von einem Mitspieler wiederbelebt (A halten, revive.go; Q62): player, x
 //	trained       – Bauer ausgebildet (professions.go): kind (miner, builder, craftsman), x
 //	merchantArrived – Händler kommt (merchant.go): resource, x (Zahlziel Kaufen); merchantLeft – Händler reist ab
+//	merchantFled  – Händler bei 0 HP geflohen, ein halber Kauf fällt als Münzen (merchant.go, B-373); hit mit target merchant
 //	disarmed      – Bürger verliert seine Ausrüstung (Verlust-Kaskade, warrior.go; Q67, Q69): kind (Figur oder
 //	                Beruf), x, cause (Gegnerart wie playerDown); ohne Priorität, nicht beim Burgfall
 //	equipmentTaken – Gegner trägt Ausrüstung weg (Q68, Q69); nur angelegt, das Aufheben durch Gegner baut K1
@@ -31,6 +32,11 @@ import "math"
 //	islandGateOpen – Endboss besiegt, Wechselpunkt zur nächsten Insel offen, in der tiefsten Stufe (island_switch.go):
 //	                island (Index der nächsten Insel), x (Burg)
 //	islandSwitch  – alle lebenden Spieler stehen am Wechselpunkt, der Raum tauscht die Insel: island
+//	eventStarted  – Event beginnt, je Nacht und Event einmal, in Stufe 0 (events_moon.go): event (fullMoon,
+//	                bloodMoon), day; Händler-Überfall bei Ankunft in der Stufe des Händlers (events_merchant.go):
+//	                event merchantRaid, day, visit
+//	eventEnded    – Event endet: Nacht-Events bei Tagesanbruch (event, day = die Nacht); merchantRaid bei Abreise oder
+//	                Flucht: event, day, protected, resource, amount (Belohnung im Vorrat)
 //
 //	playerDown    – Monarch fällt: player, cause (Gegnerart aus data/enemies.json bei Nahkampf und Geschoss,
 //	                sonst "other"; B-182)

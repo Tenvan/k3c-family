@@ -10,17 +10,37 @@ import "math"
 
 // MerchantData sind Rhythmus und Kurs aus data/economy.json › merchant.
 type MerchantData struct {
+	HP                                                       float64 // Lebenspunkte bei Ankunft (B-373, vorläufig)
 	EveryDays, EveryDaysWithTavern, StayDays, Material, Gold int
 	Materials                                                []string // Index + 1 = Hub-Stufe, ab der das Material handelbar ist
 }
 
 // Merchant ist der anwesende Händler: Resource ist sein Material, Leaves der Tag, an dessen dawn er abreist,
-// BuyPaid das Gold für den laufenden Kauf.
+// BuyPaid das Gold für den laufenden Kauf. Gegner greifen ihn am Kaufen-Zahlziel an (HP, B-373); bei 0 flieht er.
 type Merchant struct {
-	Resource string `json:"resource"`
-	Leaves   int    `json:"leaves"`
-	BuyPaid  int    `json:"buyPaid,omitempty"`
+	Resource string  `json:"resource"`
+	Leaves   int     `json:"leaves"`
+	BuyPaid  int     `json:"buyPaid,omitempty"`
+	// Raid: Dieser Besuch wird überfallen (events_merchant.go); Gegner greifen den Händler zuerst an.
+	Raid bool `json:"raid,omitempty"`
+	// HP, MaxHP: nicht im Zustand (Protokoll unverändert, Anzeige mit K4/K5); gespeichert über MerchantSave.
+	HP    float64 `json:"-"`
+	MaxHP float64 `json:"-"`
 }
+
+// MerchantSave ist der anwesende Händler im Spielstand (Version 6, B-373).
+type MerchantSave struct {
+	Resource string  `json:"resource"`
+	Leaves   int     `json:"leaves"`
+	BuyPaid  int     `json:"buyPaid,omitempty"`
+	Raid     bool    `json:"raid,omitempty"`
+	HP       float64 `json:"hp"`
+	MaxHP    float64 `json:"maxHp"`
+}
+
+// merchantID ist die ID des Händlers als Ziel. ponytail: feste ID statt w.newID(), damit seine Ankunft die IDs der
+// übrigen Entitäten (und die Golden-Läufe) nicht verschiebt; es gibt höchstens einen Händler je Stufe.
+const merchantID = -1
 
 // merchantDawn: Abreise, dann Ankunft nach Rhythmus (aus stepCycle beim dawn).
 func merchantDawn(w *World) {
@@ -29,11 +49,7 @@ func merchantDawn(w *World) {
 	}
 	m, day := economy.Merchant, w.Cycle.Day
 	if w.Merchant != nil && day >= w.Merchant.Leaves {
-		for range w.Merchant.BuyPaid { // ein halber Kauf geht als Münzen zu Boden
-			w.Coins = append(w.Coins, &Coin{ID: w.newID(), X: merchantX(w, "buy")})
-		}
-		w.Merchant = nil
-		emit(w, "merchantLeft", Event{})
+		merchantLeaves(w, "merchantLeft")
 	}
 	every := m.EveryDays
 	if tavernOnIsland(w) {
@@ -43,8 +59,31 @@ func merchantDawn(w *World) {
 		return
 	}
 	mats := m.Materials[:min(len(m.Materials), max(1, w.HubLevel))]
-	w.Merchant = &Merchant{Resource: mats[w.rng.Int(0, len(mats)-1)], Leaves: day + m.StayDays}
+	w.Merchant = &Merchant{Resource: mats[w.rng.Int(0, len(mats)-1)], Leaves: day + m.StayDays, HP: m.HP, MaxHP: m.HP}
+	if w.island != nil {
+		w.island.MerchantVisits++ // Besuche zählen, Rhythmus des Händler-Überfalls (K3.2)
+	}
 	emit(w, "merchantArrived", Event{"resource": w.Merchant.Resource, "x": unitX(merchantX(w, "buy"))})
+	merchantRaidStart(w) // jeder 4. Besuch (events_merchant.go)
+}
+
+// merchantLeaves: Der Händler reist ab (typ merchantLeft) oder flieht (merchantFled); ein halber Kauf fällt als Münzen.
+func merchantLeaves(w *World, typ string) {
+	merchantRaidEnd(w, typ == "merchantLeft")
+	for range w.Merchant.BuyPaid {
+		w.Coins = append(w.Coins, &Coin{ID: w.newID(), X: merchantX(w, "buy")})
+	}
+	w.Merchant = nil
+	emit(w, typ, Event{})
+}
+
+// damageMerchant: Schaden am Händler; bei 0 HP flieht er sofort.
+func damageMerchant(w *World, damage float64) {
+	w.Merchant.HP -= damage
+	hitEvent(w, "merchant", merchantID, merchantX(w, "buy"), damage)
+	if w.Merchant.HP <= 0 {
+		merchantLeaves(w, "merchantFled")
+	}
 }
 
 func tavernOnIsland(w *World) bool {
