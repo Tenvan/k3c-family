@@ -134,10 +134,7 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-352](B-352-botfeed-lan-zuschauer.md) | SRV | Idee | niedrig | offen | – | `sim_test` hängt sich an Clients auf der Xbox an, ohne einen Platz im Raum zu belegen |
 | [B-354](B-354-bot-eingabe-impulse-frist.md) | PLAT | Problem | mittel | offen | – | Die Bot-Eingabe verliert keine kurzen Drücke und hält bei stummem Feed an |
 | [B-360](B-360-plan-set-fehlendes-feld.md) | DEV | Problem | niedrig | offen | – | plan_set lehnt ein Feld ab, das in der Datei fehlt, statt es still zu übergehen |
-| [B-361](B-361-sprint-prio-felder-entfallen.md) | INF | Schuld | mittel | eingeplant | DV1 | Die Sprint-Felder Prio und Einschiebbar entfallen in Vorlage, Planungstest und plan-Tools |
-| [B-362](B-362-k3c-dev-token-dienst.md) | DEV | Problem | hoch | eingeplant | DV1 | k3c-dev fragt den selbst gestarteten Spielserver mit dessen Token an |
 | [B-363](B-363-planung-flags-bearbeiten.md) | DEV | Idee | mittel | offen | – | Die Planungsseite ändert Prio, Umgebung, Agent und Projekt direkt im Detail |
-| [B-365](B-365-domaene-dev-werkzeug.md) | INF | Idee | hoch | eingeplant | DV1 | Das Entwickler-Werkzeug k3c-dev hat eine eigene Domäne statt SRV |
 | [B-366](B-366-fahrplan-spalte-projekt.md) | DEV | Schuld | mittel | offen | – | k3c-dev füllt im Fahrplan die Spalte Projekt und ordnet nach Rang |
 | [B-367](B-367-doku-nachzug-projekte.md) | INF | Schuld | niedrig | offen | – | Begriffe aus den alten Bahnen und Spuren sind nach PJ3 ersetzt und neue Projekt-Begriffe im Glossar |
 | [B-368](B-368-planung-erpapi-ablage.md) | SRV | Schuld | mittel | offen | – | Die Planung liegt in der ErpApi-Ablage und k3c-dev bedient sie mit den Planungs-Tools der Workbench-Spec |
@@ -341,3 +338,6 @@ Zeile in diesen Abschnitt.
 | [B-364](archiv/B-364-planung-hierarchie-optik.md) | SRV | Idee | mittel | erledigt | – | Die Planungsseite zeigt Projekt, Sprint und Session als klar unterscheidbare Ebenen |
 | [B-359](archiv/B-359-planung-in-projekte.md) | INF | Schuld | hoch | erledigt | PJ3 | Die offene Planung ist in Projekte umgezogen, erledigte und zusammengelegte Sprints sind abgeschlossen |
 | [B-322](archiv/B-322-texte-werkzeug-seiten.md) | PLAT | Schuld | niedrig | erledigt | PL2 | Die Werkzeug-Seiten holen ihre Texte aus den zentralen Textdateien |
+| [B-365](archiv/B-365-domaene-dev-werkzeug.md) | INF | Idee | hoch | erledigt | DV1 | Das Entwickler-Werkzeug k3c-dev hat eine eigene Domäne statt SRV |
+| [B-361](archiv/B-361-sprint-prio-felder-entfallen.md) | INF | Schuld | mittel | erledigt | DV1 | Die Sprint-Felder Prio und Einschiebbar entfallen in Vorlage, Planungstest und plan-Tools |
+| [B-362](archiv/B-362-k3c-dev-token-dienst.md) | DEV | Problem | hoch | erledigt | DV1 | k3c-dev fragt den selbst gestarteten Spielserver mit dessen Token an |

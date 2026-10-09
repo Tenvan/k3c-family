@@ -1,6 +1,6 @@
 # DV1 · INF, SRV, DEV · Domäne DEV für k3c-dev, Sprint ohne Prio und Einschiebbar
 
-- **Status:** aktiv
+- **Status:** erledigt
 - **Projekt:** WZG
 - **Domäne:** INF, SRV, DEV
 - **Reife:** bereit
@@ -72,9 +72,11 @@ keine. Entschieden von 🧑 am 2026-10-08: Kürzel `DEV`; zu `DEV` gehören `too
 | DV1.1 | `DV1.1-domaene-dev-regeln.md` | Umsetzung | autonom | fertig |
 | DV1.2 | `DV1.2-plan-tools-dev.md` | Umsetzung | autonom | fertig |
 | DV1.3 | `DV1.3-token-dienst.md` | Umsetzung | autonom | fertig |
-| DV1.4 | `DV1.4-review.md` | Review | autonom | offen |
+| DV1.4 | `DV1.4-review.md` | Review | autonom | fertig |
 
 ## Abnahme
 
-Wird von der Review-Session (Doku-Sprint: letzte Session) ausgefüllt, höchstens fünf Zeilen: Datum, Kriterien
-(Verweis auf Session-Ergebnisse), behobene Befunde, neue Tickets. Bis dahin `–`.
+Review 2026-10-09 (DV1.4, eigener Review-Agent): keine schweren Befunde, `task check` und `task check:dev` grün.
+- AC-01, AC-02 geprüft (DV1.1); AC-03–AC-05 geprüft (DV1.2: `TestDomaeneDEV`, `TestSprintOhnePrioUndEinschiebbar`, `plan_list domain: DEV`); AC-06, AC-07 geprüft (DV1.3: `TestServerClientNimmtDienstToken`, `TestServerClientUmgebungHatVorrang`).
+- B-365, B-361, B-362 erledigt. Neue Tickets: keine.
+- Version: Minor vorgeschlagen (Domäne DEV, Server-Tools ohne eigenes Token); nicht gesetzt (wartet auf Bestätigung 🧑).

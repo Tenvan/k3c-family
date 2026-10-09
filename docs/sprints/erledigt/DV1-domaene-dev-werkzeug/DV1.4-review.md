@@ -1,6 +1,6 @@
 # DV1.4 · Review und Abschluss
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Review
 - **Agent:** autonom
 - **Domäne:** DEV
@@ -37,9 +37,9 @@ Stil, Benennung, Vereinfachungen. Neue Funktionen. Den PR selbst mergen.
 
 ## Fertig, wenn
 
-- [ ] alle: AC-01 bis AC-07 mit Nachweis aus DV1.1–DV1.3 oder `verschoben` mit Ticket.
-- [ ] `task check` und `task check:dev` grün.
-- [ ] Abnahme ausgefüllt, Sprint `erledigt`, PR gegen `develop` offen.
+- [x] alle: AC-01 bis AC-07 mit Nachweis aus DV1.1–DV1.3 oder `verschoben` mit Ticket.
+- [x] `task check` und `task check:dev` grün.
+- [x] Abnahme ausgefüllt, Sprint `erledigt`, PR gegen `develop` offen.
 
 ## Prüfen
 
@@ -52,5 +52,8 @@ Keine manuellen Prüfungen.
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+- Alle Kriterien geprüft (AC-01–AC-07, Nachweise in den Ergebnissen von DV1.1–DV1.3; AC-06 per Test nur für `server_status`, `sim_test mode=online` über denselben `serverClient`).
+- `task check` und `task check:dev` grün. Review durch eigenen Agenten (Sonnet, nicht der Autor): keine schweren Befunde; Kleinbefunde (Leerzeile im Import-Block `planning/list.go`) nicht behoben, kein Blocker.
+- Manuell geprüft: nichts.
+- Abweichung: Abschluss (Status, Ordner, Fahrplan, Tickets ins Archiv) von Hand, weil k3c-dev die Repo-Wurzel statt des Worktrees bediente (B-275).
+- Neue Tickets: keine.
