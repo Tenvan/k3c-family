@@ -1,6 +1,6 @@
 # PL1.1 · „Neues Spiel“ nachweisen, Ursache Overlay auf der Xbox
 
-- **Status:** in Arbeit
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** PLAT
@@ -47,9 +47,9 @@ Server oder Protokoll ändern (B-292); Namensdialog in der Lobby (B-105); Änder
 
 ## Fertig, wenn
 
-- [ ] AC-01: `task test -- pages` grün; der Test prüft `fresh=1`, das Namensformat, verschiedene Namen zu verschiedenen Zeiten und die Kachelbeschreibung (B-292/AC-01, AC-03).
-- [ ] AC-03: B-195 nennt unter „Notizen“ die Ursache mit Code-Pfad und Beobachtung aus den vier nachgestellten Fällen (B-195/AC-01); eine Ursache in `src/input/` ist mit Test behoben, eine in `src/scenes/` steht als Ticket.
-- [ ] `task check` grün; keine Datei über 400 Zeilen, keine Funktion über 60.
+- [x] AC-01: entfällt (B-292 seit 2026-10-07 in LP1, Sprint-README › AC-01).
+- [x] AC-03: B-195 nennt unter „Notizen“ Code-Pfad und Beobachtung aus den vier nachgestellten Fällen (B-195/AC-01); die Ursache war im Browser nicht nachstellbar, kein Fehler in `src/input/` oder `src/scenes/` → Prüfschritte für PL1.5 konkretisiert.
+- [x] `task check` grün; keine Datei über 400 Zeilen, keine Funktion über 60.
 
 ## Prüfen
 
@@ -62,4 +62,9 @@ Manuelle Prüfungen (Browser, Xbox, TV) nur, wenn diese Datei sie nennt und 🧑
 
 ## Ergebnis
 
-–
+- AC-01 entfällt: B-292 ist seit 2026-10-07 in LP1 (Kontext); `task test -- pages` nicht mehr Teil dieser Session.
+- AC-03 (B-195/AC-01) geprüft, soweit im Browser möglich: Browser-Pane, Shell mit iframe, Controller gemockt, Game-Loop im iframe per `game.loop.step` getaktet (rAF lief im iframe nicht). `game.html` und Testszenario: Overlay erzeugt, HUD sieht das Pad, RB 3 s → Diagnose, LB + RB 3 s → Cheat-Dialog, LB + RB kurz → zu, Ö/Ä wirken. `game.html?dev=0`: kein Overlay (gewollt). `testing.html?dev=0`: `scenarioUrl` reicht `dev` nicht weiter → wie ohne. Code-Pfad und Beobachtung unter B-195 › Notizen.
+- Ursache: im Browser nicht nachstellbar; kein Fehler in `src/input/` (PLAT) oder im Overlay-Code (CLI) gefunden, deshalb nichts behoben und kein CLI-Ticket. Vermutet (ungeprüft): Am 2026-10-03 lief noch der LS-Weg (vor B-231), oder Edge auf der Xbox nutzt LB/RB bzw. die Tasten-Emulation selbst. PL1.5 › Schritt 3 hat dafür konkrete Prüfschritte (gamepad-test mit RB/LB halten, dann Gesten im Spiel, Reaktion je Schritt notieren).
+- `task check` grün (`check_run task:check`).
+- Abweichungen: keine Code-Änderung; Planungs-Dateien B-195 (Notizen) und PL1.5 (Schritte) angepasst. Browser mit Freigabe 🧑 für BED (2026-10-09).
+- Neue Tickets: keine.

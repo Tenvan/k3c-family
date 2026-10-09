@@ -63,7 +63,7 @@ Belegung kollidiert mit Dev-Tasten → Dev-Taste weicht, Hinweis in der Doku.
 
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
-| PL1.1 | `PL1.1-neues-spiel-overlay-ursache.md` | Umsetzung | autonom | in Arbeit |
+| PL1.1 | `PL1.1-neues-spiel-overlay-ursache.md` | Umsetzung | autonom | fertig |
 | PL1.2 | `PL1.2-zwei-spieler-tastatur.md` | Umsetzung | autonom | offen |
 | PL1.3 | `PL1.3-texte-touch-shell.md` | Umsetzung | autonom | offen |
 | PL1.4 | `PL1.4-review.md` | Review | autonom | offen |
