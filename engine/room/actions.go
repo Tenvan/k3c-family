@@ -194,7 +194,7 @@ func (r *Room) Tick() bool {
 		r.met.observe(r.isl)
 	}
 	r.tick++
-	travelled := false
+	travelled := r.switchIsland()
 	states := map[int]any{} // ein Zustand je Stufe, alle Geräte der Stufe teilen ihn (B-276)
 	for _, d := range r.devices {
 		if d.connected && r.pushState(d, states) {

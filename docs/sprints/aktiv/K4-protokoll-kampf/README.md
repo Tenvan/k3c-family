@@ -68,7 +68,7 @@ Wechsel-Bestätigung vor dem Sieg über den Endboss → `bad_request`.
 |---|---|---|---|---|
 | K4.1a | `K4.1a-sim-zustand-spiegeln.md` | Umsetzung | autonom | fertig |
 | K4.1 | `K4.1-felder.md` | Umsetzung | autonom | fertig |
-| K4.2 | `K4.2-eingabe-version-bytes.md` | Umsetzung | autonom | offen |
+| K4.2 | `K4.2-eingabe-version-bytes.md` | Umsetzung | autonom | fertig |
 | K4.3 | `K4.3-review.md` | Review | autonom | offen |
 
 Bei `Reife: Entwurf` genügen Stichpunkte mit den Kriterien in Klammern statt Session-Dateien. Vor dem Aktivieren
