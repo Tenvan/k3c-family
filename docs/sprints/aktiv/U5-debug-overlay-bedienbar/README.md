@@ -66,7 +66,7 @@ Dialog offen und Ö → Dialog zuerst zu, Overlay bleibt.
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
 | U5.1 | `U5.1-oe-hud-frei.md` | Umsetzung | autonom | fertig |
-| U5.2 | `U5.2-cheat-dialog-fokus.md` | Umsetzung | autonom | offen |
+| U5.2 | `U5.2-cheat-dialog-fokus.md` | Umsetzung | autonom | in Arbeit |
 | U5.3 | `U5.3-review.md` | Review | autonom | offen |
 | U5.4 | `U5.4-abnahme-pc-handy-xbox.md` | Umsetzung | Mensch | offen |
 
