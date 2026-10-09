@@ -44,6 +44,7 @@ func stepCycle(w *World, dt float64) {
 	}
 	if changed && w.Cycle.Phase == "night" {
 		w.Events = append(w.Events, Event{"type": "night", "day": w.Cycle.Day})
+		nightEventsStart(w) // Vollmond, Blutmond (events_moon.go)
 		if dayNight {
 			startWave(w)
 		}
@@ -56,6 +57,7 @@ func stepCycle(w *World, dt float64) {
 		payDawnIncome(w)
 		tavernDawn(w)
 		merchantDawn(w)
+		nightEventsEnd(w)
 	}
 	if w.Aggression != nil && w.Biome.Cycle.Type == "aggressionPool" {
 		*w.Aggression = math.Min(100, *w.Aggression+float64(w.Biome.Cycle.PercentPerMinute/60*dt*w.CycleSpeed))

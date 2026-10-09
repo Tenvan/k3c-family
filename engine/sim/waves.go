@@ -76,6 +76,7 @@ func startWave(w *World) {
 		size, hp, damage = w.island.waveFactors()
 	}
 	plan := planWave(w.Biome, w.Wave, w.rng, w.Portals, w.Cycle.Phase == "night", size)
+	plan = append(plan, fullMoonExtra(w, plan)...) // Vollmond (events_moon.go)
 	for _, s := range plan {
 		w.SpawnQueue = append(w.SpawnQueue, QueuedSpawn{Kind: s.kind, X: s.x, At: w.Time + s.delay, hpFactor: hp, damageFactor: damage})
 	}
@@ -149,7 +150,7 @@ func removeDeadEnemies(w *World) {
 // enemyDrop: Gold laut Daten plus geklautes Gold als Münzen, mit Chance die Stufen-Ressource in den Vorrat.
 func enemyDrop(w *World, e *Enemy) {
 	gold := enemyData[e.Kind].Gold
-	dropped := w.rng.Int(gold[0], gold[1]) + e.CarriedGold
+	dropped := moonDrop(w, w.rng.Int(gold[0], gold[1])) + e.CarriedGold // Blutmond: Drop × Faktor, geklautes Gold nicht
 	scatterCoins(w, e.X, dropped)
 	emit(w, "kill", Event{"kind": e.Kind, "x": unitX(e.X), "gold": dropped})
 	drop := economy.EnemyResourceDrop

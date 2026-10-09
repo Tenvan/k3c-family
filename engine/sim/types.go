@@ -309,6 +309,8 @@ type World struct {
 	// island: die Insel, zu der die Stufe gehört (nil bei Campaign und einzelnen Welten: keine Optionen, Faktor 1,
 	// kein Lager-Maximum).
 	island *Island
+	// castleFellNight: letzte Nacht, in der die Burg fiel (Vollmond-Belohnung, events_moon.go); nicht im Spielstand.
+	castleFellNight int
 }
 
 func (w *World) newID() int {

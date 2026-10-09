@@ -30,6 +30,9 @@ import "math"
 //	islandGateOpen – Endboss besiegt, Wechselpunkt zur nächsten Insel offen, in der tiefsten Stufe (island_switch.go):
 //	                island (Index der nächsten Insel), x (Burg)
 //	islandSwitch  – alle lebenden Spieler stehen am Wechselpunkt, der Raum tauscht die Insel: island
+//	eventStarted  – Event der Nacht beginnt, je Nacht und Event einmal, in Stufe 0 (events_moon.go): event (fullMoon,
+//	                bloodMoon), day
+//	eventEnded    – Event der vergangenen Nacht endet bei Tagesanbruch (events_moon.go): event, day (die Nacht)
 //
 //	playerDown    – Monarch fällt: player, cause (Gegnerart aus data/enemies.json bei Nahkampf und Geschoss,
 //	                sonst "other"; B-182)
