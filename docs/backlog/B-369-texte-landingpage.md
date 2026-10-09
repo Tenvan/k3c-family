@@ -4,8 +4,8 @@
 - **Typ:** Schuld
 - **Prio:** niedrig
 - **Umgebung:** live
-- **Status:** offen
-- **Sprint:** –
+- **Status:** eingeplant
+- **Sprint:** GL1
 - **Projekt:** BED
 - **Erstellt:** 2026-10-08
 - **Spec:** Entwurf

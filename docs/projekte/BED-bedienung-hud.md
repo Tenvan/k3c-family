@@ -21,6 +21,8 @@ In Abarbeitungs-Reihenfolge; der erste nicht erledigte Sprint ist der nächste. 
 | S9 | Rückmeldung für Schlag und Skills, ein Hinweis je Spieler | aktiv |
 | U6 | HUD ohne Überlagerung, Optionen per Touch | geplant |
 | LB1 | Lobby zeigt Räume und startet Spiele | geplant |
+| AZ1 | Tasten von Spieler 2 an der Tastatur, Pause-Anzeige | geplant |
+| GL1 | Tastensymbole je Controller, Landingpage in der gewählten Sprache | geplant |
 
 ## Nicht-Ziele
 
