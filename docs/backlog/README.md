@@ -73,7 +73,6 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-208](B-208-protokoll-bauplaetze.md) | SRV | Idee | mittel | offen | – | Das Protokoll trägt die Bauplätze des Layouts sowie Platz- und Hub-Stufe zum Client |
 | [B-209](B-209-client-platz-arten.md) | CLI | Schuld | mittel | eingeplant | W8 | `src/model/data.ts` kennt alle Platz-Arten aus `hub.json` |
 | [B-214](B-214-server-pause.md) | SRV | Idee | mittel | offen | – | Der Server pausiert den Raum im Couch-Raum und schützt den stehenden Monarchen online |
-| [B-215](B-215-texte-eingabe-shell-tools.md) | PLAT | Schuld | niedrig | eingeplant | PL1 | Die Texte von Touch-Overlay, Shell und Werkzeug-Seiten kommen aus den zentralen Textdateien |
 | [B-230](B-230-burg-haelt-nur-47-prozent.md) | REG | Problem | mittel | eingeplant | RG1 | Burg hält Nacht 1–5 nur in 47 % der Seeds, Ziel 75–90 % |
 | [B-217](B-217-ereignisse-built-playerdown-ort.md) | SIM | Schuld | niedrig | eingeplant | LV1 | Die Ereignisse `built` und `playerDown` tragen ihren Ort |
 | [B-219](B-219-doku-gating-und-schlag.md) | REG | Schuld | niedrig | eingeplant | RG2 | Game-Design und Ereignis-Doku nennen Tier-Gating 2/4/6 und den Schlag des Monarchen |
@@ -101,7 +100,6 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-313](B-313-vermerk-wirkung-offen-test.md) | SIM | Frage | hoch | eingeplant | W7 | W4.3b kann den Vermerk „Wirkung offen“ nur mit einer Änderung an sites_test.go ersetzen |
 | [B-314](B-314-controller-pruefungen-zurueckgestellt.md) | PLAT | Schuld | niedrig | eingeplant | HW1 | Alle Controller-Prüfungen sind gesammelt nachgeholt |
 | [B-315](B-315-spielstand-voll-ausgebaut.md) | SRV | Idee | hoch | eingeplant | SV1 | Der Level-Betrachter erzeugt einen Spielstand mit allen Gebäuden voll ausgebaut |
-| [B-316](B-316-tastatur-zwei-spieler.md) | PLAT | Idee | hoch | eingeplant | PL1 | Zwei Spieler spielen an einer Tastatur im Split-Screen |
 | [B-317](B-317-cheat-dialog-fokus-tastatur.md) | CLI | Problem | hoch | eingeplant | U5 | Der Cheat-Dialog zeigt den Fokus und lässt sich mit Pfeiltasten, Leertaste und Controller bedienen |
 | [B-318](B-318-schlag-skill-feedback.md) | CLI | Problem | mittel | eingeplant | S9 | Schlag und Skills zeigen auch ohne Ziel sichtbar, dass die Taste ankam |
 | [B-319](B-319-ein-hinweis-je-weltposition.md) | CLI | Problem | hoch | eingeplant | S9 | Das Aktionen-Overlay zeigt je Spieler nur einen Hinweis, 24 px, nie über einem Preisschild |
@@ -150,6 +148,7 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-391](B-391-beitritts-hinweis-spieler-2-fehlt.md) | CLI | Problem | mittel | offen | – | Der Beitritts-Hinweis für Spieler 2 wird nicht angezeigt |
 | [B-392](B-392-splitscreen-kamera-spieler-2.md) | CLI | Problem | hoch | offen | – | Im Split-Screen scrollt nur die Kamera von Spieler 1 mit; Spieler 2 und weitere sind nicht an ihre Ansicht gebunden |
 | [B-393](B-393-muenzbild-hinweis-fehlt.md) | CLI | Problem | mittel | offen | – | Das Münzbild vor „Hinlaufen: Münze aufheben“ erscheint im Browser nicht |
+| [B-394](B-394-xbox-overlay-gesten-abnahme.md) | PLAT | Frage | niedrig | offen | – | Overlay-Gesten (RB, LB + RB) sind an der Xbox abgenommen (B-195/AC-02) |
 
 ## Archiv
 
@@ -365,3 +364,5 @@ Zeile in diesen Abschnitt.
 | [B-383](archiv/B-383-sim-zustand-boss-event-wechsel.md) | SIM | Problem | mittel | erledigt | K4 | Die Welt stellt Boss-Phase, Warnkreis, Event-Restzeit und Inselwechsel für das Protokoll bereit |
 | [B-037](archiv/B-037-lobby.md) | CLI | Idee | mittel | erledigt | LB1 | Lobby zeigt Räume und startet Spiele |
 | [B-388](archiv/B-388-checkout-argument-schreibende-tools.md) | DEV | Problem | hoch | erledigt | WT1 | Schreibende k3c-dev-Tools nehmen den Ziel-Checkout als Argument, weil der Client aus Desktop-App-Worktrees die Wurzel meldet |
+| [B-316](archiv/B-316-tastatur-zwei-spieler.md) | PLAT | Idee | hoch | erledigt | PL1 | Zwei Spieler spielen an einer Tastatur im Split-Screen |
+| [B-215](archiv/B-215-texte-eingabe-shell-tools.md) | PLAT | Schuld | niedrig | erledigt | PL1 | Die Texte von Touch-Overlay, Shell und Werkzeug-Seiten kommen aus den zentralen Textdateien |

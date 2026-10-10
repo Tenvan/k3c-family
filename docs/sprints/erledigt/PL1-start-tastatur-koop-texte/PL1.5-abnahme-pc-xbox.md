@@ -1,6 +1,6 @@
 # PL1.5 · Abnahme am PC und an der Xbox
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** Mensch
 - **Domäne:** PLAT
@@ -46,10 +46,10 @@ Code ändern; Mängel hier beheben (→ Ticket).
 
 ## Fertig, wenn
 
-- [ ] AC-01: „Neues Spiel“ startet bei vorhandenem Stand `familie` ohne `save_exists` (B-292/AC-02, Beobachtung 🧑).
-- [ ] AC-02: Zwei Spieler spielen am PC an einer Tastatur im Split-Screen unabhängig (B-316/AC-02, Beobachtung 🧑).
-- [ ] AC-03: 🧑 öffnet und schließt das Overlay auf der Xbox mit dem Controller (B-195/AC-02).
-- [ ] AC-04: Home-Button und Touch-Tasten zeigen nach Sprachwechsel und Neuladen Englisch (B-215/AC-02, Beobachtung 🧑).
+- [ ] AC-01: „Neues Spiel“ startet bei vorhandenem Stand `familie` ohne `save_exists` (B-292/AC-02, Beobachtung 🧑). **Verschoben:** liegt seit 2026-10-07 in LP1.
+- [x] AC-02: Zwei Spieler spielen am PC an einer Tastatur im Split-Screen unabhängig (B-316/AC-02, Beobachtung 🧑).
+- [ ] AC-03: 🧑 öffnet und schließt das Overlay auf der Xbox mit dem Controller (B-195/AC-02). **Verschoben:** B-394 (Xbox-Test, Hardware entkoppelt).
+- [x] AC-04: Home-Button und Touch-Tasten zeigen nach Sprachwechsel und Neuladen Englisch (B-215/AC-02, Beobachtung 🧑).
 
 ## Prüfen
 
@@ -61,4 +61,10 @@ Manuelle Prüfungen (Browser, Xbox, TV) nur, wenn diese Datei sie nennt und 🧑
 
 ## Ergebnis
 
-–
+Abnahme am PC durch 🧑 am 2026-10-10 (Dienste über k3c-dev, `game.html`).
+
+- AC-01: **verschoben** (LP1, Beschluss 🧑 2026-10-07: „Neues Spiel“ liegt in LP1).
+- AC-02: **geprüft** (🧑, PC): Zwei Spieler an einer Tastatur (Leertaste, Enter) bewegen und handeln unabhängig; Strg rechts + Ziffernblock 0–5 mit NumLock an und aus ohne Auffälligkeit (alle fünf Schritte ok).
+- AC-03: **verschoben** (B-394): Xbox-Test (B-195/AC-02) nicht durchgeführt, wartet auf das Gerät (Hardware entkoppelt, Beschluss 🧑 2026-10-10 im Chat).
+- AC-04: **geprüft** (🧑, PC): Nach Sprachwechsel auf English und Neuladen zeigen Home-Button und Touch-Tasten (`?touch=1`) Englisch.
+- Neue Tickets: B-394.

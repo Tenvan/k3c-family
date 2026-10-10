@@ -10,7 +10,6 @@ Die Reihenfolge der Arbeit ist allein der Projekt-Rang: [`../projekte/README.md`
 | Sprint | Domäne | Projekt | Thema | Am Ende sichtbar | Ordner |
 |---|---|---|---|---|---|
 | W6 | CLI | WRT | Anzeigen für Bau, Lager, Hub und Bürger (B-117, B-126) | HUD und Bauplätze am TV, von 🧑 abgenommen | `aktiv/W6-anzeige-wirtschaft/` |
-| PL1 | PLAT | BED | Neues Spiel, zwei Spieler an einer Tastatur, Overlay auf der Xbox, zentrale Texte | „Neues Spiel“ startet immer neu, zwei Tastatur-Spieler, Overlay per Controller | `aktiv/PL1-start-tastatur-koop-texte/` |
 | S9 | CLI, SIM | BED | Rückmeldung für Schlag und Skills, ein Hinweis je Spieler | Jeder Tastendruck auf Schlag oder Skill ist sichtbar, das Aktionen-Overlay zeigt je Spieler einen Hinweis | `aktiv/S9-rueckmeldung-overlay/` |
 | U6 | CLI | BED | HUD ohne Überlagerung, Optionen per Touch | Optionen per Touch bedienbar, HUD bei 1–4 Spielern ohne Überlagerung, Gesamtabnahme Anzeige | `aktiv/U6-hud-ohne-ueberlagerung/` |
 
@@ -161,3 +160,4 @@ Gesamtplan und Begründung: [`../plan-weiterentwicklung.md`](../plan-weiterentwi
 | LB1 | Lobby zeigt Räume und startet Spiele | `erledigt/LB1-lobby/` |
 | U5 | Debug-Overlay und Cheat-Dialog bedienbar | `erledigt/U5-debug-overlay-bedienbar/` |
 | S8 | Spielmenü „Spiel verlassen“, Y-Belegung und Glyphen-Entscheidung | `erledigt/S8-spielmenue-bedienung/` |
+| PL1 | Neues Spiel, zwei Spieler an einer Tastatur, Overlay auf der Xbox, zentrale Texte | `erledigt/PL1-start-tastatur-koop-texte/` |
