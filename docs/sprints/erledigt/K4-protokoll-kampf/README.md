@@ -76,7 +76,7 @@ wird jede Session als eigene Datei nach `docs/vorlagen/session.md` geschrieben.
 
 ## Abnahme
 
-2026-10-10, Review K4.3: AC-01 und AC-03 K4.1, AC-02 und AC-04 bis AC-06 K4.2, AC-07 K4.1a › Ergebnis; AC-05 mit Ereignissen 2,9 Byte je Tick (Q08), `delta` 913 Byte notiert.
+2026-10-10, Review K4.3: AC-01 bis AC-04, AC-06 und AC-07 umgesetzt und geprüft (Ergebnisse K4.1a, K4.1, K4.2). AC-05 verschoben → B-386: `snap` Ø 10,2 KB und `delta` Ø 913 B überschreiten die Grenze aus Q08 für den Kampf-Zustand; 🧑 entscheidet, ob Q08 den ganzen Zustand umfasst. B-154 bleibt offen.
 `task check` und `task check:go` grün (Shell, B-275). Behoben: `docs/protocol.md` › Kampf nannte noch Version 5 und eine Wechsel-Eingabe.
 Neu: B-385 (`islandSwitch`-Ereignis geht beim Inseltausch verloren). B-080 bleibt offen (AC-01 nicht im Sprint).
 Version: v0.16.0 vorgeschlagen (Minor: Protokoll v6, Clients der Version 5 werden abgewiesen, Raum tauscht die Insel); gesetzt erst nach Bestätigung durch 🧑.

@@ -35,6 +35,7 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-126](B-126-buerger-ui.md) | CLI | Idee | mittel | eingeplant | W6 | Der Client zeigt Berufe, Ausbildung, Händler, Truppen-Limit und Heilung |
 | [B-132](B-132-anzeige-bosse-events.md) | CLI | Idee | mittel | eingeplant | K5 | Der Client zeigt Gegner-Fähigkeiten, Bosse, Phasen und Events |
 | [B-151](B-151-spieleabend-fragebogen.md) | REG | Idee | niedrig | eingeplant | P1 | Der Spieleabend hat einen kindgerechten Fragebogen und eine Playtest-Vorlage |
+| [B-154](B-154-protokoll-bosse-events-inselwechsel.md) | SRV | Idee | hoch | eingeplant | K4 | Das Protokoll kennt Bosse, Phasen, Events und den Inselwechsel (AC-05 offen, B-386) |
 | [B-155](B-155-balancing-runde-wirtschaft.md) | REG | Idee | niedrig | eingeplant | BR1 | Die Wirtschaft ist in einer Balancing-Runde gegen die Zielkorridore abgestimmt |
 | [B-156](B-156-balancing-runde-kampf-bosse.md) | REG | Idee | niedrig | eingeplant | BR2 | Kampf, Gegner und Bosse sind in einer Balancing-Runde gegen die Zielkorridore abgestimmt |
 | [B-160](B-160-abgleich-spielmetrik-simulator.md) | REG | Idee | mittel | eingeplant | BAL4 | Spielmetrik echter Abende und Simulatorwerte sind abgeglichen |
@@ -142,6 +143,7 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-381](B-381-protokoll-haendler-raid-hp.md) | SRV | Problem | niedrig | offen | – | Das Protokoll beschreibt Überfall und HP des Händlers |
 | [B-382](B-382-lobby-neuversuch-nur-spielen.md) | CLI | Problem | niedrig | offen | – | Ein gewählter Spielstand startet nie leer neu |
 | [B-385](B-385-inselwechsel-ereignis-geht-verloren.md) | SRV | Problem | mittel | offen | – | Das Ereignis `islandSwitch` erreicht beim Inselwechsel keinen Client |
+| [B-386](B-386-netz-budget-kampf-q08.md) | SRV | Frage | mittel | offen | – | Gilt das Netz-Budget aus Q08 für den Kampf-Zustand oder nur für Ereignisse? |
 
 ## Archiv
 
@@ -353,7 +355,6 @@ Zeile in diesen Abschnitt.
 | [B-321](archiv/B-321-schlag-skill-ohne-ziel-ereignis.md) | SIM | Problem | mittel | erledigt | S9 | Schlag ohne Treffer und Skill ohne Ziel erzeugen ein Ereignis |
 | [B-131](archiv/B-131-events.md) | SIM | Idee | niedrig | erledigt | K3 | Vollmond, Blutmond und Händler-Überfall sind als Events umgesetzt |
 | [B-373](archiv/B-373-haendler-angreifbar-besuchszaehler.md) | SIM | Idee | mittel | erledigt | K3 | Der Händler ist eine angreifbare Figur mit Besuchszähler im Spielstand |
-| [B-154](archiv/B-154-protokoll-bosse-events-inselwechsel.md) | SRV | Idee | hoch | erledigt | K4 | Das Protokoll kennt Bosse, Phasen, Events und den Inselwechsel |
 | [B-345](archiv/B-345-raum-tauscht-insel.md) | SRV | Idee | hoch | erledigt | K4 | Der Raum tauscht die Insel bei `SwitchReady` |
 | [B-383](archiv/B-383-sim-zustand-boss-event-wechsel.md) | SIM | Problem | mittel | erledigt | K4 | Die Welt stellt Boss-Phase, Warnkreis, Event-Restzeit und Inselwechsel für das Protokoll bereit |
 | [B-037](archiv/B-037-lobby.md) | CLI | Idee | mittel | erledigt | LB1 | Lobby zeigt Räume und startet Spiele |

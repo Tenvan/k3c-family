@@ -4,7 +4,7 @@
 - **Typ:** Idee
 - **Prio:** hoch
 - **Umgebung:** offline
-- **Status:** erledigt
+- **Status:** eingeplant
 - **Sprint:** K4
 - **Projekt:** KMP
 - **Erstellt:** 2026-10-02
@@ -62,3 +62,4 @@ keine
 ## Notizen
 
 Aus Plan Phase 3 (K4). Setzt K1 bis K3 voraus. Bandbreitenbudget kommt aus B-140.
+AC-05 verschoben (Abnahme K4.3, 2026-10-10): Die Grenze aus Q08 (200 Byte je Tick und Client) hält der Kampf-Zustand nicht ein (`snap` Ø 10,2 KB, `delta` Ø 913 B, Messung in `docs/protocol.md` › Snapshot-Größe). Ob Q08 den ganzen Zustand oder nur Ereignisse umfasst, entscheidet 🧑 in B-386. Bis dahin bleibt dieses Ticket offen und wandert nicht ins Archiv.
