@@ -1,8 +1,9 @@
 import { fullscreenSupported, isFullscreen, onFullscreenChange, toggleLocal } from '../core/fullscreen';
 import { SHELL_MESSAGE, isOpenable, type ShellMessage } from '../core/shell';
+import { currentLanguage, t, type TextKey } from '../core/texts';
 import { PAGES, SECTIONS, type PageEntry } from './pages';
 import { CLIENT, fetchServerBuild, versionLine, versionMismatch } from '../core/version';
-import { NO_SERVER_HINT, needsServer } from './serverCheck';
+import { needsServer } from './serverCheck';
 
 /**
  * Landingpage = dauerhaft offene Shell.
@@ -31,18 +32,18 @@ const cards: HTMLElement[] = [];
 
 // ---------- Kacheln ----------
 function render(): void {
-  for (const section of Object.keys(SECTIONS) as PageEntry['section'][]) {
+  for (const section of SECTIONS) {
     const pages = PAGES.filter((p) => p.section === section);
     if (pages.length === 0) continue;
     const h2 = document.createElement('h2');
-    h2.textContent = SECTIONS[section];
+    h2.textContent = t(`landing.section.${section}`);
     const grid = document.createElement('div');
     grid.className = 'grid';
     for (const page of pages) {
       const a = document.createElement('a');
       a.className = `card${page.primary ? ' primary' : ''}${page.small ? ' small' : ''}`;
       a.href = typeof page.href === 'string' ? page.href : '#';
-      a.dataset.title = page.title;
+      a.dataset.id = page.id;
       if (needsServer(page)) a.dataset.needsServer = '';
       a.innerHTML = `<span class="icon">${page.icon}</span><span><p class="title"></p><p class="desc"></p></span>`;
       a.querySelector('.title')!.textContent = page.title;
@@ -79,7 +80,7 @@ function select(card: HTMLElement): void {
   card.focus({ preventScroll: true });
   card.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
   try {
-    sessionStorage.setItem(FOCUS_KEY, card.dataset.title!);
+    sessionStorage.setItem(FOCUS_KEY, card.dataset.id!);
   } catch {
     /* Speicher nicht verfügbar – egal */
   }
@@ -89,18 +90,18 @@ function select(card: HTMLElement): void {
 function markNoServer(): void {
   for (const card of cards.filter((c) => c.dataset.needsServer !== undefined)) {
     card.classList.add('disabled');
-    card.querySelector('.desc')!.textContent = NO_SERVER_HINT;
+    card.querySelector('.desc')!.textContent = t('landing.noServer');
   }
 }
 
 function restoreFocus(): void {
-  let title: string | null = null;
+  let id: string | null = null;
   try {
-    title = sessionStorage.getItem(FOCUS_KEY);
+    id = sessionStorage.getItem(FOCUS_KEY);
   } catch {
     /* ignorieren */
   }
-  const card = cards.find((c) => c.dataset.title === title) ?? cards[0];
+  const card = cards.find((c) => c.dataset.id === id) ?? cards[0];
   if (card) select(card);
 }
 
@@ -159,7 +160,7 @@ function openPage(href: string): void {
   frame?.remove();
   frame = document.createElement('iframe');
   frame.id = 'frame';
-  frame.title = 'Seite';
+  frame.title = t('landing.frame');
   frame.allow = 'fullscreen; gamepad; autoplay';
   frame.src = safe;
   frame.addEventListener('load', () => frame?.contentWindow?.focus(), { once: true });
@@ -212,22 +213,19 @@ function showToast(message: string): void {
   toastTimer = window.setTimeout(() => toast.classList.remove('show'), 5000);
 }
 
-async function fullscreen(via: string): Promise<void> {
+/** `via`: Klick oder Text-Schlüssel des Auslösers (Taste F, Controller Y). */
+async function fullscreen(via: 'click' | TextKey): Promise<void> {
   const error = await toggleLocal();
   if (!error) return;
-  showToast(
-    via === 'Klick'
-      ? 'Der Browser erlaubt hier kein Vollbild. Auf der Xbox alternativ das Vollbild aus dem Edge-Menü nutzen.'
-      : `Vollbild per ${via} blockiert. Bitte mit dem Cursor auf „Vollbild“ klicken.`,
-  );
+  showToast(via === 'click' ? t('landing.fullscreenDenied') : t('landing.fullscreenBlocked', { via: t(via) }));
 }
 
 function setupFullscreen(): void {
   if (!fullscreenSupported()) return void fsButton.remove();
-  fsButton.dataset.title = '__fullscreen';
-  fsButton.addEventListener('click', () => void fullscreen('Klick'));
+  fsButton.dataset.id = '__fullscreen';
+  fsButton.addEventListener('click', () => void fullscreen('click'));
   const update = (active: boolean) => {
-    fsLabel.textContent = active ? 'Vollbild beenden' : 'Vollbild';
+    fsLabel.textContent = t(active ? 'landing.fullscreenExit' : 'landing.fullscreen');
     fsButton.classList.toggle('active', active);
   };
   onFullscreenChange(update);
@@ -246,7 +244,7 @@ addEventListener('keydown', (e) => {
     e.preventDefault();
     move(dir);
   } else if (e.key === 'f' || e.key === 'F') {
-    void fullscreen('Taste F');
+    void fullscreen('landing.viaKey');
   }
 });
 
@@ -278,7 +276,7 @@ function pollGamepads(now: number): void {
   }
 
   statusEl.classList.toggle('on', pads.length > 0);
-  statusText.textContent = pads.length === 0 ? 'Controller: Taste drücken' : `${pads.length} Controller verbunden`;
+  statusText.textContent = pads.length === 0 ? t('landing.padNone') : t('landing.padCount', { n: pads.length });
 
   const dirs = new Set<Dir>();
   let aDown = false;
@@ -313,12 +311,19 @@ function pollGamepads(now: number): void {
 
   if (aDown && !aWasDown) current().click();
   aWasDown = aDown;
-  if (yDown && !yWasDown) void fullscreen('Controller (Y)');
+  if (yDown && !yWasDown) void fullscreen('landing.viaPad');
   yWasDown = yDown;
 
   requestAnimationFrame(pollGamepads);
 }
 
+/** Statische Texte aus `index.html` (`data-t`) in der Sprache des Geräts; sie gilt ab dem Laden (B-369). */
+function applyTexts(): void {
+  for (const el of document.querySelectorAll<HTMLElement>('[data-t]')) el.textContent = t(el.dataset.t as TextKey);
+  document.documentElement.lang = currentLanguage();
+}
+
+applyTexts();
 render();
 setupFullscreen();
 restoreFocus();
