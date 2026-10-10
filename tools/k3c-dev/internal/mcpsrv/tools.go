@@ -2,7 +2,9 @@ package mcpsrv
 
 import (
 	"context"
+	"fmt"
 	"reflect"
+	"sort"
 
 	"github.com/modelcontextprotocol/go-sdk/mcp"
 )
@@ -228,6 +230,14 @@ func readOnly() *mcp.ToolAnnotations {
 // add registriert ein Tool, dessen Handler Text liefert; ein Fehler wird zum Fehler-Ergebnis.
 func add[In any](s *Server, t *mcp.Tool, h func(context.Context, In) (string, error)) {
 	s.params[t.Name] = jsonNames(reflect.TypeFor[In]())
+	if takesCheckout(t.Name) {
+		schema, names, err := withCheckout[In](s.params[t.Name])
+		if err != nil {
+			panic(fmt.Sprintf("Schema von %s: %v", t.Name, err)) // wie mcp.AddTool bei einem ungültigen Typ
+		}
+		t.InputSchema, s.params[t.Name] = schema, names
+		sort.Strings(s.params[t.Name])
+	}
 	s.stats.register(t.Name, t.Description)
 	mcp.AddTool(s.mcp, t, func(ctx context.Context, _ *mcp.CallToolRequest, in In) (*mcp.CallToolResult, any, error) {
 		text, err := h(ctx, in)

@@ -22,9 +22,19 @@ func (s *Server) observe(next mcp.MethodHandler) mcp.MethodHandler {
 		if !ok || method != "tools/call" {
 			return next(ctx, method, req)
 		}
-		// Jeder Aufruf arbeitet im Checkout seines Clients (Repo-Wurzel oder Worktree), nie in einem fremden.
+		// Jeder Aufruf arbeitet im Checkout seines Clients (Repo-Wurzel oder Worktree), nie in einem fremden;
+		// das Argument checkout gilt vor dem Header (B-388).
 		ws, wsErr := s.resolveWorkspace(call)
 		header := headerRoot(call) != ""
+		arg := ""
+		if takesCheckout(call.Params.Name) {
+			var err error
+			if arg, call.Params.Arguments, err = splitCheckout(call.Params.Arguments); err != nil {
+				wsErr = err
+			} else if arg != "" {
+				ws, wsErr = s.resolveCheckout(arg)
+			}
+		}
 		ctx = context.WithValue(ctx, wsKey{}, ws)
 		id := s.stats.begin(call.Params.Name, string(call.Params.Arguments))
 		s.log.Debug("📨 "+call.Params.Name+": start", "ns", "mcp", "tool", call.Params.Name, "args", clipArgs(call.Params.Arguments))
@@ -32,7 +42,7 @@ func (s *Server) observe(next mcp.MethodHandler) mcp.MethodHandler {
 			if p := recover(); p != nil {
 				res, err = textResult(fmt.Sprintf("%s: %v", panicText, p), true), nil
 			}
-			s.finish(call, id, outcomeOf(res, err), ws, header)
+			s.finish(call, id, outcomeOf(res, err), ws, header, arg != "")
 		}()
 		if wsErr != nil {
 			res = textResult(wsErr.Error(), true)
@@ -47,10 +57,12 @@ func (s *Server) observe(next mcp.MethodHandler) mcp.MethodHandler {
 
 // finish schließt einen Aufruf ab: Zähler und Aufruf-Log, eigenes Log bei Fehlern, Nutzungsstatistik mit den rohen
 // Argumenten (das Aufruf-Log kürzt sie, gekürztes JSON ließe sich nicht mehr normieren). header und checkout im Log
-// zeigen je Aufruf, ob X-K3C-Root ankam und welcher Checkout galt (B-275).
-func (s *Server) finish(call *mcp.CallToolRequest, id int64, o outcome, ws workspace, header bool) {
+// zeigen je Aufruf, ob X-K3C-Root ankam und welcher Checkout galt (B-275), checkout_arg, ob das Argument checkout
+// ihn bestimmt hat (B-388).
+func (s *Server) finish(call *mcp.CallToolRequest, id int64, o outcome, ws workspace, header, arg bool) {
 	c, found := s.stats.end(id, o)
-	attrs := []any{"ns", "mcp", "tool", call.Params.Name, "ms", c.DurationMs, "ok", o.ok, "header", header, "checkout", ws.label()}
+	attrs := []any{"ns", "mcp", "tool", call.Params.Name, "ms", c.DurationMs, "ok", o.ok, "header", header,
+		"checkout_arg", arg, "checkout", ws.label()}
 	if !o.ok {
 		// Tool und Fehler in der Meldung, damit logs_errors gleichartige Fehler je Tool gruppiert.
 		s.log.Warn("❌ "+call.Params.Name+": "+clip(o.err), attrs...)
