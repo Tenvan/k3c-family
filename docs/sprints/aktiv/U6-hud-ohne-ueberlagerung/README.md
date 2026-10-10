@@ -72,7 +72,7 @@ B-336 › Ausnahme- und Fehlerfälle; B-337 › Ausnahme- und Fehlerfälle (sehr
 |---|---|---|---|---|
 | U6.1 | `U6.1-optionen-per-touch.md` | Umsetzung | autonom | fertig |
 | U6.2 | `U6.2-hud-elemente-layout.md` | Umsetzung | autonom | fertig |
-| U6.3 | `U6.3-review.md` | Review | autonom | offen |
+| U6.3 | `U6.3-review.md` | Review | autonom | in Arbeit |
 | U6.4 | `U6.4-abnahme-gesamt.md` | Workshop | Mensch | offen |
 
 ## Abnahme
