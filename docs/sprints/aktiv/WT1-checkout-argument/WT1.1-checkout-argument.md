@@ -1,6 +1,6 @@
 # WT1.1 · Schreibende Tools und check_run nehmen das Argument checkout
 
-- **Status:** offen
+- **Status:** in Arbeit
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** DEV

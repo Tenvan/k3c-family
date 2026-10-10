@@ -64,7 +64,7 @@ Ob das optionale Feld an allen betroffenen Tools ohne Mehraufwand ins Schema kom
 
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
-| WT1.1 | `WT1.1-checkout-argument.md` | Umsetzung | autonom | offen |
+| WT1.1 | `WT1.1-checkout-argument.md` | Umsetzung | autonom | in Arbeit |
 | WT1.2 | `WT1.2-review.md` | Review | autonom | offen |
 
 Bei `Reife: Entwurf` genügen Stichpunkte mit den Kriterien in Klammern statt Session-Dateien. Vor dem Aktivieren
