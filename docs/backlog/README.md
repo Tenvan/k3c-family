@@ -148,6 +148,8 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-389](B-389-oe-schliesst-dialog-zuerst.md) | CLI | Problem | mittel | offen | – | Ö schließt bei offenem Cheat-Dialog zuerst den Dialog, das Overlay bleibt offen |
 | [B-390](B-390-touch-hud-verdeckt-bei-aufloesung.md) | CLI | Problem | mittel | offen | – | Touch-Tasten und Start-Button verdecken HUD-Infozeilen bei bestimmten Auflösungen |
 | [B-391](B-391-beitritts-hinweis-spieler-2-fehlt.md) | CLI | Problem | mittel | offen | – | Der Beitritts-Hinweis für Spieler 2 wird nicht angezeigt |
+| [B-392](B-392-splitscreen-kamera-spieler-2.md) | CLI | Problem | hoch | offen | – | Im Split-Screen scrollt nur die Kamera von Spieler 1 mit; Spieler 2 und weitere sind nicht an ihre Ansicht gebunden |
+| [B-393](B-393-muenzbild-hinweis-fehlt.md) | CLI | Problem | mittel | offen | – | Das Münzbild vor „Hinlaufen: Münze aufheben“ erscheint im Browser nicht |
 
 ## Archiv
 
