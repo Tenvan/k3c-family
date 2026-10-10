@@ -145,6 +145,9 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-385](B-385-inselwechsel-ereignis-geht-verloren.md) | SRV | Problem | mittel | offen | – | Das Ereignis `islandSwitch` erreicht beim Inselwechsel keinen Client |
 | [B-386](B-386-netz-budget-kampf-q08.md) | SRV | Frage | mittel | offen | – | Gilt das Netz-Budget aus Q08 für den Kampf-Zustand oder nur für Ereignisse? |
 | [B-387](B-387-ticketnummern-parallele-worktrees.md) | DEV | Problem | mittel | offen | – | Ticket-Nummern bleiben zwischen parallelen Worktrees eindeutig |
+| [B-389](B-389-oe-schliesst-dialog-zuerst.md) | CLI | Problem | mittel | offen | – | Ö schließt bei offenem Cheat-Dialog zuerst den Dialog, das Overlay bleibt offen |
+| [B-390](B-390-touch-hud-verdeckt-bei-aufloesung.md) | CLI | Problem | mittel | offen | – | Touch-Tasten und Start-Button verdecken HUD-Infozeilen bei bestimmten Auflösungen |
+| [B-391](B-391-beitritts-hinweis-spieler-2-fehlt.md) | CLI | Problem | mittel | offen | – | Der Beitritts-Hinweis für Spieler 2 wird nicht angezeigt |
 
 ## Archiv
 
