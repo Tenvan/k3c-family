@@ -72,7 +72,7 @@ wird jede Session als eigene Datei nach `docs/vorlagen/session.md` geschrieben.
 
 ## Abnahme
 
-2026-10-10, Review WT1.2: AC-01 bis AC-04 geprüft (WT1.1 › Ergebnis), keine schweren Befunde, keine neuen Tickets.
+2026-10-10, Review WT1.2: AC-01 bis AC-04 geprüft (WT1.1 › Ergebnis), behoben: Pfadvergleich mit Windows-Kurznamen (`canon` in `workspace.go`, CI), keine neuen Tickets.
 `task check` und `task check:dev` grün. Review auf Anweisung 🧑 im selben Lauf wie WT1.1; Folge-PR #246 nach dem früh gemergten #244.
 Nach dem Merge k3c-dev neu bauen und starten (`task k3c-dev:build`), sonst kennen laufende Sessions `checkout` nicht.
 Version: v0.17.0 vorgeschlagen (Minor: neues Argument `checkout` im Werkzeug; v0.16.0, falls K4 nicht vorher getaggt wird); gesetzt erst nach Bestätigung durch 🧑.
