@@ -8,9 +8,9 @@
 - **Sprint:** GL1
 - **Projekt:** BED
 - **Erstellt:** 2026-10-08
-- **Spec:** Entwurf
-- **Revision:** 1
-- **Freigabe:** –
+- **Spec:** freigegeben
+- **Revision:** 2
+- **Freigabe:** 2026-10-10, 🧑 im Chat (mit GL1 Revision 2)
 
 ## Ausgangslage
 
@@ -52,7 +52,7 @@ Kein Speicher bzw. unbekannte Sprache → Deutsch. Die Sprache wechselt im Spiel
 
 ## Offene Fragen
 
-Soll die Landingpage die Sprache schon beim Schließen der Spiel-Seite übernehmen (ohne Neuladen)? Entscheidet 🧑 beim Einplanen.
+Keine. Entschieden 2026-10-10 (🧑): Die Landingpage übernimmt die Sprache nur beim Neuladen, nicht schon beim Schließen der Spiel-Seite.
 
 ## Notizen
 

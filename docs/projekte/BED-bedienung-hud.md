@@ -22,7 +22,7 @@ In Abarbeitungs-Reihenfolge; der erste nicht erledigte Sprint ist der nächste. 
 | U6 | HUD ohne Überlagerung, Optionen per Touch | aktiv |
 | LB1 | Lobby zeigt Räume und startet Spiele | erledigt |
 | AZ1 | Tasten von Spieler 2 an der Tastatur, Pause-Anzeige | geplant |
-| GL1 | Tastensymbole je Controller, Landingpage in der gewählten Sprache | geplant |
+| GL1 | Landingpage in der gewählten Sprache | aktiv |
 
 ## Nicht-Ziele
 

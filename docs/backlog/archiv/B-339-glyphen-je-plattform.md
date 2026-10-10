@@ -4,8 +4,8 @@
 - **Typ:** Idee
 - **Prio:** mittel
 - **Umgebung:** live
-- **Status:** eingeplant
-- **Sprint:** GL1
+- **Status:** verworfen
+- **Sprint:** –
 - **Projekt:** BED
 - **Erstellt:** 2026-10-07
 - **Spec:** Entwurf
@@ -65,5 +65,7 @@ Domäne CLI (`src/scenes/glyphs*.ts`); Erkennung und Weitergabe der Familie in `
 - Soll auch die Tastatur je Layout (DE/US) beschriftet werden? 🧑, nicht blockierend.
 
 ## Notizen
+
+Verworfen 2026-10-10 (🧑 im Chat): Die Plattformen sind nur Xbox, PC und Mobile (Touch); jedes Pad zeigt Xbox-Symbole, weitere Familien (PlayStation, Switch, generisch) gibt es nicht. GL1 setzt nur noch B-369 um.
 
 Erkennung über `Gamepad.id`: Chrome/Edge melden Text plus `Vendor: xxxx Product: yyyy` (Sony 054c, Microsoft 045e, Nintendo 057e). Verwandt: B-149 (Glyphen, erledigt), B-337 (HUD-Elemente), B-314 (Controller-Prüfungen).
