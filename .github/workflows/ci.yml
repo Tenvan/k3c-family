@@ -1,9 +1,9 @@
-# CI: Lint, Typecheck, Tests, Build (auch GitHub-Pages-Seite); Go: Tests (auch Heimnetz-Server), Lint, Cross-Build; Docker: Image amd64/arm64 mit Smoke-Test; k3c-dev: Frontend, Tests, Lint, Wails-Build (Windows). Bei jedem Push; im Pull Request nur Merge-Konflikt-Prüfung (Tests laufen vor dem Push und im Push-Lauf des Branches).
+# CI: Lint, Typecheck, Tests, Build (auch GitHub-Pages-Seite); Go: Tests (auch Heimnetz-Server), Lint, Cross-Build; Docker: Image amd64/arm64 mit Smoke-Test; k3c-dev: Frontend, Tests, Lint, Wails-Build (Windows). Tests nur nach dem Merge (Push auf develop/main) oder von Hand (workflow_dispatch); im Pull Request nur Merge-Konflikt-Prüfung, Tests laufen lokal vor dem Push (task check).
 name: CI
 
 on:
   push:
-    branches: ['**']
+    branches: [develop, main]
   pull_request:
   workflow_dispatch:
 
