@@ -5,6 +5,7 @@ import type { Player } from '../model/types';
 import { slotBindings, type Device } from '../input/slotBindings';
 import { fontStyle } from './fontRules';
 import type { RadarCell } from './radarView';
+import { HudBox } from './hudElements';
 import { menuEntries, skillName, slotViews, type MenuEntry, type SkillMenus } from './skillMenuLogic';
 
 const STYLE = { stroke: '#000000', strokeThickness: 6, fontStyle: 'bold' };
@@ -38,24 +39,30 @@ function menuText(p: Player, cursor: number, device: Device): string {
   return [t('skill.title', { n: p.points }), ...rows, t(`skill.hint.${device}`, { menu })].join('\n');
 }
 
-/** Zeichnet je Spielerfeld die Skill-Leiste (immer) und das Skill-Menü (wenn offen). Nur Zeichnen, die Logik liegt in `skillMenuLogic.ts`. */
+/**
+ * Zeichnet je Spielerfeld die Skill-Leiste (immer, als HUD-Element `skills:<Zelle>`, Lage aus `hudLayout`) und das
+ * Skill-Menü (wenn offen, mittig im Feld). Nur Zeichnen, die Logik liegt in `skillMenuLogic.ts`.
+ */
 export class SkillMenuLayer {
-  private bars: Phaser.GameObjects.Text[] = [];
+  /** Skill-Leiste je Zellen-Index */
+  readonly bars = new Map<number, HudBox>();
   private menus: Phaser.GameObjects.Text[] = [];
 
   constructor(private readonly scene: Phaser.Scene) {}
 
   /** `slotOf`: lokaler Slot zum Platz der Zelle (`cell.seat`), `deviceOf`: Gerät des Spielers im Slot */
   draw(cells: readonly RadarCell[], menus: SkillMenus, slotOf: (seat: number) => number | undefined, deviceOf: (slot: number) => Device): void {
-    [...this.bars, ...this.menus].forEach((o) => o.setVisible(false));
+    for (const b of this.bars.values()) b.text.setVisible(false);
+    this.menus.forEach((o) => o.setVisible(false));
     let n = 0;
-    for (const { cell, monarch, world } of cells) {
+    for (const [i, { cell, monarch, world }] of cells.entries()) {
       const p = monarch === null ? undefined : world?.players.find((q) => q.index === monarch);
       const slot = slotOf(cell.seat);
       if (!p || slot === undefined) continue;
       const device = deviceOf(slot);
-      const bar = (this.bars[n] ??= this.scene.add.text(0, 0, '', { ...STYLE, ...fontStyle('playerValue') }).setOrigin(0, 1));
-      bar.setText(slotBar(p, device)).setPosition(cell.x + 24, cell.y + cell.h - 24).setVisible(true);
+      let bar = this.bars.get(i);
+      if (!bar) this.bars.set(i, (bar = new HudBox(this.scene, this.scene.add.text(0, 0, '', { ...STYLE, ...fontStyle('playerValue') }))));
+      bar.text.setText(slotBar(p, device)).setVisible(true);
       const menu = (this.menus[n] ??= this.scene.add.text(0, 0, '', { ...STYLE, ...fontStyle('playerValue'), backgroundColor: '#0c1024cc', padding: { x: 16, y: 12 } }).setOrigin(0.5));
       n += 1;
       if (!menus.isOpen(slot)) continue;
