@@ -1,6 +1,6 @@
 # WT1 · DEV · Worktree-Sessions richten k3c-dev-Tools per Argument auf ihren Checkout
 
-- **Status:** geplant
+- **Status:** aktiv
 - **Projekt:** WZG
 - **Domäne:** DEV
 - **Reife:** bereit
