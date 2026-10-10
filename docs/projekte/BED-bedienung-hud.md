@@ -16,12 +16,12 @@ In Abarbeitungs-Reihenfolge; der erste nicht erledigte Sprint ist der nächste. 
 |---|---|---|
 | LP1 | Landingpage für Spieler, Entwicklerseite für Werkzeuge | erledigt |
 | U5 | Debug-Overlay und Cheat-Dialog bedienbar | erledigt |
-| S8 | Spielmenü „Spiel verlassen“, Y-Belegung und Glyphen-Entscheidung | aktiv |
-| PL1 | Neues Spiel, zwei Spieler an einer Tastatur, Overlay auf der Xbox, zentrale Texte | aktiv |
+| S8 | Spielmenü „Spiel verlassen“, Y-Belegung und Glyphen-Entscheidung | erledigt |
+| PL1 | Neues Spiel, zwei Spieler an einer Tastatur, Overlay auf der Xbox, zentrale Texte | erledigt |
 | S9 | Rückmeldung für Schlag und Skills, ein Hinweis je Spieler | aktiv |
 | U6 | HUD ohne Überlagerung, Optionen per Touch | aktiv |
 | LB1 | Lobby zeigt Räume und startet Spiele | erledigt |
-| AZ1 | Tasten von Spieler 2 an der Tastatur, Pause-Anzeige | geplant |
+| AZ1 | Tasten von Spieler 2 an der Tastatur, Pause-Anzeige | aktiv |
 | GL1 | Landingpage in der gewählten Sprache | aktiv |
 
 ## Nicht-Ziele

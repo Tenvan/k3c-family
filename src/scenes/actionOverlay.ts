@@ -1,6 +1,6 @@
 import Phaser from 'phaser';
 import { GROUND_Y, UNIT_PX } from '../core/constants';
-import type { Device } from '../input/slotBindings';
+import type { HintDevice } from './glyphs';
 import { HINT_FONT, playerHint, type HintView } from './actionHints';
 import { fontStyle } from './fontRules';
 import { GlyphRow, type RowPart } from './glyphView';
@@ -34,7 +34,7 @@ export class ActionOverlay {
   constructor(private readonly scene: Phaser.Scene) {}
 
   /** `cameras[i]` gehört zu `cells[i]` (layoutCameras); `slotOf`/`deviceOf` wie bei der Skill-Leiste */
-  draw(cells: readonly RadarCell[], cameras: readonly Phaser.Cameras.Scene2D.Camera[], slotOf: (seat: number) => number | undefined, deviceOf: (slot: number) => Device): void {
+  draw(cells: readonly RadarCell[], cameras: readonly Phaser.Cameras.Scene2D.Camera[], slotOf: (seat: number) => number | undefined, deviceOf: (slot: number) => HintDevice): void {
     this.rows.forEach((o) => o.box.setVisible(false)); // forEach überspringt Lücken (Feld ohne Overlay)
     cells.forEach(({ cell, monarch, world }, i) => {
       const p = monarch === null ? undefined : world?.players.find((q) => q.index === monarch);

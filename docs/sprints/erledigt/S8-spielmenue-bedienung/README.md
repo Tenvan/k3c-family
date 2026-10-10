@@ -1,6 +1,6 @@
 # S8 · CLI · Spielmenü „Spiel verlassen“, Y-Belegung und Glyphen-Entscheidung
 
-- **Status:** aktiv
+- **Status:** erledigt
 - **Projekt:** BED
 - **Domäne:** CLI
 - **Reife:** bereit
@@ -63,12 +63,12 @@ Verbindung weg beim Verlassen → Lobby trotzdem, Meldung 👋.
 | S8.1 | `S8.1-spiel-verlassen.md` | Umsetzung | autonom | fertig |
 | S8.2 | `S8.2-y-und-hinweisbilder.md` | Umsetzung | autonom | fertig |
 | S8.3 | `S8.3-review.md` | Review | autonom | fertig |
-| S8.4 | `S8.4-browser-abnahme.md` | Workshop | Mensch | offen |
+| S8.4 | `S8.4-browser-abnahme.md` | Workshop | Mensch | fertig |
 
 ## Abnahme
 
 Review 2026-10-09 (S8.3, eigener Review-Agent): keine schweren Befunde, `task check` und `task check:go` grün.
-- AC-01 geprüft (S8.1: Test „Leave game“, Rechnung 938 < 1006 px), B-293/AC-02 offen bis S8.4; AC-02 geprüft (S8.2), B-205 erledigt; AC-04 geprüft.
-- AC-03: Münze geprüft (S8.2, `grafik:coinIcon`), Ansicht offen bis S8.4; Mond verschoben nach B-370 (kein Bild unter `public/`, Entscheidung 🧑).
-- Neue Tickets: B-370.
+- AC-01 geprüft (S8.1: Test „Leave game“, Rechnung 938 < 1006 px); B-293/AC-02 im Browser abgenommen 2026-10-10 (S8.4, 🧑: Tastatur, Controller, Touch; Server-Log 👋). AC-02 geprüft (S8.2), B-205 erledigt; AC-04 geprüft.
+- AC-03: **nicht erfüllt**. Münzbild per Test belegt (S8.2), im Browser aber nicht zu sehen (S8.4, 🧑) → B-393; Mond verschoben nach B-370 (kein Bild unter `public/`, Entscheidung 🧑).
+- Neue Tickets: B-370, B-392 (Split-Screen-Kamera, aus S8.4), B-393.
 - Version: v0.15.1 vorgeschlagen (Bild im Münz-Hinweis, Texte und Nachweise); nicht gesetzt (wartet auf Bestätigung 🧑).

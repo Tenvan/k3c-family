@@ -30,6 +30,8 @@ export const en: Record<TextKey, string> = {
   'hud.join.touch': 'Press the coin button to join',
   'hud.join.pad': 'Press A to join',
   'hud.join.keyboard': 'Press Space to join',
+  'hud.hint.keyboard2': 'Hold Enter = give coins · Right Ctrl = sprint · arrows = walk',
+  'hud.join.keyboard2': 'Press Enter to join',
   'hud.joinCenter': 'Press  A  (controller), Space or the coin button to join',
   'hud.room': 'Room {code} · {name} · {n} players',
 
@@ -150,6 +152,7 @@ export const en: Record<TextKey, string> = {
   'skill.ready': 'ready',
   'skill.hint.pad': '◀ ▶ select · A confirm · {menu} close',
   'skill.hint.keyboard': 'A / D select · Space confirm · {menu} close',
+  'skill.hint.keyboard2': '◀ ▶ select · Enter confirm · {menu} close',
   'skill.hint.touch': 'Left/right select · coin button confirms · {menu} closes',
   // Action overlay (S3.3)
   'hint.hold': 'Hold {key}: {what}',
