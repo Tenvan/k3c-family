@@ -1,6 +1,6 @@
 # GL1.1 · Landingpage-Texte über t() in de und en
 
-- **Status:** in Arbeit
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** PLAT
@@ -45,8 +45,8 @@ Sprache ohne Neuladen übernehmen; Glyphen je Controller; Werkzeug-Seiten, Shell
 
 ## Fertig, wenn
 
-- [ ] AC-02: `platformTextRule.test.ts` prüft `src/landing/*.ts` und `index.html` und ist grün; jeder neue Schlüssel steht in `texts.de.ts` und `texts.en.ts`.
-- [ ] `task check` grün.
+- [x] AC-02: `platformTextRule.test.ts` prüft `src/landing/*.ts` und `index.html` und ist grün; jeder neue Schlüssel steht in `texts.de.ts` und `texts.en.ts`.
+- [x] `task check` grün.
 
 ## Prüfen
 
@@ -58,5 +58,9 @@ Manuelle Prüfungen (Browser, Xbox, TV) nur, wenn diese Datei sie nennt und 🧑
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+2026-10-10, Agent (Worktree, offline).
+
+- **AC-02 geprüft:** `src/core/platformTextRule.test.ts` prüft jetzt auch `src/landing/*.ts` (ohne Tests) und den sichtbaren Text von `index.html` (ohne `<style>`, `<script>`, Kommentare; „Family Three Crowns“ erlaubt). Vor der Umstellung rot (vier Dateien), danach grün. 27 Schlüssel `landing.*` in `texts.de.ts` und `texts.en.ts` (`Record<TextKey, string>` erzwingt Englisch für jeden Schlüssel). `task check` grün (k3c-dev `check_run`, Checkout Worktree).
+- Umsetzung: `PageEntry` hat eine `id`, `title` und `description` sind Getter über `t()`; `SECTIONS` ist eine geordnete Liste. Die gemerkte Kachel läuft über `dataset.id` statt über den Titel, damit sie den Sprachwechsel übersteht. `index.html` setzt die Texte per `data-t`, `landing.ts` füllt sie beim Laden und setzt `<html lang>`. `NO_SERVER_HINT` entfällt (`t('landing.noServer')`, `showNoServer` nutzt `landing.noServerText`).
+- Neuer Test in `pages.test.ts`: Titel folgen der Sprache (`en` → „Continue“, unbekannte Sprache → Deutsch).
+- Abweichungen: keine. Browser-Prüfung nicht gemacht (offline-Session, Nachweis am Gerät in GL1.3).

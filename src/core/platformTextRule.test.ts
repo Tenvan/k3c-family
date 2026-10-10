@@ -1,12 +1,17 @@
 import { describe, expect, it } from 'vitest';
 
 /**
- * B-215/AC-01: Touch-Overlay und Shell holen ihre Texte aus `src/core/texts.*.ts`. Gleiche Regel wie
+ * B-215/AC-01, B-369/AC-01: Touch-Overlay, Shell und Landingpage holen ihre Texte aus `src/core/texts.*.ts`. Gleiche Regel wie
  * `src/scenes/textRule.test.ts` (CLI, dort nicht geändert): kein Literal mit Umlaut, ß oder zwei Wörtern; ausgenommen
  * Kommentare, CSS (mit `;` oder in Zeilen mit `font`) und Log-Zeilen. In HTML-Markup (`<…>`) zählen nur Umlaute und ß,
  * weil Tag- und Attributnamen sonst als „zwei Wörter“ gälten.
  */
-const sources = import.meta.glob(['../input/touchInput.ts', './shell.ts'], { query: '?raw', import: 'default', eager: true }) as Record<string, string>;
+const sources = import.meta.glob(['../input/touchInput.ts', './shell.ts', '../landing/*.ts', '!../landing/*.test.ts'], {
+  query: '?raw',
+  import: 'default',
+  eager: true,
+}) as Record<string, string>;
+const indexHtml = (import.meta.glob('../../index.html', { query: '?raw', import: 'default', eager: true }) as Record<string, string>)['../../index.html']!;
 
 const GERMAN = /[äöüßÄÖÜ]|[A-Za-z]{2,}\s+[A-Za-z]{2,}/;
 const UMLAUT = /[äöüßÄÖÜ]/;
@@ -58,9 +63,32 @@ function literals(src: string): string[] {
 const germanLiterals = (src: string): string[] =>
   literals(src).filter((t) => !t.includes(';') && (t.includes('<') ? UMLAUT.test(t) : GERMAN.test(t)));
 
-describe('Keine deutschen Text-Literale in Touch-Overlay und Shell (B-215)', () => {
-  it('findet beide Dateien', () => {
-    expect(Object.keys(sources).sort()).toEqual(['../input/touchInput.ts', './shell.ts']);
+/** Sichtbarer Text der Seite: Inhalt zwischen Tags und Umlaute im Markup; `<style>`, `<script>` und Kommentare fehlen. */
+function germanHtml(html: string): string[] {
+  const markup = html.replace(/<!--[\s\S]*?-->|<style[\s\S]*?<\/style>|<script[\s\S]*?<\/script>/g, '');
+  const texts = [...markup.matchAll(/>([^<]+)</g)].map((m) => m[1]!.trim()).filter((s) => s && s !== 'Family Three Crowns');
+  const tags = [...markup.matchAll(/<[^>]+>/g)].map((m) => m[0]);
+  return [...texts.filter((s) => GERMAN.test(s)), ...tags.filter((s) => UMLAUT.test(s))];
+}
+
+describe('Keine deutschen Text-Literale in Touch-Overlay, Shell und Landingpage (B-215, B-369)', () => {
+  it('findet alle Dateien', () => {
+    expect(Object.keys(sources).sort()).toEqual([
+      '../input/touchInput.ts',
+      '../landing/landing.ts',
+      '../landing/pages.ts',
+      '../landing/serverCheck.ts',
+      './shell.ts',
+    ]);
+  });
+
+  it('index.html (B-369/AC-01)', () => {
+    expect(germanHtml(indexHtml)).toEqual([]);
+  });
+
+  it('erkennt deutschen Seitentext, nicht aber Spielname, CSS oder Kommentar', () => {
+    const html = '<style>p { content: "Grün Blau" }</style><!-- schön --><h1>Family Three Crowns</h1><p>Couch-Koop für alle</p><b title="Zurück">A</b>';
+    expect(germanHtml(html)).toEqual(['Couch-Koop für alle', '<b title="Zurück">']);
   });
 
   it.each(Object.entries(sources))('%s', (_name, text) => {

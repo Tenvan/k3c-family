@@ -64,7 +64,7 @@ Keine. Entschieden 2026-10-10 (🧑): Plattformen sind nur Xbox, PC und Mobile, 
 
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
-| GL1.1 | `GL1.1-landing-texte.md` | Umsetzung | autonom | in Arbeit |
+| GL1.1 | `GL1.1-landing-texte.md` | Umsetzung | autonom | fertig |
 | GL1.2 | `GL1.2-review.md` | Review | autonom | offen |
 | GL1.3 | `GL1.3-abnahme-sprache.md` | Workshop | Mensch | offen |
 
