@@ -5,7 +5,11 @@
  * B und View bekommen nie ein Bild (Edge-Zurück bzw. reserviert für View + Menu).
  */
 import { t } from '../core/texts';
-import { KEY_ACTIONS, PAD, PAD_ACTIONS, slotBindings, type Action, type Device, type SlotAction } from '../input/slotBindings';
+import { KEYBOARD_2, type KeySpec } from '../input/keyboardLayouts';
+import { KEY_ACTIONS, PAD, PAD_ACTIONS, SLOT_ACTIONS, slotBindings, type Action, type Device, type SlotAction } from '../input/slotBindings';
+
+/** Gerät eines Hinweises: wie `Device`, dazu Spieler 2 an der Tastatur (`KEYBOARD_2`, B-371) */
+export type HintDevice = Device | 'keyboard2';
 
 export interface Glyph {
   /** Bild-Schlüssel, `null` = nur Text zeigen */
@@ -48,6 +52,14 @@ function keyGlyph(action: Action): Glyph {
   return { key: `key:${name}`, label: name === 'SPACE' ? t('hint.space') : name === 'ESC' ? 'Esc' : name };
 }
 
+/** Spieler 2 an der Tastatur: Tasten aus `KEYBOARD_2`; Aktion ohne Taste (Pause, Vollbild) → Text-Rückfall */
+function key2Glyph(action: Action): Glyph {
+  const spec: KeySpec | undefined = KEYBOARD_2.actions[action]?.[0];
+  if (!spec) return fallback(action);
+  const name = 'code' in spec ? spec.code : spec.keyCode === 13 ? 'Enter' : String.fromCharCode(spec.keyCode);
+  return { key: `key:${name}`, label: name.replace(/^Numpad/, 'Num ') };
+}
+
 function touchGlyph(action: Action): Glyph {
   const k = isSlot(action) ? { key: action, label: slotLabel('touch', action) } : TOUCH_KEYS[action];
   return k ? { key: `touch:${k.key}`, label: k.label } : fallback(action);
@@ -59,5 +71,11 @@ export function glyphOf(action: string, device: string): Glyph {
   const a = action as Action;
   if (device === 'pad') return padGlyph(a);
   if (device === 'keyboard') return keyGlyph(a);
+  if (device === 'keyboard2') return key2Glyph(a);
   return device === 'touch' ? touchGlyph(a) : fallback(action);
+}
+
+/** Beschriftung von Schlag, Skill-Slot 1–4 und Skill-Menü in der Reihenfolge von `SLOT_ACTIONS` */
+export function slotLabels(device: HintDevice): string[] {
+  return device === 'keyboard2' ? SLOT_ACTIONS.map((a) => key2Glyph(a).label) : slotBindings(device).map((b) => b.label);
 }

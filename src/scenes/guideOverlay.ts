@@ -2,10 +2,9 @@ import Phaser from 'phaser';
 import { guideSeen } from '../core/guideSeen';
 import { loadSettings } from '../core/settings';
 import { t } from '../core/texts';
-import type { Device } from '../input/slotBindings';
 import { screenAt } from './actionOverlay';
 import { fontStyle } from './fontRules';
-import { glyphOf } from './glyphs';
+import { glyphOf, type HintDevice } from './glyphs';
 import { GlyphRow, type RowPart } from './glyphView';
 import { guideImage, stepGuide, type GuideHint } from './guideHints';
 import type { RadarCell } from './radarView';
@@ -16,7 +15,7 @@ const OBJECT_PX = 160;
 const PLAYER_PX = 370;
 
 /** Hinweis als Zeilenteile; `{key}` im Text wird zur Glyph der Bestätigen-Taste des Geräts, ein Bild steht davor (B-294) */
-function partsOf(h: GuideHint, device: Device): RowPart[] {
+function partsOf(h: GuideHint, device: HintDevice): RowPart[] {
   const [before = '', after] = t(`guide.${h.id}`, {}).split('{key}');
   const text: RowPart[] = after === undefined ? [before] : [before, glyphOf('confirm', device), after];
   const image = guideImage(h.id);
@@ -34,7 +33,7 @@ export class GuideOverlay {
   constructor(private readonly scene: Phaser.Scene) {}
 
   /** Argumente wie `ActionOverlay.draw` */
-  draw(cells: readonly RadarCell[], cameras: readonly Phaser.Cameras.Scene2D.Camera[], slotOf: (seat: number) => number | undefined, deviceOf: (slot: number) => Device): void {
+  draw(cells: readonly RadarCell[], cameras: readonly Phaser.Cameras.Scene2D.Camera[], slotOf: (seat: number) => number | undefined, deviceOf: (slot: number) => HintDevice): void {
     this.rows.forEach((r) => r.box.setVisible(false));
     const on = loadSettings().guideHints; // je Frame gelesen wie in `GameScene`: die Optionen wirken sofort
     cells.forEach(({ cell, monarch, world }, i) => {

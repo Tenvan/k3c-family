@@ -2,8 +2,8 @@ import Phaser from 'phaser';
 import { nameOf, t } from '../core/texts';
 import { MONARCH } from '../model/data';
 import type { Player } from '../model/types';
-import { slotBindings, type Device } from '../input/slotBindings';
 import { fontStyle } from './fontRules';
+import { slotLabels, type HintDevice } from './glyphs';
 import type { RadarCell } from './radarView';
 import { HudBox } from './hudElements';
 import { menuEntries, skillName, slotViews, type MenuEntry, type SkillMenus } from './skillMenuLogic';
@@ -24,18 +24,18 @@ function entryText(e: MenuEntry, selected: boolean): string {
 }
 
 /** Skill-Leiste: Taste, Skill und Abklingzeit je Slot */
-function slotBar(p: Player, device: Device): string {
-  const labels = slotBindings(device).slice(1, 5).map((b) => b.label);
+function slotBar(p: Player, device: HintDevice): string {
+  const labels = slotLabels(device).slice(1, 5);
   return slotViews(p)
     .map((s, i) => `${labels[i]} ${s.skill ? `${skillName(s.skill)} ${s.cooldown > 0 ? `${Math.ceil(s.cooldown)} s` : t('skill.ready')}` : t('skill.free')}`)
     .join('  ·  ');
 }
 
-function menuText(p: Player, cursor: number, device: Device): string {
+function menuText(p: Player, cursor: number, device: HintDevice): string {
   const entries = menuEntries(p);
   const from = Math.max(0, Math.min(cursor - Math.floor(WINDOW / 2), entries.length - WINDOW));
   const rows = entries.slice(from, from + WINDOW).map((e, i) => entryText(e, from + i === cursor));
-  const menu = slotBindings(device).find((b) => b.action === 'skillMenu')?.label ?? '';
+  const menu = slotLabels(device)[5] ?? '';
   return [t('skill.title', { n: p.points }), ...rows, t(`skill.hint.${device}`, { menu })].join('\n');
 }
 
@@ -51,7 +51,7 @@ export class SkillMenuLayer {
   constructor(private readonly scene: Phaser.Scene) {}
 
   /** `slotOf`: lokaler Slot zum Platz der Zelle (`cell.seat`), `deviceOf`: Gerät des Spielers im Slot */
-  draw(cells: readonly RadarCell[], menus: SkillMenus, slotOf: (seat: number) => number | undefined, deviceOf: (slot: number) => Device): void {
+  draw(cells: readonly RadarCell[], menus: SkillMenus, slotOf: (seat: number) => number | undefined, deviceOf: (slot: number) => HintDevice): void {
     for (const b of this.bars.values()) b.text.setVisible(false);
     this.menus.forEach((o) => o.setVisible(false));
     let n = 0;

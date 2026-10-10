@@ -12,6 +12,7 @@ Die Reihenfolge der Arbeit ist allein der Projekt-Rang: [`../projekte/README.md`
 | W6 | CLI | WRT | Anzeigen für Bau, Lager, Hub und Bürger (B-117, B-126) | HUD und Bauplätze am TV, von 🧑 abgenommen | `aktiv/W6-anzeige-wirtschaft/` |
 | S9 | CLI, SIM | BED | Rückmeldung für Schlag und Skills, ein Hinweis je Spieler | Jeder Tastendruck auf Schlag oder Skill ist sichtbar, das Aktionen-Overlay zeigt je Spieler einen Hinweis | `aktiv/S9-rueckmeldung-overlay/` |
 | U6 | CLI | BED | HUD ohne Überlagerung, Optionen per Touch | Optionen per Touch bedienbar, HUD bei 1–4 Spielern ohne Überlagerung, Gesamtabnahme Anzeige | `aktiv/U6-hud-ohne-ueberlagerung/` |
+| AZ1 | CLI | BED | Tasten von Spieler 2 an der Tastatur, Pause-Anzeige | Feld von Spieler 2 nennt Enter, Pfeile und Ziffernblock; angehaltener Raum zeigt je Zelle „Pausiert“, Figuren stehen still | `aktiv/AZ1-tasten-spieler2-pause/` |
 
 ## Offen am Gerät
 
@@ -29,7 +30,6 @@ Abnahmen am Gerät (`Agent: Mensch`) sammelt das Projekt ABN im Sprint HW1: [`..
 | M10 | SRV | GRA | Ressourcen-Manager für Grafik- und Sound-Slots in k3c-dev | – | Entwurf | `geplant/M10-ressourcen-manager/` |
 | SO2 | CLI | SND | SFX-Katalog und Einbau | – | bereit | `geplant/SO2-sfx-katalog/` |
 | SO4 | CLI | SND | Musik je Zustand | – | bereit | `geplant/SO4-musik/` |
-| AZ1 | CLI | BED | Tasten von Spieler 2 an der Tastatur, Pause-Anzeige | Feld von Spieler 2 nennt Enter, Pfeile und Ziffernblock; angehaltener Raum zeigt je Zelle „Pausiert“, Figuren stehen still | Entwurf | `geplant/AZ1-tasten-spieler2-pause/` |
 | GL1 | PLAT, CLI | BED | Tastensymbole je Controller, Landingpage in der gewählten Sprache | PlayStation-Pad zeigt ✕/□/△ in Spiel und Seiten, je Zelle die Symbole des eigenen Pads; Landingpage auf English | Entwurf | `geplant/GL1-glyphen-controller-landing-sprache/` |
 | W7 | SIM | WRT | Ausrüstung ohne Unverwundbarkeit, Spielstand vollständig | Passive Burg kann fallen, Spielstand stellt W2–W4 wieder her, Golden-Hub geprüft | bereit | `geplant/W7-ausruestung-spielstand/` |
 | SV1 | SRV | WRT | Raum mit allen Stufen, Voll-Ausbau-Spielstand, leere Test-Räume | Neuer Raum mit allen fünf Stufen, Level-Betrachter startet einen voll ausgebauten Spielstand | bereit | `geplant/SV1-raeume-stufen-testspielstand/` |
