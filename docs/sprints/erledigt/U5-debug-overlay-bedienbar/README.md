@@ -1,6 +1,6 @@
 # U5 · CLI · Debug-Overlay und Cheat-Dialog bedienbar
 
-- **Status:** aktiv
+- **Status:** erledigt
 - **Projekt:** BED
 - **Domäne:** CLI
 - **Reife:** bereit
@@ -68,12 +68,13 @@ Dialog offen und Ö → Dialog zuerst zu, Overlay bleibt.
 | U5.1 | `U5.1-oe-hud-frei.md` | Umsetzung | autonom | fertig |
 | U5.2 | `U5.2-cheat-dialog-fokus.md` | Umsetzung | autonom | fertig |
 | U5.3 | `U5.3-review.md` | Review | autonom | fertig |
-| U5.4 | `U5.4-abnahme-pc-handy-xbox.md` | Umsetzung | Mensch | offen |
+| U5.4 | `U5.4-abnahme-pc-handy-xbox.md` | Umsetzung | Mensch | fertig |
 
 ## Abnahme
 
 Review 2026-10-09 (U5.3, eigener Review-Agent): `task check` grün; ein schwerer Befund behoben: Bei offenem Cheat-Dialog lief das Skill-Menü weiter, Leertaste/A hätte Skills lernen oder zurücksetzen können (`GameScene`: `route` ohne Eingaben, Menüs schließen).
 - AC-01, AC-03 geprüft (U5.1); AC-02 geprüft für Tests und Browser-Pane (U5.2); AC-05 geprüft. B-192 erledigt.
 - Verschoben nach U5.4: B-191/AC-02, B-317/AC-03, B-317/AC-04 und AC-04 (Xbox-Prüfung; Befund und Prüfauftrag im Ergebnis von U5.2).
-- Neue Tickets: keine.
+- Abnahme U5.4 (🧑, 2026-10-10, PC und Touch in Chrome): AC-02 bestanden (Cheat-Dialog mit Fokus, Pfeiltasten, Leertaste, Klick). AC-03 mit Befunden: Ö schließt bei offenem Dialog das Overlay mit (B-389); Touch-Tasten und Start-Button verdecken bei ca. 2000 px Breite HUD-Zeilen (B-390). AC-04 (Xbox) verschoben, niedrigste Priorität.
+- Neue Tickets: B-389, B-390, B-391 (Befunde aus der Abnahme, freigegeben 2026-10-10; B-391: Beitritts-Hinweis für Spieler 2 fehlt).
 - Version: v0.15.0 vorgeschlagen (neue Bedienung des Cheat-Dialogs mit Tastatur und Klick); nicht gesetzt (wartet auf Bestätigung 🧑).
