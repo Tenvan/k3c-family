@@ -12,7 +12,6 @@ Die Reihenfolge der Arbeit ist allein der Projekt-Rang: [`../projekte/README.md`
 | W6 | CLI | WRT | Anzeigen für Bau, Lager, Hub und Bürger (B-117, B-126) | HUD und Bauplätze am TV, von 🧑 abgenommen | `aktiv/W6-anzeige-wirtschaft/` |
 | S9 | CLI, SIM | BED | Rückmeldung für Schlag und Skills, ein Hinweis je Spieler | Jeder Tastendruck auf Schlag oder Skill ist sichtbar, das Aktionen-Overlay zeigt je Spieler einen Hinweis | `aktiv/S9-rueckmeldung-overlay/` |
 | U6 | CLI | BED | HUD ohne Überlagerung, Optionen per Touch | Optionen per Touch bedienbar, HUD bei 1–4 Spielern ohne Überlagerung, Gesamtabnahme Anzeige | `aktiv/U6-hud-ohne-ueberlagerung/` |
-| GL1 | PLAT | BED | Landingpage in der gewählten Sprache | Landingpage zeigt nach Sprachwechsel und Neuladen English | `aktiv/GL1-glyphen-controller-landing-sprache/` |
 | AZ1 | CLI | BED | Tasten von Spieler 2 an der Tastatur, Pause-Anzeige | Feld von Spieler 2 nennt Enter, Pfeile und Ziffernblock; angehaltener Raum zeigt je Zelle „Pausiert“, Figuren stehen still | `aktiv/AZ1-tasten-spieler2-pause/` |
 
 ## Offen am Gerät
@@ -51,6 +50,7 @@ Abnahmen am Gerät (`Agent: Mensch`) sammelt das Projekt ABN im Sprint HW1: [`..
 | BAL4 | REG | BAL | Abgleich Spielmetrik und Simulator | – | bereit | `geplant/BAL4-metrik-abgleich/` |
 | BR1 | REG | BAL | Balancing-Runde Wirtschaft und Spieleabend 2 (BR1.1 erledigt; zurückgestellt am 2026-10-07, Vorrang Performance, Grafik und Sound) | Pass/Fail je Kennzahl, Begründungen in `docs/rules/`, Protokoll in `docs/playtests/` | bereit | `geplant/BR1-balancing-wirtschaft/` |
 | BR2 | REG | BAL | Balancing-Runde Kampf und Bosse und Spieleabend 3 | Pass/Fail je Kennzahl, Begründungen in `docs/rules/`, Protokoll in `docs/playtests/` | bereit | `geplant/BR2-balancing-kampf/` |
+| GL1 | PLAT | BED | Landingpage in der gewählten Sprache | Landingpage zeigt nach Sprachwechsel und Neuladen English | bereit | `geplant/GL1-glyphen-controller-landing-sprache/` |
 
 Gesamtplan und Begründung: [`../plan-weiterentwicklung.md`](../plan-weiterentwicklung.md). Offene Entscheidungen: [`../fragenkatalog.md`](../fragenkatalog.md).
 

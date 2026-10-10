@@ -1,6 +1,6 @@
 # GL1 · PLAT · Landingpage in der gewählten Sprache
 
-- **Status:** aktiv
+- **Status:** geplant
 - **Projekt:** BED
 - **Domäne:** PLAT
 - **Reife:** bereit
