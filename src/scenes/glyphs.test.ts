@@ -1,7 +1,7 @@
 import { beforeEach, describe, expect, it } from 'vitest';
 import { setLanguage } from '../core/texts';
 import { KEY_ACTIONS, type Action, type Device } from '../input/slotBindings';
-import { GLYPH_COLORS, glyphOf } from './glyphs';
+import { GLYPH_COLORS, glyphOf, slotLabels } from './glyphs';
 
 /** Alle Aktionen aus `src/input/playerInput.ts` (Typ `Action`), in der Reihenfolge der Belegung */
 const ACTIONS = Object.keys(KEY_ACTIONS) as Action[];
@@ -36,6 +36,13 @@ describe('glyphOf: Aktion + Gerät → Glyph-Schlüssel (S6.2 AC-04, B-149 AC-01
     expect(glyphOf('dance', 'pad')).toEqual({ key: null, label: 'dance' });
     expect(glyphOf('toString', 'keyboard')).toEqual({ key: null, label: 'toString' });
     expect(glyphOf('attack', 'wheel')).toEqual({ key: null, label: 'attack' });
+  });
+
+  it('Spieler 2 an der Tastatur: Tasten aus KEYBOARD_2, Pause und Vollbild ohne Taste (B-371 AC-01)', () => {
+    expect(ACTIONS.map((a) => glyphOf(a, 'keyboard2').key)).toEqual(['key:Enter', null, null, 'key:Numpad0', 'key:Numpad1', 'key:Numpad2', 'key:Numpad3', 'key:Numpad4', 'key:Numpad5']);
+    expect(glyphOf('confirm', 'keyboard2').label).toBe('Enter');
+    expect(slotLabels('keyboard2')).toEqual(['Num 0', 'Num 1', 'Num 2', 'Num 3', 'Num 4', 'Num 5']);
+    expect(slotLabels('keyboard')).toEqual(['E', 'Q', 'R', 'T', 'Z', 'K']);
   });
 
   it('B und View erzeugen nie einen Glyph', () => {

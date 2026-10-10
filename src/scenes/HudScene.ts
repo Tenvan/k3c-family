@@ -16,9 +16,9 @@ import { GuideOverlay } from './guideOverlay';
 import { HudBox, freeAreas } from './hudElements';
 import { hudItems, hudLayout, type HAlign, type Rect, type Size } from './hudLayout';
 import { cellRadar, radarRect, RADAR_HEIGHT } from './radar';
+import type { HintDevice } from './glyphs';
 import { GamepadInput, type PlayerInput } from '../input/playerInput';
 import { TouchInput } from '../input/touchInput';
-import type { Device } from '../input/slotBindings';
 import { resourceName, siteName } from './worldRenderer';
 
 const STYLE = { stroke: '#000000', strokeThickness: 6, fontStyle: 'bold' };
@@ -96,7 +96,7 @@ export class HudScene extends Phaser.Scene {
     this.showCells(cells);
     const seats = [...game.client.you].sort((a, b) => a.slot - b.slot); // Reihenfolge wie `hudCells` (cell.seat)
     const slotOf = (seat: number) => seats[seat]?.slot;
-    const device = (slot: number) => deviceOf(game.slots.bound[slot]) ?? game.lastDevice;
+    const device = (slot: number) => deviceOf(game.slots.bound[slot], game.keyboards[1]) ?? game.lastDevice;
     this.actions.draw(cells, game.cameras.cameras, slotOf, device);
     this.guide.draw(cells, game.cameras.cameras, slotOf, device);
     this.skills.draw(cells, game.skillMenus, slotOf, device);
@@ -190,10 +190,11 @@ export class HudScene extends Phaser.Scene {
   }
 }
 
-/** Gerät einer Eingabe, damit jede Skill-Leiste die Tasten ihres Spielers zeigt */
-function deviceOf(input: PlayerInput | null | undefined): Device | undefined {
+/** Gerät einer Eingabe, damit jede Skill-Leiste die Tasten ihres Spielers zeigt; `keyboard2` = Spieler 2 an der Tastatur */
+function deviceOf(input: PlayerInput | null | undefined, keyboard2: PlayerInput): HintDevice | undefined {
   if (input instanceof GamepadInput) return 'pad';
   if (input instanceof TouchInput) return 'touch';
+  if (input === keyboard2) return 'keyboard2';
   return input ? 'keyboard' : undefined;
 }
 

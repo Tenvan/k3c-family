@@ -1,6 +1,6 @@
 # AZ1.1 · Hinweise, Glyphen und Skill-Leiste von Spieler 2 aus KEYBOARD_2
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** CLI
@@ -48,10 +48,10 @@ Belegung ändern (B-316); Änderungen in `src/input/`; Symbole je Controller-Fam
 
 ## Fertig, wenn
 
-- [ ] AC-01: Test grün: Glyph für `confirm` von Spieler 2 nennt Enter, seine Slot-Beschriftungen nennen Ziffernblock 0–5; Spieler 1 unverändert.
-- [ ] AC-02: Browser-Pane: Im Feld von Spieler 2 stehen weder „Leertaste“ noch E/Q/R/T/Z/K.
-- [ ] Nur ein Tastatur-Spieler → Layout 1 wie bisher.
-- [ ] `src/input/` unverändert; `task check` grün.
+- [x] AC-01: Test grün: Glyph für `confirm` von Spieler 2 nennt Enter, seine Slot-Beschriftungen nennen Ziffernblock 0–5; Spieler 1 unverändert.
+- [x] AC-02: Browser-Pane: Im Feld von Spieler 2 stehen weder „Leertaste“ noch E/Q/R/T/Z/K.
+- [x] Nur ein Tastatur-Spieler → Layout 1 wie bisher.
+- [x] `src/input/` unverändert; `task check` grün.
 
 ## Prüfen
 
@@ -63,5 +63,11 @@ Browser-Pane laut Schritt 5, nur mit Freigabe 🧑 für diesen Lauf; ohne Freiga
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+2026-10-10, Agent, Browser-Pane von 🧑 für diesen Lauf freigegeben (Vite des Worktrees auf 5183, Spielserver des Worktrees auf 8090, `game.html?dev=1`).
+
+- **Umsetzung:** Szenen-Gerät `HintDevice = Device | 'keyboard2'` in `glyphs.ts`; `glyphOf(…, 'keyboard2')` und `slotLabels()` lesen `KEYBOARD_2` (Enter, `Num 0`–`Num 5`; Pause/Vollbild ohne Taste → Text-Rückfall). Skill-Leiste und -Menü nutzen `slotLabels`; `HudScene.deviceOf` erkennt Spieler 2 an `GameScene.keyboards[1]` (Feld nicht mehr privat), `trackLastDevice` setzt `keyboard2`. Neue Texte `hud.hint/join.keyboard2`, `skill.hint.keyboard2` (de, en). `GameScene.ts` bleibt bei 398 Zeilen, `src/input/` unverändert.
+- **AC-01** geprüft: `glyphs.test.ts` (Glyph `confirm` = Enter, Slots = Ziffernblock 0–5, Layout 1 unverändert) grün.
+- **AC-02** geprüft (Browser-Pane): zwei Tastatur-Spieler (Leertaste, Enter); Feld von Spieler 2 zeigt „Num 0 : Schlag“, „Num 1 – · Num 2 – · Num 3 – · Num 4 –“ und im Skill-Menü „◀ ▶ wählen · Enter bestätigen · Num 5 schließen“; Feld von Spieler 1 weiter E/Q/R/T/Z. Keine Taste von Spieler 1 im Feld von Spieler 2.
+- Nur ein Tastatur-Spieler: `deviceOf` liefert für Tastatur 1 weiter `keyboard` (Layout 1).
+- Beobachtung ohne Änderung: Der Beitritts-Hinweis folgt dem zuletzt benutzten Tastatur-Spieler und steht auch, wenn beide Tastatur-Spieler schon beigetreten sind (wie vorher mit „Leertaste“; gehört zu B-391).
+- `task check` grün (k3c-dev, `checkout`).

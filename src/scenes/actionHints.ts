@@ -6,9 +6,9 @@
 import { t } from '../core/texts';
 import { BUILDINGS } from '../model/data';
 import type { Player, World } from '../model/types';
-import type { Action, Device, SlotAction } from '../input/slotBindings';
+import type { Action, SlotAction } from '../input/slotBindings';
 import type { FontName } from './fontRules';
-import { glyphOf, type Glyph } from './glyphs';
+import { glyphOf, type Glyph, type HintDevice } from './glyphs';
 import { skillName } from './skillMenuLogic';
 import { PRICE_TAG_RANGE } from './viewRules';
 
@@ -65,7 +65,7 @@ function whatOf(h: Hint): string {
 }
 
 /** Aktion → Taste und Text für ein Gerät; Bestätigen-Aktionen (A, Leertaste, Münz-Taste) werden gehalten */
-export function hintView(h: Hint, device: Device): HintView {
+export function hintView(h: Hint, device: HintDevice): HintView {
   const glyph = glyphOf(actionOf(h), device);
   const line = (key: string) => t(h.action === 'revive' || h.action === 'build' || h.action === 'pay' ? 'hint.hold' : 'hint.press', { key, what: whatOf(h) });
   const [before = '', after = ''] = line('\u0000').split('\u0000'); // Platzhalter ohne Leerzeichen, sonst zerfällt der Text
@@ -88,7 +88,7 @@ function atPriceTag(world: World, p: Player): boolean {
  * das Preisschild trägt die Aktion. Die Server-Aktionen (`actions`) haben keinen eigenen Ort und stehen am Spieler
  * (Entfernung 0); bei Gleichstand gewinnt das höhere Gewicht. Ein gefallener Monarch hat keinen.
  */
-export function playerHint(world: World, p: Player, device: Device): HintView | null {
+export function playerHint(world: World, p: Player, device: HintDevice): HintView | null {
   if (p.respawnIn > 0 || atPriceTag(world, p)) return null;
   return p.actions.map((h) => hintView(h, device)).sort((a, b) => b.weight - a.weight)[0] ?? null;
 }

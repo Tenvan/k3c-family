@@ -59,10 +59,12 @@ B-371 › Ausnahme- und Fehlerfälle (nur ein Tastatur-Spieler → Layout 1); B-
 
 ## Sessions
 
-- AZ1.1 Hinweise, Glyphen und Skill-Leiste von Spieler 2 aus `KEYBOARD_2` (AC-01, AC-02).
-- AZ1.2 Pause-Anzeige je Zelle und angehaltene Figuren-Animationen bei `devPaused` (AC-03, AC-04).
-- AZ1.3 Review (Code-Sprint): alle Kriterien prüfen.
-- AZ1.4 Workshop (🧑): Abnahme am PC, zwei Tastatur-Spieler und Pause über `/dm` (AC-03, AC-04).
+| Nr. | Datei | Typ | Agent | Status |
+|---|---|---|---|---|
+| AZ1.1 | `AZ1.1-tasten-spieler-2.md` | Umsetzung | autonom | fertig |
+| AZ1.2 | `AZ1.2-pause-anzeige.md` | Umsetzung | autonom | offen |
+| AZ1.3 | `AZ1.3-review.md` | Review | autonom | offen |
+| AZ1.4 | `AZ1.4-workshop-abnahme.md` | Workshop | Mensch | offen |
 
 ## Abnahme
 

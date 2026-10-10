@@ -52,7 +52,7 @@ export class GameScene extends Phaser.Scene {
   /** Ereignisse für die HudScene, die sie abholt und leert */
   readonly pendingEvents: GameEvent[] = [];
   /** Zuletzt benutztes Eingabegerät, damit die Hinweise im HUD zur Steuerung passen */
-  lastDevice: 'keyboard' | 'pad' | 'touch' = 'keyboard';
+  lastDevice: 'keyboard' | 'keyboard2' | 'pad' | 'touch' = 'keyboard';
 
   private data_!: GameSceneData;
   private world_: World | undefined;
@@ -62,7 +62,7 @@ export class GameScene extends Phaser.Scene {
   private lastFlashAt: number | null = null;
   private rumbleWarned = false;
   private holders: Phaser.GameObjects.Layer[] = [];
-  private keyboards!: [KeyboardInput, KeyboardInput]; // Spieler 1 und 2 an einer Tastatur (B-316)
+  keyboards!: [KeyboardInput, KeyboardInput]; // Spieler 1 und 2 an einer Tastatur (B-316)
   private touch: TouchInput | undefined;
   private pads: GamepadInput[] = [];
   private nightFx: Phaser.Filters.ColorMatrix[] = [];
@@ -223,7 +223,7 @@ export class GameScene extends Phaser.Scene {
     if (this.allInputs().some(used)) void audioCore().onInput(); // erste Eingabe entsperrt den Ton (SO1.2)
     if (this.touch && used(this.touch)) this.lastDevice = 'touch';
     else if (this.pads.some(used)) this.lastDevice = 'pad';
-    else if (this.keyboards.some(used)) this.lastDevice = 'keyboard';
+    else if (this.keyboards.some(used)) this.lastDevice = used(this.keyboards[1]) ? 'keyboard2' : 'keyboard';
   }
 
   /** Controller getrennt: sein Spieler verlässt den Raum (Monarch wird frei); der letzte Spieler verlässt den Raum ganz. */
