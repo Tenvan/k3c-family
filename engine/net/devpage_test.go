@@ -107,3 +107,14 @@ func TestDevSeiteUnterDm(t *testing.T) {
 		t.Fatalf("/dm: %d %s", res.StatusCode, res.Header.Get("Content-Type"))
 	}
 }
+
+// B-080/AC-02, K4.2: grade kommt über POST /api/dev im Raum an; ein unbekannter Grad ist 400.
+func TestDevSeiteGrad(t *testing.T) {
+	srv, r := devPageRoom(t, true)
+	if code, _ := devCall(t, srv, http.MethodPost, "?room="+r.Code, `{"action":"grade","grade":"hard"}`); code != 200 {
+		t.Fatalf("grade: %d", code)
+	}
+	if code, _ := devCall(t, srv, http.MethodPost, "?room="+r.Code, `{"action":"grade","grade":"gibtsnicht"}`); code != 400 {
+		t.Fatalf("unbekannter Grad: %d", code)
+	}
+}

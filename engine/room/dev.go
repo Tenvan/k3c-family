@@ -8,7 +8,7 @@ import (
 
 // DevAction ist eine Dev-Aktion eines Geräts (Nachricht dev, B-178): gold und material brauchen slot und amount,
 // material zusätzlich resource, timescale braucht factor, pause braucht paused (B-231); wave braucht slot, phase braucht
-// phase (day, dusk, night) (B-232).
+// phase (day, dusk, night) (B-232); grade braucht grade (Name aus data/difficulty.json, gilt ab der nächsten Welle, B-080).
 type DevAction struct {
 	Action   string
 	Slot     *int
@@ -17,6 +17,7 @@ type DevAction struct {
 	Factor   int
 	Paused   *bool
 	Phase    string
+	Grade    string
 }
 
 // devMaxAmount ist die Obergrenze von amount (gold, material).
@@ -83,6 +84,9 @@ func (r *Room) devApply(who string, a DevAction, player func(int) (int, bool)) e
 	case "phase":
 		ok = sim.DevSetPhase(r.isl, a.Phase)
 		attrs = append(attrs, "phase", a.Phase)
+	case "grade":
+		ok = sim.SetGrade(r.isl, a.Grade, r.m.Dev) == nil
+		attrs = append(attrs, "grad", a.Grade)
 	case "timescale":
 		ok = slices.Contains(devTimescales, a.Factor)
 		if ok {

@@ -7,7 +7,7 @@
 - **Umgebung:** offline
 - **Branch:** wt1/2-review
 - **Abhängig von:** WT1.1
-- **Tickets:** B-386
+- **Tickets:** B-388
 - **Kriterien:** alle
 
 ## Ziel
@@ -21,7 +21,7 @@ Ablauf, Befund-Arten und Abnahme-Format stehen in `docs/arbeitsweise.md` › Rev
 ## Erlaubte Dateien
 
 - `tools/k3c-dev/` für Fixes schwerer Befunde
-- Planungs-Dateien (Abnahme, Status, Fahrplan, neue Tickets; B-386 nach `erledigt`)
+- Planungs-Dateien (Abnahme, Status, Fahrplan, neue Tickets; B-388 nach `erledigt`)
 
 ## Nicht-Ziele
 

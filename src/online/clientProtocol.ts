@@ -1,9 +1,9 @@
 import type { LevelLayout } from '../model/types';
 import type { GameEvent, ResourceKind, World } from '../model/types';
 
-/** Protokoll v5 aus Sicht des Browsers (Vertrag: docs/protocol.md, Beispiele: testdata/protocol/). */
+/** Protokoll v6 aus Sicht des Browsers (Vertrag: docs/protocol.md, Beispiele: testdata/protocol/). */
 
-export const PROTOCOL_VERSION = 5;
+export const PROTOCOL_VERSION = 6;
 export const WS_PATH = '/ws';
 /** Ein Gerät sendet mindestens alle 500 ms eine `input` zur Bestätigung. */
 export const INPUT_KEEPALIVE_MS = 500;

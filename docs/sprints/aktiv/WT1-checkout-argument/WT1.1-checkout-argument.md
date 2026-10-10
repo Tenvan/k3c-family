@@ -7,16 +7,16 @@
 - **Umgebung:** offline
 - **Branch:** wt1/1-checkout-argument
 - **Abhängig von:** –
-- **Tickets:** B-386
+- **Tickets:** B-388
 - **Kriterien:** AC-01, AC-02, AC-03, AC-04
 
 ## Ziel
 
-Alle schreibenden Tools von k3c-dev und `check_run` nehmen das optionale Argument `checkout` (Worktree-Name oder -Pfad); es gilt vor dem Header, `instructions.md` und das Log nennen es (B-386).
+Alle schreibenden Tools von k3c-dev und `check_run` nehmen das optionale Argument `checkout` (Worktree-Name oder -Pfad); es gilt vor dem Header, `instructions.md` und das Log nennen es (B-388).
 
 ## Kontext
 
-- Problem und Messung: `docs/backlog/B-386-checkout-argument-schreibende-tools.md` und `docs/backlog/B-341-header-ursache-live-messen.md` › Notizen. Beschluss 🧑 2026-10-06 (B-275): ohne Header nicht ablehnen, sondern den Checkout nennen; das bleibt.
+- Problem und Messung: `docs/backlog/B-388-checkout-argument-schreibende-tools.md` und `docs/backlog/B-341-header-ursache-live-messen.md` › Notizen. Beschluss 🧑 2026-10-06 (B-275): ohne Header nicht ablehnen, sondern den Checkout nennen; das bleibt.
 - `tools/k3c-dev/internal/mcpsrv/workspace.go`: `workspace`, `resolveWorkspace(req)` (Header über `headerRoot`), `workspaceOf(dir)` (Repo-Wurzel oder `isWorktreeOf`), `writeTools` (Tools, deren Antwort `Checkout:` trägt), `addCheckout`.
 - `observe.go`: die eine Middleware für alle Tool-Aufrufe; ruft `resolveWorkspace(call)`, legt das Ergebnis unter `wsKey{}` in den Kontext und loggt in `finish` die Felder `header` und `checkout`.
 - `tools.go`: `add[In]` registriert jedes Tool; das Schema folgt den Feldern von `In` (`additionalProperties: false`), `s.params[tool]` führt die gültigen Namen für `param_hint.go`. Ein unbekanntes Feld wird also schon beim Schema abgelehnt; `checkout` muss ins Schema der betroffenen Tools.

@@ -41,7 +41,7 @@ Domäne DEV (`tools/k3c-dev/internal/planning/`). Nur lesender Zugriff auf ander
 
 ## Beispiele
 
-Wurzel hat B-381 als größtes Ticket, ein Worktree hat B-385 ungetrackt → `plan_create` aus der Wurzel legt B-386 an, nicht B-382.
+Wurzel hat B-381 als größtes Ticket, ein Worktree hat B-385 ungetrackt → `plan_create` aus der Wurzel legt B-388 an, nicht B-382.
 
 ## Ausnahme- und Fehlerfälle
 
@@ -59,4 +59,4 @@ Sollen auch Branches auf `origin` ohne Worktree zählen? Das braucht `git fetch`
 
 ## Notizen
 
-Entstanden aus der Rückfrage zu B-275 am 2026-10-10 (Wahl 🧑 im Chat). Verwandt mit B-386: Solange Worktree-Sessions in die Wurzel schreiben, entstehen Nummern dort, während der Worktree seine eigenen zählt. Eigene Ticket-Anlage in der Wurzel am selben Tag lieferte B-382; weil B-382 bis B-385 in zwei Worktrees schon vergeben waren, trägt B-386 seine Nummer von Hand.
+Entstanden aus der Rückfrage zu B-275 am 2026-10-10 (Wahl 🧑 im Chat). Verwandt mit B-388: Solange Worktree-Sessions in die Wurzel schreiben, entstehen Nummern dort, während der Worktree seine eigenen zählt. Eigene Ticket-Anlage in der Wurzel am selben Tag lieferte B-382; weil B-382 bis B-385 in zwei Worktrees schon vergeben waren, trägt B-388 seine Nummer von Hand.

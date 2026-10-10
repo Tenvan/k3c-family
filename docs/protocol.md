@@ -1,4 +1,11 @@
-# Protokoll v5
+# Protokoll v6
+
+**Änderungen gegenüber v5 (K4, Version 6, B-154, B-345):** `snap`/`delta` nennen Endboss-Phase und Warnkreis
+(`enemies[].phase`, `enemies[].warn`), aktive Nacht-Events mit Restzeit (`nightEvents`) und den Wechselpunkt zur
+nächsten Insel (`islandSwitch`); siehe *Kampf: Bosse, Events, Inselwechsel*. Wechselt der Raum die Insel, beginnt jeder
+Strom des Geräts neu mit `level` und `snap` (kein `delta` über den Wechsel). Keine neuen Nachrichten, keine
+Wechsel-Bestätigung: Der Wechsel entsteht durch Anwesenheit am Wechselpunkt. `hello.v` muss 6 sein; ein v5-Client
+erhält `version`. Dev-Seite: Aktion `grade` (siehe *HTTP: Dungeon-Master-Seite*).
 
 **Änderungen gegenüber v4 (W5, Version 5, B-153, B-283):** `snap`/`delta` nennen den Wirtschaftsstand (`stockMax`, `hubLevel`, `hubUpgrade`, `danger`, `merchant`, `drops`, Berufe der Bürger; siehe *Wirtschaft: Hub, Lager, Wartegrund, Händler*) und die Ereignisse `revived`, `disarmed`, `equipmentTaken`. Keine neuen Nachrichten: Hub-Ausbau, Tausch beim Händler und Berufswahl bleiben Bezahlen am Ort über `input.pay` (B-330). `hello.v` muss 5 sein; ein v4-Client erhält `version`. Nachgetragen ohne neue Version (W10.2, B-332): `fighters` und `troopLimit` im Zustand, Zusatzfelder wie `playerDown.cause`.
 
@@ -235,7 +242,7 @@ das zählt als Abbruch.
 | `join` | Gerät → Server | Raum beitreten oder wiederverbinden | `room` Code, `slots[]` | `c2s-join.json` |
 | `joined` | Server → Gerät | nach erfolgreichem `create`/`join` | `room`, `name`, `you[]`: `slot` → `monarch`, `depth`, `stage` | `s2c-joined.json` |
 | `level` | Server → Gerät | nach `joined` und sobald eine Stufe für das Gerät neu ist, vor dem ersten Zustand der Stufe | `stage`, `depth`, `layout` (Level: Biom-ID, Breite, Chunks, Objekte) | `s2c-level.json` |
-| `snap` | Server → Gerät | voller Zustand einer Stufe: nach ihrem `level` (Beitreten, Wiederverbinden, Stufenwechsel) | `stage`, `tick`, `ack`, `s` (Zustand der Welt ohne Statisches, mit `events` und `depth`) | `s2c-snapshot-full.json`, `s2c-snapshot-wirtschaft.json` |
+| `snap` | Server → Gerät | voller Zustand einer Stufe: nach ihrem `level` (Beitreten, Wiederverbinden, Stufenwechsel) | `stage`, `tick`, `ack`, `s` (Zustand der Welt ohne Statisches, mit `events` und `depth`) | `s2c-snapshot-full.json`, `s2c-snapshot-wirtschaft.json`, `s2c-snapshot-boss.json`, `s2c-snapshot-event.json` |
 | `delta` | Server → Gerät | jeder weitere Tick, je Stufe | `stage`, `tick`, `ack`, `s` (nur Änderungen zum zuletzt gesendeten Zustand dieser Stufe) | `s2c-snapshot-delta.json` |
 | `seats` | Server → alle Geräte im Raum | wenn sich eine Zuordnung, ein Monarch-Zustand oder eine Stufe ändert | `you[]` (eigene Slots mit `monarch`, `depth` und `stage`), `monarchs[]` je Index `taken`/`waiting`/`free` | `s2c-seats.json` |
 | `addSlot` | Gerät → Server | lokaler Spieler kommt dazu | `slot` 0–3 | `c2s-add-slot.json` |
@@ -278,6 +285,9 @@ Gerät ohne Slots bekommt keinen. Stufen ohne eigenen Slot kommen nie an.
   Zustände mehr; `seats` (nach jedem Stufenwechsel gesendet) nennt die Stufen der Slots, der Client verwirft Ströme, die
   dort nicht mehr vorkommen. Kommt ein Slot zurück, beginnt der Strom wieder mit `level` und `snap`.
 - **Wiederverbinden:** `level` und `snap` aller Stufen des Geräts, aufsteigend, danach `seats`.
+- **Inselwechsel** (v6, B-345): Meldet die Sim `islandSwitch.ready`, tauscht der Raum im selben Tick die Insel. Geräte
+  und Slots bleiben, alle Spieler stehen in Stufe 0 der neuen Insel; das Gerät bekommt `seats`, danach `level` und `snap`
+  (kein `delta` über den Wechsel). Auf der letzten Insel gibt es keinen Wechsel.
 - **Neue Slots** (`addSlot`, Beitreten) kommen in die Stufe des kleinsten Slots des Geräts.
 - **Client heute:** `RoomClient.level` und `takeFrames()` liefern die Stufe des kleinsten eigenen Slots,
   `stages()`, `levelOf(stage)` und `takeFramesOf(stage)` die übrigen (Kamera je Stufe: B-106).
@@ -394,6 +404,24 @@ Aktion, Werte, Raum).
   schicken den Zustand, rechnen aber keinen Schritt; Eingaben wirken erst nach dem Lösen. Im Dev-Mode steht
   `devPaused` (true/false) wie `devTimescale` in `s`, ohne Dev-Mode fehlt das Feld. Verlässt das letzte Gerät den Raum, ist die Pause aufgehoben.
 
+### Kampf: Bosse, Events, Inselwechsel
+
+Der Zustand nennt den Kampf mit Feldern der Sim (`engine/sim/state_mirror.go`); der Client rechnet nichts, HP-Anteil,
+Phasen-Text und Zeitanzeige entstehen aus den Feldern. Zeiten in Sekunden, Orte in Units. **Fehlt ein Feld, trifft es nicht zu** (kein Boss, kein Event, kein Wechselpunkt); im Delta steht ein geändertes Feld ganz, ein verschwundenes in
+`unset`. Alle Felder sind additiv; die Version stieg mit K4.2 auf 6 (Inselwechsel).
+
+| Feld | Inhalt | Fehlt, wenn |
+|---|---|---|
+| `enemies[].boss` | `true` bei Mini- und Endboss; `kind` ist die Boss-ID (`data/bosses.json`), `hp`/`maxHp` die Lebenspunkte | kein Boss |
+| `enemies[].phase` | Phase des Endbosses, ab 1 | kein Endboss |
+| `enemies[].warn` | nächster Flächenschlag: `x` Mitte, `r` Radius (Units), `in` Sekunden bis zum Schlag (= `aoeIn`) | Boss ohne Flächenschlag in dieser Phase |
+| `nightEvents` | Liste der laufenden Nacht-Events `[{id, secondsLeft}]` (`id` aus `data/events.json`: `fullMoon`, `bloodMoon`; Nacht 91 hat beide), `secondsLeft` = Restzeit der Nacht; heißt nicht `events`, das sind die Ereignisse des Ticks | kein Event |
+| `islandSwitch` | Wechselpunkt zur nächsten Insel: `open`, `progress` (0..1), `ready`; in allen Stufen der Insel gleich | Endboss nicht besiegt |
+
+Beispiele: `s2c-snapshot-boss.json` (Endboss in Phase 2 mit Warnkreis) und `s2c-snapshot-event.json` (Vollmond-Nacht,
+Wechselpunkt halb gefüllt), auf dem Zustand von `s2c-snapshot-full.json` aufgebaut. Geprüft von `TestKampfZustand`,
+`TestKampfDelta`, `TestKampfBeispiele` und `src/online/clientKampf.test.ts`. Der Wechsel entsteht durch Anwesenheit (keine Eingabe), siehe Strom-Regel „Inselwechsel“; das Ereignis `islandSwitch` kommt heute nicht beim Client an (B-385).
+
 ### Ereignisse
 
 `events` in `s` von `snap` und `delta` sind die Ereignisse des letzten Ticks **der Stufe des Geräts**; Ereignisse
@@ -415,6 +443,15 @@ anderer Stufen kommen nie an. Auf einer Insel trägt jedes Ereignis `stage` (Ind
 | `disarmed` | `kind` (Figur oder Beruf), `x`, `cause` (Gegnerart wie bei `playerDown`, sonst `other`) | Bürger verliert seine Ausrüstung, sie fällt als `drops`-Eintrag zu Boden (Q69); nicht beim Burgfall |
 | `equipmentTaken` | `kind` (wie `drops[].kind`), `x` | Gegner trägt Ausrüstung weg (Q69); Felder bestätigt 🧑 2026-10-06, Sim sendet ab B-312 |
 | `playerDown` | `player`, `cause` (Gegnerart aus `data/enemies.json` bei Nahkampf und Geschoss, sonst `other`; B-182) | Monarch fällt; `cause` ist ein Zusatzfeld, die Protokollversion bleibt 3 |
+| `bossSpawned` | `boss`, `x` | Boss erscheint |
+| `bossPhase` | `boss`, `phase` (ab 2) | Endboss wechselt die Phase |
+| `bossDefeated` | `boss`, `x` | Boss besiegt |
+| `eventStarted` | `event`, `day`, bei `merchantRaid` `visit` | Nacht-Event oder Händler-Überfall beginnt |
+| `eventEnded` | `event`, `day`, bei `merchantRaid` `protected`, `resource`, `amount` | Event endet |
+| `islandGateOpen` | `island`, `x` | Wechselpunkt der Insel offen |
+| `islandSwitch` | `island` | Alle stehen am Wechselpunkt, die Insel wechselt |
+| `victory` | `goal`, `day` | Siegbedingung erreicht |
+| `gameOver` | – | Niederlage |
 
 Tod, Bau fertig, Skill, Nacht naht und Portal laufen über die älteren Typen `playerDown`, `built`, `skillPoint`,
 `dusk`, `arrived` (`arrived` mit `player` beim Einzelwechsel). Die Simulation begrenzt die Ereignisse je Tick und
@@ -448,6 +485,19 @@ Ereignisse brauchen damit ≈ 0,13 KB/s je Client (2 % des Budgets).
 | Wirtschaftsstand oben im Zustand (`EconomyOf`, neu in W5.1) | – | – | 113 Byte | 122 Byte |
 
 Der Benchmark misst das JSON der Welt; die Felder aus `sim.EconomyOf`, die `stateOf` (`engine/net/protocol.go`) oben in den Zustand legt, sind darin nicht enthalten und wurden mit derselben Insel und denselben 1800 Ticks einzeln gemessen (Wegwerf-Test). Ein `snap` wächst durch W5 also um ≈ 0,1 KB (≈ 1 %); die neuen Felder der Welt (`merchant`, `drops`, Berufe) standen schon vorher im `World`-JSON. Für den ganzen Zustand ist keine Grenze beschlossen.
+
+**Bosswelle (K4.2, B-154/AC-05, 2026-10-09, Intel Core Ultra 7 165H):** Kristallhöhle, 4 Spieler am Bau, Endboss in
+Phase 2 mit Warnkreis, 1800 Ticks. `go test ./engine/net -run KampfBytes -v` (`kampf_bytes_test.go`, `snap` und
+`delta` mit Ereignissen wie `stateData`) und `go test -bench Island -run '^$' ./engine/sim`
+(`BenchmarkIslandStepBoss4Players`, `World`-JSON):
+
+| je Stufe und Tick | Mittel | p99 |
+|---|---|---|
+| `events` | 2,9 Byte | 2 Byte |
+| ganzer Zustand (`snap`) | 10,2 KB | 10,2 KB |
+| `delta` | 913 Byte | 1 534 Byte |
+
+Ereignisse bleiben weit unter dem Budget (Q08: 200 Byte; p99 unter dem Mittel, weil wenige große Ereignisse wie `bossPhase` das Mittel heben); `delta` ≈ 27 KB/s je Client bei 30 Hz.
 
 **Je Gerät (S2.4, B-176/AC-04):** Mit mehreren Stufen gilt das Budget **je Gerät**, also für die Summe über seine
 Stufen. Geprüft von `TestStufenEreignisBudgetJeGeraet` (`engine/room/stages_bench_test.go`): ein Gerät, zwei Spieler in
@@ -509,6 +559,8 @@ Aktionen nur im Dev-Mode (`K3C_DEV`), sonst `403`.
 Zusätzlich zu den Aktionen der Nachricht `dev`: `{"action":"wave","slot":0}` startet sofort eine Welle in der Stufe des
 Monarchen, `{"action":"phase","phase":"night"}` springt alle Stufen zum Beginn der nächsten Phase `day`, `dusk` oder
 `night`; der Wechsel und seine Ereignisse (Nachtwelle, Morgen-Einkommen) folgen im nächsten Schritt.
+`{"action":"grade","grade":"hard"}` setzt den Schwierigkeitsgrad des Raums (Name aus `data/difficulty.json`, sonst
+`400`); er gilt ab der nächsten Welle, die laufende bleibt (B-080).
 
 ## Diagnose: CPU im Status (B-175)
 

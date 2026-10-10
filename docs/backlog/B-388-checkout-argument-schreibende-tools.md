@@ -1,4 +1,4 @@
-# B-386 · Schreibende k3c-dev-Tools nehmen den Ziel-Checkout als Argument, weil der Client aus Desktop-App-Worktrees die Wurzel meldet
+# B-388 · Schreibende k3c-dev-Tools nehmen den Ziel-Checkout als Argument, weil der Client aus Desktop-App-Worktrees die Wurzel meldet
 
 - **Domäne:** DEV
 - **Typ:** Problem
@@ -61,4 +61,4 @@ Nimmt der MCP-SDK-Schemagenerator ein optionales Feld an allen betroffenen Tools
 
 ## Notizen
 
-Entstanden aus der Rückfrage zu B-275 am 2026-10-10 (Wahl 🧑 im Chat: explizites Ziel-Argument). Folgt aus der Messung in B-341 (V1 belegt, Log-Auszug oben). B-275 bleibt erledigt. Nummer von Hand B-386 statt B-382, weil `plan_create` aus der Wurzel B-382 vergab und B-382 bis B-385 in zwei Worktrees schon belegt sind (siehe B-387).
+Entstanden aus der Rückfrage zu B-275 am 2026-10-10 (Wahl 🧑 im Chat: explizites Ziel-Argument). Folgt aus der Messung in B-341 (V1 belegt, Log-Auszug oben). B-275 bleibt erledigt. Nummer von Hand B-388 statt B-382, weil `plan_create` aus der Wurzel B-382 vergab und B-382 bis B-385 in zwei Worktrees schon belegt sind (siehe B-387).
