@@ -1,4 +1,4 @@
-# CI: Lint, Typecheck, Tests, Build (auch GitHub-Pages-Seite); Go: Tests (auch Heimnetz-Server), Lint, Cross-Build; Docker: Image amd64/arm64 mit Smoke-Test; k3c-dev: Frontend, Tests, Lint, Wails-Build (Windows). Bei jedem Push und Pull Request.
+# CI: Lint, Typecheck, Tests, Build (auch GitHub-Pages-Seite); Go: Tests (auch Heimnetz-Server), Lint, Cross-Build; Docker: Image amd64/arm64 mit Smoke-Test; k3c-dev: Frontend, Tests, Lint, Wails-Build (Windows). Bei jedem Push; im Pull Request nur Merge-Konflikt-Prüfung (Tests laufen vor dem Push und im Push-Lauf des Branches).
 name: CI
 
 on:
@@ -15,7 +15,25 @@ permissions:
   contents: read
 
 jobs:
+  # Pull Request: nur prüfen, ob der Branch sauber in die Zielbranch passt. Die übrigen Jobs laufen nur bei Push/Dispatch.
+  merge-konflikte:
+    name: Merge-Konflikte
+    if: github.event_name == 'pull_request'
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+          fetch-depth: 0
+      - name: Zielbranch probeweise einmergen
+        run: |
+          git config user.email ci@example.invalid
+          git config user.name ci
+          git merge --no-commit --no-ff "origin/${{ github.event.pull_request.base.ref }}"
+
   check:
+    if: github.event_name != 'pull_request'
     name: Typecheck · Tests · Build
     runs-on: ubuntu-latest
     timeout-minutes: 15
@@ -49,6 +67,7 @@ jobs:
           retention-days: 14
 
   go:
+    if: github.event_name != 'pull_request'
     name: Go · Tests · Lint · Cross-Build
     runs-on: ubuntu-latest
     timeout-minutes: 15
@@ -78,6 +97,7 @@ jobs:
   # Golden-Tests auf arm64 (Raspberry Pi, B-071): Go darf dort x*y + z zu FMA fusionieren, dann weichen Gleitkommawerte
   # ab. Nativer GitHub-Runner (Repo öffentlich), Rückfall wäre qemu-Emulation.
   go-arm64:
+    if: github.event_name != 'pull_request'
     name: Go · Tests arm64
     runs-on: ubuntu-24.04-arm
     timeout-minutes: 15
@@ -91,6 +111,7 @@ jobs:
       - run: task go:test
 
   docker:
+    if: github.event_name != 'pull_request'
     name: Docker · Image amd64/arm64 · Smoke-Test
     runs-on: ubuntu-latest
     timeout-minutes: 20
@@ -120,6 +141,7 @@ jobs:
           grep -q 'Keine Räume' tui.txt
 
   k3c-dev:
+    if: github.event_name != 'pull_request'
     name: k3c-dev · Frontend · Tests · Lint · Wails (Windows)
     runs-on: windows-latest
     timeout-minutes: 15
