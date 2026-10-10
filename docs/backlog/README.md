@@ -143,6 +143,9 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-379](B-379-vollmond-belohnung-nur-stufe-0.md) | SIM | Problem | mittel | offen | – | Die Vollmond-Belohnung gilt für die Stufen, in denen gespielt wird |
 | [B-380](B-380-blutmond-boss-faehigkeiten.md) | SIM | Problem | niedrig | offen | – | Der Blutmond verstärkt auch die Flächenangriffe der Bosse |
 | [B-381](B-381-protokoll-haendler-raid-hp.md) | SRV | Problem | niedrig | offen | – | Das Protokoll beschreibt Überfall und HP des Händlers |
+| [B-387](B-387-oe-schliesst-dialog-zuerst.md) | CLI | Problem | mittel | offen | – | Ö schließt bei offenem Cheat-Dialog zuerst den Dialog, das Overlay bleibt offen |
+| [B-388](B-388-touch-hud-verdeckt-bei-aufloesung.md) | CLI | Problem | mittel | offen | – | Touch-Tasten und Start-Button verdecken HUD-Infozeilen bei bestimmten Auflösungen |
+| [B-389](B-389-beitritts-hinweis-spieler-2-fehlt.md) | CLI | Problem | mittel | offen | – | Der Beitritts-Hinweis für Spieler 2 wird nicht angezeigt |
 
 ## Archiv
 
