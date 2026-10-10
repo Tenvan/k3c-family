@@ -129,14 +129,22 @@ func isWorktreeOf(dir, main string) bool {
 	if !filepath.IsAbs(gitdir) {
 		gitdir = filepath.Join(dir, gitdir)
 	}
-	rel, err := filepath.Rel(filepath.Join(main, ".git", "worktrees"), gitdir)
+	rel, err := filepath.Rel(canon(filepath.Join(main, ".git", "worktrees")), canon(gitdir))
 	return err == nil && rel != "." && !strings.HasPrefix(rel, "..")
 }
 
 // samePath vergleicht zwei Pfade; Windows unterscheidet keine Groß- und Kleinschreibung.
 func samePath(a, b string) bool {
-	rel, err := filepath.Rel(a, b)
+	rel, err := filepath.Rel(canon(a), canon(b))
 	return err == nil && rel == "."
+}
+
+// canon macht einen Pfad vergleichbar: Windows-Kurznamen (RUNNER~1) und Links werden aufgelöst, git schreibt lange Pfade.
+func canon(p string) string {
+	if c, err := filepath.EvalSymlinks(p); err == nil {
+		return c
+	}
+	return filepath.Clean(p)
 }
 
 // FindRoot sucht ab dir aufwärts das go.mod des Spiels (module k3c): die Repo-Wurzel bzw. den Worktree.

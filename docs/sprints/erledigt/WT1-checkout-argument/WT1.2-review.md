@@ -57,4 +57,5 @@ Keine manuellen Prüfungen.
 - **Kriterien:** AC-01 bis AC-04 geprüft, Nachweise in WT1.1 › Ergebnis (`TestCheckoutVorHeader`, `TestCheckoutUngueltig`, `TestCheckoutNurBeiSchreibendenTools`, bisherige `mcpsrv`-Tests).
 - **Diff ohne schwere Befunde:** `checkout` ersetzt den Checkout im Kontext vor jedem Handler, ein Fehler bricht vor dem Schreiben ab; absolute Pfade laufen durch `workspaceOf`/`isWorktreeOf` wie der Header, relative Nicht-Namen werden abgelehnt; AC-01 testet mit Header = Wurzel; `git` nur mit festen Argumenten, der Wert erreicht keine Shell.
 - **Abweichung vom Ablauf:** Review im selben Lauf wie WT1.1, auf ausdrückliche Anweisung 🧑 („wt1 abschliessen mit review“). Der erste Sprint-PR #244 war vor WT1.1 gemergt; WT1.1 und dieses Review liegen im Folge-PR #246.
+- **Behoben (CI Windows):** `isWorktreeOf`/`samePath` verglichen Pfade wörtlich; mit 8.3-Kurznamen der Wurzel (`RUNNER~1`) und langem Pfad von git galt ein echter Worktree als fremd. `canon` (`filepath.EvalSymlinks`) in `workspace.go` vergleicht jetzt aufgelöste Pfade (betrifft auch den Header-Weg).
 - Keine neuen Tickets.
