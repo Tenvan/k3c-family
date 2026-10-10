@@ -8,11 +8,11 @@ import (
 	"k3c/engine/sim"
 )
 
-// Protokoll v5 (docs/protocol.md, Beispiele in testdata/protocol/). Eine Änderung hier ändert auch das Dokument, die
+// Protokoll v6 (docs/protocol.md, Beispiele in testdata/protocol/). Eine Änderung hier ändert auch das Dokument, die
 // Beispiele und den Client (docs/arbeitsweise.md › Grenzfall Protokoll).
 
 // ProtocolVersion steht nur im Handschlag (hello, welcome).
-const ProtocolVersion = 5
+const ProtocolVersion = 6
 
 // Codes ohne Gegenstück in engine/room.
 const (

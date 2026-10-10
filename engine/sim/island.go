@@ -110,7 +110,11 @@ func StepIsland(isl *Island, commands []PlayerCommand, dt float64) {
 	if !isl.Over {
 		stepIslandTravel(isl, dt)
 		stepIslandSwitch(isl, dt)
+		mirrorSwitch(isl)
 		checkVictory(isl)
+	}
+	for _, w := range isl.Stages {
+		mirrorState(w)
 	}
 	for i, w := range isl.Stages { // nach dem Wechsel, damit auch `arrived` seine Stufe trägt
 		for _, ev := range w.Events {

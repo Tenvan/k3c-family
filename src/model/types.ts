@@ -181,6 +181,18 @@ export interface Enemy {
   carriedGold: number;
   /** Portal, aus dem der Gegner kam (Fluchtziel) */
   homeX: number;
+  /** Boss (docs/protocol.md › Kampf): `kind` ist dann die Boss-ID; Phase nur beim Endboss (ab 1), Warnkreis nur bei Flächenschlag. */
+  boss?: boolean;
+  aoeIn?: number;
+  phase?: number;
+  warn?: WarnZone;
+}
+
+/** Nächster Flächenschlag eines Bosses: Mitte `x` und Radius `r` in Units, `in` Sekunden bis zum Schlag. */
+export interface WarnZone {
+  x: number;
+  r: number;
+  in: number;
 }
 
 export interface Projectile {
@@ -292,6 +304,11 @@ export interface World {
 
   /** Alle Spieler stehen an einem Tiefen-Eingang / einer Treppe: Fortschritt 0..1, bei 1 wechselt die Kampagne die Stufe. */
   travel: Travel | null;
+
+  /** Laufende Nacht-Events (z. B. `fullMoon`, `bloodMoon`) mit Restzeit der Nacht in Sekunden; fehlt = keins. */
+  nightEvents?: { id: string; secondsLeft: number }[];
+  /** Wechselpunkt zur nächsten Insel (nach dem Endboss): Fortschritt 0..1; fehlt = noch nicht offen. */
+  islandSwitch?: { open: boolean; progress: number; ready: boolean };
 
   /** Ereignisse des letzten Ticks (für HUD-Meldungen), werden bei jedem step() geleert. */
   events: GameEvent[];
