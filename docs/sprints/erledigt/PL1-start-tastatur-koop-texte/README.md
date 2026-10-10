@@ -1,6 +1,6 @@
 # PL1 · PLAT · Neues Spiel, zwei Spieler an einer Tastatur, Overlay auf der Xbox, zentrale Texte
 
-- **Status:** aktiv
+- **Status:** erledigt
 - **Projekt:** BED
 - **Domäne:** PLAT
 - **Reife:** bereit
@@ -67,7 +67,7 @@ Belegung kollidiert mit Dev-Tasten → Dev-Taste weicht, Hinweis in der Doku.
 | PL1.2 | `PL1.2-zwei-spieler-tastatur.md` | Umsetzung | autonom | fertig |
 | PL1.3 | `PL1.3-texte-touch-shell.md` | Umsetzung | autonom | fertig |
 | PL1.4 | `PL1.4-review.md` | Review | autonom | fertig |
-| PL1.5 | `PL1.5-abnahme-pc-xbox.md` | Umsetzung | Mensch | offen |
+| PL1.5 | `PL1.5-abnahme-pc-xbox.md` | Umsetzung | Mensch | fertig |
 
 ## Abnahme
 
