@@ -15,7 +15,6 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-019](B-019-test-abdeckung.md) | INF | Idee | niedrig | eingeplant | CI1 | Test-Abdeckung der Engine ist sichtbar |
 | [B-023](B-023-itch-io.md) | INF | Idee | niedrig | eingeplant | PB1 | Spiel ist auf itch.io veröffentlicht |
 | [B-024](B-024-tiefe-3-4.md) | REG | Idee | niedrig | eingeplant | RG2 | Tiefe 3 und 4 sind beschrieben |
-| [B-037](B-037-lobby.md) | CLI | Idee | mittel | eingeplant | LB1 | Lobby zeigt Räume und startet Spiele |
 | [B-040](B-040-server-finden.md) | SRV | Idee | niedrig | eingeplant | BT1 | Geräte finden den Server im Heimnetz |
 | [B-041](B-041-wails-starter.md) | SRV | Idee | niedrig | eingeplant | BT1 | Wails-Starter für Windows existiert |
 | [B-042](B-042-pi-leistungsziel.md) | SRV | Frage | hoch | eingeplant | HW1 | Pi-Modell und Leistungsziel sind festgelegt |
@@ -141,6 +140,7 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-379](B-379-vollmond-belohnung-nur-stufe-0.md) | SIM | Problem | mittel | offen | – | Die Vollmond-Belohnung gilt für die Stufen, in denen gespielt wird |
 | [B-380](B-380-blutmond-boss-faehigkeiten.md) | SIM | Problem | niedrig | offen | – | Der Blutmond verstärkt auch die Flächenangriffe der Bosse |
 | [B-381](B-381-protokoll-haendler-raid-hp.md) | SRV | Problem | niedrig | offen | – | Das Protokoll beschreibt Überfall und HP des Händlers |
+| [B-382](B-382-lobby-neuversuch-nur-spielen.md) | CLI | Problem | niedrig | offen | – | Ein gewählter Spielstand startet nie leer neu |
 | [B-385](B-385-inselwechsel-ereignis-geht-verloren.md) | SRV | Problem | mittel | offen | – | Das Ereignis `islandSwitch` erreicht beim Inselwechsel keinen Client |
 
 ## Archiv
@@ -356,3 +356,4 @@ Zeile in diesen Abschnitt.
 | [B-154](archiv/B-154-protokoll-bosse-events-inselwechsel.md) | SRV | Idee | hoch | erledigt | K4 | Das Protokoll kennt Bosse, Phasen, Events und den Inselwechsel |
 | [B-345](archiv/B-345-raum-tauscht-insel.md) | SRV | Idee | hoch | erledigt | K4 | Der Raum tauscht die Insel bei `SwitchReady` |
 | [B-383](archiv/B-383-sim-zustand-boss-event-wechsel.md) | SIM | Problem | mittel | erledigt | K4 | Die Welt stellt Boss-Phase, Warnkreis, Event-Restzeit und Inselwechsel für das Protokoll bereit |
+| [B-037](archiv/B-037-lobby.md) | CLI | Idee | mittel | erledigt | LB1 | Lobby zeigt Räume und startet Spiele |

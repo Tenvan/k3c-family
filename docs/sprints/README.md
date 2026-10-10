@@ -32,7 +32,6 @@ Abnahmen am Gerät (`Agent: Mensch`) sammelt das Projekt ABN im Sprint HW1: [`..
 | M10 | SRV | GRA | Ressourcen-Manager für Grafik- und Sound-Slots in k3c-dev | – | Entwurf | `geplant/M10-ressourcen-manager/` |
 | SO2 | CLI | SND | SFX-Katalog und Einbau | – | bereit | `geplant/SO2-sfx-katalog/` |
 | SO4 | CLI | SND | Musik je Zustand | – | bereit | `geplant/SO4-musik/` |
-| LB1 | CLI | BED | Lobby zeigt Räume und startet Spiele | Lobby listet offene Räume, Beitritt ohne Raumcode | bereit | `geplant/LB1-lobby/` |
 | AZ1 | CLI | BED | Tasten von Spieler 2 an der Tastatur, Pause-Anzeige | Feld von Spieler 2 nennt Enter, Pfeile und Ziffernblock; angehaltener Raum zeigt je Zelle „Pausiert“, Figuren stehen still | Entwurf | `geplant/AZ1-tasten-spieler2-pause/` |
 | GL1 | PLAT, CLI | BED | Tastensymbole je Controller, Landingpage in der gewählten Sprache | PlayStation-Pad zeigt ✕/□/△ in Spiel und Seiten, je Zelle die Symbole des eigenen Pads; Landingpage auf English | Entwurf | `geplant/GL1-glyphen-controller-landing-sprache/` |
 | W7 | SIM | WRT | Ausrüstung ohne Unverwundbarkeit, Spielstand vollständig | Passive Burg kann fallen, Spielstand stellt W2–W4 wieder her, Golden-Hub geprüft | bereit | `geplant/W7-ausruestung-spielstand/` |
@@ -160,3 +159,4 @@ Gesamtplan und Begründung: [`../plan-weiterentwicklung.md`](../plan-weiterentwi
 | K2 | Bosse, Siegvarianten und Inselwechsel | `erledigt/K2-bosse-siege-inseln/` |
 | K3 | Events Vollmond, Blutmond und Händler-Überfall | `erledigt/K3-events/` |
 | K4 | Protokoll für Bosse, Events und Inselwechsel | `erledigt/K4-protokoll-kampf/` |
+| LB1 | Lobby zeigt Räume und startet Spiele | `erledigt/LB1-lobby/` |
