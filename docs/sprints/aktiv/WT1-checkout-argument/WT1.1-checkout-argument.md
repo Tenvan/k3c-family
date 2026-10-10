@@ -1,6 +1,6 @@
 # WT1.1 · Schreibende Tools und check_run nehmen das Argument checkout
 
-- **Status:** in Arbeit
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** DEV
@@ -46,11 +46,11 @@ Kein Ablehnen ohne `checkout`. Keine neuen Tools. Keine Änderung an `.mcp.json`
 
 ## Fertig, wenn
 
-- [ ] AC-01: Go-Test grün: `plan_set` mit `checkout=<worktree>` ändert nur die Datei im Worktree, auch bei Header = Wurzel.
-- [ ] AC-02: Go-Tests grün: ungültiges, unbekanntes und mehrdeutiges `checkout` werden abgelehnt, ohne zu schreiben; die Meldung nennt die gültigen Worktrees.
-- [ ] AC-03: alle bisherigen Tests des Pakets `mcpsrv` grün; Antwort ohne `checkout` trägt `Checkout:`.
-- [ ] AC-04: `instructions.md` nennt `checkout`, das Aufruf-Log führt `checkout_arg=true|false` (Test auf die Log-Attribute oder Sichtprüfung im Ergebnis).
-- [ ] `task check:dev` grün.
+- [x] AC-01: Go-Test grün: `plan_set` mit `checkout=<worktree>` ändert nur die Datei im Worktree, auch bei Header = Wurzel.
+- [x] AC-02: Go-Tests grün: ungültiges, unbekanntes und mehrdeutiges `checkout` werden abgelehnt, ohne zu schreiben; die Meldung nennt die gültigen Worktrees.
+- [x] AC-03: alle bisherigen Tests des Pakets `mcpsrv` grün; Antwort ohne `checkout` trägt `Checkout:`.
+- [x] AC-04: `instructions.md` nennt `checkout`, das Aufruf-Log führt `checkout_arg=true|false` (Test auf die Log-Attribute oder Sichtprüfung im Ergebnis).
+- [x] `task check:dev` grün.
 
 ## Prüfen
 
@@ -62,5 +62,14 @@ Keine manuellen Prüfungen. Die Beobachtung aus einem echten Desktop-App-Worktre
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+2026-10-10, fertig. `task check:dev` grün (Go-Tests aller Pakete, golangci-lint 0 issues), Shell statt `check_run`, weil k3c-dev die Repo-Wurzel bedient (genau dieses Problem).
+
+- **AC-01 geprüft:** `TestCheckoutVorHeader` (`checkout_test.go`, echtes Temp-Repo mit `git worktree add`): Header = Wurzel, `checkout` als Name und als Pfad → `plan_section` schreibt nur im Worktree, `plan_set` archiviert nur dort, Antwort `Checkout: Worktree wt-a`.
+- **AC-02 geprüft:** `TestCheckoutUngueltig`: unbekannter Name, relativer Pfad, Pfad außerhalb des Repos → Fehler mit „gültige Worktrees: …“; zwei Worktrees `a/doppelt`, `b/doppelt` → „mehrdeutig“ mit beiden Pfaden; in keinem Checkout geschrieben.
+- **AC-03 geprüft:** alle bisherigen Tests von `mcpsrv` unverändert grün (u. a. `TestSchreibendesToolNenntCheckout`); ohne `checkout` gilt der Header, Antwort trägt `Checkout:`.
+- **AC-04 geprüft:** `instructions.md` › Worktrees nennt `checkout` (immer setzen, Quelle `git rev-parse --show-toplevel`); Log-Attribut `checkout_arg` je Aufruf, `TestCheckoutVorHeader` prüft `true`/`false`.
+- **Umsetzung:** `checkout.go`: `withCheckout` ergänzt das aus der Eingabe abgeleitete Schema in `add` (kein Feld je Eingabe-Typ), `splitCheckout` nimmt das Feld in `observe` aus den Argumenten, bevor der Handler sie dekodiert; `resolveCheckout` löst den Namen über `git worktree list --porcelain` auf, sonst nur absolute Pfade über `workspaceOf` (ein relativer Wert würde sonst am Arbeitsverzeichnis von k3c-dev aufgelöst). Lese-Tools kennen `checkout` nicht (Schema lehnt ab, Parameter-Hinweis).
+- **Entscheidung `task_*`:** `task_start`/`task_stop` nehmen `checkout` wie die anderen schreibenden Tools; ein Worktree wird von `taskHost` mit Hinweis auf `check_run` abgelehnt (nicht still ignoriert).
+- **Abweichungen:** `tools/k3c-dev/go.mod`: `github.com/google/jsonschema-go` von indirekt auf direkt (schon Abhängigkeit des SDK, keine neue). Der Test kopiert `docs/vorlagen/ticket.md` aus dem Repo ins Temp-Repo, damit `plan_set` echt archiviert.
+- **Planung:** Beim Merge von `develop` kollidierte B-386 (auf `develop`: Netz-Budget Q08); das Checkout-Ticket heißt jetzt **B-388** (Datei, Index, Sprint, Sessions, B-341, B-387). Genau der Fall aus B-387.
+- Nach dem Merge muss k3c-dev neu gebaut werden (`task k3c-dev:build`), sonst kennen laufende Sessions das Argument nicht. Keine neuen Tickets.

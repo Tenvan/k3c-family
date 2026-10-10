@@ -20,10 +20,14 @@ zurückgeben. Die Gliederung folgt der gemeinsamen Spec der Workbench-Seiten (`d
 - Eine k3c-dev-Instanz (aus der Repo-Wurzel) bedient alle Worktrees. Jeder Aufruf gilt dem Checkout, aus dem die
   Session kommt (Header `X-K3C-Root` aus `.mcp.json`): Prüfläufe, Planung, Logs, Berichte, Spielstände
   und Dienste nur dort. `workbench_status` nennt den Checkout in der Zeile `Checkout:`.
-- Fehlt der Header, gilt die Repo-Wurzel. Schreibende Tools (`plan_create`, `plan_set`, `plan_section`, `plan_delete`,
-  `svc_*`, `task_start`, `task_stop`) lehnen nicht ab, nennen aber immer den Checkout in der letzten Zeile `Checkout:`.
-  Steht dort aus einem Worktree die Repo-Wurzel, kam der Header nicht an (B-275): die Änderung in der Wurzel
-  zurücknehmen und im Worktree von Hand machen.
+- **Im Worktree immer `checkout` setzen** (B-388): Schreibende Tools (`plan_create`, `plan_set`, `plan_section`,
+  `plan_delete`, `svc_*`, `task_start`, `task_stop`) und `check_run` nehmen das Argument `checkout` mit dem Ordnernamen
+  oder dem absoluten Pfad des eigenen Checkouts (`git rev-parse --show-toplevel`). Es gilt vor dem Header; der Header
+  allein genügt nicht, die Desktop-App meldet aus Worktrees die Repo-Wurzel (B-341). Ein unbekannter oder mehrdeutiger
+  Wert wird abgelehnt, die Meldung nennt die Worktrees. `task_*` mit einem Worktree lehnt ab (dort `check_run`).
+- Ohne `checkout` und ohne Header gilt die Repo-Wurzel. Schreibende Tools lehnen nicht ab, nennen aber immer den
+  Checkout in der letzten Zeile `Checkout:`. Steht dort aus einem Worktree die Repo-Wurzel, die Änderung in der Wurzel
+  zurücknehmen und mit `checkout` wiederholen.
 - Dienste eines Worktrees laufen auf eigenen Ports (Versatz 10, 20 …: Vite 5183, Spielserver 8090 …); `get_urls` nennt
   sie, `server_status` fragt den Spielserver des eigenen Worktrees. Die Ports der Repo-Wurzel (5173, 8080) nie aus einem
   Worktree ansprechen.
