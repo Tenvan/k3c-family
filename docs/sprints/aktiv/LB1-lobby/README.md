@@ -1,11 +1,11 @@
 # LB1 · CLI · Lobby zeigt Räume und startet Spiele
 
-- **Status:** geplant
+- **Status:** aktiv
 - **Projekt:** BED
 - **Domäne:** CLI
 - **Reife:** bereit
 - **Tickets:** B-037
-- **Start-Commit:** –
+- **Start-Commit:** 48b49c09
 - **Spec:** freigegeben
 - **Revision:** 1
 - **Freigabe:** 2026-10-09, 🧑 im Chat, Revision 1, Vorschläge unter Offene Fragen übernommen
@@ -56,7 +56,7 @@ Server nicht erreichbar → Hinweis, Wiederholen-Knopf.
 
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
-| LB1.1 | `LB1.1-raumliste-spielstand.md` | Umsetzung | autonom | offen |
+| LB1.1 | `LB1.1-raumliste-spielstand.md` | Umsetzung | autonom | fertig |
 | LB1.2 | `LB1.2-review.md` | Review | autonom | offen |
 
 ## Abnahme
