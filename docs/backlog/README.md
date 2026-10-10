@@ -145,7 +145,6 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-385](B-385-inselwechsel-ereignis-geht-verloren.md) | SRV | Problem | mittel | offen | – | Das Ereignis `islandSwitch` erreicht beim Inselwechsel keinen Client |
 | [B-386](B-386-netz-budget-kampf-q08.md) | SRV | Frage | mittel | offen | – | Gilt das Netz-Budget aus Q08 für den Kampf-Zustand oder nur für Ereignisse? |
 | [B-387](B-387-ticketnummern-parallele-worktrees.md) | DEV | Problem | mittel | offen | – | Ticket-Nummern bleiben zwischen parallelen Worktrees eindeutig |
-| [B-388](B-388-checkout-argument-schreibende-tools.md) | DEV | Problem | hoch | eingeplant | WT1 | Schreibende k3c-dev-Tools nehmen den Ziel-Checkout als Argument, weil der Client aus Desktop-App-Worktrees die Wurzel meldet |
 
 ## Archiv
 
@@ -360,3 +359,4 @@ Zeile in diesen Abschnitt.
 | [B-345](archiv/B-345-raum-tauscht-insel.md) | SRV | Idee | hoch | erledigt | K4 | Der Raum tauscht die Insel bei `SwitchReady` |
 | [B-383](archiv/B-383-sim-zustand-boss-event-wechsel.md) | SIM | Problem | mittel | erledigt | K4 | Die Welt stellt Boss-Phase, Warnkreis, Event-Restzeit und Inselwechsel für das Protokoll bereit |
 | [B-037](archiv/B-037-lobby.md) | CLI | Idee | mittel | erledigt | LB1 | Lobby zeigt Räume und startet Spiele |
+| [B-388](archiv/B-388-checkout-argument-schreibende-tools.md) | DEV | Problem | hoch | erledigt | WT1 | Schreibende k3c-dev-Tools nehmen den Ziel-Checkout als Argument, weil der Client aus Desktop-App-Worktrees die Wurzel meldet |

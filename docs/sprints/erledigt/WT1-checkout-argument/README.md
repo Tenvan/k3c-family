@@ -1,6 +1,6 @@
 # WT1 · DEV · Worktree-Sessions richten k3c-dev-Tools per Argument auf ihren Checkout
 
-- **Status:** aktiv
+- **Status:** erledigt
 - **Projekt:** WZG
 - **Domäne:** DEV
 - **Reife:** bereit
@@ -65,12 +65,14 @@ Ob das optionale Feld an allen betroffenen Tools ohne Mehraufwand ins Schema kom
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
 | WT1.1 | `WT1.1-checkout-argument.md` | Umsetzung | autonom | fertig |
-| WT1.2 | `WT1.2-review.md` | Review | autonom | offen |
+| WT1.2 | `WT1.2-review.md` | Review | autonom | fertig |
 
 Bei `Reife: Entwurf` genügen Stichpunkte mit den Kriterien in Klammern statt Session-Dateien. Vor dem Aktivieren
 wird jede Session als eigene Datei nach `docs/vorlagen/session.md` geschrieben.
 
 ## Abnahme
 
-Wird von der Review-Session (Doku-Sprint: letzte Session) ausgefüllt, höchstens fünf Zeilen: Datum, Kriterien
-(Verweis auf Session-Ergebnisse), behobene Befunde, neue Tickets. Bis dahin `–`.
+2026-10-10, Review WT1.2: AC-01 bis AC-04 geprüft (WT1.1 › Ergebnis), keine schweren Befunde, keine neuen Tickets.
+`task check` und `task check:dev` grün. Review auf Anweisung 🧑 im selben Lauf wie WT1.1; Folge-PR #246 nach dem früh gemergten #244.
+Nach dem Merge k3c-dev neu bauen und starten (`task k3c-dev:build`), sonst kennen laufende Sessions `checkout` nicht.
+Version: v0.17.0 vorgeschlagen (Minor: neues Argument `checkout` im Werkzeug; v0.16.0, falls K4 nicht vorher getaggt wird); gesetzt erst nach Bestätigung durch 🧑.

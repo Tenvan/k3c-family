@@ -1,6 +1,6 @@
 # WT1.2 · Review des Sprints WT1
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Review
 - **Agent:** autonom
 - **Domäne:** DEV
@@ -37,9 +37,9 @@ Stil, Benennung, Vereinfachungen. Neue Funktionen. Den PR selbst mergen. B-341 u
 
 ## Fertig, wenn
 
-- [ ] alle: AC-01 bis AC-04 mit Nachweis aus WT1.1 oder `verschoben` mit Ticket.
-- [ ] `task check` und `task check:dev` grün.
-- [ ] Abnahme ausgefüllt, Sprint `erledigt`, PR gegen `develop` offen.
+- [x] alle: AC-01 bis AC-04 mit Nachweis aus WT1.1 oder `verschoben` mit Ticket.
+- [x] `task check` und `task check:dev` grün.
+- [x] Abnahme ausgefüllt, Sprint `erledigt`, PR gegen `develop` offen.
 
 ## Prüfen
 
@@ -52,5 +52,9 @@ Keine manuellen Prüfungen.
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+2026-10-10, fertig. `task check` und `task check:dev` grün (Shell, weil das laufende k3c-dev das Argument noch nicht kennt).
+
+- **Kriterien:** AC-01 bis AC-04 geprüft, Nachweise in WT1.1 › Ergebnis (`TestCheckoutVorHeader`, `TestCheckoutUngueltig`, `TestCheckoutNurBeiSchreibendenTools`, bisherige `mcpsrv`-Tests).
+- **Diff ohne schwere Befunde:** `checkout` ersetzt den Checkout im Kontext vor jedem Handler, ein Fehler bricht vor dem Schreiben ab; absolute Pfade laufen durch `workspaceOf`/`isWorktreeOf` wie der Header, relative Nicht-Namen werden abgelehnt; AC-01 testet mit Header = Wurzel; `git` nur mit festen Argumenten, der Wert erreicht keine Shell.
+- **Abweichung vom Ablauf:** Review im selben Lauf wie WT1.1, auf ausdrückliche Anweisung 🧑 („wt1 abschliessen mit review“). Der erste Sprint-PR #244 war vor WT1.1 gemergt; WT1.1 und dieses Review liegen im Folge-PR #246.
+- Keine neuen Tickets.
