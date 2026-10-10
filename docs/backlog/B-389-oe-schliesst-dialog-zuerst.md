@@ -1,4 +1,4 @@
-# B-387 · Ö schließt bei offenem Cheat-Dialog zuerst den Dialog, das Overlay bleibt offen
+# B-389 · Ö schließt bei offenem Cheat-Dialog zuerst den Dialog, das Overlay bleibt offen
 
 - **Domäne:** CLI
 - **Typ:** Problem

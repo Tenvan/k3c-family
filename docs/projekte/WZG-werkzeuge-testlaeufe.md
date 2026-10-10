@@ -19,6 +19,7 @@ In Abarbeitungs-Reihenfolge; der erste nicht erledigte Sprint ist der nächste. 
 | MON2 | Monitoring-Seite mit Dashboard | erledigt |
 | PL2 | Werkzeug-Seiten in der gewählten Sprache | erledigt |
 | DV1 | Domäne DEV für k3c-dev, Sprint ohne Prio und Einschiebbar | erledigt |
+| WT1 | Worktree-Sessions richten k3c-dev-Tools per Argument auf ihren Checkout | aktiv |
 
 ## Nicht-Ziele
 

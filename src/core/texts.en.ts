@@ -20,6 +20,7 @@ export const en: Record<TextKey, string> = {
   'lobby.retry': 'Try again',
   'lobby.reload': 'Reload page',
   'lobby.room': '{code}  {name}  ·  Level {depth}  ·  {taken}/4 seats  ·  {state}',
+  'lobby.save': 'Save {name}  ·  Day {day}  ·  Level {depths}',
   'lobby.running': 'running',
   'lobby.paused': 'paused',
 

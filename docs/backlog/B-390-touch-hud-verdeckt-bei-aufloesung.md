@@ -1,4 +1,4 @@
-# B-388 · Touch-Tasten und Start-Button verdecken HUD-Infozeilen bei bestimmten Auflösungen
+# B-390 · Touch-Tasten und Start-Button verdecken HUD-Infozeilen bei bestimmten Auflösungen
 
 - **Domäne:** CLI
 - **Typ:** Problem

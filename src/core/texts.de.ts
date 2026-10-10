@@ -24,6 +24,7 @@ export const de = {
   'lobby.retry': 'Erneut versuchen',
   'lobby.reload': 'Seite neu laden',
   'lobby.room': '{code}  {name}  ·  Stufe {depth}  ·  {taken}/4 Plätze  ·  {state}',
+  'lobby.save': 'Spielstand {name}  ·  Tag {day}  ·  Stufe {depths}',
   'lobby.running': 'läuft',
   'lobby.paused': 'pausiert',
 

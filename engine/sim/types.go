@@ -172,6 +172,9 @@ type Enemy struct {
 	// AoeIn: Sekunden bis zum nächsten Flächenschlag (`aoe`); Spawned: Spawn-Zeit, nur bei `phases` (enemies_traits.go).
 	AoeIn   float64 `json:"aoeIn,omitempty"`
 	Spawned float64 `json:"spawned,omitempty"`
+	// Phase (nur Endboss, ab 1) und Warn (nächster Flächenschlag) spiegeln den Kampf für das Protokoll (state_mirror.go).
+	Phase int       `json:"phase,omitempty"`
+	Warn  *WarnZone `json:"warn,omitempty"`
 	// Boss: Miniboss oder Endboss (boss.go); Kind ist dann die Boss-ID aus data/bosses.json, AoeIn zählt bis zur
 	// nächsten Fähigkeit. Bosse fliehen nie.
 	Boss bool `json:"boss,omitempty"`
@@ -298,6 +301,9 @@ type World struct {
 	Merchant    *Merchant `json:"merchant,omitempty"` // Händler, nur in Tiefe 0 (merchant.go)
 	Drops       []*Drop   `json:"drops,omitempty"`    // Ausrüstung am Boden (warrior.go)
 	Events      []Event   `json:"events"`             // wird bei jedem Step geleert
+	// NightEvents und IslandSwitch spiegeln den Zustand für das Protokoll (state_mirror.go); fehlen, wenn es sie nicht gibt.
+	NightEvents  []ActiveEvent `json:"nightEvents,omitempty"`
+	IslandSwitch *SwitchState  `json:"islandSwitch,omitempty"`
 	// EventsDropped zählt die Ereignisse, die die Obergrenze je Tick in diesem Step verworfen hat (capEvents).
 	EventsDropped int `json:"eventsDropped,omitempty"` // 0 fehlt im JSON (Protokoll-Beispiele unverändert, Übertragung: B-190)
 

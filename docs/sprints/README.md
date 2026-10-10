@@ -13,6 +13,8 @@ Die Reihenfolge der Arbeit ist allein der Projekt-Rang: [`../projekte/README.md`
 | S8 | CLI | BED | Spielmenü „Spiel verlassen“, Y-Belegung und Glyphen-Entscheidung | Spielmenü verlässt ins Lobby, Y ohne Bau-Menü, Glyph-Entscheidung umgesetzt | `aktiv/S8-spielmenue-bedienung/` |
 | PL1 | PLAT | BED | Neues Spiel, zwei Spieler an einer Tastatur, Overlay auf der Xbox, zentrale Texte | „Neues Spiel“ startet immer neu, zwei Tastatur-Spieler, Overlay per Controller | `aktiv/PL1-start-tastatur-koop-texte/` |
 | S9 | CLI, SIM | BED | Rückmeldung für Schlag und Skills, ein Hinweis je Spieler | Jeder Tastendruck auf Schlag oder Skill ist sichtbar, das Aktionen-Overlay zeigt je Spieler einen Hinweis | `aktiv/S9-rueckmeldung-overlay/` |
+| U6 | CLI | BED | HUD ohne Überlagerung, Optionen per Touch | Optionen per Touch bedienbar, HUD bei 1–4 Spielern ohne Überlagerung, Gesamtabnahme Anzeige | `aktiv/U6-hud-ohne-ueberlagerung/` |
+| WT1 | DEV | – | Worktree-Sessions richten k3c-dev-Tools per Argument auf ihren Checkout | – | `aktiv/WT1-checkout-argument/` |
 
 ## Offen am Gerät
 
@@ -30,8 +32,6 @@ Abnahmen am Gerät (`Agent: Mensch`) sammelt das Projekt ABN im Sprint HW1: [`..
 | M10 | SRV | GRA | Ressourcen-Manager für Grafik- und Sound-Slots in k3c-dev | – | Entwurf | `geplant/M10-ressourcen-manager/` |
 | SO2 | CLI | SND | SFX-Katalog und Einbau | – | bereit | `geplant/SO2-sfx-katalog/` |
 | SO4 | CLI | SND | Musik je Zustand | – | bereit | `geplant/SO4-musik/` |
-| U6 | CLI | BED | HUD ohne Überlagerung, Optionen per Touch | Optionen per Touch bedienbar, HUD bei 1–4 Spielern ohne Überlagerung, Gesamtabnahme Anzeige | bereit | `geplant/U6-hud-ohne-ueberlagerung/` |
-| LB1 | CLI | BED | Lobby zeigt Räume und startet Spiele | Lobby listet offene Räume, Beitritt ohne Raumcode | bereit | `geplant/LB1-lobby/` |
 | AZ1 | CLI | BED | Tasten von Spieler 2 an der Tastatur, Pause-Anzeige | Feld von Spieler 2 nennt Enter, Pfeile und Ziffernblock; angehaltener Raum zeigt je Zelle „Pausiert“, Figuren stehen still | Entwurf | `geplant/AZ1-tasten-spieler2-pause/` |
 | GL1 | PLAT, CLI | BED | Tastensymbole je Controller, Landingpage in der gewählten Sprache | PlayStation-Pad zeigt ✕/□/△ in Spiel und Seiten, je Zelle die Symbole des eigenen Pads; Landingpage auf English | Entwurf | `geplant/GL1-glyphen-controller-landing-sprache/` |
 | W7 | SIM | WRT | Ausrüstung ohne Unverwundbarkeit, Spielstand vollständig | Passive Burg kann fallen, Spielstand stellt W2–W4 wieder her, Golden-Hub geprüft | bereit | `geplant/W7-ausruestung-spielstand/` |
@@ -39,7 +39,6 @@ Abnahmen am Gerät (`Agent: Mensch`) sammelt das Projekt ABN im Sprint HW1: [`..
 | W8 | CLI | WRT | Bauplätze mit Grund und alle Rohstoffe im Client | Gesperrte Plätze zeigen den Grund, Client-Typen passen zu `hub.json` und den fünf Rohstoffen | Entwurf | `geplant/W8-bauplaetze-rohstoffe-client/` |
 | SK1 | SIM | SKL | Skill-Baum mit Tank und Zauberer, Respec-Regeln abfragbar | Skill-Baum spielbar, Respec und Lernen ohne Seiteneffekt prüfbar | bereit | `geplant/SK1-skill-baum/` |
 | RM1 | SRV | SKL | Raum-Pause im Couch-Raum und lernbare Skills vom Server | Pause hält den Couch-Raum an; Skill-Menü zeigt nur, was der Server annimmt | Entwurf | `geplant/RM1-pause-lernbare-skills/` |
-| K4 | SRV | KMP | Protokoll für Bosse, Events und Inselwechsel | `docs/protocol.md` mit neuen Feldern, Beispiele in `testdata/protocol/`, `task check:go` und `task check` grün | bereit | `geplant/K4-protokoll-kampf/` |
 | K5 | CLI | KMP | Anzeigen für Kampf, Bosse und Events, Anlegen-Dialog, Debug-Panel | Boss-Leiste, Warnkreis und Event-Banner am TV, Lobby-Dialog, von 🧑 abgenommen | bereit | `geplant/K5-anzeige-kampf/` |
 | LV1 | SIM | KMP | Level und Gegner: Lava, Camps, Adern-Takt, Orte und IDs | Keine Lava auf Linien, Camps mit Abstand, besiegte Gegner lassen Gold fallen, Ereignisse mit Ort | Entwurf | `geplant/LV1-level-gegner-korrektur/` |
 | CI1 | INF | REL | CI-Nachweis, Release-Image ohne Dev-Mode, Test-Abdeckung | CI grün mit SP01-Prüfungen, Release-Image lehnt Dev-Aktionen ab, Abdeckung im CI-Bericht | Entwurf | `geplant/CI1-ci-release-image/` |
@@ -159,4 +158,6 @@ Gesamtplan und Begründung: [`../plan-weiterentwicklung.md`](../plan-weiterentwi
 | DV1 | Domäne DEV für k3c-dev, Sprint ohne Prio und Einschiebbar | `erledigt/DV1-domaene-dev-werkzeug/` |
 | K2 | Bosse, Siegvarianten und Inselwechsel | `erledigt/K2-bosse-siege-inseln/` |
 | K3 | Events Vollmond, Blutmond und Händler-Überfall | `erledigt/K3-events/` |
+| K4 | Protokoll für Bosse, Events und Inselwechsel (Protokoll v6; AC-05 offen → B-386) | `erledigt/K4-protokoll-kampf/` |
+| LB1 | Lobby zeigt Räume und startet Spiele | `erledigt/LB1-lobby/` |
 | U5 | Debug-Overlay und Cheat-Dialog bedienbar | `erledigt/U5-debug-overlay-bedienbar/` |

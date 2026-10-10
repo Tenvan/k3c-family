@@ -60,3 +60,29 @@ export async function fetchSave(slot = DEFAULT_SLOT): Promise<SaveGame | null> {
   if (!remote || !local) return remote ?? local;
   return local.savedAt > remote.savedAt ? local : remote;
 }
+
+/** Eintrag aus `GET /api/saves` (LB1.1); `day` fehlt bei Ständen vor Version 4 */
+export interface SaveInfo {
+  name: string;
+  savedAt: string;
+  day?: number;
+  depths: number[];
+}
+
+function toSaveInfo(e: unknown): SaveInfo | null {
+  if (typeof e !== 'object' || e === null || 'error' in e) return null;
+  const { name, savedAt, day, depths } = e as Record<string, unknown>;
+  if (typeof name !== 'string' || typeof savedAt !== 'string' || !Array.isArray(depths) || !depths.every((d) => typeof d === 'number')) return null;
+  return { name, savedAt, depths: depths as number[], ...(typeof day === 'number' ? { day } : {}) };
+}
+
+/** Spielstände des Servers; Fehler, Zeitüberschreitung und unlesbare Einträge ergeben keine Einträge. */
+export async function listSaves(fetchFn: typeof fetch = fetch): Promise<SaveInfo[]> {
+  try {
+    const res = await fetchFn('api/saves', { signal: AbortSignal.timeout(TIMEOUT_MS), cache: 'no-store' });
+    const data: unknown = res.ok ? await res.json() : [];
+    return Array.isArray(data) ? data.map(toSaveInfo).filter((s): s is SaveInfo => s !== null) : [];
+  } catch {
+    return [];
+  }
+}

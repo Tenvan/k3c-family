@@ -1,11 +1,11 @@
 # U6 · CLI · HUD ohne Überlagerung, Optionen per Touch
 
-- **Status:** geplant
+- **Status:** aktiv
 - **Projekt:** BED
 - **Domäne:** CLI
 - **Reife:** bereit
 - **Tickets:** B-336, B-337
-- **Start-Commit:** –
+- **Start-Commit:** f77ff97a
 - **Spec:** freigegeben
 - **Revision:** 1
 - **Freigabe:** 2026-10-09, 🧑 im Chat, Revision 1, Vorschläge unter Offene Fragen übernommen
@@ -58,8 +58,8 @@ B-336 › Ausnahme- und Fehlerfälle; B-337 › Ausnahme- und Fehlerfälle (sehr
 
 ## Offene Fragen
 
-- Stil von Hintergrund und Rahmen (Deckkraft, Farbe, Ecken; passend zu B-331): 🧑, blockiert U6.2 (bei der Freigabe 2026-10-09 ohne Vorschlag, weiter offen).
-- Rangfolge beim Ausblenden (Pflichtanzeigen): 🧑, blockiert U6.2 (bei der Freigabe 2026-10-09 ohne Vorschlag, weiter offen).
+- Stil von Hintergrund und Rahmen (Deckkraft, Farbe, Ecken; passend zu B-331): 🧑, beantwortet 2026-10-10 im Chat: Schwarz mit 55 % Deckkraft, Ecken 8 px, Innenabstand 8/4 px, ohne Rahmen; Hintergrund und Rahmen je Element schaltbar.
+- Rangfolge beim Ausblenden (Pflichtanzeigen): 🧑, beantwortet 2026-10-10 im Chat: Pflicht sind Spielerzeile (Gold, HP), Meldung (Banner) und Skill-Leiste; danach gemeinsamer Block (Vorräte, Uhr, Kampf) > Reise > Beitritt > Radar > Raum-Zeile > Steuerhinweis (fällt zuerst weg).
 - Soll der ☰-Knopf die Szene auch schließen (Umschalter)? 🧑, nicht blockierend.
 - Gerät für die Gesamtabnahme (AC-08): je Durchgang vorher erfragen; Xbox und Controller erst nach B-314.
 - Grenzfall Touch-Overlay (U6.1): Vorschlag: Die Optionen-Szene blendet `.k3c-zone` und `.k3c-touch` über ihre Klassen per `style.display` aus (CLI), `src/input/touchInput.ts` bleibt unverändert; Alternative wäre eine PLAT-Session mit `TouchInput.show()`. Übernommen mit der Freigabe 2026-10-09.
@@ -70,11 +70,13 @@ B-336 › Ausnahme- und Fehlerfälle; B-337 › Ausnahme- und Fehlerfälle (sehr
 
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
-| U6.1 | `U6.1-optionen-per-touch.md` | Umsetzung | autonom | offen |
-| U6.2 | `U6.2-hud-elemente-layout.md` | Umsetzung | autonom | offen |
-| U6.3 | `U6.3-review.md` | Review | autonom | offen |
+| U6.1 | `U6.1-optionen-per-touch.md` | Umsetzung | autonom | fertig |
+| U6.2 | `U6.2-hud-elemente-layout.md` | Umsetzung | autonom | fertig |
+| U6.3 | `U6.3-review.md` | Review | autonom | fertig |
 | U6.4 | `U6.4-abnahme-gesamt.md` | Workshop | Mensch | offen |
 
 ## Abnahme
 
-–
+2026-10-10 (U6.3): AC-01 bis AC-03 laut U6.1 › Ergebnis, AC-04 bis AC-06 laut U6.2 › Ergebnis (AC-05: Radar mit eigenem Hintergrund, Skill-Menü kein Element, offengelegt); AC-07 und AC-08 angenommen, Validierung offen (U6.4).
+Review ohne schwere Befunde, keine neuen Tickets. Sprint bleibt aktiv bis U6.4.
+Version: v0.18.0 vorgeschlagen (Minor: HUD-Layout und Touch-Optionen wirken im Spiel; nach den offenen Vorschlägen bis v0.17.0); nicht gesetzt (wartet auf Bestätigung 🧑).

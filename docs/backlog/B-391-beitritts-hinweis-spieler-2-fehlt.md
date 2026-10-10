@@ -1,4 +1,4 @@
-# B-389 · Der Beitritts-Hinweis für Spieler 2 wird nicht angezeigt
+# B-391 · Der Beitritts-Hinweis für Spieler 2 wird nicht angezeigt
 
 - **Domäne:** CLI
 - **Typ:** Problem
@@ -57,4 +57,4 @@ Bereits 2 Spieler im Raum → kein Hinweis mehr nötig.
 
 ## Notizen
 
-Herkunft: U5.4, Frage 17 („nur der von Spieler 1“) und Frage 19 (Beitritt anderer Spieler). Verwandt: B-388 (Touch-HUD), U5.
+Herkunft: U5.4, Frage 17 („nur der von Spieler 1“) und Frage 19 (Beitritt anderer Spieler). Verwandt: B-390 (Touch-HUD), U5.

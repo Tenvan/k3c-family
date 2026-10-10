@@ -15,6 +15,7 @@ export class PauseButton {
     this.el.style.cssText =
       'position:fixed;left:12px;top:64px;z-index:9;min-width:64px;min-height:64px;padding:8px 16px;font:bold 22px sans-serif;' +
       'color:#fff;background:rgba(0,0,0,.6);border:2px solid #fff;border-radius:12px;touch-action:manipulation';
+    this.el.hidden = true; // sichtbar erst über show(true), nur mit Touch-Steuerung (GameScene)
     this.el.addEventListener('pointerdown', () => (this.pressed = true));
     parent.appendChild(this.el);
   }
@@ -37,6 +38,19 @@ export class PauseButton {
   show(visible: boolean): void {
     this.el.hidden = !visible;
     this.relabel();
+  }
+
+  /** Verbirgt den Knopf, solange die Optionen offen sind (B-336); ein liegengebliebener Druck verfällt. Die Rückgabe stellt den vorigen Zustand her. */
+  suspend(): () => void {
+    const was = !this.el.hidden;
+    this.show(false);
+    this.pressed = false;
+    return () => this.show(was);
+  }
+
+  /** Lage in CSS-px, solange der Knopf sichtbar ist (die Raum-Zeile weicht ihm aus, B-336), sonst `null`. */
+  rect(): DOMRect | null {
+    return this.el.hidden ? null : this.el.getBoundingClientRect();
   }
 }
 
