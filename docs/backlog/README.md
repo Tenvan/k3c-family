@@ -143,6 +143,8 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-379](B-379-vollmond-belohnung-nur-stufe-0.md) | SIM | Problem | mittel | offen | – | Die Vollmond-Belohnung gilt für die Stufen, in denen gespielt wird |
 | [B-380](B-380-blutmond-boss-faehigkeiten.md) | SIM | Problem | niedrig | offen | – | Der Blutmond verstärkt auch die Flächenangriffe der Bosse |
 | [B-381](B-381-protokoll-haendler-raid-hp.md) | SRV | Problem | niedrig | offen | – | Das Protokoll beschreibt Überfall und HP des Händlers |
+| [B-386](B-386-checkout-argument-schreibende-tools.md) | DEV | Problem | hoch | eingeplant | WT1 | Schreibende k3c-dev-Tools nehmen den Ziel-Checkout als Argument, weil der Client aus Desktop-App-Worktrees die Wurzel meldet |
+| [B-387](B-387-ticketnummern-parallele-worktrees.md) | DEV | Problem | mittel | offen | – | Ticket-Nummern bleiben zwischen parallelen Worktrees eindeutig |
 
 ## Archiv
 
