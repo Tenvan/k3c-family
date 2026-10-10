@@ -8,9 +8,9 @@
 - **Sprint:** AZ1
 - **Projekt:** BED
 - **Erstellt:** 2026-10-07
-- **Spec:** Entwurf
+- **Spec:** freigegeben
 - **Revision:** 1
-- **Freigabe:** –
+- **Freigabe:** 2026-10-10, 🧑 im Chat (mit AZ1)
 
 ## Ausgangslage
 

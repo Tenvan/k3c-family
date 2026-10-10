@@ -1,14 +1,14 @@
 # AZ1 · CLI · Tasten von Spieler 2 an der Tastatur, Pause-Anzeige
 
-- **Status:** geplant
+- **Status:** aktiv
 - **Projekt:** BED
 - **Domäne:** CLI
-- **Reife:** Entwurf
+- **Reife:** bereit
 - **Tickets:** B-371, B-333
-- **Start-Commit:** –
-- **Spec:** Entwurf
+- **Start-Commit:** 87f25c20
+- **Spec:** freigegeben
 - **Revision:** 1
-- **Freigabe:** –
+- **Freigabe:** 2026-10-10, 🧑 im Chat (Revision 1)
 
 ## Ausgangslage
 
@@ -54,12 +54,10 @@ B-371 › Ausnahme- und Fehlerfälle (nur ein Tastatur-Spieler → Layout 1); B-
 
 ## Offene Fragen
 
-- Aussehen der Pause-Anzeige (Text mittig, abgedunkeltes Bild, Symbol): 🧑, nicht blockierend. Vorschlag: Text „Pausiert“ mittig je Zelle auf halbtransparentem Band, passend zu den HUD-Elementen aus U6.
-- Reihenfolge zu U6 (HUD-Layout-Funktion): Vorschlag AZ1 nach U6, damit die Pause-Anzeige ein HUD-Element wird; 🧑, nicht blockierend.
+- ~~Aussehen der Pause-Anzeige~~ – entschieden 🧑 2026-10-10 (Chat): Text „Pausiert“ mittig je Zelle auf halbtransparentem Band, passend zu den HUD-Elementen aus U6.
+- ~~Reihenfolge zu U6~~ – erledigt: U6 ist im Code fertig (nur Workshop U6.4 offen), AZ1 baut darauf auf.
 
 ## Sessions
-
-Entwurf. Vor dem Aktivieren jede Session als Datei nach `docs/vorlagen/session.md` schreiben, die Kriterien in Klammern werden ihr Feld `Kriterien`.
 
 - AZ1.1 Hinweise, Glyphen und Skill-Leiste von Spieler 2 aus `KEYBOARD_2` (AC-01, AC-02).
 - AZ1.2 Pause-Anzeige je Zelle und angehaltene Figuren-Animationen bei `devPaused` (AC-03, AC-04).
