@@ -4,8 +4,8 @@
 - **Typ:** Idee
 - **Prio:** niedrig
 - **Umgebung:** live
-- **Status:** eingeplant
-- **Sprint:** K4
+- **Status:** offen
+- **Sprint:** –
 - **Projekt:** KMP
 - **Erstellt:** 2026-10-01
 - **Spec:** freigegeben

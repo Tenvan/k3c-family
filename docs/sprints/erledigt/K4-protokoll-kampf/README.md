@@ -1,6 +1,6 @@
 # K4 · SIM, SRV · Protokoll für Bosse, Events und Inselwechsel
 
-- **Status:** aktiv
+- **Status:** erledigt
 - **Projekt:** KMP
 - **Domäne:** SIM, SRV
 - **Reife:** bereit
@@ -69,11 +69,14 @@ Wechsel-Bestätigung vor dem Sieg über den Endboss → `bad_request`.
 | K4.1a | `K4.1a-sim-zustand-spiegeln.md` | Umsetzung | autonom | fertig |
 | K4.1 | `K4.1-felder.md` | Umsetzung | autonom | fertig |
 | K4.2 | `K4.2-eingabe-version-bytes.md` | Umsetzung | autonom | fertig |
-| K4.3 | `K4.3-review.md` | Review | autonom | offen |
+| K4.3 | `K4.3-review.md` | Review | autonom | fertig |
 
 Bei `Reife: Entwurf` genügen Stichpunkte mit den Kriterien in Klammern statt Session-Dateien. Vor dem Aktivieren
 wird jede Session als eigene Datei nach `docs/vorlagen/session.md` geschrieben.
 
 ## Abnahme
 
-–
+2026-10-10, Review K4.3: AC-01 und AC-03 K4.1, AC-02 und AC-04 bis AC-06 K4.2, AC-07 K4.1a › Ergebnis; AC-05 mit Ereignissen 2,9 Byte je Tick (Q08), `delta` 913 Byte notiert.
+`task check` und `task check:go` grün (Shell, B-275). Behoben: `docs/protocol.md` › Kampf nannte noch Version 5 und eine Wechsel-Eingabe.
+Neu: B-385 (`islandSwitch`-Ereignis geht beim Inseltausch verloren). B-080 bleibt offen (AC-01 nicht im Sprint).
+Version: v0.16.0 vorgeschlagen (Minor: Protokoll v6, Clients der Version 5 werden abgewiesen, Raum tauscht die Insel); gesetzt erst nach Bestätigung durch 🧑.

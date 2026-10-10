@@ -14,7 +14,6 @@ Die Reihenfolge der Arbeit ist allein der Projekt-Rang: [`../projekte/README.md`
 | S8 | CLI | BED | Spielmenü „Spiel verlassen“, Y-Belegung und Glyphen-Entscheidung | Spielmenü verlässt ins Lobby, Y ohne Bau-Menü, Glyph-Entscheidung umgesetzt | `aktiv/S8-spielmenue-bedienung/` |
 | PL1 | PLAT | BED | Neues Spiel, zwei Spieler an einer Tastatur, Overlay auf der Xbox, zentrale Texte | „Neues Spiel“ startet immer neu, zwei Tastatur-Spieler, Overlay per Controller | `aktiv/PL1-start-tastatur-koop-texte/` |
 | S9 | CLI, SIM | BED | Rückmeldung für Schlag und Skills, ein Hinweis je Spieler | Jeder Tastendruck auf Schlag oder Skill ist sichtbar, das Aktionen-Overlay zeigt je Spieler einen Hinweis | `aktiv/S9-rueckmeldung-overlay/` |
-| K4 | SIM, SRV | KMP | Protokoll für Bosse, Events und Inselwechsel | `docs/protocol.md` mit neuen Feldern, Beispiele in `testdata/protocol/`, `task check:go` und `task check` grün | `aktiv/K4-protokoll-kampf/` |
 
 ## Offen am Gerät
 
@@ -160,3 +159,4 @@ Gesamtplan und Begründung: [`../plan-weiterentwicklung.md`](../plan-weiterentwi
 | DV1 | Domäne DEV für k3c-dev, Sprint ohne Prio und Einschiebbar | `erledigt/DV1-domaene-dev-werkzeug/` |
 | K2 | Bosse, Siegvarianten und Inselwechsel | `erledigt/K2-bosse-siege-inseln/` |
 | K3 | Events Vollmond, Blutmond und Händler-Überfall | `erledigt/K3-events/` |
+| K4 | Protokoll für Bosse, Events und Inselwechsel | `erledigt/K4-protokoll-kampf/` |

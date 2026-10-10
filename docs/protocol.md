@@ -408,7 +408,7 @@ Aktion, Werte, Raum).
 
 Der Zustand nennt den Kampf mit Feldern der Sim (`engine/sim/state_mirror.go`); der Client rechnet nichts, HP-Anteil,
 Phasen-Text und Zeitanzeige entstehen aus den Feldern. Zeiten in Sekunden, Orte in Units. **Fehlt ein Feld, trifft es nicht zu** (kein Boss, kein Event, kein Wechselpunkt); im Delta steht ein geändertes Feld ganz, ein verschwundenes in
-`unset`. Alle Felder sind additiv, die Protokollversion bleibt 5.
+`unset`. Alle Felder sind additiv; die Version stieg mit K4.2 auf 6 (Inselwechsel).
 
 | Feld | Inhalt | Fehlt, wenn |
 |---|---|---|
@@ -420,7 +420,7 @@ Phasen-Text und Zeitanzeige entstehen aus den Feldern. Zeiten in Sekunden, Orte 
 
 Beispiele: `s2c-snapshot-boss.json` (Endboss in Phase 2 mit Warnkreis) und `s2c-snapshot-event.json` (Vollmond-Nacht,
 Wechselpunkt halb gefüllt), auf dem Zustand von `s2c-snapshot-full.json` aufgebaut. Geprüft von `TestKampfZustand`,
-`TestKampfDelta`, `TestKampfBeispiele` und `src/online/clientKampf.test.ts`. Die Eingabe für den Inselwechsel steht in K4.2.
+`TestKampfDelta`, `TestKampfBeispiele` und `src/online/clientKampf.test.ts`. Der Wechsel entsteht durch Anwesenheit (keine Eingabe), siehe Strom-Regel „Inselwechsel“; das Ereignis `islandSwitch` kommt heute nicht beim Client an (B-385).
 
 ### Ereignisse
 
