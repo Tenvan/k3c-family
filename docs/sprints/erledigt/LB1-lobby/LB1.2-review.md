@@ -1,11 +1,11 @@
 # LB1.2 · Review und Abnahme des Sprints LB1
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Review
 - **Agent:** autonom
 - **Domäne:** CLI
 - **Umgebung:** offline
-- **Branch:** lb1/2-review
+- **Branch:** sprint/lb1
 - **Abhängig von:** LB1.1
 - **Tickets:** B-037
 - **Kriterien:** alle
@@ -37,9 +37,9 @@ Stil, Optimierung, Umbau von Produktionscode; Anlegen-Dialog (K5).
 
 ## Fertig, wenn
 
-- [ ] AC-01 hat einen Nachweis im Ergebnis von LB1.1 oder ist mit Grund und Ticket verschoben.
-- [ ] Schwere Befunde sind behoben oder als Ticket angelegt.
-- [ ] `task check` grün; PR des Sprints ist geöffnet.
+- [x] AC-01 hat einen Nachweis im Ergebnis von LB1.1 oder ist mit Grund und Ticket verschoben.
+- [x] Schwere Befunde sind behoben oder als Ticket angelegt.
+- [x] `task check` grün; PR des Sprints ist geöffnet.
 
 ## Prüfen
 
@@ -51,4 +51,7 @@ Manuelle Prüfungen (Browser, Xbox, TV) nur, wenn diese Datei sie nennt und 🧑
 
 ## Ergebnis
 
-–
+- Review des Diffs `origin/develop...sprint/lb1` durch einen eigenen Agenten (code-reviewer, Sonnet): keine schweren Befunde. Geprüft: Taste B nicht belegt; `listSaves` fängt Netzfehler, Timeout, `!ok` und kaputtes JSON ab, die Lobby bleibt bedienbar; Spielstand-Einträge senden nur `fresh: false`; Namen nur als Text und als `save`; keine Spiel-Logik und kein `Math.random()` in `src/scenes`; Dateien und Funktionen im Budget.
+- Befund mittel/leicht als Ticket B-382: Neuversuch greift, wenn ein gewählter Spielstand zufällig `params.save` heißt und inzwischen gelöscht ist; `NaN` aus ungültigem `savedAt` in der Sortierung.
+- Nachweis AC-01 (B-037/AC-01 bis AC-04) im Ergebnis von LB1.1 geprüft. B-037 erledigt und archiviert, Sprint nach `erledigt/`.
+- `task check` grün; Planung von Hand, weil k3c-dev die Repo-Wurzel bediente (B-275).
