@@ -3,6 +3,7 @@
  * `LobbyScene` zeichnet nur und gibt Eingaben weiter.
  */
 import { t } from '../core/texts';
+import type { SaveInfo } from '../core/saveStore';
 import type { RoomInfo } from '../online/clientProtocol';
 import type { Status } from '../online/clientConnection';
 
@@ -60,17 +61,35 @@ export function applyCommand(client: LobbyClient, cmd: LobbyCommand): void {
   else client.join(cmd.room, cmd.slots);
 }
 
-export type LobbyEntry = { kind: 'play' } | { kind: 'room'; room: RoomInfo } | { kind: 'retry' } | { kind: 'reload' };
+export type LobbyEntry =
+  | { kind: 'play' }
+  | { kind: 'room'; room: RoomInfo }
+  | { kind: 'save'; save: SaveInfo }
+  | { kind: 'retry' }
+  | { kind: 'reload' };
+
+/** Höchstens so viele Spielstände unter den Räumen (LB1, Offene Fragen) */
+export const MAX_SAVES = 6;
 
 /**
- * „Spielen“ steht oben, darunter die Räume des Servers. Ohne Verbindung (B-083) gibt es keine wirkungslosen Einträge:
+ * „Spielen“ steht oben, darunter die Räume des Servers, dann die neuesten Spielstände, die noch nicht als Raum offen sind
+ * (der Raumname ist der Name des Spielstands). Ohne Verbindung (B-083) gibt es keine wirkungslosen Einträge:
  * `lost` bietet „Erneut versuchen“, `ended` (an anderer Stelle geöffnet, veraltete Version) „Seite neu laden“, sonst nichts.
  */
-export function lobbyEntries(rooms: readonly RoomInfo[], status: Status = 'lobby'): LobbyEntry[] {
+export function lobbyEntries(rooms: readonly RoomInfo[], status: Status = 'lobby', saves: readonly SaveInfo[] = []): LobbyEntry[] {
   if (status === 'lost') return [{ kind: 'retry' }];
   if (status === 'ended') return [{ kind: 'reload' }];
   if (status !== 'lobby') return [];
-  return [{ kind: 'play' }, ...rooms.map((room): LobbyEntry => ({ kind: 'room', room }))];
+  const open = new Set(rooms.map((r) => r.name));
+  const newest = saves
+    .filter((s) => !open.has(s.name))
+    .sort((a, b) => Date.parse(b.savedAt) - Date.parse(a.savedAt))
+    .slice(0, MAX_SAVES);
+  return [
+    { kind: 'play' },
+    ...rooms.map((room): LobbyEntry => ({ kind: 'room', room })),
+    ...newest.map((save): LobbyEntry => ({ kind: 'save', save })),
+  ];
 }
 
 export function moveSelection(selected: number, dir: number, count: number): number {
@@ -81,6 +100,7 @@ export function entryLabel(e: LobbyEntry, save: string): string {
   if (e.kind === 'play') return t('lobby.play', { save });
   if (e.kind === 'retry') return t('lobby.retry');
   if (e.kind === 'reload') return t('lobby.reload');
+  if (e.kind === 'save') return t('lobby.save', { name: e.save.name, day: e.save.day ?? '–', depths: e.save.depths.join(', ') || '–' });
   const r = e.room;
   return t('lobby.room', { code: r.code, name: r.name, depth: r.depth, taken: r.taken, state: t(r.running ? 'lobby.running' : 'lobby.paused') });
 }
@@ -126,22 +146,29 @@ export class LobbyFlow {
       this.started = true;
       return this.remember(this.params.room ? { t: 'join', room: this.params.room, slots } : this.create(this.params.fresh));
     }
-    if (c.errorCode === 'save_not_found' && this.last?.t === 'create' && !this.last.fresh && !this.retried) {
+    // nur für „Spielen“: ein gewählter Spielstand existiert, er wird nie leer neu angelegt
+    const last = this.last;
+    if (c.errorCode === 'save_not_found' && last?.t === 'create' && !last.fresh && last.save === this.params.save && !this.retried) {
       this.retried = true;
       return this.remember(this.create(true));
     }
     return null;
   }
 
-  /** Auswahl in der Liste bestätigt; „Erneut versuchen“ und „Seite neu laden“ sind keine Befehle an den Server (null). */
+  /**
+   * Auswahl in der Liste bestätigt; ein Spielstand startet seinen Raum oder tritt ihm bei, falls er schon offen ist (Server).
+   * „Erneut versuchen“ und „Seite neu laden“ sind keine Befehle an den Server (null).
+   */
   choose(e: LobbyEntry): LobbyCommand | null {
-    if (e.kind !== 'play' && e.kind !== 'room') return null;
     this.retried = false;
-    return this.remember(e.kind === 'play' ? this.create(this.params.fresh) : { t: 'join', room: e.room.code, slots: this.slots() });
+    if (e.kind === 'play') return this.remember(this.create(this.params.fresh));
+    if (e.kind === 'save') return this.remember(this.create(false, e.save.name));
+    if (e.kind === 'room') return this.remember({ t: 'join', room: e.room.code, slots: this.slots() });
+    return null;
   }
 
-  private create(fresh: boolean): LobbyCommand {
-    return { t: 'create', save: this.params.save, fresh, depth: 0, slots: this.slots() };
+  private create(fresh: boolean, save = this.params.save): LobbyCommand {
+    return { t: 'create', save, fresh, depth: 0, slots: this.slots() };
   }
 
   private slots(): number[] {

@@ -1,11 +1,11 @@
 # LB1.1 · Raumliste, Beitritt und Spielstand wählen
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** CLI
 - **Umgebung:** offline
-- **Branch:** lb1/1-raumliste-spielstand
+- **Branch:** sprint/lb1
 - **Abhängig von:** –
 - **Tickets:** B-037
 - **Kriterien:** AC-01
@@ -50,8 +50,8 @@ Anlegen-Dialog mit Raum-Optionen wie Grad, Ziel, Niederlage-Modus (K5); Namen ei
 
 ## Fertig, wenn
 
-- [ ] AC-01: Tests belegen Raum erstellen (B-037/AC-01), Beitreten aus der Liste ohne Code (B-037/AC-02), offene Räume als Einträge (B-037/AC-03) und Spielstand wählen, der `create` mit diesem Namen und `fresh: false` sendet (B-037/AC-04); ohne erreichbares `api/saves` bleibt die Lobby wie bisher bedienbar.
-- [ ] `task check` grün; keine Datei über 400, keine Funktion über 60 Zeilen.
+- [x] AC-01: Tests belegen Raum erstellen (B-037/AC-01), Beitreten aus der Liste ohne Code (B-037/AC-02), offene Räume als Einträge (B-037/AC-03) und Spielstand wählen, der `create` mit diesem Namen und `fresh: false` sendet (B-037/AC-04); ohne erreichbares `api/saves` bleibt die Lobby wie bisher bedienbar.
+- [x] `task check` grün; keine Datei über 400, keine Funktion über 60 Zeilen.
 
 ## Prüfen
 
@@ -64,4 +64,15 @@ Manuelle Prüfungen (Browser, Xbox, TV) nur, wenn diese Datei sie nennt und 🧑
 
 ## Ergebnis
 
-–
+- `src/core/saveStore.ts` › `listSaves(fetchFn)`: liest `GET api/saves`, liefert geprüfte `SaveInfo` (`name`, `savedAt`, `day?`, `depths`); Fehler, Zeitüberschreitung, Server-Fehler und Einträge mit `error` ergeben keine Einträge. Test `saveStore.test.ts`.
+- `lobbyLogic.ts`: Eintrag `{ kind: 'save' }`; `lobbyEntries(rooms, status, saves)` hängt die neuesten sechs (`MAX_SAVES`, nach `savedAt`) unter die Räume, ohne Namen, die schon als Raum offen sind. `LobbyFlow.choose` sendet `create` mit dem Namen und `fresh: false`. Der `save_not_found`-Neuversuch gilt nur noch für „Spielen“ (ein gewählter Stand wird nie leer neu angelegt).
+- `LobbyScene.ts`: lädt die Liste beim Wechsel in den Zustand `lobby` (auch nach `connecting` und nach Rückkehr aus dem Spiel), nicht jedes Bild; Bedienung unverändert, B frei.
+- Texte `lobby.save` in DE/EN.
+
+Nachweis je B-037-Kriterium (`src/scenes/lobbyLogic.test.ts`):
+- AC-01 Raum erstellen: „„Spielen“ erstellt, ein Raum aus der Liste tritt bei“ und `create-Befehl mit slots[]` (SP08).
+- AC-02 Beitreten ohne Code: derselbe Test (`join` mit `KRNZ`) und „?room=CODE tritt einmal automatisch bei“.
+- AC-03 Räume sichtbar: „„Spielen“ steht oben, danach die Räume“ und `lobbyEntries` je Status.
+- AC-04 Spielstand wählen: Block „Spielstand wählen (LB1.1, B-037/AC-04)“ (neueste sechs, Doppelte entfallen, `create` mit Namen und `fresh: false`, `lost`/`ended` nur `retry`/`reload`); ohne `api/saves` leere Liste (`saveStore.test.ts`), die Lobby bleibt wie bisher.
+
+`task check` grün (91 Testdateien, 2026 Tests). Größte Datei `lobbyLogic.ts` 182 Zeilen. Geprüft in der Shell, weil k3c-dev die Repo-Wurzel statt des Worktrees bediente (B-275).

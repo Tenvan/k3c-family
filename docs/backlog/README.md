@@ -15,7 +15,6 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-019](B-019-test-abdeckung.md) | INF | Idee | niedrig | eingeplant | CI1 | Test-Abdeckung der Engine ist sichtbar |
 | [B-023](B-023-itch-io.md) | INF | Idee | niedrig | eingeplant | PB1 | Spiel ist auf itch.io veröffentlicht |
 | [B-024](B-024-tiefe-3-4.md) | REG | Idee | niedrig | eingeplant | RG2 | Tiefe 3 und 4 sind beschrieben |
-| [B-037](B-037-lobby.md) | CLI | Idee | mittel | eingeplant | LB1 | Lobby zeigt Räume und startet Spiele |
 | [B-040](B-040-server-finden.md) | SRV | Idee | niedrig | eingeplant | BT1 | Geräte finden den Server im Heimnetz |
 | [B-041](B-041-wails-starter.md) | SRV | Idee | niedrig | eingeplant | BT1 | Wails-Starter für Windows existiert |
 | [B-042](B-042-pi-leistungsziel.md) | SRV | Frage | hoch | eingeplant | HW1 | Pi-Modell und Leistungsziel sind festgelegt |
@@ -143,6 +142,7 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-379](B-379-vollmond-belohnung-nur-stufe-0.md) | SIM | Problem | mittel | offen | – | Die Vollmond-Belohnung gilt für die Stufen, in denen gespielt wird |
 | [B-380](B-380-blutmond-boss-faehigkeiten.md) | SIM | Problem | niedrig | offen | – | Der Blutmond verstärkt auch die Flächenangriffe der Bosse |
 | [B-381](B-381-protokoll-haendler-raid-hp.md) | SRV | Problem | niedrig | offen | – | Das Protokoll beschreibt Überfall und HP des Händlers |
+| [B-382](B-382-lobby-neuversuch-nur-spielen.md) | CLI | Problem | niedrig | offen | – | Ein gewählter Spielstand startet nie leer neu |
 | [B-386](B-386-checkout-argument-schreibende-tools.md) | DEV | Problem | hoch | eingeplant | WT1 | Schreibende k3c-dev-Tools nehmen den Ziel-Checkout als Argument, weil der Client aus Desktop-App-Worktrees die Wurzel meldet |
 | [B-387](B-387-ticketnummern-parallele-worktrees.md) | DEV | Problem | mittel | offen | – | Ticket-Nummern bleiben zwischen parallelen Worktrees eindeutig |
 
@@ -355,3 +355,4 @@ Zeile in diesen Abschnitt.
 | [B-321](archiv/B-321-schlag-skill-ohne-ziel-ereignis.md) | SIM | Problem | mittel | erledigt | S9 | Schlag ohne Treffer und Skill ohne Ziel erzeugen ein Ereignis |
 | [B-131](archiv/B-131-events.md) | SIM | Idee | niedrig | erledigt | K3 | Vollmond, Blutmond und Händler-Überfall sind als Events umgesetzt |
 | [B-373](archiv/B-373-haendler-angreifbar-besuchszaehler.md) | SIM | Idee | mittel | erledigt | K3 | Der Händler ist eine angreifbare Figur mit Besuchszähler im Spielstand |
+| [B-037](archiv/B-037-lobby.md) | CLI | Idee | mittel | erledigt | LB1 | Lobby zeigt Räume und startet Spiele |

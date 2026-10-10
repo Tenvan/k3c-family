@@ -1,7 +1,8 @@
 import Phaser from 'phaser';
 import { GAME_HEIGHT, GAME_WIDTH } from '../core/constants';
+import { listSaves, type SaveInfo } from '../core/saveStore';
 import { t } from '../core/texts';
-import type { RoomClient } from '../online/clientConnection';
+import type { RoomClient, Status } from '../online/clientConnection';
 import type { GameSceneData } from './GameScene';
 import { LobbyFlow, applyCommand, entryLabel, lobbyEntries, lobbyNotice, moveSelection, parseStartParams, rowAt, slotsFor, type StartParams } from './lobbyLogic';
 import { VERSION_KEY } from './debugOverlay';
@@ -34,7 +35,7 @@ function heldPadKeys(pads: readonly (Phaser.Input.Gamepad.Gamepad | null)[]): Se
   return held;
 }
 
-/** Raumliste: „Spielen“ plus die Räume des Servers. Bedienung per Pfeile/Stick und A/Enter oder Tippen. Zeichnet nur, Logik in `lobbyLogic.ts`. */
+/** Raumliste: „Spielen“, die Räume und die Spielstände des Servers. Bedienung per Pfeile/Stick und A/Enter oder Tippen. Zeichnet nur, Logik in `lobbyLogic.ts`. */
 export class LobbyScene extends Phaser.Scene {
   private client!: RoomClient;
   private params!: StartParams;
@@ -45,6 +46,9 @@ export class LobbyScene extends Phaser.Scene {
   private keys!: Record<'up' | 'down' | 'w' | 's' | 'enter' | 'space', Phaser.Input.Keyboard.Key>;
   private padHeld = new Set<string>();
   private tapped: number | null = null;
+  private saves: SaveInfo[] = [];
+  /** Zustand im letzten Bild: Spielstände nur beim Wechsel nach `lobby` laden, nicht jedes Bild */
+  private lastStatus: Status | null = null;
 
   constructor() {
     super('lobby');
@@ -59,6 +63,8 @@ export class LobbyScene extends Phaser.Scene {
     this.rows = [];
     this.padHeld = new Set();
     this.tapped = null;
+    this.saves = [];
+    this.lastStatus = null;
   }
 
   create(): void {
@@ -71,7 +77,7 @@ export class LobbyScene extends Phaser.Scene {
     this.add.text(GAME_WIDTH / 2, 128, versions, { ...STYLE, fontSize: '24px', strokeThickness: 4, fontStyle: 'normal', color: '#c8d0e0' }).setOrigin(0.5);
     this.add.text(GAME_WIDTH / 2, GAME_HEIGHT - 36, t('lobby.hint'), { ...STYLE, fontSize: '20px', strokeThickness: 4 }).setOrigin(0.5);
     // Touch über das Fenster: das Touch-Overlay des Spiels liegt über dem Canvas, die Ereignisse laufen aber bis hierher.
-    const onTap = (e: PointerEvent) => (this.tapped = rowAt(this.scale.transformY(e.pageY), TOP, ROW_H, lobbyEntries(this.client.rooms, this.client.status).length));
+    const onTap = (e: PointerEvent) => (this.tapped = rowAt(this.scale.transformY(e.pageY), TOP, ROW_H, lobbyEntries(this.client.rooms, this.client.status, this.saves).length));
     window.addEventListener('pointerdown', onTap);
     this.events.once('shutdown', () => window.removeEventListener('pointerdown', onTap));
   }
@@ -79,10 +85,12 @@ export class LobbyScene extends Phaser.Scene {
   update(): void {
     const client = this.client;
     if (client.status === 'room') return this.enterGame();
+    if (client.status === 'lobby' && this.lastStatus !== 'lobby') void listSaves().then((saves) => (this.saves = saves));
+    this.lastStatus = client.status;
     const first = this.flow.step(client);
     if (first) applyCommand(client, first);
 
-    const entries = lobbyEntries(client.rooms, client.status);
+    const entries = lobbyEntries(client.rooms, client.status, this.saves);
     const { dir, confirm } = this.poll();
     this.selected = moveSelection(this.selected, dir, entries.length);
     let chosen = confirm ? this.selected : null;

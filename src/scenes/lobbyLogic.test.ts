@@ -211,3 +211,31 @@ describe('Lobby ohne Verbindung (B-083)', () => {
     expect(flow.choose({ kind: 'reload' })).toBeNull();
   });
 });
+
+describe('Spielstand wählen (LB1.1, B-037/AC-04)', () => {
+  const save = (name: string, savedAt: string, day?: number) => ({ name, savedAt, depths: [0, 1], ...(day ? { day } : {}) });
+  const saves = Array.from({ length: 8 }, (_, i) => save(`s${i}`, `2026-10-0${i + 1}T10:00:00Z`));
+
+  it('die neuesten sechs unter den Räumen, ohne schon offene', () => {
+    const entries = lobbyEntries([room], 'lobby', [...saves, save('familie', '2026-10-09T10:00:00Z')]);
+    expect(entries.map((e) => e.kind)).toEqual(['play', 'room', 'save', 'save', 'save', 'save', 'save', 'save']);
+    expect(entries.flatMap((e) => (e.kind === 'save' ? [e.save.name] : []))).toEqual(['s7', 's6', 's5', 's4', 's3', 's2']);
+  });
+
+  it('ohne Räume direkt unter „Spielen“; ohne Verbindung nur retry/reload', () => {
+    expect(lobbyEntries([], 'lobby', [saves[0]!]).map((e) => e.kind)).toEqual(['play', 'save']);
+    expect(lobbyEntries([], 'lost', saves)).toEqual([{ kind: 'retry' }]);
+    expect(lobbyEntries([], 'ended', saves)).toEqual([{ kind: 'reload' }]);
+  });
+
+  it('Auswahl sendet create mit diesem Namen und fresh: false, kein leerer Neuversuch', () => {
+    const flow = new LobbyFlow(params({ fresh: true }));
+    expect(flow.choose({ kind: 'save', save: save('burg', '2026-10-01T10:00:00Z') })).toEqual({ t: 'create', save: 'burg', fresh: false, depth: 0, slots: [0] });
+    expect(flow.step({ status: 'lobby', errorCode: 'save_not_found' })).toBeNull();
+  });
+
+  it('Beschriftung mit Name, Tag und Stufe', () => {
+    expect(entryLabel({ kind: 'save', save: save('burg', '2026-10-01T10:00:00Z', 3) }, 'familie')).toBe('Spielstand burg  ·  Tag 3  ·  Stufe 0, 1');
+    expect(entryLabel({ kind: 'save', save: { name: 'alt', savedAt: '', depths: [] } }, 'familie')).toBe('Spielstand alt  ·  Tag –  ·  Stufe –');
+  });
+});
