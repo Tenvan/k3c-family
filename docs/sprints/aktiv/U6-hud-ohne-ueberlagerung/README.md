@@ -72,9 +72,11 @@ B-336 › Ausnahme- und Fehlerfälle; B-337 › Ausnahme- und Fehlerfälle (sehr
 |---|---|---|---|---|
 | U6.1 | `U6.1-optionen-per-touch.md` | Umsetzung | autonom | fertig |
 | U6.2 | `U6.2-hud-elemente-layout.md` | Umsetzung | autonom | fertig |
-| U6.3 | `U6.3-review.md` | Review | autonom | in Arbeit |
+| U6.3 | `U6.3-review.md` | Review | autonom | fertig |
 | U6.4 | `U6.4-abnahme-gesamt.md` | Workshop | Mensch | offen |
 
 ## Abnahme
 
-–
+2026-10-10 (U6.3): AC-01 bis AC-03 laut U6.1 › Ergebnis, AC-04 bis AC-06 laut U6.2 › Ergebnis (AC-05: Radar mit eigenem Hintergrund, Skill-Menü kein Element, offengelegt); AC-07 und AC-08 angenommen, Validierung offen (U6.4).
+Review ohne schwere Befunde, keine neuen Tickets. Sprint bleibt aktiv bis U6.4.
+Version: v0.18.0 vorgeschlagen (Minor: HUD-Layout und Touch-Optionen wirken im Spiel; nach den offenen Vorschlägen bis v0.17.0); nicht gesetzt (wartet auf Bestätigung 🧑).
