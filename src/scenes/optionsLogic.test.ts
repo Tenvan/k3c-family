@@ -1,7 +1,7 @@
 import { afterEach, describe, expect, it } from 'vitest';
 import { DEFAULT_SETTINGS, type Settings } from '../core/settings';
 import { setLanguage } from '../core/texts';
-import { MenuPress, OPTION_IDS, OPTION_PAD_KEYS, applyOption, idleCommands, moveOption, optionLabel, tapDir } from './optionsLogic';
+import { MenuPress, OPTION_IDS, OPTION_PAD_KEYS, applyOption, idleCommands, moveOption, optionLabel, tapDir, tapOption } from './optionsLogic';
 
 const base: Settings = { ...DEFAULT_SETTINGS };
 
@@ -82,6 +82,15 @@ describe('Werte', () => {
     expect(tapDir(100, 1920)).toBe('left');
     expect(tapDir(960, 1920)).toBe('confirm');
     expect(tapDir(1800, 1920)).toBe('right');
+  });
+
+  it('Antippen von „Weiter“ und „Spiel verlassen“ bestätigt in jedem Drittel (B-336)', () => {
+    for (const x of [100, 960, 1800]) {
+      expect(applyOption(base, 'resume', tapOption('resume', x, 1920)).close).toBe(true);
+      expect(applyOption(base, 'leave', tapOption('leave', x, 1920)).leave).toBe(true);
+    }
+    expect(tapOption('music', 100, 1920)).toBe('left');
+    expect(tapOption('music', 1800, 1920)).toBe('right');
   });
 });
 

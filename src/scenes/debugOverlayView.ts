@@ -53,6 +53,11 @@ export class DebugOverlay {
     scene.events.once(Phaser.Scenes.Events.SHUTDOWN, () => this.destroy());
   }
 
+  /** Diagnose sichtbar: das HUD hält ihr `DEBUG_AREA` frei (B-337) */
+  get visible(): boolean {
+    return this.shown;
+  }
+
   update(client: RoomClient, world: World | null): void {
     this.client = client;
     for (const g of this.takeGestures()) {

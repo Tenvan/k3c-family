@@ -1,11 +1,10 @@
 import Phaser from 'phaser';
-import { GAME_HEIGHT, GAME_WIDTH } from '../core/constants';
+import { GAME_WIDTH } from '../core/constants';
 import { nameOf, t } from '../core/texts';
 import { BIOMES } from '../model/biome';
 import { ECONOMY } from '../model/data';
 import type { GameEvent, World } from '../model/types';
 import type { GameScene } from './GameScene';
-import { SHARED_LINE_HEIGHT, sharedAnchor } from './layout';
 import { debugEnabled } from './debugOverlay';
 import { DebugOverlay } from './debugOverlayView';
 import { gameNotice } from './lobbyLogic';
@@ -14,6 +13,9 @@ import { RadarLayer, type RadarCell } from './radarView';
 import { SkillMenuLayer } from './skillMenuView';
 import { ActionOverlay } from './actionOverlay';
 import { GuideOverlay } from './guideOverlay';
+import { HudBox, freeAreas } from './hudElements';
+import { hudItems, hudLayout, type HAlign, type Rect, type Size } from './hudLayout';
+import { cellRadar, radarRect, RADAR_HEIGHT } from './radar';
 import { GamepadInput, type PlayerInput } from '../input/playerInput';
 import { TouchInput } from '../input/touchInput';
 import type { Device } from '../input/slotBindings';
@@ -21,7 +23,10 @@ import { resourceName, siteName } from './worldRenderer';
 
 const STYLE = { stroke: '#000000', strokeThickness: 6, fontStyle: 'bold' };
 const BANNER_SECONDS = 2.8;
-/** Bildschirmfeste Anzeigen: pro Split-Screen-Hälfte Spielerwerte, oben rechts Hub-Vorrat und Tageszeit, Meldungen in der Mitte. */
+/**
+ * Bildschirmfeste Anzeigen: pro Split-Screen-Hälfte Spielerwerte, oben rechts Hub-Vorrat und Tageszeit, Meldungen in der Mitte.
+ * Jede Anzeige ist ein HUD-Element (`HudBox`); die Lage kommt aus `hudLayout` (B-337), neu berechnet nur bei Änderung.
+ */
 export class HudScene extends Phaser.Scene {
   private joinHint!: Phaser.GameObjects.Text;
   private shared!: Phaser.GameObjects.Text;
@@ -32,7 +37,13 @@ export class HudScene extends Phaser.Scene {
   private controlsHint!: Phaser.GameObjects.Text;
   private info!: Phaser.GameObjects.Text;
   private travel!: Phaser.GameObjects.Text;
-  private playerLabels: Phaser.GameObjects.Text[] = [];
+  /** Spielerzeile je Zellen-Index */
+  private players = new Map<number, HudBox>();
+  /** Feste Elemente nach Layout-Id */
+  private boxes = new Map<string, HudBox>();
+  private layoutKey = '';
+  private layout = new Map<string, Rect | null>();
+  private aligns = new Map<string, HAlign>();
   private radar!: RadarLayer;
   private skills!: SkillMenuLayer;
   private actions!: ActionOverlay;
@@ -45,7 +56,9 @@ export class HudScene extends Phaser.Scene {
   }
 
   create(): void {
-    this.playerLabels = [];
+    this.players = new Map();
+    this.boxes = new Map();
+    this.layoutKey = '';
     this.bannerQueue = [];
     this.bannerLeft = 0;
     this.radar = new RadarLayer(this);
@@ -54,31 +67,33 @@ export class HudScene extends Phaser.Scene {
     this.guide = new GuideOverlay(this);
 
     const shared = { ...STYLE, ...fontStyle('shared') };
-    this.shared = this.add.text(GAME_WIDTH - 24, 16, '', shared).setOrigin(1, 0);
-    this.clock = this.add.text(GAME_WIDTH - 24, 56, '', shared).setOrigin(1, 0);
-    this.fight = this.add.text(GAME_WIDTH - 24, 96, '', { ...STYLE, ...fontStyle('fight') }).setOrigin(1, 0);
-    this.banner = this.add
-      .text(GAME_WIDTH / 2, GAME_HEIGHT / 2, '', { ...STYLE, ...fontStyle('banner'), strokeThickness: 10, align: 'center' })
-      .setOrigin(0.5)
-      .setVisible(false);
-    this.joinHint = this.add
-      .text(GAME_WIDTH / 2, GAME_HEIGHT / 2, t('hud.joinCenter'), { ...STYLE, ...fontStyle('joinCenter') })
-      .setOrigin(0.5);
+    this.shared = this.boxed('shared', this.add.text(0, 0, '', shared));
+    this.clock = this.boxed('clock', this.add.text(0, 0, '', shared));
+    this.fight = this.boxed('fight', this.add.text(0, 0, '', { ...STYLE, ...fontStyle('fight') }));
+    this.banner = this.boxed('banner', this.add.text(0, 0, '', { ...STYLE, ...fontStyle('banner'), strokeThickness: 10, align: 'center' }).setVisible(false));
+    this.joinHint = this.boxed('join', this.add.text(0, 0, t('hud.joinCenter'), { ...STYLE, ...fontStyle('joinCenter') }));
     this.debug = debugEnabled(location.search) ? new DebugOverlay(this) : null;
-    this.controlsHint = this.add.text(GAME_WIDTH - 20, GAME_HEIGHT - 40, '', { ...STYLE, ...fontStyle('controlsHint'), strokeThickness: 4 }).setOrigin(1, 0);
-    this.info = this.add.text(20, 16, '', { ...STYLE, ...fontStyle('roomInfo'), strokeThickness: 4 });
-    this.travel = this.add.text(GAME_WIDTH / 2, GAME_HEIGHT - 170, '', { ...STYLE, ...fontStyle('travel') }).setOrigin(0.5);
+    this.controlsHint = this.boxed('controls', this.add.text(0, 0, '', { ...STYLE, ...fontStyle('controlsHint'), strokeThickness: 4 }));
+    this.info = this.boxed('info', this.add.text(0, 0, '', { ...STYLE, ...fontStyle('roomInfo'), strokeThickness: 4 }));
+    this.travel = this.boxed('travel', this.add.text(0, 0, '', { ...STYLE, ...fontStyle('travel') }));
+  }
+
+  private boxed(id: string, text: Phaser.GameObjects.Text): Phaser.GameObjects.Text {
+    this.boxes.set(id, new HudBox(this, text));
+    return text;
   }
 
   update(_time: number, deltaMs: number): void {
     const game = this.game.scene.getScene('game') as GameScene;
     const world = game.world;
     this.debug?.update(game.client, world ?? null);
-    this.showHints(game, world);
-    if (!world) return;
+    const waiting = this.showHints(game, world);
+    if (!world) {
+      this.arrange([], waiting);
+      return;
+    }
     const cells = game.hudCells();
     this.showCells(cells);
-    this.radar.draw(cells);
     const seats = [...game.client.you].sort((a, b) => a.slot - b.slot); // Reihenfolge wie `hudCells` (cell.seat)
     const slotOf = (seat: number) => seats[seat]?.slot;
     const device = (slot: number) => deviceOf(game.slots.bound[slot]) ?? game.lastDevice;
@@ -86,32 +101,49 @@ export class HudScene extends Phaser.Scene {
     this.guide.draw(cells, game.cameras.cameras, slotOf, device);
     this.skills.draw(cells, game.skillMenus, slotOf, device);
     this.showWorld(cells.find((c) => c.cell.kind === 'player' && c.world)?.world ?? world); // gemeinsamer Block: Stufe der ersten Zelle dieses Geräts
-    this.placeShared(game);
     this.showBanner(game, deltaMs);
+    this.arrange(cells, waiting);
   }
 
-  /** Hinweise: Verbindungsstand, Beitritt, Steuerung, Raum. */
-  private showHints(game: GameScene, world: World | undefined): void {
+  /** Legt alle HUD-Elemente über `hudLayout` ab; neu gerechnet wird nur, wenn sich Elemente, Größen oder Freiflächen ändern. */
+  private arrange(cells: readonly RadarCell[], waiting: boolean): void {
+    const all = new Map(this.boxes);
+    for (const [i, b] of this.players) all.set(`player:${i}`, b);
+    for (const [i, b] of this.skills.bars) all.set(`skills:${i}`, b);
+    const sizes = new Map<string, Size>();
+    for (const [id, b] of all) {
+      const s = b.size();
+      if (s) sizes.set(id, s);
+    }
+    cells.forEach((c, i) => cellRadar(c) && sizes.set(`radar:${i}`, { w: radarRect(c.cell).w, h: RADAR_HEIGHT }));
+    const items = hudItems(cells.map((c) => c.cell), sizes, waiting);
+    const free = freeAreas(this, this.debug?.visible ?? false);
+    const key = JSON.stringify([items, free]);
+    if (key !== this.layoutKey) {
+      this.layoutKey = key;
+      this.layout = hudLayout(items, free);
+      this.aligns = new Map(items.map((it) => [it.id, it.h]));
+    }
+    for (const [id, b] of all) b.place(this.layout.get(id), this.aligns.get(id) ?? 'left');
+    this.radar.draw(cells, (i) => this.layout.get(`radar:${i}`));
+  }
+
+  /** Hinweise: Verbindungsstand, Beitritt, Steuerung, Raum. Rückgabe: Der Beitritts-Hinweis steht groß in der Mitte. */
+  private showHints(game: GameScene, world: World | undefined): boolean {
     const client = game.client;
     const away = gameNotice(client);
     if (away) {
-      this.joinHint.setText(away).setVisible(true).setY(GAME_HEIGHT / 2 + 120).setFontSize(FONTS.joinCenter.px); // Verbindung weg: Hinweis statt Standbild
-      return;
+      this.joinHint.setText(away).setVisible(true).setFontSize(FONTS.joinCenter.px); // Verbindung weg: Hinweis statt Standbild
+      return true;
     }
     const waiting = !world || game.waitingForJoin();
     this.controlsHint.setText(t(`hud.hint.${game.lastDevice}`));
     this.joinHint.setText(world ? t(`hud.join.${game.lastDevice}`) : (client.notice ?? t('net.connecting')));
     this.joinHint.setVisible(waiting || client.you.length < (client.limits?.slotsPerDevice ?? 4));
-    this.joinHint.setY(waiting ? GAME_HEIGHT / 2 + 120 : GAME_HEIGHT - 100);
     this.joinHint.setFontSize(waiting ? FONTS.joinCenter.px : FONTS.joinCorner.px);
     const taken = client.monarchs.filter((m) => m !== 'free').length;
-    this.info.setText(client.roomCode ? t('hud.room', { code: client.roomCode, name: client.roomName, n: taken }) : '').setVisible(!!client.roomCode).setY(60);
-  }
-
-  /** Gemeinsame Anzeigen stehen je nach Layout oben rechts oder mittig am Kreuzpunkt (B-084). */
-  private placeShared(game: GameScene): void {
-    const { x, y, originX } = sharedAnchor(game.hudCells().map((h) => h.cell));
-    [this.shared, this.clock, this.fight].forEach((text, i) => text.setPosition(x, y + i * SHARED_LINE_HEIGHT).setOrigin(originX, 0));
+    this.info.setText(client.roomCode ? t('hud.room', { code: client.roomCode, name: client.roomName, n: taken }) : '').setVisible(!!client.roomCode);
+    return waiting; // ☰, Home-Button und Touch-Knöpfe spart `arrange` als Freiflächen aus (B-336, B-337)
   }
 
   /** Vorrat, Tageszeit, Kampf und Reise. */
@@ -144,18 +176,16 @@ export class HudScene extends Phaser.Scene {
   /** Spielerwerte je Feld, aus der Welt der Stufe dieses Feldes; Feld ohne geladene Stufe zeigt nichts. */
   private showCells(cells: readonly RadarCell[]): void {
     const compact = cells.some((c) => c.cell.w < GAME_WIDTH); // 3 bis 4 Spieler: Text kürzen statt verkleinern (Q03)
-    this.playerLabels.forEach((l) => l.setVisible(false));
-    let label = 0;
-    for (const { cell, monarch, world } of cells) {
+    for (const b of this.players.values()) b.text.setVisible(false);
+    for (const [i, { monarch, world }] of cells.entries()) {
       const p = monarch === null ? undefined : world?.players.find((q) => q.index === monarch);
       if (!p || !world) continue;
-      const text = (this.playerLabels[label] ??= this.add.text(0, 0, '', { ...STYLE, ...fontStyle('playerValue') }));
-      label += 1;
-      text.setVisible(true).setPosition(cell.x + 24, cell.y + 16);
+      let box = this.players.get(i);
+      if (!box) this.players.set(i, (box = new HudBox(this, this.add.text(0, 0, '', { ...STYLE, ...fontStyle('playerValue') }))));
       const status = p.respawnIn > 0 ? t('hud.down', { s: Math.ceil(p.respawnIn) }) : t('hud.hp', { hp: Math.ceil(p.hp) });
       const stage = nameOf('biome', world.biome.id, world.biome.name);
       const short = p.respawnIn > 0 ? t('hud.downShort', { s: Math.ceil(p.respawnIn) }) : status;
-      text.setText(t(compact ? 'hud.playerShort' : 'hud.playerFull', { p: p.index + 1, gold: p.gold, max: ECONOMY.purse.maxGold, status: compact ? short : status, stage }));
+      box.text.setVisible(true).setText(t(compact ? 'hud.playerShort' : 'hud.playerFull', { p: p.index + 1, gold: p.gold, max: ECONOMY.purse.maxGold, status: compact ? short : status, stage }));
     }
   }
 }

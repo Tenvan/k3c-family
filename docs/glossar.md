@@ -58,6 +58,7 @@ Regelwerk in [`rules/`](rules/), und das Glossar wird angepasst. Zahlen sind, wo
 | Extrapolation | Läuft die Zeitleiste leer, laufen Figuren mit ihrer letzten Bewegung höchstens 100 ms weiter (angenommen) und bleiben dann stehen. | B-277 |
 | Farm | Gebäude der Hub-Stufe 1 auf einem festen Farm-Weltplatz je Seite zwischen Linie 1 und 2 (±52); wirkt als Plantage. | `rules/materialien-gebaeude.md` § 3, Q51 |
 | Fixture | Kleiner, aus dem Code erzeugter Spielstand je Version unter `testdata/saves/v<n>/`; alte bleiben unverändert, `TestJedeVersionHatFixture` verlangt eines je Version. | `arbeitsweise.md` › Spielstand-Format |
+| Freifläche | Bildschirmbereich, den kein HUD-Element belegen darf: Home-Button, „☰ Optionen“, Touch-Knöpfe und der Bereich der Diagnose. Die Layout-Funktion spart ihn aus. | B-337, `src/scenes/hudLayout.ts` |
 | Freigabe | Ausdrückliche Zustimmung von 🧑 zu genau einer Revision einer Spec (Feld `Freigabe`: Datum und Quelle); erst dann `Spec: freigegeben`. | `arbeitsweise.md` › SDD |
 | Getrennter Monarch (`Player.Free`) | Monarch, dessen Gerät die Verbindung verloren hat: 60 s reserviert (`waiting`), danach frei (`free`); unverwundbar, ausgeblendet, nicht wiederbelebbar. | `rules/bedienung.md` § 3, Q04, Q33 |
 | Gold | Währung je Spieler (Start 100, höchstens 100, morgens +5); bezahlt Bauten, Rekrutierung, Markierung. Gehört dem Spieler, ist kein Material. | `rules/wirtschaft.md` § 1 |
@@ -75,6 +76,7 @@ Regelwerk in [`rules/`](rules/), und das Glossar wird angepasst. Zahlen sind, wo
 | Hub-Mitte | Seed-abhängige Mitte des Hubs mit der Burg; Hub-Plätze und Mauerlinien sind Offsets von ihr. | `rules/materialien-gebaeude.md` § 3 |
 | Hub-Platz | Bauplatz mit festem Offset zur Hub-Mitte (`data/hub.json`) für Werkstatt, Lager, Kaserne, Taverne, Heilplatz, Schmiede, Rüstkammer, Treppen (+16/+24) und Händler (+8/+12); streut nicht. | Q43, Q55 |
 | Hub-Stufe | Ausbaustufe 1–5 eines Hubs (Holz bis Kristall); Stufe n schaltet Linie n, Mauer- und Turm-Stufe n und die Gebäude der Stufe frei. Code: `World.HubLevel` (ab W0). | `rules/materialien-gebaeude.md` § 2, Q59 |
+| HUD-Element | Bildschirmfeste Anzeige mit Anker (z. B. oben links in der Zelle), Rang und schaltbarem Hintergrund und Rahmen. Elemente überlagern sich nie; passt eines nicht, fällt es nach Rang weg, Rang 0 (Pflicht) nie. Weltgebundene Anzeigen sind keine HUD-Elemente. | B-337, `src/scenes/hudLayout.ts` |
 | Insel | Teil eines Spielstands, Sammlung ihrer n Stufen (je Stufe ein Level) mit einem gemeinsamen Material-Vorrat und einem Endboss; heute Insel 1 mit 5 Stufen, davon 3 gebaut. | `rules/stufen.md` § 1, `decisions/003-spielstruktur-inseln-stufen.md`, Q61 |
 | Insel-Vorrat | Gemeinsames Baumaterial aller Stufen und Hubs einer Insel (`World.stock`); Kapazität je Rohstoff 300 je Hub plus 300 je Lager. | `rules/materialien-gebaeude.md` § 1 |
 | Inselwechsel | Gemeinsamer Wechsel aller lebenden Spieler zur nächsten Insel (Boot oder Portal) nach dem Sieg über den Endboss; noch nicht gebaut. | `rules/stufen.md` § 1, B-103 |

@@ -1,7 +1,7 @@
 import Phaser from 'phaser';
 import { PLAYER_COLORS } from '../core/constants';
 import type { World } from '../model/types';
-import { cellRadar, radarRect, type RadarFeed, type RadarKind, type RadarMarker, type RadarRect } from './radar';
+import { cellRadar, type RadarFeed, type RadarKind, type RadarMarker, type RadarRect } from './radar';
 import type { Cell } from './layout';
 
 const COLORS: Record<Exclude<RadarKind, 'player'>, number> = {
@@ -33,14 +33,17 @@ export class RadarLayer {
 
   constructor(private readonly scene: Phaser.Scene) {}
 
-  /** Zeichnet alle Felder aus der Welt ihrer Stufe; Felder ohne Kamera-Ausschnitt (Layout wechselt) oder ohne geladene Stufe bleiben leer. */
-  draw(cells: readonly RadarCell[]): void {
+  /**
+   * Zeichnet alle Felder aus der Welt ihrer Stufe an der Lage aus `hudLayout` (`rectOf`, `radar:<Zelle>`); Felder ohne
+   * Kamera-Ausschnitt (Layout wechselt), ohne geladene Stufe oder vom Layout ausgeblendet bleiben leer.
+   */
+  draw(cells: readonly RadarCell[], rectOf: (cell: number) => RadarRect | null | undefined): void {
     cells.forEach((c, i) => {
       const g = (this.graphics[i] ??= this.scene.add.graphics().setDepth(-1));
       const model = cellRadar(c);
-      g.clear().setVisible(model !== null);
-      if (!model) return;
-      const rect = radarRect(c.cell);
+      const rect = rectOf(i);
+      g.clear().setVisible(model !== null && !!rect);
+      if (!model || !rect) return;
       this.background(g, rect);
       for (const m of model.markers) this.marker(g, rect, m);
       this.window(g, rect, model.view);
