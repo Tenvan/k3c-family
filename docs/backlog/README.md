@@ -144,6 +144,8 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-382](B-382-lobby-neuversuch-nur-spielen.md) | CLI | Problem | niedrig | offen | – | Ein gewählter Spielstand startet nie leer neu |
 | [B-385](B-385-inselwechsel-ereignis-geht-verloren.md) | SRV | Problem | mittel | offen | – | Das Ereignis `islandSwitch` erreicht beim Inselwechsel keinen Client |
 | [B-386](B-386-netz-budget-kampf-q08.md) | SRV | Frage | mittel | offen | – | Gilt das Netz-Budget aus Q08 für den Kampf-Zustand oder nur für Ereignisse? |
+| [B-387](B-387-ticketnummern-parallele-worktrees.md) | DEV | Problem | mittel | offen | – | Ticket-Nummern bleiben zwischen parallelen Worktrees eindeutig |
+| [B-388](B-388-checkout-argument-schreibende-tools.md) | DEV | Problem | hoch | eingeplant | WT1 | Schreibende k3c-dev-Tools nehmen den Ziel-Checkout als Argument, weil der Client aus Desktop-App-Worktrees die Wurzel meldet |
 
 ## Archiv
 
