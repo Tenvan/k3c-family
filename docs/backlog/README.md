@@ -101,7 +101,6 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-314](B-314-controller-pruefungen-zurueckgestellt.md) | PLAT | Schuld | niedrig | eingeplant | HW1 | Alle Controller-Prüfungen sind gesammelt nachgeholt |
 | [B-315](B-315-spielstand-voll-ausgebaut.md) | SRV | Idee | hoch | eingeplant | SV1 | Der Level-Betrachter erzeugt einen Spielstand mit allen Gebäuden voll ausgebaut |
 | [B-317](B-317-cheat-dialog-fokus-tastatur.md) | CLI | Problem | hoch | eingeplant | U5 | Der Cheat-Dialog zeigt den Fokus und lässt sich mit Pfeiltasten, Leertaste und Controller bedienen |
-| [B-318](B-318-schlag-skill-feedback.md) | CLI | Problem | mittel | eingeplant | S9 | Schlag und Skills zeigen auch ohne Ziel sichtbar, dass die Taste ankam |
 | [B-320](B-320-reiter-sattel-beim-laufen.md) | CLI | Problem | hoch | eingeplant | GR7 | Der Reiter sitzt beim Laufen und Sprinten auf dem Sattel, nicht auf der Kruppe |
 | [B-324](B-324-client-typen-gegnerdaten.md) | CLI | Schuld | niedrig | offen | – | Die Client-Typen der Gegner- und Wellendaten passen zu den JSON-Dateien |
 | [B-327](B-327-golden-tiefe-stufen.md) | SIM | Frage | niedrig | offen | – | Golden-Läufe decken Eisenstollen und Kristallhöhle ab |
@@ -147,7 +146,6 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-392](B-392-splitscreen-kamera-spieler-2.md) | CLI | Problem | hoch | offen | – | Im Split-Screen scrollt nur die Kamera von Spieler 1 mit; Spieler 2 und weitere sind nicht an ihre Ansicht gebunden |
 | [B-393](B-393-muenzbild-hinweis-fehlt.md) | CLI | Problem | mittel | offen | – | Das Münzbild vor „Hinlaufen: Münze aufheben“ erscheint im Browser nicht |
 | [B-394](B-394-xbox-overlay-gesten-abnahme.md) | PLAT | Frage | niedrig | offen | – | Overlay-Gesten (RB, LB + RB) sind an der Xbox abgenommen (B-195/AC-02) |
-| [B-396](B-396-schlag-ausholen-animation.md) | CLI | Problem | mittel | eingeplant | S9 | Der Monarch holt beim Schlag ohne Ziel sichtbar aus |
 
 ## Archiv
 
@@ -368,3 +366,5 @@ Zeile in diesen Abschnitt.
 | [B-215](archiv/B-215-texte-eingabe-shell-tools.md) | PLAT | Schuld | niedrig | erledigt | PL1 | Die Texte von Touch-Overlay, Shell und Werkzeug-Seiten kommen aus den zentralen Textdateien |
 | [B-395](archiv/B-395-preisschilder-ueberlappen.md) | CLI | Problem | hoch | erledigt | S9 | Nahe Bauplätze zeigen ihre Preisschilder nie übereinander |
 | [B-319](archiv/B-319-ein-hinweis-je-weltposition.md) | CLI | Problem | hoch | erledigt | S9 | Das Aktionen-Overlay zeigt je Spieler nur einen Hinweis, 24 px, nie über einem Preisschild |
+| [B-318](archiv/B-318-schlag-skill-feedback.md) | CLI | Problem | mittel | erledigt | S9 | Schlag und Skills zeigen auch ohne Ziel sichtbar, dass die Taste ankam |
+| [B-396](archiv/B-396-schlag-ausholen-animation.md) | CLI | Problem | mittel | erledigt | S9 | Der Monarch holt beim Schlag ohne Ziel sichtbar aus |
