@@ -166,3 +166,54 @@ func TestDevLog(t *testing.T) {
 		}
 	}
 }
+
+// Dev-Aktionen für Lager, Baukosten, Ausbau und Tageszeit (nur mit Dev-Mode, Felder werden geprüft).
+func TestDevLagerKostenAusbau(t *testing.T) {
+	r, p, _ := devRoom(t)
+	yes, no := true, false
+	if err := r.Dev("a", p, DevAction{Action: "cheapBuild"}); err != ErrBadRequest {
+		t.Fatalf("cheapBuild ohne on: %v", err)
+	}
+	if err := r.Dev("a", p, DevAction{Action: "buildAll", Level: 6}); err != ErrBadRequest {
+		t.Fatalf("buildAll Stufe 6: %v", err)
+	}
+	ok(t, r.Dev("a", p, DevAction{Action: "maxStock"}))
+	ok(t, r.Dev("a", p, DevAction{Action: "maxStock"}))
+	ok(t, r.Dev("a", p, DevAction{Action: "cheapBuild", On: &yes}))
+	ok(t, r.Dev("a", p, DevAction{Action: "buildAll", Level: 2}))
+	ok(t, r.Dev("a", p, DevAction{Action: "fillStock"}))
+	s := r.Summary()
+	if s.DevStockPlus != 200 || !s.DevCheap {
+		t.Fatalf("Summary %+v", s)
+	}
+	if max := sim.EconomyOf(r.isl.Stages[0]).StockMax; max < 200 || r.isl.Stock.Wood != max || r.isl.Stages[0].HubLevel != 2 {
+		t.Fatalf("Holz %d, Hub-Stufe %d", r.isl.Stock.Wood, r.isl.Stages[0].HubLevel)
+	}
+	ok(t, r.Dev("a", p, DevAction{Action: "cheapBuild", On: &no}))
+	if r.Summary().DevCheap {
+		t.Fatal("cheapBuild bleibt an")
+	}
+}
+
+// Nächste Tageszeit und Zeitraffer-Auto: Der Zeitraffer endet im ersten Tick nach dem Tageszeitwechsel, einmalig.
+func TestDevZeitrafferEndetMitTageszeit(t *testing.T) {
+	r, p, _ := devRoom(t)
+	yes := true
+	ok(t, r.Dev("a", p, DevAction{Action: "timescale", Factor: 4}))
+	ok(t, r.Dev("a", p, DevAction{Action: "timescaleAuto", On: &yes}))
+	r.Tick()
+	if factorOf(r) != 4 || !r.Summary().DevAutoReset {
+		t.Fatal("Zeitraffer endet ohne Tageszeitwechsel")
+	}
+	ok(t, r.Dev("a", p, DevAction{Action: "nextPhase"}))
+	r.Tick()
+	if got := factorOf(r); got != 1 || r.Summary().DevAutoReset {
+		t.Fatalf("Faktor %d, Auto %v nach Tageszeitwechsel", got, r.Summary().DevAutoReset)
+	}
+	ok(t, r.Dev("a", p, DevAction{Action: "timescale", Factor: 2}))
+	ok(t, r.Dev("a", p, DevAction{Action: "nextPhase"}))
+	r.Tick()
+	if factorOf(r) != 2 {
+		t.Fatal("Zeitraffer ohne Auto beendet")
+	}
+}

@@ -1,5 +1,5 @@
 import type { SlotCommand } from './localSlots';
-import { DEV_ACTIONS } from './debugActions';
+import { DEV_ACTIONS, DEV_GROUPS, actionLabel, type DevToggles } from './debugActions';
 
 /**
  * Cheat-Dialog (B-231, vorher Dev-Aktionen B-179): modal, 80 % der Fläche, leicht durchsichtig; der Raum steht, solange er offen ist.
@@ -71,15 +71,16 @@ export const DEV_FOCUS_KEY = 'devFocus';
 export const CHEAT_CSS = `
 .k3c-cheat{position:fixed;inset:0;z-index:11;display:flex;align-items:center;justify-content:center;background:rgba(0,0,0,.35)}
 .k3c-cheat[hidden]{display:none}
-.k3c-cheat .box{width:80vw;height:80vh;box-sizing:border-box;overflow:auto;display:flex;flex-direction:column;gap:2vmin;padding:3vmin;
-  background:rgba(12,16,36,.82);border:3px solid #9be564;border-radius:16px;color:#9be564;font:bold clamp(15px,2.4vmin,28px) system-ui,sans-serif}
-.k3c-cheat h2{margin:0;font-size:1.3em}
+.k3c-cheat .box{width:80vw;height:80vh;box-sizing:border-box;overflow:auto;display:flex;flex-direction:column;gap:1vmin;padding:2vmin;
+  background:rgba(12,16,36,.82);border:2px solid #9be564;border-radius:12px;color:#9be564;font:bold clamp(10px,1.5vmin,16px) system-ui,sans-serif}
+.k3c-cheat h2{margin:0;font-size:1.2em}
 .k3c-cheat .hint{color:#c9d1e8;font-weight:normal}
-.k3c-cheat .row{display:flex;gap:1.5vmin;flex-wrap:wrap}
-.k3c-cheat button{font:inherit;color:#fff;background:#2b3558;border:3px solid transparent;border-radius:10px;padding:1.2vmin 2vmin;
-  min-height:44px;touch-action:manipulation}
+.k3c-cheat .row{display:flex;gap:.8vmin;flex-wrap:wrap}
+.k3c-cheat button{font:inherit;color:#fff;background:#2b3558;border:2px solid transparent;border-radius:8px;padding:.6vmin 1.2vmin;
+  min-height:32px;touch-action:manipulation}
 .k3c-cheat button.sel{border-color:#ffd166}
 .k3c-cheat button.hit{background:#4f7a2a}
+.k3c-cheat button.on{background:#2a6f7a}
 .k3c-cheat .close{margin-top:auto;align-self:flex-end;background:#5a2b2b}`;
 
 /** DOM-Dialog über Canvas und Touch-Overlay (z-index 11 > 10). */
@@ -107,7 +108,7 @@ export class CheatDialog {
     };
     tap(this.seatButton, onSeat);
     box.append(this.note, this.seatButton);
-    for (const group of ['gold', 'material', 'zeit'] as const) {
+    for (const group of DEV_GROUPS) {
       const row = document.createElement('div');
       row.className = 'row';
       DEV_ACTIONS.forEach((a, i) => {
@@ -134,12 +135,18 @@ export class CheatDialog {
   }
 
   /** `note`: Hinweis, z. B. Server ohne Dev-Mode; leer = keiner. */
-  render(open: boolean, s: FocusState, seatLabel: string, note: string): void {
+  render(open: boolean, s: FocusState, seatLabel: string, note: string, toggles: DevToggles): void {
     this.root.hidden = !open;
     if (!open) return;
     this.note.textContent = note;
     this.seatButton.textContent = `für ${seatLabel}`;
-    this.buttons.forEach((b, i) => b.classList.toggle('sel', i === s.index));
+    this.buttons.forEach((b, i) => {
+      const a = DEV_ACTIONS[i];
+      b.classList.toggle('sel', i === s.index);
+      if (!a) return;
+      b.textContent = actionLabel(a, toggles);
+      b.classList.toggle('on', a.toggle !== undefined && toggles[a.toggle]);
+    });
   }
 
   /** Kurzes Aufleuchten der ausgelösten Schaltfläche */

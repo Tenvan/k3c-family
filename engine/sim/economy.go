@@ -237,7 +237,7 @@ func payOneCoin(w *World, p *Player) {
 	case target.offer != nil:
 		payAnyOffer(w, p, target.offer)
 	case target.sword != nil:
-		paySword(p, target.sword)
+		paySword(w, p, target.sword)
 	case target.site != nil:
 		paySite(w, p, target.site)
 	case target.troop != nil:
@@ -256,7 +256,7 @@ func paySite(w *World, p *Player, s *Site) {
 	switch {
 	case s.State == "unpaid":
 		s.PaidGold++
-		if s.PaidGold >= buildings[s.Kind].Cost.Gold {
+		if s.PaidGold >= cheap(w, buildings[s.Kind].Cost).Gold {
 			s.State = "waitingMaterial"
 		}
 	case upgradePayable(w, s):
@@ -374,8 +374,8 @@ func spend(s *Stock, c Cost) {
 // auf (upgrades.go).
 func stepSites(w *World) {
 	for _, s := range w.Sites {
-		if s.State == "waitingMaterial" && canAfford(*w.Stock, buildings[s.Kind].Cost) {
-			spend(w.Stock, buildings[s.Kind].Cost)
+		if cost := cheap(w, buildings[s.Kind].Cost); s.State == "waitingMaterial" && canAfford(*w.Stock, cost) {
+			spend(w.Stock, cost)
 			s.State = "waitingWorker"
 		}
 		if s.Kind == "workshop" && s.State == "built" {

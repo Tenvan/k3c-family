@@ -3,13 +3,15 @@
  * Läuft außerhalb der Shell (eigene URL), daher ohne installPageChrome().
  */
 import { applyTexts, t } from './texts';
-import { DM_ACTIONS, fetchDiagnose, fetchRooms, sendAction, type DmDiagnose, type DmRoom } from './dmApi';
+import { DM_ACTIONS, DM_MAX_LEVEL, actionBody, fetchDiagnose, fetchRooms, sendAction, type DmDiagnose, type DmRoom } from './dmApi';
 
 const $ = <T extends HTMLElement>(id: string) => document.getElementById(id) as T;
 const POLL_MS = 1000;
 
 let current: string | null = null;
 let dev = false;
+/** Zustand der Umschalter (Index in DM_ACTIONS); der Server meldet ihn nicht. */
+const toggled = new Set<number>();
 
 applyTexts();
 
@@ -66,7 +68,10 @@ function renderDiag(d: DmDiagnose): void {
   }
   for (const b of $('actions').querySelectorAll('button')) {
     const a = DM_ACTIONS[Number(b.dataset.i)].action;
-    b.classList.toggle('on', a.action === 'timescale' ? a.factor === d.timescale : a.action === 'pause' && a.paused === d.paused);
+    b.classList.toggle(
+      'on',
+      a.action === 'timescale' ? a.factor === d.timescale : a.action === 'pause' ? a.paused === d.paused : toggled.has(Number(b.dataset.i)),
+    );
   }
 }
 
@@ -77,9 +82,15 @@ function buildActions(): void {
       b.dataset.i = `${i}`;
       b.onclick = async () => {
         if (!current) return;
-        const body = a.needsSlot ? { ...a.action, slot: Number($<HTMLSelectElement>('slot').value) } : a.action;
+        const on = a.toggle ? !toggled.has(i) : undefined;
+        const body = actionBody(a, {
+          slot: Number($<HTMLSelectElement>('slot').value),
+          on,
+          level: Number($<HTMLSelectElement>('level').value),
+        });
         const err = await sendAction(current, body);
-        $('msg').textContent = err ? `❌ ${err}` : `✅ ${a.label}`;
+        if (!err && a.toggle) on ? toggled.add(i) : toggled.delete(i);
+        $('msg').textContent = err ? `❌ ${err}` : `✅ ${a.label}${a.leveled ? ` ${body.level}` : ''}`;
         void poll();
       };
       return b;
@@ -110,8 +121,12 @@ async function poll(): Promise<void> {
   }
   setMode(t(dev ? 'dm.devOn' : 'dm.devOff'));
   for (const b of $('actions').querySelectorAll('button')) b.disabled = !dev;
+  $<HTMLSelectElement>('level').disabled = !dev;
 }
 
+$<HTMLSelectElement>('level').replaceChildren(
+  ...Array.from({ length: DM_MAX_LEVEL }, (_, i) => new Option(t('dm.level', { n: i + 1 }), `${i + 1}`)),
+);
 buildActions();
 $('back').onclick = () => openRoom(null);
 openRoom(null);

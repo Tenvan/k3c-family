@@ -70,6 +70,8 @@ type inMsg struct {
 	Resource string    `json:"resource"` // dev: material
 	Factor   int       `json:"factor"`   // dev: timescale
 	Paused   *bool     `json:"paused"`   // dev: pause
+	On       *bool     `json:"on"`       // dev: cheapBuild, timescaleAuto
+	Level    int       `json:"level"`    // dev: buildAll (1 bis 5)
 }
 
 type inInput struct {

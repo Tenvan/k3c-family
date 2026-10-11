@@ -122,6 +122,14 @@ export const de = {
   'dm.day': '☀ Tag',
   'dm.dusk': '🌆 Dämmerung',
   'dm.night': '🌑 Nacht',
+  'dm.nextPhase': '⏭ Nächste Tageszeit',
+  'dm.maxStock': '📈 Max +100',
+  'dm.fillStock': '🗃 Alles füllen',
+  'dm.costOne': '🏷 Baukosten 1',
+  'dm.resetOnPhase': '⏱ 1× bei Wechsel',
+  'dm.buildAll': '🏗 Alles ausbauen',
+  'dm.level': 'Stufe {n}',
+  'dm.levelLabel': 'Ausbau-Stufe',
 
   // Grafik-Seite (grafiken.html) und Credits (lizenzen.html)
   'grafik.pageTitle': 'K3C Alle Grafiken',

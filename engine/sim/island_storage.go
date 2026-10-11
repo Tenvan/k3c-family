@@ -28,7 +28,7 @@ func capacity(w *World) (limit int, ok bool) {
 	if isl == nil {
 		return 0, false
 	}
-	limit = economy.Storage.BasePerHub * len(isl.Stages)
+	limit = economy.Storage.BasePerHub*len(isl.Stages) + isl.Dev.StockBonus
 	for _, st := range isl.Stages {
 		for _, s := range st.Sites {
 			if s.Kind == "storage" && s.State == "built" {

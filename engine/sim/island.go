@@ -43,6 +43,8 @@ type Island struct {
 	switchProgress float64
 	// Over: Niederlage-Modus „Komplett verloren“ (defeat.go); die Insel ist zu Ende, StepIsland ändert nichts mehr.
 	Over bool
+	// Dev: Schalter der Dev-Aktionen (dev.go), nur im Speicher; der Raum trägt sie über den Inselwechsel.
+	Dev DevFlags
 	// MerchantVisits: Ankünfte des Händlers auf der Insel (merchant.go), Rhythmus des Händler-Überfalls (K3.2).
 	MerchantVisits int
 	nextPlayer     int
