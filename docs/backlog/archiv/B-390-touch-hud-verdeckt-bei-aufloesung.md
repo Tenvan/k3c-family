@@ -4,7 +4,7 @@
 - **Typ:** Problem
 - **Prio:** mittel
 - **Umgebung:** live
-- **Status:** offen
+- **Status:** verworfen
 - **Sprint:** –
 - **Projekt:** BED
 - **Erstellt:** 2026-10-10
@@ -56,5 +56,7 @@ Sehr schmale Fenster: nicht relevant, solange das Hochformat gesperrt ist.
 Soll der Shell-Button bei Touch die obere HUD-Zeile meiden (ausblenden, nach unten schieben) oder verschiebt sich nur das HUD? Entscheidet 🧑.
 
 ## Notizen
+
+Verworfen 2026-10-11 (🧑, Chat): Touch und Handy entfallen; es zählen PC (Tastatur) und Xbox (Controller) mit höchstens 2 Spielern. Eigene Abnahmen legt 🧑 später bei Bedarf neu an.
 
 Herkunft: U5.4, Frage 15 mit „nein“ und Screenshots 2 und 3 beantwortet. Verwandt: B-191, U5.4.

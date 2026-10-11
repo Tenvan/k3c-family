@@ -22,7 +22,7 @@ Spieler sehen, warum ein Bauplatz wartet (Bauer, Material), den Lagerstand mit M
 
 ## Beteiligte und Zielgruppen
 
-Spieler am TV und am Handy; 🧑 testet am Gerät.
+Spieler am TV (Xbox) und am PC; 🧑 testet am Gerät.
 
 ## Anforderungen
 

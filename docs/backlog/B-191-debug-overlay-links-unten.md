@@ -27,8 +27,7 @@ Gold, Vorrat und HP im HUD bleiben bei offenem Overlay lesbar.
 ## Anforderungen
 
 - Info-Zeilen und Aktionsliste sind links unten verankert (Wunsch 🧑), nicht über dem HUD.
-- Die Aktionsliste überdeckt die Lauf-Flächen des Touch-Overlays nicht (`src/input/touchInput.ts`).
-- Gilt für 1 und 2 Spieler am Gerät (Split-Screen).
+- Gilt für 1 und 2 Spieler am Gerät (Split-Screen). Das Touch-Overlay und das Handy entfallen seit 2026-10-11 (Beschluss 🧑).
 
 ## Nicht-Ziele
 
@@ -44,12 +43,12 @@ Overlay mit Ö öffnen → HUD oben ist vollständig sichtbar, Overlay und Schal
 
 ## Ausnahme- und Fehlerfälle
 
-Handy im Hochformat: Liste bricht um, bleibt unten und treffbar.
+nicht relevant: Der Fall „Handy im Hochformat“ entfällt seit 2026-10-11 (Beschluss 🧑, Handy ist kein Gerät mehr).
 
 ## Akzeptanzkriterien
 
 - **AC-01** Bei offenem Overlay im Dev-Raum liegt kein Teil von Overlay oder Aktionsliste über dem HUD (Browser-Pane, 1 und 2 Spieler).
-- **AC-02** 🧑 bestätigt am PC und am Handy, dass HUD und Lauf-Flächen frei bleiben.
+- **AC-02** 🧑 bestätigt am PC, dass das HUD frei bleibt.
 
 ## Offene Fragen
 

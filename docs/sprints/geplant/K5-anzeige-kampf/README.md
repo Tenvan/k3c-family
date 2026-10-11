@@ -7,8 +7,8 @@
 - **Tickets:** B-132, B-105, B-107, B-098
 - **Start-Commit:** –
 - **Spec:** freigegeben
-- **Revision:** 1
-- **Freigabe:** 2026-10-04, Chat, durch 🧑, Revision 1; mit Änderungen aus der Spec-Prüfung
+- **Revision:** 2
+- **Freigabe:** 2026-10-11, 🧑 im Chat, Revision 2 (3–4 Spieler, Touch und Handy entfallen)
 
 ## Ausgangslage
 
@@ -22,7 +22,7 @@ Am Ende sichtbar: Boss-Leiste, Warnkreis und Event-Banner am TV, Lobby-Dialog, v
 
 ## Beteiligte und Zielgruppen
 
-Spieler (1 bis 4 am TV) und Entwickler; 🧑 nimmt am Gerät ab.
+Spieler (1 bis 2 am PC oder an der Xbox) und Entwickler; 🧑 nimmt am Gerät ab. 3 bis 4 Spieler, Touch und Handy entfallen seit 2026-10-11 (Beschluss 🧑).
 
 ## Anforderungen
 
@@ -51,7 +51,7 @@ Dev-Sperre aktiv → Debug-Panel und Grad „Dev“ sind nicht verfügbar.
 - **AC-03** Die Auswahl-Logik für Standards je Grad und Dev-Sperre ist getestet, die Lobby zeigt sie und sendet sie beim Anlegen (B-105/AC-01, B-105/AC-02).
 - **AC-04** Das Debug-Panel wechselt den Grad über eine Server-Aktion und ist ohne Dev-Mode nicht verfügbar (Test) (B-107/AC-01, B-107/AC-02).
 - **AC-05** `debugEnabled('')` ist `false`, `debugEnabled('?dev=1')` ist `true` (B-098/AC-01).
-- **AC-06** 🧑 hat Anzeige, Dialog und Panel am Gerät abgenommen (B-132/AC-03, B-105/AC-03, B-107/AC-03).
+- **AC-06** 🧑 hat Anzeige, Dialog und Panel am PC (Tastatur) und an der Xbox (Controller) mit höchstens 2 Spielern abgenommen (B-132/AC-03, B-105/AC-03, B-107/AC-03). Touch, Handy und 3–4 Spieler entfallen (Beschluss 🧑 2026-10-11).
 
 ## Offene Fragen
 

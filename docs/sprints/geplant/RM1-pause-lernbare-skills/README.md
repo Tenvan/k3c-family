@@ -20,7 +20,7 @@ Ein Couch-Raum pausiert wirklich, online ist ein pausierter Monarch geschützt, 
 
 ## Beteiligte und Zielgruppen
 
-Spielende am TV und Handy; Agent baut Server und Protokoll.
+Spielende am TV (Xbox) und am PC; Agent baut Server und Protokoll.
 
 ## Anforderungen
 

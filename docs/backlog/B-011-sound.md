@@ -22,7 +22,7 @@ Spiel hat Sound und Musik. Nutzen: Rückmeldung und Stimmung, besonders nachts.
 
 ## Beteiligte und Zielgruppen
 
-Spieler am TV (Edge auf der Xbox) und am Handy; Umsetzung durch Entwickler oder Agent.
+Spieler am TV (Edge auf der Xbox) und am PC; Umsetzung durch Entwickler oder Agent.
 
 ## Anforderungen
 

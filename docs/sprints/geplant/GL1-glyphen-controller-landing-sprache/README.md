@@ -20,7 +20,7 @@ Die Landingpage folgt der gewählten Sprache, mit Rückfall Deutsch. Am Ende sic
 
 ## Beteiligte und Zielgruppen
 
-Alle, die an PC, Handy, TV oder Xbox die Landingpage als Einstieg sehen. Der Agent arbeitet in PLAT (`src/landing/`, `index.html`, `src/core/texts.*.ts`). 🧑 nimmt den Sprachwechsel am Gerät ab.
+Alle, die am PC, TV oder an der Xbox die Landingpage als Einstieg sehen. Der Agent arbeitet in PLAT (`src/landing/`, `index.html`, `src/core/texts.*.ts`). 🧑 nimmt den Sprachwechsel am Gerät ab.
 
 ## Anforderungen
 
@@ -58,7 +58,7 @@ IDs bleiben stabil; die Kriterien aus B-339 entfallen mit Revision 2 (B-339 verw
 
 ## Offene Fragen
 
-Keine. Entschieden 2026-10-10 (🧑): Plattformen sind nur Xbox, PC und Mobile, nur Xbox-Symbole (B-339 verworfen); Symbole bleiben selbst gezeichnet; die Landingpage übernimmt die Sprache nur beim Neuladen; die Tastatur wird nicht je Layout beschriftet.
+Keine. Entschieden 2026-10-10 (🧑): nur Xbox-Symbole (B-339 verworfen); Symbole bleiben selbst gezeichnet; die Landingpage übernimmt die Sprache nur beim Neuladen; die Tastatur wird nicht je Layout beschriftet. Entschieden 2026-10-11 (🧑): Plattformen sind nur Xbox und PC (Mobile/Handy entfällt) mit höchstens 2 Spielern.
 
 ## Sessions
 

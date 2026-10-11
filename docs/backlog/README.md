@@ -15,7 +15,6 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-019](B-019-test-abdeckung.md) | INF | Idee | niedrig | eingeplant | CI1 | Test-Abdeckung der Engine ist sichtbar |
 | [B-023](B-023-itch-io.md) | INF | Idee | niedrig | eingeplant | PB1 | Spiel ist auf itch.io veröffentlicht |
 | [B-024](B-024-tiefe-3-4.md) | REG | Idee | niedrig | eingeplant | RG2 | Tiefe 3 und 4 sind beschrieben |
-| [B-040](B-040-server-finden.md) | SRV | Idee | niedrig | eingeplant | BT1 | Geräte finden den Server im Heimnetz |
 | [B-041](B-041-wails-starter.md) | SRV | Idee | niedrig | eingeplant | BT1 | Wails-Starter für Windows existiert |
 | [B-042](B-042-pi-leistungsziel.md) | SRV | Frage | hoch | eingeplant | HW1 | Pi-Modell und Leistungsziel sind festgelegt |
 | [B-048](B-048-standardbibliothek-in-001.md) | SRV | Frage | niedrig | eingeplant | BT1 | Die Wahl der Go-Standardbibliothek ist dort festgehalten, wo B-001 auf sie verweist |
@@ -109,7 +108,6 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-331](B-331-einheitlicher-grafikstil-pipeline.md) | CLI | Idee | mittel | offen | – | Alle Grafiken laufen durch eine Pipeline mit Ziel-Palette und gleicher Pixeldichte |
 | [B-334](B-334-performance-modus.md) | CLI | Idee | hoch | eingeplant | PM1 | Der Client misst Leistung in einem Performance-Modus automatisch und überträgt die Werte an den Server |
 | [B-335](B-335-landingpage-spieler-entwicklung.md) | PLAT | Idee | hoch | eingeplant | HW1 | Die Landingpage zeigt nur Spieler-Kacheln, Entwicklungs-, Performance- und Balancing-Aufrufe liegen auf einer eigenen Entwicklerseite |
-| [B-336](B-336-touch-optionen-schliessen.md) | CLI | Problem | hoch | eingeplant | U6 | Die Optionen-Szene lässt sich per Touch vollständig bedienen und schließen, ohne vom Touch-Overlay verdeckt zu werden |
 | [B-337](B-337-hud-elemente-ohne-ueberlagerung.md) | CLI | Idee | hoch | eingeplant | U6 | Jede HUD-Anzeige ist ein eigenes Element mit optionalem Hintergrund und Rahmen, und HUD-Elemente überlagern sich nicht |
 | [B-341](B-341-header-ursache-live-messen.md) | DEV | Problem | mittel | eingeplant | WZ2 | Die Ursache für den fehlenden Header `X-K3C-Root` aus Worktrees ist live gemessen |
 | [B-342](B-342-w6-2-siteview-erlaubt.md) | CLI | Frage | mittel | offen | – | W6.2 darf den Bauplatz-Wartegrund in `siteView.ts` anbinden |
@@ -138,7 +136,6 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-386](B-386-netz-budget-kampf-q08.md) | SRV | Frage | mittel | offen | – | Gilt das Netz-Budget aus Q08 für den Kampf-Zustand oder nur für Ereignisse? |
 | [B-387](B-387-ticketnummern-parallele-worktrees.md) | DEV | Problem | mittel | eingeplant | WZ2 | Ticket-Nummern bleiben zwischen parallelen Worktrees eindeutig |
 | [B-389](B-389-oe-schliesst-dialog-zuerst.md) | CLI | Problem | mittel | offen | – | Ö schließt bei offenem Cheat-Dialog zuerst den Dialog, das Overlay bleibt offen |
-| [B-390](B-390-touch-hud-verdeckt-bei-aufloesung.md) | CLI | Problem | mittel | offen | – | Touch-Tasten und Start-Button verdecken HUD-Infozeilen bei bestimmten Auflösungen |
 | [B-391](B-391-beitritts-hinweis-spieler-2-fehlt.md) | CLI | Problem | mittel | offen | – | Der Beitritts-Hinweis für Spieler 2 wird nicht angezeigt |
 | [B-392](B-392-splitscreen-kamera-spieler-2.md) | CLI | Problem | hoch | offen | – | Im Split-Screen scrollt nur die Kamera von Spieler 1 mit; Spieler 2 und weitere sind nicht an ihre Ansicht gebunden |
 | [B-393](B-393-muenzbild-hinweis-fehlt.md) | CLI | Problem | mittel | offen | – | Das Münzbild vor „Hinlaufen: Münze aufheben“ erscheint im Browser nicht |
@@ -369,3 +366,6 @@ Zeile in diesen Abschnitt.
 | [B-371](archiv/B-371-glyphen-tastatur-2.md) | CLI | Problem | mittel | erledigt | AZ1 | Hinweise und Glyphen zeigen für Spieler 2 an der Tastatur dessen Tasten |
 | [B-333](archiv/B-333-pause-anzeige.md) | CLI | Idee | mittel | erledigt | AZ1 | Der Client zeigt einen angehaltenen Raum deutlich an und hält die Figuren-Animationen an |
 | [B-368](archiv/B-368-planung-erpapi-ablage.md) | SRV | Schuld | mittel | verworfen | – | Die Planung liegt in der ErpApi-Ablage und k3c-dev bedient sie mit den Planungs-Tools der Workbench-Spec |
+| [B-336](archiv/B-336-touch-optionen-schliessen.md) | CLI | Problem | hoch | verworfen | U6 | Die Optionen-Szene lässt sich per Touch vollständig bedienen und schließen, ohne vom Touch-Overlay verdeckt zu werden |
+| [B-390](archiv/B-390-touch-hud-verdeckt-bei-aufloesung.md) | CLI | Problem | mittel | verworfen | – | Touch-Tasten und Start-Button verdecken HUD-Infozeilen bei bestimmten Auflösungen |
+| [B-040](archiv/B-040-server-finden.md) | SRV | Idee | niedrig | verworfen | BT1 | Geräte finden den Server im Heimnetz |

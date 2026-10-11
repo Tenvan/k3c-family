@@ -4,11 +4,11 @@
 - **Projekt:** BED
 - **Domäne:** CLI
 - **Reife:** bereit
-- **Tickets:** B-336, B-337
+- **Tickets:** B-337
 - **Start-Commit:** f77ff97a
 - **Spec:** freigegeben
-- **Revision:** 1
-- **Freigabe:** 2026-10-09, 🧑 im Chat, Revision 1, Vorschläge unter Offene Fragen übernommen
+- **Revision:** 2
+- **Freigabe:** 2026-10-11, 🧑 im Chat, Revision 2 (Touch, Handy und 3–4 Spieler entfallen)
 
 ## Ausgangslage
 
@@ -16,11 +16,11 @@ HUD-Anzeigen und HTML-Elemente (Home-Button, „☰ Optionen“, Touch-Overlay, 
 
 ## Ziel
 
-Das HUD besteht aus abgegrenzten Elementen, die sich in keinem Layout überlagern, und Optionen und Pause sind per Touch vollständig bedienbar. Am Ende sichtbar: Am PC mit `?touch=1` öffnet, bedient und schließt man die Optionen per Tippen, und bei 1 bis 4 Spielern verdeckt nichts im HUD ein anderes Element. Danach steht die Gesamtabnahme Anzeige und Bedienung.
+Das HUD besteht aus abgegrenzten Elementen, die sich in keinem Layout überlagern. Am Ende sichtbar: Bei 1 bis 2 Spielern am PC verdeckt nichts im HUD ein anderes Element. Danach steht die Gesamtabnahme Anzeige und Bedienung für PC und Xbox. (Optionen per Touch und 3–4 Spieler entfallen seit 2026-10-11, B-336 ist verworfen; der umgesetzte Code bleibt.)
 
 ## Beteiligte und Zielgruppen
 
-Spieler am TV, PC und Handy. 🧑 entscheidet über den Stil (Hintergrund, Rahmen) und die Rangfolge beim Ausblenden und macht die Gesamtabnahme.
+Spieler am PC (Tastatur) und an der Xbox (Controller), höchstens 2 Spieler. 🧑 entscheidet über den Stil (Hintergrund, Rahmen) und die Rangfolge beim Ausblenden und macht die Gesamtabnahme.
 
 ## Anforderungen
 
@@ -47,14 +47,14 @@ B-336 › Ausnahme- und Fehlerfälle; B-337 › Ausnahme- und Fehlerfälle (sehr
 
 ## Akzeptanzkriterien
 
-- **AC-01** Bei offener Optionen-Szene verdeckt das Touch-Overlay keinen Eintrag (`B-336/AC-01`).
-- **AC-02** Die Szene schließt per Touch über „Weiter“ (`B-336/AC-02`, Browser-Pane mit `?touch=1`).
-- **AC-03** Der Knopf „☰ Optionen“ verdeckt keinen HUD-Text (`B-336/AC-04`).
-- **AC-04** Die Layout-Funktion liefert für 1–4 Spieler, mit und ohne Touch und Debug, Rechtecke ohne Überschneidung untereinander und mit den Freiflächen (`B-337/AC-01`, Test).
+- **AC-01** Bei offener Optionen-Szene verdeckt das Touch-Overlay keinen Eintrag (`B-336/AC-01`). Umgesetzt und getestet in U6.1; die Abnahme per Touch entfällt (2026-10-11).
+- **AC-02** Die Szene schließt per Touch über „Weiter“ (`B-336/AC-02`). Umgesetzt in U6.1; die Abnahme per Touch entfällt.
+- **AC-03** Der Knopf „☰ Optionen“ verdeckt keinen HUD-Text (`B-336/AC-04`). Umgesetzt in U6.1; die Abnahme entfällt.
+- **AC-04** Die Layout-Funktion liefert für die Layouts mit 1–2 Spielern, mit und ohne Debug, Rechtecke ohne Überschneidung untereinander und mit den Freiflächen (`B-337/AC-01`, Test). Die Layouts für 3–4 Spieler und Touch sind umgesetzt, werden aber nicht abgenommen.
 - **AC-05** Alle HUD-Anzeigen laufen über diese Elemente, Hintergrund und Rahmen sind je Element schaltbar (`B-337/AC-02`).
 - **AC-06** Die Mindest-Schriftgröße bleibt je Layout eingehalten (`B-337/AC-03`, `fontRules.test.ts` grün).
-- **AC-07** 🧑 hat Optionen per Touch abgenommen und am PC (1 und 4 Spieler, `?touch=1`) keine Überlagerung gesehen (`B-336/AC-03`, `B-337/AC-04`).
-- **AC-08** 🧑 hat die Prüfliste der Gesamtabnahme durchlaufen, Mängel als Tickets (`B-337/AC-05`).
+- **AC-07** 🧑 hat am PC (1 und 2 Spieler) keine Überlagerung gesehen (`B-337/AC-04`).
+- **AC-08** 🧑 hat die Prüfliste der Gesamtabnahme für PC und Xbox durchlaufen, Mängel als Tickets (`B-337/AC-05`).
 
 ## Offene Fragen
 
@@ -79,4 +79,5 @@ B-336 › Ausnahme- und Fehlerfälle; B-337 › Ausnahme- und Fehlerfälle (sehr
 
 2026-10-10 (U6.3): AC-01 bis AC-03 laut U6.1 › Ergebnis, AC-04 bis AC-06 laut U6.2 › Ergebnis (AC-05: Radar mit eigenem Hintergrund, Skill-Menü kein Element, offengelegt); AC-07 und AC-08 angenommen, Validierung offen (U6.4).
 Review ohne schwere Befunde, keine neuen Tickets. Sprint bleibt aktiv bis U6.4.
+2026-10-11 (U6.4, 🧑 am PC, ohne `?touch=1`): Optionen (Schritt 2, mit `?touch=1`) ok, HUD mit 1 Spieler ok, 2 und 4 Spieler ok, zwei Spieler in verschiedenen Stufen ok. Touch, Handy und 3–4 Spieler entfallen (Beschluss 🧑 2026-10-11, Revision 2); B-336 verworfen.
 Version: v0.18.0 vorgeschlagen (Minor: HUD-Layout und Touch-Optionen wirken im Spiel; nach den offenen Vorschlägen bis v0.17.0); nicht gesetzt (wartet auf Bestätigung 🧑).
