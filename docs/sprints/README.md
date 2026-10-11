@@ -10,7 +10,6 @@ Die Reihenfolge der Arbeit ist allein der Projekt-Rang: [`../projekte/README.md`
 | Sprint | Domäne | Projekt | Thema | Am Ende sichtbar | Ordner |
 |---|---|---|---|---|---|
 | WZ2 | DEV | WZG | Planungs-Werkzeuge: eindeutige Nummern, Fahrplan, Flags, Prüfläufe | – | `aktiv/WZ2-planungs-werkzeuge/` |
-| GL1 | PLAT | BED | Landingpage in der gewählten Sprache | Landingpage zeigt nach Sprachwechsel und Neuladen English | `aktiv/GL1-glyphen-controller-landing-sprache/` |
 | W6 | CLI | WRT | Anzeigen für Bau, Lager, Hub und Bürger (B-117, B-126) | HUD und Bauplätze am TV, von 🧑 abgenommen | `aktiv/W6-anzeige-wirtschaft/` |
 
 ## Offen am Gerät
@@ -162,3 +161,4 @@ Gesamtplan und Begründung: [`../plan-weiterentwicklung.md`](../plan-weiterentwi
 | S9 | Rückmeldung für Schlag und Skills, ein Hinweis je Spieler | `erledigt/S9-rueckmeldung-overlay/` |
 | AZ1 | Tasten von Spieler 2 an der Tastatur, Pause-Anzeige | `erledigt/AZ1-tasten-spieler2-pause/` |
 | U6 | HUD ohne Überlagerung, Optionen per Touch | `erledigt/U6-hud-ohne-ueberlagerung/` |
+| GL1 | Landingpage in der gewählten Sprache | `erledigt/GL1-glyphen-controller-landing-sprache/` |

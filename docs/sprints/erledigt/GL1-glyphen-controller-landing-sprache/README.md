@@ -1,6 +1,6 @@
 # GL1 · PLAT · Landingpage in der gewählten Sprache
 
-- **Status:** aktiv
+- **Status:** erledigt
 - **Projekt:** BED
 - **Domäne:** PLAT
 - **Reife:** bereit
@@ -66,11 +66,10 @@ Keine. Entschieden 2026-10-10 (🧑): nur Xbox-Symbole (B-339 verworfen); Symbol
 |---|---|---|---|---|
 | GL1.1 | `GL1.1-landing-texte.md` | Umsetzung | autonom | fertig |
 | GL1.2 | `GL1.2-review.md` | Review | autonom | fertig |
-| GL1.3 | `GL1.3-abnahme-sprache.md` | Workshop | Mensch | offen |
+| GL1.3 | `GL1.3-abnahme-sprache.md` | Workshop | Mensch | fertig |
 
 ## Abnahme
 
-- **2026-10-11, Review (GL1.2):** Kriterien: AC-02 `geprüft` (`platformTextRule.test.ts`, `task check` grün); AC-06 `angenommen, Validierung offen (GL1.3)`; AC-01, AC-03, AC-04, AC-05, AC-07 `entfällt (B-339 verworfen)`.
+- **2026-10-11, Review (GL1.2):** Kriterien: AC-02 `geprüft` (`platformTextRule.test.ts`, `task check` grün); AC-06 `geprüft` am Gerät (GL1.3, 🧑 „geprüft, alles ok“); AC-01, AC-03, AC-04, AC-05, AC-07 `entfällt (B-339 verworfen)`.
 - Befunde: keine schweren. Neue Tickets: keine.
-- Der Sprint bleibt aktiv, bis GL1.3 (Sprachwechsel am Gerät, 🧑) erledigt ist.
-- Version: v0.15.0 vorgeschlagen (Minor: Wirkung im Spiel und auf der Landingpage).
+- Version: v0.15.0 vorgeschlagen (Minor: Wirkung auf der Landingpage). Noch nicht gesetzt, Bestätigung durch 🧑 ausstehend.
