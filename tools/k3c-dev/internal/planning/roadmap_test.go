@@ -95,3 +95,39 @@ func TestFahrplanOhneProjektBehaeltPlatz(t *testing.T) {
 		t.Fatalf("Reihenfolge nach plan_set: %s\n%s", got, doc(t, root, "sprints/README.md"))
 	}
 }
+
+// roadmapProject liefert die Projekt-Zelle der Fahrplan-Zeile des Sprints (Spalte 3 in Aktiv und Geplant), "" ohne Zeile.
+func roadmapProject(t *testing.T, root, id string) string {
+	t.Helper()
+	for _, l := range splitLines(doc(t, root, "sprints/README.md")) {
+		if c := cells(l); strings.HasPrefix(l, "| "+id+" |") && len(c) > 2 {
+			return c[2]
+		}
+	}
+	return ""
+}
+
+// B-404: die Fahrplan-Zeile trägt das Projekt aus dem Kopffeld, auch nach Reife, Sessions, Freigabe und Aktivieren.
+func TestFahrplanAktivierterSprintTraegtProjekt(t *testing.T) {
+	root := roadmapRepo(t)
+	must(t)(Create(root, NewDoc{Kind: "sprint", ID: "GRA1", Slug: "s", Title: "Sprint GRA1",
+		Fields: map[string]string{"Domäne": "DEV", "Projekt": "GRA", "Reife": "bereit", "Tickets": "B-001"}}))
+	check := func(step string) {
+		t.Helper()
+		if got := roadmapProject(t, root, "GRA1"); got != "GRA" {
+			t.Errorf("nach %s: Projekt-Zelle %q statt GRA\n%s", step, got, doc(t, root, "sprints/README.md"))
+		}
+	}
+	check("Anlegen")
+	must(t)(Set(root, "GRA1", map[string]string{"Reife": "Entwurf"}))
+	check("Reife Entwurf")
+	must(t)(Create(root, NewDoc{Kind: "session", ID: "GRA1.1", Slug: "u", Title: "Umsetzung",
+		Fields: map[string]string{"Domäne": "DEV", "Typ": "Umsetzung", "Agent": "autonom", "Umgebung": "offline"}}))
+	check("Session anlegen")
+	must(t)(Set(root, "GRA1", map[string]string{"Spec": "freigegeben", "Freigabe": "2026-10-11, Test"}))
+	check("Spec freigegeben")
+	must(t)(Set(root, "GRA1", map[string]string{"Reife": "bereit"}))
+	check("Reife bereit")
+	must(t)(Set(root, "GRA1", map[string]string{"Status": "aktiv", "Start-Commit": "abc1234"}))
+	check("Aktivieren")
+}
