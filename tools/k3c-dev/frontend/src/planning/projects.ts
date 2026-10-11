@@ -18,6 +18,8 @@ export interface ProjectView {
   /** Erledigte Sprints von allen der Tabelle. */
   done: number;
   total: number;
+  /** Nicht erledigte Sprints; ohne sie ist ein aktives Projekt inaktiv. */
+  open: number;
   next: Picked | null;
   /** Tickets des Projekts ohne Sprint. */
   loose: PlanTicket[];
@@ -52,15 +54,17 @@ export function groupProjects(d: PlanningData, shown: PlanSprint[] = d.sprints, 
   const view = (project: PlanProject): ProjectView => {
     const sprints = project.sprints.flatMap((id) => byId.get(id) ?? []);
     const all = project.sprints.flatMap((id) => d.sprints.find((s) => s.id === id) ?? []);
-    return { project, sprints, done: project.sprints.filter((id) => status.get(id) === 'erledigt').length, total: project.sprints.length,
+    const done = project.sprints.filter((id) => status.get(id) === 'erledigt').length;
+    return { project, sprints, done, total: project.sprints.length, open: project.sprints.length - done,
       next: nextSession(all, d.sprints), loose: tickets.filter((t) => t.project === project.id && !hasProject(t.sprint)) };
   };
-  const active = projects.filter((p) => p.status === 'aktiv' && p.id !== ABN).sort((a, b) => rankOf(a) - rankOf(b)).map(view);
+  const ranked = projects.filter((p) => p.status === 'aktiv' && p.id !== ABN).sort((a, b) => rankOf(a) - rankOf(b)).map(view);
+  const active = ranked.filter((v) => v.open > 0);
   const abnProject = projects.find((p) => p.id === ABN && p.status === 'aktiv');
   const abn = abnProject ? view(abnProject) : null;
   const abnOpen = (abn?.sprints ?? []).flatMap((sprint) =>
     sprint.sessions.filter((x) => x.agent === 'Mensch' && x.status === 'offen').map((session) => ({ sprint, session })));
-  const folded = [...projects.filter((p) => p.status === 'ruht'), ...projects.filter((p) => p.status === 'erledigt')].map(view);
+  const folded = [...ranked.filter((v) => v.open === 0), ...[...projects.filter((p) => p.status === 'ruht'), ...projects.filter((p) => p.status === 'erledigt')].map(view)];
   const listed = new Set(projects.flatMap((p) => p.sprints));
   return { active, abn, abnOpen, folded, without: {
     sprints: shown.filter((s) => !listed.has(s.id) && !hasProject(s.project)),

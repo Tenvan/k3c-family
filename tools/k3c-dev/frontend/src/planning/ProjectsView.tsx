@@ -63,7 +63,7 @@ export function ProjectSections({ groups: g, count, error, onMove, data, sel, on
       )}
       {g.folded.length > 0 && (
         <details data-area="eingeklappt">
-          <summary className="pl-h">Ruhend und erledigt ({g.folded.length})</summary>
+          <summary className="pl-h">Inaktiv, ruhend und erledigt ({g.folded.length})</summary>
           {g.folded.map((v) => <ProjectCard key={v.project.id} view={v} {...card} />)}
         </details>
       )}
