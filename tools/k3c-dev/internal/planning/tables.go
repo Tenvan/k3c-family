@@ -135,7 +135,7 @@ func syncRoadmap(c *changeSet, sp Sprint, f map[string]string, oldDir, newDir st
 	}
 	// Gleiche Tabelle und gleiches Projekt: Platz behalten (Reihenfolge zählt); sonst nach Projekt-Rang (B-366).
 	_, hasProject := old["Projekt"]
-	if at < t.first || at > t.end || (hasProject && old["Projekt"] != sp.Project) {
+	if at < t.first || at > t.end || (hasProject && projectCell(old["Projekt"]) != projectCell(sp.Project)) {
 		if at, err = roadmapPlace(c, lines, t, sp); err != nil {
 			return err
 		}
@@ -180,6 +180,14 @@ func headerAt(lines []string, i int) ([]string, bool) {
 		return nil, false
 	}
 	return cells(lines[h]), true
+}
+
+// projectCell: ein leeres Projekt steht im Fahrplan als „–“; so zählt ein leeres Feld nicht als Projektwechsel (B-403/N4).
+func projectCell(p string) string {
+	if p == "" {
+		return "–"
+	}
+	return p
 }
 
 func firstOf(v ...string) string {

@@ -2,7 +2,7 @@ import { Button, Checkbox, Flex, Text, TextField } from '@radix-ui/themes';
 import { useEffect, useState, type CSSProperties } from 'react';
 import { backend, type GitHubData, type PlanningData, type PlanSprint } from '../api';
 import { ProjectsView } from './ProjectsView';
-import { rankedCount } from './projects';
+import { rankedCount, visibleSprints } from './projects';
 import { foldAll } from './fold';
 import { errorText } from '../lib/errors';
 import { loadText, savePref } from '../lib/prefs';
@@ -60,7 +60,7 @@ export function SprintsBacklog() {
       <GitHubBar gh={gh} reload={reloadGh} />
       <div className="pl-grid">
         <section className="pl-col">
-          <ColumnHead data={shown} all={data} shown={sprints} />
+          <ColumnHead data={shown} all={visibleSprints(data, shown.projects)} shown={sprints} />
           {data.projects?.length ? <ProjectBar data={data} filter={filter} setFilter={setFilter} hits={shown.projects?.length ?? 0} /> : null}
           {picked.length > 0 && (
             <div className="pl-picked">
@@ -217,8 +217,8 @@ function FoldAll({ ids }: { ids: string[] }) {
 }
 
 /** Kopf der linken Spalte: mit Projekten „Projekte“, sonst „Sprints“ (B-364). */
-function ColumnHead({ data, all, shown }: { data: PlanningData; all: PlanningData; shown: PlanSprint[] }) {
-  const count = <>{shown.length} von {all.sprints.length} · {all.done} erledigt</>;
+function ColumnHead({ data, all, shown }: { data: PlanningData; all: PlanSprint[]; shown: PlanSprint[] }) {
+  const count = <>{shown.length} von {all.length} · {all.filter((s) => s.status === 'erledigt').length} erledigt</>;
   if (!data.projects?.length) return <h2 className="pl-h">Sprints <small>{count}</small></h2>;
   return (
     <h2 className="pl-h">Projekte <small>{rankedCount(data.projects)} nach Rang · Sprints {count}</small>

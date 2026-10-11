@@ -114,8 +114,13 @@ func nextTicket(root string) (string, []string, error) {
 	}
 	if _, err := exec.LookPath("git"); err != nil {
 		notes = append(notes, "Warnung: git nicht gefunden, Nummer nur aus dem eigenen Checkout")
-	} else if isRepoRoot(root) {
-		paths, _ := worktreePaths(root)
+	} else if !isRepoRoot(root) {
+		notes = append(notes, "Warnung: Ordner ist keine Repo-Wurzel, Worktrees und Refs nicht gelesen")
+	} else {
+		paths, err := worktreePaths(root)
+		if err != nil {
+			notes = append(notes, fmt.Sprintf("Warnung: Worktrees nicht gelesen (%v)", err))
+		}
 		for _, p := range paths {
 			if samePath(p, root) {
 				continue
@@ -128,6 +133,9 @@ func nextTicket(root string) (string, []string, error) {
 			consider(n, "Worktree "+filepath.Base(p))
 		}
 		refs := remoteHighest(root)
+		if refs == nil {
+			notes = append(notes, "Warnung: Remote-Refs nicht gelesen")
+		}
 		for _, ref := range slices.Sorted(maps.Keys(refs)) { // feste Reihenfolge: bei Gleichstand gewinnt der erste Name
 			consider(refs[ref], ref)
 		}

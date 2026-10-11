@@ -72,6 +72,13 @@ export function groupProjects(d: PlanningData, shown: PlanSprint[] = d.sprints, 
   } };
 }
 
+/** Sprints der Projekt-Ansicht: ohne die Sprints ausgeblendeter Projekte, sie zählen nicht mit (B-403/M1). */
+export function visibleSprints(all: PlanningData, shownProjects: PlanProject[] = all.projects ?? []): PlanSprint[] {
+  const kept = new Set(shownProjects.map((p) => p.id));
+  const hidden = new Set((all.projects ?? []).filter((p) => !kept.has(p.id)).flatMap((p) => p.sprints));
+  return all.sprints.filter((s) => !hidden.has(s.id));
+}
+
 /** Zahl der aktiven Projekte mit Rang (ohne ABN): Grenze für „runter“. */
 export const rankedCount = (projects: PlanProject[] = []) => projects.filter((p) => p.status === 'aktiv' && rankOf(p) !== Infinity).length;
 

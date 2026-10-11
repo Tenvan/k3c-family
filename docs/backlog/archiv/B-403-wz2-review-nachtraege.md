@@ -4,8 +4,8 @@
 - **Typ:** Schuld
 - **Prio:** mittel
 - **Umgebung:** offline
-- **Status:** offen
-- **Sprint:** –
+- **Status:** erledigt
+- **Sprint:** WZ3
 - **Projekt:** WZG
 - **Erstellt:** 2026-10-11
 - **Spec:** Entwurf

@@ -1,6 +1,6 @@
 # WZ2 · DEV · Planungs-Werkzeuge: eindeutige Nummern, Fahrplan, Flags, Prüfläufe
 
-- **Status:** aktiv
+- **Status:** erledigt
 - **Projekt:** WZG
 - **Domäne:** DEV
 - **Reife:** bereit
