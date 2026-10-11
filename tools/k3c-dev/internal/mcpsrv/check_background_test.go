@@ -85,3 +85,21 @@ func consoleTailLine(t *testing.T) string {
 	t.Fatal("keine Zeile zu console_tail in den Anweisungen")
 	return ""
 }
+
+// Review WZ2.8: „läuft bereits“ nennt die Lauf-ID des laufenden Laufs.
+func TestCheckRunLaeuftBereitNenntLaufID(t *testing.T) {
+	release := make(chan struct{})
+	s, started := fakeServer(t, func(runSpec) runResult { <-release; return runResult{} })
+	s.checkWait = 10 * time.Millisecond
+	ctx := context.Background()
+	text, err := s.checkRun(ctx, checkIn{Target: "task:test"})
+	m := reRunID.FindStringSubmatch(text)
+	if err != nil || m == nil || started.Load() != 1 {
+		t.Fatalf("erste Antwort: %q, %v", text, err)
+	}
+	_, err = s.checkRun(ctx, checkIn{Target: "task:test"})
+	if err == nil || !strings.Contains(err.Error(), "läuft bereits") || !strings.Contains(err.Error(), m[1]) {
+		t.Fatalf("erwartet läuft bereits mit %s, bekam %v", m[1], err)
+	}
+	close(release)
+}

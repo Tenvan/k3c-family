@@ -200,7 +200,7 @@ Seit PJ3 (B-359, 2026-10-08) bestimmt allein der **Projekt-Rang** die Reihenfolg
 - **Review-Sessions** laufen nie im selben Lauf wie die Umsetzung und nie vom selben Agenten.
 - **Engpass CLI:** Die Domäne CLI hat die meisten Sprints (S5, S4, S3, S7, S6, SO1, W6, K5); Asset-Sprints (GR3, GR5, SO2, SO4) schieben sich nur dazwischen, wenn die Datei-Überschneidung (Renderer) es erlaubt.
 
-### 11.6 Hardware-Bahn: Geräte entkoppelt (Beschluss 🧑 2026-10-03)
+### 11.6 Hardware: Geräte entkoppelt (Beschluss 🧑 2026-10-03)
 
 Xbox, TV, Pi, Handy und Controller stehen nicht immer bereit. Deshalb gilt (`arbeitsweise.md` › Hardware entkoppelt): Die App wird mit den **angenommenen Werten** unten gebaut, Hardware-Sessions sind keine Abhängigkeit einer App-Session oder eines Reviews und werden erledigt, sobald das Gerät da ist. Weicht ein Messwert ab, entsteht ein Ticket in der passenden Domäne; die Annahme wird hier durch den Messwert (mit Datum und Session) ersetzt.
 

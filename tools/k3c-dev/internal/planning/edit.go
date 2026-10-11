@@ -151,7 +151,7 @@ func Set(root, id string, values map[string]string) (string, error) {
 		return "", err
 	}
 	if text, err = setFields(root, r.kind, text, values); err != nil {
-		return "", err
+		return "", fmt.Errorf("%s: %w", r.rel, err)
 	}
 	if err := follow(c, r, text); err != nil {
 		return "", err

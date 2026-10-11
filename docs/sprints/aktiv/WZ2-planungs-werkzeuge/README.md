@@ -93,7 +93,7 @@ Offen: keine. Der dritte Punkt der Wunschliste vom 2026-10-11 war leer; kommt er
 | WZ2.5 | `WZ2.5-begriffe-glossar.md` | Umsetzung | autonom | fertig |
 | WZ2.6 | `WZ2.6-header-abschluss.md` | Umsetzung | autonom | fertig |
 | WZ2.7 | `WZ2.7-planungsseite-splitter-filter.md` | Umsetzung | autonom | fertig |
-| WZ2.8 | `WZ2.8-review.md` | Review | autonom | offen |
+| WZ2.8 | `WZ2.8-review.md` | Review | autonom | fertig |
 
 Reihenfolge nach Abhängigkeit, je Session ein Commit. WZ2.1 B-387 + B-360, WZ2.2 B-366, WZ2.3 B-363, WZ2.4 B-372, WZ2.5 B-367, WZ2.6 B-341, WZ2.7 B-400 + B-401 + B-402, WZ2.8 Review.
 
@@ -101,5 +101,6 @@ Alle Sessions tragen die Domäne des Sprints (DEV), weil ein Sprint in seiner Do
 
 ## Abnahme
 
-Wird von der Review-Session (Doku-Sprint: letzte Session) ausgefüllt, höchstens fünf Zeilen: Datum, Kriterien
-(Verweis auf Session-Ergebnisse), behobene Befunde, neue Tickets. Bis dahin `–`.
+- 2026-10-11, Review WZ2.8 (unabhängiger Reviewer-Agent): AC-01, AC-03, AC-05 bis AC-07, AC-10 umgesetzt und geprüft; AC-02 und AC-04 nach Befund nachgebessert und getestet; AC-09 nach H1, M2, M3 nachgebessert.
+- Offen für 🧑: Bildschirm-Abnahme der Planungsseite (AC-04, AC-08, AC-09, AC-10) und die Entscheidungen M1, M5 und Splitter-Breite in B-403; Herkunft des Timeouts (B-372 › Notizen) ungemessen.
+- Behobene Befunde: H1, M2, M3, M4, B-360-Dateimeldung, Ticket-Test B-363, N2, N3, Glossar. Neue Tickets: B-403.

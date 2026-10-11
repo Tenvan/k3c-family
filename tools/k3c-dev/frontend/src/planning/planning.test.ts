@@ -68,7 +68,7 @@ describe('Gruppierung und Auswahl', () => {
   });
   it('gemerkter Filter: kaputt oder falsch getypt ergibt die Vorgabe', () => {
     expect(parseFilter('{kaputt')).toEqual(EMPTY_FILTER);
-    expect(parseFilter('{"q":1,"doms":["SRV",2],"sel":"M8.2","done":"ja"}')).toEqual({ ...EMPTY_FILTER, doms: ['SRV'], sel: 'M8.2' });
+    expect(parseFilter('{"q":1,"pstatus":[],"doms":["SRV",2],"sel":"M8.2","done":"ja"}')).toEqual({ ...EMPTY_FILTER, doms: ['SRV'], sel: 'M8.2' });
   });
 });
 

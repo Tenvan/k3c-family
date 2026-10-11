@@ -3,11 +3,13 @@ package planning
 import (
 	"context"
 	"fmt"
+	"maps"
 	"os"
 	"os/exec"
 	"path"
 	"path/filepath"
 	"regexp"
+	"slices"
 	"strconv"
 	"strings"
 	"time"
@@ -21,7 +23,7 @@ var reTicketFile = regexp.MustCompile(`^B-(\d+)-.*\.md$`)
 // B-387: Die nächste Ticket-Nummer berücksichtigt alle Checkouts des Repos (Wurzel, Git-Worktrees samt Archiv) und die
 // lokalen Remote-Refs origin/develop und origin/sprint/* (aus dem lokalen Stand, ohne Fetch).
 
-// highestTicket ist die größte Ticket-Nummer in den Dateinamen und ob es eine gab.
+// highestTicket ist die größte Ticket-Nummer in den Dateinamen, 0 ohne Ticket.
 func highestTicket(names []string) int {
 	top := 0
 	for _, n := range names {
@@ -125,8 +127,9 @@ func nextTicket(root string) (string, []string, error) {
 			}
 			consider(n, "Worktree "+filepath.Base(p))
 		}
-		for ref, n := range remoteHighest(root) {
-			consider(n, ref)
+		refs := remoteHighest(root)
+		for _, ref := range slices.Sorted(maps.Keys(refs)) { // feste Reihenfolge: bei Gleichstand gewinnt der erste Name
+			consider(refs[ref], ref)
 		}
 	}
 	nr := fmt.Sprintf("B-%03d", top+1)

@@ -63,6 +63,24 @@ func (c *checkRuns) newJob(t checkTarget, key string) *checkJob {
 	return j
 }
 
+// runningID ist die Lauf-ID des noch laufenden Laufs mit diesem Schlüssel, sonst leer.
+func (c *checkRuns) runningID(key string) string {
+	c.mu.Lock()
+	defer c.mu.Unlock()
+	for i := len(c.order) - 1; i >= 0; i-- {
+		j := c.jobs[c.order[i]]
+		if j.key != key {
+			continue
+		}
+		select {
+		case <-j.done:
+		default:
+			return j.id
+		}
+	}
+	return ""
+}
+
 func (c *checkRuns) job(id string) *checkJob {
 	c.mu.Lock()
 	defer c.mu.Unlock()
@@ -87,7 +105,8 @@ func (s *Server) checkRun(ctx context.Context, in checkIn) (string, error) {
 	ws := s.ws(ctx)
 	key := ws.source(t.name)
 	if !s.checks.begin(key) {
-		return "", fmt.Errorf("%s läuft bereits; auf das Ende warten, Ausgabe über console_tail check:%s", t.name, t.name)
+		return "", fmt.Errorf("%s läuft bereits (Lauf-ID %s); auf das Ende warten, Ergebnis mit check_run {run}, Ausgabe über console_tail check:%s",
+			t.name, s.checks.runningID(key), t.name)
 	}
 	s.notifyCheck(CheckState{Name: key, Running: true, At: time.Now()})
 	job := s.checks.newJob(t, key)

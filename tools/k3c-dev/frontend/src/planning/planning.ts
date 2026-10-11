@@ -56,11 +56,15 @@ export function domains(d: PlanningData): string[] {
   return [...new Set([...d.sprints.map((s) => s.domain), ...d.tickets.map((t) => t.domain)].map((x) => x || '–'))].sort();
 }
 
+/** Sprint-Liste nach dem Backlog-Filter: Prio über die Tickets des Sprints, Umgebung über seine Sessions (B-401). */
 export function filterSprints(d: PlanningData, f: PlanFilter): PlanSprint[] {
   const q = f.q.trim().toLowerCase();
   const quick = QUICK.filter((x) => f.quick.includes(x.id) && x.sprint);
+  const prio = new Map(d.tickets.map((t) => [t.nr, t.prio]));
+  const prioOk = (s: PlanSprint) => f.prios.length === 0 || s.tickets.some((x) => f.prios.includes(prio.get(x.split(' ')[0]) ?? ''));
+  const envOk = (s: PlanSprint) => f.envs.length === 0 || s.sessions.some((x) => f.envs.includes(x.env ?? ''));
   return d.sprints.filter((s) =>
-    (f.done || f.quick.includes('erledigt') || s.status !== 'erledigt') && oneOf(f.projs, s.project) &&
+    (f.done || f.quick.includes('erledigt') || s.status !== 'erledigt') && oneOf(f.projs, s.project) && prioOk(s) && envOk(s) &&
     quick.every((x) => x.sprint!(s)) &&
     has(q, s.id, s.title, s.tickets.join(' '), ...s.sessions.map((x) => `${x.nr} ${x.titel}`)));
 }
@@ -123,7 +127,9 @@ export function parseFilter(raw: string): PlanFilter {
     const v = JSON.parse(raw) as Partial<PlanFilter>;
     const strs = (x: unknown) => (Array.isArray(x) ? x.filter((y): y is string => typeof y === 'string') : []);
     return { q: typeof v.q === 'string' ? v.q : '', quick: strs(v.quick), prios: strs(v.prios), envs: strs(v.envs),
-      projs: strs(v.projs), done: v.done === true, pstatus: strs(v.pstatus), doms: strs(v.doms), sel: typeof v.sel === 'string' ? v.sel : '' };
+      projs: strs(v.projs), done: v.done === true, pstatus: strs(v.pstatus),
+      // älterer Speicher ohne pstatus: die Domäne galt damals für Sprints und Tickets, jetzt für Projekte
+      doms: Array.isArray(v.pstatus) ? strs(v.doms) : [], sel: typeof v.sel === 'string' ? v.sel : '' };
   } catch {
     return EMPTY_FILTER;
   }

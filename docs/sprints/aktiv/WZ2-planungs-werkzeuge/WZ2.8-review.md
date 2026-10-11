@@ -1,6 +1,6 @@
 # WZ2.8 · Review gegen alle Kriterien
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Review
 - **Agent:** autonom
 - **Domäne:** DEV
@@ -54,5 +54,13 @@ Manuelle Prüfungen (Planungsseite am Bildschirm) nur durch 🧑.
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+Review 2026-10-11 durch einen unabhängigen Reviewer-Agenten (nicht der umsetzende Kontext), Diff `2b0d0891...HEAD`; `task check` und `task check:dev` nach den Korrekturen grün.
+
+- AC-01, AC-03, AC-05, AC-06, AC-07, AC-10: umgesetzt, geprüft (Tests laut Ergebnis der Sessions WZ2.1, WZ2.2, WZ2.4 bis WZ2.7).
+- AC-02: Befund „Meldung nennt die Datei nicht“ behoben (`Set` setzt den Pfad davor), Test `TestFehlendesFeldNenntFeldUndDatei`.
+- AC-04: Befund „kein Ticket-Test für Prio, Umgebung, Projekt“ behoben (`TestTicketFlagsAendernZiehtIndexNach`); Abnahme am Bildschirm steht aus (🧑).
+- AC-09: H1 behoben (`filterSprints` beachtet Prio über die Tickets und Umgebung über die Sessions), M2 (Speichern/Laden beider Bereiche getestet), M3 (gemerkte Domäne aus der Zeit vor dem Projekt-Filter wird verworfen). M1 und M5 sind Entscheidungen für 🧑 (B-403).
+- AC-08: verschoben, Ziehen und Doppelklick nur statisch getestet, Abnahme durch 🧑 (B-403).
+- Weitere behobene Befunde: M4 („läuft bereits“ nennt die Lauf-ID), N2 (feste Reihenfolge der Refs), N3 („11.6 Hardware“), Glossar um Backlog-Filter, Projekt-Filter, Splitter und Lauf-ID ergänzt.
+- Nicht geprüft: Aussehen und Bedienung am Bildschirm; Herkunft des Timeouts (B-372 › Notizen); Race-Detector (cgo fehlt); Windows-Pfade über Junction oder 8.3-Namen.
+- Neue Tickets: B-403 (Review-Nachträge: M1, M5, N1, N4–N6, Splitter-Interaktionstest, Doku-Reste).
