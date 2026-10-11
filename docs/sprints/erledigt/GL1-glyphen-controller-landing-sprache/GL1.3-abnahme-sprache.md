@@ -1,6 +1,6 @@
 # GL1.3 · Abnahme: Sprachwechsel am Gerät
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Workshop
 - **Agent:** Mensch
 - **Domäne:** PLAT
@@ -47,5 +47,8 @@ Manuelle Prüfungen (Browser, Xbox, TV) nur, wenn diese Datei sie nennt und 🧑
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+2026-10-11, 🧑 am Gerät: PC.
+
+- **AC-06 geprüft (🧑 am Gerät, PC):** Sprache auf English gestellt (☰ → Sprache), Landingpage neu geladen: Kacheln, Abschnitte, Statuszeile, Vollbild-Knopf und Fußleiste englisch. Zurück auf Deutsch, neu geladen: wieder deutsch. Rückmeldung: „geprüft, alles ok“.
+- Abweichungen: keine gemeldet.
+- Neue Tickets: keine.

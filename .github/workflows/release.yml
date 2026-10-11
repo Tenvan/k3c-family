@@ -24,7 +24,8 @@ jobs:
         with:
           go-version-file: go.mod
       - uses: go-task/setup-task@v1
-      - run: npm ci
+      # Client und Frontend von k3c-dev: dessen Komponententests laufen in task test mit (wie in ci.yml).
+      - run: task install
       - run: task typecheck
       - run: task test
       - run: task build
