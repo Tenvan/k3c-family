@@ -1,6 +1,6 @@
 # AZ1 · CLI · Tasten von Spieler 2 an der Tastatur, Pause-Anzeige
 
-- **Status:** aktiv
+- **Status:** erledigt
 - **Projekt:** BED
 - **Domäne:** CLI
 - **Reife:** bereit
@@ -64,12 +64,12 @@ B-371 › Ausnahme- und Fehlerfälle (nur ein Tastatur-Spieler → Layout 1); B-
 | AZ1.1 | `AZ1.1-tasten-spieler-2.md` | Umsetzung | autonom | fertig |
 | AZ1.2 | `AZ1.2-pause-anzeige.md` | Umsetzung | autonom | fertig |
 | AZ1.3 | `AZ1.3-review.md` | Review | autonom | fertig |
-| AZ1.4 | `AZ1.4-workshop-abnahme.md` | Workshop | Mensch | offen |
+| AZ1.4 | `AZ1.4-workshop-abnahme.md` | Workshop | Mensch | fertig |
 
 ## Abnahme
 
-- 2026-10-11 (AZ1.3, Review durch unabhängigen Reviewer-Agenten): AC-01 geprüft (AZ1.1, `glyphs.test.ts`), AC-02 geprüft (AZ1.1, Browser-Pane), AC-03 und AC-04 angenommen, Validierung offen (AZ1.4); `task check` und `task check:go` grün.
+- 2026-10-11 (AZ1.3, Review durch unabhängigen Reviewer-Agenten): AC-01 geprüft (AZ1.1, `glyphs.test.ts`), AC-02 geprüft (AZ1.1, Browser-Pane), AC-03 und AC-04 angenommen; `task check` und `task check:go` grün.
+- 2026-10-11 (AZ1.4, 🧑 am PC): AC-03 und AC-04 erfüllt, Tasten von Spieler 2 ok, Zusatzprobe „Raum in der Pause verlassen“ ok.
 - Behoben: Pause beim Verlassen des Raums ließ alle Animationen global angehalten (`HudScene.ts`, Shutdown-Handler ruft `resumeAll()`).
-- Offen: Ob `mount.play()` angehaltene Animationen unberührt lässt, belegt die Beobachtung in AZ1.4 (Reviewer: Phaser pausiert über das Animationsobjekt, daher kein Befund).
-- Neue Tickets: keine.
+- Neue Tickets: keine. B-371 und B-333 erledigt und archiviert.
 - Version: v0.18.0 vorgeschlagen (Minor: Pause-Anzeige und Tasten von Spieler 2 im Spiel); nicht gesetzt (wartet auf Bestätigung 🧑).
