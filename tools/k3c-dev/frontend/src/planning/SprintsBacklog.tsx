@@ -28,17 +28,11 @@ export function SprintsBacklog() {
   const [data, setData] = useState<PlanningData | null>(null);
   const [error, setError] = useState('');
   const [filter, setFilterState] = useState<PlanFilter>(() => parseFilter(loadText(PREF, '{}')));
-  const [split, setSplitState] = useState(() => parseSplit(loadText(SPLIT_PREF, '')));
   const [gh, reloadGh] = useGitHub();
   const [checked, setChecked] = useState<ReadonlySet<string>>(new Set()); // markierte Sessions (Nr.)
   const setFilter = (f: PlanFilter) => {
     setFilterState(f);
     savePref(PREF, JSON.stringify(f));
-  };
-  const setSplit = (v: number) => {
-    const n = parseSplit(String(v));
-    setSplitState(n);
-    savePref(SPLIT_PREF, String(n));
   };
   const load = () => backend.planningData().then((d) => { setData(d); setError(''); }, (e) => setError(errorText(e)));
   useEffect(() => {
@@ -80,17 +74,43 @@ export function SprintsBacklog() {
             : sprints.map(card)}
           {sprints.length === 0 && <Text color="gray">Kein Sprint passt zum Filter.</Text>}
         </section>
-        <section className="pl-col pl-right" style={{ '--pl-detail': `${split}%` } as CSSProperties}>
-          <div className="pl-scroll">
-            <h2 className="pl-h">Backlog <small>{tickets.length} von {data.tickets.length} offenen Tickets</small></h2>
-            <BacklogBar data={data} filter={filter} setFilter={setFilter} />
-            <BacklogList data={data} tickets={tickets} sel={filter.sel} />
-          </div>
-          {filter.sel && <Splitter horizontal className="pl-split" value={split} onChange={setSplit} onReset={() => setSplit(SPLIT_DEFAULT)} />}
-          <PlanDetail data={data} sel={filter.sel} onSelect={reveal} onClose={() => setFilter({ ...filter, sel: '' })} />
-        </section>
+        <BacklogColumn data={data} tickets={tickets} filter={filter} setFilter={setFilter} onReveal={reveal} />
       </div>
     </div>
+  );
+}
+
+/** Anteil des Detailbereichs (B-400): gemerkt, immer zwischen 20 und 80 %. */
+function useSplit(): [number, (v: number) => void] {
+  const [split, setState] = useState(() => parseSplit(loadText(SPLIT_PREF, '')));
+  return [split, (v) => {
+    const n = parseSplit(String(v));
+    setState(n);
+    savePref(SPLIT_PREF, String(n));
+  }];
+}
+
+interface ColumnProps {
+  data: PlanningData;
+  tickets: PlanningData['tickets'];
+  filter: PlanFilter;
+  setFilter: (f: PlanFilter) => void;
+  onReveal: (id: string) => void;
+}
+
+/** Rechte Spalte: Backlog mit eigenem Filter, darunter Splitter und Detail der Auswahl. */
+function BacklogColumn({ data, tickets, filter, setFilter, onReveal }: ColumnProps) {
+  const [split, setSplit] = useSplit();
+  return (
+    <section className="pl-col pl-right" style={{ '--pl-detail': `${split}%` } as CSSProperties}>
+      <div className="pl-scroll">
+        <h2 className="pl-h">Backlog <small>{tickets.length} von {data.tickets.length} offenen Tickets</small></h2>
+        <BacklogBar data={data} filter={filter} setFilter={setFilter} />
+        <BacklogList data={data} tickets={tickets} sel={filter.sel} />
+      </div>
+      {filter.sel && <Splitter horizontal className="pl-split" value={split} onChange={setSplit} onReset={() => setSplit(SPLIT_DEFAULT)} />}
+      <PlanDetail data={data} sel={filter.sel} onSelect={onReveal} onClose={() => setFilter({ ...filter, sel: '' })} />
+    </section>
   );
 }
 
