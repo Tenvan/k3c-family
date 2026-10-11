@@ -1,6 +1,6 @@
 # WZ2.1 · Ticket-Nummern über Worktrees und Remote-Refs, plan_set lehnt fehlendes Feld ab
 
-- **Status:** in Arbeit
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** DEV
@@ -58,5 +58,7 @@ Bei laufendem k3c-dev stattdessen `check_run` mit `task:check:dev`. Manuelle Pr�
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+- AC-01 umgesetzt, geprüft: `TestTicketNummerAusAnderemWorktree`, `TestTicketNummerWorktreeNichtLesbar`, `TestTicketNummerAusRemoteRef` (B-387/AC-01–AC-04) grün; `task check:dev` grün (go test, golangci-lint 0 Issues).
+- AC-02 umgesetzt, geprüft: `TestFehlendesFeldWirdAbgelehnt` (B-360/AC-01): `setFields` lehnt ein Feld ab, das in der Datei fehlt, die Datei bleibt unverändert.
+- Neu: `tools/k3c-dev/internal/planning/ticketnr.go` (Nummer über Wurzel, Worktrees samt Archiv und lokale Refs `origin/develop`, `origin/sprint/*`, ohne Fetch; Antwortzeile nennt Nummer und bestimmenden Checkout; übersprungene Worktrees und fehlendes git werden genannt). Git-Auskünfte gelten nur, wenn der Ordner selbst die Repo-Wurzel ist (sonst lieferte ein Test-Ordner unterhalb des Repos dessen Worktrees).
+- Abweichungen vom Plan: keine. Neue Tickets: keine. Manuell geprüft: nichts.

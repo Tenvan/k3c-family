@@ -2,9 +2,7 @@ package planning
 
 import (
 	"fmt"
-	"os"
 	"path"
-	"strconv"
 	"strings"
 	"time"
 )
@@ -60,7 +58,7 @@ func fromTemplate(c *changeSet, kind, tpl, header string, defaults, values map[s
 }
 
 func createTicket(c *changeSet, in NewDoc, tpl string) error {
-	nr, err := nextTicket(c.root)
+	nr, numberNotes, err := nextTicket(c.root)
 	if err != nil {
 		return err
 	}
@@ -80,25 +78,8 @@ func createTicket(c *changeSet, in NewDoc, tpl string) error {
 	c.write(rel, text)
 	c.crlf[rel] = c.crlf["vorlagen/ticket.md"]
 	c.notes = append(c.notes, nr+" angelegt: docs/"+rel+" (Index ergänzt)")
+	c.notes = append(c.notes, numberNotes...)
 	return syncIndex(c, t, rel)
-}
-
-// nextTicket ist die höchste Nummer in backlog/ und backlog/archiv/ plus eins.
-func nextTicket(root string) (string, error) {
-	maxNr := 0
-	for _, dir := range []string{"backlog", "backlog/archiv"} {
-		entries, err := os.ReadDir(docsPath(root, dir))
-		if err != nil && dir == "backlog" {
-			return "", err
-		}
-		for _, e := range entries {
-			if ticket.MatchString(e.Name()) {
-				n, _ := strconv.Atoi(e.Name()[2:5])
-				maxNr = max(maxNr, n)
-			}
-		}
-	}
-	return fmt.Sprintf("B-%03d", maxNr+1), nil
 }
 
 func createSprint(c *changeSet, in NewDoc, tpl string) error {
