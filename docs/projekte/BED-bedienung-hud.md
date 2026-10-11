@@ -6,7 +6,7 @@
 
 ## Ziel
 
-Menüs, HUD, Overlays und Lobby sind mit Controller, Tastatur und Touch klar bedienbar, für zwei Spieler gleichzeitig.
+Menüs, HUD, Overlays und Lobby sind mit Controller und Tastatur klar bedienbar, für höchstens zwei Spieler gleichzeitig am PC und an der Xbox. Touch, Handy und 3–4 Spieler entfallen seit 2026-10-11 (Beschluss 🧑).
 
 ## Sprints
 

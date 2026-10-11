@@ -46,11 +46,11 @@ nicht relevant: Das Ticket beschreibt selbst den Fehlerfall.
 
 ## Akzeptanzkriterien
 
-- **AC-01** Zwei Spieler an einer Tastatur (A/D und Pfeile) laufen in verschiedene Richtungen: Beide Ansichten folgen ihrer Figur. Gleiches mit 3 und 4 Spielern.
+- **AC-01** Zwei Spieler an einer Tastatur (A/D und Pfeile) laufen in verschiedene Richtungen: Beide Ansichten folgen ihrer Figur.
 
 ## Offene Fragen
 
-keine. 🧑 bestätigt (S8.4): Der Fehler tritt immer auf, nicht nur in einer bestimmten Eingabe-Kombination.
+keine. 🧑 bestätigt (S8.4): Der Fehler tritt immer auf, nicht nur in einer bestimmten Eingabe-Kombination. Entschieden 2026-10-11 (🧑, Chat): 3 und 4 Spieler entfallen; es zählen höchstens 2 Spieler.
 
 ## Notizen
 

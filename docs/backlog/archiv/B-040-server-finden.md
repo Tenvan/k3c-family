@@ -4,7 +4,7 @@
 - **Typ:** Idee
 - **Prio:** niedrig
 - **Umgebung:** live
-- **Status:** eingeplant
+- **Status:** verworfen
 - **Sprint:** BT1
 - **Projekt:** REL
 - **Erstellt:** 2026-09-30
@@ -54,4 +54,4 @@ mDNS ja oder nein; QR auf der Landingpage oder in der TUI; welche Adresse bei me
 
 ## Notizen
 
-–
+Verworfen 2026-10-11 (🧑, Chat): Der Nutzen („Handys beitreten ohne IP-Eintippen“) entfällt, weil Handy kein Spielgerät mehr ist; PC und Xbox treten über die Landingpage bei. Server im Heimnetz bleibt Gegenstand von BT1 (B-041).

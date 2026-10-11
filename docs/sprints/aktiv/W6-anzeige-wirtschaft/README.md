@@ -7,8 +7,8 @@
 - **Tickets:** B-117, B-126
 - **Start-Commit:** 82297cda
 - **Spec:** freigegeben
-- **Revision:** 1
-- **Freigabe:** 2026-10-05, Chat, durch 🧑, Revision 1
+- **Revision:** 2
+- **Freigabe:** 2026-10-11, 🧑 im Chat, Revision 2 (3–4 Spieler, Touch und Handy entfallen)
 
 ## Ausgangslage
 
@@ -22,7 +22,7 @@ Am Ende sichtbar: HUD und Bauplätze am TV, von 🧑 abgenommen.
 
 ## Beteiligte und Zielgruppen
 
-Spieler (1 bis 4 am TV); 🧑 nimmt die Anzeige am Gerät ab.
+Spieler (1 bis 2 am PC oder an der Xbox); 🧑 nimmt die Anzeige am Gerät ab. 3 bis 4 Spieler, Touch und Handy entfallen seit 2026-10-11 (Beschluss 🧑).
 
 ## Anforderungen
 
@@ -49,7 +49,7 @@ Händler nicht anwesend → keine Händler-Anzeige; Server-Feld fehlt (älterer 
 - **AC-01** Reine Funktionen für Wartegrund, Lagerstand-Text, Limit-Text und Berufsanzeige sind getestet (`task test`) (B-117/AC-01, B-126/AC-01).
 - **AC-02** HUD und Bauplätze zeigen Wartegrund, Lagerstand, Hub-Stufe und Kosten (B-117/AC-02).
 - **AC-03** Berufe, Limit, Händler und Heilplatz werden angezeigt (B-126/AC-02).
-- **AC-04** 🧑 hat beide Anzeigen am Gerät abgenommen (B-117/AC-03, B-126/AC-03).
+- **AC-04** 🧑 hat beide Anzeigen am PC (Tastatur) und an der Xbox (Controller, nach B-314) mit höchstens 2 Spielern abgenommen (B-117/AC-03, B-126/AC-03). Handy, Touch und 3–4 Spieler entfallen (Beschluss 🧑 2026-10-11).
 
 ## Offene Fragen
 

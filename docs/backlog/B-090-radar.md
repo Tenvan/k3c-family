@@ -22,13 +22,13 @@ Jeder Spieler sieht in seiner Bildschirmhälfte eine schmale Radar-Leiste über 
 
 ## Beteiligte und Zielgruppen
 
-Alle Spieler am Sofa (auch mit 3–4 lokalen Spielern); 🧑 nimmt am TV ab.
+Alle Spieler am Sofa (1 bis 2 lokale Spieler); 🧑 nimmt am TV ab. 3–4 lokale Spieler entfallen seit 2026-10-11 (Beschluss 🧑).
 
 ## Anforderungen
 
 - Das Radar zeichnet nur Daten aus dem vorhandenen `World`-Zustand des Clients; der Server und das Protokoll ändern sich nicht.
 - Die Marker-Berechnung ist eine reine, getestete Funktion (Welt, Zelle → Markerliste), getrennt vom Zeichnen.
-- Es passt in jede Zelle des Layouts für 1–4 lokale Spieler und für die Partner-Zelle, ohne Spielfeld oder Home-Button (oben ca. 70 px) zu verdecken.
+- Es passt in jede Zelle des Layouts für 1–2 lokale Spieler und für die Partner-Zelle, ohne Spielfeld oder Home-Button (oben ca. 70 px) zu verdecken.
 - Spieler sind unterscheidbar (Farbe je Monarch), Gegner heben sich ab, die Leiste bleibt bei 2 Spielern gleichzeitig lesbar.
 
 ## Nicht-Ziele
@@ -50,7 +50,7 @@ Level ohne Portale (Hub-Stufe) → keine Portal-Marker. Unter Tage mit Aggressio
 ## Akzeptanzkriterien
 
 - **AC-01** Eine reine Funktion liefert aus einem `World` die Marker (Burg, Portale, Ausgang/Treppe, Spieler, Gegner, Sichtfenster); Vitest deckt Level mit und ohne Portale, 1 und 2 Spieler und einen Spieler am Boden ab.
-- **AC-02** Das Radar erscheint in jeder Zelle der Layouts für 1, 2, 3 und 4 lokale Spieler sowie in der Partner-Zelle; ein Test belegt, dass keine Radar-Fläche den oberen Streifen für den Home-Button (70 px) berührt.
+- **AC-02** Das Radar erscheint in jeder Zelle der Layouts für 1 und 2 lokale Spieler sowie in der Partner-Zelle; ein Test belegt, dass keine Radar-Fläche den oberen Streifen für den Home-Button (70 px) berührt. (Die Layouts für 3 und 4 Spieler entfallen seit 2026-10-11.)
 - **AC-03** `task check` ist grün, `src/scenes` bleibt frei von Spiel-Logik (`noSim`-Test grün).
 - **AC-04** 🧑 hat das Radar am TV mit zwei Spielern und einer Nacht-Welle abgenommen.
 

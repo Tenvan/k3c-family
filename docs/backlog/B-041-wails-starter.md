@@ -22,11 +22,11 @@ Wails-Starter für Windows existiert. Nutzen: Einfacher Start am Windows-PC per 
 
 ## Beteiligte und Zielgruppen
 
-🧑 betreibt den Server im Heimnetz (PC, später Pi); Spieler verbinden sich mit Xbox und Handy; Umsetzung durch Entwickler oder Agent.
+🧑 betreibt den Server im Heimnetz (PC, später Pi); Spieler verbinden sich mit PC und Xbox; Umsetzung durch Entwickler oder Agent.
 
 ## Anforderungen
 
-- Desktop-Fenster (Wails) um denselben Go-Kern, mit Status und QR-Code.
+- Desktop-Fenster (Wails) um denselben Go-Kern, mit Status und Adresse. Der QR-Code entfällt seit 2026-10-11 (Beschluss 🧑: Handy ist kein Gerät mehr).
 
 ## Nicht-Ziele
 
@@ -38,7 +38,7 @@ Go-Server ist die einzige Engine (Entscheidung 001), Standardbibliothek zuerst; 
 
 ## Beispiele
 
-Doppelklick auf `k3c-desktop.exe` → Fenster zeigt Status und QR-Code, das Spiel ist erreichbar.
+Doppelklick auf `k3c-desktop.exe` → Fenster zeigt Status und Adresse, das Spiel ist erreichbar.
 
 ## Ausnahme- und Fehlerfälle
 

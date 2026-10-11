@@ -4,7 +4,7 @@
 - **Projekt:** REL
 - **Domäne:** SRV
 - **Reife:** Entwurf
-- **Tickets:** B-040, B-041, B-095, B-048
+- **Tickets:** B-041, B-095, B-048
 - **Start-Commit:** –
 - **Spec:** Entwurf
 - **Revision:** 1
@@ -16,15 +16,15 @@ Geräte brauchen die IP (B-040), der PC-Start braucht die Shell (B-041), ein See
 
 ## Ziel
 
-Ein neues Gerät tritt ohne IP-Eingabe bei, der Server startet am PC per Doppelklick, ein Seed per URL. Am Ende sichtbar: Handy findet den Server ohne IP; Doppelklick startet ihn am PC; URL startet Seed und Tiefe.
+Der Server startet am PC per Doppelklick, ein Seed startet per URL. Am Ende sichtbar: Doppelklick startet den Server am PC; URL startet Seed und Tiefe. (Das Finden des Servers ohne IP per QR-Code für das Handy entfällt seit 2026-10-11, B-040 ist verworfen.)
 
 ## Beteiligte und Zielgruppen
 
-Familie an Handy und PC; 🧑 entscheidet den Weg der Server-Suche.
+Familie an PC und Xbox; 🧑 betreibt den Server im Heimnetz.
 
 ## Anforderungen
 
-B-040 › Anforderungen; B-041 › Anforderungen; B-095 › Anforderungen; B-048 › Anforderungen.
+B-041 › Anforderungen; B-095 › Anforderungen; B-048 › Anforderungen. (B-040 › Anforderungen entfällt, B-040 ist verworfen.)
 
 ## Nicht-Ziele
 
@@ -44,14 +44,14 @@ Server nicht gefunden → Eingabefeld für die Adresse bleibt.
 
 ## Akzeptanzkriterien
 
-- **AC-01** Geräte finden den Server im Heimnetz (B-040/AC-01).
+- **AC-01** Entfällt (Beschluss 🧑 2026-10-11, B-040 verworfen: QR-Code und Handy); ehemals „Geräte finden den Server im Heimnetz“ (B-040/AC-01).
 - **AC-02** Wails-Starter für Windows existiert (B-041/AC-01).
 - **AC-03** Ein neues Spiel startet per URL mit eigenem Seed und gewählter Tiefe (B-095/AC-01, B-095/AC-02, B-095/AC-03).
 - **AC-04** Die Wahl der Go-Standardbibliothek ist dort festgehalten, wo B-001 auf sie verweist (B-048/AC-01).
 
 ## Offene Fragen
 
-- Weg der Server-Suche (mDNS, Broadcast, QR-Code): entscheidet 🧑 (B-040).
+keine (der Weg der Server-Suche mit QR-Code entfällt, B-040 verworfen).
 
 ## Sessions
 

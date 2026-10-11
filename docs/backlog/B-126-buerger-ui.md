@@ -22,7 +22,7 @@ Spieler sehen Berufe der Bauern, können ausbilden und beim Händler tauschen, s
 
 ## Beteiligte und Zielgruppen
 
-Spieler am TV und am Handy; 🧑 testet am Gerät.
+Spieler am TV (Xbox) und am PC; 🧑 testet am Gerät.
 
 ## Anforderungen
 
