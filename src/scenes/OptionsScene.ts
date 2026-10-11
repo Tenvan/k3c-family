@@ -8,6 +8,7 @@ import {
   MenuPress,
   OPTION_IDS,
   OPTION_PAD_KEYS as PAD,
+  REMOVE_PLAYER_KEY,
   applyOption,
   moveOption,
   optionLabel,
@@ -17,7 +18,7 @@ import {
 import { pauseButton } from './pauseButton';
 
 const TOP = 230;
-const ROW_H = 86; // 9 Zeilen über dem Hinweis unten
+const ROW_H = 78; // 10 Zeilen über dem Hinweis unten
 const FONT_PX = 40; // ≥ 28 px (Q03)
 const STICK = 0.5;
 const STYLE = { fontFamily: 'sans-serif', fontStyle: 'bold', color: '#ffffff', stroke: '#000000', strokeThickness: 6 };
@@ -107,6 +108,10 @@ export class OptionsScene extends Phaser.Scene {
         setLanguage(this.settings.language);
       }
       if (result.close) return this.close();
+      if (result.removePlayer) {
+        this.registry.set(REMOVE_PLAYER_KEY, true); // GameScene meldet den letzten lokalen Spieler ab (B-411)
+        return this.close();
+      }
       if (result.leave) {
         this.registry.set(LEAVE_KEY, true); // GameScene verlässt den Raum und schließt diese Szene
         return;

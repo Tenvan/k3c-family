@@ -88,6 +88,23 @@ describe('LocalSlots', () => {
     expect(slots.lose(new Pad(), [0], client)).toBe('none');
   });
 
+  it('removeLast meldet den höchsten belegten Slot ab, nie den letzten Platz (B-411)', () => {
+    const { calls, client } = host();
+    const slots = new LocalSlots<Pad>();
+    const [a, b, c] = [new Pad(), new Pad(), new Pad()];
+    slots.join([press(a)], [0], client, 0);
+    slots.join([a, press(b)], [0], client, 1);
+    slots.join([a, b, press(c)], [0, 1], client, 2);
+    expect(slots.removeLast([0, 1, 2], client)).toBe(2);
+    expect(slots.bound).toEqual([a, b, null, null]);
+    expect(calls.at(-1)).toBe('remove2');
+    expect(slots.removeLast([1, 0], client)).toBe(1);
+    expect(slots.bound[1]).toBeNull();
+    expect(slots.removeLast([0], client)).toBeNull();
+    expect(slots.bound[0]).toBe(a);
+    expect(calls.filter((x) => x.startsWith('remove'))).toEqual(['remove2', 'remove1']);
+  });
+
   it('Mock-Slots fangen keine Bestätigung ab und senden „keine Bewegung“', () => {
     const { calls, client } = host();
     const slots = new LocalSlots<Pad>([1, 2]);

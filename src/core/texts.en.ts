@@ -137,6 +137,7 @@ export const en: Record<TextKey, string> = {
   'opt.language': 'Language',
   'opt.guide': 'Hints (first night)',
   'opt.resume': 'Resume',
+  'opt.removePlayer': 'Remove player',
   'opt.leave': 'Leave game',
   'opt.on': 'on',
   'opt.off': 'off',

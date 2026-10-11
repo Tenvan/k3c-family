@@ -12,7 +12,7 @@ import type { GameEvent, World } from '../model/types';
 import { computeLayout, type Cell } from './layout';
 import type { LobbySceneData } from './LobbyScene';
 import { leavesGame } from './lobbyLogic';
-import { LEAVE_KEY, MenuPress, idleCommands } from './optionsLogic';
+import { LEAVE_KEY, MenuPress, REMOVE_PLAYER_KEY, idleCommands } from './optionsLogic';
 import { LocalSlots, pageBots } from './localSlots';
 import type { RadarCell } from './radarView';
 import { daylight } from './viewRules';
@@ -154,6 +154,10 @@ export class GameScene extends Phaser.Scene {
 
     if (this.registry.get(LEAVE_KEY) === true) return this.leaveRoom(); // „Spiel verlassen“ im Menü (B-293)
     const seated = client.you.map((s) => s.slot);
+    if (this.registry.get(REMOVE_PLAYER_KEY) === true) {
+      this.registry.set(REMOVE_PLAYER_KEY, false); // „Spieler abmelden“ im Menü (B-411): ein Platz bleibt immer
+      this.slots.removeLast(seated, client);
+    }
     if (this.scene.isActive('options')) return this.paused(seated); // Optionen offen: Monarchen stehen, nur zeichnen
     if (this.wantsOptions()) this.scene.launch('options');
     const devFocus = this.registry.get(DEV_FOCUS_KEY) === true; // Cheat-Dialog offen (B-179, B-317): Controller und Tastatur bedienen ihn
