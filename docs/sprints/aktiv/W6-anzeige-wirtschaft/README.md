@@ -63,11 +63,14 @@ keine
 | W6.2 | `W6.2-hud-bauplaetze.md` | Umsetzung | autonom | fertig |
 | W6.3 | `W6.3-buerger-ui.md` | Umsetzung | autonom | fertig |
 | W6.4 | `W6.4-abnahme-geraet.md` | Workshop | Mensch | offen |
-| W6.5 | `W6.5-review.md` | Review | autonom | in Arbeit |
+| W6.5 | `W6.5-review.md` | Review | autonom | fertig |
 
 Bei `Reife: Entwurf` genügen Stichpunkte mit den Kriterien in Klammern statt Session-Dateien. Vor dem Aktivieren
 wird jede Session als eigene Datei nach `docs/vorlagen/session.md` geschrieben.
 
 ## Abnahme
 
-–
+- 2026-10-11 Review W6.5: keine schweren Befunde, `task check` und `task check:go` grün (Ergebnis W6.5).
+- AC-01 erfüllt (W6.1–W6.3); AC-02, AC-03 umgesetzt, `angenommen, Validierung offen (W6.4)`; AC-04 offen, W6.4 am Gerät (Mensch).
+- Verschoben: Adern, Plantage, Lager als Figuren (B-412); Ausbilden und Tauschen im Overlay (B-410). Neue Tickets: B-408, B-409, B-410, B-412.
+- Version: v0.19.0 vorgeschlagen (Minor: neue Anzeigen im Client; v0.16.0, falls die offenen Vorschläge vorher getaggt werden).

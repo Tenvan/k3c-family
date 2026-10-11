@@ -50,9 +50,9 @@ Ungültige oder seltene Situation → gewolltes Verhalten. Passt nichts: `nicht 
 
 ## Offene Fragen
 
-- Neuer Mindestabstand der Zahlziele (heute 4 Units; Vorschlag 6–8)? Neue Offsets in `data/hub.json`, Regel in `docs/rules/materialien-gebaeude.md § 3`, Golden-Update nötig. Entscheidet 🧑.
-- Reicht der Hub (±50) dafür, oder wandern Plätze auf die Linien außerhalb?
+- Abstand und Offsets hängen von der Breite der Gebäude-Grafiken ab (Beschluss 🧑 2026-10-11): Erst wenn die Gebäude-Grafiken (GR3) feststehen, wird der neue Mindestabstand der Zahlziele (heute 4 Units) festgelegt. Neue Offsets in `data/hub.json`, Regel in `docs/rules/materialien-gebaeude.md § 3`, Golden-Update dann mit der Grafik-Anbindung planen.
+- Reicht der Hub (±50) dafür, oder wandern Plätze auf die Linien außerhalb? Offen bis zur Grafik.
 
 ## Notizen
 
-Links, Messwerte, verworfene Ansätze. Darf leer bleiben (`–`).
+Abhängigkeit: Gebäude-Grafik (Projekt GRA, Sprint GR3). Nicht vor der Grafik-Anbindung einplanen; dann Breite je Gebäude messen und die Offsets daraus ableiten.

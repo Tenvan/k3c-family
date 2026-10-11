@@ -147,6 +147,8 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-408](B-408-bauplaetze-aller-stufen-sichtbar.md) | CLI | Problem | mittel | offen | – | Bauplätze aller Stufen werden schon im Hub einer niedrigen Stufe angezeigt |
 | [B-409](B-409-bauplaetze-abstand-zu-eng.md) | REG | Problem | mittel | offen | – | Bauplätze im Hub stehen zu eng, besonders die Treppen |
 | [B-410](B-410-aktion-ausbilden-tauschen-protokoll.md) | SRV | Problem | mittel | offen | – | Aktionen-Overlay zeigt Ausbilden und Tauschen nicht, der Server liefert sie nicht in actions |
+| [B-411](B-411-spieler-abmelden.md) | CLI | Problem | hoch | offen | – | Lokale Spieler können beitreten, aber nicht einzeln austreten |
+| [B-412](B-412-figuren-adern-plantage-lager.md) | CLI | Idee | niedrig | offen | – | Adern, Plantage und Lager haben keine Anzeige als Figuren im Client |
 
 ## Archiv
 
