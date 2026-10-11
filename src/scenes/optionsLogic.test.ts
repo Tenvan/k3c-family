@@ -7,7 +7,7 @@ const base: Settings = { ...DEFAULT_SETTINGS };
 
 describe('Einträge', () => {
   it('stehen in fester Reihenfolge', () => {
-    expect(OPTION_IDS).toEqual(['music', 'sfx', 'screenshake', 'flash', 'colorblind', 'guide', 'language', 'resume', 'leave']);
+    expect(OPTION_IDS).toEqual(['music', 'sfx', 'screenshake', 'flash', 'colorblind', 'guide', 'language', 'resume', 'removePlayer', 'leave']);
   });
 
   it('jeder Eintrag hat einen Text', () => {
@@ -60,13 +60,23 @@ describe('Werte', () => {
   });
 
   it('nur „Spiel verlassen“ mit Bestätigen verlässt (B-293)', () => {
-    expect(applyOption(base, 'leave', 'confirm')).toEqual({ settings: base, close: false, leave: true });
+    expect(applyOption(base, 'leave', 'confirm')).toEqual({ settings: base, close: false, leave: true, removePlayer: false });
     expect(applyOption(base, 'leave', 'left').leave).toBe(false);
     expect(applyOption(base, 'leave', 'right').leave).toBe(false);
     for (const id of OPTION_IDS.filter((i) => i !== 'leave')) {
       for (const dir of ['left', 'right', 'confirm'] as const) expect(applyOption(base, id, dir).leave).toBe(false);
     }
     expect(optionLabel(base, 'leave')).toBe('Spiel verlassen');
+  });
+
+  it('nur „Spieler abmelden“ mit Bestätigen meldet ab, schließt und verlässt nicht (B-411)', () => {
+    expect(applyOption(base, 'removePlayer', 'confirm')).toEqual({ settings: base, close: false, leave: false, removePlayer: true });
+    expect(applyOption(base, 'removePlayer', 'left').removePlayer).toBe(false);
+    for (const id of OPTION_IDS.filter((i) => i !== 'removePlayer')) {
+      for (const dir of ['left', 'right', 'confirm'] as const) expect(applyOption(base, id, dir).removePlayer).toBe(false);
+    }
+    expect(optionLabel(base, 'removePlayer')).toBe('Spieler abmelden');
+    for (const x of [100, 960, 1800]) expect(tapOption('removePlayer', x, 1920)).toBe('confirm');
   });
 
   describe('„Spiel verlassen“ auf Englisch (B-293/AC-01)', () => {

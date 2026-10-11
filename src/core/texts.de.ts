@@ -147,6 +147,7 @@ export const de = {
   'opt.language': 'Sprache',
   'opt.guide': 'Hinweise (erste Nacht)',
   'opt.resume': 'Weiter',
+  'opt.removePlayer': 'Spieler abmelden',
   'opt.leave': 'Spiel verlassen',
   'opt.on': 'an',
   'opt.off': 'aus',

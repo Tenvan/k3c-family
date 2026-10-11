@@ -83,6 +83,15 @@ export class LocalSlots<I extends SlotInputDevice> {
     return 'removed';
   }
 
+  /** „Spieler abmelden“ (B-411): der höchste Platz des Geräts geht (`removeSlot`); der letzte Platz bleibt, dann `null`. */
+  removeLast(seated: readonly number[], client: SlotClient): number | null {
+    if (seated.length < 2) return null;
+    const slot = Math.max(...seated);
+    this.bound[slot] = null;
+    client.removeSlot(slot);
+    return slot;
+  }
+
   /** Eingaben für alle Plätze des Geräts: bedienter Slot mit seiner Eingabe, Mock mit „keine Bewegung“, unbedienter gar nicht. */
   commands(seated: readonly number[]): SlotCommand[] {
     const result: SlotCommand[] = [];

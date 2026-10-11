@@ -6,13 +6,16 @@ import { clampVolume, type Settings } from '../core/settings';
 import { t } from '../core/texts';
 import type { SlotCommand } from './localSlots';
 
-export type OptionId = 'music' | 'sfx' | 'screenshake' | 'flash' | 'colorblind' | 'guide' | 'language' | 'resume' | 'leave';
+export type OptionId = 'music' | 'sfx' | 'screenshake' | 'flash' | 'colorblind' | 'guide' | 'language' | 'resume' | 'removePlayer' | 'leave';
 
 /** Feste Reihenfolge der Einträge */
-export const OPTION_IDS: readonly OptionId[] = ['music', 'sfx', 'screenshake', 'flash', 'colorblind', 'guide', 'language', 'resume', 'leave'];
+export const OPTION_IDS: readonly OptionId[] = ['music', 'sfx', 'screenshake', 'flash', 'colorblind', 'guide', 'language', 'resume', 'removePlayer', 'leave'];
 
 /** Registry-Schlüssel: die Optionen melden „Spiel verlassen“, `GameScene` verlässt den Raum (B-293) */
 export const LEAVE_KEY = 'leaveGame';
+
+/** Registry-Schlüssel: „Spieler abmelden“, `GameScene` meldet den zuletzt beigetretenen lokalen Spieler ab (B-411) */
+export const REMOVE_PLAYER_KEY = 'removePlayer';
 
 /** Pad-Tasten (standard mapping), die die Szene liest. B (Index 1) bleibt frei: Edge-Zurück auf der Xbox. */
 export const OPTION_PAD_KEYS = { A: 0, VIEW: 8, MENU: 9, UP: 12, DOWN: 13, LEFT: 14, RIGHT: 15 } as const;
@@ -37,11 +40,13 @@ export interface OptionResult {
   close: boolean;
   /** „Spiel verlassen“ bestätigt: Raum verlassen, zurück zur Lobby */
   leave: boolean;
+  /** „Spieler abmelden“ bestätigt: letzter lokaler Spieler geht (B-411) */
+  removePlayer: boolean;
 }
 
 /** Links/Rechts ändert Regler um 10 % (0–100) und kippt Schalter; Bestätigen kippt Schalter oder wählt „Weiter“. */
 export function applyOption(settings: Settings, id: OptionId, dir: OptionDir): OptionResult {
-  const unchanged = { settings, close: false, leave: false };
+  const unchanged = { settings, close: false, leave: false, removePlayer: false };
   switch (id) {
     case 'music':
     case 'sfx': {
@@ -61,6 +66,8 @@ export function applyOption(settings: Settings, id: OptionId, dir: OptionDir): O
       return { ...unchanged, settings: { ...settings, language: settings.language === 'de' ? 'en' : 'de' } };
     case 'resume':
       return { ...unchanged, close: dir === 'confirm' };
+    case 'removePlayer':
+      return { ...unchanged, removePlayer: dir === 'confirm' };
     case 'leave':
       return { ...unchanged, leave: dir === 'confirm' };
   }
@@ -86,6 +93,8 @@ export function optionLabel(settings: Settings, id: OptionId): string {
       return `${t('opt.language')}  ◀ ${t(`lang.${settings.language}`)} ▶`;
     case 'resume':
       return t('opt.resume');
+    case 'removePlayer':
+      return t('opt.removePlayer');
     case 'leave':
       return t('opt.leave');
   }
@@ -99,7 +108,7 @@ export function tapDir(x: number, width: number): OptionDir {
 
 /** Tippen auf eine Zeile: „Weiter“ und „Spiel verlassen“ bestätigen in jedem Drittel (B-336), sonst gilt `tapDir`. */
 export function tapOption(id: OptionId, x: number, width: number): OptionDir {
-  return id === 'resume' || id === 'leave' ? 'confirm' : tapDir(x, width);
+  return id === 'resume' || id === 'removePlayer' || id === 'leave' ? 'confirm' : tapDir(x, width);
 }
 
 /**
