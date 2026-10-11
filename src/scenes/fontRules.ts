@@ -37,6 +37,7 @@ export const FONTS = {
   exitSign: { px: 56, art: 'info', space: 'world', color: '#ffffff' },
   priceTag: { px: 56, art: 'info', space: 'world', color: '#ffffff' },
   purse: { px: 56, art: 'info', space: 'world', color: '#ffd166' },
+  citizenLabel: { px: 56, art: 'info', space: 'world', color: '#e9c46a' },
 } as const satisfies Record<string, FontRole>;
 
 export type FontName = keyof typeof FONTS;

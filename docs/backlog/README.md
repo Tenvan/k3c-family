@@ -109,7 +109,6 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-334](B-334-performance-modus.md) | CLI | Idee | hoch | eingeplant | PM1 | Der Client misst Leistung in einem Performance-Modus automatisch und überträgt die Werte an den Server |
 | [B-335](B-335-landingpage-spieler-entwicklung.md) | PLAT | Idee | hoch | eingeplant | HW1 | Die Landingpage zeigt nur Spieler-Kacheln, Entwicklungs-, Performance- und Balancing-Aufrufe liegen auf einer eigenen Entwicklerseite |
 | [B-341](B-341-header-ursache-live-messen.md) | DEV | Problem | mittel | eingeplant | WZ2 | Die Ursache für den fehlenden Header `X-K3C-Root` aus Worktrees ist live gemessen |
-| [B-342](B-342-w6-2-siteview-erlaubt.md) | CLI | Frage | mittel | offen | – | W6.2 darf den Bauplatz-Wartegrund in `siteView.ts` anbinden |
 | [B-343](B-343-bau-vor-dem-ausgang.md) | SIM | Frage | mittel | offen | – | Der Bau des Endbosses liegt an der inneren Kante des Ausgangs-Chunks |
 | [B-344](B-344-raum-speichert-nicht-nach-game-over.md) | SRV | Idee | hoch | offen | – | Der Raum speichert nach „Komplett verloren“ nicht mehr |
 | [B-346](B-346-miniboss-wald-kippt-nacht-5.md) | REG | Problem | hoch | eingeplant | RG1 | Der Miniboss Wald kippt Nacht 5 in fast jedem Seed |
@@ -145,6 +144,11 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-401](B-401-planung-filter-getrennt.md) | DEV | Idee | niedrig | eingeplant | WZ2 | Der Backlog-Filter wirkt nur auf den Backlog, der Projekt-Filter nur auf die Projekte |
 | [B-402](B-402-planung-session-titel.md) | DEV | Idee | mittel | eingeplant | WZ2 | Die Planungsseite zeigt in den Session-Zeilen den Titel der Session |
 | [B-406](B-406-splitter-dom-test.md) | DEV | Schuld | niedrig | offen | – | Doppelklick und Ziehen des Splitters sind in einer DOM-Umgebung getestet |
+| [B-408](B-408-bauplaetze-aller-stufen-sichtbar.md) | CLI | Problem | mittel | offen | – | Bauplätze aller Stufen werden schon im Hub einer niedrigen Stufe angezeigt |
+| [B-409](B-409-bauplaetze-abstand-zu-eng.md) | REG | Problem | mittel | offen | – | Bauplätze im Hub stehen zu eng, besonders die Treppen |
+| [B-410](B-410-aktion-ausbilden-tauschen-protokoll.md) | SRV | Problem | mittel | offen | – | Aktionen-Overlay zeigt Ausbilden und Tauschen nicht, der Server liefert sie nicht in actions |
+| [B-411](B-411-spieler-abmelden.md) | CLI | Problem | hoch | offen | – | Lokale Spieler können beitreten, aber nicht einzeln austreten |
+| [B-412](B-412-figuren-adern-plantage-lager.md) | CLI | Idee | niedrig | offen | – | Adern, Plantage und Lager haben keine Anzeige als Figuren im Client |
 
 ## Archiv
 
@@ -378,3 +382,5 @@ Zeile in diesen Abschnitt.
 | [B-405](archiv/B-405-k3c-dev-gotest-haengt.md) | DEV | Problem | mittel | verworfen | – | Der vollständige Go-Test von tools/k3c-dev läuft ohne Hänger durch |
 | [B-403](archiv/B-403-wz2-review-nachtraege.md) | DEV | Schuld | mittel | erledigt | WZ3 | Review-Nachträge zu Sprint WZ2: Filter-Zählung, Schnellfilter, Splitter-Test und Kleinigkeiten |
 | [B-404](archiv/B-404-fahrplan-projekt-aktiv.md) | DEV | Problem | niedrig | verworfen | – | Die Fahrplan-Zeile eines aktivierten Sprints trägt sein Projekt statt „–“ |
+| [B-342](archiv/B-342-w6-2-siteview-erlaubt.md) | CLI | Frage | mittel | erledigt | – | W6.2 darf den Bauplatz-Wartegrund in `siteView.ts` anbinden |
+| [B-407](archiv/B-407-wz3-verweis-b403-ac08.md) | INF | Problem | hoch | erledigt | – | WZ3-README verweist auf B-403/AC-08, das es nicht gibt (planning.test.ts rot) |

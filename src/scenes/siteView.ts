@@ -5,6 +5,7 @@ import { BUILDINGS, TROOPS } from '../model/data';
 import type { Site, World } from '../model/types';
 import { BUILDING_TEXTURES, STAIRS_UP_TILES, hubTexture, siteTexture } from './buildingSprites';
 import { fontStyle } from './fontRules';
+import { drawSiteStatus, siteStatus, statusKey } from './siteStatusView';
 import { canAfford } from './viewRules';
 
 /**
@@ -129,7 +130,8 @@ function showPicture(scene: Phaser.Scene, v: View, s: Site): number | null {
 /** `near`: Das Preisschild dieses Bauplatzes steht, weil es für einen Spieler das nächste ist (`priceTagRules.ts`, B-395) */
 export function updateSiteView(scene: Phaser.Scene, v: View, s: Site, world: World, near: boolean): void {
   const data = BUILDINGS[s.kind];
-  const key = [s.state, s.paidGold, Math.round(s.buildProgress * 20), Math.round((s.hp / s.maxHp) * 20), s.bows, s.bowPaidGold, near, canAfford(world.stock, data.cost), currentLanguage()].join('|');
+  const wait = siteStatus(s, world.danger);
+  const key = [s.state, s.paidGold, Math.round(s.buildProgress * 20), Math.round((s.hp / s.maxHp) * 20), s.bows, s.bowPaidGold, near, canAfford(world.stock, data.cost), currentLanguage(), statusKey(wait)].join('|');
   if (v.getData('key') === key) return;
   v.setData('key', key);
 
@@ -144,6 +146,7 @@ export function updateSiteView(scene: Phaser.Scene, v: View, s: Site, world: Wor
   if (s.state === 'built') {
     if (picture === null) drawBuiltPlaceholder(g, s, w, h);
     drawBuiltSigns(g, label, s, world, h, near);
+    if (wait && label.text === '') drawSiteStatus(g, label, wait, siteName(s.kind), -h - 20); // laufender Ausbau
     return;
   }
 
@@ -153,8 +156,7 @@ export function updateSiteView(scene: Phaser.Scene, v: View, s: Site, world: Wor
     g.fillStyle(0xdda15e, 0.8).fillRect(-w / 2, -h * s.buildProgress, w, h * s.buildProgress);
   }
   if (s.state === 'unpaid' && near) drawPrice(g, label, world, -h - 20, data.cost.gold ?? 0, s.paidGold, siteName(s.kind), data.cost);
-  if (s.state === 'waitingMaterial') label.setPosition(0, -h - 20).setText(`${siteName(s.kind)}: ${missing(world.stock, data.cost)}`).setColor('#ff8fa3');
-  if (s.state === 'waitingWorker') label.setPosition(0, -h - 20).setText(s.buildProgress > 0 ? '' : t('site.waitingWorker', { name: siteName(s.kind) })).setColor('#ffffff');
+  if (wait) drawSiteStatus(g, label, wait, siteName(s.kind), -h - 20);
 }
 
 /** Über einem gebauten Gebäude: Treppen-Schild, Lebensbalken, Bögen und Bogen-Preis der Werkstatt */
@@ -200,10 +202,3 @@ function drawBar(g: Phaser.GameObjects.Graphics, y: number, width: number, fract
 
 export const resourceName = (r: 'wood' | 'stone' | 'copper'): string => nameOf('res', r, r);
 export const siteName = (kind: Site['kind']): string => nameOf('site', kind, BUILDINGS[kind].name);
-
-function missing(stock: World['stock'], cost: Record<string, number | undefined>): string {
-  const parts = (['wood', 'stone', 'copper'] as const)
-    .filter((r) => (cost[r] ?? 0) > stock[r])
-    .map((r) => t('site.missing', { n: (cost[r] ?? 0) - stock[r], res: resourceName(r) }));
-  return parts.join(', ') || t('site.ready');
-}

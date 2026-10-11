@@ -2,6 +2,7 @@ import Phaser from 'phaser';
 import { GROUND_Y, PLAYER_COLORS, UNIT_PX } from '../core/constants';
 import { t } from '../core/texts';
 import { fontStyle } from './fontRules';
+import { BuergerView } from './buergerView';
 import { createRider, updateRider } from './mountView';
 import { objectImage } from './objectView';
 import { priceTagSites } from './priceTagRules';
@@ -98,6 +99,7 @@ export class WorldRenderer {
   private readonly projectiles: Layer<Projectile>;
   private readonly pickups: Layer<Pickup>;
   private readonly castleHp: View;
+  private readonly citizens: BuergerView;
   private readonly lastGold = new Map<number, { gold: number; at: number }>();
   /** Bauplätze, deren Preisschild steht (nur das nächste je Spieler, B-395) */
   private priceTags = new Set<number>();
@@ -111,6 +113,7 @@ export class WorldRenderer {
     this.drawStatic();
     this.castleHp = this.put(scene.add.container(world.castle.x * U, G - 300, bar(scene, 0, 240, 0x52b788)).setDepth(5));
 
+    this.citizens = new BuergerView(scene, root);
     this.nodes = this.layer((n) => this.createNode(n), (v, n) => this.updateNode(v, n));
     this.sites = this.layer((s) => createSiteView(scene, s), (v, s) => updateSiteView(scene, v, s, this.world, this.priceTags.has(s.id)));
     this.pickups = this.layer((p) => this.createPickup(p), () => {});
@@ -161,6 +164,7 @@ export class WorldRenderer {
     this.enemies.sync(world.enemies);
     this.players.sync(world.players);
     this.projectiles.sync(world.projectiles);
+    this.citizens.sync(world);
     setBar(this.castleHp, 0, world.castle.hp / world.castle.maxHp, world.castle.hp < world.castle.maxHp);
   }
 

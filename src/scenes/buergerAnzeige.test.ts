@@ -2,7 +2,7 @@ import { afterEach, beforeEach, describe, expect, it } from 'vitest';
 import { UNIT_PX } from '../core/constants';
 import { setLanguage } from '../core/texts';
 import { BUILDINGS } from '../model/data';
-import { healerRanges, limitText, merchantText, professionLabel, professionSummary } from './buergerAnzeige';
+import { buergerLines, healerRanges, limitText, merchantSpot, merchantText, professionLabel, professionSummary } from './buergerAnzeige';
 
 beforeEach(() => setLanguage('de'));
 afterEach(() => setLanguage('de'));
@@ -77,5 +77,20 @@ describe('Heilplatz (B-126)', () => {
 
   it('ohne Bauplätze → leer', () => {
     expect(healerRanges({})).toEqual([]);
+  });
+});
+
+describe('Händlerfigur und HUD-Zeilen (W6.3, B-126)', () => {
+  it('Figur steht im Hub bei Mitte + 8 Units, nur wenn anwesend', () => {
+    const merchant = { resource: 'stone', leaves: 7 };
+    expect(merchantSpot({ castle: { x: 20 }, merchant })).toEqual({ x: 28 * UNIT_PX, text: 'Händler Stein' });
+    expect(merchantSpot({ castle: { x: 20 } })).toBeNull();
+  });
+
+  it('Zeilen: Limit zuerst, dann Händler; fehlende Felder → leer', () => {
+    const w = { fighters: 20, troopLimit: 20, merchant: { resource: 'stone', leaves: 7 } };
+    expect(buergerLines(w, false)).toEqual(['Kämpfer 20 von 20: Limit erreicht', 'Händler: Stein · bis Tag 7']);
+    expect(buergerLines({ fighters: 3, troopLimit: 10 }, true)).toEqual(['Limit 3/10']);
+    expect(buergerLines({}, false)).toEqual([]);
   });
 });
