@@ -63,7 +63,7 @@ keine
 | W6.2 | `W6.2-hud-bauplaetze.md` | Umsetzung | autonom | fertig |
 | W6.3 | `W6.3-buerger-ui.md` | Umsetzung | autonom | fertig |
 | W6.4 | `W6.4-abnahme-geraet.md` | Workshop | Mensch | offen |
-| W6.5 | `W6.5-review.md` | Review | autonom | offen |
+| W6.5 | `W6.5-review.md` | Review | autonom | in Arbeit |
 
 Bei `Reife: Entwurf` genügen Stichpunkte mit den Kriterien in Klammern statt Session-Dateien. Vor dem Aktivieren
 wird jede Session als eigene Datei nach `docs/vorlagen/session.md` geschrieben.

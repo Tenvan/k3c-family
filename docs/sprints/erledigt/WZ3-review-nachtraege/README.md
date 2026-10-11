@@ -55,7 +55,7 @@ Ungültige oder seltene Situation → gewolltes Verhalten.
 - **AC-03** Der Fahrplan springt bei leerem Feld `Projekt` nicht mehr ans Tabellenende, mit Test (B-403/N4).
 - **AC-04** `check_job.go` hält nur die Fehlerzeilen je Job (B-403/N5).
 - **AC-05** `check_background_test.go` wartet über einen Kanal statt über Zeit (B-403/N6).
-- **AC-06** `Splitter.test.tsx` prüft Ziehen und Doppelklick; der Test „fehlt in der Projekt-Ansicht“ prüft nicht mehr tautologisch (B-403/AC-08).
+- **AC-06** `Splitter.test.tsx` prüft Ziehen und Doppelklick; der Test „fehlt in der Projekt-Ansicht“ prüft nicht mehr tautologisch (B-403, Befund AC-08 der Review WZ2.8).
 
 ## Offene Fragen
 
