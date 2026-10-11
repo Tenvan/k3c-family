@@ -22,38 +22,42 @@ Im Detail eines Tickets lassen sich Prio, Umgebung und Projekt ändern, im Detai
 
 ## Beteiligte und Zielgruppen
 
-Wer spielt, entwickelt, betreibt oder entscheidet (🧑)? Keine Verantwortlichen erfinden.
+Agenten und 🧑 beim Planen über die Planungsseite von k3c-dev; 🧑 nimmt die Seite am Bildschirm ab.
 
 ## Anforderungen
 
-- Was das Ergebnis können muss, auch Qualität (deterministisch, 2+ Spieler, Leistung).
+- Änderungen laufen über `plan_set` (wie der Rang) und ziehen Ticket-Datei, `docs/backlog/README.md` und Tabellen nach.
+- Ticket-Detail: `Prio`, `Umgebung`, `Projekt` per Menü; Session-Detail: `Agent`, `Umgebung`.
+- Agent und Umgebung bleiben nur bei **offenen** Sessions änderbar (heutiges Verhalten, `pickable`); bei `fertig` und `verworfen` nicht (🧑 2026-10-11).
+- Der Sprint bekommt **keine** eigenen Felder im Detail; das Projekt kommt über Tickets und Projekt-Karten (🧑 2026-10-11).
 
 ## Nicht-Ziele
 
-Was ausdrücklich nicht dazugehört, mit Ticket-Nummer, falls es später kommt.
+Flags an erledigten oder verworfenen Sessions ändern; Felder am Sprint (`Projekt` o. Ä.); weitere Felder wie `Status` oder `Rang` in der Seite (laufen bereits anders).
 
 ## Regeln und Einschränkungen
 
-Regeln aus `CLAUDE.md`, Entscheidungen (`docs/decisions/`), Domäne, Komplexitäts-Budget, Verträge (Protokoll, Spielstand).
+Domäne DEV (`tools/k3c-dev/frontend/src/planning/` und Go-Tools), Planung nur über `plan_set`, Datei ≤ 400 Zeilen, Funktion ≤ 60 Zeilen, Komplexitäts-Budget. Die Tool-Meldung bei abgelehntem Wert wird unverändert angezeigt.
 
 ## Beispiele
 
-Typische Situation → erwartetes Ergebnis. Passt nichts: `nicht relevant` mit Grund.
+- Ticket B-001 im Detail, `Prio` von mittel auf hoch → Datei und Index zeigen hoch (`AC-01`).
+- Offene Session, `Agent` von autonom auf Mensch → Datei und Fahrplan folgen (`AC-02`).
 
 ## Ausnahme- und Fehlerfälle
 
-Ungültige oder seltene Situation → gewolltes Verhalten. Passt nichts: `nicht relevant` mit Grund.
+- Unbekannter Wert (z. B. Projekt-Kürzel gibt es nicht) → Meldung des Tools, nichts ändert sich (`AC-03`).
+- Session `fertig` oder `verworfen` → Agent und Umgebung nicht änderbar, Menü nicht angeboten (`AC-02`).
 
 ## Akzeptanzkriterien
 
 - **AC-01** Ticket-Detail: `Prio` (hoch, mittel, niedrig), `Umgebung` (offline, live, ?) und `Projekt` (Kürzel der Projekte) per Menü änderbar; danach stimmen Ticket-Datei und `docs/backlog/README.md` (Test mit Mock-Daten bzw. Go-Test auf einer Kopie von `docs/`).
-- **AC-02** Session-Detail: `Agent` und `Umgebung` änderbar wie heute, Verhalten bei erledigten Sessions geklärt (Offene Frage).
+- **AC-02** Session-Detail: `Agent` und `Umgebung` bei offenen Sessions änderbar wie heute; bei `fertig` und `verworfen` nicht angeboten (Test).
 - **AC-03** Ein abgelehnter Wert (z. B. Projekt unbekannt) zeigt die Meldung des Tools und ändert nichts.
 
 ## Offene Fragen
 
-- Sollen Agent und Umgebung auch bei `fertig`/`verworfen` änderbar sein (heute nur offene Sessions)?
-- Soll der Sprint im Detail ebenfalls Felder bekommen (z. B. `Projekt`), oder reicht die Zuordnung über Tickets und Projekt-Karten?
+–  (Entschieden von 🧑 am 2026-10-11: Agent/Umgebung nur bei offenen Sessions; keine Felder am Sprint.)
 
 ## Notizen
 

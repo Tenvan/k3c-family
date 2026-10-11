@@ -27,9 +27,9 @@ Agenten-Sessions in Worktrees, 🧑 (löst Kollisionen beim Zusammenführen).
 ## Anforderungen
 
 - `plan_create` für Tickets bestimmt die nächste Nummer über alle Checkouts des Repos: Wurzel, alle Git-Worktrees (`git worktree list`) und die Archive darin; größte Nummer + 1.
-- Optional auch Branches auf `origin` (`git ls-tree` auf `origin/develop`, `origin/sprint/*`), damit Nummern aus Branches ohne Worktree nicht wiederkehren.
-- Nummern, die in keinem Checkout mehr vorkommen, werden nicht wiederverwendet, solange ein Worktree sie noch kennt.
-- Die Antwort nennt die vergebene Nummer und, wenn ein anderer Checkout eine höhere hatte, aus welchem.
+- Zusätzlich zählen Branches auf `origin` ohne Worktree (`git ls-tree` auf `origin/develop` und `origin/sprint/*`), und zwar aus dem lokalen Stand der Remote-Refs, ohne eigenen Fetch (🧑 2026-10-11).
+- Nummern, die in keinem Checkout mehr vorkommen, werden nicht wiederverwendet, solange ein Worktree oder ein Remote-Ref sie noch kennt.
+- Die Antwort nennt die vergebene Nummer und, wenn ein anderer Checkout oder Ref eine höhere hatte, aus welchem.
 
 ## Nicht-Ziele
 
@@ -52,10 +52,11 @@ Ein Worktree ist nicht lesbar (gelöscht, gesperrt) → er wird übersprungen un
 - **AC-01** Hat ein anderer Worktree eine höhere Ticket-Nummer, vergibt `plan_create` eine größere (Test mit zwei Worktrees in einem Temp-Repo).
 - **AC-02** Nicht lesbare Worktrees werden übersprungen und in der Antwort genannt (Test).
 - **AC-03** Die Antwort nennt die vergebene Nummer und den Checkout, der sie bestimmt hat (Test).
+- **AC-04** Hat ein Remote-Ref (`origin/develop`, `origin/sprint/*`) ohne Worktree eine höhere Nummer, vergibt `plan_create` eine größere, ohne `git fetch` (Test mit Remote-Ref im Temp-Repo).
 
 ## Offene Fragen
 
-Sollen auch Branches auf `origin` ohne Worktree zählen? Das braucht `git fetch` und macht `plan_create` langsamer. Vorschlag: ja, aus dem lokalen Stand der Remote-Refs ohne eigenen Fetch.
+–  (Remote-Branches mitzählen? Entschieden von 🧑 am 2026-10-11: ja, aus dem lokalen Stand der Refs, ohne eigenen Fetch. Veraltete Refs sind akzeptiert.)
 
 ## Notizen
 

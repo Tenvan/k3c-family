@@ -26,7 +26,8 @@ Agenten beim Planen über `plan_set`.
 
 ## Anforderungen
 
-- Ein Feld der Vorlage, das in der Datei fehlt, wird an der Stelle der Vorlage eingefügt oder mit Grund abgelehnt (Entscheidung beim Einplanen).
+- Ein Feld der Vorlage, das in der Datei fehlt, wird **abgelehnt**: `plan_set` meldet einen Fehler mit Grund (Feldname und Datei), ändert nichts und meldet nie Erfolg (🧑 2026-10-11).
+- Es wird kein Feld eingefügt: die echten Dateien tragen seit PJ1.2 alle Felder, ein fehlendes Feld ist ein Datenfehler und wird nicht still repariert.
 
 ## Nicht-Ziele
 
@@ -46,11 +47,11 @@ nicht relevant (das Ticket beschreibt selbst einen Fehlerfall).
 
 ## Akzeptanzkriterien
 
-- **AC-01** Go-Test: `Set` auf einer Datei ohne das Feld meldet keinen stillen Erfolg (`dev:test` grün).
+- **AC-01** Go-Test: `Set` auf einer Datei ohne das Feld liefert einen Fehler mit Feldname und Datei, die Datei bleibt unverändert, es gibt keinen stillen Erfolg (`dev:test` grün).
 
 ## Offene Fragen
 
-Einfügen oder ablehnen? Entscheidet 🧑 beim Einplanen.
+–  (Einfügen oder ablehnen? Entschieden von 🧑 am 2026-10-11: ablehnen.)
 
 ## Notizen
 

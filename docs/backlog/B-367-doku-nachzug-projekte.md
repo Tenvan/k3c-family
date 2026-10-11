@@ -51,7 +51,7 @@ nicht relevant (reine Doku).
 
 ## Offene Fragen
 
-Projekt: WZG vorläufig, weil PRZ mit PJ3 erledigt ist; beim Einplanen ggf. neues PRZ-Folgeprojekt.
+–  (Projekt: Entschieden von 🧑 am 2026-10-11: bleibt bei WZG, kein PRZ-Folgeprojekt. Die Domäne INF der Session WZ2.5 weicht vom Sprint DEV ab, siehe Sprint-README.)
 
 ## Notizen
 
