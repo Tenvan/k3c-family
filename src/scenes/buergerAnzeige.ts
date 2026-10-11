@@ -62,3 +62,17 @@ export function healerRanges(world: { sites?: Pick<Site, 'kind' | 'x' | 'state'>
   if (!radius) return [];
   return (world.sites ?? []).filter((s) => s.kind === 'healer' && s.state === 'built').map((s) => ({ x: s.x * UNIT_PX, radiusPx: radius * UNIT_PX }));
 }
+
+/** Abstand der Händlerfigur zur Hub-Mitte in Units (Regel: Hub-Mitte + 8, docs/rules/buerger.md); der Server nennt keine Position. */
+const MERCHANT_OFFSET_UNITS = 8;
+
+/** Händlerfigur: Mitte in Pixeln und kurzer Text; kein Händler → null. */
+export function merchantSpot(world: Pick<World, 'merchant'> & { castle: { x: number } }): { x: number; text: string } | null {
+  const text = merchantText(world, true);
+  return text ? { x: (world.castle.x + MERCHANT_OFFSET_UNITS) * UNIT_PX, text } : null;
+}
+
+/** Zeilen für den gemeinsamen HUD-Block: Truppen-Limit, dann Händler (lang bzw. kurz); fehlende Felder lassen die Zeile weg. */
+export function buergerLines(world: Pick<World, 'fighters' | 'troopLimit' | 'merchant'>, compact: boolean): string[] {
+  return [limitText(world, compact), merchantText(world, compact)].filter((l): l is string => l !== null);
+}

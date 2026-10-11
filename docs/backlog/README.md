@@ -145,6 +145,9 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-402](B-402-planung-session-titel.md) | DEV | Idee | mittel | eingeplant | WZ2 | Die Planungsseite zeigt in den Session-Zeilen den Titel der Session |
 | [B-406](B-406-splitter-dom-test.md) | DEV | Schuld | niedrig | offen | – | Doppelklick und Ziehen des Splitters sind in einer DOM-Umgebung getestet |
 | [B-407](B-407-wz3-verweis-b403-ac08.md) | INF | Problem | hoch | offen | – | WZ3-README verweist auf B-403/AC-08, das es nicht gibt (planning.test.ts rot) |
+| [B-408](B-408-bauplaetze-aller-stufen-sichtbar.md) | CLI | Problem | mittel | offen | – | Bauplätze aller Stufen werden schon im Hub einer niedrigen Stufe angezeigt |
+| [B-409](B-409-bauplaetze-abstand-zu-eng.md) | REG | Problem | mittel | offen | – | Bauplätze im Hub stehen zu eng, besonders die Treppen |
+| [B-410](B-410-aktion-ausbilden-tauschen-protokoll.md) | SRV | Problem | mittel | offen | – | Aktionen-Overlay zeigt Ausbilden und Tauschen nicht, der Server liefert sie nicht in actions |
 
 ## Archiv
 

@@ -22,6 +22,7 @@ import { GamepadInput, type PlayerInput } from '../input/playerInput';
 import { TouchInput } from '../input/touchInput';
 import { siteName } from './worldRenderer';
 import { hubText, stockTexts } from './wirtschaftAnzeige';
+import { buergerLines } from './buergerAnzeige';
 
 const STYLE = { stroke: '#000000', strokeThickness: 6, fontStyle: 'bold' };
 const BANNER_SECONDS = 2.8;
@@ -179,7 +180,8 @@ export class HudScene extends Phaser.Scene {
     const stock = stockTexts(world, compact);
     if (world.skillPoints > 0) stock.push(t('hud.skillPoints', { n: world.skillPoints }));
     const hub = hubText(world, compact);
-    this.shared.setText(hub ? `${stock.join('  ·  ')}\n${hub}` : stock.join('  ·  '));
+    const lines = [stock.join('  ·  '), ...(hub ? [hub] : []), ...buergerLines(world, compact)];
+    this.shared.setText(lines.join('\n'));
     this.clock.setText(clockText(world));
     const enemies = world.enemies.length + world.spawnQueue.length;
     this.fight.setText(enemies > 0 ? t('hud.wave', { wave: world.wave, n: enemies }) : '');
