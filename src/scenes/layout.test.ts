@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import { GAME_HEIGHT, GAME_WIDTH } from '../core/constants';
-import { computeLayout, sharedAnchor, SHARED_LINE_HEIGHT, type Cell } from './layout';
+import { computeLayout, type Cell } from './layout';
 
 const area = (cells: Cell[]) => cells.reduce((sum, c) => sum + c.w * c.h, 0);
 
@@ -39,18 +39,5 @@ describe('computeLayout (B-016)', () => {
   it('0 und mehr als 4 werden auf 1 bis 4 begrenzt', () => {
     expect(computeLayout(0, false)).toHaveLength(1);
     expect(computeLayout(9, false)).toHaveLength(4);
-  });
-});
-
-describe('sharedAnchor (B-084)', () => {
-  it('Vollbild und Streifen: oben rechts', () => {
-    for (const n of [1, 2]) expect(sharedAnchor(computeLayout(n, false))).toEqual({ x: GAME_WIDTH - 24, y: 16, originX: 1 });
-  });
-
-  it.each([3, 4])('%i Spieler: mittig am Kreuzpunkt, nicht in einer Feldecke', (n) => {
-    const a = sharedAnchor(computeLayout(n, false));
-    expect(a.x).toBe(GAME_WIDTH / 2);
-    expect(a.originX).toBe(0.5);
-    expect(a.y + (SHARED_LINE_HEIGHT * 3) / 2).toBe(GAME_HEIGHT / 2);
   });
 });

@@ -37,22 +37,8 @@ export function computeLayout(seats: number, hasPartner: boolean): Cell[] {
   });
 }
 
-export interface Anchor {
-  x: number;
-  y: number;
-  /** 1 = rechtsbündig, 0.5 = zentriert */
-  originX: number;
-}
-
 /**
- * Wo die gemeinsamen Anzeigen (Vorrat, Tageszeit, Kampf) stehen (B-084): oben rechts bei Vollbild und Streifen,
- * mittig am Kreuzpunkt bei 3 und 4 Spielern – nie in der Ecke eines Spielerfelds.
+ * Höhe der Leiste oben über der ganzen Breite (POC): Vorrat, Hub, Tageszeit und Kampf gelten für alle Spieler und
+ * stehen dort statt in den Spielerfeldern. Die Leiste liegt über dem Himmel der obersten Felder, die Felder bleiben unverändert.
  */
-export function sharedAnchor(cells: readonly Cell[]): Anchor {
-  if (cells.some((c) => c.w < GAME_WIDTH)) return { x: GAME_WIDTH / 2, y: GAME_HEIGHT / 2 - SHARED_BLOCK_HEIGHT / 2, originX: 0.5 };
-  return { x: GAME_WIDTH - 24, y: 16, originX: 1 };
-}
-
-/** Höhe der drei gemeinsamen Textzeilen (Zeilenabstand 40 px) */
-export const SHARED_LINE_HEIGHT = 40;
-const SHARED_BLOCK_HEIGHT = SHARED_LINE_HEIGHT * 3;
+export const BAR_HEIGHT = 56;

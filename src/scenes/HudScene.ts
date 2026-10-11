@@ -1,5 +1,6 @@
 import Phaser from 'phaser';
 import { GAME_WIDTH } from '../core/constants';
+import { BAR_HEIGHT } from './layout';
 import { nameOf, t } from '../core/texts';
 import { BIOMES } from '../model/biome';
 import { ECONOMY } from '../model/data';
@@ -27,11 +28,12 @@ import { buergerLines } from './buergerAnzeige';
 const STYLE = { stroke: '#000000', strokeThickness: 6, fontStyle: 'bold' };
 const BANNER_SECONDS = 2.8;
 /**
- * Bildschirmfeste Anzeigen: pro Split-Screen-Hälfte Spielerwerte, oben rechts Hub-Vorrat und Tageszeit, Meldungen in der Mitte.
+ * Bildschirmfeste Anzeigen: pro Split-Screen-Feld Spielerwerte, oben über die ganze Breite die Leiste für alle (Vorrat, Hub, Tageszeit, Kampf), Meldungen in der Mitte.
  * Jede Anzeige ist ein HUD-Element (`HudBox`); die Lage kommt aus `hudLayout` (B-337), neu berechnet nur bei Änderung.
  */
 export class HudScene extends Phaser.Scene {
   private joinHint!: Phaser.GameObjects.Text;
+  private bar!: Phaser.GameObjects.Graphics;
   private shared!: Phaser.GameObjects.Text;
   private clock!: Phaser.GameObjects.Text;
   private fight!: Phaser.GameObjects.Text;
@@ -79,10 +81,13 @@ export class HudScene extends Phaser.Scene {
       this.animsPaused = false;
     });
 
+    // Leiste für alle Spieler: gemeinsamer Hintergrund, die Texte darin haben keinen eigenen
+    this.bar = this.add.graphics().fillStyle(0x000000, 0.6).fillRect(0, 0, GAME_WIDTH, BAR_HEIGHT).setVisible(false);
     const shared = { ...STYLE, ...fontStyle('shared') };
-    this.shared = this.boxed('shared', this.add.text(0, 0, '', shared));
-    this.clock = this.boxed('clock', this.add.text(0, 0, '', shared));
-    this.fight = this.boxed('fight', this.add.text(0, 0, '', { ...STYLE, ...fontStyle('fight') }));
+    this.shared = this.boxed('shared', this.add.text(0, 0, '', shared), false);
+    this.clock = this.boxed('clock', this.add.text(0, 0, '', shared), false);
+    this.fight = this.boxed('fight', this.add.text(0, 0, '', { ...STYLE, ...fontStyle('fight') }), false);
+    this.boxed('citizens', this.add.text(0, 0, '', { ...STYLE, ...fontStyle('shared'), align: 'right' }));
     this.banner = this.boxed('banner', this.add.text(0, 0, '', { ...STYLE, ...fontStyle('banner'), strokeThickness: 10, align: 'center' }).setVisible(false));
     this.joinHint = this.boxed('join', this.add.text(0, 0, t('hud.joinCenter'), { ...STYLE, ...fontStyle('joinCenter') }));
     this.debug = debugEnabled(location.search) ? new DebugOverlay(this) : null;
@@ -91,8 +96,8 @@ export class HudScene extends Phaser.Scene {
     this.travel = this.boxed('travel', this.add.text(0, 0, '', { ...STYLE, ...fontStyle('travel') }));
   }
 
-  private boxed(id: string, text: Phaser.GameObjects.Text): Phaser.GameObjects.Text {
-    this.boxes.set(id, new HudBox(this, text));
+  private boxed(id: string, text: Phaser.GameObjects.Text, background = true): Phaser.GameObjects.Text {
+    this.boxes.set(id, new HudBox(this, text, { background, frame: false }));
     return text;
   }
 
@@ -101,6 +106,7 @@ export class HudScene extends Phaser.Scene {
     const world = game.world;
     this.debug?.update(game.client, world ?? null);
     const waiting = this.showHints(game, world);
+    this.bar.setVisible(!!world);
     if (!world) {
       this.showPause(undefined, null, []);
       this.arrange([], waiting);
@@ -114,8 +120,8 @@ export class HudScene extends Phaser.Scene {
     this.actions.draw(cells, game.cameras.cameras, slotOf, device);
     this.guide.draw(cells, game.cameras.cameras, slotOf, device);
     this.skills.draw(cells, game.skillMenus, slotOf, device);
-    // gemeinsamer Block: Stufe der ersten Zelle dieses Geräts; kurze Form bei Viertel-Zellen
-    this.showWorld(cells.find((c) => c.cell.kind === 'player' && c.world)?.world ?? world, cells.some((c) => c.cell.w < GAME_WIDTH));
+    // Leiste: Stufe der ersten Zelle dieses Geräts, die Leiste hat immer Platz für die lange Form
+    this.showWorld(cells.find((c) => c.cell.kind === 'player' && c.world)?.world ?? world, false);
     this.showBanner(game, deltaMs);
     this.showPause(world, gameNotice(game.client), cells);
     this.arrange(cells, waiting);
