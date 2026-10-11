@@ -72,8 +72,8 @@ var (
 
 var (
 	field   = regexp.MustCompile(`^- \*\*([^:*]+):\*\*\s*(.*)$`)
-	session = regexp.MustCompile(`^\|\s*([A-Za-z0-9]+\.\d+)\s*\|\s*` + "`?" + `([^|` + "`" + `]*?)` + "`?" + `\s*\|\s*([^|]*?)\s*\|\s*([^|]*?)\s*\|\s*([^|]*?)\s*\|`)
-	bullet  = regexp.MustCompile(`^- ([A-Za-z0-9]+\.\d+)\s+(.*)$`)
+	session = regexp.MustCompile(`^\|\s*([A-Za-z0-9]+\.\d+[a-z]?)\s*\|\s*` + "`?" + `([^|` + "`" + `]*?)` + "`?" + `\s*\|\s*([^|]*?)\s*\|\s*([^|]*?)\s*\|\s*([^|]*?)\s*\|`)
+	bullet  = regexp.MustCompile(`^- ([A-Za-z0-9]+\.\d+[a-z]?)\s+(.*)$`)
 	ticket  = regexp.MustCompile(`^B-\d+-.*\.md$`)
 )
 

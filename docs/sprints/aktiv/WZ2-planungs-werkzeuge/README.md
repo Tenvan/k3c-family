@@ -89,7 +89,7 @@ Offen: keine. Der dritte Punkt der Wunschliste vom 2026-10-11 war leer; kommt er
 | WZ2.1 | `WZ2.1-ticket-nummern-feld-ablehnen.md` | Umsetzung | autonom | fertig |
 | WZ2.2 | `WZ2.2-fahrplan-projekt.md` | Umsetzung | autonom | fertig |
 | WZ2.3 | `WZ2.3-planungsseite-flags.md` | Umsetzung | autonom | fertig |
-| WZ2.4 | `WZ2.4-check-run-hintergrund.md` | Umsetzung | autonom | offen |
+| WZ2.4 | `WZ2.4-check-run-hintergrund.md` | Umsetzung | autonom | fertig |
 | WZ2.5 | `WZ2.5-begriffe-glossar.md` | Umsetzung | autonom | offen |
 | WZ2.6 | `WZ2.6-header-abschluss.md` | Umsetzung | autonom | offen |
 | WZ2.7 | `WZ2.7-planungsseite-splitter-filter.md` | Umsetzung | autonom | offen |

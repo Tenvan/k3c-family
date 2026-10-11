@@ -88,6 +88,8 @@ zurückgeben. Die Gliederung folgt der gemeinsamen Spec der Workbench-Seiten (`d
   oder `golangci-lint` in der Shell. Ziele: `task:check`, `task:test`, `task:typecheck`, `task:lint`, `task:build`,
   `task:check:go`, `go:test`, `go:lint`, `dev:test`. Ein Testmuster (`pattern`) geht bei `task:test`, `go:test` und `dev:test`.
 - Die Antwort ist bei grünem Lauf eine Zeile, sonst Kopfzeile und nur die Fehlerzeilen.
+- Dauert ein Lauf länger als ca. 45 s, antwortet `check_run` mit „läuft im Hintergrund“ und einer Lauf-ID; der Lauf
+  läuft weiter, auch wenn der Client abbricht. `check_run {run: "<ID>"}` liefert Exit-Code und Fehlerzeilen (oder „läuft noch“).
 - Mehr Kontext zu einem Lauf: `console_tail` mit `check:<ziel>`. Läufe verschiedener Worktrees sperren sich nicht.
 
 ### Spieldaten

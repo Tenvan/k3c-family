@@ -62,3 +62,7 @@ Hängt ein Lauf wirklich, bricht er nach einer festen Frist mit klarer Meldung a
 ## Notizen
 
 Aus K2.4 (2026-10-09).
+
+WZ2.4 (2026-10-11): Umgesetzt ist der Hintergrundlauf (`check_run` antwortet nach ca. 45 s mit einer Lauf-ID, `check_run {run}` liefert das Ergebnis; der Lauf hängt nicht mehr am Aufruf des Clients), Doku von `console_tail` per Test gesichert, Session-IDs mit Buchstaben, `plan_set` an Sprints ohne `Prio` (schon durch `TestSprintOhnePrioUndEinschiebbar` belegt).
+
+Herkunft des Timeouts **ungeprüft**: Die Live-Messung (`check_run task:check:go` über MCP) scheiterte an einer abgelaufenen MCP-Sitzung, weil k3c-dev beim Bauen neu startete. Belegt ist nur, dass die Fristen von k3c-dev selbst bei 5 min (`testTimeout`) und 10 min (`defaultTimeout`) liegen, ein Abbruch nach ca. 60 s also vermutlich aus dem Client kommt. Der Hintergrundlauf wirkt in beiden Fällen.

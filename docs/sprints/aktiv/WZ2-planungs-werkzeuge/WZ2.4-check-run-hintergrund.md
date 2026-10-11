@@ -1,6 +1,6 @@
 # WZ2.4 · check_run im Hintergrund, console_tail-Doku, Sprint ohne Prio, Session-IDs mit Buchstaben
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** DEV
@@ -59,5 +59,7 @@ Bei laufendem k3c-dev stattdessen `check_run` mit `task:check:dev`; die Messung 
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+- AC-05 umgesetzt, geprüft: `TestCheckRunLangerLaufLiefertLaufID`, `TestCheckRunUnbekannteLaufID`, `TestCheckRunKurzerLaufAntwortetDirekt` (B-372/AC-01), `TestInstructionsNennenConsoleTailParameter` (B-372/AC-02), `TestSessionIDMitBuchstabe` (B-372/AC-04) grün; `TestSprintOhnePrioUndEinschiebbar` belegt B-372/AC-03 (bestand schon). `task check:dev` grün (go test, golangci-lint 0 Issues).
+- Neu: `internal/mcpsrv/check_job.go` (Lauf im Hintergrund, Lauf-ID `L<n>`, letzte 20 Läufe, Panik wird zum Fehler, Sperre und Meldungen wie bisher), Parameter `run` an `check_run`, Texte in `tools.go` und `instructions.md`; Session-IDs `K3.2a` in `store.go` und `planning.go`.
+- Nicht geprüft: Herkunft des Timeouts (Client oder k3c-dev) wurde nicht gemessen; die Live-Messung scheiterte an einer abgelaufenen MCP-Sitzung (k3c-dev startete beim Bauen neu). Vermerkt in B-372 › Notizen, die Messung gehört 🧑 bzw. einer Session mit laufendem k3c-dev neuer Bauart.
+- Abweichung: `console_tail`-Doku stimmte bereits mit dem Schema überein; der Test sichert es nur. Neue Tickets: keine.

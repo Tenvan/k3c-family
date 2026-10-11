@@ -30,6 +30,7 @@ func register(s *Server) {
 		Description: "Führt eine Prüfung aus einem festen Katalog aus (task:check, task:test, task:typecheck, task:lint, " +
 			"task:build, task:check:go, go:test, go:lint, dev:test) und antwortet mit Exit-Code, Dauer und nur den Fehlerzeilen. " +
 			"Ersetzt task check, task test und go test in der Shell. Volle Ausgabe: console_tail check:<ziel>. " +
+			"Läufe über ca. 45 s antworten mit einer Lauf-ID; run=<ID> liefert das Ergebnis. " +
 			"Nutze es bei: jeder Prüfung vor einem Abschluss. Statt: task check, task test, go test oder golangci-lint in der Shell; volle Ausgabe über console_tail check:<ziel>.",
 		Annotations: &mcp.ToolAnnotations{DestructiveHint: &destructive, OpenWorldHint: &closed},
 	}, s.checkRun)

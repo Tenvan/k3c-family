@@ -78,6 +78,7 @@ type Server struct {
 	findBrowser func() (string, error)
 	launch      func(ctx context.Context, exe, profile, url string) (stop func(), err error)
 	run         func(context.Context, runSpec) runResult // Test-Naht für check_run
+	checkWait   time.Duration                            // wie lange check_run auf einen Lauf wartet (check_job.go)
 	wt          worktrees                                // Dienste der Worktrees (worktree_services.go)
 	portBusy    func(int) bool                           // Test-Naht für die Vergabe der Worktree-Ports
 
@@ -102,7 +103,7 @@ func ResolvePort(raw string) (int, error) {
 // New baut den Server mit allen Tools aus dem Katalog; gestartet wird er mit Start.
 func New(cfg Config) *Server {
 	s := &Server{cfg: cfg, stats: newStats(time.Now), params: map[string][]string{},
-		console: cfg.Console, log: cfg.Log, checks: newCheckRuns(), run: runProcess,
+		console: cfg.Console, log: cfg.Log, checks: newCheckRuns(), run: runProcess, checkWait: defaultCheckWait,
 		wt: worktrees{all: map[string]*worktreeServices{}}, portBusy: portBusy,
 		feeds: botfeed.NewHub(), findBrowser: browser.Find, launch: launchBrowser}
 	if s.console == nil {
