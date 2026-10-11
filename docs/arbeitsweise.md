@@ -251,7 +251,7 @@ Die Golden-Daten (`testdata/golden/`) halten fest, was Simulation und Level-Gene
 - **Begründung im Commit-Text:** welche Regel, welcher Wert, welche Kennzahl sich dadurch ändert. Golden-Änderungen in eigenem Commit.
 - **Bestätigung:** Kein Freigabe-Zwang durch 🧑 (Beschluss Q09); die Review-Session des Sprints prüft Diff und Begründung.
 - **`rng.json` nie per Task ändern:** Sie ist die Referenz der Zufallsfolge (`engine/rng`); der Task fasst sie nicht an.
-- Golden-Daten ändert nur der Sprint, der gerade in der Bahn SIM/INF läuft (`plan-weiterentwicklung.md` § 11.5).
+- Nur ein aktiver Sprint ändert Golden-Daten (kein zweiter parallel; `plan-weiterentwicklung.md` § 11.5).
 
 ## Spielstand-Format ändern
 

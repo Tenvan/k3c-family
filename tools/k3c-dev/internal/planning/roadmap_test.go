@@ -1,0 +1,77 @@
+package planning
+
+import (
+	"os"
+	"path/filepath"
+	"strings"
+	"testing"
+)
+
+const roadmapProjektMD = "# Fahrplan\n\n## Aktiv\n\n| Sprint | Domäne | Projekt | Thema | Am Ende sichtbar | Ordner |\n|---|---|---|---|---|---|\n\n" +
+	"## Geplant (nach Projekt-Rang)\n\n| Sprint | Domäne | Projekt | Thema | Am Ende sichtbar | Reife | Ordner |\n|---|---|---|---|---|---|---|\n\n" +
+	"## Erledigt\n\n| Sprint | Thema | Ordner |\n|---|---|---|\n"
+
+// roadmapOrder liefert die Sprint-IDs in der Reihenfolge der Tabelle unter heading.
+func roadmapOrder(t *testing.T, root, heading string) []string {
+	t.Helper()
+	lines := splitLines(doc(t, root, "sprints/README.md"))
+	tbl, ok := findTable(lines, func(l string) bool { return strings.HasPrefix(l, heading) })
+	if !ok {
+		t.Fatalf("Tabelle %q fehlt", heading)
+	}
+	var ids []string
+	for _, l := range lines[tbl.first:tbl.end] {
+		ids = append(ids, cells(l)[0])
+	}
+	return ids
+}
+
+func roadmapRepo(t *testing.T) string {
+	t.Helper()
+	root := tempRepo(t)
+	if err := os.WriteFile(filepath.Join(root, "docs", "sprints", "README.md"), []byte(roadmapProjektMD), 0o644); err != nil {
+		t.Fatal(err)
+	}
+	newProject(t, root, "GRA", "grafik")
+	newProject(t, root, "SND", "sound")
+	return root
+}
+
+// B-366/AC-01: neue Zeilen tragen das Projekt und stehen nach Projekt-Rang und Sprint-Reihenfolge des Projekts.
+func TestFahrplanZeileNachProjektRang(t *testing.T) {
+	root := roadmapRepo(t)
+	newSprint(t, root, "SND1", map[string]string{"Projekt": "SND"})
+	newSprint(t, root, "GRA1", map[string]string{"Projekt": "GRA"})
+	newSprint(t, root, "GRA2", map[string]string{"Projekt": "GRA"})
+	if got := strings.Join(roadmapOrder(t, root, "## Geplant"), " "); got != "GRA1 GRA2 SND1" {
+		t.Fatalf("Reihenfolge: %s\n%s", got, doc(t, root, "sprints/README.md"))
+	}
+	if !strings.Contains(doc(t, root, "sprints/README.md"), "| GRA2 | SRV | GRA | Sprint GRA2 |") {
+		t.Fatalf("Projekt-Spalte fehlt:\n%s", doc(t, root, "sprints/README.md"))
+	}
+}
+
+// B-366/AC-02: Aktivieren verschiebt die Zeile nach „Aktiv“ an die Rang-Stelle.
+func TestFahrplanAktivNachRang(t *testing.T) {
+	root := roadmapRepo(t)
+	newSprint(t, root, "SND1", map[string]string{"Projekt": "SND"})
+	newSprint(t, root, "GRA1", map[string]string{"Projekt": "GRA"})
+	activate := map[string]string{"Reife": "bereit", "Spec": "freigegeben", "Freigabe": "2026-10-11, Test"}
+	must(t)(Set(root, "SND1", activate))
+	must(t)(Set(root, "SND1", map[string]string{"Status": "aktiv"}))
+	must(t)(Set(root, "GRA1", activate))
+	must(t)(Set(root, "GRA1", map[string]string{"Status": "aktiv"}))
+	if got := strings.Join(roadmapOrder(t, root, "## Aktiv"), " "); got != "GRA1 SND1" {
+		t.Fatalf("Aktiv: %s\n%s", got, doc(t, root, "sprints/README.md"))
+	}
+}
+
+// B-366: Sprint ohne Projekt landet am Tabellenende, die Antwort nennt den Grund.
+func TestFahrplanOhneProjektAmEnde(t *testing.T) {
+	root := roadmapRepo(t)
+	newSprint(t, root, "GRA1", map[string]string{"Projekt": "GRA"})
+	out := must(t)(Create(root, NewDoc{Kind: "sprint", ID: "X1", Slug: "x", Title: "X", Fields: map[string]string{"Domäne": "SRV"}}))
+	if got := strings.Join(roadmapOrder(t, root, "## Geplant"), " "); got != "GRA1 X1" || !strings.Contains(out, "kein bekanntes Projekt") {
+		t.Fatalf("Reihenfolge %q, Antwort %q", got, out)
+	}
+}

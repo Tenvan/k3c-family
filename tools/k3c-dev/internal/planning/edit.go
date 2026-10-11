@@ -106,6 +106,9 @@ func setFields(root, kind, text string, values map[string]string) (string, error
 		if err := checkValue(kind, k, values[k], known); err != nil {
 			return "", err
 		}
+		if _, ok := headFields(text)[k]; !ok {
+			return "", fmt.Errorf("das Feld %s fehlt in der Datei (Vorlage: %s), nichts geändert", k, known[k])
+		}
 		text = setField(text, k, values[k])
 	}
 	f := headFields(text)
@@ -148,7 +151,7 @@ func Set(root, id string, values map[string]string) (string, error) {
 		return "", err
 	}
 	if text, err = setFields(root, r.kind, text, values); err != nil {
-		return "", err
+		return "", fmt.Errorf("%s: %w", r.rel, err)
 	}
 	if err := follow(c, r, text); err != nil {
 		return "", err

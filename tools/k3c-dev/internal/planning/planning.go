@@ -72,8 +72,8 @@ var (
 
 var (
 	field   = regexp.MustCompile(`^- \*\*([^:*]+):\*\*\s*(.*)$`)
-	session = regexp.MustCompile(`^\|\s*([A-Za-z0-9]+\.\d+)\s*\|\s*` + "`?" + `([^|` + "`" + `]*?)` + "`?" + `\s*\|\s*([^|]*?)\s*\|\s*([^|]*?)\s*\|\s*([^|]*?)\s*\|`)
-	bullet  = regexp.MustCompile(`^- ([A-Za-z0-9]+\.\d+)\s+(.*)$`)
+	session = regexp.MustCompile(`^\|\s*([A-Za-z0-9]+\.\d+[a-z]?)\s*\|\s*` + "`?" + `([^|` + "`" + `]*?)` + "`?" + `\s*\|\s*([^|]*?)\s*\|\s*([^|]*?)\s*\|\s*([^|]*?)\s*\|`)
+	bullet  = regexp.MustCompile(`^- ([A-Za-z0-9]+\.\d+[a-z]?)\s+(.*)$`)
 	ticket  = regexp.MustCompile(`^B-\d+-.*\.md$`)
 )
 
@@ -134,6 +134,10 @@ func loadSprint(dir, status string) (Sprint, bool) {
 		if x.File != "" && !strings.ContainsAny(x.File, `/\`) {
 			if b, err := os.ReadFile(filepath.Join(dir, x.File)); err == nil {
 				sp.Sessions[i].Text = string(b)
+				// B-402: Titel aus `# WZ2.1 · Titel`; ein Stichpunkt-Titel bleibt.
+				if h := header(strings.Split(strings.ReplaceAll(string(b), "\r\n", "\n"), "\n")); len(h) >= 2 && x.Titel == "" {
+					sp.Sessions[i].Titel = strings.Join(h[1:], " · ")
+				}
 			}
 		}
 	}

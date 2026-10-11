@@ -3,8 +3,6 @@ package mcpsrv
 import (
 	"context"
 	"errors"
-	"fmt"
-	"path/filepath"
 	"sync"
 	"time"
 
@@ -13,8 +11,9 @@ import (
 )
 
 type checkIn struct {
-	Target  string `json:"target" jsonschema:"Ziel aus dem Katalog: task:check, task:test, task:typecheck, task:lint, task:build, task:check:go, go:test, go:lint, dev:test"`
+	Target  string `json:"target,omitempty" jsonschema:"Ziel aus dem Katalog: task:check, task:test, task:typecheck, task:lint, task:build, task:check:go, go:test, go:lint, dev:test"`
 	Pattern string `json:"pattern,omitempty" jsonschema:"optionales Testmuster, nur bei task:test, go:test und dev:test"`
+	Run     string `json:"run,omitempty" jsonschema:"Lauf-ID aus der Antwort läuft im Hintergrund: liefert das Ergebnis dieses Laufs statt einen neuen zu starten"`
 }
 
 // runSpec ist ein Prozesslauf; out bekommt jede Zeile mit ihrem Strom.
@@ -40,10 +39,13 @@ type checkRuns struct {
 	mu      sync.Mutex
 	running map[string]time.Time // Beginn des laufenden Laufs
 	last    map[string]runResult
+	jobs    map[string]*checkJob // Läufe mit Lauf-ID (check_job.go)
+	order   []string             // IDs der Läufe, älteste zuerst
+	seq     int
 }
 
 func newCheckRuns() *checkRuns {
-	return &checkRuns{running: map[string]time.Time{}, last: map[string]runResult{}}
+	return &checkRuns{running: map[string]time.Time{}, last: map[string]runResult{}, jobs: map[string]*checkJob{}}
 }
 
 func (c *checkRuns) begin(name string) bool {
@@ -70,45 +72,6 @@ func (c *checkRuns) lastRun(name string) (runResult, bool) {
 	return r, ok
 }
 
-// checkRun ist das Tool check_run: prüfen, sperren, laufen lassen, verdichten. Die volle Ausgabe steht im
-// Konsolenpuffer check:<ziel>.
-func (s *Server) checkRun(ctx context.Context, in checkIn) (string, error) {
-	t, err := findTarget(in.Target)
-	if err != nil {
-		return "", err
-	}
-	args, err := t.args(in.Pattern)
-	if err != nil {
-		return "", err
-	}
-	// Sperre, Ergebnis und Konsole je Checkout: Läufe verschiedener Worktrees stören sich nicht.
-	ws := s.ws(ctx)
-	key := ws.source(t.name)
-	if !s.checks.begin(key) {
-		return "", fmt.Errorf("%s läuft bereits; auf das Ende warten, Ausgabe über console_tail check:%s", t.name, t.name)
-	}
-	s.notifyCheck(CheckState{Name: key, Running: true, At: time.Now()})
-	var res runResult
-	defer func() { s.checks.end(key, res) }() // auch nach einer Panik, sonst bliebe das Ziel gesperrt
-	// Ende melden, solange das Ziel noch gesperrt ist: sonst könnte „läuft“ des nächsten Laufs davor ankommen.
-	defer func() { s.notifyCheck(stateOf(key, res)) }()
-	source := "check:" + key
-	s.console.Reset(source)
-	var mu sync.Mutex
-	var output []string
-	res = s.run(ctx, runSpec{dir: filepath.Join(ws.root, t.dir), args: args, timeout: t.timeout,
-		out: func(stream, text string) {
-			s.console.Add(source, stream, text)
-			mu.Lock()
-			output = append(output, text)
-			mu.Unlock()
-		}})
-	s.logRun(key, res)
-	if res.err != nil {
-		return "", fmt.Errorf("%s ließ sich nicht starten: %w", t.name, res.err)
-	}
-	return report(t, res, output), nil
-}
 
 func (s *Server) logRun(name string, res runResult) {
 	attrs := []any{"ns", "check", "target", name, "exit", res.exit, "ms", int64(res.ms())}

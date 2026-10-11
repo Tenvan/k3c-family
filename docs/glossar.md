@@ -8,6 +8,7 @@ Regelwerk in [`rules/`](rules/), und das Glossar wird angepasst. Zahlen sind, wo
 |---|---|---|
 | Abbaurate | Zielrate einer Ader bei 2 Bauern: Stein 60, Kupfer 45, Eisen 35, Kristall 25 je Minute (Startwerte). Sie steuert den Materialfluss, nicht die Fundmenge. | `rules/materialien-gebaeude.md` § 1 |
 | Abend | Kein eigener Begriff: Der Musik-Zustand „Abend“ (Q16) ist die Dämmerung. | Q16, Q65 |
+| ABN (Projekt ohne Rang) | Projekt `ABN` für Abnahmen am Gerät (`Agent: Mensch`): aktiv, aber ohne Rang; es läuft neben der Rangfolge, wann immer ein Gerät bereit ist (Sprint HW1). | `arbeitsweise.md` › Projekte und Rang, `projekte/ABN-abnahmen-geraet.md` |
 | AC (Akzeptanzkriterium) | Prüfbares Kriterium einer Spec mit stabiler ID `AC-01`, `AC-02` … (lückenlos, nie umnummeriert). Sprints verweisen auf Ticket-Kriterien als `B-009/AC-01`, Sessions nennen sie im Feld `Kriterien`. | `arbeitsweise.md` › SDD |
 | Ader | Unendliche Quelle für Stein, Kupfer, Eisen oder Kristall, 2 je Stufe. Wird einmal markiert (`markCost`), höchstens 2 Bauern gleichzeitig; zählt nicht für „Alles abbauen“. | `rules/materialien-gebaeude.md` § 1, Q25; `data/economy.json` › `veins` |
 | Aggressionspool | Wellen-Auslöser unter Tage: +1 %/min, +5 % je Kill, +1 % je gesammelter Ressource; bei 100 % kommt eine Welle, danach zurück auf 0. | `rules/stufen.md` § 2, `rules/gegner.md` § 3 |
@@ -17,6 +18,7 @@ Regelwerk in [`rules/`](rules/), und das Glossar wird angepasst. Zahlen sind, wo
 | Angebots-Anhang (`dx`) | Zahlziel eines Angebots mit festem Abstand `dx` zum Gebäude (`data/buildings.json`); entsteht mit dem Bau, alle `dx` liegen frei. Beispiel: Schwert an der Werkstatt `dx +4`. | Q52, Q53 |
 | Ausrüstung | Was einen Bauern zum Kämpfer oder Beruf macht: Bogen, Schwert (auch Elite, mit ihrer Stufe) und die Ausrüstung von Bergmann, Baumeister, Handwerker. Fällt bei 0 HP zu Boden; Bürger heben sie wieder auf (Abholauftrag wie am Waffenregal), ein Gegner trägt sie zum Portal (dann verloren) oder lässt sie bei seinem Tod fallen. | `rules/buerger.md` § 3, Q67, Q68, Q69 |
 | Äußerste Sperre (äußerste Linie) | Die äußerste gebaute Mauerlinie einer Seite: Mauer, mit Tor bis zum Tor. Dort stehen Krieger, und nur dort ist ein neues Tor bezahlbar; innere Türme und Tore wirken weiter. | Q46, Q47, Q54 |
+| Backlog-Filter | Filter der Planungsseite für Backlog-Liste und Sprint-Liste: Suche, Prio, Umgebung, Projekt und die Ticket-Schnellfilter Offen, Eingeplant, Ungeplant. Prio wirkt über die Tickets eines Sprints, Umgebung über seine Sessions. Er ändert die Projekte nicht. | B-401, `tools/k3c-dev/frontend/src/planning/planning.ts` |
 | Bau-Menü | Gibt es nicht: Gebaut wird nur an Bauplätzen durch Bezahlen, die Taste Y bleibt frei. | Q06, Q34 |
 | Bauer | Rekrutierter Landstreicher (1 Gold): sammelt markierte Ressourcen, baut, repariert, holt Waffen, flieht bei Gefahr in die Burg. Zählt nicht zum Truppen-Limit. Bei 0 HP lässt er seine Münze fallen und wird Landstreicher; ein Kämpfer oder Beruf, der seine Ausrüstung verliert, wird wieder Bauer (volle HP). | `rules/buerger.md` §§ 1, 3, Q67 |
 | Baumeister | Beruf (20 Gold): Bauer, der +50 % schneller baut und repariert. | `rules/buerger.md` §§ 1–2 |
@@ -92,6 +94,7 @@ Regelwerk in [`rules/`](rules/), und das Glossar wird angepasst. Zahlen sind, wo
 | Landingpage | `index.html`: bleibt dauerhaft offen und zeigt alle anderen Seiten im Vollflächen-iframe, damit Vollbild auf der Xbox erhalten bleibt. | `CLAUDE.md` › Seiten & Navigation |
 | Landstreicher | Nicht rekrutierte Figur aus Camp oder Taverne; eine Münze (1 Gold) macht ihn zum Bauern. Wird nicht angegriffen; ein Bauer, der seine Münze verliert, wird Landstreicher und läuft zum Camp. | `rules/buerger.md` §§ 1, 3, Q67 |
 | Latenz | Zeit von einer gesendeten Eingabe (`seq`) bis zum ersten Zustand mit `ack` ≥ `seq`, Mittel und p95 über 60 s. Diagnose-Zeile „Latenz 62 ms (p95 110 ms)“, ohne Messung „Latenz –“. | B-181, `src/online/clientLatency.ts` |
+| Lauf-ID | Kennung `L<n>` eines Prüflaufs von `check_run`, der länger als ca. 45 s dauert und im Hintergrund weiterläuft; `check_run {run}` liefert Exit-Code und Fehlerzeilen. (Beim Testlauf `sim_test` heißt die Kennung des Laufs ebenfalls Lauf-ID.) | B-372, `tools/k3c-dev/internal/mcpsrv/check_job.go` |
 | Lauf-Modus | Kombination eines Testlaufs aus `mode` (`offline` mit Mocks im Prozess, `online` gegen den Spielserver) und `clients` (0 = headless, 1–4 = laufende Clients mit Bot-Eingabe). | B-348 |
 | Lava | Boden der tiefen Stufen: Figuren darauf erleiden 5 Schaden/s; ob Gegner betroffen sind, ist offen. | `rules/stufen.md` § 1, Q28 |
 | Level | Eine Stufe: aus Biom-Daten und Seed prozedural erzeugte Welt (der Generator erzeugt je Stufe ein Level); gespeichert wird nur der Seed. Die Insel ist die Sammlung ihrer Stufen. | `game-design.md` › Prozedurale Generierung, `rules/stufen.md` § 1, Q61 |
@@ -119,6 +122,7 @@ Regelwerk in [`rules/`](rules/), und das Glossar wird angepasst. Zahlen sind, wo
 | Preset | Startverteilung der Skill-Punkte beim Beitritt (Tank, Zauberer, Heiler, Dieb); keine feste Klasse. | `rules/monarch.md` § 2 |
 | Prio | Dringlichkeit eines Tickets (`hoch`, `mittel`, `niedrig`, `?`); ordnet Tickets innerhalb eines Projekts beim Einplanen. Die Reihenfolge der Sprints kommt aus dem Rang. | `arbeitsweise.md` › Projekte und Rang |
 | Projekt | Thema über mehrere Sprints (z. B. Grafik, Sound, Leistung & Stabilität) mit Kürzel aus drei Großbuchstaben, Status `aktiv`, `ruht` oder `erledigt` und Rang; hält seine Sprints in fester Reihenfolge. Ebenen: Projekt → Sprint → Session. | `arbeitsweise.md` › Projekte und Rang, B-355 |
+| Projekt-Filter | Filter der Planungsseite nur für die Projekte: Status, Domäne (eines ihrer Sprints oder Tickets) und die Sprint-Schnellfilter Aktive Sprints, Agent offen, Autonom (ein Projekt bleibt, wenn mindestens ein Sprint passt). Er ändert Backlog-Liste und Sprint-Liste nicht. | B-401 |
 | Protokoll | Nachrichten zwischen Gerät und Server über WebSocket `/ws`, heute Version 3 (`hello.v` = 3). Eine Änderung bekommt eine eigene Session für beide Enden. | `protocol.md`, `arbeitsweise.md` › Grenzfälle |
 | Puffer (Verzögerung) | Zeit, um die die Zeitleiste hinter der geschätzten Server-Zeit zeichnet: 1 Tick plus die doppelte Ankunfts-Schwankung, höchstens 150 ms (angenommen). Diagnose-Zeile „Puffer 33 ms“. | B-277 |
 | Rang | Reihenfolge der aktiven Projekte (1 = zuerst, lückenlos), von 🧑 gesetzt; bestimmt, welcher Sprint und welche Session als Nächstes drankommt. | `arbeitsweise.md` › Projekte und Rang, B-355 |
@@ -154,6 +158,7 @@ Regelwerk in [`rules/`](rules/), und das Glossar wird angepasst. Zahlen sind, wo
 | Spielstand | Gespeicherter Zustand eines Raums (`saves/<name>.json`) mit Seeds, Hubs, Vorrat und Raum-Optionen; Gegner und Level-Layout werden nicht gespeichert. | `protocol.md` › Begriffe, `game-design.md` › Speichern |
 | Spielstand-Version | `IslandSaveVersion` (`engine/sim/island_save.go`), heute 3 (Fund-Pool `skillPool`, je Spieler `skills` und `slots`, S1). Jede Formatänderung erhöht sie und bringt eine Fixture; Hub- und Platz-Stufe kommen mit W1.3 optional in v3 dazu (Q42). | `arbeitsweise.md` › Spielstand-Format, Q42 |
 | Split-Screen | Geteilter Bildschirm für 1–4 lokale Spieler, jeder mit eigener Kamera (`src/scenes/layout.ts`). | `game-design.md` › Koop, `rules/bedienung.md` § 2 |
+| Splitter | Verschiebbarer Balken zwischen zwei Bereichen einer Workbench-Seite. Auf der Planungsseite trennt er Backlog und Details mit einem gemeinsamen, gemerkten Anteil von 20–80 % (Doppelklick setzt zurück). | B-400, `tools/k3c-dev/frontend/src/tasks/TaskBars.tsx` |
 | Sprint | 3–6 Sessions eines Projekts, auch aus mehreren Domänen nacheinander, auf einem Branch `sprint/<präfix>` mit einem PR; Ordner unter `docs/sprints/` (`geplant/`, `aktiv/`, `erledigt/`). | `arbeitsweise.md` |
 | Standardszenario | Messrahmen der Zielkorridore: Insel 1, Wald-Start, Normal, 2 Spieler, Bot „sparsam“, 100 Seeds. | `rules/zielkorridore.md` |
 | Startvorrat | 100 Holz im Insel-Vorrat jeder neuen Insel (`islandStartStock`), auch nach dem Inselwechsel. | `rules/materialien-gebaeude.md` § 1, `rules/stufen.md` § 1, B-177 |
@@ -192,6 +197,7 @@ Regelwerk in [`rules/`](rules/), und das Glossar wird angepasst. Zahlen sind, wo
 | Zaubertum | Turm der Material-Stufe 5: Flächenschaden (40 Schaden, Radius 3, Reichweite 13, alle 1,5 s) statt Bogen; die Schützen steigen ab. | `rules/materialien-gebaeude.md` § 3.1, Q31 |
 | Zeitleiste | Puffer der empfangenen Zustände im Client: gezeichnet wird zur geschätzten Server-Zeit minus der Verzögerung, zwischen zwei Zuständen interpoliert; Stufenwechsel leert sie. | B-277, `src/online/clientTimeline.ts` |
 | Ziel-Palette | Feste Farbliste, auf die jede Grafik umgerechnet wird; festgelegt in der Stil-Bibel. | B-331 |
+| Ziel-Ticket | Ticket eines Projekts, das das Thema als Ganzes beschreibt (Feld `Ziel-Tickets` der Projekt-Datei, z. B. B-099 bei BAL); es wird eingeplant wie jedes Ticket und gibt dem Projekt sein Ziel. | `arbeitsweise.md` › Projekte und Rang, `vorlagen/projekt.md` |
 | Zielkorridor | Kennzahl mit Unter- und Obergrenze im Standardszenario; Pass/Fail für das Balancing. | `rules/zielkorridore.md` |
 
 ## Unklar und Widersprüche

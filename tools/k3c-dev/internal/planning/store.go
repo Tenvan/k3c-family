@@ -18,7 +18,7 @@ var (
 	writeMu    sync.Mutex // ein Schreibweg zur Zeit, auch bei parallelen MCP-Aufrufen
 	reTicketID = regexp.MustCompile(`^B-\d{3}$`)
 	reSprintID = regexp.MustCompile(`^[A-Z]+\d+$`)
-	reSession  = regexp.MustCompile(`^([A-Z]+\d+)\.(\d+)$`)
+	reSession  = regexp.MustCompile(`^([A-Z]+\d+)\.(\d+[a-z]?)$`)
 	reSlug     = regexp.MustCompile(`^[a-z0-9]+(-[a-z0-9]+)*$`)
 )
 

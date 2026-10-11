@@ -49,14 +49,17 @@ export function TasksFoot({ catalog, shown, filter, running, error }: FootProps)
   return <Text size="1" color={error ? 'red' : 'gray'} className="tk-foot">{parts.join(' · ')}</Text>;
 }
 
-/** Senkrechter Splitter: Ziehen setzt den Anteil der linken Spalte (20–80 %), Doppelklick setzt zurück. */
-export function Splitter({ value, onChange, onReset }: { value: number; onChange: (v: number) => void; onReset: () => void }) {
+/** Splitter: Ziehen setzt den Anteil der linken Spalte (20–80 %), Doppelklick setzt zurück. Mit `horizontal` ein
+ *  waagerechter Balken, dessen Wert der Anteil des unteren Bereichs ist (Planungsseite, B-400). */
+export function Splitter({ value, onChange, onReset, horizontal = false, className = 'tk-split' }:
+  { value: number; onChange: (v: number) => void; onReset: () => void; horizontal?: boolean; className?: string }) {
   const ref = useRef<HTMLDivElement>(null);
   const drag = (e: React.PointerEvent) => {
     const box = ref.current?.parentElement?.getBoundingClientRect();
     if (!box) return;
     e.preventDefault();
-    const move = (ev: PointerEvent) => onChange(Math.round(Math.min(80, Math.max(20, ((ev.clientX - box.left) / box.width) * 100))));
+    const share = (ev: PointerEvent) => (horizontal ? ((box.bottom - ev.clientY) / box.height) * 100 : ((ev.clientX - box.left) / box.width) * 100);
+    const move = (ev: PointerEvent) => onChange(Math.round(Math.min(80, Math.max(20, share(ev)))));
     const up = () => {
       window.removeEventListener('pointermove', move);
       window.removeEventListener('pointerup', up);
@@ -65,7 +68,7 @@ export function Splitter({ value, onChange, onReset }: { value: number; onChange
     window.addEventListener('pointerup', up);
   };
   return (
-    <div ref={ref} className="tk-split" role="separator" aria-orientation="vertical" aria-valuenow={value} aria-valuemin={20}
-      aria-valuemax={80} title="Ziehen ändert die Breite, Doppelklick setzt zurück" onPointerDown={drag} onDoubleClick={onReset} />
+    <div ref={ref} className={className} role="separator" aria-orientation={horizontal ? 'horizontal' : 'vertical'} aria-valuenow={value}
+      aria-valuemin={20} aria-valuemax={80} title="Ziehen ändert die Größe, Doppelklick setzt zurück" onPointerDown={drag} onDoubleClick={onReset} />
   );
 }

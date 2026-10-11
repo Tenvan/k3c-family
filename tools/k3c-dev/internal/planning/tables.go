@@ -127,14 +127,18 @@ func syncRoadmap(c *changeSet, sp Sprint, f map[string]string, oldDir, newDir st
 	if !ok {
 		return fmt.Errorf("sprints/README.md: Tabelle für %s fehlt", sp.Status)
 	}
-	known := map[string]string{"Sprint": sp.ID, "Domäne": sp.Domain, "Reife": sp.Reife,
+	known := map[string]string{"Sprint": sp.ID, "Domäne": sp.Domain, "Reife": sp.Reife, "Projekt": sp.Project,
 		"Ordner": "`" + strings.TrimPrefix(newDir, "sprints/") + "/`"}
 	row := make([]string, len(t.header))
 	for k, h := range t.header {
 		row[k] = firstOf(known[h], old[h], map[string]string{"Thema": sp.Title}[h], "–") // Thema der alten Zeile bleibt
 	}
-	if at < t.first || at > t.end { // neue Tabelle: ans Ende; gleiche Tabelle: Platz behalten (Reihenfolge zählt)
-		at = t.end
+	// Gleiche Tabelle und gleiches Projekt: Platz behalten (Reihenfolge zählt); sonst nach Projekt-Rang (B-366).
+	_, hasProject := old["Projekt"]
+	if at < t.first || at > t.end || (hasProject && old["Projekt"] != sp.Project) {
+		if at, err = roadmapPlace(c, lines, t, sp); err != nil {
+			return err
+		}
 	}
 	lines = append(lines[:at], append([]string{tableRow(row)}, lines[at:]...)...)
 	c.write("sprints/README.md", joinLines(lines))
