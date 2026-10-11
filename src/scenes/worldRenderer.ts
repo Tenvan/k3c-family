@@ -4,6 +4,7 @@ import { t } from '../core/texts';
 import { fontStyle } from './fontRules';
 import { createRider, updateRider } from './mountView';
 import { objectImage } from './objectView';
+import { priceTagSites } from './priceTagRules';
 import { TEXT, createSiteView, drawCastle, updateSiteView } from './siteView';
 import { hasDepth, isOnTower } from './viewRules';
 import { ENEMY_SPRITES, PLAYER_SPRITES, TROOP_SPRITES, face, makeSprite, playAnim, spriteTop } from './sprites';
@@ -98,6 +99,8 @@ export class WorldRenderer {
   private readonly pickups: Layer<Pickup>;
   private readonly castleHp: View;
   private readonly lastGold = new Map<number, { gold: number; at: number }>();
+  /** Bauplätze, deren Preisschild steht (nur das nächste je Spieler, B-395) */
+  private priceTags = new Set<number>();
 
   constructor(
     private readonly scene: Phaser.Scene,
@@ -109,7 +112,7 @@ export class WorldRenderer {
     this.castleHp = this.put(scene.add.container(world.castle.x * U, G - 300, bar(scene, 0, 240, 0x52b788)).setDepth(5));
 
     this.nodes = this.layer((n) => this.createNode(n), (v, n) => this.updateNode(v, n));
-    this.sites = this.layer((s) => createSiteView(scene, s), (v, s) => updateSiteView(scene, v, s, this.world));
+    this.sites = this.layer((s) => createSiteView(scene, s), (v, s) => updateSiteView(scene, v, s, this.world, this.priceTags.has(s.id)));
     this.pickups = this.layer((p) => this.createPickup(p), () => {});
     this.coins = this.layer((c) => scene.add.container(c.x * U, G - 8, [objectImage(scene, 'coin', 0, 8) ?? scene.add.circle(0, 0, 8, 0xffd166).setStrokeStyle(2, 0x9c6644)]).setDepth(6), () => {});
     this.troops = this.layer(
@@ -142,6 +145,7 @@ export class WorldRenderer {
 
   sync(world: World): void {
     this.world = world;
+    this.priceTags = priceTagSites(world);
     this.nodes.sync(world.nodes);
     this.sites.sync(world.sites);
     this.pickups.sync(world.pickups);

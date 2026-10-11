@@ -5,7 +5,7 @@ import { BUILDINGS, TROOPS } from '../model/data';
 import type { Site, World } from '../model/types';
 import { BUILDING_TEXTURES, STAIRS_UP_TILES, hubTexture, siteTexture } from './buildingSprites';
 import { fontStyle } from './fontRules';
-import { PRICE_TAG_RANGE, canAfford } from './viewRules';
+import { canAfford } from './viewRules';
 
 /**
  * Burg und Bauplätze (GR3.1): zugeordnete Grafik, sonst die Platzhalter-Form. Preisschild, Münz-Slots und Baufortschritt
@@ -126,8 +126,8 @@ function showPicture(scene: Phaser.Scene, v: View, s: Site): number | null {
   return picture.displayHeight;
 }
 
-export function updateSiteView(scene: Phaser.Scene, v: View, s: Site, world: World): void {
-  const near = world.players.some((p) => p.respawnIn <= 0 && Math.abs(p.x - s.x) < PRICE_TAG_RANGE);
+/** `near`: Das Preisschild dieses Bauplatzes steht, weil es für einen Spieler das nächste ist (`priceTagRules.ts`, B-395) */
+export function updateSiteView(scene: Phaser.Scene, v: View, s: Site, world: World, near: boolean): void {
   const data = BUILDINGS[s.kind];
   const key = [s.state, s.paidGold, Math.round(s.buildProgress * 20), Math.round((s.hp / s.maxHp) * 20), s.bows, s.bowPaidGold, near, canAfford(world.stock, data.cost), currentLanguage()].join('|');
   if (v.getData('key') === key) return;

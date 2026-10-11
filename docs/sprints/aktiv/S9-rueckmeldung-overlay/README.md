@@ -1,8 +1,8 @@
-# S9 · CLI · Rückmeldung für Schlag und Skills, ein Hinweis je Spieler
+# S9 · CLI, SIM · Rückmeldung für Schlag und Skills, ein Hinweis je Spieler
 
 - **Status:** aktiv
 - **Projekt:** BED
-- **Domäne:** CLI
+- **Domäne:** CLI, SIM
 - **Reife:** bereit
 - **Tickets:** B-319, B-318, B-321, B-395
 - **Start-Commit:** edf3f1b1
@@ -68,7 +68,7 @@ Hinweis und Preisschild an derselben Position → Preisschild gewinnt, Hinweis e
 | S9.3 | `S9.3-rueckmeldung-zeichnen.md` | Umsetzung | autonom | fertig |
 | S9.4 | `S9.4-review.md` | Review | autonom | fertig |
 | S9.5 | `S9.5-pc-abnahme.md` | Workshop | Mensch | offen |
-| S9.6 | `S9.6-nur-naechstes-preisschild.md` | Umsetzung | autonom | in Arbeit |
+| S9.6 | `S9.6-nur-naechstes-preisschild.md` | Umsetzung | autonom | offen |
 
 ## Abnahme
 
