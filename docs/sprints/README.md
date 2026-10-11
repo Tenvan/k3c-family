@@ -49,6 +49,7 @@ Abnahmen am Gerät (`Agent: Mensch`) sammelt das Projekt ABN im Sprint HW1: [`..
 | BR1 | REG | BAL | Balancing-Runde Wirtschaft und Spieleabend 2 (BR1.1 erledigt; zurückgestellt am 2026-10-07, Vorrang Performance, Grafik und Sound) | Pass/Fail je Kennzahl, Begründungen in `docs/rules/`, Protokoll in `docs/playtests/` | bereit | `geplant/BR1-balancing-wirtschaft/` |
 | BR2 | REG | BAL | Balancing-Runde Kampf und Bosse und Spieleabend 3 | Pass/Fail je Kennzahl, Begründungen in `docs/rules/`, Protokoll in `docs/playtests/` | bereit | `geplant/BR2-balancing-kampf/` |
 | GL1 | PLAT | BED | Landingpage in der gewählten Sprache | Landingpage zeigt nach Sprachwechsel und Neuladen English | bereit | `geplant/GL1-glyphen-controller-landing-sprache/` |
+| WZ2 | DEV | – | Planungs-Werkzeuge: eindeutige Nummern, Fahrplan, Flags, Prüfläufe | – | Entwurf | `geplant/WZ2-planungs-werkzeuge/` |
 
 Gesamtplan und Begründung: [`../plan-weiterentwicklung.md`](../plan-weiterentwicklung.md). Offene Entscheidungen: [`../fragenkatalog.md`](../fragenkatalog.md).
 
