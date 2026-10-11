@@ -84,7 +84,7 @@
    Session = Zeile ohne eigene Fläche. Sprint-Chips eckig, Status-Badges der Sessions rund. */
 .pl-project { gap: 8px; padding: 12px 14px 14px; background: var(--accent-a2); border-color: var(--accent-a6);
   border-left: 4px solid var(--accent-9); }
-.pl-project.is-ruht, .pl-project.is-erledigt { background: var(--gray-a2); border-color: var(--gray-a5); border-left-color: var(--gray-8); }
+.pl-project.is-ruht, .pl-project.is-erledigt, .pl-project.is-inactive { background: var(--gray-a2); border-color: var(--gray-a5); border-left-color: var(--gray-8); }
 .pl-project.is-abn { border-left-color: var(--amber-9); background: var(--amber-a2); border-color: var(--amber-a5); }
 .pl-project-head { padding-bottom: 6px; border-bottom: 1px solid var(--accent-a5); }
 .pl-project-head .pl-title { font-size: 16px; font-weight: 700; color: var(--title); }

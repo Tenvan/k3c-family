@@ -31,13 +31,13 @@ export function ProjectCard({ view, count, error, onMove, data, sel, onPick, ren
   const down = count === undefined ? null : stepRank(p, 1, count);
   const [folded, toggle] = useFold(p.id);
   return (
-    <div id={`pl-pj-${p.id}`} className={`pl-card pl-project is-${p.status}${folded ? ' is-folded' : ''}${sel === p.id ? ' is-sel' : ''}`}>
+    <div id={`pl-pj-${p.id}`} className={`pl-card pl-project ${cardState(view, folded, sel)}`}>
       <div className="pl-head pl-project-head pl-clickable" onClick={headClick(toggle, () => onPick?.(p.id))}>
         <FoldButton folded={folded} onToggle={toggle} what={`Projekt ${p.id}`} />
         <span className="pl-rank" title={p.rang === '–' ? 'ohne Rang' : `Rang ${p.rang}`}>{p.rang === '–' ? '·' : p.rang}</span>
         <strong className="pl-project-id">{p.id}</strong>
         <span className="pl-title">{p.title}</span>
-        <Text size="1" color="gray">Sprints {view.done}/{view.total}</Text>
+        <Text size="1" color="gray">{view.open} offen · {view.done}/{view.total} erledigt</Text>
         {count !== undefined && (
           <Flex gap="1">
             <Button size="1" variant="soft" color="gray" disabled={up === null} onClick={() => up !== null && onMove?.(up)}>hoch</Button>
@@ -64,6 +64,12 @@ export function ProjectCard({ view, count, error, onMove, data, sel, onPick, ren
       )}
     </div>
   );
+}
+
+/** Zustandsklassen der Projektkarte: Status, inaktiv (aktiv ohne offenen Sprint), eingeklappt, gewählt. */
+function cardState({ project: p, open }: ProjectView, folded: boolean, sel: string): string {
+  return [`is-${p.status}`, p.status === 'aktiv' && open === 0 && 'is-inactive', folded && 'is-folded', sel === p.id && 'is-sel']
+    .filter(Boolean).join(' ');
 }
 
 /** Sprint im Projektkopf: eckiger Chip, damit er sich von den runden Status-Badges der Sessions abhebt (B-364). */
