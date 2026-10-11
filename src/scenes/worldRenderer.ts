@@ -153,7 +153,8 @@ export class WorldRenderer {
     if (sprite instanceof Phaser.GameObjects.Sprite) playAnim(sprite, 'attack', true);
   }
 
-  sync(world: World): void {
+  /** `hidden`: Index freier oder wartender Monarchen (kein Spieler steuert sie), sie werden nicht gezeichnet (B-411). */
+  sync(world: World, hidden: ReadonlySet<number> = new Set()): void {
     this.world = world;
     this.priceTags = priceTagSites(world);
     this.nodes.sync(world.nodes);
@@ -162,7 +163,7 @@ export class WorldRenderer {
     this.coins.sync(world.coins);
     this.troops.sync(world.troops);
     this.enemies.sync(world.enemies);
-    this.players.sync(world.players);
+    this.players.sync(hidden.size === 0 ? world.players : world.players.filter((p) => !hidden.has(p.index)));
     this.projectiles.sync(world.projectiles);
     this.citizens.sync(world);
     setBar(this.castleHp, 0, world.castle.hp / world.castle.maxHp, world.castle.hp < world.castle.maxHp);

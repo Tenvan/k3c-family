@@ -311,7 +311,9 @@ export class GameScene extends Phaser.Scene {
       this.world_ = createViewWorld(level, state);
       this.loadStage(this.world_);
     }
-    this.stages.get(level.depth)?.renderer.sync(this.world_);
+    const unattended = new Set<number>();
+    this.client.monarchs.forEach((m, i) => m !== 'taken' && unattended.add(i));
+    this.stages.get(level.depth)?.renderer.sync(this.world_, unattended);
     const brightness = NIGHT_BRIGHTNESS + (1 - NIGHT_BRIGHTNESS) * daylight(this.world_.cycle);
     for (const fx of this.nightFx) fx.colorMatrix.brightness(brightness);
     this.updateLayout(this.world_);
