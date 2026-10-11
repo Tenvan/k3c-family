@@ -182,8 +182,11 @@ func TestDevLagerKostenAusbau(t *testing.T) {
 	ok(t, r.Dev("a", p, DevAction{Action: "cheapBuild", On: &yes}))
 	ok(t, r.Dev("a", p, DevAction{Action: "buildAll", Level: 2}))
 	ok(t, r.Dev("a", p, DevAction{Action: "fillStock"}))
+	if g := islPlayer(t, r, 0).Gold; g != 100+200 {
+		t.Fatalf("Gold %d nach fillStock, erwartet Maximum 300", g)
+	}
 	s := r.Summary()
-	if s.DevStockPlus != 200 || !s.DevCheap {
+	if s.DevStockPlus != 200 || s.DevPurseBonus != 200 || !s.DevCheap {
 		t.Fatalf("Summary %+v", s)
 	}
 	if max := sim.EconomyOf(r.isl.Stages[0]).StockMax; max < 200 || r.isl.Stock.Wood != max || r.isl.Stages[0].HubLevel != 2 {

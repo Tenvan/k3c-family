@@ -291,6 +291,8 @@ export interface World {
 
   /** Wirtschaft (docs/protocol.md › Wirtschaft), alle vom Server; fehlt = nicht vorhanden bzw. älterer Server. */
   stockMax?: number;
+  /** Gold-Maximum je Spieler, nur mit Dev-Bonus (maxStock); sonst gilt `ECONOMY.purse.maxGold`. */
+  purseMax?: number;
   hubLevel?: number;
   hubUpgrade?: HubUpgrade;
   /** Nacht oder Gegner: Bau und Ausbau warten (`waitingWorker` heißt dann Gefahr). */

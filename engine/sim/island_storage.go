@@ -39,6 +39,14 @@ func capacity(w *World) (limit int, ok bool) {
 	return limit, true
 }
 
+// purseMax ist das Gold-Maximum eines Spielers (Börse): der Grundwert plus der Dev-Bonus der Insel (devMaxStock).
+func purseMax(w *World) int {
+	if w.island == nil {
+		return economy.Purse.MaxGold
+	}
+	return economy.Purse.MaxGold + w.island.Dev.StockBonus
+}
+
 // depositPoint ist die Abgabestelle für einen Träger bei x: die Burg oder das nächste gebaute Lager. Bei Gleichstand
 // gewinnt die Burg, dann das frühere Lager in w.Sites.
 func depositPoint(w *World, x float64) float64 {

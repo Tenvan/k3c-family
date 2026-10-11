@@ -567,14 +567,14 @@ Weitere Dev-Aktionen (nur Dev-Mode, wirken auf die Insel des Raums, nichts davon
 
 | `action` | Felder | Wirkung |
 |---|---|---|
-| `maxStock` | | Lager-Maximum je Rohstoff +100 je Aufruf (höchstens +10000, darüber `bad_request`) |
-| `fillStock` | | alle Rohstoffe der Insel auf das Lager-Maximum |
+| `maxStock` | | Lager-Maximum je Rohstoff und Gold-Maximum je Spieler (Börse) +100 je Aufruf (höchstens +10000, darüber `bad_request`); das wirksame Gold-Maximum steht als `purseMax` im Zustand, solange der Bonus gilt |
+| `fillStock` | | alle Rohstoffe der Insel auf das Lager-Maximum, das Gold aller Spieler auf das Gold-Maximum |
 | `cheapBuild` | `on` (true/false) | Baukosten (Gebäude, Hub-, Mauer-, Turm-Ausbau, Angebote, Waffen, Rüstung) höchstens 1 je Posten, Schalter |
 | `buildAll` | `level` 1 bis 5 | alle Stufen: Hub-Stufe, Mauern/Türme bis Linie `level` gebaut und auf Stufe `level`, freie Plätze bis `level` gebaut (Tore nicht) |
 | `timescaleAuto` | `on` | Zeitraffer endet (1x) beim nächsten Tageszeitwechsel, einmalig; `on:false` nimmt es zurück |
 | `nextPhase` | | springt zum Beginn der nächsten Tageszeit (day → dusk → night → day) |
 
-Die Diagnose (`GET /api/dev?room=`, Summary) trägt dazu `devCheapBuild`, `devStockBonus` und `devTimescaleAuto`; das
+Die Diagnose (`GET /api/dev?room=`, Summary) trägt dazu `devCheapBuild`, `devStockBonus`, `devPurseBonus` (gleicher Wert) und `devTimescaleAuto`; das
 Lager-Maximum steht im Zustand wie sonst in `economy.stockMax`.
 
 ## Diagnose: CPU im Status (B-175)

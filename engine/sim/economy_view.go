@@ -8,6 +8,8 @@ package sim
 type Economy struct {
 	// StockMax ist das Maximum je Rohstoff der Insel; fehlt ohne Insel (unbegrenzt, island_storage.go).
 	StockMax int `json:"stockMax,omitempty"`
+	// PurseMax ist das Gold-Maximum je Spieler; fehlt ohne Dev-Bonus (dann gilt economy.purse.maxGold aus data/).
+	PurseMax int `json:"purseMax,omitempty"`
 	// HubLevel ist die Hub-Stufe (1 bis 5).
 	HubLevel int `json:"hubLevel"`
 	// HubUpgrade ist der Ausbau auf die nächste Hub-Stufe; fehlt auf der letzten Stufe (keine Kosten).
@@ -33,6 +35,9 @@ func EconomyOf(w *World) Economy {
 	e := Economy{HubLevel: w.HubLevel, Danger: isDangerous(w), Fighters: fighters(w), TroopLimit: troopLimit(w)}
 	if limit, ok := capacity(w); ok {
 		e.StockMax = limit
+	}
+	if w.island != nil && w.island.Dev.StockBonus > 0 {
+		e.PurseMax = purseMax(w)
 	}
 	if h := w.hubSite; h != nil {
 		if next := nextLevel(w, h); next != nil {
