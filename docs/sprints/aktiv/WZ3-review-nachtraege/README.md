@@ -65,7 +65,7 @@ keine
 
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
-| WZ3.1 | `WZ3.1-umsetzung.md` | Umsetzung | autonom | in Arbeit |
+| WZ3.1 | `WZ3.1-umsetzung.md` | Umsetzung | autonom | blockiert |
 | WZ3.2 | `WZ3.2-review.md` | Review | autonom | offen |
 
 ## Abnahme

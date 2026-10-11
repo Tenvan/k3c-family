@@ -1,6 +1,6 @@
 # WZ3.1 · Umsetzung der Review-Nachträge zu WZ2
 
-- **Status:** in Arbeit
+- **Status:** blockiert
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** DEV
@@ -69,5 +69,20 @@ task check:dev
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+**Blockiert** (Stand des Laufs, 2026-10-11): AC-06 (Splitter-Test) ist nicht umgesetzt. Grund: Die Frontend-Tests
+laufen ohne DOM-Umgebung (kein jsdom, kein happy-dom im Root-Vitest). Ziehen und Doppelklick des Splitters
+(`tasks/TaskBars.tsx`, nicht in den erlaubten Dateien) lassen sich so nicht prüfen. Entscheidung nötig: DOM-Umgebung
+als neue Abhängigkeit, oder Splitter-Logik in eine reine Funktion auslagern (`TaskBars.tsx` wird dann geändert).
+
+- AC-01 geprüft: `projects.test.ts` (Zählung ohne Sprints ausgeblendeter Projekte) grün; `tsc --noEmit` für `tools/k3c-dev/frontend` grün.
+- AC-02 geprüft: `TestTicketNummerKeineRepoWurzelNennt` grün (`ticketnr.go` nennt die fehlende Repo-Wurzel).
+- AC-03 geprüft: `TestFahrplanOhneProjektBehaeltPlatz` rot vor dem Fix (`X2 X1`), grün danach (`tables.go`, `projectCell`).
+- AC-04 geprüft: `TestCheckJobHaeltNurFehlerzeilen` grün; Job hält Fehlerzeilen und `fallbackLines` Endzeilen.
+- AC-05 geprüft: `TestCheckRunLangerLaufLiefertLaufID` wartet auf `job.done`, keine Sleep-Schleife mehr.
+- AC-06 **offen**: siehe Blocker oben.
+- Abweichungen: `task check:dev` nicht gelaufen. k3c-dev-MCP war während des Laufs getrennt; stattdessen einzeln
+  `go test ./internal/planning/` und `./internal/mcpsrv/` (grün), `go vet` (grün), vitest für `projects.test.ts` (8/8),
+  `tsc --noEmit` (grün).
+- Beobachtung (neues Ticket nötig, nicht Teil dieser Session): In `docs/sprints/README.md` steht die Zeile WZ3 in
+  „Aktiv“ mit Projekt `–`, obwohl das Kopffeld `WZG` lautet.
+- Manuell geprüft: niemand. Neue Tickets: keine angelegt (k3c-dev war nicht verbunden).

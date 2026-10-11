@@ -35,14 +35,8 @@ func TestCheckRunLangerLaufLiefertLaufID(t *testing.T) {
 		t.Fatalf("zweiter Lauf desselben Ziels: %v", err)
 	}
 	close(release)
-	var got string
-	for i := 0; i < 200; i++ {
-		got, _ = s.checkRun(ctx, checkIn{Run: id})
-		if !strings.Contains(got, "läuft noch") {
-			break
-		}
-		time.Sleep(5 * time.Millisecond)
-	}
+	<-s.checks.job(id).done // B-403/N6: auf das Ende des Laufs warten, nicht auf Zeit
+	got, _ := s.checkRun(ctx, checkIn{Run: id})
 	if !strings.Contains(got, "task:check:go · exit 1") || !strings.Contains(got, "FAIL: TestKaputt") {
 		t.Fatalf("Ergebnis: %q", got)
 	}
@@ -84,6 +78,23 @@ func consoleTailLine(t *testing.T) string {
 	}
 	t.Fatal("keine Zeile zu console_tail in den Anweisungen")
 	return ""
+}
+
+// B-403/N5: Ein Job hält nur Fehlerzeilen und das Ende der Ausgabe; die Antwort bleibt dieselbe.
+func TestCheckJobHaeltNurFehlerzeilen(t *testing.T) {
+	j := &checkJob{t: checkTarget{kinds: []string{kindGoTest}}}
+	for i := 0; i < 1000; i++ {
+		j.add("ok zeile")
+	}
+	j.add("--- FAIL: TestX (0.00s)")
+	if len(j.output) != 1 || len(j.tail) != fallbackLines {
+		t.Fatalf("gehalten: %d Fehlerzeilen, %d Endzeilen", len(j.output), len(j.tail))
+	}
+	j.setResult(runResult{exit: 1})
+	got, _ := j.answer()
+	if !strings.Contains(got, "--- FAIL: TestX") {
+		t.Fatalf("Fehlerzeile fehlt: %q", got)
+	}
 }
 
 // Review WZ2.8: „läuft bereits“ nennt die Lauf-ID des laufenden Laufs.

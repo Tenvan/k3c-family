@@ -1,6 +1,6 @@
 import { describe, expect, it, vi } from 'vitest';
 import { mockPlanningData } from '../api/mockPlanning';
-import { groupProjects, moveRank, nextSession, rankedCount, sessionProgress, stepRank } from './projects';
+import { groupProjects, moveRank, nextSession, rankedCount, sessionProgress, stepRank, visibleSprints } from './projects';
 
 const ids = (xs: { project: { id: string } }[]) => xs.map((x) => x.project.id);
 
@@ -41,6 +41,19 @@ describe('Projekte nach Rang (B-358)', () => {
     expect(nextSession([sp11], d.sprints)?.session.nr).toBe('SP11.3');
     sp11.sessions[0].status = 'offen';
     expect(nextSession([sp11], d.sprints)?.session.nr).toBe('SP11.1');
+  });
+});
+
+describe('Zählung der Projekt-Ansicht (B-403/M1)', () => {
+  it('AC-01: Sprints ausgeblendeter Projekte zählen nicht mit, Sprints ohne Projekt bleiben', () => {
+    const d = mockPlanningData();
+    const bet = d.projects!.find((p) => p.id === 'BET')!;
+    const ids = visibleSprints(d, d.projects!.filter((p) => p.id !== 'BET')).map((s) => s.id);
+    expect(ids).not.toContain('SP11');
+    expect(ids).not.toContain('F2');
+    expect(ids).toContain('M5'); // ohne Projekt
+    expect(visibleSprints(d).length).toBe(d.sprints.length); // ohne Filter alles
+    expect(bet.sprints.length).toBeGreaterThan(0);
   });
 });
 

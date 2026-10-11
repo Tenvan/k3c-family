@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 	"path/filepath"
+	"slices"
 	"sync"
 	"time"
 )
@@ -23,14 +24,22 @@ type checkJob struct {
 	start  time.Time
 	done   chan struct{}
 	mu     sync.Mutex
-	output []string
+	output []string // Fehlerzeilen des Ziels (N5: nur sie und das Ende, die volle Ausgabe steht im Konsolenpuffer)
+	tail   []string // letzte fallbackLines Zeilen ohne Fehlermuster, für die Antwort ohne Fehlerzeilen
 	res    runResult
 }
 
 func (j *checkJob) add(text string) {
 	j.mu.Lock()
-	j.output = append(j.output, text)
-	j.mu.Unlock()
+	defer j.mu.Unlock()
+	if matchesAny(text, j.t.kinds) {
+		j.output = append(j.output, text)
+		return
+	}
+	j.tail = append(j.tail, text)
+	if len(j.tail) > fallbackLines {
+		j.tail = j.tail[1:]
+	}
 }
 
 func (j *checkJob) setResult(res runResult) {
@@ -46,7 +55,7 @@ func (j *checkJob) answer() (string, error) {
 	if j.res.err != nil {
 		return "", fmt.Errorf("%s ließ sich nicht starten: %w", j.t.name, j.res.err)
 	}
-	return report(j.t, j.res, j.output), nil
+	return report(j.t, j.res, append(slices.Clone(j.output), j.tail...)), nil
 }
 
 func (c *checkRuns) newJob(t checkTarget, key string) *checkJob {

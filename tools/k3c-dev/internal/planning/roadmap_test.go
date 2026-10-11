@@ -75,3 +75,23 @@ func TestFahrplanOhneProjektAmEnde(t *testing.T) {
 		t.Fatalf("Reihenfolge %q, Antwort %q", got, out)
 	}
 }
+
+// B-403/N4: ein Sprint ohne Projekt behält seinen Platz, wenn sich nur der Status ändert (Projekt bleibt „–“).
+func TestFahrplanOhneProjektBehaeltPlatz(t *testing.T) {
+	root := roadmapRepo(t)
+	newSprint(t, root, "X1", nil)
+	newSprint(t, root, "X2", nil)
+	// Kopffeld von Hand leer machen (Create lehnt leere Werte ab), die Zeile bleibt bei „–“.
+	readme := filepath.Join(root, "docs", "sprints", "geplant", "X1-s", "README.md")
+	text, err := os.ReadFile(readme)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if err := os.WriteFile(readme, []byte(strings.Replace(string(text), "- **Projekt:** –", "- **Projekt:**", 1)), 0o644); err != nil {
+		t.Fatal(err)
+	}
+	must(t)(Set(root, "X1", map[string]string{"Reife": "bereit"}))
+	if got := strings.Join(roadmapOrder(t, root, "## Geplant"), " "); got != "X1 X2" {
+		t.Fatalf("Reihenfolge nach plan_set: %s\n%s", got, doc(t, root, "sprints/README.md"))
+	}
+}

@@ -91,6 +91,22 @@ func TestTicketNummerAusRemoteRef(t *testing.T) {
 	}
 }
 
+// B-403/N1: liegt der Ordner unterhalb eines Repos (keine Wurzel), nennt die Antwort, dass Worktrees und Refs fehlen.
+func TestTicketNummerKeineRepoWurzelNennt(t *testing.T) {
+	root := gitRepo(t)
+	sub := filepath.Join(root, "unterordner")
+	if err := os.MkdirAll(filepath.Join(sub, "docs", "backlog"), 0o755); err != nil {
+		t.Fatal(err)
+	}
+	_, notes, err := nextTicket(sub)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if !strings.Contains(strings.Join(notes, "\n"), "keine Repo-Wurzel") {
+		t.Fatalf("Hinweis fehlt: %q", notes)
+	}
+}
+
 // B-360/AC-01: ein Feld, das in der Datei fehlt, wird abgelehnt, die Datei bleibt unverändert.
 func TestFehlendesFeldWirdAbgelehnt(t *testing.T) {
 	root := tempRepo(t)
