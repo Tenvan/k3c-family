@@ -49,6 +49,16 @@ export function TasksFoot({ catalog, shown, filter, running, error }: FootProps)
   return <Text size="1" color={error ? 'red' : 'gray'} className="tk-foot">{parts.join(' · ')}</Text>;
 }
 
+/** Anteil in Prozent, den der Zeiger im Kasten einnimmt: senkrechte Spalte von links, waagerechter Balken von unten. */
+export function splitShare(horizontal: boolean, box: { left: number; bottom: number; width: number; height: number }, x: number, y: number): number {
+  return horizontal ? ((box.bottom - y) / box.height) * 100 : ((x - box.left) / box.width) * 100;
+}
+
+/** Klemmt den Anteil auf 20–80 % und rundet auf ganze Prozent (B-403/AC-06). */
+export function clampSplit(share: number): number {
+  return Math.round(Math.min(80, Math.max(20, share)));
+}
+
 /** Splitter: Ziehen setzt den Anteil der linken Spalte (20–80 %), Doppelklick setzt zurück. Mit `horizontal` ein
  *  waagerechter Balken, dessen Wert der Anteil des unteren Bereichs ist (Planungsseite, B-400). */
 export function Splitter({ value, onChange, onReset, horizontal = false, className = 'tk-split' }:
@@ -58,8 +68,7 @@ export function Splitter({ value, onChange, onReset, horizontal = false, classNa
     const box = ref.current?.parentElement?.getBoundingClientRect();
     if (!box) return;
     e.preventDefault();
-    const share = (ev: PointerEvent) => (horizontal ? ((box.bottom - ev.clientY) / box.height) * 100 : ((ev.clientX - box.left) / box.width) * 100);
-    const move = (ev: PointerEvent) => onChange(Math.round(Math.min(80, Math.max(20, share(ev)))));
+    const move = (ev: PointerEvent) => onChange(clampSplit(splitShare(horizontal, box, ev.clientX, ev.clientY)));
     const up = () => {
       window.removeEventListener('pointermove', move);
       window.removeEventListener('pointerup', up);

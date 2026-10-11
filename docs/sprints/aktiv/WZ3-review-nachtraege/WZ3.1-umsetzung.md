@@ -1,6 +1,6 @@
 # WZ3.1 · Umsetzung der Review-Nachträge zu WZ2
 
-- **Status:** blockiert
+- **Status:** in Arbeit
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** DEV
@@ -29,7 +29,8 @@ Die Review-Nachträge aus B-403 sind umgesetzt: Die Projekt-Ansicht zählt ausge
 
 - `tools/k3c-dev/internal/planning/` (ticketnr.go, tables.go und ihre Tests)
 - `tools/k3c-dev/internal/mcpsrv/check_job.go`, `check_background_test.go`
-- `tools/k3c-dev/frontend/src/planning/SprintsBacklog.tsx`, `projects.ts`, `Splitter.test.tsx` (und ggf. `Splitter.tsx`)
+- `tools/k3c-dev/frontend/src/planning/SprintsBacklog.tsx`, `projects.ts`, `projects.test.ts`, `Splitter.test.tsx`
+- `tools/k3c-dev/frontend/src/tasks/TaskBars.tsx` (nur Ziehlogik des Splitters als reine Funktionen, Entscheidung 🧑 2026-10-11 nach der Blockade)
 - `docs/backlog/B-403-wz2-review-nachtraege.md` (Status- und Notiz-Felder)
 
 ## Nicht-Ziele
@@ -69,7 +70,7 @@ task check:dev
 
 ## Ergebnis
 
-**Blockiert** (Stand des Laufs, 2026-10-11): AC-06 (Splitter-Test) ist nicht umgesetzt. Grund: Die Frontend-Tests
+**Blocker AC-06 (aufgelöst durch 🧑-Entscheidung, Weg 2):** Ursprünglich: AC-06 (Splitter-Test) ist nicht umgesetzt. Grund: Die Frontend-Tests
 laufen ohne DOM-Umgebung (kein jsdom, kein happy-dom im Root-Vitest). Ziehen und Doppelklick des Splitters
 (`tasks/TaskBars.tsx`, nicht in den erlaubten Dateien) lassen sich so nicht prüfen. Entscheidung nötig: DOM-Umgebung
 als neue Abhängigkeit, oder Splitter-Logik in eine reine Funktion auslagern (`TaskBars.tsx` wird dann geändert).
@@ -79,10 +80,17 @@ als neue Abhängigkeit, oder Splitter-Logik in eine reine Funktion auslagern (`T
 - AC-03 geprüft: `TestFahrplanOhneProjektBehaeltPlatz` rot vor dem Fix (`X2 X1`), grün danach (`tables.go`, `projectCell`).
 - AC-04 geprüft: `TestCheckJobHaeltNurFehlerzeilen` grün; Job hält Fehlerzeilen und `fallbackLines` Endzeilen.
 - AC-05 geprüft: `TestCheckRunLangerLaufLiefertLaufID` wartet auf `job.done`, keine Sleep-Schleife mehr.
-- AC-06 **offen**: siehe Blocker oben.
+- AC-06 geprüft: Entscheidung 🧑 (Weg 2): Ziehlogik als reine Funktionen `splitShare` und `clampSplit` in
+  `tasks/TaskBars.tsx`, getestet in `Splitter.test.tsx` (senkrecht und waagerecht, Klemmung 20–80 %). Der tautologische
+  Test „Projekt-Ansicht hat keinen Splitter“ ist entfernt. Vitest 12/12 grün (mit `projects.test.ts`), `tsc` grün.
+  Doppelklick (`onDoubleClick={onReset}`) bleibt nur über die Verdrahtung abgedeckt; ein DOM-Test dafür fehlt weiterhin.
 - Abweichungen: `task check:dev` nicht gelaufen. k3c-dev-MCP war während des Laufs getrennt; stattdessen einzeln
   `go test ./internal/planning/` und `./internal/mcpsrv/` (grün), `go vet` (grün), vitest für `projects.test.ts` (8/8),
   `tsc --noEmit` (grün).
 - Beobachtung (neues Ticket nötig, nicht Teil dieser Session): In `docs/sprints/README.md` steht die Zeile WZ3 in
   „Aktiv“ mit Projekt `–`, obwohl das Kopffeld `WZG` lautet.
+- Prüfläufe über k3c-dev (`check_run`): `dev:test` exit 0, `task:typecheck` exit 0, `go:lint` exit 0, `go:test` (Root-Modul) exit 0.
+  Die Go-Pakete unter `tools/k3c-dev` (eigenes Modul) laufen nicht über `go:test`. `planning` und `mcpsrv` waren einzeln grün.
+  Ein vollständiger `go test ./...` für `tools/k3c-dev` ist **nicht abgeschlossen**: `internal/balance` hängt, der Lauf wurde
+  auf Wunsch des Nutzers gestoppt. Die Ursache ist nicht geklärt, der Zusammenhang mit WZ3 ist nicht belegt.
 - Manuell geprüft: niemand. Neue Tickets: keine angelegt (k3c-dev war nicht verbunden).

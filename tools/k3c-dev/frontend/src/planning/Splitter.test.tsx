@@ -2,10 +2,7 @@ import { Theme } from '@radix-ui/themes';
 import type { ReactElement } from 'react';
 import { renderToStaticMarkup } from 'react-dom/server';
 import { describe, expect, it, vi } from 'vitest';
-import { mockPlanningData } from '../api/mockPlanning';
-import { Splitter } from '../tasks/TaskBars';
-import { ProjectSections } from './ProjectsView';
-import { groupProjects, rankedCount } from './projects';
+import { clampSplit, Splitter, splitShare } from '../tasks/TaskBars';
 
 vi.mock('../api', () => ({ backend: {} }));
 
@@ -26,10 +23,13 @@ describe('Splitter der Planungsseite (B-400)', () => {
     expect(html).toContain('class="tk-split"');
   });
 
-  it('AC-01: die Projekt-Ansicht hat keinen Splitter', () => {
-    const d = mockPlanningData();
-    const html = render(<ProjectSections groups={groupProjects(d)} count={rankedCount(d.projects)} error={null} onMove={() => {}}
-      data={d} sel="" renderSprint={() => null} />);
-    expect(html).not.toContain('role="separator"');
+  it('AC-06: senkrecht misst den Anteil von der linken Kante, waagerecht von unten', () => {
+    const box = { left: 100, bottom: 500, width: 800, height: 400 };
+    expect(splitShare(false, box, 300, 0)).toBe(25); // (300 − 100) / 800
+    expect(splitShare(true, box, 0, 300)).toBe(50); // (500 − 300) / 400
+  });
+
+  it('AC-06: der Anteil wird auf 20–80 % geklemmt und gerundet', () => {
+    expect([clampSplit(5), clampSplit(95), clampSplit(37.4), clampSplit(37.6)]).toEqual([20, 80, 37, 38]);
   });
 });
