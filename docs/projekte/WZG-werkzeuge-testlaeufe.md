@@ -21,7 +21,7 @@ In Abarbeitungs-Reihenfolge; der erste nicht erledigte Sprint ist der nächste. 
 | DV1 | Domäne DEV für k3c-dev, Sprint ohne Prio und Einschiebbar | erledigt |
 | WT1 | Worktree-Sessions richten k3c-dev-Tools per Argument auf ihren Checkout | erledigt |
 | WZ2 | Planungs-Werkzeuge: eindeutige Nummern, Fahrplan, Flags, Prüfläufe | erledigt |
-| WZ3 | Review-Nachträge zu WZ2: Filter-Zählung, Splitter-Test, Kleinigkeiten | aktiv |
+| WZ3 | Review-Nachträge zu WZ2: Filter-Zählung, Splitter-Test, Kleinigkeiten | erledigt |
 
 ## Nicht-Ziele
 
