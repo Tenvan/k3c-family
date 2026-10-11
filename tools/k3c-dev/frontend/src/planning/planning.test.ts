@@ -41,7 +41,7 @@ describe('Filter', () => {
     expect(filterSprints(DATA, { ...EMPTY_FILTER, q: ' MCP ' }).map((x) => x.id)).toEqual(['M8']);
     expect(filterSprints(DATA, { ...EMPTY_FILTER, q: 'w1.1' }).map((x) => x.id)).toEqual(['W1']);
     expect(filterSprints(DATA, { ...EMPTY_FILTER, quick: ['agent'] }).map((x) => x.id)).toEqual(['M8']);
-    expect(filterTickets(DATA, { ...EMPTY_FILTER, doms: ['SIM'], quick: ['hoch'] }).map((t) => t.nr)).toEqual(['B-007']);
+    expect(filterTickets(DATA, { ...EMPTY_FILTER, prios: ['hoch'] }).map((t) => t.nr)).toEqual(['B-210', 'B-007']);
     expect(filterTickets(DATA, { ...EMPTY_FILTER, q: 'm8' }).map((t) => t.nr)).toEqual(['B-210', 'B-300']);
     expect(filterTickets(DATA, { ...EMPTY_FILTER, quick: ['ungeplant'] }).map((t) => t.nr)).toEqual(['B-011', 'B-007', 'B-012', 'B-099']);
   });

@@ -92,7 +92,7 @@ Offen: keine. Der dritte Punkt der Wunschliste vom 2026-10-11 war leer; kommt er
 | WZ2.4 | `WZ2.4-check-run-hintergrund.md` | Umsetzung | autonom | fertig |
 | WZ2.5 | `WZ2.5-begriffe-glossar.md` | Umsetzung | autonom | fertig |
 | WZ2.6 | `WZ2.6-header-abschluss.md` | Umsetzung | autonom | fertig |
-| WZ2.7 | `WZ2.7-planungsseite-splitter-filter.md` | Umsetzung | autonom | offen |
+| WZ2.7 | `WZ2.7-planungsseite-splitter-filter.md` | Umsetzung | autonom | fertig |
 | WZ2.8 | `WZ2.8-review.md` | Review | autonom | offen |
 
 Reihenfolge nach Abhängigkeit, je Session ein Commit. WZ2.1 B-387 + B-360, WZ2.2 B-366, WZ2.3 B-363, WZ2.4 B-372, WZ2.5 B-367, WZ2.6 B-341, WZ2.7 B-400 + B-401 + B-402, WZ2.8 Review.

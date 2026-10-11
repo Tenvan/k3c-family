@@ -1,6 +1,6 @@
 # WZ2.7 · Planungsseite: gemerkter Splitter und getrennte Filter
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** DEV
@@ -61,5 +61,8 @@ Bei laufendem k3c-dev stattdessen `check_run` mit `task:check:dev`. Abnahme am B
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+- AC-08 umgesetzt, geprüft: `Splitter.test.tsx` und `filters.test.ts › Splitter-Anteil` (B-400/AC-01, AC-02) grün: waagerechter Balken zwischen Backlog und Details der Sprint-/Backlog-Ansicht, ein gemeinsamer Anteil (20–80 %, `planning.split`, Vorgabe 48 %), Doppelklick setzt zurück; die Projekt-Ansicht hat keinen Splitter. `Splitter` aus `tasks/TaskBars.tsx` wiederverwendet (neue Eigenschaft `horizontal`).
+- AC-09 umgesetzt, geprüft: `filters.test.ts` (B-401/AC-01–AC-03) grün: Backlog-Filter (Suche, Schnellfilter, Prio, Umgebung, Projekt, Erledigte) wirkt auf Backlog- und Sprint-Liste, der Projekt-Filter (Status, Domäne) nur auf die Projekte; beide werden getrennt als `planning.filter` gemerkt. Die Domäne gehört jetzt zum Projekt-Filter (Domäne eines Sprints oder Tickets des Projekts); die alte Domänen-Auswahl im gemeinsamen Filter entfällt.
+- AC-10 umgesetzt, geprüft: `TestSessionTitelAusDatei` (B-402/AC-01, vor der Änderung rot) und `SessionRow.test.tsx` (B-402/AC-02) grün; die Session-Zeile zeigt den Titel aus der Überschrift der Session-Datei, Typ und Agent stehen im Tooltip.
+- `task check:dev` grün (Frontend, go test, golangci-lint 0 Issues).
+- Nicht geprüft: Aussehen, Ziehen des Splitters und die neuen Filterleisten am Bildschirm (Abnahme gehört 🧑, WZ2.8). Die Komponententests für Splitter und Session-Zeile entstanden nach dem Code, nicht davor. Abweichungen vom Plan: die Zeile `Tickets: …` der Sprint-Karte zeigt keine Ticket-Titel (B-402: nur Session-Titel, 🧑). Neue Tickets: keine.

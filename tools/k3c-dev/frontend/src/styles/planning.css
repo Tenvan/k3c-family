@@ -54,7 +54,7 @@
 .pl-ticket.is-linked { background: var(--accent-a3); }
 .pl-ticket .pl-title { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 
-.pl-detail { flex: 0 0 48%; min-height: 0; overflow: auto; border: 1px solid var(--accent-9); border-radius: 10px;
+.pl-detail { flex: 0 0 var(--pl-detail, 48%); min-height: 0; overflow: auto; border: 1px solid var(--accent-9); border-radius: 10px;
   padding: 0 14px 10px; margin-top: 10px; }
 .pl-sticky { position: sticky; top: 0; background: var(--card); padding: 8px 0 6px; border-bottom: 1px solid var(--card-line); }
 .pl-md { line-height: 1.5; font-size: 13px; }
@@ -108,3 +108,7 @@
 .pl-clickable { cursor: pointer; }
 .pl-card.is-sel { box-shadow: 0 0 0 2px var(--accent-9); }
 .pl-detail-list { margin: 8px 0; padding-left: 18px; display: flex; flex-direction: column; gap: 4px; }
+
+/* Splitter zwischen Backlog und Details (B-400). */
+.pl-split { flex: 0 0 6px; margin: 4px 0 0; border-radius: 4px; background: var(--card-line); cursor: row-resize; touch-action: none; }
+.pl-split:hover { background: var(--accent-8); }

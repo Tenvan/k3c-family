@@ -1,18 +1,36 @@
 // Reine Logik der Ansicht „Sprints & Backlog“: Filter, Gruppierung, nächste Session. Kein React, damit Vitest sie prüft.
-import type { GitHubSprint, PlanSession, PlanSprint, PlanTicket, PlanningData } from '../api';
+import type { GitHubSprint, PlanProject, PlanSession, PlanSprint, PlanTicket, PlanningData } from '../api';
 import type { Tone } from '../ui/parts';
 import { worktreeOk } from './prompts';
 
 /** Filter und Auswahl; überleben das Neuladen nach `planning:changed` und werden gemerkt (lib/prefs). */
 export interface PlanFilter {
+  /** Backlog-Filter (B-401): wirkt auf Backlog-Liste und Sprint-Liste, nicht auf die Projekte. */
   q: string;
-  doms: string[];
   quick: string[];
-  sel: string;
+  prios: string[];
+  envs: string[];
+  projs: string[];
   done: boolean;
+  /** Projekt-Filter (B-401): wirkt nur auf die Projekte. `doms` = Domäne ihrer Sprints und Tickets. */
+  pstatus: string[];
+  doms: string[];
+  sel: string;
 }
 
-export const EMPTY_FILTER: PlanFilter = { q: '', doms: [], quick: [], sel: '', done: false };
+export const EMPTY_FILTER: PlanFilter = { q: '', quick: [], prios: [], envs: [], projs: [], done: false, pstatus: [], doms: [], sel: '' };
+
+/** Anteil des Detailbereichs an der rechten Spalte in Prozent (B-400); Grenzen wie auf der Tasks-Seite. */
+export const SPLIT_DEFAULT = 48;
+export const SPLIT_MIN = 20;
+export const SPLIT_MAX = 80;
+export function parseSplit(raw: string): number {
+  const n = Number(raw);
+  return raw.trim() !== '' && Number.isFinite(n) ? Math.min(SPLIT_MAX, Math.max(SPLIT_MIN, Math.round(n))) : SPLIT_DEFAULT;
+}
+
+/** Status der Projekte für den Projekt-Filter. */
+export const PROJECT_STATES = ['aktiv', 'ruht', 'erledigt'];
 
 const PRIO = ['hoch', 'mittel', 'niedrig'];
 
@@ -32,7 +50,7 @@ export const QUICK: { id: string; label: string; sprint?: (s: PlanSprint) => boo
 ];
 
 const has = (q: string, ...xs: (string | undefined)[]) => q === '' || xs.some((x) => (x ?? '').toLowerCase().includes(q));
-const domOk = (f: PlanFilter, d: string) => f.doms.length === 0 || f.doms.includes(d || '–');
+const oneOf = (list: string[], v: string | undefined) => list.length === 0 || list.includes(v || '–');
 
 export function domains(d: PlanningData): string[] {
   return [...new Set([...d.sprints.map((s) => s.domain), ...d.tickets.map((t) => t.domain)].map((x) => x || '–'))].sort();
@@ -42,7 +60,7 @@ export function filterSprints(d: PlanningData, f: PlanFilter): PlanSprint[] {
   const q = f.q.trim().toLowerCase();
   const quick = QUICK.filter((x) => f.quick.includes(x.id) && x.sprint);
   return d.sprints.filter((s) =>
-    (f.done || f.quick.includes('erledigt') || s.status !== 'erledigt') && domOk(f, s.domain) &&
+    (f.done || f.quick.includes('erledigt') || s.status !== 'erledigt') && oneOf(f.projs, s.project) &&
     quick.every((x) => x.sprint!(s)) &&
     has(q, s.id, s.title, s.tickets.join(' '), ...s.sessions.map((x) => `${x.nr} ${x.titel}`)));
 }
@@ -63,7 +81,16 @@ export function sortSprints(sprints: PlanSprint[], gh?: Record<string, GitHubSpr
 export function filterTickets(d: PlanningData, f: PlanFilter): PlanTicket[] {
   const q = f.q.trim().toLowerCase();
   const quick = QUICK.filter((x) => f.quick.includes(x.id) && x.ticket);
-  return d.tickets.filter((t) => domOk(f, t.domain) && quick.every((x) => x.ticket!(t)) && has(q, t.nr, t.title, t.sprint));
+  return d.tickets.filter((t) => oneOf(f.prios, t.prio) && oneOf(f.envs, t.env) && oneOf(f.projs, t.project) &&
+    quick.every((x) => x.ticket!(t)) && has(q, t.nr, t.title, t.sprint));
+}
+
+/** Projekte nach dem Projekt-Filter: Status und Domäne (eines ihrer Sprints oder Tickets); der Backlog-Filter wirkt nicht. */
+export function filterProjects(d: PlanningData, f: PlanFilter): PlanProject[] {
+  const inDomain = (p: PlanProject) => f.doms.length === 0 ||
+    d.sprints.some((s) => p.sprints.includes(s.id) && f.doms.includes(s.domain || '–')) ||
+    d.tickets.some((t) => t.project === p.id && f.doms.includes(t.domain || '–'));
+  return (d.projects ?? []).filter((p) => oneOf(f.pstatus, p.status) && inDomain(p));
 }
 
 /** Tickets je Domäne (alphabetisch), darin nach Prio und Nummer. */
@@ -95,8 +122,8 @@ export function parseFilter(raw: string): PlanFilter {
   try {
     const v = JSON.parse(raw) as Partial<PlanFilter>;
     const strs = (x: unknown) => (Array.isArray(x) ? x.filter((y): y is string => typeof y === 'string') : []);
-    return { q: typeof v.q === 'string' ? v.q : '', doms: strs(v.doms), quick: strs(v.quick),
-      sel: typeof v.sel === 'string' ? v.sel : '', done: v.done === true };
+    return { q: typeof v.q === 'string' ? v.q : '', quick: strs(v.quick), prios: strs(v.prios), envs: strs(v.envs),
+      projs: strs(v.projs), done: v.done === true, pstatus: strs(v.pstatus), doms: strs(v.doms), sel: typeof v.sel === 'string' ? v.sel : '' };
   } catch {
     return EMPTY_FILTER;
   }

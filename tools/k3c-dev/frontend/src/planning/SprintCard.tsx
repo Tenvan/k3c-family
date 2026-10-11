@@ -79,7 +79,7 @@ export function SprintCard({ sprint: s, gh, sel, onSelect, onPick, checked, onCh
   );
 }
 
-function SessionRow({ sprint: s, x, onSelect, checked, onCheck }:
+export function SessionRow({ sprint: s, x, onSelect, checked, onCheck }:
   { sprint: PlanSprint; x: PlanSession; onSelect: (nr: string) => void; checked: boolean; onCheck: (on: boolean) => void }) {
   const open = pickable(x);
   return (
@@ -91,7 +91,9 @@ function SessionRow({ sprint: s, x, onSelect, checked, onCheck }:
       ) : <span className="pl-nocheck" />}
       <StatusBadge tone={tone(x.status)}>{x.status}</StatusBadge>
       <code>{x.nr}</code>
-      <span className="pl-title">{x.titel || [x.typ, x.agent].filter(Boolean).join(' · ')}</span>
+      <span className="pl-title" title={[x.titel, x.typ, x.agent].filter(Boolean).join(' · ')}>
+        {x.titel || [x.typ, x.agent].filter(Boolean).join(' · ')}
+      </span>
       {open && <ModeBadge agent={x.agent} env={x.env} />}
       {open && <DepLinks ids={x.deps} title="Abhängig von" onPick={onSelect} />}
       {open && <CopyPrompt prompt={promptSession(s, x)} what={x.nr} />}
