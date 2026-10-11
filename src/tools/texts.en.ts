@@ -121,6 +121,14 @@ export const en: Partial<Record<ToolTextKey, string>> = {
   'dm.day': '☀ Day',
   'dm.dusk': '🌆 Dusk',
   'dm.night': '🌑 Night',
+  'dm.nextPhase': '⏭ Next time of day',
+  'dm.maxStock': '📈 Max +100',
+  'dm.fillStock': '🗃 Fill all',
+  'dm.costOne': '🏷 Build cost 1',
+  'dm.resetOnPhase': '⏱ 1× on change',
+  'dm.buildAll': '🏗 Build all',
+  'dm.level': 'Level {n}',
+  'dm.levelLabel': 'Build level',
 
   // Graphics page (grafiken.html) and credits (lizenzen.html)
   'grafik.pageTitle': 'K3C All Graphics',

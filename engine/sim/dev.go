@@ -65,3 +65,103 @@ func DevSetPhase(isl *Island, phase string) bool {
 	}
 	return true
 }
+
+// DevFlags sind die Dev-Schalter einer Insel (nur im Speicher, nie im Spielstand).
+type DevFlags struct {
+	CheapBuild bool // alle Bau-, Ausbau- und Angebotskosten höchstens 1 je Posten
+	StockBonus int  // zusätzliches Lager-Maximum je Rohstoff (devMaxStock)
+}
+
+// DevStockStep und DevStockBonusMax: Schritt und Obergrenze des zusätzlichen Lager-Maximums.
+const (
+	DevStockStep     = 100
+	DevStockBonusMax = 10000
+)
+
+// cheap ist der Preis c der Stufe w: mit dem Dev-Schalter CheapBuild höchstens 1 je Posten (0 bleibt 0).
+func cheap(w *World, c Cost) Cost {
+	if w.island == nil || !w.island.Dev.CheapBuild {
+		return c
+	}
+	return Cost{min(c.Gold, 1), min(c.Wood, 1), min(c.Stone, 1), min(c.Copper, 1), min(c.Iron, 1), min(c.Crystal, 1)}
+}
+
+// DevRaiseMaxStock erhöht das Lager-Maximum der Insel um DevStockStep; false an der Obergrenze.
+func DevRaiseMaxStock(isl *Island) bool {
+	if isl.Dev.StockBonus+DevStockStep > DevStockBonusMax {
+		return false
+	}
+	isl.Dev.StockBonus += DevStockStep
+	return true
+}
+
+// DevFillStock füllt jeden Rohstoff der Insel bis zum Lager-Maximum (ein größerer Vorrat bleibt).
+func DevFillStock(isl *Island) {
+	w := isl.Stages[0]
+	limit, ok := capacity(w)
+	if !ok {
+		return
+	}
+	for _, r := range []string{"wood", "stone", "copper", "iron", "crystal"} {
+		if f := stockField(isl.Stock, r); *f < limit {
+			*f = limit
+		}
+	}
+}
+
+// DevSetCheapBuild schaltet die Baukosten 1 ein oder aus (Preise stehen nicht im Zustand; Bezahltes bleibt bezahlt).
+func DevSetCheapBuild(isl *Island, on bool) {
+	isl.Dev.CheapBuild = on
+}
+
+// DevBuildAll baut jede Stufe der Insel auf level (1 bis 5) aus: Hub-Stufe, gebaute Plätze mit Ausbau-Stufen (Mauer,
+// Turm) und alle noch freien Plätze, deren Hub-Stufe und Linie bis level reicht (Tore bleiben, sie hängen an der
+// äußersten Mauer). Laufende Ausbauten und Aufträge entfallen. false: level außerhalb 1 bis 5.
+func DevBuildAll(isl *Island, level int) bool {
+	if level < 1 || level > len(hub.Levels) {
+		return false
+	}
+	for _, w := range isl.Stages {
+		w.HubLevel = level
+		if h := w.hubSite; h != nil {
+			h.Upgrade, h.UpgradePaid, h.BuildProgress, h.WorkerID = "", 0, 1, nil
+		}
+		for _, s := range w.Sites {
+			devBuildSite(w, s, level)
+		}
+	}
+	return true
+}
+
+// devBuildSite baut Platz s als fertig, soweit level reicht; ein gebauter Platz bekommt nur die Ausbau-Stufe.
+func devBuildSite(w *World, s *Site, level int) {
+	if s.Kind == "gate" {
+		return
+	}
+	if l, ok := siteLine(w, s); ok && l.Index > level {
+		return
+	}
+	if s.State != "built" && (siteHubLevel(w, s) > level || buildings[s.Kind].HP == 0) {
+		return
+	}
+	hp := buildings[s.Kind].HP
+	if levels := buildings[s.Kind].Levels; len(levels) > 0 {
+		s.Level = min(level, len(levels))
+		hp = levels[s.Level-1].HP
+	}
+	if s.State == "built" && s.HP < hp {
+		hp = s.HP // beschädigt bleibt beschädigt, aber nie über der neuen Stufe
+	}
+	s.State, s.BuildProgress, s.HP, s.MaxHP, s.WorkerID = "built", 1, hp, hp, nil
+	s.Upgrade, s.UpgradePaid = "", 0
+}
+
+// DevNextPhase springt zum Beginn der nächsten Tageszeit (day → dusk → night → day) und liefert ihren Namen.
+func DevNextPhase(isl *Island) string {
+	next := map[string]string{"day": "dusk", "dusk": "night", "night": "day"}[isl.Stages[0].Cycle.Phase]
+	if next == "" {
+		next = "dusk"
+	}
+	DevSetPhase(isl, next)
+	return next
+}

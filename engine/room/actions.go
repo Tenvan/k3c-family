@@ -161,7 +161,7 @@ func (r *Room) afterDisconnect() {
 	if r.timescale > 1 {
 		r.log().Info("⏩ Zeitraffer beendet", "faktor", r.timescale)
 	}
-	r.timescale, r.paused = 1, false
+	r.timescale, r.paused, r.autoReset = 1, false, false
 	r.save()
 	r.emptySince = r.m.now()
 }
@@ -193,6 +193,7 @@ func (r *Room) Tick() bool {
 		sim.StepIsland(r.isl, commands, 1.0/TickHz)
 		r.met.observe(r.isl)
 	}
+	r.resetScaleOnPhase()
 	r.tick++
 	travelled := r.switchIsland()
 	states := map[int]any{} // ein Zustand je Stufe, alle Geräte der Stufe teilen ihn (B-276)

@@ -103,6 +103,8 @@ type Room struct {
 	secTicks   int             // Ticks seit dem letzten Punkt der Messreihe (monitor.go)
 	beforeStep func()          // Test-Naht: läuft im Tick vor StepIsland
 	timescale  int             // Zeitraffer (dev timescale): Schritte je Tick, 0 = 1
+	autoReset  bool            // Dev: Zeitraffer endet beim nächsten Tageszeitwechsel (timescaleAuto)
+	resetPhase string          // Tageszeit beim Setzen von autoReset
 	paused     bool            // Dev-Pause (dev pause, B-231): Ticks rechnen keine Schritte
 	met        *metrics        // Spielmetrik des Raumlaufs (metrics.go); nil = kein Sammler
 	saves      saver           // Spielstände außerhalb der Sperre schreiben (saver.go)

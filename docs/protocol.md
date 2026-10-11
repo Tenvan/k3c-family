@@ -562,6 +562,21 @@ Monarchen, `{"action":"phase","phase":"night"}` springt alle Stufen zum Beginn d
 `{"action":"grade","grade":"hard"}` setzt den Schwierigkeitsgrad des Raums (Name aus `data/difficulty.json`, sonst
 `400`); er gilt ab der nächsten Welle, die laufende bleibt (B-080).
 
+Weitere Dev-Aktionen (nur Dev-Mode, wirken auf die Insel des Raums, nichts davon steht im Spielstand; über WebSocket und
+`/api/dev` gleich, Felder `on` und `level` stehen auch in der Nachricht `dev`):
+
+| `action` | Felder | Wirkung |
+|---|---|---|
+| `maxStock` | | Lager-Maximum je Rohstoff +100 je Aufruf (höchstens +10000, darüber `bad_request`) |
+| `fillStock` | | alle Rohstoffe der Insel auf das Lager-Maximum |
+| `cheapBuild` | `on` (true/false) | Baukosten (Gebäude, Hub-, Mauer-, Turm-Ausbau, Angebote, Waffen, Rüstung) höchstens 1 je Posten, Schalter |
+| `buildAll` | `level` 1 bis 5 | alle Stufen: Hub-Stufe, Mauern/Türme bis Linie `level` gebaut und auf Stufe `level`, freie Plätze bis `level` gebaut (Tore nicht) |
+| `timescaleAuto` | `on` | Zeitraffer endet (1x) beim nächsten Tageszeitwechsel, einmalig; `on:false` nimmt es zurück |
+| `nextPhase` | | springt zum Beginn der nächsten Tageszeit (day → dusk → night → day) |
+
+Die Diagnose (`GET /api/dev?room=`, Summary) trägt dazu `devCheapBuild`, `devStockBonus` und `devTimescaleAuto`; das
+Lager-Maximum steht im Zustand wie sonst in `economy.stockMax`.
+
 ## Diagnose: CPU im Status (B-175)
 
 `GET /api/status` (Token) nennt mit `cpu` die CPU-Last des Server-Prozesses in Prozent einer CPU, gemittelt über das

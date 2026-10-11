@@ -15,9 +15,9 @@ import "math"
 func placePayable(w *World, s *Site) bool {
 	switch s.Kind {
 	case "workshop":
-		return s.Bows+bowsCrafting(s) < buildings["workshop"].BowRack && s.BowPaidGold < troops["archer"].Cost.Gold
+		return s.Bows+bowsCrafting(s) < buildings["workshop"].BowRack && s.BowPaidGold < cheap(w, troops["archer"].Cost).Gold
 	case "smithy":
-		return s.BowPaidGold < troops["eliteArcher"].Cost.Gold
+		return s.BowPaidGold < cheap(w, troops["eliteArcher"].Cost).Gold
 	case "armory":
 		stage, ok := armorStage(w)
 		return ok && s.CraftDone == 0 && w.HubLevel >= stage.HubLevel && s.BowPaidGold < stage.Cost.Gold
@@ -40,7 +40,7 @@ func eliteOfferAt(w *World, x float64, payable bool) *offerTarget {
 		for i, of := range buildings[s.Kind].Offers {
 			o := &offerTarget{s, i}
 			near := isFighter(of.Kind) && s.State == "built" && math.Abs(o.x()-x) <= economy.PayRangeUnits
-			if near && (!payable || o.paid() < troops[of.Kind].Cost.Gold) {
+			if near && (!payable || o.paid() < cheap(w, troops[of.Kind].Cost).Gold) {
 				return o
 			}
 		}
@@ -53,7 +53,7 @@ func eliteOfferAt(w *World, x float64, payable bool) *offerTarget {
 func payAnyOffer(w *World, p *Player, o *offerTarget) {
 	key, amount := p.PayKey, p.PayAmount
 	payOffer(w, p, o)
-	if isFighter(o.kind()) && o.paid() < troops[o.kind()].Cost.Gold {
+	if isFighter(o.kind()) && o.paid() < cheap(w, troops[o.kind()].Cost).Gold {
 		p.PayKey, p.PayAmount = key, amount
 	}
 }
@@ -91,7 +91,7 @@ func craft(w *World, s *Site, product string, cost Cost, paid *int, done *float6
 // stepElite wertet nach der Herstellung den nächsten Kämpfer der Ausgangsfigur (troops.json › upgradeFrom) zum Platz
 // zur Figur kind auf: volle HP der neuen Figur mit Rüstung, Schaden und Reichweite liest sein Verhalten aus kind.
 func stepElite(w *World, s *Site, kind string, paid *int, done *float64) {
-	if !craft(w, s, kind, troops[kind].Cost, paid, done) {
+	if !craft(w, s, kind, cheap(w, troops[kind].Cost), paid, done) {
 		return
 	}
 	from := troops[kind].UpgradeFrom
@@ -128,7 +128,9 @@ func armorStage(w *World) (ArmorStage, bool) {
 	if w.ArmorLevel >= len(stages) {
 		return ArmorStage{}, false
 	}
-	return stages[w.ArmorLevel], true
+	stage := stages[w.ArmorLevel]
+	stage.Cost = cheap(w, stage.Cost)
+	return stage, true
 }
 
 // armorBonus ist der Zuschlag der erreichten Rüstungsstufe als Anteil der Basis-HP (0 ohne Rüstung).

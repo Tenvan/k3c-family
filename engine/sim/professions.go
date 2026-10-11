@@ -77,7 +77,7 @@ func nearOffer(w *World, x float64) bool {
 // offerPayable:Das Gebäude steht, das Angebot ist ein Beruf, noch nicht voll bezahlt und (Handwerker) hat Platz.
 func offerPayable(w *World, o *offerTarget) bool {
 	prof, ok := professionOf(o.kind())
-	if !ok || o.site.State != "built" || o.paid() >= prof.Cost.Gold {
+	if !ok || o.site.State != "built" || o.paid() >= cheap(w, prof.Cost).Gold {
 		return false
 	}
 	return prof.MaxPerBuilding == 0 || workersAt(w, o.site, o.kind()) < prof.MaxPerBuilding
@@ -115,7 +115,7 @@ func stepOffers(w *World) {
 		for i := range s.OfferPaid {
 			o := &offerTarget{s, i}
 			prof, ok := professionOf(o.kind())
-			if !ok || s.State != "built" || o.paid() < prof.Cost.Gold {
+			if !ok || s.State != "built" || o.paid() < cheap(w, prof.Cost).Gold {
 				continue
 			}
 			if t := freePeasant(w, s.X, o.kind()); t != nil {
@@ -186,7 +186,7 @@ func stepBowCraft(w *World, s *Site) {
 		s.Bows++
 		s.CraftDone = 0
 	}
-	bow := troops["archer"].Cost
+	bow := cheap(w, troops["archer"].Cost)
 	if s.CraftDone == 0 && s.BowPaidGold >= bow.Gold && canAfford(*w.Stock, bow) {
 		spend(w.Stock, bow)
 		s.BowPaidGold = 0

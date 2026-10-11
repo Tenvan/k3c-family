@@ -9,6 +9,8 @@ import (
 // DevAction ist eine Dev-Aktion eines Geräts (Nachricht dev, B-178): gold und material brauchen slot und amount,
 // material zusätzlich resource, timescale braucht factor, pause braucht paused (B-231); wave braucht slot, phase braucht
 // phase (day, dusk, night) (B-232); grade braucht grade (Name aus data/difficulty.json, gilt ab der nächsten Welle, B-080).
+// maxStock (+100 je Aufruf), fillStock und nextPhase brauchen nichts; cheapBuild und timescaleAuto brauchen on, buildAll
+// braucht level (1 bis 5).
 type DevAction struct {
 	Action   string
 	Slot     *int
@@ -18,6 +20,8 @@ type DevAction struct {
 	Paused   *bool
 	Phase    string
 	Grade    string
+	On       *bool
+	Level    int
 }
 
 // devMaxAmount ist die Obergrenze von amount (gold, material).
@@ -100,13 +104,43 @@ func (r *Room) devApply(who string, a DevAction, player func(int) (int, bool)) e
 			attrs = append(attrs, "angehalten", r.paused)
 		}
 	default:
-		ok = false
+		var more []any
+		more, ok = r.devExtra(a)
+		attrs = append(attrs, more...)
 	}
 	if !ok {
 		return ErrBadRequest
 	}
 	r.log().Info("🐛 Dev-Aktion", attrs...)
 	return nil
+}
+
+// devExtra führt die Aktionen für Lager, Baukosten, Ausbau und Tageszeit aus und liefert die Log-Felder.
+func (r *Room) devExtra(a DevAction) (attrs []any, ok bool) {
+	switch a.Action {
+	case "maxStock":
+		ok = sim.DevRaiseMaxStock(r.isl)
+		attrs = []any{"bonus", r.isl.Dev.StockBonus}
+	case "fillStock":
+		sim.DevFillStock(r.isl)
+		ok = true
+	case "cheapBuild":
+		if ok = a.On != nil; ok {
+			sim.DevSetCheapBuild(r.isl, *a.On)
+			attrs = []any{"an", *a.On}
+		}
+	case "buildAll":
+		ok = sim.DevBuildAll(r.isl, a.Level)
+		attrs = []any{"stufe", a.Level}
+	case "nextPhase":
+		attrs, ok = []any{"phase", sim.DevNextPhase(r.isl)}, true
+	case "timescaleAuto":
+		if ok = a.On != nil; ok {
+			r.autoReset, r.resetPhase = *a.On, r.isl.Stages[r.start].Cycle.Phase
+			attrs = []any{"an", *a.On}
+		}
+	}
+	return attrs, ok
 }
 
 // devStock führt gold und material aus und liefert die Log-Felder.
@@ -129,6 +163,15 @@ func devIndex(a DevAction, player func(int) (int, bool)) (int, bool) {
 		return 0, false
 	}
 	return player(*a.Slot)
+}
+
+// resetScaleOnPhase beendet den Zeitraffer beim ersten Tageszeitwechsel nach timescaleAuto (unter Raum-Sperre).
+func (r *Room) resetScaleOnPhase() {
+	if !r.autoReset || r.isl.Stages[r.start].Cycle.Phase == r.resetPhase {
+		return
+	}
+	r.log().Info("⏩ Zeitraffer endet mit der Tageszeit", "faktor", r.timescale, "phase", r.isl.Stages[r.start].Cycle.Phase)
+	r.timescale, r.autoReset = 1, false
 }
 
 // steps sind die Simulationsschritte eines Ticks: 0 in der Dev-Pause, sonst scale() (unter Raum-Sperre).

@@ -94,4 +94,10 @@ export type DevMessage =
   | { t: 'dev'; action: 'gold'; slot: number; amount: number }
   | { t: 'dev'; action: 'material'; slot: number; resource: DevResource; amount: number }
   | { t: 'dev'; action: 'timescale'; factor: number }
-  | { t: 'dev'; action: 'pause'; paused: boolean };
+  | { t: 'dev'; action: 'pause'; paused: boolean }
+  | { t: 'dev'; action: 'maxStock'; amount: number }
+  | { t: 'dev'; action: 'fillStock' }
+  | { t: 'dev'; action: 'cheapBuild'; on: boolean }
+  | { t: 'dev'; action: 'buildAll'; level: number }
+  | { t: 'dev'; action: 'timescaleAuto'; on: boolean }
+  | { t: 'dev'; action: 'nextPhase' };
