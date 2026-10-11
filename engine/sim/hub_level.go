@@ -60,7 +60,9 @@ func nextLevel(w *World, s *Site) *LevelData {
 	if s.State != "built" || n > len(levels) || (s != w.hubSite && w.HubLevel < n) {
 		return nil
 	}
-	return &levels[n-1]
+	next := levels[n-1]
+	next.Cost = cheap(w, next.Cost)
+	return &next
 }
 
 // upgradePayable: Nimmt der gebaute Platz Münzen für die nächste Stufe?

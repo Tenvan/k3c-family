@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { DM_ACTIONS, devUrl, fetchDiagnose, fetchRooms, sendAction, type FetchLike } from './dmApi';
+import { DM_ACTIONS, actionBody, devUrl, fetchDiagnose, fetchRooms, sendAction, type FetchLike } from './dmApi';
 import { t } from './texts';
 
 /** Antwortet mit status und body und merkt sich die Anfragen. */
@@ -32,10 +32,24 @@ describe('dmApi (B-232)', () => {
   // AC-03, AC-05: jede Aktion geht als POST mit JSON an den Raum.
   it('schickt Aktionen als POST', async () => {
     const { f, calls } = fake(200, { ok: true });
-    for (const a of DM_ACTIONS) expect(await sendAction('KRNZ', { ...a.action, slot: 0 }, f)).toBeNull();
+    for (const a of DM_ACTIONS) expect(await sendAction('KRNZ', actionBody(a, { slot: 0 }), f)).toBeNull();
     const sent = calls.map((c) => JSON.parse(c.init!.body).action as string);
-    expect(new Set(sent)).toEqual(new Set(['gold', 'material', 'timescale', 'pause', 'wave', 'phase']));
+    expect(new Set(sent)).toEqual(new Set([
+      'gold', 'material', 'timescale', 'pause', 'wave', 'phase',
+      'nextPhase', 'maxStock', 'fillStock', 'cheapBuild', 'timescaleAuto', 'buildAll',
+    ]));
     expect(calls.every((c) => c.init!.method === 'POST' && c.url === '/api/dev?room=KRNZ')).toBe(true);
+  });
+
+  it('baut den Körper: Umschalter mit on, Ausbau mit begrenzter Stufe', () => {
+    const by = (name: string) => DM_ACTIONS.find((a) => a.action.action === name)!;
+    expect(actionBody(by('cheapBuild'), { slot: 0, on: false })).toEqual({ action: 'cheapBuild', on: false });
+    expect(actionBody(by('timescaleAuto'), { slot: 0 })).toEqual({ action: 'timescaleAuto', on: true });
+    expect(actionBody(by('buildAll'), { slot: 0, level: 3 })).toEqual({ action: 'buildAll', level: 3 });
+    expect(actionBody(by('buildAll'), { slot: 0, level: 9 }).level).toBe(5);
+    expect(actionBody(by('buildAll'), { slot: 0, level: 0 }).level).toBe(1);
+    expect(actionBody(by('maxStock'), { slot: 2 })).toEqual({ action: 'maxStock', amount: 100 });
+    expect(actionBody(by('gold'), { slot: 2 })).toEqual({ action: 'gold', amount: 50, slot: 2 });
   });
 
   it('meldet Fehler des Servers', async () => {

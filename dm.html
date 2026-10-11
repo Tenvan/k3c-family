@@ -16,6 +16,11 @@
       .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(8.5rem, 1fr)); gap: 6px; }
       button, select { font: inherit; color: var(--text); background: var(--panel); border: 1px solid var(--line);
         border-radius: 8px; padding: 10px 8px; min-height: 44px; width: 100%; }
+      #actions { grid-template-columns: repeat(auto-fill, minmax(6.2rem, 1fr)); gap: 4px; }
+      #actions button { font-size: 0.78rem; padding: 4px; min-height: 36px; line-height: 1.2; }
+      .pick { display: flex; gap: 8px; flex-wrap: wrap; }
+      .pick label { display: flex; gap: 4px; align-items: center; font-size: 0.8rem; }
+      .pick select { width: auto; min-height: 32px; font-size: 0.8rem; padding: 2px 6px; }
       button:disabled { opacity: 0.4; }
       button.on { border-color: var(--on); }
       table { width: 100%; border-collapse: collapse; }
@@ -33,7 +38,10 @@
         <h2 id="title"></h2>
         <table id="diag"></table>
         <h2 data-t="dm.actions">Aktionen</h2>
-        <label class="dim"><span data-t="dm.monarchLabel">Monarch</span> <select id="slot"></select></label>
+        <div class="pick dim">
+          <label><span data-t="dm.monarchLabel">Monarch</span> <select id="slot"></select></label>
+          <label><span data-t="dm.levelLabel">Ausbau-Stufe</span> <select id="level"></select></label>
+        </div>
         <div id="actions" class="grid"></div>
         <p id="msg" class="dim"></p>
       </section>

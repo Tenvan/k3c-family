@@ -3,7 +3,7 @@ import { GAME_HEIGHT } from '../core/constants';
 import { PROTOCOL_VERSION } from '../online/clientProtocol';
 import type { RoomClient } from '../online/clientConnection';
 import type { World } from '../model/types';
-import { DEV_ACTIONS, devMessage, pauseMessage, roomDevMode } from './debugActions';
+import { DEV_ACTIONS, NO_TOGGLES, devMessage, nextToggles, pauseMessage, roomDevMode, type DevToggles } from './debugActions';
 import { VERSION_KEY, debugLines, type DebugWorld } from './debugOverlay';
 import type { GameScene } from './GameScene';
 import { HOLD_IDLE, holdStep, listenTaps, type DebugGesture, type HoldState } from './debugGestures';
@@ -36,6 +36,7 @@ export class DebugOverlay {
   private fs: FocusState = { index: 0, seat: 0 };
   private dialog: CheatDialog | null = null;
   private client: RoomClient | null = null;
+  private toggles: DevToggles = NO_TOGGLES;
 
   constructor(private readonly scene: Phaser.Scene) {
     const K = Phaser.Input.Keyboard.KeyCodes;
@@ -106,7 +107,7 @@ export class DebugOverlay {
     if (this.open) this.dialog ??= new CheatDialog((i) => (this.pick = i), () => this.nextSeat(), () => this.setOpen(false));
     const devMode = client.status === 'room' && roomDevMode(world as DebugWorld | null);
     const note = devMode ? '' : 'Server ohne Dev-Mode: Cheats und Pause wirken nicht.';
-    this.dialog?.render(this.open, this.fs, `Spieler ${this.seat() + 1}`, note);
+    this.dialog?.render(this.open, this.fs, `Spieler ${this.seat() + 1}`, note, this.toggles);
   }
 
   /** Lokale Slots des Geräts, aufsteigend (Gold und Material gehen an den gewählten). */
@@ -123,8 +124,12 @@ export class DebugOverlay {
   }
 
   private fire(index: number): void {
-    const message = devMessage(DEV_ACTIONS[index]?.key ?? '', this.slots()[this.seat()] ?? 0);
-    if (message) this.client?.sendDev(message);
+    const key = DEV_ACTIONS[index]?.key ?? '';
+    const message = devMessage(key, this.slots()[this.seat()] ?? 0, this.toggles);
+    if (message) {
+      this.client?.sendDev(message);
+      this.toggles = nextToggles(key, this.toggles);
+    }
     this.dialog?.flash(index);
   }
 

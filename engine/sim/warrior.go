@@ -44,19 +44,19 @@ func swordSpot(s *Site) (float64, bool) {
 func swordAt(w *World, x float64, payable bool) *Site {
 	for _, s := range w.Sites {
 		spot, ok := swordSpot(s)
-		if ok && s.State == "built" && math.Abs(spot-x) <= economy.PayRangeUnits && (!payable || swordPayable(s)) {
+		if ok && s.State == "built" && math.Abs(spot-x) <= economy.PayRangeUnits && (!payable || swordPayable(w, s)) {
 			return s
 		}
 	}
 	return nil
 }
 
-func swordPayable(s *Site) bool {
+func swordPayable(w *World, s *Site) bool {
 	inWork := 0
 	if s.SwordDone > 0 {
 		inWork = 1
 	}
-	return s.Swords+inWork < buildings[s.Kind].SwordRack && s.SwordPaidGold < troops["warrior"].Cost.Gold
+	return s.Swords+inWork < buildings[s.Kind].SwordRack && s.SwordPaidGold < cheap(w, troops["warrior"].Cost).Gold
 }
 
 // nearFullTarget: Liegt x an einem Bauplatz, Angebot oder Schwert-Zahlziel, das gerade nichts nimmt (payOneCoin)?
@@ -65,9 +65,9 @@ func nearFullTarget(w *World, x float64) bool {
 		nearest(w.Sites, func(s *Site) float64 { return s.X }, x, economy.PayRangeUnits, func(*Site) bool { return true }) != nil
 }
 
-func paySword(p *Player, s *Site) {
+func paySword(w *World, p *Player, s *Site) {
 	s.SwordPaidGold++
-	if !swordPayable(s) {
+	if !swordPayable(w, s) {
 		clearPending(p)
 	}
 }
@@ -89,7 +89,7 @@ func stepSwordCraft(w *World, s *Site) {
 		s.Swords++
 		s.SwordDone = 0
 	}
-	cost := troops["warrior"].Cost
+	cost := cheap(w, troops["warrior"].Cost)
 	if s.SwordDone == 0 && s.SwordPaidGold >= cost.Gold && canAfford(*w.Stock, cost) {
 		spend(w.Stock, cost)
 		s.SwordPaidGold = 0

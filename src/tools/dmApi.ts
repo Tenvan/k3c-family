@@ -37,7 +37,20 @@ export type FetchLike = (
 const defaultFetch: FetchLike = (url, init) => fetch(url, init);
 
 /** Knöpfe der Seite (Beschriftung beim Laden in der gewählten Sprache); `slot` setzt die Seite für Aktionen, die einen Monarchen brauchen. */
-export const DM_ACTIONS: { label: string; action: DmAction; needsSlot?: boolean }[] = [
+export interface DmEntry {
+  label: string;
+  action: DmAction;
+  needsSlot?: boolean;
+  /** Umschalter: die Seite merkt den Zustand und sendet `on` (true/false). */
+  toggle?: boolean;
+  /** Stufenwahl 1–5: die Seite sendet die gewählte Stufe als `level`. */
+  leveled?: boolean;
+}
+
+/** Größte wählbare Ausbau-Stufe von `buildAll`. */
+export const DM_MAX_LEVEL = 5;
+
+export const DM_ACTIONS: DmEntry[] = [
   { label: t('dm.gold'), action: { action: 'gold', amount: 50 }, needsSlot: true },
   ...['wood', 'stone', 'copper', 'iron', 'crystal'].map((resource) => ({
     label: t('dm.material', { resource: nameOf('res', resource, resource) }),
@@ -51,7 +64,22 @@ export const DM_ACTIONS: { label: string; action: DmAction; needsSlot?: boolean 
   { label: t('dm.day'), action: { action: 'phase', phase: 'day' } },
   { label: t('dm.dusk'), action: { action: 'phase', phase: 'dusk' } },
   { label: t('dm.night'), action: { action: 'phase', phase: 'night' } },
+  { label: t('dm.nextPhase'), action: { action: 'nextPhase' } },
+  { label: t('dm.maxStock'), action: { action: 'maxStock', amount: 100 } },
+  { label: t('dm.fillStock'), action: { action: 'fillStock' } },
+  { label: t('dm.costOne'), action: { action: 'cheapBuild' }, toggle: true },
+  { label: t('dm.resetOnPhase'), action: { action: 'timescaleAuto' }, toggle: true },
+  { label: t('dm.buildAll'), action: { action: 'buildAll' }, leveled: true },
 ];
+
+/** Körper einer Aktion: Monarch (`slot`), Umschalter (`on`) und Ausbau-Stufe (`level`, auf 1–5 begrenzt) ergänzt. */
+export function actionBody(e: DmEntry, ctx: { slot: number; on?: boolean; level?: number }): DmAction {
+  const body: DmAction = { ...e.action };
+  if (e.needsSlot) body.slot = ctx.slot;
+  if (e.toggle) body.on = ctx.on ?? true;
+  if (e.leveled) body.level = Math.min(DM_MAX_LEVEL, Math.max(1, Math.round(ctx.level ?? 1)));
+  return body;
+}
 
 export const devUrl = (room?: string): string => (room ? `/api/dev?room=${encodeURIComponent(room)}` : '/api/dev');
 
