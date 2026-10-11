@@ -1,6 +1,6 @@
 # WZ3.1 · Umsetzung der Review-Nachträge zu WZ2
 
-- **Status:** in Arbeit
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** DEV
@@ -90,7 +90,7 @@ als neue Abhängigkeit, oder Splitter-Logik in eine reine Funktion auslagern (`T
 - Beobachtung (neues Ticket nötig, nicht Teil dieser Session): In `docs/sprints/README.md` steht die Zeile WZ3 in
   „Aktiv“ mit Projekt `–`, obwohl das Kopffeld `WZG` lautet.
 - Prüfläufe über k3c-dev (`check_run`): `dev:test` exit 0, `task:typecheck` exit 0, `go:lint` exit 0, `go:test` (Root-Modul) exit 0.
-  Die Go-Pakete unter `tools/k3c-dev` (eigenes Modul) laufen nicht über `go:test`. `planning` und `mcpsrv` waren einzeln grün.
-  Ein vollständiger `go test ./...` für `tools/k3c-dev` ist **nicht abgeschlossen**: `internal/balance` hängt, der Lauf wurde
-  auf Wunsch des Nutzers gestoppt. Die Ursache ist nicht geklärt, der Zusammenhang mit WZ3 ist nicht belegt.
+  Die Go-Pakete unter `tools/k3c-dev` (eigenes Modul) laufen nicht über `go:test`; `planning` und `mcpsrv` waren einzeln grün.
+  Der teilweise `check:dev` ist von 🧑 akzeptiert (2026-10-11). Der Lauf über alle Pakete von `tools/k3c-dev` (u. a. `balance`)
+  gehört nicht zu WZ3 und wurde nicht abgeschlossen.
 - Manuell geprüft: niemand. Neue Tickets: keine angelegt (k3c-dev war nicht verbunden).

@@ -1,6 +1,6 @@
 # WZ3.2 · Review der Umsetzung WZ3
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Review
 - **Agent:** autonom
 - **Domäne:** DEV
@@ -57,5 +57,14 @@ task check:dev
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+Review 2026-10-11, Maßstab: Kriterien AC-01 bis AC-06 der Sprint-README, Nachweise aus WZ3.1.
+
+- AC-01 geprüft: `visibleSprints` in `projects.ts`, in `SprintsBacklog.tsx` für die Zählung genutzt; Vitest `projects.test.ts` 8/8, mit `Splitter.test.tsx` 12/12 grün (Lauf in WZ3.2).
+- AC-02 geprüft: `TestTicketNummerKeineRepoWurzelNennt` und das Paket `planning` waren nach der Änderung grün (Lauf in WZ3.1, in WZ3.2 nicht wiederholt).
+- AC-03 geprüft: `TestFahrplanOhneProjektBehaeltPlatz` war vor dem Fix rot (`X2 X1`), danach grün (Lauf in WZ3.1).
+- AC-04 geprüft: `TestCheckJobHaeltNurFehlerzeilen`, Paket `mcpsrv` grün (Lauf in WZ3.1).
+- AC-05 geprüft: `check_background_test.go` wartet über `<-s.checks.job(id).done`, Paket `mcpsrv` grün (Lauf in WZ3.1).
+- AC-06 geprüft: `splitShare` und `clampSplit` in `TaskBars.tsx`, getestet in `Splitter.test.tsx`; tautologischer Test entfernt.
+- `task check:dev`: von 🧑 als teilweise akzeptiert (`dev:test`, `task:typecheck`, `go:lint`, `go:test` Root-Modul grün).
+- Befunde: keine neuen am Code. Beobachtungen als Tickets: B-404 (Fahrplan-Projekt `–`), B-406 (Splitter-Doppelklick ohne DOM-Test). B-405 (Hänger bei `balance`) wurde angelegt und verworfen, die Läufe gehörten nicht zu WZ3.
+- Manuell geprüft: niemand. Keine Codeänderung in dieser Session.

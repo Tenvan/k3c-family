@@ -65,10 +65,13 @@ keine
 
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
-| WZ3.1 | `WZ3.1-umsetzung.md` | Umsetzung | autonom | in Arbeit |
-| WZ3.2 | `WZ3.2-review.md` | Review | autonom | offen |
+| WZ3.1 | `WZ3.1-umsetzung.md` | Umsetzung | autonom | fertig |
+| WZ3.2 | `WZ3.2-review.md` | Review | autonom | fertig |
 
 ## Abnahme
 
-Wird von der Review-Session (Doku-Sprint: letzte Session) ausgefüllt, höchstens fünf Zeilen: Datum, Kriterien
-(Verweis auf Session-Ergebnisse), behobene Befunde, neue Tickets. Bis dahin `–`.
+- 2026-10-11, Review WZ3.2: AC-01 bis AC-06 geprüft (Nachweise in `WZ3.1-umsetzung.md` › Ergebnis und `WZ3.2-review.md` › Ergebnis).
+- Umgesetzt: M1 (Zählung), N1 (Hinweise Worktrees und Refs), N4 (Fahrplan-Platz), N5 (Job-Ausgabe), N6 (Kanal statt Sleep), AC-08 (Splitter-Logik testbar).
+- `task check:dev` nur teilweise belegt, von 🧑 akzeptiert; Splitter-Doppelklick ohne DOM-Test (B-406).
+- Neue Tickets: B-404 (Fahrplan-Projekt `–`), B-406 (Splitter-DOM-Test). B-405 verworfen.
+- Abnahme durch 🧑: offen.
