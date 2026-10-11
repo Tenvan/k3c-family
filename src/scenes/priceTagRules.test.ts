@@ -1,4 +1,5 @@
 import { describe, expect, it } from 'vitest';
+import { BUILDINGS } from '../model/data';
 import type { Player, Site, World } from '../model/types';
 import { offersPrice, priceTagSites } from './priceTagRules';
 
@@ -35,5 +36,11 @@ describe('priceTagSites: nur das nächste Preisschild (B-395/AC-01)', () => {
     expect(offersPrice(built)).toBe(false);
     expect(offersPrice(shop)).toBe(true);
     expect([...priceTagSites(world([built, shop], [player()]))]).toEqual([2]);
+  });
+
+  it('gebaute Werkstatt mit vollem Bogen-Regal ist kein Kandidat', () => {
+    const full = site({ id: 3, kind: 'workshop', state: 'built', bows: BUILDINGS.workshop.bowRack ?? 0, x: 10 });
+    expect(offersPrice(full)).toBe(false);
+    expect(priceTagSites(world([full], [player()])).size).toBe(0);
   });
 });
