@@ -8,6 +8,7 @@ Regelwerk in [`rules/`](rules/), und das Glossar wird angepasst. Zahlen sind, wo
 |---|---|---|
 | Abbaurate | Zielrate einer Ader bei 2 Bauern: Stein 60, Kupfer 45, Eisen 35, Kristall 25 je Minute (Startwerte). Sie steuert den Materialfluss, nicht die Fundmenge. | `rules/materialien-gebaeude.md` § 1 |
 | Abend | Kein eigener Begriff: Der Musik-Zustand „Abend“ (Q16) ist die Dämmerung. | Q16, Q65 |
+| ABN (Projekt ohne Rang) | Projekt `ABN` für Abnahmen am Gerät (`Agent: Mensch`): aktiv, aber ohne Rang; es läuft neben der Rangfolge, wann immer ein Gerät bereit ist (Sprint HW1). | `arbeitsweise.md` › Projekte und Rang, `projekte/ABN-abnahmen-geraet.md` |
 | AC (Akzeptanzkriterium) | Prüfbares Kriterium einer Spec mit stabiler ID `AC-01`, `AC-02` … (lückenlos, nie umnummeriert). Sprints verweisen auf Ticket-Kriterien als `B-009/AC-01`, Sessions nennen sie im Feld `Kriterien`. | `arbeitsweise.md` › SDD |
 | Ader | Unendliche Quelle für Stein, Kupfer, Eisen oder Kristall, 2 je Stufe. Wird einmal markiert (`markCost`), höchstens 2 Bauern gleichzeitig; zählt nicht für „Alles abbauen“. | `rules/materialien-gebaeude.md` § 1, Q25; `data/economy.json` › `veins` |
 | Aggressionspool | Wellen-Auslöser unter Tage: +1 %/min, +5 % je Kill, +1 % je gesammelter Ressource; bei 100 % kommt eine Welle, danach zurück auf 0. | `rules/stufen.md` § 2, `rules/gegner.md` § 3 |
@@ -192,6 +193,7 @@ Regelwerk in [`rules/`](rules/), und das Glossar wird angepasst. Zahlen sind, wo
 | Zaubertum | Turm der Material-Stufe 5: Flächenschaden (40 Schaden, Radius 3, Reichweite 13, alle 1,5 s) statt Bogen; die Schützen steigen ab. | `rules/materialien-gebaeude.md` § 3.1, Q31 |
 | Zeitleiste | Puffer der empfangenen Zustände im Client: gezeichnet wird zur geschätzten Server-Zeit minus der Verzögerung, zwischen zwei Zuständen interpoliert; Stufenwechsel leert sie. | B-277, `src/online/clientTimeline.ts` |
 | Ziel-Palette | Feste Farbliste, auf die jede Grafik umgerechnet wird; festgelegt in der Stil-Bibel. | B-331 |
+| Ziel-Ticket | Ticket eines Projekts, das das Thema als Ganzes beschreibt (Feld `Ziel-Tickets` der Projekt-Datei, z. B. B-099 bei BAL); es wird eingeplant wie jedes Ticket und gibt dem Projekt sein Ziel. | `arbeitsweise.md` › Projekte und Rang, `vorlagen/projekt.md` |
 | Zielkorridor | Kennzahl mit Unter- und Obergrenze im Standardszenario; Pass/Fail für das Balancing. | `rules/zielkorridore.md` |
 
 ## Unklar und Widersprüche

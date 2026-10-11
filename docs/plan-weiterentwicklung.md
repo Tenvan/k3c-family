@@ -193,12 +193,12 @@ Seit PJ3 (B-359, 2026-10-08) bestimmt allein der **Projekt-Rang** die Reihenfolg
 
 ### 11.5 Regeln gegen Reibung zwischen den Accounts
 
-- **Zuständigkeit:** Spur M ändert keine Dateien eines Sprints, der gerade in Spur A läuft, außer Ergebnis-Einträge der 🧑-Sessions.
-- **Merge-Reihenfolge:** 🧑 mergt PRs der Spur A in der Reihenfolge der Bahn (Abhängigkeit), nicht nach Eingang.
+- **Zuständigkeit:** Eine 🧑-Session (`Agent: Mensch`) ändert keine Dateien eines Sprints, der gerade autonom läuft, außer Ergebnis-Einträge der 🧑-Sessions.
+- **Merge-Reihenfolge:** 🧑 mergt PRs autonomer Sprints in der Reihenfolge des Projekt-Rangs (Abhängigkeit), nicht nach Eingang.
 - **Gemeinsame Dateien** (`docs/backlog/README.md`, `docs/sprints/README.md`, `docs/roadmap.md`): Eine Session ändert sie erst am Ende, vor dem PR `git rebase origin/develop`; Konflikte löst der Agent, der zuletzt rebased.
-- **Golden-Daten und Spielstand-Fixtures** ändert nur der Sprint, der gerade in der Bahn SIM/INF läuft (kein zweiter parallel).
+- **Golden-Daten und Spielstand-Fixtures** ändert nur ein aktiver Sprint (kein zweiter parallel).
 - **Review-Sessions** laufen nie im selben Lauf wie die Umsetzung und nie vom selben Agenten.
-- **Engpass CLI:** Die Bahn CLI hat die meisten Sprints (S5, S4, S3, S7, S6, SO1, W6, K5); Asset-Sprints (GR3, GR5, SO2, SO4) schieben sich nur dazwischen, wenn die Datei-Überschneidung (Renderer) es erlaubt.
+- **Engpass CLI:** Die Domäne CLI hat die meisten Sprints (S5, S4, S3, S7, S6, SO1, W6, K5); Asset-Sprints (GR3, GR5, SO2, SO4) schieben sich nur dazwischen, wenn die Datei-Überschneidung (Renderer) es erlaubt.
 
 ### 11.6 Hardware-Bahn: Geräte entkoppelt (Beschluss 🧑 2026-10-03)
 
@@ -213,16 +213,6 @@ Offene Hardware-Sessions sammelt seit PJ3 das Projekt ABN (Sprint HW1, [`projekt
 | TV (Couch-Abstand) | Schriftgrößen und Kontrast aus `rules/bedienung.md` § 2 (28 px Vollbild, 24 px Viertel, Rest Vorschlag bis F1.4) sind lesbar | Q03, `bedienung.md` | S4.3, S5.4, S7.3, S3.4, S6.4, W6.4, K5.4 |
 | Handy, Tablet | Touch-Overlay (`src/input/touchInput.ts`, am PC per `?touch=1`) ist bedienbar; Chromium-Browser | Ist-Stand Code | DBG2.3, Abnahmen der CLI-Sprints |
 | Heim-WLAN | Latenz Eingabe → Bild im Mittel ≤ 100 ms; Ereignis-Budget 6 KB/s je Client | Q04, Q08, `bedienung.md` § 3, F4 | Messung am Gerät mit B-181 |
-| Raspberry Pi 3 | 64-Bit-Betriebssystem, Image `ghcr.io/tenvan/k3c-family`; Tick-Dauer p99 < 10 ms bei 2 Räumen × 3 Spielern | Q07, B-042, `rules/zielkorridore.md` § 1 | LT1.3 (Messlauf), Benchmark in `engine/sim` bis dahin |
+| Raspberry Pi 3 | 64-Bit-Betriebssystem, Image `ghcr.io/tenvan/k3c-family`; Tick-Dauer p99 < 10 ms bei 2 Räumen × 3 Spielern | Q07, B-042, `rules/zielkorridore.md` § 1 | HW1.5 (Messlauf Pi), Benchmark in `engine/sim` bis dahin |
 
-**Hardware-Sessions** (Spur M, je nach Gerät; Reihenfolge egal, keine wartet auf eine andere außer der eigenen Vorbereitung):
-
-| Session | Gerät | Machbar, sobald | Blockiert |
-|---|---|---|---|
-| X1.2 Gamepad- und Audio-Test | Xbox | X1.1 (Audio-Abschnitt der Testseite) gemergt | nichts; X1.3 wertet aus, SO1 baut mit der Annahme |
-| DBG2.3 Abnahme Debug-Overlay | PC, Handy, Controller | DBG2.2 gemergt | nichts (DBG2.4 hängt nicht mehr daran) |
-| S5.4 Abnahme Optionen und Pause | TV oder PC | S5.3 gemergt | nichts (S5.5 hängt nicht mehr daran) |
-| S4.3 Abnahme Stufen und Viertel | TV | S4.2 gemergt | nichts (S4.4 hängt nicht mehr daran) |
-| S7.3 Abnahme Reittier | TV | S7.2 gemergt | nichts (S7.4 hängt nicht mehr daran) |
-| S3.4, S6.4, W6.4, K5.4 Abnahmen | TV | jeweilige Umsetzung gemergt | nichts; die Session-Dateien werden beim Bereitmachen nach dieser Regel geschrieben |
-| LT1.3 Messlauf | Pi | LT1-Werkzeug gemergt | nichts; F4 und S2 bauen mit dem Benchmark |
+**Offene Hardware-Sessions** (`Agent: Mensch`, je nach Gerät; Reihenfolge egal, keine wartet auf eine andere außer der eigenen Vorbereitung) stehen im Sprint HW1 des Projekts ABN: HW1.4 Landingpage am PC, HW1.5 Messlauf am Pi, HW1.7 Release-Gerät, HW1.8 Audio am TV, HW1.9 Hörprobe am TV ([`sprints/geplant/HW1-controller-pruefungen/`](sprints/geplant/HW1-controller-pruefungen/README.md)). Die alten Session-Nummern (X1.2, S4.3 …) gelten nicht mehr.

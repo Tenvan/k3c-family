@@ -1,6 +1,6 @@
 # WZ2.5 · Alte Begriffe ersetzen, Glossar um Ziel-Ticket und ABN
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** DEV
@@ -55,5 +55,5 @@ Manuelle Prüfungen: keine.
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+- AC-06 umgesetzt, geprüft: `grep -n "Spur [MA]\|Bahn " docs/arbeitsweise.md docs/plan-weiterentwicklung.md` findet nichts mehr; die Golden-Regel lautet „Nur ein aktiver Sprint ändert Golden-Daten“ (`B-367/AC-01`). § 11.6 verweist für offene Hardware-Sessions auf HW1.4, HW1.5, HW1.7, HW1.8 und HW1.9 (die alte Session-Tabelle mit X1.2, S4.3 … ist ersetzt, LT1.3 → HW1.5); `docs/glossar.md` enthält „Ziel-Ticket“ und „ABN (Projekt ohne Rang)“; `task test -- planning` grün (554 Tests) (`B-367/AC-02`).
+- Abweichungen vom Plan: die Zeilen zu „Spur M/A“ in § 11.5 sind sinngemäß auf „🧑-Session (`Agent: Mensch`)“ und „autonom“ übertragen, ohne die Regel inhaltlich zu ändern. Neue Tickets: keine. Manuell geprüft: nichts.
