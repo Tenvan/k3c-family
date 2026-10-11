@@ -89,7 +89,8 @@ Eine Session muss **ohne Rückfragen und ohne Planungs-Werkzeuge** abzuarbeiten 
    Probleme als Ticket anlegen (Vorlage!) und in `backlog/README.md` eintragen. Gemeinsame Planungsdateien
    (`backlog/README.md`, `sprints/README.md`) erst am Ende ändern. Ein Commit mit Session im Titel
    (`feat(srv): Restore absichern (F4.3)`), `git fetch`, `git merge origin/develop`, push auf den Sprint-Branch.
-   **Kein PR**: den öffnet erst die letzte Session des Sprints (Review, im Doku-Sprint die letzte), nicht selbst mergen.
+   **Kein PR**: den öffnet erst die letzte Session des Sprints (Review, im Doku-Sprint die letzte); sie schaltet
+   auch Auto-Merge ein (siehe Review-Session, Schritt 5). Alle anderen Sessions mergen nie.
 
 **Wenn etwas nicht passt** (Schritt unklar, Befehl scheitert unerklärlich, nötige Datei nicht erlaubt, Kriterium
 widerspricht dem Code oder einer Regel):
@@ -214,7 +215,10 @@ Modell (z. B. Sonnet) reicht.
    `verschoben` mit Ticket), behobene Befunde, neue Tickets.
 5. Sind alle anderen Sessions fertig: Sprint-Ordner nach `sprints/erledigt/` verschieben, `Status: erledigt`; sonst bleibt
    er in `aktiv/` (Hardware entkoppelt). Fahrplan anpassen, committen, `git merge origin/develop`,
-   pushen und **den einen PR des Sprints** öffnen (Vorlage, eine Zeile je Session). Gemergt wird er von 🧑.
+   pushen und **den einen PR des Sprints** öffnen (Vorlage, eine Zeile je Session), danach **Auto-Merge einschalten**:
+   `gh pr merge --auto --squash`. Ist der PR schon `CLEAN` (Konflikt-Check fertig), lehnt GitHub `--auto` ab: dann
+   `gh pr merge --squash`. Im PR läuft nur der Konflikt-Check, die Tests laufen vorher lokal und nach dem Merge auf
+   `develop` (B-397). Ein Entwurfs-PR einer blockierten Session bekommt kein Auto-Merge.
 6. **Version vorschlagen** (siehe „Entscheidungen und Versionen“): eine Zeile `Version: v… vorgeschlagen (Grund)` in der Abnahme; gesetzt wird sie erst nach Bestätigung durch 🧑.
 
 ## Komplexitäts-Budget

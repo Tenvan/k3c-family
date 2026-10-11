@@ -368,3 +368,4 @@ Zeile in diesen Abschnitt.
 | [B-319](archiv/B-319-ein-hinweis-je-weltposition.md) | CLI | Problem | hoch | erledigt | S9 | Das Aktionen-Overlay zeigt je Spieler nur einen Hinweis, 24 px, nie über einem Preisschild |
 | [B-318](archiv/B-318-schlag-skill-feedback.md) | CLI | Problem | mittel | erledigt | S9 | Schlag und Skills zeigen auch ohne Ziel sichtbar, dass die Taste ankam |
 | [B-396](archiv/B-396-schlag-ausholen-animation.md) | CLI | Problem | mittel | erledigt | S9 | Der Monarch holt beim Schlag ohne Ziel sichtbar aus |
+| [B-397](archiv/B-397-auto-merge-sprint-pr.md) | INF | Idee | mittel | erledigt | – | Der PR eines Sprints wird mit Auto-Merge geöffnet |
