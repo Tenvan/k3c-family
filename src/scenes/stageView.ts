@@ -47,6 +47,18 @@ export class StageView {
     if (effect.by !== undefined) this.renderer.swing(effect.by);
   }
 
+  /** Gleicht den Kamera-Zoom für alle Texte der Stufe aus (Schrift erscheint in ihrer Größe, unabhängig von Zoom und Layout) */
+  scaleTexts(factor: number): void {
+    const walk = (list: Phaser.GameObjects.GameObject[]) => {
+      for (const o of list) {
+        if (o instanceof Phaser.GameObjects.Text) {
+          if (o.scale !== factor) o.setScale(factor);
+        } else if (o instanceof Phaser.GameObjects.Container) walk(o.list);
+      }
+    };
+    walk(this.layer.list);
+  }
+
   destroy(): void {
     this.river.forEach((t) => t.stop());
     this.effects.destroy();

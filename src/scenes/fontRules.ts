@@ -1,5 +1,5 @@
 import { GAME_WIDTH } from '../core/constants';
-import { viewZoom, type Cell } from './layout';
+import type { Cell } from './layout';
 
 /**
  * Schrift des Spiels (S4.2, Beschluss Q03, `docs/rules/bedienung.md` § 2): ein Katalog aller Schriftrollen und die
@@ -21,7 +21,8 @@ export interface FontRole {
 export const OUTLINE_COLOR = '#000000';
 
 /**
- * Welt-Texte stehen im Szenenraum und skalieren mit `viewZoom` der Zelle (Streifen und Viertel etwa 0,63).
+ * Welt-Texte stehen im Szenenraum; `StageView.scaleTexts` gleicht den Kamera-Zoom aus, damit sie in jedem Layout in
+ * ihrer Größe erscheinen (die Texte waren bei einem Spieler zu groß). Mindestgröße 28 px laut `bedienung.md` § 2.
  */
 export const FONTS = {
   playerValue: { px: 28, art: 'info', space: 'hud', color: '#ffffff' },
@@ -33,10 +34,10 @@ export const FONTS = {
   joinCorner: { px: 26, art: 'side', space: 'hud', color: '#ffffff' },
   controlsHint: { px: 24, art: 'side', space: 'hud', color: '#ffffff' },
   roomInfo: { px: 24, art: 'side', space: 'hud', color: '#ffffff' },
-  exitSign: { px: 56, art: 'info', space: 'world', color: '#ffffff' },
-  priceTag: { px: 56, art: 'info', space: 'world', color: '#ffffff' },
-  purse: { px: 56, art: 'info', space: 'world', color: '#ffd166' },
-  citizenLabel: { px: 56, art: 'info', space: 'world', color: '#e9c46a' },
+  exitSign: { px: 32, art: 'info', space: 'world', color: '#ffffff' },
+  priceTag: { px: 32, art: 'info', space: 'world', color: '#ffffff' },
+  purse: { px: 32, art: 'info', space: 'world', color: '#ffd166' },
+  citizenLabel: { px: 32, art: 'info', space: 'world', color: '#e9c46a' },
 } as const satisfies Record<string, FontRole>;
 
 export type FontName = keyof typeof FONTS;
@@ -57,9 +58,9 @@ export function minFontPx(seats: number, cell: Pick<Cell, 'w' | 'kind'>, art: Fo
   return seats <= 2 ? 24 : 20;
 }
 
-/** Größe, in der der Text auf dem Bildschirm erscheint: HUD unverändert, Welt mit dem Kamera-Zoom der Zelle (`GameScene.layoutCameras`) */
-export function effectiveFontPx(font: Pick<FontRole, 'px' | 'space'>, cell: Pick<Cell, 'h'>): number {
-  return font.space === 'hud' ? font.px : font.px * viewZoom(cell.h);
+/** Größe, in der der Text auf dem Bildschirm erscheint: HUD und Welt (Zoom ausgeglichen) in ihrer Größe `px` */
+export function effectiveFontPx(font: Pick<FontRole, 'px' | 'space'>): number {
+  return font.px;
 }
 
 function luminance(hex: string): number {

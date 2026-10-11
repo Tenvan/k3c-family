@@ -107,7 +107,7 @@ function radarAnchor(cell: Cell): Pick<HudItem, 'h' | 'dx'> {
 
 /**
  * Die HUD-Elemente mit Anker und Rang. `sizes` nennt die Größe je Id (`player:<i>`, `skills:<i>`, `radar:<i>` mit
- * Zellen-Index `i`, sonst `shared`, `clock`, `fight`, `citizens`, `banner`, `join`, `travel`, `info`, `controls`); fehlt eine Id,
+ * Zellen-Index `i`, sonst `shared`, `clock`, `fight`, `citizens`, `places`, `banner`, `join`, `travel`, `info`, `controls`); fehlt eine Id,
  * wird das Element gerade nicht gezeigt. `waiting`: der Beitritts-Hinweis steht groß in der Mitte.
  */
 export function hudItems(cells: readonly Cell[], sizes: ReadonlyMap<string, Size>, waiting: boolean): HudItem[] {
@@ -116,19 +116,25 @@ export function hudItems(cells: readonly Cell[], sizes: ReadonlyMap<string, Size
     const s = sizes.get(id);
     if (s) items.push({ id, area, rank, ...a, w: s.w, ht: s.h });
   };
+  let cardX = 24; // Spielerkarten stehen in Zeile 2 der Leiste nebeneinander
   cells.forEach((cell, i) => {
-    add(`player:${i}`, cell, RANK.player, { h: 'left', v: 'top', dx: 24, dy: 16 });
+    const card = sizes.get(`player:${i}`);
+    if (cell.kind === 'player' && card) {
+      add(`player:${i}`, BAR, RANK.player, { h: 'left', v: 'top', dx: cardX, dy: 4 + 42 });
+      cardX += card.w + GAP;
+    }
     add(`skills:${i}`, cell, RANK.skills, { h: 'left', v: 'bottom', dx: 24, dy: 24 });
     add(`radar:${i}`, cell, RANK.radar, { ...radarAnchor(cell), v: 'top', dy: 8 }); // Kompass oben im Feld
   });
   add('banner', SCREEN, RANK.banner, { h: 'center', v: 'middle', dx: 0, dy: 0 });
-  // Leiste oben, für alle Spieler, zwei Zeilen: Raum, Tageszeit, Kampf / Vorrat und Hub, Bürger; weicht dem Home-Button aus
-  const bar = (id: string, h: HAlign, row: 0 | 1) => add(id, BAR, RANK.shared, { h, v: 'top', dx: 24, dy: 6 + row * 44 });
+  // Leiste oben, für alle Spieler, drei Zeilen: Raum, Tageszeit, Kampf / Spielerwerte / Vorrat und Hub, Bürger; weicht dem Home-Button aus
+  const bar = (id: string, h: HAlign, row: 0 | 1 | 2) => add(id, BAR, RANK.shared, { h, v: 'top', dx: 24, dy: 4 + row * 42 });
   bar('info', 'left', 0);
   bar('clock', 'center', 0);
-  bar('fight', 'right', 0);
-  bar('shared', 'left', 1);
-  bar('citizens', 'right', 1);
+  bar('fight', 'right', 0); // rückt neben die Orts-Tabelle
+  bar('shared', 'left', 2);
+  bar('citizens', 'right', 2);
+  add('places', BAR, RANK.shared, { h: 'right', v: 'top', dx: 24, dy: 2 }); // Orts-Tabelle: ein Spieler je Zeile, über die Höhe der Leiste
   add('travel', SCREEN, RANK.travel, { h: 'center', v: 'bottom', dx: 0, dy: 150 });
   add('join', SCREEN, RANK.join, waiting ? { h: 'center', v: 'middle', dx: 0, dy: 120 } : { h: 'center', v: 'bottom', dx: 0, dy: 85 });
   add('controls', SCREEN, RANK.controls, { h: 'right', v: 'bottom', dx: 20, dy: 10 });

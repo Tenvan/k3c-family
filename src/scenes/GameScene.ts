@@ -313,7 +313,10 @@ export class GameScene extends Phaser.Scene {
     }
     const unattended = new Set<number>();
     this.client.monarchs.forEach((m, i) => m !== 'taken' && unattended.add(i));
-    this.stages.get(level.depth)?.renderer.sync(this.world_, unattended);
+    const stage = this.stages.get(level.depth);
+    stage?.renderer.sync(this.world_, unattended);
+    // Schrift in der Welt: Zoom der kleinsten Zelle ausgleichen, damit sie nie unter ihre Größe fällt
+    if (stage && this.cells.length > 0) stage.scaleTexts(1 / Math.min(...this.cells.map((c) => viewZoom(c.h))));
     const brightness = NIGHT_BRIGHTNESS + (1 - NIGHT_BRIGHTNESS) * daylight(this.world_.cycle);
     for (const fx of this.nightFx) fx.colorMatrix.brightness(brightness);
     this.updateLayout(this.world_);

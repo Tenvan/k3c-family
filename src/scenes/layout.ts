@@ -39,10 +39,10 @@ export function computeLayout(seats: number, hasPartner: boolean): Cell[] {
 }
 
 /**
- * Leiste oben über die ganze Breite (zwei Zeilen): Raum, Vorrat und Hub, Tageszeit, Kampf, Bürger. Die Werte gelten für
+ * Leiste oben über die ganze Breite (drei Zeilen): Raum, Tageszeit, Kampf / Spielerwerte / Vorrat, Hub, Bürger. Die Werte gelten für
  * alle Spieler und stehen nicht in den Spielerfeldern; die Felder beginnen darunter.
  */
-export const BAR_HEIGHT = 96;
+export const BAR_HEIGHT = 134;
 
 /** Weltzeile, ab der die Kameras zeigen: der Himmel darüber entfällt, das Bild wird entsprechend größer gezoomt (B-413) */
 export const WORLD_TOP = 420;

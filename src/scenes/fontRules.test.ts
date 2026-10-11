@@ -20,7 +20,7 @@ describe('Mindest-Schriftgröße je Layout (S4.2, AC-03, bedienung.md § 2)', ()
           const font = FONTS[role];
           const min = minFontPx(seats, cell, font.art);
           if (min === null) continue;
-          const px = effectiveFontPx(font, cell);
+          const px = effectiveFontPx(font);
           if (px < min) faults.push(`${name}, Zelle ${i} (${cell.w}x${cell.h}), Rolle ${role}: ${px} px < ${min} px`);
         }
       });
@@ -38,9 +38,9 @@ describe('Mindest-Schriftgröße je Layout (S4.2, AC-03, bedienung.md § 2)', ()
     expect(minFontPx(1, computeLayout(1, true)[0]!, 'info')).toBeNull(); // Mitspieler-Zelle: Regel offen
   });
 
-  it('Welt-Schrift schrumpft mit der Zellenhöhe, HUD-Schrift nicht', () => {
-    expect(effectiveFontPx({ px: 56, space: 'world' }, { h: 330 })).toBe(28); // 330 / (1080 - WORLD_TOP) = Zoom 0,5
-    expect(effectiveFontPx({ px: 56, space: 'hud' }, { h: 330 })).toBe(56);
+  it('Welt-Schrift erscheint durch den Zoom-Ausgleich in ihrer Größe, wie die HUD-Schrift', () => {
+    expect(effectiveFontPx({ px: 32, space: 'world' })).toBe(32);
+    expect(effectiveFontPx({ px: 32, space: 'hud' })).toBe(32);
   });
 
   it('Kontrast jeder Textfarbe gegen die Kontur ≥ 4,5 : 1', () => {

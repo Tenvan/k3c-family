@@ -19,7 +19,8 @@ function sizes(cells: readonly Cell[]): Map<string, Size> {
   m.set('shared', { w: 416, h: 42 });
   m.set('clock', { w: 352, h: 42 });
   m.set('fight', { w: 288, h: 42 });
-  m.set('citizens', { w: 448, h: 120 });
+  m.set('citizens', { w: 448, h: 42 });
+  m.set('places', { w: 448, h: 120 });
   m.set('travel', { w: 512, h: 56 });
   m.set('join', { w: 480, h: 40 });
   m.set('info', { w: 448, h: 38 });
@@ -59,25 +60,32 @@ describe('hudLayout (B-337/AC-01)', () => {
     cells.forEach((c, i) => c.kind === 'player' && expect(out.get(`player:${i}`)).not.toBeNull());
   });
 
-  it('ohne Freifläche stehen die Pflichtanzeigen an ihrem Anker, Vorrat, Tageszeit und Kampf nebeneinander in der Leiste oben', () => {
+  it('ohne Freifläche stehen die Pflichtanzeigen an ihrem Anker, alle gemeinsamen Anzeigen und Spielerwerte in der Leiste oben', () => {
     for (const cells of [computeLayout(1, false), computeLayout(4, false)]) {
       const items = hudItems(cells, sizes(cells), false);
       const out = hudLayout(items, []);
       if (cells.length === 1) for (const it of items.filter((i) => i.rank === 0)) expect(out.get(it.id)).toEqual(anchorRect(it));
-      const [shared, clock, fight] = ['shared', 'clock', 'fight'].map((id) => out.get(id)!);
-      expect(shared.x).toBe(24);
+      const [info, clock, fight, shared] = ['info', 'clock', 'fight', 'shared'].map((id) => out.get(id)!);
+      expect(info.x).toBe(24);
       expect(fight.x + fight.w).toBe(GAME_WIDTH - 24);
-      expect(shared.x + shared.w).toBeLessThanOrEqual(clock.x);
+      expect(info.x + info.w).toBeLessThanOrEqual(clock.x);
       expect(clock.x + clock.w).toBeLessThanOrEqual(fight.x);
-      for (const r of [shared, clock, fight]) expect(r.y + r.h).toBeLessThanOrEqual(BAR_HEIGHT);
+      expect(shared.y).toBeGreaterThanOrEqual(info.y + info.h);
+      const bar = { x: 0, y: 0, w: GAME_WIDTH, h: BAR_HEIGHT };
+      for (const id of ['info', 'clock', 'fight', 'shared', ...cells.map((_, i) => `player:${i}`)]) {
+        const r = out.get(id)!;
+        expect(r.x >= bar.x && r.y >= bar.y && r.x + r.w <= bar.w && r.y + r.h <= bar.h, `${id} in der Leiste`).toBe(true);
+      }
     }
   });
 
-  it('Spielerzeile des obersten Feldes steht unter der Leiste oben', () => {
+  it('Spielerzeilen stehen nebeneinander in der Leiste, nicht in den Feldern', () => {
     const cells = computeLayout(2, false);
     const out = hudLayout(hudItems(cells, sizes(cells), false), []);
-    expect(out.get('player:0')!.y).toBeGreaterThanOrEqual(BAR_HEIGHT);
-    expect(out.get('player:1')!.y).toBeGreaterThan(cells[1]!.y);
+    const [a, b] = [out.get('player:0')!, out.get('player:1')!];
+    expect(a.y).toBeLessThan(BAR_HEIGHT);
+    expect(b.y).toBeLessThan(BAR_HEIGHT);
+    expect(overlaps(a, b)).toBe(false);
   });
 
   it('☰ oben links: der Vorrat in der zweiten Zeile der Leiste rückt neben den Knopf (B-337 › Beispiele)', () => {
