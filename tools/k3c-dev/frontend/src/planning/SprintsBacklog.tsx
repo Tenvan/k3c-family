@@ -15,7 +15,7 @@ import { findSession } from './planning';
 import { SprintCard } from './SprintCard';
 import { CopyPrompt } from './PromptParts';
 import { openSessions, promptSessions } from './prompts';
-import { domains, filterProjects, filterSprints, filterTickets, parseFilter, parseSplit, PROJECT_STATES, QUICK, SPLIT_DEFAULT, sortSprints, toggle, type PlanFilter } from './planning';
+import { domains, filterProjects, filterSprints, filterTickets, parseFilter, parseSplit, PROJECT_STATES, PQUICK, QUICK, SPLIT_DEFAULT, sortSprints, toggle, type PlanFilter } from './planning';
 
 const PREF = 'planning.filter';
 const SPLIT_PREF = 'planning.split';
@@ -189,15 +189,18 @@ function BacklogBar({ data, filter, setFilter }: { data: PlanningData; filter: P
 /** Projekt-Filter (B-401): Status und Domäne; wirkt nur auf die Projekte. */
 function ProjectBar({ data, filter, setFilter, hits }:
   { data: PlanningData; filter: PlanFilter; setFilter: (f: PlanFilter) => void; hits: number }) {
-  const any = filter.pstatus.length + filter.doms.length > 0;
+  const any = filter.pstatus.length + filter.pquick.length + filter.doms.length > 0;
   return (
     <Flex className="pl-bar" wrap="wrap" align="center" gap="2" aria-label="Projekt-Filter">
       {PROJECT_STATES.map((v) => <Chip key={v} label={v} on={filter.pstatus.includes(v)}
         click={() => setFilter({ ...filter, pstatus: toggle(filter.pstatus, v) })} />)}
       <span className="pl-sep" />
+      {PQUICK.map((f) => <Chip key={f.id} label={f.label} on={filter.pquick.includes(f.id)}
+        click={() => setFilter({ ...filter, pquick: toggle(filter.pquick, f.id) })} />)}
+      <span className="pl-sep" />
       {domains(data).map((d) => <Chip key={d} label={d} on={filter.doms.includes(d)}
         click={() => setFilter({ ...filter, doms: toggle(filter.doms, d) })} />)}
-      {any && <Button size="1" variant="ghost" color="gray" onClick={() => setFilter({ ...filter, pstatus: [], doms: [] })}>× zurücksetzen</Button>}
+      {any && <Button size="1" variant="ghost" color="gray" onClick={() => setFilter({ ...filter, pstatus: [], pquick: [], doms: [] })}>× zurücksetzen</Button>}
       <Text size="1" color="gray" className="pl-count">{hits} Projekte</Text>
     </Flex>
   );

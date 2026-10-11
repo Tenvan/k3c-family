@@ -32,15 +32,13 @@ describe('Sortierung', () => {
 });
 
 describe('Filter', () => {
-  it('blendet Erledigte aus, außer mit Schalter oder Schnellfilter', () => {
+  it('blendet Erledigte aus, außer mit Schalter', () => {
     expect(filterSprints(DATA, EMPTY_FILTER).map((x) => x.id)).toEqual(['M8', 'W1']);
     expect(filterSprints(DATA, { ...EMPTY_FILTER, done: true })).toHaveLength(3);
-    expect(filterSprints(DATA, { ...EMPTY_FILTER, quick: ['erledigt'] }).map((x) => x.id)).toEqual(['R1']);
   });
   it('Suche trifft ID, Titel, Tickets und Sessions; Domäne und Schnellfilter verknüpft', () => {
     expect(filterSprints(DATA, { ...EMPTY_FILTER, q: ' MCP ' }).map((x) => x.id)).toEqual(['M8']);
     expect(filterSprints(DATA, { ...EMPTY_FILTER, q: 'w1.1' }).map((x) => x.id)).toEqual(['W1']);
-    expect(filterSprints(DATA, { ...EMPTY_FILTER, quick: ['agent'] }).map((x) => x.id)).toEqual(['M8']);
     expect(filterTickets(DATA, { ...EMPTY_FILTER, prios: ['hoch'] }).map((t) => t.nr)).toEqual(['B-210', 'B-007']);
     expect(filterTickets(DATA, { ...EMPTY_FILTER, q: 'm8' }).map((t) => t.nr)).toEqual(['B-210', 'B-300']);
     expect(filterTickets(DATA, { ...EMPTY_FILTER, quick: ['ungeplant'] }).map((t) => t.nr)).toEqual(['B-011', 'B-007', 'B-012', 'B-099']);

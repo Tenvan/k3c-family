@@ -17,7 +17,7 @@
 Die unabhängige Review WZ2.8 (2026-10-11) hat neben den sofort behobenen Befunden (H1, M2, M3, M4, B-360-Dateimeldung, Ticket-Test B-363, N2, N3, Glossar) diese Punkte offen gelassen:
 
 - **M1** `SprintsBacklog.tsx` und `projects.ts`: In der Projekt-Ansicht verschwinden die Sprints ausgefilterter Projekte; „Sprints x von y“ zählt sie weiter mit. B-401/AC-02 sagt „ändert die Sprint-Liste nicht“. Mit 🧑 klären, ob das so gewollt ist (Sprints stehen nur in Projekten), und die Zählung anpassen.
-- **M5** Schnellfilter (z. B. „Aktive Sprints“, „Prio hoch“) und „Erledigte zeigen“ stehen in der Backlog-Leiste, obwohl die Entscheidung den Backlog-Filter auf Prio, Umgebung, Projekt und Suche begrenzt. Mit 🧑 bestätigen oder zurückbauen.
+- **M5** erledigt (🧑 2026-10-11): Die Sprint-Schnellfilter stehen im Projekt-Filter (B-401 Revision 2); „Erledigt“, „Prio hoch“, „Worktree-tauglich“ entfielen.
 - **N1** `ticketnr.go`: Schlägt `isRepoRoot` fehl (Junction, `subst`) oder liefert `git worktree list` einen Fehler, fehlen Worktrees und Refs ohne Hinweis in der Antwort.
 - **N4** `tables.go`: Ist das Feld `Projekt` eines Sprints leer statt `–`, springt die Fahrplan-Zeile bei jedem `plan_set` ans Tabellenende; nicht getestet.
 - **N5** `check_job.go`: Jeder Job hält die volle Ausgabe (bis 20 Jobs); nur Fehlerzeilen reichten.
@@ -60,7 +60,6 @@ Ungültige oder seltene Situation → gewolltes Verhalten. Passt nichts: `nicht 
 ## Offene Fragen
 
 - M1: Sollen Sprints ausgefilterter Projekte in der Projekt-Ansicht verschwinden und aus der Zählung fallen? 🧑
-- M5: Gehören Schnellfilter und „Erledigte zeigen“ in den Backlog-Filter? 🧑
 - Splitter: Reicht die Höhe des Detailbereichs, oder soll es zusätzlich einen senkrechten Balken zwischen den Spalten geben (Spec: „Breiten“)? 🧑
 
 ## Notizen

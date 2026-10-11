@@ -9,8 +9,8 @@ Die Reihenfolge der Arbeit ist allein der Projekt-Rang: [`../projekte/README.md`
 
 | Sprint | Domäne | Projekt | Thema | Am Ende sichtbar | Ordner |
 |---|---|---|---|---|---|
+| WZ2 | DEV | WZG | Planungs-Werkzeuge: eindeutige Nummern, Fahrplan, Flags, Prüfläufe | – | `aktiv/WZ2-planungs-werkzeuge/` |
 | W6 | CLI | WRT | Anzeigen für Bau, Lager, Hub und Bürger (B-117, B-126) | HUD und Bauplätze am TV, von 🧑 abgenommen | `aktiv/W6-anzeige-wirtschaft/` |
-| WZ2 | DEV | – | Planungs-Werkzeuge: eindeutige Nummern, Fahrplan, Flags, Prüfläufe | – | `aktiv/WZ2-planungs-werkzeuge/` |
 
 ## Offen am Gerät
 

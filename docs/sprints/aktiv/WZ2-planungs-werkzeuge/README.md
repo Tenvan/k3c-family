@@ -7,8 +7,8 @@
 - **Tickets:** B-387, B-360, B-366, B-363, B-372, B-367, B-341, B-400, B-401, B-402
 - **Start-Commit:** 2b0d0891
 - **Spec:** freigegeben
-- **Revision:** 2
-- **Freigabe:** 2026-10-11, 🧑 im Chat, Revision 2
+- **Revision:** 3
+- **Freigabe:** 2026-10-11, 🧑 im Chat, Revision 3 (Revision 2 am selben Tag; B-401 Revision 2 nach Review M5)
 
 ## Ausgangslage
 
@@ -62,7 +62,7 @@ Umzug der Planung auf die ErpApi-Ablage (B-368 verworfen); Seiten Dienste & Logs
 - **AC-06** Alte Begriffe sind ersetzt, Glossar kennt „Ziel-Ticket“ und „ABN“ (`B-367/AC-01`, `AC-02`).
 - **AC-07** Header-Ursache und Abhilfe stehen in B-341 (`B-341/AC-01`, `AC-02`).
 - **AC-08** Die Sprint-/Backlog-Ansicht der Planungsseite hat einen Splitter zwischen Backlog und Details mit einem gemeinsamen, gemerkten Anteil; die Projekt-Ansicht hat keinen (`B-400/AC-01`, `AC-02`).
-- **AC-09** Der Backlog-Filter (Prio, Umgebung, Projekt, Suche) wirkt auf Backlog- und Sprint-Liste, der Projekt-Filter (Status, Domäne) nur auf die Projekte; beide werden getrennt gemerkt (`B-401/AC-01`–`AC-03`).
+- **AC-09** Der Backlog-Filter (Suche, Prio, Umgebung, Projekt, Ticket-Schnellfilter) wirkt auf Backlog- und Sprint-Liste, der Projekt-Filter (Status, Domäne, Sprint-Schnellfilter) nur auf die Projekte; beide werden getrennt gemerkt (`B-401/AC-01`–`AC-04`).
 - **AC-10** Session-Zeilen zeigen den Titel der Session aus ihrer Datei (`B-402/AC-01`, `AC-02`).
 
 ## Offene Fragen

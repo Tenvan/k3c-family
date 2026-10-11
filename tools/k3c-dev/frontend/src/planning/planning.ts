@@ -1,7 +1,6 @@
 // Reine Logik der Ansicht „Sprints & Backlog“: Filter, Gruppierung, nächste Session. Kein React, damit Vitest sie prüft.
 import type { GitHubSprint, PlanProject, PlanSession, PlanSprint, PlanTicket, PlanningData } from '../api';
 import type { Tone } from '../ui/parts';
-import { worktreeOk } from './prompts';
 
 /** Filter und Auswahl; überleben das Neuladen nach `planning:changed` und werden gemerkt (lib/prefs). */
 export interface PlanFilter {
@@ -14,11 +13,12 @@ export interface PlanFilter {
   done: boolean;
   /** Projekt-Filter (B-401): wirkt nur auf die Projekte. `doms` = Domäne ihrer Sprints und Tickets. */
   pstatus: string[];
+  pquick: string[];
   doms: string[];
   sel: string;
 }
 
-export const EMPTY_FILTER: PlanFilter = { q: '', quick: [], prios: [], envs: [], projs: [], done: false, pstatus: [], doms: [], sel: '' };
+export const EMPTY_FILTER: PlanFilter = { q: '', quick: [], prios: [], envs: [], projs: [], done: false, pstatus: [], pquick: [], doms: [], sel: '' };
 
 /** Anteil des Detailbereichs an der rechten Spalte in Prozent (B-400); Grenzen wie auf der Tasks-Seite. */
 export const SPLIT_DEFAULT = 48;
@@ -36,17 +36,18 @@ const PRIO = ['hoch', 'mittel', 'niedrig'];
 
 export const isNext = (x: PlanSession) => x.status === 'offen' && x.agent === 'autonom';
 
-/** Schnellfilter: wirken auf Sprints oder auf Tickets, mehrere zugleich verknüpft mit „und“. */
+/** Schnellfilter des Backlog-Filters: nur Tickets, mehrere zugleich verknüpft mit „und“. Prio und Umgebung haben eigene Chips. */
 export const QUICK: { id: string; label: string; sprint?: (s: PlanSprint) => boolean; ticket?: (t: PlanTicket) => boolean }[] = [
-  { id: 'aktiv', label: 'Aktive Sprints', sprint: (s) => s.status === 'aktiv' },
-  { id: 'erledigt', label: 'Erledigt', sprint: (s) => s.status === 'erledigt' },
-  { id: 'agent', label: 'Agent offen', sprint: (s) => s.sessions.some(isNext) },
-  { id: 'autonom', label: 'Autonom', sprint: (s) => s.sessions.some((x) => x.agent === 'autonom' && x.status !== 'fertig' && x.status !== 'entwurf') },
-  { id: 'worktree', label: 'Worktree-tauglich', sprint: (s) => s.sessions.some(worktreeOk), ticket: (t) => t.env === 'offline' },
-  { id: 'hoch', label: 'Prio hoch', ticket: (t) => t.prio === 'hoch' },
   { id: 'offen', label: 'Offen', ticket: (t) => t.status === 'offen' },
   { id: 'eingeplant', label: 'Eingeplant', ticket: (t) => t.status === 'eingeplant' },
   { id: 'ungeplant', label: 'Ungeplant', ticket: (t) => !t.sprint || t.sprint === '–' },
+];
+
+/** Schnellfilter des Projekt-Filters (B-401): ein Projekt bleibt, wenn mindestens einer seiner Sprints passt. */
+export const PQUICK: { id: string; label: string; sprint: (s: PlanSprint) => boolean }[] = [
+  { id: 'aktiv', label: 'Aktive Sprints', sprint: (s) => s.status === 'aktiv' },
+  { id: 'agent', label: 'Agent offen', sprint: (s) => s.sessions.some(isNext) },
+  { id: 'autonom', label: 'Autonom', sprint: (s) => s.sessions.some((x) => x.agent === 'autonom' && x.status !== 'fertig' && x.status !== 'entwurf') },
 ];
 
 const has = (q: string, ...xs: (string | undefined)[]) => q === '' || xs.some((x) => (x ?? '').toLowerCase().includes(q));
@@ -64,7 +65,7 @@ export function filterSprints(d: PlanningData, f: PlanFilter): PlanSprint[] {
   const prioOk = (s: PlanSprint) => f.prios.length === 0 || s.tickets.some((x) => f.prios.includes(prio.get(x.split(' ')[0]) ?? ''));
   const envOk = (s: PlanSprint) => f.envs.length === 0 || s.sessions.some((x) => f.envs.includes(x.env ?? ''));
   return d.sprints.filter((s) =>
-    (f.done || f.quick.includes('erledigt') || s.status !== 'erledigt') && oneOf(f.projs, s.project) && prioOk(s) && envOk(s) &&
+    (f.done || s.status !== 'erledigt') && oneOf(f.projs, s.project) && prioOk(s) && envOk(s) &&
     quick.every((x) => x.sprint!(s)) &&
     has(q, s.id, s.title, s.tickets.join(' '), ...s.sessions.map((x) => `${x.nr} ${x.titel}`)));
 }
@@ -89,12 +90,16 @@ export function filterTickets(d: PlanningData, f: PlanFilter): PlanTicket[] {
     quick.every((x) => x.ticket!(t)) && has(q, t.nr, t.title, t.sprint));
 }
 
-/** Projekte nach dem Projekt-Filter: Status und Domäne (eines ihrer Sprints oder Tickets); der Backlog-Filter wirkt nicht. */
+/** Projekte nach dem Projekt-Filter: Status, Domäne (eines ihrer Sprints oder Tickets) und Sprint-Schnellfilter; der
+ *  Backlog-Filter wirkt nicht. */
 export function filterProjects(d: PlanningData, f: PlanFilter): PlanProject[] {
   const inDomain = (p: PlanProject) => f.doms.length === 0 ||
     d.sprints.some((s) => p.sprints.includes(s.id) && f.doms.includes(s.domain || '–')) ||
     d.tickets.some((t) => t.project === p.id && f.doms.includes(t.domain || '–'));
-  return (d.projects ?? []).filter((p) => oneOf(f.pstatus, p.status) && inDomain(p));
+  const mine = (p: PlanProject) => d.sprints.filter((s) => p.sprints.includes(s.id));
+  const pquick = PQUICK.filter((x) => f.pquick.includes(x.id));
+  return (d.projects ?? []).filter((p) => oneOf(f.pstatus, p.status) && inDomain(p) &&
+    pquick.every((x) => mine(p).some(x.sprint)));
 }
 
 /** Tickets je Domäne (alphabetisch), darin nach Prio und Nummer. */
@@ -126,8 +131,9 @@ export function parseFilter(raw: string): PlanFilter {
   try {
     const v = JSON.parse(raw) as Partial<PlanFilter>;
     const strs = (x: unknown) => (Array.isArray(x) ? x.filter((y): y is string => typeof y === 'string') : []);
-    return { q: typeof v.q === 'string' ? v.q : '', quick: strs(v.quick), prios: strs(v.prios), envs: strs(v.envs),
+    return { q: typeof v.q === 'string' ? v.q : '', quick: strs(v.quick).filter((id) => QUICK.some((x) => x.id === id)), prios: strs(v.prios), envs: strs(v.envs),
       projs: strs(v.projs), done: v.done === true, pstatus: strs(v.pstatus),
+      pquick: strs(v.pquick).filter((id) => PQUICK.some((x) => x.id === id)),
       // älterer Speicher ohne pstatus: die Domäne galt damals für Sprints und Tickets, jetzt für Projekte
       doms: Array.isArray(v.pstatus) ? strs(v.doms) : [], sel: typeof v.sel === 'string' ? v.sel : '' };
   } catch {
