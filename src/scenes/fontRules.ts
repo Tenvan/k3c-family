@@ -1,5 +1,5 @@
-import { GAME_HEIGHT, GAME_WIDTH } from '../core/constants';
-import type { Cell } from './layout';
+import { GAME_WIDTH } from '../core/constants';
+import { viewZoom, type Cell } from './layout';
 
 /**
  * Schrift des Spiels (S4.2, Beschluss Q03, `docs/rules/bedienung.md` § 2): ein Katalog aller Schriftrollen und die
@@ -21,8 +21,7 @@ export interface FontRole {
 export const OUTLINE_COLOR = '#000000';
 
 /**
- * Welt-Texte stehen im Szenenraum und schrumpfen mit `Zelle.h / GAME_HEIGHT` (Zoom 0,5 im Streifen und Viertel):
- * 56 px ergeben dort 28 px (Pflicht-Info im Streifen, `ceil(28 / 0,5)`).
+ * Welt-Texte stehen im Szenenraum und skalieren mit `viewZoom` der Zelle (Streifen und Viertel etwa 0,63).
  */
 export const FONTS = {
   playerValue: { px: 28, art: 'info', space: 'hud', color: '#ffffff' },
@@ -60,7 +59,7 @@ export function minFontPx(seats: number, cell: Pick<Cell, 'w' | 'kind'>, art: Fo
 
 /** Größe, in der der Text auf dem Bildschirm erscheint: HUD unverändert, Welt mit dem Kamera-Zoom der Zelle (`GameScene.layoutCameras`) */
 export function effectiveFontPx(font: Pick<FontRole, 'px' | 'space'>, cell: Pick<Cell, 'h'>): number {
-  return font.space === 'hud' ? font.px : (font.px * cell.h) / GAME_HEIGHT;
+  return font.space === 'hud' ? font.px : font.px * viewZoom(cell.h);
 }
 
 function luminance(hex: string): number {

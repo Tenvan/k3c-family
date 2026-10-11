@@ -27,6 +27,8 @@ import { buergerLines } from './buergerAnzeige';
 
 const STYLE = { stroke: '#000000', strokeThickness: 6, fontStyle: 'bold' };
 const BANNER_SECONDS = 2.8;
+/** Leiste oben: dunkelblau, damit sichtbar ist, was auf ihr steht (POC B-413) */
+const BAR_COLOR = 0x0a1a4a;
 /**
  * Bildschirmfeste Anzeigen: pro Split-Screen-Feld Spielerwerte, oben über die ganze Breite die Leiste für alle (Vorrat, Hub, Tageszeit, Kampf), Meldungen in der Mitte.
  * Jede Anzeige ist ein HUD-Element (`HudBox`); die Lage kommt aus `hudLayout` (B-337), neu berechnet nur bei Änderung.
@@ -82,17 +84,17 @@ export class HudScene extends Phaser.Scene {
     });
 
     // Leiste für alle Spieler: gemeinsamer Hintergrund, die Texte darin haben keinen eigenen
-    this.bar = this.add.graphics().fillStyle(0x000000, 0.6).fillRect(0, 0, GAME_WIDTH, BAR_HEIGHT).setVisible(false);
+    this.bar = this.add.graphics().fillStyle(BAR_COLOR, 1).fillRect(0, 0, GAME_WIDTH, BAR_HEIGHT).setVisible(false);
     const shared = { ...STYLE, ...fontStyle('shared') };
     this.shared = this.boxed('shared', this.add.text(0, 0, '', shared), false);
     this.clock = this.boxed('clock', this.add.text(0, 0, '', shared), false);
     this.fight = this.boxed('fight', this.add.text(0, 0, '', { ...STYLE, ...fontStyle('fight') }), false);
-    this.boxed('citizens', this.add.text(0, 0, '', { ...STYLE, ...fontStyle('shared'), align: 'right' }));
+    this.boxed('citizens', this.add.text(0, 0, '', { ...STYLE, ...fontStyle('shared') }), false);
     this.banner = this.boxed('banner', this.add.text(0, 0, '', { ...STYLE, ...fontStyle('banner'), strokeThickness: 10, align: 'center' }).setVisible(false));
     this.joinHint = this.boxed('join', this.add.text(0, 0, t('hud.joinCenter'), { ...STYLE, ...fontStyle('joinCenter') }));
     this.debug = debugEnabled(location.search) ? new DebugOverlay(this) : null;
     this.controlsHint = this.boxed('controls', this.add.text(0, 0, '', { ...STYLE, ...fontStyle('controlsHint'), strokeThickness: 4 }));
-    this.info = this.boxed('info', this.add.text(0, 0, '', { ...STYLE, ...fontStyle('roomInfo'), strokeThickness: 4 }));
+    this.info = this.boxed('info', this.add.text(0, 0, '', { ...STYLE, ...fontStyle('roomInfo'), strokeThickness: 4 }), false);
     this.travel = this.boxed('travel', this.add.text(0, 0, '', { ...STYLE, ...fontStyle('travel') }));
   }
 

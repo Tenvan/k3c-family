@@ -38,8 +38,8 @@ export const DEBUG_AREA: Rect = { x: 20, y: 780, w: 570, h: 230 };
 /** Abstand zwischen Elementen und zu Freiflächen */
 export const GAP = 8;
 
-/** Rangfolge laut 🧑 (2026-10-10): Pflicht Spielerzeile, Meldung, Skill-Leiste; der Steuerhinweis fällt zuerst weg. */
-export const RANK = { player: 0, banner: 0, skills: 0, shared: 1, citizens: 1, travel: 2, join: 3, radar: 4, info: 5, controls: 6 } as const;
+/** Rangfolge laut 🧑 (2026-10-10): Pflicht Spielerzeile, Meldung, Skill-Leiste; der Steuerhinweis fällt zuerst weg. Die Leiste oben hat eigene Zeilen: `shared` gilt für alle ihre Elemente. */
+export const RANK = { player: 0, banner: 0, skills: 0, shared: 1, travel: 2, join: 3, radar: 4, info: 5, controls: 6 } as const;
 
 export const overlaps = (a: Rect, b: Rect): boolean => a.x < b.x + b.w && b.x < a.x + a.w && a.y < b.y + b.h && b.y < a.y + a.h;
 
@@ -117,20 +117,20 @@ export function hudItems(cells: readonly Cell[], sizes: ReadonlyMap<string, Size
     if (s) items.push({ id, area, rank, ...a, w: s.w, ht: s.h });
   };
   cells.forEach((cell, i) => {
-    add(`player:${i}`, cell, RANK.player, { h: 'left', v: 'top', dx: 24, dy: cell.y === 0 ? BAR_HEIGHT + 8 : 16 }); // unter der Leiste
+    add(`player:${i}`, cell, RANK.player, { h: 'left', v: 'top', dx: 24, dy: 16 });
     add(`skills:${i}`, cell, RANK.skills, { h: 'left', v: 'bottom', dx: 24, dy: 24 });
-    add(`radar:${i}`, cell, RANK.radar, { ...radarAnchor(cell), v: 'top', dy: cell.y === 0 ? BAR_HEIGHT + 8 : 8 }); // Kompass oben, unter der Leiste
+    add(`radar:${i}`, cell, RANK.radar, { ...radarAnchor(cell), v: 'top', dy: 8 }); // Kompass oben im Feld
   });
   add('banner', SCREEN, RANK.banner, { h: 'center', v: 'middle', dx: 0, dy: 0 });
-  // Leiste oben, für alle Spieler: Vorrat links, Tageszeit in der Mitte, Kampf rechts; weicht dem Home-Button aus
-  const bar = (id: string, h: HAlign) => add(id, BAR, RANK.shared, { h, v: 'top', dx: 24, dy: Math.max(0, (BAR_HEIGHT - (sizes.get(id)?.h ?? 0)) / 2) });
-  bar('shared', 'left');
-  bar('clock', 'center');
-  bar('fight', 'right');
-  add('citizens', SCREEN, RANK.citizens, { h: 'right', v: 'top', dx: 24, dy: BAR_HEIGHT + 8 });
+  // Leiste oben, für alle Spieler, zwei Zeilen: Raum, Tageszeit, Kampf / Vorrat und Hub, Bürger; weicht dem Home-Button aus
+  const bar = (id: string, h: HAlign, row: 0 | 1) => add(id, BAR, RANK.shared, { h, v: 'top', dx: 24, dy: 6 + row * 44 });
+  bar('info', 'left', 0);
+  bar('clock', 'center', 0);
+  bar('fight', 'right', 0);
+  bar('shared', 'left', 1);
+  bar('citizens', 'right', 1);
   add('travel', SCREEN, RANK.travel, { h: 'center', v: 'bottom', dx: 0, dy: 150 });
   add('join', SCREEN, RANK.join, waiting ? { h: 'center', v: 'middle', dx: 0, dy: 120 } : { h: 'center', v: 'bottom', dx: 0, dy: 85 });
-  add('info', SCREEN, RANK.info, { h: 'left', v: 'top', dx: 20, dy: BAR_HEIGHT + 8 });
   add('controls', SCREEN, RANK.controls, { h: 'right', v: 'bottom', dx: 20, dy: 10 });
   return items;
 }

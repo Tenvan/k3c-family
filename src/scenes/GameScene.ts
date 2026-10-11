@@ -9,7 +9,7 @@ import { Timeline } from '../online/clientTimeline';
 import { Predictor } from '../online/clientPredict';
 import type { SlotInput } from '../online/clientProtocol';
 import type { GameEvent, World } from '../model/types';
-import { computeLayout, type Cell } from './layout';
+import { computeLayout, viewZoom, WORLD_TOP, type Cell } from './layout';
 import type { LobbySceneData } from './LobbyScene';
 import { leavesGame } from './lobbyLogic';
 import { LEAVE_KEY, MenuPress, REMOVE_PLAYER_KEY, idleCommands } from './optionsLogic';
@@ -372,7 +372,7 @@ export class GameScene extends Phaser.Scene {
       const cam = i === 0 ? main : this.cameras.add(0, 0, cell.w, cell.h);
       this.addNightFx(cam);
       cam.setViewport(cell.x, cell.y, cell.w, cell.h);
-      cam.setZoom(cell.h / GAME_HEIGHT);
+      cam.setZoom(viewZoom(cell.h));
       cam.stopFollow();
       const stage = plan[i]!.ready ? this.stages.get(plan[i]!.depth!) : undefined;
       if (stage) {
@@ -391,9 +391,9 @@ export class GameScene extends Phaser.Scene {
 
   private aimAtStage(cam: Phaser.Cameras.Scene2D.Camera, stage: StageView, monarch: number | null): void {
     const { world } = stage;
-    cam.setBounds(0, 0, world.widthUnits * UNIT_PX, GAME_HEIGHT);
+    cam.setBounds(0, WORLD_TOP, world.widthUnits * UNIT_PX, GAME_HEIGHT - WORLD_TOP); // ohne Himmel
     cam.setBackgroundColor(world.biome.palette.sky);
-    cam.centerOn(world.hubX * UNIT_PX, GAME_HEIGHT / 2);
+    cam.centerOn(world.hubX * UNIT_PX, (WORLD_TOP + GAME_HEIGHT) / 2);
     const view = monarch === null ? undefined : stage.renderer.playerView(monarch);
     if (view) cam.startFollow(view, true, 0.1, 0.1);
   }

@@ -39,8 +39,8 @@ describe('Mindest-Schriftgröße je Layout (S4.2, AC-03, bedienung.md § 2)', ()
   });
 
   it('Welt-Schrift schrumpft mit der Zellenhöhe, HUD-Schrift nicht', () => {
-    expect(effectiveFontPx({ px: 56, space: 'world' }, { h: 540 })).toBe(28);
-    expect(effectiveFontPx({ px: 56, space: 'hud' }, { h: 540 })).toBe(56);
+    expect(effectiveFontPx({ px: 56, space: 'world' }, { h: 330 })).toBe(28); // 330 / (1080 - WORLD_TOP) = Zoom 0,5
+    expect(effectiveFontPx({ px: 56, space: 'hud' }, { h: 330 })).toBe(56);
   });
 
   it('Kontrast jeder Textfarbe gegen die Kontur ≥ 4,5 : 1', () => {

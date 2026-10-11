@@ -57,4 +57,4 @@ Entscheidung, betroffener Umfang, wer entscheidet (🧑). Sonst `keine`.
 
 ## Notizen
 
-POC auf Branch `poc/hud-leiste-fluss` (2026-10-11): Leiste `BAR_HEIGHT` 56 px liegt über dem Himmel, die Felder bleiben unverändert (Zoom unverändert). Fluss in `stageView.ts` (`addRiver`): nur Hintergrund gespiegelt, Gebäude und Figuren noch nicht. Offen für 🧑: Himmel je Feld beschneiden (mehr Zoom, ändert Sichtweite und Schriftgrößen-Regel `fontRules`), Spiegelung der Figuren, Bürger-Zeilen rechts unter der Leiste.
+POC auf Branch `poc/hud-leiste-fluss` (2026-10-11), Stand nach Rückmeldung 🧑: Leiste oben dunkelblau, zwei Zeilen (`BAR_HEIGHT` 96 px): Raum · Tageszeit · Kampf / Vorrat und Hub · Bürger. Die Felder beginnen darunter. Der Himmel entfällt: Kameras zeigen die Welt ab `WORLD_TOP` (420), Zoom `viewZoom` (Schriftgrößen-Regel in `fontRules` folgt). Fluss in `stageView.ts` (`addRiver`): nur Hintergrund gespiegelt, Gebäude und Figuren noch nicht. Offen für 🧑: Spielerzeilen (Gold, HP) bleiben im Feld; `WORLD_TOP` ist am Höhlen-Hintergrund bemessen (Hintergrund-Höhe je Biom prüfen); Spiegelung der Figuren.

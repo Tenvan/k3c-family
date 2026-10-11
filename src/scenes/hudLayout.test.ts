@@ -80,12 +80,12 @@ describe('hudLayout (B-337/AC-01)', () => {
     expect(out.get('player:1')!.y).toBeGreaterThan(cells[1]!.y);
   });
 
-  it('☰ oben links: die Raum-Zeile rückt neben oder unter den Knopf (B-337 › Beispiele)', () => {
+  it('☰ oben links: der Vorrat in der zweiten Zeile der Leiste rückt neben den Knopf (B-337 › Beispiele)', () => {
     const cells = computeLayout(1, false);
     const items = hudItems(cells, sizes(cells), false);
-    const info = hudLayout(items, [HOME, PAUSE]).get('info')!;
-    expect(overlaps(info, PAUSE)).toBe(false);
-    expect(info).not.toEqual(anchorRect(items.find((i) => i.id === 'info')!));
+    const shared = hudLayout(items, [HOME, PAUSE]).get('shared')!;
+    expect(overlaps(shared, PAUSE)).toBe(false);
+    expect(shared).not.toEqual(anchorRect(items.find((i) => i.id === 'shared')!));
   });
 
   it('zu kleine Fläche: Elemente fallen nach Rang weg, Pflicht bleibt', () => {
