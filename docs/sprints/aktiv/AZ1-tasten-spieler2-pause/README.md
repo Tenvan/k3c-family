@@ -62,7 +62,7 @@ B-371 › Ausnahme- und Fehlerfälle (nur ein Tastatur-Spieler → Layout 1); B-
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
 | AZ1.1 | `AZ1.1-tasten-spieler-2.md` | Umsetzung | autonom | fertig |
-| AZ1.2 | `AZ1.2-pause-anzeige.md` | Umsetzung | autonom | offen |
+| AZ1.2 | `AZ1.2-pause-anzeige.md` | Umsetzung | autonom | in Arbeit |
 | AZ1.3 | `AZ1.3-review.md` | Review | autonom | offen |
 | AZ1.4 | `AZ1.4-workshop-abnahme.md` | Workshop | Mensch | offen |
 

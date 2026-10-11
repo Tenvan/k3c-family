@@ -1,6 +1,6 @@
 # AZ1.2 · Pause-Anzeige je Zelle und angehaltene Figuren-Animationen
 
-- **Status:** offen
+- **Status:** in Arbeit
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** CLI
