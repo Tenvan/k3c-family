@@ -1,6 +1,6 @@
 # AZ1.2 · Pause-Anzeige je Zelle und angehaltene Figuren-Animationen
 
-- **Status:** in Arbeit
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** CLI
@@ -45,9 +45,9 @@ Pause durch den Server im Couch-Raum (B-214); Optionen-Szene; Änderungen an Ser
 
 ## Fertig, wenn
 
-- [ ] AC-03: Test der Anzeige-Funktion grün; Browser-Pane: Band in jeder Spieler-Zelle bei Pause, weg nach „Weiter“ (Beobachtung am PC folgt in AZ1.4).
-- [ ] AC-04: Browser-Pane: Animationen während der Pause angehalten, danach wieder laufend (Beobachtung am PC folgt in AZ1.4).
-- [ ] Verbindungs-Hinweis wird nicht verdeckt; `task check` grün.
+- [x] AC-03: Test der Anzeige-Funktion grün (`pauseBanner.test.ts`); Browser-Pane nicht durchgeführt (keine Freigabe für diesen Lauf), Beobachtung am PC folgt in AZ1.4.
+- [ ] AC-04: Animationen halten bei Pause an und laufen danach weiter: umgesetzt (`anims.pauseAll()`/`resumeAll()` beim Wechsel), Beobachtung am PC in AZ1.4.
+- [x] Verbindungs-Hinweis wird nicht verdeckt (Test); `task check` grün.
 
 ## Prüfen
 
@@ -59,5 +59,8 @@ Browser-Pane laut Schritt 5, nur mit Freigabe 🧑 für diesen Lauf.
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+- **AC-03** umgesetzt und geprüft (B-333/AC-01): `src/scenes/pauseBanner.test.ts` › „nur bei devPaused === true“, „Zustand ohne das Feld … keine Anzeige“, „der Verbindungs-Hinweis hat Vorrang“, „Text Pausiert in de und en“. `task check` grün. Beobachtung am PC folgt in AZ1.4.
+- **AC-04** umgesetzt, nicht beobachtet (B-333/AC-02): `HudScene.showPause` ruft `anims.pauseAll()` bzw. `resumeAll()` nur beim Wechsel von `devPaused` auf. Der Browser-Pane-Schritt 5 wurde nicht ausgeführt, weil 🧑 ihn für diesen Lauf nicht freigegeben hat; Beobachtung (Figuren stehen still, laufen nach „Weiter“) in AZ1.4. Zu prüfen dabei: Setzt `mountView.ts` mit `mount.play(key)` eine angehaltene Animation wieder in Gang?
+- **Umsetzung:** neues Modul `src/scenes/pauseBanner.ts` (`pauseShown`, `PauseBanner`: halbtransparentes Band und „Pausiert“ in Schrift `banner` je `player`-Zelle), von `HudScene.update()` gezeichnet; Texte `hud.paused` in de und en. `GameScene.ts` unverändert.
+- **Abweichung:** `hudLayout.ts` nicht angefasst, das Band ist kein HUD-Element der Layout-Berechnung, sondern liegt über der Zelle (Tiefe 40).
+- **Neue Tickets:** keine.

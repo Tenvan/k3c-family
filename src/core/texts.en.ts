@@ -40,6 +40,7 @@ export const en: Record<TextKey, string> = {
   'hud.skillPoints': 'Skill points {n}',
   'hud.wave': 'Wave {wave}: {n} enemies',
   'hud.down': 'down · back in {s} s',
+  'hud.paused': 'Paused',
   'hud.downShort': '{s} s',
   'hud.hp': 'HP {hp}',
   'hud.playerShort': 'P{p} · {gold}/{max} · {status} · {stage}',

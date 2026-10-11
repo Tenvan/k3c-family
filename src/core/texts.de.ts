@@ -46,6 +46,7 @@ export const de = {
   'hud.skillPoints': 'Skill-Punkte {n}',
   'hud.wave': 'Welle {wave}: {n} Gegner',
   'hud.down': 'gefallen · zurück in {s} s',
+  'hud.paused': 'Pausiert',
   'hud.downShort': '{s} s',
   'hud.hp': 'HP {hp}',
   'hud.playerShort': 'P{p} · {gold}/{max} · {status} · {stage}',

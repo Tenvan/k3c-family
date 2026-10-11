@@ -9,6 +9,7 @@ import { debugEnabled } from './debugOverlay';
 import { DebugOverlay } from './debugOverlayView';
 import { gameNotice } from './lobbyLogic';
 import { FONTS, fontStyle } from './fontRules';
+import { PauseBanner, pauseShown } from './pauseBanner';
 import { RadarLayer, type RadarCell } from './radarView';
 import { SkillMenuLayer } from './skillMenuView';
 import { ActionOverlay } from './actionOverlay';
@@ -48,6 +49,9 @@ export class HudScene extends Phaser.Scene {
   private skills!: SkillMenuLayer;
   private actions!: ActionOverlay;
   private guide!: GuideOverlay;
+  private pause!: PauseBanner;
+  /** Stehen die Figuren-Animationen wegen der Pause still? (nur beim Wechsel umschalten) */
+  private animsPaused = false;
   private bannerQueue: string[] = [];
   private bannerLeft = 0;
 
@@ -65,6 +69,8 @@ export class HudScene extends Phaser.Scene {
     this.skills = new SkillMenuLayer(this);
     this.actions = new ActionOverlay(this);
     this.guide = new GuideOverlay(this);
+    this.pause = new PauseBanner(this);
+    this.animsPaused = false;
 
     const shared = { ...STYLE, ...fontStyle('shared') };
     this.shared = this.boxed('shared', this.add.text(0, 0, '', shared));
@@ -89,6 +95,7 @@ export class HudScene extends Phaser.Scene {
     this.debug?.update(game.client, world ?? null);
     const waiting = this.showHints(game, world);
     if (!world) {
+      this.showPause(undefined, null, []);
       this.arrange([], waiting);
       return;
     }
@@ -102,7 +109,18 @@ export class HudScene extends Phaser.Scene {
     this.skills.draw(cells, game.skillMenus, slotOf, device);
     this.showWorld(cells.find((c) => c.cell.kind === 'player' && c.world)?.world ?? world); // gemeinsamer Block: Stufe der ersten Zelle dieses Geräts
     this.showBanner(game, deltaMs);
+    this.showPause(world, gameNotice(game.client), cells);
     this.arrange(cells, waiting);
+  }
+
+  /** Pause-Anzeige je Zelle; die Figuren-Animationen halten nur beim Wechsel an bzw. laufen weiter (AZ1.2, B-333) */
+  private showPause(world: World | undefined, away: string | null, cells: readonly RadarCell[]): void {
+    const shown = pauseShown(world, away);
+    this.pause.draw(cells, shown);
+    if (shown === this.animsPaused) return;
+    this.animsPaused = shown;
+    if (shown) this.anims.pauseAll();
+    else this.anims.resumeAll();
   }
 
   /** Legt alle HUD-Elemente über `hudLayout` ab; neu gerechnet wird nur, wenn sich Elemente, Größen oder Freiflächen ändern. */
