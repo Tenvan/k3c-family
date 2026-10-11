@@ -12,6 +12,8 @@ export interface Effect {
   y: number;
   /** Nur `noTarget`: Text, der statt der Ringe am Monarchen erscheint */
   text?: string;
+  /** Nur `swing`: ID des Spielers, dessen Monarch ausholt (S9.7, B-396) */
+  by?: number;
 }
 
 /** Aussehen und Grenzen aller Effekte an einer Stelle (GR5.2 hängt hier Blitzgrenze und Schalter ein). */
@@ -61,7 +63,7 @@ export function effectFor(e: GameEvent, playerX: (player: number) => number | un
     case 'built': return at('built', spots.get(e.kind), 60);
     case 'playerDown': return at('down', playerX(e.player));
     // `hit` fehlt nur beim Schlag eines Gegners (Protokoll): nur der Monarch holt aus, der Treffer kommt als eigenes `hit`
-    case 'strike': return e.hit === undefined ? null : at('swing', e.x);
+    case 'strike': { const fx = e.hit === undefined ? null : at('swing', e.x); return fx && { ...fx, by: e.from }; }
     case 'castFailed': { const fx = at('noTarget', e.x, 90); return fx && { ...fx, text: t('cast.noTarget') }; }
     default: return null;
   }

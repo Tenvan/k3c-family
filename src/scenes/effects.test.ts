@@ -61,3 +61,16 @@ describe('Rückmeldung für Schlag und Skill (S9.3, B-318)', () => {
     expect([a?.x, b?.x]).toEqual([10 * UNIT_PX, 40 * UNIT_PX]);
   });
 });
+
+describe('Monarch holt aus (S9.7, B-396)', () => {
+  it('Schlag mit und ohne Treffer: die Ausholbewegung gehört genau dem Spieler `from` (AC-01)', () => {
+    expect(fx({ type: 'strike', from: 4, x: 10, hit: false })?.by).toBe(4);
+    expect(fx({ type: 'strike', from: 9, x: 12, hit: true })?.by).toBe(9);
+  });
+
+  it('Schlag eines Gegners (ohne hit) und andere Effekte lassen niemanden ausholen (AC-01)', () => {
+    expect(fx({ type: 'strike', from: 7, x: 3 })).toBeNull();
+    expect(fx({ type: 'hit', x: 3, target: 'enemy', id: 1, damage: 2 })?.by).toBeUndefined();
+    expect(fx({ type: 'castFailed', from: 1, slot: 0, x: 10 })?.by).toBeUndefined();
+  });
+});

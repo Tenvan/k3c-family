@@ -268,7 +268,7 @@ export class GameScene extends Phaser.Scene {
       const isFlash = EFFECT_CONFIG[fx.kind].flash;
       if (!runEffect(isFlash, settings, now, this.lastFlashAt)) continue;
       if (isFlash) this.lastFlashAt = now;
-      view.effects.spawn(fx);
+      view.spawn(fx);
     }
   }
 

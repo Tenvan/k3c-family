@@ -18,7 +18,7 @@ In Abarbeitungs-Reihenfolge; der erste nicht erledigte Sprint ist der nächste. 
 | U5 | Debug-Overlay und Cheat-Dialog bedienbar | erledigt |
 | S8 | Spielmenü „Spiel verlassen“, Y-Belegung und Glyphen-Entscheidung | erledigt |
 | PL1 | Neues Spiel, zwei Spieler an einer Tastatur, Overlay auf der Xbox, zentrale Texte | erledigt |
-| S9 | Rückmeldung für Schlag und Skills, ein Hinweis je Spieler | aktiv |
+| S9 | Rückmeldung für Schlag und Skills, ein Hinweis je Spieler | erledigt |
 | U6 | HUD ohne Überlagerung, Optionen per Touch | aktiv |
 | LB1 | Lobby zeigt Räume und startet Spiele | erledigt |
 | AZ1 | Tasten von Spieler 2 an der Tastatur, Pause-Anzeige | aktiv |
