@@ -4,11 +4,11 @@
  * Preisschilds (`siteView.ts`, unbezahlter Bauplatz bzw. Bogen-Regal) zeigt das Overlay keinen Hinweis (B-319).
  */
 import { t } from '../core/texts';
-import { BUILDINGS } from '../model/data';
 import type { Player, World } from '../model/types';
 import type { Action, SlotAction } from '../input/slotBindings';
 import type { FontName } from './fontRules';
 import { glyphOf, type Glyph, type HintDevice } from './glyphs';
+import { offersPrice } from './priceTagRules';
 import { skillName } from './skillMenuLogic';
 import { PRICE_TAG_RANGE } from './viewRules';
 
@@ -77,10 +77,7 @@ export const HINT_FONT: FontName = 'controlsHint';
 
 /** Steht der Spieler im Bereich eines Preisschilds (gleiche Bedingung wie `siteView.ts`: unbezahlter Bauplatz bzw. Bogen-Regal)? */
 function atPriceTag(world: World, p: Player): boolean {
-  const rack = BUILDINGS.workshop.bowRack ?? 0;
-  return world.sites.some(
-    (s) => Math.abs(s.x - p.x) < PRICE_TAG_RANGE && (s.state === 'unpaid' || (s.state === 'built' && s.kind === 'workshop' && s.bows < rack)),
-  );
+  return world.sites.some((s) => Math.abs(s.x - p.x) < PRICE_TAG_RANGE && offersPrice(s));
 }
 
 /**
