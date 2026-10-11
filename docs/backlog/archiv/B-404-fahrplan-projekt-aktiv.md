@@ -4,7 +4,7 @@
 - **Typ:** Problem
 - **Prio:** niedrig
 - **Umgebung:** offline
-- **Status:** offen
+- **Status:** verworfen
 - **Sprint:** –
 - **Projekt:** WZG
 - **Erstellt:** 2026-10-11
@@ -54,4 +54,4 @@ Entscheidung, betroffener Umfang, wer entscheidet (🧑). Sonst `keine`.
 
 ## Notizen
 
-Links, Messwerte, verworfene Ansätze. Darf leer bleiben (`–`).
+Verworfen (2026-10-11): älterer Build, nicht reproduzierbar. Der Code, der die Projekt-Spalte im Fahrplan füllt (`"Projekt": sp.Project` in `tables.go`), kam mit dem WZ2-PR (`008803c0`, 14:52) nach `develop`; ein k3c-dev-Build davor schreibt `–`. Mit dem aktuellen Code und einer Kopie der echten `docs/` bleibt die Projekt-Zelle in allen Schritten (Anlegen bis Aktivieren) `WZG`. Der Regressionstest `TestFahrplanAktivierterSprintTraegtProjekt` in `roadmap_test.go` sichert das ab. Nicht belegt: welcher Build WZ3 angelegt hat.

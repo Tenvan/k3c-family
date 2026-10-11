@@ -144,7 +144,6 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-400](B-400-planung-splitter-merken.md) | DEV | Idee | niedrig | eingeplant | WZ2 | Die Planungsseite trennt Backlog und Details mit einem Splitter, dessen Stellung gemerkt wird |
 | [B-401](B-401-planung-filter-getrennt.md) | DEV | Idee | niedrig | eingeplant | WZ2 | Der Backlog-Filter wirkt nur auf den Backlog, der Projekt-Filter nur auf die Projekte |
 | [B-402](B-402-planung-session-titel.md) | DEV | Idee | mittel | eingeplant | WZ2 | Die Planungsseite zeigt in den Session-Zeilen den Titel der Session |
-| [B-404](B-404-fahrplan-projekt-aktiv.md) | DEV | Problem | niedrig | offen | – | Die Fahrplan-Zeile eines aktivierten Sprints trägt sein Projekt statt „–“ |
 | [B-406](B-406-splitter-dom-test.md) | DEV | Schuld | niedrig | offen | – | Doppelklick und Ziehen des Splitters sind in einer DOM-Umgebung getestet |
 
 ## Archiv
@@ -378,3 +377,4 @@ Zeile in diesen Abschnitt.
 | [B-337](archiv/B-337-hud-elemente-ohne-ueberlagerung.md) | CLI | Idee | hoch | erledigt | U6 | Jede HUD-Anzeige ist ein eigenes Element mit optionalem Hintergrund und Rahmen, und HUD-Elemente überlagern sich nicht |
 | [B-405](archiv/B-405-k3c-dev-gotest-haengt.md) | DEV | Problem | mittel | verworfen | – | Der vollständige Go-Test von tools/k3c-dev läuft ohne Hänger durch |
 | [B-403](archiv/B-403-wz2-review-nachtraege.md) | DEV | Schuld | mittel | erledigt | WZ3 | Review-Nachträge zu Sprint WZ2: Filter-Zählung, Schnellfilter, Splitter-Test und Kleinigkeiten |
+| [B-404](archiv/B-404-fahrplan-projekt-aktiv.md) | DEV | Problem | niedrig | verworfen | – | Die Fahrplan-Zeile eines aktivierten Sprints trägt sein Projekt statt „–“ |
