@@ -45,10 +45,10 @@ Punkt scheitert → Ticket, Sprint der Session bleibt aktiv.
 ## Akzeptanzkriterien
 
 - **AC-01** Alle Controller-Prüfungen sind gesammelt nachgeholt (B-314/AC-01, B-314/AC-02).
-- **AC-02** DBG3/AC-04 am Handy: `/dm` neben dem laufenden Spiel bedient (aus DBG3.4, PJ3).
+- **AC-02** Entfällt (Beschluss 🧑 2026-10-11: Handy ist kein Gerät mehr, HW1.3 verworfen); ehemals DBG3/AC-04 am Handy.
 - **AC-03** LP1/AC-04: Landingpage und Entwicklerseite am PC mit Tastatur bedient (aus LP1.4, PJ3).
 - **AC-04** LT1/AC-06: Messlauf am Pi über eine Nacht mit Tabelle und Bewertung in B-042 (aus LT1.3, PJ3).
-- **AC-05** MON2/AC-05 am Handy: Monitoring-Seite unter Last angesehen (aus MON2.4, PJ3).
+- **AC-05** Entfällt (Beschluss 🧑 2026-10-11, HW1.6 verworfen); ehemals MON2/AC-05 am Handy.
 - **AC-06** RL1/AC-03 am Gerät: Pi-Image-Pull und Version am Pi und auf der Xbox (aus RL1.2, PJ3).
 - **AC-07** SO1/AC-04 am TV: Entsperren, Format mit Fallback und Dämpfung im Split-Screen (aus SO1.5, PJ3).
 - **AC-08** SO3/AC-03 und SO3/AC-04 am TV: Bedienung der Hörprobenseite und Crossfade ohne Knacken (aus SO3.3, PJ3).
@@ -61,10 +61,10 @@ keine
 
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
-| HW1.3 | `HW1.3-dm-handy.md` | Workshop | Mensch | offen |
+| HW1.3 | `HW1.3-dm-handy.md` | Workshop | Mensch | verworfen |
 | HW1.4 | `HW1.4-landingpage-pc.md` | Workshop | Mensch | offen |
 | HW1.5 | `HW1.5-messlauf-pi.md` | Workshop | Mensch | offen |
-| HW1.6 | `HW1.6-monitor-handy.md` | Workshop | Mensch | offen |
+| HW1.6 | `HW1.6-monitor-handy.md` | Workshop | Mensch | verworfen |
 | HW1.7 | `HW1.7-release-geraet.md` | Workshop | Mensch | offen |
 | HW1.8 | `HW1.8-audio-tv.md` | Workshop | Mensch | offen |
 | HW1.9 | `HW1.9-hoerprobe-tv.md` | Workshop | Mensch | offen |

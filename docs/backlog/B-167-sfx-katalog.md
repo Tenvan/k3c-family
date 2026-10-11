@@ -22,7 +22,7 @@ Ein Katalog ordnet jedem wichtigen Ereignis einen Sound mit Quelle und Lizenz zu
 
 ## Beteiligte und Zielgruppen
 
-🧑 wählt Quellen und Stil (Q15 in `docs/fragenkatalog.md`); der Agent erstellt den Katalog und baut ein; Spieler am TV und am Handy.
+🧑 wählt Quellen und Stil (Q15 in `docs/fragenkatalog.md`); der Agent erstellt den Katalog und baut ein; Spieler am TV (Xbox) und am PC.
 
 ## Anforderungen
 

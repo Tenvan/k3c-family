@@ -6,7 +6,7 @@
 
 ## Ziel
 
-Alle Prüfungen am Gerät (Xbox, TV, Pi, Handy, Controller) sind gesammelt und werden erledigt, sobald ein Gerät da ist; läuft ohne Rang neben der Rangfolge.
+Alle Prüfungen am Gerät (Xbox, TV, Pi, Controller) sind gesammelt und werden erledigt, sobald ein Gerät da ist; läuft ohne Rang neben der Rangfolge. Handy und Touch entfallen seit 2026-10-11 (Beschluss 🧑).
 
 ## Sprints
 

@@ -4,7 +4,7 @@
 - **Typ:** Problem
 - **Prio:** hoch
 - **Umgebung:** live
-- **Status:** eingeplant
+- **Status:** verworfen
 - **Sprint:** U6
 - **Projekt:** BED
 - **Erstellt:** 2026-10-07
@@ -61,6 +61,8 @@ Kleiner Bildschirm im Querformat → alle Zeilen bleiben erreichbar (ggf. kompak
 
 ## Notizen
 
+Verworfen 2026-10-11 (🧑, Chat): Touch und Handy entfallen; es zählen PC (Tastatur) und Xbox (Controller) mit höchstens 2 Spielern. Die Umsetzung (U6.1) ist erledigt und bleibt im Spiel; die Abnahme per Touch entfällt. Eigene Abnahmen legt 🧑 später bei Bedarf neu an.
+
 Befund 🧑 bei S5.4 (2026-10-07): „Optionen öffnet nur, schließt aber nicht. Menü wird von Touch-Overlay überlagert.“
 
-Screenshots 🧑 (2026-10-07, PC, `?touch=1`): Bei offener Szene liegen die Touch-Knöpfe (⛶, 1–4, », ★, Schlag, Münze) über den Zeilen „Weiter“ und „Spiel verlassen“ und über der Hinweiszeile; „Weiter“ ist nur halb sichtbar, „Spiel verlassen“ fast ganz verdeckt. Nebenbefund: Der Knopf „☰ Optionen“ (oben links) verdeckt im Spiel die HUD-Zeile „Raum … · … · n Spieler“; das gehört mit zu diesem Ticket (Anforderung: kein HUD-Text verdeckt).
+Screenshots 🧑 (2026-10-07, PC, `?touch=1`): Bei offener Szene liegen die Touch-Knöpfe (⛶, 1–4, », ★, Schlag, Münze) über den Zeilen „Weiter“ und „Spiel verlassen“ und über der Hinweiszeile; „Weiter“ ist nur halb sichtbar, „Spiel verlassen“ fast ganz verdeckt. Nebenbefund: Der Knopf „☰ Optionen“ (oben links) verdeckt im Spiel die HUD-Zeile „Raum … · … · n Spieler“.

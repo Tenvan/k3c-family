@@ -22,7 +22,7 @@ Die Musik passt zum Zustand (Tag, Abend, Nacht, Kampf, Höhle/Tiefe je Stufe, Bo
 
 ## Beteiligte und Zielgruppen
 
-🧑 wählt die Stücke aus den Hörproben (Q16 in `docs/fragenkatalog.md`); der Agent baut den Zustands-Automaten ein; Spieler am TV und am Handy.
+🧑 wählt die Stücke aus den Hörproben (Q16 in `docs/fragenkatalog.md`); der Agent baut den Zustands-Automaten ein; Spieler am TV (Xbox) und am PC.
 
 ## Anforderungen
 

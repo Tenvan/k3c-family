@@ -22,7 +22,7 @@ Spieler erkennen Flächenschläge (Warnkreis), Phasen, Boss-Lebensleiste und Eve
 
 ## Beteiligte und Zielgruppen
 
-Spieler am TV und am Handy; 🧑 testet am Gerät.
+Spieler am TV (Xbox) und am PC; 🧑 testet am Gerät.
 
 ## Anforderungen
 

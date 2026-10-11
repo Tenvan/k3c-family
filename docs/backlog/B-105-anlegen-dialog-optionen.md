@@ -22,12 +22,12 @@ Beim Anlegen eines Raums wählt man Schwierigkeitsgrad, Ziel und Niederlage-Modu
 
 ## Beteiligte und Zielgruppen
 
-Spieler (Controller, Touch, Tastatur); 🧑 testet am Gerät.
+Spieler (Controller, Tastatur); 🧑 testet am Gerät. Touch entfällt seit 2026-10-11 (Beschluss 🧑).
 
 ## Anforderungen
 
 - Auswahl Leicht bis Ultra (Standard Normal), Dev nur im Dev-Mode; Ziel und Niederlage-Modus mit Standard je Grad.
-- Bedienung mit Controller (B bleibt unbelegt), Touch und Tastatur; 70 px oben frei.
+- Bedienung mit Controller (B bleibt unbelegt) und Tastatur (Mausklick am PC bleibt erlaubt); 70 px oben frei.
 - Anzeige der gewählten Optionen in der Raumliste und im Spiel.
 
 ## Nicht-Ziele

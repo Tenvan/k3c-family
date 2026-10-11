@@ -1,6 +1,6 @@
 # HW1.3 · Abnahme Dungeon-Master-Seite am Handy (aus DBG3.4)
 
-- **Status:** offen
+- **Status:** verworfen
 - **Typ:** Workshop
 - **Agent:** Mensch
 - **Domäne:** PLAT
@@ -42,5 +42,4 @@ Am Gerät durch 🧑, siehe Schritte.
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+Verworfen 2026-10-11 (🧑, Chat): Das Handy ist kein Gerät mehr; es zählen PC (Tastatur) und Xbox (Controller) mit höchstens 2 Spielern. Der PC-Nachweis aus DBG3.4 (2026-10-07) bleibt gültig. Eine Abnahme am Handy legt 🧑 später bei Bedarf neu an.
