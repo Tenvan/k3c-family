@@ -1,6 +1,6 @@
 # WZ2.3 · Planungsseite: Flags bearbeiten
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** DEV
@@ -55,5 +55,6 @@ Bei laufendem k3c-dev stattdessen `check_run` mit `task:check:dev`. Abnahme am B
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+- AC-04 umgesetzt, geprüft: `Backlog.test.tsx` (B-363/AC-01–AC-03) grün, vor der Änderung rot (fehlende Exporte); `task check:dev` grün (Frontend, go test, golangci-lint 0 Issues).
+- Stand vorher: Prio und Umgebung am Ticket sowie Agent und Umgebung an offenen Sessions waren schon bedienbar; neu ist das Menü `Projekt` am Ticket (Werte: `–` und die Kürzel der Projekte, `projectOptions`). Agent und Umgebung bleiben nur bei offenen Sessions änderbar. `setField` (vorher `set`) zeigt bei einer Ablehnung die Meldung des Tools und ändert nichts.
+- Nicht geprüft: Aussehen und Bedienung am Bildschirm (Abnahme gehört 🧑, WZ2.8). Abweichungen vom Plan: ein Go-Test auf einer Kopie von `docs/` war nicht nötig, `plan_set` mit `Prio`, `Umgebung` und `Projekt` deckt `TestTicketAnlegenAendernArchivieren` und `TestProjektZuordnung` ab. Neue Tickets: keine.

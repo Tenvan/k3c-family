@@ -16,8 +16,11 @@ const ENVS = ['offline', 'live', '?'];
 const envTone = (e = '') => (e === 'offline' ? 'ok' : e === 'live' ? 'info' : 'neutral');
 const TARGET = 'planning.target';
 
+/** Werte des Felds Projekt: `–` (kein Projekt) und die Kürzel aller Projekte. */
+export const projectOptions = (data: PlanningData): string[] => ['–', ...(data.projects ?? []).map((p) => p.id)];
+
 /** Kopf-Feld setzen; ein Fehler (z. B. unbekannter Wert) erscheint als Hinweis, der Rest kommt über `planning:changed`. */
-const set = (id: string, field: string, value: string) => backend.planningSet(id, field, value).catch((e) => window.alert(errorText(e)));
+export const setField = (id: string, field: string, value: string) => backend.planningSet(id, field, value).catch((e) => window.alert(errorText(e)));
 
 /** Ziel der Backlog-Prompts: gemerkter Sprint, fehlt er inzwischen, der erste offene, sonst „neu“. */
 function useTarget(ids: string[]): [string, (v: string) => void] {
@@ -64,10 +67,13 @@ export function BacklogList({ data, tickets, sel }: { data: PlanningData; ticket
               <Checkbox size="1" aria-label={`${t.nr} markieren`} checked={checked.has(t.nr)} onCheckedChange={(on) => check(t.nr, on === true)} />
               <code>{t.nr}</code>
               <span className="pl-title">{t.title}</span>
-              <FieldMenu label="Prio" value={t.prio} options={PRIOS} onPick={(v) => void set(t.nr, 'Prio', v)}>
+              <FieldMenu label="Prio" value={t.prio} options={PRIOS} onPick={(v) => void setField(t.nr, 'Prio', v)}>
                 <StatusBadge tone={prioTone(t.prio)}>{t.prio || '?'}</StatusBadge>
               </FieldMenu>
-              <FieldMenu label="Umgebung" value={t.env} options={ENVS} onPick={(v) => void set(t.nr, 'Umgebung', v)}>
+              <FieldMenu label="Projekt" value={t.project ?? '–'} options={projectOptions(data)} onPick={(v) => void setField(t.nr, 'Projekt', v)}>
+                <StatusBadge tone="neutral">{t.project || '–'}</StatusBadge>
+              </FieldMenu>
+              <FieldMenu label="Umgebung" value={t.env} options={ENVS} onPick={(v) => void setField(t.nr, 'Umgebung', v)}>
                 <StatusBadge tone={envTone(t.env)}>{t.env || '?'}</StatusBadge>
               </FieldMenu>
               <StatusBadge tone={t.status === 'eingeplant' ? 'info' : 'neutral'}>
@@ -98,10 +104,10 @@ export function SessionDetail({ data, sel, onSelect, onClose }:
         {x.typ && <span className="pl-dim">{x.typ}</span>}
         {open ? (
           <>
-            <FieldMenu label="Agent" value={x.agent} options={AGENTS} onPick={(v) => void set(x.nr, 'Agent', v)}>
+            <FieldMenu label="Agent" value={x.agent} options={AGENTS} onPick={(v) => void setField(x.nr, 'Agent', v)}>
               <StatusBadge tone={x.agent === 'autonom' ? 'ok' : 'neutral'}>{x.agent || '?'}</StatusBadge>
             </FieldMenu>
-            <FieldMenu label="Umgebung" value={x.env ?? ''} options={ENVS} onPick={(v) => void set(x.nr, 'Umgebung', v)}>
+            <FieldMenu label="Umgebung" value={x.env ?? ''} options={ENVS} onPick={(v) => void setField(x.nr, 'Umgebung', v)}>
               <StatusBadge tone={envTone(x.env)}>{x.env || '?'}</StatusBadge>
             </FieldMenu>
           </>
