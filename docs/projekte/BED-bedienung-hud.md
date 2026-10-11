@@ -19,7 +19,7 @@ In Abarbeitungs-Reihenfolge; der erste nicht erledigte Sprint ist der nächste. 
 | S8 | Spielmenü „Spiel verlassen“, Y-Belegung und Glyphen-Entscheidung | erledigt |
 | PL1 | Neues Spiel, zwei Spieler an einer Tastatur, Overlay auf der Xbox, zentrale Texte | erledigt |
 | S9 | Rückmeldung für Schlag und Skills, ein Hinweis je Spieler | erledigt |
-| U6 | HUD ohne Überlagerung, Optionen per Touch | aktiv |
+| U6 | HUD ohne Überlagerung, Optionen per Touch | erledigt |
 | LB1 | Lobby zeigt Räume und startet Spiele | erledigt |
 | AZ1 | Tasten von Spieler 2 an der Tastatur, Pause-Anzeige | erledigt |
 | GL1 | Landingpage in der gewählten Sprache | geplant |

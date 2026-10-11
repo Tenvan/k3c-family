@@ -1,6 +1,6 @@
 # U6 · CLI · HUD ohne Überlagerung, Optionen per Touch
 
-- **Status:** aktiv
+- **Status:** erledigt
 - **Projekt:** BED
 - **Domäne:** CLI
 - **Reife:** bereit
@@ -73,11 +73,11 @@ B-336 › Ausnahme- und Fehlerfälle; B-337 › Ausnahme- und Fehlerfälle (sehr
 | U6.1 | `U6.1-optionen-per-touch.md` | Umsetzung | autonom | fertig |
 | U6.2 | `U6.2-hud-elemente-layout.md` | Umsetzung | autonom | fertig |
 | U6.3 | `U6.3-review.md` | Review | autonom | fertig |
-| U6.4 | `U6.4-abnahme-gesamt.md` | Workshop | Mensch | offen |
+| U6.4 | `U6.4-abnahme-gesamt.md` | Workshop | Mensch | fertig |
 
 ## Abnahme
 
-2026-10-10 (U6.3): AC-01 bis AC-03 laut U6.1 › Ergebnis, AC-04 bis AC-06 laut U6.2 › Ergebnis (AC-05: Radar mit eigenem Hintergrund, Skill-Menü kein Element, offengelegt); AC-07 und AC-08 angenommen, Validierung offen (U6.4).
-Review ohne schwere Befunde, keine neuen Tickets. Sprint bleibt aktiv bis U6.4.
-2026-10-11 (U6.4, 🧑 am PC, ohne `?touch=1`): Optionen (Schritt 2, mit `?touch=1`) ok, HUD mit 1 Spieler ok, 2 und 4 Spieler ok, zwei Spieler in verschiedenen Stufen ok. Touch, Handy und 3–4 Spieler entfallen (Beschluss 🧑 2026-10-11, Revision 2); B-336 verworfen.
-Version: v0.18.0 vorgeschlagen (Minor: HUD-Layout und Touch-Optionen wirken im Spiel; nach den offenen Vorschlägen bis v0.17.0); nicht gesetzt (wartet auf Bestätigung 🧑).
+2026-10-10 (U6.3): AC-01 bis AC-03 laut U6.1 › Ergebnis, AC-04 bis AC-06 laut U6.2 › Ergebnis (AC-05: Radar mit eigenem Hintergrund, Skill-Menü kein Element, offengelegt); Review ohne schwere Befunde.
+2026-10-11 (U6.4, 🧑 am PC): AC-07 erfüllt (1 Spieler, 2 und 4 Mock-Spieler, zwei echte Spieler in verschiedenen Stufen, mit Debug-Overlay, keine Überlagerung). AC-08 erfüllt: Prüfliste B-337 für PC mit je Punkt Ergebnis; Mängel B-270 (Respec fehlt in `actions`), B-398 (Gold im HUD statt über dem Reiter), B-399 (Steuerhinweis verschwindet); Punkt 6a (Hub- und Materialstufen) nicht geprüft (B-117, B-342, B-315); Controller und Xbox (Punkt 7, 8, Teile von 1 und 2) nicht geprüft bis B-314.
+Touch, Handy und 3–4 Spieler entfallen (Beschluss 🧑 2026-10-11, Revision 2); B-336 verworfen, B-337 erledigt.
+Version: v0.19.0 vorgeschlagen (Minor: HUD-Layout im Spiel, Optionen per Touch; nach den offenen Vorschlägen bis v0.18.0); nicht gesetzt (wartet auf Bestätigung 🧑).
