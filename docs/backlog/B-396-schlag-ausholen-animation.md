@@ -4,13 +4,13 @@
 - **Typ:** Problem
 - **Prio:** mittel
 - **Umgebung:** live
-- **Status:** offen
-- **Sprint:** –
+- **Status:** eingeplant
+- **Sprint:** S9
 - **Projekt:** BED
 - **Erstellt:** 2026-10-11
-- **Spec:** Entwurf
+- **Spec:** freigegeben
 - **Revision:** 1
-- **Freigabe:** –
+- **Freigabe:** 2026-10-11, 🧑 im Chat, Revision 1
 
 ## Ausgangslage
 
@@ -26,9 +26,11 @@ Alle Spieler; 🧑 bei der Abnahme. Grafik: sofern der Monarch-Sprite keine Angr
 
 ## Anforderungen
 
-- Beim Ereignis `strike` spielt der Monarch dieses Spielers eine kurze Ausholbewegung, auch ohne Treffer.
-- Je Monarch getrennt, mit 2 Spielern.
-- Der Client zeichnet nur; keine neue SIM-Logik.
+- Beim Ereignis `strike` eines Monarchen (mit `hit`, mit und ohne Treffer) spielt dessen Figur die Angriffs-Animation (`attack` der Figur-Sprites in `data/sprites.json`) einmal ab; Beritten holt der Reiter aus.
+- Je Monarch getrennt: nur die Figur von `from` holt aus, bei 2 Spielern nie die andere.
+- Der Schlag eines Gegners (ohne `hit`) lässt keinen Monarchen ausholen.
+- Der Client zeichnet nur (Server-Ereignis `strike`); keine neue SIM-Logik, kein Protokoll.
+- Der Effekt-Kreis (`swing`) bleibt zusätzlich.
 
 ## Nicht-Ziele
 
@@ -48,12 +50,12 @@ Schlag während der Abklingzeit → keine neue Ausholbewegung (kein `strike`-Ere
 
 ## Akzeptanzkriterien
 
-- **AC-01** Ein Test belegt: Das Ereignis `strike` setzt am Monarchen des Spielers die Ausholbewegung, `hit` ändert daran nichts.
+- **AC-01** Ein Test belegt: Ein `strike` mit `hit` (mit oder ohne Treffer) ergibt die Ausholbewegung für genau den Spieler `from`; ein `strike` ohne `hit` (Gegner) ergibt keine.
 - **AC-02** 🧑 sieht am PC bei Schlag ohne Gegner, dass der Monarch ausholt (Beobachtung).
 
 ## Offene Fragen
 
-Ist die Ausholbewegung für die Abnahme von B-318/AC-03 nötig oder reicht der Effekt-Kreis? Entscheidet 🧑 (siehe S9.5).
+Entschieden 2026-10-11 (🧑, Chat): Die Ausholbewegung wird in S9 umgesetzt (Session S9.7); der Kreis allein genügt für B-318/AC-03 nicht. Sonst keine.
 
 ## Notizen
 

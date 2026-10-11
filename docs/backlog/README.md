@@ -147,7 +147,7 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-392](B-392-splitscreen-kamera-spieler-2.md) | CLI | Problem | hoch | offen | – | Im Split-Screen scrollt nur die Kamera von Spieler 1 mit; Spieler 2 und weitere sind nicht an ihre Ansicht gebunden |
 | [B-393](B-393-muenzbild-hinweis-fehlt.md) | CLI | Problem | mittel | offen | – | Das Münzbild vor „Hinlaufen: Münze aufheben“ erscheint im Browser nicht |
 | [B-394](B-394-xbox-overlay-gesten-abnahme.md) | PLAT | Frage | niedrig | offen | – | Overlay-Gesten (RB, LB + RB) sind an der Xbox abgenommen (B-195/AC-02) |
-| [B-396](B-396-schlag-ausholen-animation.md) | CLI | Problem | mittel | offen | – | Der Monarch holt beim Schlag ohne Ziel sichtbar aus |
+| [B-396](B-396-schlag-ausholen-animation.md) | CLI | Problem | mittel | eingeplant | S9 | Der Monarch holt beim Schlag ohne Ziel sichtbar aus |
 
 ## Archiv
 
