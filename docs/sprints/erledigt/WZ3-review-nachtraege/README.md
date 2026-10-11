@@ -1,6 +1,6 @@
 # WZ3 · DEV · Review-Nachträge zu WZ2: Filter-Zählung, Splitter-Test, Kleinigkeiten
 
-- **Status:** aktiv
+- **Status:** erledigt
 - **Projekt:** WZG
 - **Domäne:** DEV
 - **Reife:** bereit
@@ -74,4 +74,4 @@ keine
 - Umgesetzt: M1 (Zählung), N1 (Hinweise Worktrees und Refs), N4 (Fahrplan-Platz), N5 (Job-Ausgabe), N6 (Kanal statt Sleep), AC-08 (Splitter-Logik testbar).
 - `task check:dev` nur teilweise belegt, von 🧑 akzeptiert; Splitter-Doppelklick ohne DOM-Test (B-406).
 - Neue Tickets: B-404 (Fahrplan-Projekt `–`), B-406 (Splitter-DOM-Test). B-405 verworfen.
-- Abnahme durch 🧑: offen.
+- Abnahme durch 🧑: 2026-10-11 abgenommen.
