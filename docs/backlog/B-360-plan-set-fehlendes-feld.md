@@ -8,9 +8,9 @@
 - **Sprint:** WZ2
 - **Projekt:** WZG
 - **Erstellt:** 2026-10-08
-- **Spec:** Entwurf
+- **Spec:** freigegeben
 - **Revision:** 1
-- **Freigabe:** –
+- **Freigabe:** 2026-10-11, 🧑 im Chat (Sprint WZ2, Revision 2)
 
 ## Ausgangslage
 

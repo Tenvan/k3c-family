@@ -141,6 +141,9 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-394](B-394-xbox-overlay-gesten-abnahme.md) | PLAT | Frage | niedrig | offen | – | Overlay-Gesten (RB, LB + RB) sind an der Xbox abgenommen (B-195/AC-02) |
 | [B-398](B-398-gold-im-hud-nicht-ueber-reiter.md) | CLI | Idee | mittel | offen | – | Das Gold eines Spielers steht im HUD, nicht als Beutel über dem Reiter |
 | [B-399](B-399-steuerhinweis-verschwindet.md) | CLI | Problem | mittel | offen | – | Der Steuerhinweis im HUD verschwindet nach einiger Zeit |
+| [B-400](B-400-planung-splitter-merken.md) | DEV | Idee | niedrig | eingeplant | WZ2 | Die Planungsseite trennt Backlog und Details mit einem Splitter, dessen Stellung gemerkt wird |
+| [B-401](B-401-planung-filter-getrennt.md) | DEV | Idee | niedrig | eingeplant | WZ2 | Der Backlog-Filter wirkt nur auf den Backlog, der Projekt-Filter nur auf die Projekte |
+| [B-402](B-402-planung-session-titel.md) | DEV | Idee | mittel | eingeplant | WZ2 | Die Planungsseite zeigt in den Session-Zeilen den Titel der Session |
 
 ## Archiv
 
