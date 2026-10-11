@@ -143,6 +143,13 @@ export class WorldRenderer {
     return p ? this.players.views.get(p.id) : undefined;
   }
 
+  /** Der Monarch von Spieler `id` holt aus (S9.7, B-396): Angriffs-Animation der Figur bzw. des Reiters, läuft zu Ende, dann wieder Stehen/Laufen */
+  swing(id: number): void {
+    const fig = this.players.views.get(id)?.getAt(1);
+    const sprite = fig instanceof Phaser.GameObjects.Container ? fig.getAt(1) : fig;
+    if (sprite instanceof Phaser.GameObjects.Sprite) playAnim(sprite, 'attack', true);
+  }
+
   sync(world: World): void {
     this.world = world;
     this.priceTags = priceTagSites(world);

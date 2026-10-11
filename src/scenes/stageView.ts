@@ -2,6 +2,7 @@ import Phaser from 'phaser';
 import { GAME_HEIGHT, GAME_WIDTH, GROUND_Y, UNIT_PX } from '../core/constants';
 import { t } from '../core/texts';
 import type { World } from '../model/types';
+import type { Effect } from './effects';
 import { StageEffects } from './effectsView';
 import { backgroundLayers } from './objectView';
 import { WorldRenderer } from './worldRenderer';
@@ -34,6 +35,12 @@ export class StageView {
     this.layer.add(scene.add.rectangle(0, GROUND_Y, widthPx, GAME_HEIGHT - GROUND_Y, hex(palette.ground)).setOrigin(0, 0));
     this.renderer = new WorldRenderer(scene, world, this.layer);
     this.effects = new StageEffects(scene, this.layer);
+  }
+
+  /** Effekt zeichnen; ein Schlag lässt zusätzlich den Monarchen ausholen (S9.7, B-396) */
+  spawn(effect: Effect): void {
+    this.effects.spawn(effect);
+    if (effect.by !== undefined) this.renderer.swing(effect.by);
   }
 
   destroy(): void {
