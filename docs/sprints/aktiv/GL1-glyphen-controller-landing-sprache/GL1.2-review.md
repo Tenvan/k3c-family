@@ -1,6 +1,6 @@
 # GL1.2 · Review
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Review
 - **Agent:** autonom
 - **Domäne:** PLAT
@@ -51,5 +51,11 @@ Manuelle Prüfungen (Browser, Xbox, TV) nur, wenn diese Datei sie nennt und 🧑
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+2026-10-11, Agent (Worktree, offline). Review ohne Umsetzung.
+
+- **AC-02 geprüft:** `src/core/platformTextRule.test.ts` prüft `src/landing/*.ts` (ohne Tests) und den sichtbaren Text von `index.html`; `task check` grün (k3c-dev `check_run task:check`). Nachweis aus GL1.1 bestätigt.
+- **AC-06 angenommen, Validierung offen (GL1.3):** Sprachwechsel am Gerät ist Workshop (`Agent: Mensch`), nicht geprüft.
+- **Diff gelesen** (`1864c8c0..0563032c`, Sprint/gl1, PR #254 bereits in `develop`): keine schweren Befunde. Vollbild läuft weiter über `toggleLocal`, Landingpage bleibt offen (iframe), die gemerkte Kachel nutzt `dataset.id`, `showNoServer` nutzt `t('landing.noServerText')`, B ist nicht belegt.
+- **Umwelt:** In diesem Worktree fehlten die Abhängigkeiten von `tools/k3c-dev/frontend` (`task install` nachgeholt); danach `task check` und `task check:go` grün.
+- **Nicht geprüft:** Browser- oder Geräteprüfung (GL1.3).
+- **Befunde:** keine schweren; keine neuen Tickets.
