@@ -1,6 +1,6 @@
 # WZ2.2 · Fahrplan: Spalte Projekt und Einsortieren nach Rang
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** DEV
@@ -55,5 +55,6 @@ Bei laufendem k3c-dev stattdessen `check_run` mit `task:check:dev`. Manuelle Pr�
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+- AC-03 umgesetzt, geprüft: `TestFahrplanZeileNachProjektRang` (B-366/AC-01), `TestFahrplanAktivNachRang` (B-366/AC-02) und `TestFahrplanOhneProjektAmEnde` grün; ohne die Änderung an `tables.go` rot. `task check:dev` grün (go test, golangci-lint 0 Issues).
+- Neu: `tools/k3c-dev/internal/planning/roadmap_order.go` (Schlüssel Projekt-Rang, dann Platz in der Sprint-Tabelle des Projekts); `syncRoadmap` füllt die Spalte `Projekt` und setzt die Zeile nach Rang ein, wenn sie neu ist, die Tabelle wechselt oder das Projekt wechselt; Sprint ohne bekanntes Projekt steht am Tabellenende, die Antwort nennt den Grund. Tabellen ohne Spalte `Projekt` und unveränderte Zeilen behalten ihr Verhalten.
+- Abweichungen vom Plan: keine. Neue Tickets: keine. Manuell geprüft: nichts.
