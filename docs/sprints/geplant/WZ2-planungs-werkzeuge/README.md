@@ -52,34 +52,40 @@ Umzug der Planung auf die ErpApi-Ablage (B-368 verworfen); Seiten Dienste & Logs
 
 ## Akzeptanzkriterien
 
-- **AC-01** Ticket-Nummern sind über Worktrees eindeutig (`B-387/AC-01`–`AC-03`).
-- **AC-02** `plan_set` meldet kein stilles Erfolgs-Ergebnis bei fehlendem Feld (`B-360/AC-01`).
+- **AC-01** Ticket-Nummern sind über Worktrees und Remote-Refs eindeutig (`B-387/AC-01`–`AC-04`).
+- **AC-02** `plan_set` lehnt ein fehlendes Feld mit Grund ab und meldet keinen stillen Erfolg (`B-360/AC-01`).
 - **AC-03** Fahrplan-Zeilen tragen Projekt und stehen nach Rang (`B-366/AC-01`, `AC-02`).
-- **AC-04** Prio, Umgebung, Projekt (Ticket) sowie Agent, Umgebung (Session) sind in der Planungsseite änderbar, abgelehnte Werte ändern nichts (`B-363/AC-01`–`AC-03`).
-- **AC-05** `check_run` liefert bei Läufen > 60 s ein Ergebnis; `console_tail`-Doku stimmt (`B-372/AC-01`, `AC-02`).
+- **AC-04** Prio, Umgebung, Projekt (Ticket) sowie Agent, Umgebung (Session, nur offene) sind in der Planungsseite änderbar, abgelehnte Werte ändern nichts (`B-363/AC-01`–`AC-03`).
+- **AC-05** `check_run` liefert bei Läufen > 60 s ein Ergebnis; `console_tail`-Doku stimmt; `plan_set` an Sprints ohne `Prio` und Session-IDs mit Buchstaben funktionieren (`B-372/AC-01`–`AC-04`).
 - **AC-06** Alte Begriffe sind ersetzt, Glossar kennt „Ziel-Ticket“ und „ABN“ (`B-367/AC-01`, `AC-02`).
 - **AC-07** Header-Ursache und Abhilfe stehen in B-341 (`B-341/AC-01`, `AC-02`).
 
 ## Offene Fragen
 
-- B-360: Feld einfügen oder ablehnen? 🧑
-- B-363: Agent/Umgebung auch bei `fertig`/`verworfen` änderbar? Felder am Sprint? 🧑
-- B-387: Remote-Branches auf `origin` mitzählen (Vorschlag: ja, lokaler Stand der Refs)? 🧑
-- B-367: Projekt WZG oder neues PRZ-Folgeprojekt? 🧑
-- B-372: Kommt der Timeout aus MCP-Client oder k3c-dev (ungeprüft, klärt Session WZ2.4)?
-Blockierend für die Freigabe: B-360, B-363.
+Entschieden von 🧑 am 2026-10-11:
+
+- B-360: Fehlendes Feld wird **abgelehnt**, nicht eingefügt.
+- B-363: Agent/Umgebung nur bei **offenen** Sessions änderbar; **keine** Felder am Sprint.
+- B-387: Remote-Refs (`origin/develop`, `origin/sprint/*`) zählen mit, aus dem lokalen Stand, ohne Fetch.
+- B-367: Bleibt bei **WZG**, kein PRZ-Folgeprojekt.
+- B-372: Lösungsweg **Hintergrundlauf mit Lauf-ID**; woher der Timeout kommt (MCP-Client oder k3c-dev), misst WZ2.4 und trägt es in B-372 ein.
+- Domänen: WZ2.4 und WZ2.5 laufen unter **DEV**, wie der Sprint (Begründung unter Sessions).
+
+Offen: keine.
 
 ## Sessions
 
 Reife `Entwurf`: Stichpunkte statt Session-Dateien (Kriterien in Klammern). Reihenfolge nach Abhängigkeit, je Session ein Commit.
 
+Alle Sessions tragen die Domäne des Sprints (DEV), weil ein Sprint in seiner Domäne bleibt (`CLAUDE.md`, `docs/arbeitsweise.md`). Die Tickets B-372 (SRV) und B-367 (INF) behalten ihre eigene Domäne; ihr Code liegt ohnehin in `tools/k3c-dev/` bzw. ist reine Doku und Glossar der Planungs-Werkzeuge (🧑 2026-10-11).
+
 | Nr. | Inhalt | Domäne | Typ | Agent | Status |
 |---|---|---|---|---|---|
-| WZ2.1 | B-387 Ticket-Nummern über alle Worktrees, B-360 stiller Erfolg bei `plan_set` (AC-01, AC-02) | DEV | Umsetzung | autonom | offen |
+| WZ2.1 | B-387 Ticket-Nummern über alle Worktrees und Remote-Refs, B-360 stiller Erfolg bei `plan_set` (AC-01, AC-02) | DEV | Umsetzung | autonom | offen |
 | WZ2.2 | B-366 Fahrplan: Spalte Projekt, Einsortieren nach Rang (AC-03) | DEV | Umsetzung | autonom | offen |
 | WZ2.3 | B-363 Planungsseite: Flags bearbeiten (AC-04) | DEV | Umsetzung | autonom | offen |
-| WZ2.4 | B-372 `check_run` Timeout, `console_tail`-Doku, `plan_set` Sprint ohne Prio, Session-IDs mit Buchstaben (AC-05) | SRV | Umsetzung | autonom | offen |
-| WZ2.5 | B-367 Begriffe und Glossar (AC-06) | INF | Umsetzung | autonom | offen |
+| WZ2.4 | B-372 `check_run` Hintergrundlauf, `console_tail`-Doku, `plan_set` Sprint ohne Prio, Session-IDs mit Buchstaben (AC-05) | DEV | Umsetzung | autonom | offen |
+| WZ2.5 | B-367 Begriffe und Glossar (AC-06) | DEV | Umsetzung | autonom | offen |
 | WZ2.6 | B-341 Abschluss: AC-01/AC-02 gegen die Notizen prüfen, Ergebnis eintragen (AC-07) | DEV | Umsetzung | autonom | offen |
 | WZ2.7 | Review gegen alle Kriterien | DEV | Review | autonom | offen |
 

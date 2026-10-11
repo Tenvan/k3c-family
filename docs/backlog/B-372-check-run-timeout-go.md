@@ -26,7 +26,11 @@ Agenten in Review- und Umsetzungs-Sessions.
 
 ## Anforderungen
 
-`check_run` hält lange Läufe aus oder gibt eine Lauf-ID zum Abfragen zurück; Doku von `console_tail` passt zum Schema.
+- `check_run` startet lange Läufe im Hintergrund und gibt eine Lauf-ID zurück, über die Exit-Code und Fehlerzeilen abgefragt werden (🧑 2026-10-11). Kurze Läufe liefern das Ergebnis wie bisher direkt.
+- Die Server-Anweisungen nennen die aktuellen Parameter von `console_tail`.
+- `plan_set` an Sprints verlangt kein Feld `Prio` mehr (seit B-361 entfernt).
+- `plan_create` akzeptiert Session-IDs mit Buchstaben wie `K3.2a`.
+- Ob der Timeout aus MCP-Client oder k3c-dev kommt, misst WZ2.4 und trägt es unter Notizen ein; der Hintergrundlauf gilt unabhängig davon.
 
 ## Nicht-Ziele
 
@@ -46,12 +50,14 @@ Hängt ein Lauf wirklich, bricht er nach einer festen Frist mit klarer Meldung a
 
 ## Akzeptanzkriterien
 
-- **AC-01** `check_run task:check:go` liefert Exit-Code und Fehlerzeilen, auch wenn der Lauf länger als 60 s dauert.
+- **AC-01** `check_run task:check:go` liefert Exit-Code und Fehlerzeilen (direkt oder über eine Lauf-ID), auch wenn der Lauf länger als 60 s dauert.
 - **AC-02** Die Server-Anweisungen nennen die aktuellen Parameter von `console_tail`.
+- **AC-03** `plan_set` an einem Sprint ohne Feld `Prio` ist erfolgreich (Go-Test).
+- **AC-04** `plan_create` legt eine Session mit ID wie `K3.2a` an (Go-Test).
 
 ## Offene Fragen
 
-Ob der Timeout aus dem MCP-Client oder aus k3c-dev kommt, ist ungeprüft.
+–  (Lösungsweg entschieden von 🧑 am 2026-10-11: Hintergrundlauf mit Lauf-ID. Die Herkunft des Timeouts, MCP-Client oder k3c-dev, ist ungeprüft und wird in WZ2.4 gemessen; sie ändert den Lösungsweg nicht.)
 
 ## Notizen
 
