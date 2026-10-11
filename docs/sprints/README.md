@@ -48,7 +48,6 @@ Abnahmen am Gerät (`Agent: Mensch`) sammelt das Projekt ABN im Sprint HW1: [`..
 | BAL4 | REG | BAL | Abgleich Spielmetrik und Simulator | – | bereit | `geplant/BAL4-metrik-abgleich/` |
 | BR1 | REG | BAL | Balancing-Runde Wirtschaft und Spieleabend 2 (BR1.1 erledigt; zurückgestellt am 2026-10-07, Vorrang Performance, Grafik und Sound) | Pass/Fail je Kennzahl, Begründungen in `docs/rules/`, Protokoll in `docs/playtests/` | bereit | `geplant/BR1-balancing-wirtschaft/` |
 | BR2 | REG | BAL | Balancing-Runde Kampf und Bosse und Spieleabend 3 | Pass/Fail je Kennzahl, Begründungen in `docs/rules/`, Protokoll in `docs/playtests/` | bereit | `geplant/BR2-balancing-kampf/` |
-| GL1 | PLAT | BED | Landingpage in der gewählten Sprache | Landingpage zeigt nach Sprachwechsel und Neuladen English | bereit | `geplant/GL1-glyphen-controller-landing-sprache/` |
 
 Gesamtplan und Begründung: [`../plan-weiterentwicklung.md`](../plan-weiterentwicklung.md). Offene Entscheidungen: [`../fragenkatalog.md`](../fragenkatalog.md).
 
@@ -162,3 +161,4 @@ Gesamtplan und Begründung: [`../plan-weiterentwicklung.md`](../plan-weiterentwi
 | S9 | Rückmeldung für Schlag und Skills, ein Hinweis je Spieler | `erledigt/S9-rueckmeldung-overlay/` |
 | AZ1 | Tasten von Spieler 2 an der Tastatur, Pause-Anzeige | `erledigt/AZ1-tasten-spieler2-pause/` |
 | U6 | HUD ohne Überlagerung, Optionen per Touch | `erledigt/U6-hud-ohne-ueberlagerung/` |
+| GL1 | Landingpage in der gewählten Sprache | `erledigt/GL1-glyphen-controller-landing-sprache/` |
