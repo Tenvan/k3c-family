@@ -1,6 +1,6 @@
 # WZ2.6 · B-341 Header-Ursache gegen die Notizen prüfen und abschließen
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** DEV
@@ -52,5 +52,6 @@ Lesen der Logs über `logs_query`. Manuelle Prüfungen: keine.
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+- AC-07 geprüft: B-341/AC-01 mit je einer Log-Zeile aus der Wurzel (ohne Argument) und aus einem Worktree (mit Argument `checkout`) unter Notizen belegt, Vermutung **V1** bestätigt (1044 Zeilen, alle `header=true`; 33 Worktree-Zeilen, alle mit `checkout_arg=true`). B-341/AC-02: Abhilfe benannt, B-388 (erledigt, Argument `checkout`); im Client nicht änderbar.
+- Geprüft mit: `grep` auf `logs/k3c-dev.jsonl` (Zählungen und Zeilen stehen in B-341 › Notizen), `task test -- planning` grün.
+- Einschränkung: Das Log trägt den Header-Wert nicht; die Zuordnung zum Worktree folgt aus `checkout_arg`. Abweichungen vom Plan: keine. Neue Tickets: keine.
