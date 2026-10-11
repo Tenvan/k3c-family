@@ -4,7 +4,7 @@
 - **Typ:** Schuld
 - **Prio:** mittel
 - **Umgebung:** offline
-- **Status:** offen
+- **Status:** verworfen
 - **Sprint:** –
 - **Projekt:** WZG
 - **Erstellt:** 2026-10-08
@@ -67,5 +67,4 @@ Inhalt einer Session passt nicht in eine Tabellenzeile → Detailabschnitt im Sp
 
 ## Notizen
 
-Vorlage ErpApi: `C:\WORKSPACE\ErpApi\TODOs\` (README, `0-vorlagen/projekt-*.template.md`). Skill `todo-planner` lokal erst
-in 2.0.0/2.1.0; die Spec verweist auf orga-planning ≥ 3.0.0.
+Beschluss 🧑 (2026-10-11, Chat zu WZ2): Die Ablage (`docs/projekte`, `docs/sprints`, `docs/backlog`, `B-NNN`) bleibt wie sie ist, die `plan_*`-Tools laufen ausreichend. Kein Umzug auf die ErpApi-Ablage, kein Migrationsskript. Ticket verworfen und aus WZ2 genommen. Vorlage ErpApi bleibt Referenz: `C:\WORKSPACE\ErpApi\TODOs\`. Sollte die Spec `docs/standards/workbench-seiten.md` § Planung später für k3c verbindlich werden, neues Ticket.

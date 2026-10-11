@@ -4,8 +4,8 @@
 - **Typ:** Problem
 - **Prio:** mittel
 - **Umgebung:** live
-- **Status:** offen
-- **Sprint:** –
+- **Status:** eingeplant
+- **Sprint:** WZ2
 - **Projekt:** WZG
 - **Erstellt:** 2026-10-07
 - **Spec:** Entwurf
