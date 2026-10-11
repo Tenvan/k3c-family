@@ -321,7 +321,9 @@ export class GameScene extends Phaser.Scene {
   private pickPartner(world: World): number | null {
     const mine = new Set(this.client.you.map((s) => s.monarch));
     const me = world.players.find((p) => mine.has(p.index));
-    const others = world.players.filter((p) => !mine.has(p.index));
+    // nur Monarchen mit Spieler: freie und wartende (abgemeldet, getrennt) sind ausgeblendet und kein Partner (B-411)
+    const taken = (i: number) => (this.client.monarchs[i] ?? 'taken') === 'taken';
+    const others = world.players.filter((p) => !mine.has(p.index) && taken(p.index));
     if (!me || others.length === 0) return null;
     const dist = (p: { x: number }) => Math.abs(p.x - me.x);
     const nearest = others.reduce((a, b) => (dist(b) < dist(a) ? b : a));

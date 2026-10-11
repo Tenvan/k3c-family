@@ -32,6 +32,33 @@ func TestDevLagerMaximumUndFuellen(t *testing.T) {
 	}
 }
 
+// Gold-Maximum: ohne Bonus unverändert, mit Bonus +100 je Aufruf (Aufnahme von Münzen und giveGold), Füllen hebt das
+// Gold aller Spieler auf das erhöhte Maximum.
+func TestDevGoldMaximumUndFuellen(t *testing.T) {
+	isl := mustIsland(t, "dev-gold", []int{0})
+	w := isl.Stages[0]
+	p := AddIslandPlayer(isl, 0)
+	if purseMax(w) != economy.Purse.MaxGold || EconomyOf(w).PurseMax != 0 {
+		t.Fatalf("Maximum ohne Bonus %d", purseMax(w))
+	}
+	DevRaiseMaxStock(isl)
+	DevRaiseMaxStock(isl)
+	want := economy.Purse.MaxGold + 200
+	if purseMax(w) != want || EconomyOf(w).PurseMax != want {
+		t.Fatalf("Maximum %d, erwartet %d", purseMax(w), want)
+	}
+	p.Gold = economy.Purse.MaxGold
+	giveGold(w, p, 500, p.X)
+	if p.Gold != want || len(w.Coins) != 300 {
+		t.Fatalf("Gold %d, Münzen am Boden %d", p.Gold, len(w.Coins))
+	}
+	p.Gold = 5
+	DevFillStock(isl)
+	if p.Gold != want {
+		t.Fatalf("Gold %d nach fillStock, erwartet %d", p.Gold, want)
+	}
+}
+
 // Dev-Baukosten: jeder Posten höchstens 1, 0 bleibt 0; ein Bauplatz ist mit einer Münze bezahlt und zieht 1 Material.
 func TestDevBaukostenEins(t *testing.T) {
 	isl := mustIsland(t, "dev-kosten", []int{0})

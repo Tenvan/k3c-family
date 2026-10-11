@@ -75,9 +75,10 @@ type Summary struct {
 	Scale   int            `json:"timescale"` // Zeitraffer, mindestens 1 (B-232)
 	Paused  bool           `json:"paused"`    // Dev-Pause (B-232)
 	// Dev-Schalter: Baukosten 1, zusätzliches Lager-Maximum, Zeitraffer endet mit der Tageszeit
-	DevCheap     bool `json:"devCheapBuild"`
-	DevStockPlus int  `json:"devStockBonus"`
-	DevAutoReset bool `json:"devTimescaleAuto"`
+	DevCheap      bool `json:"devCheapBuild"`
+	DevStockPlus  int  `json:"devStockBonus"`
+	DevPurseBonus int  `json:"devPurseBonus"` // Gold-Maximum je Spieler zusätzlich (gleicher Bonus wie devStockBonus)
+	DevAutoReset  bool `json:"devTimescaleAuto"`
 }
 
 // DeviceInfo ist ein Gerät im Raum. ID ist nur eine Kennung (Anfang der Geräte-ID); die volle ID dient dem Wiederverbinden
@@ -96,7 +97,7 @@ func (r *Room) Summary() Summary {
 	s := Summary{
 		Code: r.Code, Depth: w.Biome.Depth, Tick: r.tick, Phase: w.Cycle.Phase, Day: w.Cycle.Day, Gold: []int{},
 		Troops: map[string]int{}, Castle: w.Castle.HP, Wave: w.Wave, Devices: r.deviceInfos(), Stages: r.stages(),
-		Scale: r.scale(), Paused: r.paused, DevCheap: r.isl.Dev.CheapBuild, DevStockPlus: r.isl.Dev.StockBonus,
+		Scale: r.scale(), Paused: r.paused, DevCheap: r.isl.Dev.CheapBuild, DevStockPlus: r.isl.Dev.StockBonus, DevPurseBonus: r.isl.Dev.StockBonus,
 		DevAutoReset: r.autoReset,
 	}
 	for _, p := range r.isl.Players() {

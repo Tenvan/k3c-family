@@ -213,7 +213,7 @@ export class HudScene extends Phaser.Scene {
       const status = p.respawnIn > 0 ? t('hud.down', { s: Math.ceil(p.respawnIn) }) : t('hud.hp', { hp: Math.ceil(p.hp) });
       const stage = nameOf('biome', world.biome.id, world.biome.name);
       const short = p.respawnIn > 0 ? t('hud.downShort', { s: Math.ceil(p.respawnIn) }) : status;
-      box.text.setVisible(true).setText(t(compact ? 'hud.playerShort' : 'hud.playerFull', { p: p.index + 1, gold: p.gold, max: ECONOMY.purse.maxGold, status: compact ? short : status, stage }));
+      box.text.setVisible(true).setText(t(compact ? 'hud.playerShort' : 'hud.playerFull', { p: p.index + 1, gold: p.gold, max: world.purseMax ?? ECONOMY.purse.maxGold, status: compact ? short : status, stage }));
     }
   }
 }

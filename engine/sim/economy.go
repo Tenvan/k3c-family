@@ -291,7 +291,7 @@ func collectCoins(w *World) {
 		var taker *Player
 		for _, p := range w.Players {
 			blocked := c.BlockedPlayerID != nil && *c.BlockedPlayerID == p.ID && w.Time < c.BlockedUntil
-			if isAlive(p) && p.Gold < economy.Purse.MaxGold && math.Abs(p.X-c.X) <= economy.PickupRangeUnits && !blocked {
+			if isAlive(p) && p.Gold < purseMax(w) && math.Abs(p.X-c.X) <= economy.PickupRangeUnits && !blocked {
 				taker = p
 				break
 			}
@@ -338,7 +338,7 @@ func collectPickups(w *World) {
 
 // giveGold füllt den Beutel, was nicht mehr passt, fällt bei x als Münzen auf den Boden.
 func giveGold(w *World, p *Player, amount int, x float64) {
-	fits := min(amount, economy.Purse.MaxGold-p.Gold)
+	fits := min(amount, purseMax(w)-p.Gold)
 	p.Gold += fits
 	scatterCoins(w, x, amount-fits)
 }

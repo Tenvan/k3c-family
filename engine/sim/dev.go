@@ -69,7 +69,7 @@ func DevSetPhase(isl *Island, phase string) bool {
 // DevFlags sind die Dev-Schalter einer Insel (nur im Speicher, nie im Spielstand).
 type DevFlags struct {
 	CheapBuild bool // alle Bau-, Ausbau- und Angebotskosten höchstens 1 je Posten
-	StockBonus int  // zusätzliches Lager-Maximum je Rohstoff (devMaxStock)
+	StockBonus int  // zusätzliches Lager-Maximum je Rohstoff und Gold-Maximum je Spieler (devMaxStock)
 }
 
 // DevStockStep und DevStockBonusMax: Schritt und Obergrenze des zusätzlichen Lager-Maximums.
@@ -86,7 +86,7 @@ func cheap(w *World, c Cost) Cost {
 	return Cost{min(c.Gold, 1), min(c.Wood, 1), min(c.Stone, 1), min(c.Copper, 1), min(c.Iron, 1), min(c.Crystal, 1)}
 }
 
-// DevRaiseMaxStock erhöht das Lager-Maximum der Insel um DevStockStep; false an der Obergrenze.
+// DevRaiseMaxStock erhöht das Lager-Maximum der Insel und das Gold-Maximum aller Spieler um DevStockStep; false an der Obergrenze.
 func DevRaiseMaxStock(isl *Island) bool {
 	if isl.Dev.StockBonus+DevStockStep > DevStockBonusMax {
 		return false
@@ -95,9 +95,15 @@ func DevRaiseMaxStock(isl *Island) bool {
 	return true
 }
 
-// DevFillStock füllt jeden Rohstoff der Insel bis zum Lager-Maximum (ein größerer Vorrat bleibt).
+// DevFillStock füllt jeden Rohstoff der Insel bis zum Lager-Maximum und das Gold aller Spieler bis zum Gold-Maximum
+// (ein größerer Vorrat bleibt).
 func DevFillStock(isl *Island) {
 	w := isl.Stages[0]
+	for _, st := range isl.Stages {
+		for _, p := range st.Players {
+			p.Gold = max(p.Gold, purseMax(st))
+		}
+	}
 	limit, ok := capacity(w)
 	if !ok {
 		return
