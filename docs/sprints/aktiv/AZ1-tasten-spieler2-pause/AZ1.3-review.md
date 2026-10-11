@@ -1,6 +1,6 @@
 # AZ1.3 · Review
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Review
 - **Agent:** autonom
 - **Domäne:** CLI
@@ -42,9 +42,9 @@ Stil, Optimierung, Umbau von Produktionscode; Browser- oder Geräteprüfungen (A
 
 ## Fertig, wenn
 
-- [ ] AC-01 und AC-02 haben einen Nachweis im Ergebnis von AZ1.1 oder sind mit Grund und Ticket verschoben; AC-03 und AC-04 stehen als `angenommen, Validierung offen (AZ1.4)`.
-- [ ] Schwere Befunde behoben oder als Ticket angelegt.
-- [ ] `task check` grün; PR des Sprints geöffnet.
+- [x] AC-01 und AC-02 haben einen Nachweis im Ergebnis von AZ1.1; AC-03 und AC-04 stehen als `angenommen, Validierung offen (AZ1.4)`.
+- [x] Schwere Befunde behoben (einer, siehe Ergebnis).
+- [x] `task check` grün; PR des Sprints geöffnet.
 
 ## Prüfen
 
@@ -54,5 +54,9 @@ task check
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+- **Review:** unabhängiger Reviewer-Agent (frischer Kontext) las `git diff origin/develop...sprint/az1`; AZ1.1 ist bereits in `develop` (#253), der Diff enthält AZ1.2. `task check` und `task check:go` liefen danach selbst: grün.
+- **Befund (schwer, behoben):** `GameScene.leaveRoom()` stoppt das HUD; stand der Raum in der Dev-Pause, blieb `anims.pauseAll()` global wirksam und im nächsten Raum standen alle Animationen still. Fix: Shutdown-Handler in `HudScene.create()` ruft `resumeAll()`.
+- **AC-01, AC-02:** Nachweis in AZ1.1 (`glyphs.test.ts`, Browser-Pane). **AC-03, AC-04:** angenommen, Validierung offen (AZ1.4); AC-03 hat den Test der Anzeige-Funktion, AC-04 ist umgesetzt, aber nicht beobachtet.
+- **Prüfung:** `task check` und `task check:go` grün.
+- **Abweichungen:** keine; kein Browser-Pane-Lauf (nicht freigegeben).
+- **Sprint:** bleibt `aktiv` (AZ1.4 offen). **Version:** v0.18.0 vorgeschlagen, nicht gesetzt.

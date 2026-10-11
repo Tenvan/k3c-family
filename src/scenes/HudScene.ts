@@ -71,6 +71,11 @@ export class HudScene extends Phaser.Scene {
     this.guide = new GuideOverlay(this);
     this.pause = new PauseBanner(this);
     this.animsPaused = false;
+    // `leaveRoom` stoppt das HUD mitten in der Pause: Der Animations-Manager ist global, die Figuren sollen im nächsten Raum laufen
+    this.events.once(Phaser.Scenes.Events.SHUTDOWN, () => {
+      if (this.animsPaused) this.anims.resumeAll();
+      this.animsPaused = false;
+    });
 
     const shared = { ...STYLE, ...fontStyle('shared') };
     this.shared = this.boxed('shared', this.add.text(0, 0, '', shared));
