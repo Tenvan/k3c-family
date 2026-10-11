@@ -70,6 +70,6 @@ Keine. Entschieden 2026-10-10 (🧑): nur Xbox-Symbole (B-339 verworfen); Symbol
 
 ## Abnahme
 
-- **2026-10-11, Review (GL1.2):** Kriterien: AC-02 `geprüft` (`platformTextRule.test.ts`, `task check` grün); AC-06 `geprüft` am Gerät (GL1.3, 🧑 „geprüft, alles ok“); AC-01, AC-03, AC-04, AC-05, AC-07 `entfällt (B-339 verworfen)`.
+- **2026-10-11, Review (GL1.2):** Kriterien: AC-02 `geprüft` (`platformTextRule.test.ts`, `task check` grün); AC-06 `geprüft` am PC (GL1.3, 🧑 „geprüft, alles ok“); AC-01, AC-03, AC-04, AC-05, AC-07 `entfällt (B-339 verworfen)`.
 - Befunde: keine schweren. Neue Tickets: keine.
-- Version: v0.15.0 vorgeschlagen (Minor: Wirkung auf der Landingpage). Noch nicht gesetzt, Bestätigung durch 🧑 ausstehend.
+- Version: v0.15.0 von 🧑 bestätigt. Gesetzt wird der Tag erst, wenn PR #267 in `develop` gemergt und `main` per Fast-Forward nachgezogen ist (`arbeitsweise.md` › Branches, Release).

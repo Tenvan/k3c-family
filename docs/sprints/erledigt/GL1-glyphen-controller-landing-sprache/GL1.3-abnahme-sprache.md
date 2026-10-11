@@ -47,8 +47,8 @@ Manuelle Prüfungen (Browser, Xbox, TV) nur, wenn diese Datei sie nennt und 🧑
 
 ## Ergebnis
 
-2026-10-11, 🧑 am Gerät (Gerät im Chat nicht genannt, bitte bei Bedarf nachtragen).
+2026-10-11, 🧑 am Gerät: PC.
 
-- **AC-06 geprüft (🧑 am Gerät):** Sprache auf English gestellt (☰ → Sprache), Landingpage neu geladen: Kacheln, Abschnitte, Statuszeile, Vollbild-Knopf und Fußleiste englisch. Zurück auf Deutsch, neu geladen: wieder deutsch. Rückmeldung: „geprüft, alles ok“.
+- **AC-06 geprüft (🧑 am Gerät, PC):** Sprache auf English gestellt (☰ → Sprache), Landingpage neu geladen: Kacheln, Abschnitte, Statuszeile, Vollbild-Knopf und Fußleiste englisch. Zurück auf Deutsch, neu geladen: wieder deutsch. Rückmeldung: „geprüft, alles ok“.
 - Abweichungen: keine gemeldet.
 - Neue Tickets: keine.
