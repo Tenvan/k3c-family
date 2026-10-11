@@ -1,6 +1,6 @@
 # AZ1.4 · Workshop: Abnahme am PC
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Workshop
 - **Agent:** Mensch
 - **Domäne:** CLI
@@ -34,8 +34,8 @@ Code ändern; Befunde werden Tickets.
 
 ## Fertig, wenn
 
-- [ ] AC-03: 🧑 sieht die Pause-Anzeige in jeder Zelle und sie verschwindet nach „Weiter“.
-- [ ] AC-04: 🧑 sieht die Figuren während der Pause stillstehen und danach wieder laufen.
+- [x] AC-03: 🧑 sieht die Pause-Anzeige in jeder Zelle und sie verschwindet nach „Weiter“.
+- [x] AC-04: 🧑 sieht die Figuren während der Pause stillstehen und danach wieder laufen.
 
 ## Prüfen
 
@@ -43,5 +43,11 @@ Beobachtung am PC durch 🧑.
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+Beobachtung 🧑 am PC, 2 Spieler an einer Tastatur, Server im Dev-Mode, `/dm` in einem zweiten Tab (2026-10-11); Agent hat die Dienste gestartet und protokolliert.
+
+- **Schritt 1** (B-371/AC-02, Gegenprobe zu AZ1.1): ok. Hinweis, Skill-Leiste und Skill-Menü von Spieler 2 nennen seine Tasten.
+- **AC-03** (B-333/AC-01): ok. „⏸ Pause“ zeigt in beiden Zellen „Pausiert“; nach „▶ Weiter“ ist die Anzeige weg.
+- **AC-04** (B-333/AC-02): ok. Die Figuren stehen während der Pause still und laufen danach wieder.
+- **Zusatzprobe** (Review-Befund AZ1.3): ok. Spiel in der Pause über das Menü verlassen, neuen Raum betreten: Die Figuren laufen (Shutdown-Handler hebt `pauseAll` auf).
+
+**Kriterien:** AC-03 und AC-04 erfüllt (🧑, PC). Abweichungen: keine. Neue Tickets: keine. B-371 und B-333 erledigt.

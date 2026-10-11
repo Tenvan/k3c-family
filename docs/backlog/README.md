@@ -107,7 +107,6 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-328](B-328-feuergeist-flammen-flaeche.md) | SIM | Frage | niedrig | offen | – | Der Feuergeist hinterlässt eine Flammen-Fläche |
 | [B-329](B-329-figuren-neue-gegner.md) | CLI | Schuld | niedrig | offen | – | Die sechs neuen Gegner zeigen eigene Figuren statt Platzhalter |
 | [B-331](B-331-einheitlicher-grafikstil-pipeline.md) | CLI | Idee | mittel | offen | – | Alle Grafiken laufen durch eine Pipeline mit Ziel-Palette und gleicher Pixeldichte |
-| [B-333](B-333-pause-anzeige.md) | CLI | Idee | mittel | eingeplant | AZ1 | Der Client zeigt einen angehaltenen Raum deutlich an und hält die Figuren-Animationen an |
 | [B-334](B-334-performance-modus.md) | CLI | Idee | hoch | eingeplant | PM1 | Der Client misst Leistung in einem Performance-Modus automatisch und überträgt die Werte an den Server |
 | [B-335](B-335-landingpage-spieler-entwicklung.md) | PLAT | Idee | hoch | eingeplant | HW1 | Die Landingpage zeigt nur Spieler-Kacheln, Entwicklungs-, Performance- und Balancing-Aufrufe liegen auf einer eigenen Entwicklerseite |
 | [B-336](B-336-touch-optionen-schliessen.md) | CLI | Problem | hoch | eingeplant | U6 | Die Optionen-Szene lässt sich per Touch vollständig bedienen und schließen, ohne vom Touch-Overlay verdeckt zu werden |
@@ -128,7 +127,6 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-368](B-368-planung-erpapi-ablage.md) | SRV | Schuld | mittel | offen | – | Die Planung liegt in der ErpApi-Ablage und k3c-dev bedient sie mit den Planungs-Tools der Workbench-Spec |
 | [B-369](B-369-texte-landingpage.md) | PLAT | Schuld | niedrig | eingeplant | GL1 | Die Landingpage zeigt ihre Texte in der gewählten Sprache |
 | [B-370](B-370-mond-bild-nacht-hinweis.md) | CLI | Frage | niedrig | offen | – | Der Hinweis „Die Nacht naht“ zeigt ein Mond-Bild vor dem Text |
-| [B-371](B-371-glyphen-tastatur-2.md) | CLI | Problem | mittel | eingeplant | AZ1 | Hinweise und Glyphen zeigen für Spieler 2 an der Tastatur dessen Tasten |
 | [B-372](B-372-check-run-timeout-go.md) | SRV | Problem | mittel | offen | – | check_run go:test und task:check:go brechen im MCP-Aufruf mit Timeout ab |
 | [B-374](B-374-preisschild-taste.md) | CLI | Frage | mittel | offen | – | Das Preisschild nennt die Taste zum Bezahlen |
 | [B-377](B-377-beispiel-rueckmeldung-servertest.md) | SRV | Schuld | niedrig | offen | – | Ein Server-Test prüft das Beispiel der Rückmeldungs-Ereignisse gegen die Simulation |
@@ -369,3 +367,5 @@ Zeile in diesen Abschnitt.
 | [B-318](archiv/B-318-schlag-skill-feedback.md) | CLI | Problem | mittel | erledigt | S9 | Schlag und Skills zeigen auch ohne Ziel sichtbar, dass die Taste ankam |
 | [B-396](archiv/B-396-schlag-ausholen-animation.md) | CLI | Problem | mittel | erledigt | S9 | Der Monarch holt beim Schlag ohne Ziel sichtbar aus |
 | [B-397](archiv/B-397-auto-merge-sprint-pr.md) | INF | Idee | mittel | erledigt | – | Der PR eines Sprints wird mit Auto-Merge geöffnet |
+| [B-371](archiv/B-371-glyphen-tastatur-2.md) | CLI | Problem | mittel | erledigt | AZ1 | Hinweise und Glyphen zeigen für Spieler 2 an der Tastatur dessen Tasten |
+| [B-333](archiv/B-333-pause-anzeige.md) | CLI | Idee | mittel | erledigt | AZ1 | Der Client zeigt einen angehaltenen Raum deutlich an und hält die Figuren-Animationen an |
