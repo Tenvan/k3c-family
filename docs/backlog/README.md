@@ -144,6 +144,7 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-401](B-401-planung-filter-getrennt.md) | DEV | Idee | niedrig | eingeplant | WZ2 | Der Backlog-Filter wirkt nur auf den Backlog, der Projekt-Filter nur auf die Projekte |
 | [B-402](B-402-planung-session-titel.md) | DEV | Idee | mittel | eingeplant | WZ2 | Die Planungsseite zeigt in den Session-Zeilen den Titel der Session |
 | [B-406](B-406-splitter-dom-test.md) | DEV | Schuld | niedrig | offen | – | Doppelklick und Ziehen des Splitters sind in einer DOM-Umgebung getestet |
+| [B-407](B-407-wz3-verweis-b403-ac08.md) | INF | Problem | hoch | offen | – | WZ3-README verweist auf B-403/AC-08, das es nicht gibt (planning.test.ts rot) |
 
 ## Archiv
 

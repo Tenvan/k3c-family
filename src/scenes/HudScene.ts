@@ -20,7 +20,8 @@ import { cellRadar, radarRect, RADAR_HEIGHT } from './radar';
 import type { HintDevice } from './glyphs';
 import { GamepadInput, type PlayerInput } from '../input/playerInput';
 import { TouchInput } from '../input/touchInput';
-import { resourceName, siteName } from './worldRenderer';
+import { siteName } from './worldRenderer';
+import { hubText, stockTexts } from './wirtschaftAnzeige';
 
 const STYLE = { stroke: '#000000', strokeThickness: 6, fontStyle: 'bold' };
 const BANNER_SECONDS = 2.8;
@@ -112,7 +113,8 @@ export class HudScene extends Phaser.Scene {
     this.actions.draw(cells, game.cameras.cameras, slotOf, device);
     this.guide.draw(cells, game.cameras.cameras, slotOf, device);
     this.skills.draw(cells, game.skillMenus, slotOf, device);
-    this.showWorld(cells.find((c) => c.cell.kind === 'player' && c.world)?.world ?? world); // gemeinsamer Block: Stufe der ersten Zelle dieses Geräts
+    // gemeinsamer Block: Stufe der ersten Zelle dieses Geräts; kurze Form bei Viertel-Zellen
+    this.showWorld(cells.find((c) => c.cell.kind === 'player' && c.world)?.world ?? world, cells.some((c) => c.cell.w < GAME_WIDTH));
     this.showBanner(game, deltaMs);
     this.showPause(world, gameNotice(game.client), cells);
     this.arrange(cells, waiting);
@@ -170,13 +172,14 @@ export class HudScene extends Phaser.Scene {
   }
 
   /** Vorrat, Tageszeit, Kampf und Reise. */
-  private showWorld(world: World): void {
+  private showWorld(world: World, compact: boolean): void {
     const tr = world.travel;
     const target = tr ? t(tr.via === 'stairsUp' ? 'hud.travelUp' : 'hud.travelDown', { depth: tr.toDepth }) : '';
     this.travel.setText(tr ? `${target}  ${'▮'.repeat(Math.ceil(tr.progress * 10))}${'▯'.repeat(10 - Math.ceil(tr.progress * 10))}` : '');
-    const stock = (['wood', 'stone', 'copper'] as const).filter((r) => r === world.biome.primaryResource || world.stock[r] > 0).map((r) => `${resourceName(r)} ${world.stock[r]}`);
+    const stock = stockTexts(world, compact);
     if (world.skillPoints > 0) stock.push(t('hud.skillPoints', { n: world.skillPoints }));
-    this.shared.setText(stock.join('  ·  '));
+    const hub = hubText(world, compact);
+    this.shared.setText(hub ? `${stock.join('  ·  ')}\n${hub}` : stock.join('  ·  '));
     this.clock.setText(clockText(world));
     const enemies = world.enemies.length + world.spawnQueue.length;
     this.fight.setText(enemies > 0 ? t('hud.wave', { wave: world.wave, n: enemies }) : '');
