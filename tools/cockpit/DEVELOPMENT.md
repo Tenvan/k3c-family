@@ -50,6 +50,7 @@ Nach Änderungen am Manifest zusätzlich im Repo-Root `npm run validate` und `np
 - **Hintergrundarbeit** (z. B. Model-Call nach `turn.complete`) mit `void …catch(() => undefined)` starten. Sonst entsteht nach Session-Ende oder im Test eine unbehandelte Rejection. Ergebnisse gegen Veralten absichern (siehe `asked === lastPrompt`).
 - **Modul-Variablen** (`lastPrompt`) überleben keinen Reload. Was über einen Reload bleiben muss, gehört in ein Atom.
 - **Elemente** auf Desktop: `Box`, `Text`, `Button`, `Input`, `Select`, `Svg` aus `$.ui.resolve(e)`. Farben über Theme-Keys (`success`, `warning`, `error`, `claude`).
+- **Erster Klick in ein Panel ohne Fokus verpufft** (Verhalten des Hosts, kein Fehler des Mods): Der Klick holt erst den Fokus. Dabei setzt der Host `isFocused` neu, zeichnet das Panel neu und tauscht das native Button-Element unter dem Zeiger aus; das Mausereignis trifft ein anderes Element und löst `onPress` nicht aus. Erst der zweite Klick wirkt. Der Baum, den der Mod zeichnet, ist mit und ohne Fokus identisch (gleiche `key`s, gleiche Buttons), im Mod lässt sich das deshalb nicht beheben. `$.ui.open({ …, focus: true })` setzt den Fokus nur, wenn das Eingabefeld leer ist und die Tastatur im Spiel ist, nicht aus einem Button in Band oder Panel heraus. Wirksam sind nur `hotkey`s an den Buttons (sie greifen, sobald das Panel den Fokus hat). Beim Prüfen: erst ins Panel klicken, dann die Buttons testen.
 
 ## Tests schreiben
 
@@ -58,6 +59,7 @@ Nach Änderungen am Manifest zusätzlich im Repo-Root `npm run validate` und `np
   - `ui.render` (AbovePrompt) → `{ type: 'Box' }`
   - `turn.complete` → `{ text }`
   - `prompt.submit` → `{ text }`
+  - `store.get` / `store.set` → `{ value: undefined }`; ein leeres `{}` weist die Test-Engine zurück (`returned neither { value } nor { deny }`) und der Test schlägt fehl
 - Op-Events antworten mit `{ value: … }`, z. B. `ui.open` → `{ value: { isPlaced: true } }`, `model.complete`, `session.usage`.
 - `mock.clock(on, { now })` für feste Zeit. Mount-Props brauchen alle Pflichtfelder (`bodyColumns`, `scroll`, `view` …); der Typecheck sagt, welche.
 - Asynchrones Nachzeichnen abwarten: `for (let i = 0; i < 100 && !(await ui.find({ key })); i++) await Promise.resolve()`.
