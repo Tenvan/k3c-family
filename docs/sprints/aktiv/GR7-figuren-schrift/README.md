@@ -1,14 +1,14 @@
 # GR7 · CLI · Figuren-Lücken, ganzzahlige Skalierung und Schrift
 
-- **Status:** geplant
+- **Status:** aktiv
 - **Projekt:** GRA
 - **Domäne:** CLI
-- **Reife:** Entwurf
+- **Reife:** bereit
 - **Tickets:** B-193, B-251, B-198, B-197, B-320
 - **Start-Commit:** –
-- **Spec:** Entwurf
+- **Spec:** freigegeben
 - **Revision:** 1
-- **Freigabe:** –
+- **Freigabe:** 2026-10-12, Chat (Ralf), Revision 1
 
 ## Ausgangslage
 
@@ -56,12 +56,19 @@ Keine passende Figur → Lücke bleibt mit Ticket, Platzhalter-Rückfall.
 
 ## Sessions
 
-Entwurf. Vor dem Aktivieren jede Session als Datei nach `docs/vorlagen/session.md` schreiben, die Kriterien in Klammern werden ihr Feld `Kriterien`.
+| Nr. | Datei | Typ | Agent | Status |
+|---|---|---|---|---|
+| GR7.1 | `GR7.1-schrift-platzhalter-partner.md` | Umsetzung | autonom | offen |
+| GR7.2 | `GR7.2-sattelsitz.md` | Umsetzung | autonom | offen |
+| GR7.3 | `GR7.3-figuren-kandidaten.md` | Workshop | Mensch | offen |
+| GR7.4 | `GR7.4-skalierung-tv.md` | Umsetzung | Mensch | offen |
+| GR7.5 | `GR7.5-review.md` | Review | autonom | offen |
 
-- GR7.1 Ganzzahlige Skalierung, Platzhaltertext aus dem Katalog (AC-02, AC-03, AC-04).
-- GR7.2 Figuren-Kandidaten und Auswahl (🧑) (AC-01).
-- GR7.3 Sattelsitz des Reiters beim Laufen und Sprinten (AC-05).
-- GR7.4 Review (Code-Sprint): alle Kriterien prüfen.
+- GR7.1 Platzhaltertext aus dem Katalog, Regel für die Mitspieler-Zelle (AC-03, AC-04).
+- GR7.2 Sattelsitz des Reiters beim Laufen und Sprinten (AC-05).
+- GR7.3 Figuren-Kandidaten und Auswahl, 🧑 wählt (AC-01).
+- GR7.4 Figuren am TV beobachten, ganzzahlig skalieren oder verwerfen, 🧑 beobachtet (AC-02).
+- GR7.5 Review (Code-Sprint): alle Kriterien prüfen; GR7.3 und GR7.4 sind keine Abhängigkeit (Hardware entkoppelt).
 
 ## Abnahme
 
