@@ -9,7 +9,7 @@ const MEASURE = {
   cost: { usd: 1.5 },
   changed: [],
 }
-const BAND = { plugin: 'orgamax-cockpit', component: 'AbovePrompt', props: { hasSurvey: false, isWorking: false, maxRows: 3, bodyColumns: 120, scroll: { offset: 0, bodyRows: 3 }, view: {} } } as const
+const BAND = { plugin: 'tenvan-cc', component: 'AbovePrompt', props: { hasSurvey: false, isWorking: false, maxRows: 3, bodyColumns: 120, scroll: { offset: 0, bodyRows: 3 }, view: {} } } as const
 
 test('Takt: 80 % nach 1 von 5 Stunden liegt 60 Punkte vor', () => {
   expect(pace({ kind: 'five_hour', percentUsed: 80, resetsAt: new Date(4 * H).toISOString() }, 0)).toBe(60)
@@ -40,7 +40,7 @@ test('Band zeichnet nur auf desktop, Details öffnet das Panel', async ($, on) =
   const desktop = await $.ui.mount({ ...BAND, surface: 'desktop' })
   expect((await desktop.find({ text: /5h 80%/ }))?.text).toContain('5h 80%')
   await desktop.press({ key: 'details' })
-  expect(opened).toEqual(['orgamax-cockpit'])
+  expect(opened).toEqual(['tenvan-cc'])
 })
 
 test('tool.check bleibt beobachtend: ein deny von unten geht unverändert durch', async ($, on) => {
@@ -54,10 +54,10 @@ test('Panel zeichnet alle Abschnitte auf desktop', async ($, on) => {
   on('session.measure', () => ({ changed: [] }))
   await $.session.measure(MEASURE)
   const pane = await $.ui.mount({
-    plugin: 'orgamax-cockpit',
+    plugin: 'tenvan-cc',
     surface: 'desktop',
     component: 'Pane',
-    requestId: 'orgamax-cockpit',
+    requestId: 'tenvan-cc',
     props: { title: 'Cockpit', isFocused: false, bodyColumns: 60, placement: 'dock', scroll: { offset: 0, bodyRows: 40 }, view: {} },
   })
   for (const title of ['Übersicht', 'Letzter Turn', 'GATE · Freigaben', 'Subagents', 'Log']) {
@@ -104,7 +104,7 @@ test('Folge-Schritt: Button füllt das Eingabefeld, erst Enter sendet und leert 
   // Enter der Person: prompt.submit aus dem Eingabefeld startet den Turn.
   await $.prompt.submit({ text: filled[0] } as never)
   expect(await band.find({ key: 'step-0' })).toBe(undefined)
-  const pane = await $.ui.mount({ plugin: 'orgamax-cockpit', surface: 'desktop', component: 'Pane', requestId: 'orgamax-cockpit', props: PANE_PROPS })
+  const pane = await $.ui.mount({ plugin: 'tenvan-cc', surface: 'desktop', component: 'Pane', requestId: 'tenvan-cc', props: PANE_PROPS })
   expect(await pane.find({ type: 'Text', text: /Agent arbeitet/ })).not.toBe(undefined)
 })
 
@@ -155,7 +155,7 @@ test('turn.step: Trefferquote des Haupt-Requests erscheint im Panel', async ($, 
   for await (const _ of $.turn.step({ turnId: 't1', index: 0, model: 'm', messageCount: 1 })) {
     // Stream leer durchlaufen
   }
-  const pane = await $.ui.mount({ plugin: 'orgamax-cockpit', surface: 'desktop', component: 'Pane', requestId: 'orgamax-cockpit', props: PANE_PROPS })
+  const pane = await $.ui.mount({ plugin: 'tenvan-cc', surface: 'desktop', component: 'Pane', requestId: 'tenvan-cc', props: PANE_PROPS })
   expect((await pane.find({ text: /Trefferquote 96 %/ }))?.text).toContain('Trefferquote 96 %')
 })
 
@@ -172,15 +172,15 @@ test('Abgebrochener Turn: kein Vorschlag, Agent-Status über agent.list abgeglic
   on('turn.complete', () => ({ text: 'Fertig.' }))
   await $.agent.spawn({ tool_use_id: 'u1', prompt: 'p', description: 'Suche', subagentType: 'Explore', provider: { plugin: 'test', tier: 'user' }, parentModel: 'm', background: true, fork: false })
   await $.turn.complete({ ...TURN, reason: 'aborted', isAborted: true })
-  const pane = await $.ui.mount({ plugin: 'orgamax-cockpit', surface: 'desktop', component: 'Pane', requestId: 'orgamax-cockpit', props: PANE_PROPS })
+  const pane = await $.ui.mount({ plugin: 'tenvan-cc', surface: 'desktop', component: 'Pane', requestId: 'tenvan-cc', props: PANE_PROPS })
   expect(await pane.find({ text: /✓ fertig/ })).toBeDefined()
   expect(calls).toBe(0)
 })
 
 test('title: Version und Build-Stempel mit Uhrzeit', () => {
-  expect(title(null)).toBe('orgaMAX Claude Cockpit')
-  expect(titleText(null)).toBe('Claude Cockpit')
-  expect(title({ version: '0.3.0', builtAt: new Date(2026, 9, 12, 9, 5).getTime() })).toBe('orgaMAX Claude Cockpit (Version 0.3.0, Build: 2026-10-12 09:05)')
+  expect(title(null)).toBe('Tenvan CC')
+  expect(titleText(null)).toBe('Tenvan CC')
+  expect(title({ version: '0.3.0', builtAt: new Date(2026, 9, 12, 9, 5).getTime() })).toBe('Tenvan CC (Version 0.3.0, Build: 2026-10-12 09:05)')
 })
 
 test('Titelleiste in Band und Panel mit Version aus plugin.json', async ($, on) => {
@@ -193,10 +193,10 @@ test('Titelleiste in Band und Panel mit Version aus plugin.json', async ($, on) 
   on('ui.render', { component: 'AbovePrompt' }, () => ({ type: 'Box' as const }))
   await $.session.start({ cwd: '.', surface: 'desktop', isInteractive: true })
   await $.session.measure(MEASURE)
-  const expected = 'Claude Cockpit (Version 9.9.9, Build: 2026-10-12 14:30)'
+  const expected = 'Tenvan CC (Version 9.9.9, Build: 2026-10-12 14:30)'
   const band = await $.ui.mount({ ...BAND, surface: 'desktop' })
   expect((await band.find({ type: 'Text', text: expected }))?.text).toBe(expected)
-  const pane = await $.ui.mount({ plugin: 'orgamax-cockpit', surface: 'desktop', component: 'Pane', requestId: 'orgamax-cockpit', props: PANE_PROPS })
+  const pane = await $.ui.mount({ plugin: 'tenvan-cc', surface: 'desktop', component: 'Pane', requestId: 'tenvan-cc', props: PANE_PROPS })
   expect((await pane.find({ type: 'Text', text: expected }))?.text).toBe(expected)
 })
 
@@ -211,7 +211,7 @@ test('Kompaktieren ist immer sichtbar, Legende nur im Band (Panel ohne Legende)'
   expect(leg).toContain('im Plan · zu schnell · fast leer · Agents')
   expect(leg).toContain('<title>🟩 im Plan – ')
   expect(leg).toContain('"isInteractive":true')
-  const pane = await $.ui.mount({ plugin: 'orgamax-cockpit', surface: 'desktop', component: 'Pane', requestId: 'orgamax-cockpit', props: PANE_PROPS })
+  const pane = await $.ui.mount({ plugin: 'tenvan-cc', surface: 'desktop', component: 'Pane', requestId: 'tenvan-cc', props: PANE_PROPS })
   expect(await pane.find({ type: 'Text', text: 'Legende' })).toBe(undefined)
 })
 
@@ -223,7 +223,7 @@ test('Protokoll: Prompt gekürzt, Ziel des Tool-Calls, Pfade auf zwei Segmente',
   expect(oneLine('a\n  b   c', 80)).toBe('a b c')
   expect(oneLine('x'.repeat(100), 10)).toBe('xxxxxxxxx…')
   expect(toolTarget({ file_path: ['C:', 'W', 'bridge', 'appconfig.go'].join(String.fromCharCode(92)) })).toBe('bridge/appconfig.go')
-  expect(toolTarget({ pattern: 'erpapi' })).toBe('erpapi')
+  expect(toolTarget({ pattern: 'tenvan' })).toBe('tenvan')
   expect(toolTarget(undefined)).toBe('')
 })
 
@@ -241,7 +241,7 @@ test('Panel zeigt „Agent arbeitet“ solange ein Turn läuft', async ($, on) =
   on('prompt.submit', () => ({ text: 'los' }))
   await $.session.start({ cwd: '.', surface: 'desktop', isInteractive: true })
   await $.prompt.submit({ text: 'los' } as never)
-  const pane = await $.ui.mount({ plugin: 'orgamax-cockpit', surface: 'desktop', component: 'Pane', requestId: 'orgamax-cockpit', props: PANE_PROPS })
+  const pane = await $.ui.mount({ plugin: 'tenvan-cc', surface: 'desktop', component: 'Pane', requestId: 'tenvan-cc', props: PANE_PROPS })
   expect(await pane.find({ type: 'Text', text: /Agent arbeitet/ })).not.toBe(undefined)
 })
 
@@ -251,7 +251,7 @@ test('Log: nur die letzten 10 Einträge, Prompt auf 80 Zeichen gekürzt, Quelle 
   on('prompt.submit', () => ({ text: '' }))
   for (let i = 1; i <= 12; i++) await $.prompt.submit({ text: `prompt-${String(i).padStart(2, '0')}` } as never)
   await $.prompt.submit({ text: `lang-${'x'.repeat(200)}` } as never)
-  const pane = await $.ui.mount({ plugin: 'orgamax-cockpit', surface: 'desktop', component: 'Pane', requestId: 'orgamax-cockpit', props: PANE_PROPS })
+  const pane = await $.ui.mount({ plugin: 'tenvan-cc', surface: 'desktop', component: 'Pane', requestId: 'tenvan-cc', props: PANE_PROPS })
   expect(await pane.find({ type: 'Text', text: /prompt-03/ })).toBe(undefined)
   expect(await pane.find({ type: 'Text', text: /prompt-04/ })).not.toBe(undefined)
   expect(await pane.find({ type: 'Text', text: /prompt-12/ })).not.toBe(undefined)
@@ -390,7 +390,7 @@ test('Panel: Karte Kontextfenster nennt den Grund, wenn die Engine keine Aufteil
   on('session.measure', () => ({ changed: [] }))
   on('session.usage', () => ({ value: { startedAt: 0, context: { window: 1_000_000, tokens: 1, percent: 1 }, rateLimits: [] } }) as never)
   await $.session.measure(MEASURE)
-  const pane = await $.ui.mount({ plugin: 'orgamax-cockpit', surface: 'desktop', component: 'Pane', requestId: 'orgamax-cockpit', props: PANE_PROPS })
+  const pane = await $.ui.mount({ plugin: 'tenvan-cc', surface: 'desktop', component: 'Pane', requestId: 'tenvan-cc', props: PANE_PROPS })
   for (let i = 0; i < 3000 && !(await pane.find({ type: 'Text', text: /keine Aufteilung/ })); i++) await Promise.resolve()
   expect(await pane.find({ type: 'Text', text: /keine Aufteilung/ })).not.toBe(undefined)
 })
@@ -401,7 +401,7 @@ test('Arbeitszeile: Phase in Token-Farbe, Schritt und Zähler; Platzhalter Worki
   on('prompt.submit', () => ({ text: 'los' }))
   await $.prompt.submit({ text: 'los' } as never)
   const props = { word: 'Creating notes.md', message: null, suffix: '…', mode: 'thinking' as const }
-  const line = await $.ui.mount({ plugin: 'orgamax-cockpit', surface: 'desktop', component: 'Spinner', props })
+  const line = await $.ui.mount({ plugin: 'tenvan-cc', surface: 'desktop', component: 'Spinner', props })
   const phase = await line.find({ type: 'Text', text: /Denkt nach/ })
   expect(JSON.stringify(phase)).toContain(THEME.info)
   expect(await line.find({ type: 'Text', text: 'Creating notes.md' })).not.toBe(undefined)
@@ -411,7 +411,7 @@ test('Arbeitszeile: Phase in Token-Farbe, Schritt und Zähler; Platzhalter Worki
 })
 
 test('Dauerzeile: Fertig nach Dauer in Erfolgsfarbe', async ($, on) => {
-  const line = await $.ui.mount({ plugin: 'orgamax-cockpit', surface: 'terminal', component: 'TurnDuration', props: { word: 'Baked', durationMs: 64_000 } })
+  const line = await $.ui.mount({ plugin: 'tenvan-cc', surface: 'terminal', component: 'TurnDuration', props: { word: 'Baked', durationMs: 64_000 } })
   expect(JSON.stringify(await line.find({ type: 'Text', text: '✓ Fertig' }))).toContain(THEME.success)
   expect(await line.find({ type: 'Text', text: / nach 1m 4s/ })).not.toBe(undefined)
 })
@@ -446,7 +446,7 @@ test('Farben: Band und Panel nutzen THEME, keinen Theme-Schlüssel claude', asyn
   await $.agent.spawn({ tool_use_id: 'u1', prompt: 'p', description: 'Suche', subagentType: 'Explore', provider: { plugin: 'test', tier: 'user' }, parentModel: 'm', background: true, fork: false })
   await $.prompt.submit({ text: 'los' } as never)
   const band = JSON.stringify(await (await $.ui.mount({ ...BAND, surface: 'desktop', })).find({ type: 'Box' }))
-  const pane = JSON.stringify(await (await $.ui.mount({ plugin: 'orgamax-cockpit', surface: 'desktop', component: 'Pane', requestId: 'orgamax-cockpit', props: PANE_PROPS })).find({ type: 'Box' }))
+  const pane = JSON.stringify(await (await $.ui.mount({ plugin: 'tenvan-cc', surface: 'desktop', component: 'Pane', requestId: 'tenvan-cc', props: PANE_PROPS })).find({ type: 'Box' }))
   for (const tree of [band, pane]) {
     expect(tree).not.toContain('"claude"')
     expect(tree).toContain(THEME.accent)

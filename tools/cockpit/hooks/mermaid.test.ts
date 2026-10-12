@@ -92,7 +92,7 @@ test('Rückfrage-Kopf: Anzahl und Kurztitel', () => {
 
 // ── Zeichnung auf dem Desktop ──
 
-const D = { plugin: 'orgamax-cockpit', surface: 'desktop' } as const
+const D = { plugin: 'tenvan-cc', surface: 'desktop' } as const
 
 test('AssistantMessage: Mermaid- und Formelkarte als einfaches Svg mit Kopf und Kopier-Knopf', async ($, on) => {
   on('ui.render', { component: 'AssistantMessage' }, () => ({ type: 'Box' as const }))

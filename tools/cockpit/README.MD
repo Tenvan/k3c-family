@@ -1,4 +1,4 @@
-# orgaMAX Claude Cockpit 🛩️ (`orgamax-cockpit`)
+# Tenvan CC 🛩️ (`tenvan-cc`)
 
 Universal-Mod für **Claude Desktop**: ein schmales Band über der Prompt-Eingabe und ein ausführliches Panel rechts. Eigene Implementierung, die den Funktionsumfang dreier Community-Mods bündelt und verschlankt:
 
@@ -14,7 +14,7 @@ Kein Code aus diesen Projekten wurde übernommen. Kein Netzwerk, keine Telemetri
 
 | Teil | Inhalt |
 | --- | --- |
-| Titelleiste | `orgaMAX Claude (Version x, Build: Datum Uhrzeit)`, auch erste Zeile im Panel |
+| Titelleiste | `Tenvan CC (Version x, Build: Datum Uhrzeit)`, auch erste Zeile im Panel |
 | Features | Knopf hinter der Legende: gibt alle Funktionen mit aktuellem Einstellungsstand als Bericht im Chat aus (`/cockpit-features`) |
 | Kontext | Füllstand des Kontextfensters in Prozent; ab 85 % gelb mit Button „Kompaktieren“ |
 | `5h` / `7d` | Verbrauch der Rate-Limit-Fenster; gelb, wenn mehr als 10 Punkte vor dem Takt, rot ab 90 % |
@@ -48,14 +48,14 @@ Kein Code aus diesen Projekten wurde übernommen. Kein Netzwerk, keine Telemetri
 | --- | --- | --- |
 | `nextSteps` | `true` | Folge-Schritte nach jeder Antwort vorschlagen (ein Haiku-Call pro Antwort) |
 
-Gesetzt über `/config` oder in den Settings unter `pluginConfigs.orgamax-cockpit`.
+Gesetzt über `/config` oder in den Settings unter `pluginConfigs.tenvan-cc`.
 
 ## Installation
 
 Im Terminal (der Desktop-Code-Tab kennt `/plugin` nicht, lädt das Mod aber mit):
 
 ```shell
-claude plugin install orgamax-cockpit@orga-marketplace
+claude plugin install tenvan-cc@orga-marketplace
 ```
 
 ## Entwicklung
@@ -72,10 +72,10 @@ Mod-API: Claude Code Function Hooks (Engine ≥ 2.1.295, Early Access). Struktur
 | `hooks/register.test.ts` | Tests |
 
 ```shell
-claude plugin validate plugins/orgamax-cockpit
-claude plugin test plugins/orgamax-cockpit
+claude plugin validate plugins/tenvan-cc
+claude plugin test plugins/tenvan-cc
 ```
 
-Live ausprobieren ohne Installation: `claude --plugin-dir plugins/orgamax-cockpit`, oder den Pfad in `CLAUDE_CODE_PLUGIN_DIRS` (env-Block der `~/.claude/settings.json`) eintragen, damit die Desktop-App das Mod lädt.
+Live ausprobieren ohne Installation: `claude --plugin-dir plugins/tenvan-cc`, oder den Pfad in `CLAUDE_CODE_PLUGIN_DIRS` (env-Block der `~/.claude/settings.json`) eintragen, damit die Desktop-App das Mod lädt.
 
 Weitere Community-Mods werden als zusätzliche Abschnitte in Band oder Panel ergänzt, nicht als eigene Plugins.

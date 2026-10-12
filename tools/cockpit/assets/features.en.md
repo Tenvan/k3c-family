@@ -1,4 +1,4 @@
-🛩️ orgaMAX Claude Cockpit · Features
+🛩️ Tenvan CC · Features
 
 Band above the prompt
 • Context – shows how full the context window is; turns amber at 85 %.

@@ -1,4 +1,4 @@
-🛩️ orgaMAX Claude Cockpit · Features
+🛩️ Tenvan CC · Features
 
 Band über der Eingabe
 • Kontext – zeigt, wie voll das Kontextfenster ist; ab 85 % wird es gelb.

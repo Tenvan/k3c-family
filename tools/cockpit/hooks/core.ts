@@ -2,12 +2,8 @@
 import type { About, Agent, Breakdown, BreakdownRow, CallMark, CatchUp, LoopAlert, UiLang, Limit, McpSchema, Repo, ModSettings, Step, TurnRecord } from '../types'
 import { t, type Key } from './i18n'
 
-// Alle Farben des Mods, fest eingetragen (kein Lesen von ErpApi zur Laufzeit). Primitive aus
-// ErpApi/design-system/tokens/artifact-snapshot.json (Artifact „orgaMAX Design System Product“, Snapshot 1790238895-8d9a,
-// `om-*`, nur hell); die dunklen Rollen (--text-*, --status-*-fg, --border-default) nach design-system/tokens/README.md
-// aus apps/frontend/src/themes/mobile-tokens.scss (`.radix-themes.dark`). Keine Theme-Schlüssel des Hosts ('claude',
-// 'success' …): die färben in dessen Farben. Ein Muster für Ladezustände hat das Design-System noch nicht.
-// Buttons haben keine Farb-Eigenschaft; sie folgen dem Host-Theme (nur `variant="primary"` hebt hervor).
+// Alle Farben des Mods, fest eingetragen (kein Lesen externer Dateien zur Laufzeit): Primitive und dunkle Rollen eines
+// Dark-Design-Systems. Keine Theme-Schlüssel des Hosts ('claude', 'success' …): die färben in dessen Farben.
 export const THEME = {
   accent: '#8eadfd', // om-blue-400 · --text-link / --border-focus: Akzent für Text und Rahmen
   accentFill: '#4277fc', // om-blue-500 · --action-primary: Akzent für Flächen (Ringbögen, Balken)
@@ -127,16 +123,16 @@ export function resetLabel(iso: string, now: number, lang: UiLang = 'de'): strin
   return d.getTime() - now >= 6 * 86400_000 ? `${base} (${date})` : base
 }
 
-// Titelleiste beider Flächen: „[Logo] Claude (Version x, Build: JJJJ-MM-TT hh:mm)“; ohne Logo steht „orgaMAX“ als Text davor.
+// Titelleiste beider Flächen: „[Logo] Claude (Version x, Build: JJJJ-MM-TT hh:mm)“.
 export function titleText(about: About | null): string {
-  if (!about) return 'Claude Cockpit'
+  if (!about) return 'Tenvan CC'
   const d = new Date(about.builtAt)
   const pad = (n: number) => String(n).padStart(2, '0')
   const stamp = `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())} ${pad(d.getHours())}:${pad(d.getMinutes())}`
-  return `Claude Cockpit (Version ${about.version}, Build: ${stamp})`
+  return `Tenvan CC (Version ${about.version}, Build: ${stamp})`
 }
 
-export const title = (about: About | null): string => `orgaMAX ${titleText(about)}`
+export const title = (about: About | null): string => titleText(about)
 
 // Svg-Quelle aus einer Logo-Datei: ohne XML-Kopf und Kommentare; null, wenn es kein <svg> ist.
 export function svgSource(text: string): string | null {

@@ -13,7 +13,7 @@ import { askSummary, mathSvg } from './skins'
 import type { Segment, SplitOptions } from './skins'
 import { diagramType, mermaidSvg } from './mermaid'
 
-const PLUGIN = 'orgamax-cockpit'
+const PLUGIN = 'tenvan-cc'
 // Slash-Command des Hauptpanels: kurz statt der Plugin-ID.
 const COMMAND = 'cockpit'
 // Panels mit Titel in der eingestellten Sprache. Geöffnet wird mit `focus`: der erste Klick in ein Panel ohne Fokus holt erst
@@ -21,54 +21,54 @@ const COMMAND = 'cockpit'
 // Fokus nur bei leerem Eingabefeld mit Tastatur, nicht aus einem Knopf in Band oder Panel heraus.
 const panes = (lang: UiLang) => ({
   main: { id: PLUGIN, title: t(lang, 'common.paneMain') },
-  summary: { id: 'orgamax-cockpit-summary', title: t(lang, 'common.paneSummary') },
-  settings: { id: 'orgamax-cockpit-settings', title: t(lang, 'common.paneSettings') },
+  summary: { id: 'tenvan-cc-summary', title: t(lang, 'common.paneSummary') },
+  settings: { id: 'tenvan-cc-settings', title: t(lang, 'common.paneSettings') },
 })
 const EDIT_TOOLS = new Set(['Edit', 'Write', 'NotebookEdit'])
 const LIVE = new Set(['pending', 'running', 'waiting'])
 const NL = String.fromCharCode(10)
 
-const usage = atom({ plugin: 'orgamax-cockpit', key: 'usage' } as const, null)
-const lastTurnAt = atom({ plugin: 'orgamax-cockpit', key: 'lastTurnAt' } as const, null)
-const turn = atom({ plugin: 'orgamax-cockpit', key: 'turn' } as const, null)
-const agents = atom({ plugin: 'orgamax-cockpit', key: 'agents' } as const, [] as Agent[])
+const usage = atom({ plugin: 'tenvan-cc', key: 'usage' } as const, null)
+const lastTurnAt = atom({ plugin: 'tenvan-cc', key: 'lastTurnAt' } as const, null)
+const turn = atom({ plugin: 'tenvan-cc', key: 'turn' } as const, null)
+const agents = atom({ plugin: 'tenvan-cc', key: 'agents' } as const, [] as Agent[])
 const GATE0: Gate = { allow: 0, you: 0, ask: 0, deny: 0, file: 0, shell: 0, other: 0, trail: [], asked: [] }
-const gate = atom({ plugin: 'orgamax-cockpit', key: 'gate' } as const, GATE0)
+const gate = atom({ plugin: 'tenvan-cc', key: 'gate' } as const, GATE0)
 // $.state überlebt einen Reload: Zähler aus älteren Versionen haben neue Felder nicht und werden hier aufgefüllt.
 const gateOf = (g: Partial<Gate>): Gate => ({ ...GATE0, ...g })
-const log = atom({ plugin: 'orgamax-cockpit', key: 'log' } as const, [] as LogEntry[])
+const log = atom({ plugin: 'tenvan-cc', key: 'log' } as const, [] as LogEntry[])
 // Jede Änderung zeichnet Band und Panel neu – hält Cache-Countdown und Laufzeiten aktuell.
-const tick = atom({ plugin: 'orgamax-cockpit', key: 'tick' } as const, 0)
-const steps = atom({ plugin: 'orgamax-cockpit', key: 'steps' } as const, [] as Step[])
-const cacheHit = atom({ plugin: 'orgamax-cockpit', key: 'cacheHit' } as const, null)
-const about = atom({ plugin: 'orgamax-cockpit', key: 'about' } as const, null)
-const bgTasks = atom({ plugin: 'orgamax-cockpit', key: 'bgTasks' } as const, [] as BgTask[])
-const lastPrompt = atom({ plugin: 'orgamax-cockpit', key: 'lastPrompt' } as const, '')
+const tick = atom({ plugin: 'tenvan-cc', key: 'tick' } as const, 0)
+const steps = atom({ plugin: 'tenvan-cc', key: 'steps' } as const, [] as Step[])
+const cacheHit = atom({ plugin: 'tenvan-cc', key: 'cacheHit' } as const, null)
+const about = atom({ plugin: 'tenvan-cc', key: 'about' } as const, null)
+const bgTasks = atom({ plugin: 'tenvan-cc', key: 'bgTasks' } as const, [] as BgTask[])
+const lastPrompt = atom({ plugin: 'tenvan-cc', key: 'lastPrompt' } as const, '')
 // Claudes eigener Vorschlag nach dem Turn (prompt.suggest, origin suggestion); gilt bis zum nächsten Prompt.
-const claudeHint = atom({ plugin: 'orgamax-cockpit', key: 'claudeHint' } as const, null as Step | null)
+const claudeHint = atom({ plugin: 'tenvan-cc', key: 'claudeHint' } as const, null as Step | null)
 // Animationsbild des Panels; läuft nur, solange ein Turn läuft.
-const frame = atom({ plugin: 'orgamax-cockpit', key: 'frame' } as const, 0)
-const breakdown = atom({ plugin: 'orgamax-cockpit', key: 'breakdown' } as const, null)
+const frame = atom({ plugin: 'tenvan-cc', key: 'frame' } as const, 0)
+const breakdown = atom({ plugin: 'tenvan-cc', key: 'breakdown' } as const, null)
 // Warum es keine Aufteilung gibt (Fehlertext oder Hinweis); leer, solange sie vorliegt.
-const breakdownNote = atom({ plugin: 'orgamax-cockpit', key: 'breakdownNote' } as const, '')
-const logo = atom({ plugin: 'orgamax-cockpit', key: 'logo' } as const, null)
-const modelInfo = atom({ plugin: 'orgamax-cockpit', key: 'modelInfo' } as const, null)
-const repo = atom({ plugin: 'orgamax-cockpit', key: 'repo' } as const, null)
-const settings = atom({ plugin: 'orgamax-cockpit', key: 'settings' } as const, DEFAULT_SETTINGS)
-const catchUp = atom({ plugin: 'orgamax-cockpit', key: 'catchUp' } as const, CATCH0)
-const expanded = atom({ plugin: 'orgamax-cockpit', key: 'expanded' } as const, [] as string[])
-const touched = atom({ plugin: 'orgamax-cockpit', key: 'touched' } as const, [] as string[])
-const quietIds = atom({ plugin: 'orgamax-cockpit', key: 'quietIds' } as const, [] as string[])
-const collapsed = atom({ plugin: 'orgamax-cockpit', key: 'collapsed' } as const, [] as string[])
+const breakdownNote = atom({ plugin: 'tenvan-cc', key: 'breakdownNote' } as const, '')
+const logo = atom({ plugin: 'tenvan-cc', key: 'logo' } as const, null)
+const modelInfo = atom({ plugin: 'tenvan-cc', key: 'modelInfo' } as const, null)
+const repo = atom({ plugin: 'tenvan-cc', key: 'repo' } as const, null)
+const settings = atom({ plugin: 'tenvan-cc', key: 'settings' } as const, DEFAULT_SETTINGS)
+const catchUp = atom({ plugin: 'tenvan-cc', key: 'catchUp' } as const, CATCH0)
+const expanded = atom({ plugin: 'tenvan-cc', key: 'expanded' } as const, [] as string[])
+const touched = atom({ plugin: 'tenvan-cc', key: 'touched' } as const, [] as string[])
+const quietIds = atom({ plugin: 'tenvan-cc', key: 'quietIds' } as const, [] as string[])
+const collapsed = atom({ plugin: 'tenvan-cc', key: 'collapsed' } as const, [] as string[])
 // Aufrufe des Haupt-Agents im laufenden Turn und die daraus erkannte Schleife; beides leert ein neuer Turn.
-const marks = atom({ plugin: 'orgamax-cockpit', key: 'marks' } as const, [] as CallMark[])
-const loopAlert = atom({ plugin: 'orgamax-cockpit', key: 'loopAlert' } as const, null as LoopAlert | null)
+const marks = atom({ plugin: 'tenvan-cc', key: 'marks' } as const, [] as CallMark[])
+const loopAlert = atom({ plugin: 'tenvan-cc', key: 'loopAlert' } as const, null as LoopAlert | null)
 // Geladene MCP-Schemas aus dem Kontext-Breakdown und die Server, deren Tools die Session schon aufgerufen hat (Kontext-Diät).
-const mcpTools = atom({ plugin: 'orgamax-cockpit', key: 'mcpTools' } as const, [] as McpSchema[])
-const usedMcp = atom({ plugin: 'orgamax-cockpit', key: 'usedMcp' } as const, [] as string[])
-const turnLog = atom({ plugin: 'orgamax-cockpit', key: 'turnLog' } as const, [] as TurnRecord[])
+const mcpTools = atom({ plugin: 'tenvan-cc', key: 'mcpTools' } as const, [] as McpSchema[])
+const usedMcp = atom({ plugin: 'tenvan-cc', key: 'usedMcp' } as const, [] as string[])
+const turnLog = atom({ plugin: 'tenvan-cc', key: 'turnLog' } as const, [] as TurnRecord[])
 // Subagents, deren weitere Tool-Calls das Cockpit ablehnt (Agent-Bremse: die API kann einen Subagent nicht abbrechen).
-const braked = atom({ plugin: 'orgamax-cockpit', key: 'braked' } as const, [] as string[])
+const braked = atom({ plugin: 'tenvan-cc', key: 'braked' } as const, [] as string[])
 
 const STEPS_SYSTEM =
   'Du schlägst die nächsten sinnvollen Schritte in einer Coding-Session vor. ' +
@@ -186,7 +186,7 @@ let lastBreakdownAt = 0
 // Für welchen Turn der Cache-Wächter schon einen Vorschlag gemacht hat: je Turn höchstens einmal.
 let warnedFor: number | null = null
 
-// Logo aus assets/logo.svg: Bildmarke aus ErpApi/design-system/brand/logo-symbol-dark.svg (Korpus weiß, Akzente #82b1ff).
+// Logo aus assets/logo.svg (SVG mit eingebettetem PNG).
 async function loadLogo($: EngineInterface): Promise<string | null> {
   try {
     return svgSource(await $.fs.read(`${$.plugin.root}/assets/logo.svg`))
@@ -227,7 +227,7 @@ async function loadRepo($: EngineInterface): Promise<Repo | null> {
   return top === '' ? null : parseRepo({ top, gitDir, commonDir, branch, sha, status, counts, prefix })
 }
 
-// Info-Zeile unter einem gezeichneten Chat-Element: orgaMAX-Bildmarke und die Angaben als gedimmter Text, immer sichtbar.
+// Info-Zeile unter einem gezeichneten Chat-Element: Tenvan-Bildmarke und die Angaben als gedimmter Text, immer sichtbar.
 // Ohne Logo oder Svg steht „ⓘ“ davor. Umhüllt nur, was schon gezeichnet ist; das Element selbst bleibt unberührt.
 function withInfo(ui: Ui, key: string, lines: readonly string[], theirs: RenderElement, mark: string | null): RenderElement {
   const { Box, Text } = ui
@@ -253,7 +253,7 @@ function toolIcon(ui: Ui, tool: string, errored: boolean, key: string) {
   return <Svg key={key} source={toolIconSvg(kind, errored ? THEME.error : ICON_COLOR[kind])} alt={tool} width={16} height={16} />
 }
 
-// Kennzeichen „hier greift ein Cockpit-Style“: orgaMAX-Bildmarke und/oder kurzer Style-Name, beides abschaltbar.
+// Kennzeichen „hier greift ein Cockpit-Style“: Tenvan-Bildmarke und/oder kurzer Style-Name, beides abschaltbar.
 type Marker = { mark: string | null; label: boolean; lang: UiLang }
 type StyleKey = Extract<Key, `style.${string}`>
 
@@ -383,7 +383,7 @@ async function paneHead($: EngineInterface, ui: Ui, lang: UiLang) {
   )
 }
 
-// Titelzeile: Logo links, Text daneben; ohne Logo oder Svg bleibt „orgaMAX Claude …“ als Text.
+// Titelzeile: Logo links, Text daneben; ohne Logo oder Svg bleibt der Text.
 function titleRow(ui: Ui, info: About | null, mark: string | null) {
   const { Box, Text } = ui
   const Svg = 'Svg' in ui ? ui.Svg : undefined
@@ -1260,7 +1260,7 @@ export const register: Register = (on, options) => {
   })
 
   // Zusammenfassung in eigenem Panel rechts: Knöpfe oben, darunter die Abschnitte als einfacher Text (kein Markdown-Rendering).
-  on('ui.render', { component: 'Pane', requestId: 'orgamax-cockpit-summary' }, async ($, e, next) => {
+  on('ui.render', { component: 'Pane', requestId: 'tenvan-cc-summary' }, async ($, e, next) => {
     if (e.surface !== 'desktop') return next(e)
     const s = await read($, settings)
     const cu = await read($, catchUp)
@@ -1294,7 +1294,7 @@ export const register: Register = (on, options) => {
   })
 
   // Einstellungsseite: jedes Detail von Band, Panel und Chat ein- oder ausblenden; gilt sofort und für alle Sessions.
-  on('ui.render', { component: 'Pane', requestId: 'orgamax-cockpit-settings' }, async ($, e, next) => {
+  on('ui.render', { component: 'Pane', requestId: 'tenvan-cc-settings' }, async ($, e, next) => {
     if (e.surface !== 'desktop') return next(e)
     const s = await read($, settings)
     const L = s.lang
@@ -1369,7 +1369,7 @@ export const register: Register = (on, options) => {
     )
   })
 
-  on('ui.render', { component: 'Pane', requestId: 'orgamax-cockpit' }, async ($, e, next) => {
+  on('ui.render', { component: 'Pane', requestId: 'tenvan-cc' }, async ($, e, next) => {
     if (e.surface !== 'desktop') return next(e)
     await read($, tick)
     const now = await $.clock.now()

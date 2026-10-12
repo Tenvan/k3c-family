@@ -1,12 +1,12 @@
 # Cockpit · Demo of all stylable elements
 
-Two layers: the **components** a mod can draw via `ui.render`, and the **Markdown elements** in replies and command output. The count is in the dim info line with the orgaMAX symbol below this output.
+Two layers: the **components** a mod can draw via `ui.render`, and the **Markdown elements** in replies and command output. The count is in the dim info line with the Tenvan symbol below this output.
 
 <!-- KOMPONENTEN -->
 
 ### Working and duration line
 
-Colors from the dark tokens of the orgaMAX design system. It has no pattern for loading states yet, so only the color roles are used. Toggle: Settings → Chat → "Working and duration line".
+Colors from the dark tokens of the design system. It has no pattern for loading states yet, so only the color roles are used. Toggle: Settings → Chat → "Working and duration line".
 
 | Line | Part | Token | Color |
 | --- | --- | --- | --- |
@@ -100,7 +100,7 @@ def greet(name: str) -> str:
 ```
 
 ```json
-{ "name": "orgamax-cockpit", "version": "0.6.0" }
+{ "name": "tenvan-cc", "version": "0.6.0" }
 ```
 
 ```

@@ -108,7 +108,7 @@ const TOOL_USE = { tool_use_id: 'u1', tool: 'Read', input: { file_path: 'a.ts' }
 
 test('ToolUse: Symbol als einfaches Svg, Details klappen als Code auf; Terminal unverändert', async ($, on) => {
   on('ui.render', { component: 'ToolUse' }, () => ({ type: 'Box' as const }))
-  const row = await $.ui.mount({ plugin: 'orgamax-cockpit', surface: 'desktop', component: 'ToolUse', props: TOOL_USE })
+  const row = await $.ui.mount({ plugin: 'tenvan-cc', surface: 'desktop', component: 'ToolUse', props: TOOL_USE })
   const icon = JSON.stringify(await row.find({ type: 'Svg' }))
   expect(icon).toContain(THEME.info)
   expect(icon).not.toContain('isInteractive')
@@ -118,14 +118,14 @@ test('ToolUse: Symbol als einfaches Svg, Details klappen als Code auf; Terminal 
   const codes = JSON.stringify(await row.findAll({ type: 'Code' }))
   expect(codes).toContain('let x = 1')
   expect(codes).toContain('"language":"json"')
-  const term = await $.ui.mount({ plugin: 'orgamax-cockpit', surface: 'terminal', component: 'ToolUse', props: TOOL_USE })
+  const term = await $.ui.mount({ plugin: 'tenvan-cc', surface: 'terminal', component: 'ToolUse', props: TOOL_USE })
   expect(await term.find({ type: 'Svg' })).toBe(undefined)
   expect(await term.find({ type: 'Button' })).toBe(undefined)
 })
 
 test('ToolResult: Diff-Karte, ruhige Zeile, echte Fehlerzeile', async ($, on) => {
   on('ui.render', { component: 'ToolResult' }, () => ({ type: 'Box' as const }))
-  const base = { plugin: 'orgamax-cockpit', surface: 'desktop', component: 'ToolResult' } as const
+  const base = { plugin: 'tenvan-cc', surface: 'desktop', component: 'ToolResult' } as const
   const edit = await $.ui.mount({ ...base, props: { tool_use_id: 'e1', tool: 'Edit', isErrored: false, output: { filePath: 'a.ts', oldString: 'a', newString: 'b', originalFile: 'a', structuredPatch: [{ oldStart: 1, oldLines: 1, newStart: 1, newLines: 1, lines: ['-a', '+b'] }], userModified: false, replaceAll: false } } })
   const card = JSON.stringify(await edit.find({ type: 'Svg' }))
   expect(card).toContain('+1')
@@ -140,10 +140,10 @@ test('ToolResult: Diff-Karte, ruhige Zeile, echte Fehlerzeile', async ($, on) =>
 
 test('UserMessage: getippter Prompt rechtsbündig im Rahmen als Markdown; Benachrichtigungen bleiben', async ($, on) => {
   on('ui.render', { component: 'UserMessage' }, () => ({ type: 'Box' as const }))
-  const msg = await $.ui.mount({ plugin: 'orgamax-cockpit', surface: 'desktop', component: 'UserMessage', props: { text: 'Mach *das*', origin: { kind: 'composer' }, isExpanded: true } })
+  const msg = await $.ui.mount({ plugin: 'tenvan-cc', surface: 'desktop', component: 'UserMessage', props: { text: 'Mach *das*', origin: { kind: 'composer' }, isExpanded: true } })
   expect(JSON.stringify(await msg.find({ type: 'Box' }))).toContain(THEME.accent)
   expect(JSON.stringify(await msg.find({ type: 'Markdown' }))).toContain('Mach \\\\*das\\\\*')
-  const other = await $.ui.mount({ plugin: 'orgamax-cockpit', surface: 'desktop', component: 'UserMessage', props: { text: 'x', origin: { kind: 'sdk' }, isExpanded: true } })
+  const other = await $.ui.mount({ plugin: 'tenvan-cc', surface: 'desktop', component: 'UserMessage', props: { text: 'x', origin: { kind: 'sdk' }, isExpanded: true } })
   expect(await other.find({ type: 'Markdown' })).toBe(undefined)
 })
 
@@ -151,7 +151,7 @@ test('ToolGroup: je Tool Symbol, Name und Zähler; nur MCP-Aufrufe einzeln mit Z
   on('ui.render', { component: 'ToolGroup' }, () => ({ type: 'Box' as const }))
   const call = (tool: string, input: unknown = {}) => ({ tool, input, isRunning: false, isErrored: false, isInterrupted: false })
   const calls = [call('Read', { file_path: 'C:/a/hooks/core.ts' }), call('Read'), call('Bash', { command: 'git status' }), call('mcp__serena__find_symbol', { query: 'register' })]
-  const g = await $.ui.mount({ plugin: 'orgamax-cockpit', surface: 'desktop', component: 'ToolGroup', props: { calls, isActive: false, isExpanded: false } })
+  const g = await $.ui.mount({ plugin: 'tenvan-cc', surface: 'desktop', component: 'ToolGroup', props: { calls, isActive: false, isExpanded: false } })
   expect((await g.findAll({ type: 'Svg' })).length).toBe(3)
   expect(await g.find({ type: 'Text', text: 'Read ×2' })).not.toBe(undefined)
   expect(await g.find({ type: 'Text', text: 'serena ×1' })).not.toBe(undefined)
@@ -167,7 +167,7 @@ test('ToolGroup: MCP-Aufrufe je Server zusammengefasst, Plugin-Präfix bereinigt
     call('mcp__serena__get_symbols_overview'),
     call('mcp__context7__query'),
   ]
-  const g = await $.ui.mount({ plugin: 'orgamax-cockpit', surface: 'desktop', component: 'ToolGroup', props: { calls, isActive: false, isExpanded: false } })
+  const g = await $.ui.mount({ plugin: 'tenvan-cc', surface: 'desktop', component: 'ToolGroup', props: { calls, isActive: false, isExpanded: false } })
   // Beide Schreibweisen von serena landen in einem Eintrag, context7 bekommt einen eigenen.
   expect(await g.find({ type: 'Text', text: 'serena ×10' })).not.toBe(undefined)
   expect(await g.find({ type: 'Text', text: 'context7 ×1' })).not.toBe(undefined)
@@ -180,14 +180,14 @@ test('ToolGroup: MCP-Aufrufe je Server zusammengefasst, Plugin-Präfix bereinigt
 test('AssistantMessage: Code- und Tabellenkarten mit Kopier-Knopf darunter; Prosa bleibt Markdown', async ($, on) => {
   on('ui.render', { component: 'AssistantMessage' }, () => ({ type: 'Box' as const }))
   const text = `Hier:\n\n${F}ts\nconst a = 1\n${F}\n\n| A | B |\n| --- | --- |\n| 1 | 2 |`
-  const m = await $.ui.mount({ plugin: 'orgamax-cockpit', surface: 'desktop', component: 'AssistantMessage', props: { text, isFirstOfReply: true } })
+  const m = await $.ui.mount({ plugin: 'tenvan-cc', surface: 'desktop', component: 'AssistantMessage', props: { text, isFirstOfReply: true } })
   expect(JSON.stringify(await m.find({ type: 'Code' }))).toContain('"language":"ts"')
   expect(await m.find({ type: 'Text', text: 'ts · 1 Zeilen' })).not.toBe(undefined)
   expect(await m.find({ type: 'Text', text: /Tabelle · 1 Zeilen × 2 Spalten/ })).not.toBe(undefined)
   expect((await m.findAll({ type: 'Button' })).length).toBe(2)
   expect(JSON.stringify(await m.find({ type: 'Markdown' }))).toContain('Hier:')
   // Ohne Karten-Inhalt bleibt die Engine-Zeichnung (nur Info-Zeile)
-  const plain = await $.ui.mount({ plugin: 'orgamax-cockpit', surface: 'desktop', component: 'AssistantMessage', props: { text: 'nur Text', isFirstOfReply: true } })
+  const plain = await $.ui.mount({ plugin: 'tenvan-cc', surface: 'desktop', component: 'AssistantMessage', props: { text: 'nur Text', isFirstOfReply: true } })
   expect(await plain.find({ type: 'Code' })).toBe(undefined)
 })
 
@@ -197,11 +197,11 @@ test('Hervorhebungen eingeschaltet: Hinweis als Karte, geänderte Datei in Erfol
   on('tool.call', () => ({ result: {} }) as never)
   on('ui.render', { component: 'AssistantMessage' }, () => ({ type: 'Box' as const }))
   const props = { title: 'x', isFocused: false, bodyColumns: 144, placement: 'dock', scroll: { offset: 0, bodyRows: 40 }, view: {} } as const
-  const page = await $.ui.mount({ plugin: 'orgamax-cockpit', surface: 'desktop', component: 'Pane', requestId: 'orgamax-cockpit-settings', props })
+  const page = await $.ui.mount({ plugin: 'tenvan-cc', surface: 'desktop', component: 'Pane', requestId: 'tenvan-cc-settings', props })
   await page.press({ key: 'set-skinInline' })
   await $.tool.call({ tool: 'Edit', tool_use_id: 'e1', input: { file_path: 'C:/p/hooks/core.ts', old_string: 'a', new_string: 'b' } } as never)
   const text = 'Geändert: core.ts auf 0.7.0\n\n> [!TIP]\n> Gut\n\n- [x] a\n- [x] b'
-  const m = await $.ui.mount({ plugin: 'orgamax-cockpit', surface: 'desktop', component: 'AssistantMessage', props: { text, isFirstOfReply: true } })
+  const m = await $.ui.mount({ plugin: 'tenvan-cc', surface: 'desktop', component: 'AssistantMessage', props: { text, isFirstOfReply: true } })
   expect(JSON.stringify(await m.find({ type: 'Text', text: 'core.ts' }))).toContain(THEME.success)
   expect(JSON.stringify(await m.find({ type: 'Text', text: 'Tipp' }))).toContain(THEME.success)
   expect(await m.find({ type: 'Text', text: 'Aufgaben · 2/2 erledigt' })).not.toBe(undefined)
@@ -209,7 +209,7 @@ test('Hervorhebungen eingeschaltet: Hinweis als Karte, geänderte Datei in Erfol
 
 test('CommandOutput: Codeblock als Karte', async ($, on) => {
   on('ui.render', { component: 'CommandOutput' }, () => ({ type: 'Box' as const }))
-  const out = await $.ui.mount({ plugin: 'orgamax-cockpit', surface: 'desktop', component: 'CommandOutput', props: { command: 'x', args: '', text: `${F}sh\nls\n${F}`, isErrored: false } })
+  const out = await $.ui.mount({ plugin: 'tenvan-cc', surface: 'desktop', component: 'CommandOutput', props: { command: 'x', args: '', text: `${F}sh\nls\n${F}`, isErrored: false } })
   expect(JSON.stringify(await out.find({ type: 'Code' }))).toContain('"source":"ls"')
 })
 
@@ -218,9 +218,9 @@ test('Style-Kennzeichen: Name neben dem Symbol, über die Einstellungen abschalt
   on('store.get', () => ({ value: undefined }) as never)
   on('store.set', () => ({}) as never)
   const props = { tool_use_id: 'b2', tool: 'Bash', isErrored: true, output: 'Exit code 1\nerror: kaputt' }
-  const base = { plugin: 'orgamax-cockpit', surface: 'desktop', component: 'ToolResult', props } as const
+  const base = { plugin: 'tenvan-cc', surface: 'desktop', component: 'ToolResult', props } as const
   expect(await (await $.ui.mount(base)).find({ type: 'Text', text: 'Fehlerzeile' })).not.toBe(undefined)
-  const page = await $.ui.mount({ plugin: 'orgamax-cockpit', surface: 'desktop', component: 'Pane', requestId: 'orgamax-cockpit-settings', props: { title: 'S', isFocused: false, bodyColumns: 100, placement: 'dock', scroll: { offset: 0, bodyRows: 40 }, view: {} } })
+  const page = await $.ui.mount({ plugin: 'tenvan-cc', surface: 'desktop', component: 'Pane', requestId: 'tenvan-cc-settings', props: { title: 'S', isFocused: false, bodyColumns: 100, placement: 'dock', scroll: { offset: 0, bodyRows: 40 }, view: {} } })
   await page.press({ key: 'set-skinMarkLabel' })
   for (let i = 0; i < 50; i++) await Promise.resolve()
   expect(await (await $.ui.mount(base)).find({ type: 'Text', text: 'Fehlerzeile' })).toBe(undefined)

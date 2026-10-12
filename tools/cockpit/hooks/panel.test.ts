@@ -16,11 +16,11 @@ test('Einstellungsseite: Schalter blendet Karte im Panel aus', async ($, on) => 
   on('store.get', () => ({ value: undefined }) as never)
   on('store.set', () => ({}) as never)
 
-  const settings = await $.ui.mount({ plugin: 'orgamax-cockpit', surface: 'desktop', component: 'Pane', requestId: 'orgamax-cockpit-settings', props: SETTINGS_PROPS })
+  const settings = await $.ui.mount({ plugin: 'tenvan-cc', surface: 'desktop', component: 'Pane', requestId: 'tenvan-cc-settings', props: SETTINGS_PROPS })
   expect(await settings.find({ type: 'Text', text: 'Panel' })).not.toBe(undefined)
   await settings.press({ key: 'set-cardLog' })
 
-  const pane = await $.ui.mount({ plugin: 'orgamax-cockpit', surface: 'desktop', component: 'Pane', requestId: 'orgamax-cockpit', props: PANE_PROPS })
+  const pane = await $.ui.mount({ plugin: 'tenvan-cc', surface: 'desktop', component: 'Pane', requestId: 'tenvan-cc', props: PANE_PROPS })
   expect(await pane.find({ type: 'Text', text: 'Log' })).toBe(undefined)
   expect(await pane.find({ type: 'Text', text: 'Übersicht' })).not.toBe(undefined)
 })
@@ -47,7 +47,7 @@ test('Panel-Karten: ▾/▸ klappt zu und auf, ✕ schaltet die Karte in den Ein
   await pane.press({ key: 'card-close-cardLog' })
   await settle(async () => (await pane.find({ type: 'Text', text: 'Log' })) === undefined)
   expect(await pane.find({ type: 'Text', text: 'Log' })).toBe(undefined)
-  const settings = await $.ui.mount({ plugin: 'orgamax-cockpit', surface: 'desktop', component: 'Pane', requestId: 'orgamax-cockpit-settings', props: SETTINGS_PROPS })
+  const settings = await $.ui.mount({ plugin: 'tenvan-cc', surface: 'desktop', component: 'Pane', requestId: 'tenvan-cc-settings', props: SETTINGS_PROPS })
   expect(JSON.stringify(await settings.find({ type: 'Button', key: 'set-cardLog' }))).toContain('○ Aus')
 })
 
@@ -83,7 +83,7 @@ test('Zusammenfassung: Aktualisieren sendet deutschen Prompt und zeigt das Ergeb
     return { value: { isAnswered: true, text: '## Warum diese Session\n- Einstellungsseite bauen', usage: {} } } as never
   })
 
-  const pane = await $.ui.mount({ plugin: 'orgamax-cockpit', surface: 'desktop', component: 'Pane', requestId: 'orgamax-cockpit-summary', props: SETTINGS_PROPS })
+  const pane = await $.ui.mount({ plugin: 'tenvan-cc', surface: 'desktop', component: 'Pane', requestId: 'tenvan-cc-summary', props: SETTINGS_PROPS })
   expect(await pane.find({ type: 'Text', text: /Die Zusammenfassung erscheint/ })).not.toBe(undefined)
   await pane.press({ key: 'cu-refresh' })
   for (let i = 0; i < 200 && sent.length === 0; i++) await Promise.resolve()
@@ -105,7 +105,7 @@ test('Demo: /cockpit-demo gibt Markdown mit allen skinbaren Elementen aus', asyn
   expect(out.text).not.toContain('KOMPONENTEN')
 })
 
-const BAND = { plugin: 'orgamax-cockpit', component: 'AbovePrompt', props: { hasSurvey: false, isWorking: false, maxRows: 3, bodyColumns: 120, scroll: { offset: 0, bodyRows: 3 }, view: {} } } as const
+const BAND = { plugin: 'tenvan-cc', component: 'AbovePrompt', props: { hasSurvey: false, isWorking: false, maxRows: 3, bodyColumns: 120, scroll: { offset: 0, bodyRows: 3 }, view: {} } } as const
 const MEASURE = { context: { tokens: 50_000, window: 200_000, percent: 25 }, rateLimits: [], cost: { usd: 1.5 }, changed: [] }
 
 // Gemountete Instanzen zeichnen bei Zustandsänderung neu; Suche wartet, bis der Text erscheint (oder aufgibt).
@@ -126,12 +126,12 @@ test('Sprache: lang-en schaltet Band und Panel auf Englisch', async ($, on) => {
   on('ui.render', { component: 'AbovePrompt' }, () => ({ type: 'Box' as const }))
   await $.session.measure(MEASURE)
 
-  const settings = await $.ui.mount({ plugin: 'orgamax-cockpit', surface: 'desktop', component: 'Pane', requestId: 'orgamax-cockpit-settings', props: SETTINGS_PROPS })
+  const settings = await $.ui.mount({ plugin: 'tenvan-cc', surface: 'desktop', component: 'Pane', requestId: 'tenvan-cc-settings', props: SETTINGS_PROPS })
   expect(await settings.find({ type: 'Text', text: 'Band über der Eingabe' })).not.toBe(undefined)
   await settings.press({ key: 'lang-en' })
   expect(await waitFind(settings, 'Band above the prompt')).not.toBe(undefined)
 
-  const pane = await $.ui.mount({ plugin: 'orgamax-cockpit', surface: 'desktop', component: 'Pane', requestId: 'orgamax-cockpit', props: PANE_PROPS })
+  const pane = await $.ui.mount({ plugin: 'tenvan-cc', surface: 'desktop', component: 'Pane', requestId: 'tenvan-cc', props: PANE_PROPS })
   expect(await pane.find({ type: 'Text', text: 'Overview' })).not.toBe(undefined)
   expect(await pane.find({ type: 'Text', text: 'Übersicht' })).toBe(undefined)
   const band = await $.ui.mount({ ...BAND, surface: 'desktop' })
@@ -172,6 +172,6 @@ test('Panel: Modellzeile unter dem Titel mit Modell und Claude-Code-Version', as
   on('fs.read', () => ({ value: '{ "version": "1" }' }) as never)
   await $.session.start({ cwd: '.', surface: 'desktop', isInteractive: true })
   for (let i = 0; i < 200; i++) await Promise.resolve()
-  const pane = await $.ui.mount({ plugin: 'orgamax-cockpit', surface: 'desktop', component: 'Pane', requestId: 'orgamax-cockpit', props: PANE_PROPS })
+  const pane = await $.ui.mount({ plugin: 'tenvan-cc', surface: 'desktop', component: 'Pane', requestId: 'tenvan-cc', props: PANE_PROPS })
   expect(await pane.find({ type: 'Text', text: /Opus 5\.5 \(claude-opus-5-5\).*Claude Code 2\.1\.295/ })).not.toBe(undefined)
 })
