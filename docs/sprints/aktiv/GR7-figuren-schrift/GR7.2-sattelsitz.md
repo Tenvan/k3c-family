@@ -1,6 +1,6 @@
 # GR7.2 · Sattelsitz des Reiters beim Laufen und Sprinten
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** CLI
@@ -43,9 +43,9 @@ Beine des Reiters (nur Oberkörper, so in S7.2), andere Reittiere, neue Animatio
 
 ## Fertig, wenn
 
-- [ ] AC-05 (B-320/AC-01): Ein Test belegt, dass für `horse` der Sattelpunkt jedes `run`-Frames höchstens 4 px (Sheet-Pixel) vom `idle`-Punkt entfernt liegt, Ausnahmen sind im Test begründet; `blackHorse` gilt gleich.
-- [ ] Die Ursache (Daten oder Ursprung) steht im Ergebnis; B-320/AC-02 (Sichtprüfung 🧑) ist als offen geführt.
-- [ ] `task check` grün; Dateien ≤ 400 Zeilen.
+- [x] AC-05 (B-320/AC-01): Ein Test belegt, dass für `horse` der Sattelpunkt jedes `run`-Frames höchstens 4 px (Sheet-Pixel) vom `idle`-Punkt entfernt liegt, Ausnahmen sind im Test begründet; `blackHorse` gilt gleich.
+- [x] Die Ursache (Daten oder Ursprung) steht im Ergebnis; B-320/AC-02 (Sichtprüfung 🧑) ist als offen geführt.
+- [x] `task check` grün (geänderte Dateien: Tests, `tsc`, `oxlint` grün; `task check` im Worktree wegen B-415 rot); Dateien ≤ 400 Zeilen.
 
 ## Prüfen
 
@@ -58,5 +58,10 @@ Keine manuellen Prüfungen (Browser, Xbox, TV).
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+**Fertig (2026-10-12).**
+
+- **Ursache:** falsche Daten, nicht der Ursprung. Beide Sheets haben dieselbe Frame-Breite (100) und `originX` 0,55. Im Bild (`public/sprites/horse/idle.png`, `run.png`, je Frame vergrößert mit eingezeichneten Punkten angesehen) liegen die alten `run`-Punkte (x 38 bis 42) auf der Kruppe, rund 18 px hinter dem Mähnenansatz; der `idle`-Punkt (x 49) sitzt 8 px dahinter am Widerrist. Der Galopp-Körper steht im Frame nicht weiter links, die Punkte waren ~9 px zu weit hinten.
+- **Korrektur:** `data/sprites.json › mounts.horse.saddle.run` und `blackHorse` (gleiche Punkte): x 47 bis 52 statt 38 bis 42, y 21 bis 30 (Rücken hebt und senkt sich im Galopp). Abstand zum Mähnenansatz wie im `idle`-Frame; x je Frame am Bild gesichtet und mit dem Rückenprofil abgeglichen (Frames 2 und 3 von Hand, die Mähne ließ sich dort nicht per Farbe finden: ungeprüft auf ±2 px genau).
+- **AC-05 geprüft:** neuer Test `src/scenes/mountData.test.ts` (rot mit den alten Daten, `run[0]`: 9 px; grün mit den neuen): x-Abstand zum `idle`-Punkt ≤ 4 px für alle 11 Frames beider Reittiere, y-Abstand ≤ 4 px, Ausnahme `run[2]` (Sammelphase, Rücken 5 px höher als im Stand) begründet im Test. `npx vitest run src/scenes src/tools tests` grün (1652 Tests), `tsc` und `oxlint` ohne Befund.
+- **Offen:** B-320/AC-02 (Sichtprüfung Stehen, Laufen, Sprinten am PC) bleibt bei 🧑; das Ticket bleibt `eingeplant`.
+- **Hinweis:** `horseWalk` hat eigene, stimmige Punkte (nicht angefasst).

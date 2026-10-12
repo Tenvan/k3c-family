@@ -152,6 +152,7 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-413](B-413-hud-leiste-oben-fluss.md) | CLI | Idee | mittel | offen | – | Gemeinsame HUD-Leiste oben für alle Spieler, Kompass oben, Fluss mit Spiegelung unten |
 | [B-414](B-414-welt-meldungen-im-band.md) | CLI | Idee | mittel | offen | – | Welt-Meldungen erscheinen für alle im globalen Band oben |
 | [B-415](B-415-cockpit-lint-rot.md) | INF | Problem | hoch | offen | – | Lint ist rot: tools/cockpit überschreitet die Dateigrenze |
+| [B-416](B-416-checkout-git-ohne-fenster.md) | DEV | Problem | hoch | offen | – | Der Checkout-Aufruf von k3c-dev öffnet bei jedem Tool ein Konsolenfenster |
 
 ## Archiv
 
