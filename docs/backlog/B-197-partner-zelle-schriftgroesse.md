@@ -8,9 +8,9 @@
 - **Sprint:** GR7
 - **Projekt:** GRA
 - **Erstellt:** 2026-10-03
-- **Spec:** Entwurf
+- **Spec:** freigegeben
 - **Revision:** 1
-- **Freigabe:** –
+- **Freigabe:** 2026-10-12, Chat (Ralf), Revision 1
 
 ## Ausgangslage
 
@@ -50,7 +50,7 @@ nicht relevant: Entscheidungsfrage.
 
 ## Offene Fragen
 
-Welche Mindestgröße (oder Ausblenden) gilt in der Mitspieler-Zelle? Entscheidet 🧑.
+Beantwortet (🧑, 2026-10-12, Chat): In der Mitspieler-Zelle werden Welt-Texte ausgeblendet, dort gilt keine Mindestgröße.
 
 ## Notizen
 

@@ -1,14 +1,17 @@
 package mcpsrv
 
 import (
+	"context"
 	"encoding/json"
 	"errors"
 	"fmt"
-	"os/exec"
 	"path/filepath"
 	"strings"
+	"time"
 
 	"github.com/google/jsonschema-go/jsonschema"
+
+	"k3c/tools/k3c-dev/internal/proc"
 )
 
 // Argument checkout (B-388): Der Client der Desktop-App meldet im Header aus jedem Worktree die Repo-Wurzel (B-341).
@@ -82,7 +85,10 @@ func (s *Server) worktrees() ([]string, error) {
 	if s.cfg.Root == "" {
 		return nil, errors.New("k3c-dev kennt keine Repo-Wurzel")
 	}
-	out, err := exec.Command("git", "-C", s.cfg.Root, "worktree", "list", "--porcelain").Output()
+	ctx, cancel := context.WithTimeout(context.Background(), 3*time.Second)
+	defer cancel()
+	// proc.Command: ohne Konsolenfenster (B-416)
+	out, err := proc.Command(ctx, []string{"git", "-C", s.cfg.Root, "worktree", "list", "--porcelain"}).Output()
 	if err != nil {
 		return nil, err
 	}

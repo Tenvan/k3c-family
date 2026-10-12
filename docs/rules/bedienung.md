@@ -26,6 +26,8 @@ Alle Größen in px bezogen auf die Spielfläche **1920 × 1080** (`GAME_WIDTH`,
 | 3 Spieler | 960 × 540 oben, 1920 × 540 unten | **24 px** in den Vierteln (beschlossen), 28 px im breiten Streifen (bestätigt) | 20 px (bestätigt) |
 | 4 Spieler | 960 × 540 (2 × 2) | **24 px** (beschlossen) | 20 px (bestätigt) |
 
+**Mitspieler-Zelle** (oben 1920 × 360, wenn ein Mitspieler eines anderen Geräts mitspielt): Die Texte der Stufe (Preisschilder, Beutel, Bürger-Labels, Ausgangsschild) sind dort **ausgeblendet**, es gilt keine Mindestgröße (beschlossen 🧑 2026-10-12, B-197); `minFontPx` liefert für diese Zelle `null`. Der Platzhaltertext „Stufe n wird geladen“ (Rolle `placeholder`, Nebeninfo, 32 px) bleibt in jeder Zelle sichtbar. Welt-Meldungen für alle gehören ins globale Band oben (Ticket B-414).
+
 **Prüfverfahren:** Für jede Textanzeige gilt Fontgröße × Skalierung der Zelle ≥ Mindestgröße der Tabelle; das prüft ein Test je Layout in S4 (B-106), die Lesbarkeit am TV nimmt 🧑 in der Abnahme von S4 per Sichtprüfung ab.
 Heute liegen Hinweise und Info-Zeile bei 20 px (`src/scenes/HudScene.ts`), die Anpassung ist Teil von S4.
 
