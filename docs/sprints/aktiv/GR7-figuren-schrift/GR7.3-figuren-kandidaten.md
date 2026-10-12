@@ -58,5 +58,4 @@ Die Wahl der Figuren ist eine manuelle Entscheidung von 🧑.
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+**Vorbereitet (2026-10-12), Session bleibt `offen`:** Schritt 1 und 2 erledigt. Referenzseite `docs/funde/gr7-figuren-funde.html` mit bis zu drei Kandidaten je Lücke (`lavaSlime`, `ironBeetle`, `fireSpirit`, `crystalSpider`, `shardling`, `crystalGuardian`) und Auswahlfeld; `boss` ausgelassen (B-130). Lizenzen und Eignung stammen aus Suchergebnissen und sind **ungeprüft**; einige Links sind OpenGameArt-Suchlinks. Für `ironBeetle` gibt es nur zwei Kandidaten (kein CC0-Treffer), `fireSpirit` nur Effekte. Offen: Wahl durch 🧑 (Schritt 3), Einbau (Schritt 4), `task check` (Schritt 5).
