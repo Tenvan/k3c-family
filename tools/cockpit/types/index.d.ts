@@ -107,6 +107,7 @@ export type ModSettings = {
   skinPrompt: boolean
   skinCards: boolean
   skinInline: boolean
+  skinLinks: boolean
   skinMermaid: boolean
   skinMath: boolean
   skinAsk: boolean
@@ -136,7 +137,7 @@ export type TurnRecord = { usd?: number; tools: number; edits: number; durationM
 
 declare module 'claude-code' {
   interface PluginState {
-    'orgamax-cockpit': {
+    'tenvan-cc': {
       usage: Usage | null
       lastTurnAt: number | null
       turn: Turn | null

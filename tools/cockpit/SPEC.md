@@ -1,4 +1,4 @@
-# Spec: orgamax-cockpit
+# Spec: tenvan-cc
 
 Agenten: vor jeder Arbeit an diesem Plugin zuerst [DEVELOPMENT.md](DEVELOPMENT.md) lesen (Prüfbefehle, API-Fallstricke, Test-Muster).
 
@@ -9,7 +9,7 @@ Lebende Spezifikation. Bei jeder Feature-Änderung mitpflegen: Abschnitt „Feat
 Ein einziges, über den orga-marketplace installierbares Mod für **Claude Desktop**, das nützliche Community-Mods bündelt und vereinfacht. Zwei Anzeigeflächen:
 
 - **Band** über der Prompt-Eingabe (`ui.render` auf `AbovePrompt`): kompakt, immer sichtbar
-- **Panel** rechts (`ui.render` auf `Pane`, `requestId: 'orgamax-cockpit'`): ausführlich, auf Abruf
+- **Panel** rechts (`ui.render` auf `Pane`, `requestId: 'tenvan-cc'`): ausführlich, auf Abruf
 
 ## Leitplanken
 
@@ -37,9 +37,9 @@ Ein einziges, über den orga-marketplace installierbares Mod für **Claude Deskt
 
 ### Titelleiste (Band und Panel, jeweils erste Zeile)
 
-`orgaMAX Claude (Version x, Build: JJJJ-MM-TT hh:mm)`. Version aus `.claude-plugin/plugin.json`, Build-Stempel = jüngste Änderungszeit von `hooks/register.tsx` und `hooks/core.ts` (kein Build-Schritt vorhanden). Gelesen bei `session.start`, also auch bei jedem Reload.
+`Tenvan CC (Version x, Build: JJJJ-MM-TT hh:mm)`. Version aus `.claude-plugin/plugin.json`, Build-Stempel = jüngste Änderungszeit von `hooks/register.tsx` und `hooks/core.ts` (kein Build-Schritt vorhanden). Gelesen bei `session.start`, also auch bei jedem Reload.
 
-Das Logo steht statt des Textes „orgaMAX“ vor der Titelzeile: `assets/logo.svg`, Kopie von `logo_dark.svg` (Wort-Bild-Marke, Variante für dunkle Flächen) aus `ErpApi/apps/frontend/src/assets/images`, gezeichnet als `Svg` 83 × 20 px; ohne Logo oder `Svg` bleibt „orgaMAX Claude …“ als Text. Brand-Regel: nie umfärben. Bei Platzmangel wäre die Bildmarke `logo-symbol-dark.svg` aus `ErpApi/design-system/brand` die Alternative.
+Das Logo steht vor der Titelzeile: `assets/logo.svg` (SVG mit eingebettetem PNG, 13 × 20 px); ohne Logo oder `Svg` bleibt nur der Text. Das Bild wird nie umgefärbt.
 
 Darunter eine Infozeile zum Arbeitsverzeichnis (nur lesende git-Befehle, kein Netzwerk): Branch, Worktree-Name mit Art (Hauptcheckout oder verknüpft), Kurz-SHA, Anzahl geänderter Dateien, Abstand zum Upstream (↑ ↓, sonst „kein Upstream“), Ordner samt Unterordner. Gelesen bei `session.start` und nach `turn.complete`.
 
@@ -72,7 +72,7 @@ Lade-Animation, solange ein Turn läuft: hervorgehobene Karte (Rahmen in Akzentf
 
 Arbeitsverzeichnis: eigene Karte oben im Panel mit Branch, Worktree (Hauptcheckout oder verknüpft), Commit, Änderungen, Upstream, Ordner und ggf. Unterordner. Im Band steht davon nur der aktuelle Branch (`⎇ branch`) unter der Titelzeile.
 
-Hover-Infos im Chat (Option `chatInfo`, Standard an): Nachrichten, Tool-Zeilen, Tool-Ergebnisse und Command-Ausgaben bekommen oben rechts ein kleines ⓘ. Beim Überfahren erscheint ein Hinweis mit dem, was daran skinbar ist: Codeblöcke, Diffs, Mermaid, Formeln, Tabellen, Links einer Nachricht; bei Tools Art (Datei/Shell/Sonstige), Ziel, Status und Umfang einer Änderung. Technik: `ui.render` auf `AssistantMessage`, `ToolUse`, `ToolResult`, `CommandOutput` umhüllt das schon gezeichnete Element (`next(e)`) mit `position: absolute` und `hover.scope`. Das Skins-Mod bleibt als eigenes Plugin aktiv; orgamax-cockpit übernimmt keinen Code daraus.
+Hover-Infos im Chat (Option `chatInfo`, Standard an): Tool-Zeilen, Tool-Ergebnisse und Command-Ausgaben bekommen oben rechts ein kleines ⓘ. Beim Überfahren erscheint ein Hinweis mit Art (Datei/Shell/Sonstige), Ziel, Status und Umfang einer Änderung. Antworten des Modells tragen keinen Hinweis (die frühere Zeile „Skinbar in dieser Nachricht“ ist seit 2026-10-12 entfernt). Technik: `ui.render` auf `ToolUse`, `ToolResult`, `CommandOutput` umhüllt das schon gezeichnete Element (`next(e)`) mit `position: absolute` und `hover.scope`. Das Skins-Mod bleibt als eigenes Plugin aktiv; tenvan-cc übernimmt keinen Code daraus.
 
 Chat-Skins (Einstellungsgruppe „Chat-Skins“, nur Desktop, Logik in `hooks/skins.ts`): Tool-Symbole, ruhige Ergebnisse mit echter Fehlerzeile, Diff-Karte, Details aufklappen, Prompt-Rahmen, Code- und Tabellenkarten mit Kopier-Knopf, Mermaid-Karten (flowchart, sequenceDiagram; Logik in `hooks/mermaid.ts`), Formelkarten für `$$…$$`, Rückfrage-Kopf, Modus-Labels, Kennzeichen an der Hinweiszeile, Hervorhebungen (standardmäßig aus). Einzelheiten im Entscheidungslog.
 
@@ -114,7 +114,7 @@ Jedes Kriterium hat einen Test in `hooks/register.test.ts`, außer wo „manuell
 
 - [x] Takt- und Cache-Rechnung stimmen (Unit-Tests)
 - [x] Band zeichnet auf `desktop`, auf `terminal` nichts Eigenes
-- [x] Button „Details“ öffnet den Pane `orgamax-cockpit`
+- [x] Button „Details“ öffnet den Pane `tenvan-cc`
 - [x] `tool.check` reicht ein `deny` von unten unverändert durch
 - [x] Panel zeigt alle fünf Abschnitte inkl. Takt und Reset-Zeit
 - [x] `parseSteps` liest JSON aus Freitext, max. 3, Label ≤ 30 Zeichen, Fallback `prompt = label`
@@ -141,20 +141,19 @@ Priorität von oben nach unten. Vor Umsetzung mit Ralf abstimmen, wenn ein Punkt
 
 | Datum | Entscheidung |
 | --- | --- |
-| 2026-10-11 | Name `orga-mods`, Ort `plugins/orga-mods` (seit 2026-10-12 `orgamax-cockpit`), nur Desktop, Panel per Command + Button |
+| 2026-10-11 | Name `orga-mods`, Ort `plugins/orga-mods` (seit 2026-10-12 `tenvan-cc`), nur Desktop, Panel per Command + Button |
 | 2026-10-11 | next-steps vereinfacht: Einzelklick, ein Model-Call, Option `nextSteps` |
-| 2026-10-12 | v0.3.0: Titelleiste „orgaMAX Claude (Version, Build)“; Build = Datei-Änderungszeit, solange es keine Build-Pipeline gibt |
+| 2026-10-12 | v0.3.0: Titelleiste „Tenvan CC (Version, Build)“; Build = Datei-Änderungszeit, solange es keine Build-Pipeline gibt |
 | 2026-10-12 | v0.2.0: Kompaktieren-Hinweis, Cache-Trefferquote über `turn.step`, Agent-Abgleich über `agent.list`, kein Vorschlag bei Abbruch |
-| 2026-10-12 | Lokale Entwicklung über Junction `.claude/skills/orgamax-cockpit` → `plugins/orgamax-cockpit` im Hauptcheckout (projektlokal, kein globales `CLAUDE_CODE_PLUGIN_DIRS`) |
+| 2026-10-12 | Lokale Entwicklung über Junction `.claude/skills/tenvan-cc` → `plugins/tenvan-cc` im Hauptcheckout (projektlokal, kein globales `CLAUDE_CODE_PLUGIN_DIRS`) |
 | 2026-10-12 | Hot-Reload über Junction im Watch-Ordner `~/.claude/dev-mods/<session>/cockpit`; `lastPrompt` als Atom (überlebt Reload), Band bricht um (`flexWrap`), Panel liest parallel und kürzt Zeilen |
 | 2026-10-12 | Backlog „Cache-Miss → kalt“ gestrichen: `turn.step` setzt `lastTurnAt` bei jedem Haupt-Request, der Cache ist nach einem Miss neu aufgebaut; TTL-Aufschlüsselung (`ephemeral_1h/5m`) liefert die Engine nur im Subagent-Report, nicht in `turn.step` |
 | 2026-10-12 | Kompaktieren-Button immer sichtbar (war unter 85 % unsichtbar); Legende und Karten-Layout nach Flightdeck-Vorbild; `plain` muss ein Literal sein, sonst überspringt die Engine den ganzen Render-Hook |
 | 2026-10-12 | v0.3.1: Kompaktieren immer sichtbar, Legende, Karten-Layout, Freigaben-Karte mit Datei/Shell/Sonstige, `lastPrompt` als Atom |
-| 2026-10-12 | Lokale Entwicklung jetzt global: Junction `~/.claude/skills/orgamax-cockpit` → `plugins/orgamax-cockpit`, Projekt-Junction entfernt (Doppelladung vermeiden); `$.state` überlebt Reloads, neue Felder deshalb mit Defaults auffüllen (`gateOf`) |
+| 2026-10-12 | Lokale Entwicklung jetzt global: Junction `~/.claude/skills/tenvan-cc` → `plugins/tenvan-cc`, Projekt-Junction entfernt (Doppelladung vermeiden); `$.state` überlebt Reloads, neue Felder deshalb mit Defaults auffüllen (`gateOf`) |
 | 2026-10-12 | Log nach Flightdeck-Vorbild (Quelle, Prompt-Text, Tool-Ziel, 10 Einträge); Lade-Animation nur während eines Turns, damit kein Dauer-Redraw entsteht |
 | 2026-10-12 | Ringe nur im Band (Idee aus dem Skins-Mod, eigene Umsetzung), Panel behält Fortschrittsbalken; Lade-Balken auf Panelbreite |
 | 2026-10-12 | Kontext-Tooltip über Hover-Scope; offen: ob das Band das absolute Box über seine Region hinaus zeichnet (Clipping), sonst Aufschlüsselung als Karte im Panel |
-| 2026-10-12 | Logo aus ErpApi-Design-System im Titel; Infozeile zu Worktree/Branch/Ordner über `$.process.run` (git, lesend) |
 | 2026-10-12 | Skins: nur Hover-Infos über dem laufenden Skins-Plugin (Variante A), kein Vendoring; Worktree-Infos: Band nur Branch, Panel eigene Karte |
 | 2026-10-12 | Legende verständlicher: „im Takt“ → „im Plan“, „knapp“ → „fast leer“, Takt in Worten („60 Punkte schneller als die Zeit“); im Band Hover-Erklärung am Legendenzeichen ⓘ |
 | 2026-10-12 | v0.4.0: Ringe und Kontext-Tooltip im Band, Lade-Animation, Log nach Flightdeck-Vorbild, Logo und Worktree-Infos, Hover-Infos im Chat, verständlichere Legende |
@@ -176,13 +175,11 @@ Priorität von oben nach unten. Vor Umsetzung mit Ralf abstimmen, wenn ein Punkt
 | 2026-10-12 | Grafischer Kontext-Tooltip per absolutem Box im Band erscheint auf dem Desktop nicht (auch innerhalb der Bandfläche) → zurück zum `<title>`, Zeilen mit Blockzeichen-Balken. `/cockpit-demo`: Tabelle aller 15 `ui.render`-Komponenten mit Stand (`RENDER_COMPONENTS`, `demoTable`) plus vollständiger Markdown-Katalog |
 | 2026-10-12 | Kontext-Tooltip farbig über Emoji-Quadrate (🟦🟥🟩…, je angefangene 10 %); Kategorie-Farben im Panel an die Emoji angeglichen, damit beide gleich aussehen. Subagent-Verlauf als Gantt (`timelineSvg`): Zeile je Agent, Balken auf gemeinsamer Achse vom ältesten Start bis jetzt |
 | 2026-10-12 | v0.6.0: Gate-Karte und Subagent-Kacheln mit Verlauf nach Flightdeck, Tooltips am Ring (Kontext farbig per Emoji), sortierte Kontext-Aufteilung mit gestapeltem Balken im Panel, `/cockpit-demo`, Bildmarke mit farbiger Wortmarke |
-| 2026-10-12 | Spinner und TurnDuration gestylt (Einstellung `chatLines`): Farben nur aus den Dark-Tokens von ErpApi (`OM` in `core.ts`), weil das Design-System für Ladezustände noch kein Muster hat. Arbeitszeile ersetzt die Engine-Zeile ganz (Phase, Schritt, Laufzeit, Tool-Calls, Edits, Fehler; Token-Angabe der Engine entfällt), Takt über `frame`. TurnDuration zeichnet die Engine nur im Terminal |
 | 2026-10-12 | Sprachumschaltung DE/EN für die ganze Oberfläche: alle sichtbaren Texte in `hooks/i18n.ts` (`de` ist Quelle, `en` muss per Typ dieselben Schlüssel haben, `t(lang, key, vars)` mit `{name}`-Platzhaltern), `CATCH_UI` aufgegangen; reine Funktionen in `core.ts` bekommen `lang`; Demo als `assets/skins-demo.{de,en}.md`. Log-Einträge, Kontext-Hinweis und Command-Beschreibungen behalten die Sprache beim Schreiben bzw. Session-Start. Einstellungsseite neu: Karte „Sprache · Language“ zuerst, je Gruppe eine Karte mit „n/m an“ und „Alle an/aus“, Zeilen mit Schalter-Button (Zustand im Label, der Desktop zeichnet keine Text-Kinder eines Buttons), fetter Beschriftung und Hinweis in eigener Zeile (schmale Panels); „Auf Standard zurücksetzen“ behält die Sprache |
 | 2026-10-12 | Ring-Tooltips nur im Leerlauf: weder Turn noch laufender Subagent (interaktive Svg flackerten auch bei Neuzeichnen durch Agent-Updates) |
-| 2026-10-12 | orgaMAX-Markenfarben statt Host-Theme-Schlüsseln: zentrales `THEME` in `core.ts` (Primitive aus `ErpApi/design-system/tokens/artifact-snapshot.json`, Snapshot 1790238895-8d9a; dunkle Rollen aus `mobile-tokens.scss`): Akzent om-blue-400 (Flächen om-blue-500), Status grün/amber/rot, Rahmen om-ink-600, Chips om-navy-700; `RING_HEX`, `DECISION_COLOR`, `SRC_COLOR`, Kategorie-Farben und Rollen (`contextColor` → `accent`) laufen darüber. Buttons haben keine Farbe und folgen dem Host-Theme; Hauptaktionen (Kompaktieren bei vollem Kontext, Zusammenfassung „Aktualisieren“, gewählte Sprache) über `variant="primary"` |
 | 2026-10-12 | Hover-Infos im Chat waren nie sichtbar (absolute Boxen zeichnet der Desktop nicht) → ⓘ als kleines interaktives Svg mit `<title>` rechts neben dem Element, im Fluss. Modellzeile unter dem Titel (Panels) bzw. neben dem Branch (Band): Modell, Effort aus `turn.step`, Kontextfenster, Ausgabestil aus `prompt.compose`, Claude-Code-Version; Atom `modelInfo`. Mehr Abstand: Leerzeile nach dem Kopf, breitere Karten im Band |
 | 2026-10-12 | Chat-Infos ohne Tooltip: statt ⓘ-Svg eine gedimmte, immer sichtbare Zeile „ⓘ …“ unter dem Element (`withInfo`), Einstellung heißt „Info-Zeilen“; `infoIconSvg` entfernt |
-| 2026-10-12 | Info-Zeilen im Chat mit der orgaMAX-Bildmarke (`assets/logo.svg`, 11×14 px, einfaches Bild) statt „ⓘ“; ohne Logo bleibt „ⓘ“ |
+| 2026-10-12 | Info-Zeilen im Chat mit der Tenvan-Bildmarke (`assets/logo.svg`, 11×14 px, einfaches Bild) statt „ⓘ“; ohne Logo bleibt „ⓘ“ |
 | 2026-10-12 | Kurze Legende im Band als ein Bild (`legendSvg`) mit der ganzen Legende als `<title>`-Tooltip; interaktiv nur im Leerlauf (kein Turn, kein laufender Subagent) wie die Ringe, Quelle ändert sich nur bei Sprachwechsel. Das absolute Hover-Box der Legende (nie gezeichnet) ist entfernt |
 | 2026-10-12 | Legende-Karte im Panel und Einstellung `cardLegend` entfernt (Legende nur noch im Band-Tooltip); Tooltip mit farbigen Emoji-Kästchen 🟩🟨🟥🟦 passend zu den Farbmarken |
 | 2026-10-12 | Folge-Schritte: genau 5 Vorschläge mit kurzer Begründung (`why`), je Zeile `plain`-Button mit `hotkey` 1–5 (wirkt auch als Ziffer im leeren Eingabefeld) und Begründung gedimmt daneben; maxTokens 1000 |
@@ -194,11 +191,11 @@ Priorität von oben nach unten. Vor Umsetzung mit Ralf abstimmen, wenn ein Punkt
 | 2026-10-12 | Prompt-Rahmen (`skinPrompt`): nur getippte Prompts (`origin.kind` `composer`, ohne `from`/`task`) rechtsbündig im runden Rahmen in Akzentfarbe, Text als wörtliches `Markdown` (markierbar) |
 | 2026-10-12 | Code- und Tabellenkarten (`skinCards`): `AssistantMessage` und `CommandOutput` werden nur selbst gezeichnet, wenn ein geschlossener Codeblock oder eine Tabelle vorkommt; Prosa bleibt natives `Markdown`, Code im `Code`-Element mit Kopf (Sprache, Zeilen), Tabellen als Markdown in der Karte, Kopier-Knopf darunter über `$.ui.copy`; Mermaid/Mathe und offene Fences (Streaming) bleiben Markdown |
 | 2026-10-12 | Hervorhebungen (`skinInline`, standardmäßig aus, experimentell): GitHub-Alerts als farbige Karte, Aufgabenlisten mit Zähler, nur Absätze ganz ohne Markdown-Zeichen als farbiger Text (Pfade, in diesem Turn geänderte Dateien aus Atom `touched`, Versionen, Zahlen); alles andere bleibt Markdown |
-| 2026-10-12 | Umbenannt in „orgaMAX Claude Cockpit“: Plugin-ID `orgamax-cockpit` (vorher `orga-mods`), Ordner `plugins/orgamax-cockpit`, Junction `~/.claude/skills/orgamax-cockpit`, Commands `/cockpit`, `/cockpit-zusammenfassung`, `/cockpit-einstellungen`, `/cockpit-demo`, State- und Pane-IDs `orgamax-cockpit*`. Der Plugin-Store hängt an der ID; die alten Einstellungen werden einmalig von Hand übernommen |
+| 2026-10-12 | Umbenannt in „Tenvan CC“: Plugin-ID `tenvan-cc` (vorher `orga-mods`), Ordner `plugins/tenvan-cc`, Junction `~/.claude/skills/tenvan-cc`, Commands `/cockpit`, `/cockpit-zusammenfassung`, `/cockpit-einstellungen`, `/cockpit-demo`, State- und Pane-IDs `tenvan-cc*`. Der Plugin-Store hängt an der ID; die alten Einstellungen werden einmalig von Hand übernommen |
 | 2026-10-12 | Lade-Linien zwischen den Panel-Karten entfernt (Arbeitszustand zeigt die Karte „Agent arbeitet“), stattdessen eine Leerzeile; `sweep*`-Code gelöscht. Gate: je `tool_use_id` nur einmal gezählt (Mehrfachprüfungen blähten „von dir“/„offen“ auf), offene Rückfragen = Länge von `asked`, nach jedem Turn geleert |
-| 2026-10-12 | Modellzeile nur noch in den Panels, nicht im Band. Folge-Schritte: Label erst beim Zeichnen gekürzt, nach Bandbreite (40 % von `bodyColumns`, mind. 24 Zeichen). Kennzeichen „hier greift ein Cockpit-Style“: kleine orgaMAX-Bildmarke (9×11, einfaches Bild) an Karten, Diff-Karte, ruhigen Ergebnissen/Fehlerzeilen, Tool-Symbolen, Details-Knopf, Prompt-Rahmen und Arbeitszeile |
+| 2026-10-12 | Modellzeile nur noch in den Panels, nicht im Band. Folge-Schritte: Label erst beim Zeichnen gekürzt, nach Bandbreite (40 % von `bodyColumns`, mind. 24 Zeichen). Kennzeichen „hier greift ein Cockpit-Style“: kleine Tenvan-Bildmarke (9×11, einfaches Bild) an Karten, Diff-Karte, ruhigen Ergebnissen/Fehlerzeilen, Tool-Symbolen, Details-Knopf, Prompt-Rahmen und Arbeitszeile |
 | 2026-10-12 | Folge-Schritte an Claude angeglichen: Claudes eigener Vorschlag (Event `prompt.suggest`, origin `suggestion`) steht wörtlich als Schritt 1 („Vorschlag von Claude“), Haiku-Duplikate fallen weg (`withClaude`); das Haiku-Prompt formuliert Schritte als knappen Nutzer-Prompt. Das Prompt hinter Claudes Vorschlag liefert die API nicht |
-| 2026-10-12 | Style-Kennzeichen mit kurzem Style-Namen (gedimmt, kursiv, z. B. „Codekarte“, „Fehlerzeile“) neben der orgaMAX-Marke; Symbol (`skinMarkIcon`) und Name (`skinMarkLabel`) getrennt in den Einstellungen der Gruppe Chat-Skins abschaltbar |
+| 2026-10-12 | Style-Kennzeichen mit kurzem Style-Namen (gedimmt, kursiv, z. B. „Codekarte“, „Fehlerzeile“) neben der Tenvan-Marke; Symbol (`skinMarkIcon`) und Name (`skinMarkLabel`) getrennt in den Einstellungen der Gruppe Chat-Skins abschaltbar |
 | 2026-10-12 | Karte „Hintergrundaufgaben“ (Einstellung `cardTasks`): Start, wenn ein Shell-Aufruf `backgroundTaskId` liefert (run_in_background oder Strg+B), Ende aus der `<task-notification>` im Prompt (origin `task-notification`, `parseTaskNotification`), `TaskStop` setzt „killed“; Liste mit Befehl und Kurztext, Verlauf wie bei den Subagents. Die API bietet keine Liste aller Hintergrundaufgaben; Aufgaben vor einem Reload fehlen |
 | 2026-10-12 | Mermaid-Karten (`skinMermaid`): ```` ```mermaid ```` in `AssistantMessage`/`CommandOutput` als einfaches Svg in einer Karte „Mermaid · <Typ>“ mit Knopf „Quelle kopieren“ darunter; eigener Parser und eigenes Layout in `hooks/mermaid.ts` (flowchart/graph TD/LR/BT/RL mit Rang nach längstem Pfad und einer Baryzentrums-Runde, sequenceDiagram mit Lebenslinien, Notizen, Blöcken als Zeile). Andere Typen oder Parse-Fehler bleiben Markdown; nicht interaktiv (kein `<title>` je Knoten), Quelle nur aus dem Diagrammtext, keine Animation (Entrance-once erfüllt), Breite auf 720 px gekappt. Idee aus claude-skins, kein Code übernommen |
 | 2026-10-12 | Formelkarten (`skinMath`): `$$…$$`-Blöcke und `math`/`latex`/`katex`-Fences als Karte; `texToText` setzt Symbole, `\frac`, `\sqrt`, `\text`, Hoch-/Tiefstellung in Unicode um und zeichnet sie als Svg-Text; bleibt ein unbekannter Befehl übrig, zeigt die Karte den LaTeX-Quelltext im `Code` („nicht umgesetzt“). Inline-`$…$` und offene `$$` (Streaming) bleiben Markdown |
@@ -215,3 +212,4 @@ Priorität von oben nach unten. Vor Umsetzung mit Ralf abstimmen, wenn ein Punkt
 | 2026-10-12 | Knopf „Features“ hinter der Legende im Band (Legende und Knopf in eigener Zeilengruppe, sonst verteilt `space-between` sie): schreibt `/cockpit-features` per `$.prompt.fill` ins Eingabefeld (`$.command.run` aus dem Knopf kam im Desktop nicht an), Enter führt ihn aus; Übersicht in Schlagworten mit je einem Satz aus `assets/features.<lang>.md`. Verworfen: direkte Ausgabe per `$.session.append` (Typ `system` wird als `InfoNotice` gezeichnet, die der Desktop nicht zeigt; aus einem Knopf heraus hängt der Aufruf im Testhost) und die Einstellungstabelle im Bericht (zu lang) |
 | 2026-10-12 | Erster Klick verpufft: jedes Neuzeichnen tauscht die nativen Buttons aus, auch den unter dem Zeiger (so auch effortless dokumentiert). Das Panel las das 250-ms-Animationsbild `frame` und wurde während eines Turns 4×/s neu gezeichnet → „Agent arbeitet“ im Panel mit festem ●, `frame` nur noch für die Arbeitszeile im Chat (ohne Buttons). Messwerte (`usage`, Breakdown, `mcpTools`, `modelInfo`, `cacheHit`) werden nur bei Änderung geschrieben (`same`, Vergleich am Aufrufort, weil der Modul-Scan nur Literal-Atome erlaubt) |
 | 2026-10-12 | Restlicher Klickverlust nur in Panels: der erste Klick in ein Panel ohne Tastaturfokus holt den Fokus (`isFocused` wechselt), der Host zeichnet neu und tauscht den Button aus. Gegenmaßnahmen: Panel-Köpfe lesen `usage` nicht mehr (Kontextfenster steht in `modelInfo.window`), `repo` wird nur bei Änderung geschrieben, alle `$.ui.open` mit `focus: true` (wirkt nur bei leerem Eingabefeld mit Tastatur, nicht aus Knöpfen). Der Fokus-Wechsel selbst liegt beim Host. Skin-Demo-Knopf wie Features per `$.prompt.fill` |
+| 2026-10-12 | Link-Skin (Einstellung `skinLinks`, Standard an, Logik `linkTokens`/`fileTarget`/`fileHref` in `hooks/skins.ts`): Absätze mit Links werden als eigenes Segment gezeichnet, Web-Links in der Akzentfarbe unterstrichen, Dateilinks (kein Schema oder `file:`) als Chip mit Name und `:Zeile`; relative Pfade werden ab dem Arbeitsverzeichnis des Repos zu `file:///…`. Nur einfache Absätze (Text, Code, Fett, Links); Listen, Überschriften, Tabellen und Zitate bleiben natives Markdown. Offen: ob der Desktop `file:`-Links per Klick öffnet, ist nur im laufenden Cockpit prüfbar |

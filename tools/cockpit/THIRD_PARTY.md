@@ -2,7 +2,7 @@
 
 ## catch-me-up (Oliver Wang)
 
-Die Zusammenfassungs-Funktion von orgamax-cockpit folgt dem Konzept von catch-me-up (https://github.com/oliverow/catch-me-up, Version 0.1.3).
+Die Zusammenfassungs-Funktion von tenvan-cc folgt dem Konzept von catch-me-up (https://github.com/oliverow/catch-me-up, Version 0.1.3).
 `assets/catchup.en.md` ist dessen `INSTRUCTIONS.md` unverändert, `assets/catchup.de.md` eine deutsche Neufassung. Der Code ist eine eigene TypeScript-Umsetzung.
 
 ```text
@@ -31,4 +31,4 @@ SOFTWARE.
 
 ## claude-skins (hellosverre) und prismantis (Nahum Litvin, Oliver Wang)
 
-Die Chat-Skins von orgamax-cockpit (`hooks/skins.ts`, Zeichnung in `hooks/register.tsx`) übernehmen Ideen aus claude-skins (Tool-Symbole, Diff-Karte, Details mit Code-Element, Prompt-Rahmen, Hervorhebungen, Code- und Tabellenkarten, Mermaid-Karten, Formelkarten; Parser und Layout in `hooks/mermaid.ts` sind eigener Code) und prismantis (ruhige Ergebnisse, echte Fehlerzeile). Beide stehen unter der MIT-Lizenz (Copyright (c) 2026 hellosverre bzw. Copyright (c) 2026 Nahum Litvin). Der Code ist eine eigene Umsetzung; einzig `mdLiteral` folgt in der Technik (Satzzeichen per Backslash maskieren, führende Leerzeichen als geschützte Leerzeichen) der Funktion `literal` aus claude-skins `hooks/rows.tsx`. Lizenztext wie oben (MIT).
+Die Chat-Skins von tenvan-cc (`hooks/skins.ts`, Zeichnung in `hooks/register.tsx`) übernehmen Ideen aus claude-skins (Tool-Symbole, Diff-Karte, Details mit Code-Element, Prompt-Rahmen, Hervorhebungen, Code- und Tabellenkarten, Mermaid-Karten, Formelkarten; Parser und Layout in `hooks/mermaid.ts` sind eigener Code) und prismantis (ruhige Ergebnisse, echte Fehlerzeile). Beide stehen unter der MIT-Lizenz (Copyright (c) 2026 hellosverre bzw. Copyright (c) 2026 Nahum Litvin). Der Code ist eine eigene Umsetzung; einzig `mdLiteral` folgt in der Technik (Satzzeichen per Backslash maskieren, führende Leerzeichen als geschützte Leerzeichen) der Funktion `literal` aus claude-skins `hooks/rows.tsx`. Lizenztext wie oben (MIT).

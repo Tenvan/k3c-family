@@ -240,9 +240,11 @@ export type Segment =
   | { kind: 'tasks'; text: string; done: number; total: number }
   | { kind: 'mermaid'; diagram: Diagram; source: string }
   | { kind: 'math'; tex: string; text: string | null }
+  | { kind: 'links'; tokens: LinkToken[] }
 
 // `mermaid`: unterstützte Diagramme als Karte; `math`: $$…$$ und math/latex-Fences als Formelkarte.
-export type SplitOptions = { cards: boolean; inline: boolean; mermaid?: boolean; math?: boolean }
+// `links`: Absätze mit Links als Akzentlink beziehungsweise Datei-Chip.
+export type SplitOptions = { cards: boolean; inline: boolean; mermaid?: boolean; math?: boolean; links?: boolean }
 
 export const ALERT_COLOR: Record<AlertKind, string> = { note: THEME.info, tip: THEME.success, important: THEME.violet, warning: THEME.warning, caution: THEME.error }
 
@@ -264,13 +266,15 @@ export function splitMessage(text: string, o: SplitOptions): Segment[] {
     const md = buf.join('\n')
     buf = []
     if (md.trim() === '') return
-    if (!o.inline) return void out.push({ kind: 'md', text: md })
+    if (!o.inline && !o.links) return void out.push({ kind: 'md', text: md })
     for (const para of md.split(/\n\s*\n/)) {
       if (para.trim() === '') continue
-      const kind = MD_SYNTAX.test(para) ? 'md' : 'plain'
+      const tokens = o.links ? linkTokens(para) : null
       const last = out[out.length - 1]
-      if (kind === 'md' && last?.kind === 'md') last.text += `\n\n${para}`
-      else out.push({ kind, text: para })
+      if (tokens !== null) out.push({ kind: 'links', tokens })
+      else if (o.inline && !MD_SYNTAX.test(para)) out.push({ kind: 'plain', text: para })
+      else if (last?.kind === 'md') last.text += `\n\n${para}`
+      else out.push({ kind: 'md', text: para })
     }
   }
   let i = 0
@@ -387,6 +391,88 @@ export function inlineTokens(text: string, touched: readonly string[] = []): { t
   }
   if (at < text.length) out.push({ text: text.slice(at) })
   return out
+}
+
+// ── Links ─────────────────────────────────────────────────────────────────────
+
+// Stück eines Absatzes mit Links: Text, Code, Fett, Link (`file`: Dateipfad statt Adresse, `line`: Zeile aus `datei:42`).
+export type LinkToken =
+  | { kind: 'text'; text: string }
+  | { kind: 'code'; text: string }
+  | { kind: 'bold'; text: string }
+  | { kind: 'link'; label: string; href: string; file: boolean; path: string; line: number | null }
+
+const LINK_PART = /\[([^\]\n]+)\]\(([^)\s]+)\)|<(https?:\/\/[^>\s]+)>|(https?:\/\/[^\s<>)\]]*[^\s<>)\].,;:!?])|`([^`\n]+)`|\*\*([^*\n]+)\*\*/g
+// Was nach dem Abtrennen der bekannten Teile noch Markdown ist, bleibt Sache der Engine.
+const LINK_REST = /[*_`#>|[\]<\~]|^\s*([-+]|\d+[.)])\s/m
+
+// Ziel eines Links als Datei, wenn es kein Schema (außer file:) trägt: `src/a.ts`, `./a.ts:42`, `C:\x\a.ts`, `file:///a.ts#L7`.
+export function fileTarget(href: string): { path: string; line: number | null } | null {
+  const raw = href.replace(/^file:\/{2,3}/i, '')
+  if (raw === href && /^[a-z][a-z0-9+.-]+:/i.test(href)) return null
+  let path = raw
+  let line: number | null = null
+  const hash = /#L(\d+)(?:C\d+)?(?:-L?\d+(?:C\d+)?)?$/.exec(path)
+  if (hash) {
+    line = Number(hash[1])
+    path = path.slice(0, hash.index)
+  }
+  const colon = /:(\d+)(?::\d+)?$/.exec(path)
+  if (colon && path.length > colon[0].length) {
+    line = Number(colon[1])
+    path = path.slice(0, colon.index)
+  }
+  try {
+    path = decodeURIComponent(path)
+  } catch {
+    // unverändert lassen
+  }
+  return path === '' ? null : { path, line }
+}
+
+// file:-Adresse zu einem Dateipfad; relative Pfade gelten ab `cwd` (Arbeitsverzeichnis); ohne `cwd` bleibt der Pfad relativ.
+export function fileHref(path: string, cwd: string): string {
+  const norm = (x: string) => x.replace(/\\/g, '/')
+  const abs = /^([A-Za-z]:)?\//.test(norm(path))
+  const parts = (abs || cwd === '' ? norm(path) : `${norm(cwd).replace(/\/+$/, '')}/${norm(path)}`).split('/')
+  const out: string[] = []
+  for (const part of parts) {
+    if (part === '.') continue
+    if (part === '..' && out.length > 1) out.pop()
+    else out.push(part)
+  }
+  const full = out.join('/')
+  return /^([A-Za-z]:)?\//.test(full) ? `file:///${encodeURI(full.replace(/^\//, ''))}` : encodeURI(full)
+}
+
+// Zerlegt einen Absatz mit mindestens einem Link; null, wenn er sonst Markdown enthält (Listen, Überschriften, Tabellen …).
+export function linkTokens(text: string): LinkToken[] | null {
+  const tokens: LinkToken[] = []
+  let rest = ''
+  let at = 0
+  let links = 0
+  const pushText = (t: string) => {
+    if (t === '') return
+    rest += t
+    const last = tokens[tokens.length - 1]
+    if (last?.kind === 'text') last.text += t
+    else tokens.push({ kind: 'text', text: t })
+  }
+  for (const m of text.matchAll(LINK_PART)) {
+    const idx = m.index ?? 0
+    pushText(text.slice(at, idx))
+    at = idx + m[0].length
+    if (m[5] !== undefined) tokens.push({ kind: 'code', text: m[5] })
+    else if (m[6] !== undefined) tokens.push({ kind: 'bold', text: m[6] })
+    else {
+      const href = m[2] ?? m[3] ?? m[4] ?? ''
+      const f = fileTarget(href)
+      links++
+      tokens.push({ kind: 'link', label: m[1] ?? href, href, file: f !== null, path: f?.path ?? '', line: f?.line ?? null })
+    }
+  }
+  pushText(text.slice(at))
+  return links === 0 || LINK_REST.test(rest) ? null : tokens
 }
 
 export const lineCountOf = (source: string): number => (source === '' ? 0 : source.split('\n').length)

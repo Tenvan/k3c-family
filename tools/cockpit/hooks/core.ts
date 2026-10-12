@@ -2,12 +2,8 @@
 import type { About, Agent, Breakdown, BreakdownRow, CallMark, CatchUp, LoopAlert, UiLang, Limit, McpSchema, Repo, ModSettings, Step, TurnRecord } from '../types'
 import { t, type Key } from './i18n'
 
-// Alle Farben des Mods, fest eingetragen (kein Lesen von ErpApi zur Laufzeit). Primitive aus
-// ErpApi/design-system/tokens/artifact-snapshot.json (Artifact „orgaMAX Design System Product“, Snapshot 1790238895-8d9a,
-// `om-*`, nur hell); die dunklen Rollen (--text-*, --status-*-fg, --border-default) nach design-system/tokens/README.md
-// aus apps/frontend/src/themes/mobile-tokens.scss (`.radix-themes.dark`). Keine Theme-Schlüssel des Hosts ('claude',
-// 'success' …): die färben in dessen Farben. Ein Muster für Ladezustände hat das Design-System noch nicht.
-// Buttons haben keine Farb-Eigenschaft; sie folgen dem Host-Theme (nur `variant="primary"` hebt hervor).
+// Alle Farben des Mods, fest eingetragen (kein Lesen externer Dateien zur Laufzeit): Primitive und dunkle Rollen eines
+// Dark-Design-Systems. Keine Theme-Schlüssel des Hosts ('claude', 'success' …): die färben in dessen Farben.
 export const THEME = {
   accent: '#8eadfd', // om-blue-400 · --text-link / --border-focus: Akzent für Text und Rahmen
   accentFill: '#4277fc', // om-blue-500 · --action-primary: Akzent für Flächen (Ringbögen, Balken)
@@ -19,8 +15,8 @@ export const THEME = {
   textMuted: '#8c929c', // om-ink-400 · --text-muted
   border: '#4a5565', // om-ink-600 · --border-default / --divider
   chip: '#2f3a59', // om-navy-700: Grund der Nummern- und Typ-Chips
-  max: '#82b1ff', // nur die Wortmarke „MAX“ (brand/README.md)
-  orga: '#ffffff', // Wortmarke „orga“ auf dunklem Grund
+  max: '#82b1ff', // Hellblau für Suche und Versionsnummern
+  orga: '#ffffff', // reines Weiß auf dunklem Grund
   surface: '#222222', // Grund schwebender Hinweise
   violet: '#aa8ed6', // Agent-Symbol, Hinweis „Wichtig“; wie die fünfte Kategorie-Farbe
 } as const
@@ -127,16 +123,16 @@ export function resetLabel(iso: string, now: number, lang: UiLang = 'de'): strin
   return d.getTime() - now >= 6 * 86400_000 ? `${base} (${date})` : base
 }
 
-// Titelleiste beider Flächen: „[Logo] Claude (Version x, Build: JJJJ-MM-TT hh:mm)“; ohne Logo steht „orgaMAX“ als Text davor.
+// Titelleiste beider Flächen: „[Logo] Claude (Version x, Build: JJJJ-MM-TT hh:mm)“.
 export function titleText(about: About | null): string {
-  if (!about) return 'Claude Cockpit'
+  if (!about) return 'Tenvan CC'
   const d = new Date(about.builtAt)
   const pad = (n: number) => String(n).padStart(2, '0')
   const stamp = `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())} ${pad(d.getHours())}:${pad(d.getMinutes())}`
-  return `Claude Cockpit (Version ${about.version}, Build: ${stamp})`
+  return `Tenvan CC (Version ${about.version}, Build: ${stamp})`
 }
 
-export const title = (about: About | null): string => `orgaMAX ${titleText(about)}`
+export const title = (about: About | null): string => titleText(about)
 
 // Svg-Quelle aus einer Logo-Datei: ohne XML-Kopf und Kommentare; null, wenn es kein <svg> ist.
 export function svgSource(text: string): string | null {
@@ -346,6 +342,7 @@ export const SETTING_DEFS: readonly { key: SettingKey; group: SettingGroup }[] =
   { key: 'skinPrompt', group: 'skins' },
   { key: 'skinCards', group: 'skins' },
   { key: 'skinInline', group: 'skins' },
+  { key: 'skinLinks', group: 'skins' },
   { key: 'skinMermaid', group: 'skins' },
   { key: 'skinMath', group: 'skins' },
   { key: 'skinAsk', group: 'skins' },
@@ -364,7 +361,7 @@ export const DEFAULT_SETTINGS: ModSettings = {
   cardWorkdir: true, cardCatchUp: true, cardOverview: true, cardContext: true, cardTurn: true, cardGate: true, cardAgents: true, cardTasks: true, cardLog: true,
   chatInfo: true, chatLines: true, catchUp: false, lang: 'de',
   // Hervorhebungen zeichnen Antworten selbst und sind deshalb standardmäßig aus.
-  skinIcons: true, skinQuiet: true, skinDiff: true, skinExpand: true, skinPrompt: true, skinCards: true, skinInline: false,
+  skinIcons: true, skinQuiet: true, skinDiff: true, skinExpand: true, skinPrompt: true, skinCards: true, skinInline: false, skinLinks: true,
   skinMermaid: true, skinMath: true, skinAsk: true, skinMode: true, skinHint: true, skinMarkIcon: true, skinMarkLabel: true,
 }
 
@@ -495,29 +492,6 @@ export function shortHash(text: string): string {
   return (h >>> 0).toString(36)
 }
 
-// Skinbare Elemente einer Markdown-Nachricht: Codeblöcke, Diffs, Mermaid, Formeln, Tabellen, Links.
-export function markdownStats(text: string): Record<'code' | 'diff' | 'mermaid' | 'math' | 'tables' | 'links', number> {
-  const fences = [...text.matchAll(/^[ \t]*```(\w*)[^\n]*$/gm)].map(m => (m[1] ?? '').toLowerCase())
-  const opening = fences.filter((_, i) => i % 2 === 0)
-  const prose = text.replace(/```[\s\S]*?```/g, '')
-  return {
-    code: opening.filter(l => l !== 'diff' && l !== 'mermaid').length,
-    diff: opening.filter(l => l === 'diff').length,
-    mermaid: opening.filter(l => l === 'mermaid').length,
-    math: Math.floor((prose.match(/\$\$/g) ?? []).length / 2),
-    tables: (prose.match(/^\s*\|?\s*:?-{3,}:?\s*(\|\s*:?-{3,}:?\s*)+\|?\s*$/gm) ?? []).length,
-    links: (prose.match(/\[[^\]]+\]\([^)\s]+\)|https?:\/\/[^\s)]+/g) ?? []).length,
-  }
-}
-
-const STAT_KEYS = ['code', 'diff', 'mermaid', 'math', 'tables', 'links'] as const
-
-// Zeilen für den Hover-Hinweis; leer, wenn nichts Skinbares enthalten ist.
-export function statsLines(s: ReturnType<typeof markdownStats>, lang: UiLang = 'de'): string[] {
-  const parts = STAT_KEYS.filter(k => s[k] > 0).map(k => `${t(lang, `chat.stat.${k}`)} ${s[k]}`)
-  return parts.length === 0 ? [] : [t(lang, 'chat.skinbar'), parts.join(' · ')]
-}
-
 const lineCount = (v: unknown): number => (typeof v === 'string' && v !== '' ? v.split('\n').length : 0)
 
 // Zeilen für den Hover-Hinweis zu einem Tool-Aufruf: Art, Ziel, Status und bei Änderungen der Umfang.
@@ -563,13 +537,13 @@ export function parseSteps(text: string, max = 5): Step[] {
 // Die Beschreibung („Wo“) steht in i18n.ts unter `demo.<name>`.
 export const RENDER_COMPONENTS = [
   { name: 'UserMessage', by: 'skin', skins: ['skinPrompt'] },
-  { name: 'AssistantMessage', by: 'chat', skins: ['skinCards', 'skinInline', 'skinMermaid', 'skinMath'] },
+  { name: 'AssistantMessage', by: 'chat', skins: ['skinCards', 'skinInline', 'skinLinks', 'skinMermaid', 'skinMath'] },
   { name: 'ToolUse', by: 'chat', skins: ['skinIcons', 'skinExpand'] },
   { name: 'ToolResult', by: 'chat', skins: ['skinQuiet', 'skinDiff'] },
   { name: 'ToolGroup', by: 'skin', skins: ['skinIcons'] },
   // 'terminal' = die Engine löst die Komponente auf dem Desktop nicht aus; dort gibt es nichts zu stylen.
   { name: 'ToolProgress', by: 'terminal' },
-  { name: 'CommandOutput', by: 'chat', skins: ['skinCards', 'skinInline', 'skinMermaid', 'skinMath'] },
+  { name: 'CommandOutput', by: 'chat', skins: ['skinCards', 'skinInline', 'skinLinks', 'skinMermaid', 'skinMath'] },
   { name: 'AskUserQuestion', by: 'skin', skins: ['skinAsk'] },
   { name: 'Spinner', by: 'line' },
   { name: 'TurnDuration', by: 'line' },

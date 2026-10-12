@@ -1,12 +1,12 @@
 # Cockpit · Demo aller stylbaren Elemente
 
-Zwei Ebenen: die **Komponenten**, die ein Mod über `ui.render` zeichnen kann, und die **Markdown-Elemente** in Antworten und Command-Ausgaben. Die Zählung steht in der gedimmten Info-Zeile mit dem orgaMAX-Symbol unter dieser Ausgabe.
+Zwei Ebenen: die **Komponenten**, die ein Mod über `ui.render` zeichnen kann, und die **Markdown-Elemente** in Antworten und Command-Ausgaben. Die Zählung steht in der gedimmten Info-Zeile mit dem Tenvan-Symbol unter dieser Ausgabe.
 
 <!-- KOMPONENTEN -->
 
 ### Arbeits- und Dauerzeile
 
-Farben aus den Dark-Tokens des orgaMAX-Design-Systems. Ein eigenes Muster für Ladezustände gibt es dort noch nicht, darum nur die Farbrollen. Schalter: Einstellungen → Chat → „Arbeits- und Dauerzeile“.
+Farben aus den Dark-Tokens des Design-Systems. Ein eigenes Muster für Ladezustände gibt es dort noch nicht, darum nur die Farbrollen. Schalter: Einstellungen → Chat → „Arbeits- und Dauerzeile“.
 
 | Zeile | Teil | Token | Farbe |
 | --- | --- | --- | --- |
@@ -100,7 +100,7 @@ def greet(name: str) -> str:
 ```
 
 ```json
-{ "name": "orgamax-cockpit", "version": "0.6.0" }
+{ "name": "tenvan-cc", "version": "0.6.0" }
 ```
 
 ```

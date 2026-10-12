@@ -1,15 +1,15 @@
 {
-  "name": "orgamax-cockpit",
-  "displayName": "orgaMAX Claude Cockpit",
+  "name": "tenvan-cc",
+  "displayName": "Tenvan CC",
   "version": "0.8.2",
-  "description": "orgaMAX Claude Cockpit für Claude Desktop: Band über der Prompt-Eingabe (Kontext, 5h/7d-Limits mit Takt, Prompt-Cache, Kosten, Modell, Subagents, Folge-Schritte mit Tasten 1–5) und Panels rechts (/cockpit, /cockpit-zusammenfassung, /cockpit-einstellungen) mit Übersicht, Turn-Beleg, Gate, Subagent-Verlauf und Log; Chat-Skins, Deutsch/Englisch, orgaMAX-Brandfarben. Eigene Implementierung, inspiriert von claude-flightdeck, claude-skins, prismantis, catch-me-up und next-steps. Kein Netzwerk, keine Telemetrie.",
+  "description": "Tenvan CC für Claude Desktop: Band über der Prompt-Eingabe (Kontext, 5h/7d-Limits mit Takt, Prompt-Cache, Kosten, Modell, Subagents, Folge-Schritte mit Tasten 1–5) und Panels rechts (/cockpit, /cockpit-zusammenfassung, /cockpit-einstellungen) mit Übersicht, Turn-Beleg, Gate, Subagent-Verlauf und Log; Chat-Skins, Deutsch/Englisch, eigene Farben. Eigene Implementierung, inspiriert von claude-flightdeck, claude-skins, prismantis, catch-me-up und next-steps. Kein Netzwerk, keine Telemetrie.",
   "author": {
-    "name": "orgaMAX",
-    "email": "rstich@orgamax.de"
+    "name": "Tenvan",
+    "email": "ralf.stich@gmail.com"
   },
   "license": "MIT",
   "keywords": [
-    "orgamax",
+    "tenvan",
     "cockpit",
     "mod",
     "desktop",
@@ -23,7 +23,7 @@
     "chatInfo": {
       "type": "boolean",
       "title": "Info-Zeilen im Chat",
-      "description": "Gedimmte Zeile mit orgaMAX-Symbol unter Antworten, Tool-Zeilen und Command-Ausgaben (was daran skinbar ist, Tool-Art und Umfang).",
+      "description": "Gedimmte Zeile mit Tenvan-Symbol unter Antworten, Tool-Zeilen und Command-Ausgaben (was daran skinbar ist, Tool-Art und Umfang).",
       "default": true
     },
     "nextSteps": {

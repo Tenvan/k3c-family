@@ -4,7 +4,7 @@ import { AGENT_STEPS_WARN, LOOP_EDITS, LOOP_ERRORS, THEME, compactFocus, detectL
 
 const H = 3600_000
 const MEASURE = { context: { tokens: 50_000, window: 200_000, percent: 25 }, rateLimits: [], cost: { usd: 1.5 }, changed: [] }
-const BAND = { plugin: 'orgamax-cockpit', component: 'AbovePrompt', props: { hasSurvey: false, isWorking: false, maxRows: 3, bodyColumns: 120, scroll: { offset: 0, bodyRows: 3 }, view: {} } } as const
+const BAND = { plugin: 'tenvan-cc', component: 'AbovePrompt', props: { hasSurvey: false, isWorking: false, maxRows: 3, bodyColumns: 120, scroll: { offset: 0, bodyRows: 3 }, view: {} } } as const
 const PANE_PROPS = { title: 'Cockpit', isFocused: false, bodyColumns: 144, placement: 'dock', scroll: { offset: 0, bodyRows: 60 }, view: {} } as const
 const SPAWN = { tool_use_id: 'u1', prompt: 'p', description: 'Suche', subagentType: 'Explore', provider: { plugin: 'test', tier: 'user' }, parentModel: 'm', background: true, fork: false } as const
 
@@ -102,7 +102,7 @@ test('Agent-Bremse: teurer Subagent bekommt den Knopf, danach werden seine Tool-
   on('tool.call', () => ({ result: {} }) as never)
   await $.agent.spawn(SPAWN)
   for (let i = 0; i < AGENT_STEPS_WARN; i++) await $.tool.call({ tool: 'Read', tool_use_id: `r${i}`, input: { file_path: 'a.ts' }, agentId: 'a1' } as never)
-  const pane = await $.ui.mount({ plugin: 'orgamax-cockpit', surface: 'desktop', component: 'Pane', requestId: 'orgamax-cockpit', props: PANE_PROPS })
+  const pane = await $.ui.mount({ plugin: 'tenvan-cc', surface: 'desktop', component: 'Pane', requestId: 'tenvan-cc', props: PANE_PROPS })
   expect(await pane.find({ text: /teuer: 40 Tool-Calls/ })).not.toBe(undefined)
   await pane.press({ key: 'brake-a1' })
   for (let i = 0; i < 100 && !(await pane.find({ text: 'gebremst' })); i++) await Promise.resolve()

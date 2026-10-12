@@ -5,15 +5,15 @@ import type { BgTask, About, ModelInfo, Agent, Breakdown, CallMark, CatchUp, Dec
 import { THEME, splitTool, toolText, withClaude, parseTaskNotification, legendSvg, modelLabel, SPIN_MODE, spinnerText, timelineSvg, demoTable, agentStats, agentFlags, breakdownBarSvg, contextTip, limitTip, cacheTip, summaryLines, topRows, resetLabel, CATCH0, CATCH_KEEP, DEFAULT_SETTINGS, SETTING_DEFS, settingLabel, settingHint, catchUpPrompt, catchUpSystem, nextChunk, settingsOf, startIndex, fingerprint } from './core'
 import type { SettingGroup, SettingKey } from './core'
 import { CACHE_WARN_MS, WASTE_USD, compactFocus, detectLoop, isAgentHeavy, isWasteful, mcpDiet, mcpKey, turnBarsSvg } from './core'
-import { RISKY_GIT_CONFIG, COMPACT_AT, DECISION_COLOR, RING_HEX, contextColor, LEGEND, LEGEND_NOTE, paceText, LIMIT_LABEL, LOG_MAX, SRC_COLOR, bar, cacheHitPct, cacheLeftMs, clockTime, duration, limitColor, pace, parseSteps, pushCapped, markdownStats, shortHash, statsLines, toolInfoLines, oneLine, parseRepo, repoRows, repoShort, ringSvg, svgSource, titleText, toBreakdown, breakdownTitle, categoryColor, spinner, title, toolTarget, toolKind, tokens, usd } from './core'
+import { RISKY_GIT_CONFIG, COMPACT_AT, DECISION_COLOR, RING_HEX, contextColor, LEGEND, LEGEND_NOTE, paceText, LIMIT_LABEL, LOG_MAX, SRC_COLOR, bar, cacheHitPct, cacheLeftMs, clockTime, duration, limitColor, pace, parseSteps, pushCapped, shortHash, toolInfoLines, oneLine, parseRepo, repoRows, repoShort, ringSvg, svgSource, titleText, toBreakdown, breakdownTitle, categoryColor, spinner, title, toolTarget, toolKind, tokens, usd } from './core'
 import { t } from './i18n'
 import type { Key } from './i18n'
 import { ALERT_COLOR, ICON_COLOR, TONE_COLOR, detailInput, detailOutput, diffCardSvg, diffOf, errorText, firstErrorLine, iconKind, inlineTokens, inputPath, isReadOnlyShell, isShell, isStyled, lineCountOf, mdLiteral, QUIET_TOOLS, quietLine, shellCommand, splitMessage, toolIconSvg } from './skins'
-import { askSummary, mathSvg } from './skins'
-import type { Segment, SplitOptions } from './skins'
+import { askSummary, fileHref, mathSvg } from './skins'
+import type { LinkToken, Segment, SplitOptions } from './skins'
 import { diagramType, mermaidSvg } from './mermaid'
 
-const PLUGIN = 'orgamax-cockpit'
+const PLUGIN = 'tenvan-cc'
 // Slash-Command des Hauptpanels: kurz statt der Plugin-ID.
 const COMMAND = 'cockpit'
 // Panels mit Titel in der eingestellten Sprache. Geöffnet wird mit `focus`: der erste Klick in ein Panel ohne Fokus holt erst
@@ -21,54 +21,54 @@ const COMMAND = 'cockpit'
 // Fokus nur bei leerem Eingabefeld mit Tastatur, nicht aus einem Knopf in Band oder Panel heraus.
 const panes = (lang: UiLang) => ({
   main: { id: PLUGIN, title: t(lang, 'common.paneMain') },
-  summary: { id: 'orgamax-cockpit-summary', title: t(lang, 'common.paneSummary') },
-  settings: { id: 'orgamax-cockpit-settings', title: t(lang, 'common.paneSettings') },
+  summary: { id: 'tenvan-cc-summary', title: t(lang, 'common.paneSummary') },
+  settings: { id: 'tenvan-cc-settings', title: t(lang, 'common.paneSettings') },
 })
 const EDIT_TOOLS = new Set(['Edit', 'Write', 'NotebookEdit'])
 const LIVE = new Set(['pending', 'running', 'waiting'])
 const NL = String.fromCharCode(10)
 
-const usage = atom({ plugin: 'orgamax-cockpit', key: 'usage' } as const, null)
-const lastTurnAt = atom({ plugin: 'orgamax-cockpit', key: 'lastTurnAt' } as const, null)
-const turn = atom({ plugin: 'orgamax-cockpit', key: 'turn' } as const, null)
-const agents = atom({ plugin: 'orgamax-cockpit', key: 'agents' } as const, [] as Agent[])
+const usage = atom({ plugin: 'tenvan-cc', key: 'usage' } as const, null)
+const lastTurnAt = atom({ plugin: 'tenvan-cc', key: 'lastTurnAt' } as const, null)
+const turn = atom({ plugin: 'tenvan-cc', key: 'turn' } as const, null)
+const agents = atom({ plugin: 'tenvan-cc', key: 'agents' } as const, [] as Agent[])
 const GATE0: Gate = { allow: 0, you: 0, ask: 0, deny: 0, file: 0, shell: 0, other: 0, trail: [], asked: [] }
-const gate = atom({ plugin: 'orgamax-cockpit', key: 'gate' } as const, GATE0)
+const gate = atom({ plugin: 'tenvan-cc', key: 'gate' } as const, GATE0)
 // $.state überlebt einen Reload: Zähler aus älteren Versionen haben neue Felder nicht und werden hier aufgefüllt.
 const gateOf = (g: Partial<Gate>): Gate => ({ ...GATE0, ...g })
-const log = atom({ plugin: 'orgamax-cockpit', key: 'log' } as const, [] as LogEntry[])
+const log = atom({ plugin: 'tenvan-cc', key: 'log' } as const, [] as LogEntry[])
 // Jede Änderung zeichnet Band und Panel neu – hält Cache-Countdown und Laufzeiten aktuell.
-const tick = atom({ plugin: 'orgamax-cockpit', key: 'tick' } as const, 0)
-const steps = atom({ plugin: 'orgamax-cockpit', key: 'steps' } as const, [] as Step[])
-const cacheHit = atom({ plugin: 'orgamax-cockpit', key: 'cacheHit' } as const, null)
-const about = atom({ plugin: 'orgamax-cockpit', key: 'about' } as const, null)
-const bgTasks = atom({ plugin: 'orgamax-cockpit', key: 'bgTasks' } as const, [] as BgTask[])
-const lastPrompt = atom({ plugin: 'orgamax-cockpit', key: 'lastPrompt' } as const, '')
+const tick = atom({ plugin: 'tenvan-cc', key: 'tick' } as const, 0)
+const steps = atom({ plugin: 'tenvan-cc', key: 'steps' } as const, [] as Step[])
+const cacheHit = atom({ plugin: 'tenvan-cc', key: 'cacheHit' } as const, null)
+const about = atom({ plugin: 'tenvan-cc', key: 'about' } as const, null)
+const bgTasks = atom({ plugin: 'tenvan-cc', key: 'bgTasks' } as const, [] as BgTask[])
+const lastPrompt = atom({ plugin: 'tenvan-cc', key: 'lastPrompt' } as const, '')
 // Claudes eigener Vorschlag nach dem Turn (prompt.suggest, origin suggestion); gilt bis zum nächsten Prompt.
-const claudeHint = atom({ plugin: 'orgamax-cockpit', key: 'claudeHint' } as const, null as Step | null)
+const claudeHint = atom({ plugin: 'tenvan-cc', key: 'claudeHint' } as const, null as Step | null)
 // Animationsbild des Panels; läuft nur, solange ein Turn läuft.
-const frame = atom({ plugin: 'orgamax-cockpit', key: 'frame' } as const, 0)
-const breakdown = atom({ plugin: 'orgamax-cockpit', key: 'breakdown' } as const, null)
+const frame = atom({ plugin: 'tenvan-cc', key: 'frame' } as const, 0)
+const breakdown = atom({ plugin: 'tenvan-cc', key: 'breakdown' } as const, null)
 // Warum es keine Aufteilung gibt (Fehlertext oder Hinweis); leer, solange sie vorliegt.
-const breakdownNote = atom({ plugin: 'orgamax-cockpit', key: 'breakdownNote' } as const, '')
-const logo = atom({ plugin: 'orgamax-cockpit', key: 'logo' } as const, null)
-const modelInfo = atom({ plugin: 'orgamax-cockpit', key: 'modelInfo' } as const, null)
-const repo = atom({ plugin: 'orgamax-cockpit', key: 'repo' } as const, null)
-const settings = atom({ plugin: 'orgamax-cockpit', key: 'settings' } as const, DEFAULT_SETTINGS)
-const catchUp = atom({ plugin: 'orgamax-cockpit', key: 'catchUp' } as const, CATCH0)
-const expanded = atom({ plugin: 'orgamax-cockpit', key: 'expanded' } as const, [] as string[])
-const touched = atom({ plugin: 'orgamax-cockpit', key: 'touched' } as const, [] as string[])
-const quietIds = atom({ plugin: 'orgamax-cockpit', key: 'quietIds' } as const, [] as string[])
-const collapsed = atom({ plugin: 'orgamax-cockpit', key: 'collapsed' } as const, [] as string[])
+const breakdownNote = atom({ plugin: 'tenvan-cc', key: 'breakdownNote' } as const, '')
+const logo = atom({ plugin: 'tenvan-cc', key: 'logo' } as const, null)
+const modelInfo = atom({ plugin: 'tenvan-cc', key: 'modelInfo' } as const, null)
+const repo = atom({ plugin: 'tenvan-cc', key: 'repo' } as const, null)
+const settings = atom({ plugin: 'tenvan-cc', key: 'settings' } as const, DEFAULT_SETTINGS)
+const catchUp = atom({ plugin: 'tenvan-cc', key: 'catchUp' } as const, CATCH0)
+const expanded = atom({ plugin: 'tenvan-cc', key: 'expanded' } as const, [] as string[])
+const touched = atom({ plugin: 'tenvan-cc', key: 'touched' } as const, [] as string[])
+const quietIds = atom({ plugin: 'tenvan-cc', key: 'quietIds' } as const, [] as string[])
+const collapsed = atom({ plugin: 'tenvan-cc', key: 'collapsed' } as const, [] as string[])
 // Aufrufe des Haupt-Agents im laufenden Turn und die daraus erkannte Schleife; beides leert ein neuer Turn.
-const marks = atom({ plugin: 'orgamax-cockpit', key: 'marks' } as const, [] as CallMark[])
-const loopAlert = atom({ plugin: 'orgamax-cockpit', key: 'loopAlert' } as const, null as LoopAlert | null)
+const marks = atom({ plugin: 'tenvan-cc', key: 'marks' } as const, [] as CallMark[])
+const loopAlert = atom({ plugin: 'tenvan-cc', key: 'loopAlert' } as const, null as LoopAlert | null)
 // Geladene MCP-Schemas aus dem Kontext-Breakdown und die Server, deren Tools die Session schon aufgerufen hat (Kontext-Diät).
-const mcpTools = atom({ plugin: 'orgamax-cockpit', key: 'mcpTools' } as const, [] as McpSchema[])
-const usedMcp = atom({ plugin: 'orgamax-cockpit', key: 'usedMcp' } as const, [] as string[])
-const turnLog = atom({ plugin: 'orgamax-cockpit', key: 'turnLog' } as const, [] as TurnRecord[])
+const mcpTools = atom({ plugin: 'tenvan-cc', key: 'mcpTools' } as const, [] as McpSchema[])
+const usedMcp = atom({ plugin: 'tenvan-cc', key: 'usedMcp' } as const, [] as string[])
+const turnLog = atom({ plugin: 'tenvan-cc', key: 'turnLog' } as const, [] as TurnRecord[])
 // Subagents, deren weitere Tool-Calls das Cockpit ablehnt (Agent-Bremse: die API kann einen Subagent nicht abbrechen).
-const braked = atom({ plugin: 'orgamax-cockpit', key: 'braked' } as const, [] as string[])
+const braked = atom({ plugin: 'tenvan-cc', key: 'braked' } as const, [] as string[])
 
 const STEPS_SYSTEM =
   'Du schlägst die nächsten sinnvollen Schritte in einer Coding-Session vor. ' +
@@ -186,7 +186,7 @@ let lastBreakdownAt = 0
 // Für welchen Turn der Cache-Wächter schon einen Vorschlag gemacht hat: je Turn höchstens einmal.
 let warnedFor: number | null = null
 
-// Logo aus assets/logo.svg: Bildmarke aus ErpApi/design-system/brand/logo-symbol-dark.svg (Korpus weiß, Akzente #82b1ff).
+// Logo aus assets/logo.svg (SVG mit eingebettetem PNG).
 async function loadLogo($: EngineInterface): Promise<string | null> {
   try {
     return svgSource(await $.fs.read(`${$.plugin.root}/assets/logo.svg`))
@@ -227,7 +227,7 @@ async function loadRepo($: EngineInterface): Promise<Repo | null> {
   return top === '' ? null : parseRepo({ top, gitDir, commonDir, branch, sha, status, counts, prefix })
 }
 
-// Info-Zeile unter einem gezeichneten Chat-Element: orgaMAX-Bildmarke und die Angaben als gedimmter Text, immer sichtbar.
+// Info-Zeile unter einem gezeichneten Chat-Element: Tenvan-Bildmarke und die Angaben als gedimmter Text, immer sichtbar.
 // Ohne Logo oder Svg steht „ⓘ“ davor. Umhüllt nur, was schon gezeichnet ist; das Element selbst bleibt unberührt.
 function withInfo(ui: Ui, key: string, lines: readonly string[], theirs: RenderElement, mark: string | null): RenderElement {
   const { Box, Text } = ui
@@ -236,7 +236,7 @@ function withInfo(ui: Ui, key: string, lines: readonly string[], theirs: RenderE
     <Box key={key} flexDirection="column">
       {theirs}
       <Box flexDirection="row" columnGap={1} alignItems="center">
-        {mark !== null && Svg ? <Svg source={mark} alt="orgaMAX" width={11} height={14} /> : <Text color={THEME.textMuted}>ⓘ</Text>}
+        {mark !== null && Svg ? <Svg source={mark} alt="Tenvan CC" width={9} height={14} /> : <Text color={THEME.textMuted}>ⓘ</Text>}
         <Text color={THEME.textMuted} wrap="truncate-end">{lines.join(' · ')}</Text>
       </Box>
     </Box>
@@ -253,7 +253,7 @@ function toolIcon(ui: Ui, tool: string, errored: boolean, key: string) {
   return <Svg key={key} source={toolIconSvg(kind, errored ? THEME.error : ICON_COLOR[kind])} alt={tool} width={16} height={16} />
 }
 
-// Kennzeichen „hier greift ein Cockpit-Style“: orgaMAX-Bildmarke und/oder kurzer Style-Name, beides abschaltbar.
+// Kennzeichen „hier greift ein Cockpit-Style“: Tenvan-Bildmarke und/oder kurzer Style-Name, beides abschaltbar.
 type Marker = { mark: string | null; label: boolean; lang: UiLang }
 type StyleKey = Extract<Key, `style.${string}`>
 
@@ -265,7 +265,7 @@ async function markerOf($: EngineInterface): Promise<Marker> {
 function skinMark(ui: Ui, mk: Marker, key: string, style: StyleKey) {
   const { Box, Text } = ui
   const Svg = 'Svg' in ui ? ui.Svg : undefined
-  const icon = mk.mark !== null && Svg ? <Svg source={mk.mark} alt="orgaMAX" width={9} height={11} /> : null
+  const icon = mk.mark !== null && Svg ? <Svg source={mk.mark} alt="Tenvan CC" width={7} height={11} /> : null
   if (icon === null && !mk.label) return null
   return (
     <Box key={key} flexDirection="row" columnGap={1} alignItems="center">
@@ -306,10 +306,26 @@ function card(ui: Ui, key: string, head: RenderElement, body: RenderElement, cop
   )
 }
 
-const splitOptions = (s: ModSettings): SplitOptions => ({ cards: s.skinCards, inline: s.skinInline, mermaid: s.skinMermaid, math: s.skinMath })
+const splitOptions = (s: ModSettings): SplitOptions => ({ cards: s.skinCards, inline: s.skinInline, mermaid: s.skinMermaid, math: s.skinMath, links: s.skinLinks })
+
+// Stück eines Absatzes mit Links: Links in der Akzentfarbe, Dateilinks als Chip (Name, ggf. `:Zeile`), Code gedämpft auf Chip-Grund.
+function linkPart(ui: Ui, p: LinkToken, key: string, cwd: string) {
+  const { Text } = ui
+  const Link = 'Link' in ui ? ui.Link : undefined
+  if (p.kind === 'text') return p.text
+  if (p.kind === 'bold') return <Text key={key} bold>{p.text}</Text>
+  if (p.kind === 'code') return <Text key={key} color={THEME.textSecondary} backgroundColor={THEME.chip}>{` ${p.text} `}</Text>
+  if (!p.file) {
+    const text = <Text key={`${key}-t`} color={THEME.accent} underline>{p.label}</Text>
+    return Link ? <Link key={key} href={p.href}>{text}</Link> : text
+  }
+  const name = p.line !== null && !/:\d+$/.test(p.label) ? `${p.label}:${p.line}` : p.label
+  const chip = <Text key={`${key}-t`} color={THEME.accent} backgroundColor={THEME.chip}>{` ${name} `}</Text>
+  return Link ? <Link key={key} href={fileHref(p.path, cwd)}>{chip}</Link> : chip
+}
 
 // Abschnitte einer Antwort oder Command-Ausgabe: Prosa bleibt Markdown (markierbar), Karten und Hervorhebungen eigen.
-function segmentsView($: EngineInterface, ui: Ui, segs: readonly Segment[], base: string, lang: UiLang, changed: readonly string[], mk: Marker): RenderElement {
+function segmentsView($: EngineInterface, ui: Ui, segs: readonly Segment[], base: string, lang: UiLang, changed: readonly string[], mk: Marker, cwd: string): RenderElement {
   const { Box, Text, Markdown, Code } = ui
   const Svg = 'Svg' in ui ? ui.Svg : undefined
   const copy = (text: string) => () => void $.ui.copy({ text }).catch(() => undefined)
@@ -323,6 +339,12 @@ function segmentsView($: EngineInterface, ui: Ui, segs: readonly Segment[], base
           return (
             <Text key={k} wrap="wrap">
               {inlineTokens(s.text, changed).map(p => (p.tone === undefined ? p.text : <Text color={TONE_COLOR[p.tone]}>{p.text}</Text>))}
+            </Text>
+          )
+        if (s.kind === 'links')
+          return (
+            <Text key={k} wrap="wrap">
+              {s.tokens.map((p, j) => linkPart(ui, p, `${k}-${j}`, cwd))}
             </Text>
           )
         if (s.kind === 'code') {
@@ -383,19 +405,14 @@ async function paneHead($: EngineInterface, ui: Ui, lang: UiLang) {
   )
 }
 
-// Titelzeile: Logo links, Text daneben; ohne Logo oder Svg bleibt „orgaMAX Claude …“ als Text.
+// Titelzeile: Logo links, Text daneben; ohne Logo oder Svg bleibt der Text.
 function titleRow(ui: Ui, info: About | null, mark: string | null) {
   const { Box, Text } = ui
   const Svg = 'Svg' in ui ? ui.Svg : undefined
   if (mark === null || !Svg) return <Text bold color={THEME.accent}>{title(info)}</Text>
   return (
     <Box flexDirection="row" columnGap={1} alignItems="center">
-      <Svg source={mark} alt="orgaMAX" width={16} height={20} />
-      {/* Wortmarke als Text in den Markenfarben für dunklen Grund: „orga“ weiß, „MAX“ #82b1ff (brand/README.md) */}
-      <Text italic>
-        <Text color={THEME.orga}>orga</Text>
-        <Text bold color={THEME.max}>MAX</Text>
-      </Text>
+      <Svg source={mark} alt="Tenvan CC" width={13} height={20} />
       <Text bold color={THEME.accent}>{titleText(info)}</Text>
     </Box>
   )
@@ -684,10 +701,9 @@ export const register: Register = (on, options) => {
     const so = splitOptions(s)
     if (Object.values(so).some(Boolean) && e.props.isSummary !== true) {
       const segs = splitMessage(e.props.text, so)
-      if (isStyled(segs)) el = segmentsView($, ui, segs, `om-s-${shortHash(e.props.text)}`, s.lang, s.skinInline ? await read($, touched) : [], await markerOf($))
+      if (isStyled(segs)) el = segmentsView($, ui, segs, `om-s-${shortHash(e.props.text)}`, s.lang, s.skinInline ? await read($, touched) : [], await markerOf($), (await read($, repo))?.path ?? '')
     }
-    const lines = s.chatInfo ? statsLines(markdownStats(e.props.text), s.lang) : []
-    return lines.length === 0 ? el : withInfo(ui, `om-m-${shortHash(e.props.text)}`, lines, el, await read($, logo))
+    return el
   })
 
   // Deine Nachricht rechtsbündig im Rahmen; der Text als wörtliches Markdown, damit er markierbar bleibt.
@@ -918,18 +934,17 @@ export const register: Register = (on, options) => {
     const so = splitOptions(s)
     if (Object.values(so).some(Boolean) && !e.props.isErrored) {
       const segs = splitMessage(e.props.text, so)
-      if (isStyled(segs)) el = segmentsView($, ui, segs, `om-cs-${shortHash(e.props.command + e.props.text)}`, s.lang, s.skinInline ? await read($, touched) : [], await markerOf($))
+      if (isStyled(segs)) el = segmentsView($, ui, segs, `om-cs-${shortHash(e.props.command + e.props.text)}`, s.lang, s.skinInline ? await read($, touched) : [], await markerOf($), (await read($, repo))?.path ?? '')
     }
     if (!s.chatInfo) return el
     const lines = [
       `/${e.props.command} · ${t(s.lang, e.props.isErrored ? 'chat.withError' : 'chat.ok')}`,
       t(s.lang, 'chat.outputLines', { n: e.props.text.split('\n').length }),
-      ...statsLines(markdownStats(e.props.text), s.lang),
     ]
     return withInfo(ui, `om-c-${shortHash(e.props.command + e.props.text)}`, lines, el, await read($, logo))
   })
 
-  // Ausgabe als Markdown im Chat: zeigt jedes skinbare Element und die Hover-Info daran.
+  // Ausgabe als Markdown im Chat: zeigt jedes skinbare Element.
   on('command.run', { command: 'cockpit-demo' }, async $ => {
     const s = await read($, settings)
     const md = await $.fs.read(`${$.plugin.root}/assets/skins-demo.${s.lang}.md`)
@@ -1262,7 +1277,7 @@ export const register: Register = (on, options) => {
   })
 
   // Zusammenfassung in eigenem Panel rechts: Knöpfe oben, darunter die Abschnitte als einfacher Text (kein Markdown-Rendering).
-  on('ui.render', { component: 'Pane', requestId: 'orgamax-cockpit-summary' }, async ($, e, next) => {
+  on('ui.render', { component: 'Pane', requestId: 'tenvan-cc-summary' }, async ($, e, next) => {
     if (e.surface !== 'desktop') return next(e)
     const s = await read($, settings)
     const cu = await read($, catchUp)
@@ -1296,7 +1311,7 @@ export const register: Register = (on, options) => {
   })
 
   // Einstellungsseite: jedes Detail von Band, Panel und Chat ein- oder ausblenden; gilt sofort und für alle Sessions.
-  on('ui.render', { component: 'Pane', requestId: 'orgamax-cockpit-settings' }, async ($, e, next) => {
+  on('ui.render', { component: 'Pane', requestId: 'tenvan-cc-settings' }, async ($, e, next) => {
     if (e.surface !== 'desktop') return next(e)
     const s = await read($, settings)
     const L = s.lang
@@ -1371,7 +1386,7 @@ export const register: Register = (on, options) => {
     )
   })
 
-  on('ui.render', { component: 'Pane', requestId: 'orgamax-cockpit' }, async ($, e, next) => {
+  on('ui.render', { component: 'Pane', requestId: 'tenvan-cc' }, async ($, e, next) => {
     if (e.surface !== 'desktop') return next(e)
     await read($, tick)
     const now = await $.clock.now()
