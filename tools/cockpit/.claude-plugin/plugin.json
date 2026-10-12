@@ -1,0 +1,36 @@
+{
+  "name": "orgamax-cockpit",
+  "displayName": "orgaMAX Claude Cockpit",
+  "version": "0.8.2",
+  "description": "orgaMAX Claude Cockpit für Claude Desktop: Band über der Prompt-Eingabe (Kontext, 5h/7d-Limits mit Takt, Prompt-Cache, Kosten, Modell, Subagents, Folge-Schritte mit Tasten 1–5) und Panels rechts (/cockpit, /cockpit-zusammenfassung, /cockpit-einstellungen) mit Übersicht, Turn-Beleg, Gate, Subagent-Verlauf und Log; Chat-Skins, Deutsch/Englisch, orgaMAX-Brandfarben. Eigene Implementierung, inspiriert von claude-flightdeck, claude-skins, prismantis, catch-me-up und next-steps. Kein Netzwerk, keine Telemetrie.",
+  "author": {
+    "name": "orgaMAX",
+    "email": "rstich@orgamax.de"
+  },
+  "license": "MIT",
+  "keywords": [
+    "orgamax",
+    "cockpit",
+    "mod",
+    "desktop",
+    "usage",
+    "rate-limit",
+    "pane",
+    "skins"
+  ],
+  "types": "./types/index.d.ts",
+  "userConfig": {
+    "chatInfo": {
+      "type": "boolean",
+      "title": "Info-Zeilen im Chat",
+      "description": "Gedimmte Zeile mit orgaMAX-Symbol unter Antworten, Tool-Zeilen und Command-Ausgaben (was daran skinbar ist, Tool-Art und Umfang).",
+      "default": true
+    },
+    "nextSteps": {
+      "type": "boolean",
+      "title": "Folge-Schritte vorschlagen",
+      "description": "Nach jeder Antwort fünf nächste Schritte mit Begründung über der Prompt (Tasten 1–5). Kostet einen kurzen Haiku-Call pro Antwort.",
+      "default": true
+    }
+  }
+}
