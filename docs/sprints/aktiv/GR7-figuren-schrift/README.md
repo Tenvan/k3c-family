@@ -5,7 +5,7 @@
 - **Domäne:** CLI
 - **Reife:** bereit
 - **Tickets:** B-193, B-251, B-198, B-197, B-320
-- **Start-Commit:** –
+- **Start-Commit:** 46c2c435
 - **Spec:** freigegeben
 - **Revision:** 1
 - **Freigabe:** 2026-10-12, Chat (Ralf), Revision 1
@@ -58,7 +58,7 @@ Keine passende Figur → Lücke bleibt mit Ticket, Platzhalter-Rückfall.
 
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
-| GR7.1 | `GR7.1-schrift-platzhalter-partner.md` | Umsetzung | autonom | offen |
+| GR7.1 | `GR7.1-schrift-platzhalter-partner.md` | Umsetzung | autonom | in Arbeit |
 | GR7.2 | `GR7.2-sattelsitz.md` | Umsetzung | autonom | offen |
 | GR7.3 | `GR7.3-figuren-kandidaten.md` | Workshop | Mensch | offen |
 | GR7.4 | `GR7.4-skalierung-tv.md` | Umsetzung | Mensch | offen |

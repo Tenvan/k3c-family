@@ -1,6 +1,6 @@
 # GR7.1 · Schrift: Platzhaltertext aus dem Katalog, Regel für die Mitspieler-Zelle
 
-- **Status:** offen
+- **Status:** in Arbeit
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** CLI
