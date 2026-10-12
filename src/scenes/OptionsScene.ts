@@ -18,7 +18,7 @@ import {
 import { pauseButton } from './pauseButton';
 
 const TOP = 230;
-const ROW_H = 78; // 10 Zeilen über dem Hinweis unten
+const ROW_H = 72; // 11 Zeilen über dem Hinweis unten
 const FONT_PX = 40; // ≥ 28 px (Q03)
 const STICK = 0.5;
 const STYLE = { fontFamily: 'sans-serif', fontStyle: 'bold', color: '#ffffff', stroke: '#000000', strokeThickness: 6 };

@@ -6,10 +6,10 @@ import { clampVolume, type Settings } from '../core/settings';
 import { t } from '../core/texts';
 import type { SlotCommand } from './localSlots';
 
-export type OptionId = 'music' | 'sfx' | 'screenshake' | 'flash' | 'colorblind' | 'guide' | 'language' | 'resume' | 'removePlayer' | 'leave';
+export type OptionId = 'music' | 'sfx' | 'ambient' | 'screenshake' | 'flash' | 'colorblind' | 'guide' | 'language' | 'resume' | 'removePlayer' | 'leave';
 
 /** Feste Reihenfolge der Einträge */
-export const OPTION_IDS: readonly OptionId[] = ['music', 'sfx', 'screenshake', 'flash', 'colorblind', 'guide', 'language', 'resume', 'removePlayer', 'leave'];
+export const OPTION_IDS: readonly OptionId[] = ['music', 'sfx', 'ambient', 'screenshake', 'flash', 'colorblind', 'guide', 'language', 'resume', 'removePlayer', 'leave'];
 
 /** Registry-Schlüssel: die Optionen melden „Spiel verlassen“, `GameScene` verlässt den Raum (B-293) */
 export const LEAVE_KEY = 'leaveGame';
@@ -26,6 +26,9 @@ export const VOLUME_STEP = 10;
 
 /** Schalter-Einträge → Feld der Einstellungen */
 const SWITCHES = { screenshake: 'screenshake', flash: 'flash', colorblind: 'colorblindSymbols', guide: 'guideHints' } as const;
+
+/** Regler-Einträge → Feld der Einstellungen (ein Regler je Bus) */
+const VOLUMES = { music: 'musicVolume', sfx: 'sfxVolume', ambient: 'ambientVolume' } as const;
 
 export type OptionDir = 'left' | 'right' | 'confirm';
 
@@ -49,9 +52,10 @@ export function applyOption(settings: Settings, id: OptionId, dir: OptionDir): O
   const unchanged = { settings, close: false, leave: false, removePlayer: false };
   switch (id) {
     case 'music':
-    case 'sfx': {
+    case 'sfx':
+    case 'ambient': {
       if (dir === 'confirm') return unchanged;
-      const key = id === 'music' ? 'musicVolume' : 'sfxVolume';
+      const key = VOLUMES[id];
       const value = clampVolume(settings[key] + (dir === 'left' ? -VOLUME_STEP : VOLUME_STEP), settings[key]);
       return { ...unchanged, settings: { ...settings, [key]: value } };
     }
@@ -81,6 +85,8 @@ export function optionLabel(settings: Settings, id: OptionId): string {
       return `${t('opt.music')}  ◀ ${settings.musicVolume} % ▶`;
     case 'sfx':
       return `${t('opt.sfx')}  ◀ ${settings.sfxVolume} % ▶`;
+    case 'ambient':
+      return `${t('opt.ambient')}  ◀ ${settings.ambientVolume} % ▶`;
     case 'screenshake':
       return `${t('opt.screenshake')}  ${onOff(settings.screenshake)}`;
     case 'flash':

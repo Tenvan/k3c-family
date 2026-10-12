@@ -39,7 +39,7 @@ function setup(state = 'suspended', resumes = true) {
       if (resumes) ctx.state = 'running';
     },
     decodeAudioData: async () => ({ buf: 1 }),
-    createBufferSource: () => ({ buffer: null, connect: () => undefined, start: (...a) => void log.started.push(a) }),
+    createBufferSource: () => ({ buffer: null, connect: () => undefined, start: (...a) => void log.started.push(a as number[]) }),
   };
   const core = new AudioCore({
     createContext: () => (log.created++, ctx),
