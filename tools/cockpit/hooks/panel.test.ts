@@ -14,7 +14,7 @@ test('Einstellungsseite: Schalter blendet Karte im Panel aus', async ($, on) => 
   mock.clock(on, { now: 1 })
   on('session.measure', () => ({ changed: [] }))
   on('store.get', () => ({ value: undefined }) as never)
-  on('store.set', () => ({}) as never)
+  on('store.set', () => ({ value: undefined }) as never)
 
   const settings = await $.ui.mount({ plugin: 'tenvan-cc', surface: 'desktop', component: 'Pane', requestId: 'tenvan-cc-settings', props: SETTINGS_PROPS })
   expect(await settings.find({ type: 'Text', text: 'Panel' })).not.toBe(undefined)
@@ -29,8 +29,8 @@ test('Panel-Karten: ▾/▸ klappt zu und auf, ✕ schaltet die Karte in den Ein
   mock.clock(on, { now: 1 })
   on('session.measure', () => ({ changed: [] }))
   on('store.get', () => ({ value: undefined }) as never)
-  on('store.set', () => ({}) as never)
-  const pane = await $.ui.mount({ plugin: 'orgamax-cockpit', surface: 'desktop', component: 'Pane', requestId: 'orgamax-cockpit', props: PANE_PROPS })
+  on('store.set', () => ({ value: undefined }) as never)
+  const pane = await $.ui.mount({ plugin: 'tenvan-cc', surface: 'desktop', component: 'Pane', requestId: 'tenvan-cc', props: PANE_PROPS })
   const settle = async (done: () => Promise<boolean>) => {
     for (let i = 0; i < 100 && !(await done()); i++) await Promise.resolve()
   }
@@ -71,7 +71,7 @@ test('Zusammenfassung: Aktualisieren sendet deutschen Prompt und zeigt das Ergeb
   mock.clock(on, { now: 1 })
   on('session.measure', () => ({ changed: [] }))
   on('store.get', () => ({ value: undefined }) as never)
-  on('store.set', () => ({}) as never)
+  on('store.set', () => ({ value: undefined }) as never)
   on('store.delete', () => ({}) as never)
   on('session.id', () => ({ value: 's1' }) as never)
   on('session.messages', () => ({ value: MESSAGES }) as never)
@@ -122,7 +122,7 @@ test('Sprache: lang-en schaltet Band und Panel auf Englisch', async ($, on) => {
   mock.clock(on, { now: 1 })
   on('session.measure', () => ({ changed: [] }))
   on('store.get', () => ({ value: undefined }) as never)
-  on('store.set', () => ({}) as never)
+  on('store.set', () => ({ value: undefined }) as never)
   on('ui.render', { component: 'AbovePrompt' }, () => ({ type: 'Box' as const }))
   await $.session.measure(MEASURE)
 
@@ -143,9 +143,9 @@ test('Einstellungsseite: „Alle aus“ einer Gruppe und Zurücksetzen', async (
   mock.clock(on, { now: 1 })
   on('session.measure', () => ({ changed: [] }))
   on('store.get', () => ({ value: undefined }) as never)
-  on('store.set', () => ({}) as never)
-  const page = await $.ui.mount({ plugin: 'orgamax-cockpit', surface: 'desktop', component: 'Pane', requestId: 'orgamax-cockpit-settings', props: SETTINGS_PROPS })
-  const main = await $.ui.mount({ plugin: 'orgamax-cockpit', surface: 'desktop', component: 'Pane', requestId: 'orgamax-cockpit', props: PANE_PROPS })
+  on('store.set', () => ({ value: undefined }) as never)
+  const page = await $.ui.mount({ plugin: 'tenvan-cc', surface: 'desktop', component: 'Pane', requestId: 'tenvan-cc-settings', props: SETTINGS_PROPS })
+  const main = await $.ui.mount({ plugin: 'tenvan-cc', surface: 'desktop', component: 'Pane', requestId: 'tenvan-cc', props: PANE_PROPS })
   expect(await main.find({ type: 'Text', text: 'Übersicht' })).not.toBe(undefined)
 
   // Gruppen in Reihenfolge des ersten Schalters: Band, Panel, Zusammenfassung, Chat
@@ -164,7 +164,7 @@ test('Panel: Modellzeile unter dem Titel mit Modell und Claude-Code-Version', as
   mock.clock(on, { now: 1 })
   on('session.measure', () => ({ changed: [] }))
   on('store.get', () => ({ value: undefined }) as never)
-  on('store.set', () => ({}) as never)
+  on('store.set', () => ({ value: undefined }) as never)
   on('session.model', () => ({ value: 'claude-opus-5-5' }) as never)
   on('session.version', () => ({ value: { version: '2.1.295' } }) as never)
   on('session.start', ($, e) => ({ cwd: e.cwd }))

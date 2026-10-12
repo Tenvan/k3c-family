@@ -193,7 +193,7 @@ test('AssistantMessage: Code- und Tabellenkarten mit Kopier-Knopf darunter; Pros
 
 test('Hervorhebungen eingeschaltet: Hinweis als Karte, geänderte Datei in Erfolgsfarbe, Aufgaben mit Zähler', async ($, on) => {
   on('store.get', () => ({ value: undefined }) as never)
-  on('store.set', () => ({}) as never)
+  on('store.set', () => ({ value: undefined }) as never)
   on('tool.call', () => ({ result: {} }) as never)
   on('ui.render', { component: 'AssistantMessage' }, () => ({ type: 'Box' as const }))
   const props = { title: 'x', isFocused: false, bodyColumns: 144, placement: 'dock', scroll: { offset: 0, bodyRows: 40 }, view: {} } as const
@@ -216,7 +216,7 @@ test('CommandOutput: Codeblock als Karte', async ($, on) => {
 test('Style-Kennzeichen: Name neben dem Symbol, über die Einstellungen abschaltbar', async ($, on) => {
   on('ui.render', { component: 'ToolResult' }, () => ({ type: 'Box' as const }))
   on('store.get', () => ({ value: undefined }) as never)
-  on('store.set', () => ({}) as never)
+  on('store.set', () => ({ value: undefined }) as never)
   const props = { tool_use_id: 'b2', tool: 'Bash', isErrored: true, output: 'Exit code 1\nerror: kaputt' }
   const base = { plugin: 'tenvan-cc', surface: 'desktop', component: 'ToolResult', props } as const
   expect(await (await $.ui.mount(base)).find({ type: 'Text', text: 'Fehlerzeile' })).not.toBe(undefined)
