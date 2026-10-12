@@ -495,29 +495,6 @@ export function shortHash(text: string): string {
   return (h >>> 0).toString(36)
 }
 
-// Skinbare Elemente einer Markdown-Nachricht: Codeblöcke, Diffs, Mermaid, Formeln, Tabellen, Links.
-export function markdownStats(text: string): Record<'code' | 'diff' | 'mermaid' | 'math' | 'tables' | 'links', number> {
-  const fences = [...text.matchAll(/^[ \t]*```(\w*)[^\n]*$/gm)].map(m => (m[1] ?? '').toLowerCase())
-  const opening = fences.filter((_, i) => i % 2 === 0)
-  const prose = text.replace(/```[\s\S]*?```/g, '')
-  return {
-    code: opening.filter(l => l !== 'diff' && l !== 'mermaid').length,
-    diff: opening.filter(l => l === 'diff').length,
-    mermaid: opening.filter(l => l === 'mermaid').length,
-    math: Math.floor((prose.match(/\$\$/g) ?? []).length / 2),
-    tables: (prose.match(/^\s*\|?\s*:?-{3,}:?\s*(\|\s*:?-{3,}:?\s*)+\|?\s*$/gm) ?? []).length,
-    links: (prose.match(/\[[^\]]+\]\([^)\s]+\)|https?:\/\/[^\s)]+/g) ?? []).length,
-  }
-}
-
-const STAT_KEYS = ['code', 'diff', 'mermaid', 'math', 'tables', 'links'] as const
-
-// Zeilen für den Hover-Hinweis; leer, wenn nichts Skinbares enthalten ist.
-export function statsLines(s: ReturnType<typeof markdownStats>, lang: UiLang = 'de'): string[] {
-  const parts = STAT_KEYS.filter(k => s[k] > 0).map(k => `${t(lang, `chat.stat.${k}`)} ${s[k]}`)
-  return parts.length === 0 ? [] : [t(lang, 'chat.skinbar'), parts.join(' · ')]
-}
-
 const lineCount = (v: unknown): number => (typeof v === 'string' && v !== '' ? v.split('\n').length : 0)
 
 // Zeilen für den Hover-Hinweis zu einem Tool-Aufruf: Art, Ziel, Status und bei Änderungen der Umfang.

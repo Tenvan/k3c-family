@@ -1,6 +1,6 @@
 import { expect, mock, test } from 'claude-code/testing'
 
-import { THEME, spinnerText, contextTip, limitTip, cacheTip, RISKY_GIT_CONFIG, paceText, markdownStats, shortHash, statsLines, toolInfoLines, cacheHitPct, cacheLeftMs, pace, breakdownTitle, contextColor, oneLine, parseRepo, parseSteps, repoRows, repoShort, svgSource, toBreakdown, breakdownBarSvg, ringSvg, spinner, title, titleText, toolKind, toolTarget } from './core'
+import { THEME, spinnerText, contextTip, limitTip, cacheTip, RISKY_GIT_CONFIG, paceText, shortHash, toolInfoLines, cacheHitPct, cacheLeftMs, pace, breakdownTitle, contextColor, oneLine, parseRepo, parseSteps, repoRows, repoShort, svgSource, toBreakdown, breakdownBarSvg, ringSvg, spinner, title, titleText, toolKind, toolTarget } from './core'
 
 const H = 3600_000
 const MEASURE = {
@@ -370,13 +370,6 @@ test('Repo-Infozeile: Branch, Worktree, Commit, Änderungen, Upstream, Ordner', 
   const re = new RegExp(RISKY_GIT_CONFIG)
   expect(['filter.lfs.clean', 'core.fsmonitor', 'diff.x.textconv', 'diff.external', 'alias.st', 'include.path', 'includeif.gitdir:/x/.path', 'extensions.worktreeconfig', 'gpg.program', 'gpg.ssh.program', 'log.showsignature'].every(k => re.test(k))).toBe(true)
   expect(['core.autocrlf', 'user.name', 'remote.origin.url'].some(k => re.test(k))).toBe(false)
-})
-
-test('markdownStats: Codeblöcke, Diffs, Mermaid, Formeln, Tabellen, Links', () => {
-  const text = ['Text mit [Link](https://a.de) und https://b.de', '```ts', 'x', '```', '```diff', '-a', '+b', '```', '```mermaid', 'graph TD', '```', '$$', 'x', '$$', '| a | b |', '|---|---|', '| 1 | 2 |'].join('\n')
-  expect(markdownStats(text)).toEqual({ code: 1, diff: 1, mermaid: 1, math: 1, tables: 1, links: 2 })
-  expect(statsLines(markdownStats('nur Text'))).toEqual([])
-  expect(statsLines(markdownStats(text))[1]).toBe('Codeblöcke 1 · Diffs 1 · Mermaid 1 · Formeln 1 · Tabellen 1 · Links 2')
 })
 
 test('toolInfoLines: Art, Ziel, Status, Umfang einer Änderung', () => {
