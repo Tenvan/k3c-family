@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import { GAME_HEIGHT, GAME_WIDTH } from '../core/constants';
-import { computeLayout, sharedAnchor, SHARED_LINE_HEIGHT, type Cell } from './layout';
+import { BAR_HEIGHT, computeLayout, type Cell } from './layout';
 import { cellRadar, radarMarkers, radarRect, RADAR_HEIGHT, RADAR_MAX_WIDTH, TOP_STRIP, type RadarWorld } from './radar';
 
 /** Kleines Level: 1000 Units breit, Burg in der Mitte, zwei Portale, ein Ausgang. */
@@ -119,10 +119,9 @@ describe('radarRect (B-090/AC-02)', () => {
     expect(radarRect(tr).x + radarRect(tr).w).toBe(GAME_WIDTH - 24);
   });
 
-  /** Der gemeinsame HUD-Block (Vorrat, Tageszeit, Kampf) ist hier großzügig 900 px breit angesetzt. */
-  it.each(layouts)('%s: Leisten überlappen den gemeinsamen HUD-Block nicht', (_name, cells) => {
-    const a = sharedAnchor(cells);
-    const block = { x: a.x - a.originX * 900, y: a.y, w: 900, h: 3 * SHARED_LINE_HEIGHT };
+  /** Die Leiste oben (Vorrat, Tageszeit, Kampf) läuft über die ganze Breite. */
+  it.each(layouts)('%s: Radar-Leisten überlappen die Leiste oben nicht', (_name, cells) => {
+    const block = { x: 0, y: 0, w: GAME_WIDTH, h: BAR_HEIGHT };
     for (const cell of cells) {
       const r = radarRect(cell);
       const apart = r.x + r.w <= block.x || block.x + block.w <= r.x || r.y + r.h <= block.y || block.y + block.h <= r.y;

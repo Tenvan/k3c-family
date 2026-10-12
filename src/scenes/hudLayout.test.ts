@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import { GAME_HEIGHT, GAME_WIDTH } from '../core/constants';
-import { computeLayout, type Cell } from './layout';
+import { BAR_HEIGHT, computeLayout, type Cell } from './layout';
 import { anchorRect, DEBUG_AREA, hudItems, hudLayout, overlaps, RANK, type HudItem, type Rect, type Size } from './hudLayout';
 import { radarRect } from './radar';
 
@@ -19,6 +19,8 @@ function sizes(cells: readonly Cell[]): Map<string, Size> {
   m.set('shared', { w: 416, h: 42 });
   m.set('clock', { w: 352, h: 42 });
   m.set('fight', { w: 288, h: 42 });
+  m.set('citizens', { w: 448, h: 42 });
+  m.set('places', { w: 448, h: 120 });
   m.set('travel', { w: 512, h: 56 });
   m.set('join', { w: 480, h: 40 });
   m.set('info', { w: 448, h: 38 });
@@ -58,23 +60,40 @@ describe('hudLayout (B-337/AC-01)', () => {
     cells.forEach((c, i) => c.kind === 'player' && expect(out.get(`player:${i}`)).not.toBeNull());
   });
 
-  it('ohne Freifläche stehen die Pflichtanzeigen an ihrem Anker, der gemeinsame Block stapelt sich oben rechts', () => {
-    const cells = computeLayout(1, false);
-    const items = hudItems(cells, sizes(cells), false);
-    const out = hudLayout(items, []);
-    for (const it of items.filter((i) => i.rank === 0)) expect(out.get(it.id)).toEqual(anchorRect(it));
-    const [shared, clock, fight] = ['shared', 'clock', 'fight'].map((id) => out.get(id)!);
-    expect(shared.x + shared.w).toBe(GAME_WIDTH - 24);
-    expect(clock.y).toBeGreaterThanOrEqual(shared.y + shared.h);
-    expect(fight.y).toBeGreaterThanOrEqual(clock.y + clock.h);
+  it('ohne Freifläche stehen die Pflichtanzeigen an ihrem Anker, alle gemeinsamen Anzeigen und Spielerwerte in der Leiste oben', () => {
+    for (const cells of [computeLayout(1, false), computeLayout(4, false)]) {
+      const items = hudItems(cells, sizes(cells), false);
+      const out = hudLayout(items, []);
+      if (cells.length === 1) for (const it of items.filter((i) => i.rank === 0)) expect(out.get(it.id)).toEqual(anchorRect(it));
+      const [info, clock, fight, shared] = ['info', 'clock', 'fight', 'shared'].map((id) => out.get(id)!);
+      expect(info.x).toBe(24);
+      expect(fight.x + fight.w).toBe(GAME_WIDTH - 24);
+      expect(info.x + info.w).toBeLessThanOrEqual(clock.x);
+      expect(clock.x + clock.w).toBeLessThanOrEqual(fight.x);
+      expect(shared.y).toBeGreaterThanOrEqual(info.y + info.h);
+      const bar = { x: 0, y: 0, w: GAME_WIDTH, h: BAR_HEIGHT };
+      for (const id of ['info', 'clock', 'fight', 'shared', ...cells.map((_, i) => `player:${i}`)]) {
+        const r = out.get(id)!;
+        expect(r.x >= bar.x && r.y >= bar.y && r.x + r.w <= bar.w && r.y + r.h <= bar.h, `${id} in der Leiste`).toBe(true);
+      }
+    }
   });
 
-  it('☰ oben links: die Raum-Zeile rückt neben oder unter den Knopf (B-337 › Beispiele)', () => {
+  it('Spielerzeilen stehen nebeneinander in der Leiste, nicht in den Feldern', () => {
+    const cells = computeLayout(2, false);
+    const out = hudLayout(hudItems(cells, sizes(cells), false), []);
+    const [a, b] = [out.get('player:0')!, out.get('player:1')!];
+    expect(a.y).toBeLessThan(BAR_HEIGHT);
+    expect(b.y).toBeLessThan(BAR_HEIGHT);
+    expect(overlaps(a, b)).toBe(false);
+  });
+
+  it('☰ oben links: der Vorrat in der zweiten Zeile der Leiste rückt neben den Knopf (B-337 › Beispiele)', () => {
     const cells = computeLayout(1, false);
     const items = hudItems(cells, sizes(cells), false);
-    const info = hudLayout(items, [HOME, PAUSE]).get('info')!;
-    expect(overlaps(info, PAUSE)).toBe(false);
-    expect(info).not.toEqual(anchorRect(items.find((i) => i.id === 'info')!));
+    const shared = hudLayout(items, [HOME, PAUSE]).get('shared')!;
+    expect(overlaps(shared, PAUSE)).toBe(false);
+    expect(shared).not.toEqual(anchorRect(items.find((i) => i.id === 'shared')!));
   });
 
   it('zu kleine Fläche: Elemente fallen nach Rang weg, Pflicht bleibt', () => {

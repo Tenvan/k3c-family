@@ -1,5 +1,6 @@
 import Phaser from 'phaser';
 import { GAME_WIDTH } from '../core/constants';
+import { BAR_HEIGHT } from './layout';
 import { nameOf, t } from '../core/texts';
 import { BIOMES } from '../model/biome';
 import { ECONOMY } from '../model/data';
@@ -14,7 +15,8 @@ import { RadarLayer, type RadarCell } from './radarView';
 import { SkillMenuLayer } from './skillMenuView';
 import { ActionOverlay } from './actionOverlay';
 import { GuideOverlay } from './guideOverlay';
-import { HudBox, freeAreas } from './hudElements';
+import { BOX, HudBox, freeAreas } from './hudElements';
+import { PLAYER_COLORS } from '../core/constants';
 import { hudItems, hudLayout, type HAlign, type Rect, type Size } from './hudLayout';
 import { cellRadar, radarRect, RADAR_HEIGHT } from './radar';
 import type { HintDevice } from './glyphs';
@@ -26,12 +28,20 @@ import { buergerLines } from './buergerAnzeige';
 
 const STYLE = { stroke: '#000000', strokeThickness: 6, fontStyle: 'bold' };
 const BANNER_SECONDS = 2.8;
+/** Leiste oben: dunkelblau, damit sichtbar ist, was auf ihr steht (POC B-413) */
+const BAR_COLOR = 0x0a1a4a;
 /**
- * Bildschirmfeste Anzeigen: pro Split-Screen-Hälfte Spielerwerte, oben rechts Hub-Vorrat und Tageszeit, Meldungen in der Mitte.
+ * Bildschirmfeste Anzeigen: pro Split-Screen-Feld Spielerwerte, oben über die ganze Breite die Leiste für alle (Vorrat, Hub, Tageszeit, Kampf), Meldungen in der Mitte.
  * Jede Anzeige ist ein HUD-Element (`HudBox`); die Lage kommt aus `hudLayout` (B-337), neu berechnet nur bei Änderung.
  */
 export class HudScene extends Phaser.Scene {
   private joinHint!: Phaser.GameObjects.Text;
+  private bar!: Phaser.GameObjects.Graphics;
+  /** Lebensbalken und Goldtopf der Spielerkarten, jedes Bild neu gezeichnet */
+  private cards!: Phaser.GameObjects.Graphics;
+  /** Zeichenbreite der Spielerzeile: die Karten reservieren ihre Bildflächen mit Leerzeichen (Festschrift) */
+  private probe!: Phaser.GameObjects.Text;
+  private cardData = new Map<number, CardData>();
   private shared!: Phaser.GameObjects.Text;
   private clock!: Phaser.GameObjects.Text;
   private fight!: Phaser.GameObjects.Text;
@@ -63,6 +73,7 @@ export class HudScene extends Phaser.Scene {
 
   create(): void {
     this.players = new Map();
+    this.cardData = new Map();
     this.boxes = new Map();
     this.layoutKey = '';
     this.bannerQueue = [];
@@ -79,20 +90,26 @@ export class HudScene extends Phaser.Scene {
       this.animsPaused = false;
     });
 
+    // Leiste für alle Spieler: gemeinsamer Hintergrund, die Texte darin haben keinen eigenen
+    this.bar = this.add.graphics().fillStyle(BAR_COLOR, 1).fillRect(0, 0, GAME_WIDTH, BAR_HEIGHT).setVisible(false);
     const shared = { ...STYLE, ...fontStyle('shared') };
-    this.shared = this.boxed('shared', this.add.text(0, 0, '', shared));
-    this.clock = this.boxed('clock', this.add.text(0, 0, '', shared));
-    this.fight = this.boxed('fight', this.add.text(0, 0, '', { ...STYLE, ...fontStyle('fight') }));
+    this.shared = this.boxed('shared', this.add.text(0, 0, '', shared), false);
+    this.clock = this.boxed('clock', this.add.text(0, 0, '', shared), false);
+    this.fight = this.boxed('fight', this.add.text(0, 0, '', { ...STYLE, ...fontStyle('fight') }), false);
+    this.boxed('places', this.add.text(0, 0, '', { ...STYLE, ...fontStyle('roomInfo'), strokeThickness: 4, align: 'right' }), false);
+    this.cards = this.add.graphics();
+    this.probe = this.add.text(0, 0, 'MMMMMMMMMM', { ...STYLE, ...fontStyle('playerValue') }).setVisible(false);
+    this.boxed('citizens', this.add.text(0, 0, '', { ...STYLE, ...fontStyle('shared') }), false);
     this.banner = this.boxed('banner', this.add.text(0, 0, '', { ...STYLE, ...fontStyle('banner'), strokeThickness: 10, align: 'center' }).setVisible(false));
     this.joinHint = this.boxed('join', this.add.text(0, 0, t('hud.joinCenter'), { ...STYLE, ...fontStyle('joinCenter') }));
     this.debug = debugEnabled(location.search) ? new DebugOverlay(this) : null;
     this.controlsHint = this.boxed('controls', this.add.text(0, 0, '', { ...STYLE, ...fontStyle('controlsHint'), strokeThickness: 4 }));
-    this.info = this.boxed('info', this.add.text(0, 0, '', { ...STYLE, ...fontStyle('roomInfo'), strokeThickness: 4 }));
+    this.info = this.boxed('info', this.add.text(0, 0, '', { ...STYLE, ...fontStyle('roomInfo'), strokeThickness: 4 }), false);
     this.travel = this.boxed('travel', this.add.text(0, 0, '', { ...STYLE, ...fontStyle('travel') }));
   }
 
-  private boxed(id: string, text: Phaser.GameObjects.Text): Phaser.GameObjects.Text {
-    this.boxes.set(id, new HudBox(this, text));
+  private boxed(id: string, text: Phaser.GameObjects.Text, background = true): Phaser.GameObjects.Text {
+    this.boxes.set(id, new HudBox(this, text, { background, frame: false }));
     return text;
   }
 
@@ -101,6 +118,7 @@ export class HudScene extends Phaser.Scene {
     const world = game.world;
     this.debug?.update(game.client, world ?? null);
     const waiting = this.showHints(game, world);
+    this.bar.setVisible(!!world);
     if (!world) {
       this.showPause(undefined, null, []);
       this.arrange([], waiting);
@@ -114,8 +132,8 @@ export class HudScene extends Phaser.Scene {
     this.actions.draw(cells, game.cameras.cameras, slotOf, device);
     this.guide.draw(cells, game.cameras.cameras, slotOf, device);
     this.skills.draw(cells, game.skillMenus, slotOf, device);
-    // gemeinsamer Block: Stufe der ersten Zelle dieses Geräts; kurze Form bei Viertel-Zellen
-    this.showWorld(cells.find((c) => c.cell.kind === 'player' && c.world)?.world ?? world, cells.some((c) => c.cell.w < GAME_WIDTH));
+    // Leiste: Stufe der ersten Zelle dieses Geräts, die Leiste hat immer Platz für die lange Form
+    this.showWorld(cells.find((c) => c.cell.kind === 'player' && c.world)?.world ?? world, false);
     this.showBanner(game, deltaMs);
     this.showPause(world, gameNotice(game.client), cells);
     this.arrange(cells, waiting);
@@ -152,6 +170,7 @@ export class HudScene extends Phaser.Scene {
     }
     for (const [id, b] of all) b.place(this.layout.get(id), this.aligns.get(id) ?? 'left');
     this.radar.draw(cells, (i) => this.layout.get(`radar:${i}`));
+    this.drawCards();
   }
 
   /** Hinweise: Verbindungsstand, Beitritt, Steuerung, Raum. Rückgabe: Der Beitritts-Hinweis steht groß in der Mitte. */
@@ -201,22 +220,58 @@ export class HudScene extends Phaser.Scene {
     this.bannerLeft = this.bannerQueue.length > 2 ? BANNER_SECONDS / 2 : BANNER_SECONDS;
   }
 
-  /** Spielerwerte je Feld, aus der Welt der Stufe dieses Feldes; Feld ohne geladene Stufe zeigt nichts. */
+  /**
+   * Spielerkarte je Feld in der Leiste: Name, Lebensbalken, Goldtopf mit Stand; dazu die Orts-Tabelle mit jedem Spieler.
+   * Die Welt der Stufe des Feldes liefert die Werte; ein Feld ohne geladene Stufe zeigt nichts.
+   */
   private showCells(cells: readonly RadarCell[]): void {
-    const compact = cells.some((c) => c.cell.w < GAME_WIDTH); // 3 bis 4 Spieler: Text kürzen statt verkleinern (Q03)
+    const cw = this.probe.width / 10;
+    const pad = (px: number) => ' '.repeat(Math.ceil(px / cw));
     for (const b of this.players.values()) b.text.setVisible(false);
+    this.cardData.clear();
+    const places: string[] = [];
     for (const [i, { monarch, world }] of cells.entries()) {
       const p = monarch === null ? undefined : world?.players.find((q) => q.index === monarch);
       if (!p || !world) continue;
       let box = this.players.get(i);
-      if (!box) this.players.set(i, (box = new HudBox(this, this.add.text(0, 0, '', { ...STYLE, ...fontStyle('playerValue') }))));
-      const status = p.respawnIn > 0 ? t('hud.down', { s: Math.ceil(p.respawnIn) }) : t('hud.hp', { hp: Math.ceil(p.hp) });
-      const stage = nameOf('biome', world.biome.id, world.biome.name);
-      const short = p.respawnIn > 0 ? t('hud.downShort', { s: Math.ceil(p.respawnIn) }) : status;
-      box.text.setVisible(true).setText(t(compact ? 'hud.playerShort' : 'hud.playerFull', { p: p.index + 1, gold: p.gold, max: world.purseMax ?? ECONOMY.purse.maxGold, status: compact ? short : status, stage }));
+      if (!box) this.players.set(i, (box = new HudBox(this, this.add.text(0, 0, '', { ...STYLE, ...fontStyle('playerValue') }), { background: false, frame: false })));
+      const max = world.purseMax ?? ECONOMY.purse.maxGold;
+      const gold = p.respawnIn > 0 ? t('hud.downShort', { s: Math.ceil(p.respawnIn) }) : `${p.gold}/${max}`;
+      box.text.setVisible(true).setText(`P${p.index + 1} ${pad(CARD.bar)} ${pad(CARD.pot)} ${gold}`);
+      this.cardData.set(i, { cw, hp: Math.max(0, p.hp / p.maxHp), down: p.respawnIn > 0, color: PLAYER_COLORS[p.index % PLAYER_COLORS.length]! });
+      places.push(t('hud.place', { p: p.index + 1, stage: nameOf('biome', world.biome.id, world.biome.name) }));
+    }
+    this.boxes.get('places')?.text.setText(places.join('\n'));
+  }
+
+  /** Lebensbalken und Goldtopf in die reservierten Flächen der Karten zeichnen (nach `arrange`, wenn die Lage feststeht) */
+  private drawCards(): void {
+    const g = this.cards.clear();
+    for (const [i, d] of this.cardData) {
+      const r = this.layout.get(`player:${i}`);
+      if (!r) continue;
+      const x = r.x + BOX.padX + d.cw * 3; // hinter „P1 “
+      const y = r.y + BOX.padY + 8;
+      g.fillStyle(0x000000, 0.7).fillRect(x, y, CARD.bar, CARD.barH);
+      const hp = d.hp;
+      g.fillStyle(hp > 0.5 ? 0x52b788 : hp > 0.25 ? 0xf4a261 : 0xe63946, 1).fillRect(x + 2, y + 2, Math.max(0, (CARD.bar - 4) * hp), CARD.barH - 4);
+      g.lineStyle(2, d.color, 1).strokeRect(x, y, CARD.bar, CARD.barH);
+      const px = x + CARD.bar + d.cw; // Goldtopf: bauchiger Topf mit Rand
+      g.fillStyle(0xffd166, 1).fillEllipse(px + 12, y + CARD.barH - 2, 24, 22).fillRect(px + 4, y - 6, 16, 6);
+      g.fillStyle(0x9c6644, 1).fillRect(px + 2, y - 8, 20, 3);
     }
   }
 }
+
+interface CardData {
+  cw: number;
+  hp: number;
+  down: boolean;
+  color: number;
+}
+
+/** Maße der Spielerkarte: Breite des Lebensbalkens (und seine Höhe) und der Fläche des Goldtopfs, in px */
+const CARD = { bar: 150, barH: 20, pot: 30 } as const;
 
 /** Gerät einer Eingabe, damit jede Skill-Leiste die Tasten ihres Spielers zeigt; `keyboard2` = Spieler 2 an der Tastatur */
 function deviceOf(input: PlayerInput | null | undefined, keyboard2: PlayerInput): HintDevice | undefined {
