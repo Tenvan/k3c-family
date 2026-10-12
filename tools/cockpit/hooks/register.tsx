@@ -236,7 +236,7 @@ function withInfo(ui: Ui, key: string, lines: readonly string[], theirs: RenderE
     <Box key={key} flexDirection="column">
       {theirs}
       <Box flexDirection="row" columnGap={1} alignItems="center">
-        {mark !== null && Svg ? <Svg source={mark} alt="orgaMAX" width={11} height={14} /> : <Text color={THEME.textMuted}>ⓘ</Text>}
+        {mark !== null && Svg ? <Svg source={mark} alt="Tenvan CC" width={9} height={14} /> : <Text color={THEME.textMuted}>ⓘ</Text>}
         <Text color={THEME.textMuted} wrap="truncate-end">{lines.join(' · ')}</Text>
       </Box>
     </Box>
@@ -265,7 +265,7 @@ async function markerOf($: EngineInterface): Promise<Marker> {
 function skinMark(ui: Ui, mk: Marker, key: string, style: StyleKey) {
   const { Box, Text } = ui
   const Svg = 'Svg' in ui ? ui.Svg : undefined
-  const icon = mk.mark !== null && Svg ? <Svg source={mk.mark} alt="orgaMAX" width={9} height={11} /> : null
+  const icon = mk.mark !== null && Svg ? <Svg source={mk.mark} alt="Tenvan CC" width={7} height={11} /> : null
   if (icon === null && !mk.label) return null
   return (
     <Box key={key} flexDirection="row" columnGap={1} alignItems="center">
@@ -390,12 +390,7 @@ function titleRow(ui: Ui, info: About | null, mark: string | null) {
   if (mark === null || !Svg) return <Text bold color={THEME.accent}>{title(info)}</Text>
   return (
     <Box flexDirection="row" columnGap={1} alignItems="center">
-      <Svg source={mark} alt="orgaMAX" width={16} height={20} />
-      {/* Wortmarke als Text in den Markenfarben für dunklen Grund: „orga“ weiß, „MAX“ #82b1ff (brand/README.md) */}
-      <Text italic>
-        <Text color={THEME.orga}>orga</Text>
-        <Text bold color={THEME.max}>MAX</Text>
-      </Text>
+      <Svg source={mark} alt="Tenvan CC" width={13} height={20} />
       <Text bold color={THEME.accent}>{titleText(info)}</Text>
     </Box>
   )

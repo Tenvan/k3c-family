@@ -15,8 +15,8 @@ export const THEME = {
   textMuted: '#8c929c', // om-ink-400 · --text-muted
   border: '#4a5565', // om-ink-600 · --border-default / --divider
   chip: '#2f3a59', // om-navy-700: Grund der Nummern- und Typ-Chips
-  max: '#82b1ff', // nur die Wortmarke „MAX“ (brand/README.md)
-  orga: '#ffffff', // Wortmarke „orga“ auf dunklem Grund
+  max: '#82b1ff', // Hellblau für Suche und Versionsnummern
+  orga: '#ffffff', // reines Weiß auf dunklem Grund
   surface: '#222222', // Grund schwebender Hinweise
   violet: '#aa8ed6', // Agent-Symbol, Hinweis „Wichtig“; wie die fünfte Kategorie-Farbe
 } as const
