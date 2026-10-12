@@ -152,7 +152,6 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-413](B-413-hud-leiste-oben-fluss.md) | CLI | Idee | mittel | offen | – | Gemeinsame HUD-Leiste oben für alle Spieler, Kompass oben, Fluss mit Spiegelung unten |
 | [B-414](B-414-welt-meldungen-im-band.md) | CLI | Idee | mittel | offen | – | Welt-Meldungen erscheinen für alle im globalen Band oben |
 | [B-415](B-415-cockpit-lint-rot.md) | INF | Problem | hoch | offen | – | Lint ist rot: tools/cockpit überschreitet die Dateigrenze |
-| [B-416](B-416-checkout-git-ohne-fenster.md) | DEV | Problem | hoch | offen | – | Der Checkout-Aufruf von k3c-dev öffnet bei jedem Tool ein Konsolenfenster |
 
 ## Archiv
 
@@ -388,3 +387,4 @@ Zeile in diesen Abschnitt.
 | [B-404](archiv/B-404-fahrplan-projekt-aktiv.md) | DEV | Problem | niedrig | verworfen | – | Die Fahrplan-Zeile eines aktivierten Sprints trägt sein Projekt statt „–“ |
 | [B-342](archiv/B-342-w6-2-siteview-erlaubt.md) | CLI | Frage | mittel | erledigt | – | W6.2 darf den Bauplatz-Wartegrund in `siteView.ts` anbinden |
 | [B-407](archiv/B-407-wz3-verweis-b403-ac08.md) | INF | Problem | hoch | erledigt | – | WZ3-README verweist auf B-403/AC-08, das es nicht gibt (planning.test.ts rot) |
+| [B-416](archiv/B-416-checkout-git-ohne-fenster.md) | DEV | Problem | hoch | erledigt | – | Der Checkout-Aufruf von k3c-dev öffnet bei jedem Tool ein Konsolenfenster |
