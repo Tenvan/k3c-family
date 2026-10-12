@@ -9,8 +9,8 @@ import { RISKY_GIT_CONFIG, COMPACT_AT, DECISION_COLOR, RING_HEX, contextColor, L
 import { t } from './i18n'
 import type { Key } from './i18n'
 import { ALERT_COLOR, ICON_COLOR, TONE_COLOR, detailInput, detailOutput, diffCardSvg, diffOf, errorText, firstErrorLine, iconKind, inlineTokens, inputPath, isReadOnlyShell, isShell, isStyled, lineCountOf, mdLiteral, QUIET_TOOLS, quietLine, shellCommand, splitMessage, toolIconSvg } from './skins'
-import { askSummary, mathSvg } from './skins'
-import type { Segment, SplitOptions } from './skins'
+import { askSummary, fileHref, mathSvg } from './skins'
+import type { LinkToken, Segment, SplitOptions } from './skins'
 import { diagramType, mermaidSvg } from './mermaid'
 
 const PLUGIN = 'tenvan-cc'
@@ -306,10 +306,26 @@ function card(ui: Ui, key: string, head: RenderElement, body: RenderElement, cop
   )
 }
 
-const splitOptions = (s: ModSettings): SplitOptions => ({ cards: s.skinCards, inline: s.skinInline, mermaid: s.skinMermaid, math: s.skinMath })
+const splitOptions = (s: ModSettings): SplitOptions => ({ cards: s.skinCards, inline: s.skinInline, mermaid: s.skinMermaid, math: s.skinMath, links: s.skinLinks })
+
+// Stück eines Absatzes mit Links: Links in der Akzentfarbe, Dateilinks als Chip (Name, ggf. `:Zeile`), Code gedämpft auf Chip-Grund.
+function linkPart(ui: Ui, p: LinkToken, key: string, cwd: string) {
+  const { Text } = ui
+  const Link = 'Link' in ui ? ui.Link : undefined
+  if (p.kind === 'text') return p.text
+  if (p.kind === 'bold') return <Text key={key} bold>{p.text}</Text>
+  if (p.kind === 'code') return <Text key={key} color={THEME.textSecondary} backgroundColor={THEME.chip}>{` ${p.text} `}</Text>
+  if (!p.file) {
+    const text = <Text key={`${key}-t`} color={THEME.accent} underline>{p.label}</Text>
+    return Link ? <Link key={key} href={p.href}>{text}</Link> : text
+  }
+  const name = p.line !== null && !/:\d+$/.test(p.label) ? `${p.label}:${p.line}` : p.label
+  const chip = <Text key={`${key}-t`} color={THEME.accent} backgroundColor={THEME.chip}>{` ${name} `}</Text>
+  return Link ? <Link key={key} href={fileHref(p.path, cwd)}>{chip}</Link> : chip
+}
 
 // Abschnitte einer Antwort oder Command-Ausgabe: Prosa bleibt Markdown (markierbar), Karten und Hervorhebungen eigen.
-function segmentsView($: EngineInterface, ui: Ui, segs: readonly Segment[], base: string, lang: UiLang, changed: readonly string[], mk: Marker): RenderElement {
+function segmentsView($: EngineInterface, ui: Ui, segs: readonly Segment[], base: string, lang: UiLang, changed: readonly string[], mk: Marker, cwd: string): RenderElement {
   const { Box, Text, Markdown, Code } = ui
   const Svg = 'Svg' in ui ? ui.Svg : undefined
   const copy = (text: string) => () => void $.ui.copy({ text }).catch(() => undefined)
@@ -323,6 +339,12 @@ function segmentsView($: EngineInterface, ui: Ui, segs: readonly Segment[], base
           return (
             <Text key={k} wrap="wrap">
               {inlineTokens(s.text, changed).map(p => (p.tone === undefined ? p.text : <Text color={TONE_COLOR[p.tone]}>{p.text}</Text>))}
+            </Text>
+          )
+        if (s.kind === 'links')
+          return (
+            <Text key={k} wrap="wrap">
+              {s.tokens.map((p, j) => linkPart(ui, p, `${k}-${j}`, cwd))}
             </Text>
           )
         if (s.kind === 'code') {
@@ -679,7 +701,7 @@ export const register: Register = (on, options) => {
     const so = splitOptions(s)
     if (Object.values(so).some(Boolean) && e.props.isSummary !== true) {
       const segs = splitMessage(e.props.text, so)
-      if (isStyled(segs)) el = segmentsView($, ui, segs, `om-s-${shortHash(e.props.text)}`, s.lang, s.skinInline ? await read($, touched) : [], await markerOf($))
+      if (isStyled(segs)) el = segmentsView($, ui, segs, `om-s-${shortHash(e.props.text)}`, s.lang, s.skinInline ? await read($, touched) : [], await markerOf($), (await read($, repo))?.path ?? '')
     }
     return el
   })
@@ -912,7 +934,7 @@ export const register: Register = (on, options) => {
     const so = splitOptions(s)
     if (Object.values(so).some(Boolean) && !e.props.isErrored) {
       const segs = splitMessage(e.props.text, so)
-      if (isStyled(segs)) el = segmentsView($, ui, segs, `om-cs-${shortHash(e.props.command + e.props.text)}`, s.lang, s.skinInline ? await read($, touched) : [], await markerOf($))
+      if (isStyled(segs)) el = segmentsView($, ui, segs, `om-cs-${shortHash(e.props.command + e.props.text)}`, s.lang, s.skinInline ? await read($, touched) : [], await markerOf($), (await read($, repo))?.path ?? '')
     }
     if (!s.chatInfo) return el
     const lines = [

@@ -342,6 +342,7 @@ export const SETTING_DEFS: readonly { key: SettingKey; group: SettingGroup }[] =
   { key: 'skinPrompt', group: 'skins' },
   { key: 'skinCards', group: 'skins' },
   { key: 'skinInline', group: 'skins' },
+  { key: 'skinLinks', group: 'skins' },
   { key: 'skinMermaid', group: 'skins' },
   { key: 'skinMath', group: 'skins' },
   { key: 'skinAsk', group: 'skins' },
@@ -360,7 +361,7 @@ export const DEFAULT_SETTINGS: ModSettings = {
   cardWorkdir: true, cardCatchUp: true, cardOverview: true, cardContext: true, cardTurn: true, cardGate: true, cardAgents: true, cardTasks: true, cardLog: true,
   chatInfo: true, chatLines: true, catchUp: false, lang: 'de',
   // Hervorhebungen zeichnen Antworten selbst und sind deshalb standardmäßig aus.
-  skinIcons: true, skinQuiet: true, skinDiff: true, skinExpand: true, skinPrompt: true, skinCards: true, skinInline: false,
+  skinIcons: true, skinQuiet: true, skinDiff: true, skinExpand: true, skinPrompt: true, skinCards: true, skinInline: false, skinLinks: true,
   skinMermaid: true, skinMath: true, skinAsk: true, skinMode: true, skinHint: true, skinMarkIcon: true, skinMarkLabel: true,
 }
 
@@ -536,13 +537,13 @@ export function parseSteps(text: string, max = 5): Step[] {
 // Die Beschreibung („Wo“) steht in i18n.ts unter `demo.<name>`.
 export const RENDER_COMPONENTS = [
   { name: 'UserMessage', by: 'skin', skins: ['skinPrompt'] },
-  { name: 'AssistantMessage', by: 'chat', skins: ['skinCards', 'skinInline', 'skinMermaid', 'skinMath'] },
+  { name: 'AssistantMessage', by: 'chat', skins: ['skinCards', 'skinInline', 'skinLinks', 'skinMermaid', 'skinMath'] },
   { name: 'ToolUse', by: 'chat', skins: ['skinIcons', 'skinExpand'] },
   { name: 'ToolResult', by: 'chat', skins: ['skinQuiet', 'skinDiff'] },
   { name: 'ToolGroup', by: 'skin', skins: ['skinIcons'] },
   // 'terminal' = die Engine löst die Komponente auf dem Desktop nicht aus; dort gibt es nichts zu stylen.
   { name: 'ToolProgress', by: 'terminal' },
-  { name: 'CommandOutput', by: 'chat', skins: ['skinCards', 'skinInline', 'skinMermaid', 'skinMath'] },
+  { name: 'CommandOutput', by: 'chat', skins: ['skinCards', 'skinInline', 'skinLinks', 'skinMermaid', 'skinMath'] },
   { name: 'AskUserQuestion', by: 'skin', skins: ['skinAsk'] },
   { name: 'Spinner', by: 'line' },
   { name: 'TurnDuration', by: 'line' },

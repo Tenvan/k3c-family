@@ -99,7 +99,7 @@ test('Demo: /cockpit-demo gibt Markdown mit allen skinbaren Elementen aus', asyn
   on('store.get', () => ({ value: undefined }) as never)
   const out = await $.command.run({ command: 'cockpit-demo', args: '' } as Parameters<typeof $.command.run>[0])
   expect(out.text).toContain('```ts')
-  expect(out.text).toContain('| `AssistantMessage` | Antwort des Modells (Markdown) | ✅ Chat-Skin (Code- und Tabellenkarten, Mermaid-Karten, Formelkarten) |')
+  expect(out.text).toContain('| `AssistantMessage` | Antwort des Modells (Markdown) | ✅ Chat-Skin (Code- und Tabellenkarten, Links und Dateilinks, Mermaid-Karten, Formelkarten) |')
   expect(out.text).toContain('| `InfoNotice` | Hinweiszeile im Transcript | ➖ nur Terminal')
   expect(out.text).toContain('| `Spinner` | Arbeitszeile während eines Turns | ✅ eigene Zeile (Design-System) |')
   expect(out.text).not.toContain('KOMPONENTEN')

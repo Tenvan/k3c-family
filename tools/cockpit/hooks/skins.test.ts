@@ -1,7 +1,7 @@
 import { expect, test } from 'claude-code/testing'
 
 import { DEFAULT_SETTINGS, THEME, demoTable } from './core'
-import { detailInput, detailOutput, diffCardSvg, diffOf, firstErrorLine, iconKind, inlineTokens, isReadOnlyShell, isStyled, mdLiteral, quietLine, splitMessage, toolIconSvg } from './skins'
+import { detailInput, detailOutput, diffCardSvg, diffOf, fileHref, fileTarget, firstErrorLine, iconKind, inlineTokens, isReadOnlyShell, isStyled, linkTokens, mdLiteral, quietLine, splitMessage, toolIconSvg } from './skins'
 
 const ON = { cards: true, inline: true }
 const F = '```'
@@ -96,7 +96,7 @@ test('Hervorhebungen: Pfade, geänderte Dateien, Versionen, Zahlen', () => {
 test('Demo-Tabelle: gestylte Komponenten nennen ihre Chat-Skins', () => {
   const md = demoTable(DEFAULT_SETTINGS, 'de')
   expect(md).toContain('| `UserMessage` | Deine Nachricht im Chat | ✅ Chat-Skin (Prompt-Rahmen) |')
-  expect(md).toContain('✅ Chat-Skin (Code- und Tabellenkarten, Mermaid-Karten, Formelkarten)')
+  expect(md).toContain('✅ Chat-Skin (Code- und Tabellenkarten, Links und Dateilinks, Mermaid-Karten, Formelkarten)')
   expect(md).toContain('| `AskUserQuestion` | Rückfrage-Dialog an dich | ✅ Chat-Skin (Rückfrage-Kopf) |')
   expect(md).toContain('| `ToolProgress` | Fortschritt eines laufenden Tools | ➖ nur Terminal')
   expect(demoTable({ ...DEFAULT_SETTINGS, skinPrompt: false }, 'de')).toContain('⏸ Chat-Skin aus')
@@ -224,4 +224,61 @@ test('Style-Kennzeichen: Name neben dem Symbol, über die Einstellungen abschalt
   await page.press({ key: 'set-skinMarkLabel' })
   for (let i = 0; i < 50; i++) await Promise.resolve()
   expect(await (await $.ui.mount(base)).find({ type: 'Text', text: 'Fehlerzeile' })).toBe(undefined)
+})
+
+// ── Links ──
+
+const BS = String.fromCharCode(92)
+
+test('fileTarget: Pfade mit Zeile, file:-Adressen, Schemata sind keine Dateien', () => {
+  expect(fileTarget('hooks/register.tsx')).toEqual({ path: 'hooks/register.tsx', line: null })
+  expect(fileTarget('hooks/register.tsx:42')).toEqual({ path: 'hooks/register.tsx', line: 42 })
+  expect(fileTarget('./a.ts#L7-L9')).toEqual({ path: './a.ts', line: 7 })
+  const win = ['C:', 'x', 'a.ts'].join(BS)
+  expect(fileTarget(`${win}:3:5`)).toEqual({ path: win, line: 3 })
+  expect(fileTarget('file:///C:/x/a%20b.ts')).toEqual({ path: 'C:/x/a b.ts', line: null })
+  expect(fileTarget('https://example.com/a.ts')).toBe(null)
+  expect(fileTarget('mailto:a@b.de')).toBe(null)
+})
+
+test('fileHref: relativ ab Arbeitsverzeichnis, absolut unverändert, Leerzeichen codiert', () => {
+  expect(fileHref('hooks/a.ts', ['C:', 'WORKSPACE', 'K3C', 'tools', 'cockpit'].join(BS))).toBe('file:///C:/WORKSPACE/K3C/tools/cockpit/hooks/a.ts')
+  expect(fileHref('./a b.ts', 'C:/p')).toBe('file:///C:/p/a%20b.ts')
+  expect(fileHref('../x.ts', 'C:/p/q')).toBe('file:///C:/p/x.ts')
+  expect(fileHref(['C:', 'x', 'a.ts'].join(BS), 'C:/p')).toBe('file:///C:/x/a.ts')
+  expect(fileHref('/home/u/a.ts', '')).toBe('file:///home/u/a.ts')
+  expect(fileHref('a.ts', '')).toBe('a.ts')
+})
+
+test('linkTokens: Absatz mit Links in Stücke; sonstiges Markdown bleibt Sache der Engine', () => {
+  const t = linkTokens('Siehe [register.tsx](hooks/register.tsx:12), **wichtig**, `x` und <https://a.de/b> oder https://c.de.')
+  expect(t?.map(p => p.kind)).toEqual(['text', 'link', 'text', 'bold', 'text', 'code', 'text', 'link', 'text', 'link', 'text'])
+  const file = t?.[1]
+  expect(file).toMatchObject({ kind: 'link', label: 'register.tsx', file: true, path: 'hooks/register.tsx', line: 12 })
+  expect(t?.[7]).toMatchObject({ kind: 'link', href: 'https://a.de/b', file: false })
+  expect(linkTokens('Kein Link hier.')).toBe(null)
+  expect(linkTokens('- [a](b)\n- [c](d)')).toBe(null)
+  expect(linkTokens('# Titel [a](b)')).toBe(null)
+  expect(linkTokens('Text mit _Betonung_ und [a](b)')).toBe(null)
+})
+
+test('splitMessage: Absatz mit Link wird links-Segment, Rest bleibt md; ohne Option unverändert', () => {
+  const text = 'Erster Absatz.\n\nSiehe [a](src/a.ts).\n\n- Liste [b](c)'
+  const segs = splitMessage(text, { cards: false, inline: false, links: true })
+  expect(segs.map(s => s.kind)).toEqual(['md', 'links', 'md'])
+  expect(isStyled(segs)).toBe(true)
+  const off = splitMessage(text, { cards: false, inline: false })
+  expect(off.map(s => s.kind)).toEqual(['md'])
+})
+
+test('AssistantMessage: Link in Akzentfarbe, Dateilink als Chip mit Zeile', async ($, on) => {
+  on('store.get', () => ({ value: undefined }) as never)
+  on('store.set', () => ({ value: undefined }) as never)
+  on('ui.render', { component: 'AssistantMessage' }, () => ({ type: 'Box' as const }))
+  const text = 'Mehr in [den Docs](https://example.com/doc) und [skins.ts](hooks/skins.ts:42).'
+  const m = await $.ui.mount({ plugin: 'tenvan-cc', surface: 'desktop', component: 'AssistantMessage', props: { text, isFirstOfReply: true } })
+  const web = await m.find({ type: 'Text', text: 'den Docs' })
+  expect(JSON.stringify(web)).toContain(THEME.accent)
+  const chip = await m.find({ type: 'Text', text: 'skins.ts:42' })
+  expect(JSON.stringify(chip)).toContain(THEME.chip)
 })

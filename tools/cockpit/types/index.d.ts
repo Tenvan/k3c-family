@@ -107,6 +107,7 @@ export type ModSettings = {
   skinPrompt: boolean
   skinCards: boolean
   skinInline: boolean
+  skinLinks: boolean
   skinMermaid: boolean
   skinMath: boolean
   skinAsk: boolean
