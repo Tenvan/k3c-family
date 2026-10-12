@@ -1,6 +1,6 @@
 # GR7.1 · Schrift: Platzhaltertext aus dem Katalog, Regel für die Mitspieler-Zelle
 
-- **Status:** in Arbeit
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** CLI
@@ -44,9 +44,9 @@ Zeichnen der Stufen (S4.1), neue Schrift-Rollen außer `placeholder`, Größen d
 
 ## Fertig, wenn
 
-- [ ] AC-03: `PLACEHOLDER_TEXT` in `stageView.ts` hat keine lose Größe mehr; Rolle `placeholder` steht in `FONTS`, `fontRules.test.ts` prüft sie in allen Layouts, `task check` grün.
-- [ ] AC-04: `docs/rules/bedienung.md` § 2 nennt die Regel für die Mitspieler-Zelle; `minFontPx` und `fontRules.test.ts` folgen ihr.
-- [ ] Keine Datei über 400 Zeilen, keine Funktion über 60.
+- [x] AC-03: `PLACEHOLDER_TEXT` in `stageView.ts` hat keine lose Größe mehr; Rolle `placeholder` steht in `FONTS`, `fontRules.test.ts` prüft sie in allen Layouts, `task check` grün.
+- [x] AC-04: `docs/rules/bedienung.md` § 2 nennt die Regel für die Mitspieler-Zelle; `minFontPx` und `fontRules.test.ts` folgen ihr.
+- [x] Keine Datei über 400 Zeilen, keine Funktion über 60.
 
 ## Prüfen
 
@@ -59,5 +59,9 @@ task check
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+**Fertig (2026-10-12).**
+
+- **AC-03** umgesetzt und geprüft: Rolle `placeholder` (Nebeninfo, `world`, 32 px) in `src/scenes/fontRules.ts`; `stageView.ts › placeholderLayer` nimmt Größe und Farbe aus `fontStyle('placeholder')` (Kontur `OUTLINE_COLOR`) und skaliert den Text mit `1 / Zoom` der Zelle (`GameScene` übergibt `viewZoom(cell.h)`), er erscheint also in jeder Zelle in 32 px. `fontRules.test.ts` deckt die Rolle in allen Layouts ab, dazu ein eigener Test.
+- **AC-04** umgesetzt und geprüft: Beschluss 🧑 (2026-10-12, Chat): In der Mitspieler-Zelle sind die Texte der Stufe ausgeblendet, keine Mindestgröße. Regel in `docs/rules/bedienung.md` § 2, `minFontPx` liefert `null` mit Begründung im Kommentar, Test prüft `partner` → `[null, null]` und die eigene Zelle (28). Ausblenden: `StageView.scaleTexts(factor, hideFrom)` setzt `cameraFilter` der Stufen-Texte auf die Kamera-ID der Mitspieler-Zelle (`GameScene.partnerCamId`); Phaser 4.2.1 prüft `cameraFilter` im `willRender` auch für Kinder einer Layer (Quelltext gelesen). Der Zoom-Ausgleich der Texte rechnet ohne die Mitspieler-Zelle, damit die Texte der eigenen Zelle nicht zu groß werden. **Sichtprüfung der Partner-Zelle steht aus** (braucht zwei Geräte, nicht Teil dieser Session).
+- Geprüft: `npx vitest run tests/planning.test.ts src/scenes` grün (974 Tests), `tsc --noEmit` und `oxlint` auf den geänderten Dateien ohne Befund. `task check` im Worktree rot wegen Lint-Fehlern in `tools/cockpit/` (aus develop, PR #278, nicht aus dieser Session; Ticket B-415).
+- Neues Ticket: B-414 (Welt-Meldungen im globalen Band oben, Wunsch von Ralf im Chat), B-415 (Lint in `tools/cockpit/`).

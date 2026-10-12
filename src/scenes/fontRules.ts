@@ -38,6 +38,8 @@ export const FONTS = {
   priceTag: { px: 32, art: 'info', space: 'world', color: '#ffffff' },
   purse: { px: 32, art: 'info', space: 'world', color: '#ffd166' },
   citizenLabel: { px: 32, art: 'info', space: 'world', color: '#e9c46a' },
+  /** „Stufe n wird geladen“ in einer Zelle ohne Stufe (`placeholderLayer`, skaliert mit 1 / Zoom der Zelle) */
+  placeholder: { px: 32, art: 'side', space: 'world', color: '#ffffff' },
 } as const satisfies Record<string, FontRole>;
 
 export type FontName = keyof typeof FONTS;
@@ -50,7 +52,8 @@ export function fontStyle(name: FontName): { fontSize: string; color: string } {
 /**
  * Mindestgröße in px (bezogen auf 1920 × 1080, nach der Skalierung der Zelle) laut `docs/rules/bedienung.md` § 2.
  * Pflicht-Info: 28 px in Zellen über die ganze Breite (Vollbild, Streifen, breiter Streifen bei 3), 24 px in den Vierteln.
- * Nebeninfo: 24 px bei 1 und 2 Spielern, 20 px bei 3 und 4. Die Mitspieler-Zelle (`partner`) nennt die Regel nicht: `null`.
+ * Nebeninfo: 24 px bei 1 und 2 Spielern, 20 px bei 3 und 4. Die Mitspieler-Zelle (`partner`) hat keine Mindestgröße: Die Texte
+ * der Stufe (Preise, Beutel, Bürger-Labels, Ausgangsschild) sind dort ausgeblendet (Beschluss 🧑 2026-10-12, B-197), also `null`.
  */
 export function minFontPx(seats: number, cell: Pick<Cell, 'w' | 'kind'>, art: FontArt): number | null {
   if (cell.kind === 'partner') return null;

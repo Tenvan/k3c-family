@@ -62,6 +62,8 @@ export class GameScene extends Phaser.Scene {
   private lastFlashAt: number | null = null;
   private rumbleWarned = false;
   private holders: Phaser.GameObjects.Layer[] = [];
+  /** Kamera-ID der Mitspieler-Zelle: dort sind die Texte der Stufe ausgeblendet (B-197), 0 = keine */
+  private partnerCamId = 0;
   keyboards!: [KeyboardInput, KeyboardInput]; // Spieler 1 und 2 an einer Tastatur (B-316)
   private touch: TouchInput | undefined;
   private pads: GamepadInput[] = [];
@@ -315,8 +317,9 @@ export class GameScene extends Phaser.Scene {
     this.client.monarchs.forEach((m, i) => m !== 'taken' && unattended.add(i));
     const stage = this.stages.get(level.depth);
     stage?.renderer.sync(this.world_, unattended);
-    // Schrift in der Welt: Zoom der kleinsten Zelle ausgleichen, damit sie nie unter ihre Größe fällt
-    if (stage && this.cells.length > 0) stage.scaleTexts(1 / Math.min(...this.cells.map((c) => viewZoom(c.h))));
+    // Schrift in der Welt: Zoom der kleinsten Zelle ausgleichen, damit sie nie unter ihre Größe fällt; die Mitspieler-Zelle zählt nicht (Texte dort ausgeblendet, B-197)
+    const textCells = this.cells.filter((c) => c.kind !== 'partner');
+    if (stage && textCells.length > 0) stage.scaleTexts(1 / Math.min(...textCells.map((c) => viewZoom(c.h))), this.partnerCamId);
     const brightness = NIGHT_BRIGHTNESS + (1 - NIGHT_BRIGHTNESS) * daylight(this.world_.cycle);
     for (const fx of this.nightFx) fx.colorMatrix.brightness(brightness);
     this.updateLayout(this.world_);
@@ -370,9 +373,11 @@ export class GameScene extends Phaser.Scene {
     const seats = [...this.client.you].sort((a, b) => a.slot - b.slot);
     const plan = cellStages(this.cells, seats, this.partnerMonarch === null ? null : world.biome.depth, new Set(this.stages.keys()));
     const own: Phaser.GameObjects.Layer[] = [];
+    this.partnerCamId = 0;
 
     this.cells.forEach((cell, i) => {
       const cam = i === 0 ? main : this.cameras.add(0, 0, cell.w, cell.h);
+      if (cell.kind === 'partner') this.partnerCamId = cam.id;
       this.addNightFx(cam);
       cam.setViewport(cell.x, cell.y, cell.w, cell.h);
       cam.setZoom(viewZoom(cell.h));
@@ -383,7 +388,7 @@ export class GameScene extends Phaser.Scene {
         this.aimAtStage(cam, stage, monarch);
         own.push(stage.layer);
       } else {
-        const holder = placeholderLayer(this, plan[i]!.depth); // Stufe noch nicht geladen: Platzhalter statt leerer Kamera
+        const holder = placeholderLayer(this, plan[i]!.depth, viewZoom(cell.h)); // Stufe noch nicht geladen: Platzhalter statt leerer Kamera
         this.holders.push(holder);
         cam.removeBounds().centerOn(GAME_WIDTH / 2, GAME_HEIGHT / 2).setBackgroundColor(PLACEHOLDER_BG);
         own.push(holder);

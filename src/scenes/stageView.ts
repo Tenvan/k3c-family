@@ -4,13 +4,14 @@ import { t } from '../core/texts';
 import type { World } from '../model/types';
 import type { Effect } from './effects';
 import { StageEffects } from './effectsView';
+import { fontStyle, OUTLINE_COLOR } from './fontRules';
 import { backgroundLayers } from './objectView';
 import { WorldRenderer } from './worldRenderer';
 
 /** Hintergrundfarbe einer Zelle, deren Stufe noch nicht geladen ist */
 export const PLACEHOLDER_BG = '#202030';
-/** Schrift des Platzhalters; die endgültige Größe regelt S4.2 (Mindest-Schriftgröße) */
-const PLACEHOLDER_TEXT = { fontSize: '40px', color: '#ffffff', stroke: '#000000', strokeThickness: 4, fontStyle: 'bold' };
+/** Schrift des Platzhalters: Rolle `placeholder` des Katalogs, Kontur wie alle Texte */
+const placeholderStyle = () => ({ ...fontStyle('placeholder'), stroke: OUTLINE_COLOR, strokeThickness: 4, fontStyle: 'bold' });
 
 function hex(color: string): number {
   return Phaser.Display.Color.HexStringToColor(color).color;
@@ -47,12 +48,16 @@ export class StageView {
     if (effect.by !== undefined) this.renderer.swing(effect.by);
   }
 
-  /** Gleicht den Kamera-Zoom für alle Texte der Stufe aus (Schrift erscheint in ihrer Größe, unabhängig von Zoom und Layout) */
-  scaleTexts(factor: number): void {
+  /**
+   * Gleicht den Kamera-Zoom für alle Texte der Stufe aus (Schrift erscheint in ihrer Größe, unabhängig von Zoom und Layout).
+   * `hideFrom` ist die Kamera-ID der Mitspieler-Zelle, in der die Texte ausgeblendet sind (B-197); 0 = überall sichtbar.
+   */
+  scaleTexts(factor: number, hideFrom = 0): void {
     const walk = (list: Phaser.GameObjects.GameObject[]) => {
       for (const o of list) {
         if (o instanceof Phaser.GameObjects.Text) {
           if (o.scale !== factor) o.setScale(factor);
+          o.cameraFilter = hideFrom;
         } else if (o instanceof Phaser.GameObjects.Container) walk(o.list);
       }
     };
@@ -156,11 +161,11 @@ function ridge(scene: Phaser.Scene, widthPx: number, color: number, scrollFactor
   return g;
 }
 
-/** Text „Stufe n wird geladen“ in der Mitte der Spielfläche; die Kamera der Zelle zentriert dort (`centerOn`). */
-export function placeholderLayer(scene: Phaser.Scene, depth: number | null): Phaser.GameObjects.Layer {
+/** Text „Stufe n wird geladen“ in der Mitte der Spielfläche; die Kamera der Zelle zentriert dort (`centerOn`), `zoom` ist ihr Zoom (Schrift erscheint in ihrer Größe). */
+export function placeholderLayer(scene: Phaser.Scene, depth: number | null, zoom: number): Phaser.GameObjects.Layer {
   const text = depth === null ? t('stage.loading') : t('stage.loadingN', { depth });
   const layer = scene.add.layer();
-  layer.add(scene.add.text(GAME_WIDTH / 2, GAME_HEIGHT / 2, text, PLACEHOLDER_TEXT).setOrigin(0.5));
+  layer.add(scene.add.text(GAME_WIDTH / 2, GAME_HEIGHT / 2, text, placeholderStyle()).setOrigin(0.5).setScale(1 / zoom));
   return layer;
 }
 

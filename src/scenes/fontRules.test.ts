@@ -35,7 +35,16 @@ describe('Mindest-Schriftgröße je Layout (S4.2, AC-03, bedienung.md § 2)', ()
     expect([minFontPx(3, strips[0]!, 'info'), minFontPx(3, strips[0]!, 'side')]).toEqual([24, 20]);
     expect([minFontPx(3, strips[2]!, 'info'), minFontPx(3, strips[2]!, 'side')]).toEqual([28, 20]);
     expect(minFontPx(2, computeLayout(2, false)[0]!, 'side')).toBe(24);
-    expect(minFontPx(1, computeLayout(1, true)[0]!, 'info')).toBeNull(); // Mitspieler-Zelle: Regel offen
+    // Mitspieler-Zelle: Texte der Stufe dort ausgeblendet, keine Mindestgröße (Beschluss 🧑 2026-10-12, B-197)
+    const [partner, own] = computeLayout(1, true);
+    expect(partner!.kind).toBe('partner');
+    expect([minFontPx(1, partner!, 'info'), minFontPx(1, partner!, 'side')]).toEqual([null, null]);
+    expect(minFontPx(1, own!, 'info')).toBe(28);
+  });
+
+  it('Platzhaltertext ist eine Rolle des Katalogs: Nebeninfo in der Welt, mindestens 24 px (B-198)', () => {
+    expect(FONTS.placeholder).toMatchObject({ art: 'side', space: 'world' });
+    expect(FONTS.placeholder.px).toBeGreaterThanOrEqual(24);
   });
 
   it('Welt-Schrift erscheint durch den Zoom-Ausgleich in ihrer Größe, wie die HUD-Schrift', () => {

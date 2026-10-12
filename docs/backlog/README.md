@@ -150,6 +150,8 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-411](B-411-spieler-abmelden.md) | CLI | Problem | hoch | offen | – | Lokale Spieler können beitreten, aber nicht einzeln austreten |
 | [B-412](B-412-figuren-adern-plantage-lager.md) | CLI | Idee | niedrig | offen | – | Adern, Plantage und Lager haben keine Anzeige als Figuren im Client |
 | [B-413](B-413-hud-leiste-oben-fluss.md) | CLI | Idee | mittel | offen | – | Gemeinsame HUD-Leiste oben für alle Spieler, Kompass oben, Fluss mit Spiegelung unten |
+| [B-414](B-414-welt-meldungen-im-band.md) | CLI | Idee | mittel | offen | – | Welt-Meldungen erscheinen für alle im globalen Band oben |
+| [B-415](B-415-cockpit-lint-rot.md) | INF | Problem | hoch | offen | – | Lint ist rot: tools/cockpit überschreitet die Dateigrenze |
 
 ## Archiv
 
