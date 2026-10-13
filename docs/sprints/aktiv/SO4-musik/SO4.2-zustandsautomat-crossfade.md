@@ -1,6 +1,6 @@
 # SO4.2 · Zustands-Automat, Crossfade, Bus „Musik“
 
-- **Status:** in Arbeit
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** CLI
@@ -48,10 +48,10 @@ Ducking, Musik-Dateien einchecken, Credits (SO4.3), Hörprobenseite (SO3), Optio
 
 ## Fertig, wenn
 
-- [ ] AC-01: Test: Der Automat bildet jeden der acht Zustände auf genau ein Stück ab (Lücke mit Ersatzverhalten ausgewiesen).
-- [ ] AC-02: Test der Rampen (stetiger Pegelverlauf, Umlenken ohne Sprung) und Durchlauf Tag → Abend → Nacht im Browser-Pane ohne Fehler; Hören am TV ist SO4.5.
-- [ ] AC-05: Test: Bus „Musik“ ändert sich unabhängig vom Bus „Effekte“.
-- [ ] `src/scenes/noSim.test.ts` grün; fehlendes Stück lässt das Spiel weiterlaufen (Test).
+- [x] AC-01: Test: Der Automat bildet jeden der acht Zustände auf genau ein Stück ab (Lücke mit Ersatzverhalten ausgewiesen).
+- [x] AC-02: Test der Rampen (stetiger Pegelverlauf, Umlenken ohne Sprung) und Durchlauf Tag → Abend → Nacht im Browser-Pane ohne Fehler; Hören am TV ist SO4.5.
+- [x] AC-05: Test: Bus „Musik“ ändert sich unabhängig vom Bus „Effekte“.
+- [x] `src/scenes/noSim.test.ts` grün; fehlendes Stück lässt das Spiel weiterlaufen (Test).
 
 ## Prüfen
 
@@ -63,4 +63,18 @@ Manuelle Prüfungen (Browser, Xbox, TV) nur, wenn diese Datei sie nennt und 🧑
 
 ## Ergebnis
 
-–
+Neu: `src/audio/music.ts` (+ `music.test.ts`), angebunden in `GameScene` (reset, Ereignisse, Auszug je Frame) und `LobbyScene` (`lobby()` je Frame). Audio-Kern unverändert.
+
+**Abweichung von der Reihenfolge:** SO4.1 (Workshop, 🧑) ist noch `offen`, obwohl diese Session von ihr abhängt; auf ausdrücklichen Wunsch von 🧑 trotzdem umgesetzt. Folge: Es gibt noch keine gewählten Stücke, `MUSIC_TRACKS` führt alle acht Zustände als **Lücke** (`null`). Ersatzverhalten bei Lücke: Stille (das laufende Stück blendet in 2 s aus). Sobald SO4.1/SO4.3 Stücke liefern, wird nur diese Tabelle gefüllt.
+
+- **AC-01:** `nextMusicState` ist eine reine Funktion (bisheriger Zustand, Auszug, Ereignisse → Zustand). Priorität: Lobby > Niederlage/Sieg > Boss > Kampf (`enemies > 0`) > Tiefe (`biome.depth > 0`) > Tageszeit; „Ende“ bleibt nach `castleFallen`, bis die Lobby läuft. Test belegt die Reihenfolge und das Mapping: acht Zustände, je genau ein Eintrag (Stück oder Lücke), kein Stück doppelt (`music.test.ts`).
+- **Boss und Sieg:** Auslöser (`boss`, `victory` im Auszug) haben bis K2/K4 keine Quelle; Test mit künstlichem Zustand.
+- **AC-02:** Rampen und Umlenken ohne Sprung testen schon `crossfade.test.ts` und `audioFiles.test.ts` (SO4.6): das Umlenken nimmt den aktuellen Pegel als Start. Hinweis: Die Kurven haben **gleiche Leistung** (Summe der Quadrate = 1, belegt im Test), nicht „Summe der Pegel ≤ 1“ (Spitze √2 in der Mitte); bei Bedarf eigenes Ticket. Dauer `CROSSFADE_SECONDS` = 2 s im Kern. Browser-Pane (`?autostart=1&mock=1`, Dev-Aktion `phase` per `/api/dev`): Lobby → Tag → Abend → Nacht → Kampf (Nachtwelle) wie erwartet, **keine Konsolenfehler**. Hören am TV: SO4.5. Hinweis: Da alle Stücke Lücken sind, war im Pane nur der Zustandswechsel prüfbar, kein hörbarer Crossfade.
+- **AC-05:** Bus „Musik“ unabhängig von „Effekte“: Test `audioFiles.test.ts` (SO4.6, „Lautstärke je Bus getrennt“) und `mixer.test.ts`.
+- **Fehlendes Stück:** `music.test.ts`: Datei lädt nicht → kein Absturz, kein erneuter Versuch je Frame (der Kern loggt einmal je Datei); gesperrter Kontext → kein Request, Start nach der Entsperrung; Wechsel während des Ladens → altes Stück startet nicht mehr. `noSim.test.ts` grün.
+- **Wahl Wiedergabe:** `AudioBufferSourceNode` über `AudioCore.playFile` (Kern aus SO4.6), `MusicDirector` ruft nur `preload`, `playFile`, `stop`.
+- **Eine Musik je Gerät:** `musicDirector()` ist ein Singleton, gespeist aus der Welt der eigenen Stufe (`world_`).
+
+**Prüfen:** `task:typecheck` grün, `vitest` für `src/audio`, `src/scenes`, `tests/planning` grün (1022 Tests), `task:build` grün. `task check` ist in diesem Worktree **nicht** grün, aber nicht durch diese Session: `oxlint` meldet 22 Fehler nur in `tools/cockpit/hooks/*`, und 11 Testdateien in `tools/cockpit` und `tools/k3c-dev/frontend` finden Pakete nicht (`react`, `@radix-ui/themes`, `claude-code/testing`: Abhängigkeiten dort nicht installiert). Hinweis zum Lauf: Hook-Ordner `.omc/` im Sprint-Ordner (durch `cd`) hatte `tests/planning` kurz gebrochen, gelöscht.
+
+**Offen / Tickets:** keine neuen. Folgearbeit: Stücke eintragen (SO4.1, SO4.3), Hysterese gegen Kampf-Flackern (`enemies` 0 ↔ 1) nur falls SO4.5 es hörbar findet.
