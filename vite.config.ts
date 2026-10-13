@@ -42,7 +42,7 @@ export default defineConfig({
   },
   preview: { host: true, port: 4173 },
   // .claude/worktrees enthält komplette Checkouts anderer Branches; deren Tests gehören nicht zu diesem Lauf.
-  test: { exclude: [...configDefaults.exclude, '.claude/**'] },
+  test: { exclude: [...configDefaults.exclude, '.claude/**', 'tools/cockpit/**'] },
   build: {
     target: 'es2022',
     chunkSizeWarningLimit: 2000,

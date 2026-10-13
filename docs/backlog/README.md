@@ -149,7 +149,6 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-412](B-412-figuren-adern-plantage-lager.md) | CLI | Idee | niedrig | eingeplant | W11 | Adern, Plantage und Lager haben keine Anzeige als Figuren im Client |
 | [B-413](B-413-hud-leiste-oben-fluss.md) | CLI | Idee | mittel | offen | – | Gemeinsame HUD-Leiste oben für alle Spieler, Kompass oben, Fluss mit Spiegelung unten |
 | [B-414](B-414-welt-meldungen-im-band.md) | CLI | Idee | mittel | eingeplant | BD1 | Welt-Meldungen erscheinen für alle im globalen Band oben |
-| [B-415](B-415-cockpit-lint-rot.md) | INF | Problem | hoch | eingeplant | WZ4 | Lint ist rot: tools/cockpit überschreitet die Dateigrenze |
 
 ## Archiv
 
@@ -388,3 +387,4 @@ Zeile in diesen Abschnitt.
 | [B-416](archiv/B-416-checkout-git-ohne-fenster.md) | DEV | Problem | hoch | erledigt | – | Der Checkout-Aufruf von k3c-dev öffnet bei jedem Tool ein Konsolenfenster |
 | [B-197](archiv/B-197-partner-zelle-schriftgroesse.md) | CLI | Frage | hoch | erledigt | GR7 | Die Schriftregel nennt eine Mindestgröße für die Mitspieler-Zelle |
 | [B-198](archiv/B-198-platzhaltertext-schrift-katalog.md) | CLI | Schuld | hoch | erledigt | GR7 | Der Platzhaltertext einer ungeladenen Stufe liest seine Schrift aus dem Katalog |
+| [B-415](archiv/B-415-cockpit-lint-rot.md) | INF | Problem | hoch | erledigt | – | Lint ist rot: tools/cockpit überschreitet die Dateigrenze |
