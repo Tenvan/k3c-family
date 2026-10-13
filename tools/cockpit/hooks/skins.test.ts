@@ -1,7 +1,7 @@
 import { expect, test } from 'claude-code/testing'
 
 import { DEFAULT_SETTINGS, THEME, demoTable } from './core'
-import { detailInput, detailOutput, diffCardSvg, diffOf, fileHref, fileTarget, firstErrorLine, iconKind, inlineTokens, isReadOnlyShell, isStyled, linkTokens, mdLiteral, quietLine, splitMessage, toolIconSvg } from './skins'
+import { detailInput, detailOutput, diffCardSvg, diffOf, fileHref, fileTarget, firstErrorLine, iconKind, inlineTokens, isReadOnlyShell, isStyled, linkTokens, mdLiteral, richBlock, quietLine, splitMessage, toolIconSvg } from './skins'
 
 const ON = { cards: true, inline: true }
 const F = '```'
@@ -75,7 +75,7 @@ test('Antwort zerlegen: Code, Tabelle, Hinweis, Aufgaben, offener Fence, Mermaid
     '> [!WARNING]', '> Achtung', '', '- [x] eins', '- [ ] zwei', '', `${F}mermaid`, 'graph TD', F,
   ].join('\n')
   const segs = splitMessage(text, ON)
-  expect(segs.map(s => s.kind)).toEqual(['md', 'code', 'table', 'alert', 'tasks', 'md'])
+  expect(segs.map(s => s.kind)).toEqual(['rich', 'code', 'table', 'alert', 'tasks', 'md'])
   expect(segs[1]).toEqual({ kind: 'code', lang: 'ts', source: 'const a = 1\nconst b = 2' })
   expect(segs[2]).toMatchObject({ kind: 'table', rows: 1, cols: 2 })
   expect(segs[3]).toEqual({ kind: 'alert', alert: 'warning', text: 'Achtung' })
@@ -113,7 +113,7 @@ test('ToolUse: Symbol als einfaches Svg, Details klappen als Code auf; Terminal 
   expect(icon).toContain(THEME.info)
   expect(icon).not.toContain('isInteractive')
   expect(await row.find({ type: 'Code' })).toBe(undefined)
-  await row.press({ key: 'om-xb-u1' })
+  await row.press({ key: 'tv-xb-u1' })
   for (let i = 0; i < 100 && !(await row.find({ type: 'Code' })); i++) await Promise.resolve()
   const codes = JSON.stringify(await row.findAll({ type: 'Code' }))
   expect(codes).toContain('let x = 1')
@@ -281,4 +281,19 @@ test('AssistantMessage: Link in Akzentfarbe, Dateilink als Chip mit Zeile', asyn
   expect(JSON.stringify(web)).toContain(THEME.accent)
   const chip = await m.find({ type: 'Text', text: 'skins.ts:42' })
   expect(JSON.stringify(chip)).toContain(THEME.chip)
+})
+
+test('richBlock: Listen, Code und Fett selbst gezeichnet, Links und Kursiv bleiben Markdown', () => {
+  const lines = richBlock('- Entfernt ist `markAfterDelivery` im **Runner**\n  - Unterpunkt 3\n1. Erstens')
+  expect(lines?.map(l => l.bullet)).toEqual(['•', '•', '1.'])
+  expect(lines?.[1]?.indent).toBe(1)
+  expect(lines?.[0]?.parts).toEqual([{ text: 'Entfernt ist ' }, { text: 'markAfterDelivery', code: true }, { text: ' im ' }, { text: 'Runner', bold: true }])
+  expect(richBlock('Siehe [Doku](https://x.de)')).toBe(null)
+  expect(richBlock('ein _kursives_ Wort')).toBe(null)
+  expect(richBlock('## Titel')).toBe(null)
+  expect(richBlock('**Workflow `X`** neu')).toBe(null)
+  expect(richBlock('`UPDATE_RECORD` bleibt')).not.toBe(null)
+  const segs = splitMessage('Absatz mit `code`\n\nDatei core.ts geändert', { cards: true, inline: true })
+  expect(segs.map(s => s.kind)).toEqual(['rich', 'plain'])
+  expect(isStyled(segs.slice(0, 1))).toBe(false)
 })

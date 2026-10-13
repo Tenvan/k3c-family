@@ -55,7 +55,7 @@ Gesetzt über `/config` oder in den Settings unter `pluginConfigs.tenvan-cc`.
 Im Terminal (der Desktop-Code-Tab kennt `/plugin` nicht, lädt das Mod aber mit):
 
 ```shell
-claude plugin install tenvan-cc@orga-marketplace
+claude --plugin-dir tools/cockpit
 ```
 
 ## Entwicklung

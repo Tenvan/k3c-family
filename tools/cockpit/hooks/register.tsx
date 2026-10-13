@@ -1,16 +1,24 @@
 import { atom, read, update } from 'claude-code'
-import type { EngineInterface, Register, RenderChildren, RenderElement, SessionUsage } from 'claude-code'
+import type { EngineInterface, PressedLink, Register, RenderChildren, RenderElement, SessionUsage } from 'claude-code'
 
 import type { BgTask, About, ModelInfo, Agent, Breakdown, CallMark, CatchUp, Decision, LoopAlert, McpSchema, UiLang, Repo, Gate, LogEntry, LogSrc, ModSettings, Step, Turn, TurnRecord, Usage } from '../types'
-import { THEME, splitTool, toolText, withClaude, parseTaskNotification, legendSvg, modelLabel, SPIN_MODE, spinnerText, timelineSvg, demoTable, agentStats, agentFlags, breakdownBarSvg, contextTip, limitTip, cacheTip, summaryLines, topRows, resetLabel, CATCH0, CATCH_KEEP, DEFAULT_SETTINGS, SETTING_DEFS, settingLabel, settingHint, catchUpPrompt, catchUpSystem, nextChunk, settingsOf, startIndex, fingerprint } from './core'
-import type { SettingGroup, SettingKey } from './core'
+import { mockData } from './mock'
+import { BREATHS, breathFrameSvg, breathOf, breathSvg, phaseAt } from './breath'
+import { canMergeNow, draftPrompt, forgeRemote, mrBadge, mrRef, isPipelineRunning, mrEvents, parseDraft, pipelineTone, pollDelayMs, threadsPrompt } from './mr'
+import { authMissing, canAutoMerge, forgeCreate, forgeDefault, forgeFind, forgeLists, forgeLoad, forgeMerge, forgeRebase, forgeRetry, forgeThreads } from './forge'
+import type { Io, Remote } from './forge'
+import type { Mr, MrDraft, MrMine } from '../types'
+import { THEME, TINT, CARD_TINT, cycleTint, summarySections, splitTool, toolText, withClaude, parseTaskNotification, legendSvg, modelLabel, SPIN_MODE, spinnerText, timelineSvg, demoTable, agentStats, agentFlags, breakdownBarSvg, contextTip, limitTip, cacheTip, summaryLines, topRows, resetLabel, CATCH0, CATCH_KEEP, DEFAULT_SETTINGS, SETTING_DEFS, settingLabel, settingHint, catchUpPrompt, catchUpSystem, nextChunk, settingsOf, startIndex, fingerprint } from './core'
+import type { SettingGroup, SettingKey, Tone } from './core'
+import { EFFORT_LEVELS, effortColor, effectiveEffort, effortJudgeText, handoffMarkdown, handoffPays, isTrivialPrompt, limitAlert } from './core'
+import type { EffortLevel } from './core'
 import { CACHE_WARN_MS, WASTE_USD, compactFocus, detectLoop, isAgentHeavy, isWasteful, mcpDiet, mcpKey, turnBarsSvg } from './core'
 import { RISKY_GIT_CONFIG, COMPACT_AT, DECISION_COLOR, RING_HEX, contextColor, LEGEND, LEGEND_NOTE, paceText, LIMIT_LABEL, LOG_MAX, SRC_COLOR, bar, cacheHitPct, cacheLeftMs, clockTime, duration, limitColor, pace, parseSteps, pushCapped, shortHash, toolInfoLines, oneLine, parseRepo, repoRows, repoShort, ringSvg, svgSource, titleText, toBreakdown, breakdownTitle, categoryColor, spinner, title, toolTarget, toolKind, tokens, usd } from './core'
 import { t } from './i18n'
 import type { Key } from './i18n'
-import { ALERT_COLOR, ICON_COLOR, TONE_COLOR, detailInput, detailOutput, diffCardSvg, diffOf, errorText, firstErrorLine, iconKind, inlineTokens, inputPath, isReadOnlyShell, isShell, isStyled, lineCountOf, mdLiteral, QUIET_TOOLS, quietLine, shellCommand, splitMessage, toolIconSvg } from './skins'
+import { ALERT_COLOR, CODE_BG, CODE_FG, ICON_COLOR, TONE_COLOR, detailInput, detailOutput, diffCardSvg, diffOf, errorText, firstErrorLine, iconKind, inlineTokens, inputPath, isReadOnlyShell, isShell, isStyled, lineCountOf, mdLiteral, QUIET_TOOLS, quietLine, shellCommand, splitMessage, toolIconSvg } from './skins'
 import { askSummary, fileHref, mathSvg } from './skins'
-import type { LinkToken, Segment, SplitOptions } from './skins'
+import type { LinkToken, RichPart, Segment, SplitOptions } from './skins'
 import { diagramType, mermaidSvg } from './mermaid'
 
 const PLUGIN = 'tenvan-cc'
@@ -23,6 +31,7 @@ const panes = (lang: UiLang) => ({
   main: { id: PLUGIN, title: t(lang, 'common.paneMain') },
   summary: { id: 'tenvan-cc-summary', title: t(lang, 'common.paneSummary') },
   settings: { id: 'tenvan-cc-settings', title: t(lang, 'common.paneSettings') },
+  mr: { id: 'tenvan-cc-mr', title: t(lang, 'common.paneMr') },
 })
 const EDIT_TOOLS = new Set(['Edit', 'Write', 'NotebookEdit'])
 const LIVE = new Set(['pending', 'running', 'waiting'])
@@ -63,16 +72,40 @@ const collapsed = atom({ plugin: 'tenvan-cc', key: 'collapsed' } as const, [] as
 // Aufrufe des Haupt-Agents im laufenden Turn und die daraus erkannte Schleife; beides leert ein neuer Turn.
 const marks = atom({ plugin: 'tenvan-cc', key: 'marks' } as const, [] as CallMark[])
 const loopAlert = atom({ plugin: 'tenvan-cc', key: 'loopAlert' } as const, null as LoopAlert | null)
+const loopIgnored = atom({ plugin: 'tenvan-cc', key: 'loopIgnored' } as const, [] as string[])
+const loopKey = (a: LoopAlert) => `${a.kind}:${a.target}`
 // Geladene MCP-Schemas aus dem Kontext-Breakdown und die Server, deren Tools die Session schon aufgerufen hat (Kontext-Diät).
 const mcpTools = atom({ plugin: 'tenvan-cc', key: 'mcpTools' } as const, [] as McpSchema[])
 const usedMcp = atom({ plugin: 'tenvan-cc', key: 'usedMcp' } as const, [] as string[])
 const turnLog = atom({ plugin: 'tenvan-cc', key: 'turnLog' } as const, [] as TurnRecord[])
+// Höchstens so viele Zeilen Befehl und Ergebnis je Kachel einer Hintergrundaufgabe.
+const TASK_LINES = 8
+// Breite der Schalter-Spalte in den Einstellungen (Button „○ Aus“/„○ Off“ plus Luft).
+const SWITCH_COLS = 9
+const mrHost = atom({ plugin: 'tenvan-cc', key: 'mrHost' } as const, '')
+const mrCur = atom({ plugin: 'tenvan-cc', key: 'mrCur' } as const, null as Mr | null)
+const mrMine = atom({ plugin: 'tenvan-cc', key: 'mrMine' } as const, [] as MrMine[])
+const mrReview = atom({ plugin: 'tenvan-cc', key: 'mrReview' } as const, [] as MrMine[])
+const mrAhead = atom({ plugin: 'tenvan-cc', key: 'mrAhead' } as const, 0)
+const mrDraft = atom({ plugin: 'tenvan-cc', key: 'mrDraft' } as const, null as MrDraft | null)
+const mrBusy = atom({ plugin: 'tenvan-cc', key: 'mrBusy' } as const, '')
+const mrConfirm = atom({ plugin: 'tenvan-cc', key: 'mrConfirm' } as const, '')
+const devMock = atom({ plugin: 'tenvan-cc', key: 'devMock' } as const, false)
 // Subagents, deren weitere Tool-Calls das Cockpit ablehnt (Agent-Bremse: die API kann einen Subagent nicht abbrechen).
 const braked = atom({ plugin: 'tenvan-cc', key: 'braked' } as const, [] as string[])
+const effortPick = atom({ plugin: 'tenvan-cc', key: 'effortPick' } as const, null as EffortLevel | null)
+const effortBase = atom({ plugin: 'tenvan-cc', key: 'effortBase' } as const, null as string | number | null)
+const handoffNote = atom({ plugin: 'tenvan-cc', key: 'handoffNote' } as const, '')
+const effortNote = atom({ plugin: 'tenvan-cc', key: 'effortNote' } as const, '')
+const effortShift = atom({ plugin: 'tenvan-cc', key: 'effortShift' } as const, null as { from: string | null; to: string; step: number } | null)
+// Animation alt ─→ neu: EFFORT_STEPS Bilder im Abstand von EFFORT_FRAME_MS, danach bleibt „Haiku: neu“ stehen.
+const EFFORT_STEPS = 10
+const EFFORT_FRAME_MS = 140
+let effortTimer: { cancel(): void } | undefined
 
 const STEPS_SYSTEM =
   'Du schlägst die nächsten sinnvollen Schritte in einer Coding-Session vor. ' +
-  'Antworte nur mit einem JSON-Array aus genau 5 Objekten {"label": string, "why": string, "prompt": string}, das wichtigste zuerst. ' +
+  'Antworte nur mit einem JSON-Array aus genau 3 Objekten {"label": string, "why": string, "prompt": string}, das wichtigste zuerst. ' +
   '"prompt": genau so formuliert, wie der Nutzer es selbst als nächsten Prompt ins Eingabefeld tippen würde: ' +
   'knapp (meist unter 15 Wörtern), konkret, als direkte Aufforderung, ohne Höflichkeitsfloskeln und ohne Erklärung. ' +
   '"label": Kurzfassung dieses Prompts, höchstens 6 Wörter. "why": kurze Begründung, höchstens 10 Wörter. ' +
@@ -321,7 +354,9 @@ function linkPart(ui: Ui, p: LinkToken, key: string, cwd: string) {
   }
   const name = p.line !== null && !/:\d+$/.test(p.label) ? `${p.label}:${p.line}` : p.label
   const chip = <Text key={`${key}-t`} color={THEME.accent} backgroundColor={THEME.chip}>{` ${name} `}</Text>
-  return Link ? <Link key={key} href={fileHref(p.path, cwd)}>{chip}</Link> : chip
+  // Ohne Arbeitsverzeichnis bleibt der Pfad relativ; ein Link ohne URL lässt die Engine die ganze Antwort verwerfen.
+  const href = fileHref(p.path, cwd)
+  return Link && href.startsWith('file:') ? <Link key={key} href={href}>{chip}</Link> : chip
 }
 
 // Abschnitte einer Antwort oder Command-Ausgabe: Prosa bleibt Markdown (markierbar), Karten und Hervorhebungen eigen.
@@ -347,6 +382,33 @@ function segmentsView($: EngineInterface, ui: Ui, segs: readonly Segment[], base
               {s.tokens.map((p, j) => linkPart(ui, p, `${k}-${j}`, cwd))}
             </Text>
           )
+        if (s.kind === 'rich') {
+          // Hängender Einzug je Listenpunkt; Code als Chip, Fett fett, übriger Text mit den Farbrollen der Hervorhebungen.
+          const runs = (parts: RichPart[]) =>
+            parts.map(p =>
+              p.code ? (
+                <Text color={CODE_FG} backgroundColor={CODE_BG}> {p.text} </Text>
+              ) : (
+                <Text bold={p.bold === true}>{inlineTokens(p.text, changed).map(x => (x.tone === undefined ? x.text : <Text color={TONE_COLOR[x.tone]}>{x.text}</Text>))}</Text>
+              ),
+            )
+          return (
+            <Box key={k} flexDirection="column">
+              {s.lines.map((l, j) =>
+                l.bullet === undefined ? (
+                  <Text key={`${k}-${j}`} wrap="wrap">{runs(l.parts)}</Text>
+                ) : (
+                  <Box key={`${k}-${j}`} flexDirection="row" paddingLeft={2 + l.indent * 2}>
+                    <Box width={l.bullet.length + 1} flexShrink={0}>
+                      <Text>{l.bullet}</Text>
+                    </Box>
+                    <Text wrap="wrap">{runs(l.parts)}</Text>
+                  </Box>
+                ),
+              )}
+            </Box>
+          )
+        }
         if (s.kind === 'code') {
           const head = <Text color={THEME.accent} bold>{t(lang, 'skin.codeHead', { lang: s.lang || t(lang, 'skin.code'), n: lineCountOf(s.source) })}</Text>
           const body = s.lang === 'diff' ? <Code source={s.source} format="diff" /> : <Code source={s.source} language={s.lang === '' ? undefined : s.lang} />
@@ -393,7 +455,7 @@ function modelRow({ Text }: Ui, mi: ModelInfo | null, window: number | undefined
 }
 
 // Kopf der Panels: Titel, Modellzeile und eine Leerzeile Abstand zum Inhalt.
-async function paneHead($: EngineInterface, ui: Ui, lang: UiLang) {
+async function paneHead($: EngineInterface, ui: Ui, lang: UiLang, extra: RenderElement | null = null) {
   const { Box } = ui
   // Liest bewusst nicht `usage`: das ändert sich bei jeder Messung, und jedes Neuzeichnen kostet einen Klick (siehe `same`).
   const mi = await read($, modelInfo)
@@ -401,6 +463,7 @@ async function paneHead($: EngineInterface, ui: Ui, lang: UiLang) {
     <Box flexDirection="column" marginBottom={1}>
       {titleRow(ui, await read($, about), await read($, logo))}
       {modelRow(ui, mi, mi?.window, lang)}
+      {extra}
     </Box>
   )
 }
@@ -651,6 +714,78 @@ async function watchCache($: EngineInterface) {
   await $.prompt.suggest({ text: t(s.lang, 'cache.keepWarm') })
 }
 
+// Auto-Effort: Haiku bewertet den Prompt vor dem Senden (blockiert ihn rund 1 s); triviale Prompts behalten die letzte Stufe.
+async function judgeEffort($: EngineInterface, text: string) {
+  const s = await read($, settings)
+  if (!s.autoEffort) return
+  if (isTrivialPrompt(text)) {
+    await update($, effortNote, () => t(s.lang, 'effort.kept'))
+    return
+  }
+  await update($, effortNote, () => t(s.lang, 'effort.judging'))
+  const prev = (await read($, effortPick)) ?? (await read($, effortBase))
+  const level = await $.model.classify(effortJudgeText(text), EFFORT_LEVELS).catch(() => undefined)
+  if (level === 'low' || level === 'medium' || level === 'high') {
+    await update($, effortPick, () => level)
+    await animateEffort($, prev === null ? null : String(prev), level)
+    await update($, effortNote, () => t(s.lang, 'effort.judged', { v: level }))
+    await note($, 'main', t(s.lang, 'effort.judged', { v: level }))
+  } else await update($, effortNote, () => t(s.lang, 'effort.failed'))
+}
+
+// Kurzer Übergang im Band, damit der Wechsel auffällt; ein neuer Wechsel ersetzt einen laufenden.
+async function animateEffort($: EngineInterface, from: string | null, to: string) {
+  effortTimer?.cancel()
+  await update($, effortShift, () => ({ from, to, step: 0 }))
+  effortTimer = $.clock.every(EFFORT_FRAME_MS, async () => {
+    const cur = await read($, effortShift)
+    if (cur === null || cur.step >= EFFORT_STEPS) {
+      effortTimer?.cancel()
+      effortTimer = undefined
+      return
+    }
+    await update($, effortShift, x => (x === null ? x : { ...x, step: x.step + 1 }))
+  })
+}
+
+// Stufe für einen Haupt-Request oder undefined (nichts umschreiben). Weicht der Effort der Session vom zuletzt gesehenen ab,
+// hat die Person ihn von Hand geändert (oder ein anderes Mod): Auto-Effort geht aus.
+async function effortFor($: EngineInterface, base: string | number | undefined): Promise<EffortLevel | undefined> {
+  const s = await read($, settings)
+  if (!s.autoEffort || base === undefined) return undefined
+  const known = await read($, effortBase)
+  if (known !== null && known !== base) {
+    await update($, effortBase, () => null)
+    await setSettings($, { autoEffort: false })
+    await note($, 'main', t(s.lang, 'effort.manualOff'))
+    return undefined
+  }
+  if (known === null) await update($, effortBase, () => base)
+  const pick = await read($, effortPick)
+  return pick === null ? undefined : effectiveEffort(pick, s.saveMode, (await read($, usage))?.limits ?? [])
+}
+
+// Handoff: HANDOFF.md im Arbeitsverzeichnis plus Zwischenablage. Zusammenfassung aus catch-me-up, wenn vorhanden (kein Call),
+// sonst ein Fork über das eigene Transcript.
+async function writeHandoff($: EngineInterface) {
+  const s = await read($, settings)
+  await update($, handoffNote, () => t(s.lang, 'handoff.busy'))
+  try {
+    let summary = (await read($, catchUp)).summary
+    if (summary.trim() === '') {
+      const r = await $.model.fork({ prompt: t(s.lang, 'handoff.prompt') })
+      if (!r.isAnswered) throw new Error(r.reason)
+      summary = r.text
+    }
+    const text = handoffMarkdown({ summary, lastPrompt: await read($, lastPrompt), touched: await read($, touched), steps: await read($, steps), git: await catchGitState($) }, s.lang)
+    await $.fs.write(`${await $.session.cwd()}/HANDOFF.md`, text)
+    await $.ui.copy({ text })
+    await update($, handoffNote, () => t(s.lang, 'handoff.done'))
+  } catch (err) {
+    await update($, handoffNote, () => t(s.lang, 'handoff.failed', { why: err instanceof Error ? err.message : String(err) }))
+  }
+}
+
 // Neuer Turn: Zähler zurücksetzen, Vorschläge leeren, Prompt ins Log. Aus prompt.submit und aus den Folge-Schritt-Knöpfen.
 async function startTurn($: EngineInterface, text: string) {
   const startedAt = await $.clock.now()
@@ -664,6 +799,373 @@ async function startTurn($: EngineInterface, text: string) {
   await update($, steps, () => [])
   await update($, claudeHint, () => null)
   await note($, 'you', oneLine(text))
+}
+
+// ── Merge/Pull Requests (GitLab über glab, GitHub über gh, Bitbucket Server über REST; Ein-/Ausgabe in forge.ts) ──
+// Lesend im Takt; schreibend nur per Klick.
+let mrPolledAt = 0
+let mrPolling = false
+let mrRemote: Remote | null = null
+let authWarned = ''
+
+// Remote des aktuellen Branches (git config branch.<b>.remote), sonst „origin“, sonst der erste Remote.
+// Nicht jedes Repo nennt ihn „origin“ (manche heißen etwa „upstream“); mit fest „origin“ blieb GitLab unerkannt.
+async function gitRemote($: EngineInterface): Promise<string> {
+  const branch = await gitText($, ['branch', '--show-current'])
+  const own = branch === '' ? '' : await gitText($, ['config', '--get', `branch.${branch}.remote`])
+  if (own !== '' && own !== '.') return own
+  const all = (await gitText($, ['remote'])).split(/\r?\n/).filter(Boolean)
+  return all.includes('origin') ? 'origin' : (all[0] ?? 'origin')
+}
+
+// Ziel-Branch: Standard-Branch der Plattform, sonst <remote>/HEAD, sonst „main“.
+async function defaultTarget($: EngineInterface, remote: string): Promise<string> {
+  const own = mrRemote === null ? '' : await forgeDefault(forgeIo($), mrRemote)
+  if (own !== '') return own
+  const head = await gitText($, ['symbolic-ref', '--short', `refs/remotes/${remote}/HEAD`])
+  return head !== '' ? head.slice(remote.length + 1) : 'main'
+}
+
+// Prozess und HTTP für forge.ts (dort gibt es kein `$`).
+function forgeIo($: EngineInterface): Io {
+  return { run: (argv, opts) => $.process.run(argv, opts), fetch: (url, init) => $.http.fetch(url, init) }
+}
+
+// MR/PR des Branches abfragen; im Leerlauf jede Minute, bei laufender Pipeline alle 15 s, `force` sofort.
+async function refreshMr($: EngineInterface, force = false) {
+  const s = await read($, settings)
+  if (!s.mrBand && !s.mrPane && !s.mrNotify && !s.mrFooter) return
+  const prev = await read($, mrCur)
+  const now = await $.clock.now()
+  if (mrPolling || (!force && now - mrPolledAt < pollDelayMs(prev))) return
+  mrPolling = true
+  mrPolledAt = now
+  try {
+    const remoteName = await gitRemote($)
+    const remote = forgeRemote(await gitText($, ['remote', 'get-url', remoteName]))
+    mrRemote = remote
+    { const v = remote?.host ?? ''; if (!same(await read($, mrHost), v)) await update($, mrHost, () => v) }
+    if (remote === null) {
+      { const v = null; if (!same(await read($, mrCur), v)) await update($, mrCur, () => v) }
+      { const v = 0; if (!same(await read($, mrAhead), v)) await update($, mrAhead, () => v) }
+      return
+    }
+    const branch = await gitText($, ['branch', '--show-current'])
+    const found = branch === '' ? null : await forgeFind(forgeIo($), remote, branch)
+    // Ein eben gemergter oder geschlossener MR desselben Branches wird weiter abgefragt, damit sein Ende gemeldet wird.
+    const iid = found ?? (prev !== null && prev.source === branch && prev.forge === remote.kind ? prev.iid : null)
+    const next = iid === null ? null : await forgeLoad(forgeIo($), remote, iid)
+    // Bitbucket ohne Zugang im Git-Credential-Store: einmal je Host sagen, warum nichts erscheint.
+    if (authMissing() !== '' && authWarned !== authMissing()) {
+      authWarned = authMissing()
+      $.ui.toast(t(s.lang, 'mr.noAuth', { host: authWarned }))
+    }
+    if (s.mrNotify) {
+      for (const ev of mrEvents(prev, next)) {
+        const text = t(s.lang, `mr.ev.${ev}`, { ref: next === null ? '' : mrRef(next) })
+        $.ui.toast(text)
+        await note($, 'main', text)
+      }
+    }
+    { const v = next; if (!same(await read($, mrCur), v)) await update($, mrCur, () => v) }
+    const target = await defaultTarget($, remoteName)
+    const ahead = branch !== '' && branch !== target && (next === null || next.state !== 'opened') ? Number(await gitText($, ['rev-list', '--count', `${remoteName}/${target}..HEAD`])) || 0 : 0
+    { const v = ahead; if (!same(await read($, mrAhead), v)) await update($, mrAhead, () => v) }
+    if (s.mrPane) {
+      const lists = await forgeLists(forgeIo($), remote)
+      { const v = lists.mine; if (!same(await read($, mrMine), v)) await update($, mrMine, () => v) }
+      { const v = lists.review; if (!same(await read($, mrReview), v)) await update($, mrReview, () => v) }
+    }
+  } finally {
+    mrPolling = false
+  }
+}
+
+// Eine schreibende Aktion mit Statuszeile, Ergebnis als Toast und anschließender Abfrage.
+async function mrStep($: EngineInterface, what: string, run: (r: Remote, m: Mr) => Promise<{ ok: boolean; err: string }>) {
+  const m = await read($, mrCur)
+  if (m === null || mrRemote === null) return
+  const r = mrRemote
+  const L = (await read($, settings)).lang
+  await update($, mrBusy, () => t(L, 'mr.working'))
+  try {
+    const x = await run(r, m)
+    $.ui.toast(x.ok ? t(L, 'mr.done', { what }) : t(L, 'mr.failed', { what, why: x.err }))
+    await note($, 'main', x.ok ? t(L, 'mr.done', { what }) : t(L, 'mr.failed', { what, why: x.err }))
+  } finally {
+    await update($, mrBusy, () => '')
+    await refreshMr($, true)
+  }
+}
+
+const rebaseMr = async ($: EngineInterface) => mrStep($, t((await read($, settings)).lang, 'mr.rebase'), (r, m) => forgeRebase(forgeIo($), r, m))
+const retryPipeline = async ($: EngineInterface) => mrStep($, t((await read($, settings)).lang, 'mr.retry'), (r, m) => forgeRetry(forgeIo($), r, m))
+
+// Mergen in zwei Schritten: erster Klick fragt („Wirklich mergen?“, 6 s gültig), zweiter mergt. Läuft die Pipeline noch,
+// merget GitLab bzw. GitHub, sobald sie grün ist.
+async function mergeMr($: EngineInterface) {
+  const m = await read($, mrCur)
+  if (m === null) return
+  const key = `merge-${m.iid}`
+  if ((await read($, mrConfirm)) !== key) {
+    await update($, mrConfirm, () => key)
+    $.clock.after(6_000, () => void update($, mrConfirm, c => (c === key ? '' : c)).catch(() => undefined))
+    return
+  }
+  await update($, mrConfirm, () => '')
+  const auto = isPipelineRunning(m) && canAutoMerge(m)
+  await mrStep($, t((await read($, settings)).lang, auto ? 'mr.mergeAuto' : 'mr.merge'), (r, cur) => forgeMerge(forgeIo($), r, cur, auto))
+}
+
+// Entwurf für einen neuen MR: Haiku schreibt Titel und Beschreibung aus Commits und Diffstat; angelegt wird erst per Klick.
+async function draftMr($: EngineInterface) {
+  const L = (await read($, settings)).lang
+  await update($, mrBusy, () => t(L, 'mr.drafting'))
+  try {
+    const branch = await gitText($, ['branch', '--show-current'])
+    const remoteName = await gitRemote($)
+    const target = await defaultTarget($, remoteName)
+    const [log, stat, first] = await Promise.all([
+      gitText($, ['log', '--no-merges', '--format=- %s%n%b', `${remoteName}/${target}..HEAD`]),
+      gitText($, ['diff', '--stat', `${remoteName}/${target}...HEAD`]),
+      gitText($, ['log', '-1', '--format=%s']),
+    ])
+    const r = await $.model.complete({ model: 'haiku', prompt: draftPrompt(branch, target, log, stat, L), maxTokens: 1500, effort: 'low', timeoutMs: 30_000 }).catch(() => null)
+    const d = parseDraft(r !== null && r.isAnswered ? r.text : '', first || branch)
+    await update($, mrDraft, () => ({ ...d, source: branch, target }))
+  } finally {
+    await update($, mrBusy, () => '')
+  }
+  await $.ui.open({ ...panes(L).mr, focus: true }).catch(() => undefined)
+}
+
+// Branch pushen, dann den MR/PR aus dem Entwurf anlegen (Beschreibung über stdin bzw. REST, kein Editor).
+async function createMr($: EngineInterface, asDraft: boolean) {
+  const d = await read($, mrDraft)
+  if (d === null || mrRemote === null) return
+  const L = (await read($, settings)).lang
+  await update($, mrBusy, () => t(L, 'mr.creating'))
+  try {
+    const push = await $.process.run(['git', 'push', '-u', await gitRemote($), d.source], { timeoutMs: 120_000 }).catch(() => null)
+    if (push === null || push.exitCode !== 0) {
+      $.ui.toast(t(L, 'mr.failed', { what: 'git push', why: (push?.stderr ?? '').trim().split('\n')[0] ?? '' }))
+      return
+    }
+    const r = await forgeCreate(forgeIo($), mrRemote, d, asDraft)
+    if (!r.ok) {
+      $.ui.toast(t(L, 'mr.failed', { what: t(L, 'mr.create'), why: r.err }))
+      return
+    }
+    await update($, mrDraft, () => null)
+    $.ui.toast(t(L, 'mr.created', { ref: d.source }))
+    await note($, 'main', t(L, 'mr.created', { ref: d.source }))
+  } finally {
+    await update($, mrBusy, () => '')
+    await refreshMr($, true)
+  }
+}
+
+// Offene Review-Threads als Auftrag ins Eingabefeld; gesendet wird erst mit Enter.
+async function threadsToClaude($: EngineInterface) {
+  const m = await read($, mrCur)
+  if (m === null || mrRemote === null) return
+  const threads = await forgeThreads(forgeIo($), mrRemote, m)
+  if (threads.length === 0) return
+  await $.prompt.fill({ text: threadsPrompt(m, threads, (await read($, settings)).lang) })
+}
+
+// Statusteile eines MR für Band und Panel: Nummer, Zustand, Pipeline, Approvals, Threads, Konflikt.
+function mrParts(ui: Ui, m: Mr, L: UiLang): RenderElement[] {
+  const { Text } = ui
+  const parts: RenderElement[] = [<Text key="mr-ref" bold color={THEME.accent}>{mrRef(m)}</Text>]
+  if (m.state === 'merged') parts.push(<Text key="mr-st" color={THEME.success}>{t(L, 'mr.merged')}</Text>)
+  if (m.state === 'closed') parts.push(<Text key="mr-st" color={THEME.textMuted}>{t(L, 'mr.closed')}</Text>)
+  if (m.draft) parts.push(<Text key="mr-dr" color={THEME.textMuted}>{t(L, 'mr.draft')}</Text>)
+  if (m.state !== 'opened') return parts
+  parts.push(
+    m.pipeline !== null ? (
+      <Text key="mr-pl" color={THEME[pipelineTone(m.pipeline.status)]}>{t(L, 'mr.pipeline', { status: m.pipeline.status })}</Text>
+    ) : (
+      <Text key="mr-pl" color={THEME.textMuted}>{t(L, 'mr.noPipeline')}</Text>
+    ),
+  )
+  if (m.approvals !== null && m.approvals.required > 0) {
+    parts.push(<Text key="mr-ap" color={m.approvals.left === 0 ? THEME.success : THEME.warning}>{t(L, 'mr.approvals', { have: m.approvals.required - m.approvals.left, need: m.approvals.required })}</Text>)
+  }
+  if (m.threads > 0) parts.push(<Text key="mr-th" color={THEME.warning}>{t(L, 'mr.threads', { n: m.threads })}</Text>)
+  if (m.conflicts) parts.push(<Text key="mr-cf" color={THEME.error}>{t(L, 'mr.conflict')}</Text>)
+  return parts
+}
+
+const withDots = (ui: Ui, parts: readonly RenderElement[], base: string): RenderElement[] =>
+  parts.flatMap((p, i) => (i === 0 ? [p] : [<ui.Text key={`${base}-sep-${i}`} color={THEME.border}>·</ui.Text>, p]))
+
+// Zeile im Band: MR mit Status, sonst Entwurf oder „n Commits ohne MR“ mit dem Knopf zum Anlegen.
+async function mrBandRow($: EngineInterface, ui: Ui, L: UiLang, devMr: Mr | null = null): Promise<RenderElement | null> {
+  const { Box, Text, Button } = ui
+  const [cur, ahead, draft, busy] = await Promise.all([read($, mrCur), read($, mrAhead), read($, mrDraft), read($, mrBusy)])
+  // Im Dev-Mode der Mock-MR, damit die Zeile auch ohne GitLab-Repo sichtbar ist.
+  const m = devMr ?? cur
+  const details = <Button key="mr-details" label={t(L, 'mr.details')} plain dimColor onPress={() => void $.ui.open({ ...panes(L).mr, focus: true }).catch(() => undefined)} />
+  if (busy !== '') return <Box key="mr" flexDirection="row" columnGap={1}><Text color={THEME.accent}>⇄ {busy}</Text></Box>
+  if (m !== null) {
+    return (
+      <Box key="mr" flexDirection="row" columnGap={1} alignItems="center" flexWrap="wrap">
+        <Text color={THEME.textMuted}>⇄</Text>
+        {withDots(ui, mrParts(ui, m, L), 'mr-b')}
+        {m.state === 'opened' && m.threads > 0 && <Button key="mr-claude" label={t(L, 'mr.toClaude')} plain dimColor onPress={() => void threadsToClaude($).catch(() => undefined)} />}
+        {details}
+      </Box>
+    )
+  }
+  if (draft !== null) {
+    return (
+      <Box key="mr" flexDirection="row" columnGap={1} alignItems="center">
+        <Text color={THEME.accent}>⇄ {t(L, 'mr.draftHead', { target: draft.target })}</Text>
+        {details}
+      </Box>
+    )
+  }
+  if (ahead === 0) return null
+  return (
+    <Box key="mr" flexDirection="row" columnGap={1} alignItems="center">
+      <Text color={THEME.textMuted}>⇄ {t(L, 'mr.ahead', { n: ahead })}</Text>
+      <Button key="mr-create" label={t(L, 'mr.create')} plain dimColor onPress={() => void draftMr($).catch(() => undefined)} />
+    </Box>
+  )
+}
+
+const mdText = (s: string): string => s.replace(/[[\]()<>]/g, ' ').trim()
+
+// Öffnet http(s)-Links im Standard-Browser des Systems: Windows über rundll32 (ohne cmd, damit „&“ in URLs heil bleibt),
+// sonst macOS `open`, sonst `xdg-open`.
+// Unter Windows mit vollem Pfad (der Prozess der App muss System32 nicht im PATH haben); explorer.exe meldet auch bei
+// Erfolg Exit 1. Schlägt alles fehl, sagt ein Toast warum, statt still nichts zu tun.
+async function openExternal($: EngineInterface, href: string) {
+  if (!/^https?:\/\//i.test(href)) return
+  const root = (await $.env.get('SystemRoot').catch(() => undefined)) ?? ''
+  const tries: { argv: string[]; ok: (code: number) => boolean }[] = root !== ''
+    ? [
+        { argv: [`${root}\\System32\\rundll32.exe`, 'url.dll,FileProtocolHandler', href], ok: c => c === 0 },
+        { argv: [`${root}\\explorer.exe`, href], ok: c => c === 0 || c === 1 },
+      ]
+    : [
+        { argv: ['open', href], ok: c => c === 0 },
+        { argv: ['xdg-open', href], ok: c => c === 0 },
+      ]
+  let why = ''
+  for (const x of tries) {
+    const r = await $.process.run(x.argv, { timeoutMs: 10_000 }).catch((err: unknown) => {
+      why = String(err).slice(0, 120)
+      return null
+    })
+    if (r !== null && x.ok(r.exitCode)) return
+    if (r !== null) why = `${x.argv[0]?.split(/[\\/]/).pop()}: exit ${r.exitCode} ${r.stderr.trim().slice(0, 80)}`
+  }
+  $.ui.toast(t((await read($, settings)).lang, 'mr.openFailed', { why }))
+}
+
+// Das MR-Panel: je Abschnitt eine Karte (Branch-MR mit Beschreibung, Threads und Aktionen, Entwurf, eigene MRs, Reviews).
+// `mock` füllt es im Dev-Mode.
+async function mrPaneBody($: EngineInterface, ui: Ui, L: UiLang, mock: { mr: Mr; mrMine: MrMine[] } | null, now: number): Promise<RenderElement[]> {
+  const { Box, Text, Button, Markdown } = ui
+  // Links im externen Standard-Browser, nicht im Browser der App.
+  const ext = (link: PressedLink) => void openExternal($, link.href).catch(() => undefined)
+  const section = (i: number, key: string, ...children: RenderChildren[]) => (
+    <Box key={key} flexDirection="column">
+      <Box height={1} />
+      <Box flexDirection="column" backgroundColor={cycleTint(i)} marginX={1} paddingX={1} paddingY={1}>
+        {children}
+      </Box>
+    </Box>
+  )
+  const host = mock !== null ? 'gitlab' : await read($, mrHost)
+  if (host === '') return [section(0, 'mr-s-none', <Text color={THEME.textMuted}>{t(L, 'mr.noGitlab')}</Text>)]
+  const m = mock !== null ? mock.mr : await read($, mrCur)
+  const mine = mock !== null ? mock.mrMine : await read($, mrMine)
+  const reviews = mock !== null ? [] : await read($, mrReview)
+  const [ahead, draft, busy, confirm] = await Promise.all([read($, mrAhead), read($, mrDraft), read($, mrBusy), read($, mrConfirm)])
+  const out: RenderElement[] = []
+  const branch: RenderChildren[] = [<Text key="mr-bh" bold>{t(L, 'mr.branchHead')}</Text>]
+  if (busy !== '') branch.push(<Text key="mr-busy" color={THEME.accent}>◌ {busy}</Text>)
+  if (m !== null) {
+    branch.push(<Markdown onLinkPress={ext} key="mr-link" text={`[${mrRef(m)} ${mdText(m.title)}](${m.url})`} />)
+    branch.push(<Text key="mr-br" color={THEME.textMuted}>{m.source} → {m.target}</Text>)
+    if (m.author !== '') {
+      const when = m.updatedAt === '' ? '–' : duration(Math.max(0, now - Date.parse(m.updatedAt)))
+      branch.push(<Text key="mr-meta" color={THEME.textMuted}>{t(L, 'mr.meta', { author: m.author, when, changes: m.changes || '?' })}</Text>)
+    }
+    branch.push(<Box key="mr-parts" flexDirection="row" columnGap={1} flexWrap="wrap">{withDots(ui, mrParts(ui, m, L), 'mr-p')}</Box>)
+    if (m.pipeline !== null && m.pipeline.url !== '') branch.push(<Markdown onLinkPress={ext} key="mr-pl" text={`[${t(L, 'mr.pipelineLink')}${m.pipeline.id > 0 ? ` #${m.pipeline.id}` : ''}](${m.pipeline.url})`} />)
+    if (m.approvals !== null && m.approvals.by.length > 0) branch.push(<Text key="mr-by" color={THEME.textMuted}>{t(L, 'mr.approvedBy', { who: m.approvals.by.join(', ') })}</Text>)
+    if (m.state === 'opened') {
+      branch.push(<Text key="mr-ms" color={THEME.textMuted}>{t(L, 'mr.status', { s: m.mergeStatus })}</Text>)
+      const asking = confirm === `merge-${m.iid}`
+      const mergeLabel = asking ? t(L, 'mr.confirm') : t(L, canMergeNow(m) || !canAutoMerge(m) ? 'mr.merge' : 'mr.mergeAuto')
+      branch.push(
+        <Box key="mr-actions" flexDirection="row" columnGap={2} flexWrap="wrap" marginTop={1}>
+          {m.threads > 0 && <Button key="mr-a-claude" label={t(L, 'mr.toClaude')} plain onPress={() => void threadsToClaude($).catch(() => undefined)} />}
+          <Button key="mr-a-rebase" label={t(L, 'mr.rebase')} plain onPress={() => void rebaseMr($).catch(() => undefined)} />
+          {(canMergeNow(m) || (isPipelineRunning(m) && canAutoMerge(m))) &&
+            (asking ? (
+              <Button key="mr-a-merge" label={mergeLabel} variant="primary" onPress={() => void mergeMr($).catch(() => undefined)} />
+            ) : (
+              <Button key="mr-a-merge" label={mergeLabel} plain onPress={() => void mergeMr($).catch(() => undefined)} />
+            ))}
+          {m.pipeline !== null && m.pipeline.status === 'failed' && m.pipeline.id > 0 && <Button key="mr-a-retry" label={t(L, 'mr.retry')} plain onPress={() => void retryPipeline($).catch(() => undefined)} />}
+          <Button key="mr-a-refresh" label={t(L, 'mr.refresh')} plain dimColor onPress={() => void refreshMr($, true).catch(() => undefined)} />
+        </Box>,
+      )
+    }
+  } else if (draft === null) {
+    branch.push(<Text key="mr-none" color={THEME.textMuted}>{t(L, 'mr.none')}</Text>)
+    if (ahead > 0) {
+      branch.push(
+        <Box key="mr-ahead" flexDirection="row" columnGap={2} alignItems="center">
+          <Text>{t(L, 'mr.ahead', { n: ahead })}</Text>
+          <Button key="mr-a-create" label={t(L, 'mr.create')} plain onPress={() => void draftMr($).catch(() => undefined)} />
+        </Box>,
+      )
+    }
+  }
+  out.push(section(0, 'mr-s-branch', ...branch))
+  if (m !== null && m.description !== '') out.push(section(1, 'mr-s-desc', <Markdown onLinkPress={ext} key="mr-desc" text={m.description} />))
+  if (m !== null && m.threadList.length > 0) {
+    out.push(
+      section(
+        2,
+        'mr-s-threads',
+        <Text key="mr-th-h" bold>{t(L, 'mr.threadsHead')}</Text>,
+        ...m.threadList.map((x, i) => (
+          <Box key={`mr-th-${i}`} flexDirection="column" marginTop={1}>
+            <Text color={THEME.accent}>{x.path}{x.line !== null ? `:${x.line}` : ''}{x.author !== '' ? <Text color={THEME.textMuted}> · @{x.author}</Text> : null}</Text>
+            <Text wrap="wrap">{x.body}</Text>
+          </Box>
+        )),
+      ),
+    )
+  }
+  if (draft !== null) {
+    out.push(
+      section(
+        3,
+        'mr-s-draft',
+        <Text key="mr-dh" color={THEME.textMuted}>{t(L, 'mr.draftHead', { target: draft.target })}</Text>,
+        <Text key="mr-dt" bold color={THEME.accent}>{draft.title}</Text>,
+        draft.description !== '' && <Markdown onLinkPress={ext} key="mr-dd" text={draft.description} />,
+        <Box key="mr-dactions" flexDirection="row" columnGap={2} flexWrap="wrap" marginTop={1}>
+          <Button key="mr-d-create" label={t(L, 'mr.submit')} variant="primary" onPress={() => void createMr($, false).catch(() => undefined)} />
+          <Button key="mr-d-draft" label={t(L, 'mr.submitDraft')} plain onPress={() => void createMr($, true).catch(() => undefined)} />
+          <Button key="mr-d-redraft" label={t(L, 'mr.redraft')} plain onPress={() => void draftMr($).catch(() => undefined)} />
+          <Button key="mr-d-discard" label={t(L, 'mr.discard')} plain dimColor onPress={() => void update($, mrDraft, () => null).catch(() => undefined)} />
+        </Box>,
+      ),
+    )
+  }
+  const list = (items: readonly MrMine[]) => items.map(x => `- [${mdText(x.ref)}](${x.url}) ${mdText(x.title)}${x.draft ? ' · Draft' : ''}`).join('\n')
+  if (mine.length > 0) out.push(section(4, 'mr-s-mine', <Text key="mr-mine-h" bold>{t(L, 'mr.mine')}</Text>, <Markdown onLinkPress={ext} key="mr-mine" text={list(mine)} />))
+  if (reviews.length > 0) out.push(section(5, 'mr-s-review', <Text key="mr-rev-h" bold>{t(L, 'mr.review')}</Text>, <Markdown onLinkPress={ext} key="mr-rev" text={list(reviews)} />))
+  return out
 }
 
 export const register: Register = (on, options) => {
@@ -684,8 +1186,12 @@ export const register: Register = (on, options) => {
     await $.command.register({ name: 'cockpit-zusammenfassung', description: t(lang, 'common.cmdSummary') })
     await $.command.register({ name: 'cockpit-einstellungen', description: t(lang, 'common.cmdSettings') })
     await $.command.register({ name: 'cockpit-demo', description: t(lang, 'common.cmdDemo') })
+    await $.command.register({ name: 'cockpit-dev', description: t(lang, 'common.cmdDev') })
+    await $.command.register({ name: 'cockpit-mr', description: t(lang, 'common.cmdMr') })
     await $.command.register({ name: 'cockpit-features', description: t(lang, 'common.cmdFeatures') })
     void $.clock.every(30_000, () => void Promise.all([update($, tick, n => n + 1), syncAgents($), watchCache($)]).catch(() => undefined))
+    void $.clock.every(15_000, () => void refreshMr($).catch(() => undefined))
+    void refreshMr($, true).catch(() => undefined)
     return next(e)
   })
 
@@ -701,7 +1207,7 @@ export const register: Register = (on, options) => {
     const so = splitOptions(s)
     if (Object.values(so).some(Boolean) && e.props.isSummary !== true) {
       const segs = splitMessage(e.props.text, so)
-      if (isStyled(segs)) el = segmentsView($, ui, segs, `om-s-${shortHash(e.props.text)}`, s.lang, s.skinInline ? await read($, touched) : [], await markerOf($), (await read($, repo))?.path ?? '')
+      if (isStyled(segs)) el = segmentsView($, ui, segs, `tv-s-${shortHash(e.props.text)}`, s.lang, s.skinInline ? await read($, touched) : [], await markerOf($), (await read($, repo))?.path ?? '')
     }
     return el
   })
@@ -716,9 +1222,9 @@ export const register: Register = (on, options) => {
     if (!s.skinPrompt || p.origin.kind !== 'composer' || p.from !== undefined || p.task !== undefined || p.text.trim() === '' || md.length > 100_000) return next(e)
     const { Box, Markdown } = $.ui.resolve(e)
     return (
-      <Box key={`om-p-${shortHash(p.text)}`} flexDirection="column" alignItems="flex-end">
+      <Box key={`tv-p-${shortHash(p.text)}`} flexDirection="column" alignItems="flex-end">
         <Box borderStyle="round" borderColor={THEME.accent} paddingX={1} flexShrink={1} flexDirection="row" columnGap={1} alignItems="flex-start">
-          {skinMark($.ui.resolve(e), await markerOf($), `om-pm-${shortHash(p.text)}`, 'style.prompt')}
+          {skinMark($.ui.resolve(e), await markerOf($), `tv-pm-${shortHash(p.text)}`, 'style.prompt')}
           <Markdown text={md} />
         </Box>
       </Box>
@@ -735,11 +1241,11 @@ export const register: Register = (on, options) => {
     const p = e.props
     const id = p.tool_use_id
     let el = theirs
-    const icon = s.skinIcons ? toolIcon(ui, p.tool, p.isErrored, `om-i-${id}`) : null
+    const icon = s.skinIcons ? toolIcon(ui, p.tool, p.isErrored, `tv-i-${id}`) : null
     if (icon !== null)
       el = (
-        <Box key={`om-ir-${id}`} flexDirection="row" columnGap={1} alignItems="flex-start">
-          {skinMark(ui, await markerOf($), `om-im-${id}`, 'style.icon')}
+        <Box key={`tv-ir-${id}`} flexDirection="row" columnGap={1} alignItems="flex-start">
+          {skinMark(ui, await markerOf($), `tv-im-${id}`, 'style.icon')}
           {icon}
           {theirs}
         </Box>
@@ -750,11 +1256,11 @@ export const register: Register = (on, options) => {
       const input = detailInput(p.tool, p.input)
       const output = open ? detailOutput(p.output) : null
       el = (
-        <Box key={`om-x-${id}`} flexDirection="column">
+        <Box key={`tv-x-${id}`} flexDirection="column">
           {el}
           <Box flexDirection="row" columnGap={1} alignItems="center">
-            {skinMark(ui, await markerOf($), `om-xm-${id}`, 'style.expand')}
-            <Button key={`om-xb-${id}`} label={t(s.lang, open ? 'skin.detailsOpen' : 'skin.details')} plain dimColor onPress={toggle} />
+            {skinMark(ui, await markerOf($), `tv-xm-${id}`, 'style.expand')}
+            <Button key={`tv-xb-${id}`} label={t(s.lang, open ? 'skin.detailsOpen' : 'skin.details')} plain dimColor onPress={toggle} />
           </Box>
           {open && (
             <Box flexDirection="column" borderStyle="round" borderColor={THEME.border} paddingX={1}>
@@ -769,7 +1275,7 @@ export const register: Register = (on, options) => {
     }
     if (!s.chatInfo) return el
     const status = t(s.lang, p.isErrored ? 'chat.statusError' : p.isRunning ? 'chat.statusRunning' : 'chat.statusDone')
-    return withInfo(ui, `om-u-${id}`, toolInfoLines(p.tool, p.input, status, s.lang), el, await read($, logo))
+    return withInfo(ui, `tv-u-${id}`, toolInfoLines(p.tool, p.input, status, s.lang), el, await read($, logo))
   })
 
   // Gruppe zusammengefasster Aufrufe: je Werkzeugart ein Symbol vor der Zählzeile (nur zugeklappt).
@@ -787,26 +1293,26 @@ export const register: Register = (on, options) => {
     const groups = [...byName].slice(0, 6)
     const base = calls[0]?.tool_use_id ?? shortHash(calls.map(c => c.tool).join(','))
     const icons = groups.flatMap(([name, cs]) => {
-      const icon = toolIcon(ui, cs[0]!.tool, cs.some(c => c.isErrored), `om-gi-${base}-${name}`)
-      return icon === null ? [] : [icon, <Text key={`om-gn-${base}-${name}`} dimColor>{name} ×{cs.length}</Text>]
+      const icon = toolIcon(ui, cs[0]!.tool, cs.some(c => c.isErrored), `tv-gi-${base}-${name}`)
+      return icon === null ? [] : [icon, <Text key={`tv-gn-${base}-${name}`} dimColor>{name} ×{cs.length}</Text>]
     })
     if (icons.length === 0) return theirs
     // Nur MCP-Aufrufe einzeln mit Server › Tool → Ziel; der Rest bleibt in der Zählzeile. Lange Listen gekürzt.
     const mcp = calls.filter(c => splitTool(c.tool).server !== null)
     const shown = mcp.slice(0, GROUP_CALLS_MAX)
     return (
-      <Box key={`om-gc-${base}`} flexDirection="column">
-        <Box key={`om-g-${base}`} flexDirection="row" columnGap={1} alignItems="center">
-          {skinMark(ui, await markerOf($), `om-gm-${base}`, 'style.group')}
+      <Box key={`tv-gc-${base}`} flexDirection="column">
+        <Box key={`tv-g-${base}`} flexDirection="row" columnGap={1} alignItems="center">
+          {skinMark(ui, await markerOf($), `tv-gm-${base}`, 'style.group')}
           {icons}
           {theirs}
         </Box>
         {shown.map((c, i) => (
-          <Text key={`om-gl-${base}-${i}`} wrap="truncate-end" dimColor={!c.isRunning}>
+          <Text key={`tv-gl-${base}-${i}`} wrap="truncate-end" dimColor={!c.isRunning}>
             {'  '}{toolLabel(ui, c.tool, toolTarget(c.input), c.isErrored)}
           </Text>
         ))}
-        {mcp.length > shown.length && <Text key={`om-gx-${base}`} dimColor>{'  '}+{mcp.length - shown.length}</Text>}
+        {mcp.length > shown.length && <Text key={`tv-gx-${base}`} dimColor>{'  '}+{mcp.length - shown.length}</Text>}
       </Box>
     )
   })
@@ -824,17 +1330,17 @@ export const register: Register = (on, options) => {
     let el = theirs
     const diff = s.skinDiff && !p.isErrored && Svg ? diffOf(p.output) : null
     if (diff !== null && Svg) {
-      el = marked(ui, await markerOf($), `om-dm-${id}`, <Svg key={`om-d-${id}`} source={diffCardSvg(diff, s.lang)} alt={t(s.lang, 'skin.diffAlt', { file: diff.file, add: diff.added, del: diff.removed })} />, 'style.diff', 'flex-start')
+      el = marked(ui, await markerOf($), `tv-dm-${id}`, <Svg key={`tv-d-${id}`} source={diffCardSvg(diff, s.lang)} alt={t(s.lang, 'skin.diffAlt', { file: diff.file, add: diff.added, del: diff.removed })} />, 'style.diff', 'flex-start')
     } else if (s.skinQuiet && p.isErrored) {
-      el = marked(ui, await markerOf($), `om-qm-${id}`, <Text key={`om-q-${id}`} color={THEME.error} wrap="truncate-end">✖ {firstErrorLine(errorText(p.output))}</Text>, 'style.error')
+      el = marked(ui, await markerOf($), `tv-qm-${id}`, <Text key={`tv-q-${id}`} color={THEME.error} wrap="truncate-end">✖ {firstErrorLine(errorText(p.output))}</Text>, 'style.error')
     } else if (s.skinQuiet && (QUIET_TOOLS.has(p.tool) || (isShell(p.tool) && (await read($, quietIds)).includes(id)))) {
       const line = quietLine(p.tool, p.output, s.lang)
-      if (line !== null) el = marked(ui, await markerOf($), `om-qm-${id}`, <Text key={`om-q-${id}`} color={THEME.textMuted} wrap="truncate-end">✓ {line}</Text>, 'style.quiet')
+      if (line !== null) el = marked(ui, await markerOf($), `tv-qm-${id}`, <Text key={`tv-q-${id}`} color={THEME.textMuted} wrap="truncate-end">✓ {line}</Text>, 'style.quiet')
     }
     if (!s.chatInfo) return el
     const size = typeof p.output === 'string' ? t(s.lang, 'chat.outputLines', { n: p.output.split('\n').length }) : ''
     const lines = [t(s.lang, 'chat.result', { tool: p.tool, state: t(s.lang, p.isErrored ? 'chat.withError' : 'chat.ok') }), size].filter(l => l !== '')
-    return withInfo(ui, `om-r-${id}`, lines, el, await read($, logo))
+    return withInfo(ui, `tv-r-${id}`, lines, el, await read($, logo))
   })
 
   // Arbeitszeile: Phase in der Farbrolle des Design-Systems, Schritt, Laufzeit und Zähler des Turns. Ersetzt die Zeile der
@@ -846,11 +1352,15 @@ export const register: Register = (on, options) => {
     const now = await $.clock.now()
     const { Box, Text } = $.ui.resolve(e)
     const mode = SPIN_MODE[e.props.mode]
+    // Atemübung: der Spinner nennt zusätzlich die Phase mit Restsekunden, im selben Takt wie der Kreis im Band.
+    const breathing = s.breath && tn !== null && tn.durationMs === undefined
+    const ph = breathing ? phaseAt(breathOf(s.breathKey), now - tn.startedAt) : null
     const step = spinnerText(e.props.word, e.props.message)
     return (
       <Box flexDirection="row" columnGap={1} alignItems="center">
-        {skinMark($.ui.resolve(e), await markerOf($), 'om-spin-m', 'style.spinner')}
+        {skinMark($.ui.resolve(e), await markerOf($), 'tv-spin-m', 'style.spinner')}
         <Text color={mode.color} bold>{spinner(await read($, frame))} {t(s.lang, mode.label)}</Text>
+        {ph !== null && <Text key="breath-phase" color={THEME.accent}>{t(s.lang, `breath.${ph.phase}`)} {Math.ceil(ph.leftMs / 1000)}s ·</Text>}
         {step !== '' && <Text color={THEME.textSecondary} wrap="truncate-end">{step}</Text>}
         {tn !== null && (
           <Text color={THEME.textMuted}>· {duration(now - tn.startedAt)} · {t(s.lang, 'chat.toolCalls', { n: tn.tools })}{tn.edits > 0 ? ` · ${t(s.lang, 'chat.edits', { n: tn.edits })}` : ''}</Text>
@@ -881,7 +1391,7 @@ export const register: Register = (on, options) => {
     if (!s.skinAsk) return theirs
     const ui = $.ui.resolve(e)
     const { Box, Text } = ui
-    const key = `om-ask-${shortHash(JSON.stringify(e.props.questions))}`
+    const key = `tv-ask-${shortHash(JSON.stringify(e.props.questions))}`
     return (
       <Box key={key} flexDirection="column">
         <Box flexDirection="row" columnGap={1} alignItems="center" borderStyle="round" borderColor={THEME.accent} paddingX={1}>
@@ -894,16 +1404,28 @@ export const register: Register = (on, options) => {
   })
 
   // Modus-Labels im Footer: dieselben Labels in Akzentfarbe; ohne Labels zeichnet die Engine.
+  // Fußzeile rechts unter dem Prompt: Modus-Labels (skinMode in Akzentfarbe, sonst gedimmt wie die Engine) und die Cockpit-Minibuttons.
   on('ui.render', { component: 'SessionMode' }, async ($, e, next) => {
-    if (e.surface !== 'desktop' || e.props.modes.length === 0) return next(e)
+    if (e.surface !== 'desktop') return next(e)
     const s = await read($, settings)
-    if (!s.skinMode) return next(e)
     const ui = $.ui.resolve(e)
-    const { Box, Text } = ui
+    const { Box, Text, Button } = ui
+    const L = s.lang
+    const P = panes(L)
+    const modes = e.props.modes
+    // MR des Branches als kleiner Statusknopf (wie der PR-Knopf der Desktop-App); im Dev-Mode der Mock-MR.
+    const footMr = s.mrFooter ? ((await read($, devMock)) ? mockData(await $.clock.now()).mr : await read($, mrCur)) : null
+    // Fußzeilen-Muster aus effortless: mehrere sehr kurze Knöpfe, Leerzeichen als Innenrand, Hover-Hintergrund wie die
+    // Pillen der App. Lange Labels sprengen die schmale Fußzeile, dann landet der Rest hinter „…“ (so war es mit
+    // „Tenvan · Details“). Svg zeichnet die Fußzeile nicht; Text-Kinder eines Buttons lehnt die Engine ab.
+    const mrFoot = footMr !== null ? ` ${mrBadge(footMr).replace(/ · /g, ' ')} ` : null
+    const pill = (scope: string) => ({ scope, backgroundColor: THEME.chip })
     return (
-      <Box key="om-mode" flexDirection="row" columnGap={1} alignItems="center">
-        {skinMark(ui, await markerOf($), 'om-mode-m', 'style.mode')}
-        <Text color={THEME.accent}>{e.props.modes.join(' & ')}</Text>
+      <Box key="tv-mode" flexDirection="row" gap={1} alignItems="center">
+        {modes.length > 0 && s.skinMode && skinMark(ui, await markerOf($), 'tv-mode-m', 'style.mode')}
+        {modes.length > 0 && (s.skinMode ? <Text color={THEME.accent}>{modes.join(' & ')}</Text> : <Text dimColor>{modes.join(' & ')}</Text>)}
+        {mrFoot !== null && <Button key="mr-foot" plain label={mrFoot} hover={pill('tv-mr')} onPress={() => void $.ui.open({ ...P.mr, focus: true })} />}
+        <Button key="details" plain dimColor label=" Tenvan " hover={pill('tv-details')} onPress={() => void $.ui.open({ ...P.main, focus: true })} />
       </Box>
     )
   })
@@ -913,11 +1435,11 @@ export const register: Register = (on, options) => {
     const theirs = await next(e)
     if (e.surface !== 'desktop' || !(await read($, settings)).skinHint) return theirs
     const ui = $.ui.resolve(e)
-    const m = skinMark(ui, await markerOf($), 'om-hint-m', 'style.hint')
+    const m = skinMark(ui, await markerOf($), 'tv-hint-m', 'style.hint')
     if (m === null) return theirs
     const { Box } = ui
     return (
-      <Box key="om-hint" flexDirection="row" columnGap={1} alignItems="center">
+      <Box key="tv-hint" flexDirection="row" columnGap={1} alignItems="center">
         {m}
         {theirs}
       </Box>
@@ -934,14 +1456,14 @@ export const register: Register = (on, options) => {
     const so = splitOptions(s)
     if (Object.values(so).some(Boolean) && !e.props.isErrored) {
       const segs = splitMessage(e.props.text, so)
-      if (isStyled(segs)) el = segmentsView($, ui, segs, `om-cs-${shortHash(e.props.command + e.props.text)}`, s.lang, s.skinInline ? await read($, touched) : [], await markerOf($), (await read($, repo))?.path ?? '')
+      if (isStyled(segs)) el = segmentsView($, ui, segs, `tv-cs-${shortHash(e.props.command + e.props.text)}`, s.lang, s.skinInline ? await read($, touched) : [], await markerOf($), (await read($, repo))?.path ?? '')
     }
     if (!s.chatInfo) return el
     const lines = [
       `/${e.props.command} · ${t(s.lang, e.props.isErrored ? 'chat.withError' : 'chat.ok')}`,
       t(s.lang, 'chat.outputLines', { n: e.props.text.split('\n').length }),
     ]
-    return withInfo(ui, `om-c-${shortHash(e.props.command + e.props.text)}`, lines, el, await read($, logo))
+    return withInfo(ui, `tv-c-${shortHash(e.props.command + e.props.text)}`, lines, el, await read($, logo))
   })
 
   // Ausgabe als Markdown im Chat: zeigt jedes skinbare Element.
@@ -949,6 +1471,15 @@ export const register: Register = (on, options) => {
     const s = await read($, settings)
     const md = await $.fs.read(`${$.plugin.root}/assets/skins-demo.${s.lang}.md`)
     return { text: md.replace('<!-- KOMPONENTEN -->', demoTable(s, s.lang)) }
+  })
+
+  // Dev-Mode: schaltet Mockdaten im Panel um und öffnet es.
+  on('command.run', { command: 'cockpit-dev' }, async $ => {
+    const L = (await read($, settings)).lang
+    const isOn = !(await read($, devMock))
+    await update($, devMock, () => isOn)
+    if (isOn) await $.ui.open({ ...panes(L).main, focus: true })
+    return { text: t(L, isOn ? 'dev.on' : 'dev.off') }
   })
 
   // Funktionsübersicht in Schlagworten, auch über den Knopf „Features“ im Band.
@@ -983,8 +1514,26 @@ export const register: Register = (on, options) => {
     return next(e)
   })
 
+  // Nach /compact misst die Engine erst mit dem nächsten Request neu: Kontext, Aufschlüsselung und Cache selbst nachlesen.
+  on('session.compact', async ($, e, next) => {
+    const done = await next(e)
+    if (e.agentId === undefined && e.trigger !== 'precompute' && done.skip === undefined) {
+      const reread = async () => {
+        const v = toUsage(await $.session.usage())
+        if (!same(await read($, usage), v)) await update($, usage, () => v)
+        await fetchBreakdown($, true)
+      }
+      await update($, cacheHit, () => null)
+      await reread().catch(() => undefined)
+      // Die Zählung danach kann einen Moment hinterherhängen: einmal kurz später nachlesen.
+      $.clock.after(1500, () => void reread().catch(() => undefined))
+    }
+    return done
+  })
+
   on('prompt.submit', async ($, e, next) => {
     if (e.origin?.kind === 'task-notification') await finishBackground($, e.text)
+    else await judgeEffort($, e.text)
     await startTurn($, e.text)
     return next(e)
   })
@@ -1007,7 +1556,8 @@ export const register: Register = (on, options) => {
       const list = pushCapped(await read($, marks), mark, 60)
       await update($, marks, () => list)
       const alert = detectLoop(list)
-      if (alert !== null) await update($, loopAlert, () => alert)
+      // Eine ignorierte Warnung (gleiche Art, gleiches Ziel) kommt in dieser Session nicht wieder.
+      if (alert !== null && !(await read($, loopIgnored)).includes(loopKey(alert))) await update($, loopAlert, () => alert)
     }
     await note($, 'main', `${toolText(e.tool)}${target === '' ? '' : ` → ${target}`}${isError ? ' ✗' : ''}`, { tool: e.tool, target, isError })
     await settleAsk($, e.tool_use_id, ran.deny !== undefined)
@@ -1059,9 +1609,11 @@ export const register: Register = (on, options) => {
   })
 
   on('turn.step', async function* ($, e, next) {
-    const result = yield* next(e)
+    // Auto-Effort nur für die Hauptschleife; Subagents behalten ihren Effort.
+    const want = e.agentId ? undefined : await effortFor($, e.effort)
+    const result = yield* next(want === undefined ? e : { ...e, effort: want })
     if (!e.agentId) {
-      const v = { ...(await read($, modelInfo)), model: e.model, effort: e.effort }
+      const v = { ...(await read($, modelInfo)), model: e.model, effort: want ?? e.effort }
       if (!same(await read($, modelInfo), v)) await update($, modelInfo, () => v)
     }
     if (!e.agentId && result.usage) {
@@ -1100,6 +1652,7 @@ export const register: Register = (on, options) => {
 
   on('turn.complete', async ($, e, next) => {
     const done = await next(e)
+    if (!e.agentId) void refreshMr($, true).catch(() => undefined)
     if (e.agentId) {
       const status = e.isAborted ? 'killed' : 'completed'
       const u = e.usage
@@ -1140,7 +1693,8 @@ export const register: Register = (on, options) => {
   on('ui.render', { component: 'AbovePrompt' }, async ($, e, next) => {
     const s = await read($, settings)
     const u = await read($, usage)
-    const next3 = e.props.isWorking || !s.steps ? [] : await read($, steps)
+    // Kappung auch hier: $.state überlebt Reloads und kann noch Listen älterer Versionen (fünf Schritte) halten.
+    const next3 = e.props.isWorking || !s.steps ? [] : (await read($, steps)).slice(0, 3)
     if (e.surface !== 'desktop' || e.props.hasSurvey || (u === null && next3.length === 0 && (await read($, loopAlert)) === null)) return next(e)
     await read($, tick)
     const now = await $.clock.now()
@@ -1154,12 +1708,11 @@ export const register: Register = (on, options) => {
     // (sonst baut die Oberfläche ihn neu auf).
     const tipNow = Math.floor(now / 60_000) * 60_000
     const L = s.lang
-    const P = panes(L)
     const ring = (percent: number, color: keyof typeof RING_HEX, tip = '') =>
       !Svg || !s.rings ? null : s.ctxTip && tip !== '' && !e.props.isWorking && running === 0 ? (
-        <Svg source={ringSvg(percent, RING_HEX[color], 28, tip)} alt={tip.split(NL)[0] ?? ''} width={28} height={28} isInteractive />
+        <Svg source={ringSvg(percent, RING_HEX[color], 20, tip)} alt={tip.split(NL)[0] ?? ''} width={20} height={20} isInteractive />
       ) : (
-        <Svg source={ringSvg(percent, RING_HEX[color])} alt={`${Math.round(percent)} %`} width={28} height={28} />
+        <Svg source={ringSvg(percent, RING_HEX[color], 20)} alt={`${Math.round(percent)} %`} width={20} height={20} />
       )
     const head = titleRow(ui, await read($, about), await read($, logo))
     const where = s.branch ? repoRow(ui, await read($, repo)) : null
@@ -1169,62 +1722,130 @@ export const register: Register = (on, options) => {
       const focus = compactFocus(await read($, lastPrompt), await read($, touched), await read($, steps), L)
       await $.prompt.fill({ text: focus === '' ? '/compact' : `/compact ${focus}` })
     }
+    // Gruppen ohne Rahmen, getrennt durch einen gedimmten Strich (kompakter als Karten).
     const card = (...children: RenderChildren[]) => (
-      <Box flexDirection="row" columnGap={3} alignItems="center" borderStyle="round" borderColor={THEME.border} paddingX={2}>
+      <Box flexDirection="row" columnGap={2} alignItems="center">
         {children}
       </Box>
     )
+    const sep = (key: string) => <Text key={key} color={THEME.border}>│</Text>
+    const mini = (key: string, label: string, onPress: () => void) => <Button key={key} label={label} plain dimColor onPress={onPress} />
+    const mi = await read($, modelInfo)
+    const pick = await read($, effortPick)
+    const lim = u === null ? null : limitAlert(u.limits)
+    const handoffMsg = await read($, handoffNote)
+    const stepCols = Math.max(20, Math.floor((e.props.bodyColumns - 4) / 3))
+    const effortMsg = await read($, effortNote)
+    const shift = await read($, effortShift)
+    // Auto-Effort-Status: nach einem Urteil „Haiku: alt ─→ neu“ als kurze Animation in Stufenfarben, danach „Haiku: neu“.
+    const effortView = () => {
+      const lvl = (v: string, bold = false) => <Text color={effortColor(v)} bold={bold}>{v}</Text>
+      if (shift === null || effortMsg !== t(L, 'effort.judged', { v: shift.to })) return <Text key="effort-note" color={THEME.textMuted}>{effortMsg}</Text>
+      const by = <Text color={THEME.textMuted}>{t(L, 'effort.by')} </Text>
+      if (shift.from === shift.to) return <Text key="effort-note">{by}{lvl(shift.to, true)}<Text color={THEME.textMuted}> {t(L, 'effort.same')}</Text></Text>
+      if (shift.step >= EFFORT_STEPS || shift.from === null) return <Text key="effort-note">{by}{lvl(shift.to, true)}</Text>
+      // Pfeil wächst in der ersten Hälfte, die neue Stufe erscheint ab der Mitte.
+      const half = EFFORT_STEPS / 2
+      const arrow = `${'─'.repeat(Math.min(shift.step, half))}→`
+      return (
+        <Text key="effort-note">
+          {by}
+          <Text color={effortColor(shift.from)} dimColor={shift.step >= half}>{shift.from}</Text>
+          <Text color={THEME.textMuted}> {arrow} </Text>
+          {shift.step >= half && lvl(shift.to, true)}
+        </Text>
+      )
+    }
+    // Sparmodus: Punkt in Statusfarbe (an grün, aus rot) mit Erklärung als Tooltip, daneben der Knopf mit dem Zustand im Label.
+    // Interaktiv (Tooltip) nur im Leerlauf, wie die Ringe: interaktive Svg flackern beim Neuzeichnen.
+    const saveToggle = () => {
+      const tip = t(L, 'alert.saveTip', { state: t(L, s.saveMode ? 'alert.saveState.on' : 'alert.saveState.off') })
+      const color = s.saveMode ? THEME.success : THEME.error
+      const idle = !e.props.isWorking && running === 0
+      return (
+        <Box key="save-mode-box" flexDirection="row" columnGap={1} alignItems="center">
+          {Svg && (idle ? (
+            <Svg key="save-dot" source={ringSvg(100, color, 12, tip)} alt={tip.split(NL)[0] ?? ''} width={12} height={12} isInteractive />
+          ) : (
+            <Svg key="save-dot" source={ringSvg(100, color, 12)} alt={tip.split(NL)[0] ?? ''} width={12} height={12} />
+          ))}
+          {mini('save-mode', t(L, s.saveMode ? 'alert.saveOn' : 'alert.saveOff'), () => void setSettings($, { saveMode: !s.saveMode }).catch(() => undefined))}
+        </Box>
+      )
+    }
+    const toggleAuto = () => void update($, effortBase, () => null).then(() => setSettings($, { autoEffort: !s.autoEffort })).catch(() => undefined)
 
     return (
       <Box flexDirection="column">
-        <Box flexDirection="row" justifyContent="space-between">
-          {head}
-          {/* Legende und Features-Knopf zusammen rechts, sonst verteilt space-between sie über die Zeile. */}
+        <Box flexDirection="row" justifyContent="space-between" alignItems="center">
           <Box flexDirection="row" columnGap={2} alignItems="center">
-          {s.legend && (Svg ? (
-            // Kurze Legende als Bild; die ganze Legende steht im Tooltip. Interaktiv nur im Leerlauf (wie die Ringe), sonst Bild.
-            <Svg
-              key="leg"
-              source={legendSvg(LEGEND.map(l => ({ color: THEME[l.color], label: t(L, l.label) })), legendTip(L), THEME.textMuted)}
-              alt={LEGEND.map(l => t(L, l.label)).join(' · ')}
-              height={16}
-              isInteractive={!e.props.isWorking && running === 0}
-            />
-          ) : (
-            legend(ui, L)
-          ))}
+            {head}
+            {where}
+            {/* MR-Status in der Kopfzeile hinter dem Branch, mit etwas Abstand. */}
+            {s.mrBand && <Box key="mr-head" marginLeft={2}>{await mrBandRow($, ui, L, (await read($, devMock)) ? mockData(now).mr : null)}</Box>}
+          </Box>
+          {/* Features rechts; Details steht in der Fußzeile unter dem Prompt, die Legende im Tooltip der Limit-Ringe. */}
+          <Box flexDirection="row" columnGap={1} alignItems="center">
+          {/* Die Legende steht im Tooltip der Limit-Ringe; ohne Svg (keine Tooltips) bleibt sie als Text hier. */}
+          {s.legend && !Svg && legend(ui, L)}
+          {s.cardCatchUp && mini('summary', t(L, 'common.summary'), () => void $.ui.open({ ...panes(L).summary, focus: true }).catch(() => undefined))}
           {/* $.command.run aus dem Knopf kam im Desktop nicht an: Befehl ins Eingabefeld, Enter führt ihn aus. */}
-          <Button key="features" label={t(L, 'common.features')} plain onPress={() => void $.prompt.fill({ text: '/cockpit-features' }).catch(() => undefined)} />
+          {mini('features', t(L, 'common.features'), () => void $.prompt.fill({ text: '/cockpit-features' }).catch(() => undefined))}
           </Box>
         </Box>
-        <Box flexDirection="row" marginBottom={1}>
-          {where}
-        </Box>
         {u !== null && metrics(u, await read($, lastTurnAt), await read($, cacheHit), await read($, breakdown))}
+        {s.breath && Svg && (await (async () => {
+          const tn = await read($, turn)
+          const labels = { in: t(L, 'breath.in'), sip: t(L, 'breath.sip'), hold: t(L, 'breath.hold'), out: t(L, 'breath.out') }
+          const name = t(L, `breath.name.${s.breathKey}`)
+          // Während eines Turns zeichnet das Band ständig neu und startete SMIL dabei von vorn: dann Einzelbilder im 250-ms-Takt
+          // (Atom `frame`), synchron zur Arbeitszeile. Nur im Leerlauf des Dev-Modes animiert SMIL selbst.
+          const working = e.props.isWorking && tn !== null && tn.durationMs === undefined
+          if (!working && !(await read($, devMock))) return null
+          if (working) await read($, frame)
+          const img = working
+            ? <Svg key="breath" source={breathFrameSvg(breathOf(s.breathKey), now - (tn?.startedAt ?? now), labels, name, THEME.accent, THEME.textMuted)} alt={t(L, 'settings.breath')} height={56} />
+            : <Svg key="breath" source={breathSvg(breathOf(s.breathKey), labels, name, THEME.accent, THEME.textMuted)} alt={t(L, 'settings.breath')} height={56} />
+          // Durchschalten: nächste Übung der Reihe nach, gilt sofort und bleibt gespeichert.
+          const idx = BREATHS.findIndex(b => b.key === s.breathKey)
+          const nextKey = (BREATHS[(idx + 1) % BREATHS.length] ?? BREATHS[0])!.key
+          return (
+            <Box key="breath-row" flexDirection="row" columnGap={1} alignItems="center" justifyContent="center">
+              {img}
+              <Button key="breath-next" label={t(L, 'breath.next')} plain dimColor onPress={() => void setSettings($, { breathKey: nextKey }).catch(() => undefined)} />
+            </Box>
+          )
+        })())}
         {alert !== null && (
-          <Box key="loop" flexDirection="row" columnGap={2} alignItems="center" borderStyle="round" borderColor={THEME.warning} paddingX={1}>
+          <Box key="loop" flexDirection="row" columnGap={2} alignItems="center">
             <Text color={THEME.warning} wrap="truncate-end">⚠ {loopText}</Text>
             <Button key="loop-fix" label={t(L, 'loop.action')} plain onPress={() => void $.prompt.fill({ text: t(L, 'loop.prompt', { what: loopText }) }).catch(() => undefined)} />
+            <Button key="loop-ignore" label={t(L, 'loop.ignore')} plain dimColor onPress={() => void update($, loopIgnored, l => [...l, loopKey(alert)]).then(() => update($, loopAlert, () => null)).catch(() => undefined)} />
           </Box>
         )}
         {next3.length > 0 && (
-          // Je Vorschlag eine Zeile: „1: Label“ (Taste 1–5, auch im leeren Eingabefeld) und die Begründung gedimmt daneben.
+          // Drei Spalten gleicher Breite: oben „1: Label“ (Taste 1–3, auch im leeren Eingabefeld), darunter die Begründung,
+          // so stehen die Begründungen in einer gemeinsamen zweiten Reihe.
           <Box flexDirection="column">
             <Text dimColor>{t(L, 'band.next')}</Text>
+            <Box flexDirection="row" columnGap={2}>
             {next3.map((s, i) => (
-              <Box key={`step-row-${i}`} flexDirection="row" columnGap={2}>
+              <Box key={`step-col-${i}`} flexDirection="column" width={stepCols}>
+              <Box key={`step-row-${i}`} flexDirection="row" columnGap={1}>
                 {s.fromClaude && <Text key={`step-cc-${i}`} backgroundColor={THEME.chip}> CC </Text>}
                 <Button
                   key={`step-${i}`}
-                  label={clip(s.label, Math.max(24, Math.floor(e.props.bodyColumns * 0.4)))}
+                  label={clip(s.label, Math.max(12, stepCols - (s.fromClaude ? 8 : 4)))}
                   hotkey={String(i + 1)}
                   plain
                   // Nur ins Eingabefeld: Enter sendet ihn als Eingabe der Person, damit andere Mods (effortless) ihn wie getippt bewerten; startTurn läuft dann im eigenen prompt.submit-Hook.
                   onPress={() => void $.prompt.fill({ text: s.prompt }).catch(() => undefined)}
                 />
+              </Box>
                 {s.why !== undefined && <Text color={THEME.textMuted} wrap="truncate-end">{s.why}</Text>}
               </Box>
             ))}
+            </Box>
           </Box>
         )}
       </Box>
@@ -1234,26 +1855,47 @@ export const register: Register = (on, options) => {
       const ttl = u.limits.length > 0 ? 3600_000 : 300_000
       const cache = cacheLeftMs(lastAt, u.limits.length > 0, now)
       const isFull = (u.contextPercent ?? 0) >= COMPACT_AT
+      const ctxTone = contextColor(u.contextPercent ?? 0)
+      // Ohne bekannten letzten Request ist der Cache unbekannt, nicht kalt.
+      const pays = lastAt !== null && handoffPays(u.contextPercent, cache)
+      const level = mi?.effort ?? pick
+      const levelText = level === undefined || level === null ? '' : `${String(level).charAt(0).toUpperCase()}${String(level).slice(1)} · `
       return (
-        <Box flexDirection="column">
         <Box flexDirection="row" flexWrap="wrap" columnGap={2} alignItems="center">
-          {card(
-            <Box key="ctx" flexDirection="row" columnGap={1} alignItems="center">
-              {ring(u.contextPercent ?? 0, contextColor(u.contextPercent ?? 0), contextTip(u, bd, L))}
-              <Text color={isFull ? THEME.warning : undefined}>{t(L, 'common.context')} {Svg && s.rings ? '' : `${bar(u.contextPercent ?? 0, 8)} `}{Math.round(u.contextPercent ?? 0)}%</Text>
-            </Box>,
-            // Schreibt /compact mit dem, was erhalten bleiben muss, ins Eingabefeld; Enter startet es (anpassbar vor dem Senden).
-            <Button key="compact" label={t(L, 'band.compact')} {...(isFull ? { variant: 'primary' as const } : { plain: true })} onPress={() => void fillCompact().catch(() => undefined)} />,
-          )}
+          {/* Reihenfolge: Limits (Usage), Effort, Kontext, Cache/Kosten. */}
           {s.limits && u.limits.length > 0 &&
             card(
               ...u.limits.map(l => (
                 <Box key={`lim-${l.kind}`} flexDirection="row" columnGap={1} alignItems="center">
-                  {ring(l.percentUsed, limitColor(l, now), limitTip(l, tipNow, L))}
+                  {ring(l.percentUsed, limitColor(l, now), s.legend ? `${limitTip(l, tipNow, L)}${NL}${NL}${legendTip(L)}` : limitTip(l, tipNow, L))}
                   <Text color={THEME[limitColor(l, now)]}>{LIMIT_LABEL[l.kind] ?? l.kind} {Math.round(l.percentUsed)}%</Text>
                 </Box>
               )),
+              // Ab 80 % und mit Auto-Effort: Sparmodus direkt an der Limit-Anzeige statt in einer eigenen Warnzeile.
+              lim !== null && s.autoEffort && saveToggle(),
             )}
+          {s.limits && u.limits.length > 0 && sep('sep-lim')}
+          {mi !== null && card(
+            <Text key="effort" color={effortColor(level)}>◆ {levelText}{modelLabel(mi.model)}</Text>,
+            mini('auto', t(L, s.autoEffort ? 'effort.autoOn' : 'effort.auto'), toggleAuto),
+            s.autoEffort && effortMsg !== '' && effortView(),
+          )}
+          {mi !== null && sep('sep-effort')}
+          {card(
+            <Box key="ctx" flexDirection="row" columnGap={1} alignItems="center">
+              {ring(u.contextPercent ?? 0, ctxTone, contextTip(u, bd, L))}
+              <Text color={THEME[ctxTone]} bold={isFull}>{t(L, 'common.context')} {Svg && s.rings ? '' : `${bar(u.contextPercent ?? 0, 8)} `}{Math.round(u.contextPercent ?? 0)}%</Text>
+            </Box>,
+            // Wenn ein frischer Chat günstiger wäre, wird Handoff die Hauptaktion; Kompaktieren bleibt daneben.
+            pays && <Button key="handoff" label={t(L, 'handoff.action')} variant="primary" onPress={() => void writeHandoff($).catch(() => undefined)} />,
+            // Schreibt /compact mit dem, was erhalten bleiben muss, ins Eingabefeld; Enter startet es (anpassbar vor dem Senden).
+            // Button nimmt (Engine 2.1.295) keine farbigen Text-Kinder: die Ampel trägt der getönte Grund, der Hover die Schriftfarbe.
+            <Box key="compact-pill" backgroundColor={TINT[ctxTone]} paddingX={1}>
+              <Button key="compact" label={t(L, 'band.compact')} plain hover={{ color: THEME[ctxTone] }} onPress={() => void fillCompact().catch(() => undefined)} />
+            </Box>,
+            handoffMsg !== '' && <Text key="handoff-note" color={THEME.textMuted}>{handoffMsg}</Text>,
+          )}
+          {s.cache && sep('sep-cache')}
           {s.cache && card(
             <Box key="cache" flexDirection="row" columnGap={1} alignItems="center">
               {ring((100 * cache) / ttl, 'accent', cacheTip(cacheLeftMs(lastAt, u.limits.length > 0, tipNow), ttl, hit, lastAt, tipNow, L))}
@@ -1265,12 +1907,6 @@ export const register: Register = (on, options) => {
             u.usd !== undefined && <Text>{usd(u.usd)}</Text>,
             running > 0 && <Text color={THEME.accent}>{t(L, 'band.agents', { n: running })}</Text>,
           )}
-          <Button key="details" label={t(L, 'common.details')} plain onPress={() => void $.ui.open({ ...P.main, focus: true })} />
-          {s.cardCatchUp && <Button key="summary" label={t(L, 'common.summary')} plain onPress={() => void $.ui.open({ ...P.summary, focus: true })} />}
-          <Button key="settings" label={t(L, 'common.settings')} plain onPress={() => void $.ui.open({ ...P.settings, focus: true })} />
-          {/* $.command.run aus einem Knopf kam im Desktop nicht an: Befehl ins Eingabefeld, Enter führt ihn aus. */}
-          <Button key="demo" label={t(L, 'common.demo')} plain onPress={() => void $.prompt.fill({ text: '/cockpit-demo' }).catch(() => undefined)} />
-        </Box>
         </Box>
       )
     }
@@ -1280,7 +1916,9 @@ export const register: Register = (on, options) => {
   on('ui.render', { component: 'Pane', requestId: 'tenvan-cc-summary' }, async ($, e, next) => {
     if (e.surface !== 'desktop') return next(e)
     const s = await read($, settings)
-    const cu = await read($, catchUp)
+    const realCu = await read($, catchUp)
+    // Dev-Mode: Mock-Zusammenfassung, damit die Optik ohne Haiku-Lauf sichtbar ist.
+    const cu = (await read($, devMock)) ? { ...realCu, summary: mockData(await $.clock.now()).summary } : realCu
     const L = s.lang
     const ui = $.ui.resolve(e)
     const { Box, Text, Button } = ui
@@ -1295,19 +1933,49 @@ export const register: Register = (on, options) => {
         </Box>
         <Text dimColor>{t(L, 'summary.status', { auto: t(L, s.catchUp ? 'common.on' : 'common.off'), lang: t(L, L === 'de' ? 'common.langDe' : 'common.langEn') })}</Text>
         {cu.summary === '' && <Text dimColor>{t(L, 'summary.empty')}</Text>}
-        {summaryLines(cu.summary).map(l =>
-          l.kind === 'heading' ? (
-            <Box paddingTop={1}>
-              <Text bold color={THEME.accent}>{l.text}</Text>
-            </Box>
-          ) : l.kind === 'bullet' ? (
-            <Text>• {l.text}</Text>
-          ) : (
-            <Text>{l.text}</Text>
-          ),
-        )}
+        {/* Je Überschrift eine Karte im Wechsel der Kartentöne; Aufzählungen mit hängendem Einzug, Absätze mit Luft dazwischen. */}
+        {summarySections(summaryLines(cu.summary)).map((sec, i) => (
+          <Box key={`cu-sec-${i}`} flexDirection="column" rowGap={1} backgroundColor={cycleTint(i)} marginX={1} paddingX={2} paddingY={1}>
+            {sec.heading !== undefined && <Text bold color={THEME.accent}>{sec.heading}</Text>}
+            {sec.lines.map((l, j) =>
+              l.kind === 'bullet' ? (
+                <Box key={`cu-l-${i}-${j}`} flexDirection="row">
+                  <Box width={2} flexShrink={0}>
+                    <Text color={THEME.accent}>•</Text>
+                  </Box>
+                  <Text wrap="wrap">{l.text}</Text>
+                </Box>
+              ) : (
+                <Text key={`cu-l-${i}-${j}`} wrap="wrap">{l.text}</Text>
+              ),
+            )}
+          </Box>
+        ))}
       </Box>
     )
+  })
+
+  // Merge-Request-Panel (GitLab): ausführlich, eigenes Fenster; im Dev-Mode mit Mock-MR.
+  on('ui.render', { component: 'Pane', requestId: 'tenvan-cc-mr' }, async ($, e, next) => {
+    if (e.surface !== 'desktop') return next(e)
+    const s = await read($, settings)
+    const L = s.lang
+    const ui = $.ui.resolve(e)
+    const now = await $.clock.now()
+    const m = (await read($, devMock)) ? mockData(now) : null
+    return (
+      <ui.Box flexDirection="column">
+        {await paneHead($, ui, L)}
+        {...(await mrPaneBody($, ui, L, m === null ? null : { mr: m.mr, mrMine: m.mrMine }, now))}
+      </ui.Box>
+    )
+  })
+
+  on('command.run', { command: 'cockpit-mr' }, async $ => {
+    const L = (await read($, settings)).lang
+    await $.ui.open({ ...panes(L).mr, focus: true })
+    void refreshMr($, true).catch(() => undefined)
+    return {}
   })
 
   // Einstellungsseite: jedes Detail von Band, Panel und Chat ein- oder ausblenden; gilt sofort und für alle Sessions.
@@ -1318,9 +1986,13 @@ export const register: Register = (on, options) => {
     const ui = $.ui.resolve(e)
     const { Box, Text, Button } = ui
     const groups = [...new Set(SETTING_DEFS.map(d => d.group))]
-    const card = (...children: RenderChildren[]) => (
-      <Box flexDirection="column" borderStyle="round" borderColor={THEME.border} paddingX={1}>
-        {children}
+    // Karten wie im Hauptpanel: Leerzeile davor, Grund im Wechsel der Kartentöne.
+    const card = (i: number, ...children: RenderChildren[]) => (
+      <Box flexDirection="column">
+        <Box height={1} />
+        <Box flexDirection="column" backgroundColor={cycleTint(i)} marginX={1} paddingX={1} paddingY={1}>
+          {children}
+        </Box>
       </Box>
     )
     const keysOf = (group: SettingGroup): SettingKey[] => SETTING_DEFS.filter(d => d.group === group).map(d => d.key)
@@ -1339,16 +2011,40 @@ export const register: Register = (on, options) => {
         {await paneHead($, ui, L)}
         <Text dimColor>{t(L, 'settings.intro')}</Text>
         {card(
+          0,
           <Text bold>{t(L, 'settings.langTitle')}</Text>,
-          <Box flexDirection="row" columnGap={1} alignItems="center">
-            {langButton('de', t(L, 'common.langDe'))}
-            {langButton('en', t(L, 'common.langEn'))}
-          </Box>,
           <Text dimColor wrap="wrap">{t(L, 'settings.langHint')}</Text>,
+          // Je Sprache eine Zeile im selben Zwei-Spalten-Raster wie die Schalter darunter.
+          ...([['de', t(L, 'common.langDe')], ['en', t(L, 'common.langEn')]] as const).map(([lang, name]) => (
+            <Box key={`lang-row-${lang}`} flexDirection="row" columnGap={1} marginTop={1}>
+              <Box width={SWITCH_COLS} flexShrink={0}>
+                {langButton(lang, L === lang ? t(L, 'settings.on') : t(L, 'settings.off'))}
+              </Box>
+              <Text bold>{name}</Text>
+            </Box>
+          )),
+        )}
+        {card(
+          1,
+          <Text bold>{t(L, 'settings.breathTitle')}</Text>,
+          <Text dimColor wrap="wrap">{t(L, 'settings.breathHint')}</Text>,
+          ...BREATHS.map(b => (
+            <Box key={`breath-row-${b.key}`} flexDirection="row" columnGap={1} marginTop={1}>
+              <Box width={SWITCH_COLS} flexShrink={0}>
+                {s.breathKey === b.key ? (
+                  <Button key={`breath-${b.key}`} label={`● ${t(L, 'settings.on')}`} variant="primary" onPress={() => undefined} />
+                ) : (
+                  <Button key={`breath-${b.key}`} label={`○ ${t(L, 'settings.off')}`} dimColor onPress={() => void setSettings($, { breathKey: b.key }).catch(() => undefined)} />
+                )}
+              </Box>
+              <Text bold>{t(L, `breath.name.${b.key}`)}</Text>
+            </Box>
+          )),
         )}
         {groups.map((group, i) => {
           const keys = keysOf(group)
           return card(
+            i + 2,
             <Box flexDirection="row" flexWrap="wrap" justifyContent="space-between" alignItems="center" columnGap={2}>
               <Text bold>{t(L, `settings.group.${group}`)}</Text>
               <Box flexDirection="row" flexWrap="wrap" columnGap={2} alignItems="center">
@@ -1361,17 +2057,17 @@ export const register: Register = (on, options) => {
               const flip = () => void setSettings($, { [k]: !s[k] } as Partial<ModSettings>).catch(() => undefined)
               // Der Desktop zeichnet keine Text-Kinder eines Buttons, nur das Label: der Schalterzustand steht deshalb im Label.
               return (
-                <Box key={`row-${k}`} flexDirection="column">
-                  <Box flexDirection="row" columnGap={1} alignItems="center">
+                // Zwei Spalten: Schalter in fester Breite links, Label und Hinweis bündig rechts daneben.
+                <Box key={`row-${k}`} flexDirection="row" columnGap={1} marginTop={1}>
+                  <Box width={SWITCH_COLS} flexShrink={0}>
                     {s[k] ? (
                       <Button key={`set-${k}`} label={`● ${t(L, 'settings.on')}`} variant="primary" onPress={flip} />
                     ) : (
                       <Button key={`set-${k}`} label={`○ ${t(L, 'settings.off')}`} dimColor onPress={flip} />
                     )}
-                    <Text bold wrap="truncate-end">{settingLabel(k, L)}</Text>
                   </Box>
-                  {/* Hinweis in eigener Zeile, eingerückt: bleibt auch in schmalen Panels sichtbar */}
-                  <Box paddingLeft={2}>
+                  <Box flexDirection="column" flexShrink={1}>
+                    <Text bold wrap="truncate-end">{settingLabel(k, L)}</Text>
                     <Text dimColor wrap="wrap">{settingHint(k, L)}</Text>
                   </Box>
                 </Box>
@@ -1391,13 +2087,25 @@ export const register: Register = (on, options) => {
     await read($, tick)
     const now = await $.clock.now()
     const s = await read($, settings)
-    const bdPanel = await read($, breakdown)
+    const realBd = await read($, breakdown)
     const bdNote = await read($, breakdownNote)
-    const [mark, place] = await Promise.all([read($, logo), read($, repo)])
-    const [u, tn, g, list, entries, last, hit, info] = await Promise.all([
-      read($, usage), read($, turn), read($, gate).then(gateOf), read($, agents), read($, log), read($, lastTurnAt), read($, cacheHit), read($, about),
+    const [mark, realPlace] = await Promise.all([read($, logo), read($, repo)])
+    const [realU, realTn, realGate, realList, realEntries, realLast, realHit, info] = await Promise.all([
+      read($, usage), read($, turn), read($, gate), read($, agents), read($, log), read($, lastTurnAt), read($, cacheHit), read($, about),
     ])
+    // Dev-Mode: alle Panel-Werte aus mockData, die echten Atome bleiben unberührt.
+    const dev = await read($, devMock)
+    const m = dev ? mockData(now) : null
+    const place = m?.repo ?? realPlace
+    const u = m?.usage ?? realU
+    const tn = m?.turn ?? realTn
+    const g = gateOf(m?.gate ?? realGate)
+    const list = m?.agents ?? realList
+    const entries = m?.log ?? realEntries
+    const last = m?.lastTurnAt ?? realLast
+    const hit = m?.cacheHit ?? realHit
     const cache = u ? cacheLeftMs(last, u.limits.length > 0, now) : 0
+    const bdPanel = m?.breakdown ?? realBd
     const L = s.lang
     const P = panes(L)
     const ui = $.ui.resolve(e)
@@ -1412,8 +2120,8 @@ export const register: Register = (on, options) => {
         <Button key={`card-close-${key}`} label="✕" plain onPress={() => void setSettings($, { [key]: false } as Partial<ModSettings>).catch(() => undefined)} />
       </Box>
     )
-    // Halbe Zeile zwischen den Karten: Box rechnet nur in ganzen Zeilen, Svg in CSS-Pixeln.
-    const gap = () => (Svg ? <Svg source={'<svg xmlns="http://www.w3.org/2000/svg" width="1" height="8"/>'} alt="" height={8} /> : <Box height={1} />)
+    // Eine leere Zeile zwischen den Karten: mit gedimmtem Grund braucht es eine sichtbare Lücke, Box rechnet nur in ganzen Zeilen.
+    const gap = () => <Box height={1} />
     // Jede Karte trägt ihren Abstand nach oben selbst: abgeschaltete Karten hinterlassen keine doppelte Lücke.
     const spaced = (inner: RenderElement) => (
       <Box flexDirection="column" flexGrow={1}>
@@ -1422,7 +2130,7 @@ export const register: Register = (on, options) => {
       </Box>
     )
     const card = (key: SettingKey, name: string, ...children: RenderChildren[]) => spaced(
-      <Box flexDirection="column" flexGrow={1} borderStyle="round" borderColor={THEME.border} paddingX={1}>
+      <Box flexDirection="column" flexGrow={1} backgroundColor={CARD_TINT[key] ?? TINT.neutral} marginX={1} paddingX={1} paddingY={1}>
         <Box flexDirection="row" justifyContent="space-between">
           <Text bold>{name}</Text>
           {headButtons(key)}
@@ -1446,7 +2154,7 @@ export const register: Register = (on, options) => {
         )
       })
     }
-    const tasks = await read($, bgTasks)
+    const tasks = m?.bgTasks ?? (await read($, bgTasks))
     // Kontext-Diät: nie aufgerufene MCP-Server mit ihren Schema-Tokens; der Knopf schreibt /mcp ins Eingabefeld zum Abschalten.
     const dietRows = () =>
       diet.length === 0
@@ -1458,26 +2166,32 @@ export const register: Register = (on, options) => {
             </Box>,
             ...diet.slice(0, 6).map(r => <Text key={`diet-${r.server}`} dimColor wrap="truncate-end">  {t(L, 'diet.row', { server: r.server, tokens: tokens(r.tokens), n: r.tools })}</Text>),
           ]
-    const diet = mcpDiet(await read($, mcpTools), await read($, usedMcp))
-    const turns = await read($, turnLog)
+    const diet = m ? mcpDiet(m.mcpTools, m.usedMcp) : mcpDiet(await read($, mcpTools), await read($, usedMcp))
+    const turns = m?.turnLog ?? (await read($, turnLog))
     const brakedIds = await read($, braked)
     const brake = async (a: Agent) => {
       await update($, braked, ids => (ids.includes(a.id) ? ids : [...ids, a.id]))
       await note($, 'agent', t(L, 'log.braked', { name: a.description }))
     }
     const working = s.animation && tn !== null && tn.durationMs === undefined
+    const taskState = (x: BgTask) => {
+      const bad = x.status === 'failed' || x.status === 'killed'
+      const d = duration(x.status === 'running' || x.durationMs === undefined ? now - x.since : x.durationMs)
+      return x.status === 'running' ? `● ${t(L, 'agents.running', { d })}` : `${bad ? '✗' : '✓'} ${x.status} ${d}`
+    }
 
     return (
       <Box flexDirection="column">
-        <Box flexDirection="row" justifyContent="space-between" alignItems="center">
-          {await paneHead($, ui, L)}
+        {await paneHead($, ui, L, (
+          // Zusammenfassung und Einstellungen direkt unter der Modellzeile.
           <Box flexDirection="row" columnGap={2}>
             {s.cardCatchUp && <Button key="open-summary" label={t(L, 'common.summary')} plain onPress={() => void $.ui.open({ ...P.summary, focus: true })} />}
             <Button key="open-settings" label={t(L, 'common.settings')} plain onPress={() => void $.ui.open({ ...P.settings, focus: true })} />
+            {dev && <Text backgroundColor={TINT.warning} color={THEME.warning} bold> {t(L, 'dev.badge')} </Text>}
           </Box>
-        </Box>
+        ))}
         {working && tn !== null && spaced(
-          <Box flexDirection="column" borderStyle="round" borderColor={THEME.accent} paddingX={1}>
+          <Box flexDirection="column" backgroundColor={TINT.accent} marginX={1} paddingX={1} paddingY={1}>
             <Text bold color={THEME.accent}>● {t(L, 'panel.working', { d: duration(now - tn.startedAt), tools: tn.tools, edits: tn.edits })}</Text>
             {entries.length > 0 && (
               <Text wrap="truncate-end">
@@ -1497,6 +2211,20 @@ export const register: Register = (on, options) => {
                 <Text wrap="truncate-end">{value}</Text>
               </Box>
             )),
+            // Kurzer MR-Status unter Upstream (nur GitLab): Knopf öffnet das MR-Panel, ohne MR „n Commits ohne MR“.
+            await (async () => {
+              const wm = m?.mr ?? (await read($, mrCur))
+              const ahead = m !== null ? 0 : await read($, mrAhead)
+              if (wm === null && ahead === 0) return null
+              const label = wm !== null ? ` ${mrBadge(wm).replace(/ · /g, ' ')} ` : ` ${t(L, 'mr.ahead', { n: ahead })} `
+              return (
+                <Box key="wd-mr" flexDirection="row" columnGap={1}>
+                  <Box width={12}><Text dimColor>{t(L, 'mr.short')}</Text></Box>
+                  <Button key="wd-mr-open" label={label} plain onPress={() => void $.ui.open({ ...P.mr, focus: true }).catch(() => undefined)} />
+                  {wm !== null && wm.title !== '' && <Text color={THEME.textMuted} wrap="truncate-end">{wm.title}</Text>}
+                </Box>
+              )
+            })(),
           )}
         {s.cardContext && bdPanel === null && card('cardContext', t(L, 'panel.context'), <Text dimColor>{bdNote !== '' ? bdNote : t(L, 'panel.contextPending')}</Text>)}
         {s.cardContext && bdPanel !== null &&
@@ -1521,7 +2249,7 @@ export const register: Register = (on, options) => {
           t(L, 'panel.overview'),
           u === null && <Text dimColor>{t(L, 'panel.noMeasure')}</Text>,
           u !== null && (
-            <Text color={(u.contextPercent ?? 0) >= COMPACT_AT ? THEME.warning : undefined}>
+            <Text color={THEME[contextColor(u.contextPercent ?? 0)]}>
               {t(L, 'common.context')} {bar(u.contextPercent ?? 0)} {Math.round(u.contextPercent ?? 0)}% ({tokens(u.contextTokens ?? 0)} / {tokens(u.contextWindow)})
             </Text>
           ),
@@ -1560,7 +2288,7 @@ export const register: Register = (on, options) => {
             turns.some(isWasteful) && <Text color={THEME.warning}>{t(L, 'turn.waste', { n: turns.filter(isWasteful).length })}</Text>,
           )}
           {s.cardGate && spaced(
-            <Box flexDirection="column" flexGrow={1} borderStyle="round" borderColor={THEME[g.deny > 0 ? 'error' : g.ask > 0 ? 'warning' : 'success']} paddingX={1}>
+            <Box flexDirection="column" flexGrow={1} backgroundColor={TINT[g.deny > 0 ? 'error' : g.ask > 0 ? 'warning' : 'success']} marginX={1} paddingX={1} paddingY={1}>
               <Box flexDirection="row" justifyContent="space-between">
                 <Text bold color={THEME[g.deny > 0 ? 'error' : g.ask > 0 ? 'warning' : 'success']}>{t(L, 'gate.title')}</Text>
                 <Box flexDirection="row" columnGap={1}>
@@ -1607,9 +2335,9 @@ export const register: Register = (on, options) => {
               const isKilled = a.status === 'killed' || a.status === 'failed'
               const isBraked = brakedIds.includes(a.id)
               const heavy = live && isAgentHeavy(a, now)
-              const tone = heavy || (live && isBraked) ? THEME.warning : live ? THEME.accent : isKilled ? THEME.error : THEME.success
+              const tone: Tone = heavy || (live && isBraked) ? 'warning' : live ? 'accent' : isKilled ? 'error' : 'success'
               return (
-                <Box key={`ag-${a.id}`} flexDirection="column" width={42} borderStyle="round" borderColor={tone} paddingX={1}>
+                <Box key={`ag-${a.id}`} flexDirection="column" width={42} backgroundColor={TINT[tone]} marginX={1} paddingX={1} paddingY={1}>
                   <Text wrap="truncate-end">
                     <Text backgroundColor={THEME.chip}> {i + 1} </Text> <Text bold>{a.description}</Text>
                   </Text>
@@ -1635,21 +2363,36 @@ export const register: Register = (on, options) => {
           'cardTasks',
           t(L, 'tasks.title', { live: tasks.filter(x => x.status === 'running').length, all: tasks.length }),
           tasks.length === 0 && <Text dimColor>{t(L, 'tasks.none')}</Text>,
-          ...tasks.map((x, i) => {
-            const live = x.status === 'running'
-            const bad = x.status === 'failed' || x.status === 'killed'
-            const tone = live ? THEME.accent : bad ? THEME.error : THEME.success
-            const d = duration(live || x.durationMs === undefined ? now - x.since : x.durationMs)
-            return (
-              <Box key={`bg-${x.id}`} flexDirection="column">
-                <Text wrap="truncate-end">
-                  <Text backgroundColor={THEME.chip}> {i + 1} </Text> <Text bold>{x.description}</Text> <Text color={tone}>{live ? `● ${d}` : `${bad ? '✗' : '✓'} ${x.status} ${d}`}</Text>
-                </Text>
-                {x.command !== undefined && x.command !== x.description && <Text color={THEME.textMuted} wrap="truncate-end">  $ {x.command}</Text>}
-                {x.summary !== undefined && x.summary !== '' && <Text color={THEME.textMuted} wrap="truncate-end">  {x.summary}</Text>}
-              </Box>
-            )
-          }),
+          // Wie bei den Subagents: ältere als kompakte Liste, die letzten beiden als Kachel mit Grund nach Status.
+          ...tasks.slice(0, -2).map((x, i) => (
+            <Text key={`bgo-${x.id}`} wrap="truncate-end" dimColor={x.status !== 'running'}>
+              <Text backgroundColor={THEME.chip}> {i + 1} </Text> {x.description} · {taskState(x)}
+            </Text>
+          )),
+          <Box flexDirection="row" flexWrap="wrap" columnGap={1}>
+            {tasks.slice(-2).map((x, k) => {
+              const i = Math.max(0, tasks.length - 2) + k
+              const live = x.status === 'running'
+              const bad = x.status === 'failed' || x.status === 'killed'
+              const tone: Tone = live ? 'accent' : bad ? 'error' : 'success'
+              // Befehl und Ergebnis zusammen höchstens TASK_LINES Zeilen; der Rest als „+n“.
+              const body = [
+                ...(x.command !== undefined && x.command !== x.description ? x.command.split(/\r?\n/).map((l, j) => `${j === 0 ? '$ ' : '  '}${l}`) : []),
+                ...(x.summary !== undefined && x.summary !== '' ? x.summary.split(/\r?\n/) : []),
+              ]
+              const shown = body.slice(0, body.length > TASK_LINES ? TASK_LINES - 1 : TASK_LINES)
+              return (
+                <Box key={`bg-${x.id}`} flexDirection="column" width={42} backgroundColor={TINT[tone]} marginX={1} paddingX={1} paddingY={1}>
+                  <Text wrap="truncate-end">
+                    <Text backgroundColor={THEME.chip}> {i + 1} </Text> <Text bold>{x.description}</Text>
+                  </Text>
+                  {shown.map((l, j) => <Text key={`bgl-${x.id}-${j}`} color={THEME.textMuted} wrap="truncate-end">{l}</Text>)}
+                  {body.length > shown.length && <Text dimColor>{t(L, 'tasks.more', { n: body.length - shown.length })}</Text>}
+                  <Text color={THEME[tone]}>{taskState(x)}</Text>
+                </Box>
+              )
+            })}
+          </Box>,
           tasks.length > 0 && <Text dimColor>{t(L, 'agents.timeline')}</Text>,
           ...timeline(tasks),
         )}

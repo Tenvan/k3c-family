@@ -7,7 +7,12 @@ Band above the prompt
 • Cache – time left and hit rate; when it's cold, how much gets read again.
 • Cost – what the session has cost so far.
 • Loop warning – fires when the same call keeps failing or one file gets edited over and over.
-• Follow-up steps – up to five suggestions after each answer, keys 1–5.
+• Effort – level and model; “Auto” lets Haiku pick Low/Medium/High per prompt.
+• Handoff – with a large, cold context: write and copy HANDOFF.md instead of paying to carry on.
+• Save mode – from 80 % on 5h or 7d a button at the limits caps auto effort at Low.
+• Breathing exercise – while Claude works, a circle breathes in the band; the working line counts the phase (exercise in the settings).
+• Merge requests – on GitLab, GitHub and Bitbucket repos the branch MR/PR in the band (pipeline, approvals, threads), notices on changes, and in the panel rebase, merge, retry pipeline, comments to Claude and “Create MR” with a draft.
+• Follow-up steps – three suggestions side by side after each answer, keys 1–3.
 
 Panel on the right (/cockpit)
 • Agent working – run time, tool calls and edits while a turn runs.

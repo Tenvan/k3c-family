@@ -14,6 +14,8 @@ Claude-Desktop-Mod (Claude Code Function Hooks, Early Access, Engine ≥ 2.1.295
 | --- | --- | --- |
 | `hooks/register.tsx` | alle Hooks, Band, Panel | Einstiegspunkt laut `hooks/hooks.json` |
 | `hooks/core.ts` | reine Funktionen ohne `$` | neue Rechen-/Formatlogik hierher, damit sie direkt testbar ist |
+| `hooks/mr.ts`, `hooks/forge.ts` | MR/PR: Übersetzung der Plattform-Antworten (rein) bzw. Aufrufe von glab, gh, Bitbucket-REST (über `io`, ohne `$`) | neue Plattform: Konverter in `mr.ts`, Aufrufe in `forge.ts` |
+| `hooks/mock.ts` | Mockdaten für den Dev-Mode (`/cockpit-dev`) | neue Panel-Werte hier mitpflegen |
 | `types/index.d.ts` | `$.state`-Vertrag `PluginState['tenvan-cc']` | jedes neue Atom hier deklarieren, sonst schlägt `validate` fehl |
 | `hooks/register.test.ts` | Tests (`claude-code/testing`) | pro Akzeptanzkriterium ein Test |
 | `.claude-plugin/plugin.json` | Manifest, `userConfig` | Version synchron mit `.claude-plugin/marketplace.json` im Repo-Root |
@@ -49,7 +51,7 @@ Die Tests dieses Ordners laufen **nur** mit `claude plugin test tools/cockpit`, 
 - Ein Stub für `claude-code/testing` würde `mock` und die Host-Stubs nachbauen und belegte dann nur den Stub, nicht das Mod. Deshalb gibt es keinen.
 - Das Mod hat Host-Grenzen und eine eigene Toolchain (`claude plugin validate`, `claude plugin test`, eigener Typecheck, siehe oben). Die Budgets des Spiels (400 Zeilen je Datei, 60 je Funktion, Komplexität 15) gelten hier nicht.
 
-Deshalb steht `tools/cockpit` in `ignorePatterns` von `.oxlintrc.json` und im `test.exclude` von `vite.config.ts` (B-415); `task check` prüft das Mod nicht. Vor jedem Abschluss gelten die Befehle unter „Prüfen“. Stand 2026-10-13: `claude plugin test tools/cockpit` 108 von 108 grün (6 Dateien).
+Deshalb steht `tools/cockpit` in `ignorePatterns` von `.oxlintrc.json` und im `test.exclude` von `vite.config.ts` (B-415); `task check` prüft das Mod nicht. Vor jedem Abschluss gelten die Befehle unter „Prüfen“. Stand 2026-10-13: `claude plugin test tools/cockpit` 127 von 127 grün (9 Dateien).
 
 ## Fallstricke der Mod-API (alle schon einmal aufgetreten)
 
@@ -59,8 +61,33 @@ Deshalb steht `tools/cockpit` in `ignorePatterns` von `.oxlintrc.json` und im `t
 - **Surface-Gate zuerst**: jeder `ui.render`-Hook beginnt mit `if (e.surface !== 'desktop') return next(e)`.
 - **Hintergrundarbeit** (z. B. Model-Call nach `turn.complete`) mit `void …catch(() => undefined)` starten. Sonst entsteht nach Session-Ende oder im Test eine unbehandelte Rejection. Ergebnisse gegen Veralten absichern (siehe `asked === lastPrompt`).
 - **Modul-Variablen** (`lastPrompt`) überleben keinen Reload. Was über einen Reload bleiben muss, gehört in ein Atom.
+- **`$` verlässt nie das Modul**: auch nicht an importierte Funktionen (`forgeFind($, …)` lädt nicht). Andere Module bekommen ein `io`-Objekt aus `$.process.run`/`$.http.fetch` (siehe `forgeIo`).
+- **`Button` ohne Kinder-Elemente**: Engine 2.1.295 nimmt nur `label` oder ein String-Kind, keinen farbigen `Text` (entgegen den Typen). Farbe über eine getönte Box drumherum.
 - **Elemente** auf Desktop: `Box`, `Text`, `Button`, `Input`, `Select`, `Svg` aus `$.ui.resolve(e)`. Farben über Theme-Keys (`success`, `warning`, `error`, `claude`).
 - **Erster Klick in ein Panel ohne Fokus verpufft** (Verhalten des Hosts, kein Fehler des Mods): Der Klick holt erst den Fokus. Dabei setzt der Host `isFocused` neu, zeichnet das Panel neu und tauscht das native Button-Element unter dem Zeiger aus; das Mausereignis trifft ein anderes Element und löst `onPress` nicht aus. Erst der zweite Klick wirkt. Der Baum, den der Mod zeichnet, ist mit und ohne Fokus identisch (gleiche `key`s, gleiche Buttons), im Mod lässt sich das deshalb nicht beheben. `$.ui.open({ …, focus: true })` setzt den Fokus nur, wenn das Eingabefeld leer ist und die Tastatur im Spiel ist, nicht aus einem Button in Band oder Panel heraus. Wirksam sind nur `hotkey`s an den Buttons (sie greifen, sobald das Panel den Fokus hat). Beim Prüfen: erst ins Panel klicken, dann die Buttons testen.
+
+## Muster aus ray-amjad/claude-code-mods
+
+Referenz-Mods (MIT): `github.com/ray-amjad/claude-code-mods` (Stand `56a266b`). Nur als Vorlage, kein Code übernehmen. Vor neuen Features dort nach einem ähnlichen Mod suchen.
+
+| Muster | Quelle | Für das Cockpit |
+| --- | --- | --- |
+| Echte Cache-TTL aus dem Transcript: neueste Hauptthread-Zeile mit `usage.cache_creation.ephemeral_1h_input_tokens` bzw. `_5m_` (Pfad aus `classic.Stop`/`classic.SessionStart` → `transcript_path`) | `cache-clock` | statt Schätzung „1 h mit Subscription“ |
+| Resume: `classic.SessionStart` liefert `seconds_since_last_response`, damit läuft der Cache-Countdown nach `--resume` richtig weiter | `cache-clock` | Cache-Wächter |
+| Ein Command kann keinen Prompt absetzen (er wartet auf seinen eigenen Turn): `$.clock.after(50, () => $.prompt.submit({ text, asUser: true }))` | `prompt-bouncer` | Alternative zu `prompt.fill`, wenn Knopf direkt senden soll |
+| Band einzeilig halten: Teile nach Wichtigkeit, von hinten weglassen, bis `bodyColumns` reicht | `cache-clock` | Band bei schmalem Fenster |
+| Pane unaufgefordert nur ab 144 Spalten platziert; `isPlaced` prüfen, sonst Toast mit dem Command. `focus` nur `true` oder weglassen; `closeOnEscape`, `rows` beim gewollten Öffnen | `decision-tree`, `diagram-pane` | `$.ui.open` |
+| Hook-Laufzeit max. 10 s, Zeit in Mod-API-Aufrufen zählt nicht mit | `secret-box` | lange Waits nur über API-Aufrufe |
+| Schwere Auswertung über einen Fork der Session (voller Kontext, keine Tools, Antwort als JSON). Vorher ein billiges Gate (Regex, dann Haiku), JSON aus Prosa über die äußersten Klammern holen | `diagram-pane`, `decision-tree`, `dream-pass` | Zusammenfassung, Handoff |
+| Fail open: fällt Haiku aus oder antwortet Unsinn, nichts blockieren | `prompt-bouncer` | Auto-Effort, Gates |
+| Pro Session im `$.store` ablegen, nur die N neuesten Sessions behalten | `diagram-pane` | Store-Hygiene |
+| Reine Logik ohne `$` in eigene Datei, damit sie unter plain Node testbar ist | `vercel-deploy-status`, `secret-box` | `core.ts`, `skins.ts`, `mock.ts` |
+| Fußzeile (`SessionMode`) trägt mehrere Knöpfe, wenn die Labels kurz sind (` ⏻ `, ` ⚙︎ `): Leerzeichen als Innenrand, `gap={1}`, `hover={{ scope, backgroundColor }}` als Pille; lange Labels drängen den Rest hinter „…“ | `HeyCubit/effortless` | MR-Knopf und „Tenvan“ unter dem Prompt |
+| Fehler im eigenen Hook nie die Session blockieren lassen: `.catch(($, e, next) => (next.called ? undefined : next(e)))` am `on(...)` | `cache-clock` | `session.start`, `prompt.submit` |
+
+## Dev-Mode (Mockdaten)
+
+`/cockpit-dev` schaltet das Panel auf Mockdaten aus `hooks/mock.ts` um (Kennzeichen „DEV · Mockdaten“), erneut aufgerufen zurück. Gilt nur für die Session, die echten Atome bleiben unberührt. Neue Panel-Werte gleich in `mockData` ergänzen, damit jeder Zustand ohne echte Session sichtbar ist.
 
 ## Tests schreiben
 
@@ -87,5 +114,5 @@ Deshalb steht `tools/cockpit` in `ignorePatterns` von `.oxlintrc.json` und im `t
 ## Konventionen
 
 - Bewusste Vereinfachungen mit `// ponytail: <Grenze>, <Ausbaupfad>` markieren.
-- Commits über Skill `orga-core:commit`, Scope `mods`.
+- Commits nach Repo-Konvention (`docs/arbeitsweise.md`), Scope `tools`.
 - Kein Auto-Open, keine Toasts, keine Statuszeile ohne Rücksprache.

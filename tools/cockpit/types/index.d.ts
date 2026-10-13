@@ -77,6 +77,34 @@ export type Repo = {
 
 export type UiLang = 'de' | 'en'
 
+// Merge Request des aktuellen Branches auf GitLab (über glab); `threads`: offene, lösbare Review-Diskussionen.
+// Plattform des Remotes; Zustände und Pipeline-Status von GitHub und Bitbucket sind auf GitLabs Vokabular abgebildet.
+export type Forge = 'gitlab' | 'github' | 'bitbucket'
+export type Mr = {
+  forge: Forge
+  iid: number
+  title: string
+  state: string
+  draft: boolean
+  url: string
+  source: string
+  target: string
+  mergeStatus: string
+  conflicts: boolean
+  notes: number
+  threads: number
+  pipeline: { id: number; status: string; url: string } | null
+  approvals: { required: number; left: number; by: string[] } | null
+  // Für das MR-Pane: Beschreibung, Autor, letzte Änderung, Umfang und die offenen Threads (höchstens 20)
+  description: string
+  author: string
+  updatedAt: string
+  changes: string
+  threadList: { path: string; line: number | null; author: string; body: string }[]
+}
+export type MrMine = { ref: string; title: string; url: string; draft: boolean }
+export type MrDraft = { title: string; description: string; source: string; target: string }
+
 // Einstellungen: jedes Detail von Band, Panel und Chat lässt sich ein- und ausblenden.
 export type ModSettings = {
   rings: boolean
@@ -95,6 +123,7 @@ export type ModSettings = {
   cardGate: boolean
   cardAgents: boolean
   cardTasks: boolean
+  mrPane: boolean
   cardLog: boolean
   chatInfo: boolean
   chatLines: boolean
@@ -115,6 +144,15 @@ export type ModSettings = {
   skinHint: boolean
   skinMarkIcon: boolean
   skinMarkLabel: boolean
+  // Auto-Effort und Sparmodus (Idee: effortless)
+  autoEffort: boolean
+  saveMode: boolean
+  // Atemübung im Band, solange Claude arbeitet (Idee: Mindful-Claude)
+  breath: boolean
+  mrBand: boolean
+  mrNotify: boolean
+  mrFooter: boolean
+  breathKey: 'hrv' | 'sigh' | 'box' | '478'
   lang: UiLang
 }
 
@@ -175,6 +213,29 @@ declare module 'claude-code' {
       turnLog: TurnRecord[]
       // agentIds gebremster Subagents
       braked: string[]
+      // Auto-Effort: Haikus Stufe für den laufenden Prompt; Effort der Session, wie zuletzt gesehen (Wechsel = manuell)
+      effortPick: 'low' | 'medium' | 'high' | null
+      effortBase: string | number | null
+      // Ergebnis des letzten Handoffs (Pfad oder Fehler), leer ohne
+      handoffNote: string
+      // Auto-Effort-Status im Band: prüft / Haiku: Stufe / behalten
+      effortNote: string
+      // Merge Requests (GitLab): Host, MR des Branches, eigene offene MRs, Commits ohne MR, Entwurf, laufende Aktion, Rückfrage
+      mrHost: string
+      mrCur: Mr | null
+      mrMine: MrMine[]
+      // offene MRs, in denen du als Reviewer eingetragen bist
+      mrReview: MrMine[]
+      mrAhead: number
+      mrDraft: MrDraft | null
+      mrBusy: string
+      mrConfirm: string
+      // ignorierte Schleifen-Warnungen (`kind:target`), gelten bis zum Ende der Session
+      loopIgnored: string[]
+      // Wechsel der Auto-Effort-Stufe für die kurze Animation im Band; `step` zählt die Bilder hoch
+      effortShift: { from: string | null; to: string; step: number } | null
+      // Dev-Mode: Panel zeigt Mockdaten statt der Session-Werte (nur Session)
+      devMock: boolean
     }
   }
 }
