@@ -1,0 +1,72 @@
+# W11 · REG, SRV, CLI · Bauplätze im Protokoll, Abstand der Treppen, Ausbilden und Tauschen, Figuren
+
+- **Status:** geplant
+- **Projekt:** WRT
+- **Domäne:** REG, SRV, CLI
+- **Reife:** Entwurf
+- **Tickets:** B-409, B-208, B-410, B-408, B-412
+- **Start-Commit:** – (wird beim Aktivieren gesetzt: `git rev-parse --short origin/develop`)
+- **Spec:** Entwurf
+- **Revision:** 1
+- **Freigabe:** –
+
+## Ausgangslage
+
+Aus der Sichtung von W6 (2026-10-11): Bauplätze stehen im Hub zu eng, besonders die Treppen (B-409, `data/hub.json › sites`, je 4 Units Abstand); Plätze „aller Stufen“ erscheinen schon im Hub einer niedrigen Stufe (B-408, Ursache Server oder Client offen); das Protokoll trägt gestreute Bauplätze, Platz- und Hub-Stufe nicht zum Client (B-208); `actions` enthält Ausbilden und Tauschen nicht (B-410, `docs/protocol.md`); Adern, Plantage und Lager haben keine Figuren (B-412).
+
+## Ziel
+
+Der Client zeigt nur Bauplätze, die zur Hub- und Stufen-Lage passen, in lesbarem Abstand, dazu Ausbilden, Tauschen und die Wirtschafts-Figuren. Am Ende sichtbar: Hub am TV ohne überlappende Preisschilder, Aktionen-Overlay mit Ausbilden und Tauschen, Adern, Plantage und Lager als Figuren; von 🧑 abgenommen.
+
+## Beteiligte und Zielgruppen
+
+Spielende am TV; Agent in REG, SRV und CLI nacheinander; 🧑 nimmt am Gerät ab.
+
+## Anforderungen
+
+B-409, B-208, B-410, B-408, B-412 › Anforderungen (Specs noch Entwurf).
+
+## Nicht-Ziele
+
+Neue Gebäude oder Wirtschaftsregeln; Gesperrt-Gründe und Rohstoff-Typen (W8: B-207, B-209, B-188); Ausrüstung und Spielstand (W7, SV1).
+
+## Regeln und Einschränkungen
+
+Reihenfolge REG → SRV → CLI. Mindestmaß der Zahlziele ≥ 4 Units (Glossar › Zahlziel) bleibt. Protokoll-Änderungen (W11.2, W11.3) mit Beispielen unter `testdata/protocol/`, Version nach Absprache. Der Client rechnet nichts. Der Spielstand bleibt kompatibel oder wird migriert (Golden, F2).
+
+## Beispiele
+
+Hub-Stufe 1 → Plätze mit `hubLevel` > 1 und `fromDepth` > Stufe werden nicht als baubar gezeigt. Treppe hoch und runter stehen mindestens 8 Units auseinander.
+
+## Ausnahme- und Fehlerfälle
+
+Alter Server ohne neue Felder → Client zeigt Plätze wie bisher mit Warnung 🤒. Unbekannte Aktion in `actions` → ignorieren, Log.
+
+## Akzeptanzkriterien
+
+- **AC-01** Die Bauplätze im Hub haben bei den Treppen mindestens 8 Units Abstand, `task balance` und Golden bleiben grün (B-409).
+- **AC-02** Das Protokoll trägt Bauplätze mit Platz- und Hub-Stufe; nicht erreichbare Plätze erscheinen nicht (B-208, B-408).
+- **AC-03** Der Server liefert Ausbilden und Tauschen in `actions` (B-410).
+- **AC-04** Der Client zeigt Ausbilden und Tauschen im Aktionen-Overlay sowie Adern, Plantage und Lager als Figuren; von 🧑 am TV abgenommen (B-408, B-410, B-412).
+
+## Offene Fragen
+
+🧑: Reihenfolge W8 und W11 (W8 braucht die Plätze aus B-208 für die Gesperrt-Gründe), Abstand der Treppen (8 Units?), B-408 (filtert der Server oder der Client?), Version des Protokolls. SV1 nennt B-208 als Nicht-Ziel; Verweis anpassen.
+
+## Sessions
+
+| Nr. | Datei | Typ | Agent | Status |
+|---|---|---|---|---|
+| W11.1 | `W11.1-treppen-abstand.md` | Umsetzung | autonom | offen |
+| W11.2 | `W11.2-bauplaetze-im-zustand.md` | Umsetzung | autonom | offen |
+| W11.3 | `W11.3-aktionen-ausbilden-tauschen.md` | Umsetzung | autonom | offen |
+| W11.4 | `W11.4-bauplaetze-figuren-client.md` | Umsetzung | autonom | offen |
+| W11.5 | `W11.5-review.md` | Review | autonom | offen |
+
+Bei `Reife: Entwurf` genügen Stichpunkte mit den Kriterien in Klammern statt Session-Dateien. Vor dem Aktivieren
+wird jede Session als eigene Datei nach `docs/vorlagen/session.md` geschrieben.
+
+## Abnahme
+
+Wird von der Review-Session (Doku-Sprint: letzte Session) ausgefüllt, höchstens fünf Zeilen: Datum, Kriterien
+(Verweis auf Session-Ergebnisse), behobene Befunde, neue Tickets. Bis dahin `–`.

@@ -16,6 +16,7 @@ In Abarbeitungs-Reihenfolge; der erste nicht erledigte Sprint ist der nächste. 
 |---|---|---|
 | TR3 | Bot-Eingabe im Spiel einbinden | erledigt |
 | LT1 | Lasttest-Werkzeug | erledigt |
+| TR4 | Bot-Eingabe ohne verlorene Drücke, Beobachter ohne Platz im Raum | geplant |
 
 ## Nicht-Ziele
 

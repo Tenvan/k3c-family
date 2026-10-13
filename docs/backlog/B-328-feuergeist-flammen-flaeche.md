@@ -4,8 +4,8 @@
 - **Typ:** Frage
 - **Prio:** niedrig
 - **Umgebung:** offline
-- **Status:** offen
-- **Sprint:** –
+- **Status:** eingeplant
+- **Sprint:** KB1
 - **Projekt:** KMP
 - **Erstellt:** 2026-10-06
 - **Spec:** Entwurf

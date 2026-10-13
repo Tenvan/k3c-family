@@ -4,8 +4,8 @@
 - **Typ:** Idee
 - **Prio:** niedrig
 - **Umgebung:** live
-- **Status:** offen
-- **Sprint:** –
+- **Status:** eingeplant
+- **Sprint:** TR4
 - **Projekt:** TST
 - **Erstellt:** 2026-10-07
 - **Spec:** Entwurf
