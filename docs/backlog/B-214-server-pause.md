@@ -4,8 +4,8 @@
 - **Typ:** Idee
 - **Prio:** mittel
 - **Umgebung:** offline
-- **Status:** offen
-- **Sprint:** –
+- **Status:** eingeplant
+- **Sprint:** BD3
 - **Projekt:** BED
 - **Erstellt:** 2026-10-04
 - **Spec:** Entwurf
@@ -53,7 +53,7 @@ Gerät pausiert und verliert die Verbindung → Frist laut § 3; die Pause endet
 
 ## Offene Fragen
 
-Protokollform (eigene Nachricht oder Feld in `input`): 🧑.
+Geklärt (🧑 2026-10-13, Chat): Pause und Fortsetzen sind eine eigene Geräte-Nachricht, kein Feld in `input`.
 
 ## Notizen
 

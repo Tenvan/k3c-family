@@ -4,7 +4,7 @@
 - **Projekt:** SND
 - **Domäne:** CLI
 - **Reife:** bereit
-- **Tickets:** B-167
+- **Tickets:** B-167, B-011
 - **Start-Commit:** –
 - **Spec:** freigegeben
 - **Revision:** 1
