@@ -23,7 +23,7 @@ func readFixture(t *testing.T, version int) []byte {
 	return raw
 }
 
-// B-137/AC-03: Version 1 (Campaign), 2, 3, 4 und 5 (Insel) laden; Seed, Spieler und Hubs stimmen.
+// B-137/AC-03: Version 1 (Campaign), 2 bis 7 (Insel) laden; Seed, Spieler und Hubs stimmen.
 func TestAlterSpielstandLaedt(t *testing.T) {
 	cases := []struct {
 		version, stages int // v1: die Tiefen 0..2 kommen als Stufen dazu (islandFromV1)
@@ -36,6 +36,7 @@ func TestAlterSpielstandLaedt(t *testing.T) {
 		{4, 2, []int{23, 8}, []int{0, 1}, Stock{Stone: 12}},
 		{5, 2, []int{23, 8}, []int{0, 1}, Stock{Stone: 12}},
 		{6, 2, []int{23, 8}, []int{0, 1}, Stock{Stone: 12}},
+		{7, 2, []int{23, 8}, []int{0, 1}, Stock{Stone: 12}},
 	}
 	for _, c := range cases {
 		s, err := ParseIslandSave(readFixture(t, c.version))

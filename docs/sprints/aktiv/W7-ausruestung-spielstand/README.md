@@ -68,7 +68,7 @@ Spielstand aus neuerer Version → Fehler 🚫 mit Version, kein stiller Verlust
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
 | W7.1 | `W7.1-ausruestung-wegtragen.md` | Umsetzung | autonom | fertig |
-| W7.2 | `W7.2-spielstand-wirtschaft.md` | Umsetzung | autonom | offen |
+| W7.2 | `W7.2-spielstand-wirtschaft.md` | Umsetzung | autonom | fertig |
 | W7.3 | `W7.3-golden-hub.md` | Umsetzung | autonom | offen |
 | W7.4 | `W7.4-review.md` | Review | autonom | offen |
 

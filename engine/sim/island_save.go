@@ -8,12 +8,12 @@ import (
 	"sort"
 )
 
-// Spielstand der Insel (Version 6, B-100, S1.4, S2.2, K2.3b, K3.2a). Die Campaign schreibt weiter Version 1 (save.go); der Raum benutzt bis zur
+// Spielstand der Insel (Version 7, B-100, S1.4, S2.2, K2.3b, K3.2a, W7.2). Die Campaign schreibt weiter Version 1 (save.go); der Raum benutzt bis zur
 // Umstellung (B-133) nur Version 1. Gespeichert wird wie dort nur, was sich nicht aus dem Seed ergibt: Hubs, Truppen,
 // Vorrat, Gold und Entferntes. Flüchtiges (Gegner, Münzen am Boden, Geschosse, Zufallsstand) geht beim Laden verloren.
 
 // IslandSaveVersion ist die Version des Insel-Spielstands.
-const IslandSaveVersion = 6
+const IslandSaveVersion = 7
 
 // IslandSave ist ein Spielstand einer Insel.
 type IslandSave struct {
@@ -37,6 +37,7 @@ type IslandSave struct {
 	// Version 6 (B-373): Besuche des Händlers und der anwesende Händler (Material, Abreisetag, HP).
 	MerchantVisits int           `json:"merchantVisits,omitempty"`
 	Merchant       *MerchantSave `json:"merchant,omitempty"`
+	// Version 7 (save_economy.go): Rüstung, Berufe, Krieger, Elite, Schwerter und Plantage stehen in den Stufen (HubSave).
 }
 
 // IslandPlayerSave ist ein Spieler der Insel: inselweiter Index, Gold, die Tiefe seiner Stufe und seine Verteilung
@@ -72,7 +73,7 @@ func (isl *Island) ToSave(savedAt string) IslandSave {
 	return s
 }
 
-// ParseIslandSave liest einen Spielstand der Version 6 oder, überführt, der Version 5 (ohne Händler), 4 (ohne Bosse und
+// ParseIslandSave liest einen Spielstand der Version 7 oder, überführt, der Version 6 (ohne Wirtschaft), 5 (ohne Händler), 4 (ohne Bosse und
 // Insel), 3 (ohne
 // Tag und Phase), 2 oder 1 (Campaign). Tag und Phase wirken beim Laden nicht, die Zeit kommt aus `time`.
 func ParseIslandSave(raw []byte) (IslandSave, error) {
@@ -91,10 +92,10 @@ func ParseIslandSave(raw []byte) (IslandSave, error) {
 		return islandFromV1(old), nil
 	case 2:
 		return parseIslandV2(raw)
-	case 3, 4, 5, IslandSaveVersion:
+	case 3, 4, 5, 6, IslandSaveVersion:
 		return parseIslandV3(raw)
 	}
-	return IslandSave{}, fmt.Errorf("spielstand: Version %d, erwartet %d, 2, 3, 4, 5 oder %d", head.Version, SaveVersion, IslandSaveVersion)
+	return IslandSave{}, fmt.Errorf("spielstand: Version %d, erwartet %d, 2, 3, 4, 5, 6 oder %d", head.Version, SaveVersion, IslandSaveVersion)
 }
 
 func validateIslandSave(s IslandSave) error {
@@ -110,6 +111,9 @@ func validateIslandSave(s IslandSave) error {
 			return fmt.Errorf("spielstand: unbekannte oder doppelte Tiefe %d", h.Depth)
 		}
 		depths[h.Depth] = true
+		if err := validateEconomy(h); err != nil {
+			return err
+		}
 	}
 	seen := map[int]bool{}
 	for _, p := range s.Players {
