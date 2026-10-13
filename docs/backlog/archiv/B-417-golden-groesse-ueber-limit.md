@@ -50,7 +50,7 @@ Ungültige oder seltene Situation → gewolltes Verhalten. Passt nichts: `nicht 
 
 ## Offene Fragen
 
-Entschieden 2026-10-13 (🧑, Chat): Grenze auf 14 MB anheben. Umgesetzt als Test `Golden-Daten gesamt höchstens 14 MB (B-417)` in `tests/projectRules.test.ts` (vorher gab es keine Prüfung).
+Entschieden 2026-10-13 (🧑, Chat): Grenze anheben, zuerst auf 14 MB, dann auf **16 MB**; die Golden-Dateien bleiben unverändert (`sim-cave-belagerung` behält `snapshotEvery` 60). Umgesetzt als Test `Golden-Daten gesamt höchstens 16 MB (B-417)` in `tests/projectRules.test.ts`. Gezieltes Verkleinern später: B-419.
 
 ## Notizen
 

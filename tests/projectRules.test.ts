@@ -71,8 +71,8 @@ describe('Komplexität & Schichten', () => {
     expect(goFiles.filter((f) => lines(f) > HARD)).toEqual([]);
   });
 
-  it('Golden-Daten gesamt höchstens 14 MB (B-417)', () => {
+  it('Golden-Daten gesamt höchstens 16 MB (B-417)', () => {
     const bytes = filesIn('testdata/golden', () => true).reduce((sum, f) => sum + statSync(join(ROOT, f)).size, 0);
-    expect(bytes).toBeLessThanOrEqual(14 * 1024 * 1024);
+    expect(bytes).toBeLessThanOrEqual(16 * 1024 * 1024);
   });
 });

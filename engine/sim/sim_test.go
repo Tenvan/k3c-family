@@ -22,7 +22,7 @@ type goldenRun struct {
 	Players       int
 	Dt            float64
 	Ticks         int
-	SnapshotEvery int          // Abstand der Snapshots in Ticks; sim-cave-belagerung 120 statt 60 (B-417: Golden-Daten ≤ 14 MB)
+	SnapshotEvery int
 	Setup         *goldenSetup // nach CreateWorld und AddPlayer
 	Inputs        []struct {
 		Ticks    int
