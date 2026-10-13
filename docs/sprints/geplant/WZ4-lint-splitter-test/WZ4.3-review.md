@@ -7,8 +7,8 @@
 - **Umgebung:** offline
 - **Branch:** wz4/3-review
 - **Abhängig von:** WZ4.2
-- **Tickets:** B-415, B-406
-- **Kriterien:** AC-01, AC-02
+- **Tickets:** B-406
+- **Kriterien:** AC-01
 
 ## Ziel
 

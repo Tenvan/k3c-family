@@ -1,10 +1,10 @@
-# WZ4 · INF, DEV · Lint grün mit Cockpit-Plugin, Splitter-Test in DOM-Umgebung
+# WZ4 · DEV · Splitter-Test in DOM-Umgebung
 
 - **Status:** geplant
 - **Projekt:** WZG
-- **Domäne:** INF, DEV
+- **Domäne:** DEV
 - **Reife:** Entwurf
-- **Tickets:** B-415, B-406
+- **Tickets:** B-406
 - **Start-Commit:** – (wird beim Aktivieren gesetzt: `git rev-parse --short origin/develop`)
 - **Spec:** Entwurf
 - **Revision:** 1
@@ -12,11 +12,11 @@
 
 ## Ausgangslage
 
-Nach dem Merge des Cockpit-Plugins (PR #278) ist `task lint` rot: `tools/cockpit/hooks/core.ts` hat 570 Zeilen (Grenze 400), `src/tools/soundtest.ts:117` verletzt `no-unused-expressions` (B-415). Der Splitter der Planungsseite ist nur über `splitShare`/`clampSplit` getestet, Doppelklick und Ziehen nicht (B-406, im Root-Vitest fehlt jsdom/happy-dom).
+Der Splitter der Planungsseite ist nur über `splitShare`/`clampSplit` getestet, Doppelklick und Ziehen nicht (B-406, im Root-Vitest fehlt jsdom/happy-dom). B-415 (Lint rot durch `tools/cockpit`) ist auf `develop` bereits erledigt und gehört nicht mehr zum Sprint.
 
 ## Ziel
 
-`task check` ist wieder grün, und das Splitter-Verhalten der Planungsseite ist in einer DOM-Umgebung getestet. Am Ende sichtbar: `task lint` ohne Fehler, Splitter-Test grün.
+Das Splitter-Verhalten der Planungsseite ist in einer DOM-Umgebung getestet. Am Ende sichtbar: Splitter-Test grün in `task check`.
 
 ## Beteiligte und Zielgruppen
 
@@ -24,7 +24,7 @@ Alle, die `task check` brauchen (Entwickler, CI); Agent in INF und DEV.
 
 ## Anforderungen
 
-B-415, B-406 › Anforderungen. B-415 ist zuerst zu klären: Bestehen die Fehler schon auf `develop` oder nur im Worktree (fehlende Pakete in `tools/k3c-dev/frontend`)?
+B-406 › Anforderungen.
 
 ## Nicht-Ziele
 
@@ -44,18 +44,16 @@ Lint-Fehler nur im Worktree (fehlende Pakete) → kein Code-Fix, Hinweis in der 
 
 ## Akzeptanzkriterien
 
-- **AC-01** `task lint` und `task check` laufen ohne Fehler; keine Datei über 400 Zeilen (B-415).
-- **AC-02** Ein Test mit DOM-Umgebung prüft Doppelklick und Ziehen des Splitters (B-406).
+- **AC-01** Ein Test mit DOM-Umgebung prüft Doppelklick und Ziehen des Splitters (B-406).
 
 ## Offene Fragen
 
-B-415 und B-406 hatten Projekt REL bzw. WZG; B-415 wurde auf WZG gesetzt (Cockpit-Werkzeug). 🧑 bestätigt?
+keine. Hinweis: Mit nur einem Ticket kann der Sprint auch in einen anderen WZG-Sprint aufgehen (🧑).
 
 ## Sessions
 
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
-| WZ4.1 | `WZ4.1-lint-cockpit.md` | Umsetzung | autonom | offen |
 | WZ4.2 | `WZ4.2-splitter-dom-test.md` | Umsetzung | autonom | offen |
 | WZ4.3 | `WZ4.3-review.md` | Review | autonom | offen |
 

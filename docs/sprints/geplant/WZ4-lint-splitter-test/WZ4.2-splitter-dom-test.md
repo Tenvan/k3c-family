@@ -6,9 +6,9 @@
 - **Domäne:** DEV
 - **Umgebung:** offline
 - **Branch:** wz4/2-splitter-dom-test
-- **Abhängig von:** WZ4.1
+- **Abhängig von:** –
 - **Tickets:** B-406
-- **Kriterien:** AC-02
+- **Kriterien:** AC-01
 
 ## Ziel
 
