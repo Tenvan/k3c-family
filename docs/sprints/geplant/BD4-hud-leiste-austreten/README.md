@@ -40,7 +40,7 @@ Domäne CLI; `src/scenes` zeichnet nur Snapshots (`noSim.test.ts`); Layout als r
 
 ## Ausnahme- und Fehlerfälle
 
-Letzter lokaler Spieler tritt aus → Rückfrage, dann wie „Spiel verlassen“ (B-411). `removeSlot` abgelehnt → Feld bleibt, Warnung im Log. Touch-Modus (`?touch=1`) → Leiste weicht den Touch-Flächen aus.
+Letzter lokaler Spieler meldet sich ab → ohne Rückfrage wie „Spiel verlassen“ (B-411). `removeSlot` abgelehnt → Feld bleibt, Warnung im Log. Touch-Modus (`?touch=1`) → Leiste weicht den Touch-Flächen aus.
 
 ## Akzeptanzkriterien
 
@@ -48,8 +48,8 @@ Letzter lokaler Spieler tritt aus → Rückfrage, dann wie „Spiel verlassen“
 - **AC-02** Der Kompass steht je Feld oben, im obersten Feld unter der Leiste, ohne Überlagerung (B-413/AC-02).
 - **AC-03** Unter der Bodenlinie liegt ein Fluss mit kopfüber gespiegeltem Hintergrund und strömenden Wellen; Beobachtung am Gerät (B-413/AC-03).
 - **AC-04** Die Leiste weicht dem Home-Button und den Touch-Flächen aus (B-413/AC-04).
-- **AC-05** „Spieler abmelden“ trifft den Öffner des Menüs: `removeSlot` nur für dessen Slot, beim letzten lokalen Spieler nach Rückfrage `leave`; Pad, Tastatur und Touch als Öffner erkannt (B-411/AC-01, B-411/AC-02, B-411/AC-03).
-- **AC-06** Am Gerät: Ein Spieler meldet sich ab, die anderen spielen weiter, Wiederbeitritt per A (B-411/AC-04).
+- **AC-05** „Spieler abmelden“ trifft den Öffner des Menüs bzw. bei zwei Tastatur-Spielern den gewählten: `removeSlot` nur für dessen Slot, beim letzten lokalen Spieler ohne Rückfrage `leave` (B-411/AC-01 bis B-411/AC-04).
+- **AC-06** Am Gerät: Ein Spieler meldet sich ab, die anderen spielen weiter, Wiederbeitritt per A (B-411/AC-05).
 
 ## Offene Fragen
 
