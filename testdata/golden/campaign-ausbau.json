@@ -1,292 +1,292 @@
 {
   "cycleSpeed": 1,
   "dt": 0.03333333333333333,
-  "inputs": [
-    {
-      "ticks": 580,
-      "commands": [
-        {
-          "moveX": -1,
-          "sprint": true,
-          "pay": false
-        },
-        {
-          "moveX": 0,
-          "sprint": false,
-          "pay": false
-        }
-      ]
-    },
-    {
-      "ticks": 1,
-      "commands": [
-        {
-          "moveX": 0,
-          "sprint": false,
-          "pay": true
-        },
-        {
-          "moveX": 0,
-          "sprint": false,
-          "pay": false
-        }
-      ]
-    },
-    {
-      "ticks": 13,
-      "commands": [
-        {
-          "moveX": 1,
-          "sprint": true,
-          "pay": false
-        },
-        {
-          "moveX": 0,
-          "sprint": false,
-          "pay": false
-        }
-      ]
-    },
-    {
-      "ticks": 1,
-      "commands": [
-        {
-          "moveX": 0,
-          "sprint": false,
-          "pay": true
-        },
-        {
-          "moveX": 0,
-          "sprint": false,
-          "pay": false
-        }
-      ]
-    },
-    {
-      "ticks": 879,
-      "commands": [
-        {
-          "moveX": 1,
-          "sprint": true,
-          "pay": false
-        },
-        {
-          "moveX": 0,
-          "sprint": false,
-          "pay": false
-        }
-      ]
-    },
-    {
-      "ticks": 1,
-      "commands": [
-        {
-          "moveX": 0,
-          "sprint": false,
-          "pay": true
-        },
-        {
-          "moveX": 0,
-          "sprint": false,
-          "pay": false
-        }
-      ]
-    },
-    {
-      "ticks": 53,
-      "commands": [
-        {
-          "moveX": 1,
-          "sprint": true,
-          "pay": false
-        },
-        {
-          "moveX": 0,
-          "sprint": false,
-          "pay": false
-        }
-      ]
-    },
-    {
-      "ticks": 1,
-      "commands": [
-        {
-          "moveX": 0,
-          "sprint": false,
-          "pay": true
-        },
-        {
-          "moveX": 0,
-          "sprint": false,
-          "pay": false
-        }
-      ]
-    },
-    {
-      "ticks": 16,
-      "commands": [
-        {
-          "moveX": 1,
-          "sprint": true,
-          "pay": false
-        },
-        {
-          "moveX": 0,
-          "sprint": false,
-          "pay": false
-        }
-      ]
-    },
-    {
-      "ticks": 1,
-      "commands": [
-        {
-          "moveX": 0,
-          "sprint": false,
-          "pay": true
-        },
-        {
-          "moveX": 0,
-          "sprint": false,
-          "pay": false
-        }
-      ]
-    },
-    {
-      "ticks": 23,
-      "commands": [
-        {
-          "moveX": 1,
-          "sprint": true,
-          "pay": false
-        },
-        {
-          "moveX": 0,
-          "sprint": false,
-          "pay": false
-        }
-      ]
-    },
-    {
-      "ticks": 1,
-      "commands": [
-        {
-          "moveX": 0,
-          "sprint": false,
-          "pay": true
-        },
-        {
-          "moveX": 0,
-          "sprint": false,
-          "pay": false
-        }
-      ]
-    },
-    {
-      "ticks": 449,
-      "commands": [
-        {
-          "moveX": -1,
-          "sprint": true,
-          "pay": false
-        },
-        {
-          "moveX": 0,
-          "sprint": false,
-          "pay": false
-        }
-      ]
-    },
-    {
-      "ticks": 113,
-      "commands": [
-        {
-          "moveX": 0,
-          "sprint": false,
-          "pay": true
-        },
-        {
-          "moveX": 0,
-          "sprint": false,
-          "pay": false
-        }
-      ]
-    },
-    {
-      "ticks": 4657,
-      "commands": [
-        {
-          "moveX": 0,
-          "sprint": false,
-          "pay": false
-        },
-        {
-          "moveX": 0,
-          "sprint": false,
-          "pay": false
-        }
-      ]
-    },
-    {
-      "ticks": 153,
-      "commands": [
-        {
-          "moveX": 0,
-          "sprint": false,
-          "pay": true
-        },
-        {
-          "moveX": 0,
-          "sprint": false,
-          "pay": false
-        }
-      ]
-    },
-    {
-      "ticks": 246,
-      "commands": [
-        {
-          "moveX": 1,
-          "sprint": true,
-          "pay": false
-        },
-        {
-          "moveX": 0,
-          "sprint": false,
-          "pay": false
-        }
-      ]
-    },
-    {
-      "ticks": 1,
-      "commands": [
-        {
-          "moveX": 0,
-          "sprint": false,
-          "pay": true
-        },
-        {
-          "moveX": 0,
-          "sprint": false,
-          "pay": false
-        }
-      ]
-    },
-    {
-      "ticks": 620,
-      "commands": [
-        {
-          "moveX": 0,
-          "sprint": false,
-          "pay": false
-        },
-        {
-          "moveX": 0,
-          "sprint": false,
-          "pay": false
-        }
-      ]
-    }
+  "inputs": [
+    {
+      "ticks": 580,
+      "commands": [
+        {
+          "moveX": -1,
+          "sprint": true,
+          "pay": false
+        },
+        {
+          "moveX": 0,
+          "sprint": false,
+          "pay": false
+        }
+      ]
+    },
+    {
+      "ticks": 1,
+      "commands": [
+        {
+          "moveX": 0,
+          "sprint": false,
+          "pay": true
+        },
+        {
+          "moveX": 0,
+          "sprint": false,
+          "pay": false
+        }
+      ]
+    },
+    {
+      "ticks": 13,
+      "commands": [
+        {
+          "moveX": 1,
+          "sprint": true,
+          "pay": false
+        },
+        {
+          "moveX": 0,
+          "sprint": false,
+          "pay": false
+        }
+      ]
+    },
+    {
+      "ticks": 1,
+      "commands": [
+        {
+          "moveX": 0,
+          "sprint": false,
+          "pay": true
+        },
+        {
+          "moveX": 0,
+          "sprint": false,
+          "pay": false
+        }
+      ]
+    },
+    {
+      "ticks": 879,
+      "commands": [
+        {
+          "moveX": 1,
+          "sprint": true,
+          "pay": false
+        },
+        {
+          "moveX": 0,
+          "sprint": false,
+          "pay": false
+        }
+      ]
+    },
+    {
+      "ticks": 1,
+      "commands": [
+        {
+          "moveX": 0,
+          "sprint": false,
+          "pay": true
+        },
+        {
+          "moveX": 0,
+          "sprint": false,
+          "pay": false
+        }
+      ]
+    },
+    {
+      "ticks": 53,
+      "commands": [
+        {
+          "moveX": 1,
+          "sprint": true,
+          "pay": false
+        },
+        {
+          "moveX": 0,
+          "sprint": false,
+          "pay": false
+        }
+      ]
+    },
+    {
+      "ticks": 1,
+      "commands": [
+        {
+          "moveX": 0,
+          "sprint": false,
+          "pay": true
+        },
+        {
+          "moveX": 0,
+          "sprint": false,
+          "pay": false
+        }
+      ]
+    },
+    {
+      "ticks": 16,
+      "commands": [
+        {
+          "moveX": 1,
+          "sprint": true,
+          "pay": false
+        },
+        {
+          "moveX": 0,
+          "sprint": false,
+          "pay": false
+        }
+      ]
+    },
+    {
+      "ticks": 1,
+      "commands": [
+        {
+          "moveX": 0,
+          "sprint": false,
+          "pay": true
+        },
+        {
+          "moveX": 0,
+          "sprint": false,
+          "pay": false
+        }
+      ]
+    },
+    {
+      "ticks": 23,
+      "commands": [
+        {
+          "moveX": 1,
+          "sprint": true,
+          "pay": false
+        },
+        {
+          "moveX": 0,
+          "sprint": false,
+          "pay": false
+        }
+      ]
+    },
+    {
+      "ticks": 1,
+      "commands": [
+        {
+          "moveX": 0,
+          "sprint": false,
+          "pay": true
+        },
+        {
+          "moveX": 0,
+          "sprint": false,
+          "pay": false
+        }
+      ]
+    },
+    {
+      "ticks": 449,
+      "commands": [
+        {
+          "moveX": -1,
+          "sprint": true,
+          "pay": false
+        },
+        {
+          "moveX": 0,
+          "sprint": false,
+          "pay": false
+        }
+      ]
+    },
+    {
+      "ticks": 113,
+      "commands": [
+        {
+          "moveX": 0,
+          "sprint": false,
+          "pay": true
+        },
+        {
+          "moveX": 0,
+          "sprint": false,
+          "pay": false
+        }
+      ]
+    },
+    {
+      "ticks": 4657,
+      "commands": [
+        {
+          "moveX": 0,
+          "sprint": false,
+          "pay": false
+        },
+        {
+          "moveX": 0,
+          "sprint": false,
+          "pay": false
+        }
+      ]
+    },
+    {
+      "ticks": 153,
+      "commands": [
+        {
+          "moveX": 0,
+          "sprint": false,
+          "pay": true
+        },
+        {
+          "moveX": 0,
+          "sprint": false,
+          "pay": false
+        }
+      ]
+    },
+    {
+      "ticks": 246,
+      "commands": [
+        {
+          "moveX": 1,
+          "sprint": true,
+          "pay": false
+        },
+        {
+          "moveX": 0,
+          "sprint": false,
+          "pay": false
+        }
+      ]
+    },
+    {
+      "ticks": 1,
+      "commands": [
+        {
+          "moveX": 0,
+          "sprint": false,
+          "pay": true
+        },
+        {
+          "moveX": 0,
+          "sprint": false,
+          "pay": false
+        }
+      ]
+    },
+    {
+      "ticks": 620,
+      "commands": [
+        {
+          "moveX": 0,
+          "sprint": false,
+          "pay": false
+        },
+        {
+          "moveX": 0,
+          "sprint": false,
+          "pay": false
+        }
+      ]
+    }
   ],
   "name": "campaign-ausbau",
   "players": 2,
