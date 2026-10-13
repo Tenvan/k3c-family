@@ -139,6 +139,7 @@ export const de = {
   'opt.title': 'Optionen',
   'opt.music': 'Musik',
   'opt.sfx': 'Effekte',
+  'opt.ambient': 'Umgebung',
   'opt.screenshake': 'Wackeln',
   'opt.flash': 'Blitze',
   'opt.colorblind': 'Farbschwäche-Symbole',

@@ -129,6 +129,7 @@ export const en: Record<TextKey, string> = {
   'opt.title': 'Options',
   'opt.music': 'Music',
   'opt.sfx': 'Effects',
+  'opt.ambient': 'Ambience',
   'opt.screenshake': 'Shake',
   'opt.flash': 'Flashes',
   'opt.colorblind': 'Colorblind symbols',

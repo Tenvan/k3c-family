@@ -1,8 +1,9 @@
 import { clientLog } from '../core/clientLog';
 import { installPageChrome } from '../core/shell';
-import { Mixer, type AudioContextLike } from '../audio/mixer';
+import { audioCore } from '../audio/audioCore';
+import { CROSSFADE_SECONDS } from '../audio/crossfade';
 import {
-  crossfadeCurves, fileFor, groupCandidates, keyAction, moveSelection, padActions, parseCandidates, stepVolume,
+  fileFor, groupCandidates, keyAction, moveSelection, padActions, parseCandidates, stepVolume,
   type Action, type Candidate, type PadState,
 } from './soundtestLogic';
 import { applyTexts, t } from './texts';
@@ -11,7 +12,7 @@ installPageChrome();
 applyTexts();
 // Kein installPadScroll(): Stick und Steuerkreuz wählen hier den Eintrag, die Auswahl scrollt selbst (scrollIntoView).
 
-const FADE_SECONDS = 2;
+const core = audioCore();
 const $ = (id: string) => document.getElementById(id) as HTMLElement;
 const hint = $('hint');
 const listEl = $('list');
@@ -20,25 +21,17 @@ const statusEl = $('status');
 interface Entry {
   cand: Candidate;
   url?: string;
-  buffer?: AudioBuffer;
   failed: boolean;
-}
-interface Voice {
-  entry: Entry;
-  src: AudioBufferSourceNode;
-  gain: GainNode;
 }
 
 let entries: Entry[] = [];
 let selected = 0;
-let ctx: AudioContext | undefined;
-let mixer: Mixer | undefined;
-let voice: Voice | undefined;
+let playing: Entry | undefined;
 
 function say(text: string): void {
   statusEl.textContent = text;
 }
-const volume = (): number => mixer?.getVolume('music') ?? 100;
+const volume = (): number => core.getVolume('music');
 
 function render(): void {
   listEl.replaceChildren();
@@ -54,7 +47,7 @@ function render(): void {
       const idx = i++;
       const e = entries[idx];
       const div = document.createElement('div');
-      div.className = `item${idx === selected ? ' sel' : ''}${voice?.entry === e ? ' playing' : ''}${e.failed ? ' off' : ''}`;
+      div.className = `item${idx === selected ? ' sel' : ''}${playing === e ? ' playing' : ''}${e.failed ? ' off' : ''}`;
       div.dataset.idx = String(idx);
       div.innerHTML = `<span class="mark"></span><span class="name"></span><span class="meta"></span>`;
       (div.querySelector('.name') as HTMLElement).textContent = e.failed ? t('sound.failed', { name: cand.name }) : cand.name;
@@ -67,67 +60,45 @@ function render(): void {
     }
   }
   listEl.querySelector('.sel')?.scrollIntoView({ block: 'nearest' });
-  const state = voice ? t('sound.playing', { name: voice.entry.cand.name }) : t('sound.silence');
+  const state = playing ? t('sound.playing', { name: playing.cand.name }) : t('sound.silence');
   say(t('sound.status', { state, volume: volume() }));
 }
 
 async function load(e: Entry): Promise<void> {
-  if (e.buffer || e.failed || !ctx) return;
-  try {
-    if (!e.url) throw new Error(t('sound.noFormat'));
-    const res = await fetch(e.url);
-    if (!res.ok) throw new Error(`HTTP ${res.status}`);
-    e.buffer = await ctx.decodeAudioData(await res.arrayBuffer());
-  } catch (err) {
+  if (e.failed) return;
+  if (!e.url || !(await core.preload(e.url))) {
     e.failed = true;
-    clientLog('warn', '🔇 Kandidat lädt nicht', { name: e.cand.name, error: String(err) });
+    clientLog('warn', '🔇 Kandidat lädt nicht', { name: e.cand.name, url: e.url ?? t('sound.noFormat') });
     render();
   }
 }
 
-/** Startet `e` mit eigener Gain-Stufe am Bus; `fadeIn` > 0 blendet mit der Kurve ein, sonst sofort. Musik läuft in Schleife. */
-function start(e: Entry, fadeIn: number): Voice | undefined {
-  if (!ctx || !mixer || !e.buffer) return undefined;
-  const src = ctx.createBufferSource();
-  src.buffer = e.buffer;
-  src.loop = e.cand.bus === 'music';
-  const gain = ctx.createGain();
-  if (fadeIn > 0) gain.gain.setValueCurveAtTime(crossfadeCurves().in, ctx.currentTime, fadeIn);
-  src.connect(gain);
-  gain.connect(mixer.node(e.cand.bus) as unknown as AudioNode);
-  src.start();
-  return { entry: e, src, gain };
-}
-
-/** Altes Stück über die Kurve ausblenden und danach beenden (kein Sprung der Lautstärke). */
-function fadeOut(v: Voice, seconds: number): void {
-  if (!ctx) return;
-  v.gain.gain.setValueCurveAtTime(crossfadeCurves().out, ctx.currentTime, seconds);
-  v.src.stop(ctx.currentTime + seconds);
-}
-
+/** Musik läuft in Schleife, Effekte einmal; ein Wechsel blendet mit der Kurve des Audio-Kerns über (kein Sprung der Lautstärke). */
 async function play(crossfade: boolean): Promise<void> {
   const e = entries[selected];
-  if (!e || !ctx) return;
+  if (!e || !core.running) return;
   await load(e);
-  if (e.failed || voice?.entry === e) return;
-  const old = voice;
-  const seconds = crossfade && old ? FADE_SECONDS : 0;
-  voice = start(e, seconds);
-  if (old) seconds ? fadeOut(old, seconds) : fadeOut(old, 0.03);
+  if (e.failed || !e.url || playing === e) return;
+  if (playing && playing.cand.bus !== e.cand.bus) core.stop(playing.cand.bus); // eine Stimme zur Zeit, wie zuvor
+  const ok = await core.playFile(e.url, {
+    bus: e.cand.bus,
+    fade: crossfade && playing ? CROSSFADE_SECONDS : 0,
+    onEnded: () => {
+      if (playing === e) { playing = undefined; render(); }
+    },
+  });
+  if (ok) playing = e;
   render();
-  const v = voice;
-  if (v && e.cand.bus === 'sfx') v.src.onended = () => { if (voice === v) { voice = undefined; render(); } };
 }
 
 function stop(): void {
-  if (voice) fadeOut(voice, 0.03);
-  voice = undefined;
+  if (playing) core.stop(playing.cand.bus);
+  playing = undefined;
   render();
 }
 
 function act(a: Action): void {
-  if (!ctx) return;
+  if (!core.running) return;
   switch (a) {
     case 'up': case 'down':
       selected = moveSelection(selected, entries.length, a === 'up' ? -1 : 1);
@@ -137,8 +108,8 @@ function act(a: Action): void {
     case 'stop': return stop();
     case 'volUp': case 'volDown': {
       const v = stepVolume(volume(), a === 'volUp' ? 1 : -1);
-      mixer?.setVolume('music', v);
-      mixer?.setVolume('sfx', v);
+      core.setVolume('music', v);
+      core.setVolume('sfx', v);
       return render();
     }
   }
@@ -146,17 +117,10 @@ function act(a: Action): void {
 
 /** Erste Eingabe (Taste, Klick/Touch, Controller): Kontext anlegen und fortsetzen; solange er gesperrt bleibt, steht der Hinweis da. */
 async function unlock(): Promise<void> {
-  try {
-    if (!ctx) {
-      ctx = new AudioContext();
-      mixer = new Mixer(ctx as unknown as AudioContextLike, window.localStorage);
-      void Promise.all(entries.map(load));
-    }
-    await ctx.resume();
-  } catch (e) {
-    clientLog('warn', '🔇 Audio nicht startbar', { error: String(e) });
-  }
-  const running = ctx?.state === 'running';
+  const was = core.running;
+  await core.onInput(); // legt Kontext und Mixer an, wirft nie
+  const running = core.running;
+  if (running && !was) void Promise.all(entries.map(load));
   hint.classList.toggle('on', running);
   hint.textContent = t(running ? 'sound.unlocked' : 'sound.locked');
 }
@@ -172,7 +136,7 @@ function pollPads(): void {
       if (!p) continue;
       const cur = padState(p);
       const acts = padActions(prev.get(p.index) ?? { buttons: [], stickY: 0 }, cur);
-      if (acts.length && !ctx?.state.startsWith('run')) void unlock();
+      if (acts.length && !core.running) void unlock();
       for (const a of acts) act(a);
       prev.set(p.index, cur);
     }
