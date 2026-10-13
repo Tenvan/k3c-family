@@ -144,7 +144,6 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-412](B-412-figuren-adern-plantage-lager.md) | CLI | Idee | niedrig | eingeplant | W11 | Adern, Plantage und Lager haben keine Anzeige als Figuren im Client |
 | [B-413](B-413-hud-leiste-oben-fluss.md) | CLI | Idee | mittel | offen | – | Gemeinsame HUD-Leiste oben für alle Spieler, Kompass oben, Fluss mit Spiegelung unten |
 | [B-414](B-414-welt-meldungen-im-band.md) | CLI | Idee | mittel | eingeplant | BD1 | Welt-Meldungen erscheinen für alle im globalen Band oben |
-| [B-417](B-417-golden-groesse-ueber-limit.md) | INF | Problem | niedrig | offen | – | Golden-Daten liegen mit 12,7 MB über der Grenze von 8 MB aus SP06 |
 | [B-418](B-418-spielstand-kommentare-veraltet.md) | SIM | Problem | niedrig | offen | – | Kommentare in island_save_v3.go und island_save_v5.go nennen nach W7.2 veraltete Versionen |
 
 ## Archiv
@@ -390,3 +389,4 @@ Zeile in diesen Abschnitt.
 | [B-202](archiv/B-202-spielstand-versionsfolge.md) | SIM | Problem | hoch | erledigt | W7 | S1 und W1 teilen sich die Spielstand-Version 3 eindeutig |
 | [B-201](archiv/B-201-spielstand-wirtschaft.md) | SIM | Schuld | mittel | erledigt | W7 | Der Spielstand stellt Plantage, Berufe, Krieger, Elite, Rüstung, Schwerter und Händler nach dem Laden wieder her |
 | [B-075](archiv/B-075-golden-spielstand-hub.md) | SIM | Schuld | mittel | erledigt | W7 | Der Golden-Spielstand enthält einen gebauten und veränderten Hub |
+| [B-417](archiv/B-417-golden-groesse-ueber-limit.md) | INF | Problem | niedrig | erledigt | – | Golden-Daten liegen mit 12,7 MB über der Grenze von 8 MB aus SP06 |

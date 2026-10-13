@@ -4,7 +4,7 @@
 - **Typ:** Problem
 - **Prio:** niedrig
 - **Umgebung:** offline
-- **Status:** offen
+- **Status:** erledigt
 - **Sprint:** –
 - **Projekt:** TST
 - **Erstellt:** 2026-10-13
@@ -50,7 +50,7 @@ Ungültige oder seltene Situation → gewolltes Verhalten. Passt nichts: `nicht 
 
 ## Offene Fragen
 
-🧑: Grenze anheben (und durch einen Test absichern) oder Golden-Dateien verkleinern (weniger Snapshots, kürzere Läufe)?
+Entschieden 2026-10-13 (🧑, Chat): Grenze auf 14 MB anheben. Umgesetzt als Test `Golden-Daten gesamt höchstens 14 MB (B-417)` in `tests/projectRules.test.ts` (vorher gab es keine Prüfung).
 
 ## Notizen
 
