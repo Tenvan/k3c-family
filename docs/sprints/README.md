@@ -34,7 +34,6 @@ Abnahmen am Gerät (`Agent: Mensch`) sammelt das Projekt ABN im Sprint HW1: [`..
 | M10 | SRV | GRA | Ressourcen-Manager für Grafik- und Sound-Slots in k3c-dev | – | Entwurf | `geplant/M10-ressourcen-manager/` |
 | SO2 | CLI | SND | SFX-Katalog und Einbau | – | bereit | `geplant/SO2-sfx-katalog/` |
 | TR4 | PLAT, SRV | TST | Bot-Eingabe ohne verlorene Drücke, Beobachter ohne Platz im Raum | – | Entwurf | `geplant/TR4-bot-feed-beobachter/` |
-| W7 | SIM | WRT | Ausrüstung ohne Unverwundbarkeit, Spielstand vollständig | Passive Burg kann fallen, Spielstand stellt W2–W4 wieder her, Golden-Hub geprüft | bereit | `geplant/W7-ausruestung-spielstand/` |
 | SV1 | SRV | WRT | Raum mit allen Stufen, Voll-Ausbau-Spielstand, leere Test-Räume | Neuer Raum mit allen fünf Stufen, Level-Betrachter startet einen voll ausgebauten Spielstand | bereit | `geplant/SV1-raeume-stufen-testspielstand/` |
 | W8 | CLI | WRT | Bauplätze mit Grund und alle Rohstoffe im Client | Gesperrte Plätze zeigen den Grund, Client-Typen passen zu `hub.json` und den fünf Rohstoffen | Entwurf | `geplant/W8-bauplaetze-rohstoffe-client/` |
 | W11 | REG, SRV, CLI | WRT | Bauplätze im Protokoll, Abstand der Treppen, Ausbilden und Tauschen, Figuren | – | Entwurf | `geplant/W11-bauplaetze-protokoll-abstand/` |
@@ -173,3 +172,4 @@ Gesamtplan und Begründung: [`../plan-weiterentwicklung.md`](../plan-weiterentwi
 | GL1 | Landingpage in der gewählten Sprache | `erledigt/GL1-glyphen-controller-landing-sprache/` |
 | WZ2 | Planungs-Werkzeuge: eindeutige Nummern, Fahrplan, Flags, Prüfläufe | `erledigt/WZ2-planungs-werkzeuge/` |
 | WZ3 | Review-Nachträge zu WZ2: Filter-Zählung, Splitter-Test, Kleinigkeiten | `erledigt/WZ3-review-nachtraege/` |
+| W7 | Ausrüstung ohne Unverwundbarkeit, Spielstand vollständig | `erledigt/W7-ausruestung-spielstand/` |

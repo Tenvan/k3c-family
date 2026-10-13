@@ -33,15 +33,17 @@ type campaignFile struct {
 	}
 }
 
-func loadCampaign(t *testing.T) campaignFile {
+func loadCampaign(t *testing.T) campaignFile { return loadCampaignAt(t, campaignPath) }
+
+func loadCampaignAt(t *testing.T, path string) campaignFile {
 	t.Helper()
-	raw, err := os.ReadFile(campaignPath)
+	raw, err := os.ReadFile(path)
 	var f campaignFile
 	if err == nil {
 		err = json.Unmarshal(raw, &f)
 	}
 	if err != nil || len(f.Snapshots) == 0 || f.SaveAt == 0 || len(f.Save) == 0 {
-		t.Fatalf("campaign-abstieg.json unbrauchbar: %v", err)
+		t.Fatalf("%s unbrauchbar: %v", path, err)
 	}
 	return f
 }
@@ -60,7 +62,10 @@ type campaignGot struct {
 	snaps []campaignSnap
 }
 
-const campaignPath = "../../testdata/golden/campaign-abstieg.json"
+const (
+	campaignPath       = "../../testdata/golden/campaign-abstieg.json"
+	campaignAusbauPath = "../../testdata/golden/campaign-ausbau.json"
+)
 
 func compareCampaign(t *testing.T, f campaignFile, snap int, c *Campaign, got *campaignGot) {
 	t.Helper()
@@ -73,7 +78,7 @@ func compareCampaign(t *testing.T, f campaignFile, snap int, c *Campaign, got *c
 		t.Fatalf("Tick %d: Tiefe %d/%d, erwartet %d/%d", s.Tick, c.Depth, c.UnlockedDepth, s.Depth, s.UnlockedDepth)
 	}
 	if d := golden.Diff("world", s.World, golden.Tree(t, c.CurrentWorld())); d != "" {
-		t.Fatalf("campaign-abstieg Tick %d: %s", s.Tick, d)
+		t.Fatalf("%s Tick %d: %s", f.Name, s.Tick, d)
 	}
 }
 
@@ -88,7 +93,7 @@ func saveAndLoad(t *testing.T, f campaignFile, c *Campaign, got *campaignGot) *C
 			t.Fatal(err)
 		}
 	} else if d := golden.Diff("save", golden.Tree(t, f.Save), golden.Tree(t, c.ToSave(f.SavedAt))); d != "" {
-		t.Fatalf("campaign-abstieg Tick %d: %s", f.SaveAt, d)
+		t.Fatalf("%s Tick %d: %s", f.Name, f.SaveAt, d)
 	}
 	s, err := ParseSave(raw)
 	if err != nil {
@@ -101,8 +106,37 @@ func saveAndLoad(t *testing.T, f campaignFile, c *Campaign, got *campaignGot) *C
 	return loaded
 }
 
-func TestGoldenKampagne(t *testing.T) {
-	f := loadCampaign(t)
+func TestGoldenKampagne(t *testing.T) { runGoldenKampagne(t, campaignPath, 2) }
+
+// TestGoldenKampagneAusbau (B-075): Spielstand mit ausgebautem Hub (Bauern angeworben, Bäume markiert und gefällt,
+// Truhe geöffnet, Werkstatt gebaut, Bogen bezahlt, Fels markiert), danach speichern, laden, weiterlaufen.
+func TestGoldenKampagneAusbau(t *testing.T) {
+	var save SaveGame
+	if err := json.Unmarshal(runGoldenKampagne(t, campaignAusbauPath, 0), &save); err != nil {
+		t.Fatal(err)
+	}
+	h := save.Hubs[0]
+	built, archers := 0, 0
+	for _, s := range h.Sites {
+		if s.State == "built" {
+			built++
+		}
+	}
+	for _, tr := range h.Troops {
+		if tr.Kind == "archer" {
+			archers++
+		}
+	}
+	if len(h.NodesGone) == 0 || len(h.NodesMarked) == 0 || len(h.PickupsTaken) == 0 || built == 0 || archers == 0 {
+		t.Fatalf("Stand zu leer: nodesGone %d, nodesMarked %d, pickupsTaken %d, gebaut %d, Bogenschützen %d",
+			len(h.NodesGone), len(h.NodesMarked), len(h.PickupsTaken), built, archers)
+	}
+}
+
+// runGoldenKampagne spielt die Datei ab und liefert den gespeicherten Stand.
+func runGoldenKampagne(t *testing.T, path string, wantDepth int) json.RawMessage {
+	t.Helper()
+	f := loadCampaignAt(t, path)
 	c := CreateCampaign(f.Seed, "golden", f.CycleSpeed)
 	for range f.Players {
 		c.JoinPlayer()
@@ -127,15 +161,21 @@ func TestGoldenKampagne(t *testing.T) {
 			}
 		}
 	}
-	if tick != f.Ticks || snap != len(f.Snapshots)-1 || c.Depth != 2 {
-		t.Fatalf("%d Ticks, %d Snapshots, Tiefe %d; Datei hat %d Ticks, %d Snapshots, Ziel Tiefe 2", tick, snap+1, c.Depth, f.Ticks, len(f.Snapshots))
+	if tick != f.Ticks || snap != len(f.Snapshots)-1 || c.Depth != wantDepth {
+		t.Fatalf("%d Ticks, %d Snapshots, Tiefe %d; Datei hat %d Ticks, %d Snapshots, Ziel Tiefe %d", tick, snap+1, c.Depth, f.Ticks, len(f.Snapshots), wantDepth)
 	}
 	if *golden.Update {
-		file := golden.ReadFile(t, campaignPath)
+		file := golden.ReadFile(t, path)
 		file.Set(t, "save", got.save)
 		file.Set(t, "snapshots", got.snaps)
-		file.Write(t, campaignPath)
+		file.Write(t, path)
+		saved, err := json.Marshal(got.save)
+		if err != nil {
+			t.Fatal(err)
+		}
+		return saved
 	}
+	return f.Save
 }
 
 func TestSpielstandRundreise(t *testing.T) {

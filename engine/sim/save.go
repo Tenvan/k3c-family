@@ -40,6 +40,8 @@ type HubSave struct {
 	// Hub-Stufe (W1.3, 0 = 1) und ein laufender Hub-Ausbau an der Burg (hub_level.go), beide optional.
 	HubLevel   int       `json:"hubLevel,omitempty"`
 	HubUpgrade *SiteSave `json:"hubUpgrade,omitempty"`
+	// Rüstungsstufe der Kämpfer des Hubs (Version 7, save_economy.go), 0 = keine.
+	ArmorLevel int `json:"armorLevel,omitempty"`
 	// Nur Bauern und Bogenschützen. Landstreicher kommen von allein aus den Camps.
 	Troops       []TroopSave `json:"troops"`
 	NodesGone    []string    `json:"nodesGone"` // Schlüssel `kind@x` der abgebauten Bäume/Felsen
@@ -52,11 +54,14 @@ type PlayerSave struct {
 	Gold int `json:"gold"`
 }
 
-// TroopSave ist ein gespeicherter Bauer oder Bogenschütze.
+// TroopSave ist ein gespeicherter Bauer oder Kämpfer (Bogenschütze, Krieger, Elite). Beruf und Arbeitsplatz
+// (`kind@x` des Gebäudes) stehen ab Version 7 im Stand (save_economy.go).
 type TroopSave struct {
-	Kind    string  `json:"kind"`
-	X       float64 `json:"x"`
-	AnchorX float64 `json:"anchorX"`
+	Kind       string  `json:"kind"`
+	X          float64 `json:"x"`
+	AnchorX    float64 `json:"anchorX"`
+	Profession string  `json:"profession,omitempty"`
+	WorkSite   string  `json:"workSite,omitempty"`
 }
 
 // SiteSave ist ein gespeicherter Bauplatz.
@@ -73,6 +78,8 @@ type SiteSave struct {
 	Level       int    `json:"level,omitempty"`
 	Upgrade     string `json:"upgrade,omitempty"`
 	UpgradePaid int    `json:"upgradePaid,omitempty"`
+	// Wirtschaft (Version 7, save_economy.go): Herstellung, Angebote, Schwerter, Plantage.
+	Craft *CraftSave `json:"craft,omitempty"`
 }
 
 // key ist `kind@x` mit x wie `x.toFixed(2)` in JS: Gleichstände (nur bei x = n/8) runden weg von 0, Go `FormatFloat`
@@ -127,12 +134,8 @@ func hubSave(w, base *World) HubSave {
 		saved := siteSave(u)
 		h.HubUpgrade = &saved
 	}
-	h.Troops = []TroopSave{}
-	for _, t := range w.Troops {
-		if t.Kind != "vagrant" {
-			h.Troops = append(h.Troops, TroopSave{t.Kind, t.X, t.AnchorX})
-		}
-	}
+	h.ArmorLevel = w.ArmorLevel
+	h.Troops = troopsSave(w)
 	h.NodesGone = without(keys(base.Nodes, nodeKey), keys(w.Nodes, nodeKey))
 	h.NodesMarked = keys(w.Nodes, func(n *ResourceNode) (string, bool) { return key(n.Kind, n.X), n.Marked })
 	h.PickupsTaken = without(keys(base.Pickups, pickupKey), keys(w.Pickups, pickupKey))
@@ -140,7 +143,10 @@ func hubSave(w, base *World) HubSave {
 }
 
 func siteSave(s *Site) SiteSave {
-	return SiteSave{s.Kind, s.X, s.State, s.PaidGold, s.BuildProgress, s.HP, s.Bows, s.BowPaidGold, s.Level, s.Upgrade, s.UpgradePaid}
+	return SiteSave{
+		Kind: s.Kind, X: s.X, State: s.State, PaidGold: s.PaidGold, BuildProgress: s.BuildProgress, HP: s.HP, Bows: s.Bows,
+		BowPaidGold: s.BowPaidGold, Level: s.Level, Upgrade: s.Upgrade, UpgradePaid: s.UpgradePaid, Craft: craftSave(s),
+	}
 }
 
 // ToSave schreibt den Spielstand. savedAt ist ein Zeitstempel (ISO 8601).
@@ -195,6 +201,11 @@ func ParseSave(raw []byte) (SaveGame, error) {
 	if !hasDepth(s.Depth) {
 		return SaveGame{}, errors.New("spielstand: unbekannte Tiefe")
 	}
+	for _, h := range s.Hubs {
+		if err := validateEconomy(h); err != nil {
+			return SaveGame{}, err
+		}
+	}
 	return s, nil
 }
 
@@ -225,6 +236,7 @@ func applyHub(w *World, h HubSave) {
 	if w.Aggression != nil && h.Aggression != nil {
 		*w.Aggression = *h.Aggression
 	}
+	w.ArmorLevel = h.ArmorLevel
 	for _, saved := range h.Sites {
 		applySite(w, saved)
 	}
@@ -237,16 +249,7 @@ func applyHub(w *World, h HubSave) {
 		}
 	}
 	w.Troops = vagrants
-	for _, t := range h.Troops {
-		troop := spawnVagrant(w, w.HubX, t.X)
-		switch t.Kind {
-		case "archer":
-			makeArcher(w, troop)
-			troop.AnchorX = t.AnchorX
-		case "peasant":
-			troop.Kind, troop.HP, troop.MaxHP, troop.AnchorX = "peasant", troops["peasant"].HP, troops["peasant"].HP, w.HubX
-		}
-	}
+	applyTroops(w, h)
 	gone, marked, taken := set(h.NodesGone), set(h.NodesMarked), set(h.PickupsTaken)
 	nodes := []*ResourceNode{}
 	for _, n := range w.Nodes {
@@ -263,6 +266,7 @@ func applyHub(w *World, h HubSave) {
 		}
 	}
 	w.Pickups = pickups
+	applyPlots(w, h) // nach den Knoten: die Bäume der Plantage kommen dazu
 }
 
 func applySite(w *World, saved SiteSave) {
@@ -281,6 +285,7 @@ func applySite(w *World, saved SiteSave) {
 		}
 		if state == "built" {
 			applyUpgrade(s, saved)
+			applyCraft(s, saved.Craft)
 		}
 		return
 	}

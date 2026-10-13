@@ -98,6 +98,7 @@ type EnemyData struct {
 	SwarmSize                int
 	Phases                   struct{ EverySeconds, DurationSeconds float64 }
 	KiteDistance             float64
+	GrabRange                float64 // Units, in denen er Ausrüstung am Boden wegträgt (equipment_taken.go); 0 = nie
 }
 
 // HubSite ist ein Bauplatz relativ zur Hub-Mitte.

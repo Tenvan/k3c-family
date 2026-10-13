@@ -70,4 +70,9 @@ describe('Komplexität & Schichten', () => {
   it('keine Go-Datei über der harten Grenze, auch keine Test-Datei', () => {
     expect(goFiles.filter((f) => lines(f) > HARD)).toEqual([]);
   });
+
+  it('Golden-Daten gesamt höchstens 16 MB (B-417)', () => {
+    const bytes = filesIn('testdata/golden', () => true).reduce((sum, f) => sum + statSync(join(ROOT, f)).size, 0);
+    expect(bytes).toBeLessThanOrEqual(16 * 1024 * 1024);
+  });
 });

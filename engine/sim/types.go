@@ -161,6 +161,7 @@ type Enemy struct {
 	Cooldown    float64  `json:"cooldown"`
 	Fleeing     bool     `json:"fleeing"`
 	CarriedGold int      `json:"carriedGold"`
+	Carried     *Drop    `json:"carried,omitempty"` // weggetragene Ausrüstung (equipment_taken.go)
 	HomeX       float64  `json:"homeX"` // Portal, aus dem der Gegner kam
 	// Stun: Sekunden betäubt (kein Schritt, kein Angriff). TauntFor: so lange zielt der Gegner auf den Spieler TauntID.
 	Stun     float64 `json:"stun,omitempty"`
