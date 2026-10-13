@@ -1,14 +1,14 @@
 # W7 · SIM · Ausrüstung ohne Unverwundbarkeit, Spielstand vollständig
 
-- **Status:** geplant
+- **Status:** aktiv
 - **Projekt:** WRT
 - **Domäne:** SIM
 - **Reife:** bereit
 - **Tickets:** B-312, B-313, B-202, B-201, B-075
-- **Start-Commit:** –
-- **Spec:** Entwurf
+- **Start-Commit:** ee52a371
+- **Spec:** freigegeben
 - **Revision:** 1
-- **Freigabe:** –
+- **Freigabe:** 2026-10-13 Chat (🧑, Revision 1)
 
 ## Ausgangslage
 
@@ -67,7 +67,7 @@ Spielstand aus neuerer Version → Fehler 🚫 mit Version, kein stiller Verlust
 
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
-| W7.1 | `W7.1-ausruestung-wegtragen.md` | Umsetzung | autonom | offen |
+| W7.1 | `W7.1-ausruestung-wegtragen.md` | Umsetzung | autonom | in Arbeit |
 | W7.2 | `W7.2-spielstand-wirtschaft.md` | Umsetzung | autonom | offen |
 | W7.3 | `W7.3-golden-hub.md` | Umsetzung | autonom | offen |
 | W7.4 | `W7.4-review.md` | Review | autonom | offen |
