@@ -9,6 +9,7 @@ Audio-Subsystem des Clients (Presentation Layer): erzeugt Ton aus Spiel-Ereignis
 - `audioCore.ts`: `AudioCore` (Fassade) mit injizierbaren `CoreDeps` (Context, `canPlay`, Fetch) für Tests; `audioCore()` liefert die gemeinsame Instanz. `AudioContext` entsteht erst bei der ersten Eingabe (Autoplay-Policy), `resume()` bis er läuft.
 - `mixer.ts`: `Mixer` mit Master-Gain und je einem Bus (`music`, `sfx`, `ambient`); Lautstärken je Gerät in den Settings (`volumeToGain`).
 - `atlas.ts`: Sound-Atlas (`public/audio/atlas.json`, ein Sprite je Format): `parseAtlas`, `pickFile` nach `FORMAT_ORDER` (ogg, mp3, wav).
+- `music.ts` (SO4.2): reiner Zustands-Automat `nextMusicState` (acht Zustände, Priorität Lobby > Ende > Boss > Kampf > Tiefe > Tageszeit), Tabelle `MUSIC_TRACKS` (Zustand → ein Stück oder Lücke = Stille) und `MusicDirector`, der per `playFile` mit Crossfade auf dem Bus `music` spielt. Gespeist von `GameScene` (Welt-Auszug, Ereignisse) und `LobbyScene`.
 - `events.ts`: reine Zuordnung `cueFor(GameEvent)` → `SoundCue` und Positionsdämpfung `attenuation` (`Listener` = Mitte/Breite der Kamera, `EDGE_GAIN`).
 
 ## Flow

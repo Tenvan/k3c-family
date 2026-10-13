@@ -6,6 +6,7 @@ import type { RoomClient, Status } from '../online/clientConnection';
 import type { GameSceneData } from './GameScene';
 import { LobbyFlow, applyCommand, entryLabel, lobbyEntries, lobbyNotice, moveSelection, parseStartParams, rowAt, slotsFor, type StartParams } from './lobbyLogic';
 import { VERSION_KEY } from './debugOverlay';
+import { musicDirector } from '../audio/music';
 
 export interface LobbySceneData {
   client: RoomClient;
@@ -83,6 +84,7 @@ export class LobbyScene extends Phaser.Scene {
   }
 
   update(): void {
+    musicDirector().lobby();
     const client = this.client;
     if (client.status === 'room') return this.enterGame();
     if (client.status === 'lobby' && this.lastStatus !== 'lobby') void listSaves().then((saves) => (this.saves = saves));
