@@ -24,6 +24,8 @@ Abnahmen am Gerät (`Agent: Mensch`) sammelt das Projekt ABN im Sprint HW1: [`..
 | WZ4 | DEV | WZG | Splitter-Test in DOM-Umgebung | – | Entwurf | `geplant/WZ4-lint-splitter-test/` |
 | BD1 | CLI | BED | Kamera, Beitritts-Hinweis, Overlay-Taste und HUD-Nachträge | – | Entwurf | `geplant/BD1-hud-overlay-nachtraege/` |
 | BD2 | SIM, SRV, CLI | BED | Rückmeldungs-Ereignisse gedrosselt und geprüft, Lobby startet nie still leer | – | Entwurf | `geplant/BD2-rueckmeldung-lobby-nachtraege/` |
+| BD3 | SRV | BED | Raum-Pause im Couch-Raum, Schutz des pausierten Monarchen online | – | Entwurf | `geplant/BD3-raum-pause/` |
+| BD4 | CLI | BED | Gemeinsame HUD-Leiste oben, Fluss unten, lokale Spieler treten einzeln aus | – | Entwurf | `geplant/BD4-hud-leiste-austreten/` |
 | GR8 | CLI | GRA | Eigene Figuren für neue Gegner und Grafik-Pipeline mit Ziel-Palette | – | Entwurf | `geplant/GR8-figuren-pipeline/` |
 | PM1 | CLI | LST | Leistung messen: Diagnose-Zeile und Performance-Modus | – | Entwurf | `geplant/PM1-leistung-messen/` |
 | PF1 | CLI | LST | Split-Screen flüssig auf der Xbox | Zwei Spieler im Split-Screen ohne sichtbares Ruckeln auf der Xbox | bereit | `geplant/PF1-splitscreen-leistung/` |

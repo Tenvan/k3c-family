@@ -4,9 +4,9 @@
 - **Typ:** Idee
 - **Prio:** mittel
 - **Umgebung:** ?
-- **Status:** offen
-- **Sprint:** –
-- **Projekt:** WRT
+- **Status:** eingeplant
+- **Sprint:** BD4
+- **Projekt:** BED
 - **Erstellt:** 2026-10-11
 - **Spec:** Entwurf
 - **Revision:** 1

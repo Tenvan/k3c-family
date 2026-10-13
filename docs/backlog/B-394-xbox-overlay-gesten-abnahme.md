@@ -4,8 +4,8 @@
 - **Typ:** Frage
 - **Prio:** niedrig
 - **Umgebung:** live
-- **Status:** offen
-- **Sprint:** –
+- **Status:** eingeplant
+- **Sprint:** HW1
 - **Projekt:** ABN
 - **Erstellt:** 2026-10-10
 - **Spec:** Entwurf
