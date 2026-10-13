@@ -4,8 +4,8 @@
 - **Typ:** Schuld
 - **Prio:** niedrig
 - **Umgebung:** offline
-- **Status:** offen
-- **Sprint:** –
+- **Status:** eingeplant
+- **Sprint:** GR8
 - **Projekt:** GRA
 - **Erstellt:** 2026-10-06
 - **Spec:** Entwurf

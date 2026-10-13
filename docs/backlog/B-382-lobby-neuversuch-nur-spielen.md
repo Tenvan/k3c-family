@@ -4,8 +4,8 @@
 - **Typ:** Problem
 - **Prio:** niedrig
 - **Umgebung:** offline
-- **Status:** offen
-- **Sprint:** –
+- **Status:** eingeplant
+- **Sprint:** BD2
 - **Projekt:** BED
 - **Erstellt:** 2026-10-10
 - **Spec:** Entwurf

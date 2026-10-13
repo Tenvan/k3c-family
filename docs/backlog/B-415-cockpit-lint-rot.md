@@ -4,9 +4,9 @@
 - **Typ:** Problem
 - **Prio:** hoch
 - **Umgebung:** offline
-- **Status:** offen
-- **Sprint:** –
-- **Projekt:** REL
+- **Status:** eingeplant
+- **Sprint:** WZ4
+- **Projekt:** WZG
 - **Erstellt:** 2026-10-12
 - **Spec:** Entwurf
 - **Revision:** 1

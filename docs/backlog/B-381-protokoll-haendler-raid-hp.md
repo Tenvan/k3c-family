@@ -4,8 +4,8 @@
 - **Typ:** Problem
 - **Prio:** niedrig
 - **Umgebung:** offline
-- **Status:** offen
-- **Sprint:** –
+- **Status:** eingeplant
+- **Sprint:** KB2
 - **Projekt:** KMP
 - **Erstellt:** 2026-10-09
 - **Spec:** Entwurf

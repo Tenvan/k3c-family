@@ -4,8 +4,8 @@
 - **Typ:** Frage
 - **Prio:** niedrig
 - **Umgebung:** offline
-- **Status:** offen
-- **Sprint:** –
+- **Status:** eingeplant
+- **Sprint:** BD1
 - **Projekt:** BED
 - **Erstellt:** 2026-10-09
 - **Spec:** Entwurf

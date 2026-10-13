@@ -23,6 +23,8 @@ In Abarbeitungs-Reihenfolge; der erste nicht erledigte Sprint ist der nächste. 
 | LB1 | Lobby zeigt Räume und startet Spiele | erledigt |
 | AZ1 | Tasten von Spieler 2 an der Tastatur, Pause-Anzeige | erledigt |
 | GL1 | Landingpage in der gewählten Sprache | erledigt |
+| BD1 | Kamera, Beitritts-Hinweis, Overlay-Taste und HUD-Nachträge | geplant |
+| BD2 | Rückmeldungs-Ereignisse gedrosselt und geprüft, Lobby startet nie still leer | geplant |
 
 ## Nicht-Ziele
 
