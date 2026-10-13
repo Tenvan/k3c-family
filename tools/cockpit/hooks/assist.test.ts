@@ -94,6 +94,15 @@ test('Band: wiederholter Fehler zeigt Schleifen-Warnung, der Knopf schlägt eine
   await band.press({ key: 'loop-fix' })
   for (let i = 0; i < 100 && filled.length === 0; i++) await Promise.resolve()
   expect(filled[0]).toContain('anderen Ansatz')
+
+  // Ignorieren: Warnung verschwindet und kommt für dasselbe Ziel nicht wieder.
+  const warn = /Schleife\? Bash → npm test/
+  await band.press({ key: 'loop-ignore' })
+  for (let i = 0; i < 100 && (await band.find({ text: warn })) !== undefined; i++) await Promise.resolve()
+  expect(await band.find({ text: warn })).toBe(undefined)
+  await $.tool.call({ tool: 'Bash', tool_use_id: 'b-again', input: { command: 'npm test' } } as never)
+  for (let i = 0; i < 20; i++) await Promise.resolve()
+  expect(await band.find({ text: warn })).toBe(undefined)
 })
 
 test('Agent-Bremse: teurer Subagent bekommt den Knopf, danach werden seine Tool-Calls abgelehnt', async ($, on) => {
@@ -113,10 +122,11 @@ test('Agent-Bremse: teurer Subagent bekommt den Knopf, danach werden seine Tool-
   expect(main.deny).toBe(undefined)
 })
 
-test('Features: Knopf hinter der Legende schreibt /cockpit-features ins Eingabefeld', async ($, on) => {
+test('Features: Minibutton in der Band-Kopfzeile schreibt /cockpit-features ins Eingabefeld', async ($, on) => {
   mock.clock(on, { now: H })
   on('session.measure', () => ({ changed: [] }))
   on('ui.render', { component: 'AbovePrompt' }, () => ({ type: 'Box' as const }))
+  on('ui.render', { component: 'SessionMode' }, () => ({ type: 'Text' as const, text: '' }) as never)
   const filled: string[] = []
   on('prompt.fill', ($, e) => {
     filled.push(e.text)

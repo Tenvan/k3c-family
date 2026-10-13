@@ -11,7 +11,7 @@ Colors from the dark tokens of the design system. It has no pattern for loading 
 | Line | Part | Token | Color |
 | --- | --- | --- | --- |
 | Working line | ⠋ Requesting | `--text-secondary` | `#aeb2ba` |
-| Working line | ⠋ Thinking | `--text-link` (`--om-blue-400`) | `#8eadfd` |
+| Working line | ⠋ Thinking | `--text-link` | `#8eadfd` |
 | Working line | ⠋ Responding | `--status-success-fg` | `#89c958` |
 | Working line | ⠋ Tool | `--status-warning` | `#e8b641` |
 | Working line | Step (e.g. "Creating notes.md") | `--text-secondary` | `#aeb2ba` |

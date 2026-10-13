@@ -4,7 +4,7 @@
 - **Projekt:** KMP
 - **Domäne:** SRV, CLI
 - **Reife:** Entwurf
-- **Tickets:** B-385, B-344, B-381, B-386, B-324
+- **Tickets:** B-385, B-344, B-381, B-386, B-324, B-080
 - **Start-Commit:** – (wird beim Aktivieren gesetzt: `git rev-parse --short origin/develop`)
 - **Spec:** Entwurf
 - **Revision:** 1
@@ -48,6 +48,7 @@ Spieler verlässt den Raum nach Game Over → kein Speichern über den letzten S
 - **AC-02** Der Raum speichert nach „Komplett verloren“ nicht mehr (B-344).
 - **AC-03** `docs/protocol.md`, `src/model/types.ts` und das Beispiel beschreiben `merchant.raid` und die Händler-HP; die Entscheidung zu Q08 (B-386) steht im Protokoll (B-381, B-386).
 - **AC-04** `src/model/data.ts` kennt alle Felder aus `enemies.json` und `waves.json` ohne `as unknown as` (B-324).
+- **AC-05** Go-Tests belegen: Eine Dev-Aktion ist im nächsten `delta` sichtbar, der Gradwechsel wirkt ab der nächsten Welle und wird ohne Dev-Mode abgelehnt (B-080/AC-01, B-080/AC-02). KB2.6 beim Bereitmachen vor das Review ordnen.
 
 ## Offene Fragen
 
@@ -62,6 +63,7 @@ B-386 (🧑): Gilt das Netz-Budget Q08 (≤ 200 Byte je Tick und Client) für de
 | KB2.3 | `KB2.3-haendler-protokoll.md` | Umsetzung | autonom | offen |
 | KB2.4 | `KB2.4-client-typen-gegner.md` | Umsetzung | autonom | offen |
 | KB2.5 | `KB2.5-review.md` | Review | autonom | offen |
+| KB2.6 | `KB2.6-dev-aktion-grad-nachweis.md` | Umsetzung | autonom | offen |
 
 Bei `Reife: Entwurf` genügen Stichpunkte mit den Kriterien in Klammern statt Session-Dateien. Vor dem Aktivieren
 wird jede Session als eigene Datei nach `docs/vorlagen/session.md` geschrieben.

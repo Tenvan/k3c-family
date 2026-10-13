@@ -4,7 +4,7 @@
 - **Projekt:** ABN
 - **Domäne:** PLAT, SRV, INF, CLI
 - **Reife:** Entwurf
-- **Tickets:** B-314, B-042, B-090, B-092, B-335
+- **Tickets:** B-314, B-042, B-090, B-092, B-335, B-394
 - **Start-Commit:** –
 - **Spec:** Entwurf
 - **Revision:** 1
@@ -52,6 +52,7 @@ Punkt scheitert → Ticket, Sprint der Session bleibt aktiv.
 - **AC-06** RL1/AC-03 am Gerät: Pi-Image-Pull und Version am Pi und auf der Xbox (aus RL1.2, PJ3).
 - **AC-07** SO1/AC-04 am TV: Entsperren, Format mit Fallback und Dämpfung im Split-Screen (aus SO1.5, PJ3).
 - **AC-08** SO3/AC-03 und SO3/AC-04 am TV: Bedienung der Hörprobenseite und Crossfade ohne Knacken (aus SO3.3, PJ3).
+- **AC-09** B-195/AC-02 an der Xbox: Diagnose (RB 3 s) und Cheat-Dialog (LB + RB) mit dem Controller geöffnet und geschlossen (B-394/AC-01, aus PL1.5).
 
 ## Offene Fragen
 
@@ -68,6 +69,7 @@ keine
 | HW1.7 | `HW1.7-release-geraet.md` | Workshop | Mensch | offen |
 | HW1.8 | `HW1.8-audio-tv.md` | Workshop | Mensch | offen |
 | HW1.9 | `HW1.9-hoerprobe-tv.md` | Workshop | Mensch | offen |
+| HW1.10 | `HW1.10-overlay-gesten-xbox.md` | Workshop | Mensch | offen |
 
 Entwurf. Vor dem Aktivieren jede Session als Datei nach `docs/vorlagen/session.md` schreiben, die Kriterien in Klammern werden ihr Feld `Kriterien`.
 

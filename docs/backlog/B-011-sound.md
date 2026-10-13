@@ -4,8 +4,8 @@
 - **Typ:** Idee
 - **Prio:** mittel
 - **Umgebung:** live
-- **Status:** offen
-- **Sprint:** –
+- **Status:** eingeplant
+- **Sprint:** SO2
 - **Projekt:** SND
 - **Erstellt:** 2026-09-29
 - **Spec:** freigegeben

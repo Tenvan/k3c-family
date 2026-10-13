@@ -151,12 +151,13 @@ test('Einstellungsseite: „Alle aus“ einer Gruppe und Zurücksetzen', async (
   // Gruppen in Reihenfolge des ersten Schalters: Band, Panel, Zusammenfassung, Chat
   await page.press({ key: 'grp-off-1' })
   for (let i = 0; i < 3000 && (await main.find({ type: 'Text', text: 'Übersicht' })) !== undefined; i++) await Promise.resolve()
-  expect(await waitFind(page, '0/9 an')).not.toBe(undefined)
+  expect(await waitFind(page, '0/10 an')).not.toBe(undefined)
   for (const card of ['Übersicht', 'Log', 'Letzter Turn']) expect(await main.find({ type: 'Text', text: card })).toBe(undefined)
 
   await page.press({ key: 'set-reset' })
-  expect(await waitFind(page, '9/9 an')).not.toBe(undefined)
-  expect(await page.find({ type: 'Text', text: '7/7 an' })).not.toBe(undefined)
+  expect(await waitFind(page, '10/10 an')).not.toBe(undefined)
+  // Band: Auto-Effort und Sparmodus sind standardmäßig aus, die Atemübung an
+  expect(await page.find({ type: 'Text', text: '11/13 an' })).not.toBe(undefined)
   expect(await waitFind(main, 'Übersicht')).not.toBe(undefined)
 })
 
@@ -174,4 +175,43 @@ test('Panel: Modellzeile unter dem Titel mit Modell und Claude-Code-Version', as
   for (let i = 0; i < 200; i++) await Promise.resolve()
   const pane = await $.ui.mount({ plugin: 'tenvan-cc', surface: 'desktop', component: 'Pane', requestId: 'tenvan-cc', props: PANE_PROPS })
   expect(await pane.find({ type: 'Text', text: /Opus 5\.5 \(claude-opus-5-5\).*Claude Code 2\.1\.295/ })).not.toBe(undefined)
+})
+
+test('Dev-Mode: /cockpit-dev füllt das Panel mit Mockdaten und schaltet zurück', async ($, on) => {
+  mock.clock(on, { now: Date.UTC(2026, 9, 13, 10) })
+  on('session.measure', () => ({ changed: [] }))
+  on('store.get', () => ({ value: undefined }) as never)
+  on('store.set', () => ({}) as never)
+  on('ui.open', () => ({ value: { isPlaced: true as const } }))
+  const pane = await $.ui.mount({ plugin: 'tenvan-cc', surface: 'desktop', component: 'Pane', requestId: 'tenvan-cc', props: PANE_PROPS })
+  const settle = async (done: () => Promise<boolean>) => {
+    for (let i = 0; i < 100 && !(await done()); i++) await Promise.resolve()
+  }
+  const badge = () => pane.find({ type: 'Text', text: ' DEV · Mockdaten ' })
+  expect(await badge()).toBe(undefined)
+  expect(JSON.stringify(await $.command.run({ command: 'cockpit-dev', args: '' } as never))).toContain('Dev-Mode an')
+  await settle(async () => (await badge()) !== undefined)
+  expect(await badge()).not.toBe(undefined)
+  expect(await pane.find({ type: 'Text', text: 'feature/dev-mock' })).not.toBe(undefined)
+  expect(JSON.stringify(await pane.find({ type: 'Button', key: 'wd-mr-open' }))).toContain('!42')
+  // Kachel „Build und Release-Check“: 10 Zeilen Befehl + Ergebnis, 7 sichtbar, Rest als Hinweis.
+  expect(await pane.find({ type: 'Text', text: '… +3 Zeilen' })).not.toBe(undefined)
+  await $.command.run({ command: 'cockpit-dev', args: '' } as never)
+  await settle(async () => (await badge()) === undefined)
+  expect(await badge()).toBe(undefined)
+})
+
+test('MR-Panel und Fußzeilen-Knopf im Dev-Mode', async ($, on) => {
+  mock.clock(on, { now: Date.UTC(2026, 9, 13, 10) })
+  on('session.measure', () => ({ changed: [] }))
+  on('store.get', () => ({ value: undefined }) as never)
+  on('store.set', () => ({}) as never)
+  on('ui.open', () => ({ value: { isPlaced: true as const } }))
+  await $.command.run({ command: 'cockpit-dev', args: '' } as never)
+  const pane = await $.ui.mount({ plugin: 'tenvan-cc', surface: 'desktop', component: 'Pane', requestId: 'tenvan-cc-mr', props: { ...PANE_PROPS, title: 'Cockpit · Merge Requests' } })
+  expect(await pane.find({ type: 'Text', text: 'Offene Threads' })).not.toBe(undefined)
+  expect(await pane.find({ type: 'Button', key: 'mr-a-rebase' })).not.toBe(undefined)
+  const foot = await $.ui.mount({ plugin: 'tenvan-cc', surface: 'desktop', component: 'SessionMode', props: { modes: [] } as never })
+  expect(JSON.stringify(await foot.find({ type: 'Button', key: 'mr-foot' }))).toContain('!42')
+  expect(await foot.find({ type: 'Button', key: 'details' })).not.toBe(undefined)
 })
