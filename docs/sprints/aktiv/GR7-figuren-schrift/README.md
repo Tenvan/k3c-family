@@ -74,5 +74,5 @@ Keine passende Figur → Lücke bleibt mit Ticket, Platzhalter-Rückfall.
 
 - 2026-10-13, Review GR7.5 (Diff des gemergten PR #279): keine schweren Befunde; AC-03, AC-04, AC-05 geprüft (Ergebnisse GR7.1, GR7.2, Test `mountData.test.ts`).
 - AC-01, AC-02: angenommen, Validierung offen (GR7.3, GR7.4); B-193, B-251 und B-320 (Sichtprüfung) bleiben `eingeplant`; B-197 und B-198 erledigt.
-- Lint und Cockpit-Tests rot durch `tools/cockpit/` aus PR #278 (B-415), nicht durch GR7.
+- Lint und Cockpit-Tests waren rot durch `tools/cockpit/` aus PR #278, nicht durch GR7; behoben mit B-415 (Mod aus Lint und Vitest ausgenommen), `task check` grün.
 - Version: v0.17.0 vorgeschlagen (Minor: Wirkung im Client, Schrift und Reiter; letzter Tag v0.16.0), gesetzt erst nach Bestätigung durch 🧑.

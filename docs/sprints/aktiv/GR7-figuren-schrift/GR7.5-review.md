@@ -53,10 +53,10 @@ task check:go
 
 **Fertig (2026-10-13).** Abweichung vom Plan: Der Sprint-PR [#279](https://github.com/tenvan/k3c-family/pull/279) war schon vor dem Review in `develop` gemergt (Squash `79992b24`); es gab keinen Branch `origin/sprint/gr7`. Geprüft wurde deshalb `git diff 79992b24^ 79992b24`, der Abnahme-Commit geht als kleiner Folge-PR auf `develop`.
 
-- **Prüfläufe:** `task check:go` grün. `task typecheck` grün. `npx vitest run`: 2171 Tests grün, 6 Testdateien rot, **alle** unter `tools/cockpit/hooks/` (Paket `claude-code/testing` fehlt). `task lint`: 22 Fehler, **keine** in `src/scenes/`, `data/` oder `tools/k3c-dev/`, sondern in `tools/cockpit/` und fünf Werkzeug-Seiten unter `src/tools/`. Ursache aus PR #278, nicht aus GR7: Ticket B-415 (um die rote Testdatei-Liste ergänzt).
+- **Prüfläufe:** `task check:go` grün. `task typecheck` grün. `npx vitest run`: 2171 Tests grün, 6 Testdateien rot, **alle** unter `tools/cockpit/hooks/` (Paket `claude-code/testing` fehlt). `task lint`: 22 Fehler, **keine** in `src/scenes/`, `data/` oder `tools/k3c-dev/`, sondern in `tools/cockpit/` und fünf Werkzeug-Seiten unter `src/tools/`. Ursache aus PR #278, nicht aus GR7; im Folgecommit mit B-415 behoben (`tools/cockpit` aus Lint und Vitest ausgenommen, `task check` grün).
 - **Diff-Befunde:** keine schweren. `cameraFilter` der Stufen-Texte wird nur auf Text-Objekten gesetzt, das Ausblenden je Kamera läuft weiter über die Layer (`showOnly`); `Math.random()` nirgends; `GameScene.ts` bleibt unter der Grenze (409 Zeilen mit Kommentaren, 400 ohne); `proc.Command` ersetzt `exec.Command("git")`, Test sichert das.
 - **AC-03 geprüft:** Rolle `placeholder` in `FONTS`, `stageView.ts` ohne lose Größe, `fontRules.test.ts` grün (GR7.1).
 - **AC-04 geprüft:** `bedienung.md` § 2 und `minFontPx` (`null` für `partner`) nennen dieselbe Regel (Beschluss 🧑 2026-10-12), Test grün (GR7.1).
 - **AC-05 geprüft (Test):** `mountData.test.ts` mit Grenze 4 px, nur `run[2]` (Sammelphase, +2 px) begründet ausgenommen, wie B-320/AC-01 es zulässt. Sichtprüfung B-320/AC-02 bleibt bei 🧑.
 - **AC-01 und AC-02:** angenommen, Validierung offen (GR7.3 bzw. GR7.4, Agent: Mensch).
-- **Neue Tickets:** keine; B-415 ergänzt.
+- **Neue Tickets:** keine.

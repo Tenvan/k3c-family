@@ -4,7 +4,7 @@
 - **Typ:** Problem
 - **Prio:** hoch
 - **Umgebung:** offline
-- **Status:** offen
+- **Status:** erledigt
 - **Sprint:** –
 - **Projekt:** REL
 - **Erstellt:** 2026-10-12
@@ -55,4 +55,4 @@ Entscheidung, betroffener Umfang, wer entscheidet (🧑). Sonst `keine`.
 
 ## Notizen
 
-Links, Messwerte, verworfene Ansätze. Darf leer bleiben (`–`).
+2026-10-13: `tools/cockpit` ist ein Claude-Code-Mod mit eigener Toolchain (`claude plugin validate` und `claude plugin test`; `claude-code/testing` liefert nur der Host) und kein Spiel-Code. Es steht deshalb wie `.claude` in `ignorePatterns` von `.oxlintrc.json` und im `test.exclude` von `vite.config.ts`. `task check` ist grün (Lint ohne Fehler, 2171 Tests). Der Mod selbst blieb unverändert; seine Grenzen (`register.tsx` 1455 Zeilen) gelten für ihn nicht. Prüfen des Mods bleibt bei `claude plugin test` laut `tools/cockpit/DEVELOPMENT.md`.

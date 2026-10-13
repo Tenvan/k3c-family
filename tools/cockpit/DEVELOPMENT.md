@@ -41,6 +41,16 @@ npx -y -p typescript@5.6.3 tsc -p <scratchpad>/tsconfig.json
 
 Nach Änderungen am Manifest zusätzlich im Repo-Root `npm run validate` und `npm run registry:build`. Achtung: `registry:build -- --fix` sortiert alle Marketplace-Einträge um. Neue Einträge deshalb von Hand ans Ende setzen und nur ohne `--fix` prüfen.
 
+## Warum nicht Vitest
+
+Die Tests dieses Ordners laufen **nur** mit `claude plugin test tools/cockpit`, nicht mit dem Vitest des Spiel-Projekts:
+
+- Jede `*.test.ts` importiert `expect`, `mock` und `test` aus `claude-code/testing`. Das ist ein Modul des Hosts (Claude Code), kein npm-Paket; es existiert nur im Prozess von `claude plugin test`. Unter Vitest bricht jede Datei in Zeile 1 mit `Cannot find package 'claude-code/testing'` ab, es läuft kein Test.
+- Ein Stub für `claude-code/testing` würde `mock` und die Host-Stubs nachbauen und belegte dann nur den Stub, nicht das Mod. Deshalb gibt es keinen.
+- Das Mod hat Host-Grenzen und eine eigene Toolchain (`claude plugin validate`, `claude plugin test`, eigener Typecheck, siehe oben). Die Budgets des Spiels (400 Zeilen je Datei, 60 je Funktion, Komplexität 15) gelten hier nicht.
+
+Deshalb steht `tools/cockpit` in `ignorePatterns` von `.oxlintrc.json` und im `test.exclude` von `vite.config.ts` (B-415); `task check` prüft das Mod nicht. Vor jedem Abschluss gelten die Befehle unter „Prüfen“. Stand 2026-10-13: `claude plugin test tools/cockpit` 108 von 108 grün (6 Dateien).
+
 ## Fallstricke der Mod-API (alle schon einmal aufgetreten)
 
 - **Atom-Refs nur mit Literalen**: `atom({ plugin: 'tenvan-cc', key: '…' } as const, init)`. Eine Konstante wie `PLUGIN` statt `'tenvan-cc'` lehnt `validate` ab.
