@@ -14,7 +14,8 @@
 
 ## Ausgangslage
 
-Nach dem Merge von `origin/develop` (PR #278, Cockpit-Plugin als Rohfassung) meldet `task lint` im Worktree 21 Fehler und 10 Warnungen, u. a. `tools/cockpit/hooks/core.ts` mit 570 Zeilen (Grenze 400, `max-lines`) und `src/tools/soundtest.ts:117` (`no-unused-expressions`). `task check` ist damit rot, ohne dass ein Sprint-Commit die Ursache wäre. Ungeprüft: ob die Fehler schon auf `develop` bestehen oder nur im Worktree auftreten (dort fehlen installierte Pakete in `tools/k3c-dev/frontend`).
+Nach dem Merge von `origin/develop` (PR #278, Cockpit-Plugin als Rohfassung) meldet `task lint` 22 Fehler und 11 Warnungen, u. a. `tools/cockpit/hooks/core.ts` mit 570 Zeilen (Grenze 400, `max-lines`), `tools/cockpit/hooks/register.tsx` (14 Treffer) und je ein Treffer in fünf Seiten unter `src/tools/` (z. B. `soundtest.ts`, `gamepadTest.ts`). `task check` ist damit rot, ohne dass ein Sprint-Commit die Ursache wäre.
+Bestätigt am 2026-10-13 (GR7.5) direkt auf `develop`, nicht nur im Worktree. Zusätzlich scheitern 6 Testdateien unter `tools/cockpit/hooks/` (`assist`, `mermaid`, `panel`, `register`, `settings`, `skins`) mit „Cannot find package 'claude-code/testing'“; alle 2171 übrigen Tests sind grün.
 
 ## Ziel
 

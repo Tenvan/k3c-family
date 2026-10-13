@@ -62,7 +62,7 @@ Keine passende Figur → Lücke bleibt mit Ticket, Platzhalter-Rückfall.
 | GR7.2 | `GR7.2-sattelsitz.md` | Umsetzung | autonom | fertig |
 | GR7.3 | `GR7.3-figuren-kandidaten.md` | Workshop | Mensch | offen |
 | GR7.4 | `GR7.4-skalierung-tv.md` | Umsetzung | Mensch | offen |
-| GR7.5 | `GR7.5-review.md` | Review | autonom | offen |
+| GR7.5 | `GR7.5-review.md` | Review | autonom | fertig |
 
 - GR7.1 Platzhaltertext aus dem Katalog, Regel für die Mitspieler-Zelle (AC-03, AC-04).
 - GR7.2 Sattelsitz des Reiters beim Laufen und Sprinten (AC-05).
@@ -72,4 +72,7 @@ Keine passende Figur → Lücke bleibt mit Ticket, Platzhalter-Rückfall.
 
 ## Abnahme
 
-–
+- 2026-10-13, Review GR7.5 (Diff des gemergten PR #279): keine schweren Befunde; AC-03, AC-04, AC-05 geprüft (Ergebnisse GR7.1, GR7.2, Test `mountData.test.ts`).
+- AC-01, AC-02: angenommen, Validierung offen (GR7.3, GR7.4); B-193, B-251 und B-320 (Sichtprüfung) bleiben `eingeplant`; B-197 und B-198 erledigt.
+- Lint und Cockpit-Tests rot durch `tools/cockpit/` aus PR #278 (B-415), nicht durch GR7.
+- Version: v0.17.0 vorgeschlagen (Minor: Wirkung im Client, Schrift und Reiter; letzter Tag v0.16.0), gesetzt erst nach Bestätigung durch 🧑.
