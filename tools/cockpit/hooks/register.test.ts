@@ -1,6 +1,6 @@
 import { expect, mock, test } from 'claude-code/testing'
 
-import { THEME, spinnerText, contextTip, limitTip, cacheTip, RISKY_GIT_CONFIG, paceText, shortHash, toolInfoLines, cacheHitPct, cacheLeftMs, pace, breakdownTitle, contextColor, oneLine, parseRepo, parseSteps, repoRows, repoShort, svgSource, toBreakdown, breakdownBarSvg, ringSvg, spinner, title, titleText, toolKind, toolTarget } from './core'
+import { THEME, TINT, spinnerText, contextTip, limitTip, cacheTip, RISKY_GIT_CONFIG, paceText, shortHash, toolInfoLines, cacheHitPct, cacheLeftMs, pace, breakdownTitle, contextColor, oneLine, parseRepo, parseSteps, repoRows, repoShort, svgSource, toBreakdown, breakdownBarSvg, ringSvg, spinner, title, titleText, toolKind, toolTarget } from './core'
 
 const H = 3600_000
 const MEASURE = {
@@ -10,6 +10,21 @@ const MEASURE = {
   changed: [],
 }
 const BAND = { plugin: 'tenvan-cc', component: 'AbovePrompt', props: { hasSurvey: false, isWorking: false, maxRows: 3, bodyColumns: 120, scroll: { offset: 0, bodyRows: 3 }, view: {} } } as const
+
+const SUMMARY = { role: 'user' as const, text: 'Zusammenfassung', toolUses: [] }
+
+test('Nach /compact liest das Band den Kontext neu, ohne auf die nächste Messung zu warten', async ($, on) => {
+  mock.clock(on, { now: H })
+  on('session.measure', () => ({ changed: [] }))
+  on('ui.render', { component: 'AbovePrompt' }, () => ({ type: 'Box' as const }))
+  on('session.compact', () => ({ messages: [SUMMARY] }))
+  on('session.usage', () => ({ value: { startedAt: 0, context: { window: 200_000, tokens: 20_000, percent: 10 }, rateLimits: [] } }) as never)
+  await $.session.measure({ ...MEASURE, context: { tokens: 180_000, window: 200_000, percent: 90 } })
+  await $.session.compact({ trigger: 'manual', messages: [SUMMARY, SUMMARY] })
+  const band = await $.ui.mount({ ...BAND, surface: 'desktop' })
+  for (let i = 0; i < 100 && !JSON.stringify(await band.find({ key: 'compact-pill' })).includes(TINT.success); i++) await Promise.resolve()
+  expect(JSON.stringify(await band.find({ key: 'compact-pill' }))).toContain(`"backgroundColor":"${TINT.success}"`)
+})
 
 test('Takt: 80 % nach 1 von 5 Stunden liegt 60 Punkte vor', () => {
   expect(pace({ kind: 'five_hour', percentUsed: 80, resetsAt: new Date(4 * H).toISOString() }, 0)).toBe(60)
@@ -32,6 +47,7 @@ test('Band zeichnet nur auf desktop, Details öffnet das Panel', async ($, on) =
   on('session.measure', () => ({ changed: [] }))
   // Steht für das Engine-eigene Band: leer.
   on('ui.render', { component: 'AbovePrompt' }, () => ({ type: 'Box' as const }))
+  on('ui.render', { component: 'SessionMode' }, () => ({ type: 'Text' as const, text: '' }) as never)
   await $.session.measure(MEASURE)
 
   const terminal = await $.ui.mount({ ...BAND, surface: 'terminal' })
@@ -39,7 +55,11 @@ test('Band zeichnet nur auf desktop, Details öffnet das Panel', async ($, on) =
 
   const desktop = await $.ui.mount({ ...BAND, surface: 'desktop' })
   expect((await desktop.find({ text: /5h 80%/ }))?.text).toContain('5h 80%')
-  await desktop.press({ key: 'details' })
+  expect(await desktop.find({ key: 'details' })).toBe(undefined)
+
+  // Details steht mit dem Logo in der Fußzeile rechts unter dem Prompt (SessionMode).
+  const hint = await $.ui.mount({ plugin: 'tenvan-cc', surface: 'desktop', component: 'SessionMode', props: { modes: [] } })
+  await hint.press({ key: 'details' })
   expect(opened).toEqual(['tenvan-cc'])
 })
 
@@ -66,9 +86,9 @@ test('Panel zeichnet alle Abschnitte auf desktop', async ($, on) => {
   expect((await pane.find({ text: /40 Punkte schneller als die Zeit/ }))?.text).toContain('Reset')
 })
 
-test('parseSteps: JSON aus Freitext, max. 5, Label erst ab 80 Zeichen gekürzt, prompt-Fallback, Begründung', () => {
+test('parseSteps: JSON aus Freitext, max. 3, Label erst ab 80 Zeichen gekürzt, prompt-Fallback, Begründung', () => {
   const steps = parseSteps('Hier: [{"label":"Tests schreiben","why":"sichert den Parser ab"},{"label":"Eine sehr lange Beschriftung über dreißig Zeichen","prompt":"x"},{"label":""},{"label":"C"},{"label":"D"},{"label":"E"},{"label":"F"}]')
-  expect(steps).toHaveLength(5)
+  expect(steps).toHaveLength(3)
   expect(steps[0]?.why).toBe('sichert den Parser ab')
   expect(steps[1]?.why).toBe(undefined)
   expect(steps[0]).toEqual({ label: 'Tests schreiben', prompt: 'Tests schreiben', why: 'sichert den Parser ab' })
@@ -128,7 +148,7 @@ test('cacheHitPct: Anteil Cache-Lesen an der Eingabe', () => {
   expect(cacheHitPct(USAGE0)).toBe(null)
 })
 
-test('Ab 85 % Kontext hebt das Band Kompaktieren hervor; der Knopf schreibt /compact ins Eingabefeld', async ($, on) => {
+test('Ab 85 % Kontext tönt das Band Kompaktieren rot; der Knopf schreibt /compact ins Eingabefeld', async ($, on) => {
   mock.clock(on, { now: H })
   const filled: string[] = []
   on('session.measure', () => ({ changed: [] }))
@@ -139,7 +159,7 @@ test('Ab 85 % Kontext hebt das Band Kompaktieren hervor; der Knopf schreibt /com
   on('ui.render', { component: 'AbovePrompt' }, () => ({ type: 'Box' as const }))
   await $.session.measure({ ...MEASURE, context: { tokens: 180_000, window: 200_000, percent: 90 } })
   const band = await $.ui.mount({ ...BAND, surface: 'desktop' })
-  expect(JSON.stringify(await band.find({ key: 'compact' }))).toContain('"variant":"primary"')
+  expect(JSON.stringify(await band.find({ key: 'compact-pill' }))).toContain(`"backgroundColor":"${TINT.error}"`)
   await band.press({ key: 'compact' })
   for (let i = 0; i < 100 && filled.length === 0; i++) await Promise.resolve()
   expect(filled).toEqual(['/compact'])
@@ -177,10 +197,10 @@ test('Abgebrochener Turn: kein Vorschlag, Agent-Status über agent.list abgeglic
   expect(calls).toBe(0)
 })
 
-test('title: Version und Build-Stempel mit Uhrzeit', () => {
+test('title: Version ohne Build-Stempel', () => {
   expect(title(null)).toBe('Tenvan CC')
   expect(titleText(null)).toBe('Tenvan CC')
-  expect(title({ version: '0.3.0', builtAt: new Date(2026, 9, 12, 9, 5).getTime() })).toBe('Tenvan CC (Version 0.3.0, Build: 2026-10-12 09:05)')
+  expect(title({ version: '0.3.0', builtAt: new Date(2026, 9, 12, 9, 5).getTime() })).toBe('Tenvan CC (Version 0.3.0)')
 })
 
 test('Titelleiste in Band und Panel mit Version aus plugin.json', async ($, on) => {
@@ -193,24 +213,24 @@ test('Titelleiste in Band und Panel mit Version aus plugin.json', async ($, on) 
   on('ui.render', { component: 'AbovePrompt' }, () => ({ type: 'Box' as const }))
   await $.session.start({ cwd: '.', surface: 'desktop', isInteractive: true })
   await $.session.measure(MEASURE)
-  const expected = 'Tenvan CC (Version 9.9.9, Build: 2026-10-12 14:30)'
+  const expected = 'Tenvan CC (Version 9.9.9)'
   const band = await $.ui.mount({ ...BAND, surface: 'desktop' })
   expect((await band.find({ type: 'Text', text: expected }))?.text).toBe(expected)
   const pane = await $.ui.mount({ plugin: 'tenvan-cc', surface: 'desktop', component: 'Pane', requestId: 'tenvan-cc', props: PANE_PROPS })
   expect((await pane.find({ type: 'Text', text: expected }))?.text).toBe(expected)
 })
 
-test('Kompaktieren ist immer sichtbar, Legende nur im Band (Panel ohne Legende)', async ($, on) => {
+test('Kompaktieren ist immer sichtbar, Legende im Tooltip der Limit-Ringe (Panel ohne Legende)', async ($, on) => {
   mock.clock(on, { now: H })
   on('session.measure', () => ({ changed: [] }))
   on('ui.render', { component: 'AbovePrompt' }, () => ({ type: 'Box' as const }))
   await $.session.measure(MEASURE)
   const band = await $.ui.mount({ ...BAND, surface: 'desktop' })
   expect(await band.find({ key: 'compact' })).not.toBe(undefined)
-  const leg = JSON.stringify((await band.findAll({ type: 'Svg' })).find(x => JSON.stringify(x).includes('im Plan · zu schnell')))
-  expect(leg).toContain('im Plan · zu schnell · fast leer · Agents')
-  expect(leg).toContain('<title>🟩 im Plan – ')
+  const leg = JSON.stringify((await band.findAll({ type: 'Svg' })).find(x => JSON.stringify(x).includes('5-Stunden-Limit')))
+  expect(leg).toContain('🟩 im Plan – ')
   expect(leg).toContain('"isInteractive":true')
+  expect((await band.findAll({ type: 'Svg' })).some(x => JSON.stringify(x).includes('im Plan · zu schnell'))).toBe(false)
   const pane = await $.ui.mount({ plugin: 'tenvan-cc', surface: 'desktop', component: 'Pane', requestId: 'tenvan-cc', props: PANE_PROPS })
   expect(await pane.find({ type: 'Text', text: 'Legende' })).toBe(undefined)
 })
@@ -266,7 +286,7 @@ test('Ringdiagramm: Bogenlänge nach Prozent, Farbe nach Füllstand', () => {
   expect(full).toContain('stroke-dasharray="69.12 69.12"')
   expect(half).toContain('stroke-dasharray="34.56 69.12"')
   expect(ringSvg(0, '#fff')).not.toContain('stroke-dasharray')
-  expect([contextColor(10), contextColor(85), contextColor(95)]).toEqual(['accent', 'warning', 'error'])
+  expect([contextColor(10), contextColor(55), contextColor(75), contextColor(85)]).toEqual(['success', 'accent', 'warning', 'error'])
 })
 
 test('Band zeichnet Ringe für Kontext und Limits', async ($, on) => {
@@ -423,8 +443,8 @@ test('Band: Ring-Tooltips aus, solange ein Subagent läuft', async ($, on) => {
   on('agent.spawn', () => ({ model: 'm', agentId: 'a1' }))
   await $.session.measure(MEASURE)
   const band = await $.ui.mount({ ...BAND, surface: 'desktop' })
-  // Erstes Svg ist der Kontext-Ring: im Leerlauf interaktiv mit Tooltip als alt
-  const ring = async () => JSON.stringify((await band.findAll({ type: 'Svg' })).find(x => !JSON.stringify(x).includes('im Plan · zu schnell')))
+  // Kontext-Ring (25 %): im Leerlauf interaktiv mit Tooltip als alt, sonst nur Prozent
+  const ring = async () => JSON.stringify((await band.findAll({ type: 'Svg' })).find(x => /"alt":"(Kontextfenster|25 %)/.test(JSON.stringify(x))))
   expect(await ring()).toContain('"isInteractive":true')
   expect(await ring()).toContain('"alt":"Kontextfenster 50k / 200k (25 %)"')
 
@@ -432,7 +452,8 @@ test('Band: Ring-Tooltips aus, solange ein Subagent läuft', async ($, on) => {
   for (let i = 0; i < 3000 && (await ring()).includes('isInteractive'); i++) await Promise.resolve()
   expect(await ring()).not.toContain('isInteractive')
   expect(await ring()).toContain('"alt":"25 %"')
-  const leg = JSON.stringify((await band.findAll({ type: 'Svg' })).find(x => JSON.stringify(x).includes('im Plan · zu schnell')))
+  // Limit-Ring mit Legende im Tooltip ist dann ebenfalls nur Bild
+  const leg = JSON.stringify((await band.findAll({ type: 'Svg' })).find(x => JSON.stringify(x).includes('"alt":"80 %"')))
   expect(leg).not.toContain('"isInteractive":true')
 })
 
@@ -452,20 +473,4 @@ test('Farben: Band und Panel nutzen THEME, keinen Theme-Schlüssel claude', asyn
     expect(tree).toContain(THEME.accent)
   }
   expect(pane).toContain('Agent arbeitet')
-})
-
-test('Band: Knopf Skin-Demo schreibt /cockpit-demo ins Eingabefeld', async ($, on) => {
-  mock.clock(on, { now: H })
-  on('session.measure', () => ({ changed: [] }))
-  on('ui.render', { component: 'AbovePrompt' }, () => ({ type: 'Box' as const }))
-  const filled: string[] = []
-  on('prompt.fill', ($, e) => {
-    filled.push(e.text)
-    return { isFilled: true, box: { text: e.text, cursor: 0 } }
-  })
-  await $.session.measure(MEASURE)
-  const band = await $.ui.mount({ ...BAND, surface: 'desktop' })
-  await band.press({ key: 'demo' })
-  for (let i = 0; i < 100 && filled.length === 0; i++) await Promise.resolve()
-  expect(filled).toEqual(['/cockpit-demo'])
 })

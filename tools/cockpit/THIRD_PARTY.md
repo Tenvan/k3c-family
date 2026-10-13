@@ -32,3 +32,11 @@ SOFTWARE.
 ## claude-skins (hellosverre) und prismantis (Nahum Litvin, Oliver Wang)
 
 Die Chat-Skins von tenvan-cc (`hooks/skins.ts`, Zeichnung in `hooks/register.tsx`) übernehmen Ideen aus claude-skins (Tool-Symbole, Diff-Karte, Details mit Code-Element, Prompt-Rahmen, Hervorhebungen, Code- und Tabellenkarten, Mermaid-Karten, Formelkarten; Parser und Layout in `hooks/mermaid.ts` sind eigener Code) und prismantis (ruhige Ergebnisse, echte Fehlerzeile). Beide stehen unter der MIT-Lizenz (Copyright (c) 2026 hellosverre bzw. Copyright (c) 2026 Nahum Litvin). Der Code ist eine eigene Umsetzung; einzig `mdLiteral` folgt in der Technik (Satzzeichen per Backslash maskieren, führende Leerzeichen als geschützte Leerzeichen) der Funktion `literal` aus claude-skins `hooks/rows.tsx`. Lizenztext wie oben (MIT).
+
+## Mindful-Claude (Halluton)
+
+Die Atemübung im Band folgt der Idee von Mindful-Claude (https://github.com/halluton/Mindful-Claude, Stand 411c9c4): Atemübungen hrv, sigh, box und 4-7-8, solange Claude arbeitet, die Phase auch in der Arbeitszeile. Kein Code übernommen; die Umsetzung (`hooks/breath.ts`, SMIL-Svg statt Terminal-Client) ist eigen. Lizenz: MIT, Copyright (c) 2026 Halluton.
+
+## guided-mr (Alex Jacobs)
+
+Die Merge-Request-Funktion übernimmt Ideen aus guided-mr (https://github.com/alexjacobs08/guided-mr, Stand 46027a2): MRs über `glab` lesen, Status im Pane, Aktionen per Taste. Das Repo hat keine Lizenzdatei; es wurde kein Code übernommen, die Umsetzung (`hooks/mr.ts`, Teile in `hooks/register.tsx`) ist eigen.

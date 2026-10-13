@@ -1,6 +1,6 @@
 import { expect, test } from 'claude-code/testing'
 
-import { splitTool, toolText, parseTaskNotification, withClaude, modelLabel, timelineSvg, summaryLines, topRows, resetLabel, agentStats, agentFlags, DEFAULT_SETTINGS, SETTING_DEFS, settingHint, settingLabel, catchUpPrompt, catchUpSystem, fingerprint, formatMessage, nextChunk, settingsOf, startIndex } from './core'
+import { splitTool, toolText, parseTaskNotification, withClaude, modelLabel, timelineSvg, summaryLines, summarySections, topRows, resetLabel, agentStats, agentFlags, DEFAULT_SETTINGS, SETTING_DEFS, settingHint, settingLabel, catchUpPrompt, catchUpSystem, fingerprint, formatMessage, nextChunk, settingsOf, startIndex } from './core'
 import { STRINGS, t, type Key } from './i18n'
 
 type Msg = Parameters<typeof fingerprint>[0]
@@ -18,9 +18,9 @@ test('settingsOf: Standard, Teileingabe und leere Altzustände', () => {
   expect(settingsOf({ rings: false })).toEqual({ ...DEFAULT_SETTINGS, rings: false })
 })
 
-test('SETTING_DEFS: deckt alle Schalter außer lang genau einmal ab', () => {
+test('SETTING_DEFS: deckt alle Schalter außer lang und breathKey genau einmal ab', () => {
   const keys = SETTING_DEFS.map(d => d.key as string).sort()
-  expect(keys).toEqual(Object.keys(DEFAULT_SETTINGS).filter(k => k !== 'lang').sort())
+  expect(keys).toEqual(Object.keys(DEFAULT_SETTINGS).filter(k => k !== 'lang' && k !== 'breathKey').sort())
   const groups = ['band', 'panel', 'chat', 'skins', 'summary']
   for (const d of SETTING_DEFS) {
     for (const lang of ['de', 'en'] as const) {
@@ -162,12 +162,12 @@ test('modelLabel: lesbarer Name aus der Modell-ID, Unbekanntes bleibt', () => {
   expect(modelLabel('gpt-x')).toBe('gpt-x')
 })
 
-test('withClaude: Claudes Vorschlag vorn, gleicher Prompt nur einmal, höchstens 5', () => {
+test('withClaude: Claudes Vorschlag vorn, gleicher Prompt nur einmal, höchstens 3', () => {
   const s = (p: string) => ({ label: p, prompt: p })
   const hint = { label: 'Tests ausführen', prompt: 'Tests ausführen', why: 'Vorschlag von Claude' }
   const list = [s('Commit erstellen'), s('tests ausführen'), s('A'), s('B'), s('C')]
-  expect(withClaude(list, hint).map(x => x.prompt)).toEqual(['Tests ausführen', 'Commit erstellen', 'A', 'B', 'C'])
-  expect(withClaude(list, null)).toHaveLength(5)
+  expect(withClaude(list, hint).map(x => x.prompt)).toEqual(['Tests ausführen', 'Commit erstellen', 'A'])
+  expect(withClaude(list, null)).toHaveLength(3)
   expect(withClaude([], hint)).toEqual([hint])
 })
 
@@ -183,4 +183,10 @@ test('splitTool: MCP-Namen in Server und Tool, Plugin-Präfix gekürzt, eingebau
   expect(splitTool('mcp__plugin_oh-my-claudecode_t__lsp_hover')).toEqual({ server: 'oh-my-claudecode_t', tool: 'lsp_hover' })
   expect(splitTool('Bash')).toEqual({ server: null, tool: 'Bash' })
   expect(toolText('mcp__dev-workbench__plan_session')).toBe('dev-workbench › plan_session')
+})
+
+test('summarySections: Abschnitt je Überschrift, Vorspann ohne Titel', () => {
+  const s = summarySections(summaryLines('Vorspann\n## Ziel\n- a\n- b\n## Stand\ntext'))
+  expect(s.map(x => x.heading)).toEqual([undefined, 'Ziel', 'Stand'])
+  expect(s.map(x => x.lines.length)).toEqual([1, 2, 1])
 })

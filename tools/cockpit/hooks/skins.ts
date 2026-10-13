@@ -234,6 +234,7 @@ export type AlertKind = 'note' | 'tip' | 'important' | 'warning' | 'caution'
 export type Segment =
   | { kind: 'md'; text: string }
   | { kind: 'plain'; text: string }
+  | { kind: 'rich'; lines: RichLine[] }
   | { kind: 'code'; lang: string; source: string }
   | { kind: 'table'; source: string; rows: number; cols: number }
   | { kind: 'alert'; alert: AlertKind; text: string }
@@ -256,6 +257,39 @@ const TASK = /^\s*[-*+]\s+\[([ xX])\]\s/
 // Ein Absatz ohne jedes Markdown-Zeichen kann ohne Verlust als farbiger Text gezeichnet werden.
 const MD_SYNTAX = /[*_`#>|[\]<\\~]|:\/\/|^\s*([-+]|\d+[.)])\s/m
 
+// Einfaches Markdown (Listen, `code`, **fett**) zeichnet das Mod selbst: Das Markdown-Element färbt Inline-Code nicht,
+// die Chips der Antwort gingen sonst verloren. Alles darüber hinaus (Links, Überschriften, Zitate, Kursiv …) bleibt Markdown.
+export type RichPart = { text: string; code?: true; bold?: true }
+export type RichLine = { bullet?: string; indent: number; parts: RichPart[] }
+const RICH_BLOCKER = /^\s*#|^\s*>|\||<\/?[a-z]|\\|~|:\/\/|\]\(|(^|[^\w*])[*_][^\s*_]/m
+const LIST_ITEM = /^(\s*)([-*+]|\d+[.)])\s+(.*)$/
+
+export function richParts(text: string): RichPart[] {
+  const out: RichPart[] = []
+  for (const [i, chunk] of text.split(/`([^`\n]+)`/).entries()) {
+    if (i % 2 === 1) {
+      out.push({ text: chunk, code: true })
+      continue
+    }
+    for (const [j, piece] of chunk.split(/\*\*([^*\n]+)\*\*/).entries()) if (piece !== '') out.push(j % 2 === 1 ? { text: piece, bold: true } : { text: piece })
+  }
+  return out
+}
+
+// Absatz als Zeilen mit Aufzählungszeichen, oder null, wenn er Markdown braucht, das hier nicht gezeichnet wird.
+export function richBlock(para: string): RichLine[] | null {
+  const outside = para.replace(/`[^`\n]+`/g, 'x').replace(/\*\*[^*\n]+\*\*/g, 'x').replace(/^(\s*)[-*+]\s/gm, '$1  ')
+  if (/`/.test(outside) || RICH_BLOCKER.test(outside)) return null
+  const lines = para.split('\n').map((line): RichLine => {
+    const m = LIST_ITEM.exec(line)
+    if (!m) return { indent: 0, parts: richParts(line.trim()) }
+    const mark = m[2] ?? '-'
+    return { bullet: /\d/.test(mark) ? mark : '•', indent: Math.floor((m[1] ?? '').length / 2), parts: richParts(m[3] ?? '') }
+  })
+  // Fett, das Code umschließt (**a `b`**), lässt sich hier nicht zerlegen: dann lieber Markdown als sichtbare Sternchen.
+  return lines.some(l => l.parts.some(p => !p.code && p.text.includes('**'))) ? null : lines
+}
+
 // Zerlegt Markdown in Abschnitte. `cards`: Codeblöcke und Tabellen; `inline`: Hinweise, Aufgabenlisten, reine Absätze.
 // Ein offener Fence (Antwort streamt noch) bleibt Markdown, bis er geschlossen ist.
 export function splitMessage(text: string, o: SplitOptions): Segment[] {
@@ -270,8 +304,10 @@ export function splitMessage(text: string, o: SplitOptions): Segment[] {
     for (const para of md.split(/\n\s*\n/)) {
       if (para.trim() === '') continue
       const tokens = o.links ? linkTokens(para) : null
+      const rich = tokens === null && o.inline && MD_SYNTAX.test(para) ? richBlock(para) : null
       const last = out[out.length - 1]
       if (tokens !== null) out.push({ kind: 'links', tokens })
+      else if (rich !== null) out.push({ kind: 'rich', lines: rich })
       else if (o.inline && !MD_SYNTAX.test(para)) out.push({ kind: 'plain', text: para })
       else if (last?.kind === 'md') last.text += `\n\n${para}`
       else out.push({ kind: 'md', text: para })
@@ -358,9 +394,14 @@ export function splitMessage(text: string, o: SplitOptions): Segment[] {
   return out
 }
 
-// Lohnt eine eigene Zeichnung? Nur mit Karte, Hinweis, Aufgaben oder einem reinen Absatz, in dem etwas gefärbt wird.
+// Lohnt eine eigene Zeichnung? Nur mit Karte, Hinweis, Aufgaben oder einem reinen Absatz, in dem etwas gefärbt wird;
+// einfaches Markdown allein zeichnet die Engine (mit ihren Code-Chips) selbst.
 export const isStyled = (segs: readonly Segment[]): boolean =>
-  segs.some(s => (s.kind === 'plain' ? inlineTokens(s.text).some(p => p.tone !== undefined) : s.kind !== 'md'))
+  segs.some(s => (s.kind === 'plain' ? inlineTokens(s.text).some(p => p.tone !== undefined) : s.kind !== 'md' && s.kind !== 'rich'))
+
+// Inline-Code wie in der Antwort der Engine: rote Schrift auf dunklem Chip.
+export const CODE_FG = THEME.error
+export const CODE_BG = '#2b2e35'
 
 // Dateipfad eines Tool-Aufrufs aus dem tool.call-Event, für „in diesem Turn geändert“.
 export function inputPath(e: unknown): string {
@@ -543,5 +584,5 @@ export function mathSvg(text: string, width = 560): string {
   const w = Math.max(width, ...lines.map(l => l.length * 10 + 32))
   const h = lines.length * lineH + 16
   const body = lines.map((l, i) => `<text x="${w / 2}" y="${8 + (i + 1) * lineH - 7}" text-anchor="middle" xml:space="preserve">${esc(l)}</text>`).join('')
-  return `<svg xmlns="http://www.w3.org/2000/svg" width="${w}" height="${h}" viewBox="0 0 ${w} ${h}" font-family="Cambria Math, STIX Two Math, Times New Roman, serif" font-size="18" font-style="italic" fill="${THEME.orga}">${body}</svg>`
+  return `<svg xmlns="http://www.w3.org/2000/svg" width="${w}" height="${h}" viewBox="0 0 ${w} ${h}" font-family="Cambria Math, STIX Two Math, Times New Roman, serif" font-size="18" font-style="italic" fill="${THEME.white}">${body}</svg>`
 }

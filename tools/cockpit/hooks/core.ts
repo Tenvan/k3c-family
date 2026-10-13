@@ -5,24 +5,47 @@ import { t, type Key } from './i18n'
 // Alle Farben des Mods, fest eingetragen (kein Lesen externer Dateien zur Laufzeit): Primitive und dunkle Rollen eines
 // Dark-Design-Systems. Keine Theme-Schlüssel des Hosts ('claude', 'success' …): die färben in dessen Farben.
 export const THEME = {
-  accent: '#8eadfd', // om-blue-400 · --text-link / --border-focus: Akzent für Text und Rahmen
-  accentFill: '#4277fc', // om-blue-500 · --action-primary: Akzent für Flächen (Ringbögen, Balken)
-  info: '#8eadfd', // om-blue-400 · = accent
-  success: '#89c958', // om-green-500 · --status-success-fg
-  warning: '#e8b641', // om-amber-500 · --status-warning
-  error: '#fa6e6e', // om-red-400 · --status-error-fg
-  textSecondary: '#aeb2ba', // om-ink-300 · --text-secondary
-  textMuted: '#8c929c', // om-ink-400 · --text-muted
-  border: '#4a5565', // om-ink-600 · --border-default / --divider
-  chip: '#2f3a59', // om-navy-700: Grund der Nummern- und Typ-Chips
+  accent: '#8eadfd', // --text-link / --border-focus: Akzent für Text und Rahmen
+  accentFill: '#4277fc', // --action-primary: Akzent für Flächen (Ringbögen, Balken)
+  info: '#8eadfd', // = accent
+  success: '#89c958', // --status-success-fg
+  warning: '#e8b641', // --status-warning
+  error: '#fa6e6e', // --status-error-fg
+  textSecondary: '#aeb2ba', // --text-secondary
+  textMuted: '#8c929c', // --text-muted
+  border: '#4a5565', // --border-default / --divider
+  chip: '#2f3a59', // Grund der Nummern- und Typ-Chips
   max: '#82b1ff', // Hellblau für Suche und Versionsnummern
-  orga: '#ffffff', // reines Weiß auf dunklem Grund
+  white: '#ffffff', // reines Weiß auf dunklem Grund
   surface: '#222222', // Grund schwebender Hinweise
   violet: '#aa8ed6', // Agent-Symbol, Hinweis „Wichtig“; wie die fünfte Kategorie-Farbe
 } as const
 
 // Farbrolle → Farbe; die Rechenfunktionen liefern Rollen, gezeichnet wird mit THEME[rolle].
 export type Tone = 'accent' | 'success' | 'warning' | 'error'
+
+// Gedimmte Kartengründe im Panel statt Rahmen: je Rolle ein dunkler Ton, neutral für gewöhnliche Karten.
+export const TINT: Record<Tone | 'neutral', string> = {
+  neutral: '#262b33',
+  accent: '#1f2a44',
+  success: '#1f2c1c',
+  warning: '#33290f',
+  error: '#3a1f22',
+}
+
+// Gedimmte Gründe je Panel-Karte, im Wechsel kühl/warm, damit benachbarte Karten sich absetzen.
+export const CARD_TINT: Record<string, string> = {
+  cardWorkdir: '#232a3a', // Navy
+  cardContext: '#1e2e33', // Petrol
+  cardOverview: '#2a2538', // Indigo-Violett
+  cardTurn: '#1f2e2a', // Tannengrün
+  cardAgents: '#2d2733', // Pflaume
+  cardTasks: '#1f2b36', // Stahlblau
+  cardLog: '#2e2a24', // Sand
+}
+// Dieselben Töne als Folge für Seiten mit gleichartigen Karten (Einstellungen, Zusammenfassung): Karte i nimmt CARD_CYCLE[i % n].
+export const CARD_CYCLE: readonly string[] = ['#232a3a', '#1e2e33', '#2a2538', '#1f2e2a', '#2d2733', '#1f2b36', '#2e2a24']
+export const cycleTint = (i: number): string => CARD_CYCLE[i % CARD_CYCLE.length] as string
 
 const WINDOW_MS: Record<string, number> = {
   five_hour: 5 * 3600_000,
@@ -123,13 +146,9 @@ export function resetLabel(iso: string, now: number, lang: UiLang = 'de'): strin
   return d.getTime() - now >= 6 * 86400_000 ? `${base} (${date})` : base
 }
 
-// Titelleiste beider Flächen: „[Logo] Claude (Version x, Build: JJJJ-MM-TT hh:mm)“.
+// Titelleiste beider Flächen: „[Logo] Tenvan CC (Version x)“.
 export function titleText(about: About | null): string {
-  if (!about) return 'Tenvan CC'
-  const d = new Date(about.builtAt)
-  const pad = (n: number) => String(n).padStart(2, '0')
-  const stamp = `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())} ${pad(d.getHours())}:${pad(d.getMinutes())}`
-  return `Tenvan CC (Version ${about.version}, Build: ${stamp})`
+  return about ? `Tenvan CC (Version ${about.version})` : 'Tenvan CC'
 }
 
 export const title = (about: About | null): string => titleText(about)
@@ -210,8 +229,9 @@ export const spinner = (frame: number): string => SPINNER[frame % SPINNER.length
 export const RING_HEX: Record<Tone, string> = { success: THEME.success, warning: THEME.warning, error: THEME.error, accent: THEME.accentFill }
 
 // Farbrolle des Kontext-Rings: knapp ab 90 %, voll ab COMPACT_AT, sonst Akzent.
-export function contextColor(percent: number): 'error' | 'warning' | 'accent' {
-  return percent >= 90 ? 'error' : percent >= COMPACT_AT ? 'warning' : 'accent'
+// Ampel nach Füllgrad für Ring, Text und Kompaktieren-Knopf: bis 50 % grün, bis 70 % neutral, bis COMPACT_AT gelb, darüber rot.
+export function contextColor(percent: number): Tone {
+  return percent >= COMPACT_AT ? 'error' : percent >= 70 ? 'warning' : percent >= 50 ? 'accent' : 'success'
 }
 
 // SVG eines Rings: grauer Grund, darüber der gefüllte Bogen ab 12 Uhr im Uhrzeigersinn.
@@ -312,7 +332,7 @@ export function breakdownBarSvg(b: Breakdown, width = 600, height = 14): string 
 
 // Einstellungen: Gruppe je Schalter; Beschriftung und Erklärung liegen in i18n.ts unter `settings.<key>` und `settings.<key>.hint`.
 // Die Reihenfolge ist die der Einstellungsseite, Gruppen in der Reihenfolge ihres ersten Schalters.
-export type SettingKey = Exclude<keyof ModSettings, 'lang'>
+export type SettingKey = Exclude<keyof ModSettings, 'lang' | 'breathKey'>
 export type SettingGroup = 'band' | 'panel' | 'chat' | 'skins' | 'summary'
 
 export const SETTING_DEFS: readonly { key: SettingKey; group: SettingGroup }[] = [
@@ -323,6 +343,12 @@ export const SETTING_DEFS: readonly { key: SettingKey; group: SettingGroup }[] =
   { key: 'legend', group: 'band' },
   { key: 'branch', group: 'band' },
   { key: 'steps', group: 'band' },
+  { key: 'autoEffort', group: 'band' },
+  { key: 'saveMode', group: 'band' },
+  { key: 'breath', group: 'band' },
+  { key: 'mrBand', group: 'band' },
+  { key: 'mrNotify', group: 'band' },
+  { key: 'mrFooter', group: 'band' },
   { key: 'cardWorkdir', group: 'panel' },
   { key: 'cardCatchUp', group: 'summary' },
   { key: 'cardOverview', group: 'panel' },
@@ -331,6 +357,7 @@ export const SETTING_DEFS: readonly { key: SettingKey; group: SettingGroup }[] =
   { key: 'cardGate', group: 'panel' },
   { key: 'cardAgents', group: 'panel' },
   { key: 'cardTasks', group: 'panel' },
+  { key: 'mrPane', group: 'panel' },
   { key: 'cardLog', group: 'panel' },
   { key: 'animation', group: 'panel' },
   { key: 'chatInfo', group: 'chat' },
@@ -358,17 +385,21 @@ export const settingHint = (key: SettingKey, lang: UiLang): string => t(lang, `s
 
 export const DEFAULT_SETTINGS: ModSettings = {
   rings: true, legend: true, branch: true, limits: true, cache: true, ctxTip: true, steps: true, animation: true,
-  cardWorkdir: true, cardCatchUp: true, cardOverview: true, cardContext: true, cardTurn: true, cardGate: true, cardAgents: true, cardTasks: true, cardLog: true,
+  cardWorkdir: true, cardCatchUp: true, cardOverview: true, cardContext: true, cardTurn: true, cardGate: true, cardAgents: true, cardTasks: true, mrPane: true, cardLog: true,
   chatInfo: true, chatLines: true, catchUp: false, lang: 'de',
   // Hervorhebungen zeichnen Antworten selbst und sind deshalb standardmäßig aus.
   skinIcons: true, skinQuiet: true, skinDiff: true, skinExpand: true, skinPrompt: true, skinCards: true, skinInline: false, skinLinks: true,
   skinMermaid: true, skinMath: true, skinAsk: true, skinMode: true, skinHint: true, skinMarkIcon: true, skinMarkLabel: true,
+  // Auto-Effort ist aus, solange das Mod effortless daneben läuft: zwei Judges würden um den Effort jedes Requests streiten.
+  autoEffort: false, saveMode: false,
+  breath: true, breathKey: 'hrv',
+  mrBand: true, mrNotify: true, mrFooter: true,
 }
 
 // $.store kann Einstellungen aus älteren Versionen liefern: fehlende Felder werden mit den Standardwerten aufgefüllt.
 export const settingsOf = (saved: Partial<ModSettings> | null | undefined): ModSettings => {
   const s = { ...DEFAULT_SETTINGS, ...saved }
-  return { ...s, lang: s.lang === 'en' ? 'en' : 'de' }
+  return { ...s, lang: s.lang === 'en' ? 'en' : 'de', breathKey: ['hrv', 'sigh', 'box', '478'].includes(s.breathKey) ? s.breathKey : 'hrv' }
 }
 
 export const CATCH_CHUNK = 100_000
@@ -458,6 +489,18 @@ export function summaryLines(text: string): SummaryLine[] {
     })
 }
 
+// Zusammenfassung in Abschnitte je Überschrift; Zeilen vor der ersten Überschrift bilden einen Abschnitt ohne Titel.
+export type SummarySection = { heading?: string; lines: SummaryLine[] }
+export function summarySections(lines: readonly SummaryLine[]): SummarySection[] {
+  const out: SummarySection[] = []
+  for (const l of lines) {
+    if (l.kind === 'heading') out.push({ heading: l.text, lines: [] })
+    else if (out.length === 0) out.push({ lines: [l] })
+    else out[out.length - 1]?.lines.push(l)
+  }
+  return out
+}
+
 // Die größten belegten Zeilen der Kontext-Aufteilung, für den kleinen Tooltip im Band.
 export const topRows = (b: Breakdown, max = 3): BreakdownRow[] =>
   b.rows
@@ -509,7 +552,7 @@ export function pushCapped<T>(list: readonly T[], item: T, max = 50): T[] {
 }
 
 // Liest bis zu `max` Vorschläge aus einer Modellantwort, die ein JSON-Array enthalten soll.
-export function parseSteps(text: string, max = 5): Step[] {
+export function parseSteps(text: string, max = 3): Step[] {
   const match = /\[[\s\S]*\]/.exec(text)
   if (!match) return []
   let list: unknown
@@ -627,7 +670,7 @@ export function legendSvg(items: readonly { color: string; label: string }[], ti
 }
 
 // Claudes eigener Vorschlag (prompt.suggest) steht vorn; Haiku-Vorschläge mit gleichem Prompt fallen weg, höchstens 5.
-export function withClaude(list: readonly Step[], hint: Step | null, max = 5): Step[] {
+export function withClaude(list: readonly Step[], hint: Step | null, max = 3): Step[] {
   if (hint === null) return list.slice(0, max)
   const same = (s: Step) => s.prompt.trim().toLowerCase() === hint.prompt.trim().toLowerCase()
   return [hint, ...list.filter(s => !same(s))].slice(0, max)
@@ -726,3 +769,62 @@ export const isAgentHeavy = (a: Pick<Agent, 'steps' | 'since'>, now: number): bo
 // Cache-Wächter: so kurz vor Ablauf schlägt das Cockpit einen Prompt vor, der den Cache warm hält.
 export const CACHE_WARN_MS = 90_000
 
+
+// ---- Auto-Effort, Limit-Alarm, Handoff (Ideen aus effortless, eigener Code) ----
+
+export type EffortLevel = 'low' | 'medium' | 'high'
+export const EFFORT_LEVELS: readonly EffortLevel[] = ['low', 'medium', 'high']
+
+// „ok“, „ja, weiter“, Slash-Befehle: kein Judge-Call, die letzte Stufe bleibt.
+export const isTrivialPrompt = (text: string): boolean => {
+  const x = text.trim()
+  return x === '' || x.startsWith('/') || (x.length <= 24 && x.split(/\s+/).length <= 3)
+}
+
+// Eingabe für $.model.classify: kurze Skala, dann der Prompt als Daten.
+export const effortJudgeText = (text: string): string =>
+  `Reasoning effort a coding assistant needs for this request. low = quick question, lookup, trivial edit. medium = normal feature or fix. high = hard multi-step work, architecture, tricky debugging.
+
+Request:
+${text.trim().slice(0, 2000)}`
+
+export const LIMIT_ALERT_AT = 80
+
+// Das vollste Limit-Fenster ab LIMIT_ALERT_AT, sonst null.
+export function limitAlert(limits: readonly Limit[]): Limit | null {
+  const top = [...limits].sort((a, z) => z.percentUsed - a.percentUsed)[0]
+  return top !== undefined && top.percentUsed >= LIMIT_ALERT_AT ? top : null
+}
+
+// Stufe, die gesendet wird: im Sparmodus mit vollem Limit immer low.
+export const effectiveEffort = (pick: EffortLevel, saveMode: boolean, limits: readonly Limit[]): EffortLevel =>
+  saveMode && limitAlert(limits) !== null ? 'low' : pick
+
+export const HANDOFF_AT = 60
+// Ein frischer Chat lohnt, wenn ein großer Kontext kalt neu gelesen werden müsste.
+// ponytail: feste Schwelle statt Haiku-Urteil; Model-Call nachrüsten, wenn die Schwelle oft daneben liegt.
+export const handoffPays = (contextPercent: number | undefined, cacheLeft: number): boolean => (contextPercent ?? 0) >= HANDOFF_AT && cacheLeft === 0
+
+// HANDOFF.md aus dem, was das Cockpit ohnehin kennt; ohne Zusammenfassung liefert der Aufrufer den Text eines Forks.
+export function handoffMarkdown(p: { summary: string; lastPrompt: string; touched: readonly string[]; steps: readonly { label: string }[]; git: string }, lang: UiLang = 'de'): string {
+  const sec = (key: 'handoff.summary' | 'handoff.goal' | 'handoff.files' | 'handoff.steps', body: string) => (body.trim() === '' ? [] : [`## ${t(lang, key)}`, '', body.trim(), ''])
+  const fence = '```'
+  return [
+    t(lang, 'handoff.title'),
+    '',
+    ...sec('handoff.summary', p.summary),
+    ...sec('handoff.goal', p.lastPrompt),
+    ...sec('handoff.files', p.touched.map(f => `- ${f}`).join('\n')),
+    ...sec('handoff.steps', p.steps.map(s => `- ${s.label}`).join('\n')),
+    '## Git',
+    '',
+    fence,
+    p.git.trim(),
+    fence,
+    '',
+  ].join('\n')
+}
+
+// Farbe des Effort-Blocks: low gelb, medium grün, high (und höher) blau; ohne Stufe Standardfarbe.
+export const effortColor = (level: string | number | null | undefined): string | undefined =>
+  level === 'low' ? THEME.warning : level === 'medium' ? THEME.success : level === undefined || level === null ? undefined : THEME.accent

@@ -334,7 +334,7 @@ function flowSvg(f: Flowchart): string {
           : n.shape === 'diamond'
             ? `<polygon points="${r1(b.x)},${r1(b.y - b.h / 2)} ${r1(b.x + b.w / 2)},${r1(b.y)} ${r1(b.x)},${r1(b.y + b.h / 2)} ${r1(b.x - b.w / 2)},${r1(b.y)}" ${st}/>`
             : `<rect x="${r1(b.x - b.w / 2)}" y="${r1(b.y - b.h / 2)}" width="${b.w}" height="${b.h}" rx="${n.shape === 'round' ? 17 : 4}" ${st}/>`
-      return `${shape}<text x="${r1(b.x)}" y="${r1(b.y + 4)}" text-anchor="middle" fill="${THEME.orga}">${esc(n.label)}</text>`
+      return `${shape}<text x="${r1(b.x)}" y="${r1(b.y + 4)}" text-anchor="middle" fill="${THEME.white}">${esc(n.label)}</text>`
     })
     .join('')
   return frame(W, H, `${edges}${nodes}`)
@@ -354,7 +354,7 @@ function sequenceSvg(s: Sequence): string {
       .map(a => {
         const cx = x.get(a.id) ?? 0
         const w = Math.min(colW - 16, textW(a.label) + 20)
-        return `<rect x="${r1(cx - w / 2)}" y="${y}" width="${w}" height="${headH}" rx="4" fill="${THEME.chip}" stroke="${THEME.accent}"/><text x="${r1(cx)}" y="${y + 19}" text-anchor="middle" fill="${THEME.orga}">${esc(a.label)}</text>`
+        return `<rect x="${r1(cx - w / 2)}" y="${y}" width="${w}" height="${headH}" rx="4" fill="${THEME.chip}" stroke="${THEME.accent}"/><text x="${r1(cx)}" y="${y + 19}" text-anchor="middle" fill="${THEME.white}">${esc(a.label)}</text>`
       })
       .join('')
   const lifelines = s.actors.map(a => `<line x1="${x.get(a.id)}" y1="${PAD + headH}" x2="${x.get(a.id)}" y2="${H - PAD - headH}" stroke="${THEME.border}" stroke-dasharray="3 3"/>`).join('')
