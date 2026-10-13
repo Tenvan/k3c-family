@@ -1,6 +1,6 @@
 # SO4.2 · Zustands-Automat, Crossfade, Bus „Musik“
 
-- **Status:** offen
+- **Status:** in Arbeit
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** CLI
