@@ -1,6 +1,6 @@
 # W7 · SIM · Ausrüstung ohne Unverwundbarkeit, Spielstand vollständig
 
-- **Status:** aktiv
+- **Status:** erledigt
 - **Projekt:** WRT
 - **Domäne:** SIM
 - **Reife:** bereit
@@ -70,8 +70,10 @@ Spielstand aus neuerer Version → Fehler 🚫 mit Version, kein stiller Verlust
 | W7.1 | `W7.1-ausruestung-wegtragen.md` | Umsetzung | autonom | fertig |
 | W7.2 | `W7.2-spielstand-wirtschaft.md` | Umsetzung | autonom | fertig |
 | W7.3 | `W7.3-golden-hub.md` | Umsetzung | autonom | fertig |
-| W7.4 | `W7.4-review.md` | Review | autonom | offen |
+| W7.4 | `W7.4-review.md` | Review | autonom | fertig |
 
 ## Abnahme
 
-–
+Review W7.4 (2026-10-13, unabhängiger Review-Agent, leicht): keine schweren Befunde. AC-01–AC-06 mit Nachweis in W7.1–W7.3; `task check` und `task check:go` grün.
+Abweichungen: Spielstand-Version ist 7 statt der genannten 5 (6 war schon belegt); W7.1 ohne Golden-Diff (kein Szenario mit Ausrüstung am Boden); Golden-Daten über der alten Grenze von 8 MB, das gab es schon vorher (B-417); veraltete Kommentare (B-418).
+Version: v0.17.0 vorgeschlagen (Minor: neue Mechanik „Gegner tragen Ausrüstung weg“ und Spielstand v7); gesetzt erst nach Bestätigung durch 🧑.

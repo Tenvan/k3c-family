@@ -20,7 +20,6 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-048](B-048-standardbibliothek-in-001.md) | SRV | Frage | niedrig | eingeplant | BT1 | Die Wahl der Go-Standardbibliothek ist dort festgehalten, wo B-001 auf sie verweist |
 | [B-053](B-053-ci-lauf-sp01.md) | INF | Problem | hoch | eingeplant | CI1 | Die CI hat die Prüfungen aus SP01 einmal grün durchlaufen |
 | [B-058](B-058-execution-policy.md) | INF | Frage | niedrig | eingeplant | RP1 | requirements.md empfiehlt keine Sicherheitseinstellung ohne Entscheidung von 🧑 |
-| [B-075](B-075-golden-spielstand-hub.md) | SIM | Schuld | mittel | eingeplant | W7 | Der Golden-Spielstand enthält einen gebauten und veränderten Hub |
 | [B-080](B-080-dev-tasten-server.md) | SRV | Idee | niedrig | offen | – | Dev-Tasten (Gold, Stufe, Neustart) wirken über den Server |
 | [B-090](B-090-radar.md) | CLI | Idee | mittel | eingeplant | HW1 | Ein Radar im HUD zeigt Burg, Portale, Ausgang, Mitspieler und Gegner |
 | [B-092](B-092-level-betrachter.md) | PLAT | Idee | mittel | eingeplant | HW1 | Eine Testseite zeigt ein generiertes Level (Seed und Biom) ohne zu spielen |
@@ -62,8 +61,6 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-159](archiv/B-159-replay-repro-format.md) | SIM | Idee | mittel | erledigt | BAL1 | Ein Lauf ist als Datei aus Seed und Eingaben wiederholbar |
 | [B-199](B-199-raum-fuenf-stufen.md) | SRV | Problem | mittel | eingeplant | SV1 | Ein neuer Raum legt die Insel mit allen Stufen an, für die es ein Biom gibt |
 | [B-200](B-200-aggressionspool-adern.md) | SIM | Problem | mittel | eingeplant | LV1 | Der Aggressionspool unter Tage bleibt auch mit Adern im Wellen-Korridor |
-| [B-201](B-201-spielstand-wirtschaft.md) | SIM | Schuld | mittel | eingeplant | W7 | Der Spielstand stellt Plantage, Berufe, Krieger, Elite, Rüstung, Schwerter und Händler nach dem Laden wieder her |
-| [B-202](B-202-spielstand-versionsfolge.md) | SIM | Problem | hoch | eingeplant | W7 | S1 und W1 teilen sich die Spielstand-Version 3 eindeutig |
 | [B-203](B-203-gold-schwelle-kennzahl.md) | REG | Frage | niedrig | eingeplant | RG2 | Die Kennzahl „erste Gold-Schwelle“ hat eine feste Schwelle und Bedeutung |
 | [B-204](B-204-test-raeume-sofort-schliessen.md) | SRV | Idee | niedrig | eingeplant | SV1 | Leere Test-Räume schließen sofort statt nach der Leer-Frist |
 | [B-207](B-207-bauplaetze-anzeige.md) | CLI | Idee | mittel | eingeplant | W8 | Der Client zeigt freie und gesperrte Bauplätze mit Grund (ab Hub-Stufe n, Linie fehlt) |
@@ -93,8 +90,6 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-300](B-300-mauern-zuerst-wie-sparsam.md) | SIM | Frage | mittel | eingeplant | BAL6 | Das Profil „Mauern zuerst“ spielt messbar anders als „sparsam“ |
 | [B-301](B-301-vary-ohne-wirkung.md) | SIM | Problem | niedrig | eingeplant | BAL6 | Ein Sensitivitäts-Pfad ohne Wirkung ergibt einen Fehler |
 | [B-302](B-302-aufraeumen-branches-worktrees.md) | INF | Schuld | mittel | eingeplant | RP1 | Lokale Branches und Worktrees werden an festen Meilensteinen aufgeräumt |
-| [B-312](B-312-wiederaufheben-begrenzen.md) | SIM | Problem | hoch | eingeplant | W7 | Sofortiges Wiederaufheben fallengelassener Ausrüstung macht die Burg bei passivem Spiel unverwundbar |
-| [B-313](B-313-vermerk-wirkung-offen-test.md) | SIM | Frage | hoch | eingeplant | W7 | W4.3b kann den Vermerk „Wirkung offen“ nur mit einer Änderung an sites_test.go ersetzen |
 | [B-314](B-314-controller-pruefungen-zurueckgestellt.md) | PLAT | Schuld | niedrig | eingeplant | HW1 | Alle Controller-Prüfungen sind gesammelt nachgeholt |
 | [B-315](B-315-spielstand-voll-ausgebaut.md) | SRV | Idee | hoch | eingeplant | SV1 | Der Level-Betrachter erzeugt einen Spielstand mit allen Gebäuden voll ausgebaut |
 | [B-317](B-317-cheat-dialog-fokus-tastatur.md) | CLI | Problem | hoch | eingeplant | U5 | Der Cheat-Dialog zeigt den Fokus und lässt sich mit Pfeiltasten, Leertaste und Controller bedienen |
@@ -150,6 +145,7 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-413](B-413-hud-leiste-oben-fluss.md) | CLI | Idee | mittel | offen | – | Gemeinsame HUD-Leiste oben für alle Spieler, Kompass oben, Fluss mit Spiegelung unten |
 | [B-414](B-414-welt-meldungen-im-band.md) | CLI | Idee | mittel | eingeplant | BD1 | Welt-Meldungen erscheinen für alle im globalen Band oben |
 | [B-417](B-417-golden-groesse-ueber-limit.md) | INF | Problem | niedrig | offen | – | Golden-Daten liegen mit 12,7 MB über der Grenze von 8 MB aus SP06 |
+| [B-418](B-418-spielstand-kommentare-veraltet.md) | SIM | Problem | niedrig | offen | – | Kommentare in island_save_v3.go und island_save_v5.go nennen nach W7.2 veraltete Versionen |
 
 ## Archiv
 
@@ -389,3 +385,8 @@ Zeile in diesen Abschnitt.
 | [B-197](archiv/B-197-partner-zelle-schriftgroesse.md) | CLI | Frage | hoch | erledigt | GR7 | Die Schriftregel nennt eine Mindestgröße für die Mitspieler-Zelle |
 | [B-198](archiv/B-198-platzhaltertext-schrift-katalog.md) | CLI | Schuld | hoch | erledigt | GR7 | Der Platzhaltertext einer ungeladenen Stufe liest seine Schrift aus dem Katalog |
 | [B-415](archiv/B-415-cockpit-lint-rot.md) | INF | Problem | hoch | erledigt | – | Lint ist rot: tools/cockpit überschreitet die Dateigrenze |
+| [B-312](archiv/B-312-wiederaufheben-begrenzen.md) | SIM | Problem | hoch | erledigt | W7 | Sofortiges Wiederaufheben fallengelassener Ausrüstung macht die Burg bei passivem Spiel unverwundbar |
+| [B-313](archiv/B-313-vermerk-wirkung-offen-test.md) | SIM | Frage | hoch | erledigt | W7 | W4.3b kann den Vermerk „Wirkung offen“ nur mit einer Änderung an sites_test.go ersetzen |
+| [B-202](archiv/B-202-spielstand-versionsfolge.md) | SIM | Problem | hoch | erledigt | W7 | S1 und W1 teilen sich die Spielstand-Version 3 eindeutig |
+| [B-201](archiv/B-201-spielstand-wirtschaft.md) | SIM | Schuld | mittel | erledigt | W7 | Der Spielstand stellt Plantage, Berufe, Krieger, Elite, Rüstung, Schwerter und Händler nach dem Laden wieder her |
+| [B-075](archiv/B-075-golden-spielstand-hub.md) | SIM | Schuld | mittel | erledigt | W7 | Der Golden-Spielstand enthält einen gebauten und veränderten Hub |

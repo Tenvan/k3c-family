@@ -6,7 +6,7 @@
 - **Umgebung:** offline
 - **Status:** offen
 - **Sprint:** –
-- **Projekt:** –
+- **Projekt:** TST
 - **Erstellt:** 2026-10-13
 - **Spec:** Entwurf
 - **Revision:** 1
