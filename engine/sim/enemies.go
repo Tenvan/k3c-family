@@ -86,6 +86,7 @@ func stepEnemies(w *World, dt float64) {
 			continue
 		}
 		bossAbility(w, e)
+		takeEquipment(w, e)
 		if e.has("fleesAtHalfHp") && e.HP < e.MaxHP/2 {
 			e.Fleeing = true
 		}

@@ -21,7 +21,7 @@ import "math"
 //	merchantFled  – Händler bei 0 HP geflohen, ein halber Kauf fällt als Münzen (merchant.go, B-373); hit mit target merchant
 //	disarmed      – Bürger verliert seine Ausrüstung (Verlust-Kaskade, warrior.go; Q67, Q69): kind (Figur oder
 //	                Beruf), x, cause (Gegnerart wie playerDown); ohne Priorität, nicht beim Burgfall
-//	equipmentTaken – Gegner trägt Ausrüstung weg (Q68, Q69); nur angelegt, das Aufheben durch Gegner baut K1
+//	equipmentTaken – Gegner trägt Ausrüstung weg (Q68, Q69); kind (Figur oder Beruf), x (equipment_taken.go)
 //	traded        – Tausch am Händler: player, resource, amount (+ gekauft, − verkauft), gold (− bezahlt, + erhalten)
 //	bossSpawned   – Boss erscheint (boss.go): boss (ID aus data/bosses.json), x
 //	bossDefeated  – Boss besiegt, Belohnung gegeben (boss.go): boss, x; statt `kill`

@@ -160,6 +160,7 @@ func enemyDrop(w *World, e *Enemy) {
 	gold := enemyData[e.Kind].Gold
 	dropped := moonDrop(w, w.rng.Int(gold[0], gold[1])) + e.CarriedGold // Blutmond: Drop × Faktor, geklautes Gold nicht
 	scatterCoins(w, e.X, dropped)
+	dropCarried(w, e)
 	emit(w, "kill", Event{"kind": e.Kind, "x": unitX(e.X), "gold": dropped})
 	drop := economy.EnemyResourceDrop
 	if w.rng.Next() < drop.Chance && addStock(w, w.Biome.PrimaryResource, drop.Amount) {
