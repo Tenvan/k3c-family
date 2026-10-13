@@ -1,11 +1,11 @@
 # SO4 · CLI · Musik je Zustand
 
-- **Status:** geplant
+- **Status:** aktiv
 - **Projekt:** SND
 - **Domäne:** CLI
 - **Reife:** bereit
 - **Tickets:** B-168, B-250, B-218
-- **Start-Commit:** –
+- **Start-Commit:** 2ea58efa
 - **Spec:** freigegeben
 - **Revision:** 2
 - **Freigabe:** 2026-10-08, Chat, durch 🧑, Revision 2
@@ -63,11 +63,11 @@ Stück fehlt → vorheriger Zustand oder Stille, kein Absturz.
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
 | SO4.1 | `SO4.1-workshop-stuecke.md` | Workshop | Mensch | offen |
-| SO4.2 | `SO4.2-zustandsautomat-crossfade.md` | Umsetzung | autonom | offen |
+| SO4.2 | `SO4.2-zustandsautomat-crossfade.md` | Umsetzung | autonom | fertig |
 | SO4.3 | `SO4.3-ducking-dateien-credits.md` | Umsetzung | autonom | offen |
 | SO4.4 | `SO4.4-review.md` | Review | autonom | offen |
 | SO4.5 | `SO4.5-hoerprobe-tv.md` | Workshop | Mensch | offen |
-| SO4.6 | `SO4.6-audiokern-dateien-ambient.md` | Umsetzung | autonom | offen |
+| SO4.6 | `SO4.6-audiokern-dateien-ambient.md` | Umsetzung | autonom | fertig |
 
 Bei `Reife: Entwurf` genügen Stichpunkte mit den Kriterien in Klammern statt Session-Dateien. Vor dem Aktivieren
 wird jede Session als eigene Datei nach `docs/vorlagen/session.md` geschrieben.

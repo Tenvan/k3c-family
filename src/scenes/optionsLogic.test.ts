@@ -7,7 +7,7 @@ const base: Settings = { ...DEFAULT_SETTINGS };
 
 describe('Einträge', () => {
   it('stehen in fester Reihenfolge', () => {
-    expect(OPTION_IDS).toEqual(['music', 'sfx', 'screenshake', 'flash', 'colorblind', 'guide', 'language', 'resume', 'removePlayer', 'leave']);
+    expect(OPTION_IDS).toEqual(['music', 'sfx', 'ambient', 'screenshake', 'flash', 'colorblind', 'guide', 'language', 'resume', 'removePlayer', 'leave']);
   });
 
   it('jeder Eintrag hat einen Text', () => {
@@ -30,6 +30,14 @@ describe('Werte', () => {
     expect(applyOption({ ...base, sfxVolume: 50 }, 'sfx', 'right').settings.sfxVolume).toBe(60);
     expect(applyOption({ ...base, musicVolume: 0 }, 'music', 'left').settings.musicVolume).toBe(0);
     expect(applyOption({ ...base, sfxVolume: 100 }, 'sfx', 'right').settings.sfxVolume).toBe(100);
+    // AC-09: Ambient wie die anderen Regler in 10er-Schritten, ohne die anderen Busse zu berühren
+    const up = applyOption({ ...base, ambientVolume: 50 }, 'ambient', 'right').settings;
+    expect(up.ambientVolume).toBe(60);
+    expect([up.musicVolume, up.sfxVolume]).toEqual([base.musicVolume, base.sfxVolume]);
+    expect(applyOption({ ...base, ambientVolume: 50 }, 'ambient', 'left').settings.ambientVolume).toBe(40);
+    expect(applyOption({ ...base, ambientVolume: 0 }, 'ambient', 'left').settings.ambientVolume).toBe(0);
+    expect(applyOption({ ...base, ambientVolume: 100 }, 'ambient', 'right').settings.ambientVolume).toBe(100);
+    expect(applyOption({ ...base, ambientVolume: 50 }, 'ambient', 'confirm').settings.ambientVolume).toBe(50);
   });
 
   it('Bestätigen ändert einen Regler nicht', () => {

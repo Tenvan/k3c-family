@@ -13,7 +13,12 @@ const FIELD = { music: 'musicVolume', sfx: 'sfxVolume', ambient: 'ambientVolume'
 
 /** Der Teil des `AudioContext`, den der Mixer braucht. */
 export interface GainNodeLike {
-  gain: { value: number };
+  gain: {
+    value: number;
+    /** Nur der Browser-Gain kennt Kurven; Test-Doppelgänger dürfen sie weglassen. */
+    setValueCurveAtTime?(curve: Float32Array, startTime: number, duration: number): void;
+    cancelScheduledValues?(startTime: number): void;
+  };
   connect(target: unknown): unknown;
 }
 export interface AudioContextLike {

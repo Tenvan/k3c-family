@@ -56,21 +56,6 @@ export const moveSelection = (index: number, count: number, delta: number): numb
 /** Rein: Lautstärke in 10er-Schritten, 0–100. */
 export const stepVolume = (percent: number, delta: number): number => Math.min(100, Math.max(0, Math.round(percent / 10) * 10 + delta * 10));
 
-/**
- * Rein: Crossfade-Kurven mit gleicher Leistung (cos/sin), `n` Stützpunkte für `setValueCurveAtTime`.
- * `out` startet bei 1 und endet bei 0, `in` umgekehrt; benachbarte Werte springen nie (kein Knacken).
- */
-export function crossfadeCurves(n = 64): { out: Float32Array; in: Float32Array } {
-  const out = new Float32Array(n);
-  const inn = new Float32Array(n);
-  for (let i = 0; i < n; i++) {
-    const x = (i / (n - 1)) * (Math.PI / 2);
-    out[i] = Math.cos(x);
-    inn[i] = Math.sin(x);
-  }
-  return { out, in: inn };
-}
-
 export type Action = 'up' | 'down' | 'play' | 'stop' | 'fade' | 'volUp' | 'volDown';
 
 /** Rein: Tastatur → Aktion (Pfeile wählen, Enter/Leertaste spielt, S stoppt, X überblendet, links/rechts oder +/− Lautstärke). */

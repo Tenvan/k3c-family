@@ -58,8 +58,6 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-193](B-193-figuren-luecken-suche.md) | CLI | Idee | hoch | eingeplant | GR7 | Figuren-Lücken unter public/sprites/ haben Kandidaten und eine Auswahl |
 | [B-194](B-194-splitscreen-ruckelt-xbox.md) | CLI | Problem | hoch | eingeplant | PF1 | Der Split-Screen läuft auf der Xbox flüssig |
 | [B-195](B-195-debug-overlay-xbox.md) | PLAT | Problem | mittel | eingeplant | PL1 | Das Debug-Overlay lässt sich auf der Xbox öffnen |
-| [B-197](B-197-partner-zelle-schriftgroesse.md) | CLI | Frage | hoch | eingeplant | GR7 | Die Schriftregel nennt eine Mindestgröße für die Mitspieler-Zelle |
-| [B-198](B-198-platzhaltertext-schrift-katalog.md) | CLI | Schuld | hoch | eingeplant | GR7 | Der Platzhaltertext einer ungeladenen Stufe liest seine Schrift aus dem Katalog |
 | [B-157](archiv/B-157-zielkorridor-pruefung.md) | SIM | Idee | mittel | erledigt | BAL2 | Der Balancing-Tester prüft Zielkorridore und meldet Pass oder Fail je Kennzahl |
 | [B-159](archiv/B-159-replay-repro-format.md) | SIM | Idee | mittel | erledigt | BAL1 | Ein Lauf ist als Datei aus Seed und Eingaben wiederholbar |
 | [B-199](B-199-raum-fuenf-stufen.md) | SRV | Problem | mittel | eingeplant | SV1 | Ein neuer Raum legt die Insel mit allen Stufen an, für die es ein Biom gibt |
@@ -388,3 +386,5 @@ Zeile in diesen Abschnitt.
 | [B-342](archiv/B-342-w6-2-siteview-erlaubt.md) | CLI | Frage | mittel | erledigt | – | W6.2 darf den Bauplatz-Wartegrund in `siteView.ts` anbinden |
 | [B-407](archiv/B-407-wz3-verweis-b403-ac08.md) | INF | Problem | hoch | erledigt | – | WZ3-README verweist auf B-403/AC-08, das es nicht gibt (planning.test.ts rot) |
 | [B-416](archiv/B-416-checkout-git-ohne-fenster.md) | DEV | Problem | hoch | erledigt | – | Der Checkout-Aufruf von k3c-dev öffnet bei jedem Tool ein Konsolenfenster |
+| [B-197](archiv/B-197-partner-zelle-schriftgroesse.md) | CLI | Frage | hoch | erledigt | GR7 | Die Schriftregel nennt eine Mindestgröße für die Mitspieler-Zelle |
+| [B-198](archiv/B-198-platzhaltertext-schrift-katalog.md) | CLI | Schuld | hoch | erledigt | GR7 | Der Platzhaltertext einer ungeladenen Stufe liest seine Schrift aus dem Katalog |
