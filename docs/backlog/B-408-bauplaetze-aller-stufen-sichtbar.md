@@ -50,8 +50,7 @@ Ungültige oder seltene Situation → gewolltes Verhalten. Passt nichts: `nicht 
 
 ## Offene Fragen
 
-- Meint „alle Stufen“ die Hub-Stufen (Bauplätze höherer Hub-Stufe schon sichtbar) oder die Stufen der Insel (Tiefen)? Entscheidet 🧑.
-- Gesperrte Plätze ganz ausblenden oder abgeblendet zeigen?
+Geklärt mit 🧑 (2026-10-14): Gemeint sind Plätze höherer Hub-Stufen und Linien 2–5 (Tiefen filtert die Sim schon). Der Server schickt Plätze bis Hub-Stufe + 1 mit `hubLevel` (W11.2), unbezahlte darüber nicht; die nächste Stufe zeigt W8/B-207 als gesperrt.
 
 ## Notizen
 

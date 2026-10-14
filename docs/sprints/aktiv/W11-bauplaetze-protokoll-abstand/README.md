@@ -51,7 +51,7 @@ Alter Server ohne neue Felder → Client zeigt Plätze wie bisher mit Warnung �
 
 ## Offene Fragen
 
-Geklärt mit 🧑 (2026-10-14): W11 vor W8; Treppen ≥ 8 Units zu **allen** Zahlzielen derselben Tiefe. „Linien +8“ verworfen (Kristallhöhle: Portale ab 135, Camps ohne freien Chunk); stattdessen teilen sich Treppe hoch (ab Tiefe 1) und Händler-Kaufen (nur Tiefe 0) ein Raster, Linien bleiben. B-408 filtert der Server. Offen: Version des Protokolls (W11.2), SV1-Verweis auf B-208 anpassen.
+Geklärt mit 🧑 (2026-10-14): W11 vor W8; Treppen ≥ 8 Units zu **allen** Zahlzielen derselben Tiefe. „Linien +8“ verworfen (Kristallhöhle: Portale ab 135, Camps ohne freien Chunk); stattdessen teilen sich Treppe hoch (ab Tiefe 1) und Händler-Kaufen (nur Tiefe 0) ein Raster, Linien bleiben. B-408: Der Server filtert; „erreichbar“ heißt Platz-Stufe ≤ Hub-Stufe + 1 (bezahlte und gebaute Plätze immer), damit W8 die nächste Stufe als gesperrt zeigen kann. Protokoll: keine neue Version (additiv, Vorschlag W11.2). Offen: SV1-Verweis auf B-208 anpassen.
 
 ## Sessions
 
