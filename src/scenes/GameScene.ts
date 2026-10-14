@@ -16,6 +16,7 @@ import { LEAVE_KEY, MenuPress, REMOVE_PLAYER_KEY, idleCommands } from './options
 import { LocalSlots, pageBots } from './localSlots';
 import type { RadarCell } from './radarView';
 import { daylight } from './viewRules';
+import { refollow } from './cameraFollow';
 import { cellStages } from './cellStages';
 import { PLACEHOLDER_BG, StageView, placeholderLayer, showOnly } from './stageView';
 import { clientLog } from '../core/clientLog';
@@ -65,6 +66,8 @@ export class GameScene extends Phaser.Scene {
   private holders: Phaser.GameObjects.Layer[] = [];
   /** Kamera-ID der Mitspieler-Zelle: dort sind die Texte der Stufe ausgeblendet (B-197), 0 = keine */
   private partnerCamId = 0;
+  /** Kameras mit Figur-Ziel; die Nachführung holt eine später entstehende View nach (B-392). */
+  private follows: { cam: Phaser.Cameras.Scene2D.Camera; stage: StageView; monarch: number; target?: object }[] = [];
   keyboards!: [KeyboardInput, KeyboardInput]; // Spieler 1 und 2 an einer Tastatur (B-316)
   private touch: TouchInput | undefined;
   private pads: GamepadInput[] = [];
@@ -327,6 +330,7 @@ export class GameScene extends Phaser.Scene {
     const brightness = NIGHT_BRIGHTNESS + (1 - NIGHT_BRIGHTNESS) * daylight(this.world_.cycle);
     for (const fx of this.nightFx) fx.colorMatrix.brightness(brightness);
     this.updateLayout(this.world_);
+    this.follows.forEach((f) => (f.target = refollow(f.cam, f.target, f.stage.renderer.playerView(f.monarch))));
   }
 
   /** Nächster Mitspieler eines anderen Geräts; der bisherige bleibt, solange kein anderer deutlich näher ist (kein Flackern). */
@@ -372,6 +376,7 @@ export class GameScene extends Phaser.Scene {
     const main = this.cameras.main;
     this.cameras.cameras.filter((c) => c !== main).forEach((c) => this.cameras.remove(c));
     this.nightFx = [];
+    this.follows = [];
     this.holders.forEach((h) => h.destroy());
     this.holders = [];
     const seats = [...this.client.you].sort((a, b) => a.slot - b.slot);
@@ -406,8 +411,10 @@ export class GameScene extends Phaser.Scene {
     cam.setBounds(0, WORLD_TOP, world.widthUnits * UNIT_PX, GAME_HEIGHT - WORLD_TOP); // ohne Himmel
     cam.setBackgroundColor(world.biome.palette.sky);
     cam.centerOn(world.hubX * UNIT_PX, (WORLD_TOP + GAME_HEIGHT) / 2);
-    const view = monarch === null ? undefined : stage.renderer.playerView(monarch);
+    if (monarch === null) return;
+    const view = stage.renderer.playerView(monarch);
     if (view) cam.startFollow(view, true, 0.1, 0.1);
+    this.follows.push({ cam, stage, monarch, target: view });
   }
 
   /** Nacht = Kamera abdunkeln. Nur mit WebGL (Filter), im Canvas-Modus bleibt es hell. */
