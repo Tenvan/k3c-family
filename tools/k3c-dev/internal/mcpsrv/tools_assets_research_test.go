@@ -71,7 +71,23 @@ func TestAssetsImportTool(t *testing.T) {
 	if !strings.Contains(string(credits), "| kandidaten/farm-haus.png | Farm Haus | unbekannt | unbekannt | https://x.itch.io/farm | Lizenz prüfen |") {
 		t.Errorf("Credit: %s", credits)
 	}
+	outside := filepath.Join(t.TempDir(), "fremd.png")
+	if err := os.WriteFile(outside, mustRead(t, src), 0o644); err != nil {
+		t.Fatal(err)
+	}
+	if text, isErr := callText(t, cs, "assets_import", map[string]any{"id": "farm", "hit": hits[0].ID, "path": outside}); !isErr || !strings.Contains(text, "nur Dateien unterhalb der Repo-Wurzel") {
+		t.Errorf("Pfad außerhalb des Checkouts: %q", text)
+	}
 	if text, isErr := callText(t, cs, "assets_import", map[string]any{"id": "farm", "hit": hits[0].ID}); !isErr || !strings.Contains(text, "manuell") {
 		t.Errorf("Download ohne erkannte Lizenz: %q", text)
 	}
+}
+
+func mustRead(t *testing.T, p string) []byte {
+	t.Helper()
+	b, err := os.ReadFile(p)
+	if err != nil {
+		t.Fatal(err)
+	}
+	return b
 }

@@ -150,7 +150,11 @@ func registerAssetsImport(s *Server) {
 		if in.Path == "" {
 			rel, err = assets.DownloadHit(ctx, root, in.ID, in.Hit, http.DefaultClient, time.Now())
 		} else {
-			rel, err = assets.ImportFile(root, in.ID, in.Hit, in.Path, time.Now())
+			// Über MCP nur Dateien im eigenen Checkout (z. B. .work/): kein Agent kopiert fremde Dateien nach public/.
+			var src string
+			if src, err = insideRoot(root, in.Path); err == nil {
+				rel, err = assets.ImportFile(root, in.ID, in.Hit, src, time.Now())
+			}
 		}
 		if err != nil {
 			return "", err

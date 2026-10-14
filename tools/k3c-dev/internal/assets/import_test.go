@@ -111,12 +111,22 @@ func TestDownloadHit(t *testing.T) {
 	root, itch, _ := importRepo(t)
 	srv := httptest.NewTLSServer(http.HandlerFunc(func(w http.ResponseWriter, _ *http.Request) { _, _ = w.Write(pngBytes(t)) }))
 	defer srv.Close()
+	if _, err := AddHits(root, "farm", []Hit{{Title: "Intern", Link: "https://commons.wikimedia.org/i", Source: "Agent", License: "CC0 1.0",
+		Download: srv.URL + "/intern.png"}}, day); err != nil {
+		t.Fatal(err)
+	}
+	intern, _ := HitsOf(root, "farm")
+	if _, err := DownloadHit(context.Background(), root, "farm", intern[2].ID, srv.Client(), day); err == nil || !strings.Contains(err.Error(), "download nur von upload.wikimedia.org") {
+		t.Fatalf("fremder Host nicht abgelehnt: %v", err)
+	}
+	DownloadHosts["127.0.0.1"] = true // Testserver
+	defer delete(DownloadHosts, "127.0.0.1")
 	if _, err := AddHits(root, "farm", []Hit{{Title: "Coin video game.png", Link: "https://commons.wikimedia.org/c", Source: "Wikimedia Commons",
 		License: "CC BY-SA 3.0", Download: srv.URL + "/coin.png"}}, day); err != nil {
 		t.Fatal(err)
 	}
 	hits, _ := HitsOf(root, "farm")
-	rel, err := DownloadHit(context.Background(), root, "farm", hits[2].ID, srv.Client(), day)
+	rel, err := DownloadHit(context.Background(), root, "farm", hits[3].ID, srv.Client(), day)
 	if err != nil || rel != "grafik/kandidaten/coin-video-game-png.png" {
 		t.Fatalf("Download: %q %v", rel, err)
 	}

@@ -11,6 +11,7 @@ import (
 	"os"
 	"path"
 	"path/filepath"
+	"sort"
 	"strings"
 	"time"
 )
@@ -185,6 +186,19 @@ func contains(list []string, s string) bool {
 	return false
 }
 
+// DownloadHosts sind die Quellen mit direktem Download und maschinenlesbarer Lizenz. Nur sie lädt k3c-dev selbst;
+// Links aus Treffern (auch von Agenten über assets_hit_add) erreichen so keine internen Adressen (SSRF).
+var DownloadHosts = map[string]bool{"upload.wikimedia.org": true}
+
+func hostList() string {
+	hosts := make([]string, 0, len(DownloadHosts))
+	for h := range DownloadHosts {
+		hosts = append(hosts, h)
+	}
+	sort.Strings(hosts)
+	return strings.Join(hosts, ", ")
+}
+
 // DownloadHit übernimmt einen Treffer mit direktem Download und erkannter Lizenz ohne Handarbeit (nur https, Limit, Signatur).
 func DownloadHit(ctx context.Context, root, slotID, hitID string, client *http.Client, now time.Time) (string, error) {
 	_, hit, err := importTarget(root, slotID, hitID)
@@ -197,6 +211,9 @@ func DownloadHit(ctx context.Context, root, slotID, hitID string, client *http.C
 	u, err := url.Parse(hit.Download)
 	if err != nil || u.Scheme != "https" {
 		return "", fmt.Errorf("download nur über https: %q", hit.Download)
+	}
+	if !DownloadHosts[strings.ToLower(u.Hostname())] {
+		return "", fmt.Errorf("download nur von %s, nicht von %q: bitte manuell laden und importieren", hostList(), u.Hostname())
 	}
 	tmp, err := fetchToTemp(ctx, client, u, path.Ext(u.Path))
 	if err != nil {

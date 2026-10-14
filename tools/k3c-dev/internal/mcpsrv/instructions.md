@@ -109,8 +109,9 @@ zurückgeben. Die Gliederung folgt der gemeinsamen Spec der Workbench-Seiten (`d
   `K3C_FREESOUND_TOKEN` oder `.work/freesound-token`), Wikimedia Commons und OpenGameArt; `assets_hits {id}` liest,
   `assets_hit_add {id, titel, link, …}` legt einen eigenen Fund ab (z. B. itch.io, Kenney), `assets_hit_drop {id, hit}`
   verwirft. Lizenz-Status nach Q70: `erkannt`, `pruefen` (bis 🧑 bestätigt), `ausgeschlossen` (ND, Pixabay, Mixkit …).
-- `assets_import {id, hit, path?}` übernimmt einen Treffer: `path` = lokale Datei (Endung und Inhalt geprüft, höchstens
-  20 MB), ohne `path` der direkte Download (nur `https` und erkannte Lizenz). Ablage `public/grafik/kandidaten/` bzw.
+- `assets_import {id, hit, path?}` übernimmt einen Treffer: `path` = Datei im eigenen Checkout, z. B. `.work/` (Endung
+  und Inhalt geprüft, höchstens 20 MB), ohne `path` der direkte Download (nur `https`, erkannte Lizenz, nur von
+  `upload.wikimedia.org`). Ablage `public/grafik/kandidaten/` bzw.
   `public/audio/kandidaten/`, Credit-Zeile im Abschnitt „Importe (k3c-dev)“, Zuordnung als letzte Präferenz. Die Lizenz
   bestätigt nur 🧑 in der Oberfläche; ein Agent nie.
 
