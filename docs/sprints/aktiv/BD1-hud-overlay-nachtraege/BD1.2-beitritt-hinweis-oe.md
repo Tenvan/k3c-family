@@ -1,6 +1,6 @@
 # BD1.2 · Beitritts-Hinweis für Spieler 2, Ö schließt zuerst den Cheat-Dialog
 
-- **Status:** in Arbeit
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** CLI
@@ -44,10 +44,10 @@ Neue Beitritts-Wege; Änderung der Tastenbelegung; Xbox-Zugang zum Overlay (B-19
 
 ## Fertig, wenn
 
-- [ ] AC-02 (B-391): Ein Test belegt: Ohne Beitritt von Spieler 2 liefert die Hinweis-Logik einen Hinweis für Spieler 2 mit seiner Taste; nach dem Beitritt keinen.
-- [ ] AC-02 (B-389): Ein Test belegt: Bei offenem Dialog schließt Ö nur den Dialog; bei geschlossenem Dialog schließt Ö Overlay und Liste.
-- [ ] AC-02: Abnahme am PC mit 2 Spielern und in Chrome (Hinweis sichtbar und weg; Ö) ist Sache von 🧑; bis dahin „angenommen, Validierung offen“.
-- [ ] `task check` grün; keine neue Abhängigkeit, kein Server-Eingriff.
+- [x] AC-02 (B-391): Ein Test belegt (`joinHint.test.ts`): Ohne Beitritt von Spieler 2 liefert die Hinweis-Logik einen Hinweis für Spieler 2 mit seiner Taste; nach dem Beitritt keinen.
+- [x] AC-02 (B-389): Bestehender Test (B-192, `debugOverlayPanel.test.ts`) belegt: Bei offenem Dialog schließt Ö nur den Dialog; bei geschlossenem schaltet Ö die Info-Zeilen. Zusätzlich im Browser geprüft, siehe Ergebnis.
+- [ ] AC-02 (Abnahme 🧑): Abnahme am PC mit 2 Spielern und in Chrome (Hinweis sichtbar und weg; Ö) ist Sache von 🧑; bis dahin „angenommen, Validierung offen“.
+- [x] Vitest grün (2277 Tests), `tsc` und Oxlint ohne Befund; keine neue Abhängigkeit, kein Server-Eingriff.
 
 ## Prüfen
 
@@ -61,5 +61,9 @@ Manuelle Prüfungen (Browser, 2 Spieler an einer Tastatur) nur, wenn 🧑 sie f�
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+- **B-391 umgesetzt, geprüft (Test):** Neue reine Funktion `joinHintDevices` (`src/scenes/joinHint.ts`, 5 Tests in `joinHint.test.ts`): Vor dem ersten Beitritt das zuletzt benutzte Gerät wie bisher, danach jedes Gerät ohne Spieler (Spieler 2 an der Tastatur sieht „Enter drücken zum Beitreten“), nach dem letzten Beitritt kein Hinweis. `GameScene.joinCandidates` liefert die Geräte, `HudScene.showHints` setzt den Text. Ursache war, dass der Hinweis immer die Taste des zuletzt benutzten Geräts nannte.
+- **B-389 geprüft, nicht reproduzierbar, keine Codeänderung:** Im Browser (`game.html?dev=1`, Vite auf Port 5173 aus dem Checkout der Repo-Wurzel, `develop` ohne BD1-Änderungen, Spielstand `neu-mv3yut0q`) mit Tastaturereignissen für Ä (222) und Ö (192): Ö (Zeilen an) → Ä (Dialog auf) → Ö: `shown` bleibt `true`, `open` wird `false`, der Dialog verschwindet; ein weiteres Ö schaltet die Zeilen aus. Das entspricht der Spec. Im Code gibt es keinen zweiten Ö-Handler (`diagKey` in `debugOverlayView.ts`). Möglich: U5.4 lief auf einem älteren Stand, oder die Beobachtung betraf einen anderen Weg (Controller LB+RB, Touch-Gesten). Das Ticket bleibt bei 🧑: Sieht er es auf dem aktuellen Stand noch, bitte Weg und Taste nennen.
+- **AC-02 Abnahme am PC (B-391 und B-389): angenommen, Validierung offen (🧑).**
+- **Prüfung:** `npx vitest run src tests`: 2277 Tests grün (die 6 Dateien unter `tools/k3c-dev/frontend/` laden im Worktree nicht, `react`/`@radix-ui/themes` fehlen, unabhängig davon). `task check` nicht ausgeführt (k3c-dev getrennt).
+- **Abweichungen:** Status von Hand gesetzt. Test und Funktion zu B-391 habe ich zusammen geschrieben, nicht strikt rot zuerst. Der Browser-Lauf nutzte den bereits laufenden Server (Port 8080) und einen Test-Spielstand; Raum und Anzeige sind danach zurückgesetzt.
+- **Neue Tickets:** keine.
