@@ -95,3 +95,43 @@ func TestVollAusgebautNurImDevMode(t *testing.T) {
 		t.Errorf("27 Zeichen: %v", err)
 	}
 }
+
+// B-424/AC-01: Ein offener leerer Raum mit dem Namen wird geschlossen; der neue Start lädt den frischen Stand.
+func TestVollAusgebautSchliesstLeerenRaum(t *testing.T) {
+	f := newFixture()
+	f.m.Dev = true
+	name := need(f.m.FullSave("abc"))(t)
+	x := &peer{}
+	old := need(f.m.Create("xbox", x, name, false, 0, []int{0}, Options{}))(t)
+	old.mu.Lock()
+	old.isl.Stages[0].HubLevel = 1 // „gespielter“ Zustand, den der neue Stand ersetzen muss
+	old.mu.Unlock()
+	old.Leave("xbox", x)
+	need(f.m.FullSave("abc"))(t)
+	if len(f.m.Rooms()) != 0 || !old.Closed() {
+		t.Fatalf("alter Raum noch offen: %v", roomNames(f.m))
+	}
+	if s := need(sim.ParseIslandSave(f.store.data[name]))(t); s.Stages[0].HubLevel != 5 {
+		t.Fatalf("Stand im Store: Hub %d, erwartet 5", s.Stages[0].HubLevel)
+	}
+	r := need(f.m.Create("xbox", x, name, false, 0, []int{0}, Options{}))(t)
+	if r == old || r.isl.Stages[0].HubLevel != 5 {
+		t.Fatalf("neuer Start: Hub %d, alter Raum %v", r.isl.Stages[0].HubLevel, r == old)
+	}
+}
+
+// B-424/AC-02: Mit verbundenem Gerät lehnt FullSave ab und ändert nichts.
+func TestVollAusgebautLehntBeiVerbundenemGeraetAb(t *testing.T) {
+	f := newFixture()
+	f.m.Dev = true
+	name := need(f.m.FullSave("abc"))(t)
+	r := need(f.m.Create("xbox", &peer{}, name, false, 0, []int{0}, Options{}))(t)
+	waitSaved(r)
+	before := bytes.Clone(f.store.data[name])
+	if _, err := f.m.FullSave("abc"); !errors.Is(err, ErrSaveInUse) {
+		t.Fatalf("mit verbundenem Gerät: %v, erwartet ErrSaveInUse", err)
+	}
+	if !bytes.Equal(before, f.store.data[name]) || len(f.m.Rooms()) != 1 || r.Closed() {
+		t.Fatal("Stand oder Raum verändert")
+	}
+}

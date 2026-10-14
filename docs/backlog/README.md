@@ -144,7 +144,6 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-421](B-421-abnahme-m10-ressourcen-manager.md) | DEV | Idee | mittel | offen | – | Abnahme M10: Ressourcen-Manager in k3c-dev und Mini-Szenen durch 🧑 beobachten |
 | [B-422](B-422-w11-b207-nachtragen.md) | CLI | Schuld | mittel | offen | – | Die Spec von W11 nennt B-207 (gesperrte Plätze mit Grund) noch nicht |
 | [B-423](B-423-sim-test-im-worktree.md) | DEV | Problem | mittel | offen | – | sim_test rechnet immer mit dem Code der Repo-Wurzel, nicht mit dem Worktree der Session |
-| [B-424](B-424-fullsave-offener-raum.md) | SRV | Problem | mittel | offen | – | Ein neuer Voll-Ausbau-Stand wird nicht vom noch offenen alten Raum überschrieben |
 | [B-425](B-425-fullsave-ausbauregeln.md) | SRV | Problem | mittel | offen | – | Der Voll-Ausbau-Stand hält die Ausbauregeln des Spiels ein |
 | [B-426](B-426-fullsave-review-kleinigkeiten.md) | SRV | Schuld | niedrig | offen | – | Kleine Befunde aus dem Review von SV1 sind erledigt |
 
@@ -398,3 +397,4 @@ Zeile in diesen Abschnitt.
 | [B-204](archiv/B-204-test-raeume-sofort-schliessen.md) | SRV | Idee | niedrig | erledigt | SV1 | Leere Test-Räume schließen sofort statt nach der Leer-Frist |
 | [B-209](archiv/B-209-client-platz-arten.md) | CLI | Schuld | mittel | erledigt | W8 | `src/model/data.ts` kennt alle Platz-Arten aus `hub.json` |
 | [B-188](archiv/B-188-client-rohstoffe-eisen-kristall.md) | CLI | Schuld | niedrig | erledigt | W8 | Der Client kennt alle fünf Rohstoffe des Servers |
+| [B-424](archiv/B-424-fullsave-offener-raum.md) | SRV | Problem | mittel | erledigt | – | Ein neuer Voll-Ausbau-Stand wird nicht vom noch offenen alten Raum überschrieben |
