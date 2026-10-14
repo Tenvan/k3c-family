@@ -35,6 +35,12 @@ describe('Seiten & Navigation', () => {
     for (const href of hrefs) expect(allHtml).toContain(href);
   });
 
+  it('Dev-Seiten (Marker k3c-dev-only) haben eine Kachel nur im Dev-Build und fehlen im Produktions-Build (B-299)', () => {
+    const devPages = allHtml.filter((f) => read(f).includes('name="k3c-dev-only"'));
+    expect(devPages).toEqual(DEV_TILES.filter((t) => t.devOnly).map((t) => t.href));
+    expect(read('vite.config.ts')).toMatch(/!readFileSync\(.*\)\.includes\('name="k3c-dev-only"'\)/);
+  });
+
   it.each(htmlPages)('%s ruft installPageChrome() auf', (page) => {
     const script = /<script type="module" src="\/([^"]+)"/.exec(read(page))?.[1];
     expect(script, `${page} braucht ein Modul-Script`).toBeDefined();

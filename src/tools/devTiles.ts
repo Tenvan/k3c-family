@@ -14,6 +14,8 @@ export interface DevTile {
   href: string;
   /** Seite läuft außerhalb der Shell (z. B. `dm.html`, B-232) und öffnet sich in einem neuen Fenster bzw. Tab */
   external?: boolean;
+  /** Seite gibt es nur im Dev-Build (Marker `k3c-dev-only` im HTML, B-299); im Produktions-Build ist die Kachel ausgeblendet */
+  devOnly?: boolean;
 }
 
 export interface DevSection {
@@ -60,6 +62,7 @@ export const DEV_SECTIONS: readonly DevSection[] = [
     tile('figuren', '🧙', 'figuren.html'),
     tile('grafiken', '🏰', 'grafiken.html'),
     tile('sound', '🔊', 'soundtest.html'),
+    Object.assign(tile('assetvorschau', '🧩', 'assetvorschau.html'), { devOnly: true }),
     tile('dm', '🎲', 'dm.html', true),
   ]),
   section('perf', [tile('monitor', '📈', 'monitor.html')]),
