@@ -1,14 +1,14 @@
 # M10 · DEV · Ressourcen-Manager für Grafik- und Sound-Slots in k3c-dev
 
-- **Status:** geplant
+- **Status:** aktiv
 - **Projekt:** GRA
 - **Domäne:** DEV
 - **Reife:** bereit
 - **Tickets:** B-298, B-299
-- **Start-Commit:** –
-- **Spec:** Entwurf
+- **Start-Commit:** 3880dc29
+- **Spec:** freigegeben
 - **Revision:** 3
-- **Freigabe:** –
+- **Freigabe:** 2026-10-14, 🧑 im Chat (Revision 3, mit Browser-Pane-Prüfung für diesen Lauf)
 
 ## Ausgangslage
 
@@ -58,7 +58,7 @@ Keine. Entschieden (🧑, 2026-10-14): Slot-Register `data/assets.json`, angeleg
 
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
-| M10.1 | `M10.1-slot-register.md` | Umsetzung | autonom | offen |
+| M10.1 | `M10.1-slot-register.md` | Umsetzung | autonom | in Arbeit |
 | M10.2 | `M10.2-assetvorschau.md` | Umsetzung | autonom | offen |
 | M10.3 | `M10.3-oberflaeche.md` | Umsetzung | autonom | offen |
 | M10.4 | `M10.4-recherche.md` | Umsetzung | autonom | offen |

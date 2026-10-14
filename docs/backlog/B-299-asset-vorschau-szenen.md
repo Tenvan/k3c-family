@@ -8,9 +8,9 @@
 - **Sprint:** M10
 - **Projekt:** GRA
 - **Erstellt:** 2026-10-05
-- **Spec:** Entwurf
+- **Spec:** freigegeben
 - **Revision:** 2
-- **Freigabe:** –
+- **Freigabe:** 2026-10-14, 🧑 im Chat (mit Sprint M10 Rev. 3)
 
 ## Ausgangslage
 
