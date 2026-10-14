@@ -5,7 +5,7 @@
 - **Prio:** mittel
 - **Umgebung:** live
 - **Status:** eingeplant
-- **Sprint:** W8
+- **Sprint:** W11
 - **Projekt:** WRT
 - **Erstellt:** 2026-10-04
 - **Spec:** Entwurf

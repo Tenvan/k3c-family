@@ -4,13 +4,13 @@
 - **Typ:** Schuld
 - **Prio:** niedrig
 - **Umgebung:** offline
-- **Status:** eingeplant
+- **Status:** erledigt
 - **Sprint:** W8
 - **Projekt:** WRT
 - **Erstellt:** 2026-10-03
-- **Spec:** Entwurf
+- **Spec:** freigegeben
 - **Revision:** 1
-- **Freigabe:** –
+- **Freigabe:** 2026-10-14, Chat, durch 🧑, mit Sprint W8
 
 ## Ausgangslage
 
