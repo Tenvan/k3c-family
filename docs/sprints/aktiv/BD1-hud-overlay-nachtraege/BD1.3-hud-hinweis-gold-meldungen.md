@@ -1,6 +1,6 @@
 # BD1.3 · Steuerhinweis blendet aus, Gold im HUD, Welt-Meldungen im globalen Band
 
-- **Status:** offen
+- **Status:** in Arbeit
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** CLI
