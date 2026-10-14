@@ -63,7 +63,7 @@ Risiko: S8.2 fand in den vorhandenen Packs keinen Mond. Findet BD1.4 keinen, blo
 | BD1.1 | `BD1.1-kamera-spieler-2.md` | Umsetzung | autonom | fertig |
 | BD1.2 | `BD1.2-beitritt-hinweis-oe.md` | Umsetzung | autonom | fertig |
 | BD1.3 | `BD1.3-hud-hinweis-gold-meldungen.md` | Umsetzung | autonom | fertig |
-| BD1.4 | `BD1.4-muenzbild-mondbild-hinweis.md` | Umsetzung | autonom | offen |
+| BD1.4 | `BD1.4-muenzbild-mondbild-hinweis.md` | Umsetzung | autonom | in Arbeit |
 | BD1.5 | `BD1.5-review.md` | Review | autonom | offen |
 
 Bei `Reife: Entwurf` genügen Stichpunkte mit den Kriterien in Klammern statt Session-Dateien. Vor dem Aktivieren

@@ -1,6 +1,6 @@
 # BD1.4 · Münzbild und Mond-Bild im Hinweis
 
-- **Status:** offen
+- **Status:** in Arbeit
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** CLI
