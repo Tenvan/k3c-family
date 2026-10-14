@@ -266,9 +266,12 @@ func (r *Room) broadcastSeats() {
 	}
 }
 
+// isTest: Der Raum ist ein Testraum (TestPrefix).
+func (r *Room) isTest() bool { return strings.HasPrefix(r.Name, TestPrefix) }
+
 // dropTestSave löscht den Spielstand eines Testraums (TestPrefix), nachdem der leere Raum aufgeräumt wurde.
 func (r *Room) dropTestSave() {
-	if !strings.HasPrefix(r.Name, TestPrefix) {
+	if !r.isTest() {
 		return
 	}
 	if err := r.m.Store.Delete(r.Name); err != nil {

@@ -1,4 +1,5 @@
-import type { DevMessage, DevResource } from '../online/clientProtocol';
+import type { ResourceKind } from '../model/types';
+import type { DevMessage } from '../online/clientProtocol';
 
 /** Dev-Aktionen im Cheat-Dialog (B-179, B-231): nur Daten und Abbildung auf die Nachricht `dev`, keine Spielregel. */
 
@@ -28,7 +29,7 @@ const FACTORS = [1, 2, 4, 8];
 export const MAX_STEP = 100;
 /** Wählbare Stufen von „Alles ausbauen“ */
 export const UPGRADE_LEVELS = [1, 2, 3, 4, 5];
-const RESOURCES: [DevResource, string][] = [
+const RESOURCES: [ResourceKind, string][] = [
   ['wood', 'Holz'],
   ['stone', 'Stein'],
   ['copper', 'Kupfer'],
@@ -63,7 +64,7 @@ export function devMessage(key: string, slot: number, toggles: DevToggles = NO_T
     case 'gold':
       return { t: 'dev', action: 'gold', slot, amount: Number(value) };
     case 'material':
-      return { t: 'dev', action: 'material', slot, resource: value as DevResource, amount: MATERIAL_AMOUNT };
+      return { t: 'dev', action: 'material', slot, resource: value as ResourceKind, amount: MATERIAL_AMOUNT };
     case 'timescale':
       return { t: 'dev', action: 'timescale', factor: Number(value) };
     case 'maxplus':

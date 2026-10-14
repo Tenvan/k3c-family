@@ -13,11 +13,7 @@ func TestTestRaumLoeschtSpielstandBeimAufraeumen(t *testing.T) {
 	real := need(f.m.Create("handy", y, "familie", true, 0, []int{0}, Options{}))(t)
 	test.Leave("xbox", x)
 	real.Leave("handy", y)
-	f.wait(9 * time.Minute)
-	if len(f.store.deleted) != 0 {
-		t.Fatalf("vor 10 min gelöscht: %v", f.store.deleted)
-	}
-	f.wait(2 * time.Minute)
+	f.wait(11 * time.Minute) // Test-Raum schon beim ersten Sweep (B-204), der echte nach EmptyFor
 	if len(f.m.Rooms()) != 0 {
 		t.Fatalf("Räume nicht aufgeräumt: %d", len(f.m.Rooms()))
 	}

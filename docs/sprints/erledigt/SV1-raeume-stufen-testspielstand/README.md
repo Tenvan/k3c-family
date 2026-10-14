@@ -1,14 +1,14 @@
 # SV1 · SRV · Raum mit allen Stufen, Voll-Ausbau-Spielstand, leere Test-Räume
 
-- **Status:** geplant
+- **Status:** erledigt
 - **Projekt:** WRT
 - **Domäne:** SRV
 - **Reife:** bereit
 - **Tickets:** B-315, B-199, B-290, B-204
-- **Start-Commit:** –
-- **Spec:** Entwurf
+- **Start-Commit:** a8d46d9e
+- **Spec:** freigegeben
 - **Revision:** 1
-- **Freigabe:** –
+- **Freigabe:** 2026-10-14 (Chat)
 
 ## Ausgangslage
 
@@ -64,12 +64,15 @@ Biom ohne Daten → Stufe fehlt mit Log-Warnung 🤒, Raum läuft weiter.
 
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
-| SV1.1 | `SV1.1-alle-stufen-test-raeume.md` | Umsetzung | autonom | offen |
-| SV1.2 | `SV1.2-client-biome.md` | Umsetzung | autonom | offen |
-| SV1.3 | `SV1.3-spielstand-voll-ausgebaut.md` | Umsetzung | autonom | offen |
-| SV1.4 | `SV1.4-knopf-level-betrachter.md` | Umsetzung | autonom | offen |
-| SV1.5 | `SV1.5-review.md` | Review | autonom | offen |
+| SV1.1 | `SV1.1-alle-stufen-test-raeume.md` | Umsetzung | autonom | fertig |
+| SV1.2 | `SV1.2-client-biome.md` | Umsetzung | autonom | fertig |
+| SV1.3 | `SV1.3-spielstand-voll-ausgebaut.md` | Umsetzung | autonom | fertig |
+| SV1.4 | `SV1.4-knopf-level-betrachter.md` | Umsetzung | autonom | fertig |
+| SV1.5 | `SV1.5-review.md` | Review | autonom | fertig |
 
 ## Abnahme
 
-–
+- 2026-10-14, SV1.5: AC-01 (SV1.3, SV1.4), AC-02 und AC-04 (SV1.1), AC-03 (SV1.1 Server, SV1.2 Client), AC-05 (SV1.3), AC-06 (alle; `task check` und `task check:go` grün) mit Nachweis. Die Testseite braucht leere Test-Räume nicht länger, AC-04 ist also erfüllt.
+- Behoben im Review: Die Dev-API nahm Seeds an, deren Name `voll-<seed>` `store.Saves` ablehnt (Großbuchstaben, `_`, über 32 Zeichen); das ergab 500 statt 400. Jetzt gilt `^[a-z0-9-]{1,27}$` wie im Client, mit Test.
+- Offen für 🧑: B-315/AC-03, also Klick auf „Voll ausgebaut starten“ in `leveltest.html` am PC beobachten. Bis dahin bleibt B-315 offen. Keine neuen Tickets.
+- Version: v0.17.0 vorgeschlagen (Minor: Räume mit allen fünf Stufen, Client kennt Eisenstollen und Kristallhöhle, Dev-Spielstand „voll ausgebaut“); nicht gesetzt (wartet auf Bestätigung 🧑).

@@ -12,7 +12,7 @@ export const de = {
   'level.random': 'Zufälliger Seed',
   'level.load': 'Laden',
   'level.start': 'Im Spiel starten',
-  'level.keys': 'Scrollen: linker Stick oder Pfeiltasten · Zoom: LB/RB oder + / − · Auswahl: Steuerkreuz hoch/runter, A drücken',
+  'level.keys': 'Scrollen: linker Stick oder Pfeiltasten · Zoom: LB/RB oder + / − · Auswahl: Steuerkreuz hoch/runter, A drücken · Voll ausgebaut: V',
   'level.replaces': 'Der Start öffnet den Spielstand mit dem Seed als Namen: gibt es ihn schon, wird er weitergespielt, sonst entsteht ein neues Spiel mit diesem Level.',
   'level.cannotStart': 'Im Spiel starten nicht möglich: {reason}.',
   'level.chunkTitle': 'Abschnitt {index}: {kind} ({from}–{to} Units)',
@@ -26,6 +26,12 @@ export const de = {
   'level.unreachable': 'Server nicht erreichbar. Starte ihn mit `task start`.',
   'level.invalid': 'Die Antwort des Servers ist kein gültiges Level.',
   'level.httpError': 'Fehler {status}',
+  'level.fullStart': 'Voll ausgebaut starten (V)',
+  'level.fullHint': 'Voll ausgebaut: legt den Spielstand „voll-{seed}“ mit allen Stufen und allen Gebäuden ausgebaut an (überschreibt ihn) und startet ihn in Tiefe 0. Nur im Dev-Mode.',
+  'level.fullCreating': 'Lege den Spielstand voll ausgebaut an …',
+  'level.fullBadSeed': 'Für „voll ausgebaut“ muss der Seed aus Kleinbuchstaben, Ziffern und - bestehen (höchstens 27 Zeichen)',
+  'level.fullForbidden': 'Voll ausgebaut geht nur im Dev-Mode (Server mit K3C_DEV starten).',
+  'level.fullInvalid': 'Die Antwort des Servers nennt keinen Spielstand.',
 
   // Hörprobe (soundtest.html)
   'sound.pageTitle': 'K3C Hörprobe',

@@ -334,7 +334,7 @@ func TestSpeicherzeitpunkte(t *testing.T) {
 		t.Fatalf("Stufenwechsel: Stufe %d, %d Speicherungen, %v", r.isl.StageOf(0), f.store.saves-saves, x.log[len(x.log)-3:])
 	}
 	s := need(sim.ParseIslandSave(f.store.data["reise"]))(t)
-	if s.Version != sim.IslandSaveVersion || len(s.Stages) != 3 || s.Players[0].Depth != 1 {
+	if s.Version != sim.IslandSaveVersion || len(s.Stages) != 5 || s.Players[0].Depth != 1 {
 		t.Fatalf("gespeicherter Stand: %+v", s.Players)
 	}
 	h := &peer{}
