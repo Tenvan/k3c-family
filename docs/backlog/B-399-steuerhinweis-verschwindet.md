@@ -8,9 +8,9 @@
 - **Sprint:** BD1
 - **Projekt:** BED
 - **Erstellt:** 2026-10-11
-- **Spec:** Entwurf
-- **Revision:** 1
-- **Freigabe:** –
+- **Spec:** freigegeben
+- **Revision:** 2
+- **Freigabe:** 2026-10-14, Chat 🧑 (Revision 2)
 
 ## Ausgangslage
 
@@ -26,8 +26,8 @@ Spieler am PC und an der Xbox (höchstens 2); 🧑 nimmt ab und entscheidet die 
 
 ## Anforderungen
 
-- Der Steuerhinweis (Element `controls`) wird nach einer festen Zeit seit dem Beitritt des Spielers ausgeblendet (Vorschlag: 20 s).
-- Er erscheint wieder bei einem neuen Beitritt oder wenn 🧑 ihn über die Optionen wieder einschaltet (Vorschlag: gemeinsam mit „Hinweise“, `guideHints`).
+- Der Steuerhinweis (Element `controls`) wird 20 s nach dem Beitritt des Spielers ausgeblendet.
+- Er erscheint wieder bei einem neuen Beitritt oder wenn 🧑 in den Optionen „Hinweise“ (`guideHints`) einschaltet.
 - Das HUD-Layout (B-337) lässt den frei gewordenen Platz für die anderen Elemente.
 - Gilt für 1 und 2 Spieler, je Zelle.
 
@@ -54,7 +54,7 @@ Spieler wechselt das Gerät (Tastatur → Controller) → Hinweis erscheint für
 
 ## Offene Fragen
 
-Wie lange soll der Hinweis stehen (Vorschlag 20 s), und soll er in den Optionen wieder einschaltbar sein? Entscheidet 🧑.
+keine. Entschieden 2026-10-14 (🧑, Chat): Dauer 20 s nach Beitritt; über „Hinweise“ (`guideHints`) in den Optionen wieder einschaltbar.
 
 ## Notizen
 

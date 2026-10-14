@@ -128,7 +128,7 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-387](B-387-ticketnummern-parallele-worktrees.md) | DEV | Problem | mittel | eingeplant | WZ2 | Ticket-Nummern bleiben zwischen parallelen Worktrees eindeutig |
 | [B-389](B-389-oe-schliesst-dialog-zuerst.md) | CLI | Problem | mittel | eingeplant | BD1 | Ö schließt bei offenem Cheat-Dialog zuerst den Dialog, das Overlay bleibt offen |
 | [B-391](B-391-beitritts-hinweis-spieler-2-fehlt.md) | CLI | Problem | mittel | eingeplant | BD1 | Der Beitritts-Hinweis für Spieler 2 wird nicht angezeigt |
-| [B-392](B-392-splitscreen-kamera-spieler-2.md) | CLI | Problem | hoch | eingeplant | BD1 | Im Split-Screen scrollt nur die Kamera von Spieler 1 mit; Spieler 2 und weitere sind nicht an ihre Ansicht gebunden |
+| [B-392](B-392-splitscreen-kamera-spieler-2.md) | CLI | Problem | hoch | eingeplant | BD1 | Im Split-Screen scrollt nur die Kamera von Spieler 1 mit; Spieler 2 ist nicht an seine Ansicht gebunden |
 | [B-393](B-393-muenzbild-hinweis-fehlt.md) | CLI | Problem | mittel | eingeplant | BD1 | Das Münzbild vor „Hinlaufen: Münze aufheben“ erscheint im Browser nicht |
 | [B-394](B-394-xbox-overlay-gesten-abnahme.md) | PLAT | Frage | niedrig | eingeplant | HW1 | Overlay-Gesten (RB, LB + RB) sind an der Xbox abgenommen (B-195/AC-02) |
 | [B-398](B-398-gold-im-hud-nicht-ueber-reiter.md) | CLI | Idee | mittel | eingeplant | BD1 | Das Gold eines Spielers steht im HUD, nicht als Beutel über dem Reiter |

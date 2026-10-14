@@ -8,9 +8,9 @@
 - **Sprint:** BD1
 - **Projekt:** BED
 - **Erstellt:** 2026-10-10
-- **Spec:** Entwurf
-- **Revision:** 1
-- **Freigabe:** –
+- **Spec:** freigegeben
+- **Revision:** 2
+- **Freigabe:** 2026-10-14, Chat 🧑 (Revision 2)
 
 ## Ausgangslage
 
@@ -26,7 +26,9 @@ Spielende in der ersten Nacht; 🧑 hat den Fehler in der Abnahme gemeldet.
 
 ## Anforderungen
 
-- Im Browser erscheint das Bild vor dem Text, mit 1 und 2 Spielern; ein Test oder Log belegt, dass die Textur geladen und gezeichnet wird.
+- Die Session prüft die Ursache selbst mit frischem Profil (kein `guideSeen`): Erscheint der Hinweistext, und werden Textur und `RowImage` geladen und gezeichnet? Ein Test oder Log belegt das Ergebnis.
+- Im Browser erscheint das Bild vor dem Text, mit 1 und 2 Spielern.
+- Fehlt die Textur, schreibt der Client ein Log 🐛 (bisher still).
 
 ## Nicht-Ziele
 
@@ -50,7 +52,7 @@ Textur nicht geladen → Hinweis nur mit Text (bisher gewollt, ohne Meldung; ein
 
 ## Offene Fragen
 
-Erschien der Hinweistext selbst? Möglich: Er war schon als gesehen markiert (`guideSeen`, Browser-Speicher) und kam deshalb gar nicht (🧑 prüft mit frischem Profil oder `?`-Reset).
+keine. Entschieden 2026-10-14 (🧑, Chat): Die Session prüft die Ursache selbst mit frischem Profil; 🧑 muss vorab nichts prüfen.
 
 ## Notizen
 
