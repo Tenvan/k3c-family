@@ -61,7 +61,7 @@
         },
         {
           "kind": "stairsDown",
-          "x": 524,
+          "x": 508,
           "state": "unpaid",
           "paidGold": 0,
           "buildProgress": 0,
@@ -175,7 +175,7 @@
         },
         {
           "kind": "stairsDown",
-          "x": 424,
+          "x": 408,
           "state": "unpaid",
           "paidGold": 0,
           "buildProgress": 0,

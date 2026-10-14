@@ -8,7 +8,7 @@
 - **Start-Commit:** a8d46d9e
 - **Spec:** freigegeben
 - **Revision:** 2
-- **Freigabe:** 2026-10-14, 🧑 im Chat (Rev. 2: Treppen ≥ 8 Units zu allen Nachbarn, Linien +8)
+- **Freigabe:** 2026-10-14, 🧑 im Chat (Rev. 2: Treppen ≥ 8 Units zu allen Zahlzielen derselben Tiefe, Raster je Tiefe geteilt)
 
 ## Ausgangslage
 
@@ -51,13 +51,13 @@ Alter Server ohne neue Felder → Client zeigt Plätze wie bisher mit Warnung �
 
 ## Offene Fragen
 
-Geklärt mit 🧑 (2026-10-14): W11 vor W8; Treppen ≥ 8 Units zu **allen** Nachbar-Zahlzielen; dafür rücken alle Mauerlinien +8 Units nach außen (Linie 1 ±52, äußerstes Tor 140 < Portal 150, Farmen ±60), Golden wird neu geschrieben; B-408 filtert der Server. Offen: Version des Protokolls (W11.2), SV1-Verweis auf B-208 anpassen.
+Geklärt mit 🧑 (2026-10-14): W11 vor W8; Treppen ≥ 8 Units zu **allen** Zahlzielen derselben Tiefe. „Linien +8“ verworfen (Kristallhöhle: Portale ab 135, Camps ohne freien Chunk); stattdessen teilen sich Treppe hoch (ab Tiefe 1) und Händler-Kaufen (nur Tiefe 0) ein Raster, Linien bleiben. B-408 filtert der Server. Offen: Version des Protokolls (W11.2), SV1-Verweis auf B-208 anpassen.
 
 ## Sessions
 
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
-| W11.1 | `W11.1-treppen-abstand.md` | Umsetzung | autonom | in Arbeit |
+| W11.1 | `W11.1-treppen-abstand.md` | Umsetzung | autonom | fertig |
 | W11.2 | `W11.2-bauplaetze-im-zustand.md` | Umsetzung | autonom | offen |
 | W11.3 | `W11.3-aktionen-ausbilden-tauschen.md` | Umsetzung | autonom | offen |
 | W11.4 | `W11.4-bauplaetze-figuren-client.md` | Umsetzung | autonom | offen |

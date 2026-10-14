@@ -147,6 +147,7 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-419](B-419-golden-daten-verkleinern.md) | INF | Idee | niedrig | offen | – | Golden-Daten werden gezielt verkleinert, ohne die Prüfschärfe zu verlieren |
 | [B-420](B-420-importe-grafikpacks.md) | DEV | Schuld | mittel | offen | – | Mit k3c-dev importierte Kandidaten unter public/grafik/kandidaten/ brechen grafikPacks.test nicht |
 | [B-421](B-421-abnahme-m10-ressourcen-manager.md) | DEV | Idee | mittel | offen | – | Abnahme M10: Ressourcen-Manager in k3c-dev und Mini-Szenen durch 🧑 beobachten |
+| [B-423](B-423-sim-test-im-worktree.md) | DEV | Problem | mittel | offen | – | sim_test rechnet immer mit dem Code der Repo-Wurzel, nicht mit dem Worktree der Session |
 
 ## Archiv
 

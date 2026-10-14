@@ -2,7 +2,9 @@ package sim
 
 import (
 	"fmt"
+	"math"
 	"sort"
+	"strings"
 	"testing"
 )
 
@@ -57,12 +59,16 @@ func lineTargets(left, right int) []dataTarget {
 // isLineKind: Mauer, Turm und Tor gehören zu den Linien, nicht zu den Hub-Plätzen.
 func isLineKind(kind string) bool { return kind == "wall" || kind == "tower" || kind == "gate" }
 
-// fixedTargets: Burg, Hub- und Insel-Plätze (ohne Linien), Händler und Angebote.
-func fixedTargets() []dataTarget {
-	out := []dataTarget{{"castle", 0},
-		{"merchant buy", hub.Merchant.BuyOffsetUnits}, {"merchant sell", hub.Merchant.SellOffsetUnits}}
+// fixedTargets: Burg, Hub- und Insel-Plätze (ohne Linien), Händler und Angebote, die es in Tiefe depth gibt
+// (deeper: es gibt eine tiefere Stufe), wie engine/sim/lines.go und merchant.go sie anlegen.
+func fixedTargets(depth int, deeper bool) []dataTarget {
+	out := []dataTarget{{"castle", 0}}
+	if depth == hub.Merchant.OnlyDepth {
+		out = append(out, dataTarget{"merchant buy", hub.Merchant.BuyOffsetUnits},
+			dataTarget{"merchant sell", hub.Merchant.SellOffsetUnits})
+	}
 	for _, s := range append(append([]HubSite{}, hub.Sites...), hub.IslandSites...) {
-		if isLineKind(s.Kind) {
+		if isLineKind(s.Kind) || depth < s.FromDepth || (s.NeedsDeeper && !deeper) {
 			continue
 		}
 		out = append(out, dataTarget{fmt.Sprintf("%s@%+.0f", s.Kind, s.OffsetUnits), s.OffsetUnits})
@@ -71,6 +77,22 @@ func fixedTargets() []dataTarget {
 		}
 	}
 	return out
+}
+
+// eachLayout ruft fn für jede Tiefe (0 und tiefer, mit und ohne tiefere Stufe) bei jeder Streuung der Linien auf.
+func eachLayout(fn func(desc string, all []dataTarget)) {
+	combos := 1 << len(hub.WallLines.WallUnits)
+	for _, depth := range []int{0, 1} {
+		for _, deeper := range []bool{true, false} {
+			fixed := fixedTargets(depth, deeper)
+			for left := range combos {
+				for right := range combos {
+					desc := fmt.Sprintf("Tiefe %d (tiefer %v), Streuung links %05b rechts %05b", depth, deeper, left, right)
+					fn(desc, append(append([]dataTarget{}, fixed...), lineTargets(left, right)...))
+				}
+			}
+		}
+	}
 }
 
 func TestSiteDataGenauEinPlatzJeBau(t *testing.T) {
@@ -107,20 +129,33 @@ func TestSiteDataGenauEinPlatzJeBau(t *testing.T) {
 
 func TestSiteDataAbstandBeiVollerStreuung(t *testing.T) {
 	minGap := 2 * economy.PayRangeUnits // zwei Reichweiten: kein Zahlziel überdeckt ein anderes
-	fixed := fixedTargets()
-	combos := 1 << len(hub.WallLines.WallUnits)
-	for left := range combos {
-		for right := range combos {
-			all := append(append([]dataTarget{}, fixed...), lineTargets(left, right)...)
-			sort.Slice(all, func(i, j int) bool { return all[i].x < all[j].x })
-			for i := 1; i < len(all); i++ {
-				if gap := all[i].x - all[i-1].x; gap < minGap {
-					t.Fatalf("Streuung links %05b rechts %05b: %s (%v) und %s (%v) nur %v Units auseinander, mindestens %v",
-						left, right, all[i-1].name, all[i-1].x, all[i].name, all[i].x, gap, minGap)
+	eachLayout(func(desc string, all []dataTarget) {
+		sort.Slice(all, func(i, j int) bool { return all[i].x < all[j].x })
+		for i := 1; i < len(all); i++ {
+			if gap := all[i].x - all[i-1].x; gap < minGap {
+				t.Fatalf("%s: %s (%v) und %s (%v) nur %v Units auseinander, mindestens %v",
+					desc, all[i-1].name, all[i-1].x, all[i].name, all[i].x, gap, minGap)
+			}
+		}
+	})
+}
+
+// W11.1 (B-409): Treppen brauchen Platz für Preisschild und Wartegrund, mindestens 8 Units zu jedem Zahlziel.
+func TestSiteDataTreppenAbstand(t *testing.T) {
+	const minGap = 8
+	eachLayout(func(desc string, all []dataTarget) {
+		for _, s := range all {
+			if !strings.HasPrefix(s.name, "stairs") {
+				continue
+			}
+			for _, o := range all {
+				if gap := math.Abs(o.x - s.x); o.name != s.name && gap < minGap {
+					t.Fatalf("%s: %s (%v) und %s (%v) nur %v Units auseinander, mindestens %v",
+						desc, s.name, s.x, o.name, o.x, gap, minGap)
 				}
 			}
 		}
-	}
+	})
 }
 
 func TestSiteDataLinien(t *testing.T) {

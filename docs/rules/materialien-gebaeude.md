@@ -48,7 +48,7 @@ Begründung: Fortschritt über Tiefe und Material, kein reines Goldsparen. Daten
 
 | Platz-Klasse | Lage | Freischaltung | Quelle |
 |---|---|---|---|
-| **Hub-Platz** | fester Offset zur Hub-Mitte (`data/hub.json`): Burg (Hub-Mitte, Zahlziel des Hub-Ausbaus), Werkstatt, Lager, Kaserne, Taverne, Heilplatz, Schmiede, Rüstkammer, Treppen (+16/+24), Händler (+8/+12, nur Tiefe 0) | Hub-Stufe des Gebäudes (Tabelle unten) | Q43, Q55 |
+| **Hub-Platz** | fester Offset zur Hub-Mitte (`data/hub.json`): Burg (Hub-Mitte, Zahlziel des Hub-Ausbaus), Werkstatt, Lager, Kaserne, Taverne, Heilplatz, Schmiede, Rüstkammer, Treppe runter +8, Treppe hoch +16 (ab Tiefe 1), Händler Kaufen +16 / Verkaufen +20 (nur Tiefe 0, teilt sich +16 mit der Treppe hoch); Treppen ≥ 8 Units zu jedem Zahlziel derselben Tiefe | Hub-Stufe des Gebäudes (Tabelle unten) | Q43, Q55, B-409 |
 | **Mauerlinie** | je Seite 5 Linien mit Mauer-Platz und eigenem Turm-Platz (8 Units innen) | Linie k ab Hub-Stufe k, sobald die **Mauer** der Linie k−1 derselben Seite gebaut ist (Material egal); jede Seite für sich | Q48, Q58, Q49 |
 | **Tor-Platz** | je Linie einer, Mauer +4 Units außen | bezahlbar nur an der äußersten gebauten Linie der Seite (Tor ab Hub-Stufe 2) | Q47 |
 | **Farm-Weltplatz** | ein fester Weltplatz je Seite zwischen Linie 1 und 2 | Hub-Stufe 1 | Q51 |
