@@ -1,6 +1,6 @@
 # WZ4.2 · Splitter: Doppelklick und Ziehen in einer DOM-Umgebung getestet
 
-- **Status:** offen
+- **Status:** in Arbeit
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** DEV
