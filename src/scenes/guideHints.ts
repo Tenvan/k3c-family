@@ -22,6 +22,19 @@ export function guideImage(id: GuideId): GuideImage | null {
   return id === 'coin' ? { image: 'grafik:coinIcon', scale: 4 } : null; // Münze 6 px im 16-px-Bild → 24 px, etwa Texthöhe
 }
 
+/**
+ * Bild nur, wenn seine Textur geladen ist (B-393): Sonst zeichnet Phaser einen grünen Platzhalter statt „nur Text“.
+ * `warn` meldet jede fehlende Textur einmal (Log 🐛), der Hinweis steht dann ohne Bild.
+ */
+export function usableGuideImage(image: GuideImage | null, exists: (key: string) => boolean, warn: (key: string) => void, warned: Set<string>): GuideImage | null {
+  if (!image || exists(image.image)) return image;
+  if (!warned.has(image.image)) {
+    warned.add(image.image);
+    warn(image.image);
+  }
+  return null;
+}
+
 export interface GuideHint {
   id: GuideId;
   /** Ort in der Welt (Units), über dem der Hinweis steht */

@@ -6,7 +6,8 @@ import { screenAt } from './actionOverlay';
 import { fontStyle } from './fontRules';
 import { glyphOf, type HintDevice } from './glyphs';
 import { GlyphRow, type RowPart } from './glyphView';
-import { guideImage, stepGuide, type GuideHint } from './guideHints';
+import { guideImage, stepGuide, usableGuideImage, type GuideHint } from './guideHints';
+import { clientLog } from '../core/clientLog';
 import type { RadarCell } from './radarView';
 
 const STYLE = { stroke: '#000000', strokeThickness: 6, fontStyle: 'bold', ...fontStyle('playerValue') }; // 28 px, HUD-fest (Q03)
@@ -15,10 +16,10 @@ const OBJECT_PX = 160;
 const PLAYER_PX = 370;
 
 /** Hinweis als Zeilenteile; `{key}` im Text wird zur Glyph der Bestätigen-Taste des Geräts, ein Bild steht davor (B-294) */
-function partsOf(h: GuideHint, device: HintDevice): RowPart[] {
+function partsOf(h: GuideHint, device: HintDevice, usable: (h: GuideHint) => ReturnType<typeof guideImage>): RowPart[] {
   const [before = '', after] = t(`guide.${h.id}`, {}).split('{key}');
   const text: RowPart[] = after === undefined ? [before] : [before, glyphOf('confirm', device), after];
-  const image = guideImage(h.id);
+  const image = usable(h);
   return image ? [image, ...text] : text;
 }
 
@@ -29,8 +30,16 @@ function partsOf(h: GuideHint, device: HintDevice): RowPart[] {
 export class GuideOverlay {
   private rows: GlyphRow[] = [];
   private shown: (GuideHint | null)[] = [];
+  private readonly warned = new Set<string>();
 
   constructor(private readonly scene: Phaser.Scene) {}
+
+  /** Bild des Hinweises, sobald seine Textur da ist; fehlt sie, steht der Hinweis ohne Bild und ein Log 🐛 meldet es einmal (B-393) */
+  private imageOf(h: GuideHint): ReturnType<typeof guideImage> {
+    const exists = (key: string) => this.scene.textures.exists(key);
+    const warn = (key: string) => clientLog('warn', '🐛 Hinweis-Bild fehlt: Textur nicht geladen', { key, hint: h.id });
+    return usableGuideImage(guideImage(h.id), exists, warn, this.warned);
+  }
 
   /** Argumente wie `ActionOverlay.draw` */
   draw(cells: readonly RadarCell[], cameras: readonly Phaser.Cameras.Scene2D.Camera[], slotOf: (seat: number) => number | undefined, deviceOf: (slot: number) => HintDevice): void {
@@ -43,7 +52,7 @@ export class GuideOverlay {
       this.shown[i] = h;
       const at = h && cameras[i] ? screenAt(cell, cameras[i].worldView, h.x, h.target === null ? PLAYER_PX : OBJECT_PX) : null;
       if (!h || !at || slot === undefined) return;
-      (this.rows[i] ??= new GlyphRow(this.scene, STYLE, 'bottom')).set(partsOf(h, deviceOf(slot)), at.x, at.y);
+      (this.rows[i] ??= new GlyphRow(this.scene, STYLE, 'bottom')).set(partsOf(h, deviceOf(slot), (hint) => this.imageOf(hint)), at.x, at.y);
     });
   }
 }
