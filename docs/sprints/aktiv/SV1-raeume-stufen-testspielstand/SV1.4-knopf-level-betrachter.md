@@ -1,6 +1,6 @@
 # SV1.4 · Knopf „Voll ausgebaut starten“ im Level-Betrachter
 
-- **Status:** offen
+- **Status:** in Arbeit
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** SRV
