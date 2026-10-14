@@ -1,6 +1,6 @@
 # WZ4.3 · Review WZ4
 
-- **Status:** offen
+- **Status:** in Arbeit
 - **Typ:** Review
 - **Agent:** autonom
 - **Domäne:** DEV

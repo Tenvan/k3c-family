@@ -55,7 +55,7 @@ Neue devDependency `happy-dom` im Root (🧑 mit der Spec-Freigabe, siehe B-406)
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
 | WZ4.2 | `WZ4.2-splitter-dom-test.md` | Umsetzung | autonom | fertig |
-| WZ4.3 | `WZ4.3-review.md` | Review | autonom | offen |
+| WZ4.3 | `WZ4.3-review.md` | Review | autonom | in Arbeit |
 
 Bei `Reife: Entwurf` genügen Stichpunkte mit den Kriterien in Klammern statt Session-Dateien. Vor dem Aktivieren
 wird jede Session als eigene Datei nach `docs/vorlagen/session.md` geschrieben.
