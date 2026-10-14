@@ -1,6 +1,6 @@
 # BD1.2 · Beitritts-Hinweis für Spieler 2, Ö schließt zuerst den Cheat-Dialog
 
-- **Status:** offen
+- **Status:** in Arbeit
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** CLI
