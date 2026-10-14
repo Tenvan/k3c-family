@@ -16,6 +16,7 @@ Interne Go-Packages von k3c-dev (Service Layer hinter Wails-Bindings und MCP-Ser
 | [`serverapi/`](serverapi/codemap.md) | Read-only-Client für `/api/status` des Spielservers |
 | [`enginetools/`](enginetools/codemap.md) | In-process-Facade auf `engine/level` und `engine/sim` |
 | [`balance/`](balance/codemap.md) (+ [`cmd/`](balance/cmd/codemap.md)) | Balancing-Matrix, Zielkorridor, Baseline, Sensitivität, Kurven, Replays |
+| [`assets/`](assets/codemap.md) | Slot-Register `data/assets.json` und Asset-Katalog unter `public/` (B-298) |
 | [`gamedata/`](gamedata/codemap.md) | Zusammenfassungen von `reports/` und `saves/` |
 | [`github/`](github/codemap.md) | `gh`-CLI-Client für PR- und CI-Stand |
 | [`usage/`](usage/codemap.md) | Statistik der MCP-Aufrufe |

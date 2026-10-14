@@ -21,7 +21,7 @@ zurückgeben. Die Gliederung folgt der gemeinsamen Spec der Workbench-Seiten (`d
   Session kommt (Header `X-K3C-Root` aus `.mcp.json`): Prüfläufe, Planung, Logs, Berichte, Spielstände
   und Dienste nur dort. `workbench_status` nennt den Checkout in der Zeile `Checkout:`.
 - **Im Worktree immer `checkout` setzen** (B-388): Schreibende Tools (`plan_create`, `plan_set`, `plan_section`,
-  `plan_delete`, `svc_*`, `task_start`, `task_stop`) und `check_run` nehmen das Argument `checkout` mit dem Ordnernamen
+  `plan_delete`, `assets_set`, `svc_*`, `task_start`, `task_stop`) und `check_run` nehmen das Argument `checkout` mit dem Ordnernamen
   oder dem absoluten Pfad des eigenen Checkouts (`git rev-parse --show-toplevel`). Es gilt vor dem Header; der Header
   allein genügt nicht, die Desktop-App meldet aus Worktrees die Repo-Wurzel (B-341). Ein unbekannter oder mehrdeutiger
   Wert wird abgelehnt, die Meldung nennt die Worktrees. `task_*` mit einem Worktree lehnt ab (dort `check_run`).
@@ -96,6 +96,15 @@ zurückgeben. Die Gliederung folgt der gemeinsamen Spec der Workbench-Seiten (`d
 
 - `reports_list` und `report_read` statt `reports/*.json` zu öffnen: Xbox-Berichte der Gamepad-Testseite.
 - `saves_list` statt `saves/` zu durchsuchen: Stufe, Tag, Spieler und Datum je Spielstand.
+
+### Grafik- und Sound-Slots
+
+- `assets_list {art?, kategorie?, status?}` zeigt die Asset-Slots des Slot-Registers `data/assets.json` (je Zeile ID,
+  Kategorie, Status `zugeordnet`/`luecke`/`fehlt`, aktive Zuordnung); `assets_get {id}` einen Slot mit allen Präferenzen.
+- `assets_catalog {query?, art?, limit?}` sucht Dateien unter `public/grafik`, `public/sprites`, `public/audio` mit Pack,
+  Gruppe, Maßen und Lizenz; Kennzeichen `[NC]`, `[SA]`, `[ND]` nach Q70.
+- `assets_set {id, wahl}` ersetzt die Zuordnungen (Reihenfolge = Präferenz, nur die erste ist im Spiel aktiv); jede
+  `datei` relativ zu `public/`, Ausschnitt `{x,y,w,h}` innerhalb des Bildes. Ein ungültiges Register wird nie überschrieben.
 
 ### Laufender Server
 
