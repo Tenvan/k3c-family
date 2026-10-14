@@ -20,6 +20,7 @@ import { PLAYER_COLORS } from '../core/constants';
 import { hudItems, hudLayout, type HAlign, type Rect, type Size } from './hudLayout';
 import { cellRadar, radarRect, RADAR_HEIGHT } from './radar';
 import type { HintDevice } from './glyphs';
+import { joinHintDevices } from './joinHint';
 import { GamepadInput, type PlayerInput } from '../input/playerInput';
 import { TouchInput } from '../input/touchInput';
 import { siteName } from './worldRenderer';
@@ -183,8 +184,9 @@ export class HudScene extends Phaser.Scene {
     }
     const waiting = !world || game.waitingForJoin();
     this.controlsHint.setText(t(`hud.hint.${game.lastDevice}`));
-    this.joinHint.setText(world ? t(`hud.join.${game.lastDevice}`) : (client.notice ?? t('net.connecting')));
-    this.joinHint.setVisible(waiting || client.you.length < (client.limits?.slotsPerDevice ?? 4));
+    const joinText = joinHintDevices(game.joinCandidates(), game.lastDevice).map((d) => t(`hud.join.${d}`)).join('  ·  ');
+    this.joinHint.setText(world ? joinText : (client.notice ?? t('net.connecting')));
+    this.joinHint.setVisible((waiting || client.you.length < (client.limits?.slotsPerDevice ?? 4)) && (!world || joinText !== ''));
     this.joinHint.setFontSize(waiting ? FONTS.joinCenter.px : FONTS.joinCorner.px);
     const taken = client.monarchs.filter((m) => m !== 'free').length;
     this.info.setText(client.roomCode ? t('hud.room', { code: client.roomCode, name: client.roomName, n: taken }) : '').setVisible(!!client.roomCode);

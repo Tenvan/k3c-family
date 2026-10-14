@@ -17,6 +17,7 @@ import { LocalSlots, pageBots } from './localSlots';
 import type { RadarCell } from './radarView';
 import { daylight } from './viewRules';
 import { refollow } from './cameraFollow';
+import type { JoinCandidate } from './joinHint';
 import { cellStages } from './cellStages';
 import { PLACEHOLDER_BG, StageView, placeholderLayer, showOnly } from './stageView';
 import { clientLog } from '../core/clientLog';
@@ -195,6 +196,17 @@ export class GameScene extends Phaser.Scene {
   /** Slots, deren Spieler noch auf seinen Beitritt wartet (Taste drücken) */
   waitingForJoin(): boolean {
     return this.slots.waiting(this.client.you.map((s) => s.slot));
+  }
+
+  /** Geräte, die beitreten können, und ob sie schon einen Spieler steuern (Beitritts-Hinweis, B-391) */
+  joinCandidates(): JoinCandidate[] {
+    const bound = (i: PlayerInput) => this.slots.bound.includes(i);
+    return [
+      { device: 'keyboard', bound: bound(this.keyboards[0]) },
+      { device: 'keyboard2', bound: bound(this.keyboards[1]) },
+      ...this.pads.map((p): JoinCandidate => ({ device: 'pad', bound: bound(p) })),
+      ...(this.touch ? [{ device: 'touch', bound: bound(this.touch) } as JoinCandidate] : []),
+    ];
   }
 
   /** Felder, für die das HUD Werte zeigt: Monarchen der lokalen Spieler, dazu der sichtbare Ausschnitt der Kamera (Radar) */
