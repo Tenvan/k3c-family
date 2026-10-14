@@ -1,7 +1,3 @@
-import forest from '../../data/biomes/forest.json';
-import cave from '../../data/biomes/cave.json';
-import mine from '../../data/biomes/mine.json';
-
 export type Range = [min: number, max: number];
 
 export type EventChunkKind = 'chest' | 'recruitCamp';
@@ -32,8 +28,10 @@ export interface BiomeConfig {
   palette: { sky: string; far: string; near: string; ground: string };
 }
 
-// JSON kennt keine Tupel/Literal-Typen, daher der Cast. Die Configs werden in levelGenerator.test.ts über 500 Seeds geprüft.
-export const BIOMES: readonly BiomeConfig[] = [forest, cave, mine] as unknown as BiomeConfig[];
+// Alle Biome aus data/biomes/, nach Tiefe sortiert (B-290). JSON kennt keine Tupel/Literal-Typen, daher der Cast;
+// biome.test.ts prüft Pflichtfelder und lückenlose Tiefen.
+const FILES = import.meta.glob('../../data/biomes/*.json', { eager: true, import: 'default' });
+export const BIOMES: readonly BiomeConfig[] = (Object.values(FILES) as BiomeConfig[]).sort((a, b) => a.depth - b.depth);
 
 export function biomeForDepth(depth: number): BiomeConfig {
   const biome = BIOMES.find((b) => b.depth === depth);

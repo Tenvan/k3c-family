@@ -60,7 +60,7 @@ func sameJSON(t *testing.T, got, want string) {
 // B-091/AC-01: Seed und Biom ergeben dasselbe Level wie engine/level (Felder und Warnungen), zweimal identisch.
 func TestLevelStimmtMitEngineUeberein(t *testing.T) {
 	srv := levelServer(t)
-	for _, biome := range []string{"forest", "cave", "mine"} {
+	for _, biome := range levelBiomes() { // alle Biome aus data/biomes (SV1.1)
 		res, first := do(t, "GET", srv.URL+"/api/level?seed=test&biome="+biome, "")
 		if res.StatusCode != 200 || !strings.HasPrefix(res.Header.Get("Content-Type"), "application/json") {
 			t.Fatalf("%s: %d %q", biome, res.StatusCode, res.Header.Get("Content-Type"))

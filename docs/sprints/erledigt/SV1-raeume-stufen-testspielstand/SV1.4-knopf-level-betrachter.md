@@ -1,6 +1,6 @@
 # SV1.4 · Knopf „Voll ausgebaut starten“ im Level-Betrachter
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** SRV
@@ -25,6 +25,7 @@
 ## Erlaubte Dateien
 
 - `leveltest.html`, `src/tools/leveltest.ts`, `src/tools/levelApi.ts`, `src/tools/levelApi.test.ts`
+- `src/tools/texts.de.ts`, `src/tools/texts.en.ts` (Texte für Knopf und Hinweis; ergänzt mit Zustimmung 🧑 2026-10-14, Chat)
 - Planungs-Dateien (`docs/sprints/`, `docs/backlog/`)
 
 ## Nicht-Ziele
@@ -41,9 +42,9 @@
 
 ## Fertig, wenn
 
-- [ ] AC-01: Vitest belegt Aufruf der Dev-API und Ziel-URL des Spielstands.
-- [ ] AC-01: Knopf und Taste sind eingebaut; die Beobachtung am PC (B-315/AC-03) macht 🧑 bei der Abnahme des Sprints.
-- [ ] AC-06: `task check` grün (inklusive `tests/projectRules.test.ts`).
+- [x] AC-01: Vitest belegt Aufruf der Dev-API und Ziel-URL des Spielstands.
+- [x] AC-01: Knopf und Taste sind eingebaut; die Beobachtung am PC (B-315/AC-03) macht 🧑 bei der Abnahme des Sprints.
+- [x] AC-06: `task check` grün (inklusive `tests/projectRules.test.ts`).
 
 ## Prüfen
 
@@ -55,4 +56,8 @@ Manuelle Prüfung (Klick am PC, B-315/AC-03) nur durch 🧑 bei der Sprint-Abnah
 
 ## Ergebnis
 
-–
+- **AC-01 (Vitest)** umgesetzt, geprüft: `src/tools/levelApi.test.ts` › `createFullSave` (POST an `/api/dev/fullsave` mit `{"seed"}`, liefert `voll-…`; 403 → Hinweis `level.fullForbidden`; Seed außerhalb `[a-z0-9-]{1,27}` fragt gar nicht erst, weil `voll-<seed>` sonst nicht ins Namensformat der Lobby passt; Server weg oder Antwort ohne Spielstand → Hinweis) und `fullSaveTarget` (`game.html?autostart=1&save=voll-abc`, ohne `fresh`).
+- **AC-01 (Knopf und Taste)** umgesetzt: In `leveltest.html` gibt es den Knopf „Voll ausgebaut starten (V)“ und darunter einen Hinweis (`#fullNote`), angebunden in `src/tools/leveltest.ts` über `startFull()`. Taste `V` wirkt außerhalb der Eingabefelder, am Controller über Steuerkreuz und A wie die anderen Knöpfe. B, View und Menu bleiben unbelegt. Der Wechsel läuft über `openPage()`. Bei 403 steht der Hinweis zum Dev-Mode da, gestartet wird nichts. Die Beobachtung am PC (B-315/AC-03) macht 🧑 bei der Sprint-Abnahme.
+- **Startstufe:** Der Autostart beginnt immer in Tiefe 0 (B-095), dort steht Hub-Stufe 5. Die Biom-Auswahl wirkt beim vollen Stand nicht, der Hinweistext sagt das.
+- **Erlaubte Dateien:** um `src/tools/texts.de.ts` und `texts.en.ts` erweitert, Zustimmung 🧑 2026-10-14 im Chat. Neue Schlüssel `level.full*`, `level.keys` nennt V.
+- **AC-06** geprüft: `task check` grün (k3c-dev `check_run`, mit `tests/projectRules.test.ts`).

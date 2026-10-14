@@ -98,7 +98,7 @@ func TestInselRundlauf(t *testing.T) {
 	r.Leave("xbox", x)
 	waitSaved(r)
 	got := need(sim.ParseIslandSave(need(s.Load("insel"))(t)))(t)
-	if got.Version != sim.IslandSaveVersion || len(got.Stages) != 3 || len(got.Players) != 2 {
+	if got.Version != sim.IslandSaveVersion || len(got.Stages) != 5 || len(got.Players) != 2 {
 		t.Fatalf("gespeichert: Version %d, %d Stufen, %d Spieler", got.Version, len(got.Stages), len(got.Players))
 	}
 	f.wait(11 * time.Minute) // leerer Raum wird aufgeräumt
@@ -150,7 +150,7 @@ func TestStatusZeigtStufen(t *testing.T) {
 	moveToExit(t, r, 0)
 	ticks(r, 70)
 	st, _ := f.m.Status()
-	if len(st) != 1 || fmt.Sprint(st[0].Stages) != "[{0 day 1 [1]} {1 day 1 [0]} {2 day 1 []}]" {
+	if len(st) != 1 || fmt.Sprint(st[0].Stages) != "[{0 day 1 [1]} {1 day 1 [0]} {2 day 1 []} {3 day 1 []} {4 day 1 []}]" {
 		t.Fatalf("Status.Stages: %+v", st)
 	}
 	if got := fmt.Sprint(r.Summary().Stages); got != fmt.Sprint(st[0].Stages) {

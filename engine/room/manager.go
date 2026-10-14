@@ -25,7 +25,8 @@ type Store interface {
 }
 
 // TestPrefix reserviert Spielstandnamen für Testläufe (Testseite, B-086): Räume mit diesem Präfix löschen ihren Spielstand,
-// wenn sie nach der Frist EmptyFor aufgeräumt werden, der Server beim Start auch alte Dateien (store.Saves.Purge).
+// wenn sie aufgeräumt werden (leer und ohne wartende Monarchen schon beim nächsten Sweep, B-204), der Server beim Start auch
+// alte Dateien (store.Saves.Purge).
 const TestPrefix = "test-"
 
 var saveName = regexp.MustCompile(`^[a-z0-9-]{1,32}$`)
@@ -156,7 +157,7 @@ func (m *Manager) create(id string, peer Peer, name string, fresh bool, depth in
 	return r, r.lockedJoin(id, peer, slots)
 }
 
-// open lädt den Spielstand (Version 1 oder 2) oder legt eine neue Insel mit den Stufen Tiefe 0, 1, 2 an. Die Spieler eines
+// open lädt den Spielstand (Version 1 oder 2) oder legt eine neue Insel mit einer Stufe je Biom an (islandDepths). Die Spieler eines
 // geladenen Stands sind im Raum freie Monarchen.
 func (m *Manager) open(name string, fresh bool, depth int, opts Options) (*sim.Island, error) {
 	data, err := m.Store.Load(name)
@@ -169,10 +170,14 @@ func (m *Manager) open(name string, fresh bool, depth int, opts Options) (*sim.I
 		return nil, err
 	case fresh:
 		// ponytail: Seed ist der Name; ein eigener Seed käme mit einem Feld in `create` (Protokoll-Änderung).
-		if depth < 0 || depth > 2 {
+		depths, err := islandDepths()
+		if err != nil {
+			return nil, err
+		}
+		if !slices.Contains(depths, depth) {
 			return nil, ErrBadRequest // unbekannte Startstufe
 		}
-		isl, err := sim.CreateIsland(name, []int{0, 1, 2}, 1)
+		isl, err := sim.CreateIsland(name, depths, 1)
 		if err != nil {
 			return nil, err
 		}
@@ -296,7 +301,11 @@ func (r *Room) lockedSweep(now time.Time) (changed, remove bool) {
 	defer r.mu.Unlock()
 	changed, remove = r.sweep(now)
 	if remove {
-		r.log().Info("🧹 Raum leer seit Frist, wird aufgeräumt", "frist", EmptyFor.String())
+		if r.isTest() {
+			r.log().Info("🧹 Test-Raum leer, wird sofort aufgeräumt")
+		} else {
+			r.log().Info("🧹 Raum leer seit Frist, wird aufgeräumt", "frist", EmptyFor.String())
+		}
 		r.saveNow()
 		r.writeReport()
 		r.closed = true

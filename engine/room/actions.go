@@ -231,7 +231,13 @@ func (r *Room) sweep(now time.Time) (changed, remove bool) {
 		r.syncFree()
 		r.broadcastSeats()
 	}
-	return changed, r.connected() == 0 && !r.emptySince.IsZero() && now.Sub(r.emptySince) >= EmptyFor
+	if r.connected() > 0 || r.emptySince.IsZero() {
+		return changed, false
+	}
+	if r.isTest() { // B-204: ein Test-Raum wartet nur auf wartende Monarchen, nicht auf EmptyFor
+		return changed, r.count(Waiting) == 0
+	}
+	return changed, now.Sub(r.emptySince) >= EmptyFor
 }
 
 func (r *Room) index(mo *monarch) int {

@@ -32,7 +32,6 @@ Abnahmen am Gerät (`Agent: Mensch`) sammelt das Projekt ABN im Sprint HW1: [`..
 | ST1 | SRV | LST | Speichern alle 60 s, unter Windows robust, Rotation der Spielmetrik | HUD zeigt „gesichert“, Spielstände überstehen gesperrte Dateien, `reports/` bleibt begrenzt | Entwurf | `geplant/ST1-speichern-robust/` |
 | SO2 | CLI | SND | SFX-Katalog und Einbau | – | bereit | `geplant/SO2-sfx-katalog/` |
 | TR4 | PLAT, SRV | TST | Bot-Eingabe ohne verlorene Drücke, Beobachter ohne Platz im Raum | – | Entwurf | `geplant/TR4-bot-feed-beobachter/` |
-| SV1 | SRV | WRT | Raum mit allen Stufen, Voll-Ausbau-Spielstand, leere Test-Räume | Neuer Raum mit allen fünf Stufen, Level-Betrachter startet einen voll ausgebauten Spielstand | bereit | `geplant/SV1-raeume-stufen-testspielstand/` |
 | W11 | REG, SRV, CLI | WRT | Bauplätze im Protokoll, Abstand der Treppen, Ausbilden und Tauschen, Figuren | – | Entwurf | `geplant/W11-bauplaetze-protokoll-abstand/` |
 | SK1 | SIM | SKL | Skill-Baum mit Tank und Zauberer, Respec-Regeln abfragbar | Skill-Baum spielbar, Respec und Lernen ohne Seiteneffekt prüfbar | bereit | `geplant/SK1-skill-baum/` |
 | RM1 | SRV | SKL | Raum-Pause im Couch-Raum und lernbare Skills vom Server | Pause hält den Couch-Raum an; Skill-Menü zeigt nur, was der Server annimmt | Entwurf | `geplant/RM1-pause-lernbare-skills/` |
@@ -173,3 +172,4 @@ Gesamtplan und Begründung: [`../plan-weiterentwicklung.md`](../plan-weiterentwi
 | WZ4 | Splitter-Test in DOM-Umgebung | `erledigt/WZ4-lint-splitter-test/` |
 | M10 | Ressourcen-Manager für Grafik- und Sound-Slots in k3c-dev | `erledigt/M10-ressourcen-manager/` |
 | W8 | Bauplätze mit Grund und alle Rohstoffe im Client | `erledigt/W8-bauplaetze-rohstoffe-client/` |
+| SV1 | Raum mit allen Stufen, Voll-Ausbau-Spielstand, leere Test-Räume | `erledigt/SV1-raeume-stufen-testspielstand/` |

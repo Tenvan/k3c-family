@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { fetchLevel, levelUrl, type FetchLike } from './levelApi';
+import { createFullSave, fetchLevel, fullSaveTarget, levelUrl, type FetchLike } from './levelApi';
 import { t } from './texts';
 
 const SERVER_UNREACHABLE = t('level.unreachable');
@@ -56,5 +56,46 @@ describe('fetchLevel (B-092/AC-04)', () => {
     expect(await fetchLevel('x', 'forest', noJson)).toEqual({ error: INVALID_ANSWER });
     expect(await fetchLevel('x', 'forest', answer(200, null))).toEqual({ error: INVALID_ANSWER });
     expect(await fetchLevel('x', 'forest', answer(200, 'text'))).toEqual({ error: INVALID_ANSWER });
+  });
+});
+
+describe('createFullSave (SV1.3/SV1.4, B-315)', () => {
+  it('schickt den Seed per POST an die Dev-API und liefert den Spielstandnamen', async () => {
+    const calls: { url: string; init?: RequestInit }[] = [];
+    const result = await createFullSave('abc', async (url, init) => {
+      calls.push({ url, init });
+      return { ok: true, status: 200, json: async () => ({ save: 'voll-abc' }) };
+    });
+    expect(result).toEqual({ save: 'voll-abc' });
+    expect(calls).toHaveLength(1);
+    expect(calls[0]!.url).toBe('/api/dev/fullsave');
+    expect(calls[0]!.init?.method).toBe('POST');
+    expect(JSON.parse(String(calls[0]!.init?.body))).toEqual({ seed: 'abc' });
+  });
+
+  it('ohne Dev-Mode (403): erkennbarer Hinweis statt Start', async () => {
+    expect(await createFullSave('abc', answer(403, { error: 'forbidden' }))).toEqual({ error: t('level.fullForbidden') });
+  });
+
+  it('Seed, dessen Spielstandname die Lobby nicht laden kann, fragt gar nicht erst', async () => {
+    let asked = false;
+    const spy: FetchLike = async () => {
+      asked = true;
+      return { ok: true, status: 200, json: async () => ({ save: 'x' }) };
+    };
+    expect(await createFullSave('A_b', spy)).toEqual({ error: t('level.fullBadSeed') });
+    expect(await createFullSave('a'.repeat(28), spy)).toEqual({ error: t('level.fullBadSeed') });
+    expect(asked).toBe(false);
+  });
+
+  it('Server nicht erreichbar oder unerwartete Antwort: Hinweis', async () => {
+    expect(await createFullSave('abc', async () => { throw new TypeError('down'); })).toEqual({ error: SERVER_UNREACHABLE });
+    expect(await createFullSave('abc', answer(200, { nope: 1 }))).toEqual({ error: t('level.fullInvalid') });
+  });
+});
+
+describe('fullSaveTarget', () => {
+  it('lädt den vorhandenen Spielstand per Autostart, ohne fresh', () => {
+    expect(fullSaveTarget('voll-abc')).toBe('game.html?autostart=1&save=voll-abc');
   });
 });
