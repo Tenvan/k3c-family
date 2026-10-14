@@ -136,7 +136,6 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-400](B-400-planung-splitter-merken.md) | DEV | Idee | niedrig | eingeplant | WZ2 | Die Planungsseite trennt Backlog und Details mit einem Splitter, dessen Stellung gemerkt wird |
 | [B-401](B-401-planung-filter-getrennt.md) | DEV | Idee | niedrig | eingeplant | WZ2 | Der Backlog-Filter wirkt nur auf den Backlog, der Projekt-Filter nur auf die Projekte |
 | [B-402](B-402-planung-session-titel.md) | DEV | Idee | mittel | eingeplant | WZ2 | Die Planungsseite zeigt in den Session-Zeilen den Titel der Session |
-| [B-406](B-406-splitter-dom-test.md) | DEV | Schuld | niedrig | eingeplant | WZ4 | Doppelklick und Ziehen des Splitters sind in einer DOM-Umgebung getestet |
 | [B-408](B-408-bauplaetze-aller-stufen-sichtbar.md) | CLI | Problem | mittel | eingeplant | W11 | Bauplätze aller Stufen werden schon im Hub einer niedrigen Stufe angezeigt |
 | [B-409](B-409-bauplaetze-abstand-zu-eng.md) | REG | Problem | mittel | eingeplant | W11 | Bauplätze im Hub stehen zu eng, besonders die Treppen |
 | [B-410](B-410-aktion-ausbilden-tauschen-protokoll.md) | SRV | Problem | mittel | eingeplant | W11 | Aktionen-Overlay zeigt Ausbilden und Tauschen nicht, der Server liefert sie nicht in actions |
@@ -391,3 +390,4 @@ Zeile in diesen Abschnitt.
 | [B-201](archiv/B-201-spielstand-wirtschaft.md) | SIM | Schuld | mittel | erledigt | W7 | Der Spielstand stellt Plantage, Berufe, Krieger, Elite, Rüstung, Schwerter und Händler nach dem Laden wieder her |
 | [B-075](archiv/B-075-golden-spielstand-hub.md) | SIM | Schuld | mittel | erledigt | W7 | Der Golden-Spielstand enthält einen gebauten und veränderten Hub |
 | [B-417](archiv/B-417-golden-groesse-ueber-limit.md) | INF | Problem | niedrig | erledigt | – | Golden-Daten liegen mit 12,7 MB über der Grenze von 8 MB aus SP06 |
+| [B-406](archiv/B-406-splitter-dom-test.md) | DEV | Schuld | niedrig | erledigt | WZ4 | Doppelklick und Ziehen des Splitters sind in einer DOM-Umgebung getestet |
