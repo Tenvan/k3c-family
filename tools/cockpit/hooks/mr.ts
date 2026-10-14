@@ -23,6 +23,13 @@ export function forgeRemote(url: string): { kind: Forge; host: string; project: 
   return null
 }
 
+// „projekt!12“ / „projekt#12“ aus den Listen in Projekt und Nummer; ob ein MR im aktuellen Repo liegt, hängt am Projekt.
+export const refOf = (ref: string): { project: string; iid: number } | null => {
+  const m = /^(.*)[#!](\d+)$/.exec(ref)
+  return m === null ? null : { project: m[1] ?? '', iid: Number(m[2]) }
+}
+export const inRepo = (ref: string, project: string): boolean => refOf(ref)?.project.toLowerCase() === project.toLowerCase()
+
 // Kurzzeichen wie auf der Plattform: GitLab „!12“, GitHub und Bitbucket „#12“.
 export const mrRef = (m: Pick<Mr, 'forge' | 'iid'>): string => `${m.forge === 'gitlab' ? '!' : '#'}${m.iid}`
 
@@ -295,6 +302,25 @@ export function parseDraft(text: string, fallbackTitle: string): { title: string
     // fällt auf den Commit-Titel zurück
   }
   return { title: fallbackTitle.slice(0, 200), description: '' }
+}
+
+// Merge-Konflikt als Auftrag an Claude: Ziel-Branch einmergen, Konflikte lösen, nichts pushen.
+export function conflictPrompt(m: Mr, lang: 'de' | 'en'): string {
+  return lang === 'de'
+    ? [
+        `${mrRef(m)} („${m.title}“) hat einen Merge-Konflikt mit \`${m.target}\`. Löse ihn im aktuellen Branch \`${m.source}\`:`,
+        `1. Hole den aktuellen Stand von \`${m.target}\` vom Remote und merge ihn in den Branch.`,
+        '2. Löse jeden Konflikt, indem du beide Seiten verstehst und ihre Absicht erhältst; bei einer echten inhaltlichen Entscheidung frag mich.',
+        '3. Baue bzw. teste, was das Projekt dafür vorsieht, und schließe den Merge mit einem Commit ab.',
+        '4. Pushe nicht; sag mir kurz, welche Dateien betroffen waren und wie du entschieden hast.',
+      ].join('\n')
+    : [
+        `${mrRef(m)} ("${m.title}") has a merge conflict with \`${m.target}\`. Resolve it on the current branch \`${m.source}\`:`,
+        `1. Fetch the latest \`${m.target}\` from the remote and merge it into the branch.`,
+        '2. Resolve each conflict by understanding both sides and keeping their intent; ask me where it is a real content decision.',
+        '3. Build or test as the project provides, then finish the merge with a commit.',
+        '4. Do not push; tell me briefly which files were affected and how you decided.',
+      ].join('\n')
 }
 
 // Offene Review-Anmerkungen als Auftrag an Claude.

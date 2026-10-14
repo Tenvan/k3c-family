@@ -19,12 +19,26 @@ export type Mock = {
   summary: string
   mr: Mr
   mrMine: MrMine[]
+  // Status je eigenem MR im selben Repo, Schlüssel = `ref` aus mrMine
+  mrDetails: Record<string, Mr>
 }
 
 const MIN = 60_000
 const TRAIL: Decision[] = ['allow', 'allow', 'you', 'allow', 'you', 'deny', 'allow', 'you', 'allow', 'ask', 'allow', 'you', 'you', 'allow', 'allow', 'you', 'allow', 'ask']
 
 export function mockData(now: number): Mock {
+  const b = mockBase(now)
+  return {
+    ...b,
+    mrDetails: {
+      'consulting/demo!42': b.mr,
+      // Konflikt und grüne Pipeline: zeigt „Konflikt“ ohne Mergen-Knopf, nur mit Rebase.
+      'team/report-tool!17': { ...b.mr, iid: 17, title: 'Report-Export vereinfachen', draft: false, conflicts: true, mergeStatus: 'dirty', threads: 0, approvals: null, pipeline: { id: 9002, status: 'success', url: '' } },
+    },
+  }
+}
+
+function mockBase(now: number): Omit<Mock, 'mrDetails'> {
   const iso = (ms: number) => new Date(now + ms).toISOString()
   return {
     usage: {

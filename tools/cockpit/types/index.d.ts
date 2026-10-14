@@ -125,6 +125,7 @@ export type ModSettings = {
   cardTasks: boolean
   mrPane: boolean
   cardLog: boolean
+  paneMargins: boolean
   chatInfo: boolean
   chatLines: boolean
   catchUp: boolean
@@ -153,6 +154,8 @@ export type ModSettings = {
   mrNotify: boolean
   mrFooter: boolean
   breathKey: 'hrv' | 'sigh' | 'box' | '478'
+  // Anzahl der Subagent-Kacheln im Hauptpanel (gerade, 2 bis 12)
+  agentTiles: number
   lang: UiLang
 }
 
@@ -203,7 +206,7 @@ declare module 'claude-code' {
       touched: string[]
       // tool_use_ids lesender Shell-Befehle (ruhige Ergebnisse)
       quietIds: string[]
-      // Einstellungsschlüssel der im Hauptpanel zugeklappten Karten (nur Session, nicht im Store)
+      // Einstellungsschlüssel der im Hauptpanel zugeklappten Karten (Kopie des Stands im $.store, gilt je User)
       collapsed: string[]
       marks: CallMark[]
       loopAlert: LoopAlert | null
@@ -224,6 +227,8 @@ declare module 'claude-code' {
       mrHost: string
       mrCur: Mr | null
       mrMine: MrMine[]
+      // Status der eigenen MRs im selben Repo (Schlüssel = Referenz aus mrMine), nur bei offenem MR-Panel nachgeladen
+      mrDetails: Record<string, Mr>
       // offene MRs, in denen du als Reviewer eingetragen bist
       mrReview: MrMine[]
       mrAhead: number
