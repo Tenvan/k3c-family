@@ -92,6 +92,8 @@ func (s *server) devFullSave(w http.ResponseWriter, r *http.Request) {
 	case errors.Is(err, room.ErrForbidden):
 		s.log.Warn("🚫 Spielstand voll ausgebaut ohne Dev-Mode abgelehnt")
 		fail(w, http.StatusForbidden, messages["forbidden"])
+	case errors.Is(err, room.ErrSaveInUse):
+		fail(w, http.StatusConflict, "Spielstand ist gerade in einem Raum mit verbundenem Gerät offen")
 	case errors.Is(err, room.ErrBadRequest):
 		fail(w, http.StatusBadRequest, "Seed ungültig (1–27 Zeichen: Kleinbuchstaben, Ziffern und -)")
 	case err != nil:

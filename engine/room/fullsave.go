@@ -63,7 +63,8 @@ func readJSON(name string, v any) error {
 }
 
 // FullSave legt den Spielstand „voll ausgebaut“ zum Seed an (überschreibt einen gleichnamigen) und liefert seinen Namen.
-// Nur im Dev-Mode (sonst ErrForbidden); gleicher Seed ergibt denselben Stand bis auf savedAt.
+// Nur im Dev-Mode (sonst ErrForbidden); gleicher Seed ergibt denselben Stand bis auf savedAt. Ein offener Raum mit dem
+// Namen wird vorher geschlossen, wenn kein Gerät verbunden ist, sonst ErrSaveInUse (B-424).
 func (m *Manager) FullSave(seed string) (string, error) {
 	if !m.Dev {
 		return "", ErrForbidden
@@ -80,6 +81,13 @@ func (m *Manager) FullSave(seed string) (string, error) {
 		return "", err
 	}
 	name := FullSavePrefix + seed
+	closed := false
+	defer func() { m.notify(closed) }()
+	m.mu.Lock() // bis nach dem Schreiben: kein Gerät tritt dem alten Raum dazwischen bei
+	defer m.mu.Unlock()
+	if closed, err = m.closeEmpty(name); err != nil {
+		return "", err
+	}
 	if _, err := m.Store.Store(name, raw); err != nil {
 		m.log().Error("💥 Spielstand voll ausgebaut nicht gespeichert", "save", name, "err", err)
 		return "", err
@@ -123,4 +131,27 @@ func fullIsland(seed, savedAt string) (sim.IslandSave, error) {
 		return sim.IslandSave{}, err
 	}
 	return s, nil
+}
+
+// closeEmpty schließt den offenen Raum mit diesem Spielstand (unter m.mu), damit er den neuen Stand nicht überschreibt:
+// ausstehende Speicherungen abwarten, Bericht schreiben, Code frei. Mit verbundenem Gerät ErrSaveInUse. true: geschlossen.
+func (m *Manager) closeEmpty(name string) (bool, error) {
+	for code, r := range m.rooms {
+		if r.Name != name {
+			continue
+		}
+		r.mu.Lock()
+		defer r.mu.Unlock()
+		if r.connected() > 0 {
+			r.log().Info("🚫 Spielstand voll ausgebaut abgelehnt, Raum hat verbundene Geräte", "save", name, "geraete", r.connected())
+			return false, ErrSaveInUse
+		}
+		r.flush()
+		r.writeReport()
+		r.closed = true
+		delete(m.rooms, code)
+		r.log().Info("🧹 Raum geschlossen, Spielstand voll ausgebaut wird neu angelegt", "save", name)
+		return true, nil
+	}
+	return false, nil
 }

@@ -35,6 +35,7 @@ var (
 	ErrBadRequest   = errors.New("bad_request")
 	ErrClosed       = errors.New("room_closed") // Server fährt herunter
 	ErrForbidden    = errors.New("forbidden")   // dev ohne Dev-Mode (B-178)
+	ErrSaveInUse    = errors.New("save_in_use") // Spielstand in einem Raum mit verbundenem Gerät offen (B-424)
 )
 
 // Zustände eines Monarchen.
