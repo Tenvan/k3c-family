@@ -61,3 +61,4 @@ Eine Stufe hat keine Grafik → Platzhalter-Form wie im Renderer (GR3/AC-03), ke
 ## Notizen
 
 Wunsch von 🧑 im Chat 2026-10-06 („Spielstand mit allen ausgebauten Gebäuden auf allen Leveln … über den Level-Betrachter“). Verwandt: B-092, B-095, B-075, B-208, GR3.4.
+- Review PR #293 (2026-10-14): Folge-Tickets B-424 (offener Raum), B-425 (Ausbauregeln), B-426 (Kleinigkeiten). Abnahme von AC-03 nach B-424 und B-425 empfohlen.
