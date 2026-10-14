@@ -1,6 +1,6 @@
 # SV1.1 · Raum mit allen Stufen, leere Test-Räume schließen sofort
 
-- **Status:** in Arbeit
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** SRV
@@ -46,11 +46,11 @@ Client-Biome (SV1.2), `data/islands.json` und Inselwechsel (B-103, K2), Protokol
 
 ## Fertig, wenn
 
-- [ ] AC-02: Go-Test in `engine/room/` belegt fünf Stufen, Startstufe 4 ja / 5 nein, gespeicherter Stand mit drei Stufen lädt mit drei.
-- [ ] AC-03: Derselbe Test belegt den Server-Teil (B-290/AC-01: neuer Raum hat fünf Stufen).
-- [ ] AC-04: Go-Test belegt: leerer Test-Raum nach dem nächsten Sweep weg, Spielstand gelöscht; wartender Monarch hält ihn offen; normaler Raum bleibt `EmptyFor`.
-- [ ] Prüfung der Testseite (Schritt 6) steht im Ergebnis.
-- [ ] AC-06: `task check:go` grün.
+- [x] AC-02: Go-Test in `engine/room/` belegt fünf Stufen, Startstufe 4 ja / 5 nein, gespeicherter Stand mit drei Stufen lädt mit drei.
+- [x] AC-03: Derselbe Test belegt den Server-Teil (B-290/AC-01: neuer Raum hat fünf Stufen).
+- [x] AC-04: Go-Test belegt: leerer Test-Raum nach dem nächsten Sweep weg, Spielstand gelöscht; wartender Monarch hält ihn offen; normaler Raum bleibt `EmptyFor`.
+- [x] Prüfung der Testseite (Schritt 6) steht im Ergebnis.
+- [x] AC-06: `task check:go` grün.
 
 ## Prüfen
 
@@ -60,4 +60,9 @@ task check:go
 
 ## Ergebnis
 
-–
+- **AC-02** umgesetzt, geprüft: `engine/room/depths_test.go` › `TestNeuerRaumHatAlleStufen` (fünf Stufen mit Tiefe 0–4, Startstufe 4 angenommen, 5 → `ErrBadRequest`), `TestGespeicherterStandBehaeltStufen` (Stand mit drei Stufen lädt mit drei). `open` nimmt die Tiefen aus `islandDepths` (`engine/room/stages.go`, aus `data/biomes/*.json` über `level.LoadBiome`, lückenlos ab 0, sonst Fehler beim Anlegen).
+- **AC-03** Server-Teil umgesetzt, geprüft: derselbe Test (B-290/AC-01). Der Client-Teil (B-290/AC-02) folgt in SV1.2.
+- **AC-04** umgesetzt, geprüft: `TestLeererTestRaumSchliesstSofort` (leerer Test-Raum nach dem nächsten Sweep weg und Spielstand gelöscht; wartender Monarch hält ihn bis `WaitFor`), `TestNormalerRaumBleibtEmptyFor`. `Room.sweep` überspringt `EmptyFor` für `TestPrefix`, Log 🧹 „Test-Raum leer, wird sofort aufgeräumt“. `TestTestRaumLoeschtSpielstandBeimAufraeumen` an die neue Regel angepasst.
+- **Schritt 6 (Testseite):** Annahme bestätigt. `src/tools/testing.ts` startet jedes Szenario mit neuem Namen (`test-` + `Date.now()`) und `fresh=1`, ein Wiederbetreten eines alten Test-Raums gibt es nicht. Ein kurzer Verbindungsabbruch bleibt abgedeckt, weil wartende Monarchen den Raum bis `WaitFor` offen halten.
+- **AC-06** (Go-Teil) geprüft: `task check:go` grün über k3c-dev `check_run`. Den Frontend-Teil von `task check` berührt SV1.1 nicht.
+- Nebenbei: `engine/net/level_test.go` prüft alle Biome (`levelBiomes()`), Schritt 7. Bestehende Tests mit fest drei Stufen (`island_test.go`, `room_test.go`) auf fünf angepasst.

@@ -1,11 +1,42 @@
 package room
 
 import (
+	"fmt"
+	"io/fs"
 	"maps"
+	"path"
 	"slices"
+	"strings"
+	"sync"
 
+	"k3c/data"
+	"k3c/engine/level"
 	"k3c/engine/sim"
 )
+
+// islandDepths sind die Stufen einer neuen Insel: die Tiefen aller Biome (data/biomes/*.json), lückenlos ab 0 (B-199).
+// Eine Lücke ist ein Datenfehler und lässt jedes Anlegen scheitern, nicht erst den Wechsel in die fehlende Stufe.
+var islandDepths = sync.OnceValues(func() ([]int, error) {
+	files, err := fs.Glob(data.Files, "biomes/*.json")
+	if err != nil {
+		return nil, err
+	}
+	depths := make([]int, 0, len(files))
+	for _, f := range files {
+		b, err := level.LoadBiome(strings.TrimSuffix(path.Base(f), ".json"))
+		if err != nil {
+			return nil, err
+		}
+		depths = append(depths, b.Depth)
+	}
+	slices.Sort(depths)
+	for i, d := range depths {
+		if d != i {
+			return nil, fmt.Errorf("biome: Tiefen %v nicht lückenlos ab 0", depths)
+		}
+	}
+	return depths, nil
+})
 
 // Stufen der Insel im Raum: Monarch i ist der Insel-Spieler mit Index i; jedes Gerät bekommt Level und Zustand jeder
 // Stufe, in der einer seiner Slots steht (B-176).
