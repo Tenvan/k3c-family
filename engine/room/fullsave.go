@@ -16,7 +16,8 @@ import (
 // FullSavePrefix ist der Namensanfang dieser Spielstände (nicht TestPrefix: die löscht der Server beim Start).
 const FullSavePrefix = "voll-"
 
-var fullSeed = regexp.MustCompile(`^[A-Za-z0-9_-]{1,40}$`) // der Seed wird Teil des Dateinamens
+// fullSeed: `voll-<seed>` muss ins Namensformat von store.Saves passen (`^[a-z0-9-]{1,32}$`), sonst scheitert erst das Speichern.
+var fullSeed = regexp.MustCompile(`^[a-z0-9-]{1,27}$`)
 
 // buildingLevels: HP je Gebäudeart und Stufe aus data/buildings.json, Hub-Stufen aus data/hub.json.
 type buildingLevels struct {

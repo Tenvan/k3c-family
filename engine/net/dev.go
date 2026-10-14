@@ -93,7 +93,7 @@ func (s *server) devFullSave(w http.ResponseWriter, r *http.Request) {
 		s.log.Warn("🚫 Spielstand voll ausgebaut ohne Dev-Mode abgelehnt")
 		fail(w, http.StatusForbidden, messages["forbidden"])
 	case errors.Is(err, room.ErrBadRequest):
-		fail(w, http.StatusBadRequest, "Seed ungültig (1–40 Zeichen: Buchstaben, Ziffern, - und _)")
+		fail(w, http.StatusBadRequest, "Seed ungültig (1–27 Zeichen: Kleinbuchstaben, Ziffern und -)")
 	case err != nil:
 		s.log.Error("💥 Spielstand voll ausgebaut fehlgeschlagen", "error", err.Error())
 		fail(w, http.StatusInternalServerError, "Spielstand nicht angelegt")

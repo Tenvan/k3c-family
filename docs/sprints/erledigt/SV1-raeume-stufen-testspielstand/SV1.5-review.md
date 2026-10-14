@@ -1,6 +1,6 @@
 # SV1.5 · Review und Abnahme des Sprints SV1
 
-- **Status:** in Arbeit
+- **Status:** fertig
 - **Typ:** Review
 - **Agent:** autonom
 - **Domäne:** SRV
@@ -38,9 +38,9 @@ Stil, Optimierung, Umbau von Produktionscode, neue Biome.
 
 ## Fertig, wenn
 
-- [ ] AC-01 bis AC-06 haben einen Nachweis im Ergebnis der jeweiligen Session oder sind mit Grund und Ticket verschoben.
-- [ ] Schwere Befunde sind behoben oder als Ticket angelegt.
-- [ ] `task check` und `task check:go` grün; Sprint liegt unter `docs/sprints/erledigt/`.
+- [x] AC-01 bis AC-06 haben einen Nachweis im Ergebnis der jeweiligen Session oder sind mit Grund und Ticket verschoben.
+- [x] Schwere Befunde sind behoben oder als Ticket angelegt.
+- [x] `task check` und `task check:go` grün; Sprint liegt unter `docs/sprints/erledigt/`.
 
 ## Prüfen
 
@@ -51,4 +51,9 @@ task check:go
 
 ## Ergebnis
 
-–
+- Diff `origin/develop...origin/sprint/sv1` gelesen. `engine/sim/` ist unverändert, PLAT- und Werkzeug-Änderungen nur in den Dateien aus SV1.4 (plus `texts.de.ts`/`texts.en.ts`, mit Zustimmung 🧑). Keine Taste B, Wechsel über `openPage()`, kein `Math.random()`, keine Datei über 400 Zeilen (Lint grün).
+- Stufen kommen aus den Biomen (`islandDepths`), geladene Stände behalten ihre Stufen. Test-Räume schließen nur ohne verbundenes oder wartendes Gerät sofort, normale bleiben `EmptyFor` offen. Der Voll-Ausbau ist deterministisch und nur im Dev-Mode erzeugbar.
+- **Schwerer Befund, behoben:** Der Seed der Dev-API war weiter gefasst als das Namensformat von `store.Saves`, ungültige Namen endeten erst beim Speichern mit 500. Jetzt gilt `fullSeed = ^[a-z0-9-]{1,27}$` (`engine/room/fullsave.go`), Meldung in `engine/net/dev.go`, Test `TestVollAusgebautNurImDevMode` mit Großbuchstaben, `_`, `../x` und 28 Zeichen.
+- Kriterien AC-01 bis AC-06: Nachweise in SV1.1 bis SV1.4 vorhanden, siehe Abnahme. B-315/AC-03 (PC-Beobachtung) bleibt bei 🧑.
+- `task check` und `task check:go` grün (k3c-dev `check_run`) nach dem Fix.
+- B-199, B-290 und B-204 erledigt und archiviert, B-315 bleibt offen.

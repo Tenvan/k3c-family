@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"encoding/json"
 	"errors"
+	"strings"
 	"testing"
 	"time"
 
@@ -83,7 +84,14 @@ func TestVollAusgebautNurImDevMode(t *testing.T) {
 	if _, err := f.m.FullSave("abc"); !errors.Is(err, ErrForbidden) {
 		t.Fatalf("ohne Dev-Mode: %v", err)
 	}
-	if _, err := (func() (string, error) { f.m.Dev = true; return f.m.FullSave("") })(); !errors.Is(err, ErrBadRequest) {
-		t.Fatalf("leerer Seed: %v", err)
+	f.m.Dev = true
+	// Review SV1.5: der Name voll-<seed> muss für store.Saves gültig sein (Kleinbuchstaben, Ziffern, -, höchstens 32 Zeichen).
+	for _, seed := range []string{"", "ABC", "a_b", "../x", strings.Repeat("a", 28)} {
+		if _, err := f.m.FullSave(seed); !errors.Is(err, ErrBadRequest) {
+			t.Errorf("Seed %q: %v, erwartet ErrBadRequest", seed, err)
+		}
+	}
+	if _, err := f.m.FullSave(strings.Repeat("a", 27)); err != nil {
+		t.Errorf("27 Zeichen: %v", err)
 	}
 }

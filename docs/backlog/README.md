@@ -59,10 +59,8 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-195](B-195-debug-overlay-xbox.md) | PLAT | Problem | mittel | eingeplant | PL1 | Das Debug-Overlay lässt sich auf der Xbox öffnen |
 | [B-157](archiv/B-157-zielkorridor-pruefung.md) | SIM | Idee | mittel | erledigt | BAL2 | Der Balancing-Tester prüft Zielkorridore und meldet Pass oder Fail je Kennzahl |
 | [B-159](archiv/B-159-replay-repro-format.md) | SIM | Idee | mittel | erledigt | BAL1 | Ein Lauf ist als Datei aus Seed und Eingaben wiederholbar |
-| [B-199](B-199-raum-fuenf-stufen.md) | SRV | Problem | mittel | eingeplant | SV1 | Ein neuer Raum legt die Insel mit allen Stufen an, für die es ein Biom gibt |
 | [B-200](B-200-aggressionspool-adern.md) | SIM | Problem | mittel | eingeplant | LV1 | Der Aggressionspool unter Tage bleibt auch mit Adern im Wellen-Korridor |
 | [B-203](B-203-gold-schwelle-kennzahl.md) | REG | Frage | niedrig | eingeplant | RG2 | Die Kennzahl „erste Gold-Schwelle“ hat eine feste Schwelle und Bedeutung |
-| [B-204](B-204-test-raeume-sofort-schliessen.md) | SRV | Idee | niedrig | eingeplant | SV1 | Leere Test-Räume schließen sofort statt nach der Leer-Frist |
 | [B-207](B-207-bauplaetze-anzeige.md) | CLI | Idee | mittel | eingeplant | W8 | Der Client zeigt freie und gesperrte Bauplätze mit Grund (ab Hub-Stufe n, Linie fehlt) |
 | [B-208](B-208-protokoll-bauplaetze.md) | SRV | Idee | mittel | eingeplant | W11 | Das Protokoll trägt die Bauplätze des Layouts sowie Platz- und Hub-Stufe zum Client |
 | [B-209](B-209-client-platz-arten.md) | CLI | Schuld | mittel | eingeplant | W8 | `src/model/data.ts` kennt alle Platz-Arten aus `hub.json` |
@@ -80,7 +78,6 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-287](B-287-hub-ausbau-beutel-maximum.md) | REG | Problem | mittel | eingeplant | RG1 | Hub-Stufe 4 und 5 sind mit dem Beutel-Maximum bezahlbar |
 | [B-288](B-288-alte-spielstaende-ohne-ruecksicht.md) | INF | Schuld | mittel | eingeplant | RP1 | Formatänderungen am Spielstand nehmen keine Rücksicht auf alte Stände |
 | [B-289](B-289-aggressionspool-mit-adern.md) | REG | Problem | mittel | eingeplant | RG1 | Der Aggressionspool steigt mit Adern nicht zu schnell |
-| [B-290](B-290-raum-fuenf-stufen.md) | SRV | Idee | mittel | eingeplant | SV1 | Der Raum erzeugt alle fünf Stufen und der Client kennt Eisenstollen und Kristallhöhle |
 | [B-291](B-291-lava-nicht-auf-mauerlinien.md) | SIM | Problem | mittel | eingeplant | LV1 | Lava liegt nicht auf den Mauerlinien |
 | [B-293](B-293-spiel-im-menue-verlassen.md) | CLI | Idee | hoch | eingeplant | S8 | Das Spielmenü hat neben „Weiter“ einen Eintrag „Spiel verlassen“ |
 | [B-294](B-294-hinweis-glyph-muenze-nacht.md) | CLI | Frage | mittel | eingeplant | S8 | Münze und „Nacht naht“ zeigen in der geführten ersten Nacht keine Glyph |
@@ -393,3 +390,6 @@ Zeile in diesen Abschnitt.
 | [B-075](archiv/B-075-golden-spielstand-hub.md) | SIM | Schuld | mittel | erledigt | W7 | Der Golden-Spielstand enthält einen gebauten und veränderten Hub |
 | [B-417](archiv/B-417-golden-groesse-ueber-limit.md) | INF | Problem | niedrig | erledigt | – | Golden-Daten liegen mit 12,7 MB über der Grenze von 8 MB aus SP06 |
 | [B-406](archiv/B-406-splitter-dom-test.md) | DEV | Schuld | niedrig | erledigt | WZ4 | Doppelklick und Ziehen des Splitters sind in einer DOM-Umgebung getestet |
+| [B-199](archiv/B-199-raum-fuenf-stufen.md) | SRV | Problem | mittel | erledigt | SV1 | Ein neuer Raum legt die Insel mit allen Stufen an, für die es ein Biom gibt |
+| [B-290](archiv/B-290-raum-fuenf-stufen.md) | SRV | Idee | mittel | erledigt | SV1 | Der Raum erzeugt alle fünf Stufen und der Client kennt Eisenstollen und Kristallhöhle |
+| [B-204](archiv/B-204-test-raeume-sofort-schliessen.md) | SRV | Idee | niedrig | erledigt | SV1 | Leere Test-Räume schließen sofort statt nach der Leer-Frist |
