@@ -1,6 +1,6 @@
 # SV1.3 · Spielstand „voll ausgebaut“ und Dev-API
 
-- **Status:** offen
+- **Status:** in Arbeit
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** SRV
