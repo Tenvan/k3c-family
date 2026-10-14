@@ -1,14 +1,14 @@
 # BD1 · CLI · Kamera, Beitritts-Hinweis, Overlay-Taste und HUD-Nachträge
 
-- **Status:** geplant
+- **Status:** aktiv
 - **Projekt:** BED
 - **Domäne:** CLI
 - **Reife:** bereit
 - **Tickets:** B-392, B-391, B-389, B-399, B-398, B-414, B-393, B-370, B-374
-- **Start-Commit:** – (wird beim Aktivieren gesetzt: `git rev-parse --short origin/develop`)
-- **Spec:** Entwurf
+- **Start-Commit:** ab671123
+- **Spec:** freigegeben
 - **Revision:** 3
-- **Freigabe:** –
+- **Freigabe:** 2026-10-14, Chat 🧑 (Revision 3)
 
 ## Ausgangslage
 
