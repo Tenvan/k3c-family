@@ -3,6 +3,7 @@ package assets
 import (
 	"context"
 	"encoding/json"
+	"errors"
 	"fmt"
 	"html"
 	"io"
@@ -70,20 +71,28 @@ func (s Searcher) Search(ctx context.Context, query, kind string) (hits []Hit, n
 	}
 	wg.Wait()
 	for i, src := range sources {
-		if errs[i] != nil {
-			notes = append(notes, fmt.Sprintf("%s: %v", src.name, errs[i]))
+		if err := errs[i]; err != nil {
+			// *url.Error nennt die Adresse; ohne sie gelangt nichts aus der Anfrage in Hinweise und Logs.
+			var ue *url.Error
+			if errors.As(err, &ue) {
+				err = ue.Err
+			}
+			notes = append(notes, fmt.Sprintf("%s: %v", src.name, err))
 		}
 		hits = append(hits, results[i]...)
 	}
 	return hits, notes
 }
 
-func (s Searcher) get(ctx context.Context, rawURL string) ([]byte, error) {
+func (s Searcher) get(ctx context.Context, rawURL string, header ...string) ([]byte, error) {
 	req, err := http.NewRequestWithContext(ctx, http.MethodGet, rawURL, nil)
 	if err != nil {
 		return nil, err
 	}
 	req.Header.Set("User-Agent", userAgent)
+	for i := 0; i+1 < len(header); i += 2 {
+		req.Header.Set(header[i], header[i+1])
+	}
 	res, err := s.Client.Do(req)
 	if err != nil {
 		return nil, err
@@ -104,8 +113,9 @@ func (s Searcher) freesound(ctx context.Context, query, _ string) ([]Hit, error)
 	if s.Token == "" {
 		return nil, fmt.Errorf("token fehlt (K3C_FREESOUND_TOKEN oder .work/freesound-token)")
 	}
-	q := url.Values{"query": {query}, "fields": {"id,name,url,username,license,previews"}, "page_size": {"15"}, "token": {s.Token}}
-	body, err := s.get(ctx, s.Freesound+"/apiv2/search/text/?"+q.Encode())
+	// Token im Header, nie in der Adresse: so steht er in keiner Fehlermeldung und keinem Log.
+	q := url.Values{"query": {query}, "fields": {"id,name,url,username,license,previews"}, "page_size": {"15"}}
+	body, err := s.get(ctx, s.Freesound+"/apiv2/search/text/?"+q.Encode(), "Authorization", "Token "+s.Token)
 	if err != nil {
 		return nil, err
 	}

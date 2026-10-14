@@ -17,7 +17,7 @@ func recorded(t *testing.T, failOGA bool) Searcher {
 	srv := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		file := ""
 		switch {
-		case strings.HasPrefix(r.URL.Path, "/apiv2/") && r.URL.Query().Get("token") == "":
+		case strings.HasPrefix(r.URL.Path, "/apiv2/") && (r.Header.Get("Authorization") != "Token test" || r.URL.Query().Has("token")):
 			w.WriteHeader(http.StatusUnauthorized)
 			file = "freesound-401.json"
 		case strings.HasPrefix(r.URL.Path, "/apiv2/"):
