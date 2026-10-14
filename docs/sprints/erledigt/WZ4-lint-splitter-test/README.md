@@ -65,4 +65,4 @@ wird jede Session als eigene Datei nach `docs/vorlagen/session.md` geschrieben.
 2026-10-14, Review WZ4.3: AC-01 erfüllt (Nachweis im Ergebnis von WZ4.2; `SplitterDom.test.tsx` löst echte Doppelklick-, Pointer-Ereignisse aus, `task check` und `dev:test` grün).
 Befunde: keine schweren; nur `happy-dom` neu, nur diese Datei nutzt die DOM-Umgebung (Datei-Pragma).
 Neue Tickets: keine.
-Version: v0.16.1 vorgeschlagen (Patch, reine Testschuld ohne neue Funktion); Tag nicht gesetzt.
+Version: v0.16.1 gesetzt (2026-10-14, Patch, reine Testschuld ohne neue Funktion).
