@@ -10,7 +10,9 @@ import type { SiteKind } from './types';
 
 /** Typisierter Zugriff auf die Balancing-Daten aus data/. Werte gehören in die JSON, nicht in den Code. */
 
-export type ResourceKind = 'wood' | 'stone' | 'copper';
+/** Rohstoffe, die der Server im Vorrat bei 0 weglässt (docs/protocol.md › Wirtschaft). */
+export type RareResource = 'iron' | 'crystal';
+export type ResourceKind = 'wood' | 'stone' | 'copper' | RareResource;
 export type Cost = Partial<Record<ResourceKind | 'gold', number>>;
 
 export interface BuildingData {

@@ -59,7 +59,7 @@ keine (B-207 → W11 entschieden 2026-10-14, 🧑, Chat).
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
 | W8.1 | `W8.1-hub-typ-platz-arten.md` | Umsetzung | autonom | fertig |
-| W8.2 | `W8.2-rohstoffe-client.md` | Umsetzung | autonom | offen |
+| W8.2 | `W8.2-rohstoffe-client.md` | Umsetzung | autonom | fertig |
 | W8.3 | `W8.3-review.md` | Review | autonom | offen |
 
 ## Abnahme
