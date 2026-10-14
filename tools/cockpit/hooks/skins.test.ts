@@ -106,7 +106,7 @@ test('Demo-Tabelle: gestylte Komponenten nennen ihre Chat-Skins', () => {
 
 const TOOL_USE = { tool_use_id: 'u1', tool: 'Read', input: { file_path: 'a.ts' }, isRunning: false, isErrored: false, isInterrupted: false, output: { type: 'text', file: { filePath: 'a.ts', content: 'let x = 1', numLines: 1, startLine: 1, totalLines: 1 } } }
 
-test('ToolUse: Symbol als einfaches Svg, Details klappen als Code auf; Terminal unverändert', async ($, on) => {
+test('ToolUse: Symbol als einfaches Svg, Details klappen als Code auf; Terminal ohne Symbol, mit Details', async ($, on) => {
   on('ui.render', { component: 'ToolUse' }, () => ({ type: 'Box' as const }))
   const row = await $.ui.mount({ plugin: 'tenvan-cc', surface: 'desktop', component: 'ToolUse', props: TOOL_USE })
   const icon = JSON.stringify(await row.find({ type: 'Svg' }))
@@ -120,7 +120,7 @@ test('ToolUse: Symbol als einfaches Svg, Details klappen als Code auf; Terminal 
   expect(codes).toContain('"language":"json"')
   const term = await $.ui.mount({ plugin: 'tenvan-cc', surface: 'terminal', component: 'ToolUse', props: TOOL_USE })
   expect(await term.find({ type: 'Svg' })).toBe(undefined)
-  expect(await term.find({ type: 'Button' })).toBe(undefined)
+  expect(await term.find({ type: 'Button', key: 'tv-xb-u1' })).not.toBe(undefined)
 })
 
 test('ToolResult: Diff-Karte, ruhige Zeile, echte Fehlerzeile', async ($, on) => {

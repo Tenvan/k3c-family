@@ -1,6 +1,6 @@
 import { expect, test } from 'claude-code/testing'
 
-import { bitbucketMine, canMergeNow, forgeRemote, fromBitbucket, fromGithub, githubChecks, githubMine, mrBadge, mrRef, mrEvents, openThreads, parseDraft, pipelineTone, pollDelayMs, threadsPrompt, toMine, toMr } from './mr'
+import { bitbucketMine, canMergeNow, forgeRemote, fromBitbucket, fromGithub, githubChecks, githubMine, mrBadge, mrRef, mrEvents, openThreads, parseDraft, pipelineTone, pollDelayMs, conflictPrompt, inRepo, refOf, threadsPrompt, toMine, toMr } from './mr'
 
 const DETAIL = {
   iid: 7,
@@ -120,4 +120,22 @@ test('mrBadge: Kurzform für den Fußzeilen-Knopf', () => {
   expect(mrBadge({ ...m, pipeline: { ...m.pipeline!, status: 'success' }, threads: 0 })).toBe('!7 · ✓')
   expect(mrBadge({ ...m, state: 'merged' })).toBe('!7 · ✓ merged')
   expect(m.threadList[0]).toEqual({ path: 'src/a.ts', line: 12, author: 'kollegin', body: 'Bitte Test ergänzen' })
+})
+
+test('conflictPrompt: nennt MR, Ziel und Quelle, verbietet Push, kommt auch auf Englisch', () => {
+  const m = { ...toMr(DETAIL, APPROVALS, DISCUSSIONS)!, conflicts: true }
+  const de = conflictPrompt(m, 'de')
+  expect(de).toContain(`${mrRef(m)} („${m.title}“) hat einen Merge-Konflikt mit \`${m.target}\``)
+  expect(de).toContain(`aktuellen Branch \`${m.source}\``)
+  expect(de).toContain('Pushe nicht')
+  expect(conflictPrompt(m, 'en')).toContain('Do not push')
+})
+
+test('refOf/inRepo: Projekt und Nummer aus GitLab-, GitHub- und Bitbucket-Referenzen', () => {
+  expect(refOf('Tenvan/k3c-family#295')).toEqual({ project: 'Tenvan/k3c-family', iid: 295 })
+  expect(refOf('group/sub/proj!7')).toEqual({ project: 'group/sub/proj', iid: 7 })
+  expect(refOf('kein-bezug')).toBe(null)
+  expect(inRepo('Tenvan/k3c-family#294', 'tenvan/K3C-family')).toBe(true)
+  expect(inRepo('Tenvan/andere#1', 'Tenvan/k3c-family')).toBe(false)
+  expect(inRepo('PROJ/slug#3', 'proj/slug')).toBe(true)
 })

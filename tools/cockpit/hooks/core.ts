@@ -332,7 +332,7 @@ export function breakdownBarSvg(b: Breakdown, width = 600, height = 14): string 
 
 // Einstellungen: Gruppe je Schalter; Beschriftung und Erklärung liegen in i18n.ts unter `settings.<key>` und `settings.<key>.hint`.
 // Die Reihenfolge ist die der Einstellungsseite, Gruppen in der Reihenfolge ihres ersten Schalters.
-export type SettingKey = Exclude<keyof ModSettings, 'lang' | 'breathKey'>
+export type SettingKey = Exclude<keyof ModSettings, 'lang' | 'breathKey' | 'agentTiles'>
 export type SettingGroup = 'band' | 'panel' | 'chat' | 'skins' | 'summary'
 
 export const SETTING_DEFS: readonly { key: SettingKey; group: SettingGroup }[] = [
@@ -359,6 +359,7 @@ export const SETTING_DEFS: readonly { key: SettingKey; group: SettingGroup }[] =
   { key: 'cardTasks', group: 'panel' },
   { key: 'mrPane', group: 'panel' },
   { key: 'cardLog', group: 'panel' },
+  { key: 'paneMargins', group: 'panel' },
   { key: 'animation', group: 'panel' },
   { key: 'chatInfo', group: 'chat' },
   { key: 'chatLines', group: 'chat' },
@@ -386,6 +387,7 @@ export const settingHint = (key: SettingKey, lang: UiLang): string => t(lang, `s
 export const DEFAULT_SETTINGS: ModSettings = {
   rings: true, legend: true, branch: true, limits: true, cache: true, ctxTip: true, steps: true, animation: true,
   cardWorkdir: true, cardCatchUp: true, cardOverview: true, cardContext: true, cardTurn: true, cardGate: true, cardAgents: true, cardTasks: true, mrPane: true, cardLog: true,
+  paneMargins: true,
   chatInfo: true, chatLines: true, catchUp: false, lang: 'de',
   // Hervorhebungen zeichnen Antworten selbst und sind deshalb standardmäßig aus.
   skinIcons: true, skinQuiet: true, skinDiff: true, skinExpand: true, skinPrompt: true, skinCards: true, skinInline: false, skinLinks: true,
@@ -393,13 +395,21 @@ export const DEFAULT_SETTINGS: ModSettings = {
   // Auto-Effort ist aus, solange das Mod effortless daneben läuft: zwei Judges würden um den Effort jedes Requests streiten.
   autoEffort: false, saveMode: false,
   breath: true, breathKey: 'hrv',
+  agentTiles: 6,
   mrBand: true, mrNotify: true, mrFooter: true,
+}
+
+// Kachelzahl der Subagents: gerade Werte von 2 bis 12.
+export const TILES = { min: 2, max: 12, step: 2 } as const
+export const clampTiles = (n: unknown): number => {
+  const v = typeof n === 'number' && Number.isFinite(n) ? Math.round(n / TILES.step) * TILES.step : DEFAULT_SETTINGS.agentTiles
+  return Math.min(TILES.max, Math.max(TILES.min, v))
 }
 
 // $.store kann Einstellungen aus älteren Versionen liefern: fehlende Felder werden mit den Standardwerten aufgefüllt.
 export const settingsOf = (saved: Partial<ModSettings> | null | undefined): ModSettings => {
   const s = { ...DEFAULT_SETTINGS, ...saved }
-  return { ...s, lang: s.lang === 'en' ? 'en' : 'de', breathKey: ['hrv', 'sigh', 'box', '478'].includes(s.breathKey) ? s.breathKey : 'hrv' }
+  return { ...s, agentTiles: clampTiles(s.agentTiles), lang: s.lang === 'en' ? 'en' : 'de', breathKey: ['hrv', 'sigh', 'box', '478'].includes(s.breathKey) ? s.breathKey : 'hrv' }
 }
 
 export const CATCH_CHUNK = 100_000
@@ -749,16 +759,26 @@ export function mcpDiet(tools: readonly McpSchema[], used: readonly string[]): {
 export const WASTE_USD = 0.25
 export const isWasteful = (r: TurnRecord): boolean => (r.usd ?? 0) >= WASTE_USD && r.edits === 0
 
+// Höhe eines Turn-Balkens: Kosten, ohne Kostenangabe die Tool-Calls.
+const turnValue = (r: TurnRecord): number => r.usd ?? r.tools / 100
+
 // Ein Balken je Turn, Höhe nach Kosten (ohne Kostenangabe nach Tool-Calls); verschwenderische Turns in Warnfarbe.
 export function turnBarsSvg(list: readonly TurnRecord[], height = 24): string {
   const w = 6
-  const val = (r: TurnRecord) => r.usd ?? r.tools / 100
-  const max = Math.max(...list.map(val), 1e-9)
+  const max = Math.max(...list.map(turnValue), 1e-9)
   const bars = list.map((r, i) => {
-    const h = Math.max(1, Math.round((val(r) / max) * height))
+    const h = Math.max(1, Math.round((turnValue(r) / max) * height))
     return `<rect x="${i * w}" y="${height - h}" width="${w - 2}" height="${h}" rx="1" fill="${isWasteful(r) ? THEME.warning : THEME.accentFill}"/>`
   })
   return `<svg xmlns="http://www.w3.org/2000/svg" width="${Math.max(w, list.length * w)}" height="${height}" viewBox="0 0 ${Math.max(w, list.length * w)} ${height}">${bars.join('')}</svg>`
+}
+
+// Dieselbe Bilanz für Oberflächen ohne Svg (Terminal): ein Blockzeichen je Turn, Höhe in acht Stufen.
+const BAR_GLYPHS = '▁▂▃▄▅▆▇█'
+export function turnBarsText(list: readonly TurnRecord[]): { glyph: string; isWaste: boolean }[] {
+  const max = Math.max(...list.map(turnValue), 1e-9)
+  const top = BAR_GLYPHS.length - 1
+  return list.map(r => ({ glyph: BAR_GLYPHS.charAt(Math.round((turnValue(r) / max) * top)), isWaste: isWasteful(r) }))
 }
 
 // Agent-Bremse: ab so vielen Tool-Calls oder so langer Laufzeit gilt ein laufender Subagent als teuer.

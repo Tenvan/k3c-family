@@ -59,7 +59,7 @@
         },
         {
           "kind": "stairsDown",
-          "x": 524,
+          "x": 508,
           "state": "unpaid",
           "paidGold": 0,
           "buildProgress": 0,

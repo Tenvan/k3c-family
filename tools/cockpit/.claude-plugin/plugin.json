@@ -1,8 +1,8 @@
 {
   "name": "tenvan-cc",
   "displayName": "Tenvan CC",
-  "version": "0.9.0",
-  "description": "Tenvan CC für Claude Desktop: Band über der Prompt-Eingabe (Kontext, 5h/7d-Limits mit Takt, Prompt-Cache, Kosten, Modell, Subagents, Folge-Schritte mit Tasten 1–5) und Panels rechts (/cockpit, /cockpit-zusammenfassung, /cockpit-einstellungen) mit Übersicht, Turn-Beleg, Gate, Subagent-Verlauf und Log; Chat-Skins, Deutsch/Englisch, eigene Farben. Eigene Implementierung, inspiriert von claude-flightdeck, claude-skins, prismantis, catch-me-up und next-steps. Kein Netzwerk, keine Telemetrie.",
+  "version": "1.0.0",
+  "description": "Tenvan CC für Claude Desktop und die Claude-Code-CLI: Band über der Prompt-Eingabe (Kontext, 5h/7d-Limits mit Takt, Prompt-Cache, Kosten, Modell, Subagents, Folge-Schritte mit Tasten 1–5) und Panels rechts (/cockpit, /cockpit-zusammenfassung, /cockpit-einstellungen) mit Übersicht, Turn-Beleg, Gate, Subagent-Verlauf und Log; Chat-Skins, Deutsch/Englisch, eigene Farben. Eigene Implementierung, inspiriert von claude-flightdeck, claude-skins, prismantis, catch-me-up und next-steps. Kein Netzwerk, keine Telemetrie.",
   "author": {
     "name": "Tenvan",
     "email": "ralf.stich@gmail.com"
