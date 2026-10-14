@@ -47,7 +47,7 @@ Neues Split-Screen-Layout; Änderungen an Server, Protokoll oder `engine/`; Beit
 ## Fertig, wenn
 
 - [x] AC-01: Ein Test belegt, dass jede Kamera der Figur ihres Sitzes folgt, auch wenn die View erst nach dem Layout entsteht (`cameraFollow.test.ts`).
-- [ ] AC-01 (Abnahme 🧑): Bei 2 Spielern an einer Tastatur (A/D und Pfeile) in verschiedene Richtungen scrollen beide Ansichten mit (Abnahme 🧑 am PC; bis dahin „angenommen, Validierung offen“).
+- [x] AC-01 (Abnahme 🧑, bestätigt im Chat 2026-10-14): Bei 2 Spielern an einer Tastatur (A/D und Pfeile) in verschiedene Richtungen scrollen beide Ansichten mit (Abnahme 🧑 am PC; bis dahin „angenommen, Validierung offen“).
 - [x] Vitest grün (2269 Tests), `tsc` und Oxlint ohne Befund; keine neue Abhängigkeit, keine Server-Änderung. `task check` insgesamt rot durch Bestand, siehe Ergebnis.
 
 ## Prüfen
@@ -62,8 +62,8 @@ Manuelle Prüfung im Browser (2 Spieler, Tastatur) nur, wenn 🧑 sie für diese
 ## Ergebnis
 
 - **AC-01 umgesetzt, geprüft (Test):** Neue reine Funktion `refollow` (`src/scenes/cameraFollow.ts`) führt jede Kamera ihrer Figur nach; `GameScene.draw` ruft sie jeden Frame je Kamera mit Figur-Ziel auf (`follows`, gefüllt in `aimAtStage`). `cameraFollow.test.ts`: 5 Tests (View erscheint nach dem Layout, kein Neustart je Frame, neue View, Figur verschwindet, zwei Kameras unabhängig).
-- **AC-01 Abnahme am PC: angenommen, Validierung offen (🧑).** Das Verhalten mit 2 Spielern an einer Tastatur (A/D und Pfeile) habe ich nicht im Browser geprüft.
-- **Ursache nicht belegt:** Die Hypothese (View von Spieler 2 entsteht erst nach dem Layout, `startFollow` wird nie nachgeholt) ist plausibel, aber nicht am laufenden Spiel bestätigt. In `draw` läuft `sync` vor `updateLayout`; die Lücke entsteht also nur, wenn der Monarch beim Layout noch ausgeblendet ist (`unattended`, B-411). Die Korrektur deckt jede Ursache ab, bei der das Ziel später entsteht oder neu gezeichnet wird. Ist es eine andere Ursache (z. B. falscher Monarch je Sitz), bleibt B-392 offen: dann bei der Abnahme melden.
+- **AC-01 Abnahme am PC: bestätigt von 🧑 im Chat 2026-10-14 (Abnahme am PC).** Ich selbst habe das Verhalten mit 2 Spielern nicht im Browser geprüft.
+- **Ursache nicht belegt:** Die Hypothese (View von Spieler 2 entsteht erst nach dem Layout, `startFollow` wird nie nachgeholt) ist plausibel, aber nicht am laufenden Spiel bestätigt. In `draw` läuft `sync` vor `updateLayout`; die Lücke entsteht also nur, wenn der Monarch beim Layout noch ausgeblendet ist (`unattended`, B-411). Die Korrektur deckt jede Ursache ab, bei der das Ziel später entsteht oder neu gezeichnet wird. Die Abnahme von 🧑 bestätigt die Korrektur.
 - **Prüfung:** `npx vitest run`: 2269 Tests grün; 6 Testdateien unter `tools/k3c-dev/frontend/` laden nicht (`@radix-ui/themes`, `react` nicht installiert im Worktree), unabhängig von dieser Änderung. `task check` deshalb nicht grün; k3c-dev war nicht verbunden (Handarbeit, `check_run` nicht möglich).
 - **Abweichungen:** Status von Hand gesetzt (k3c-dev getrennt). `GameScene.ts` hat 425 Zeilen, zählt für Oxlint ohne Leer- und Kommentarzeilen unter 400 (Lint ohne Befund).
 - **Neue Tickets:** keine.
