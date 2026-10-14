@@ -14,11 +14,11 @@ In Abarbeitungs-Reihenfolge; der erste nicht erledigte Sprint ist der nächste. 
 
 | Sprint | Thema | Status |
 |---|---|---|
-| W6 | Anzeigen für Bau, Lager, Hub und Bürger | aktiv |
+| W6 | Anzeigen für Bau, Lager, Hub und Bürger | geplant |
 | W7 | Ausrüstung ohne Unverwundbarkeit, Spielstand vollständig | erledigt |
 | SV1 | Raum mit allen Stufen, Voll-Ausbau-Spielstand, leere Test-Räume | geplant |
 | W8 | Bauplätze mit Grund und alle Rohstoffe im Client | geplant |
-| W11 | Bauplätze im Protokoll, Abstand der Treppen, Ausbilden und Tauschen, Figuren | aktiv |
+| W11 | Bauplätze im Protokoll, Abstand der Treppen, Ausbilden und Tauschen, Figuren | geplant |
 
 ## Nicht-Ziele
 

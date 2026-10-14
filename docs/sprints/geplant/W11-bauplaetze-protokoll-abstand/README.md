@@ -1,6 +1,6 @@
 # W11 · REG, SRV, CLI · Bauplätze im Protokoll, Abstand der Treppen, Ausbilden und Tauschen, Figuren
 
-- **Status:** aktiv
+- **Status:** geplant
 - **Projekt:** WRT
 - **Domäne:** REG, SRV, CLI
 - **Reife:** bereit
