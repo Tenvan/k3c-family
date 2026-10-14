@@ -1,7 +1,7 @@
 import { installPageChrome, openPage } from '../core/shell';
 import { nameOf } from '../core/texts';
 import { BIOMES } from '../model/biome';
-import { fetchLevel } from './levelApi';
+import { createFullSave, fetchLevel, fullSaveTarget } from './levelApi';
 import { levelModel, seedFromBytes, startTarget, type LevelModel } from './levelView';
 import { applyTexts, t } from './texts';
 
@@ -14,6 +14,8 @@ const biomeSelect = byId<HTMLSelectElement>('biome');
 const startButton = byId<HTMLButtonElement>('start');
 const note = byId('note');
 const startNote = byId('startNote');
+const fullButton = byId<HTMLButtonElement>('full');
+const fullNote = byId('fullNote');
 const viewport = byId('viewport');
 const strip = byId('strip');
 const legend = byId('legend');
@@ -100,6 +102,21 @@ function updateStart(): void {
   const target = startTarget(seedInput.value, biomeSelect.value);
   startButton.disabled = 'reason' in target;
   startNote.textContent = 'reason' in target ? t('level.cannotStart', { reason: target.reason }) : t('level.replaces');
+  fullNote.textContent = t('level.fullHint', { seed: seedInput.value });
+}
+
+/** „Voll ausgebaut starten“ (B-315): Spielstand über die Dev-API anlegen und laden; ohne Dev-Mode steht der Hinweis da. */
+async function startFull(): Promise<void> {
+  if (fullButton.disabled) return;
+  fullButton.disabled = true;
+  fullNote.textContent = t('level.fullCreating');
+  const result = await createFullSave(seedInput.value);
+  fullButton.disabled = false;
+  if ('error' in result) {
+    fullNote.textContent = result.error;
+    return;
+  }
+  openPage(fullSaveTarget(result.save));
 }
 
 async function load(): Promise<void> {
@@ -140,19 +157,21 @@ startButton.addEventListener('click', () => {
   const target = startTarget(seedInput.value, biomeSelect.value);
   if ('url' in target) openPage(target.url);
 });
+fullButton.addEventListener('click', () => void startFull());
 seedInput.addEventListener('input', updateStart);
 seedInput.addEventListener('keydown', (e) => {
   if (e.key === 'Enter') void load();
 });
 biomeSelect.addEventListener('change', () => void load());
 
-// Tastatur: Pfeile scrollen, + und − zoomen (nicht, solange im Eingabefeld getippt wird).
+// Tastatur: Pfeile scrollen, + und − zoomen, V startet voll ausgebaut (nicht, solange im Eingabefeld getippt wird).
 document.addEventListener('keydown', (e) => {
   if (e.target instanceof HTMLInputElement || e.target instanceof HTMLSelectElement) return;
   if (e.key === 'ArrowLeft') viewport.scrollLeft -= 120;
   else if (e.key === 'ArrowRight') viewport.scrollLeft += 120;
   else if (e.key === '+' || e.key === '=') zoom(1.25);
   else if (e.key === '-') zoom(0.8);
+  else if (e.key === 'v' || e.key === 'V') void startFull();
 });
 
 // Controller: Steuerkreuz hoch/runter wählt, A klickt, linker Stick scrollt, LB/RB zoomen.

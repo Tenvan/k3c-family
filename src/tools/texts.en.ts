@@ -11,7 +11,7 @@ export const en: Partial<Record<ToolTextKey, string>> = {
   'level.random': 'Random seed',
   'level.load': 'Load',
   'level.start': 'Start in game',
-  'level.keys': 'Scroll: left stick or arrow keys · Zoom: LB/RB or + / − · Select: D-pad up/down, press A',
+  'level.keys': 'Scroll: left stick or arrow keys · Zoom: LB/RB or + / − · Select: D-pad up/down, press A · Fully built: V',
   'level.replaces': 'Starting opens the save named after the seed: if it exists it continues, otherwise a new game with this level begins.',
   'level.cannotStart': 'Cannot start in game: {reason}.',
   'level.chunkTitle': 'Chunk {index}: {kind} ({from}–{to} units)',
@@ -25,6 +25,12 @@ export const en: Partial<Record<ToolTextKey, string>> = {
   'level.unreachable': 'Server not reachable. Start it with `task start`.',
   'level.invalid': 'The server response is not a valid level.',
   'level.httpError': 'Error {status}',
+  'level.fullStart': 'Start fully built (V)',
+  'level.fullHint': 'Fully built: creates the save “voll-{seed}” with all stages and every building fully upgraded (overwrites it) and starts it at depth 0. Dev mode only.',
+  'level.fullCreating': 'Creating the fully built save …',
+  'level.fullBadSeed': 'For “fully built” the seed must consist of lowercase letters, digits and - (at most 27 characters)',
+  'level.fullForbidden': 'Fully built only works in dev mode (start the server with K3C_DEV).',
+  'level.fullInvalid': 'The server response names no save.',
 
   // Sound test (soundtest.html)
   'sound.pageTitle': 'K3C Sound Test',
