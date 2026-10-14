@@ -1,3 +1,4 @@
+import { mockAssets } from './mockAssets';
 import { mockLogFiles } from './mockLogFiles';
 import { mockLogs } from './mockLogs';
 import { mockMcp } from './mockMcp';
@@ -64,6 +65,7 @@ export function mockBackend(): Backend {
     taskRuns: tasks.taskRuns,
     ...mockGates(),
     ...mockPlanning(() => emit('planning:changed', null)),
+    ...mockAssets(),
     mcpInstructions: async () => INSTRUCTIONS,
     mcpRestart: async () => {
       mcp = { ...mcp, listening: false, error: '' };
