@@ -8,9 +8,9 @@
 - **Sprint:** BD1
 - **Projekt:** BED
 - **Erstellt:** 2026-10-09
-- **Spec:** Entwurf
-- **Revision:** 1
-- **Freigabe:** –
+- **Spec:** freigegeben
+- **Revision:** 2
+- **Freigabe:** 2026-10-14, Chat 🧑 (Revision 2)
 
 ## Ausgangslage
 
@@ -18,7 +18,7 @@ Seit S9.1 (B-319) zeigt das Aktionen-Overlay im Bereich eines Preisschilds keine
 
 ## Ziel
 
-Am Bauplatz und am Bogen-Regal ist erkennbar, welche Taste bezahlt, ohne zweites Element an derselben Weltposition.
+Das Preisschild an Bauplatz und Bogen-Regal bleibt bei Name, Material und Münzkreisen; es nennt keine Taste. Das Ticket hält diese Entscheidung fest.
 
 ## Beteiligte und Zielgruppen
 
@@ -26,12 +26,13 @@ Neue Spielende; 🧑 entscheidet (Glyph im Preisschild oder so lassen); Agent in
 
 ## Anforderungen
 
-- Das Preisschild zeigt die Bestätigen-Glyph des Geräts des nächsten Spielers (z. B. „Leertaste halten“), oder 🧑 entscheidet, dass Preis und Münzkreise genügen.
+- Das Preisschild (`src/scenes/siteView.ts` › `drawPrice`) bleibt unverändert; keine Bestätigen-Glyph im Preisschild.
 - Je Weltposition weiter nur ein Element (B-319).
+- Welche Taste bezahlt, zeigt weiter der geführte Hinweis `guide.pay` in der ersten Nacht.
 
 ## Nicht-Ziele
 
-Den Aktionen-Hinweis am Preisschild zurückholen (widerspricht B-319/AC-02).
+Den Aktionen-Hinweis am Preisschild zurückholen (widerspricht B-319/AC-02); eine Taste oder Glyph im Preisschild; Änderungen an `drawPrice`.
 
 ## Regeln und Einschränkungen
 
@@ -39,19 +40,19 @@ CLI zeichnet nur; Glyphen aus `src/scenes/glyphs.ts`; zwei Spieler mit verschied
 
 ## Beispiele
 
-Spieler an der Tastatur steht am unbezahlten Mauer-Bauplatz → Preisschild „Mauer · Leertaste halten“ mit Münzkreisen.
+Spieler an der Tastatur steht am unbezahlten Mauer-Bauplatz → Preisschild zeigt „Mauer“ mit Münzkreisen, ohne Tastenangabe.
 
 ## Ausnahme- und Fehlerfälle
 
-Zwei Spieler mit verschiedenen Geräten am selben Preisschild → Glyph des näheren Spielers (Vorschlag, 🧑 entscheidet).
+nicht relevant: Das Preisschild ändert sich nicht; zwei Spieler mit verschiedenen Geräten am selben Preisschild sehen dasselbe.
 
 ## Akzeptanzkriterien
 
-- **AC-01** 🧑 hat entschieden (Glyph im Preisschild oder nicht); bei Glyph: Test belegt die Taste je Gerät im Preisschild.
+- **AC-01** Die Entscheidung „keine Taste im Preisschild“ ist festgehalten (🧑, 2026-10-14); `drawPrice` bleibt unverändert, ein bestehender Test belegt, dass das Preisschild Name, Material und Münzkreise zeigt.
 
 ## Offene Fragen
 
-Braucht das Preisschild die Taste, oder genügen Preis und Münzkreise (🧑)? Blockierend; Beobachtung in S9.5 (B-319/AC-04) hilft bei der Entscheidung.
+keine. Entschieden 2026-10-14 (🧑, Chat): Preis und Münzkreise genügen, keine Taste im Preisschild.
 
 ## Notizen
 

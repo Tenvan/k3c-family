@@ -8,9 +8,9 @@
 - **Sprint:** BD1
 - **Projekt:** BED
 - **Erstellt:** 2026-10-09
-- **Spec:** Entwurf
-- **Revision:** 1
-- **Freigabe:** –
+- **Spec:** freigegeben
+- **Revision:** 2
+- **Freigabe:** 2026-10-14, Chat 🧑 (Revision 2)
 
 ## Ausgangslage
 
@@ -26,7 +26,8 @@ Spielende in der ersten Nacht; 🧑 entscheidet über das Bild; Agent trägt es 
 
 ## Anforderungen
 
-- `guideImage('dusk')` liefert ein Bild aus einem Pack unter `public/`, mit Zeile in `docs/assets/zuordnung-welt.md`.
+- `guideImage('dusk')` liefert ein Mond-Bild aus einem vorhandenen Pack unter `public/`, mit Zeile in `docs/assets/zuordnung-welt.md`.
+- Findet die Session in den vorhandenen Packs kein Mond-Bild (S8.2 fand keines), nimmt sie keinen Ersatz (kein Stern) und blockiert mit einer Frage an 🧑.
 - Pixel-Art ganzzahlig skaliert, wie das Münzbild (`RowImage` in `src/scenes/glyphView.ts`).
 
 ## Nicht-Ziele
@@ -51,7 +52,7 @@ Textur nicht geladen → Hinweis ohne Bild (nur Text).
 
 ## Offene Fragen
 
-Welches Bild statt Mond (🧑): ein vorhandenes Pack-Bild als Ersatz (z. B. Stern `props/part-star.png` aus `item-ruby-banana-star`, schon für Skillpunkte vergeben) oder ein neues Pack mit Mond. Blockierend.
+keine. Entschieden 2026-10-14 (🧑, Chat): ein Mond-Icon aus den vorhandenen Packs; Stern (`part-star.png`) ist kein Ersatz. Hinweis: S8.2 fand in den vorhandenen Packs keinen Mond; die Session sucht erneut und fragt bei Misserfolg nach, ein neues Pack braucht Lizenz-Eintrag und Zustimmung 🧑.
 
 ## Notizen
 

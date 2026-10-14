@@ -1,4 +1,4 @@
-# B-392 · Im Split-Screen scrollt nur die Kamera von Spieler 1 mit; Spieler 2 und weitere sind nicht an ihre Ansicht gebunden
+# B-392 · Im Split-Screen scrollt nur die Kamera von Spieler 1 mit; Spieler 2 ist nicht an seine Ansicht gebunden
 
 - **Domäne:** CLI
 - **Typ:** Problem
@@ -8,13 +8,13 @@
 - **Sprint:** BD1
 - **Projekt:** BED
 - **Erstellt:** 2026-10-10
-- **Spec:** Entwurf
-- **Revision:** 1
-- **Freigabe:** –
+- **Spec:** freigegeben
+- **Revision:** 4
+- **Freigabe:** 2026-10-14, Chat 🧑 (Revision 4)
 
 ## Ausgangslage
 
-Beobachtung 🧑 in der Abnahme S8.4 (2026-10-10): Im Split-Screen mit mehreren Spielern scrollt nur die Ansicht von Spieler 1 mit seiner Spielfigur. Die Ansichten von Spieler 2 (und weiteren) folgen ihrer Figur nicht. Die Kamera-Logik liegt in `src/scenes/` (`GameScene`, Kameras je Spieler); die Ursache ist noch nicht untersucht.
+Beobachtung 🧑 in der Abnahme S8.4 (2026-10-10): Im Split-Screen mit 2 lokalen Spielern scrollt nur die Ansicht von Spieler 1 mit seiner Figur; die Ansicht von Spieler 2 folgt ihrer Figur nicht. Die Kamera-Logik liegt in `GameScene.layoutCameras`/`aimAtStage` (`src/scenes/GameScene.ts`). Vermutete Ursache (ungeprüft, BD1.1 Schritt 2): `startFollow` wird nur gesetzt, wenn `playerView(monarch)` beim Layout schon eine View liefert; die View von Spieler 2 entsteht erst im folgenden `sync`, und das Layout wird nicht wiederholt.
 
 ## Ziel
 
@@ -22,15 +22,17 @@ Jeder Spieler hat im Split-Screen eine eigene Ansicht, die seiner Figur folgt.
 
 ## Beteiligte und Zielgruppen
 
-Spielende im Couch-Koop (2–4 Spieler); 🧑 meldete den Fehler.
+Spielende im Couch-Koop (höchstens 2 Spieler); 🧑 meldete den Fehler.
 
 ## Anforderungen
 
-- Jede Spieler-Ansicht folgt der Figur ihres Spielers, mit 2 und mehr Spielern gleichzeitig.
+- Jede Spieler-Ansicht folgt der Figur ihres Sitzes, mit 2 lokalen Spielern gleichzeitig.
+- Das gilt auch, wenn die Figur erst nach dem Aufbau der Kameras erscheint (Beitritt, Stufenwechsel, Neuaufbau des Layouts).
+- Ein Test belegt das Verhalten; die Abnahme am PC bleibt bei 🧑.
 
 ## Nicht-Ziele
 
-Neues Split-Screen-Layout; Änderungen an Server oder Protokoll.
+Neues Split-Screen-Layout; Änderungen an Server oder Protokoll; 3–4 Spieler (entfallen seit 2026-10-11); Umbau der Partner-Kamera, außer die Ursache liegt dort.
 
 ## Regeln und Einschränkungen
 
