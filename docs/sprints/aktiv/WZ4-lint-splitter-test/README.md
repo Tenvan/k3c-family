@@ -1,14 +1,14 @@
 # WZ4 · DEV · Splitter-Test in DOM-Umgebung
 
-- **Status:** geplant
+- **Status:** aktiv
 - **Projekt:** WZG
 - **Domäne:** DEV
-- **Reife:** Entwurf
+- **Reife:** bereit
 - **Tickets:** B-406
-- **Start-Commit:** – (wird beim Aktivieren gesetzt: `git rev-parse --short origin/develop`)
-- **Spec:** Entwurf
+- **Start-Commit:** 3880dc29
+- **Spec:** freigegeben
 - **Revision:** 1
-- **Freigabe:** –
+- **Freigabe:** 2026-10-14, 🧑 im Chat (Revision 1)
 
 ## Ausgangslage
 
@@ -48,7 +48,7 @@ Lint-Fehler nur im Worktree (fehlende Pakete) → kein Code-Fix, Hinweis in der 
 
 ## Offene Fragen
 
-keine. Hinweis: Mit nur einem Ticket kann der Sprint auch in einen anderen WZG-Sprint aufgehen (🧑).
+Neue devDependency `happy-dom` im Root (🧑 mit der Spec-Freigabe, siehe B-406). Hinweis: Mit nur einem Ticket kann der Sprint auch in einen anderen WZG-Sprint aufgehen (🧑).
 
 ## Sessions
 
