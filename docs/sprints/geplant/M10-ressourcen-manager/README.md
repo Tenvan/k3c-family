@@ -1,22 +1,22 @@
-# M10 · SRV · Ressourcen-Manager für Grafik- und Sound-Slots in k3c-dev
+# M10 · DEV · Ressourcen-Manager für Grafik- und Sound-Slots in k3c-dev
 
 - **Status:** geplant
 - **Projekt:** GRA
-- **Domäne:** SRV
-- **Reife:** Entwurf
+- **Domäne:** DEV
+- **Reife:** bereit
 - **Tickets:** B-298, B-299
 - **Start-Commit:** –
 - **Spec:** Entwurf
-- **Revision:** 2
+- **Revision:** 3
 - **Freigabe:** –
 
 ## Ausgangslage
 
-Grafik- und Sound-Zuordnung steht verteilt in `docs/assets/` und im Code; es gibt kein Slot-Register (B-298).
+Grafik- und Sound-Zuordnung steht verteilt in `docs/assets/zuordnung*.md`, `public/audio/kandidaten.json` und `data/sprites.json`; es gibt kein Slot-Register, keinen durchsuchbaren Asset-Katalog und keine Vorschau im Spielmaßstab (B-298, B-299).
 
 ## Ziel
 
-🧑 ordnet in k3c-dev jedem Grafik- und Sound-Slot Assets mit Präferenz zu, das Register ist die einzige Quelle. Am Ende sichtbar: k3c-dev zeigt alle Slots, 🧑 ordnet Assets mit Präferenz zu.
+🧑 ordnet in k3c-dev jedem Asset-Slot Assets nach Präferenz zu, legt Ausschnitte fest, lässt im Netz recherchieren und importiert Funde mit Credit; das Slot-Register `data/assets.json` ist die einzige Quelle. Am Ende sichtbar: k3c-dev zeigt alle Asset-Slots in den Ansichten Grafik und Sound, und die eingebettete Mini-Szene zeigt die aktive Zuordnung im Spielmaßstab.
 
 ## Beteiligte und Zielgruppen
 
@@ -28,19 +28,22 @@ B-298 › Anforderungen; B-299 › Anforderungen (aus DBG4, PJ3).
 
 ## Nicht-Ziele
 
-Neue Assets suchen. Die Vorschau im Spielmaßstab (B-299) gehört seit PJ3 zu diesem Sprint (AC-02).
+Neue Assets selbst auswählen (wählt 🧑); Grafik oder Sound bearbeiten außer Ausschnitt; das Spiel liest das Slot-Register noch nicht (Renderer und Audio bleiben bei `data/sprites.json` und dem Audio-Atlas); `docs/assets/zuordnung*.md` werden nicht generiert, sie bleiben als Historie; Steuerung per Controller, Betrieb auf der Xbox.
 
 ## Regeln und Einschränkungen
 
-Nur `tools/k3c-dev/` und das Register unter `public/` (Format in der ersten Session festlegen).
+- **Slot-Register** `data/assets.json` (Entscheidung 🧑 2026-10-14): legt die DEV-Session M10.1 an (Werkzeug-Daten, kein Spielwert, daher weder SIM noch REG); k3c-dev schreibt es, die Dev-Seite importiert es (Vite-HMR). Recherche-Treffer liegen getrennt in `data/assets-recherche.json`.
+- **Migration** (Entscheidung 🧑 2026-10-14): einmaliger Import der Objekt-IDs und Zuordnungen aus `docs/assets/zuordnung*.md` (Präferenz 1) und aus `public/audio/kandidaten.json`; die md-Tabellen bleiben als Historie, `src/tools/zuordnung.test.ts` prüft sie weiter. `kandidaten.json` geht im Register auf (die Hörprobe `soundtest.html` liest danach das Register).
+- **Domäne DEV für alle Sessions:** k3c-dev (`tools/k3c-dev/`) und Werkzeug-Seiten (`src/tools/`) sind laut Tabelle DEV, daher auch B-299. Grenzfall der Dev-Seite (M10.2): die Seite `assetvorschau.html` (sonst PLAT), in `vite.config.ts` die Dev-Seite aus dem Produktions-Build nehmen und `tests/projectRules.test.ts` um die Dev-Seiten-Regel ergänzen (sonst INF), nur für B-299/AC-04.
+- Lizenzregel Q70 (`docs/fragenkatalog.md`), Credits sofort (B-165), freesound-Token nur lokal, Logging mit Emojis, Datei ≤ 400 Zeilen, Funktion ≤ 60 Zeilen. Keine neue Abhängigkeit (Ziehen per HTML5-Drag-and-Drop, HTML-Lesen mit der Go-Standardbibliothek).
 
 ## Beispiele
 
-Slot „Bogenschütze laufen“ → zwei Kandidaten, Präferenz 1 wird geladen.
+Asset-Slot `farm` (Grafik, Kategorie `gebaeude`) → Suche „house“ → 🧑 wählt `grafik/gothicvania-town/props-einzeln/house-a.png` (Präferenz 1) und `house-b.png` (Präferenz 2) → Mini-Szene Gebäude zeigt `house-a`, mit `wahl=2` `house-b`. Asset-Slot `sfx:coin` → Recherche liefert einen freesound-Treffer (CC0, Hörprobe) und einen itch.io-Fund (nur Link, „Lizenz prüfen“).
 
 ## Ausnahme- und Fehlerfälle
 
-Asset im Register fehlt auf der Platte → Slot rot markiert, Spiel nutzt den Platzhalter.
+Datei einer Zuordnung fehlt auf der Platte → Asset-Slot rot markiert, Mini-Szene zeigt Platzhalter mit Pfad. Slot-Register kaputt (JSON ungültig) → k3c-dev schreibt nicht und meldet den Fehler, die Datei bleibt unverändert. Quelle der Recherche nicht erreichbar → Hinweis an der Quelle, die übrigen liefern weiter.
 
 ## Akzeptanzkriterien
 
@@ -49,16 +52,20 @@ Asset im Register fehlt auf der Platte → Slot rot markiert, Spiel nutzt den Pl
 
 ## Offene Fragen
 
-Format und Ort des Slot-Registers: entscheidet die erste Session, 🧑 bestätigt.
+Keine. Entschieden (🧑, 2026-10-14): Slot-Register `data/assets.json`, angelegt von DEV; einmaliger Import der bestehenden Zuordnungen, md bleibt Historie; Recherche und Import bleiben in M10 (sechs Sessions); Kategorien der Mini-Szenen wie in B-299 vorgeschlagen.
 
 ## Sessions
 
-Entwurf. Vor dem Aktivieren jede Session als Datei nach `docs/vorlagen/session.md` schreiben, die Kriterien in Klammern werden ihr Feld `Kriterien`.
+| Nr. | Datei | Typ | Agent | Status |
+|---|---|---|---|---|
+| M10.1 | `M10.1-slot-register.md` | Umsetzung | autonom | offen |
+| M10.2 | `M10.2-assetvorschau.md` | Umsetzung | autonom | offen |
+| M10.3 | `M10.3-oberflaeche.md` | Umsetzung | autonom | offen |
+| M10.4 | `M10.4-recherche.md` | Umsetzung | autonom | offen |
+| M10.5 | `M10.5-import.md` | Umsetzung | autonom | offen |
+| M10.6 | `M10.6-review.md` | Review | autonom | offen |
 
-- M10.1 Slot-Register und Katalog mit Suche (AC-01).
-- M10.2 Oberfläche Grafik und Sound, Präferenz speichern (AC-01).
-- M10.3 Review (Code-Sprint): alle Kriterien prüfen.
-- M10.4 Dev-Seite mit Mini-Szenen je Kategorie, Domäne PLAT (AC-02; aus DBG4.1, PJ3). Beim Bereitmachen vor das Review ordnen.
+Kriterien: AC-01 in M10.1 (Register, Reihenfolge, Ausschnitt, MCP), M10.3 (Oberfläche, Mini-Szene eingebettet), M10.4 (Recherche), M10.5 (Import); AC-02 in M10.2.
 
 ## Abnahme
 
