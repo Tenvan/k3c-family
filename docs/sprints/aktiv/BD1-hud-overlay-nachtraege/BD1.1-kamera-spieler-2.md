@@ -1,6 +1,6 @@
 # BD1.1 · Split-Screen: Die Kamera folgt jedem lokalen Spieler
 
-- **Status:** offen
+- **Status:** in Arbeit
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** CLI
@@ -29,7 +29,7 @@ Im Split-Screen mit 2 lokalen Spielern folgt die Kamera jeder Ansicht der Figur 
 - `src/scenes/worldRenderer.ts` (nur `playerView` / Kamera-Ziel)
 - `src/scenes/layout.ts`, `src/scenes/cellStages.ts` (nur falls die Ursache dort liegt)
 - neuer oder bestehender Test unter `src/scenes/` (z. B. `cameraFollow.test.ts`)
-- `docs/sprints/geplant/BD1-hud-overlay-nachtraege/` und `docs/backlog/B-392-*.md` (Status, Ergebnis)
+- `docs/sprints/aktiv/BD1-hud-overlay-nachtraege/` und `docs/backlog/B-392-*.md` (Status, Ergebnis)
 
 ## Nicht-Ziele
 

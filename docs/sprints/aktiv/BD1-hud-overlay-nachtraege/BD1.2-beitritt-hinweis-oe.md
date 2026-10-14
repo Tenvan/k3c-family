@@ -27,7 +27,7 @@ Ein Spieler, der noch nicht beigetreten ist, sieht den Beitritts-Hinweis mit sei
 - `src/scenes/debugOverlayPanel.ts`, `src/scenes/debugOverlayView.ts`, `src/scenes/debugGestures.ts`
 - `src/core/texts.de.ts`, `src/core/texts.en.ts` (nur `hud.join.*`)
 - neue oder bestehende Tests dazu unter `src/scenes/`
-- Planung: `docs/sprints/geplant/BD1-hud-overlay-nachtraege/`, `docs/backlog/B-391-*.md`, `docs/backlog/B-389-*.md`
+- Planung: `docs/sprints/aktiv/BD1-hud-overlay-nachtraege/`, `docs/backlog/B-391-*.md`, `docs/backlog/B-389-*.md`
 
 ## Nicht-Ziele
 
