@@ -143,6 +143,7 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-420](B-420-importe-grafikpacks.md) | DEV | Schuld | mittel | offen | – | Mit k3c-dev importierte Kandidaten unter public/grafik/kandidaten/ brechen grafikPacks.test nicht |
 | [B-421](B-421-abnahme-m10-ressourcen-manager.md) | DEV | Idee | mittel | offen | – | Abnahme M10: Ressourcen-Manager in k3c-dev und Mini-Szenen durch 🧑 beobachten |
 | [B-422](B-422-w11-b207-nachtragen.md) | CLI | Schuld | mittel | offen | – | Die Spec von W11 nennt B-207 (gesperrte Plätze mit Grund) noch nicht |
+| [B-423](B-423-sim-test-im-worktree.md) | DEV | Problem | mittel | offen | – | sim_test rechnet immer mit dem Code der Repo-Wurzel, nicht mit dem Worktree der Session |
 | [B-425](B-425-fullsave-ausbauregeln.md) | SRV | Problem | mittel | offen | – | Der Voll-Ausbau-Stand hält die Ausbauregeln des Spiels ein |
 | [B-426](B-426-fullsave-review-kleinigkeiten.md) | SRV | Schuld | niedrig | offen | – | Kleine Befunde aus dem Review von SV1 sind erledigt |
 

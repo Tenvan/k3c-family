@@ -3,12 +3,12 @@
 - **Status:** geplant
 - **Projekt:** WRT
 - **Domäne:** REG, SRV, CLI
-- **Reife:** Entwurf
+- **Reife:** bereit
 - **Tickets:** B-409, B-208, B-410, B-408, B-412
-- **Start-Commit:** – (wird beim Aktivieren gesetzt: `git rev-parse --short origin/develop`)
-- **Spec:** Entwurf
-- **Revision:** 1
-- **Freigabe:** –
+- **Start-Commit:** a8d46d9e
+- **Spec:** freigegeben
+- **Revision:** 2
+- **Freigabe:** 2026-10-14, 🧑 im Chat (Rev. 2: Treppen ≥ 8 Units zu allen Zahlzielen derselben Tiefe, Raster je Tiefe geteilt)
 
 ## Ausgangslage
 
@@ -36,7 +36,7 @@ Reihenfolge REG → SRV → CLI. Mindestmaß der Zahlziele ≥ 4 Units (Glossar 
 
 ## Beispiele
 
-Hub-Stufe 1 → Plätze mit `hubLevel` > 1 und `fromDepth` > Stufe werden nicht als baubar gezeigt. Treppe hoch und runter stehen mindestens 8 Units auseinander.
+Hub-Stufe 1 → Plätze mit `hubLevel` > 1 und `fromDepth` > Stufe werden nicht als baubar gezeigt. Treppe hoch und runter stehen mindestens 8 Units von jedem anderen Zahlziel entfernt (Burg, Händler, Plätze, Angebote, Linien).
 
 ## Ausnahme- und Fehlerfälle
 
@@ -51,13 +51,13 @@ Alter Server ohne neue Felder → Client zeigt Plätze wie bisher mit Warnung �
 
 ## Offene Fragen
 
-🧑: Reihenfolge W8 und W11 (W8 braucht die Plätze aus B-208 für die Gesperrt-Gründe), Abstand der Treppen (8 Units?), B-408 (filtert der Server oder der Client?), Version des Protokolls. SV1 nennt B-208 als Nicht-Ziel; Verweis anpassen.
+Geklärt mit 🧑 (2026-10-14): W11 vor W8; Treppen ≥ 8 Units zu **allen** Zahlzielen derselben Tiefe. „Linien +8“ verworfen (Kristallhöhle: Portale ab 135, Camps ohne freien Chunk); stattdessen teilen sich Treppe hoch (ab Tiefe 1) und Händler-Kaufen (nur Tiefe 0) ein Raster, Linien bleiben. B-408: Der Server filtert; „erreichbar“ heißt Platz-Stufe ≤ Hub-Stufe + 1 (bezahlte und gebaute Plätze immer), damit W8 die nächste Stufe als gesperrt zeigen kann. Protokoll: keine neue Version (additiv, Vorschlag W11.2). Offen: SV1-Verweis auf B-208 anpassen.
 
 ## Sessions
 
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
-| W11.1 | `W11.1-treppen-abstand.md` | Umsetzung | autonom | offen |
+| W11.1 | `W11.1-treppen-abstand.md` | Umsetzung | autonom | fertig |
 | W11.2 | `W11.2-bauplaetze-im-zustand.md` | Umsetzung | autonom | offen |
 | W11.3 | `W11.3-aktionen-ausbilden-tauschen.md` | Umsetzung | autonom | offen |
 | W11.4 | `W11.4-bauplaetze-figuren-client.md` | Umsetzung | autonom | offen |

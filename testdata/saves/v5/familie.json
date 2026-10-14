@@ -220,7 +220,7 @@
         },
         {
           "kind": "barracks",
-          "x": 520,
+          "x": 524,
           "state": "unpaid",
           "paidGold": 0,
           "buildProgress": 0,
@@ -230,7 +230,7 @@
         },
         {
           "kind": "stairsDown",
-          "x": 524,
+          "x": 508,
           "state": "unpaid",
           "paidGold": 0,
           "buildProgress": 0,
@@ -663,7 +663,7 @@
         },
         {
           "kind": "barracks",
-          "x": 420,
+          "x": 424,
           "state": "unpaid",
           "paidGold": 0,
           "buildProgress": 0,
@@ -673,7 +673,7 @@
         },
         {
           "kind": "stairsDown",
-          "x": 424,
+          "x": 408,
           "state": "unpaid",
           "paidGold": 0,
           "buildProgress": 0,
