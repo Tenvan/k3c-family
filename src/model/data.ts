@@ -10,7 +10,9 @@ import type { SiteKind } from './types';
 
 /** Typisierter Zugriff auf die Balancing-Daten aus data/. Werte gehören in die JSON, nicht in den Code. */
 
-export type ResourceKind = 'wood' | 'stone' | 'copper';
+/** Rohstoffe, die der Server im Vorrat bei 0 weglässt (docs/protocol.md › Wirtschaft). */
+export type RareResource = 'iron' | 'crystal';
+export type ResourceKind = 'wood' | 'stone' | 'copper' | RareResource;
 export type Cost = Partial<Record<ResourceKind | 'gold', number>>;
 
 export interface BuildingData {
@@ -63,8 +65,26 @@ export const BUILDINGS = buildingsJson as unknown as Record<string, BuildingData
 export const TROOPS = troopsJson as unknown as Record<'vagrant' | 'peasant' | 'archer', TroopData>;
 export const ENEMIES = enemiesJson as unknown as Record<string, EnemyData>;
 export const MONARCH = monarchJson;
+/** Bauplatz aus `data/hub.json` (`sites`, `islandSites`); `hubLevel` = ab welcher Hub-Stufe er frei ist. */
+export interface HubSite {
+  kind: SiteKind;
+  offsetUnits: number;
+  hubLevel: number;
+  fromDepth?: number;
+  needsDeeper?: boolean;
+}
+
 export const HUB = hubJson as {
-  sites: { kind: SiteKind; offsetUnits: number; fromDepth?: number; needsDeeper?: boolean }[];
+  sites: HubSite[];
+  islandSites: HubSite[];
+  wallLines: {
+    wallUnits: number[];
+    fixedLines: number;
+    jitterOutwardUnits: number;
+    towerInsetUnits: number;
+    gateOutsetUnits: number;
+    gateHubLevel: number;
+  };
   castleRadiusUnits: number;
   homeRadiusUnits: number;
   startTroops: Partial<Record<'peasant' | 'archer', number>>;

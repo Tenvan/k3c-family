@@ -1,6 +1,6 @@
 import type buildingsJson from '../../data/buildings.json';
 import type { BiomeConfig } from './biome';
-import type { ResourceKind } from './data';
+import type { RareResource, ResourceKind } from './data';
 
 /**
  * Zustand der Simulation. Reine Daten, alle Positionen in Units, Zeiten in Sekunden.
@@ -8,7 +8,8 @@ import type { ResourceKind } from './data';
  */
 
 export type { ResourceKind };
-export type Stock = Record<ResourceKind, number>;
+/** Vorrat der Insel; Eisen und Kristall fehlen bei 0. */
+export type Stock = Record<Exclude<ResourceKind, RareResource>, number> & Partial<Record<RareResource, number>>;
 
 /** Eingabe eines Spielers für einen Tick. */
 export interface PlayerCommand {
@@ -138,7 +139,7 @@ export interface Site {
 /** Ausbau auf die nächste Hub-Stufe (docs/protocol.md › Wirtschaft), vom Server berechnet. */
 export interface HubUpgrade {
   gold: number;
-  material: Partial<Record<ResourceKind | 'iron' | 'crystal', number>>;
+  material: Partial<Record<ResourceKind, number>>;
   paid: number;
   /** Fehlt, solange Gold offen ist. */
   state?: 'waitingMaterial' | 'waitingWorker';
