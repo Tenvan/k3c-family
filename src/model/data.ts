@@ -63,8 +63,26 @@ export const BUILDINGS = buildingsJson as unknown as Record<string, BuildingData
 export const TROOPS = troopsJson as unknown as Record<'vagrant' | 'peasant' | 'archer', TroopData>;
 export const ENEMIES = enemiesJson as unknown as Record<string, EnemyData>;
 export const MONARCH = monarchJson;
+/** Bauplatz aus `data/hub.json` (`sites`, `islandSites`); `hubLevel` = ab welcher Hub-Stufe er frei ist. */
+export interface HubSite {
+  kind: SiteKind;
+  offsetUnits: number;
+  hubLevel: number;
+  fromDepth?: number;
+  needsDeeper?: boolean;
+}
+
 export const HUB = hubJson as {
-  sites: { kind: SiteKind; offsetUnits: number; fromDepth?: number; needsDeeper?: boolean }[];
+  sites: HubSite[];
+  islandSites: HubSite[];
+  wallLines: {
+    wallUnits: number[];
+    fixedLines: number;
+    jitterOutwardUnits: number;
+    towerInsetUnits: number;
+    gateOutsetUnits: number;
+    gateHubLevel: number;
+  };
   castleRadiusUnits: number;
   homeRadiusUnits: number;
   startTroops: Partial<Record<'peasant' | 'archer', number>>;
