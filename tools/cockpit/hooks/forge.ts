@@ -113,20 +113,30 @@ function bbDone(x: { status: number; data: unknown }): Done {
 // ── Lesen ──
 
 // Nummer des offenen MR/PR für den Branch, sonst null.
+// Ein fehlgeschlagener Abruf wirft: sonst hielte das Panel „kein MR“ für einen Befund und böte „MR anlegen“ an, obwohl er nur
+// nicht erreichbar war. Bitbucket ohne Zugang bleibt `null` (der Hinweis dazu kommt aus authMissing).
 export async function forgeFind(io: Io, r: Remote, branch: string): Promise<number | null> {
   const b = encodeURIComponent(branch)
-  if (r.kind === 'gitlab') {
-    const list = await cliJson(io, ['glab', 'api', `projects/:id/merge_requests?state=opened&source_branch=${b}`])
-    const iid = Array.isArray(list) ? (list[0] as { iid?: unknown } | undefined)?.iid : undefined
-    return typeof iid === 'number' ? iid : null
-  }
-  if (r.kind === 'github') {
-    const list = await cliJson(io, ['gh', 'pr', 'list', '-R', ghRepo(r), '--head', branch, '--state', 'open', '--json', 'number', '--limit', '1'])
-    const n = Array.isArray(list) ? (list[0] as { number?: unknown } | undefined)?.number : undefined
+  if (r.kind === 'gitlab' || r.kind === 'github') {
+    const argv = r.kind === 'gitlab'
+      ? ['glab', 'api', `projects/:id/merge_requests?state=opened&source_branch=${b}`]
+      : ['gh', 'pr', 'list', '-R', ghRepo(r), '--head', branch, '--state', 'open', '--json', 'number', '--limit', '1']
+    const x = await cli(io, argv)
+    if (!x.ok) throw new Error(x.err || argv[0])
+    let list: unknown = null
+    try {
+      list = JSON.parse(x.out) as unknown
+    } catch {
+      throw new Error(argv[0] ?? 'cli')
+    }
+    const first = Array.isArray(list) ? (list[0] as { iid?: unknown; number?: unknown } | undefined) : undefined
+    const n = r.kind === 'gitlab' ? first?.iid : first?.number
     return typeof n === 'number' ? n : null
   }
-  const page = (await bbGet(io, r, `${bbRepo(r)}/pull-requests?at=refs/heads/${b}&direction=OUTGOING&state=OPEN&limit=1`)) as { values?: { id?: unknown }[] } | null
-  const id = page?.values?.[0]?.id
+  const x = await bb(io, r, 'GET', `${bbRepo(r)}/pull-requests?at=refs/heads/${b}&direction=OUTGOING&state=OPEN&limit=1`)
+  if (x.status === 401 || x.status === 403) return null
+  if (x.status < 200 || x.status >= 300) throw new Error(`HTTP ${x.status}`)
+  const id = (x.data as { values?: { id?: unknown }[] } | null)?.values?.[0]?.id
   return typeof id === 'number' ? id : null
 }
 

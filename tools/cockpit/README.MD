@@ -1,6 +1,6 @@
 # Tenvan CC 🛩️ (`tenvan-cc`)
 
-Universal-Mod für **Claude Desktop**: ein schmales Band über der Prompt-Eingabe und ein ausführliches Panel rechts. Eigene Implementierung, die den Funktionsumfang dreier Community-Mods bündelt und verschlankt:
+Universal-Mod für **Claude Desktop** und die **Claude-Code-CLI**: ein schmales Band über der Prompt-Eingabe und ein ausführliches Panel rechts. Eigene Implementierung, die den Funktionsumfang dreier Community-Mods bündelt und verschlankt:
 
 - [scasella/claude-flightdeck](https://github.com/scasella/claude-flightdeck) – Panel mit Turn-Beleg, Gate, Agents, Log
 - [augiefra/token-weather-usage](https://github.com/augiefra/claude-mods/tree/main/plugins/token-weather-usage) – Band mit Kontext, Limits, Cache, Kosten
@@ -36,7 +36,7 @@ Kein Code aus diesen Projekten wurde übernommen. Kein Netzwerk, keine Telemetri
 
 ## Grenzen
 
-- Zeichnet nur auf der Desktop-Surface; im Terminal bleibt alles wie gewohnt.
+- Zeichnet auf Desktop und im Terminal. Im Terminal gibt es kein Svg: Ringe werden Textbalken, Turn-Bilanz Blockzeichen, Formeln Unicode-Text; Tooltips, Atemkreis, Logo, Tool-Symbole und Diff-Karte entfallen dort (Mermaid und Diffs zeichnet die Engine).
 - Die Cache-Restzeit ist geschätzt; ob der Cache wirklich traf, zeigt erst die Trefferquote des nächsten Requests.
 - Ohne Subscription liefert die Engine keine Rate-Limits – der Limit-Teil entfällt dann.
 - Tool-Freigaben werden nur gezählt, das Mod lehnt selbst nie etwas ab.

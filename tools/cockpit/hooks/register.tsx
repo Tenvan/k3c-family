@@ -1,18 +1,18 @@
 import { atom, read, update } from 'claude-code'
-import type { EngineInterface, PressedLink, Register, RenderChildren, RenderElement, SessionUsage } from 'claude-code'
+import type { EngineInterface, PressedLink, Register, RenderChildren, RenderElement, RenderSurface, ResolveInput, SessionUsage } from 'claude-code'
 
 import type { BgTask, About, ModelInfo, Agent, Breakdown, CallMark, CatchUp, Decision, LoopAlert, McpSchema, UiLang, Repo, Gate, LogEntry, LogSrc, ModSettings, Step, Turn, TurnRecord, Usage } from '../types'
 import { mockData } from './mock'
 import { BREATHS, breathFrameSvg, breathOf, breathSvg, phaseAt } from './breath'
-import { canMergeNow, draftPrompt, forgeRemote, mrBadge, mrRef, isPipelineRunning, mrEvents, parseDraft, pipelineTone, pollDelayMs, threadsPrompt } from './mr'
+import { canMergeNow, conflictPrompt, draftPrompt, inRepo, refOf, forgeRemote, mrBadge, mrRef, isPipelineRunning, mrEvents, parseDraft, pipelineTone, pollDelayMs, threadsPrompt } from './mr'
 import { authMissing, canAutoMerge, forgeCreate, forgeDefault, forgeFind, forgeLists, forgeLoad, forgeMerge, forgeRebase, forgeRetry, forgeThreads } from './forge'
 import type { Io, Remote } from './forge'
 import type { Mr, MrDraft, MrMine } from '../types'
 import { THEME, TINT, CARD_TINT, cycleTint, summarySections, splitTool, toolText, withClaude, parseTaskNotification, legendSvg, modelLabel, SPIN_MODE, spinnerText, timelineSvg, demoTable, agentStats, agentFlags, breakdownBarSvg, contextTip, limitTip, cacheTip, summaryLines, topRows, resetLabel, CATCH0, CATCH_KEEP, DEFAULT_SETTINGS, SETTING_DEFS, settingLabel, settingHint, catchUpPrompt, catchUpSystem, nextChunk, settingsOf, startIndex, fingerprint } from './core'
 import type { SettingGroup, SettingKey, Tone } from './core'
-import { EFFORT_LEVELS, effortColor, effectiveEffort, effortJudgeText, handoffMarkdown, handoffPays, isTrivialPrompt, limitAlert } from './core'
+import { TILES, EFFORT_LEVELS, effortColor, effectiveEffort, effortJudgeText, handoffMarkdown, handoffPays, isTrivialPrompt, limitAlert } from './core'
 import type { EffortLevel } from './core'
-import { CACHE_WARN_MS, WASTE_USD, compactFocus, detectLoop, isAgentHeavy, isWasteful, mcpDiet, mcpKey, turnBarsSvg } from './core'
+import { CACHE_WARN_MS, WASTE_USD, compactFocus, detectLoop, isAgentHeavy, isWasteful, mcpDiet, mcpKey, turnBarsSvg, turnBarsText } from './core'
 import { RISKY_GIT_CONFIG, COMPACT_AT, DECISION_COLOR, RING_HEX, contextColor, LEGEND, LEGEND_NOTE, paceText, LIMIT_LABEL, LOG_MAX, SRC_COLOR, bar, cacheHitPct, cacheLeftMs, clockTime, duration, limitColor, pace, parseSteps, pushCapped, shortHash, toolInfoLines, oneLine, parseRepo, repoRows, repoShort, ringSvg, svgSource, titleText, toBreakdown, breakdownTitle, categoryColor, spinner, title, toolTarget, toolKind, tokens, usd } from './core'
 import { t } from './i18n'
 import type { Key } from './i18n'
@@ -36,6 +36,12 @@ const panes = (lang: UiLang) => ({
 const EDIT_TOOLS = new Set(['Edit', 'Write', 'NotebookEdit'])
 const LIVE = new Set(['pending', 'running', 'waiting'])
 const NL = String.fromCharCode(10)
+
+// Oberflächen, auf denen das Cockpit zeichnet; überall sonst zeichnet die Engine (`next(e)`). Die Zeichnungen fragen nicht
+// nach dem Namen der Oberfläche, sondern nach ihren Elementen: `'Svg' in ui` entscheidet zwischen Grafik (Desktop) und
+// Text-Fallback (Terminal). Desktop führt, das Terminal bekommt dieselben Daten und Texte.
+const DRAWS_ON: ReadonlySet<RenderSurface> = new Set(['desktop', 'terminal'])
+const drawsOn = (surface: RenderSurface): boolean => DRAWS_ON.has(surface)
 
 const usage = atom({ plugin: 'tenvan-cc', key: 'usage' } as const, null)
 const lastTurnAt = atom({ plugin: 'tenvan-cc', key: 'lastTurnAt' } as const, null)
@@ -80,11 +86,14 @@ const usedMcp = atom({ plugin: 'tenvan-cc', key: 'usedMcp' } as const, [] as str
 const turnLog = atom({ plugin: 'tenvan-cc', key: 'turnLog' } as const, [] as TurnRecord[])
 // Höchstens so viele Zeilen Befehl und Ergebnis je Kachel einer Hintergrundaufgabe.
 const TASK_LINES = 8
+// Breite der Bezeichnungs-Spalte in der Übersicht („Kontext“ plus Luft).
+const OVERVIEW_LABEL_COLS = 9
 // Breite der Schalter-Spalte in den Einstellungen (Button „○ Aus“/„○ Off“ plus Luft).
 const SWITCH_COLS = 9
 const mrHost = atom({ plugin: 'tenvan-cc', key: 'mrHost' } as const, '')
 const mrCur = atom({ plugin: 'tenvan-cc', key: 'mrCur' } as const, null as Mr | null)
 const mrMine = atom({ plugin: 'tenvan-cc', key: 'mrMine' } as const, [] as MrMine[])
+const mrDetails = atom({ plugin: 'tenvan-cc', key: 'mrDetails' } as const, {} as Record<string, Mr>)
 const mrReview = atom({ plugin: 'tenvan-cc', key: 'mrReview' } as const, [] as MrMine[])
 const mrAhead = atom({ plugin: 'tenvan-cc', key: 'mrAhead' } as const, 0)
 const mrDraft = atom({ plugin: 'tenvan-cc', key: 'mrDraft' } as const, null as MrDraft | null)
@@ -114,16 +123,16 @@ const STEPS_SYSTEM =
 
 type Ui = ReturnType<EngineInterface['ui']['resolve']>
 
-// Farblegende: `hints` zeigt die Erklärung, sonst nur die Kurzbezeichnung.
-// Kurze Legende als Text, nur wo die Oberfläche kein Svg zeichnet (sonst `legendSvg` mit Tooltip).
-function legend({ Box, Text }: Ui, lang: UiLang) {
-  return (
-    <Box flexDirection="row" columnGap={2}>
-      {LEGEND.map(l => (
-        <Text><Text color={THEME[l.color]}>■</Text> <Text dimColor>{t(lang, l.label)}</Text></Text>
-      ))}
-    </Box>
-  )
+// Oberflächen, die Svg zeichnen. Die Engine ergänzt jede Elementtabelle um alle Namen; im Terminal steht deshalb auch ein
+// `Svg` darin, das nur ein leeres Fragment zeichnet. `elementsOf` nimmt es dort heraus, damit `'Svg' in ui` stimmt.
+const SVG_SURFACES: ReadonlySet<RenderSurface> = new Set(['desktop', 'vscode', 'mobile'])
+
+// Die Elementtabelle für einen Render-Hook; jede Zeichnung holt sie hier statt direkt über `$.ui.resolve`.
+function elementsOf($: EngineInterface, e: ResolveInput): Ui {
+  const ui = $.ui.resolve(e)
+  if (SVG_SURFACES.has(e.surface)) return ui
+  const { Svg: _drawsNothing, ...rest } = ui as Ui & { Svg?: unknown }
+  return rest as Ui
 }
 
 // Farbige Kästchen im Tooltip: ein <title> ist reiner Text, Emoji-Quadrate zeigen trotzdem die Farbe der Legende.
@@ -276,8 +285,9 @@ function withInfo(ui: Ui, key: string, lines: readonly string[], theirs: RenderE
   )
 }
 
-// ── Chat-Skins (Desktop): Zeichnung zu den reinen Funktionen in skins.ts ──
+// ── Chat-Skins: Zeichnung zu den reinen Funktionen in skins.ts ──
 // Alle Svg hier sind einfache Bilder (nie interaktiv) mit stabiler Quelle; keine absoluten Boxen; Buttons nur mit Label.
+// Ohne Svg (Terminal) fällt jede Grafik auf Text oder auf die Zeichnung der Engine zurück.
 
 function toolIcon(ui: Ui, tool: string, errored: boolean, key: string) {
   const Svg = 'Svg' in ui ? ui.Svg : undefined
@@ -339,7 +349,6 @@ function card(ui: Ui, key: string, head: RenderElement, body: RenderElement, cop
   )
 }
 
-const splitOptions = (s: ModSettings): SplitOptions => ({ cards: s.skinCards, inline: s.skinInline, mermaid: s.skinMermaid, math: s.skinMath, links: s.skinLinks })
 
 // Stück eines Absatzes mit Links: Links in der Akzentfarbe, Dateilinks als Chip (Name, ggf. `:Zeile`), Code gedämpft auf Chip-Grund.
 function linkPart(ui: Ui, p: LinkToken, key: string, cwd: string) {
@@ -358,6 +367,8 @@ function linkPart(ui: Ui, p: LinkToken, key: string, cwd: string) {
   const href = fileHref(p.path, cwd)
   return Link && href.startsWith('file:') ? <Link key={key} href={href}>{chip}</Link> : chip
 }
+// Mermaid-Karten nur mit Svg: ohne Grafik bliebe die Karte der Markdown-Block der Engine, die Übernahme brächte nichts.
+const splitOptions = (s: ModSettings, hasSvg: boolean): SplitOptions => ({ cards: s.skinCards, inline: s.skinInline, mermaid: s.skinMermaid && hasSvg, math: s.skinMath, links: s.skinLinks })
 
 // Abschnitte einer Antwort oder Command-Ausgabe: Prosa bleibt Markdown (markierbar), Karten und Hervorhebungen eigen.
 function segmentsView($: EngineInterface, ui: Ui, segs: readonly Segment[], base: string, lang: UiLang, changed: readonly string[], mk: Marker, cwd: string): RenderElement {
@@ -426,8 +437,9 @@ function segmentsView($: EngineInterface, ui: Ui, segs: readonly Segment[], base
           return card(ui, k, <Text color={THEME.accent} bold>{t(lang, 'skin.mermaidHead', { type })}</Text>, body, copy(s.source), t(lang, 'skin.copySource'), THEME.border, mk, 'style.mermaid')
         }
         if (s.kind === 'math') {
-          const ok = s.text !== null && Svg
-          const body = ok ? <Svg key={`${k}-svg`} source={mathSvg(s.text ?? '')} alt={s.text ?? ''} /> : <Code source={s.tex} language="latex" />
+          // Umgesetzte Formel als Svg-Bild, ohne Svg derselbe Unicode-Text; nur der Rest bleibt LaTeX-Quelltext.
+          const ok = s.text !== null
+          const body = !ok ? <Code source={s.tex} language="latex" /> : Svg ? <Svg key={`${k}-svg`} source={mathSvg(s.text ?? '')} alt={s.text ?? ''} /> : <Text key={`${k}-txt`} wrap="wrap">{s.text}</Text>
           return card(ui, k, <Text color={THEME.accent} bold>{t(lang, ok ? 'skin.mathHead' : 'skin.mathRaw')}</Text>, body, copy(s.tex), t(lang, 'skin.copySource'), THEME.border, mk, 'style.math')
         }
         return (
@@ -538,10 +550,48 @@ function startSpin($: EngineInterface) {
 }
 
 // Einstellungen: aus dem $.store (gilt für alle Sessions) in den State laden; Standardwerte aus den Plugin-Optionen.
+let settingsDefaults: Partial<ModSettings> = {}
 async function loadSettings($: EngineInterface, defaults: Partial<ModSettings>) {
+  settingsDefaults = defaults
   // Ohne lesbaren Speicher gelten die Standardwerte; der Start des Mods darf daran nicht scheitern.
   const saved = await $.store.get('settings').then(v => v as Partial<ModSettings> | undefined, () => undefined)
   await update($, settings, () => settingsOf({ ...defaults, ...saved }))
+}
+
+// Abgleich mit dem Speicher: Änderungen aus einer anderen Session kommen so an. Ein Lesefehler lässt den Stand unberührt
+// (anders als beim Start, wo Standardwerte gelten); gezeichnet wird nur bei echter Änderung.
+async function syncSettings($: EngineInterface): Promise<boolean> {
+  const saved = (await $.store.get('settings')) as Partial<ModSettings> | undefined
+  const next = settingsOf({ ...settingsDefaults, ...saved })
+  const folded = foldedOf(await $.store.get('collapsed'))
+  let changed = false
+  if (!same(await read($, settings), next)) {
+    await update($, settings, () => next)
+    changed = true
+  }
+  if (!same(await read($, collapsed), folded)) {
+    await update($, collapsed, () => folded)
+    changed = true
+  }
+  return changed
+}
+
+// Klapp-Status der Panel-Karten: je User im Speicher, nicht je Session.
+const foldedOf = (v: unknown): string[] => (Array.isArray(v) ? v.filter((x): x is string => typeof x === 'string') : [])
+
+async function toggleCard($: EngineInterface, key: string) {
+  await update($, collapsed, c => (c.includes(key) ? c.filter(x => x !== key) : [...c, key]))
+  await $.store.set('collapsed', await read($, collapsed))
+}
+
+// Knopf „Neu laden“: gleicht ab und sagt, was dabei herauskam.
+async function reloadSettings($: EngineInterface) {
+  const L = (await read($, settings)).lang
+  try {
+    $.ui.toast(t(L, (await syncSettings($)) ? 'settings.reloaded' : 'settings.upToDate'))
+  } catch (err) {
+    $.ui.toast(t(L, 'settings.reloadFailed', { why: err instanceof Error ? err.message : String(err) }))
+  }
 }
 
 // Zusammenfassung nach einem Turn anstoßen: nur automatisch eingeschaltet und nur, wo eine Oberfläche das Panel zeigt (nicht in claude -p).
@@ -804,7 +854,12 @@ async function startTurn($: EngineInterface, text: string) {
 // ── Merge/Pull Requests (GitLab über glab, GitHub über gh, Bitbucket Server über REST; Ein-/Ausgabe in forge.ts) ──
 // Lesend im Takt; schreibend nur per Klick.
 let mrPolledAt = 0
-let mrPolling = false
+let mrInflight: Promise<void> | null = null
+// Letzte Zeichnung des MR-Panels und letzter Abruf der MR-Status: Status laden nur, solange das Panel offen ist (es zeichnet im
+// 30-s-Takt neu), höchstens alle 5 Minuten.
+let mrPaneAt = 0
+let mrDetailAt = 0
+const MINE_DETAIL_MAX = 10
 let mrRemote: Remote | null = null
 let authWarned = ''
 
@@ -831,16 +886,25 @@ function forgeIo($: EngineInterface): Io {
   return { run: (argv, opts) => $.process.run(argv, opts), fetch: (url, init) => $.http.fetch(url, init) }
 }
 
-// MR/PR des Branches abfragen; im Leerlauf jede Minute, bei laufender Pipeline alle 15 s, `force` sofort.
+// MR/PR des Branches abfragen; im Leerlauf jede Minute, bei laufender Pipeline alle 15 s. `force` wartet eine laufende
+// Abfrage ab und fragt danach selbst sofort neu; Fehler wirft nur `force`, der Takt bleibt still beim letzten Stand.
 async function refreshMr($: EngineInterface, force = false) {
+  if (force && mrInflight !== null) await mrInflight.catch(() => undefined)
   const s = await read($, settings)
   if (!s.mrBand && !s.mrPane && !s.mrNotify && !s.mrFooter) return
   const prev = await read($, mrCur)
   const now = await $.clock.now()
-  if (mrPolling || (!force && now - mrPolledAt < pollDelayMs(prev))) return
-  mrPolling = true
+  if (mrInflight !== null || (!force && now - mrPolledAt < pollDelayMs(prev))) return
   mrPolledAt = now
-  try {
+  const run = pollMr($, s, prev).finally(() => {
+    mrInflight = null
+  })
+  mrInflight = run
+  await run
+}
+
+async function pollMr($: EngineInterface, s: ModSettings, prev: Mr | null) {
+  {
     const remoteName = await gitRemote($)
     const remote = forgeRemote(await gitText($, ['remote', 'get-url', remoteName]))
     mrRemote = remote
@@ -855,6 +919,7 @@ async function refreshMr($: EngineInterface, force = false) {
     // Ein eben gemergter oder geschlossener MR desselben Branches wird weiter abgefragt, damit sein Ende gemeldet wird.
     const iid = found ?? (prev !== null && prev.source === branch && prev.forge === remote.kind ? prev.iid : null)
     const next = iid === null ? null : await forgeLoad(forgeIo($), remote, iid)
+    if (iid !== null && next === null) throw new Error(t(s.lang, 'mr.loadFailed', { ref: `!${iid}` }))
     // Bitbucket ohne Zugang im Git-Credential-Store: einmal je Host sagen, warum nichts erscheint.
     if (authMissing() !== '' && authWarned !== authMissing()) {
       authWarned = authMissing()
@@ -868,6 +933,9 @@ async function refreshMr($: EngineInterface, force = false) {
       }
     }
     { const v = next; if (!same(await read($, mrCur), v)) await update($, mrCur, () => v) }
+    // Ein Entwurf gilt nur für seinen Branch und nur, solange es dafür keinen offenen MR gibt (etwa weil er anderswo angelegt wurde).
+    const draft = await read($, mrDraft)
+    if (draft !== null && (draft.source !== branch || (next !== null && next.state === 'opened'))) await update($, mrDraft, () => null)
     const target = await defaultTarget($, remoteName)
     const ahead = branch !== '' && branch !== target && (next === null || next.state !== 'opened') ? Number(await gitText($, ['rev-list', '--count', `${remoteName}/${target}..HEAD`])) || 0 : 0
     { const v = ahead; if (!same(await read($, mrAhead), v)) await update($, mrAhead, () => v) }
@@ -876,14 +944,51 @@ async function refreshMr($: EngineInterface, force = false) {
       { const v = lists.mine; if (!same(await read($, mrMine), v)) await update($, mrMine, () => v) }
       { const v = lists.review; if (!same(await read($, mrReview), v)) await update($, mrReview, () => v) }
     }
+  }
+}
+
+// Status der eigenen MRs im selben Repo: höchstens MINE_DETAIL_MAX, je drei gleichzeitig. MRs anderer Projekte bleiben ohne Status,
+// weil die Abfragen (`projects/:id`) am Projekt des Arbeitsverzeichnisses hängen.
+async function loadMineDetails($: EngineInterface, force = false) {
+  const r = mrRemote
+  if (r === null || !(await read($, settings)).mrPane) return
+  const now = await $.clock.now()
+  if (!force && (now - mrPaneAt > 90_000 || now - mrDetailAt < 300_000)) return
+  mrDetailAt = now
+  const own = (await read($, mrMine)).filter(x => inRepo(x.ref, r.project)).slice(0, MINE_DETAIL_MAX)
+  const out: Record<string, Mr> = {}
+  for (let i = 0; i < own.length; i += 3) {
+    await Promise.all(
+      own.slice(i, i + 3).map(async x => {
+        const iid = refOf(x.ref)?.iid
+        const m = iid === undefined ? null : await forgeLoad(forgeIo($), r, iid).catch(() => null)
+        if (m !== null) out[x.ref] = m
+      }),
+    )
+  }
+  if (!same(await read($, mrDetails), out)) await update($, mrDetails, () => out)
+}
+
+// „Aktualisieren“: Panel aus dem tatsächlichen Stand neu aufbauen (MR, Branch, Listen, Repo-Infos), alte Rückfragen verwerfen.
+async function reloadMrPane($: EngineInterface) {
+  const L = (await read($, settings)).lang
+  await update($, mrBusy, () => t(L, 'mr.refreshing'))
+  try {
+    await update($, mrConfirm, () => '')
+    await refreshMr($, true)
+    await loadMineDetails($, true)
+    const r = await loadRepo($)
+    if (!same(await read($, repo), r)) await update($, repo, () => r)
+  } catch (err) {
+    $.ui.toast(t(L, 'mr.failed', { what: t(L, 'mr.refresh'), why: err instanceof Error ? err.message : String(err) }))
   } finally {
-    mrPolling = false
+    await update($, mrBusy, () => '')
   }
 }
 
 // Eine schreibende Aktion mit Statuszeile, Ergebnis als Toast und anschließender Abfrage.
-async function mrStep($: EngineInterface, what: string, run: (r: Remote, m: Mr) => Promise<{ ok: boolean; err: string }>) {
-  const m = await read($, mrCur)
+async function mrStep($: EngineInterface, what: string, run: (r: Remote, m: Mr) => Promise<{ ok: boolean; err: string }>, ref?: string) {
+  const m = ref === undefined ? await read($, mrCur) : ((await read($, mrDetails))[ref] ?? null)
   if (m === null || mrRemote === null) return
   const r = mrRemote
   const L = (await read($, settings)).lang
@@ -895,16 +1000,17 @@ async function mrStep($: EngineInterface, what: string, run: (r: Remote, m: Mr) 
   } finally {
     await update($, mrBusy, () => '')
     await refreshMr($, true)
+    await loadMineDetails($, true).catch(() => undefined)
   }
 }
 
-const rebaseMr = async ($: EngineInterface) => mrStep($, t((await read($, settings)).lang, 'mr.rebase'), (r, m) => forgeRebase(forgeIo($), r, m))
+const rebaseMr = async ($: EngineInterface, ref?: string) => mrStep($, t((await read($, settings)).lang, 'mr.rebase'), (r, m) => forgeRebase(forgeIo($), r, m), ref)
 const retryPipeline = async ($: EngineInterface) => mrStep($, t((await read($, settings)).lang, 'mr.retry'), (r, m) => forgeRetry(forgeIo($), r, m))
 
 // Mergen in zwei Schritten: erster Klick fragt („Wirklich mergen?“, 6 s gültig), zweiter mergt. Läuft die Pipeline noch,
 // merget GitLab bzw. GitHub, sobald sie grün ist.
-async function mergeMr($: EngineInterface) {
-  const m = await read($, mrCur)
+async function mergeMr($: EngineInterface, ref?: string) {
+  const m = ref === undefined ? await read($, mrCur) : ((await read($, mrDetails))[ref] ?? null)
   if (m === null) return
   const key = `merge-${m.iid}`
   if ((await read($, mrConfirm)) !== key) {
@@ -914,7 +1020,7 @@ async function mergeMr($: EngineInterface) {
   }
   await update($, mrConfirm, () => '')
   const auto = isPipelineRunning(m) && canAutoMerge(m)
-  await mrStep($, t((await read($, settings)).lang, auto ? 'mr.mergeAuto' : 'mr.merge'), (r, cur) => forgeMerge(forgeIo($), r, cur, auto))
+  await mrStep($, t((await read($, settings)).lang, auto ? 'mr.mergeAuto' : 'mr.merge'), (r, cur) => forgeMerge(forgeIo($), r, cur, auto), ref)
 }
 
 // Entwurf für einen neuen MR: Haiku schreibt Titel und Beschreibung aus Commits und Diffstat; angelegt wird erst per Klick.
@@ -974,6 +1080,13 @@ async function threadsToClaude($: EngineInterface) {
   await $.prompt.fill({ text: threadsPrompt(m, threads, (await read($, settings)).lang) })
 }
 
+// Konflikt als Auftrag ins Eingabefeld; gesendet wird erst mit Enter.
+async function conflictToClaude($: EngineInterface) {
+  const m = await read($, mrCur)
+  if (m === null || !m.conflicts) return
+  await $.prompt.fill({ text: conflictPrompt(m, (await read($, settings)).lang) })
+}
+
 // Statusteile eines MR für Band und Panel: Nummer, Zustand, Pipeline, Approvals, Threads, Konflikt.
 function mrParts(ui: Ui, m: Mr, L: UiLang): RenderElement[] {
   const { Text } = ui
@@ -1014,6 +1127,7 @@ async function mrBandRow($: EngineInterface, ui: Ui, L: UiLang, devMr: Mr | null
         <Text color={THEME.textMuted}>⇄</Text>
         {withDots(ui, mrParts(ui, m, L), 'mr-b')}
         {m.state === 'opened' && m.threads > 0 && <Button key="mr-claude" label={t(L, 'mr.toClaude')} plain dimColor onPress={() => void threadsToClaude($).catch(() => undefined)} />}
+        {m.state === 'opened' && m.conflicts && <Button key="mr-fix" label={t(L, 'mr.fixConflict')} plain dimColor onPress={() => void conflictToClaude($).catch(() => undefined)} />}
         {details}
       </Box>
     )
@@ -1067,14 +1181,14 @@ async function openExternal($: EngineInterface, href: string) {
 
 // Das MR-Panel: je Abschnitt eine Karte (Branch-MR mit Beschreibung, Threads und Aktionen, Entwurf, eigene MRs, Reviews).
 // `mock` füllt es im Dev-Mode.
-async function mrPaneBody($: EngineInterface, ui: Ui, L: UiLang, mock: { mr: Mr; mrMine: MrMine[] } | null, now: number): Promise<RenderElement[]> {
+async function mrPaneBody($: EngineInterface, ui: Ui, L: UiLang, mock: { mr: Mr; mrMine: MrMine[]; mrDetails: Record<string, Mr> } | null, now: number, marg: number): Promise<RenderElement[]> {
   const { Box, Text, Button, Markdown } = ui
   // Links im externen Standard-Browser, nicht im Browser der App.
   const ext = (link: PressedLink) => void openExternal($, link.href).catch(() => undefined)
   const section = (i: number, key: string, ...children: RenderChildren[]) => (
     <Box key={key} flexDirection="column">
-      <Box height={1} />
-      <Box flexDirection="column" backgroundColor={cycleTint(i)} marginX={1} paddingX={1} paddingY={1}>
+      {marg ? <Box height={1} /> : null}
+      <Box flexDirection="column" backgroundColor={cycleTint(i)} marginX={marg} paddingX={1} paddingY={1}>
         {children}
       </Box>
     </Box>
@@ -1083,10 +1197,13 @@ async function mrPaneBody($: EngineInterface, ui: Ui, L: UiLang, mock: { mr: Mr;
   if (host === '') return [section(0, 'mr-s-none', <Text color={THEME.textMuted}>{t(L, 'mr.noGitlab')}</Text>)]
   const m = mock !== null ? mock.mr : await read($, mrCur)
   const mine = mock !== null ? mock.mrMine : await read($, mrMine)
+  const details = mock !== null ? mock.mrDetails : await read($, mrDetails)
+  if (mock === null) mrPaneAt = now
   const reviews = mock !== null ? [] : await read($, mrReview)
   const [ahead, draft, busy, confirm] = await Promise.all([read($, mrAhead), read($, mrDraft), read($, mrBusy), read($, mrConfirm)])
   const out: RenderElement[] = []
   const branch: RenderChildren[] = [<Text key="mr-bh" bold>{t(L, 'mr.branchHead')}</Text>]
+  const refreshBtn = <Button key="mr-a-refresh" label={t(L, 'mr.refresh')} plain dimColor onPress={() => void reloadMrPane($).catch(() => undefined)} />
   if (busy !== '') branch.push(<Text key="mr-busy" color={THEME.accent}>◌ {busy}</Text>)
   if (m !== null) {
     branch.push(<Markdown onLinkPress={ext} key="mr-link" text={`[${mrRef(m)} ${mdText(m.title)}](${m.url})`} />)
@@ -1105,6 +1222,7 @@ async function mrPaneBody($: EngineInterface, ui: Ui, L: UiLang, mock: { mr: Mr;
       branch.push(
         <Box key="mr-actions" flexDirection="row" columnGap={2} flexWrap="wrap" marginTop={1}>
           {m.threads > 0 && <Button key="mr-a-claude" label={t(L, 'mr.toClaude')} plain onPress={() => void threadsToClaude($).catch(() => undefined)} />}
+          {m.conflicts && <Button key="mr-a-fix" label={t(L, 'mr.fixConflict')} plain onPress={() => void conflictToClaude($).catch(() => undefined)} />}
           <Button key="mr-a-rebase" label={t(L, 'mr.rebase')} plain onPress={() => void rebaseMr($).catch(() => undefined)} />
           {(canMergeNow(m) || (isPipelineRunning(m) && canAutoMerge(m))) &&
             (asking ? (
@@ -1113,7 +1231,7 @@ async function mrPaneBody($: EngineInterface, ui: Ui, L: UiLang, mock: { mr: Mr;
               <Button key="mr-a-merge" label={mergeLabel} plain onPress={() => void mergeMr($).catch(() => undefined)} />
             ))}
           {m.pipeline !== null && m.pipeline.status === 'failed' && m.pipeline.id > 0 && <Button key="mr-a-retry" label={t(L, 'mr.retry')} plain onPress={() => void retryPipeline($).catch(() => undefined)} />}
-          <Button key="mr-a-refresh" label={t(L, 'mr.refresh')} plain dimColor onPress={() => void refreshMr($, true).catch(() => undefined)} />
+          {refreshBtn}
         </Box>,
       )
     }
@@ -1128,6 +1246,7 @@ async function mrPaneBody($: EngineInterface, ui: Ui, L: UiLang, mock: { mr: Mr;
       )
     }
   }
+  if (!(m !== null && m.state === 'opened')) branch.push(<Box key="mr-refresh-row" flexDirection="row" marginTop={1}>{refreshBtn}</Box>)
   out.push(section(0, 'mr-s-branch', ...branch))
   if (m !== null && m.description !== '') out.push(section(1, 'mr-s-desc', <Markdown onLinkPress={ext} key="mr-desc" text={m.description} />))
   if (m !== null && m.threadList.length > 0) {
@@ -1145,7 +1264,7 @@ async function mrPaneBody($: EngineInterface, ui: Ui, L: UiLang, mock: { mr: Mr;
       ),
     )
   }
-  if (draft !== null) {
+  if (draft !== null && !(m !== null && m.state === 'opened')) {
     out.push(
       section(
         3,
@@ -1163,7 +1282,31 @@ async function mrPaneBody($: EngineInterface, ui: Ui, L: UiLang, mock: { mr: Mr;
     )
   }
   const list = (items: readonly MrMine[]) => items.map(x => `- [${mdText(x.ref)}](${x.url}) ${mdText(x.title)}${x.draft ? ' · Draft' : ''}`).join('\n')
-  if (mine.length > 0) out.push(section(4, 'mr-s-mine', <Text key="mr-mine-h" bold>{t(L, 'mr.mine')}</Text>, <Markdown onLinkPress={ext} key="mr-mine" text={list(mine)} />))
+  // Je eigener MR: Link, darunter (wenn geladen) Status und Aktionen. Konflikte löst Claude nur im ausgecheckten Branch, deshalb
+  // hier nur der Hinweis „Konflikt“ aus dem Status.
+  const mineRows = mine.map(x => {
+    const d = details[x.ref]
+    const asking = d !== undefined && confirm === `merge-${d.iid}`
+    const mergeable = d !== undefined && d.state === 'opened' && (canMergeNow(d) || (isPipelineRunning(d) && canAutoMerge(d)))
+    return (
+      <Box key={`mine-${x.ref}`} flexDirection="column">
+        <Markdown onLinkPress={ext} key={`mine-l-${x.ref}`} text={list([x])} />
+        {d !== undefined && (
+          <Box key={`mine-s-${x.ref}`} flexDirection="row" columnGap={1} flexWrap="wrap" marginLeft={2}>
+            {withDots(ui, mrParts(ui, d, L).slice(1), `mine-p-${d.iid}`)}
+            {d.state === 'opened' && <Button key={`mine-rebase-${d.iid}`} label={t(L, 'mr.rebase')} plain dimColor onPress={() => void rebaseMr($, x.ref).catch(() => undefined)} />}
+            {mergeable && d !== undefined &&
+              (asking ? (
+                <Button key={`mine-merge-${d.iid}`} label={t(L, 'mr.confirm')} variant="primary" onPress={() => void mergeMr($, x.ref).catch(() => undefined)} />
+              ) : (
+                <Button key={`mine-merge-${d.iid}`} label={t(L, canMergeNow(d) || !canAutoMerge(d) ? 'mr.merge' : 'mr.mergeAuto')} plain onPress={() => void mergeMr($, x.ref).catch(() => undefined)} />
+              ))}
+          </Box>
+        )}
+      </Box>
+    )
+  })
+  if (mine.length > 0) out.push(section(4, 'mr-s-mine', <Text key="mr-mine-h" bold>{t(L, 'mr.mine')}</Text>, ...mineRows))
   if (reviews.length > 0) out.push(section(5, 'mr-s-review', <Text key="mr-rev-h" bold>{t(L, 'mr.review')}</Text>, <Markdown onLinkPress={ext} key="mr-rev" text={list(reviews)} />))
   return out
 }
@@ -1174,6 +1317,7 @@ export const register: Register = (on, options) => {
     const info = await loadAbout($)
     await update($, about, () => info)
     await loadSettings($, { steps: options.nextSteps !== false, chatInfo: options.chatInfo !== false })
+    void $.store.get('collapsed').then(v => update($, collapsed, () => foldedOf(v))).catch(() => undefined)
     void loadCatchUp($).catch(() => undefined)
     await update($, logo, () => null)
     void Promise.all([$.session.model(), $.session.version()])
@@ -1190,21 +1334,25 @@ export const register: Register = (on, options) => {
     await $.command.register({ name: 'cockpit-mr', description: t(lang, 'common.cmdMr') })
     await $.command.register({ name: 'cockpit-features', description: t(lang, 'common.cmdFeatures') })
     void $.clock.every(30_000, () => void Promise.all([update($, tick, n => n + 1), syncAgents($), watchCache($)]).catch(() => undefined))
-    void $.clock.every(15_000, () => void refreshMr($).catch(() => undefined))
+    void $.clock.every(15_000, () => void refreshMr($).then(() => loadMineDetails($)).catch(() => undefined))
+    void $.clock.every(10_000, () => void syncSettings($).catch(() => undefined))
     void refreshMr($, true).catch(() => undefined)
+    // Jede Speicherung im Plugin-Ordner lädt das Mod in allen Sessions neu; ein Band, das dabei nichts zeichnete, hat keine
+    // Atome abonniert und bliebe leer, bis ein neuer Prompt neu zeichnet.
+    $.clock.after(1_500, () => $.ui.invalidate('ui.render'))
     return next(e)
   })
 
-  // Hover-Infos über dem Chat: nur Desktop, abschaltbar in den Einstellungen.
+  // Info-Zeilen und Karten im Chat, abschaltbar in den Einstellungen.
   // Antworten: Code-/Tabellenkarten (skinCards) und Hervorhebungen (skinInline) zeichnen selbst, aber nur wenn es etwas zu
   // stylen gibt; Prosa bleibt das native Markdown. Zusammenfassungs-Blöcke bleiben unverändert.
   on('ui.render', { component: 'AssistantMessage' }, async ($, e, next) => {
     const theirs = await next(e)
-    if (e.surface !== 'desktop') return theirs
+    if (!drawsOn(e.surface)) return theirs
     const s = await read($, settings)
-    const ui = $.ui.resolve(e)
+    const ui = elementsOf($, e)
     let el = theirs
-    const so = splitOptions(s)
+    const so = splitOptions(s, 'Svg' in ui)
     if (Object.values(so).some(Boolean) && e.props.isSummary !== true) {
       const segs = splitMessage(e.props.text, so)
       if (isStyled(segs)) el = segmentsView($, ui, segs, `tv-s-${shortHash(e.props.text)}`, s.lang, s.skinInline ? await read($, touched) : [], await markerOf($), (await read($, repo))?.path ?? '')
@@ -1215,16 +1363,16 @@ export const register: Register = (on, options) => {
   // Deine Nachricht rechtsbündig im Rahmen; der Text als wörtliches Markdown, damit er markierbar bleibt.
   // Nur getippte Prompts: Benachrichtigungen und Nachrichten anderer Agents zeichnet weiter die Engine.
   on('ui.render', { component: 'UserMessage' }, async ($, e, next) => {
-    if (e.surface !== 'desktop') return next(e)
+    if (!drawsOn(e.surface)) return next(e)
     const s = await read($, settings)
     const p = e.props
     const md = mdLiteral(p.text)
     if (!s.skinPrompt || p.origin.kind !== 'composer' || p.from !== undefined || p.task !== undefined || p.text.trim() === '' || md.length > 100_000) return next(e)
-    const { Box, Markdown } = $.ui.resolve(e)
+    const { Box, Markdown } = elementsOf($, e)
     return (
       <Box key={`tv-p-${shortHash(p.text)}`} flexDirection="column" alignItems="flex-end">
         <Box borderStyle="round" borderColor={THEME.accent} paddingX={1} flexShrink={1} flexDirection="row" columnGap={1} alignItems="flex-start">
-          {skinMark($.ui.resolve(e), await markerOf($), `tv-pm-${shortHash(p.text)}`, 'style.prompt')}
+          {skinMark(elementsOf($, e), await markerOf($), `tv-pm-${shortHash(p.text)}`, 'style.prompt')}
           <Markdown text={md} />
         </Box>
       </Box>
@@ -1234,9 +1382,9 @@ export const register: Register = (on, options) => {
   // Tool-Zeile: Symbol davor (skinIcons), darunter ▸/▾ Details mit Eingabe und Ergebnis als Code (skinExpand), dann die Info-Zeile.
   on('ui.render', { component: 'ToolUse' }, async ($, e, next) => {
     const theirs = await next(e)
-    if (e.surface !== 'desktop') return theirs
+    if (!drawsOn(e.surface)) return theirs
     const s = await read($, settings)
-    const ui = $.ui.resolve(e)
+    const ui = elementsOf($, e)
     const { Box, Text, Button, Code } = ui
     const p = e.props
     const id = p.tool_use_id
@@ -1282,8 +1430,8 @@ export const register: Register = (on, options) => {
   const GROUP_CALLS_MAX = 8
   on('ui.render', { component: 'ToolGroup' }, async ($, e, next) => {
     const theirs = await next(e)
-    if (e.surface !== 'desktop' || e.props.isExpanded || !(await read($, settings)).skinIcons) return theirs
-    const ui = $.ui.resolve(e)
+    if (!drawsOn(e.surface) || e.props.isExpanded || !(await read($, settings)).skinIcons) return theirs
+    const ui = elementsOf($, e)
     const { Box, Text } = ui
     const calls = e.props.calls
     // Je Tool (MCP: je Server) Symbol, Name und Zähler: „[icon] Bash ×3“.
@@ -1320,9 +1468,9 @@ export const register: Register = (on, options) => {
   // Ergebnis: Diff-Karte für Edit/Write (skinDiff); Fehler als erste echte Fehlerzeile und lesende Aufrufe als eine Zeile (skinQuiet).
   on('ui.render', { component: 'ToolResult' }, async ($, e, next) => {
     const theirs = await next(e)
-    if (e.surface !== 'desktop') return theirs
+    if (!drawsOn(e.surface)) return theirs
     const s = await read($, settings)
-    const ui = $.ui.resolve(e)
+    const ui = elementsOf($, e)
     const { Text } = ui
     const Svg = 'Svg' in ui ? ui.Svg : undefined
     const p = e.props
@@ -1350,7 +1498,7 @@ export const register: Register = (on, options) => {
     if (!s.chatLines) return next(e)
     const tn = await read($, turn)
     const now = await $.clock.now()
-    const { Box, Text } = $.ui.resolve(e)
+    const { Box, Text } = elementsOf($, e)
     const mode = SPIN_MODE[e.props.mode]
     // Atemübung: der Spinner nennt zusätzlich die Phase mit Restsekunden, im selben Takt wie der Kreis im Band.
     const breathing = s.breath && tn !== null && tn.durationMs === undefined
@@ -1358,7 +1506,7 @@ export const register: Register = (on, options) => {
     const step = spinnerText(e.props.word, e.props.message)
     return (
       <Box flexDirection="row" columnGap={1} alignItems="center">
-        {skinMark($.ui.resolve(e), await markerOf($), 'tv-spin-m', 'style.spinner')}
+        {skinMark(elementsOf($, e), await markerOf($), 'tv-spin-m', 'style.spinner')}
         <Text color={mode.color} bold>{spinner(await read($, frame))} {t(s.lang, mode.label)}</Text>
         {ph !== null && <Text key="breath-phase" color={THEME.accent}>{t(s.lang, `breath.${ph.phase}`)} {Math.ceil(ph.leftMs / 1000)}s ·</Text>}
         {step !== '' && <Text color={THEME.textSecondary} wrap="truncate-end">{step}</Text>}
@@ -1374,7 +1522,7 @@ export const register: Register = (on, options) => {
   on('ui.render', { component: 'TurnDuration' }, async ($, e, next) => {
     const s = await read($, settings)
     if (!s.chatLines) return next(e)
-    const { Text } = $.ui.resolve(e)
+    const { Text } = elementsOf($, e)
     return (
       <Text>
         <Text color={THEME.success}>{t(s.lang, 'chat.done')}</Text>
@@ -1386,10 +1534,10 @@ export const register: Register = (on, options) => {
   // Rückfrage: nur ein Kopfband über dem Dialog der Engine; Fragen, Optionen und Eingabe bleiben unberührt (`theirs`).
   on('ui.render', { component: 'AskUserQuestion' }, async ($, e, next) => {
     const theirs = await next(e)
-    if (e.surface !== 'desktop') return theirs
+    if (!drawsOn(e.surface)) return theirs
     const s = await read($, settings)
     if (!s.skinAsk) return theirs
-    const ui = $.ui.resolve(e)
+    const ui = elementsOf($, e)
     const { Box, Text } = ui
     const key = `tv-ask-${shortHash(JSON.stringify(e.props.questions))}`
     return (
@@ -1406,9 +1554,9 @@ export const register: Register = (on, options) => {
   // Modus-Labels im Footer: dieselben Labels in Akzentfarbe; ohne Labels zeichnet die Engine.
   // Fußzeile rechts unter dem Prompt: Modus-Labels (skinMode in Akzentfarbe, sonst gedimmt wie die Engine) und die Cockpit-Minibuttons.
   on('ui.render', { component: 'SessionMode' }, async ($, e, next) => {
-    if (e.surface !== 'desktop') return next(e)
+    if (!drawsOn(e.surface)) return next(e)
     const s = await read($, settings)
-    const ui = $.ui.resolve(e)
+    const ui = elementsOf($, e)
     const { Box, Text, Button } = ui
     const L = s.lang
     const P = panes(L)
@@ -1433,8 +1581,8 @@ export const register: Register = (on, options) => {
   // Hinweiszeile unter dem Prompt: nur das Kennzeichen davor; die Zeile (samt Pills) bleibt die der Engine.
   on('ui.render', { component: 'PromptHint' }, async ($, e, next) => {
     const theirs = await next(e)
-    if (e.surface !== 'desktop' || !(await read($, settings)).skinHint) return theirs
-    const ui = $.ui.resolve(e)
+    if (!drawsOn(e.surface) || !(await read($, settings)).skinHint) return theirs
+    const ui = elementsOf($, e)
     const m = skinMark(ui, await markerOf($), 'tv-hint-m', 'style.hint')
     if (m === null) return theirs
     const { Box } = ui
@@ -1448,12 +1596,12 @@ export const register: Register = (on, options) => {
 
   on('ui.render', { component: 'CommandOutput' }, async ($, e, next) => {
     const theirs = await next(e)
-    if (e.surface !== 'desktop') return theirs
+    if (!drawsOn(e.surface)) return theirs
     const s = await read($, settings)
-    const ui = $.ui.resolve(e)
+    const ui = elementsOf($, e)
     let el = theirs
     // Karten und Hervorhebungen auch hier (zeigt sie in /cockpit-demo); Fehlerzeilen zeichnet weiter die Engine.
-    const so = splitOptions(s)
+    const so = splitOptions(s, 'Svg' in ui)
     if (Object.values(so).some(Boolean) && !e.props.isErrored) {
       const segs = splitMessage(e.props.text, so)
       if (isStyled(segs)) el = segmentsView($, ui, segs, `tv-cs-${shortHash(e.props.command + e.props.text)}`, s.lang, s.skinInline ? await read($, touched) : [], await markerOf($), (await read($, repo))?.path ?? '')
@@ -1695,11 +1843,11 @@ export const register: Register = (on, options) => {
     const u = await read($, usage)
     // Kappung auch hier: $.state überlebt Reloads und kann noch Listen älterer Versionen (fünf Schritte) halten.
     const next3 = e.props.isWorking || !s.steps ? [] : (await read($, steps)).slice(0, 3)
-    if (e.surface !== 'desktop' || e.props.hasSurvey || (u === null && next3.length === 0 && (await read($, loopAlert)) === null)) return next(e)
+    if (!drawsOn(e.surface) || e.props.hasSurvey || (u === null && next3.length === 0 && (await read($, loopAlert)) === null)) return next(e)
     await read($, tick)
     const now = await $.clock.now()
     const running = (await read($, agents)).filter(a => LIVE.has(a.status)).length
-    const ui = $.ui.resolve(e)
+    const ui = elementsOf($, e)
     const { Box, Text, Button } = ui
     // Ringe nur, wo die Oberfläche Svg zeichnet; sonst bleibt der Textbalken.
     const Svg = 'Svg' in ui ? ui.Svg : undefined
@@ -1734,7 +1882,7 @@ export const register: Register = (on, options) => {
     const pick = await read($, effortPick)
     const lim = u === null ? null : limitAlert(u.limits)
     const handoffMsg = await read($, handoffNote)
-    const stepCols = Math.max(20, Math.floor((e.props.bodyColumns - 4) / 3))
+    const stepCols = Math.max(20, Math.floor((e.props.bodyColumns - (e.surface === 'terminal' ? 8 : 4)) / 3))
     const effortMsg = await read($, effortNote)
     const shift = await read($, effortShift)
     // Auto-Effort-Status: nach einem Urteil „Haiku: alt ─→ neu“ als kurze Animation in Stufenfarben, danach „Haiku: neu“.
@@ -1775,8 +1923,11 @@ export const register: Register = (on, options) => {
     }
     const toggleAuto = () => void update($, effortBase, () => null).then(() => setSettings($, { autoEffort: !s.autoEffort })).catch(() => undefined)
 
-    return (
-      <Box flexDirection="column">
+    // Im Terminal setzt ein Rahmen in Akzentblau (`THEME.accentFill`) auf dunkelblauem Grund das Band vom Transcript ab;
+    // der Desktop rahmt es selbst. Voller blauer Grund wäre für die Statusfarben (grün, gelb) zu kontrastarm.
+    const term = e.surface === 'terminal'
+    const body = (
+      <Box flexDirection="column" {...(term ? { borderStyle: 'round', borderColor: THEME.accentFill, backgroundColor: TINT.accent, paddingX: 1 } : {})}>
         <Box flexDirection="row" justifyContent="space-between" alignItems="center">
           <Box flexDirection="row" columnGap={2} alignItems="center">
             {head}
@@ -1786,8 +1937,6 @@ export const register: Register = (on, options) => {
           </Box>
           {/* Features rechts; Details steht in der Fußzeile unter dem Prompt, die Legende im Tooltip der Limit-Ringe. */}
           <Box flexDirection="row" columnGap={1} alignItems="center">
-          {/* Die Legende steht im Tooltip der Limit-Ringe; ohne Svg (keine Tooltips) bleibt sie als Text hier. */}
-          {s.legend && !Svg && legend(ui, L)}
           {s.cardCatchUp && mini('summary', t(L, 'common.summary'), () => void $.ui.open({ ...panes(L).summary, focus: true }).catch(() => undefined))}
           {/* $.command.run aus dem Knopf kam im Desktop nicht an: Befehl ins Eingabefeld, Enter führt ihn aus. */}
           {mini('features', t(L, 'common.features'), () => void $.prompt.fill({ text: '/cockpit-features' }).catch(() => undefined))}
@@ -1850,6 +1999,8 @@ export const register: Register = (on, options) => {
         )}
       </Box>
     )
+    // Der Rahmen selbst nimmt keinen Grund an (nur sein Inneres): eine äußere Box mit demselben Grund füllt auch die Rahmenzellen.
+    return term ? <Box key="band-bg" flexDirection="column" backgroundColor={TINT.accent}>{body}</Box> : body
 
     function metrics(u: Usage, lastAt: number | null, hit: number | null, bd: Breakdown | null) {
       const ttl = u.limits.length > 0 ? 3600_000 : 300_000
@@ -1868,7 +2019,11 @@ export const register: Register = (on, options) => {
               ...u.limits.map(l => (
                 <Box key={`lim-${l.kind}`} flexDirection="row" columnGap={1} alignItems="center">
                   {ring(l.percentUsed, limitColor(l, now), s.legend ? `${limitTip(l, tipNow, L)}${NL}${NL}${legendTip(L)}` : limitTip(l, tipNow, L))}
-                  <Text color={THEME[limitColor(l, now)]}>{LIMIT_LABEL[l.kind] ?? l.kind} {Math.round(l.percentUsed)}%</Text>
+                  <Text color={THEME[limitColor(l, now)]}>
+                    {LIMIT_LABEL[l.kind] ?? l.kind} {Math.round(l.percentUsed)}%
+                    {/* Ohne Svg gibt es keinen Ring-Tooltip: die Reset-Zeit steht dann direkt dahinter. */}
+                    {!Svg && l.resetsAt ? <Text color={THEME.textMuted}> · {resetLabel(l.resetsAt, now, L)}</Text> : null}
+                  </Text>
                 </Box>
               )),
               // Ab 80 % und mit Auto-Effort: Sparmodus direkt an der Limit-Anzeige statt in einer eigenen Warnzeile.
@@ -1914,13 +2069,14 @@ export const register: Register = (on, options) => {
 
   // Zusammenfassung in eigenem Panel rechts: Knöpfe oben, darunter die Abschnitte als einfacher Text (kein Markdown-Rendering).
   on('ui.render', { component: 'Pane', requestId: 'tenvan-cc-summary' }, async ($, e, next) => {
-    if (e.surface !== 'desktop') return next(e)
+    if (!drawsOn(e.surface)) return next(e)
     const s = await read($, settings)
     const realCu = await read($, catchUp)
     // Dev-Mode: Mock-Zusammenfassung, damit die Optik ohne Haiku-Lauf sichtbar ist.
     const cu = (await read($, devMock)) ? { ...realCu, summary: mockData(await $.clock.now()).summary } : realCu
     const L = s.lang
-    const ui = $.ui.resolve(e)
+    const marg = s.paneMargins ? 1 : 0
+    const ui = elementsOf($, e)
     const { Box, Text, Button } = ui
 
     return (
@@ -1935,7 +2091,7 @@ export const register: Register = (on, options) => {
         {cu.summary === '' && <Text dimColor>{t(L, 'summary.empty')}</Text>}
         {/* Je Überschrift eine Karte im Wechsel der Kartentöne; Aufzählungen mit hängendem Einzug, Absätze mit Luft dazwischen. */}
         {summarySections(summaryLines(cu.summary)).map((sec, i) => (
-          <Box key={`cu-sec-${i}`} flexDirection="column" rowGap={1} backgroundColor={cycleTint(i)} marginX={1} paddingX={2} paddingY={1}>
+          <Box key={`cu-sec-${i}`} flexDirection="column" rowGap={1} backgroundColor={cycleTint(i)} marginX={marg} paddingX={2} paddingY={1}>
             {sec.heading !== undefined && <Text bold color={THEME.accent}>{sec.heading}</Text>}
             {sec.lines.map((l, j) =>
               l.kind === 'bullet' ? (
@@ -1957,16 +2113,18 @@ export const register: Register = (on, options) => {
 
   // Merge-Request-Panel (GitLab): ausführlich, eigenes Fenster; im Dev-Mode mit Mock-MR.
   on('ui.render', { component: 'Pane', requestId: 'tenvan-cc-mr' }, async ($, e, next) => {
-    if (e.surface !== 'desktop') return next(e)
+    if (!drawsOn(e.surface)) return next(e)
     const s = await read($, settings)
     const L = s.lang
-    const ui = $.ui.resolve(e)
+    const marg = s.paneMargins ? 1 : 0
+    const ui = elementsOf($, e)
     const now = await $.clock.now()
+    await read($, tick)
     const m = (await read($, devMock)) ? mockData(now) : null
     return (
       <ui.Box flexDirection="column">
         {await paneHead($, ui, L)}
-        {...(await mrPaneBody($, ui, L, m === null ? null : { mr: m.mr, mrMine: m.mrMine }, now))}
+        {...(await mrPaneBody($, ui, L, m === null ? null : { mr: m.mr, mrMine: m.mrMine, mrDetails: m.mrDetails }, now, marg))}
       </ui.Box>
     )
   })
@@ -1974,23 +2132,24 @@ export const register: Register = (on, options) => {
   on('command.run', { command: 'cockpit-mr' }, async $ => {
     const L = (await read($, settings)).lang
     await $.ui.open({ ...panes(L).mr, focus: true })
-    void refreshMr($, true).catch(() => undefined)
+    void refreshMr($, true).then(() => loadMineDetails($, true)).catch(() => undefined)
     return {}
   })
 
   // Einstellungsseite: jedes Detail von Band, Panel und Chat ein- oder ausblenden; gilt sofort und für alle Sessions.
   on('ui.render', { component: 'Pane', requestId: 'tenvan-cc-settings' }, async ($, e, next) => {
-    if (e.surface !== 'desktop') return next(e)
+    if (!drawsOn(e.surface)) return next(e)
     const s = await read($, settings)
     const L = s.lang
-    const ui = $.ui.resolve(e)
+    const marg = s.paneMargins ? 1 : 0
+    const ui = elementsOf($, e)
     const { Box, Text, Button } = ui
     const groups = [...new Set(SETTING_DEFS.map(d => d.group))]
     // Karten wie im Hauptpanel: Leerzeile davor, Grund im Wechsel der Kartentöne.
     const card = (i: number, ...children: RenderChildren[]) => (
       <Box flexDirection="column">
-        <Box height={1} />
-        <Box flexDirection="column" backgroundColor={cycleTint(i)} marginX={1} paddingX={1} paddingY={1}>
+        {marg ? <Box height={1} /> : null}
+        <Box flexDirection="column" backgroundColor={cycleTint(i)} marginX={marg} paddingX={1} paddingY={1}>
           {children}
         </Box>
       </Box>
@@ -2023,6 +2182,16 @@ export const register: Register = (on, options) => {
               <Text bold>{name}</Text>
             </Box>
           )),
+        )}
+        {card(
+          1,
+          <Text bold>{t(L, 'settings.agentTilesTitle')}</Text>,
+          <Text dimColor wrap="wrap">{t(L, 'settings.agentTilesHint')}</Text>,
+          <Box key="tiles-row" flexDirection="row" columnGap={1} marginTop={1} alignItems="center">
+            <Button key="tiles-minus" label=" − " plain onPress={() => void setSettings($, { agentTiles: s.agentTiles - TILES.step }).catch(() => undefined)} />
+            <Box width={4} justifyContent="center"><Text bold>{s.agentTiles}</Text></Box>
+            <Button key="tiles-plus" label=" + " plain onPress={() => void setSettings($, { agentTiles: s.agentTiles + TILES.step }).catch(() => undefined)} />
+          </Box>,
         )}
         {card(
           1,
@@ -2075,15 +2244,16 @@ export const register: Register = (on, options) => {
             }),
           )
         })}
-        <Box flexDirection="row" paddingTop={1}>
+        <Box flexDirection="row" paddingTop={1} columnGap={2}>
           <Button key="set-reset" label={t(L, 'settings.reset')} onPress={() => void resetSettings($).catch(() => undefined)} />
+          <Button key="set-reload" label={t(L, 'settings.reload')} plain onPress={() => void reloadSettings($).catch(() => undefined)} />
         </Box>
       </Box>
     )
   })
 
   on('ui.render', { component: 'Pane', requestId: 'tenvan-cc' }, async ($, e, next) => {
-    if (e.surface !== 'desktop') return next(e)
+    if (!drawsOn(e.surface)) return next(e)
     await read($, tick)
     const now = await $.clock.now()
     const s = await read($, settings)
@@ -2108,7 +2278,7 @@ export const register: Register = (on, options) => {
     const bdPanel = m?.breakdown ?? realBd
     const L = s.lang
     const P = panes(L)
-    const ui = $.ui.resolve(e)
+    const ui = elementsOf($, e)
     const { Box, Text, Button } = ui
     const Svg = 'Svg' in ui ? ui.Svg : undefined
     // Kopf jeder Karte: ▾/▸ klappt zu (nur Session, Atom `collapsed`), ✕ schaltet die Karte in den Einstellungen ab.
@@ -2116,12 +2286,12 @@ export const register: Register = (on, options) => {
     const isOpen = (key: SettingKey) => !folded.includes(key)
     const headButtons = (key: SettingKey) => (
       <Box flexDirection="row" columnGap={1}>
-        <Button key={`card-fold-${key}`} label={isOpen(key) ? '▾' : '▸'} plain onPress={() => void update($, collapsed, c => (c.includes(key) ? c.filter(x => x !== key) : [...c, key])).catch(() => undefined)} />
+        <Button key={`card-fold-${key}`} label={isOpen(key) ? '▾' : '▸'} plain onPress={() => void toggleCard($, key).catch(() => undefined)} />
         <Button key={`card-close-${key}`} label="✕" plain onPress={() => void setSettings($, { [key]: false } as Partial<ModSettings>).catch(() => undefined)} />
       </Box>
     )
     // Eine leere Zeile zwischen den Karten: mit gedimmtem Grund braucht es eine sichtbare Lücke, Box rechnet nur in ganzen Zeilen.
-    const gap = () => <Box height={1} />
+    const gap = () => marg ? <Box height={1} /> : null
     // Jede Karte trägt ihren Abstand nach oben selbst: abgeschaltete Karten hinterlassen keine doppelte Lücke.
     const spaced = (inner: RenderElement) => (
       <Box flexDirection="column" flexGrow={1}>
@@ -2129,8 +2299,17 @@ export const register: Register = (on, options) => {
         {inner}
       </Box>
     )
+    // Zeile der Übersicht: Bezeichnung in fester Spalte, Wert daneben; Prozente dreistellig rechtsbündig, damit alles fluchtet.
+    const overviewRow = (key: string, label: string, color: string | undefined, value: string) => (
+      <Box key={key} flexDirection="row">
+        <Box width={OVERVIEW_LABEL_COLS} flexShrink={0}><Text color={color}>{label}</Text></Box>
+        <Text color={color} wrap="truncate-end">{value}</Text>
+      </Box>
+    )
+    const pct = (n: number) => `${String(Math.round(n)).padStart(3)}%`
+    const marg = s.paneMargins ? 1 : 0
     const card = (key: SettingKey, name: string, ...children: RenderChildren[]) => spaced(
-      <Box flexDirection="column" flexGrow={1} backgroundColor={CARD_TINT[key] ?? TINT.neutral} marginX={1} paddingX={1} paddingY={1}>
+      <Box flexDirection="column" flexGrow={1} backgroundColor={CARD_TINT[key] ?? TINT.neutral} marginX={marg} paddingX={1} paddingY={1}>
         <Box flexDirection="row" justifyContent="space-between">
           <Text bold>{name}</Text>
           {headButtons(key)}
@@ -2191,7 +2370,7 @@ export const register: Register = (on, options) => {
           </Box>
         ))}
         {working && tn !== null && spaced(
-          <Box flexDirection="column" backgroundColor={TINT.accent} marginX={1} paddingX={1} paddingY={1}>
+          <Box flexDirection="column" backgroundColor={TINT.accent} marginX={marg} paddingX={1} paddingY={1}>
             <Text bold color={THEME.accent}>● {t(L, 'panel.working', { d: duration(now - tn.startedAt), tools: tn.tools, edits: tn.edits })}</Text>
             {entries.length > 0 && (
               <Text wrap="truncate-end">
@@ -2248,28 +2427,15 @@ export const register: Register = (on, options) => {
           'cardOverview',
           t(L, 'panel.overview'),
           u === null && <Text dimColor>{t(L, 'panel.noMeasure')}</Text>,
-          u !== null && (
-            <Text color={THEME[contextColor(u.contextPercent ?? 0)]}>
-              {t(L, 'common.context')} {bar(u.contextPercent ?? 0)} {Math.round(u.contextPercent ?? 0)}% ({tokens(u.contextTokens ?? 0)} / {tokens(u.contextWindow)})
-            </Text>
-          ),
+          // Raster: Bezeichnung in fester Spalte, Balken und rechtsbündige Prozente untereinander.
+          u !== null && overviewRow('ov-ctx', t(L, 'common.context'), THEME[contextColor(u.contextPercent ?? 0)], `${bar(u.contextPercent ?? 0)} ${pct(u.contextPercent ?? 0)} · ${tokens(u.contextTokens ?? 0)} / ${tokens(u.contextWindow)}`),
           ...(u?.limits.map(l => {
             const p = pace(l, now)
-            return (
-              <Text color={THEME[limitColor(l, now)]}>
-                {LIMIT_LABEL[l.kind] ?? l.kind} {bar(l.percentUsed)} {Math.round(l.percentUsed)}%
-                {p !== undefined ? ` · ${paceText(p, L)}` : ''}
-                {l.resetsAt ? ` · ${t(L, 'panel.reset', { at: resetLabel(l.resetsAt, now, L) })}` : ''}
-              </Text>
-            )
+            const rest = [p !== undefined ? paceText(p, L) : '', l.resetsAt ? t(L, 'panel.reset', { at: resetLabel(l.resetsAt, now, L) }) : ''].filter(x => x !== '')
+            return overviewRow(`ov-${l.kind}`, LIMIT_LABEL[l.kind] ?? l.kind, THEME[limitColor(l, now)], [`${bar(l.percentUsed)} ${pct(l.percentUsed)}`, ...rest].join(' · '))
           }) ?? []),
-          u?.usd !== undefined && <Text>{t(L, 'panel.cost', { usd: usd(u.usd) })}</Text>,
-          u !== null && (
-            <Text dimColor={cache === 0}>
-              {cache === 0 ? t(L, 'panel.cacheCold') : t(L, 'panel.cacheLeft', { d: duration(cache) })}
-              {hit !== null ? ` · ${t(L, 'panel.cacheHit', { n: hit })}` : ''}
-            </Text>
-          ),
+          u?.usd !== undefined && overviewRow('ov-usd', t(L, 'panel.costLabel'), undefined, usd(u.usd)),
+          u !== null && overviewRow('ov-cache', t(L, 'band.cache'), cache === 0 ? THEME.textMuted : undefined, `${cache === 0 ? t(L, 'band.cold') : duration(cache)}${hit !== null ? ` · ${t(L, 'panel.cacheHit', { n: hit })}` : ''}`),
         )}
         <Box flexDirection="row">
           {s.cardTurn && card(
@@ -2284,11 +2450,16 @@ export const register: Register = (on, options) => {
               </Text>
             ),
             turns.length > 1 && <Text dimColor>{t(L, 'turn.bars', { usd: usd(WASTE_USD) })}</Text>,
-            turns.length > 1 && Svg && <Svg source={turnBarsSvg(turns)} alt={t(L, 'turn.bars', { usd: usd(WASTE_USD) })} height={24} />,
+            turns.length > 1 &&
+              (Svg ? (
+                <Svg source={turnBarsSvg(turns)} alt={t(L, 'turn.bars', { usd: usd(WASTE_USD) })} height={24} />
+              ) : (
+                <Text key="turn-bars">{turnBarsText(turns).map(x => <Text color={x.isWaste ? THEME.warning : THEME.accentFill}>{x.glyph}</Text>)}</Text>
+              )),
             turns.some(isWasteful) && <Text color={THEME.warning}>{t(L, 'turn.waste', { n: turns.filter(isWasteful).length })}</Text>,
           )}
           {s.cardGate && spaced(
-            <Box flexDirection="column" flexGrow={1} backgroundColor={TINT[g.deny > 0 ? 'error' : g.ask > 0 ? 'warning' : 'success']} marginX={1} paddingX={1} paddingY={1}>
+            <Box flexDirection="column" flexGrow={1} backgroundColor={TINT[g.deny > 0 ? 'error' : g.ask > 0 ? 'warning' : 'success']} marginX={marg} paddingX={1} paddingY={1}>
               <Box flexDirection="row" justifyContent="space-between">
                 <Text bold color={THEME[g.deny > 0 ? 'error' : g.ask > 0 ? 'warning' : 'success']}>{t(L, 'gate.title')}</Text>
                 <Box flexDirection="row" columnGap={1}>
@@ -2321,23 +2492,23 @@ export const register: Register = (on, options) => {
           'cardAgents',
           t(L, 'agents.title', { live: list.filter(a => LIVE.has(a.status)).length, all: list.length }),
           list.length === 0 && <Text dimColor>{t(L, 'agents.none')}</Text>,
-          // Ältere als kompakte Liste, nur die letzten beiden als Kachel.
-          ...list.slice(0, -2).map((a, i) => (
+          // Ältere als kompakte Liste, nur die letzten `agentTiles` als Kachel.
+          ...list.slice(0, -s.agentTiles).map((a, i) => (
             <Text key={`ago-${a.id}`} wrap="truncate-end" dimColor={!LIVE.has(a.status)}>
               <Text backgroundColor={THEME.chip}> {i + 1} </Text> {a.description} · {a.type}{a.model !== undefined ? ` · ${a.model}` : ''} ·{' '}
               {LIVE.has(a.status) ? t(L, 'agents.running', { d: duration(now - a.since) }) : `${a.status === 'killed' || a.status === 'failed' ? '✗' : '✓'} ${a.durationMs !== undefined ? duration(a.durationMs) : ''}`}
             </Text>
           )),
           <Box flexDirection="row" flexWrap="wrap" columnGap={1}>
-            {list.slice(-2).map((a, k) => {
-              const i = Math.max(0, list.length - 2) + k
+            {list.slice(-s.agentTiles).map((a, k) => {
+              const i = Math.max(0, list.length - s.agentTiles) + k
               const live = LIVE.has(a.status)
               const isKilled = a.status === 'killed' || a.status === 'failed'
               const isBraked = brakedIds.includes(a.id)
               const heavy = live && isAgentHeavy(a, now)
               const tone: Tone = heavy || (live && isBraked) ? 'warning' : live ? 'accent' : isKilled ? 'error' : 'success'
               return (
-                <Box key={`ag-${a.id}`} flexDirection="column" width={42} backgroundColor={TINT[tone]} marginX={1} paddingX={1} paddingY={1}>
+                <Box key={`ag-${a.id}`} flexDirection="column" width={42} backgroundColor={TINT[tone]} marginX={marg} paddingX={1} paddingY={1}>
                   <Text wrap="truncate-end">
                     <Text backgroundColor={THEME.chip}> {i + 1} </Text> <Text bold>{a.description}</Text>
                   </Text>
@@ -2382,7 +2553,7 @@ export const register: Register = (on, options) => {
               ]
               const shown = body.slice(0, body.length > TASK_LINES ? TASK_LINES - 1 : TASK_LINES)
               return (
-                <Box key={`bg-${x.id}`} flexDirection="column" width={42} backgroundColor={TINT[tone]} marginX={1} paddingX={1} paddingY={1}>
+                <Box key={`bg-${x.id}`} flexDirection="column" width={42} backgroundColor={TINT[tone]} marginX={marg} paddingX={1} paddingY={1}>
                   <Text wrap="truncate-end">
                     <Text backgroundColor={THEME.chip}> {i + 1} </Text> <Text bold>{x.description}</Text>
                   </Text>

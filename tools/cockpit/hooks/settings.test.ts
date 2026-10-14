@@ -18,9 +18,9 @@ test('settingsOf: Standard, Teileingabe und leere Altzustände', () => {
   expect(settingsOf({ rings: false })).toEqual({ ...DEFAULT_SETTINGS, rings: false })
 })
 
-test('SETTING_DEFS: deckt alle Schalter außer lang und breathKey genau einmal ab', () => {
+test('SETTING_DEFS: deckt alle Schalter außer lang, breathKey und agentTiles genau einmal ab', () => {
   const keys = SETTING_DEFS.map(d => d.key as string).sort()
-  expect(keys).toEqual(Object.keys(DEFAULT_SETTINGS).filter(k => k !== 'lang' && k !== 'breathKey').sort())
+  expect(keys).toEqual(Object.keys(DEFAULT_SETTINGS).filter(k => k !== 'lang' && k !== 'breathKey' && k !== 'agentTiles').sort())
   const groups = ['band', 'panel', 'chat', 'skins', 'summary']
   for (const d of SETTING_DEFS) {
     for (const lang of ['de', 'en'] as const) {

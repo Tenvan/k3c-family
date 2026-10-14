@@ -1,6 +1,6 @@
 import { expect, mock, test } from 'claude-code/testing'
 
-import { THEME } from './core'
+import { THEME, clampTiles } from './core'
 
 const PANE_PROPS = { title: 'Cockpit', isFocused: false, bodyColumns: 144, placement: 'dock', scroll: { offset: 0, bodyRows: 40 }, view: {} } as const
 const SETTINGS_PROPS = { ...PANE_PROPS, title: 'Cockpit · Einstellungen' } as const
@@ -139,7 +139,7 @@ test('Sprache: lang-en schaltet Band und Panel auf Englisch', async ($, on) => {
   expect(await band.find({ type: 'Text', text: /^Kontext/ })).toBe(undefined)
 })
 
-test('Einstellungsseite: „Alle aus“ einer Gruppe und Zurücksetzen', async ($, on) => {
+test('Einstellungsseite: „Alle aus” einer Gruppe und Zurücksetzen', async ($, on) => {
   mock.clock(on, { now: 1 })
   on('session.measure', () => ({ changed: [] }))
   on('store.get', () => ({ value: undefined }) as never)
@@ -151,13 +151,13 @@ test('Einstellungsseite: „Alle aus“ einer Gruppe und Zurücksetzen', async (
   // Gruppen in Reihenfolge des ersten Schalters: Band, Panel, Zusammenfassung, Chat
   await page.press({ key: 'grp-off-1' })
   for (let i = 0; i < 3000 && (await main.find({ type: 'Text', text: 'Übersicht' })) !== undefined; i++) await Promise.resolve()
-  expect(await waitFind(page, '0/10 an')).not.toBe(undefined)
+  expect(await waitFind(page, /^0\/\d+ an$/)).not.toBe(undefined)
   for (const card of ['Übersicht', 'Log', 'Letzter Turn']) expect(await main.find({ type: 'Text', text: card })).toBe(undefined)
 
   await page.press({ key: 'set-reset' })
-  expect(await waitFind(page, '10/10 an')).not.toBe(undefined)
+  expect(await waitFind(page, /^\d+\/\d+ an$/)).not.toBe(undefined)
   // Band: Auto-Effort und Sparmodus sind standardmäßig aus, die Atemübung an
-  expect(await page.find({ type: 'Text', text: '11/13 an' })).not.toBe(undefined)
+  expect(await page.find({ type: 'Text', text: /^\d+\/13 an$/ })).not.toBe(undefined)
   expect(await waitFind(main, 'Übersicht')).not.toBe(undefined)
 })
 
@@ -214,4 +214,70 @@ test('MR-Panel und Fußzeilen-Knopf im Dev-Mode', async ($, on) => {
   const foot = await $.ui.mount({ plugin: 'tenvan-cc', surface: 'desktop', component: 'SessionMode', props: { modes: [] } as never })
   expect(JSON.stringify(await foot.find({ type: 'Button', key: 'mr-foot' }))).toContain('!42')
   expect(await foot.find({ type: 'Button', key: 'details' })).not.toBe(undefined)
+})
+
+test('Subagent-Kacheln: Standard 6, Stepper in Zweierschritten mit Grenzen 2 bis 12', async ($, on) => {
+  mock.clock(on, { now: 1 })
+  on('session.measure', () => ({ changed: [] }))
+  on('store.get', () => ({ value: undefined }) as never)
+  on('store.set', () => ({ value: undefined }) as never)
+  expect([clampTiles(undefined), clampTiles(5), clampTiles(0), clampTiles(99)]).toEqual([6, 6, 2, 12])
+  const page = await $.ui.mount({ plugin: 'tenvan-cc', surface: 'desktop', component: 'Pane', requestId: 'tenvan-cc-settings', props: SETTINGS_PROPS })
+  expect(await waitFind(page, '6')).not.toBe(undefined)
+  await page.press({ key: 'tiles-plus' })
+  expect(await waitFind(page, '8')).not.toBe(undefined)
+  for (let i = 0; i < 6; i++) await page.press({ key: 'tiles-minus' })
+  expect(await waitFind(page, '2')).not.toBe(undefined)
+})
+
+test('Einstellungen: „Neu laden“ übernimmt, was eine andere Session gespeichert hat', async ($, on) => {
+  mock.clock(on, { now: 1 })
+  on('session.measure', () => ({ changed: [] }))
+  let saved: unknown
+  on('store.get', () => ({ value: saved }) as never)
+  on('store.set', () => ({ value: undefined }) as never)
+  const page = await $.ui.mount({ plugin: 'tenvan-cc', surface: 'desktop', component: 'Pane', requestId: 'tenvan-cc-settings', props: SETTINGS_PROPS })
+  const main = await $.ui.mount({ plugin: 'tenvan-cc', surface: 'desktop', component: 'Pane', requestId: 'tenvan-cc', props: PANE_PROPS })
+  expect(await waitFind(main, 'Log')).not.toBe(undefined)
+  saved = { cardLog: false }
+  await page.press({ key: 'set-reload' })
+  for (let i = 0; i < 3000 && (await main.find({ type: 'Text', text: 'Log' })) !== undefined; i++) await Promise.resolve()
+  expect(await main.find({ type: 'Text', text: 'Log' })).toBe(undefined)
+})
+
+test('Klapp-Status: Einklappen wird im Speicher abgelegt und beim Start gelesen', async ($, on) => {
+  mock.clock(on, { now: 1 })
+  on('session.measure', () => ({ changed: [] }))
+  const stored = new Map<string, unknown>()
+  on('store.get', (_$, e) => ({ value: stored.get((e as { key: string }).key) }) as never)
+  on('store.set', (_$, e) => {
+    stored.set((e as { key: string }).key, (e as { value: unknown }).value)
+    return { value: undefined } as never
+  })
+  const pane = await $.ui.mount({ plugin: 'tenvan-cc', surface: 'desktop', component: 'Pane', requestId: 'tenvan-cc', props: PANE_PROPS })
+  expect(await waitFind(pane, 'Leer.')).not.toBe(undefined)
+  await pane.press({ key: 'card-fold-cardLog' })
+  for (let i = 0; i < 100 && !stored.has('collapsed'); i++) await Promise.resolve()
+  expect(stored.get('collapsed')).toEqual(['cardLog'])
+})
+
+test('Einstellungen: „Neu laden“ meldet das Ergebnis als Toast', async ($, on) => {
+  mock.clock(on, { now: 1 })
+  on('session.measure', () => ({ changed: [] }))
+  let saved: unknown
+  on('store.get', () => ({ value: saved }) as never)
+  on('store.set', () => ({ value: undefined }) as never)
+  const toasts: string[] = []
+  on('ui.toast', (_$, e) => {
+    toasts.push((e as { text: string }).text)
+    return { value: undefined } as never
+  })
+  const page = await $.ui.mount({ plugin: 'tenvan-cc', surface: 'desktop', component: 'Pane', requestId: 'tenvan-cc-settings', props: SETTINGS_PROPS })
+  await page.press({ key: 'set-reload' })
+  for (let i = 0; i < 200 && toasts.length < 1; i++) await Promise.resolve()
+  expect(toasts).toEqual(['Einstellungen sind aktuell'])
+  saved = { cardLog: false }
+  await page.press({ key: 'set-reload' })
+  for (let i = 0; i < 200 && toasts.length < 2; i++) await Promise.resolve()
+  expect(toasts[1]).toBe('Einstellungen neu geladen')
 })

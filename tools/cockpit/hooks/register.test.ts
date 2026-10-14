@@ -50,8 +50,10 @@ test('Band zeichnet nur auf desktop, Details öffnet das Panel', async ($, on) =
   on('ui.render', { component: 'SessionMode' }, () => ({ type: 'Text' as const, text: '' }) as never)
   await $.session.measure(MEASURE)
 
+  // Das Terminal zeichnet dasselbe Band, nur ohne Svg: Kontext als Textbalken statt Ring.
   const terminal = await $.ui.mount({ ...BAND, surface: 'terminal' })
-  expect(await terminal.find({ text: /Kontext/ })).toBe(undefined)
+  expect((await terminal.find({ text: /Kontext ▰/ }))?.text).toContain('25%')
+  expect(await terminal.find({ type: 'Svg' })).toBe(undefined)
 
   const desktop = await $.ui.mount({ ...BAND, surface: 'desktop' })
   expect((await desktop.find({ text: /5h 80%/ }))?.text).toContain('5h 80%')
