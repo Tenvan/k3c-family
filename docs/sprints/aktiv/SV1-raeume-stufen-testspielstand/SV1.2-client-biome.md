@@ -1,6 +1,6 @@
 # SV1.2 · Client kennt Eisenstollen und Kristallhöhle
 
-- **Status:** offen
+- **Status:** in Arbeit
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** SRV
