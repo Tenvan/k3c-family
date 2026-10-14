@@ -1,6 +1,6 @@
 # W8 · CLI · Bauplätze mit Grund und alle Rohstoffe im Client
 
-- **Status:** aktiv
+- **Status:** erledigt
 - **Projekt:** WRT
 - **Domäne:** CLI
 - **Reife:** bereit
@@ -60,8 +60,12 @@ keine (B-207 → W11 entschieden 2026-10-14, 🧑, Chat).
 |---|---|---|---|---|
 | W8.1 | `W8.1-hub-typ-platz-arten.md` | Umsetzung | autonom | fertig |
 | W8.2 | `W8.2-rohstoffe-client.md` | Umsetzung | autonom | fertig |
-| W8.3 | `W8.3-review.md` | Review | autonom | offen |
+| W8.3 | `W8.3-review.md` | Review | autonom | fertig |
 
 ## Abnahme
 
-–
+- 2026-10-14, W8.3 (leichter Review, Diff `origin/develop...sprint/w8`): keine schweren Befunde.
+- AC-01 Nachweis W8.1 (`src/model/data.test.ts`, Gegenprobe `market` rot); AC-02 Nachweis W8.2 (`DevResource` entfernt, `ResourceKind` mit `iron`/`crystal`); AC-03 `task check` grün.
+- Hinweis: `src/model/types.ts` hat 412 Zeilen (vorher 411), Oxlint meldet nichts; bei der nächsten Änderung dort teilen.
+- Neues Ticket: B-422 (B-207 in der Spec von W11 nachtragen).
+- Version: v0.16.2 vorgeschlagen (Patch: nur Client-Typen, kein Verhalten); nicht gesetzt (wartet auf Bestätigung 🧑).

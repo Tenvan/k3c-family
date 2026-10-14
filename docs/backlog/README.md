@@ -50,7 +50,6 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-185](B-185-verluste-je-welle-angleichen.md) | REG | Schuld | niedrig | eingeplant | RG2 | Wirtschaft nennt denselben Verlust-Korridor je Welle wie die Bürger |
 | [B-186](B-186-autospeichern-takt.md) | SRV | Idee | mittel | eingeplant | ST1 | Der Server speichert alle 60 s und bei Tagesanbruch, das HUD zeigt „gesichert“ |
 | [B-187](B-187-speichern-windows-rename.md) | SRV | Problem | mittel | eingeplant | ST1 | Speichern übersteht unter Windows eine kurz gesperrte Zieldatei |
-| [B-188](B-188-client-rohstoffe-eisen-kristall.md) | CLI | Schuld | niedrig | eingeplant | W8 | Der Client kennt alle fünf Rohstoffe des Servers |
 | [B-189](B-189-toter-gegner-flieht-ins-portal.md) | SIM | Problem | mittel | eingeplant | LV1 | Ein besiegter Gegner verschwindet nicht im Portal, sondern lässt sein Gold fallen |
 | [B-190](B-190-events-dropped-im-protokoll.md) | SRV | Problem | niedrig | eingeplant | NT1 | Der Client erfährt zuverlässig, wie viele Ereignisse verworfen wurden |
 | [B-191](B-191-debug-overlay-links-unten.md) | CLI | Problem | mittel | eingeplant | U5 | Debug-Overlay und Aktionsliste verdecken das HUD nicht |
@@ -65,7 +64,6 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-204](B-204-test-raeume-sofort-schliessen.md) | SRV | Idee | niedrig | eingeplant | SV1 | Leere Test-Räume schließen sofort statt nach der Leer-Frist |
 | [B-207](B-207-bauplaetze-anzeige.md) | CLI | Idee | mittel | eingeplant | W11 | Der Client zeigt freie und gesperrte Bauplätze mit Grund (ab Hub-Stufe n, Linie fehlt) |
 | [B-208](B-208-protokoll-bauplaetze.md) | SRV | Idee | mittel | eingeplant | W11 | Das Protokoll trägt die Bauplätze des Layouts sowie Platz- und Hub-Stufe zum Client |
-| [B-209](B-209-client-platz-arten.md) | CLI | Schuld | mittel | eingeplant | W8 | `src/model/data.ts` kennt alle Platz-Arten aus `hub.json` |
 | [B-214](B-214-server-pause.md) | SRV | Idee | mittel | eingeplant | BD3 | Der Server pausiert den Raum im Couch-Raum und schützt den stehenden Monarchen online |
 | [B-230](B-230-burg-haelt-nur-47-prozent.md) | REG | Problem | mittel | eingeplant | RG1 | Burg hält Nacht 1–5 nur in 47 % der Seeds, Ziel 75–90 % |
 | [B-217](B-217-ereignisse-built-playerdown-ort.md) | SIM | Schuld | niedrig | eingeplant | LV1 | Die Ereignisse `built` und `playerDown` tragen ihren Ort |
@@ -394,3 +392,5 @@ Zeile in diesen Abschnitt.
 | [B-075](archiv/B-075-golden-spielstand-hub.md) | SIM | Schuld | mittel | erledigt | W7 | Der Golden-Spielstand enthält einen gebauten und veränderten Hub |
 | [B-417](archiv/B-417-golden-groesse-ueber-limit.md) | INF | Problem | niedrig | erledigt | – | Golden-Daten liegen mit 12,7 MB über der Grenze von 8 MB aus SP06 |
 | [B-406](archiv/B-406-splitter-dom-test.md) | DEV | Schuld | niedrig | erledigt | WZ4 | Doppelklick und Ziehen des Splitters sind in einer DOM-Umgebung getestet |
+| [B-209](archiv/B-209-client-platz-arten.md) | CLI | Schuld | mittel | erledigt | W8 | `src/model/data.ts` kennt alle Platz-Arten aus `hub.json` |
+| [B-188](archiv/B-188-client-rohstoffe-eisen-kristall.md) | CLI | Schuld | niedrig | erledigt | W8 | Der Client kennt alle fünf Rohstoffe des Servers |
