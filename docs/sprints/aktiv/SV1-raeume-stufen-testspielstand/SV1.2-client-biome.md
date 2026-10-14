@@ -1,6 +1,6 @@
 # SV1.2 · Client kennt Eisenstollen und Kristallhöhle
 
-- **Status:** in Arbeit
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** SRV
@@ -42,9 +42,9 @@ Eigene Grafik oder Gegner der neuen Stufen (B-010, K1, B-129), Änderungen am Se
 
 ## Fertig, wenn
 
-- [ ] AC-03: Vitest belegt, dass der Client alle Biome aus `data/biomes/` lädt (B-290/AC-02).
-- [ ] Unbekanntes Biom bleibt ein klarer Fehler (Log 💥), kein Absturz.
-- [ ] AC-06: `task check` grün.
+- [x] AC-03: Vitest belegt, dass der Client alle Biome aus `data/biomes/` lädt (B-290/AC-02).
+- [x] Unbekanntes Biom bleibt ein klarer Fehler (Log 💥), kein Absturz.
+- [x] AC-06: `task check` grün.
 
 ## Prüfen
 
@@ -54,4 +54,8 @@ task check
 
 ## Ergebnis
 
-–
+- **AC-03** (Client-Teil, B-290/AC-02) umgesetzt, geprüft: `src/model/biome.test.ts` (alle Dateien aus `data/biomes/` in `BIOMES`, Tiefen 0–4 lückenlos, `id`/`name`/volle Palette je Biom, `biomeForDepth(3)` = `ironhold`, `biomeForDepth(4)` = `crystal`, Tiefe 5 wirft). `src/model/biome.ts` lädt per `import.meta.glob` alle Biome, nach Tiefe sortiert, statt drei fester Imports.
+- **Unbekanntes Biom** bleibt ein klarer Fehler: `src/online/clientStages.ts` loggt weiter 💥 und lässt den Strom ohne Level, kein Absturz. Keine Änderung nötig.
+- **Schritt 4:** `src/tools/leveltest.ts` füllt die Auswahl aus `BIOMES` und zeigt die neuen Biome ohne Änderung. `HudScene` und `viewRules` lesen ebenfalls aus `BIOMES`.
+- **AC-06** (Frontend-Teil) geprüft: `task check` grün über k3c-dev `check_run`. Im Worktree musste dafür zuerst `task install` laufen (fehlende Pakete des k3c-dev-Frontends), nicht wegen dieser Änderung.
+- Keine Browser-Prüfung (Umgebung offline, nicht freigegeben). Wie die neuen Stufen im Spiel aussehen, prüft 🧑 bei der Abnahme.
