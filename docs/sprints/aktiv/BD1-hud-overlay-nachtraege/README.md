@@ -5,7 +5,7 @@
 - **Domäne:** CLI
 - **Reife:** bereit
 - **Tickets:** B-392, B-391, B-389, B-399, B-398, B-414, B-393, B-370, B-374
-- **Start-Commit:** ab671123
+- **Start-Commit:** 7724ead6
 - **Spec:** freigegeben
 - **Revision:** 3
 - **Freigabe:** 2026-10-14, Chat 🧑 (Revision 3)
