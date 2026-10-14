@@ -15,13 +15,35 @@ export interface Candidate {
 export const ZUSTAENDE = ['Tag', 'Abend', 'Nacht', 'Kampf', 'Tiefe/Höhle', 'Boss', 'Lobby', 'Niederlage/Sieg'] as const;
 export const EREIGNISSE = ['Treffer', 'Kill', 'Münze', 'Pfeil', 'Schlag', 'Bau', 'Tod', 'Wiederbeleben', 'Skill', 'Nacht naht', 'Portal'] as const;
 
-/** Rein: gültige Einträge der JSON-Liste, kaputte fallen weg. */
-export function parseCandidates(raw: unknown): Candidate[] {
-  if (!Array.isArray(raw)) return [];
-  const str = (v: unknown): v is string => typeof v === 'string' && v.length > 0;
-  return raw.filter(
-    (c): c is Candidate => !!c && str(c.gruppe) && str(c.name) && str(c.datei) && (c.bus === 'music' || c.bus === 'sfx') && str(c.quelle) && str(c.lizenz),
-  );
+/** Sound-Slot des Slot-Registers `data/assets.json` (B-298), nur was die Hörprobe braucht */
+export interface SoundSlot {
+  id: string;
+  art: string;
+  beschreibung: string;
+  bus?: string;
+  wahl: readonly { datei: string; sprite?: string }[];
+}
+
+/**
+ * Rein: je Zuordnung eines Sound-Slots ein Kandidat (Gruppe = Beschreibung des Slots, Reihenfolge = Präferenz).
+ * Töne des Audio-Atlas (`sprite`) fehlen: die Hörprobe spielt nur ganze Dateien. Lizenz und Quelle stehen in der Credit-Datei.
+ */
+export function candidatesFromSlots(slots: readonly SoundSlot[]): Candidate[] {
+  return slots.flatMap((s) => {
+    const bus = s.bus === 'music' || s.bus === 'sfx' ? s.bus : undefined;
+    if (s.art !== 'sound' || !bus) return [];
+    return s.wahl
+      .map((w, i) => ({ w, pref: i + 1 }))
+      .filter(({ w }) => !w.sprite)
+      .map(({ w, pref }) => ({
+        gruppe: s.beschreibung,
+        name: `${w.datei.replace(/^.*\//, '').replace(/\.\w+$/, '')} (${s.id}, ${pref})`,
+        datei: w.datei.replace(/\.\w+$/, ''),
+        bus,
+        quelle: w.datei,
+        lizenz: 'public/audio/README.md',
+      }));
+  });
 }
 
 export interface Group {

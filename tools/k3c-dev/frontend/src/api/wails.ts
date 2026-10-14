@@ -1,5 +1,5 @@
 import type {
-  Backend, ConsoleLine, ErrorsView, EventName, Events, Info, LevelCounts, LogQuery, LogView, McpCall, McpOverview,
+  AssetChoice, AssetHit, AssetSlot, ResearchResult, AssetsView, Backend, CatalogAsset, ConsoleLine, ErrorsView, EventName, Events, Info, LevelCounts, LogQuery, LogView, McpCall, McpOverview,
   McpState, McpUsage, ServicesView, ServiceStatus, Source, TaskCatalog, TaskGates, TaskRun, PlanDoc, PlanningData, GitHubData,
 } from './types';
 
@@ -38,6 +38,15 @@ interface GoApp {
   PlanningDoc(name: PlanDoc): Promise<string>;
   GitHubStatus(force: boolean): Promise<GitHubData>;
   OpenInClaude(prompt: string): Promise<void>;
+  AssetsList(): Promise<AssetsView>;
+  AssetsSet(id: string, wahl: AssetChoice[]): Promise<AssetSlot>;
+  AssetsCatalog(query: string, art: string, limit: number): Promise<CatalogAsset[]>;
+  AssetsHits(id: string): Promise<AssetHit[]>;
+  AssetsResearch(id: string, query: string): Promise<ResearchResult>;
+  AssetsHitDrop(id: string, hit: string): Promise<void>;
+  AssetsImport(id: string, hit: string): Promise<string>;
+  AssetsDownload(id: string, hit: string): Promise<string>;
+  AssetsLicenseOK(id: string, hit: string): Promise<void>;
 }
 
 interface WailsRuntime {
@@ -93,6 +102,15 @@ export function wailsBackend(): Backend {
     planningDoc: (name) => app.PlanningDoc(name),
     githubStatus: (force) => app.GitHubStatus(force),
     openInClaude: (prompt) => app.OpenInClaude(prompt),
+    assetsList: () => app.AssetsList(),
+    assetsSet: (id, wahl) => app.AssetsSet(id, wahl),
+    assetsCatalog: (query, art, limit) => app.AssetsCatalog(query, art, limit),
+    assetsHits: (id) => app.AssetsHits(id),
+    assetsResearch: (id, query) => app.AssetsResearch(id, query),
+    assetsHitDrop: (id, hit) => app.AssetsHitDrop(id, hit),
+    assetsImport: (id, hit) => app.AssetsImport(id, hit),
+    assetsDownload: (id, hit) => app.AssetsDownload(id, hit),
+    assetsLicenseOk: (id, hit) => app.AssetsLicenseOK(id, hit),
     openUrl: (url) => runtime.BrowserOpenURL(url),
     on: <E extends EventName>(event: E, fn: (data: Events[E]) => void) =>
       runtime.EventsOn(event, (data) => fn(data as Events[E])),

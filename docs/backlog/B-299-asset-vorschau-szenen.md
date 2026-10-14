@@ -1,6 +1,6 @@
 # B-299 · Eine Dev-Seite zeigt die Asset-Zuordnung je Kategorie als Mini-Szene im Spielmaßstab
 
-- **Domäne:** PLAT
+- **Domäne:** DEV
 - **Typ:** Idee
 - **Prio:** mittel
 - **Umgebung:** live
@@ -8,9 +8,9 @@
 - **Sprint:** M10
 - **Projekt:** GRA
 - **Erstellt:** 2026-10-05
-- **Spec:** Entwurf
-- **Revision:** 1
-- **Freigabe:** –
+- **Spec:** freigegeben
+- **Revision:** 2
+- **Freigabe:** 2026-10-14, 🧑 im Chat (mit Sprint M10 Rev. 3)
 
 ## Ausgangslage
 
@@ -39,7 +39,7 @@ Zuordnung ändern (nur B-298), eigene Mini-Szene je Asset, Spiel-Logik.
 
 ## Regeln und Einschränkungen
 
-Domäne PLAT (`*.html`, `src/tools/`); Zeichnen über vorhandene Renderer-Bausteine statt Kopie; kein `Math.random()`; Datei ≤ 400 Zeilen.
+Domäne DEV (Werkzeug-Seite `src/tools/`; `assetvorschau.html`, `vite.config.ts` und `tests/projectRules.test.ts` als Grenzfall laut Sprint M10); Zeichnen über vorhandene Renderer-Bausteine statt Kopie; kein `Math.random()`; Datei ≤ 400 Zeilen.
 
 ## Beispiele
 
@@ -58,9 +58,11 @@ Slot ohne Zuordnung → Platzhalter-Rahmen mit Slot-ID. Bild oder Sound lädt ni
 
 ## Offene Fragen
 
-Kategorien final festlegen (Vorschlag in den Anforderungen).
+Keine.
 
 Entschieden (🧑, Chat 2026-10-05): Die Seite gibt es nur im Dev-Build, nicht im Produktions-Build und nicht auf der Landingpage der Xbox; die Regel „in `pages.ts` eintragen“ braucht dafür eine Ausnahme oder einen Dev-Eintrag (`tests/projectRules.test.ts`).
+
+Entschieden (🧑, 2026-10-14, Sprint M10 Rev. 3): Kategorien wie in den Anforderungen; Domäne DEV (Werkzeug-Seite unter `src/tools/`), Eintrag in `src/tools/devTiles.ts` nur im Dev-Build.
 
 ## Notizen
 

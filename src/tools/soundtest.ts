@@ -1,9 +1,10 @@
+import register from '../../data/assets.json';
 import { clientLog } from '../core/clientLog';
 import { installPageChrome } from '../core/shell';
 import { audioCore } from '../audio/audioCore';
 import { CROSSFADE_SECONDS } from '../audio/crossfade';
 import {
-  fileFor, groupCandidates, keyAction, moveSelection, padActions, parseCandidates, stepVolume,
+  candidatesFromSlots, fileFor, groupCandidates, keyAction, moveSelection, padActions, stepVolume,
   type Action, type Candidate, type PadState,
 } from './soundtestLogic';
 import { applyTexts, t } from './texts';
@@ -145,10 +146,9 @@ function pollPads(): void {
   requestAnimationFrame(tick);
 }
 
-async function init(): Promise<void> {
-  const raw = await fetch('audio/kandidaten.json').then((r) => r.json()).catch(() => []);
+function init(): void {
   const canPlay = (mime: string) => new Audio().canPlayType(mime) !== '';
-  const cands = parseCandidates(raw);
+  const cands = candidatesFromSlots(register.slots);
   // gleiche Reihenfolge wie die Anzeige (nach Gruppen), damit Index und Zeile übereinstimmen
   entries = groupCandidates(cands).flatMap((g) => g.items).map((cand) => ({ cand, url: fileFor(cand, canPlay), failed: false }));
   render();
@@ -165,4 +165,4 @@ $('b-fade').addEventListener('click', () => act('fade'));
 $('b-vold').addEventListener('click', () => act('volDown'));
 $('b-volu').addEventListener('click', () => act('volUp'));
 pollPads();
-void init();
+init();

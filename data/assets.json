@@ -1,0 +1,1423 @@
+{
+  "_comment": "Slot-Register (B-298, M10): einzige Quelle aller Asset-Slots; schreibt k3c-dev (Reiter Assets, MCP assets_set), liest assetvorschau.html. Je Slot: id, art (grafik|sound), kategorie (grafik: figuren, gebaeude, umgebung, objekte, hud; sound: sfx, musik, ambient), beschreibung, optional ziel {w,h} bzw. bus (sfx|music|ambient), wahl = Zuordnungen nach Präferenz (nur die erste ist im Spiel aktiv): datei relativ zu public/, optional sheet (data/sprites.json), ausschnitt {x,y,w,h} in Bild-Pixeln, raster {w,h}, sprite (Name im Audio-Atlas). Erstbefüllung aus docs/assets/zuordnung*.md (Präferenz 1, erste Datei je Zeile) und public/audio/kandidaten.json (M10.1).",
+  "slots": [
+    {
+      "id": "castle",
+      "art": "grafik",
+      "kategorie": "gebaeude",
+      "beschreibung": "Gebäude: castle",
+      "wahl": [
+        {
+          "datei": "grafik/k3c-paletten/ebenen/fort-tileset.png"
+        }
+      ]
+    },
+    {
+      "id": "wall",
+      "art": "grafik",
+      "kategorie": "gebaeude",
+      "beschreibung": "Gebäude: wall",
+      "wahl": [
+        {
+          "datei": "grafik/gothicvania-town/tileset-einzeln/wall.png"
+        }
+      ]
+    },
+    {
+      "id": "tower",
+      "art": "grafik",
+      "kategorie": "gebaeude",
+      "beschreibung": "Gebäude: tower",
+      "wahl": [
+        {
+          "datei": "grafik/k3c-paletten/props/tower-stein.png"
+        }
+      ]
+    },
+    {
+      "id": "gate",
+      "art": "grafik",
+      "kategorie": "gebaeude",
+      "beschreibung": "Gebäude: gate",
+      "wahl": [
+        {
+          "datei": "grafik/k3c-paletten/props/fort-door.png"
+        }
+      ]
+    },
+    {
+      "id": "workshop",
+      "art": "grafik",
+      "kategorie": "gebaeude",
+      "beschreibung": "Gebäude: workshop",
+      "wahl": [
+        {
+          "datei": "grafik/gothicvania-town/props-einzeln/house-b.png"
+        }
+      ]
+    },
+    {
+      "id": "storage",
+      "art": "grafik",
+      "kategorie": "gebaeude",
+      "beschreibung": "Gebäude: storage",
+      "wahl": [
+        {
+          "datei": "grafik/gothicvania-town/props-einzeln/crate-stack.png"
+        }
+      ]
+    },
+    {
+      "id": "farm",
+      "art": "grafik",
+      "kategorie": "gebaeude",
+      "beschreibung": "Gebäude: farm",
+      "wahl": [
+        {
+          "datei": "grafik/gothicvania-town/props-einzeln/house-a.png"
+        }
+      ]
+    },
+    {
+      "id": "barracks",
+      "art": "grafik",
+      "kategorie": "gebaeude",
+      "beschreibung": "Gebäude: barracks",
+      "wahl": [
+        {
+          "datei": "grafik/gothicvania-town/props-einzeln/house-c.png"
+        }
+      ]
+    },
+    {
+      "id": "stairsUp",
+      "art": "grafik",
+      "kategorie": "gebaeude",
+      "beschreibung": "Gebäude: stairsUp",
+      "wahl": [
+        {
+          "datei": "grafik/gothicvania-town/tileset-einzeln/stairs-left.png"
+        }
+      ]
+    },
+    {
+      "id": "stairsDown",
+      "art": "grafik",
+      "kategorie": "gebaeude",
+      "beschreibung": "Gebäude: stairsDown",
+      "wahl": [
+        {
+          "datei": "grafik/phantasy-dungeon-entrance/ebenen/dungeon-door.png"
+        }
+      ]
+    },
+    {
+      "id": "tavern",
+      "art": "grafik",
+      "kategorie": "gebaeude",
+      "beschreibung": "Gebäude: tavern",
+      "wahl": []
+    },
+    {
+      "id": "healer",
+      "art": "grafik",
+      "kategorie": "gebaeude",
+      "beschreibung": "Gebäude: healer",
+      "wahl": []
+    },
+    {
+      "id": "smithy",
+      "art": "grafik",
+      "kategorie": "gebaeude",
+      "beschreibung": "Gebäude: smithy",
+      "wahl": []
+    },
+    {
+      "id": "armory",
+      "art": "grafik",
+      "kategorie": "gebaeude",
+      "beschreibung": "Gebäude: armory",
+      "wahl": []
+    },
+    {
+      "id": "greed",
+      "art": "grafik",
+      "kategorie": "figuren",
+      "beschreibung": "Gegner: greed",
+      "wahl": [
+        {
+          "datei": "sprites/goblin/idle.png",
+          "sheet": "goblin"
+        }
+      ]
+    },
+    {
+      "id": "wolf",
+      "art": "grafik",
+      "kategorie": "figuren",
+      "beschreibung": "Gegner: wolf",
+      "wahl": [
+        {
+          "datei": "sprites/hell-hound/idle.png",
+          "sheet": "hell-hound"
+        }
+      ]
+    },
+    {
+      "id": "alphaWolf",
+      "art": "grafik",
+      "kategorie": "figuren",
+      "beschreibung": "Gegner: alphaWolf",
+      "wahl": [
+        {
+          "datei": "sprites/hell-hound/idle.png",
+          "sheet": "hell-hound"
+        }
+      ]
+    },
+    {
+      "id": "goblin",
+      "art": "grafik",
+      "kategorie": "figuren",
+      "beschreibung": "Gegner: goblin",
+      "wahl": [
+        {
+          "datei": "sprites/goblin/idle.png",
+          "sheet": "goblin"
+        }
+      ]
+    },
+    {
+      "id": "goblinArcher",
+      "art": "grafik",
+      "kategorie": "figuren",
+      "beschreibung": "Gegner: goblinArcher",
+      "wahl": [
+        {
+          "datei": "sprites/goblin/idle.png",
+          "sheet": "goblin"
+        }
+      ]
+    },
+    {
+      "id": "skeleton",
+      "art": "grafik",
+      "kategorie": "figuren",
+      "beschreibung": "Gegner: skeleton",
+      "wahl": [
+        {
+          "datei": "sprites/cemetery-skeleton/idle.png",
+          "sheet": "cemetery-skeleton"
+        }
+      ]
+    },
+    {
+      "id": "bat",
+      "art": "grafik",
+      "kategorie": "figuren",
+      "beschreibung": "Gegner: bat",
+      "wahl": [
+        {
+          "datei": "sprites/fire-skull/idle.png",
+          "sheet": "fire-skull"
+        }
+      ]
+    },
+    {
+      "id": "caveTroll",
+      "art": "grafik",
+      "kategorie": "figuren",
+      "beschreibung": "Gegner: caveTroll",
+      "wahl": [
+        {
+          "datei": "sprites/hell-gato/idle.png",
+          "sheet": "hell-gato"
+        }
+      ]
+    },
+    {
+      "id": "zombie",
+      "art": "grafik",
+      "kategorie": "figuren",
+      "beschreibung": "Gegner: zombie",
+      "wahl": [
+        {
+          "datei": "sprites/cemetery-skeleton-clothed/idle.png",
+          "sheet": "cemetery-skeleton-clothed"
+        }
+      ]
+    },
+    {
+      "id": "ratSwarm",
+      "art": "grafik",
+      "kategorie": "figuren",
+      "beschreibung": "Gegner: ratSwarm",
+      "wahl": [
+        {
+          "datei": "sprites/mushroom/idle.png",
+          "sheet": "mushroom"
+        }
+      ]
+    },
+    {
+      "id": "mineGhost",
+      "art": "grafik",
+      "kategorie": "figuren",
+      "beschreibung": "Gegner: mineGhost",
+      "wahl": [
+        {
+          "datei": "sprites/ghost/idle.png",
+          "sheet": "ghost"
+        }
+      ]
+    },
+    {
+      "id": "lavaSlime",
+      "art": "grafik",
+      "kategorie": "figuren",
+      "beschreibung": "Gegner: lavaSlime",
+      "wahl": [
+        {
+          "datei": "sprites/mushroom/idle.png",
+          "sheet": "mushroom"
+        }
+      ]
+    },
+    {
+      "id": "ironBeetle",
+      "art": "grafik",
+      "kategorie": "figuren",
+      "beschreibung": "Gegner: ironBeetle",
+      "wahl": [
+        {
+          "datei": "sprites/hell-hound/idle.png",
+          "sheet": "hell-hound"
+        }
+      ]
+    },
+    {
+      "id": "fireSpirit",
+      "art": "grafik",
+      "kategorie": "figuren",
+      "beschreibung": "Gegner: fireSpirit",
+      "wahl": [
+        {
+          "datei": "sprites/ghost/idle.png",
+          "sheet": "ghost"
+        }
+      ]
+    },
+    {
+      "id": "crystalSpider",
+      "art": "grafik",
+      "kategorie": "figuren",
+      "beschreibung": "Gegner: crystalSpider",
+      "wahl": [
+        {
+          "datei": "sprites/hell-hound/idle.png",
+          "sheet": "hell-hound"
+        }
+      ]
+    },
+    {
+      "id": "shardling",
+      "art": "grafik",
+      "kategorie": "figuren",
+      "beschreibung": "Gegner: shardling",
+      "wahl": [
+        {
+          "datei": "sprites/mushroom/idle.png",
+          "sheet": "mushroom"
+        }
+      ]
+    },
+    {
+      "id": "crystalGuardian",
+      "art": "grafik",
+      "kategorie": "figuren",
+      "beschreibung": "Gegner: crystalGuardian",
+      "wahl": [
+        {
+          "datei": "sprites/hell-gato/idle.png",
+          "sheet": "hell-gato"
+        }
+      ]
+    },
+    {
+      "id": "vagrant",
+      "art": "grafik",
+      "kategorie": "figuren",
+      "beschreibung": "Truppen: vagrant",
+      "wahl": [
+        {
+          "datei": "sprites/martial-hero-3/idle.png",
+          "sheet": "martial-hero-3"
+        }
+      ]
+    },
+    {
+      "id": "peasant",
+      "art": "grafik",
+      "kategorie": "figuren",
+      "beschreibung": "Truppen: peasant",
+      "wahl": [
+        {
+          "datei": "sprites/martial-hero-3/idle.png",
+          "sheet": "martial-hero-3"
+        }
+      ]
+    },
+    {
+      "id": "archer",
+      "art": "grafik",
+      "kategorie": "figuren",
+      "beschreibung": "Truppen: archer",
+      "wahl": [
+        {
+          "datei": "sprites/huntress-2/idle.png",
+          "sheet": "huntress-2"
+        }
+      ]
+    },
+    {
+      "id": "warrior",
+      "art": "grafik",
+      "kategorie": "figuren",
+      "beschreibung": "Truppen: warrior",
+      "wahl": [
+        {
+          "datei": "sprites/medieval-warrior-2/idle.png",
+          "sheet": "medieval-warrior-2"
+        }
+      ]
+    },
+    {
+      "id": "eliteArcher",
+      "art": "grafik",
+      "kategorie": "figuren",
+      "beschreibung": "Truppen: eliteArcher",
+      "wahl": [
+        {
+          "datei": "sprites/huntress-2/idle.png",
+          "sheet": "huntress-2"
+        }
+      ]
+    },
+    {
+      "id": "eliteWarrior",
+      "art": "grafik",
+      "kategorie": "figuren",
+      "beschreibung": "Truppen: eliteWarrior",
+      "wahl": [
+        {
+          "datei": "sprites/medieval-warrior/idle.png",
+          "sheet": "medieval-warrior"
+        }
+      ]
+    },
+    {
+      "id": "hub:1",
+      "art": "grafik",
+      "kategorie": "gebaeude",
+      "beschreibung": "Hub-Stufen: hub:1",
+      "wahl": [
+        {
+          "datei": "grafik/k3c-paletten/ebenen/fort-tileset.png"
+        }
+      ]
+    },
+    {
+      "id": "hub:2",
+      "art": "grafik",
+      "kategorie": "gebaeude",
+      "beschreibung": "Hub-Stufen: hub:2",
+      "wahl": [
+        {
+          "datei": "grafik/wooden-fortress-and-animated-doors/ebenen/wooden-castle.png"
+        }
+      ]
+    },
+    {
+      "id": "hub:3",
+      "art": "grafik",
+      "kategorie": "gebaeude",
+      "beschreibung": "Hub-Stufen: hub:3",
+      "wahl": [
+        {
+          "datei": "grafik/opp2017-castle-tiles/ebenen/tile-castle.png"
+        }
+      ]
+    },
+    {
+      "id": "hub:4",
+      "art": "grafik",
+      "kategorie": "gebaeude",
+      "beschreibung": "Hub-Stufen: hub:4",
+      "wahl": [
+        {
+          "datei": "grafik/opp2017-castle-tiles/ebenen/tile-castle.png"
+        }
+      ]
+    },
+    {
+      "id": "hub:5",
+      "art": "grafik",
+      "kategorie": "gebaeude",
+      "beschreibung": "Hub-Stufen: hub:5",
+      "wahl": [
+        {
+          "datei": "grafik/opp2017-castle-tiles/ebenen/tile-castle.png"
+        }
+      ]
+    },
+    {
+      "id": "wall:1",
+      "art": "grafik",
+      "kategorie": "gebaeude",
+      "beschreibung": "Mauer-Stufen: wall:1",
+      "wahl": []
+    },
+    {
+      "id": "wall:2",
+      "art": "grafik",
+      "kategorie": "gebaeude",
+      "beschreibung": "Mauer-Stufen: wall:2",
+      "wahl": [
+        {
+          "datei": "grafik/gothicvania-town/tileset-einzeln/wall.png"
+        }
+      ]
+    },
+    {
+      "id": "wall:3",
+      "art": "grafik",
+      "kategorie": "gebaeude",
+      "beschreibung": "Mauer-Stufen: wall:3",
+      "wahl": [
+        {
+          "datei": "grafik/k3c-paletten/tileset-einzeln/wall-kupfer.png"
+        }
+      ]
+    },
+    {
+      "id": "wall:4",
+      "art": "grafik",
+      "kategorie": "gebaeude",
+      "beschreibung": "Mauer-Stufen: wall:4",
+      "wahl": [
+        {
+          "datei": "grafik/k3c-paletten/tileset-einzeln/wall-eisen.png"
+        }
+      ]
+    },
+    {
+      "id": "wall:5",
+      "art": "grafik",
+      "kategorie": "gebaeude",
+      "beschreibung": "Mauer-Stufen: wall:5",
+      "wahl": [
+        {
+          "datei": "grafik/k3c-paletten/tileset-einzeln/wall-kristall.png"
+        }
+      ]
+    },
+    {
+      "id": "tower:1",
+      "art": "grafik",
+      "kategorie": "gebaeude",
+      "beschreibung": "Turm-Stufen: tower:1",
+      "wahl": []
+    },
+    {
+      "id": "tower:2",
+      "art": "grafik",
+      "kategorie": "gebaeude",
+      "beschreibung": "Turm-Stufen: tower:2",
+      "wahl": [
+        {
+          "datei": "grafik/k3c-paletten/props/tower-stein.png"
+        }
+      ]
+    },
+    {
+      "id": "tower:3",
+      "art": "grafik",
+      "kategorie": "gebaeude",
+      "beschreibung": "Turm-Stufen: tower:3",
+      "wahl": [
+        {
+          "datei": "grafik/k3c-paletten/props/tower-kupfer.png"
+        }
+      ]
+    },
+    {
+      "id": "tower:4",
+      "art": "grafik",
+      "kategorie": "gebaeude",
+      "beschreibung": "Turm-Stufen: tower:4",
+      "wahl": [
+        {
+          "datei": "grafik/k3c-paletten/props/tower-eisen.png"
+        }
+      ]
+    },
+    {
+      "id": "tower:5",
+      "art": "grafik",
+      "kategorie": "gebaeude",
+      "beschreibung": "Turm-Stufen: tower:5",
+      "wahl": []
+    },
+    {
+      "id": "material:wood",
+      "art": "grafik",
+      "kategorie": "objekte",
+      "beschreibung": "Materialien und Adern: material:wood",
+      "wahl": [
+        {
+          "datei": "grafik/resource-icons/ressourcen/resources-icons.png"
+        }
+      ]
+    },
+    {
+      "id": "material:stone",
+      "art": "grafik",
+      "kategorie": "objekte",
+      "beschreibung": "Materialien und Adern: material:stone",
+      "wahl": [
+        {
+          "datei": "grafik/various-stones-and-oregem-veins-16x16/ressourcen/Stones_ores_gems_without_grass.png",
+          "ausschnitt": {
+            "x": 80,
+            "y": 0,
+            "w": 32,
+            "h": 16
+          }
+        }
+      ]
+    },
+    {
+      "id": "material:copper",
+      "art": "grafik",
+      "kategorie": "objekte",
+      "beschreibung": "Materialien und Adern: material:copper",
+      "wahl": [
+        {
+          "datei": "grafik/various-stones-and-oregem-veins-16x16/ressourcen/Stones_ores_gems_without_grass.png",
+          "ausschnitt": {
+            "x": 80,
+            "y": 16,
+            "w": 32,
+            "h": 16
+          }
+        }
+      ]
+    },
+    {
+      "id": "material:iron",
+      "art": "grafik",
+      "kategorie": "objekte",
+      "beschreibung": "Materialien und Adern: material:iron",
+      "wahl": [
+        {
+          "datei": "grafik/various-stones-and-oregem-veins-16x16/ressourcen/Stones_ores_gems_without_grass.png",
+          "ausschnitt": {
+            "x": 80,
+            "y": 32,
+            "w": 32,
+            "h": 16
+          }
+        }
+      ]
+    },
+    {
+      "id": "material:crystal",
+      "art": "grafik",
+      "kategorie": "objekte",
+      "beschreibung": "Materialien und Adern: material:crystal",
+      "wahl": [
+        {
+          "datei": "grafik/various-stones-and-oregem-veins-16x16/ressourcen/Stones_ores_gems_without_grass.png",
+          "ausschnitt": {
+            "x": 80,
+            "y": 128,
+            "w": 16,
+            "h": 16
+          }
+        }
+      ]
+    },
+    {
+      "id": "vein:stone",
+      "art": "grafik",
+      "kategorie": "objekte",
+      "beschreibung": "Materialien und Adern: vein:stone",
+      "wahl": [
+        {
+          "datei": "grafik/various-stones-and-oregem-veins-16x16/ressourcen/Stones_ores_gems_without_grass.png",
+          "ausschnitt": {
+            "x": 0,
+            "y": 0,
+            "w": 80,
+            "h": 16
+          }
+        }
+      ]
+    },
+    {
+      "id": "vein:copper",
+      "art": "grafik",
+      "kategorie": "objekte",
+      "beschreibung": "Materialien und Adern: vein:copper",
+      "wahl": [
+        {
+          "datei": "grafik/various-stones-and-oregem-veins-16x16/ressourcen/Stones_ores_gems_without_grass.png",
+          "ausschnitt": {
+            "x": 0,
+            "y": 16,
+            "w": 80,
+            "h": 16
+          }
+        }
+      ]
+    },
+    {
+      "id": "vein:iron",
+      "art": "grafik",
+      "kategorie": "objekte",
+      "beschreibung": "Materialien und Adern: vein:iron",
+      "wahl": [
+        {
+          "datei": "grafik/various-stones-and-oregem-veins-16x16/ressourcen/Stones_ores_gems_without_grass.png",
+          "ausschnitt": {
+            "x": 0,
+            "y": 32,
+            "w": 80,
+            "h": 16
+          }
+        }
+      ]
+    },
+    {
+      "id": "vein:crystal",
+      "art": "grafik",
+      "kategorie": "objekte",
+      "beschreibung": "Materialien und Adern: vein:crystal",
+      "wahl": [
+        {
+          "datei": "grafik/various-stones-and-oregem-veins-16x16/ressourcen/Stones_ores_gems_without_grass.png",
+          "ausschnitt": {
+            "x": 0,
+            "y": 128,
+            "w": 80,
+            "h": 16
+          }
+        }
+      ]
+    },
+    {
+      "id": "plantation",
+      "art": "grafik",
+      "kategorie": "objekte",
+      "beschreibung": "Materialien und Adern: plantation",
+      "wahl": []
+    },
+    {
+      "id": "pickup:chest",
+      "art": "grafik",
+      "kategorie": "objekte",
+      "beschreibung": "Truhen, Portale, Münzen, Ausgang: pickup:chest",
+      "wahl": [
+        {
+          "datei": "grafik/gold-treasure-icons-16x16/icons/8.png"
+        }
+      ]
+    },
+    {
+      "id": "portal",
+      "art": "grafik",
+      "kategorie": "objekte",
+      "beschreibung": "Truhen, Portale, Münzen, Ausgang: portal",
+      "wahl": [
+        {
+          "datei": "grafik/portals-32-x-48/portale/portalsSpriteSheet.png"
+        }
+      ]
+    },
+    {
+      "id": "coin",
+      "art": "grafik",
+      "kategorie": "objekte",
+      "beschreibung": "Truhen, Portale, Münzen, Ausgang: coin",
+      "wahl": [
+        {
+          "datei": "grafik/16x16-small-and-medium-coin-animation/muenzen/sCoins_1.png"
+        }
+      ]
+    },
+    {
+      "id": "guide:coin",
+      "art": "grafik",
+      "kategorie": "objekte",
+      "beschreibung": "Truhen, Portale, Münzen, Ausgang: guide:coin",
+      "wahl": [
+        {
+          "datei": "grafik/gold-treasure-icons-16x16/icons/2.png"
+        }
+      ]
+    },
+    {
+      "id": "exit",
+      "art": "grafik",
+      "kategorie": "objekte",
+      "beschreibung": "Truhen, Portale, Münzen, Ausgang: exit",
+      "wahl": [
+        {
+          "datei": "grafik/k3c-paletten/props/fort-door.png"
+        }
+      ]
+    },
+    {
+      "id": "pickup:skillPoint",
+      "art": "grafik",
+      "kategorie": "objekte",
+      "beschreibung": "Truhen, Portale, Münzen, Ausgang: pickup:skillPoint",
+      "wahl": [
+        {
+          "datei": "grafik/item-ruby-banana-star/props/part-star.png"
+        }
+      ]
+    },
+    {
+      "id": "node:tree",
+      "art": "grafik",
+      "kategorie": "objekte",
+      "beschreibung": "Ressourcen und Rekrutierungslager: node:tree",
+      "wahl": [
+        {
+          "datei": "grafik/gotthicvania-swamp/umgebung/trees.png"
+        }
+      ]
+    },
+    {
+      "id": "node:rock",
+      "art": "grafik",
+      "kategorie": "objekte",
+      "beschreibung": "Ressourcen und Rekrutierungslager: node:rock",
+      "wahl": [
+        {
+          "datei": "grafik/various-stones-and-oregem-veins-16x16/ressourcen/Stones_ores_gems_without_grass.png",
+          "ausschnitt": {
+            "x": 16,
+            "y": 0,
+            "w": 16,
+            "h": 16
+          }
+        }
+      ]
+    },
+    {
+      "id": "node:copperOre",
+      "art": "grafik",
+      "kategorie": "objekte",
+      "beschreibung": "Ressourcen und Rekrutierungslager: node:copperOre",
+      "wahl": [
+        {
+          "datei": "grafik/various-stones-and-oregem-veins-16x16/ressourcen/Stones_ores_gems_without_grass.png",
+          "ausschnitt": {
+            "x": 0,
+            "y": 16,
+            "w": 16,
+            "h": 16
+          }
+        }
+      ]
+    },
+    {
+      "id": "node:bush",
+      "art": "grafik",
+      "kategorie": "objekte",
+      "beschreibung": "Ressourcen und Rekrutierungslager: node:bush",
+      "wahl": [
+        {
+          "datei": "grafik/sunnyland-tall-forest-environment/props/Plant.png"
+        }
+      ]
+    },
+    {
+      "id": "camp:recruit",
+      "art": "grafik",
+      "kategorie": "objekte",
+      "beschreibung": "Ressourcen und Rekrutierungslager: camp:recruit",
+      "wahl": [
+        {
+          "datei": "grafik/tent-8/props/objs.png"
+        }
+      ]
+    },
+    {
+      "id": "mount:horse",
+      "art": "grafik",
+      "kategorie": "figuren",
+      "beschreibung": "Reittiere: mount:horse",
+      "wahl": [
+        {
+          "datei": "sprites/horse/idle.png",
+          "sheet": "horse"
+        }
+      ]
+    },
+    {
+      "id": "mount:horseWalk",
+      "art": "grafik",
+      "kategorie": "figuren",
+      "beschreibung": "Reittiere: mount:horseWalk",
+      "wahl": [
+        {
+          "datei": "sprites/horse-walk/idle.png",
+          "sheet": "horse-walk"
+        }
+      ]
+    },
+    {
+      "id": "mount:blackHorse",
+      "art": "grafik",
+      "kategorie": "figuren",
+      "beschreibung": "Reittiere: mount:blackHorse",
+      "wahl": [
+        {
+          "datei": "sprites/horse/idle.png",
+          "sheet": "horse"
+        }
+      ]
+    },
+    {
+      "id": "mount:whiteHorse",
+      "art": "grafik",
+      "kategorie": "figuren",
+      "beschreibung": "Reittiere: mount:whiteHorse",
+      "wahl": [
+        {
+          "datei": "sprites/white-horse/idle.png",
+          "sheet": "white-horse"
+        }
+      ]
+    },
+    {
+      "id": "mount:unicorn",
+      "art": "grafik",
+      "kategorie": "figuren",
+      "beschreibung": "Reittiere: mount:unicorn",
+      "wahl": [
+        {
+          "datei": "sprites/unicorn/idle.png",
+          "sheet": "unicorn"
+        }
+      ]
+    },
+    {
+      "id": "mount:pegasus",
+      "art": "grafik",
+      "kategorie": "figuren",
+      "beschreibung": "Reittiere: mount:pegasus",
+      "wahl": [
+        {
+          "datei": "sprites/pegasus/idle.png",
+          "sheet": "pegasus"
+        }
+      ]
+    },
+    {
+      "id": "mount:elephant",
+      "art": "grafik",
+      "kategorie": "figuren",
+      "beschreibung": "Reittiere: mount:elephant",
+      "wahl": [
+        {
+          "datei": "sprites/elephant/idle.png",
+          "sheet": "elephant"
+        }
+      ]
+    },
+    {
+      "id": "mount:stag",
+      "art": "grafik",
+      "kategorie": "figuren",
+      "beschreibung": "Reittiere: mount:stag",
+      "wahl": [
+        {
+          "datei": "sprites/stag/idle.png",
+          "sheet": "stag"
+        }
+      ]
+    },
+    {
+      "id": "mount:wolf",
+      "art": "grafik",
+      "kategorie": "figuren",
+      "beschreibung": "Reittiere: mount:wolf",
+      "wahl": [
+        {
+          "datei": "sprites/lpc-wolf/idle.png",
+          "sheet": "lpc-wolf"
+        }
+      ]
+    },
+    {
+      "id": "mount:hellhound",
+      "art": "grafik",
+      "kategorie": "figuren",
+      "beschreibung": "Reittiere: mount:hellhound",
+      "wahl": [
+        {
+          "datei": "sprites/lpc-hellhound/idle.png",
+          "sheet": "lpc-hellhound"
+        }
+      ]
+    },
+    {
+      "id": "mount:nightmare",
+      "art": "grafik",
+      "kategorie": "figuren",
+      "beschreibung": "Reittiere: mount:nightmare",
+      "wahl": [
+        {
+          "datei": "sprites/nightmare/idle.png",
+          "sheet": "nightmare"
+        }
+      ]
+    },
+    {
+      "id": "mount:hellHound",
+      "art": "grafik",
+      "kategorie": "figuren",
+      "beschreibung": "Reittiere: mount:hellHound",
+      "wahl": [
+        {
+          "datei": "sprites/hell-hound/idle.png",
+          "sheet": "hell-hound"
+        }
+      ]
+    },
+    {
+      "id": "mount:whiteWolf",
+      "art": "grafik",
+      "kategorie": "figuren",
+      "beschreibung": "Reittiere: mount:whiteWolf",
+      "wahl": [
+        {
+          "datei": "sprites/wolf/idle.png",
+          "sheet": "wolf"
+        }
+      ]
+    },
+    {
+      "id": "icon:1",
+      "art": "grafik",
+      "kategorie": "hud",
+      "beschreibung": "Icons: icon:1",
+      "wahl": [
+        {
+          "datei": "grafik/gold-treasure-icons-16x16/icons/1.png"
+        }
+      ]
+    },
+    {
+      "id": "icon:2",
+      "art": "grafik",
+      "kategorie": "hud",
+      "beschreibung": "Icons: icon:2",
+      "wahl": [
+        {
+          "datei": "grafik/gold-treasure-icons-16x16/icons/2.png"
+        }
+      ]
+    },
+    {
+      "id": "icon:3",
+      "art": "grafik",
+      "kategorie": "hud",
+      "beschreibung": "Icons: icon:3",
+      "wahl": [
+        {
+          "datei": "grafik/gold-treasure-icons-16x16/icons/3.png"
+        }
+      ]
+    },
+    {
+      "id": "icon:4",
+      "art": "grafik",
+      "kategorie": "hud",
+      "beschreibung": "Icons: icon:4",
+      "wahl": [
+        {
+          "datei": "grafik/gold-treasure-icons-16x16/icons/4.png"
+        }
+      ]
+    },
+    {
+      "id": "icon:5",
+      "art": "grafik",
+      "kategorie": "hud",
+      "beschreibung": "Icons: icon:5",
+      "wahl": [
+        {
+          "datei": "grafik/gold-treasure-icons-16x16/icons/5.png"
+        }
+      ]
+    },
+    {
+      "id": "icon:6",
+      "art": "grafik",
+      "kategorie": "hud",
+      "beschreibung": "Icons: icon:6",
+      "wahl": [
+        {
+          "datei": "grafik/gold-treasure-icons-16x16/icons/6.png"
+        }
+      ]
+    },
+    {
+      "id": "icon:7",
+      "art": "grafik",
+      "kategorie": "hud",
+      "beschreibung": "Icons: icon:7",
+      "wahl": [
+        {
+          "datei": "grafik/gold-treasure-icons-16x16/icons/7.png"
+        }
+      ]
+    },
+    {
+      "id": "icon:8",
+      "art": "grafik",
+      "kategorie": "hud",
+      "beschreibung": "Icons: icon:8",
+      "wahl": [
+        {
+          "datei": "grafik/gold-treasure-icons-16x16/icons/8.png"
+        }
+      ]
+    },
+    {
+      "id": "icon:9",
+      "art": "grafik",
+      "kategorie": "hud",
+      "beschreibung": "Icons: icon:9",
+      "wahl": [
+        {
+          "datei": "grafik/gold-treasure-icons-16x16/icons/9.png"
+        }
+      ]
+    },
+    {
+      "id": "icon:10",
+      "art": "grafik",
+      "kategorie": "hud",
+      "beschreibung": "Icons: icon:10",
+      "wahl": [
+        {
+          "datei": "grafik/gold-treasure-icons-16x16/icons/10.png"
+        }
+      ]
+    },
+    {
+      "id": "icon:sheet",
+      "art": "grafik",
+      "kategorie": "hud",
+      "beschreibung": "Icons: icon:sheet",
+      "wahl": [
+        {
+          "datei": "grafik/gold-treasure-icons-16x16/icons/sheet.png"
+        }
+      ]
+    },
+    {
+      "id": "skill-icon",
+      "art": "grafik",
+      "kategorie": "hud",
+      "beschreibung": "Icons: skill-icon",
+      "wahl": []
+    },
+    {
+      "id": "boss",
+      "art": "grafik",
+      "kategorie": "figuren",
+      "beschreibung": "Bosse: boss",
+      "wahl": []
+    },
+    {
+      "id": "bg:forest",
+      "art": "grafik",
+      "kategorie": "umgebung",
+      "beschreibung": "Hintergründe je Biom: bg:forest",
+      "wahl": [
+        {
+          "datei": "grafik/forest-background/ebenen/parallax-forest-back-trees.png"
+        }
+      ]
+    },
+    {
+      "id": "bg:cave",
+      "art": "grafik",
+      "kategorie": "umgebung",
+      "beschreibung": "Hintergründe je Biom: bg:cave",
+      "wahl": [
+        {
+          "datei": "grafik/blue-cave-background/ebenen/startcavebg.png"
+        }
+      ]
+    },
+    {
+      "id": "bg:mine",
+      "art": "grafik",
+      "kategorie": "umgebung",
+      "beschreibung": "Hintergründe je Biom: bg:mine",
+      "wahl": [
+        {
+          "datei": "grafik/warped-super-grotto-escape-pack/ebenen/back.png"
+        }
+      ]
+    },
+    {
+      "id": "bg:ironhold",
+      "art": "grafik",
+      "kategorie": "umgebung",
+      "beschreibung": "Hintergründe je Biom: bg:ironhold",
+      "wahl": []
+    },
+    {
+      "id": "bg:crystal",
+      "art": "grafik",
+      "kategorie": "umgebung",
+      "beschreibung": "Hintergründe je Biom: bg:crystal",
+      "wahl": []
+    },
+    {
+      "id": "monarch:1",
+      "art": "grafik",
+      "kategorie": "figuren",
+      "beschreibung": "Monarch 1",
+      "wahl": [
+        {
+          "datei": "sprites/medieval-king/idle.png",
+          "sheet": "medieval-king"
+        }
+      ]
+    },
+    {
+      "id": "monarch:2",
+      "art": "grafik",
+      "kategorie": "figuren",
+      "beschreibung": "Monarch 2",
+      "wahl": [
+        {
+          "datei": "sprites/medieval-king-2/idle.png",
+          "sheet": "medieval-king-2"
+        }
+      ]
+    },
+    {
+      "id": "monarch:3",
+      "art": "grafik",
+      "kategorie": "figuren",
+      "beschreibung": "Monarch 3",
+      "wahl": [
+        {
+          "datei": "sprites/medieval-king/idle.png",
+          "sheet": "medieval-king"
+        }
+      ]
+    },
+    {
+      "id": "monarch:4",
+      "art": "grafik",
+      "kategorie": "figuren",
+      "beschreibung": "Monarch 4",
+      "wahl": [
+        {
+          "datei": "sprites/medieval-king-2/idle.png",
+          "sheet": "medieval-king-2"
+        }
+      ]
+    },
+    {
+      "id": "music:tag",
+      "art": "sound",
+      "kategorie": "musik",
+      "beschreibung": "Tag",
+      "bus": "music",
+      "wahl": [
+        {
+          "datei": "audio/probe-a.ogg"
+        }
+      ]
+    },
+    {
+      "id": "music:abend",
+      "art": "sound",
+      "kategorie": "musik",
+      "beschreibung": "Abend",
+      "bus": "music",
+      "wahl": []
+    },
+    {
+      "id": "music:nacht",
+      "art": "sound",
+      "kategorie": "musik",
+      "beschreibung": "Nacht",
+      "bus": "music",
+      "wahl": [
+        {
+          "datei": "audio/probe-b.ogg"
+        }
+      ]
+    },
+    {
+      "id": "music:kampf",
+      "art": "sound",
+      "kategorie": "musik",
+      "beschreibung": "Kampf",
+      "bus": "music",
+      "wahl": []
+    },
+    {
+      "id": "music:tiefe",
+      "art": "sound",
+      "kategorie": "musik",
+      "beschreibung": "Tiefe/Höhle",
+      "bus": "music",
+      "wahl": []
+    },
+    {
+      "id": "music:boss",
+      "art": "sound",
+      "kategorie": "musik",
+      "beschreibung": "Boss",
+      "bus": "music",
+      "wahl": []
+    },
+    {
+      "id": "music:lobby",
+      "art": "sound",
+      "kategorie": "musik",
+      "beschreibung": "Lobby",
+      "bus": "music",
+      "wahl": []
+    },
+    {
+      "id": "music:ende",
+      "art": "sound",
+      "kategorie": "musik",
+      "beschreibung": "Niederlage/Sieg",
+      "bus": "music",
+      "wahl": []
+    },
+    {
+      "id": "sfx:hit",
+      "art": "sound",
+      "kategorie": "sfx",
+      "beschreibung": "Treffer",
+      "bus": "sfx",
+      "wahl": [
+        {
+          "datei": "audio/atlas.ogg",
+          "sprite": "hit"
+        }
+      ]
+    },
+    {
+      "id": "sfx:kill",
+      "art": "sound",
+      "kategorie": "sfx",
+      "beschreibung": "Kill",
+      "bus": "sfx",
+      "wahl": []
+    },
+    {
+      "id": "sfx:coin",
+      "art": "sound",
+      "kategorie": "sfx",
+      "beschreibung": "Münze",
+      "bus": "sfx",
+      "wahl": [
+        {
+          "datei": "audio/atlas.ogg",
+          "sprite": "coin"
+        },
+        {
+          "datei": "audio-test/test.ogg"
+        }
+      ]
+    },
+    {
+      "id": "sfx:arrow",
+      "art": "sound",
+      "kategorie": "sfx",
+      "beschreibung": "Pfeil",
+      "bus": "sfx",
+      "wahl": []
+    },
+    {
+      "id": "sfx:strike",
+      "art": "sound",
+      "kategorie": "sfx",
+      "beschreibung": "Schlag",
+      "bus": "sfx",
+      "wahl": []
+    },
+    {
+      "id": "sfx:build",
+      "art": "sound",
+      "kategorie": "sfx",
+      "beschreibung": "Bau",
+      "bus": "sfx",
+      "wahl": []
+    },
+    {
+      "id": "sfx:death",
+      "art": "sound",
+      "kategorie": "sfx",
+      "beschreibung": "Tod",
+      "bus": "sfx",
+      "wahl": []
+    },
+    {
+      "id": "sfx:revive",
+      "art": "sound",
+      "kategorie": "sfx",
+      "beschreibung": "Wiederbeleben",
+      "bus": "sfx",
+      "wahl": []
+    },
+    {
+      "id": "sfx:skill",
+      "art": "sound",
+      "kategorie": "sfx",
+      "beschreibung": "Skill",
+      "bus": "sfx",
+      "wahl": []
+    },
+    {
+      "id": "sfx:warn",
+      "art": "sound",
+      "kategorie": "sfx",
+      "beschreibung": "Nacht naht",
+      "bus": "sfx",
+      "wahl": [
+        {
+          "datei": "audio/atlas.ogg",
+          "sprite": "warn"
+        }
+      ]
+    },
+    {
+      "id": "sfx:portal",
+      "art": "sound",
+      "kategorie": "sfx",
+      "beschreibung": "Portal",
+      "bus": "sfx",
+      "wahl": []
+    }
+  ]
+}

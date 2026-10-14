@@ -1,12 +1,20 @@
 import { describe, expect, it } from 'vitest';
-import { fileFor, groupCandidates, keyAction, moveSelection, padActions, parseCandidates, stepVolume, type Candidate } from './soundtestLogic';
+import { candidatesFromSlots, fileFor, groupCandidates, keyAction, moveSelection, padActions, stepVolume, type Candidate } from './soundtestLogic';
 
 const c = (gruppe: string, name = gruppe): Candidate => ({ gruppe, name, datei: 'audio/x', bus: 'music', quelle: 'q', lizenz: 'l' });
 
 describe('Hörprobe-Logik', () => {
-  it('parseCandidates verwirft kaputte Einträge', () => {
-    expect(parseCandidates([c('Tag'), { gruppe: 'Tag' }, null, { ...c('Tag'), bus: 'x' }])).toHaveLength(1);
-    expect(parseCandidates('kaputt')).toEqual([]);
+  it('candidatesFromSlots: je Datei-Zuordnung eines Sound-Slots ein Kandidat, ohne Atlas-Töne und Grafik', () => {
+    const list = candidatesFromSlots([
+      { id: 'sfx:coin', art: 'sound', beschreibung: 'Münze', bus: 'sfx', wahl: [{ datei: 'audio/atlas.ogg', sprite: 'coin' }, { datei: 'audio-test/test.ogg' }] },
+      { id: 'music:tag', art: 'sound', beschreibung: 'Tag', bus: 'music', wahl: [{ datei: 'audio/probe-a.ogg' }] },
+      { id: 'farm', art: 'grafik', beschreibung: 'Farm', wahl: [{ datei: 'grafik/a.png' }] },
+      { id: 'amb:wind', art: 'sound', beschreibung: 'Wind', bus: 'ambient', wahl: [{ datei: 'audio/wind.ogg' }] },
+    ]);
+    expect(list).toEqual([
+      { gruppe: 'Münze', name: 'test (sfx:coin, 2)', datei: 'audio-test/test', bus: 'sfx', quelle: 'audio-test/test.ogg', lizenz: 'public/audio/README.md' },
+      { gruppe: 'Tag', name: 'probe-a (music:tag, 1)', datei: 'audio/probe-a', bus: 'music', quelle: 'audio/probe-a.ogg', lizenz: 'public/audio/README.md' },
+    ]);
   });
 
   it('groupCandidates: Zustände vor Ereignissen, leere Gruppen fehlen, Unbekanntes am Ende', () => {

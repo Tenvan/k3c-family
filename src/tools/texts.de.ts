@@ -185,6 +185,8 @@ export const de = {
   'tile.sound.desc': 'Kandidaten für Musik und Effekte anhören · nach Zustand und Ereignis, mit Quelle und Lizenz',
   'tile.dm.title': 'Dungeon Master',
   'tile.dm.desc': 'Laufende Räume beobachten und steuern: Zeit, Pause, Gold, Material, Welle, Tageszeit · neues Fenster (Dev-Mode des Servers)',
+  'tile.assetvorschau.title': 'Asset-Vorschau',
+  'tile.assetvorschau.desc': 'Zuordnung der Grafik- und Sound-Slots je Kategorie als Mini-Szene im Spielmaßstab · nur im Dev-Build',
   'tile.monitor.title': 'Monitor',
   'tile.monitor.desc': 'Serverzustand: Ampel je Raum, Verläufe mit Perzentilen, Fehler-Zeitleiste (Go-Server mit K3C_STATUS_TOKEN)',
 
@@ -356,6 +358,26 @@ export const de = {
   'lic.thanks':
     'Von Herzen an <strong>LuizMelo</strong>, <strong>ansimuz</strong>, <strong>bluecarrot16</strong>, <strong>Jordan Irwin (AntumDeluge)</strong>, <strong>lawnjelly</strong>, <strong>Calciumtrice</strong>, <strong>lemmling</strong>, <strong>Bonsaiheldin</strong>, <strong>vico</strong>, <strong>Rusher_go</strong> und <strong>WolfTech</strong>, an die Plattformen <strong>itch.io</strong> und <strong>OpenGameArt.org</strong> und an alle Open-Source-Entwickler:innen oben. Wer Freude an ihren Werken hat: Schaut bei ihnen vorbei und unterstützt sie, wenn ihr könnt.',
   'lic.thanksNote': 'Fehlt eine Nennung oder ist etwas falsch zugeordnet? Bitte melden, wir korrigieren es umgehend.',
+  'av.pageTitle': 'K3C Asset-Vorschau',
+  'av.title': 'Asset-Vorschau',
+  'av.sub': 'Aktive Zuordnungen aus dem Slot-Register je Kategorie im Spielmaßstab; nur im Dev-Build.',
+  'av.pick': 'Kategorie oben wählen.',
+  'av.empty': 'Keine Asset-Slots in dieser Kategorie.',
+  'av.gap': 'Lücke: {id}',
+  'av.missing': 'lädt nicht: {file}',
+  'av.pref': 'Präferenz {n}',
+  'av.nc': 'NC',
+  'av.play': '▶ Abspielen',
+  'av.playFar': '▶ Andere Bildhälfte',
+  'av.stop': 'Stopp',
+  'av.scene.figuren': 'Figuren',
+  'av.scene.gebaeude': 'Gebäude',
+  'av.scene.umgebung': 'Umgebung',
+  'av.scene.objekte': 'Objekte',
+  'av.scene.hud': 'HUD',
+  'av.scene.sfx': 'Ereignis-SFX',
+  'av.scene.musik': 'Musik',
+  'av.scene.ambient': 'Umgebungsgeräusche',
 } as const satisfies Record<string, string>;
 
 export type ToolTextKey = keyof typeof de;

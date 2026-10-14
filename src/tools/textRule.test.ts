@@ -10,7 +10,7 @@ const sources = import.meta.glob(['./*.ts'], { query: '?raw', import: 'default',
 /** Reine Daten, keine Oberflächen-Texte. */
 const DATEN: Record<string, string> = {
   './grafikPacks.ts': 'Urheber, Lizenzen und Recherche-Notizen der Grafik-Packs',
-  './soundtestLogic.ts': 'Gruppen-Namen der Kandidatenliste public/audio/kandidaten.json',
+  './soundtestLogic.ts': 'Gruppen-Namen der Hörprobe und Verweis auf die Credit-Datei public/audio/README.md',
 };
 
 const GERMAN = /[äöüßÄÖÜ]|[A-Za-z]{2,}\s+[A-Za-z]{2,}/;

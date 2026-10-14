@@ -47,7 +47,7 @@ for (const section of DEV_SECTIONS) {
   } else {
     const grid = document.createElement('div');
     grid.className = 'grid';
-    grid.append(...section.tiles.map(tileButton));
+    grid.append(...section.tiles.filter((t) => import.meta.env.DEV || !t.devOnly).map(tileButton));
     box.append(grid);
   }
   root.append(box);

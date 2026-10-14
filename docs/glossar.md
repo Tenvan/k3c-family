@@ -16,7 +16,10 @@ Regelwerk in [`rules/`](rules/), und das Glossar wird angepasst. Zahlen sind, wo
 | Ampel | Zustand eines Raums auf der Monitoring-Seite aus den letzten 5 min: rot bei Absturz, Tick p99 > 33,3 ms, RTT > 250 ms oder kein Pong; gelb bei anderem Diagnose-Ereignis, Tick p99 > 16,7 ms oder RTT > 100 ms; grau ohne Daten; sonst grün (Schwellen angenommen). | B-282, `src/tools/monitorData.ts` |
 | Angebot | Etwas, das ein Gebäude verkauft oder ausbildet (Bogen, Schwert, Beruf, Elite, Rüstung). Jedes Angebot hat ein eigenes Zahlziel, keine Auswahl per Taste. | Q34, `rules/materialien-gebaeude.md` § 3 |
 | Angebots-Anhang (`dx`) | Zahlziel eines Angebots mit festem Abstand `dx` zum Gebäude (`data/buildings.json`); entsteht mit dem Bau, alle `dx` liegen frei. Beispiel: Schwert an der Werkstatt `dx +4`. | Q52, Q53 |
+| Asset-Katalog | Alle Grafik- und Sound-Dateien unter `public/grafik/`, `public/sprites/`, `public/audio/` mit Pack, Urheber und Lizenz aus den CREDITS-Dateien; in k3c-dev durchsuchbar. | B-298 |
+| Asset-Slot | Stelle im Spiel, an der eine Grafik oder ein Sound eingebaut wird (z. B. `farm`, `mount:horse`, `sfx:coin`), mit Kategorie und einer Liste von Zuordnungen nach Präferenz. Nicht verwechseln mit Slot (lokaler Spieler). | B-298, `data/assets.json` |
 | Ausrüstung | Was einen Bauern zum Kämpfer oder Beruf macht: Bogen, Schwert (auch Elite, mit ihrer Stufe) und die Ausrüstung von Bergmann, Baumeister, Handwerker. Fällt bei 0 HP zu Boden; Bürger heben sie wieder auf (Abholauftrag wie am Waffenregal), ein Gegner trägt sie zum Portal (dann verloren) oder lässt sie bei seinem Tod fallen. | `rules/buerger.md` § 3, Q67, Q68, Q69 |
+| Ausschnitt | Rechteck (`x`, `y`, `w`, `h`) oder Frame-Raster einer Grafik, das eine Zuordnung nutzt; Vorschau im Maßstab `UNIT_PX`. | B-298 |
 | Äußerste Sperre (äußerste Linie) | Die äußerste gebaute Mauerlinie einer Seite: Mauer, mit Tor bis zum Tor. Dort stehen Krieger, und nur dort ist ein neues Tor bezahlbar; innere Türme und Tore wirken weiter. | Q46, Q47, Q54 |
 | Backlog-Filter | Filter der Planungsseite für Backlog-Liste und Sprint-Liste: Suche, Prio, Umgebung, Projekt und die Ticket-Schnellfilter Offen, Eingeplant, Ungeplant. Prio wirkt über die Tickets eines Sprints, Umgebung über seine Sessions. Er ändert die Projekte nicht. | B-401, `tools/k3c-dev/frontend/src/planning/planning.ts` |
 | Bau-Menü | Gibt es nicht: Gebaut wird nur an Bauplätzen durch Bezahlen, die Taste Y bleibt frei. | Q06, Q34 |
@@ -106,6 +109,7 @@ Regelwerk in [`rules/`](rules/), und das Glossar wird angepasst. Zahlen sind, wo
 | Mauerlinie | Je Seite 5 feste Linien bei ±44/64/84/104/124 Units mit Mauer-Platz, Turm-Platz (8 innen) und Tor-Platz (4 außen). Linie k ist ab Hub-Stufe k bezahlbar, wenn die Mauer der Linie k−1 derselben Seite steht. | `rules/materialien-gebaeude.md` § 3, Q48, Q49, Q58 |
 | Messreihe | Verlauf einer Kennzahl im Server (Tick-Dauer je Raum, RTT und Warteschlange je Gerät, Heap, CPU …): ein Punkt je Sekunde in einem Ring-Puffer fester Größe (3600 = 1 h), älteste Punkte fallen raus. Ausgabe über `/api/metrics`. | B-281, `engine/room/monitor.go` |
 | Mine | Stufe der Tiefe 2 (Biom `mine`) mit Kupfer-Adern und Kupfererz; Wellen über den Aggressionspool. | `game-design.md` › Welt & Stufen |
+| Mini-Szene | Kleine Szene je Kategorie auf der Dev-Seite `assetvorschau.html`, die die aktiven Zuordnungen der Asset-Slots im Spielmaßstab zeigt bzw. abspielt (Grafik: Figuren, Gebäude, Umgebung, Objekte, HUD; Sound: Ereignis-SFX, Musik, Umgebung). | B-299 |
 | Miniboss | Boss je Stufe; kommt mit Welle 5 (Wald) bzw. Welle 3 (unten) und kehrt nach dem Sieg nie zurück. | `rules/bosse.md` § 1 |
 | Monarch | Figur eines Spielers (Index 0–3), immer beritten; kämpft mit Schlag und Skills, seine Hauptrolle ist das Management der Bürger. | `protocol.md` › Begriffe, `rules/monarch.md` |
 | Monitoring-Seite | Seite `monitor.html` (Kachel „Monitor“) mit Ampel je Raum, Verläufen der Messreihen mit Perzentilen und der Fehler-Zeitleiste aus `/api/metrics`; rechnet nur Statistik, keine Spiel-Logik. | B-282 |
@@ -119,6 +123,7 @@ Regelwerk in [`rules/`](rules/), und das Glossar wird angepasst. Zahlen sind, wo
 | Platz-Stufe | Gespeicherte Stufe eines Bauplatzes im Spielstand v3 (`SiteSave`). | B-202, Q42 |
 | Portal | Ausgangspunkt der Gegnerwellen: 2 je Stufe, ab Tiefe 3 drei; mindestens 150 Units vom Hub und außerhalb der Linie 5 inklusive Streuung. | `rules/gegner.md` § 3, Q49, Q57 |
 | Posten | Standplatz eines Kämpfers: Bogenschützen auf dem Turm oder hinter der äußersten Mauer, Krieger hinter der äußersten gebauten Sperre. Posten sind keine Bauplätze. | `rules/buerger.md` § 1, Q46 |
+| Präferenz | Reihenfolge der Zuordnungen eines Asset-Slots; nur Präferenz 1 ist im Spiel aktiv, die weiteren sind Reserve und Vergleich (`wahl=n` in der Mini-Szene). | B-298, B-299 |
 | Preset | Startverteilung der Skill-Punkte beim Beitritt (Tank, Zauberer, Heiler, Dieb); keine feste Klasse. | `rules/monarch.md` § 2 |
 | Prio | Dringlichkeit eines Tickets (`hoch`, `mittel`, `niedrig`, `?`); ordnet Tickets innerhalb eines Projekts beim Einplanen. Die Reihenfolge der Sprints kommt aus dem Rang. | `arbeitsweise.md` › Projekte und Rang |
 | Projekt | Thema über mehrere Sprints (z. B. Grafik, Sound, Leistung & Stabilität) mit Kürzel aus drei Großbuchstaben, Status `aktiv`, `ruht` oder `erledigt` und Rang; hält seine Sprints in fester Reihenfolge. Ebenen: Projekt → Sprint → Session. | `arbeitsweise.md` › Projekte und Rang, B-355 |
@@ -128,6 +133,7 @@ Regelwerk in [`rules/`](rules/), und das Glossar wird angepasst. Zahlen sind, wo
 | Rang | Reihenfolge der aktiven Projekte (1 = zuerst, lückenlos), von 🧑 gesetzt; bestimmt, welcher Sprint und welche Session als Nächstes drankommt. | `arbeitsweise.md` › Projekte und Rang, B-355 |
 | Raum | Ein laufendes Spiel auf dem Server mit genau einem Spielstand und einem Code aus 4 Buchstaben; tickt unabhängig von anderen Räumen. | `protocol.md` › Begriffe |
 | Raum-Option | Beim Anlegen gewählte Einstellung des Raums: Schwierigkeitsgrad, Ziel (Siegvariante), Niederlage-Modus; steht im Spielstand. | `rules/stufen.md` § 5 |
+| Recherche-Treffer | Vorschlag aus der Web-Recherche zu einem Asset-Slot mit Titel, Link, Quelle, Urheber, Lizenz und Vorschau; bleibt gespeichert, bis 🧑 ihn verwirft. Ohne bestätigte Lizenz „Lizenz prüfen“. | B-298, `data/assets-recherche.json` |
 | Reife | Sprint-Feld: `Entwurf` (Sessions als Stichpunkte) oder `bereit` (jede Session als Datei, jedes Kriterium hat eine Session). | `arbeitsweise.md` › Sprint-Lebenslauf |
 | Reittier | Standard-Pferd (`horse`), das jeder Monarch immer reitet; Tempo- und Sprintfaktor 1,0, kein Auf- und Absteigen. | `rules/monarch.md` § 7 |
 | Respawn | Rückkehr eines gefallenen Monarchen an der Burg seiner Stufe mit voller HP nach der Wartezeit, wenn niemand ihn wiederbelebt: heute 5 s, Ziel 15 s mit B-120/W4.1. Ereignis `revive`. | `rules/monarch.md` §§ 1, 5, Q62 |
@@ -152,7 +158,8 @@ Regelwerk in [`rules/`](rules/), und das Glossar wird angepasst. Zahlen sind, wo
 | Sim (Engine) | Die Spiel-Logik in Go (`engine/sim/`, `engine/level/`), rechnet deterministisch auf dem Server; der Browser zeichnet nur. | `decisions/001-server-engine-go.md`, `CLAUDE.md` |
 | Skill | Aktive oder passive Fähigkeit des Monarchen aus vier Linien (Tank, Zauberer, Heiler, Dieb) mit Tier 1–4; vier Skill-Slots. | `rules/monarch.md` §§ 3–4, `game-design.md` |
 | Skill-Pool | Fund-Pool der Skill-Punkte je Insel: Ein gefundener Punkt zählt für jeden Spieler, jeder verteilt für sich (`World.SkillPoints`). | `rules/monarch.md` § 3 |
-| Slot | Lokaler Spieler eines Geräts (Index 0–3). Daneben: Skill-Slot, eine der vier Skill-Tasten. | `protocol.md` › Begriffe, `rules/monarch.md` § 4 |
+| Slot | Lokaler Spieler eines Geräts (Index 0–3). Daneben: Skill-Slot, eine der vier Skill-Tasten; Asset-Slot (Grafik/Sound) ist ein eigener Begriff. | `protocol.md` › Begriffe, `rules/monarch.md` § 4 |
+| Slot-Register | `data/assets.json`: einzige Quelle aller Asset-Slots mit Art, Kategorie, Beschreibung, Zielmaß bzw. Bus und Zuordnungen nach Präferenz; k3c-dev schreibt es, die Dev-Seite liest es. | B-298, M10 |
 | Snapshot | Zustand der Welt, den der Server an ein Gerät schickt: voll als `snap`, danach als `delta`; der Client zeichnet nur ihn. | `protocol.md` › Nachrichten |
 | Spec | Anforderung eines Tickets oder Sprints (README) mit Akzeptanzkriterien; Status `Entwurf`, `freigegeben` oder `rückwirkend`. | `arbeitsweise.md` › SDD |
 | Spielstand | Gespeicherter Zustand eines Raums (`saves/<name>.json`) mit Seeds, Hubs, Vorrat und Raum-Optionen; Gegner und Level-Layout werden nicht gespeichert. | `protocol.md` › Begriffe, `game-design.md` › Speichern |

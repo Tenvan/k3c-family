@@ -1,6 +1,6 @@
 # B-298 · Ein ResourcenManager in k3c-dev ordnet jedem Grafik- und Sound-Slot Assets mit Präferenz zu
 
-- **Domäne:** SRV
+- **Domäne:** DEV
 - **Typ:** Idee
 - **Prio:** mittel
 - **Umgebung:** live
@@ -8,9 +8,9 @@
 - **Sprint:** M10
 - **Projekt:** GRA
 - **Erstellt:** 2026-10-05
-- **Spec:** Entwurf
-- **Revision:** 1
-- **Freigabe:** –
+- **Spec:** freigegeben
+- **Revision:** 2
+- **Freigabe:** 2026-10-14, 🧑 im Chat (mit Sprint M10 Rev. 3)
 
 ## Ausgangslage
 
@@ -42,7 +42,7 @@ Grafik oder Sound bearbeiten (außer Ausschnitt), Einbau neuer Slots in den Rend
 
 ## Regeln und Einschränkungen
 
-Lizenzregel Q70 (`docs/fragenkatalog.md`): CC0, CC-BY, OGA-BY, CC-BY-SA, OFL (Schriften); CC-BY-NC nur als markierter Lückenfüller. Der Manager zeigt die Lizenz je Asset als Kennzeichen, markiert NC-Assets und warnt beim Ausschnitt an SA-Assets (Credit: Ausschnitt unter CC-BY-SA). Nicht übernehmbar: ND und Lizenzen ohne Weitergabe der Rohdateien (Pixabay, Mixkit, CraftPix-Freebies, Zapsplat, Sonniss). Credits sofort (B-165). freesound-Token nur lokal (nicht im Repo). Domäne SRV (`tools/k3c-dev/`); das Slot-Register in `data/` legt SIM bzw. REG an (Grenzfall klären). Logging mit Emojis.
+Lizenzregel Q70 (`docs/fragenkatalog.md`): CC0, CC-BY, OGA-BY, CC-BY-SA, OFL (Schriften); CC-BY-NC nur als markierter Lückenfüller. Der Manager zeigt die Lizenz je Asset als Kennzeichen, markiert NC-Assets und warnt beim Ausschnitt an SA-Assets (Credit: Ausschnitt unter CC-BY-SA). Nicht übernehmbar: ND und Lizenzen ohne Weitergabe der Rohdateien (Pixabay, Mixkit, CraftPix-Freebies, Zapsplat, Sonniss). Credits sofort (B-165). freesound-Token nur lokal (nicht im Repo). Domäne DEV (`tools/k3c-dev/`); das Slot-Register `data/assets.json` legt DEV an (Werkzeug-Daten, Entscheidung 🧑 2026-10-14). Logging mit Emojis.
 
 ## Beispiele
 
@@ -64,9 +64,11 @@ Datei fehlt → Slot zeigt Platzhalter mit Pfad. Quelle nicht erreichbar, Suchse
 
 ## Offene Fragen
 
-- Wer legt das Slot-Register an (SIM/REG oder SRV als Grenzfall) und wie werden bestehende Zuordnungen migriert?
+Keine.
 
 Entschieden (🧑, Chat 2026-10-05): B-252 ist verworfen und geht hier auf; das Spiel nutzt nur die erste Präferenz, weitere sind Reserve und Vergleich; Recherche ohne API ist erlaubt (Vorschläge mit Link, manueller Download und Import); Lizenzregel Q70.
+
+Entschieden (🧑, 2026-10-14, Sprint M10 Rev. 3): Slot-Register `data/assets.json`, angelegt von DEV (k3c-dev und Werkzeug-Seiten sind DEV, nicht SRV); einmaliger Import der Zuordnungen aus `docs/assets/zuordnung*.md` und `public/audio/kandidaten.json`, die md-Tabellen bleiben Historie; Recherche-Treffer in `data/assets-recherche.json`.
 
 ## Notizen
 

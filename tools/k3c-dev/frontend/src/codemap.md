@@ -2,18 +2,18 @@
 
 ## Responsibility
 
-React-Single-Page-App von k3c-dev: Shell mit vier Reitern (Dienste, Tasks, Planung, MCP), Theme-Umschaltung und Anbindung an das Backend über die `api`-Schicht.
+React-Single-Page-App von k3c-dev: Shell mit fünf Reitern (Dienste, Tasks, Planung, Assets, MCP), Theme-Umschaltung und Anbindung an das Backend über die `api`-Schicht.
 
 ## Design
 
 - `main.tsx`: Einstieg; lädt `@radix-ui/themes/styles.css` und `styles/*.css` (`theme`, `app`, `services`, `logs`, `mcp`, `tasks`, `planning`), rendert `App` in `StrictMode`.
 - `App.tsx`: Wurzel mit Radix `Theme` (dark/light, gemerkt, Vorgabe aus `prefers-color-scheme`) und `Tabs.Root`; Seite je Reiter gemerkt über `lib/prefs`; hält den MCP-Zustand (`mcp:state`, `backend.info()`).
-- `Header.tsx`: Reiterleiste `PAGES = dienste|tasks|planung|mcp`, MCP-Badge, `Mock`-Badge, Dark-Switch.
+- `Header.tsx`: Reiterleiste `PAGES = dienste|tasks|planung|assets|mcp`, MCP-Badge, `Mock`-Badge, Dark-Switch.
 - Unterordner (je mit eigener codemap):
-  - `api/` – Backend-Vertrag, Wails-Adapter und Mock.
+  - `api/` – Backend-Vertrag (`types.ts`, Assets in `assetTypes.ts`), Wails-Adapter und Mock.
   - `lib/` – Formatierung, Prefs, Hooks.
   - `ui/` – gemeinsame Bausteine (`StatusBadge`, `ActionButton`, `MarkdownView`).
-  - `services/`, `tasks/`, `planning/`, `mcp/` – je eine Seite; `logs/` – Logs-Bereich der Dienste-Seite, Konsole auch von `tasks/` genutzt.
+  - `services/`, `tasks/`, `planning/`, `assets/`, `mcp/` – je eine Seite; `logs/` – Logs-Bereich der Dienste-Seite, Konsole auch von `tasks/` genutzt.
   - `styles/` – CSS je Seite (keine Logik).
 - Muster: Feature-Ordner mit pure Logik-Dateien (Vitest) getrennt von Komponenten und Data-Hooks.
 
