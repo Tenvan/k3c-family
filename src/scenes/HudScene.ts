@@ -20,6 +20,11 @@ import { PLAYER_COLORS } from '../core/constants';
 import { hudItems, hudLayout, type HAlign, type Rect, type Size } from './hudLayout';
 import { cellRadar, radarRect, RADAR_HEIGHT } from './radar';
 import type { HintDevice } from './glyphs';
+import { joinHintDevices } from './joinHint';
+import { stepControlsHint, type ControlsTrack } from './controlsHint';
+import { stepGoldFlash, type GoldFlash } from './goldFlash';
+import { enqueueBanner } from './bannerQueue';
+import { loadSettings } from '../core/settings';
 import { GamepadInput, type PlayerInput } from '../input/playerInput';
 import { TouchInput } from '../input/touchInput';
 import { siteName } from './worldRenderer';
@@ -42,12 +47,14 @@ export class HudScene extends Phaser.Scene {
   /** Zeichenbreite der Spielerzeile: die Karten reservieren ihre Bildflächen mit Leerzeichen (Festschrift) */
   private probe!: Phaser.GameObjects.Text;
   private cardData = new Map<number, CardData>();
+  private goldFlash = new Map<number, GoldFlash>();
   private shared!: Phaser.GameObjects.Text;
   private clock!: Phaser.GameObjects.Text;
   private fight!: Phaser.GameObjects.Text;
   private banner!: Phaser.GameObjects.Text;
   private debug: DebugOverlay | null = null;
   private controlsHint!: Phaser.GameObjects.Text;
+  private controlsTrack: ControlsTrack | null = null;
   private info!: Phaser.GameObjects.Text;
   private travel!: Phaser.GameObjects.Text;
   /** Spielerzeile je Zellen-Index */
@@ -74,9 +81,11 @@ export class HudScene extends Phaser.Scene {
   create(): void {
     this.players = new Map();
     this.cardData = new Map();
+    this.goldFlash = new Map();
     this.boxes = new Map();
     this.layoutKey = '';
     this.bannerQueue = [];
+    this.controlsTrack = null;
     this.bannerLeft = 0;
     this.radar = new RadarLayer(this);
     this.skills = new SkillMenuLayer(this);
@@ -100,7 +109,7 @@ export class HudScene extends Phaser.Scene {
     this.cards = this.add.graphics();
     this.probe = this.add.text(0, 0, 'MMMMMMMMMM', { ...STYLE, ...fontStyle('playerValue') }).setVisible(false);
     this.boxed('citizens', this.add.text(0, 0, '', { ...STYLE, ...fontStyle('shared') }), false);
-    this.banner = this.boxed('banner', this.add.text(0, 0, '', { ...STYLE, ...fontStyle('banner'), strokeThickness: 10, align: 'center' }).setVisible(false));
+    this.banner = this.boxed('banner', this.add.text(0, 0, '', { ...STYLE, ...fontStyle('banner'), strokeThickness: 4, align: 'center' }).setVisible(false));
     this.joinHint = this.boxed('join', this.add.text(0, 0, t('hud.joinCenter'), { ...STYLE, ...fontStyle('joinCenter') }));
     this.debug = debugEnabled(location.search) ? new DebugOverlay(this) : null;
     this.controlsHint = this.boxed('controls', this.add.text(0, 0, '', { ...STYLE, ...fontStyle('controlsHint'), strokeThickness: 4 }));
@@ -182,9 +191,12 @@ export class HudScene extends Phaser.Scene {
       return true;
     }
     const waiting = !world || game.waitingForJoin();
-    this.controlsHint.setText(t(`hud.hint.${game.lastDevice}`));
-    this.joinHint.setText(world ? t(`hud.join.${game.lastDevice}`) : (client.notice ?? t('net.connecting')));
-    this.joinHint.setVisible(waiting || client.you.length < (client.limits?.slotsPerDevice ?? 4));
+    const controls = stepControlsHint(this.controlsTrack, performance.now(), { seats: client.you.length, device: game.lastDevice, guide: loadSettings().guideHints });
+    this.controlsTrack = controls.track;
+    this.controlsHint.setText(t(`hud.hint.${game.lastDevice}`)).setVisible(controls.visible);
+    const joinText = joinHintDevices(game.joinCandidates(), game.lastDevice).map((d) => t(`hud.join.${d}`)).join('  ·  ');
+    this.joinHint.setText(world ? joinText : (client.notice ?? t('net.connecting')));
+    this.joinHint.setVisible((waiting || client.you.length < (client.limits?.slotsPerDevice ?? 4)) && (!world || joinText !== ''));
     this.joinHint.setFontSize(waiting ? FONTS.joinCenter.px : FONTS.joinCorner.px);
     const taken = client.monarchs.filter((m) => m !== 'free').length;
     this.info.setText(client.roomCode ? t('hud.room', { code: client.roomCode, name: client.roomName, n: taken }) : '').setVisible(!!client.roomCode);
@@ -209,7 +221,7 @@ export class HudScene extends Phaser.Scene {
   private showBanner(game: GameScene, deltaMs: number): void {
     for (const e of game.pendingEvents.splice(0)) {
       const text = eventText(e);
-      if (text) this.bannerQueue.push(text);
+      if (text) this.bannerQueue = enqueueBanner(this.bannerQueue, this.banner.visible ? this.banner.text : null, text);
     }
     this.bannerLeft -= deltaMs / 1000;
     if (this.bannerLeft > 0) return;
@@ -238,7 +250,9 @@ export class HudScene extends Phaser.Scene {
       const max = world.purseMax ?? ECONOMY.purse.maxGold;
       const gold = p.respawnIn > 0 ? t('hud.downShort', { s: Math.ceil(p.respawnIn) }) : `${p.gold}/${max}`;
       box.text.setVisible(true).setText(`P${p.index + 1} ${pad(CARD.bar)} ${pad(CARD.pot)} ${gold}`);
-      this.cardData.set(i, { cw, hp: Math.max(0, p.hp / p.maxHp), down: p.respawnIn > 0, color: PLAYER_COLORS[p.index % PLAYER_COLORS.length]! });
+      const flash = stepGoldFlash(this.goldFlash.get(p.index), p.gold, performance.now());
+      this.goldFlash.set(p.index, flash.state);
+      this.cardData.set(i, { cw, hp: Math.max(0, p.hp / p.maxHp), down: p.respawnIn > 0, color: PLAYER_COLORS[p.index % PLAYER_COLORS.length]!, flash: flash.flash });
       places.push(t('hud.place', { p: p.index + 1, stage: nameOf('biome', world.biome.id, world.biome.name) }));
     }
     this.boxes.get('places')?.text.setText(places.join('\n'));
@@ -259,6 +273,7 @@ export class HudScene extends Phaser.Scene {
       const px = x + CARD.bar + d.cw; // Goldtopf: bauchiger Topf mit Rand
       g.fillStyle(0xffd166, 1).fillEllipse(px + 12, y + CARD.barH - 2, 24, 22).fillRect(px + 4, y - 6, 16, 6);
       g.fillStyle(0x9c6644, 1).fillRect(px + 2, y - 8, 20, 3);
+      if (d.flash) g.lineStyle(3, 0xffffff, 1).strokeEllipse(px + 12, y + CARD.barH - 2, 34, 32);
     }
   }
 }
@@ -268,6 +283,8 @@ interface CardData {
   hp: number;
   down: boolean;
   color: number;
+  /** Goldzahl hat sich eben geändert: Topf hervorheben (B-398) */
+  flash: boolean;
 }
 
 /** Maße der Spielerkarte: Breite des Lebensbalkens (und seine Höhe) und der Fläche des Goldtopfs, in px */

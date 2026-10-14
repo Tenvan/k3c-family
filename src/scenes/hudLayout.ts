@@ -126,7 +126,9 @@ export function hudItems(cells: readonly Cell[], sizes: ReadonlyMap<string, Size
     add(`skills:${i}`, cell, RANK.skills, { h: 'left', v: 'bottom', dx: 24, dy: 24 });
     add(`radar:${i}`, cell, RANK.radar, { ...radarAnchor(cell), v: 'top', dy: 8 }); // Kompass oben im Feld
   });
-  add('banner', SCREEN, RANK.banner, { h: 'center', v: 'middle', dx: 0, dy: 0 });
+  // Welt-Meldung: Zeile 2 der Leiste statt Bildmitte (B-414). 3 und 4 Spieler sind entfallen (🧑 2026-10-11); dort ist die Zeile voll, die Meldung bleibt mittig.
+  if (cells.length <= 2) add('banner', BAR, RANK.banner, { h: 'center', v: 'top', dx: 0, dy: 4 + 42 });
+  else add('banner', SCREEN, RANK.banner, { h: 'center', v: 'middle', dx: 0, dy: 0 });
   // Leiste oben, für alle Spieler, drei Zeilen: Raum, Tageszeit, Kampf / Spielerwerte / Vorrat und Hub, Bürger; weicht dem Home-Button aus
   const bar = (id: string, h: HAlign, row: 0 | 1 | 2) => add(id, BAR, RANK.shared, { h, v: 'top', dx: 24, dy: 4 + row * 42 });
   bar('info', 'left', 0);

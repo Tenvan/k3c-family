@@ -100,7 +100,6 @@ export class WorldRenderer {
   private readonly pickups: Layer<Pickup>;
   private readonly castleHp: View;
   private readonly citizens: BuergerView;
-  private readonly lastGold = new Map<number, { gold: number; at: number }>();
   /** Bauplätze, deren Preisschild steht (nur das nächste je Spieler, B-395) */
   private priceTags = new Set<number>();
 
@@ -290,8 +289,7 @@ export class WorldRenderer {
     // Farbiger Punkt unter den Füßen: welcher Monarch gehört zu wem
     const color = PLAYER_COLORS[p.index % PLAYER_COLORS.length];
     const marker = s.add.ellipse(0, 4, 56, 12, color, 0.8);
-    const purse = s.add.text(0, top - 10, '', { ...TEXT, ...fontStyle('purse') }).setOrigin(0.5, 1);
-    return s.add.container(p.x * U, G, [marker, sprite, purse, ...bar(s, top - 50, 50, 0x52b788)]).setDepth(10);
+    return s.add.container(p.x * U, G, [marker, sprite, ...bar(s, top - 50, 50, 0x52b788)]).setDepth(10); // Gold steht nur im HUD (B-398)
   }
 
   private updatePlayer(v: View, p: Player): void {
@@ -304,14 +302,7 @@ export class WorldRenderer {
     v.setPosition(p.x * U, G);
     v.setAlpha(p.respawnIn > 0 ? 0.25 : 1);
 
-    // Münzbeutel über dem Kopf: beim Bezahlen und kurz nach jeder Änderung
-    const now = this.world.time;
-    const last = this.lastGold.get(p.id);
-    if (!last || last.gold !== p.gold) this.lastGold.set(p.id, { gold: p.gold, at: last ? now : -99 });
-    const recent = now - (this.lastGold.get(p.id)?.at ?? -99) < 2;
-    const purse = v.getAt(2) as Phaser.GameObjects.Text;
-    purse.setText(`${p.gold} Gold`).setVisible(p.paying || recent);
-    setBar(v, 3, p.hp / p.maxHp, p.hp < p.maxHp && p.respawnIn <= 0);
+    setBar(v, 2, p.hp / p.maxHp, p.hp < p.maxHp && p.respawnIn <= 0);
   }
 }
 

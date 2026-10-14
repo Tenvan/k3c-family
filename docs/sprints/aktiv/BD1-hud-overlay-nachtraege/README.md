@@ -1,18 +1,18 @@
 # BD1 · CLI · Kamera, Beitritts-Hinweis, Overlay-Taste und HUD-Nachträge
 
-- **Status:** geplant
+- **Status:** aktiv
 - **Projekt:** BED
 - **Domäne:** CLI
-- **Reife:** Entwurf
+- **Reife:** bereit
 - **Tickets:** B-392, B-391, B-389, B-399, B-398, B-414, B-393, B-370, B-374
-- **Start-Commit:** – (wird beim Aktivieren gesetzt: `git rev-parse --short origin/develop`)
-- **Spec:** Entwurf
-- **Revision:** 1
-- **Freigabe:** –
+- **Start-Commit:** 7724ead6
+- **Spec:** freigegeben
+- **Revision:** 3
+- **Freigabe:** 2026-10-14, Chat 🧑 (Revision 3)
 
 ## Ausgangslage
 
-Nach den Abnahmen U5.4, S8.4 und U6.4 sowie dem HUD-Umbau (B-413) sind neun Beobachtungen der Bedienung offen: Kamera von Spieler 2 (B-392), Beitritts-Hinweis (B-391), Ö bei offenem Cheat-Dialog (B-389), dauerhafter Steuerhinweis (B-399), Gold im HUD (B-398), Welt-Meldungen im globalen Band (B-414), fehlendes Münzbild (B-393), Mond-Bild (B-370) und Taste am Preisschild (B-374). Alle liegen in `src/scenes/`.
+Nach den Abnahmen U5.4, S8.4 und U6.4 sowie dem HUD-Umbau (B-413) sind neun Beobachtungen der Bedienung offen: Kamera von Spieler 2 (B-392), Beitritts-Hinweis (B-391), Ö bei offenem Cheat-Dialog (B-389), dauerhafter Steuerhinweis (B-399), Gold im HUD (B-398), Welt-Meldungen im globalen Band (B-414), fehlendes Münzbild (B-393), Mond-Bild (B-370) und die Frage, ob das Preisschild eine Taste nennt (B-374, entschieden: nein). Alle liegen in `src/scenes/`.
 
 ## Ziel
 
@@ -24,7 +24,7 @@ Spielende am PC und an der Xbox (höchstens 2 Spieler); ein Agent baut in `src/s
 
 ## Anforderungen
 
-B-392, B-391, B-389, B-399, B-398, B-414, B-393, B-370, B-374 › Anforderungen. Die Ticket-Specs sind noch Entwurf und müssen vor der Freigabe ausgefüllt werden (Ausgangslage steht, Ziel und Kriterien fehlen).
+B-392, B-391, B-389, B-399, B-398, B-414, B-393, B-370, B-374 › Anforderungen. Freigegeben sind B-392, B-391, B-389 und B-414; B-399, B-398, B-393, B-370 und B-374 sind ausgefüllt (Entscheidungen 2026-10-14 eingetragen), ihre Freigabe steht aus. B-374 enthält keine Code-Arbeit mehr, nur die festgehaltene Entscheidung.
 
 ## Nicht-Ziele
 
@@ -46,22 +46,24 @@ Textur für Münz- oder Mond-Bild fehlt → nur Text, Warnung im Client-Log 🤒
 
 - **AC-01** Im Split-Screen mit 2 lokalen Spielern folgt die Kamera jeder Ansicht ihrer Figur (B-392).
 - **AC-02** Der Beitritts-Hinweis erscheint für jeden freien Platz; Ö schließt bei offenem Cheat-Dialog nur den Dialog (B-391, B-389).
-- **AC-03** Der Steuerhinweis blendet nach einer Frist aus, das Gold steht im HUD statt als Beutel über dem Reiter, Welt-Meldungen erscheinen im globalen Band oben (B-399, B-398, B-414).
-- **AC-04** Das Münzbild erscheint im Münz-Hinweis, die Nacht-Warnung zeigt ein Mond-Bild, das Preisschild nennt die Zahl-Taste (B-393, B-370, B-374).
+- **AC-03** Der Steuerhinweis blendet 20 s nach dem Beitritt aus und ist über „Hinweise“ wieder einschaltbar, das Gold steht im HUD statt als Beutel über dem Reiter und wird beim Bezahlen kurz hervorgehoben, Welt-Meldungen erscheinen im globalen Band oben (B-399, B-398, B-414).
+- **AC-04** Das Münzbild erscheint im Münz-Hinweis (Ursache von der Session mit frischem Profil geprüft), die Nacht-Warnung zeigt ein Mond-Bild aus den vorhandenen Packs, das Preisschild bleibt ohne Taste (Entscheidung festgehalten) (B-393, B-370, B-374).
 - **AC-05** `task check` ist grün; alle Texte kommen aus `texts.de.ts`.
 
 ## Offene Fragen
 
-B-370 und B-374 sind Fragen an 🧑: Mond-Bild aus welchem Pack? Soll das Preisschild die Taste immer nennen oder nur in der geführten Nacht? Außerdem: Ticket-Projekt von B-414 wurde von WRT auf BED gesetzt (🧑 bestätigt?).
+keine. Entschieden 2026-10-14 (🧑, Chat): B-399 20 s und über „Hinweise“ einschaltbar; B-398 Goldzahl kurz hervorheben; B-393 Session prüft die Ursache selbst; B-370 Mond-Icon aus vorhandenen Packs (Stern kein Ersatz); B-374 keine Taste im Preisschild; B-414 Projekt BED, Warteschlange, Umbruch sonst „…“.
+
+Risiko: S8.2 fand in den vorhandenen Packs keinen Mond. Findet BD1.4 keinen, blockiert die Session mit einer Frage an 🧑 (neues Pack nur mit Lizenz-Eintrag und Zustimmung).
 
 ## Sessions
 
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
-| BD1.1 | `BD1.1-kamera-spieler-2.md` | Umsetzung | autonom | offen |
-| BD1.2 | `BD1.2-beitritt-hinweis-oe.md` | Umsetzung | autonom | offen |
-| BD1.3 | `BD1.3-hud-hinweis-gold-meldungen.md` | Umsetzung | autonom | offen |
-| BD1.4 | `BD1.4-hinweis-bilder-taste.md` | Umsetzung | autonom | offen |
+| BD1.1 | `BD1.1-kamera-spieler-2.md` | Umsetzung | autonom | fertig |
+| BD1.2 | `BD1.2-beitritt-hinweis-oe.md` | Umsetzung | autonom | fertig |
+| BD1.3 | `BD1.3-hud-hinweis-gold-meldungen.md` | Umsetzung | autonom | fertig |
+| BD1.4 | `BD1.4-muenzbild-mondbild-hinweis.md` | Umsetzung | autonom | blockiert |
 | BD1.5 | `BD1.5-review.md` | Review | autonom | offen |
 
 Bei `Reife: Entwurf` genügen Stichpunkte mit den Kriterien in Klammern statt Session-Dateien. Vor dem Aktivieren

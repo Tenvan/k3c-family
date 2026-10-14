@@ -8,9 +8,9 @@
 - **Sprint:** BD1
 - **Projekt:** BED
 - **Erstellt:** 2026-10-11
-- **Spec:** Entwurf
-- **Revision:** 1
-- **Freigabe:** –
+- **Spec:** freigegeben
+- **Revision:** 2
+- **Freigabe:** 2026-10-14, Chat 🧑 (Revision 2)
 
 ## Ausgangslage
 
@@ -27,7 +27,7 @@ Spieler am PC und an der Xbox (höchstens 2); 🧑 nimmt ab.
 ## Anforderungen
 
 - Der Goldbeutel-Text über dem Reiter (`purse` in `worldRenderer.ts`) entfällt.
-- Das HUD zeigt das Gold jedes Spielers weiter an (Spielerzeile); beim Bezahlen und nach einer Änderung hebt es die Zahl sichtbar hervor (Vorschlag), falls das ohne Beutel nötig ist.
+- Das HUD zeigt das Gold jedes Spielers weiter in der Spielerzeile; beim Bezahlen und nach einer Änderung wird die Zahl kurz hervorgehoben (Farbe oder kurzes Aufblinken).
 - HP-Balken über dem Reiter bleiben (B-173).
 - 2 Spieler: Gold je Zelle in der eigenen Spielerzeile.
 
@@ -54,7 +54,7 @@ Gefallener Monarch → Spielerzeile zeigt wie bisher den Respawn-Text, kein Gold
 
 ## Offene Fragen
 
-Soll die Goldzahl im HUD beim Bezahlen hervorgehoben werden (Farbe, kurzes Aufblinken), oder reicht die Zahl? Entscheidet 🧑.
+keine. Entschieden 2026-10-14 (🧑, Chat): Die Goldzahl im HUD wird beim Bezahlen kurz hervorgehoben.
 
 ## Notizen
 

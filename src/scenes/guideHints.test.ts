@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import type { Coin, CycleInfo, Site, Troop } from '../model/types';
-import { GUIDE_ORDER, guideImage, nextGuide, stepGuide, type GuideHint, type GuideWorld } from './guideHints';
+import { GUIDE_ORDER, guideImage, nextGuide, stepGuide, usableGuideImage, type GuideHint, type GuideWorld } from './guideHints';
 
 const coin = (id: number, x: number) => ({ id, x }) as Coin;
 const site = (id: number, x: number, state: Site['state'] = 'unpaid') => ({ id, x, state }) as Site;
@@ -91,5 +91,27 @@ describe('guideImage (B-294)', () => {
 
   it('Bauplatz, Nacht und Bauer zeigen kein Bild (Mond: kein Bild unter public/, B-370)', () => {
     for (const id of GUIDE_ORDER.filter((i) => i !== 'coin')) expect(guideImage(id)).toBeNull();
+  });
+});
+
+describe('usableGuideImage (B-393)', () => {
+  const coin = { image: 'grafik:coinIcon', scale: 4 };
+
+  it('geladene Textur: das Bild bleibt, kein Log', () => {
+    const warned = new Set<string>();
+    const log: string[] = [];
+    expect(usableGuideImage(coin, () => true, (k) => log.push(k), warned)).toBe(coin);
+    expect(log).toEqual([]);
+  });
+
+  it('fehlende Textur: Hinweis ohne Bild und ein Log, nicht bei jedem Frame', () => {
+    const warned = new Set<string>();
+    const log: string[] = [];
+    for (let i = 0; i < 3; i++) expect(usableGuideImage(coin, () => false, (k) => log.push(k), warned)).toBeNull();
+    expect(log).toEqual(['grafik:coinIcon']);
+  });
+
+  it('ohne Bild bleibt es ohne Bild', () => {
+    expect(usableGuideImage(null, () => false, () => undefined, new Set())).toBeNull();
   });
 });
