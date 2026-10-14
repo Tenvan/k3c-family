@@ -1,6 +1,6 @@
 # SV1.1 · Raum mit allen Stufen, leere Test-Räume schließen sofort
 
-- **Status:** offen
+- **Status:** in Arbeit
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** SRV

@@ -1,14 +1,14 @@
 # SV1 · SRV · Raum mit allen Stufen, Voll-Ausbau-Spielstand, leere Test-Räume
 
-- **Status:** geplant
+- **Status:** aktiv
 - **Projekt:** WRT
 - **Domäne:** SRV
 - **Reife:** bereit
 - **Tickets:** B-315, B-199, B-290, B-204
-- **Start-Commit:** –
-- **Spec:** Entwurf
+- **Start-Commit:** a8d46d9e
+- **Spec:** freigegeben
 - **Revision:** 1
-- **Freigabe:** –
+- **Freigabe:** 2026-10-14 (Chat)
 
 ## Ausgangslage
 
@@ -64,7 +64,7 @@ Biom ohne Daten → Stufe fehlt mit Log-Warnung 🤒, Raum läuft weiter.
 
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
-| SV1.1 | `SV1.1-alle-stufen-test-raeume.md` | Umsetzung | autonom | offen |
+| SV1.1 | `SV1.1-alle-stufen-test-raeume.md` | Umsetzung | autonom | in Arbeit |
 | SV1.2 | `SV1.2-client-biome.md` | Umsetzung | autonom | offen |
 | SV1.3 | `SV1.3-spielstand-voll-ausgebaut.md` | Umsetzung | autonom | offen |
 | SV1.4 | `SV1.4-knopf-level-betrachter.md` | Umsetzung | autonom | offen |
