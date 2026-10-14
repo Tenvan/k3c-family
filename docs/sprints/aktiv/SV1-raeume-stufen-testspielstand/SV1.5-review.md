@@ -1,6 +1,6 @@
 # SV1.5 · Review und Abnahme des Sprints SV1
 
-- **Status:** offen
+- **Status:** in Arbeit
 - **Typ:** Review
 - **Agent:** autonom
 - **Domäne:** SRV

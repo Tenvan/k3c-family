@@ -68,7 +68,7 @@ Biom ohne Daten → Stufe fehlt mit Log-Warnung 🤒, Raum läuft weiter.
 | SV1.2 | `SV1.2-client-biome.md` | Umsetzung | autonom | fertig |
 | SV1.3 | `SV1.3-spielstand-voll-ausgebaut.md` | Umsetzung | autonom | fertig |
 | SV1.4 | `SV1.4-knopf-level-betrachter.md` | Umsetzung | autonom | fertig |
-| SV1.5 | `SV1.5-review.md` | Review | autonom | offen |
+| SV1.5 | `SV1.5-review.md` | Review | autonom | in Arbeit |
 
 ## Abnahme
 
