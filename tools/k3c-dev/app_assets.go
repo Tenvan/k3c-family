@@ -3,7 +3,10 @@ package main
 import (
 	"context"
 	"fmt"
+	"net/http"
 	"time"
+
+	"github.com/wailsapp/wails/v2/pkg/runtime"
 
 	assetreg "k3c/tools/k3c-dev/internal/assets"
 	"k3c/tools/k3c-dev/internal/services"
@@ -102,4 +105,34 @@ func (a *App) AssetsResearch(id, query string) (assetreg.ResearchResult, error) 
 func (a *App) AssetsHitDrop(id, hit string) error {
 	a.wait()
 	return assetreg.DropHit(a.root, id, hit)
+}
+
+// AssetsImport öffnet den Dateidialog und übernimmt die gewählte Datei zu einem Treffer (Binding, B-298/AC-05);
+// Abbruch im Dialog = leere Antwort.
+func (a *App) AssetsImport(id, hit string) (string, error) {
+	a.wait()
+	src, err := runtime.OpenFileDialog(a.ctx, runtime.OpenDialogOptions{
+		Title:   "Datei zum Treffer importieren",
+		Filters: []runtime.FileFilter{{DisplayName: "Grafik und Sound (png, ogg, mp3, wav)", Pattern: "*.png;*.ogg;*.mp3;*.wav"}},
+	})
+	if err != nil || src == "" {
+		return "", err
+	}
+	return assetreg.ImportFile(a.root, id, hit, src, time.Now())
+}
+
+// AssetsDownload übernimmt einen Treffer mit direktem Download und erkannter Lizenz (Binding).
+func (a *App) AssetsDownload(id, hit string) (string, error) {
+	a.wait()
+	ctx := a.svcCtx
+	if ctx == nil {
+		ctx = context.Background()
+	}
+	return assetreg.DownloadHit(ctx, a.root, id, hit, http.DefaultClient, time.Now())
+}
+
+// AssetsLicenseOK bestätigt die Lizenz eines Treffers (Binding, nur 🧑; bewusst kein MCP-Tool).
+func (a *App) AssetsLicenseOK(id, hit string) error {
+	a.wait()
+	return assetreg.ConfirmLicense(a.root, id, hit, time.Now())
 }

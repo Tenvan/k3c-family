@@ -145,6 +145,7 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-414](B-414-welt-meldungen-im-band.md) | CLI | Idee | mittel | eingeplant | BD1 | Welt-Meldungen erscheinen für alle im globalen Band oben |
 | [B-418](B-418-spielstand-kommentare-veraltet.md) | SIM | Problem | niedrig | offen | – | Kommentare in island_save_v3.go und island_save_v5.go nennen nach W7.2 veraltete Versionen |
 | [B-419](B-419-golden-daten-verkleinern.md) | INF | Idee | niedrig | offen | – | Golden-Daten werden gezielt verkleinert, ohne die Prüfschärfe zu verlieren |
+| [B-420](B-420-importe-grafikpacks.md) | DEV | Schuld | mittel | offen | – | Mit k3c-dev importierte Kandidaten unter public/grafik/kandidaten/ brechen grafikPacks.test nicht |
 
 ## Archiv
 

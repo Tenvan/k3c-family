@@ -3,6 +3,7 @@ package mcpsrv
 import (
 	"context"
 	"fmt"
+	"net/http"
 	"strings"
 	"time"
 
@@ -28,6 +29,12 @@ type assetsHitAddIn struct {
 	Lizenz   string `json:"lizenz,omitempty" jsonschema:"wie auf der Seite angegeben; leer = Lizenz prüfen"`
 	Vorschau string `json:"vorschau,omitempty" jsonschema:"Bild- oder MP3-Adresse für die Vorschau"`
 	Download string `json:"download,omitempty" jsonschema:"direkte Datei, nur wenn die Seite sie mit maschinenlesbarer Lizenz anbietet"`
+}
+
+type assetsImportIn struct {
+	ID   string `json:"id" jsonschema:"Asset-Slot"`
+	Hit  string `json:"hit" jsonschema:"ID des Treffers aus assets_hits"`
+	Path string `json:"path,omitempty" jsonschema:"lokale Datei (png bzw. ogg, mp3, wav); leer = direkter Download des Treffers (nur mit erkannter Lizenz)"`
 }
 
 type assetsHitDropIn struct {
@@ -125,4 +132,29 @@ func hitAdd(root string, in assetsHitAddIn) (string, error) {
 		return in.ID + ": Link schon gespeichert", nil
 	}
 	return in.ID + ": Treffer gespeichert", nil
+}
+
+// registerAssetsImport übernimmt Treffer (B-298/AC-05); die Lizenz bestätigt nur 🧑 in der Oberfläche, nie ein Tool.
+func registerAssetsImport(s *Server) {
+	open, destructive := true, false
+	add(s, &mcp.Tool{
+		Name: "assets_import",
+		Description: "Übernimmt einen Recherche-Treffer: lokale Datei (path) oder direkter Download; legt sie unter public/…/kandidaten/ ab, " +
+			"trägt den Credit ein (Lizenz prüfen bis 🧑 bestätigt) und hängt sie als letzte Präferenz an. Nutze es bei: Fund übernehmen. " +
+			"Statt: Datei von Hand kopieren und CREDITS bearbeiten.",
+		Annotations: &mcp.ToolAnnotations{DestructiveHint: &destructive, OpenWorldHint: &open},
+	}, func(ctx context.Context, in assetsImportIn) (string, error) {
+		root := s.ws(ctx).root
+		var rel string
+		var err error
+		if in.Path == "" {
+			rel, err = assets.DownloadHit(ctx, root, in.ID, in.Hit, http.DefaultClient, time.Now())
+		} else {
+			rel, err = assets.ImportFile(root, in.ID, in.Hit, in.Path, time.Now())
+		}
+		if err != nil {
+			return "", err
+		}
+		return fmt.Sprintf("%s: %s importiert, Credit eingetragen, letzte Präferenz", in.ID, rel), nil
+	})
 }

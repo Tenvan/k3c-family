@@ -97,3 +97,17 @@ func TestAssetsHitsBindings(t *testing.T) {
 		t.Errorf("nach Verwerfen: %+v", hits)
 	}
 }
+
+func TestAssetsLicenseOK(t *testing.T) {
+	app := assetApp(t)
+	if _, err := assetreg.AddHits(app.root, "farm", []assetreg.Hit{{Title: "Farm", Link: "https://x/farm"}}, time.Now()); err != nil {
+		t.Fatal(err)
+	}
+	hits, _ := app.AssetsHits("farm")
+	if err := app.AssetsLicenseOK("farm", hits[0].ID); err != nil {
+		t.Fatal(err)
+	}
+	if hits, _ := app.AssetsHits("farm"); hits[0].LicenseStatus != assetreg.LicenseConfirmed {
+		t.Errorf("Status: %+v", hits[0])
+	}
+}

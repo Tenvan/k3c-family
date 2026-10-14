@@ -3,6 +3,8 @@ package mcpsrv
 import (
 	"net/http"
 	"net/http/httptest"
+	"os"
+	"path/filepath"
 	"strings"
 	"testing"
 
@@ -49,5 +51,27 @@ func TestAssetsResearchTools(t *testing.T) {
 	}
 	if text, isErr := callText(t, cs, "assets_hit_add", map[string]any{"id": "farm", "titel": "x", "link": "http://unsicher"}); !isErr || !strings.Contains(text, "https://") {
 		t.Errorf("http abgelehnt: %q", text)
+	}
+}
+
+// B-298/AC-05 über MCP: lokale Datei zu einem Treffer importieren; Ablage und Credit stimmen.
+func TestAssetsImportTool(t *testing.T) {
+	root := assetRepo(t)
+	cs := connect(t, New(Config{Version: "test", Root: root}))
+	if text, isErr := callText(t, cs, "assets_hit_add", map[string]any{"id": "farm", "titel": "Farm Haus", "link": "https://x.itch.io/farm"}); isErr {
+		t.Fatal(text)
+	}
+	hits, _ := assets.HitsOf(root, "farm")
+	src := filepath.Join(root, "public", "grafik", "town", "house-a.png")
+	text, isErr := callText(t, cs, "assets_import", map[string]any{"id": "farm", "hit": hits[0].ID, "path": src})
+	if isErr || !strings.Contains(text, "grafik/kandidaten/farm-haus.png importiert") {
+		t.Fatalf("assets_import: %q", text)
+	}
+	credits, _ := os.ReadFile(filepath.Join(root, "public", "grafik", "CREDITS.md"))
+	if !strings.Contains(string(credits), "| kandidaten/farm-haus.png | Farm Haus | unbekannt | unbekannt | https://x.itch.io/farm | Lizenz prüfen |") {
+		t.Errorf("Credit: %s", credits)
+	}
+	if text, isErr := callText(t, cs, "assets_import", map[string]any{"id": "farm", "hit": hits[0].ID}); !isErr || !strings.Contains(text, "manuell") {
+		t.Errorf("Download ohne erkannte Lizenz: %q", text)
 	}
 }

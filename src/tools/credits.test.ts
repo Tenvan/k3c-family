@@ -7,16 +7,18 @@ const GLOBS = {
   sprites: Object.keys(import.meta.glob('../../public/sprites/*/*', { query: '?url' })),
 };
 const dirsOf = (root: keyof typeof GLOBS) => [...new Set(GLOBS[root].map((p) => p.split('/')[4]!))];
+/** Import-Zeilen aus k3c-dev nennen die Datei (kandidaten/<datei>, B-298); geprüft wird ihr Ordner. */
+const dirOf = (folder: string) => folder.split('/')[0]!;
 
 describe('Credits (B-165)', () => {
   it.each(['grafik', 'sprites'] as const)('jedes Verzeichnis unter public/%s hat einen Eintrag (AC-01)', (root) => {
-    const listed = new Set(CREDITS.filter((c) => c.root === root).flatMap((c) => c.folders));
+    const listed = new Set(CREDITS.filter((c) => c.root === root).flatMap((c) => c.folders.map(dirOf)));
     expect(dirsOf(root).filter((d) => !listed.has(d))).toEqual([]);
   });
 
   it.each(['grafik', 'sprites'] as const)('jeder Eintrag in %s zeigt auf ein vorhandenes Verzeichnis', (root) => {
     const dirs = new Set(dirsOf(root));
-    const missing = CREDITS.filter((c) => c.root === root).flatMap((c) => c.folders).filter((f) => !dirs.has(f));
+    const missing = CREDITS.filter((c) => c.root === root).flatMap((c) => c.folders).filter((f) => !dirs.has(dirOf(f)));
     expect(missing).toEqual([]);
   });
 
@@ -62,6 +64,15 @@ describe('Credits (B-165)', () => {
     const md = '| Ordner | Werk | Autor:innen | Lizenz | Quelle |\n|---|---|---|---|---|\n| a, b | W | X | CC0 | https://q |';
     expect(parseCredits(md, 'sprites')).toEqual([
       { root: 'sprites', folders: ['a', 'b'], title: 'W', author: 'X', license: 'CC0', source: 'https://q' },
+    ]);
+    // Import-Abschnitt aus k3c-dev (B-298): Zeile je Datei, Spalte Status wird ignoriert
+    const imported = [
+      '| Ordner | Pack | Urheber | Lizenz | Quelle | Status |',
+      '|---|---|---|---|---|---|',
+      '| kandidaten/coin.png | Coin | A | CC0 1.0 | https://q | Lizenz prüfen |',
+    ].join('\n');
+    expect(parseCredits(imported, 'grafik')).toEqual([
+      { root: 'grafik', folders: ['kandidaten/coin.png'], title: 'Coin', author: 'A', license: 'CC0 1.0', source: 'https://q' },
     ]);
   });
 });

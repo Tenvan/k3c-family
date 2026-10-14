@@ -59,7 +59,20 @@ function fakeHits(query: string): AssetHit[] {
   ];
 }
 
-export function mockAssets(): Pick<Backend, 'assetsList' | 'assetsSet' | 'assetsCatalog' | 'assetsHits' | 'assetsResearch' | 'assetsHitDrop'> {
+function mockImport(slots: AssetSlot[], hits: Map<string, AssetHit[]>, id: string, hit: string): string {
+  const s = slots.find((x) => x.id === id);
+  const h = hits.get(id)?.find((x) => x.id === hit);
+  if (!s || !h) throw new Error(`treffer "${hit}" zu ${id} nicht gefunden`);
+  if (h.lizenzStatus === 'ausgeschlossen') throw new Error(`treffer ${hit} ist nicht übernehmbar (Q70: ${h.lizenz})`);
+  const datei = `${s.art === 'sound' ? 'audio' : 'grafik'}/kandidaten/${h.titel.toLowerCase().replace(/[^a-z0-9]+/g, '-')}.${s.art === 'sound' ? 'ogg' : 'png'}`;
+  CATALOG.push({ datei, art: s.art, pack: 'kandidaten', w: 32, h: 32, lizenz: h.lizenz || 'unbekannt' });
+  h.datei = datei;
+  s.wahl.push({ datei });
+  s.status = 'zugeordnet';
+  return datei;
+}
+
+export function mockAssets(): Pick<Backend, 'assetsList' | 'assetsSet' | 'assetsCatalog' | 'assetsHits' | 'assetsResearch' | 'assetsHitDrop' | 'assetsImport' | 'assetsDownload' | 'assetsLicenseOk'> {
   const slots = initial();
   const hits = new Map<string, AssetHit[]>();
   const preview = new URLSearchParams(window.location.search).get('preview') ?? '';
@@ -83,6 +96,12 @@ export function mockAssets(): Pick<Backend, 'assetsList' | 'assetsSet' | 'assets
     },
     assetsHitDrop: async (id, hit) => {
       hits.set(id, (hits.get(id) ?? []).filter((h) => h.id !== hit));
+    },
+    // Import und Download legen im Mock nur einen Katalog-Eintrag an und hängen ihn als letzte Präferenz an.
+    assetsImport: async (id, hit) => mockImport(slots, hits, id, hit),
+    assetsDownload: async (id, hit) => mockImport(slots, hits, id, hit),
+    assetsLicenseOk: async (id, hit) => {
+      for (const h of hits.get(id) ?? []) if (h.id === hit) h.lizenzStatus = 'bestaetigt';
     },
     assetsCatalog: async (query, art, limit) => {
       const words = query.toLowerCase().split(/\s+/).filter(Boolean);

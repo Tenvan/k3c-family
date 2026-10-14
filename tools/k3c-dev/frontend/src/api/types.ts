@@ -483,6 +483,12 @@ export interface Backend {
   assetsResearch(id: string, query: string): Promise<ResearchResult>;
   /** Verwirft einen Treffer. */
   assetsHitDrop(id: string, hit: string): Promise<void>;
+  /** Dateidialog, dann Import zum Treffer (Ablage, Credit, letzte Präferenz); Abbruch = leere Antwort. */
+  assetsImport(id: string, hit: string): Promise<string>;
+  /** Direkter Download eines Treffers mit erkannter Lizenz. */
+  assetsDownload(id: string, hit: string): Promise<string>;
+  /** Lizenz bestätigen (nur 🧑). */
+  assetsLicenseOk(id: string, hit: string): Promise<void>;
   /** Abonniert ein Ereignis; die Rückgabe meldet wieder ab. */
   on<E extends EventName>(event: E, fn: (data: Events[E]) => void): () => void;
 }

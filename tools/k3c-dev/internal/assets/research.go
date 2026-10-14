@@ -39,6 +39,7 @@ type Hit struct {
 	LicenseStatus string `json:"lizenzStatus"`
 	Flag          string `json:"kennzeichen,omitempty"`
 	Created       string `json:"erstellt"`
+	File          string `json:"datei,omitempty"` // nach dem Import: Datei relativ zu public/
 }
 
 // Research ist der Inhalt von data/assets-recherche.json: Treffer je Slot-ID.
@@ -48,7 +49,7 @@ type Research struct {
 }
 
 const researchComment = "Recherche-Treffer je Asset-Slot (B-298, M10.4): Vorschläge mit Link, Quelle, Urheber, Lizenz und Vorschau. " +
-	"Schreibt k3c-dev (Recherche, MCP assets_hit_add); ein Treffer bleibt, bis 🧑 ihn verwirft. lizenzStatus: erkannt, pruefen, ausgeschlossen (Q70)."
+	"Schreibt k3c-dev (Recherche, MCP assets_hit_add); ein Treffer bleibt, bis 🧑 ihn verwirft. lizenzStatus: erkannt, pruefen, ausgeschlossen (Q70), bestaetigt (🧑)."
 
 // LoadResearch liest die Treffer; fehlt die Datei, ist sie leer. Ungültiges JSON ist ein Fehler (nie überschreiben).
 func LoadResearch(root string) (*Research, error) {

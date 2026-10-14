@@ -8,6 +8,7 @@ Ressourcen-Manager (B-298, Sprint M10): Slot-Register `data/assets.json` (Asset-
 - `catalog.go`: `Catalog` läuft über `public/grafik`, `public/sprites`, `public/audio`, `public/audio-test`; Gruppe aus `public/grafik/index.json`, Credit aus den Tabellen `| Ordner | Pack | Urheber | Lizenz | Quelle |` (`readCredits`); `LicenseFlag` (ND vor NC vor SA), `Search` (alle Wörter, ohne Groß/Klein, Filter Art, Limit).
 - `research.go`: Recherche-Treffer in `data/assets-recherche.json` (`LoadResearch`, `AddHits` ohne Doppel je Link, `DropHit`, `HitsOf`, `RunResearch`), `ClassifyLicense` nach Q70 (`erkannt`, `pruefen`, `ausgeschlossen`).
 - `sources.go`: `Searcher` mit freesound (API, Token aus `K3C_FREESOUND_TOKEN` oder `.work/freesound-token`), Wikimedia Commons (MediaWiki-API, direkter Download) und OpenGameArt (Suchseite als HTML); Quellen parallel, Fehler einer Quelle als Hinweis. Tests spielen `testdata/` ab.
+- `import.go`: `ImportFile` (Endung je Art, höchstens 20 MB, Datei-Signatur, Name aus dem Titel ohne Pfadanteile, nie überschreiben → `public/grafik/kandidaten/` bzw. `public/audio/kandidaten/`, Zuordnung als letzte Präferenz), `DownloadHit` (nur `https` und erkannte Lizenz). `credits.go`: Credit-Zeile je Datei im Abschnitt „Importe (k3c-dev)“ der Credit-Datei, `ConfirmLicense` (nur Oberfläche, 🧑).
 - Funktionen nehmen `root` explizit (Worktree-fähig); nur Standardbibliothek.
 
 ## Flow
@@ -16,6 +17,6 @@ Ressourcen-Manager (B-298, Sprint M10): Slot-Register `data/assets.json` (Asset-
 3. `Catalog(root)` → `Search(list, query, art, limit)`.
 
 ## Integration
-- Konsumenten: `internal/mcpsrv/tools_assets.go` (`assets_list`, `assets_get`, `assets_set`, `assets_catalog`), `tools_assets_research.go` (`assets_research`, `assets_hits`, `assets_hit_add`, `assets_hit_drop`), `app_assets.go` (Bindings).
+- Konsumenten: `internal/mcpsrv/tools_assets.go` (`assets_list`, `assets_get`, `assets_set`, `assets_catalog`), `tools_assets_research.go` (`assets_research`, `assets_hits`, `assets_hit_add`, `assets_hit_drop`, `assets_import`), `app_assets.go` (Bindings).
 - Daten: `data/assets.json` (Erstbefüllung aus `docs/assets/zuordnung*.md`), `public/**/CREDITS.md`, `public/audio/README.md`.
 - Tests: `repo_test.go` prüft das echte Register (gültig, byte-gleiche Rundreise); `src/tools/assets.test.ts` prüft es gegen die Zuordnungstabellen.

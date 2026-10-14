@@ -44,6 +44,9 @@ interface GoApp {
   AssetsHits(id: string): Promise<AssetHit[]>;
   AssetsResearch(id: string, query: string): Promise<ResearchResult>;
   AssetsHitDrop(id: string, hit: string): Promise<void>;
+  AssetsImport(id: string, hit: string): Promise<string>;
+  AssetsDownload(id: string, hit: string): Promise<string>;
+  AssetsLicenseOK(id: string, hit: string): Promise<void>;
 }
 
 interface WailsRuntime {
@@ -105,6 +108,9 @@ export function wailsBackend(): Backend {
     assetsHits: (id) => app.AssetsHits(id),
     assetsResearch: (id, query) => app.AssetsResearch(id, query),
     assetsHitDrop: (id, hit) => app.AssetsHitDrop(id, hit),
+    assetsImport: (id, hit) => app.AssetsImport(id, hit),
+    assetsDownload: (id, hit) => app.AssetsDownload(id, hit),
+    assetsLicenseOk: (id, hit) => app.AssetsLicenseOK(id, hit),
     openUrl: (url) => runtime.BrowserOpenURL(url),
     on: <E extends EventName>(event: E, fn: (data: Events[E]) => void) =>
       runtime.EventsOn(event, (data) => fn(data as Events[E])),

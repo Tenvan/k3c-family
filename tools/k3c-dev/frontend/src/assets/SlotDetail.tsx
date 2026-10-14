@@ -11,10 +11,12 @@ interface Props {
   /** Adresse des Vite-Dienstes; leer = keine Bilder, keine Mini-Szene */
   preview: string;
   onSave: (id: string, wahl: AssetChoice[]) => Promise<boolean>;
+  /** Slot-Liste neu laden (nach einem Import) */
+  onReload: () => void;
 }
 
 /** Detail eines Asset-Slots: Zuordnungen nach Präferenz (Ziehen), Ausschnitt, Katalog-Suche, Mini-Szene und Recherche. */
-export function SlotDetail({ slot, preview, onSave }: Props) {
+export function SlotDetail({ slot, preview, onSave, onReload }: Props) {
   const [active, setActive] = useState(0);
   const choice = slot.wahl[active];
   const save = (wahl: AssetChoice[]) => onSave(slot.id, wahl);
@@ -32,7 +34,7 @@ export function SlotDetail({ slot, preview, onSave }: Props) {
       {choice && slot.art === 'sound' && <SoundProbe choice={choice} preview={preview} />}
       <CatalogPicker art={slot.art} onAdd={(datei) => save(addChoice(slot.wahl, datei))} />
       <ScenePreview slot={slot} pref={active + 1} preview={preview} />
-      <ResearchPanel slot={slot} />
+      <ResearchPanel slot={slot} onImported={onReload} />
     </div>
   );
 }

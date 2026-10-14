@@ -7,7 +7,7 @@ Reiter „Assets“ (B-298, Sprint M10): getrennte Ansichten Grafik und Sound au
 - `assets.ts` (Vitest `assets.test.ts`): reine Logik – `filterSlots`, `countStatus`, `move`, `addChoice`, `removeChoice`, `withCut`, `previewSize` (×2, Units à 32 px), `sceneUrl`, `fileUrl`.
 - `useAssets.ts`: lädt `backend.assetsList()`, speichert sofort mit `assetsSet` (Ablehnung aus Go in `error`), `startVite`.
 - `AssetsPage.tsx`: Kopf (Art, Kategorie, Status, Suche, „Vite starten“), `SlotList`, `SlotDetail`.
-- `SlotDetail.tsx`: `ChoiceList` (HTML5-Drag-and-Drop, ↑, ✕), `SoundProbe`, `ScenePreview`; `CutEditor.tsx` (Felder x/y/w/h, Canvas im Spielmaßstab, SA/NC-Hinweis nach Q70); `CatalogPicker.tsx` (entprellte Suche, ND gesperrt); `ResearchPanel.tsx` (Web-Recherche: Treffer mit Lizenz-Status, Vorschau, Link im Browser, Verwerfen).
+- `SlotDetail.tsx`: `ChoiceList` (HTML5-Drag-and-Drop, ↑, ✕), `SoundProbe`, `ScenePreview`; `CutEditor.tsx` (Felder x/y/w/h, Canvas im Spielmaßstab, SA/NC-Hinweis nach Q70); `CatalogPicker.tsx` (entprellte Suche, ND gesperrt); `ResearchPanel.tsx` (Web-Recherche: Treffer mit Lizenz-Status, Vorschau, Link im Browser, Übernehmen/Importieren …, Lizenz bestätigen, Verwerfen).
 
 ## Flow
 1. Reiter öffnen → `assetsList` (Slots mit Status, Vite-Adresse).

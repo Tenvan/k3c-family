@@ -78,7 +78,10 @@ func asset(rel, full string, credits map[string]credit) (Asset, bool) {
 	default:
 		return a, false
 	}
-	c, ok := credits[a.Pack]
+	c, ok := credits[strings.Join(parts[1:], "/")] // Import: Zeile je Datei (kandidaten/<datei>)
+	if !ok {
+		c, ok = credits[a.Pack]
+	}
 	switch {
 	case ok:
 		a.Title, a.Artist, a.License, a.Source = c.title, c.artist, c.license, c.source

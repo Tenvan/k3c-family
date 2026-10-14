@@ -58,7 +58,7 @@ export function AssetsPage() {
       <div className="as-body">
         <SlotList slots={visible} selected={slot?.id ?? ''} onSelect={pick} />
         <section className="as-detail">
-          {slot ? <SlotDetail key={slot.id} slot={slot} preview={data.view.preview} onSave={data.save} /> : (
+          {slot ? <SlotDetail key={slot.id} slot={slot} preview={data.view.preview} onSave={data.save} onReload={() => void data.reload()} /> : (
             <NoticeCard title="Kein Asset-Slot gewählt" tone="neutral">Links einen Slot wählen: Zuordnungen, Ausschnitt und Mini-Szene erscheinen hier.</NoticeCard>
           )}
         </section>

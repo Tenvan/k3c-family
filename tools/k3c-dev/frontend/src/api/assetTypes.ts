@@ -52,7 +52,7 @@ export interface CatalogAsset {
   kennzeichen?: '' | 'NC' | 'SA' | 'ND';
 }
 
-export type LicenseStatus = 'erkannt' | 'pruefen' | 'ausgeschlossen';
+export type LicenseStatus = 'erkannt' | 'pruefen' | 'ausgeschlossen' | 'bestaetigt';
 
 /** Recherche-Treffer (Go: assets.Hit): Vorschlag mit Link, Quelle und Lizenz-Status nach Q70 */
 export interface AssetHit {
@@ -67,6 +67,8 @@ export interface AssetHit {
   lizenzStatus: LicenseStatus;
   kennzeichen?: '' | 'NC' | 'SA' | 'ND';
   erstellt: string;
+  /** nach dem Import: Datei relativ zu public/ */
+  datei?: string;
 }
 
 /** Ergebnis einer Recherche: alle gespeicherten Treffer des Slots, neu angelegte, Hinweise ausgefallener Quellen */
