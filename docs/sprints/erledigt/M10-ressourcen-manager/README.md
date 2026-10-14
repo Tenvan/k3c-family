@@ -1,6 +1,6 @@
 # M10 · DEV · Ressourcen-Manager für Grafik- und Sound-Slots in k3c-dev
 
-- **Status:** aktiv
+- **Status:** erledigt
 - **Projekt:** GRA
 - **Domäne:** DEV
 - **Reife:** bereit
@@ -63,10 +63,13 @@ Keine. Entschieden (🧑, 2026-10-14): Slot-Register `data/assets.json`, angeleg
 | M10.3 | `M10.3-oberflaeche.md` | Umsetzung | autonom | fertig |
 | M10.4 | `M10.4-recherche.md` | Umsetzung | autonom | fertig |
 | M10.5 | `M10.5-import.md` | Umsetzung | autonom | fertig |
-| M10.6 | `M10.6-review.md` | Review | autonom | offen |
+| M10.6 | `M10.6-review.md` | Review | autonom | fertig |
 
 Kriterien: AC-01 in M10.1 (Register, Reihenfolge, Ausschnitt, MCP), M10.3 (Oberfläche, Mini-Szene eingebettet), M10.4 (Recherche), M10.5 (Import); AC-02 in M10.2.
 
 ## Abnahme
 
-–
+- 2026-10-14: AC-01 und AC-02 mit Nachweis in M10.1 bis M10.5; Go-, Vitest- und Build-Kriterien geprüft, Beobachtungen (B-298/AC-01, AC-03, AC-04, AC-07; B-299/AC-01, AC-02) nur vom Agenten im Browser-Pane mit Mock: angenommen, Abnahme 🧑 offen (B-421).
+- Befunde: keine neuen schweren; Sicherheitsfunde (Import nur im Checkout, Download nur upload.wikimedia.org, freesound-Token im Header) in M10.4/M10.5 behoben.
+- Neue Tickets: B-420 (Credit-Test für Importe), B-421 (Abnahme 🧑). B-298 und B-299 bleiben eingeplant bis B-421.
+- Version: v0.17.0 vorgeschlagen (neues Dev-Werkzeug-Feature, aktuell v0.16.1).

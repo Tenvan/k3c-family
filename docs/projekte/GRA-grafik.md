@@ -15,7 +15,7 @@ In Abarbeitungs-Reihenfolge; der erste nicht erledigte Sprint ist der nächste. 
 | Sprint | Thema | Status |
 |---|---|---|
 | GR7 | Figuren-Lücken, ganzzahlige Skalierung und Schrift | aktiv |
-| M10 | Ressourcen-Manager für Grafik- und Sound-Slots in k3c-dev | aktiv |
+| M10 | Ressourcen-Manager für Grafik- und Sound-Slots in k3c-dev | erledigt |
 | GR8 | Eigene Figuren für neue Gegner und Grafik-Pipeline mit Ziel-Palette | geplant |
 
 ## Nicht-Ziele
