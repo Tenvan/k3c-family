@@ -1,6 +1,6 @@
 # WZ4.3 · Review WZ4
 
-- **Status:** in Arbeit
+- **Status:** fertig
 - **Typ:** Review
 - **Agent:** autonom
 - **Domäne:** DEV
@@ -51,5 +51,4 @@ Manuelle Prüfungen (Browser, Xbox, TV) nur, wenn diese Datei sie nennt und 🧑
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+AC-01 geprüft: `task check` und `dev:test` grün; Diff gegen `origin/develop` gelesen (nur `happy-dom` neu, Umgebung per Datei-Pragma, Test löst echte Ereignisse für Doppelklick, Ziehen, Klemmung, Loslassen aus). Keine schweren Befunde, keine neuen Tickets. Version v0.16.1 vorgeschlagen (Patch), kein Tag.
