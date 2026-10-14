@@ -15,7 +15,7 @@ function sizes(cells: readonly Cell[]): Map<string, Size> {
     }
     m.set(`radar:${i}`, { w: radarRect(c).w, h: 20 });
   });
-  m.set('banner', { w: 640, h: 72 });
+  m.set('banner', { w: 640, h: 42 });
   m.set('shared', { w: 416, h: 42 });
   m.set('clock', { w: 352, h: 42 });
   m.set('fight', { w: 288, h: 42 });
@@ -64,7 +64,7 @@ describe('hudLayout (B-337/AC-01)', () => {
     for (const cells of [computeLayout(1, false), computeLayout(4, false)]) {
       const items = hudItems(cells, sizes(cells), false);
       const out = hudLayout(items, []);
-      if (cells.length === 1) for (const it of items.filter((i) => i.rank === 0)) expect(out.get(it.id)).toEqual(anchorRect(it));
+      if (cells.length === 1) for (const it of items.filter((i) => i.rank === 0 && i.id !== 'banner')) expect(out.get(it.id)).toEqual(anchorRect(it)); // die Meldung weicht der Spielerkarte aus (B-414)
       const [info, clock, fight, shared] = ['info', 'clock', 'fight', 'shared'].map((id) => out.get(id)!);
       expect(info.x).toBe(24);
       expect(fight.x + fight.w).toBe(GAME_WIDTH - 24);
@@ -112,5 +112,27 @@ describe('hudLayout (B-337/AC-01)', () => {
     const low = hudLayout(hudItems(cells, s, false), []).get('join')!;
     expect(mid.y + mid.h / 2).toBe(GAME_HEIGHT / 2 + 120);
     expect(low.y).toBeGreaterThan(mid.y);
+  });
+});
+
+describe('Welt-Meldungen im Band (B-414/AC-01)', () => {
+  it.each([
+    ['1', computeLayout(1, false)],
+    ['1 mit Partner', computeLayout(1, true)],
+    ['2', computeLayout(2, false)],
+  ])('%s Spieler: die Meldung steht innerhalb der Leiste und überlagert keine Leistenzeile', (_name, cells) => {
+    const out = hudLayout(hudItems(cells, sizes(cells), false), [HOME]);
+    const banner = out.get('banner')!;
+    expect(banner).not.toBeNull();
+    expect(banner.y).toBeGreaterThanOrEqual(0);
+    expect(banner.y + banner.h).toBeLessThanOrEqual(BAR_HEIGHT);
+    for (const id of ['info', 'clock', 'fight', 'shared', 'citizens', 'places']) {
+      const other = out.get(id);
+      if (other) expect(overlaps(banner, other), `banner schneidet ${id}`).toBe(false);
+    }
+    cells.forEach((c, i) => {
+      const card = out.get(`player:${i}`);
+      if (c.kind === 'player' && card) expect(overlaps(banner, card), `banner schneidet Spielerkarte ${i}`).toBe(false);
+    });
   });
 });

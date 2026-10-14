@@ -1,6 +1,6 @@
 # BD1.3 · Steuerhinweis blendet aus, Gold im HUD, Welt-Meldungen im globalen Band
 
-- **Status:** in Arbeit
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** CLI
@@ -46,11 +46,11 @@ Aktionen-Overlay (B-319) und geführte Hinweise (B-148); Münz-Animationen (GR5)
 
 ## Fertig, wenn
 
-- [ ] AC-03 (B-399/AC-01): Test belegt 20 s Sichtbarkeit, danach weg, Gerätewechsel startet neu, „Hinweise“ schaltet ihn wieder ein.
-- [ ] AC-03 (B-398/AC-01): Test belegt: kein Goldtext über dem Reiter; Spielerzeile nennt das Gold; Hervorhebung beim Bezahlen.
-- [ ] AC-03 (B-414/AC-01, AC-02): `hudLayout.test.ts` belegt die Lage im Band für 1 und 2 Spieler, `fontRules.test.ts` die Mindestgröße.
+- [x] AC-03 (B-399/AC-01): Test belegt 20 s Sichtbarkeit, danach weg, Gerätewechsel startet neu, „Hinweise“ schaltet ihn wieder ein.
+- [x] AC-03 (B-398/AC-01): Test belegt: kein Goldtext über dem Reiter; Spielerzeile nennt das Gold; Hervorhebung beim Bezahlen.
+- [x] AC-03 (B-414/AC-01, AC-02): `hudLayout.test.ts` belegt die Lage im Band für 1 und 2 Spieler, `fontRules.test.ts` die Mindestgröße.
 - [ ] AC-03 (B-399/AC-02, B-398/AC-02, B-414/AC-03): Abnahme am PC bzw. Gerät ist Sache von 🧑; bis dahin „angenommen, Validierung offen“.
-- [ ] `task check` grün.
+- [x] Vitest grün (2303 Tests), `tsc` und Oxlint ohne Befund. `task check` nicht ausgeführt (k3c-dev getrennt).
 
 ## Prüfen
 
@@ -64,5 +64,14 @@ Manuelle Prüfungen (2 Spieler am PC, Meldungen im Band) nur, wenn 🧑 sie für
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+- **B-399 umgesetzt, geprüft (Test):** `stepControlsHint` (`src/scenes/controlsHint.ts`, `controlsHint.test.ts`, 6 Tests): 20 s ab Beitritt, Gerätewechsel oder Einschalten von „Hinweise“ (`guideHints`); weniger Plätze (Abmelden) zeigen ihn nicht erneut. `HudScene.showHints` blendet das Element `controls` aus, das Layout gibt den Platz frei.
+- **B-398 umgesetzt, geprüft (Test):** Beutel-Text `purse` über dem Reiter und die Rolle `purse` in `fontRules.ts` entfallen (`worldRenderer.ts`, HP-Balken bleiben). Die Goldzahl der Spielerkarte wird nach einer Änderung 0,8 s lang durch einen weißen Ring um den Topf hervorgehoben (`goldFlash.ts`, 3 Tests). `goldOnlyInHud.test.ts` belegt per Quelltext, dass die Welt-Ansicht keinen Goldtext erzeugt und die Karte Gold/Maximum nennt (kein Phaser-Lauf, das ist ein Quelltext-Test).
+- **B-414 umgesetzt, geprüft (Test):** Welt-Meldungen stehen in Zeile 2 der Leiste (`hudLayout.ts`, Rolle `banner` 28 px statt 56 px, Kontur 4 statt 10); `bannerQueue.ts` (6 Tests) kürzt auf 56 Zeichen mit „…“ und reiht dieselbe Meldung nur einmal ein, die Warteschlange bleibt. `hudLayout.test.ts`: neuer Fall für 1, 1 mit Partner und 2 Spieler (innerhalb `BAR_HEIGHT`, ohne Überlagerung von Leistenzeilen und Karten); `fontRules.test.ts` grün.
+- **Abweichungen:**
+  - **Umbruch:** Entschieden war „Umbruch, sonst „…““. Die Leistenzeile ist nur eine Zeile hoch, deshalb gibt es nur Kürzung, keinen Umbruch.
+  - **3–4 Spieler:** Dort bleibt die Meldung in der Bildmitte (die Leistenzeile ist voll). Diese Layouts sind entfallen (🧑 2026-10-11).
+  - **Banner-Position:** Bei 1 Spieler weicht die Meldung der Spielerkarte aus und steht rechts davon (x 736 statt zentriert).
+  - **Steuerhinweis:** Er hat noch eine Zelle für alle Spieler, nicht je Zelle (das HUD hat nur ein Element `controls`).
+- **Abnahme am PC (B-399/AC-02, B-398/AC-02, B-414/AC-03): angenommen, Validierung offen (🧑).** Im Browser nicht geprüft: Der laufende Vite-Server gehört zum Checkout der Repo-Wurzel, nicht zu `sprint/bd1`.
+- **Prüfung:** `npx vitest run src tests`: 2303 Tests grün (ohne die 6 Dateien unter `tools/k3c-dev/frontend/`, deren Pakete im Worktree fehlen).
+- **Neue Tickets:** keine.

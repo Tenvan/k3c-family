@@ -28,7 +28,7 @@ export const FONTS = {
   playerValue: { px: 28, art: 'info', space: 'hud', color: '#ffffff' },
   shared: { px: 28, art: 'info', space: 'hud', color: '#ffffff' },
   fight: { px: 28, art: 'info', space: 'hud', color: '#ff8fa3' },
-  banner: { px: 56, art: 'info', space: 'hud', color: '#ffffff' },
+  banner: { px: 28, art: 'info', space: 'hud', color: '#ffffff' },
   travel: { px: 40, art: 'info', space: 'hud', color: '#ffd166' },
   joinCenter: { px: 44, art: 'info', space: 'hud', color: '#ffffff' },
   joinCorner: { px: 26, art: 'side', space: 'hud', color: '#ffffff' },
@@ -36,7 +36,6 @@ export const FONTS = {
   roomInfo: { px: 24, art: 'side', space: 'hud', color: '#ffffff' },
   exitSign: { px: 32, art: 'info', space: 'world', color: '#ffffff' },
   priceTag: { px: 32, art: 'info', space: 'world', color: '#ffffff' },
-  purse: { px: 32, art: 'info', space: 'world', color: '#ffd166' },
   citizenLabel: { px: 32, art: 'info', space: 'world', color: '#e9c46a' },
   /** „Stufe n wird geladen“ in einer Zelle ohne Stufe (`placeholderLayer`, skaliert mit 1 / Zoom der Zelle) */
   placeholder: { px: 32, art: 'side', space: 'world', color: '#ffffff' },
