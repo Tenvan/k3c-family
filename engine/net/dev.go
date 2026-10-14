@@ -68,3 +68,37 @@ func (s *server) devAction(w http.ResponseWriter, r *http.Request, rm *room.Room
 		writeJSON(w, http.StatusOK, map[string]any{"ok": true, "room": rm.Summary()})
 	}
 }
+
+// devFullSave ist POST /api/dev/fullsave {"seed": "…"} (B-315, SV1.3): legt den Spielstand „voll ausgebaut“ an und
+// antwortet mit seinem Namen {"save": "voll-…"}. Nur im Dev-Mode, sonst 403; der Level-Betrachter startet ihn danach.
+func (s *server) devFullSave(w http.ResponseWriter, r *http.Request) {
+	if s.cfg.Rooms == nil {
+		http.NotFound(w, r)
+		return
+	}
+	if r.Method != http.MethodPost {
+		fail(w, http.StatusMethodNotAllowed, "Nur POST")
+		return
+	}
+	var b struct {
+		Seed string `json:"seed"`
+	}
+	if err := json.NewDecoder(http.MaxBytesReader(w, r.Body, 4096)).Decode(&b); err != nil {
+		fail(w, http.StatusBadRequest, "Anfrage unlesbar")
+		return
+	}
+	name, err := s.cfg.Rooms.FullSave(b.Seed)
+	switch {
+	case errors.Is(err, room.ErrForbidden):
+		s.log.Warn("🚫 Spielstand voll ausgebaut ohne Dev-Mode abgelehnt")
+		fail(w, http.StatusForbidden, messages["forbidden"])
+	case errors.Is(err, room.ErrBadRequest):
+		fail(w, http.StatusBadRequest, "Seed ungültig (1–40 Zeichen: Buchstaben, Ziffern, - und _)")
+	case err != nil:
+		s.log.Error("💥 Spielstand voll ausgebaut fehlgeschlagen", "error", err.Error())
+		fail(w, http.StatusInternalServerError, "Spielstand nicht angelegt")
+	default:
+		s.log.Info("🐛 Spielstand voll ausgebaut", "save", name)
+		writeJSON(w, http.StatusOK, map[string]any{"save": name})
+	}
+}

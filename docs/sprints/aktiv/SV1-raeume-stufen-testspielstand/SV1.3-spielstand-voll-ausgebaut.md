@@ -1,6 +1,6 @@
 # SV1.3 · Spielstand „voll ausgebaut“ und Dev-API
 
-- **Status:** in Arbeit
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** SRV
@@ -44,10 +44,10 @@ Knopf im Level-Betrachter (SV1.4), Darstellung der Ausbaustufen im Renderer (B-2
 
 ## Fertig, wenn
 
-- [ ] AC-01: Go-Test belegt jeden Bauplatz aller Stufen gebaut und jede Ausbaustufe mindestens einmal (B-315/AC-01).
-- [ ] AC-01: Go-Test belegt gleicher Seed → gleicher Spielstand (B-315/AC-02).
-- [ ] AC-05: Go-Test belegt 403 ohne Dev-Mode.
-- [ ] AC-06: `task check:go` grün.
+- [x] AC-01: Go-Test belegt jeden Bauplatz aller Stufen gebaut und jede Ausbaustufe mindestens einmal (B-315/AC-01).
+- [x] AC-01: Go-Test belegt gleicher Seed → gleicher Spielstand (B-315/AC-02).
+- [x] AC-05: Go-Test belegt 403 ohne Dev-Mode.
+- [x] AC-06: `task check:go` grün.
 
 ## Prüfen
 
@@ -57,4 +57,9 @@ task check:go
 
 ## Ergebnis
 
-–
+- **Name:** `voll-<seed>` (`room.FullSavePrefix`); Seed 1–40 Zeichen `[A-Za-z0-9_-]`, weil er Teil des Dateinamens wird. Ein gleichnamiger Stand wird überschrieben, wobei der Store wie üblich eine Sicherung anlegt.
+- **„Voll ausgebaut“** (`engine/room/fullsave.go`): neue Insel mit allen Stufen (`islandDepths`), jeder Bauplatz `built` mit den HP seiner Stufe. Mauern und Türme laufen reihum über alle Inselstufen durch die Stufen 1–5. Die Hub-Stufe ist auf der ersten Stufe 5 und fällt je Tiefe um eins (5…1), damit jede Hub-Stufe einmal steht und der Start (Tiefe 0) Hub 5 zeigt. Die Stufen kommen aus `data/buildings.json` › `levels` und `data/hub.json` › `levels`, `engine/sim/` bleibt unverändert.
+- **AC-01** umgesetzt, geprüft: `engine/room/fullsave_test.go` › `TestVollAusgebauterSpielstand` (fünf Stufen, jeder Platz `built` mit HP > 0, Hub-, Mauer- und Turmstufen 1–5 je mindestens einmal; lädt über `sim.FromIslandSave` mit allen Plätzen `built` und Hub 5 auf der ersten Stufe) und `TestVollAusgebautDeterministisch` (gleicher Seed → gleiche Bytes ohne `savedAt`).
+- **AC-05** umgesetzt, geprüft: `POST /api/dev/fullsave {"seed"}` → `{"save": "voll-…"}` (`engine/net/dev.go`). `engine/net/fullsave_test.go` belegt: mit Dev-Mode liegt der Stand im Store, ungültiger Seed → 400, ohne Dev-Mode → 403 und nichts gespeichert; `TestVollAusgebautNurImDevMode` belegt dasselbe für `Manager.FullSave`. Logs 💾, 🐛, 🚫, 💥.
+- **AC-06** geprüft: `task check:go` grün (k3c-dev `check_run`: `go:test` und `go:lint` nach Auslagern von `loadsBuilt`, gocyclo).
+- Nicht im Stand: Bögen im Turm, Rüstung, Werkstatt-Angebote. B-315 verlangt sie nicht. Kommen sie dazu, braucht es ein SIM-Ticket, weil die Werte in `engine/sim/` nicht exportiert sind.
