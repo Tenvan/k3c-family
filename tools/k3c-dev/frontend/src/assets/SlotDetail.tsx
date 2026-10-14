@@ -4,6 +4,7 @@ import type { AssetChoice, AssetSlot } from '../api';
 import { addChoice, fileUrl, move, removeChoice, sceneUrl, withCut } from './assets';
 import { CatalogPicker } from './CatalogPicker';
 import { CutEditor } from './CutEditor';
+import { ResearchPanel } from './ResearchPanel';
 
 interface Props {
   slot: AssetSlot;
@@ -12,7 +13,7 @@ interface Props {
   onSave: (id: string, wahl: AssetChoice[]) => Promise<boolean>;
 }
 
-/** Detail eines Asset-Slots: Zuordnungen nach Präferenz (Ziehen), Ausschnitt, Katalog-Suche und Mini-Szene. */
+/** Detail eines Asset-Slots: Zuordnungen nach Präferenz (Ziehen), Ausschnitt, Katalog-Suche, Mini-Szene und Recherche. */
 export function SlotDetail({ slot, preview, onSave }: Props) {
   const [active, setActive] = useState(0);
   const choice = slot.wahl[active];
@@ -31,6 +32,7 @@ export function SlotDetail({ slot, preview, onSave }: Props) {
       {choice && slot.art === 'sound' && <SoundProbe choice={choice} preview={preview} />}
       <CatalogPicker art={slot.art} onAdd={(datei) => save(addChoice(slot.wahl, datei))} />
       <ScenePreview slot={slot} pref={active + 1} preview={preview} />
+      <ResearchPanel slot={slot} />
     </div>
   );
 }

@@ -1,5 +1,5 @@
 import type {
-  AssetChoice, AssetSlot, AssetsView, Backend, CatalogAsset, ConsoleLine, ErrorsView, EventName, Events, Info, LevelCounts, LogQuery, LogView, McpCall, McpOverview,
+  AssetChoice, AssetHit, AssetSlot, ResearchResult, AssetsView, Backend, CatalogAsset, ConsoleLine, ErrorsView, EventName, Events, Info, LevelCounts, LogQuery, LogView, McpCall, McpOverview,
   McpState, McpUsage, ServicesView, ServiceStatus, Source, TaskCatalog, TaskGates, TaskRun, PlanDoc, PlanningData, GitHubData,
 } from './types';
 
@@ -41,6 +41,9 @@ interface GoApp {
   AssetsList(): Promise<AssetsView>;
   AssetsSet(id: string, wahl: AssetChoice[]): Promise<AssetSlot>;
   AssetsCatalog(query: string, art: string, limit: number): Promise<CatalogAsset[]>;
+  AssetsHits(id: string): Promise<AssetHit[]>;
+  AssetsResearch(id: string, query: string): Promise<ResearchResult>;
+  AssetsHitDrop(id: string, hit: string): Promise<void>;
 }
 
 interface WailsRuntime {
@@ -99,6 +102,9 @@ export function wailsBackend(): Backend {
     assetsList: () => app.AssetsList(),
     assetsSet: (id, wahl) => app.AssetsSet(id, wahl),
     assetsCatalog: (query, art, limit) => app.AssetsCatalog(query, art, limit),
+    assetsHits: (id) => app.AssetsHits(id),
+    assetsResearch: (id, query) => app.AssetsResearch(id, query),
+    assetsHitDrop: (id, hit) => app.AssetsHitDrop(id, hit),
     openUrl: (url) => runtime.BrowserOpenURL(url),
     on: <E extends EventName>(event: E, fn: (data: Events[E]) => void) =>
       runtime.EventsOn(event, (data) => fn(data as Events[E])),

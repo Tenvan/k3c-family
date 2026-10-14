@@ -1,3 +1,5 @@
+import type { AssetChoice, AssetHit, AssetSlot, AssetsView, CatalogAsset, ResearchResult } from './assetTypes';
+
 // Backend-Vertrag der Oberfläche (B-064 › Backend-Vertrag). Go-Seite: tools/k3c-dev/app.go.
 // Wails-Laufzeit → wails.ts, ohne sie → mock.ts; welche gilt, entscheidet index.ts.
 
@@ -412,58 +414,8 @@ export interface Events {
 
 export type EventName = keyof Events;
 
-/** Ausschnitt in Bild-Pixeln (Go: assets.Rect) */
-export interface AssetRect {
-  x: number;
-  y: number;
-  w: number;
-  h: number;
-}
 
-/** Zuordnung eines Asset-Slots (Go: assets.Choice); datei relativ zu public/ */
-export interface AssetChoice {
-  datei: string;
-  sheet?: string;
-  ausschnitt?: AssetRect;
-  raster?: { w: number; h: number };
-  sprite?: string;
-}
-
-export type AssetKind = 'grafik' | 'sound';
-export type AssetStatus = 'zugeordnet' | 'luecke' | 'fehlt';
-
-/** Asset-Slot des Slot-Registers mit Status (Go: AssetSlotView); wahl in Präferenz-Reihenfolge */
-export interface AssetSlot {
-  id: string;
-  art: AssetKind;
-  kategorie: string;
-  beschreibung: string;
-  bus?: string;
-  wahl: AssetChoice[];
-  status: AssetStatus;
-}
-
-/** Slot-Register für die Seite Assets; preview = Adresse des Vite-Dienstes, leer ohne Vite */
-export interface AssetsView {
-  slots: AssetSlot[];
-  error: string;
-  preview: string;
-}
-
-/** Datei des Asset-Katalogs (Go: assets.Asset); kennzeichen NC, SA oder ND nach Q70 */
-export interface CatalogAsset {
-  datei: string;
-  art: AssetKind;
-  pack: string;
-  gruppe?: string;
-  w?: number;
-  h?: number;
-  titel?: string;
-  urheber?: string;
-  lizenz: string;
-  quelle?: string;
-  kennzeichen?: '' | 'NC' | 'SA' | 'ND';
-}
+export type * from './assetTypes';
 
 export interface Backend {
   /** true ohne Wails-Laufzeit: erfundene Daten, Badge `Mock`. */
@@ -525,6 +477,12 @@ export interface Backend {
   assetsSet(id: string, wahl: AssetChoice[]): Promise<AssetSlot>;
   /** Suche im Asset-Katalog: alle Wörter in Datei, Pack, Gruppe, Titel oder Lizenz; art leer = beide. */
   assetsCatalog(query: string, art: string, limit: number): Promise<CatalogAsset[]>;
+  /** Gespeicherte Recherche-Treffer eines Slots (data/assets-recherche.json). */
+  assetsHits(id: string): Promise<AssetHit[]>;
+  /** Sucht im Netz (freesound, Wikimedia Commons, OpenGameArt) und speichert neue Treffer; query leer = Beschreibung. */
+  assetsResearch(id: string, query: string): Promise<ResearchResult>;
+  /** Verwirft einen Treffer. */
+  assetsHitDrop(id: string, hit: string): Promise<void>;
   /** Abonniert ein Ereignis; die Rückgabe meldet wieder ab. */
   on<E extends EventName>(event: E, fn: (data: Events[E]) => void): () => void;
 }

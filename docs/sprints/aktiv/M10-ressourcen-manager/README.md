@@ -61,7 +61,7 @@ Keine. Entschieden (🧑, 2026-10-14): Slot-Register `data/assets.json`, angeleg
 | M10.1 | `M10.1-slot-register.md` | Umsetzung | autonom | fertig |
 | M10.2 | `M10.2-assetvorschau.md` | Umsetzung | autonom | fertig |
 | M10.3 | `M10.3-oberflaeche.md` | Umsetzung | autonom | fertig |
-| M10.4 | `M10.4-recherche.md` | Umsetzung | autonom | offen |
+| M10.4 | `M10.4-recherche.md` | Umsetzung | autonom | fertig |
 | M10.5 | `M10.5-import.md` | Umsetzung | autonom | offen |
 | M10.6 | `M10.6-review.md` | Review | autonom | offen |
 

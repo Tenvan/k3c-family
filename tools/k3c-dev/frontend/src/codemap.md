@@ -10,7 +10,7 @@ React-Single-Page-App von k3c-dev: Shell mit fünf Reitern (Dienste, Tasks, Plan
 - `App.tsx`: Wurzel mit Radix `Theme` (dark/light, gemerkt, Vorgabe aus `prefers-color-scheme`) und `Tabs.Root`; Seite je Reiter gemerkt über `lib/prefs`; hält den MCP-Zustand (`mcp:state`, `backend.info()`).
 - `Header.tsx`: Reiterleiste `PAGES = dienste|tasks|planung|assets|mcp`, MCP-Badge, `Mock`-Badge, Dark-Switch.
 - Unterordner (je mit eigener codemap):
-  - `api/` – Backend-Vertrag, Wails-Adapter und Mock.
+  - `api/` – Backend-Vertrag (`types.ts`, Assets in `assetTypes.ts`), Wails-Adapter und Mock.
   - `lib/` – Formatierung, Prefs, Hooks.
   - `ui/` – gemeinsame Bausteine (`StatusBadge`, `ActionButton`, `MarkdownView`).
   - `services/`, `tasks/`, `planning/`, `assets/`, `mcp/` – je eine Seite; `logs/` – Logs-Bereich der Dienste-Seite, Konsole auch von `tasks/` genutzt.

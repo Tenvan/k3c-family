@@ -1,4 +1,4 @@
-import type { AssetChoice, AssetSlot, AssetsView, Backend, CatalogAsset } from './types';
+import type { AssetChoice, AssetHit, AssetSlot, AssetsView, Backend, CatalogAsset } from './types';
 
 // Erfundenes Slot-Register und Katalog für den Mock. Bilder und Mini-Szene kommen vom Vite-Dienst des Spiels:
 // im Browser mit `?preview=http://localhost:5173/` aufrufen, sonst zeigt die Seite den Hinweis „Vite starten“.
@@ -47,8 +47,21 @@ function check(s: AssetSlot, wahl: AssetChoice[]): void {
   });
 }
 
-export function mockAssets(): Pick<Backend, 'assetsList' | 'assetsSet' | 'assetsCatalog'> {
+/** Erfundene Treffer einer Recherche: je Quelle einer, Lizenz-Status wie in Go eingeordnet */
+function fakeHits(query: string): AssetHit[] {
+  const q = encodeURIComponent(query);
+  const hit = (id: string, quelle: string, titel: string, lizenz: string, lizenzStatus: AssetHit['lizenzStatus'], extra: Partial<AssetHit> = {}): AssetHit =>
+    ({ id, quelle, titel, link: `https://example.org/${quelle}/${q}`, lizenz, lizenzStatus, erstellt: '2026-10-14', ...extra });
+  return [
+    hit(`c-${q}`, 'Wikimedia Commons', `${query} pixel.png`, 'CC BY-SA 4.0', 'erkannt', { kennzeichen: 'SA', download: 'https://example.org/datei.png' }),
+    hit(`o-${q}`, 'OpenGameArt', `${query} pack`, '', 'pruefen'),
+    hit(`p-${q}`, 'Agent', `${query} (Pixabay)`, 'Pixabay', 'ausgeschlossen'),
+  ];
+}
+
+export function mockAssets(): Pick<Backend, 'assetsList' | 'assetsSet' | 'assetsCatalog' | 'assetsHits' | 'assetsResearch' | 'assetsHitDrop'> {
   const slots = initial();
+  const hits = new Map<string, AssetHit[]>();
   const preview = new URLSearchParams(window.location.search).get('preview') ?? '';
   return {
     assetsList: async (): Promise<AssetsView> => ({ slots: slots.map((s) => ({ ...s, wahl: [...s.wahl] })), error: '', preview }),
@@ -59,6 +72,17 @@ export function mockAssets(): Pick<Backend, 'assetsList' | 'assetsSet' | 'assets
       s.wahl = wahl.map((c) => ({ ...c }));
       s.status = wahl.length ? 'zugeordnet' : 'luecke';
       return { ...s, wahl: [...s.wahl] };
+    },
+    assetsHits: async (id) => [...(hits.get(id) ?? [])],
+    assetsResearch: async (id, query) => {
+      await new Promise((r) => setTimeout(r, 400));
+      const old = hits.get(id) ?? [];
+      const fresh = fakeHits(query || id).filter((h) => !old.some((o) => o.link === h.link));
+      hits.set(id, [...old, ...fresh]);
+      return { treffer: [...(hits.get(id) ?? [])], neu: fresh.length, hinweise: ['freesound: token fehlt (Mock)'] };
+    },
+    assetsHitDrop: async (id, hit) => {
+      hits.set(id, (hits.get(id) ?? []).filter((h) => h.id !== hit));
     },
     assetsCatalog: async (query, art, limit) => {
       const words = query.toLowerCase().split(/\s+/).filter(Boolean);

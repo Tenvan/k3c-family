@@ -7,6 +7,7 @@ import (
 	"path/filepath"
 	"strings"
 	"testing"
+	"time"
 
 	assetreg "k3c/tools/k3c-dev/internal/assets"
 )
@@ -74,5 +75,25 @@ func TestAssetsListKaputt(t *testing.T) {
 	}
 	if v := app.AssetsList(); !strings.Contains(v.Error, "ungültig") || len(v.Slots) != 0 {
 		t.Errorf("kaputtes Register: %+v", v)
+	}
+}
+
+func TestAssetsHitsBindings(t *testing.T) {
+	app := assetApp(t)
+	if hits, err := app.AssetsHits("farm"); err != nil || hits == nil || len(hits) != 0 {
+		t.Fatalf("ohne Treffer: %v %v", hits, err)
+	}
+	if _, err := assetreg.AddHits(app.root, "farm", []assetreg.Hit{{Title: "Farm", Link: "https://x/farm"}}, time.Now()); err != nil {
+		t.Fatal(err)
+	}
+	hits, _ := app.AssetsHits("farm")
+	if len(hits) != 1 || hits[0].LicenseStatus != assetreg.LicenseCheck {
+		t.Fatalf("Treffer: %+v", hits)
+	}
+	if err := app.AssetsHitDrop("farm", hits[0].ID); err != nil {
+		t.Fatal(err)
+	}
+	if hits, _ := app.AssetsHits("farm"); len(hits) != 0 {
+		t.Errorf("nach Verwerfen: %+v", hits)
 	}
 }

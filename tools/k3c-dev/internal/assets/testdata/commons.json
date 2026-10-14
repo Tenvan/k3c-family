@@ -1,0 +1,64 @@
+{
+ "query": {
+  "pages": {
+   "122885034": {
+    "pageid": 122885034,
+    "ns": 6,
+    "title": "File:5 Indian rupees coin.jpg",
+    "index": 5,
+    "imagerepository": "local",
+    "imageinfo": [
+     {
+      "thumburl": "https://thumb.wikimedia.org/wikipedia/commons/thumb/3/32/5_Indian_rupees_coin.jpg/250px-5_Indian_rupees_coin.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "url": "https://upload.wikimedia.org/wikipedia/commons/3/32/5_Indian_rupees_coin.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+      "descriptionurl": "https://commons.wikimedia.org/wiki/File:5_Indian_rupees_coin.jpg",
+      "extmetadata": {
+       "Artist": {
+        "value": "<a href=\"//commons.wikimedia.org/w/index.php?title=User:Altitude37&amp;action=edit&amp;redlink=1\" class=\"new\" title=\"User:Altitude37 (page does not exist)\">Altitude37</a>",
+        "source": "commons-desc-page"
+       },
+       "LicenseShortName": {
+        "value": "CC BY-SA 4.0",
+        "source": "commons-desc-page",
+        "hidden": ""
+       },
+       "LicenseUrl": {
+        "value": "https://creativecommons.org/licenses/by-sa/4.0",
+        "source": "commons-desc-page"
+       }
+      }
+     }
+    ]
+   },
+   "128147746": {
+    "pageid": 128147746,
+    "ns": 6,
+    "title": "File:Coin video game.png",
+    "index": 4,
+    "imagerepository": "local",
+    "imageinfo": [
+     {
+      "thumburl": "https://thumb.wikimedia.org/wikipedia/commons/thumb/e/e6/Coin_video_game.png/250px-Coin_video_game.png?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "url": "https://upload.wikimedia.org/wikipedia/commons/e/e6/Coin_video_game.png?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+      "descriptionurl": "https://commons.wikimedia.org/wiki/File:Coin_video_game.png",
+      "extmetadata": {
+       "Artist": {
+        "value": "devnewton",
+        "source": "commons-desc-page"
+       },
+       "LicenseShortName": {
+        "value": "CC BY-SA 3.0",
+        "source": "commons-desc-page",
+        "hidden": ""
+       },
+       "LicenseUrl": {
+        "value": "https://creativecommons.org/licenses/by-sa/3.0",
+        "source": "commons-desc-page"
+       }
+      }
+     }
+    ]
+   }
+  }
+ }
+}

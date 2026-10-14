@@ -21,7 +21,7 @@ zurückgeben. Die Gliederung folgt der gemeinsamen Spec der Workbench-Seiten (`d
   Session kommt (Header `X-K3C-Root` aus `.mcp.json`): Prüfläufe, Planung, Logs, Berichte, Spielstände
   und Dienste nur dort. `workbench_status` nennt den Checkout in der Zeile `Checkout:`.
 - **Im Worktree immer `checkout` setzen** (B-388): Schreibende Tools (`plan_create`, `plan_set`, `plan_section`,
-  `plan_delete`, `assets_set`, `svc_*`, `task_start`, `task_stop`) und `check_run` nehmen das Argument `checkout` mit dem Ordnernamen
+  `plan_delete`, `assets_set`, `assets_research`, `assets_hit_add`, `assets_hit_drop`, `svc_*`, `task_start`, `task_stop`) und `check_run` nehmen das Argument `checkout` mit dem Ordnernamen
   oder dem absoluten Pfad des eigenen Checkouts (`git rev-parse --show-toplevel`). Es gilt vor dem Header; der Header
   allein genügt nicht, die Desktop-App meldet aus Worktrees die Repo-Wurzel (B-341). Ein unbekannter oder mehrdeutiger
   Wert wird abgelehnt, die Meldung nennt die Worktrees. `task_*` mit einem Worktree lehnt ab (dort `check_run`).
@@ -105,6 +105,10 @@ zurückgeben. Die Gliederung folgt der gemeinsamen Spec der Workbench-Seiten (`d
   Gruppe, Maßen und Lizenz; Kennzeichen `[NC]`, `[SA]`, `[ND]` nach Q70.
 - `assets_set {id, wahl}` ersetzt die Zuordnungen (Reihenfolge = Präferenz, nur die erste ist im Spiel aktiv); jede
   `datei` relativ zu `public/`, Ausschnitt `{x,y,w,h}` innerhalb des Bildes. Ein ungültiges Register wird nie überschrieben.
+- Recherche (Treffer in `data/assets-recherche.json`): `assets_research {id, query?}` fragt freesound (Token in
+  `K3C_FREESOUND_TOKEN` oder `.work/freesound-token`), Wikimedia Commons und OpenGameArt; `assets_hits {id}` liest,
+  `assets_hit_add {id, titel, link, …}` legt einen eigenen Fund ab (z. B. itch.io, Kenney), `assets_hit_drop {id, hit}`
+  verwirft. Lizenz-Status nach Q70: `erkannt`, `pruefen` (bis 🧑 bestätigt), `ausgeschlossen` (ND, Pixabay, Mixkit …).
 
 ### Laufender Server
 

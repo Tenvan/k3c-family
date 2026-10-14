@@ -1,7 +1,9 @@
 package main
 
 import (
+	"context"
 	"fmt"
+	"time"
 
 	assetreg "k3c/tools/k3c-dev/internal/assets"
 	"k3c/tools/k3c-dev/internal/services"
@@ -74,4 +76,30 @@ func (a *App) previewBase() string {
 		}
 	}
 	return ""
+}
+
+// AssetsHits liefert die gespeicherten Recherche-Treffer eines Slots (Binding).
+func (a *App) AssetsHits(id string) ([]assetreg.Hit, error) {
+	a.wait()
+	hits, err := assetreg.HitsOf(a.root, id)
+	if hits == nil {
+		hits = []assetreg.Hit{}
+	}
+	return hits, err
+}
+
+// AssetsResearch sucht im Netz nach Alternativen für einen Slot und speichert neue Treffer (Binding, B-298/AC-04).
+func (a *App) AssetsResearch(id, query string) (assetreg.ResearchResult, error) {
+	a.wait()
+	ctx := a.svcCtx
+	if ctx == nil {
+		ctx = context.Background()
+	}
+	return assetreg.RunResearch(ctx, a.root, id, query, assetreg.NewSearcher(a.root), time.Now())
+}
+
+// AssetsHitDrop verwirft einen Recherche-Treffer (Binding).
+func (a *App) AssetsHitDrop(id, hit string) error {
+	a.wait()
+	return assetreg.DropHit(a.root, id, hit)
 }
