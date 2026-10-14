@@ -1,6 +1,6 @@
 # WZ4.2 · Splitter: Doppelklick und Ziehen in einer DOM-Umgebung getestet
 
-- **Status:** in Arbeit
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** DEV
@@ -47,9 +47,9 @@ Keine Änderung an `TaskBars.tsx` oder der Planungsseite; keine weiteren DOM-Tes
 
 ## Fertig, wenn
 
-- [ ] AC-01: `SplitterDom.test.tsx` läuft in `happy-dom` und prüft Doppelklick (`onReset`), Ziehen senkrecht und waagerecht mit Klemmung 20–80 %, Loslassen und fehlende Box; `task test -- SplitterDom` ist grün.
-- [ ] `happy-dom` ist die einzige neue Abhängigkeit, nur als devDependency im Root; kein anderer Test wechselt die Umgebung.
-- [ ] `task check` ist grün.
+- [x] AC-01: `SplitterDom.test.tsx` läuft in `happy-dom` und prüft Doppelklick (`onReset`), Ziehen senkrecht und waagerecht mit Klemmung 20–80 %, Loslassen und fehlende Box; `task test -- SplitterDom` ist grün.
+- [x] `happy-dom` ist die einzige neue Abhängigkeit, nur als devDependency im Root; kein anderer Test wechselt die Umgebung.
+- [x] `task check` ist grün.
 
 ## Prüfen
 
@@ -61,5 +61,7 @@ Manuelle Prüfungen (Browser, Xbox, TV) nur, wenn diese Datei sie nennt und 🧑
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+- AC-01 geprüft: `SplitterDom.test.tsx` (happy-dom, fünf Tests: Doppelklick, Ziehen senkrecht mit Klemmung 20–80 %, Ziehen waagerecht, Loslassen, fehlende Box); `npx vitest run SplitterDom` 5/5 grün, `task check` grün.
+- `happy-dom` ist die einzige neue Abhängigkeit (Root-devDependency); die Umgebung gilt nur für diese Datei per Docblock.
+- Abweichung: Der Fall „Box fehlt“ wird über ein `getBoundingClientRect`, das `undefined` liefert, ausgelöst, da das Elternelement im DOM immer existiert.
+- Keine neuen Tickets. Geprüft hat der Agent, keine manuelle Prüfung.
