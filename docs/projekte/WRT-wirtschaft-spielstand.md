@@ -18,7 +18,7 @@ In Abarbeitungs-Reihenfolge; der erste nicht erledigte Sprint ist der nächste. 
 | W7 | Ausrüstung ohne Unverwundbarkeit, Spielstand vollständig | erledigt |
 | SV1 | Raum mit allen Stufen, Voll-Ausbau-Spielstand, leere Test-Räume | erledigt |
 | W8 | Bauplätze mit Grund und alle Rohstoffe im Client | erledigt |
-| W11 | Bauplätze im Protokoll, Abstand der Treppen, Ausbilden und Tauschen, Figuren | geplant |
+| W11 | Bauplätze im Protokoll, Abstand der Treppen, Ausbilden und Tauschen, Figuren | aktiv |
 
 ## Nicht-Ziele
 
