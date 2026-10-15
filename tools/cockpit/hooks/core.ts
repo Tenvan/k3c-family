@@ -207,7 +207,7 @@ export function repoRows(r: Repo, lang: UiLang = 'de'): [label: string, value: s
     [t(lang, 'panel.repoCommit'), r.sha],
     [t(lang, 'panel.repoChanges'), changes],
     [t(lang, 'panel.repoUpstream'), sync],
-    [t(lang, 'panel.repoFolder'), r.path],
+    [t(lang, 'panel.repoFolder'), displayDir(r.path)],
     ...(r.subdir === '' ? [] : [[t(lang, 'panel.repoSubfolder'), r.subdir] as [string, string]]),
   ]
 }
@@ -772,7 +772,15 @@ export function parseTaskNotifications(text: string): { id: string; status: stri
 
 // ---- Verzeichniswächter: arbeitet Claude außerhalb des Session-Ordners? ----
 
-const normDir = (p: string): string => p.replace(/\\/g, '/').replace(/^\/([a-z])\//i, '$1:/').replace(/\/+$/, '').toLowerCase()
+const normDir = (p: string): string =>
+  p.trim().replace(/\\/g, '/').replace(/^\/([a-z])(?=\/|$)/i, '$1:').replace(/\/{2,}/g, '/').replace(/\/+$/, '').toLowerCase()
+
+// Anzeige: Laufwerkspfade (auch Git-Bash `/c/x`) in der Windows-Schreibweise.
+export function displayDir(p: string): string {
+  const m = /^\/([a-z])(?=\/|$)(.*)$/i.exec(p.replace(/\\/g, '/'))
+  const w = m ? `${(m[1] ?? '').toUpperCase()}:${m[2] ?? ''}` : p
+  return /^[a-z]:/i.test(w) ? w.replace(/\//g, '\\') : p
+}
 
 // Absoluter Pfad aus einem (evtl. relativen, evtl. Git-Bash-) Pfad; `~` = Home.
 export function resolveDir(path: string, cwd: string, home: string): string {
@@ -804,10 +812,15 @@ export function dirTarget(tool: string, input: Record<string, unknown>, cwd: str
 // Liegt `dir` außerhalb des Session-Ordners `root` und ist kein Arbeitsplatz für Hilfsdateien (Temp, AppData, Punkt-Ordner
 // im Home wie ~/.claude)? Nur dann ist es ein anderes Projekt, in das Claude gerade wechselt.
 // ponytail: Ausnahmen als feste Muster, erweiterbar über eine Einstellung, falls Fehlalarme auftreten
-export function isForeignDir(dir: string, root: string, home: string): boolean {
+// Ein Ordner gilt als drinnen, wenn er im Session-Ordner oder im aktuellen Prozess-Ordner (`cwd`) liegt oder dessen Unterordner ist;
+// die Schreibweise (C:\x, C:/x, /c/x) und Groß-/Kleinschreibung spielen keine Rolle.
+export function isForeignDir(dir: string, root: string, home: string, cwd = ''): boolean {
   const d = normDir(dir)
-  const r = normDir(root)
-  if (d === r || d.startsWith(`${r}/`)) return false
+  const inside = (base: string) => {
+    const b = normDir(base)
+    return b !== '' && (d === b || d.startsWith(`${b}/`))
+  }
+  if (inside(root) || inside(cwd)) return false
   const h = normDir(home)
   if (h !== '' && (d === h || d.startsWith(`${h}/.`) || d.startsWith(`${h}/appdata/`))) return false
   return !/(^|\/)(tmp|temp)(\/|$)/.test(d)

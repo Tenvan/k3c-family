@@ -235,6 +235,7 @@ test('dirTarget/isForeignDir: Wechsel per cd, git -C, Desktop und Schreiben; Tem
   expect(isForeignDir('C:/WORKSPACE/ErpApi', cwd, home)).toBe(true)
   expect(isForeignDir('/c/WORKSPACE/ErpApi', cwd, home)).toBe(true)
   expect(isForeignDir('C:\\WORKSPACE\\k3c/src', cwd, home)).toBe(false)
+  expect(isForeignDir('/c/WORKSPACE/K3C/tools/cockpit', 'C:\\WORKSPACE\\K3C\\wt', home, 'C:\\WORKSPACE\\K3C\\tools\\cockpit')).toBe(false)
   expect(isForeignDir('/c/workspace/K3C/.claude/worktrees/x', cwd, home)).toBe(false)
   expect(isForeignDir('C:/Users/r/.claude/projects', cwd, home)).toBe(false)
   expect(isForeignDir('C:/Users/r/AppData/Local/Temp/x', cwd, home)).toBe(false)
