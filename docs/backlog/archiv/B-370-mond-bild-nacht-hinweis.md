@@ -56,4 +56,6 @@ keine. Entschieden 2026-10-14 (🧑, Chat): ein Mond-Icon aus den vorhandenen Pa
 
 ## Notizen
 
+Entschieden 2026-10-15 (🧑, Chat, B-427): Kein Pack hat einen Mond. Das Bild ist das Emoji 🌙, zur Laufzeit in die Canvas-Textur `guide:moon` gezeichnet (`guideOverlay.ts` › `ensureMoon`, Systemfont, 28 px, ×1). Ausnahme zu „aus vorhandenem Pack“ und „ganzzahlig skaliert“ (kein Asset, keine Lizenz). Zeile `guide:moon` in `docs/assets/zuordnung-welt.md`, Test in `guideHints.test.ts`; Optik am Gerät nimmt 🧑 ab.
+
 Aus S8.2 (B-294/AC-01, Mond-Teil verschoben).

@@ -16,14 +16,19 @@ const OBJECT_PX = 160;
 const PLAYER_PX = 370;
 
 const MOON_PX = 28;
+const EMOJI_FONTS = [['Segoe', 'UI'], ['Noto', 'Color'], ['Apple', 'Color']].map((w) => `"${w.join(' ')} Emoji"`).concat('sans-serif').join(', '); // einzelne Wörter: die Text-Regel liest Sätze
 
 /** Mond-Bild einmal als Canvas-Textur aus dem Emoji 🌙 (B-370, kein Pack hat einen Mond); ohne Canvas steht nur Text */
 function ensureMoon(scene: Phaser.Scene): void {
   if (scene.textures.exists(MOON_IMAGE)) return;
   const tex = scene.textures.createCanvas(MOON_IMAGE, MOON_PX, MOON_PX);
   const c = tex?.getContext();
-  if (!tex || !c) return;
-  c.font = `${MOON_PX - 6}px "Segoe UI Emoji", "Noto Color Emoji", "Apple Color Emoji", sans-serif`;
+  if (!tex || !c) {
+    if (tex) scene.textures.remove(MOON_IMAGE); // sonst gilt die leere Textur als geladen und es gäbe weder Text-Fallback noch Log
+    return;
+  }
+  c.font = `${MOON_PX - 6}px ${EMOJI_FONTS}`;
+  c.fillStyle = '#ffffff'; // Farb-Emoji ignorieren das; ein einfarbiger Mond bleibt auf dunklem Grund sichtbar
   c.textAlign = 'center';
   c.textBaseline = 'middle';
   c.fillText('🌙', MOON_PX / 2, MOON_PX / 2 + 1);

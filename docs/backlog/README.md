@@ -109,7 +109,6 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-366](B-366-fahrplan-spalte-projekt.md) | DEV | Schuld | mittel | eingeplant | WZ2 | k3c-dev füllt im Fahrplan die Spalte Projekt und ordnet nach Rang |
 | [B-367](B-367-doku-nachzug-projekte.md) | INF | Schuld | niedrig | eingeplant | WZ2 | Begriffe aus den alten Bahnen und Spuren sind nach PJ3 ersetzt und neue Projekt-Begriffe im Glossar |
 | [B-369](B-369-texte-landingpage.md) | PLAT | Schuld | niedrig | eingeplant | GL1 | Die Landingpage zeigt ihre Texte in der gewählten Sprache |
-| [B-370](B-370-mond-bild-nacht-hinweis.md) | CLI | Frage | niedrig | erledigt | BD1 | Der Hinweis „Die Nacht naht“ zeigt ein Mond-Bild vor dem Text |
 | [B-372](B-372-check-run-timeout-go.md) | SRV | Problem | mittel | eingeplant | WZ2 | check_run go:test und task:check:go brechen im MCP-Aufruf mit Timeout ab |
 | [B-374](B-374-preisschild-taste.md) | CLI | Frage | mittel | eingeplant | BD1 | Das Preisschild nennt die Taste zum Bezahlen |
 | [B-377](B-377-beispiel-rueckmeldung-servertest.md) | SRV | Schuld | niedrig | eingeplant | BD2 | Ein Server-Test prüft das Beispiel der Rückmeldungs-Ereignisse gegen die Simulation |
@@ -146,7 +145,6 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-423](B-423-sim-test-im-worktree.md) | DEV | Problem | mittel | offen | – | sim_test rechnet immer mit dem Code der Repo-Wurzel, nicht mit dem Worktree der Session |
 | [B-425](B-425-fullsave-ausbauregeln.md) | SRV | Problem | mittel | offen | – | Der Voll-Ausbau-Stand hält die Ausbauregeln des Spiels ein |
 | [B-426](B-426-fullsave-review-kleinigkeiten.md) | SRV | Schuld | niedrig | offen | – | Kleine Befunde aus dem Review von SV1 sind erledigt |
-| [B-427](B-427-mond-bild-quelle.md) | CLI | Frage | mittel | erledigt | – | Aus welcher Quelle kommt das Mond-Bild für den Nacht-Hinweis? |
 
 ## Archiv
 
@@ -399,3 +397,5 @@ Zeile in diesen Abschnitt.
 | [B-209](archiv/B-209-client-platz-arten.md) | CLI | Schuld | mittel | erledigt | W8 | `src/model/data.ts` kennt alle Platz-Arten aus `hub.json` |
 | [B-188](archiv/B-188-client-rohstoffe-eisen-kristall.md) | CLI | Schuld | niedrig | erledigt | W8 | Der Client kennt alle fünf Rohstoffe des Servers |
 | [B-424](archiv/B-424-fullsave-offener-raum.md) | SRV | Problem | mittel | erledigt | – | Ein neuer Voll-Ausbau-Stand wird nicht vom noch offenen alten Raum überschrieben |
+| [B-370](archiv/B-370-mond-bild-nacht-hinweis.md) | CLI | Frage | niedrig | erledigt | BD1 | Der Hinweis „Die Nacht naht“ zeigt ein Mond-Bild vor dem Text |
+| [B-427](archiv/B-427-mond-bild-quelle.md) | CLI | Frage | mittel | erledigt | – | Aus welcher Quelle kommt das Mond-Bild für den Nacht-Hinweis? |
