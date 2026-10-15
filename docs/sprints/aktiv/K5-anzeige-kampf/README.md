@@ -1,11 +1,11 @@
 # K5 · CLI · Anzeigen für Kampf, Bosse und Events, Anlegen-Dialog, Debug-Panel
 
-- **Status:** geplant
+- **Status:** aktiv
 - **Projekt:** KMP
 - **Domäne:** CLI
 - **Reife:** bereit
 - **Tickets:** B-132, B-105, B-107, B-098
-- **Start-Commit:** –
+- **Start-Commit:** 61b680ee
 - **Spec:** freigegeben
 - **Revision:** 2
 - **Freigabe:** 2026-10-11, 🧑 im Chat, Revision 2 (3–4 Spieler, Touch und Handy entfallen)
@@ -63,7 +63,7 @@ Dev-Sperre aktiv → Debug-Panel und Grad „Dev“ sind nicht verfügbar.
 
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
-| K5.1 | `K5.1-boss-warnkreis-event.md` | Umsetzung | autonom | offen |
+| K5.1 | `K5.1-boss-warnkreis-event.md` | Umsetzung | autonom | in Arbeit |
 | K5.2 | `K5.2-anlegen-dialog.md` | Umsetzung | autonom | offen |
 | K5.3 | `K5.3-debug-panel-overlay.md` | Umsetzung | autonom | offen |
 | K5.4 | `K5.4-abnahme-geraet.md` | Workshop | Mensch | offen |
