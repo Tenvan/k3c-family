@@ -4,7 +4,7 @@
 - **Typ:** Frage
 - **Prio:** hoch
 - **Umgebung:** offline
-- **Status:** offen
+- **Status:** erledigt
 - **Sprint:** W11
 - **Projekt:** WRT
 - **Erstellt:** 2026-10-15
@@ -57,11 +57,4 @@ Ungültige oder seltene Situation → gewolltes Verhalten. Passt nichts: `nicht 
 
 ## Notizen
 
-Vorbereitete Änderung an `src/model/types.ts › PlayerAction` (nicht committet):
-
-```ts
-  | { action: 'train'; kind: 'miner' | 'builder' | 'craftsman'; gold: number; paid: number }
-  | { action: 'trade'; side: 'buy' | 'sell'; resource: string; material: number; gold: number };
-```
-
-Kommentar dazu: „`train` und `trade` (B-410): das Ziel, das A halten am Ort jetzt bezahlt – Beruf (`gold` Preis, `paid` schon bezahlt) oder Händler (`material` gegen `gold`).“
+Beantwortet 2026-10-15 (🧑): `PlayerAction` mit `train`/`trade` wandert nach W11.4, das Typ und Anzeige zusammen ergänzt; W11.3 ist mit dem Server-Teil fertig.
