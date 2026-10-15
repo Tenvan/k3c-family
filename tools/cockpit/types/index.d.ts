@@ -8,6 +8,9 @@ export type Usage = {
   usd?: number
 }
 
+// MR, für den das Cockpit die Session angepinnt hat; `mine: false`, wenn sie schon vorher angepinnt war
+export type SidebarPin = { ref: string; mine: boolean } | null
+
 export type Turn = {
   startedAt: number
   durationMs?: number
@@ -62,6 +65,9 @@ export type BreakdownRow = { name: string; tokens: number; percent: number; kind
 export type Breakdown = { total: number; window: number; percent: number; rows: BreakdownRow[] }
 
 // Git-Stand des Arbeitsverzeichnisses für die Infozeile unter dem Titel.
+// Verknüpfte Session der Desktop-App (aus dieser gestartet oder ihr Starter), aus ccd_session_mgmt.list_sessions.
+export type LinkedSession = { id: string; title: string; name: string; branch: string; cwd: string; running: boolean; archived: boolean }
+
 export type Repo = {
   name: string
   isLinked: boolean
@@ -137,12 +143,13 @@ export type ModSettings = {
   skinPrompt: boolean
   skinCards: boolean
   skinInline: boolean
-  skinLinks: boolean
   skinMermaid: boolean
   skinMath: boolean
   skinAsk: boolean
   skinMode: boolean
   skinHint: boolean
+  dirGuard: boolean
+  skinTodos: boolean
   skinMarkIcon: boolean
   skinMarkLabel: boolean
   // Auto-Effort und Sparmodus (Idee: effortless)
@@ -153,6 +160,10 @@ export type ModSettings = {
   mrBand: boolean
   mrNotify: boolean
   mrFooter: boolean
+  // Sitzungsleiste der Desktop-App (ccd_sidebar), Opt-in
+  sidebarDone: boolean
+  sidebarUnread: boolean
+  sidebarPin: boolean
   breathKey: 'hrv' | 'sigh' | 'box' | '478'
   // Anzahl der Subagent-Kacheln im Hauptpanel (gerade, 2 bis 12)
   agentTiles: number
@@ -200,6 +211,10 @@ declare module 'claude-code' {
       settings: ModSettings
       catchUp: CatchUp
       repo: Repo | null
+      linked: LinkedSession[]
+      lastAnswer: string
+      pressed: string
+      stepsBusy: boolean
       // tool_use_ids mit aufgeklappten Details (Chat-Skin)
       expanded: string[]
       // in diesem Turn geänderte Dateien (Hervorhebungen)
@@ -210,6 +225,8 @@ declare module 'claude-code' {
       collapsed: string[]
       marks: CallMark[]
       loopAlert: LoopAlert | null
+      dirs: { cwd: string; root: string; home: string }
+      dirAlert: { dir: string; tool: string } | null
       mcpTools: McpSchema[]
       // Serverteile (mcpKey) der in dieser Session aufgerufenen MCP-Tools
       usedMcp: string[]
@@ -229,6 +246,8 @@ declare module 'claude-code' {
       mrMine: MrMine[]
       // Status der eigenen MRs im selben Repo (Schlüssel = Referenz aus mrMine), nur bei offenem MR-Panel nachgeladen
       mrDetails: Record<string, Mr>
+      // Sitzungsleiste (Opt-in): Nadel des Cockpits
+      sidebarPin: SidebarPin
       // offene MRs, in denen du als Reviewer eingetragen bist
       mrReview: MrMine[]
       mrAhead: number

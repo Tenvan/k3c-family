@@ -64,7 +64,10 @@ test('Band: Claudes eigener Vorschlag trägt den Chip „CC“', async ($, on) =
   const rows = await band.findAll({ type: 'Text', text: ' CC ' })
   expect(rows.length).toBe(1)
   expect(JSON.stringify(rows[0])).toContain(THEME.chip)
-  expect(await band.find({ type: 'Text', text: 'Vorschlag von Claude' })).not.toBe(undefined)
+  // Begründung als Tooltip am Info-Symbol (Desktop), nicht als eigene Zeile.
+  expect(JSON.stringify(await band.findAll({ type: 'Svg' }))).toContain('Vorschlag von Claude')
+  expect(await band.find({ type: 'Text', text: 'Vorschlag von Claude' })).toBe(undefined)
+  expect(await band.find({ type: 'Button', key: 'steps-refresh' })).not.toBe(undefined)
 })
 
 test('Zusammenfassung: Aktualisieren sendet deutschen Prompt und zeigt das Ergebnis', async ($, on) => {
@@ -72,7 +75,7 @@ test('Zusammenfassung: Aktualisieren sendet deutschen Prompt und zeigt das Ergeb
   on('session.measure', () => ({ changed: [] }))
   on('store.get', () => ({ value: undefined }) as never)
   on('store.set', () => ({ value: undefined }) as never)
-  on('store.delete', () => ({}) as never)
+  on('store.delete', () => ({ value: undefined }) as never)
   on('session.id', () => ({ value: 's1' }) as never)
   on('session.messages', () => ({ value: MESSAGES }) as never)
   on('fs.read', () => ({ value: '# Anweisungen' }) as never)
@@ -99,7 +102,7 @@ test('Demo: /cockpit-demo gibt Markdown mit allen skinbaren Elementen aus', asyn
   on('store.get', () => ({ value: undefined }) as never)
   const out = await $.command.run({ command: 'cockpit-demo', args: '' } as Parameters<typeof $.command.run>[0])
   expect(out.text).toContain('```ts')
-  expect(out.text).toContain('| `AssistantMessage` | Antwort des Modells (Markdown) | ✅ Chat-Skin (Code- und Tabellenkarten, Links und Dateilinks, Mermaid-Karten, Formelkarten) |')
+  expect(out.text).toContain('| `AssistantMessage` | Antwort des Modells (Markdown) | ✅ Chat-Skin (Code- und Tabellenkarten, Mermaid-Karten, Formelkarten) |')
   expect(out.text).toContain('| `InfoNotice` | Hinweiszeile im Transcript | ➖ nur Terminal')
   expect(out.text).toContain('| `Spinner` | Arbeitszeile während eines Turns | ✅ eigene Zeile (Design-System) |')
   expect(out.text).not.toContain('KOMPONENTEN')
@@ -148,16 +151,16 @@ test('Einstellungsseite: „Alle aus” einer Gruppe und Zurücksetzen', async (
   const main = await $.ui.mount({ plugin: 'tenvan-cc', surface: 'desktop', component: 'Pane', requestId: 'tenvan-cc', props: PANE_PROPS })
   expect(await main.find({ type: 'Text', text: 'Übersicht' })).not.toBe(undefined)
 
-  // Gruppen in Reihenfolge des ersten Schalters: Band, Panel, Zusammenfassung, Chat
-  await page.press({ key: 'grp-off-1' })
+  // Gruppen in Reihenfolge des ersten Schalters: Band, Während Claude arbeitet, Effort & Kosten, Panel …
+  await page.press({ key: 'grp-off-3' })
   for (let i = 0; i < 3000 && (await main.find({ type: 'Text', text: 'Übersicht' })) !== undefined; i++) await Promise.resolve()
   expect(await waitFind(page, /^0\/\d+ an$/)).not.toBe(undefined)
   for (const card of ['Übersicht', 'Log', 'Letzter Turn']) expect(await main.find({ type: 'Text', text: card })).toBe(undefined)
 
   await page.press({ key: 'set-reset' })
   expect(await waitFind(page, /^\d+\/\d+ an$/)).not.toBe(undefined)
-  // Band: Auto-Effort und Sparmodus sind standardmäßig aus, die Atemübung an
-  expect(await page.find({ type: 'Text', text: /^\d+\/13 an$/ })).not.toBe(undefined)
+  // Effort & Kosten: Auto-Effort und Sparmodus sind standardmäßig aus
+  expect(await page.find({ type: 'Text', text: '0/2 an' })).not.toBe(undefined)
   expect(await waitFind(main, 'Übersicht')).not.toBe(undefined)
 })
 
@@ -181,7 +184,7 @@ test('Dev-Mode: /cockpit-dev füllt das Panel mit Mockdaten und schaltet zurück
   mock.clock(on, { now: Date.UTC(2026, 9, 13, 10) })
   on('session.measure', () => ({ changed: [] }))
   on('store.get', () => ({ value: undefined }) as never)
-  on('store.set', () => ({}) as never)
+  on('store.set', () => ({ value: undefined }) as never)
   on('ui.open', () => ({ value: { isPlaced: true as const } }))
   const pane = await $.ui.mount({ plugin: 'tenvan-cc', surface: 'desktop', component: 'Pane', requestId: 'tenvan-cc', props: PANE_PROPS })
   const settle = async (done: () => Promise<boolean>) => {
@@ -205,12 +208,16 @@ test('MR-Panel und Fußzeilen-Knopf im Dev-Mode', async ($, on) => {
   mock.clock(on, { now: Date.UTC(2026, 9, 13, 10) })
   on('session.measure', () => ({ changed: [] }))
   on('store.get', () => ({ value: undefined }) as never)
-  on('store.set', () => ({}) as never)
+  on('store.set', () => ({ value: undefined }) as never)
   on('ui.open', () => ({ value: { isPlaced: true as const } }))
   await $.command.run({ command: 'cockpit-dev', args: '' } as never)
   const pane = await $.ui.mount({ plugin: 'tenvan-cc', surface: 'desktop', component: 'Pane', requestId: 'tenvan-cc-mr', props: { ...PANE_PROPS, title: 'Cockpit · Merge Requests' } })
   expect(await pane.find({ type: 'Text', text: 'Offene Threads' })).not.toBe(undefined)
   expect(await pane.find({ type: 'Button', key: 'mr-a-rebase' })).not.toBe(undefined)
+  // Klick-Rückmeldung: der gedrückte Knopf zeigt „◌ … …“, solange seine Aktion läuft (mindestens 600 ms).
+  await pane.press({ key: 'mr-a-refresh' })
+  for (let i = 0; i < 100 && !JSON.stringify(await pane.find({ type: 'Button', key: 'mr-a-refresh' })).includes('◌'); i++) await Promise.resolve()
+  expect(JSON.stringify(await pane.find({ type: 'Button', key: 'mr-a-refresh' }))).toContain('◌')
   const foot = await $.ui.mount({ plugin: 'tenvan-cc', surface: 'desktop', component: 'SessionMode', props: { modes: [] } as never })
   expect(JSON.stringify(await foot.find({ type: 'Button', key: 'mr-foot' }))).toContain('!42')
   expect(await foot.find({ type: 'Button', key: 'details' })).not.toBe(undefined)
@@ -280,4 +287,96 @@ test('Einstellungen: „Neu laden“ meldet das Ergebnis als Toast', async ($, o
   await page.press({ key: 'set-reload' })
   for (let i = 0; i < 200 && toasts.length < 2; i++) await Promise.resolve()
   expect(toasts[1]).toBe('Einstellungen neu geladen')
+})
+
+test('Arbeitsverzeichnis: ein Git-Fehler lässt die Kachel stehen, nur „kein Repository“ blendet sie aus', async ($, on) => {
+  const clock = mock.clock(on, { now: 1 })
+  on('session.measure', () => ({ changed: [] }))
+  on('store.get', () => ({ value: undefined }) as never)
+  on('store.set', () => ({ value: undefined }) as never)
+  let mode: 'ok' | 'broken' | 'none' = 'ok'
+  on('process.run', (_$, e) => {
+    const argv = (e as { argv: readonly string[] }).argv
+    const top = argv.includes('--show-toplevel')
+    const r = (exitCode: number, stdout: string, stderr = '') => ({ value: { exitCode, stdout, stderr, isStdoutTruncated: false, isStderrTruncated: false } }) as never
+    if (mode === 'none') return r(128, '', 'fatal: not a git repository (or any of the parent directories): .git')
+    if (mode === 'broken' && top) return r(128, '', 'fatal: Unable to read current working directory')
+    return r(0, top ? 'C:/WORKSPACE/demo' : '')
+  })
+  on('session.model', () => ({ value: 'claude-opus-5-5' }) as never)
+  on('session.version', () => ({ value: { version: '2.1.295' } }) as never)
+  on('session.start', ($, e) => ({ cwd: e.cwd }))
+  on('command.register', ($, e) => ({ value: { command: e.name } }))
+  on('fs.read', () => ({ value: '{ "version": "1" }' }) as never)
+  on('http.fetch', () => ({ value: { status: 404, headers: {}, text: '' } }) as never)
+  await $.session.start({ cwd: '.', surface: 'desktop', isInteractive: true })
+  const pane = await $.ui.mount({ plugin: 'tenvan-cc', surface: 'desktop', component: 'Pane', requestId: 'tenvan-cc', props: PANE_PROPS })
+  expect(await waitFind(pane, 'Arbeitsverzeichnis')).not.toBe(undefined)
+  mode = 'broken'
+  await clock.advance(30_000)
+  expect(await pane.find({ type: 'Text', text: 'Arbeitsverzeichnis' })).not.toBe(undefined)
+  mode = 'none'
+  await clock.advance(30_000)
+  for (let i = 0; i < 100 && (await pane.find({ type: 'Text', text: 'Arbeitsverzeichnis' })); i++) await Promise.resolve()
+  expect(await pane.find({ type: 'Text', text: 'Arbeitsverzeichnis' })).toBe(undefined)
+})
+
+test('Einstellungen: ▾/▸ klappt jede Gruppe zu und auf', async ($, on) => {
+  mock.clock(on, { now: 1 })
+  on('session.measure', () => ({ changed: [] }))
+  on('store.get', () => ({ value: undefined }) as never)
+  on('store.set', () => ({ value: undefined }) as never)
+  const page = await $.ui.mount({ plugin: 'tenvan-cc', surface: 'desktop', component: 'Pane', requestId: 'tenvan-cc-settings', props: SETTINGS_PROPS })
+  expect(await page.find({ type: 'Button', key: 'set-cardLog' })).not.toBe(undefined)
+  await page.press({ key: 'set-fold-panel' })
+  for (let i = 0; i < 100 && (await page.find({ type: 'Button', key: 'set-cardLog' })); i++) await Promise.resolve()
+  expect(await page.find({ type: 'Button', key: 'set-cardLog' })).toBe(undefined)
+  expect(JSON.stringify(await page.find({ type: 'Button', key: 'set-fold-panel' }))).toContain('▸')
+  await page.press({ key: 'set-fold-panel' })
+  for (let i = 0; i < 100 && !(await page.find({ type: 'Button', key: 'set-cardLog' })); i++) await Promise.resolve()
+  expect(await page.find({ type: 'Button', key: 'set-cardLog' })).not.toBe(undefined)
+})
+
+test('Einstellungen: „Alle einklappen“ und „Alle ausklappen“ schalten alle Karten', async ($, on) => {
+  mock.clock(on, { now: 1 })
+  on('session.measure', () => ({ changed: [] }))
+  on('store.get', () => ({ value: undefined }) as never)
+  on('store.set', () => ({ value: undefined }) as never)
+  const page = await $.ui.mount({ plugin: 'tenvan-cc', surface: 'desktop', component: 'Pane', requestId: 'tenvan-cc-settings', props: SETTINGS_PROPS })
+  await page.press({ key: 'set-fold-all' })
+  for (let i = 0; i < 100 && (await page.find({ type: 'Button', key: 'set-cardLog' })); i++) await Promise.resolve()
+  expect(await page.find({ type: 'Button', key: 'set-cardLog' })).toBe(undefined)
+  expect(await page.find({ type: 'Button', key: 'lang-de' })).toBe(undefined)
+  await page.press({ key: 'set-unfold-all' })
+  for (let i = 0; i < 100 && !(await page.find({ type: 'Button', key: 'set-cardLog' })); i++) await Promise.resolve()
+  expect(await page.find({ type: 'Button', key: 'lang-de' })).not.toBe(undefined)
+})
+
+test('Arbeitsverzeichnis: verknüpfte Sessions aus der Desktop-App mit Status und Branch', async ($, on) => {
+  const clock = mock.clock(on, { now: 1 })
+  on('session.measure', () => ({ changed: [] }))
+  on('store.get', () => ({ value: undefined }) as never)
+  on('store.set', () => ({ value: undefined }) as never)
+  on('process.run', (_$, e) => {
+    const top = (e as { argv: readonly string[] }).argv.includes('--show-toplevel')
+    return { value: { exitCode: 0, stdout: top ? 'C:/WORKSPACE/demo' : '', stderr: '', isStdoutTruncated: false, isStderrTruncated: false } } as never
+  })
+  const rows = [{ sessionId: 'local_1', title: 'Sitzungsleiste anbinden', name: 'sl', branch: 'claude/sl', cwd: 'C:/w', isRunning: true, isArchived: false }]
+  on('mcp.call', (_$, e) => {
+    const c = e as { server: string; tool: string }
+    return { value: { content: [{ type: 'text', text: c.tool === 'list_sessions' ? JSON.stringify(rows) : '{}' }], isError: false } } as never
+  })
+  on('session.model', () => ({ value: 'claude-opus-5-5' }) as never)
+  on('session.version', () => ({ value: { version: '2.1.295' } }) as never)
+  on('session.start', ($, e) => ({ cwd: e.cwd }))
+  on('command.register', ($, e) => ({ value: { command: e.name } }))
+  on('fs.read', () => ({ value: '{ "version": "1" }' }) as never)
+  on('http.fetch', () => ({ value: { status: 404, headers: {}, text: '' } }) as never)
+  await $.session.start({ cwd: '.', surface: 'desktop', isInteractive: true })
+  const pane = await $.ui.mount({ plugin: 'tenvan-cc', surface: 'desktop', component: 'Pane', requestId: 'tenvan-cc', props: PANE_PROPS })
+  await clock.advance(30_000)
+  expect(await waitFind(pane, 'Verknüpfte Sessions · 1')).not.toBe(undefined)
+  expect(await pane.find({ type: 'Text', text: 'Sitzungsleiste anbinden' })).not.toBe(undefined)
+  expect(await pane.find({ type: 'Text', text: 'läuft' })).not.toBe(undefined)
+  expect(await pane.find({ type: 'Text', text: /⎇ claude\/sl/ })).not.toBe(undefined)
 })

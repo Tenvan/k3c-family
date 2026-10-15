@@ -32,6 +32,14 @@ Kein Code aus diesen Projekten wurde übernommen. Kein Netzwerk, keine Telemetri
 - Subagents: Typ, Aufgabe, Status, Laufzeit
 - Log: die letzten Ereignisse der Session
 
+**Sitzungsleiste der Desktop-App** (Einstellungen → „Sitzungsleiste (Desktop)“, alle Schalter standardmäßig aus)
+
+| Schalter | Wirkung |
+| --- | --- |
+| Gemergt → erledigt | Ist der MR des Branches gemergt, wird der Punkt der Session quittiert („Als erledigt markieren“) |
+| Rot oder Konflikt → ungelesen | Pipeline rot oder neuer Konflikt, während die Session ruht: blauer Punkt |
+| Offener MR → angepinnt | Session steht unter „Angepinnt“, solange der MR offen ist; danach löst das Cockpit nur die eigene Nadel |
+
 „Takt“ = Verbrauch minus verstrichener Anteil des Fensters, in Prozentpunkten. `+12` heißt: 12 Punkte schneller als gleichmäßig.
 
 ## Grenzen
@@ -40,6 +48,7 @@ Kein Code aus diesen Projekten wurde übernommen. Kein Netzwerk, keine Telemetri
 - Die Cache-Restzeit ist geschätzt; ob der Cache wirklich traf, zeigt erst die Trefferquote des nächsten Requests.
 - Ohne Subscription liefert die Engine keine Rate-Limits – der Limit-Teil entfällt dann.
 - Tool-Freigaben werden nur gezählt, das Mod lehnt selbst nie etwas ab.
+- Die Sitzungsleiste gibt es nur in der Desktop-App; im Terminal bleiben die Schalter wirkungslos. Sie folgt dem MR-Abruf (jede Minute, bei laufender Pipeline alle 15 s). Im Auto-Modus lehnt der Classifier die Aufrufe ab (das Log nennt den Grund einmal je Session).
 - Folge-Schritte sind Einzelklicks (keine Mehrfachauswahl) und lassen sich abschalten.
 
 ## Optionen
@@ -55,7 +64,7 @@ Gesetzt über `/config` oder in den Settings unter `pluginConfigs.tenvan-cc`.
 Im Terminal (der Desktop-Code-Tab kennt `/plugin` nicht, lädt das Mod aber mit):
 
 ```shell
-claude --plugin-dir tools/cockpit
+claude plugin install tenvan-cc@orga-marketplace
 ```
 
 ## Entwicklung

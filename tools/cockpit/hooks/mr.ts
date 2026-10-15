@@ -80,7 +80,7 @@ export function toMr(detail: unknown, approvals: unknown, discussions: unknown):
     notes: num(d.user_notes_count),
     threads: openThreads(discussions).length,
     pipeline: p ? { id: num(obj(p).id), status: str(obj(p).status), url: str(obj(p).web_url) } : null,
-    // Ohne Approval-Regeln (GitLab Free, z. B. auf selbst gehosteten Instanzen) fehlt `approvals_required`; `approved_by` gibt es trotzdem.
+    // Ohne Approval-Regeln (GitLab Free, so auf gitlab.deltra.de) fehlt `approvals_required`; `approved_by` gibt es trotzdem.
     description: str(d.description).trim(),
     author: str(obj(d.author).username),
     updatedAt: str(d.updated_at),

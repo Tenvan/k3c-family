@@ -1,25 +1,27 @@
 import { atom, read, update } from 'claude-code'
 import type { EngineInterface, PressedLink, Register, RenderChildren, RenderElement, RenderSurface, ResolveInput, SessionUsage } from 'claude-code'
 
-import type { BgTask, About, ModelInfo, Agent, Breakdown, CallMark, CatchUp, Decision, LoopAlert, McpSchema, UiLang, Repo, Gate, LogEntry, LogSrc, ModSettings, Step, Turn, TurnRecord, Usage } from '../types'
+import type { BgTask, LinkedSession, About, ModelInfo, Agent, Breakdown, CallMark, CatchUp, Decision, LoopAlert, McpSchema, UiLang, Repo, Gate, LogEntry, LogSrc, ModSettings, Step, Turn, TurnRecord, Usage } from '../types'
 import { mockData } from './mock'
 import { BREATHS, breathFrameSvg, breathOf, breathSvg, phaseAt } from './breath'
 import { canMergeNow, conflictPrompt, draftPrompt, inRepo, refOf, forgeRemote, mrBadge, mrRef, isPipelineRunning, mrEvents, parseDraft, pipelineTone, pollDelayMs, threadsPrompt } from './mr'
 import { authMissing, canAutoMerge, forgeCreate, forgeDefault, forgeFind, forgeLists, forgeLoad, forgeMerge, forgeRebase, forgeRetry, forgeThreads } from './forge'
 import type { Io, Remote } from './forge'
-import type { Mr, MrDraft, MrMine } from '../types'
-import { THEME, TINT, CARD_TINT, cycleTint, summarySections, splitTool, toolText, withClaude, parseTaskNotification, legendSvg, modelLabel, SPIN_MODE, spinnerText, timelineSvg, demoTable, agentStats, agentFlags, breakdownBarSvg, contextTip, limitTip, cacheTip, summaryLines, topRows, resetLabel, CATCH0, CATCH_KEEP, DEFAULT_SETTINGS, SETTING_DEFS, settingLabel, settingHint, catchUpPrompt, catchUpSystem, nextChunk, settingsOf, startIndex, fingerprint } from './core'
+import type { Mr, MrDraft, MrMine, SidebarPin } from '../types'
+import { THEME, TINT, CARD_TINT, cycleTint, summarySections, splitTool, toolText, withClaude, parseTaskNotifications, backgroundOf, NEW_STYLES, todosOf, wrapupOf, resetLeft, dirTarget, isForeignDir, parseLinkedSessions, infoSvg, legendSvg, modelLabel, SPIN_MODE, spinnerText, timelineSvg, demoTable, agentStats, agentFlags, breakdownBarSvg, contextTip, limitTip, cacheTip, summaryLines, topRows, resetLabel, CATCH0, CATCH_KEEP, DEFAULT_SETTINGS, SETTING_DEFS, settingLabel, settingHint, catchUpPrompt, catchUpSystem, nextChunk, settingsOf, startIndex, fingerprint, sidebarCalls } from './core'
 import type { SettingGroup, SettingKey, Tone } from './core'
 import { TILES, EFFORT_LEVELS, effortColor, effectiveEffort, effortJudgeText, handoffMarkdown, handoffPays, isTrivialPrompt, limitAlert } from './core'
 import type { EffortLevel } from './core'
 import { CACHE_WARN_MS, WASTE_USD, compactFocus, detectLoop, isAgentHeavy, isWasteful, mcpDiet, mcpKey, turnBarsSvg, turnBarsText } from './core'
-import { RISKY_GIT_CONFIG, COMPACT_AT, DECISION_COLOR, RING_HEX, contextColor, LEGEND, LEGEND_NOTE, paceText, LIMIT_LABEL, LOG_MAX, SRC_COLOR, bar, cacheHitPct, cacheLeftMs, clockTime, duration, limitColor, pace, parseSteps, pushCapped, shortHash, toolInfoLines, oneLine, parseRepo, repoRows, repoShort, ringSvg, svgSource, titleText, toBreakdown, breakdownTitle, categoryColor, spinner, title, toolTarget, toolKind, tokens, usd } from './core'
+import { RISKY_GIT_CONFIG, COMPACT_AT, DECISION_COLOR, RING_HEX, contextColor, LEGEND, LEGEND_NOTE, paceText, LIMIT_LABEL, LOG_MAX, SRC_COLOR, bar, cacheHitPct, cacheLeftMs, clockTime, duration, limitColor, pace, parseSteps, pushCapped, markdownStats, shortHash, statsLines, toolInfoLines, oneLine, parseRepo, repoRows, repoShort, ringSvg, svgSource, titleText, toBreakdown, breakdownTitle, categoryColor, spinner, title, toolTarget, toolKind, tokens, usd } from './core'
 import { t } from './i18n'
 import type { Key } from './i18n'
 import { ALERT_COLOR, CODE_BG, CODE_FG, ICON_COLOR, TONE_COLOR, detailInput, detailOutput, diffCardSvg, diffOf, errorText, firstErrorLine, iconKind, inlineTokens, inputPath, isReadOnlyShell, isShell, isStyled, lineCountOf, mdLiteral, QUIET_TOOLS, quietLine, shellCommand, splitMessage, toolIconSvg } from './skins'
-import { askSummary, fileHref, mathSvg } from './skins'
-import type { LinkToken, RichPart, Segment, SplitOptions } from './skins'
+import { askSummary, mathSvg } from './skins'
+import type { RichPart, Segment, SplitOptions } from './skins'
 import { diagramType, mermaidSvg } from './mermaid'
+import { chip, labelRow, pill, tile } from './ui'
+import type { Ui } from './ui'
 
 const PLUGIN = 'tenvan-cc'
 // Slash-Command des Hauptpanels: kurz statt der Plugin-ID.
@@ -59,6 +61,9 @@ const cacheHit = atom({ plugin: 'tenvan-cc', key: 'cacheHit' } as const, null)
 const about = atom({ plugin: 'tenvan-cc', key: 'about' } as const, null)
 const bgTasks = atom({ plugin: 'tenvan-cc', key: 'bgTasks' } as const, [] as BgTask[])
 const lastPrompt = atom({ plugin: 'tenvan-cc', key: 'lastPrompt' } as const, '')
+// Letzte Antwort und ob gerade neue Folge-Schritte geholt werden: für den Knopf „↻“ hinter den Vorschlägen.
+const lastAnswer = atom({ plugin: 'tenvan-cc', key: 'lastAnswer' } as const, '')
+const stepsBusy = atom({ plugin: 'tenvan-cc', key: 'stepsBusy' } as const, false)
 // Claudes eigener Vorschlag nach dem Turn (prompt.suggest, origin suggestion); gilt bis zum nächsten Prompt.
 const claudeHint = atom({ plugin: 'tenvan-cc', key: 'claudeHint' } as const, null as Step | null)
 // Animationsbild des Panels; läuft nur, solange ein Turn läuft.
@@ -69,6 +74,7 @@ const breakdownNote = atom({ plugin: 'tenvan-cc', key: 'breakdownNote' } as cons
 const logo = atom({ plugin: 'tenvan-cc', key: 'logo' } as const, null)
 const modelInfo = atom({ plugin: 'tenvan-cc', key: 'modelInfo' } as const, null)
 const repo = atom({ plugin: 'tenvan-cc', key: 'repo' } as const, null)
+const linked = atom({ plugin: 'tenvan-cc', key: 'linked' } as const, [] as LinkedSession[])
 const settings = atom({ plugin: 'tenvan-cc', key: 'settings' } as const, DEFAULT_SETTINGS)
 const catchUp = atom({ plugin: 'tenvan-cc', key: 'catchUp' } as const, CATCH0)
 const expanded = atom({ plugin: 'tenvan-cc', key: 'expanded' } as const, [] as string[])
@@ -78,6 +84,9 @@ const collapsed = atom({ plugin: 'tenvan-cc', key: 'collapsed' } as const, [] as
 // Aufrufe des Haupt-Agents im laufenden Turn und die daraus erkannte Schleife; beides leert ein neuer Turn.
 const marks = atom({ plugin: 'tenvan-cc', key: 'marks' } as const, [] as CallMark[])
 const loopAlert = atom({ plugin: 'tenvan-cc', key: 'loopAlert' } as const, null as LoopAlert | null)
+// Verzeichniswächter: Session-Ordner (root), Prozess-Ordner (cwd), Home; letzter Wechsel nach außerhalb im laufenden Turn.
+const dirs = atom({ plugin: 'tenvan-cc', key: 'dirs' } as const, { cwd: '', root: '', home: '' })
+const dirAlert = atom({ plugin: 'tenvan-cc', key: 'dirAlert' } as const, null as { dir: string; tool: string } | null)
 const loopIgnored = atom({ plugin: 'tenvan-cc', key: 'loopIgnored' } as const, [] as string[])
 const loopKey = (a: LoopAlert) => `${a.kind}:${a.target}`
 // Geladene MCP-Schemas aus dem Kontext-Breakdown und die Server, deren Tools die Session schon aufgerufen hat (Kontext-Diät).
@@ -94,10 +103,13 @@ const mrHost = atom({ plugin: 'tenvan-cc', key: 'mrHost' } as const, '')
 const mrCur = atom({ plugin: 'tenvan-cc', key: 'mrCur' } as const, null as Mr | null)
 const mrMine = atom({ plugin: 'tenvan-cc', key: 'mrMine' } as const, [] as MrMine[])
 const mrDetails = atom({ plugin: 'tenvan-cc', key: 'mrDetails' } as const, {} as Record<string, Mr>)
+const sidebarPin = atom({ plugin: 'tenvan-cc', key: 'sidebarPin' } as const, null as SidebarPin)
 const mrReview = atom({ plugin: 'tenvan-cc', key: 'mrReview' } as const, [] as MrMine[])
 const mrAhead = atom({ plugin: 'tenvan-cc', key: 'mrAhead' } as const, 0)
 const mrDraft = atom({ plugin: 'tenvan-cc', key: 'mrDraft' } as const, null as MrDraft | null)
 const mrBusy = atom({ plugin: 'tenvan-cc', key: 'mrBusy' } as const, '')
+// Knopf, dessen Aktion gerade läuft: zeichnet „◌ … “ statt seines Labels, bis die Aktion fertig ist.
+const pressed = atom({ plugin: 'tenvan-cc', key: 'pressed' } as const, '')
 const mrConfirm = atom({ plugin: 'tenvan-cc', key: 'mrConfirm' } as const, '')
 const devMock = atom({ plugin: 'tenvan-cc', key: 'devMock' } as const, false)
 // Subagents, deren weitere Tool-Calls das Cockpit ablehnt (Agent-Bremse: die API kann einen Subagent nicht abbrechen).
@@ -115,13 +127,15 @@ let effortTimer: { cancel(): void } | undefined
 const STEPS_SYSTEM =
   'Du schlägst die nächsten sinnvollen Schritte in einer Coding-Session vor. ' +
   'Antworte nur mit einem JSON-Array aus genau 3 Objekten {"label": string, "why": string, "prompt": string}, das wichtigste zuerst. ' +
-  '"prompt": genau so formuliert, wie der Nutzer es selbst als nächsten Prompt ins Eingabefeld tippen würde: ' +
-  'knapp (meist unter 15 Wörtern), konkret, als direkte Aufforderung, ohne Höflichkeitsfloskeln und ohne Erklärung. ' +
-  '"label": Kurzfassung dieses Prompts, höchstens 6 Wörter. "why": kurze Begründung, höchstens 10 Wörter. ' +
+  '"prompt": der nächste Prompt, den der Nutzer an Claude schickt, also immer ein Auftrag AN CLAUDE: ' +
+  'Imperativ in der Du-Form an Claude gerichtet (z. B. "Führe die Tests aus", "Committe die Änderungen"), knapp (meist unter 15 Wörtern), ' +
+  'konkret, ohne Höflichkeitsfloskeln und ohne Erklärung. Nie eine Anweisung an den Nutzer selbst ("Prüfe im Browser", "Starte die App neu"); ' +
+  'braucht es seine Mitwirkung, formuliere den Auftrag an Claude, der sie vorbereitet oder abfragt. ' +
+  '"label": Kurzfassung dieses Auftrags an Claude im selben Imperativ, höchstens 6 Wörter. ' +
+  '"why": kurze Begründung aus Sicht des Nutzers, höchstens 10 Wörter. ' +
   'Schlage nur vor, was sich direkt aus dem letzten Austausch ergibt; nichts wiederholen, was schon erledigt ist. ' +
   'Sprache der Unterhaltung verwenden. Gibt es nichts Sinnvolles, antworte mit [].'
 
-type Ui = ReturnType<EngineInterface['ui']['resolve']>
 
 // Oberflächen, die Svg zeichnen. Die Engine ergänzt jede Elementtabelle um alle Namen; im Terminal steht deshalb auch ein
 // `Svg` darin, das nur ein leeres Fragment zeichnet. `elementsOf` nimmt es dort heraus, damit `'Svg' in ui` stimmt.
@@ -205,16 +219,41 @@ async function syncAgents($: EngineInterface) {
 }
 
 // ponytail: ein Haiku-Call pro Antwort, kein Cache – abschaltbar über die Option nextSteps
-async function suggest($: EngineInterface, asked: string, answer: string): Promise<Step[]> {
+async function suggest($: EngineInterface, asked: string, answer: string, avoid: readonly string[] = []): Promise<Step[]> {
   const r = await $.model.complete({
     model: 'haiku',
     system: STEPS_SYSTEM,
-    prompt: `Nutzer fragte:\n${clip(asked, 3000)}\n\nAssistent antwortete:\n${clip(answer, 6000)}\n\nNächste Schritte (JSON-Array):`,
+    prompt: `Nutzer fragte:\n${clip(asked, 3000)}\n\nAssistent antwortete:\n${clip(answer, 6000)}\n\n${avoid.length > 0 ? `Schon vorgeschlagen, wähle andere:\n${avoid.map(a => `- ${a}`).join('\n')}\n\n` : ''}Nächste Schritte (JSON-Array):`,
     maxTokens: 1000,
     effort: 'low',
     timeoutMs: 15_000,
   })
   return r.isAnswered ? parseSteps(r.text) : []
+}
+
+// Knopf „↻“: neue Folge-Schritte zum letzten Austausch, ohne die gerade gezeigten zu wiederholen.
+async function refreshSteps($: EngineInterface) {
+  const asked = await read($, lastPrompt)
+  const answer = await read($, lastAnswer)
+  if (await read($, stepsBusy)) return
+  if (answer.trim() === '') {
+    $.ui.toast(t((await read($, settings)).lang, 'band.noAnswerYet'))
+    return
+  }
+  await update($, stepsBusy, () => true)
+  try {
+    const avoid = (await read($, steps)).filter(s => s.fromClaude !== true).map(s => s.label)
+    const list = await suggest($, asked, answer, avoid)
+    if ((await read($, lastPrompt)) !== asked) return
+    if (list.length === 0) {
+      $.ui.toast(t((await read($, settings)).lang, 'band.noNewSteps'))
+      return
+    }
+    await update($, steps, () => list)
+    await mergeHint($)
+  } finally {
+    await update($, stepsBusy, () => false)
+  }
 }
 
 // Claudes Vorschlag vor die Haiku-Vorschläge setzen; egal, welcher von beiden zuerst eintrifft.
@@ -228,7 +267,7 @@ let lastBreakdownAt = 0
 // Für welchen Turn der Cache-Wächter schon einen Vorschlag gemacht hat: je Turn höchstens einmal.
 let warnedFor: number | null = null
 
-// Logo aus assets/logo.svg (SVG mit eingebettetem PNG).
+// Logo aus assets/logo.svg: Bildmarke aus ErpApi/design-system/brand/logo-symbol-dark.svg (Korpus weiß, Akzente #82b1ff).
 async function loadLogo($: EngineInterface): Promise<string | null> {
   try {
     return svgSource(await $.fs.read(`${$.plugin.root}/assets/logo.svg`))
@@ -253,11 +292,16 @@ async function isRiskyRepo($: EngineInterface): Promise<boolean> {
 // Git-Stand des Arbeitsverzeichnisses; rein lesend, ohne Netzwerk. Außerhalb eines Repos null.
 // Ein fremdes Repo kann über seine Konfiguration Befehle starten (Filter, fsmonitor, textconv). Nur `git status`
 // kann das hier auslösen; es läuft deshalb nur, wenn die lokale Konfiguration keinen solchen Schlüssel enthält.
-async function loadRepo($: EngineInterface): Promise<Repo | null> {
+// Nur „kein Repository“ ergibt null. Jeder andere Fehler (Timeout, Sperre, Ordner kurz weg beim Worktree-Wechsel) ergibt
+// undefined: der zuletzt bekannte Stand bleibt stehen, statt die Kachel bis zum nächsten Turn verschwinden zu lassen.
+async function loadRepo($: EngineInterface): Promise<Repo | null | undefined> {
   const git = (...args: string[]) => gitText($, args)
+  const probe = await $.process.run(['git', '-c', 'core.fsmonitor=false', '--no-optional-locks', 'rev-parse', '--show-toplevel']).catch(() => null)
+  if (probe === null) return undefined
+  if (probe.exitCode !== 0) return /not a git repository/i.test(probe.stderr) ? null : undefined
+  const top = probe.stdout.trim()
   const risky = await isRiskyRepo($)
-  const [top, gitDir, commonDir, branch, sha, status, counts, prefix] = await Promise.all([
-    git('rev-parse', '--show-toplevel'),
+  const [gitDir, commonDir, branch, sha, status, counts, prefix] = await Promise.all([
     git('rev-parse', '--absolute-git-dir'),
     git('rev-parse', '--path-format=absolute', '--git-common-dir'),
     git('branch', '--show-current'),
@@ -266,7 +310,32 @@ async function loadRepo($: EngineInterface): Promise<Repo | null> {
     git('rev-list', '--left-right', '--count', '@{upstream}...HEAD'),
     git('rev-parse', '--show-prefix'),
   ])
-  return top === '' ? null : parseRepo({ top, gitDir, commonDir, branch, sha, status, counts, prefix })
+  return top === '' ? undefined : parseRepo({ top, gitDir, commonDir, branch, sha, status, counts, prefix })
+}
+
+async function refreshDirs($: EngineInterface) {
+  const [cwd, root, home] = await Promise.all([
+    $.session.cwd(),
+    $.session.root(),
+    $.env.get('USERPROFILE').then(v => v ?? $.env.get('HOME')).then(v => v ?? ''),
+  ])
+  const next = { cwd, root, home }
+  if (!same(await read($, dirs), next)) await update($, dirs, () => next)
+  return next
+}
+
+// Ziel eines Aufrufs außerhalb des Session-Ordners, sonst null.
+async function foreignTarget($: EngineInterface, tool: string, input: Record<string, unknown>): Promise<string | null> {
+  const d = (await read($, dirs)).root === '' ? await refreshDirs($) : await read($, dirs)
+  // Argumente liegen bei tool.call im Event, bei tool.check unter `input`.
+  const args = (typeof input.input === 'object' && input.input !== null ? input.input : input) as Record<string, unknown>
+  const dir = dirTarget(tool, args, d.cwd, d.home)
+  return dir !== null && isForeignDir(dir, d.root, d.home) ? dir : null
+}
+
+async function refreshRepo($: EngineInterface) {
+  const r = await loadRepo($)
+  if (r !== undefined && !same(await read($, repo), r)) await update($, repo, () => r)
 }
 
 // Info-Zeile unter einem gezeichneten Chat-Element: Tenvan-Bildmarke und die Angaben als gedimmter Text, immer sichtbar.
@@ -278,7 +347,7 @@ function withInfo(ui: Ui, key: string, lines: readonly string[], theirs: RenderE
     <Box key={key} flexDirection="column">
       {theirs}
       <Box flexDirection="row" columnGap={1} alignItems="center">
-        {mark !== null && Svg ? <Svg source={mark} alt="Tenvan CC" width={9} height={14} /> : <Text color={THEME.textMuted}>ⓘ</Text>}
+        {mark !== null && Svg ? <Svg source={mark} alt="Tenvan" width={11} height={14} /> : <Text color={THEME.textMuted}>ⓘ</Text>}
         <Text color={THEME.textMuted} wrap="truncate-end">{lines.join(' · ')}</Text>
       </Box>
     </Box>
@@ -308,12 +377,13 @@ async function markerOf($: EngineInterface): Promise<Marker> {
 function skinMark(ui: Ui, mk: Marker, key: string, style: StyleKey) {
   const { Box, Text } = ui
   const Svg = 'Svg' in ui ? ui.Svg : undefined
-  const icon = mk.mark !== null && Svg ? <Svg source={mk.mark} alt="Tenvan CC" width={7} height={11} /> : null
+  const icon = mk.mark !== null && Svg ? <Svg source={mk.mark} alt="Tenvan" width={9} height={11} /> : null
   if (icon === null && !mk.label) return null
   return (
     <Box key={key} flexDirection="row" columnGap={1} alignItems="center">
       {icon}
       {mk.label && <Text color={THEME.textMuted} italic>{t(mk.lang, style)}</Text>}
+      {NEW_STYLES.has(style) && chip(ui, 'skin', `${key}-new`, t(mk.lang, 'skin.newStyle'), THEME.accent)}
     </Box>
   )
 }
@@ -342,36 +412,18 @@ function card(ui: Ui, key: string, head: RenderElement, body: RenderElement, cop
       </Box>
       {copy !== null && (
         <Box flexDirection="row">
-          <Button key={`${key}-copy`} label={label} plain dimColor onPress={copy} />
+          {pill(ui, 'skin', `${key}-copy`, label, copy)}
         </Box>
       )}
     </Box>
   )
 }
 
-
-// Stück eines Absatzes mit Links: Links in der Akzentfarbe, Dateilinks als Chip (Name, ggf. `:Zeile`), Code gedämpft auf Chip-Grund.
-function linkPart(ui: Ui, p: LinkToken, key: string, cwd: string) {
-  const { Text } = ui
-  const Link = 'Link' in ui ? ui.Link : undefined
-  if (p.kind === 'text') return p.text
-  if (p.kind === 'bold') return <Text key={key} bold>{p.text}</Text>
-  if (p.kind === 'code') return <Text key={key} color={THEME.textSecondary} backgroundColor={THEME.chip}>{` ${p.text} `}</Text>
-  if (!p.file) {
-    const text = <Text key={`${key}-t`} color={THEME.accent} underline>{p.label}</Text>
-    return Link ? <Link key={key} href={p.href}>{text}</Link> : text
-  }
-  const name = p.line !== null && !/:\d+$/.test(p.label) ? `${p.label}:${p.line}` : p.label
-  const chip = <Text key={`${key}-t`} color={THEME.accent} backgroundColor={THEME.chip}>{` ${name} `}</Text>
-  // Ohne Arbeitsverzeichnis bleibt der Pfad relativ; ein Link ohne URL lässt die Engine die ganze Antwort verwerfen.
-  const href = fileHref(p.path, cwd)
-  return Link && href.startsWith('file:') ? <Link key={key} href={href}>{chip}</Link> : chip
-}
 // Mermaid-Karten nur mit Svg: ohne Grafik bliebe die Karte der Markdown-Block der Engine, die Übernahme brächte nichts.
-const splitOptions = (s: ModSettings, hasSvg: boolean): SplitOptions => ({ cards: s.skinCards, inline: s.skinInline, mermaid: s.skinMermaid && hasSvg, math: s.skinMath, links: s.skinLinks })
+const splitOptions = (s: ModSettings, hasSvg: boolean): SplitOptions => ({ cards: s.skinCards, inline: s.skinInline, mermaid: s.skinMermaid && hasSvg, math: s.skinMath })
 
 // Abschnitte einer Antwort oder Command-Ausgabe: Prosa bleibt Markdown (markierbar), Karten und Hervorhebungen eigen.
-function segmentsView($: EngineInterface, ui: Ui, segs: readonly Segment[], base: string, lang: UiLang, changed: readonly string[], mk: Marker, cwd: string): RenderElement {
+function segmentsView($: EngineInterface, ui: Ui, segs: readonly Segment[], base: string, lang: UiLang, changed: readonly string[], mk: Marker): RenderElement {
   const { Box, Text, Markdown, Code } = ui
   const Svg = 'Svg' in ui ? ui.Svg : undefined
   const copy = (text: string) => () => void $.ui.copy({ text }).catch(() => undefined)
@@ -385,12 +437,6 @@ function segmentsView($: EngineInterface, ui: Ui, segs: readonly Segment[], base
           return (
             <Text key={k} wrap="wrap">
               {inlineTokens(s.text, changed).map(p => (p.tone === undefined ? p.text : <Text color={TONE_COLOR[p.tone]}>{p.text}</Text>))}
-            </Text>
-          )
-        if (s.kind === 'links')
-          return (
-            <Text key={k} wrap="wrap">
-              {s.tokens.map((p, j) => linkPart(ui, p, `${k}-${j}`, cwd))}
             </Text>
           )
         if (s.kind === 'rich') {
@@ -480,14 +526,19 @@ async function paneHead($: EngineInterface, ui: Ui, lang: UiLang, extra: RenderE
   )
 }
 
-// Titelzeile: Logo links, Text daneben; ohne Logo oder Svg bleibt der Text.
+// Titelzeile: Logo links, Text daneben; ohne Logo oder Svg bleibt „Tenvan CC …“ als Text.
 function titleRow(ui: Ui, info: About | null, mark: string | null) {
   const { Box, Text } = ui
   const Svg = 'Svg' in ui ? ui.Svg : undefined
   if (mark === null || !Svg) return <Text bold color={THEME.accent}>{title(info)}</Text>
   return (
     <Box flexDirection="row" columnGap={1} alignItems="center">
-      <Svg source={mark} alt="Tenvan CC" width={13} height={20} />
+      <Svg source={mark} alt="Tenvan" width={16} height={20} />
+      {/* Wortmarke als Text in den Markenfarben für dunklen Grund: „orga“ weiß, „MAX“ #82b1ff (brand/README.md) */}
+      <Text italic>
+        <Text color={THEME.orga}>orga</Text>
+        <Text bold color={THEME.max}>MAX</Text>
+      </Text>
       <Text bold color={THEME.accent}>{titleText(info)}</Text>
     </Box>
   )
@@ -578,6 +629,29 @@ async function syncSettings($: EngineInterface): Promise<boolean> {
 
 // Klapp-Status der Panel-Karten: je User im Speicher, nicht je Session.
 const foldedOf = (v: unknown): string[] => (Array.isArray(v) ? v.filter((x): x is string => typeof x === 'string') : [])
+
+// Mehrere Karten auf einmal zu- oder aufklappen (Einstellungsseite: „Alle einklappen“/„Alle ausklappen“).
+async function foldCards($: EngineInterface, keys: readonly string[], fold: boolean) {
+  await update($, collapsed, c => (fold ? [...new Set([...c, ...keys])] : c.filter(x => !keys.includes(x))))
+  await $.store.set('collapsed', await read($, collapsed))
+}
+
+// Klick-Rückmeldung: der Knopf zeigt „◌ …“, solange seine Aktion läuft, mindestens 600 ms (sonst sieht man bei schnellen
+// Aktionen wie „ins Eingabefeld“ nichts). Ein zweiter Klick auf denselben Knopf während des Laufs wird ignoriert.
+async function act($: EngineInterface, key: string, run: () => Promise<unknown>) {
+  if ((await read($, pressed)) === key) return
+  const start = await $.clock.now()
+  await update($, pressed, () => key)
+  try {
+    await run()
+  } finally {
+    const left = 600 - ((await $.clock.now()) - start)
+    const clear = () => void update($, pressed, k => (k === key ? '' : k)).catch(() => undefined)
+    if (left > 0) $.clock.after(left, clear)
+    else clear()
+  }
+}
+
 
 async function toggleCard($: EngineInterface, key: string) {
   await update($, collapsed, c => (c.includes(key) ? c.filter(x => x !== key) : [...c, key]))
@@ -726,27 +800,28 @@ async function settleAsk($: EngineInterface, id: string, isDenied: boolean) {
   })
 }
 
-// Shell-Aufruf, der im Hintergrund weiterläuft (run_in_background oder Strg+B): als laufende Aufgabe merken.
+// Aufruf, der im Hintergrund weiterläuft (Shell, Monitor, Workflow, Cloud-Agent): als laufende Aufgabe merken.
 // TaskStop beendet sie sofort als „killed“.
 async function trackBackground($: EngineInterface, e: { tool: string; [k: string]: unknown }, ran: unknown) {
   const now = await $.clock.now()
-  const result = (ran as { result?: { backgroundTaskId?: unknown } }).result
-  const id = typeof result?.backgroundTaskId === 'string' ? result.backgroundTaskId : ''
-  if (id !== '' && isShell(e.tool)) {
-    const command = shellCommand(e)
-    const description = typeof e.description === 'string' && e.description.trim() !== '' ? e.description.trim() : oneLine(command, 80)
-    await update($, bgTasks, list => pushCapped(list.filter(x => x.id !== id), { id, description, command, status: 'running', since: now }, 20))
-  }
+  const bg = backgroundOf(e.tool, e, (ran as { result?: unknown }).result)
+  if (bg !== null) await update($, bgTasks, list => pushCapped(list.filter(x => x.id !== bg.id), { ...bg, status: 'running', since: now }, 20))
   const stop = e.tool === 'TaskStop' || e.tool === 'KillShell' ? (typeof e.task_id === 'string' ? e.task_id : typeof e.shell_id === 'string' ? e.shell_id : '') : ''
   if (stop !== '') await update($, bgTasks, list => list.map(x => (x.id === stop && x.status === 'running' ? { ...x, status: 'killed', durationMs: now - x.since } : x)))
 }
 
 // Benachrichtigung der Engine über das Ende einer Hintergrundaufgabe: Status, Dauer und Kurztext übernehmen.
 async function finishBackground($: EngineInterface, text: string) {
-  const n = parseTaskNotification(text)
-  if (n === null) return
+  const ns = parseTaskNotifications(text)
+  if (ns.length === 0) return
   const now = await $.clock.now()
-  await update($, bgTasks, list => list.map(x => (x.id === n.id ? { ...x, status: n.status, durationMs: now - x.since, summary: n.summary } : x)))
+  const byId = new Map(ns.map(n => [n.id, n]))
+  await update($, bgTasks, list =>
+    list.map(x => {
+      const n = byId.get(x.id)
+      return n === undefined ? x : { ...x, status: n.status, durationMs: x.durationMs ?? now - x.since, summary: n.summary }
+    }),
+  )
 }
 
 const featuresText = async ($: EngineInterface) => $.fs.read(`${$.plugin.root}/assets/features.${await langOf($)}.md`)
@@ -864,7 +939,7 @@ let mrRemote: Remote | null = null
 let authWarned = ''
 
 // Remote des aktuellen Branches (git config branch.<b>.remote), sonst „origin“, sonst der erste Remote.
-// Nicht jedes Repo nennt ihn „origin“ (manche heißen etwa „upstream“); mit fest „origin“ blieb GitLab unerkannt.
+// Nicht jedes Repo nennt ihn „origin“ (ErpApi heißt etwa „ErpApi“); mit fest „origin“ blieb GitLab unerkannt.
 async function gitRemote($: EngineInterface): Promise<string> {
   const branch = await gitText($, ['branch', '--show-current'])
   const own = branch === '' ? '' : await gitText($, ['config', '--get', `branch.${branch}.remote`])
@@ -891,7 +966,7 @@ function forgeIo($: EngineInterface): Io {
 async function refreshMr($: EngineInterface, force = false) {
   if (force && mrInflight !== null) await mrInflight.catch(() => undefined)
   const s = await read($, settings)
-  if (!s.mrBand && !s.mrPane && !s.mrNotify && !s.mrFooter) return
+  if (!s.mrBand && !s.mrPane && !s.mrNotify && !s.mrFooter && !s.sidebarDone && !s.sidebarUnread && !s.sidebarPin) return
   const prev = await read($, mrCur)
   const now = await $.clock.now()
   if (mrInflight !== null || (!force && now - mrPolledAt < pollDelayMs(prev))) return
@@ -901,6 +976,51 @@ async function refreshMr($: EngineInterface, force = false) {
   })
   mrInflight = run
   await run
+}
+
+// Sitzungsleiste der Desktop-App (Opt-in): MR gemergt → erledigt, Pipeline rot oder Konflikt im Leerlauf → ungelesen,
+// offener MR → angepinnt. Ohne Desktop-App (Terminal) scheitern die Aufrufe still.
+let sidebarWarned = false
+async function syncSidebar($: EngineInterface, s: ModSettings, events: readonly string[], next: Mr | null) {
+  const [pin, tn] = await Promise.all([read($, sidebarPin), read($, turn)])
+  const idle = tn === null || tn.durationMs !== undefined
+  const plan = sidebarCalls(s, events, idle, next !== null && next.state === 'opened' ? mrRef(next) : null, pin)
+  let nextPin = plan.pin
+  for (const c of plan.calls) {
+    // War die Session schon angepinnt, gehört die Nadel dem Nutzer und bleibt nach dem Merge stehen.
+    if (c.tool === 'set_pinned' && c.pinned && nextPin !== null && (await pinnedNow($))) {
+      nextPin = { ...nextPin, mine: false }
+      continue
+    }
+    const args = c.tool === 'set_pinned' ? { session_id: 'self', pinned: c.pinned } : c.tool === 'set_unread' ? { session_id: 'self', unread: true } : { session_id: 'self' }
+    // Im Auto-Modus lehnt der Classifier Schreibaufrufe ohne Auftrag ab: einmal je Session ins Log, sonst still.
+    await $.mcp.call('ccd_sidebar', c.tool, args).catch(async (err: unknown) => {
+      if (sidebarWarned) return
+      sidebarWarned = true
+      await note($, 'main', t(s.lang, 'sidebar.refused', { why: String(err).slice(0, 120) }))
+    })
+  }
+  if (!same(pin, nextPin)) await update($, sidebarPin, () => nextPin)
+}
+
+// Verknüpfte Sessions der Desktop-App (lesend, geht auch im Auto-Modus). Ohne Desktop-Tools (CLI) oder bei Fehlern bleibt der Stand.
+async function refreshLinked($: EngineInterface) {
+  const r = await $.mcp.call('ccd_session_mgmt', 'list_sessions', { linked: true, include_archived: true, limit: 10 }).catch(() => null)
+  if (r === null || r.isError === true) return
+  const block = r.content.find(b => b.type === 'text')
+  const list = parseLinkedSessions(block !== undefined && 'text' in block ? block.text : undefined)
+  if (!same(await read($, linked), list)) await update($, linked, () => list)
+}
+
+async function pinnedNow($: EngineInterface): Promise<boolean> {
+  const r = await $.mcp.call('ccd_session_mgmt', 'get_session', { session_id: 'self' }).catch(() => null)
+  const block = r?.content.find(b => b.type === 'text')
+  const text = block !== undefined && 'text' in block ? block.text : undefined
+  try {
+    return typeof text === 'string' && (JSON.parse(text) as { pinned?: unknown }).pinned === true
+  } catch {
+    return false
+  }
 }
 
 async function pollMr($: EngineInterface, s: ModSettings, prev: Mr | null) {
@@ -932,6 +1052,7 @@ async function pollMr($: EngineInterface, s: ModSettings, prev: Mr | null) {
         await note($, 'main', text)
       }
     }
+    await syncSidebar($, s, mrEvents(prev, next), next)
     { const v = next; if (!same(await read($, mrCur), v)) await update($, mrCur, () => v) }
     // Ein Entwurf gilt nur für seinen Branch und nur, solange es dafür keinen offenen MR gibt (etwa weil er anderswo angelegt wurde).
     const draft = await read($, mrDraft)
@@ -977,8 +1098,7 @@ async function reloadMrPane($: EngineInterface) {
     await update($, mrConfirm, () => '')
     await refreshMr($, true)
     await loadMineDetails($, true)
-    const r = await loadRepo($)
-    if (!same(await read($, repo), r)) await update($, repo, () => r)
+    await refreshRepo($)
   } catch (err) {
     $.ui.toast(t(L, 'mr.failed', { what: t(L, 'mr.refresh'), why: err instanceof Error ? err.message : String(err) }))
   } finally {
@@ -1116,18 +1236,19 @@ const withDots = (ui: Ui, parts: readonly RenderElement[], base: string): Render
 // Zeile im Band: MR mit Status, sonst Entwurf oder „n Commits ohne MR“ mit dem Knopf zum Anlegen.
 async function mrBandRow($: EngineInterface, ui: Ui, L: UiLang, devMr: Mr | null = null): Promise<RenderElement | null> {
   const { Box, Text, Button } = ui
-  const [cur, ahead, draft, busy] = await Promise.all([read($, mrCur), read($, mrAhead), read($, mrDraft), read($, mrBusy)])
+  const [cur, ahead, draft, busy, down] = await Promise.all([read($, mrCur), read($, mrAhead), read($, mrDraft), read($, mrBusy), read($, pressed)])
+  const btn = (key: string, label: string, run: () => Promise<unknown>) => pill(ui, 'band', key, label, () => void act($, key, run).catch(() => undefined), down === key)
   // Im Dev-Mode der Mock-MR, damit die Zeile auch ohne GitLab-Repo sichtbar ist.
   const m = devMr ?? cur
-  const details = <Button key="mr-details" label={t(L, 'mr.details')} plain dimColor onPress={() => void $.ui.open({ ...panes(L).mr, focus: true }).catch(() => undefined)} />
+  const details = btn('mr-details', t(L, 'mr.details'), () => $.ui.open({ ...panes(L).mr, focus: true }))
   if (busy !== '') return <Box key="mr" flexDirection="row" columnGap={1}><Text color={THEME.accent}>⇄ {busy}</Text></Box>
   if (m !== null) {
     return (
       <Box key="mr" flexDirection="row" columnGap={1} alignItems="center" flexWrap="wrap">
         <Text color={THEME.textMuted}>⇄</Text>
         {withDots(ui, mrParts(ui, m, L), 'mr-b')}
-        {m.state === 'opened' && m.threads > 0 && <Button key="mr-claude" label={t(L, 'mr.toClaude')} plain dimColor onPress={() => void threadsToClaude($).catch(() => undefined)} />}
-        {m.state === 'opened' && m.conflicts && <Button key="mr-fix" label={t(L, 'mr.fixConflict')} plain dimColor onPress={() => void conflictToClaude($).catch(() => undefined)} />}
+        {m.state === 'opened' && m.threads > 0 && btn('mr-claude', t(L, 'mr.toClaude'), () => threadsToClaude($))}
+        {m.state === 'opened' && m.conflicts && btn('mr-fix', t(L, 'mr.fixConflict'), () => conflictToClaude($))}
         {details}
       </Box>
     )
@@ -1144,7 +1265,7 @@ async function mrBandRow($: EngineInterface, ui: Ui, L: UiLang, devMr: Mr | null
   return (
     <Box key="mr" flexDirection="row" columnGap={1} alignItems="center">
       <Text color={THEME.textMuted}>⇄ {t(L, 'mr.ahead', { n: ahead })}</Text>
-      <Button key="mr-create" label={t(L, 'mr.create')} plain dimColor onPress={() => void draftMr($).catch(() => undefined)} />
+      {btn('mr-create', t(L, 'mr.create'), () => draftMr($))}
     </Box>
   )
 }
@@ -1185,14 +1306,7 @@ async function mrPaneBody($: EngineInterface, ui: Ui, L: UiLang, mock: { mr: Mr;
   const { Box, Text, Button, Markdown } = ui
   // Links im externen Standard-Browser, nicht im Browser der App.
   const ext = (link: PressedLink) => void openExternal($, link.href).catch(() => undefined)
-  const section = (i: number, key: string, ...children: RenderChildren[]) => (
-    <Box key={key} flexDirection="column">
-      {marg ? <Box height={1} /> : null}
-      <Box flexDirection="column" backgroundColor={cycleTint(i)} marginX={marg} paddingX={1} paddingY={1}>
-        {children}
-      </Box>
-    </Box>
-  )
+  const section = (i: number, key: string, ...children: RenderChildren[]) => tile(ui, 'pane', { key, tint: cycleTint(i), marg }, ...children)
   const host = mock !== null ? 'gitlab' : await read($, mrHost)
   if (host === '') return [section(0, 'mr-s-none', <Text color={THEME.textMuted}>{t(L, 'mr.noGitlab')}</Text>)]
   const m = mock !== null ? mock.mr : await read($, mrCur)
@@ -1200,10 +1314,11 @@ async function mrPaneBody($: EngineInterface, ui: Ui, L: UiLang, mock: { mr: Mr;
   const details = mock !== null ? mock.mrDetails : await read($, mrDetails)
   if (mock === null) mrPaneAt = now
   const reviews = mock !== null ? [] : await read($, mrReview)
-  const [ahead, draft, busy, confirm] = await Promise.all([read($, mrAhead), read($, mrDraft), read($, mrBusy), read($, mrConfirm)])
+  const [ahead, draft, busy, confirm, down] = await Promise.all([read($, mrAhead), read($, mrDraft), read($, mrBusy), read($, mrConfirm), read($, pressed)])
+  const btn = (key: string, label: string, run: () => Promise<unknown>) => pill(ui, 'pane', key, label, () => void act($, key, run).catch(() => undefined), down === key)
   const out: RenderElement[] = []
   const branch: RenderChildren[] = [<Text key="mr-bh" bold>{t(L, 'mr.branchHead')}</Text>]
-  const refreshBtn = <Button key="mr-a-refresh" label={t(L, 'mr.refresh')} plain dimColor onPress={() => void reloadMrPane($).catch(() => undefined)} />
+  const refreshBtn = btn('mr-a-refresh', t(L, 'mr.refresh'), () => reloadMrPane($))
   if (busy !== '') branch.push(<Text key="mr-busy" color={THEME.accent}>◌ {busy}</Text>)
   if (m !== null) {
     branch.push(<Markdown onLinkPress={ext} key="mr-link" text={`[${mrRef(m)} ${mdText(m.title)}](${m.url})`} />)
@@ -1221,16 +1336,16 @@ async function mrPaneBody($: EngineInterface, ui: Ui, L: UiLang, mock: { mr: Mr;
       const mergeLabel = asking ? t(L, 'mr.confirm') : t(L, canMergeNow(m) || !canAutoMerge(m) ? 'mr.merge' : 'mr.mergeAuto')
       branch.push(
         <Box key="mr-actions" flexDirection="row" columnGap={2} flexWrap="wrap" marginTop={1}>
-          {m.threads > 0 && <Button key="mr-a-claude" label={t(L, 'mr.toClaude')} plain onPress={() => void threadsToClaude($).catch(() => undefined)} />}
-          {m.conflicts && <Button key="mr-a-fix" label={t(L, 'mr.fixConflict')} plain onPress={() => void conflictToClaude($).catch(() => undefined)} />}
-          <Button key="mr-a-rebase" label={t(L, 'mr.rebase')} plain onPress={() => void rebaseMr($).catch(() => undefined)} />
+          {m.threads > 0 && btn('mr-a-claude', t(L, 'mr.toClaude'), () => threadsToClaude($))}
+          {m.conflicts && btn('mr-a-fix', t(L, 'mr.fixConflict'), () => conflictToClaude($))}
+          {btn('mr-a-rebase', t(L, 'mr.rebase'), () => rebaseMr($))}
           {(canMergeNow(m) || (isPipelineRunning(m) && canAutoMerge(m))) &&
             (asking ? (
               <Button key="mr-a-merge" label={mergeLabel} variant="primary" onPress={() => void mergeMr($).catch(() => undefined)} />
             ) : (
-              <Button key="mr-a-merge" label={mergeLabel} plain onPress={() => void mergeMr($).catch(() => undefined)} />
+              pill(ui, 'pane', 'mr-a-merge', mergeLabel, () => void mergeMr($).catch(() => undefined))
             ))}
-          {m.pipeline !== null && m.pipeline.status === 'failed' && m.pipeline.id > 0 && <Button key="mr-a-retry" label={t(L, 'mr.retry')} plain onPress={() => void retryPipeline($).catch(() => undefined)} />}
+          {m.pipeline !== null && m.pipeline.status === 'failed' && m.pipeline.id > 0 && btn('mr-a-retry', t(L, 'mr.retry'), () => retryPipeline($))}
           {refreshBtn}
         </Box>,
       )
@@ -1241,7 +1356,7 @@ async function mrPaneBody($: EngineInterface, ui: Ui, L: UiLang, mock: { mr: Mr;
       branch.push(
         <Box key="mr-ahead" flexDirection="row" columnGap={2} alignItems="center">
           <Text>{t(L, 'mr.ahead', { n: ahead })}</Text>
-          <Button key="mr-a-create" label={t(L, 'mr.create')} plain onPress={() => void draftMr($).catch(() => undefined)} />
+          {btn('mr-a-create', t(L, 'mr.create'), () => draftMr($))}
         </Box>,
       )
     }
@@ -1274,9 +1389,9 @@ async function mrPaneBody($: EngineInterface, ui: Ui, L: UiLang, mock: { mr: Mr;
         draft.description !== '' && <Markdown onLinkPress={ext} key="mr-dd" text={draft.description} />,
         <Box key="mr-dactions" flexDirection="row" columnGap={2} flexWrap="wrap" marginTop={1}>
           <Button key="mr-d-create" label={t(L, 'mr.submit')} variant="primary" onPress={() => void createMr($, false).catch(() => undefined)} />
-          <Button key="mr-d-draft" label={t(L, 'mr.submitDraft')} plain onPress={() => void createMr($, true).catch(() => undefined)} />
-          <Button key="mr-d-redraft" label={t(L, 'mr.redraft')} plain onPress={() => void draftMr($).catch(() => undefined)} />
-          <Button key="mr-d-discard" label={t(L, 'mr.discard')} plain dimColor onPress={() => void update($, mrDraft, () => null).catch(() => undefined)} />
+          {btn('mr-d-draft', t(L, 'mr.submitDraft'), () => createMr($, true))}
+          {btn('mr-d-redraft', t(L, 'mr.redraft'), () => draftMr($))}
+          {btn('mr-d-discard', t(L, 'mr.discard'), () => update($, mrDraft, () => null))}
         </Box>,
       ),
     )
@@ -1294,12 +1409,12 @@ async function mrPaneBody($: EngineInterface, ui: Ui, L: UiLang, mock: { mr: Mr;
         {d !== undefined && (
           <Box key={`mine-s-${x.ref}`} flexDirection="row" columnGap={1} flexWrap="wrap" marginLeft={2}>
             {withDots(ui, mrParts(ui, d, L).slice(1), `mine-p-${d.iid}`)}
-            {d.state === 'opened' && <Button key={`mine-rebase-${d.iid}`} label={t(L, 'mr.rebase')} plain dimColor onPress={() => void rebaseMr($, x.ref).catch(() => undefined)} />}
+            {d.state === 'opened' && btn(`mine-rebase-${d.iid}`, t(L, 'mr.rebase'), () => rebaseMr($, x.ref))}
             {mergeable && d !== undefined &&
               (asking ? (
                 <Button key={`mine-merge-${d.iid}`} label={t(L, 'mr.confirm')} variant="primary" onPress={() => void mergeMr($, x.ref).catch(() => undefined)} />
               ) : (
-                <Button key={`mine-merge-${d.iid}`} label={t(L, canMergeNow(d) || !canAutoMerge(d) ? 'mr.merge' : 'mr.mergeAuto')} plain onPress={() => void mergeMr($, x.ref).catch(() => undefined)} />
+                pill(ui, 'pane', `mine-merge-${d.iid}`, t(L, canMergeNow(d) || !canAutoMerge(d) ? 'mr.merge' : 'mr.mergeAuto'), () => void mergeMr($, x.ref).catch(() => undefined))
               ))}
           </Box>
         )}
@@ -1323,7 +1438,7 @@ export const register: Register = (on, options) => {
     void Promise.all([$.session.model(), $.session.version()])
       .then(([model, v]) => update($, modelInfo, mi => ({ ...mi, model, cc: v.version })))
       .catch(() => undefined)
-    void Promise.all([loadLogo($).then(l => update($, logo, () => l)), loadRepo($).then(async r => (same(await read($, repo), r) ? undefined : update($, repo, () => r)))]).catch(() => undefined)
+    void Promise.all([loadLogo($).then(l => update($, logo, () => l)), refreshRepo($), refreshLinked($), refreshDirs($)]).catch(() => undefined)
     // ponytail: Beschreibungen in der Sprache beim Session-Start; nach einem Sprachwechsel erst mit dem nächsten Start/Reload
     const lang = await langOf($)
     await $.command.register({ name: COMMAND, description: t(lang, 'common.cmdPanel') })
@@ -1333,7 +1448,8 @@ export const register: Register = (on, options) => {
     await $.command.register({ name: 'cockpit-dev', description: t(lang, 'common.cmdDev') })
     await $.command.register({ name: 'cockpit-mr', description: t(lang, 'common.cmdMr') })
     await $.command.register({ name: 'cockpit-features', description: t(lang, 'common.cmdFeatures') })
-    void $.clock.every(30_000, () => void Promise.all([update($, tick, n => n + 1), syncAgents($), watchCache($)]).catch(() => undefined))
+    // ponytail: Git-Stand alle 30 s neu (auch nach Worktree-Wechsel oder Neustart ohne neuen Turn), classic.CwdChanged wäre sofort
+    void $.clock.every(30_000, () => void Promise.all([update($, tick, n => n + 1), syncAgents($), watchCache($), refreshRepo($), refreshLinked($), refreshDirs($)]).catch(() => undefined))
     void $.clock.every(15_000, () => void refreshMr($).then(() => loadMineDetails($)).catch(() => undefined))
     void $.clock.every(10_000, () => void syncSettings($).catch(() => undefined))
     void refreshMr($, true).catch(() => undefined)
@@ -1355,9 +1471,10 @@ export const register: Register = (on, options) => {
     const so = splitOptions(s, 'Svg' in ui)
     if (Object.values(so).some(Boolean) && e.props.isSummary !== true) {
       const segs = splitMessage(e.props.text, so)
-      if (isStyled(segs)) el = segmentsView($, ui, segs, `tv-s-${shortHash(e.props.text)}`, s.lang, s.skinInline ? await read($, touched) : [], await markerOf($), (await read($, repo))?.path ?? '')
+      if (isStyled(segs)) el = segmentsView($, ui, segs, `om-s-${shortHash(e.props.text)}`, s.lang, s.skinInline ? await read($, touched) : [], await markerOf($))
     }
-    return el
+    const lines = s.chatInfo ? statsLines(markdownStats(e.props.text), s.lang) : []
+    return lines.length === 0 ? el : withInfo(ui, `om-m-${shortHash(e.props.text)}`, lines, el, await read($, logo))
   })
 
   // Deine Nachricht rechtsbündig im Rahmen; der Text als wörtliches Markdown, damit er markierbar bleibt.
@@ -1370,9 +1487,9 @@ export const register: Register = (on, options) => {
     if (!s.skinPrompt || p.origin.kind !== 'composer' || p.from !== undefined || p.task !== undefined || p.text.trim() === '' || md.length > 100_000) return next(e)
     const { Box, Markdown } = elementsOf($, e)
     return (
-      <Box key={`tv-p-${shortHash(p.text)}`} flexDirection="column" alignItems="flex-end">
+      <Box key={`om-p-${shortHash(p.text)}`} flexDirection="column" alignItems="flex-end">
         <Box borderStyle="round" borderColor={THEME.accent} paddingX={1} flexShrink={1} flexDirection="row" columnGap={1} alignItems="flex-start">
-          {skinMark(elementsOf($, e), await markerOf($), `tv-pm-${shortHash(p.text)}`, 'style.prompt')}
+          {skinMark(elementsOf($, e), await markerOf($), `om-pm-${shortHash(p.text)}`, 'style.prompt')}
           <Markdown text={md} />
         </Box>
       </Box>
@@ -1389,13 +1506,39 @@ export const register: Register = (on, options) => {
     const p = e.props
     const id = p.tool_use_id
     let el = theirs
-    const icon = s.skinIcons ? toolIcon(ui, p.tool, p.isErrored, `tv-i-${id}`) : null
+    // Aufgabenliste und Abschluss-Box: nur ein Kopfband mit Fortschritt bzw. Rückblick darüber, die Zeile bleibt die der Engine.
+    const todo = s.skinTodos ? todosOf(p.tool, p.input) : null
+    const wrap = s.skinTodos ? wrapupOf(p.tool, p.input) : null
+    if (todo !== null || wrap !== null) {
+      const head =
+        todo !== null ? (
+          <Text color={todo.done === todo.total ? THEME.success : THEME.accent} bold wrap="truncate-end">
+            {t(s.lang, 'skin.todosHead', { done: todo.done, total: todo.total })}
+            {todo.current !== '' ? ` · ${t(s.lang, 'skin.todosNow', { what: todo.current })}` : ''}
+          </Text>
+        ) : (
+          <Text color={THEME.accent} wrap="truncate-end">
+            <Text bold>{t(s.lang, 'skin.wrapupHead')}</Text> · {wrap?.recap}
+            {wrap?.ask ? ` · ${t(s.lang, 'skin.wrapupAsk', { what: wrap.ask })}` : ''}
+          </Text>
+        )
+      el = (
+        <Box key={`om-td-${id}`} flexDirection="column">
+          <Box flexDirection="row" columnGap={1} alignItems="center" borderStyle="round" borderColor={THEME.accent} paddingX={1}>
+            {skinMark(ui, await markerOf($), `om-tdm-${id}`, todo !== null ? 'style.todos' : 'style.wrapup')}
+            {head}
+          </Box>
+          {theirs}
+        </Box>
+      )
+    }
+    const icon = s.skinIcons ? toolIcon(ui, p.tool, p.isErrored, `om-i-${id}`) : null
     if (icon !== null)
       el = (
-        <Box key={`tv-ir-${id}`} flexDirection="row" columnGap={1} alignItems="flex-start">
-          {skinMark(ui, await markerOf($), `tv-im-${id}`, 'style.icon')}
+        <Box key={`om-ir-${id}`} flexDirection="row" columnGap={1} alignItems="flex-start">
+          {skinMark(ui, await markerOf($), `om-im-${id}`, 'style.icon')}
           {icon}
-          {theirs}
+          {el}
         </Box>
       )
     if (s.skinExpand && !p.isRunning) {
@@ -1404,11 +1547,11 @@ export const register: Register = (on, options) => {
       const input = detailInput(p.tool, p.input)
       const output = open ? detailOutput(p.output) : null
       el = (
-        <Box key={`tv-x-${id}`} flexDirection="column">
+        <Box key={`om-x-${id}`} flexDirection="column">
           {el}
           <Box flexDirection="row" columnGap={1} alignItems="center">
-            {skinMark(ui, await markerOf($), `tv-xm-${id}`, 'style.expand')}
-            <Button key={`tv-xb-${id}`} label={t(s.lang, open ? 'skin.detailsOpen' : 'skin.details')} plain dimColor onPress={toggle} />
+            {skinMark(ui, await markerOf($), `om-xm-${id}`, 'style.expand')}
+            {pill(ui, 'skin', `om-xb-${id}`, t(s.lang, open ? 'skin.detailsOpen' : 'skin.details'), toggle)}
           </Box>
           {open && (
             <Box flexDirection="column" borderStyle="round" borderColor={THEME.border} paddingX={1}>
@@ -1423,7 +1566,7 @@ export const register: Register = (on, options) => {
     }
     if (!s.chatInfo) return el
     const status = t(s.lang, p.isErrored ? 'chat.statusError' : p.isRunning ? 'chat.statusRunning' : 'chat.statusDone')
-    return withInfo(ui, `tv-u-${id}`, toolInfoLines(p.tool, p.input, status, s.lang), el, await read($, logo))
+    return withInfo(ui, `om-u-${id}`, toolInfoLines(p.tool, p.input, status, s.lang), el, await read($, logo))
   })
 
   // Gruppe zusammengefasster Aufrufe: je Werkzeugart ein Symbol vor der Zählzeile (nur zugeklappt).
@@ -1441,26 +1584,26 @@ export const register: Register = (on, options) => {
     const groups = [...byName].slice(0, 6)
     const base = calls[0]?.tool_use_id ?? shortHash(calls.map(c => c.tool).join(','))
     const icons = groups.flatMap(([name, cs]) => {
-      const icon = toolIcon(ui, cs[0]!.tool, cs.some(c => c.isErrored), `tv-gi-${base}-${name}`)
-      return icon === null ? [] : [icon, <Text key={`tv-gn-${base}-${name}`} dimColor>{name} ×{cs.length}</Text>]
+      const icon = toolIcon(ui, cs[0]!.tool, cs.some(c => c.isErrored), `om-gi-${base}-${name}`)
+      return icon === null ? [] : [icon, <Text key={`om-gn-${base}-${name}`} dimColor>{name} ×{cs.length}</Text>]
     })
     if (icons.length === 0) return theirs
     // Nur MCP-Aufrufe einzeln mit Server › Tool → Ziel; der Rest bleibt in der Zählzeile. Lange Listen gekürzt.
     const mcp = calls.filter(c => splitTool(c.tool).server !== null)
     const shown = mcp.slice(0, GROUP_CALLS_MAX)
     return (
-      <Box key={`tv-gc-${base}`} flexDirection="column">
-        <Box key={`tv-g-${base}`} flexDirection="row" columnGap={1} alignItems="center">
-          {skinMark(ui, await markerOf($), `tv-gm-${base}`, 'style.group')}
+      <Box key={`om-gc-${base}`} flexDirection="column">
+        <Box key={`om-g-${base}`} flexDirection="row" columnGap={1} alignItems="center">
+          {skinMark(ui, await markerOf($), `om-gm-${base}`, 'style.group')}
           {icons}
           {theirs}
         </Box>
         {shown.map((c, i) => (
-          <Text key={`tv-gl-${base}-${i}`} wrap="truncate-end" dimColor={!c.isRunning}>
+          <Text key={`om-gl-${base}-${i}`} wrap="truncate-end" dimColor={!c.isRunning}>
             {'  '}{toolLabel(ui, c.tool, toolTarget(c.input), c.isErrored)}
           </Text>
         ))}
-        {mcp.length > shown.length && <Text key={`tv-gx-${base}`} dimColor>{'  '}+{mcp.length - shown.length}</Text>}
+        {mcp.length > shown.length && <Text key={`om-gx-${base}`} dimColor>{'  '}+{mcp.length - shown.length}</Text>}
       </Box>
     )
   })
@@ -1478,17 +1621,17 @@ export const register: Register = (on, options) => {
     let el = theirs
     const diff = s.skinDiff && !p.isErrored && Svg ? diffOf(p.output) : null
     if (diff !== null && Svg) {
-      el = marked(ui, await markerOf($), `tv-dm-${id}`, <Svg key={`tv-d-${id}`} source={diffCardSvg(diff, s.lang)} alt={t(s.lang, 'skin.diffAlt', { file: diff.file, add: diff.added, del: diff.removed })} />, 'style.diff', 'flex-start')
+      el = marked(ui, await markerOf($), `om-dm-${id}`, <Svg key={`om-d-${id}`} source={diffCardSvg(diff, s.lang)} alt={t(s.lang, 'skin.diffAlt', { file: diff.file, add: diff.added, del: diff.removed })} />, 'style.diff', 'flex-start')
     } else if (s.skinQuiet && p.isErrored) {
-      el = marked(ui, await markerOf($), `tv-qm-${id}`, <Text key={`tv-q-${id}`} color={THEME.error} wrap="truncate-end">✖ {firstErrorLine(errorText(p.output))}</Text>, 'style.error')
+      el = marked(ui, await markerOf($), `om-qm-${id}`, <Text key={`om-q-${id}`} color={THEME.error} wrap="truncate-end">✖ {firstErrorLine(errorText(p.output))}</Text>, 'style.error')
     } else if (s.skinQuiet && (QUIET_TOOLS.has(p.tool) || (isShell(p.tool) && (await read($, quietIds)).includes(id)))) {
       const line = quietLine(p.tool, p.output, s.lang)
-      if (line !== null) el = marked(ui, await markerOf($), `tv-qm-${id}`, <Text key={`tv-q-${id}`} color={THEME.textMuted} wrap="truncate-end">✓ {line}</Text>, 'style.quiet')
+      if (line !== null) el = marked(ui, await markerOf($), `om-qm-${id}`, <Text key={`om-q-${id}`} color={THEME.textMuted} wrap="truncate-end">✓ {line}</Text>, 'style.quiet')
     }
     if (!s.chatInfo) return el
     const size = typeof p.output === 'string' ? t(s.lang, 'chat.outputLines', { n: p.output.split('\n').length }) : ''
     const lines = [t(s.lang, 'chat.result', { tool: p.tool, state: t(s.lang, p.isErrored ? 'chat.withError' : 'chat.ok') }), size].filter(l => l !== '')
-    return withInfo(ui, `tv-r-${id}`, lines, el, await read($, logo))
+    return withInfo(ui, `om-r-${id}`, lines, el, await read($, logo))
   })
 
   // Arbeitszeile: Phase in der Farbrolle des Design-Systems, Schritt, Laufzeit und Zähler des Turns. Ersetzt die Zeile der
@@ -1506,7 +1649,7 @@ export const register: Register = (on, options) => {
     const step = spinnerText(e.props.word, e.props.message)
     return (
       <Box flexDirection="row" columnGap={1} alignItems="center">
-        {skinMark(elementsOf($, e), await markerOf($), 'tv-spin-m', 'style.spinner')}
+        {skinMark(elementsOf($, e), await markerOf($), 'om-spin-m', 'style.spinner')}
         <Text color={mode.color} bold>{spinner(await read($, frame))} {t(s.lang, mode.label)}</Text>
         {ph !== null && <Text key="breath-phase" color={THEME.accent}>{t(s.lang, `breath.${ph.phase}`)} {Math.ceil(ph.leftMs / 1000)}s ·</Text>}
         {step !== '' && <Text color={THEME.textSecondary} wrap="truncate-end">{step}</Text>}
@@ -1539,7 +1682,7 @@ export const register: Register = (on, options) => {
     if (!s.skinAsk) return theirs
     const ui = elementsOf($, e)
     const { Box, Text } = ui
-    const key = `tv-ask-${shortHash(JSON.stringify(e.props.questions))}`
+    const key = `om-ask-${shortHash(JSON.stringify(e.props.questions))}`
     return (
       <Box key={key} flexDirection="column">
         <Box flexDirection="row" columnGap={1} alignItems="center" borderStyle="round" borderColor={THEME.accent} paddingX={1}>
@@ -1569,11 +1712,11 @@ export const register: Register = (on, options) => {
     const mrFoot = footMr !== null ? ` ${mrBadge(footMr).replace(/ · /g, ' ')} ` : null
     const pill = (scope: string) => ({ scope, backgroundColor: THEME.chip })
     return (
-      <Box key="tv-mode" flexDirection="row" gap={1} alignItems="center">
-        {modes.length > 0 && s.skinMode && skinMark(ui, await markerOf($), 'tv-mode-m', 'style.mode')}
+      <Box key="om-mode" flexDirection="row" gap={1} alignItems="center">
+        {modes.length > 0 && s.skinMode && skinMark(ui, await markerOf($), 'om-mode-m', 'style.mode')}
         {modes.length > 0 && (s.skinMode ? <Text color={THEME.accent}>{modes.join(' & ')}</Text> : <Text dimColor>{modes.join(' & ')}</Text>)}
-        {mrFoot !== null && <Button key="mr-foot" plain label={mrFoot} hover={pill('tv-mr')} onPress={() => void $.ui.open({ ...P.mr, focus: true })} />}
-        <Button key="details" plain dimColor label=" Tenvan " hover={pill('tv-details')} onPress={() => void $.ui.open({ ...P.main, focus: true })} />
+        {mrFoot !== null && <Button key="mr-foot" plain label={mrFoot} hover={pill('om-mr')} onPress={() => void $.ui.open({ ...P.mr, focus: true })} />}
+        <Button key="details" plain dimColor label=" Tenvan " hover={pill('om-details')} onPress={() => void $.ui.open({ ...P.main, focus: true })} />
       </Box>
     )
   })
@@ -1583,11 +1726,11 @@ export const register: Register = (on, options) => {
     const theirs = await next(e)
     if (!drawsOn(e.surface) || !(await read($, settings)).skinHint) return theirs
     const ui = elementsOf($, e)
-    const m = skinMark(ui, await markerOf($), 'tv-hint-m', 'style.hint')
+    const m = skinMark(ui, await markerOf($), 'om-hint-m', 'style.hint')
     if (m === null) return theirs
     const { Box } = ui
     return (
-      <Box key="tv-hint" flexDirection="row" columnGap={1} alignItems="center">
+      <Box key="om-hint" flexDirection="row" columnGap={1} alignItems="center">
         {m}
         {theirs}
       </Box>
@@ -1604,17 +1747,18 @@ export const register: Register = (on, options) => {
     const so = splitOptions(s, 'Svg' in ui)
     if (Object.values(so).some(Boolean) && !e.props.isErrored) {
       const segs = splitMessage(e.props.text, so)
-      if (isStyled(segs)) el = segmentsView($, ui, segs, `tv-cs-${shortHash(e.props.command + e.props.text)}`, s.lang, s.skinInline ? await read($, touched) : [], await markerOf($), (await read($, repo))?.path ?? '')
+      if (isStyled(segs)) el = segmentsView($, ui, segs, `om-cs-${shortHash(e.props.command + e.props.text)}`, s.lang, s.skinInline ? await read($, touched) : [], await markerOf($))
     }
     if (!s.chatInfo) return el
     const lines = [
       `/${e.props.command} · ${t(s.lang, e.props.isErrored ? 'chat.withError' : 'chat.ok')}`,
       t(s.lang, 'chat.outputLines', { n: e.props.text.split('\n').length }),
+      ...statsLines(markdownStats(e.props.text), s.lang),
     ]
-    return withInfo(ui, `tv-c-${shortHash(e.props.command + e.props.text)}`, lines, el, await read($, logo))
+    return withInfo(ui, `om-c-${shortHash(e.props.command + e.props.text)}`, lines, el, await read($, logo))
   })
 
-  // Ausgabe als Markdown im Chat: zeigt jedes skinbare Element.
+  // Ausgabe als Markdown im Chat: zeigt jedes skinbare Element und die Hover-Info daran.
   on('command.run', { command: 'cockpit-demo' }, async $ => {
     const s = await read($, settings)
     const md = await $.fs.read(`${$.plugin.root}/assets/skins-demo.${s.lang}.md`)
@@ -1680,8 +1824,10 @@ export const register: Register = (on, options) => {
   })
 
   on('prompt.submit', async ($, e, next) => {
-    if (e.origin?.kind === 'task-notification') await finishBackground($, e.text)
-    else await judgeEffort($, e.text)
+    // Benachrichtigungen kommen auch gebündelt oder mit einem getippten Prompt zusammen: jeden Prompt danach absuchen.
+    await finishBackground($, e.text)
+    await update($, dirAlert, () => null)
+    if (e.origin?.kind !== 'task-notification') await judgeEffort($, e.text)
     await startTurn($, e.text)
     return next(e)
   })
@@ -1711,12 +1857,26 @@ export const register: Register = (on, options) => {
     await settleAsk($, e.tool_use_id, ran.deny !== undefined)
     if (e.agentId !== undefined) await update($, agents, list => list.map(a => (a.id === e.agentId ? { ...a, steps: (a.steps ?? 0) + 1 } : a)))
     await trackBackground($, e, ran)
+    if (!isError && ran.deny === undefined) {
+      const out = await foreignTarget($, e.tool, e).catch(() => null)
+      if (out !== null && (await read($, dirAlert))?.dir !== out) {
+        const L = await langOf($)
+        await update($, dirAlert, () => ({ dir: out, tool: e.tool }))
+        $.ui.toast(t(L, 'dir.alert', { dir: out }))
+        await note($, 'main', t(L, 'log.dirOutside', { dir: out }))
+      }
+    }
+    // Neue Session aus dieser gestartet: gleich in der Arbeitsverzeichnis-Kachel zeigen, nicht erst im 30-s-Takt.
+    if (e.tool === 'mcp__ccd_session__start_session') void refreshLinked($).catch(() => undefined)
     return ran
   })
 
   // Nur beobachten: das Ergebnis geht unverändert durch, nie ein eigenes deny. Abfragen ohne echten Aufruf zählen nicht.
   on('tool.check', async ($, e, next) => {
-    const verdict = await next(e)
+    const engine = await next(e)
+    // Verzeichniswächter: ein erlaubter Wechsel nach außerhalb wird zur Rückfrage; ein deny von unten bleibt.
+    const out = engine.decision === 'allow' && (await read($, settings)).dirGuard ? await foreignTarget($, e.tool, e).catch(() => null) : null
+    const verdict = out === null ? engine : { decision: 'ask' as const, reason: t(await langOf($), 'dir.ask', { root: (await read($, dirs)).root, dir: out }) }
     const id = e.tool_use_id
     // Die Engine prüft denselben Aufruf mitunter mehrfach: je tool_use_id nur einmal zählen.
     if (id === undefined || checked.has(id)) return verdict
@@ -1819,7 +1979,7 @@ export const register: Register = (on, options) => {
     const fresh = toUsage(await $.session.usage())
     await update($, usage, () => fresh)
     void fetchBreakdown($, true).catch(() => undefined)
-    void loadRepo($).then(async r => (same(await read($, repo), r) ? undefined : update($, repo, () => r))).catch(() => undefined)
+    void refreshRepo($).catch(() => undefined)
     const now = await $.clock.now()
     await update($, lastTurnAt, () => now)
     await update($, turn, t => t && { ...t, durationMs: e.durationMs, usdDelta: fresh.usd !== undefined && t.usdStart !== undefined ? fresh.usd - t.usdStart : undefined })
@@ -1830,6 +1990,7 @@ export const register: Register = (on, options) => {
     if (!e.agentId) void maybeCatchUp($).catch(() => undefined)
     if (s.steps && e.reason === 'answer' && !e.isAborted && e.answer.trim()) {
       const asked = await read($, lastPrompt)
+      await update($, lastAnswer, () => e.answer)
       // Nur übernehmen, wenn inzwischen kein neuer Prompt gesendet wurde.
       void suggest($, asked, e.answer)
         .then(async list => ((await read($, lastPrompt)) === asked ? update($, steps, () => list).then(() => mergeHint($)) : undefined))
@@ -1843,7 +2004,10 @@ export const register: Register = (on, options) => {
     const u = await read($, usage)
     // Kappung auch hier: $.state überlebt Reloads und kann noch Listen älterer Versionen (fünf Schritte) halten.
     const next3 = e.props.isWorking || !s.steps ? [] : (await read($, steps)).slice(0, 3)
-    if (!drawsOn(e.surface) || e.props.hasSurvey || (u === null && next3.length === 0 && (await read($, loopAlert)) === null)) return next(e)
+    // Die Zeile mit „↻ Neue“ steht immer, wenn Folge-Schritte an sind und Claude nicht arbeitet, auch ohne Vorschläge.
+    const showSteps = s.steps && !e.props.isWorking
+    const busySteps = await read($, stepsBusy)
+    if (!drawsOn(e.surface) || e.props.hasSurvey || (u === null && next3.length === 0 && (await read($, loopAlert)) === null && (await read($, dirAlert)) === null)) return next(e)
     await read($, tick)
     const now = await $.clock.now()
     const running = (await read($, agents)).filter(a => LIVE.has(a.status)).length
@@ -1865,6 +2029,7 @@ export const register: Register = (on, options) => {
     const head = titleRow(ui, await read($, about), await read($, logo))
     const where = s.branch ? repoRow(ui, await read($, repo)) : null
     const alert = await read($, loopAlert)
+    const dirWarn = await read($, dirAlert)
     const loopText = alert === null ? '' : t(L, alert.kind === 'error' ? 'loop.error' : 'loop.edit', { target: alert.target, n: alert.n })
     const fillCompact = async () => {
       const focus = compactFocus(await read($, lastPrompt), await read($, touched), await read($, steps), L)
@@ -1877,7 +2042,7 @@ export const register: Register = (on, options) => {
       </Box>
     )
     const sep = (key: string) => <Text key={key} color={THEME.border}>│</Text>
-    const mini = (key: string, label: string, onPress: () => void) => <Button key={key} label={label} plain dimColor onPress={onPress} />
+    const mini = (key: string, label: string, onPress: () => void) => pill(ui, 'band', key, label, onPress)
     const mi = await read($, modelInfo)
     const pick = await read($, effortPick)
     const lim = u === null ? null : limitAlert(u.limits)
@@ -1923,7 +2088,7 @@ export const register: Register = (on, options) => {
     }
     const toggleAuto = () => void update($, effortBase, () => null).then(() => setSettings($, { autoEffort: !s.autoEffort })).catch(() => undefined)
 
-    // Im Terminal setzt ein Rahmen in Akzentblau (`THEME.accentFill`) auf dunkelblauem Grund das Band vom Transcript ab;
+    // Im Terminal setzt ein Rahmen in Tenvan-Blau (om-blue-500) auf dunkelblauem Grund das Band vom Transcript ab;
     // der Desktop rahmt es selbst. Voller blauer Grund wäre für die Statusfarben (grün, gelb) zu kontrastarm.
     const term = e.surface === 'terminal'
     const body = (
@@ -1961,27 +2126,33 @@ export const register: Register = (on, options) => {
           return (
             <Box key="breath-row" flexDirection="row" columnGap={1} alignItems="center" justifyContent="center">
               {img}
-              <Button key="breath-next" label={t(L, 'breath.next')} plain dimColor onPress={() => void setSettings($, { breathKey: nextKey }).catch(() => undefined)} />
+              {pill(ui, 'band', 'breath-next', t(L, 'breath.next'), () => void setSettings($, { breathKey: nextKey }).catch(() => undefined))}
             </Box>
           )
         })())}
+        {dirWarn !== null && (
+          <Box key="dir-warn" flexDirection="row" columnGap={2} alignItems="center" backgroundColor={TINT.error} paddingX={1}>
+            <Text color={THEME.error} bold wrap="truncate-end">⚠ {t(L, 'dir.alert', { dir: dirWarn.dir })}</Text>
+          </Box>
+        )}
         {alert !== null && (
           <Box key="loop" flexDirection="row" columnGap={2} alignItems="center">
             <Text color={THEME.warning} wrap="truncate-end">⚠ {loopText}</Text>
-            <Button key="loop-fix" label={t(L, 'loop.action')} plain onPress={() => void $.prompt.fill({ text: t(L, 'loop.prompt', { what: loopText }) }).catch(() => undefined)} />
-            <Button key="loop-ignore" label={t(L, 'loop.ignore')} plain dimColor onPress={() => void update($, loopIgnored, l => [...l, loopKey(alert)]).then(() => update($, loopAlert, () => null)).catch(() => undefined)} />
+            {pill(ui, 'band', 'loop-fix', t(L, 'loop.action'), () => void $.prompt.fill({ text: t(L, 'loop.prompt', { what: loopText }) }).catch(() => undefined))}
+            {pill(ui, 'band', 'loop-ignore', t(L, 'loop.ignore'), () => void update($, loopIgnored, l => [...l, loopKey(alert)]).then(() => update($, loopAlert, () => null)).catch(() => undefined))}
           </Box>
         )}
-        {next3.length > 0 && (
-          // Drei Spalten gleicher Breite: oben „1: Label“ (Taste 1–3, auch im leeren Eingabefeld), darunter die Begründung,
-          // so stehen die Begründungen in einer gemeinsamen zweiten Reihe.
+        {showSteps && (
+          // Drei Spalten gleicher Breite: „1: Label“ (Taste 1–3, auch im leeren Eingabefeld), die Begründung als Tooltip am ⓘ
+          // dahinter; ohne Svg (Terminal) als Zeile darunter.
           <Box flexDirection="column">
             <Text dimColor>{t(L, 'band.next')}</Text>
             <Box flexDirection="row" columnGap={2}>
+            {next3.length === 0 && <Text key="steps-none" color={THEME.textMuted}>{t(L, 'band.noSteps')}</Text>}
             {next3.map((s, i) => (
               <Box key={`step-col-${i}`} flexDirection="column" width={stepCols}>
-              <Box key={`step-row-${i}`} flexDirection="row" columnGap={1}>
-                {s.fromClaude && <Text key={`step-cc-${i}`} backgroundColor={THEME.chip}> CC </Text>}
+              <Box key={`step-row-${i}`} flexDirection="row" columnGap={1} alignItems="center">
+                {s.fromClaude && chip(ui, 'band', `step-cc-${i}`, 'CC')}
                 <Button
                   key={`step-${i}`}
                   label={clip(s.label, Math.max(12, stepCols - (s.fromClaude ? 8 : 4)))}
@@ -1990,10 +2161,12 @@ export const register: Register = (on, options) => {
                   // Nur ins Eingabefeld: Enter sendet ihn als Eingabe der Person, damit andere Mods (effortless) ihn wie getippt bewerten; startTurn läuft dann im eigenen prompt.submit-Hook.
                   onPress={() => void $.prompt.fill({ text: s.prompt }).catch(() => undefined)}
                 />
+                {Svg && s.why !== undefined && <Svg key={`step-why-${i}`} source={infoSvg(s.why, THEME.textMuted)} alt={s.why} width={14} height={14} isInteractive />}
               </Box>
-                {s.why !== undefined && <Text color={THEME.textMuted} wrap="truncate-end">{s.why}</Text>}
+                {!Svg && s.why !== undefined && <Text color={THEME.textMuted} wrap="truncate-end">{s.why}</Text>}
               </Box>
             ))}
+            {pill(ui, 'band', 'steps-refresh', t(L, 'band.moreSteps'), () => void refreshSteps($).catch(() => undefined), busySteps)}
             </Box>
           </Box>
         )}
@@ -2021,8 +2194,8 @@ export const register: Register = (on, options) => {
                   {ring(l.percentUsed, limitColor(l, now), s.legend ? `${limitTip(l, tipNow, L)}${NL}${NL}${legendTip(L)}` : limitTip(l, tipNow, L))}
                   <Text color={THEME[limitColor(l, now)]}>
                     {LIMIT_LABEL[l.kind] ?? l.kind} {Math.round(l.percentUsed)}%
-                    {/* Ohne Svg gibt es keinen Ring-Tooltip: die Reset-Zeit steht dann direkt dahinter. */}
-                    {!Svg && l.resetsAt ? <Text color={THEME.textMuted}> · {resetLabel(l.resetsAt, now, L)}</Text> : null}
+                    {/* Restzeit bis zum Reset immer dahinter; ohne Svg (kein Ring-Tooltip) zusätzlich die Uhrzeit. */}
+                    {l.resetsAt ? <Text color={THEME.textMuted}> · ↻ {resetLeft(l.resetsAt, now)}{Svg ? '' : ` (${resetLabel(l.resetsAt, now, L)})`}</Text> : null}
                   </Text>
                 </Box>
               )),
@@ -2045,8 +2218,8 @@ export const register: Register = (on, options) => {
             pays && <Button key="handoff" label={t(L, 'handoff.action')} variant="primary" onPress={() => void writeHandoff($).catch(() => undefined)} />,
             // Schreibt /compact mit dem, was erhalten bleiben muss, ins Eingabefeld; Enter startet es (anpassbar vor dem Senden).
             // Button nimmt (Engine 2.1.295) keine farbigen Text-Kinder: die Ampel trägt der getönte Grund, der Hover die Schriftfarbe.
-            <Box key="compact-pill" backgroundColor={TINT[ctxTone]} paddingX={1}>
-              <Button key="compact" label={t(L, 'band.compact')} plain hover={{ color: THEME[ctxTone] }} onPress={() => void fillCompact().catch(() => undefined)} />
+            <Box key="compact-pill" backgroundColor={TINT[ctxTone === 'accent' ? 'warning' : ctxTone]} paddingX={1}>
+              <Button key="compact" label={t(L, 'band.compact')} plain hover={{ color: THEME[ctxTone === 'accent' ? 'warning' : ctxTone] }} onPress={() => void fillCompact().catch(() => undefined)} />
             </Box>,
             handoffMsg !== '' && <Text key="handoff-note" color={THEME.textMuted}>{handoffMsg}</Text>,
           )}
@@ -2084,7 +2257,7 @@ export const register: Register = (on, options) => {
         {await paneHead($, ui, L)}
         <Box flexDirection="row" columnGap={2} alignItems="center">
           <Button key="cu-refresh" label={t(L, 'summary.refresh')} variant="primary" onPress={() => void runCatchUp($, false).catch(() => undefined)} />
-          <Button key="cu-rebuild" label={t(L, 'summary.rebuild')} plain onPress={() => void rebuildCatchUp($).catch(() => undefined)} />
+          {pill(ui, 'pane', 'cu-rebuild', t(L, 'summary.rebuild'), () => void rebuildCatchUp($).catch(() => undefined))}
           <Text dimColor>{cu.status !== '' ? cu.status : cu.updatedAt > 0 ? t(L, 'summary.updated', { time: clockTime(new Date(cu.updatedAt).toISOString()) }) : t(L, 'summary.none')}</Text>
         </Box>
         <Text dimColor>{t(L, 'summary.status', { auto: t(L, s.catchUp ? 'common.on' : 'common.off'), lang: t(L, L === 'de' ? 'common.langDe' : 'common.langEn') })}</Text>
@@ -2145,15 +2318,15 @@ export const register: Register = (on, options) => {
     const ui = elementsOf($, e)
     const { Box, Text, Button } = ui
     const groups = [...new Set(SETTING_DEFS.map(d => d.group))]
-    // Karten wie im Hauptpanel: Leerzeile davor, Grund im Wechsel der Kartentöne.
-    const card = (i: number, ...children: RenderChildren[]) => (
-      <Box flexDirection="column">
-        {marg ? <Box height={1} /> : null}
-        <Box flexDirection="column" backgroundColor={cycleTint(i)} marginX={marg} paddingX={1} paddingY={1}>
-          {children}
-        </Box>
-      </Box>
-    )
+    // Karten wie im Hauptpanel: Leerzeile davor, Grund im Wechsel der Kartentöne; ▾/▸ im Kopf klappt zu (gleicher Speicher
+    // `collapsed` wie das Hauptpanel, Schlüssel mit Präfix `set:`).
+    const folded = await read($, collapsed)
+    const card = (i: number, id: string, head: RenderElement, ...children: RenderChildren[]) => {
+      const key = `set:${id}`
+      const fold = { id: `set-fold-${id}`, open: !folded.includes(key), onToggle: () => void toggleCard($, key).catch(() => undefined) }
+      return tile(ui, id === 'sidebar' ? 'sidebar' : 'pane', { key: `set-card-${id}`, tint: cycleTint(i), marg, head, fold }, ...children)
+    }
+    const cardKeys = ['lang', 'tiles', 'breath', ...groups].map(id => `set:${id}`)
     const keysOf = (group: SettingGroup): SettingKey[] => SETTING_DEFS.filter(d => d.group === group).map(d => d.key)
     const setAll = (group: SettingGroup, value: boolean) =>
       void setSettings($, Object.fromEntries(keysOf(group).map(k => [k, value])) as Partial<ModSettings>).catch(() => undefined)
@@ -2169,8 +2342,13 @@ export const register: Register = (on, options) => {
       <Box flexDirection="column">
         {await paneHead($, ui, L)}
         <Text dimColor>{t(L, 'settings.intro')}</Text>
+        <Box flexDirection="row" columnGap={2} marginTop={1} marginBottom={marg ? 0 : 1}>
+          {pill(ui, 'pane', 'set-fold-all', t(L, 'settings.foldAll'), () => void foldCards($, cardKeys, true).catch(() => undefined))}
+          {pill(ui, 'pane', 'set-unfold-all', t(L, 'settings.unfoldAll'), () => void foldCards($, cardKeys, false).catch(() => undefined))}
+        </Box>
         {card(
           0,
+          'lang',
           <Text bold>{t(L, 'settings.langTitle')}</Text>,
           <Text dimColor wrap="wrap">{t(L, 'settings.langHint')}</Text>,
           // Je Sprache eine Zeile im selben Zwei-Spalten-Raster wie die Schalter darunter.
@@ -2185,16 +2363,18 @@ export const register: Register = (on, options) => {
         )}
         {card(
           1,
+          'tiles',
           <Text bold>{t(L, 'settings.agentTilesTitle')}</Text>,
           <Text dimColor wrap="wrap">{t(L, 'settings.agentTilesHint')}</Text>,
           <Box key="tiles-row" flexDirection="row" columnGap={1} marginTop={1} alignItems="center">
-            <Button key="tiles-minus" label=" − " plain onPress={() => void setSettings($, { agentTiles: s.agentTiles - TILES.step }).catch(() => undefined)} />
+            {pill(ui, 'pane', 'tiles-minus', ' − ', () => void setSettings($, { agentTiles: s.agentTiles - TILES.step }).catch(() => undefined))}
             <Box width={4} justifyContent="center"><Text bold>{s.agentTiles}</Text></Box>
-            <Button key="tiles-plus" label=" + " plain onPress={() => void setSettings($, { agentTiles: s.agentTiles + TILES.step }).catch(() => undefined)} />
+            {pill(ui, 'pane', 'tiles-plus', ' + ', () => void setSettings($, { agentTiles: s.agentTiles + TILES.step }).catch(() => undefined))}
           </Box>,
         )}
         {card(
           1,
+          'breath',
           <Text bold>{t(L, 'settings.breathTitle')}</Text>,
           <Text dimColor wrap="wrap">{t(L, 'settings.breathHint')}</Text>,
           ...BREATHS.map(b => (
@@ -2214,12 +2394,13 @@ export const register: Register = (on, options) => {
           const keys = keysOf(group)
           return card(
             i + 2,
-            <Box flexDirection="row" flexWrap="wrap" justifyContent="space-between" alignItems="center" columnGap={2}>
+            group,
+            <Box flexGrow={1} flexDirection="row" flexWrap="wrap" justifyContent="space-between" alignItems="center" columnGap={2}>
               <Text bold>{t(L, `settings.group.${group}`)}</Text>
               <Box flexDirection="row" flexWrap="wrap" columnGap={2} alignItems="center">
                 <Text dimColor>{t(L, 'settings.count', { n: keys.filter(k => s[k]).length, m: keys.length })}</Text>
-                <Button key={`grp-on-${i}`} label={t(L, 'settings.allOn')} plain onPress={() => setAll(group, true)} />
-                <Button key={`grp-off-${i}`} label={t(L, 'settings.allOff')} plain onPress={() => setAll(group, false)} />
+                {pill(ui, 'pane', `grp-on-${i}`, t(L, 'settings.allOn'), () => setAll(group, true))}
+                {pill(ui, 'pane', `grp-off-${i}`, t(L, 'settings.allOff'), () => setAll(group, false))}
               </Box>
             </Box>,
             ...keys.map(k => {
@@ -2246,7 +2427,7 @@ export const register: Register = (on, options) => {
         })}
         <Box flexDirection="row" paddingTop={1} columnGap={2}>
           <Button key="set-reset" label={t(L, 'settings.reset')} onPress={() => void resetSettings($).catch(() => undefined)} />
-          <Button key="set-reload" label={t(L, 'settings.reload')} plain onPress={() => void reloadSettings($).catch(() => undefined)} />
+          {pill(ui, 'pane', 'set-reload', t(L, 'settings.reload'), () => void reloadSettings($).catch(() => undefined))}
         </Box>
       </Box>
     )
@@ -2286,8 +2467,8 @@ export const register: Register = (on, options) => {
     const isOpen = (key: SettingKey) => !folded.includes(key)
     const headButtons = (key: SettingKey) => (
       <Box flexDirection="row" columnGap={1}>
-        <Button key={`card-fold-${key}`} label={isOpen(key) ? '▾' : '▸'} plain onPress={() => void toggleCard($, key).catch(() => undefined)} />
-        <Button key={`card-close-${key}`} label="✕" plain onPress={() => void setSettings($, { [key]: false } as Partial<ModSettings>).catch(() => undefined)} />
+        {pill(ui, 'pane', `card-fold-${key}`, isOpen(key) ? '▾' : '▸', () => void toggleCard($, key).catch(() => undefined))}
+        {pill(ui, 'pane', `card-close-${key}`, '✕', () => void setSettings($, { [key]: false } as Partial<ModSettings>).catch(() => undefined))}
       </Box>
     )
     // Eine leere Zeile zwischen den Karten: mit gedimmtem Grund braucht es eine sichtbare Lücke, Box rechnet nur in ganzen Zeilen.
@@ -2308,15 +2489,25 @@ export const register: Register = (on, options) => {
     )
     const pct = (n: number) => `${String(Math.round(n)).padStart(3)}%`
     const marg = s.paneMargins ? 1 : 0
-    const card = (key: SettingKey, name: string, ...children: RenderChildren[]) => spaced(
-      <Box flexDirection="column" flexGrow={1} backgroundColor={CARD_TINT[key] ?? TINT.neutral} marginX={marg} paddingX={1} paddingY={1}>
-        <Box flexDirection="row" justifyContent="space-between">
-          <Text bold>{name}</Text>
-          {headButtons(key)}
-        </Box>
-        {isOpen(key) && children}
-      </Box>
-    )
+    const card = (key: SettingKey, name: string, ...children: RenderChildren[]) =>
+      tile(
+        ui,
+        'pane',
+        {
+          key: `card-${key}`,
+          tint: CARD_TINT[key] ?? TINT.neutral,
+          marg,
+          grow: true,
+          open: isOpen(key),
+          head: (
+            <Box flexDirection="row" justifyContent="space-between">
+              <Text bold>{name}</Text>
+              {headButtons(key)}
+            </Box>
+          ),
+        },
+        ...children,
+      )
 
     // Verlauf der Subagents wie in Flightdeck: Name links, Balken auf der gemeinsamen Zeitachse (ältester Start bis jetzt).
     const timeline = (all: readonly Pick<Agent, 'id' | 'description' | 'since' | 'status' | 'durationMs'>[]) => {
@@ -2341,7 +2532,7 @@ export const register: Register = (on, options) => {
         : [
             <Box key="diet-head" flexDirection="row" columnGap={2} marginTop={1}>
               <Text color={THEME.warning}>{t(L, 'diet.title', { tokens: tokens(diet.reduce((n, r) => n + r.tokens, 0)) })}</Text>
-              <Button key="diet-mcp" label={t(L, 'diet.action')} plain onPress={() => void $.prompt.fill({ text: '/mcp' }).catch(() => undefined)} />
+              {pill(ui, 'pane', 'diet-mcp', t(L, 'diet.action'), () => void $.prompt.fill({ text: '/mcp' }).catch(() => undefined))}
             </Box>,
             ...diet.slice(0, 6).map(r => <Text key={`diet-${r.server}`} dimColor wrap="truncate-end">  {t(L, 'diet.row', { server: r.server, tokens: tokens(r.tokens), n: r.tools })}</Text>),
           ]
@@ -2364,8 +2555,8 @@ export const register: Register = (on, options) => {
         {await paneHead($, ui, L, (
           // Zusammenfassung und Einstellungen direkt unter der Modellzeile.
           <Box flexDirection="row" columnGap={2}>
-            {s.cardCatchUp && <Button key="open-summary" label={t(L, 'common.summary')} plain onPress={() => void $.ui.open({ ...P.summary, focus: true })} />}
-            <Button key="open-settings" label={t(L, 'common.settings')} plain onPress={() => void $.ui.open({ ...P.settings, focus: true })} />
+            {s.cardCatchUp && pill(ui, 'pane', 'open-summary', t(L, 'common.summary'), () => void $.ui.open({ ...P.summary, focus: true }))}
+            {pill(ui, 'pane', 'open-settings', t(L, 'common.settings'), () => void $.ui.open({ ...P.settings, focus: true }))}
             {dev && <Text backgroundColor={TINT.warning} color={THEME.warning} bold> {t(L, 'dev.badge')} </Text>}
           </Box>
         ))}
@@ -2384,12 +2575,18 @@ export const register: Register = (on, options) => {
           card(
             'cardWorkdir',
             t(L, 'panel.workdir'),
-            ...repoRows(place, L).map(([label, value]) => (
-              <Box flexDirection="row" columnGap={1}>
-                <Box width={12}><Text dimColor>{label}</Text></Box>
-                <Text wrap="truncate-end">{value}</Text>
-              </Box>
-            )),
+            await (async () => {
+              const d = await read($, dirs)
+              const out = await read($, dirAlert)
+              return (
+                <Box key="wd-dirs" flexDirection="column" marginBottom={1}>
+                  {labelRow(ui, 'pane', 'wd-root', t(L, 'dir.session'), <Text color={THEME.accent} bold wrap="truncate-end">{d.root || place.path}</Text>)}
+                  {d.cwd !== '' && d.cwd !== d.root && labelRow(ui, 'pane', 'wd-cwd', t(L, 'dir.process'), d.cwd)}
+                  {out !== null && labelRow(ui, 'pane', 'wd-out', t(L, 'dir.outside'), <Text color={THEME.error} bold wrap="truncate-end">⚠ {out.dir}</Text>)}
+                </Box>
+              )
+            })(),
+            ...repoRows(place, L).map(([label, value]) => labelRow(ui, 'pane', `wd-row-${label}`, label, value)),
             // Kurzer MR-Status unter Upstream (nur GitLab): Knopf öffnet das MR-Panel, ohne MR „n Commits ohne MR“.
             await (async () => {
               const wm = m?.mr ?? (await read($, mrCur))
@@ -2397,10 +2594,29 @@ export const register: Register = (on, options) => {
               if (wm === null && ahead === 0) return null
               const label = wm !== null ? ` ${mrBadge(wm).replace(/ · /g, ' ')} ` : ` ${t(L, 'mr.ahead', { n: ahead })} `
               return (
-                <Box key="wd-mr" flexDirection="row" columnGap={1}>
-                  <Box width={12}><Text dimColor>{t(L, 'mr.short')}</Text></Box>
-                  <Button key="wd-mr-open" label={label} plain onPress={() => void $.ui.open({ ...P.mr, focus: true }).catch(() => undefined)} />
-                  {wm !== null && wm.title !== '' && <Text color={THEME.textMuted} wrap="truncate-end">{wm.title}</Text>}
+                labelRow(ui, 'pane', 'wd-mr', t(L, 'mr.short'), (
+                  <Box flexDirection="row" columnGap={1} flexShrink={1}>
+                    {pill(ui, 'pane', 'wd-mr-open', label, () => void $.ui.open({ ...P.mr, focus: true }).catch(() => undefined))}
+                    {wm !== null && wm.title !== '' && <Text color={THEME.textMuted} wrap="truncate-end">{wm.title}</Text>}
+                  </Box>
+                ))
+              )
+            })(),
+            // Verknüpfte Sessions (nur Desktop): Status, Name, Branch; neueste zuerst wie die App sie liefert.
+            await (async () => {
+              const ls = m?.linked ?? (await read($, linked))
+              if (ls.length === 0) return null
+              return (
+                <Box key="wd-linked" flexDirection="column" marginTop={1}>
+                  <Text dimColor>{t(L, 'panel.linked', { n: ls.length })}</Text>
+                  {ls.map(x => (
+                    <Box key={`wd-l-${x.id}`} flexDirection="row" columnGap={1}>
+                      <Text color={x.archived ? THEME.textMuted : x.running ? THEME.success : THEME.accent}>{x.archived ? '◌' : x.running ? '●' : '○'}</Text>
+                      <Box width={10} flexShrink={0}><Text dimColor>{t(L, x.archived ? 'panel.linkedArchived' : x.running ? 'panel.linkedRunning' : 'panel.linkedIdle')}</Text></Box>
+                      <Text bold={!x.archived} dimColor={x.archived} wrap="truncate-end">{x.title || x.name}</Text>
+                      {x.branch !== '' && <Text color={THEME.textMuted} wrap="truncate-end">⎇ {x.branch}</Text>}
+                    </Box>
+                  ))}
                 </Box>
               )
             })(),
@@ -2479,7 +2695,7 @@ export const register: Register = (on, options) => {
                   <Box flexDirection="row" flexWrap="wrap" columnGap={2}>
                     {([['file', t(L, 'gate.chipFile'), t(L, 'common.file'), g.file], ['shell', t(L, 'gate.chipShell'), t(L, 'common.shell'), g.shell], ['other', t(L, 'gate.chipOther'), t(L, 'gate.other'), g.other]] as const).map(([id, k, label, n]) => (
                       <Text key={`gk-${id}`}>
-                        <Text backgroundColor={THEME.chip}> {k} </Text> <Text bold>{label} {n}</Text>
+                        {chip(ui, 'pane', '', String(k))} <Text bold>{label} {n}</Text>
                       </Text>
                     ))}
                   </Box>
@@ -2495,7 +2711,7 @@ export const register: Register = (on, options) => {
           // Ältere als kompakte Liste, nur die letzten `agentTiles` als Kachel.
           ...list.slice(0, -s.agentTiles).map((a, i) => (
             <Text key={`ago-${a.id}`} wrap="truncate-end" dimColor={!LIVE.has(a.status)}>
-              <Text backgroundColor={THEME.chip}> {i + 1} </Text> {a.description} · {a.type}{a.model !== undefined ? ` · ${a.model}` : ''} ·{' '}
+              {chip(ui, 'pane', '', String(i + 1))} {a.description} · {a.type}{a.model !== undefined ? ` · ${a.model}` : ''} ·{' '}
               {LIVE.has(a.status) ? t(L, 'agents.running', { d: duration(now - a.since) }) : `${a.status === 'killed' || a.status === 'failed' ? '✗' : '✓'} ${a.durationMs !== undefined ? duration(a.durationMs) : ''}`}
             </Text>
           )),
@@ -2510,14 +2726,14 @@ export const register: Register = (on, options) => {
               return (
                 <Box key={`ag-${a.id}`} flexDirection="column" width={42} backgroundColor={TINT[tone]} marginX={marg} paddingX={1} paddingY={1}>
                   <Text wrap="truncate-end">
-                    <Text backgroundColor={THEME.chip}> {i + 1} </Text> <Text bold>{a.description}</Text>
+                    {chip(ui, 'pane', '', String(i + 1))} <Text bold>{a.description}</Text>
                   </Text>
                   <Text wrap="truncate-end">{a.type}{a.model !== undefined ? ` · ${a.model}` : ''}</Text>
                   <Text dimColor wrap="truncate-end">{agentStats(a, L)}</Text>
                   {agentFlags(a, L) !== '' && <Text dimColor wrap="truncate-end">{agentFlags(a, L)}</Text>}
                   {heavy && <Text color={THEME.warning} wrap="truncate-end">{t(L, 'agents.heavy', { steps: a.steps ?? 0, d: duration(now - a.since) })}</Text>}
                   {live && isBraked && <Text color={THEME.warning}>{t(L, 'agents.braked')}</Text>}
-                  {heavy && !isBraked && <Button key={`brake-${a.id}`} label={t(L, 'agents.brake')} plain onPress={() => void brake(a)} />}
+                  {heavy && !isBraked && pill(ui, 'pane', `brake-${a.id}`, t(L, 'agents.brake'), () => void brake(a))}
                   <Text color={live ? THEME.accent : isKilled ? THEME.error : THEME.success}>
                     {live
                       ? t(L, 'agents.running', { d: duration(now - a.since) })
@@ -2537,7 +2753,7 @@ export const register: Register = (on, options) => {
           // Wie bei den Subagents: ältere als kompakte Liste, die letzten beiden als Kachel mit Grund nach Status.
           ...tasks.slice(0, -2).map((x, i) => (
             <Text key={`bgo-${x.id}`} wrap="truncate-end" dimColor={x.status !== 'running'}>
-              <Text backgroundColor={THEME.chip}> {i + 1} </Text> {x.description} · {taskState(x)}
+              {chip(ui, 'pane', '', String(i + 1))} {x.description} · {taskState(x)}
             </Text>
           )),
           <Box flexDirection="row" flexWrap="wrap" columnGap={1}>
@@ -2555,7 +2771,7 @@ export const register: Register = (on, options) => {
               return (
                 <Box key={`bg-${x.id}`} flexDirection="column" width={42} backgroundColor={TINT[tone]} marginX={marg} paddingX={1} paddingY={1}>
                   <Text wrap="truncate-end">
-                    <Text backgroundColor={THEME.chip}> {i + 1} </Text> <Text bold>{x.description}</Text>
+                    {chip(ui, 'pane', '', String(i + 1))} <Text bold>{x.description}</Text>
                   </Text>
                   {shown.map((l, j) => <Text key={`bgl-${x.id}-${j}`} color={THEME.textMuted} wrap="truncate-end">{l}</Text>)}
                   {body.length > shown.length && <Text dimColor>{t(L, 'tasks.more', { n: body.length - shown.length })}</Text>}
