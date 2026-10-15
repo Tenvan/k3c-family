@@ -1,6 +1,6 @@
 # BD1 · CLI · Kamera, Beitritts-Hinweis, Overlay-Taste und HUD-Nachträge
 
-- **Status:** aktiv
+- **Status:** erledigt
 - **Projekt:** BED
 - **Domäne:** CLI
 - **Reife:** bereit
@@ -64,12 +64,14 @@ Risiko: S8.2 fand in den vorhandenen Packs keinen Mond. Findet BD1.4 keinen, blo
 | BD1.2 | `BD1.2-beitritt-hinweis-oe.md` | Umsetzung | autonom | fertig |
 | BD1.3 | `BD1.3-hud-hinweis-gold-meldungen.md` | Umsetzung | autonom | fertig |
 | BD1.4 | `BD1.4-muenzbild-mondbild-hinweis.md` | Umsetzung | autonom | fertig |
-| BD1.5 | `BD1.5-review.md` | Review | autonom | offen |
+| BD1.5 | `BD1.5-review.md` | Review | autonom | fertig |
 
 Bei `Reife: Entwurf` genügen Stichpunkte mit den Kriterien in Klammern statt Session-Dateien. Vor dem Aktivieren
 wird jede Session als eigene Datei nach `docs/vorlagen/session.md` geschrieben.
 
 ## Abnahme
 
-Wird von der Review-Session (Doku-Sprint: letzte Session) ausgefüllt, höchstens fünf Zeilen: Datum, Kriterien
-(Verweis auf Session-Ergebnisse), behobene Befunde, neue Tickets. Bis dahin `–`.
+2026-10-15 (BD1.5): AC-01 und AC-02 umgesetzt und am PC von 🧑 bestätigt; AC-03 und AC-04 umgesetzt, angenommen, Validierung offen (BD1.3, BD1.4: HUD am PC, Münz-Hinweis mit frischem Profil, Mond-Optik am Gerät); AC-05 `task check` und `task check:go` grün.
+Behobener Befund: Steuerhinweis blieb mit 2 Spielern wegen Gerätewechsel stehen (B-399). Neue Tickets: keine (B-370 und B-427 gelöst: Mond als Emoji-Textur).
+Der Sprint-PR #299 ist gemergt; BD1.4 und dieser Review liegen lokal auf `develop`, noch nicht gepusht.
+Version: v0.17.0 vorgeschlagen (Minor: sichtbare Bedienungs- und HUD-Änderungen im Spiel); gesetzt erst nach Bestätigung durch 🧑.

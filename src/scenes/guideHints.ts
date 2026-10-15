@@ -29,7 +29,7 @@ export function guideImage(id: GuideId): GuideImage | null {
 
 /**
  * Bild nur, wenn seine Textur geladen ist (B-393): Sonst zeichnet Phaser einen grünen Platzhalter statt „nur Text“.
- * `warn` meldet jede fehlende Textur einmal (Log 🐛), der Hinweis steht dann ohne Bild.
+ * `warn` meldet jede fehlende Textur einmal (Log 🤒), der Hinweis steht dann ohne Bild.
  */
 export function usableGuideImage(image: GuideImage | null, exists: (key: string) => boolean, warn: (key: string) => void, warned: Set<string>): GuideImage | null {
   if (!image || exists(image.image)) return image;

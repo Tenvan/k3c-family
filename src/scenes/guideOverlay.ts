@@ -54,11 +54,11 @@ export class GuideOverlay {
 
   constructor(private readonly scene: Phaser.Scene) {}
 
-  /** Bild des Hinweises, sobald seine Textur da ist; fehlt sie, steht der Hinweis ohne Bild und ein Log 🐛 meldet es einmal (B-393) */
+  /** Bild des Hinweises, sobald seine Textur da ist; fehlt sie, steht der Hinweis ohne Bild und ein Log 🤒 meldet es einmal (B-393) */
   private imageOf(h: GuideHint): ReturnType<typeof guideImage> {
     if (h.id === 'dusk') ensureMoon(this.scene);
     const exists = (key: string) => this.scene.textures.exists(key);
-    const warn = (key: string) => clientLog('warn', '🐛 Hinweis-Bild fehlt: Textur nicht geladen', { key, hint: h.id });
+    const warn = (key: string) => clientLog('warn', '🤒 Hinweis-Bild fehlt: Textur nicht geladen', { key, hint: h.id });
     return usableGuideImage(guideImage(h.id), exists, warn, this.warned);
   }
 

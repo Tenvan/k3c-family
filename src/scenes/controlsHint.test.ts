@@ -38,6 +38,14 @@ describe('stepControlsHint (B-399)', () => {
     expect(r.visible).toBe(true);
   });
 
+  it('mit zwei Spielern startet der ständige Gerätewechsel die Zeit nicht neu', () => {
+    let r = run(null, 0, 2, 'keyboard');
+    r = run(r.track, CONTROLS_HINT_MS + 1, 2, 'keyboard2');
+    expect(r.visible).toBe(false);
+    r = run(r.track, CONTROLS_HINT_MS + 2, 2, 'keyboard');
+    expect(r.visible).toBe(false);
+  });
+
   it('„Hinweise“ wieder einschalten zeigt ihn erneut', () => {
     let r = run(null, 0, 1, 'keyboard', false);
     r = run(r.track, CONTROLS_HINT_MS + 1, 1, 'keyboard', false);
