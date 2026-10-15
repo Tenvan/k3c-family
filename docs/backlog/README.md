@@ -147,6 +147,7 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-425](B-425-fullsave-ausbauregeln.md) | SRV | Problem | mittel | offen | – | Der Voll-Ausbau-Stand hält die Ausbauregeln des Spiels ein |
 | [B-426](B-426-fullsave-review-kleinigkeiten.md) | SRV | Schuld | niedrig | offen | – | Kleine Befunde aus dem Review von SV1 sind erledigt |
 | [B-427](B-427-mond-bild-quelle.md) | CLI | Frage | mittel | offen | – | Aus welcher Quelle kommt das Mond-Bild für den Nacht-Hinweis? |
+| [B-430](B-430-frage-w11-3-session-spec-fehlt.md) | SRV | Frage | mittel | offen | W11 | Frage: Wie lauten Ziel, Erlaubte Dateien und Form der actions-Einträge für W11.3 (Ausbilden, Tauschen)? |
 
 ## Archiv
 
