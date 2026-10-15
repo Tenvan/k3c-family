@@ -13,6 +13,7 @@ Mod für Claude Desktop und die Claude-Code-CLI (Claude Code Function Hooks, Ear
 | Datei | Inhalt | Regel |
 | --- | --- | --- |
 | `hooks/register.tsx` | alle Hooks, Band, Panel | Einstiegspunkt laut `hooks/hooks.json` |
+| `hooks/ui.tsx` | Design-System: Tokens je Bereich (`MODES`: pane, skin, sidebar, band), Atome `pill`, `chip`, Moleküle `labelRow`, `tile` | Knöpfe, Chips, Raster-Zeilen und Karten nur hierüber, mit dem Bereich als `mode`; Style-Änderungen in `MODES`, nie an der Aufrufstelle. Kein `$` (Engine 2.1.295 lädt keine `$`-Funktionen aus anderen Dateien) |
 | `hooks/core.ts` | reine Funktionen ohne `$` | neue Rechen-/Formatlogik hierher, damit sie direkt testbar ist |
 | `hooks/mr.ts`, `hooks/forge.ts` | MR/PR: Übersetzung der Plattform-Antworten (rein) bzw. Aufrufe von glab, gh, Bitbucket-REST (über `io`, ohne `$`) | neue Plattform: Konverter in `mr.ts`, Aufrufe in `forge.ts` |
 | `hooks/mock.ts` | Mockdaten für den Dev-Mode (`/cockpit-dev`) | neue Panel-Werte hier mitpflegen |
@@ -43,16 +44,6 @@ npx -y -p typescript@5.6.3 tsc -p <scratchpad>/tsconfig.json
 
 Nach Änderungen am Manifest zusätzlich im Repo-Root `npm run validate` und `npm run registry:build`. Achtung: `registry:build -- --fix` sortiert alle Marketplace-Einträge um. Neue Einträge deshalb von Hand ans Ende setzen und nur ohne `--fix` prüfen.
 
-## Warum nicht Vitest
-
-Die Tests dieses Ordners laufen **nur** mit `claude plugin test tools/cockpit`, nicht mit dem Vitest des Spiel-Projekts:
-
-- Jede `*.test.ts` importiert `expect`, `mock` und `test` aus `claude-code/testing`. Das ist ein Modul des Hosts (Claude Code), kein npm-Paket; es existiert nur im Prozess von `claude plugin test`. Unter Vitest bricht jede Datei in Zeile 1 mit `Cannot find package 'claude-code/testing'` ab, es läuft kein Test.
-- Ein Stub für `claude-code/testing` würde `mock` und die Host-Stubs nachbauen und belegte dann nur den Stub, nicht das Mod. Deshalb gibt es keinen.
-- Das Mod hat Host-Grenzen und eine eigene Toolchain (`claude plugin validate`, `claude plugin test`, eigener Typecheck, siehe oben). Die Budgets des Spiels (400 Zeilen je Datei, 60 je Funktion, Komplexität 15) gelten hier nicht.
-
-Deshalb steht `tools/cockpit` in `ignorePatterns` von `.oxlintrc.json` und im `test.exclude` von `vite.config.ts` (B-415); `task check` prüft das Mod nicht. Vor jedem Abschluss gelten die Befehle unter „Prüfen“. Stand 2026-10-14: `claude plugin test tools/cockpit` 137 von 137 grün (10 Dateien).
-
 ## Fallstricke der Mod-API (alle schon einmal aufgetreten)
 
 - **Atom-Refs nur mit Literalen**: `atom({ plugin: 'tenvan-cc', key: '…' } as const, init)`. Eine Konstante wie `PLUGIN` statt `'tenvan-cc'` lehnt `validate` ab.
@@ -65,12 +56,17 @@ Deshalb steht `tools/cockpit` in `ignorePatterns` von `.oxlintrc.json` und im `t
 - **Modul-Variablen** (`lastPrompt`) überleben keinen Reload. Was über einen Reload bleiben muss, gehört in ein Atom.
 - **`$` verlässt nie das Modul**: auch nicht an importierte Funktionen (`forgeFind($, …)` lädt nicht). Andere Module bekommen ein `io`-Objekt aus `$.process.run`/`$.http.fetch` (siehe `forgeIo`).
 - **`Button` ohne Kinder-Elemente**: Engine 2.1.295 nimmt nur `label` oder ein String-Kind, keinen farbigen `Text` (entgegen den Typen). Farbe über eine getönte Box drumherum.
-- **Erster Klick in ein Panel ohne Fokus verpufft** (Verhalten des Hosts, kein Fehler des Mods): Der Klick holt erst den Fokus. Dabei setzt der Host `isFocused` neu, zeichnet das Panel neu und tauscht das native Button-Element unter dem Zeiger aus; das Mausereignis trifft ein anderes Element und löst `onPress` nicht aus. Erst der zweite Klick wirkt. Der Baum, den der Mod zeichnet, ist mit und ohne Fokus identisch (gleiche `key`s, gleiche Buttons), im Mod lässt sich das deshalb nicht beheben. `$.ui.open({ …, focus: true })` setzt den Fokus nur, wenn das Eingabefeld leer ist und die Tastatur im Spiel ist, nicht aus einem Button in Band oder Panel heraus. Wirksam sind nur `hotkey`s an den Buttons (sie greifen, sobald das Panel den Fokus hat). Beim Prüfen: erst ins Panel klicken, dann die Buttons testen.
+- **Op-Stubs im Test** antworten immer mit `{ value: … }`, auch ohne Ergebnis: `on('store.set', () => ({ value: undefined }) as never)`. `{}` lehnt Engine 2.1.295 ab.
+- **CLI-Version**: `claude` im PATH kann älter sein als die Engine der Desktop-App. Prüfen mit der Desktop-Engine: `"$APPDATA/Claude/claude-code/<version>/<hash>/claude.exe" plugin test plugins/tenvan-cc`.
 - **Elemente**: `Box`, `Text`, `Button`, `Input`, `Select`, `Code`, `Markdown` auf Desktop und Terminal, `Svg` nur auf dem Desktop. Farben über Theme-Keys (`success`, `warning`, `error`, `claude`).
+
+## Offizielle Quelle: anthropics/claude-code
+
+Im Cache: `~/.deltra/repo-cache/github.com/anthropics/claude-code` (Skill `repo-cache`). Relevant: `CHANGELOG.md` (Mod-Änderungen je Version, vor der Desktop-Engine), `mods/` (offizielle Referenz-Mods `diff`, `agents-md`, `sec-default`, `telemetry` mit Tests). `mods/types/claude-code.d.ts` ist älter als die Engine – maßgeblich bleibt die Typdatei aus dem Skill `plugin-authoring`.
 
 ## Muster aus ray-amjad/claude-code-mods
 
-Referenz-Mods (MIT): `github.com/ray-amjad/claude-code-mods` (Stand `56a266b`). Nur als Vorlage, kein Code übernehmen. Vor neuen Features dort nach einem ähnlichen Mod suchen.
+Referenz-Mods (MIT) im Cache: `~/.deltra/repo-cache/github.com/ray-amjad/claude-code-mods` (per Skill `repo-cache`, Stand `56a266b`). Nur als Vorlage, kein Code übernehmen. Vor neuen Features dort nach einem ähnlichen Mod suchen.
 
 | Muster | Quelle | Für das Cockpit |
 | --- | --- | --- |
@@ -98,7 +94,6 @@ Referenz-Mods (MIT): `github.com/ray-amjad/claude-code-mods` (Stand `56a266b`). 
   - `ui.render` (AbovePrompt) → `{ type: 'Box' }`
   - `turn.complete` → `{ text }`
   - `prompt.submit` → `{ text }`
-  - `store.get` / `store.set` → `{ value: undefined }`; ein leeres `{}` weist die Test-Engine zurück (`returned neither { value } nor { deny }`) und der Test schlägt fehl
 - Op-Events antworten mit `{ value: … }`, z. B. `ui.open` → `{ value: { isPlaced: true } }`, `model.complete`, `session.usage`.
 - `mock.clock(on, { now })` für feste Zeit. Mount-Props brauchen alle Pflichtfelder (`bodyColumns`, `scroll`, `view` …); der Typecheck sagt, welche.
 - Asynchrones Nachzeichnen abwarten: `for (let i = 0; i < 100 && !(await ui.find({ key })); i++) await Promise.resolve()`.
@@ -116,5 +111,5 @@ Referenz-Mods (MIT): `github.com/ray-amjad/claude-code-mods` (Stand `56a266b`). 
 ## Konventionen
 
 - Bewusste Vereinfachungen mit `// ponytail: <Grenze>, <Ausbaupfad>` markieren.
-- Commits nach Repo-Konvention (`docs/arbeitsweise.md`), Scope `tools`.
+- Commits über Skill `orga-core:commit`, Scope `mods`.
 - Kein Auto-Open, keine Toasts, keine Statuszeile ohne Rücksprache.

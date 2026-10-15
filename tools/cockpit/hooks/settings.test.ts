@@ -1,6 +1,6 @@
 import { expect, test } from 'claude-code/testing'
 
-import { splitTool, toolText, parseTaskNotification, withClaude, modelLabel, timelineSvg, summaryLines, summarySections, topRows, resetLabel, agentStats, agentFlags, DEFAULT_SETTINGS, SETTING_DEFS, settingHint, settingLabel, catchUpPrompt, catchUpSystem, fingerprint, formatMessage, nextChunk, settingsOf, startIndex } from './core'
+import { splitTool, toolText, parseTaskNotifications, backgroundOf, todosOf, wrapupOf, resetLeft, parseLinkedSessions, dirTarget, isForeignDir, withClaude, modelLabel, timelineSvg, summaryLines, summarySections, topRows, resetLabel, agentStats, agentFlags, DEFAULT_SETTINGS, SETTING_DEFS, settingHint, settingLabel, catchUpPrompt, catchUpSystem, fingerprint, formatMessage, nextChunk, settingsOf, startIndex } from './core'
 import { STRINGS, t, type Key } from './i18n'
 
 type Msg = Parameters<typeof fingerprint>[0]
@@ -21,7 +21,7 @@ test('settingsOf: Standard, Teileingabe und leere Altzustände', () => {
 test('SETTING_DEFS: deckt alle Schalter außer lang, breathKey und agentTiles genau einmal ab', () => {
   const keys = SETTING_DEFS.map(d => d.key as string).sort()
   expect(keys).toEqual(Object.keys(DEFAULT_SETTINGS).filter(k => k !== 'lang' && k !== 'breathKey' && k !== 'agentTiles').sort())
-  const groups = ['band', 'panel', 'chat', 'skins', 'summary']
+  const groups = ['band', 'work', 'effort', 'panel', 'summary', 'mr', 'sidebar', 'skins', 'tools', 'input', 'marks']
   for (const d of SETTING_DEFS) {
     for (const lang of ['de', 'en'] as const) {
       expect(settingLabel(d.key, lang).trim()).not.toBe('')
@@ -171,10 +171,34 @@ test('withClaude: Claudes Vorschlag vorn, gleicher Prompt nur einmal, höchstens
   expect(withClaude([], hint)).toEqual([hint])
 })
 
-test('parseTaskNotification: Kennung, Status und Kurztext; null ohne Kennung', () => {
-  const text = '<task-notification>\n<task-id>b1x</task-id>\n<status>completed</status>\n<summary>Build fertig</summary>\n</task-notification>'
-  expect(parseTaskNotification(text)).toEqual({ id: 'b1x', status: 'completed', summary: 'Build fertig' })
-  expect(parseTaskNotification('normaler Prompt')).toBe(null)
+test('parseTaskNotifications: alle gebündelten Benachrichtigungen; leer ohne Kennung', () => {
+  const one = (id: string, status: string) => `<task-notification>
+<task-id>${id}</task-id>
+<status>${status}</status>
+<summary>S ${id}</summary>
+</task-notification>`
+  expect(parseTaskNotifications(one('b1x', 'completed'))).toEqual([{ id: 'b1x', status: 'completed', summary: 'S b1x' }])
+  expect(parseTaskNotifications(`${one('a', 'failed')}\nText\n${one('b', 'killed')}`).map(n => `${n.id}:${n.status}`)).toEqual(['a:failed', 'b:killed'])
+  expect(parseTaskNotifications('<task-notification>\n<summary>Review fertig</summary>\n</task-notification>')).toEqual([])
+  expect(parseTaskNotifications('normaler Prompt')).toEqual([])
+})
+
+test('backgroundOf: Shell (auch per Timeout), Monitor, Workflow, Cloud-Agent; lokale Agents und Vordergrund nicht', () => {
+  expect(backgroundOf('PowerShell', { command: 'npm test', description: 'Tests' }, { backgroundTaskId: 'b1', timedOutAfterMs: 120000 })).toEqual({ id: 'b1', description: 'Tests', command: 'npm test' })
+  expect(backgroundOf('Bash', { command: 'ls' }, { stdout: '' })).toBe(null)
+  expect(backgroundOf('Monitor', { description: 'CI', command: 'gh run watch' }, { taskId: 'm1', timeoutMs: 0 })).toEqual({ id: 'm1', description: 'CI', command: 'gh run watch' })
+  expect(backgroundOf('Workflow', { script: 'x' }, { status: 'async_launched', taskId: 'w1', workflowName: 'review' })).toEqual({ id: 'w1', description: 'review' })
+  expect(backgroundOf('Agent', { description: 'Cloud' }, { status: 'remote_launched', taskId: 'r1', description: 'Cloud', sessionUrl: 'u' })?.id).toBe('r1')
+  expect(backgroundOf('Agent', { description: 'lokal' }, { status: 'async_launched', agentId: 'a1' })).toBe(null)
+})
+
+test('todosOf/wrapupOf: Fortschritt aus TodoWrite und update_plan, Teil-Updates und fremde Tools null', () => {
+  expect(todosOf('TodoWrite', { todos: [{ content: 'a', status: 'completed' }, { content: 'b', status: 'in_progress', activeForm: 'Baut b' }, { content: 'c', status: 'pending' }] })).toEqual({ done: 1, total: 3, current: 'Baut b' })
+  expect(todosOf('mcp__ccd_turn__update_plan', { items: [{ content: 'x', status: 'in_progress' }] })).toEqual({ done: 0, total: 1, current: 'x' })
+  expect(todosOf('mcp__ccd_turn__update_plan', { advance: true })).toBe(null)
+  expect(todosOf('Read', { todos: [] })).toBe(null)
+  expect(wrapupOf('mcp__ccd_turn__wrap_up', { recap: 'Fertig.', ask: 'Commit?' })).toEqual({ recap: 'Fertig.', ask: 'Commit?' })
+  expect(wrapupOf('mcp__ccd_turn__wrap_up', {})).toBe(null)
 })
 
 test('splitTool: MCP-Namen in Server und Tool, Plugin-Präfix gekürzt, eingebaute Tools unverändert', () => {
@@ -189,4 +213,37 @@ test('summarySections: Abschnitt je Überschrift, Vorspann ohne Titel', () => {
   const s = summarySections(summaryLines('Vorspann\n## Ziel\n- a\n- b\n## Stand\ntext'))
   expect(s.map(x => x.heading)).toEqual([undefined, 'Ziel', 'Stand'])
   expect(s.map(x => x.lines.length)).toEqual([1, 2, 1])
+})
+
+test('parseLinkedSessions: Felder aus list_sessions, Unbrauchbares ergibt []', () => {
+  const text = JSON.stringify([{ sessionId: 'local_1', title: 'T', name: 'n', branch: 'b', cwd: 'C:/x', isRunning: true, isArchived: false }, { title: 'ohne id' }])
+  expect(parseLinkedSessions(text)).toEqual([{ id: 'local_1', title: 'T', name: 'n', branch: 'b', cwd: 'C:/x', running: true, archived: false }])
+  expect(parseLinkedSessions('kein json')).toEqual([])
+  expect(parseLinkedSessions(undefined)).toEqual([])
+})
+
+test('dirTarget/isForeignDir: Wechsel per cd, git -C, Desktop und Schreiben; Temp, AppData und Punkt-Ordner zählen nicht', () => {
+  const cwd = 'C:\\WORKSPACE\\k3c'
+  const home = 'C:\\Users\\r'
+  expect(dirTarget('PowerShell', { command: 'cd C:\\WORKSPACE\\ErpApi; dotnet build' }, cwd, home)).toBe('C:\\WORKSPACE\\ErpApi')
+  expect(dirTarget('Bash', { command: 'git -C /c/WORKSPACE/ErpApi status' }, cwd, home)).toBe('/c/WORKSPACE/ErpApi')
+  expect(dirTarget('Bash', { command: 'cd src && ls' }, cwd, home)).toBe('C:\\WORKSPACE\\k3c/src')
+  expect(dirTarget('mcp__ccd_directory__change_directory', { path: 'C:\\WORKSPACE\\ErpApi' }, cwd, home)).toBe('C:\\WORKSPACE\\ErpApi')
+  expect(dirTarget('Write', { file_path: 'C:/WORKSPACE/ErpApi/a.cs' }, cwd, home)).toBe('C:/WORKSPACE/ErpApi')
+  expect(dirTarget('Read', { file_path: 'C:/WORKSPACE/ErpApi/a.cs' }, cwd, home)).toBe(null)
+  expect(dirTarget('Bash', { command: 'ls -la' }, cwd, home)).toBe(null)
+  expect(isForeignDir('C:/WORKSPACE/ErpApi', cwd, home)).toBe(true)
+  expect(isForeignDir('/c/WORKSPACE/ErpApi', cwd, home)).toBe(true)
+  expect(isForeignDir('C:\\WORKSPACE\\k3c/src', cwd, home)).toBe(false)
+  expect(isForeignDir('/c/workspace/K3C/.claude/worktrees/x', cwd, home)).toBe(false)
+  expect(isForeignDir('C:/Users/r/.claude/projects', cwd, home)).toBe(false)
+  expect(isForeignDir('C:/Users/r/AppData/Local/Temp/x', cwd, home)).toBe(false)
+})
+
+test('resetLeft: Minuten, Stunden, Tage; abgelaufen 0m', () => {
+  const now = Date.UTC(2026, 9, 15, 10, 0)
+  expect(resetLeft(new Date(now + 12 * 60_000).toISOString(), now)).toBe('12m')
+  expect(resetLeft(new Date(now + 133 * 60_000).toISOString(), now)).toBe('2h 13m')
+  expect(resetLeft(new Date(now + (3 * 24 + 4) * 3600_000).toISOString(), now)).toBe('3d 4h')
+  expect(resetLeft(new Date(now - 60_000).toISOString(), now)).toBe('0m')
 })

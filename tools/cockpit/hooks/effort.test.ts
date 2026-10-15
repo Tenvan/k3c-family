@@ -39,7 +39,7 @@ test('Auto-Effort: Knopf schaltet ein, Haiku-Stufe geht in den Haupt-Request, Ha
   mock.clock(on, { now: H })
   on('session.measure', () => ({ changed: [] }))
   on('store.get', () => ({ value: undefined }) as never)
-  on('store.set', () => ({}) as never)
+  on('store.set', () => ({ value: undefined }) as never)
   on('prompt.submit', ($, e) => ({ text: e.text }))
   let judged = 0
   on('model.classify', () => {

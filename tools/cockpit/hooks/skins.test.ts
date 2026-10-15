@@ -1,7 +1,8 @@
+import { MODES } from './ui'
 import { expect, test } from 'claude-code/testing'
 
 import { DEFAULT_SETTINGS, THEME, demoTable } from './core'
-import { detailInput, detailOutput, diffCardSvg, diffOf, fileHref, fileTarget, firstErrorLine, iconKind, inlineTokens, isReadOnlyShell, isStyled, linkTokens, mdLiteral, richBlock, quietLine, splitMessage, toolIconSvg } from './skins'
+import { detailInput, detailOutput, diffCardSvg, diffOf, firstErrorLine, iconKind, inlineTokens, isReadOnlyShell, isStyled, mdLiteral, richBlock, quietLine, splitMessage, toolIconSvg } from './skins'
 
 const ON = { cards: true, inline: true }
 const F = '```'
@@ -96,7 +97,7 @@ test('Hervorhebungen: Pfade, geänderte Dateien, Versionen, Zahlen', () => {
 test('Demo-Tabelle: gestylte Komponenten nennen ihre Chat-Skins', () => {
   const md = demoTable(DEFAULT_SETTINGS, 'de')
   expect(md).toContain('| `UserMessage` | Deine Nachricht im Chat | ✅ Chat-Skin (Prompt-Rahmen) |')
-  expect(md).toContain('✅ Chat-Skin (Code- und Tabellenkarten, Links und Dateilinks, Mermaid-Karten, Formelkarten)')
+  expect(md).toContain('✅ Chat-Skin (Code- und Tabellenkarten, Mermaid-Karten, Formelkarten)')
   expect(md).toContain('| `AskUserQuestion` | Rückfrage-Dialog an dich | ✅ Chat-Skin (Rückfrage-Kopf) |')
   expect(md).toContain('| `ToolProgress` | Fortschritt eines laufenden Tools | ➖ nur Terminal')
   expect(demoTable({ ...DEFAULT_SETTINGS, skinPrompt: false }, 'de')).toContain('⏸ Chat-Skin aus')
@@ -113,14 +114,19 @@ test('ToolUse: Symbol als einfaches Svg, Details klappen als Code auf; Terminal 
   expect(icon).toContain(THEME.info)
   expect(icon).not.toContain('isInteractive')
   expect(await row.find({ type: 'Code' })).toBe(undefined)
-  await row.press({ key: 'tv-xb-u1' })
+  await row.press({ key: 'om-xb-u1' })
   for (let i = 0; i < 100 && !(await row.find({ type: 'Code' })); i++) await Promise.resolve()
   const codes = JSON.stringify(await row.findAll({ type: 'Code' }))
   expect(codes).toContain('let x = 1')
   expect(codes).toContain('"language":"json"')
   const term = await $.ui.mount({ plugin: 'tenvan-cc', surface: 'terminal', component: 'ToolUse', props: TOOL_USE })
   expect(await term.find({ type: 'Svg' })).toBe(undefined)
-  expect(await term.find({ type: 'Button', key: 'tv-xb-u1' })).not.toBe(undefined)
+  expect(await term.find({ type: 'Button', key: 'om-xb-u1' })).not.toBe(undefined)
+  // Modus „skin“: orange Pille, auf dem Desktop abgerundet, im Terminal ohne Rahmen.
+  const pillOf = async (v: { find(q: { key: string }): Promise<unknown> }) => JSON.stringify(await v.find({ key: 'om-xb-u1-pill' }))
+  expect(await pillOf(row)).toContain(MODES.skin.fill)
+  expect(await pillOf(row)).toContain('"borderStyle":"round"')
+  expect(await pillOf(term)).not.toContain('borderStyle')
 })
 
 test('ToolResult: Diff-Karte, ruhige Zeile, echte Fehlerzeile', async ($, on) => {
@@ -226,63 +232,6 @@ test('Style-Kennzeichen: Name neben dem Symbol, über die Einstellungen abschalt
   expect(await (await $.ui.mount(base)).find({ type: 'Text', text: 'Fehlerzeile' })).toBe(undefined)
 })
 
-// ── Links ──
-
-const BS = String.fromCharCode(92)
-
-test('fileTarget: Pfade mit Zeile, file:-Adressen, Schemata sind keine Dateien', () => {
-  expect(fileTarget('hooks/register.tsx')).toEqual({ path: 'hooks/register.tsx', line: null })
-  expect(fileTarget('hooks/register.tsx:42')).toEqual({ path: 'hooks/register.tsx', line: 42 })
-  expect(fileTarget('./a.ts#L7-L9')).toEqual({ path: './a.ts', line: 7 })
-  const win = ['C:', 'x', 'a.ts'].join(BS)
-  expect(fileTarget(`${win}:3:5`)).toEqual({ path: win, line: 3 })
-  expect(fileTarget('file:///C:/x/a%20b.ts')).toEqual({ path: 'C:/x/a b.ts', line: null })
-  expect(fileTarget('https://example.com/a.ts')).toBe(null)
-  expect(fileTarget('mailto:a@b.de')).toBe(null)
-})
-
-test('fileHref: relativ ab Arbeitsverzeichnis, absolut unverändert, Leerzeichen codiert', () => {
-  expect(fileHref('hooks/a.ts', ['C:', 'WORKSPACE', 'K3C', 'tools', 'cockpit'].join(BS))).toBe('file:///C:/WORKSPACE/K3C/tools/cockpit/hooks/a.ts')
-  expect(fileHref('./a b.ts', 'C:/p')).toBe('file:///C:/p/a%20b.ts')
-  expect(fileHref('../x.ts', 'C:/p/q')).toBe('file:///C:/p/x.ts')
-  expect(fileHref(['C:', 'x', 'a.ts'].join(BS), 'C:/p')).toBe('file:///C:/x/a.ts')
-  expect(fileHref('/home/u/a.ts', '')).toBe('file:///home/u/a.ts')
-  expect(fileHref('a.ts', '')).toBe('a.ts')
-})
-
-test('linkTokens: Absatz mit Links in Stücke; sonstiges Markdown bleibt Sache der Engine', () => {
-  const t = linkTokens('Siehe [register.tsx](hooks/register.tsx:12), **wichtig**, `x` und <https://a.de/b> oder https://c.de.')
-  expect(t?.map(p => p.kind)).toEqual(['text', 'link', 'text', 'bold', 'text', 'code', 'text', 'link', 'text', 'link', 'text'])
-  const file = t?.[1]
-  expect(file).toMatchObject({ kind: 'link', label: 'register.tsx', file: true, path: 'hooks/register.tsx', line: 12 })
-  expect(t?.[7]).toMatchObject({ kind: 'link', href: 'https://a.de/b', file: false })
-  expect(linkTokens('Kein Link hier.')).toBe(null)
-  expect(linkTokens('- [a](b)\n- [c](d)')).toBe(null)
-  expect(linkTokens('# Titel [a](b)')).toBe(null)
-  expect(linkTokens('Text mit _Betonung_ und [a](b)')).toBe(null)
-})
-
-test('splitMessage: Absatz mit Link wird links-Segment, Rest bleibt md; ohne Option unverändert', () => {
-  const text = 'Erster Absatz.\n\nSiehe [a](src/a.ts).\n\n- Liste [b](c)'
-  const segs = splitMessage(text, { cards: false, inline: false, links: true })
-  expect(segs.map(s => s.kind)).toEqual(['md', 'links', 'md'])
-  expect(isStyled(segs)).toBe(true)
-  const off = splitMessage(text, { cards: false, inline: false })
-  expect(off.map(s => s.kind)).toEqual(['md'])
-})
-
-test('AssistantMessage: Link in Akzentfarbe, Dateilink als Chip mit Zeile', async ($, on) => {
-  on('store.get', () => ({ value: undefined }) as never)
-  on('store.set', () => ({ value: undefined }) as never)
-  on('ui.render', { component: 'AssistantMessage' }, () => ({ type: 'Box' as const }))
-  const text = 'Mehr in [den Docs](https://example.com/doc) und [skins.ts](hooks/skins.ts:42).'
-  const m = await $.ui.mount({ plugin: 'tenvan-cc', surface: 'desktop', component: 'AssistantMessage', props: { text, isFirstOfReply: true } })
-  const web = await m.find({ type: 'Text', text: 'den Docs' })
-  expect(JSON.stringify(web)).toContain(THEME.accent)
-  const chip = await m.find({ type: 'Text', text: 'skins.ts:42' })
-  expect(JSON.stringify(chip)).toContain(THEME.chip)
-})
-
 test('richBlock: Listen, Code und Fett selbst gezeichnet, Links und Kursiv bleiben Markdown', () => {
   const lines = richBlock('- Entfernt ist `markAfterDelivery` im **Runner**\n  - Unterpunkt 3\n1. Erstens')
   expect(lines?.map(l => l.bullet)).toEqual(['•', '•', '1.'])
@@ -296,4 +245,24 @@ test('richBlock: Listen, Code und Fett selbst gezeichnet, Links und Kursiv bleib
   const segs = splitMessage('Absatz mit `code`\n\nDatei core.ts geändert', { cards: true, inline: true })
   expect(segs.map(s => s.kind)).toEqual(['rich', 'plain'])
   expect(isStyled(segs.slice(0, 1))).toBe(false)
+})
+
+test('Aufgabenliste & Abschluss: Kopfband mit Fortschritt und Chip „new style“ über TodoWrite, update_plan und wrap_up', async ($, on) => {
+  on('ui.render', { component: 'ToolUse' }, () => ({ type: 'Box' as const }))
+  const row = (tool: string, input: unknown) =>
+    $.ui.mount({ plugin: 'tenvan-cc', surface: 'desktop', component: 'ToolUse', props: { tool_use_id: `t-${tool}`, tool, input, isRunning: false, isErrored: false, isInterrupted: false } })
+  const todos = await row('TodoWrite', { todos: [{ content: 'A', status: 'completed', activeForm: 'A' }, { content: 'B', status: 'in_progress', activeForm: 'Baut B' }] })
+  expect(await todos.find({ type: 'Text', text: /Aufgaben · 1\/2 erledigt/ })).not.toBe(undefined)
+  expect(JSON.stringify(await todos.find({ type: 'Text', text: /läuft: Baut B/ }))).not.toBe(undefined)
+  expect(await todos.find({ type: 'Text', text: ' new style ' })).not.toBe(undefined)
+  const plan = await row('mcp__ccd_turn__update_plan', { items: [{ content: 'X', status: 'completed' }] })
+  expect(await plan.find({ type: 'Text', text: /1\/1 erledigt/ })).not.toBe(undefined)
+  const step = await row('mcp__ccd_turn__update_plan', { advance: true })
+  expect(await step.find({ type: 'Text', text: ' new style ' })).toBe(undefined)
+  const wrap = await row('mcp__ccd_turn__wrap_up', { recap: 'Fix ist drin.', ask: 'Commit?' })
+  expect(await wrap.find({ type: 'Text', text: 'Abschluss-Box' })).not.toBe(undefined)
+  expect(await wrap.find({ type: 'Text', text: ' new style ' })).not.toBe(undefined)
+  // Alte Styles tragen keinen Chip.
+  const read = await row('Read', { file_path: 'a.ts' })
+  expect(await read.find({ type: 'Text', text: ' new style ' })).toBe(undefined)
 })

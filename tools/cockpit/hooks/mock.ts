@@ -1,6 +1,6 @@
 // Dev-Mode (`/cockpit-dev`): Mockdaten für das Panel, damit jede Karte in allen Zuständen sichtbar ist,
 // ohne dass eine Session sie erst erzeugen muss. Rein, nur von `now` abhängig; echte Atome bleiben unberührt.
-import type { Agent, BgTask, Breakdown, Decision, Gate, LogEntry, McpSchema, Mr, MrMine, Repo, Turn, TurnRecord, Usage } from '../types'
+import type { Agent, BgTask, Breakdown, Decision, Gate, LogEntry, McpSchema, Mr, MrMine, Repo, LinkedSession, Turn, TurnRecord, Usage } from '../types'
 
 export type Mock = {
   usage: Usage
@@ -13,6 +13,7 @@ export type Mock = {
   bgTasks: BgTask[]
   turnLog: TurnRecord[]
   repo: Repo
+  linked: LinkedSession[]
   breakdown: Breakdown
   mcpTools: McpSchema[]
   usedMcp: string[]
@@ -33,7 +34,7 @@ export function mockData(now: number): Mock {
     mrDetails: {
       'consulting/demo!42': b.mr,
       // Konflikt und grüne Pipeline: zeigt „Konflikt“ ohne Mergen-Knopf, nur mit Rebase.
-      'team/report-tool!17': { ...b.mr, iid: 17, title: 'Report-Export vereinfachen', draft: false, conflicts: true, mergeStatus: 'dirty', threads: 0, approvals: null, pipeline: { id: 9002, status: 'success', url: '' } },
+      'consulting/erp-consulting!17': { ...b.mr, iid: 17, title: 'Report-Export vereinfachen', draft: false, conflicts: true, mergeStatus: 'dirty', threads: 0, approvals: null, pipeline: { id: 9002, status: 'success', url: '' } },
     },
   }
 }
@@ -93,7 +94,11 @@ function mockBase(now: number): Omit<Mock, 'mrDetails'> {
       { usd: 0.19, tools: 6, edits: 3, durationMs: 41_000 },
       { usd: 0.42, tools: 14, edits: 3, durationMs: 83_000 },
     ],
-    repo: { name: 'k3c', isLinked: true, branch: 'feature/dev-mock', sha: 'a1b2c3d', dirty: 4, ahead: 2, behind: 1, path: 'C:/WORKSPACE/demo/k3c', subdir: 'tools/cockpit' },
+    repo: { name: 'orga-marketplace', isLinked: true, branch: 'feature/dev-mock', sha: 'a1b2c3d', dirty: 4, ahead: 2, behind: 1, path: 'C:/WORKSPACE/demo/orga-marketplace', subdir: 'plugins/tenvan-cc' },
+    linked: [
+      { id: 'local_a1', title: 'Cockpit: Sitzungsleiste anbinden', name: 'cockpit-sitzungsleiste', branch: 'claude/sitzungsleiste-a1', cwd: 'C:/WORKSPACE/demo/.claude/worktrees/a1', running: true, archived: false },
+      { id: 'local_b2', title: 'Tests für Hintergrundaufgaben', name: 'bg-tests', branch: 'claude/bg-tests-b2', cwd: 'C:/WORKSPACE/demo/.claude/worktrees/b2', running: false, archived: false },
+    ],
     breakdown: {
       total: 412_000,
       window: 1_000_000,
@@ -142,7 +147,7 @@ function mockBase(now: number): Omit<Mock, 'mrDetails'> {
     },
     mrMine: [
       { ref: 'consulting/demo!42', title: 'Cockpit: Merge Requests im Band und Panel', url: 'https://gitlab.example/consulting/demo/-/merge_requests/42', draft: false },
-      { ref: 'team/report-tool!17', title: 'Report-Export vereinfachen', url: 'https://gitlab.example/team/report-tool/-/merge_requests/17', draft: true },
+      { ref: 'consulting/erp-consulting!17', title: 'Report-Export vereinfachen', url: 'https://gitlab.example/consulting/erp-consulting/-/merge_requests/17', draft: true },
     ],
     summary: [
       'Ralf baut das Tenvan CC weiter aus; Schwerpunkt heute ist die Optik des Panels.',

@@ -33,7 +33,7 @@ test('Terminal: Band mit Textbalken, Reset-Zeit am Limit, ohne Legende', async (
   const band = await $.ui.mount(BAND)
   expect((await band.find({ text: /Kontext ▰/ }))?.text).toContain('25%')
   // Kein Ring-Tooltip im Terminal: die Reset-Zeit steht am Limit, die Legende entfällt.
-  expect((await band.find({ text: /^5h 40%/ }))?.text).toMatch(/5h 40% · \S+ \d\d:\d\d/)
+  expect((await band.find({ text: /^5h 40%/ }))?.text).toMatch(/5h 40% · ↻ \d+h \d+m \(\S+ \d\d:\d\d\)/)
   expect(await band.find({ type: 'Text', text: 'im Plan' })).toBe(undefined)
   expect(JSON.stringify(await band.find({ type: 'Box' }))).toContain(TINT.accent)
   expect(JSON.stringify(await band.find({ type: 'Box' }))).toContain(THEME.accentFill)
@@ -45,7 +45,7 @@ test('Terminal: alle Panels zeichnen im Dev-Mode ohne Svg', async ($, on) => {
   mock.clock(on, { now: NOW })
   on('session.measure', () => ({ changed: [] }))
   on('store.get', () => ({ value: undefined }) as never)
-  on('store.set', () => ({}) as never)
+  on('store.set', () => ({ value: undefined }) as never)
   on('ui.open', () => ({ value: { isPlaced: true as const } }))
   await $.command.run({ command: 'cockpit-dev', args: '' } as never)
   const settle = async (done: () => Promise<boolean>) => {

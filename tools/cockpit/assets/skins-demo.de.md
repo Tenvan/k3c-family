@@ -6,12 +6,12 @@ Zwei Ebenen: die **Komponenten**, die ein Mod über `ui.render` zeichnen kann, u
 
 ### Arbeits- und Dauerzeile
 
-Farben aus den Dark-Tokens des Design-Systems. Ein eigenes Muster für Ladezustände gibt es dort noch nicht, darum nur die Farbrollen. Schalter: Einstellungen → Chat → „Arbeits- und Dauerzeile“.
+Farben aus den Dark-Tokens des Tenvan-Design-Systems. Ein eigenes Muster für Ladezustände gibt es dort noch nicht, darum nur die Farbrollen. Schalter: Einstellungen → Chat → „Arbeits- und Dauerzeile“.
 
 | Zeile | Teil | Token | Farbe |
 | --- | --- | --- | --- |
 | Arbeitszeile | ⠋ Fragt an | `--text-secondary` | `#aeb2ba` |
-| Arbeitszeile | ⠋ Denkt nach | `--text-link` | `#8eadfd` |
+| Arbeitszeile | ⠋ Denkt nach | `--text-link` (`--om-blue-400`) | `#8eadfd` |
 | Arbeitszeile | ⠋ Antwortet | `--status-success-fg` | `#89c958` |
 | Arbeitszeile | ⠋ Werkzeug | `--status-warning` | `#e8b641` |
 | Arbeitszeile | Schritt (z. B. „Creating notes.md“) | `--text-secondary` | `#aeb2ba` |
