@@ -145,7 +145,7 @@ type stateMsg struct {
 // mit dem Wirtschaftsstand aus sim.EconomyOf (stockMax, hubLevel, hubUpgrade, danger; W5.1), je
 // Spieler mit points und actions (actions.go). Das Feld
 // `free` der Spieler (B-059) fällt weg, der Zustand der Monarchen steht in `seats`. timescale > 0 (nur Dev-Mode) steht
-// als `devTimescale` darin, daneben die Dev-Pause als `devPaused` (B-231).
+// als `devTimescale` darin, daneben die Dev-Pause als `devPaused` (B-231). Bauplätze laut filterSites (W11.2).
 func stateOf(w *sim.World, timescale int, paused bool) map[string]any {
 	raw, _ := json.Marshal(w)
 	var s map[string]any
@@ -158,10 +158,28 @@ func stateOf(w *sim.World, timescale int, paused bool) map[string]any {
 		delete(p.(map[string]any), "free")
 	}
 	addActions(w, s["players"].([]any))
+	if sites, ok := s["sites"].([]any); ok {
+		s["sites"] = filterSites(w, sites)
+	}
 	s["depth"] = w.Biome.Depth
 	if timescale > 0 {
 		s["devTimescale"] = timescale
 		s["devPaused"] = paused // immer mitsenden: das Delta kennt kein Entfernen von Feldern
 	}
 	return s
+}
+
+// filterSites setzt je Bauplatz die Platz-Stufe `hubLevel` (sim.SiteHubLevel) und lässt unbezahlte Plätze über Hub-Stufe
+// + 1 weg (B-408, W11.2); bezahlte, wartende und gebaute bleiben. sites ist w.Sites als JSON, gleiche Reihenfolge.
+func filterSites(w *sim.World, sites []any) []any {
+	out := make([]any, 0, len(sites))
+	for i, e := range sites {
+		site, lv := w.Sites[i], sim.SiteHubLevel(w, w.Sites[i])
+		if site.State == "unpaid" && site.PaidGold == 0 && lv > w.HubLevel+1 {
+			continue
+		}
+		e.(map[string]any)["hubLevel"] = lv
+		out = append(out, e)
+	}
+	return out
 }

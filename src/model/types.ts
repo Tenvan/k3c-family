@@ -134,6 +134,8 @@ export interface Site {
   upgrade?: 'waitingMaterial' | 'waitingWorker';
   /** Bezahltes Gold des laufenden Ausbaus; fehlt = 0. */
   upgradePaid?: number;
+  /** Platz-Stufe: ab dieser Hub-Stufe bezahlbar (W11.2, B-208); fehlt = älterer Server. */
+  hubLevel?: number;
 }
 
 /** Ausbau auf die nächste Hub-Stufe (docs/protocol.md › Wirtschaft), vom Server berechnet. */

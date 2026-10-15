@@ -352,6 +352,13 @@ vom Server je Stufe abgelesen; die übrigen aus der Welt):
 `level` (fehlt = 1) für den Ausbau von Mauer und Turm, `hubUpgrade.state` für den Hub. `waitingWorker` heißt bei
 `danger` „Gefahr“, sonst „kein Bauer“; den Text bildet der Client.
 
+**Platz-Stufe und Sichtbarkeit (W11.2, B-208, B-408; ohne neue Version):** `sites[].hubLevel` ist die Hub-Stufe, ab der
+ein Platz bezahlbar ist (Hub-Plätze laut `data/hub.json`, Mauer und Turm der Linie k: k, Tor: `max(gateHubLevel, k)`;
+`sim.SiteHubLevel`). Der Zustand enthält nur Plätze bis zur nächsten Hub-Stufe (`hubLevel` ≤ Hub-Stufe + 1); unbezahlte
+Plätze darüber fehlen, bezahlte, wartende und gebaute nie. Steigt die Hub-Stufe, erscheinen die neuen Plätze im
+nächsten `delta` in `sites.set`. Fehlt `hubLevel` (älterer Server), zeigt der Client die Plätze wie bisher.
+Geprüft von `TestBauplaetzeNurBisNaechsteHubStufe` und `TestBauplaetzeHubAusbauImDelta`.
+
 **Berufe:** `troops[].profession` (`miner`, `builder`, `craftsman`; fehlt = keiner) und `troops[].workSite` (Site-ID
 des Arbeitsplatzes, fehlt = keiner). Berufswahl, Tausch und Hub-Ausbau als Eingabe stehen in W5.2.
 
