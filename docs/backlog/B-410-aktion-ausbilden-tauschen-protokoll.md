@@ -8,9 +8,9 @@
 - **Sprint:** W11
 - **Projekt:** WRT
 - **Erstellt:** 2026-10-11
-- **Spec:** Entwurf
+- **Spec:** freigegeben
 - **Revision:** 2
-- **Freigabe:** –
+- **Freigabe:** 2026-10-15, 🧑 im Chat, Revision 2 (alle vier Vorschläge bestätigt)
 
 ## Ausgangslage
 
@@ -60,10 +60,10 @@ Kein Händler da, Angebot voll bezahlt oder ohne Platz (Handwerker), Gebäude ni
 
 ## Offene Fragen
 
-Vorschläge der Planung, 🧑 bestätigt oder ändert sie mit der Freigabe:
-1. Namen `train` und `trade` mit den Feldern oben (statt z. B. `profession`/`merchant`).
-2. Nur Beruf und Händler; Bogen, Schwert, Elite, Rüstung und Bauplätze bleiben ohne Eintrag (das Preisschild zeigt sie schon).
-3. Eintrag nur, wenn die Zahlung jetzt wirkt (Gold, Lager, Vorrat), statt immer am Ort.
+Geklärt mit 🧑 (2026-10-15), Vorschläge bestätigt:
+1. Namen `train` und `trade` mit den Feldern aus Anforderungen.
+2. Nur Beruf und Händler; Bogen, Schwert, Elite, Rüstung und Bauplätze ohne Eintrag (das Preisschild zeigt sie).
+3. Eintrag nur, wenn die Zahlung jetzt wirkt (Gold, Lager, Vorrat).
 4. Keine neue Protokoll-Version.
 
 ## Notizen

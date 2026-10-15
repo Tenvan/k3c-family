@@ -147,7 +147,6 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-425](B-425-fullsave-ausbauregeln.md) | SRV | Problem | mittel | offen | – | Der Voll-Ausbau-Stand hält die Ausbauregeln des Spiels ein |
 | [B-426](B-426-fullsave-review-kleinigkeiten.md) | SRV | Schuld | niedrig | offen | – | Kleine Befunde aus dem Review von SV1 sind erledigt |
 | [B-427](B-427-mond-bild-quelle.md) | CLI | Frage | mittel | offen | – | Aus welcher Quelle kommt das Mond-Bild für den Nacht-Hinweis? |
-| [B-430](B-430-frage-w11-3-session-spec-fehlt.md) | SRV | Frage | mittel | offen | W11 | Frage: Wie lauten Ziel, Erlaubte Dateien und Form der actions-Einträge für W11.3 (Ausbilden, Tauschen)? |
 
 ## Archiv
 
@@ -400,3 +399,4 @@ Zeile in diesen Abschnitt.
 | [B-209](archiv/B-209-client-platz-arten.md) | CLI | Schuld | mittel | erledigt | W8 | `src/model/data.ts` kennt alle Platz-Arten aus `hub.json` |
 | [B-188](archiv/B-188-client-rohstoffe-eisen-kristall.md) | CLI | Schuld | niedrig | erledigt | W8 | Der Client kennt alle fünf Rohstoffe des Servers |
 | [B-424](archiv/B-424-fullsave-offener-raum.md) | SRV | Problem | mittel | erledigt | – | Ein neuer Voll-Ausbau-Stand wird nicht vom noch offenen alten Raum überschrieben |
+| [B-430](archiv/B-430-frage-w11-3-session-spec-fehlt.md) | SRV | Frage | mittel | erledigt | W11 | Frage: Wie lauten Ziel, Erlaubte Dateien und Form der actions-Einträge für W11.3 (Ausbilden, Tauschen)? |

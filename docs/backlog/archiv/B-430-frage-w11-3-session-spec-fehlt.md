@@ -4,7 +4,7 @@
 - **Typ:** Frage
 - **Prio:** mittel
 - **Umgebung:** offline
-- **Status:** offen
+- **Status:** erledigt
 - **Sprint:** W11
 - **Projekt:** WRT
 - **Erstellt:** 2026-10-15
@@ -60,4 +60,4 @@ Entscheidung, betroffener Umfang, wer entscheidet (🧑). Sonst `keine`.
 
 ## Notizen
 
-Links, Messwerte, verworfene Ansätze. Darf leer bleiben (`–`).
+Beantwortet 2026-10-15: W11.3 und B-410 (Revision 2) ausgeplant, von 🧑 freigegeben. Antworten: 1. `train`/`trade` laut B-410 › Anforderungen; 2. bestehendes A halten (`findPayTarget`), keine neue Eingabe; 3. Erlaubte Dateien in W11.3, keine neue Version; 4. B-410/AC-01–AC-03.
