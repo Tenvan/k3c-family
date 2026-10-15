@@ -289,7 +289,7 @@ test('Einstellungen: „Neu laden“ meldet das Ergebnis als Toast', async ($, o
   expect(toasts[1]).toBe('Einstellungen neu geladen')
 })
 
-test('Arbeitsverzeichnis: ein Git-Fehler lässt die Kachel stehen, nur „kein Repository“ blendet sie aus', async ($, on) => {
+test('Arbeitsverzeichnis: ein Git-Fehler lässt die Kachel stehen, auch „kein Repository“ lässt sie stehen', async ($, on) => {
   const clock = mock.clock(on, { now: 1 })
   on('session.measure', () => ({ changed: [] }))
   on('store.get', () => ({ value: undefined }) as never)
@@ -317,8 +317,8 @@ test('Arbeitsverzeichnis: ein Git-Fehler lässt die Kachel stehen, nur „kein R
   expect(await pane.find({ type: 'Text', text: 'Arbeitsverzeichnis' })).not.toBe(undefined)
   mode = 'none'
   await clock.advance(30_000)
-  for (let i = 0; i < 100 && (await pane.find({ type: 'Text', text: 'Arbeitsverzeichnis' })); i++) await Promise.resolve()
-  expect(await pane.find({ type: 'Text', text: 'Arbeitsverzeichnis' })).toBe(undefined)
+  expect(await waitFind(pane, 'kein Git-Repository')).not.toBe(undefined)
+  expect(await pane.find({ type: 'Text', text: 'Arbeitsverzeichnis' })).not.toBe(undefined)
 })
 
 test('Einstellungen: ▾/▸ klappt jede Gruppe zu und auf', async ($, on) => {

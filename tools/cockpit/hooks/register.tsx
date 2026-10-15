@@ -8,7 +8,7 @@ import { canMergeNow, conflictPrompt, draftPrompt, inRepo, refOf, forgeRemote, m
 import { authMissing, canAutoMerge, forgeCreate, forgeDefault, forgeFind, forgeLists, forgeLoad, forgeMerge, forgeRebase, forgeRetry, forgeThreads } from './forge'
 import type { Io, Remote } from './forge'
 import type { Mr, MrDraft, MrMine, SidebarPin } from '../types'
-import { THEME, TINT, CARD_TINT, cycleTint, summarySections, splitTool, toolText, withClaude, parseTaskNotifications, backgroundOf, NEW_STYLES, todosOf, wrapupOf, resetLeft, dirTarget, isForeignDir, parseLinkedSessions, infoSvg, legendSvg, modelLabel, SPIN_MODE, spinnerText, timelineSvg, demoTable, agentStats, agentFlags, breakdownBarSvg, contextTip, limitTip, cacheTip, summaryLines, topRows, resetLabel, CATCH0, CATCH_KEEP, DEFAULT_SETTINGS, SETTING_DEFS, settingLabel, settingHint, catchUpPrompt, catchUpSystem, nextChunk, settingsOf, startIndex, fingerprint, sidebarCalls } from './core'
+import { THEME, TINT, CARD_TINT, cycleTint, summarySections, splitTool, toolText, withClaude, parseTaskNotifications, backgroundOf, NEW_STYLES, todosOf, wrapupOf, resetLeft, dirTarget, isForeignDir, displayDir, parseLinkedSessions, infoSvg, legendSvg, modelLabel, SPIN_MODE, spinnerText, timelineSvg, demoTable, agentStats, agentFlags, breakdownBarSvg, contextTip, limitTip, cacheTip, summaryLines, topRows, resetLabel, CATCH0, CATCH_KEEP, DEFAULT_SETTINGS, SETTING_DEFS, settingLabel, settingHint, catchUpPrompt, catchUpSystem, nextChunk, settingsOf, startIndex, fingerprint, sidebarCalls } from './core'
 import type { SettingGroup, SettingKey, Tone } from './core'
 import { TILES, EFFORT_LEVELS, effortColor, effectiveEffort, effortJudgeText, handoffMarkdown, handoffPays, isTrivialPrompt, limitAlert } from './core'
 import type { EffortLevel } from './core'
@@ -85,7 +85,8 @@ const collapsed = atom({ plugin: 'tenvan-cc', key: 'collapsed' } as const, [] as
 const marks = atom({ plugin: 'tenvan-cc', key: 'marks' } as const, [] as CallMark[])
 const loopAlert = atom({ plugin: 'tenvan-cc', key: 'loopAlert' } as const, null as LoopAlert | null)
 // Verzeichniswächter: Session-Ordner (root), Prozess-Ordner (cwd), Home; letzter Wechsel nach außerhalb im laufenden Turn.
-const dirs = atom({ plugin: 'tenvan-cc', key: 'dirs' } as const, { cwd: '', root: '', home: '' })
+type Dirs = { cwd: string; root: string; home: string }
+const dirs = atom({ plugin: 'tenvan-cc', key: 'dirs' } as const, { cwd: '', root: '', home: '' } as Dirs)
 const dirAlert = atom({ plugin: 'tenvan-cc', key: 'dirAlert' } as const, null as { dir: string; tool: string } | null)
 const loopIgnored = atom({ plugin: 'tenvan-cc', key: 'loopIgnored' } as const, [] as string[])
 const loopKey = (a: LoopAlert) => `${a.kind}:${a.target}`
@@ -292,7 +293,7 @@ async function isRiskyRepo($: EngineInterface): Promise<boolean> {
 // Git-Stand des Arbeitsverzeichnisses; rein lesend, ohne Netzwerk. Außerhalb eines Repos null.
 // Ein fremdes Repo kann über seine Konfiguration Befehle starten (Filter, fsmonitor, textconv). Nur `git status`
 // kann das hier auslösen; es läuft deshalb nur, wenn die lokale Konfiguration keinen solchen Schlüssel enthält.
-// Nur „kein Repository“ ergibt null. Jeder andere Fehler (Timeout, Sperre, Ordner kurz weg beim Worktree-Wechsel) ergibt
+// Nur „kein Repository“ ergibt null (die Kachel bleibt trotzdem, ohne Git-Zeilen). Jeder andere Fehler (Timeout, Sperre, Ordner kurz weg beim Worktree-Wechsel) ergibt
 // undefined: der zuletzt bekannte Stand bleibt stehen, statt die Kachel bis zum nächsten Turn verschwinden zu lassen.
 async function loadRepo($: EngineInterface): Promise<Repo | null | undefined> {
   const git = (...args: string[]) => gitText($, args)
@@ -321,16 +322,27 @@ async function refreshDirs($: EngineInterface) {
   ])
   const next = { cwd, root, home }
   if (!same(await read($, dirs), next)) await update($, dirs, () => next)
+  const alert = await read($, dirAlert)
+  if (alert !== null && !isForeignDir(alert.dir, root, home)) await update($, dirAlert, () => null)
   return next
 }
 
 // Ziel eines Aufrufs außerhalb des Session-Ordners, sonst null.
-async function foreignTarget($: EngineInterface, tool: string, input: Record<string, unknown>): Promise<string | null> {
-  const d = (await read($, dirs)).root === '' ? await refreshDirs($) : await read($, dirs)
+// `before`: Ordner von vor dem Aufruf (tool.call läuft nach dem Aufruf, ein cd hat `cwd` dann schon umgesetzt).
+async function foreignTarget($: EngineInterface, tool: string, input: Record<string, unknown>, before?: Dirs): Promise<string | null> {
+  const d = before ?? (await refreshDirs($))
   // Argumente liegen bei tool.call im Event, bei tool.check unter `input`.
   const args = (typeof input.input === 'object' && input.input !== null ? input.input : input) as Record<string, unknown>
   const dir = dirTarget(tool, args, d.cwd, d.home)
-  return dir !== null && isForeignDir(dir, d.root, d.home) ? dir : null
+  return dir !== null && isForeignDir(dir, d.root, d.home, d.cwd) ? displayDir(dir) : null
+}
+
+// Gemerkte Warnung nur, solange der Ordner nach dem aktuellen Session-Ordner noch außerhalb liegt (Wechsel zurück,
+// Schreibweise, Stand vor einem Reload). Rein lesend: Beim Zeichnen darf kein Zustand geschrieben werden; verworfen wird
+// in `refreshDirs`. Ohne `cwd`: Nach einem cd ist der neue Ordner schon `cwd`, die Warnung gälte sonst als erledigt.
+async function liveDirAlert($: EngineInterface): Promise<{ dir: string; tool: string } | null> {
+  const [a, d] = await Promise.all([read($, dirAlert), read($, dirs)])
+  return a !== null && isForeignDir(a.dir, d.root, d.home) ? { ...a, dir: displayDir(a.dir) } : null
 }
 
 async function refreshRepo($: EngineInterface) {
@@ -1836,6 +1848,7 @@ export const register: Register = (on, options) => {
     if (e.agentId !== undefined && (await read($, braked)).includes(e.agentId)) return { deny: t(await langOf($), 'agents.brakeDeny') }
     // Vor dem Lauf merken, damit das Ergebnis beim ersten Zeichnen schon als ruhig erkannt wird.
     if (isShell(e.tool) && isReadOnlyShell(shellCommand(e))) await update($, quietIds, ids => pushCapped(ids, e.tool_use_id, 200))
+    const dirsBefore = await refreshDirs($).catch(() => undefined)
     const ran = await next(e)
     const isEdit = EDIT_TOOLS.has(e.tool)
     const isError = ran.isError === true
@@ -1858,7 +1871,7 @@ export const register: Register = (on, options) => {
     if (e.agentId !== undefined) await update($, agents, list => list.map(a => (a.id === e.agentId ? { ...a, steps: (a.steps ?? 0) + 1 } : a)))
     await trackBackground($, e, ran)
     if (!isError && ran.deny === undefined) {
-      const out = await foreignTarget($, e.tool, e).catch(() => null)
+      const out = await foreignTarget($, e.tool, e, dirsBefore).catch(() => null)
       if (out !== null && (await read($, dirAlert))?.dir !== out) {
         const L = await langOf($)
         await update($, dirAlert, () => ({ dir: out, tool: e.tool }))
@@ -2029,7 +2042,7 @@ export const register: Register = (on, options) => {
     const head = titleRow(ui, await read($, about), await read($, logo))
     const where = s.branch ? repoRow(ui, await read($, repo)) : null
     const alert = await read($, loopAlert)
-    const dirWarn = await read($, dirAlert)
+    const dirWarn = await liveDirAlert($)
     const loopText = alert === null ? '' : t(L, alert.kind === 'error' ? 'loop.error' : 'loop.edit', { target: alert.target, n: alert.n })
     const fillCompact = async () => {
       const focus = compactFocus(await read($, lastPrompt), await read($, touched), await read($, steps), L)
@@ -2571,22 +2584,24 @@ export const register: Register = (on, options) => {
             )}
           </Box>
         )}
-        {s.cardWorkdir && place !== null &&
+        {s.cardWorkdir &&
           card(
             'cardWorkdir',
             t(L, 'panel.workdir'),
             await (async () => {
               const d = await read($, dirs)
-              const out = await read($, dirAlert)
+              const out = await liveDirAlert($)
               return (
                 <Box key="wd-dirs" flexDirection="column" marginBottom={1}>
-                  {labelRow(ui, 'pane', 'wd-root', t(L, 'dir.session'), <Text color={THEME.accent} bold wrap="truncate-end">{d.root || place.path}</Text>)}
+                  {labelRow(ui, 'pane', 'wd-root', t(L, 'dir.session'), <Text color={THEME.accent} bold wrap="truncate-end">{d.root || place?.path || d.cwd}</Text>)}
                   {d.cwd !== '' && d.cwd !== d.root && labelRow(ui, 'pane', 'wd-cwd', t(L, 'dir.process'), d.cwd)}
                   {out !== null && labelRow(ui, 'pane', 'wd-out', t(L, 'dir.outside'), <Text color={THEME.error} bold wrap="truncate-end">⚠ {out.dir}</Text>)}
                 </Box>
               )
             })(),
-            ...repoRows(place, L).map(([label, value]) => labelRow(ui, 'pane', `wd-row-${label}`, label, value)),
+            ...(place === null
+              ? [labelRow(ui, 'pane', 'wd-norepo', t(L, 'panel.repoBranch'), <Text dimColor>{t(L, 'panel.noRepo')}</Text>)]
+              : repoRows(place, L).map(([label, value]) => labelRow(ui, 'pane', `wd-row-${label}`, label, value))),
             // Kurzer MR-Status unter Upstream (nur GitLab): Knopf öffnet das MR-Panel, ohne MR „n Commits ohne MR“.
             await (async () => {
               const wm = m?.mr ?? (await read($, mrCur))
