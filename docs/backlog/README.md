@@ -109,9 +109,7 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-366](B-366-fahrplan-spalte-projekt.md) | DEV | Schuld | mittel | eingeplant | WZ2 | k3c-dev füllt im Fahrplan die Spalte Projekt und ordnet nach Rang |
 | [B-367](B-367-doku-nachzug-projekte.md) | INF | Schuld | niedrig | eingeplant | WZ2 | Begriffe aus den alten Bahnen und Spuren sind nach PJ3 ersetzt und neue Projekt-Begriffe im Glossar |
 | [B-369](B-369-texte-landingpage.md) | PLAT | Schuld | niedrig | eingeplant | GL1 | Die Landingpage zeigt ihre Texte in der gewählten Sprache |
-| [B-370](B-370-mond-bild-nacht-hinweis.md) | CLI | Frage | niedrig | eingeplant | BD1 | Der Hinweis „Die Nacht naht“ zeigt ein Mond-Bild vor dem Text |
 | [B-372](B-372-check-run-timeout-go.md) | SRV | Problem | mittel | eingeplant | WZ2 | check_run go:test und task:check:go brechen im MCP-Aufruf mit Timeout ab |
-| [B-374](B-374-preisschild-taste.md) | CLI | Frage | mittel | eingeplant | BD1 | Das Preisschild nennt die Taste zum Bezahlen |
 | [B-377](B-377-beispiel-rueckmeldung-servertest.md) | SRV | Schuld | niedrig | eingeplant | BD2 | Ein Server-Test prüft das Beispiel der Rückmeldungs-Ereignisse gegen die Simulation |
 | [B-378](B-378-castfailed-einmal-je-druck.md) | SIM | Problem | mittel | eingeplant | BD2 | Eine gehaltene Skill-Taste ohne Ziel meldet castFailed einmal je Tastendruck |
 | [B-379](B-379-vollmond-belohnung-nur-stufe-0.md) | SIM | Problem | mittel | eingeplant | KB1 | Die Vollmond-Belohnung gilt für die Stufen, in denen gespielt wird |
@@ -121,13 +119,7 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-385](B-385-inselwechsel-ereignis-geht-verloren.md) | SRV | Problem | mittel | eingeplant | KB2 | Das Ereignis `islandSwitch` erreicht beim Inselwechsel keinen Client |
 | [B-386](B-386-netz-budget-kampf-q08.md) | SRV | Frage | mittel | eingeplant | KB2 | Netz-Budget des Kampf-Zustands: Q08 gilt für alles oder nur für Ereignisse? |
 | [B-387](B-387-ticketnummern-parallele-worktrees.md) | DEV | Problem | mittel | eingeplant | WZ2 | Ticket-Nummern bleiben zwischen parallelen Worktrees eindeutig |
-| [B-389](B-389-oe-schliesst-dialog-zuerst.md) | CLI | Problem | mittel | eingeplant | BD1 | Ö schließt bei offenem Cheat-Dialog zuerst den Dialog, das Overlay bleibt offen |
-| [B-391](B-391-beitritts-hinweis-spieler-2-fehlt.md) | CLI | Problem | mittel | eingeplant | BD1 | Der Beitritts-Hinweis für Spieler 2 wird nicht angezeigt |
-| [B-392](B-392-splitscreen-kamera-spieler-2.md) | CLI | Problem | hoch | eingeplant | BD1 | Im Split-Screen scrollt nur die Kamera von Spieler 1 mit; Spieler 2 ist nicht an seine Ansicht gebunden |
-| [B-393](B-393-muenzbild-hinweis-fehlt.md) | CLI | Problem | mittel | eingeplant | BD1 | Das Münzbild vor „Hinlaufen: Münze aufheben“ erscheint im Browser nicht |
 | [B-394](B-394-xbox-overlay-gesten-abnahme.md) | PLAT | Frage | niedrig | eingeplant | HW1 | Overlay-Gesten (RB, LB + RB) sind an der Xbox abgenommen (B-195/AC-02) |
-| [B-398](B-398-gold-im-hud-nicht-ueber-reiter.md) | CLI | Idee | mittel | eingeplant | BD1 | Das Gold eines Spielers steht im HUD, nicht als Beutel über dem Reiter |
-| [B-399](B-399-steuerhinweis-verschwindet.md) | CLI | Problem | mittel | eingeplant | BD1 | Der Steuerhinweis im HUD verschwindet nach einiger Zeit |
 | [B-400](B-400-planung-splitter-merken.md) | DEV | Idee | niedrig | eingeplant | WZ2 | Die Planungsseite trennt Backlog und Details mit einem Splitter, dessen Stellung gemerkt wird |
 | [B-401](B-401-planung-filter-getrennt.md) | DEV | Idee | niedrig | eingeplant | WZ2 | Der Backlog-Filter wirkt nur auf den Backlog, der Projekt-Filter nur auf die Projekte |
 | [B-402](B-402-planung-session-titel.md) | DEV | Idee | mittel | eingeplant | WZ2 | Die Planungsseite zeigt in den Session-Zeilen den Titel der Session |
@@ -137,7 +129,6 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-411](B-411-spieler-abmelden.md) | CLI | Problem | hoch | eingeplant | BD4 | Lokale Spieler können beitreten, aber nicht einzeln austreten |
 | [B-412](B-412-figuren-adern-plantage-lager.md) | CLI | Idee | niedrig | eingeplant | W11 | Adern, Plantage und Lager haben keine Anzeige als Figuren im Client |
 | [B-413](B-413-hud-leiste-oben-fluss.md) | CLI | Idee | mittel | eingeplant | BD4 | Gemeinsame HUD-Leiste oben für alle Spieler, Kompass oben, Fluss mit Spiegelung unten |
-| [B-414](B-414-welt-meldungen-im-band.md) | CLI | Idee | mittel | eingeplant | BD1 | Welt-Meldungen erscheinen für alle im globalen Band oben |
 | [B-418](B-418-spielstand-kommentare-veraltet.md) | SIM | Problem | niedrig | offen | – | Kommentare in island_save_v3.go und island_save_v5.go nennen nach W7.2 veraltete Versionen |
 | [B-419](B-419-golden-daten-verkleinern.md) | INF | Idee | niedrig | offen | – | Golden-Daten werden gezielt verkleinert, ohne die Prüfschärfe zu verlieren |
 | [B-420](B-420-importe-grafikpacks.md) | DEV | Schuld | mittel | offen | – | Mit k3c-dev importierte Kandidaten unter public/grafik/kandidaten/ brechen grafikPacks.test nicht |
@@ -146,7 +137,6 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-423](B-423-sim-test-im-worktree.md) | DEV | Problem | mittel | offen | – | sim_test rechnet immer mit dem Code der Repo-Wurzel, nicht mit dem Worktree der Session |
 | [B-425](B-425-fullsave-ausbauregeln.md) | SRV | Problem | mittel | offen | – | Der Voll-Ausbau-Stand hält die Ausbauregeln des Spiels ein |
 | [B-426](B-426-fullsave-review-kleinigkeiten.md) | SRV | Schuld | niedrig | offen | – | Kleine Befunde aus dem Review von SV1 sind erledigt |
-| [B-427](B-427-mond-bild-quelle.md) | CLI | Frage | mittel | offen | – | Aus welcher Quelle kommt das Mond-Bild für den Nacht-Hinweis? |
 
 ## Archiv
 
@@ -399,3 +389,13 @@ Zeile in diesen Abschnitt.
 | [B-209](archiv/B-209-client-platz-arten.md) | CLI | Schuld | mittel | erledigt | W8 | `src/model/data.ts` kennt alle Platz-Arten aus `hub.json` |
 | [B-188](archiv/B-188-client-rohstoffe-eisen-kristall.md) | CLI | Schuld | niedrig | erledigt | W8 | Der Client kennt alle fünf Rohstoffe des Servers |
 | [B-424](archiv/B-424-fullsave-offener-raum.md) | SRV | Problem | mittel | erledigt | – | Ein neuer Voll-Ausbau-Stand wird nicht vom noch offenen alten Raum überschrieben |
+| [B-370](archiv/B-370-mond-bild-nacht-hinweis.md) | CLI | Frage | niedrig | erledigt | BD1 | Der Hinweis „Die Nacht naht“ zeigt ein Mond-Bild vor dem Text |
+| [B-427](archiv/B-427-mond-bild-quelle.md) | CLI | Frage | mittel | erledigt | – | Aus welcher Quelle kommt das Mond-Bild für den Nacht-Hinweis? |
+| [B-392](archiv/B-392-splitscreen-kamera-spieler-2.md) | CLI | Problem | hoch | erledigt | BD1 | Im Split-Screen scrollt nur die Kamera von Spieler 1 mit; Spieler 2 ist nicht an seine Ansicht gebunden |
+| [B-391](archiv/B-391-beitritts-hinweis-spieler-2-fehlt.md) | CLI | Problem | mittel | erledigt | BD1 | Der Beitritts-Hinweis für Spieler 2 wird nicht angezeigt |
+| [B-389](archiv/B-389-oe-schliesst-dialog-zuerst.md) | CLI | Problem | mittel | erledigt | BD1 | Ö schließt bei offenem Cheat-Dialog zuerst den Dialog, das Overlay bleibt offen |
+| [B-399](archiv/B-399-steuerhinweis-verschwindet.md) | CLI | Problem | mittel | erledigt | BD1 | Der Steuerhinweis im HUD verschwindet nach einiger Zeit |
+| [B-398](archiv/B-398-gold-im-hud-nicht-ueber-reiter.md) | CLI | Idee | mittel | erledigt | BD1 | Das Gold eines Spielers steht im HUD, nicht als Beutel über dem Reiter |
+| [B-414](archiv/B-414-welt-meldungen-im-band.md) | CLI | Idee | mittel | erledigt | BD1 | Welt-Meldungen erscheinen für alle im globalen Band oben |
+| [B-393](archiv/B-393-muenzbild-hinweis-fehlt.md) | CLI | Problem | mittel | erledigt | BD1 | Das Münzbild vor „Hinlaufen: Münze aufheben“ erscheint im Browser nicht |
+| [B-374](archiv/B-374-preisschild-taste.md) | CLI | Frage | mittel | erledigt | BD1 | Das Preisschild nennt die Taste zum Bezahlen |

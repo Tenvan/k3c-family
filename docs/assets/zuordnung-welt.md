@@ -75,6 +75,8 @@ Viele dieser Objekte gibt es noch nicht im Code (B-112, B-114); dann ist die Her
 | `exit` | `src/scenes/worldRenderer.ts` › `drawStatic` (Level-Objekt `exit`) | `grafik/k3c-paletten` | `props/fort-door.png` (offener Torbogen, 96×80); dieselbe Datei wie `gate` (offen) | 16 px, Gothicvania (Dunkelviolett), ×2; Vermerk: Palette angeglichen (GR2.3, `grafik/k3c-paletten`) | CC0 1.0 | zugeordnet |
 | `pickup:skillPoint` | `src/model/types.ts` › `Pickup` (`skillPoint`) | `grafik/item-ruby-banana-star` | `props/part-star.png` (Stern, 4 Frames 16×16) | 16 px, mieki256 (Gelb), ×2; Entscheidung 🧑 GR2.2 | CC0 1.0 | zugeordnet |
 
+`guide:moon` (Nacht-Hinweis, B-370): kein Pack-Bild. Das Emoji 🌙 wird zur Laufzeit in die Canvas-Textur `guide:moon` gezeichnet (`src/scenes/guideOverlay.ts` › `ensureMoon`, Systemfont, 28 px, ×1, kein Asset, keine Lizenz). Test: `guideHints.test.ts`.
+
 ## Ressourcen und Rekrutierungslager
 
 Endliche Level-Objekte, die `src/scenes/worldRenderer.ts` heute als Formen zeichnet (`createNode`, `drawStatic`).

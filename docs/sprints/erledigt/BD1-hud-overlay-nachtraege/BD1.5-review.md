@@ -1,6 +1,6 @@
 # BD1.5 · Review BD1
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Review
 - **Agent:** autonom
 - **Domäne:** CLI
@@ -60,5 +60,16 @@ git fetch && git diff origin/develop...origin/sprint/bd1 --stat
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+Review 2026-10-15 im Hauptcheckout auf `develop` (kein Worktree). Sprint-Diff: `61b680ee` (PR #299, BD1.1–BD1.3 und Planung) plus `3d7a47c0`, `cb5f3119`, `8ff000ea` (BD1.4, Mond als Emoji-Textur); `origin/sprint/bd1` existiert nicht mehr, daher kein Diff `origin/develop...origin/sprint/bd1`.
+
+- **Schritt 1 geprüft:** `task check` und `task check:go` über `check_run`: beide Exit 0.
+- **Schritt 2–3 geprüft:** Diff von `src/scenes/` (GameScene, HudScene, `cameraFollow`, `controlsHint`, `goldFlash`, `bannerQueue`, `joinHint`, `guideHints`, `guideOverlay`, `hudLayout`, `worldRenderer`, `fontRules`) gelesen, dazu ein unabhängiger Reviewer-Agent. Kein `Math.random()`, keine Spiel-Logik im Client, B-Taste und View + Menu unberührt, `siteView.ts` unberührt (B-374), Kamera und Beitritts-Hinweis je Spieler getrennt.
+- **Schwerer Befund behoben (B-399/AC-03):** Mit 2 Spielern an zwei Tastaturen (oder Controller und Tastatur) wechselt `lastDevice` ständig; `stepControlsHint` startete die 20 s dabei jedes Mal neu, der Steuerhinweis verschwand nie. Fix: Ein Gerätewechsel startet die Zeit nur noch mit einem Platz (`controlsHint.ts`), neuer Test für 2 Spieler. Außerdem das Log-Emoji des fehlenden Hinweis-Bilds von 🐛 auf 🤒 (Spec „Ausnahme- und Fehlerfälle“).
+- **AC-01 umgesetzt, geprüft:** `cameraFollow.test.ts` (5 Tests); Abnahme am PC von 🧑 bestätigt (BD1.1, 2026-10-14).
+- **AC-02 umgesetzt, geprüft:** `joinHint.test.ts` (5 Tests); B-389 nicht reproduzierbar, keine Änderung; Abnahme am PC von 🧑 bestätigt (BD1.2, 2026-10-14).
+- **AC-03 umgesetzt, geprüft (Test); angenommen, Validierung offen (BD1.3):** `controlsHint`, `goldFlash`, `bannerQueue`, `hudLayout`, `goldOnlyInHud` getestet; Sichtprüfung am PC bei 🧑 (laut Memory ruhen HUD-Abnahmen bis B-337/AC-05).
+- **AC-04 umgesetzt, geprüft (Test); angenommen, Validierung offen (BD1.4):** Münz-Bild nur mit geladener Textur, sonst Text und Log 🤒 (Ursache aus S8.4 nicht belegt: frisches Profil prüfen); Mond als Canvas-Textur aus dem Emoji 🌙 (B-370, Entscheidung 🧑), Optik/Systemfont am PC und Xbox offen; Preisschild ohne Taste (B-374, `siteView.ts` unverändert).
+- **AC-05 geprüft:** `task check` grün, Texte aus `texts.de.ts` (Text-Regel im Check).
+- **Hinweis (kein Befund):** Der Beitritts-Hinweis nennt nach dem ersten Beitritt auch Tastaturen, solange sie keinen Spieler steuern, auch auf der Xbox ohne Tastatur. Verhalten nach Spec, bei Bedarf Ticket nach der Xbox-Abnahme.
+- **Abweichungen vom Plan:** Der eine PR des Sprints (#299) wurde schon vor BD1.4 und diesem Review gemergt; die Commits `3d7a47c0`, `cb5f3119`, `8ff000ea`, `3a8cc0d2` und dieser Review-Commit liegen nur lokal auf `develop`. Nichts gepusht, kein PR geöffnet, kein Tag (Rückfrage bei 🧑).
+- **Neue Tickets:** keine. Offene Abweichung aus BD1.3 bleibt: Der Steuerhinweis ist ein Element für alle Zellen (nicht je Zelle).

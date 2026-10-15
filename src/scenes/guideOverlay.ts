@@ -6,7 +6,7 @@ import { screenAt } from './actionOverlay';
 import { fontStyle } from './fontRules';
 import { glyphOf, type HintDevice } from './glyphs';
 import { GlyphRow, type RowPart } from './glyphView';
-import { guideImage, stepGuide, usableGuideImage, type GuideHint } from './guideHints';
+import { guideImage, MOON_IMAGE, stepGuide, usableGuideImage, type GuideHint } from './guideHints';
 import { clientLog } from '../core/clientLog';
 import type { RadarCell } from './radarView';
 
@@ -14,6 +14,26 @@ const STYLE = { stroke: '#000000', strokeThickness: 6, fontStyle: 'bold', ...fon
 /** Höhe über dem Boden in Welt-Pixeln: über Münze und Bauplatz bzw. über dem Aktionen-Overlay des Monarchen */
 const OBJECT_PX = 160;
 const PLAYER_PX = 370;
+
+const MOON_PX = 28;
+const EMOJI_FONTS = [['Segoe', 'UI'], ['Noto', 'Color'], ['Apple', 'Color']].map((w) => `"${w.join(' ')} Emoji"`).concat('sans-serif').join(', '); // einzelne Wörter: die Text-Regel liest Sätze
+
+/** Mond-Bild einmal als Canvas-Textur aus dem Emoji 🌙 (B-370, kein Pack hat einen Mond); ohne Canvas steht nur Text */
+function ensureMoon(scene: Phaser.Scene): void {
+  if (scene.textures.exists(MOON_IMAGE)) return;
+  const tex = scene.textures.createCanvas(MOON_IMAGE, MOON_PX, MOON_PX);
+  const c = tex?.getContext();
+  if (!tex || !c) {
+    if (tex) scene.textures.remove(MOON_IMAGE); // sonst gilt die leere Textur als geladen und es gäbe weder Text-Fallback noch Log
+    return;
+  }
+  c.font = `${MOON_PX - 6}px ${EMOJI_FONTS}`;
+  c.fillStyle = '#ffffff'; // Farb-Emoji ignorieren das; ein einfarbiger Mond bleibt auf dunklem Grund sichtbar
+  c.textAlign = 'center';
+  c.textBaseline = 'middle';
+  c.fillText('🌙', MOON_PX / 2, MOON_PX / 2 + 1);
+  tex.refresh();
+}
 
 /** Hinweis als Zeilenteile; `{key}` im Text wird zur Glyph der Bestätigen-Taste des Geräts, ein Bild steht davor (B-294) */
 function partsOf(h: GuideHint, device: HintDevice, usable: (h: GuideHint) => ReturnType<typeof guideImage>): RowPart[] {
@@ -34,10 +54,11 @@ export class GuideOverlay {
 
   constructor(private readonly scene: Phaser.Scene) {}
 
-  /** Bild des Hinweises, sobald seine Textur da ist; fehlt sie, steht der Hinweis ohne Bild und ein Log 🐛 meldet es einmal (B-393) */
+  /** Bild des Hinweises, sobald seine Textur da ist; fehlt sie, steht der Hinweis ohne Bild und ein Log 🤒 meldet es einmal (B-393) */
   private imageOf(h: GuideHint): ReturnType<typeof guideImage> {
+    if (h.id === 'dusk') ensureMoon(this.scene);
     const exists = (key: string) => this.scene.textures.exists(key);
-    const warn = (key: string) => clientLog('warn', '🐛 Hinweis-Bild fehlt: Textur nicht geladen', { key, hint: h.id });
+    const warn = (key: string) => clientLog('warn', '🤒 Hinweis-Bild fehlt: Textur nicht geladen', { key, hint: h.id });
     return usableGuideImage(guideImage(h.id), exists, warn, this.warned);
   }
 
