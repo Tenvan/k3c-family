@@ -61,11 +61,13 @@ describe('debugLines (AC-01)', () => {
   });
 });
 
-describe('debugEnabled (AC-02)', () => {
-  it('standardmäßig an, nur ?dev=0 schaltet ab', () => {
-    expect(debugEnabled('')).toBe(true);
-    expect(debugEnabled('?x=1')).toBe(true);
+describe('debugEnabled (B-098, K5/AC-05)', () => {
+  it('standardmäßig aus, nur ?dev=1 schaltet an', () => {
+    expect(debugEnabled('')).toBe(false);
+    expect(debugEnabled('?x=1')).toBe(false);
     expect(debugEnabled('?dev=1')).toBe(true);
+    expect(debugEnabled('?seed=x&dev=1')).toBe(true);
+    expect(debugEnabled('?dev=0')).toBe(false);
     expect(debugEnabled('?seed=x&dev=0')).toBe(false);
   });
   it('Versionszeile steht zuletzt, auch beim Verbinden', () => {

@@ -150,6 +150,8 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-428](B-428-endboss-bau-aktion-overlay.md) | SRV | Idee | niedrig | offen | – | Aktionen-Overlay zeigt den Bau-Auslöser des Endbosses |
 | [B-429](B-429-merchant-raid-im-protokoll.md) | SRV | Schuld | niedrig | offen | – | Protokoll und Client-Typen nennen merchant.raid |
 | [B-431](B-431-raum-optionen-bei-vorhandenem-spielstand.md) | CLI | Frage | mittel | offen | – | Raum-Optionen des Anlegen-Dialogs wirken nicht, wenn „Spielen“ einen vorhandenen Spielstand lädt |
+| [B-432](B-432-dev-grade-ueber-websocket.md) | SRV | Problem | mittel | offen | – | Die Dev-Aktion grade wirkt über die Nachricht dev, der Zustand nennt den Grad des Raums |
+| [B-433](B-433-dev-links-mit-dev-parameter.md) | PLAT | Idee | niedrig | offen | – | Werkzeug-Links auf game.html öffnen das Debug-Overlay mit ?dev=1 |
 
 ## Archiv
 
