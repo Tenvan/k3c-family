@@ -212,4 +212,17 @@ export const en: Record<TextKey, string> = {
   'landing.noServer': 'Needs the home network server',
   'landing.noServerText':
     'Needs the home network server. The game only runs on the Go server (task serve), not on a static site like GitHub Pages. The Home button takes you back.',
+
+  // Combat: bosses and events (K5.1)
+  'boss.phase': 'Phase {n} of {of}',
+  'boss.goblinLeader': 'Goblin Leader',
+  'boss.trollKing': 'Troll King',
+  'boss.ratQueen': 'Rat Queen',
+  'boss.lavaGolem': 'Lava Golem',
+  'boss.shardTitan': 'Shard Titan',
+  'boss.crystalHeartWarden': 'Crystal Heart Warden',
+  'event.timed': '{name}  ·  {left}',
+  'event.fullMoon': 'Full moon',
+  'event.bloodMoon': 'Blood moon',
+  'event.merchantRaid': 'Merchant raid',
 };

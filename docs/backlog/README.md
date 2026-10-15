@@ -147,6 +147,8 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-425](B-425-fullsave-ausbauregeln.md) | SRV | Problem | mittel | offen | – | Der Voll-Ausbau-Stand hält die Ausbauregeln des Spiels ein |
 | [B-426](B-426-fullsave-review-kleinigkeiten.md) | SRV | Schuld | niedrig | offen | – | Kleine Befunde aus dem Review von SV1 sind erledigt |
 | [B-427](B-427-mond-bild-quelle.md) | CLI | Frage | mittel | offen | – | Aus welcher Quelle kommt das Mond-Bild für den Nacht-Hinweis? |
+| [B-428](B-428-endboss-bau-aktion-overlay.md) | SRV | Idee | niedrig | offen | – | Aktionen-Overlay zeigt den Bau-Auslöser des Endbosses |
+| [B-429](B-429-merchant-raid-im-protokoll.md) | SRV | Schuld | niedrig | offen | – | Protokoll und Client-Typen nennen merchant.raid |
 
 ## Archiv
 

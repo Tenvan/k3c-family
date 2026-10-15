@@ -30,6 +30,8 @@ import { TouchInput } from '../input/touchInput';
 import { siteName } from './worldRenderer';
 import { hubText, stockTexts } from './wirtschaftAnzeige';
 import { buergerLines } from './buergerAnzeige';
+import { formatTime } from './kampfAnzeige';
+import { KampfHud } from './kampfView';
 
 const STYLE = { stroke: '#000000', strokeThickness: 6, fontStyle: 'bold' };
 const BANNER_SECONDS = 2.8;
@@ -69,6 +71,7 @@ export class HudScene extends Phaser.Scene {
   private actions!: ActionOverlay;
   private guide!: GuideOverlay;
   private pause!: PauseBanner;
+  private kampf!: KampfHud;
   /** Stehen die Figuren-Animationen wegen der Pause still? (nur beim Wechsel umschalten) */
   private animsPaused = false;
   private bannerQueue: string[] = [];
@@ -92,6 +95,7 @@ export class HudScene extends Phaser.Scene {
     this.actions = new ActionOverlay(this);
     this.guide = new GuideOverlay(this);
     this.pause = new PauseBanner(this);
+    this.kampf = new KampfHud(this);
     this.animsPaused = false;
     // `leaveRoom` stoppt das HUD mitten in der Pause: Der Animations-Manager ist global, die Figuren sollen im nächsten Raum laufen
     this.events.once(Phaser.Scenes.Events.SHUTDOWN, () => {
@@ -129,6 +133,7 @@ export class HudScene extends Phaser.Scene {
     const waiting = this.showHints(game, world);
     this.bar.setVisible(!!world);
     if (!world) {
+      this.kampf.draw(null);
       this.showPause(undefined, null, []);
       this.arrange([], waiting);
       return;
@@ -142,7 +147,9 @@ export class HudScene extends Phaser.Scene {
     this.guide.draw(cells, game.cameras.cameras, slotOf, device);
     this.skills.draw(cells, game.skillMenus, slotOf, device);
     // Leiste: Stufe der ersten Zelle dieses Geräts, die Leiste hat immer Platz für die lange Form
-    this.showWorld(cells.find((c) => c.cell.kind === 'player' && c.world)?.world ?? world, false);
+    const shown = cells.find((c) => c.cell.kind === 'player' && c.world)?.world ?? world;
+    this.showWorld(shown, false);
+    this.kampf.draw(shown);
     this.showBanner(game, deltaMs);
     this.showPause(world, gameNotice(game.client), cells);
     this.arrange(cells, waiting);
@@ -296,11 +303,6 @@ function deviceOf(input: PlayerInput | null | undefined, keyboard2: PlayerInput)
   if (input instanceof TouchInput) return 'touch';
   if (input === keyboard2) return 'keyboard2';
   return input ? 'keyboard' : undefined;
-}
-
-function formatTime(seconds: number): string {
-  const s = Math.max(0, Math.ceil(seconds));
-  return `${Math.floor(s / 60)}:${String(s % 60).padStart(2, '0')}`;
 }
 
 function clockText(w: World): string {

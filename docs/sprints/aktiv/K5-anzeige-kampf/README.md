@@ -63,7 +63,7 @@ Dev-Sperre aktiv → Debug-Panel und Grad „Dev“ sind nicht verfügbar.
 
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
-| K5.1 | `K5.1-boss-warnkreis-event.md` | Umsetzung | autonom | in Arbeit |
+| K5.1 | `K5.1-boss-warnkreis-event.md` | Umsetzung | autonom | fertig |
 | K5.2 | `K5.2-anlegen-dialog.md` | Umsetzung | autonom | offen |
 | K5.3 | `K5.3-debug-panel-overlay.md` | Umsetzung | autonom | offen |
 | K5.4 | `K5.4-abnahme-geraet.md` | Workshop | Mensch | offen |
