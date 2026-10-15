@@ -149,6 +149,7 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-427](B-427-mond-bild-quelle.md) | CLI | Frage | mittel | offen | – | Aus welcher Quelle kommt das Mond-Bild für den Nacht-Hinweis? |
 | [B-428](B-428-endboss-bau-aktion-overlay.md) | SRV | Idee | niedrig | offen | – | Aktionen-Overlay zeigt den Bau-Auslöser des Endbosses |
 | [B-429](B-429-merchant-raid-im-protokoll.md) | SRV | Schuld | niedrig | offen | – | Protokoll und Client-Typen nennen merchant.raid |
+| [B-431](B-431-raum-optionen-bei-vorhandenem-spielstand.md) | CLI | Frage | mittel | offen | – | Raum-Optionen des Anlegen-Dialogs wirken nicht, wenn „Spielen“ einen vorhandenen Spielstand lädt |
 
 ## Archiv
 

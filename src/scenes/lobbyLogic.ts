@@ -6,6 +6,7 @@ import { t } from '../core/texts';
 import type { SaveInfo } from '../core/saveStore';
 import type { RoomInfo } from '../online/clientProtocol';
 import type { Status } from '../online/clientConnection';
+import { GRADES, createOptions, dialogStep, initialDialog, type DialogInput, type DialogState, type Grade, type RoomOptions } from './lobbyOptions';
 
 export const DEFAULT_SAVE = 'familie';
 const SAVE_FORMAT = /^[a-z0-9-]{1,32}$/;
@@ -48,16 +49,16 @@ export function slotsFor(mock: number, players = 1): number[] {
 }
 
 export type LobbyCommand =
-  | { t: 'create'; save: string; fresh: boolean; depth: number; slots: number[] }
+  | { t: 'create'; save: string; fresh: boolean; depth: number; slots: number[]; options?: RoomOptions }
   | { t: 'join'; room: string; slots: number[] };
 
 export interface LobbyClient {
-  create(save: string, fresh: boolean, depth: number, slots: number[]): void;
+  create(save: string, fresh: boolean, depth: number, slots: number[], options?: RoomOptions): void;
   join(room: string, slots: number[]): void;
 }
 
 export function applyCommand(client: LobbyClient, cmd: LobbyCommand): void {
-  if (cmd.t === 'create') client.create(cmd.save, cmd.fresh, cmd.depth, cmd.slots);
+  if (cmd.t === 'create') client.create(cmd.save, cmd.fresh, cmd.depth, cmd.slots, cmd.options);
   else client.join(cmd.room, cmd.slots);
 }
 
@@ -102,7 +103,13 @@ export function entryLabel(e: LobbyEntry, save: string): string {
   if (e.kind === 'reload') return t('lobby.reload');
   if (e.kind === 'save') return t('lobby.save', { name: e.save.name, day: e.save.day ?? '–', depths: e.save.depths.join(', ') || '–' });
   const r = e.room;
-  return t('lobby.room', { code: r.code, name: r.name, depth: r.depth, taken: r.taken, state: t(r.running ? 'lobby.running' : 'lobby.paused') });
+  const room = t('lobby.room', { code: r.code, name: r.name, depth: r.depth, taken: r.taken, state: t(r.running ? 'lobby.running' : 'lobby.paused') });
+  return `${room}  ·  ${gradeName(r.grade)}`;
+}
+
+/** Name eines Grads; ein unbekannter Grad des Servers bleibt als Kennung stehen */
+export function gradeName(grade: string): string {
+  return (GRADES as readonly string[]).includes(grade) ? t(`opt.grade.${grade as Grade}`) : grade;
 }
 
 /** Zeile unter dem Zeiger (Touch), -1 = keine */
@@ -111,9 +118,10 @@ export function rowAt(y: number, top: number, rowHeight: number, count: number):
   return y >= top && row < count ? row : -1;
 }
 
-/** Hinweis der Lobby: Verbindungsstand oder Fehlertext des Servers (jeder Fehler-Code bringt seine `message` mit) */
-export function lobbyNotice(c: { status: Status; notice: string | null }): string | null {
+/** Hinweis der Lobby: Verbindungsstand oder Fehlertext des Servers (jeder Fehler-Code bringt seine `message` mit); abgelehnte Raum-Option (`bad_request`) mit eigenem Text */
+export function lobbyNotice(c: { status: Status; notice: string | null; errorCode?: string | null }): string | null {
   if (c.status === 'connecting') return c.notice ?? t('net.connecting');
+  if (c.status === 'lobby' && c.errorCode === 'bad_request') return t('lobby.badOption');
   return c.notice;
 }
 
@@ -129,14 +137,21 @@ export function leavesGame(status: Status): boolean {
 
 /**
  * Wann die Lobby welchen Befehl sendet: Start-Parameter (`?room`, `?autostart`) einmal, Auswahl aus der Liste,
- * `save_not_found` → ein zweiter Versuch mit `fresh: true`, `depth: 0`.
+ * `save_not_found` → ein zweiter Versuch mit `fresh: true`, `depth: 0`. „Spielen“ öffnet erst den Anlegen-Dialog (K5.2);
+ * Autostart und `?room=` senden ohne Optionen, es gelten die Standards des Servers.
  */
 export class LobbyFlow {
   private started = false;
   private retried = false;
   private last: LobbyCommand | null = null;
+  /** Offener Anlegen-Dialog, null = Liste */
+  dialog: DialogState | null = null;
 
-  constructor(private readonly params: StartParams) {}
+  /** `dev`: Grad „Dev“ anbieten (`devAllowed`) */
+  constructor(
+    private readonly params: StartParams,
+    private readonly dev = false,
+  ) {}
 
   /** Bei jedem Frame mit dem Client-Zustand aufrufen; liefert den nächsten Befehl oder null. */
   step(c: { status: Status; errorCode: string | null }): LobbyCommand | null {
@@ -150,7 +165,7 @@ export class LobbyFlow {
     const last = this.last;
     if (c.errorCode === 'save_not_found' && last?.t === 'create' && !last.fresh && last.save === this.params.save && !this.retried) {
       this.retried = true;
-      return this.remember(this.create(true));
+      return this.remember({ ...last, fresh: true, depth: 0 });
     }
     return null;
   }
@@ -161,14 +176,25 @@ export class LobbyFlow {
    */
   choose(e: LobbyEntry): LobbyCommand | null {
     this.retried = false;
-    if (e.kind === 'play') return this.remember(this.create(this.params.fresh));
+    if (e.kind === 'play') {
+      this.dialog = initialDialog();
+      return null;
+    }
     if (e.kind === 'save') return this.remember(this.create(false, e.save.name));
     if (e.kind === 'room') return this.remember({ t: 'join', room: e.room.code, slots: this.slots() });
     return null;
   }
 
-  private create(fresh: boolean, save = this.params.save): LobbyCommand {
-    return { t: 'create', save, fresh, depth: 0, slots: this.slots() };
+  /** Eingabe im offenen Dialog; „Raum anlegen“ liefert den create-Befehl mit den Optionen, „Abbrechen“ schließt. */
+  dialogInput(input: DialogInput): LobbyCommand | null {
+    if (!this.dialog) return null;
+    const { dialog, action } = dialogStep(this.dialog, input, this.dev);
+    this.dialog = action ? null : dialog;
+    return action === 'create' ? this.remember(this.create(this.params.fresh, this.params.save, createOptions(dialog.options))) : null;
+  }
+
+  private create(fresh: boolean, save = this.params.save, options?: RoomOptions): LobbyCommand {
+    return { t: 'create', save, fresh, depth: 0, slots: this.slots(), ...(options ? { options } : {}) };
   }
 
   private slots(): number[] {

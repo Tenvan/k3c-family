@@ -158,12 +158,12 @@ export class RoomClient {
     return this.status === 'reconnecting' ? this.downSince : null;
   }
 
-  create(save: string, fresh: boolean, depth: number, slots: number[]): void {
+  create(save: string, fresh: boolean, depth: number, slots: number[], options?: { grade: string; goal: string; defeat: string }): void {
     if (this.status !== 'lobby') return;
     this.slotsWanted = slots;
     this.notice = null;
     this.errorCode = null;
-    this.send({ t: 'create', save, fresh, ...(fresh ? { depth } : {}), slots });
+    this.send({ t: 'create', save, fresh, ...(fresh ? { depth } : {}), slots, ...options });
   }
 
   join(room: string, slots: number[]): void {

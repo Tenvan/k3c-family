@@ -361,12 +361,14 @@ describe('Befehle', () => {
     expect(t.last().sent).toHaveLength(1); // nur hello
     t.client.create('familie', true, 0, [0]);
     expect(t.last().sent.at(-1)).toEqual({ t: 'create', save: 'familie', fresh: true, depth: 0, slots: [0] });
+    t.client.create('familie', true, 0, [0], { grade: 'hard', goal: 'endboss', defeat: 'lost' });
+    expect(t.last().sent.at(-1)).toEqual({ t: 'create', save: 'familie', fresh: true, depth: 0, slots: [0], grade: 'hard', goal: 'endboss', defeat: 'lost' });
     t.client.join('KRNZ', [0, 1]);
     expect(t.last().sent.at(-1)).toEqual({ t: 'join', room: 'KRNZ', slots: [0, 1] });
     t.last().recv(joined);
     t.client.join('BWTQ', [0]); // im Raum: wird nicht gesendet (der Server würde bad_request antworten)
     t.client.create('x', true, 0, [0]);
-    expect(t.last().sent).toHaveLength(3); // hello, create, join
+    expect(t.last().sent).toHaveLength(4); // hello, create, create mit Optionen, join
   });
 
   it('seats aktualisiert Zuordnung und Monarchen-Zustände', () => {

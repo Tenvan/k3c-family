@@ -5,6 +5,7 @@ import {
   applyCommand,
   entryLabel,
   gameNotice,
+  gradeName,
   leavesGame,
   lobbyEntries,
   lobbyNotice,
@@ -18,6 +19,9 @@ import {
 
 const room = { code: 'KRNZ', name: 'familie', depth: 1, grade: 'normal', taken: 2, free: 2, running: true };
 const lobby = { status: 'lobby' as Status, errorCode: null };
+const createPlay = { t: 'create', save: 'familie', fresh: false, depth: 0, slots: [0], options: { grade: 'normal', goal: 'endboss', defeat: 'stage' } };
+/** „Spielen“ und im Dialog sofort „Raum anlegen“ */
+const playNow = (flow: LobbyFlow) => (flow.choose({ kind: 'play' }), flow.dialogInput({ dir: 3, side: 0, confirm: true }));
 const params = (p: Partial<StartParams> = {}): StartParams => ({ autostart: false, fresh: false, save: 'familie', mock: 0, room: null, players: 1, ...p });
 
 describe('Start-Parameter (AC-14, B-082/AC-01)', () => {
@@ -81,7 +85,7 @@ describe('create-Befehl mit slots[] (AC-14, B-082/AC-02)', () => {
     applyCommand(client, { t: 'create', save: 's', fresh: true, depth: 0, slots: [0, 1] });
     applyCommand(client, { t: 'join', room: 'KRNZ', slots: [0] });
     expect(calls).toEqual([
-      ['create', 's', true, 0, [0, 1]],
+      ['create', 's', true, 0, [0, 1], undefined],
       ['join', 'KRNZ', [0]],
     ]);
   });
@@ -105,11 +109,51 @@ describe('Lobby-Auswahl (AC-03)', () => {
     expect(rowAt(400, 120, 50, 3)).toBe(-1);
   });
 
-  it('„Spielen“ erstellt, ein Raum aus der Liste tritt bei', () => {
+  it('„Spielen“ öffnet den Dialog, „Raum anlegen“ erstellt mit Optionen, ein Raum aus der Liste tritt bei', () => {
     const flow = new LobbyFlow(params({ mock: 1 }));
     const [play, entry] = lobbyEntries([room]);
-    expect(flow.choose(play!)).toEqual({ t: 'create', save: 'familie', fresh: false, depth: 0, slots: [0, 1] });
+    expect(flow.choose(play!)).toBeNull();
+    expect(flow.dialog).not.toBeNull();
+    expect(flow.dialogInput({ dir: 3, side: 0, confirm: true })).toEqual({ ...createPlay, slots: [0, 1] });
+    expect(flow.dialog).toBeNull();
     expect(flow.choose(entry!)).toEqual({ t: 'join', room: 'KRNZ', slots: [0, 1] });
+  });
+
+  it('Dialog: Hart → Stufenverlust, eigene Wahl Komplett verloren wird gesendet (B-105)', () => {
+    const flow = new LobbyFlow(params());
+    flow.choose({ kind: 'play' });
+    flow.dialogInput({ dir: 0, side: 1, confirm: false }); // Grad Normal → Hart
+    expect(flow.dialog?.options).toMatchObject({ grade: 'hard', defeat: 'stage' });
+    flow.dialogInput({ dir: 2, side: 1, confirm: false }); // Niederlage Stufenverlust → Komplett verloren
+    const cmd = flow.dialogInput({ dir: 1, side: 0, confirm: true });
+    expect(cmd).toMatchObject({ t: 'create', options: { grade: 'hard', goal: 'endboss', defeat: 'lost' } });
+    const calls: unknown[][] = [];
+    applyCommand({ create: (...a: unknown[]) => calls.push(a), join: () => {} }, cmd!);
+    expect(calls[0]?.[4]).toEqual({ grade: 'hard', goal: 'endboss', defeat: 'lost' });
+  });
+
+  it('„Abbrechen“ schließt den Dialog ohne Befehl', () => {
+    const flow = new LobbyFlow(params());
+    flow.choose({ kind: 'play' });
+    expect(flow.dialogInput({ dir: 4, side: 0, confirm: true })).toBeNull();
+    expect(flow.dialog).toBeNull();
+  });
+
+  it('Grad „Dev“ nur mit dev', () => {
+    const open = (dev: boolean) => {
+      const flow = new LobbyFlow(params(), dev);
+      flow.choose({ kind: 'play' });
+      flow.dialogInput({ dir: 0, side: -1, confirm: false });
+      flow.dialogInput({ dir: 0, side: -1, confirm: false });
+      return flow.dialog?.options.grade;
+    };
+    expect(open(false)).toBe('easy');
+    expect(open(true)).toBe('dev');
+  });
+
+  it('Raumliste zeigt den Grad', () => {
+    expect(entryLabel({ kind: 'room', room: { ...room, grade: 'hard' } }, 'familie')).toContain('Hart');
+    expect(gradeName('neu')).toBe('neu');
   });
 
   it('?room=CODE tritt einmal automatisch bei', () => {
@@ -128,9 +172,9 @@ describe('save_not_found → zweiter Versuch (AC-03)', () => {
 
   it('genau ein Versuch mit fresh und depth 0', () => {
     const flow = new LobbyFlow(params({ save: 'neu' }));
-    flow.choose({ kind: 'play' });
+    playNow(flow);
     const retry = flow.step(notFound);
-    expect(retry).toEqual({ t: 'create', save: 'neu', fresh: true, depth: 0, slots: [0] });
+    expect(retry).toEqual({ ...createPlay, save: 'neu', fresh: true });
     expect(flow.step(notFound)).toBeNull();
   });
 
@@ -145,15 +189,15 @@ describe('save_not_found → zweiter Versuch (AC-03)', () => {
     joined.step(lobby);
     expect(joined.step(notFound)).toBeNull();
     const fresh = new LobbyFlow(params({ fresh: true }));
-    fresh.choose({ kind: 'play' });
+    playNow(fresh);
     expect(fresh.step(notFound)).toBeNull();
   });
 
   it('eine neue Auswahl darf wieder einmal wiederholen', () => {
     const flow = new LobbyFlow(params());
-    flow.choose({ kind: 'play' });
+    playNow(flow);
     flow.step(notFound);
-    flow.choose({ kind: 'play' });
+    playNow(flow);
     expect(flow.step(notFound)).not.toBeNull();
   });
 });
@@ -164,6 +208,10 @@ describe('Hinweise (AC-09, AC-10)', () => {
   it.each(codes)('%s zeigt die Server-Meldung bzw. den Hinweistext', (code) => {
     const status: Status = code === 'replaced' || code === 'version' ? 'ended' : 'lobby';
     expect(lobbyNotice({ status, notice: `Text zu ${code}` })).toBe(`Text zu ${code}`);
+  });
+
+  it('abgelehnte Raum-Option (bad_request) zeigt den eigenen Hinweis', () => {
+    expect(lobbyNotice({ status: 'lobby', notice: 'invalid grade', errorCode: 'bad_request' })).toBe('Option abgelehnt (Grad Dev nur im Dev-Mode)');
   });
 
   it('Verbindungsstände', () => {
