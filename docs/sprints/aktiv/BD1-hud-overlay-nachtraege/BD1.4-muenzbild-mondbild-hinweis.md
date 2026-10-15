@@ -1,6 +1,6 @@
 # BD1.4 · Münzbild und Mond-Bild im Hinweis
 
-- **Status:** blockiert
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** CLI
@@ -46,8 +46,8 @@ Jede Änderung am Preisschild (`drawPrice`, `siteView.ts`, Glyph oder Taste); de
 ## Fertig, wenn
 
 - [x] AC-04 (B-393/AC-01): Test oder Log belegt Textur geladen und gezeichnet; Browser-Beobachtung mit frischem Profil im Ergebnis (1 und 2 Spieler); Log 🐛 bei fehlender Textur.
-- [ ] AC-04 (B-370/AC-01): `task test -- guideHints`: `guideImage('dusk')` liefert das Mond-Bild; Zuordnung in `docs/assets/zuordnung-welt.md`. Sonst blockiert (Schritt 3).
-- [ ] AC-04 (B-374/AC-01): `git diff` zeigt keine Änderung an `src/scenes/siteView.ts`; das Preisschild zeigt weiter Name, Material, Münzkreise.
+- [x] AC-04 (B-370/AC-01): `task test -- guideHints`: `guideImage('dusk')` liefert das Mond-Bild; Zuordnung in `docs/assets/zuordnung-welt.md`. Sonst blockiert (Schritt 3).
+- [x] AC-04 (B-374/AC-01): `git diff` zeigt keine Änderung an `src/scenes/siteView.ts`; das Preisschild zeigt weiter Name, Material, Münzkreise.
 - [ ] Abnahme am PC bleibt 🧑; bis dahin „angenommen, Validierung offen“.
 - [ ] `task check` grün.
 
@@ -62,14 +62,15 @@ Browser-Prüfung (frisches Profil, `game.html`) nur, wenn 🧑 sie für diesen L
 
 ## Ergebnis
 
-Teilweise erledigt, **blockiert** an B-370 (kein Mond-Bild in den vorhandenen Packs).
+**Fertig** (Nachtrag 2026-10-15): B-370 gelöst durch Entscheidung 🧑 im Chat, siehe unten. Davor blockiert an B-370 (kein Mond-Bild in den vorhandenen Packs).
 
 - **B-393 umgesetzt, geprüft (Test, Browser teilweise):**
   - **Prüfung mit frischem Profil:** Im Browser (`game.html?dev=1`, `k3c-guide-seen` leer) ist die Textur `grafik:coinIcon` geladen (`textures.exists` = true). Der Zeichenweg (`GlyphRow` → `add.image`) ist unverändert und in sich schlüssig.
   - **Münz-Hinweis selbst:** Ich habe den Münz-Hinweis im Spiel nicht zu sehen bekommen (Spielstand ohne Münze in Sicht). Die Ursache aus S8.4 ist nicht belegt; die wahrscheinlichste (Hinweis war per `guideSeen` schon als gesehen markiert, `localStorage`) lässt sich im Code nicht ausschließen.
   - **Härtung:** `usableGuideImage` (`guideHints.ts`, 3 Tests) zeichnet ein Bild nur, wenn die Textur existiert (sonst zeigte Phaser den grünen Platzhalter statt „nur Text“) und schreibt dann einmal ein Log 🐛 (`GuideOverlay.imageOf`).
   - **Abnahme:** am PC bei 🧑 offen: „angenommen, Validierung offen“, mit frischem Profil prüfen, ob Bild und Text erscheinen.
-- **B-370 blockiert:** Gesucht in `kyrises-free-16x16-rpg-icon-pack` (beide Sheets, Sichtprüfung), `16x16-rpg-items-db32`, `resource-icons`, `item-ruby-banana-star`, `materials-pack` und `pixel-platformer` (Hintergründe): kein Mond-, Halbmond- oder Nachtsymbol. Nach Spec kein Ersatz (Stern ausgeschlossen). Frage-Ticket **B-427** angelegt (Optionen: neues Pack mit Lizenz, Eigenbau-Icon, Perle, kein Bild). `guideImage('dusk')` bleibt `null`.
+- **B-370 gelöst (Nachtrag 2026-10-15):** Entscheidung 🧑 (Chat): Emoji 🌙 als Canvas-Textur `guide:moon` zur Laufzeit (`guideOverlay.ts` › `ensureMoon`), `guideImage('dusk')` liefert sie; Zeile `guide:moon` in `zuordnung-welt.md` (Lücke: kein Pack-Bild), Test in `guideHints.test.ts`. Commit `3d7a47c0` auf develop. Optik am PC/Xbox (Systemfont) noch von 🧑 abzunehmen. B-427 damit entschieden.
+- **B-370 war blockiert:** Gesucht in `kyrises-free-16x16-rpg-icon-pack` (beide Sheets, Sichtprüfung), `16x16-rpg-items-db32`, `resource-icons`, `item-ruby-banana-star`, `materials-pack` und `pixel-platformer` (Hintergründe): kein Mond-, Halbmond- oder Nachtsymbol. Nach Spec kein Ersatz (Stern ausgeschlossen). Frage-Ticket **B-427** angelegt (Optionen: neues Pack mit Lizenz, Eigenbau-Icon, Perle, kein Bild). `guideImage('dusk')` bleibt `null`.
 - **B-374 geprüft:** `src/scenes/siteView.ts` ist unverändert (`git diff origin/develop -- src/scenes/siteView.ts` leer); das Preisschild zeigt weiter Name, Material und Münzkreise.
 - **Prüfung:** `npx vitest run src tests`: grün (ohne die 6 Dateien unter `tools/k3c-dev/frontend/`, Pakete im Worktree nicht installiert); `tsc` und Oxlint ohne Befund. `task check` nicht ausgeführt (k3c-dev getrennt).
 - **Nebenwirkung der Browser-Prüfung:** Beim zweiten Lauf wählte ich versehentlich den Spielstand `familie` statt eines Test-Spielstands (die Zeilenreihenfolge der Lobby hatte sich geändert). Der Autosave schrieb `saves/familie.json` neu (14 335 statt 14 336 Bytes, Tag 5, gleicher Stand); das Archiv `familie-2026-10-11T…json` ist unverändert. Ich habe danach nichts im Spiel verändert.
