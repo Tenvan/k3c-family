@@ -319,9 +319,21 @@ Felder je Spieler in `players[]` von `snap` und `delta`:
 
 `actions` nennt nur, was der Spieler **an seinem Ort** jetzt tun kann, in fester Reihenfolge: `{ "action": "attack" }`
 (lebt, Schlag bereit), `{ "action": "skill", "slot": n, "skill": id }` je belegtem, bereitem Slot (lebt; `slot` wie
-`input.p[].skill`), `{ "action": "learn" }` (`points` > 0). `respec` ist als Eintrag vorgesehen, fehlt aber, bis die
-Sim eine Prüfung ohne Seiteneffekt bietet (B-270); die Nachricht `respec` wirkt trotzdem. Die Liste nennt keine Taste,
-die Belegung gehört dem Client. Berufe, Tausch, Grabstein und Wiederbeleben kommen später (W5, B-120).
+`input.p[].skill`), `{ "action": "learn" }` (`points` > 0), dann höchstens einer von `train` und `trade` (B-410).
+`respec` ist als Eintrag vorgesehen, fehlt aber, bis die Sim eine Prüfung ohne Seiteneffekt bietet (B-270); die
+Nachricht `respec` wirkt trotzdem. Die Liste nennt keine Taste, die Belegung gehört dem Client.
+
+`train` und `trade` erscheinen nur, wenn A halten (`input.pay`) am Ort des Spielers **jetzt** darauf zahlt: maßgeblich
+ist genau das Zahlziel der Sim (`findPayTarget`, über `sim.PayActionOf`); hat ein anderes Ziel Vorrang (Bauplatz,
+Schwert), fehlen beide. Der Spieler lebt, und die Zahlung kann wirken:
+
+| Eintrag | Felder | nur wenn |
+|---|---|---|
+| `train` | `kind` (`miner`, `builder`, `craftsman`), `gold` (Preis), `paid` (schon bezahlt) | Gold in der Börse; Gebäude gebaut, Angebot nicht voll bezahlt, beim Handwerker Platz |
+| `trade` | `side` (`buy`, `sell`), `resource` (Material des Händlers), `material`/`gold` (Kurs, z. B. 10 = 5) | Händler da; `buy`: Gold in der Börse, Lager nicht voll, Kauf nicht voll bezahlt; `sell`: genug Material im Vorrat |
+
+Additiv ohne neue Version: Ein älterer Client ignoriert unbekannte Einträge. Grabstein und Wiederbeleben kommen später
+(B-120).
 
 ### Wirtschaft: Hub, Lager, Wartegrund, Händler
 

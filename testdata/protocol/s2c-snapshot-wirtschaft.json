@@ -451,6 +451,12 @@
         "actions": [
           {
             "action": "attack"
+          },
+          {
+            "action": "train",
+            "gold": 20,
+            "kind": "miner",
+            "paid": 5
           }
         ],
         "facing": -1,
@@ -472,6 +478,13 @@
         "actions": [
           {
             "action": "attack"
+          },
+          {
+            "action": "trade",
+            "gold": 5,
+            "material": 10,
+            "resource": "stone",
+            "side": "sell"
           }
         ],
         "facing": 1,

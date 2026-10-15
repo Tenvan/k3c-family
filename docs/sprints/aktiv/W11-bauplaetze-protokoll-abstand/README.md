@@ -59,7 +59,7 @@ Geklärt mit 🧑 (2026-10-14): W11 vor W8; Treppen ≥ 8 Units zu **allen** Zah
 |---|---|---|---|---|
 | W11.1 | `W11.1-treppen-abstand.md` | Umsetzung | autonom | fertig |
 | W11.2 | `W11.2-bauplaetze-im-zustand.md` | Umsetzung | autonom | fertig |
-| W11.3 | `W11.3-aktionen-ausbilden-tauschen.md` | Umsetzung | autonom | in Arbeit |
+| W11.3 | `W11.3-aktionen-ausbilden-tauschen.md` | Umsetzung | autonom | blockiert |
 | W11.4 | `W11.4-bauplaetze-figuren-client.md` | Umsetzung | autonom | offen |
 | W11.5 | `W11.5-review.md` | Review | autonom | offen |
 
