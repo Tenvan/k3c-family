@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import type { Coin, CycleInfo, Site, Troop } from '../model/types';
-import { GUIDE_ORDER, guideImage, nextGuide, stepGuide, usableGuideImage, type GuideHint, type GuideWorld } from './guideHints';
+import { GUIDE_ORDER, guideImage, MOON_IMAGE, nextGuide, stepGuide, usableGuideImage, type GuideHint, type GuideWorld } from './guideHints';
 
 const coin = (id: number, x: number) => ({ id, x }) as Coin;
 const site = (id: number, x: number, state: Site['state'] = 'unpaid') => ({ id, x, state }) as Site;
@@ -89,8 +89,12 @@ describe('guideImage (B-294)', () => {
     expect(guideImage('coin')).toEqual({ image: 'grafik:coinIcon', scale: 4 });
   });
 
-  it('Bauplatz, Nacht und Bauer zeigen kein Bild (Mond: kein Bild unter public/, B-370)', () => {
-    for (const id of GUIDE_ORDER.filter((i) => i !== 'coin')) expect(guideImage(id)).toBeNull();
+  it('Nacht zeigt den Mond (Emoji-Textur, B-370)', () => {
+    expect(guideImage('dusk')).toEqual({ image: MOON_IMAGE, scale: 1 });
+  });
+
+  it('Bauplatz und Bauer zeigen kein Bild', () => {
+    for (const id of GUIDE_ORDER.filter((i) => i !== 'coin' && i !== 'dusk')) expect(guideImage(id)).toBeNull();
   });
 });
 

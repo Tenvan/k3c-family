@@ -104,6 +104,9 @@ Nur so bleibt Vollbild auf der Xbox über Seitenwechsel erhalten. Für **jede** 
   Codepunkt (kein U+FE0F). Das Thema setzt die Konsole selbst aus `ns` (`engine/conlog` › `Topics`); ein neuer `ns` bekommt dort sein Emoji.
 - Klein bleiben: kein Framework-Overhead. Prozess steht nur in `docs/arbeitsweise.md`, keine weiteren Prozess-Dokumente.
   Ein Sprint bleibt in seiner Domäne; Datei ≤ 400 Zeilen, Funktion ≤ 60 Zeilen. Lieber spielbarer Code.
+- **Kein automatischer Worktree-Wechsel:** Nicht von sich aus in einen Worktree wechseln (`change_directory`, `EnterWorktree`,
+  Lesen/Schreiben unter `.claude/worktrees/`). Nur auf ausdrückliche Anweisung von 🧑. Sonst im aktuellen Checkout bleiben;
+  Inhalte anderer Branches nur lesend per `git show <branch>:<pfad>`.
 
 ## Im Browser-Pane testen
 
