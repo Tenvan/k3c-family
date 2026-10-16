@@ -89,7 +89,7 @@ Weitere Gebäude (je eigener Sprint im Projekt GEB); weitere Baumvarianten und L
 | GEB1.1 | `GEB1.1-workshop-grundregeln.md` | Workshop | Mensch | fertig |
 | GEB1.2 | `GEB1.2-werkstatt-generator.md` | Umsetzung | autonom | fertig |
 | GEB1.3 | `GEB1.3-baeume.md` | Umsetzung | autonom | fertig |
-| GEB1.4 | `GEB1.4-review-abnahme.md` | Review | autonom | offen |
+| GEB1.4 | `GEB1.4-review-abnahme.md` | Review | autonom | in Arbeit |
 
 - GEB1.1 Grundregeln aus Werkstatt und Bäumen festlegen, Skalierungsfragen klären (AC-01).
 - GEB1.2 Werkstatt: Daten, Build-Skript mit Mehrfach-Dichte, PNG, Vorschau im Asset-Manager (AC-02, AC-03, AC-06).
