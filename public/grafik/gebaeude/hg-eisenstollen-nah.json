@@ -1,0 +1,34 @@
+{
+  "id": "hg-eisenstollen-nah",
+  "klasse": "hintergrund",
+  "vorlage": {
+    "motiv": "Kräftige Eisenpfeiler im Vordergrund mit Kantenlicht, Lavaschein in schmalen Spalten am Boden",
+    "teile": [
+      "Vier dicke Eisenpfeiler im Abstand 6 Kacheln mit Fußplatte",
+      "Kantenlicht links, Schatten rechts",
+      "Bodenband aus dunklem Fels",
+      "Spalten mit Lavaschein zwischen den Pfeilern, Glutkerne fein"
+    ],
+    "materialien": [
+      "Hintergrund Eisen",
+      "Hintergrund Glut",
+      "Hintergrund Fels"
+    ],
+    "stimmung": "drückend, Schmiedeglut tief unten",
+    "fein": "Kantenlicht, Glutkerne"
+  },
+  "kacheln": {
+    "b": 24,
+    "h": 15
+  },
+  "bausteine": [
+    {"art":"boden","rechteck":[0,13.25,24,1.75],"farbe":"valhalla"},
+    {"art":"pfeiler","rechteck":[2.0,1.0,0.875,13.0],"farbe":"smokey-ash","wiederholung":{"schritt":6,"anzahl":4}},
+    {"art":"kante","rechteck":[2.0,1.0,0.125,13.0],"farbe":"dim-gray","fein":true,"wiederholung":{"schritt":6,"anzahl":4}},
+    {"art":"schatten","rechteck":[2.75,1.0,0.125,13.0],"farbe":"valhalla","wiederholung":{"schritt":6,"anzahl":4}},
+    {"art":"platte","rechteck":[1.75,13.0,1.375,0.5],"farbe":"smokey-ash","wiederholung":{"schritt":6,"anzahl":4}},
+    {"art":"spalte","rechteck":[4.5,13.5,2.0,0.5],"farbe":"brown","wiederholung":{"schritt":6,"anzahl":3}},
+    {"art":"spalte","rechteck":[5.0,13.25,1.0,0.25],"farbe":"oiled-cedar","wiederholung":{"schritt":6,"anzahl":3}},
+    {"art":"kern","rechteck":[5.25,13.625,0.5,0.125],"farbe":"tahiti-gold","fein":true,"wiederholung":{"schritt":6,"anzahl":3}}
+  ]
+}

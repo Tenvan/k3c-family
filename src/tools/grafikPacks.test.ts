@@ -19,9 +19,9 @@ const files = Object.keys(import.meta.glob('../../public/grafik/**/*', { query: 
 const FORBIDDEN = /\.(mp3|ogg|wav|js|html|psd|ase|aseprite|gif|iml|tps|json)$/i;
 
 describe('Grafik-Packs (B-087)', () => {
-  it('hat vierunddreißig Packs (14 Bestand, 20 Kandidaten) mit eindeutiger ID', () => {
-    expect(GRAFIK_PACKS).toHaveLength(34);
-    expect(new Set(GRAFIK_PACKS.map((p) => p.id)).size).toBe(34);
+  it('hat neunundzwanzig Packs (14 Bestand, 15 Kandidaten) mit eindeutiger ID', () => {
+    expect(GRAFIK_PACKS).toHaveLength(29);
+    expect(new Set(GRAFIK_PACKS.map((p) => p.id)).size).toBe(29);
   });
 
   it.each(GRAFIK_PACKS)('$id: Ordner, LICENSE.txt und Bilder liegen im Repo (AC-01)', (pack) => {

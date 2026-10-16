@@ -335,8 +335,6 @@ export const de = {
   'lic.graphics':
     'Alle Figuren im Spiel stammen von talentierten Pixel-Künstler:innen, die ihre Arbeit der Allgemeinheit schenken. Ohne sie gäbe es dieses Spiel in dieser Form nicht. <strong>Vielen herzlichen Dank!</strong> Jede Figur wurde von uns zugeschnitten, teils gespiegelt, zu Streifen zusammengesetzt oder eingefärbt.',
   'lic.creditsNote': 'Die Einträge stehen in <code>public/grafik/CREDITS.md</code> und <code>public/sprites/CREDITS.md</code>; diese Seite liest sie von dort.',
-  'lic.warped':
-    'Warped Caves Pixel Art Pack: Artwork created by Luis Zuno (@ansimuz). Die Quellseite nennt CC0, die Lizenzdatei im Pack CC BY 3.0; wir nutzen es vorsichtig unter <a href="https://creativecommons.org/licenses/by/3.0/deed.de" target="_blank" rel="noopener">CC BY 3.0</a> (Namensnennung Pflicht).',
   'lic.h.mounts': 'Hinweise zu Reittieren (CC BY 3.0, Namensnennung Pflicht)',
   'lic.mounts':
     'Pferde, Einhorn, Pegasus, Hirsch, Elefant und Wölfe sind unter <a href="https://creativecommons.org/licenses/by/3.0/deed.de" target="_blank" rel="noopener">Creative Commons Namensnennung 3.0</a> lizenziert. Wir nutzen sie ausschließlich unter CC BY 3.0 (nicht unter den dort ebenfalls angebotenen GPL-Varianten). Änderungen durch uns: aus den Sheets herausgeschnitten, auf Blickrichtung rechts gebracht, zugeschnitten, teils eingefärbt; darauf sitzt im Spiel ein Reiter.',
@@ -370,6 +368,7 @@ export const de = {
   'av.pick': 'Kategorie oben wählen.',
   'av.empty': 'Keine Asset-Slots in dieser Kategorie.',
   'av.geb': 'Neue Gebäude (GEB): Master 32 px ×1 neben 16 px ×2',
+  'av.hg': 'Hintergründe (GEB): drei Schichten je Biom auf der Himmelsfarbe, zwei Kacheln nebeneinander',
   'av.gap': 'Lücke: {id}',
   'av.missing': 'lädt nicht: {file}',
   'av.pref': 'Präferenz {n}',

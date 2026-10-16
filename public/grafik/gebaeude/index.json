@@ -502,6 +502,407 @@
     }
   },
   {
+    "id": "hg-eisenstollen-fern",
+    "klasse": "hintergrund",
+    "kacheln": {
+      "b": 24,
+      "h": 15
+    },
+    "vorlage": {
+      "motiv": "Ferner dunkler Fels mit gestuften Felsblöcken und niedrigen Gangbögen über einem Felsboden",
+      "teile": [
+        "Felsboden als durchgehendes Band (Bodenlinie)",
+        "Gestufte Felsblöcke in Valhalla, Abstand 6 Kacheln",
+        "Zwei Gangbögen als dunkle Öffnungen (Schwarz) zwischen den Blöcken",
+        "Feine Kantenlichter auf den Blöcken"
+      ],
+      "materialien": [
+        "Hintergrund Fels"
+      ],
+      "stimmung": "tief unten, kalt und rußig",
+      "fein": "Kantenlichter"
+    },
+    "dateien": {
+      "16": "grafik/gebaeude/hg-eisenstollen-fern-16.png",
+      "32": "grafik/gebaeude/hg-eisenstollen-fern-32.png"
+    }
+  },
+  {
+    "id": "hg-eisenstollen-mitte",
+    "klasse": "hintergrund",
+    "kacheln": {
+      "b": 24,
+      "h": 15
+    },
+    "vorlage": {
+      "motiv": "Fels mit senkrechten und waagerechten Eisenträgern und Streben, Nieten als feine Punkte",
+      "teile": [
+        "Felsband am Boden (Bodenlinie)",
+        "Senkrechte Träger im Abstand 4 Kacheln",
+        "Waagerechter Träger oben, zwei Streben je Feld",
+        "Nieten fein"
+      ],
+      "materialien": [
+        "Hintergrund Fels",
+        "Hintergrund Eisen"
+      ],
+      "stimmung": "Stollenausbau, kalt",
+      "fein": "Nieten, Kantenlicht"
+    },
+    "dateien": {
+      "16": "grafik/gebaeude/hg-eisenstollen-mitte-16.png",
+      "32": "grafik/gebaeude/hg-eisenstollen-mitte-32.png"
+    }
+  },
+  {
+    "id": "hg-eisenstollen-nah",
+    "klasse": "hintergrund",
+    "kacheln": {
+      "b": 24,
+      "h": 15
+    },
+    "vorlage": {
+      "motiv": "Kräftige Eisenpfeiler im Vordergrund mit Kantenlicht, Lavaschein in schmalen Spalten am Boden",
+      "teile": [
+        "Vier dicke Eisenpfeiler im Abstand 6 Kacheln mit Fußplatte",
+        "Kantenlicht links, Schatten rechts",
+        "Bodenband aus dunklem Fels",
+        "Spalten mit Lavaschein zwischen den Pfeilern, Glutkerne fein"
+      ],
+      "materialien": [
+        "Hintergrund Eisen",
+        "Hintergrund Glut",
+        "Hintergrund Fels"
+      ],
+      "stimmung": "drückend, Schmiedeglut tief unten",
+      "fein": "Kantenlicht, Glutkerne"
+    },
+    "dateien": {
+      "16": "grafik/gebaeude/hg-eisenstollen-nah-16.png",
+      "32": "grafik/gebaeude/hg-eisenstollen-nah-32.png"
+    }
+  },
+  {
+    "id": "hg-hoehle-fern",
+    "klasse": "hintergrund",
+    "kacheln": {
+      "b": 24,
+      "h": 15
+    },
+    "vorlage": {
+      "motiv": "Ferne Hallen und Felswand im Dunkel: Bögen und Pfeiler aus Opal mit kühlem Koamaru-Schimmer über einem durchgehenden Höhlenboden",
+      "teile": [
+        "Höhlenboden als durchgehendes Band über die ganze Breite (Bodenlinie)",
+        "Felswand als gestufter Block in Opal, links nach rechts versetzt",
+        "Ferne Hallenbögen: Pfeiler mit Sturz, Abstand 12 Kacheln, mit Öffnung dazwischen",
+        "Niedrige zweite Reihe Felsstufen mit kühlem Schimmer (Deep-Koamaru, sparsam)"
+      ],
+      "materialien": [
+        "Hintergrund Fels"
+      ],
+      "stimmung": "kühles Dunkel, ferne Hallen im Dunst",
+      "fein": "Schimmer"
+    },
+    "dateien": {
+      "16": "grafik/gebaeude/hg-hoehle-fern-16.png",
+      "32": "grafik/gebaeude/hg-hoehle-fern-32.png"
+    }
+  },
+  {
+    "id": "hg-hoehle-mitte",
+    "klasse": "hintergrund",
+    "kacheln": {
+      "b": 24,
+      "h": 15
+    },
+    "vorlage": {
+      "motiv": "Felswand mit hängenden Stalaktiten unter einer unterbrochenen Höhlendecke, unterschiedlich lang und im Abstand wechselnd, am Boden Felsstufen",
+      "teile": [
+        "Höhlendecke in Abschnitten (2,5 Kacheln, Abstand 3) mit offenen Lücken, durch die der Himmel scheint",
+        "Lange Stalaktiten im Abstand von 3 Kacheln, als Stufen nach unten verjüngt",
+        "Kurze Stalaktiten dazwischen (Abstand 2,5 Kacheln) und mittlere (Abstand 4 Kacheln)",
+        "Felswand-Brocken seitlich und Felsboden als durchgehendes Band"
+      ],
+      "materialien": [
+        "Hintergrund Fels"
+      ],
+      "stimmung": "feuchter Felsgang, kühl",
+      "fein": "Tropfen, Kante"
+    },
+    "dateien": {
+      "16": "grafik/gebaeude/hg-hoehle-mitte-16.png",
+      "32": "grafik/gebaeude/hg-hoehle-mitte-32.png"
+    }
+  },
+  {
+    "id": "hg-hoehle-nah",
+    "klasse": "hintergrund",
+    "kacheln": {
+      "b": 24,
+      "h": 15
+    },
+    "vorlage": {
+      "motiv": "Nahe Felsbögen und Pfeiler mit Lichtkante, Stalagmiten am Boden, kühl und kräftig",
+      "teile": [
+        "Felsboden als durchgehendes Band mit Kante über die ganze Breite",
+        "Pfeiler im Abstand von 8 Kacheln mit hellerer Kante links und Schattenkante rechts",
+        "Bogenansatz oben an den Pfeilern (Stufen aus Rechtecken)",
+        "Stalagmiten am Boden in Gruppen, Abstand 3 und 5 Kacheln, nach oben verjüngt"
+      ],
+      "materialien": [
+        "Hintergrund Fels"
+      ],
+      "stimmung": "nahe Felsen, kühl-bläulich, kräftig",
+      "fein": "Lichtkante, Schimmer"
+    },
+    "dateien": {
+      "16": "grafik/gebaeude/hg-hoehle-nah-16.png",
+      "32": "grafik/gebaeude/hg-hoehle-nah-32.png"
+    }
+  },
+  {
+    "id": "hg-kristall-fern",
+    "klasse": "hintergrund",
+    "kacheln": {
+      "b": 24,
+      "h": 15
+    },
+    "vorlage": {
+      "motiv": "Ferne Felszacken in kühlem Blau-Violett, gestaffelt wie ein Gebirgszug in der Höhle, über einem durchgehenden dunklen Boden",
+      "teile": [
+        "Felsboden als durchgehendes Band über die ganze Breite (Bodenlinie)",
+        "Breite Felssockel in Loulou-Violett, abgestuft, Abstand 8 Kacheln",
+        "Spitze Felstürme als Stapel schmaler Rechtecke, Abstand 5 Kacheln",
+        "Niedrige Felsrippen in Valhalla dazwischen (Abstand 3,5 Kacheln)"
+      ],
+      "materialien": [
+        "Hintergrund Fels"
+      ],
+      "stimmung": "kühle, ruhige Dunkelheit, tiefe Höhle",
+      "fein": "Kantenlicht an den Türmen"
+    },
+    "dateien": {
+      "16": "grafik/gebaeude/hg-kristall-fern-16.png",
+      "32": "grafik/gebaeude/hg-kristall-fern-32.png"
+    }
+  },
+  {
+    "id": "hg-kristall-mitte",
+    "klasse": "hintergrund",
+    "kacheln": {
+      "b": 24,
+      "h": 15
+    },
+    "vorlage": {
+      "motiv": "Kristallgruppen als Treppen aus Rechtecken mit unterschiedlichen Höhen, in Deep-Koamaru mit Valhalla-Schatten und spärlichem Kristalllicht",
+      "teile": [
+        "Kristallboden als durchgehendes Band über die ganze Breite (Bodenlinie)",
+        "Große Gruppe: hohe Treppe, Abstand 6 Kacheln",
+        "Mittlere Gruppe: niedrigere Treppe, Abstand 4,5 Kacheln, versetzt",
+        "Kleine Splitter am Boden, Abstand 2,5 Kacheln",
+        "Royal-Blue-Kantenlicht an den Spitzen"
+      ],
+      "materialien": [
+        "Hintergrund Kristall",
+        "Hintergrund Fels"
+      ],
+      "stimmung": "schwaches Glimmen in dunkler Höhle",
+      "fein": "Kantenlicht, Glanzpunkte"
+    },
+    "dateien": {
+      "16": "grafik/gebaeude/hg-kristall-mitte-16.png",
+      "32": "grafik/gebaeude/hg-kristall-mitte-32.png"
+    }
+  },
+  {
+    "id": "hg-kristall-nah",
+    "klasse": "hintergrund",
+    "kacheln": {
+      "b": 24,
+      "h": 15
+    },
+    "vorlage": {
+      "motiv": "Große Kristalle am Boden und Kristallzapfen von der Decke, breite Treppen aus Deep-Koamaru mit Valhalla-Flanke und feinem Kristalllicht",
+      "teile": [
+        "Kristallboden als durchgehendes Band über die ganze Breite (Bodenlinie)",
+        "Zwei große Bodenkristalle als Treppen, Abstand 11 Kacheln",
+        "Deckenzapfen als umgekehrte Treppen, Abstand 6 Kacheln",
+        "Royal-Blue-Kante und sparsamer Viking-Glanz"
+      ],
+      "materialien": [
+        "Hintergrund Kristall"
+      ],
+      "stimmung": "dunkler Vordergrund, kühles Kristallfunkeln",
+      "fein": "Kantenlicht, Glanzpunkte"
+    },
+    "dateien": {
+      "16": "grafik/gebaeude/hg-kristall-nah-16.png",
+      "32": "grafik/gebaeude/hg-kristall-nah-32.png"
+    }
+  },
+  {
+    "id": "hg-mine-fern",
+    "klasse": "hintergrund",
+    "kacheln": {
+      "b": 24,
+      "h": 15
+    },
+    "vorlage": {
+      "motiv": "Ferne warme Felswand als Stufenkamm aus Rechtecken mit schmalen Gerüstpfosten und Querbalken im Dunkel, darunter ein durchgehender Felsboden",
+      "teile": [
+        "Felsboden als durchgehendes Band über die ganze Breite (Bodenlinie)",
+        "Zwei Reihen gestufter Felsblöcke in Loulou, links nach rechts versetzt",
+        "Schmale Gerüstpfosten im Abstand von 4 Kacheln mit Querbalken",
+        "Einzelne Schattenspalten in Valhalla"
+      ],
+      "materialien": [
+        "Hintergrund Fels",
+        "Hintergrund Holz"
+      ],
+      "stimmung": "warmes Dunkel tief im Berg, fern und ruhig",
+      "fein": "Spalten, Balkenköpfe"
+    },
+    "dateien": {
+      "16": "grafik/gebaeude/hg-mine-fern-16.png",
+      "32": "grafik/gebaeude/hg-mine-fern-32.png"
+    }
+  },
+  {
+    "id": "hg-mine-mitte",
+    "klasse": "hintergrund",
+    "kacheln": {
+      "b": 24,
+      "h": 15
+    },
+    "vorlage": {
+      "motiv": "Stützbalken und Querbalken aus Holz vor gestuftem Fels, Stempel im Abstand von 3 Kacheln, Schutt am Boden",
+      "teile": [
+        "Schuttband am Boden über die ganze Breite (Bodenlinie)",
+        "Gestufte Felsblöcke in Valhalla hinter den Stützen",
+        "Senkrechte Stützbalken in Loulou, Abstand 3 Kacheln",
+        "Querbalken oben, Kopfbänder als Stufen, zweite Reihe versetzt",
+        "Kleine Grubenlicht-Punkte in Rope"
+      ],
+      "materialien": [
+        "Hintergrund Fels",
+        "Hintergrund Holz"
+      ],
+      "stimmung": "warmbrauner Stollen, Holzausbau im Halbdunkel",
+      "fein": "Balkenkanten, Lichtpunkt"
+    },
+    "dateien": {
+      "16": "grafik/gebaeude/hg-mine-mitte-16.png",
+      "32": "grafik/gebaeude/hg-mine-mitte-32.png"
+    }
+  },
+  {
+    "id": "hg-mine-nah",
+    "klasse": "hintergrund",
+    "kacheln": {
+      "b": 24,
+      "h": 15
+    },
+    "vorlage": {
+      "motiv": "Schienenbett am Boden mit Holzschwellen und Eisenschienen, davor kräftige Pfosten und ein Querbalken als Rahmen",
+      "teile": [
+        "Bodenband aus Schotter über die ganze Breite (Bodenlinie)",
+        "Holzschwellen im Abstand von 1 Kachel, zwei Eisenschienen darüber",
+        "Kräftige Holzpfosten mit Lichtkante links und Schatten rechts, Abstand 8 Kacheln",
+        "Querbalken oben zwischen den Pfosten, Kopfbänder als Stufen"
+      ],
+      "materialien": [
+        "Hintergrund Holz",
+        "Hintergrund Eisen"
+      ],
+      "stimmung": "nahes Gleis, dunkler Holzausbau im Vordergrund",
+      "fein": "Schienenkante, Balkenkante"
+    },
+    "dateien": {
+      "16": "grafik/gebaeude/hg-mine-nah-16.png",
+      "32": "grafik/gebaeude/hg-mine-nah-32.png"
+    }
+  },
+  {
+    "id": "hg-wald-fern",
+    "klasse": "hintergrund",
+    "kacheln": {
+      "b": 24,
+      "h": 15
+    },
+    "vorlage": {
+      "motiv": "Ferne Hügelkämme mit schmalen Stämmen und runden Kronen im Dunst, dunkle Silhouetten über einem durchgehenden Waldboden",
+      "teile": [
+        "Waldboden als durchgehendes Band über die ganze Breite (Bodenlinie)",
+        "Zwei Reihen flacher Hügelkämme in Opal, abgestuft, links nach rechts versetzt",
+        "Schmale hohe Stämme im Abstand von 2 Kacheln mit kleinen Kronen",
+        "Zweite Reihe niedriger Stämme dazwischen (Abstand 3 Kacheln)"
+      ],
+      "materialien": [
+        "Hintergrund Wald"
+      ],
+      "stimmung": "kühler Morgendunst, tief im Wald",
+      "fein": "Kronen-Licht"
+    },
+    "dateien": {
+      "16": "grafik/gebaeude/hg-wald-fern-16.png",
+      "32": "grafik/gebaeude/hg-wald-fern-32.png"
+    }
+  },
+  {
+    "id": "hg-wald-mitte",
+    "klasse": "hintergrund",
+    "kacheln": {
+      "b": 24,
+      "h": 15
+    },
+    "vorlage": {
+      "motiv": "Mittlere Laubbäume mit dunkelbraunen Stämmen und breiten olivgrünen Kronen, zweite Reihe niedriger und dunkler dahinter, Farnband am Boden",
+      "teile": [
+        "Farn- und Buschband am Boden über die ganze Breite (Bodenlinie)",
+        "Erste Reihe: breite Kronen (Verdigris) auf Stämmen, Abstand 3 Kacheln",
+        "Kronenunterseite in Opal, Lichtflecken links oben in Dell",
+        "Zweite Reihe: niedrigere Bäume in Opal, um 1,5 Kacheln versetzt"
+      ],
+      "materialien": [
+        "Hintergrund Wald",
+        "Hintergrund Holz"
+      ],
+      "stimmung": "schattiger Mittelwald",
+      "fein": "Lichtflecken, Rindenfuge"
+    },
+    "dateien": {
+      "16": "grafik/gebaeude/hg-wald-mitte-16.png",
+      "32": "grafik/gebaeude/hg-wald-mitte-32.png"
+    }
+  },
+  {
+    "id": "hg-wald-nah",
+    "klasse": "hintergrund",
+    "kacheln": {
+      "b": 24,
+      "h": 15
+    },
+    "vorlage": {
+      "motiv": "Nahe, kräftige Baumstämme mit Lichtkante links und Schatten rechts, Laubansatz oben und Gras- und Farnband am Boden",
+      "teile": [
+        "Vier dicke Stämme im Abstand von 7 Kacheln und ein einzelner Stamm rechts außen",
+        "Lichtkante links in Rope, Schattenkante rechts in Loulou, feine Rindenstriche",
+        "Laubansatz oben (Dell) mit Lichtkante, an den Stämmen hängend",
+        "Grasband am Boden über die ganze Breite mit Büscheln"
+      ],
+      "materialien": [
+        "Hintergrund Holz",
+        "Hintergrund Wald"
+      ],
+      "stimmung": "dunkler Vordergrund, nahe Stämme",
+      "fein": "Rindenstriche, Grasbüschel"
+    },
+    "dateien": {
+      "16": "grafik/gebaeude/hg-wald-nah-16.png",
+      "32": "grafik/gebaeude/hg-wald-nah-32.png"
+    }
+  },
+  {
     "id": "hintergrundmauer",
     "klasse": "kachel",
     "kacheln": {

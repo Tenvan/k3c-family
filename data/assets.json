@@ -1154,51 +1154,169 @@
       "wahl": []
     },
     {
-      "id": "bg:forest",
+      "id": "bg:forest:1",
       "art": "grafik",
       "kategorie": "umgebung",
-      "beschreibung": "Hintergründe je Biom: bg:forest",
+      "beschreibung": "Hintergründe je Biom: bg:forest:1 (fern)",
       "wahl": [
         {
-          "datei": "grafik/forest-background/ebenen/parallax-forest-back-trees.png"
+          "datei": "grafik/gebaeude/hg-wald-fern-32.png"
         }
       ]
     },
     {
-      "id": "bg:cave",
+      "id": "bg:forest:2",
       "art": "grafik",
       "kategorie": "umgebung",
-      "beschreibung": "Hintergründe je Biom: bg:cave",
+      "beschreibung": "Hintergründe je Biom: bg:forest:2 (mitte)",
       "wahl": [
         {
-          "datei": "grafik/blue-cave-background/ebenen/startcavebg.png"
+          "datei": "grafik/gebaeude/hg-wald-mitte-32.png"
         }
       ]
     },
     {
-      "id": "bg:mine",
+      "id": "bg:forest:3",
       "art": "grafik",
       "kategorie": "umgebung",
-      "beschreibung": "Hintergründe je Biom: bg:mine",
+      "beschreibung": "Hintergründe je Biom: bg:forest:3 (nah)",
       "wahl": [
         {
-          "datei": "grafik/warped-super-grotto-escape-pack/ebenen/back.png"
+          "datei": "grafik/gebaeude/hg-wald-nah-32.png"
         }
       ]
     },
     {
-      "id": "bg:ironhold",
+      "id": "bg:cave:1",
       "art": "grafik",
       "kategorie": "umgebung",
-      "beschreibung": "Hintergründe je Biom: bg:ironhold",
-      "wahl": []
+      "beschreibung": "Hintergründe je Biom: bg:cave:1 (fern)",
+      "wahl": [
+        {
+          "datei": "grafik/gebaeude/hg-hoehle-fern-32.png"
+        }
+      ]
     },
     {
-      "id": "bg:crystal",
+      "id": "bg:cave:2",
       "art": "grafik",
       "kategorie": "umgebung",
-      "beschreibung": "Hintergründe je Biom: bg:crystal",
-      "wahl": []
+      "beschreibung": "Hintergründe je Biom: bg:cave:2 (mitte)",
+      "wahl": [
+        {
+          "datei": "grafik/gebaeude/hg-hoehle-mitte-32.png"
+        }
+      ]
+    },
+    {
+      "id": "bg:cave:3",
+      "art": "grafik",
+      "kategorie": "umgebung",
+      "beschreibung": "Hintergründe je Biom: bg:cave:3 (nah)",
+      "wahl": [
+        {
+          "datei": "grafik/gebaeude/hg-hoehle-nah-32.png"
+        }
+      ]
+    },
+    {
+      "id": "bg:mine:1",
+      "art": "grafik",
+      "kategorie": "umgebung",
+      "beschreibung": "Hintergründe je Biom: bg:mine:1 (fern)",
+      "wahl": [
+        {
+          "datei": "grafik/gebaeude/hg-mine-fern-32.png"
+        }
+      ]
+    },
+    {
+      "id": "bg:mine:2",
+      "art": "grafik",
+      "kategorie": "umgebung",
+      "beschreibung": "Hintergründe je Biom: bg:mine:2 (mitte)",
+      "wahl": [
+        {
+          "datei": "grafik/gebaeude/hg-mine-mitte-32.png"
+        }
+      ]
+    },
+    {
+      "id": "bg:mine:3",
+      "art": "grafik",
+      "kategorie": "umgebung",
+      "beschreibung": "Hintergründe je Biom: bg:mine:3 (nah)",
+      "wahl": [
+        {
+          "datei": "grafik/gebaeude/hg-mine-nah-32.png"
+        }
+      ]
+    },
+    {
+      "id": "bg:ironhold:1",
+      "art": "grafik",
+      "kategorie": "umgebung",
+      "beschreibung": "Hintergründe je Biom: bg:ironhold:1 (fern)",
+      "wahl": [
+        {
+          "datei": "grafik/gebaeude/hg-eisenstollen-fern-32.png"
+        }
+      ]
+    },
+    {
+      "id": "bg:ironhold:2",
+      "art": "grafik",
+      "kategorie": "umgebung",
+      "beschreibung": "Hintergründe je Biom: bg:ironhold:2 (mitte)",
+      "wahl": [
+        {
+          "datei": "grafik/gebaeude/hg-eisenstollen-mitte-32.png"
+        }
+      ]
+    },
+    {
+      "id": "bg:ironhold:3",
+      "art": "grafik",
+      "kategorie": "umgebung",
+      "beschreibung": "Hintergründe je Biom: bg:ironhold:3 (nah)",
+      "wahl": [
+        {
+          "datei": "grafik/gebaeude/hg-eisenstollen-nah-32.png"
+        }
+      ]
+    },
+    {
+      "id": "bg:crystal:1",
+      "art": "grafik",
+      "kategorie": "umgebung",
+      "beschreibung": "Hintergründe je Biom: bg:crystal:1 (fern)",
+      "wahl": [
+        {
+          "datei": "grafik/gebaeude/hg-kristall-fern-32.png"
+        }
+      ]
+    },
+    {
+      "id": "bg:crystal:2",
+      "art": "grafik",
+      "kategorie": "umgebung",
+      "beschreibung": "Hintergründe je Biom: bg:crystal:2 (mitte)",
+      "wahl": [
+        {
+          "datei": "grafik/gebaeude/hg-kristall-mitte-32.png"
+        }
+      ]
+    },
+    {
+      "id": "bg:crystal:3",
+      "art": "grafik",
+      "kategorie": "umgebung",
+      "beschreibung": "Hintergründe je Biom: bg:crystal:3 (nah)",
+      "wahl": [
+        {
+          "datei": "grafik/gebaeude/hg-kristall-nah-32.png"
+        }
+      ]
     },
     {
       "id": "monarch:1",

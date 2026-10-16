@@ -22,6 +22,7 @@ nur mit Zustimmung von 🧑.
 | Mauer (Stufen 1–5) | 1 × 5 | `mauer.json` (GEB3) |
 | Turm (Stufen 1–5) | 3 × 8 | `turm.json` (GEB3) |
 | Hintergrundmauer (Stufen 1–5, kachelbar) | 1 × 4 | `hintergrundmauer.json` (GEB3, B-442) |
+| Hintergrund-Schicht (je Biom fern, mitte, nah; kachelbar, Klasse `hintergrund`) | 24 × 15 (768 × 480 px) | `hg-<biom>-<schicht>.json` (GEB7, B-435), siehe § 10 |
 | Burg (Hub-Stufen 1–5) | 8 × 9 | `burg.json` (GEB4) |
 | Tor (Stufen 1–5, Stufe der Mauerlinie) | 2 × 4 | `tor.json` (GEB4) |
 | Farm (Scheune, Holz) | 4 × 3 | `farm.json` (`farm`, GEB5) |
@@ -61,6 +62,12 @@ nur mit Zustimmung von 🧑.
 | Eisen hell (Mauer-, Turmstufe 4) | `heather` | `light-steel` | `dim-gray`, Fuge `valhalla` |
 | Kristall (Mauer-, Turmstufe 5) | `royal-blue` | `cornflower`, Glanz `white` | `deep-koamaru`, leuchtende Fuge `viking` |
 | Stoff blau (Decke) | `cornflower` | `viking` | `royal-blue` (Falte) |
+| Hintergrund Wald | `opal` | `verdigris` (Krone), `dell` (fein) | `valhalla` |
+| Hintergrund Holz | `oiled-cedar` | `rope` (Kante, schmal) | `loulou`, `valhalla` |
+| Hintergrund Fels | `valhalla` | `opal`, Kante `smokey-ash` (schmal) | `black`; kühl `deep-koamaru`, warm `loulou` |
+| Hintergrund Eisen | `smokey-ash` | `dim-gray` (Kante, fein) | `valhalla` |
+| Hintergrund Glut | `brown` | `tahiti-gold` (Kern, fein, sparsam) | `oiled-cedar`, `loulou` |
+| Hintergrund Kristall | `deep-koamaru` | `royal-blue` (fein), Glanz `viking` (fein, sparsam) | `valhalla` |
 | Fels (Felsen, Erzbrocken) = Stein | `dim-gray` | `smokey-ash` | Fuge `valhalla` (fein) |
 | Zelttuch (Lager) = Stoff hell | `pancho` | `white` (Falte) | `twine` |
 | Erde (Wurzeln, Hügelrand) = Pfosten, Balken | `oiled-cedar` | `rope` | – |
@@ -77,7 +84,7 @@ Ein Gebäude ist eine Liste von Rechtecken in Zeichenreihenfolge (hinten zuerst)
 `werkzeug`; Taverne: `kamin`, `dach`, `schindel`, `fenster`, `glas`, `sprosse`, `tuer`, `beschlag`, `stufe`, `ausleger`,
 `kette`, `krug`, `fass`, `reifen`; Heilplatz: `kraut`, `schnur`, `liege`, `kissen`, `decke`, `schale`, `wasser`, `korb`, `flechtung`; Mauer und Turm: `zinne`, `wand`, `bruestung`, `konsole`, `schaft`, `scharte`, `tuerrahmen`, `tuer`, `sockel`,
 `patina`, `band`, `niete`, `glanz`, `kristall`, `aura`, `runenband`, `rune`, `kante` (Hintergrundmauer); Burg: `turm`, `obergeschoss`, `mast`, `banner`; Tor: `sturz`, `fluegel`, `riegel` (Flügel in `stinger` bleiben Holz, nicht im Farbtausch); Schmiede: `haken`, `esse`, `oeffnung`, `glut`, `funke`, `klotz`, `amboss`, `hammer`, `trog`;
-Rüstkammer: `sockel`, `scharte`, `tor`, `band`, `niete`, `staender`, `helm`, `ruestung`, `wappen`, `speer`, `regal`; Lager: `sack`, `holz`, `erz`; Kaserne: `schwert`; Farm: `luke`, `strebe`, `zaun`, `heu`; Treppe hoch: `stufe`, `gelaender`, `laterne`; Treppe runter: `bogen`, `schlussstein`, `oeffnung`; Bäume: `stamm`, `krone`, `licht`, `strich`, `blatt`. Die Art dient der Lesbarkeit und späteren Zusätzen; gezeichnet wird nur Rechteck und Farbe.
+Rüstkammer: `sockel`, `scharte`, `tor`, `band`, `niete`, `staender`, `helm`, `ruestung`, `wappen`, `speer`, `regal`; Lager: `sack`, `holz`, `erz`; Kaserne: `schwert`; Farm: `luke`, `strebe`, `zaun`, `heu`; Treppe hoch: `stufe`, `gelaender`, `laterne`; Treppe runter: `bogen`, `schlussstein`, `oeffnung`; Bäume: `stamm`, `krone`, `licht`, `strich`, `blatt`; Hintergrund Wald: `boden`, `huegel`, `schatten`, `farn`, `fuge`, `laub`, `gras`, `busch`, `buschlicht`; Hintergrund Höhle: `wand`, `wandkopf`, `pfeiler`, `sturz`, `stufe`, `schimmer`, `decke`, `deckenkante`, `zapfen`, `zapfenschatten`, `tropfen`, `brocken`, `brockenschatten`, `bodenkante`, `bogen`, `bogenschatten`, `stalagmit`; Hintergrund Mine: `fels`, `spalte`, `stuetze`, `kante`, `quer`, `kopfband`, `querkante`, `lampe`, `schutt`, `schotter`, `schwelle`, `schiene`, `schienenkante`; Hintergrund Eisenstollen: `bogen`, `licht`, `traeger`, `strebe`, `niete`, `pfeiler`, `platte`, `spalte`, `kern`; Hintergrund Kristall: `sockel`, `turm`, `rippe`, `kantenlicht`, `bodenlicht`, `gruppe`, `mittel`, `splitter`, `glanz`, `kristall`, `flanke`, `zapfen`, `zflanke`, `zkante`, `zlicht`, `zrand`, `zglanz`. Die Art dient der Lesbarkeit und späteren Zusätzen; gezeichnet wird nur Rechteck und Farbe.
 
 ## 5. Datenformat
 
@@ -108,6 +115,11 @@ Rüstkammer: `sockel`, `scharte`, `tor`, `band`, `niete`, `staender`, `helm`, `r
 - `klasse` (optional) gruppiert in der Vorschau; `baum` = Teil der Baum-Reihe; `kachel` = in der Breite nahtlos kachelbar
   (Vorschau zeigt drei Kacheln nebeneinander). Kachelbar heißt: keine Seitenkanten, Muster periodisch über die Breite,
   erste und letzte Pixelspalte gleich (Go-Test `TestHintergrundmauerKachelbar`).
+- `klasse: hintergrund` = Hintergrund-Schicht (§ 10): wie `kachel` in der Breite nahtlos, nur Dichten 16 und 32, Oberkante transparent,
+  unterste Pixelzeile deckend. Die Vorschau zeigt sie im Streifen „Hintergründe“ (§ 9), nicht als Gebäude-Karte.
+- `wiederholung: { "schritt": <Kacheln>, "anzahl": <n ≥ 2> }` am Baustein (GEB7): `anzahl` Kopien entlang x im Abstand `schritt`
+  (die erste ist das Original, Kopien folgen direkt in der Zeichenreihenfolge). Schritt ein positives Vielfaches von 1/32, jede Kopie
+  im Bild; sonst bricht `task gebaeude` mit Gebäude, Baustein und Feld ab. Gilt auch für `zusaetze`.
 - `fein: true` markiert Details, die bei gröberer Dichte entfallen (Werkzeuge, Faltenlicht, Plankenfugen).
 
 ### Bäume
@@ -157,7 +169,7 @@ das **Material** (1 Stein, 2 Kupfer, 3 Eisen, 4 Kristall), nicht das Biom.
 
 - Die Quelle speichert Formen in Kachel-Einheiten; die Pixeldichte ist ein Render-Parameter.
 - **Master: 32 px je Kachel.** Erlaubt sind nur **16, 32, 64, 128** px je Kachel; andere Werte → Fehler.
-- **64 und 128** sind verlustfreie Vergrößerungen (Test: 64 nach 2×2-Downsampling = 32).
+- **64 und 128** sind verlustfreie Vergrößerungen (Test: 64 nach 2×2-Downsampling = 32). Die Klasse `hintergrund` rendert nur **16 und 32** (64/128 wären mehrere MB je Schicht ohne Spielwert).
 - **16** lässt `fein`-Bausteine weg und rundet ab. Ein Baustein ohne `fein`, der bei 16 dünner als 1 px wäre (also 1 px im Master), ist ein Fehler.
 - Jede Dichte nimmt 🧑 in der Vorschau ab, bevor das Spiel sie nutzt. **Spiel-Dichte: 32 px je Kachel ×1** (Entscheidung 🧑 2026-10-16, GEB1.4; abgenommen in 32 und 16 px). Gebäude sind damit feiner als Figuren und die heutigen 16-px-Packs.
 
@@ -173,4 +185,17 @@ das **Material** (1 Stein, 2 Kupfer, 3 Eisen, 4 Kristall), nicht das Biom.
    Daten-JSON in `public/grafik/gebaeude/` anlegen oder ändern.
 2. `task gebaeude` rendert `<id>-16.png`, `-32.png`, `-64.png`, `-128.png` und `index.json`; gleiche Daten → byte-gleiche PNGs.
 3. Vorschau: `assetvorschau.html?szene=gebaeude`, Streifen „Neue Gebäude (GEB)“ (Baum-Reihe, dann je Gebäude 32 px ×1 neben 16 px ×2).
-4. PNGs und `index.json` mit committen.
+4. Hintergrund-Schichten: Streifen „Hintergründe“ derselben Seite (je Biom die drei Schichten fern → nah auf `palette.sky`, zwei Kacheln nebeneinander, 32 px ×1 und 16 px ×2).
+5. PNGs und `index.json` mit committen.
+
+## 10. Hintergrund-Schichten
+
+Je Biom drei Schichten (`hg-<biom>-fern|mitte|nah`, Biom: `wald`, `hoehle`, `mine`, `eisenstollen`, `kristall`; Klasse `hintergrund`, GEB7).
+
+- **Maß:** 24 × 15 Kacheln (768 × 480 px bei 32 px, 384 × 240 px bei 16 px); Spiel: Maßstab 1, Unterkante auf der Bodenlinie. Der Himmel ist `palette.sky` des Bioms (`data/biomes/*.json`, nicht DB32) und scheint oben durch: **oberste Pixelzeile transparent**.
+- **Bodenlinie:** unterste Pixelzeile **durchgehend deckend** (kein Spalt über dem Boden, die Fluss-Spiegelung zeigt sonst Streifen).
+- **Naht:** erste = letzte Pixelspalte. Nichts berührt die Randspalten außer durchgehenden Bändern (Boden); Bausteine gehen nie über die Bildkante, Wiederholungen enden mit Abstand zum Rand.
+- **Helligkeit (Luma 0,299 R + 0,587 G + 0,114 B, Mittel über die deckenden Pixel bei 32 px):** fern < mitte < nah, je Schicht mindestens **8** Punkte heller als die dahinter; „nah“ im Mittel höchstens **75**, also dunkler als das dunkelste Gebäude (Farm 79). Leuchtfarben (Glut, Kristalllicht) nur in kleinen Flächen. Prüfung: `TestHintergrundStufen` (`tools/gebaeude/hintergrund_test.go`).
+- **Material:** die Zeilen „Hintergrund …“ in § 3 (Wald: Krone, Hügel, Farn; Holz: Stamm, Balken, Gerüst; Fels: Wand, Bogen, Zapfen; Eisen: Träger, Strebe; Glut: Lavaschein, Spalte; Kristall: Gruppe, Zapfen); fernere Schichten entsättigter und dunkler. Motive stehen in der Vorlage jeder JSON.
+- **Scroll-Faktoren im Spiel** (hinten < vorn, Code in `worldSprites.ts`): Wald 0,15 / 0,35 / 0,5, Höhle 0,1 / 0,2 / 0,4, Mine, Eisenstollen und Kristallhöhle 0,1 / 0,25 / 0,45. Der Faktor am TV bleibt offen (§ 8).
+- **Variation** entsteht nur in den Daten (Wiederholungen mit festen Schritten und Versätzen), nie durch Zufall.

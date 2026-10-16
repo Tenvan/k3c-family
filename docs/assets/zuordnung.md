@@ -4,7 +4,7 @@ Diese Datei hält fest, welche Grafik-Packs zum gesetzten Grafik-Stil passen und
 
 - **Stilbeschluss Q13** (`docs/fragenkatalog.md` › Beschlüsse vom 2026-10-03): „Grundraster 16/32 px, Skalierung ×2 bis ×3; nicht passende Packs sind Lücken, Palettenbruch nur bei Hintergründen.“
 - **Datum:** 2026-10-04
-- **Bestätigt von 🧑 am 2026-10-04** (Workshop GR1.1 im Chat). Abweichungen vom Vorschlag: Figuren gelten trotz nicht ganzzahliger Skalierung als „passt“ (Vermerk B-251); `blue-cave-background` passt als Hintergrund; 32-px-Packs nativ ×1 passen.
+- **Bestätigt von 🧑 am 2026-10-04** (Workshop GR1.1 im Chat). Abweichungen vom Vorschlag: Figuren gelten trotz nicht ganzzahliger Skalierung als „passt“ (Vermerk B-251); 32-px-Packs nativ ×1 passen.
 - Die Zeilen je Spielobjekt stehen in weiteren Dateien `docs/assets/zuordnung-*.md` (GR1.2, GR1.3).
 
 Regeln für den Vorschlag (Anwendung von Q13): Raster 16 px (×2 auf `UNIT_PX` = 32) oder 32 px (nativ ×1) und ganzzahlige Skalierung ×2 oder ×3 → „passt“. Anderes Raster oder nicht ganzzahlige Skalierung → „passt nicht (Lücke)“. Eine abweichende Palette ist nur bei Hintergründen erlaubt. Die Spalte „Entscheidung 🧑“ füllt allein der Nutzer. Q13 gilt streng für Umgebung; Figuren übernehmen die Skalierung aus `data/sprites.json` (Entscheidung 🧑, Vermerk B-251).
@@ -18,12 +18,8 @@ Regeln für den Vorschlag (Anwendung von Q13): Raster 16 px (×2 auf `UNIT_PX` =
 | various-stones-and-oregem-veins-16x16 | Various stones and ore/gem veins 16x16, vico | CC0 1.0 | 16 px (Sheet 112×176) | ×2 | hell, gesättigt (Erze, Edelsteine) | passt | 16-px-Raster, ganzzahlig ×2. | passt |
 | 16x16-small-and-medium-coin-animation | 16x16 Small and Medium Coin Animation, WolfTech | CC0 1.0 | 16 px (Sheet 128×64) | ×2 | hell, gelb, gesättigt | passt | 16-px-Raster, ganzzahlig ×2. | passt |
 | gold-treasure-icons-16x16 | Gold treasure icons 16x16, Bonsaiheldin | CC0 1.0 | 16 px (10 Icons 16×16, 1 Sheet 64×64) | ×2 | hell, gelb/braun, gesättigt | passt | 16-px-Raster, ganzzahlig ×2. | passt |
-| sunnyland-tall-forest-environment | SunnyLand Tall Forest Environment, Luis Zuno (ansimuz) | CC0 1.0 | 16 px (Ebenen 144–192×240; Props frei 27–42 px) | ×2 | hell, grün, gesättigt | passt | Ebenen sind Vielfache von 16 px, ×2; Props liegen nicht auf dem Raster, sind aber frei platzierbar. | passt |
 | gotthicvania-swamp | GothicVania Swamp, Luis Zuno (ansimuz) | CC0 1.0 | 16 px (Ebenen 96/208/336×…) | ×2 | dunkel, grün, entsättigt | passt | Größen sind Vielfache von 16 px, ×2; als Hintergrund-Pack ohne Kachelsatz. | passt |
-| forest-background | Forest Background, Luis Zuno (ansimuz) | CC0 1.0 | kein Kachelraster (4 Parallax-Ebenen 272×160) | ×2 | mittel, braun/orange, einfarbig-flach | passt | Reine Hintergrund-Ebenen, 272×160 sind Vielfache von 16; Palette weicht ab, bei Hintergründen erlaubt. | passt |
-| blue-cave-background | Blue Cave Background, Urheber unbekannt | CC0 1.0 | kein Pixelraster (Einzelbild 400×225) | ×2 ergibt 800×450, kein Vielfaches von 32 | dunkel, blau, weich/verwaschen | passt nicht (Lücke) | 225 px Höhe liegt nicht im 16-px-Raster, Stil ist malerisch statt Pixel-Art, Urheber ungeklärt. | passt |
 | sunnyland-fort-of-illusion | SunnyLand Fort of Illusion, Luis Zuno (ansimuz) | CC0 1.0 | 16 px (Ebenen 64–335×272/128; Props 16–96 px) | ×2 | dunkel, blaugrün/violett, gesättigt | passt | 16-px-Raster, ganzzahlig ×2. | passt |
-| warped-caves-pixel-art-pack | Warped Caves Pixel Art Pack, Luis Zuno (ansimuz) | CC BY 3.0 (Namensnennung Pflicht) | 16 px (Ebenen 160–384×128–192; Props 48×48) | ×2 | dunkel, Neon-Pink/Violett, stark gesättigt | passt | 16-px-Raster, ×2; die Palette ist ein Bruch, bei Höhlen-Hintergründen erlaubt, für Objekte davor nicht. | passt |
 
 ## Figuren-Packs (`public/sprites/`)
 
@@ -55,7 +51,7 @@ Frame = Leinwandgröße je Bild aus `data/sprites.json` (`frameWidth`×`frameHei
 
 ## Ergebnis Workshop GR1.1
 
-- Umgebungs-Packs: alle 12 passen (`blue-cave-background` entgegen dem Vorschlag als Hintergrund bestätigt; Warped Caves nur als Höhlen-Hintergrund).
+- Umgebungs-Packs: alle 12 passen (Stand GR1.1; die Hintergrund-Packs sind durch GEB7 ersetzt und gelöscht).
 - Figuren-Packs: alle 21 passen; 19 davon mit Vermerk „Skalierung nicht ganzzahlig“ (B-251).
 - Keine Pack-Lücken; Lücken entstehen nur bei Objekten ohne Grafik (`zuordnung-objekte.md`).
 - Gebäude: Burg, Turm und Tor aus SunnyLand Fort bleiben zugeordnet, Palette wird an Gothicvania Town angeglichen (Entscheidung 🧑). Häuser und Treppen aus Gothicvania Town kommen als Bestands-Kandidaten in GR2.1, die Objekte bleiben bis GR2.2 Lücken.

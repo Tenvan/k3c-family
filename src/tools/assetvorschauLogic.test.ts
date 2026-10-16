@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { baumDatei, baumReihe, figureCard, gebaeudeKarten, kachelAnzahl, stufenKarten, vorlageZeilen, licenseFlag, parseQuery, resolveSlot, SCENES, slotsOf, type AssetSlot, type GebaeudeEintrag } from './assetvorschauLogic';
+import { baumDatei, baumReihe, figureCard, gebaeudeKarten, hintergrundStreifen, kachelAnzahl, stufenKarten, vorlageZeilen, licenseFlag, parseQuery, resolveSlot, SCENES, slotsOf, type AssetSlot, type GebaeudeEintrag } from './assetvorschauLogic';
 
 const farm: AssetSlot = {
   id: 'farm', art: 'grafik', kategorie: 'gebaeude', beschreibung: 'Farm',
@@ -148,5 +148,28 @@ describe('Asset-Vorschau: kachelbare Grafik (GEB3/AC-07)', () => {
     expect(kachelAnzahl({ klasse: 'kachel' })).toBe(3);
     expect(kachelAnzahl({ klasse: 'baum' })).toBe(1);
     expect(kachelAnzahl({})).toBe(1);
+  });
+});
+
+describe('Asset-Vorschau: Hintergründe je Biom (GEB7/AC-03)', () => {
+  const schicht = (id: string) => ({ id, klasse: 'hintergrund', kacheln: { b: 24, h: 15 }, dateien: { 16: `${id}-16.png`, 32: `${id}-32.png` } });
+  const wald = ['fern', 'mitte', 'nah'].map((s) => schicht(`hg-wald-${s}`));
+  const biome = [{ id: 'forest', palette: { sky: '#123456' } }, { id: 'cave', palette: { sky: '#654321' } }];
+
+  it('stapelt je Biom die drei Schichten fern → nah auf der Himmelsfarbe des Bioms', () => {
+    const s = hintergrundStreifen([...wald].reverse(), biome);
+    expect(s).toHaveLength(1);
+    expect(s[0]!.biom).toBe('forest');
+    expect(s[0]!.himmel).toBe('#123456');
+    expect(s[0]!.schichten.map((l) => l.id)).toEqual(['hg-wald-fern', 'hg-wald-mitte', 'hg-wald-nah']);
+  });
+
+  it('lässt Biome ohne vollständige Schichten und unbekannte Biome weg', () => {
+    expect(hintergrundStreifen(wald.slice(0, 2), biome)).toEqual([]);
+    expect(hintergrundStreifen(wald, [{ id: 'sumpf', palette: { sky: '#000000' } }])).toEqual([]);
+  });
+
+  it('zeigt Hintergrund-Schichten nicht als Gebäude-Karten', () => {
+    expect(gebaeudeKarten(wald)).toEqual([]);
   });
 });

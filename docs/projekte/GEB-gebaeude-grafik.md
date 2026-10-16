@@ -37,7 +37,7 @@ Umfang und Ist-Stand je Slot: B-435 › Notizen. Alle sieben Sprints sind als En
 - GEB4 Burg, Hub-Stufen 1–5 und Tor
 - GEB5 Lager, Farm samt Plantage, Kaserne, Treppen
 - GEB6 Natur und Objekte (Bäume, Fels, Erz, Busch, Adern, Truhe, Portal, Ausgang, Rekrutierungslager)
-- GEB7 Hintergründe je Biom (auf Wunsch von 🧑 am 2026-10-16 als Entwurf geplant: 15 Hintergrund-Schichten, Spec-Freigabe offen)
+- GEB7 Hintergründe je Biom (auf Wunsch von 🧑 am 2026-10-16 geplant, am 2026-10-16 freigegeben und aktiviert: 15 Hintergrund-Schichten; GEB7.5 (CLI) wartet auf den Merge von GEB6)
 
 Rang 3 (vor GRA und SND) von 🧑 am 2026-10-15 im Chat gesetzt.
 

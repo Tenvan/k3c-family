@@ -1,0 +1,36 @@
+{
+  "id": "hg-mine-fern",
+  "klasse": "hintergrund",
+  "vorlage": {
+    "motiv": "Ferne warme Felswand als Stufenkamm aus Rechtecken mit schmalen Gerüstpfosten und Querbalken im Dunkel, darunter ein durchgehender Felsboden",
+    "teile": [
+      "Felsboden als durchgehendes Band über die ganze Breite (Bodenlinie)",
+      "Zwei Reihen gestufter Felsblöcke in Loulou, links nach rechts versetzt",
+      "Schmale Gerüstpfosten im Abstand von 4 Kacheln mit Querbalken",
+      "Einzelne Schattenspalten in Valhalla"
+    ],
+    "materialien": [
+      "Hintergrund Fels",
+      "Hintergrund Holz"
+    ],
+    "stimmung": "warmes Dunkel tief im Berg, fern und ruhig",
+    "fein": "Spalten, Balkenköpfe"
+  },
+  "kacheln": {
+    "b": 24,
+    "h": 15
+  },
+  "bausteine": [
+    {"art":"boden","rechteck":[0,12.5,24,2.5],"farbe":"loulou"},
+    {"art":"fels","rechteck":[0.5,9.5,7,3.0],"farbe":"valhalla","wiederholung":{"schritt":8,"anzahl":3}},
+    {"art":"fels","rechteck":[1.5,7.5,4,2.0],"farbe":"valhalla","wiederholung":{"schritt":8,"anzahl":3}},
+    {"art":"fels","rechteck":[2.5,6.0,2,1.5],"farbe":"loulou","wiederholung":{"schritt":8,"anzahl":3}},
+    {"art":"fels","rechteck":[7.0,10.5,3,2.0],"farbe":"valhalla","wiederholung":{"schritt":8,"anzahl":2}},
+    {"art":"fels","rechteck":[7.75,9.5,1.5,1.0],"farbe":"loulou","wiederholung":{"schritt":8,"anzahl":2}},
+    {"art":"spalte","rechteck":[3.0,8.0,0.125,4.5],"farbe":"black","fein":true,"wiederholung":{"schritt":4.0,"anzahl":5}},
+    {"art":"pfosten","rechteck":[3.5,4.5,0.25,8.0],"farbe":"black","wiederholung":{"schritt":4.0,"anzahl":5}},
+    {"art":"pfosten","rechteck":[5.5,4.5,0.25,8.0],"farbe":"valhalla","wiederholung":{"schritt":4.0,"anzahl":5}},
+    {"art":"balken","rechteck":[3.5,4.5,2.25,0.25],"farbe":"valhalla","wiederholung":{"schritt":4.0,"anzahl":5}},
+    {"art":"balken","rechteck":[3.5,7.0,2.25,0.125],"farbe":"black","fein":true,"wiederholung":{"schritt":4.0,"anzahl":5}}
+  ]
+}

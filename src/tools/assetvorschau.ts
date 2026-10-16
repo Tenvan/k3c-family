@@ -10,8 +10,9 @@ import { attenuation } from '../audio/events';
 import { clientLog } from '../core/clientLog';
 import { UNIT_PX as UNIT } from '../core/constants';
 import { installPageChrome } from '../core/shell';
+import { BIOMES } from '../model/biome';
 import {
-  baumDatei, baumReihe, figureCard, gebaeudeKarten, GRAFIK_SCALE, licenseFlag, parseQuery, resolveSlot, SCENES, slotsOf, kachelAnzahl, stufenKarten, vorlageZeilen,
+  baumDatei, baumReihe, figureCard, gebaeudeKarten, GRAFIK_SCALE, hintergrundStreifen, licenseFlag, parseQuery, resolveSlot, SCENES, slotsOf, kachelAnzahl, stufenKarten, vorlageZeilen,
   type AssetSlot, type GebaeudeEintrag, type Query, type Resolved, type SceneId,
 } from './assetvorschauLogic';
 import { CREDITS } from './credits';
@@ -159,7 +160,56 @@ async function renderNeueGebaeude(): Promise<void> {
   }
   const title = document.createElement('h2');
   title.textContent = t('av.geb');
-  sceneEl.prepend(title, strip);
+  const hg = hintergrundBloecke(index);
+  sceneEl.prepend(title, strip, ...(hg ? [Object.assign(document.createElement('h2'), { textContent: t('av.hg') }), hg] : []));
+}
+
+/** Streifen „Hintergründe“ (GEB7): je Biom die drei Schichten fern → nah auf der Himmelsfarbe, zwei Kacheln nebeneinander (Naht sichtbar), 32 px ×1 und 16 px ×2. */
+function hintergrundBloecke(index: readonly GebaeudeEintrag[]): HTMLElement | null {
+  const streifen = hintergrundStreifen(index, BIOMES);
+  if (streifen.length === 0) return null;
+  const box = document.createElement('div');
+  box.className = 'strip';
+  box.style.cssText = 'flex-direction:column;align-items:flex-start;overflow-x:auto';
+  for (const s of streifen) {
+    const row = document.createElement('div');
+    row.style.cssText = 'display:flex;gap:1rem;align-items:flex-start';
+    for (const [dichte, scale] of [[32, 1], [16, 2]] as const) {
+      const fig = document.createElement('figure');
+      fig.append(Object.assign(document.createElement('figcaption'), { textContent: `${s.biom} · ${s.schichten.map((l) => l.id).join(' + ')} · ${dichte} px ×${scale}` }));
+      const canvas = document.createElement('canvas');
+      fig.prepend(canvas);
+      void hintergrundZeichnen(canvas, s.himmel, s.schichten.map((l) => l.dateien[dichte]!), scale);
+      row.append(fig);
+    }
+    box.append(row);
+  }
+  return box;
+}
+
+async function hintergrundZeichnen(canvas: HTMLCanvasElement, himmel: string, dateien: string[], scale: number): Promise<void> {
+  try {
+    const imgs = await Promise.all(dateien.map(ladeBild));
+    const w = imgs[0]!.width * scale;
+    canvas.width = w * 2;
+    canvas.height = imgs[0]!.height * scale;
+    const g = canvas.getContext('2d')!;
+    g.imageSmoothingEnabled = false;
+    g.fillStyle = himmel;
+    g.fillRect(0, 0, canvas.width, canvas.height);
+    for (const img of imgs) for (let i = 0; i < 2; i++) g.drawImage(img, i * w, 0, w, canvas.height);
+  } catch (err) {
+    clientLog('error', '❌ Asset lädt nicht', { datei: (err as Error).message });
+  }
+}
+
+function ladeBild(src: string): Promise<HTMLImageElement> {
+  return new Promise((ok, fail) => {
+    const img = new Image();
+    img.onload = () => ok(img);
+    img.onerror = () => fail(new Error(src));
+    img.src = src;
+  });
 }
 
 /** Karte mit einem Bild in ganzzahligem Maßstab auf der Bodenlinie und Beschriftung darunter. */
@@ -211,13 +261,7 @@ function baumFigur(index: readonly GebaeudeEintrag[], d: number, stufe = 1): HTM
   canvas.height = hoehe * UNIT;
   const g = canvas.getContext('2d')!;
   g.imageSmoothingEnabled = false;
-  const load = (src: string) => new Promise<HTMLImageElement>((ok, fail) => {
-    const img = new Image();
-    img.onload = () => ok(img);
-    img.onerror = () => fail(new Error(src));
-    img.src = src;
-  });
-  void Promise.all(reihe.map((b) => load(baumDatei(byId.get(b.id)!, stufe, d)!)))
+  void Promise.all(reihe.map((b) => ladeBild(baumDatei(byId.get(b.id)!, stufe, d)!)))
     .then((imgs) => imgs.forEach((img, i) => {
       const e = byId.get(reihe[i]!.id)!;
       g.drawImage(img, reihe[i]!.x * UNIT, (hoehe - e.kacheln.h) * UNIT, e.kacheln.b * UNIT, e.kacheln.h * UNIT);

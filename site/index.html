@@ -39,14 +39,13 @@
       .wrap { max-width: 1100px; margin: 0 auto; }
       .lead { color: var(--muted); max-width: 680px; font-size: 1.1rem; }
 
-      /* Hero: Wald-Parallax (272×160 px, vierfach), Figuren laufen auf der Stelle, die Welt zieht vorbei. */
+      /* Hero: Wald-Parallax (hg-wald-*, 768×480 px, auf 680 px Höhe), Figuren laufen auf der Stelle, die Welt zieht vorbei. */
       .hero { position: relative; height: min(92vh, 680px); min-height: 540px; overflow: hidden; padding: 0; background: #1e2a3a; }
-      .layer { position: absolute; left: 0; right: 0; bottom: 0; height: 680px; background-repeat: repeat-x; background-size: 1156px 680px; animation: scroll linear infinite; }
-      .l-back { background-image: url(app/grafik/forest-background/ebenen/parallax-forest-back-trees.png); animation-duration: 90s; }
-      .l-lights { background-image: url(app/grafik/forest-background/ebenen/parallax-forest-lights.png); animation-duration: 70s; opacity: 0.8; }
-      .l-mid { background-image: url(app/grafik/forest-background/ebenen/parallax-forest-middle-trees.png); animation-duration: 50s; }
-      .l-front { background-image: url(app/grafik/forest-background/ebenen/parallax-forest-front-trees.png); animation-duration: 30s; }
-      @keyframes scroll { to { background-position-x: -1156px; } }
+      .layer { position: absolute; left: 0; right: 0; bottom: 0; height: 680px; background-repeat: repeat-x; background-size: 1088px 680px; animation: scroll linear infinite; }
+      .l-back { background-image: url(app/grafik/gebaeude/hg-wald-fern-32.png); animation-duration: 90s; }
+      .l-mid { background-image: url(app/grafik/gebaeude/hg-wald-mitte-32.png); animation-duration: 50s; }
+      .l-front { background-image: url(app/grafik/gebaeude/hg-wald-nah-32.png); animation-duration: 30s; }
+      @keyframes scroll { to { background-position-x: -1088px; } }
       .ground { position: absolute; left: 0; right: 0; bottom: 0; height: 9%; background: linear-gradient(#2b2f22, var(--bg)); }
       .shade { position: absolute; inset: 0; background: linear-gradient(180deg, rgba(13, 16, 32, 0.35) 0%, rgba(13, 16, 32, 0.6) 50%, rgba(13, 16, 32, 0.15) 85%); }
 
@@ -100,9 +99,9 @@
       .depth p { margin: 0; color: #d4d6e4; max-width: 640px; }
       .tags { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 10px; }
       .tag { font-size: 0.8rem; padding: 2px 10px; border-radius: 999px; background: rgba(242, 193, 78, 0.14); color: var(--gold); border: 1px solid rgba(242, 193, 78, 0.35); }
-      .d0 { --pic: url(app/grafik/forest-background/ebenen/parallax-forest-middle-trees.png); }
-      .d1 { --pic: url(app/grafik/blue-cave-background/ebenen/startcavebg.png); }
-      .d2 { --pic: url(app/grafik/warped-caves-pixel-art-pack/ebenen/background.png); }
+      .d0 { --pic: url(app/grafik/gebaeude/hg-wald-mitte-32.png); }
+      .d1 { --pic: url(app/grafik/gebaeude/hg-hoehle-mitte-32.png); }
+      .d2 { --pic: url(app/grafik/gebaeude/hg-mine-mitte-32.png); }
 
       /* Skills */
       .lines { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 16px; margin-top: 36px; }
@@ -149,7 +148,6 @@
   <body>
     <header class="hero">
       <div class="layer l-back px"></div>
-      <div class="layer l-lights px"></div>
       <div class="layer l-mid px"></div>
       <div class="layer l-front px"></div>
       <div class="shade"></div>
@@ -305,7 +303,7 @@
       <div class="wrap">
         <div><b>Family Three Crowns (K3C)</b> · © 2026 Ralf Stich · source-available, nur nicht-kommerziell
           (<a href="https://github.com/tenvan/k3c-family/blob/main/LICENSE">Lizenz</a>)</div>
-        <div>Figuren von LuizMelo und ansimuz, Umgebung von OpenGameArt-Künstlern (meist CC0). Warped Caves: Artwork created by Luis Zuno (@ansimuz), CC BY 3.0.
+        <div>Figuren von LuizMelo und ansimuz, Umgebung von OpenGameArt-Künstlern (meist CC0).
           Alle Danksagungen: <a href="app/lizenzen.html">Lizenzen &amp; Danksagung</a>.</div>
         <div>Inspiriert von <em>Kingdom Two Crowns</em>, kein offizielles Produkt und nicht verbunden mit dessen Herstellern.</div>
       </div>

@@ -11,7 +11,7 @@ Viele dieser Objekte gibt es noch nicht im Code (B-112, B-114); dann ist die Her
   `node:<Art aus data/economy.json › gatherables bzw. data/biomes/*.json › resourcesPerChunk>`, `camp:recruit`, `exit`,
   `pickup:<chest|skillPoint>` (Pickup-Arten aus `src/model/types.ts` › `Pickup`),
   `icon:<Dateiname ohne .png der Gruppe icons in public/grafik/index.json>`, `skill-icon`, `boss`,
-  `bg:<id aus data/biomes/*.json>`.
+  `bg:<id aus data/biomes/*.json>:<1–3>` Hintergrund-Schicht (1 hinten … 3 vorn, GEB7).
 - **Frames im Erz-Sheet** `ressourcen/Stones_ores_gems_without_grass.png` (112×144, 7 Spalten × 9 Zeilen à 16×16):
   Zeile 1 Stein, 2 Kupfer, 3 helles Erz (als Eisen gedeutet), 9 Kristall (türkis); Spalte 1–5 Ader im Fels,
   Spalte 6 Brocken/Edelstein, Spalte 7 Barren (nur Zeile 1–5).
@@ -139,8 +139,18 @@ Je Bild der Gruppe `icons` in `public/grafik/index.json` eine Zeile; die Verwend
 
 | Objekt | Herkunft | Pack | Datei/Frame | Stil (Raster, Palette, Skalierung) | Lizenz | Status |
 |---|---|---|---|---|---|---|
-| `bg:forest` | `data/biomes/forest.json` | `grafik/forest-background`, `grafik/sunnyland-tall-forest-environment` | `ebenen/parallax-forest-*.png` (4 Ebenen 272×160); Alternative `ebenen/back.png`, `far.png`, `middle.png` (Tall Forest) | Hintergrund, ansimuz (Braun/Orange bzw. Grün), ×2; Palettenbruch bei Hintergründen erlaubt (Q13) | CC0 1.0 | zugeordnet |
-| `bg:cave` | `data/biomes/cave.json` | `grafik/blue-cave-background`, `grafik/warped-caves-pixel-art-pack` | `ebenen/startcavebg.png` (400×225); Alternative `ebenen/background.png`, `ebenen/middleground.png` (Warped Caves, nur als Höhlen-Hintergrund, GR1.1) | Hintergrund, Blau malerisch bzw. Neon-Violett, ×2; Palettenbruch bei Hintergründen erlaubt (Q13) | CC0 1.0 bzw. CC BY 3.0 | zugeordnet |
-| `bg:mine` | `data/biomes/mine.json` | `grafik/warped-super-grotto-escape-pack` | `ebenen/back.png`, `ebenen/far.png`, `ebenen/middle.png` (3 Parallax-Ebenen, 240 px hoch), `ebenen/tileset.png` | Hintergrund, ansimuz (Dunkelviolett), ×2; Palettenbruch bei Hintergründen erlaubt; Entscheidung 🧑 GR2.2 | CC0 1.0 | zugeordnet |
-| `bg:ironhold` | `data/biomes/ironhold.json` | – | – (neues Biom, W2.2) | Ziel: Hintergrund ×2, Palettenbruch erlaubt (Q13) | Ziel: CC0 oder CC-BY | **Lücke: neues Biom, Platzhalter-Palette, B-010** |
-| `bg:crystal` | `data/biomes/crystal.json` | – | – (neues Biom, W2.2) | Ziel: Hintergrund ×2, Palettenbruch erlaubt (Q13) | Ziel: CC0 oder CC-BY | **Lücke: neues Biom, Platzhalter-Palette, B-010** |
+| `bg:forest:1` | `data/biomes/forest.json` | `grafik/gebaeude` | `hg-wald-fern-32.png` (fern, 24×15 Kacheln, kachelbar) | eigene Grafik (`tools/gebaeude`), 32 px je Kachel, ×1, Regeldatei § 10; GEB7 | eigen | zugeordnet |
+| `bg:forest:2` | `data/biomes/forest.json` | `grafik/gebaeude` | `hg-wald-mitte-32.png` (mitte, 24×15 Kacheln, kachelbar) | eigene Grafik (`tools/gebaeude`), 32 px je Kachel, ×1, Regeldatei § 10; GEB7 | eigen | zugeordnet |
+| `bg:forest:3` | `data/biomes/forest.json` | `grafik/gebaeude` | `hg-wald-nah-32.png` (nah, 24×15 Kacheln, kachelbar) | eigene Grafik (`tools/gebaeude`), 32 px je Kachel, ×1, Regeldatei § 10; GEB7 | eigen | zugeordnet |
+| `bg:cave:1` | `data/biomes/cave.json` | `grafik/gebaeude` | `hg-hoehle-fern-32.png` (fern, 24×15 Kacheln, kachelbar) | eigene Grafik (`tools/gebaeude`), 32 px je Kachel, ×1, Regeldatei § 10; GEB7 | eigen | zugeordnet |
+| `bg:cave:2` | `data/biomes/cave.json` | `grafik/gebaeude` | `hg-hoehle-mitte-32.png` (mitte, 24×15 Kacheln, kachelbar) | eigene Grafik (`tools/gebaeude`), 32 px je Kachel, ×1, Regeldatei § 10; GEB7 | eigen | zugeordnet |
+| `bg:cave:3` | `data/biomes/cave.json` | `grafik/gebaeude` | `hg-hoehle-nah-32.png` (nah, 24×15 Kacheln, kachelbar) | eigene Grafik (`tools/gebaeude`), 32 px je Kachel, ×1, Regeldatei § 10; GEB7 | eigen | zugeordnet |
+| `bg:mine:1` | `data/biomes/mine.json` | `grafik/gebaeude` | `hg-mine-fern-32.png` (fern, 24×15 Kacheln, kachelbar) | eigene Grafik (`tools/gebaeude`), 32 px je Kachel, ×1, Regeldatei § 10; GEB7 | eigen | zugeordnet |
+| `bg:mine:2` | `data/biomes/mine.json` | `grafik/gebaeude` | `hg-mine-mitte-32.png` (mitte, 24×15 Kacheln, kachelbar) | eigene Grafik (`tools/gebaeude`), 32 px je Kachel, ×1, Regeldatei § 10; GEB7 | eigen | zugeordnet |
+| `bg:mine:3` | `data/biomes/mine.json` | `grafik/gebaeude` | `hg-mine-nah-32.png` (nah, 24×15 Kacheln, kachelbar) | eigene Grafik (`tools/gebaeude`), 32 px je Kachel, ×1, Regeldatei § 10; GEB7 | eigen | zugeordnet |
+| `bg:ironhold:1` | `data/biomes/ironhold.json` | `grafik/gebaeude` | `hg-eisenstollen-fern-32.png` (fern, 24×15 Kacheln, kachelbar) | eigene Grafik (`tools/gebaeude`), 32 px je Kachel, ×1, Regeldatei § 10; GEB7 | eigen | zugeordnet |
+| `bg:ironhold:2` | `data/biomes/ironhold.json` | `grafik/gebaeude` | `hg-eisenstollen-mitte-32.png` (mitte, 24×15 Kacheln, kachelbar) | eigene Grafik (`tools/gebaeude`), 32 px je Kachel, ×1, Regeldatei § 10; GEB7 | eigen | zugeordnet |
+| `bg:ironhold:3` | `data/biomes/ironhold.json` | `grafik/gebaeude` | `hg-eisenstollen-nah-32.png` (nah, 24×15 Kacheln, kachelbar) | eigene Grafik (`tools/gebaeude`), 32 px je Kachel, ×1, Regeldatei § 10; GEB7 | eigen | zugeordnet |
+| `bg:crystal:1` | `data/biomes/crystal.json` | `grafik/gebaeude` | `hg-kristall-fern-32.png` (fern, 24×15 Kacheln, kachelbar) | eigene Grafik (`tools/gebaeude`), 32 px je Kachel, ×1, Regeldatei § 10; GEB7 | eigen | zugeordnet |
+| `bg:crystal:2` | `data/biomes/crystal.json` | `grafik/gebaeude` | `hg-kristall-mitte-32.png` (mitte, 24×15 Kacheln, kachelbar) | eigene Grafik (`tools/gebaeude`), 32 px je Kachel, ×1, Regeldatei § 10; GEB7 | eigen | zugeordnet |
+| `bg:crystal:3` | `data/biomes/crystal.json` | `grafik/gebaeude` | `hg-kristall-nah-32.png` (nah, 24×15 Kacheln, kachelbar) | eigene Grafik (`tools/gebaeude`), 32 px je Kachel, ×1, Regeldatei § 10; GEB7 | eigen | zugeordnet |

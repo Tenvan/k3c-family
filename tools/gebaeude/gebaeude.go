@@ -32,6 +32,8 @@ type baustein struct {
 	Rechteck [4]float64 `json:"rechteck"`
 	Farbe    string     `json:"farbe"`
 	Fein     bool       `json:"fein,omitempty"`
+	// Wiederholung kopiert den Baustein entlang x (Regeldatei § 5); `build` löst sie vor dem Zeichnen auf.
+	Wiederholung *wiederholung `json:"wiederholung,omitempty"`
 }
 
 // vorlage ist die Gebäude-Vorlage (Glossar): Absicht neben den Koordinaten, damit eine Session das Gebäude neu erzeugen kann.
@@ -190,6 +192,9 @@ func build(file, prefix string, out map[string]*image.Paletted) (eintrag, error)
 		return eintrag{}, fmt.Errorf("%s: %w", file, err)
 	}
 	if err := pruefeVorlage(b.Vorlage); err != nil {
+		return eintrag{}, fmt.Errorf("%s: %w", file, err)
+	}
+	if err := wiederholungenAufloesen(&b); err != nil {
 		return eintrag{}, fmt.Errorf("%s: %w", file, err)
 	}
 	if want := strings.TrimSuffix(filepath.Base(file), ".json"); b.ID != want {
