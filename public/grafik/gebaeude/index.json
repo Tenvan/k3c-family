@@ -478,6 +478,91 @@
     }
   },
   {
+    "id": "tor",
+    "kacheln": {
+      "b": 2,
+      "h": 4
+    },
+    "vorlage": {
+      "motiv": "Tor einer Mauerlinie, 2 Kacheln breit und 4 hoch, niedriger als die Mauer; der Rahmen wechselt das Material mit der Stufe der Mauer, die Flügel bleiben Holz",
+      "teile": [
+        "Zwei kleine Zinnen links und rechts oben",
+        "Sturz über die ganze Breite",
+        "Pfosten links und rechts, Licht links, Schatten rechts",
+        "Zwei Holzflügel mit Bohlen, Mittelfuge und Beschlägen",
+        "Zwei Querriegel über beide Flügel",
+        "Sockel unten"
+      ],
+      "materialien": [
+        "Holz (Wand, Tresen, Gestell)",
+        "Stein (Kamin, Esse, Sockel, Stufe)",
+        "Kupfer (Mauer-, Turmstufe 3)",
+        "Eisen hell (Mauer-, Turmstufe 4)",
+        "Kristall (Mauer-, Turmstufe 5)"
+      ],
+      "stimmung": "wehrhaft und zur Mauer passend; gleiche Farbstufen wie Mauer und Turm",
+      "fein": "Bohlenfugen, Beschläge, Rahmen-Quaderfugen, Nieten"
+    },
+    "dateien": {
+      "128": "grafik/gebaeude/tor-1-128.png",
+      "16": "grafik/gebaeude/tor-1-16.png",
+      "32": "grafik/gebaeude/tor-1-32.png",
+      "64": "grafik/gebaeude/tor-1-64.png"
+    },
+    "stufen": [
+      {
+        "stufe": 1,
+        "aenderung": "Grundform",
+        "dateien": {
+          "128": "grafik/gebaeude/tor-1-128.png",
+          "16": "grafik/gebaeude/tor-1-16.png",
+          "32": "grafik/gebaeude/tor-1-32.png",
+          "64": "grafik/gebaeude/tor-1-64.png"
+        }
+      },
+      {
+        "stufe": 2,
+        "aenderung": "Stein: Rahmen, Sturz und Zinnen aus grauen Quadern, Holzflügel bleiben",
+        "dateien": {
+          "128": "grafik/gebaeude/tor-2-128.png",
+          "16": "grafik/gebaeude/tor-2-16.png",
+          "32": "grafik/gebaeude/tor-2-32.png",
+          "64": "grafik/gebaeude/tor-2-64.png"
+        }
+      },
+      {
+        "stufe": 3,
+        "aenderung": "Kupfer: kupferner Rahmen mit Patina-Tupfen, Kupferbeschläge an den Flügeln",
+        "dateien": {
+          "128": "grafik/gebaeude/tor-3-128.png",
+          "16": "grafik/gebaeude/tor-3-16.png",
+          "32": "grafik/gebaeude/tor-3-32.png",
+          "64": "grafik/gebaeude/tor-3-64.png"
+        }
+      },
+      {
+        "stufe": 4,
+        "aenderung": "Eisen: Stahlrahmen, zwei Eisenbänder mit Nieten quer über beide Flügel",
+        "dateien": {
+          "128": "grafik/gebaeude/tor-4-128.png",
+          "16": "grafik/gebaeude/tor-4-16.png",
+          "32": "grafik/gebaeude/tor-4-32.png",
+          "64": "grafik/gebaeude/tor-4-64.png"
+        }
+      },
+      {
+        "stufe": 5,
+        "aenderung": "Kristall: blauer Kristallrahmen mit leuchtenden Fugen, Kristallspitzen auf den Zinnen, leuchtendes Runenband auf dem Sturz, dunkle Kristallbänder über beiden Flügeln",
+        "dateien": {
+          "128": "grafik/gebaeude/tor-5-128.png",
+          "16": "grafik/gebaeude/tor-5-16.png",
+          "32": "grafik/gebaeude/tor-5-32.png",
+          "64": "grafik/gebaeude/tor-5-64.png"
+        }
+      }
+    ]
+  },
+  {
     "id": "turm",
     "kacheln": {
       "b": 3,

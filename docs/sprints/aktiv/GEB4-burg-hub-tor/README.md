@@ -74,7 +74,7 @@ Lager, Farm, Kaserne, Treppen (GEB5); Natur und Objekte (GEB6); Animationen (Ban
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
 | GEB4.1 | `GEB4.1-burg-stufen.md` | Umsetzung | autonom | fertig |
-| GEB4.2 | `GEB4.2-tor-stufen.md` | Umsetzung | autonom | in Arbeit |
+| GEB4.2 | `GEB4.2-tor-stufen.md` | Umsetzung | autonom | fertig |
 | GEB4.3 | `GEB4.3-burg-tor-spiel.md` | Umsetzung | autonom | offen |
 | GEB4.4 | `GEB4.4-review-abnahme.md` | Review | autonom | offen |
 

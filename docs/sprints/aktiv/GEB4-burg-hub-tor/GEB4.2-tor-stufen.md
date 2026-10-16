@@ -1,6 +1,6 @@
 # GEB4.2 · Tor 1 bis 5 passend zur Mauer
 
-- **Status:** in Arbeit
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** DEV
@@ -55,5 +55,8 @@ Keine manuellen Prüfungen; die Sichtprüfung gehört GEB4.4.
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+2026-10-16, Claude (Lead im Team „geb4-geb5“, Ralf im Chat).
+- Ein Teil lief im Rückfall: k3c-dev war kurz nicht erreichbar, deshalb wurde der Status „in Arbeit“ von Hand gesetzt und mit `task test -- planning` geprüft (645 grün).
+- AC-02/AC-04 umgesetzt: `tor.json` (2 × 4, Vorlage). Rahmen, Sturz und Zinnen wechseln mit dem Farbtausch der Mauer, die Holzflügel (`stinger`) bleiben in jeder Stufe Holz. Stufe 2 bringt Stein-Quader, Stufe 3 Kupfer mit Patina und Beschlägen, Stufe 4 Eisenbänder mit Nieten, Stufe 5 Kristallspitzen, ein Runenband und dunkle Kristallbänder. `tor-<n>-32.png` haben je 64 × 128 px, dazu kommen 16/64/128. Ein zweiter Lauf ist md5-gleich, die älteren PNGs sind unverändert. Das Vergleichsbild Mauer neben Tor je Stufe ist gesichtet.
+- Regeldatei: § 1 (Maße Tor), § 4 (Bausteine `sturz`, `fluegel`, `riegel`).
+- Checks: `task check` und `task check:go` grün. Review (Sonnet-Agent): keine schweren Befunde; Stufe-5-Text präzisiert.
