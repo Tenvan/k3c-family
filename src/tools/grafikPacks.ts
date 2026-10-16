@@ -139,15 +139,6 @@ export const GRAFIK_PACKS: readonly GrafikPack[] = [
   },
   // GR2.3 (B-162): Auswahl von 🧑 in GR2.2, Recherche in docs/funde/gr2-grafik-funde.html
   {
-    id: 'phantasy-dungeon-entrance',
-    name: 'Phantasy Dungeon Entrance',
-    artist: ZUNO,
-    license: 'CC0 1.0',
-    source: 'https://opengameart.org/content/phantasy-dungeon-entrance',
-    covers: ['Treppe runter (Verlies-Eingang)'],
-    note: 'Ein Kampf-Hintergrund 368x208 als zwei Ebenen (mit und ohne Schädel); Aseprite-Quelle nicht übernommen.',
-  },
-  {
     id: 'tent-8',
     name: 'Tent',
     artist: 'CDmir (OpenGameArt-Uploader)',

@@ -63,7 +63,7 @@ Viele dieser Objekte gibt es noch nicht im Code (B-112, B-114); dann ist die Her
 | `vein:copper` | `docs/rules/materialien-gebaeude.md` § 1 (Adern) | `grafik/various-stones-and-oregem-veins-16x16` | Erz-Sheet Zeile 2, Spalte 1–5 | 16 px, vico (hell, gesättigt), ×2 | CC0 1.0 | zugeordnet |
 | `vein:iron` | `docs/rules/materialien-gebaeude.md` § 1 (Adern) | `grafik/various-stones-and-oregem-veins-16x16` | Erz-Sheet Zeile 3, Spalte 1–5 (helles Erz als Eisen gedeutet) | 16 px, vico (hell, gesättigt), ×2 | CC0 1.0 | zugeordnet |
 | `vein:crystal` | `docs/rules/materialien-gebaeude.md` § 1 (Adern) | `grafik/various-stones-and-oregem-veins-16x16` | Erz-Sheet Zeile 9, Spalte 1–5 | 16 px, vico (hell, gesättigt), ×2 | CC0 1.0 | zugeordnet |
-| `plantation` | `docs/rules/materialien-gebaeude.md` § 1 (Farm-Plantage) | – | – (kein Treffer in GR2.2; SA-Kandidaten ausgeschlossen) | Ziel: 16 px, ×2 (Q13) | Ziel: CC0 oder CC-BY | **Lücke: kein Treffer, Platzhalter, B-162** |
+| `plantation` | `docs/rules/materialien-gebaeude.md` § 1 (Farm-Plantage) | `grafik/gebaeude` | `setzling-32.png` (1 × 1 Kachel, leerer Platz; gewachsen: `pappel-32.png`) | eigene Grafik (`tools/gebaeude`), 32 px je Kachel, ×1; GEB5 | eigen | zugeordnet |
 
 ## Truhen, Portale, Münzen, Ausgang
 

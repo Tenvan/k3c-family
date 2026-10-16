@@ -1,6 +1,6 @@
 # GEB5.4 · Gebäude und Plantage im Spiel, alte Grafik gelöscht
 
-- **Status:** in Arbeit
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** CLI
@@ -62,5 +62,9 @@ Keine manuellen Prüfungen; der Blick ins Spiel gehört GEB5.5.
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+- **AC-05 geprüft (Vitest):** `buildingSprites.test.ts`: Lager, Kaserne, Farm, Treppe hoch, Treppe runter → `gebaeude/<id>-32.png`, Maßstab 1; Treppe hoch ein Bild (`STAIRS_UP_TILES`, `grafik:stairs*`-Kacheln und `FRAMES` in `siteView.ts` entfallen, `createSiteView` nutzt für alle Gebäude ein `Image`); `plantation.test.ts`: 6 Plätze an den `plotX`-Positionen, leer/Baum, Farm im Bau → keine Plätze, Waldbaum und Fels neben/auf einem Platz → kein Plantage-Baum. Register `storage`, `farm`, `barracks`, `stairsUp`, `stairsDown`, `plantation` → neue PNGs, `assets.test.ts` grün.
+- **AC-02 (Spiel-Teil) umgesetzt/geprüft:** `plantation.ts` rechnet leere Plätze aus Farm-Position und `farm.plantation` (gleiche Formel wie `plotX` in Go); `worldRenderer.ts` zeichnet auf leeren Plätzen `grafik:setzling`, Bäume auf Plätzen als `grafik:pappel` (Tiefe 3, vor der Farm); Waldbäume bleiben `node:tree`. Pfad im Code und Test belegt, nicht im Browser angesehen.
+- **AC-06 geprüft:** gelöscht: `crate-stack`, `house-a`, `house-c`, `stairs-left`, `stairs`, `stairs-right` (gothicvania-town), `dungeon-door`, `dungeon-door-skull` und damit der Pack `phantasy-dungeon-entrance` samt LICENSE; bereinigt: `public/grafik/index.json`, `CREDITS.md`, `src/tools/grafikPacks.ts` (+ Test 38 Packs), `docs/assets/zuordnung-objekte.md` und `-welt.md`, B-435 › Notizen, `src/scenes/codemap.md`; Fixtures und Mocks in `tools/k3c-dev` und `assetvorschauLogic.test.ts` auf `well`, `wagon`, `crate` umgestellt. `git grep` nach den Namen ohne Treffer außerhalb von `docs/funde`, `docs/sprints`, `docs/backlog` (einziger Rest: Negativ-Test auf `grafik:stairs`). Die übrigen Treppen-Kacheln des Packs (`stairs-mirror*`, `stairs-wall*`) sind unbenutzt, standen aber nicht in der Spec und bleiben.
+- **Prüfen:** `check_run task:check` grün, `task:check:go` grün; `dev:test` im Ganzen rot durch zwei nicht zugehörige Fälle: `TestRepo` (GEB7 Entwurf ohne Sessions, schon auf `develop`, neues Ticket B-448) und `TestSprintDomaeneFolgtSessions` (Windows-Rename „Access denied“, einzeln wiederholt grün, Flake); die geänderten `TestAssets*` grün.
+- **Review:** getrennter Reviewer (Formel gegen Go, Layer-Sync, tote Verweise, Regeln): keine schweren Befunde.
+- Manuell geprüft hat niemand (Sichtprüfung gehört GEB5.5/Ralf). Neue Tickets: B-448.

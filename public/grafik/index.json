@@ -149,13 +149,6 @@
  {
   "pack": "gothicvania-town",
   "group": "tileset-einzeln",
-  "file": "tileset-einzeln/stairs-left.png",
-  "w": 16,
-  "h": 32
- },
- {
-  "pack": "gothicvania-town",
-  "group": "tileset-einzeln",
   "file": "tileset-einzeln/stairs-mirror-left.png",
   "w": 16,
   "h": 32
@@ -171,13 +164,6 @@
   "pack": "gothicvania-town",
   "group": "tileset-einzeln",
   "file": "tileset-einzeln/stairs-mirror.png",
-  "w": 16,
-  "h": 32
- },
- {
-  "pack": "gothicvania-town",
-  "group": "tileset-einzeln",
-  "file": "tileset-einzeln/stairs-right.png",
   "w": 16,
   "h": 32
  },
@@ -220,13 +206,6 @@
   "pack": "gothicvania-town",
   "group": "tileset-einzeln",
   "file": "tileset-einzeln/stairs-wall.png",
-  "w": 16,
-  "h": 32
- },
- {
-  "pack": "gothicvania-town",
-  "group": "tileset-einzeln",
-  "file": "tileset-einzeln/stairs.png",
   "w": 16,
   "h": 32
  },
@@ -296,30 +275,9 @@
  {
   "pack": "gothicvania-town",
   "group": "props-einzeln",
-  "file": "props-einzeln/crate-stack.png",
-  "w": 73,
-  "h": 68
- },
- {
-  "pack": "gothicvania-town",
-  "group": "props-einzeln",
   "file": "props-einzeln/crate.png",
   "w": 39,
   "h": 35
- },
- {
-  "pack": "gothicvania-town",
-  "group": "props-einzeln",
-  "file": "props-einzeln/house-a.png",
-  "w": 168,
-  "h": 183
- },
- {
-  "pack": "gothicvania-town",
-  "group": "props-einzeln",
-  "file": "props-einzeln/house-c.png",
-  "w": 221,
-  "h": 183
  },
  {
   "pack": "gothicvania-town",
@@ -810,20 +768,6 @@
   "file": "vorschau/Fort-of-Illusionx3.png",
   "w": 2685,
   "h": 816
- },
- {
-  "pack": "phantasy-dungeon-entrance",
-  "group": "ebenen",
-  "file": "ebenen/dungeon-door-skull.png",
-  "w": 368,
-  "h": 208
- },
- {
-  "pack": "phantasy-dungeon-entrance",
-  "group": "ebenen",
-  "file": "ebenen/dungeon-door.png",
-  "w": 368,
-  "h": 208
  },
  {
   "pack": "tent-8",

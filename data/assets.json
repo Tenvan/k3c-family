@@ -63,7 +63,7 @@
       "beschreibung": "Gebäude: storage",
       "wahl": [
         {
-          "datei": "grafik/gothicvania-town/props-einzeln/crate-stack.png"
+          "datei": "grafik/gebaeude/lager-32.png"
         }
       ]
     },
@@ -74,7 +74,7 @@
       "beschreibung": "Gebäude: farm",
       "wahl": [
         {
-          "datei": "grafik/gothicvania-town/props-einzeln/house-a.png"
+          "datei": "grafik/gebaeude/farm-32.png"
         }
       ]
     },
@@ -85,7 +85,7 @@
       "beschreibung": "Gebäude: barracks",
       "wahl": [
         {
-          "datei": "grafik/gothicvania-town/props-einzeln/house-c.png"
+          "datei": "grafik/gebaeude/kaserne-32.png"
         }
       ]
     },
@@ -96,7 +96,7 @@
       "beschreibung": "Gebäude: stairsUp",
       "wahl": [
         {
-          "datei": "grafik/gothicvania-town/tileset-einzeln/stairs-left.png"
+          "datei": "grafik/gebaeude/treppe-hoch-32.png"
         }
       ]
     },
@@ -107,7 +107,7 @@
       "beschreibung": "Gebäude: stairsDown",
       "wahl": [
         {
-          "datei": "grafik/phantasy-dungeon-entrance/ebenen/dungeon-door.png"
+          "datei": "grafik/gebaeude/treppe-runter-32.png"
         }
       ]
     },
@@ -759,7 +759,11 @@
       "art": "grafik",
       "kategorie": "objekte",
       "beschreibung": "Materialien und Adern: plantation",
-      "wahl": []
+      "wahl": [
+        {
+          "datei": "grafik/gebaeude/setzling-32.png"
+        }
+      ]
     },
     {
       "id": "pickup:chest",

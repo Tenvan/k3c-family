@@ -3,7 +3,7 @@ import { GROUND_Y, UNIT_PX } from '../core/constants';
 import { currentLanguage, nameOf, t } from '../core/texts';
 import { BUILDINGS, TROOPS } from '../model/data';
 import type { Site, World } from '../model/types';
-import { BUILDING_TEXTURES, STAIRS_UP_TILES, hubTexture, siteTexture, textureScale } from './buildingSprites';
+import { BUILDING_TEXTURES, hubTexture, siteTexture, textureScale } from './buildingSprites';
 import { fontStyle } from './fontRules';
 import { gateStage } from './gateRules';
 import { drawSiteStatus, siteStatus, statusKey } from './siteStatusView';
@@ -15,11 +15,8 @@ import { canAfford } from './viewRules';
  */
 
 type View = Phaser.GameObjects.Container;
-type Picture = Phaser.GameObjects.Image | Phaser.GameObjects.Container;
 
 const G = GROUND_Y;
-/** Pixel-Art ganzzahlig ×2 (Q13: 16-px-Raster auf UNIT_PX = 32) */
-const ZOOM = 2;
 export const TEXT = { stroke: '#000000', strokeThickness: 4, fontStyle: 'bold' };
 
 const SITE_SIZE: Record<Site['kind'], [number, number]> = {
@@ -53,24 +50,14 @@ const SITE_COLOR: Record<Site['kind'], number> = {
   armory: 0x5c677d,
 };
 
-/** Ausschnitte aus Kachelsätzen (Pixel im Bild): Verlies-Eingang aus dem Dungeon-Bild */
-const FRAMES: Record<string, [string, number, number, number, number][]> = {
-  'grafik:stairsDown': [['entrance', 96, 0, 176, 112]],
-};
-
 /** Nur die zugeordneten Gebäude-Grafiken laden (LoadScene.preload) */
 export function preloadBuildings(scene: Phaser.Scene): void {
   for (const [key, file] of Object.entries(BUILDING_TEXTURES)) scene.load.image(key, `grafik/${file}`);
 }
 
-/** Nach dem Laden: Pixel-Art scharf und Ausschnitte als Frames anlegen */
+/** Nach dem Laden: Pixel-Art scharf */
 export function prepareBuildings(scene: Phaser.Scene): void {
-  for (const key of Object.keys(BUILDING_TEXTURES)) {
-    if (!scene.textures.exists(key)) continue;
-    const texture = scene.textures.get(key);
-    texture.setFilter(Phaser.Textures.FilterMode.NEAREST);
-    for (const [name, x, y, w, h] of FRAMES[key] ?? []) if (!texture.has(name)) texture.add(name, 0, x, y, w, h);
-  }
+  for (const key of Object.keys(BUILDING_TEXTURES)) if (scene.textures.exists(key)) scene.textures.get(key).setFilter(Phaser.Textures.FilterMode.NEAREST);
 }
 
 const has = (scene: Phaser.Scene, key: string | null): key is string => key !== null && scene.textures.exists(key);
@@ -100,36 +87,21 @@ export function updateCastleView(scene: Phaser.Scene, v: View, stage: number): v
 
 export function createSiteView(scene: Phaser.Scene, s: Site): View {
   const [w, h] = SITE_SIZE[s.kind];
-  // Treppe hoch aus Kacheln, sonst ein Bild (Mauer seit GEB3 ebenfalls)
-  const picture: Picture = s.kind === 'stairsUp' ? stairsUp(scene) : scene.add.image(0, 0, '__DEFAULT').setOrigin(0.5, 1);
-  picture.setScale(ZOOM).setVisible(false);
+  const picture = scene.add.image(0, 0, '__DEFAULT').setOrigin(0.5, 1).setVisible(false);
   const g = scene.add.graphics();
   const label = scene.add.text(0, 0, '', { ...TEXT, ...fontStyle('priceTag') }).setOrigin(0.5, 1);
   return scene.add.container(s.x * UNIT_PX, G, [picture, g, label]).setDepth(2).setData('size', [w, h]);
 }
 
-/** Treppe hoch aus den Kacheln (je 16 nach rechts und 16 höher); fehlt eine Kachel, bleibt sie leer → Platzhalter */
-function stairsUp(scene: Phaser.Scene): Phaser.GameObjects.Container {
-  if (!STAIRS_UP_TILES.every((key) => scene.textures.exists(key))) return scene.add.container(0, 0);
-  const mid = (STAIRS_UP_TILES.length - 1) / 2;
-  return scene.add.container(0, 0, STAIRS_UP_TILES.map((key, i) => scene.add.image((i - mid) * 16, -i * 16, key).setOrigin(0.5, 1)));
-}
-
 /** Zeigt die Grafik, falls zugeordnet und geladen; liefert die Höhe für Schilder darüber (sonst Platzhalter-Höhe) */
 function showPicture(scene: Phaser.Scene, v: View, s: Site, stage: number): number | null {
-  const picture = v.getAt(0) as Picture;
+  const picture = v.getAt(0) as Phaser.GameObjects.Image;
   const key = siteTexture(s.kind, s.state, stage); // Mauer und Turm je Ausbau-Stufe (GEB3), Tor je Mauerlinie (GEB4)
-  const frame = key === null ? undefined : FRAMES[key]?.[0]?.[0];
-  const empty = picture instanceof Phaser.GameObjects.Container && picture.length === 0;
-  if (!has(scene, key) || empty) {
+  if (!has(scene, key)) {
     picture.setVisible(false);
     return null;
   }
-  if (picture instanceof Phaser.GameObjects.Container) {
-    picture.setVisible(true);
-    return picture.getBounds().height;
-  }
-  picture.setTexture(key, frame).setScale(textureScale(key)).setVisible(true);
+  picture.setTexture(key).setScale(textureScale(key)).setVisible(true);
   return picture.displayHeight;
 }
 
