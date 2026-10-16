@@ -6,6 +6,7 @@ import { type BackWall, backWalls } from './backWallRules';
 import { createBackWallView, updateBackWallView } from './backWallView';
 import { BuergerView } from './buergerView';
 import { createRider, updateRider } from './mountView';
+import { nodeSprite } from './natureSprites';
 import { objectImage } from './objectView';
 import { type Plot, isPlantationTree, plantationPlots } from './plantation';
 import { priceTagSites } from './priceTagRules';
@@ -23,6 +24,10 @@ const U = UNIT_PX;
 const G = GROUND_Y;
 /** Setzling und Plantage-Baum stehen vor der Farm (Bauplätze: Tiefe 2) */
 const PLANTATION_DEPTH = 3;
+/** Bildhöhe, auf die Fahne und Balken ohne Grafik zielen (Platzhalter-Form) */
+const PLACEHOLDER_NODE_HEIGHT = 158;
+/** Abstand der Ausgang-Beschriftung über der Oberkante des Ausgangs */
+const SIGN_GAP = 24;
 
 type View = Phaser.GameObjects.Container;
 type Sprite = Phaser.GameObjects.Sprite;
@@ -194,14 +199,14 @@ export class WorldRenderer {
       if (e.kind === 'portal') {
         this.put(objectImage(scene, 'portal', ex, G) ?? scene.add.ellipse(ex, G - 110, 110, 220, 0x7b2cbf).setStrokeStyle(6, 0x240046));
       } else if (e.kind === 'exit') {
-        this.put(objectImage(scene, 'exit', ex, G) ?? scene.add.rectangle(ex, G - 90, 160, 180, 0x111111).setStrokeStyle(6, 0x555555));
+        const door = objectImage(scene, 'exit', ex, G) ?? scene.add.rectangle(ex, G - 90, 160, 180, 0x111111).setStrokeStyle(6, 0x555555);
+        this.put(door);
         const deeper = hasDepth(world.biome.depth + 1);
-        this.put(scene.add.text(ex, G - 210, deeper ? t('exit.deeper', { depth: world.biome.depth + 1 }) : t('exit.blocked'), { ...TEXT, ...fontStyle('exitSign'), align: 'center' }).setOrigin(0.5));
+        this.put(scene.add.text(ex, G - door.displayHeight - SIGN_GAP, deeper ? t('exit.deeper', { depth: world.biome.depth + 1 }) : t('exit.blocked'), { ...TEXT, ...fontStyle('exitSign'), align: 'center' }).setOrigin(0.5));
       } else if (e.kind === 'bush') {
-        this.put(objectImage(scene, 'node:bush', ex, G) ?? scene.add.circle(ex, G - 14, 18, 0x40916c)); // Deko
+        this.put(objectImage(scene, 'node:bush', ex, G, nodeSprite('bush', e.x, world.biome.id)) ?? scene.add.circle(ex, G - 14, 18, 0x40916c)); // Deko
       } else if (e.kind === 'recruitCamp') {
         this.put(objectImage(scene, 'camp:recruit', ex, G) ?? scene.add.triangle(ex, G - 45, 0, 90, 60, 0, 120, 90, 0xe9c46a).setStrokeStyle(3, 0x7f5539));
-        this.put(objectImage(scene, 'camp:recruit:fire', ex + 90, G) ?? scene.add.circle(ex + 90, G - 10, 14, 0xf77f00)); // Lagerfeuer
       }
     }
   }
@@ -219,7 +224,8 @@ export class WorldRenderer {
     const parts: Phaser.GameObjects.GameObject[] = [];
     // Plantage-Baum (steht auf einem Platz): Pappel aus GEB1, vor der Farm; Waldbäume bleiben bei der Zuordnung (GEB6)
     const pappel = isPlantationTree(n, this.world.sites) && s.textures.exists('grafik:pappel');
-    const sprite = pappel ? s.add.image(0, 0, 'grafik:pappel').setOrigin(0.5, 1) : objectImage(s, `node:${n.kind}`, 0, 0); // Grafik aus der Zuordnung (GR3.2), sonst Platzhalter-Form
+    // Baumform aus der Position, Look aus dem Biom (GEB6); unbekannte Art oder fehlende Grafik: Platzhalter-Form
+    const sprite = pappel ? s.add.image(0, 0, 'grafik:pappel').setOrigin(0.5, 1) : objectImage(s, `node:${n.kind}`, 0, 0, nodeSprite(n.kind, n.x, this.world.biome.id));
     if (sprite) parts.push(sprite);
     else if (n.kind === 'tree') {
       parts.push(s.add.rectangle(0, -40, 14, 80, 0x6b4226), s.add.triangle(0, -110, 0, 90, 40, 0, 80, 90, 0x2d6a4f));
@@ -230,9 +236,11 @@ export class WorldRenderer {
     } else {
       parts.push(s.add.circle(0, -14, 18, 0x40916c)); // Busch
     }
-    const flag = s.add.rectangle(10, -170, 24, 14, 0xd00000).setOrigin(0, 0.5);
-    const pole = s.add.rectangle(10, -160, 3, 30, 0xffffff);
-    return s.add.container(n.x * U, G, [...parts, pole, flag, ...bar(s, -190, 50, 0xffd166)]).setDepth(pappel ? PLANTATION_DEPTH : 0);
+    // Fahne und Balken sitzen über der Bildhöhe (Platzhalter: wie früher 170 px)
+    const top = -(sprite ? sprite.displayHeight : PLACEHOLDER_NODE_HEIGHT);
+    const flag = s.add.rectangle(10, top - 12, 24, 14, 0xd00000).setOrigin(0, 0.5);
+    const pole = s.add.rectangle(10, top - 2, 3, 30, 0xffffff);
+    return s.add.container(n.x * U, G, [...parts, pole, flag, ...bar(s, top - 32, 50, 0xffd166)]).setDepth(pappel ? PLANTATION_DEPTH : 0);
   }
 
   private updateNode(v: View, n: ResourceNode): void {

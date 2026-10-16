@@ -1,6 +1,6 @@
 # GEB6.5 · Natur und Objekte im Spiel, alte Grafik gelöscht
 
-- **Status:** in Arbeit
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** CLI
@@ -48,10 +48,10 @@ Keine Sim-, Protokoll- oder Spielstand-Änderung, keine Änderung an den PNGs un
 
 ## Fertig, wenn
 
-- [ ] AC-02: Register `data/assets.json` und `worldSprites.ts` ordnen `node:tree`, `node:rock`, `node:copperOre`, `node:bush`, `vein:*`, `pickup:chest`, `portal`, `exit`, `camp:recruit` den neuen PNGs zu (Maßstab 1; `zuordnung.test.ts` grün).
-- [ ] AC-05: Vitest für `treeTexture`, `natureLook`, `veinSlot` (siehe Schritt 3); Ader-Knoten zeigen `vein:*` (Test oder im Code belegter Pfad); Plantage-Bäume bleiben Pappel; Fahne, Balken und Ausgang-Beschriftung sitzen über der neuen Bildhöhe (im Code belegt); kein `Math.random()` in der Baumwahl.
-- [ ] AC-06: alte Grafik gelöscht, Erz-Blatt und `icons/8.png` bleiben; Index, CREDITS, `grafikPacks.ts`, LICENSE, Zuordnungs-Doku, Tests, Mocks bereinigt; Suche (`git grep`) ohne Treffer außerhalb historischer Doku.
-- [ ] `task check` und `task check:go` grün.
+- [x] AC-02: Register `data/assets.json` und `worldSprites.ts` ordnen `node:tree`, `node:rock`, `node:copperOre`, `node:bush`, `vein:*`, `pickup:chest`, `portal`, `exit`, `camp:recruit` den neuen PNGs zu (Maßstab 1; `zuordnung.test.ts` grün).
+- [x] AC-05: Vitest für `treeTexture`, `natureLook`, `veinSlot` (siehe Schritt 3); Ader-Knoten zeigen `vein:*` (Test oder im Code belegter Pfad); Plantage-Bäume bleiben Pappel; Fahne, Balken und Ausgang-Beschriftung sitzen über der neuen Bildhöhe (im Code belegt); kein `Math.random()` in der Baumwahl.
+- [x] AC-06: alte Grafik gelöscht, Erz-Blatt und `icons/8.png` bleiben; Index, CREDITS, `grafikPacks.ts`, LICENSE, Zuordnungs-Doku, Tests, Mocks bereinigt; Suche (`git grep`) ohne Treffer außerhalb historischer Doku.
+- [x] `task check` und `task check:go` grün.
 
 ## Prüfen
 
@@ -65,5 +65,7 @@ Die Suche darf nur Treffer liefern, die zu bewusst behaltenen Dateien gehören (
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+- **AC-02 umgesetzt, geprüft (Vitest `natureSprites.test.ts`, `worldSprites.test.ts`):** `src/scenes/natureSprites.ts` (neu) und `worldSprites.ts` ordnen `node:tree`, `node:rock`, `node:copperOre`, `node:bush`, `vein:*`, `pickup:chest`, `portal`, `exit`, `camp:recruit` den PNGs aus `public/grafik/gebaeude/` zu (Maßstab 1; Test: jeder Schlüssel ist geladen, jede Datei existiert). Register `data/assets.json` über `assets_set` (nur diese 12 Slots; Baum = `tanne-32.png`, Fels = `felsen-1-32.png`, Adern = `ader-1…4-32.png`). Portal und Lagerfeuer-Flammen sind statisch, `camp:recruit:fire` und die Animation von `portal` sind entfernt.
+- **AC-05 umgesetzt, geprüft (Vitest):** `treeTexture(x, biomeId)` wählt Art und Form aus der gerundeten Position (ganzzahliger Hash, kein `Math.random()`), im Wald alle neun Bäume, in Höhle und Mine nur die sechs Formen 2 und 3 im Look Höhle; `natureLook` (Wald 1, Höhle 2, Mine, Eisenstollen, Kristallhöhle und neue Biome 3, fehlende ID 1); `veinSlot`/`nodeSprite` (vier Adern nach Material, unbekannt `null`). `worldRenderer.createNode` nutzt `nodeSprite`; die Plantage-Pappel (`isPlantationTree`) bleibt unverändert. Fahne, Balken und Ausgang-Beschriftung folgen der Bildhöhe (`displayHeight`; Platzhalter wie zuvor 158 px bzw. Abstand 24 px). Im Code belegt, nicht im Browser gesehen (AC-03 gehört 🧑).
+- **AC-06 umgesetzt, geprüft (`git grep`):** gelöscht sind die Packs `portals-32-x-48`, `tent-8`, `16x16-animated-campfire`, `k3c-paletten` ganz sowie `gotthicvania-swamp/umgebung/trees.png` und `sunnyland-tall-forest-environment/props/Plant.png`, dazu ihre Einträge in `public/grafik/index.json`, `CREDITS.md`, `src/tools/grafikPacks.ts` (Test von 38 auf 34 Packs angepasst), `docs/assets/zuordnung-welt.md` und `zuordnung.md`. Bewusst behalten: das Erz-Blatt (genutzt von `material:*`) und `icons/8.png` (`icon:8`); die übrigen Dateien der Packs `gotthicvania-swamp` und `sunnyland-tall-forest-environment` (nicht ersetzt, `bg:forest` nennt dort Alternativen). `git grep` (ohne `docs/sprints`, `docs/backlog`, `docs/funde`) nach den gelöschten Pfaden: keine Treffer. `task check` und `task check:go` grün.
+- **Abweichungen/Hinweise:** `src/scenes/codemap.md` nachgezogen. Der Fels hat für `ironhold` und `crystal` den Look Mine (Offene Frage 6). Niemand hat manuell geprüft.

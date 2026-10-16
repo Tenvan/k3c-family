@@ -13,7 +13,6 @@ Lizenz **CC0 1.0** (gemeinfrei): Namensnennung nicht nötig, aber erwünscht. Au
 | gothicvania-town | GothicVania Town | Luis Zuno (ansimuz) | CC0 1.0 | https://opengameart.org/content/gothicvania-town |
 | gothicvania-church-pack | GothicVania Church Pack | Luis Zuno (ansimuz) | CC0 1.0 | https://opengameart.org/content/gothicvania-church-pack |
 | various-stones-and-oregem-veins-16x16 | Various stones and ore/gem veins 16x16 | vico (OpenGameArt-Uploader) | CC0 1.0 | https://opengameart.org/content/various-stones-and-oregem-veins-16x16 |
-| portals-32-x-48 | Portals 32 x 48 | Rusher_go (OpenGameArt-Uploader) | CC0 1.0 | https://opengameart.org/content/portals-32-x-48 |
 | 16x16-small-and-medium-coin-animation | 16x16 Small and Medium Coin Animation | WolfTech (OpenGameArt-Uploader) | CC0 1.0 | https://opengameart.org/content/16x16-small-and-medium-coin-animation |
 | gold-treasure-icons-16x16 | Gold treasure icons 16x16 | Bonsaiheldin | CC0 1.0 | https://opengameart.org/content/gold-treasure-icons-16x16 |
 | sunnyland-tall-forest-environment | SunnyLand Tall Forest Environment | Luis Zuno (ansimuz) | CC0 1.0 | https://opengameart.org/content/sunnyland-tall-forest-environment |
@@ -22,12 +21,9 @@ Lizenz **CC0 1.0** (gemeinfrei): Namensnennung nicht nötig, aber erwünscht. Au
 | blue-cave-background | Blue Cave Background | unbekannt | CC0 1.0 | https://opengameart.org/content/blue-cave-background |
 | sunnyland-fort-of-illusion | SunnyLand Fort of Illusion | Luis Zuno (ansimuz) | CC0 1.0 | https://opengameart.org/node/140912 |
 | warped-caves-pixel-art-pack | Warped Caves Pixel Art Pack | Luis Zuno (ansimuz) | CC BY 3.0 | https://opengameart.org/content/warped-caves-pixel-art-pack |
-| tent-8 | Tent | CDmir (OpenGameArt-Uploader) | CC0 1.0 | https://opengameart.org/content/tent-8 |
-| 16x16-animated-campfire | 16x16 Animated Campfire | krial (OpenGameArt-Uploader) | CC0 1.0 | https://opengameart.org/content/16x16-animated-campfire |
 | warped-super-grotto-escape-pack | Warped: Super Grotto Escape Pack | Luis Zuno (ansimuz) | CC0 1.0 | https://opengameart.org/content/warped-super-grotto-escape-pack |
 | resource-icons | Resource icons | Kutejnikov (OpenGameArt-Uploader) | CC0 1.0 | https://opengameart.org/content/resource-icons |
 | item-ruby-banana-star | Item Ruby, Banana, Star | mieki256 (OpenGameArt-Uploader) | CC0 1.0 | https://opengameart.org/content/item-ruby-banana-star |
-| k3c-paletten | K3C-Paletten (Farbvarianten aus GothicVania Town und SunnyLand Fort of Illusion) | Luis Zuno (ansimuz), Farbtausch K3C | CC0 1.0 | https://opengameart.org/content/gothicvania-town |
 | 16x16-block-texture-set | 16x16 Block Texture Set | ARoachIFoundOnMyPillow (OpenGameArt-Uploader) | CC0 1.0 | https://opengameart.org/content/16x16-block-texture-set |
 | 16x16-rpg-items-db32 | 16x16 RPG Items (DB32) | ARoachIFoundOnMyPillow | CC0 1.0 | https://opengameart.org/content/16x16-rpg-items-db32 |
 | 32-pixel-set-log-cabin | 32-pixel Set - Log Cabin | cyanowl | CC0 1.0 | https://opengameart.org/content/32-pixel-set-log-cabin |
@@ -55,10 +51,9 @@ Lizenz **CC0 1.0** (gemeinfrei): Namensnennung nicht nötig, aber erwünscht. Au
   (https://creativecommons.org/licenses/by/3.0/, Namensnennung, entfällt nur für Patreon-Unterstützer von ansimuz). Wir nutzen es vorsichtig unter CC BY 3.0 und nennen den Urheber: **Artwork created by Luis Zuno (@ansimuz)**.
 - **GothicVania Town, Church, Swamp und Warped Caves** enthalten Musik von Pascal Belisle (Namensnennung Pflicht, nicht CC0). Die Musik ist **nicht** im Repo.
 - **Blue Cave Background:** Urheber unbekannt; Lizenz laut Quellseite CC0. Vor einer Verwendung im Spiel den Urheber klären, falls möglich.
-- Packs ohne eigene Lizenzdatei (Stones, Portals, Coins, Blue Cave, Tent, Campfire, Resource icons, Item Ruby/Banana/Star): `LICENSE.txt` verweist auf die Lizenzangabe der Quellseite.
+- Packs ohne eigene Lizenzdatei (Stones, Coins, Blue Cave, Resource icons, Item Ruby/Banana/Star): `LICENSE.txt` verweist auf die Lizenzangabe der Quellseite.
 - **GR2.3 (B-162):** Die Packs ab Phantasy Dungeon Entrance wurden am 2026-10-04 geprüft und geladen (Auswahl GR2.2, `docs/funde/gr2-grafik-funde.html`).
 - **Phantasy Dungeon Entrance, Super Grotto Escape:** Die Lizenzdatei im Pack erlaubt Nutzung, Änderung und Weitergabe ohne Namensnennungspflicht, passend zu CC0 auf der Quellseite.
-- **k3c-paletten:** eigene Farbvarianten (nur Palettentausch, Q13) von Teilen aus `sunnyland-fort-of-illusion` (offenes Tor an die Palette von GothicVania Town angeglichen, heute nur noch der Ausgang `exit`). Quelle: https://opengameart.org/node/140912, CC0 1.0, Luis Zuno (ansimuz). Mauer und Turm sind seit GEB3, Burg und Tor seit GEB4 eigene Grafik (`gebaeude/`).
 - **Kandidaten (GR2.3, AC-06):** Die Packs ab 16x16 Block Texture Set sind nicht gewählte Kandidaten aus `docs/funde/gr2-grafik-funde.html`, am 2026-10-04 geprüft und geladen (Bildgruppe `kandidaten` in `index.json`). Sie sind im Spiel keinem Objekt zugeordnet. CC-BY-SA-Kandidaten (LPC Fruit Trees, 16px Items and Materials) sind nicht im Repo.
 - **Materials Pack:** CC BY 3.0 laut Quellseite und `readme.txt` im Pack (ein älterer Kommentar nennt CC-BY-SA 1.0 in einer früheren readme; die geladene Fassung ist CC BY 3.0). Namensnennung: **Materials Pack by xvideosman**.
 - **Plants and Flowers - Pixel Art:** CC BY 4.0 (https://creativecommons.org/licenses/by/4.0/), Urheber **peony**, Quelle https://opengameart.org/content/plants-and-flowers-pixel-art.

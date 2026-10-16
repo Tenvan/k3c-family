@@ -121,7 +121,7 @@ Keine blockiert den Start der Planung; jede Annahme gilt mit der Freigabe als be
 | GEB6.2 | `GEB6.2-fels-erzbrocken.md` | Umsetzung | autonom | fertig |
 | GEB6.3 | `GEB6.3-adern.md` | Umsetzung | autonom | fertig |
 | GEB6.4 | `GEB6.4-truhe-portal-lager.md` | Umsetzung | autonom | fertig |
-| GEB6.5 | `GEB6.5-zuordnung-aufraeumen.md` | Umsetzung | autonom | in Arbeit |
+| GEB6.5 | `GEB6.5-zuordnung-aufraeumen.md` | Umsetzung | autonom | fertig |
 | GEB6.6 | `GEB6.6-review-abnahme.md` | Review | autonom | offen |
 
 - GEB6.1 (DEV) Bäume: je 2 weitere Formen für Tanne, Pappel, Birke mit Looks Wald und Höhle, Busch 1 × 1; Material-Zeilen in § 3 und Biom-Look in § 6 (AC-01, AC-04).

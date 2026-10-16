@@ -1,6 +1,6 @@
 import Phaser from 'phaser';
 import { GAME_WIDTH, GROUND_Y } from '../core/constants';
-import { WORLD_FRAMES, WORLD_TEXTURES, biomeBackground, objectSprite } from './worldSprites';
+import { WORLD_TEXTURES, biomeBackground, objectSprite, type ObjectSprite } from './worldSprites';
 
 /** Lädt, bereitet vor und setzt die Welt-Grafiken aus worldSprites.ts (GR3.2). Zeichnet nur. */
 
@@ -12,15 +12,13 @@ export function preloadWorld(scene: Phaser.Scene): void {
   }
 }
 
-/** Nach dem Laden: Pixel-Art scharf, Ausschnitte und Animationen (Portal, Stern, Münze, Lagerfeuer) anlegen */
+/** Nach dem Laden: Pixel-Art scharf, Animationen (Stern, Münze) anlegen; Portal und Lager stehen still (GEB6) */
 export function prepareWorld(scene: Phaser.Scene): void {
   for (const key of Object.keys(WORLD_TEXTURES)) {
     if (!scene.textures.exists(key)) continue;
-    const texture = scene.textures.get(key);
-    texture.setFilter(Phaser.Textures.FilterMode.NEAREST);
-    for (const [name, x, y, w, h] of WORLD_FRAMES[key] ?? []) if (!texture.has(name)) texture.add(name, 0, x, y, w, h);
+    scene.textures.get(key).setFilter(Phaser.Textures.FilterMode.NEAREST);
   }
-  for (const id of ['portal', 'pickup:skillPoint', 'coin', 'camp:recruit:fire']) {
+  for (const id of ['pickup:skillPoint', 'coin']) {
     const s = objectSprite(id);
     if (!s || typeof s.frame !== 'number' || !scene.textures.exists(s.key) || scene.anims.exists(id)) continue;
     const frames = scene.anims.generateFrameNumbers(s.key, { start: s.frame, end: s.frame + s.frames - 1 });
@@ -28,9 +26,9 @@ export function prepareWorld(scene: Phaser.Scene): void {
   }
 }
 
-/** Sprite eines Objekts mit Fußpunkt (x, y); `null` = keine Grafik, dann zeichnet der Aufrufer die Platzhalter-Form */
-export function objectImage(scene: Phaser.Scene, id: string, x: number, y: number): Phaser.GameObjects.Sprite | null {
-  const s = objectSprite(id);
+/** Sprite eines Objekts mit Fußpunkt (x, y); `sprite` überschreibt die Zuordnung der ID (Biom-Look, Baumform: `natureSprites.ts`). `null` = keine Grafik, dann zeichnet der Aufrufer die Platzhalter-Form */
+export function objectImage(scene: Phaser.Scene, id: string, x: number, y: number, sprite?: ObjectSprite | null): Phaser.GameObjects.Sprite | null {
+  const s = sprite === undefined ? objectSprite(id) : sprite;
   if (!s || !scene.textures.exists(s.key)) return null;
   const image = scene.add.sprite(x, y, s.key, s.frame).setOrigin(0.5, 1).setScale(s.zoom);
   if (s.frames > 1 && scene.anims.exists(id)) image.play(id);
