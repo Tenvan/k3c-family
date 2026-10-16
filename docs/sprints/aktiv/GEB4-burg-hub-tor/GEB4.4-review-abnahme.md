@@ -53,5 +53,7 @@ Manuelle Prüfung im Browser-Pane nur mit Freigabe von 🧑 für diesen Lauf.
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+2026-10-16, Claude (Ralf im Chat), Zwischenstand.
+- `task check` und `task check:go` grün; Sprint-Diff gegen `origin/sprint/geb3` ohne schwere Befunde (keine älteren PNGs geändert, kein Zufall, alle Dateien ≤ 400 Zeilen; Reviews GEB4.1–GEB4.3 eingearbeitet).
+- Sichtprüfung: Ralf hat für diesen Lauf nur die Vorschau freigegeben. Claude hat `assetvorschau.html?szene=gebaeude` (Port 5183 seit #309) mit Burg 1–5 und Tor 1–5 gezeigt; Ralf: **Vorschau abgenommen**, Spiel offen (prüft Ralf selbst; Spielserver und Vite laufen).
+- Offen: AC-03 Teil Spiel, danach Abnahme-Abschnitt, Sprint abschließen, PR. Hinweis: Die Burg ist mit 8 Kacheln schmaler als der alte Aufbau (etwa 10).
