@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { BUILDING_TEXTURES, STAIRS_UP_TILES, backWallTexture, hubTexture, siteTexture, textureScale } from './buildingSprites';
+import { BUILDING_TEXTURES, backWallTexture, hubTexture, siteTexture, textureScale } from './buildingSprites';
 
 /** Nur die Pfade, nichts wird geladen */
 const FILES = Object.keys(import.meta.glob('../../public/grafik/**/*.png'));
@@ -10,26 +10,28 @@ describe('Gebäude-Grafik (GR3.1)', () => {
     expect(siteTexture('wall', 'built')).toBe('grafik:wall-1');
   });
 
-  it('Treppe hoch steht aus Treppen-Kacheln: Anfang, Mitte, Ende', () => {
-    expect(siteTexture('stairsUp', 'built')).toBe('grafik:stairs');
-    expect(STAIRS_UP_TILES[0]).toBe('grafik:stairs-left');
-    expect(STAIRS_UP_TILES.at(-1)).toBe('grafik:stairs-right');
-    for (const key of STAIRS_UP_TILES) expect(BUILDING_TEXTURES).toHaveProperty([key]);
+  it('Treppe hoch ist ein Bild statt Kacheln (GEB5 AC-05)', () => {
+    expect(siteTexture('stairsUp', 'built')).toBe('grafik:stairsUp');
+    expect(BUILDING_TEXTURES['grafik:stairsUp']).toBe('gebaeude/treppe-hoch-32.png');
+    expect(Object.keys(BUILDING_TEXTURES).filter((k) => k === 'grafik:stairs' || k.startsWith('grafik:stairs-'))).toEqual([]);
   });
 
   it('Baustellen und Lücken zeichnen den Platzhalter (AC-03)', () => {
     for (const state of ['unpaid', 'waitingMaterial', 'waitingWorker'] as const) expect(siteTexture('workshop', state)).toBeNull();
   });
 
-  it('Gebäude aus tools/gebaeude: eigene 32-px-Grafik in Maßstab 1, Packs ×2 (GEB2 AC-02)', () => {
-    const neu = { workshop: 'werkstatt', tavern: 'taverne', healer: 'heilplatz', smithy: 'schmiede', armory: 'ruestkammer' } as const;
+  it('Gebäude aus tools/gebaeude: eigene 32-px-Grafik in Maßstab 1 (GEB2 AC-02, GEB5 AC-05)', () => {
+    const neu = { workshop: 'werkstatt', tavern: 'taverne', healer: 'heilplatz', smithy: 'schmiede', armory: 'ruestkammer', storage: 'lager', barracks: 'kaserne', farm: 'farm', stairsUp: 'treppe-hoch', stairsDown: 'treppe-runter' } as const;
     for (const [kind, id] of Object.entries(neu)) {
       const key = siteTexture(kind as keyof typeof neu, 'built');
       expect(key).not.toBeNull();
       expect(BUILDING_TEXTURES[key!]).toBe(`gebaeude/${id}-32.png`);
       expect(textureScale(key!)).toBe(1);
     }
-    expect(textureScale('grafik:barracks')).toBe(2);
+    for (const [key, id] of [['grafik:setzling', 'setzling'], ['grafik:pappel', 'pappel']] as const) {
+      expect(BUILDING_TEXTURES[key]).toBe(`gebaeude/${id}-32.png`); // Plantage (GEB5 AC-02)
+      expect(textureScale(key)).toBe(1);
+    }
   });
 
   it('Material-Stufen wählen das Sprite je Stufe, Lücken sind null (AC-04)', () => {

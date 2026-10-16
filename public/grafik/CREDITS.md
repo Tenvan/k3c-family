@@ -22,7 +22,6 @@ Lizenz **CC0 1.0** (gemeinfrei): Namensnennung nicht nötig, aber erwünscht. Au
 | blue-cave-background | Blue Cave Background | unbekannt | CC0 1.0 | https://opengameart.org/content/blue-cave-background |
 | sunnyland-fort-of-illusion | SunnyLand Fort of Illusion | Luis Zuno (ansimuz) | CC0 1.0 | https://opengameart.org/node/140912 |
 | warped-caves-pixel-art-pack | Warped Caves Pixel Art Pack | Luis Zuno (ansimuz) | CC BY 3.0 | https://opengameart.org/content/warped-caves-pixel-art-pack |
-| phantasy-dungeon-entrance | Phantasy Dungeon Entrance | Luis Zuno (ansimuz) | CC0 1.0 | https://opengameart.org/content/phantasy-dungeon-entrance |
 | tent-8 | Tent | CDmir (OpenGameArt-Uploader) | CC0 1.0 | https://opengameart.org/content/tent-8 |
 | 16x16-animated-campfire | 16x16 Animated Campfire | krial (OpenGameArt-Uploader) | CC0 1.0 | https://opengameart.org/content/16x16-animated-campfire |
 | warped-super-grotto-escape-pack | Warped: Super Grotto Escape Pack | Luis Zuno (ansimuz) | CC0 1.0 | https://opengameart.org/content/warped-super-grotto-escape-pack |

@@ -10,7 +10,7 @@ func katalog(t *testing.T) []Asset {
 	t.Helper()
 	root := repo(t)
 	writePNG(t, filepath.Join(root, "public", "sprites", "horse", "idle.png"), 100, 65)
-	writeFile(t, filepath.Join(root, "public", "grafik", "index.json"), `[{"pack":"town","group":"props","file":"house-a.png","w":64,"h":48}]`)
+	writeFile(t, filepath.Join(root, "public", "grafik", "index.json"), `[{"pack":"town","group":"props","file":"well.png","w":64,"h":48}]`)
 	writeFile(t, filepath.Join(root, "public", "grafik", "CREDITS.md"), "# Grafik\n\n| Ordner | Pack | Urheber | Lizenz | Quelle |\n|---|---|---|---|---|\n"+
 		"| town, `city` | GothicVania Town | Luis Zuno | CC0 1.0 | https://example.org/town |\n")
 	writeFile(t, filepath.Join(root, "public", "sprites", "CREDITS.md"), "| Ordner | Pack | Urheber | Lizenz | Quelle |\n|---|---|---|---|---|\n"+
@@ -31,9 +31,9 @@ func TestKatalogMitCredits(t *testing.T) {
 	for _, a := range list {
 		byFile[a.File] = a
 	}
-	house := byFile["grafik/town/house-a.png"]
+	house := byFile["grafik/town/well.png"]
 	if house.Pack != "town" || house.Group != "props" || house.W != 64 || house.H != 48 || house.Artist != "Luis Zuno" || house.Flag != "" {
-		t.Errorf("house-a: %+v", house)
+		t.Errorf("well: %+v", house)
 	}
 	if h := byFile["sprites/horse/idle.png"]; h.Flag != "NC" || h.W != 100 {
 		t.Errorf("horse: %+v", h)
@@ -66,7 +66,7 @@ func TestKatalogEigeneGebaeude(t *testing.T) {
 
 func TestKatalogSuche(t *testing.T) {
 	list := katalog(t)
-	if got := Search(list, "TOWN props", "", 0); len(got) != 1 || got[0].File != "grafik/town/house-a.png" {
+	if got := Search(list, "TOWN props", "", 0); len(got) != 1 || got[0].File != "grafik/town/well.png" {
 		t.Errorf("Suche town props: %+v", got)
 	}
 	if got := Search(list, "nc-sa", "", 0); len(got) != 1 {

@@ -13,8 +13,8 @@ import (
 func repo(t *testing.T) string {
 	t.Helper()
 	root := t.TempDir()
-	writePNG(t, filepath.Join(root, "public", "grafik", "town", "house-a.png"), 64, 48)
-	writePNG(t, filepath.Join(root, "public", "grafik", "town", "house-c.png"), 32, 32)
+	writePNG(t, filepath.Join(root, "public", "grafik", "town", "well.png"), 64, 48)
+	writePNG(t, filepath.Join(root, "public", "grafik", "town", "wagon.png"), 32, 32)
 	writeFile(t, filepath.Join(root, "public", "audio", "coin.ogg"), "ogg")
 	writeFile(t, filepath.Join(root, RegisterPath), `{
   "_comment": "Test",
@@ -55,7 +55,7 @@ func writePNG(t *testing.T, path string, w, h int) {
 // B-298/AC-02: mehrere Zuordnungen stehen in gesetzter Reihenfolge im Register und kommen so wieder heraus.
 func TestReihenfolgeImRegister(t *testing.T) {
 	root := repo(t)
-	want := []Choice{{File: "grafik/town/house-c.png"}, {File: "grafik/town/house-a.png"}}
+	want := []Choice{{File: "grafik/town/wagon.png"}, {File: "grafik/town/well.png"}}
 	if _, err := SetChoices(root, "farm", want); err != nil {
 		t.Fatal(err)
 	}
@@ -76,14 +76,14 @@ func TestReihenfolgeImRegister(t *testing.T) {
 func TestAusschnitt(t *testing.T) {
 	root := repo(t)
 	cut := &Rect{X: 0, Y: 0, W: 64, H: 48}
-	if _, err := SetChoices(root, "farm", []Choice{{File: "grafik/town/house-a.png", Cut: cut}}); err != nil {
+	if _, err := SetChoices(root, "farm", []Choice{{File: "grafik/town/well.png", Cut: cut}}); err != nil {
 		t.Fatal(err)
 	}
 	reg, _ := Load(root)
 	if got := reg.Find("farm").Choices[0].Cut; got == nil || *got != *cut {
 		t.Errorf("Ausschnitt %+v", got)
 	}
-	_, err := SetChoices(root, "farm", []Choice{{File: "grafik/town/house-a.png", Cut: &Rect{X: 40, Y: 0, W: 32, H: 48}}})
+	_, err := SetChoices(root, "farm", []Choice{{File: "grafik/town/well.png", Cut: &Rect{X: 40, Y: 0, W: 32, H: 48}}})
 	if err == nil || !strings.Contains(err.Error(), "außerhalb") {
 		t.Errorf("Ausschnitt außerhalb: %v", err)
 	}
@@ -137,7 +137,7 @@ func TestStatus(t *testing.T) {
 // Speichern behält das Format: zwei Leerzeichen, Umlaute im Klartext, Zeilenende \n.
 func TestSpeichernFormat(t *testing.T) {
 	root := repo(t)
-	if _, err := SetChoices(root, "farm", []Choice{{File: "grafik/town/house-a.png"}}); err != nil {
+	if _, err := SetChoices(root, "farm", []Choice{{File: "grafik/town/well.png"}}); err != nil {
 		t.Fatal(err)
 	}
 	b, _ := os.ReadFile(filepath.Join(root, RegisterPath))

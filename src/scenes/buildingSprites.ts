@@ -17,22 +17,20 @@ export const BUILDING_TEXTURES: Record<string, string> = {
   'grafik:healer': 'gebaeude/heilplatz-32.png',
   'grafik:smithy': 'gebaeude/schmiede-32.png',
   'grafik:armory': 'gebaeude/ruestkammer-32.png',
-  'grafik:storage': 'gothicvania-town/props-einzeln/crate-stack.png',
-  'grafik:farm': 'gothicvania-town/props-einzeln/house-a.png',
-  'grafik:barracks': 'gothicvania-town/props-einzeln/house-c.png',
-  'grafik:stairsDown': 'phantasy-dungeon-entrance/ebenen/dungeon-door.png',
-  'grafik:stairs-left': 'gothicvania-town/tileset-einzeln/stairs-left.png',
-  'grafik:stairs': 'gothicvania-town/tileset-einzeln/stairs.png',
-  'grafik:stairs-right': 'gothicvania-town/tileset-einzeln/stairs-right.png',
+  'grafik:storage': 'gebaeude/lager-32.png',
+  'grafik:farm': 'gebaeude/farm-32.png',
+  'grafik:barracks': 'gebaeude/kaserne-32.png',
+  'grafik:stairsUp': 'gebaeude/treppe-hoch-32.png',
+  'grafik:stairsDown': 'gebaeude/treppe-runter-32.png',
+  /** Plantage (GEB5): Setzling auf leerem Platz, Pappel auf gewachsenem Platz */
+  'grafik:setzling': 'gebaeude/setzling-32.png',
+  'grafik:pappel': 'gebaeude/pappel-32.png',
 };
 
 /** Burg, Mauer, Turm und Tor in den Stufen 1–5 aus `tools/gebaeude` (GEB3, GEB4): `grafik:<kind>-<n>` → `gebaeude/<id>-<n>-32.png` */
 function stufen(kind: string, id: string): Record<string, string> {
   return Object.fromEntries([1, 2, 3, 4, 5].map((n) => [`grafik:${kind}-${n}`, `gebaeude/${id}-${n}-32.png`]));
 }
-
-/** Treppe hoch aus 16×32-Kacheln, von unten links nach oben rechts je eine Kachel weiter und eine halbe höher */
-export const STAIRS_UP_TILES = ['grafik:stairs-left', 'grafik:stairs', 'grafik:stairs', 'grafik:stairs', 'grafik:stairs-right'];
 
 /** Material-Stufen 1–5 (Regel materialien-gebaeude.md § 3.1; Grafik GEB3, Turm 5 = Zaubertum; Tor GEB4 in der Stufe seiner Mauerlinie) */
 const STAGES: Partial<Record<SiteKind, string[]>> = {
@@ -55,8 +53,7 @@ const BASE: Partial<Record<SiteKind, string>> = {
   farm: 'grafik:farm',
   barracks: 'grafik:barracks',
   stairsDown: 'grafik:stairsDown',
-  /** steht für die ganze Kachel-Treppe (STAIRS_UP_TILES) */
-  stairsUp: 'grafik:stairs',
+  stairsUp: 'grafik:stairsUp',
 };
 
 /** Maßstab im Spiel: eigene Gebäude aus `tools/gebaeude` sind schon 32 px je Kachel (×1), die 16-px-Packs ×2 (GEB2) */

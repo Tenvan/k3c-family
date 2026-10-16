@@ -19,7 +19,7 @@ In Abarbeitungs-Reihenfolge; der erste nicht erledigte Sprint ist der nächste. 
 | GEB8 | Gebäude-Vorlagen in den Daten-JSONs | erledigt |
 | GEB3 | Mauer und Turm, Stufen 1 bis 5 | erledigt |
 | GEB4 | Burg und Hub-Stufen 1 bis 5, Tor | erledigt |
-| GEB5 | Lager, Farm mit Plantage, Kaserne, Treppen | aktiv |
+| GEB5 | Lager, Farm mit Plantage, Kaserne, Treppen | erledigt |
 | GEB6 | Natur und Objekte: Bäume, Fels, Erz, Adern, Truhe, Portal, Rekrutierungslager | geplant |
 | GEB7 | Hintergründe je Biom | geplant |
 
@@ -37,7 +37,7 @@ Umfang und Ist-Stand je Slot: B-435 › Notizen. Alle sieben Sprints sind als En
 - GEB4 Burg, Hub-Stufen 1–5 und Tor
 - GEB5 Lager, Farm samt Plantage, Kaserne, Treppen
 - GEB6 Natur und Objekte (Bäume, Fels, Erz, Busch, Adern, Truhe, Portal, Ausgang, Rekrutierungslager)
-- GEB7 Hintergründe je Biom (optional, nur wenn 🧑 will)
+- GEB7 Hintergründe je Biom (auf Wunsch von 🧑 am 2026-10-16 als Entwurf geplant: 15 Hintergrund-Schichten, Spec-Freigabe offen)
 
 Rang 3 (vor GRA und SND) von 🧑 am 2026-10-15 im Chat gesetzt.
 

@@ -24,11 +24,11 @@ Skalierung ×2 bis ×3, Nachbearbeitung nur Skalieren und Palette.
 | `healer` | `data/buildings.json` | `grafik/gebaeude` | `heilplatz-32.png` | 32 px je Kachel, eigene Grafik (`tools/gebaeude`), ×1; GEB2 | eigen | zugeordnet |
 | `smithy` | `data/buildings.json` | `grafik/gebaeude` | `schmiede-32.png` | 32 px je Kachel, eigene Grafik (`tools/gebaeude`), ×1; GEB2 | eigen | zugeordnet |
 | `armory` | `data/buildings.json` | `grafik/gebaeude` | `ruestkammer-32.png` | 32 px je Kachel, eigene Grafik (`tools/gebaeude`), ×1; GEB2 | eigen | zugeordnet |
-| `storage` | `data/buildings.json` | `grafik/gothicvania-town` | `props-einzeln/crate-stack.png` (73×68) | 16 px, Gothicvania (Dunkelviolett), ×2 | CC0 1.0 | zugeordnet |
-| `farm` | `data/buildings.json` | `grafik/gothicvania-town` | `props-einzeln/house-a.png` | 16 px, Gothicvania (Dunkelviolett), ×2; Entscheidung 🧑 GR2.2 | CC0 1.0 | zugeordnet |
-| `barracks` | `data/buildings.json` | `grafik/gothicvania-town` | `props-einzeln/house-c.png` | 16 px, Gothicvania (Dunkelviolett), ×2; Entscheidung 🧑 GR2.2 | CC0 1.0 | zugeordnet |
-| `stairsUp` | `data/buildings.json` | `grafik/gothicvania-town` | `tileset-einzeln/stairs*.png` (Treppen-Kacheln 16×32, 13 Dateien) | 16 px, Gothicvania (Dunkelviolett), ×2; Entscheidung 🧑 GR2.2 | CC0 1.0 | zugeordnet |
-| `stairsDown` | `data/buildings.json` | `grafik/phantasy-dungeon-entrance` | `ebenen/dungeon-door.png` (Ausschnitt Verlies-Eingang aus 368×208), Variante `ebenen/dungeon-door-skull.png` | 16 px, ansimuz (Braun), ×2; Vermerk: Palette weicht ab; Entscheidung 🧑 GR2.2 | CC0 1.0 | zugeordnet |
+| `storage` | `data/buildings.json` | `grafik/gebaeude` | `lager-32.png` (6 × 4 Kacheln) | 32 px je Kachel, eigene Grafik (`tools/gebaeude`), ×1; GEB5 | eigen | zugeordnet |
+| `farm` | `data/buildings.json` | `grafik/gebaeude` | `farm-32.png` (4 × 3 Kacheln) | 32 px je Kachel, eigene Grafik (`tools/gebaeude`), ×1; GEB5 | eigen | zugeordnet |
+| `barracks` | `data/buildings.json` | `grafik/gebaeude` | `kaserne-32.png` (6 × 4 Kacheln) | 32 px je Kachel, eigene Grafik (`tools/gebaeude`), ×1; GEB5 | eigen | zugeordnet |
+| `stairsUp` | `data/buildings.json` | `grafik/gebaeude` | `treppe-hoch-32.png` (4 × 4 Kacheln, ein Bild) | 32 px je Kachel, eigene Grafik (`tools/gebaeude`), ×1; GEB5 | eigen | zugeordnet |
+| `stairsDown` | `data/buildings.json` | `grafik/gebaeude` | `treppe-runter-32.png` (4 × 3 Kacheln) | 32 px je Kachel, eigene Grafik (`tools/gebaeude`), ×1; GEB5 | eigen | zugeordnet |
 
 ## Gegner
 
