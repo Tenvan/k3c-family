@@ -1,0 +1,31 @@
+{
+  "id": "hg-eisenstollen-fern",
+  "klasse": "hintergrund",
+  "vorlage": {
+    "motiv": "Ferner dunkler Fels mit gestuften Felsblöcken und niedrigen Gangbögen über einem Felsboden",
+    "teile": [
+      "Felsboden als durchgehendes Band (Bodenlinie)",
+      "Gestufte Felsblöcke in Valhalla, Abstand 6 Kacheln",
+      "Zwei Gangbögen als dunkle Öffnungen (Schwarz) zwischen den Blöcken",
+      "Feine Kantenlichter auf den Blöcken"
+    ],
+    "materialien": [
+      "Hintergrund Fels"
+    ],
+    "stimmung": "tief unten, kalt und rußig",
+    "fein": "Kantenlichter"
+  },
+  "kacheln": {
+    "b": 24,
+    "h": 15
+  },
+  "bausteine": [
+    {"art":"boden","rechteck":[0,12.5,24,2.5],"farbe":"loulou"},
+    {"art":"fels","rechteck":[0.5,8.5,5,4.0],"farbe":"valhalla","wiederholung":{"schritt":6,"anzahl":4}},
+    {"art":"fels","rechteck":[1.0,7.5,3,1.0],"farbe":"valhalla","wiederholung":{"schritt":6,"anzahl":4}},
+    {"art":"fels","rechteck":[1.5,6.75,1.5,0.75],"farbe":"valhalla","wiederholung":{"schritt":6,"anzahl":4}},
+    {"art":"bogen","rechteck":[3.5,10.5,2.0,2.0],"farbe":"black","wiederholung":{"schritt":6,"anzahl":3}},
+    {"art":"bogen","rechteck":[4.0,10.0,1.0,0.5],"farbe":"black","wiederholung":{"schritt":6,"anzahl":3}},
+    {"art":"licht","rechteck":[0.5,8.5,1.5,0.125],"farbe":"opal","fein":true,"wiederholung":{"schritt":6,"anzahl":4}}
+  ]
+}

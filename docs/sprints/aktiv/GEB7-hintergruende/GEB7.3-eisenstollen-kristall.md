@@ -1,6 +1,6 @@
 # GEB7.3 · Hintergründe Eisenstollen und Kristallhöhle
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** DEV
@@ -61,4 +61,8 @@ Mit laufender Workbench stattdessen `check_run` (mit `checkout`). Keine manuelle
 
 ## Ergebnis
 
-–
+- **AC-01 umgesetzt:** `hg-eisenstollen-*` und `hg-kristall-*` (je 24 × 15, `-16.png`, `-32.png`); damit liegen alle **15** Schichten vor (`index.json`); zweiter `task gebaeude`-Lauf byte-gleich, ältere PNGs md5-gleich (verglichen).
+- **AC-02 geprüft:** `TestKachelKlassen` grün für alle 15 Schichten.
+- **AC-04 geprüft:** nur DB32, Materialnamen aus § 3; Luma Eisenstollen 38,1 / 47,9 / 62,8, Kristall 39,2 / 52,0 / 63,1 (`TestHintergrundStufen` für alle fünf Biome grün); Bausteinarten in § 4.
+- `task check` grün, `task check:go` siehe Sprint-Review (GEB7.6).
+- Umsetzung: Kristall per Agent im Scratch-Ordner; Eisenstollen schrieb Claude selbst (der Agent-Start dafür wurde vom Auto-Mode abgelehnt, nicht umgangen). Hinweise für 🧑: Kristall `fern` nutzt `loulou`-Sockel (wirkt rötlich-violett), `mitte`/`nah` sind beide `deep-koamaru`-lastig; Eisenstollen `fern`/`mitte` bestehen aus wenigen groben Blöcken. Sicht nicht geprüft, gehört 🧑 (AC-08). Neue Tickets: keine.
