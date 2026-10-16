@@ -4,8 +4,8 @@
 - **Typ:** Idee
 - **Prio:** mittel
 - **Umgebung:** ?
-- **Status:** offen
-- **Sprint:** –
+- **Status:** eingeplant
+- **Sprint:** GEB6
 - **Projekt:** GEB
 - **Erstellt:** 2026-10-16
 - **Spec:** Entwurf
@@ -18,7 +18,9 @@ Sprint GEB1 hat Werkstatt, Tanne, Pappel und Birke mit `tools/gebaeude` erzeugt 
 
 ## Ziel
 
-Im Spiel zeigen die Werkstatt (`workshop`) und die Bäume (`node:tree`, als überlappende Reihe) die neuen Grafiken in 32 px je Kachel ×1; ganzzahlige Skalierung nach GR7.4 (B-251).
+Im Spiel zeigen die Bäume (`node:tree`) die Grafiken aus `tools/gebaeude` (Tanne, Pappel, Birke) als überlappende Reihe in 32 px je Kachel ×1; alte Baum-Grafik wird nach der Aufräum-Regel des Projekts gelöscht. Die Werkstatt ist erledigt (GEB2.3).
+
+Eingeplant 2026-10-16 (Chat, Ralf) in GEB6 (Natur und Objekte), weil GEB6 die Bäume ohnehin behandelt.
 
 ## Beteiligte und Zielgruppen
 

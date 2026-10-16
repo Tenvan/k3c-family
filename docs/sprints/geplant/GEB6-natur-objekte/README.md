@@ -4,7 +4,7 @@
 - **Projekt:** GEB
 - **Domäne:** DEV
 - **Reife:** Entwurf
-- **Tickets:** B-435
+- **Tickets:** B-435, B-438
 - **Start-Commit:** – (wird beim Aktivieren gesetzt: `git rev-parse --short origin/develop`)
 - **Spec:** Entwurf
 - **Revision:** 1

@@ -3,9 +3,9 @@
 - **Domäne:** DEV
 - **Typ:** Problem
 - **Prio:** mittel
-- **Umgebung:** ?
-- **Status:** offen
-- **Sprint:** –
+- **Umgebung:** offline
+- **Status:** eingeplant
+- **Sprint:** GEB3
 - **Projekt:** GEB
 - **Erstellt:** 2026-10-16
 - **Spec:** Entwurf
@@ -26,7 +26,9 @@ Wer spielt, entwickelt, betreibt oder entscheidet (🧑)? Keine Verantwortlichen
 
 ## Anforderungen
 
-- Was das Ergebnis können muss, auch Qualität (deterministisch, 2+ Spieler, Leistung).
+- `tools/k3c-dev/internal/assets/catalog.go` (`asset`): PNG unter `public/grafik/gebaeude/` bekommt die Lizenz „eigene Grafik (tools/gebaeude, kein Credit nötig)“ statt „unbekannt“, analog `selfMade` bei Sounds; `Flag` leer.
+- Geprüft 2026-10-16 (Claude): `LicenseFlag("unbekannt")` liefert kein NC/ND/SA-Flag; das Problem ist die Lizenzangabe „unbekannt“ in Katalog und Asset-Manager, kein falsches Flag.
+- Go-Test in `catalog_test.go`: eine Datei unter `grafik/gebaeude/` hat die eigene Lizenz, eine Pack-Datei ohne Credit bleibt „unbekannt“.
 
 ## Nicht-Ziele
 
@@ -46,7 +48,7 @@ Ungültige oder seltene Situation → gewolltes Verhalten. Passt nichts: `nicht 
 
 ## Akzeptanzkriterien
 
-- **AC-01** Prüfbar formuliert: Test, Befehl, Datei oder Beobachtung am TV mit erwartetem Ergebnis.
+- **AC-01** Der Asset-Katalog führt jede PNG unter `public/grafik/gebaeude/` mit eigener Lizenz statt „unbekannt“; `go test` in `tools/k3c-dev/internal/assets` belegt eigene Grafik und unveränderten Fallback für Packs ohne Credit.
 
 ## Offene Fragen
 
