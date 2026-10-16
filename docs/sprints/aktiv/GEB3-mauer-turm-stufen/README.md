@@ -74,7 +74,7 @@ Tor (GEB4); Burg und Hub-Stufen (GEB4); Stufen für Werkstatt, Taverne usw. (fol
 
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
-| GEB3.1 | `GEB3.1-katalog-eigene-grafik.md` | Umsetzung | autonom | in Arbeit |
+| GEB3.1 | `GEB3.1-katalog-eigene-grafik.md` | Umsetzung | autonom | fertig |
 | GEB3.2 | `GEB3.2-stufen-werkzeug-mauer.md` | Umsetzung | autonom | offen |
 | GEB3.3 | `GEB3.3-turm-stufen.md` | Umsetzung | autonom | offen |
 | GEB3.4 | `GEB3.4-zuordnung-aufraeumen.md` | Umsetzung | autonom | offen |

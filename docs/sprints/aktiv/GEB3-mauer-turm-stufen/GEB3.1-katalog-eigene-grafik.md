@@ -1,6 +1,6 @@
 # GEB3.1 · Asset-Katalog kennt eigene Gebäude-Grafik
 
-- **Status:** in Arbeit
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** DEV
@@ -52,5 +52,7 @@ task check:dev
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+2026-10-16, Claude (autonom, Ralf im Chat).
+- AC-04 geprüft: `catalog.go` führt PNGs mit Pack `gebaeude` ohne Credit-Zeile als `ownBuilding` („eigene Grafik (tools/gebaeude, kein Credit nötig)“), Flag leer; eine Credit-Zeile hätte weiter Vorrang. Test `TestKatalogEigeneGebaeude` (erst rot, dann grün) belegt eigene Lizenz und unveränderten Fallback „unbekannt“ für fremde Packs; `TestLicenseFlag` um `ownBuilding` ergänzt.
+- Checks: `task check` grün; `dev:test`: `internal/assets` grün, rot nur vorbestehend `internal/planning` (B-440, GEB4–GEB7 als Entwurf).
+- Review (Sonnet-Agent): keine Befunde, die blockieren; Hinweis „wirkt auch auf `sprites/gebaeude/`“ nicht übernommen (Ordner gibt es nicht).

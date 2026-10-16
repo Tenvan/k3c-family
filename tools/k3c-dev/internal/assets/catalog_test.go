@@ -43,6 +43,27 @@ func TestKatalogMitCredits(t *testing.T) {
 	}
 }
 
+// B-437: eigene Gebäude-Grafik (tools/gebaeude) ohne Credit-Zeile hat eine eigene Lizenz, fremde Packs ohne Credit bleiben „unbekannt“.
+func TestKatalogEigeneGebaeude(t *testing.T) {
+	root := repo(t)
+	writePNG(t, filepath.Join(root, "public", "grafik", "gebaeude", "taverne-32.png"), 192, 128)
+	writePNG(t, filepath.Join(root, "public", "grafik", "fremd", "x.png"), 16, 16)
+	list, err := Catalog(root)
+	if err != nil {
+		t.Fatal(err)
+	}
+	byFile := map[string]Asset{}
+	for _, a := range list {
+		byFile[a.File] = a
+	}
+	if g := byFile["grafik/gebaeude/taverne-32.png"]; g.License != ownBuilding || g.Flag != "" {
+		t.Errorf("gebaeude: %+v", g)
+	}
+	if f := byFile["grafik/fremd/x.png"]; f.License != "unbekannt" {
+		t.Errorf("fremd: %+v", f)
+	}
+}
+
 func TestKatalogSuche(t *testing.T) {
 	list := katalog(t)
 	if got := Search(list, "TOWN props", "", 0); len(got) != 1 || got[0].File != "grafik/town/house-a.png" {
@@ -63,7 +84,7 @@ func TestKatalogSuche(t *testing.T) {
 func TestLicenseFlag(t *testing.T) {
 	cases := map[string]string{
 		"CC0 1.0": "", "CC BY 3.0": "", "OGA-BY 3.0": "", "CC BY-SA 4.0": "SA", "CC-BY-SA 3.0": "SA",
-		"CC BY-NC 4.0": "NC", "CC BY-NC-SA 4.0": "NC", "CC BY-NC-ND 4.0": "ND", "Sample Pack": "", selfMade: "",
+		"CC BY-NC 4.0": "NC", "CC BY-NC-SA 4.0": "NC", "CC BY-NC-ND 4.0": "ND", "Sample Pack": "", selfMade: "", ownBuilding: "",
 	}
 	for lic, want := range cases {
 		if got := LicenseFlag(lic); got != want {
