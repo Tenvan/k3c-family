@@ -79,6 +79,6 @@ Spiel (je Biom ein Durchgang, Maßstab 1):
 
 Entscheidungen:
 
-- [ ] 13. Materialien (Offene Frage 4) bestätigen oder ändern: Fels = Stein, Zelt = „Stoff hell“, Erde = „Pfosten, Balken“, Gold = Glut.
+- [x] 13. Materialien (Offene Frage 4) von 🧑 bestätigt, Option 1, 2026-10-16: Fels = Stein, Zelt = „Stoff hell“, Erde = „Pfosten, Balken“, Gold = Glut.
 - [ ] 14. Geschmack: Mine-Fels eher dunkelgrau als braun, Feuerstelle klein, Ausgang ohne Platz oben, Kristall-Ader ohne durchgehende Fuge; Animationen von Portal und Feuer entfallen (Nicht-Ziel).
 - [ ] 15. Ergebnis: „abgenommen“ oder Nachbesserungen nennen. Danach setzt Claude GEB6.6 auf `fertig`, verschiebt den Sprint nach `erledigt/`, nimmt PR #319 aus dem Entwurf und schaltet Auto-Merge ein.
