@@ -1,6 +1,6 @@
 # GEB1.3 · Drei schmale Bäume als Daten und PNG
 
-- **Status:** in Arbeit
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** DEV
@@ -59,5 +59,9 @@ Keine manuellen Prüfungen in dieser Session; die Sichtprüfung gehört GEB1.4.
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+2026-10-16, Claude (autonom, Ralf im Chat).
+- AC-05 geprüft: `tanne`, `pappel`, `birke` (`klasse: baum`, 1 × 2,25 Kacheln) → `*-32.png` je 32×72 px, dazu 16/64/128; zweiter `task gebaeude`-Lauf → md5 gleich.
+- AC-05 umgesetzt: `baumReihe` (½ Kachel Abstand, überlappend) mit Test in `assetvorschauLogic.test.ts`; Vorschau zeichnet die Reihe in 32 px ×1 und 16 px ×2 vor den Gebäude-Karten. Sichtprüfung in GEB1.4.
+- Werkzeug: Feld `klasse`, Gebäudemaße als Bruch im 1/32-Raster; Review-Befund behoben: erst alles rendern, dann alte PNGs löschen (Test `TestRunLaesstOrdnerBeiFehlerUnveraendert`).
+- Checks: `task check` grün (k3c-dev), `go test ./tools/gebaeude`, `golangci-lint` 0 Befunde. Review (Sonnet-Agent): ein Befund, behoben.
+- Regeldatei um Bäume (Maße, Material, Reihe) ergänzt. Formen sind ein erster Wurf; Varianten feilt 🧑 später aus (B-435).

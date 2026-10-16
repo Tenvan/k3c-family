@@ -1,5 +1,47 @@
 [
   {
+    "id": "birke",
+    "klasse": "baum",
+    "kacheln": {
+      "b": 1,
+      "h": 2.25
+    },
+    "dateien": {
+      "128": "grafik/gebaeude/birke-128.png",
+      "16": "grafik/gebaeude/birke-16.png",
+      "32": "grafik/gebaeude/birke-32.png",
+      "64": "grafik/gebaeude/birke-64.png"
+    }
+  },
+  {
+    "id": "pappel",
+    "klasse": "baum",
+    "kacheln": {
+      "b": 1,
+      "h": 2.25
+    },
+    "dateien": {
+      "128": "grafik/gebaeude/pappel-128.png",
+      "16": "grafik/gebaeude/pappel-16.png",
+      "32": "grafik/gebaeude/pappel-32.png",
+      "64": "grafik/gebaeude/pappel-64.png"
+    }
+  },
+  {
+    "id": "tanne",
+    "klasse": "baum",
+    "kacheln": {
+      "b": 1,
+      "h": 2.25
+    },
+    "dateien": {
+      "128": "grafik/gebaeude/tanne-128.png",
+      "16": "grafik/gebaeude/tanne-16.png",
+      "32": "grafik/gebaeude/tanne-32.png",
+      "64": "grafik/gebaeude/tanne-64.png"
+    }
+  },
+  {
     "id": "werkstatt",
     "kacheln": {
       "b": 6,

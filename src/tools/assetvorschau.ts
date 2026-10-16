@@ -8,9 +8,10 @@ import { audioCore } from '../audio/audioCore';
 import { CROSSFADE_SECONDS } from '../audio/crossfade';
 import { attenuation } from '../audio/events';
 import { clientLog } from '../core/clientLog';
+import { UNIT_PX as UNIT } from '../core/constants';
 import { installPageChrome } from '../core/shell';
 import {
-  figureCard, gebaeudeKarten, GRAFIK_SCALE, licenseFlag, parseQuery, resolveSlot, SCENES, slotsOf,
+  baumReihe, figureCard, gebaeudeKarten, GRAFIK_SCALE, licenseFlag, parseQuery, resolveSlot, SCENES, slotsOf,
   type AssetSlot, type GebaeudeEintrag, type Query, type Resolved, type SceneId,
 } from './assetvorschauLogic';
 import { CREDITS } from './credits';
@@ -136,11 +137,12 @@ async function renderNeueGebaeude(): Promise<void> {
     clientLog('error', '❌ Gebäude-Index lädt nicht', { datei });
     return;
   }
-  const karten = gebaeudeKarten((await res.json()) as GebaeudeEintrag[]);
+  const index = (await res.json()) as GebaeudeEintrag[];
   if (parseQuery(location.search).szene !== 'gebaeude') return; // inzwischen andere Szene gewählt
   const strip = document.createElement('div');
   strip.className = 'strip';
-  for (const k of karten) {
+  if (baumReihe(index).length > 0) strip.append(baumFigur(index, 32), baumFigur(index, 16));
+  for (const k of gebaeudeKarten(index)) {
     const fig = document.createElement('figure');
     const cap = document.createElement('figcaption');
     cap.textContent = `${k.id} · ${k.dichte} px ×${k.scale}`;
@@ -162,6 +164,36 @@ async function renderNeueGebaeude(): Promise<void> {
   const title = document.createElement('h2');
   title.textContent = t('av.geb');
   sceneEl.prepend(title, strip);
+}
+
+/** Überlappende Baum-Reihe in Dichte d, auf 32 px je Kachel skaliert (GEB1/AC-05). */
+function baumFigur(index: readonly GebaeudeEintrag[], d: number): HTMLElement {
+  const reihe = baumReihe(index);
+  const byId = new Map(index.map((e) => [e.id, e]));
+  const fig = document.createElement('figure');
+  const cap = document.createElement('figcaption');
+  cap.textContent = `${reihe.map((b) => b.id).join(', ')} · ${d} px ×${UNIT / d}`;
+  fig.append(cap);
+  const hoehe = Math.max(...reihe.map((b) => byId.get(b.id)!.kacheln.h));
+  const canvas = document.createElement('canvas');
+  canvas.width = (reihe.at(-1)!.x + 1) * UNIT;
+  canvas.height = hoehe * UNIT;
+  const g = canvas.getContext('2d')!;
+  g.imageSmoothingEnabled = false;
+  const load = (src: string) => new Promise<HTMLImageElement>((ok, fail) => {
+    const img = new Image();
+    img.onload = () => ok(img);
+    img.onerror = () => fail(new Error(src));
+    img.src = src;
+  });
+  void Promise.all(reihe.map((b) => load(byId.get(b.id)!.dateien[d]!)))
+    .then((imgs) => imgs.forEach((img, i) => {
+      const e = byId.get(reihe[i]!.id)!;
+      g.drawImage(img, reihe[i]!.x * UNIT, (hoehe - e.kacheln.h) * UNIT, e.kacheln.b * UNIT, e.kacheln.h * UNIT);
+    }))
+    .catch((err: Error) => clientLog('error', '❌ Asset lädt nicht', { datei: err.message }));
+  fig.prepend(canvas);
+  return fig;
 }
 
 // ---------------------------------------------------------------- Sound

@@ -3,6 +3,8 @@ package main
 import (
 	"bytes"
 	"image"
+	"os"
+	"path/filepath"
 	"strings"
 	"testing"
 )
@@ -88,5 +90,42 @@ func TestDeterministisch(t *testing.T) {
 	}
 	if !bytes.Equal(a.Bytes(), b.Bytes()) {
 		t.Fatal("zwei Läufe, ungleiche Bytes")
+	}
+}
+
+func TestRunSchreibtIndexMitKlasse(t *testing.T) {
+	dir := t.TempDir()
+	src := `{"id":"tanne","klasse":"baum","kacheln":{"b":1,"h":1},"bausteine":[{"art":"krone","rechteck":[0,0,1,1],"farbe":"dell"}]}`
+	if err := os.WriteFile(filepath.Join(dir, "tanne.json"), []byte(src), 0o644); err != nil {
+		t.Fatal(err)
+	}
+	if err := os.WriteFile(filepath.Join(dir, "alt-32.png"), nil, 0o644); err != nil {
+		t.Fatal(err)
+	}
+	if n, err := run(dir, "grafik/gebaeude/"); err != nil || n != 1 {
+		t.Fatalf("run: %d, %v", n, err)
+	}
+	idx, err := os.ReadFile(filepath.Join(dir, "index.json"))
+	if err != nil || !strings.Contains(string(idx), `"klasse": "baum"`) || !strings.Contains(string(idx), "grafik/gebaeude/tanne-16.png") {
+		t.Fatalf("index.json: %s %v", idx, err)
+	}
+	if _, err := os.Stat(filepath.Join(dir, "alt-32.png")); !os.IsNotExist(err) {
+		t.Fatal("verwaiste PNG nicht entfernt")
+	}
+}
+
+func TestRunLaesstOrdnerBeiFehlerUnveraendert(t *testing.T) {
+	dir := t.TempDir()
+	if err := os.WriteFile(filepath.Join(dir, "kaputt.json"), []byte(`{"id":"kaputt","kacheln":{"b":1,"h":1},"bausteine":[{"art":"x","rechteck":[0,0,1,1],"farbe":"lila"}]}`), 0o644); err != nil {
+		t.Fatal(err)
+	}
+	if err := os.WriteFile(filepath.Join(dir, "alt-32.png"), nil, 0o644); err != nil {
+		t.Fatal(err)
+	}
+	if _, err := run(dir, ""); err == nil {
+		t.Fatal("kein Fehler bei fremder Farbe")
+	}
+	if _, err := os.Stat(filepath.Join(dir, "alt-32.png")); err != nil {
+		t.Fatal("alte PNG trotz Fehler gelöscht")
 	}
 }

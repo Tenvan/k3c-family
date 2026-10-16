@@ -19,9 +19,10 @@ const master = 32
 // dichten sind die erlaubten Render-Dichten in px je Kachel (½, 1, 2, 4 × Master).
 var dichten = []int{16, 32, 64, 128}
 
+// kacheln sind die Gebäudemaße in Kacheln, Vielfache von 1/32 (Baum: 1 × 2,25).
 type kacheln struct {
-	B int `json:"b"`
-	H int `json:"h"`
+	B float64 `json:"b"`
+	H float64 `json:"h"`
 }
 
 // baustein ist ein Rechteck [x, y, b, h] in Kachel-Einheiten; fein = entfällt bei gröberer Dichte als Master.
@@ -34,12 +35,14 @@ type baustein struct {
 
 type building struct {
 	ID        string     `json:"id"`
+	Klasse    string     `json:"klasse,omitempty"` // z. B. "baum"; die Vorschau gruppiert danach
 	Kacheln   kacheln    `json:"kacheln"`
 	Bausteine []baustein `json:"bausteine"`
 }
 
 type eintrag struct {
 	ID      string            `json:"id"`
+	Klasse  string            `json:"klasse,omitempty"`
 	Kacheln kacheln           `json:"kacheln"`
 	Dateien map[string]string `json:"dateien"`
 }
@@ -71,10 +74,14 @@ func render(b building, d int) (*image.Paletted, error) {
 	if !erlaubt(d) {
 		return nil, fmt.Errorf("dichte %d nicht erlaubt (16, 32, 64, 128 px je Kachel)", d)
 	}
+	size, err := masterPx([4]float64{0, 0, b.Kacheln.B, b.Kacheln.H})
+	if err != nil || size[2] <= 0 || size[3] <= 0 {
+		return nil, fmt.Errorf("%s: kacheln %v ungültig", b.ID, b.Kacheln)
+	}
 	pal, idx := palette()
-	img := image.NewPaletted(image.Rect(0, 0, b.Kacheln.B*d, b.Kacheln.H*d), pal)
+	img := image.NewPaletted(image.Rect(0, 0, size[2]*d/master, size[3]*d/master), pal)
 	for i, s := range b.Bausteine {
-		c, m, err := check(b, i, idx, d)
+		c, m, err := check(b, i, idx, size, d)
 		if err != nil {
 			return nil, err
 		}
@@ -94,7 +101,7 @@ func render(b building, d int) (*image.Paletted, error) {
 }
 
 // check prüft Baustein i (Farbe, Raster, Maße, Mindestbreite bei Dichte d) und liefert Farbindex und Master-Pixel.
-func check(b building, i int, idx map[string]uint8, d int) (uint8, [4]int, error) {
+func check(b building, i int, idx map[string]uint8, size [4]int, d int) (uint8, [4]int, error) {
 	s := b.Bausteine[i]
 	where := fmt.Sprintf("%s: Baustein %d (%s)", b.ID, i, s.Art)
 	c, ok := idx[s.Farbe]
@@ -105,8 +112,8 @@ func check(b building, i int, idx map[string]uint8, d int) (uint8, [4]int, error
 	if err != nil {
 		return 0, m, fmt.Errorf("%s: %w", where, err)
 	}
-	if m[0] < 0 || m[1] < 0 || m[2] <= 0 || m[3] <= 0 || m[0]+m[2] > b.Kacheln.B*master || m[1]+m[3] > b.Kacheln.H*master {
-		return 0, m, fmt.Errorf("%s: Rechteck %v außerhalb von %d×%d Kacheln", where, s.Rechteck, b.Kacheln.B, b.Kacheln.H)
+	if m[0] < 0 || m[1] < 0 || m[2] <= 0 || m[3] <= 0 || m[0]+m[2] > size[2] || m[1]+m[3] > size[3] {
+		return 0, m, fmt.Errorf("%s: Rechteck %v außerhalb von %g×%g Kacheln", where, s.Rechteck, b.Kacheln.B, b.Kacheln.H)
 	}
 	if d < master && !s.Fein && (m[2]*d < master || m[3]*d < master) {
 		return 0, m, fmt.Errorf("%s: dünner als 1 px bei %d px je Kachel, als fein markieren", where, d)
@@ -121,7 +128,20 @@ func run(dir, prefix string) (int, error) {
 		return 0, err
 	}
 	sort.Strings(files)
-	// Alte PNGs weg, damit gelöschte oder umbenannte Gebäude keine Waisen hinterlassen; der Ordner hält nur Ausgaben.
+	// Erst alles rendern: scheitert ein Gebäude, bleibt der Ordner unverändert.
+	var index []eintrag
+	out := map[string]*image.Paletted{}
+	for _, f := range files {
+		if filepath.Base(f) == "index.json" {
+			continue
+		}
+		e, err := build(f, prefix, out)
+		if err != nil {
+			return 0, err
+		}
+		index = append(index, e)
+	}
+	// Dann alte PNGs weg, damit gelöschte oder umbenannte Gebäude keine Waisen hinterlassen; der Ordner hält nur Ausgaben.
 	old, err := filepath.Glob(filepath.Join(dir, "*.png"))
 	if err != nil {
 		return 0, err
@@ -131,16 +151,10 @@ func run(dir, prefix string) (int, error) {
 			return 0, err
 		}
 	}
-	var index []eintrag
-	for _, f := range files {
-		if filepath.Base(f) == "index.json" {
-			continue
-		}
-		e, err := build(f, dir, prefix)
-		if err != nil {
+	for name, img := range out {
+		if err := writePNG(filepath.Join(dir, name), img); err != nil {
 			return 0, err
 		}
-		index = append(index, e)
 	}
 	data, err := json.MarshalIndent(index, "", "  ")
 	if err != nil {
@@ -149,7 +163,8 @@ func run(dir, prefix string) (int, error) {
 	return len(index), os.WriteFile(filepath.Join(dir, "index.json"), append(data, '\n'), 0o644)
 }
 
-func build(file, dir, prefix string) (eintrag, error) {
+// build liest ein Gebäude, rendert es in allen Dichten nach out (Dateiname → Bild) und liefert seinen Index-Eintrag.
+func build(file, prefix string, out map[string]*image.Paletted) (eintrag, error) {
 	var b building
 	raw, err := os.ReadFile(file)
 	if err != nil {
@@ -161,16 +176,14 @@ func build(file, dir, prefix string) (eintrag, error) {
 	if want := strings.TrimSuffix(filepath.Base(file), ".json"); b.ID != want {
 		return eintrag{}, fmt.Errorf("%s: id %q passt nicht zum Dateinamen", file, b.ID)
 	}
-	e := eintrag{ID: b.ID, Kacheln: b.Kacheln, Dateien: map[string]string{}}
+	e := eintrag{ID: b.ID, Klasse: b.Klasse, Kacheln: b.Kacheln, Dateien: map[string]string{}}
 	for _, d := range dichten {
 		img, err := render(b, d)
 		if err != nil {
 			return eintrag{}, err
 		}
 		name := fmt.Sprintf("%s-%d.png", b.ID, d)
-		if err := writePNG(filepath.Join(dir, name), img); err != nil {
-			return eintrag{}, err
-		}
+		out[name] = img
 		e.Dateien[fmt.Sprint(d)] = prefix + name
 	}
 	return e, nil

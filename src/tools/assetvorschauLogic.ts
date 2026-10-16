@@ -128,6 +128,7 @@ export const GRAFIK_SCALE = 2;
 /** Eintrag aus `public/grafik/gebaeude/index.json` (schreibt `task gebaeude`, GEB1) */
 export interface GebaeudeEintrag {
   id: string;
+  klasse?: string;
   kacheln: { b: number; h: number };
   dateien: Record<string, string>;
 }
@@ -148,4 +149,14 @@ export function gebaeudeKarten(index: readonly GebaeudeEintrag[]): GebaeudeKarte
   return index.flatMap((e) =>
     VERGLEICH.filter((d) => e.dateien[d]).map((d) => ({ id: e.id, dichte: d, datei: e.dateien[d], scale: 32 / d })),
   );
+}
+
+/** Abstand der Bäume in der Reihe: ½ Kachel bei 1 Kachel Breite, also überlappend wie ein kleiner Wald (GEB1/AC-05) */
+export const BAUM_ABSTAND = 0.5;
+
+/** Reihe aus den Bäumen des Index im Wechsel: je Baum ID und x in Kacheln, gezeichnet von links nach rechts. */
+export function baumReihe(index: readonly GebaeudeEintrag[], anzahl = 6): { id: string; x: number }[] {
+  const ids = index.filter((e) => e.klasse === 'baum').map((e) => e.id);
+  if (ids.length === 0) return [];
+  return Array.from({ length: anzahl }, (_, i) => ({ id: ids[i % ids.length]!, x: i * BAUM_ABSTAND }));
 }

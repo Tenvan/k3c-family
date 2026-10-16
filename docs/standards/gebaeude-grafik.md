@@ -7,7 +7,7 @@ nur mit Zustimmung von 🧑.
 ## 1. Raster und Maße
 
 - **Kachel** = `UNIT_PX` = 32 px in der Master-Dichte. Alle Maße in Kacheln, Vorderansicht, Boden = Unterkante des Bilds.
-- Koordinaten sind Vielfache von **1/32 Kachel** (1 px Master). Andere Werte lehnt das Werkzeug ab.
+- Koordinaten und Maße sind Vielfache von **1/32 Kachel** (1 px Master), auch Bruch-Maße wie 2,25. Andere Werte lehnt das Werkzeug ab.
 
 | Klasse | Breite × Höhe (Kacheln) | Beleg |
 |---|---|---|
@@ -29,12 +29,15 @@ nur mit Zustimmung von 🧑.
 | Stoff rot | `brown` | `mandy` (Falte) | `loulou` |
 | Stoff hell | `pancho` | `white` (Falte) | `twine` |
 | Metall (Werkzeug) | `heather` | – | `dim-gray` |
+| Nadeln (Tanne) | `elf-green` | `christi` | `opal` |
+| Laub (Pappel, Birke) | `christi` | `atlantis` | `dell` |
+| Birkenrinde | `white` | – | `heather`, Striche `black` (fein) |
 
 ## 4. Bausteine
 
 Ein Gebäude ist eine Liste von Rechtecken in Zeichenreihenfolge (hinten zuerst). Arten der Werkstatt: `wand`, `fuge`,
 `schatten`, `schild`, `zeichen`, `pfosten`, `balken`, `tuch`, `volant`, `falte`, `tresen`, `kiste`, `gestell`,
-`werkzeug`. Die Art dient der Lesbarkeit und späteren Zusätzen; gezeichnet wird nur Rechteck und Farbe.
+`werkzeug`; Bäume: `stamm`, `krone`, `licht`, `strich`, `blatt`. Die Art dient der Lesbarkeit und späteren Zusätzen; gezeichnet wird nur Rechteck und Farbe.
 
 ## 5. Datenformat
 
@@ -50,7 +53,14 @@ Ein Gebäude ist eine Liste von Rechtecken in Zeichenreihenfolge (hinten zuerst)
 ```
 
 - `rechteck` = `[x, y, b, h]` in Kacheln, Ursprung oben links. Dateiname = `id` + `.json`.
+- `klasse` (optional) gruppiert in der Vorschau; `baum` = Teil der Baum-Reihe.
 - `fein: true` markiert Details, die bei gröberer Dichte entfallen (Werkzeuge, Faltenlicht, Plankenfugen).
+
+### Bäume
+
+Schmal, 1 Kachel breit, 2,25 Kacheln hoch, Stamm mittig (x 14–18 px Master). Sie stehen als kleiner Wald in Reihen mit
+**½ Kachel Abstand**, überlappend, von links nach rechts gezeichnet (Vorschau: `baumReihe`). Varianten je Art und
+Level-Paletten folgen später (B-435 › Beispiele).
 
 ## 6. Ausbaustufen
 
@@ -76,5 +86,5 @@ Stufe oder Zusatz-Liste) legt der erste GEB-Sprint mit mehreren Stufen fest und 
 
 1. Daten-JSON in `public/grafik/gebaeude/` anlegen oder ändern.
 2. `task gebaeude` rendert `<id>-16.png`, `-32.png`, `-64.png`, `-128.png` und `index.json`; gleiche Daten → byte-gleiche PNGs.
-3. Vorschau: `assetvorschau.html?szene=gebaeude`, Streifen „Neue Gebäude (GEB)“ (32 px ×1 neben 16 px ×2).
+3. Vorschau: `assetvorschau.html?szene=gebaeude`, Streifen „Neue Gebäude (GEB)“ (Baum-Reihe, dann je Gebäude 32 px ×1 neben 16 px ×2).
 4. PNGs und `index.json` mit committen.
