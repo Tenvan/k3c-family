@@ -74,7 +74,7 @@ Stufe oder Zusatz-Liste) legt der erste GEB-Sprint mit mehreren Stufen fest und 
 - **Master: 32 px je Kachel.** Erlaubt sind nur **16, 32, 64, 128** px je Kachel; andere Werte → Fehler.
 - **64 und 128** sind verlustfreie Vergrößerungen (Test: 64 nach 2×2-Downsampling = 32).
 - **16** lässt `fein`-Bausteine weg und rundet ab. Ein Baustein ohne `fein`, der bei 16 dünner als 1 px wäre (also 1 px im Master), ist ein Fehler.
-- Jede Dichte nimmt 🧑 in der Vorschau ab, bevor das Spiel sie nutzt. **Spiel-Dichte:** offen, Entscheidung 🧑 in GEB1.4 (32 px ×1 oder 16 px ×2, wie die heutigen 16-px-Packs).
+- Jede Dichte nimmt 🧑 in der Vorschau ab, bevor das Spiel sie nutzt. **Spiel-Dichte: 32 px je Kachel ×1** (Entscheidung 🧑 2026-10-16, GEB1.4; abgenommen in 32 und 16 px). Gebäude sind damit feiner als Figuren und die heutigen 16-px-Packs.
 
 ## 8. Skalierung
 

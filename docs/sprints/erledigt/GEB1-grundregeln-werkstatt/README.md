@@ -1,6 +1,6 @@
 # GEB1 · DEV · Grundregeln für Gebäude-Grafik und Werkstatt
 
-- **Status:** aktiv
+- **Status:** erledigt
 - **Projekt:** GEB
 - **Domäne:** DEV
 - **Reife:** bereit
@@ -89,7 +89,7 @@ Weitere Gebäude (je eigener Sprint im Projekt GEB); weitere Baumvarianten und L
 | GEB1.1 | `GEB1.1-workshop-grundregeln.md` | Workshop | Mensch | fertig |
 | GEB1.2 | `GEB1.2-werkstatt-generator.md` | Umsetzung | autonom | fertig |
 | GEB1.3 | `GEB1.3-baeume.md` | Umsetzung | autonom | fertig |
-| GEB1.4 | `GEB1.4-review-abnahme.md` | Review | autonom | in Arbeit |
+| GEB1.4 | `GEB1.4-review-abnahme.md` | Review | autonom | fertig |
 
 - GEB1.1 Grundregeln aus Werkstatt und Bäumen festlegen, Skalierungsfragen klären (AC-01).
 - GEB1.2 Werkstatt: Daten, Build-Skript mit Mehrfach-Dichte, PNG, Vorschau im Asset-Manager (AC-02, AC-03, AC-06).
@@ -98,5 +98,7 @@ Weitere Gebäude (je eigener Sprint im Projekt GEB); weitere Baumvarianten und L
 
 ## Abnahme
 
-Wird von der Review-Session (Doku-Sprint: letzte Session) ausgefüllt, höchstens fünf Zeilen: Datum, Kriterien
-(Verweis auf Session-Ergebnisse), behobene Befunde, neue Tickets. Bis dahin `–`.
+2026-10-16 (GEB1.4): `task check` und `task check:go` grün; Diff-Review ohne schwere Befunde.
+AC-01–AC-03, AC-05, AC-06 geprüft (Ergebnisse GEB1.2, GEB1.3); AC-04 von Ralf in 32 und 16 px abgenommen, Spiel-Dichte 32 px ×1; Skalierungsfaktor angenommen, Validierung offen (GR7.4).
+Behoben: verwaiste PNGs, Löschen vor dem Rendern (Review GEB1.2/GEB1.3).
+Neue Tickets: B-436 (plan_create), B-437 (Asset-Katalog), B-438 (Zuordnung ins Spiel). Versionsvorschlag: Minor (neues Werkzeug, keine Spieländerung).

@@ -140,6 +140,7 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-435](B-435-gebaeude-grafik-per-prompt.md) | DEV | Idee | mittel | eingeplant | GEB1 | Gebäude und Strukturen entstehen im Asset-Manager aus Beschreibung und Prompt |
 | [B-436](B-436-plan-create-entwurf-zeilen.md) | DEV | Problem | niedrig | offen | – | plan_create scheitert an Platzhalter-Zeilen „– (Entwurf)“ in der Session-Tabelle |
 | [B-437](B-437-katalog-eigene-gebaeude.md) | DEV | Problem | mittel | offen | – | Asset-Katalog von k3c-dev kennt eigene Gebäude-Grafik nicht |
+| [B-438](B-438-werkstatt-baeume-ins-spiel.md) | CLI | Idee | mittel | offen | – | Werkstatt und Bäume aus tools/gebaeude erscheinen im Spiel |
 
 ## Archiv
 

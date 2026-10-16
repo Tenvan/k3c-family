@@ -1,6 +1,6 @@
 # GEB1.4 · Review und Abnahme am Bildschirm
 
-- **Status:** in Arbeit
+- **Status:** fertig
 - **Typ:** Review
 - **Agent:** autonom
 - **Domäne:** DEV
@@ -57,5 +57,9 @@ Manuelle Prüfung: Asset-Vorschau im Browser (Schritt 3), nur mit Freigabe von �
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+2026-10-16, Claude (Review per Sonnet-Agent in eigenem Kontext), Sichtprüfung von Ralf.
+- Checks: `task check` und `task check:go` grün. Diff-Review `origin/develop...origin/sprint/geb1`: keine schweren Befunde.
+- AC-01 geprüft (Regeldatei vollständig; Skalierungsfaktor `angenommen, Validierung offen (GR7.4)`), AC-02, AC-03, AC-05, AC-06 geprüft laut GEB1.2/GEB1.3.
+- AC-04 abgenommen: Ralf hat Werkstatt und Bäume in der Asset-Vorschau (Browser-Pane, `127.0.0.1:5173/assetvorschau.html?szene=gebaeude`) in 32 px ×1 und 16 px ×2 abgenommen; Spiel-Dichte **32 px ×1**, in der Regeldatei eingetragen.
+- Neues Ticket B-438 (Zuordnung ins Spiel). Abweichung: Review-Session lief im selben Gespräch wie die Umsetzung; das Diff-Review kam deshalb von einem frischen Agenten.
+- Hinweis: `localhost:5173` lieferte im Pane 404 (vermutet IPv6 auf einem anderen Dienst), `127.0.0.1` ging.
