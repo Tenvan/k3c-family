@@ -1,11 +1,9 @@
 import { Heading, Text } from '@radix-ui/themes';
-import { useState, type CSSProperties } from 'react';
-import { Splitter, useSplit } from '../tasks/TaskBars';
+import { useState } from 'react';
 import type { AssetChoice, AssetSlot } from '../api';
-import { addChoice, fileUrl, move, removeChoice, withCut } from './assets';
+import { addChoice, fileUrl, move, removeChoice, sceneUrl, withCut } from './assets';
 import { CatalogPicker } from './CatalogPicker';
 import { CutEditor } from './CutEditor';
-import { MiniScene } from './MiniScene';
 import { ResearchPanel } from './ResearchPanel';
 
 interface Props {
@@ -15,19 +13,14 @@ interface Props {
   onSave: (id: string, wahl: AssetChoice[]) => Promise<boolean>;
   /** Slot-Liste neu laden (nach einem Import) */
   onReload: () => void;
-  /** alle im Register zugeordneten Dateien (Katalog blendet sie aus) */
-  used: ReadonlySet<string>;
 }
 
-/** Detail eines Asset-Slots: Zuordnungen nach Präferenz (Ziehen), Ausschnitt, Katalog-Suche und Recherche; darunter (Splitter) die Mini-Szene. */
-export function SlotDetail({ slot, preview, onSave, onReload, used }: Props) {
+/** Detail eines Asset-Slots: Zuordnungen nach Präferenz (Ziehen), Ausschnitt, Katalog-Suche, Mini-Szene und Recherche. */
+export function SlotDetail({ slot, preview, onSave, onReload }: Props) {
   const [active, setActive] = useState(0);
   const choice = slot.wahl[active];
-  const [split, setSplit, resetSplit] = useSplit('assets.scene', 40);
   const save = (wahl: AssetChoice[]) => onSave(slot.id, wahl);
-  const scene = slot.art === 'grafik';
   return (
-    <div className="as-detail-split" style={{ '--as-scene': `${split}%` } as CSSProperties}>
     <div className="as-detail-body">
       <Heading size="4">{slot.id} <Text size="2" color="gray">{slot.beschreibung} · {slot.art}/{slot.kategorie}{slot.bus ? ` · Bus ${slot.bus}` : ''}</Text></Heading>
       <Text size="2" color="gray">Präferenz 1 ist im Spiel aktiv, die weiteren sind Reserve und Vergleich. Reihenfolge per Ziehen.</Text>
@@ -39,11 +32,9 @@ export function SlotDetail({ slot, preview, onSave, onReload, used }: Props) {
           onCut={(cut) => save(withCut(slot.wahl, active, cut))} />
       )}
       {choice && slot.art === 'sound' && <SoundProbe choice={choice} preview={preview} />}
-      <CatalogPicker art={slot.art} used={used} onAdd={(datei) => save(addChoice(slot.wahl, datei))} />
+      <CatalogPicker art={slot.art} onAdd={(datei) => save(addChoice(slot.wahl, datei))} />
+      <ScenePreview slot={slot} pref={active + 1} preview={preview} />
       <ResearchPanel slot={slot} onImported={onReload} />
-    </div>
-    {scene && <Splitter horizontal className="pl-split-h" value={split} onChange={setSplit} onReset={resetSplit} />}
-    {scene && <div className="as-scene-pane"><MiniScene wahl={slot.wahl} active={active} preview={preview} /></div>}
     </div>
   );
 }
@@ -82,6 +73,17 @@ function ChoiceList({ slot, active, onActive, onMove, onRemove }: ListProps) {
 
 function SoundProbe({ choice, preview }: { choice: AssetChoice; preview: string }) {
   if (!preview) return <Text size="2" color="gray">Hörprobe braucht den Vite-Dienst.</Text>;
-  if (choice.sprite) return <Text size="2" color="gray">Ton „{choice.sprite}“ aus dem Audio-Atlas: in der Vorschau-Seite abspielen.</Text>;
+  if (choice.sprite) return <Text size="2" color="gray">Ton „{choice.sprite}“ aus dem Audio-Atlas: in der Mini-Szene abspielen.</Text>;
   return <audio className="as-audio" controls src={fileUrl(preview, choice.datei)} />;
+}
+
+function ScenePreview({ slot, pref, preview }: { slot: AssetSlot; pref: number; preview: string }) {
+  const url = sceneUrl(preview, slot, pref);
+  if (!url) return <Text size="2" color="gray">Mini-Szene braucht den Vite-Dienst (oben „Vite starten“).</Text>;
+  return (
+    <div className="as-scene">
+      <Text size="2" color="gray">Mini-Szene „{slot.kategorie}“ mit Präferenz {pref} für {slot.id}</Text>
+      <iframe title={`Mini-Szene ${slot.kategorie}`} src={url} />
+    </div>
+  );
 }
