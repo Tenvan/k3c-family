@@ -2,6 +2,8 @@ import Phaser from 'phaser';
 import { GROUND_Y, PLAYER_COLORS, UNIT_PX } from '../core/constants';
 import { t } from '../core/texts';
 import { fontStyle } from './fontRules';
+import { type BackWall, backWalls } from './backWallRules';
+import { createBackWallView, updateBackWallView } from './backWallView';
 import { BuergerView } from './buergerView';
 import { createRider, updateRider } from './mountView';
 import { objectImage } from './objectView';
@@ -96,6 +98,7 @@ export class WorldRenderer {
   private readonly coins: Layer<Coin>;
   private readonly nodes: Layer<ResourceNode>;
   private readonly sites: Layer<Site>;
+  private readonly backWalls: Layer<BackWall>;
   private readonly projectiles: Layer<Projectile>;
   private readonly pickups: Layer<Pickup>;
   private readonly castleHp: View;
@@ -115,6 +118,7 @@ export class WorldRenderer {
     this.citizens = new BuergerView(scene, root);
     this.nodes = this.layer((n) => this.createNode(n), (v, n) => this.updateNode(v, n));
     this.sites = this.layer((s) => createSiteView(scene, s), (v, s) => updateSiteView(scene, v, s, this.world, this.priceTags.has(s.id)));
+    this.backWalls = this.layer(() => createBackWallView(scene), (v, b) => updateBackWallView(scene, v, b));
     this.pickups = this.layer((p) => this.createPickup(p), () => {});
     this.coins = this.layer((c) => scene.add.container(c.x * U, G - 8, [objectImage(scene, 'coin', 0, 8) ?? scene.add.circle(0, 0, 8, 0xffd166).setStrokeStyle(2, 0x9c6644)]).setDepth(6), () => {});
     this.troops = this.layer(
@@ -158,6 +162,7 @@ export class WorldRenderer {
     this.priceTags = priceTagSites(world);
     this.nodes.sync(world.nodes);
     this.sites.sync(world.sites);
+    this.backWalls.sync(backWalls(world.sites, world.hubX));
     this.pickups.sync(world.pickups);
     this.coins.sync(world.coins);
     this.troops.sync(world.troops);

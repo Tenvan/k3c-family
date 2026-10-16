@@ -12,6 +12,7 @@ export const BUILDING_TEXTURES: Record<string, string> = {
   'grafik:hub-2': 'wooden-fortress-and-animated-doors/ebenen/wooden-castle.png',
   ...stufen('wall', 'mauer'),
   ...stufen('tower', 'turm'),
+  ...stufen('backwall', 'hintergrundmauer'),
   'grafik:gate': 'k3c-paletten/props/fort-closed-door.png',
   'grafik:workshop': 'gebaeude/werkstatt-32.png',
   'grafik:tavern': 'gebaeude/taverne-32.png',
@@ -62,6 +63,12 @@ const BASE: Partial<Record<SiteKind, string>> = {
 /** Maßstab im Spiel: eigene Gebäude aus `tools/gebaeude` sind schon 32 px je Kachel (×1), die 16-px-Packs ×2 (GEB2) */
 export function textureScale(key: string): number {
   return BUILDING_TEXTURES[key]?.startsWith('gebaeude/') ? 1 : 2;
+}
+
+/** Textur der Hintergrundmauer in Stufe 1–5 (B-442), sonst `null` */
+export function backWallTexture(stage: number): string | null {
+  const key = `grafik:backwall-${stage}`;
+  return key in BUILDING_TEXTURES ? key : null;
 }
 
 /** Grafik eines Bauplatzes; nur gebaute Gebäude, Baustellen behalten Umriss, Fortschritt und Preisschild */

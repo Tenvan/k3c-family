@@ -48,6 +48,7 @@ Viele dieser Objekte gibt es noch nicht im Code (B-112, B-114); dann ist die Her
 | `tower:3` | `docs/rules/materialien-gebaeude.md` § 3.1 | `grafik/gebaeude` | `turm-3-32.png` (Kupfer) | eigene Grafik (`tools/gebaeude`), 32 px je Kachel, ×1; GEB3 | eigen | zugeordnet |
 | `tower:4` | `docs/rules/materialien-gebaeude.md` § 3.1 | `grafik/gebaeude` | `turm-4-32.png` (Eisen) | eigene Grafik (`tools/gebaeude`), 32 px je Kachel, ×1; GEB3 | eigen | zugeordnet |
 | `tower:5` | `docs/rules/materialien-gebaeude.md` § 3.1 (Zaubertum) | `grafik/gebaeude` | `turm-5-32.png` (Kristall, Zaubertum) | eigene Grafik (`tools/gebaeude`), 32 px je Kachel, ×1; GEB3 | eigen | zugeordnet |
+| `wall:back` | B-442 (Hintergrundmauer, Typ B) | `grafik/gebaeude` | `hintergrundmauer-<n>-32.png` (1 × 4 Kacheln, kachelbar; Stufe der äußeren Mauer) | eigene Grafik (`tools/gebaeude`), 32 px je Kachel, ×1, Tiefe 1 hinter den Bauplätzen; GEB3 | eigen | zugeordnet |
 
 ## Materialien und Adern
 

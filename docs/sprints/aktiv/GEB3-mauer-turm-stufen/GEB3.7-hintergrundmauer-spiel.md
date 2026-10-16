@@ -1,6 +1,6 @@
 # GEB3.7 · Hintergrundmauer im Spiel zeichnen
 
-- **Status:** in Arbeit
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** CLI
@@ -57,5 +57,7 @@ Keine manuellen Prüfungen; der Blick ins Spiel gehört GEB3.5.
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+2026-10-16, Claude (autonom, Ralf im Chat).
+- AC-08 umgesetzt und geprüft: `src/scenes/backWallRules.ts` (`backWalls(sites, hubX)`: je Seite nach Abstand zur Hub-Mitte sortierte Mauer-Plätze, Abschnitt nur zwischen zwei benachbarten gebauten, Stufe der äußeren, `level` fehlt = 1) mit Vitest `backWallRules.test.ts` (Spec-Beispiel, beide Seiten, Lücke durch ungebaute Mauer, eine Mauer allein, Turm zählt nicht; erst rot, dann grün). `backWallView.ts`: gekacheltes `TileSprite` in Maßstab 1, Tiefe 1 hinter den Bauplätzen, Unterkante am Boden, Lage und Breite auf ganze Pixel gerundet; fehlt die Textur, bleibt es unsichtbar. `worldRenderer.ts` synchronisiert die Abschnitte als eigene Ebene (id = äußere Mauer), damit beide Kameras sie zeigen. Texturen `grafik:backwall-1…5` in `buildingSprites.ts` (`backWallTexture`, Vitest). Slot `wall:back` in `data/assets.json`, Zeile in `docs/assets/zuordnung-welt.md`.
+- Checks: `task check` und `task check:go` grün; `dev:test` rot nur vorbestehend (B-440). Review (Sonnet-Agent): keine schweren Befunde; Rundung auf ganze Pixel übernommen.
+- Nicht geprüft: Darstellung im laufenden Spiel (gehört GEB3.5).

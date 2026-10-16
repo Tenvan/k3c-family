@@ -597,6 +597,17 @@
       ]
     },
     {
+      "id": "wall:back",
+      "art": "grafik",
+      "kategorie": "gebaeude",
+      "beschreibung": "Hintergrundmauer zwischen zwei Mauern (B-442), Stufe 1; Stufen 2–5 aus hintergrundmauer.json",
+      "wahl": [
+        {
+          "datei": "grafik/gebaeude/hintergrundmauer-1-32.png"
+        }
+      ]
+    },
+    {
       "id": "material:wood",
       "art": "grafik",
       "kategorie": "objekte",

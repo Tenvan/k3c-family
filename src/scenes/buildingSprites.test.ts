@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { BUILDING_TEXTURES, STAIRS_UP_TILES, hubTexture, siteTexture, textureScale } from './buildingSprites';
+import { BUILDING_TEXTURES, STAIRS_UP_TILES, backWallTexture, hubTexture, siteTexture, textureScale } from './buildingSprites';
 
 /** Nur die Pfade, nichts wird geladen */
 const FILES = Object.keys(import.meta.glob('../../public/grafik/**/*.png'));
@@ -44,6 +44,15 @@ describe('Gebäude-Grafik (GR3.1)', () => {
     }
     expect(siteTexture('wall', 'built', 9)).toBeNull();
     expect(siteTexture('farm', 'built', 3)).toBe('grafik:farm');
+  });
+
+  it('Hintergrundmauer je Stufe eigene 32-px-Grafik, unbekannte Stufe null (GEB3 AC-08)', () => {
+    for (const n of [1, 2, 3, 4, 5]) {
+      const key = backWallTexture(n);
+      expect(BUILDING_TEXTURES[key!]).toBe(`gebaeude/hintergrundmauer-${n}-32.png`);
+      expect(textureScale(key!)).toBe(1);
+    }
+    expect(backWallTexture(6)).toBeNull();
   });
 
   it('Hub-Stufen: 1 Burg, 2 Palisade, 3–5 noch Platzhalter', () => {
