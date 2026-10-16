@@ -54,4 +54,4 @@ Entscheidung, betroffener Umfang, wer entscheidet (🧑). Sonst `keine`.
 
 ## Notizen
 
-Links, Messwerte, verworfene Ansätze. Darf leer bleiben (`–`).
+2026-10-16: Eingearbeitet in W11 Revision 3 (Entwurf): B-207 steht unter Tickets, AC-05 (B-207/AC-01, AC-02) und AC-06 (B-207/AC-03, Abnahme), Session W11.4 erfüllt sie. Umfang von B-207 auf „frei“ und „ab Hub-Stufe n“ begrenzt, weil „Linie fehlt“ ein Server-Feld braucht (B-447). Dieses Ticket wird `erledigt`, sobald 🧑 W11 Revision 3 freigibt.

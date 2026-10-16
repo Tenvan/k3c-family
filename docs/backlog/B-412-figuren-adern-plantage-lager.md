@@ -4,21 +4,23 @@
 - **Typ:** Idee
 - **Prio:** niedrig
 - **Umgebung:** live
-- **Status:** eingeplant
-- **Sprint:** W11
+- **Status:** offen
+- **Sprint:** –
 - **Projekt:** WRT
 - **Erstellt:** 2026-10-11
-- **Spec:** freigegeben
-- **Revision:** 1
-- **Freigabe:** 2026-10-14, 🧑 im Chat (mit W11 Rev. 2)
+- **Spec:** Entwurf
+- **Revision:** 2
+- **Freigabe:** –
 
 ## Ausgangslage
 
-Aus W6.2 verschoben (B-117 › Anforderungen): Adern (Abbau läuft), Plantage (Bäume wachsen) und Lager als Figuren werden im Client nicht angezeigt. W2 liefert sie nicht im Zustand; Grafiken kommen mit GR3. Die Sprint-Kriterien von W6 nennen sie nicht.
+Aus W6.2 verschoben (B-117 › Anforderungen): Adern (Abbau läuft), Plantage (Bäume wachsen) und Lager als Figuren werden im Client nicht angezeigt. Stand 2026-10-16 (Beleg `src/model/types.ts`, `engine/sim/plantation.go`, GEB5/GEB6-Specs):
+- **Grafik** kommt aus GEB, nicht aus GR3: Lager (`storage`) und Plantage (Setzling auf leerem Platz, Pappel auf gewachsenem; Client leitet leere Plätze aus Farm-Position und Bäumen ab) in GEB5.4 (CLI), Adern (`vein:*`, 2 × 2 Kacheln, vier Stufen) in GEB6.5 (CLI).
+- **Zustand im Snapshot:** Adern-Abbau (`nodes[].workerId`, `progress`) und Lager voll (`stock` gegen `stockMax`) sind schon da; „Bäume wachsen“ nicht: `growIn` steht nur im Spielstand (`engine/sim/save_economy.go`), nicht im Snapshot; GEB5 verzichtet darauf (feinere Phasen bräuchten ein Server-Feld, eigenes Ticket SIM/SRV).
 
 ## Ziel
 
-Adern, Plantage und Lager erscheinen im Client als Figuren mit ihrem Zustand (Abbau läuft, Bäume wachsen, Lager voll), sobald der Server die Felder liefert und die Grafiken (GR3) vorliegen.
+Nach GEB5 und GEB6 zeigt der Client den Zustand an den neuen Figuren: Ader mit laufendem Abbau, Lager voll, Plantage mit Wachstum (letzteres erst mit Server-Feld). Die Grafik selbst gehört GEB; dieses Ticket bleibt die Anzeige des Zustands.
 
 ## Beteiligte und Zielgruppen
 
@@ -50,8 +52,8 @@ Ungültige oder seltene Situation → gewolltes Verhalten. Passt nichts: `nicht 
 
 ## Offene Fragen
 
-Entscheidung, betroffener Umfang, wer entscheidet (🧑). Sonst `keine`.
+Vorschlag (2026-10-16, Entwurf, entscheidet 🧑): Das Ticket verlässt W11 (`Sprint: –`), weil GEB5.4 und GEB6.5 dieselben Dateien in `src/scenes/` ändern und die Grafik der Adern erst mit GEB6 kommt. Es wird nach GEB6 neu eingeplant, dann mit Kriterien (Ader: Abbau läuft aus `workerId`/`progress`; Lager voll aus `stock`/`stockMax`; Plantage: Wachstum nur mit Server-Feld, eigenes Ticket SIM/SRV).
 
 ## Notizen
 
-Links, Messwerte, verworfene Ansätze. Darf leer bleiben (`–`).
+Revision 2 (2026-10-16, Entwurf): aus W11 genommen und auf `offen` gesetzt; vorher `eingeplant` in W11 (AC-04). „Figuren“ meint hier Objekte und Gebäude, nicht Bürger (Glossar › Bürger).
