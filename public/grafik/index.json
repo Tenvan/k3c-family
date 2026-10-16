@@ -896,48 +896,6 @@
   "h": 240
  },
  {
-  "pack": "wooden-fortress-and-animated-doors",
-  "group": "ebenen",
-  "file": "ebenen/wooden-castle.png",
-  "w": 144,
-  "h": 192
- },
- {
-  "pack": "wooden-fortress-and-animated-doors",
-  "group": "props",
-  "file": "props/animated-wooden-castle-door.png",
-  "w": 384,
-  "h": 64
- },
- {
-  "pack": "opp2017-castle-tiles",
-  "group": "ebenen",
-  "file": "ebenen/tile-castle-grey.png",
-  "w": 480,
-  "h": 480
- },
- {
-  "pack": "opp2017-castle-tiles",
-  "group": "ebenen",
-  "file": "ebenen/tile-castle.png",
-  "w": 480,
-  "h": 480
- },
- {
-  "pack": "opp2017-castle-tiles",
-  "group": "vorschau",
-  "file": "vorschau/castle01.png",
-  "w": 800,
-  "h": 320
- },
- {
-  "pack": "opp2017-castle-tiles",
-  "group": "vorschau",
-  "file": "vorschau/castle02.png",
-  "w": 800,
-  "h": 320
- },
- {
   "pack": "resource-icons",
   "group": "ressourcen",
   "file": "ressourcen/resources-icons.png",
@@ -957,27 +915,6 @@
   "file": "props/ruby.png",
   "w": 168,
   "h": 24
- },
- {
-  "pack": "k3c-paletten",
-  "group": "ebenen",
-  "file": "ebenen/fort-tileset.png",
-  "w": 208,
-  "h": 128
- },
- {
-  "pack": "k3c-paletten",
-  "group": "props",
-  "file": "props/fort-banner.png",
-  "w": 48,
-  "h": 59
- },
- {
-  "pack": "k3c-paletten",
-  "group": "props",
-  "file": "props/fort-closed-door.png",
-  "w": 96,
-  "h": 80
  },
  {
   "pack": "k3c-paletten",

@@ -23,11 +23,11 @@ Viele dieser Objekte gibt es noch nicht im Code (B-112, B-114); dann ist die Her
 
 | Objekt | Herkunft | Pack | Datei/Frame | Stil (Raster, Palette, Skalierung) | Lizenz | Status |
 |---|---|---|---|---|---|---|
-| `hub:1` | `docs/rules/materialien-gebaeude.md` § 2 | `grafik/k3c-paletten` | wie `castle`: `ebenen/fort-tileset.png` (Burgmauer mit Zinnen), `props/fort-banner.png`; abgeleitet von `sunnyland-fort-of-illusion` | 16 px, Gothicvania (Dunkelviolett), ×2; Vermerk: Palette angeglichen (GR2.3, `grafik/k3c-paletten`) | CC0 1.0 | zugeordnet |
-| `hub:2` | `docs/rules/materialien-gebaeude.md` § 2 | `grafik/wooden-fortress-and-animated-doors` | `ebenen/wooden-castle.png` (Palisade 144×192), `props/animated-wooden-castle-door.png` (Tor, 6 Frames 64×64) | 32 px nativ, Reemax (Braun), ×1; Vermerk: Ansicht schräg von oben, nur die Front; Entscheidung 🧑 GR2.2 | CC BY 3.0 (Namensnennung Pflicht) | zugeordnet |
-| `hub:3` | `docs/rules/materialien-gebaeude.md` § 2 | `grafik/opp2017-castle-tiles` | `ebenen/tile-castle.png` (violette Variante, Kacheln 32×32), Bausatz Stufe 3 | 32 px nativ, OPP DB32 (Violett), ×1; Entscheidung 🧑 GR2.2 | CC0 1.0 | zugeordnet |
-| `hub:4` | `docs/rules/materialien-gebaeude.md` § 2 | `grafik/opp2017-castle-tiles` | `ebenen/tile-castle.png` (violette Variante, Kacheln 32×32), Bausatz Stufe 4 | 32 px nativ, OPP DB32 (Violett), ×1; Entscheidung 🧑 GR2.2 | CC0 1.0 | zugeordnet |
-| `hub:5` | `docs/rules/materialien-gebaeude.md` § 2 | `grafik/opp2017-castle-tiles` | `ebenen/tile-castle.png` (violette Variante, Kacheln 32×32), Bausatz Stufe 5; Beispiel `vorschau/castle01.png` | 32 px nativ, OPP DB32 (Violett), ×1; Entscheidung 🧑 GR2.2 | CC0 1.0 | zugeordnet |
+| `hub:1` | `docs/rules/materialien-gebaeude.md` § 2 | `grafik/gebaeude` | `burg-1-32.png` (Holz) | eigene Grafik (`tools/gebaeude`), 32 px je Kachel, ×1; GEB4 | eigen | zugeordnet |
+| `hub:2` | `docs/rules/materialien-gebaeude.md` § 2 | `grafik/gebaeude` | `burg-2-32.png` (Stein) | eigene Grafik (`tools/gebaeude`), 32 px je Kachel, ×1; GEB4 | eigen | zugeordnet |
+| `hub:3` | `docs/rules/materialien-gebaeude.md` § 2 | `grafik/gebaeude` | `burg-3-32.png` (Kupfer) | eigene Grafik (`tools/gebaeude`), 32 px je Kachel, ×1; GEB4 | eigen | zugeordnet |
+| `hub:4` | `docs/rules/materialien-gebaeude.md` § 2 | `grafik/gebaeude` | `burg-4-32.png` (Eisen) | eigene Grafik (`tools/gebaeude`), 32 px je Kachel, ×1; GEB4 | eigen | zugeordnet |
+| `hub:5` | `docs/rules/materialien-gebaeude.md` § 2 | `grafik/gebaeude` | `burg-5-32.png` (Kristall) | eigene Grafik (`tools/gebaeude`), 32 px je Kachel, ×1; GEB4 | eigen | zugeordnet |
 
 ## Mauer-Stufen
 
@@ -73,7 +73,7 @@ Viele dieser Objekte gibt es noch nicht im Code (B-112, B-114); dann ist die Her
 | `portal` | `data/biomes/*.json` › `portals` | `grafik/portals-32-x-48` | `portale/portalsSpriteSheet.png`, Frame 32×48, je Zeile eine Farbe (blau, rot, orange, grau) mit 4 Frames | 32 px nativ, Rusher_go (gesättigt), ×1 | CC0 1.0 | zugeordnet |
 | `coin` | `data/economy.json` › `purse` | `grafik/16x16-small-and-medium-coin-animation` | `muenzen/sCoins_1.png`, `muenzen/sCoins_2.png` (Drehung, je 8 Frames 16×16) | 16 px, WolfTech (gelb), ×2 | CC0 1.0 | zugeordnet |
 | `guide:coin` | `src/scenes/guideHints.ts` › `guideImage('coin')` (Hinweis „Münze aufheben“, B-294) | `grafik/gold-treasure-icons-16x16` | `icons/2.png` (Münze von vorn, Textur `grafik:coinIcon`); die Münze aus `sCoins_1.png` ist als Symbol zu klein und hat Markierungspixel | 16 px, Bonsaiheldin (gelb/braun), ×4 (Münze 6 px → 24 px, etwa Texthöhe) | CC0 1.0 | zugeordnet |
-| `exit` | `src/scenes/worldRenderer.ts` › `drawStatic` (Level-Objekt `exit`) | `grafik/k3c-paletten` | `props/fort-door.png` (offener Torbogen, 96×80); dieselbe Datei wie `gate` (offen) | 16 px, Gothicvania (Dunkelviolett), ×2; Vermerk: Palette angeglichen (GR2.3, `grafik/k3c-paletten`) | CC0 1.0 | zugeordnet |
+| `exit` | `src/scenes/worldRenderer.ts` › `drawStatic` (Level-Objekt `exit`) | `grafik/k3c-paletten` | `props/fort-door.png` (offener Torbogen, 96×80) | 16 px, Gothicvania (Dunkelviolett), ×2; Vermerk: Palette angeglichen (GR2.3, `grafik/k3c-paletten`) | CC0 1.0 | zugeordnet |
 | `pickup:skillPoint` | `src/model/types.ts` › `Pickup` (`skillPoint`) | `grafik/item-ruby-banana-star` | `props/part-star.png` (Stern, 4 Frames 16×16) | 16 px, mieki256 (Gelb), ×2; Entscheidung 🧑 GR2.2 | CC0 1.0 | zugeordnet |
 
 `guide:moon` (Nacht-Hinweis, B-370): kein Pack-Bild. Das Emoji 🌙 wird zur Laufzeit in die Canvas-Textur `guide:moon` gezeichnet (`src/scenes/guideOverlay.ts` › `ensureMoon`, Systemfont, 28 px, ×1, kein Asset, keine Lizenz). Test: `guideHints.test.ts`.

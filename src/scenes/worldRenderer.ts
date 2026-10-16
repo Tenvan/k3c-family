@@ -8,7 +8,7 @@ import { BuergerView } from './buergerView';
 import { createRider, updateRider } from './mountView';
 import { objectImage } from './objectView';
 import { priceTagSites } from './priceTagRules';
-import { TEXT, createSiteView, drawCastle, updateSiteView } from './siteView';
+import { TEXT, createCastleView, createSiteView, updateCastleView, updateSiteView } from './siteView';
 import { hasDepth, isOnTower } from './viewRules';
 import { ENEMY_SPRITES, PLAYER_SPRITES, TROOP_SPRITES, face, makeSprite, playAnim, spriteTop } from './sprites';
 import type { Coin, Enemy, Pickup, Player, Projectile, ResourceNode, Site, Troop, World } from '../model/types';
@@ -101,6 +101,7 @@ export class WorldRenderer {
   private readonly backWalls: Layer<BackWall>;
   private readonly projectiles: Layer<Projectile>;
   private readonly pickups: Layer<Pickup>;
+  private readonly castle: View;
   private readonly castleHp: View;
   private readonly citizens: BuergerView;
   /** Bauplätze, deren Preisschild steht (nur das nächste je Spieler, B-395) */
@@ -112,8 +113,11 @@ export class WorldRenderer {
     /** Ebene der Stufe: alles, was dieser Renderer zeichnet, liegt darin (je Kamera ein-/ausblendbar, S4.1) */
     private readonly root: Phaser.GameObjects.Layer,
   ) {
+    this.castle = this.put(createCastleView(scene, world.castle.x * U));
+    updateCastleView(scene, this.castle, world.hubLevel ?? 1);
     this.drawStatic();
-    this.castleHp = this.put(scene.add.container(world.castle.x * U, G - 300, bar(scene, 0, 240, 0x52b788)).setDepth(5));
+    // über der Burg (288 px hoch, GEB4)
+    this.castleHp = this.put(scene.add.container(world.castle.x * U, G - 310, bar(scene, 0, 240, 0x52b788)).setDepth(5));
 
     this.citizens = new BuergerView(scene, root);
     this.nodes = this.layer((n) => this.createNode(n), (v, n) => this.updateNode(v, n));
@@ -170,6 +174,7 @@ export class WorldRenderer {
     this.players.sync(hidden.size === 0 ? world.players : world.players.filter((p) => !hidden.has(p.index)));
     this.projectiles.sync(world.projectiles);
     this.citizens.sync(world);
+    updateCastleView(this.scene, this.castle, world.hubLevel ?? 1); // Burg wechselt mit dem Hub-Ausbau (GEB4 AC-05)
     setBar(this.castleHp, 0, world.castle.hp / world.castle.maxHp, world.castle.hp < world.castle.maxHp);
   }
 
@@ -177,8 +182,6 @@ export class WorldRenderer {
 
   private drawStatic(): void {
     const { scene, world } = this;
-    drawCastle(scene, world.castle.x * U, (o) => this.put(o));
-
     for (const e of world.level.entities) {
       const ex = e.x * U;
       if (e.kind === 'portal') {

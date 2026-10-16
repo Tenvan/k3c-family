@@ -8,7 +8,7 @@
       "beschreibung": "Gebäude: castle",
       "wahl": [
         {
-          "datei": "grafik/k3c-paletten/ebenen/fort-tileset.png"
+          "datei": "grafik/gebaeude/burg-1-32.png"
         }
       ]
     },
@@ -41,7 +41,7 @@
       "beschreibung": "Gebäude: gate",
       "wahl": [
         {
-          "datei": "grafik/k3c-paletten/props/fort-door.png"
+          "datei": "grafik/gebaeude/tor-1-32.png"
         }
       ]
     },
@@ -438,7 +438,7 @@
       "beschreibung": "Hub-Stufen: hub:1",
       "wahl": [
         {
-          "datei": "grafik/k3c-paletten/ebenen/fort-tileset.png"
+          "datei": "grafik/gebaeude/burg-1-32.png"
         }
       ]
     },
@@ -449,7 +449,7 @@
       "beschreibung": "Hub-Stufen: hub:2",
       "wahl": [
         {
-          "datei": "grafik/wooden-fortress-and-animated-doors/ebenen/wooden-castle.png"
+          "datei": "grafik/gebaeude/burg-2-32.png"
         }
       ]
     },
@@ -460,7 +460,7 @@
       "beschreibung": "Hub-Stufen: hub:3",
       "wahl": [
         {
-          "datei": "grafik/opp2017-castle-tiles/ebenen/tile-castle.png"
+          "datei": "grafik/gebaeude/burg-3-32.png"
         }
       ]
     },
@@ -471,7 +471,7 @@
       "beschreibung": "Hub-Stufen: hub:4",
       "wahl": [
         {
-          "datei": "grafik/opp2017-castle-tiles/ebenen/tile-castle.png"
+          "datei": "grafik/gebaeude/burg-4-32.png"
         }
       ]
     },
@@ -482,7 +482,7 @@
       "beschreibung": "Hub-Stufen: hub:5",
       "wahl": [
         {
-          "datei": "grafik/opp2017-castle-tiles/ebenen/tile-castle.png"
+          "datei": "grafik/gebaeude/burg-5-32.png"
         }
       ]
     },
