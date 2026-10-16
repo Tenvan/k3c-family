@@ -49,6 +49,7 @@ type building struct {
 	Vorlage   *vorlage   `json:"vorlage"`
 	Kacheln   kacheln    `json:"kacheln"`
 	Bausteine []baustein `json:"bausteine"`
+	Stufen    []stufe    `json:"stufen,omitempty"` // Ausbaustufen 2, 3, …; Grundform = Stufe 1 (§ 6)
 }
 
 type eintrag struct {
@@ -57,6 +58,7 @@ type eintrag struct {
 	Kacheln kacheln           `json:"kacheln"`
 	Vorlage *vorlage          `json:"vorlage"`
 	Dateien map[string]string `json:"dateien"`
+	Stufen  []stufenEintrag   `json:"stufen,omitempty"`
 }
 
 func erlaubt(d int) bool {
@@ -193,16 +195,15 @@ func build(file, prefix string, out map[string]*image.Paletted) (eintrag, error)
 	if want := strings.TrimSuffix(filepath.Base(file), ".json"); b.ID != want {
 		return eintrag{}, fmt.Errorf("%s: id %q passt nicht zum Dateinamen", file, b.ID)
 	}
-	e := eintrag{ID: b.ID, Klasse: b.Klasse, Kacheln: b.Kacheln, Vorlage: b.Vorlage, Dateien: map[string]string{}}
-	for _, d := range dichten {
-		img, err := render(b, d)
-		if err != nil {
-			return eintrag{}, err
-		}
-		name := fmt.Sprintf("%s-%d.png", b.ID, d)
-		out[name] = img
-		e.Dateien[fmt.Sprint(d)] = prefix + name
+	e := eintrag{ID: b.ID, Klasse: b.Klasse, Kacheln: b.Kacheln, Vorlage: b.Vorlage}
+	if len(b.Stufen) == 0 {
+		e.Dateien, err = renderDichten(b, b.ID, prefix, out)
+		return e, err
 	}
+	if e.Stufen, err = renderStufen(b, prefix, out); err != nil {
+		return eintrag{}, err
+	}
+	e.Dateien = e.Stufen[0].Dateien // Karten der Vorschau zeigen die Grundform
 	return e, nil
 }
 

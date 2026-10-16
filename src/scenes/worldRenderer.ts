@@ -2,11 +2,13 @@ import Phaser from 'phaser';
 import { GROUND_Y, PLAYER_COLORS, UNIT_PX } from '../core/constants';
 import { t } from '../core/texts';
 import { fontStyle } from './fontRules';
+import { type BackWall, backWalls } from './backWallRules';
+import { createBackWallView, updateBackWallView } from './backWallView';
 import { BuergerView } from './buergerView';
 import { createRider, updateRider } from './mountView';
 import { objectImage } from './objectView';
 import { priceTagSites } from './priceTagRules';
-import { TEXT, createSiteView, drawCastle, updateSiteView } from './siteView';
+import { TEXT, createCastleView, createSiteView, updateCastleView, updateSiteView } from './siteView';
 import { hasDepth, isOnTower } from './viewRules';
 import { ENEMY_SPRITES, PLAYER_SPRITES, TROOP_SPRITES, face, makeSprite, playAnim, spriteTop } from './sprites';
 import type { Coin, Enemy, Pickup, Player, Projectile, ResourceNode, Site, Troop, World } from '../model/types';
@@ -96,8 +98,10 @@ export class WorldRenderer {
   private readonly coins: Layer<Coin>;
   private readonly nodes: Layer<ResourceNode>;
   private readonly sites: Layer<Site>;
+  private readonly backWalls: Layer<BackWall>;
   private readonly projectiles: Layer<Projectile>;
   private readonly pickups: Layer<Pickup>;
+  private readonly castle: View;
   private readonly castleHp: View;
   private readonly citizens: BuergerView;
   /** Bauplätze, deren Preisschild steht (nur das nächste je Spieler, B-395) */
@@ -109,12 +113,16 @@ export class WorldRenderer {
     /** Ebene der Stufe: alles, was dieser Renderer zeichnet, liegt darin (je Kamera ein-/ausblendbar, S4.1) */
     private readonly root: Phaser.GameObjects.Layer,
   ) {
+    this.castle = this.put(createCastleView(scene, world.castle.x * U));
+    updateCastleView(scene, this.castle, world.hubLevel ?? 1);
     this.drawStatic();
-    this.castleHp = this.put(scene.add.container(world.castle.x * U, G - 300, bar(scene, 0, 240, 0x52b788)).setDepth(5));
+    // über der Burg (288 px hoch, GEB4)
+    this.castleHp = this.put(scene.add.container(world.castle.x * U, G - 310, bar(scene, 0, 240, 0x52b788)).setDepth(5));
 
     this.citizens = new BuergerView(scene, root);
     this.nodes = this.layer((n) => this.createNode(n), (v, n) => this.updateNode(v, n));
     this.sites = this.layer((s) => createSiteView(scene, s), (v, s) => updateSiteView(scene, v, s, this.world, this.priceTags.has(s.id)));
+    this.backWalls = this.layer(() => createBackWallView(scene), (v, b) => updateBackWallView(scene, v, b));
     this.pickups = this.layer((p) => this.createPickup(p), () => {});
     this.coins = this.layer((c) => scene.add.container(c.x * U, G - 8, [objectImage(scene, 'coin', 0, 8) ?? scene.add.circle(0, 0, 8, 0xffd166).setStrokeStyle(2, 0x9c6644)]).setDepth(6), () => {});
     this.troops = this.layer(
@@ -158,6 +166,7 @@ export class WorldRenderer {
     this.priceTags = priceTagSites(world);
     this.nodes.sync(world.nodes);
     this.sites.sync(world.sites);
+    this.backWalls.sync(backWalls(world.sites, world.hubX));
     this.pickups.sync(world.pickups);
     this.coins.sync(world.coins);
     this.troops.sync(world.troops);
@@ -165,6 +174,7 @@ export class WorldRenderer {
     this.players.sync(hidden.size === 0 ? world.players : world.players.filter((p) => !hidden.has(p.index)));
     this.projectiles.sync(world.projectiles);
     this.citizens.sync(world);
+    updateCastleView(this.scene, this.castle, world.hubLevel ?? 1); // Burg wechselt mit dem Hub-Ausbau (GEB4 AC-05)
     setBar(this.castleHp, 0, world.castle.hp / world.castle.maxHp, world.castle.hp < world.castle.maxHp);
   }
 
@@ -172,8 +182,6 @@ export class WorldRenderer {
 
   private drawStatic(): void {
     const { scene, world } = this;
-    drawCastle(scene, world.castle.x * U, (o) => this.put(o));
-
     for (const e of world.level.entities) {
       const ex = e.x * U;
       if (e.kind === 'portal') {

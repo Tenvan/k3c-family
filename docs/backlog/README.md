@@ -139,8 +139,7 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-426](B-426-fullsave-review-kleinigkeiten.md) | SRV | Schuld | niedrig | offen | – | Kleine Befunde aus dem Review von SV1 sind erledigt |
 | [B-435](B-435-gebaeude-grafik-per-prompt.md) | DEV | Idee | mittel | eingeplant | GEB1 | Gebäude und Strukturen entstehen im Asset-Manager aus Beschreibung und Prompt |
 | [B-436](B-436-plan-create-entwurf-zeilen.md) | DEV | Problem | niedrig | offen | – | plan_create scheitert an Platzhalter-Zeilen „– (Entwurf)“ in der Session-Tabelle |
-| [B-437](B-437-katalog-eigene-gebaeude.md) | DEV | Problem | mittel | offen | – | Asset-Katalog von k3c-dev kennt eigene Gebäude-Grafik nicht |
-| [B-438](B-438-werkstatt-baeume-ins-spiel.md) | CLI | Idee | mittel | offen | – | Werkstatt und Bäume aus tools/gebaeude erscheinen im Spiel |
+| [B-438](B-438-werkstatt-baeume-ins-spiel.md) | CLI | Idee | mittel | eingeplant | GEB6 | Werkstatt und Bäume aus tools/gebaeude erscheinen im Spiel |
 | [B-439](B-439-planung-erpqs-look.md) | DEV | Idee | mittel | eingeplant | WZ5 | Die Planungsseite von k3c-dev zeigt und bedient die Planung wie die erp-qs-Workbench |
 | [B-440](B-440-dev-test-entwurfs-sprints-ohne-sessions.md) | DEV | Problem | mittel | offen | – | k3c-dev-Planungstest lehnt Entwurfs-Sprints ohne Sessions ab |
 | [B-443](B-443-dev-logs-scrollen-liste.md) | DEV | Problem | mittel | offen | – | Auf der Log-Seite von k3c-dev scrollt nur die Log-Liste, nicht die ganze Seite |
@@ -409,3 +408,5 @@ Zeile in diesen Abschnitt.
 | [B-393](archiv/B-393-muenzbild-hinweis-fehlt.md) | CLI | Problem | mittel | erledigt | BD1 | Das Münzbild vor „Hinlaufen: Münze aufheben“ erscheint im Browser nicht |
 | [B-374](archiv/B-374-preisschild-taste.md) | CLI | Frage | mittel | erledigt | BD1 | Das Preisschild nennt die Taste zum Bezahlen |
 | [B-441](archiv/B-441-gebaeude-json-beschreibung.md) | DEV | Idee | hoch | erledigt | GEB8 | Gebäude-JSONs tragen ihre Gebäude-Vorlage (`vorlage`) |
+| [B-437](archiv/B-437-katalog-eigene-gebaeude.md) | DEV | Problem | mittel | erledigt | GEB3 | Asset-Katalog von k3c-dev kennt eigene Gebäude-Grafik nicht |
+| [B-442](archiv/B-442-hintergrundmauer-typ-b.md) | CLI | Idee | hoch | erledigt | GEB3 | Hintergrundmauern verbinden die Mauern einer Seite wie in Kingdom Two Crowns |

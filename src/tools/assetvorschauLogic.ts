@@ -133,6 +133,18 @@ export interface GebaeudeEintrag {
   dateien: Record<string, string>;
   /** Gebäude-Vorlage (Glossar, GEB8) */
   vorlage?: { motiv: string; teile: string[]; materialien?: string[]; stimmung?: string; fein?: string };
+  /** Ausbaustufen (GEB3, Regeldatei § 6); Stufe 1 = Grundform */
+  stufen?: { stufe: number; aenderung: string; dateien: Record<string, string> }[];
+}
+
+/** Kacheln nebeneinander in der Vorschau: kachelbare Grafik (`klasse: kachel`, z. B. Hintergrundmauer) dreimal, damit die Naht sichtbar wird (GEB3/AC-07). */
+export function kachelAnzahl(e: Pick<GebaeudeEintrag, 'klasse'>): number {
+  return e.klasse === 'kachel' ? 3 : 1;
+}
+
+/** Karten der Stufenreihe: jede Stufe ab 2 in 32 px mit ihrer Änderung; Stufe 1 zeigt die Hauptkarte (GEB3/AC-01). */
+export function stufenKarten(e: GebaeudeEintrag): { id: string; stufe: number; datei: string; aenderung: string }[] {
+  return (e.stufen ?? []).filter((s) => s.stufe > 1 && s.dateien[32]).map((s) => ({ id: e.id, stufe: s.stufe, datei: s.dateien[32]!, aenderung: s.aenderung }));
 }
 
 /** Vorlage für die Anzeige: Motiv als Titel, Teile als Zeilen, danach die gesetzten Zusatzfelder (GEB8/AC-03). */

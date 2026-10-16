@@ -7,17 +7,11 @@ import type { SiteKind, SiteState } from '../model/types';
 
 /** Textur-Schlüssel → Datei unter `public/grafik/` (nur zugeordnete Dateien; LoadScene lädt genau diese) */
 export const BUILDING_TEXTURES: Record<string, string> = {
-  'grafik:fort-tileset': 'k3c-paletten/ebenen/fort-tileset.png',
-  'grafik:fort-banner': 'k3c-paletten/props/fort-banner.png',
-  'grafik:hub-2': 'wooden-fortress-and-animated-doors/ebenen/wooden-castle.png',
-  'grafik:wall-2': 'gothicvania-town/tileset-einzeln/wall.png',
-  'grafik:wall-3': 'k3c-paletten/tileset-einzeln/wall-kupfer.png',
-  'grafik:wall-4': 'k3c-paletten/tileset-einzeln/wall-eisen.png',
-  'grafik:wall-5': 'k3c-paletten/tileset-einzeln/wall-kristall.png',
-  'grafik:tower-2': 'k3c-paletten/props/tower-stein.png',
-  'grafik:tower-3': 'k3c-paletten/props/tower-kupfer.png',
-  'grafik:tower-4': 'k3c-paletten/props/tower-eisen.png',
-  'grafik:gate': 'k3c-paletten/props/fort-closed-door.png',
+  ...stufen('hub', 'burg'),
+  ...stufen('wall', 'mauer'),
+  ...stufen('tower', 'turm'),
+  ...stufen('backwall', 'hintergrundmauer'),
+  ...stufen('gate', 'tor'),
   'grafik:workshop': 'gebaeude/werkstatt-32.png',
   'grafik:tavern': 'gebaeude/taverne-32.png',
   'grafik:healer': 'gebaeude/heilplatz-32.png',
@@ -32,20 +26,26 @@ export const BUILDING_TEXTURES: Record<string, string> = {
   'grafik:stairs-right': 'gothicvania-town/tileset-einzeln/stairs-right.png',
 };
 
+/** Burg, Mauer, Turm und Tor in den Stufen 1–5 aus `tools/gebaeude` (GEB3, GEB4): `grafik:<kind>-<n>` → `gebaeude/<id>-<n>-32.png` */
+function stufen(kind: string, id: string): Record<string, string> {
+  return Object.fromEntries([1, 2, 3, 4, 5].map((n) => [`grafik:${kind}-${n}`, `gebaeude/${id}-${n}-32.png`]));
+}
+
 /** Treppe hoch aus 16×32-Kacheln, von unten links nach oben rechts je eine Kachel weiter und eine halbe höher */
 export const STAIRS_UP_TILES = ['grafik:stairs-left', 'grafik:stairs', 'grafik:stairs', 'grafik:stairs', 'grafik:stairs-right'];
 
-/** Material-Stufen 1–5 (Regel materialien-gebaeude.md § 3.1); Stufe 1 (Holz) und Turm 5 (Zaubertum) sind Lücken */
-const STAGES: Partial<Record<SiteKind, (string | null)[]>> = {
-  wall: [null, 'grafik:wall-2', 'grafik:wall-3', 'grafik:wall-4', 'grafik:wall-5'],
-  tower: [null, 'grafik:tower-2', 'grafik:tower-3', 'grafik:tower-4', null],
+/** Material-Stufen 1–5 (Regel materialien-gebaeude.md § 3.1; Grafik GEB3, Turm 5 = Zaubertum; Tor GEB4 in der Stufe seiner Mauerlinie) */
+const STAGES: Partial<Record<SiteKind, string[]>> = {
+  wall: [1, 2, 3, 4, 5].map((n) => `grafik:wall-${n}`),
+  tower: [1, 2, 3, 4, 5].map((n) => `grafik:tower-${n}`),
+  gate: [1, 2, 3, 4, 5].map((n) => `grafik:gate-${n}`),
 };
 
-/** Ohne Stufe im Snapshot: die Grafik der Objekt-Zeile (Mauer und Turm zeigen dort Stein = Stufe 2) */
+/** Ohne Stufe: die Grundform (Mauer, Turm und Tor: Stufe 1, wie `Site.level` „fehlt = 1“) */
 const BASE: Partial<Record<SiteKind, string>> = {
-  wall: 'grafik:wall-2',
-  tower: 'grafik:tower-2',
-  gate: 'grafik:gate',
+  wall: 'grafik:wall-1',
+  tower: 'grafik:tower-1',
+  gate: 'grafik:gate-1',
   workshop: 'grafik:workshop',
   tavern: 'grafik:tavern',
   healer: 'grafik:healer',
@@ -64,6 +64,12 @@ export function textureScale(key: string): number {
   return BUILDING_TEXTURES[key]?.startsWith('gebaeude/') ? 1 : 2;
 }
 
+/** Textur der Hintergrundmauer in Stufe 1–5 (B-442), sonst `null` */
+export function backWallTexture(stage: number): string | null {
+  const key = `grafik:backwall-${stage}`;
+  return key in BUILDING_TEXTURES ? key : null;
+}
+
 /** Grafik eines Bauplatzes; nur gebaute Gebäude, Baustellen behalten Umriss, Fortschritt und Preisschild */
 export function siteTexture(kind: SiteKind, state: SiteState, stage?: number): string | null {
   if (state !== 'built') return null;
@@ -72,7 +78,8 @@ export function siteTexture(kind: SiteKind, state: SiteState, stage?: number): s
   return BASE[kind] ?? null;
 }
 
-/** Hub-Stufe (materialien-gebaeude.md § 2): 1 = Burg aus dem Fort-Tileset, 2 = Palisade; 3–5 sind Kachel-Bausätze, noch nicht gesetzt */
+/** Burg in der Hub-Stufe 1–5 (materialien-gebaeude.md § 2, GEB4), ohne Stufe 1; unbekannte Stufe `null` */
 export function hubTexture(stage = 1): string | null {
-  return ['grafik:fort-tileset', 'grafik:hub-2'][stage - 1] ?? null;
+  const key = `grafik:hub-${stage}`;
+  return key in BUILDING_TEXTURES ? key : null;
 }

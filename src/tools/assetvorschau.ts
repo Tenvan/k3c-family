@@ -11,7 +11,7 @@ import { clientLog } from '../core/clientLog';
 import { UNIT_PX as UNIT } from '../core/constants';
 import { installPageChrome } from '../core/shell';
 import {
-  baumReihe, figureCard, gebaeudeKarten, GRAFIK_SCALE, licenseFlag, parseQuery, resolveSlot, SCENES, slotsOf, vorlageZeilen,
+  baumReihe, figureCard, gebaeudeKarten, GRAFIK_SCALE, licenseFlag, parseQuery, resolveSlot, SCENES, slotsOf, kachelAnzahl, stufenKarten, vorlageZeilen,
   type AssetSlot, type GebaeudeEintrag, type Query, type Resolved, type SceneId,
 } from './assetvorschauLogic';
 import { CREDITS } from './credits';
@@ -145,28 +145,39 @@ async function renderNeueGebaeude(): Promise<void> {
   const byId = new Map(index.map((e) => [e.id, e]));
   if (baumReihe(index).length > 0) strip.append(baumFigur(index, 32), baumFigur(index, 16));
   for (const k of gebaeudeKarten(index)) {
-    const fig = document.createElement('figure');
-    const cap = document.createElement('figcaption');
-    cap.textContent = `${k.id} · ${k.dichte} px ×${k.scale}`;
-    fig.append(cap);
-    if (k.dichte === 32) vorlageBlock(fig, byId.get(k.id)!);
-    const img = new Image();
-    img.onload = () => {
-      const canvas = document.createElement('canvas');
-      canvas.width = img.width * k.scale;
-      canvas.height = img.height * k.scale;
-      const g = canvas.getContext('2d')!;
-      g.imageSmoothingEnabled = false;
-      g.drawImage(img, 0, 0, canvas.width, canvas.height);
-      fig.prepend(aufBodenlinie(canvas, index));
-    };
-    img.onerror = () => clientLog('error', '❌ Asset lädt nicht', { datei: k.datei });
-    img.src = k.datei;
+    const n = kachelAnzahl(byId.get(k.id)!);
+    const fig = bildKarte(k.datei, k.scale, `${k.id} · ${k.dichte} px ×${k.scale}`, index, n);
     strip.append(fig);
+    if (k.dichte !== 32) continue;
+    vorlageBlock(fig, byId.get(k.id)!);
+    for (const s of stufenKarten(byId.get(k.id)!)) {
+      const sf = bildKarte(s.datei, 1, `${s.id} · Stufe ${s.stufe} · 32 px ×1`, index, n);
+      sf.append(Object.assign(document.createElement('p'), { textContent: s.aenderung, style: 'max-width:10rem;font-size:0.75rem;margin:0.3rem 0 0' }));
+      strip.append(sf);
+    }
   }
   const title = document.createElement('h2');
   title.textContent = t('av.geb');
   sceneEl.prepend(title, strip);
+}
+
+/** Karte mit einem Bild in ganzzahligem Maßstab auf der Bodenlinie und Beschriftung darunter. */
+function bildKarte(datei: string, scale: number, text: string, index: readonly GebaeudeEintrag[], kacheln = 1): HTMLElement {
+  const fig = document.createElement('figure');
+  fig.append(Object.assign(document.createElement('figcaption'), { textContent: text }));
+  const img = new Image();
+  img.onload = () => {
+    const canvas = document.createElement('canvas');
+    canvas.width = img.width * scale * kacheln;
+    canvas.height = img.height * scale;
+    const g = canvas.getContext('2d')!;
+    g.imageSmoothingEnabled = false;
+    for (let i = 0; i < kacheln; i++) g.drawImage(img, i * img.width * scale, 0, img.width * scale, canvas.height);
+    fig.prepend(aufBodenlinie(canvas, index));
+  };
+  img.onerror = () => clientLog('error', '❌ Asset lädt nicht', { datei });
+  img.src = datei;
+  return fig;
 }
 
 /** Vorlage unter der Master-Karte: Motiv als Titel, Teile und Zusatzfelder als Liste (GEB8/AC-03). */

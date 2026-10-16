@@ -38,6 +38,9 @@ var catalogDirs = []struct{ dir, credits string }{
 // ponytail: Ordner-Annahme; ein fremder Sound braucht eine Zeile in der Credit-Tabelle (Import M10.5).
 const selfMade = "selbst erzeugt (kein Credit nötig)"
 
+// ownBuilding gilt für eigene Gebäude-Grafik aus `task gebaeude` unter public/grafik/gebaeude/ (B-437).
+const ownBuilding = "eigene Grafik (tools/gebaeude, kein Credit nötig)"
+
 // Catalog liest alle Bilder und Sounds unter public/ mit Pack, Gruppe, Maßen und Credit.
 func Catalog(root string) ([]Asset, error) {
 	pub := filepath.Join(root, "public")
@@ -87,6 +90,8 @@ func asset(rel, full string, credits map[string]credit) (Asset, bool) {
 		a.Title, a.Artist, a.License, a.Source = c.title, c.artist, c.license, c.source
 	case a.Kind == KindSound:
 		a.License = selfMade
+	case a.Pack == "gebaeude":
+		a.License = ownBuilding
 	default:
 		a.License = "unbekannt"
 	}

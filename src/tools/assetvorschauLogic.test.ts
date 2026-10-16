@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { baumReihe, figureCard, gebaeudeKarten, vorlageZeilen, licenseFlag, parseQuery, resolveSlot, SCENES, slotsOf, type AssetSlot, type GebaeudeEintrag } from './assetvorschauLogic';
+import { baumReihe, figureCard, gebaeudeKarten, kachelAnzahl, stufenKarten, vorlageZeilen, licenseFlag, parseQuery, resolveSlot, SCENES, slotsOf, type AssetSlot, type GebaeudeEintrag } from './assetvorschauLogic';
 
 const farm: AssetSlot = {
   id: 'farm', art: 'grafik', kategorie: 'gebaeude', beschreibung: 'Farm',
@@ -110,5 +110,29 @@ describe('Asset-Vorschau: Gebäude-Vorlage (GEB8/AC-03)', () => {
 
   it('ohne Vorlage nichts', () => {
     expect(vorlageZeilen(eintrag())).toBeNull();
+  });
+});
+
+describe('Asset-Vorschau: Stufenreihe (GEB3/AC-01)', () => {
+  const stufe = (n: number, aenderung: string) => ({ stufe: n, aenderung, dateien: { 32: `m-${n}-32.png`, 16: `m-${n}-16.png` } });
+  const mauer: GebaeudeEintrag = { id: 'mauer', kacheln: { b: 1, h: 5 }, dateien: { 32: 'm-1-32.png' }, stufen: [stufe(1, 'Grundform'), stufe(2, 'Stein'), stufe(3, 'Kupfer')] };
+
+  it('Stufen ab 2 in 32 px mit Änderungstext; Stufe 1 zeigt schon die Hauptkarte', () => {
+    expect(stufenKarten(mauer)).toEqual([
+      { id: 'mauer', stufe: 2, datei: 'm-2-32.png', aenderung: 'Stein' },
+      { id: 'mauer', stufe: 3, datei: 'm-3-32.png', aenderung: 'Kupfer' },
+    ]);
+  });
+
+  it('ohne Stufen keine Karten', () => {
+    expect(stufenKarten({ id: 'x', kacheln: { b: 1, h: 1 }, dateien: {} })).toEqual([]);
+  });
+});
+
+describe('Asset-Vorschau: kachelbare Grafik (GEB3/AC-07)', () => {
+  it('Hintergrundmauer dreimal nebeneinander, andere Gebäude einmal', () => {
+    expect(kachelAnzahl({ klasse: 'kachel' })).toBe(3);
+    expect(kachelAnzahl({ klasse: 'baum' })).toBe(1);
+    expect(kachelAnzahl({})).toBe(1);
   });
 });

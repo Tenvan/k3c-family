@@ -1,0 +1,149 @@
+{
+  "id": "hintergrundmauer",
+  "klasse": "kachel",
+  "vorlage": {
+    "motiv": "Hintergrundmauer zwischen zwei Mauern, 1 Kachel breit und 4 hoch, nahtlos in der Breite kachelbar; dunkler als die Mauer, damit sie zurücktritt",
+    "teile": [
+      "Zwei Zinnen oben je Kachel, Lücken gleich breit auch über die Naht",
+      "Mauerkörper über die ganze Breite ohne Seitenkanten, helle Oberkante",
+      "Waagrechte Bohlen (ab Stufe 2 Quader mit versetzten Stoßfugen)",
+      "Dunkler Sockel unten"
+    ],
+    "materialien": [
+      "Holz (Wand, Tresen, Gestell)",
+      "Stein (Kamin, Esse, Sockel, Stufe)",
+      "Kupfer (Mauer-, Turmstufe 3)",
+      "Eisen hell (Mauer-, Turmstufe 4)",
+      "Kristall (Mauer-, Turmstufe 5)"
+    ],
+    "stimmung": "ruhig und zurückhaltend, Farbstufen wie die Mauer, eine Stufe dunkler",
+    "fein": "Bohlen- und Quaderfugen, Nieten, Glanzpunkte"
+  },
+  "kacheln": {
+    "b": 1,
+    "h": 4
+  },
+  "bausteine": [
+    { "art": "zinne", "rechteck": [0.125, 0, 0.25, 0.3125], "farbe": "oiled-cedar" },
+    { "art": "zinne", "rechteck": [0.125, 0, 0.25, 0.0625], "farbe": "rope" },
+    { "art": "zinne", "rechteck": [0.625, 0, 0.25, 0.3125], "farbe": "oiled-cedar" },
+    { "art": "zinne", "rechteck": [0.625, 0, 0.25, 0.0625], "farbe": "rope" },
+    { "art": "wand", "rechteck": [0, 0.3125, 1, 3.6875], "farbe": "oiled-cedar" },
+    { "art": "kante", "rechteck": [0, 0.3125, 1, 0.0625], "farbe": "rope" },
+    { "art": "fuge", "rechteck": [0, 0.6875, 1, 0.03125], "farbe": "loulou", "fein": true },
+    { "art": "fuge", "rechteck": [0, 1.0625, 1, 0.03125], "farbe": "loulou", "fein": true },
+    { "art": "fuge", "rechteck": [0, 1.4375, 1, 0.03125], "farbe": "loulou", "fein": true },
+    { "art": "fuge", "rechteck": [0, 1.8125, 1, 0.03125], "farbe": "loulou", "fein": true },
+    { "art": "fuge", "rechteck": [0, 2.1875, 1, 0.03125], "farbe": "loulou", "fein": true },
+    { "art": "fuge", "rechteck": [0, 2.5625, 1, 0.03125], "farbe": "loulou", "fein": true },
+    { "art": "fuge", "rechteck": [0, 2.9375, 1, 0.03125], "farbe": "loulou", "fein": true },
+    { "art": "fuge", "rechteck": [0, 3.3125, 1, 0.03125], "farbe": "loulou", "fein": true },
+    { "art": "fuge", "rechteck": [0, 3.6875, 1, 0.03125], "farbe": "loulou", "fein": true },
+    { "art": "sockel", "rechteck": [0, 3.75, 1, 0.25], "farbe": "loulou" }
+  ],
+  "stufen": [
+    {
+      "stufe": 2,
+      "aenderung": "Stein: dunkelgraue Quader mit versetzten Stoßfugen statt Holzbohlen",
+      "farben": {
+        "oiled-cedar": "smokey-ash",
+        "rope": "dim-gray",
+        "loulou": "valhalla"
+      },
+      "zusaetze": [
+        { "art": "fuge", "rechteck": [0.5, 0.375, 0.03125, 0.3125], "farbe": "valhalla", "fein": true },
+        { "art": "fuge", "rechteck": [0.25, 0.75, 0.03125, 0.3125], "farbe": "valhalla", "fein": true },
+        { "art": "fuge", "rechteck": [0.75, 0.75, 0.03125, 0.3125], "farbe": "valhalla", "fein": true },
+        { "art": "fuge", "rechteck": [0.5, 1.125, 0.03125, 0.3125], "farbe": "valhalla", "fein": true },
+        { "art": "fuge", "rechteck": [0.25, 1.5, 0.03125, 0.3125], "farbe": "valhalla", "fein": true },
+        { "art": "fuge", "rechteck": [0.75, 1.5, 0.03125, 0.3125], "farbe": "valhalla", "fein": true },
+        { "art": "fuge", "rechteck": [0.5, 1.875, 0.03125, 0.3125], "farbe": "valhalla", "fein": true },
+        { "art": "fuge", "rechteck": [0.25, 2.25, 0.03125, 0.3125], "farbe": "valhalla", "fein": true },
+        { "art": "fuge", "rechteck": [0.75, 2.25, 0.03125, 0.3125], "farbe": "valhalla", "fein": true },
+        { "art": "fuge", "rechteck": [0.5, 2.625, 0.03125, 0.3125], "farbe": "valhalla", "fein": true },
+        { "art": "fuge", "rechteck": [0.25, 3, 0.03125, 0.3125], "farbe": "valhalla", "fein": true },
+        { "art": "fuge", "rechteck": [0.75, 3, 0.03125, 0.3125], "farbe": "valhalla", "fein": true },
+        { "art": "fuge", "rechteck": [0.5, 3.375, 0.03125, 0.3125], "farbe": "valhalla", "fein": true }
+      ]
+    },
+    {
+      "stufe": 3,
+      "aenderung": "Kupfer: gedämpft kupferbraune Platten, einzelne Patina-Tupfen",
+      "farben": {
+        "oiled-cedar": "rope",
+        "rope": "tahiti-gold",
+        "loulou": "oiled-cedar"
+      },
+      "zusaetze": [
+        { "art": "fuge", "rechteck": [0.5, 0.375, 0.03125, 0.3125], "farbe": "oiled-cedar", "fein": true },
+        { "art": "fuge", "rechteck": [0.25, 0.75, 0.03125, 0.3125], "farbe": "oiled-cedar", "fein": true },
+        { "art": "fuge", "rechteck": [0.75, 0.75, 0.03125, 0.3125], "farbe": "oiled-cedar", "fein": true },
+        { "art": "fuge", "rechteck": [0.5, 1.125, 0.03125, 0.3125], "farbe": "oiled-cedar", "fein": true },
+        { "art": "fuge", "rechteck": [0.25, 1.5, 0.03125, 0.3125], "farbe": "oiled-cedar", "fein": true },
+        { "art": "fuge", "rechteck": [0.75, 1.5, 0.03125, 0.3125], "farbe": "oiled-cedar", "fein": true },
+        { "art": "fuge", "rechteck": [0.5, 1.875, 0.03125, 0.3125], "farbe": "oiled-cedar", "fein": true },
+        { "art": "fuge", "rechteck": [0.25, 2.25, 0.03125, 0.3125], "farbe": "oiled-cedar", "fein": true },
+        { "art": "fuge", "rechteck": [0.75, 2.25, 0.03125, 0.3125], "farbe": "oiled-cedar", "fein": true },
+        { "art": "fuge", "rechteck": [0.5, 2.625, 0.03125, 0.3125], "farbe": "oiled-cedar", "fein": true },
+        { "art": "fuge", "rechteck": [0.25, 3, 0.03125, 0.3125], "farbe": "oiled-cedar", "fein": true },
+        { "art": "fuge", "rechteck": [0.75, 3, 0.03125, 0.3125], "farbe": "oiled-cedar", "fein": true },
+        { "art": "fuge", "rechteck": [0.5, 3.375, 0.03125, 0.3125], "farbe": "oiled-cedar", "fein": true },
+        { "art": "patina", "rechteck": [0.1875, 1.875, 0.125, 0.0625], "farbe": "verdigris" },
+        { "art": "patina", "rechteck": [0.6875, 3, 0.125, 0.0625], "farbe": "verdigris" }
+      ]
+    },
+    {
+      "stufe": 4,
+      "aenderung": "Eisen: mattgraue Stahlplatten, ein durchgehendes dunkles Querband mit Nieten",
+      "farben": {
+        "oiled-cedar": "dim-gray",
+        "rope": "heather",
+        "loulou": "valhalla"
+      },
+      "zusaetze": [
+        { "art": "fuge", "rechteck": [0.5, 0.375, 0.03125, 0.3125], "farbe": "valhalla", "fein": true },
+        { "art": "fuge", "rechteck": [0.25, 0.75, 0.03125, 0.3125], "farbe": "valhalla", "fein": true },
+        { "art": "fuge", "rechteck": [0.75, 0.75, 0.03125, 0.3125], "farbe": "valhalla", "fein": true },
+        { "art": "fuge", "rechteck": [0.5, 1.125, 0.03125, 0.3125], "farbe": "valhalla", "fein": true },
+        { "art": "fuge", "rechteck": [0.25, 1.5, 0.03125, 0.3125], "farbe": "valhalla", "fein": true },
+        { "art": "fuge", "rechteck": [0.75, 1.5, 0.03125, 0.3125], "farbe": "valhalla", "fein": true },
+        { "art": "fuge", "rechteck": [0.5, 1.875, 0.03125, 0.3125], "farbe": "valhalla", "fein": true },
+        { "art": "fuge", "rechteck": [0.25, 2.25, 0.03125, 0.3125], "farbe": "valhalla", "fein": true },
+        { "art": "fuge", "rechteck": [0.75, 2.25, 0.03125, 0.3125], "farbe": "valhalla", "fein": true },
+        { "art": "fuge", "rechteck": [0.5, 2.625, 0.03125, 0.3125], "farbe": "valhalla", "fein": true },
+        { "art": "fuge", "rechteck": [0.25, 3, 0.03125, 0.3125], "farbe": "valhalla", "fein": true },
+        { "art": "fuge", "rechteck": [0.75, 3, 0.03125, 0.3125], "farbe": "valhalla", "fein": true },
+        { "art": "fuge", "rechteck": [0.5, 3.375, 0.03125, 0.3125], "farbe": "valhalla", "fein": true },
+        { "art": "band", "rechteck": [0, 2.1875, 1, 0.125], "farbe": "valhalla" },
+        { "art": "niete", "rechteck": [0.1875, 2.21875, 0.0625, 0.0625], "farbe": "heather", "fein": true },
+        { "art": "niete", "rechteck": [0.6875, 2.21875, 0.0625, 0.0625], "farbe": "heather", "fein": true }
+      ]
+    },
+    {
+      "stufe": 5,
+      "aenderung": "Kristall: dunkelblaue Kristallblöcke mit blauen Fugen und wenigen Glanzpunkten, ohne Leuchten (tritt hinter die Mauer zurück)",
+      "farben": {
+        "oiled-cedar": "deep-koamaru",
+        "rope": "royal-blue",
+        "loulou": "valhalla"
+      },
+      "zusaetze": [
+        { "art": "fuge", "rechteck": [0.5, 0.375, 0.03125, 0.3125], "farbe": "royal-blue", "fein": true },
+        { "art": "fuge", "rechteck": [0.25, 0.75, 0.03125, 0.3125], "farbe": "royal-blue", "fein": true },
+        { "art": "fuge", "rechteck": [0.75, 0.75, 0.03125, 0.3125], "farbe": "royal-blue", "fein": true },
+        { "art": "fuge", "rechteck": [0.5, 1.125, 0.03125, 0.3125], "farbe": "royal-blue", "fein": true },
+        { "art": "fuge", "rechteck": [0.25, 1.5, 0.03125, 0.3125], "farbe": "royal-blue", "fein": true },
+        { "art": "fuge", "rechteck": [0.75, 1.5, 0.03125, 0.3125], "farbe": "royal-blue", "fein": true },
+        { "art": "fuge", "rechteck": [0.5, 1.875, 0.03125, 0.3125], "farbe": "royal-blue", "fein": true },
+        { "art": "fuge", "rechteck": [0.25, 2.25, 0.03125, 0.3125], "farbe": "royal-blue", "fein": true },
+        { "art": "fuge", "rechteck": [0.75, 2.25, 0.03125, 0.3125], "farbe": "royal-blue", "fein": true },
+        { "art": "fuge", "rechteck": [0.5, 2.625, 0.03125, 0.3125], "farbe": "royal-blue", "fein": true },
+        { "art": "fuge", "rechteck": [0.25, 3, 0.03125, 0.3125], "farbe": "royal-blue", "fein": true },
+        { "art": "fuge", "rechteck": [0.75, 3, 0.03125, 0.3125], "farbe": "royal-blue", "fein": true },
+        { "art": "fuge", "rechteck": [0.5, 3.375, 0.03125, 0.3125], "farbe": "royal-blue", "fein": true },
+        { "art": "glanz", "rechteck": [0.3125, 1.25, 0.0625, 0.0625], "farbe": "cornflower", "fein": true },
+        { "art": "glanz", "rechteck": [0.8125, 3.125, 0.0625, 0.0625], "farbe": "cornflower", "fein": true }
+      ]
+    }
+  ]
+}

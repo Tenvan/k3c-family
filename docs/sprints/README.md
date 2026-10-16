@@ -24,9 +24,7 @@ Abnahmen am Gerät (`Agent: Mensch`) sammelt das Projekt ABN im Sprint HW1: [`..
 | BD2 | SIM, SRV, CLI | BED | Rückmeldungs-Ereignisse gedrosselt und geprüft, Lobby startet nie still leer | – | Entwurf | `geplant/BD2-rueckmeldung-lobby-nachtraege/` |
 | BD3 | SRV | BED | Raum-Pause im Couch-Raum, Schutz des pausierten Monarchen online | – | Entwurf | `geplant/BD3-raum-pause/` |
 | BD4 | CLI | BED | Gemeinsame HUD-Leiste oben, Fluss unten, lokale Spieler treten einzeln aus | – | Entwurf | `geplant/BD4-hud-leiste-austreten/` |
-| GEB3 | DEV | GEB | Mauer und Turm, Stufen 1 bis 5 | – | Entwurf | `geplant/GEB3-mauer-turm-stufen/` |
-| GEB4 | DEV | GEB | Burg und Hub-Stufen 1 bis 5, Tor | – | Entwurf | `geplant/GEB4-burg-hub-tor/` |
-| GEB5 | DEV | GEB | Lager, Farm mit Plantage, Kaserne, Treppen | – | Entwurf | `geplant/GEB5-hub-gebaeude-rest/` |
+| GEB5 | DEV, CLI | GEB | Lager, Farm mit Plantage, Kaserne, Treppen | – | bereit | `geplant/GEB5-hub-gebaeude-rest/` |
 | GEB6 | DEV | GEB | Natur und Objekte: Bäume, Fels, Erz, Adern, Truhe, Portal, Rekrutierungslager | – | Entwurf | `geplant/GEB6-natur-objekte/` |
 | GEB7 | DEV | GEB | Hintergründe je Biom | – | Entwurf | `geplant/GEB7-hintergruende/` |
 | GR8 | CLI | GRA | Eigene Figuren für neue Gegner und Grafik-Pipeline mit Ziel-Palette | – | Entwurf | `geplant/GR8-figuren-pipeline/` |
@@ -182,3 +180,5 @@ Gesamtplan und Begründung: [`../plan-weiterentwicklung.md`](../plan-weiterentwi
 | GEB1 | Grundregeln für Gebäude-Grafik und Werkstatt | `erledigt/GEB1-grundregeln-werkstatt/` |
 | GEB2 | Gebäude ohne Grafik: Taverne, Heilplatz, Schmiede, Rüstkammer | `erledigt/GEB2-luecken-gebaeude/` |
 | GEB8 | Gebäude-Vorlagen in den Daten-JSONs | `erledigt/GEB8-gebaeude-vorlagen/` |
+| GEB3 | Mauer und Turm, Stufen 1 bis 5 | `erledigt/GEB3-mauer-turm-stufen/` |
+| GEB4 | Burg und Hub-Stufen 1 bis 5, Tor | `erledigt/GEB4-burg-hub-tor/` |
