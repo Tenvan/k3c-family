@@ -73,6 +73,36 @@
     ]
   },
   {
+    "id": "ausgang",
+    "klasse": "ausgang",
+    "kacheln": {
+      "b": 2,
+      "h": 3
+    },
+    "vorlage": {
+      "motiv": "Schlichter Holzrahmen mit dunkler Öffnung, dahinter führt eine Stufe nach oben zur nächsten Ebene, 2 × 3 Kacheln",
+      "teile": [
+        "Zwei kräftige Pfosten",
+        "Querbalken mit kleinem Überstand oben",
+        "Dunkle Öffnung mit angedeuteten Stufen nach oben",
+        "Steinschwelle vorn"
+      ],
+      "materialien": [
+        "Pfosten, Balken",
+        "Holz (Wand, Tresen, Gestell)",
+        "Stein (Kamin, Esse, Sockel, Stufe)"
+      ],
+      "stimmung": "schlicht, erdig, still",
+      "fein": "Maserung, Fugen, Nägel"
+    },
+    "dateien": {
+      "128": "grafik/gebaeude/ausgang-128.png",
+      "16": "grafik/gebaeude/ausgang-16.png",
+      "32": "grafik/gebaeude/ausgang-32.png",
+      "64": "grafik/gebaeude/ausgang-64.png"
+    }
+  },
+  {
     "id": "birke-2",
     "klasse": "baum",
     "kacheln": {
@@ -836,6 +866,65 @@
     }
   },
   {
+    "id": "portal",
+    "klasse": "portal",
+    "kacheln": {
+      "b": 2,
+      "h": 3
+    },
+    "vorlage": {
+      "motiv": "Steinbogen mit leuchtendem, bedrohlichem Kristalltor, aus dem die Gegner der Nachtwelle treten, 2 × 3 Kacheln",
+      "teile": [
+        "Breiter Steinbogen mit Schlussstein oben",
+        "Kristallfläche im Bogen, nach innen heller bis weißer Kern",
+        "Leuchtende Runen in den Pfeilern",
+        "Steinschwelle am Boden"
+      ],
+      "materialien": [
+        "Stein (Kamin, Esse, Sockel, Stufe)",
+        "Kristall (Mauer-, Turmstufe 5)"
+      ],
+      "stimmung": "magisch, bedrohlich",
+      "fein": "Runen, Fugen, Glanzpunkte"
+    },
+    "dateien": {
+      "128": "grafik/gebaeude/portal-128.png",
+      "16": "grafik/gebaeude/portal-16.png",
+      "32": "grafik/gebaeude/portal-32.png",
+      "64": "grafik/gebaeude/portal-64.png"
+    }
+  },
+  {
+    "id": "rekrutierungslager",
+    "klasse": "lager",
+    "kacheln": {
+      "b": 3,
+      "h": 2
+    },
+    "vorlage": {
+      "motiv": "Zelt links und Feuerstelle rechts, hier warten Landstreicher auf Anwerbung, 3 × 2 Kacheln",
+      "teile": [
+        "Spitzes Zelt aus hellem Tuch mit Falte und dunkler Eingangsöffnung",
+        "Zeltpfosten ragt oben heraus",
+        "Feuerstelle mit Steinring, Holzscheiten, Glut und Funken"
+      ],
+      "materialien": [
+        "Zelttuch (Lager) = Stoff hell",
+        "Pfosten, Balken",
+        "Stein (Kamin, Esse, Sockel, Stufe)",
+        "Glut"
+      ],
+      "stimmung": "gemütlich, abendlich",
+      "fein": "Funken, Fugen"
+    },
+    "dateien": {
+      "128": "grafik/gebaeude/rekrutierungslager-128.png",
+      "16": "grafik/gebaeude/rekrutierungslager-16.png",
+      "32": "grafik/gebaeude/rekrutierungslager-32.png",
+      "64": "grafik/gebaeude/rekrutierungslager-64.png"
+    }
+  },
+  {
     "id": "ruestkammer",
     "kacheln": {
       "b": 6,
@@ -1181,6 +1270,35 @@
         }
       }
     ]
+  },
+  {
+    "id": "truhe",
+    "klasse": "beute",
+    "kacheln": {
+      "b": 1,
+      "h": 1
+    },
+    "vorlage": {
+      "motiv": "Offene Beute-Truhe mit überquellendem Goldhaufen, 1 × 1 Kachel",
+      "teile": [
+        "Hochgeklappter Deckel hinten, innen dunkel",
+        "Goldhaufen quillt über den Rand",
+        "Truhenkörper aus Holz mit zwei Eisenbändern und Schloss"
+      ],
+      "materialien": [
+        "Holz (Wand, Tresen, Gestell)",
+        "Eisen (Rüstung, Band)",
+        "Gold (Truhe) = Glut"
+      ],
+      "stimmung": "verlockend, reich",
+      "fein": "Goldglanz-Punkte, Maserung"
+    },
+    "dateien": {
+      "128": "grafik/gebaeude/truhe-128.png",
+      "16": "grafik/gebaeude/truhe-16.png",
+      "32": "grafik/gebaeude/truhe-32.png",
+      "64": "grafik/gebaeude/truhe-64.png"
+    }
   },
   {
     "id": "turm",

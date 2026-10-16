@@ -14,6 +14,9 @@ nur mit Zustimmung von 🧑.
 | Handelsstand / kleines Gebäude | 6 × 4 | Werkstatt (`workshop`), Taverne (`tavern`), Heilplatz (`healer`), Schmiede (`smithy`), Rüstkammer (`armory`) (GEB2); Lager (`storage`), Kaserne (`barracks`) in Stein (GEB5) |
 | Baum (schmal) | 1 × 2,25 | Tanne, Pappel, Birke (GEB1.3); je Art Form 2 und 3 (`tanne-2` … `birke-3`, Looks Wald und Höhle, GEB6.1) |
 | Busch | 1 × 1 | `busch.json` (GEB6.1) |
+| Truhe (offen, mit Gold) | 1 × 1 | `truhe.json` (GEB6.4) |
+| Portal, Ausgang (statisch, ohne Stufen) | 2 × 3 | `portal.json`, `ausgang.json` (GEB6.4); Portal mit leuchtender Kristallfläche, Ausgang mit dunkler Öffnung und Holzrahmen |
+| Rekrutierungslager (Zelt und Feuerstelle, statisch) | 3 × 2 | `rekrutierungslager.json` (GEB6.4) |
 | Ader (Stufen 1–4 = Stein, Kupfer, Eisen, Kristall) | 2 × 2 | `ader.json` (GEB6.3); Felsbuckel mit Erzgang, Stein-Ader in `pancho`/`white`, die nur im Gang vorkommt |
 | Fels (Looks Wald, Höhle, Mine), Erzbrocken (Look Mine) | 1 × 1 | `felsen.json`, `erzbrocken.json` (GEB6.2); Licht auf Stein ist `topaz` (heller als `dim-gray`), Risse in Höhle und Mine `black` |
 | Mauer (Stufen 1–5) | 1 × 5 | `mauer.json` (GEB3) |

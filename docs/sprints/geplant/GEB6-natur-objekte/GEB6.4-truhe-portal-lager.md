@@ -1,6 +1,6 @@
 # GEB6.4 · Truhe, Portal, Ausgang und Rekrutierungslager
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** DEV
@@ -47,10 +47,10 @@ Keine Darstellung im Spiel (GEB6.5), keine Animation (Portal-Flackern, Flammen),
 
 ## Fertig, wenn
 
-- [ ] AC-01/AC-04: `truhe-32.png` (32 × 32 px), `portal-32.png` und `ausgang-32.png` (je 64 × 96 px), `rekrutierungslager-32.png` (96 × 64 px), je plus 16/64/128, alle JSONs mit `vorlage`, ohne `stufen`.
-- [ ] AC-04: md5 aller vorher vorhandenen PNGs gleich; ein zweiter `task gebaeude`-Lauf ändert nichts.
-- [ ] AC-04: Regeldatei § 1 (Maße) und § 4 (Bausteine) nachgetragen; alle vier erscheinen in der Vorschau.
-- [ ] `task check` und `task check:go` grün.
+- [x] AC-01/AC-04: `truhe-32.png` (32 × 32 px), `portal-32.png` und `ausgang-32.png` (je 64 × 96 px), `rekrutierungslager-32.png` (96 × 64 px), je plus 16/64/128, alle JSONs mit `vorlage`, ohne `stufen`.
+- [x] AC-04: md5 aller vorher vorhandenen PNGs gleich; ein zweiter `task gebaeude`-Lauf ändert nichts.
+- [x] AC-04: Regeldatei § 1 (Maße) und § 4 (Bausteine) nachgetragen; alle vier erscheinen in der Vorschau.
+- [x] `task check` und `task check:go` grün.
 
 ## Prüfen
 
@@ -64,5 +64,7 @@ Mit laufender Workbench stattdessen `check_run` (mit `checkout`). Keine manuelle
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+- **AC-01 umgesetzt, geprüft (`task gebaeude`, PIL):** `truhe.json` (1 × 1) liefert `truhe-32.png` (32 × 32 px), `portal.json` und `ausgang.json` (je 2 × 3) liefern `portal-32.png` und `ausgang-32.png` (je 64 × 96 px), `rekrutierungslager.json` (3 × 2) liefert `rekrutierungslager-32.png` (96 × 64 px), je plus 16/64/128; alle mit `vorlage`, ohne `stufen`, statisch. Portal (leuchtende Kristallfläche im Steinbogen) und Ausgang (Holzrahmen, dunkle Öffnung) sind im Kontaktbild klar unterscheidbar.
+- **AC-04 geprüft:** md5 aller vorher vorhandenen PNGs gleich (0 Abweichungen), zweiter Lauf byte-gleich; Regeldatei § 1 nachgetragen (§ 4 nicht nötig); die Vorschau zeigt alle Einträge des Index automatisch. Materialnamen entsprechen § 3 (`TestEchteVorlagen`).
+- `task check` und `task check:go` grün.
+- **Abweichungen:** Licht auf Stein `topaz`, `smokey-ash` als Schatten. Die Feuerstelle wirkt neben dem Zelt klein, der Ausgang lässt oben keinen Platz für die Beschriftung (das Spiel setzt sie darüber, GEB6.5); das sind Geschmacksfragen für 🧑 in GEB6.6. Niemand hat manuell geprüft.
