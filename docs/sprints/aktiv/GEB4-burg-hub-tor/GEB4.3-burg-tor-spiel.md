@@ -1,6 +1,6 @@
 # GEB4.3 · Burg und Tor im Spiel, alte Grafik gelöscht
 
-- **Status:** offen
+- **Status:** in Arbeit
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** CLI
