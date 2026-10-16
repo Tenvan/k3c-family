@@ -36,6 +36,7 @@ interface GoApp {
   PlanningDocs(): Promise<PlanDoc[]>;
   PlanningSet(id: string, field: string, value: string): Promise<string>;
   PlanningDoc(name: PlanDoc): Promise<string>;
+  PlanningGet(id: string): Promise<string>;
   GitHubStatus(force: boolean): Promise<GitHubData>;
   OpenInClaude(prompt: string): Promise<void>;
   AssetsList(): Promise<AssetsView>;
@@ -100,6 +101,7 @@ export function wailsBackend(): Backend {
     planningDocs: () => app.PlanningDocs(),
     planningSet: (id, field, value) => app.PlanningSet(id, field, value),
     planningDoc: (name) => app.PlanningDoc(name),
+    planningGet: (id) => app.PlanningGet(id),
     githubStatus: (force) => app.GitHubStatus(force),
     openInClaude: (prompt) => app.OpenInClaude(prompt),
     assetsList: () => app.AssetsList(),

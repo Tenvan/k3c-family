@@ -1,0 +1,54 @@
+/* Lesemodus der Planung (B-439, wie TicketReader.css der erp-qs-Workbench). Nur Radix-Tokens: Fließtext --gray-12 auf
+   --color-panel-solid, Nebentext --gray-11, Links --accent-11 – die von Radix für Text vorgesehenen Stufen, AA in beiden Themes. */
+.pl-reader.rt-DialogContent { width: min(75rem, 94vw); height: 90vh; max-height: 90vh; padding: 0; display: flex; flex-direction: column; overflow: hidden; }
+.pl-reader.rt-DialogContent.is-full { width: 100vw; height: 100vh; max-height: 100vh; border-radius: 0; }
+.rt-DialogScrollPadding:has(> .pl-reader.is-full) { padding: 0; }
+.pl-reader-head { display: grid; grid-template-columns: auto minmax(0, 1fr) auto; gap: var(--space-2) var(--space-3); align-items: center;
+  padding: var(--space-4) var(--space-5) var(--space-3); border-bottom: 1px solid var(--gray-a5); background: var(--color-panel-solid); }
+.pl-reader-heading { margin: 0; min-width: 0; overflow-wrap: anywhere; }
+.pl-reader-meta { grid-column: 1 / -1; }
+.pl-reader-ac .rt-ProgressRoot { width: calc(var(--space-9) * 2); }
+.pl-reader-search { margin-left: auto; width: min(20rem, 100%); }
+
+.pl-reader-body { flex: 1; min-height: 0; display: grid; grid-template-columns: minmax(11rem, 15rem) minmax(0, 1fr); }
+.pl-reader-body:has(> .pl-reader-scroll:only-child) { grid-template-columns: minmax(0, 1fr); }
+.pl-reader-toc { overflow-y: auto; padding: var(--space-4) var(--space-3); border-right: 1px solid var(--gray-a4); background: var(--gray-a2); }
+.pl-reader-toc-label { padding: 0 var(--space-2) var(--space-2); text-transform: uppercase; letter-spacing: 0.04em; }
+.pl-reader-toc button { display: block; width: 100%; text-align: left; padding: var(--space-1) var(--space-2); border: 0; border-left: 2px solid transparent;
+  border-radius: 0 var(--radius-2) var(--radius-2) 0; background: none; color: var(--gray-11); font: inherit; font-size: var(--font-size-2); cursor: pointer; }
+.pl-reader-toc button:hover { background: var(--gray-a3); color: var(--gray-12); }
+.pl-reader-toc button.is-active { border-left-color: var(--accent-9); background: var(--accent-a3); color: var(--accent-12); font-weight: 500; }
+.pl-reader-scroll { overflow-y: auto; min-width: 0; }
+.pl-reader-scroll:focus { outline: none; }
+
+.pl-reader-content.pl-md { max-width: 78ch; margin: 0 auto; padding: var(--space-5) var(--space-6) var(--space-8); color: var(--gray-12);
+  font-size: var(--font-size-3); line-height: 1.65; }
+.pl-reader-content h2 { margin: var(--space-7) 0 var(--space-3); padding-bottom: var(--space-1); border-bottom: 1px solid var(--gray-a4);
+  font-size: var(--font-size-5); line-height: 1.3; color: var(--gray-12); scroll-margin-top: var(--space-4); }
+.pl-reader-content section:first-child h2 { margin-top: 0; }
+.pl-reader-content h3, .pl-reader-content h4 { margin: var(--space-5) 0 var(--space-2); font-size: var(--font-size-4); color: var(--gray-12); }
+.pl-reader-content p, .pl-reader-content ul, .pl-reader-content ol { margin: 0 0 var(--space-3); }
+.pl-reader-content li + li { margin-top: var(--space-1); }
+.pl-reader-content code { font-family: var(--code-font-family); font-size: 0.9em; overflow-wrap: anywhere; }
+.pl-reader-content pre { margin: 0 0 var(--space-4); padding: var(--space-3); border-radius: var(--radius-3); }
+.pl-reader-content .md-table { margin: 0 0 var(--space-4); overflow-x: auto; border: 1px solid var(--gray-a5); border-radius: var(--radius-3); }
+.pl-reader-content table { width: 100%; border-collapse: collapse; font-size: var(--font-size-2); line-height: 1.5; }
+.pl-reader-content th, .pl-reader-content td { padding: var(--space-2) var(--space-3); text-align: left; vertical-align: top; }
+.pl-reader-content th { background: var(--gray-a3); font-weight: 600; white-space: nowrap; }
+.pl-reader-content tbody tr:nth-child(even) { background: var(--gray-a2); }
+
+.pl-reader-foot { display: flex; flex-wrap: wrap; justify-content: space-between; gap: var(--space-2); padding: var(--space-2) var(--space-5);
+  border-top: 1px solid var(--gray-a5); background: var(--gray-a2); font-size: var(--font-size-1); }
+.pl-reader-foot code { color: var(--gray-11); overflow-wrap: anywhere; }
+
+/* Suchtreffer (CSS Custom Highlight API): Kontrast --gray-12 auf yellow-a6 / orange-a7, wie in erp-qs gemessen. */
+::highlight(pl-search) { background-color: var(--yellow-a6); color: var(--gray-12); }
+::highlight(pl-search-current) { background-color: var(--orange-a7); color: var(--gray-12); }
+
+@media (max-width: 900px) {
+  .pl-reader-body { grid-template-columns: minmax(0, 1fr); }
+  .pl-reader-toc { display: none; }
+  .pl-reader-content.pl-md { padding: var(--space-4); }
+  .pl-reader-search { margin-left: 0; width: 100%; }
+}
+@media (prefers-reduced-motion: reduce) { .pl-reader.rt-DialogContent { animation: none; } }

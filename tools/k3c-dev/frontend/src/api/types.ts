@@ -471,6 +471,8 @@ export interface Backend {
   openUrl(url: string): void;
   /** Markdown eines Planungs-Dokuments. */
   planningDoc(name: PlanDoc): Promise<string>;
+  /** Ticket, Sprint-README, Session oder Projekt als Markdown, erste Zeile der Pfad (wie plan_get); Lesemodus. */
+  planningGet(id: string): Promise<string>;
   /** Slot-Register frisch aus data/assets.json (Go: AssetsList); ein ungültiges Register steht in error. */
   assetsList(): Promise<AssetsView>;
   /** Ersetzt die Zuordnungen eines Slots (Reihenfolge = Präferenz); Go lehnt fehlende Datei oder Ausschnitt außerhalb ab. */

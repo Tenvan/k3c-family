@@ -102,6 +102,18 @@ export function filterProjects(d: PlanningData, f: PlanFilter): PlanProject[] {
     pquick.every((x) => mine(p).some(x.sprint)));
 }
 
+/** Engt der Backlog-Filter ein (Suche, Prio, Umgebung, Projekt, Einplanung)? Dann zeigt die Projekt-Spalte nur Treffer. */
+export const narrowed = (f: PlanFilter) => f.q.trim() !== '' || f.prios.length + f.envs.length + f.projs.length + f.quick.length > 0;
+
+/** Projekte mit Treffer: ein gezeigter Sprint, ein gezeigtes Ticket ohne Sprint oder die Suche passt auf Kürzel und Titel. */
+export function projectHits(projects: PlanProject[], sprints: PlanSprint[], tickets: PlanTicket[], f: PlanFilter): PlanProject[] {
+  if (!narrowed(f)) return projects;
+  const q = f.q.trim().toLowerCase();
+  const shown = new Set(sprints.map((s) => s.id));
+  return projects.filter((p) => p.sprints.some((id) => shown.has(id)) || tickets.some((t) => t.project === p.id) ||
+    (q !== '' && has(q, p.id, p.title)));
+}
+
 /** Tickets je Domäne (alphabetisch), darin nach Prio und Nummer. */
 export function groupTickets(tickets: PlanTicket[]): [string, PlanTicket[]][] {
   const rank = (t: PlanTicket) => prioRank(t.prio);
@@ -111,6 +123,10 @@ export function groupTickets(tickets: PlanTicket[]): [string, PlanTicket[]][] {
     .sort(([a], [b]) => a.localeCompare(b))
     .map(([dom, ts]) => [dom, [...ts].sort((a, b) => rank(a) - rank(b) || a.nr.localeCompare(b.nr))]);
 }
+
+/** Gibt es die Auswahl (Session, Sprint, Projekt oder Ticket) noch? */
+export const exists = (d: PlanningData, id: string) =>
+  !!findSession(d, id) || d.sprints.some((s) => s.id === id) || !!d.projects?.some((p) => p.id === id) || d.tickets.some((t) => t.nr === id);
 
 export function findSession(d: PlanningData, nr: string): { sprint: PlanSprint; session: PlanSession } | null {
   for (const sprint of d.sprints) for (const session of sprint.sessions) if (session.nr === nr) return { sprint, session };
@@ -131,7 +147,8 @@ export function parseFilter(raw: string): PlanFilter {
   try {
     const v = JSON.parse(raw) as Partial<PlanFilter>;
     const strs = (x: unknown) => (Array.isArray(x) ? x.filter((y): y is string => typeof y === 'string') : []);
-    return { q: typeof v.q === 'string' ? v.q : '', quick: strs(v.quick).filter((id) => QUICK.some((x) => x.id === id)), prios: strs(v.prios), envs: strs(v.envs),
+    // Freitext wird nicht gemerkt (Workbench-Spec › Gemerkter Zustand).
+    return { q: '', quick: strs(v.quick).filter((id) => QUICK.some((x) => x.id === id)), prios: strs(v.prios), envs: strs(v.envs),
       projs: strs(v.projs), done: v.done === true, pstatus: strs(v.pstatus),
       pquick: strs(v.pquick).filter((id) => PQUICK.some((x) => x.id === id)),
       // älterer Speicher ohne pstatus: die Domäne galt damals für Sprints und Tickets, jetzt für Projekte

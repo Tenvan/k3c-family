@@ -1,10 +1,10 @@
 import { Text } from '@radix-ui/themes';
 import { useState, type ReactNode } from 'react';
 import { backend, type PlanningData, type PlanSprint, type PlanTicket } from '../api';
-import { BacklogList } from './Backlog';
 import { FoldButton, useFold } from './fold';
 import { ProjectCard } from './ProjectCard';
 import { groupProjects, moveRank, rankedCount, type ProjectGroups } from './projects';
+import { DepLinks } from './PromptParts';
 
 interface Props {
   data: PlanningData;
@@ -49,22 +49,28 @@ export function ProjectSections({ groups: g, count, error, onMove, data, sel, on
         <FoldSection id="ABN" area="abn" className="pl-card pl-project is-abn"
           title={<>Abnahmen am Gerät (ABN) <small>ohne Rang · {g.abnOpen.length} offen</small></>}>
           {g.abnOpen.map(({ sprint, session }) => (
-            <Text key={session.nr} size="1">{session.nr} · {session.titel} <Text color="gray">({sprint.id})</Text></Text>
+            <button type="button" key={session.nr} className="pl-abn-row" onClick={() => onPick?.(session.nr)}>
+              {session.nr} · {session.titel} <Text color="gray">({sprint.id})</Text>
+            </button>
           ))}
           {g.abnOpen.length === 0 && <Text size="1" color="gray">Keine offene Abnahme.</Text>}
         </FoldSection>
       )}
       {(g.without.sprints.length > 0 || g.without.tickets.length > 0) && (
-        <FoldSection id="ohne" area="ohne"
+        <FoldSection id="ohne" area="ohne" className="pl-card pl-project is-loose"
           title={<>Ohne Projekt <small>{g.without.sprints.length} Sprints · {g.without.tickets.length} Tickets</small></>}>
           {g.without.sprints.map(renderSprint)}
-          {g.without.tickets.length > 0 && <BacklogList data={data} tickets={g.without.tickets} sel={sel} />}
+          {g.without.tickets.length > 0 && (
+            <span className="pl-sprint-tickets">
+              Tickets: <DepLinks ids={g.without.tickets.map((t) => t.nr)} lead="" title="Tickets ohne Projekt" onPick={(id) => onPick?.(id)} />
+            </span>
+          )}
         </FoldSection>
       )}
       {g.folded.length > 0 && (
         <details data-area="eingeklappt">
           <summary className="pl-h">Inaktiv, ruhend und erledigt ({g.folded.length})</summary>
-          {g.folded.map((v) => <ProjectCard key={v.project.id} view={v} {...card} />)}
+          <div className="pl-folded-list">{g.folded.map((v) => <ProjectCard key={v.project.id} view={v} {...card} />)}</div>
         </details>
       )}
     </>
@@ -77,7 +83,7 @@ function FoldSection({ id, area, className, title, children }:
   const [folded, toggle] = useFold(`area:${id}`);
   return (
     <section className={className} data-area={area}>
-      <h3 className="pl-h"><FoldButton folded={folded} onToggle={toggle} what={id} />{title}</h3>
+      <h3 className="pl-h pl-area-head"><FoldButton folded={folded} onToggle={toggle} what={id} />{title}</h3>
       {!folded && children}
     </section>
   );

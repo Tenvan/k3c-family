@@ -175,6 +175,29 @@ function setField(id: string, field: string, value: string) {
   }
 }
 
+/** Wie planning.Get in Go: Markdown mit Pfad in der ersten Zeile; Ticket und Sprint als knappe Spec nach Vorlage. */
+export function mockDoc(d: PlanningData, id: string): string {
+  const t = d.tickets.find((x) => x.nr === id);
+  if (t) {
+    return `docs/backlog/${t.nr}-mock.md\n\n# ${t.nr} · ${t.title}\n\n- **Domäne:** ${t.domain}\n- **Prio:** ${t.prio}\n- **Status:** ${t.status}\n\n` +
+      `## Ausgangslage\n\nHeute fehlt das noch; siehe ${t.sprint !== '–' ? `Sprint ${t.sprint}` : 'Backlog'}.\n\n## Ziel\n\n${t.title}.\n\n` +
+      '## Anforderungen\n\n- Funktioniert mit **2 Spielern**.\n- Werte stehen in `data/*.json`.\n\n' +
+      '## Akzeptanzkriterien\n\n- [x] **AC-01** Ein Test prüft den Normalfall.\n- [ ] **AC-02** Am TV sichtbar.\n\n## Offene Fragen\n\nkeine\n';
+  }
+  for (const s of d.sprints) {
+    const x = s.sessions.find((y) => y.nr === id);
+    if (x) return `docs/sprints/${s.id}/${x.nr}.md\n\n${x.text ?? `# ${x.nr} · ${x.titel}\n\nEntwurf ohne Session-Datei.\n`}`;
+  }
+  const s = d.sprints.find((x) => x.id === id);
+  if (s) {
+    const rows = s.sessions.map((x) => `| ${x.nr} | ${x.titel || x.typ} | ${x.agent || '–'} | ${x.status} |`).join('\n');
+    return `docs/sprints/${s.status}/${s.id}/README.md\n\n# ${s.id} · ${s.domain} · ${s.title}\n\n- **Status:** ${s.status}\n- **Spec:** ${s.spec}\n\n` +
+      `## Ziel\n\n${s.title} ist fertig.\n\n## Akzeptanzkriterien\n\n- **AC-01** Tickets ${s.tickets.join(', ') || '–'} erfüllt.\n\n` +
+      `## Sessions\n\n| Nr. | Titel | Agent | Status |\n|---|---|---|---|\n${rows}\n`;
+  }
+  throw new Error(`${id} nicht gefunden`);
+}
+
 /** Frische Kopie der Mock-Planung für Tests. */
 export const mockPlanningData = (): PlanningData => structuredClone(DATA);
 
@@ -194,6 +217,7 @@ export function mockPlanning(changed: () => void) {
       return `${id}: ${field} = ${value}`;
     },
     planningDoc: async (name: PlanDoc): Promise<string> => DOCS[name],
+    planningGet: async (id: string): Promise<string> => mockDoc(DATA, id),
     openInClaude: async (prompt: string): Promise<void> => { console.info('[mock] openInClaude', prompt.length, 'Zeichen'); },
     githubStatus: async (): Promise<GitHubData> => structuredClone(GITHUB),
     openUrl: (url: string) => void window.open(url, '_blank', 'noopener'),

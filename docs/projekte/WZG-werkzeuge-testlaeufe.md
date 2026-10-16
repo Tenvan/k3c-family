@@ -23,6 +23,7 @@ In Abarbeitungs-Reihenfolge; der erste nicht erledigte Sprint ist der nächste. 
 | WZ2 | Planungs-Werkzeuge: eindeutige Nummern, Fahrplan, Flags, Prüfläufe | erledigt |
 | WZ3 | Review-Nachträge zu WZ2: Filter-Zählung, Splitter-Test, Kleinigkeiten | erledigt |
 | WZ4 | Splitter-Test in DOM-Umgebung | erledigt |
+| WZ5 | Planungsseite im Look der erp-qs-Workbench | geplant |
 
 ## Nicht-Ziele
 

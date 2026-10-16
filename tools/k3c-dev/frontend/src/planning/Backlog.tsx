@@ -1,19 +1,17 @@
-import { Checkbox, IconButton, Select, Text } from '@radix-ui/themes';
+import { Checkbox, Select, Text } from '@radix-ui/themes';
 import { useState } from 'react';
 import { backend, type PlanTicket, type PlanningData } from '../api';
 import { errorText } from '../lib/errors';
 import { loadText, savePref } from '../lib/prefs';
-import { MarkdownView } from '../ui/MarkdownView';
-import { StatusBadge } from '../ui/parts';
-import { findSession, groupTickets, linkedTickets } from './planning';
-import { CopyPrompt, DepLinks, FieldMenu } from './PromptParts';
-import { backlogPrompt, NEW_SPRINT, pickable, promptSession, type SprintTarget } from './prompts';
-import { ModeBadge, prioTone, tone } from './SprintCard';
+import { FoldButton, useFold } from './fold';
+import { Pill, prioTone, type PillTone } from './Pill';
+import { groupTickets, linkedTickets } from './planning';
+import { CopyPrompt, FieldMenu } from './PromptParts';
+import { backlogPrompt, NEW_SPRINT, type SprintTarget } from './prompts';
 
 const PRIOS = ['hoch', 'mittel', 'niedrig', '?'];
-const AGENTS = ['autonom', 'Mensch'];
-const ENVS = ['offline', 'live', '?'];
-const envTone = (e = '') => (e === 'offline' ? 'ok' : e === 'live' ? 'info' : 'neutral');
+export const ENVS = ['offline', 'live', '?'];
+export const envTone = (e = ''): PillTone => (e === 'offline' ? 'ok' : e === 'live' ? 'info' : 'neutral');
 const TARGET = 'planning.target';
 
 /** Werte des Felds Projekt: `–` (kein Projekt) und die Kürzel aller Projekte. */
@@ -23,104 +21,128 @@ export const projectOptions = (data: PlanningData): string[] => ['–', ...(data
 export const setField = (id: string, field: string, value: string) => backend.planningSet(id, field, value).catch((e) => window.alert(errorText(e)));
 
 /** Ziel der Backlog-Prompts: gemerkter Sprint, fehlt er inzwischen, der erste offene, sonst „neu“. */
-function useTarget(ids: string[]): [string, (v: string) => void] {
+export function useTarget(ids: string[]): [SprintTarget, string, (v: string) => void] {
   const [raw, setRaw] = useState(() => loadText(TARGET, ''));
   const value = raw === NEW_SPRINT || ids.includes(raw) ? raw : (ids[0] ?? NEW_SPRINT);
-  return [value, (v) => { setRaw(v); savePref(TARGET, v); }];
+  const target: SprintTarget = value === NEW_SPRINT ? { kind: 'new' } : { kind: 'sprint', id: value };
+  return [target, value, (v) => { setRaw(v); savePref(TARGET, v); }];
 }
 
-/** Backlog je Domäne mit Mehrfachauswahl und Prompt zum Einplanen in einen Sprint; Prio per Klick änderbar; Tickets
- *  der ausgewählten Session sind hervorgehoben. */
-export function BacklogList({ data, tickets, sel }: { data: PlanningData; tickets: PlanTicket[]; sel: string }) {
-  const linked = linkedTickets(data, sel);
+interface Props {
+  data: PlanningData;
+  /** Gefilterte Tickets. */
+  tickets: PlanTicket[];
+  sel: string;
+  /** Ticket fürs Detail wählen. */
+  onPick: (nr: string) => void;
+  /** Ziel der Prompts (useTarget im Board, das Detail nutzt es auch). */
+  target: SprintTarget;
+  goal: string;
+  choose: (v: string) => void;
+}
+
+/** Backlog-Spalte (erp-qs-Look): Kopf mit Zähler und Ziel, Leiste der markierten Tickets mit Prompt, Tickets je Domäne
+ *  einklappbar mit Sammel-Checkbox. Die Auswahl gilt auch für Tickets, die der Filter gerade ausblendet. */
+export function BacklogView({ data, tickets, sel, onPick, target, goal, choose }: Props) {
   const ids = data.sprints.filter((s) => s.status !== 'erledigt').map((s) => s.id);
-  const [goal, choose] = useTarget(ids);
   const [checked, setChecked] = useState<ReadonlySet<string>>(new Set());
-  const target: SprintTarget = goal === NEW_SPRINT ? { kind: 'new' } : { kind: 'sprint', id: goal };
+  const setMany = (nrs: string[], on: boolean) => setChecked((cur) => {
+    const n = new Set(cur);
+    nrs.forEach((nr) => (on ? n.add(nr) : n.delete(nr)));
+    return n;
+  });
   const picked = data.tickets.filter((t) => checked.has(t.nr));
-  const check = (nr: string, on: boolean) => setChecked((cur) => { const n = new Set(cur); if (on) n.add(nr); else n.delete(nr); return n; });
+  const row = { data, sel, linked: linkedTickets(data, sel), target, goal, onPick };
   return (
-    <>
-      <div className="pl-target">
-        <Text size="1" color="gray">Einplanen in</Text>
+    <div className="pl-backlog">
+      <div className="pl-bl-bar">
+        <Text className="pl-heading">Backlog</Text>
+        <Text size="1" color="gray">{tickets.length} von {data.tickets.length} offenen Tickets</Text>
+        <span className="pl-spacer" />
+        <Text size="1">Ziel:</Text>
         <Select.Root size="1" value={goal} onValueChange={choose}>
-          <Select.Trigger />
+          <Select.Trigger aria-label="Ziel der Backlog-Prompts" />
           <Select.Content>
             {ids.map((id) => <Select.Item key={id} value={id}>{id}</Select.Item>)}
             <Select.Item value={NEW_SPRINT}>Neuer Sprint</Select.Item>
           </Select.Content>
         </Select.Root>
-        {picked.length > 0 && (
-          <>
-            <Text size="1" weight="medium">{picked.length} markiert</Text>
-            <CopyPrompt prompt={backlogPrompt(picked, target)} what={`${picked.length} markierte Tickets`} />
-            <button type="button" className="pl-textlink" onClick={() => setChecked(new Set())}>Auswahl aufheben</button>
-          </>
-        )}
       </div>
-      {tickets.length === 0 && <Text color="gray">Kein Ticket passt zum Filter.</Text>}
-      {groupTickets(tickets).map(([dom, ts]) => (
-        <div key={dom}>
-          <div className="pl-group">{dom} <span>{ts.length}</span></div>
-          {ts.map((t) => (
-            <div key={t.nr} className={`pl-ticket${linked.has(t.nr) ? ' is-linked' : ''}`} title={`${t.typ} · Spec: ${t.spec}`}>
-              <Checkbox size="1" aria-label={`${t.nr} markieren`} checked={checked.has(t.nr)} onCheckedChange={(on) => check(t.nr, on === true)} />
-              <code>{t.nr}</code>
-              <span className="pl-title">{t.title}</span>
-              <FieldMenu label="Prio" value={t.prio} options={PRIOS} onPick={(v) => void setField(t.nr, 'Prio', v)}>
-                <StatusBadge tone={prioTone(t.prio)}>{t.prio || '?'}</StatusBadge>
-              </FieldMenu>
-              <FieldMenu label="Projekt" value={t.project ?? '–'} options={projectOptions(data)} onPick={(v) => void setField(t.nr, 'Projekt', v)}>
-                <StatusBadge tone="neutral">{t.project || '–'}</StatusBadge>
-              </FieldMenu>
-              <FieldMenu label="Umgebung" value={t.env} options={ENVS} onPick={(v) => void setField(t.nr, 'Umgebung', v)}>
-                <StatusBadge tone={envTone(t.env)}>{t.env || '?'}</StatusBadge>
-              </FieldMenu>
-              <StatusBadge tone={t.status === 'eingeplant' ? 'info' : 'neutral'}>
-                {t.status}{t.sprint && t.sprint !== '–' ? ` · ${t.sprint}` : ''}
-              </StatusBadge>
-              <CopyPrompt prompt={backlogPrompt([t], target)} what={goal === NEW_SPRINT ? `${t.nr} zu neuem Sprint` : `${t.nr} in ${goal}`} />
-            </div>
-          ))}
+      {picked.length > 0 && (
+        <div className="pl-picked">
+          <Text size="1" weight="medium">{picked.length} markiert</Text>
+          <CopyPrompt prompt={backlogPrompt(picked, target)} what={`${picked.length} markierte Tickets`} />
+          <button type="button" className="pl-textlink" onClick={() => setChecked(new Set())}>Auswahl aufheben</button>
         </div>
-      ))}
-    </>
+      )}
+      <div className="pl-bl-list">
+        {groupTickets(tickets).map(([dom, ts]) => <DomainSection key={dom} dom={dom} tickets={ts} checked={checked} onCheck={setMany} row={row} />)}
+        {tickets.length === 0 && <Text color="gray" size="2">{data.tickets.length ? 'Kein Ticket passt zum Filter.' : 'Keine offenen Tickets.'}</Text>}
+      </div>
+    </div>
   );
 }
 
-/** Detail-Panel der ausgewählten Session mit Prompt und Agent zum Umstellen; verschwindet die Auswahl, bleibt es leer. */
-export function SessionDetail({ data, sel, onSelect, onClose }:
-  { data: PlanningData; sel: string; onSelect: (nr: string) => void; onClose: () => void }) {
-  const hit = findSession(data, sel);
-  if (!hit) return null;
-  const { sprint, session: x } = hit;
-  const open = pickable(x);
+type RowCtx = Omit<RowProps, 't' | 'checked' | 'onCheck'>;
+
+/** Eine Domäne: Pfeil, Sammel-Checkbox (mit Zwischenzustand) und ihre Ticket-Zeilen. */
+function DomainSection({ dom, tickets, checked, onCheck, row }:
+  { dom: string; tickets: PlanTicket[]; checked: ReadonlySet<string>; onCheck: (nrs: string[], on: boolean) => void; row: RowCtx }) {
+  const [folded, toggle] = useFold(`dom:${dom}`);
+  const nrs = tickets.map((t) => t.nr);
+  const n = nrs.filter((nr) => checked.has(nr)).length;
   return (
-    <aside className="pl-detail">
-      <div className="pl-head pl-sticky">
-        <code>{x.nr}</code>
-        <strong className="pl-title">{x.titel || sprint.title}</strong>
-        <StatusBadge tone={tone(x.status)}>{x.status}</StatusBadge>
-        {x.typ && <span className="pl-dim">{x.typ}</span>}
-        {open ? (
-          <>
-            <FieldMenu label="Agent" value={x.agent} options={AGENTS} onPick={(v) => void setField(x.nr, 'Agent', v)}>
-              <StatusBadge tone={x.agent === 'autonom' ? 'ok' : 'neutral'}>{x.agent || '?'}</StatusBadge>
-            </FieldMenu>
-            <FieldMenu label="Umgebung" value={x.env ?? ''} options={ENVS} onPick={(v) => void setField(x.nr, 'Umgebung', v)}>
-              <StatusBadge tone={envTone(x.env)}>{x.env || '?'}</StatusBadge>
-            </FieldMenu>
-          </>
-        ) : <ModeBadge agent={x.agent} env={x.env} />}
-        <DepLinks ids={x.deps} title="Abhängig von" onPick={onSelect} />
-        {open && <CopyPrompt prompt={promptSession(sprint, x)} what={x.nr} />}
-        <IconButton size="1" variant="ghost" color="gray" onClick={onClose} aria-label="Schließen">×</IconButton>
+    <section className="pl-bl-domain" data-domain={dom}>
+      <div className="pl-bl-domain-head">
+        <FoldButton folded={folded} onToggle={toggle} what={`Domäne ${dom}`} />
+        <Checkbox aria-label={`Alle sichtbaren Tickets in ${dom} markieren`} checked={n === nrs.length ? true : n > 0 ? 'indeterminate' : false}
+          onCheckedChange={(on) => onCheck(nrs, on === true)} />
+        <button type="button" className="pl-bl-domain-name" onClick={toggle}>{dom} ({tickets.length})</button>
       </div>
-      <div className="pl-md">
-        {x.text ? <MarkdownView source={x.text} headingOffset={1} /> : (
-          <Text color="gray">Noch keine Session-Datei – Entwurf im Sprint {sprint.id}.</Text>
-        )}
-      </div>
-    </aside>
+      {!folded && (
+        <ul>
+          {tickets.map((t) => <TicketRow key={t.nr} t={t} checked={checked.has(t.nr)} onCheck={(on) => onCheck([t.nr], on)} {...row} />)}
+        </ul>
+      )}
+    </section>
+  );
+}
+
+interface RowProps {
+  t: PlanTicket;
+  data: PlanningData;
+  sel: string;
+  linked: Set<string>;
+  checked: boolean;
+  onCheck: (on: boolean) => void;
+  target: SprintTarget;
+  goal: string;
+  onPick: (nr: string) => void;
+}
+
+/** Ticket-Zeile: Auswahl, Nr., Titel, Prio/Projekt/Umgebung zum Ändern, Status und Prompt; Klick zeigt das Detail. */
+function TicketRow({ t, data, sel, linked, checked, onCheck, target, goal, onPick }: RowProps) {
+  const cls = ['pl-bl-ticket', sel === t.nr && 'is-sel', linked.has(t.nr) && 'is-linked'].filter(Boolean).join(' ');
+  const planned = t.sprint && t.sprint !== '–';
+  return (
+    <li className={cls} title={`${t.typ} · Spec: ${t.spec}`} role="button" tabIndex={0} onClick={() => onPick(t.nr)}
+      onKeyDown={(e) => e.target === e.currentTarget && (e.key === 'Enter' || e.key === ' ') && (e.preventDefault(), onPick(t.nr))}>
+      <Checkbox size="1" aria-label={`${t.nr} markieren`} checked={checked} onCheckedChange={(on) => onCheck(on === true)} onClick={(e) => e.stopPropagation()} />
+      <span className="pl-bl-id">{t.nr}</span>
+      <span className="pl-bl-title">{t.title}</span>
+      <span className="pl-pills">
+        <FieldMenu label="Prio" value={t.prio} options={PRIOS} onPick={(v) => void setField(t.nr, 'Prio', v)}>
+          <Pill tone={prioTone(t.prio)}>{t.prio || '?'}</Pill>
+        </FieldMenu>
+        <FieldMenu label="Projekt" value={t.project ?? '–'} options={projectOptions(data)} onPick={(v) => void setField(t.nr, 'Projekt', v)}>
+          <Pill tone="neutral">{t.project || '–'}</Pill>
+        </FieldMenu>
+        <FieldMenu label="Umgebung" value={t.env} options={ENVS} onPick={(v) => void setField(t.nr, 'Umgebung', v)}>
+          <Pill tone={envTone(t.env)}>{t.env || '?'}</Pill>
+        </FieldMenu>
+        <Pill tone={planned ? 'info' : 'neutral'}>{planned ? `eingeplant · ${t.sprint}` : t.status}</Pill>
+      </span>
+      <CopyPrompt prompt={backlogPrompt([t], target)} what={target.kind === 'new' ? `${t.nr} zu neuem Sprint` : `${t.nr} in ${goal}`} />
+    </li>
   );
 }

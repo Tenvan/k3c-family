@@ -3,7 +3,8 @@ import type { ReactElement } from 'react';
 import { renderToStaticMarkup } from 'react-dom/server';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { mockPlanningData } from '../api/mockPlanning';
-import { BacklogList, SessionDetail, projectOptions, setField } from './Backlog';
+import { BacklogView, projectOptions, setField } from './Backlog';
+import { PlanDetail } from './Detail';
 
 const planningSet = vi.fn();
 vi.mock('../api', () => ({ backend: { planningSet: (...a: unknown[]) => planningSet(...a) } }));
@@ -17,7 +18,7 @@ describe('Planungsseite: Flags bearbeiten (B-363)', () => {
   beforeEach(() => { planningSet.mockClear(); });
 
   it('AC-01: jedes Ticket bietet Prio, Umgebung und Projekt als Menü an', () => {
-    const html = render(<BacklogList data={d} tickets={d.tickets} sel="" />);
+    const html = render(<BacklogView data={d} tickets={d.tickets} sel="" onPick={() => {}} target={{ kind: 'new' }} goal="__new__" choose={() => {}} />);
     expect(d.tickets.length).toBeGreaterThan(0);
     for (const label of ['Prio: ', 'Umgebung: ', 'Projekt: ']) expect(count(html, label)).toBe(d.tickets.length);
   });
@@ -30,8 +31,8 @@ describe('Planungsseite: Flags bearbeiten (B-363)', () => {
     const open = sessions.find((x) => x.status === 'offen');
     const done = sessions.find((x) => x.status === 'fertig');
     expect(open && done).toBeTruthy();
-    const openHtml = render(<SessionDetail data={d} sel={open!.nr} onSelect={() => {}} onClose={() => {}} />);
-    const doneHtml = render(<SessionDetail data={d} sel={done!.nr} onSelect={() => {}} onClose={() => {}} />);
+    const openHtml = render(<PlanDetail data={d} sel={open!.nr} onSelect={() => {}} onClose={() => {}} target={{ kind: 'new' }} />);
+    const doneHtml = render(<PlanDetail data={d} sel={done!.nr} onSelect={() => {}} onClose={() => {}} target={{ kind: 'new' }} />);
     expect(count(openHtml, 'Agent: ')).toBe(1);
     expect(count(openHtml, 'Umgebung: ')).toBe(1);
     expect(count(doneHtml, 'Agent: ')).toBe(0);
