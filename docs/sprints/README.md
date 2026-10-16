@@ -9,7 +9,6 @@ Die Reihenfolge der Arbeit ist allein der Projekt-Rang: [`../projekte/README.md`
 
 | Sprint | Domäne | Projekt | Thema | Am Ende sichtbar | Ordner |
 |---|---|---|---|---|---|
-| GEB8 | DEV | GEB | Gebäude-Vorlagen in den Daten-JSONs | – | `aktiv/GEB8-gebaeude-vorlagen/` |
 | GR7 | CLI | GRA | Figuren-Lücken, ganzzahlige Skalierung und Schrift | – | `aktiv/GR7-figuren-schrift/` |
 | SO4 | CLI | SND | Musik je Zustand | – | `aktiv/SO4-musik/` |
 
@@ -182,3 +181,4 @@ Gesamtplan und Begründung: [`../plan-weiterentwicklung.md`](../plan-weiterentwi
 | BD1 | Kamera, Beitritts-Hinweis, Overlay-Taste und HUD-Nachträge | `erledigt/BD1-hud-overlay-nachtraege/` |
 | GEB1 | Grundregeln für Gebäude-Grafik und Werkstatt | `erledigt/GEB1-grundregeln-werkstatt/` |
 | GEB2 | Gebäude ohne Grafik: Taverne, Heilplatz, Schmiede, Rüstkammer | `erledigt/GEB2-luecken-gebaeude/` |
+| GEB8 | Gebäude-Vorlagen in den Daten-JSONs | `erledigt/GEB8-gebaeude-vorlagen/` |

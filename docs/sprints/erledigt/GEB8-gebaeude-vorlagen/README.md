@@ -1,6 +1,6 @@
 # GEB8 · DEV · Gebäude-Vorlagen in den Daten-JSONs
 
-- **Status:** aktiv
+- **Status:** erledigt
 - **Projekt:** GEB
 - **Domäne:** DEV
 - **Reife:** bereit
@@ -62,7 +62,7 @@ Domäne DEV: `tools/gebaeude/`, `public/grafik/gebaeude/`, `src/tools/assetvorsc
 |---|---|---|---|---|
 | GEB8.1 | `GEB8.1-vorlage-werkzeug-daten.md` | Umsetzung | autonom | fertig |
 | GEB8.2 | `GEB8.2-vorlage-vorschau.md` | Umsetzung | autonom | fertig |
-| GEB8.3 | `GEB8.3-review-abnahme.md` | Review | autonom | in Arbeit |
+| GEB8.3 | `GEB8.3-review-abnahme.md` | Review | autonom | fertig |
 
 - GEB8.1 Werkzeug verlangt und übernimmt `vorlage`; Vorlagen für alle acht Gebäude (AC-01, AC-02).
 - GEB8.2 Vorlage in der Asset-Vorschau (AC-03).
@@ -70,5 +70,6 @@ Domäne DEV: `tools/gebaeude/`, `public/grafik/gebaeude/`, `src/tools/assetvorsc
 
 ## Abnahme
 
-Wird von der Review-Session (Doku-Sprint: letzte Session) ausgefüllt, höchstens fünf Zeilen: Datum, Kriterien
-(Verweis auf Session-Ergebnisse), behobene Befunde, neue Tickets. Bis dahin `–`.
+2026-10-16 (GEB8.3): `task check` und `task check:go` grün; Reviews ohne schwere Befunde (leichte in GEB8.1 behoben).
+AC-01, AC-02 (GEB8.1), AC-03 (GEB8.2) geprüft; AC-04 von Ralf im Chat abgenommen, mit Bedingung „Gebäude auf einer Linie, Text darunter“ (in GEB8.3 umgesetzt).
+PNGs unverändert. B-441 erledigt. Versionsvorschlag: Minor (Werkzeug-Format, keine Spieländerung).

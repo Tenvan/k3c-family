@@ -143,7 +143,6 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-438](B-438-werkstatt-baeume-ins-spiel.md) | CLI | Idee | mittel | offen | – | Werkstatt und Bäume aus tools/gebaeude erscheinen im Spiel |
 | [B-439](B-439-planung-erpqs-look.md) | DEV | Idee | mittel | eingeplant | WZ5 | Die Planungsseite von k3c-dev zeigt und bedient die Planung wie die erp-qs-Workbench |
 | [B-440](B-440-dev-test-entwurfs-sprints-ohne-sessions.md) | DEV | Problem | mittel | offen | – | k3c-dev-Planungstest lehnt Entwurfs-Sprints ohne Sessions ab |
-| [B-441](B-441-gebaeude-json-beschreibung.md) | DEV | Idee | hoch | eingeplant | GEB8 | Gebäude-JSONs tragen ihre Gebäude-Vorlage (`vorlage`) |
 
 ## Archiv
 
@@ -406,3 +405,4 @@ Zeile in diesen Abschnitt.
 | [B-414](archiv/B-414-welt-meldungen-im-band.md) | CLI | Idee | mittel | erledigt | BD1 | Welt-Meldungen erscheinen für alle im globalen Band oben |
 | [B-393](archiv/B-393-muenzbild-hinweis-fehlt.md) | CLI | Problem | mittel | erledigt | BD1 | Das Münzbild vor „Hinlaufen: Münze aufheben“ erscheint im Browser nicht |
 | [B-374](archiv/B-374-preisschild-taste.md) | CLI | Frage | mittel | erledigt | BD1 | Das Preisschild nennt die Taste zum Bezahlen |
+| [B-441](archiv/B-441-gebaeude-json-beschreibung.md) | DEV | Idee | hoch | erledigt | GEB8 | Gebäude-JSONs tragen ihre Gebäude-Vorlage (`vorlage`) |

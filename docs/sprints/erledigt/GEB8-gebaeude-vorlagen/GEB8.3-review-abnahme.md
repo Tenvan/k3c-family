@@ -1,6 +1,6 @@
 # GEB8.3 · Review und Abnahme der Vorlagen
 
-- **Status:** in Arbeit
+- **Status:** fertig
 - **Typ:** Review
 - **Agent:** autonom
 - **Domäne:** DEV
@@ -53,5 +53,7 @@ Manuelle Prüfung im Browser-Pane (Vorschau) nur mit Freigabe von 🧑 für dies
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+2026-10-16, Claude (Ralf im Chat).
+- `task check` und `task check:go` grün; Sprint-Diff (Code: `tools/gebaeude/`, `src/tools/assetvorschau*.ts`) ohne schwere Befunde; keine PNG im Sprint geändert.
+- AC-04 geprüft: Ralf hat die Sichtprüfung der Vorschau für diesen Lauf freigegeben; Claude hat `assetvorschau.html?szene=gebaeude` im Browser-Pane gezeigt. Ralf: „Abgenommen, wenn Gebäude auf einer Linie sind, und der Text dafür nach unten fließt.“ Umgesetzt in `assetvorschau.ts` (`aufBodenlinie`: Bilder per Rand auf die Bodenlinie des höchsten Gebäudes, Streifen oben ausgerichtet); Screenshot bestätigt, Bedingung erfüllt.
+- AC-01 bis AC-03: Nachweise in GEB8.1 und GEB8.2 geprüft.

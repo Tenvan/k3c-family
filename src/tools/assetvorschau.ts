@@ -141,6 +141,7 @@ async function renderNeueGebaeude(): Promise<void> {
   if (parseQuery(location.search).szene !== 'gebaeude') return; // inzwischen andere Szene gewählt
   const strip = document.createElement('div');
   strip.className = 'strip';
+  strip.style.alignItems = 'flex-start'; // Bilder per Rand auf eine Bodenlinie, Vorlagen-Text fließt darunter
   const byId = new Map(index.map((e) => [e.id, e]));
   if (baumReihe(index).length > 0) strip.append(baumFigur(index, 32), baumFigur(index, 16));
   for (const k of gebaeudeKarten(index)) {
@@ -157,7 +158,7 @@ async function renderNeueGebaeude(): Promise<void> {
       const g = canvas.getContext('2d')!;
       g.imageSmoothingEnabled = false;
       g.drawImage(img, 0, 0, canvas.width, canvas.height);
-      fig.prepend(canvas);
+      fig.prepend(aufBodenlinie(canvas, index));
     };
     img.onerror = () => clientLog('error', '❌ Asset lädt nicht', { datei: k.datei });
     img.src = k.datei;
@@ -210,8 +211,15 @@ function baumFigur(index: readonly GebaeudeEintrag[], d: number): HTMLElement {
       g.drawImage(img, reihe[i]!.x * UNIT, (hoehe - e.kacheln.h) * UNIT, e.kacheln.b * UNIT, e.kacheln.h * UNIT);
     }))
     .catch((err: Error) => clientLog('error', '❌ Asset lädt nicht', { datei: err.message }));
-  fig.prepend(canvas);
+  fig.prepend(aufBodenlinie(canvas, index));
   return fig;
+}
+
+/** Rückt ein Bild so weit nach unten, dass seine Unterkante auf der Bodenlinie des höchsten Gebäudes steht. */
+function aufBodenlinie(canvas: HTMLCanvasElement, index: readonly GebaeudeEintrag[]): HTMLCanvasElement {
+  const boden = Math.max(...index.map((e) => e.kacheln.h)) * UNIT;
+  canvas.style.marginTop = `${Math.max(0, boden - canvas.height)}px`;
+  return canvas;
 }
 
 // ---------------------------------------------------------------- Sound
