@@ -54,4 +54,4 @@ Entscheidung, betroffener Umfang, wer entscheidet (🧑). Sonst `keine`.
 
 ## Notizen
 
-Links, Messwerte, verworfene Ansätze. Darf leer bleiben (`–`).
+2026-10-16 (Chat, Ralf): Die Werkstatt (`workshop`) wandert mit den vier Lücken-Gebäuden in Sprint GEB2 (Session GEB2.3, Maßstab 1 im Spiel). Dieses Ticket behält nur die Bäume (`node:tree`) und nutzt den Maßstab-Weg aus GEB2.3.
