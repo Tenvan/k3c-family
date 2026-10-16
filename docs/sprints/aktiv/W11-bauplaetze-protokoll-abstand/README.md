@@ -1,14 +1,14 @@
 # W11 · REG, SRV, CLI · Bauplätze im Protokoll, Abstand der Treppen, Ausbilden und Tauschen, Figuren
 
-- **Status:** geplant
+- **Status:** aktiv
 - **Projekt:** WRT
 - **Domäne:** REG, SRV, CLI
-- **Reife:** Entwurf
+- **Reife:** bereit
 - **Tickets:** B-409, B-208, B-410, B-408, B-207
 - **Start-Commit:** a8d46d9e
-- **Spec:** Entwurf
+- **Spec:** freigegeben
 - **Revision:** 3
-- **Freigabe:** –
+- **Freigabe:** 2026-10-16, Chat (Ralf), Revision 3 (Vorschläge 1–5, Frage 7: Session W11.6 Mensch)
 
 ## Ausgangslage
 
@@ -75,7 +75,7 @@ Alter Server ohne `hubLevel` → Client zeigt Plätze wie bisher, ohne Sperr-Hin
 
 Geklärt mit 🧑 (2026-10-14): W11 vor W8; Treppen ≥ 8 Units zu **allen** Zahlzielen derselben Tiefe. „Linien +8“ verworfen (Kristallhöhle: Portale ab 135, Camps ohne freien Chunk); stattdessen teilen sich Treppe hoch (ab Tiefe 1) und Händler-Kaufen (nur Tiefe 0) ein Raster, Linien bleiben. B-408: Der Server filtert; „erreichbar“ heißt Platz-Stufe ≤ Hub-Stufe + 1 (bezahlte und gebaute Plätze immer), damit die nächste Stufe als gesperrt gezeigt werden kann (B-207, jetzt W11.4). Protokoll: keine neue Version (additiv). Mit 🧑 (2026-10-15): `train` und `trade` wie in B-410 Rev. 2; `PlayerAction` mit der Anzeige in W11.4 (B-434).
 
-**Offen für 🧑 (Revision 3, 2026-10-16, Vorschläge in Klammern):**
+**Geklärt mit 🧑 (2026-10-16, Chat): Vorschläge 1–5 wie genannt, Frage 7 mit Session W11.6 (Mensch, Abnahme am TV); Frage 6 bleibt offen. Ursprüngliche Fragen (Vorschläge in Klammern):**
 1. **W11 nicht neu starten, nur anpassen** (Vorschlag): W11.1 bis W11.3 bleiben `fertig`, W11.1 wird nicht wiederholt (Beleg in Ausgangslage). Einverstanden? Der Sprint steht dafür wieder in `geplant/`, weil `aktiv` eine freigegebene Spec verlangt (das Werkzeug lehnt sonst ab); der Lebenslauf kennt keinen Rückweg aktiv → geplant und zählt einen Sprint mit Branch auf `origin` als aktiv: gilt bis zur Freigabe, danach zurück nach `aktiv/`. Die Änderung liegt auf `sprint/w11-plan`, nicht auf `sprint/w11`.
 2. **B-412 aus W11 herausnehmen** (Vorschlag), weil die Grafik GEB5/GEB6 liefern und dieselben Dateien betroffen sind; neu einplanen nach GEB6.
 3. **B-207 auf „frei“ und „ab Hub-Stufe n“ begrenzen** (Vorschlag); „Linie fehlt“ und „Tor nur außen“ brauchen ein Server-Feld (B-447, später) oder eine SRV-Session in W11 vor W11.4 (dann 6 Sessions).
@@ -93,6 +93,7 @@ Geklärt mit 🧑 (2026-10-14): W11 vor W8; Treppen ≥ 8 Units zu **allen** Zah
 | W11.3 | `W11.3-aktionen-ausbilden-tauschen.md` | Umsetzung | autonom | fertig |
 | W11.4 | `W11.4-bauplaetze-figuren-client.md` | Umsetzung | autonom | offen |
 | W11.5 | `W11.5-review.md` | Review | autonom | offen |
+| W11.6 | `W11.6-abnahme-geraet.md` | Workshop | Mensch | offen |
 
 Bei `Reife: Entwurf` genügen Stichpunkte mit den Kriterien in Klammern statt Session-Dateien. Vor dem Aktivieren
 wird jede Session als eigene Datei nach `docs/vorlagen/session.md` geschrieben.

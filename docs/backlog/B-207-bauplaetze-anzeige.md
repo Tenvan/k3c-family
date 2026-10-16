@@ -8,9 +8,9 @@
 - **Sprint:** W11
 - **Projekt:** WRT
 - **Erstellt:** 2026-10-04
-- **Spec:** Entwurf
+- **Spec:** freigegeben
 - **Revision:** 2
-- **Freigabe:** –
+- **Freigabe:** 2026-10-16, Chat (Ralf), mit W11 Rev. 3
 
 ## Ausgangslage
 
