@@ -1,6 +1,6 @@
 # GEB4.2 · Tor 1 bis 5 passend zur Mauer
 
-- **Status:** offen
+- **Status:** in Arbeit
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** DEV
