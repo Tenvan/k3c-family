@@ -1,6 +1,6 @@
 # GEB2.2 · Schmiede und Rüstkammer als Daten und PNG
 
-- **Status:** in Arbeit
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** DEV
@@ -58,5 +58,7 @@ Keine manuellen Prüfungen in dieser Session; die Sichtprüfung gehört GEB2.4.
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+2026-10-16, Claude (autonom, Ralf im Chat).
+- AC-01 umgesetzt (Teil Schmiede, Rüstkammer): `schmiede.json` (Holz-Vordach, Kamin und Esse aus Stein mit Glut und Funken, Amboss auf Klotz, Werkzeug an der Wand, Wassertrog) und `ruestkammer.json` (Steinsockel, Holzaufbau, Schieferdach, Tor mit Eisenbändern, Rüstungsständer, Wappenschild, Speere am Regal), je 6 × 4 Kacheln; `*-32.png` 192×128 px plus 16/64/128; zweiter `task gebaeude`-Lauf → md5 gleich; `index.json` führt alle acht Einträge.
+- Regeldatei: Stein mit Fuge, Glut, Schiefer, Eisen, Wappen, Wasser in § 3, Bausteine in § 4, Klasse 6 × 4 um beide ergänzt.
+- Checks: `task check` und `task check:go` grün (k3c-dev). Review (Sonnet-Agent, Skriptprüfung): ein leichter Befund (Material Wasser fehlte), behoben. Sichtprüfung gehört GEB2.4.

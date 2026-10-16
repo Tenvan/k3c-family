@@ -41,6 +41,32 @@
     }
   },
   {
+    "id": "ruestkammer",
+    "kacheln": {
+      "b": 6,
+      "h": 4
+    },
+    "dateien": {
+      "128": "grafik/gebaeude/ruestkammer-128.png",
+      "16": "grafik/gebaeude/ruestkammer-16.png",
+      "32": "grafik/gebaeude/ruestkammer-32.png",
+      "64": "grafik/gebaeude/ruestkammer-64.png"
+    }
+  },
+  {
+    "id": "schmiede",
+    "kacheln": {
+      "b": 6,
+      "h": 4
+    },
+    "dateien": {
+      "128": "grafik/gebaeude/schmiede-128.png",
+      "16": "grafik/gebaeude/schmiede-16.png",
+      "32": "grafik/gebaeude/schmiede-32.png",
+      "64": "grafik/gebaeude/schmiede-64.png"
+    }
+  },
+  {
     "id": "tanne",
     "klasse": "baum",
     "kacheln": {

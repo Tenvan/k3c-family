@@ -11,7 +11,7 @@ nur mit Zustimmung von 🧑.
 
 | Klasse | Breite × Höhe (Kacheln) | Beleg |
 |---|---|---|
-| Handelsstand / kleines Gebäude | 6 × 4 | Werkstatt (`workshop`), Taverne (`tavern`), Heilplatz (`healer`) (GEB2) |
+| Handelsstand / kleines Gebäude | 6 × 4 | Werkstatt (`workshop`), Taverne (`tavern`), Heilplatz (`healer`), Schmiede (`smithy`), Rüstkammer (`armory`) (GEB2) |
 | Baum (schmal) | 1 × 2,25 | Tanne, Pappel, Birke (GEB1.3) |
 | weitere Gebäude | legt der jeweilige GEB-Sprint fest, hier nachtragen | B-435 › Notizen |
 
@@ -35,8 +35,13 @@ nur mit Zustimmung von 🧑.
 | Putz (Fachwerk) | `pancho` | – | `twine` |
 | Dachziegel | `brown` | `mandy` (linke Kante) | `loulou` (Traufe, Schindel-Fuge fein) |
 | Fensterlicht | `tahiti-gold` | `golden-fizz` (oben links) | Sprossen `oiled-cedar` (fein) |
-| Stein (Kamin, Stufe) | `dim-gray` | `smokey-ash` | – |
+| Stein (Kamin, Esse, Sockel, Stufe) | `dim-gray` | `smokey-ash` | Fuge `valhalla` (fein) |
+| Glut | `tahiti-gold` | `golden-fizz` (Kern, Funken fein) | `brown`, Öffnung `black` |
+| Schiefer (Dach) | `deep-koamaru` | `venice-blue` (linke Kante) | `valhalla` |
+| Eisen (Rüstung, Band) | `heather` | `light-steel` | `dim-gray` |
+| Wappen | `brown` | `mandy` | Rand `tahiti-gold`, Zeichen `golden-fizz` (fein) |
 | Kräuter | `christi` | `atlantis` | `elf-green` |
+| Wasser (Schale, Trog) | `cornflower` | – | – |
 | Stoff blau (Decke) | `cornflower` | `viking` | `royal-blue` (Falte) |
 
 Zeichen am Gebäude sind Motive, keine Schutzzeichen: Das Heil-Zeichen ist ein **grünes** Kreuz (`christi`, Licht `atlantis`).
@@ -46,7 +51,8 @@ Zeichen am Gebäude sind Motive, keine Schutzzeichen: Das Heil-Zeichen ist ein *
 Ein Gebäude ist eine Liste von Rechtecken in Zeichenreihenfolge (hinten zuerst). Arten der Werkstatt: `wand`, `fuge`,
 `schatten`, `schild`, `zeichen`, `pfosten`, `balken`, `tuch`, `volant`, `falte`, `tresen`, `kiste`, `gestell`,
 `werkzeug`; Taverne: `kamin`, `dach`, `schindel`, `fenster`, `glas`, `sprosse`, `tuer`, `beschlag`, `stufe`, `ausleger`,
-`kette`, `krug`, `fass`, `reifen`; Heilplatz: `kraut`, `schnur`, `liege`, `kissen`, `decke`, `schale`, `wasser`, `korb`, `flechtung`; Bäume: `stamm`, `krone`, `licht`, `strich`, `blatt`. Die Art dient der Lesbarkeit und späteren Zusätzen; gezeichnet wird nur Rechteck und Farbe.
+`kette`, `krug`, `fass`, `reifen`; Heilplatz: `kraut`, `schnur`, `liege`, `kissen`, `decke`, `schale`, `wasser`, `korb`, `flechtung`; Schmiede: `haken`, `esse`, `oeffnung`, `glut`, `funke`, `klotz`, `amboss`, `hammer`, `trog`;
+Rüstkammer: `sockel`, `scharte`, `tor`, `band`, `niete`, `staender`, `helm`, `ruestung`, `wappen`, `speer`, `regal`; Bäume: `stamm`, `krone`, `licht`, `strich`, `blatt`. Die Art dient der Lesbarkeit und späteren Zusätzen; gezeichnet wird nur Rechteck und Farbe.
 
 ## 5. Datenformat
 
