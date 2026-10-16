@@ -1,14 +1,14 @@
 # GEB4 · DEV, CLI · Burg und Hub-Stufen 1 bis 5, Tor
 
-- **Status:** geplant
+- **Status:** aktiv
 - **Projekt:** GEB
 - **Domäne:** DEV, CLI
 - **Reife:** bereit
 - **Tickets:** B-435
-- **Start-Commit:** – (wird beim Aktivieren gesetzt: `git rev-parse --short origin/develop`)
-- **Spec:** Entwurf
+- **Start-Commit:** 16bf107a
+- **Spec:** freigegeben
 - **Revision:** 1
-- **Freigabe:** –
+- **Freigabe:** 2026-10-16, Chat (Ralf), Revision 1 inkl. Tor 2 × 4
 
 ## Ausgangslage
 
@@ -73,7 +73,7 @@ Lager, Farm, Kaserne, Treppen (GEB5); Natur und Objekte (GEB6); Animationen (Ban
 
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
-| GEB4.1 | `GEB4.1-burg-stufen.md` | Umsetzung | autonom | offen |
+| GEB4.1 | `GEB4.1-burg-stufen.md` | Umsetzung | autonom | in Arbeit |
 | GEB4.2 | `GEB4.2-tor-stufen.md` | Umsetzung | autonom | offen |
 | GEB4.3 | `GEB4.3-burg-tor-spiel.md` | Umsetzung | autonom | offen |
 | GEB4.4 | `GEB4.4-review-abnahme.md` | Review | autonom | offen |

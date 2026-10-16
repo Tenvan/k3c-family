@@ -9,6 +9,7 @@ Die Reihenfolge der Arbeit ist allein der Projekt-Rang: [`../projekte/README.md`
 
 | Sprint | Domäne | Projekt | Thema | Am Ende sichtbar | Ordner |
 |---|---|---|---|---|---|
+| GEB4 | DEV, CLI | GEB | Burg und Hub-Stufen 1 bis 5, Tor | – | `aktiv/GEB4-burg-hub-tor/` |
 | GR7 | CLI | GRA | Figuren-Lücken, ganzzahlige Skalierung und Schrift | – | `aktiv/GR7-figuren-schrift/` |
 | SO4 | CLI | SND | Musik je Zustand | – | `aktiv/SO4-musik/` |
 
@@ -24,7 +25,6 @@ Abnahmen am Gerät (`Agent: Mensch`) sammelt das Projekt ABN im Sprint HW1: [`..
 | BD2 | SIM, SRV, CLI | BED | Rückmeldungs-Ereignisse gedrosselt und geprüft, Lobby startet nie still leer | – | Entwurf | `geplant/BD2-rueckmeldung-lobby-nachtraege/` |
 | BD3 | SRV | BED | Raum-Pause im Couch-Raum, Schutz des pausierten Monarchen online | – | Entwurf | `geplant/BD3-raum-pause/` |
 | BD4 | CLI | BED | Gemeinsame HUD-Leiste oben, Fluss unten, lokale Spieler treten einzeln aus | – | Entwurf | `geplant/BD4-hud-leiste-austreten/` |
-| GEB4 | DEV, CLI | GEB | Burg und Hub-Stufen 1 bis 5, Tor | – | bereit | `geplant/GEB4-burg-hub-tor/` |
 | GEB5 | DEV | GEB | Lager, Farm mit Plantage, Kaserne, Treppen | – | Entwurf | `geplant/GEB5-hub-gebaeude-rest/` |
 | GEB6 | DEV | GEB | Natur und Objekte: Bäume, Fels, Erz, Adern, Truhe, Portal, Rekrutierungslager | – | Entwurf | `geplant/GEB6-natur-objekte/` |
 | GEB7 | DEV | GEB | Hintergründe je Biom | – | Entwurf | `geplant/GEB7-hintergruende/` |

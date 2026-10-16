@@ -1,6 +1,6 @@
 # GEB4.1 · Burg mit Hub-Stufen 1 bis 5
 
-- **Status:** offen
+- **Status:** in Arbeit
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** DEV
