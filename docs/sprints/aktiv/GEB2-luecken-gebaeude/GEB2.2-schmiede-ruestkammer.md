@@ -1,6 +1,6 @@
 # GEB2.2 · Schmiede und Rüstkammer als Daten und PNG
 
-- **Status:** offen
+- **Status:** in Arbeit
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** DEV
