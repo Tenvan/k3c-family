@@ -10,7 +10,10 @@ const zuordnung = zuordnungObjekte + zuordnungWelt;
 const lizenzen =renderCredits(CREDITS.filter((c) => c.root === 'grafik'));
 
 /** Alle Dateien unter public/grafik (Schlüssel: Pfad ab dem Ordner) */
-const files = Object.keys(import.meta.glob('../../public/grafik/**/*', { query: '?url', import: 'default' })).map((p) => p.replace('../../public/grafik/', ''));
+/** ohne `gebaeude/`: eigene Grafik mit Daten-JSON aus `task gebaeude` (GEB1), kein Fremd-Pack */
+const files = Object.keys(import.meta.glob('../../public/grafik/**/*', { query: '?url', import: 'default' }))
+  .map((p) => p.replace('../../public/grafik/', ''))
+  .filter((f) => !f.startsWith('gebaeude/'));
 
 /** Dateiendungen, die nicht ins Repo gehören: Musik, Code, Quelldateien, Skripte */
 const FORBIDDEN = /\.(mp3|ogg|wav|js|html|psd|ase|aseprite|gif|iml|tps|json)$/i;

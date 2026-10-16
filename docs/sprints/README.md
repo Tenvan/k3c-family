@@ -24,7 +24,6 @@ Abnahmen am Gerät (`Agent: Mensch`) sammelt das Projekt ABN im Sprint HW1: [`..
 | BD2 | SIM, SRV, CLI | BED | Rückmeldungs-Ereignisse gedrosselt und geprüft, Lobby startet nie still leer | – | Entwurf | `geplant/BD2-rueckmeldung-lobby-nachtraege/` |
 | BD3 | SRV | BED | Raum-Pause im Couch-Raum, Schutz des pausierten Monarchen online | – | Entwurf | `geplant/BD3-raum-pause/` |
 | BD4 | CLI | BED | Gemeinsame HUD-Leiste oben, Fluss unten, lokale Spieler treten einzeln aus | – | Entwurf | `geplant/BD4-hud-leiste-austreten/` |
-| GEB1 | DEV | GEB | Grundregeln für Gebäude-Grafik und Werkstatt | – | Entwurf | `geplant/GEB1-grundregeln-werkstatt/` |
 | GEB2 | DEV | GEB | Gebäude ohne Grafik: Taverne, Heilplatz, Schmiede, Rüstkammer | – | Entwurf | `geplant/GEB2-luecken-gebaeude/` |
 | GEB3 | DEV | GEB | Mauer und Turm, Stufen 1 bis 5 | – | Entwurf | `geplant/GEB3-mauer-turm-stufen/` |
 | GEB4 | DEV | GEB | Burg und Hub-Stufen 1 bis 5, Tor | – | Entwurf | `geplant/GEB4-burg-hub-tor/` |
@@ -181,3 +180,4 @@ Gesamtplan und Begründung: [`../plan-weiterentwicklung.md`](../plan-weiterentwi
 | W8 | Bauplätze mit Grund und alle Rohstoffe im Client | `erledigt/W8-bauplaetze-rohstoffe-client/` |
 | SV1 | Raum mit allen Stufen, Voll-Ausbau-Spielstand, leere Test-Räume | `erledigt/SV1-raeume-stufen-testspielstand/` |
 | BD1 | Kamera, Beitritts-Hinweis, Overlay-Taste und HUD-Nachträge | `erledigt/BD1-hud-overlay-nachtraege/` |
+| GEB1 | Grundregeln für Gebäude-Grafik und Werkstatt | `erledigt/GEB1-grundregeln-werkstatt/` |

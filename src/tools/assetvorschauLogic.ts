@@ -124,3 +124,39 @@ export function figureCard(slot: AssetSlot, choice: Choice & { sheet: string }):
 // ponytail: ein Faktor für alle; im Spiel haben einzelne Objekte eigene Zooms (Portal ×1, Wald-Hintergrund ×3,
 // src/scenes/worldSprites.ts). Erst übernehmen, wenn die Vorschau dort täuscht.
 export const GRAFIK_SCALE = 2;
+
+/** Eintrag aus `public/grafik/gebaeude/index.json` (schreibt `task gebaeude`, GEB1) */
+export interface GebaeudeEintrag {
+  id: string;
+  klasse?: string;
+  kacheln: { b: number; h: number };
+  dateien: Record<string, string>;
+}
+
+export interface GebaeudeKarte {
+  id: string;
+  dichte: number;
+  datei: string;
+  /** ganzzahliger Faktor auf 32 px je Kachel (`UNIT_PX`) */
+  scale: number;
+}
+
+/** Vergleichsdichten der Vorschau: Master 32 px ×1 neben 16 px ×2 (GEB1/AC-06, Spiel-Dichte entscheidet 🧑 in GEB1.4) */
+const VERGLEICH = [32, 16];
+
+/** Karten je Gebäude in Vergleichsreihenfolge; fehlende Dichten entfallen. */
+export function gebaeudeKarten(index: readonly GebaeudeEintrag[]): GebaeudeKarte[] {
+  return index.flatMap((e) =>
+    VERGLEICH.filter((d) => e.dateien[d]).map((d) => ({ id: e.id, dichte: d, datei: e.dateien[d], scale: 32 / d })),
+  );
+}
+
+/** Abstand der Bäume in der Reihe: ½ Kachel bei 1 Kachel Breite, also überlappend wie ein kleiner Wald (GEB1/AC-05) */
+export const BAUM_ABSTAND = 0.5;
+
+/** Reihe aus den Bäumen des Index im Wechsel: je Baum ID und x in Kacheln, gezeichnet von links nach rechts. */
+export function baumReihe(index: readonly GebaeudeEintrag[], anzahl = 6): { id: string; x: number }[] {
+  const ids = index.filter((e) => e.klasse === 'baum').map((e) => e.id);
+  if (ids.length === 0) return [];
+  return Array.from({ length: anzahl }, (_, i) => ({ id: ids[i % ids.length]!, x: i * BAUM_ABSTAND }));
+}
