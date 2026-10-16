@@ -1,6 +1,6 @@
 # GEB7.1 · Generator für Hintergrund-Schichten und Wald
 
-- **Status:** offen
+- **Status:** in Arbeit
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** DEV

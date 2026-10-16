@@ -115,7 +115,7 @@ Keine blockiert die Planung; jede Annahme gilt mit der Freigabe als bestätigt, 
 
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
-| GEB7.1 | `GEB7.1-generator-wald.md` | Umsetzung | autonom | offen |
+| GEB7.1 | `GEB7.1-generator-wald.md` | Umsetzung | autonom | in Arbeit |
 | GEB7.2 | `GEB7.2-hoehle-mine.md` | Umsetzung | autonom | offen |
 | GEB7.3 | `GEB7.3-eisenstollen-kristall.md` | Umsetzung | autonom | offen |
 | GEB7.4 | `GEB7.4-pages-umstellen.md` | Umsetzung | autonom | offen |
