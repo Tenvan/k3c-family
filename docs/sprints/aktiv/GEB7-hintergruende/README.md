@@ -1,14 +1,14 @@
-# GEB7 · DEV · Hintergründe je Biom
+# GEB7 · DEV, PLAT, CLI · Hintergründe je Biom
 
-- **Status:** geplant
+- **Status:** aktiv
 - **Projekt:** GEB
-- **Domäne:** DEV
-- **Reife:** Entwurf
+- **Domäne:** DEV, PLAT, CLI
+- **Reife:** bereit
 - **Tickets:** B-435
-- **Start-Commit:** – (wird beim Aktivieren gesetzt: `git rev-parse --short origin/develop`)
-- **Spec:** Entwurf
-- **Revision:** 1
-- **Freigabe:** –
+- **Start-Commit:** b9a22a82
+- **Spec:** freigegeben
+- **Revision:** 2
+- **Freigabe:** 2026-10-16, Chat (Ralf: Umsetzung auf Annahmen, offene Fragen nach Abschluss)
 
 ## Ausgangslage
 
@@ -44,10 +44,10 @@ Jedes der fünf Biome (Wald, Höhle, Mine, Eisenstollen, Kristallhöhle) hat ein
 
 B-435 › Anforderungen (Dichte-Regel, Determinismus, Daten + Skript im Repo) und `docs/standards/gebaeude-grafik.md` (Raster § 1, Palette § 2, Materialien § 3, Vorlage § 5, Dichte § 7); Aufräum-Regel aus Projekt GEB › Notizen. Sprint-eigen (Maße und Motive sind Annahmen, siehe Offene Fragen):
 
-- **Schichten:** je Biom **drei** Hintergrund-Schichten (fern, mitte, nah), je eine Daten-JSON `hg-<biom>-<schicht>` (z. B. `hg-wald-fern`), Klasse `kachel`, **24 × 15 Kacheln** (768 × 480 px Master, Höhe wie die heutigen Schichten), in der Breite nahtlos kachelbar, oben transparent (Himmel bleibt `palette.sky`), unterste Pixelzeile deckend (Bodenlinie und Fluss-Spiegelung). Das sind 15 JSONs.
+- **Schichten:** je Biom **drei** Hintergrund-Schichten (fern, mitte, nah), je eine Daten-JSON `hg-<biom>-<schicht>` (z. B. `hg-wald-fern`), Klasse `hintergrund` (kachelbar wie `kachel`, Revision 2), **24 × 15 Kacheln** (768 × 480 px Master, Höhe wie die heutigen Schichten), in der Breite nahtlos kachelbar, oben transparent (Himmel bleibt `palette.sky`), unterste Pixelzeile deckend (Bodenlinie und Fluss-Spiegelung). Das sind 15 JSONs.
 - **Motive** (Vorschlag, 🧑 prüft in der Vorschau): Wald: ferne Hügel und Stämme im Dunst, mittlere Laubbäume (Farbwelt der Bäume aus GEB1/GEB6), nahe Stämme; Höhle: Felswand, Stalaktiten, ferne Hallen; Mine: Stützbalken und Gerüst vor Fels (Holz § 3), Schienenbett; Eisenstollen: dunkler Fels mit Eisenträgern und Lavaschein (Glut § 3); Kristallhöhle: Kristallgruppen und Kristalllicht (Kristall § 3).
 - **Farbe und Lesbarkeit:** nur DB32; fernere Schichten dunkler und entsättigter als nähere, alle dunkler als die Gebäude und Figuren davor (Zahl der Stufen legt die Regeldatei fest); Farbwahl passt zur Himmelsfarbe des Bioms.
-- **Generator** (`tools/gebaeude`, nur soweit nötig): (a) Wiederholung eines Bausteins entlang x (`wiederholung`: Schritt und Anzahl), damit Bäume, Stalaktiten und Kristalle nicht als hunderte Einzel-Rechtecke stehen; (b) für Klasse `hintergrund` nur die Dichten 16 und 32 (64/128 wären mehrere MB je Schicht ohne Spielwert); (c) der Kachelbarkeits-Test (`TestHintergrundmauerKachelbar`) gilt für alle Klassen `kachel`, dazu „unterste Zeile deckend“. Alles ohne neue Abhängigkeit.
+- **Generator** (`tools/gebaeude`, nur soweit nötig): (a) Wiederholung eines Bausteins entlang x (`wiederholung`: Schritt und Anzahl), damit Bäume, Stalaktiten und Kristalle nicht als hunderte Einzel-Rechtecke stehen; (b) für Klasse `hintergrund` nur die Dichten 16 und 32 (64/128 wären mehrere MB je Schicht ohne Spielwert); (c) ein Kachelbarkeits-Test (`TestKachelKlassen`, ersetzt `TestHintergrundmauerKachelbar` nicht) gilt für alle Klassen `kachel` und `hintergrund`, für `hintergrund` dazu „oberste Zeile transparent, unterste Zeile deckend“. Alles ohne neue Abhängigkeit.
 - **Vorschau:** `assetvorschau.html?szene=gebaeude` zeigt je Biom die drei Schichten gestapelt auf der Himmelsfarbe des Bioms, 32 px ×1 und 16 px ×2.
 - **Spiel (CLI):** `BACKGROUNDS` und `WORLD_TEXTURES` in `worldSprites.ts` verweisen auf die neuen PNGs, Zoom 1 (statt ×2/×3), Scroll-Faktoren je Biom wie heute (hinten langsam), ein Eintrag für **alle fünf** Biome (Silhouetten bleiben nur als Rückfall für unbekannte Biome). Register: je Schicht ein Slot `bg:<biom>:<n>` (n = 1 hinten … 3 vorn) statt `bg:<biom>`; `zuordnung-welt.md` und `zuordnung.test.ts` ziehen mit.
 - **Pages-Seite (PLAT):** `site/index.html` nutzt die neuen Schichten statt der alten Packs (Frage 5).
@@ -60,7 +60,7 @@ Animationen (Lichtstrahlen, Lava-Flackern, Staub, Wolken); Himmel und Tag-Nacht-
 ## Regeln und Einschränkungen
 
 - **Domänen nacheinander:** **DEV** (GEB7.1–GEB7.3: `tools/gebaeude/` für die Generator-Ergänzung, `public/grafik/gebaeude/`, `src/tools/assetvorschau*.ts`, Regeldatei) → **PLAT** (GEB7.4: `site/`, nur wenn Frage 5 mit „umstellen“ beantwortet wird, sonst verworfen) → **CLI** (GEB7.5: `src/scenes/`, `data/assets.json`, Löschen alter Grafik samt Fixtures und Mocks). Die PLAT-Session liegt **vor** dem Löschen, weil `site/index.html` die alten Packs noch lädt. `engine/` und `data/biomes/` bleiben unberührt.
-- **Verhältnis zu GEB5 und GEB6:** GEB5 (aktiv) und GEB6 laufen in anderen Checkouts. GEB7 fasst deren Slots und Dateien nicht an (Gebäude, `node:*`, `vein:*`, Objekte), teilt aber `docs/standards/gebaeude-grafik.md`, `public/grafik/gebaeude/index.json`, `data/assets.json` und `src/scenes/worldSprites.ts` (GEB6.5 ändert dort `OBJECTS`/`WORLD_TEXTURES`, GEB7.5 `BACKGROUNDS` und die `bg:*`-Texturen). **Merge-Reihenfolge GEB5 → GEB6 → GEB7**; GEB7 wird erst aktiviert, wenn GEB6 gemergt ist (`Start-Commit` danach), und seine Sessions holen vorher `origin/develop`.
+- **Verhältnis zu GEB5 und GEB6:** GEB5 (aktiv) und GEB6 laufen in anderen Checkouts. GEB7 fasst deren Slots und Dateien nicht an (Gebäude, `node:*`, `vein:*`, Objekte), teilt aber `docs/standards/gebaeude-grafik.md`, `public/grafik/gebaeude/index.json`, `data/assets.json` und `src/scenes/worldSprites.ts` (GEB6.5 ändert dort `OBJECTS`/`WORLD_TEXTURES`, GEB7.5 `BACKGROUNDS` und die `bg:*`-Texturen). **Merge-Reihenfolge GEB5 → GEB6 → GEB7**. Revision 2 (autonomer Lauf): GEB7 wird auf Basis von `develop` mit GEB5 aktiviert (`Start-Commit` dort); GEB6 läuft noch (Branch `sprint/geb6`). Die DEV-Sessions GEB7.1–GEB7.4 laufen schon, **GEB7.5 (CLI) beginnt erst, wenn GEB6 auf `develop` gemergt ist und keine andere CLI-Session `in Arbeit` ist**; vorher holt `sprint/geb7` `origin/develop` per `git merge`. Der PR von GEB7 wird erst nach dem Merge von GEB6 geöffnet. Beim Merge beider Sprints ist GEB6 `erledigt` (nie zwei aktive Sprints im Projekt, `tests/planning.test.ts`).
 - **Materialien** nur aus `gebaeude-grafik.md` § 3 (Holz, Stein, Eisen, Glut, Kristall, Laub, Nadeln, Putz u. a.); Fels = Zeile Stein, wie es GEB6 Frage 4 festlegt. Fehlt etwas (z. B. Erde, Lava-Fels), zuerst dort mit Zustimmung von 🧑 ergänzen.
 - **Determinismus:** gleiche JSON → byte-gleiche PNGs; vorhandene PNGs bleiben unverändert (md5 vor und nach `task gebaeude`). Keine Würfel im Client, keine Zufallsvarianten; Variation entsteht nur in den Daten (Wiederholung mit festen Versätzen).
 - **Aufräum-Regel (🧑, 2026-10-16):** Alte Grafik, die der neue Hintergrund ersetzt, wird in **diesem** Sprint gelöscht: PNG, Einträge in `public/grafik/index.json`, Register-Wahl in `data/assets.json`, `docs/assets/zuordnung-*.md`, Test-Fixtures und Mocks, CREDITS-Zeilen und `grafikPacks.ts` (wird ein Pack leer, fällt er ganz weg samt LICENSE). Gelöscht wird nur, was **vorher per Suche belegt** nichts anderes nutzt; Kandidaten und Belege stehen in GEB7.5. Historische Belege (`docs/funde/`, erledigte Sprints, Archiv, andere Tickets) bleiben.
@@ -82,6 +82,7 @@ Animationen (Lichtstrahlen, Lava-Flackern, Staub, Wolken); Himmel und Tag-Nacht-
 - Baustein außerhalb der 24 × 15 Kacheln, Rechteck nicht im 1/32-Raster, `wiederholung` mit Schritt 0 oder Überlauf → `task gebaeude` bricht mit klarer Meldung ab.
 - Pack, den noch etwas nutzt (z. B. `sunnyland-tall-forest-environment` mit `Plant.png`, falls GEB6 es nicht ersetzt hat) → bleibt, nur ungenutzte Dateien (`ebenen/*`) fallen weg; nie ein Pack löschen, den ein Treffer in `src/`, `data/`, `tests/`, `tools/` oder `site/` nennt.
 - Antwort auf Frage 5 „Pages-Seite unverändert lassen“ → GEB7.4 entfällt (`verworfen`), `forest-background`, `blue-cave-background` und `warped-caves-pixel-art-pack` bleiben mit Vermerk im Ergebnis, nur `warped-super-grotto-escape-pack` und die ungenutzten `ebenen/*` von `sunnyland-tall-forest-environment` fallen weg.
+- **Wald-Gate entfallen (Revision 2):** Die Spec verlangte, dass 🧑 den Wald in der Vorschau prüft, bevor GEB7.2/GEB7.3 beginnen. Im autonomen Lauf entfällt das; 🧑 prüft nach Abschluss alle fünf Biome (AC-08). Ändert 🧑 dann Motiv, Maße oder Stil des Waldes, werden die übrigen Biome im Stil nachgezogen (Farbtausch oder Neuzeichnen der JSON, kein Code).
 - Hintergrund zu hell und lenkt von Gebäuden ab → 🧑 lehnt in der Vorschau ab; die Schicht wird dunkler gefärbt (Farbtausch in der JSON), kein Code.
 
 ## Akzeptanzkriterien
@@ -97,16 +98,16 @@ Animationen (Lichtstrahlen, Lava-Flackern, Staub, Wolken); Himmel und Tag-Nacht-
 
 ## Offene Fragen
 
-Keine blockiert die Planung; jede Annahme gilt mit der Freigabe als bestätigt, eine Antwort von 🧑 ersetzt sie vorher. Frage 5 ist die einzige mit Auswirkung auf den Zuschnitt.
+Keine blockiert die Planung; jede Annahme gilt mit der Freigabe als bestätigt, eine Antwort von 🧑 ersetzt sie. Frage 5 ist die einzige mit Auswirkung auf den Zuschnitt. Freigabe (Revision 2): „Ralf, Chat 2026-10-16: Umsetzung auf Annahmen, offene Fragen nach Abschluss“; **Annahme zu Frage 5: umstellen** (Empfehlung). Je Frage steht, was sich bei anderer Antwort ändert.
 
-1. Annahme: **drei Schichten je Biom** (fern, mitte, nah), also 15 Schichten; die vierte Wald-Schicht „Lichtstrahlen“ (`bg:forest-lights`) und die Höhle mit einer Schicht werden auf drei vereinheitlicht. Scroll-Faktoren: Wald 0,15 / 0,35 / 0,5, Höhle 0,1 / 0,2 / 0,4, Mine 0,1 / 0,25 / 0,45, Eisenstollen und Kristallhöhle wie Mine.
-2. Annahme: Schichten **24 × 15 Kacheln** (768 × 480 px), **Zoom 1** im Spiel (Pixelraster wie Gebäude, § 8 gemeinsames Raster), nur Dichten **16 und 32**. Der Faktor am TV bleibt offen (GR7.4, B-251) und gilt für alle gemeinsam.
-3. Annahme: Himmel bleibt `palette.sky` aus `data/biomes/*.json` (nicht DB32, REG-Werte); die Schichten sind oben transparent.
-4. Annahme: **Slots je Schicht** `bg:<biom>:<n>` (n = 1 hinten) ersetzen die fünf `bg:<biom>`-Slots (wie `hub:<n>`); die Reihenfolge der Schichten steht in `BACKGROUNDS` (Code), das Register hält je Slot die gewählte Datei.
-5. **Frage an 🧑:** `site/index.html` (Pages-Seite) lädt `forest-background`, `blue-cave-background` und `warped-caves-pixel-art-pack/ebenen/background.png`. Empfehlung: **umstellen** (PLAT-Session GEB7.4 vor dem Löschen), dann fallen alle drei Packs weg und die Pages-Seite zeigt dieselben Hintergründe wie das Spiel. Alternative: **unverändert** lassen, dann bleiben die drei Packs (samt CC-BY-Eintrag Warped Caves) und GEB7.4 entfällt. Falls der Sprint PG1 (Präsentation Bilder, ändert ebenfalls `site/`) zuerst läuft, trifft GEB7.4 auf dessen Stand und ersetzt nur die `url()`-Zeilen.
-6. Annahme: Motive wie in Anforderungen (Wald: Dunst-Hügel, Laubbäume, nahe Stämme; Höhle: Felswand mit Stalaktiten; Mine: Stützbalken; Eisenstollen: Fels mit Lavaschein; Kristallhöhle: Kristallgruppen). 🧑 gibt in der Vorschau pro Biom frei oder ändert die Motive; die Farbwelt der Bäume zieht aus GEB6 (Kronen-Paletten je Biom) nach.
-7. Annahme: Der Generator bekommt `wiederholung` (Schritt, Anzahl) und für Klasse `hintergrund` die Dichten 16/32; kein Perlin-Rauschen, keine Zufallsgrafik, nur Rechtecke aus DB32 wie bisher. Reicht das für ansehnliche Hintergründe nicht, entscheidet 🧑 in der Vorschau von GEB7.1 (Wald) über weitere Bausteine (z. B. Dreiecke für Berge) oder über ein Ticket.
-8. Annahme: `sunnyland-tall-forest-environment/ebenen/*` ist nur als „Alternative“ dokumentiert und fällt weg, `props/Plant.png` bleibt bis GEB6 es ersetzt; hat GEB6 den Pack schon ganz entfernt, entfällt dieser Punkt.
+1. Annahme: **drei Schichten je Biom** (fern, mitte, nah), also 15 Schichten; die vierte Wald-Schicht „Lichtstrahlen“ (`bg:forest-lights`) und die Höhle mit einer Schicht werden auf drei vereinheitlicht. Scroll-Faktoren: Wald 0,15 / 0,35 / 0,5, Höhle 0,1 / 0,2 / 0,4, Mine 0,1 / 0,25 / 0,45, Eisenstollen und Kristallhöhle wie Mine. *Bei anderer Antwort:* andere Schichtzahl → Daten-JSONs, `BACKGROUNDS` und Register-Slots in GEB7.1–GEB7.3 und GEB7.5 anpassen; andere Faktoren → nur `BACKGROUNDS` (GEB7.5).
+2. Annahme: Schichten **24 × 15 Kacheln** (768 × 480 px), **Zoom 1** im Spiel (Pixelraster wie Gebäude, § 8 gemeinsames Raster), nur Dichten **16 und 32**. Der Faktor am TV bleibt offen (GR7.4, B-251) und gilt für alle gemeinsam. *Bei anderer Antwort:* andere Maße → Neuzeichnen der 15 JSONs (GEB7.1–GEB7.3), Zoom in GEB7.5.
+3. Annahme: Himmel bleibt `palette.sky` aus `data/biomes/*.json` (nicht DB32, REG-Werte); die Schichten sind oben transparent. *Bei anderer Antwort (Himmel in DB32):* eigenes REG-Ticket für `data/biomes/*.json`, kein Eingriff in diesen Sprint.
+4. Annahme: **Slots je Schicht** `bg:<biom>:<n>` (n = 1 hinten) ersetzen die fünf `bg:<biom>`-Slots (wie `hub:<n>`); die Reihenfolge der Schichten steht in `BACKGROUNDS` (Code), das Register hält je Slot die gewählte Datei. *Bei anderer Antwort:* nur Register, `zuordnung-welt.md` und `zuordnung.test.ts` in GEB7.5.
+5. **Frage an 🧑:** `site/index.html` (Pages-Seite) lädt `forest-background`, `blue-cave-background` und `warped-caves-pixel-art-pack/ebenen/background.png`. Empfehlung: **umstellen** (PLAT-Session GEB7.4 vor dem Löschen), dann fallen alle drei Packs weg und die Pages-Seite zeigt dieselben Hintergründe wie das Spiel. Alternative: **unverändert** lassen, dann bleiben die drei Packs (samt CC-BY-Eintrag Warped Caves) und GEB7.4 entfällt. Falls der Sprint PG1 (Präsentation Bilder, ändert ebenfalls `site/`) zuerst läuft, trifft GEB7.4 auf dessen Stand und ersetzt nur die `url()`-Zeilen. *Bei Antwort „unverändert“:* GEB7.4 wird `verworfen`, GEB7.5 lässt `forest-background`, `blue-cave-background` und `warped-caves-pixel-art-pack` stehen (AC-06 für sie `verschoben`, AC-07 entfällt).
+6. Annahme: Motive wie in Anforderungen (Wald: Dunst-Hügel, Laubbäume, nahe Stämme; Höhle: Felswand mit Stalaktiten; Mine: Stützbalken; Eisenstollen: Fels mit Lavaschein; Kristallhöhle: Kristallgruppen). 🧑 gibt in der Vorschau pro Biom frei oder ändert die Motive; die Farbwelt der Bäume zieht aus GEB6 (Kronen-Paletten je Biom) nach. *Bei anderer Antwort:* Motive stehen nur in den Daten-JSONs (GEB7.1–GEB7.3), kein Code.
+7. Annahme: Der Generator bekommt `wiederholung` (Schritt, Anzahl) und für Klasse `hintergrund` die Dichten 16/32; kein Perlin-Rauschen, keine Zufallsgrafik, nur Rechtecke aus DB32 wie bisher. Reicht das für ansehnliche Hintergründe nicht, entscheidet 🧑 in der Vorschau (nach Abschluss, Revision 2) über weitere Bausteine (z. B. Dreiecke für Berge) oder über ein Ticket. *Bei anderer Antwort:* zusätzliche Bausteinart im Generator (neue Session DEV) und Neuzeichnen betroffener JSONs.
+8. Annahme: `sunnyland-tall-forest-environment/ebenen/*` ist nur als „Alternative“ dokumentiert und fällt weg, `props/Plant.png` bleibt bis GEB6 es ersetzt; hat GEB6 den Pack schon ganz entfernt, entfällt dieser Punkt. *Bei anderer Antwort:* `ebenen/*` bleibt, AC-06 ohne diesen Punkt.
 9. Annahme: Ein Eintrag im Glossar (**Hintergrund-Schicht**) steht bereits; „Ebene“ bleibt für die Insel-Variante reserviert, `ebenen/` in Pack-Pfaden ist kein Glossar-Begriff.
 - Freigabe der Spec setzt 🧑.
 
@@ -114,16 +115,12 @@ Keine blockiert die Planung; jede Annahme gilt mit der Freigabe als bestätigt, 
 
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
-
-Bei `Reife: Entwurf` genügen Stichpunkte mit den Kriterien in Klammern statt Session-Dateien. Vor dem Aktivieren
-wird jede Session als eigene Datei nach `docs/vorlagen/session.md` geschrieben.
-
-- GEB7.1 (DEV) Generator: `wiederholung`, Dichten 16/32 für Klasse `hintergrund`, Test Kachelbarkeit und deckende Unterkante für alle Klassen `kachel`; Vorschau-Streifen „Hintergründe“; Wald (`hg-wald-fern|mitte|nah`); Regeldatei § 1–§ 3; 🧑 prüft den Wald in der Vorschau, bevor GEB7.2 und GEB7.3 beginnen (AC-01, AC-02, AC-03, AC-04).
-- GEB7.2 (DEV) Höhle und Mine, je drei Schichten (AC-01, AC-02, AC-04).
-- GEB7.3 (DEV) Eisenstollen und Kristallhöhle, je drei Schichten (AC-01, AC-02, AC-04).
-- GEB7.4 (PLAT) `site/index.html` auf die neuen Schichten umstellen; entfällt bei „unverändert“ auf Frage 5 (AC-07).
-- GEB7.5 (CLI) `BACKGROUNDS` und Texturen für alle fünf Biome in Maßstab 1, Slots `bg:<biom>:<n>`, Zuordnungs-Doku und Tests; alte Packs und Verweise löschen mit Suchbeleg (AC-05, AC-06).
-- GEB7.6 Review und Abnahme durch 🧑 (AC-08, alle).
+| GEB7.1 | `GEB7.1-generator-wald.md` | Umsetzung | autonom | offen |
+| GEB7.2 | `GEB7.2-hoehle-mine.md` | Umsetzung | autonom | offen |
+| GEB7.3 | `GEB7.3-eisenstollen-kristall.md` | Umsetzung | autonom | offen |
+| GEB7.4 | `GEB7.4-pages-umstellen.md` | Umsetzung | autonom | offen |
+| GEB7.5 | `GEB7.5-zuordnung-aufraeumen.md` | Umsetzung | autonom | offen |
+| GEB7.6 | `GEB7.6-review-abnahme.md` | Review | autonom | offen |
 
 ## Abnahme
 
