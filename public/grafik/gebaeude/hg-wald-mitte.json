@@ -1,0 +1,39 @@
+{
+  "id": "hg-wald-mitte",
+  "klasse": "hintergrund",
+  "vorlage": {
+    "motiv": "Mittlere Laubbäume mit dunkelbraunen Stämmen und breiten olivgrünen Kronen, zweite Reihe niedriger und dunkler dahinter, Farnband am Boden",
+    "teile": [
+      "Farn- und Buschband am Boden über die ganze Breite (Bodenlinie)",
+      "Erste Reihe: breite Kronen (Verdigris) auf Stämmen, Abstand 3 Kacheln",
+      "Kronenunterseite in Opal, Lichtflecken links oben in Dell",
+      "Zweite Reihe: niedrigere Bäume in Opal, um 1,5 Kacheln versetzt"
+    ],
+    "materialien": [
+      "Hintergrund Wald",
+      "Hintergrund Holz"
+    ],
+    "stimmung": "schattiger Mittelwald",
+    "fein": "Lichtflecken, Rindenfuge"
+  },
+  "kacheln": {
+    "b": 24,
+    "h": 15
+  },
+  "bausteine": [
+    {"art":"stamm","rechteck":[2.0,7.5,0.5,6],"farbe":"valhalla","wiederholung":{"schritt":3.0,"anzahl":7}},
+    {"art":"krone","rechteck":[1.75,5.5,1.75,2.5],"farbe":"valhalla","wiederholung":{"schritt":3.0,"anzahl":7}},
+    {"art":"krone","rechteck":[2.25,4.75,0.75,0.75],"farbe":"valhalla","wiederholung":{"schritt":3.0,"anzahl":7}},
+    {"art":"stamm","rechteck":[0.75,5.5,0.5,8],"farbe":"loulou","wiederholung":{"schritt":3.0,"anzahl":8}},
+    {"art":"krone","rechteck":[0.25,2.5,2.5,3.0],"farbe":"opal","wiederholung":{"schritt":3.0,"anzahl":8}},
+    {"art":"krone","rechteck":[0.75,1.75,1.5,0.75],"farbe":"opal","wiederholung":{"schritt":3.0,"anzahl":8}},
+    {"art":"krone","rechteck":[0.25,2.5,2.5,1.5],"farbe":"verdigris","wiederholung":{"schritt":3.0,"anzahl":8}},
+    {"art":"krone","rechteck":[0.75,1.75,1.5,0.75],"farbe":"verdigris","wiederholung":{"schritt":3.0,"anzahl":8}},
+    {"art":"schatten","rechteck":[0.25,5.0,2.5,0.5],"farbe":"valhalla","wiederholung":{"schritt":3.0,"anzahl":8}},
+    {"art":"licht","rechteck":[0.5,2.75,0.75,0.5],"farbe":"dell","fein":true,"wiederholung":{"schritt":3.0,"anzahl":8}},
+    {"art":"fuge","rechteck":[0.875,6.5,0.0625,3.5],"farbe":"loulou","fein":true,"wiederholung":{"schritt":3.0,"anzahl":8}},
+    {"art":"farn","rechteck":[0,13.5,24,1.5],"farbe":"opal"},
+    {"art":"farn","rechteck":[0.25,12.75,1.5,0.75],"farbe":"opal","wiederholung":{"schritt":2.5,"anzahl":9}},
+    {"art":"farn","rechteck":[0.75,13.0,0.75,0.5],"farbe":"verdigris","fein":true,"wiederholung":{"schritt":2.5,"anzahl":9}}
+  ]
+}

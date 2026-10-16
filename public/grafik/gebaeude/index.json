@@ -181,6 +181,86 @@
     }
   },
   {
+    "id": "hg-wald-fern",
+    "klasse": "hintergrund",
+    "kacheln": {
+      "b": 24,
+      "h": 15
+    },
+    "vorlage": {
+      "motiv": "Ferne Hügelkämme mit schmalen Stämmen und runden Kronen im Dunst, dunkle Silhouetten über einem durchgehenden Waldboden",
+      "teile": [
+        "Waldboden als durchgehendes Band über die ganze Breite (Bodenlinie)",
+        "Zwei Reihen flacher Hügelkämme in Opal, abgestuft, links nach rechts versetzt",
+        "Schmale hohe Stämme im Abstand von 2 Kacheln mit kleinen Kronen",
+        "Zweite Reihe niedriger Stämme dazwischen (Abstand 3 Kacheln)"
+      ],
+      "materialien": [
+        "Hintergrund Wald"
+      ],
+      "stimmung": "kühler Morgendunst, tief im Wald",
+      "fein": "Kronen-Licht"
+    },
+    "dateien": {
+      "16": "grafik/gebaeude/hg-wald-fern-16.png",
+      "32": "grafik/gebaeude/hg-wald-fern-32.png"
+    }
+  },
+  {
+    "id": "hg-wald-mitte",
+    "klasse": "hintergrund",
+    "kacheln": {
+      "b": 24,
+      "h": 15
+    },
+    "vorlage": {
+      "motiv": "Mittlere Laubbäume mit dunkelbraunen Stämmen und breiten olivgrünen Kronen, zweite Reihe niedriger und dunkler dahinter, Farnband am Boden",
+      "teile": [
+        "Farn- und Buschband am Boden über die ganze Breite (Bodenlinie)",
+        "Erste Reihe: breite Kronen (Verdigris) auf Stämmen, Abstand 3 Kacheln",
+        "Kronenunterseite in Opal, Lichtflecken links oben in Dell",
+        "Zweite Reihe: niedrigere Bäume in Opal, um 1,5 Kacheln versetzt"
+      ],
+      "materialien": [
+        "Hintergrund Wald",
+        "Hintergrund Holz"
+      ],
+      "stimmung": "schattiger Mittelwald",
+      "fein": "Lichtflecken, Rindenfuge"
+    },
+    "dateien": {
+      "16": "grafik/gebaeude/hg-wald-mitte-16.png",
+      "32": "grafik/gebaeude/hg-wald-mitte-32.png"
+    }
+  },
+  {
+    "id": "hg-wald-nah",
+    "klasse": "hintergrund",
+    "kacheln": {
+      "b": 24,
+      "h": 15
+    },
+    "vorlage": {
+      "motiv": "Nahe, kräftige Baumstämme mit Lichtkante links und Schatten rechts, Laubansatz oben und Gras- und Farnband am Boden",
+      "teile": [
+        "Vier dicke Stämme im Abstand von 7 Kacheln und ein einzelner Stamm rechts außen",
+        "Lichtkante links in Rope, Schattenkante rechts in Loulou, feine Rindenstriche",
+        "Laubansatz oben (Dell) mit Lichtkante, an den Stämmen hängend",
+        "Grasband am Boden über die ganze Breite mit Büscheln"
+      ],
+      "materialien": [
+        "Hintergrund Holz",
+        "Hintergrund Wald"
+      ],
+      "stimmung": "dunkler Vordergrund, nahe Stämme",
+      "fein": "Rindenstriche, Grasbüschel"
+    },
+    "dateien": {
+      "16": "grafik/gebaeude/hg-wald-nah-16.png",
+      "32": "grafik/gebaeude/hg-wald-nah-32.png"
+    }
+  },
+  {
     "id": "hintergrundmauer",
     "klasse": "kachel",
     "kacheln": {

@@ -1,0 +1,42 @@
+{
+  "id": "hg-wald-nah",
+  "klasse": "hintergrund",
+  "vorlage": {
+    "motiv": "Nahe, kräftige Baumstämme mit Lichtkante links und Schatten rechts, Laubansatz oben und Gras- und Farnband am Boden",
+    "teile": [
+      "Vier dicke Stämme im Abstand von 7 Kacheln und ein einzelner Stamm rechts außen",
+      "Lichtkante links in Rope, Schattenkante rechts in Loulou, feine Rindenstriche",
+      "Laubansatz oben (Dell) mit Lichtkante, an den Stämmen hängend",
+      "Grasband am Boden über die ganze Breite mit Büscheln"
+    ],
+    "materialien": [
+      "Hintergrund Holz",
+      "Hintergrund Wald"
+    ],
+    "stimmung": "dunkler Vordergrund, nahe Stämme",
+    "fein": "Rindenstriche, Grasbüschel"
+  },
+  "kacheln": {
+    "b": 24,
+    "h": 15
+  },
+  "bausteine": [
+    {"art":"stamm","rechteck":[1.5,1.0,1.0,14],"farbe":"oiled-cedar","wiederholung":{"schritt":7,"anzahl":3}},
+    {"art":"licht","rechteck":[1.5,1.0,0.125,14],"farbe":"rope","wiederholung":{"schritt":7,"anzahl":3}},
+    {"art":"schatten","rechteck":[2.25,1.0,0.25,14],"farbe":"loulou","wiederholung":{"schritt":7,"anzahl":3}},
+    {"art":"strich","rechteck":[1.75,3.0,0.4375,0.03125],"farbe":"loulou","fein":true,"wiederholung":{"schritt":7,"anzahl":3}},
+    {"art":"strich","rechteck":[1.75,5.5,0.4375,0.03125],"farbe":"loulou","fein":true,"wiederholung":{"schritt":7,"anzahl":3}},
+    {"art":"strich","rechteck":[1.75,8.0,0.4375,0.03125],"farbe":"loulou","fein":true,"wiederholung":{"schritt":7,"anzahl":3}},
+    {"art":"strich","rechteck":[1.75,10.5,0.4375,0.03125],"farbe":"loulou","fein":true,"wiederholung":{"schritt":7,"anzahl":3}},
+    {"art":"stamm","rechteck":[21.5,3.0,0.75,12],"farbe":"oiled-cedar"},
+    {"art":"licht","rechteck":[21.5,3.0,0.125,12],"farbe":"rope"},
+    {"art":"schatten","rechteck":[22.0625,3.0,0.1875,12],"farbe":"loulou"},
+    {"art":"laub","rechteck":[0.5,1.0,3.0,1.5],"farbe":"verdigris","wiederholung":{"schritt":7,"anzahl":3}},
+    {"art":"laub","rechteck":[1.0,2.5,2.0,0.75],"farbe":"verdigris","wiederholung":{"schritt":7,"anzahl":3}},
+    {"art":"licht","rechteck":[0.5,1.0,1.0,0.25],"farbe":"dell","fein":true,"wiederholung":{"schritt":7,"anzahl":3}},
+    {"art":"laub","rechteck":[21.0,3.0,2.0,1.0],"farbe":"verdigris"},
+    {"art":"gras","rechteck":[0,13.75,24,1.25],"farbe":"verdigris"},
+    {"art":"busch","rechteck":[4.5,13.0,1.5,0.75],"farbe":"verdigris","wiederholung":{"schritt":7,"anzahl":3}},
+    {"art":"buschlicht","rechteck":[4.5,13.0,0.5,0.25],"farbe":"dell","fein":true,"wiederholung":{"schritt":7,"anzahl":3}}
+  ]
+}

@@ -170,9 +170,9 @@ export interface GebaeudeKarte {
 /** Vergleichsdichten der Vorschau: Master 32 px ×1 neben 16 px ×2 (GEB1/AC-06, Spiel-Dichte entscheidet 🧑 in GEB1.4) */
 const VERGLEICH = [32, 16];
 
-/** Karten je Gebäude in Vergleichsreihenfolge; fehlende Dichten entfallen. */
+/** Karten je Gebäude in Vergleichsreihenfolge; fehlende Dichten entfallen. Hintergrund-Schichten haben ihren eigenen Streifen. */
 export function gebaeudeKarten(index: readonly GebaeudeEintrag[]): GebaeudeKarte[] {
-  return index.flatMap((e) =>
+  return index.filter((e) => e.klasse !== 'hintergrund').flatMap((e) =>
     VERGLEICH.filter((d) => e.dateien[d]).map((d) => ({ id: e.id, dichte: d, datei: e.dateien[d], scale: 32 / d })),
   );
 }
@@ -185,4 +185,24 @@ export function baumReihe(index: readonly GebaeudeEintrag[], anzahl = 6): { id: 
   const ids = index.filter((e) => e.klasse === 'baum').map((e) => e.id);
   if (ids.length === 0) return [];
   return Array.from({ length: anzahl }, (_, i) => ({ id: ids[i % ids.length]!, x: i * BAUM_ABSTAND }));
+}
+
+/** Biom-ID → Namensteil der Hintergrund-Schichten `hg-<teil>-<fern|mitte|nah>` (GEB7, Regeldatei § 10) */
+const HINTERGRUND_TEIL: Record<string, string> = { forest: 'wald', cave: 'hoehle', mine: 'mine', ironhold: 'eisenstollen', crystal: 'kristall' };
+
+export interface HintergrundStreifen {
+  biom: string;
+  /** `palette.sky` des Bioms: Untergrund, auf dem die Schichten stehen */
+  himmel: string;
+  /** hinten (fern) zuerst */
+  schichten: { id: string; dateien: Record<string, string> }[];
+}
+
+/** Je Biom (Reihenfolge von `biome`) die drei Hintergrund-Schichten fern → nah; Biome ohne alle drei Schichten entfallen. */
+export function hintergrundStreifen(index: readonly GebaeudeEintrag[], biome: readonly { id: string; palette: { sky: string } }[]): HintergrundStreifen[] {
+  const byId = new Map(index.filter((e) => e.klasse === 'hintergrund').map((e) => [e.id, e]));
+  return biome.flatMap((b) => {
+    const schichten = ['fern', 'mitte', 'nah'].flatMap((s) => byId.get(`hg-${HINTERGRUND_TEIL[b.id]}-${s}`) ?? []);
+    return schichten.length === 3 ? [{ biom: b.id, himmel: b.palette.sky, schichten: schichten.map((e) => ({ id: e.id, dateien: e.dateien })) }] : [];
+  });
 }

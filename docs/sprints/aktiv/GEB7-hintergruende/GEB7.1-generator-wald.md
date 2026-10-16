@@ -1,6 +1,6 @@
 # GEB7.1 · Generator für Hintergrund-Schichten und Wald
 
-- **Status:** in Arbeit
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** DEV
@@ -70,4 +70,9 @@ Mit laufender Workbench stattdessen `check_run` (mit `checkout`). Keine manuelle
 
 ## Ergebnis
 
-–
+- **AC-01 umgesetzt (Teil Wald):** `hg-wald-fern|mitte|nah.json` mit Vorlage, je `-16.png` (384 × 240) und `-32.png` (768 × 480), kein 64/128; Maße, Klasse und Dichten in Regeldatei § 1, § 5, § 7, § 10. Zweiter `task gebaeude`-Lauf byte-gleich; alle 156 älteren PNGs md5-gleich (vorher/nachher verglichen).
+- **AC-02 geprüft:** `TestKachelKlassen` (Naht, oberste Zeile transparent, unterste deckend) und Generator-Tests (`wiederholung`: Kopien, Fehlerfälle, Bild; Klasse `hintergrund` nur 16/32) grün (`go test ./tools/gebaeude`).
+- **AC-03 geprüft (Logik):** `hintergrundStreifen` mit Vitest; `assetvorschau.ts` zeichnet den Streifen „Hintergründe“ (Biom-Himmel, drei Schichten, zwei Kacheln, 32 px ×1 und 16 px ×2); `gebaeudeKarten` blendet `hintergrund` aus. Sicht im Browser: nicht geprüft, gehört 🧑.
+- **AC-04 geprüft (Wald):** nur DB32; Luma fern 39,6 / mitte 52,8 / nah 71,3 (`TestHintergrundStufen`, Abstand ≥ 8, nah ≤ 75); neue Materialien `Hintergrund Wald|Holz|Fels|Eisen|Glut|Kristall` in § 3 (Zustimmung aus der Spec-Freigabe, Ralf prüft nach).
+- `task check` grün (`check_run`, nach `npm ci --prefix tools/k3c-dev/frontend`: dem Worktree fehlten die Frontend-Pakete, kein Codefehler). Review durch getrennten Agenten: keine schweren Befunde.
+- Abweichungen: Klasse `hintergrund` statt `kachel` (Spec Revision 2); Wald-Gate entfällt (Revision 2). Wald in Wegwerf-Skript im Scratch erzeugt, die JSON ist die Quelle. Neue Tickets: keine.

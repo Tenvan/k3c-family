@@ -370,6 +370,7 @@ export const de = {
   'av.pick': 'Kategorie oben wählen.',
   'av.empty': 'Keine Asset-Slots in dieser Kategorie.',
   'av.geb': 'Neue Gebäude (GEB): Master 32 px ×1 neben 16 px ×2',
+  'av.hg': 'Hintergründe (GEB): drei Schichten je Biom auf der Himmelsfarbe, zwei Kacheln nebeneinander',
   'av.gap': 'Lücke: {id}',
   'av.missing': 'lädt nicht: {file}',
   'av.pref': 'Präferenz {n}',
