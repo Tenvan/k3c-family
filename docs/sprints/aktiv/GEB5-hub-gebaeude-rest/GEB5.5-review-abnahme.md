@@ -1,6 +1,6 @@
 # GEB5.5 · Review und Abnahme
 
-- **Status:** offen
+- **Status:** blockiert
 - **Typ:** Review
 - **Agent:** autonom
 - **Domäne:** CLI
@@ -53,5 +53,9 @@ Manuelle Prüfung im Browser-Pane nur mit Freigabe von 🧑 für diesen Lauf.
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+- **Prüfen:** `check_run task:check` und `task:check:go` grün (nach `git merge origin/develop`).
+- **Review:** `git diff origin/develop...HEAD` von einem vom Schreiber getrennten Reviewer gelesen: keine schweren Befunde (ältere PNGs unverändert, nur `A` für `treppe-*`; gelöschte Grafik nirgends mehr genutzt; `plotX` im Client = Go-Formel; kein `Math.random`; Dateien ≤ 400 Zeilen). Hinweis ohne Befund: Ein Waldbaum, der auf ±0,01 Units genau auf einem Platz steht, würde als Pappel gezeichnet (rein optisch).
+- **AC-01, AC-02, AC-04–AC-06 geprüft:** Nachweise aus GEB5.1–GEB5.4 (Session-Ergebnisse); `dev:test` rot nur durch nicht zugehörige Fälle (B-448, Windows-Rename-Flake).
+- **AC-03 blockiert:** Die Sichtprüfung (Vorschau `assetvorschau.html?szene=gebaeude` und Spiel: Farm mit Setzlingen und Pappel, Lager, Kaserne, Treppen ab Hub-Stufe 2) und die Bestätigung der Annahmen aus GEB5 › Offene Fragen gehören 🧑 und sind nicht erfolgt. Claude hat nichts abgenommen und keine Spec-Freigabe gesetzt.
+- Sprint bleibt `aktiv`, Session `blockiert`, PR als Entwurf, kein Auto-Merge. Nach der Abnahme durch 🧑: Session `fertig`, Sprint nach `erledigt/`, Version vorschlagen, PR auf „bereit“.
+- Neue Tickets: B-448 (GEB5.4).

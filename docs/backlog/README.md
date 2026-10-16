@@ -146,6 +146,7 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-444](B-444-vite-ports-plus-zehn.md) | DEV | Problem | mittel | offen | – | Vite-Ports von Spiel und k3c-dev liegen 10 höher und kollidieren nicht mit dem Vite-Standardport |
 | [B-445](B-445-dev-splitter-assets-mcp.md) | DEV | Idee | mittel | offen | – | Assets- und MCP-Seite von k3c-dev haben ziehbare Splitter zwischen den Panelen |
 | [B-448](B-448-planning-testrepo-entwurf-sprint.md) | DEV | Problem | mittel | offen | – | dev:test TestRepo scheitert an Entwurfs-Sprints ohne Sessions (GEB7) |
+| [B-449](B-449-geb5-abnahme-sichtpruefung.md) | CLI | Frage | hoch | offen | – | GEB5: Abnahme von Vorschau und Spiel durch Ralf |
 
 ## Archiv
 
