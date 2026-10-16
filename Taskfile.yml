@@ -34,7 +34,7 @@ tasks:
       - npm ci --prefix {{.DEV}}/frontend
 
   dev:
-    desc: Dev-Server (LAN, Port 5173); /api und /ws gehen an den Go-Server (Port 8080, `task start`)
+    desc: Dev-Server (LAN, Port 5183); /api und /ws gehen an den Go-Server (Port 8080, `task start`)
     deps: [atlas]
     cmds:
       - npx vite --host {{.CLI_ARGS}}

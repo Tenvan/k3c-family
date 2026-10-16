@@ -3,13 +3,13 @@ import { useEffect, useState, type CSSProperties } from 'react';
 import { backend, type PlanningData, type PlanSprint } from '../api';
 import { errorText } from '../lib/errors';
 import { loadText, savePref } from '../lib/prefs';
-import { Splitter } from '../tasks/TaskBars';
+import { Splitter, useSplit } from '../tasks/TaskBars';
 import { NoticeCard } from '../ui/parts';
 import { BacklogView, useTarget } from './Backlog';
 import { PlanDetail } from './Detail';
 import { foldAll, unfold } from './fold';
 import { GitHubBar, useGitHub } from './GitHubBar';
-import { exists, filterProjects, filterSprints, filterTickets, findSession, parseFilter, parseSplit, projectHits, sortSprints, SPLIT_DEFAULT, type PlanFilter } from './planning';
+import { exists, filterProjects, filterSprints, filterTickets, findSession, parseFilter, projectHits, sortSprints, SPLIT_DEFAULT, type PlanFilter } from './planning';
 import { PlanToolbar } from './PlanToolbar';
 import { ProjectsView } from './ProjectsView';
 import { rankedCount, visibleSprints } from './projects';
@@ -18,17 +18,6 @@ import { NEW_SPRINT, openSessions, promptSessions, type SprintTarget } from './p
 import { SprintCard } from './SprintCard';
 
 const PREF = 'planning.filter';
-
-/** Gemerkter Anteil eines Splitters in Prozent, immer zwischen 20 und 80. */
-function useSplit(key: string, dflt: number): [number, (v: number) => void, () => void] {
-  const [split, setState] = useState(() => parseSplit(loadText(key, String(dflt))));
-  const set = (v: number) => {
-    const n = parseSplit(String(v));
-    setState(n);
-    savePref(key, String(n));
-  };
-  return [split, set, () => set(dflt)];
-}
 
 /** Planung aus planning.Data (dieselben Daten wie plan_list) im erp-qs-Look (B-439): GitHub-Leiste, Filterleiste,
  *  links die Projekte, rechts der Backlog und darunter das Detail der Auswahl, beide Grenzen mit Splitter. Lädt bei

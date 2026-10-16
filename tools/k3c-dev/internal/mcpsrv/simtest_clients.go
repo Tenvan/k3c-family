@@ -89,7 +89,7 @@ func (s *Server) viteBase(ctx context.Context) (string, error) {
 		port = w.ports["K3C_VITE_PORT"]
 	}
 	if port == "" {
-		port = "5173"
+		port = "5183"
 	}
 	base := "http://127.0.0.1:" + port
 	ctx, cancel := context.WithTimeout(ctx, 2*time.Second)

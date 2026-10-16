@@ -11,7 +11,7 @@ type EmitLines = (lines: ConsoleLine[]) => void;
 type EmitSource = (src: Source) => void;
 
 const VITE_LINES = [
-  `${ESC}32m➜${ESC}0m  ${ESC}1mLocal${ESC}0m:   ${ESC}36mhttp://localhost:5173/${ESC}0m`,
+  `${ESC}32m➜${ESC}0m  ${ESC}1mLocal${ESC}0m:   ${ESC}36mhttp://localhost:5183/${ESC}0m`,
   `${ESC}2m17:03:12${ESC}0m ${ESC}36m[vite]${ESC}0m hmr update ${ESC}2m/src/scenes/GameScene.ts${ESC}0m`,
   `${ESC}2m17:03:15${ESC}0m ${ESC}33m[vite] WARN${ESC}0m Sourcemap für ${ESC}38;5;208mphaser.js${ESC}0m fehlt`,
   `${ESC}2m17:03:20${ESC}0m ${ESC}36m[vite]${ESC}0m page reload ${ESC}2mgame.html${ESC}0m`,

@@ -30,7 +30,7 @@ Voraussetzungen (Node, Go, golangci-lint mit Versionen): `requirements.md`.
 ```bash
 task               # alle Aufgaben anzeigen (Go Task, Taskfile.yml; einziger Einstieg für Befehle)
 task install       # Abhängigkeiten holen
-task dev           # Dev-Server (auch im LAN erreichbar, Port 5173)
+task dev           # Dev-Server (auch im LAN erreichbar, Port 5183)
 task test          # Vitest (Level-Generator, reine Logik); Filter: task test -- planning
 task check         # Lint + Typecheck + Tests (vor jedem Abschluss)
 task check:go      # go test + golangci-lint (Rechner mit Go)
