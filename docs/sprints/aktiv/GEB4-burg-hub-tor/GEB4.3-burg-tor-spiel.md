@@ -1,6 +1,6 @@
 # GEB4.3 · Burg und Tor im Spiel, alte Grafik gelöscht
 
-- **Status:** in Arbeit
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** CLI
@@ -59,5 +59,8 @@ Keine manuellen Prüfungen; der Blick ins Spiel gehört GEB4.4.
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+2026-10-16, Team „geb4-geb5“: Umsetzung durch worker-spiel, Review und Commit durch Claude als Lead (Ralf im Chat).
+- AC-05 umgesetzt und geprüft: Die Burg ist ein Bild `gebaeude/burg-<n>-32.png` in Maßstab 1 (`siteView.createCastleView`/`updateCastleView`) und wechselt in `worldRenderer.sync` mit `World.hubLevel` (fehlt = 1). Fehlt die Grafik, erscheint die Platzhalter-Form. Der HP-Balken sitzt bei `G - 310`. Das Tor zeigt die Stufe der gebauten Mauer seiner Linie: `gateRules.gateStage` mit Vitest (beide Seiten, Gegenseite zählt nicht, ungebaut → 1, `level` fehlt → 1); die Stufe steht im Cache-Schlüssel von `updateSiteView`. `hubTexture(1…5)` und die Tor-Stufen sind per Vitest geprüft. Register: `castle`, `hub:1`–`hub:5`, `gate`.
+- AC-06 geprüft: gelöscht `k3c-paletten` fort-tileset, fort-banner und fort-closed-door, dazu die ganzen Packs `wooden-fortress-and-animated-doors` und `opp2017-castle-tiles`; Index (9 Einträge), CREDITS, LICENSE, `grafikPacks.ts` (Pack-Test 41 → 39) und die Zuordnungs-Doku sind nachgezogen. `fort-door.png` bleibt, weil `exit` sie nutzt (`worldSprites.ts`). `git grep` findet nichts außerhalb historischer Doku.
+- Checks: `task check` und `task check:go` grün. Review (Sonnet-Agent): freigegeben, keine schweren Befunde; `src/scenes/codemap.md` nachgezogen.
+- Offen für GEB4.4: Die Burg ist mit 256 px schmaler als der alte Aufbau (etwa 320 px); ob das im Spiel passt, ist ungeprüft.

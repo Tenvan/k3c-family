@@ -3,6 +3,6 @@ Lizenz der Ableitungen: CC0 1.0 Universal, Public Domain. https://creativecommon
 
 Abgeleitet von (CC0 1.0, Luis Zuno / ansimuz):
 - SunnyLand Fort of Illusion, https://opengameart.org/node/140912
-  ebenen/tileset.png, props/banner.png, props/door.png, props/closed-door.png -> ebenen/fort-tileset.png, props/fort-*.png (an GothicVania Town angeglichen)
+  props/door.png -> props/fort-door.png (an GothicVania Town angeglichen)
 
-Mauer- und Turm-Varianten (wall-*, tower-*) sind seit GEB3 entfernt; Mauer und Turm sind eigene Grafik unter grafik/gebaeude/.
+Mauer- und Turm-Varianten (wall-*, tower-*) sind seit GEB3 entfernt, Burg-Tileset, Banner und geschlossenes Tor seit GEB4; Mauer, Turm, Burg und Tor sind eigene Grafik unter grafik/gebaeude/.
