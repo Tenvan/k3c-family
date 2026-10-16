@@ -306,6 +306,92 @@
     }
   },
   {
+    "id": "turm",
+    "kacheln": {
+      "b": 3,
+      "h": 8
+    },
+    "vorlage": {
+      "motiv": "Schmaler Wehrturm, 3 Kacheln breit und 8 hoch, mit Plattform für Bogenschützen; Material wechselt je Stufe, Stufe 5 ist der Zaubertum",
+      "teile": [
+        "Vier Zinnen oben über die Plattform (ca. 0,4 Kacheln hoch)",
+        "Brüstung über die ganze Breite, darunter Konsolen links und rechts",
+        "Schaft mittig, 2,25 Kacheln breit, aus waagrechten Bohlen (ab Stufe 2 Quader), Licht links, Schatten rechts",
+        "Zwei Schießscharten übereinander in der Mitte des Schafts",
+        "Tür unten mittig mit Rahmen",
+        "Sockel unten"
+      ],
+      "materialien": [
+        "Holz (Wand, Tresen, Gestell)",
+        "Pfosten, Balken",
+        "Stein (Kamin, Esse, Sockel, Stufe)",
+        "Kupfer (Mauer-, Turmstufe 3)",
+        "Eisen hell (Mauer-, Turmstufe 4)",
+        "Kristall (Mauer-, Turmstufe 5)"
+      ],
+      "stimmung": "wachsam und wehrhaft; gleiche Farbstufen wie die Mauer, damit Linie und Turm zusammenpassen",
+      "fein": "Bohlen- und Quaderfugen, Türfugen, Patina-Tupfen, Nieten, Runen, Glanzpunkte"
+    },
+    "dateien": {
+      "128": "grafik/gebaeude/turm-1-128.png",
+      "16": "grafik/gebaeude/turm-1-16.png",
+      "32": "grafik/gebaeude/turm-1-32.png",
+      "64": "grafik/gebaeude/turm-1-64.png"
+    },
+    "stufen": [
+      {
+        "stufe": 1,
+        "aenderung": "Grundform",
+        "dateien": {
+          "128": "grafik/gebaeude/turm-1-128.png",
+          "16": "grafik/gebaeude/turm-1-16.png",
+          "32": "grafik/gebaeude/turm-1-32.png",
+          "64": "grafik/gebaeude/turm-1-64.png"
+        }
+      },
+      {
+        "stufe": 2,
+        "aenderung": "Stein: graue Quader (versetzte Stoßfugen) statt Holzbohlen, dunkle Fugen und Türrahmen",
+        "dateien": {
+          "128": "grafik/gebaeude/turm-2-128.png",
+          "16": "grafik/gebaeude/turm-2-16.png",
+          "32": "grafik/gebaeude/turm-2-32.png",
+          "64": "grafik/gebaeude/turm-2-64.png"
+        }
+      },
+      {
+        "stufe": 3,
+        "aenderung": "Kupfer: orange-kupferne Platten mit hellen Kanten, grüne Patina-Flecken am Schaft und an der Brüstung",
+        "dateien": {
+          "128": "grafik/gebaeude/turm-3-128.png",
+          "16": "grafik/gebaeude/turm-3-16.png",
+          "32": "grafik/gebaeude/turm-3-32.png",
+          "64": "grafik/gebaeude/turm-3-64.png"
+        }
+      },
+      {
+        "stufe": 4,
+        "aenderung": "Eisen: graue Stahlplatten, zwei dunkle Querbänder mit Nieten um den Schaft, Eisenband an der Brüstung",
+        "dateien": {
+          "128": "grafik/gebaeude/turm-4-128.png",
+          "16": "grafik/gebaeude/turm-4-16.png",
+          "32": "grafik/gebaeude/turm-4-32.png",
+          "64": "grafik/gebaeude/turm-4-64.png"
+        }
+      },
+      {
+        "stufe": 5,
+        "aenderung": "Zaubertum: blaue Kristallblöcke mit leuchtenden Fugen, große Kristallspitze mit Glanzkante mittig über der Plattform, verdeckt die Innenkanten der mittleren Zinnen, Funken daneben, leuchtendes Runenband an der Brüstung, leuchtende Scharten mit Runen, leuchtender Türrahmen und Sockelkante, weiße Glanzpunkte",
+        "dateien": {
+          "128": "grafik/gebaeude/turm-5-128.png",
+          "16": "grafik/gebaeude/turm-5-16.png",
+          "32": "grafik/gebaeude/turm-5-32.png",
+          "64": "grafik/gebaeude/turm-5-64.png"
+        }
+      }
+    ]
+  },
+  {
     "id": "werkstatt",
     "kacheln": {
       "b": 6,

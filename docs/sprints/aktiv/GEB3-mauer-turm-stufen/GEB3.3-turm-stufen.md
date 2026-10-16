@@ -1,6 +1,6 @@
 # GEB3.3 · Turm 1 bis 5 mit Zaubertum
 
-- **Status:** in Arbeit
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** DEV
@@ -57,5 +57,7 @@ Keine manuellen Prüfungen; die Sichtprüfung gehört GEB3.5.
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+2026-10-16, Claude (autonom, Ralf im Chat).
+- AC-01 (Turm) umgesetzt: `turm.json` (3 × 8; Grundform Holz: vier Zinnen, Brüstung mit Konsolen, Schaft 2,25 Kacheln, zwei Scharten, Tür mit Rahmen, Sockel), Stufen 2–5 mit denselben Farbstufen wie die Mauer; Stufe 5 **Zaubertum** mit Zusätzen nur für ihn (große Kristallspitze, Funken, leuchtendes Runenband, leuchtende Scharten mit Runen). `turm-<n>-32.png` je 96 × 256 px plus 16/64/128; zweiter Lauf md5-gleich; ältere PNGs unverändert.
+- Regeldatei § 4 um die Bausteine von Mauer und Turm ergänzt (§ 1 Maße stehen seit GEB3.2).
+- Checks: `task check` und `task check:go` grün. Review (Sonnet-Agent): keine schweren Befunde; Texte zu Stufe 5 präzisiert (Kristall verdeckt die Innenkanten der mittleren Zinnen, leuchtender Türrahmen). Sichtprüfung gehört GEB3.5.
