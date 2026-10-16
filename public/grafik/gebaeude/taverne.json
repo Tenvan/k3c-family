@@ -1,5 +1,27 @@
 {
   "id": "taverne",
+  "vorlage": {
+    "motiv": "Fachwerk-Taverne mit rotem Satteldach, warmem Fensterlicht und Bierkrug-Schild",
+    "teile": [
+      "Kamin aus Stein rechts hinter dem First, ragt über das Dach",
+      "Satteldach in Stufen von der Traufe (ca. 5,5 Kacheln) zum First, Lichtkante links",
+      "Putzwand mit Fachwerk: Schwelle, zwei Riegel, vier Ständer",
+      "Zwei Fenster links und rechts mit warmem Licht, Sprossenkreuz und Sims",
+      "Tür mittig aus Planken mit Messingbeschlag, Steinstufe davor",
+      "Fass vor der Wand rechts neben der Tür",
+      "Hängeschild mit Bierkrug am rechten Giebel an einem Ausleger"
+    ],
+    "materialien": [
+      "Putz (Fachwerk)",
+      "Pfosten, Balken",
+      "Dachziegel",
+      "Fensterlicht",
+      "Stein (Kamin, Esse, Sockel, Stufe)",
+      "Holz (Wand, Tresen, Gestell)"
+    ],
+    "stimmung": "einladend, warmes Licht",
+    "fein": "Schindel-Fugen, Sprossen, Türfugen, Beschlag, Fassreifen, Kette, Krug-Henkel"
+  },
   "kacheln": { "b": 6, "h": 4 },
   "bausteine": [
     {"art":"kamin","rechteck":[4.125,0.3125,0.375,0.9375],"farbe":"dim-gray"},

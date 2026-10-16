@@ -1,5 +1,28 @@
 {
   "id": "ruestkammer",
+  "vorlage": {
+    "motiv": "Wuchtige Rüstkammer: Holzaufbau auf Steinsockel unter Schieferdach",
+    "teile": [
+      "Schieferdach in Stufen über die ganze Breite (ca. 5,75 Kacheln), Lichtkante links",
+      "Holzaufbau mit Planken und Eckpfosten",
+      "Steinsockel unten über die ganze Breite",
+      "Rüstungsständer links mit Helm und Brustpanzer",
+      "Zwei Schießscharten neben dem Tor",
+      "Tor mittig mit zwei Eisenbändern und Nieten",
+      "Rotes Wappenschild mit Krone rechts an der Wand",
+      "Zwei Speere am Regal rechts"
+    ],
+    "materialien": [
+      "Schiefer (Dach)",
+      "Holz (Wand, Tresen, Gestell)",
+      "Pfosten, Balken",
+      "Stein (Kamin, Esse, Sockel, Stufe)",
+      "Eisen (Rüstung, Band)",
+      "Wappen"
+    ],
+    "stimmung": "wehrhaft, kühl, kühles Blau gegen rotes Wappen",
+    "fein": "Schindel-Fugen, Planken- und Steinfugen, Nieten, Helmschlitz, Wappenzeichen, Speerspitzen-Licht"
+  },
   "kacheln": { "b": 6, "h": 4 },
   "bausteine": [
     {"art":"wand","rechteck":[0.5,1.25,5,1.8125],"farbe":"rope"},

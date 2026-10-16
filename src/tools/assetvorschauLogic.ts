@@ -131,6 +131,20 @@ export interface GebaeudeEintrag {
   klasse?: string;
   kacheln: { b: number; h: number };
   dateien: Record<string, string>;
+  /** Gebäude-Vorlage (Glossar, GEB8) */
+  vorlage?: { motiv: string; teile: string[]; materialien?: string[]; stimmung?: string; fein?: string };
+}
+
+/** Vorlage für die Anzeige: Motiv als Titel, Teile als Zeilen, danach die gesetzten Zusatzfelder (GEB8/AC-03). */
+export function vorlageZeilen(e: GebaeudeEintrag): { titel: string; zeilen: string[] } | null {
+  const v = e.vorlage;
+  if (!v) return null;
+  const extra = [
+    v.materialien?.length ? `Materialien: ${v.materialien.join(', ')}` : '',
+    v.stimmung ? `Stimmung: ${v.stimmung}` : '',
+    v.fein ? `fein: ${v.fein}` : '',
+  ];
+  return { titel: v.motiv, zeilen: [...v.teile, ...extra.filter(Boolean)] };
 }
 
 export interface GebaeudeKarte {

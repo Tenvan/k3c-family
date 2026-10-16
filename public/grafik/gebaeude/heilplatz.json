@@ -1,5 +1,27 @@
 {
   "id": "heilplatz",
+  "vorlage": {
+    "motiv": "Offener Heilplatz unter hellem Stoff-Vordach mit grünem Kreuz",
+    "teile": [
+      "Rückwand aus Stoff im Schatten zwischen zwei Pfosten",
+      "Helles Vordach über die ganze Breite (ca. 4,25 Kacheln) mit Volant und grünem Kreuz mittig",
+      "Kräuterbündel hängen unter dem Dach",
+      "Liege links mit Kissen und blauer Decke",
+      "Wasserschale am Boden rechts der Mitte, vor dem rechten Pfosten",
+      "Kräuterkorb rechts neben dem Pfosten",
+      "Trockengestell ganz rechts mit hängenden Kräutern"
+    ],
+    "materialien": [
+      "Stoff hell",
+      "Pfosten, Balken",
+      "Kräuter",
+      "Stoff blau (Decke)",
+      "Wasser (Schale, Trog)",
+      "Metall (Werkzeug)"
+    ],
+    "stimmung": "ruhig, sauber, heilend; Kreuz bewusst grün, kein Schutzzeichen",
+    "fein": "Faltenlicht, Stofffalten der Rückwand, Kräuterbündel, Flechtung, Wasserspiegel"
+  },
   "kacheln": { "b": 6, "h": 4 },
   "bausteine": [
     {"art":"tuch","rechteck":[0.625,1.375,3.375,2.5],"farbe":"twine"},
