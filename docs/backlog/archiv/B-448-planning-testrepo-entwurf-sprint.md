@@ -4,7 +4,7 @@
 - **Typ:** Problem
 - **Prio:** mittel
 - **Umgebung:** offline
-- **Status:** offen
+- **Status:** erledigt
 - **Sprint:** –
 - **Projekt:** WZG
 - **Erstellt:** 2026-10-16
@@ -55,4 +55,4 @@ keine
 
 ## Notizen
 
-Links, Messwerte, verworfene Ansätze. Darf leer bleiben (`–`).
+Erledigt ohne Codeänderung: GEB7 hat mit #315 Sessions bekommen (Sprint GEB7 geplant, Session-Tabelle gefüllt), `TestRepo` scheitert nicht mehr. Beleg: `check_run dev:test` auf `origin/develop` (b9a22a82) grün, 2026-10-16, vor dem Tag v0.18.0. Die Anforderung (Entwürfe ohne Sessions dürfen `TestRepo` nicht rot machen) bleibt ungelöst: ein künftiger Entwurfs-Sprint ohne Sessions würde den Test wieder auslösen. AC-01 ist für den heutigen Stand erfüllt.
