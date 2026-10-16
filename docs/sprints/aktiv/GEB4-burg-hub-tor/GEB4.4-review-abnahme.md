@@ -1,6 +1,6 @@
 # GEB4.4 · Review und Abnahme
 
-- **Status:** offen
+- **Status:** in Arbeit
 - **Typ:** Review
 - **Agent:** autonom
 - **Domäne:** CLI
