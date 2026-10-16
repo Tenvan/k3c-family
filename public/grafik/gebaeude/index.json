@@ -63,6 +63,90 @@
     }
   },
   {
+    "id": "mauer",
+    "kacheln": {
+      "b": 1,
+      "h": 5
+    },
+    "vorlage": {
+      "motiv": "Wehrmauer, 1 Kachel breit und 5 hoch, mit drei Zinnen oben; Material wechselt je Stufe",
+      "teile": [
+        "Drei Zinnen oben über die ganze Breite",
+        "Mauerkörper aus waagrechten Bohlen (ab Stufe 2 Quader), Licht links, Schatten rechts",
+        "Schattenkante unter den Zinnen",
+        "Dunkler Sockel unten"
+      ],
+      "materialien": [
+        "Holz (Wand, Tresen, Gestell)",
+        "Pfosten, Balken",
+        "Stein (Kamin, Esse, Sockel, Stufe)",
+        "Kupfer (Mauer-, Turmstufe 3)",
+        "Eisen hell (Mauer-, Turmstufe 4)",
+        "Kristall (Mauer-, Turmstufe 5)"
+      ],
+      "stimmung": "wehrhaft; Stufe 1 einfach aus Holz, jede Stufe edler",
+      "fein": "Block-Fugen, Patina-Tupfen, Nieten, Glanzpunkte"
+    },
+    "dateien": {
+      "128": "grafik/gebaeude/mauer-1-128.png",
+      "16": "grafik/gebaeude/mauer-1-16.png",
+      "32": "grafik/gebaeude/mauer-1-32.png",
+      "64": "grafik/gebaeude/mauer-1-64.png"
+    },
+    "stufen": [
+      {
+        "stufe": 1,
+        "aenderung": "Grundform",
+        "dateien": {
+          "128": "grafik/gebaeude/mauer-1-128.png",
+          "16": "grafik/gebaeude/mauer-1-16.png",
+          "32": "grafik/gebaeude/mauer-1-32.png",
+          "64": "grafik/gebaeude/mauer-1-64.png"
+        }
+      },
+      {
+        "stufe": 2,
+        "aenderung": "Stein: graue Quader (versetzte Stoßfugen) statt waagrechter Holzbohlen, dunkle Fugen, Schießscharte oben mittig",
+        "dateien": {
+          "128": "grafik/gebaeude/mauer-2-128.png",
+          "16": "grafik/gebaeude/mauer-2-16.png",
+          "32": "grafik/gebaeude/mauer-2-32.png",
+          "64": "grafik/gebaeude/mauer-2-64.png"
+        }
+      },
+      {
+        "stufe": 3,
+        "aenderung": "Kupfer: orange-kupferne Platten mit hellen Kanten, grüne Patina-Flecken, Schießscharte",
+        "dateien": {
+          "128": "grafik/gebaeude/mauer-3-128.png",
+          "16": "grafik/gebaeude/mauer-3-16.png",
+          "32": "grafik/gebaeude/mauer-3-32.png",
+          "64": "grafik/gebaeude/mauer-3-64.png"
+        }
+      },
+      {
+        "stufe": 4,
+        "aenderung": "Eisen: graue Stahlplatten, zwei dunkle Querbänder mit Nieten, Schießscharte",
+        "dateien": {
+          "128": "grafik/gebaeude/mauer-4-128.png",
+          "16": "grafik/gebaeude/mauer-4-16.png",
+          "32": "grafik/gebaeude/mauer-4-32.png",
+          "64": "grafik/gebaeude/mauer-4-64.png"
+        }
+      },
+      {
+        "stufe": 5,
+        "aenderung": "Kristall: blaue Kristallblöcke mit leuchtenden hellblauen Fugen, weiße Glanzpunkte, leuchtende Schießscharte",
+        "dateien": {
+          "128": "grafik/gebaeude/mauer-5-128.png",
+          "16": "grafik/gebaeude/mauer-5-16.png",
+          "32": "grafik/gebaeude/mauer-5-32.png",
+          "64": "grafik/gebaeude/mauer-5-64.png"
+        }
+      }
+    ]
+  },
+  {
     "id": "pappel",
     "klasse": "baum",
     "kacheln": {

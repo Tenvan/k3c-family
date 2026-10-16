@@ -13,6 +13,8 @@ nur mit Zustimmung von 🧑.
 |---|---|---|
 | Handelsstand / kleines Gebäude | 6 × 4 | Werkstatt (`workshop`), Taverne (`tavern`), Heilplatz (`healer`), Schmiede (`smithy`), Rüstkammer (`armory`) (GEB2) |
 | Baum (schmal) | 1 × 2,25 | Tanne, Pappel, Birke (GEB1.3) |
+| Mauer (Stufen 1–5) | 1 × 5 | `mauer.json` (GEB3) |
+| Turm (Stufen 1–5) | 3 × 8 | `turm.json` (GEB3) |
 | weitere Gebäude | legt der jeweilige GEB-Sprint fest, hier nachtragen | B-435 › Notizen |
 
 ## 2. Palette und Licht
@@ -42,6 +44,9 @@ nur mit Zustimmung von 🧑.
 | Wappen | `brown` | `mandy` | Rand `tahiti-gold`, Zeichen `golden-fizz` (fein) |
 | Kräuter | `christi` | `atlantis` | `elf-green` |
 | Wasser (Schale, Trog) | `cornflower` | – | – |
+| Kupfer (Mauer-, Turmstufe 3) | `tahiti-gold` | `twine` | `rope`, Fuge `oiled-cedar`, Patina `verdigris` |
+| Eisen hell (Mauer-, Turmstufe 4) | `heather` | `light-steel` | `dim-gray`, Fuge `valhalla` |
+| Kristall (Mauer-, Turmstufe 5) | `royal-blue` | `cornflower`, Glanz `white` | `deep-koamaru`, leuchtende Fuge `viking` |
 | Stoff blau (Decke) | `cornflower` | `viking` | `royal-blue` (Falte) |
 
 Zeichen am Gebäude sind Motive, keine Schutzzeichen: Das Heil-Zeichen ist ein **grünes** Kreuz (`christi`, Licht `atlantis`).
@@ -92,8 +97,26 @@ Level-Paletten folgen später (B-435 › Beispiele).
 ## 6. Ausbaustufen
 
 Stufen und Level-Looks entstehen aus derselben Quelle: über **Zusätze** (weitere Bausteine, z. B. Schild, zweites
-Gestell) und **Palettentausch** (Farbnamen je Stufe ersetzen), nicht durch Neuzeichnen. Die Umsetzung (eine Datei je
-Stufe oder Zusatz-Liste) legt der erste GEB-Sprint mit mehreren Stufen fest und trägt sie hier ein.
+Gestell) und **Palettentausch** (Farbnamen je Stufe ersetzen), nicht durch Neuzeichnen.
+
+**Umsetzung (GEB3, Entscheidung 🧑 2026-10-16):** Ein Gebäude mit Ausbaustufen ist **eine** JSON. Bausteine und
+Vorlage beschreiben die **Grundform = Stufe 1**. Das Feld `stufen` listet jede weitere Stufe und beschreibt genau, was
+sich gegenüber der Grundform ändert:
+
+```json
+"stufen": [
+  { "stufe": 2, "aenderung": "Steinquader statt Pfählen, Zinnen oben",
+    "farben": { "oiled-cedar": "dim-gray", "rope": "smokey-ash" },
+    "zusaetze": [ { "art": "zinne", "rechteck": [0, 0, 0.25, 0.25], "farbe": "smokey-ash" } ] }
+]
+```
+
+- `stufe` 2, 3, … lückenlos und in Reihenfolge; `aenderung` (Pflicht) ist der Text zur Stufe und gehört zur Vorlage.
+- `farben` tauscht Farben der Grundform-Bausteine (alt → neu, beide DB32); `zusaetze` werden danach gezeichnet und
+  gelten wie Bausteine (Raster, Maße, `fein`). Zusätze einer Stufe gelten nur für diese Stufe, nicht für spätere.
+- Ausgabe `<id>-<stufe>-<dichte>.png` für alle Stufen einschließlich 1; `index.json` führt `stufen` mit Nummer,
+  Änderung (Stufe 1: „Grundform“) und Dateien, `dateien` des Eintrags zeigt die Grundform.
+- Gebäude ohne `stufen` bleiben bei `<id>-<dichte>.png`.
 
 ## 7. Dichte-Regel
 

@@ -1,6 +1,6 @@
 # GEB3.2 · Stufen im Werkzeug und Mauer 1 bis 5
 
-- **Status:** in Arbeit
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** DEV
@@ -62,5 +62,8 @@ Keine manuellen Prüfungen; die Sichtprüfung gehört GEB3.5.
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+2026-10-16, Claude (autonom, Ralf im Chat).
+- AC-05 geprüft: `tools/gebaeude/stufen.go` (`stufe`, `pruefeStufen`, `stufeBauen`, `renderStufen`, `renderDichten`): Stufen 2… lückenlos mit Pflichttext `aenderung`, Farbtausch in einem Durchlauf über die Grundform (alte Farbe muss dort vorkommen, beide DB32), Zusätze danach; Ausgabe `<id>-<stufe>-<d>.png`, `index.json` mit `stufen` (Stufe 1 = „Grundform“), `dateien` = Grundform. Tests `stufen_test.go`: Rendern, Index, Fehlerfälle (Text leer, Lücke, Stufe 1, doppelt, fremde/fehlende Farbe, Zusatz außerhalb oder fremd), Tausch ohne Kette. Regeldatei § 1 (Maße), § 3 (Kupfer, Eisen hell, Kristall), § 6 (Mechanik).
+- AC-01 (Mauer) umgesetzt: `mauer.json` (1 × 5; Grundform Holzbohlen mit drei Zinnen; Stufe 2 Stein-Quader, 3 Kupfer mit Patina, 4 Eisen mit Bändern und Nieten, 5 Kristall mit leuchtenden Fugen), `mauer-<n>-32.png` je 32 × 160 px plus 16/64/128; zweiter Lauf md5-gleich; die PNGs der acht vorhandenen Gebäude unverändert.
+- Vorschau: `stufenKarten` (Vitest) und `bildKarte`; die Stufen 2–5 stehen mit ihrem Änderungstext neben der Hauptkarte (im Browser-Pane kurz auf Fehler geprüft; Sichtabnahme gehört GEB3.5).
+- Checks: `task check` und `task check:go` grün. Review (Sonnet-Agent): keine schweren Befunde; übernommen: Farbtausch-Tippfehler ablehnen, Test gegen Tauschkette, Materialien der Vorlage, Kupfer-Text, Stufenkarten unabhängig von der 16-px-Karte.
