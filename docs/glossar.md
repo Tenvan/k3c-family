@@ -157,6 +157,7 @@ Regelwerk in [`rules/`](rules/), und das Glossar wird angepasst. Zahlen sind, wo
 | SDD | Spec-Driven Development: Ticket und Sprint-README sind die Spec mit Kriterien, Sessions erfüllen genannte Kriterien. | `arbeitsweise.md` › SDD |
 | Seed | Zahl, aus der der Generator ein Level deterministisch erzeugt; gespeichert wird nur der Seed. | `game-design.md` › Prozedurale Generierung |
 | Session | Arbeitsschritt eines Sprints als Datei nach Vorlage mit genau einem Commit in genau einer Domäne; Typ Umsetzung, Review oder Workshop, Agent autonom oder Mensch; Status `offen`, `in Arbeit`, `fertig`, `blockiert` oder `verworfen`. | `arbeitsweise.md`, `vorlagen/session.md` |
+| Setzling | Grafik eines leeren Plantage-Platzes, bis dort ein Baum nachwächst (`setzling.json`, nur Darstellung); der gewachsene Plantage-Baum zeigt die Pappel. | GEB5 › Anforderungen |
 | Shell | Seiten-Rahmen aus `src/core/shell.ts`: Landingpage mit iframe, auf jeder anderen Seite `installPageChrome()` mit Home-Button, Home-Kombi und Zurück-Falle für B. | `CLAUDE.md` › Seiten & Navigation |
 | Siegvariante | Ziel des Raums (`goal`): Endboss (Standard), Gold sammeln, Tage überleben, Alles abbauen, Alles ausbauen. | `rules/stufen.md` § 3 |
 | Sim (Engine) | Die Spiel-Logik in Go (`engine/sim/`, `engine/level/`), rechnet deterministisch auf dem Server; der Browser zeichnet nur. | `decisions/001-server-engine-go.md`, `CLAUDE.md` |
