@@ -77,7 +77,7 @@ Tor (GEB4); Burg und Hub-Stufen (GEB4); Stufen für Werkstatt, Taverne usw. (fol
 | GEB3.1 | `GEB3.1-katalog-eigene-grafik.md` | Umsetzung | autonom | fertig |
 | GEB3.2 | `GEB3.2-stufen-werkzeug-mauer.md` | Umsetzung | autonom | fertig |
 | GEB3.3 | `GEB3.3-turm-stufen.md` | Umsetzung | autonom | fertig |
-| GEB3.4 | `GEB3.4-zuordnung-aufraeumen.md` | Umsetzung | autonom | offen |
+| GEB3.4 | `GEB3.4-zuordnung-aufraeumen.md` | Umsetzung | autonom | in Arbeit |
 | GEB3.5 | `GEB3.5-review-abnahme.md` | Review | autonom | offen |
 
 - GEB3.1 (DEV) Asset-Katalog kennt eigene Gebäude-Grafik, B-437 (AC-04).
