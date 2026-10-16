@@ -1,6 +1,6 @@
 # GEB8.3 · Review und Abnahme der Vorlagen
 
-- **Status:** offen
+- **Status:** in Arbeit
 - **Typ:** Review
 - **Agent:** autonom
 - **Domäne:** DEV

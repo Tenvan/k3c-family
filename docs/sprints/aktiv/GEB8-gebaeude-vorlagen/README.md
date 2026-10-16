@@ -62,7 +62,7 @@ Domäne DEV: `tools/gebaeude/`, `public/grafik/gebaeude/`, `src/tools/assetvorsc
 |---|---|---|---|---|
 | GEB8.1 | `GEB8.1-vorlage-werkzeug-daten.md` | Umsetzung | autonom | fertig |
 | GEB8.2 | `GEB8.2-vorlage-vorschau.md` | Umsetzung | autonom | fertig |
-| GEB8.3 | `GEB8.3-review-abnahme.md` | Review | autonom | offen |
+| GEB8.3 | `GEB8.3-review-abnahme.md` | Review | autonom | in Arbeit |
 
 - GEB8.1 Werkzeug verlangt und übernimmt `vorlage`; Vorlagen für alle acht Gebäude (AC-01, AC-02).
 - GEB8.2 Vorlage in der Asset-Vorschau (AC-03).
