@@ -5,10 +5,10 @@
 - **Domäne:** DEV, CLI
 - **Reife:** bereit
 - **Tickets:** B-435, B-438
-- **Start-Commit:** – (wird beim Aktivieren gesetzt: `git rev-parse --short origin/develop`)
-- **Spec:** Entwurf
+- **Start-Commit:** 554d478c
+- **Spec:** freigegeben
 - **Revision:** 1
-- **Freigabe:** –
+- **Freigabe:** 2026-10-16, Ralf, Chat: Umsetzung auf Annahmen, offene Fragen nach Abschluss (Rev. 1)
 
 ## Ausgangslage
 
@@ -107,7 +107,7 @@ Keine blockiert den Start der Planung; jede Annahme gilt mit der Freigabe als be
 1. Annahme: Maße Fels, Erzbrocken, Busch, Truhe je 1 × 1; Adern 2 × 2; Portal und Ausgang je 2 × 3; Rekrutierungslager 3 × 2 Kacheln. Das ist **kleiner** als heute bei Baum (heute 18 × 13 Kacheln in einem Bild, neu 1 × 2,25) und Busch (heute etwa 2,6 × 1,7) und **größer** beim Portal (heute 1 × 1,5).
 2. Annahme: Je Art zwei zusätzliche Baum-Formen (gesamt 3 je Art); Tanne, Pappel und Birke bleiben als Form 1 mit Wald-Look unverändert (Dateinamen stabil für GEB5.4). Biom-Looks als Farbtausch über `stufen`, Stufe = Look (1 Wald, 2 Höhle, 3 Mine); die Bäume der Formen 2 und 3 bekommen Wald und Höhle (Bäume stehen nur im Wald und in der Höhle), die Höhle zeigt deshalb nur Formen 2 und 3. Alternative: `stufen` an den drei vorhandenen Bäumen, dann wechselt `pappel-32.png` zu `pappel-1-32.png` und GEB5.4 und GEB6.5 müssen den Pfad nachziehen.
 3. Annahme: Die vier Adern sind **eine** JSON mit vier Stufen (Stein, Kupfer, Eisen, Kristall) nach § 6.
-4. **Offen für 🧑 (Annahme: der Vorschlag gilt mit der Freigabe):** Erde, Fels und Zelttuch haben keine eigene Zeile in `gebaeude-grafik.md` § 3 (Gold für die Truhe auch nicht). Vorschlag: Fels = Zeile Stein (`dim-gray`, Licht `smokey-ash`, Fuge `valhalla`); Zelttuch = „Stoff hell“ (`pancho`, Falte `white`, Schatten `twine`); Erde (Wurzeln, Hügelrand) = „Pfosten, Balken“ (`oiled-cedar`, Licht `rope`); Gold = Zeile Glut (`tahiti-gold`, Licht `golden-fizz`, Schatten `brown`). GEB6.1 trägt die Zeilen in § 3 ein; Fels, Zelttuch und Erde sind dabei nur Verweise auf vorhandene Zeilen, neu ist allein Gold.
+4. **Offen für 🧑 (Annahme: der Vorschlag gilt mit der Freigabe, 🧑 2026-10-16: „Umsetzung auf Annahmen, offene Fragen nach Abschluss“):** Erde, Fels und Zelttuch haben keine eigene Zeile in `gebaeude-grafik.md` § 3 (Gold für die Truhe auch nicht). Vorschlag: Fels = Zeile Stein (`dim-gray`, Licht `smokey-ash`, Fuge `valhalla`); Zelttuch = „Stoff hell“ (`pancho`, Falte `white`, Schatten `twine`); Erde (Wurzeln, Hügelrand) = „Pfosten, Balken“ (`oiled-cedar`, Licht `rope`); Gold = Zeile Glut (`tahiti-gold`, Licht `golden-fizz`, Schatten `brown`). GEB6.1 trägt die Zeilen in § 3 ein; Fels, Zelttuch und Erde sind dabei nur Verweise auf vorhandene Zeilen, neu ist allein Gold. **Bei anderer Antwort von 🧑 ändern:** die Zeilen in § 3 (GEB6.1), die Farben in `felsen.json` und `erzbrocken.json` (GEB6.2), in `ader.json` (GEB6.3) und in `truhe.json`, `rekrutierungslager.json` (GEB6.4); danach `task gebaeude` neu laufen lassen.
 5. Annahme: Portal und Lagerfeuer werden **statische** Bilder; die Animationen (heute je 4 Frames) entfallen, weil Animationen Nicht-Ziel sind, und das Pack `16x16-animated-campfire` fällt weg. Alternative: Animation in einem eigenen Sprint des Projekts GRA nachholen.
 6. Annahme: Eisenstollen (`ironhold`) und Kristallhöhle (`crystal`) nutzen den Look Mine, bis 🧑 eigene Looks will; ihre Adern zeigen schon Eisen und Kristall.
 7. Annahme: Die Truhe bleibt eine offene Truhe mit sichtbarem Gold (wie heute `icons/8.png`, als Beute erkennbar); eine geschlossene gibt es nicht (ungeprüft vermutet: die Truhe verschwindet beim Einsammeln, `Pickup`).
