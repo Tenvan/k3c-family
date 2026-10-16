@@ -1,6 +1,6 @@
 # GEB5.3 · Treppe hoch und Treppe runter
 
-- **Status:** in Arbeit
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** DEV
@@ -58,5 +58,9 @@ Keine manuellen Prüfungen; die Sichtprüfung gehört GEB5.5.
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+- **AC-01 geprüft:** `treppe-hoch.json` (4 × 4, ein Bild: acht Stein-Stufen, Holzgeländer, Laterne am Absatz) und `treppe-runter.json` (4 × 3, Steinbogen mit Zinnen, drei Stufen in den dunklen Abgang) mit Vorlage, ohne `stufen`; `treppe-hoch-32.png` 128 × 128, `treppe-runter-32.png` 128 × 96 plus 16/64/128; beide stehen in `index.json` und damit in der Vorschau (`assetvorschau.ts` liest sie, keine Code-Änderung).
+- **AC-04 geprüft:** `task gebaeude` zweimal (zweiter Lauf mit `--force`): Treppen-PNGs byte-gleich; md5 aller 148 vorhandenen PNGs vor und nach dem Lauf gleich; Maße in Regeldatei § 1, neue Bausteinarten in § 4.
+- **Prüfen:** `check_run task:check` und `task:check:go` grün (Worktree-Checkout).
+- **Review:** getrennter Reviewer (Raster 1/32, `fein`-Regel, DB32-Namen, Rechtecke im Bild, Dateiumfang, Regeldatei): keine schweren Befunde.
+- Manuell geprüft hat niemand; die Sichtprüfung gehört GEB5.5. Claude hat die PNGs nur als Bild gesichtet und die Stufen des Bogens einmal nachgebessert (heller Auftritt vorn).
+- Abweichungen vom Plan: keine. Neue Tickets: keine.

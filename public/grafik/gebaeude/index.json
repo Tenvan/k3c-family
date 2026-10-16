@@ -689,6 +689,65 @@
     ]
   },
   {
+    "id": "treppe-hoch",
+    "kacheln": {
+      "b": 4,
+      "h": 4
+    },
+    "vorlage": {
+      "motiv": "Steinerne Außentreppe, die von links unten nach rechts oben steigt, mit Holzgeländer und einer Laterne am oberen Absatz",
+      "teile": [
+        "Acht Stein-Stufen von links (niedrig) nach rechts (hoch), je 0,5 Kacheln breit und 0,3125 hoch, Auftritt hell, Schattenkante darunter",
+        "Steinkörper unter den Stufen bis zum Boden mit versetzten Fugen",
+        "Dunkle Fußlinie am Boden",
+        "Holzgeländer entlang der Steigung: Pfosten je Stufe, oberer Holm und unterer Holm folgen den Stufen",
+        "Pfosten mit Laterne am oberen Absatz rechts (Licht = hinauf)"
+      ],
+      "materialien": [
+        "Stein (Kamin, Esse, Sockel, Stufe)",
+        "Holz (Wand, Tresen, Gestell)",
+        "Pfosten, Balken",
+        "Fensterlicht"
+      ],
+      "stimmung": "Einladend und solide; passt zur Steinmauer, die Laterne markiert das Ziel oben",
+      "fein": "Steinfugen, Holm-Glanz"
+    },
+    "dateien": {
+      "128": "grafik/gebaeude/treppe-hoch-128.png",
+      "16": "grafik/gebaeude/treppe-hoch-16.png",
+      "32": "grafik/gebaeude/treppe-hoch-32.png",
+      "64": "grafik/gebaeude/treppe-hoch-64.png"
+    }
+  },
+  {
+    "id": "treppe-runter",
+    "kacheln": {
+      "b": 4,
+      "h": 3
+    },
+    "vorlage": {
+      "motiv": "Steinbogen mit Zinnen über dem Eingang eines Abgangs; im dunklen Bogen führen Stufen nach unten",
+      "teile": [
+        "Steinwand 4 Kacheln breit mit vier Zinnen oben, Licht links und oben, Schattenkante unter der Zinnenreihe",
+        "Pfeiler links und rechts mit versetzten Fugen",
+        "Heller Bogenring um eine schwarze Öffnung (Mitte, ca. 2,5 Kacheln breit), Schlussstein oben",
+        "Im Bogen drei Stufen nach unten: vorn hell, nach hinten immer dunkler, zuletzt Schwarz",
+        "Dunkle Fußlinie an den Pfeilern"
+      ],
+      "materialien": [
+        "Stein (Kamin, Esse, Sockel, Stufe)"
+      ],
+      "stimmung": "Düster und einladend zugleich: Der Weg führt hinab, passt zur Steinmauer",
+      "fein": "Steinfugen, letzte Stufe im Dunkeln"
+    },
+    "dateien": {
+      "128": "grafik/gebaeude/treppe-runter-128.png",
+      "16": "grafik/gebaeude/treppe-runter-16.png",
+      "32": "grafik/gebaeude/treppe-runter-32.png",
+      "64": "grafik/gebaeude/treppe-runter-64.png"
+    }
+  },
+  {
     "id": "turm",
     "kacheln": {
       "b": 3,
