@@ -62,8 +62,8 @@ func windowOptions(app *App) *options.App {
 		AssetServer:      &assetserver.Options{Assets: assets},
 		OnStartup:        app.startup,
 		OnDomReady: func(ctx context.Context) {
-			if placed {
-				runtime.WindowSetPosition(ctx, win.X, win.Y)
+			if placed && onScreen(win) {
+				placeWindow(ctx, win.X, win.Y)
 			}
 			runtime.WindowShow(ctx)
 		},
