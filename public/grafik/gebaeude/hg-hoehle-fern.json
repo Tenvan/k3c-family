@@ -1,0 +1,35 @@
+{
+  "id": "hg-hoehle-fern",
+  "klasse": "hintergrund",
+  "vorlage": {
+    "motiv": "Ferne Hallen und Felswand im Dunkel: Bögen und Pfeiler aus Opal mit kühlem Koamaru-Schimmer über einem durchgehenden Höhlenboden",
+    "teile": [
+      "Höhlenboden als durchgehendes Band über die ganze Breite (Bodenlinie)",
+      "Felswand als gestufter Block in Opal, links nach rechts versetzt",
+      "Ferne Hallenbögen: Pfeiler mit Sturz, Abstand 12 Kacheln, mit Öffnung dazwischen",
+      "Niedrige zweite Reihe Felsstufen mit kühlem Schimmer (Deep-Koamaru, sparsam)"
+    ],
+    "materialien": [
+      "Hintergrund Fels"
+    ],
+    "stimmung": "kühles Dunkel, ferne Hallen im Dunst",
+    "fein": "Schimmer"
+  },
+  "kacheln": {
+    "b": 24,
+    "h": 15
+  },
+  "bausteine": [
+    {"art":"boden","rechteck":[0,13,24,2],"farbe":"valhalla"},
+    {"art":"wand","rechteck":[0.5,7.5,5.5,5.5],"farbe":"valhalla","wiederholung":{"schritt":8,"anzahl":3}},
+    {"art":"wandkopf","rechteck":[0.5,7.5,5.5,0.5],"farbe":"opal","wiederholung":{"schritt":8,"anzahl":3}},
+    {"art":"wand","rechteck":[1.5,5.5,3.5,2.0],"farbe":"valhalla","wiederholung":{"schritt":8,"anzahl":3}},
+    {"art":"wand","rechteck":[2.5,4.5,1.5,1.0],"farbe":"valhalla","wiederholung":{"schritt":8,"anzahl":3}},
+    {"art":"pfeiler","rechteck":[8.0,6.0,0.75,7.0],"farbe":"opal","wiederholung":{"schritt":12,"anzahl":2}},
+    {"art":"pfeiler","rechteck":[11.0,6.0,0.75,7.0],"farbe":"opal","wiederholung":{"schritt":12,"anzahl":2}},
+    {"art":"sturz","rechteck":[8.0,5.25,3.75,0.75],"farbe":"opal","wiederholung":{"schritt":12,"anzahl":2}},
+    {"art":"stufe","rechteck":[6.0,12.0,1.5,1.0],"farbe":"deep-koamaru","wiederholung":{"schritt":8,"anzahl":3}},
+    {"art":"schimmer","rechteck":[1.0,7.5,1.0,0.125],"farbe":"deep-koamaru","fein":true,"wiederholung":{"schritt":8,"anzahl":3}},
+    {"art":"schimmer","rechteck":[8.0,5.25,3.75,0.0625],"farbe":"deep-koamaru","fein":true,"wiederholung":{"schritt":12,"anzahl":2}}
+  ]
+}

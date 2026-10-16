@@ -1,0 +1,38 @@
+{
+  "id": "hg-mine-nah",
+  "klasse": "hintergrund",
+  "vorlage": {
+    "motiv": "Schienenbett am Boden mit Holzschwellen und Eisenschienen, davor kräftige Pfosten und ein Querbalken als Rahmen",
+    "teile": [
+      "Bodenband aus Schotter über die ganze Breite (Bodenlinie)",
+      "Holzschwellen im Abstand von 1 Kachel, zwei Eisenschienen darüber",
+      "Kräftige Holzpfosten mit Lichtkante links und Schatten rechts, Abstand 8 Kacheln",
+      "Querbalken oben zwischen den Pfosten, Kopfbänder als Stufen"
+    ],
+    "materialien": [
+      "Hintergrund Holz",
+      "Hintergrund Eisen"
+    ],
+    "stimmung": "nahes Gleis, dunkler Holzausbau im Vordergrund",
+    "fein": "Schienenkante, Balkenkante"
+  },
+  "kacheln": {
+    "b": 24,
+    "h": 15
+  },
+  "bausteine": [
+    {"art":"pfosten","rechteck":[1.5,1.5,1.0,12.5],"farbe":"oiled-cedar","wiederholung":{"schritt":8,"anzahl":3}},
+    {"art":"kante","rechteck":[1.5,1.5,0.125,12.5],"farbe":"rope","wiederholung":{"schritt":8,"anzahl":3}},
+    {"art":"schatten","rechteck":[2.25,1.5,0.25,12.5],"farbe":"loulou","wiederholung":{"schritt":8,"anzahl":3}},
+    {"art":"quer","rechteck":[1.5,1.5,8.0,0.75],"farbe":"oiled-cedar","wiederholung":{"schritt":8,"anzahl":2}},
+    {"art":"querkante","rechteck":[1.5,1.5,8.0,0.0625],"farbe":"rope","fein":true,"wiederholung":{"schritt":8,"anzahl":2}},
+    {"art":"kopfband","rechteck":[2.5,2.25,0.75,0.75],"farbe":"oiled-cedar","wiederholung":{"schritt":8,"anzahl":3}},
+    {"art":"kopfband","rechteck":[3.25,2.25,0.5,0.5],"farbe":"oiled-cedar","wiederholung":{"schritt":8,"anzahl":3}},
+    {"art":"kopfband","rechteck":[0.75,2.25,0.75,0.75],"farbe":"oiled-cedar","wiederholung":{"schritt":8,"anzahl":3}},
+    {"art":"schotter","rechteck":[0,13.25,24,1.75],"farbe":"loulou"},
+    {"art":"schwelle","rechteck":[0.25,13.0,0.75,0.5],"farbe":"oiled-cedar","wiederholung":{"schritt":1.0,"anzahl":23}},
+    {"art":"schiene","rechteck":[0,13.25,24,0.25],"farbe":"smokey-ash"},
+    {"art":"schiene","rechteck":[0,14.0,24,0.25],"farbe":"smokey-ash"},
+    {"art":"schienenkante","rechteck":[0,13.25,24,0.0625],"farbe":"dim-gray","fein":true}
+  ]
+}

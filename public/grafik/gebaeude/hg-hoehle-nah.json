@@ -1,0 +1,38 @@
+{
+  "id": "hg-hoehle-nah",
+  "klasse": "hintergrund",
+  "vorlage": {
+    "motiv": "Nahe Felsbögen und Pfeiler mit Lichtkante, Stalagmiten am Boden, kühl und kräftig",
+    "teile": [
+      "Felsboden als durchgehendes Band mit Kante über die ganze Breite",
+      "Pfeiler im Abstand von 8 Kacheln mit hellerer Kante links und Schattenkante rechts",
+      "Bogenansatz oben an den Pfeilern (Stufen aus Rechtecken)",
+      "Stalagmiten am Boden in Gruppen, Abstand 3 und 5 Kacheln, nach oben verjüngt"
+    ],
+    "materialien": [
+      "Hintergrund Fels"
+    ],
+    "stimmung": "nahe Felsen, kühl-bläulich, kräftig",
+    "fein": "Lichtkante, Schimmer"
+  },
+  "kacheln": {
+    "b": 24,
+    "h": 15
+  },
+  "bausteine": [
+    {"art":"pfeiler","rechteck":[1.5,2.5,1.5,11],"farbe":"deep-koamaru","wiederholung":{"schritt":8,"anzahl":3}},
+    {"art":"licht","rechteck":[1.5,2.5,0.125,11],"farbe":"smokey-ash","wiederholung":{"schritt":8,"anzahl":3}},
+    {"art":"schatten","rechteck":[2.75,2.5,0.25,11],"farbe":"valhalla","wiederholung":{"schritt":8,"anzahl":3}},
+    {"art":"bogen","rechteck":[1.0,1.5,2.5,1.0],"farbe":"deep-koamaru","wiederholung":{"schritt":8,"anzahl":3}},
+    {"art":"bogen","rechteck":[3.5,1.0,1.5,1.0],"farbe":"deep-koamaru","wiederholung":{"schritt":8,"anzahl":3}},
+    {"art":"bogenschatten","rechteck":[1.0,2.25,2.5,0.25],"farbe":"valhalla","wiederholung":{"schritt":8,"anzahl":3}},
+    {"art":"schimmer","rechteck":[1.75,4.0,0.5,0.125],"farbe":"royal-blue","fein":true,"wiederholung":{"schritt":8,"anzahl":3}},
+    {"art":"boden","rechteck":[0,13.5,24,1.5],"farbe":"deep-koamaru"},
+    {"art":"bodenkante","rechteck":[0,13.5,24,0.125],"farbe":"smokey-ash"},
+    {"art":"stalagmit","rechteck":[5.0,12.5,1.0,1.0],"farbe":"deep-koamaru","wiederholung":{"schritt":5.0,"anzahl":4}},
+    {"art":"stalagmit","rechteck":[5.25,11.5,0.5,1.0],"farbe":"deep-koamaru","wiederholung":{"schritt":5.0,"anzahl":4}},
+    {"art":"stalagmit","rechteck":[5.4375,10.75,0.125,0.75],"farbe":"deep-koamaru","wiederholung":{"schritt":5.0,"anzahl":4}},
+    {"art":"stalagmit","rechteck":[11.0,12.75,0.75,0.75],"farbe":"deep-koamaru","wiederholung":{"schritt":3.0,"anzahl":3}},
+    {"art":"stalagmit","rechteck":[11.1875,11.75,0.375,1.0],"farbe":"deep-koamaru","wiederholung":{"schritt":3.0,"anzahl":3}}
+  ]
+}

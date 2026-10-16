@@ -1,0 +1,42 @@
+{
+  "id": "hg-hoehle-mitte",
+  "klasse": "hintergrund",
+  "vorlage": {
+    "motiv": "Felswand mit hängenden Stalaktiten unter einer Höhlendecke, unterschiedlich lang und im Abstand wechselnd, am Boden Felsstufen",
+    "teile": [
+      "Höhlendecke als durchgehendes Band oben über die ganze Breite",
+      "Lange Stalaktiten im Abstand von 3 Kacheln, als Stufen nach unten verjüngt",
+      "Kurze Stalaktiten dazwischen (Abstand 2,5 Kacheln) und mittlere (Abstand 4 Kacheln)",
+      "Felswand-Brocken seitlich und Felsboden als durchgehendes Band"
+    ],
+    "materialien": [
+      "Hintergrund Fels"
+    ],
+    "stimmung": "feuchter Felsgang, kühl",
+    "fein": "Tropfen, Kante"
+  },
+  "kacheln": {
+    "b": 24,
+    "h": 15
+  },
+  "bausteine": [
+    {"art":"decke","rechteck":[0,0.25,24,1.5],"farbe":"opal"},
+    {"art":"deckenkante","rechteck":[0,1.75,24,0.0625],"farbe":"smokey-ash","fein":true},
+    {"art":"zapfen","rechteck":[1.0,1.75,1.0,1.5],"farbe":"opal","wiederholung":{"schritt":3.0,"anzahl":8}},
+    {"art":"zapfen","rechteck":[1.25,3.25,0.5,2.0],"farbe":"opal","wiederholung":{"schritt":3.0,"anzahl":8}},
+    {"art":"zapfen","rechteck":[1.4375,5.25,0.125,1.5],"farbe":"opal","wiederholung":{"schritt":3.0,"anzahl":8}},
+    {"art":"zapfenschatten","rechteck":[1.75,1.75,0.25,3.5],"farbe":"valhalla","wiederholung":{"schritt":3.0,"anzahl":8}},
+    {"art":"zapfen","rechteck":[2.5,1.75,0.5,1.0],"farbe":"opal","wiederholung":{"schritt":2.5,"anzahl":9}},
+    {"art":"zapfen","rechteck":[2.6875,2.75,0.125,1.0],"farbe":"opal","wiederholung":{"schritt":2.5,"anzahl":9}},
+    {"art":"zapfen","rechteck":[4.0,1.75,0.75,2.5],"farbe":"opal","wiederholung":{"schritt":4.0,"anzahl":5}},
+    {"art":"zapfen","rechteck":[4.25,4.25,0.25,1.5],"farbe":"opal","wiederholung":{"schritt":4.0,"anzahl":5}},
+    {"art":"zapfenschatten","rechteck":[4.5,1.75,0.25,2.5],"farbe":"valhalla","wiederholung":{"schritt":4.0,"anzahl":5}},
+    {"art":"tropfen","rechteck":[4.3125,6.0,0.0625,0.0625],"farbe":"deep-koamaru","fein":true,"wiederholung":{"schritt":4.0,"anzahl":5}},
+    {"art":"brocken","rechteck":[0.5,9.0,3.0,4.0],"farbe":"opal","wiederholung":{"schritt":9.0,"anzahl":2}},
+    {"art":"brocken","rechteck":[1.0,7.5,1.5,1.5],"farbe":"opal","wiederholung":{"schritt":9.0,"anzahl":2}},
+    {"art":"brockenschatten","rechteck":[3.0,9.0,0.5,4.0],"farbe":"valhalla","wiederholung":{"schritt":9.0,"anzahl":2}},
+    {"art":"boden","rechteck":[0,13,24,2],"farbe":"loulou"},
+    {"art":"bodenkante","rechteck":[0,13,24,0.0625],"farbe":"smokey-ash","fein":true},
+    {"art":"stufe","rechteck":[5.0,12.0,2.0,1.0],"farbe":"opal","wiederholung":{"schritt":5.5,"anzahl":4}}
+  ]
+}

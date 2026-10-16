@@ -1,0 +1,41 @@
+{
+  "id": "hg-mine-mitte",
+  "klasse": "hintergrund",
+  "vorlage": {
+    "motiv": "Stützbalken und Querbalken aus Holz vor gestuftem Fels, Stempel im Abstand von 3 Kacheln, Schutt am Boden",
+    "teile": [
+      "Schuttband am Boden über die ganze Breite (Bodenlinie)",
+      "Gestufte Felsblöcke in Valhalla hinter den Stützen",
+      "Senkrechte Stützbalken in Loulou, Abstand 3 Kacheln",
+      "Querbalken oben, Kopfbänder als Stufen, zweite Reihe versetzt",
+      "Kleine Grubenlicht-Punkte in Rope"
+    ],
+    "materialien": [
+      "Hintergrund Fels",
+      "Hintergrund Holz"
+    ],
+    "stimmung": "warmbrauner Stollen, Holzausbau im Halbdunkel",
+    "fein": "Balkenkanten, Lichtpunkt"
+  },
+  "kacheln": {
+    "b": 24,
+    "h": 15
+  },
+  "bausteine": [
+    {"art":"fels","rechteck":[0.25,7.5,6,4.5],"farbe":"loulou","wiederholung":{"schritt":8,"anzahl":3}},
+    {"art":"fels","rechteck":[1.0,5.5,3.5,2.0],"farbe":"loulou","wiederholung":{"schritt":8,"anzahl":3}},
+    {"art":"fels","rechteck":[5.0,9.0,3,3.0],"farbe":"valhalla","wiederholung":{"schritt":8,"anzahl":2}},
+    {"art":"licht","rechteck":[0.5,7.5,2.0,0.125],"farbe":"valhalla","fein":true,"wiederholung":{"schritt":8,"anzahl":3}},
+    {"art":"stuetze","rechteck":[1.0,3.0,0.5,10.0],"farbe":"oiled-cedar","wiederholung":{"schritt":3.0,"anzahl":7}},
+    {"art":"kante","rechteck":[1.0,3.0,0.0625,10.0],"farbe":"rope","fein":true,"wiederholung":{"schritt":3.0,"anzahl":7}},
+    {"art":"schatten","rechteck":[1.4375,3.0,0.0625,10.0],"farbe":"loulou","fein":true,"wiederholung":{"schritt":3.0,"anzahl":7}},
+    {"art":"quer","rechteck":[1.0,3.0,2.5,0.5],"farbe":"oiled-cedar","wiederholung":{"schritt":3.0,"anzahl":7}},
+    {"art":"kopfband","rechteck":[1.5,3.5,0.5,0.5],"farbe":"oiled-cedar","wiederholung":{"schritt":3.0,"anzahl":7}},
+    {"art":"kopfband","rechteck":[3.0,3.5,0.5,0.5],"farbe":"oiled-cedar","wiederholung":{"schritt":3.0,"anzahl":7}},
+    {"art":"querkante","rechteck":[1.0,3.0,2.5,0.0625],"farbe":"rope","fein":true,"wiederholung":{"schritt":3.0,"anzahl":7}},
+    {"art":"lampe","rechteck":[2.0,4.5,0.125,0.125],"farbe":"tahiti-gold","fein":true,"wiederholung":{"schritt":9.0,"anzahl":2}},
+    {"art":"schutt","rechteck":[0,13.0,24,2.0],"farbe":"loulou"},
+    {"art":"brocken","rechteck":[0.5,12.5,1.5,0.5],"farbe":"loulou","wiederholung":{"schritt":2.5,"anzahl":9}},
+    {"art":"brocken","rechteck":[1.0,12.25,0.5,0.25],"farbe":"oiled-cedar","wiederholung":{"schritt":2.5,"anzahl":9}}
+  ]
+}
