@@ -1,6 +1,6 @@
 # GEB1.3 · Drei schmale Bäume als Daten und PNG
 
-- **Status:** offen
+- **Status:** in Arbeit
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** DEV
