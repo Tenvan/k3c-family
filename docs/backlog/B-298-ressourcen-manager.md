@@ -9,8 +9,8 @@
 - **Projekt:** GRA
 - **Erstellt:** 2026-10-05
 - **Spec:** freigegeben
-- **Revision:** 3
-- **Freigabe:** 2026-10-16, 🧑 im Chat (AC-07: Mini-Szene als Canvas statt iframe)
+- **Revision:** 2
+- **Freigabe:** 2026-10-14, 🧑 im Chat (mit Sprint M10 Rev. 3)
 
 ## Ausgangslage
 
@@ -34,7 +34,7 @@ Die Zuordnung von Grafiken und Sounds läuft über Chat-Fragen, statische Fundse
 - **Web-Recherche als Vorschlagsliste** je Slot: Treffer mit Titel, Quelle (Link), Urheber, Lizenz (soweit erkennbar) und Vorschau (Bild bzw. Hörprobe, sonst nur Link). Eine API ist keine Voraussetzung: Treffer kommen aus Such-APIs (z. B. freesound), aus gelesenen Suchseiten (OpenGameArt, itch.io, Kenney, Wikimedia Commons) oder vom Agenten über ein MCP-Tool (Agent sucht im Netz, legt Treffer zum Slot ab). Treffer bleiben je Slot gespeichert, bis 🧑 sie verwirft.
 - **Übernahme**: automatisch nur, wo die Quelle einen direkten Download mit maschinenlesbarer Lizenz bietet; sonst lädt 🧑 manuell herunter und übernimmt die Datei per **Import** (Datei wählen, Treffer zuordnen). Der Import legt sie unter `public/…/kandidaten/` ab und trägt Quelle, Urheber, Lizenz aus dem Treffer in die Credits ein. Lizenz ohne Bestätigung → „Lizenz prüfen“, bis 🧑 bestätigt.
 - **MCP-Tools** für den Agenten: Slots lesen, Zuordnung setzen, Recherche-Treffer anlegen und lesen.
-- Mini-Szene als eigener Canvas in k3c-dev (Revision 3, statt iframe von B-299); die Dev-Seite `assetvorschau.html` aus B-299 bleibt unverändert bestehen (Sounds, Figuren-Sheets).
+- Einbettung der Mini-Szenen aus B-299 als iframe vom Vite-Port des Worktrees.
 
 ## Nicht-Ziele
 
@@ -60,7 +60,7 @@ Datei fehlt → Slot zeigt Platzhalter mit Pfad. Quelle nicht erreichbar, Suchse
 - **AC-04** Die Recherche zeigt je Slot Vorschläge mit Link, Quelle und Lizenz, auch von Quellen ohne API; Treffer bleiben gespeichert (Go-Test mit aufgezeichneten Antworten + Beobachtung).
 - **AC-05** Eine manuell geladene Datei lässt sich zu einem Treffer importieren; Ablage und Credit-Eintrag stimmen, unbestätigte Lizenz bleibt „Lizenz prüfen“ (Go-Test).
 - **AC-06** MCP-Tools für Slots, Zuordnung und Recherche-Treffer antworten (`dev:test`).
-- **AC-07** k3c-dev zeigt je Grafik-Slot eine Mini-Szene als Canvas im Spielmaßstab (×2, 1 Unit = 32 px): alle Präferenzen nebeneinander auf einer Bodenlinie, die gewählte hervorgehoben, Präferenz 1 als „aktiv“ beschriftet (Beobachtung; Layout per Vitest `sceneLayout`).
+- **AC-07** Die Mini-Szene aus B-299 ist eingebettet und zeigt die aktive Zuordnung (Beobachtung).
 
 ## Offene Fragen
 
