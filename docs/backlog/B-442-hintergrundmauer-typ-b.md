@@ -3,9 +3,9 @@
 - **Domäne:** CLI
 - **Typ:** Idee
 - **Prio:** hoch
-- **Umgebung:** ?
-- **Status:** offen
-- **Sprint:** –
+- **Umgebung:** offline
+- **Status:** eingeplant
+- **Sprint:** GEB3
 - **Projekt:** GEB
 - **Erstellt:** 2026-10-16
 - **Spec:** Entwurf
@@ -51,7 +51,8 @@ Ungültige oder seltene Situation → gewolltes Verhalten. Passt nichts: `nicht 
 
 ## Akzeptanzkriterien
 
-- **AC-01** Prüfbar formuliert: Test, Befehl, Datei oder Beobachtung am TV mit erwartetem Ergebnis.
+- **AC-01** Die Hintergrundmauer liegt in den Stufen 1–5 als Daten-JSON mit `stufen` und PNG vor (gleiche Farbstufen wie die Mauer, in der Breite kachelbar).
+- **AC-02** Der Client zeichnet zwischen je zwei benachbarten gebauten Mauern derselben Seite eine durchgehende Hintergrundmauer hinter den Bauplätzen, in der Stufe der äußeren Mauer; Vitest prüft die Abschnitte (Lage, Stufe, Lücken bei ungebauten Mauern).
 
 ## Offene Fragen
 

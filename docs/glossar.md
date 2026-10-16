@@ -75,6 +75,7 @@ Regelwerk in [`rules/`](rules/), und das Glossar wird angepasst. Zahlen sind, wo
 | Handwerker | Beruf (30 Gold) in Werkstatt, Schmiede oder Rüstkammer (1–2 je Gebäude): +50 % Herstellungstempo je Handwerker. | `rules/buerger.md` § 1, Q35 |
 | Heilplatz | Gebäude der Hub-Stufe 3: heilt Truppen (Kämpfer) und Spieler im Radius 6 mit 5 HP/s, immer, auch im Kampf. Sonst gibt es keine Regeneration. | `rules/materialien-gebaeude.md` § 3.2, Q32 |
 | Heimbereich | Bereich um die Hub-Mitte mit Radius `homeRadiusUnits` (12 Units), in dem Figuren ohne Auftrag wandern. | `data/hub.json`, `engine/sim/units.go`, Fragenkatalog Q38 |
+| Hintergrundmauer | Mauer im Hintergrund (Typ B), die zwei benachbarte gebaute Mauern (Typ A, Mauer-Platz der Mauerlinie) derselben Seite verbindet, wie in Kingdom Two Crowns. Ihre Stufe ist die der äußeren der beiden Mauern. Nur Darstellung, kein eigener Bauplatz. | B-442, GEB3 |
 | Höhle | Stufe der Tiefe 1 (Biom `cave`) mit Stein-Adern; Wellen über den Aggressionspool. | `game-design.md` › Welt & Stufen |
 | Holz | Material der Hub-Stufe 1 aus Bäumen im Wald und aus Farm-Plantagen; Grundgebäude, Holzmauer und -turm, Bogen und Schwert. | `rules/materialien-gebaeude.md` § 1 |
 | Home-Kombi | View + Menu gemeinsam halten (Tastatur Pos1) = zurück zur Landingpage; auf keiner Seite anders belegt. | `CLAUDE.md` › Seiten & Navigation |

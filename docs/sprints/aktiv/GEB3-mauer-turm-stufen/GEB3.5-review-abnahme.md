@@ -6,7 +6,7 @@
 - **Domäne:** CLI
 - **Umgebung:** live
 - **Branch:** geb3/5-review
-- **Abhängig von:** GEB3.4
+- **Abhängig von:** GEB3.4, GEB3.7
 - **Tickets:** B-435
 - **Kriterien:** AC-03
 
