@@ -87,7 +87,7 @@ Weitere Gebäude (je eigener Sprint im Projekt GEB); weitere Baumvarianten und L
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
 | GEB1.1 | `GEB1.1-workshop-grundregeln.md` | Workshop | Mensch | fertig |
-| GEB1.2 | `GEB1.2-werkstatt-generator.md` | Umsetzung | autonom | offen |
+| GEB1.2 | `GEB1.2-werkstatt-generator.md` | Umsetzung | autonom | in Arbeit |
 | GEB1.3 | `GEB1.3-baeume.md` | Umsetzung | autonom | offen |
 | GEB1.4 | `GEB1.4-review-abnahme.md` | Review | autonom | offen |
 

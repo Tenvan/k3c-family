@@ -1,6 +1,6 @@
 # GEB1.2 · Werkstatt: Regeldatei, Generator, PNG, Vorschau
 
-- **Status:** offen
+- **Status:** in Arbeit
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** DEV
