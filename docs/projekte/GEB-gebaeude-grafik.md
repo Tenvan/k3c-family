@@ -17,7 +17,7 @@ In Abarbeitungs-Reihenfolge; der erste nicht erledigte Sprint ist der nächste. 
 | GEB1 | Grundregeln für Gebäude-Grafik und Werkstatt | erledigt |
 | GEB2 | Gebäude ohne Grafik: Taverne, Heilplatz, Schmiede, Rüstkammer | erledigt |
 | GEB8 | Gebäude-Vorlagen in den Daten-JSONs | erledigt |
-| GEB3 | Mauer und Turm, Stufen 1 bis 5 | aktiv |
+| GEB3 | Mauer und Turm, Stufen 1 bis 5 | erledigt |
 | GEB4 | Burg und Hub-Stufen 1 bis 5, Tor | geplant |
 | GEB5 | Lager, Farm mit Plantage, Kaserne, Treppen | geplant |
 | GEB6 | Natur und Objekte: Bäume, Fels, Erz, Adern, Truhe, Portal, Rekrutierungslager | geplant |

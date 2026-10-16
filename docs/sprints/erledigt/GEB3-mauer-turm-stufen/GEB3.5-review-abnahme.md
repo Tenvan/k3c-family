@@ -1,6 +1,6 @@
 # GEB3.5 · Review und Abnahme der Stufenreihe
 
-- **Status:** in Arbeit
+- **Status:** fertig
 - **Typ:** Review
 - **Agent:** autonom
 - **Domäne:** CLI
@@ -53,5 +53,8 @@ Manuelle Prüfung im Browser-Pane nur mit Freigabe von 🧑 für diesen Lauf.
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+2026-10-16, Claude (Ralf im Chat).
+- `task check` und `task check:go` grün; Sprint-Diff ohne schwere Befunde (Session-Reviews GEB3.1–GEB3.4, GEB3.6, GEB3.7 eingearbeitet; keine PNG der älteren Gebäude geändert, kein Zufall, alle Dateien ≤ 400 Zeilen).
+- AC-03 geprüft: Vorschau von Claude im Browser-Pane gezeigt (Mauer, Turm mit Zaubertum, Hintergrundmauer, jeweils Stufen 1–5 mit Vorlage); Ralf hat die Vorschau abgenommen und das Spiel selbst geprüft und abgenommen (Chat, 2026-10-16).
+- AC-01, AC-02, AC-04–AC-08: Nachweise in GEB3.1–GEB3.4, GEB3.6, GEB3.7 geprüft.
+- Hinweis an Ralf: Die übrigen alten Grafiken in der Slot-Szene gehören zu GEB4–GEB7 bzw. GRA/HUD.

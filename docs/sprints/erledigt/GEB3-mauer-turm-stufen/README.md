@@ -1,6 +1,6 @@
 # GEB3 · DEV, CLI · Mauer und Turm, Stufen 1 bis 5
 
-- **Status:** aktiv
+- **Status:** erledigt
 - **Projekt:** GEB
 - **Domäne:** DEV, CLI
 - **Reife:** bereit
@@ -85,7 +85,7 @@ Tor (GEB4); Burg und Hub-Stufen (GEB4); Stufen für Werkstatt, Taverne usw. (fol
 | GEB3.2 | `GEB3.2-stufen-werkzeug-mauer.md` | Umsetzung | autonom | fertig |
 | GEB3.3 | `GEB3.3-turm-stufen.md` | Umsetzung | autonom | fertig |
 | GEB3.4 | `GEB3.4-zuordnung-aufraeumen.md` | Umsetzung | autonom | fertig |
-| GEB3.5 | `GEB3.5-review-abnahme.md` | Review | autonom | in Arbeit |
+| GEB3.5 | `GEB3.5-review-abnahme.md` | Review | autonom | fertig |
 | GEB3.6 | `GEB3.6-hintergrundmauer-grafik.md` | Umsetzung | autonom | fertig |
 | GEB3.7 | `GEB3.7-hintergrundmauer-spiel.md` | Umsetzung | autonom | fertig |
 
@@ -101,5 +101,7 @@ Reihenfolge: GEB3.1–3.4, dann GEB3.6 und GEB3.7 (Revision 2), zuletzt das Revi
 
 ## Abnahme
 
-Wird von der Review-Session (Doku-Sprint: letzte Session) ausgefüllt, höchstens fünf Zeilen: Datum, Kriterien
-(Verweis auf Session-Ergebnisse), behobene Befunde, neue Tickets. Bis dahin `–`.
+2026-10-16 (GEB3.5): `task check` und `task check:go` grün; Reviews ohne offene schwere Befunde (behoben u. a.: Stufe fehlte im Client und im Cache-Schlüssel).
+AC-01, AC-05 (GEB3.2, GEB3.3), AC-02, AC-06 (GEB3.4), AC-04 (GEB3.1), AC-07 (GEB3.6), AC-08 (GEB3.7) geprüft; AC-03 von Ralf im Chat abgenommen (Vorschau und Spiel).
+Revision 2 brachte die Hintergrundmauer (B-442). Erledigt: B-437, B-442.
+Neue Tickets: keine. Versionsvorschlag: Minor (neue Grafik und Hintergrundmauer im Spiel).
