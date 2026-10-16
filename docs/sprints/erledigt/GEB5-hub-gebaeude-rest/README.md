@@ -116,5 +116,5 @@ Keine blockiert die Freigabe; jede Annahme gilt mit der Freigabe als bestätigt,
 
 - 2026-10-16 Review (GEB5.5): AC-01, AC-02, AC-04, AC-05, AC-06 geprüft laut Ergebnissen GEB5.1–GEB5.4; keine schweren Befunde, keine Befunde behoben.
 - AC-03 abgenommen durch 🧑 (Ralf, Chat „abnahme“, 2026-10-16).
-- Version: v… vorgeschlagen (Minor, Wirkung im Spiel durch neue Gebäude-Grafik und Plantage); gesetzt erst nach Bestätigung durch 🧑.
+- Version: v0.18.0 vorgeschlagen (Minor, Wirkung im Spiel durch neue Gebäude-Grafik und Plantage; letzter Tag v0.17.0); nicht gesetzt, wartet auf Bestätigung durch 🧑.
 - Neue Tickets: B-448 (dev:test `TestRepo` an Entwurfs-Sprint GEB7), B-449 (Abnahme, erledigt).
