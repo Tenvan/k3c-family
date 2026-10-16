@@ -1,6 +1,6 @@
 # GEB2 · DEV, CLI · Gebäude ohne Grafik: Taverne, Heilplatz, Schmiede, Rüstkammer
 
-- **Status:** aktiv
+- **Status:** erledigt
 - **Projekt:** GEB
 - **Domäne:** DEV, CLI
 - **Reife:** bereit
@@ -72,7 +72,7 @@ Ausbaustufen und Level-Paletten der vier Gebäude; Bäume ins Spiel (`node:tree`
 | GEB2.1 | `GEB2.1-taverne-heilplatz.md` | Umsetzung | autonom | fertig |
 | GEB2.2 | `GEB2.2-schmiede-ruestkammer.md` | Umsetzung | autonom | fertig |
 | GEB2.3 | `GEB2.3-zuordnung-spiel.md` | Umsetzung | autonom | fertig |
-| GEB2.4 | `GEB2.4-review-abnahme.md` | Review | autonom | blockiert |
+| GEB2.4 | `GEB2.4-review-abnahme.md` | Review | autonom | fertig |
 
 - GEB2.1 (DEV) Taverne und Heilplatz als Daten und PNG, Regeldatei ergänzen (AC-01).
 - GEB2.2 (DEV) Schmiede und Rüstkammer als Daten und PNG, Stein und Glut in die Regeldatei (AC-01).
@@ -81,5 +81,7 @@ Ausbaustufen und Level-Paletten der vier Gebäude; Bäume ins Spiel (`node:tree`
 
 ## Abnahme
 
-Wird von der Review-Session (Doku-Sprint: letzte Session) ausgefüllt, höchstens fünf Zeilen: Datum, Kriterien
-(Verweis auf Session-Ergebnisse), behobene Befunde, neue Tickets. Bis dahin `–`.
+2026-10-16 (GEB2.4): `task check` und `task check:go` grün; Reviews ohne offene Befunde (ein leichter in GEB2.2 behoben).
+AC-01 (GEB2.1, GEB2.2), AC-02 und AC-04 (GEB2.3) geprüft; AC-03 von Ralf im Chat abgenommen (Vorschau und Spiel).
+Revision 2 brachte die Aufräum-Anforderung (alte Grafik löschen), gilt für alle GEB-Sprints (Projekt GEB › Notizen).
+Neue Tickets: B-440 (dev:test bei Entwurfs-Sprints), B-441 (Gebäude-Prompt). Versionsvorschlag: Minor (neue Gebäude-Grafik im Spiel).

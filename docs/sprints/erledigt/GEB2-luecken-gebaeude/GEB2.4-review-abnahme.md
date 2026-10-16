@@ -1,6 +1,6 @@
 # GEB2.4 · Review und Abnahme am Bildschirm
 
-- **Status:** blockiert
+- **Status:** fertig
 - **Typ:** Review
 - **Agent:** autonom
 - **Domäne:** CLI
@@ -54,8 +54,9 @@ Manuelle Prüfung im Browser-Pane (Vorschau und Spiel) nur mit Freigabe von 🧑
 
 ## Ergebnis
 
-2026-10-16, Claude (Ralf im Chat), Zwischenstand.
+2026-10-16, Claude (Ralf im Chat).
 - `task check` und `task check:go` grün; Diff-Review des Sprints (Code-Teil) ohne Befunde; Session-Reviews GEB2.1–GEB2.3 ohne offene Befunde.
-- Sichtprüfung: Ralf hat für diesen Lauf nur die Vorschau freigegeben. Claude hat `assetvorschau.html?szene=gebaeude` im Browser-Pane gezeigt (alle fünf Gebäude in 32 px ×1 und 16 px ×2). Ralf: **Vorschau abgenommen**, Spiel noch offen.
+- AC-03 geprüft: Vorschau (`assetvorschau.html?szene=gebaeude`, Screenshot von Claude im Browser-Pane) und Spiel (Prüfung durch Ralf selbst) von Ralf am 2026-10-16 im Chat abgenommen.
+- AC-01, AC-02, AC-04: Nachweise in GEB2.1–GEB2.3 geprüft.
 - Hinweis: Unter `localhost:5173` antwortet auf diesem Rechner ein anderer Dev-Server (React, IPv6); K3C ist unter `127.0.0.1:5173` erreichbar.
-- Offen: AC-03 Teil Spiel (Ralf prüft selbst, Spielserver läuft), danach Abnahme-Abschnitt, Sprint abschließen, PR.
+- Neue Tickets: B-440 (dev:test, vorbestehend), B-441 (Gebäude-Prompt in den JSONs).
