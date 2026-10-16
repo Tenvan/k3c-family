@@ -1,11 +1,11 @@
-# B-441 · Gebäude-JSONs tragen ihre Motiv-Beschreibung im Feld beschreibung
+# B-441 · Gebäude-JSONs tragen ihre Gebäude-Vorlage (`vorlage`)
 
 - **Domäne:** DEV
 - **Typ:** Idee
-- **Prio:** mittel
+- **Prio:** hoch
 - **Umgebung:** offline
-- **Status:** offen
-- **Sprint:** –
+- **Status:** eingeplant
+- **Sprint:** GEB8
 - **Projekt:** GEB
 - **Erstellt:** 2026-10-16
 - **Spec:** Entwurf
@@ -18,9 +18,9 @@ Gebäude entstehen in `public/grafik/gebaeude/<id>.json` als exakte Rechteck-Lis
 
 ## Ziel
 
-Jede Gebäude-JSON trägt ein Feld `prompt` (Motiv, Teile von links nach rechts, Materialien, Stimmung, was `fein` ist), aus dem eine KI das Gebäude erneut annähernd gleich erzeugen kann. `tools/gebaeude` liest es mit und übernimmt es ins `index.json`; die Asset-Vorschau zeigt es unter dem Gebäude. Die Regeldatei (§ 5 Datenformat) verlangt es, der Begriff „Gebäude-Prompt“ kommt ins Glossar (nicht „Spec“, das ist im Projekt Ticket/Sprint-README). Die vorhandenen Gebäude (Werkstatt, Taverne, Heilplatz, Schmiede, Rüstkammer, drei Bäume) bekommen ihren Prompt nachgetragen.
+Jede Gebäude-JSON trägt eine **Gebäude-Vorlage** (Feld `vorlage`, Glossar), aus der eine spätere Session das Gebäude annähernd gleich neu erzeugen oder ändern kann. `tools/gebaeude` verlangt sie, übernimmt sie ins `index.json`, und die Asset-Vorschau zeigt sie. Alle vorhandenen Gebäude (GEB1: Werkstatt, Tanne, Pappel, Birke; GEB2: Taverne, Heilplatz, Schmiede, Rüstkammer) bekommen ihre Vorlage nachgetragen.
 
-Entschieden 2026-10-16 (Chat, Ralf): Name `prompt` statt `beschreibung`.
+Entschieden 2026-10-16 (Chat, Ralf): strukturierte Definition statt Freitext-Prompt, Name `vorlage` (nicht „Spec“, das ist im Projekt die SDD-Spec); eigener Sprint im Projekt GEB vor GEB3, dringend.
 
 ## Beteiligte und Zielgruppen
 
@@ -28,7 +28,10 @@ Wer spielt, entwickelt, betreibt oder entscheidet (🧑)? Keine Verantwortlichen
 
 ## Anforderungen
 
-- Was das Ergebnis können muss, auch Qualität (deterministisch, 2+ Spieler, Leistung).
+- Format (Vorschlag, endgültig in der Regeldatei § 5): `"vorlage": { "motiv": "<ein Satz>", "teile": ["<Teil, Lage, Größe in Kacheln>", …], "materialien": ["<Material aus § 3>", …], "stimmung": "<Licht, Farbwirkung>", "fein": "<was bei 16 px entfällt>" }`; Teile von links nach rechts und hinten nach vorn.
+- Pflichtfeld: Fehlt `vorlage` oder ist `motiv`/`teile` leer, bricht `task gebaeude` mit Meldung (Datei, Feld) ab.
+- `index.json` enthält die Vorlage je Gebäude; die Vorschau zeigt sie unter dem Gebäude (Motiv, Teile).
+- Die Vorlagen beschreiben den heutigen Stand der PNGs, abgeleitet aus Bausteinen und Sprint-Doku (GEB1, GEB2), ohne die Grafik zu ändern: gleiche PNGs vorher/nachher.
 
 ## Nicht-Ziele
 
