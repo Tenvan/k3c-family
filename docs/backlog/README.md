@@ -142,6 +142,7 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-437](B-437-katalog-eigene-gebaeude.md) | DEV | Problem | mittel | offen | – | Asset-Katalog von k3c-dev kennt eigene Gebäude-Grafik nicht |
 | [B-438](B-438-werkstatt-baeume-ins-spiel.md) | CLI | Idee | mittel | offen | – | Werkstatt und Bäume aus tools/gebaeude erscheinen im Spiel |
 | [B-439](B-439-planung-erpqs-look.md) | DEV | Idee | mittel | eingeplant | WZ5 | Die Planungsseite von k3c-dev zeigt und bedient die Planung wie die erp-qs-Workbench |
+| [B-440](B-440-dev-test-entwurfs-sprints-ohne-sessions.md) | DEV | Problem | mittel | offen | – | k3c-dev-Planungstest lehnt Entwurfs-Sprints ohne Sessions ab |
 
 ## Archiv
 

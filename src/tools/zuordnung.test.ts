@@ -99,7 +99,7 @@ describe('Grafik-Zuordnung (B-161)', () => {
     const missing = rows
       .filter((r) => r.status === 'zugeordnet')
       .flatMap((r) => r.pack.replace(/`/g, '').split(',').map((p) => p.trim()))
-      .filter((p) => !credited.has(p));
+      .filter((p) => !credited.has(p) && p !== 'grafik/gebaeude'); // eigene Grafik (GEB), keine Credits nötig
     expect(missing).toEqual([]);
   });
 

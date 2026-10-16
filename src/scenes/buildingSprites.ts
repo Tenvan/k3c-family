@@ -18,7 +18,11 @@ export const BUILDING_TEXTURES: Record<string, string> = {
   'grafik:tower-3': 'k3c-paletten/props/tower-kupfer.png',
   'grafik:tower-4': 'k3c-paletten/props/tower-eisen.png',
   'grafik:gate': 'k3c-paletten/props/fort-closed-door.png',
-  'grafik:workshop': 'gothicvania-town/props-einzeln/house-b.png',
+  'grafik:workshop': 'gebaeude/werkstatt-32.png',
+  'grafik:tavern': 'gebaeude/taverne-32.png',
+  'grafik:healer': 'gebaeude/heilplatz-32.png',
+  'grafik:smithy': 'gebaeude/schmiede-32.png',
+  'grafik:armory': 'gebaeude/ruestkammer-32.png',
   'grafik:storage': 'gothicvania-town/props-einzeln/crate-stack.png',
   'grafik:farm': 'gothicvania-town/props-einzeln/house-a.png',
   'grafik:barracks': 'gothicvania-town/props-einzeln/house-c.png',
@@ -43,6 +47,10 @@ const BASE: Partial<Record<SiteKind, string>> = {
   tower: 'grafik:tower-2',
   gate: 'grafik:gate',
   workshop: 'grafik:workshop',
+  tavern: 'grafik:tavern',
+  healer: 'grafik:healer',
+  smithy: 'grafik:smithy',
+  armory: 'grafik:armory',
   storage: 'grafik:storage',
   farm: 'grafik:farm',
   barracks: 'grafik:barracks',
@@ -50,6 +58,11 @@ const BASE: Partial<Record<SiteKind, string>> = {
   /** steht für die ganze Kachel-Treppe (STAIRS_UP_TILES) */
   stairsUp: 'grafik:stairs',
 };
+
+/** Maßstab im Spiel: eigene Gebäude aus `tools/gebaeude` sind schon 32 px je Kachel (×1), die 16-px-Packs ×2 (GEB2) */
+export function textureScale(key: string): number {
+  return BUILDING_TEXTURES[key]?.startsWith('gebaeude/') ? 1 : 2;
+}
 
 /** Grafik eines Bauplatzes; nur gebaute Gebäude, Baustellen behalten Umriss, Fortschritt und Preisschild */
 export function siteTexture(kind: SiteKind, state: SiteState, stage?: number): string | null {

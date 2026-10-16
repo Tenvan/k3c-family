@@ -71,7 +71,7 @@ Quelle: `assets_list` Kategorien `gebaeude`, `objekte`, `umgebung`. **Lücke** =
 | Slot | Gebäude | Stand heute | Stufen |
 |---|---|---|---|
 | `castle` | Burg/Thron (Hub-Kern) | gemischt | über Hub-Stufen 1–5 |
-| `workshop` | Werkstatt | gemischt (house-b) | **Stilvorlage fertig**, Stufen offen |
+| `workshop` | Werkstatt | eigen (GEB2, alte Grafik gelöscht) | **Stilvorlage fertig**, Stufen offen |
 | `storage` | Lager | gemischt | – |
 | `farm` | Farm | gemischt (house-a) | – |
 | `barracks` | Kaserne | gemischt (house-c) | – |

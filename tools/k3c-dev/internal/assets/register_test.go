@@ -14,7 +14,7 @@ func repo(t *testing.T) string {
 	t.Helper()
 	root := t.TempDir()
 	writePNG(t, filepath.Join(root, "public", "grafik", "town", "house-a.png"), 64, 48)
-	writePNG(t, filepath.Join(root, "public", "grafik", "town", "house-b.png"), 32, 32)
+	writePNG(t, filepath.Join(root, "public", "grafik", "town", "house-c.png"), 32, 32)
 	writeFile(t, filepath.Join(root, "public", "audio", "coin.ogg"), "ogg")
 	writeFile(t, filepath.Join(root, RegisterPath), `{
   "_comment": "Test",
@@ -55,7 +55,7 @@ func writePNG(t *testing.T, path string, w, h int) {
 // B-298/AC-02: mehrere Zuordnungen stehen in gesetzter Reihenfolge im Register und kommen so wieder heraus.
 func TestReihenfolgeImRegister(t *testing.T) {
 	root := repo(t)
-	want := []Choice{{File: "grafik/town/house-b.png"}, {File: "grafik/town/house-a.png"}}
+	want := []Choice{{File: "grafik/town/house-c.png"}, {File: "grafik/town/house-a.png"}}
 	if _, err := SetChoices(root, "farm", want); err != nil {
 		t.Fatal(err)
 	}

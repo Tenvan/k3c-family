@@ -1,6 +1,6 @@
 # GEB2.3 · Neue Gebäude-Grafik im Spiel zuordnen
 
-- **Status:** in Arbeit
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** CLI
@@ -61,5 +61,9 @@ Keine manuellen Prüfungen in dieser Session; der Blick ins Spiel gehört GEB2.4
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+2026-10-16, Claude (autonom, Ralf im Chat).
+- AC-02 geprüft: `buildingSprites.ts` ordnet `workshop`, `tavern`, `healer`, `smithy`, `armory` den `gebaeude/<id>-32.png` zu; `textureScale` = 1 für eigene Gebäude, sonst 2; `siteView.showPicture` setzt den Maßstab beim Zeigen. Test „Gebäude aus tools/gebaeude …“ in `buildingSprites.test.ts` (erst rot, dann grün). Register `data/assets.json`: die fünf Slots mit Präferenz 1 = neue PNG; `docs/assets/zuordnung-objekte.md` nachgezogen (alte Lücken-Zeilen entfernt).
+- AC-04 geprüft: `house-b.png` gelöscht, Eintrag in `public/grafik/index.json` entfernt; Test-Fixtures und Mock auf `house-c` umgestellt (`assetvorschauLogic.test.ts`, `mockAssets.ts`, `assets.test.ts`, `app_assets_test.go`, `register_test.go`; die beiden letzten über die Liste hinaus, gleiche Art Fixture). CREDITS bleibt (Pack wird weiter genutzt). Suche nach `house-b` ohne Treffer in Code, Daten und Tests. Abweichung: historische Belege behalten den Namen (`docs/funde/gr2-grafik-funde.html`, Entscheidung GR2.2, und die GEB2-Sprintdateien selbst); Umschreiben würde die Historie verfälschen.
+- Nebenbei: `zuordnung.test.ts` nimmt `grafik/gebaeude` wie `credits.test.ts` von der Credit-Pflicht aus (eigene Grafik).
+- Checks: `task check` und `task check:go` grün. `dev:test` rot, vorbestehend auf `develop` (GEB3–GEB7 als Entwurf ohne Sessions) → B-440.
+- Review (Sonnet-Agent): keine Befunde. Blick ins Spiel gehört GEB2.4.

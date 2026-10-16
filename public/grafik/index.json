@@ -331,13 +331,6 @@
  {
   "pack": "gothicvania-town",
   "group": "props-einzeln",
-  "file": "props-einzeln/house-b.png",
-  "w": 210,
-  "h": 244
- },
- {
-  "pack": "gothicvania-town",
-  "group": "props-einzeln",
   "file": "props-einzeln/house-c.png",
   "w": 221,
   "h": 183

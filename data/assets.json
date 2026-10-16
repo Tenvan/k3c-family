@@ -52,7 +52,7 @@
       "beschreibung": "Gebäude: workshop",
       "wahl": [
         {
-          "datei": "grafik/gothicvania-town/props-einzeln/house-b.png"
+          "datei": "grafik/gebaeude/werkstatt-32.png"
         }
       ]
     },
@@ -116,28 +116,44 @@
       "art": "grafik",
       "kategorie": "gebaeude",
       "beschreibung": "Gebäude: tavern",
-      "wahl": []
+      "wahl": [
+        {
+          "datei": "grafik/gebaeude/taverne-32.png"
+        }
+      ]
     },
     {
       "id": "healer",
       "art": "grafik",
       "kategorie": "gebaeude",
       "beschreibung": "Gebäude: healer",
-      "wahl": []
+      "wahl": [
+        {
+          "datei": "grafik/gebaeude/heilplatz-32.png"
+        }
+      ]
     },
     {
       "id": "smithy",
       "art": "grafik",
       "kategorie": "gebaeude",
       "beschreibung": "Gebäude: smithy",
-      "wahl": []
+      "wahl": [
+        {
+          "datei": "grafik/gebaeude/schmiede-32.png"
+        }
+      ]
     },
     {
       "id": "armory",
       "art": "grafik",
       "kategorie": "gebaeude",
       "beschreibung": "Gebäude: armory",
-      "wahl": []
+      "wahl": [
+        {
+          "datei": "grafik/gebaeude/ruestkammer-32.png"
+        }
+      ]
     },
     {
       "id": "greed",
