@@ -1,6 +1,7 @@
 package main
 
 import (
+	"bytes"
 	"encoding/json"
 	"fmt"
 	"image"
@@ -33,9 +34,19 @@ type baustein struct {
 	Fein     bool       `json:"fein,omitempty"`
 }
 
+// vorlage ist die Gebäude-Vorlage (Glossar): Absicht neben den Koordinaten, damit eine Session das Gebäude neu erzeugen kann.
+type vorlage struct {
+	Motiv       string   `json:"motiv"`
+	Teile       []string `json:"teile"`
+	Materialien []string `json:"materialien,omitempty"`
+	Stimmung    string   `json:"stimmung,omitempty"`
+	Fein        string   `json:"fein,omitempty"`
+}
+
 type building struct {
 	ID        string     `json:"id"`
 	Klasse    string     `json:"klasse,omitempty"` // z. B. "baum"; die Vorschau gruppiert danach
+	Vorlage   *vorlage   `json:"vorlage"`
 	Kacheln   kacheln    `json:"kacheln"`
 	Bausteine []baustein `json:"bausteine"`
 }
@@ -44,6 +55,7 @@ type eintrag struct {
 	ID      string            `json:"id"`
 	Klasse  string            `json:"klasse,omitempty"`
 	Kacheln kacheln           `json:"kacheln"`
+	Vorlage *vorlage          `json:"vorlage"`
 	Dateien map[string]string `json:"dateien"`
 }
 
@@ -170,13 +182,18 @@ func build(file, prefix string, out map[string]*image.Paletted) (eintrag, error)
 	if err != nil {
 		return eintrag{}, err
 	}
-	if err := json.Unmarshal(raw, &b); err != nil {
+	dec := json.NewDecoder(bytes.NewReader(raw))
+	dec.DisallowUnknownFields() // Tippfehler in Vorlage oder Bausteinen fallen auf
+	if err := dec.Decode(&b); err != nil {
+		return eintrag{}, fmt.Errorf("%s: %w", file, err)
+	}
+	if err := pruefeVorlage(b.Vorlage); err != nil {
 		return eintrag{}, fmt.Errorf("%s: %w", file, err)
 	}
 	if want := strings.TrimSuffix(filepath.Base(file), ".json"); b.ID != want {
 		return eintrag{}, fmt.Errorf("%s: id %q passt nicht zum Dateinamen", file, b.ID)
 	}
-	e := eintrag{ID: b.ID, Klasse: b.Klasse, Kacheln: b.Kacheln, Dateien: map[string]string{}}
+	e := eintrag{ID: b.ID, Klasse: b.Klasse, Kacheln: b.Kacheln, Vorlage: b.Vorlage, Dateien: map[string]string{}}
 	for _, d := range dichten {
 		img, err := render(b, d)
 		if err != nil {
@@ -187,6 +204,19 @@ func build(file, prefix string, out map[string]*image.Paletted) (eintrag, error)
 		e.Dateien[fmt.Sprint(d)] = prefix + name
 	}
 	return e, nil
+}
+
+// pruefeVorlage verlangt eine Vorlage mit Motiv und mindestens einem Teil (GEB8).
+func pruefeVorlage(v *vorlage) error {
+	switch {
+	case v == nil:
+		return fmt.Errorf("vorlage fehlt")
+	case strings.TrimSpace(v.Motiv) == "":
+		return fmt.Errorf("vorlage.motiv ist leer")
+	case len(v.Teile) == 0:
+		return fmt.Errorf("vorlage.teile ist leer")
+	}
+	return nil
 }
 
 func writePNG(path string, img image.Image) error {

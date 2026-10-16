@@ -1,6 +1,6 @@
 # GEB8.1 · Vorlage im Werkzeug und in allen acht Gebäude-JSONs
 
-- **Status:** in Arbeit
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** DEV
@@ -59,5 +59,7 @@ Keine manuellen Prüfungen in dieser Session.
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+2026-10-16, Claude (autonom, Ralf im Chat).
+- AC-01 geprüft: `tools/gebaeude` liest `vorlage` (`motiv`, `teile`, `materialien`, `stimmung`, `fein`), verlangt `motiv` und `teile`, liest die Datei mit `DisallowUnknownFields` (unbekannte Felder → Abbruch mit Feldname) und schreibt die Vorlage ins `index.json`. Tests: `TestVorlagePflicht` (fehlt, Motiv leer, Teile leer, unbekanntes Feld; erst rot, dann grün), `TestRunSchreibtIndexMitKlasse` prüft die Übernahme, `TestEchteVorlagen` baut alle Gebäude-JSONs des Repos und prüft die Materialnamen gegen § 3. Format in Regeldatei § 5, Ablauf § 9 („Vorlage zuerst“).
+- AC-02 geprüft: alle acht JSONs (Werkstatt, Tanne, Pappel, Birke, Taverne, Heilplatz, Schmiede, Rüstkammer) tragen ihre Vorlage, abgeleitet aus Bausteinen, PNG-Sichtung und Sprint-Doku; PNG-md5 vor/nach gleich.
+- Checks: `task check` und `task check:go` grün. Review (Sonnet-Agent): keine schweren Befunde; leichte behoben (Materialnamen exakt nach § 3, Lage der Wasserschale, Test über echte Dateien). Nicht übernommen: Holz für Baumstämme in `materialien` (Stamm ist kaum sichtbar).

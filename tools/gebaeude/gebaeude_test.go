@@ -95,7 +95,7 @@ func TestDeterministisch(t *testing.T) {
 
 func TestRunSchreibtIndexMitKlasse(t *testing.T) {
 	dir := t.TempDir()
-	src := `{"id":"tanne","klasse":"baum","kacheln":{"b":1,"h":1},"bausteine":[{"art":"krone","rechteck":[0,0,1,1],"farbe":"dell"}]}`
+	src := `{"id":"tanne","klasse":"baum","vorlage":{"motiv":"schmale Tanne","teile":["Kegel"]},"kacheln":{"b":1,"h":1},"bausteine":[{"art":"krone","rechteck":[0,0,1,1],"farbe":"dell"}]}`
 	if err := os.WriteFile(filepath.Join(dir, "tanne.json"), []byte(src), 0o644); err != nil {
 		t.Fatal(err)
 	}
@@ -106,7 +106,7 @@ func TestRunSchreibtIndexMitKlasse(t *testing.T) {
 		t.Fatalf("run: %d, %v", n, err)
 	}
 	idx, err := os.ReadFile(filepath.Join(dir, "index.json"))
-	if err != nil || !strings.Contains(string(idx), `"klasse": "baum"`) || !strings.Contains(string(idx), "grafik/gebaeude/tanne-16.png") {
+	if err != nil || !strings.Contains(string(idx), `"klasse": "baum"`) || !strings.Contains(string(idx), "grafik/gebaeude/tanne-16.png") || !strings.Contains(string(idx), `"motiv": "schmale Tanne"`) {
 		t.Fatalf("index.json: %s %v", idx, err)
 	}
 	if _, err := os.Stat(filepath.Join(dir, "alt-32.png")); !os.IsNotExist(err) {

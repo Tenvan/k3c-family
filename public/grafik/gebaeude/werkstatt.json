@@ -1,5 +1,26 @@
 {
   "id": "werkstatt",
+  "vorlage": {
+    "motiv": "Offener Handelsstand der Werkstatt mit gestreiftem Tuchdach und Werkzeuggestell rechts",
+    "teile": [
+      "Holzwand mit senkrechten Planken hinter dem Stand, 4 Kacheln breit",
+      "Pfosten links und rechts, Balken oben über die ganze Standbreite",
+      "Tuchdach aus 8 Bahnen im Wechsel rot und hell, mit Volant darunter",
+      "Wandschild mittig mit Hammer-Zeichen",
+      "Tresen über die ganze Breite vorn, mit heller Oberkante und Planken",
+      "Kiste rechts auf dem Tresen, Werkzeug links darauf",
+      "Gestell rechts neben dem Stand (ca. 1,5 Kacheln breit) mit Hämmern oben und Bögen unten, abholbereit"
+    ],
+    "materialien": [
+      "Holz (Wand, Tresen, Gestell)",
+      "Pfosten, Balken",
+      "Stoff rot",
+      "Stoff hell",
+      "Metall (Werkzeug)"
+    ],
+    "stimmung": "Markttag, warm und handwerklich, Stilvorlage aller Gebäude",
+    "fein": "Plankenfugen, Faltenlicht im Tuch, Werkzeug auf Tresen und Gestell, Schild-Zeichen"
+  },
   "kacheln": { "b": 6, "h": 4 },
   "bausteine": [
     {"art":"wand","rechteck":[0.25,1.25,3.75,2.375],"farbe":"rope"},

@@ -1,6 +1,19 @@
 {
   "id": "tanne",
   "klasse": "baum",
+  "vorlage": {
+    "motiv": "Schmale Tanne, 1 Kachel breit, als Teil einer überlappenden Baumreihe",
+    "teile": [
+      "Kegelförmige Krone in Stufen, oben spitz, unten fast kachelbreit",
+      "Lichtkante links an jeder Stufe, Schattenkante rechts",
+      "Kurzer Stamm unten mittig, kaum sichtbar"
+    ],
+    "materialien": [
+      "Nadeln (Tanne)"
+    ],
+    "stimmung": "dunkler Nadelwald, kühl",
+    "fein": "keine"
+  },
   "kacheln": { "b": 1, "h": 2.25 },
   "bausteine": [
     {"art":"stamm","rechteck":[0.4375,1.9375,0.125,0.3125],"farbe":"oiled-cedar"},

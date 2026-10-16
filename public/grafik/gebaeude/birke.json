@@ -1,6 +1,20 @@
 {
   "id": "birke",
   "klasse": "baum",
+  "vorlage": {
+    "motiv": "Birke mit weißem Stamm und lockerer runder Krone, 1 Kachel breit, als Teil einer überlappenden Baumreihe",
+    "teile": [
+      "Runde, lockere Krone in der oberen Hälfte mit einzelnen dunklen Blättern",
+      "Lichtkante links oben an der Krone",
+      "Weißer Stamm mittig bis zum Boden mit dunklen Querstrichen"
+    ],
+    "materialien": [
+      "Laub (Pappel, Birke)",
+      "Birkenrinde"
+    ],
+    "stimmung": "licht und leicht",
+    "fein": "Querstriche auf der Rinde"
+  },
   "kacheln": { "b": 1, "h": 2.25 },
   "bausteine": [
     {"art":"stamm","rechteck":[0.40625,0.75,0.1875,1.5],"farbe":"white"},

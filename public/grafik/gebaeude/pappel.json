@@ -1,6 +1,19 @@
 {
   "id": "pappel",
   "klasse": "baum",
+  "vorlage": {
+    "motiv": "Hohe schmale Pappel, 1 Kachel breit, als Teil einer überlappenden Baumreihe",
+    "teile": [
+      "Spindelförmige Krone fast über die ganze Höhe, oben und unten spitz zulaufend",
+      "Lichtflecken links, Schatten rechts",
+      "Schmaler Stamm unten mittig"
+    ],
+    "materialien": [
+      "Laub (Pappel, Birke)"
+    ],
+    "stimmung": "helles, frisches Grün",
+    "fein": "keine"
+  },
   "kacheln": { "b": 1, "h": 2.25 },
   "bausteine": [
     {"art":"stamm","rechteck":[0.4375,1.8125,0.125,0.4375],"farbe":"oiled-cedar"},

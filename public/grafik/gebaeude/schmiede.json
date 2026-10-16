@@ -1,5 +1,26 @@
 {
   "id": "schmiede",
+  "vorlage": {
+    "motiv": "Schmiede unter Holz-Vordach mit Esse und Glut links, Amboss in der Mitte",
+    "teile": [
+      "Holz-Rückwand mit Planken rechts unter dem Vordach, Werkzeug an Haken",
+      "Zwei Pfosten und ein Brettervordach über die ganze Breite",
+      "Kamin aus Stein links, ragt durch das Vordach",
+      "Gemauerte Esse links unten mit dunkler Öffnung, Glut und Funken",
+      "Amboss auf Holzklotz in der Mitte, Hammer darauf",
+      "Wassertrog rechts vorn"
+    ],
+    "materialien": [
+      "Holz (Wand, Tresen, Gestell)",
+      "Pfosten, Balken",
+      "Stein (Kamin, Esse, Sockel, Stufe)",
+      "Glut",
+      "Eisen (Rüstung, Band)",
+      "Wasser (Schale, Trog)"
+    ],
+    "stimmung": "heiß und rußig, Glut als einziger Farbtupfer",
+    "fein": "Werkzeug an der Wand, Steinfugen, Funken, Hammer, Trogreifen"
+  },
   "kacheln": { "b": 6, "h": 4 },
   "bausteine": [
     {"art":"wand","rechteck":[2,1.1875,3.625,2.6875],"farbe":"rope"},
