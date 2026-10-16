@@ -12,7 +12,13 @@ nur mit Zustimmung von 🧑.
 | Klasse | Breite × Höhe (Kacheln) | Beleg |
 |---|---|---|
 | Handelsstand / kleines Gebäude | 6 × 4 | Werkstatt (`workshop`), Taverne (`tavern`), Heilplatz (`healer`), Schmiede (`smithy`), Rüstkammer (`armory`) (GEB2); Lager (`storage`), Kaserne (`barracks`) in Stein (GEB5) |
-| Baum (schmal) | 1 × 2,25 | Tanne, Pappel, Birke (GEB1.3) |
+| Baum (schmal) | 1 × 2,25 | Tanne, Pappel, Birke (GEB1.3); je Art Form 2 und 3 (`tanne-2` … `birke-3`, Looks Wald und Höhle, GEB6.1) |
+| Busch | 1 × 1 | `busch.json` (GEB6.1) |
+| Truhe (offen, mit Gold) | 1 × 1 | `truhe.json` (GEB6.4) |
+| Portal, Ausgang (statisch, ohne Stufen) | 2 × 3 | `portal.json`, `ausgang.json` (GEB6.4); Portal mit leuchtender Kristallfläche, Ausgang mit dunkler Öffnung und Holzrahmen |
+| Rekrutierungslager (Zelt und Feuerstelle, statisch) | 3 × 2 | `rekrutierungslager.json` (GEB6.4) |
+| Ader (Stufen 1–4 = Stein, Kupfer, Eisen, Kristall) | 2 × 2 | `ader.json` (GEB6.3); Felsbuckel mit Erzgang, Stein-Ader in `pancho`/`white`, die nur im Gang vorkommt |
+| Fels (Looks Wald, Höhle, Mine), Erzbrocken (Look Mine) | 1 × 1 | `felsen.json`, `erzbrocken.json` (GEB6.2); Licht auf Stein ist `topaz` (heller als `dim-gray`), Risse in Höhle und Mine `black` |
 | Mauer (Stufen 1–5) | 1 × 5 | `mauer.json` (GEB3) |
 | Turm (Stufen 1–5) | 3 × 8 | `turm.json` (GEB3) |
 | Hintergrundmauer (Stufen 1–5, kachelbar) | 1 × 4 | `hintergrundmauer.json` (GEB3, B-442) |
@@ -55,6 +61,12 @@ nur mit Zustimmung von 🧑.
 | Eisen hell (Mauer-, Turmstufe 4) | `heather` | `light-steel` | `dim-gray`, Fuge `valhalla` |
 | Kristall (Mauer-, Turmstufe 5) | `royal-blue` | `cornflower`, Glanz `white` | `deep-koamaru`, leuchtende Fuge `viking` |
 | Stoff blau (Decke) | `cornflower` | `viking` | `royal-blue` (Falte) |
+| Fels (Felsen, Erzbrocken) = Stein | `dim-gray` | `smokey-ash` | Fuge `valhalla` (fein) |
+| Zelttuch (Lager) = Stoff hell | `pancho` | `white` (Falte) | `twine` |
+| Erde (Wurzeln, Hügelrand) = Pfosten, Balken | `oiled-cedar` | `rope` | – |
+| Gold (Truhe) = Glut | `tahiti-gold` | `golden-fizz` | `brown` |
+
+Die vier letzten Zeilen (GEB6.1) sind Verweise auf vorhandene Materialien, neu ist nur der Name; sie gelten als Annahme, bis 🧑 die Offene Frage 4 aus GEB6 beantwortet (andere Antwort: Zeilen hier und die Farben in `felsen`, `erzbrocken`, `ader`, `truhe`, `rekrutierungslager` ändern, `task gebaeude` neu laufen lassen).
 
 Zeichen am Gebäude sind Motive, keine Schutzzeichen: Das Heil-Zeichen ist ein **grünes** Kreuz (`christi`, Licht `atlantis`).
 
@@ -101,8 +113,11 @@ Rüstkammer: `sockel`, `scharte`, `tor`, `band`, `niete`, `staender`, `helm`, `r
 ### Bäume
 
 Schmal, 1 Kachel breit, 2,25 Kacheln hoch, Stamm mittig (x 14–18 px Master). Sie stehen als kleiner Wald in Reihen mit
-**½ Kachel Abstand**, überlappend, von links nach rechts gezeichnet (Vorschau: `baumReihe`). Varianten je Art und
-Level-Paletten folgen später (B-435 › Beispiele).
+**½ Kachel Abstand**, überlappend, von links nach rechts gezeichnet (Vorschau: `baumReihe`). Je Art gibt es **drei
+Formen** (GEB6.1): Form 1 sind `tanne`, `pappel`, `birke` (unverändert, nur Wald-Look, Dateinamen stabil), Form 2 und 3
+sind eigene JSONs mit unterscheidbarem Umriss (`tanne-2` breit mit tiefen Ästen, `tanne-3` schlank mit schiefer Spitze,
+`pappel-2` schmal mit Lücken, `pappel-3` mit Zwiegabel, `birke-2` mit hängenden Zweigen, `birke-3` niedriger und breiter).
+Der **Busch** (`busch`) ist 1 × 1, nur im Wald.
 
 ## 6. Ausbaustufen
 
@@ -127,6 +142,16 @@ sich gegenüber der Grundform ändert:
 - Ausgabe `<id>-<stufe>-<dichte>.png` für alle Stufen einschließlich 1; `index.json` führt `stufen` mit Nummer,
   Änderung (Stufe 1: „Grundform“) und Dateien, `dateien` des Eintrags zeigt die Grundform.
 - Gebäude ohne `stufen` bleiben bei `<id>-<dichte>.png`.
+
+**Biom-Look bei Natur-Objekten (GEB6, Annahme, 🧑 hat mit der Freigabe zugestimmt):** Bei Objekten der Welt (Bäume,
+Busch, Fels, Erzbrocken) bedeutet die **Stufe den Look**, nicht den Ausbau: Stufe 1 = Wald (Grundform), 2 = Höhle,
+3 = Mine; `aenderung` nennt den Look („Höhle: kühleres, dunkleres Laub“). Ein Look ist ein Farbtausch derselben
+Quelle, keine zweite Zeichnung. Ein Objekt hat nur die Looks der Biome, in denen es steht: Bäume Wald und Höhle (Mine
+zeigt den Look Höhle), Busch nur Wald, Fels Wald, Höhle und Mine; Biome ohne eigenen Look (Eisenstollen,
+Kristallhöhle) zeigen Mine, begrenzt auf den höchsten Look des Objekts. Der Höhle-Look der Bäume: Laub eine Stufe
+dunkler und kühler (`christi` → `elf-green`, `atlantis` → `christi`, `dell` → `opal`), Nadeln `elf-green` → `opal`,
+`christi` → `elf-green`, `opal` → `deep-koamaru`, Stämme eine Stufe dunkler. Bei **Adern** (`ader`) bedeutet die Stufe
+das **Material** (1 Stein, 2 Kupfer, 3 Eisen, 4 Kristall), nicht das Biom.
 
 ## 7. Dichte-Regel
 

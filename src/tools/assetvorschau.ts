@@ -11,7 +11,7 @@ import { clientLog } from '../core/clientLog';
 import { UNIT_PX as UNIT } from '../core/constants';
 import { installPageChrome } from '../core/shell';
 import {
-  baumReihe, figureCard, gebaeudeKarten, GRAFIK_SCALE, licenseFlag, parseQuery, resolveSlot, SCENES, slotsOf, kachelAnzahl, stufenKarten, vorlageZeilen,
+  baumDatei, baumReihe, figureCard, gebaeudeKarten, GRAFIK_SCALE, licenseFlag, parseQuery, resolveSlot, SCENES, slotsOf, kachelAnzahl, stufenKarten, vorlageZeilen,
   type AssetSlot, type GebaeudeEintrag, type Query, type Resolved, type SceneId,
 } from './assetvorschauLogic';
 import { CREDITS } from './credits';
@@ -144,6 +144,7 @@ async function renderNeueGebaeude(): Promise<void> {
   strip.style.alignItems = 'flex-start'; // Bilder per Rand auf eine Bodenlinie, Vorlagen-Text fließt darunter
   const byId = new Map(index.map((e) => [e.id, e]));
   if (baumReihe(index).length > 0) strip.append(baumFigur(index, 32), baumFigur(index, 16));
+  if (baumReihe(index, undefined, 2).length > 0) strip.append(baumFigur(index, 32, 2)); // Look Höhle (Stufe 2, GEB6.1)
   for (const k of gebaeudeKarten(index)) {
     const n = kachelAnzahl(byId.get(k.id)!);
     const fig = bildKarte(k.datei, k.scale, `${k.id} · ${k.dichte} px ×${k.scale}`, index, n);
@@ -197,12 +198,12 @@ function vorlageBlock(fig: HTMLElement, e: GebaeudeEintrag): void {
 }
 
 /** Überlappende Baum-Reihe in Dichte d, auf 32 px je Kachel skaliert (GEB1/AC-05). */
-function baumFigur(index: readonly GebaeudeEintrag[], d: number): HTMLElement {
-  const reihe = baumReihe(index);
+function baumFigur(index: readonly GebaeudeEintrag[], d: number, stufe = 1): HTMLElement {
+  const reihe = baumReihe(index, undefined, stufe);
   const byId = new Map(index.map((e) => [e.id, e]));
   const fig = document.createElement('figure');
   const cap = document.createElement('figcaption');
-  cap.textContent = `${reihe.map((b) => b.id).join(', ')} · ${d} px ×${UNIT / d}`;
+  cap.textContent = `${reihe.map((b) => b.id).join(', ')} · ${stufe === 2 ? 'Look Höhle · ' : ''}${d} px ×${UNIT / d}`;
   fig.append(cap);
   const hoehe = Math.max(...reihe.map((b) => byId.get(b.id)!.kacheln.h));
   const canvas = document.createElement('canvas');
@@ -216,7 +217,7 @@ function baumFigur(index: readonly GebaeudeEintrag[], d: number): HTMLElement {
     img.onerror = () => fail(new Error(src));
     img.src = src;
   });
-  void Promise.all(reihe.map((b) => load(byId.get(b.id)!.dateien[d]!)))
+  void Promise.all(reihe.map((b) => load(baumDatei(byId.get(b.id)!, stufe, d)!)))
     .then((imgs) => imgs.forEach((img, i) => {
       const e = byId.get(reihe[i]!.id)!;
       g.drawImage(img, reihe[i]!.x * UNIT, (hoehe - e.kacheln.h) * UNIT, e.kacheln.b * UNIT, e.kacheln.h * UNIT);
