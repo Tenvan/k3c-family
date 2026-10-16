@@ -1,6 +1,6 @@
 # GEB3.6 · Hintergrundmauer 1 bis 5 als Grafik
 
-- **Status:** in Arbeit
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** DEV
@@ -61,5 +61,8 @@ Keine manuellen Prüfungen; die Sichtprüfung gehört GEB3.5.
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+2026-10-16, Claude (autonom, Ralf im Chat).
+- AC-07 umgesetzt und geprüft: `hintergrundmauer.json` (`klasse: kachel`, 1 × 4 Kacheln, Vorlage, Stufen 2–5 mit den Farbstufen der Mauer, je eine Stufe dunkler, damit sie zurücktritt; zwei Zinnen je Kachel, keine Seitenkanten, Stoßfugen ab Stufe 2 nie auf der Naht). `hintergrundmauer-<n>-32.png` je 32 × 128 px plus 16/64/128; zweiter Lauf md5-gleich; ältere PNGs unverändert. Go-Test `TestHintergrundmauerKachelbar`: erste = letzte Pixelspalte in allen 5 Stufen × 4 Dichten (20 Bilder).
+- Vorschau: `kachelAnzahl` (Vitest) – kachelbare Grafik erscheint dreimal nebeneinander, auch in der Stufenreihe.
+- Regeldatei: § 1 Maße, § 4 Baustein `kante`, § 5 Klasse `kachel` und was kachelbar heißt.
+- Checks: `task check` grün; `task check:go` grün (ein Lauf scheiterte vorher an einer Windows-Dateisperre in `engine/store`, ohne Bezug zu dieser Session; Wiederholung grün). Review (Sonnet-Agent): keine schweren Befunde; übernommen: Stoßfugen enden unter der Oberkante, Test prüft die Zahl der Bilder.

@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { baumReihe, figureCard, gebaeudeKarten, stufenKarten, vorlageZeilen, licenseFlag, parseQuery, resolveSlot, SCENES, slotsOf, type AssetSlot, type GebaeudeEintrag } from './assetvorschauLogic';
+import { baumReihe, figureCard, gebaeudeKarten, kachelAnzahl, stufenKarten, vorlageZeilen, licenseFlag, parseQuery, resolveSlot, SCENES, slotsOf, type AssetSlot, type GebaeudeEintrag } from './assetvorschauLogic';
 
 const farm: AssetSlot = {
   id: 'farm', art: 'grafik', kategorie: 'gebaeude', beschreibung: 'Farm',
@@ -126,5 +126,13 @@ describe('Asset-Vorschau: Stufenreihe (GEB3/AC-01)', () => {
 
   it('ohne Stufen keine Karten', () => {
     expect(stufenKarten({ id: 'x', kacheln: { b: 1, h: 1 }, dateien: {} })).toEqual([]);
+  });
+});
+
+describe('Asset-Vorschau: kachelbare Grafik (GEB3/AC-07)', () => {
+  it('Hintergrundmauer dreimal nebeneinander, andere Gebäude einmal', () => {
+    expect(kachelAnzahl({ klasse: 'kachel' })).toBe(3);
+    expect(kachelAnzahl({ klasse: 'baum' })).toBe(1);
+    expect(kachelAnzahl({})).toBe(1);
   });
 });

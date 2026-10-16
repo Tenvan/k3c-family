@@ -63,6 +63,90 @@
     }
   },
   {
+    "id": "hintergrundmauer",
+    "klasse": "kachel",
+    "kacheln": {
+      "b": 1,
+      "h": 4
+    },
+    "vorlage": {
+      "motiv": "Hintergrundmauer zwischen zwei Mauern, 1 Kachel breit und 4 hoch, nahtlos in der Breite kachelbar; dunkler als die Mauer, damit sie zurücktritt",
+      "teile": [
+        "Zwei Zinnen oben je Kachel, Lücken gleich breit auch über die Naht",
+        "Mauerkörper über die ganze Breite ohne Seitenkanten, helle Oberkante",
+        "Waagrechte Bohlen (ab Stufe 2 Quader mit versetzten Stoßfugen)",
+        "Dunkler Sockel unten"
+      ],
+      "materialien": [
+        "Holz (Wand, Tresen, Gestell)",
+        "Stein (Kamin, Esse, Sockel, Stufe)",
+        "Kupfer (Mauer-, Turmstufe 3)",
+        "Eisen hell (Mauer-, Turmstufe 4)",
+        "Kristall (Mauer-, Turmstufe 5)"
+      ],
+      "stimmung": "ruhig und zurückhaltend, Farbstufen wie die Mauer, eine Stufe dunkler",
+      "fein": "Bohlen- und Quaderfugen, Nieten, Glanzpunkte"
+    },
+    "dateien": {
+      "128": "grafik/gebaeude/hintergrundmauer-1-128.png",
+      "16": "grafik/gebaeude/hintergrundmauer-1-16.png",
+      "32": "grafik/gebaeude/hintergrundmauer-1-32.png",
+      "64": "grafik/gebaeude/hintergrundmauer-1-64.png"
+    },
+    "stufen": [
+      {
+        "stufe": 1,
+        "aenderung": "Grundform",
+        "dateien": {
+          "128": "grafik/gebaeude/hintergrundmauer-1-128.png",
+          "16": "grafik/gebaeude/hintergrundmauer-1-16.png",
+          "32": "grafik/gebaeude/hintergrundmauer-1-32.png",
+          "64": "grafik/gebaeude/hintergrundmauer-1-64.png"
+        }
+      },
+      {
+        "stufe": 2,
+        "aenderung": "Stein: dunkelgraue Quader mit versetzten Stoßfugen statt Holzbohlen",
+        "dateien": {
+          "128": "grafik/gebaeude/hintergrundmauer-2-128.png",
+          "16": "grafik/gebaeude/hintergrundmauer-2-16.png",
+          "32": "grafik/gebaeude/hintergrundmauer-2-32.png",
+          "64": "grafik/gebaeude/hintergrundmauer-2-64.png"
+        }
+      },
+      {
+        "stufe": 3,
+        "aenderung": "Kupfer: gedämpft kupferbraune Platten, einzelne Patina-Tupfen",
+        "dateien": {
+          "128": "grafik/gebaeude/hintergrundmauer-3-128.png",
+          "16": "grafik/gebaeude/hintergrundmauer-3-16.png",
+          "32": "grafik/gebaeude/hintergrundmauer-3-32.png",
+          "64": "grafik/gebaeude/hintergrundmauer-3-64.png"
+        }
+      },
+      {
+        "stufe": 4,
+        "aenderung": "Eisen: mattgraue Stahlplatten, ein durchgehendes dunkles Querband mit Nieten",
+        "dateien": {
+          "128": "grafik/gebaeude/hintergrundmauer-4-128.png",
+          "16": "grafik/gebaeude/hintergrundmauer-4-16.png",
+          "32": "grafik/gebaeude/hintergrundmauer-4-32.png",
+          "64": "grafik/gebaeude/hintergrundmauer-4-64.png"
+        }
+      },
+      {
+        "stufe": 5,
+        "aenderung": "Kristall: dunkelblaue Kristallblöcke mit blauen Fugen und wenigen Glanzpunkten, ohne Leuchten (tritt hinter die Mauer zurück)",
+        "dateien": {
+          "128": "grafik/gebaeude/hintergrundmauer-5-128.png",
+          "16": "grafik/gebaeude/hintergrundmauer-5-16.png",
+          "32": "grafik/gebaeude/hintergrundmauer-5-32.png",
+          "64": "grafik/gebaeude/hintergrundmauer-5-64.png"
+        }
+      }
+    ]
+  },
+  {
     "id": "mauer",
     "kacheln": {
       "b": 1,

@@ -15,6 +15,7 @@ nur mit Zustimmung von 🧑.
 | Baum (schmal) | 1 × 2,25 | Tanne, Pappel, Birke (GEB1.3) |
 | Mauer (Stufen 1–5) | 1 × 5 | `mauer.json` (GEB3) |
 | Turm (Stufen 1–5) | 3 × 8 | `turm.json` (GEB3) |
+| Hintergrundmauer (Stufen 1–5, kachelbar) | 1 × 4 | `hintergrundmauer.json` (GEB3, B-442) |
 | weitere Gebäude | legt der jeweilige GEB-Sprint fest, hier nachtragen | B-435 › Notizen |
 
 ## 2. Palette und Licht
@@ -57,7 +58,7 @@ Ein Gebäude ist eine Liste von Rechtecken in Zeichenreihenfolge (hinten zuerst)
 `schatten`, `schild`, `zeichen`, `pfosten`, `balken`, `tuch`, `volant`, `falte`, `tresen`, `kiste`, `gestell`,
 `werkzeug`; Taverne: `kamin`, `dach`, `schindel`, `fenster`, `glas`, `sprosse`, `tuer`, `beschlag`, `stufe`, `ausleger`,
 `kette`, `krug`, `fass`, `reifen`; Heilplatz: `kraut`, `schnur`, `liege`, `kissen`, `decke`, `schale`, `wasser`, `korb`, `flechtung`; Mauer und Turm: `zinne`, `wand`, `bruestung`, `konsole`, `schaft`, `scharte`, `tuerrahmen`, `tuer`, `sockel`,
-`patina`, `band`, `niete`, `glanz`, `kristall`, `aura`, `runenband`, `rune`; Schmiede: `haken`, `esse`, `oeffnung`, `glut`, `funke`, `klotz`, `amboss`, `hammer`, `trog`;
+`patina`, `band`, `niete`, `glanz`, `kristall`, `aura`, `runenband`, `rune`, `kante` (Hintergrundmauer); Schmiede: `haken`, `esse`, `oeffnung`, `glut`, `funke`, `klotz`, `amboss`, `hammer`, `trog`;
 Rüstkammer: `sockel`, `scharte`, `tor`, `band`, `niete`, `staender`, `helm`, `ruestung`, `wappen`, `speer`, `regal`; Bäume: `stamm`, `krone`, `licht`, `strich`, `blatt`. Die Art dient der Lesbarkeit und späteren Zusätzen; gezeichnet wird nur Rechteck und Farbe.
 
 ## 5. Datenformat
@@ -86,7 +87,9 @@ Rüstkammer: `sockel`, `scharte`, `tor`, `band`, `niete`, `staender`, `helm`, `r
   annähernd gleich neu zu erzeugen. Fehlt sie, ist `motiv` oder `teile` leer oder steht ein unbekanntes Feld in der
   Datei, bricht `task gebaeude` ab. `index.json` übernimmt sie.
 - `rechteck` = `[x, y, b, h]` in Kacheln, Ursprung oben links. Dateiname = `id` + `.json`.
-- `klasse` (optional) gruppiert in der Vorschau; `baum` = Teil der Baum-Reihe.
+- `klasse` (optional) gruppiert in der Vorschau; `baum` = Teil der Baum-Reihe; `kachel` = in der Breite nahtlos kachelbar
+  (Vorschau zeigt drei Kacheln nebeneinander). Kachelbar heißt: keine Seitenkanten, Muster periodisch über die Breite,
+  erste und letzte Pixelspalte gleich (Go-Test `TestHintergrundmauerKachelbar`).
 - `fein: true` markiert Details, die bei gröberer Dichte entfallen (Werkzeuge, Faltenlicht, Plankenfugen).
 
 ### Bäume

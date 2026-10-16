@@ -137,6 +137,11 @@ export interface GebaeudeEintrag {
   stufen?: { stufe: number; aenderung: string; dateien: Record<string, string> }[];
 }
 
+/** Kacheln nebeneinander in der Vorschau: kachelbare Grafik (`klasse: kachel`, z. B. Hintergrundmauer) dreimal, damit die Naht sichtbar wird (GEB3/AC-07). */
+export function kachelAnzahl(e: Pick<GebaeudeEintrag, 'klasse'>): number {
+  return e.klasse === 'kachel' ? 3 : 1;
+}
+
 /** Karten der Stufenreihe: jede Stufe ab 2 in 32 px mit ihrer Änderung; Stufe 1 zeigt die Hauptkarte (GEB3/AC-01). */
 export function stufenKarten(e: GebaeudeEintrag): { id: string; stufe: number; datei: string; aenderung: string }[] {
   return (e.stufen ?? []).filter((s) => s.stufe > 1 && s.dateien[32]).map((s) => ({ id: e.id, stufe: s.stufe, datei: s.dateien[32]!, aenderung: s.aenderung }));
