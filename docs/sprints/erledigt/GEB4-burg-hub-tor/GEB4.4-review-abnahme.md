@@ -1,6 +1,6 @@
 # GEB4.4 · Review und Abnahme
 
-- **Status:** in Arbeit
+- **Status:** fertig
 - **Typ:** Review
 - **Agent:** autonom
 - **Domäne:** CLI
@@ -53,7 +53,8 @@ Manuelle Prüfung im Browser-Pane nur mit Freigabe von 🧑 für diesen Lauf.
 
 ## Ergebnis
 
-2026-10-16, Claude (Ralf im Chat), Zwischenstand.
+2026-10-16, Claude (Ralf im Chat).
 - `task check` und `task check:go` grün; Sprint-Diff gegen `origin/sprint/geb3` ohne schwere Befunde (keine älteren PNGs geändert, kein Zufall, alle Dateien ≤ 400 Zeilen; Reviews GEB4.1–GEB4.3 eingearbeitet).
-- Sichtprüfung: Ralf hat für diesen Lauf nur die Vorschau freigegeben. Claude hat `assetvorschau.html?szene=gebaeude` (Port 5183 seit #309) mit Burg 1–5 und Tor 1–5 gezeigt; Ralf: **Vorschau abgenommen**, Spiel offen (prüft Ralf selbst; Spielserver und Vite laufen).
-- Offen: AC-03 Teil Spiel, danach Abnahme-Abschnitt, Sprint abschließen, PR. Hinweis: Die Burg ist mit 8 Kacheln schmaler als der alte Aufbau (etwa 10).
+- AC-03 geprüft: Claude hat die Vorschau im Browser-Pane gezeigt (Burg 1–5, Tor 1–5, Port 5183 seit #309). Ralf hat die Vorschau abgenommen, das Spiel selbst geprüft und ebenfalls abgenommen (Chat, 2026-10-16).
+- AC-01, AC-02, AC-04–AC-06: Nachweise in GEB4.1–GEB4.3 geprüft.
+- Arbeitsweise: GEB4.2 lief durch den Lead; GEB4.3 und die Planung von GEB5 liefen im Team „geb4-geb5“ (oh-my-claudecode) mit Review durch einen getrennten Agenten, Commits nur durch den Lead.

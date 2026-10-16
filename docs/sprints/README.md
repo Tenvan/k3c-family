@@ -9,7 +9,6 @@ Die Reihenfolge der Arbeit ist allein der Projekt-Rang: [`../projekte/README.md`
 
 | Sprint | Domäne | Projekt | Thema | Am Ende sichtbar | Ordner |
 |---|---|---|---|---|---|
-| GEB4 | DEV, CLI | GEB | Burg und Hub-Stufen 1 bis 5, Tor | – | `aktiv/GEB4-burg-hub-tor/` |
 | GR7 | CLI | GRA | Figuren-Lücken, ganzzahlige Skalierung und Schrift | – | `aktiv/GR7-figuren-schrift/` |
 | SO4 | CLI | SND | Musik je Zustand | – | `aktiv/SO4-musik/` |
 
@@ -182,3 +181,4 @@ Gesamtplan und Begründung: [`../plan-weiterentwicklung.md`](../plan-weiterentwi
 | GEB2 | Gebäude ohne Grafik: Taverne, Heilplatz, Schmiede, Rüstkammer | `erledigt/GEB2-luecken-gebaeude/` |
 | GEB8 | Gebäude-Vorlagen in den Daten-JSONs | `erledigt/GEB8-gebaeude-vorlagen/` |
 | GEB3 | Mauer und Turm, Stufen 1 bis 5 | `erledigt/GEB3-mauer-turm-stufen/` |
+| GEB4 | Burg und Hub-Stufen 1 bis 5, Tor | `erledigt/GEB4-burg-hub-tor/` |

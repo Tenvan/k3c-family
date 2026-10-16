@@ -1,6 +1,6 @@
 # GEB4 · DEV, CLI · Burg und Hub-Stufen 1 bis 5, Tor
 
-- **Status:** aktiv
+- **Status:** erledigt
 - **Projekt:** GEB
 - **Domäne:** DEV, CLI
 - **Reife:** bereit
@@ -76,7 +76,7 @@ Lager, Farm, Kaserne, Treppen (GEB5); Natur und Objekte (GEB6); Animationen (Ban
 | GEB4.1 | `GEB4.1-burg-stufen.md` | Umsetzung | autonom | fertig |
 | GEB4.2 | `GEB4.2-tor-stufen.md` | Umsetzung | autonom | fertig |
 | GEB4.3 | `GEB4.3-burg-tor-spiel.md` | Umsetzung | autonom | fertig |
-| GEB4.4 | `GEB4.4-review-abnahme.md` | Review | autonom | in Arbeit |
+| GEB4.4 | `GEB4.4-review-abnahme.md` | Review | autonom | fertig |
 
 - GEB4.1 (DEV) Burg 8 × 9 mit Hub-Stufen 1–5 (AC-01, AC-04).
 - GEB4.2 (DEV) Tor 2 × 4 in den Stufen 1–5 (AC-02, AC-04).
@@ -85,5 +85,7 @@ Lager, Farm, Kaserne, Treppen (GEB5); Natur und Objekte (GEB6); Animationen (Ban
 
 ## Abnahme
 
-Wird von der Review-Session (Doku-Sprint: letzte Session) ausgefüllt, höchstens fünf Zeilen: Datum, Kriterien
-(Verweis auf Session-Ergebnisse), behobene Befunde, neue Tickets. Bis dahin `–`.
+2026-10-16 (GEB4.4): `task check` und `task check:go` grün; Reviews ohne offene schwere Befunde.
+AC-01, AC-04 (GEB4.1, GEB4.2), AC-02 (GEB4.2), AC-05, AC-06 (GEB4.3) geprüft; AC-03 von Ralf im Chat abgenommen (Vorschau und Spiel).
+Behoben nebenbei: Die Burg wechselte vorher nie mit der Hub-Stufe. Basis war `sprint/geb3` (#310 noch offen); GEB5 wurde im selben Lauf bereit gemacht.
+Neue Tickets: keine. Versionsvorschlag: Minor (neue Burg und Tor im Spiel).
