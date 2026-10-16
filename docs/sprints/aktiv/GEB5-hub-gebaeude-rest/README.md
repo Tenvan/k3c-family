@@ -1,14 +1,14 @@
 # GEB5 · DEV, CLI · Lager, Farm mit Plantage, Kaserne, Treppen
 
-- **Status:** geplant
+- **Status:** aktiv
 - **Projekt:** GEB
 - **Domäne:** DEV, CLI
 - **Reife:** bereit
 - **Tickets:** B-435
-- **Start-Commit:** – (wird beim Aktivieren gesetzt: `git rev-parse --short origin/develop`)
-- **Spec:** Entwurf
+- **Start-Commit:** ca628e17
+- **Spec:** freigegeben
 - **Revision:** 1
-- **Freigabe:** –
+- **Freigabe:** 2026-10-16, Chat (Ralf)
 
 ## Ausgangslage
 
@@ -100,7 +100,7 @@ Keine blockiert die Freigabe; jede Annahme gilt mit der Freigabe als bestätigt,
 
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
-| GEB5.1 | `GEB5.1-lager-kaserne.md` | Umsetzung | autonom | offen |
+| GEB5.1 | `GEB5.1-lager-kaserne.md` | Umsetzung | autonom | in Arbeit |
 | GEB5.2 | `GEB5.2-farm-plantage.md` | Umsetzung | autonom | offen |
 | GEB5.3 | `GEB5.3-treppen.md` | Umsetzung | autonom | offen |
 | GEB5.4 | `GEB5.4-zuordnung-aufraeumen.md` | Umsetzung | autonom | offen |

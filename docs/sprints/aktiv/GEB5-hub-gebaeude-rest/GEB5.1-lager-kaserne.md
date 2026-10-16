@@ -1,6 +1,6 @@
 # GEB5.1 · Lager und Kaserne
 
-- **Status:** offen
+- **Status:** in Arbeit
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** DEV
