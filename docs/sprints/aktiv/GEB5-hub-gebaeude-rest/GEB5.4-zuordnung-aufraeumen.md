@@ -1,6 +1,6 @@
 # GEB5.4 · Gebäude und Plantage im Spiel, alte Grafik gelöscht
 
-- **Status:** offen
+- **Status:** in Arbeit
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** CLI

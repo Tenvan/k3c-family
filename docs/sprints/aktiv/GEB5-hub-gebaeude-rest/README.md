@@ -103,7 +103,7 @@ Keine blockiert die Freigabe; jede Annahme gilt mit der Freigabe als bestätigt,
 | GEB5.1 | `GEB5.1-lager-kaserne.md` | Umsetzung | autonom | fertig |
 | GEB5.2 | `GEB5.2-farm-plantage.md` | Umsetzung | autonom | fertig |
 | GEB5.3 | `GEB5.3-treppen.md` | Umsetzung | autonom | fertig |
-| GEB5.4 | `GEB5.4-zuordnung-aufraeumen.md` | Umsetzung | autonom | offen |
+| GEB5.4 | `GEB5.4-zuordnung-aufraeumen.md` | Umsetzung | autonom | in Arbeit |
 | GEB5.5 | `GEB5.5-review-abnahme.md` | Review | autonom | offen |
 
 - GEB5.1 (DEV) Lager und Kaserne, je 6 × 4 (AC-01, AC-04).
