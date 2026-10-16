@@ -143,6 +143,9 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-438](B-438-werkstatt-baeume-ins-spiel.md) | CLI | Idee | mittel | offen | – | Werkstatt und Bäume aus tools/gebaeude erscheinen im Spiel |
 | [B-439](B-439-planung-erpqs-look.md) | DEV | Idee | mittel | eingeplant | WZ5 | Die Planungsseite von k3c-dev zeigt und bedient die Planung wie die erp-qs-Workbench |
 | [B-440](B-440-dev-test-entwurfs-sprints-ohne-sessions.md) | DEV | Problem | mittel | offen | – | k3c-dev-Planungstest lehnt Entwurfs-Sprints ohne Sessions ab |
+| [B-443](B-443-dev-logs-scrollen-liste.md) | DEV | Problem | mittel | offen | – | Auf der Log-Seite von k3c-dev scrollt nur die Log-Liste, nicht die ganze Seite |
+| [B-444](B-444-vite-ports-plus-zehn.md) | DEV | Problem | mittel | offen | – | Vite-Ports von Spiel und k3c-dev liegen 10 höher und kollidieren nicht mit dem Vite-Standardport |
+| [B-445](B-445-dev-splitter-assets-mcp.md) | DEV | Idee | mittel | offen | – | Assets- und MCP-Seite von k3c-dev haben ziehbare Splitter zwischen den Panelen |
 
 ## Archiv
 

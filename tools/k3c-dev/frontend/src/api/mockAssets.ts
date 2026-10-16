@@ -1,7 +1,7 @@
 import type { AssetChoice, AssetHit, AssetSlot, AssetsView, Backend, CatalogAsset } from './types';
 
 // Erfundenes Slot-Register und Katalog für den Mock. Bilder und Mini-Szene kommen vom Vite-Dienst des Spiels:
-// im Browser mit `?preview=http://localhost:5173/` aufrufen, sonst zeigt die Seite den Hinweis „Vite starten“.
+// im Browser mit `?preview=http://localhost:5183/` aufrufen, sonst zeigt die Seite den Hinweis „Vite starten“.
 
 const TOWN = 'grafik/gothicvania-town/props-einzeln';
 

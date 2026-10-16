@@ -61,6 +61,7 @@
   flex-direction: column;
   flex: 1;
   min-width: 0;
+  min-height: 0; /* B-443: ohne begrenzte Höhe wächst die Seite mit den Zeilen, statt dass die Liste scrollt */
   gap: 10px;
 }
 
@@ -78,6 +79,7 @@
   flex-direction: column;
   flex: 1;
   min-width: 0;
+  min-height: 0;
   gap: 8px;
 }
 
@@ -92,6 +94,7 @@
 
 .console-body {
   flex: 1;
+  min-height: 0;
   overflow: auto;
   padding: 6px 0;
   border: 1px solid var(--card-line);
@@ -136,6 +139,7 @@
 .logtab-body,
 .errtab-list {
   flex: 1;
+  min-height: 0;
   overflow: auto;
   border: 1px solid var(--card-line);
   border-radius: 10px;
