@@ -1,6 +1,6 @@
 # GEB2.1 · Taverne und Heilplatz als Daten und PNG
 
-- **Status:** in Arbeit
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** DEV
@@ -59,5 +59,7 @@ Keine manuellen Prüfungen in dieser Session; die Sichtprüfung gehört GEB2.4.
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+2026-10-16, Claude (autonom, Ralf im Chat).
+- AC-01 umgesetzt (Teil Taverne, Heilplatz): `taverne.json` (Fachwerk, Satteldach, Kamin, zwei Fenster mit Licht, Tür, Hängeschild mit Krug, Fass) und `heilplatz.json` (Vordach aus hellem Stoff mit grünem Kreuz, Liege, Schale, Kräuterkorb, Trockengestell), je 6 × 4 Kacheln; `*-32.png` 192×128 px plus 16/64/128; zweiter `task gebaeude`-Lauf → md5 gleich; `index.json` führt beide.
+- Regeldatei: Klasse 6 × 4 um Taverne/Heilplatz, Materialien Putz, Dachziegel, Fensterlicht, Stein, Kräuter, Stoff blau, Heil-Zeichen grün, neue Bausteine in § 4.
+- Checks: `task check` und `task check:go` grün (k3c-dev). Review (Sonnet-Agent, Skriptprüfung von Farben, Raster, Dicke, Regeldatei): keine Befunde. Sichtprüfung gehört GEB2.4.

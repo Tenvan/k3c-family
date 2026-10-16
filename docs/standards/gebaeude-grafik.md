@@ -11,7 +11,7 @@ nur mit Zustimmung von 🧑.
 
 | Klasse | Breite × Höhe (Kacheln) | Beleg |
 |---|---|---|
-| Handelsstand / kleines Gebäude | 6 × 4 | Werkstatt (`workshop`) |
+| Handelsstand / kleines Gebäude | 6 × 4 | Werkstatt (`workshop`), Taverne (`tavern`), Heilplatz (`healer`) (GEB2) |
 | Baum (schmal) | 1 × 2,25 | Tanne, Pappel, Birke (GEB1.3) |
 | weitere Gebäude | legt der jeweilige GEB-Sprint fest, hier nachtragen | B-435 › Notizen |
 
@@ -32,12 +32,21 @@ nur mit Zustimmung von 🧑.
 | Nadeln (Tanne) | `elf-green` | `christi` | `opal` |
 | Laub (Pappel, Birke) | `christi` | `atlantis` | `dell` |
 | Birkenrinde | `white` | – | `heather`, Striche `black` (fein) |
+| Putz (Fachwerk) | `pancho` | – | `twine` |
+| Dachziegel | `brown` | `mandy` (linke Kante) | `loulou` (Traufe, Schindel-Fuge fein) |
+| Fensterlicht | `tahiti-gold` | `golden-fizz` (oben links) | Sprossen `oiled-cedar` (fein) |
+| Stein (Kamin, Stufe) | `dim-gray` | `smokey-ash` | – |
+| Kräuter | `christi` | `atlantis` | `elf-green` |
+| Stoff blau (Decke) | `cornflower` | `viking` | `royal-blue` (Falte) |
+
+Zeichen am Gebäude sind Motive, keine Schutzzeichen: Das Heil-Zeichen ist ein **grünes** Kreuz (`christi`, Licht `atlantis`).
 
 ## 4. Bausteine
 
 Ein Gebäude ist eine Liste von Rechtecken in Zeichenreihenfolge (hinten zuerst). Arten der Werkstatt: `wand`, `fuge`,
 `schatten`, `schild`, `zeichen`, `pfosten`, `balken`, `tuch`, `volant`, `falte`, `tresen`, `kiste`, `gestell`,
-`werkzeug`; Bäume: `stamm`, `krone`, `licht`, `strich`, `blatt`. Die Art dient der Lesbarkeit und späteren Zusätzen; gezeichnet wird nur Rechteck und Farbe.
+`werkzeug`; Taverne: `kamin`, `dach`, `schindel`, `fenster`, `glas`, `sprosse`, `tuer`, `beschlag`, `stufe`, `ausleger`,
+`kette`, `krug`, `fass`, `reifen`; Heilplatz: `kraut`, `schnur`, `liege`, `kissen`, `decke`, `schale`, `wasser`, `korb`, `flechtung`; Bäume: `stamm`, `krone`, `licht`, `strich`, `blatt`. Die Art dient der Lesbarkeit und späteren Zusätzen; gezeichnet wird nur Rechteck und Farbe.
 
 ## 5. Datenformat
 

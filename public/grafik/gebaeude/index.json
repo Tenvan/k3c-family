@@ -14,6 +14,19 @@
     }
   },
   {
+    "id": "heilplatz",
+    "kacheln": {
+      "b": 6,
+      "h": 4
+    },
+    "dateien": {
+      "128": "grafik/gebaeude/heilplatz-128.png",
+      "16": "grafik/gebaeude/heilplatz-16.png",
+      "32": "grafik/gebaeude/heilplatz-32.png",
+      "64": "grafik/gebaeude/heilplatz-64.png"
+    }
+  },
+  {
     "id": "pappel",
     "klasse": "baum",
     "kacheln": {
@@ -39,6 +52,19 @@
       "16": "grafik/gebaeude/tanne-16.png",
       "32": "grafik/gebaeude/tanne-32.png",
       "64": "grafik/gebaeude/tanne-64.png"
+    }
+  },
+  {
+    "id": "taverne",
+    "kacheln": {
+      "b": 6,
+      "h": 4
+    },
+    "dateien": {
+      "128": "grafik/gebaeude/taverne-128.png",
+      "16": "grafik/gebaeude/taverne-16.png",
+      "32": "grafik/gebaeude/taverne-32.png",
+      "64": "grafik/gebaeude/taverne-64.png"
     }
   },
   {
