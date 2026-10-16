@@ -1,6 +1,6 @@
 # GEB5.2 · Farm und Setzling der Plantage
 
-- **Status:** offen
+- **Status:** in Arbeit
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** DEV
