@@ -85,7 +85,7 @@ Tor (GEB4); Burg und Hub-Stufen (GEB4); Stufen für Werkstatt, Taverne usw. (fol
 | GEB3.2 | `GEB3.2-stufen-werkzeug-mauer.md` | Umsetzung | autonom | fertig |
 | GEB3.3 | `GEB3.3-turm-stufen.md` | Umsetzung | autonom | fertig |
 | GEB3.4 | `GEB3.4-zuordnung-aufraeumen.md` | Umsetzung | autonom | fertig |
-| GEB3.5 | `GEB3.5-review-abnahme.md` | Review | autonom | offen |
+| GEB3.5 | `GEB3.5-review-abnahme.md` | Review | autonom | in Arbeit |
 | GEB3.6 | `GEB3.6-hintergrundmauer-grafik.md` | Umsetzung | autonom | fertig |
 | GEB3.7 | `GEB3.7-hintergrundmauer-spiel.md` | Umsetzung | autonom | fertig |
 

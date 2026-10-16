@@ -1,6 +1,6 @@
 # GEB3.5 · Review und Abnahme der Stufenreihe
 
-- **Status:** offen
+- **Status:** in Arbeit
 - **Typ:** Review
 - **Agent:** autonom
 - **Domäne:** CLI
