@@ -3,12 +3,12 @@
 - **Status:** geplant
 - **Projekt:** WRT
 - **Domäne:** REG, SRV, CLI
-- **Reife:** bereit
+- **Reife:** Entwurf
 - **Tickets:** B-409, B-208, B-410, B-408, B-412
 - **Start-Commit:** a8d46d9e
-- **Spec:** freigegeben
+- **Spec:** Entwurf
 - **Revision:** 2
-- **Freigabe:** 2026-10-14, 🧑 im Chat (Rev. 2: Treppen ≥ 8 Units zu allen Zahlzielen derselben Tiefe, Raster je Tiefe geteilt)
+- **Freigabe:** –
 
 ## Ausgangslage
 
