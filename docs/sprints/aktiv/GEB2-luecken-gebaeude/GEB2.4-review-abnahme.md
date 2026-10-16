@@ -1,6 +1,6 @@
 # GEB2.4 · Review und Abnahme am Bildschirm
 
-- **Status:** offen
+- **Status:** in Arbeit
 - **Typ:** Review
 - **Agent:** autonom
 - **Domäne:** CLI

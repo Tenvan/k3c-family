@@ -72,7 +72,7 @@ Ausbaustufen und Level-Paletten der vier Gebäude; Bäume ins Spiel (`node:tree`
 | GEB2.1 | `GEB2.1-taverne-heilplatz.md` | Umsetzung | autonom | fertig |
 | GEB2.2 | `GEB2.2-schmiede-ruestkammer.md` | Umsetzung | autonom | fertig |
 | GEB2.3 | `GEB2.3-zuordnung-spiel.md` | Umsetzung | autonom | fertig |
-| GEB2.4 | `GEB2.4-review-abnahme.md` | Review | autonom | offen |
+| GEB2.4 | `GEB2.4-review-abnahme.md` | Review | autonom | in Arbeit |
 
 - GEB2.1 (DEV) Taverne und Heilplatz als Daten und PNG, Regeldatei ergänzen (AC-01).
 - GEB2.2 (DEV) Schmiede und Rüstkammer als Daten und PNG, Stein und Glut in die Regeldatei (AC-01).
