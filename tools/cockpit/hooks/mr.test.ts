@@ -7,13 +7,13 @@ const DETAIL = {
   title: 'Export vereinfachen',
   state: 'opened',
   draft: false,
-  web_url: 'https://gitlab.example.com/consulting/x/-/merge_requests/7',
+  web_url: 'https://gitlab.deltra.de/consulting/x/-/merge_requests/7',
   source_branch: 'feature/export',
   target_branch: 'main',
   detailed_merge_status: 'mergeable',
   has_conflicts: false,
   user_notes_count: 3,
-  head_pipeline: { id: 55, status: 'running', web_url: 'https://gitlab.example.com/p/55' },
+  head_pipeline: { id: 55, status: 'running', web_url: 'https://gitlab.deltra.de/p/55' },
 }
 const APPROVALS = { approvals_required: 2, approvals_left: 1, approved_by: [{ user: { username: 'kollegin' } }] }
 const DISCUSSIONS = [
@@ -23,11 +23,11 @@ const DISCUSSIONS = [
 ]
 
 test('forgeRemote: GitLab, GitHub und Bitbucket Server aus ssh/https, sonst null', () => {
-  expect(forgeRemote('git@gitlab.example.com:team/report-tool.git')).toEqual({ kind: 'gitlab', host: 'gitlab.example.com', project: 'team/report-tool' })
-  expect(forgeRemote('https://gitlab.example.com/consulting/x.git')).toEqual({ kind: 'gitlab', host: 'gitlab.example.com', project: 'consulting/x' })
+  expect(forgeRemote('git@gitlab.deltra.de:consulting/erp-consulting.git')).toEqual({ kind: 'gitlab', host: 'gitlab.deltra.de', project: 'consulting/erp-consulting' })
+  expect(forgeRemote('https://gitlab.deltra.de/consulting/x.git')).toEqual({ kind: 'gitlab', host: 'gitlab.deltra.de', project: 'consulting/x' })
   expect(forgeRemote('git@github.com:Tenvan/tool.git')).toEqual({ kind: 'github', host: 'github.com', project: 'Tenvan/tool' })
-  expect(forgeRemote('ssh://git@git.example.com:7999/cor/tools.git')).toEqual({ kind: 'bitbucket', host: 'git.example.com', project: 'cor/tools' })
-  expect(forgeRemote('https://git.example.com/scm/OX/aide.git')).toEqual({ kind: 'bitbucket', host: 'git.example.com', project: 'OX/aide' })
+  expect(forgeRemote('ssh://git@git.deltra.de:7999/cor/orga-marketplace.git')).toEqual({ kind: 'bitbucket', host: 'git.deltra.de', project: 'cor/orga-marketplace' })
+  expect(forgeRemote('https://git.deltra.de/scm/OX/aide.git')).toEqual({ kind: 'bitbucket', host: 'git.deltra.de', project: 'OX/aide' })
   expect(forgeRemote('https://example.com/a/b.git')).toBe(null)
   expect(forgeRemote('')).toBe(null)
 })
@@ -58,9 +58,9 @@ test('GitHub: PR aus gh-JSON, Checks als Pipeline, offene Review-Threads, eigene
 test('Bitbucket Server: PR, Merge-Veto, Builds, ungelöste Threads und Dashboard', () => {
   const pr = {
     id: 7, version: 4, title: 'T', state: 'OPEN', draft: false, description: 'D', updatedDate: Date.UTC(2026, 9, 13),
-    fromRef: { displayId: 'feat', latestCommit: 'abc' }, toRef: { displayId: 'main', repository: { slug: 'app', project: { key: 'COR' } } },
+    fromRef: { displayId: 'feat', latestCommit: 'abc' }, toRef: { displayId: 'main', repository: { slug: 'erp', project: { key: 'COR' } } },
     author: { user: { name: 'rstich' } }, reviewers: [{ approved: true, status: 'APPROVED', user: { name: 'lg' } }, { approved: false, status: 'UNAPPROVED', user: { name: 'x' } }],
-    links: { self: [{ href: 'https://git.example.com/projects/COR/repos/app/pull-requests/7' }] },
+    links: { self: [{ href: 'https://git.deltra.de/projects/COR/repos/erp/pull-requests/7' }] },
   }
   const merge = { canMerge: false, conflicted: false, vetoes: [{ summaryMessage: 'Mindestens 2 Freigaben' }] }
   const builds = { values: [{ state: 'SUCCESSFUL', url: 'https://ci/1' }, { state: 'INPROGRESS', url: 'https://ci/2' }] }
@@ -75,7 +75,7 @@ test('Bitbucket Server: PR, Merge-Veto, Builds, ungelöste Threads und Dashboard
   expect(m.threadList[0]).toEqual({ path: 'a.py', line: 12, author: 'lg', body: 'Bitte prüfen' })
   expect(mrBadge(m)).toBe('#7 · ● · 1 💬')
   expect(fromBitbucket({ errors: [] }, null, null, null)).toBe(null)
-  expect(bitbucketMine({ values: [pr] })).toEqual([{ ref: 'COR/app#7', title: 'T', url: 'https://git.example.com/projects/COR/repos/app/pull-requests/7', draft: false }])
+  expect(bitbucketMine({ values: [pr] })).toEqual([{ ref: 'COR/erp#7', title: 'T', url: 'https://git.deltra.de/projects/COR/repos/erp/pull-requests/7', draft: false }])
 })
 
 test('toMr: Status, Pipeline, Approvals und offene Threads aus der REST-Antwort', () => {

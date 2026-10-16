@@ -1,6 +1,6 @@
 import { expect, mock, test } from 'claude-code/testing'
 
-import { THEME, TINT, spinnerText, contextTip, limitTip, cacheTip, RISKY_GIT_CONFIG, paceText, shortHash, toolInfoLines, cacheHitPct, cacheLeftMs, pace, breakdownTitle, contextColor, oneLine, parseRepo, parseSteps, repoRows, repoShort, svgSource, toBreakdown, breakdownBarSvg, ringSvg, spinner, title, titleText, toolKind, toolTarget } from './core'
+import { THEME, TINT, spinnerText, contextTip, limitTip, cacheTip, RISKY_GIT_CONFIG, paceText, markdownStats, shortHash, statsLines, toolInfoLines, cacheHitPct, cacheLeftMs, pace, breakdownTitle, contextColor, oneLine, parseRepo, parseSteps, repoRows, repoShort, svgSource, toBreakdown, breakdownBarSvg, ringSvg, spinner, title, titleText, toolKind, toolTarget } from './core'
 
 const H = 3600_000
 const MEASURE = {
@@ -104,7 +104,8 @@ const TURN = { answer: 'Fertig.', reason: 'answer', durationMs: 1000, isAborted:
 test('Folge-Schritt: Button füllt das Eingabefeld, erst Enter sendet und leert die Vorschläge', async ($, on) => {
   mock.clock(on, { now: H })
   const filled: string[] = []
-  on('model.complete', () => ({ value: { isAnswered: true, text: STEP_REPLY, usage: { input_tokens: 1, output_tokens: 1, cache_read_input_tokens: 0, cache_creation_input_tokens: 0 } } }))
+  const asked: string[] = []
+  on('model.complete', ($, e) => (asked.push(e.prompt), { value: { isAnswered: true, text: STEP_REPLY, usage: { input_tokens: 1, output_tokens: 1, cache_read_input_tokens: 0, cache_creation_input_tokens: 0 } } }))
   on('session.usage', () => ({ value: { startedAt: 0, context: { window: 200_000 }, rateLimits: [] } }))
   on('turn.complete', () => ({ text: 'Fertig.' }))
   on('prompt.fill', ($, e) => {
@@ -119,13 +120,21 @@ test('Folge-Schritt: Button füllt das Eingabefeld, erst Enter sendet und leert 
   for (let i = 0; i < 100 && !(await band.find({ key: 'step-0' })); i++) await Promise.resolve()
 
   expect(JSON.stringify(await band.find({ key: 'step-0' }))).toContain('"hotkey":"1"')
-  expect(await band.find({ type: 'Text', text: 'Parser ist ungetestet' })).not.toBe(undefined)
+  // Begründung als Tooltip am Info-Symbol, nicht als Zeile.
+  expect(JSON.stringify(await band.findAll({ type: 'Svg' }))).toContain('Parser ist ungetestet')
+  // ↻ holt neue Vorschläge und nennt dem Modell die bisherigen.
+  await band.press({ key: 'steps-refresh' })
+  for (let i = 0; i < 100 && asked.length < 2; i++) await Promise.resolve()
+  expect(asked[1]).toContain('Schon vorgeschlagen')
   await band.press({ key: 'step-0' })
   expect(filled).toEqual(['Ergänze Tests für parseSteps.'])
   expect(await band.find({ key: 'step-0' })).not.toBe(undefined)
   // Enter der Person: prompt.submit aus dem Eingabefeld startet den Turn.
   await $.prompt.submit({ text: filled[0] } as never)
   expect(await band.find({ key: 'step-0' })).toBe(undefined)
+  // Ohne Vorschläge bleibt die Zeile mit „↻ Neue“ stehen.
+  expect(await band.find({ type: 'Text', text: 'keine Vorschläge' })).not.toBe(undefined)
+  expect(await band.find({ type: 'Button', key: 'steps-refresh' })).not.toBe(undefined)
   const pane = await $.ui.mount({ plugin: 'tenvan-cc', surface: 'desktop', component: 'Pane', requestId: 'tenvan-cc', props: PANE_PROPS })
   expect(await pane.find({ type: 'Text', text: /Agent arbeitet/ })).not.toBe(undefined)
 })
@@ -245,7 +254,7 @@ test('Protokoll: Prompt gekürzt, Ziel des Tool-Calls, Pfade auf zwei Segmente',
   expect(oneLine('a\n  b   c', 80)).toBe('a b c')
   expect(oneLine('x'.repeat(100), 10)).toBe('xxxxxxxxx…')
   expect(toolTarget({ file_path: ['C:', 'W', 'bridge', 'appconfig.go'].join(String.fromCharCode(92)) })).toBe('bridge/appconfig.go')
-  expect(toolTarget({ pattern: 'tenvan' })).toBe('tenvan')
+  expect(toolTarget({ pattern: 'erpapi' })).toBe('erpapi')
   expect(toolTarget(undefined)).toBe('')
 })
 
@@ -379,12 +388,12 @@ test('Repo-Infozeile: Branch, Worktree, Commit, Änderungen, Upstream, Ordner', 
     ['Commit', 'abc1234'],
     ['Änderungen', '2 geänderte Dateien'],
     ['Upstream', '↑1 voraus · ↓2 hinterher'],
-    ['Ordner', 'C:/W/repo/.claude/worktrees/x1'],
+    ['Ordner', 'C:\\W\\repo\\.claude\\worktrees\\x1'],
     ['Unterordner', 'plugins'],
   ])
   const main = parseRepo({ top: 'C:/W/repo', gitDir: 'C:/W/repo/.git', commonDir: 'C:/W/repo/.git', branch: '', sha: 'abc1234', status: '', counts: '', prefix: '' })
   expect(repoShort(main)).toBe('⎇ detached')
-  expect(repoRows(main).map(r => r[1])).toEqual(['detached', 'repo (Hauptcheckout)', 'abc1234', 'sauber', 'kein Upstream', 'C:/W/repo'])
+  expect(repoRows(main).map(r => r[1])).toEqual(['detached', 'repo (Hauptcheckout)', 'abc1234', 'sauber', 'kein Upstream', 'C:\\W\\repo'])
   // Riskante Repo-Konfiguration: Status wird nicht ausgeführt, die Zeile sagt es.
   const untrusted = parseRepo({ top: 'C:/W/repo', gitDir: 'C:/W/repo/.git', commonDir: 'C:/W/repo/.git', branch: 'x', sha: 'abc1234', status: null, counts: '', prefix: '' })
   expect(untrusted.dirty).toBe(null)
@@ -392,6 +401,13 @@ test('Repo-Infozeile: Branch, Worktree, Commit, Änderungen, Upstream, Ordner', 
   const re = new RegExp(RISKY_GIT_CONFIG)
   expect(['filter.lfs.clean', 'core.fsmonitor', 'diff.x.textconv', 'diff.external', 'alias.st', 'include.path', 'includeif.gitdir:/x/.path', 'extensions.worktreeconfig', 'gpg.program', 'gpg.ssh.program', 'log.showsignature'].every(k => re.test(k))).toBe(true)
   expect(['core.autocrlf', 'user.name', 'remote.origin.url'].some(k => re.test(k))).toBe(false)
+})
+
+test('markdownStats: Codeblöcke, Diffs, Mermaid, Formeln, Tabellen, Links', () => {
+  const text = ['Text mit [Link](https://a.de) und https://b.de', '```ts', 'x', '```', '```diff', '-a', '+b', '```', '```mermaid', 'graph TD', '```', '$$', 'x', '$$', '| a | b |', '|---|---|', '| 1 | 2 |'].join('\n')
+  expect(markdownStats(text)).toEqual({ code: 1, diff: 1, mermaid: 1, math: 1, tables: 1, links: 2 })
+  expect(statsLines(markdownStats('nur Text'))).toEqual([])
+  expect(statsLines(markdownStats(text))[1]).toBe('Codeblöcke 1 · Diffs 1 · Mermaid 1 · Formeln 1 · Tabellen 1 · Links 2')
 })
 
 test('toolInfoLines: Art, Ziel, Status, Umfang einer Änderung', () => {
@@ -475,4 +491,46 @@ test('Farben: Band und Panel nutzen THEME, keinen Theme-Schlüssel claude', asyn
     expect(tree).toContain(THEME.accent)
   }
   expect(pane).toContain('Agent arbeitet')
+})
+
+test('Verzeichniswächter: folgt cwd dem Wechsel schon beim tool.call, warnt er trotzdem', async ($, on) => {
+  mock.clock(on, { now: H })
+  let cwd = 'C:\WORKSPACE\k3c'
+  on('session.measure', () => ({ changed: [] }))
+  on('store.get', () => ({ value: undefined }) as never)
+  on('session.cwd', () => ({ value: cwd }) as never)
+  on('session.root', () => ({ value: 'C:\WORKSPACE\k3c' }) as never)
+  on('env.get', () => ({ value: 'C:\Users\r' }) as never)
+  on('tool.call', () => {
+    cwd = 'C:\WORKSPACE\ErpApi'
+    return { result: { stdout: '', stderr: '', interrupted: false } } as never
+  })
+  on('ui.render', { component: 'AbovePrompt' }, () => ({ type: 'Box' as const }))
+  await $.session.measure(MEASURE)
+  await $.tool.call({ tool: 'Bash', command: 'cd /c/WORKSPACE/ErpApi && git status' } as never)
+  const band = await $.ui.mount({ ...BAND, surface: 'desktop' })
+  for (let i = 0; i < 200 && !(await band.find({ key: 'dir-warn' })); i++) await Promise.resolve()
+  expect(await band.find({ key: 'dir-warn' })).not.toBe(undefined)
+})
+
+test('Verzeichniswächter: Wechsel aus dem Session-Ordner wird zur Rückfrage, danach Warnung im Band', async ($, on) => {
+  mock.clock(on, { now: H })
+  on('session.measure', () => ({ changed: [] }))
+  on('store.get', () => ({ value: undefined }) as never)
+  on('session.cwd', () => ({ value: 'C:\\WORKSPACE\\k3c' }) as never)
+  on('session.root', () => ({ value: 'C:\\WORKSPACE\\k3c' }) as never)
+  on('env.get', () => ({ value: 'C:\\Users\\r' }) as never)
+  on('tool.check', () => ({ decision: 'allow' }))
+  on('tool.call', () => ({ result: { stdout: '', stderr: '', interrupted: false } }) as never)
+  on('ui.render', { component: 'AbovePrompt' }, () => ({ type: 'Box' as const }))
+  const away = await $.tool.check({ tool: 'mcp__ccd_directory__change_directory', input: { path: 'C:\\WORKSPACE\\ErpApi' } } as never)
+  expect(away.decision).toBe('ask')
+  expect(away.reason).toContain('ErpApi')
+  const inside = await $.tool.check({ tool: 'Bash', input: { command: 'cd src && ls' } } as never)
+  expect(inside.decision).toBe('allow')
+  await $.session.measure(MEASURE)
+  await $.tool.call({ tool: 'Bash', command: 'cd /c/WORKSPACE/ErpApi && git status' } as never)
+  const band = await $.ui.mount({ ...BAND, surface: 'desktop' })
+  for (let i = 0; i < 200 && !(await band.find({ key: 'dir-warn' })); i++) await Promise.resolve()
+  expect(await band.find({ type: 'Text', text: /außerhalb des Session-Ordners: C:\\WORKSPACE\\ErpApi/ })).not.toBe(undefined)
 })

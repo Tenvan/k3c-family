@@ -42,3 +42,10 @@ func (a *App) PlanningSet(id, field, value string) (string, error) {
 	a.wait()
 	return planning.Set(a.root, id, map[string]string{field: value})
 }
+
+// PlanningGet liefert Ticket, Sprint-README, Session oder Projekt als Markdown mit Pfad in der ersten Zeile, wie
+// plan_get (Binding, Lesemodus der Planungsseite).
+func (a *App) PlanningGet(id string) (string, error) {
+	a.wait()
+	return planning.Get(a.root, id)
+}

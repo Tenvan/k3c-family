@@ -368,6 +368,7 @@ export const en: Partial<Record<ToolTextKey, string>> = {
   'av.sub': 'Active assignments from the slot register per category at game scale; dev build only.',
   'av.pick': 'Pick a category above.',
   'av.empty': 'No asset slots in this category.',
+  'av.geb': 'New buildings (GEB): master 32 px ×1 next to 16 px ×2',
   'av.gap': 'Gap: {id}',
   'av.missing': 'does not load: {file}',
   'av.pref': 'preference {n}',

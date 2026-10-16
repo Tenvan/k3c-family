@@ -1,22 +1,26 @@
 // Reine Rechen- und Formatfunktionen, ohne `$` – direkt testbar.
-import type { About, Agent, Breakdown, BreakdownRow, CallMark, CatchUp, LoopAlert, UiLang, Limit, McpSchema, Repo, ModSettings, Step, TurnRecord } from '../types'
+import type { About, Agent, Breakdown, BreakdownRow, CallMark, CatchUp, LoopAlert, UiLang, Limit, McpSchema, Repo, LinkedSession, ModSettings, SidebarPin, Step, TurnRecord } from '../types'
 import { t, type Key } from './i18n'
 
-// Alle Farben des Mods, fest eingetragen (kein Lesen externer Dateien zur Laufzeit): Primitive und dunkle Rollen eines
-// Dark-Design-Systems. Keine Theme-Schlüssel des Hosts ('claude', 'success' …): die färben in dessen Farben.
+// Alle Farben des Mods, fest eingetragen (kein Lesen von ErpApi zur Laufzeit). Primitive aus
+// ErpApi/design-system/tokens/artifact-snapshot.json (Artifact „Tenvan Design System Product“, Snapshot 1790238895-8d9a,
+// `om-*`, nur hell); die dunklen Rollen (--text-*, --status-*-fg, --border-default) nach design-system/tokens/README.md
+// aus apps/frontend/src/themes/mobile-tokens.scss (`.radix-themes.dark`). Keine Theme-Schlüssel des Hosts ('claude',
+// 'success' …): die färben in dessen Farben. Ein Muster für Ladezustände hat das Design-System noch nicht.
+// Buttons haben keine Farb-Eigenschaft; sie folgen dem Host-Theme (nur `variant="primary"` hebt hervor).
 export const THEME = {
-  accent: '#8eadfd', // --text-link / --border-focus: Akzent für Text und Rahmen
-  accentFill: '#4277fc', // --action-primary: Akzent für Flächen (Ringbögen, Balken)
-  info: '#8eadfd', // = accent
-  success: '#89c958', // --status-success-fg
-  warning: '#e8b641', // --status-warning
-  error: '#fa6e6e', // --status-error-fg
-  textSecondary: '#aeb2ba', // --text-secondary
-  textMuted: '#8c929c', // --text-muted
-  border: '#4a5565', // --border-default / --divider
-  chip: '#2f3a59', // Grund der Nummern- und Typ-Chips
-  max: '#82b1ff', // Hellblau für Suche und Versionsnummern
-  white: '#ffffff', // reines Weiß auf dunklem Grund
+  accent: '#8eadfd', // om-blue-400 · --text-link / --border-focus: Akzent für Text und Rahmen
+  accentFill: '#4277fc', // om-blue-500 · --action-primary: Akzent für Flächen (Ringbögen, Balken)
+  info: '#8eadfd', // om-blue-400 · = accent
+  success: '#89c958', // om-green-500 · --status-success-fg
+  warning: '#e8b641', // om-amber-500 · --status-warning
+  error: '#fa6e6e', // om-red-400 · --status-error-fg
+  textSecondary: '#aeb2ba', // om-ink-300 · --text-secondary
+  textMuted: '#8c929c', // om-ink-400 · --text-muted
+  border: '#4a5565', // om-ink-600 · --border-default / --divider
+  chip: '#2f3a59', // om-navy-700: Grund der Nummern- und Typ-Chips
+  max: '#82b1ff', // nur die Wortmarke „MAX“ (brand/README.md)
+  orga: '#ffffff', // Wortmarke „orga“ auf dunklem Grund
   surface: '#222222', // Grund schwebender Hinweise
   violet: '#aa8ed6', // Agent-Symbol, Hinweis „Wichtig“; wie die fünfte Kategorie-Farbe
 } as const
@@ -130,6 +134,14 @@ export function duration(ms: number): string {
   return m < 60 ? `${m}m ${s % 60}s` : `${Math.floor(m / 60)}h ${m % 60}m`
 }
 
+// Restzeit bis zum Reset eines Limits, grob: „3d 4h“, „2h 13m“, „12m“; abgelaufen „0m“.
+export function resetLeft(iso: string, now: number): string {
+  const m = Math.max(0, Math.round((Date.parse(iso) - now) / 60_000))
+  if (m < 60) return `${m}m`
+  const h = Math.floor(m / 60)
+  return h < 24 ? `${h}h ${m % 60}m` : `${Math.floor(h / 24)}d ${h % 24}h`
+}
+
 export function clockTime(iso: string): string {
   const d = new Date(iso)
   return `${String(d.getHours()).padStart(2, '0')}:${String(d.getMinutes()).padStart(2, '0')}`
@@ -146,7 +158,7 @@ export function resetLabel(iso: string, now: number, lang: UiLang = 'de'): strin
   return d.getTime() - now >= 6 * 86400_000 ? `${base} (${date})` : base
 }
 
-// Titelleiste beider Flächen: „[Logo] Tenvan CC (Version x)“.
+// Titelleiste beider Flächen: „[Logo] Tenvan CC (Version x)“; die Bildmarke trägt keinen Namen, der Text steht immer daneben.
 export function titleText(about: About | null): string {
   return about ? `Tenvan CC (Version ${about.version})` : 'Tenvan CC'
 }
@@ -195,7 +207,7 @@ export function repoRows(r: Repo, lang: UiLang = 'de'): [label: string, value: s
     [t(lang, 'panel.repoCommit'), r.sha],
     [t(lang, 'panel.repoChanges'), changes],
     [t(lang, 'panel.repoUpstream'), sync],
-    [t(lang, 'panel.repoFolder'), r.path],
+    [t(lang, 'panel.repoFolder'), displayDir(r.path)],
     ...(r.subdir === '' ? [] : [[t(lang, 'panel.repoSubfolder'), r.subdir] as [string, string]]),
   ]
 }
@@ -236,6 +248,13 @@ export function contextColor(percent: number): Tone {
 
 // SVG eines Rings: grauer Grund, darüber der gefüllte Bogen ab 12 Uhr im Uhrzeigersinn.
 // `tip` wird als <title> eingebettet: die Oberfläche zeigt ihn beim Überfahren als Tooltip (Svg mit isInteractive).
+// Kleines ⓘ als Svg mit <title>: Tooltip für Begründungen (Folge-Schritte), wo Button und Text keinen kennen.
+export function infoSvg(tip: string, color: string, size = 14): string {
+  const t = tip.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+  const m = size / 2
+  return `<svg xmlns="http://www.w3.org/2000/svg" width="${size}" height="${size}" viewBox="0 0 ${size} ${size}"><title>${t}</title><circle cx="${m}" cy="${m}" r="${m - 1}" fill="none" stroke="${color}" stroke-width="1.2"/><circle cx="${m}" cy="${size * 0.3}" r="1" fill="${color}"/><rect x="${m - 0.7}" y="${size * 0.42}" width="1.4" height="${size * 0.36}" fill="${color}"/></svg>`
+}
+
 export function ringSvg(percent: number, color: string, size = 28, tip = ''): string {
   const r = size / 2 - 3
   const c = 2 * Math.PI * r
@@ -333,7 +352,7 @@ export function breakdownBarSvg(b: Breakdown, width = 600, height = 14): string 
 // Einstellungen: Gruppe je Schalter; Beschriftung und Erklärung liegen in i18n.ts unter `settings.<key>` und `settings.<key>.hint`.
 // Die Reihenfolge ist die der Einstellungsseite, Gruppen in der Reihenfolge ihres ersten Schalters.
 export type SettingKey = Exclude<keyof ModSettings, 'lang' | 'breathKey' | 'agentTiles'>
-export type SettingGroup = 'band' | 'panel' | 'chat' | 'skins' | 'summary'
+export type SettingGroup = 'band' | 'work' | 'effort' | 'panel' | 'summary' | 'mr' | 'sidebar' | 'skins' | 'tools' | 'input' | 'marks'
 
 export const SETTING_DEFS: readonly { key: SettingKey; group: SettingGroup }[] = [
   { key: 'rings', group: 'band' },
@@ -343,42 +362,46 @@ export const SETTING_DEFS: readonly { key: SettingKey; group: SettingGroup }[] =
   { key: 'legend', group: 'band' },
   { key: 'branch', group: 'band' },
   { key: 'steps', group: 'band' },
-  { key: 'autoEffort', group: 'band' },
-  { key: 'saveMode', group: 'band' },
-  { key: 'breath', group: 'band' },
-  { key: 'mrBand', group: 'band' },
-  { key: 'mrNotify', group: 'band' },
-  { key: 'mrFooter', group: 'band' },
+  { key: 'chatLines', group: 'work' },
+  { key: 'dirGuard', group: 'work' },
+  { key: 'breath', group: 'work' },
+  { key: 'animation', group: 'work' },
+  { key: 'autoEffort', group: 'effort' },
+  { key: 'saveMode', group: 'effort' },
   { key: 'cardWorkdir', group: 'panel' },
-  { key: 'cardCatchUp', group: 'summary' },
   { key: 'cardOverview', group: 'panel' },
   { key: 'cardContext', group: 'panel' },
   { key: 'cardTurn', group: 'panel' },
   { key: 'cardGate', group: 'panel' },
   { key: 'cardAgents', group: 'panel' },
   { key: 'cardTasks', group: 'panel' },
-  { key: 'mrPane', group: 'panel' },
   { key: 'cardLog', group: 'panel' },
   { key: 'paneMargins', group: 'panel' },
-  { key: 'animation', group: 'panel' },
-  { key: 'chatInfo', group: 'chat' },
-  { key: 'chatLines', group: 'chat' },
-  { key: 'skinIcons', group: 'skins' },
-  { key: 'skinQuiet', group: 'skins' },
-  { key: 'skinDiff', group: 'skins' },
-  { key: 'skinExpand', group: 'skins' },
+  { key: 'cardCatchUp', group: 'summary' },
+  { key: 'catchUp', group: 'summary' },
+  { key: 'mrBand', group: 'mr' },
+  { key: 'mrNotify', group: 'mr' },
+  { key: 'mrFooter', group: 'mr' },
+  { key: 'mrPane', group: 'mr' },
+  { key: 'sidebarDone', group: 'sidebar' },
+  { key: 'sidebarUnread', group: 'sidebar' },
+  { key: 'sidebarPin', group: 'sidebar' },
   { key: 'skinPrompt', group: 'skins' },
   { key: 'skinCards', group: 'skins' },
   { key: 'skinInline', group: 'skins' },
-  { key: 'skinLinks', group: 'skins' },
   { key: 'skinMermaid', group: 'skins' },
   { key: 'skinMath', group: 'skins' },
-  { key: 'skinAsk', group: 'skins' },
-  { key: 'skinMode', group: 'skins' },
-  { key: 'skinHint', group: 'skins' },
-  { key: 'skinMarkIcon', group: 'skins' },
-  { key: 'skinMarkLabel', group: 'skins' },
-  { key: 'catchUp', group: 'summary' },
+  { key: 'skinIcons', group: 'tools' },
+  { key: 'skinQuiet', group: 'tools' },
+  { key: 'skinDiff', group: 'tools' },
+  { key: 'skinExpand', group: 'tools' },
+  { key: 'skinTodos', group: 'tools' },
+  { key: 'skinAsk', group: 'input' },
+  { key: 'skinMode', group: 'input' },
+  { key: 'skinHint', group: 'input' },
+  { key: 'chatInfo', group: 'marks' },
+  { key: 'skinMarkIcon', group: 'marks' },
+  { key: 'skinMarkLabel', group: 'marks' },
 ]
 
 export const settingLabel = (key: SettingKey, lang: UiLang): string => t(lang, `settings.${key}`)
@@ -390,13 +413,15 @@ export const DEFAULT_SETTINGS: ModSettings = {
   paneMargins: true,
   chatInfo: true, chatLines: true, catchUp: false, lang: 'de',
   // Hervorhebungen zeichnen Antworten selbst und sind deshalb standardmäßig aus.
-  skinIcons: true, skinQuiet: true, skinDiff: true, skinExpand: true, skinPrompt: true, skinCards: true, skinInline: false, skinLinks: true,
-  skinMermaid: true, skinMath: true, skinAsk: true, skinMode: true, skinHint: true, skinMarkIcon: true, skinMarkLabel: true,
+  skinIcons: true, skinQuiet: true, skinDiff: true, skinExpand: true, skinPrompt: true, skinCards: true, skinInline: false,
+  skinMermaid: true, skinMath: true, skinAsk: true, skinMode: true, skinHint: true, dirGuard: true, skinTodos: true, skinMarkIcon: true, skinMarkLabel: true,
   // Auto-Effort ist aus, solange das Mod effortless daneben läuft: zwei Judges würden um den Effort jedes Requests streiten.
   autoEffort: false, saveMode: false,
   breath: true, breathKey: 'hrv',
   agentTiles: 6,
   mrBand: true, mrNotify: true, mrFooter: true,
+  // Sitzungsleiste: greift in die Desktop-App ein und ist deshalb Opt-in.
+  sidebarDone: false, sidebarUnread: false, sidebarPin: false,
 }
 
 // Kachelzahl der Subagents: gerade Werte von 2 bis 12.
@@ -410,6 +435,32 @@ export const clampTiles = (n: unknown): number => {
 export const settingsOf = (saved: Partial<ModSettings> | null | undefined): ModSettings => {
   const s = { ...DEFAULT_SETTINGS, ...saved }
   return { ...s, agentTiles: clampTiles(s.agentTiles), lang: s.lang === 'en' ? 'en' : 'de', breathKey: ['hrv', 'sigh', 'box', '478'].includes(s.breathKey) ? s.breathKey : 'hrv' }
+}
+
+// Sitzungsleiste der Desktop-App (Opt-in, `ccd_sidebar`): welche Aufrufe ein MR-Wechsel auslöst und wem die Nadel gehört.
+// `open` = Kürzel des offenen Branch-MR, sonst null; `pin` = MR, für den das Mod angepinnt hat (`mine: false`: war schon angepinnt).
+export type SidebarCall = { tool: 'mark_completed' } | { tool: 'set_unread' } | { tool: 'set_pinned'; pinned: boolean }
+export function sidebarCalls(
+  s: Pick<ModSettings, 'sidebarDone' | 'sidebarUnread' | 'sidebarPin'>,
+  events: readonly string[],
+  idle: boolean,
+  open: string | null,
+  pin: SidebarPin,
+): { calls: SidebarCall[]; pin: SidebarPin } {
+  const calls: SidebarCall[] = []
+  if (s.sidebarDone && events.includes('merged')) calls.push({ tool: 'mark_completed' })
+  if (s.sidebarUnread && idle && (events.includes('pipelineFailed') || events.includes('conflict'))) calls.push({ tool: 'set_unread' })
+  const want = s.sidebarPin && open !== null
+  if (want && pin?.ref !== open) {
+    calls.push({ tool: 'set_pinned', pinned: true })
+    return { calls, pin: { ref: open, mine: true } }
+  }
+  if (!want && pin !== null) {
+    // Eine Nadel, die schon vor dem MR da war, bleibt stehen.
+    if (pin.mine) calls.push({ tool: 'set_pinned', pinned: false })
+    return { calls, pin: null }
+  }
+  return { calls, pin }
 }
 
 export const CATCH_CHUNK = 100_000
@@ -545,6 +596,29 @@ export function shortHash(text: string): string {
   return (h >>> 0).toString(36)
 }
 
+// Skinbare Elemente einer Markdown-Nachricht: Codeblöcke, Diffs, Mermaid, Formeln, Tabellen, Links.
+export function markdownStats(text: string): Record<'code' | 'diff' | 'mermaid' | 'math' | 'tables' | 'links', number> {
+  const fences = [...text.matchAll(/^[ \t]*```(\w*)[^\n]*$/gm)].map(m => (m[1] ?? '').toLowerCase())
+  const opening = fences.filter((_, i) => i % 2 === 0)
+  const prose = text.replace(/```[\s\S]*?```/g, '')
+  return {
+    code: opening.filter(l => l !== 'diff' && l !== 'mermaid').length,
+    diff: opening.filter(l => l === 'diff').length,
+    mermaid: opening.filter(l => l === 'mermaid').length,
+    math: Math.floor((prose.match(/\$\$/g) ?? []).length / 2),
+    tables: (prose.match(/^\s*\|?\s*:?-{3,}:?\s*(\|\s*:?-{3,}:?\s*)+\|?\s*$/gm) ?? []).length,
+    links: (prose.match(/\[[^\]]+\]\([^)\s]+\)|https?:\/\/[^\s)]+/g) ?? []).length,
+  }
+}
+
+const STAT_KEYS = ['code', 'diff', 'mermaid', 'math', 'tables', 'links'] as const
+
+// Zeilen für den Hover-Hinweis; leer, wenn nichts Skinbares enthalten ist.
+export function statsLines(s: ReturnType<typeof markdownStats>, lang: UiLang = 'de'): string[] {
+  const parts = STAT_KEYS.filter(k => s[k] > 0).map(k => `${t(lang, `chat.stat.${k}`)} ${s[k]}`)
+  return parts.length === 0 ? [] : [t(lang, 'chat.skinbar'), parts.join(' · ')]
+}
+
 const lineCount = (v: unknown): number => (typeof v === 'string' && v !== '' ? v.split('\n').length : 0)
 
 // Zeilen für den Hover-Hinweis zu einem Tool-Aufruf: Art, Ziel, Status und bei Änderungen der Umfang.
@@ -590,13 +664,13 @@ export function parseSteps(text: string, max = 3): Step[] {
 // Die Beschreibung („Wo“) steht in i18n.ts unter `demo.<name>`.
 export const RENDER_COMPONENTS = [
   { name: 'UserMessage', by: 'skin', skins: ['skinPrompt'] },
-  { name: 'AssistantMessage', by: 'chat', skins: ['skinCards', 'skinInline', 'skinLinks', 'skinMermaid', 'skinMath'] },
-  { name: 'ToolUse', by: 'chat', skins: ['skinIcons', 'skinExpand'] },
+  { name: 'AssistantMessage', by: 'chat', skins: ['skinCards', 'skinInline', 'skinMermaid', 'skinMath'] },
+  { name: 'ToolUse', by: 'chat', skins: ['skinIcons', 'skinExpand', 'skinTodos'] },
   { name: 'ToolResult', by: 'chat', skins: ['skinQuiet', 'skinDiff'] },
   { name: 'ToolGroup', by: 'skin', skins: ['skinIcons'] },
   // 'terminal' = die Engine löst die Komponente auf dem Desktop nicht aus; dort gibt es nichts zu stylen.
   { name: 'ToolProgress', by: 'terminal' },
-  { name: 'CommandOutput', by: 'chat', skins: ['skinCards', 'skinInline', 'skinLinks', 'skinMermaid', 'skinMath'] },
+  { name: 'CommandOutput', by: 'chat', skins: ['skinCards', 'skinInline', 'skinMermaid', 'skinMath'] },
   { name: 'AskUserQuestion', by: 'skin', skins: ['skinAsk'] },
   { name: 'Spinner', by: 'line' },
   { name: 'TurnDuration', by: 'line' },
@@ -687,10 +761,123 @@ export function withClaude(list: readonly Step[], hint: Step | null, max = 3): S
 }
 
 // Task-Benachrichtigung der Engine (`<task-notification>` im Prompt): Kennung, Status und Kurztext; null, wenn es keine ist.
-export function parseTaskNotification(text: string): { id: string; status: string; summary: string } | null {
-  const tag = (name: string) => new RegExp(`<${name}>([\\s\\S]*?)</${name}>`).exec(text)?.[1]?.trim() ?? ''
-  const id = tag('task-id')
-  return id === '' ? null : { id, status: tag('status') || 'completed', summary: tag('summary') }
+// Alle Benachrichtigungen eines Texts: die Engine bündelt mehrere, die während eines Turns fertig wurden, in einem Prompt.
+export function parseTaskNotifications(text: string): { id: string; status: string; summary: string }[] {
+  return [...text.matchAll(/<task-notification>([\s\S]*?)<\/task-notification>/g)].flatMap(m => {
+    const tag = (name: string) => new RegExp(`<${name}>([\\s\\S]*?)</${name}>`).exec(m[1] ?? '')?.[1]?.trim() ?? ''
+    const id = tag('task-id')
+    return id === '' ? [] : [{ id, status: tag('status') || 'completed', summary: tag('summary') }]
+  })
+}
+
+// ---- Verzeichniswächter: arbeitet Claude außerhalb des Session-Ordners? ----
+
+const normDir = (p: string): string =>
+  p.trim().replace(/\\/g, '/').replace(/^\/([a-z])(?=\/|$)/i, '$1:').replace(/\/{2,}/g, '/').replace(/\/+$/, '').toLowerCase()
+
+// Anzeige: Laufwerkspfade (auch Git-Bash `/c/x`) in der Windows-Schreibweise.
+export function displayDir(p: string): string {
+  const m = /^\/([a-z])(?=\/|$)(.*)$/i.exec(p.replace(/\\/g, '/'))
+  const w = m ? `${(m[1] ?? '').toUpperCase()}:${m[2] ?? ''}` : p
+  return /^[a-z]:/i.test(w) ? w.replace(/\//g, '\\') : p
+}
+
+// Absoluter Pfad aus einem (evtl. relativen, evtl. Git-Bash-) Pfad; `~` = Home.
+export function resolveDir(path: string, cwd: string, home: string): string {
+  const p = path.trim().replace(/^["']|["']$/g, '')
+  if (p === '' ) return cwd
+  if (p === '~' || p.startsWith('~/')) return `${home}${p.slice(1)}`
+  if (/^[a-z]:[\\/]/i.test(p) || p.startsWith('/') || p.startsWith('\\\\')) return p
+  return `${cwd.replace(/[\\/]+$/, '')}/${p}`
+}
+
+// Verzeichnis, in das ein Aufruf wechselt oder in dem er schreibt; null, wenn er das nicht tut.
+// Shell: führendes `cd`/`pushd`/`Set-Location` (auch nach && oder ;) und `git -C`; Desktop-Wechsel und Worktree-Wechsel;
+// schreibende Datei-Tools über ihren Ordner. Lesende Datei-Tools zählen nicht.
+export function dirTarget(tool: string, input: Record<string, unknown>, cwd: string, home: string): string | null {
+  const str = (v: unknown) => (typeof v === 'string' ? v : '')
+  if (tool === 'mcp__ccd_directory__change_directory' || tool === 'EnterWorktree') return str(input.path) === '' ? null : resolveDir(str(input.path), cwd, home)
+  if (tool === 'Write' || tool === 'Edit' || tool === 'NotebookEdit') {
+    const f = str(input.file_path) || str(input.notebook_path)
+    return f === '' ? null : resolveDir(f.replace(/[\\/][^\\/]*$/, ''), cwd, home)
+  }
+  if (!SHELL_TOOLS.has(tool)) return null
+  const cmd = str(input.command)
+  const cd = /(?:^|&&|;|\|\|)\s*(?:cd|pushd|Set-Location|sl|chdir)\s+(?:-LiteralPath\s+|-Path\s+)?("[^"]+"|'[^']+'|[^\s;&|]+)/i.exec(cmd)
+  if (cd?.[1] !== undefined && cd[1] !== '-') return resolveDir(cd[1], cwd, home)
+  const git = /\bgit\s+-C\s+("[^"]+"|'[^']+'|[^\s;&|]+)/.exec(cmd)
+  return git?.[1] !== undefined ? resolveDir(git[1], cwd, home) : null
+}
+
+// Liegt `dir` außerhalb des Session-Ordners `root` und ist kein Arbeitsplatz für Hilfsdateien (Temp, AppData, Punkt-Ordner
+// im Home wie ~/.claude)? Nur dann ist es ein anderes Projekt, in das Claude gerade wechselt.
+// ponytail: Ausnahmen als feste Muster, erweiterbar über eine Einstellung, falls Fehlalarme auftreten
+// Ein Ordner gilt als drinnen, wenn er im Session-Ordner oder im aktuellen Prozess-Ordner (`cwd`) liegt oder dessen Unterordner ist;
+// die Schreibweise (C:\x, C:/x, /c/x) und Groß-/Kleinschreibung spielen keine Rolle.
+export function isForeignDir(dir: string, root: string, home: string, cwd = ''): boolean {
+  const d = normDir(dir)
+  const inside = (base: string) => {
+    const b = normDir(base)
+    return b !== '' && (d === b || d.startsWith(`${b}/`))
+  }
+  if (inside(root) || inside(cwd)) return false
+  const h = normDir(home)
+  if (h !== '' && (d === h || d.startsWith(`${h}/.`) || d.startsWith(`${h}/appdata/`))) return false
+  return !/(^|\/)(tmp|temp)(\/|$)/.test(d)
+}
+
+// Verknüpfte Sessions aus der Antwort von ccd_session_mgmt.list_sessions (ein Text-Block mit JSON-Array); [] bei allem anderen.
+export function parseLinkedSessions(text: string | undefined): LinkedSession[] {
+  let list: unknown
+  try {
+    list = JSON.parse(text ?? '')
+  } catch {
+    return []
+  }
+  if (!Array.isArray(list)) return []
+  const str = (v: unknown) => (typeof v === 'string' ? v : '')
+  return list.flatMap(x => {
+    const o = (x ?? {}) as Record<string, unknown>
+    const id = str(o.sessionId)
+    return id === '' ? [] : [{ id, title: str(o.title), name: str(o.name), branch: str(o.branch), cwd: str(o.cwd), running: o.isRunning === true, archived: o.isArchived === true }]
+  })
+}
+
+// Styles, die neu dazugekommen sind: ihr Kennzeichen trägt den Chip „new style“.
+export const NEW_STYLES: ReadonlySet<string> = new Set(['style.todos', 'style.wrapup'])
+
+// Aufgabenliste aus einem Tool-Aufruf: TodoWrite (CLI) und die Aufgabenliste der Desktop-App (update_plan mit `items`).
+// null bei Teil-Updates (`advance`, `done`), die keine ganze Liste tragen.
+export const TODO_TOOLS: ReadonlySet<string> = new Set(['TodoWrite', 'mcp__ccd_turn__update_plan'])
+export function todosOf(tool: string, input: unknown): { done: number; total: number; current: string } | null {
+  if (!TODO_TOOLS.has(tool)) return null
+  const o = (input ?? {}) as Record<string, unknown>
+  const list = tool === 'TodoWrite' ? o.todos : o.items
+  if (!Array.isArray(list) || list.length === 0) return null
+  const items = list.map(x => (x ?? {}) as Record<string, unknown>)
+  const text = (x: Record<string, unknown>) => (typeof x.activeForm === 'string' && x.activeForm !== '' ? x.activeForm : typeof x.content === 'string' ? x.content : '')
+  const running = items.find(x => x.status === 'in_progress')
+  return { done: items.filter(x => x.status === 'completed').length, total: items.length, current: running === undefined ? '' : oneLine(text(running), 80) }
+}
+
+// Abschluss-Box der Desktop-App (wrap_up): Rückblick und, falls offen, die Frage an dich.
+export function wrapupOf(tool: string, input: unknown): { recap: string; ask: string } | null {
+  if (tool !== 'mcp__ccd_turn__wrap_up') return null
+  const o = (input ?? {}) as Record<string, unknown>
+  const recap = typeof o.recap === 'string' ? oneLine(o.recap, 140) : ''
+  return recap === '' ? null : { recap, ask: typeof o.ask === 'string' ? oneLine(o.ask, 100) : '' }
+}
+
+// Aufruf, der eine Hintergrundaufgabe startet: Shell (run_in_background, Strg+B, Timeout), Monitor, Workflow, Cloud-Agent.
+// Lokale Subagents führt die Agent-Kachel. null, wenn der Aufruf nichts im Hintergrund lässt.
+export function backgroundOf(tool: string, input: Record<string, unknown>, result: unknown): { id: string; description: string; command?: string } | null {
+  const r = (result ?? {}) as Record<string, unknown>
+  const str = (v: unknown) => (typeof v === 'string' ? v.trim() : '')
+  const id = SHELL_TOOLS.has(tool) ? str(r.backgroundTaskId) : tool === 'Monitor' || tool === 'Workflow' || (tool === 'Agent' && r.status === 'remote_launched') ? str(r.taskId) : ''
+  if (id === '') return null
+  const command = str(input.command)
+  const description = str(input.description) || str(r.description) || str(r.workflowName) || oneLine(command, 80) || tool
+  return command === '' ? { id, description } : { id, description, command }
 }
 
 // Tool-Namen lesbar: `mcp__dev-workbench__plan_session` → Server „dev-workbench“, Tool „plan_session“.

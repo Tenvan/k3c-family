@@ -3,8 +3,9 @@ import { GROUND_Y, UNIT_PX } from '../core/constants';
 import { currentLanguage, nameOf, t } from '../core/texts';
 import { BUILDINGS, TROOPS } from '../model/data';
 import type { Site, World } from '../model/types';
-import { BUILDING_TEXTURES, STAIRS_UP_TILES, hubTexture, siteTexture } from './buildingSprites';
+import { BUILDING_TEXTURES, hubTexture, siteTexture, textureScale } from './buildingSprites';
 import { fontStyle } from './fontRules';
+import { gateStage } from './gateRules';
 import { drawSiteStatus, siteStatus, statusKey } from './siteStatusView';
 import { canAfford } from './viewRules';
 
@@ -14,11 +15,8 @@ import { canAfford } from './viewRules';
  */
 
 type View = Phaser.GameObjects.Container;
-type Picture = Phaser.GameObjects.Image | Phaser.GameObjects.TileSprite | Phaser.GameObjects.Container;
 
 const G = GROUND_Y;
-/** Pixel-Art ganzzahlig ×2 (Q13: 16-px-Raster auf UNIT_PX = 32) */
-const ZOOM = 2;
 export const TEXT = { stroke: '#000000', strokeThickness: 4, fontStyle: 'bold' };
 
 const SITE_SIZE: Record<Site['kind'], [number, number]> = {
@@ -52,78 +50,58 @@ const SITE_COLOR: Record<Site['kind'], number> = {
   armory: 0x5c677d,
 };
 
-/** Ausschnitte aus Kachelsätzen (Pixel im Bild): Burg aus dem Fort-Tileset, Verlies-Eingang aus dem Dungeon-Bild */
-const FRAMES: Record<string, [string, number, number, number, number][]> = {
-  'grafik:fort-tileset': [['column', 0, 16, 32, 96], ['wall', 48, 48, 96, 64], ['merlon', 48, 16, 32, 16]],
-  'grafik:stairsDown': [['entrance', 96, 0, 176, 112]],
-};
-
 /** Nur die zugeordneten Gebäude-Grafiken laden (LoadScene.preload) */
 export function preloadBuildings(scene: Phaser.Scene): void {
   for (const [key, file] of Object.entries(BUILDING_TEXTURES)) scene.load.image(key, `grafik/${file}`);
 }
 
-/** Nach dem Laden: Pixel-Art scharf und Ausschnitte als Frames anlegen */
+/** Nach dem Laden: Pixel-Art scharf */
 export function prepareBuildings(scene: Phaser.Scene): void {
-  for (const key of Object.keys(BUILDING_TEXTURES)) {
-    if (!scene.textures.exists(key)) continue;
-    const texture = scene.textures.get(key);
-    texture.setFilter(Phaser.Textures.FilterMode.NEAREST);
-    for (const [name, x, y, w, h] of FRAMES[key] ?? []) if (!texture.has(name)) texture.add(name, 0, x, y, w, h);
-  }
+  for (const key of Object.keys(BUILDING_TEXTURES)) if (scene.textures.exists(key)) scene.textures.get(key).setFilter(Phaser.Textures.FilterMode.NEAREST);
 }
 
 const has = (scene: Phaser.Scene, key: string | null): key is string => key !== null && scene.textures.exists(key);
 
-/** Burg (Hub-Stufe 1): Säulen links/rechts, Mauer mit Zinnen, Banner. Ohne Grafik die bisherige Form. */
-export function drawCastle(scene: Phaser.Scene, x: number, put: (o: Phaser.GameObjects.GameObject) => void): void {
-  const key = hubTexture();
-  if (!has(scene, key)) {
-    put(scene.add.rectangle(x, G - 130, 300, 260, 0x6c757d).setStrokeStyle(4, 0x343a40));
-    put(scene.add.rectangle(x, G - 40, 60, 80, 0x343a40));
-    for (const dx of [-120, -40, 40, 120]) put(scene.add.rectangle(x + dx, G - 275, 40, 30, 0x6c757d).setStrokeStyle(4, 0x343a40));
+/** Burg (GEB4): ein Bild je Hub-Stufe, Unterkante am Boden, mittig auf `x`; Inhalt setzt `updateCastleView` */
+export function createCastleView(scene: Phaser.Scene, x: number): View {
+  const picture = scene.add.image(0, 0, '__DEFAULT').setOrigin(0.5, 1).setVisible(false);
+  return scene.add.container(x, G, [picture, scene.add.graphics()]);
+}
+
+/** Tauscht die Burg-Grafik, wenn sich die Hub-Stufe ändert (`World.hubLevel`, fehlt = 1); ohne Grafik die bisherige Form */
+export function updateCastleView(scene: Phaser.Scene, v: View, stage: number): void {
+  if (v.getData('stage') === stage) return;
+  v.setData('stage', stage);
+  const picture = v.getAt(0) as Phaser.GameObjects.Image;
+  const g = (v.getAt(1) as Phaser.GameObjects.Graphics).clear();
+  const key = hubTexture(stage);
+  if (has(scene, key)) {
+    picture.setTexture(key).setScale(textureScale(key)).setVisible(true);
     return;
   }
-  const part = (px: number, py: number, frame: string): void => put(scene.add.image(x + px, py, key, frame).setOrigin(0.5, 1).setScale(ZOOM));
-  part(-128, G, 'column');
-  part(128, G, 'column');
-  part(0, G, 'wall');
-  for (const dx of [-64, 0, 64]) part(dx, G - 128, 'merlon');
-  if (has(scene, 'grafik:fort-banner')) put(scene.add.image(x, G - 120, 'grafik:fort-banner').setOrigin(0.5, 0).setScale(ZOOM));
+  picture.setVisible(false);
+  g.fillStyle(0x6c757d).fillRect(-150, -260, 300, 260).lineStyle(4, 0x343a40).strokeRect(-150, -260, 300, 260);
+  g.fillStyle(0x343a40).fillRect(-30, -80, 60, 80);
+  for (const dx of [-120, -40, 40, 120]) g.fillStyle(0x6c757d).fillRect(dx - 20, -290, 40, 30).strokeRect(dx - 20, -290, 40, 30);
 }
 
 export function createSiteView(scene: Phaser.Scene, s: Site): View {
   const [w, h] = SITE_SIZE[s.kind];
-  // Mauer: 16-px-Kachel gestapelt, sonst ein Bild
-  const picture: Picture = s.kind === 'stairsUp' ? stairsUp(scene) : s.kind === 'wall' ? scene.add.tileSprite(0, 0, 16, 80, '__DEFAULT').setOrigin(0.5, 1) : scene.add.image(0, 0, '__DEFAULT').setOrigin(0.5, 1);
-  picture.setScale(ZOOM).setVisible(false);
+  const picture = scene.add.image(0, 0, '__DEFAULT').setOrigin(0.5, 1).setVisible(false);
   const g = scene.add.graphics();
   const label = scene.add.text(0, 0, '', { ...TEXT, ...fontStyle('priceTag') }).setOrigin(0.5, 1);
   return scene.add.container(s.x * UNIT_PX, G, [picture, g, label]).setDepth(2).setData('size', [w, h]);
 }
 
-/** Treppe hoch aus den Kacheln (je 16 nach rechts und 16 höher); fehlt eine Kachel, bleibt sie leer → Platzhalter */
-function stairsUp(scene: Phaser.Scene): Phaser.GameObjects.Container {
-  if (!STAIRS_UP_TILES.every((key) => scene.textures.exists(key))) return scene.add.container(0, 0);
-  const mid = (STAIRS_UP_TILES.length - 1) / 2;
-  return scene.add.container(0, 0, STAIRS_UP_TILES.map((key, i) => scene.add.image((i - mid) * 16, -i * 16, key).setOrigin(0.5, 1)));
-}
-
 /** Zeigt die Grafik, falls zugeordnet und geladen; liefert die Höhe für Schilder darüber (sonst Platzhalter-Höhe) */
-function showPicture(scene: Phaser.Scene, v: View, s: Site): number | null {
-  const picture = v.getAt(0) as Picture;
-  const key = siteTexture(s.kind, s.state);
-  const frame = key === null ? undefined : FRAMES[key]?.[0]?.[0];
-  const empty = picture instanceof Phaser.GameObjects.Container && picture.length === 0;
-  if (!has(scene, key) || empty) {
+function showPicture(scene: Phaser.Scene, v: View, s: Site, stage: number): number | null {
+  const picture = v.getAt(0) as Phaser.GameObjects.Image;
+  const key = siteTexture(s.kind, s.state, stage); // Mauer und Turm je Ausbau-Stufe (GEB3), Tor je Mauerlinie (GEB4)
+  if (!has(scene, key)) {
     picture.setVisible(false);
     return null;
   }
-  if (picture instanceof Phaser.GameObjects.Container) {
-    picture.setVisible(true);
-    return picture.getBounds().height;
-  }
-  picture.setTexture(key, frame).setVisible(true);
+  picture.setTexture(key).setScale(textureScale(key)).setVisible(true);
   return picture.displayHeight;
 }
 
@@ -131,7 +109,8 @@ function showPicture(scene: Phaser.Scene, v: View, s: Site): number | null {
 export function updateSiteView(scene: Phaser.Scene, v: View, s: Site, world: World, near: boolean): void {
   const data = BUILDINGS[s.kind];
   const wait = siteStatus(s, world.danger);
-  const key = [s.state, s.paidGold, Math.round(s.buildProgress * 20), Math.round((s.hp / s.maxHp) * 20), s.bows, s.bowPaidGold, near, canAfford(world.stock, data.cost), currentLanguage(), statusKey(wait)].join('|');
+  const stage = s.kind === 'gate' ? gateStage(s, world.sites, world.hubX) : (s.level ?? 1);
+  const key = [s.state, s.paidGold, Math.round(s.buildProgress * 20), Math.round((s.hp / s.maxHp) * 20), s.bows, s.bowPaidGold, near, canAfford(world.stock, data.cost), currentLanguage(), statusKey(wait), stage].join('|'); // stage: Mauer/Turm je Stufe (GEB3), Tor je Mauerlinie (GEB4)
   if (v.getData('key') === key) return;
   v.setData('key', key);
 
@@ -140,7 +119,7 @@ export function updateSiteView(scene: Phaser.Scene, v: View, s: Site, world: Wor
   g.clear();
   label.setText('');
   const [w, size] = v.getData('size') as [number, number];
-  const picture = showPicture(scene, v, s);
+  const picture = showPicture(scene, v, s, stage);
   const h = picture ?? size;
 
   if (s.state === 'built') {

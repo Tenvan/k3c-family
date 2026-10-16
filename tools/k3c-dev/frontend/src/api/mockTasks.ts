@@ -17,7 +17,7 @@ const TASKS: TaskInfo[] = [
   t('test', 'Vitest (Level-Generator, reine Logik)', 'Taskfile.yml', 52),
   t('lint', 'Oxlint über src/ und tests/', 'Taskfile.yml', 58),
   t('build', 'Typecheck + Produktions-Build nach dist/', 'Taskfile.yml', 66),
-  t('dev', 'Dev-Server (auch im LAN erreichbar, Port 5173)', 'Taskfile.yml', 74),
+  t('dev', 'Dev-Server (auch im LAN erreichbar, Port 5183)', 'Taskfile.yml', 74),
   t('serve', 'Build + Go-Server (Port 8080)', 'Taskfile.yml', 82),
   t('check:go', 'go test + golangci-lint', 'Taskfile.yml', 96),
   t('check:dev', 'k3c-dev: Frontend, go test, golangci-lint', 'Taskfile.yml', 124),
@@ -50,7 +50,7 @@ const SCRIPTS: Record<string, string[]> = {
   ],
   dev: [
     `${ESC}2mtask: [dev] npx vite${ESC}0m`,
-    `${ESC}32m➜${ESC}0m  ${ESC}1mLocal${ESC}0m:   ${ESC}36mhttp://localhost:5173/${ESC}0m`,
+    `${ESC}32m➜${ESC}0m  ${ESC}1mLocal${ESC}0m:   ${ESC}36mhttp://localhost:5183/${ESC}0m`,
   ],
 };
 

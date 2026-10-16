@@ -1,6 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import { mockPlanningData } from '../api/mockPlanning';
-import { EMPTY_FILTER, QUICK, SPLIT_DEFAULT, filterProjects, filterSprints, filterTickets, isNext, parseFilter, parseSplit } from './planning';
+import { EMPTY_FILTER, QUICK, SPLIT_DEFAULT, filterProjects, filterSprints, filterTickets, isNext, parseFilter } from './planning';
+import { parseSplit } from '../tasks/TaskBars';
 
 const d = mockPlanningData();
 const ids = (xs: { id: string }[]) => xs.map((x) => x.id);
@@ -46,10 +47,10 @@ describe('getrennte Filter (B-401)', () => {
 
 describe('Splitter-Anteil (B-400)', () => {
   it('AC-02: gemerkter Anteil bleibt zwischen 20 und 80 %, sonst Vorgabe', () => {
-    expect(parseSplit('30')).toBe(30);
-    expect(parseSplit('5')).toBe(20);
-    expect(parseSplit('95')).toBe(80);
-    for (const bad of ['', 'abc', 'NaN', 'null']) expect(parseSplit(bad)).toBe(SPLIT_DEFAULT);
+    expect(parseSplit('30', SPLIT_DEFAULT)).toBe(30);
+    expect(parseSplit('5', SPLIT_DEFAULT)).toBe(20);
+    expect(parseSplit('95', SPLIT_DEFAULT)).toBe(80);
+    for (const bad of ['', 'abc', 'NaN', 'null']) expect(parseSplit(bad, SPLIT_DEFAULT)).toBe(SPLIT_DEFAULT);
   });
 });
 
@@ -71,9 +72,9 @@ describe('Review WZ2.8 (B-401)', () => {
     expect(got.length).toBeLessThan(base.length);
   });
 
-  it('M2: beide Bereiche überstehen Speichern und Laden unverändert', () => {
-    const f = { ...EMPTY_FILTER, q: 'x', prios: ['hoch'], envs: ['live'], projs: ['GRA'], pstatus: ['ruht'], doms: ['SIM'], sel: 'SP11' };
-    expect(parseFilter(JSON.stringify(f))).toEqual(f);
+  it('M2: beide Bereiche überstehen Speichern und Laden, der Freitext nicht (B-439)', () => {
+    const f = { ...EMPTY_FILTER, prios: ['hoch'], envs: ['live'], projs: ['GRA'], pstatus: ['ruht'], doms: ['SIM'], sel: 'SP11' };
+    expect(parseFilter(JSON.stringify({ ...f, q: 'x' }))).toEqual(f);
   });
 
   it('M3: eine gemerkte Domäne aus der Zeit vor dem Projekt-Filter wird verworfen', () => {

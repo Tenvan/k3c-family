@@ -1,0 +1,1232 @@
+{
+ "id": "kaserne",
+ "vorlage": {
+  "motiv": "Steinerne Kaserne mit Zinnen, breitem Holztor und Wimpel am Dach, daneben ein Waffenständer mit Speeren und Schwertern",
+  "teile": [
+   "Wimpel rot am Mast links auf dem Dach, ca. x 0,6 bis 1,3, y 0 bis 1",
+   "Steinhaus mit Zinnen oben, Quaderfugen und Sockel, x 0,25 bis 4,25, y 1 bis 4",
+   "Zwei Schießscharten links und rechts oben in der Wand",
+   "Breites Holztor mittig, x 1,2 bis 3,3, mit Balkenrahmen, Planken und zwei Eisenbändern mit Nieten",
+   "Waffenständer rechts, x 4,4 bis 5,9, niedrig bis y 2,2, mit zwei Speeren und zwei Schwertern"
+  ],
+  "materialien": [
+   "Stein (Kamin, Esse, Sockel, Stufe)",
+   "Holz (Wand, Tresen, Gestell)",
+   "Pfosten, Balken",
+   "Eisen (Rüstung, Band)",
+   "Metall (Werkzeug)",
+   "Stoff rot"
+  ],
+  "stimmung": "wehrhaft und geordnet, Steinbau passend zur Mauer",
+  "fein": "Quaderfugen, Plankenfugen, Nieten, Tor-Beschlag, Faltenlicht im Wimpel, Waffenglanz"
+ },
+ "kacheln": {
+  "b": 6,
+  "h": 4
+ },
+ "bausteine": [
+  {
+   "art": "wand",
+   "rechteck": [
+    0.25,
+    1.25,
+    4,
+    2.75
+   ],
+   "farbe": "dim-gray"
+  },
+  {
+   "art": "schatten",
+   "rechteck": [
+    0.25,
+    1.25,
+    4,
+    0.0625
+   ],
+   "farbe": "valhalla"
+  },
+  {
+   "art": "licht",
+   "rechteck": [
+    0.25,
+    1.25,
+    0.0625,
+    2.75
+   ],
+   "farbe": "smokey-ash"
+  },
+  {
+   "art": "schatten",
+   "rechteck": [
+    4.1875,
+    1.3125,
+    0.0625,
+    2.6875
+   ],
+   "farbe": "valhalla"
+  },
+  {
+   "art": "fuge",
+   "rechteck": [
+    0.3125,
+    1.625,
+    3.875,
+    0.03125
+   ],
+   "farbe": "valhalla",
+   "fein": true
+  },
+  {
+   "art": "fuge",
+   "rechteck": [
+    0.75,
+    1.65625,
+    0.03125,
+    0.34375
+   ],
+   "farbe": "valhalla",
+   "fein": true
+  },
+  {
+   "art": "fuge",
+   "rechteck": [
+    2.0,
+    1.65625,
+    0.03125,
+    0.34375
+   ],
+   "farbe": "valhalla",
+   "fein": true
+  },
+  {
+   "art": "fuge",
+   "rechteck": [
+    3.5,
+    1.65625,
+    0.03125,
+    0.34375
+   ],
+   "farbe": "valhalla",
+   "fein": true
+  },
+  {
+   "art": "fuge",
+   "rechteck": [
+    0.3125,
+    2.0,
+    3.875,
+    0.03125
+   ],
+   "farbe": "valhalla",
+   "fein": true
+  },
+  {
+   "art": "fuge",
+   "rechteck": [
+    0.5,
+    2.03125,
+    0.03125,
+    0.34375
+   ],
+   "farbe": "valhalla",
+   "fein": true
+  },
+  {
+   "art": "fuge",
+   "rechteck": [
+    1.25,
+    2.03125,
+    0.03125,
+    0.34375
+   ],
+   "farbe": "valhalla",
+   "fein": true
+  },
+  {
+   "art": "fuge",
+   "rechteck": [
+    2.75,
+    2.03125,
+    0.03125,
+    0.34375
+   ],
+   "farbe": "valhalla",
+   "fein": true
+  },
+  {
+   "art": "fuge",
+   "rechteck": [
+    3.875,
+    2.03125,
+    0.03125,
+    0.34375
+   ],
+   "farbe": "valhalla",
+   "fein": true
+  },
+  {
+   "art": "fuge",
+   "rechteck": [
+    0.3125,
+    2.375,
+    3.875,
+    0.03125
+   ],
+   "farbe": "valhalla",
+   "fein": true
+  },
+  {
+   "art": "fuge",
+   "rechteck": [
+    0.75,
+    2.40625,
+    0.03125,
+    0.34375
+   ],
+   "farbe": "valhalla",
+   "fein": true
+  },
+  {
+   "art": "fuge",
+   "rechteck": [
+    2.0,
+    2.40625,
+    0.03125,
+    0.34375
+   ],
+   "farbe": "valhalla",
+   "fein": true
+  },
+  {
+   "art": "fuge",
+   "rechteck": [
+    3.5,
+    2.40625,
+    0.03125,
+    0.34375
+   ],
+   "farbe": "valhalla",
+   "fein": true
+  },
+  {
+   "art": "fuge",
+   "rechteck": [
+    0.3125,
+    2.75,
+    3.875,
+    0.03125
+   ],
+   "farbe": "valhalla",
+   "fein": true
+  },
+  {
+   "art": "fuge",
+   "rechteck": [
+    0.5,
+    2.78125,
+    0.03125,
+    0.34375
+   ],
+   "farbe": "valhalla",
+   "fein": true
+  },
+  {
+   "art": "fuge",
+   "rechteck": [
+    1.25,
+    2.78125,
+    0.03125,
+    0.34375
+   ],
+   "farbe": "valhalla",
+   "fein": true
+  },
+  {
+   "art": "fuge",
+   "rechteck": [
+    2.75,
+    2.78125,
+    0.03125,
+    0.34375
+   ],
+   "farbe": "valhalla",
+   "fein": true
+  },
+  {
+   "art": "fuge",
+   "rechteck": [
+    3.875,
+    2.78125,
+    0.03125,
+    0.34375
+   ],
+   "farbe": "valhalla",
+   "fein": true
+  },
+  {
+   "art": "fuge",
+   "rechteck": [
+    0.3125,
+    3.125,
+    3.875,
+    0.03125
+   ],
+   "farbe": "valhalla",
+   "fein": true
+  },
+  {
+   "art": "fuge",
+   "rechteck": [
+    0.75,
+    3.15625,
+    0.03125,
+    0.34375
+   ],
+   "farbe": "valhalla",
+   "fein": true
+  },
+  {
+   "art": "fuge",
+   "rechteck": [
+    2.0,
+    3.15625,
+    0.03125,
+    0.34375
+   ],
+   "farbe": "valhalla",
+   "fein": true
+  },
+  {
+   "art": "fuge",
+   "rechteck": [
+    3.5,
+    3.15625,
+    0.03125,
+    0.34375
+   ],
+   "farbe": "valhalla",
+   "fein": true
+  },
+  {
+   "art": "fuge",
+   "rechteck": [
+    0.3125,
+    3.5,
+    3.875,
+    0.03125
+   ],
+   "farbe": "valhalla",
+   "fein": true
+  },
+  {
+   "art": "fuge",
+   "rechteck": [
+    0.5,
+    3.53125,
+    0.03125,
+    0.34375
+   ],
+   "farbe": "valhalla",
+   "fein": true
+  },
+  {
+   "art": "fuge",
+   "rechteck": [
+    1.25,
+    3.53125,
+    0.03125,
+    0.34375
+   ],
+   "farbe": "valhalla",
+   "fein": true
+  },
+  {
+   "art": "fuge",
+   "rechteck": [
+    2.75,
+    3.53125,
+    0.03125,
+    0.34375
+   ],
+   "farbe": "valhalla",
+   "fein": true
+  },
+  {
+   "art": "fuge",
+   "rechteck": [
+    3.875,
+    3.53125,
+    0.03125,
+    0.34375
+   ],
+   "farbe": "valhalla",
+   "fein": true
+  },
+  {
+   "art": "sockel",
+   "rechteck": [
+    0.25,
+    3.75,
+    4,
+    0.25
+   ],
+   "farbe": "valhalla"
+  },
+  {
+   "art": "sockel",
+   "rechteck": [
+    0.25,
+    3.75,
+    4,
+    0.0625
+   ],
+   "farbe": "dim-gray"
+  },
+  {
+   "art": "zinne",
+   "rechteck": [
+    0.25,
+    1.0,
+    0.25,
+    0.3125
+   ],
+   "farbe": "dim-gray"
+  },
+  {
+   "art": "zinne",
+   "rechteck": [
+    0.25,
+    1.0,
+    0.25,
+    0.0625
+   ],
+   "farbe": "smokey-ash"
+  },
+  {
+   "art": "zinne",
+   "rechteck": [
+    0.25,
+    1.0,
+    0.0625,
+    0.3125
+   ],
+   "farbe": "smokey-ash"
+  },
+  {
+   "art": "zinne",
+   "rechteck": [
+    0.75,
+    1.0,
+    0.25,
+    0.3125
+   ],
+   "farbe": "dim-gray"
+  },
+  {
+   "art": "zinne",
+   "rechteck": [
+    0.75,
+    1.0,
+    0.25,
+    0.0625
+   ],
+   "farbe": "smokey-ash"
+  },
+  {
+   "art": "zinne",
+   "rechteck": [
+    0.75,
+    1.0,
+    0.0625,
+    0.3125
+   ],
+   "farbe": "smokey-ash"
+  },
+  {
+   "art": "zinne",
+   "rechteck": [
+    1.25,
+    1.0,
+    0.25,
+    0.3125
+   ],
+   "farbe": "dim-gray"
+  },
+  {
+   "art": "zinne",
+   "rechteck": [
+    1.25,
+    1.0,
+    0.25,
+    0.0625
+   ],
+   "farbe": "smokey-ash"
+  },
+  {
+   "art": "zinne",
+   "rechteck": [
+    1.25,
+    1.0,
+    0.0625,
+    0.3125
+   ],
+   "farbe": "smokey-ash"
+  },
+  {
+   "art": "zinne",
+   "rechteck": [
+    1.75,
+    1.0,
+    0.25,
+    0.3125
+   ],
+   "farbe": "dim-gray"
+  },
+  {
+   "art": "zinne",
+   "rechteck": [
+    1.75,
+    1.0,
+    0.25,
+    0.0625
+   ],
+   "farbe": "smokey-ash"
+  },
+  {
+   "art": "zinne",
+   "rechteck": [
+    1.75,
+    1.0,
+    0.0625,
+    0.3125
+   ],
+   "farbe": "smokey-ash"
+  },
+  {
+   "art": "zinne",
+   "rechteck": [
+    2.25,
+    1.0,
+    0.25,
+    0.3125
+   ],
+   "farbe": "dim-gray"
+  },
+  {
+   "art": "zinne",
+   "rechteck": [
+    2.25,
+    1.0,
+    0.25,
+    0.0625
+   ],
+   "farbe": "smokey-ash"
+  },
+  {
+   "art": "zinne",
+   "rechteck": [
+    2.25,
+    1.0,
+    0.0625,
+    0.3125
+   ],
+   "farbe": "smokey-ash"
+  },
+  {
+   "art": "zinne",
+   "rechteck": [
+    2.75,
+    1.0,
+    0.25,
+    0.3125
+   ],
+   "farbe": "dim-gray"
+  },
+  {
+   "art": "zinne",
+   "rechteck": [
+    2.75,
+    1.0,
+    0.25,
+    0.0625
+   ],
+   "farbe": "smokey-ash"
+  },
+  {
+   "art": "zinne",
+   "rechteck": [
+    2.75,
+    1.0,
+    0.0625,
+    0.3125
+   ],
+   "farbe": "smokey-ash"
+  },
+  {
+   "art": "zinne",
+   "rechteck": [
+    3.25,
+    1.0,
+    0.25,
+    0.3125
+   ],
+   "farbe": "dim-gray"
+  },
+  {
+   "art": "zinne",
+   "rechteck": [
+    3.25,
+    1.0,
+    0.25,
+    0.0625
+   ],
+   "farbe": "smokey-ash"
+  },
+  {
+   "art": "zinne",
+   "rechteck": [
+    3.25,
+    1.0,
+    0.0625,
+    0.3125
+   ],
+   "farbe": "smokey-ash"
+  },
+  {
+   "art": "zinne",
+   "rechteck": [
+    3.75,
+    1.0,
+    0.25,
+    0.3125
+   ],
+   "farbe": "dim-gray"
+  },
+  {
+   "art": "zinne",
+   "rechteck": [
+    3.75,
+    1.0,
+    0.25,
+    0.0625
+   ],
+   "farbe": "smokey-ash"
+  },
+  {
+   "art": "zinne",
+   "rechteck": [
+    3.75,
+    1.0,
+    0.0625,
+    0.3125
+   ],
+   "farbe": "smokey-ash"
+  },
+  {
+   "art": "scharte",
+   "rechteck": [
+    0.625,
+    2.0,
+    0.125,
+    0.5
+   ],
+   "farbe": "black"
+  },
+  {
+   "art": "scharte",
+   "rechteck": [
+    3.625,
+    2.0,
+    0.125,
+    0.5
+   ],
+   "farbe": "black"
+  },
+  {
+   "art": "mast",
+   "rechteck": [
+    0.59375,
+    0.0,
+    0.0625,
+    1.0
+   ],
+   "farbe": "oiled-cedar"
+  },
+  {
+   "art": "mast",
+   "rechteck": [
+    0.59375,
+    0.0,
+    0.03125,
+    1.0
+   ],
+   "farbe": "rope",
+   "fein": true
+  },
+  {
+   "art": "banner",
+   "rechteck": [
+    0.65625,
+    0.0625,
+    0.5,
+    0.1875
+   ],
+   "farbe": "brown"
+  },
+  {
+   "art": "banner",
+   "rechteck": [
+    0.65625,
+    0.0625,
+    0.5,
+    0.0625
+   ],
+   "farbe": "mandy",
+   "fein": true
+  },
+  {
+   "art": "banner",
+   "rechteck": [
+    0.65625,
+    0.1875,
+    0.5,
+    0.0625
+   ],
+   "farbe": "loulou"
+  },
+  {
+   "art": "banner",
+   "rechteck": [
+    1.15625,
+    0.125,
+    0.125,
+    0.0625
+   ],
+   "farbe": "brown"
+  },
+  {
+   "art": "banner",
+   "rechteck": [
+    1.28125,
+    0.125,
+    0.0625,
+    0.0625
+   ],
+   "farbe": "loulou"
+  },
+  {
+   "art": "tuerrahmen",
+   "rechteck": [
+    1.1875,
+    1.875,
+    2.125,
+    2.125
+   ],
+   "farbe": "oiled-cedar"
+  },
+  {
+   "art": "tuerrahmen",
+   "rechteck": [
+    1.1875,
+    1.875,
+    2.125,
+    0.0625
+   ],
+   "farbe": "rope"
+  },
+  {
+   "art": "tuerrahmen",
+   "rechteck": [
+    1.1875,
+    1.875,
+    0.0625,
+    2.125
+   ],
+   "farbe": "rope"
+  },
+  {
+   "art": "tor",
+   "rechteck": [
+    1.3125,
+    2.0,
+    1.875,
+    2.0
+   ],
+   "farbe": "rope"
+  },
+  {
+   "art": "schatten",
+   "rechteck": [
+    1.3125,
+    2.0,
+    1.875,
+    0.125
+   ],
+   "farbe": "oiled-cedar"
+  },
+  {
+   "art": "licht",
+   "rechteck": [
+    1.3125,
+    2.125,
+    0.0625,
+    1.875
+   ],
+   "farbe": "twine"
+  },
+  {
+   "art": "fuge",
+   "rechteck": [
+    1.5625,
+    2.125,
+    0.03125,
+    1.875
+   ],
+   "farbe": "oiled-cedar",
+   "fein": true
+  },
+  {
+   "art": "fuge",
+   "rechteck": [
+    1.8125,
+    2.125,
+    0.03125,
+    1.875
+   ],
+   "farbe": "oiled-cedar",
+   "fein": true
+  },
+  {
+   "art": "fuge",
+   "rechteck": [
+    2.0625,
+    2.125,
+    0.03125,
+    1.875
+   ],
+   "farbe": "oiled-cedar",
+   "fein": true
+  },
+  {
+   "art": "fuge",
+   "rechteck": [
+    2.3125,
+    2.125,
+    0.03125,
+    1.875
+   ],
+   "farbe": "oiled-cedar",
+   "fein": true
+  },
+  {
+   "art": "fuge",
+   "rechteck": [
+    2.5625,
+    2.125,
+    0.03125,
+    1.875
+   ],
+   "farbe": "oiled-cedar",
+   "fein": true
+  },
+  {
+   "art": "fuge",
+   "rechteck": [
+    2.8125,
+    2.125,
+    0.03125,
+    1.875
+   ],
+   "farbe": "oiled-cedar",
+   "fein": true
+  },
+  {
+   "art": "fuge",
+   "rechteck": [
+    3.0625,
+    2.125,
+    0.03125,
+    1.875
+   ],
+   "farbe": "oiled-cedar",
+   "fein": true
+  },
+  {
+   "art": "band",
+   "rechteck": [
+    1.3125,
+    2.5,
+    1.875,
+    0.125
+   ],
+   "farbe": "dim-gray"
+  },
+  {
+   "art": "band",
+   "rechteck": [
+    1.3125,
+    2.5,
+    1.875,
+    0.03125
+   ],
+   "farbe": "heather",
+   "fein": true
+  },
+  {
+   "art": "niete",
+   "rechteck": [
+    1.4375,
+    2.53125,
+    0.0625,
+    0.0625
+   ],
+   "farbe": "light-steel",
+   "fein": true
+  },
+  {
+   "art": "niete",
+   "rechteck": [
+    1.9375,
+    2.53125,
+    0.0625,
+    0.0625
+   ],
+   "farbe": "light-steel",
+   "fein": true
+  },
+  {
+   "art": "niete",
+   "rechteck": [
+    2.4375,
+    2.53125,
+    0.0625,
+    0.0625
+   ],
+   "farbe": "light-steel",
+   "fein": true
+  },
+  {
+   "art": "niete",
+   "rechteck": [
+    2.9375,
+    2.53125,
+    0.0625,
+    0.0625
+   ],
+   "farbe": "light-steel",
+   "fein": true
+  },
+  {
+   "art": "band",
+   "rechteck": [
+    1.3125,
+    3.375,
+    1.875,
+    0.125
+   ],
+   "farbe": "dim-gray"
+  },
+  {
+   "art": "band",
+   "rechteck": [
+    1.3125,
+    3.375,
+    1.875,
+    0.03125
+   ],
+   "farbe": "heather",
+   "fein": true
+  },
+  {
+   "art": "niete",
+   "rechteck": [
+    1.4375,
+    3.40625,
+    0.0625,
+    0.0625
+   ],
+   "farbe": "light-steel",
+   "fein": true
+  },
+  {
+   "art": "niete",
+   "rechteck": [
+    1.9375,
+    3.40625,
+    0.0625,
+    0.0625
+   ],
+   "farbe": "light-steel",
+   "fein": true
+  },
+  {
+   "art": "niete",
+   "rechteck": [
+    2.4375,
+    3.40625,
+    0.0625,
+    0.0625
+   ],
+   "farbe": "light-steel",
+   "fein": true
+  },
+  {
+   "art": "niete",
+   "rechteck": [
+    2.9375,
+    3.40625,
+    0.0625,
+    0.0625
+   ],
+   "farbe": "light-steel",
+   "fein": true
+  },
+  {
+   "art": "beschlag",
+   "rechteck": [
+    2.21875,
+    3.0,
+    0.0625,
+    0.25
+   ],
+   "farbe": "dim-gray",
+   "fein": true
+  },
+  {
+   "art": "beschlag",
+   "rechteck": [
+    2.28125,
+    3.0,
+    0.0625,
+    0.25
+   ],
+   "farbe": "heather",
+   "fein": true
+  },
+  {
+   "art": "staender",
+   "rechteck": [
+    4.5,
+    2.25,
+    0.125,
+    1.75
+   ],
+   "farbe": "oiled-cedar"
+  },
+  {
+   "art": "staender",
+   "rechteck": [
+    4.5,
+    2.25,
+    0.03125,
+    1.75
+   ],
+   "farbe": "rope",
+   "fein": true
+  },
+  {
+   "art": "staender",
+   "rechteck": [
+    5.625,
+    2.25,
+    0.125,
+    1.75
+   ],
+   "farbe": "oiled-cedar"
+  },
+  {
+   "art": "staender",
+   "rechteck": [
+    5.625,
+    2.25,
+    0.03125,
+    1.75
+   ],
+   "farbe": "rope",
+   "fein": true
+  },
+  {
+   "art": "speer",
+   "rechteck": [
+    4.6875,
+    1.9375,
+    0.0625,
+    1.9375
+   ],
+   "farbe": "rope"
+  },
+  {
+   "art": "speer",
+   "rechteck": [
+    4.65625,
+    1.75,
+    0.125,
+    0.1875
+   ],
+   "farbe": "light-steel"
+  },
+  {
+   "art": "speer",
+   "rechteck": [
+    4.6875,
+    1.6875,
+    0.0625,
+    0.0625
+   ],
+   "farbe": "light-steel"
+  },
+  {
+   "art": "speer",
+   "rechteck": [
+    4.9375,
+    2.0625,
+    0.0625,
+    1.8125
+   ],
+   "farbe": "rope"
+  },
+  {
+   "art": "speer",
+   "rechteck": [
+    4.90625,
+    1.875,
+    0.125,
+    0.1875
+   ],
+   "farbe": "light-steel"
+  },
+  {
+   "art": "speer",
+   "rechteck": [
+    4.9375,
+    1.8125,
+    0.0625,
+    0.0625
+   ],
+   "farbe": "light-steel"
+  },
+  {
+   "art": "schwert",
+   "rechteck": [
+    5.25,
+    2.5,
+    0.0625,
+    0.8125
+   ],
+   "farbe": "light-steel"
+  },
+  {
+   "art": "schwert",
+   "rechteck": [
+    5.25,
+    2.5,
+    0.03125,
+    0.8125
+   ],
+   "farbe": "white",
+   "fein": true
+  },
+  {
+   "art": "schwert",
+   "rechteck": [
+    5.1875,
+    3.3125,
+    0.1875,
+    0.0625
+   ],
+   "farbe": "dim-gray"
+  },
+  {
+   "art": "schwert",
+   "rechteck": [
+    5.25,
+    3.375,
+    0.0625,
+    0.375
+   ],
+   "farbe": "oiled-cedar"
+  },
+  {
+   "art": "schwert",
+   "rechteck": [
+    5.4375,
+    2.5,
+    0.0625,
+    0.8125
+   ],
+   "farbe": "light-steel"
+  },
+  {
+   "art": "schwert",
+   "rechteck": [
+    5.4375,
+    2.5,
+    0.03125,
+    0.8125
+   ],
+   "farbe": "white",
+   "fein": true
+  },
+  {
+   "art": "schwert",
+   "rechteck": [
+    5.375,
+    3.3125,
+    0.1875,
+    0.0625
+   ],
+   "farbe": "dim-gray"
+  },
+  {
+   "art": "schwert",
+   "rechteck": [
+    5.4375,
+    3.375,
+    0.0625,
+    0.375
+   ],
+   "farbe": "oiled-cedar"
+  },
+  {
+   "art": "staender",
+   "rechteck": [
+    4.4375,
+    2.1875,
+    1.4375,
+    0.125
+   ],
+   "farbe": "rope"
+  },
+  {
+   "art": "staender",
+   "rechteck": [
+    4.4375,
+    2.1875,
+    1.4375,
+    0.03125
+   ],
+   "farbe": "twine",
+   "fein": true
+  },
+  {
+   "art": "staender",
+   "rechteck": [
+    4.5,
+    3.5,
+    1.25,
+    0.09375
+   ],
+   "farbe": "rope"
+  },
+  {
+   "art": "staender",
+   "rechteck": [
+    4.375,
+    3.875,
+    1.5,
+    0.125
+   ],
+   "farbe": "oiled-cedar"
+  }
+ ]
+}

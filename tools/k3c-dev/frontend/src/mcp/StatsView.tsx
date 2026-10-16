@@ -1,8 +1,9 @@
 import { SegmentedControl } from '@radix-ui/themes';
-import { useState } from 'react';
+import { useState, type CSSProperties } from 'react';
 import type { McpUsage } from '../api';
 import { loadPref, savePref } from '../lib/prefs';
 import { useNow } from '../lib/useNow';
+import { Splitter, useSplit } from '../tasks/TaskBars';
 import { rangeScope } from './rangeScope';
 import { RANGES, RANGE_SPEC, type Range } from './series';
 import { Kpi } from './ServerCards';
@@ -15,10 +16,11 @@ type Choice = (typeof CHOICES)[number];
 const isRange = (c: Choice): c is Range => (RANGES as readonly string[]).includes(c);
 
 /** Unteransicht `Statistik` (B-065, B-350): Kacheln, Tool-Tabelle und Seitenspalte für Sitzung, Gesamtzeit oder einen
- *  Zeitraum (15 min bis 7 T, aus der Minuten-Zeitreihe). */
+ *  Zeitraum (15 min bis 7 T, aus der Minuten-Zeitreihe). Tabelle | Splitter (B-445) | Seitenspalte. */
 export function StatsView({ usage }: { usage: McpUsage }) {
   const [choice, setChoice] = useState<Choice>(() => loadPref('mcp.statScope', CHOICES, 'session'));
   const now = useNow(30_000);
+  const [split, setSplit, resetSplit] = useSplit('mcp.split.stats', 70);
   const names = usage.allTime.tools.map((t) => t.name);
   const scope = isRange(choice) ? rangeScope(usage.minutes, names, choice, now) : usage[choice];
   return (
@@ -39,10 +41,13 @@ export function StatsView({ usage }: { usage: McpUsage }) {
             : ruleLine(usage.rules, scope.since, now)}
         </p>
       </section>
-      <div className="mcp-stats-body">
-        <StatsTable scope={scope} />
-        {!isRange(choice) && <StatsSide scope={scope} now={now} />}
-      </div>
+      {isRange(choice) ? <StatsTable scope={scope} /> : (
+        <div className="mcp-stats-body" style={{ '--mcp-table': `${split}%` } as CSSProperties}>
+          <StatsTable scope={scope} />
+          <Splitter className="pl-split-v" value={split} onChange={setSplit} onReset={resetSplit} />
+          <StatsSide scope={scope} now={now} />
+        </div>
+      )}
     </div>
   );
 }

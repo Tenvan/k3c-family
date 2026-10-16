@@ -1,0 +1,194 @@
+{
+  "id": "mauer",
+  "vorlage": {
+    "motiv": "Wehrmauer, 1 Kachel breit und 5 hoch, mit drei Zinnen oben; Material wechselt je Stufe",
+    "teile": [
+      "Drei Zinnen oben über die ganze Breite",
+      "Mauerkörper aus waagrechten Bohlen (ab Stufe 2 Quader), Licht links, Schatten rechts",
+      "Schattenkante unter den Zinnen",
+      "Dunkler Sockel unten"
+    ],
+    "materialien": [
+      "Holz (Wand, Tresen, Gestell)",
+      "Pfosten, Balken",
+      "Stein (Kamin, Esse, Sockel, Stufe)",
+      "Kupfer (Mauer-, Turmstufe 3)",
+      "Eisen hell (Mauer-, Turmstufe 4)",
+      "Kristall (Mauer-, Turmstufe 5)"
+    ],
+    "stimmung": "wehrhaft; Stufe 1 einfach aus Holz, jede Stufe edler",
+    "fein": "Block-Fugen, Patina-Tupfen, Nieten, Glanzpunkte"
+  },
+  "kacheln": {
+    "b": 1,
+    "h": 5
+  },
+  "bausteine": [
+    { "art": "zinne", "rechteck": [0, 0, 0.25, 0.375], "farbe": "rope" },
+    { "art": "zinne", "rechteck": [0, 0, 0.25, 0.0625], "farbe": "twine" },
+    { "art": "zinne", "rechteck": [0, 0, 0.0625, 0.375], "farbe": "twine" },
+    { "art": "zinne", "rechteck": [0.375, 0, 0.25, 0.375], "farbe": "rope" },
+    { "art": "zinne", "rechteck": [0.375, 0, 0.25, 0.0625], "farbe": "twine" },
+    { "art": "zinne", "rechteck": [0.375, 0, 0.0625, 0.375], "farbe": "twine" },
+    { "art": "zinne", "rechteck": [0.75, 0, 0.25, 0.375], "farbe": "rope" },
+    { "art": "zinne", "rechteck": [0.75, 0, 0.25, 0.0625], "farbe": "twine" },
+    { "art": "zinne", "rechteck": [0.75, 0, 0.0625, 0.375], "farbe": "twine" },
+    { "art": "wand", "rechteck": [0, 0.375, 1, 4.625], "farbe": "rope" },
+    { "art": "licht", "rechteck": [0, 0.375, 0.0625, 4.375], "farbe": "twine" },
+    { "art": "schatten", "rechteck": [0.875, 0.375, 0.125, 4.375], "farbe": "oiled-cedar" },
+    { "art": "schatten", "rechteck": [0, 0.375, 1, 0.0625], "farbe": "oiled-cedar" },
+    { "art": "fuge", "rechteck": [0.0625, 0.8125, 0.8125, 0.03125], "farbe": "loulou", "fein": true },
+    { "art": "fuge", "rechteck": [0.0625, 1.1875, 0.8125, 0.03125], "farbe": "loulou", "fein": true },
+    { "art": "fuge", "rechteck": [0.0625, 1.5625, 0.8125, 0.03125], "farbe": "loulou", "fein": true },
+    { "art": "fuge", "rechteck": [0.0625, 1.9375, 0.8125, 0.03125], "farbe": "loulou", "fein": true },
+    { "art": "fuge", "rechteck": [0.0625, 2.3125, 0.8125, 0.03125], "farbe": "loulou", "fein": true },
+    { "art": "fuge", "rechteck": [0.0625, 2.6875, 0.8125, 0.03125], "farbe": "loulou", "fein": true },
+    { "art": "fuge", "rechteck": [0.0625, 3.0625, 0.8125, 0.03125], "farbe": "loulou", "fein": true },
+    { "art": "fuge", "rechteck": [0.0625, 3.4375, 0.8125, 0.03125], "farbe": "loulou", "fein": true },
+    { "art": "fuge", "rechteck": [0.0625, 3.8125, 0.8125, 0.03125], "farbe": "loulou", "fein": true },
+    { "art": "fuge", "rechteck": [0.0625, 4.1875, 0.8125, 0.03125], "farbe": "loulou", "fein": true },
+    { "art": "fuge", "rechteck": [0.0625, 4.5625, 0.8125, 0.03125], "farbe": "loulou", "fein": true },
+    { "art": "sockel", "rechteck": [0, 4.6875, 1, 0.3125], "farbe": "oiled-cedar" },
+    { "art": "sockel", "rechteck": [0, 4.6875, 1, 0.0625], "farbe": "loulou" }
+  ],
+  "stufen": [
+    {
+      "stufe": 2,
+      "aenderung": "Stein: graue Quader (versetzte Stoßfugen) statt waagrechter Holzbohlen, dunkle Fugen, Schießscharte oben mittig",
+      "farben": {
+        "rope": "dim-gray",
+        "twine": "smokey-ash",
+        "oiled-cedar": "valhalla",
+        "loulou": "black"
+      },
+      "zusaetze": [
+        { "art": "fuge", "rechteck": [0.5, 0.46875, 0.03125, 0.34375], "farbe": "black", "fein": true },
+        { "art": "fuge", "rechteck": [0.25, 0.84375, 0.03125, 0.34375], "farbe": "black", "fein": true },
+        { "art": "fuge", "rechteck": [0.75, 0.84375, 0.03125, 0.34375], "farbe": "black", "fein": true },
+        { "art": "fuge", "rechteck": [0.5, 1.21875, 0.03125, 0.34375], "farbe": "black", "fein": true },
+        { "art": "fuge", "rechteck": [0.25, 1.59375, 0.03125, 0.34375], "farbe": "black", "fein": true },
+        { "art": "fuge", "rechteck": [0.75, 1.59375, 0.03125, 0.34375], "farbe": "black", "fein": true },
+        { "art": "fuge", "rechteck": [0.5, 1.96875, 0.03125, 0.34375], "farbe": "black", "fein": true },
+        { "art": "fuge", "rechteck": [0.25, 2.34375, 0.03125, 0.34375], "farbe": "black", "fein": true },
+        { "art": "fuge", "rechteck": [0.75, 2.34375, 0.03125, 0.34375], "farbe": "black", "fein": true },
+        { "art": "fuge", "rechteck": [0.5, 2.71875, 0.03125, 0.34375], "farbe": "black", "fein": true },
+        { "art": "fuge", "rechteck": [0.25, 3.09375, 0.03125, 0.34375], "farbe": "black", "fein": true },
+        { "art": "fuge", "rechteck": [0.75, 3.09375, 0.03125, 0.34375], "farbe": "black", "fein": true },
+        { "art": "fuge", "rechteck": [0.5, 3.46875, 0.03125, 0.34375], "farbe": "black", "fein": true },
+        { "art": "fuge", "rechteck": [0.25, 3.84375, 0.03125, 0.34375], "farbe": "black", "fein": true },
+        { "art": "fuge", "rechteck": [0.75, 3.84375, 0.03125, 0.34375], "farbe": "black", "fein": true },
+        { "art": "fuge", "rechteck": [0.5, 4.21875, 0.03125, 0.34375], "farbe": "black", "fein": true },
+        { "art": "scharte", "rechteck": [0.4375, 1.25, 0.125, 0.625], "farbe": "black" }
+      ]
+    },
+    {
+      "stufe": 3,
+      "aenderung": "Kupfer: orange-kupferne Platten mit hellen Kanten, grüne Patina-Flecken, Schießscharte",
+      "farben": {
+        "rope": "tahiti-gold",
+        "twine": "twine",
+        "oiled-cedar": "rope",
+        "loulou": "oiled-cedar"
+      },
+      "zusaetze": [
+        { "art": "fuge", "rechteck": [0.5, 0.46875, 0.03125, 0.34375], "farbe": "oiled-cedar", "fein": true },
+        { "art": "fuge", "rechteck": [0.25, 0.84375, 0.03125, 0.34375], "farbe": "oiled-cedar", "fein": true },
+        { "art": "fuge", "rechteck": [0.75, 0.84375, 0.03125, 0.34375], "farbe": "oiled-cedar", "fein": true },
+        { "art": "fuge", "rechteck": [0.5, 1.21875, 0.03125, 0.34375], "farbe": "oiled-cedar", "fein": true },
+        { "art": "fuge", "rechteck": [0.25, 1.59375, 0.03125, 0.34375], "farbe": "oiled-cedar", "fein": true },
+        { "art": "fuge", "rechteck": [0.75, 1.59375, 0.03125, 0.34375], "farbe": "oiled-cedar", "fein": true },
+        { "art": "fuge", "rechteck": [0.5, 1.96875, 0.03125, 0.34375], "farbe": "oiled-cedar", "fein": true },
+        { "art": "fuge", "rechteck": [0.25, 2.34375, 0.03125, 0.34375], "farbe": "oiled-cedar", "fein": true },
+        { "art": "fuge", "rechteck": [0.75, 2.34375, 0.03125, 0.34375], "farbe": "oiled-cedar", "fein": true },
+        { "art": "fuge", "rechteck": [0.5, 2.71875, 0.03125, 0.34375], "farbe": "oiled-cedar", "fein": true },
+        { "art": "fuge", "rechteck": [0.25, 3.09375, 0.03125, 0.34375], "farbe": "oiled-cedar", "fein": true },
+        { "art": "fuge", "rechteck": [0.75, 3.09375, 0.03125, 0.34375], "farbe": "oiled-cedar", "fein": true },
+        { "art": "fuge", "rechteck": [0.5, 3.46875, 0.03125, 0.34375], "farbe": "oiled-cedar", "fein": true },
+        { "art": "fuge", "rechteck": [0.25, 3.84375, 0.03125, 0.34375], "farbe": "oiled-cedar", "fein": true },
+        { "art": "fuge", "rechteck": [0.75, 3.84375, 0.03125, 0.34375], "farbe": "oiled-cedar", "fein": true },
+        { "art": "fuge", "rechteck": [0.5, 4.21875, 0.03125, 0.34375], "farbe": "oiled-cedar", "fein": true },
+        { "art": "scharte", "rechteck": [0.4375, 1.25, 0.125, 0.625], "farbe": "black" },
+        { "art": "patina", "rechteck": [0.125, 2.1875, 0.125, 0.0625], "farbe": "verdigris" },
+        { "art": "patina", "rechteck": [0.625, 3, 0.125, 0.0625], "farbe": "verdigris" },
+        { "art": "patina", "rechteck": [0.25, 3.875, 0.1875, 0.0625], "farbe": "verdigris" },
+        { "art": "patina", "rechteck": [0.6875, 0.9375, 0.0625, 0.0625], "farbe": "verdigris", "fein": true },
+        { "art": "patina", "rechteck": [0.1875, 3.375, 0.0625, 0.0625], "farbe": "verdigris", "fein": true }
+      ]
+    },
+    {
+      "stufe": 4,
+      "aenderung": "Eisen: graue Stahlplatten, zwei dunkle Querbänder mit Nieten, Schießscharte",
+      "farben": {
+        "rope": "heather",
+        "twine": "light-steel",
+        "oiled-cedar": "dim-gray",
+        "loulou": "valhalla"
+      },
+      "zusaetze": [
+        { "art": "fuge", "rechteck": [0.5, 0.46875, 0.03125, 0.34375], "farbe": "valhalla", "fein": true },
+        { "art": "fuge", "rechteck": [0.25, 0.84375, 0.03125, 0.34375], "farbe": "valhalla", "fein": true },
+        { "art": "fuge", "rechteck": [0.75, 0.84375, 0.03125, 0.34375], "farbe": "valhalla", "fein": true },
+        { "art": "fuge", "rechteck": [0.5, 1.21875, 0.03125, 0.34375], "farbe": "valhalla", "fein": true },
+        { "art": "fuge", "rechteck": [0.25, 1.59375, 0.03125, 0.34375], "farbe": "valhalla", "fein": true },
+        { "art": "fuge", "rechteck": [0.75, 1.59375, 0.03125, 0.34375], "farbe": "valhalla", "fein": true },
+        { "art": "fuge", "rechteck": [0.5, 1.96875, 0.03125, 0.34375], "farbe": "valhalla", "fein": true },
+        { "art": "fuge", "rechteck": [0.25, 2.34375, 0.03125, 0.34375], "farbe": "valhalla", "fein": true },
+        { "art": "fuge", "rechteck": [0.75, 2.34375, 0.03125, 0.34375], "farbe": "valhalla", "fein": true },
+        { "art": "fuge", "rechteck": [0.5, 2.71875, 0.03125, 0.34375], "farbe": "valhalla", "fein": true },
+        { "art": "fuge", "rechteck": [0.25, 3.09375, 0.03125, 0.34375], "farbe": "valhalla", "fein": true },
+        { "art": "fuge", "rechteck": [0.75, 3.09375, 0.03125, 0.34375], "farbe": "valhalla", "fein": true },
+        { "art": "fuge", "rechteck": [0.5, 3.46875, 0.03125, 0.34375], "farbe": "valhalla", "fein": true },
+        { "art": "fuge", "rechteck": [0.25, 3.84375, 0.03125, 0.34375], "farbe": "valhalla", "fein": true },
+        { "art": "fuge", "rechteck": [0.75, 3.84375, 0.03125, 0.34375], "farbe": "valhalla", "fein": true },
+        { "art": "fuge", "rechteck": [0.5, 4.21875, 0.03125, 0.34375], "farbe": "valhalla", "fein": true },
+        { "art": "scharte", "rechteck": [0.4375, 1.25, 0.125, 0.625], "farbe": "black" },
+        { "art": "band", "rechteck": [0.0625, 2.1875, 0.8125, 0.125], "farbe": "dim-gray" },
+        { "art": "band", "rechteck": [0.0625, 3.6875, 0.8125, 0.125], "farbe": "dim-gray" },
+        { "art": "niete", "rechteck": [0.125, 2.21875, 0.0625, 0.0625], "farbe": "light-steel", "fein": true },
+        { "art": "niete", "rechteck": [0.125, 3.71875, 0.0625, 0.0625], "farbe": "light-steel", "fein": true },
+        { "art": "niete", "rechteck": [0.375, 2.21875, 0.0625, 0.0625], "farbe": "light-steel", "fein": true },
+        { "art": "niete", "rechteck": [0.375, 3.71875, 0.0625, 0.0625], "farbe": "light-steel", "fein": true },
+        { "art": "niete", "rechteck": [0.625, 2.21875, 0.0625, 0.0625], "farbe": "light-steel", "fein": true },
+        { "art": "niete", "rechteck": [0.625, 3.71875, 0.0625, 0.0625], "farbe": "light-steel", "fein": true },
+        { "art": "niete", "rechteck": [0.8125, 2.21875, 0.0625, 0.0625], "farbe": "light-steel", "fein": true },
+        { "art": "niete", "rechteck": [0.8125, 3.71875, 0.0625, 0.0625], "farbe": "light-steel", "fein": true }
+      ]
+    },
+    {
+      "stufe": 5,
+      "aenderung": "Kristall: blaue Kristallblöcke mit leuchtenden hellblauen Fugen, weiße Glanzpunkte, leuchtende Schießscharte",
+      "farben": {
+        "rope": "royal-blue",
+        "twine": "cornflower",
+        "oiled-cedar": "deep-koamaru",
+        "loulou": "viking"
+      },
+      "zusaetze": [
+        { "art": "fuge", "rechteck": [0.5, 0.46875, 0.03125, 0.34375], "farbe": "viking", "fein": true },
+        { "art": "fuge", "rechteck": [0.25, 0.84375, 0.03125, 0.34375], "farbe": "viking", "fein": true },
+        { "art": "fuge", "rechteck": [0.75, 0.84375, 0.03125, 0.34375], "farbe": "viking", "fein": true },
+        { "art": "fuge", "rechteck": [0.5, 1.21875, 0.03125, 0.34375], "farbe": "viking", "fein": true },
+        { "art": "fuge", "rechteck": [0.25, 1.59375, 0.03125, 0.34375], "farbe": "viking", "fein": true },
+        { "art": "fuge", "rechteck": [0.75, 1.59375, 0.03125, 0.34375], "farbe": "viking", "fein": true },
+        { "art": "fuge", "rechteck": [0.5, 1.96875, 0.03125, 0.34375], "farbe": "viking", "fein": true },
+        { "art": "fuge", "rechteck": [0.25, 2.34375, 0.03125, 0.34375], "farbe": "viking", "fein": true },
+        { "art": "fuge", "rechteck": [0.75, 2.34375, 0.03125, 0.34375], "farbe": "viking", "fein": true },
+        { "art": "fuge", "rechteck": [0.5, 2.71875, 0.03125, 0.34375], "farbe": "viking", "fein": true },
+        { "art": "fuge", "rechteck": [0.25, 3.09375, 0.03125, 0.34375], "farbe": "viking", "fein": true },
+        { "art": "fuge", "rechteck": [0.75, 3.09375, 0.03125, 0.34375], "farbe": "viking", "fein": true },
+        { "art": "fuge", "rechteck": [0.5, 3.46875, 0.03125, 0.34375], "farbe": "viking", "fein": true },
+        { "art": "fuge", "rechteck": [0.25, 3.84375, 0.03125, 0.34375], "farbe": "viking", "fein": true },
+        { "art": "fuge", "rechteck": [0.75, 3.84375, 0.03125, 0.34375], "farbe": "viking", "fein": true },
+        { "art": "fuge", "rechteck": [0.5, 4.21875, 0.03125, 0.34375], "farbe": "viking", "fein": true },
+        { "art": "scharte", "rechteck": [0.4375, 1.25, 0.125, 0.625], "farbe": "viking" },
+        { "art": "scharte", "rechteck": [0.4375, 1.25, 0.03125, 0.625], "farbe": "white", "fein": true },
+        { "art": "glanz", "rechteck": [0.0625, 0.0625, 0.0625, 0.0625], "farbe": "white" },
+        { "art": "glanz", "rechteck": [0.4375, 0.0625, 0.0625, 0.0625], "farbe": "white" },
+        { "art": "glanz", "rechteck": [0.8125, 0.0625, 0.0625, 0.0625], "farbe": "white" },
+        { "art": "glanz", "rechteck": [0.125, 0.9375, 0.0625, 0.0625], "farbe": "white", "fein": true },
+        { "art": "glanz", "rechteck": [0.625, 2.75, 0.0625, 0.0625], "farbe": "white", "fein": true },
+        { "art": "glanz", "rechteck": [0.3125, 4.125, 0.0625, 0.0625], "farbe": "white", "fein": true }
+      ]
+    }
+  ]
+}

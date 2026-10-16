@@ -34,7 +34,7 @@ export default defineConfig({
   // k3c-dev setzt beide Ports je Worktree (K3C_VITE_PORT, K3C_HTTP_PORT), damit Worktrees nebeneinander laufen.
   server: {
     host: true,
-    port: Number(process.env.K3C_VITE_PORT ?? 5173),
+    port: Number(process.env.K3C_VITE_PORT ?? 5183),
     proxy: { '/api': `http://localhost:${serverPort}`, '/ws': { target: `ws://localhost:${serverPort}`, ws: true } },
     // Worktrees im eigenen .claude/ (zehntausende Dateien) und laufend geschriebene Ausgaben nicht beobachten,
     // sonst blockiert der Watcher unter Windows die Event-Loop und Anfragen hängen sekundenlang.

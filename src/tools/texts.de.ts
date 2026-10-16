@@ -369,6 +369,7 @@ export const de = {
   'av.sub': 'Aktive Zuordnungen aus dem Slot-Register je Kategorie im Spielmaßstab; nur im Dev-Build.',
   'av.pick': 'Kategorie oben wählen.',
   'av.empty': 'Keine Asset-Slots in dieser Kategorie.',
+  'av.geb': 'Neue Gebäude (GEB): Master 32 px ×1 neben 16 px ×2',
   'av.gap': 'Lücke: {id}',
   'av.missing': 'lädt nicht: {file}',
   'av.pref': 'Präferenz {n}',

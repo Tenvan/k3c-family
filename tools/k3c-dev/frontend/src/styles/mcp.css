@@ -206,14 +206,22 @@
 
 .mcp-stats-body {
   display: grid;
-  grid-template-columns: 1fr 340px;
-  gap: 14px;
-  align-items: start;
+  grid-template-columns: minmax(0, var(--mcp-table, 70%)) 8px minmax(260px, 1fr);
+  gap: 14px 4px;
+  align-items: stretch;
+}
+
+.mcp-stats-body > :not(.pl-split-v) {
+  align-self: start;
 }
 
 @media (max-width: 1000px) {
   .mcp-stats-body {
     grid-template-columns: 1fr;
+  }
+
+  .mcp-stats-body > .pl-split-v {
+    display: none;
   }
 }
 
@@ -357,7 +365,8 @@
 .mcp-server .mcp-kpis dd { font-size: 16px; }
 .mcp-kpi-groups { display: grid; grid-template-columns: 3fr 2fr; gap: 14px; }
 .mcp-kpi-groups > :last-child { border-left: 1px solid var(--card-line); padding-left: 14px; }
-.mcp-band2 { display: grid; grid-template-columns: minmax(0, 1fr) minmax(320px, 40%); gap: 14px; flex: none; align-items: start; }
+.mcp-band2 { display: grid; grid-template-columns: minmax(0, var(--mcp-band, 60%)) 8px minmax(320px, 1fr); gap: 14px 4px; flex: none; align-items: start; }
+.mcp-band2 > .pl-split-v { align-self: stretch; }
 .mcp-tools { max-height: 240px; overflow: auto; }
 .mcp-live-body { display: flex; gap: 12px; align-items: stretch; }
 .mcp-live-body > :last-child { flex: 1; min-width: 0; }
@@ -370,5 +379,6 @@
 .mcp-tip { white-space: pre-line; }
 @media (max-width: 900px) {
   .mcp-band2, .mcp-kpi-groups { grid-template-columns: 1fr; }
+  .mcp-band2 > .pl-split-v { display: none; }
   .mcp-kpi-groups > :last-child { border-left: none; padding-left: 0; }
 }

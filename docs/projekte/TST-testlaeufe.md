@@ -1,7 +1,7 @@
 # TST · Testläufe
 
 - **Status:** aktiv
-- **Rang:** 6
+- **Rang:** 8
 - **Ziel-Tickets:** –
 
 ## Ziel

@@ -1,7 +1,7 @@
 # LST · Leistung & Stabilität
 
 - **Status:** aktiv
-- **Rang:** 5
+- **Rang:** 7
 - **Ziel-Tickets:** –
 
 ## Ziel

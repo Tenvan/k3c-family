@@ -30,7 +30,7 @@ Voraussetzungen (Node, Go, golangci-lint mit Versionen): `requirements.md`.
 ```bash
 task               # alle Aufgaben anzeigen (Go Task, Taskfile.yml; einziger Einstieg für Befehle)
 task install       # Abhängigkeiten holen
-task dev           # Dev-Server (auch im LAN erreichbar, Port 5173)
+task dev           # Dev-Server (auch im LAN erreichbar, Port 5183)
 task test          # Vitest (Level-Generator, reine Logik); Filter: task test -- planning
 task check         # Lint + Typecheck + Tests (vor jedem Abschluss)
 task check:go      # go test + golangci-lint (Rechner mit Go)
@@ -104,6 +104,12 @@ Nur so bleibt Vollbild auf der Xbox über Seitenwechsel erhalten. Für **jede** 
   Codepunkt (kein U+FE0F). Das Thema setzt die Konsole selbst aus `ns` (`engine/conlog` › `Topics`); ein neuer `ns` bekommt dort sein Emoji.
 - Klein bleiben: kein Framework-Overhead. Prozess steht nur in `docs/arbeitsweise.md`, keine weiteren Prozess-Dokumente.
   Ein Sprint bleibt in seiner Domäne; Datei ≤ 400 Zeilen, Funktion ≤ 60 Zeilen. Lieber spielbarer Code.
+- **Code-Review vor jedem Commit:** Vor jedem Commit MUSS ein Code-Review der geänderten Dateien laufen (`/code-review`
+  bzw. Reviewer-Agent, getrennt vom Schreiben); schwere Befunde werden vor dem Commit behoben. Gilt zusätzlich zur
+  Sprint-Review-Session (`docs/arbeitsweise.md`), nicht an ihrer Stelle.
+- **Kein automatischer Worktree-Wechsel:** Nicht von sich aus in einen Worktree wechseln (`change_directory`, `EnterWorktree`,
+  Lesen/Schreiben unter `.claude/worktrees/`). Nur auf ausdrückliche Anweisung von 🧑. Sonst im aktuellen Checkout bleiben;
+  Inhalte anderer Branches nur lesend per `git show <branch>:<pfad>`.
 
 ## Im Browser-Pane testen
 

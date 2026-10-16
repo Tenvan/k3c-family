@@ -1,6 +1,7 @@
 import { Button, Switch, Text, TextField } from '@radix-ui/themes';
-import { useRef } from 'react';
+import { useRef, useState } from 'react';
 import type { TaskCatalog } from '../api';
+import { loadText, savePref } from '../lib/prefs';
 
 interface HeadProps {
   query: string;
@@ -57,6 +58,23 @@ export function splitShare(horizontal: boolean, box: { left: number; bottom: num
 /** Klemmt den Anteil auf 20–80 % und rundet auf ganze Prozent (B-403/AC-06). */
 export function clampSplit(share: number): number {
   return Math.round(Math.min(80, Math.max(20, share)));
+}
+
+/** Gemerkter Anteil als Text: 20–80 %, unlesbar oder leer gilt die Vorgabe. */
+export function parseSplit(raw: string, dflt: number): number {
+  const n = Number(raw);
+  return raw.trim() !== '' && Number.isFinite(n) ? clampSplit(n) : dflt;
+}
+
+/** Gemerkter Anteil eines Splitters unter `k3c-dev.<key>`; liefert Wert, Setzen und Zurücksetzen auf die Vorgabe. */
+export function useSplit(key: string, dflt: number): [number, (v: number) => void, () => void] {
+  const [split, setState] = useState(() => parseSplit(loadText(key, ''), dflt));
+  const set = (v: number) => {
+    const n = clampSplit(v);
+    setState(n);
+    savePref(key, String(n));
+  };
+  return [split, set, () => set(dflt)];
 }
 
 /** Splitter: Ziehen setzt den Anteil der linken Spalte (20–80 %), Doppelklick setzt zurück. Mit `horizontal` ein

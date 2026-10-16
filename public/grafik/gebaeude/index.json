@@ -1,0 +1,870 @@
+[
+  {
+    "id": "birke",
+    "klasse": "baum",
+    "kacheln": {
+      "b": 1,
+      "h": 2.25
+    },
+    "vorlage": {
+      "motiv": "Birke mit weißem Stamm und lockerer runder Krone, 1 Kachel breit, als Teil einer überlappenden Baumreihe",
+      "teile": [
+        "Runde, lockere Krone in der oberen Hälfte mit einzelnen dunklen Blättern",
+        "Lichtkante links oben an der Krone",
+        "Weißer Stamm mittig bis zum Boden mit dunklen Querstrichen"
+      ],
+      "materialien": [
+        "Laub (Pappel, Birke)",
+        "Birkenrinde"
+      ],
+      "stimmung": "licht und leicht",
+      "fein": "Querstriche auf der Rinde"
+    },
+    "dateien": {
+      "128": "grafik/gebaeude/birke-128.png",
+      "16": "grafik/gebaeude/birke-16.png",
+      "32": "grafik/gebaeude/birke-32.png",
+      "64": "grafik/gebaeude/birke-64.png"
+    }
+  },
+  {
+    "id": "burg",
+    "kacheln": {
+      "b": 8,
+      "h": 9
+    },
+    "vorlage": {
+      "motiv": "Burg als Hub-Kern, 8 Kacheln breit und 9 hoch, mit großem Tor in der Mitte als Zahlziel; wächst mit jeder Hub-Stufe",
+      "teile": [
+        "Mittelbau über 6 Kacheln mit sechs Zinnen oben und Holzbohlen (ab Stufe 2 Quader)",
+        "Großes Tor mittig unten mit zwei Flügeln und Beschlägen",
+        "Banner an einem Mast über der Mitte",
+        "Ab Stufe 2 zwei Ecktürme links und rechts (je 1,25 Kacheln breit, 7,25 hoch) mit Zinnen und Scharten",
+        "Ab Stufe 3 ein Obergeschoss mittig mit zwei erleuchteten Fenstern",
+        "Sockel unten über die ganze Breite"
+      ],
+      "materialien": [
+        "Holz (Wand, Tresen, Gestell)",
+        "Pfosten, Balken",
+        "Stoff rot",
+        "Stein (Kamin, Esse, Sockel, Stufe)",
+        "Kupfer (Mauer-, Turmstufe 3)",
+        "Eisen hell (Mauer-, Turmstufe 4)",
+        "Kristall (Mauer-, Turmstufe 5)",
+        "Fensterlicht"
+      ],
+      "stimmung": "Herz des Hubs; wächst von der Holzburg zur Kristallfestung, gleiche Farbstufen wie Mauer und Turm",
+      "fein": "Bohlen- und Quaderfugen, Torbeschläge, Nieten, Fensterlicht, Glanzpunkte"
+    },
+    "dateien": {
+      "128": "grafik/gebaeude/burg-1-128.png",
+      "16": "grafik/gebaeude/burg-1-16.png",
+      "32": "grafik/gebaeude/burg-1-32.png",
+      "64": "grafik/gebaeude/burg-1-64.png"
+    },
+    "stufen": [
+      {
+        "stufe": 1,
+        "aenderung": "Grundform",
+        "dateien": {
+          "128": "grafik/gebaeude/burg-1-128.png",
+          "16": "grafik/gebaeude/burg-1-16.png",
+          "32": "grafik/gebaeude/burg-1-32.png",
+          "64": "grafik/gebaeude/burg-1-64.png"
+        }
+      },
+      {
+        "stufe": 2,
+        "aenderung": "Stein: Mittelbau aus grauen Quadern, zwei Ecktürme links und rechts mit Zinnen und Scharten",
+        "dateien": {
+          "128": "grafik/gebaeude/burg-2-128.png",
+          "16": "grafik/gebaeude/burg-2-16.png",
+          "32": "grafik/gebaeude/burg-2-32.png",
+          "64": "grafik/gebaeude/burg-2-64.png"
+        }
+      },
+      {
+        "stufe": 3,
+        "aenderung": "Kupfer: kupferne Platten, Ecktürme, dazu ein Obergeschoss mittig mit zwei warm erleuchteten Fenstern; Banner auf dem Obergeschoss",
+        "dateien": {
+          "128": "grafik/gebaeude/burg-3-128.png",
+          "16": "grafik/gebaeude/burg-3-16.png",
+          "32": "grafik/gebaeude/burg-3-32.png",
+          "64": "grafik/gebaeude/burg-3-64.png"
+        }
+      },
+      {
+        "stufe": 4,
+        "aenderung": "Eisen: Stahlplatten, Ecktürme und Obergeschoss, Eisenbänder mit Nieten am Tor, zusätzliche Banner auf beiden Ecktürmen",
+        "dateien": {
+          "128": "grafik/gebaeude/burg-4-128.png",
+          "16": "grafik/gebaeude/burg-4-16.png",
+          "32": "grafik/gebaeude/burg-4-32.png",
+          "64": "grafik/gebaeude/burg-4-64.png"
+        }
+      },
+      {
+        "stufe": 5,
+        "aenderung": "Kristall: blaue Kristallblöcke mit leuchtenden Fugen, Ecktürme und Obergeschoss, Kristallspitzen auf beiden Ecktürmen und eine große in der Mitte statt des Banners, leuchtende Fenster",
+        "dateien": {
+          "128": "grafik/gebaeude/burg-5-128.png",
+          "16": "grafik/gebaeude/burg-5-16.png",
+          "32": "grafik/gebaeude/burg-5-32.png",
+          "64": "grafik/gebaeude/burg-5-64.png"
+        }
+      }
+    ]
+  },
+  {
+    "id": "farm",
+    "kacheln": {
+      "b": 4,
+      "h": 3
+    },
+    "vorlage": {
+      "motiv": "Holzscheune mit Satteldach in der Vorderansicht, großem Scheunentor mit Streben, Holzzaun und Heuballen rechts",
+      "teile": [
+        "Scheunenwand aus Holz links, 3 Kacheln breit, mit Pfosten an beiden Seiten und Bodenbalken",
+        "Satteldach in 4 Stufen oben (Giebel, Spitze bei x 1,5), Traufe dunkel, mit Heuluke im Giebel",
+        "Großes Scheunentor mittig (x 0,75 bis 2,25) aus zwei dunklen Flügeln mit gekreuzten Streben und hellem Rahmen",
+        "Kurzer Holzzaun rechts (x 3 bis 4) mit drei Pfosten und zwei Latten",
+        "Heuballen vor dem Zaun (x 3,2 bis 3,7) mit Bändern"
+      ],
+      "materialien": [
+        "Holz (Wand, Tresen, Gestell)",
+        "Pfosten, Balken",
+        "Dachziegel"
+      ],
+      "stimmung": "Ländlich und ruhig, warme Holztöne, Hof der Bauern",
+      "fein": "Plankenfugen, Schindelfugen, Torfuge, Zaunlicht, Heubänder"
+    },
+    "dateien": {
+      "128": "grafik/gebaeude/farm-128.png",
+      "16": "grafik/gebaeude/farm-16.png",
+      "32": "grafik/gebaeude/farm-32.png",
+      "64": "grafik/gebaeude/farm-64.png"
+    }
+  },
+  {
+    "id": "heilplatz",
+    "kacheln": {
+      "b": 6,
+      "h": 4
+    },
+    "vorlage": {
+      "motiv": "Offener Heilplatz unter hellem Stoff-Vordach mit grünem Kreuz",
+      "teile": [
+        "Rückwand aus Stoff im Schatten zwischen zwei Pfosten",
+        "Helles Vordach über die ganze Breite (ca. 4,25 Kacheln) mit Volant und grünem Kreuz mittig",
+        "Kräuterbündel hängen unter dem Dach",
+        "Liege links mit Kissen und blauer Decke",
+        "Wasserschale am Boden rechts der Mitte, vor dem rechten Pfosten",
+        "Kräuterkorb rechts neben dem Pfosten",
+        "Trockengestell ganz rechts mit hängenden Kräutern"
+      ],
+      "materialien": [
+        "Stoff hell",
+        "Pfosten, Balken",
+        "Kräuter",
+        "Stoff blau (Decke)",
+        "Wasser (Schale, Trog)",
+        "Metall (Werkzeug)"
+      ],
+      "stimmung": "ruhig, sauber, heilend; Kreuz bewusst grün, kein Schutzzeichen",
+      "fein": "Faltenlicht, Stofffalten der Rückwand, Kräuterbündel, Flechtung, Wasserspiegel"
+    },
+    "dateien": {
+      "128": "grafik/gebaeude/heilplatz-128.png",
+      "16": "grafik/gebaeude/heilplatz-16.png",
+      "32": "grafik/gebaeude/heilplatz-32.png",
+      "64": "grafik/gebaeude/heilplatz-64.png"
+    }
+  },
+  {
+    "id": "hintergrundmauer",
+    "klasse": "kachel",
+    "kacheln": {
+      "b": 1,
+      "h": 4
+    },
+    "vorlage": {
+      "motiv": "Hintergrundmauer zwischen zwei Mauern, 1 Kachel breit und 4 hoch, nahtlos in der Breite kachelbar; dunkler als die Mauer, damit sie zurücktritt",
+      "teile": [
+        "Zwei Zinnen oben je Kachel, Lücken gleich breit auch über die Naht",
+        "Mauerkörper über die ganze Breite ohne Seitenkanten, helle Oberkante",
+        "Waagrechte Bohlen (ab Stufe 2 Quader mit versetzten Stoßfugen)",
+        "Dunkler Sockel unten"
+      ],
+      "materialien": [
+        "Holz (Wand, Tresen, Gestell)",
+        "Stein (Kamin, Esse, Sockel, Stufe)",
+        "Kupfer (Mauer-, Turmstufe 3)",
+        "Eisen hell (Mauer-, Turmstufe 4)",
+        "Kristall (Mauer-, Turmstufe 5)"
+      ],
+      "stimmung": "ruhig und zurückhaltend, Farbstufen wie die Mauer, eine Stufe dunkler",
+      "fein": "Bohlen- und Quaderfugen, Nieten, Glanzpunkte"
+    },
+    "dateien": {
+      "128": "grafik/gebaeude/hintergrundmauer-1-128.png",
+      "16": "grafik/gebaeude/hintergrundmauer-1-16.png",
+      "32": "grafik/gebaeude/hintergrundmauer-1-32.png",
+      "64": "grafik/gebaeude/hintergrundmauer-1-64.png"
+    },
+    "stufen": [
+      {
+        "stufe": 1,
+        "aenderung": "Grundform",
+        "dateien": {
+          "128": "grafik/gebaeude/hintergrundmauer-1-128.png",
+          "16": "grafik/gebaeude/hintergrundmauer-1-16.png",
+          "32": "grafik/gebaeude/hintergrundmauer-1-32.png",
+          "64": "grafik/gebaeude/hintergrundmauer-1-64.png"
+        }
+      },
+      {
+        "stufe": 2,
+        "aenderung": "Stein: dunkelgraue Quader mit versetzten Stoßfugen statt Holzbohlen",
+        "dateien": {
+          "128": "grafik/gebaeude/hintergrundmauer-2-128.png",
+          "16": "grafik/gebaeude/hintergrundmauer-2-16.png",
+          "32": "grafik/gebaeude/hintergrundmauer-2-32.png",
+          "64": "grafik/gebaeude/hintergrundmauer-2-64.png"
+        }
+      },
+      {
+        "stufe": 3,
+        "aenderung": "Kupfer: gedämpft kupferbraune Platten, einzelne Patina-Tupfen",
+        "dateien": {
+          "128": "grafik/gebaeude/hintergrundmauer-3-128.png",
+          "16": "grafik/gebaeude/hintergrundmauer-3-16.png",
+          "32": "grafik/gebaeude/hintergrundmauer-3-32.png",
+          "64": "grafik/gebaeude/hintergrundmauer-3-64.png"
+        }
+      },
+      {
+        "stufe": 4,
+        "aenderung": "Eisen: mattgraue Stahlplatten, ein durchgehendes dunkles Querband mit Nieten",
+        "dateien": {
+          "128": "grafik/gebaeude/hintergrundmauer-4-128.png",
+          "16": "grafik/gebaeude/hintergrundmauer-4-16.png",
+          "32": "grafik/gebaeude/hintergrundmauer-4-32.png",
+          "64": "grafik/gebaeude/hintergrundmauer-4-64.png"
+        }
+      },
+      {
+        "stufe": 5,
+        "aenderung": "Kristall: dunkelblaue Kristallblöcke mit blauen Fugen und wenigen Glanzpunkten, ohne Leuchten (tritt hinter die Mauer zurück)",
+        "dateien": {
+          "128": "grafik/gebaeude/hintergrundmauer-5-128.png",
+          "16": "grafik/gebaeude/hintergrundmauer-5-16.png",
+          "32": "grafik/gebaeude/hintergrundmauer-5-32.png",
+          "64": "grafik/gebaeude/hintergrundmauer-5-64.png"
+        }
+      }
+    ]
+  },
+  {
+    "id": "kaserne",
+    "kacheln": {
+      "b": 6,
+      "h": 4
+    },
+    "vorlage": {
+      "motiv": "Steinerne Kaserne mit Zinnen, breitem Holztor und Wimpel am Dach, daneben ein Waffenständer mit Speeren und Schwertern",
+      "teile": [
+        "Wimpel rot am Mast links auf dem Dach, ca. x 0,6 bis 1,3, y 0 bis 1",
+        "Steinhaus mit Zinnen oben, Quaderfugen und Sockel, x 0,25 bis 4,25, y 1 bis 4",
+        "Zwei Schießscharten links und rechts oben in der Wand",
+        "Breites Holztor mittig, x 1,2 bis 3,3, mit Balkenrahmen, Planken und zwei Eisenbändern mit Nieten",
+        "Waffenständer rechts, x 4,4 bis 5,9, niedrig bis y 2,2, mit zwei Speeren und zwei Schwertern"
+      ],
+      "materialien": [
+        "Stein (Kamin, Esse, Sockel, Stufe)",
+        "Holz (Wand, Tresen, Gestell)",
+        "Pfosten, Balken",
+        "Eisen (Rüstung, Band)",
+        "Metall (Werkzeug)",
+        "Stoff rot"
+      ],
+      "stimmung": "wehrhaft und geordnet, Steinbau passend zur Mauer",
+      "fein": "Quaderfugen, Plankenfugen, Nieten, Tor-Beschlag, Faltenlicht im Wimpel, Waffenglanz"
+    },
+    "dateien": {
+      "128": "grafik/gebaeude/kaserne-128.png",
+      "16": "grafik/gebaeude/kaserne-16.png",
+      "32": "grafik/gebaeude/kaserne-32.png",
+      "64": "grafik/gebaeude/kaserne-64.png"
+    }
+  },
+  {
+    "id": "lager",
+    "kacheln": {
+      "b": 6,
+      "h": 4
+    },
+    "vorlage": {
+      "motiv": "Offenes Lager: Holzschuppen mit Schindeldach auf Steinsockel, im offenen Inneren Kisten, Fässer, Säcke und Rohstoffe",
+      "teile": [
+        "Steinsockel über die ganze Breite am Boden, 0,75 Kacheln hoch, mit Fugen",
+        "Pfosten links und rechts (x 0,25 und 5,5)",
+        "Dunkle Holzrückwand im offenen Inneren",
+        "Kistenstapel links (2 Kisten übereinander, ca. 1 Kachel breit)",
+        "Zwei Fässer mit Reifen (großes, kleines) in der Mitte links",
+        "Drei Säcke, zwei unten und einer oben aufgestapelt, Mitte rechts",
+        "Holzscheit-Stapel und Erzbrocken rechts",
+        "Dreistufiges Schindeldach aus Holz oben, Traufe dunkel"
+      ],
+      "materialien": [
+        "Stein (Kamin, Esse, Sockel, Stufe)",
+        "Holz (Wand, Tresen, Gestell)",
+        "Pfosten, Balken",
+        "Stoff hell",
+        "Metall (Werkzeug)"
+      ],
+      "stimmung": "Ruhig und solide, ein gefüllter Vorrat; passt zur Steinmauer",
+      "fein": "Steinfugen, Schindelfugen, Brettfugen der Rückwand, Kistenkreuze, Fass-Maserung, Sack-Falten, Holzmaserung, Erzglanz"
+    },
+    "dateien": {
+      "128": "grafik/gebaeude/lager-128.png",
+      "16": "grafik/gebaeude/lager-16.png",
+      "32": "grafik/gebaeude/lager-32.png",
+      "64": "grafik/gebaeude/lager-64.png"
+    }
+  },
+  {
+    "id": "mauer",
+    "kacheln": {
+      "b": 1,
+      "h": 5
+    },
+    "vorlage": {
+      "motiv": "Wehrmauer, 1 Kachel breit und 5 hoch, mit drei Zinnen oben; Material wechselt je Stufe",
+      "teile": [
+        "Drei Zinnen oben über die ganze Breite",
+        "Mauerkörper aus waagrechten Bohlen (ab Stufe 2 Quader), Licht links, Schatten rechts",
+        "Schattenkante unter den Zinnen",
+        "Dunkler Sockel unten"
+      ],
+      "materialien": [
+        "Holz (Wand, Tresen, Gestell)",
+        "Pfosten, Balken",
+        "Stein (Kamin, Esse, Sockel, Stufe)",
+        "Kupfer (Mauer-, Turmstufe 3)",
+        "Eisen hell (Mauer-, Turmstufe 4)",
+        "Kristall (Mauer-, Turmstufe 5)"
+      ],
+      "stimmung": "wehrhaft; Stufe 1 einfach aus Holz, jede Stufe edler",
+      "fein": "Block-Fugen, Patina-Tupfen, Nieten, Glanzpunkte"
+    },
+    "dateien": {
+      "128": "grafik/gebaeude/mauer-1-128.png",
+      "16": "grafik/gebaeude/mauer-1-16.png",
+      "32": "grafik/gebaeude/mauer-1-32.png",
+      "64": "grafik/gebaeude/mauer-1-64.png"
+    },
+    "stufen": [
+      {
+        "stufe": 1,
+        "aenderung": "Grundform",
+        "dateien": {
+          "128": "grafik/gebaeude/mauer-1-128.png",
+          "16": "grafik/gebaeude/mauer-1-16.png",
+          "32": "grafik/gebaeude/mauer-1-32.png",
+          "64": "grafik/gebaeude/mauer-1-64.png"
+        }
+      },
+      {
+        "stufe": 2,
+        "aenderung": "Stein: graue Quader (versetzte Stoßfugen) statt waagrechter Holzbohlen, dunkle Fugen, Schießscharte oben mittig",
+        "dateien": {
+          "128": "grafik/gebaeude/mauer-2-128.png",
+          "16": "grafik/gebaeude/mauer-2-16.png",
+          "32": "grafik/gebaeude/mauer-2-32.png",
+          "64": "grafik/gebaeude/mauer-2-64.png"
+        }
+      },
+      {
+        "stufe": 3,
+        "aenderung": "Kupfer: orange-kupferne Platten mit hellen Kanten, grüne Patina-Flecken, Schießscharte",
+        "dateien": {
+          "128": "grafik/gebaeude/mauer-3-128.png",
+          "16": "grafik/gebaeude/mauer-3-16.png",
+          "32": "grafik/gebaeude/mauer-3-32.png",
+          "64": "grafik/gebaeude/mauer-3-64.png"
+        }
+      },
+      {
+        "stufe": 4,
+        "aenderung": "Eisen: graue Stahlplatten, zwei dunkle Querbänder mit Nieten, Schießscharte",
+        "dateien": {
+          "128": "grafik/gebaeude/mauer-4-128.png",
+          "16": "grafik/gebaeude/mauer-4-16.png",
+          "32": "grafik/gebaeude/mauer-4-32.png",
+          "64": "grafik/gebaeude/mauer-4-64.png"
+        }
+      },
+      {
+        "stufe": 5,
+        "aenderung": "Kristall: blaue Kristallblöcke mit leuchtenden hellblauen Fugen, weiße Glanzpunkte, leuchtende Schießscharte",
+        "dateien": {
+          "128": "grafik/gebaeude/mauer-5-128.png",
+          "16": "grafik/gebaeude/mauer-5-16.png",
+          "32": "grafik/gebaeude/mauer-5-32.png",
+          "64": "grafik/gebaeude/mauer-5-64.png"
+        }
+      }
+    ]
+  },
+  {
+    "id": "pappel",
+    "klasse": "baum",
+    "kacheln": {
+      "b": 1,
+      "h": 2.25
+    },
+    "vorlage": {
+      "motiv": "Hohe schmale Pappel, 1 Kachel breit, als Teil einer überlappenden Baumreihe",
+      "teile": [
+        "Spindelförmige Krone fast über die ganze Höhe, oben und unten spitz zulaufend",
+        "Lichtflecken links, Schatten rechts",
+        "Schmaler Stamm unten mittig"
+      ],
+      "materialien": [
+        "Laub (Pappel, Birke)"
+      ],
+      "stimmung": "helles, frisches Grün",
+      "fein": "keine"
+    },
+    "dateien": {
+      "128": "grafik/gebaeude/pappel-128.png",
+      "16": "grafik/gebaeude/pappel-16.png",
+      "32": "grafik/gebaeude/pappel-32.png",
+      "64": "grafik/gebaeude/pappel-64.png"
+    }
+  },
+  {
+    "id": "ruestkammer",
+    "kacheln": {
+      "b": 6,
+      "h": 4
+    },
+    "vorlage": {
+      "motiv": "Wuchtige Rüstkammer: Holzaufbau auf Steinsockel unter Schieferdach",
+      "teile": [
+        "Schieferdach in Stufen über die ganze Breite (ca. 5,75 Kacheln), Lichtkante links",
+        "Holzaufbau mit Planken und Eckpfosten",
+        "Steinsockel unten über die ganze Breite",
+        "Rüstungsständer links mit Helm und Brustpanzer",
+        "Zwei Schießscharten neben dem Tor",
+        "Tor mittig mit zwei Eisenbändern und Nieten",
+        "Rotes Wappenschild mit Krone rechts an der Wand",
+        "Zwei Speere am Regal rechts"
+      ],
+      "materialien": [
+        "Schiefer (Dach)",
+        "Holz (Wand, Tresen, Gestell)",
+        "Pfosten, Balken",
+        "Stein (Kamin, Esse, Sockel, Stufe)",
+        "Eisen (Rüstung, Band)",
+        "Wappen"
+      ],
+      "stimmung": "wehrhaft, kühl, kühles Blau gegen rotes Wappen",
+      "fein": "Schindel-Fugen, Planken- und Steinfugen, Nieten, Helmschlitz, Wappenzeichen, Speerspitzen-Licht"
+    },
+    "dateien": {
+      "128": "grafik/gebaeude/ruestkammer-128.png",
+      "16": "grafik/gebaeude/ruestkammer-16.png",
+      "32": "grafik/gebaeude/ruestkammer-32.png",
+      "64": "grafik/gebaeude/ruestkammer-64.png"
+    }
+  },
+  {
+    "id": "schmiede",
+    "kacheln": {
+      "b": 6,
+      "h": 4
+    },
+    "vorlage": {
+      "motiv": "Schmiede unter Holz-Vordach mit Esse und Glut links, Amboss in der Mitte",
+      "teile": [
+        "Holz-Rückwand mit Planken rechts unter dem Vordach, Werkzeug an Haken",
+        "Zwei Pfosten und ein Brettervordach über die ganze Breite",
+        "Kamin aus Stein links, ragt durch das Vordach",
+        "Gemauerte Esse links unten mit dunkler Öffnung, Glut und Funken",
+        "Amboss auf Holzklotz in der Mitte, Hammer darauf",
+        "Wassertrog rechts vorn"
+      ],
+      "materialien": [
+        "Holz (Wand, Tresen, Gestell)",
+        "Pfosten, Balken",
+        "Stein (Kamin, Esse, Sockel, Stufe)",
+        "Glut",
+        "Eisen (Rüstung, Band)",
+        "Wasser (Schale, Trog)"
+      ],
+      "stimmung": "heiß und rußig, Glut als einziger Farbtupfer",
+      "fein": "Werkzeug an der Wand, Steinfugen, Funken, Hammer, Trogreifen"
+    },
+    "dateien": {
+      "128": "grafik/gebaeude/schmiede-128.png",
+      "16": "grafik/gebaeude/schmiede-16.png",
+      "32": "grafik/gebaeude/schmiede-32.png",
+      "64": "grafik/gebaeude/schmiede-64.png"
+    }
+  },
+  {
+    "id": "setzling",
+    "kacheln": {
+      "b": 1,
+      "h": 1
+    },
+    "vorlage": {
+      "motiv": "Junger Setzling auf einem leeren Plantage-Platz, aus dem später die Pappel wächst",
+      "teile": [
+        "Stützstab rechts aus Holz",
+        "Grüner Trieb mittig mit drei Blättern",
+        "Bindung zwischen Trieb und Stab",
+        "Erdhügel am Boden, rechts im Schatten"
+      ],
+      "materialien": [
+        "Laub (Pappel, Birke)",
+        "Pfosten, Balken"
+      ],
+      "stimmung": "frisch gepflanzt, wächst nach",
+      "fein": "Lichtkanten an Blättern und Stab"
+    },
+    "dateien": {
+      "128": "grafik/gebaeude/setzling-128.png",
+      "16": "grafik/gebaeude/setzling-16.png",
+      "32": "grafik/gebaeude/setzling-32.png",
+      "64": "grafik/gebaeude/setzling-64.png"
+    }
+  },
+  {
+    "id": "tanne",
+    "klasse": "baum",
+    "kacheln": {
+      "b": 1,
+      "h": 2.25
+    },
+    "vorlage": {
+      "motiv": "Schmale Tanne, 1 Kachel breit, als Teil einer überlappenden Baumreihe",
+      "teile": [
+        "Kegelförmige Krone in Stufen, oben spitz, unten fast kachelbreit",
+        "Lichtkante links an jeder Stufe, Schattenkante rechts",
+        "Kurzer Stamm unten mittig, kaum sichtbar"
+      ],
+      "materialien": [
+        "Nadeln (Tanne)"
+      ],
+      "stimmung": "dunkler Nadelwald, kühl",
+      "fein": "keine"
+    },
+    "dateien": {
+      "128": "grafik/gebaeude/tanne-128.png",
+      "16": "grafik/gebaeude/tanne-16.png",
+      "32": "grafik/gebaeude/tanne-32.png",
+      "64": "grafik/gebaeude/tanne-64.png"
+    }
+  },
+  {
+    "id": "taverne",
+    "kacheln": {
+      "b": 6,
+      "h": 4
+    },
+    "vorlage": {
+      "motiv": "Fachwerk-Taverne mit rotem Satteldach, warmem Fensterlicht und Bierkrug-Schild",
+      "teile": [
+        "Kamin aus Stein rechts hinter dem First, ragt über das Dach",
+        "Satteldach in Stufen von der Traufe (ca. 5,5 Kacheln) zum First, Lichtkante links",
+        "Putzwand mit Fachwerk: Schwelle, zwei Riegel, vier Ständer",
+        "Zwei Fenster links und rechts mit warmem Licht, Sprossenkreuz und Sims",
+        "Tür mittig aus Planken mit Messingbeschlag, Steinstufe davor",
+        "Fass vor der Wand rechts neben der Tür",
+        "Hängeschild mit Bierkrug am rechten Giebel an einem Ausleger"
+      ],
+      "materialien": [
+        "Putz (Fachwerk)",
+        "Pfosten, Balken",
+        "Dachziegel",
+        "Fensterlicht",
+        "Stein (Kamin, Esse, Sockel, Stufe)",
+        "Holz (Wand, Tresen, Gestell)"
+      ],
+      "stimmung": "einladend, warmes Licht",
+      "fein": "Schindel-Fugen, Sprossen, Türfugen, Beschlag, Fassreifen, Kette, Krug-Henkel"
+    },
+    "dateien": {
+      "128": "grafik/gebaeude/taverne-128.png",
+      "16": "grafik/gebaeude/taverne-16.png",
+      "32": "grafik/gebaeude/taverne-32.png",
+      "64": "grafik/gebaeude/taverne-64.png"
+    }
+  },
+  {
+    "id": "tor",
+    "kacheln": {
+      "b": 2,
+      "h": 4
+    },
+    "vorlage": {
+      "motiv": "Tor einer Mauerlinie, 2 Kacheln breit und 4 hoch, niedriger als die Mauer; der Rahmen wechselt das Material mit der Stufe der Mauer, die Flügel bleiben Holz",
+      "teile": [
+        "Zwei kleine Zinnen links und rechts oben",
+        "Sturz über die ganze Breite",
+        "Pfosten links und rechts, Licht links, Schatten rechts",
+        "Zwei Holzflügel mit Bohlen, Mittelfuge und Beschlägen",
+        "Zwei Querriegel über beide Flügel",
+        "Sockel unten"
+      ],
+      "materialien": [
+        "Holz (Wand, Tresen, Gestell)",
+        "Stein (Kamin, Esse, Sockel, Stufe)",
+        "Kupfer (Mauer-, Turmstufe 3)",
+        "Eisen hell (Mauer-, Turmstufe 4)",
+        "Kristall (Mauer-, Turmstufe 5)"
+      ],
+      "stimmung": "wehrhaft und zur Mauer passend; gleiche Farbstufen wie Mauer und Turm",
+      "fein": "Bohlenfugen, Beschläge, Rahmen-Quaderfugen, Nieten"
+    },
+    "dateien": {
+      "128": "grafik/gebaeude/tor-1-128.png",
+      "16": "grafik/gebaeude/tor-1-16.png",
+      "32": "grafik/gebaeude/tor-1-32.png",
+      "64": "grafik/gebaeude/tor-1-64.png"
+    },
+    "stufen": [
+      {
+        "stufe": 1,
+        "aenderung": "Grundform",
+        "dateien": {
+          "128": "grafik/gebaeude/tor-1-128.png",
+          "16": "grafik/gebaeude/tor-1-16.png",
+          "32": "grafik/gebaeude/tor-1-32.png",
+          "64": "grafik/gebaeude/tor-1-64.png"
+        }
+      },
+      {
+        "stufe": 2,
+        "aenderung": "Stein: Rahmen, Sturz und Zinnen aus grauen Quadern, Holzflügel bleiben",
+        "dateien": {
+          "128": "grafik/gebaeude/tor-2-128.png",
+          "16": "grafik/gebaeude/tor-2-16.png",
+          "32": "grafik/gebaeude/tor-2-32.png",
+          "64": "grafik/gebaeude/tor-2-64.png"
+        }
+      },
+      {
+        "stufe": 3,
+        "aenderung": "Kupfer: kupferner Rahmen mit Patina-Tupfen, Kupferbeschläge an den Flügeln",
+        "dateien": {
+          "128": "grafik/gebaeude/tor-3-128.png",
+          "16": "grafik/gebaeude/tor-3-16.png",
+          "32": "grafik/gebaeude/tor-3-32.png",
+          "64": "grafik/gebaeude/tor-3-64.png"
+        }
+      },
+      {
+        "stufe": 4,
+        "aenderung": "Eisen: Stahlrahmen, zwei Eisenbänder mit Nieten quer über beide Flügel",
+        "dateien": {
+          "128": "grafik/gebaeude/tor-4-128.png",
+          "16": "grafik/gebaeude/tor-4-16.png",
+          "32": "grafik/gebaeude/tor-4-32.png",
+          "64": "grafik/gebaeude/tor-4-64.png"
+        }
+      },
+      {
+        "stufe": 5,
+        "aenderung": "Kristall: blauer Kristallrahmen mit leuchtenden Fugen, Kristallspitzen auf den Zinnen, leuchtendes Runenband auf dem Sturz, dunkle Kristallbänder über beiden Flügeln",
+        "dateien": {
+          "128": "grafik/gebaeude/tor-5-128.png",
+          "16": "grafik/gebaeude/tor-5-16.png",
+          "32": "grafik/gebaeude/tor-5-32.png",
+          "64": "grafik/gebaeude/tor-5-64.png"
+        }
+      }
+    ]
+  },
+  {
+    "id": "treppe-hoch",
+    "kacheln": {
+      "b": 4,
+      "h": 4
+    },
+    "vorlage": {
+      "motiv": "Steinerne Außentreppe, die von links unten nach rechts oben steigt, mit Holzgeländer und einer Laterne am oberen Absatz",
+      "teile": [
+        "Acht Stein-Stufen von links (niedrig) nach rechts (hoch), je 0,5 Kacheln breit und 0,3125 hoch, Auftritt hell, Schattenkante darunter",
+        "Steinkörper unter den Stufen bis zum Boden mit versetzten Fugen",
+        "Dunkle Fußlinie am Boden",
+        "Holzgeländer entlang der Steigung: Pfosten je Stufe, oberer Holm und unterer Holm folgen den Stufen",
+        "Pfosten mit Laterne am oberen Absatz rechts (Licht = hinauf)"
+      ],
+      "materialien": [
+        "Stein (Kamin, Esse, Sockel, Stufe)",
+        "Holz (Wand, Tresen, Gestell)",
+        "Pfosten, Balken",
+        "Fensterlicht"
+      ],
+      "stimmung": "Einladend und solide; passt zur Steinmauer, die Laterne markiert das Ziel oben",
+      "fein": "Steinfugen, Holm-Glanz"
+    },
+    "dateien": {
+      "128": "grafik/gebaeude/treppe-hoch-128.png",
+      "16": "grafik/gebaeude/treppe-hoch-16.png",
+      "32": "grafik/gebaeude/treppe-hoch-32.png",
+      "64": "grafik/gebaeude/treppe-hoch-64.png"
+    }
+  },
+  {
+    "id": "treppe-runter",
+    "kacheln": {
+      "b": 4,
+      "h": 3
+    },
+    "vorlage": {
+      "motiv": "Steinbogen mit Zinnen über dem Eingang eines Abgangs; im dunklen Bogen führen Stufen nach unten",
+      "teile": [
+        "Steinwand 4 Kacheln breit mit vier Zinnen oben, Licht links und oben, Schattenkante unter der Zinnenreihe",
+        "Pfeiler links und rechts mit versetzten Fugen",
+        "Heller Bogenring um eine schwarze Öffnung (Mitte, ca. 2,5 Kacheln breit), Schlussstein oben",
+        "Im Bogen drei Stufen nach unten: vorn hell, nach hinten immer dunkler, zuletzt Schwarz",
+        "Dunkle Fußlinie an den Pfeilern"
+      ],
+      "materialien": [
+        "Stein (Kamin, Esse, Sockel, Stufe)"
+      ],
+      "stimmung": "Düster und einladend zugleich: Der Weg führt hinab, passt zur Steinmauer",
+      "fein": "Steinfugen, letzte Stufe im Dunkeln"
+    },
+    "dateien": {
+      "128": "grafik/gebaeude/treppe-runter-128.png",
+      "16": "grafik/gebaeude/treppe-runter-16.png",
+      "32": "grafik/gebaeude/treppe-runter-32.png",
+      "64": "grafik/gebaeude/treppe-runter-64.png"
+    }
+  },
+  {
+    "id": "turm",
+    "kacheln": {
+      "b": 3,
+      "h": 8
+    },
+    "vorlage": {
+      "motiv": "Schmaler Wehrturm, 3 Kacheln breit und 8 hoch, mit Plattform für Bogenschützen; Material wechselt je Stufe, Stufe 5 ist der Zaubertum",
+      "teile": [
+        "Vier Zinnen oben über die Plattform (ca. 0,4 Kacheln hoch)",
+        "Brüstung über die ganze Breite, darunter Konsolen links und rechts",
+        "Schaft mittig, 2,25 Kacheln breit, aus waagrechten Bohlen (ab Stufe 2 Quader), Licht links, Schatten rechts",
+        "Zwei Schießscharten übereinander in der Mitte des Schafts",
+        "Tür unten mittig mit Rahmen",
+        "Sockel unten"
+      ],
+      "materialien": [
+        "Holz (Wand, Tresen, Gestell)",
+        "Pfosten, Balken",
+        "Stein (Kamin, Esse, Sockel, Stufe)",
+        "Kupfer (Mauer-, Turmstufe 3)",
+        "Eisen hell (Mauer-, Turmstufe 4)",
+        "Kristall (Mauer-, Turmstufe 5)"
+      ],
+      "stimmung": "wachsam und wehrhaft; gleiche Farbstufen wie die Mauer, damit Linie und Turm zusammenpassen",
+      "fein": "Bohlen- und Quaderfugen, Türfugen, Patina-Tupfen, Nieten, Runen, Glanzpunkte"
+    },
+    "dateien": {
+      "128": "grafik/gebaeude/turm-1-128.png",
+      "16": "grafik/gebaeude/turm-1-16.png",
+      "32": "grafik/gebaeude/turm-1-32.png",
+      "64": "grafik/gebaeude/turm-1-64.png"
+    },
+    "stufen": [
+      {
+        "stufe": 1,
+        "aenderung": "Grundform",
+        "dateien": {
+          "128": "grafik/gebaeude/turm-1-128.png",
+          "16": "grafik/gebaeude/turm-1-16.png",
+          "32": "grafik/gebaeude/turm-1-32.png",
+          "64": "grafik/gebaeude/turm-1-64.png"
+        }
+      },
+      {
+        "stufe": 2,
+        "aenderung": "Stein: graue Quader (versetzte Stoßfugen) statt Holzbohlen, dunkle Fugen und Türrahmen",
+        "dateien": {
+          "128": "grafik/gebaeude/turm-2-128.png",
+          "16": "grafik/gebaeude/turm-2-16.png",
+          "32": "grafik/gebaeude/turm-2-32.png",
+          "64": "grafik/gebaeude/turm-2-64.png"
+        }
+      },
+      {
+        "stufe": 3,
+        "aenderung": "Kupfer: orange-kupferne Platten mit hellen Kanten, grüne Patina-Flecken am Schaft und an der Brüstung",
+        "dateien": {
+          "128": "grafik/gebaeude/turm-3-128.png",
+          "16": "grafik/gebaeude/turm-3-16.png",
+          "32": "grafik/gebaeude/turm-3-32.png",
+          "64": "grafik/gebaeude/turm-3-64.png"
+        }
+      },
+      {
+        "stufe": 4,
+        "aenderung": "Eisen: graue Stahlplatten, zwei dunkle Querbänder mit Nieten um den Schaft, Eisenband an der Brüstung",
+        "dateien": {
+          "128": "grafik/gebaeude/turm-4-128.png",
+          "16": "grafik/gebaeude/turm-4-16.png",
+          "32": "grafik/gebaeude/turm-4-32.png",
+          "64": "grafik/gebaeude/turm-4-64.png"
+        }
+      },
+      {
+        "stufe": 5,
+        "aenderung": "Zaubertum: blaue Kristallblöcke mit leuchtenden Fugen, große Kristallspitze mit Glanzkante mittig über der Plattform, verdeckt die Innenkanten der mittleren Zinnen, Funken daneben, leuchtendes Runenband an der Brüstung, leuchtende Scharten mit Runen, leuchtender Türrahmen und Sockelkante, weiße Glanzpunkte",
+        "dateien": {
+          "128": "grafik/gebaeude/turm-5-128.png",
+          "16": "grafik/gebaeude/turm-5-16.png",
+          "32": "grafik/gebaeude/turm-5-32.png",
+          "64": "grafik/gebaeude/turm-5-64.png"
+        }
+      }
+    ]
+  },
+  {
+    "id": "werkstatt",
+    "kacheln": {
+      "b": 6,
+      "h": 4
+    },
+    "vorlage": {
+      "motiv": "Offener Handelsstand der Werkstatt mit gestreiftem Tuchdach und Werkzeuggestell rechts",
+      "teile": [
+        "Holzwand mit senkrechten Planken hinter dem Stand, 4 Kacheln breit",
+        "Pfosten links und rechts, Balken oben über die ganze Standbreite",
+        "Tuchdach aus 8 Bahnen im Wechsel rot und hell, mit Volant darunter",
+        "Wandschild mittig mit Hammer-Zeichen",
+        "Tresen über die ganze Breite vorn, mit heller Oberkante und Planken",
+        "Kiste rechts auf dem Tresen, Werkzeug links darauf",
+        "Gestell rechts neben dem Stand (ca. 1,5 Kacheln breit) mit Hämmern oben und Bögen unten, abholbereit"
+      ],
+      "materialien": [
+        "Holz (Wand, Tresen, Gestell)",
+        "Pfosten, Balken",
+        "Stoff rot",
+        "Stoff hell",
+        "Metall (Werkzeug)"
+      ],
+      "stimmung": "Markttag, warm und handwerklich, Stilvorlage aller Gebäude",
+      "fein": "Plankenfugen, Faltenlicht im Tuch, Werkzeug auf Tresen und Gestell, Schild-Zeichen"
+    },
+    "dateien": {
+      "128": "grafik/gebaeude/werkstatt-128.png",
+      "16": "grafik/gebaeude/werkstatt-16.png",
+      "32": "grafik/gebaeude/werkstatt-32.png",
+      "64": "grafik/gebaeude/werkstatt-64.png"
+    }
+  }
+]

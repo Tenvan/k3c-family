@@ -51,12 +51,13 @@ export function CopyPrompt({ prompt, what }: { prompt: string; what: string }) {
   );
 }
 
-/** Abhängigkeiten als Links (`← GR4.2, S5.1`); ein Klick springt zum Ziel, ohne die umgebende Zeile auszulösen. */
-export function DepLinks({ ids, title, onPick }: { ids?: string[]; title: string; onPick: (id: string) => void }) {
+/** Abhängigkeiten als Links (`← GR4.2, S5.1`); ein Klick springt zum Ziel, ohne die umgebende Zeile auszulösen.
+ *  Ohne Vorsatz (`lead=""`) erscheinen die IDs als eckige Ticket-Links. */
+export function DepLinks({ ids, title, onPick, lead = '←' }: { ids?: string[]; title: string; onPick: (id: string) => void; lead?: string }) {
   if (!ids?.length) return null;
   return (
-    <span className="pl-deps" title={title}>
-      ←{' '}
+    <span className={lead ? 'pl-deps' : 'pl-deps is-tickets'} title={title}>
+      {lead && `${lead} `}
       {ids.map((id, i) => (
         <Fragment key={id}>
           {i > 0 && ', '}

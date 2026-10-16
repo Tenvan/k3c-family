@@ -1,14 +1,14 @@
 import type { AssetChoice, AssetHit, AssetSlot, AssetsView, Backend, CatalogAsset } from './types';
 
 // Erfundenes Slot-Register und Katalog für den Mock. Bilder und Mini-Szene kommen vom Vite-Dienst des Spiels:
-// im Browser mit `?preview=http://localhost:5173/` aufrufen, sonst zeigt die Seite den Hinweis „Vite starten“.
+// im Browser mit `?preview=http://localhost:5183/` aufrufen, sonst zeigt die Seite den Hinweis „Vite starten“.
 
 const TOWN = 'grafik/gothicvania-town/props-einzeln';
 
 const CATALOG: CatalogAsset[] = [
-  { datei: `${TOWN}/house-a.png`, art: 'grafik', pack: 'gothicvania-town', gruppe: 'props-einzeln', w: 168, h: 183, lizenz: 'CC0 1.0', urheber: 'Luis Zuno (ansimuz)' },
-  { datei: `${TOWN}/house-b.png`, art: 'grafik', pack: 'gothicvania-town', gruppe: 'props-einzeln', w: 210, h: 244, lizenz: 'CC0 1.0', urheber: 'Luis Zuno (ansimuz)' },
-  { datei: `${TOWN}/crate-stack.png`, art: 'grafik', pack: 'gothicvania-town', gruppe: 'props-einzeln', w: 73, h: 68, lizenz: 'CC0 1.0' },
+  { datei: `${TOWN}/well.png`, art: 'grafik', pack: 'gothicvania-town', gruppe: 'props-einzeln', w: 65, h: 65, lizenz: 'CC0 1.0', urheber: 'Luis Zuno (ansimuz)' },
+  { datei: `${TOWN}/wagon.png`, art: 'grafik', pack: 'gothicvania-town', gruppe: 'props-einzeln', w: 93, h: 75, lizenz: 'CC0 1.0', urheber: 'Luis Zuno (ansimuz)' },
+  { datei: `${TOWN}/crate.png`, art: 'grafik', pack: 'gothicvania-town', gruppe: 'props-einzeln', w: 39, h: 35, lizenz: 'CC0 1.0' },
   { datei: 'grafik/plants/flower.png', art: 'grafik', pack: 'plants', w: 32, h: 32, lizenz: 'CC BY-NC 4.0', kennzeichen: 'NC' },
   { datei: 'grafik/lpc/tree.png', art: 'grafik', pack: 'lpc', w: 96, h: 128, lizenz: 'CC BY-SA 3.0', kennzeichen: 'SA' },
   { datei: 'sprites/horse/idle.png', art: 'grafik', pack: 'horse', w: 100, h: 65, lizenz: 'CC0 1.0' },
@@ -23,8 +23,8 @@ const slot = (id: string, art: AssetSlot['art'], kategorie: string, beschreibung
 
 function initial(): AssetSlot[] {
   return [
-    slot('farm', 'grafik', 'gebaeude', 'Gebäude: farm', [{ datei: `${TOWN}/house-a.png`, ausschnitt: { x: 0, y: 0, w: 168, h: 183 } }, { datei: `${TOWN}/house-b.png` }]),
-    slot('storage', 'grafik', 'gebaeude', 'Gebäude: storage', [{ datei: `${TOWN}/crate-stack.png` }]),
+    slot('farm', 'grafik', 'gebaeude', 'Gebäude: farm', [{ datei: `${TOWN}/well.png`, ausschnitt: { x: 0, y: 0, w: 65, h: 65 } }, { datei: `${TOWN}/wagon.png` }]),
+    slot('storage', 'grafik', 'gebaeude', 'Gebäude: storage', [{ datei: `${TOWN}/crate.png` }]),
     slot('tavern', 'grafik', 'gebaeude', 'Gebäude: tavern', []),
     slot('mount:horse', 'grafik', 'figuren', 'Reittiere: mount:horse', [{ datei: 'sprites/horse/idle.png', sheet: 'horse' }]),
     { ...slot('portal', 'grafik', 'objekte', 'Truhen, Portale: portal', [{ datei: 'grafik/portals/weg.png' }]), status: 'fehlt' },

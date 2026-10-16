@@ -6,7 +6,9 @@ const GLOBS = {
   grafik: Object.keys(import.meta.glob('../../public/grafik/*/*', { query: '?url' })),
   sprites: Object.keys(import.meta.glob('../../public/sprites/*/*', { query: '?url' })),
 };
-const dirsOf = (root: keyof typeof GLOBS) => [...new Set(GLOBS[root].map((p) => p.split('/')[4]!))];
+/** Eigene Grafik ohne Fremdlizenz (GEB1): Gebäude aus `task gebaeude`, keine Credits nötig */
+const OWN = new Set(['gebaeude']);
+const dirsOf = (root: keyof typeof GLOBS) => [...new Set(GLOBS[root].map((p) => p.split('/')[4]!))].filter((d) => !OWN.has(d));
 /** Import-Zeilen aus k3c-dev nennen die Datei (kandidaten/<datei>, B-298); geprüft wird ihr Ordner. */
 const dirOf = (folder: string) => folder.split('/')[0]!;
 

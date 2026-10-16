@@ -28,8 +28,8 @@ zurückgeben. Die Gliederung folgt der gemeinsamen Spec der Workbench-Seiten (`d
 - Ohne `checkout` und ohne Header gilt die Repo-Wurzel. Schreibende Tools lehnen nicht ab, nennen aber immer den
   Checkout in der letzten Zeile `Checkout:`. Steht dort aus einem Worktree die Repo-Wurzel, die Änderung in der Wurzel
   zurücknehmen und mit `checkout` wiederholen.
-- Dienste eines Worktrees laufen auf eigenen Ports (Versatz 10, 20 …: Vite 5183, Spielserver 8090 …); `get_urls` nennt
-  sie, `server_status` fragt den Spielserver des eigenen Worktrees. Die Ports der Repo-Wurzel (5173, 8080) nie aus einem
+- Dienste eines Worktrees laufen auf eigenen Ports (Versatz 10, 20 …: Vite 5193, Spielserver 8090 …); `get_urls` nennt
+  sie, `server_status` fragt den Spielserver des eigenen Worktrees. Die Ports der Repo-Wurzel (5183, 8080) nie aus einem
   Worktree ansprechen.
 - `task_*` bedient nur die Repo-Wurzel; im Worktree `check_run` nutzen.
 

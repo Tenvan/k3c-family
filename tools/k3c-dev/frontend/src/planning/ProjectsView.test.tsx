@@ -23,7 +23,8 @@ describe('ProjectSections mit Mock-Daten', () => {
     const at = order('pl-pj-BET', 'pl-pj-SKL', 'pl-pj-RGW');
     expect(at.every((x, i) => x >= 0 && (i === 0 || x > at[i - 1]))).toBe(true);
     expect(html).toContain('SP11 · aktiv · 1/4');
-    expect(html).toContain('2 offen · 0/2 erledigt');
+    expect(html).toContain('Sprints 0/2');
+    expect(html).toContain('1/6 Sessions erledigt · 2 Sprints offen');
     expect(html).toMatch(/Nächste Session: <strong>SP11\.3<\/strong>/);
     expect(html).toContain('data-sprint="SP11"');
   });

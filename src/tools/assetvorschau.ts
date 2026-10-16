@@ -8,10 +8,11 @@ import { audioCore } from '../audio/audioCore';
 import { CROSSFADE_SECONDS } from '../audio/crossfade';
 import { attenuation } from '../audio/events';
 import { clientLog } from '../core/clientLog';
+import { UNIT_PX as UNIT } from '../core/constants';
 import { installPageChrome } from '../core/shell';
 import {
-  figureCard, GRAFIK_SCALE, licenseFlag, parseQuery, resolveSlot, SCENES, slotsOf,
-  type AssetSlot, type Query, type Resolved, type SceneId,
+  baumReihe, figureCard, gebaeudeKarten, GRAFIK_SCALE, licenseFlag, parseQuery, resolveSlot, SCENES, slotsOf, kachelAnzahl, stufenKarten, vorlageZeilen,
+  type AssetSlot, type GebaeudeEintrag, type Query, type Resolved, type SceneId,
 } from './assetvorschauLogic';
 import { CREDITS } from './credits';
 import { renderReference, type Card } from './spriteReference';
@@ -55,6 +56,7 @@ function show(q: Query): void {
     sceneEl.textContent = t('av.pick');
     return;
   }
+  if (q.szene === 'gebaeude') void renderNeueGebaeude();
   const items = slotsOf(SLOTS, q.szene).map((s) => resolveSlot(s, q));
   if (items.length === 0) sceneEl.textContent = t('av.empty');
   else if (SCENES.find((s) => s.id === q.szene)?.art === 'sound') renderSounds(items);
@@ -125,6 +127,110 @@ function renderGraphics(szene: SceneId, items: Resolved[]): void {
     renderReference(root, [{ title: sceneTitle(szene), cards: figures }], true);
   }
   if (strip.childElementCount > 0) sceneEl.append(strip);
+}
+
+/** Streifen „Neue Gebäude (GEB)“ aus `grafik/gebaeude/index.json` vor den Slots: je Gebäude 32 px ×1 und 16 px ×2. */
+async function renderNeueGebaeude(): Promise<void> {
+  const datei = 'grafik/gebaeude/index.json';
+  const res = await fetch(datei).catch(() => null);
+  if (!res?.ok) {
+    clientLog('error', '❌ Gebäude-Index lädt nicht', { datei });
+    return;
+  }
+  const index = (await res.json()) as GebaeudeEintrag[];
+  if (parseQuery(location.search).szene !== 'gebaeude') return; // inzwischen andere Szene gewählt
+  const strip = document.createElement('div');
+  strip.className = 'strip';
+  strip.style.alignItems = 'flex-start'; // Bilder per Rand auf eine Bodenlinie, Vorlagen-Text fließt darunter
+  const byId = new Map(index.map((e) => [e.id, e]));
+  if (baumReihe(index).length > 0) strip.append(baumFigur(index, 32), baumFigur(index, 16));
+  for (const k of gebaeudeKarten(index)) {
+    const n = kachelAnzahl(byId.get(k.id)!);
+    const fig = bildKarte(k.datei, k.scale, `${k.id} · ${k.dichte} px ×${k.scale}`, index, n);
+    strip.append(fig);
+    if (k.dichte !== 32) continue;
+    vorlageBlock(fig, byId.get(k.id)!);
+    for (const s of stufenKarten(byId.get(k.id)!)) {
+      const sf = bildKarte(s.datei, 1, `${s.id} · Stufe ${s.stufe} · 32 px ×1`, index, n);
+      sf.append(Object.assign(document.createElement('p'), { textContent: s.aenderung, style: 'max-width:10rem;font-size:0.75rem;margin:0.3rem 0 0' }));
+      strip.append(sf);
+    }
+  }
+  const title = document.createElement('h2');
+  title.textContent = t('av.geb');
+  sceneEl.prepend(title, strip);
+}
+
+/** Karte mit einem Bild in ganzzahligem Maßstab auf der Bodenlinie und Beschriftung darunter. */
+function bildKarte(datei: string, scale: number, text: string, index: readonly GebaeudeEintrag[], kacheln = 1): HTMLElement {
+  const fig = document.createElement('figure');
+  fig.append(Object.assign(document.createElement('figcaption'), { textContent: text }));
+  const img = new Image();
+  img.onload = () => {
+    const canvas = document.createElement('canvas');
+    canvas.width = img.width * scale * kacheln;
+    canvas.height = img.height * scale;
+    const g = canvas.getContext('2d')!;
+    g.imageSmoothingEnabled = false;
+    for (let i = 0; i < kacheln; i++) g.drawImage(img, i * img.width * scale, 0, img.width * scale, canvas.height);
+    fig.prepend(aufBodenlinie(canvas, index));
+  };
+  img.onerror = () => clientLog('error', '❌ Asset lädt nicht', { datei });
+  img.src = datei;
+  return fig;
+}
+
+/** Vorlage unter der Master-Karte: Motiv als Titel, Teile und Zusatzfelder als Liste (GEB8/AC-03). */
+function vorlageBlock(fig: HTMLElement, e: GebaeudeEintrag): void {
+  const v = vorlageZeilen(e);
+  if (!v) return;
+  const box = document.createElement('details');
+  box.open = true;
+  box.style.cssText = 'max-width:16rem;font-size:0.75rem;margin-top:0.3rem';
+  const sum = document.createElement('summary');
+  sum.textContent = `${e.id}: ${v.titel}`;
+  const ul = document.createElement('ul');
+  ul.style.cssText = 'margin:0.2rem 0 0;padding-left:1rem';
+  for (const z of v.zeilen) ul.append(Object.assign(document.createElement('li'), { textContent: z }));
+  box.append(sum, ul);
+  fig.append(box);
+}
+
+/** Überlappende Baum-Reihe in Dichte d, auf 32 px je Kachel skaliert (GEB1/AC-05). */
+function baumFigur(index: readonly GebaeudeEintrag[], d: number): HTMLElement {
+  const reihe = baumReihe(index);
+  const byId = new Map(index.map((e) => [e.id, e]));
+  const fig = document.createElement('figure');
+  const cap = document.createElement('figcaption');
+  cap.textContent = `${reihe.map((b) => b.id).join(', ')} · ${d} px ×${UNIT / d}`;
+  fig.append(cap);
+  const hoehe = Math.max(...reihe.map((b) => byId.get(b.id)!.kacheln.h));
+  const canvas = document.createElement('canvas');
+  canvas.width = (reihe.at(-1)!.x + 1) * UNIT;
+  canvas.height = hoehe * UNIT;
+  const g = canvas.getContext('2d')!;
+  g.imageSmoothingEnabled = false;
+  const load = (src: string) => new Promise<HTMLImageElement>((ok, fail) => {
+    const img = new Image();
+    img.onload = () => ok(img);
+    img.onerror = () => fail(new Error(src));
+    img.src = src;
+  });
+  void Promise.all(reihe.map((b) => load(byId.get(b.id)!.dateien[d]!)))
+    .then((imgs) => imgs.forEach((img, i) => {
+      const e = byId.get(reihe[i]!.id)!;
+      g.drawImage(img, reihe[i]!.x * UNIT, (hoehe - e.kacheln.h) * UNIT, e.kacheln.b * UNIT, e.kacheln.h * UNIT);
+    }))
+    .catch((err: Error) => clientLog('error', '❌ Asset lädt nicht', { datei: err.message }));
+  fig.prepend(aufBodenlinie(canvas, index));
+  return fig;
+}
+
+/** Rückt ein Bild so weit nach unten, dass seine Unterkante auf der Bodenlinie des höchsten Gebäudes steht. */
+function aufBodenlinie(canvas: HTMLCanvasElement, index: readonly GebaeudeEintrag[]): HTMLCanvasElement {
+  const boden = Math.max(...index.map((e) => e.kacheln.h)) * UNIT;
+  canvas.style.marginTop = `${Math.max(0, boden - canvas.height)}px`;
+  return canvas;
 }
 
 // ---------------------------------------------------------------- Sound

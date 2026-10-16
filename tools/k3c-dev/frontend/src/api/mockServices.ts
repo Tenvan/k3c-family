@@ -14,7 +14,7 @@ function initial(now: number): ServiceStatus[] {
     ...base, name, port, health: `http://127.0.0.1:${port}/`, state: 'gestoppt', ...rest,
   });
   return [
-    svc('Vite', 5173, { tags: ['Spiel', 'Client'], description: 'Vite-Dev-Server: liefert den Browser-Client mit Hot Reload aus.', state: 'läuft', pid: 41232, cpu: 3.1, memory: 480 * MB,
+    svc('Vite', 5183, { tags: ['Spiel', 'Client'], description: 'Vite-Dev-Server: liefert den Browser-Client mit Hot Reload aus.', state: 'läuft', pid: 41232, cpu: 3.1, memory: 480 * MB,
       startedAt: new Date(now - (2 * 60 + 13) * 60_000).toISOString() }),
     svc('Spielserver', 8080, { tags: ['Spiel', 'Backend'], log: 'server', description: 'Go-Spielserver (Engine, API, WebSocket).' }),
     svc('Go-Server', 8090, { tags: ['Spiel', 'Backend'], state: 'fehlgeschlagen', restarts: 2, log: 'k3c-dev',

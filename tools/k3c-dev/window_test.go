@@ -29,7 +29,7 @@ func TestLoadWindow(t *testing.T) {
 	if err := saveWindow(path, windowState{X: -8, Y: -3000, Width: 10, Height: 20}); err != nil {
 		t.Fatal(err)
 	}
-	if w, _ := loadWindow(path); w != (windowState{Width: minWidth, Height: minHeight}) {
+	if w, _ := loadWindow(path); w != (windowState{X: -8, Y: -3000, Width: minWidth, Height: minHeight}) {
 		t.Errorf("Minimum: %+v", w)
 	}
 }

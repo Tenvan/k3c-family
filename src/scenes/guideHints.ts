@@ -17,14 +17,19 @@ export interface GuideImage {
   scale: number;
 }
 
-/** Bild vor dem Text (B-294): Münze mit dem Münzbild; die Nacht bekommt erst mit einem Mond-Bild eins (B-370) */
+/** Textur-Key des Mond-Bilds; `GuideOverlay` zeichnet das Emoji 🌙 einmal in eine Canvas-Textur (B-370) */
+export const MOON_IMAGE = 'guide:moon';
+
+/** Bild vor dem Text (B-294, B-370): Münze mit dem Münzbild, die Nacht mit dem Mond */
 export function guideImage(id: GuideId): GuideImage | null {
-  return id === 'coin' ? { image: 'grafik:coinIcon', scale: 4 } : null; // Münze 6 px im 16-px-Bild → 24 px, etwa Texthöhe
+  if (id === 'coin') return { image: 'grafik:coinIcon', scale: 4 }; // Münze 6 px im 16-px-Bild → 24 px, etwa Texthöhe
+  if (id === 'dusk') return { image: MOON_IMAGE, scale: 1 };
+  return null;
 }
 
 /**
  * Bild nur, wenn seine Textur geladen ist (B-393): Sonst zeichnet Phaser einen grünen Platzhalter statt „nur Text“.
- * `warn` meldet jede fehlende Textur einmal (Log 🐛), der Hinweis steht dann ohne Bild.
+ * `warn` meldet jede fehlende Textur einmal (Log 🤒), der Hinweis steht dann ohne Bild.
  */
 export function usableGuideImage(image: GuideImage | null, exists: (key: string) => boolean, warn: (key: string) => void, warned: Set<string>): GuideImage | null {
   if (!image || exists(image.image)) return image;

@@ -34,7 +34,7 @@ tasks:
       - npm ci --prefix {{.DEV}}/frontend
 
   dev:
-    desc: Dev-Server (LAN, Port 5173); /api und /ws gehen an den Go-Server (Port 8080, `task start`)
+    desc: Dev-Server (LAN, Port 5183); /api und /ws gehen an den Go-Server (Port 8080, `task start`)
     deps: [atlas]
     cmds:
       - npx vite --host {{.CLI_ARGS}}
@@ -87,6 +87,23 @@ tasks:
     cmds:
       - go build -o bin/atlas{{exeExt}} ./tools/atlas
       - ./bin/atlas{{exeExt}}
+
+  gebaeude:
+    desc: Gebäude-PNGs aus public/grafik/gebaeude/*.json rendern (16/32/64/128 px je Kachel, deterministisch; feste EXE bin/gebaeude, GEB1)
+    deps: [tmp]
+    preconditions:
+      - sh: command -v go
+        msg: Go fehlt (requirements.md)
+    sources:
+      - tools/gebaeude/*.go
+      - public/grafik/gebaeude/*.json
+      - exclude: public/grafik/gebaeude/index.json
+    generates:
+      - public/grafik/gebaeude/*.png
+      - public/grafik/gebaeude/index.json
+    cmds:
+      - go build -o bin/gebaeude{{exeExt}} ./tools/gebaeude
+      - ./bin/gebaeude{{exeExt}}
 
   build:
     desc: Atlas, Typecheck und Produktions-Build nach dist/

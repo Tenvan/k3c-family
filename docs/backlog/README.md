@@ -109,9 +109,7 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-366](B-366-fahrplan-spalte-projekt.md) | DEV | Schuld | mittel | eingeplant | WZ2 | k3c-dev füllt im Fahrplan die Spalte Projekt und ordnet nach Rang |
 | [B-367](B-367-doku-nachzug-projekte.md) | INF | Schuld | niedrig | eingeplant | WZ2 | Begriffe aus den alten Bahnen und Spuren sind nach PJ3 ersetzt und neue Projekt-Begriffe im Glossar |
 | [B-369](B-369-texte-landingpage.md) | PLAT | Schuld | niedrig | eingeplant | GL1 | Die Landingpage zeigt ihre Texte in der gewählten Sprache |
-| [B-370](B-370-mond-bild-nacht-hinweis.md) | CLI | Frage | niedrig | eingeplant | BD1 | Der Hinweis „Die Nacht naht“ zeigt ein Mond-Bild vor dem Text |
 | [B-372](B-372-check-run-timeout-go.md) | SRV | Problem | mittel | eingeplant | WZ2 | check_run go:test und task:check:go brechen im MCP-Aufruf mit Timeout ab |
-| [B-374](B-374-preisschild-taste.md) | CLI | Frage | mittel | eingeplant | BD1 | Das Preisschild nennt die Taste zum Bezahlen |
 | [B-377](B-377-beispiel-rueckmeldung-servertest.md) | SRV | Schuld | niedrig | eingeplant | BD2 | Ein Server-Test prüft das Beispiel der Rückmeldungs-Ereignisse gegen die Simulation |
 | [B-378](B-378-castfailed-einmal-je-druck.md) | SIM | Problem | mittel | eingeplant | BD2 | Eine gehaltene Skill-Taste ohne Ziel meldet castFailed einmal je Tastendruck |
 | [B-379](B-379-vollmond-belohnung-nur-stufe-0.md) | SIM | Problem | mittel | eingeplant | KB1 | Die Vollmond-Belohnung gilt für die Stufen, in denen gespielt wird |
@@ -121,13 +119,7 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-385](B-385-inselwechsel-ereignis-geht-verloren.md) | SRV | Problem | mittel | eingeplant | KB2 | Das Ereignis `islandSwitch` erreicht beim Inselwechsel keinen Client |
 | [B-386](B-386-netz-budget-kampf-q08.md) | SRV | Frage | mittel | eingeplant | KB2 | Netz-Budget des Kampf-Zustands: Q08 gilt für alles oder nur für Ereignisse? |
 | [B-387](B-387-ticketnummern-parallele-worktrees.md) | DEV | Problem | mittel | eingeplant | WZ2 | Ticket-Nummern bleiben zwischen parallelen Worktrees eindeutig |
-| [B-389](B-389-oe-schliesst-dialog-zuerst.md) | CLI | Problem | mittel | eingeplant | BD1 | Ö schließt bei offenem Cheat-Dialog zuerst den Dialog, das Overlay bleibt offen |
-| [B-391](B-391-beitritts-hinweis-spieler-2-fehlt.md) | CLI | Problem | mittel | eingeplant | BD1 | Der Beitritts-Hinweis für Spieler 2 wird nicht angezeigt |
-| [B-392](B-392-splitscreen-kamera-spieler-2.md) | CLI | Problem | hoch | eingeplant | BD1 | Im Split-Screen scrollt nur die Kamera von Spieler 1 mit; Spieler 2 ist nicht an seine Ansicht gebunden |
-| [B-393](B-393-muenzbild-hinweis-fehlt.md) | CLI | Problem | mittel | eingeplant | BD1 | Das Münzbild vor „Hinlaufen: Münze aufheben“ erscheint im Browser nicht |
 | [B-394](B-394-xbox-overlay-gesten-abnahme.md) | PLAT | Frage | niedrig | eingeplant | HW1 | Overlay-Gesten (RB, LB + RB) sind an der Xbox abgenommen (B-195/AC-02) |
-| [B-398](B-398-gold-im-hud-nicht-ueber-reiter.md) | CLI | Idee | mittel | eingeplant | BD1 | Das Gold eines Spielers steht im HUD, nicht als Beutel über dem Reiter |
-| [B-399](B-399-steuerhinweis-verschwindet.md) | CLI | Problem | mittel | eingeplant | BD1 | Der Steuerhinweis im HUD verschwindet nach einiger Zeit |
 | [B-400](B-400-planung-splitter-merken.md) | DEV | Idee | niedrig | eingeplant | WZ2 | Die Planungsseite trennt Backlog und Details mit einem Splitter, dessen Stellung gemerkt wird |
 | [B-401](B-401-planung-filter-getrennt.md) | DEV | Idee | niedrig | eingeplant | WZ2 | Der Backlog-Filter wirkt nur auf den Backlog, der Projekt-Filter nur auf die Projekte |
 | [B-402](B-402-planung-session-titel.md) | DEV | Idee | mittel | eingeplant | WZ2 | Die Planungsseite zeigt in den Session-Zeilen den Titel der Session |
@@ -137,7 +129,6 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-411](B-411-spieler-abmelden.md) | CLI | Problem | hoch | eingeplant | BD4 | Lokale Spieler können beitreten, aber nicht einzeln austreten |
 | [B-412](B-412-figuren-adern-plantage-lager.md) | CLI | Idee | niedrig | offen | – | Adern, Plantage und Lager haben keine Anzeige als Figuren im Client |
 | [B-413](B-413-hud-leiste-oben-fluss.md) | CLI | Idee | mittel | eingeplant | BD4 | Gemeinsame HUD-Leiste oben für alle Spieler, Kompass oben, Fluss mit Spiegelung unten |
-| [B-414](B-414-welt-meldungen-im-band.md) | CLI | Idee | mittel | eingeplant | BD1 | Welt-Meldungen erscheinen für alle im globalen Band oben |
 | [B-418](B-418-spielstand-kommentare-veraltet.md) | SIM | Problem | niedrig | offen | – | Kommentare in island_save_v3.go und island_save_v5.go nennen nach W7.2 veraltete Versionen |
 | [B-419](B-419-golden-daten-verkleinern.md) | INF | Idee | niedrig | offen | – | Golden-Daten werden gezielt verkleinert, ohne die Prüfschärfe zu verlieren |
 | [B-420](B-420-importe-grafikpacks.md) | DEV | Schuld | mittel | offen | – | Mit k3c-dev importierte Kandidaten unter public/grafik/kandidaten/ brechen grafikPacks.test nicht |
@@ -145,7 +136,15 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-423](B-423-sim-test-im-worktree.md) | DEV | Problem | mittel | offen | – | sim_test rechnet immer mit dem Code der Repo-Wurzel, nicht mit dem Worktree der Session |
 | [B-425](B-425-fullsave-ausbauregeln.md) | SRV | Problem | mittel | offen | – | Der Voll-Ausbau-Stand hält die Ausbauregeln des Spiels ein |
 | [B-426](B-426-fullsave-review-kleinigkeiten.md) | SRV | Schuld | niedrig | offen | – | Kleine Befunde aus dem Review von SV1 sind erledigt |
-| [B-427](B-427-mond-bild-quelle.md) | CLI | Frage | mittel | offen | – | Aus welcher Quelle kommt das Mond-Bild für den Nacht-Hinweis? |
+| [B-435](B-435-gebaeude-grafik-per-prompt.md) | DEV | Idee | mittel | eingeplant | GEB1 | Gebäude und Strukturen entstehen im Asset-Manager aus Beschreibung und Prompt |
+| [B-436](B-436-plan-create-entwurf-zeilen.md) | DEV | Problem | niedrig | offen | – | plan_create scheitert an Platzhalter-Zeilen „– (Entwurf)“ in der Session-Tabelle |
+| [B-438](B-438-werkstatt-baeume-ins-spiel.md) | CLI | Idee | mittel | eingeplant | GEB6 | Werkstatt und Bäume aus tools/gebaeude erscheinen im Spiel |
+| [B-439](B-439-planung-erpqs-look.md) | DEV | Idee | mittel | eingeplant | WZ5 | Die Planungsseite von k3c-dev zeigt und bedient die Planung wie die erp-qs-Workbench |
+| [B-440](B-440-dev-test-entwurfs-sprints-ohne-sessions.md) | DEV | Problem | mittel | offen | – | k3c-dev-Planungstest lehnt Entwurfs-Sprints ohne Sessions ab |
+| [B-443](B-443-dev-logs-scrollen-liste.md) | DEV | Problem | mittel | offen | – | Auf der Log-Seite von k3c-dev scrollt nur die Log-Liste, nicht die ganze Seite |
+| [B-444](B-444-vite-ports-plus-zehn.md) | DEV | Problem | mittel | offen | – | Vite-Ports von Spiel und k3c-dev liegen 10 höher und kollidieren nicht mit dem Vite-Standardport |
+| [B-445](B-445-dev-splitter-assets-mcp.md) | DEV | Idee | mittel | offen | – | Assets- und MCP-Seite von k3c-dev haben ziehbare Splitter zwischen den Panelen |
+| [B-448](B-448-planning-testrepo-entwurf-sprint.md) | DEV | Problem | mittel | offen | – | dev:test TestRepo scheitert an Entwurfs-Sprints ohne Sessions (GEB7) |
 | [B-446](B-446-hub-plaetze-nach-gebaeude-breite.md) | REG | Problem | mittel | offen | – | Hub-Gebäude überdecken sich: Kaserne und Schmiede stehen 4 Units auseinander, sind aber 6 Kacheln breit |
 | [B-447](B-447-sperrgrund-linie-im-protokoll.md) | SRV | Idee | mittel | offen | – | Der Server nennt je Mauer-, Turm- und Tor-Platz Linie und Sperrgrund (Linie fehlt, Tor nur außen) |
 
@@ -400,6 +399,20 @@ Zeile in diesen Abschnitt.
 | [B-209](archiv/B-209-client-platz-arten.md) | CLI | Schuld | mittel | erledigt | W8 | `src/model/data.ts` kennt alle Platz-Arten aus `hub.json` |
 | [B-188](archiv/B-188-client-rohstoffe-eisen-kristall.md) | CLI | Schuld | niedrig | erledigt | W8 | Der Client kennt alle fünf Rohstoffe des Servers |
 | [B-424](archiv/B-424-fullsave-offener-raum.md) | SRV | Problem | mittel | erledigt | – | Ein neuer Voll-Ausbau-Stand wird nicht vom noch offenen alten Raum überschrieben |
+| [B-370](archiv/B-370-mond-bild-nacht-hinweis.md) | CLI | Frage | niedrig | erledigt | BD1 | Der Hinweis „Die Nacht naht“ zeigt ein Mond-Bild vor dem Text |
+| [B-427](archiv/B-427-mond-bild-quelle.md) | CLI | Frage | mittel | erledigt | – | Aus welcher Quelle kommt das Mond-Bild für den Nacht-Hinweis? |
+| [B-392](archiv/B-392-splitscreen-kamera-spieler-2.md) | CLI | Problem | hoch | erledigt | BD1 | Im Split-Screen scrollt nur die Kamera von Spieler 1 mit; Spieler 2 ist nicht an seine Ansicht gebunden |
+| [B-391](archiv/B-391-beitritts-hinweis-spieler-2-fehlt.md) | CLI | Problem | mittel | erledigt | BD1 | Der Beitritts-Hinweis für Spieler 2 wird nicht angezeigt |
+| [B-389](archiv/B-389-oe-schliesst-dialog-zuerst.md) | CLI | Problem | mittel | erledigt | BD1 | Ö schließt bei offenem Cheat-Dialog zuerst den Dialog, das Overlay bleibt offen |
+| [B-399](archiv/B-399-steuerhinweis-verschwindet.md) | CLI | Problem | mittel | erledigt | BD1 | Der Steuerhinweis im HUD verschwindet nach einiger Zeit |
+| [B-398](archiv/B-398-gold-im-hud-nicht-ueber-reiter.md) | CLI | Idee | mittel | erledigt | BD1 | Das Gold eines Spielers steht im HUD, nicht als Beutel über dem Reiter |
+| [B-414](archiv/B-414-welt-meldungen-im-band.md) | CLI | Idee | mittel | erledigt | BD1 | Welt-Meldungen erscheinen für alle im globalen Band oben |
+| [B-393](archiv/B-393-muenzbild-hinweis-fehlt.md) | CLI | Problem | mittel | erledigt | BD1 | Das Münzbild vor „Hinlaufen: Münze aufheben“ erscheint im Browser nicht |
+| [B-374](archiv/B-374-preisschild-taste.md) | CLI | Frage | mittel | erledigt | BD1 | Das Preisschild nennt die Taste zum Bezahlen |
+| [B-441](archiv/B-441-gebaeude-json-beschreibung.md) | DEV | Idee | hoch | erledigt | GEB8 | Gebäude-JSONs tragen ihre Gebäude-Vorlage (`vorlage`) |
+| [B-437](archiv/B-437-katalog-eigene-gebaeude.md) | DEV | Problem | mittel | erledigt | GEB3 | Asset-Katalog von k3c-dev kennt eigene Gebäude-Grafik nicht |
+| [B-442](archiv/B-442-hintergrundmauer-typ-b.md) | CLI | Idee | hoch | erledigt | GEB3 | Hintergrundmauern verbinden die Mauern einer Seite wie in Kingdom Two Crowns |
+| [B-449](archiv/B-449-geb5-abnahme-sichtpruefung.md) | CLI | Frage | hoch | erledigt | – | GEB5: Abnahme von Vorschau und Spiel durch Ralf |
 | [B-430](archiv/B-430-frage-w11-3-session-spec-fehlt.md) | SRV | Frage | mittel | erledigt | W11 | Frage: Wie lauten Ziel, Erlaubte Dateien und Form der actions-Einträge für W11.3 (Ausbilden, Tauschen)? |
 | [B-434](archiv/B-434-playeraction-train-trade-bricht-actionhints.md) | CLI | Frage | hoch | erledigt | W11 | PlayerAction mit train und trade bricht den Typcheck von actionHints.ts, das W11.3 nicht anfassen darf |
 | [B-422](archiv/B-422-w11-b207-nachtragen.md) | CLI | Schuld | mittel | erledigt | – | Die Spec von W11 nennt B-207 (gesperrte Plätze mit Grund) noch nicht |
