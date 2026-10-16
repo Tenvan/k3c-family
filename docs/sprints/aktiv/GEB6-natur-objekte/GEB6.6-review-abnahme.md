@@ -1,6 +1,6 @@
 # GEB6.6 · Review und Abnahme
 
-- **Status:** offen
+- **Status:** blockiert
 - **Typ:** Review
 - **Agent:** autonom
 - **Domäne:** CLI
@@ -55,5 +55,6 @@ Manuelle Prüfung im Browser-Pane nur mit Freigabe von 🧑 für diesen Lauf.
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+- **AC-03 blockiert (🧑):** Abnahme der Vorschau je Biom und des Spiels steht aus; niemand außer Agenten hat Bilder gesehen. Nach Arbeitsweise › Wenn etwas nicht passt bleibt die Session `blockiert`, der PR ist ein Entwurfs-PR ohne Auto-Merge.
+- **AC-01, AC-02, AC-04, AC-05, AC-06 geprüft:** Ergebnisse GEB6.1–GEB6.5; `task check` und `task check:go` grün (pro Session), Sprint-Diff `origin/develop...HEAD` von einem getrennten Agenten gelesen (Domänen DEV, CLI): keine schweren Befunde, alte Gebäude-PNGs unverändert (nur `index.json` geändert), Baumwahl ohne `Math.random()`, Plantage-Pappel unverändert, Datei ≤ 400 und Funktion ≤ 60 Zeilen.
+- **Hinweise:** GEB6 wurde erst nach dem Merge von GEB5 aktiviert (Planungstest: ein aktiver Sprint je Projekt); GEB6.1–6.4 liefen davor in `geplant/` auf `sprint/geb6`. Offene Frage 4 bleibt offen für 🧑 (Annahme umgesetzt, Änderungsweg in der Sprint-README).
