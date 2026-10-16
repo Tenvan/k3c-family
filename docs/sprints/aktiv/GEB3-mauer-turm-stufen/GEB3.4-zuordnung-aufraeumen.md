@@ -1,6 +1,6 @@
 # GEB3.4 · Mauer und Turm im Spiel, alte Grafik gelöscht
 
-- **Status:** in Arbeit
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** CLI
@@ -59,5 +59,8 @@ Keine manuellen Prüfungen; der Blick ins Spiel gehört GEB3.5.
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+2026-10-16, Claude (autonom, Ralf im Chat).
+- AC-02 geprüft: `buildingSprites.ts` ordnet `wall`/`tower` Stufe 1–5 den PNGs `gebaeude/mauer-<n>-32.png` bzw. `turm-<n>-32.png` zu (Maßstab 1, keine Lücken mehr, ohne Stufe = Grundform 1); Vitest prüft alle zehn Stufen (erst rot, dann grün). **Fund und Fix:** `siteView` gab die Ausbau-Stufe (`Site.level`) nie an `siteTexture` weiter und zeigte daher immer Stufe 2; jetzt `s.level ?? 1`, und die Stufe steht im Cache-Schlüssel von `updateSiteView` (Review-Befund). Die Mauer ist ein Bild statt einer gestapelten 16-px-Kachel. Register `data/assets.json`: `wall`, `tower`, `wall:1–5`, `tower:1–5`.
+- AC-06 geprüft: gelöscht `gothicvania-town/tileset-einzeln/wall.png`, `wall-b.png`, `k3c-paletten/tileset-einzeln/wall-*.png` (6), `k3c-paletten/props/tower-*.png` (4); 12 Einträge aus `public/grafik/index.json`; nachgezogen `docs/assets/zuordnung-objekte.md`, `zuordnung-welt.md`, `public/grafik/CREDITS.md`, `k3c-paletten/LICENSE.txt` und die Pack-Notiz in `src/tools/grafikPacks.ts` (über die Liste hinaus, gleiche Art Herkunftsangabe). `git grep` ohne Treffer außer historischer Doku (`docs/funde/`, erledigte Sprints, Archiv).
+- Checks: `task check` und `task check:go` grün. Review (Sonnet-Agent): ein mittlerer Befund (Stufe fehlte im Cache-Schlüssel) und CREDITS behoben.
+- Neu: B-442 (Hintergrundmauer Typ B, Ralf im Chat), Einordnung offen.

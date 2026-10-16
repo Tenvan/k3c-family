@@ -33,21 +33,21 @@ Viele dieser Objekte gibt es noch nicht im Code (B-112, B-114); dann ist die Her
 
 | Objekt | Herkunft | Pack | Datei/Frame | Stil (Raster, Palette, Skalierung) | Lizenz | Status |
 |---|---|---|---|---|---|---|
-| `wall:1` | `docs/rules/materialien-gebaeude.md` § 3.1 | – | – (Holzmauer: kein Treffer in GR2.2) | Ziel: 16 px, Gothicvania, ×2 (Q13) | Ziel: CC0 oder CC-BY | **Lücke: kein Treffer, Platzhalter, B-162** |
-| `wall:2` | `docs/rules/materialien-gebaeude.md` § 3.1 | `grafik/gothicvania-town` | wie `wall` (GR1.2): `tileset-einzeln/wall.png`, `tileset-einzeln/wall-b.png` (16×16) | 16 px, Gothicvania (Dunkelviolett), ×2 | CC0 1.0 | zugeordnet |
-| `wall:3` | `docs/rules/materialien-gebaeude.md` § 3.1 | `grafik/k3c-paletten` | `tileset-einzeln/wall-kupfer.png`, `tileset-einzeln/wall-b-kupfer.png` (16×16) | 16 px, Gothicvania-Wand, Palettentausch Kupfer (warm-orange), ×2 (GR2.3, Entscheidung 🧑 GR2.2) | CC0 1.0 | zugeordnet |
-| `wall:4` | `docs/rules/materialien-gebaeude.md` § 3.1 | `grafik/k3c-paletten` | `tileset-einzeln/wall-eisen.png`, `tileset-einzeln/wall-b-eisen.png` (16×16) | 16 px, Gothicvania-Wand, Palettentausch Eisen (kühl-grau), ×2 (GR2.3, Entscheidung 🧑 GR2.2) | CC0 1.0 | zugeordnet |
-| `wall:5` | `docs/rules/materialien-gebaeude.md` § 3.1 | `grafik/k3c-paletten` | `tileset-einzeln/wall-kristall.png`, `tileset-einzeln/wall-b-kristall.png` (16×16) | 16 px, Gothicvania-Wand, Palettentausch Kristall (türkis), ×2 (GR2.3, Entscheidung 🧑 GR2.2) | CC0 1.0 | zugeordnet |
+| `wall:1` | `docs/rules/materialien-gebaeude.md` § 3.1 | `grafik/gebaeude` | `mauer-1-32.png` (Holz) | eigene Grafik (`tools/gebaeude`), 32 px je Kachel, ×1; GEB3 | eigen | zugeordnet |
+| `wall:2` | `docs/rules/materialien-gebaeude.md` § 3.1 | `grafik/gebaeude` | `mauer-2-32.png` (Stein) | eigene Grafik (`tools/gebaeude`), 32 px je Kachel, ×1; GEB3 | eigen | zugeordnet |
+| `wall:3` | `docs/rules/materialien-gebaeude.md` § 3.1 | `grafik/gebaeude` | `mauer-3-32.png` (Kupfer) | eigene Grafik (`tools/gebaeude`), 32 px je Kachel, ×1; GEB3 | eigen | zugeordnet |
+| `wall:4` | `docs/rules/materialien-gebaeude.md` § 3.1 | `grafik/gebaeude` | `mauer-4-32.png` (Eisen) | eigene Grafik (`tools/gebaeude`), 32 px je Kachel, ×1; GEB3 | eigen | zugeordnet |
+| `wall:5` | `docs/rules/materialien-gebaeude.md` § 3.1 | `grafik/gebaeude` | `mauer-5-32.png` (Kristall) | eigene Grafik (`tools/gebaeude`), 32 px je Kachel, ×1; GEB3 | eigen | zugeordnet |
 
 ## Turm-Stufen
 
 | Objekt | Herkunft | Pack | Datei/Frame | Stil (Raster, Palette, Skalierung) | Lizenz | Status |
 |---|---|---|---|---|---|---|
-| `tower:1` | `docs/rules/materialien-gebaeude.md` § 3.1 | – | – (Holzturm: kein Treffer in GR2.2) | Ziel: 16 px, Gothicvania, ×2 (Q13) | Ziel: CC0 oder CC-BY | **Lücke: kein Treffer, Platzhalter, B-162** |
-| `tower:2` | `docs/rules/materialien-gebaeude.md` § 3.1 | `grafik/k3c-paletten` | wie `tower`: `props/tower-stein.png` (Turm mit Kegeldach, 112×128); abgeleitet von `sunnyland-fort-of-illusion` `ebenen/front.png` | 16 px, Gothicvania (Dunkelviolett), ×2; Vermerk: Palette angeglichen (GR2.3, `grafik/k3c-paletten`) | CC0 1.0 | zugeordnet |
-| `tower:3` | `docs/rules/materialien-gebaeude.md` § 3.1 | `grafik/k3c-paletten` | `props/tower-kupfer.png` (112×128) | 16 px, Fort-Turm, Palettentausch Kupfer (warm-orange), ×2 (GR2.3, Entscheidung 🧑 GR2.2) | CC0 1.0 | zugeordnet |
-| `tower:4` | `docs/rules/materialien-gebaeude.md` § 3.1 | `grafik/k3c-paletten` | `props/tower-eisen.png` (112×128) | 16 px, Fort-Turm, Palettentausch Eisen (kühl-grau), ×2 (GR2.3, Entscheidung 🧑 GR2.2) | CC0 1.0 | zugeordnet |
-| `tower:5` | `docs/rules/materialien-gebaeude.md` § 3.1 (Zaubertum) | – | – (Zaubertum: kein Treffer in GR2.2; der Kristall-Turm `props/tower-kristall.png` aus `grafik/k3c-paletten` liegt bereit) | Ziel: 16 px, Gothicvania, ×2 (Q13) | Ziel: CC0 oder CC-BY | **Lücke: kein Treffer, Platzhalter, B-162** |
+| `tower:1` | `docs/rules/materialien-gebaeude.md` § 3.1 | `grafik/gebaeude` | `turm-1-32.png` (Holz) | eigene Grafik (`tools/gebaeude`), 32 px je Kachel, ×1; GEB3 | eigen | zugeordnet |
+| `tower:2` | `docs/rules/materialien-gebaeude.md` § 3.1 | `grafik/gebaeude` | `turm-2-32.png` (Stein) | eigene Grafik (`tools/gebaeude`), 32 px je Kachel, ×1; GEB3 | eigen | zugeordnet |
+| `tower:3` | `docs/rules/materialien-gebaeude.md` § 3.1 | `grafik/gebaeude` | `turm-3-32.png` (Kupfer) | eigene Grafik (`tools/gebaeude`), 32 px je Kachel, ×1; GEB3 | eigen | zugeordnet |
+| `tower:4` | `docs/rules/materialien-gebaeude.md` § 3.1 | `grafik/gebaeude` | `turm-4-32.png` (Eisen) | eigene Grafik (`tools/gebaeude`), 32 px je Kachel, ×1; GEB3 | eigen | zugeordnet |
+| `tower:5` | `docs/rules/materialien-gebaeude.md` § 3.1 (Zaubertum) | `grafik/gebaeude` | `turm-5-32.png` (Kristall, Zaubertum) | eigene Grafik (`tools/gebaeude`), 32 px je Kachel, ×1; GEB3 | eigen | zugeordnet |
 
 ## Materialien und Adern
 

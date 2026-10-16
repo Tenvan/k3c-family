@@ -10,13 +10,8 @@ export const BUILDING_TEXTURES: Record<string, string> = {
   'grafik:fort-tileset': 'k3c-paletten/ebenen/fort-tileset.png',
   'grafik:fort-banner': 'k3c-paletten/props/fort-banner.png',
   'grafik:hub-2': 'wooden-fortress-and-animated-doors/ebenen/wooden-castle.png',
-  'grafik:wall-2': 'gothicvania-town/tileset-einzeln/wall.png',
-  'grafik:wall-3': 'k3c-paletten/tileset-einzeln/wall-kupfer.png',
-  'grafik:wall-4': 'k3c-paletten/tileset-einzeln/wall-eisen.png',
-  'grafik:wall-5': 'k3c-paletten/tileset-einzeln/wall-kristall.png',
-  'grafik:tower-2': 'k3c-paletten/props/tower-stein.png',
-  'grafik:tower-3': 'k3c-paletten/props/tower-kupfer.png',
-  'grafik:tower-4': 'k3c-paletten/props/tower-eisen.png',
+  ...stufen('wall', 'mauer'),
+  ...stufen('tower', 'turm'),
   'grafik:gate': 'k3c-paletten/props/fort-closed-door.png',
   'grafik:workshop': 'gebaeude/werkstatt-32.png',
   'grafik:tavern': 'gebaeude/taverne-32.png',
@@ -32,19 +27,24 @@ export const BUILDING_TEXTURES: Record<string, string> = {
   'grafik:stairs-right': 'gothicvania-town/tileset-einzeln/stairs-right.png',
 };
 
+/** Mauer und Turm in den Material-Stufen 1–5 aus `tools/gebaeude` (GEB3): `grafik:<kind>-<n>` → `gebaeude/<id>-<n>-32.png` */
+function stufen(kind: string, id: string): Record<string, string> {
+  return Object.fromEntries([1, 2, 3, 4, 5].map((n) => [`grafik:${kind}-${n}`, `gebaeude/${id}-${n}-32.png`]));
+}
+
 /** Treppe hoch aus 16×32-Kacheln, von unten links nach oben rechts je eine Kachel weiter und eine halbe höher */
 export const STAIRS_UP_TILES = ['grafik:stairs-left', 'grafik:stairs', 'grafik:stairs', 'grafik:stairs', 'grafik:stairs-right'];
 
-/** Material-Stufen 1–5 (Regel materialien-gebaeude.md § 3.1); Stufe 1 (Holz) und Turm 5 (Zaubertum) sind Lücken */
-const STAGES: Partial<Record<SiteKind, (string | null)[]>> = {
-  wall: [null, 'grafik:wall-2', 'grafik:wall-3', 'grafik:wall-4', 'grafik:wall-5'],
-  tower: [null, 'grafik:tower-2', 'grafik:tower-3', 'grafik:tower-4', null],
+/** Material-Stufen 1–5 (Regel materialien-gebaeude.md § 3.1; Grafik GEB3, Turm 5 = Zaubertum) */
+const STAGES: Partial<Record<SiteKind, string[]>> = {
+  wall: [1, 2, 3, 4, 5].map((n) => `grafik:wall-${n}`),
+  tower: [1, 2, 3, 4, 5].map((n) => `grafik:tower-${n}`),
 };
 
-/** Ohne Stufe im Snapshot: die Grafik der Objekt-Zeile (Mauer und Turm zeigen dort Stein = Stufe 2) */
+/** Ohne Stufe: die Grundform (Mauer und Turm: Stufe 1, wie `Site.level` „fehlt = 1“) */
 const BASE: Partial<Record<SiteKind, string>> = {
-  wall: 'grafik:wall-2',
-  tower: 'grafik:tower-2',
+  wall: 'grafik:wall-1',
+  tower: 'grafik:tower-1',
   gate: 'grafik:gate',
   workshop: 'grafik:workshop',
   tavern: 'grafik:tavern',

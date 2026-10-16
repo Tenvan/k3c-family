@@ -14,7 +14,7 @@ import { canAfford } from './viewRules';
  */
 
 type View = Phaser.GameObjects.Container;
-type Picture = Phaser.GameObjects.Image | Phaser.GameObjects.TileSprite | Phaser.GameObjects.Container;
+type Picture = Phaser.GameObjects.Image | Phaser.GameObjects.Container;
 
 const G = GROUND_Y;
 /** Pixel-Art ganzzahlig ×2 (Q13: 16-px-Raster auf UNIT_PX = 32) */
@@ -94,8 +94,8 @@ export function drawCastle(scene: Phaser.Scene, x: number, put: (o: Phaser.GameO
 
 export function createSiteView(scene: Phaser.Scene, s: Site): View {
   const [w, h] = SITE_SIZE[s.kind];
-  // Mauer: 16-px-Kachel gestapelt, sonst ein Bild
-  const picture: Picture = s.kind === 'stairsUp' ? stairsUp(scene) : s.kind === 'wall' ? scene.add.tileSprite(0, 0, 16, 80, '__DEFAULT').setOrigin(0.5, 1) : scene.add.image(0, 0, '__DEFAULT').setOrigin(0.5, 1);
+  // Treppe hoch aus Kacheln, sonst ein Bild (Mauer seit GEB3 ebenfalls)
+  const picture: Picture = s.kind === 'stairsUp' ? stairsUp(scene) : scene.add.image(0, 0, '__DEFAULT').setOrigin(0.5, 1);
   picture.setScale(ZOOM).setVisible(false);
   const g = scene.add.graphics();
   const label = scene.add.text(0, 0, '', { ...TEXT, ...fontStyle('priceTag') }).setOrigin(0.5, 1);
@@ -112,7 +112,7 @@ function stairsUp(scene: Phaser.Scene): Phaser.GameObjects.Container {
 /** Zeigt die Grafik, falls zugeordnet und geladen; liefert die Höhe für Schilder darüber (sonst Platzhalter-Höhe) */
 function showPicture(scene: Phaser.Scene, v: View, s: Site): number | null {
   const picture = v.getAt(0) as Picture;
-  const key = siteTexture(s.kind, s.state);
+  const key = siteTexture(s.kind, s.state, s.level ?? 1); // Mauer und Turm je Ausbau-Stufe (GEB3)
   const frame = key === null ? undefined : FRAMES[key]?.[0]?.[0];
   const empty = picture instanceof Phaser.GameObjects.Container && picture.length === 0;
   if (!has(scene, key) || empty) {
@@ -131,7 +131,7 @@ function showPicture(scene: Phaser.Scene, v: View, s: Site): number | null {
 export function updateSiteView(scene: Phaser.Scene, v: View, s: Site, world: World, near: boolean): void {
   const data = BUILDINGS[s.kind];
   const wait = siteStatus(s, world.danger);
-  const key = [s.state, s.paidGold, Math.round(s.buildProgress * 20), Math.round((s.hp / s.maxHp) * 20), s.bows, s.bowPaidGold, near, canAfford(world.stock, data.cost), currentLanguage(), statusKey(wait)].join('|');
+  const key = [s.state, s.paidGold, Math.round(s.buildProgress * 20), Math.round((s.hp / s.maxHp) * 20), s.bows, s.bowPaidGold, near, canAfford(world.stock, data.cost), currentLanguage(), statusKey(wait), s.level ?? 1].join('|'); // level: Mauer/Turm wechseln die Grafik je Stufe (GEB3)
   if (v.getData('key') === key) return;
   v.setData('key', key);
 

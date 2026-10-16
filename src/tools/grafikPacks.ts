@@ -217,8 +217,8 @@ export const GRAFIK_PACKS: readonly GrafikPack[] = [
     artist: ZUNO,
     license: 'CC0 1.0',
     source: 'https://opengameart.org/content/gothicvania-town',
-    covers: ['Mauer und Turm in Kupfer, Eisen, Kristall', 'Burg, Turm, Tor in der Palette von GothicVania Town'],
-    note: 'Eigene Ableitung (GR2.3): nur Farben getauscht (Q13). Quellen gothicvania-town (wall.png, wall-b.png) und sunnyland-fort-of-illusion (front.png, tileset.png, banner.png, door.png, closed-door.png), beide CC0.',
+    covers: ['Burg und Tor in der Palette von GothicVania Town'],
+    note: 'Eigene Ableitung (GR2.3): nur Farben getauscht (Q13). Quelle sunnyland-fort-of-illusion (tileset.png, banner.png, door.png, closed-door.png), CC0. Mauer und Turm in Kupfer, Eisen, Kristall sind seit GEB3 eigene Grafik (gebaeude/).',
   },
   // Nicht gewählte Kandidaten aus GR2 (AC-06), nicht zugeordnet
   kandidat('16x16-block-texture-set', '16x16 Block Texture Set', 'ARoachIFoundOnMyPillow (OpenGameArt-Uploader)', 'CC0 1.0', 'https://opengameart.org/content/16x16-block-texture-set', 'Mauer-/Turm-Materialstufen', 'Nur das Tilemap-Sheet (Blöcke, Ziegel, Stein, Holz) übernommen; Einzelkacheln, Pflanzen und Feldfrüchte weggelassen.'),

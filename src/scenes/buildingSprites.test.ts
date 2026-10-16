@@ -7,7 +7,7 @@ const FILES = Object.keys(import.meta.glob('../../public/grafik/**/*.png'));
 describe('Gebäude-Grafik (GR3.1)', () => {
   it('gebaute Gebäude mit Zuordnung bekommen ihre Grafik', () => {
     expect(siteTexture('gate', 'built')).toBe('grafik:gate');
-    expect(siteTexture('wall', 'built')).toBe('grafik:wall-2');
+    expect(siteTexture('wall', 'built')).toBe('grafik:wall-1');
   });
 
   it('Treppe hoch steht aus Treppen-Kacheln: Anfang, Mitte, Ende', () => {
@@ -30,12 +30,18 @@ describe('Gebäude-Grafik (GR3.1)', () => {
       expect(textureScale(key!)).toBe(1);
     }
     expect(textureScale('grafik:barracks')).toBe(2);
-    expect(textureScale('grafik:wall-2')).toBe(2);
+    expect(textureScale('grafik:gate')).toBe(2);
   });
 
   it('Material-Stufen wählen das Sprite je Stufe, Lücken sind null (AC-04)', () => {
-    expect([1, 2, 3, 4, 5].map((s) => siteTexture('wall', 'built', s))).toEqual([null, 'grafik:wall-2', 'grafik:wall-3', 'grafik:wall-4', 'grafik:wall-5']);
-    expect([1, 2, 3, 4, 5].map((s) => siteTexture('tower', 'built', s))).toEqual([null, 'grafik:tower-2', 'grafik:tower-3', 'grafik:tower-4', null]);
+    for (const [kind, id] of [['wall', 'mauer'], ['tower', 'turm']] as const) {
+      for (const s of [1, 2, 3, 4, 5]) {
+        const key = siteTexture(kind, 'built', s);
+        expect(key).toBe(`grafik:${kind}-${s}`);
+        expect(BUILDING_TEXTURES[key!]).toBe(`gebaeude/${id}-${s}-32.png`); // GEB3 AC-02: alle zehn Stufen, eigene Grafik
+        expect(textureScale(key!)).toBe(1);
+      }
+    }
     expect(siteTexture('wall', 'built', 9)).toBeNull();
     expect(siteTexture('farm', 'built', 3)).toBe('grafik:farm');
   });

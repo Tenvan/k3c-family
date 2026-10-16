@@ -19,7 +19,7 @@
       "beschreibung": "Gebäude: wall",
       "wahl": [
         {
-          "datei": "grafik/gothicvania-town/tileset-einzeln/wall.png"
+          "datei": "grafik/gebaeude/mauer-1-32.png"
         }
       ]
     },
@@ -30,7 +30,7 @@
       "beschreibung": "Gebäude: tower",
       "wahl": [
         {
-          "datei": "grafik/k3c-paletten/props/tower-stein.png"
+          "datei": "grafik/gebaeude/turm-1-32.png"
         }
       ]
     },
@@ -491,7 +491,11 @@
       "art": "grafik",
       "kategorie": "gebaeude",
       "beschreibung": "Mauer-Stufen: wall:1",
-      "wahl": []
+      "wahl": [
+        {
+          "datei": "grafik/gebaeude/mauer-1-32.png"
+        }
+      ]
     },
     {
       "id": "wall:2",
@@ -500,7 +504,7 @@
       "beschreibung": "Mauer-Stufen: wall:2",
       "wahl": [
         {
-          "datei": "grafik/gothicvania-town/tileset-einzeln/wall.png"
+          "datei": "grafik/gebaeude/mauer-2-32.png"
         }
       ]
     },
@@ -511,7 +515,7 @@
       "beschreibung": "Mauer-Stufen: wall:3",
       "wahl": [
         {
-          "datei": "grafik/k3c-paletten/tileset-einzeln/wall-kupfer.png"
+          "datei": "grafik/gebaeude/mauer-3-32.png"
         }
       ]
     },
@@ -522,7 +526,7 @@
       "beschreibung": "Mauer-Stufen: wall:4",
       "wahl": [
         {
-          "datei": "grafik/k3c-paletten/tileset-einzeln/wall-eisen.png"
+          "datei": "grafik/gebaeude/mauer-4-32.png"
         }
       ]
     },
@@ -533,7 +537,7 @@
       "beschreibung": "Mauer-Stufen: wall:5",
       "wahl": [
         {
-          "datei": "grafik/k3c-paletten/tileset-einzeln/wall-kristall.png"
+          "datei": "grafik/gebaeude/mauer-5-32.png"
         }
       ]
     },
@@ -542,7 +546,11 @@
       "art": "grafik",
       "kategorie": "gebaeude",
       "beschreibung": "Turm-Stufen: tower:1",
-      "wahl": []
+      "wahl": [
+        {
+          "datei": "grafik/gebaeude/turm-1-32.png"
+        }
+      ]
     },
     {
       "id": "tower:2",
@@ -551,7 +559,7 @@
       "beschreibung": "Turm-Stufen: tower:2",
       "wahl": [
         {
-          "datei": "grafik/k3c-paletten/props/tower-stein.png"
+          "datei": "grafik/gebaeude/turm-2-32.png"
         }
       ]
     },
@@ -562,7 +570,7 @@
       "beschreibung": "Turm-Stufen: tower:3",
       "wahl": [
         {
-          "datei": "grafik/k3c-paletten/props/tower-kupfer.png"
+          "datei": "grafik/gebaeude/turm-3-32.png"
         }
       ]
     },
@@ -573,7 +581,7 @@
       "beschreibung": "Turm-Stufen: tower:4",
       "wahl": [
         {
-          "datei": "grafik/k3c-paletten/props/tower-eisen.png"
+          "datei": "grafik/gebaeude/turm-4-32.png"
         }
       ]
     },
@@ -582,7 +590,11 @@
       "art": "grafik",
       "kategorie": "gebaeude",
       "beschreibung": "Turm-Stufen: tower:5",
-      "wahl": []
+      "wahl": [
+        {
+          "datei": "grafik/gebaeude/turm-5-32.png"
+        }
+      ]
     },
     {
       "id": "material:wood",
