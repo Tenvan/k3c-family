@@ -1,6 +1,6 @@
 # GEB8.2 · Vorlage in der Asset-Vorschau zeigen
 
-- **Status:** in Arbeit
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** DEV
@@ -52,5 +52,6 @@ Keine manuellen Prüfungen in dieser Session; die Sichtprüfung gehört GEB8.3.
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+2026-10-16, Claude (autonom, Ralf im Chat).
+- AC-03 umgesetzt: `vorlageZeilen` in `assetvorschauLogic.ts` (Motiv als Titel, Teile, dann Materialien, Stimmung, fein; ohne Vorlage `null`), Vitest-Block „Gebäude-Vorlage (GEB8/AC-03)“ (erst rot, dann grün). `assetvorschau.ts` hängt unter jede 32-px-Karte (Gebäude und einzelne Bäume) ein aufgeklapptes `details` mit der Vorlage, Text nur über `textContent`. Sichtprüfung gehört GEB8.3.
+- Checks: `task check` grün. Review (Sonnet-Agent): keine schweren Befunde. Zwei leichte nicht übernommen: fehlende `teile` im Index und doppelte IDs schließt `tools/gebaeude` aus (Pflichtfeld, ID = Dateiname).
