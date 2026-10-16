@@ -13,7 +13,7 @@ import (
 )
 
 const (
-	// slotStep ist der Port-Versatz je Worktree: Vite 5173 → 5183, 5193 …; Spielserver 8080 → 8090, 8100 …
+	// slotStep ist der Port-Versatz je Worktree: Vite 5183 → 5193, 5203 …; Spielserver 8080 → 8090, 8100 …
 	slotStep = 10
 	maxSlots = 50
 )
@@ -83,21 +83,27 @@ func (s *Server) worktreeServices(ws workspace) (*worktreeServices, error) {
 	return w, nil
 }
 
-// freeOffset ist der kleinste Versatz, den kein anderer Worktree hat und an dessen Ports niemand lauscht.
+// freeOffset ist der kleinste Versatz, dessen Ports weder die Repo-Wurzel noch ein anderer Worktree hat und an denen
+// niemand lauscht. Gesperrt sind Ports, nicht Versätze: Worktrees auf älteren Branches haben eine andere Basis in ihrer
+// services.json (Vite 5173 statt 5183, B-444) und dürfen den Port der Wurzel nicht bekommen, auch wenn sie gerade ruht.
 // ponytail: Vergabe nur im Speicher; nach einem Neustart von k3c-dev kann ein Worktree einen anderen Versatz bekommen.
 func (s *Server) freeOffset(list []services.Service) (int, error) {
 	taken := map[int]bool{}
+	if s.cfg.Services != nil {
+		for _, st := range s.cfg.Services.Statuses() {
+			taken[st.Port] = true
+		}
+	}
 	for _, w := range s.wt.all {
-		taken[w.off] = true
+		for _, st := range w.ctl.Statuses() {
+			taken[st.Port] = true
+		}
 	}
 	for k := 1; k <= maxSlots; k++ {
 		off := k * slotStep
-		if taken[off] {
-			continue
-		}
 		free := true
 		for _, svc := range list {
-			if s.portBusy(svc.Port + off) {
+			if taken[svc.Port+off] || s.portBusy(svc.Port+off) {
 				free = false
 				break
 			}

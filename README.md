@@ -12,7 +12,7 @@ task install
 task dev
 ```
 
-Dann `http://localhost:5173` öffnen, oder im Heimnetz `http://<PC-IP>:5173` (z.B. von der Xbox aus).
+Dann `http://localhost:5183` öffnen, oder im Heimnetz `http://<PC-IP>:5183` (z.B. von der Xbox aus).
 Die Startseite ist eine Landingpage, die man komplett mit dem Controller bedient (D-Pad/Stick + **A**,
 **Y** bzw. **F** = Vollbild). Sie bleibt dauerhaft geöffnet und zeigt Spiel und Testseiten in sich an.
 Dadurch bleibt Vollbild beim Seitenwechsel erhalten.
@@ -143,7 +143,7 @@ task k3c-dev:build
 
 baut `tools/k3c-dev/build/bin/k3c-dev.exe` (starten per Doppelklick, die EXE muss im Repo liegen). Zum Entwickeln
 mit Neuladen: `task k3c-dev` (`wails dev`). Die Oberfläche allein läuft im Browser gegen erfundene Daten:
-`npm --prefix tools/k3c-dev/frontend run dev` (Port 5181).
+`npm --prefix tools/k3c-dev/frontend run dev` (Port 5191).
 
 Er lauscht nur an `http://127.0.0.1:5180/mcp` (anderer Port: `K3C_DEV_PORT`). Claude Code verbindet sich über die
 eingecheckte `.mcp.json` (gilt so auch in jedem Worktree), freigegeben in `.claude/settings.json`. Läuft k3c-dev nicht,
@@ -152,7 +152,7 @@ fehlen die Tools nur in der Session.
 Es läuft genau **eine** Instanz, gestartet aus der Repo-Wurzel; alle Worktrees teilen sie. Der `headersHelper` der
 `.mcp.json` schickt bei jeder Anfrage das Arbeitsverzeichnis der Session (Header `X-K3C-Root`), ohne ihn gelten die MCP-roots
 des Clients. Jedes Tool liest, schreibt, prüft und startet dann nur in diesem Checkout. Dienste eines Worktrees bekommen
-eigene Ports (Versatz 10, 20 …: Vite 5183, Spielserver 8090 …); `svc_status` nennt sie. Ein fremder Ordner wird abgelehnt.
+eigene Ports (Versatz 10, 20 …: Vite 5193, Spielserver 8090 …); `svc_status` nennt sie. Ein fremder Ordner wird abgelehnt.
 
 Prüfen: `task check:dev`. Plan für Statistik, Dienste und Oberfläche: Sprints M2–M5 in [`docs/sprints/`](docs/sprints/README.md).
 

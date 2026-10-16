@@ -22,4 +22,4 @@ Backend-Vertrag der Oberfläche (Port/Adapter): typisiert alle Aufrufe und Ereig
 
 - Konsumenten: alle Ordner unter `src/` (`logs/`, `mcp/`, `planning/`, `services/`, `tasks/`, `App.tsx`) über `import { backend } from '../api'`.
 - Gegenstück: Go-App `tools/k3c-dev/app.go` (Wails-Bindings `window.go.main.App`, `window.runtime`).
-- Mock-Betrieb: `npx vite` im Frontend (Port 5181) ohne Wails.
+- Mock-Betrieb: `npx vite` im Frontend (Port 5191) ohne Wails.

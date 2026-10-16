@@ -22,12 +22,6 @@ export const EMPTY_FILTER: PlanFilter = { q: '', quick: [], prios: [], envs: [],
 
 /** Anteil des Detailbereichs an der rechten Spalte in Prozent (B-400); Grenzen wie auf der Tasks-Seite. */
 export const SPLIT_DEFAULT = 48;
-export const SPLIT_MIN = 20;
-export const SPLIT_MAX = 80;
-export function parseSplit(raw: string): number {
-  const n = Number(raw);
-  return raw.trim() !== '' && Number.isFinite(n) ? Math.min(SPLIT_MAX, Math.max(SPLIT_MIN, Math.round(n))) : SPLIT_DEFAULT;
-}
 
 /** Status der Projekte für den Projekt-Filter. */
 export const PROJECT_STATES = ['aktiv', 'ruht', 'erledigt'];

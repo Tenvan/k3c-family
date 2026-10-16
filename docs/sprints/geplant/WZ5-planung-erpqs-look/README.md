@@ -16,7 +16,7 @@ Siehe `B-439 › Ausgangslage`: Die Planungsseite von k3c-dev ist älter als die
 
 ## Ziel
 
-Die Planungsseite zeigt und bedient die k3c-Planung im Look der erp-qs-Workbench. Am Ende sichtbar: im Mock (`k3c-dev-ui`, Port 5181) Filterleiste mit Checklisten, Splitter, Projektkarten mit Pills, Detail nur bei Auswahl und Lesemodus, hell und dunkel.
+Die Planungsseite zeigt und bedient die k3c-Planung im Look der erp-qs-Workbench. Am Ende sichtbar: im Mock (`k3c-dev-ui`, Port 5191) Filterleiste mit Checklisten, Splitter, Projektkarten mit Pills, Detail nur bei Auswahl und Lesemodus, hell und dunkel.
 
 ## Beteiligte und Zielgruppen
 

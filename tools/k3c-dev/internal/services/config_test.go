@@ -30,7 +30,7 @@ func TestLoadServicesJSONImModul(t *testing.T) {
 	if list[1].Log != "k3c-server" { // B-066: Quelle logs/k3c-server.jsonl, geschrieben vom Go-Server
 		t.Errorf("Spielserver-Log = %q", list[1].Log)
 	}
-	if list[0].HealthURL() != "http://127.0.0.1:5173/" {
+	if list[0].HealthURL() != "http://127.0.0.1:5183/" {
 		t.Errorf("Adresse: %s", list[0].HealthURL())
 	}
 }

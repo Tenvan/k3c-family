@@ -1,6 +1,7 @@
 import { SegmentedControl, Text } from '@radix-ui/themes';
-import { useState } from 'react';
+import { useState, type CSSProperties } from 'react';
 import { loadPref, savePref } from '../lib/prefs';
+import { Splitter, useSplit } from '../tasks/TaskBars';
 import { NoticeCard } from '../ui/parts';
 import { CallLog } from './CallLog';
 import { LiveMonitors } from './LiveMonitors';
@@ -12,10 +13,12 @@ import { useMcpData } from './useMcpData';
 const VIEWS = ['uebersicht', 'statistik'] as const;
 type View = (typeof VIEWS)[number];
 
-/** Reiter `MCP` (B-065, Workbench-Spec § 3): Umschalter Widgets | Statistiken (gemerkt). */
+/** Reiter `MCP` (B-065, Workbench-Spec § 3): Umschalter Widgets | Statistiken (gemerkt); Splitter zwischen Tool-Kacheln
+ *  und Live-Monitoren (B-445). */
 export function McpPage() {
   const [view, setView] = useState<View>(() => loadPref('mcp.view', VIEWS, 'uebersicht'));
   const data = useMcpData();
+  const [split, setSplit, resetSplit] = useSplit('mcp.split.band', 60);
   const choose = (v: string) => {
     const next = VIEWS.includes(v as View) ? (v as View) : 'uebersicht';
     setView(next);
@@ -33,8 +36,9 @@ export function McpPage() {
       {overview && view === 'uebersicht' && (
         <>
           <ServerCards overview={overview} error={data.error} reload={data.reload} />
-          <div className="mcp-band2">
+          <div className="mcp-band2" style={{ '--mcp-band': `${split}%` } as CSSProperties}>
             <ToolTiles tools={overview.stats.tools} />
+            <Splitter className="pl-split-v" value={split} onChange={setSplit} onReset={resetSplit} />
             <LiveMonitors minutes={data.usage?.minutes ?? []} tools={overview.stats.tools} />
           </div>
           <CallLog calls={data.calls} tools={overview.stats.tools.map((t) => t.name)} />

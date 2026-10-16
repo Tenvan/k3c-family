@@ -12,6 +12,8 @@ import (
 	"testing"
 
 	"github.com/modelcontextprotocol/go-sdk/mcp"
+
+	"k3c/tools/k3c-dev/internal/services"
 )
 
 func writeFile(t *testing.T, path, text string) {
@@ -140,6 +142,20 @@ func TestWorktreeDiensteMitEigenenPorts(t *testing.T) {
 	}
 	if text, _ := callText(t, connectWithHeader(t, s, main), "svc_status", nil); !strings.Contains(text, "keine Dienste") {
 		t.Errorf("Wurzel ohne Controller sieht Worktree-Dienste: %q", text)
+	}
+}
+
+// B-444: Ein Worktree mit alter Basis (Vite 5173) bekommt nicht den Vite-Port der Wurzel (5183), auch wenn er frei ist.
+func TestWorktreeAlteBasisMeidetWurzelPorts(t *testing.T) {
+	main, wt, _ := repoWithWorktree(t)
+	writeFile(t, filepath.Join(wt, "tools", "k3c-dev", "services.json"),
+		`[{"name":"Vite","command":["x"],"port":5173,"health":"http","portEnv":"K3C_VITE_PORT"}]`)
+	root := services.New([]services.Service{{Name: "Vite", Command: []string{"x"}, Port: 5183, Health: "http"}}, services.Options{})
+	s := New(Config{Root: main, Version: "test", Services: root})
+	s.portBusy = func(int) bool { return false }
+	t.Cleanup(func() { s.StopWorktreeServices(context.Background()) })
+	if text, isErr := callText(t, connectWithHeader(t, s, wt), "svc_status", nil); isErr || !strings.Contains(text, "Vite · gestoppt · Port 5193") {
+		t.Errorf("svc_status im Worktree: %q", text)
 	}
 }
 

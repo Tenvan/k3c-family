@@ -96,7 +96,7 @@ func (s *Server) consoleExcerpt(name string) string {
 	return "\nletzte Zeilen:\n" + strings.Join(out, "\n")
 }
 
-// serviceLine ist ein Dienst in einer Zeile, z. B. "Vite · läuft · Port 5173 · PID 41232 · CPU 3,1 % · 480,0 MB ·
+// serviceLine ist ein Dienst in einer Zeile, z. B. "Vite · läuft · Port 5183 · PID 41232 · CPU 3,1 % · 480,0 MB ·
 // 2 h 13 min · Neustarts 0".
 func (s *Server) serviceLine(ctl *services.Controller, st services.Status) string {
 	parts := []string{st.Name, string(st.State), fmt.Sprintf("Port %d", st.Port)}

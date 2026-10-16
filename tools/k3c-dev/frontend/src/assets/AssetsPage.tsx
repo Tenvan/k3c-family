@@ -1,7 +1,8 @@
 import { Button, SegmentedControl, Select, Text, TextField } from '@radix-ui/themes';
-import { useMemo, useState } from 'react';
+import { useMemo, useState, type CSSProperties } from 'react';
 import type { AssetKind, AssetSlot, AssetStatus } from '../api';
 import { loadPref, loadText, savePref } from '../lib/prefs';
+import { Splitter, useSplit } from '../tasks/TaskBars';
 import { NoticeCard, StatusBadge, type Tone } from '../ui/parts';
 import { CATEGORIES, countStatus, filterSlots } from './assets';
 import { SlotDetail } from './SlotDetail';
@@ -11,8 +12,9 @@ const KINDS = ['grafik', 'sound'] as const;
 const STATUS_TONE: Record<AssetStatus, Tone> = { zugeordnet: 'ok', luecke: 'warn', fehlt: 'error' };
 const STATUS_LABEL: Record<AssetStatus, string> = { zugeordnet: 'zugeordnet', luecke: 'Lücke', fehlt: 'Datei fehlt' };
 const ALL = 'alle';
+const SPLIT_DEFAULT = 38;
 
-/** Reiter Assets (B-298): getrennte Ansichten Grafik und Sound, Slot-Liste mit Status, Detail mit Zuordnungen. */
+/** Reiter Assets (B-298): getrennte Ansichten Grafik und Sound, Slot-Liste mit Status | Splitter (B-445) | Detail mit Zuordnungen. */
 export function AssetsPage() {
   const data = useAssets();
   const [art, setArt] = useState<AssetKind>(() => loadPref('assets.art', KINDS, 'grafik'));
@@ -20,6 +22,7 @@ export function AssetsPage() {
   const [status, setStatus] = useState<'' | AssetStatus>('');
   const [query, setQuery] = useState('');
   const [selected, setSelected] = useState(() => loadText('assets.selected', ''));
+  const [split, setSplit, resetSplit] = useSplit('assets.split', SPLIT_DEFAULT);
   const slots = useMemo(() => data.view?.slots ?? [], [data.view]);
   const visible = useMemo(() => filterSlots(slots, { art, kategorie, status, query }), [slots, art, kategorie, status, query]);
 
@@ -55,8 +58,9 @@ export function AssetsPage() {
         {!data.view.preview && <Button variant="soft" onClick={() => void data.startVite()}>Vite starten (Bilder, Mini-Szene)</Button>}
       </div>
       {data.error && <p className="svc-error">{data.error}</p>}
-      <div className="as-body">
+      <div className="as-body" style={{ '--as-split': `${split}%` } as CSSProperties}>
         <SlotList slots={visible} selected={slot?.id ?? ''} onSelect={pick} />
+        <Splitter className="pl-split-v" value={split} onChange={setSplit} onReset={resetSplit} />
         <section className="as-detail">
           {slot ? <SlotDetail key={slot.id} slot={slot} preview={data.view.preview} onSave={data.save} onReload={() => void data.reload()} /> : (
             <NoticeCard title="Kein Asset-Slot gewählt" tone="neutral">Links einen Slot wählen: Zuordnungen, Ausschnitt und Mini-Szene erscheinen hier.</NoticeCard>
