@@ -1,6 +1,6 @@
 # GEB2.1 · Taverne und Heilplatz als Daten und PNG
 
-- **Status:** offen
+- **Status:** in Arbeit
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** DEV
