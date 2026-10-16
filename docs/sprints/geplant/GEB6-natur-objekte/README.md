@@ -117,7 +117,7 @@ Keine blockiert den Start der Planung; jede Annahme gilt mit der Freigabe als be
 
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
-| GEB6.1 | `GEB6.1-baeume-busch.md` | Umsetzung | autonom | in Arbeit |
+| GEB6.1 | `GEB6.1-baeume-busch.md` | Umsetzung | autonom | fertig |
 | GEB6.2 | `GEB6.2-fels-erzbrocken.md` | Umsetzung | autonom | offen |
 | GEB6.3 | `GEB6.3-adern.md` | Umsetzung | autonom | offen |
 | GEB6.4 | `GEB6.4-truhe-portal-lager.md` | Umsetzung | autonom | offen |

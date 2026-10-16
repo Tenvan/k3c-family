@@ -1,5 +1,106 @@
 [
   {
+    "id": "birke-2",
+    "klasse": "baum",
+    "kacheln": {
+      "b": 1,
+      "h": 2.25
+    },
+    "vorlage": {
+      "motiv": "Birke mit hängenden Zweigen, 1 Kachel breit, Form 2 der Birke",
+      "teile": [
+        "Weißer Stamm mittig bis zum Boden mit dunklen Querstrichen",
+        "Runde Krone in der oberen Hälfte",
+        "Vom unteren Kronenrand hängen schmale Zweige herab",
+        "Lichtkante links oben"
+      ],
+      "materialien": [
+        "Laub (Pappel, Birke)",
+        "Birkenrinde"
+      ],
+      "stimmung": "weich, melancholisch",
+      "fein": "Querstriche auf der Rinde, Lichtpunkte"
+    },
+    "dateien": {
+      "128": "grafik/gebaeude/birke-2-1-128.png",
+      "16": "grafik/gebaeude/birke-2-1-16.png",
+      "32": "grafik/gebaeude/birke-2-1-32.png",
+      "64": "grafik/gebaeude/birke-2-1-64.png"
+    },
+    "stufen": [
+      {
+        "stufe": 1,
+        "aenderung": "Grundform",
+        "dateien": {
+          "128": "grafik/gebaeude/birke-2-1-128.png",
+          "16": "grafik/gebaeude/birke-2-1-16.png",
+          "32": "grafik/gebaeude/birke-2-1-32.png",
+          "64": "grafik/gebaeude/birke-2-1-64.png"
+        }
+      },
+      {
+        "stufe": 2,
+        "aenderung": "Höhle: kühleres, dunkleres Laub, bläuliche Rinde",
+        "dateien": {
+          "128": "grafik/gebaeude/birke-2-2-128.png",
+          "16": "grafik/gebaeude/birke-2-2-16.png",
+          "32": "grafik/gebaeude/birke-2-2-32.png",
+          "64": "grafik/gebaeude/birke-2-2-64.png"
+        }
+      }
+    ]
+  },
+  {
+    "id": "birke-3",
+    "klasse": "baum",
+    "kacheln": {
+      "b": 1,
+      "h": 2.25
+    },
+    "vorlage": {
+      "motiv": "Niedrige, breite Birke mit tief ansetzender Krone, 1 Kachel breit, Form 3 der Birke",
+      "teile": [
+        "Weißer Stamm mittig, kurz",
+        "Breite, flache Krone knapp über dem Stamm, ragt bis an beide Kachelränder",
+        "Lichtkante links oben, Schatten unten rechts"
+      ],
+      "materialien": [
+        "Laub (Pappel, Birke)",
+        "Birkenrinde"
+      ],
+      "stimmung": "gedrungen, behäbig",
+      "fein": "Querstriche auf der Rinde, Lichtpunkte"
+    },
+    "dateien": {
+      "128": "grafik/gebaeude/birke-3-1-128.png",
+      "16": "grafik/gebaeude/birke-3-1-16.png",
+      "32": "grafik/gebaeude/birke-3-1-32.png",
+      "64": "grafik/gebaeude/birke-3-1-64.png"
+    },
+    "stufen": [
+      {
+        "stufe": 1,
+        "aenderung": "Grundform",
+        "dateien": {
+          "128": "grafik/gebaeude/birke-3-1-128.png",
+          "16": "grafik/gebaeude/birke-3-1-16.png",
+          "32": "grafik/gebaeude/birke-3-1-32.png",
+          "64": "grafik/gebaeude/birke-3-1-64.png"
+        }
+      },
+      {
+        "stufe": 2,
+        "aenderung": "Höhle: kühleres, dunkleres Laub, bläuliche Rinde",
+        "dateien": {
+          "128": "grafik/gebaeude/birke-3-2-128.png",
+          "16": "grafik/gebaeude/birke-3-2-16.png",
+          "32": "grafik/gebaeude/birke-3-2-32.png",
+          "64": "grafik/gebaeude/birke-3-2-64.png"
+        }
+      }
+    ]
+  },
+  {
     "id": "birke",
     "klasse": "baum",
     "kacheln": {
@@ -114,6 +215,33 @@
         }
       }
     ]
+  },
+  {
+    "id": "busch",
+    "kacheln": {
+      "b": 1,
+      "h": 1
+    },
+    "vorlage": {
+      "motiv": "Runder Busch, 1 × 1 Kachel, niedrig und breit, am Boden verwurzelt",
+      "teile": [
+        "Runde Laubkuppe über die ganze Kachelbreite",
+        "Lichtkante links oben, Schatten unten und rechts",
+        "Zwei kurze Wurzelstummel am Boden"
+      ],
+      "materialien": [
+        "Laub (Pappel, Birke)",
+        "Pfosten, Balken"
+      ],
+      "stimmung": "dicht, am Wegrand",
+      "fein": "Lichtpunkte auf dem Laub"
+    },
+    "dateien": {
+      "128": "grafik/gebaeude/busch-128.png",
+      "16": "grafik/gebaeude/busch-16.png",
+      "32": "grafik/gebaeude/busch-32.png",
+      "64": "grafik/gebaeude/busch-64.png"
+    }
   },
   {
     "id": "farm",
@@ -417,6 +545,107 @@
     ]
   },
   {
+    "id": "pappel-2",
+    "klasse": "baum",
+    "kacheln": {
+      "b": 1,
+      "h": 2.25
+    },
+    "vorlage": {
+      "motiv": "Schmale Pappel mit drei getrennten Laubballen und sichtbarem Stamm dazwischen, Form 2 der Pappel",
+      "teile": [
+        "Dünner Stamm über die ganze Höhe, unten kräftiger",
+        "Drei Laubballen übereinander, leicht versetzt, mit Lücken",
+        "Lichtflecken links, Schatten rechts"
+      ],
+      "materialien": [
+        "Laub (Pappel, Birke)",
+        "Pfosten, Balken"
+      ],
+      "stimmung": "luftig, windbewegt",
+      "fein": "Lichtflecken auf dem Laub"
+    },
+    "dateien": {
+      "128": "grafik/gebaeude/pappel-2-1-128.png",
+      "16": "grafik/gebaeude/pappel-2-1-16.png",
+      "32": "grafik/gebaeude/pappel-2-1-32.png",
+      "64": "grafik/gebaeude/pappel-2-1-64.png"
+    },
+    "stufen": [
+      {
+        "stufe": 1,
+        "aenderung": "Grundform",
+        "dateien": {
+          "128": "grafik/gebaeude/pappel-2-1-128.png",
+          "16": "grafik/gebaeude/pappel-2-1-16.png",
+          "32": "grafik/gebaeude/pappel-2-1-32.png",
+          "64": "grafik/gebaeude/pappel-2-1-64.png"
+        }
+      },
+      {
+        "stufe": 2,
+        "aenderung": "Höhle: kühleres, dunkleres Laub",
+        "dateien": {
+          "128": "grafik/gebaeude/pappel-2-2-128.png",
+          "16": "grafik/gebaeude/pappel-2-2-16.png",
+          "32": "grafik/gebaeude/pappel-2-2-32.png",
+          "64": "grafik/gebaeude/pappel-2-2-64.png"
+        }
+      }
+    ]
+  },
+  {
+    "id": "pappel-3",
+    "klasse": "baum",
+    "kacheln": {
+      "b": 1,
+      "h": 2.25
+    },
+    "vorlage": {
+      "motiv": "Pappel mit Zwiegabel: der Stamm teilt sich auf halber Höhe in zwei Äste mit je einer schmalen Krone, Form 3 der Pappel",
+      "teile": [
+        "Kräftiger Stamm unten mittig",
+        "Gabelung auf halber Höhe, zwei Äste nach links oben und rechts oben",
+        "Zwei schmale Kronen nebeneinander, rechte etwas höher",
+        "Lichtflecken links, Schatten rechts"
+      ],
+      "materialien": [
+        "Laub (Pappel, Birke)",
+        "Pfosten, Balken"
+      ],
+      "stimmung": "gespalten, kraftvoll",
+      "fein": "Lichtflecken auf dem Laub"
+    },
+    "dateien": {
+      "128": "grafik/gebaeude/pappel-3-1-128.png",
+      "16": "grafik/gebaeude/pappel-3-1-16.png",
+      "32": "grafik/gebaeude/pappel-3-1-32.png",
+      "64": "grafik/gebaeude/pappel-3-1-64.png"
+    },
+    "stufen": [
+      {
+        "stufe": 1,
+        "aenderung": "Grundform",
+        "dateien": {
+          "128": "grafik/gebaeude/pappel-3-1-128.png",
+          "16": "grafik/gebaeude/pappel-3-1-16.png",
+          "32": "grafik/gebaeude/pappel-3-1-32.png",
+          "64": "grafik/gebaeude/pappel-3-1-64.png"
+        }
+      },
+      {
+        "stufe": 2,
+        "aenderung": "Höhle: kühleres, dunkleres Laub",
+        "dateien": {
+          "128": "grafik/gebaeude/pappel-3-2-128.png",
+          "16": "grafik/gebaeude/pappel-3-2-16.png",
+          "32": "grafik/gebaeude/pappel-3-2-32.png",
+          "64": "grafik/gebaeude/pappel-3-2-64.png"
+        }
+      }
+    ]
+  },
+  {
     "id": "pappel",
     "klasse": "baum",
     "kacheln": {
@@ -540,6 +769,108 @@
       "32": "grafik/gebaeude/setzling-32.png",
       "64": "grafik/gebaeude/setzling-64.png"
     }
+  },
+  {
+    "id": "tanne-2",
+    "klasse": "baum",
+    "kacheln": {
+      "b": 1,
+      "h": 2.25
+    },
+    "vorlage": {
+      "motiv": "Breite Tanne mit tief hängenden unteren Ästen, 1 Kachel breit, Form 2 der Tanne",
+      "teile": [
+        "Spitze oben, darunter vier Stufen, die nach unten breiter werden",
+        "Unterste Stufe reicht über die ganze Kachelbreite und hängt tief herab",
+        "Lichtkante links, Schattenkante rechts und unter jeder Stufe",
+        "Kurzer Stamm unten mittig"
+      ],
+      "materialien": [
+        "Nadeln (Tanne)",
+        "Pfosten, Balken"
+      ],
+      "stimmung": "dichter, schwerer Nadelwald",
+      "fein": "Lichtpunkte auf den Nadeln"
+    },
+    "dateien": {
+      "128": "grafik/gebaeude/tanne-2-1-128.png",
+      "16": "grafik/gebaeude/tanne-2-1-16.png",
+      "32": "grafik/gebaeude/tanne-2-1-32.png",
+      "64": "grafik/gebaeude/tanne-2-1-64.png"
+    },
+    "stufen": [
+      {
+        "stufe": 1,
+        "aenderung": "Grundform",
+        "dateien": {
+          "128": "grafik/gebaeude/tanne-2-1-128.png",
+          "16": "grafik/gebaeude/tanne-2-1-16.png",
+          "32": "grafik/gebaeude/tanne-2-1-32.png",
+          "64": "grafik/gebaeude/tanne-2-1-64.png"
+        }
+      },
+      {
+        "stufe": 2,
+        "aenderung": "Höhle: kühlere, dunklere Nadeln und dunklerer Stamm",
+        "dateien": {
+          "128": "grafik/gebaeude/tanne-2-2-128.png",
+          "16": "grafik/gebaeude/tanne-2-2-16.png",
+          "32": "grafik/gebaeude/tanne-2-2-32.png",
+          "64": "grafik/gebaeude/tanne-2-2-64.png"
+        }
+      }
+    ]
+  },
+  {
+    "id": "tanne-3",
+    "klasse": "baum",
+    "kacheln": {
+      "b": 1,
+      "h": 2.25
+    },
+    "vorlage": {
+      "motiv": "Schlanke Tanne mit schief abgeknickter Spitze, 1 Kachel breit, Form 3 der Tanne",
+      "teile": [
+        "Abgeknickte Spitze, nach rechts geneigt",
+        "Fünf schmale Stufen, nach unten breiter, nie ganz kachelbreit",
+        "Lichtkante links, Schattenkante rechts",
+        "Kurzer Stamm unten mittig"
+      ],
+      "materialien": [
+        "Nadeln (Tanne)",
+        "Pfosten, Balken"
+      ],
+      "stimmung": "windschief, karg",
+      "fein": "Lichtpunkte auf den Nadeln"
+    },
+    "dateien": {
+      "128": "grafik/gebaeude/tanne-3-1-128.png",
+      "16": "grafik/gebaeude/tanne-3-1-16.png",
+      "32": "grafik/gebaeude/tanne-3-1-32.png",
+      "64": "grafik/gebaeude/tanne-3-1-64.png"
+    },
+    "stufen": [
+      {
+        "stufe": 1,
+        "aenderung": "Grundform",
+        "dateien": {
+          "128": "grafik/gebaeude/tanne-3-1-128.png",
+          "16": "grafik/gebaeude/tanne-3-1-16.png",
+          "32": "grafik/gebaeude/tanne-3-1-32.png",
+          "64": "grafik/gebaeude/tanne-3-1-64.png"
+        }
+      },
+      {
+        "stufe": 2,
+        "aenderung": "Höhle: kühlere, dunklere Nadeln und dunklerer Stamm",
+        "dateien": {
+          "128": "grafik/gebaeude/tanne-3-2-128.png",
+          "16": "grafik/gebaeude/tanne-3-2-16.png",
+          "32": "grafik/gebaeude/tanne-3-2-32.png",
+          "64": "grafik/gebaeude/tanne-3-2-64.png"
+        }
+      }
+    ]
   },
   {
     "id": "tanne",

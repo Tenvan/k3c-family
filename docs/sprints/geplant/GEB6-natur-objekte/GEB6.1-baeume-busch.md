@@ -1,6 +1,6 @@
 # GEB6.1 · Bäume: je Art drei Formen mit Biom-Looks, Busch
 
-- **Status:** in Arbeit
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** DEV
@@ -51,11 +51,11 @@ Keine Änderung an `tanne.json`, `pappel.json`, `birke.json` und ihren PNGs; kei
 
 ## Fertig, wenn
 
-- [ ] AC-01/AC-04: `tanne-2`, `tanne-3`, `pappel-2`, `pappel-3`, `birke-2`, `birke-3` (je 1 × 2,25, mit `vorlage`, Stufen Wald und Höhle) erzeugen `<id>-1-32.png` und `<id>-2-32.png` (je 32 × 72 px) plus 16/64/128; `busch.json` (1 × 1, mit `vorlage`) erzeugt `busch-32.png` (32 × 32 px) plus 16/64/128.
-- [ ] AC-04: md5 aller vorher vorhandenen PNGs gleich (insbesondere `tanne-32.png`, `pappel-32.png`, `birke-32.png`); ein zweiter `task gebaeude`-Lauf ändert nichts.
-- [ ] AC-04: Regeldatei § 1 (Maße), § 3 (Fels, Zelttuch, Erde, Gold), § 4 (Bausteine) und § 6 (Stufe = Look bei Natur-Objekten) nachgetragen.
-- [ ] AC-04: Vorschau zeigt alle neun Bäume und beide Looks (Vitest für die erweiterte Auswahl).
-- [ ] `task check` und `task check:go` grün.
+- [x] AC-01/AC-04: `tanne-2`, `tanne-3`, `pappel-2`, `pappel-3`, `birke-2`, `birke-3` (je 1 × 2,25, mit `vorlage`, Stufen Wald und Höhle) erzeugen `<id>-1-32.png` und `<id>-2-32.png` (je 32 × 72 px) plus 16/64/128; `busch.json` (1 × 1, mit `vorlage`) erzeugt `busch-32.png` (32 × 32 px) plus 16/64/128.
+- [x] AC-04: md5 aller vorher vorhandenen PNGs gleich (insbesondere `tanne-32.png`, `pappel-32.png`, `birke-32.png`); ein zweiter `task gebaeude`-Lauf ändert nichts.
+- [x] AC-04: Regeldatei § 1 (Maße), § 3 (Fels, Zelttuch, Erde, Gold), § 4 (Bausteine) und § 6 (Stufe = Look bei Natur-Objekten) nachgetragen.
+- [x] AC-04: Vorschau zeigt alle neun Bäume und beide Looks (Vitest für die erweiterte Auswahl).
+- [x] `task check` und `task check:go` grün.
 
 ## Prüfen
 
@@ -69,5 +69,8 @@ Mit laufender Workbench stattdessen `check_run` (mit `checkout`). Keine manuelle
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+- **AC-01 umgesetzt, geprüft (`task gebaeude`, Index):** `tanne-2`, `tanne-3`, `pappel-2`, `pappel-3`, `birke-2`, `birke-3` (je 1 × 2,25, Klasse `baum`, mit `vorlage`, Stufe 1 Wald, Stufe 2 Höhle) liefern `<id>-1-32.png` und `<id>-2-32.png` (je 32 × 72 px) plus 16/64/128; `busch.json` (1 × 1, mit `vorlage`) liefert `busch-32.png` (32 × 32 px) plus 16/64/128. Bilder mit der Python-Zeichenhilfe aus dem Scratchpad erzeugt (nicht im Repo) und als Kontaktbild gesichtet.
+- **AC-04 geprüft:** md5 aller 148 vorher vorhandenen PNGs gleich (`md5sum` vor und nach `task gebaeude`, keine Abweichung, `git status` zeigt nur `index.json` geändert und neue Dateien); zweiter Lauf byte-gleich. Regeldatei nachgetragen: § 1 (Baumformen, Busch), § 3 (Fels, Zelttuch, Erde, Gold als Verweise, Annahme laut Offener Frage 4), § 5 (drei Formen je Art), § 6 (Absatz „Biom-Look bei Natur-Objekten: Stufe = Look“); § 4 braucht nichts (`stamm`, `krone`, `licht`, `strich`, `blatt` sind schon genannt). Vorschau: `baumReihe(index, anzahl?, stufe)` zeigt ohne Anzahl alle Bäume einmal, `baumDatei` liefert die Datei je Look, Reihe „Look Höhle“ zusätzlich (Vitest in `assetvorschauLogic.test.ts`).
+- `task check` und `task check:go` grün (über `check_run` mit `checkout`).
+- **Offene Frage 4 (Materialien, offen für 🧑):** Annahme umgesetzt (Fels = Stein, Zelttuch = Stoff hell, Erde = Pfosten/Balken, Gold = Glut). Bei anderer Antwort: § 3 ändern, Farben in `felsen`, `erzbrocken`, `ader`, `truhe`, `rekrutierungslager` anpassen, `task gebaeude` neu laufen lassen.
+- **Abweichung vom Plan:** GEB6 steht noch in `geplant/` (Spec freigegeben), weil `tests/planningProjects.test.ts` je Projekt nur einen aktiven Sprint erlaubt und GEB5 (PR #317, Abnahme offen) noch aktiv ist; Aktivierung folgt, sobald GEB5 abgeschlossen ist. Manuell geprüft hat niemand (AC-03 gehört 🧑, GEB6.6).

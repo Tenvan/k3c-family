@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { baumReihe, figureCard, gebaeudeKarten, kachelAnzahl, stufenKarten, vorlageZeilen, licenseFlag, parseQuery, resolveSlot, SCENES, slotsOf, type AssetSlot, type GebaeudeEintrag } from './assetvorschauLogic';
+import { baumDatei, baumReihe, figureCard, gebaeudeKarten, kachelAnzahl, stufenKarten, vorlageZeilen, licenseFlag, parseQuery, resolveSlot, SCENES, slotsOf, type AssetSlot, type GebaeudeEintrag } from './assetvorschauLogic';
 
 const farm: AssetSlot = {
   id: 'farm', art: 'grafik', kategorie: 'gebaeude', beschreibung: 'Farm',
@@ -93,6 +93,20 @@ describe('Asset-Vorschau: Baum-Reihe (GEB1/AC-05)', () => {
 
   it('ohne Bäume keine Reihe', () => {
     expect(baumReihe([])).toEqual([]);
+  });
+
+  it('zeigt ohne Anzahl jeden Baum einmal (GEB6.1: alle neun Formen)', () => {
+    const neun = ['birke', 'birke-2', 'birke-3', 'pappel', 'pappel-2', 'pappel-3', 'tanne', 'tanne-2', 'tanne-3'].map(baum);
+    expect(baumReihe(neun).map((b) => b.id)).toEqual(neun.map((b) => b.id));
+  });
+
+  it('Look Höhle (Stufe 2) enthält nur Bäume mit dieser Stufe und die Höhle-Dateien', () => {
+    const mitHoehle = (id: string) => ({ ...baum(id), dateien: { 32: `${id}-1-32.png` }, stufen: [{ stufe: 2, aenderung: 'Höhle', dateien: { 32: `${id}-2-32.png` } }] });
+    const idx = [baum('tanne'), mitHoehle('tanne-2'), mitHoehle('birke-3')];
+    expect(baumReihe(idx, undefined, 2).map((b) => b.id)).toEqual(['tanne-2', 'birke-3']);
+    expect(baumDatei(idx[1]!, 2, 32)).toBe('tanne-2-2-32.png');
+    expect(baumDatei(idx[1]!, 1, 32)).toBe('tanne-2-1-32.png');
+    expect(baumDatei(idx[0]!, 2, 32)).toBeUndefined();
   });
 });
 
