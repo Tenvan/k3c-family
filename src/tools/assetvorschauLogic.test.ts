@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { figureCard, licenseFlag, parseQuery, resolveSlot, SCENES, slotsOf, type AssetSlot } from './assetvorschauLogic';
+import { baumReihe, figureCard, gebaeudeKarten, licenseFlag, parseQuery, resolveSlot, SCENES, slotsOf, type AssetSlot } from './assetvorschauLogic';
 
 const farm: AssetSlot = {
   id: 'farm', art: 'grafik', kategorie: 'gebaeude', beschreibung: 'Farm',
@@ -59,5 +59,39 @@ describe('Asset-Vorschau: Lizenz und Figuren', () => {
     expect(figureCard({ id: 'mount:horse', art: 'grafik', kategorie: 'figuren', beschreibung: 'h', wahl: [] }, { datei: 'sprites/horse/idle.png', sheet: 'horse' }).mount).toBe('horse');
     expect(figureCard({ id: 'greed', art: 'grafik', kategorie: 'figuren', beschreibung: 'g', wahl: [] }, { datei: 'sprites/wolf/idle.png', sheet: 'wolf' }).spec)
       .toEqual({ sheet: 'wolf' });
+  });
+});
+
+describe('Asset-Vorschau: neue Gebäude (GEB1/AC-03, AC-06)', () => {
+  it('zeigt je Gebäude 32 px ×1 neben 16 px ×2, beide im Spielmaßstab', () => {
+    const index = [{ id: 'werkstatt', kacheln: { b: 6, h: 4 }, dateien: { 16: 'w-16.png', 32: 'w-32.png', 64: 'w-64.png' } }];
+    const karten = gebaeudeKarten(index);
+    expect(karten).toEqual([
+      { id: 'werkstatt', dichte: 32, datei: 'w-32.png', scale: 1 },
+      { id: 'werkstatt', dichte: 16, datei: 'w-16.png', scale: 2 },
+    ]);
+    for (const k of karten) expect(k.dichte * k.scale).toBe(32);
+  });
+
+  it('lässt fehlende Dichten weg', () => {
+    expect(gebaeudeKarten([{ id: 'x', kacheln: { b: 1, h: 1 }, dateien: { 32: 'x-32.png' } }])).toHaveLength(1);
+  });
+});
+
+describe('Asset-Vorschau: Baum-Reihe (GEB1/AC-05)', () => {
+  const baum = (id: string) => ({ id, klasse: 'baum', kacheln: { b: 1, h: 2.25 }, dateien: {} });
+  const index = [baum('birke'), { id: 'werkstatt', kacheln: { b: 6, h: 4 }, dateien: {} }, baum('pappel'), baum('tanne')];
+
+  it('wechselt die Bäume ab und lässt Gebäude weg', () => {
+    expect(baumReihe(index, 4).map((b) => b.id)).toEqual(['birke', 'pappel', 'tanne', 'birke']);
+  });
+
+  it('Nachbarn überlappen sich (Abstand kleiner als 1 Kachel Breite)', () => {
+    const reihe = baumReihe(index);
+    for (let i = 1; i < reihe.length; i++) expect(reihe[i]!.x - reihe[i - 1]!.x).toBeLessThan(1);
+  });
+
+  it('ohne Bäume keine Reihe', () => {
+    expect(baumReihe([])).toEqual([]);
   });
 });
