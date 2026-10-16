@@ -64,5 +64,5 @@ Mit laufender Workbench stattdessen `check_run` (mit `checkout`). Keine manuelle
 - **AC-01 umgesetzt (Höhle, Mine):** sechs JSONs mit Vorlage, je `-16.png` und `-32.png`, kein 64/128; zweiter `task gebaeude`-Lauf byte-gleich, ältere PNGs md5-gleich (verglichen).
 - **AC-02 geprüft:** `TestKachelKlassen` grün für beide Biome; von den Erzeugern zusätzlich per PIL geprüft.
 - **AC-04 geprüft:** nur DB32, Materialnamen aus § 3 (`TestEchteVorlagen`); Luma Höhle 39,8 / 53,6 / 67,1, Mine 38,6 / 54,4 / 66,2 (`TestHintergrundStufen` grün); Bausteinarten in § 4.
-- Umsetzung im Team: je ein Agent pro Biom im Scratch-Ordner (Wegwerf-Skripte, JSON ist die Quelle). Hinweise der Erzeuger für 🧑: Höhle `mitte` hat durchgehende Decke (geschlossene Wirkung), Mine `mitte`/`nah` trennen sich nur schwach (beide Balken in `oiled-cedar`). Sicht nicht geprüft, gehört 🧑 (AC-08).
+- Umsetzung im Team: je ein Agent pro Biom im Scratch-Ordner (Wegwerf-Skripte, JSON ist die Quelle). Hinweise der Erzeuger für 🧑: Höhle `mitte`: die durchgehende Decke ist auf Wunsch von 🧑 in Abschnitte mit Lücken aufgelöst (Nachbesserung nach der Vorschau, andere PNGs md5-gleich), Mine `mitte`/`nah` trennen sich nur schwach (beide Balken in `oiled-cedar`). Sicht nicht geprüft, gehört 🧑 (AC-08).
 - `go test ./tools/gebaeude` grün; `task check` in GEB7.3 gemeinsam. Neue Tickets: keine.

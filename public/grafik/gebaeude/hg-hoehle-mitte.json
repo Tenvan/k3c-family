@@ -2,9 +2,9 @@
   "id": "hg-hoehle-mitte",
   "klasse": "hintergrund",
   "vorlage": {
-    "motiv": "Felswand mit hängenden Stalaktiten unter einer Höhlendecke, unterschiedlich lang und im Abstand wechselnd, am Boden Felsstufen",
+    "motiv": "Felswand mit hängenden Stalaktiten unter einer unterbrochenen Höhlendecke, unterschiedlich lang und im Abstand wechselnd, am Boden Felsstufen",
     "teile": [
-      "Höhlendecke als durchgehendes Band oben über die ganze Breite",
+      "Höhlendecke in Abschnitten (2,5 Kacheln, Abstand 3) mit offenen Lücken, durch die der Himmel scheint",
       "Lange Stalaktiten im Abstand von 3 Kacheln, als Stufen nach unten verjüngt",
       "Kurze Stalaktiten dazwischen (Abstand 2,5 Kacheln) und mittlere (Abstand 4 Kacheln)",
       "Felswand-Brocken seitlich und Felsboden als durchgehendes Band"
@@ -20,8 +20,8 @@
     "h": 15
   },
   "bausteine": [
-    {"art":"decke","rechteck":[0,0.25,24,1.5],"farbe":"opal"},
-    {"art":"deckenkante","rechteck":[0,1.75,24,0.0625],"farbe":"smokey-ash","fein":true},
+    {"art":"decke","rechteck":[0.5,0.25,2.5,1.5],"farbe":"opal","wiederholung":{"schritt":3.0,"anzahl":7}},
+    {"art":"deckenkante","rechteck":[0.5,1.75,2.5,0.0625],"farbe":"smokey-ash","fein":true,"wiederholung":{"schritt":3.0,"anzahl":7}},
     {"art":"zapfen","rechteck":[1.0,1.75,1.0,1.5],"farbe":"opal","wiederholung":{"schritt":3.0,"anzahl":8}},
     {"art":"zapfen","rechteck":[1.25,3.25,0.5,2.0],"farbe":"opal","wiederholung":{"schritt":3.0,"anzahl":8}},
     {"art":"zapfen","rechteck":[1.4375,5.25,0.125,1.5],"farbe":"opal","wiederholung":{"schritt":3.0,"anzahl":8}},

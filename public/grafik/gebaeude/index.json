@@ -295,9 +295,9 @@
       "h": 15
     },
     "vorlage": {
-      "motiv": "Felswand mit hängenden Stalaktiten unter einer Höhlendecke, unterschiedlich lang und im Abstand wechselnd, am Boden Felsstufen",
+      "motiv": "Felswand mit hängenden Stalaktiten unter einer unterbrochenen Höhlendecke, unterschiedlich lang und im Abstand wechselnd, am Boden Felsstufen",
       "teile": [
-        "Höhlendecke als durchgehendes Band oben über die ganze Breite",
+        "Höhlendecke in Abschnitten (2,5 Kacheln, Abstand 3) mit offenen Lücken, durch die der Himmel scheint",
         "Lange Stalaktiten im Abstand von 3 Kacheln, als Stufen nach unten verjüngt",
         "Kurze Stalaktiten dazwischen (Abstand 2,5 Kacheln) und mittlere (Abstand 4 Kacheln)",
         "Felswand-Brocken seitlich und Felsboden als durchgehendes Band"
