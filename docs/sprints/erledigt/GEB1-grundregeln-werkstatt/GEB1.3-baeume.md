@@ -43,9 +43,9 @@ Keine weiteren Baumvarianten oder Level-Paletten, keine Zuordnung zum Slot `node
 
 ## Fertig, wenn
 
-- [ ] AC-05: `tanne-32.png`, `pappel-32.png`, `birke-32.png` mit je 32×72 px liegen im Repo; zweiter `task gebaeude`-Lauf ändert nichts.
-- [ ] AC-05: Test in `assetvorschauLogic.test.ts` prüft die überlappende Anordnung der Reihe.
-- [ ] `task check` und `task check:go` grün.
+- [x] AC-05: `tanne-32.png`, `pappel-32.png`, `birke-32.png` mit je 32×72 px liegen im Repo; zweiter `task gebaeude`-Lauf ändert nichts.
+- [x] AC-05: Test in `assetvorschauLogic.test.ts` prüft die überlappende Anordnung der Reihe.
+- [x] `task check` und `task check:go` grün. (In GEB1.3: `task check`, `go test ./tools/gebaeude` und `golangci-lint`; das ganze `task check:go` lief in GEB1.4 grün.)
 
 ## Prüfen
 

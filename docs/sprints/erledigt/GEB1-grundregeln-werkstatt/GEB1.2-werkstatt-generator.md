@@ -50,11 +50,11 @@ Keine Bäume (GEB1.3), keine Ausbaustufen über Stufe 1 hinaus (nur Mechanik in 
 
 ## Fertig, wenn
 
-- [ ] AC-01: `docs/standards/gebaeude-grafik.md` enthält alle in AC-01 genannten Punkte.
-- [ ] AC-02: `task gebaeude` erzeugt `werkstatt-32.png` mit 192×128 px; zweiter Lauf → `git status` ohne Änderung an PNGs.
-- [ ] AC-06: `go test ./tools/gebaeude/...` grün mit den Tests aus Schritt 2.
-- [ ] AC-03: `assetvorschauLogic.test.ts` prüft die Karten aus `index.json` (32 px ×1, 16 px ×2); Browser-Sicht erst in GEB1.4.
-- [ ] `task check` und `task check:go` grün; keine Datei über 400, keine Funktion über 60 Zeilen.
+- [x] AC-01: `docs/standards/gebaeude-grafik.md` enthält alle in AC-01 genannten Punkte.
+- [x] AC-02: `task gebaeude` erzeugt `werkstatt-32.png` mit 192×128 px; zweiter Lauf → `git status` ohne Änderung an PNGs.
+- [x] AC-06: `go test ./tools/gebaeude/...` grün mit den Tests aus Schritt 2.
+- [x] AC-03: `assetvorschauLogic.test.ts` prüft die Karten aus `index.json` (32 px ×1, 16 px ×2); Browser-Sicht erst in GEB1.4.
+- [x] `task check` und `task check:go` grün; keine Datei über 400, keine Funktion über 60 Zeilen. (In GEB1.2: `task check`, `go test` aller Pakete und `golangci-lint ./tools/gebaeude`; das ganze `task check:go` lief erst in GEB1.4 grün.)
 
 ## Prüfen
 

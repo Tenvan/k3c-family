@@ -42,9 +42,9 @@ Stil-Nacharbeit über schwere Befunde hinaus, Zuordnung ins Spiel, TV-Test (GR7.
 
 ## Fertig, wenn
 
-- [ ] AC-01 bis AC-03, AC-05, AC-06 haben einen Nachweis im Ergebnis von GEB1.1 bis GEB1.3.
-- [ ] AC-04: Abnahme durch 🧑 je verwendeter Dichte und Spiel-Dichte im Ergebnis und in der Regeldatei.
-- [ ] Schwere Befunde behoben oder als Ticket angelegt; `task check` grün; PR geöffnet.
+- [x] AC-01 bis AC-03, AC-05, AC-06 haben einen Nachweis im Ergebnis von GEB1.1 bis GEB1.3.
+- [x] AC-04: Abnahme durch 🧑 je verwendeter Dichte und Spiel-Dichte im Ergebnis und in der Regeldatei.
+- [x] Schwere Befunde behoben oder als Ticket angelegt; `task check` grün; PR geöffnet.
 
 ## Prüfen
 
@@ -57,9 +57,9 @@ Manuelle Prüfung: Asset-Vorschau im Browser (Schritt 3), nur mit Freigabe von �
 
 ## Ergebnis
 
-2026-10-16, Claude (Review per Sonnet-Agent in eigenem Kontext), Sichtprüfung von Ralf.
+2026-10-16, Claude (Review per Sonnet-Agent in eigenem Kontext), Abnahme durch Ralf im Chat.
 - Checks: `task check` und `task check:go` grün. Diff-Review `origin/develop...origin/sprint/geb1`: keine schweren Befunde.
 - AC-01 geprüft (Regeldatei vollständig; Skalierungsfaktor `angenommen, Validierung offen (GR7.4)`), AC-02, AC-03, AC-05, AC-06 geprüft laut GEB1.2/GEB1.3.
-- AC-04 abgenommen: Ralf hat Werkstatt und Bäume in der Asset-Vorschau (Browser-Pane, `127.0.0.1:5173/assetvorschau.html?szene=gebaeude`) in 32 px ×1 und 16 px ×2 abgenommen; Spiel-Dichte **32 px ×1**, in der Regeldatei eingetragen.
+- AC-04 abgenommen (Quelle: Chat 2026-10-16, Ralfs Antworten „32 und 16 abgenommen“ und Spiel-Dichte „32 px ×1“). Claude hatte vorher die Asset-Vorschau im Browser-Pane geöffnet (`127.0.0.1:5173/assetvorschau.html?szene=gebaeude`, Werkstatt und Bäume in 32 px ×1 und 16 px ×2). Dass Ralf dort selbst hingeschaut hat, ist nur durch seine Antwort belegt, nicht durch ein eigenes Protokoll. Die Spiel-Dichte 32 px ×1 steht in der Regeldatei. Ralfs Abnahme schließt die Bäume mit ein; AC-05 verlangt allerdings keine Abnahme.
 - Neues Ticket B-438 (Zuordnung ins Spiel). Abweichung: Review-Session lief im selben Gespräch wie die Umsetzung; das Diff-Review kam deshalb von einem frischen Agenten.
 - Hinweis: `localhost:5173` lieferte im Pane 404 (vermutet IPv6 auf einem anderen Dienst), `127.0.0.1` ging.
