@@ -1,5 +1,209 @@
 [
   {
+    "id": "ader",
+    "klasse": "welt",
+    "kacheln": {
+      "b": 2,
+      "h": 2
+    },
+    "vorlage": {
+      "motiv": "Ein Felsbuckel mit einer breiten, zackigen Erzader, die diagonal von links unten nach rechts oben quer durch den Fels läuft; eine unendliche Rohstoffquelle in Höhle und Mine.",
+      "teile": [
+        "Felsbuckel (Stein)",
+        "Erzader (Streifen, Farbe je Stufe/Material)",
+        "Lichtkante der Ader",
+        "Schattenkante der Ader"
+      ],
+      "materialien": [
+        "Fels (Felsen, Erzbrocken) = Stein",
+        "Kupfer (Mauer-, Turmstufe 3)",
+        "Eisen hell (Mauer-, Turmstufe 4)",
+        "Kristall (Mauer-, Turmstufe 5)"
+      ],
+      "stimmung": "Schwerer grauer Fels, durchzogen von einem hellen Gang, der je Material anders leuchtet.",
+      "fein": "Felsrisse, Funkelpunkte und Patina-Tupfer"
+    },
+    "dateien": {
+      "128": "grafik/gebaeude/ader-1-128.png",
+      "16": "grafik/gebaeude/ader-1-16.png",
+      "32": "grafik/gebaeude/ader-1-32.png",
+      "64": "grafik/gebaeude/ader-1-64.png"
+    },
+    "stufen": [
+      {
+        "stufe": 1,
+        "aenderung": "Grundform",
+        "dateien": {
+          "128": "grafik/gebaeude/ader-1-128.png",
+          "16": "grafik/gebaeude/ader-1-16.png",
+          "32": "grafik/gebaeude/ader-1-32.png",
+          "64": "grafik/gebaeude/ader-1-64.png"
+        }
+      },
+      {
+        "stufe": 2,
+        "aenderung": "Kupfer: Ader in Kupfer mit grüner Patina",
+        "dateien": {
+          "128": "grafik/gebaeude/ader-2-128.png",
+          "16": "grafik/gebaeude/ader-2-16.png",
+          "32": "grafik/gebaeude/ader-2-32.png",
+          "64": "grafik/gebaeude/ader-2-64.png"
+        }
+      },
+      {
+        "stufe": 3,
+        "aenderung": "Eisen: Ader in hellem Eisen",
+        "dateien": {
+          "128": "grafik/gebaeude/ader-3-128.png",
+          "16": "grafik/gebaeude/ader-3-16.png",
+          "32": "grafik/gebaeude/ader-3-32.png",
+          "64": "grafik/gebaeude/ader-3-64.png"
+        }
+      },
+      {
+        "stufe": 4,
+        "aenderung": "Kristall: Ader in Kristallblau mit leuchtender Fuge und Kristallspitzen",
+        "dateien": {
+          "128": "grafik/gebaeude/ader-4-128.png",
+          "16": "grafik/gebaeude/ader-4-16.png",
+          "32": "grafik/gebaeude/ader-4-32.png",
+          "64": "grafik/gebaeude/ader-4-64.png"
+        }
+      }
+    ]
+  },
+  {
+    "id": "ausgang",
+    "klasse": "ausgang",
+    "kacheln": {
+      "b": 2,
+      "h": 3
+    },
+    "vorlage": {
+      "motiv": "Schlichter Holzrahmen mit dunkler Öffnung, dahinter führt eine Stufe nach oben zur nächsten Ebene, 2 × 3 Kacheln",
+      "teile": [
+        "Zwei kräftige Pfosten",
+        "Querbalken mit kleinem Überstand oben",
+        "Dunkle Öffnung mit angedeuteten Stufen nach oben",
+        "Steinschwelle vorn"
+      ],
+      "materialien": [
+        "Pfosten, Balken",
+        "Holz (Wand, Tresen, Gestell)",
+        "Stein (Kamin, Esse, Sockel, Stufe)"
+      ],
+      "stimmung": "schlicht, erdig, still",
+      "fein": "Maserung, Fugen, Nägel"
+    },
+    "dateien": {
+      "128": "grafik/gebaeude/ausgang-128.png",
+      "16": "grafik/gebaeude/ausgang-16.png",
+      "32": "grafik/gebaeude/ausgang-32.png",
+      "64": "grafik/gebaeude/ausgang-64.png"
+    }
+  },
+  {
+    "id": "birke-2",
+    "klasse": "baum",
+    "kacheln": {
+      "b": 1,
+      "h": 2.25
+    },
+    "vorlage": {
+      "motiv": "Birke mit hängenden Zweigen, 1 Kachel breit, Form 2 der Birke",
+      "teile": [
+        "Weißer Stamm mittig bis zum Boden mit dunklen Querstrichen",
+        "Runde Krone in der oberen Hälfte",
+        "Vom unteren Kronenrand hängen schmale Zweige herab",
+        "Lichtkante links oben"
+      ],
+      "materialien": [
+        "Laub (Pappel, Birke)",
+        "Birkenrinde"
+      ],
+      "stimmung": "weich, melancholisch",
+      "fein": "Querstriche auf der Rinde, Lichtpunkte"
+    },
+    "dateien": {
+      "128": "grafik/gebaeude/birke-2-1-128.png",
+      "16": "grafik/gebaeude/birke-2-1-16.png",
+      "32": "grafik/gebaeude/birke-2-1-32.png",
+      "64": "grafik/gebaeude/birke-2-1-64.png"
+    },
+    "stufen": [
+      {
+        "stufe": 1,
+        "aenderung": "Grundform",
+        "dateien": {
+          "128": "grafik/gebaeude/birke-2-1-128.png",
+          "16": "grafik/gebaeude/birke-2-1-16.png",
+          "32": "grafik/gebaeude/birke-2-1-32.png",
+          "64": "grafik/gebaeude/birke-2-1-64.png"
+        }
+      },
+      {
+        "stufe": 2,
+        "aenderung": "Höhle: kühleres, dunkleres Laub, bläuliche Rinde",
+        "dateien": {
+          "128": "grafik/gebaeude/birke-2-2-128.png",
+          "16": "grafik/gebaeude/birke-2-2-16.png",
+          "32": "grafik/gebaeude/birke-2-2-32.png",
+          "64": "grafik/gebaeude/birke-2-2-64.png"
+        }
+      }
+    ]
+  },
+  {
+    "id": "birke-3",
+    "klasse": "baum",
+    "kacheln": {
+      "b": 1,
+      "h": 2.25
+    },
+    "vorlage": {
+      "motiv": "Niedrige, breite Birke mit tief ansetzender Krone, 1 Kachel breit, Form 3 der Birke",
+      "teile": [
+        "Weißer Stamm mittig, kurz",
+        "Breite, flache Krone knapp über dem Stamm, ragt bis an beide Kachelränder",
+        "Lichtkante links oben, Schatten unten rechts"
+      ],
+      "materialien": [
+        "Laub (Pappel, Birke)",
+        "Birkenrinde"
+      ],
+      "stimmung": "gedrungen, behäbig",
+      "fein": "Querstriche auf der Rinde, Lichtpunkte"
+    },
+    "dateien": {
+      "128": "grafik/gebaeude/birke-3-1-128.png",
+      "16": "grafik/gebaeude/birke-3-1-16.png",
+      "32": "grafik/gebaeude/birke-3-1-32.png",
+      "64": "grafik/gebaeude/birke-3-1-64.png"
+    },
+    "stufen": [
+      {
+        "stufe": 1,
+        "aenderung": "Grundform",
+        "dateien": {
+          "128": "grafik/gebaeude/birke-3-1-128.png",
+          "16": "grafik/gebaeude/birke-3-1-16.png",
+          "32": "grafik/gebaeude/birke-3-1-32.png",
+          "64": "grafik/gebaeude/birke-3-1-64.png"
+        }
+      },
+      {
+        "stufe": 2,
+        "aenderung": "Höhle: kühleres, dunkleres Laub, bläuliche Rinde",
+        "dateien": {
+          "128": "grafik/gebaeude/birke-3-2-128.png",
+          "16": "grafik/gebaeude/birke-3-2-16.png",
+          "32": "grafik/gebaeude/birke-3-2-32.png",
+          "64": "grafik/gebaeude/birke-3-2-64.png"
+        }
+      }
+    ]
+  },
+  {
     "id": "birke",
     "klasse": "baum",
     "kacheln": {
@@ -116,6 +320,62 @@
     ]
   },
   {
+    "id": "busch",
+    "kacheln": {
+      "b": 1,
+      "h": 1
+    },
+    "vorlage": {
+      "motiv": "Runder Busch, 1 × 1 Kachel, niedrig und breit, am Boden verwurzelt",
+      "teile": [
+        "Runde Laubkuppe über die ganze Kachelbreite",
+        "Lichtkante links oben, Schatten unten und rechts",
+        "Zwei kurze Wurzelstummel am Boden"
+      ],
+      "materialien": [
+        "Laub (Pappel, Birke)",
+        "Pfosten, Balken"
+      ],
+      "stimmung": "dicht, am Wegrand",
+      "fein": "Lichtpunkte auf dem Laub"
+    },
+    "dateien": {
+      "128": "grafik/gebaeude/busch-128.png",
+      "16": "grafik/gebaeude/busch-16.png",
+      "32": "grafik/gebaeude/busch-32.png",
+      "64": "grafik/gebaeude/busch-64.png"
+    }
+  },
+  {
+    "id": "erzbrocken",
+    "kacheln": {
+      "b": 1,
+      "h": 1
+    },
+    "vorlage": {
+      "motiv": "Dunkler Erzbrocken mit Kupfer-Einsprengseln, 1 × 1 Kachel, niedrig und breit, Look Mine",
+      "teile": [
+        "Großer dunkelbrauner Brocken",
+        "Kleiner Stein rechts davor",
+        "Kupfer-Einsprengsel (orange, mit hellem Glanzpunkt) über den Brocken verteilt",
+        "Patina-Punkte (verdigris) neben dem Kupfer",
+        "Lichtkante links oben, Schatten rechts und unten"
+      ],
+      "materialien": [
+        "Fels (Felsen, Erzbrocken) = Stein",
+        "Kupfer (Mauer-, Turmstufe 3)"
+      ],
+      "stimmung": "Erzader, glänzend, wertvoll",
+      "fein": "Risse, Glanzpunkte und Patina"
+    },
+    "dateien": {
+      "128": "grafik/gebaeude/erzbrocken-128.png",
+      "16": "grafik/gebaeude/erzbrocken-16.png",
+      "32": "grafik/gebaeude/erzbrocken-32.png",
+      "64": "grafik/gebaeude/erzbrocken-64.png"
+    }
+  },
+  {
     "id": "farm",
     "kacheln": {
       "b": 4,
@@ -144,6 +404,67 @@
       "32": "grafik/gebaeude/farm-32.png",
       "64": "grafik/gebaeude/farm-64.png"
     }
+  },
+  {
+    "id": "felsen",
+    "kacheln": {
+      "b": 1,
+      "h": 1
+    },
+    "vorlage": {
+      "motiv": "Kleiner Felsbrocken-Haufen, 1 × 1 Kachel, niedrig und breit am Boden: ein großer Brocken, ein kleinerer rechts, ein kleiner links vorn",
+      "teile": [
+        "Großer Brocken links und mittig",
+        "Kleinerer Brocken rechts davor",
+        "Kleiner Stein ganz links vorn",
+        "Lichtkante links oben (topaz), Schattenflächen rechts und unten (smokey-ash)",
+        "Feine Risse (valhalla), Moos oben auf dem großen Brocken"
+      ],
+      "materialien": [
+        "Fels (Felsen, Erzbrocken) = Stein",
+        "Laub (Pappel, Birke)"
+      ],
+      "stimmung": "schlicht, kantig, abbaubar",
+      "fein": "Risse und Moos-Lichtpunkte"
+    },
+    "dateien": {
+      "128": "grafik/gebaeude/felsen-1-128.png",
+      "16": "grafik/gebaeude/felsen-1-16.png",
+      "32": "grafik/gebaeude/felsen-1-32.png",
+      "64": "grafik/gebaeude/felsen-1-64.png"
+    },
+    "stufen": [
+      {
+        "stufe": 1,
+        "aenderung": "Grundform",
+        "dateien": {
+          "128": "grafik/gebaeude/felsen-1-128.png",
+          "16": "grafik/gebaeude/felsen-1-16.png",
+          "32": "grafik/gebaeude/felsen-1-32.png",
+          "64": "grafik/gebaeude/felsen-1-64.png"
+        }
+      },
+      {
+        "stufe": 2,
+        "aenderung": "Höhle: kühler, bläulicher Stein, Moos wird bläulicher Schimmer",
+        "dateien": {
+          "128": "grafik/gebaeude/felsen-2-128.png",
+          "16": "grafik/gebaeude/felsen-2-16.png",
+          "32": "grafik/gebaeude/felsen-2-32.png",
+          "64": "grafik/gebaeude/felsen-2-64.png"
+        }
+      },
+      {
+        "stufe": 3,
+        "aenderung": "Mine: dunkler, wärmerer brauner Stein, Moos entfällt (wird zur Steinfarbe)",
+        "dateien": {
+          "128": "grafik/gebaeude/felsen-3-128.png",
+          "16": "grafik/gebaeude/felsen-3-16.png",
+          "32": "grafik/gebaeude/felsen-3-32.png",
+          "64": "grafik/gebaeude/felsen-3-64.png"
+        }
+      }
+    ]
   },
   {
     "id": "heilplatz",
@@ -818,6 +1139,107 @@
     ]
   },
   {
+    "id": "pappel-2",
+    "klasse": "baum",
+    "kacheln": {
+      "b": 1,
+      "h": 2.25
+    },
+    "vorlage": {
+      "motiv": "Schmale Pappel mit drei getrennten Laubballen und sichtbarem Stamm dazwischen, Form 2 der Pappel",
+      "teile": [
+        "Dünner Stamm über die ganze Höhe, unten kräftiger",
+        "Drei Laubballen übereinander, leicht versetzt, mit Lücken",
+        "Lichtflecken links, Schatten rechts"
+      ],
+      "materialien": [
+        "Laub (Pappel, Birke)",
+        "Pfosten, Balken"
+      ],
+      "stimmung": "luftig, windbewegt",
+      "fein": "Lichtflecken auf dem Laub"
+    },
+    "dateien": {
+      "128": "grafik/gebaeude/pappel-2-1-128.png",
+      "16": "grafik/gebaeude/pappel-2-1-16.png",
+      "32": "grafik/gebaeude/pappel-2-1-32.png",
+      "64": "grafik/gebaeude/pappel-2-1-64.png"
+    },
+    "stufen": [
+      {
+        "stufe": 1,
+        "aenderung": "Grundform",
+        "dateien": {
+          "128": "grafik/gebaeude/pappel-2-1-128.png",
+          "16": "grafik/gebaeude/pappel-2-1-16.png",
+          "32": "grafik/gebaeude/pappel-2-1-32.png",
+          "64": "grafik/gebaeude/pappel-2-1-64.png"
+        }
+      },
+      {
+        "stufe": 2,
+        "aenderung": "Höhle: kühleres, dunkleres Laub",
+        "dateien": {
+          "128": "grafik/gebaeude/pappel-2-2-128.png",
+          "16": "grafik/gebaeude/pappel-2-2-16.png",
+          "32": "grafik/gebaeude/pappel-2-2-32.png",
+          "64": "grafik/gebaeude/pappel-2-2-64.png"
+        }
+      }
+    ]
+  },
+  {
+    "id": "pappel-3",
+    "klasse": "baum",
+    "kacheln": {
+      "b": 1,
+      "h": 2.25
+    },
+    "vorlage": {
+      "motiv": "Pappel mit Zwiegabel: der Stamm teilt sich auf halber Höhe in zwei Äste mit je einer schmalen Krone, Form 3 der Pappel",
+      "teile": [
+        "Kräftiger Stamm unten mittig",
+        "Gabelung auf halber Höhe, zwei Äste nach links oben und rechts oben",
+        "Zwei schmale Kronen nebeneinander, rechte etwas höher",
+        "Lichtflecken links, Schatten rechts"
+      ],
+      "materialien": [
+        "Laub (Pappel, Birke)",
+        "Pfosten, Balken"
+      ],
+      "stimmung": "gespalten, kraftvoll",
+      "fein": "Lichtflecken auf dem Laub"
+    },
+    "dateien": {
+      "128": "grafik/gebaeude/pappel-3-1-128.png",
+      "16": "grafik/gebaeude/pappel-3-1-16.png",
+      "32": "grafik/gebaeude/pappel-3-1-32.png",
+      "64": "grafik/gebaeude/pappel-3-1-64.png"
+    },
+    "stufen": [
+      {
+        "stufe": 1,
+        "aenderung": "Grundform",
+        "dateien": {
+          "128": "grafik/gebaeude/pappel-3-1-128.png",
+          "16": "grafik/gebaeude/pappel-3-1-16.png",
+          "32": "grafik/gebaeude/pappel-3-1-32.png",
+          "64": "grafik/gebaeude/pappel-3-1-64.png"
+        }
+      },
+      {
+        "stufe": 2,
+        "aenderung": "Höhle: kühleres, dunkleres Laub",
+        "dateien": {
+          "128": "grafik/gebaeude/pappel-3-2-128.png",
+          "16": "grafik/gebaeude/pappel-3-2-16.png",
+          "32": "grafik/gebaeude/pappel-3-2-32.png",
+          "64": "grafik/gebaeude/pappel-3-2-64.png"
+        }
+      }
+    ]
+  },
+  {
     "id": "pappel",
     "klasse": "baum",
     "kacheln": {
@@ -842,6 +1264,65 @@
       "16": "grafik/gebaeude/pappel-16.png",
       "32": "grafik/gebaeude/pappel-32.png",
       "64": "grafik/gebaeude/pappel-64.png"
+    }
+  },
+  {
+    "id": "portal",
+    "klasse": "portal",
+    "kacheln": {
+      "b": 2,
+      "h": 3
+    },
+    "vorlage": {
+      "motiv": "Steinbogen mit leuchtendem, bedrohlichem Kristalltor, aus dem die Gegner der Nachtwelle treten, 2 × 3 Kacheln",
+      "teile": [
+        "Breiter Steinbogen mit Schlussstein oben",
+        "Kristallfläche im Bogen, nach innen heller bis weißer Kern",
+        "Leuchtende Runen in den Pfeilern",
+        "Steinschwelle am Boden"
+      ],
+      "materialien": [
+        "Stein (Kamin, Esse, Sockel, Stufe)",
+        "Kristall (Mauer-, Turmstufe 5)"
+      ],
+      "stimmung": "magisch, bedrohlich",
+      "fein": "Runen, Fugen, Glanzpunkte"
+    },
+    "dateien": {
+      "128": "grafik/gebaeude/portal-128.png",
+      "16": "grafik/gebaeude/portal-16.png",
+      "32": "grafik/gebaeude/portal-32.png",
+      "64": "grafik/gebaeude/portal-64.png"
+    }
+  },
+  {
+    "id": "rekrutierungslager",
+    "klasse": "lager",
+    "kacheln": {
+      "b": 3,
+      "h": 2
+    },
+    "vorlage": {
+      "motiv": "Zelt links und Feuerstelle rechts, hier warten Landstreicher auf Anwerbung, 3 × 2 Kacheln",
+      "teile": [
+        "Spitzes Zelt aus hellem Tuch mit Falte und dunkler Eingangsöffnung",
+        "Zeltpfosten ragt oben heraus",
+        "Feuerstelle mit Steinring, Holzscheiten, Glut und Funken"
+      ],
+      "materialien": [
+        "Zelttuch (Lager) = Stoff hell",
+        "Pfosten, Balken",
+        "Stein (Kamin, Esse, Sockel, Stufe)",
+        "Glut"
+      ],
+      "stimmung": "gemütlich, abendlich",
+      "fein": "Funken, Fugen"
+    },
+    "dateien": {
+      "128": "grafik/gebaeude/rekrutierungslager-128.png",
+      "16": "grafik/gebaeude/rekrutierungslager-16.png",
+      "32": "grafik/gebaeude/rekrutierungslager-32.png",
+      "64": "grafik/gebaeude/rekrutierungslager-64.png"
     }
   },
   {
@@ -941,6 +1422,108 @@
       "32": "grafik/gebaeude/setzling-32.png",
       "64": "grafik/gebaeude/setzling-64.png"
     }
+  },
+  {
+    "id": "tanne-2",
+    "klasse": "baum",
+    "kacheln": {
+      "b": 1,
+      "h": 2.25
+    },
+    "vorlage": {
+      "motiv": "Breite Tanne mit tief hängenden unteren Ästen, 1 Kachel breit, Form 2 der Tanne",
+      "teile": [
+        "Spitze oben, darunter vier Stufen, die nach unten breiter werden",
+        "Unterste Stufe reicht über die ganze Kachelbreite und hängt tief herab",
+        "Lichtkante links, Schattenkante rechts und unter jeder Stufe",
+        "Kurzer Stamm unten mittig"
+      ],
+      "materialien": [
+        "Nadeln (Tanne)",
+        "Pfosten, Balken"
+      ],
+      "stimmung": "dichter, schwerer Nadelwald",
+      "fein": "Lichtpunkte auf den Nadeln"
+    },
+    "dateien": {
+      "128": "grafik/gebaeude/tanne-2-1-128.png",
+      "16": "grafik/gebaeude/tanne-2-1-16.png",
+      "32": "grafik/gebaeude/tanne-2-1-32.png",
+      "64": "grafik/gebaeude/tanne-2-1-64.png"
+    },
+    "stufen": [
+      {
+        "stufe": 1,
+        "aenderung": "Grundform",
+        "dateien": {
+          "128": "grafik/gebaeude/tanne-2-1-128.png",
+          "16": "grafik/gebaeude/tanne-2-1-16.png",
+          "32": "grafik/gebaeude/tanne-2-1-32.png",
+          "64": "grafik/gebaeude/tanne-2-1-64.png"
+        }
+      },
+      {
+        "stufe": 2,
+        "aenderung": "Höhle: kühlere, dunklere Nadeln und dunklerer Stamm",
+        "dateien": {
+          "128": "grafik/gebaeude/tanne-2-2-128.png",
+          "16": "grafik/gebaeude/tanne-2-2-16.png",
+          "32": "grafik/gebaeude/tanne-2-2-32.png",
+          "64": "grafik/gebaeude/tanne-2-2-64.png"
+        }
+      }
+    ]
+  },
+  {
+    "id": "tanne-3",
+    "klasse": "baum",
+    "kacheln": {
+      "b": 1,
+      "h": 2.25
+    },
+    "vorlage": {
+      "motiv": "Schlanke Tanne mit schief abgeknickter Spitze, 1 Kachel breit, Form 3 der Tanne",
+      "teile": [
+        "Abgeknickte Spitze, nach rechts geneigt",
+        "Fünf schmale Stufen, nach unten breiter, nie ganz kachelbreit",
+        "Lichtkante links, Schattenkante rechts",
+        "Kurzer Stamm unten mittig"
+      ],
+      "materialien": [
+        "Nadeln (Tanne)",
+        "Pfosten, Balken"
+      ],
+      "stimmung": "windschief, karg",
+      "fein": "Lichtpunkte auf den Nadeln"
+    },
+    "dateien": {
+      "128": "grafik/gebaeude/tanne-3-1-128.png",
+      "16": "grafik/gebaeude/tanne-3-1-16.png",
+      "32": "grafik/gebaeude/tanne-3-1-32.png",
+      "64": "grafik/gebaeude/tanne-3-1-64.png"
+    },
+    "stufen": [
+      {
+        "stufe": 1,
+        "aenderung": "Grundform",
+        "dateien": {
+          "128": "grafik/gebaeude/tanne-3-1-128.png",
+          "16": "grafik/gebaeude/tanne-3-1-16.png",
+          "32": "grafik/gebaeude/tanne-3-1-32.png",
+          "64": "grafik/gebaeude/tanne-3-1-64.png"
+        }
+      },
+      {
+        "stufe": 2,
+        "aenderung": "Höhle: kühlere, dunklere Nadeln und dunklerer Stamm",
+        "dateien": {
+          "128": "grafik/gebaeude/tanne-3-2-128.png",
+          "16": "grafik/gebaeude/tanne-3-2-16.png",
+          "32": "grafik/gebaeude/tanne-3-2-32.png",
+          "64": "grafik/gebaeude/tanne-3-2-64.png"
+        }
+      }
+    ]
   },
   {
     "id": "tanne",
@@ -1146,6 +1729,35 @@
       "16": "grafik/gebaeude/treppe-runter-16.png",
       "32": "grafik/gebaeude/treppe-runter-32.png",
       "64": "grafik/gebaeude/treppe-runter-64.png"
+    }
+  },
+  {
+    "id": "truhe",
+    "klasse": "beute",
+    "kacheln": {
+      "b": 1,
+      "h": 1
+    },
+    "vorlage": {
+      "motiv": "Offene Beute-Truhe mit überquellendem Goldhaufen, 1 × 1 Kachel",
+      "teile": [
+        "Hochgeklappter Deckel hinten, innen dunkel",
+        "Goldhaufen quillt über den Rand",
+        "Truhenkörper aus Holz mit zwei Eisenbändern und Schloss"
+      ],
+      "materialien": [
+        "Holz (Wand, Tresen, Gestell)",
+        "Eisen (Rüstung, Band)",
+        "Gold (Truhe) = Glut"
+      ],
+      "stimmung": "verlockend, reich",
+      "fein": "Goldglanz-Punkte, Maserung"
+    },
+    "dateien": {
+      "128": "grafik/gebaeude/truhe-128.png",
+      "16": "grafik/gebaeude/truhe-16.png",
+      "32": "grafik/gebaeude/truhe-32.png",
+      "64": "grafik/gebaeude/truhe-64.png"
     }
   },
   {

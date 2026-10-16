@@ -180,11 +180,20 @@ export function gebaeudeKarten(index: readonly GebaeudeEintrag[]): GebaeudeKarte
 /** Abstand der Bäume in der Reihe: ½ Kachel bei 1 Kachel Breite, also überlappend wie ein kleiner Wald (GEB1/AC-05) */
 export const BAUM_ABSTAND = 0.5;
 
-/** Reihe aus den Bäumen des Index im Wechsel: je Baum ID und x in Kacheln, gezeichnet von links nach rechts. */
-export function baumReihe(index: readonly GebaeudeEintrag[], anzahl = 6): { id: string; x: number }[] {
-  const ids = index.filter((e) => e.klasse === 'baum').map((e) => e.id);
+/** Datei eines Baums in Stufe (Look, Regeldatei § 6) und Dichte; Stufe 1 = Grundform, fehlende Stufe oder Dichte → `undefined`. */
+export function baumDatei(e: GebaeudeEintrag, stufe: number, dichte: number): string | undefined {
+  if (stufe === 1) return e.dateien[dichte];
+  return e.stufen?.find((s) => s.stufe === stufe)?.dateien[dichte];
+}
+
+/**
+ * Reihe aus den Bäumen des Index im Wechsel: je Baum ID und x in Kacheln, gezeichnet von links nach rechts.
+ * Ohne `anzahl` kommt jeder Baum einmal vor (GEB6.1: alle Formen); `stufe` wählt den Look (1 Wald, 2 Höhle) und lässt Bäume ohne ihn weg.
+ */
+export function baumReihe(index: readonly GebaeudeEintrag[], anzahl?: number, stufe = 1): { id: string; x: number }[] {
+  const ids = index.filter((e) => e.klasse === 'baum' && (stufe === 1 || e.stufen?.some((s) => s.stufe === stufe))).map((e) => e.id);
   if (ids.length === 0) return [];
-  return Array.from({ length: anzahl }, (_, i) => ({ id: ids[i % ids.length]!, x: i * BAUM_ABSTAND }));
+  return Array.from({ length: anzahl ?? ids.length }, (_, i) => ({ id: ids[i % ids.length]!, x: i * BAUM_ABSTAND }));
 }
 
 /** Biom-ID → Namensteil der Hintergrund-Schichten `hg-<teil>-<fern|mitte|nah>` (GEB7, Regeldatei § 10) */

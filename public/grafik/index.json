@@ -343,13 +343,6 @@
   "h": 144
  },
  {
-  "pack": "portals-32-x-48",
-  "group": "portale",
-  "file": "portale/portalsSpriteSheet.png",
-  "w": 128,
-  "h": 192
- },
- {
   "pack": "16x16-small-and-medium-coin-animation",
   "group": "muenzen",
   "file": "muenzen/sCoins_1.png",
@@ -471,13 +464,6 @@
  {
   "pack": "sunnyland-tall-forest-environment",
   "group": "props",
-  "file": "props/Plant.png",
-  "w": 42,
-  "h": 27
- },
- {
-  "pack": "sunnyland-tall-forest-environment",
-  "group": "props",
   "file": "props/Rock.png",
   "w": 32,
   "h": 32
@@ -537,13 +523,6 @@
   "file": "umgebung/tileset.png",
   "w": 336,
   "h": 112
- },
- {
-  "pack": "gotthicvania-swamp",
-  "group": "umgebung",
-  "file": "umgebung/trees.png",
-  "w": 288,
-  "h": 208
  },
  {
   "pack": "forest-background",
@@ -770,20 +749,6 @@
   "h": 816
  },
  {
-  "pack": "tent-8",
-  "group": "props",
-  "file": "props/objs.png",
-  "w": 256,
-  "h": 184
- },
- {
-  "pack": "16x16-animated-campfire",
-  "group": "props",
-  "file": "props/campfire-16x16.png",
-  "w": 64,
-  "h": 16
- },
- {
   "pack": "warped-super-grotto-escape-pack",
   "group": "ebenen",
   "file": "ebenen/back.png",
@@ -859,13 +824,6 @@
   "file": "props/ruby.png",
   "w": 168,
   "h": 24
- },
- {
-  "pack": "k3c-paletten",
-  "group": "props",
-  "file": "props/fort-door.png",
-  "w": 96,
-  "h": 80
  },
  {
   "pack": "16x16-block-texture-set",

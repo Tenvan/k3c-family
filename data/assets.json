@@ -693,13 +693,7 @@
       "beschreibung": "Materialien und Adern: vein:stone",
       "wahl": [
         {
-          "datei": "grafik/various-stones-and-oregem-veins-16x16/ressourcen/Stones_ores_gems_without_grass.png",
-          "ausschnitt": {
-            "x": 0,
-            "y": 0,
-            "w": 80,
-            "h": 16
-          }
+          "datei": "grafik/gebaeude/ader-1-32.png"
         }
       ]
     },
@@ -710,13 +704,7 @@
       "beschreibung": "Materialien und Adern: vein:copper",
       "wahl": [
         {
-          "datei": "grafik/various-stones-and-oregem-veins-16x16/ressourcen/Stones_ores_gems_without_grass.png",
-          "ausschnitt": {
-            "x": 0,
-            "y": 16,
-            "w": 80,
-            "h": 16
-          }
+          "datei": "grafik/gebaeude/ader-2-32.png"
         }
       ]
     },
@@ -727,13 +715,7 @@
       "beschreibung": "Materialien und Adern: vein:iron",
       "wahl": [
         {
-          "datei": "grafik/various-stones-and-oregem-veins-16x16/ressourcen/Stones_ores_gems_without_grass.png",
-          "ausschnitt": {
-            "x": 0,
-            "y": 32,
-            "w": 80,
-            "h": 16
-          }
+          "datei": "grafik/gebaeude/ader-3-32.png"
         }
       ]
     },
@@ -744,13 +726,7 @@
       "beschreibung": "Materialien und Adern: vein:crystal",
       "wahl": [
         {
-          "datei": "grafik/various-stones-and-oregem-veins-16x16/ressourcen/Stones_ores_gems_without_grass.png",
-          "ausschnitt": {
-            "x": 0,
-            "y": 128,
-            "w": 80,
-            "h": 16
-          }
+          "datei": "grafik/gebaeude/ader-4-32.png"
         }
       ]
     },
@@ -772,7 +748,7 @@
       "beschreibung": "Truhen, Portale, Münzen, Ausgang: pickup:chest",
       "wahl": [
         {
-          "datei": "grafik/gold-treasure-icons-16x16/icons/8.png"
+          "datei": "grafik/gebaeude/truhe-32.png"
         }
       ]
     },
@@ -783,7 +759,7 @@
       "beschreibung": "Truhen, Portale, Münzen, Ausgang: portal",
       "wahl": [
         {
-          "datei": "grafik/portals-32-x-48/portale/portalsSpriteSheet.png"
+          "datei": "grafik/gebaeude/portal-32.png"
         }
       ]
     },
@@ -816,7 +792,7 @@
       "beschreibung": "Truhen, Portale, Münzen, Ausgang: exit",
       "wahl": [
         {
-          "datei": "grafik/k3c-paletten/props/fort-door.png"
+          "datei": "grafik/gebaeude/ausgang-32.png"
         }
       ]
     },
@@ -838,7 +814,7 @@
       "beschreibung": "Ressourcen und Rekrutierungslager: node:tree",
       "wahl": [
         {
-          "datei": "grafik/gotthicvania-swamp/umgebung/trees.png"
+          "datei": "grafik/gebaeude/tanne-32.png"
         }
       ]
     },
@@ -849,13 +825,7 @@
       "beschreibung": "Ressourcen und Rekrutierungslager: node:rock",
       "wahl": [
         {
-          "datei": "grafik/various-stones-and-oregem-veins-16x16/ressourcen/Stones_ores_gems_without_grass.png",
-          "ausschnitt": {
-            "x": 16,
-            "y": 0,
-            "w": 16,
-            "h": 16
-          }
+          "datei": "grafik/gebaeude/felsen-1-32.png"
         }
       ]
     },
@@ -866,13 +836,7 @@
       "beschreibung": "Ressourcen und Rekrutierungslager: node:copperOre",
       "wahl": [
         {
-          "datei": "grafik/various-stones-and-oregem-veins-16x16/ressourcen/Stones_ores_gems_without_grass.png",
-          "ausschnitt": {
-            "x": 0,
-            "y": 16,
-            "w": 16,
-            "h": 16
-          }
+          "datei": "grafik/gebaeude/erzbrocken-32.png"
         }
       ]
     },
@@ -883,7 +847,7 @@
       "beschreibung": "Ressourcen und Rekrutierungslager: node:bush",
       "wahl": [
         {
-          "datei": "grafik/sunnyland-tall-forest-environment/props/Plant.png"
+          "datei": "grafik/gebaeude/busch-32.png"
         }
       ]
     },
@@ -894,7 +858,7 @@
       "beschreibung": "Ressourcen und Rekrutierungslager: camp:recruit",
       "wahl": [
         {
-          "datei": "grafik/tent-8/props/objs.png"
+          "datei": "grafik/gebaeude/rekrutierungslager-32.png"
         }
       ]
     },

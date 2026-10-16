@@ -8,9 +8,9 @@
 - **Sprint:** GEB6
 - **Projekt:** GEB
 - **Erstellt:** 2026-10-16
-- **Spec:** Entwurf
+- **Spec:** freigegeben
 - **Revision:** 1
-- **Freigabe:** –
+- **Freigabe:** 2026-10-16, Chat (Ralf), mit Sprint GEB6 Revision 1
 
 ## Ausgangslage
 

@@ -55,15 +55,6 @@ export const GRAFIK_PACKS: readonly GrafikPack[] = [
     note: 'Je 5 Formen für Stein, Kupfer, Eisen, Gold, Kohle, Smaragde, Rubine, Saphire und Diamanten; ein Sheet mit Gras.',
   },
   {
-    id: 'portals-32-x-48',
-    name: 'Portals 32 x 48',
-    artist: 'Rusher_go (OpenGameArt-Uploader)',
-    license: 'CC0 1.0',
-    source: 'https://opengameart.org/content/portals-32-x-48',
-    covers: ['Portal'],
-    note: 'Ein Sheet mit Portalen in 32x48 px.',
-  },
-  {
     id: '16x16-small-and-medium-coin-animation',
     name: '16x16 Small and Medium Coin Animation',
     artist: 'WolfTech (OpenGameArt-Uploader)',
@@ -139,24 +130,6 @@ export const GRAFIK_PACKS: readonly GrafikPack[] = [
   },
   // GR2.3 (B-162): Auswahl von 🧑 in GR2.2, Recherche in docs/funde/gr2-grafik-funde.html
   {
-    id: 'tent-8',
-    name: 'Tent',
-    artist: 'CDmir (OpenGameArt-Uploader)',
-    license: 'CC0 1.0',
-    source: 'https://opengameart.org/content/tent-8',
-    covers: ['Rekrutierungslager (Zelte, Hütte, Schilder)'],
-    note: 'Ein Blatt 256x184 mit zwei Zelten, Strohhütte und Holzschildern, erstellt für CaveTaxi.',
-  },
-  {
-    id: '16x16-animated-campfire',
-    name: '16x16 Animated Campfire',
-    artist: 'krial (OpenGameArt-Uploader)',
-    license: 'CC0 1.0',
-    source: 'https://opengameart.org/content/16x16-animated-campfire',
-    covers: ['Lagerfeuer (Rekrutierungslager)'],
-    note: 'Animiertes Lagerfeuer, 4 Frames zu 16x16, DB16-Palette.',
-  },
-  {
     id: 'warped-super-grotto-escape-pack',
     name: 'Warped: Super Grotto Escape Pack',
     artist: ZUNO,
@@ -182,15 +155,6 @@ export const GRAFIK_PACKS: readonly GrafikPack[] = [
     source: 'https://opengameart.org/content/item-ruby-banana-star',
     covers: ['Skillpunkt-Pickup (Stern)', 'Rubin'],
     note: 'Stern 4 Frames zu 16x16, Rubin 7 Frames zu 24x24; die Banane ist nicht übernommen.',
-  },
-  {
-    id: 'k3c-paletten',
-    name: 'K3C-Paletten (Farbvarianten aus GothicVania Town und SunnyLand Fort of Illusion)',
-    artist: ZUNO,
-    license: 'CC0 1.0',
-    source: 'https://opengameart.org/content/gothicvania-town',
-    covers: ['Ausgang (offenes Tor) in der Palette von GothicVania Town'],
-    note: 'Eigene Ableitung (GR2.3): nur Farben getauscht (Q13). Quelle sunnyland-fort-of-illusion (door.png), CC0. Mauer und Turm sind seit GEB3, Burg und Tor seit GEB4 eigene Grafik (gebaeude/).',
   },
   // Nicht gewählte Kandidaten aus GR2 (AC-06), nicht zugeordnet
   kandidat('16x16-block-texture-set', '16x16 Block Texture Set', 'ARoachIFoundOnMyPillow (OpenGameArt-Uploader)', 'CC0 1.0', 'https://opengameart.org/content/16x16-block-texture-set', 'Mauer-/Turm-Materialstufen', 'Nur das Tilemap-Sheet (Blöcke, Ziegel, Stein, Holz) übernommen; Einzelkacheln, Pflanzen und Feldfrüchte weggelassen.'),

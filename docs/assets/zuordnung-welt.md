@@ -59,36 +59,36 @@ Viele dieser Objekte gibt es noch nicht im Code (B-112, B-114); dann ist die Her
 | `material:copper` | `data/economy.json` › `gatherables.copperOre` | `grafik/various-stones-and-oregem-veins-16x16` | Erz-Sheet Zeile 2, Spalte 6 (Brocken) und 7 (Barren) | 16 px, vico (hell, gesättigt), ×2 | CC0 1.0 | zugeordnet |
 | `material:iron` | `docs/rules/materialien-gebaeude.md` § 1 | `grafik/various-stones-and-oregem-veins-16x16` | Erz-Sheet Zeile 3, Spalte 6 (Brocken) und 7 (Barren), helles Erz als Eisen gedeutet | 16 px, vico (hell, gesättigt), ×2 | CC0 1.0 | zugeordnet |
 | `material:crystal` | `docs/rules/materialien-gebaeude.md` § 1 | `grafik/various-stones-and-oregem-veins-16x16` | Erz-Sheet Zeile 9, Spalte 6 (türkiser Edelstein) | 16 px, vico (hell, gesättigt), ×2 | CC0 1.0 | zugeordnet |
-| `vein:stone` | `docs/rules/materialien-gebaeude.md` § 1 (Adern) | `grafik/various-stones-and-oregem-veins-16x16` | Erz-Sheet Zeile 1, Spalte 1–5 | 16 px, vico (hell, gesättigt), ×2 | CC0 1.0 | zugeordnet |
-| `vein:copper` | `docs/rules/materialien-gebaeude.md` § 1 (Adern) | `grafik/various-stones-and-oregem-veins-16x16` | Erz-Sheet Zeile 2, Spalte 1–5 | 16 px, vico (hell, gesättigt), ×2 | CC0 1.0 | zugeordnet |
-| `vein:iron` | `docs/rules/materialien-gebaeude.md` § 1 (Adern) | `grafik/various-stones-and-oregem-veins-16x16` | Erz-Sheet Zeile 3, Spalte 1–5 (helles Erz als Eisen gedeutet) | 16 px, vico (hell, gesättigt), ×2 | CC0 1.0 | zugeordnet |
-| `vein:crystal` | `docs/rules/materialien-gebaeude.md` § 1 (Adern) | `grafik/various-stones-and-oregem-veins-16x16` | Erz-Sheet Zeile 9, Spalte 1–5 | 16 px, vico (hell, gesättigt), ×2 | CC0 1.0 | zugeordnet |
+| `vein:stone` | `docs/rules/materialien-gebaeude.md` § 1 (Adern) | `grafik/gebaeude` | `ader-1-32.png` (2 × 2 Kacheln, Stufe 1 Stein) | eigene Grafik (`tools/gebaeude`), 32 px je Kachel, ×1; GEB6 | eigen | zugeordnet |
+| `vein:copper` | `docs/rules/materialien-gebaeude.md` § 1 (Adern) | `grafik/gebaeude` | `ader-2-32.png` (Stufe 2 Kupfer) | eigene Grafik (`tools/gebaeude`), 32 px je Kachel, ×1; GEB6 | eigen | zugeordnet |
+| `vein:iron` | `docs/rules/materialien-gebaeude.md` § 1 (Adern) | `grafik/gebaeude` | `ader-3-32.png` (Stufe 3 Eisen) | eigene Grafik (`tools/gebaeude`), 32 px je Kachel, ×1; GEB6 | eigen | zugeordnet |
+| `vein:crystal` | `docs/rules/materialien-gebaeude.md` § 1 (Adern) | `grafik/gebaeude` | `ader-4-32.png` (Stufe 4 Kristall) | eigene Grafik (`tools/gebaeude`), 32 px je Kachel, ×1; GEB6 | eigen | zugeordnet |
 | `plantation` | `docs/rules/materialien-gebaeude.md` § 1 (Farm-Plantage) | `grafik/gebaeude` | `setzling-32.png` (1 × 1 Kachel, leerer Platz; gewachsen: `pappel-32.png`) | eigene Grafik (`tools/gebaeude`), 32 px je Kachel, ×1; GEB5 | eigen | zugeordnet |
 
 ## Truhen, Portale, Münzen, Ausgang
 
 | Objekt | Herkunft | Pack | Datei/Frame | Stil (Raster, Palette, Skalierung) | Lizenz | Status |
 |---|---|---|---|---|---|---|
-| `pickup:chest` | `data/economy.json` › `chestGold`, Pickup `chest` | `grafik/gold-treasure-icons-16x16` | `icons/8.png` (offene Truhe mit Gold, 16×16); geschlossene Truhe fehlt | 16 px, Bonsaiheldin (gelb/braun), ×2 | CC0 1.0 | zugeordnet |
-| `portal` | `data/biomes/*.json` › `portals` | `grafik/portals-32-x-48` | `portale/portalsSpriteSheet.png`, Frame 32×48, je Zeile eine Farbe (blau, rot, orange, grau) mit 4 Frames | 32 px nativ, Rusher_go (gesättigt), ×1 | CC0 1.0 | zugeordnet |
+| `pickup:chest` | `data/economy.json` › `chestGold`, Pickup `chest` | `grafik/gebaeude` | `truhe-32.png` (1 × 1 Kachel, offene Truhe mit Gold) | eigene Grafik (`tools/gebaeude`), 32 px je Kachel, ×1; GEB6 | eigen | zugeordnet |
+| `portal` | `data/biomes/*.json` › `portals` | `grafik/gebaeude` | `portal-32.png` (2 × 3 Kacheln, statisch) | eigene Grafik (`tools/gebaeude`), 32 px je Kachel, ×1; GEB6 | eigen | zugeordnet |
 | `coin` | `data/economy.json` › `purse` | `grafik/16x16-small-and-medium-coin-animation` | `muenzen/sCoins_1.png`, `muenzen/sCoins_2.png` (Drehung, je 8 Frames 16×16) | 16 px, WolfTech (gelb), ×2 | CC0 1.0 | zugeordnet |
 | `guide:coin` | `src/scenes/guideHints.ts` › `guideImage('coin')` (Hinweis „Münze aufheben“, B-294) | `grafik/gold-treasure-icons-16x16` | `icons/2.png` (Münze von vorn, Textur `grafik:coinIcon`); die Münze aus `sCoins_1.png` ist als Symbol zu klein und hat Markierungspixel | 16 px, Bonsaiheldin (gelb/braun), ×4 (Münze 6 px → 24 px, etwa Texthöhe) | CC0 1.0 | zugeordnet |
-| `exit` | `src/scenes/worldRenderer.ts` › `drawStatic` (Level-Objekt `exit`) | `grafik/k3c-paletten` | `props/fort-door.png` (offener Torbogen, 96×80) | 16 px, Gothicvania (Dunkelviolett), ×2; Vermerk: Palette angeglichen (GR2.3, `grafik/k3c-paletten`) | CC0 1.0 | zugeordnet |
+| `exit` | `src/scenes/worldRenderer.ts` › `drawStatic` (Level-Objekt `exit`) | `grafik/gebaeude` | `ausgang-32.png` (2 × 3 Kacheln, dunkle Öffnung, Beschriftung darüber) | eigene Grafik (`tools/gebaeude`), 32 px je Kachel, ×1; GEB6 | eigen | zugeordnet |
 | `pickup:skillPoint` | `src/model/types.ts` › `Pickup` (`skillPoint`) | `grafik/item-ruby-banana-star` | `props/part-star.png` (Stern, 4 Frames 16×16) | 16 px, mieki256 (Gelb), ×2; Entscheidung 🧑 GR2.2 | CC0 1.0 | zugeordnet |
 
 `guide:moon` (Nacht-Hinweis, B-370): kein Pack-Bild. Das Emoji 🌙 wird zur Laufzeit in die Canvas-Textur `guide:moon` gezeichnet (`src/scenes/guideOverlay.ts` › `ensureMoon`, Systemfont, 28 px, ×1, kein Asset, keine Lizenz). Test: `guideHints.test.ts`.
 
 ## Ressourcen und Rekrutierungslager
 
-Endliche Level-Objekte, die `src/scenes/worldRenderer.ts` heute als Formen zeichnet (`createNode`, `drawStatic`).
+Level-Objekte, die `src/scenes/worldRenderer.ts` zeichnet (`createNode`, `drawStatic`); ab GEB6 eigene Grafik aus `tools/gebaeude` (Looks je Biom: Regeldatei § 6).
 
 | Objekt | Herkunft | Pack | Datei/Frame | Stil (Raster, Palette, Skalierung) | Lizenz | Status |
 |---|---|---|---|---|---|---|
-| `node:tree` | `data/economy.json` › `gatherables.tree` | `grafik/gotthicvania-swamp` | `umgebung/trees.png` (knorriger Baum, 288×208) | 16 px, Gothicvania Swamp (Dunkelgrün, entsättigt), ×2 | CC0 1.0 | zugeordnet |
-| `node:rock` | `data/economy.json` › `gatherables.rock` | `grafik/various-stones-and-oregem-veins-16x16` | Erz-Sheet Zeile 1, Spalte 2 (Fels ohne Erz; Ader `vein:stone` nutzt dieselbe Zeile) | 16 px, vico (hell, gesättigt), ×2 | CC0 1.0 | zugeordnet |
-| `node:copperOre` | `data/economy.json` › `gatherables.copperOre` | `grafik/various-stones-and-oregem-veins-16x16` | Erz-Sheet Zeile 2, Spalte 1 (Ader `vein:copper` nutzt dieselbe Zeile) | 16 px, vico (hell, gesättigt), ×2 | CC0 1.0 | zugeordnet |
-| `node:bush` | `data/biomes/forest.json` › `resourcesPerChunk` (Deko) | `grafik/sunnyland-tall-forest-environment` | `props/Plant.png` (Farn, 42×27) | 16 px, SunnyLand (Grün, gesättigt), ×2 | CC0 1.0 | zugeordnet |
-| `camp:recruit` | `data/economy.json` › `recruitCamp` | `grafik/tent-8`, `grafik/16x16-animated-campfire` | `props/objs.png` (Zelt aus dem Blatt 256×184) und `props/campfire-16x16.png` (Lagerfeuer, 4 Frames 16×16) | ca. 32 px CDmir (Braun) und 16 px krial (DB16), ×2; Vermerk: Palette anpassen; Entscheidung 🧑 GR2.2 | CC0 1.0 | zugeordnet |
+| `node:tree` | `data/economy.json` › `gatherables.tree` | `grafik/gebaeude` | `tanne`, `pappel`, `birke` und je zwei weitere Formen (`<art>-2`, `<art>-3`); Form aus der Position, Look Wald oder Höhle aus dem Biom (`src/scenes/natureSprites.ts`) | eigene Grafik (`tools/gebaeude`), 32 px je Kachel, ×1; GEB6 | eigen | zugeordnet |
+| `node:rock` | `data/economy.json` › `gatherables.rock` | `grafik/gebaeude` | `felsen-1-32.png` (Wald), `felsen-2-32.png` (Höhle), `felsen-3-32.png` (Mine, auch Eisenstollen und Kristallhöhle) | eigene Grafik (`tools/gebaeude`), 32 px je Kachel, ×1; GEB6 | eigen | zugeordnet |
+| `node:copperOre` | `data/economy.json` › `gatherables.copperOre` | `grafik/gebaeude` | `erzbrocken-32.png` (1 × 1 Kachel) | eigene Grafik (`tools/gebaeude`), 32 px je Kachel, ×1; GEB6 | eigen | zugeordnet |
+| `node:bush` | `data/biomes/forest.json` › `resourcesPerChunk` (Deko) | `grafik/gebaeude` | `busch-32.png` (1 × 1 Kachel, nur Wald) | eigene Grafik (`tools/gebaeude`), 32 px je Kachel, ×1; GEB6 | eigen | zugeordnet |
+| `camp:recruit` | `data/economy.json` › `recruitCamp` | `grafik/gebaeude` | `rekrutierungslager-32.png` (3 × 2 Kacheln, Zelt und Feuerstelle in einem Bild, statisch) | eigene Grafik (`tools/gebaeude`), 32 px je Kachel, ×1; GEB6 | eigen | zugeordnet |
 
 ## Reittiere
 
