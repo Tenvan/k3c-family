@@ -99,6 +99,6 @@ Weitere Gebäude (je eigener Sprint im Projekt GEB); weitere Baumvarianten und L
 ## Abnahme
 
 2026-10-16 (GEB1.4): `task check` und `task check:go` grün; Diff-Review ohne schwere Befunde.
-AC-01–AC-03, AC-05, AC-06 geprüft (Ergebnisse GEB1.2, GEB1.3); AC-04 von Ralf in 32 und 16 px abgenommen, Spiel-Dichte 32 px ×1; Skalierungsfaktor angenommen, Validierung offen (GR7.4).
+AC-01–AC-03, AC-05, AC-06 geprüft (Ergebnisse GEB1.2, GEB1.3); AC-04 von Ralf im Chat abgenommen (32 und 16 px, Vorschau im Browser-Pane), Spiel-Dichte 32 px ×1; Skalierungsfaktor angenommen, Validierung offen (GR7.4).
 Behoben: verwaiste PNGs, Löschen vor dem Rendern (Review GEB1.2/GEB1.3).
 Neue Tickets: B-436 (plan_create), B-437 (Asset-Katalog), B-438 (Zuordnung ins Spiel). Versionsvorschlag: Minor (neues Werkzeug, keine Spieländerung).
