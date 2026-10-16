@@ -71,9 +71,9 @@ describe('Review WZ2.8 (B-401)', () => {
     expect(got.length).toBeLessThan(base.length);
   });
 
-  it('M2: beide Bereiche überstehen Speichern und Laden unverändert', () => {
-    const f = { ...EMPTY_FILTER, q: 'x', prios: ['hoch'], envs: ['live'], projs: ['GRA'], pstatus: ['ruht'], doms: ['SIM'], sel: 'SP11' };
-    expect(parseFilter(JSON.stringify(f))).toEqual(f);
+  it('M2: beide Bereiche überstehen Speichern und Laden, der Freitext nicht (B-439)', () => {
+    const f = { ...EMPTY_FILTER, prios: ['hoch'], envs: ['live'], projs: ['GRA'], pstatus: ['ruht'], doms: ['SIM'], sel: 'SP11' };
+    expect(parseFilter(JSON.stringify({ ...f, q: 'x' }))).toEqual(f);
   });
 
   it('M3: eine gemerkte Domäne aus der Zeit vor dem Projekt-Filter wird verworfen', () => {

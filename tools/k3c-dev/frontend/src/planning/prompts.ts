@@ -27,6 +27,13 @@ export function promptSprint(s: PlanSprint): string {
   );
 }
 
+export function promptProject(p: PlanProject): string {
+  return (
+    `Wir arbeiten weiter am Projekt ${p.id}.\n` +
+    'Lies das Projekt und seinen aktiven Sprint (`plan_get`), fasse den Stand in drei Sätzen zusammen und nenne die nächste offene Session.'
+  );
+}
+
 export function promptSession(s: PlanSprint, x: PlanSession): string {
   return (
     `Wir arbeiten weiter an ${where(s)}, Session ${x.nr}.\n` +
