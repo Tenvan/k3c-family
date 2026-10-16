@@ -1,6 +1,6 @@
 # GEB5.2 · Farm und Setzling der Plantage
 
-- **Status:** in Arbeit
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** DEV
@@ -58,5 +58,8 @@ Keine manuellen Prüfungen; die Sichtprüfung gehört GEB5.5.
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+- AC-01 geprüft: `farm-32.png` 128 × 96 px, `setzling-32.png` 32 × 32 px plus 16/64/128; zweiter `task gebaeude`-Lauf byte-gleich, ältere PNGs md5-gleich (vorher/nachher verglichen); beide im Index für die Vorschau.
+- AC-02 geprüft (Grafik-Teil): Setzling liegt vor, die gewachsene Phase nutzt die Pappel aus GEB1, keine neue Baum-Grafik.
+- AC-04 geprüft: beide mit Vorlage, ohne `stufen`, Maße in Regeldatei § 1; `task check` und `task check:go` grün.
+- Code-Review (Reviewer-Agent, getrennt): 6 kleine Befunde, 5 behoben (Fensterlage in der Vorlage, Zaunlatten `rope`, Material „Pfosten, Balken“, Stamm mittig 15–17 px, Umlaut). Offen/vermutet: Erde hat keine Zeile in § 3 (Hügel nutzt Holz-Farben).
+- Sichtprüfung nicht durchgeführt, gehört GEB5.5 (🧑). Abweichung: Setzling mit `klasse: baum`, damit er neben der Pappel in der Baum-Reihe steht. Keine neuen Tickets.
