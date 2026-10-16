@@ -14,6 +14,7 @@ nur mit Zustimmung von 🧑.
 | Handelsstand / kleines Gebäude | 6 × 4 | Werkstatt (`workshop`), Taverne (`tavern`), Heilplatz (`healer`), Schmiede (`smithy`), Rüstkammer (`armory`) (GEB2); Lager (`storage`), Kaserne (`barracks`) in Stein (GEB5) |
 | Baum (schmal) | 1 × 2,25 | Tanne, Pappel, Birke (GEB1.3); je Art Form 2 und 3 (`tanne-2` … `birke-3`, Looks Wald und Höhle, GEB6.1) |
 | Busch | 1 × 1 | `busch.json` (GEB6.1) |
+| Fels (Looks Wald, Höhle, Mine), Erzbrocken (Look Mine) | 1 × 1 | `felsen.json`, `erzbrocken.json` (GEB6.2); Licht auf Stein ist `topaz` (heller als `dim-gray`), Risse in Höhle und Mine `black` |
 | Mauer (Stufen 1–5) | 1 × 5 | `mauer.json` (GEB3) |
 | Turm (Stufen 1–5) | 3 × 8 | `turm.json` (GEB3) |
 | Hintergrundmauer (Stufen 1–5, kachelbar) | 1 × 4 | `hintergrundmauer.json` (GEB3, B-442) |

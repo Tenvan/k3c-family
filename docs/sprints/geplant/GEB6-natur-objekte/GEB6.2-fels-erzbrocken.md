@@ -1,6 +1,6 @@
 # GEB6.2 · Fels und Erzbrocken mit Biom-Looks
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** DEV
@@ -45,10 +45,10 @@ Keine Darstellung im Spiel (GEB6.5), keine Änderung an vorhandenen JSONs und PN
 
 ## Fertig, wenn
 
-- [ ] AC-01/AC-04: `felsen-1-32.png`, `felsen-2-32.png`, `felsen-3-32.png` (je 32 × 32 px) plus 16/64/128 und `erzbrocken-32.png` (32 × 32 px) plus 16/64/128, beide JSONs mit `vorlage`; Fels in drei erkennbar verschiedenen Looks.
-- [ ] AC-04: md5 aller vorher vorhandenen PNGs gleich; ein zweiter `task gebaeude`-Lauf ändert nichts.
-- [ ] AC-04: Regeldatei § 1 und § 4 nachgetragen; Vorschau zeigt die drei Fels-Looks und den Erzbrocken.
-- [ ] `task check` und `task check:go` grün.
+- [x] AC-01/AC-04: `felsen-1-32.png`, `felsen-2-32.png`, `felsen-3-32.png` (je 32 × 32 px) plus 16/64/128 und `erzbrocken-32.png` (32 × 32 px) plus 16/64/128, beide JSONs mit `vorlage`; Fels in drei erkennbar verschiedenen Looks.
+- [x] AC-04: md5 aller vorher vorhandenen PNGs gleich; ein zweiter `task gebaeude`-Lauf ändert nichts.
+- [x] AC-04: Regeldatei § 1 und § 4 nachgetragen; Vorschau zeigt die drei Fels-Looks und den Erzbrocken.
+- [x] `task check` und `task check:go` grün.
 
 ## Prüfen
 
@@ -62,5 +62,7 @@ Mit laufender Workbench stattdessen `check_run` (mit `checkout`). Keine manuelle
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+- **AC-01 umgesetzt, geprüft (`task gebaeude`, PIL):** `felsen.json` (1 × 1, `vorlage`, Stufe 1 Wald, 2 Höhle, 3 Mine) liefert `felsen-1-32.png`, `-2-`, `-3-` (je 32 × 32 px) plus 16/64/128; `erzbrocken.json` (1 × 1, `vorlage`, ohne Stufen) liefert `erzbrocken-32.png` (32 × 32 px) plus 16/64/128. Die drei Fels-Looks sind im Kontaktbild klar verschieden (grau mit Moos, bläulich mit Eis-Schimmer, dunkel mit braunem Schatten).
+- **AC-04 geprüft:** md5 aller vorher vorhandenen PNGs gleich (0 Abweichungen), zweiter Lauf byte-gleich; Regeldatei § 1 nachgetragen (§ 4 nicht nötig, keine neuen Bausteinarten); Vorschau zeigt die Looks über die allgemeinen Stufenkarten (`stufenKarten`, keine Code-Änderung nötig).
+- `task check` und `task check:go` grün.
+- **Abweichungen:** Licht auf Stein ist `topaz` statt `smokey-ash` (`smokey-ash` ist dunkler als `dim-gray` und dient als Schatten); Risse in Höhle und Mine `black` statt `valhalla` (sonst unlesbar). Die Zeichnungen entstanden mit einer Hilfe im Scratchpad, nicht im Repo. Geschmacksfrage für 🧑 (GEB6.6): Die Mine wirkt eher dunkelgrau als braun (wärmer ginge mit `stinger` als Licht). Niemand hat manuell geprüft.

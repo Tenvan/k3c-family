@@ -244,6 +244,35 @@
     }
   },
   {
+    "id": "erzbrocken",
+    "kacheln": {
+      "b": 1,
+      "h": 1
+    },
+    "vorlage": {
+      "motiv": "Dunkler Erzbrocken mit Kupfer-Einsprengseln, 1 × 1 Kachel, niedrig und breit, Look Mine",
+      "teile": [
+        "Großer dunkelbrauner Brocken",
+        "Kleiner Stein rechts davor",
+        "Kupfer-Einsprengsel (orange, mit hellem Glanzpunkt) über den Brocken verteilt",
+        "Patina-Punkte (verdigris) neben dem Kupfer",
+        "Lichtkante links oben, Schatten rechts und unten"
+      ],
+      "materialien": [
+        "Fels (Felsen, Erzbrocken) = Stein",
+        "Kupfer (Mauer-, Turmstufe 3)"
+      ],
+      "stimmung": "Erzader, glänzend, wertvoll",
+      "fein": "Risse, Glanzpunkte und Patina"
+    },
+    "dateien": {
+      "128": "grafik/gebaeude/erzbrocken-128.png",
+      "16": "grafik/gebaeude/erzbrocken-16.png",
+      "32": "grafik/gebaeude/erzbrocken-32.png",
+      "64": "grafik/gebaeude/erzbrocken-64.png"
+    }
+  },
+  {
     "id": "farm",
     "kacheln": {
       "b": 4,
@@ -272,6 +301,67 @@
       "32": "grafik/gebaeude/farm-32.png",
       "64": "grafik/gebaeude/farm-64.png"
     }
+  },
+  {
+    "id": "felsen",
+    "kacheln": {
+      "b": 1,
+      "h": 1
+    },
+    "vorlage": {
+      "motiv": "Kleiner Felsbrocken-Haufen, 1 × 1 Kachel, niedrig und breit am Boden: ein großer Brocken, ein kleinerer rechts, ein kleiner links vorn",
+      "teile": [
+        "Großer Brocken links und mittig",
+        "Kleinerer Brocken rechts davor",
+        "Kleiner Stein ganz links vorn",
+        "Lichtkante links oben (topaz), Schattenflächen rechts und unten (smokey-ash)",
+        "Feine Risse (valhalla), Moos oben auf dem großen Brocken"
+      ],
+      "materialien": [
+        "Fels (Felsen, Erzbrocken) = Stein",
+        "Laub (Pappel, Birke)"
+      ],
+      "stimmung": "schlicht, kantig, abbaubar",
+      "fein": "Risse und Moos-Lichtpunkte"
+    },
+    "dateien": {
+      "128": "grafik/gebaeude/felsen-1-128.png",
+      "16": "grafik/gebaeude/felsen-1-16.png",
+      "32": "grafik/gebaeude/felsen-1-32.png",
+      "64": "grafik/gebaeude/felsen-1-64.png"
+    },
+    "stufen": [
+      {
+        "stufe": 1,
+        "aenderung": "Grundform",
+        "dateien": {
+          "128": "grafik/gebaeude/felsen-1-128.png",
+          "16": "grafik/gebaeude/felsen-1-16.png",
+          "32": "grafik/gebaeude/felsen-1-32.png",
+          "64": "grafik/gebaeude/felsen-1-64.png"
+        }
+      },
+      {
+        "stufe": 2,
+        "aenderung": "Höhle: kühler, bläulicher Stein, Moos wird bläulicher Schimmer",
+        "dateien": {
+          "128": "grafik/gebaeude/felsen-2-128.png",
+          "16": "grafik/gebaeude/felsen-2-16.png",
+          "32": "grafik/gebaeude/felsen-2-32.png",
+          "64": "grafik/gebaeude/felsen-2-64.png"
+        }
+      },
+      {
+        "stufe": 3,
+        "aenderung": "Mine: dunkler, wärmerer brauner Stein, Moos entfällt (wird zur Steinfarbe)",
+        "dateien": {
+          "128": "grafik/gebaeude/felsen-3-128.png",
+          "16": "grafik/gebaeude/felsen-3-16.png",
+          "32": "grafik/gebaeude/felsen-3-32.png",
+          "64": "grafik/gebaeude/felsen-3-64.png"
+        }
+      }
+    ]
   },
   {
     "id": "heilplatz",
