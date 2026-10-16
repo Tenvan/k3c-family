@@ -63,7 +63,7 @@ Ein Gebäude ist eine Liste von Rechtecken in Zeichenreihenfolge (hinten zuerst)
 `werkzeug`; Taverne: `kamin`, `dach`, `schindel`, `fenster`, `glas`, `sprosse`, `tuer`, `beschlag`, `stufe`, `ausleger`,
 `kette`, `krug`, `fass`, `reifen`; Heilplatz: `kraut`, `schnur`, `liege`, `kissen`, `decke`, `schale`, `wasser`, `korb`, `flechtung`; Mauer und Turm: `zinne`, `wand`, `bruestung`, `konsole`, `schaft`, `scharte`, `tuerrahmen`, `tuer`, `sockel`,
 `patina`, `band`, `niete`, `glanz`, `kristall`, `aura`, `runenband`, `rune`, `kante` (Hintergrundmauer); Burg: `turm`, `obergeschoss`, `mast`, `banner`; Tor: `sturz`, `fluegel`, `riegel` (Flügel in `stinger` bleiben Holz, nicht im Farbtausch); Schmiede: `haken`, `esse`, `oeffnung`, `glut`, `funke`, `klotz`, `amboss`, `hammer`, `trog`;
-Rüstkammer: `sockel`, `scharte`, `tor`, `band`, `niete`, `staender`, `helm`, `ruestung`, `wappen`, `speer`, `regal`; Lager: `sack`, `holz`, `erz`; Kaserne: `schwert`; Setzling: `stab`, `huegel`; Bäume: `stamm`, `krone`, `licht`, `strich`, `blatt`. Die Art dient der Lesbarkeit und späteren Zusätzen; gezeichnet wird nur Rechteck und Farbe.
+Rüstkammer: `sockel`, `scharte`, `tor`, `band`, `niete`, `staender`, `helm`, `ruestung`, `wappen`, `speer`, `regal`; Lager: `sack`, `holz`, `erz`; Kaserne: `schwert`; Farm: `luke`, `strebe`, `zaun`, `heu`; Bäume: `stamm`, `krone`, `licht`, `strich`, `blatt`. Die Art dient der Lesbarkeit und späteren Zusätzen; gezeichnet wird nur Rechteck und Farbe.
 
 ## 5. Datenformat
 

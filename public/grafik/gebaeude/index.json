@@ -122,25 +122,21 @@
       "h": 3
     },
     "vorlage": {
-      "motiv": "Holzscheune mit Satteldach, Doppeltor und Fenstern auf niedrigem Steinsockel, links und rechts je ein kurzer Zaun",
+      "motiv": "Holzscheune mit Satteldach in der Vorderansicht, großem Scheunentor mit Streben, Holzzaun und Heuballen rechts",
       "teile": [
-        "Zaunstück links (x 0 bis 0,375) mit zwei Pfosten und zwei Latten",
-        "Holzwand mit senkrechten Brettern von x 0,375 bis 3,625, Schatten unter der Traufe",
-        "Fenster links (x 0,75) und rechts (x 2,8125) mit Sprossen",
-        "Doppeltor in der Mitte (x 1,375 bis 2,625) mit Rahmen und zwei Flügeln",
-        "Steinsockel am Boden, 0,25 Kacheln hoch",
-        "Satteldach in vier Stufen, schmal oben, Traufe unten über die ganze Breite",
-        "Zaunstück rechts (x 3,625 bis 4) wie links"
+        "Scheunenwand aus Holz links, 3 Kacheln breit, mit Pfosten an beiden Seiten und Bodenbalken",
+        "Satteldach in 4 Stufen oben (Giebel, Spitze bei x 1,5), Traufe dunkel, mit Heuluke im Giebel",
+        "Großes Scheunentor mittig (x 0,75 bis 2,25) aus zwei dunklen Flügeln mit gekreuzten Streben und hellem Rahmen",
+        "Kurzer Holzzaun rechts (x 3 bis 4) mit drei Pfosten und zwei Latten",
+        "Heuballen vor dem Zaun (x 3,2 bis 3,7) mit Bändern"
       ],
       "materialien": [
         "Holz (Wand, Tresen, Gestell)",
         "Pfosten, Balken",
-        "Dachziegel",
-        "Fensterlicht",
-        "Stein (Kamin, Esse, Sockel, Stufe)"
+        "Dachziegel"
       ],
-      "stimmung": "Ländlich und warm, ein Hof mit Vorrat; passt zur Holzmauer der Stufe 1",
-      "fein": "Brettfugen, Fenstersprossen, Torstreben"
+      "stimmung": "Ländlich und ruhig, warme Holztöne, Hof der Bauern",
+      "fein": "Plankenfugen, Schindelfugen, Torfuge, Zaunlicht, Heubänder"
     },
     "dateien": {
       "128": "grafik/gebaeude/farm-128.png",

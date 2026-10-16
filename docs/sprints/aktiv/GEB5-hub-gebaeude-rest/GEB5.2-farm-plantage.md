@@ -60,6 +60,6 @@ Keine manuellen Prüfungen; die Sichtprüfung gehört GEB5.5.
 
 - **AC-01** umgesetzt: `farm.json`, `setzling.json` mit PNGs 16/32/64/128; `farm-32.png` 128 × 96 px, `setzling-32.png` 32 × 32 px (`file`).
 - **AC-02** umgesetzt (Grafik-Teil): Setzling für den leeren Platz; die gewachsene Phase nutzt die vorhandene `pappel-32.png` (GEB1), keine neue Baum-Grafik. Zuordnung im Spiel folgt in GEB5.4.
-- **AC-04** geprüft (Teil Farm, Setzling): Vorlage, ohne `stufen`; Setzling ohne `klasse` (nicht in der Waldreihe); zweiter `task gebaeude`-Lauf md5-gleich; alle 140 älteren PNGs md5-gleich; beide in `index.json`; Maße in Regeldatei § 1, neue Bausteine `luke`, `strebe`, `zaun`, `heu` in § 4.
+- **AC-04** geprüft (Teil Farm, Setzling): Vorlage, ohne `stufen`; Setzling ohne `klasse` (nicht in der Waldreihe); zweiter `task gebaeude`-Lauf md5-gleich; alle älteren PNGs md5-gleich; beide in `index.json`; Maße in Regeldatei § 1, neue Bausteine der Farm `luke`, `strebe`, `zaun`, `heu` in § 4.
 - `task check` und `task check:go` grün. Review (eigener Agent) fand `klasse: baum` am Setzling, behoben.
-- Team: Farm von einem Agenten; der Setzling-Agent wurde von der Auto-Mode-Prüfung abgelehnt, Claude baute den Setzling selbst. Manuell geprüft: niemand (Sichtprüfung GEB5.5). Neue Tickets: keine.
+- Abweichung: Eine parallele Session hat im selben Checkout eine eigene Farm und einen falschen § 4-Eintrag (`stab`, `huegel`) committet (`6e680d26`). Auf Entscheidung von 🧑 (2026-10-16, Chat) gilt die Team-Farm (Scheune mit Heuluke, Torstreben, Zaun, Heuballen); Korrektur-Commit danach. Manuell geprüft: niemand (Sichtprüfung GEB5.5). Neue Tickets: keine.
