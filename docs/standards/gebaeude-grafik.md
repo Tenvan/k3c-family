@@ -73,7 +73,7 @@ nur mit Zustimmung von 🧑.
 | Erde (Wurzeln, Hügelrand) = Pfosten, Balken | `oiled-cedar` | `rope` | – |
 | Gold (Truhe) = Glut | `tahiti-gold` | `golden-fizz` | `brown` |
 
-Die vier letzten Zeilen (GEB6.1) sind Verweise auf vorhandene Materialien, neu ist nur der Name; sie gelten als Annahme, bis 🧑 die Offene Frage 4 aus GEB6 beantwortet (andere Antwort: Zeilen hier und die Farben in `felsen`, `erzbrocken`, `ader`, `truhe`, `rekrutierungslager` ändern, `task gebaeude` neu laufen lassen).
+Die vier letzten Zeilen (GEB6.1) sind Verweise auf vorhandene Materialien, neu ist nur der Name; 🧑 hat sie als Antwort auf die Offene Frage 4 aus GEB6 bestätigt (Option 1, 2026-10-16, Chat). Auf Stein dient `topaz` als Licht, weil `smokey-ash` dunkler als `dim-gray` ist und als Schatten wirkt.
 
 Zeichen am Gebäude sind Motive, keine Schutzzeichen: Das Heil-Zeichen ist ein **grünes** Kreuz (`christi`, Licht `atlantis`).
 
