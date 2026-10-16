@@ -1,6 +1,6 @@
 # GEB8.2 · Vorlage in der Asset-Vorschau zeigen
 
-- **Status:** offen
+- **Status:** in Arbeit
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** DEV
