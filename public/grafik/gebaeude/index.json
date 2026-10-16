@@ -28,6 +28,94 @@
     }
   },
   {
+    "id": "burg",
+    "kacheln": {
+      "b": 8,
+      "h": 9
+    },
+    "vorlage": {
+      "motiv": "Burg als Hub-Kern, 8 Kacheln breit und 9 hoch, mit großem Tor in der Mitte als Zahlziel; wächst mit jeder Hub-Stufe",
+      "teile": [
+        "Mittelbau über 6 Kacheln mit sechs Zinnen oben und Holzbohlen (ab Stufe 2 Quader)",
+        "Großes Tor mittig unten mit zwei Flügeln und Beschlägen",
+        "Banner an einem Mast über der Mitte",
+        "Ab Stufe 2 zwei Ecktürme links und rechts (je 1,25 Kacheln breit, 7,25 hoch) mit Zinnen und Scharten",
+        "Ab Stufe 3 ein Obergeschoss mittig mit zwei erleuchteten Fenstern",
+        "Sockel unten über die ganze Breite"
+      ],
+      "materialien": [
+        "Holz (Wand, Tresen, Gestell)",
+        "Pfosten, Balken",
+        "Stoff rot",
+        "Stein (Kamin, Esse, Sockel, Stufe)",
+        "Kupfer (Mauer-, Turmstufe 3)",
+        "Eisen hell (Mauer-, Turmstufe 4)",
+        "Kristall (Mauer-, Turmstufe 5)",
+        "Fensterlicht"
+      ],
+      "stimmung": "Herz des Hubs; wächst von der Holzburg zur Kristallfestung, gleiche Farbstufen wie Mauer und Turm",
+      "fein": "Bohlen- und Quaderfugen, Torbeschläge, Nieten, Fensterlicht, Glanzpunkte"
+    },
+    "dateien": {
+      "128": "grafik/gebaeude/burg-1-128.png",
+      "16": "grafik/gebaeude/burg-1-16.png",
+      "32": "grafik/gebaeude/burg-1-32.png",
+      "64": "grafik/gebaeude/burg-1-64.png"
+    },
+    "stufen": [
+      {
+        "stufe": 1,
+        "aenderung": "Grundform",
+        "dateien": {
+          "128": "grafik/gebaeude/burg-1-128.png",
+          "16": "grafik/gebaeude/burg-1-16.png",
+          "32": "grafik/gebaeude/burg-1-32.png",
+          "64": "grafik/gebaeude/burg-1-64.png"
+        }
+      },
+      {
+        "stufe": 2,
+        "aenderung": "Stein: Mittelbau aus grauen Quadern, zwei Ecktürme links und rechts mit Zinnen und Scharten",
+        "dateien": {
+          "128": "grafik/gebaeude/burg-2-128.png",
+          "16": "grafik/gebaeude/burg-2-16.png",
+          "32": "grafik/gebaeude/burg-2-32.png",
+          "64": "grafik/gebaeude/burg-2-64.png"
+        }
+      },
+      {
+        "stufe": 3,
+        "aenderung": "Kupfer: kupferne Platten, Ecktürme, dazu ein Obergeschoss mittig mit zwei warm erleuchteten Fenstern; Banner auf dem Obergeschoss",
+        "dateien": {
+          "128": "grafik/gebaeude/burg-3-128.png",
+          "16": "grafik/gebaeude/burg-3-16.png",
+          "32": "grafik/gebaeude/burg-3-32.png",
+          "64": "grafik/gebaeude/burg-3-64.png"
+        }
+      },
+      {
+        "stufe": 4,
+        "aenderung": "Eisen: Stahlplatten, Ecktürme und Obergeschoss, Eisenbänder mit Nieten am Tor, zusätzliche Banner auf beiden Ecktürmen",
+        "dateien": {
+          "128": "grafik/gebaeude/burg-4-128.png",
+          "16": "grafik/gebaeude/burg-4-16.png",
+          "32": "grafik/gebaeude/burg-4-32.png",
+          "64": "grafik/gebaeude/burg-4-64.png"
+        }
+      },
+      {
+        "stufe": 5,
+        "aenderung": "Kristall: blaue Kristallblöcke mit leuchtenden Fugen, Ecktürme und Obergeschoss, Kristallspitzen auf beiden Ecktürmen und eine große in der Mitte statt des Banners, leuchtende Fenster",
+        "dateien": {
+          "128": "grafik/gebaeude/burg-5-128.png",
+          "16": "grafik/gebaeude/burg-5-16.png",
+          "32": "grafik/gebaeude/burg-5-32.png",
+          "64": "grafik/gebaeude/burg-5-64.png"
+        }
+      }
+    ]
+  },
+  {
     "id": "heilplatz",
     "kacheln": {
       "b": 6,

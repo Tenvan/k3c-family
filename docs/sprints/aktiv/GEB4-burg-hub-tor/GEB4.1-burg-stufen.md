@@ -1,6 +1,6 @@
 # GEB4.1 · Burg mit Hub-Stufen 1 bis 5
 
-- **Status:** in Arbeit
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** DEV
@@ -57,5 +57,8 @@ Keine manuellen Prüfungen; die Sichtprüfung gehört GEB4.4.
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+2026-10-16, Claude (autonom, Ralf im Chat).
+- Basis: GEB4 baut auf `sprint/geb3` auf, weil #310 noch offen war (Freigabe Ralf). Der Branch `sprint/geb4` wurde lokal neu von `origin/sprint/geb3` aufgesetzt und der Planungs-Commit übernommen; ein Fahrplan-Konflikt ist gelöst.
+- AC-01/AC-04 umgesetzt: `burg.json` (8 × 9, Vorlage; Grundform = Hub-Stufe 1 Holzburg mit Zinnen, Tor und Banner). Stufe 2 bringt Stein mit zwei Ecktürmen, Stufe 3 Kupfer mit Obergeschoss, erleuchteten Fenstern und Banner obenauf, Stufe 4 Eisen mit Torbändern, Nieten und Bannern auf den Ecktürmen, Stufe 5 Kristall mit drei Kristallspitzen. Der Farbtausch ist identisch zu Mauer und Turm. `burg-<n>-32.png` haben je 256 × 288 px, dazu kommen 16/64/128. Ein zweiter Lauf ist md5-gleich, die älteren PNGs sind unverändert.
+- Regeldatei: § 1 (Maße Burg), § 4 (Bausteine `turm`, `obergeschoss`, `mast`, `banner`).
+- Checks: `task check` und `task check:go` grün. Review (Sonnet-Agent, Skriptprüfung): keine Befunde.
