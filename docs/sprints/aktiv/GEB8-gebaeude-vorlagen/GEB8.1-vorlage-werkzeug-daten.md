@@ -1,6 +1,6 @@
 # GEB8.1 · Vorlage im Werkzeug und in allen acht Gebäude-JSONs
 
-- **Status:** offen
+- **Status:** in Arbeit
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** DEV

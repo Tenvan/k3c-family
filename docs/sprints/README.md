@@ -9,6 +9,7 @@ Die Reihenfolge der Arbeit ist allein der Projekt-Rang: [`../projekte/README.md`
 
 | Sprint | Domäne | Projekt | Thema | Am Ende sichtbar | Ordner |
 |---|---|---|---|---|---|
+| GEB8 | DEV | GEB | Gebäude-Vorlagen in den Daten-JSONs | – | `aktiv/GEB8-gebaeude-vorlagen/` |
 | GR7 | CLI | GRA | Figuren-Lücken, ganzzahlige Skalierung und Schrift | – | `aktiv/GR7-figuren-schrift/` |
 | SO4 | CLI | SND | Musik je Zustand | – | `aktiv/SO4-musik/` |
 
@@ -29,7 +30,6 @@ Abnahmen am Gerät (`Agent: Mensch`) sammelt das Projekt ABN im Sprint HW1: [`..
 | GEB5 | DEV | GEB | Lager, Farm mit Plantage, Kaserne, Treppen | – | Entwurf | `geplant/GEB5-hub-gebaeude-rest/` |
 | GEB6 | DEV | GEB | Natur und Objekte: Bäume, Fels, Erz, Adern, Truhe, Portal, Rekrutierungslager | – | Entwurf | `geplant/GEB6-natur-objekte/` |
 | GEB7 | DEV | GEB | Hintergründe je Biom | – | Entwurf | `geplant/GEB7-hintergruende/` |
-| GEB8 | DEV | GEB | Gebäude-Vorlagen in den Daten-JSONs | – | bereit | `geplant/GEB8-gebaeude-vorlagen/` |
 | GR8 | CLI | GRA | Eigene Figuren für neue Gegner und Grafik-Pipeline mit Ziel-Palette | – | Entwurf | `geplant/GR8-figuren-pipeline/` |
 | PM1 | CLI | LST | Leistung messen: Diagnose-Zeile und Performance-Modus | – | Entwurf | `geplant/PM1-leistung-messen/` |
 | PF1 | CLI | LST | Split-Screen flüssig auf der Xbox | Zwei Spieler im Split-Screen ohne sichtbares Ruckeln auf der Xbox | bereit | `geplant/PF1-splitscreen-leistung/` |

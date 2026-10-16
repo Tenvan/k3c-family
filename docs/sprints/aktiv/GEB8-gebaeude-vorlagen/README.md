@@ -1,14 +1,14 @@
 # GEB8 · DEV · Gebäude-Vorlagen in den Daten-JSONs
 
-- **Status:** geplant
+- **Status:** aktiv
 - **Projekt:** GEB
 - **Domäne:** DEV
 - **Reife:** bereit
 - **Tickets:** B-441
-- **Start-Commit:** – (wird beim Aktivieren gesetzt: `git rev-parse --short origin/develop`)
-- **Spec:** Entwurf
+- **Start-Commit:** 4867877b
+- **Spec:** freigegeben
 - **Revision:** 1
-- **Freigabe:** –
+- **Freigabe:** 2026-10-16, Chat (Ralf), Revision 1
 
 ## Ausgangslage
 
@@ -60,7 +60,7 @@ Domäne DEV: `tools/gebaeude/`, `public/grafik/gebaeude/`, `src/tools/assetvorsc
 
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
-| GEB8.1 | `GEB8.1-vorlage-werkzeug-daten.md` | Umsetzung | autonom | offen |
+| GEB8.1 | `GEB8.1-vorlage-werkzeug-daten.md` | Umsetzung | autonom | in Arbeit |
 | GEB8.2 | `GEB8.2-vorlage-vorschau.md` | Umsetzung | autonom | offen |
 | GEB8.3 | `GEB8.3-review-abnahme.md` | Review | autonom | offen |
 
