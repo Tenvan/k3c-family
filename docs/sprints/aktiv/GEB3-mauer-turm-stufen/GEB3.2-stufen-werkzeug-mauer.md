@@ -1,6 +1,6 @@
 # GEB3.2 · Stufen im Werkzeug und Mauer 1 bis 5
 
-- **Status:** offen
+- **Status:** in Arbeit
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** DEV
