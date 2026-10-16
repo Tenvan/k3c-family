@@ -73,15 +73,6 @@ export const GRAFIK_PACKS: readonly GrafikPack[] = [
     note: '16x16-Symbole in DawnBringers 16-Farben-Palette.',
   },
   {
-    id: 'sunnyland-tall-forest-environment',
-    name: 'SunnyLand Tall Forest Environment',
-    artist: ZUNO,
-    license: 'CC0 1.0',
-    source: 'https://opengameart.org/content/sunnyland-tall-forest-environment',
-    covers: ['Hintergrund Wald (3 Ebenen)', 'Bäume, Felsen, Pflanzen'],
-    note: '16-Bit-Wald im SNES-Stil, Höhe der Hintergründe 240 px, mit Tileset und Props.',
-  },
-  {
     id: 'gotthicvania-swamp',
     name: 'GothicVania Swamp',
     artist: ZUNO,
@@ -89,35 +80,6 @@ export const GRAFIK_PACKS: readonly GrafikPack[] = [
     source: 'https://opengameart.org/content/gotthicvania-swamp',
     covers: ['Hintergrund Sumpf/Wald', 'Bäume, Props'],
     note: 'Sumpf-Umgebung im Gothicvania-Stil; Figuren und Musik nicht übernommen.',
-  },
-  {
-    id: 'forest-background',
-    name: 'Forest Background',
-    artist: ZUNO,
-    license: 'CC0 1.0',
-    source: 'https://opengameart.org/content/forest-background',
-    covers: ['Hintergrund Wald (4 Ebenen)'],
-    note: 'Nahtlos kachelbare Ebenen: hintere, mittlere, vordere Bäume und Lichtstrahlen.',
-  },
-  {
-    id: 'blue-cave-background',
-    name: 'Blue Cave Background',
-    artist: 'unbekannt (die OpenGameArt-Seite nennt keinen Uploader)',
-    license: 'CC0 1.0',
-    source: 'https://opengameart.org/content/blue-cave-background',
-    covers: ['Hintergrund Höhle'],
-    note: 'Ein einzelnes Bild, 400x225.',
-  },
-  {
-    id: 'warped-caves-pixel-art-pack',
-    name: 'Warped Caves Pixel Art Pack',
-    artist: ZUNO,
-    license: 'CC BY 3.0',
-    licenseNote:
-      'Die OpenGameArt-Seite zeigt CC0, die Lizenzdatei im Pack sagt CC-BY 3.0 (Namensnennung, entfällt nur für Patreon-Unterstützer). Wir behandeln es vorsichtig als CC BY 3.0 und nennen den Urheber; B-010 verlangt sonst nur CC0.',
-    source: 'https://opengameart.org/content/warped-caves-pixel-art-pack',
-    covers: ['Hintergrund Höhle (Ebenen, Wände)', 'Props (Tore, Stalaktit, Pflanzen, Steine)'],
-    note: 'Höhle im Metroid-Stil, 240x176-Ebenen, Tileset und Props. Figuren, Demo-Code und Musik nicht übernommen.',
   },
   {
     id: 'sunnyland-fort-of-illusion',
@@ -129,15 +91,6 @@ export const GRAFIK_PACKS: readonly GrafikPack[] = [
     note: 'Wald-Umgebung nach „Castle of Illusion“: Ebenen, Tileset, Turm als Dekoration, Props.',
   },
   // GR2.3 (B-162): Auswahl von 🧑 in GR2.2, Recherche in docs/funde/gr2-grafik-funde.html
-  {
-    id: 'warped-super-grotto-escape-pack',
-    name: 'Warped: Super Grotto Escape Pack',
-    artist: ZUNO,
-    license: 'CC0 1.0',
-    source: 'https://opengameart.org/content/warped-super-grotto-escape-pack',
-    covers: ['Hintergrund Mine (3 Parallax-Ebenen)', 'Tileset, Pflanzen'],
-    note: 'Höhle im 16-Bit-Stil, Ebenen 240 px hoch; die Lizenzdatei im Pack verlangt keine Namensnennung. Aseprite-Quelle nicht übernommen.',
-  },
   {
     id: 'resource-icons',
     name: 'Resource icons',

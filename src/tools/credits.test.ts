@@ -45,7 +45,7 @@ describe('Credits (B-165)', () => {
 
   it('jeder CC-BY-Eintrag zeigt Urheber, Lizenz und Quelle als Link (AC-03)', () => {
     const by = CREDITS.filter(isCcBy);
-    expect(by.map((c) => c.folders[0])).toEqual(expect.arrayContaining(['warped-caves-pixel-art-pack', 'horse', 'elephant', 'lpc-wolf']));
+    expect(by.map((c) => c.folders[0])).toEqual(expect.arrayContaining(['horse', 'elephant', 'lpc-wolf']));
     const rows = renderCredits(CREDITS).split('<tr').filter((r) => r.startsWith(' class="by"'));
     expect(rows).toHaveLength(by.length);
     by.forEach((c, i) => {

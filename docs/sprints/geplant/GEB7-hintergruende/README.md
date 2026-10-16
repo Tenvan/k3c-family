@@ -1,6 +1,6 @@
 # GEB7 · DEV, PLAT, CLI · Hintergründe je Biom
 
-- **Status:** aktiv
+- **Status:** geplant
 - **Projekt:** GEB
 - **Domäne:** DEV, PLAT, CLI
 - **Reife:** bereit
@@ -119,7 +119,7 @@ Keine blockiert die Planung; jede Annahme gilt mit der Freigabe als bestätigt, 
 | GEB7.2 | `GEB7.2-hoehle-mine.md` | Umsetzung | autonom | fertig |
 | GEB7.3 | `GEB7.3-eisenstollen-kristall.md` | Umsetzung | autonom | fertig |
 | GEB7.4 | `GEB7.4-pages-umstellen.md` | Umsetzung | autonom | fertig |
-| GEB7.5 | `GEB7.5-zuordnung-aufraeumen.md` | Umsetzung | autonom | offen |
+| GEB7.5 | `GEB7.5-zuordnung-aufraeumen.md` | Umsetzung | autonom | fertig |
 | GEB7.6 | `GEB7.6-review-abnahme.md` | Review | autonom | offen |
 
 ## Abnahme

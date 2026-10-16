@@ -64,7 +64,7 @@ const worldIds = [
   ...[...nodeKinds].map((k) => `node:${k}`),
   ...Object.keys(sprites.mounts).map((id) => `mount:${id}`),
   ...grafikIndex.filter((e) => e.group === 'icons').map((e) => `icon:${e.file.replace(/^.*\/|\.png$/g, '')}`),
-  ...biomes.map((id) => `bg:${id}`),
+  ...biomes.flatMap((id) => [1, 2, 3].map((n) => `bg:${id}:${n}`)),
 ];
 
 describe('Grafik-Zuordnung (B-161)', () => {

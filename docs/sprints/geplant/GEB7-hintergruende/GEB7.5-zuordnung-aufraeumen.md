@@ -1,6 +1,6 @@
 # GEB7.5 · Hintergründe im Spiel, alte Grafik gelöscht
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** CLI
@@ -68,4 +68,7 @@ Die Suche darf nur Treffer liefern, die zu bewusst behaltenen Dateien gehören (
 
 ## Ergebnis
 
-–
+- **AC-05 umgesetzt, geprüft (Vitest):** `worldSprites.ts` erzeugt per Schleife `bg:<biom>:<n>` (n 1–3) aus `gebaeude/hg-<teil>-<fern|mitte|nah>-32.png` für alle fünf Biome, Zoom 1, Scroll Wald 0,15/0,35/0,5, Höhle 0,1/0,2/0,4, Mine, Eisenstollen, Kristall 0,1/0,25/0,45; unbekanntes Biom `null`. `worldSprites.test.ts` prüft Schlüssel, Zoom, aufsteigenden Scroll, Datei-Muster und Existenz der PNGs; Register: 15 Slots `bg:<biom>:<n>` ersetzen die fünf `bg:<biom>`; `zuordnung-welt.md` (15 Zeilen) und `zuordnung.test.ts` (`bg:${id}:${n}`) stimmen überein. `objectView`/`stageView` unverändert (Zoom und Fluss-Spiegelung rechnen mit der Skalierung der Textur, vom Reviewer gelesen).
+- **AC-06 umgesetzt, geprüft (`git grep`):** gelöscht: `sunnyland-tall-forest-environment` (ganz: GEB6 ersetzte `Plant.png`, danach nutzte nichts mehr den Pack; Frage 8 entfällt), `forest-background`, `blue-cave-background`, `warped-caves-pixel-art-pack`, `warped-super-grotto-escape-pack` (alle ganz; `site/` lädt sie seit GEB7.4 nicht mehr). Vor dem Löschen: Treffer nur in Register, `worldSprites.ts`, `site/` (erledigt), Index, CREDITS, `grafikPacks.ts`, Texten, Zuordnungs-Doku, Credits- und Pack-Test. Mitgezogen: `public/grafik/index.json` (211 → 175 Einträge), `CREDITS.md` (Zeilen und Fließtext), `grafikPacks.ts` (+ `grafikPacks.test.ts`: 29 Packs), `lic.warped` (de, en) samt Absatz in `lizenzen.html`, `credits.test.ts`, `zuordnung.md`, `src/scenes/codemap.md`. Suche nach `forest-background|blue-cave|warped|parallax-forest|startcavebg|lic.warped|sunnyland-tall|Tall Forest|Super Grotto` ohne Treffer außerhalb `docs/sprints`, `docs/backlog`, `docs/funde`.
+- `task check`, `task check:go`, `dev:test` und `task build` grün (`dev:test` nach `npm run build --prefix tools/k3c-dev/frontend`, dem Worktree fehlte `frontend/dist`). Review durch getrennten Agenten: keine schweren Befunde.
+- **Abweichung:** Nach dem Merge von GEB6 (PR #319, auf Anweisung von 🧑 aus dem Entwurf gemergt) steht GEB6 noch `aktiv` (GEB6.6 blockiert, Abnahme AC-03). `tests/planningProjects.test.ts` erlaubt nur einen aktiven Sprint je Projekt: GEB7 liegt deshalb wieder in `geplant/` (wie GEB6 vor dem GEB5-Merge) und wird aktiviert, sobald GEB6 `erledigt` ist. Neue Tickets: keine.
