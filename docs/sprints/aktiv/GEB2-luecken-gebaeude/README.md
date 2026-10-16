@@ -8,7 +8,7 @@
 - **Start-Commit:** 4867877b
 - **Spec:** freigegeben
 - **Revision:** 2
-- **Freigabe:** 2026-10-16, Chat (Ralf), Revision 1
+- **Freigabe:** 2026-10-16, Chat (Ralf), Revision 2
 
 ## Ausgangslage
 
@@ -71,7 +71,7 @@ Ausbaustufen und Level-Paletten der vier Gebäude; Bäume ins Spiel (`node:tree`
 |---|---|---|---|---|
 | GEB2.1 | `GEB2.1-taverne-heilplatz.md` | Umsetzung | autonom | fertig |
 | GEB2.2 | `GEB2.2-schmiede-ruestkammer.md` | Umsetzung | autonom | fertig |
-| GEB2.3 | `GEB2.3-zuordnung-spiel.md` | Umsetzung | autonom | offen |
+| GEB2.3 | `GEB2.3-zuordnung-spiel.md` | Umsetzung | autonom | in Arbeit |
 | GEB2.4 | `GEB2.4-review-abnahme.md` | Review | autonom | offen |
 
 - GEB2.1 (DEV) Taverne und Heilplatz als Daten und PNG, Regeldatei ergänzen (AC-01).

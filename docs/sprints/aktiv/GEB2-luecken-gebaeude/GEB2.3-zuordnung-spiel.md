@@ -1,6 +1,6 @@
 # GEB2.3 · Neue Gebäude-Grafik im Spiel zuordnen
 
-- **Status:** offen
+- **Status:** in Arbeit
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** CLI
