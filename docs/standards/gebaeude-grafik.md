@@ -11,13 +11,15 @@ nur mit Zustimmung von 🧑.
 
 | Klasse | Breite × Höhe (Kacheln) | Beleg |
 |---|---|---|
-| Handelsstand / kleines Gebäude | 6 × 4 | Werkstatt (`workshop`), Taverne (`tavern`), Heilplatz (`healer`), Schmiede (`smithy`), Rüstkammer (`armory`) (GEB2) |
+| Handelsstand / kleines Gebäude | 6 × 4 | Werkstatt (`workshop`), Taverne (`tavern`), Heilplatz (`healer`), Schmiede (`smithy`), Rüstkammer (`armory`) (GEB2); Lager (`storage`), Kaserne (`barracks`) in Stein (GEB5) |
 | Baum (schmal) | 1 × 2,25 | Tanne, Pappel, Birke (GEB1.3) |
 | Mauer (Stufen 1–5) | 1 × 5 | `mauer.json` (GEB3) |
 | Turm (Stufen 1–5) | 3 × 8 | `turm.json` (GEB3) |
 | Hintergrundmauer (Stufen 1–5, kachelbar) | 1 × 4 | `hintergrundmauer.json` (GEB3, B-442) |
 | Burg (Hub-Stufen 1–5) | 8 × 9 | `burg.json` (GEB4) |
 | Tor (Stufen 1–5, Stufe der Mauerlinie) | 2 × 4 | `tor.json` (GEB4) |
+| Farm (Scheune, Holz) | 4 × 3 | `farm.json` (`farm`, GEB5) |
+| Setzling (leerer Plantage-Platz; gewachsen: Pappel) | 1 × 1 | `setzling.json` (`plantation`, GEB5) |
 | weitere Gebäude | legt der jeweilige GEB-Sprint fest, hier nachtragen | B-435 › Notizen |
 
 ## 2. Palette und Licht
@@ -61,7 +63,7 @@ Ein Gebäude ist eine Liste von Rechtecken in Zeichenreihenfolge (hinten zuerst)
 `werkzeug`; Taverne: `kamin`, `dach`, `schindel`, `fenster`, `glas`, `sprosse`, `tuer`, `beschlag`, `stufe`, `ausleger`,
 `kette`, `krug`, `fass`, `reifen`; Heilplatz: `kraut`, `schnur`, `liege`, `kissen`, `decke`, `schale`, `wasser`, `korb`, `flechtung`; Mauer und Turm: `zinne`, `wand`, `bruestung`, `konsole`, `schaft`, `scharte`, `tuerrahmen`, `tuer`, `sockel`,
 `patina`, `band`, `niete`, `glanz`, `kristall`, `aura`, `runenband`, `rune`, `kante` (Hintergrundmauer); Burg: `turm`, `obergeschoss`, `mast`, `banner`; Tor: `sturz`, `fluegel`, `riegel` (Flügel in `stinger` bleiben Holz, nicht im Farbtausch); Schmiede: `haken`, `esse`, `oeffnung`, `glut`, `funke`, `klotz`, `amboss`, `hammer`, `trog`;
-Rüstkammer: `sockel`, `scharte`, `tor`, `band`, `niete`, `staender`, `helm`, `ruestung`, `wappen`, `speer`, `regal`; Bäume: `stamm`, `krone`, `licht`, `strich`, `blatt`. Die Art dient der Lesbarkeit und späteren Zusätzen; gezeichnet wird nur Rechteck und Farbe.
+Rüstkammer: `sockel`, `scharte`, `tor`, `band`, `niete`, `staender`, `helm`, `ruestung`, `wappen`, `speer`, `regal`; Lager: `sack`, `holz`, `erz`; Kaserne: `schwert`; Farm: `luke`, `strebe`, `zaun`, `heu`; Bäume: `stamm`, `krone`, `licht`, `strich`, `blatt`. Die Art dient der Lesbarkeit und späteren Zusätzen; gezeichnet wird nur Rechteck und Farbe.
 
 ## 5. Datenformat
 

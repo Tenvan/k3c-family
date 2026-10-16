@@ -1,6 +1,6 @@
 # GEB5.1 · Lager und Kaserne
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** DEV
@@ -58,5 +58,8 @@ Keine manuellen Prüfungen; die Sichtprüfung gehört GEB5.5.
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+- **AC-01** umgesetzt: `lager.json`, `kaserne.json` mit PNGs 16/32/64/128 in `public/grafik/gebaeude/`; `lager-32.png`, `kaserne-32.png` je 192 × 128 px (`file`).
+- **AC-04** geprüft (Teil Lager, Kaserne): je 6 × 4 mit Vorlage, ohne `stufen`; zweiter `task gebaeude`-Lauf md5-gleich; alle 132 älteren PNGs md5-gleich; beide in `index.json` (Vorschau liest sie generisch, `assetvorschau.ts`); Maße in Regeldatei § 1, neue Bausteine (`sack`, `holz`, `erz`, `schwert`) in § 4.
+- `task check` und `task check:go` grün (erster Lauf fand Material „Stein (Sockel)“ nicht in § 3, korrigiert).
+- Umsetzung im Team: zwei Agenten je Gebäude, Rendern im Scratch-Ordner; Review durch eigenen Agenten ohne schwere Befunde. Manuell geprüft: niemand (Sichtprüfung GEB5.5).
+- Abweichungen: keine; neue Tickets: keine.

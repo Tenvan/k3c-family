@@ -116,6 +116,36 @@
     ]
   },
   {
+    "id": "farm",
+    "kacheln": {
+      "b": 4,
+      "h": 3
+    },
+    "vorlage": {
+      "motiv": "Holzscheune mit Satteldach in der Vorderansicht, großem Scheunentor mit Streben, Holzzaun und Heuballen rechts",
+      "teile": [
+        "Scheunenwand aus Holz links, 3 Kacheln breit, mit Pfosten an beiden Seiten und Bodenbalken",
+        "Satteldach in 4 Stufen oben (Giebel, Spitze bei x 1,5), Traufe dunkel, mit Heuluke im Giebel",
+        "Großes Scheunentor mittig (x 0,75 bis 2,25) aus zwei dunklen Flügeln mit gekreuzten Streben und hellem Rahmen",
+        "Kurzer Holzzaun rechts (x 3 bis 4) mit drei Pfosten und zwei Latten",
+        "Heuballen vor dem Zaun (x 3,2 bis 3,7) mit Bändern"
+      ],
+      "materialien": [
+        "Holz (Wand, Tresen, Gestell)",
+        "Pfosten, Balken",
+        "Dachziegel"
+      ],
+      "stimmung": "Ländlich und ruhig, warme Holztöne, Hof der Bauern",
+      "fein": "Plankenfugen, Schindelfugen, Torfuge, Zaunlicht, Heubänder"
+    },
+    "dateien": {
+      "128": "grafik/gebaeude/farm-128.png",
+      "16": "grafik/gebaeude/farm-16.png",
+      "32": "grafik/gebaeude/farm-32.png",
+      "64": "grafik/gebaeude/farm-64.png"
+    }
+  },
+  {
     "id": "heilplatz",
     "kacheln": {
       "b": 6,
@@ -233,6 +263,74 @@
         }
       }
     ]
+  },
+  {
+    "id": "kaserne",
+    "kacheln": {
+      "b": 6,
+      "h": 4
+    },
+    "vorlage": {
+      "motiv": "Steinerne Kaserne mit Zinnen, breitem Holztor und Wimpel am Dach, daneben ein Waffenständer mit Speeren und Schwertern",
+      "teile": [
+        "Wimpel rot am Mast links auf dem Dach, ca. x 0,6 bis 1,3, y 0 bis 1",
+        "Steinhaus mit Zinnen oben, Quaderfugen und Sockel, x 0,25 bis 4,25, y 1 bis 4",
+        "Zwei Schießscharten links und rechts oben in der Wand",
+        "Breites Holztor mittig, x 1,2 bis 3,3, mit Balkenrahmen, Planken und zwei Eisenbändern mit Nieten",
+        "Waffenständer rechts, x 4,4 bis 5,9, niedrig bis y 2,2, mit zwei Speeren und zwei Schwertern"
+      ],
+      "materialien": [
+        "Stein (Kamin, Esse, Sockel, Stufe)",
+        "Holz (Wand, Tresen, Gestell)",
+        "Pfosten, Balken",
+        "Eisen (Rüstung, Band)",
+        "Metall (Werkzeug)",
+        "Stoff rot"
+      ],
+      "stimmung": "wehrhaft und geordnet, Steinbau passend zur Mauer",
+      "fein": "Quaderfugen, Plankenfugen, Nieten, Tor-Beschlag, Faltenlicht im Wimpel, Waffenglanz"
+    },
+    "dateien": {
+      "128": "grafik/gebaeude/kaserne-128.png",
+      "16": "grafik/gebaeude/kaserne-16.png",
+      "32": "grafik/gebaeude/kaserne-32.png",
+      "64": "grafik/gebaeude/kaserne-64.png"
+    }
+  },
+  {
+    "id": "lager",
+    "kacheln": {
+      "b": 6,
+      "h": 4
+    },
+    "vorlage": {
+      "motiv": "Offenes Lager: Holzschuppen mit Schindeldach auf Steinsockel, im offenen Inneren Kisten, Fässer, Säcke und Rohstoffe",
+      "teile": [
+        "Steinsockel über die ganze Breite am Boden, 0,75 Kacheln hoch, mit Fugen",
+        "Pfosten links und rechts (x 0,25 und 5,5)",
+        "Dunkle Holzrückwand im offenen Inneren",
+        "Kistenstapel links (2 Kisten übereinander, ca. 1 Kachel breit)",
+        "Zwei Fässer mit Reifen (großes, kleines) in der Mitte links",
+        "Drei Säcke, zwei unten und einer oben aufgestapelt, Mitte rechts",
+        "Holzscheit-Stapel und Erzbrocken rechts",
+        "Dreistufiges Schindeldach aus Holz oben, Traufe dunkel"
+      ],
+      "materialien": [
+        "Stein (Kamin, Esse, Sockel, Stufe)",
+        "Holz (Wand, Tresen, Gestell)",
+        "Pfosten, Balken",
+        "Stoff hell",
+        "Metall (Werkzeug)"
+      ],
+      "stimmung": "Ruhig und solide, ein gefüllter Vorrat; passt zur Steinmauer",
+      "fein": "Steinfugen, Schindelfugen, Brettfugen der Rückwand, Kistenkreuze, Fass-Maserung, Sack-Falten, Holzmaserung, Erzglanz"
+    },
+    "dateien": {
+      "128": "grafik/gebaeude/lager-128.png",
+      "16": "grafik/gebaeude/lager-16.png",
+      "32": "grafik/gebaeude/lager-32.png",
+      "64": "grafik/gebaeude/lager-64.png"
+    }
   },
   {
     "id": "mauer",
@@ -413,6 +511,34 @@
       "16": "grafik/gebaeude/schmiede-16.png",
       "32": "grafik/gebaeude/schmiede-32.png",
       "64": "grafik/gebaeude/schmiede-64.png"
+    }
+  },
+  {
+    "id": "setzling",
+    "kacheln": {
+      "b": 1,
+      "h": 1
+    },
+    "vorlage": {
+      "motiv": "Junger Setzling auf einem leeren Plantage-Platz, aus dem später die Pappel wächst",
+      "teile": [
+        "Stützstab rechts aus Holz",
+        "Grüner Trieb mittig mit drei Blättern",
+        "Bindung zwischen Trieb und Stab",
+        "Erdhügel am Boden, rechts im Schatten"
+      ],
+      "materialien": [
+        "Laub (Pappel, Birke)",
+        "Pfosten, Balken"
+      ],
+      "stimmung": "frisch gepflanzt, wächst nach",
+      "fein": "Lichtkanten an Blättern und Stab"
+    },
+    "dateien": {
+      "128": "grafik/gebaeude/setzling-128.png",
+      "16": "grafik/gebaeude/setzling-16.png",
+      "32": "grafik/gebaeude/setzling-32.png",
+      "64": "grafik/gebaeude/setzling-64.png"
     }
   },
   {
