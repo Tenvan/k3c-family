@@ -1,6 +1,6 @@
 # GEB3.6 · Hintergrundmauer 1 bis 5 als Grafik
 
-- **Status:** offen
+- **Status:** in Arbeit
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** DEV

@@ -8,7 +8,7 @@
 - **Start-Commit:** 670eace6
 - **Spec:** freigegeben
 - **Revision:** 2
-- **Freigabe:** 2026-10-16, Chat (Ralf), Revision 1
+- **Freigabe:** 2026-10-16, Chat (Ralf), Revision 2 inkl. Annahmen zur Hintergrundmauer
 
 ## Ausgangslage
 
@@ -86,7 +86,7 @@ Tor (GEB4); Burg und Hub-Stufen (GEB4); Stufen für Werkstatt, Taverne usw. (fol
 | GEB3.3 | `GEB3.3-turm-stufen.md` | Umsetzung | autonom | fertig |
 | GEB3.4 | `GEB3.4-zuordnung-aufraeumen.md` | Umsetzung | autonom | fertig |
 | GEB3.5 | `GEB3.5-review-abnahme.md` | Review | autonom | offen |
-| GEB3.6 | `GEB3.6-hintergrundmauer-grafik.md` | Umsetzung | autonom | offen |
+| GEB3.6 | `GEB3.6-hintergrundmauer-grafik.md` | Umsetzung | autonom | in Arbeit |
 | GEB3.7 | `GEB3.7-hintergrundmauer-spiel.md` | Umsetzung | autonom | offen |
 
 Reihenfolge: GEB3.1–3.4, dann GEB3.6 und GEB3.7 (Revision 2), zuletzt das Review GEB3.5 (abhängig von GEB3.7).
