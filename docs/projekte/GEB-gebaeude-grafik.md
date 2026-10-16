@@ -15,7 +15,8 @@ In Abarbeitungs-Reihenfolge; der erste nicht erledigte Sprint ist der nächste. 
 | Sprint | Thema | Status |
 |---|---|---|
 | GEB1 | Grundregeln für Gebäude-Grafik und Werkstatt | erledigt |
-| GEB2 | Gebäude ohne Grafik: Taverne, Heilplatz, Schmiede, Rüstkammer | geplant |
+| GEB2 | Gebäude ohne Grafik: Taverne, Heilplatz, Schmiede, Rüstkammer | erledigt |
+| GEB8 | Gebäude-Vorlagen in den Daten-JSONs | erledigt |
 | GEB3 | Mauer und Turm, Stufen 1 bis 5 | geplant |
 | GEB4 | Burg und Hub-Stufen 1 bis 5, Tor | geplant |
 | GEB5 | Lager, Farm mit Plantage, Kaserne, Treppen | geplant |
@@ -39,3 +40,5 @@ Umfang und Ist-Stand je Slot: B-435 › Notizen. Alle sieben Sprints sind als En
 - GEB7 Hintergründe je Biom (optional, nur wenn 🧑 will)
 
 Rang 3 (vor GRA und SND) von 🧑 am 2026-10-15 im Chat gesetzt.
+
+**Anforderung an jeden GEB-Sprint (🧑, 2026-10-16, Chat):** Alte Grafik, die das Gebäudesystem im Spiel ersetzt, wird im selben Sprint aufgeräumt und gelöscht: PNG unter `public/grafik/`, Einträge in `public/grafik/index.json`, Register-Wahl in `data/assets.json`, Zuordnungs-Doku (`docs/assets/zuordnung-*.md`), Test-Fixtures und Mocks, CREDITS-Zeilen (wird ein Pack leer, fällt er ganz weg). Gelöscht wird nur, was keine andere Stelle mehr nutzt (vorher per Suche belegen). Wer einen Sprint bereit macht, nimmt das als Anforderung und Kriterium auf.

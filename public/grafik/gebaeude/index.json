@@ -6,11 +6,60 @@
       "b": 1,
       "h": 2.25
     },
+    "vorlage": {
+      "motiv": "Birke mit weißem Stamm und lockerer runder Krone, 1 Kachel breit, als Teil einer überlappenden Baumreihe",
+      "teile": [
+        "Runde, lockere Krone in der oberen Hälfte mit einzelnen dunklen Blättern",
+        "Lichtkante links oben an der Krone",
+        "Weißer Stamm mittig bis zum Boden mit dunklen Querstrichen"
+      ],
+      "materialien": [
+        "Laub (Pappel, Birke)",
+        "Birkenrinde"
+      ],
+      "stimmung": "licht und leicht",
+      "fein": "Querstriche auf der Rinde"
+    },
     "dateien": {
       "128": "grafik/gebaeude/birke-128.png",
       "16": "grafik/gebaeude/birke-16.png",
       "32": "grafik/gebaeude/birke-32.png",
       "64": "grafik/gebaeude/birke-64.png"
+    }
+  },
+  {
+    "id": "heilplatz",
+    "kacheln": {
+      "b": 6,
+      "h": 4
+    },
+    "vorlage": {
+      "motiv": "Offener Heilplatz unter hellem Stoff-Vordach mit grünem Kreuz",
+      "teile": [
+        "Rückwand aus Stoff im Schatten zwischen zwei Pfosten",
+        "Helles Vordach über die ganze Breite (ca. 4,25 Kacheln) mit Volant und grünem Kreuz mittig",
+        "Kräuterbündel hängen unter dem Dach",
+        "Liege links mit Kissen und blauer Decke",
+        "Wasserschale am Boden rechts der Mitte, vor dem rechten Pfosten",
+        "Kräuterkorb rechts neben dem Pfosten",
+        "Trockengestell ganz rechts mit hängenden Kräutern"
+      ],
+      "materialien": [
+        "Stoff hell",
+        "Pfosten, Balken",
+        "Kräuter",
+        "Stoff blau (Decke)",
+        "Wasser (Schale, Trog)",
+        "Metall (Werkzeug)"
+      ],
+      "stimmung": "ruhig, sauber, heilend; Kreuz bewusst grün, kein Schutzzeichen",
+      "fein": "Faltenlicht, Stofffalten der Rückwand, Kräuterbündel, Flechtung, Wasserspiegel"
+    },
+    "dateien": {
+      "128": "grafik/gebaeude/heilplatz-128.png",
+      "16": "grafik/gebaeude/heilplatz-16.png",
+      "32": "grafik/gebaeude/heilplatz-32.png",
+      "64": "grafik/gebaeude/heilplatz-64.png"
     }
   },
   {
@@ -20,11 +69,94 @@
       "b": 1,
       "h": 2.25
     },
+    "vorlage": {
+      "motiv": "Hohe schmale Pappel, 1 Kachel breit, als Teil einer überlappenden Baumreihe",
+      "teile": [
+        "Spindelförmige Krone fast über die ganze Höhe, oben und unten spitz zulaufend",
+        "Lichtflecken links, Schatten rechts",
+        "Schmaler Stamm unten mittig"
+      ],
+      "materialien": [
+        "Laub (Pappel, Birke)"
+      ],
+      "stimmung": "helles, frisches Grün",
+      "fein": "keine"
+    },
     "dateien": {
       "128": "grafik/gebaeude/pappel-128.png",
       "16": "grafik/gebaeude/pappel-16.png",
       "32": "grafik/gebaeude/pappel-32.png",
       "64": "grafik/gebaeude/pappel-64.png"
+    }
+  },
+  {
+    "id": "ruestkammer",
+    "kacheln": {
+      "b": 6,
+      "h": 4
+    },
+    "vorlage": {
+      "motiv": "Wuchtige Rüstkammer: Holzaufbau auf Steinsockel unter Schieferdach",
+      "teile": [
+        "Schieferdach in Stufen über die ganze Breite (ca. 5,75 Kacheln), Lichtkante links",
+        "Holzaufbau mit Planken und Eckpfosten",
+        "Steinsockel unten über die ganze Breite",
+        "Rüstungsständer links mit Helm und Brustpanzer",
+        "Zwei Schießscharten neben dem Tor",
+        "Tor mittig mit zwei Eisenbändern und Nieten",
+        "Rotes Wappenschild mit Krone rechts an der Wand",
+        "Zwei Speere am Regal rechts"
+      ],
+      "materialien": [
+        "Schiefer (Dach)",
+        "Holz (Wand, Tresen, Gestell)",
+        "Pfosten, Balken",
+        "Stein (Kamin, Esse, Sockel, Stufe)",
+        "Eisen (Rüstung, Band)",
+        "Wappen"
+      ],
+      "stimmung": "wehrhaft, kühl, kühles Blau gegen rotes Wappen",
+      "fein": "Schindel-Fugen, Planken- und Steinfugen, Nieten, Helmschlitz, Wappenzeichen, Speerspitzen-Licht"
+    },
+    "dateien": {
+      "128": "grafik/gebaeude/ruestkammer-128.png",
+      "16": "grafik/gebaeude/ruestkammer-16.png",
+      "32": "grafik/gebaeude/ruestkammer-32.png",
+      "64": "grafik/gebaeude/ruestkammer-64.png"
+    }
+  },
+  {
+    "id": "schmiede",
+    "kacheln": {
+      "b": 6,
+      "h": 4
+    },
+    "vorlage": {
+      "motiv": "Schmiede unter Holz-Vordach mit Esse und Glut links, Amboss in der Mitte",
+      "teile": [
+        "Holz-Rückwand mit Planken rechts unter dem Vordach, Werkzeug an Haken",
+        "Zwei Pfosten und ein Brettervordach über die ganze Breite",
+        "Kamin aus Stein links, ragt durch das Vordach",
+        "Gemauerte Esse links unten mit dunkler Öffnung, Glut und Funken",
+        "Amboss auf Holzklotz in der Mitte, Hammer darauf",
+        "Wassertrog rechts vorn"
+      ],
+      "materialien": [
+        "Holz (Wand, Tresen, Gestell)",
+        "Pfosten, Balken",
+        "Stein (Kamin, Esse, Sockel, Stufe)",
+        "Glut",
+        "Eisen (Rüstung, Band)",
+        "Wasser (Schale, Trog)"
+      ],
+      "stimmung": "heiß und rußig, Glut als einziger Farbtupfer",
+      "fein": "Werkzeug an der Wand, Steinfugen, Funken, Hammer, Trogreifen"
+    },
+    "dateien": {
+      "128": "grafik/gebaeude/schmiede-128.png",
+      "16": "grafik/gebaeude/schmiede-16.png",
+      "32": "grafik/gebaeude/schmiede-32.png",
+      "64": "grafik/gebaeude/schmiede-64.png"
     }
   },
   {
@@ -34,6 +166,19 @@
       "b": 1,
       "h": 2.25
     },
+    "vorlage": {
+      "motiv": "Schmale Tanne, 1 Kachel breit, als Teil einer überlappenden Baumreihe",
+      "teile": [
+        "Kegelförmige Krone in Stufen, oben spitz, unten fast kachelbreit",
+        "Lichtkante links an jeder Stufe, Schattenkante rechts",
+        "Kurzer Stamm unten mittig, kaum sichtbar"
+      ],
+      "materialien": [
+        "Nadeln (Tanne)"
+      ],
+      "stimmung": "dunkler Nadelwald, kühl",
+      "fein": "keine"
+    },
     "dateien": {
       "128": "grafik/gebaeude/tanne-128.png",
       "16": "grafik/gebaeude/tanne-16.png",
@@ -42,10 +187,66 @@
     }
   },
   {
+    "id": "taverne",
+    "kacheln": {
+      "b": 6,
+      "h": 4
+    },
+    "vorlage": {
+      "motiv": "Fachwerk-Taverne mit rotem Satteldach, warmem Fensterlicht und Bierkrug-Schild",
+      "teile": [
+        "Kamin aus Stein rechts hinter dem First, ragt über das Dach",
+        "Satteldach in Stufen von der Traufe (ca. 5,5 Kacheln) zum First, Lichtkante links",
+        "Putzwand mit Fachwerk: Schwelle, zwei Riegel, vier Ständer",
+        "Zwei Fenster links und rechts mit warmem Licht, Sprossenkreuz und Sims",
+        "Tür mittig aus Planken mit Messingbeschlag, Steinstufe davor",
+        "Fass vor der Wand rechts neben der Tür",
+        "Hängeschild mit Bierkrug am rechten Giebel an einem Ausleger"
+      ],
+      "materialien": [
+        "Putz (Fachwerk)",
+        "Pfosten, Balken",
+        "Dachziegel",
+        "Fensterlicht",
+        "Stein (Kamin, Esse, Sockel, Stufe)",
+        "Holz (Wand, Tresen, Gestell)"
+      ],
+      "stimmung": "einladend, warmes Licht",
+      "fein": "Schindel-Fugen, Sprossen, Türfugen, Beschlag, Fassreifen, Kette, Krug-Henkel"
+    },
+    "dateien": {
+      "128": "grafik/gebaeude/taverne-128.png",
+      "16": "grafik/gebaeude/taverne-16.png",
+      "32": "grafik/gebaeude/taverne-32.png",
+      "64": "grafik/gebaeude/taverne-64.png"
+    }
+  },
+  {
     "id": "werkstatt",
     "kacheln": {
       "b": 6,
       "h": 4
+    },
+    "vorlage": {
+      "motiv": "Offener Handelsstand der Werkstatt mit gestreiftem Tuchdach und Werkzeuggestell rechts",
+      "teile": [
+        "Holzwand mit senkrechten Planken hinter dem Stand, 4 Kacheln breit",
+        "Pfosten links und rechts, Balken oben über die ganze Standbreite",
+        "Tuchdach aus 8 Bahnen im Wechsel rot und hell, mit Volant darunter",
+        "Wandschild mittig mit Hammer-Zeichen",
+        "Tresen über die ganze Breite vorn, mit heller Oberkante und Planken",
+        "Kiste rechts auf dem Tresen, Werkzeug links darauf",
+        "Gestell rechts neben dem Stand (ca. 1,5 Kacheln breit) mit Hämmern oben und Bögen unten, abholbereit"
+      ],
+      "materialien": [
+        "Holz (Wand, Tresen, Gestell)",
+        "Pfosten, Balken",
+        "Stoff rot",
+        "Stoff hell",
+        "Metall (Werkzeug)"
+      ],
+      "stimmung": "Markttag, warm und handwerklich, Stilvorlage aller Gebäude",
+      "fein": "Plankenfugen, Faltenlicht im Tuch, Werkzeug auf Tresen und Gestell, Schild-Zeichen"
     },
     "dateien": {
       "128": "grafik/gebaeude/werkstatt-128.png",

@@ -1,9 +1,9 @@
 import { describe, expect, it } from 'vitest';
-import { baumReihe, figureCard, gebaeudeKarten, licenseFlag, parseQuery, resolveSlot, SCENES, slotsOf, type AssetSlot } from './assetvorschauLogic';
+import { baumReihe, figureCard, gebaeudeKarten, vorlageZeilen, licenseFlag, parseQuery, resolveSlot, SCENES, slotsOf, type AssetSlot, type GebaeudeEintrag } from './assetvorschauLogic';
 
 const farm: AssetSlot = {
   id: 'farm', art: 'grafik', kategorie: 'gebaeude', beschreibung: 'Farm',
-  wahl: [{ datei: 'grafik/gothicvania-town/props-einzeln/house-a.png', ausschnitt: { x: 0, y: 0, w: 64, h: 48 } }, { datei: 'grafik/gothicvania-town/props-einzeln/house-b.png' }],
+  wahl: [{ datei: 'grafik/gothicvania-town/props-einzeln/house-a.png', ausschnitt: { x: 0, y: 0, w: 64, h: 48 } }, { datei: 'grafik/gothicvania-town/props-einzeln/house-c.png' }],
 };
 const tavern: AssetSlot = { id: 'tavern', art: 'grafik', kategorie: 'gebaeude', beschreibung: 'Taverne', wahl: [] };
 const coin: AssetSlot = { id: 'sfx:coin', art: 'sound', kategorie: 'sfx', beschreibung: 'Münze', bus: 'sfx', wahl: [{ datei: 'audio/atlas.ogg', sprite: 'coin' }] };
@@ -93,5 +93,22 @@ describe('Asset-Vorschau: Baum-Reihe (GEB1/AC-05)', () => {
 
   it('ohne Bäume keine Reihe', () => {
     expect(baumReihe([])).toEqual([]);
+  });
+});
+
+describe('Asset-Vorschau: Gebäude-Vorlage (GEB8/AC-03)', () => {
+  const eintrag = (vorlage?: GebaeudeEintrag['vorlage']): GebaeudeEintrag => ({ id: 'taverne', kacheln: { b: 6, h: 4 }, dateien: {}, vorlage });
+
+  it('Motiv als Titel, Teile als Zeilen, danach Materialien, Stimmung und fein', () => {
+    const v = vorlageZeilen(eintrag({ motiv: 'Taverne', teile: ['Dach', 'Tür'], materialien: ['Putz (Fachwerk)', 'Dachziegel'], stimmung: 'warm', fein: 'Fugen' }));
+    expect(v).toEqual({ titel: 'Taverne', zeilen: ['Dach', 'Tür', 'Materialien: Putz (Fachwerk), Dachziegel', 'Stimmung: warm', 'fein: Fugen'] });
+  });
+
+  it('leere Zusatzfelder entfallen', () => {
+    expect(vorlageZeilen(eintrag({ motiv: 'Tanne', teile: ['Kegel'] }))).toEqual({ titel: 'Tanne', zeilen: ['Kegel'] });
+  });
+
+  it('ohne Vorlage nichts', () => {
+    expect(vorlageZeilen(eintrag())).toBeNull();
   });
 });

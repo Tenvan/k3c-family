@@ -3,7 +3,7 @@ import { GROUND_Y, UNIT_PX } from '../core/constants';
 import { currentLanguage, nameOf, t } from '../core/texts';
 import { BUILDINGS, TROOPS } from '../model/data';
 import type { Site, World } from '../model/types';
-import { BUILDING_TEXTURES, STAIRS_UP_TILES, hubTexture, siteTexture } from './buildingSprites';
+import { BUILDING_TEXTURES, STAIRS_UP_TILES, hubTexture, siteTexture, textureScale } from './buildingSprites';
 import { fontStyle } from './fontRules';
 import { drawSiteStatus, siteStatus, statusKey } from './siteStatusView';
 import { canAfford } from './viewRules';
@@ -123,7 +123,7 @@ function showPicture(scene: Phaser.Scene, v: View, s: Site): number | null {
     picture.setVisible(true);
     return picture.getBounds().height;
   }
-  picture.setTexture(key, frame).setVisible(true);
+  picture.setTexture(key, frame).setScale(textureScale(key)).setVisible(true);
   return picture.displayHeight;
 }
 

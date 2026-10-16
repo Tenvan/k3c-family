@@ -7,7 +7,7 @@ const TOWN = 'grafik/gothicvania-town/props-einzeln';
 
 const CATALOG: CatalogAsset[] = [
   { datei: `${TOWN}/house-a.png`, art: 'grafik', pack: 'gothicvania-town', gruppe: 'props-einzeln', w: 168, h: 183, lizenz: 'CC0 1.0', urheber: 'Luis Zuno (ansimuz)' },
-  { datei: `${TOWN}/house-b.png`, art: 'grafik', pack: 'gothicvania-town', gruppe: 'props-einzeln', w: 210, h: 244, lizenz: 'CC0 1.0', urheber: 'Luis Zuno (ansimuz)' },
+  { datei: `${TOWN}/house-c.png`, art: 'grafik', pack: 'gothicvania-town', gruppe: 'props-einzeln', w: 221, h: 183, lizenz: 'CC0 1.0', urheber: 'Luis Zuno (ansimuz)' },
   { datei: `${TOWN}/crate-stack.png`, art: 'grafik', pack: 'gothicvania-town', gruppe: 'props-einzeln', w: 73, h: 68, lizenz: 'CC0 1.0' },
   { datei: 'grafik/plants/flower.png', art: 'grafik', pack: 'plants', w: 32, h: 32, lizenz: 'CC BY-NC 4.0', kennzeichen: 'NC' },
   { datei: 'grafik/lpc/tree.png', art: 'grafik', pack: 'lpc', w: 96, h: 128, lizenz: 'CC BY-SA 3.0', kennzeichen: 'SA' },
@@ -23,7 +23,7 @@ const slot = (id: string, art: AssetSlot['art'], kategorie: string, beschreibung
 
 function initial(): AssetSlot[] {
   return [
-    slot('farm', 'grafik', 'gebaeude', 'Gebäude: farm', [{ datei: `${TOWN}/house-a.png`, ausschnitt: { x: 0, y: 0, w: 168, h: 183 } }, { datei: `${TOWN}/house-b.png` }]),
+    slot('farm', 'grafik', 'gebaeude', 'Gebäude: farm', [{ datei: `${TOWN}/house-a.png`, ausschnitt: { x: 0, y: 0, w: 168, h: 183 } }, { datei: `${TOWN}/house-c.png` }]),
     slot('storage', 'grafik', 'gebaeude', 'Gebäude: storage', [{ datei: `${TOWN}/crate-stack.png` }]),
     slot('tavern', 'grafik', 'gebaeude', 'Gebäude: tavern', []),
     slot('mount:horse', 'grafik', 'figuren', 'Reittiere: mount:horse', [{ datei: 'sprites/horse/idle.png', sheet: 'horse' }]),

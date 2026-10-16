@@ -1,12 +1,11 @@
 import { describe, expect, it } from 'vitest';
-import { BUILDING_TEXTURES, STAIRS_UP_TILES, hubTexture, siteTexture } from './buildingSprites';
+import { BUILDING_TEXTURES, STAIRS_UP_TILES, hubTexture, siteTexture, textureScale } from './buildingSprites';
 
 /** Nur die Pfade, nichts wird geladen */
 const FILES = Object.keys(import.meta.glob('../../public/grafik/**/*.png'));
 
 describe('Gebäude-Grafik (GR3.1)', () => {
   it('gebaute Gebäude mit Zuordnung bekommen ihre Grafik', () => {
-    expect(siteTexture('workshop', 'built')).toBe('grafik:workshop');
     expect(siteTexture('gate', 'built')).toBe('grafik:gate');
     expect(siteTexture('wall', 'built')).toBe('grafik:wall-2');
   });
@@ -20,7 +19,18 @@ describe('Gebäude-Grafik (GR3.1)', () => {
 
   it('Baustellen und Lücken zeichnen den Platzhalter (AC-03)', () => {
     for (const state of ['unpaid', 'waitingMaterial', 'waitingWorker'] as const) expect(siteTexture('workshop', state)).toBeNull();
-    for (const kind of ['tavern', 'healer', 'smithy', 'armory'] as const) expect(siteTexture(kind, 'built')).toBeNull();
+  });
+
+  it('Gebäude aus tools/gebaeude: eigene 32-px-Grafik in Maßstab 1, Packs ×2 (GEB2 AC-02)', () => {
+    const neu = { workshop: 'werkstatt', tavern: 'taverne', healer: 'heilplatz', smithy: 'schmiede', armory: 'ruestkammer' } as const;
+    for (const [kind, id] of Object.entries(neu)) {
+      const key = siteTexture(kind as keyof typeof neu, 'built');
+      expect(key).not.toBeNull();
+      expect(BUILDING_TEXTURES[key!]).toBe(`gebaeude/${id}-32.png`);
+      expect(textureScale(key!)).toBe(1);
+    }
+    expect(textureScale('grafik:barracks')).toBe(2);
+    expect(textureScale('grafik:wall-2')).toBe(2);
   });
 
   it('Material-Stufen wählen das Sprite je Stufe, Lücken sind null (AC-04)', () => {
@@ -40,7 +50,7 @@ describe('Gebäude-Grafik (GR3.1)', () => {
   });
 
   it('jeder gewählte Schlüssel ist ladbar', () => {
-    const kinds = ['wall', 'tower', 'gate', 'workshop', 'storage', 'farm', 'barracks', 'stairsUp', 'stairsDown'] as const;
+    const kinds = ['wall', 'tower', 'gate', 'workshop', 'tavern', 'healer', 'smithy', 'armory', 'storage', 'farm', 'barracks', 'stairsUp', 'stairsDown'] as const;
     const keys = [...kinds.map((k) => siteTexture(k, 'built')), ...[1, 2, 3, 4, 5].map((s) => siteTexture('tower', 'built', s)), hubTexture(2)];
     for (const key of keys.filter((k) => k !== null)) expect(BUILDING_TEXTURES).toHaveProperty([key]);
   });
