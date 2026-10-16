@@ -8,7 +8,7 @@
 - **Branch:** geb2/3-zuordnung-spiel
 - **Abhängig von:** GEB2.2
 - **Tickets:** B-435
-- **Kriterien:** AC-02
+- **Kriterien:** AC-02, AC-04
 
 ## Ziel
 
@@ -28,6 +28,7 @@ Werkstatt, Taverne, Heilplatz, Schmiede und Rüstkammer zeigen im Spiel gebaut d
 - `src/scenes/buildingSprites.ts`, `src/scenes/buildingSprites.test.ts`, `src/scenes/siteView.ts`
 - `data/assets.json` (nur die fünf Slots)
 - `docs/assets/zuordnung-objekte.md` (falls dort die Gebäude-Zuordnung steht)
+- AC-04, Löschen von `house-b.png`: `public/grafik/gothicvania-town/props-einzeln/house-b.png`, `public/grafik/index.json`, CREDITS des Packs, `src/tools/assetvorschauLogic.test.ts`, `tools/k3c-dev/app_assets_test.go`, `tools/k3c-dev/frontend/src/api/mockAssets.ts` (nur den Verweis ersetzen oder entfernen)
 - `docs/sprints/`, `docs/backlog/`
 
 ## Nicht-Ziele
@@ -39,14 +40,16 @@ Keine Bäume (`node:tree`, B-438), kein Umbau anderer Gebäude auf Maßstab 1, k
 1. `sprint/geb2` auschecken, `Status: in Arbeit`, committen, pushen.
 2. Test zuerst in `buildingSprites.test.ts`: `siteTexture('tavern'|'healer'|'smithy'|'armory'|'workshop', 'built')` liefert einen Schlüssel auf `gebaeude/<id>-32.png`; Maßstab dieser Schlüssel 1, z. B. `grafik:barracks` weiter 2.
 3. `BUILDING_TEXTURES`, `BASE` und Maßstab-Funktion umsetzen; `siteView.ts` nutzt den Maßstab beim Zeigen.
-4. Register `data/assets.json` für die fünf Slots nach Kontext.
-5. Code-Review der geänderten Dateien, Ergebnis ausfüllen, `Status: fertig`, ein Commit, push.
+4. Register `data/assets.json` für die fünf Slots nach Kontext; bei `workshop` nur der neue Eintrag.
+5. AC-04: `rg -n "house-b" --glob '!docs/sprints/erledigt/**' --glob '!.claude/**'` → jeden Verweis entfernen oder ersetzen (Test-Fixtures auf eine andere vorhandene Datei umstellen), PNG löschen; Suche erneut ohne Treffer. Nutzt eine weitere Stelle die Datei im Spiel, nicht löschen, sondern als Ticket melden.
+6. Code-Review der geänderten Dateien, Ergebnis ausfüllen, `Status: fertig`, ein Commit, push.
 
 ## Fertig, wenn
 
 - [ ] AC-02: Vitest in `buildingSprites.test.ts` prüft Zuordnung der fünf Slots und Maßstab 1 bzw. 2.
 - [ ] AC-02: `data/assets.json` hat für die fünf Slots Präferenz 1 = neue PNG; `assets.test.ts` grün.
-- [ ] `task check` grün.
+- [ ] AC-04: `house-b.png` gelöscht, Suche nach `house-b` ohne Treffer außerhalb `docs/sprints/erledigt/`.
+- [ ] `task check` und `task check:go` grün.
 
 ## Prüfen
 

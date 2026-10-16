@@ -7,7 +7,7 @@
 - **Tickets:** B-435
 - **Start-Commit:** 4867877b
 - **Spec:** freigegeben
-- **Revision:** 1
+- **Revision:** 2
 - **Freigabe:** 2026-10-16, Chat (Ralf), Revision 1
 
 ## Ausgangslage
@@ -28,6 +28,7 @@ B-435 › Anforderungen; Regeln aus `docs/standards/gebaeude-grafik.md` (GEB1). 
 - Alle vier Gebäude haben die Maße der Klasse „kleines Gebäude“: **6 × 4 Kacheln** wie die Werkstatt (Entscheidung 🧑 2026-10-16, Chat). Unterschiede entstehen über Bausteine und Farben aus der Materialsprache.
 - Erkennbarkeit am Motiv: Taverne = Holzhaus mit Schild (Krug), Fenster mit warmem Licht, Fass; Heilplatz = offenes Zelt/Vordach mit hellem Stoff, Liege, Kräuterkorb; Schmiede = Esse mit Glut, Amboss, Kamin; Rüstkammer = Steinsockel, Ständer mit Rüstung und Schild. Neue Materialien (Stein, Glut, Glas) werden mit DB32-Farben in die Regeldatei eingetragen.
 - **Zuordnung ins Spiel** (Entscheidung 🧑 2026-10-16, Chat): Die Slots `tavern`, `healer`, `smithy`, `armory` und `workshop` zeigen im Spiel die neuen Grafiken in der Spiel-Dichte **32 px je Kachel ×1** (Regeldatei § 7). Die übrigen Gebäude bleiben bei ihrem Pack-Maßstab (×2).
+- **Aufräumen** (🧑 2026-10-16, Chat; gilt für alle GEB-Sprints, Projekt GEB › Notizen): Alte Grafik, die das Gebäudesystem im Spiel ersetzt, wird im selben Sprint gelöscht, samt Einträgen in `public/grafik/index.json`, Register, Zuordnungs-Doku, Test-Fixtures/Mocks und CREDITS, sofern keine andere Stelle sie nutzt. In GEB2 betrifft das die alte Werkstatt-Grafik `gothicvania-town/props-einzeln/house-b.png` (Präferenz 2 im Slot `workshop` entfällt damit).
 
 ## Nicht-Ziele
 
@@ -56,6 +57,7 @@ Ausbaustufen und Level-Paletten der vier Gebäude; Bäume ins Spiel (`node:tree`
 - **AC-01** Taverne, Heilplatz, Schmiede und Rüstkammer liegen als Daten-JSON und PNG unter `public/grafik/gebaeude/` und entsprechen den Regeln aus GEB1 (6 × 4 Kacheln, DB32, Licht links oben, `fein`-Details); zweiter `task gebaeude`-Lauf ändert nichts; sie erscheinen im Vorschau-Streifen „Neue Gebäude (GEB)“; neue Materialien stehen in `docs/standards/gebaeude-grafik.md`.
 - **AC-02** Die Slots `tavern`, `healer`, `smithy`, `armory` und `workshop` sind im Register (`data/assets.json`, Präferenz 1) und in `src/scenes/buildingSprites.ts` den neuen 32-px-PNGs zugeordnet; das Spiel zeichnet sie gebaut in Maßstab 1 (32 px je Kachel), alle anderen Gebäude unverändert ×2; Vitest prüft Zuordnung und Maßstab.
 - **AC-03** 🧑 hat die vier Gebäude am Bildschirm abgenommen, in der Vorschau und gebaut im Spiel.
+- **AC-04** Ersetzte alte Grafik ist gelöscht: `house-b.png` ist mit allen Verweisen (Grafik-Index, Register, Zuordnungs-Doku, Tests, Mocks, CREDITS) entfernt, belegt durch eine Suche ohne Treffer außerhalb von `docs/sprints/erledigt/`; `task check` und `task check:go` grün.
 
 ## Offene Fragen
 
@@ -74,7 +76,7 @@ Ausbaustufen und Level-Paletten der vier Gebäude; Bäume ins Spiel (`node:tree`
 
 - GEB2.1 (DEV) Taverne und Heilplatz als Daten und PNG, Regeldatei ergänzen (AC-01).
 - GEB2.2 (DEV) Schmiede und Rüstkammer als Daten und PNG, Stein und Glut in die Regeldatei (AC-01).
-- GEB2.3 (CLI) Zuordnung der fünf Slots in Register und Client, Maßstab 1 im Spiel (AC-02).
+- GEB2.3 (CLI) Zuordnung der fünf Slots in Register und Client, Maßstab 1 im Spiel; alte Werkstatt-Grafik löschen (AC-02, AC-04).
 - GEB2.4 Review und Abnahme durch 🧑 in Vorschau und Spiel (AC-03, alle).
 
 ## Abnahme
