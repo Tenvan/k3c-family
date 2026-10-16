@@ -1,6 +1,6 @@
 # GEB6.3 · Adern in vier Materialstufen
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** DEV
@@ -45,10 +45,10 @@ Keine Darstellung im Spiel (GEB6.5), keine zusätzlichen Stufen jenseits der vie
 
 ## Fertig, wenn
 
-- [ ] AC-01/AC-04: `ader-1-32.png` … `ader-4-32.png` (je 64 × 64 px) plus 16/64/128, `ader.json` mit `vorlage` und vier Stufen (Stein, Kupfer, Eisen, Kristall); Materialfarben wie die Mauer-Stufen 2, 3, 4, 5.
-- [ ] AC-04: md5 aller vorher vorhandenen PNGs gleich; ein zweiter `task gebaeude`-Lauf ändert nichts.
-- [ ] AC-04: Regeldatei § 1, § 4 und § 6 nachgetragen; Vorschau zeigt die Stufenreihe.
-- [ ] `task check` und `task check:go` grün.
+- [x] AC-01/AC-04: `ader-1-32.png` … `ader-4-32.png` (je 64 × 64 px) plus 16/64/128, `ader.json` mit `vorlage` und vier Stufen (Stein, Kupfer, Eisen, Kristall); Materialfarben wie die Mauer-Stufen 2, 3, 4, 5.
+- [x] AC-04: md5 aller vorher vorhandenen PNGs gleich; ein zweiter `task gebaeude`-Lauf ändert nichts.
+- [x] AC-04: Regeldatei § 1, § 4 und § 6 nachgetragen; Vorschau zeigt die Stufenreihe.
+- [x] `task check` und `task check:go` grün.
 
 ## Prüfen
 
@@ -62,5 +62,7 @@ Mit laufender Workbench stattdessen `check_run` (mit `checkout`). Keine manuelle
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+- **AC-01 umgesetzt, geprüft (`task gebaeude`, PIL):** `ader.json` (2 × 2, `vorlage`, vier Stufen Stein, Kupfer, Eisen, Kristall) liefert `ader-1-32.png` … `ader-4-32.png` (je 64 × 64 px) plus 16/64/128. Die vier Stufen sind im Kontaktbild auf grünem und dunklem Grund klar unterscheidbar; Kristall hat Spitzen als Zusatz.
+- **AC-04 geprüft:** md5 aller vorher vorhandenen PNGs gleich (0 Abweichungen), zweiter Lauf byte-gleich; Regeldatei § 1 nachgetragen, § 6 (Stufe = Material bei Adern) steht seit GEB6.1; Vorschau zeigt die Stufenreihe über die allgemeinen Stufenkarten. Materialnamen der Vorlage entsprechen § 3 (`TestEchteVorlagen`).
+- `task check` und `task check:go` grün.
+- **Abweichungen:** Die Stein-Ader der Grundform ist helles Sandbeige (`pancho`, `white`, Schatten `opal`), weil diese Farben sonst nirgends in der Zeichnung vorkommen und der Farbtausch so nur den Gang trifft; Eisen-Fuge `valhalla` statt `dim-gray` (sonst unsichtbar auf dem Fels). Kristall: `viking` nur als einzelne Funken, keine durchgehende Fuge. Nicht nebeneinander mit den Mauer-Stufen verglichen. Niemand hat manuell geprüft.

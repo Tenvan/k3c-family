@@ -1,5 +1,78 @@
 [
   {
+    "id": "ader",
+    "klasse": "welt",
+    "kacheln": {
+      "b": 2,
+      "h": 2
+    },
+    "vorlage": {
+      "motiv": "Ein Felsbuckel mit einer breiten, zackigen Erzader, die diagonal von links unten nach rechts oben quer durch den Fels läuft; eine unendliche Rohstoffquelle in Höhle und Mine.",
+      "teile": [
+        "Felsbuckel (Stein)",
+        "Erzader (Streifen, Farbe je Stufe/Material)",
+        "Lichtkante der Ader",
+        "Schattenkante der Ader"
+      ],
+      "materialien": [
+        "Fels (Felsen, Erzbrocken) = Stein",
+        "Kupfer (Mauer-, Turmstufe 3)",
+        "Eisen hell (Mauer-, Turmstufe 4)",
+        "Kristall (Mauer-, Turmstufe 5)"
+      ],
+      "stimmung": "Schwerer grauer Fels, durchzogen von einem hellen Gang, der je Material anders leuchtet.",
+      "fein": "Felsrisse, Funkelpunkte und Patina-Tupfer"
+    },
+    "dateien": {
+      "128": "grafik/gebaeude/ader-1-128.png",
+      "16": "grafik/gebaeude/ader-1-16.png",
+      "32": "grafik/gebaeude/ader-1-32.png",
+      "64": "grafik/gebaeude/ader-1-64.png"
+    },
+    "stufen": [
+      {
+        "stufe": 1,
+        "aenderung": "Grundform",
+        "dateien": {
+          "128": "grafik/gebaeude/ader-1-128.png",
+          "16": "grafik/gebaeude/ader-1-16.png",
+          "32": "grafik/gebaeude/ader-1-32.png",
+          "64": "grafik/gebaeude/ader-1-64.png"
+        }
+      },
+      {
+        "stufe": 2,
+        "aenderung": "Kupfer: Ader in Kupfer mit grüner Patina",
+        "dateien": {
+          "128": "grafik/gebaeude/ader-2-128.png",
+          "16": "grafik/gebaeude/ader-2-16.png",
+          "32": "grafik/gebaeude/ader-2-32.png",
+          "64": "grafik/gebaeude/ader-2-64.png"
+        }
+      },
+      {
+        "stufe": 3,
+        "aenderung": "Eisen: Ader in hellem Eisen",
+        "dateien": {
+          "128": "grafik/gebaeude/ader-3-128.png",
+          "16": "grafik/gebaeude/ader-3-16.png",
+          "32": "grafik/gebaeude/ader-3-32.png",
+          "64": "grafik/gebaeude/ader-3-64.png"
+        }
+      },
+      {
+        "stufe": 4,
+        "aenderung": "Kristall: Ader in Kristallblau mit leuchtender Fuge und Kristallspitzen",
+        "dateien": {
+          "128": "grafik/gebaeude/ader-4-128.png",
+          "16": "grafik/gebaeude/ader-4-16.png",
+          "32": "grafik/gebaeude/ader-4-32.png",
+          "64": "grafik/gebaeude/ader-4-64.png"
+        }
+      }
+    ]
+  },
+  {
     "id": "birke-2",
     "klasse": "baum",
     "kacheln": {
