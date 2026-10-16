@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import type { AssetSlot } from '../api';
-import { addChoice, countStatus, filterSlots, move, previewSize, removeChoice, sceneUrl, withCut } from './assets';
+import { addChoice, countStatus, filterSlots, move, previewSize, removeChoice, sceneLayout, SCENE, typen, typOf, withCut } from './assets';
 
 const farm: AssetSlot = {
   id: 'farm', art: 'grafik', kategorie: 'gebaeude', beschreibung: 'Gebäude: farm', status: 'zugeordnet',
@@ -47,10 +47,29 @@ describe('Assets: Präferenz und Ausschnitt (B-298/AC-02, AC-03)', () => {
   });
 });
 
-describe('Assets: Mini-Szene (B-298/AC-07)', () => {
-  it('baut die Adresse der Dev-Seite, ohne Vite keine', () => {
-    expect(sceneUrl('http://localhost:5173/', farm, 1)).toBe('http://localhost:5173/assetvorschau.html?szene=gebaeude&slot=farm');
-    expect(sceneUrl('http://localhost:5173/', farm, 2)).toBe('http://localhost:5173/assetvorschau.html?szene=gebaeude&slot=farm&wahl=2');
-    expect(sceneUrl('', farm, 1)).toBe('');
+describe('Assets: Typ-Filter', () => {
+  const gegner: AssetSlot = { id: 'greed', art: 'grafik', kategorie: 'figuren', beschreibung: 'Gegner: greed', status: 'zugeordnet', wahl: [] };
+  const monarch: AssetSlot = { id: 'm2', art: 'grafik', kategorie: 'figuren', beschreibung: 'Monarch 2', status: 'zugeordnet', wahl: [] };
+  it('leitet den Typ aus der Beschreibung ab', () => {
+    expect(typOf(farm)).toBe('Gebäude');
+    expect(typOf(monarch)).toBe('Sonstige');
+    expect(typOf({ beschreibung: 'Hub-Stufen: 1' })).toBe('Hub-Stufen');
+    expect(typen([farm, tavern, gegner, monarch])).toEqual(['Gebäude', 'Gegner', 'Sonstige']);
+  });
+  it('filtert nach Typ', () => {
+    expect(filterSlots([farm, gegner], { art: 'grafik', kategorie: '', typ: 'Gegner', status: '', query: '' })).toEqual([gegner]);
+  });
+});
+
+describe('Assets: Mini-Szene', () => {
+  it('ordnet Zuordnungen im Spielmaßstab auf einer Bodenlinie an', () => {
+    const l = sceneLayout([{ w: 32, h: 160 }, { w: 16, h: 16 }]);
+    expect(l.items[0]).toEqual({ x: SCENE.pad, y: l.floor - 320, w: 64, h: 320 });
+    expect(l.items[1]!.x).toBe(SCENE.pad + 64 + SCENE.gap);
+    expect(l.items[1]!.y + l.items[1]!.h).toBe(l.floor);
+    expect(l.h).toBe(l.floor + SCENE.ground);
+  });
+  it('bleibt ohne Bilder gültig', () => {
+    expect(sceneLayout([]).items).toEqual([]);
   });
 });

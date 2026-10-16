@@ -16,6 +16,8 @@ export interface SlotFilter {
   art: AssetKind;
   /** leer = alle Kategorien der Art */
   kategorie: string;
+  /** Typ laut `typOf`; leer oder fehlend = alle */
+  typ?: string;
   /** leer = alle */
   status: '' | AssetStatus;
   query: string;
@@ -25,11 +27,20 @@ export interface SlotFilter {
 export function filterSlots(slots: readonly AssetSlot[], f: SlotFilter): AssetSlot[] {
   const words = f.query.toLowerCase().split(/\s+/).filter(Boolean);
   return slots.filter((s) => {
-    if (s.art !== f.art || (f.kategorie && s.kategorie !== f.kategorie) || (f.status && s.status !== f.status)) return false;
+    if (s.art !== f.art || (f.kategorie && s.kategorie !== f.kategorie) || (f.typ && typOf(s) !== f.typ) || (f.status && s.status !== f.status)) return false;
     const hay = [s.id, s.beschreibung, ...s.wahl.map((c) => c.datei)].join(' ').toLowerCase();
     return words.every((w) => hay.includes(w));
   });
 }
+
+/** Typ eines Slots: Text vor dem Doppelpunkt der Beschreibung („Gebäude: wall“ → Gebäude, „Monarch 2“ → Monarch), sonst „Sonstige“. */
+export function typOf(s: Pick<AssetSlot, 'beschreibung'>): string {
+  const head = s.beschreibung.split(':')[0]?.trim() ?? '';
+  return s.beschreibung.includes(':') && head.length > 0 && head.length <= 24 ? head.replace(/\s+\d+$/, '') : 'Sonstige';
+}
+
+/** Verschiedene Typen der Slots, sortiert */
+export const typen = (slots: readonly AssetSlot[]): string[] => [...new Set(slots.map(typOf))].sort((a, b) => a.localeCompare(b, 'de'));
 
 /** Zahl je Status für die Kopfzeile */
 export function countStatus(slots: readonly AssetSlot[]): Record<AssetStatus, number> {
@@ -70,12 +81,18 @@ export function previewSize(cut: AssetRect): { w: number; h: number; unitsW: num
   return { w, h, unitsW: Math.round((w / UNIT_PX) * 10) / 10, unitsH: Math.round((h / UNIT_PX) * 10) / 10 };
 }
 
-/** Adresse der Mini-Szene (B-299) für Slot und Präferenz; ohne Vite leer. */
-export function sceneUrl(preview: string, slot: AssetSlot, pref: number): string {
-  if (!preview) return '';
-  const q = new URLSearchParams({ szene: slot.kategorie, slot: slot.id });
-  if (pref > 1) q.set('wahl', String(pref));
-  return `${preview}assetvorschau.html?${q}`;
+/** Anordnung der Mini-Szene: Zuordnungen nebeneinander auf einer Bodenlinie im Spielmaßstab (Quellmaße in px). */
+export const SCENE = { pad: 16, gap: 24, ground: 28, label: 22 } as const;
+export function sceneLayout(sizes: readonly { w: number; h: number }[]): { items: { x: number; y: number; w: number; h: number }[]; w: number; h: number; floor: number } {
+  const tall = Math.max(0, ...sizes.map((s) => s.h * GAME_SCALE));
+  const floor = SCENE.label + SCENE.pad + tall;
+  let x = SCENE.pad;
+  const items = sizes.map((s) => {
+    const it = { x, y: floor - s.h * GAME_SCALE, w: s.w * GAME_SCALE, h: s.h * GAME_SCALE };
+    x += it.w + SCENE.gap;
+    return it;
+  });
+  return { items, w: Math.max(x - SCENE.gap + SCENE.pad, 2 * SCENE.pad), h: floor + SCENE.ground, floor };
 }
 
 /** Adresse einer Datei unter public/ über den Vite-Dienst; ohne Vite leer. */
