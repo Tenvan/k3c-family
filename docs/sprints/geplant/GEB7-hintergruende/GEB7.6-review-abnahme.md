@@ -1,6 +1,6 @@
 # GEB7.6 · Review und Abnahme
 
-- **Status:** offen
+- **Status:** blockiert
 - **Typ:** Review
 - **Agent:** autonom
 - **Domäne:** CLI
@@ -54,4 +54,9 @@ Manuelle Prüfung im Browser-Pane nur mit Freigabe von 🧑 für diesen Lauf.
 
 ## Ergebnis
 
-–
+- **Prüfen:** `check_run` `task:check`, `task:check:go`, `dev:test` und `task build` grün (nach `git merge origin/develop` mit GEB6; Worktree brauchte `npm ci` und `npm run build` im k3c-dev-Frontend).
+- **Review:** `git diff origin/develop...HEAD` von einem vom Schreiber getrennten Reviewer gelesen: keine schweren Befunde (ältere PNGs unverändert, nur `A` für 15 × `hg-*` in 16 und 32 px; gelöschte Grafik nirgends mehr genutzt; kein `Math.random`; `BACKGROUNDS` deckt alle fünf Biome).
+- **AC-01 bis AC-07 geprüft:** Nachweise aus GEB7.1–GEB7.5 (Session-Ergebnisse).
+- **AC-08 blockiert (🧑):** Abnahme von Vorschau, Spiel und Pages-Seite steht aus; niemand außer Agenten hat Bilder gesehen. Claude hat die Vorschau im Browser nur technisch abgefragt (Streifen „Hintergründe“, zehn Figuren) und den Wald im Screenshot gesehen, nicht abgenommen. Ticket B-450; Session `blockiert`, PR als Entwurf ohne Auto-Merge (Arbeitsweise › Wenn etwas nicht passt).
+- **Abweichungen:** GEB7 liegt wieder in `geplant/` (GEB6 noch `aktiv`, ein aktiver Sprint je Projekt); PR #319 (GEB6) wurde auf Anweisung von 🧑 aus dem Entwurf gemergt.
+- Neue Tickets: B-450.

@@ -145,6 +145,7 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-443](B-443-dev-logs-scrollen-liste.md) | DEV | Problem | mittel | offen | – | Auf der Log-Seite von k3c-dev scrollt nur die Log-Liste, nicht die ganze Seite |
 | [B-444](B-444-vite-ports-plus-zehn.md) | DEV | Problem | mittel | offen | – | Vite-Ports von Spiel und k3c-dev liegen 10 höher und kollidieren nicht mit dem Vite-Standardport |
 | [B-445](B-445-dev-splitter-assets-mcp.md) | DEV | Idee | mittel | offen | – | Assets- und MCP-Seite von k3c-dev haben ziehbare Splitter zwischen den Panelen |
+| [B-450](B-450-geb7-abnahme-sichtpruefung.md) | CLI | Frage | hoch | offen | GEB7 | GEB7: Abnahme von Vorschau und Spiel durch Ralf |
 
 ## Archiv
 
