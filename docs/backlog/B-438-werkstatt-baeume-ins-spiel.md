@@ -24,35 +24,40 @@ Eingeplant 2026-10-16 (Chat, Ralf) in GEB6 (Natur und Objekte), weil GEB6 die B�
 
 ## Beteiligte und Zielgruppen
 
-Wer spielt, entwickelt, betreibt oder entscheidet (🧑)? Keine Verantwortlichen erfinden.
+Spieler sehen im Spiel Bäume im Stil der neuen Gebäude-Grafik; 🧑 entscheidet über die Spec und nimmt das Spiel ab; ein Agent (Domäne CLI) setzt es in Sprint GEB6 (Session GEB6.5) um.
 
 ## Anforderungen
 
-- Was das Ergebnis können muss, auch Qualität (deterministisch, 2+ Spieler, Leistung).
+- `node:tree` zeigt die Bäume aus `public/grafik/gebaeude/` (Tanne, Pappel, Birke und die Formen aus GEB6.1) in Maßstab 1 (32 px je Kachel); Art und Form wählt eine reine Funktion aus der Position des Baums (deterministisch, kein `Math.random()`), den Look das Biom.
+- Mehrere Bäume dicht beieinander wirken als überlappende Reihe (Abstand ½ Kachel wie in der Vorschau), wo das Level sie so setzt; die Platzierung selbst bleibt unverändert.
+- Plantage-Bäume bleiben die Pappel aus GEB5.
+- Die alte Baum-Grafik (`gotthicvania-swamp/umgebung/trees.png`) wird nach der Aufräum-Regel des Projekts GEB gelöscht, sofern nichts anderes sie nutzt.
+- Gilt mit mehreren Spielern und auf der Xbox gleich (nur Darstellung, keine Rechenlast im Client über das Auswählen hinaus).
 
 ## Nicht-Ziele
 
-Was ausdrücklich nicht dazugehört, mit Ticket-Nummer, falls es später kommt.
+Werkstatt (erledigt in GEB2.3); Fels, Erz, Busch und die übrigen Objekte (GEB6, eigene Kriterien dort); neue Level-Regeln oder eine andere Platzierung der Bäume; Animationen; Änderungen an `engine/`.
 
 ## Regeln und Einschränkungen
 
-Regeln aus `CLAUDE.md`, Entscheidungen (`docs/decisions/`), Domäne, Komplexitäts-Budget, Verträge (Protokoll, Spielstand).
+Domäne CLI (`src/scenes/`, `data/assets.json`); Spiel-Dichte 32 px ×1 (`docs/standards/gebaeude-grafik.md` § 7); der Client würfelt nicht; Datei ≤ 400, Funktion ≤ 60 Zeilen; Reihenfolge: nach GEB5 (Plantage-Pappel) und nach den Baum-Formen aus GEB6.1.
 
 ## Beispiele
 
-Typische Situation → erwartetes Ergebnis. Passt nichts: `nicht relevant` mit Grund.
+- Wald-Chunk mit fünf Bäumen → fünf Bäume, je nach Position Tanne, Pappel oder Birke in einer ihrer Formen, bei jedem Start gleich.
+- Plantage mit Farm → die Bäume auf den Plätzen sind Pappeln (GEB5).
 
 ## Ausnahme- und Fehlerfälle
 
-Ungültige oder seltene Situation → gewolltes Verhalten. Passt nichts: `nicht relevant` mit Grund.
+Grafik nicht geladen → bisherige Platzhalter-Form (Stamm und Dreieck); Biom ohne Look → Look des Waldes; markierter oder abgebauter Baum → Fahne und Balken sitzen über dem neuen, niedrigeren Bild.
 
 ## Akzeptanzkriterien
 
-- **AC-01** Prüfbar formuliert: Test, Befehl, Datei oder Beobachtung am TV mit erwartetem Ergebnis.
+- **AC-01** Im Spiel zeigt `node:tree` Bäume aus `public/grafik/gebaeude/` in Maßstab 1; die Wahl von Art, Form und Look ist eine reine Funktion von Position und Biom mit Vitest (gleiche Eingabe → gleiche Wahl, Plantage-Bäume → Pappel); die alte Baum-Grafik ist gelöscht (Suche ohne Treffer außerhalb historischer Doku); `task check` grün.
 
 ## Offene Fragen
 
-Entscheidung, betroffener Umfang, wer entscheidet (🧑). Sonst `keine`.
+Keine eigenen; die Annahmen zu Baum-Formen und Biom-Looks stehen in GEB6 › Offene Fragen (2, 6) und gelten mit der Freigabe des Sprints.
 
 ## Notizen
 
