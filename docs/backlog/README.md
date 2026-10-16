@@ -138,6 +138,7 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-425](B-425-fullsave-ausbauregeln.md) | SRV | Problem | mittel | offen | – | Der Voll-Ausbau-Stand hält die Ausbauregeln des Spiels ein |
 | [B-426](B-426-fullsave-review-kleinigkeiten.md) | SRV | Schuld | niedrig | offen | – | Kleine Befunde aus dem Review von SV1 sind erledigt |
 | [B-435](B-435-gebaeude-grafik-per-prompt.md) | DEV | Idee | mittel | eingeplant | GEB1 | Gebäude und Strukturen entstehen im Asset-Manager aus Beschreibung und Prompt |
+| [B-436](B-436-plan-create-entwurf-zeilen.md) | DEV | Problem | niedrig | offen | – | plan_create scheitert an Platzhalter-Zeilen „– (Entwurf)“ in der Session-Tabelle |
 
 ## Archiv
 

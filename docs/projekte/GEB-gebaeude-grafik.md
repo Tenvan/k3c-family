@@ -14,7 +14,7 @@ In Abarbeitungs-Reihenfolge; der erste nicht erledigte Sprint ist der nächste. 
 
 | Sprint | Thema | Status |
 |---|---|---|
-| GEB1 | Grundregeln für Gebäude-Grafik und Werkstatt | geplant |
+| GEB1 | Grundregeln für Gebäude-Grafik und Werkstatt | aktiv |
 | GEB2 | Gebäude ohne Grafik: Taverne, Heilplatz, Schmiede, Rüstkammer | geplant |
 | GEB3 | Mauer und Turm, Stufen 1 bis 5 | geplant |
 | GEB4 | Burg und Hub-Stufen 1 bis 5, Tor | geplant |
