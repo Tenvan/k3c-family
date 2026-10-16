@@ -1,6 +1,6 @@
 # GEB6.5 · Natur und Objekte im Spiel, alte Grafik gelöscht
 
-- **Status:** offen
+- **Status:** in Arbeit
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** CLI
