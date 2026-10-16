@@ -1,9 +1,12 @@
 package main
 
 import (
+	"context"
 	"encoding/json"
 	"os"
 	"path/filepath"
+
+	"github.com/wailsapp/wails/v2/pkg/runtime"
 )
 
 // Vorgabe und Minimum der Fenstergröße (B-064 › Fenster).
@@ -23,9 +26,8 @@ type windowState struct {
 }
 
 // loadWindow liest den gemerkten Zustand. ok ist false, wenn die Datei fehlt oder kaputt ist; dann gilt die Vorgabe
-// und die Position bleibt Wails überlassen. Zu kleine Maße werden aufs Minimum, negative Positionen auf 0 gehoben.
-// ponytail: prüft nicht, ob die Position auf einem noch angeschlossenen Bildschirm liegt (Wails rechnet relativ zum
-// aktuellen Bildschirm); bei Bedarf mit runtime.ScreenGetAll abgleichen.
+// und die Position bleibt Wails überlassen. Zu kleine Maße werden aufs Minimum gehoben. Negative Positionen bleiben
+// (Bildschirm links oder oberhalb des Hauptbildschirms); ob der Bildschirm noch da ist, prüft onScreen beim Start.
 func loadWindow(path string) (w windowState, ok bool) {
 	w = windowState{Width: defaultWidth, Height: defaultHeight}
 	data, err := os.ReadFile(path)
@@ -33,8 +35,15 @@ func loadWindow(path string) (w windowState, ok bool) {
 		return windowState{Width: defaultWidth, Height: defaultHeight}, false
 	}
 	w.Width, w.Height = max(w.Width, minWidth), max(w.Height, minHeight)
-	w.X, w.Y = max(w.X, 0), max(w.Y, 0)
 	return w, true
+}
+
+// placeWindow setzt die absolute Position (x, y). Wails liest sie absolut, setzt sie aber relativ zum Arbeitsbereich
+// des Bildschirms, auf dem das Fenster gerade steht; der Zug auf (0, 0) misst diesen Versatz.
+func placeWindow(ctx context.Context, x, y int) {
+	runtime.WindowSetPosition(ctx, 0, 0)
+	ox, oy := runtime.WindowGetPosition(ctx)
+	runtime.WindowSetPosition(ctx, x-ox, y-oy)
 }
 
 // saveWindow schreibt den Zustand; der Ordner wird bei Bedarf angelegt.
