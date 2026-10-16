@@ -19,7 +19,7 @@ In Abarbeitungs-Reihenfolge; der erste nicht erledigte Sprint ist der nächste. 
 | GEB8 | Gebäude-Vorlagen in den Daten-JSONs | erledigt |
 | GEB3 | Mauer und Turm, Stufen 1 bis 5 | erledigt |
 | GEB4 | Burg und Hub-Stufen 1 bis 5, Tor | erledigt |
-| GEB5 | Lager, Farm mit Plantage, Kaserne, Treppen | aktiv |
+| GEB5 | Lager, Farm mit Plantage, Kaserne, Treppen | erledigt |
 | GEB6 | Natur und Objekte: Bäume, Fels, Erz, Adern, Truhe, Portal, Rekrutierungslager | geplant |
 | GEB7 | Hintergründe je Biom | geplant |
 

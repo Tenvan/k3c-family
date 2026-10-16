@@ -146,7 +146,6 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-444](B-444-vite-ports-plus-zehn.md) | DEV | Problem | mittel | offen | – | Vite-Ports von Spiel und k3c-dev liegen 10 höher und kollidieren nicht mit dem Vite-Standardport |
 | [B-445](B-445-dev-splitter-assets-mcp.md) | DEV | Idee | mittel | offen | – | Assets- und MCP-Seite von k3c-dev haben ziehbare Splitter zwischen den Panelen |
 | [B-448](B-448-planning-testrepo-entwurf-sprint.md) | DEV | Problem | mittel | offen | – | dev:test TestRepo scheitert an Entwurfs-Sprints ohne Sessions (GEB7) |
-| [B-449](B-449-geb5-abnahme-sichtpruefung.md) | CLI | Frage | hoch | offen | – | GEB5: Abnahme von Vorschau und Spiel durch Ralf |
 
 ## Archiv
 
@@ -412,3 +411,4 @@ Zeile in diesen Abschnitt.
 | [B-441](archiv/B-441-gebaeude-json-beschreibung.md) | DEV | Idee | hoch | erledigt | GEB8 | Gebäude-JSONs tragen ihre Gebäude-Vorlage (`vorlage`) |
 | [B-437](archiv/B-437-katalog-eigene-gebaeude.md) | DEV | Problem | mittel | erledigt | GEB3 | Asset-Katalog von k3c-dev kennt eigene Gebäude-Grafik nicht |
 | [B-442](archiv/B-442-hintergrundmauer-typ-b.md) | CLI | Idee | hoch | erledigt | GEB3 | Hintergrundmauern verbinden die Mauern einer Seite wie in Kingdom Two Crowns |
+| [B-449](archiv/B-449-geb5-abnahme-sichtpruefung.md) | CLI | Frage | hoch | erledigt | – | GEB5: Abnahme von Vorschau und Spiel durch Ralf |

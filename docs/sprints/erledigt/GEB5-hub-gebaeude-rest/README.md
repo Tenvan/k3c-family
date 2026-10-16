@@ -1,6 +1,6 @@
 # GEB5 · DEV, CLI · Lager, Farm mit Plantage, Kaserne, Treppen
 
-- **Status:** aktiv
+- **Status:** erledigt
 - **Projekt:** GEB
 - **Domäne:** DEV, CLI
 - **Reife:** bereit
@@ -104,7 +104,7 @@ Keine blockiert die Freigabe; jede Annahme gilt mit der Freigabe als bestätigt,
 | GEB5.2 | `GEB5.2-farm-plantage.md` | Umsetzung | autonom | fertig |
 | GEB5.3 | `GEB5.3-treppen.md` | Umsetzung | autonom | fertig |
 | GEB5.4 | `GEB5.4-zuordnung-aufraeumen.md` | Umsetzung | autonom | fertig |
-| GEB5.5 | `GEB5.5-review-abnahme.md` | Review | autonom | blockiert |
+| GEB5.5 | `GEB5.5-review-abnahme.md` | Review | autonom | fertig |
 
 - GEB5.1 (DEV) Lager und Kaserne, je 6 × 4 (AC-01, AC-04).
 - GEB5.2 (DEV) Farm 4 × 3 und Setzling 1 × 1 für die Plantage (AC-01, AC-02, AC-04).
@@ -115,6 +115,6 @@ Keine blockiert die Freigabe; jede Annahme gilt mit der Freigabe als bestätigt,
 ## Abnahme
 
 - 2026-10-16 Review (GEB5.5): AC-01, AC-02, AC-04, AC-05, AC-06 geprüft laut Ergebnissen GEB5.1–GEB5.4; keine schweren Befunde, keine Befunde behoben.
-- **AC-03 offen:** Abnahme von Vorschau und Spiel durch 🧑 steht aus (GEB5.5 `blockiert`); PR als Entwurf, Sprint bleibt aktiv.
-- Version: `v… vorgeschlagen` erst nach der Abnahme (Minor, Wirkung im Spiel).
-- Neue Tickets: B-448 (dev:test `TestRepo` an Entwurfs-Sprint GEB7).
+- AC-03 abgenommen durch 🧑 (Ralf, Chat „abnahme“, 2026-10-16).
+- Version: v… vorgeschlagen (Minor, Wirkung im Spiel durch neue Gebäude-Grafik und Plantage); gesetzt erst nach Bestätigung durch 🧑.
+- Neue Tickets: B-448 (dev:test `TestRepo` an Entwurfs-Sprint GEB7), B-449 (Abnahme, erledigt).
