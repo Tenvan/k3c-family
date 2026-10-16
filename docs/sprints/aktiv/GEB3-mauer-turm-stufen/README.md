@@ -1,14 +1,14 @@
 # GEB3 · DEV, CLI · Mauer und Turm, Stufen 1 bis 5
 
-- **Status:** geplant
+- **Status:** aktiv
 - **Projekt:** GEB
 - **Domäne:** DEV, CLI
 - **Reife:** bereit
 - **Tickets:** B-435, B-437
-- **Start-Commit:** – (wird beim Aktivieren gesetzt: `git rev-parse --short origin/develop`)
-- **Spec:** Entwurf
+- **Start-Commit:** 670eace6
+- **Spec:** freigegeben
 - **Revision:** 1
-- **Freigabe:** –
+- **Freigabe:** 2026-10-16, Chat (Ralf), Revision 1
 
 ## Ausgangslage
 
@@ -74,7 +74,7 @@ Tor (GEB4); Burg und Hub-Stufen (GEB4); Stufen für Werkstatt, Taverne usw. (fol
 
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
-| GEB3.1 | `GEB3.1-katalog-eigene-grafik.md` | Umsetzung | autonom | offen |
+| GEB3.1 | `GEB3.1-katalog-eigene-grafik.md` | Umsetzung | autonom | in Arbeit |
 | GEB3.2 | `GEB3.2-stufen-werkzeug-mauer.md` | Umsetzung | autonom | offen |
 | GEB3.3 | `GEB3.3-turm-stufen.md` | Umsetzung | autonom | offen |
 | GEB3.4 | `GEB3.4-zuordnung-aufraeumen.md` | Umsetzung | autonom | offen |

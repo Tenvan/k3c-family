@@ -1,6 +1,6 @@
 # GEB3.1 · Asset-Katalog kennt eigene Gebäude-Grafik
 
-- **Status:** offen
+- **Status:** in Arbeit
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** DEV
