@@ -1,6 +1,6 @@
 # GEB5.3 · Treppe hoch und Treppe runter
 
-- **Status:** offen
+- **Status:** in Arbeit
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** DEV
