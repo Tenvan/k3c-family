@@ -62,7 +62,7 @@ func TestAssetsImportTool(t *testing.T) {
 		t.Fatal(text)
 	}
 	hits, _ := assets.HitsOf(root, "farm")
-	src := filepath.Join(root, "public", "grafik", "town", "house-a.png")
+	src := filepath.Join(root, "public", "grafik", "town", "well.png")
 	text, isErr := callText(t, cs, "assets_import", map[string]any{"id": "farm", "hit": hits[0].ID, "path": src})
 	if isErr || !strings.Contains(text, "grafik/kandidaten/farm-haus.png importiert") {
 		t.Fatalf("assets_import: %q", text)

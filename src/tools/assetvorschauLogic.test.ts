@@ -3,7 +3,7 @@ import { baumReihe, figureCard, gebaeudeKarten, kachelAnzahl, stufenKarten, vorl
 
 const farm: AssetSlot = {
   id: 'farm', art: 'grafik', kategorie: 'gebaeude', beschreibung: 'Farm',
-  wahl: [{ datei: 'grafik/gothicvania-town/props-einzeln/house-a.png', ausschnitt: { x: 0, y: 0, w: 64, h: 48 } }, { datei: 'grafik/gothicvania-town/props-einzeln/house-c.png' }],
+  wahl: [{ datei: 'grafik/gothicvania-town/props-einzeln/well.png', ausschnitt: { x: 0, y: 0, w: 64, h: 48 } }, { datei: 'grafik/gothicvania-town/props-einzeln/wagon.png' }],
 };
 const tavern: AssetSlot = { id: 'tavern', art: 'grafik', kategorie: 'gebaeude', beschreibung: 'Taverne', wahl: [] };
 const coin: AssetSlot = { id: 'sfx:coin', art: 'sound', kategorie: 'sfx', beschreibung: 'Münze', bus: 'sfx', wahl: [{ datei: 'audio/atlas.ogg', sprite: 'coin' }] };

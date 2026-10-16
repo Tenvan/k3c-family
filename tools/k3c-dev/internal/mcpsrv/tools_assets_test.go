@@ -28,7 +28,7 @@ func assetRepo(t *testing.T) string {
 			t.Fatal(err)
 		}
 	}
-	img := filepath.Join(root, "public", "grafik", "town", "house-a.png")
+	img := filepath.Join(root, "public", "grafik", "town", "well.png")
 	if err := os.MkdirAll(filepath.Dir(img), 0o755); err != nil {
 		t.Fatal(err)
 	}
@@ -53,13 +53,13 @@ func TestAssetsTools(t *testing.T) {
 	}{
 		{"assets_list", map[string]any{}, "farm gebaeude luecke · Farm → –"},
 		{"assets_list", map[string]any{"art": "sound"}, "1 Asset-Slots\nsfx:coin sfx luecke"},
-		{"assets_catalog", map[string]any{"query": "town"}, "grafik/town/house-a.png · town  · 64×48 · CC BY-NC 4.0 [NC]"},
+		{"assets_catalog", map[string]any{"query": "town"}, "grafik/town/well.png · town  · 64×48 · CC BY-NC 4.0 [NC]"},
 		{"assets_set", map[string]any{"id": "farm", "wahl": []map[string]any{
-			{"datei": "grafik/town/house-a.png", "ausschnitt": map[string]int{"x": 0, "y": 0, "w": 32, "h": 48}},
-			{"datei": "grafik/town/house-a.png"},
+			{"datei": "grafik/town/well.png", "ausschnitt": map[string]int{"x": 0, "y": 0, "w": 32, "h": 48}},
+			{"datei": "grafik/town/well.png"},
 		}}, "farm gespeichert: 2 Zuordnung(en)"},
-		{"assets_get", map[string]any{"id": "farm"}, "1. grafik/town/house-a.png [0,0,32,48]\n2. grafik/town/house-a.png"},
-		{"assets_list", map[string]any{"status": "zugeordnet"}, "farm gebaeude zugeordnet · Farm → grafik/town/house-a.png [0,0,32,48] (+1)"},
+		{"assets_get", map[string]any{"id": "farm"}, "1. grafik/town/well.png [0,0,32,48]\n2. grafik/town/well.png"},
+		{"assets_list", map[string]any{"status": "zugeordnet"}, "farm gebaeude zugeordnet · Farm → grafik/town/well.png [0,0,32,48] (+1)"},
 	}
 	for _, st := range steps {
 		text, isErr := callText(t, cs, st.tool, st.args)

@@ -72,15 +72,15 @@ Quelle: `assets_list` Kategorien `gebaeude`, `objekte`, `umgebung`. **Lücke** =
 |---|---|---|---|
 | `castle` | Burg/Thron (Hub-Kern) | gemischt | über Hub-Stufen 1–5 |
 | `workshop` | Werkstatt | eigen (GEB2, alte Grafik gelöscht) | **Stilvorlage fertig**, Stufen offen |
-| `storage` | Lager | gemischt | – |
-| `farm` | Farm | gemischt (house-a) | – |
-| `barracks` | Kaserne | gemischt (house-c) | – |
+| `storage` | Lager | eigen (GEB5, alte Grafik gelöscht) | – |
+| `farm` | Farm | eigen (GEB5, alte Grafik gelöscht) | – |
+| `barracks` | Kaserne | eigen (GEB5, alte Grafik gelöscht) | – |
 | `tavern` | Taverne | **Lücke** | – |
 | `healer` | Heilplatz | **Lücke** | – |
 | `smithy` | Schmiede | **Lücke** | – |
 | `armory` | Rüstkammer | **Lücke** | – |
 | `gate` | Tor | gemischt | Stufen über Mauer-Linien |
-| `stairsUp` / `stairsDown` | Treppe hoch / runter | gemischt | – |
+| `stairsUp` / `stairsDown` | Treppe hoch / runter | eigen (GEB5, alte Grafik gelöscht) | – |
 | `wall` | Mauer | gemischt | Stufen 1–5; `wall:1` **Lücke** |
 | `tower` | Turm | gemischt | Stufen 1–5; `tower:1` und `tower:5` (Zaubertum) **Lücke** |
 
@@ -91,7 +91,7 @@ Quelle: `assets_list` Kategorien `gebaeude`, `objekte`, `umgebung`. **Lücke** =
 | Slot | Struktur | Stand heute |
 |---|---|---|
 | `node:tree` | Bäume | gemischt; **Beispiel Tanne/Pappel/Birke fertig** |
-| `plantation` | Farm-Plantage (nachwachsende Bäume) | **Lücke** |
+| `plantation` | Farm-Plantage (nachwachsende Bäume) | eigen (GEB5): Setzling, gewachsen Pappel |
 | `node:rock`, `node:copperOre`, `node:bush` | Fels, Erzbrocken, Busch | gemischt |
 | `vein:stone`, `vein:copper`, `vein:iron`, `vein:crystal` | Adern je Mine-Stufe | gemischt |
 | `portal`, `exit` | Portal, Ausgang | gemischt |

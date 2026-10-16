@@ -7,6 +7,7 @@ import { createBackWallView, updateBackWallView } from './backWallView';
 import { BuergerView } from './buergerView';
 import { createRider, updateRider } from './mountView';
 import { objectImage } from './objectView';
+import { type Plot, isPlantationTree, plantationPlots } from './plantation';
 import { priceTagSites } from './priceTagRules';
 import { TEXT, createCastleView, createSiteView, updateCastleView, updateSiteView } from './siteView';
 import { hasDepth, isOnTower } from './viewRules';
@@ -20,6 +21,8 @@ import type { Coin, Enemy, Pickup, Player, Projectile, ResourceNode, Site, Troop
 
 const U = UNIT_PX;
 const G = GROUND_Y;
+/** Setzling und Plantage-Baum stehen vor der Farm (Bauplätze: Tiefe 2) */
+const PLANTATION_DEPTH = 3;
 
 type View = Phaser.GameObjects.Container;
 type Sprite = Phaser.GameObjects.Sprite;
@@ -98,6 +101,8 @@ export class WorldRenderer {
   private readonly coins: Layer<Coin>;
   private readonly nodes: Layer<ResourceNode>;
   private readonly sites: Layer<Site>;
+  /** leere Plantage-Plätze (Setzling, GEB5) */
+  private readonly plots: Layer<Plot>;
   private readonly backWalls: Layer<BackWall>;
   private readonly projectiles: Layer<Projectile>;
   private readonly pickups: Layer<Pickup>;
@@ -122,6 +127,7 @@ export class WorldRenderer {
     this.citizens = new BuergerView(scene, root);
     this.nodes = this.layer((n) => this.createNode(n), (v, n) => this.updateNode(v, n));
     this.sites = this.layer((s) => createSiteView(scene, s), (v, s) => updateSiteView(scene, v, s, this.world, this.priceTags.has(s.id)));
+    this.plots = this.layer((p) => this.createPlot(p), () => {});
     this.backWalls = this.layer(() => createBackWallView(scene), (v, b) => updateBackWallView(scene, v, b));
     this.pickups = this.layer((p) => this.createPickup(p), () => {});
     this.coins = this.layer((c) => scene.add.container(c.x * U, G - 8, [objectImage(scene, 'coin', 0, 8) ?? scene.add.circle(0, 0, 8, 0xffd166).setStrokeStyle(2, 0x9c6644)]).setDepth(6), () => {});
@@ -166,6 +172,7 @@ export class WorldRenderer {
     this.priceTags = priceTagSites(world);
     this.nodes.sync(world.nodes);
     this.sites.sync(world.sites);
+    this.plots.sync(plantationPlots(world.sites, world.nodes).filter((p) => p.tree === null));
     this.backWalls.sync(backWalls(world.sites, world.hubX));
     this.pickups.sync(world.pickups);
     this.coins.sync(world.coins);
@@ -201,10 +208,18 @@ export class WorldRenderer {
 
   // ---------- Ressourcen ----------
 
+  /** Setzling auf einem leeren Plantage-Platz, vor der Farm; ohne geladene Grafik bleibt der Platz leer */
+  private createPlot(p: Plot): View {
+    const image = this.scene.textures.exists('grafik:setzling') ? [this.scene.add.image(0, 0, 'grafik:setzling').setOrigin(0.5, 1)] : [];
+    return this.scene.add.container(p.x * U, G, image).setDepth(PLANTATION_DEPTH);
+  }
+
   private createNode(n: ResourceNode): View {
     const s = this.scene;
     const parts: Phaser.GameObjects.GameObject[] = [];
-    const sprite = objectImage(s, `node:${n.kind}`, 0, 0); // Grafik aus der Zuordnung (GR3.2), sonst Platzhalter-Form
+    // Plantage-Baum (steht auf einem Platz): Pappel aus GEB1, vor der Farm; Waldbäume bleiben bei der Zuordnung (GEB6)
+    const pappel = isPlantationTree(n, this.world.sites) && s.textures.exists('grafik:pappel');
+    const sprite = pappel ? s.add.image(0, 0, 'grafik:pappel').setOrigin(0.5, 1) : objectImage(s, `node:${n.kind}`, 0, 0); // Grafik aus der Zuordnung (GR3.2), sonst Platzhalter-Form
     if (sprite) parts.push(sprite);
     else if (n.kind === 'tree') {
       parts.push(s.add.rectangle(0, -40, 14, 80, 0x6b4226), s.add.triangle(0, -110, 0, 90, 40, 0, 80, 90, 0x2d6a4f));
@@ -217,7 +232,7 @@ export class WorldRenderer {
     }
     const flag = s.add.rectangle(10, -170, 24, 14, 0xd00000).setOrigin(0, 0.5);
     const pole = s.add.rectangle(10, -160, 3, 30, 0xffffff);
-    return s.add.container(n.x * U, G, [...parts, pole, flag, ...bar(s, -190, 50, 0xffd166)]);
+    return s.add.container(n.x * U, G, [...parts, pole, flag, ...bar(s, -190, 50, 0xffd166)]).setDepth(pappel ? PLANTATION_DEPTH : 0);
   }
 
   private updateNode(v: View, n: ResourceNode): void {
