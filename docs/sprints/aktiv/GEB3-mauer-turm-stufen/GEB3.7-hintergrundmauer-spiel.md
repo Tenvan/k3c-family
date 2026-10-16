@@ -1,6 +1,6 @@
 # GEB3.7 · Hintergrundmauer im Spiel zeichnen
 
-- **Status:** offen
+- **Status:** in Arbeit
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** CLI
