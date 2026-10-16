@@ -35,7 +35,8 @@ Stil-Nacharbeit ohne Auftrag von 🧑, GEB7 (Hintergründe), Animationen, TV-Tes
 2. `git fetch && git diff origin/develop...origin/sprint/geb6` lesen, Befunde behandeln.
 3. Mit Freigabe von 🧑: Vorschau (und ggf. Spiel) zeigen, Abnahme im Ergebnis festhalten.
 4. Nachweis je Kriterium AC-01 bis AC-06; Abschnitt „Abnahme“ der Sprint-README (höchstens fünf Zeilen, Versionsvorschlag).
-5. Sprint nach `erledigt/`, `Status: erledigt` (nur wenn alle Sessions fertig); PR `sprint/geb6` → `develop` öffnen, Auto-Merge einschalten (Arbeitsweise › Review-Session, Schritt 5).
+5. Fehlt die Abnahme von 🧑: `Status: blockiert` mit Grund im Ergebnis (Arbeitsweise › Wenn etwas nicht passt) und aufhören.
+6. Sprint nach `erledigt/`, `Status: erledigt` (nur wenn alle Sessions fertig); PR `sprint/geb6` → `develop` öffnen, Auto-Merge einschalten (Arbeitsweise › Review-Session, Schritt 5).
 
 ## Fertig, wenn
 

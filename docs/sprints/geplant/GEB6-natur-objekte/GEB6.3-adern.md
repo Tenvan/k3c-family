@@ -19,7 +19,7 @@
 - **Spec:** GEB6 AC-01, AC-04, › Anforderungen (Adern), Offene Fragen 3. Regeln: `docs/standards/gebaeude-grafik.md` (§ 1, § 3, § 5, § 6).
 - **Fachlich:** Eine Ader ist eine **unendliche Quelle** für Stein, Kupfer, Eisen oder Kristall (Glossar „Ader“, `data/economy.json › veins`); höchstens 2 Bauern bauen gleichzeitig ab. Jedes Biom hat eine Art (`data/biomes/*.json › veins`): Höhle Stein, Mine Kupfer, Eisenstollen Eisen, Kristallhöhle Kristall.
 - **Heute:** `vein:*` zeigen je eine Zeile des Erz-Blatts (80 × 16 px, 5 Spalten); im Spiel werden sie vermutlich gar nicht abgefragt (GEB6.5 prüft das).
-- **Entwurf:** `ader.json` ist **eine** Datei, 2 × 2 Kacheln (64 × 64 px): Felsbuckel mit einer deutlichen Erzader als Streifen. Die Grundform ist Stufe 1 = **Stein** (Stein `dim-gray`, Licht `smokey-ash`, Ader in einer hellen Steinfarbe); `stufen` 2 = **Kupfer** (Ader `tahiti-gold` mit Patina `verdigris`), 3 = **Eisen** (Ader `heather`/`light-steel`), 4 = **Kristall** (Ader `royal-blue`/`cornflower`, Glanz `white`, Zusätze: Kristallspitzen; Fuge `viking` leuchtend). Materialien nach § 3 (Mauer-/Turmstufen 3–5 dienen als Farbvorbild, damit Mauer und Ader zusammenpassen). Der Farbtausch betrifft **eine** Streifenfarbe der Grundform plus Zusätze; die Felsmasse bleibt in allen Stufen Stein.
+- **Entwurf:** `ader.json` ist **eine** Datei, 2 × 2 Kacheln (64 × 64 px): Felsbuckel mit einer deutlichen Erzader als Streifen. Die Grundform ist Stufe 1 = **Stein** (Stein `dim-gray`, Licht `smokey-ash`, Ader in einer hellen Steinfarbe); `stufen` 2 = **Kupfer** (Ader `tahiti-gold` mit Patina `verdigris`), 3 = **Eisen** (Ader `heather`/`light-steel`), 4 = **Kristall** (Ader `royal-blue`/`cornflower`, Glanz `white`, Zusätze: Kristallspitzen; Fuge `viking` leuchtend). Materialien nach § 3 (Mauer-/Turmstufen 3–5 dienen als Farbvorbild, damit Mauer und Ader zusammenpassen). `stufeBauen` tauscht jede Farbe der Grundform global: Die Streifenfarbe darf in der Grundform **nur im Streifen** vorkommen (nicht zugleich als Licht oder Fuge der Felsmasse), sonst färbt der Tausch den Fels mit. Der Farbtausch betrifft **eine** Streifenfarbe plus Zusätze; die Felsmasse bleibt in allen Stufen Stein.
 - **Stufe = Material**, nicht Biom: Die Adern brauchen keinen Biom-Look; `aenderung` nennt das Material.
 - Vorbild: `mauer.json` (Farbtausch-Tabelle, Stufen 1–5), `turm.json`.
 
@@ -45,7 +45,7 @@ Keine Darstellung im Spiel (GEB6.5), keine zusätzlichen Stufen jenseits der vie
 
 ## Fertig, wenn
 
-- [ ] AC-01/AC-04: `ader-1-32.png` … `ader-4-32.png` (je 64 × 64 px) plus 16/64/128, `ader.json` mit `vorlage` und vier Stufen (Stein, Kupfer, Eisen, Kristall); Materialfarben wie die Mauer-Stufen 1, 3, 4, 5.
+- [ ] AC-01/AC-04: `ader-1-32.png` … `ader-4-32.png` (je 64 × 64 px) plus 16/64/128, `ader.json` mit `vorlage` und vier Stufen (Stein, Kupfer, Eisen, Kristall); Materialfarben wie die Mauer-Stufen 2, 3, 4, 5.
 - [ ] AC-04: md5 aller vorher vorhandenen PNGs gleich; ein zweiter `task gebaeude`-Lauf ändert nichts.
 - [ ] AC-04: Regeldatei § 1, § 4 und § 6 nachgetragen; Vorschau zeigt die Stufenreihe.
 - [ ] `task check` und `task check:go` grün.

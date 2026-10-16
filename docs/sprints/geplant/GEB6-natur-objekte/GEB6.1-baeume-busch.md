@@ -6,7 +6,7 @@
 - **Domäne:** DEV
 - **Umgebung:** offline
 - **Branch:** geb6/1-baeume-busch
-- **Abhängig von:** GEB5.3 (nicht mehr in Arbeit, Domänen-Sperre DEV)
+- **Abhängig von:** GEB5.3 (fertig, Domänen-Sperre DEV)
 - **Tickets:** B-435
 - **Kriterien:** AC-01, AC-04
 
@@ -24,7 +24,7 @@ Sechs weitere Baum-Formen (`tanne-2`, `tanne-3`, `pappel-2`, `pappel-3`, `birke-
 - **Busch** (`busch`, `klasse` leer): 1 × 1 Kachel, rundlich, Material Laub (`christi`, `atlantis`, `dell`), nur Look Wald (Busch steht nur im Wald, `data/biomes/forest.json`), keine Stufen.
 - **Materialien (Offene Frage 4):** Mit der Spec-Freigabe (oder der Antwort von 🧑) trägt diese Session in § 3 die Zeilen Fels, Zelttuch, Erde und Gold nach dem Vorschlag ein; GEB6.2 und GEB6.4 nutzen sie.
 - **Vorschau:** `src/tools/assetvorschauLogic.ts` › `baumReihe(index, anzahl = 6)` wechselt alle Einträge der Klasse `baum` reihum und zeigt bei neun Bäumen nicht alle; `stufenKarten` zeigt Stufen. Alle Formen und beide Looks sollen sichtbar sein (`src/tools/assetvorschau.ts`, Test `assetvorschauLogic.test.ts`).
-- **Parallel:** GEB5.3 (DEV) darf nicht mehr `in Arbeit` sein (Sprint-Regeln); GEB5 hat Lager, Kaserne, Farm und Setzling nach `public/grafik/gebaeude/index.json` und Regeldatei § 1 geschrieben: nach `git merge origin/develop` `task gebaeude` neu laufen lassen und § 1 zusammenführen.
+- **Parallel:** GEB5.3 (DEV) muss `fertig` sein (Sprint-Regeln); GEB5 hat Lager, Kaserne, Farm und Setzling nach `public/grafik/gebaeude/index.json` und Regeldatei § 1 geschrieben: nach `git merge origin/develop` `task gebaeude` neu laufen lassen und § 1 zusammenführen.
 
 ## Erlaubte Dateien
 
@@ -40,7 +40,7 @@ Keine Änderung an `tanne.json`, `pappel.json`, `birke.json` und ihren PNGs; kei
 
 ## Schritte
 
-1. Prüfen, dass GEB5.3 (DEV) nicht mehr `in Arbeit` ist (`git ls-remote --heads origin 'sprint/*'`, Sprint-Dateien dort lesen); sonst nichts tun und melden. `sprint/geb6` auschecken (fehlt er: von `origin/develop` anlegen, `Start-Commit` setzen), `Status: in Arbeit`, committen, pushen.
+1. Prüfen, dass GEB6 aktiviert ist (Spec freigegeben, Ordner `aktiv/`) und GEB5.3 (DEV) `fertig` ist (`git ls-remote --heads origin 'sprint/*'`, Sprint-Dateien dort lesen); sonst nichts tun und melden. `sprint/geb6` auschecken (fehlt er: von `origin/develop` anlegen, `Start-Commit` setzen), `Status: in Arbeit`, committen, pushen.
 2. md5 aller vorhandenen PNGs in `public/grafik/gebaeude/` sichern (z. B. `md5sum public/grafik/gebaeude/*.png` in eine Datei im Scratchpad).
 3. Regeldatei § 3: Zeilen Fels (= Stein), Zelttuch (= Stoff hell), Erde, Gold nach dem Vorschlag der Offenen Frage 4 bzw. der Antwort von 🧑 eintragen.
 4. Vorlage zuerst (§ 5), dann Bausteine: `tanne-2`, `tanne-3`, `pappel-2`, `pappel-3`, `birke-2`, `birke-3` (je 1 × 2,25, Klasse `baum`) mit `stufen` Stufe 2 = Höhle (Farbtausch, `aenderung`); `busch` (1 × 1, ohne Stufen).

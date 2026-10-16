@@ -29,7 +29,6 @@ Spieler sehen im Spiel Bäume im Stil der neuen Gebäude-Grafik; 🧑 entscheide
 ## Anforderungen
 
 - `node:tree` zeigt die Bäume aus `public/grafik/gebaeude/` (Tanne, Pappel, Birke und die Formen aus GEB6.1) in Maßstab 1 (32 px je Kachel); Art und Form wählt eine reine Funktion aus der Position des Baums (deterministisch, kein `Math.random()`), den Look das Biom.
-- Mehrere Bäume dicht beieinander wirken als überlappende Reihe (Abstand ½ Kachel wie in der Vorschau), wo das Level sie so setzt; die Platzierung selbst bleibt unverändert.
 - Plantage-Bäume bleiben die Pappel aus GEB5.
 - Die alte Baum-Grafik (`gotthicvania-swamp/umgebung/trees.png`) wird nach der Aufräum-Regel des Projekts GEB gelöscht, sofern nichts anderes sie nutzt.
 - Gilt mit mehreren Spielern und auf der Xbox gleich (nur Darstellung, keine Rechenlast im Client über das Auswählen hinaus).
@@ -49,7 +48,7 @@ Domäne CLI (`src/scenes/`, `data/assets.json`); Spiel-Dichte 32 px ×1 (`docs/s
 
 ## Ausnahme- und Fehlerfälle
 
-Grafik nicht geladen → bisherige Platzhalter-Form (Stamm und Dreieck); Biom ohne Look → Look des Waldes; markierter oder abgebauter Baum → Fahne und Balken sitzen über dem neuen, niedrigeren Bild.
+Grafik nicht geladen → bisherige Platzhalter-Form (Stamm und Dreieck); Biom ohne Look → höchster vorhandener Look des Baums (Mine → Höhle), Biom-ID fehlt → Wald; markierter oder abgebauter Baum → Fahne und Balken sitzen über dem neuen, niedrigeren Bild.
 
 ## Akzeptanzkriterien
 
