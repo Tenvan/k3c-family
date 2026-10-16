@@ -1,0 +1,15 @@
+[
+  {
+    "id": "werkstatt",
+    "kacheln": {
+      "b": 6,
+      "h": 4
+    },
+    "dateien": {
+      "128": "grafik/gebaeude/werkstatt-128.png",
+      "16": "grafik/gebaeude/werkstatt-16.png",
+      "32": "grafik/gebaeude/werkstatt-32.png",
+      "64": "grafik/gebaeude/werkstatt-64.png"
+    }
+  }
+]

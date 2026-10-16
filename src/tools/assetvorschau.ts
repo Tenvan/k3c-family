@@ -10,8 +10,8 @@ import { attenuation } from '../audio/events';
 import { clientLog } from '../core/clientLog';
 import { installPageChrome } from '../core/shell';
 import {
-  figureCard, GRAFIK_SCALE, licenseFlag, parseQuery, resolveSlot, SCENES, slotsOf,
-  type AssetSlot, type Query, type Resolved, type SceneId,
+  figureCard, gebaeudeKarten, GRAFIK_SCALE, licenseFlag, parseQuery, resolveSlot, SCENES, slotsOf,
+  type AssetSlot, type GebaeudeEintrag, type Query, type Resolved, type SceneId,
 } from './assetvorschauLogic';
 import { CREDITS } from './credits';
 import { renderReference, type Card } from './spriteReference';
@@ -55,6 +55,7 @@ function show(q: Query): void {
     sceneEl.textContent = t('av.pick');
     return;
   }
+  if (q.szene === 'gebaeude') void renderNeueGebaeude();
   const items = slotsOf(SLOTS, q.szene).map((s) => resolveSlot(s, q));
   if (items.length === 0) sceneEl.textContent = t('av.empty');
   else if (SCENES.find((s) => s.id === q.szene)?.art === 'sound') renderSounds(items);
@@ -125,6 +126,42 @@ function renderGraphics(szene: SceneId, items: Resolved[]): void {
     renderReference(root, [{ title: sceneTitle(szene), cards: figures }], true);
   }
   if (strip.childElementCount > 0) sceneEl.append(strip);
+}
+
+/** Streifen „Neue Gebäude (GEB)“ aus `grafik/gebaeude/index.json` vor den Slots: je Gebäude 32 px ×1 und 16 px ×2. */
+async function renderNeueGebaeude(): Promise<void> {
+  const datei = 'grafik/gebaeude/index.json';
+  const res = await fetch(datei).catch(() => null);
+  if (!res?.ok) {
+    clientLog('error', '❌ Gebäude-Index lädt nicht', { datei });
+    return;
+  }
+  const karten = gebaeudeKarten((await res.json()) as GebaeudeEintrag[]);
+  if (parseQuery(location.search).szene !== 'gebaeude') return; // inzwischen andere Szene gewählt
+  const strip = document.createElement('div');
+  strip.className = 'strip';
+  for (const k of karten) {
+    const fig = document.createElement('figure');
+    const cap = document.createElement('figcaption');
+    cap.textContent = `${k.id} · ${k.dichte} px ×${k.scale}`;
+    fig.append(cap);
+    const img = new Image();
+    img.onload = () => {
+      const canvas = document.createElement('canvas');
+      canvas.width = img.width * k.scale;
+      canvas.height = img.height * k.scale;
+      const g = canvas.getContext('2d')!;
+      g.imageSmoothingEnabled = false;
+      g.drawImage(img, 0, 0, canvas.width, canvas.height);
+      fig.prepend(canvas);
+    };
+    img.onerror = () => clientLog('error', '❌ Asset lädt nicht', { datei: k.datei });
+    img.src = k.datei;
+    strip.append(fig);
+  }
+  const title = document.createElement('h2');
+  title.textContent = t('av.geb');
+  sceneEl.prepend(title, strip);
 }
 
 // ---------------------------------------------------------------- Sound

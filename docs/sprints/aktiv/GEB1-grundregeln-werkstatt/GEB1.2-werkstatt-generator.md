@@ -1,6 +1,6 @@
 # GEB1.2 · Werkstatt: Regeldatei, Generator, PNG, Vorschau
 
-- **Status:** in Arbeit
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** DEV
@@ -68,5 +68,10 @@ Keine manuellen Prüfungen in dieser Session; die Sichtprüfung gehört GEB1.4.
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+2026-10-16, Claude (autonom, Ralf im Chat).
+- AC-01 umgesetzt: `docs/standards/gebaeude-grafik.md` (Raster, Maße, DB32, Licht, Material, Bausteine, Datenformat, Stufen, Dichte, Skalierung; Faktor offen bis GR7.4, Spiel-Dichte offen bis GEB1.4).
+- AC-02 geprüft: `task gebaeude` → `werkstatt-32.png` 192×128 px, dazu 16/64/128; PNGs gelöscht und neu gebaut → md5 gleich.
+- AC-06 geprüft: `go test ./tools/gebaeude` (64→32 pixelgleich, Dichte 48 abgelehnt, 16 ohne `fein`, Fehlerfälle, gleiche Bytes).
+- AC-03 umgesetzt: `gebaeudeKarten` mit Test in `assetvorschauLogic.test.ts`; Streifen in `assetvorschau.html?szene=gebaeude`; Sichtprüfung in GEB1.4.
+- Checks: `task check` grün (2342 Tests), `golangci-lint ./tools/gebaeude` 0 Befunde. Review (Sonnet-Agent): keine schweren Befunde; verwaiste PNGs behoben (Werkzeug löscht alte PNGs vor dem Lauf), Katalog-Befund → B-437.
+- Abweichungen: außerhalb der erlaubten Dateien `src/tools/texts.de.ts`/`texts.en.ts` (Text `av.geb`, Textregel PL2) sowie `credits.test.ts`/`grafikPacks.test.ts` (Ausnahme für eigene Grafik `gebaeude/`, Freigabe Ralf im Chat). Werkstatt aus der Beschreibung neu aufgebaut (Entwurfs-Quelle nicht im Repo). k3c-dev fiel während der Session aus; Planung danach von Hand, Prüfungen in der Shell.
