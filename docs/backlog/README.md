@@ -135,18 +135,19 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-409](B-409-bauplaetze-abstand-zu-eng.md) | REG | Problem | mittel | eingeplant | W11 | Bauplätze im Hub stehen zu eng, besonders die Treppen |
 | [B-410](B-410-aktion-ausbilden-tauschen-protokoll.md) | SRV | Problem | mittel | eingeplant | W11 | Aktionen-Overlay zeigt Ausbilden und Tauschen nicht, der Server liefert sie nicht in actions |
 | [B-411](B-411-spieler-abmelden.md) | CLI | Problem | hoch | eingeplant | BD4 | Lokale Spieler können beitreten, aber nicht einzeln austreten |
-| [B-412](B-412-figuren-adern-plantage-lager.md) | CLI | Idee | niedrig | eingeplant | W11 | Adern, Plantage und Lager haben keine Anzeige als Figuren im Client |
+| [B-412](B-412-figuren-adern-plantage-lager.md) | CLI | Idee | niedrig | offen | – | Adern, Plantage und Lager haben keine Anzeige als Figuren im Client |
 | [B-413](B-413-hud-leiste-oben-fluss.md) | CLI | Idee | mittel | eingeplant | BD4 | Gemeinsame HUD-Leiste oben für alle Spieler, Kompass oben, Fluss mit Spiegelung unten |
 | [B-414](B-414-welt-meldungen-im-band.md) | CLI | Idee | mittel | eingeplant | BD1 | Welt-Meldungen erscheinen für alle im globalen Band oben |
 | [B-418](B-418-spielstand-kommentare-veraltet.md) | SIM | Problem | niedrig | offen | – | Kommentare in island_save_v3.go und island_save_v5.go nennen nach W7.2 veraltete Versionen |
 | [B-419](B-419-golden-daten-verkleinern.md) | INF | Idee | niedrig | offen | – | Golden-Daten werden gezielt verkleinert, ohne die Prüfschärfe zu verlieren |
 | [B-420](B-420-importe-grafikpacks.md) | DEV | Schuld | mittel | offen | – | Mit k3c-dev importierte Kandidaten unter public/grafik/kandidaten/ brechen grafikPacks.test nicht |
 | [B-421](B-421-abnahme-m10-ressourcen-manager.md) | DEV | Idee | mittel | offen | – | Abnahme M10: Ressourcen-Manager in k3c-dev und Mini-Szenen durch 🧑 beobachten |
-| [B-422](B-422-w11-b207-nachtragen.md) | CLI | Schuld | mittel | offen | – | Die Spec von W11 nennt B-207 (gesperrte Plätze mit Grund) noch nicht |
 | [B-423](B-423-sim-test-im-worktree.md) | DEV | Problem | mittel | offen | – | sim_test rechnet immer mit dem Code der Repo-Wurzel, nicht mit dem Worktree der Session |
 | [B-425](B-425-fullsave-ausbauregeln.md) | SRV | Problem | mittel | offen | – | Der Voll-Ausbau-Stand hält die Ausbauregeln des Spiels ein |
 | [B-426](B-426-fullsave-review-kleinigkeiten.md) | SRV | Schuld | niedrig | offen | – | Kleine Befunde aus dem Review von SV1 sind erledigt |
 | [B-427](B-427-mond-bild-quelle.md) | CLI | Frage | mittel | offen | – | Aus welcher Quelle kommt das Mond-Bild für den Nacht-Hinweis? |
+| [B-446](B-446-hub-plaetze-nach-gebaeude-breite.md) | REG | Problem | mittel | offen | – | Hub-Gebäude überdecken sich: Kaserne und Schmiede stehen 4 Units auseinander, sind aber 6 Kacheln breit |
+| [B-447](B-447-sperrgrund-linie-im-protokoll.md) | SRV | Idee | mittel | offen | – | Der Server nennt je Mauer-, Turm- und Tor-Platz Linie und Sperrgrund (Linie fehlt, Tor nur außen) |
 
 ## Archiv
 
@@ -401,3 +402,4 @@ Zeile in diesen Abschnitt.
 | [B-424](archiv/B-424-fullsave-offener-raum.md) | SRV | Problem | mittel | erledigt | – | Ein neuer Voll-Ausbau-Stand wird nicht vom noch offenen alten Raum überschrieben |
 | [B-430](archiv/B-430-frage-w11-3-session-spec-fehlt.md) | SRV | Frage | mittel | erledigt | W11 | Frage: Wie lauten Ziel, Erlaubte Dateien und Form der actions-Einträge für W11.3 (Ausbilden, Tauschen)? |
 | [B-434](archiv/B-434-playeraction-train-trade-bricht-actionhints.md) | CLI | Frage | hoch | erledigt | W11 | PlayerAction mit train und trade bricht den Typcheck von actionHints.ts, das W11.3 nicht anfassen darf |
+| [B-422](archiv/B-422-w11-b207-nachtragen.md) | CLI | Schuld | mittel | erledigt | – | Die Spec von W11 nennt B-207 (gesperrte Plätze mit Grund) noch nicht |
