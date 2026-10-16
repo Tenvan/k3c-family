@@ -1,6 +1,6 @@
 # GEB6.1 · Bäume: je Art drei Formen mit Biom-Looks, Busch
 
-- **Status:** offen
+- **Status:** in Arbeit
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** DEV
