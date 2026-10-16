@@ -1,6 +1,6 @@
 # GEB7.4 · Pages-Seite auf neue Hintergründe umstellen
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** PLAT
@@ -55,4 +55,6 @@ Mit laufender Workbench `check_run` (mit `checkout`). Keine manuellen Prüfungen
 
 ## Ergebnis
 
-–
+- **AC-07 umgesetzt und geprüft:** `site/index.html` lädt Hero-Parallax (drei Ebenen `hg-wald-fern|mitte|nah`, `background-size` 1088 × 680, `.l-lights` entfällt) und die Tiefen-Kacheln (`hg-wald|hoehle|mine-mitte-32.png`) aus `app/grafik/gebaeude/`; der Credit-Satz zu Warped Caves entfällt mit dem Pack. `git grep -E "forest-background|blue-cave|warped|l-lights" -- site` ohne Treffer; alle `url(app/…)`-Pfade existieren unter `public/`; `task pages` baut, `_site/app/grafik/gebaeude/hg-wald-fern-32.png` liegt vor.
+- Sichtprüfung (Hero-Anmutung, Kachel-Ausschnitt `cover`) nicht geprüft, gehört 🧑 (AC-08). Annahme Frage 5 „umstellen“ (bei „unverändert“ wäre diese Session verworfen worden).
+- Lint-Korrektur aus GEB7.1 (`errcheck` in `hintergrund_test.go`, `check:go` rot) mitcommittet. Neue Tickets: keine.
