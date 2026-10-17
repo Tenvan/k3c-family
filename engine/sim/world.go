@@ -15,11 +15,13 @@ import (
 type Options struct {
 	CycleSpeed float64 // beschleunigt den Tag/Nacht-Zyklus (Tests, Dev)
 	Time       float64 // Startzeit in Sekunden, damit der globale Zyklus beim Stufenwechsel weiterläuft
+	// Planned sind die geplanten Chunks dieser Stufe (docs/rules/geplante-chunks.md); leer = reiner Zufall.
+	Planned []level.PlannedChunk
 }
 
 // CreateWorld baut den Startzustand einer Stufe.
 func CreateWorld(b level.Biome, seed string, opts Options) (*World, error) {
-	lv, err := level.Generate(b, seed)
+	lv, err := level.GenerateWith(b, seed, level.Options{Planned: opts.Planned})
 	if err != nil {
 		return nil, err
 	}

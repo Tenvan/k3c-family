@@ -95,3 +95,12 @@ func checkPlannedChunks(d IslandDef, lines level.WallLineData) error {
 	}
 	return nil
 }
+
+// savedIslandOptions liefert die Erzeugungs-Parameter für das Laden eines Spielstands der Insel `number`: die Planung
+// der Insel aus den Daten (die Planung selbst wird nicht gespeichert).
+func savedIslandOptions(number int) CreateOptions {
+	if number >= 0 && number < len(islandDefs) {
+		return islandDefs[number].CreateOptions()
+	}
+	return CreateOptions{}
+}

@@ -19,7 +19,7 @@ func mustIsland(t *testing.T, seed string, depths []int) *Island {
 // newIsland ist CreateIsland mit Startvorrat, wie ein neues Spiel.
 func newIsland(t *testing.T, seed string, depths []int) *Island {
 	t.Helper()
-	isl, err := CreateIsland(seed, depths, islandSpeed)
+	isl, err := CreateIsland(seed, depths, islandSpeed, CreateOptions{})
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -158,10 +158,10 @@ func TestIslandDeterministic(t *testing.T) {
 }
 
 func TestCreateIslandRejectsBadInput(t *testing.T) {
-	if _, err := CreateIsland("x", nil, 1); err == nil {
+	if _, err := CreateIsland("x", nil, 1, CreateOptions{}); err == nil {
 		t.Error("ohne Stufen muss ein Fehler kommen")
 	}
-	if _, err := CreateIsland("x", []int{0, 9}, 1); err == nil {
+	if _, err := CreateIsland("x", []int{0, 9}, 1, CreateOptions{}); err == nil {
 		t.Error("unbekannte Tiefe muss ein Fehler sein")
 	}
 }

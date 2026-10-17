@@ -27,7 +27,7 @@ func TestCampAbstandZuLinien500Seeds(t *testing.T) {
 
 func checkCamp(t *testing.T, l Layout, x float64, id string, seed int) {
 	t.Helper()
-	if !clearOfLines(x - l.HubCenterUnits) {
+	if !clearOfLines(wallLines, x-l.HubCenterUnits) {
 		t.Errorf("Biom %s, Seed %d: Camp bei Hub %+v zu nah an einer möglichen Linie", id, seed, x-l.HubCenterUnits)
 	}
 	for _, line := range l.Lines {
@@ -49,7 +49,7 @@ func TestCampClearOfLinesGrenzen(t *testing.T) {
 		want bool
 	}{{75, false}, {-75, false}, {125, false}, {-125, false}, {outer + payGapUnits - 0.5, false}, {outer + payGapUnits, true}, {-175, true}}
 	for _, c := range cases {
-		if got := clearOfLines(c.dx); got != c.want {
+		if got := clearOfLines(wallLines, c.dx); got != c.want {
 			t.Errorf("clearOfLines(%v) = %v, erwartet %v", c.dx, got, c.want)
 		}
 	}

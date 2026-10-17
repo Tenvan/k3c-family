@@ -50,9 +50,17 @@ func isEvent(kind string) bool { return kind == "chest" || kind == "recruitCamp"
 type gen struct {
 	b     Biome
 	r     *rng.Rng
+	seed  string
+	lines WallLineData
 	kinds []string
 	cw    float64
 	hub   float64
+	// Geplante Chunks (planned_gen.go): hubStart und hubChunks legen die Plätze fest, planned ordnet Chunk-Index
+	// und Plan zu, fixed zählt feste Portale, Truhen, Camps und Adern, sideFixed feste Portale je Seite.
+	hubStart, hubChunks int
+	planned             map[int]PlannedChunk
+	fixed               map[string]int
+	sideFixed           [2]int
 }
 
 func (g *gen) center(i int) float64 { return float64(float64(i)*g.cw) + g.cw/2 }
@@ -67,10 +75,19 @@ func (g *gen) free() []int {
 	return out
 }
 
-// Generate baut das Level für Biom und Seed.
-func Generate(b Biome, seed string) (Layout, error) {
-	g := &gen{b: b, r: rng.New(b.ID + ":" + seed), cw: b.ChunkWidthUnits}
+// Generate baut das Level für Biom und Seed ohne Planung und mit den eingebetteten Mauerlinien.
+func Generate(b Biome, seed string) (Layout, error) { return GenerateWith(b, seed, Options{}) }
+
+// GenerateWith baut das Level mit Planung und Mauerlinien aus o; der Nullwert von Options ergibt dasselbe Level wie
+// Generate. Eine ungültige Planung wird abgelehnt (ValidatePlan).
+func GenerateWith(b Biome, seed string, o Options) (Layout, error) {
+	lines := o.lines()
+	if err := ValidatePlan(b, o.Planned, lines); err != nil {
+		return Layout{}, fmt.Errorf("geplante Chunks: %w", err)
+	}
+	g := &gen{b: b, r: rng.New(b.ID + ":" + seed), seed: seed, lines: lines, cw: b.ChunkWidthUnits}
 	g.frame()
+	g.reserve(o.Planned)
 	if err := g.placePortals(); err != nil {
 		return Layout{}, err
 	}
@@ -92,7 +109,7 @@ func Generate(b Biome, seed string) (Layout, error) {
 	sort.SliceStable(entities, func(i, j int) bool { return entities[i].X < entities[j].X })
 	return Layout{
 		Seed: seed, BiomeID: b.ID, WidthUnits: float64(len(chunks)) * g.cw, ChunkWidthUnits: g.cw,
-		HubCenterUnits: g.hub, Chunks: chunks, Entities: entities, Lines: generateLines(b.ID, seed, g.hub),
+		HubCenterUnits: g.hub, Chunks: chunks, Entities: entities, Lines: generateLines(lines, b.ID, seed, g.hub),
 	}, nil
 }
 
@@ -106,6 +123,7 @@ func (g *gen) frame() {
 	}
 	g.kinds = make([]string, count)
 	hubStart := count/2 - hubChunks/2
+	g.hubStart, g.hubChunks = hubStart, hubChunks
 	for i := range hubChunks {
 		g.kinds[hubStart+i] = "hub"
 	}
@@ -121,13 +139,16 @@ func (g *gen) frame() {
 // placePortals verteilt die Portale abwechselnd links/rechts mit Mindestabstand zum Hub, Startseite zufällig.
 func (g *gen) placePortals() error {
 	left := g.r.Next() < 0.5
-	for n := range g.b.Portals.Count {
+	if g.sideFixed[0] != g.sideFixed[1] {
+		left = g.sideFixed[0] < g.sideFixed[1] // beginnt auf der Seite mit weniger festen Portalen
+	}
+	for n := range g.b.Portals.Count - g.fixed["portal"] {
 		options := g.eligible(left)
 		if len(options) == 0 {
 			options = g.eligible(!left)
 		}
 		if len(options) == 0 {
-			return fmt.Errorf("kein Platz für Portal %d/%d in %s", n+1, g.b.Portals.Count, g.b.ID)
+			return fmt.Errorf("kein Platz für Portal %d/%d in %s", n+1+g.fixed["portal"], g.b.Portals.Count, g.b.ID)
 		}
 		g.kinds[rng.Pick(g.r, options)] = "portal"
 		left = !left
@@ -166,7 +187,7 @@ func (g *gen) placeEvents(seed string) error {
 	for _, kind := range eventKinds {
 		want := g.b.EventChunks[kind]
 		slots := rng.Shuffle(g.r, g.free())
-		count := g.r.Int(want.Min, want.Max)
+		count := max(0, g.r.Int(want.Min, want.Max)-g.fixed[kind]) // feste Truhen und Camps zählen mit
 		if len(slots) < count {
 			return fmt.Errorf("level zu kurz für %dx %s (Seed %s)", count, kind, seed)
 		}
@@ -174,7 +195,7 @@ func (g *gen) placeEvents(seed string) error {
 			// Stabil: gleich gute Slots behalten ihre Reihenfolge aus dem Mischen.
 			sort.SliceStable(slots, func(i, j int) bool {
 				di, dj := g.center(slots[i])-g.hub, g.center(slots[j])-g.hub
-				if ci, cj := clearOfLines(di), clearOfLines(dj); ci != cj {
+				if ci, cj := clearOfLines(g.lines, di), clearOfLines(g.lines, dj); ci != cj {
 					return ci
 				}
 				return math.Abs(di) < math.Abs(dj)
@@ -193,12 +214,12 @@ func (g *gen) placeEvents(seed string) error {
 func (g *gen) swapCampsWithChests() {
 	dist := func(i int) float64 { return math.Abs(g.center(i) - g.hub) }
 	for i, k := range g.kinds {
-		if k != "recruitCamp" || clearOfLines(g.center(i)-g.hub) {
+		if _, fixed := g.planned[i]; k != "recruitCamp" || fixed || clearOfLines(g.lines, g.center(i)-g.hub) {
 			continue
 		}
 		best := -1
 		for j, kj := range g.kinds {
-			if kj == "chest" && clearOfLines(g.center(j)-g.hub) && (best < 0 || dist(j) < dist(best)) {
+			if _, fixed := g.planned[j]; kj == "chest" && !fixed && clearOfLines(g.lines, g.center(j)-g.hub) && (best < 0 || dist(j) < dist(best)) {
 				best = j
 			}
 		}
@@ -212,6 +233,10 @@ func (g *gen) swapCampsWithChests() {
 func (g *gen) entities(chunks []Chunk) []Entity {
 	out := []Entity{{Kind: "castle", X: g.hub}}
 	for _, c := range chunks {
+		if pc, ok := g.planned[c.Index]; ok {
+			out = append(out, g.plannedEntities(c, pc)...)
+			continue
+		}
 		switch {
 		case c.Kind == "hub" || c.Kind == "edge":
 			continue
@@ -222,20 +247,20 @@ func (g *gen) entities(chunks []Chunk) []Entity {
 		resources, _ := g.b.ResourcesPerChunk.Get(c.Kind)
 		for _, res := range resources {
 			for range g.r.Int(res.Value[0], res.Value[1]) {
-				out = append(out, Entity{Kind: res.Key, X: g.inside(c)})
+				out = append(out, Entity{Kind: res.Key, X: g.inside(g.r, c)})
 			}
 		}
 	}
 	// Skill-Punkte: versteckt in beliebigen Chunks außerhalb von Hub und Rand.
 	var hideouts []Chunk
 	for _, c := range chunks {
-		if c.Kind != "hub" && c.Kind != "edge" {
+		if _, fixed := g.planned[c.Index]; c.Kind != "hub" && c.Kind != "edge" && !fixed {
 			hideouts = append(hideouts, c)
 		}
 	}
 	for range g.r.Int(g.b.SkillPoints.Min, g.b.SkillPoints.Max) {
 		c := rng.Pick(g.r, hideouts)
-		out = append(out, Entity{Kind: "skillPoint", X: g.inside(c)})
+		out = append(out, Entity{Kind: "skillPoint", X: g.inside(g.r, c)})
 	}
 	return append(out, g.veins(chunks)...)
 }
@@ -245,23 +270,23 @@ func (g *gen) entities(chunks []Chunk) []Entity {
 func (g *gen) veins(chunks []Chunk) []Entity {
 	var spots []Chunk
 	for _, c := range chunks {
-		if c.Kind != "hub" && c.Kind != "edge" && c.Kind != "exit" && c.Kind != "portal" && !isEvent(c.Kind) {
+		if _, fixed := g.planned[c.Index]; c.Kind != "hub" && c.Kind != "edge" && c.Kind != "exit" && c.Kind != "portal" && !isEvent(c.Kind) && !fixed {
 			spots = append(spots, c)
 		}
 	}
 	var out []Entity
-	for range min(g.b.Veins.Count, len(spots)) {
+	for range min(max(0, g.b.Veins.Count-g.fixed[g.b.Veins.Kind]), len(spots)) { // feste Adern zählen mit
 		i := g.r.Int(0, len(spots)-1)
-		out = append(out, Entity{Kind: g.b.Veins.Kind, X: g.inside(spots[i])})
+		out = append(out, Entity{Kind: g.b.Veins.Kind, X: g.inside(g.r, spots[i])})
 		spots = append(spots[:i], spots[i+1:]...)
 	}
 	return out
 }
 
-// inside ist eine zufällige Position mit 2 Units Abstand zu den Chunk-Grenzen.
+// inside ist eine zufällige Position aus dem Strom r mit 2 Units Abstand zu den Chunk-Grenzen.
 // float64(…) rundet das Produkt vor der Addition, sonst darf Go zu FMA fusionieren (B-071).
-func (g *gen) inside(c Chunk) float64 {
-	return c.StartUnits + 2 + float64(g.r.Next()*(g.cw-4))
+func (g *gen) inside(r *rng.Rng, c Chunk) float64 {
+	return c.StartUnits + 2 + float64(r.Next()*(g.cw-4))
 }
 
 func weights(o Ordered[float64]) []rng.Weight {

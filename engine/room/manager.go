@@ -177,7 +177,7 @@ func (m *Manager) open(name string, fresh bool, depth int, opts Options) (*sim.I
 		if !slices.Contains(depths, depth) {
 			return nil, ErrBadRequest // unbekannte Startstufe
 		}
-		isl, err := sim.CreateIsland(name, depths, 1)
+		isl, err := sim.CreateIsland(name, depths, 1, sim.CreateOptions{})
 		if err != nil {
 			return nil, err
 		}

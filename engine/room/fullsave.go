@@ -106,7 +106,7 @@ func fullIsland(seed, savedAt string) (sim.IslandSave, error) {
 	if err != nil {
 		return sim.IslandSave{}, err
 	}
-	isl, err := sim.CreateIsland(seed, depths, 1)
+	isl, err := sim.CreateIsland(seed, depths, 1, sim.CreateOptions{})
 	if err != nil {
 		return sim.IslandSave{}, err
 	}

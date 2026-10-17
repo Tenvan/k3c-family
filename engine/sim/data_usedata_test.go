@@ -53,7 +53,7 @@ func TestUseDataReloadsAndRestores(t *testing.T) {
 
 func newIslandPlayer(t *testing.T) *Player {
 	t.Helper()
-	isl, err := CreateIsland("usedata", []int{0}, 1)
+	isl, err := CreateIsland("usedata", []int{0}, 1, CreateOptions{})
 	if err != nil {
 		t.Fatal(err)
 	}

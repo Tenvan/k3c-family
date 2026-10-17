@@ -61,8 +61,8 @@ func loadPayRange() float64 {
 
 // clearOfLines: Ein Ort dx (Units ab Hub-Mitte) liegt bei jeder Streuung der Linien ≥ payGapUnits von Mauer, Turm
 // und Tor jeder Linie entfernt (B-261). Die Streuung ist ganzzahlig (Q56), daher genügt jeder ganze Wurf.
-func clearOfLines(dx float64) bool {
-	d, a := wallLines, math.Abs(dx)
+func clearOfLines(d WallLineData, dx float64) bool {
+	a := math.Abs(dx)
 	for k, offset := range d.WallUnits {
 		jitter := d.JitterOutwardUnits
 		if k < d.FixedLines {
@@ -83,8 +83,7 @@ func clearOfLines(dx float64) bool {
 // generateLines legt je Seite die Mauerlinien ab der Hub-Mitte an. Die Streuung kommt aus dem eigenen Strom
 // `<biom>:<seed>:sites`, damit der Level-Strom unverändert bleibt; Wurfreihenfolge: links die gestreuten Linien
 // von innen nach außen, dann rechts (Q50, Q56). Gestreut wird nur nach außen um ganze Units.
-func generateLines(biomeID, seed string, hub float64) []WallLine {
-	d := wallLines
+func generateLines(d WallLineData, biomeID, seed string, hub float64) []WallLine {
 	r := rng.New(biomeID + ":" + seed + ":sites")
 	out := make([]WallLine, 0, 2*len(d.WallUnits))
 	for _, side := range []int{-1, 1} {

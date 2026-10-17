@@ -79,36 +79,40 @@ type placed struct {
 	fixed bool // vom Nutzer gesetzt; false = Ereignis-Chunk ohne Objektliste, Objekt in der Chunk-Mitte
 }
 
-// key ist `kind@x` mit der Lage x als Abstand zur Hub-Mitte, links negativ (der Spielstand ordnet Objekte so zu).
-func (p placed) key() string {
+// spotKey ist `kind@x` mit der Lage x als Abstand zur Hub-Mitte, links negativ (der Spielstand ordnet Objekte so zu).
+type spotKey struct {
+	kind string
+	x    float64
+}
+
+func (p placed) key() spotKey {
 	x := p.dist
 	if p.slot < 0 {
 		x = -x
 	}
-	return fmt.Sprintf("%s@%v", p.kind, x)
+	return spotKey{p.kind, x}
 }
 
-// kindSets sind die erlaubten Chunk- und Objekt-Arten eines Bioms.
-type kindSets struct{ chunks, objects map[string]bool }
+// hasChunkKind: Chunk-Arten des Bioms (chunkWeights) und die Ereignis-Arten.
+func hasChunkKind(b Biome, kind string) bool {
+	if kind == "portal" || isEvent(kind) {
+		return true
+	}
+	_, ok := b.ChunkWeights.Get(kind)
+	return ok
+}
 
-func setsOf(b Biome) kindSets {
-	s := kindSets{chunks: map[string]bool{}, objects: map[string]bool{}}
-	for _, e := range b.ChunkWeights {
-		s.chunks[e.Key] = true
+// hasObjectKind: Ressourcen laut resourcesPerChunk, die Ader des Bioms und die Ereignis-Arten.
+func hasObjectKind(b Biome, kind string) bool {
+	if kind == "portal" || isEvent(kind) || (b.Veins.Count > 0 && kind == b.Veins.Kind) {
+		return true
 	}
-	for _, k := range eventKinds {
-		s.chunks[k], s.objects[k] = true, true
-	}
-	s.chunks["portal"], s.objects["portal"] = true, true
-	for _, kind := range b.ResourcesPerChunk {
-		for _, res := range kind.Value {
-			s.objects[res.Key] = true
+	for _, chunkKind := range b.ResourcesPerChunk {
+		if _, ok := chunkKind.Value.Get(kind); ok {
+			return true
 		}
 	}
-	if b.Veins.Count > 0 {
-		s.objects[b.Veins.Kind] = true
-	}
-	return s
+	return false
 }
 
 // ValidatePlan prüft die geplanten Chunks einer Tiefe unabhängig vom Seed. Ist die Planung gültig, scheitert kein Seed
@@ -117,11 +121,11 @@ func ValidatePlan(b Biome, plan []PlannedChunk, lines WallLineData) error {
 	if len(plan) == 0 {
 		return nil
 	}
-	g, sets := shortest(b), setsOf(b)
-	seen, spots := map[int]bool{}, map[string]bool{}
-	var all []placed
+	g := shortest(b)
+	seen, spots := make(map[int]bool, len(plan)), make(map[spotKey]bool, len(plan))
+	all := make([]placed, 0, len(plan))
 	for _, c := range plan {
-		if err := checkChunk(c, g, sets, seen); err != nil {
+		if err := checkChunk(c, b, g, seen); err != nil {
 			return fmt.Errorf("auf Platz %+d: %w", c.Slot, err)
 		}
 		seen[c.Slot] = true
@@ -130,18 +134,18 @@ func ValidatePlan(b Biome, plan []PlannedChunk, lines WallLineData) error {
 			return fmt.Errorf("auf Platz %+d: %w", c.Slot, err)
 		}
 		for _, it := range items {
-			if key := it.key(); spots[key] {
-				return fmt.Errorf("auf Platz %+d: %s doppelt (kind@x muss je Stufe eindeutig sein)", c.Slot, key)
-			} else {
-				spots[key] = true
+			key := it.key()
+			if spots[key] {
+				return fmt.Errorf("auf Platz %+d: %s@%v doppelt (kind@x muss je Stufe eindeutig sein)", c.Slot, key.kind, key.x)
 			}
+			spots[key] = true
 		}
 		all = append(all, items...)
 	}
 	return checkTotals(b, g, plan, all)
 }
 
-func checkChunk(c PlannedChunk, g geometry, sets kindSets, seen map[int]bool) error {
+func checkChunk(c PlannedChunk, b Biome, g geometry, seen map[int]bool) error {
 	switch {
 	case c.Slot == 0:
 		return fmt.Errorf("es gibt keinen Platz 0 (Hub)")
@@ -151,7 +155,7 @@ func checkChunk(c PlannedChunk, g geometry, sets kindSets, seen map[int]bool) er
 		return fmt.Errorf("jenseits der kürzesten Länge (höchstens ±%d)", g.usable)
 	case seen[c.Slot]:
 		return fmt.Errorf("doppelt geplant")
-	case !sets.chunks[c.Kind]:
+	case !hasChunkKind(b, c.Kind):
 		return fmt.Errorf("unbekannte Chunk-Art %q", c.Kind)
 	case notEmpty(c.Buildings), notEmpty(c.Enemies):
 		return fmt.Errorf("planbar sind nur Art, Seed und Objekte; Gebäude und Gegner sind noch nicht unterstützt (Teil 2, B-468)")
@@ -167,7 +171,6 @@ func notEmpty(raw json.RawMessage) bool {
 // checkObjects prüft Art, Lage und Eindeutigkeit der Objekte eines Chunks. Ein Ereignis-Chunk ohne Objektliste trägt
 // sein Objekt in der Chunk-Mitte.
 func checkObjects(c PlannedChunk, b Biome, g geometry, lines WallLineData) ([]placed, error) {
-	sets := setsOf(b)
 	if len(c.Objects) == 0 {
 		if isEvent(c.Kind) || c.Kind == "portal" {
 			p := placed{kind: c.Kind, slot: c.Slot, at: g.cw / 2, dist: g.dist(c.Slot, g.cw/2)}
@@ -175,17 +178,14 @@ func checkObjects(c PlannedChunk, b Biome, g geometry, lines WallLineData) ([]pl
 		}
 		return nil, nil
 	}
-	var out []placed
-	seen := map[string]bool{}
-	for _, o := range c.Objects {
-		key := fmt.Sprintf("%s@%v", o.Kind, o.At)
+	out := make([]placed, 0, len(c.Objects))
+	for i, o := range c.Objects {
 		switch {
-		case !sets.objects[o.Kind]:
+		case !hasObjectKind(b, o.Kind):
 			return nil, fmt.Errorf("unbekannte Objekt-Art %q im Biom %s", o.Kind, b.ID)
-		case seen[key]:
-			return nil, fmt.Errorf("%s doppelt (kind@x muss eindeutig sein)", key)
+		case slices.ContainsFunc(c.Objects[:i], func(p PlannedObject) bool { return p == o }):
+			return nil, fmt.Errorf("%s@%v doppelt (kind@x muss eindeutig sein)", o.Kind, o.At)
 		}
-		seen[key] = true
 		p := placed{kind: o.Kind, slot: c.Slot, at: o.At, dist: g.dist(c.Slot, o.At), fixed: true}
 		if err := checkPlaced(p, b, g, lines); err != nil {
 			return nil, err
