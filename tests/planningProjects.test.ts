@@ -5,7 +5,7 @@ import { describe, expect, it } from 'vitest';
 import { checkTemplate, DOCS, meta, none, read, section, sessionRows, sprints, title, waitsForDevice } from './planningDocs';
 
 type Project = { id: string; status: string; rang: string; sprints: string[] };
-type SprintInfo = { id: string; projekt: string; active: boolean; domains: string[]; sessionDomains: string[] };
+type SprintInfo = { id: string; projekt: string; domains: string[]; sessionDomains: string[] };
 type SessionInfo = { id: string; domain: string; status: string };
 
 /** Sprint-Tabelle eines Projekts: erste Spalte jeder Zeile außer Kopf und Trenner. */
@@ -36,13 +36,6 @@ function linkErrors(projects: Project[], list: SprintInfo[]): string[] {
   return errors;
 }
 
-/** Projekte mit mehr als einem aktiven Sprint (Sprints, die nur aufs Gerät warten, zählen nicht). */
-function crowdedProjects(list: SprintInfo[]): string[] {
-  const count = new Map<string, number>();
-  for (const s of list.filter((s) => s.active && !none(s.projekt))) count.set(s.projekt, (count.get(s.projekt) ?? 0) + 1);
-  return [...count].filter(([, n]) => n > 1).map(([p]) => p);
-}
-
 /** Sprint-Feld `Domäne` = Domänen seiner Sessions in Reihenfolge des ersten Auftretens. */
 const domainListOk = (s: SprintInfo) => s.domains.join() === [...new Set(s.sessionDomains)].join();
 
@@ -54,8 +47,8 @@ function busyDomains(sessions: SessionInfo[]): string[] {
 }
 
 const P = (id: string, status: string, rang: string, list: string[] = []): Project => ({ id, status, rang, sprints: list });
-const S = (id: string, projekt: string, active = false, domains = ['SIM'], sessionDomains = domains): SprintInfo =>
-  ({ id, projekt, active, domains, sessionDomains });
+const S = (id: string, projekt: string, domains = ['SIM'], sessionDomains = domains): SprintInfo =>
+  ({ id, projekt, domains, sessionDomains });
 
 describe('Regeln für Projekte (Beispiele)', () => {
   it('ein Sprint, der nur noch auf Mensch-Sessions wartet, zählt nicht als aktiv', () => {
@@ -81,16 +74,10 @@ describe('Regeln für Projekte (Beispiele)', () => {
     expect(linkErrors([P('GRA', 'aktiv', '1', ['K3'])], [S('K3', 'KMP')])).toHaveLength(2);
   });
 
-  it('je Projekt höchstens ein aktiver Sprint', () => {
-    expect(crowdedProjects([S('GR7', 'GRA', true), S('SO2', 'SND', true), S('M10', 'GRA')])).toEqual([]);
-    expect(crowdedProjects([S('GR7', 'GRA', true), S('M10', 'GRA', true)])).toEqual(['GRA']);
-    expect(crowdedProjects([S('A1', '–', true), S('B1', '–', true)])).toEqual([]);
-  });
-
   it('Sprint-Domänen folgen den Sessions', () => {
-    expect(domainListOk(S('K3', '–', false, ['SIM', 'SRV'], ['SIM', 'SIM', 'SRV', 'SRV']))).toBe(true);
-    expect(domainListOk(S('K3', '–', false, ['SIM'], ['SIM', 'CLI']))).toBe(false);
-    expect(domainListOk(S('K3', '–', false, ['SRV', 'SIM'], ['SIM', 'SRV']))).toBe(false);
+    expect(domainListOk(S('K3', '–', ['SIM', 'SRV'], ['SIM', 'SIM', 'SRV', 'SRV']))).toBe(true);
+    expect(domainListOk(S('K3', '–', ['SIM'], ['SIM', 'CLI']))).toBe(false);
+    expect(domainListOk(S('K3', '–', ['SRV', 'SIM'], ['SIM', 'SRV']))).toBe(false);
   });
 
   it('höchstens eine Session je Domäne in Arbeit', () => {
@@ -112,8 +99,7 @@ const sprintInfos: (SprintInfo & { reife: string })[] = sprints.map(({ path }) =
   const readme = read(`${path}/README.md`);
   const f = meta(readme);
   const sessionDomains = sessionRows(readme).map((r) => meta(read(`${path}/${r.file}`)).Domäne);
-  return { id: title(readme) ?? path, projekt: f.Projekt, reife: f.Reife, domains: f.Domäne.split(/,\s*/), sessionDomains,
-    active: path.startsWith('sprints/aktiv/') && !waitsForDevice(readme) };
+  return { id: title(readme) ?? path, projekt: f.Projekt, reife: f.Reife, domains: f.Domäne.split(/,\s*/), sessionDomains };
 });
 const sessions: SessionInfo[] = sprints.flatMap(({ path }) =>
   sessionRows(read(`${path}/README.md`)).map((r) => ({ id: r.id, domain: meta(read(`${path}/${r.file}`)).Domäne, status: r.status })));
@@ -134,10 +120,9 @@ describe('Projekte', () => {
     for (const file of projectFiles) expect(overview, file).toContain(file);
   });
 
-  it('Ränge, Zuordnung und ein aktiver Sprint je Projekt', () => {
+  it('Ränge und Zuordnung', () => {
     expect(rankErrors(projects)).toEqual([]);
     expect(linkErrors(projects, sprintInfos)).toEqual([]);
-    expect(crowdedProjects(sprintInfos)).toEqual([]);
   });
 
   it('Tickets nennen nur bestehende Projekte', () => {

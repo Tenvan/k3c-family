@@ -9,7 +9,7 @@ Zielplattform ist **Edge auf der Xbox** (Gamepad API), gehostet im Heimnetz. Die
 - **Glossar:** `docs/glossar.md` – verbindliche Begriffe; vor jeder Session lesen, neue Begriffe dort zuerst eintragen.
 - **Branches:** Entwickelt wird auf `develop`, PRs zielen auf `develop`; **ein PR je Sprint** (Branch `sprint/<präfix>`, ein Commit je Session). `main` ist geschützt, nur Releases (Fast-Forward durch den Nutzer).
 - **Projekte und Sprints:** `docs/projekte/README.md` und `docs/sprints/aktiv/` lesen und die nächste offene Session nehmen, nach **Projekt-Rang**
-  (aktives Projekt mit kleinstem Rang → sein aktiver Sprint). `docs/sprints/geplant/` nur beim
+  (aktives Projekt mit kleinstem Rang → seine aktiven Sprints). `docs/sprints/geplant/` nur beim
   Planen lesen, `docs/sprints/erledigt/` nur auf Nachfrage. Übersicht: `docs/sprints/README.md`.
 - **Tickets:** `docs/backlog/` (Index `README.md`, ein Ticket pro Datei). Neue Ideen/Probleme sofort als Ticket anlegen,
   nicht nebenbei umsetzen. Erledigte/verworfene liegen in `docs/backlog/archiv/` (nur auf Nachfrage lesen).
