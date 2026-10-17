@@ -1,7 +1,7 @@
 // Gruppen der Filterleiste (wie die erp-qs-Workbench, B-439): jeder Filter liegt in einer Gruppe, die Gruppen in drei
 // Bereichen nach Wirkung. Reine Funktionen, damit die Leiste nur zeichnet: Gruppen lesen, Wert umschalten, Chips.
 import type { PlanningData } from '../api';
-import { domains, EMPTY_FILTER, PQUICK, PROJECT_STATES, QUICK, toggle, type PlanFilter } from './planning';
+import { domains, EMPTY_FILTER, PQUICK, PROJECT_STATES, projectState, QUICK, toggle, type PlanFilter } from './planning';
 
 export type FilterArea = 'common' | 'projects' | 'backlog';
 export type GroupKey = 'prios' | 'envs' | 'projs' | 'pstatus' | 'pquick' | 'doms' | 'quick';
@@ -49,7 +49,7 @@ export function filterGroups(f: PlanFilter, d: PlanningData): FilterGroup[] {
     { key: 'prios', area: 'common', label: 'Prio', join: 'or', options: counted(['hoch', 'mittel', 'niedrig'], d.tickets.map((t) => t.prio)) },
     { key: 'envs', area: 'common', label: 'Umgebung', join: 'or', options: counted(['offline', 'live'], d.tickets.map((t) => t.env)) },
     { key: 'projs', area: 'common', label: 'Projekt', join: 'or', options: counted(projects.map((p) => p.id), d.tickets.map((t) => t.project)) },
-    { key: 'pstatus', area: 'projects', label: 'Zustand', join: 'or', options: counted(PROJECT_STATES, projects.map((p) => p.status)) },
+    { key: 'pstatus', area: 'projects', label: 'Zustand', join: 'or', options: counted(PROJECT_STATES, projects.map((p) => projectState(p, d.sprints))) },
     { key: 'pquick', area: 'projects', label: 'Sprints', join: 'and',
       options: [...PQUICK.map((x) => ({ id: x.id, label: x.label })), { id: SHOW_DONE, label: 'Erledigte zeigen', count: d.done }] },
     { key: 'doms', area: 'projects', label: 'Domänen', join: 'or', options: domains(d).map((x) => ({ id: x, label: x })) },

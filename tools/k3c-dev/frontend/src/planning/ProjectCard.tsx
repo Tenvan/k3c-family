@@ -37,6 +37,8 @@ export function ProjectCard({ view, count, error, onMove, data, sel, onPick, ren
   const [folded, toggle] = useFold(p.id);
   const sum = sessionTotals(data, p.sprints);
   const pct = (n: number) => `${sum.total ? (n / sum.total) * 100 : 0}%`;
+  // Ohne offenen Sprint zeigt die Karte alle Sprints als Chips, auch die vom Filter ausgeblendeten erledigten; Panels bleiben gefiltert.
+  const chips = view.open === 0 ? p.sprints.flatMap((id) => data.sprints.find((s) => s.id === id) ?? []) : view.sprints;
   return (
     <article id={`pl-pj-${p.id}`} className={`pl-card pl-project ${cardState(view, folded, sel)}`}>
       <header className="pl-project-head" onClick={headClick(toggle, () => onPick?.(p.id))}>
@@ -45,7 +47,7 @@ export function ProjectCard({ view, count, error, onMove, data, sel, onPick, ren
         <span className="pl-project-id">{p.id}</span>
         <span className="pl-project-title">{p.title}</span>
         <span className="pl-project-meta">
-          Sprints {view.done}/{view.total}{view.sprints.length < view.total ? ` · ${view.sprints.length} sichtbar` : ''}
+          Sprints {view.done}/{view.total}{chips.length < view.total ? ` · ${chips.length} sichtbar` : ''}
         </span>
         {count !== undefined && <RankButtons view={view} count={count} onMove={onMove} />}
         <span className="pl-pills">
@@ -54,9 +56,9 @@ export function ProjectCard({ view, count, error, onMove, data, sel, onPick, ren
         </span>
       </header>
       {error && <NoticeCard title="Rang nicht geändert" tone="error">{error}</NoticeCard>}
-      {view.sprints.length > 0 && (
+      {chips.length > 0 && (
         <div className="pl-chips">
-          {view.sprints.map((s) => <SprintChip key={s.id} s={s} onPick={() => { onPick?.(s.id); unfold([p.id, s.id]); setTimeout(() => scrollToSprint(s.id), 0); }} />)}
+          {chips.map((s) => <SprintChip key={s.id} s={s} onPick={() => { onPick?.(s.id); unfold([p.id, s.id]); setTimeout(() => scrollToSprint(s.id), 0); }} />)}
         </div>
       )}
       <div className="pl-bar" role="img" aria-label={`${sum.done} von ${sum.total} Sessions erledigt`}>

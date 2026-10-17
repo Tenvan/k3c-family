@@ -43,6 +43,14 @@ describe('ProjectSections mit Mock-Daten', () => {
   });
 });
 
+describe('ProjectCard eingeklappt', () => {
+  it('zeigt alle Sprints als Chips, auch erledigte, die der Filter ausblendet', () => {
+    const fnd = groupProjects(d, d.sprints.filter((s) => s.status !== 'erledigt')).folded.find((v) => v.project.id === 'FND')!;
+    expect(fnd.sprints).toEqual([]);
+    expect(render(<ProjectCard view={fnd} {...props} />)).toContain('R1 · erledigt · 2/2');
+  });
+});
+
 describe('ProjectCard Rang-Knöpfe (AC-07)', () => {
   const buttons = (i: number, error?: string) =>
     render(<ProjectCard view={g.active[i]} count={3} error={error} {...props} />).match(/<button[^>]*>(hoch|runter)<\/button>/g) ?? [];

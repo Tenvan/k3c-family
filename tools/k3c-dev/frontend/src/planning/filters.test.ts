@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import { mockPlanningData } from '../api/mockPlanning';
-import { EMPTY_FILTER, QUICK, SPLIT_DEFAULT, filterProjects, filterSprints, filterTickets, isNext, parseFilter } from './planning';
+import { EMPTY_FILTER, QUICK, SPLIT_DEFAULT, filterProjects, filterSprints, filterTickets, isNext, parseFilter, projectState } from './planning';
 import { parseSplit } from '../tasks/TaskBars';
 
 const d = mockPlanningData();
@@ -23,6 +23,15 @@ describe('getrennte Filter (B-401)', () => {
     expect(ids(filterProjects(d, f))).not.toEqual(projects);
     expect(ids(filterSprints(d, f))).toEqual(sprints);
     expect(filterTickets(d, f).map((t) => t.nr)).toEqual(tickets);
+  });
+
+  it('Zustand „inaktiv“ heißt aktiv ohne offenen Sprint und ist filterbar', () => {
+    const x = mockPlanningData();
+    const fnd = x.projects!.find((p) => p.id === 'FND')!;
+    fnd.status = 'aktiv';
+    expect(projectState(fnd, x.sprints)).toBe('inaktiv');
+    expect(ids(filterProjects(x, { ...EMPTY_FILTER, pstatus: ['inaktiv'] }))).toEqual(['FND']);
+    expect(ids(filterProjects(x, { ...EMPTY_FILTER, pstatus: ['aktiv'] }))).not.toContain('FND');
   });
 
   it('der Projekt-Filter schränkt nach Status und Domäne der Projekte ein', () => {
