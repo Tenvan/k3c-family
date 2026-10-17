@@ -1,4 +1,4 @@
-import type { GitHubData, GitHubSprint, PlanDoc, PlanningData, PlanSession, PlanTicket } from './types';
+import type { WorktreeDiff, GitHubData, GitHubSprint, PlanDoc, PlanningData, PlanSession, PlanTicket } from './types';
 import { setRank, withProjects } from './mockProjects';
 
 // Erfundene Planung für den Mock: ein aktiver Sprint mit Session-Tabelle, geplante Entwürfe, Tickets und drei kurze
@@ -220,6 +220,14 @@ export function mockPlanning(changed: () => void) {
     planningGet: async (id: string): Promise<string> => mockDoc(DATA, id),
     openInClaude: async (prompt: string): Promise<void> => { console.info('[mock] openInClaude', prompt.length, 'Zeichen'); },
     githubStatus: async (): Promise<GitHubData> => structuredClone(GITHUB),
+    worktreeCheck: async (): Promise<WorktreeDiff[]> => [{
+      branch: 'claude/planer-wt-test', path: 'C:/k3c/.claude/worktrees/planer-wt-test',
+      changes: [
+        { kind: 'geändert', item: 'Projekt', id: 'TST', text: 'Status aktiv → ruht' },
+        { kind: 'neu', item: 'Sprint', id: 'TR5', text: 'Dummy Planer-Test' },
+        { kind: 'neu', item: 'Session', id: 'TR5.1', text: 'Dummy Session' },
+      ],
+    }],
     openUrl: (url: string) => void window.open(url, '_blank', 'noopener'),
   };
 }
