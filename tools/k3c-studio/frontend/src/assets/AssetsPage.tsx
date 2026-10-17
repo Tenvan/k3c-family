@@ -55,16 +55,17 @@ export function AssetsPage({ art }: { art: AssetKind }) {
         <SlotList slots={visible} selected={slot?.id ?? ''} onSelect={pick} />
         <Splitter className="pl-split-v" value={split} onChange={setSplit} onReset={resetSplit} />
         <section className="as-detail">
-          {slot ? <SlotDetail key={slot.id} slot={slot} used={used} onSave={data.save} onReload={() => void data.reload()} /> : <NoSlot missing={missing ? selected : ''} />}
+          {slot ? <SlotDetail key={slot.id} slot={slot} used={used} onSave={data.save} onReload={() => void data.reload()} /> : <NoSlot art={art} missing={missing ? selected : ''} />}
         </section>
       </div>
     </div>
   );
 }
 
-function NoSlot({ missing }: { missing: string }) {
+function NoSlot({ art, missing }: { art: AssetKind; missing: string }) {
   if (missing) return <NoticeCard title={`Asset-Slot ${missing} fehlt`} tone="warn">Nach dem Neuladen gibt es den gewählten Slot nicht mehr. Links einen anderen wählen.</NoticeCard>;
-  return <NoticeCard title="Kein Asset-Slot gewählt" tone="neutral">Links einen Slot wählen: Zuordnungen, Ausschnitt und Mini-Szene erscheinen hier.</NoticeCard>;
+  const was = art === 'sound' ? 'Zuordnungen und Hörprobe' : 'Zuordnungen, Ausschnitt und Mini-Szene';
+  return <NoticeCard title="Kein Asset-Slot gewählt" tone="neutral">Links einen Slot wählen: {was} erscheinen hier.</NoticeCard>;
 }
 
 function TypFilter({ typen: list, typ, onTyp }: { typen: string[]; typ: string; onTyp: (t: string) => void }) {

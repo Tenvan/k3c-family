@@ -2,7 +2,8 @@ import { Heading, Text } from '@radix-ui/themes';
 import { useState, type CSSProperties } from 'react';
 import type { AssetChoice, AssetSlot } from '../api';
 import { Splitter, useSplit } from '../ui/Splitter';
-import { addChoice, fileUrl, move, removeChoice, withCut } from './assets';
+import { SoundProbe } from '../sound/SoundProbe';
+import { addChoice, move, removeChoice, withCut } from './assets';
 import { CatalogPicker } from './CatalogPicker';
 import { CutEditor } from './CutEditor';
 import { MiniScene } from './MiniScene';
@@ -36,7 +37,7 @@ export function SlotDetail({ slot, onSave, onReload, used }: Props) {
         <CutEditor key={`${active}:${choice.datei}`} choice={choice}
           onCut={(cut) => save(withCut(slot.wahl, active, cut))} />
       )}
-      {choice && slot.art === 'sound' && <SoundProbe choice={choice} />}
+      {choice && slot.art === 'sound' && <SoundProbe key={`${active}:${choice.datei}`} slot={slot} choice={choice} />}
       <CatalogPicker art={slot.art} used={used} onAdd={(datei) => save(addChoice(slot.wahl, datei))} />
       <ResearchPanel slot={slot} onImported={onReload} />
     </div>
@@ -76,9 +77,4 @@ function ChoiceList({ slot, active, onActive, onMove, onRemove }: ListProps) {
       ))}
     </ol>
   );
-}
-
-function SoundProbe({ choice }: { choice: AssetChoice }) {
-  if (choice.sprite) return <Text size="2" color="gray">Ton „{choice.sprite}“ aus dem Audio-Atlas: Hörprobe auf der Seite Sound.</Text>;
-  return <audio className="as-audio" controls src={fileUrl(choice.datei)} />;
 }

@@ -34,3 +34,15 @@
 .pk-note { color: var(--dim); font-size: 13px; margin: 6px 0; }
 .pk-imgs { display: flex; flex-wrap: wrap; gap: 12px; align-items: flex-end; background: #11151c; border-radius: 8px; padding: 10px; }
 .pk-imgs img { display: block; image-rendering: pixelated; }
+
+/* Seite Sound: Zeilen der Szenen, Hörprobe am Slot, Liste der Hörprobe (aus soundtest.html). */
+.sd-row { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; background: var(--card); border: 1px solid var(--card-line); border-radius: 10px; padding: 8px 12px; }
+.sd-cap { flex: 1 1 24rem; font-size: 13px; word-break: break-all; }
+.sd-probe { border: 1px solid var(--card-line); border-radius: 10px; padding: 8px; }
+.hp-page { display: flex; flex-direction: column; gap: 6px; outline: none; }
+.hp-item { all: unset; box-sizing: border-box; width: 100%; display: flex; flex-wrap: wrap; justify-content: space-between; gap: 8px; padding: 4px 10px; border-radius: 6px; cursor: pointer; font-size: 13px; }
+.hp-item:hover { background: var(--gray-a3); }
+.hp-sel { background: var(--accent-a4); }
+.hp-on { box-shadow: inset 3px 0 0 var(--green-9); }
+.hp-off { opacity: 0.5; }
+.hp-item:focus-visible { outline: 2px solid var(--accent-8); }

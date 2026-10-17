@@ -1,6 +1,6 @@
 # WZ6.4 · Seite Sound mit Hörprobe im Asset-Studio
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** DEV
@@ -80,10 +80,10 @@ Nur lesen: `src/**`, `data/**`, `public/**`, `tools/k3c-dev/frontend/src/**`, `a
 
 ## Fertig, wenn
 
-- [ ] AC-02: Seite Sound mit Slots, Filtern, Präferenzen, Katalog, Recherche, Import und Hörprobe je Zuordnung (auch Atlas-Töne); Tests im Prüfziel des Studios grün.
-- [ ] AC-06: Reiter „Szenen“ mit `sfx`, `musik` (Wechsel mit `CROSSFADE_SECONDS`) und `ambient` (Schleife) sowie Reiter „Hörprobe“ mit den Gruppen aus `soundtest.html` (Musik-Zustände, Ereignisse), Lautstärke und Crossfade; Test der Abspiel-Zuordnung (Bus, Gain, Schleife, Überblendung je Slot).
-- [ ] `git diff --name-only` der Session zeigt nichts unter `src/`, `data/`, `public/` und weder `soundtest.html` noch `assetvorschau.html`.
-- [ ] Prüfziel des Asset-Studios, `task check` und `task k3c-studio:build` grün (Oxlint: Datei ≤ 400, Funktion ≤ 60 Zeilen).
+- [x] AC-02: Seite Sound mit Slots, Filtern, Präferenzen, Katalog, Recherche, Import und Hörprobe je Zuordnung (auch Atlas-Töne); Tests im Prüfziel des Studios grün.
+- [x] AC-06: Reiter „Szenen“ mit `sfx`, `musik` (Wechsel mit `CROSSFADE_SECONDS`) und `ambient` (Schleife) sowie Reiter „Hörprobe“ mit den Gruppen aus `soundtest.html` (Musik-Zustände, Ereignisse), Lautstärke und Crossfade; Test der Abspiel-Zuordnung (Bus, Gain, Schleife, Überblendung je Slot).
+- [x] `git diff --name-only` der Session zeigt nichts unter `src/`, `data/`, `public/` und weder `soundtest.html` noch `assetvorschau.html`.
+- [ ] Prüfziel des Asset-Studios, `task check` und `task k3c-studio:build` grün (Oxlint: Datei ≤ 400, Funktion ≤ 60 Zeilen): `check:studio` und `k3c-studio:build` grün, Oxlint ohne Befund im Studio; `task check` rot nur durch den vorbestehenden Lint-Fehler auf `develop` (B-465), Typecheck und Tests grün.
 
 ## Prüfen
 
@@ -97,5 +97,10 @@ Browser-/Fensterprüfung nur mit Freigabe 🧑 für diesen Lauf: Mock des Studio
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+- **AC-02 umgesetzt, geprüft:** Seite Sound auf der gemeinsamen Seitenstruktur (`AssetsPage art="sound"`): Slots mit Filtern, Präferenzen, Katalog, Recherche, Import; `SoundProbe` am Slot spielt jede Präferenz wie im Spiel (Atlas-Töne mit „fern“, Musik mit Crossfade, Umgebung als Schleife). DOM-Test `SoundPage.test.tsx` (Atlas-Ton `sfx:coin` mit „fern“, keine Ausschnitt-Felder).
+- **AC-06 umgesetzt, geprüft:** `playback.ts` (Abspiel-Zuordnung, umgezogen aus `playSound`) mit Test; `audio.ts` mit einem `audioCore` des Spiels je Fenster, Stopp aller Busse (beendet auch noch wartende Atlas-Wiederholungen), Stopp beim Verlassen der Seite. Reiter Szenen (`sfx`, `musik`, `ambient`, Vergleich Präferenz n, NC, Lücke, Stopp, Statuszeile) und Hörprobe (`candidatesFromSlots`/`groupCandidates`/`fileFor`/`keyAction`/`stepVolume` aus `@game/tools/soundtestLogic`, hart oder Crossfade, Lautstärke ±10 % aus dem Mixer, Tastatur).
+- **Fenster (Freigabe 🧑, 2026-10-17):** `bin/k3c-studio.exe` mit echten Daten: 19 Sound-Slots; `sfx:coin` spielt schon beim ersten Klick (Status „Münze · audio/atlas.ogg#coin“); Szene Musik `music:tag` → `music:nacht` startet beide (Status ok, die Überblendung hört 🧑 in WZ6.8); Hörprobe mit Gruppen Tag, Nacht, Münze, „spielt: probe-a“. Screenshots im Notizordner (`side-session-notes/…/wz6.4-screenshots/`). Konsole im Fenster nicht einsehbar (kein Devtools-Zugriff), daher nicht geprüft. Der Stand nach dem Review (siehe unten) lief nicht mehr im Fenster, nur in Tests und Build.
+- **Prüfung:** `task check:studio` grün (49 Tests, Go-Tests, Lint), `task k3c-studio:build` grün, `check_run task:test` und `task:typecheck` grün; `task:lint` rot nur durch B-465.
+- **Review (getrennter Reviewer):** keine schweren Befunde. Behoben: Stopp der Hörprobe stoppt alle Busse (auch nach Reiterwechsel), Lautstärke aus dem Mixer und nur bei laufendem Kern, Abbruch wartender Atlas-Töne bei Stopp, eigene Meldung für unbekannte Atlas-Töne, Enter/Leertaste auf Knöpfen, `playing` im Ref, Testisolation, Kommentar zu `FAR_GAIN`. Gelassen: „lädt nicht“ erscheint erst beim Klick (soundtest.html lädt alle vor).
+- **Abweichungen:** `FAR_GAIN` mit x = 40 (Vorschau-Wert, Faktor 0,25): der Wert aus `assetvorschau.ts` (x = 100) ergibt mit der Formel aus SO1 den Faktor 0, „fern“ war dort stumm. Atlas-Töne warten nach dem ersten Entsperren bis zu 3 s auf den Atlas (sonst schlug der erste Klick fehl, im Fenster beobachtet). Der Sound-DOM-Test ersetzt `@game/tools/credits` durch eine leere Liste (das Studio-Vitest liefert `public/**/CREDITS.md?raw` außerhalb seiner Wurzel nicht aus; die Einbindung blieb laut Nicht-Zielen unverändert).
+- **Geprüft von:** Claude (autonom, Fenster mit Freigabe 🧑). **Neue Tickets:** keine.
