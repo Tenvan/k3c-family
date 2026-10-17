@@ -108,11 +108,13 @@ function Colors({ m }: { m: Monarch }) {
 export function MonarchPage() {
   const m = useMonarch();
   const [infos, setInfos] = useState<FigureInfo[]>([]);
+  const [missing, setMissing] = useState<string[]>([]);
   return (
     <div className="wd-page wd-monarch">
       <Bar m={m} gap={infos[0]?.gap} />
       <PlaybackControls control={m.control} onChange={m.setControl} frames={infos[0]?.frames ?? 1} />
-      <FigureStage items={m.items} control={m.control} onInfo={setInfos} />
+      {missing.length > 0 && <Text as="p" size="2" color="red" role="status">Grafiken nicht geladen: {missing.join(', ')}</Text>}
+      <FigureStage items={m.items} control={m.control} onInfo={setInfos} onLoadError={setMissing} />
       <Colors m={m} />
       <SkillList />
     </div>

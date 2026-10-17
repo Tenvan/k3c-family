@@ -159,6 +159,7 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-472](B-472-nacht-dunkler-fackeln-lagerfeuer-licht.md) | CLI | Idee | niedrig | offen | – | Nacht und Morgengrauen sind dunkler, Fackeln und Lagerfeuer machen Licht |
 | [B-473](B-473-ci-rot-k3c-dev-planning-worktree-tests.md) | DEV | Problem | hoch | offen | – | CI auf develop rot: k3c-dev internal/planning Worktree-Tests scheitern auf dem Windows-Runner |
 | [B-474](B-474-testdownloadhit-norton-tls.md) | DEV | Problem | mittel | offen | – | TestDownloadHit scheitert lokal am TLS-Zertifikat (Norton), check:all rot |
+| [B-476](B-476-preload-sprites-beliebige-reittiere.md) | CLI | Schuld | niedrig | offen | – | preloadSprites und createSpriteAnims laden beliebige Reittiere statt nur das Standard-Reittier |
 
 ## Archiv
 

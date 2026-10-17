@@ -117,7 +117,7 @@ Vor der Freigabe offen: nichts.
 | WZ10.1 | `WZ10.1-abspiel-bausteine.md` | Umsetzung | autonom | fertig |
 | WZ10.2 | `WZ10.2-monarch-seite-bewegung.md` | Umsetzung | autonom | fertig |
 | WZ10.3 | `WZ10.3-monarch-seite-aktionen.md` | Umsetzung | autonom | fertig |
-| WZ10.4 | `WZ10.4-review.md` | Review | autonom | in Arbeit |
+| WZ10.4 | `WZ10.4-review.md` | Review | autonom | fertig |
 | WZ10.5 | `WZ10.5-abnahme.md` | Review | Mensch | offen |
 
 - WZ10.1 (DEV) Abspiel-Bausteine auf der Bühne aus WZ7.3 (kein neues Phaser): Spiel-Animationen, Steuerung, Maßstab, Reittier-Lader, Lücken-Markierung, als Parameter statt Monarch-Festwerte, damit WZ11 sie nutzt (AC-02, AC-11, AC-16)
@@ -130,5 +130,6 @@ Bei `Reife: Entwurf` genügen Stichpunkte; vor dem Aktivieren wird jede Session 
 
 ## Abnahme
 
-Wird von der Review-Session (Doku-Sprint: letzte Session) ausgefüllt, höchstens fünf Zeilen: Datum, Kriterien
-(Verweis auf Session-Ergebnisse), behobene Befunde, neue Tickets. Bis dahin `–`.
+2026-10-18 (Review WZ10.4): AC-01 bis AC-12, AC-15, AC-16 mit Nachweis aus Code, Tests und getrenntem Reviewer (Ergebnisse WZ10.1–WZ10.4); AC-13 und AC-14 verschoben nach WZ11 (AC-18, AC-19); AC-17 offen (WZ10.5, 🧑 am PC).
+Befunde: keine schweren; Abweichung von B-463/AC-02 (Laden der Reittiere außerhalb des Atlas nachgebaut, `src/scenes/` ist tabu) mit Ticket B-476.
+Version: v… vorgeschlagen: keine Änderung (Werkzeug-Sprint, kein Spielstand- oder Protokoll-Wechsel).
