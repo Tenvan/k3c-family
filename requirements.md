@@ -10,8 +10,8 @@ holt `npm ci` aus `package-lock.json`. Versionen gelten, solange diese Datei, `.
 | Node.js (mit npm) | 22 (neuere laufen lokal meist auch) | Client bauen, testen, Dev-Server | `.nvmrc` | `node --version` |
 | Go | 1.27 | Go-Server, `data/embed.go`, `task check:go` | `go.mod` | `go version` |
 | golangci-lint | 2.14 | Go-Lint mit Komplexitäts-Budget | `.github/workflows/ci.yml` | `golangci-lint --version` |
-| Wails-CLI | 2.16.0 | Fenster von `tools/k3c-dev` bauen (`task k3c-dev`, `task k3c-dev:build`) | `tools/k3c-dev/go.mod` | `wails version` |
-| WebView2-Laufzeit | aktuell (in Windows 11 enthalten) | Fenster von `k3c-dev` | – | `wails doctor` |
+| Wails-CLI | 2.16.0 | Fenster von `tools/k3c-dev` und Asset-Studio `tools/k3c-studio` bauen (`task k3c-dev`, `task k3c-dev:build`, `task k3c-studio`, `task k3c-studio:build`) | `tools/k3c-dev/go.mod`, `tools/k3c-studio/go.mod` | `wails version` |
+| WebView2-Laufzeit | aktuell (in Windows 11 enthalten) | Fenster von `k3c-dev` und Asset-Studio | – | `wails doctor` |
 | Go Task | 3 | Alle Befehle (`Taskfile.yml`, `task --list`) | `Taskfile.yml` | `task --version` |
 | C-Compiler (optional) | `gcc` oder `clang` | Race-Detector `go test -race` in `task check:race`; ohne Compiler nur ein Hinweis, die CI prüft es (B-077) | – | `gcc --version` |
 | Docker (optional) | aktuell, mit `buildx` | Image des Heimnetz-Servers (`Dockerfile`, `compose.yaml`); sonst prüft es die CI | – | `docker buildx version` |
@@ -54,9 +54,11 @@ Hinweise:
 ```bash
 npm ci
 npm ci --prefix tools/k3c-dev/frontend
+npm ci --prefix tools/k3c-studio/frontend
 ```
 
-Die zweite Zeile nur für `tools/k3c-dev` (Frontend der Oberfläche, `task check:dev`).
+Die zweite Zeile nur für `tools/k3c-dev` (Frontend der Oberfläche, `task check:dev`), die dritte für das Asset-Studio
+(`task check:studio`); `task install` macht alle drei.
 
 ## Alles prüfen
 

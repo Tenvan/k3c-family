@@ -9,6 +9,7 @@ Die Reihenfolge der Arbeit ist allein der Projekt-Rang: [`../projekte/README.md`
 
 | Sprint | Domäne | Projekt | Thema | Am Ende sichtbar | Ordner |
 |---|---|---|---|---|---|
+| WZ6 | INF, DEV | WZG | Asset-Studio als eigene EXE mit Seiten für Grafik und Sound | – | `aktiv/WZ6-asset-werkzeug-exe/` |
 | GR7 | CLI | GRA | Figuren-Lücken, ganzzahlige Skalierung und Schrift | – | `aktiv/GR7-figuren-schrift/` |
 | SO4 | CLI | SND | Musik je Zustand | – | `aktiv/SO4-musik/` |
 
@@ -20,7 +21,6 @@ Abnahmen am Gerät (`Agent: Mensch`) sammelt das Projekt ABN im Sprint HW1: [`..
 
 | Sprint | Domäne | Projekt | Thema | Am Ende sichtbar | Reife | Ordner |
 |---|---|---|---|---|---|---|
-| WZ6 | INF, DEV | WZG | Asset-Studio als eigene EXE mit Seiten für Grafik und Sound | – | bereit | `geplant/WZ6-asset-werkzeug-exe/` |
 | WZ7 | DEV | WZG | Welt-Betrachter im Asset-Studio mit Chunk- und Live-Vorschau | – | Entwurf | `geplant/WZ7-welt-betrachter/` |
 | WZ8 | SIM | WZG | Chunks je Insel und Stufe planen: Seed oder feste Objekte | – | Entwurf | `geplant/WZ8-chunk-planung/` |
 | WZ9 | DEV | WZG | Gebäude-Planer für die Freischaltung je Hub-Stufe | – | Entwurf | `geplant/WZ9-gebaeude-planer/` |

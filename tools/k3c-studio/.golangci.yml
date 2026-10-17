@@ -1,0 +1,18 @@
+# Grenzen aus docs/arbeitsweise.md › Komplexitäts-Budget, wie im Hauptmodul (.golangci.yml im Repo).
+# Dateilänge und Verschachtelung prüfen tests/projectRules.test.ts und tests/nesting_test.go.
+version: "2"
+
+linters:
+  enable:
+    - funlen
+    - gocyclo
+  settings:
+    funlen:
+      lines: 60
+      statements: -1
+    gocyclo:
+      min-complexity: 15
+  exclusions:
+    rules:
+      - path: _test\.go
+        linters: [funlen]

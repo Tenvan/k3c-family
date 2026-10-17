@@ -8,6 +8,8 @@ reports
 logs
 certs
 tools/k3c-dev
+tools/k3c-studio
+tools/assetkit
 docs
 .omc
 .claude

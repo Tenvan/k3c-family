@@ -4,6 +4,7 @@ version: '3'
 
 vars:
   DEV: tools/k3c-dev
+  STUDIO: tools/k3c-studio
 
 # Go-Build-Temp (go-build, Test-EXEs) und Wails-Bindings-EXE liegen fest im Projekt statt in %TEMP%:
 # Nur so reicht EINE Norton-Ausnahme für `.work/` (Ordner legt `task install` an).
@@ -27,11 +28,12 @@ tasks:
       - task --list
 
   install:
-    desc: Abhängigkeiten holen (Client und Frontend von k3c-dev)
+    desc: Abhängigkeiten holen (Client, Frontends von k3c-dev und Asset-Studio)
     cmds:
       - mkdir -p .work/tmp
       - npm ci
       - npm ci --prefix {{.DEV}}/frontend
+      - npm ci --prefix {{.STUDIO}}/frontend
 
   dev:
     desc: Dev-Server (LAN, Port 5183); /api und /ws gehen an den Go-Server (Port 8080, `task start`)
@@ -209,6 +211,30 @@ tasks:
       - go test ./...
       - golangci-lint run
 
+  studio:frontend:
+    desc: Frontend des Asset-Studios bauen (go:embed braucht frontend/dist)
+    dir: '{{.STUDIO}}/frontend'
+    cmds:
+      - npx tsc --noEmit
+      - npx vite build
+    sources:
+      - src/**/*
+      - index.html
+      - package.json
+      - vite.config.ts
+    generates:
+      - dist/**/*
+
+  check:studio:
+    desc: Asset-Studio und gemeinsame Asset-Logik prüfen (Frontend mit Vitest, go test, golangci-lint; B-459)
+    deps: [tmp, studio:frontend]
+    cmds:
+      - npx vitest run --config {{.STUDIO}}/frontend/vitest.config.ts
+      - cd tools/assetkit && go test ./...
+      - cd tools/assetkit && golangci-lint run
+      - cd {{.STUDIO}} && go test ./...
+      - cd {{.STUDIO}} && golangci-lint run
+
   k3c-dev:
     desc: Entwickler-Werkzeug k3c-dev als Fenster starten (wails dev)
     deps: [tmp]
@@ -264,10 +290,32 @@ tasks:
     cmds:
       - wails build
 
+  k3c-studio:
+    desc: Asset-Studio als Fenster starten (wails dev; B-459)
+    deps: [tmp]
+    dir: '{{.STUDIO}}'
+    preconditions:
+      - sh: command -v wails
+        msg: 'Wails-CLI fehlt – go install github.com/wailsapp/wails/v2/cmd/wails@v2.16.0 (requirements.md)'
+    cmds:
+      - wails dev
+
+  k3c-studio:build:
+    desc: EXE des Asset-Studios bauen, feste EXE bin/k3c-studio (Firewall; laufendes Asset-Studio vorher schließen, sonst scheitert die Kopie); startet die Workbench nicht neu
+    deps: [tmp]
+    preconditions:
+      - sh: command -v wails
+        msg: 'Wails-CLI fehlt – go install github.com/wailsapp/wails/v2/cmd/wails@v2.16.0 (requirements.md)'
+    cmds:
+      - cd {{.STUDIO}} && wails build
+      - mkdir -p bin
+      - cp {{.STUDIO}}/build/bin/k3c-studio{{exeExt}} bin/k3c-studio{{exeExt}}
+
   check:all:
-    desc: Alles prüfen (Client, Go, k3c-dev, Build)
+    desc: Alles prüfen (Client, Go, k3c-dev, Asset-Studio, Build)
     cmds:
       - task: check
       - task: build
       - task: check:go
       - task: check:dev
+      - task: check:studio

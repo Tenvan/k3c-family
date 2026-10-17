@@ -2,7 +2,6 @@ import { Tabs, Theme } from '@radix-ui/themes';
 import { useEffect, useState } from 'react';
 import { backend, type McpState } from './api';
 import { Header, PAGES, type Page } from './Header';
-import { AssetsPage } from './assets/AssetsPage';
 import { loadPref, savePref } from './lib/prefs';
 import { McpPage } from './mcp/McpPage';
 import { PlanningPage } from './planning/PlanningPage';
@@ -50,9 +49,6 @@ export function App() {
           </Tabs.Content>
           <Tabs.Content value="planung">
             <PlanningPage />
-          </Tabs.Content>
-          <Tabs.Content value="assets">
-            <AssetsPage />
           </Tabs.Content>
           <Tabs.Content value="mcp">
             <McpPage />

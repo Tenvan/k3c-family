@@ -1,7 +1,7 @@
 # Repository Atlas: K3C – Family Three Crowns
 
 ## Project Responsibility
-Couch-Koop-Side-Scroller im Stil von Kingdom Two Crowns für Edge auf der Xbox (Gamepad API), gehostet im Heimnetz. Ein Go-Server (`engine/`, `cmd/k3c-server`) rechnet die deterministische Simulation und verteilt Snapshots über WebSocket (Protokoll v4). Der Browser-Client (`src/`, TypeScript + Phaser 4 + Vite) sendet nur Eingaben und zeichnet. Balancing liegt als JSON in `data/` und ist die einzige Quelle für beide Seiten. `tools/k3c-dev` ist das Entwickler-Werkzeug (Wails-Desktop-App + MCP-Server).
+Couch-Koop-Side-Scroller im Stil von Kingdom Two Crowns für Edge auf der Xbox (Gamepad API), gehostet im Heimnetz. Ein Go-Server (`engine/`, `cmd/k3c-server`) rechnet die deterministische Simulation und verteilt Snapshots über WebSocket (Protokoll v4). Der Browser-Client (`src/`, TypeScript + Phaser 4 + Vite) sendet nur Eingaben und zeichnet. Balancing liegt als JSON in `data/` und ist die einzige Quelle für beide Seiten. `tools/k3c-dev` ist das Entwickler-Werkzeug (Wails-Desktop-App + MCP-Server), `tools/k3c-studio` das Asset-Studio (Wails-Desktop-App für Grafik und Sound).
 
 ## System Entry Points
 - `game.html` → `src/main.ts`: Spiel-Client (Phaser-Szenen `load` → `lobby` → `game` + `hud`)
@@ -10,7 +10,7 @@ Couch-Koop-Side-Scroller im Stil von Kingdom Two Crowns für Edge auf der Xbox (
 - `cmd/k3c-server/`: Go-Spielserver (liefert `dist/` aus, `/api`, `/ws`)
 - `Taskfile.yml`: einziger Einstieg für Befehle (`task dev`, `task start`, `task check` …)
 - `package.json`, `tsconfig.json`, `vite.config.ts`: Client-Build (jede Root-`*.html` wird eine Seite; Dev-Proxy für `/api` und `/ws`; Watcher ignoriert Worktrees und Laufzeit-Ausgaben)
-- `go.mod`: Go-Modul für Engine, Server und `tools/atlas`; `tools/k3c-dev/go.mod` ist ein eigenes Modul
+- `go.mod`: Go-Modul für Engine, Server und `tools/atlas`; `tools/k3c-dev/go.mod`, `tools/k3c-studio/go.mod` und `tools/assetkit/go.mod` sind eigene Module
 
 ## Directory Map
 | Directory | Responsibility Summary | Detailed Map |
@@ -40,7 +40,9 @@ Couch-Koop-Side-Scroller im Stil von Kingdom Two Crowns für Edge auf der Xbox (
 | `src/tools/` | Test- und Info-Seiten (Gamepad-Test, Level-Betrachter, Grafiken, Monitor, Hörprobe, Dungeon Master, Lizenzen) | [View Map](src/tools/codemap.md) |
 | `tools/` | Entwickler-Werkzeuge außerhalb des Spiels | [View Map](tools/codemap.md) |
 | `tools/atlas/` | Build-Time-CLI: packt Sprites zu Atlas-PNGs und Phaser-`atlas.json` | [View Map](tools/atlas/codemap.md) |
+| `tools/assetkit/` | Gemeinsame Asset-Logik von k3c-dev und Asset-Studio: Slot-Register, Katalog, Recherche, Schreibregel | [View Map](tools/assetkit/codemap.md) |
 | `tools/k3c-dev/` | Wails-Desktop-Host: Composition Root, App-Bindings, MCP-Server, Dienste | [View Map](tools/k3c-dev/codemap.md) |
+| `tools/k3c-studio/` | Asset-Studio: Wails-Fenster mit Seiten Grafik und Sound auf `data/assets.json` | [View Map](tools/k3c-studio/codemap.md) |
 | `tools/k3c-dev/internal/` | Interne Packages von k3c-dev | [View Map](tools/k3c-dev/internal/codemap.md) |
 | `tools/k3c-dev/internal/mcpsrv/` | MCP-Server (Streamable HTTP): Tool-Katalog, Worktree-Scoping, Check-Pipeline | [View Map](tools/k3c-dev/internal/mcpsrv/codemap.md) |
 | `tools/k3c-dev/internal/planning/` | Tickets, Sprints, Sessions, Roadmap unter `docs/`, transaktional mit Vorlagenpflicht, Prio-Vererbung | [View Map](tools/k3c-dev/internal/planning/codemap.md) |
