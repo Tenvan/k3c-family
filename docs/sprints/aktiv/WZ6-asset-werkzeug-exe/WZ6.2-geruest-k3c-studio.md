@@ -1,6 +1,6 @@
 # WZ6.2 · Gerüst k3c-studio: Wails-App, EXE, Task, gemeinsames Asset-Paket
 
-- **Status:** offen
+- **Status:** in Arbeit
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** DEV
