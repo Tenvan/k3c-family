@@ -373,6 +373,22 @@ export interface PlanningData {
   done: number;
 }
 
+/** Unterschied eines Worktrees zur Wurzel (Go: planning.Change); nur zur Anzeige. */
+export interface WorktreeChange {
+  kind: 'neu' | 'geändert' | 'entfernt';
+  item: 'Projekt' | 'Sprint' | 'Session' | 'Ticket';
+  id: string;
+  text: string;
+}
+
+/** Planungsunterschiede eines Worktrees zur Wurzel (Go: planning.WorktreeDiff). */
+export interface WorktreeDiff {
+  branch: string;
+  path: string;
+  changes: WorktreeChange[];
+  error?: string;
+}
+
 /** GitHub-Stand eines Sprints (Go: github.SprintPR). */
 export interface GitHubSprint {
   number: number;
@@ -465,6 +481,7 @@ export interface Backend {
   planningSet(id: string, field: string, value: string): Promise<string>;
   /** PR, CI und Merge-Stand je Sprint; force umgeht den Zwischenspeicher (60 s). */
   githubStatus(force: boolean): Promise<GitHubData>;
+  worktreeCheck(): Promise<WorktreeDiff[]>;
   /** Öffnet den Prompt als neue Code-Session in Claude Desktop (Deep Link, schickt nicht ab). */
   openInClaude(prompt: string): Promise<void>;
   /** Öffnet eine Adresse im Standard-Browser (Wails) bzw. in einem neuen Tab (Mock). */

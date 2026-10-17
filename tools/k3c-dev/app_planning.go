@@ -49,3 +49,9 @@ func (a *App) PlanningGet(id string) (string, error) {
 	a.wait()
 	return planning.Get(a.root, id)
 }
+
+// WorktreeCheck vergleicht die Planung aller Worktrees mit der Wurzel (Binding); nur lesend, nichts wird geschrieben.
+func (a *App) WorktreeCheck() ([]planning.WorktreeDiff, error) {
+	a.wait()
+	return planning.CheckWorktrees(a.root)
+}

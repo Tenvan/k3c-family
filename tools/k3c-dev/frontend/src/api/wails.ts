@@ -1,6 +1,6 @@
 import type {
   AssetChoice, AssetHit, AssetSlot, ResearchResult, AssetsView, Backend, CatalogAsset, ConsoleLine, ErrorsView, EventName, Events, Info, LevelCounts, LogQuery, LogView, McpCall, McpOverview,
-  McpState, McpUsage, ServicesView, ServiceStatus, Source, TaskCatalog, TaskGates, TaskRun, PlanDoc, PlanningData, GitHubData,
+  McpState, McpUsage, ServicesView, ServiceStatus, Source, TaskCatalog, TaskGates, TaskRun, PlanDoc, PlanningData, GitHubData, WorktreeDiff,
 } from './types';
 
 // Die Wails-Laufzeit legt window.go (Bindings der App) und window.runtime an. Die generierten Dateien unter
@@ -38,6 +38,7 @@ interface GoApp {
   PlanningDoc(name: PlanDoc): Promise<string>;
   PlanningGet(id: string): Promise<string>;
   GitHubStatus(force: boolean): Promise<GitHubData>;
+  WorktreeCheck(): Promise<WorktreeDiff[]>;
   OpenInClaude(prompt: string): Promise<void>;
   AssetsList(): Promise<AssetsView>;
   AssetsSet(id: string, wahl: AssetChoice[]): Promise<AssetSlot>;
@@ -103,6 +104,7 @@ export function wailsBackend(): Backend {
     planningDoc: (name) => app.PlanningDoc(name),
     planningGet: (id) => app.PlanningGet(id),
     githubStatus: (force) => app.GitHubStatus(force),
+    worktreeCheck: () => app.WorktreeCheck(),
     openInClaude: (prompt) => app.OpenInClaude(prompt),
     assetsList: () => app.AssetsList(),
     assetsSet: (id, wahl) => app.AssetsSet(id, wahl),

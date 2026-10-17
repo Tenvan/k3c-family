@@ -9,6 +9,7 @@ import { BacklogView, useTarget } from './Backlog';
 import { PlanDetail } from './Detail';
 import { foldAll, unfold } from './fold';
 import { GitHubBar, useGitHub } from './GitHubBar';
+import { WorktreeBar } from './WorktreeBar';
 import { exists, filterProjects, filterSprints, filterTickets, findSession, parseFilter, projectHits, sortSprints, SPLIT_DEFAULT, type PlanFilter } from './planning';
 import { PlanToolbar } from './PlanToolbar';
 import { ProjectsView } from './ProjectsView';
@@ -59,6 +60,7 @@ export function SprintsBacklog() {
   return (
     <div className="pl-board">
       <GitHubBar gh={gh} reload={reloadGh} />
+      <WorktreeBar />
       <PlanToolbar data={data} filter={filter} setFilter={setFilter} hits={(shown.projects?.length ?? 0) + tickets.length} />
       <div className="pl-grid" style={{ '--pl-split': `${cols}%`, '--pl-detail': rows } as CSSProperties}>
         <section className="pl-pane pl-projects" aria-label="Projekte">
