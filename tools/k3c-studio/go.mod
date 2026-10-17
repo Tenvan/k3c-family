@@ -4,6 +4,7 @@ go 1.27.0
 
 require (
 	github.com/wailsapp/wails/v2 v2.16.0
+	k3c v0.0.0-00010101000000-000000000000
 	k3c/tools/assetkit v0.0.0
 )
 
@@ -34,9 +35,12 @@ require (
 	github.com/wailsapp/mimetype v1.4.1 // indirect
 	golang.org/x/crypto v0.53.0 // indirect
 	golang.org/x/net v0.56.0 // indirect
-	golang.org/x/sys v0.46.0 // indirect
+	golang.org/x/sys v0.47.0 // indirect
 	golang.org/x/text v0.39.0 // indirect
 )
 
 // Asset-Logik, gemeinsam mit der Workbench tools/k3c-dev (B-459).
 replace k3c/tools/assetkit => ../assetkit
+
+// Level-Erzeugung und Daten des Spiels für den Welt-Betrachter (B-460), nur lesend.
+replace k3c => ../..

@@ -1,3 +1,5 @@
+import type { LevelLayout } from '@game/model/types';
+
 // Typen des Asset-Studios (B-298, B-459): Slot-Register, Katalog und Recherche, wie Go sie liefert
 // (tools/assetkit, tools/k3c-studio/app_assets.go). Kopie aus k3c-dev, ergänzt um Stand und Backend.
 /** Ausschnitt in Bild-Pixeln (Go: assets.Rect) */
@@ -87,6 +89,17 @@ export interface ResearchResult {
   hinweise: string[];
 }
 
+/** Level des Welt-Betrachters (Go: WorldLevelView): das Level wie im Spiel plus Warnungen der Prüfung; error ist der
+ *  Hinweis für die Seite (dann sind Abschnitte und Objekte leer). */
+/** Quelle des Levels als Wert (Go: WorldSource): in WZ7 das Biom; Insel + Stufe trägt die Schnittstelle schon (WZ8.5). */
+export interface WorldSource {
+  biome?: string;
+  island?: string;
+  stage?: number;
+}
+
+export type WorldLevelView = LevelLayout & { warnings: string[]; error: string };
+
 /** Ereignisse des Backends: assets:changed = data/assets.json geändert (MCP, Editor, eigenes Speichern) */
 export interface Events {
   'assets:changed': null;
@@ -105,6 +118,8 @@ export interface Backend {
   assetsImport(id: string, hit: string): Promise<string>;
   assetsDownload(id: string, hit: string): Promise<string>;
   assetsLicenseOk(id: string, hit: string): Promise<void>;
+  /** Welt-Betrachter: Level zu Seed und Biom, ohne Spielserver (B-460) */
+  worldLevel(seed: string, source: WorldSource): Promise<WorldLevelView>;
   openUrl(url: string): void;
   /** Abo eines Ereignisses; liefert die Abmeldung */
   on<E extends EventName>(event: E, fn: (data: Events[E]) => void): () => void;

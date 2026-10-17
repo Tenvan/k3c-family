@@ -1,0 +1,26 @@
+/* Seite Welt-Betrachter (B-460, WZ7.2): Chunk-Vorschau aus der früheren leveltest.html, Farben aus theme.css. */
+.wd-page { display: flex; flex-direction: column; gap: 12px; }
+.wd-chunks { display: flex; flex-direction: column; gap: 8px; min-height: 16rem; }
+.wd-chunks.wd-max { min-height: calc(100vh - 7rem); }
+.wd-bar { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; }
+.wd-seed { width: 12rem; }
+.wd-grow { flex: 1; }
+.wd-note { margin: 0; color: var(--dim); font-size: 13px; }
+.wd-viewport { overflow-x: auto; padding-bottom: 8px; border: 1px solid var(--card-line); border-radius: 8px; background: var(--card); }
+.wd-chunks.wd-max .wd-viewport { flex: 1; }
+.wd-strip { position: relative; height: 8.5rem; margin: 8px 0; }
+.wd-chunk {
+  position: absolute; top: 0; bottom: 0; box-sizing: border-box; padding: 2px 4px; overflow: hidden;
+  border-left: 1px solid var(--card-line); color: var(--dim); font-size: 11px; white-space: nowrap;
+}
+.wd-chunk.wd-special { background: color-mix(in srgb, #b388ff 14%, transparent); }
+.wd-chunk.wd-hub { background: color-mix(in srgb, #ffd166 16%, transparent); }
+.wd-marker { position: absolute; border-radius: 50%; }
+.wd-hubline { position: absolute; top: 0; bottom: 0; width: 2px; background: #ffd166; opacity: 0.7; }
+.wd-legend { display: flex; flex-wrap: wrap; gap: 4px 14px; list-style: none; margin: 0; padding: 0; font-size: 12px; }
+.wd-legend li::before {
+  content: ''; display: inline-block; width: 9px; height: 9px; margin-right: 5px; border-radius: 50%; background: var(--dot);
+}
+.wd-warnings { margin: 0; padding-left: 18px; color: #ff8fa3; font-size: 13px; }
+.wd-live { border: 1px dashed var(--card-line); border-radius: 8px; padding: 16px; min-height: 12rem; }
+.wd-live[hidden] { display: none; }
