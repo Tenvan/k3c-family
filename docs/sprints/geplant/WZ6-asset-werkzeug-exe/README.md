@@ -6,9 +6,9 @@
 - **Reife:** bereit
 - **Tickets:** B-459
 - **Start-Commit:** – (wird beim Aktivieren gesetzt: `git rev-parse --short origin/develop`)
-- **Spec:** Entwurf
+- **Spec:** freigegeben
 - **Revision:** 2
-- **Freigabe:** –
+- **Freigabe:** 2026-10-17, Chat (Ralf)
 
 ## Ausgangslage
 
@@ -55,7 +55,7 @@ Ein eigenes Asset-Studio (EXE mit festem Pfad, eigener Task) mit je einer Seite 
 
 ## Offene Fragen
 
-Entschieden von 🧑 am 2026-10-17 (B-459 › Offene Fragen). Revision 2 nach Review: Annahmen gemeinsames Modul `tools/assetkit`, Alias auf `src/`, Grenzfälle in DEV, Schreibregel für `data/assets.json` – warten auf Freigabe durch 🧑.
+Entschieden von 🧑 am 2026-10-17 (B-459 › Offene Fragen); Revision 2 freigegeben am 2026-10-17 (Chat). Offen: keine.
 
 ## Sessions
 
