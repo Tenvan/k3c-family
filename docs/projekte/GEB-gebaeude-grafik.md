@@ -22,6 +22,7 @@ In Abarbeitungs-Reihenfolge; der erste nicht erledigte Sprint ist der nächste. 
 | GEB5 | Lager, Farm mit Plantage, Kaserne, Treppen | erledigt |
 | GEB6 | Natur und Objekte: Bäume, Fels, Erz, Adern, Truhe, Portal, Rekrutierungslager | erledigt |
 | GEB7 | Hintergründe je Biom | erledigt |
+| GEB9 | Ausbaustufen 1 bis 5 für alle Hub-Gebäude | geplant |
 
 ## Nicht-Ziele
 

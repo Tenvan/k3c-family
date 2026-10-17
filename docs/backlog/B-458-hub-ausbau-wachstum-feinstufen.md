@@ -57,4 +57,4 @@ Anzahl Stufen je Level, Reihenfolge der freigeschalteten Gebäude, Schilde; Abgr
 
 ## Notizen
 
-Links, Messwerte, verworfene Ansätze. Darf leer bleiben (`–`).
+Abstimmung mit GEB9 (Ausbaustufen 1–5 aller Hub-Gebäude, Entwurf 2026-10-17): GEB9 baut auf den heutigen fünf Hub-Stufen auf und bleibt über `stufen` erweiterbar; ändert B-458 die Stufenfolge, kommen weitere Stufen in dieselben JSONs. Reihenfolge entscheidet 🧑 (GEB9 › Offene Fragen 2).

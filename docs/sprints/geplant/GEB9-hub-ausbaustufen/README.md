@@ -1,0 +1,102 @@
+# GEB9 · DEV · Ausbaustufen 1 bis 5 für alle Hub-Gebäude
+
+- **Status:** geplant
+- **Projekt:** GEB
+- **Domäne:** DEV
+- **Reife:** Entwurf
+- **Tickets:** B-435
+- **Start-Commit:** – (wird beim Aktivieren gesetzt: `git rev-parse --short origin/develop`)
+- **Spec:** Entwurf
+- **Revision:** 1
+- **Freigabe:** –
+
+## Ausgangslage
+
+Nach GEB1–GEB8 haben nur Burg, Mauer, Turm, Tor und Hintergrundmauer Grafik in fünf Stufen (`<id>-<n>-32.png`, `src/scenes/buildingSprites.ts` › `stufen`). Lager, Kaserne, Farm, Werkstatt, Taverne, Schmiede, Heilplatz, Rüstkammer und das Camp (Rekrutierungslager, `recruitCamp`) liegen nur als Grundform vor (`public/grafik/gebaeude/<id>-32.png`, keine `stufen` in der JSON).
+
+- `data/buildings.json` führt `levels` nur für `wall` und `tower`. Die Hub-Stufe 1–5 (`data/hub.json` › `levels`, `engine/sim/hub_level.go`) steht im Snapshot (`World.hubLevel`); der Client nutzt sie nur für die Burg (`siteView.ts` › `updateCastleView`, `buildingSprites.ts` › `hubTexture`). `siteTexture` bekommt sonst die Stufe des Bauplatzes.
+- Material je Hub-Stufe (`docs/rules/materialien-gebaeude.md` § 2): 1 Holz, 2 Stein, 3 Kupfer, 4 Eisen, 5 Kristall.
+- **Freischaltung** (ebd. § 3): Werkstatt und Farm ab Hub-Stufe 1; Kaserne, Lager, Taverne ab 2; Schmiede und Heilplatz ab 3; Rüstkammer ab 4. Im Spiel sind also nur die Stufen ab der Freischaltung sichtbar.
+- Die Grundformen von Kaserne, Taverne, Schmiede und Rüstkammer enthalten schon Stein- bzw. Eisenfarben; „Grundform = Holz“ gilt nicht für alle.
+- Das Camp ist kein Hub-Gebäude, sondern ein Welt-Objekt; seine Grafik kommt über `src/scenes/natureSprites.ts`.
+- Ausbaustufen entstehen nach `docs/standards/gebaeude-grafik.md` § 6 aus **einer** JSON (Grundform = Stufe 1, `stufen` lückenlos ab 2). Mit `stufen` schreibt `tools/gebaeude` nur noch `<id>-<n>-<dichte>.png` und löscht `<id>-<dichte>.png`.
+- Ralf (2026-10-17): Alle Gebäude sollen für die fünf Stufen gerendert werden. B-458 (Hub wächst kleinteiliger, Lagerfeuer bis Burg) kann die Zahl der Hub-Stufen später ändern.
+
+## Ziel
+
+Alle neun Hub-Gebäude haben Grafik für die Hub-Stufen 1–5 im Material der Stufe (Holz bis Kristall), passend zu Burg, Mauer und Turm, und das Spiel zeigt je Gebäude die Stufe des Hubs. Am Ende sichtbar: Stufenreihe je Gebäude in der Asset-Vorschau und im Spiel, von 🧑 abgenommen.
+
+## Beteiligte und Zielgruppen
+
+🧑 entscheidet die offenen Fragen (Stufen-Looks, Abgrenzung zu B-458) und nimmt Vorschau und Spiel ab; Agenten erweitern die Daten-JSONs und die Zuordnung im Client; Spieler sehen am Hub, wie weit er ausgebaut ist.
+
+## Anforderungen
+
+B-435 › Anforderungen; Regeln aus `docs/standards/gebaeude-grafik.md` (§ 3 Materialsprache, § 5 Vorlage, § 6 Ausbaustufen). Sprint-eigen (Annahmen, siehe Offene Fragen):
+- **Gebäude:** `lager.json`, `kaserne.json`, `farm.json`, `werkstatt.json`, `taverne.json`, `schmiede.json`, `heilplatz.json`, `ruestkammer.json` bekommen `stufen` 2–5 (lückenlos nach § 6); die Grundform bleibt Stufe 1 und unverändert. Stufen vor der Freischaltung erscheinen nur in der Vorschau. Das Camp nach Entscheidung zu Frage 4.
+- **Stufen-Look:** Farbziele Stein, Kupfer, Eisen, Kristall wie bei Mauer, Turm und Burg. Welche Teile tauschen (tragendes Mauerwerk, Dach) und welche Holz bleiben (Gestell, Zaun, Tresen), legt GEB9.1 je Gebäude fest (Frage 5). Dazu höchstens wenige `zusaetze` je Stufe, damit der Ausbau auch ohne Farbe erkennbar ist (Frage 3).
+- **Ausgabe:** `<id>-<n>-<dichte>.png` für n = 1–5, `index.json` mit `stufen`; Asset-Vorschau zeigt die Stufenreihe je Gebäude.
+- **Übergang:** Bis GEB9.5 bleibt `<id>-<dichte>.png` (= Stufe 1) erhalten, damit das Spiel zwischen den Sessions grün bleibt: `tools/gebaeude` schreibt sie für die GEB9-Gebäude zusätzlich, § 6 vermerkt den Übergang. GEB9.5 stellt die Zuordnung um und löscht die Grundform-Dateien samt Verweisen (Aufräum-Regel aus Projekt GEB › Notizen: `data/assets.json`, `docs/assets/zuordnung-*.md`).
+- **Spiel:** Die acht Hub-Gebäude wählen die Grafik nach der Hub-Stufe des Snapshots (wie die Burg); fehlt die Stufe, gilt Stufe 1.
+- **Determinismus:** gleiche JSON → byte-gleiche PNGs.
+- **Erweiterbar:** Kommt mit B-458 eine andere Stufenzahl, entstehen weitere Stufen in derselben JSON, ohne Neuzeichnen.
+
+## Nicht-Ziele
+
+Kleinteiligere Hub-Stufen oder neue Stufenfolge (Lagerfeuer bis Burg) und Freischaltungen je Stufe (B-458); eigene Ausbaustufen der Gebäude mit Werten in `data/buildings.json` (SIM/REG, Ticket noch nicht angelegt, Frage 1); Bäume, Höhlen-Flora (B-454); Truhe geschlossen (B-455); Wimpel in Spielerfarbe (B-456); Treppen und Natur-Objekte; Änderungen an `engine/`, `data/hub.json`, `data/buildings.json` oder am Protokoll; Animationen.
+
+## Regeln und Einschränkungen
+
+- Domänen nacheinander: **DEV** (GEB9.1–9.4: `public/grafik/gebaeude/`, `tools/gebaeude/` für den Übergang, `src/tools/assetvorschau*.ts`, Regeldatei) → **CLI** (GEB9.5–9.6: `src/scenes/buildingSprites.ts`, `src/scenes/siteView.ts`, ggf. `src/scenes/natureSprites.ts`, `data/assets.json`, `docs/assets/zuordnung-*.md`, Löschen der Grundform-Dateien). `engine/` bleibt unberührt.
+- Stufen nur über `farben` und `zusaetze` (§ 6), kein Neuzeichnen; Farben nur aus DB32.
+- Die Hub-Stufe kommt aus dem Snapshot; im Client keine Würfel, keine eigene Stufenlogik außer der Zuordnung.
+- 2 Spieler: Die Stufe gilt je Hub, beide Spieler sehen dasselbe.
+- Keine neue Abhängigkeit. Datei ≤ 400, Funktion ≤ 60 Zeilen.
+- **Abstimmung:** B-458 kann die Stufenzahl ändern; GEB9 baut auf den heutigen fünf Hub-Stufen auf und bleibt über `stufen` erweiterbar. B-454 (Natur) ist ein eigener Sprint.
+
+## Beispiele
+
+- `task gebaeude` mit `taverne.json` (mit `stufen`) → `taverne-1-32.png` bis `taverne-5-32.png` plus 16/64/128; während des Übergangs zusätzlich `taverne-32.png` (= Stufe 1), nach GEB9.5 nicht mehr.
+- Hub-Stufe 3, Schmiede gebaut → Schmiede in Kupfer (`schmiede-3-32.png`) neben Burg Stufe 3.
+- Hub-Stufe 2 → Rüstkammer gibt es noch nicht (Freischaltung ab 4); ihre Stufen 1–3 erscheinen nur in der Vorschau.
+- Hub steigt von 2 auf 3 → alle gebauten Hub-Gebäude wechseln mit dem nächsten Snapshot auf Stufe 3.
+- Asset-Vorschau › Gebäude → je Gebäude eine Reihe Stufe 1–5 nebeneinander.
+
+## Ausnahme- und Fehlerfälle
+
+- Snapshot ohne Hub-Stufe oder unbekannte Stufe → Stufe 1 (Grundform).
+- Gebäude im Bau oder zerstört → Platzhalter wie heute, unabhängig von der Stufe.
+- Grafik einer Stufe nicht geladen → Grundform statt leerer Fläche.
+- Camp außerhalb des Hubs → folgt der Entscheidung zu Frage 4; bis dahin Grundform.
+
+## Akzeptanzkriterien
+
+- **AC-01** Stufen-Looks (Farbtausch und Zusätze je Gebäude), Umgang mit Stufen vor der Freischaltung, Camp und Abgrenzung zu B-458 sind als Entscheidung von 🧑 in der Spec festgelegt.
+- **AC-02** Lager, Kaserne, Farm, Werkstatt, Taverne, Schmiede, Heilplatz und Rüstkammer haben `stufen` 2–5 in ihrer JSON und PNGs für Stufe 1–5 (`B-435`); das Camp nach AC-01.
+- **AC-03** Die Asset-Vorschau zeigt je Gebäude die Stufenreihe 1–5.
+- **AC-04** Im Spiel zeigen die acht Hub-Gebäude die Grafik der aktuellen Hub-Stufe; ohne Stufe die Grundform (Test der Zuordnung).
+- **AC-05** Gleiche JSON → byte-gleiche PNGs; nach GEB9.5 gibt es keine Grundform-Dateien `<id>-<dichte>.png` der GEB9-Gebäude und keine Verweise mehr darauf; `task check` ist nach jeder Session grün.
+- **AC-06** 🧑 nimmt Stufenreihe in der Vorschau und das Spiel in mindestens zwei Hub-Stufen ab (Review-Session).
+
+## Offene Fragen
+
+1. **Stufe = Hub-Stufe?** Annahme: Die Gebäude folgen der Hub-Stufe (wie die Burg), nicht eigenen Gebäudestufen. Alternative: eigene `levels` je Gebäude in `data/buildings.json` (SIM/REG, eigenes Ticket). Entscheidet 🧑.
+2. **Reihenfolge zu B-458:** GEB9 jetzt mit fünf Stufen und B-458 später erweitern (Annahme), oder erst B-458 (neue Stufenfolge) und GEB9 danach? Entscheidet 🧑.
+3. **Zusätze:** nur Farbtausch oder je Stufe ein sichtbarer Zusatz (Schild, Banner, Anbau)? Annahme: Farbtausch plus ein Zusatz ab Stufe 3.
+4. **Camp (Rekrutierungslager):** Es steht draußen und ist ein Welt-Objekt. Folgt es der Hub-Stufe, dem Biom-Look wie die Natur-Objekte, oder bleibt es bei der Grundform? Annahme: bleibt Grundform, dann fällt es aus AC-02 heraus.
+5. **Welche Teile tauschen?** Annahme: Holzteile (Gestell, Zaun, Tresen) bleiben Holz, Mauerwerk und Dach wechseln das Material; bei Gebäuden mit Stein-Grundform (Kaserne, Taverne, Schmiede, Rüstkammer) wechselt der Stein.
+6. **Stufen vor der Freischaltung:** § 6 verlangt `stufen` lückenlos ab 2, also entstehen z. B. Rüstkammer-Stufen 2 und 3, die im Spiel nie erscheinen. Annahme: behalten (Vorschau, Erweiterbarkeit mit B-458); Alternative: Grundform späterer Gebäude zeigt das Material ihrer Freischaltungsstufe.
+
+## Sessions
+
+- GEB9.1 (DEV) Workshop: Stufen-Looks, Zusätze, Camp und Abgrenzung zu B-458 mit 🧑 festlegen, Regeldatei § 6 inklusive Übergang nachziehen (AC-01).
+- GEB9.2 (DEV) Übergang in `tools/gebaeude` (Grundform-Datei bleibt), dann Werkstatt und Farm: Stufen 2–5, PNGs, Vorschau-Reihe (AC-02, AC-03, AC-05).
+- GEB9.3 (DEV) Kaserne, Lager, Taverne: Stufen 2–5 (AC-02, AC-03, AC-05).
+- GEB9.4 (DEV) Schmiede, Heilplatz, Rüstkammer, Camp nach Frage 4: Stufen 2–5 (AC-02, AC-03, AC-05).
+- GEB9.5 (CLI) Spiel wählt die Grafik der acht Hub-Gebäude nach Hub-Stufe (`siteView.ts`, `buildingSprites.ts`), Zuordnung und Test; Grundform-Dateien und Verweise löschen (AC-04, AC-05).
+- GEB9.6 (CLI) Review und Abnahme durch 🧑 in Vorschau und Spiel (AC-06, alle).
+
+## Abnahme
+
+Wird von der Review-Session (Doku-Sprint: letzte Session) ausgefüllt, höchstens fünf Zeilen: Datum, Kriterien
+(Verweis auf Session-Ergebnisse), behobene Befunde, neue Tickets. Bis dahin `–`.
