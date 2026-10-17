@@ -30,19 +30,22 @@ func parseWorktrees(porcelain string) []string {
 	return branches
 }
 
-// markWorktrees ordnet Branches den Sprints zu: `sprint/s4`, `s4-4-work`, `f4/4-review` gehören zu S4 bzw. F4.
+// markWorktrees ordnet Branches den Sprints zu: `sprint/s4`, `s4-4-work`, `f4/4-review`, `claude/sprint-s4-ab12`,
+// `claude/s4-review-ab12` gehören zu S4 bzw. F4. Alle Treffer landen in Worktrees (mehrere Agenten je Sprint), der erste in Worktree.
 // ponytail: nur über den Branch-Namen; ein Worktree auf einem fremd benannten Branch bleibt unerkannt.
 func markWorktrees(sprints []Sprint, branches []string) {
 	for i, s := range sprints {
 		if s.ID == "" {
 			continue
 		}
-		re := regexp.MustCompile(`(?i)^(sprint/)?` + regexp.QuoteMeta(s.ID) + `([-/.]|$)`)
+		re := regexp.MustCompile(`(?i)^((sprint|claude)/)?(sprint-)?` + regexp.QuoteMeta(s.ID) + `([-/.]|$)`)
 		for _, b := range branches {
 			if re.MatchString(b) {
-				sprints[i].Worktree = b
-				break
+				sprints[i].Worktrees = append(sprints[i].Worktrees, b)
 			}
+		}
+		if len(sprints[i].Worktrees) > 0 {
+			sprints[i].Worktree = sprints[i].Worktrees[0]
 		}
 	}
 }

@@ -19,26 +19,27 @@ type Session struct {
 	Agent  string   `json:"agent"`
 	Status string   `json:"status"`
 	Titel  string   `json:"titel"`
-	File   string   `json:"-"`              // Spalte „Datei“ der Tabelle, relativ zum Sprint-Ordner
-	Text   string   `json:"text,omitempty"` // Inhalt der Session-Datei (Markdown) für das Detail-Panel
-	Deps   []string `json:"deps,omitempty"` // Session-IDs aus „Abhängig von“
-	Env    string   `json:"env,omitempty"`  // Feld „Umgebung“ der Session-Datei: offline | live | ?
+	File   string   `json:"-"`                // Spalte „Datei“ der Tabelle, relativ zum Sprint-Ordner
+	Text   string   `json:"text,omitempty"`   // Inhalt der Session-Datei (Markdown) für das Detail-Panel
+	Deps   []string `json:"deps,omitempty"`   // Session-IDs aus „Abhängig von“
+	Env    string   `json:"env,omitempty"`    // Feld „Umgebung“ der Session-Datei: offline | live | ?
 	Domain string   `json:"domain,omitempty"` // Feld „Domäne“ der Session-Datei
 }
 
 // Sprint ist die Kopfzeile und Session-Tabelle einer Sprint-README.
 type Sprint struct {
-	ID       string    `json:"id"`
-	Title    string    `json:"title"`
-	Domain   string    `json:"domain"`
-	Project  string    `json:"project"`        // Feld „Projekt“: Kürzel oder –
-	Deps     []string  `json:"deps,omitempty"` // Sprints, auf deren Sessions seine Sessions warten
-	Status   string    `json:"status"`         // aktiv | geplant | erledigt
-	Reife    string    `json:"reife"`
-	Spec     string    `json:"spec"`
-	Tickets  []string  `json:"tickets"`
-	Sessions []Session `json:"sessions"`
-	Worktree string    `json:"worktree,omitempty"` // Branch eines Worktrees, der gerade an diesem Sprint arbeitet
+	ID        string    `json:"id"`
+	Title     string    `json:"title"`
+	Domain    string    `json:"domain"`
+	Project   string    `json:"project"`        // Feld „Projekt“: Kürzel oder –
+	Deps      []string  `json:"deps,omitempty"` // Sprints, auf deren Sessions seine Sessions warten
+	Status    string    `json:"status"`         // aktiv | geplant | erledigt
+	Reife     string    `json:"reife"`
+	Spec      string    `json:"spec"`
+	Tickets   []string  `json:"tickets"`
+	Sessions  []Session `json:"sessions"`
+	Worktree  string    `json:"worktree,omitempty"`  // Branch eines Worktrees, der gerade an diesem Sprint arbeitet
+	Worktrees []string  `json:"worktrees,omitempty"` // alle solchen Branches (mehrere Agenten, `claude/…`)
 }
 
 // Ticket ist der Kopf einer Backlog-Datei.

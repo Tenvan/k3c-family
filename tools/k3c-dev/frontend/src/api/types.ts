@@ -334,6 +334,8 @@ export interface PlanSprint {
   tickets: string[];
   sessions: PlanSession[];
   worktree?: string;
+  /** Alle Branches der Worktrees, die an diesem Sprint arbeiten (mehrere Agenten, `claude/…`). */
+  worktrees?: string[];
   /** Feld „Projekt“: Kürzel oder `–`. */
   project?: string;
 }
