@@ -1,6 +1,6 @@
 # WZ6.7 · Review WZ6
 
-- **Status:** in Arbeit
+- **Status:** fertig
 - **Typ:** Review
 - **Agent:** autonom
 - **Domäne:** DEV
@@ -74,5 +74,12 @@ Manuelle Prüfungen (Browser, Xbox, TV) nennt diese Session nicht; sie gehören 
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+- **Checks:** `task check` (Lint, Typecheck, Tests), `task check:go`, `dev:test` (k3c-dev) und `task build` grün über `check_run`. `check:dev`/`check:all` sind nicht im Katalog von `check_run`; abgedeckt durch `dev:test`, `task:build` und die Studio-Prüfung in der CI (`k3c-studio`-Job).
+- **Diff:** `origin/develop...sprint/wz6` enthält nach dem bereits gemergten PR #341 (WZ6.1–WZ6.5) nur WZ6.6 (Entfernung `assetvorschau`, Dev-only-Mechanismus, Herkunftskommentare) und `.gitattributes` (kein Schaden: `text=auto`, Binärdateien markiert). Keine schweren Befunde. `StudioOpen`: fester Pfad, kein Argument von außen, kein Shell-Aufruf; das Studio öffnet keinen Listener; `grafiken.html`/`soundtest.html` unverändert; `git grep` auf `assetvorschau`/`k3c-dev-only` außerhalb `docs/`: 0 Treffer.
+- **AC-01:** angenommen, Validierung offen (WZ6.8): Build und Tests (WZ6.2), kein Port; Fenster nur mit Freigabe geprüft.
+- **AC-02:** angenommen (WZ6.3, WZ6.4: Tests, Fensterproben mit Freigabe 🧑).
+- **AC-03:** angenommen, Neubau-Probe offen (WZ6.8) (WZ6.5).
+- **AC-04:** angenommen (WZ6.2: `check:studio` in `check:all` und CI; WZ6.3: Studio-Vitest in CI).
+- **AC-05:** angenommen (WZ6.1). **AC-06:** angenommen (WZ6.3, WZ6.4, WZ6.6). **AC-07:** angenommen (WZ6.2, WZ6.3: `reload.test.tsx`, `ErrStale`).
+- **AC-08:** offen (WZ6.8). Abnahme-Liste in WZ6.8 geschrieben, inkl. B-421/AC-01–AC-07 und Neubau-Probe.
+- **Geprüft von:** Claude (autonom), keine manuellen Prüfungen. **Abweichung:** WZ6.1–WZ6.5 waren schon mit PR #341 gemergt, der Sprint-PR ist daher ein zweiter PR mit dem Rest. **Version:** v0.19.0 vorgeschlagen. **Neue Tickets:** keine.
