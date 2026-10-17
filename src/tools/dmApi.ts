@@ -113,7 +113,7 @@ export async function sendAction(room: string, action: DmAction, f: FetchLike = 
     const res = await f(devUrl(room), { method: 'POST', body: JSON.stringify(action) });
     if (res.ok) return null;
     const body = (await res.json().catch(() => null)) as { error?: string } | null;
-    return body?.error ?? t('level.httpError', { status: res.status });
+    return body?.error ?? t('tool.httpError', { status: res.status });
   } catch {
     return t('dm.unreachable');
   }

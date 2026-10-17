@@ -1,6 +1,6 @@
 import type { LevelLayout } from '@game/model/types';
 
-// Chunk-Vorschau des Welt-Betrachters (B-460, WZ7.2): reine Funktionen, aus der früheren Seite leveltest.html
+// Chunk-Vorschau des Welt-Betrachters (B-460, WZ7.2): reine Funktionen, aus der früheren Level-Betrachter-Seite
 // (B-092, src/tools/levelView.ts) hierher umgezogen. Aus dem Level wird das Zeichenmodell; dazu Zoom und Zufalls-Seed.
 // Kein DOM, kein Netz. „Im Spiel starten“ und „Voll ausgebaut“ folgen in WZ7.4.
 

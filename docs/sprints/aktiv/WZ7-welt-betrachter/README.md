@@ -78,7 +78,7 @@ Beantwortet von 🧑 am 2026-10-17 (Chat), siehe `B-460 › Offene Fragen` 10–
 | WZ7.2 | `WZ7.2-seite-chunk-vorschau.md` | Umsetzung | autonom | fertig |
 | WZ7.3 | `WZ7.3-live-vorschau.md` | Umsetzung | autonom | fertig |
 | WZ7.4 | `WZ7.4-live-optionen-im-spiel.md` | Umsetzung | autonom | fertig |
-| WZ7.5 | `WZ7.5-leveltest-entfernen.md` | Umsetzung | autonom | in Arbeit |
+| WZ7.5 | `WZ7.5-leveltest-entfernen.md` | Umsetzung | autonom | fertig |
 | WZ7.6 | `WZ7.6-review.md` | Review | autonom | offen |
 | WZ7.7 | `WZ7.7-abnahme.md` | Review | Mensch | offen |
 

@@ -111,7 +111,7 @@ describe('Seite Welt-Betrachter: Tasten und Anfragen (B-460/AC-02)', () => {
     expect(chunks(h).dataset.maximized).toBe('true');
   });
 
-  it('Tasten + und − zoomen, Pfeile scrollen (wie leveltest.html)', async () => {
+  it('Tasten + und − zoomen, Pfeile scrollen', async () => {
     const h = await mount();
     const press = (key: string) => act(async () => { document.body.dispatchEvent(new KeyboardEvent('keydown', { key, bubbles: true })); });
     const width = () => parseFloat(h.querySelector<HTMLElement>('.wd-strip')!.style.width);

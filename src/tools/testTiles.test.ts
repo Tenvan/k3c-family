@@ -1,31 +1,13 @@
 import { describe, expect, it } from 'vitest';
-import { isOpenable } from '../core/shell';
-import { DEV_TILES } from './devTiles';
 import { SCENARIOS } from './testScenarios';
-import { LEVEL_TILES, nextFocus } from './testTiles';
+import { nextFocus } from './testTiles';
 
-describe('Abschnitt „Level“ der Testseite (B-092/AC-06)', () => {
-  it('enthält die Kachel „Level-Betrachter“ mit Ziel leveltest.html', () => {
-    expect(LEVEL_TILES.map((t) => [t.title, t.href])).toEqual([['Level-Betrachter', 'leveltest.html']]);
-    for (const tile of LEVEL_TILES) expect(tile.description.length).toBeGreaterThan(0);
-  });
+describe('nextFocus: Steuerkreuz über alle Szenarien-Kacheln der Seite', () => {
+  const count = SCENARIOS.length;
 
-  it('das Ziel ist eine Seite, die die Shell öffnet, und steht auf der Entwicklerseite', () => {
-    for (const tile of LEVEL_TILES) {
-      expect(isOpenable(tile.href)).toBe(true);
-      expect(DEV_TILES.some((t) => t.href === tile.href)).toBe(true);
-    }
-  });
-});
-
-describe('nextFocus: Steuerkreuz über alle Kacheln der Seite', () => {
-  const count = SCENARIOS.length + LEVEL_TILES.length; // Szenarien zuerst, dann der Abschnitt „Level“
-  const lastScenario = SCENARIOS.length - 1;
-  const levelTile = SCENARIOS.length;
-
-  it('von der letzten Szenarien-Kachel „weiter“ erreicht die Level-Kachel, „zurück“ geht wieder hin', () => {
-    expect(nextFocus(count, lastScenario, 'next')).toBe(levelTile);
-    expect(nextFocus(count, levelTile, 'prev')).toBe(lastScenario);
+  it('„weiter“ und „zurück“ wandern um eine Kachel', () => {
+    expect(nextFocus(count, 0, 'next')).toBe(1);
+    expect(nextFocus(count, 1, 'prev')).toBe(0);
   });
 
   it('an den Rändern bleibt der Fokus stehen', () => {
