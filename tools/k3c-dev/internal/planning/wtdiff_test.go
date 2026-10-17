@@ -3,6 +3,7 @@ package planning
 import (
 	"os"
 	"path/filepath"
+	"reflect"
 	"testing"
 )
 
@@ -138,5 +139,38 @@ func TestDiffDataEntfernt(t *testing.T) {
 func TestCheckWorktreesGitFehler(t *testing.T) {
 	if _, err := CheckWorktrees(filepath.Join(t.TempDir(), "gibt-es-nicht")); err == nil {
 		t.Fatal("Fehler erwartet")
+	}
+}
+
+// Reihenfolge und alle verglichenen Felder: je Art erst der Worktree (neu oder Feldänderungen in fester Reihenfolge,
+// beim Sprint danach die Sessions), dann das Entfernte; Arten in der Folge Projekt, Sprint, Ticket (B-465).
+func TestDiffDataReihenfolge(t *testing.T) {
+	base := Data{
+		Projects: []Project{{ID: "WZG", Title: "Werkzeuge", Status: "ruht", Rang: "2"}, {ID: "ALT", Title: "Alt"}},
+		Sprints: []Sprint{{ID: "WZ6", Title: "Studio", Status: "geplant", Project: "–",
+			Sessions: []Session{{Nr: "WZ6.1", Status: "offen", Titel: "Glossar"}}}},
+		Tickets: []Ticket{{Nr: "B-1", Title: "Eins", Status: "offen", Prio: "mittel", Sprint: "–"}, {Nr: "B-2", Title: "Zwei"}},
+	}
+	wt := Data{
+		Projects: []Project{{ID: "NEU", Title: "Neu"}, {ID: "WZG", Title: "Werkzeuge", Status: "aktiv", Rang: "1"}},
+		Sprints: []Sprint{{ID: "WZ6", Title: "Studio", Status: "aktiv", Project: "WZG",
+			Sessions: []Session{{Nr: "WZ6.1", Status: "fertig", Titel: "Glossar"}}}},
+		Tickets: []Ticket{{Nr: "B-1", Title: "Eins", Status: "eingeplant", Prio: "hoch", Sprint: "WZ6"}},
+	}
+	want := []Change{
+		{"neu", "Projekt", "NEU", "Neu"},
+		{"geändert", "Projekt", "WZG", "Status ruht → aktiv"},
+		{"geändert", "Projekt", "WZG", "Rang 2 → 1"},
+		{"entfernt", "Projekt", "ALT", "Alt"},
+		{"geändert", "Sprint", "WZ6", "Status geplant → aktiv"},
+		{"geändert", "Sprint", "WZ6", "Projekt – → WZG"},
+		{"geändert", "Session", "WZ6.1", "Status offen → fertig"},
+		{"geändert", "Ticket", "B-1", "Status offen → eingeplant"},
+		{"geändert", "Ticket", "B-1", "Prio mittel → hoch"},
+		{"geändert", "Ticket", "B-1", "Sprint – → WZ6"},
+		{"entfernt", "Ticket", "B-2", "Zwei"},
+	}
+	if got := diffData(base, wt); !reflect.DeepEqual(got, want) {
+		t.Errorf("diffData:\n got %v\nwant %v", got, want)
 	}
 }
