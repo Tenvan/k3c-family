@@ -24,7 +24,6 @@ Abnahmen am Gerät (`Agent: Mensch`) sammelt das Projekt ABN im Sprint HW1: [`..
 | BD2 | SIM, SRV, CLI | BED | Rückmeldungs-Ereignisse gedrosselt und geprüft, Lobby startet nie still leer | – | Entwurf | `geplant/BD2-rueckmeldung-lobby-nachtraege/` |
 | BD3 | SRV | BED | Raum-Pause im Couch-Raum, Schutz des pausierten Monarchen online | – | Entwurf | `geplant/BD3-raum-pause/` |
 | BD4 | CLI | BED | Gemeinsame HUD-Leiste oben, Fluss unten, lokale Spieler treten einzeln aus | – | Entwurf | `geplant/BD4-hud-leiste-austreten/` |
-| GEB7 | DEV, PLAT, CLI | GEB | Hintergründe je Biom | – | bereit | `geplant/GEB7-hintergruende/` |
 | GR8 | CLI | GRA | Eigene Figuren für neue Gegner und Grafik-Pipeline mit Ziel-Palette | – | Entwurf | `geplant/GR8-figuren-pipeline/` |
 | PM1 | CLI | LST | Leistung messen: Diagnose-Zeile und Performance-Modus | – | Entwurf | `geplant/PM1-leistung-messen/` |
 | PF1 | CLI | LST | Split-Screen flüssig auf der Xbox | Zwei Spieler im Split-Screen ohne sichtbares Ruckeln auf der Xbox | bereit | `geplant/PF1-splitscreen-leistung/` |
@@ -182,3 +181,4 @@ Gesamtplan und Begründung: [`../plan-weiterentwicklung.md`](../plan-weiterentwi
 | GEB4 | Burg und Hub-Stufen 1 bis 5, Tor | `erledigt/GEB4-burg-hub-tor/` |
 | GEB5 | Lager, Farm mit Plantage, Kaserne, Treppen | `erledigt/GEB5-hub-gebaeude-rest/` |
 | GEB6 | Natur und Objekte: Bäume, Fels, Erz, Adern, Truhe, Portal, Rekrutierungslager | `erledigt/GEB6-natur-objekte/` |
+| GEB7 | Hintergründe je Biom | `erledigt/GEB7-hintergruende/` |

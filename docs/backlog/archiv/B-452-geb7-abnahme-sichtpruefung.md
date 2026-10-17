@@ -4,7 +4,7 @@
 - **Typ:** Frage
 - **Prio:** hoch
 - **Umgebung:** live
-- **Status:** offen
+- **Status:** erledigt
 - **Sprint:** GEB7
 - **Projekt:** GEB
 - **Erstellt:** 2026-10-17
@@ -57,4 +57,4 @@ Sind Motive, Farben und Dichte der 15 Schichten so abgenommen, und gelten die An
 
 ## Notizen
 
-Entspricht dem Ticket B-450 auf `origin/sprint/geb7` (nur dort angelegt, nie auf `develop`; die Nummer ist dort nicht mehr frei zu führen, deshalb B-452). Vorschau: `svc_start`, dann `assetvorschau.html?szene=gebaeude`.
+Abgenommen von Ralf am 2026-10-17 (Chat): GEB7 AC-08 und Annahmen 1–9. Feinjustierung der Hintergründe im Projekt GRJ. Entspricht dem Ticket B-450 auf `origin/sprint/geb7` (nur dort angelegt, nie auf `develop`).
