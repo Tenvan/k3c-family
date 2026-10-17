@@ -2,7 +2,7 @@ import { describe, expect, it } from 'vitest';
 import { DEV_SECTIONS, DEV_TILES } from './devTiles';
 
 /** Werkzeug-Seiten, die bis LP1 auf der Landingpage standen, dazu Dungeon Master (B-335/AC-02). */
-const TOOLS = ['testing.html', 'leveltest.html', 'gamepad-test.html', 'aufstellung.html', 'figuren.html', 'grafiken.html', 'soundtest.html', 'assetvorschau.html', 'monitor.html', 'dm.html'];
+const TOOLS = ['testing.html', 'leveltest.html', 'gamepad-test.html', 'aufstellung.html', 'figuren.html', 'grafiken.html', 'soundtest.html', 'monitor.html', 'dm.html'];
 
 describe('Entwicklerseite (B-335)', () => {
   it('gliedert nach Entwicklung, Performance und Balancing', () => {
@@ -23,9 +23,5 @@ describe('Entwicklerseite (B-335)', () => {
 
   it('nur Dungeon Master öffnet in einem neuen Fenster', () => {
     expect(DEV_TILES.filter((t) => t.external).map((t) => t.href)).toEqual(['dm.html']);
-  });
-
-  it('nur die Asset-Vorschau gibt es nur im Dev-Build (B-299)', () => {
-    expect(DEV_TILES.filter((t) => t.devOnly).map((t) => t.href)).toEqual(['assetvorschau.html']);
   });
 });

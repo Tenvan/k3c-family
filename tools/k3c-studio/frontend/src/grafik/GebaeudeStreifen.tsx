@@ -2,12 +2,12 @@ import { UNIT_PX as UNIT } from '@game/core/constants';
 import { Pixel, bildZeichnen, ladeBild, pixelContext } from './pixel';
 import { baumDatei, baumReihe, gebaeudeKarten, kachelAnzahl, stufenKarten, vorlageZeilen, type GebaeudeEintrag } from './szenenLogic';
 
-// Streifen „Neue Gebäude (GEB)“ aus grafik/gebaeude/index.json (umgezogen aus src/tools/assetvorschau.ts): Baum-Reihe,
+// Streifen „Neue Gebäude (GEB)“ aus grafik/gebaeude/index.json (umgezogen aus der früheren Asset-Vorschau): Baum-Reihe,
 // je Gebäude 32 px ×1 neben 16 px ×2, kachelbare Grafik dreifach, Stufenreihe, Gebäude-Vorlage; alles auf der
 // Bodenlinie des höchsten Gebäudes (docs/standards/gebaeude-grafik.md § 9 Punkte 3–4).
 
 /** Bodenlinie: Höhe des höchsten Gebäudes. Hintergrund-Schichten (15 Kacheln, eigener Streifen in der Umgebung) zählen
- *  nicht mit; in assetvorschau.html taten sie es und schoben seit GEB7 alles weit nach unten. */
+ *  nicht mit; in der früheren Asset-Vorschau taten sie es und schoben seit GEB7 alles weit nach unten. */
 const bodenOf = (index: readonly GebaeudeEintrag[]) => Math.max(...index.filter((e) => e.klasse !== 'hintergrund').map((e) => e.kacheln.h)) * UNIT;
 
 export function GebaeudeStreifen({ index }: { index: readonly GebaeudeEintrag[] }) {

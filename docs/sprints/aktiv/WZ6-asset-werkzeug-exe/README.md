@@ -66,11 +66,13 @@ Entschieden von 🧑 am 2026-10-17 (B-459 › Offene Fragen); Revision 2 freigeg
 | WZ6.3 | `WZ6.3-seite-grafik.md` | Umsetzung | autonom | fertig |
 | WZ6.4 | `WZ6.4-seite-sound.md` | Umsetzung | autonom | fertig |
 | WZ6.5 | `WZ6.5-workbench-ohne-assets.md` | Umsetzung | autonom | fertig |
-| WZ6.6 | `WZ6.6-assetvorschau-entfernen.md` | Umsetzung | autonom | offen |
-| WZ6.7 | `WZ6.7-review.md` | Review | autonom | offen |
+| WZ6.6 | `WZ6.6-assetvorschau-entfernen.md` | Umsetzung | autonom | fertig |
+| WZ6.7 | `WZ6.7-review.md` | Review | autonom | fertig |
 | WZ6.8 | `WZ6.8-abnahme.md` | Review | Mensch | offen |
 
 ## Abnahme
 
-Wird von der Review-Session (Doku-Sprint: letzte Session) ausgefüllt, höchstens fünf Zeilen: Datum, Kriterien
-(Verweis auf Session-Ergebnisse), behobene Befunde, neue Tickets. Bis dahin `–`.
+- 2026-10-17 (Review WZ6.7): AC-01–AC-07 angenommen laut Ergebnissen WZ6.1–WZ6.6, AC-01 (Fenster/Port) und AC-03 (Neubau-Probe) mit Validierung offen (WZ6.8); AC-08 offen (WZ6.8).
+- Checks grün: `task check`, `task check:go`, `dev:test`, `task build`; Diff gegen `develop` (Rest nach PR #341: Entfernung `assetvorschau`, `.gitattributes`) ohne schwere Befunde; keine Reste von `assetvorschau`/`k3c-dev-only` außerhalb `docs/`.
+- Behobene Befunde: keine. Neue Tickets: keine.
+- Version: v0.19.0 vorgeschlagen (neues Werkzeug Asset-Studio, Minor); nicht gesetzt.

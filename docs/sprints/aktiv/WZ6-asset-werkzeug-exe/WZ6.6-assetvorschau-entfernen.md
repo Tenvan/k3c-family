@@ -1,6 +1,6 @@
 # WZ6.6 · assetvorschau.html samt Skript, Kachel und Verweisen entfernen
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** DEV
@@ -83,5 +83,8 @@ Manuelle Prüfungen (Browser, Xbox, TV) nennt diese Session nicht.
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+- AC-06 geprüft: `assetvorschau.html`, `src/tools/assetvorschau.ts`, `assetvorschauLogic.ts`, `assetvorschauLogic.test.ts` gelöscht; Kachel, `devOnly`, Filter in `dev.ts`, Texte `av.*`/`tile.assetvorschau.*`, Dev-only-Test und Vite-Filter `k3c-dev-only` entfernt. `git grep -n assetvorschau` mit den Ausschlüssen der Session: 0 Treffer. `grafiken.html`, `soundtest.html` unverändert (`git diff origin/develop`).
+- `task check` grün, `task build` grün, `dist/` ohne `assetvorschau.html`.
+- Verweise umgestellt: `docs/standards/gebaeude-grafik.md` § 9, `data/assets.json` (`_comment`), Glossar „Mini-Szene“, `src/tools/codemap.md`.
+- Abweichung vom Plan (mit Zustimmung von 🧑 im Chat, 2026-10-17): Die Vorbedingung „keine Treffer in `tools/k3c-studio`“ ließ sich nicht erfüllen, weil dort 14 Herkunftskommentare (Quellcode und `codemap.md`) den Namen nannten, die Abschluss-Prüfung aber repoweit 0 Treffer verlangt. Es wurden nur diese Kommentare umformuliert („frühere Asset-Vorschau“), keine Logik. Ebenso ein Wort in `docs/sprints/geplant/WZ7-welt-betrachter/README.md`.
+- Manuell nichts geprüft. Keine neuen Tickets.
