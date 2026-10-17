@@ -1,6 +1,6 @@
 # WZ8.6 · Review WZ8
 
-- **Status:** offen
+- **Status:** in Arbeit
 - **Typ:** Review
 - **Agent:** autonom
 - **Domäne:** DEV

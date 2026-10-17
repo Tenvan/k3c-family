@@ -112,7 +112,7 @@ Vor der Freigabe offen: nichts Blockierendes.
 | WZ8.3 | `WZ8.3-generator-create-options.md` | Umsetzung | autonom | fertig |
 | WZ8.4 | `WZ8.4-vorschau-option-planung.md` | Umsetzung | autonom | fertig |
 | WZ8.5 | `WZ8.5-editor-welt-betrachter.md` | Umsetzung | autonom | fertig |
-| WZ8.6 | `WZ8.6-review.md` | Review | autonom | offen |
+| WZ8.6 | `WZ8.6-review.md` | Review | autonom | in Arbeit |
 | WZ8.7 | `WZ8.7-abnahme.md` | Review | Mensch | offen |
 
 - WZ8.1 (REG) Workshop mit 🧑: Format, Chunk-Platz, Stromnamen, Anrechnung auf die Biom-Summen, Lage-Regeln; Regeltext in `docs/rules/`; Glossar „geplanter Chunk“, „Chunk-Platz“, „Chunk-Seed“, „Ruine“ und „Gegnerlager“ (geplant, B-468) und Chunk-Breite korrigieren (25 Units in Eisenstollen und Kristallhöhle) (AC-01).
