@@ -1,14 +1,14 @@
-# WZ8 · SIM · Chunks je Insel und Stufe planen: Seed oder feste Objekte
+# WZ8 · REG, SIM, SRV, DEV · Chunks je Insel und Stufe planen: Seed oder feste Objekte
 
 - **Status:** geplant
 - **Projekt:** WZG
-- **Domäne:** SIM
-- **Reife:** Entwurf
+- **Domäne:** REG, SIM, SRV, DEV
+- **Reife:** bereit
 - **Tickets:** B-461
 - **Start-Commit:** – (wird beim Aktivieren gesetzt: `git rev-parse --short origin/develop`)
-- **Spec:** Entwurf
+- **Spec:** freigegeben
 - **Revision:** 1
-- **Freigabe:** –
+- **Freigabe:** 2026-10-17, Ralf im Chat (Revision 1)
 
 ## Ausgangslage
 
@@ -101,9 +101,19 @@ Entschieden von 🧑 am 2026-10-17 (Chat): B-461 › Offene Fragen 1–5, darunt
 
 Vor der Freigabe offen: nichts Blockierendes.
 
-**Im Workshop WZ8.1** (Teil von AC-01): B-461 › Offene Fragen 6–9 (Bezug des Chunk-Platzes, Objektliste ersetzt oder ergänzt, Lage-Regeln und Stromnamen, Verteilung übriger Portale und Ereignisse).
+**Im Workshop WZ8.1 entschieden** (2026-10-17, 🧑, Annahmen aus B-461 übernommen; Teil von AC-01): B-461 › Offene Fragen 6–9 (Bezug des Chunk-Platzes, Objektliste ersetzt oder ergänzt, Lage-Regeln und Stromnamen, Verteilung übriger Portale und Ereignisse).
 
 ## Sessions
+
+| Nr. | Datei | Typ | Agent | Status |
+|---|---|---|---|---|
+| WZ8.1 | `WZ8.1-workshop-format.md` | Workshop | Mensch | fertig |
+| WZ8.2 | `WZ8.2-feld-planung-pruefung.md` | Umsetzung | autonom | offen |
+| WZ8.3 | `WZ8.3-generator-create-options.md` | Umsetzung | autonom | offen |
+| WZ8.4 | `WZ8.4-vorschau-option-planung.md` | Umsetzung | autonom | offen |
+| WZ8.5 | `WZ8.5-editor-welt-betrachter.md` | Umsetzung | autonom | offen |
+| WZ8.6 | `WZ8.6-review.md` | Review | autonom | offen |
+| WZ8.7 | `WZ8.7-abnahme.md` | Review | Mensch | offen |
 
 - WZ8.1 (REG) Workshop mit 🧑: Format, Chunk-Platz, Stromnamen, Anrechnung auf die Biom-Summen, Lage-Regeln; Regeltext in `docs/rules/`; Glossar „geplanter Chunk“, „Chunk-Platz“, „Chunk-Seed“, „Ruine“ und „Gegnerlager“ (geplant, B-468) und Chunk-Breite korrigieren (25 Units in Eisenstollen und Kristallhöhle) (AC-01).
 - WZ8.2 (SIM) Feld `plannedChunks` in `data/islands.json` (leer) mit Laden und vom Seed unabhängiger Prüfung gegen die kürzeste Länge; die Prüfung nimmt die Mauerlinien als Parameter (Options-Struktur in `engine/level`, Standard eingebettet, kein globaler Zustand, Typ der Linien-Daten exportiert); benannte Fehler, je Fall ein Test, darunter Ader bei Hub +136 mit Linie 5 bei 124 gültig und bei 126 abgelehnt; Portal- und Platz-Grenzen gegen `frame()`/`eligible()` gerechnet (AC-06, AC-02).
