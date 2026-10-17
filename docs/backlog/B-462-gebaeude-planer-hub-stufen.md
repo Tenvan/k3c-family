@@ -3,7 +3,7 @@
 - **Domäne:** DEV
 - **Typ:** Idee
 - **Prio:** mittel
-- **Umgebung:** ?
+- **Umgebung:** live
 - **Status:** eingeplant
 - **Sprint:** WZ9
 - **Projekt:** WZG
@@ -14,50 +14,130 @@
 
 ## Ausgangslage
 
-Welches Gebäude ab welcher Hub-Stufe verfügbar ist, steht in `data/hub.json`: `sites` (je Platz `kind`, `offsetUnits`, `hubLevel`, `fromDepth`, `needsDeeper`), `islandSites`, `wallLines` (Linie k ab Hub-Stufe k, Tor ab `gateHubLevel`) und `merchant` (`onlyDepth`); die Regel dazu in `docs/rules/materialien-gebaeude.md` § 3 (Tabelle Hub-Stufe → Gebäude). Bearbeitet wird von Hand; Regel und Daten können auseinanderlaufen. B-458 (Hub wächst kleinteiliger) und GEB9 (Ausbaustufen) brauchen genau diese Zuordnung. Die Werte sind Domäne REG; jede Änderung kann Sim-Goldens verschieben.
+Welches Gebäude ab welcher Hub-Stufe an welchem Bauplatz verfügbar ist, steht in `data/hub.json`: `sites` (je Hub-Platz `kind`, `offsetUnits`, `hubLevel`, `fromDepth`, `needsDeeper`), `islandSites` (Lager), `wallLines` (Mauerlinie k bei `wallUnits[k-1]` ab Hub-Stufe k, Turm innen, Tor außen ab `gateHubLevel`) und `merchant` (Zahlziele Kaufen/Verkaufen, nur Tiefe `onlyDepth`); die Zahl der Hub-Stufen ergibt sich aus `levels` (heute 5). Gepflegt wird von Hand an drei Stellen, die auseinanderlaufen können:
+
+- `data/hub.json` (Quelle für Go per `go:embed`, `data/embed.go`, und für den Client per Import),
+- die Tabelle „Hub-Stufe → Gebäude“ in `docs/rules/materialien-gebaeude.md` § 3,
+- die Kopie `hubLevelRule` in `engine/sim/site_data_test.go` (`TestSiteDataHubStufe`).
+
+Die Platz-Regeln gibt es nur als Go-Tests in `engine/sim/site_data_test.go`: genau ein Platz je Bau, Abstand zweier Zahlziele ≥ 2 × `payRangeUnits` (heute 4 Units) bei voller Streuung der Mauerlinien und je Tiefe, Treppen ≥ 8 Units zu jedem Zahlziel derselben Tiefe (B-409), äußerstes Tor unter dem Portal-Mindestabstand der Biome. Eine Funktion, die eine geänderte `hub.json` vor dem Schreiben prüft, gibt es nicht. B-458 (Hub wächst kleinteiliger) braucht genau diese Zuordnung und profitiert vom Planer; GEB9 (Ausbaustufen, nur Grafik) braucht den Planer nicht und ändert `data/hub.json` nicht. Die Werte sind Domäne REG; eine Änderung verschiebt in der Regel Sim- und Level-Goldens.
+
+Live-Vorschau: `engine/sim` liest `hub.json` per `go:embed` (`engine/sim/data.go`, globale `hub`); der Snapshot aus WZ7.1 (B-460) baut deshalb ohne Zusatz nur aus den eingebetteten Daten und zeigt einen ungespeicherten Planer-Stand nicht. Ein EXE-Neubau je Änderung wäre für eine Live-Vorschau unbrauchbar. Außerdem darf ein Speichern den Spielserver nicht lahmlegen: Mit B-461 (WZ8) prüft der Start auch die geplanten Chunks in `data/islands.json` gegen die Linien-Bauplätze; eine verschobene Mauerlinie kann eine bis dahin gültige Planung ungültig machen und den Start scheitern lassen.
 
 ## Ziel
 
-Ein Gebäude-Planer im Asset-Studio zeigt und bearbeitet die Freischaltung: je Hub-Stufe die verfügbaren Gebäude mit Platz (`offsetUnits`), Tiefe (`fromDepth`) und Bedingungen; er schreibt `data/hub.json` gültig zurück und zeigt das Ergebnis in der Live-Vorschau (B-460).
+Ein Gebäude-Planer im Asset-Studio (`tools/k3c-studio`, B-459) zeigt die Freischaltung als Matrix Hub-Stufe × Bauplatz und bearbeitet sie: Hub-Stufe, Platz und Tiefe. Er prüft jede Änderung mit denselben Regeln wie die Simulation (Go-Backend), schreibt `data/hub.json` erst danach format-stabil zurück und zeigt das Ergebnis sofort in der Live-Vorschau (B-460), auch ungespeichert: Der Snapshot (WZ7.1) nimmt die Kandidaten-`hub.json` als Option, ohne Neubau von EXE oder Spielserver. `data/hub.json` ist die einzige Quelle: Die Regeltabelle in § 3 wird daraus per Task erzeugt, ein Test hält beide gleich. Nutzen: Freischaltungen für B-458 und spätere Stufen ohne Handarbeit an drei Stellen, ohne ungültige Plätze, ohne den Start des Spielservers zu gefährden und mit sichtbarem Ergebnis.
 
 ## Beteiligte und Zielgruppen
 
-Wer spielt, entwickelt, betreibt oder entscheidet (🧑)? Keine Verantwortlichen erfinden.
+- 🧑 (Ralf) plant die Freischaltung im Gebäude-Planer, speichert, committet die REG-Änderung mit Begründung, entscheidet über `task golden:update` und nimmt den Planer ab.
+- Agenten bauen Regeltabellen-Generator (INF), Prüffunktion (SIM), Snapshot-Option für den Kandidaten (SRV) und Planer (DEV); sie lesen Matrix und erzeugte Tabelle beim Planen von B-458.
+- Spieler profitieren indirekt: Freischaltungen bleiben gültig (keine überlappenden Zahlziele), und der Spielserver startet mit jeder gespeicherten Freischaltung.
 
 ## Anforderungen
 
-- Was das Ergebnis können muss, auch Qualität (deterministisch, 2+ Spieler, Leistung).
+- **Matrix:** Zeilen = jeder Bauplatz aus `sites` und `islandSites` (`kind@offsetUnits`), Mauerlinie k je Seite mit Turm, Tor (`gateHubLevel`), Händler Kaufen/Verkaufen; Spalten = Hub-Stufe 1 … Anzahl `levels`. Je Zeile: ab welcher Hub-Stufe verfügbar, Platz (Offset zur Hub-Mitte), Tiefe (`fromDepth`, `needsDeeper`, `onlyDepth`), Herkunft (Liste in der JSON). Burg (Hub-Mitte) und Ausbaustufen von Mauer und Turm (`data/buildings.json` › `levels`, Stufe n ab Hub-Stufe n) nur als Anzeige.
+- **Bearbeitbar:** `hubLevel`, `offsetUnits`, `fromDepth`, `needsDeeper` bestehender Einträge in `sites`/`islandSites`; `gateHubLevel`; `wallUnits[k]`; `merchant` (`buyOffsetUnits`, `sellOffsetUnits`, `onlyDepth`). Alles andere (u. a. `levels`, `fixedLines`, `jitterOutwardUnits`, Insets, `notes`) nur lesen.
+- **Prüfung über das Go-Backend:** eine exportierte Funktion in `engine/sim` prüft eine Kandidaten-`hub.json` (Bytes, kein globaler Zustand, kein `sim.UseData`) mit den Regeln aus `engine/sim/site_data_test.go` und liefert verständliche Befunde (Regel, Platz, Wert, Grenze); die Go-Tests rufen dieselbe Funktion auf (eine Quelle der Regeln). Die Kopie `hubLevelRule` entfällt.
+- **Prüfung schließt geplante Chunks ein (B-461, Querschnitt zu WZ8):** Dieselbe Funktion prüft zusätzlich die geplanten Chunks aus `data/islands.json` (Standard: eingebettet, auch als Parameter) gegen die Linien des Kandidaten, z. B. Adern ≥ 4 Units von jedem Bauplatz der Linien inklusive Streuung und Farm-Weltplatz. Eine Änderung, die eine Planung ungültig macht und damit den Start des Spielservers scheitern ließe, wird abgelehnt und nennt Insel, Tiefe, Platz und Grund. Annahme: WZ8 ist vor WZ9 erledigt (Reihenfolge WZ7 → WZ8 → WZ9); die Planungs-Prüfung aus WZ8.2 in `engine/level` nimmt die Linien dann als Parameter, und die Funktion reicht die Kandidaten-Linien durch. **`engine/level` darf WZ9.3 ändern:** Fehlen die Linien-Parameter (WZ8 nicht erledigt), legt WZ9.3 sie in `engine/level` an (Options-Struktur, Standard eingebettet, kein globaler Zustand, Zuschnitt wie in B-461 › Anforderungen), auch ohne Planung, weil der Bau aus dem Kandidaten (WZ9.4) sie im Generator braucht. Ist WZ8 nicht erledigt, prüft die Funktion nur `hub.json`, der Planer zeigt „geplante Chunks nicht geprüft“, und die Nachrüstung der Planungs-Prüfung wird ein Ticket.
+- **Schreiben:** erst nach erfolgreicher Prüfung; atomar (temporäre Datei, dann umbenennen); Schlüssel-Reihenfolge, Zeilenumbrüche (ein Platz je Zeile), `notes` und unbekannte Felder bleiben erhalten; Laden und Speichern ohne Änderung ist byte-gleich.
+- **Schreibregel wie B-459:** Hat sich `data/hub.json` seit dem Laden geändert, wird nicht gespeichert (siehe Ausnahme- und Fehlerfälle).
+- **REG-Hinweis** nach jedem Speichern: „REG-Änderung: Commit mit Begründung, `task golden:update` nur bei gewollter Änderung“.
+- **Regeltabelle erzeugt:** Ein Task `task rules:update` baut `bin/regeltabelle` (Go, `tools/regeltabelle`, wie `tools/gebaeude`) und schreibt die Tabelle „Hub-Stufe → Gebäude“ in § 3 zwischen festen Markern aus `data/hub.json` (Mauer/Turm-Stufen aus `data/buildings.json`). Die Erzeugung ist eine reine Funktion in einem eigenen Paket (`tools/regeltabelle/tabelle`, ohne `main`), die Task und Asset-Studio-Backend gemeinsam nutzen: Das Studio schreibt die Tabelle nie, sondern zeigt die Abweichung zwischen dem Block in § 3 und der aus dem geladenen bzw. gespeicherten Stand erzeugten Tabelle, mit dem Task-Namen. Ein Go-Test (`task check:go`, CI) schlägt fehl, wenn Block und JSON abweichen; `tests/projectRules.test.ts` (läuft auch ohne Go) prüft nur, dass beide Marker genau einmal vorkommen.
+- **Live-Vorschau:** zeigt den geprüften Stand des Planers (auch ungespeichert) in der gewählten Hub-Stufe, nur Darstellung. Dafür nimmt die Snapshot-Funktion aus WZ7.1 (SRV, `engine/room`/`engine/net`) die Kandidaten-`hub.json` als Option ihrer Options-Struktur (ohne globalen Zustand): Sie prüft den Kandidaten mit der Funktion aus dem Prüf-Punkt (fail closed) und baut Plätze, Stufen und Linien aus dem Kandidaten; ohne Option gilt die eingebettete. Kein EXE-Neubau, kein Spielstand, keine Datei wird geschrieben. Die Kandidaten-Linien erreichen den Generator über die Linien-Parameter in `engine/level`, die Plätze und Stufen über das neue Feld der Options-Struktur von `sim.CreateIsland` (WZ9.3; die Struktur legt WZ8.3 an, sonst WZ9.3). **Vorrang:** Sind in der Snapshot-Funktion sowohl „geplante Chunks“ (WZ8.4, B-461) als auch die Kandidaten-`hub.json` gesetzt, gelten die Kandidaten-Linien, und die Planung wird gegen sie geprüft, nicht gegen die eingebetteten.
+- **Erweiterbar (B-458):** keine feste 5 in Planer, Prüfung und Generator; Stufenzahl aus `levels`, Linienzahl aus `wallUnits`.
+- **Deterministisch:** gleiche JSON → gleiche Matrix, gleiche Befunde, byte-gleiche Tabelle, byte-gleicher Snapshot.
+- Keine neue Abhängigkeit; Datei ≤ 400, Funktion ≤ 60 Zeilen.
 
 ## Nicht-Ziele
 
-Kosten, Bauzeiten und Werte der Gebäude (`data/buildings.json`, REG); neue Gebäude-Arten; mehr Hub-Stufen (B-458) – der Planer soll sie aber ohne Umbau aufnehmen können.
+- Kosten, Bauzeiten, HP und andere Werte der Gebäude (`data/buildings.json`, REG) und die Kosten der Hub-Stufen (`data/hub.json` › `levels`, REG).
+- Neue Gebäudearten, neue Felder in `data/hub.json` (SIM) sowie Bauplätze hinzufügen oder entfernen (Annahme, Offene Fragen).
+- Mehr Hub-Stufen selbst (B-458); der Planer nimmt sie aber ohne Umbau auf.
+- Streuung, Turm-Inset und Tor-Outset der Mauerlinien bearbeiten; Regeln der Simulation ändern (Linie k ab Hub-Stufe k bleibt Code, `engine/sim/lines.go`).
+- Grafik der Ausbaustufen (GEB9), Chunk-Planung (B-461).
+- Golden-Daten aktualisieren oder Werte im Sprint selbst ändern: das bleibt eine Entscheidung von 🧑 nach dem Speichern.
+- Migration alter Spielstände nach einer Platzverschiebung (keine Rücksicht auf alte Spielstände).
 
 ## Regeln und Einschränkungen
 
-Regeln aus `CLAUDE.md`, Entscheidungen (`docs/decisions/`), Domäne, Komplexitäts-Budget, Verträge (Protokoll, Spielstand).
+- **Domänen, nacheinander:** REG (Regeltabelle § 3 in erzeugbare Form) → INF (Generator `tools/regeltabelle`, Task in `Taskfile.yml`, Marker-Test) → SIM (Prüffunktion in `engine/sim`, Tests darauf umstellen; **darf `engine/level` ändern**, siehe Schichten) → SRV (Snapshot nimmt Kandidaten-`hub.json` als Option) → DEV (Planer in `tools/k3c-studio`). Je Session eine Domäne.
+- **Grenzfall „Werkzeug schreibt REG-Daten“:** Der Code des Planers ist DEV; das Speichern zur Laufzeit ist eine REG-Änderung durch 🧑. Sessions des Sprints committen keine geänderte `data/hub.json`; Tests schreiben nur in Kopien (`t.TempDir()` bzw. Fixtures). Ein Commit mit geänderter `data/hub.json` enthält die per Task neu erzeugte Tabelle und die Begründung (welcher Platz, welche Stufe, warum); Goldens nur bei gewollter Änderung per `task golden:update`, in eigenem Commit (`docs/arbeitsweise.md` › Golden aktualisieren), nur ein aktiver Sprint ändert Golden-Daten.
+- **Eine Quelle:** `data/hub.json`. Der erzeugte Block in § 3 wird nie von Hand geändert; Prosa außerhalb der Marker bleibt REG.
+- **Prüfung in Go:** Regeln nicht im Frontend nachbauen; das Asset-Studio-Backend importiert `k3c/engine/sim` (wie `tools/k3c-dev/internal/balance`). Ohne Prüfung kein Schreiben (fail closed).
+- **Eingebettete Daten und Kandidat:** `engine/sim` liest `economy.json`, `buildings.json` und Biome per `go:embed` zum Bauzeitpunkt; die Prüfung nimmt nur `hub.json` als Kandidat, als Parameter und ohne globalen Zustand (kein `sim.UseData`). Dasselbe gilt für die Snapshot-Option (WZ7.1-Muster: Optionen als Struktur). Die Live-Vorschau zeigt so einen ungespeicherten Stand ohne EXE-Neubau; nur Spielserver und Spiel zeigen eine gespeicherte Änderung erst nach Neubau.
+- **Schichten:** `engine/room` importiert nichts aus `engine/net`; die Kandidaten-Option geht durch dieselben Schichten wie die Snapshot-Funktion (Insel-Erzeugung in `engine/room`, Zustand über `stateOf` in `engine/net`). **`engine/level` darf in WZ9.3 geändert werden:** Generator und Prüfung der Planung nehmen die Mauerlinien als Parameter (Standard eingebettet, kein globaler Zustand); hat WZ8 das schon getan (WZ8.2, WZ8.3), bleibt in WZ9.3 höchstens eine Ergänzung (z. B. Umwandlung der Linien-Daten aus dem Kandidaten); sonst legt WZ9.3 die Parameter an. `engine/level` importiert weiter nichts aus `engine/sim`, `engine/room`, `engine/net`; die Golden-Daten bleiben byte-gleich (Standard-Linien = heutiges Verhalten).
+- **Schreibort:** nur `data/hub.json` des Checkouts, aus dem das Asset-Studio läuft; der Pfad steht in der Oberfläche.
+- **Spielstände:** Plätze werden über `kind@x` zugeordnet (Glossar); eine Platzverschiebung lässt alte Spielstände den Platz verlieren, ohne Migration.
+- **Firewall:** Asset-Studio als EXE mit festem Pfad, Proben nur auf Loopback (B-459). Der Generator läuft als gebaute EXE (`bin/regeltabelle`), nie per `go run`.
+- Begriffe laut `docs/glossar.md`; „Gebäude-Planer“ trägt WZ6.1 ein, WZ9 trägt keinen Begriff ein.
 
 ## Beispiele
 
-Typische Situation → erwartetes Ergebnis. Passt nichts: `nicht relevant` mit Grund.
+- Planer öffnen mit heutiger `data/hub.json` → Matrix mit 5 Spalten: Werkstatt −16 und Farm ±52 ab Stufe 1; Kaserne +24, Taverne −32, Lager −26 (`islandSites`), Treppe runter +8 (`needsDeeper`), Treppe hoch +16 (ab Tiefe 1) und Tor ab Stufe 2; Schmiede +28, Heilplatz −40 ab 3; Rüstkammer +40 ab 4; Mauerlinie k bei ±44/64/84/104/124 ab Stufe k; Händler +16/+20 nur Tiefe 0. Keine Abweichung zur Regeltabelle.
+- Rüstkammer von Hub-Stufe 4 auf 3 → Prüfung ohne Befund → die Live-Vorschau zeigt sofort (noch ungespeichert, ohne EXE-Neubau) die Rüstkammer in Hub-Stufe 3 → Speichern; `git diff data/hub.json` zeigt nur die Zeile der Rüstkammer; REG-Hinweis erscheint; der Planer meldet „Regeltabelle veraltet“ bis zum Task.
+- `gateHubLevel` 2 → 3 → Tor-Zeilen springen in Spalte 3; erzeugte Tabelle nach dem Task: Tor in Zeile 3.
+- Kopie von `hub.json` mit 7 `levels` (B-458; Fixture, siehe AC-08) → Matrix mit 7 Spalten, Hub-Stufe 7 wählbar, Tabelle mit 7 Zeilen, ohne Codeänderung; die Fixture besteht die Prüfung.
+- Laden und sofort Speichern ohne Änderung → Datei byte-gleich, kein Diff.
+- Mit B-461 (Höhle, Tiefe 1, geplanter Chunk Platz +2 beginnt bei Hub +100): Eine geplante Ader bei Lage 36 (Hub +136) liegt genau 4 Units hinter dem Tor der Linie 5, das bei voller Streuung bis +132 reicht (Linie 5 bei 124: Mauer 124…128, Turm 116…120, Tor 128…132), und ist gültig. Linie 5 von 124 auf 126 → Tor 130…134 → Befund „Planung island1/Tiefe 1/Platz 2: Ader 2 < 4 Units vom Tor der Linie 5“; das äußerste Tor 134 bleibt unter dem Portal-Mindestabstand 135, es greift nur die Ader-Regel. Eine Ader bei Lage 40 (Hub +140) ist mit Linie 5 bei 124 gültig; Linie 5 auf 130 → Tor 134…138 → Ader 2 Units vom Tor abgelehnt, dazu Befund „Tor 138 ≥ Portal-Mindestabstand 135“ (Eisenstollen, Kristallhöhle). In allen Fällen wird nichts geschrieben, der Spielserver kann nicht an ungültiger Planung scheitern.
+- Planer mit Kandidat und Planung zugleich: In der Vorschau sind „geplante Chunks“ (Entwurf aus dem Chunk-Editor) und die Kandidaten-`hub.json` gesetzt → Linien und Plätze kommen aus dem Kandidaten, und der Entwurf wird gegen die Kandidaten-Linien geprüft (Linie 5 bei 126: die Ader bei Hub +136 wird abgelehnt, die Vorschau behält das letzte gültige Bild).
 
 ## Ausnahme- und Fehlerfälle
 
-Ungültige oder seltene Situation → gewolltes Verhalten. Passt nichts: `nicht relevant` mit Grund.
+- **Abstand zu Zahlzielen:** Schmiede von +28 auf +26 → Befund „smithy@26 zu nah an barracks@24: 2 < 4 Units“; nichts wird geschrieben, die Eingabe bleibt zum Korrigieren. Geprüft wird bei voller Streuung der Mauerlinien, je Tiefe (mit und ohne tiefere Stufe), inklusive Angebots-Anhängen (`dx` aus `data/buildings.json`) und Händler.
+- **Treppe zu nah:** Treppe hoch `fromDepth` 1 → 0 → kollidiert in Tiefe 0 mit Händler Kaufen +16 → abgelehnt (≥ 8 Units, B-409).
+- **Ungültiger Platz:** zwei Bauplätze derselben Art auf demselben Offset oder eine Mauerlinie samt Tor und Streuung nicht unter dem Portal-Mindestabstand eines Bioms → abgelehnt mit Regel und Grenzwert.
+- **Stufe außerhalb des Bereichs:** `hubLevel` bzw. `gateHubLevel` kleiner 1 oder größer als die Anzahl `levels` (heute ab 6) → abgelehnt mit „Hub-Stufe 1–5“; mit mehr `levels` wächst der Bereich mit.
+- **Geplante Chunks werden ungültig** (mit WZ8): Linie verschoben, sodass eine geplante Ader oder ein anderes Objekt gegen die Lage-Regeln aus B-461 verstößt → abgelehnt mit Insel, Tiefe, Platz und Grund; nichts wird geschrieben. Ist `data/islands.json` selbst bereits ungültig, nennt die Prüfung das als eigenen Befund (nicht dem Kandidaten anlasten).
+- **WZ8 noch nicht erledigt:** keine Prüfung geplanter Chunks, Hinweis „geplante Chunks nicht geprüft“ im Planer, Ticket zur Nachrüstung.
+- **Kandidat für die Live-Vorschau ungültig:** Die Snapshot-Option lehnt ab und liefert die Befunde der Prüfung; die Vorschau bleibt beim letzten gültigen Stand, kein leeres Fenster.
+- **Datei extern geändert** (Editor, `git checkout`, anderer Prozess) seit dem Laden → wie Schreibregel B-459: nicht speichern, neu laden, Meldung „`data/hub.json` geändert, bitte erneut speichern“; offene Eingaben bleiben erhalten.
+- **`data/hub.json` nicht lesbar oder kein gültiges JSON** → Planer zeigt den Fehler mit Pfad, Bearbeiten und Speichern sind gesperrt.
+- **Go-Prüfung nicht erreichbar oder bricht ab** → kein Schreiben, Fehlermeldung.
+- **Regeltabelle von Hand geändert** oder Marker fehlen → Go-Test bzw. Marker-Test rot; Planer zeigt „Regeltabelle weicht ab“ mit dem Task.
+- **Absturz beim Schreiben** → alte Datei bleibt vollständig (atomares Ersetzen).
+- **Goldens brechen nach dem Speichern** → erwartet bei Platz- oder Stufenänderung; nicht automatisch aktualisieren, 🧑 entscheidet.
 
 ## Akzeptanzkriterien
 
-- **AC-01** Der Planer zeigt eine Matrix Hub-Stufe × Gebäude aus `data/hub.json` (`sites`, `islandSites`, Mauerlinien und Tor aus `wallLines`, Händler), inklusive Platz und Tiefe.
-- **AC-02** Änderungen (Stufe, Platz, Tiefe) werden geprüft (Platz frei, Abstand zu Zahlzielen wie in `engine/sim` geprüft, Stufe im Bereich) und erst dann in `data/hub.json` geschrieben; Format und Reihenfolge der Datei bleiben stabil.
-- **AC-03** Abweichungen zwischen `data/hub.json` und der Tabelle in `materialien-gebaeude.md` § 3 werden angezeigt.
-- **AC-04** Die Live-Vorschau (B-460) zeigt die geänderte Freischaltung je Hub-Stufe.
-- **AC-05** Der Planer weist darauf hin, dass eine gespeicherte Änderung eine REG-Änderung ist: Commit mit Begründung, `task golden:update` nur bei gewollter Änderung.
+- **AC-01** Der Planer zeigt eine Matrix Hub-Stufe × Bauplatz aus `data/hub.json` (`sites`, `islandSites`, Mauerlinien und Tor aus `wallLines`, Händler) mit Platz und Tiefe; ein Test mit der heutigen Datei liefert die Zuordnung aus Beispiel 1.
+- **AC-02** Änderungen (Stufe, Platz, Tiefe) prüft eine exportierte Funktion in `engine/sim` ohne globalen Zustand mit den Regeln aus `engine/sim/site_data_test.go` (Platz eindeutig, Abstand zu Zahlzielen bei voller Streuung, Treppen-Abstand, Portal-Mindestabstand, Stufe im Bereich); die Go-Tests nutzen dieselbe Funktion, `hubLevelRule` gibt es nicht mehr. Ist WZ8 erledigt, prüft sie zusätzlich die geplanten Chunks aus `data/islands.json` gegen die Linien des Kandidaten (Linien als Parameter der Planungs-Prüfung in `engine/level`; Go-Test: Linienverschiebung macht eine Planung ungültig, Beispiel 6 → abgelehnt, ungültige `islands.json` wird als eigener Befund genannt); sonst gilt der Hinweis „geplante Chunks nicht geprüft“. Erst ohne Befund wird `data/hub.json` geschrieben; Go-Tests decken die Fälle aus Ausnahme- und Fehlerfälle 1–5 ab, abgelehnte Änderungen lassen die Datei byte-gleich.
+- **AC-03** Weicht der erzeugte Block der Regeltabelle in `materialien-gebaeude.md` § 3 vom geladenen oder gespeicherten Stand von `data/hub.json` ab, zeigt der Planer das mit dem Task-Namen an; die Abweichung berechnet das Go-Backend mit derselben Erzeugungs-Funktion wie der Task (Test mit abweichender Tabelle).
+- **AC-04** Die Live-Vorschau (B-460/AC-04) zeigt den geprüften Stand des Planers in der gewählten Hub-Stufe, auch ungespeichert und ohne EXE-Neubau (Beispiel 2: Rüstkammer in Stufe 3 sichtbar).
+- **AC-05** Nach jedem Speichern zeigt der Planer: „REG-Änderung: Commit mit Begründung, `task golden:update` nur bei gewollter Änderung“.
+- **AC-06** Format und Schreibregel: Laden und Speichern ohne Änderung ist byte-gleich; eine Änderung ändert nur die betroffenen Zeilen; Schreiben ist atomar; bei extern geänderter Datei wird nicht gespeichert, neu geladen und gemeldet, offene Eingaben bleiben (Tests mit Kopie in `t.TempDir()`).
+- **AC-07** Ein Task `task rules:update` schreibt die Tabelle „Hub-Stufe → Gebäude“ in § 3 zwischen festen Markern aus `data/hub.json` (Generator `tools/regeltabelle`, Funktion im Paket `tools/regeltabelle/tabelle`); ein zweiter Lauf ist byte-gleich; ein Go-Test in `task check:go` schlägt fehl, wenn Block und JSON abweichen; `tests/projectRules.test.ts` prüft die Marker.
+- **AC-08** Mehr Hub-Stufen ohne Umbau: Es gibt eine Fixture mit 7 `levels` (Kopie von `data/hub.json` unter `testdata/`, Werte nicht vorgegeben), die die Prüfung aus AC-02 besteht. Die Fixture darf Farm, Linie 1, `payRangeUnits` (nur soweit die Prüfung den Zahlziel-Abstand als Parameter nimmt, Standard aus `data/economy.json`; Entscheidung in WZ9.3), Inset und Streuung frei wählen. Mit ihr zeigen Matrix, Prüfung, Generator und Snapshot-Option 7 Stufen (Tests); keine feste 5 im Code. Eine Rechnung der Werte gibt die Spec nicht vor.
+- **AC-09** Die Snapshot-Funktion aus WZ7.1 nimmt die Kandidaten-`hub.json` als Option (Options-Struktur, kein globaler Zustand, kein `sim.UseData`): Sie prüft den Kandidaten mit der Funktion aus AC-02 (ungültig → Fehler mit den Befunden, nichts wird gebaut) und baut Plätze, Hub-Stufen und Linien aus dem Kandidaten; ohne Option gilt die eingebettete `hub.json`. Sind Kandidat und „geplante Chunks“ (B-461/AC-08) zugleich gesetzt, gelten die Kandidaten-Linien, und die Planung wird gegen sie geprüft. Go-Tests: gleiche Eingaben → byte-gleicher Snapshot; Rüstkammer von Hub-Stufe 4 auf 3 im Kandidaten → in Hub-Stufe 3 gebaut, ohne Option weiterhin nicht; Kandidat mit verschobener Linie 5 plus Planung mit einer Ader bei Hub +136 → Fehler (Beispiel 6) statt Snapshot; eingebettete Daten und `data/hub.json` bleiben unverändert; die 7-Stufen-Fixture liefert 7 wählbare Stufen.
 
 ## Offene Fragen
 
-1. Die Platz-Prüfung lebt in Go (`engine/sim`, `data`-Validierung): ruft der Planer sie über das Go-Backend auf (Annahme) oder prüft er selbst?
-2. Ist ein Schreiben von `data/hub.json` aus dem Werkzeug erlaubt (Werte = Domäne REG)? Annahme: ja, aber nur Freischaltung und Platz, Werte bleiben REG.
-3. Soll die Regeltabelle in `materialien-gebaeude.md` künftig aus der JSON erzeugt werden?
+Entschieden von 🧑 am 2026-10-17 (Chat):
+1. **Schreiben und Prüfung:** Der Gebäude-Planer im Asset-Studio (`tools/k3c-studio`, WZ6) schreibt `data/hub.json` direkt, nach Prüfung über das Go-Backend, und zeigt den Hinweis „REG-Änderung: Commit mit Begründung, `task golden:update` nur bei gewollter Änderung“ (AC-02, AC-05).
+2. **Regeltabelle:** Die Tabelle in `docs/rules/materialien-gebaeude.md` § 3 wird künftig aus `data/hub.json` erzeugt (eine Quelle, per Task); eigene REG- bzw. INF-Session für Generator und Task, Test für Tabelle = JSON (AC-07).
+3. **Umfang:** erweiterbar für mehr Hub-Stufen (B-458) ohne Umbau; die Matrix umfasst `sites`, `islandSites`, Mauerlinien und Tor (`wallLines`) und Händler (AC-01, AC-08).
+4. **Vorschau:** Die Live-Vorschau aus WZ7 zeigt die Änderung (AC-04).
+9. **SRV-Session für die Live-Vorschau ungespeicherter Stände (Querschnitt X1, später am selben Tag):** Die Snapshot-Funktion aus WZ7.1 hat eine Options-Struktur ohne globalen Zustand (kein `sim.UseData`); WZ9 bekommt eine eigene SRV-Session „Snapshot nimmt Kandidaten-`hub.json` als Option“ (Prüfung und Bau aus dem Kandidaten, ohne EXE-Neubau). Damit ist der Befund behoben, dass die Live-Vorschau in einer reinen DEV-Session wegen `go:embed` (`engine/sim/data.go`) unmöglich war (AC-04, AC-09). Reihenfolge der Domänen REG → INF → SIM → SRV → DEV.
+
+Offen (Annahmen, entscheidet 🧑 vor der Freigabe):
+5. **Bauplätze hinzufügen oder entfernen?** Annahme: nein, nur bestehende Einträge bearbeiten; neue Plätze kommen mit B-458 über SIM/REG.
+6. **Mauerlinien-Offsets (`wallUnits`) bearbeitbar?** Annahme: ja (Platz); Streuung, Turm-Inset und Tor-Outset nur Anzeige. Folge: Level-Goldens verschieben sich (`engine/level/lines.go` › `clearOfLines`), und geplante Chunks (B-461) werden mitgeprüft.
+7. **Live-Vorschau mit ungespeichertem Stand?** Entschieden durch 9: ja, nach erfolgreicher Prüfung; nur Darstellung (Plätze aus dem Planer, keine Simulation).
+8. **Tabelle beim Speichern gleich erzeugen?** Annahme: nein, der Planer meldet die Abweichung, 🧑 führt den Task vor dem Commit aus (Entscheidung 2: „per Task“).
+10. **Ort des Generators der Regeltabelle (festgelegt, mit der Freigabe bestätigt):** Go statt TS-Modul. Begründung: Das Asset-Studio-Backend ist Go und soll die Abweichung ohne Node-Aufruf und ohne zweite Implementierung berechnen; `tools/gebaeude` und `tools/atlas` sind das Muster (Go-Tool, gebaut per `task`, EXE mit festem Pfad). Aufbau: Paket `tools/regeltabelle/tabelle` (reine Funktion, wird vom Studio importiert) plus `tools/regeltabelle/main.go` (Task). Folge: Der Abgleich Block = JSON ist ein Go-Test (läuft in `task check:go` und CI, nicht in `task check` auf einem Rechner ohne Go); `tests/projectRules.test.ts` prüft nur die Marker. Domäne INF (Tooling, wie der Taskfile). Alternative: TS-Modul unter `scripts/`, dann müsste das Studio die Tabelle nachbauen oder Node starten; verworfen.
+11. **Umfang der Sprintgröße:** 8 Sessions (statt 7) über dem Richtwert 3–6; siehe WZ9 › Offene Fragen 2.
 
 ## Notizen
 
-Links, Messwerte, verworfene Ansätze. Darf leer bleiben (`–`).
+Fundstellen (Stand 2026-10-17):
+- `engine/sim/site_data_test.go`: `TestSiteDataGenauEinPlatzJeBau`, `TestSiteDataAbstandBeiVollerStreuung` (`minGap = 2 × economy.PayRangeUnits`, `data/economy.json` › `payRangeUnits` = 2), `TestSiteDataTreppenAbstand` (8 Units, B-409), `TestSiteDataLinien` (Portal-Mindestabstand), `TestSiteDataHubStufe` mit Kopie `hubLevelRule`. Hilfen `fixedTargets`, `lineTargets`, `eachLayout` sind die Vorlage der Prüffunktion.
+- `engine/sim/data.go` › `HubSite`, `WallLineData`, globale `hub` per `go:embed`; die Prüffunktion und der Bau aus einem Kandidaten (Snapshot-Option, WZ9.4) brauchen eine Variante, die eine übergebene Kandidaten-JSON statt der eingebetteten nimmt, ohne globalen Zustand (kein `sim.UseData`). Wie weit `siteHubLevel`, `worldSiteSpecs` und die Linien-Berechnung dafür umgebaut werden, legt WZ9.3 fest (Risiko: größte Session des Sprints, Schnitt in zwei SIM-Sessions möglich).
+- `engine/sim/hub_level.go` › `siteHubLevel` ordnet über `kind` + Offset zu; `engine/level/lines.go` › `clearOfLines` hält Level-Objekte ≥ `payGapUnits` von allen Linien fern (Level-Goldens hängen an `wallUnits`). `lines.go` lädt die Linien heute in die Paket-Variable `wallLines`; `generateLines` und `clearOfLines` lesen sie global, ebenso `placeEvents` und `swapCampsWithChests` in `level.go`. Ohne Linien-Parameter zeigt ein Kandidat im Snapshot geänderte Linien nicht (Review-Befund 2026-10-17); deshalb darf WZ9.3 `engine/level` ändern oder baut auf WZ8.2/WZ8.3 auf.
+- `engine/sim/lines.go` › `worldSiteSpecs` und `siteLine` bauen Mauer, Turm und Tor aus `w.Level.Lines`, `lineOpen` liest `hub.WallLines.GateHubLevel`: Die Kandidaten-Linien wirken über das Layout, nur `hub.Sites`, `GateHubLevel` und `levels` müssen in WZ9.3 aus dem Kandidaten kommen (ungeprüft, wie das am wenigsten Umbau kostet).
+- `sim.CreateIsland(seed, depths, cycleSpeed)` bekommt in WZ8.3 eine Options-Struktur (Planung je Tiefe); WZ9.3 ergänzt darin den Kandidaten (`hub.json`) als Feld, ohne die Signatur zu ändern. Gibt es sie noch nicht (WZ8 nicht erledigt), legt WZ9.3 die Struktur an und passt alle Aufrufer an (`engine/room/fullsave.go`, `engine/room/manager.go`, `tools/k3c-dev/internal/balance/run.go`, die Testdateien).
+- `tools/k3c-dev/go.mod` bindet `k3c` ein (`internal/balance` importiert `k3c/engine/sim`); dasselbe Muster für `tools/k3c-studio`. Der Generator liegt im Wurzel-Modul (`tools/regeltabelle`, Muster `tools/gebaeude`, `Taskfile.yml` › `gebaeude`); das Studio importiert `k3c/tools/regeltabelle/tabelle`.
+- Querschnitt zu B-460: Die Snapshot-Funktion (WZ7.1) muss ihre Options-Struktur so anlegen, dass WZ9.4 das Feld für den Kandidaten ergänzt (und WZ8.4 das für die Planung), ohne die Signatur zu brechen.
+- Querschnitt zu B-461 (WZ8): Die Planungs-Prüfung (WZ8.2) und der Generator (WZ8.3) nehmen die Linien als Parameter; der Planer-Befund „Ader zu nah an Bauplatz“ kommt aus derselben Funktion. Umgekehrt prüft der Chunk-Editor (WZ8.5) gegen die eingebettete `hub.json`; Änderungen daran wirken im Editor erst nach Neubau, es sei denn, die Snapshot-Funktion bekommt zugleich den Kandidaten (dann gelten dessen Linien, siehe Anforderungen › Live-Vorschau › Vorrang).
+- Abhängigkeiten: WZ6 (Asset-Studio, Schreibregel B-459/AC-07), WZ7 (Live-Vorschau B-460/AC-04, Snapshot-Funktion WZ7.1), WZ8 (geplante Chunks, für die Mitprüfung). Bezug: B-458 nutzt den Planer für die neue Stufenfolge; GEB9 braucht ihn nicht und ändert `data/hub.json` nicht.
+- **Verworfen (Review-Befund, 2026-10-17):** Eine 7-Stufen-Fixture mit 12 Units Linien-Abstand (`wallUnits` 44, 56, … 116) ist nicht erfüllbar: Tor der Linie 1 und Turm der Linie 2 liegen beide bei 48 (Abstand 0 < 4), und der Farm-Weltplatz ±52 liegt im Turmbereich der Linie 2 (48…52). Die Spec gibt deshalb keine Werte vor; die Fixture wählt Farm, Linie 1, Inset und Streuung (und soweit parametrierbar `payRangeUnits`) so, dass die Prüfung besteht (AC-08).
+- Revision 2 (2026-10-17, Entwurf, noch nicht freigegeben): SRV-Session für die Live-Vorschau ungespeicherter Stände (Entscheidung 9, AC-09), Mitprüfung geplanter Chunks (AC-02), Verweis B-460/AC-04, GEB9-Bezug vereinheitlicht, Glossar-Eintrag „Gebäude-Planer“ kommt aus WZ6.1, Generator in Go (Frage 10), Fixture mit 7 Stufen ohne vorgegebene Werte (AC-08), Linien als Parameter in `engine/level` und Vorrang des Kandidaten (Anforderungen, AC-09).
