@@ -120,9 +120,12 @@ Keine blockiert die Planung; jede Annahme gilt mit der Freigabe als bestätigt, 
 | GEB7.3 | `GEB7.3-eisenstollen-kristall.md` | Umsetzung | autonom | fertig |
 | GEB7.4 | `GEB7.4-pages-umstellen.md` | Umsetzung | autonom | fertig |
 | GEB7.5 | `GEB7.5-zuordnung-aufraeumen.md` | Umsetzung | autonom | fertig |
-| GEB7.6 | `GEB7.6-review-abnahme.md` | Review | autonom | offen |
+| GEB7.6 | `GEB7.6-review-abnahme.md` | Review | autonom | fertig |
 
 ## Abnahme
 
-Wird von der Review-Session (Doku-Sprint: letzte Session) ausgefüllt, höchstens fünf Zeilen: Datum, Kriterien
-(Verweis auf Session-Ergebnisse), behobene Befunde, neue Tickets. Bis dahin `–`.
+2026-10-17 (Review GEB7.6, getrennter Reviewer, keine schweren Befunde): AC-01 bis AC-04 geprüft (GEB7.1–GEB7.3), AC-05/AC-06 (GEB7.5), AC-07 (GEB7.4); `task check` und `task check:go` grün.
+AC-08 offen für 🧑 (B-452): Vorschau, Spiel und Pages-Seite sieht nur 🧑 ab; Wald-Gate entfiel (Revision 2), Annahmen 1–9 gelten bis zur Antwort.
+Behobene Befunde: keine. Neue Tickets: B-452.
+Hinweis: GEB7 liegt in `geplant/`, bis GEB6 `erledigt` ist (ein aktiver Sprint je Projekt); danach nach `aktiv/`, mit der Abnahme nach `erledigt/`.
+Version: Minor vorgeschlagen (Wirkung im Spiel und Werkzeug; Nummer nach dem GEB6-Vorschlag), gesetzt wird sie erst nach Bestätigung durch 🧑.
