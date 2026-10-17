@@ -9,7 +9,6 @@ Die Reihenfolge der Arbeit ist allein der Projekt-Rang: [`../projekte/README.md`
 
 | Sprint | Domäne | Projekt | Thema | Am Ende sichtbar | Ordner |
 |---|---|---|---|---|---|
-| GEB7 | DEV, PLAT, CLI | GEB | Hintergründe je Biom | – | `aktiv/GEB7-hintergruende/` |
 | GR7 | CLI | GRA | Figuren-Lücken, ganzzahlige Skalierung und Schrift | – | `aktiv/GR7-figuren-schrift/` |
 | SO4 | CLI | SND | Musik je Zustand | – | `aktiv/SO4-musik/` |
 
@@ -182,3 +181,4 @@ Gesamtplan und Begründung: [`../plan-weiterentwicklung.md`](../plan-weiterentwi
 | GEB4 | Burg und Hub-Stufen 1 bis 5, Tor | `erledigt/GEB4-burg-hub-tor/` |
 | GEB5 | Lager, Farm mit Plantage, Kaserne, Treppen | `erledigt/GEB5-hub-gebaeude-rest/` |
 | GEB6 | Natur und Objekte: Bäume, Fels, Erz, Adern, Truhe, Portal, Rekrutierungslager | `erledigt/GEB6-natur-objekte/` |
+| GEB7 | Hintergründe je Biom | `erledigt/GEB7-hintergruende/` |
