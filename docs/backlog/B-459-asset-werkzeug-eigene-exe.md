@@ -8,9 +8,9 @@
 - **Sprint:** WZ6
 - **Projekt:** WZG
 - **Erstellt:** 2026-10-17
-- **Spec:** Entwurf
-- **Revision:** 1
-- **Freigabe:** –
+- **Spec:** freigegeben
+- **Revision:** 2
+- **Freigabe:** 2026-10-17, Chat (Ralf)
 
 ## Ausgangslage
 
@@ -22,11 +22,14 @@ Das Asset-Studio (`tools/k3c-studio`, Wails-App, EXE mit festem Pfad unter `bin/
 
 ## Beteiligte und Zielgruppen
 
-Wer spielt, entwickelt, betreibt oder entscheidet (🧑)? Keine Verantwortlichen erfinden.
+🧑 pflegt Grafik und Sound im Asset-Studio und ändert es laufend; Agenten nutzen weiter die MCP-Tools `assets_*` der Workbench; beide arbeiten auf `data/assets.json`.
 
 ## Anforderungen
 
-- Was das Ergebnis können muss, auch Qualität (deterministisch, 2+ Spieler, Leistung).
+- Eigene Wails-App `tools/k3c-studio`, EXE `bin/k3c-studio.exe`, unabhängig von k3c-dev baubar und startbar.
+- Gemeinsame Asset-Logik (Go) in einem Modul, das k3c-dev und Asset-Studio nutzen (kein `internal/` über Modulgrenzen).
+- Spiel-Code aus `src/` (Audio, Modelle, Figuren-Referenz) liest das Asset-Studio nur, ändert ihn nicht.
+- Keine neue Abhängigkeit ohne Ticket; Datei ≤ 400, Funktion ≤ 60 Zeilen.
 
 ## Nicht-Ziele
 
@@ -34,25 +37,29 @@ Neue Asset-Funktionen über den heutigen Stand hinaus (eigene Tickets B-460–B-
 
 ## Regeln und Einschränkungen
 
-Regeln aus `CLAUDE.md`, Entscheidungen (`docs/decisions/`), Domäne, Komplexitäts-Budget, Verträge (Protokoll, Spielstand).
+Domäne DEV; `Taskfile.yml`, CI (`.github/workflows/ci.yml`), Lint-Konfiguration (`.oxlintrc.json`), Wurzel-`vite.config.ts` (nur Test-Ausschluss und Seitenfilter), `.gitignore`/`.dockerignore`, `requirements.md` und Struktur-Abschnitt von `CLAUDE.md` werden für das neue Werkzeug als Grenzfall in DEV mitgeändert (wie GEB1.2 für `tools/gebaeude`). Firewall: EXE mit festem Pfad, kein `go run`, Proben nur auf `127.0.0.1`.
 
 ## Beispiele
 
-Typische Situation → erwartetes Ergebnis. Passt nichts: `nicht relevant` mit Grund.
+- Ralf baut das Asset-Studio neu, während die Workbench läuft → MCP bleibt verbunden, Planung unverändert.
+- Ein Agent setzt per `assets_set` eine Präferenz → das offene Asset-Studio zeigt sie nach dem Neuladen, Auswahl und Filter bleiben.
+- Asset-Studio › Sound › Musik → Wechsel `music:tag` → `music:nacht` hörbar (bisher `assetvorschau.html?szene=musik`).
 
 ## Ausnahme- und Fehlerfälle
 
-Ungültige oder seltene Situation → gewolltes Verhalten. Passt nichts: `nicht relevant` mit Grund.
+- `data/assets.json` wurde seit dem Laden von einem anderen Prozess geändert (MCP) → das Asset-Studio speichert nicht, lädt neu und meldet „Register geändert, bitte erneut speichern“; offene Eingaben bleiben erhalten.
+- `bin/k3c-studio.exe` fehlt → der Verweis in der Workbench meldet „Asset-Studio nicht gebaut (`task k3c-studio:build`)“.
+- Datei aus `public/` fehlt → Lücke markiert wie heute.
 
 ## Akzeptanzkriterien
 
-- **AC-01** Das Asset-Studio startet als eigene EXE mit festem Pfad (`bin/`) über einen Task in `Taskfile.yml`; Proben nur auf Loopback (keine Firewall-Abfrage).
+- **AC-01** Das Asset-Studio startet als eigene EXE mit festem Pfad (`bin/k3c-studio.exe`) über einen Task in `Taskfile.yml`; Proben nur auf Loopback (keine Firewall-Abfrage).
 - **AC-02** Es hat je eine Seite für Grafik und für Sound mit dem heutigen Funktionsumfang der Workbench-Seite: Slots, Filter, Präferenzen, Mini-Szene, Katalog, Recherche (`ResearchPanel`), Ausschnitt-Editor (`CutEditor`), Import.
-- **AC-03** Die Workbench hat keine Assets-Seite mehr, sondern höchstens einen Verweis auf das Asset-Studio; ein Neubau des Asset-Studios startet die Workbench nicht neu.
-- **AC-04** Tests der Asset-Logik laufen in `task check` bzw. einem eigenen Prüfziel mit.
+- **AC-03** Die Workbench hat keine Assets-Seite mehr, sondern einen Verweis, der das Asset-Studio startet; ein Neubau des Asset-Studios startet die Workbench nicht neu.
+- **AC-04** Tests der Asset-Logik (Go und Frontend) laufen in `task check:all` und in der CI mit.
 - **AC-05** `tools/k3c-studio/` ist in der Domänentabelle (`docs/arbeitsweise.md`) als DEV eingetragen; Asset-Studio und die neuen Begriffe stehen im Glossar.
-- **AC-06** Der Inhalt von `assetvorschau.html` (Spielmaßstab je Kategorie, Gebäude-Stufenreihen) ist auf der Grafik-Seite des Asset-Studios; `assetvorschau.html`, ihr Skript (`src/tools/assetvorschau*.ts`), ihre Kachel und Verweise (u. a. `docs/standards/gebaeude-grafik.md`) sind entfernt. Die Inhalte von `grafiken.html` und `soundtest.html` gibt es zusätzlich im Asset-Studio; beide Seiten bleiben für Prüfungen am TV (Xbox) bestehen.
-- **AC-07** Die MCP-Tools `assets_*` bleiben in k3c-dev; ändert ein Agent `data/assets.json`, lädt das Asset-Studio neu, ohne Eingaben zu verlieren.
+- **AC-06** Der gesamte Inhalt von `assetvorschau.html` ist im Asset-Studio: Grafik-Szenen (Figuren, Gebäude mit Stufenreihen und Vorlagen-Texten, Umgebung mit Hintergründen, Objekte, HUD) auf der Grafik-Seite, Sound-Szenen (Ereignis-SFX, Musik mit Wechsel, Umgebungsgeräusche) auf der Sound-Seite. `assetvorschau.html`, `src/tools/assetvorschau*.ts` (die Logik zieht ins Asset-Studio um), Kachel, Texte und Verweise sind entfernt. Die Inhalte von `grafiken.html` und `soundtest.html` gibt es zusätzlich im Asset-Studio; beide Seiten bleiben für Prüfungen am TV (Xbox) bestehen.
+- **AC-07** Die MCP-Tools `assets_*` bleiben in k3c-dev; ändert ein anderer Prozess `data/assets.json`, lädt das Asset-Studio neu, ohne Auswahl, Filter und offene Eingaben zu verlieren; ein Speichern auf veraltetem Stand wird abgelehnt (siehe Ausnahme- und Fehlerfälle).
 
 ## Offene Fragen
 
@@ -67,4 +74,4 @@ Offen: keine.
 
 ## Notizen
 
-Links, Messwerte, verworfene Ansätze. Darf leer bleiben (`–`).
+B-421 (Abnahme M10 Ressourcen-Manager) prüft `assetvorschau.html` und die Workbench-Assets-Seite, die WZ6 entfernt; seine Abnahmepunkte (u. a. `sfx:coin`, Musikwechsel) gehen in die Abnahme WZ6.8 über, dort entscheidet 🧑 über B-421. Revision 2 (2026-10-17): AC-06 um Sound-Szenen, Hintergründe und Vorlagen ergänzt, AC-07 um die Schreibregel, Ausnahmefälle und Grenzfälle der Domäne nachgetragen (Review-Befunde).
