@@ -1,8 +1,8 @@
-# WZ7 · DEV · Welt-Betrachter im Asset-Studio mit Chunk- und Live-Vorschau
+# WZ7 · SIM · Welt-Betrachter im Asset-Studio mit Chunk- und Live-Vorschau
 
 - **Status:** geplant
 - **Projekt:** WZG
-- **Domäne:** DEV
+- **Domäne:** SIM
 - **Reife:** Entwurf
 - **Tickets:** B-460
 - **Start-Commit:** – (wird beim Aktivieren gesetzt: `git rev-parse --short origin/develop`)
@@ -39,7 +39,7 @@ Am Ende sichtbar: im Studio-Fenster die Seite Welt-Betrachter mit beiden Vorscha
 
 ## Regeln und Einschränkungen
 
-`B-460 › Regeln und Einschränkungen`. Domänen nacheinander, je Session eine: **SRV** (WZ7.1: `engine/room/`, `engine/net/`) → **DEV** (WZ7.2–WZ7.7: `tools/k3c-studio/**`, `src/tools/**`); die Review-Session trägt die Domäne der letzten Umsetzung (DEV) und prüft den Diff beider Domänen. Das Entfernen von `leveltest.html` samt Kacheln, Texten, Tests, Codemaps und Sprint-Übersicht fällt als Grenzfall in DEV (wie WZ6.6/B-299). `src/scenes/`, `src/online/`, `src/model/`, `public/` und `data/` nur lesend (Ausnahme: die Codemaps unter `src/`). Die Snapshot-Funktion setzt keinen globalen Zustand und ihre Options-Struktur bleibt erweiterbar. Abhängigkeit: WZ6 erledigt. Richtwert je Session ≤ ~400 geänderte Code-Zeilen; Fenster- und Browserprüfungen nur mit Freigabe von 🧑 für den Lauf. Mit 7 Sessions liegt der Sprint wie WZ6 über dem Richtwert 3–6, weil Review und Abnahme getrennt sind.
+`B-460 › Regeln und Einschränkungen`. Domänen nacheinander, je Session eine: **SIM** (WZ7.8: neue Datei `engine/sim/preview.go` samt Test und Codemap, bestehende Funktionen unverändert) → **SRV** (WZ7.1: `engine/room/`, `engine/net/`) → **DEV** (WZ7.2–WZ7.7: `tools/k3c-studio/**`, `src/tools/**`); die Review-Session trägt die Domäne der letzten Umsetzung (DEV) und prüft den Diff beider Domänen. Das Entfernen von `leveltest.html` samt Kacheln, Texten, Tests, Codemaps und Sprint-Übersicht fällt als Grenzfall in DEV (wie WZ6.6/B-299). `src/scenes/`, `src/online/`, `src/model/`, `public/` und `data/` nur lesend (Ausnahme: die Codemaps unter `src/`). Die Snapshot-Funktion setzt keinen globalen Zustand und ihre Options-Struktur bleibt erweiterbar. Abhängigkeit: WZ6 erledigt. Richtwert je Session ≤ ~400 geänderte Code-Zeilen; Fenster- und Browserprüfungen nur mit Freigabe von 🧑 für den Lauf. Mit 8 Sessions liegt der Sprint wie WZ6 über dem Richtwert 3–6, weil Review und Abnahme getrennt sind.
 
 ## Beispiele
 
@@ -71,7 +71,12 @@ Beantwortet von 🧑 am 2026-10-17 (Chat), siehe `B-460 › Offene Fragen` 10–
 
 ## Sessions
 
-- WZ7.1 (SRV) Vorschau-Snapshot als exportierte Go-Funktion mit Options-Struktur, ohne globalen Zustand (kein `sim.UseData`): Insel aus Seed, Quelle Biom bzw. Insel + Stufe, Hub-Stufe, Gebäude-Auswahl (Snapshot ohne Bürger und Gegner), Material-Stufen reihum je Art in Platzreihenfolge bis zur bei der Hub-Stufe erlaubten Höchststufe (Regeln aus `engine/sim/hub_level.go`, nicht die ungeprüfte Rotation aus `fullIsland`, vgl. B-425), Tageszeit über eine eigene Setzfunktion, die `w.Cycle` (Sim-Phase `day`, `dusk`, `night` und Fortschritt in [0, 1)) direkt setzt und `w.Time` passend ableitet (nicht `sim.DevSetPhase`; unbekannte Phase, auch `dawn`, und Fortschritt außerhalb von [0, 1) → Fehler), Level und Zustand über `stateOf`; Struktur offen für WZ8.4 und WZ9; Go-Tests für Determinismus, Hub-Stufen, Tageszeit der drei Sim-Phasen und Fehlerfälle (AC-03, AC-08)
+| Nr. | Datei | Typ | Agent | Status |
+|---|---|---|---|---|
+| WZ7.8 | `WZ7.8-sim-vorschau-regeln.md` | Umsetzung | autonom | offen |
+
+- WZ7.8 (SIM) läuft vor WZ7.1: Sim-Hilfen für die Vorschau in neuer Datei `engine/sim/preview.go`: `PreviewCycle` setzt `w.Cycle` (Sim-Phase `day`, `dusk`, `night` und Fortschritt in [0, 1)) direkt und leitet `w.Time` ab (nicht `sim.DevSetPhase`; `dawn`, unbekannte Phase und Fortschritt außerhalb von [0, 1) → Fehler); `PreviewHubLevel` baut eine Welt auf Hub-Stufe n nach den Regeln der Simulation aus (Plätze wie `devBuildSite`) und setzt die Material-Stufen je Art reihum von 1 bis `min(n, Stufenzahl)`; Go-Tests, kein globaler Zustand (AC-03, AC-08)
+- WZ7.1 (SRV) Vorschau-Snapshot als exportierte Go-Funktion mit Options-Struktur, ohne globalen Zustand (kein `sim.UseData`): Insel aus Seed, Quelle Biom bzw. Insel + Stufe, Hub-Stufe, Gebäude-Auswahl (Snapshot ohne Bürger und Gegner), Tageszeit und Hub-Stufe über `sim.PreviewCycle` und `sim.PreviewHubLevel` aus WZ7.8 (Abhängigkeit; Fehler der Optionen wie dort), Entfernen von Bürgern und Gegnern, Level und Zustand über `stateOf`; Struktur offen für WZ8.4 und WZ9; Go-Tests für Determinismus, Hub-Stufen, Tageszeit der drei Sim-Phasen und Fehlerfälle (AC-03, AC-08)
 - WZ7.2 (DEV) Seite Welt-Betrachter im Studio: Go-Binding auf `engine/level` (Quelle als Wert, in WZ7 das Biom), Logik und Tests aus `levelView.ts`/`levelApi.ts` umziehen, Chunk-Vorschau maximiert und verkleinerbar (AC-01, AC-02, AC-08)
 - WZ7.3 (DEV) Live-Vorschau: Phaser im Studio-Frontend einführen, wiederverwendbare Bühne (Szene + Preload) mit `StageView`/`WorldRenderer` über `@game`, Binding auf WZ7.1, Hub-Stufe aus `levels` (Material-Stufen der Gebäude reihum laut Snapshot, das Frontend rechnet keine Stufen), Gebäude ein/aus (AC-04, AC-08)
 - WZ7.4 (DEV) Live-Optionen und „Im Spiel öffnen“: Tageszeit mit vier Einträgen (Tag, Dämmerung, Nacht, Morgengrauen, mit Fortschritt p in [0, 1)) und reiner Abbildungsfunktion im Frontend (Morgengrauen = `night` mit 0,9 + 0,1·p; Test gegen `daylight()`, Gleitkomma mit `toBeCloseTo`), Hintergrund-Schichten mit Parallaxe, Spiel neu oder voll ausgebaut im Browser über die Landingpage (AC-05, AC-06)
@@ -79,7 +84,7 @@ Beantwortet von 🧑 am 2026-10-17 (Chat), siehe `B-460 › Offene Fragen` 10–
 - WZ7.6 (DEV) Review: `task check:all`, Diff SRV und DEV, nur schwere Befunde, PR des Sprints (alle)
 - WZ7.7 (DEV) Abnahme durch 🧑 am PC, Agent Mensch: Welt-Betrachter, Umplanung B-092, B-426 Punkte 1 und 4 (AC-09)
 
-Domänen-Reihenfolge: SRV (WZ7.1) → DEV (WZ7.2–WZ7.7).
+Domänen-Reihenfolge: SIM (WZ7.8, zuerst) → SRV (WZ7.1) → DEV (WZ7.2–WZ7.7). WZ7.8 trägt die höchste Nummer, weil sie später aufgenommen wurde; die Nummern von WZ7.1–WZ7.7 bleiben stabil, weil WZ8–WZ11 und B-463 auf sie verweisen.
 
 ## Abnahme
 
