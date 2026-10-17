@@ -156,6 +156,7 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-462](B-462-gebaeude-planer-hub-stufen.md) | DEV | Idee | mittel | eingeplant | WZ9 | Ein Gebäude-Planer bearbeitet, welches Gebäude ab welcher Hub-Stufe verfügbar ist |
 | [B-463](B-463-monarch-vorschau-animationen.md) | DEV | Idee | mittel | eingeplant | WZ10 | Eine Monarch-Seite im Asset-Studio zeigt Reiten, Schlagen, Skills und weitere Vorschauen |
 | [B-464](B-464-gegner-bosse-vorschau.md) | DEV | Idee | mittel | eingeplant | WZ10 | Eine Gegner-Seite im Asset-Studio zeigt alle Gegnertypen und Bosse mit ihren Vorschauen |
+| [B-465](B-465-lint-sprintsbacklog-zeilen.md) | DEV | Problem | hoch | offen | – | task lint ist auf develop rot, weil SprintsBacklog 61 Zeilen hat |
 
 ## Archiv
 

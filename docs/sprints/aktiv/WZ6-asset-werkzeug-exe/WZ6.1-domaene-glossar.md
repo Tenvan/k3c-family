@@ -1,6 +1,6 @@
 # WZ6.1 · Domänentabelle und Glossar für das Asset-Studio
 
-- **Status:** in Arbeit
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** INF
@@ -49,8 +49,8 @@ Bedeutungen der neuen Begriffe (aus den Tickets):
 
 ## Fertig, wenn
 
-- [ ] AC-05: `docs/arbeitsweise.md` nennt `tools/k3c-studio/` und `tools/assetkit/` in der Zeile DEV; `docs/glossar.md` enthält Asset-Studio, Chunk-Vorschau, Gebäude-Planer, Live-Vorschau und Welt-Betrachter alphabetisch einsortiert, je mit Bedeutung und Quelle (B-459, B-460, B-462).
-- [ ] `task check` grün (Planungs- und Projektregel-Tests eingeschlossen).
+- [x] AC-05: `docs/arbeitsweise.md` nennt `tools/k3c-studio/` und `tools/assetkit/` in der Zeile DEV; `docs/glossar.md` enthält Asset-Studio, Chunk-Vorschau, Gebäude-Planer, Live-Vorschau und Welt-Betrachter alphabetisch einsortiert, je mit Bedeutung und Quelle (B-459, B-460, B-462).
+- [ ] `task check` grün (Planungs- und Projektregel-Tests eingeschlossen). Typecheck und Tests grün; Lint rot durch einen Fehler, der schon auf `develop` steht (B-465).
 
 ## Prüfen
 
@@ -62,5 +62,8 @@ Läuft k3c-dev, stattdessen `check_run task:check`. Sichtprüfung: `git diff doc
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+- **AC-05 umgesetzt, geprüft:** Zeile DEV in `docs/arbeitsweise.md` nennt `tools/k3c-studio/` und `tools/assetkit/`; fünf neue Glossar-Zeilen (Asset-Studio, Chunk-Vorschau, Gebäude-Planer, Live-Vorschau, Welt-Betrachter) alphabetisch eingefügt, Quellen B-459, B-460, B-462. Sichtprüfung per `git diff`: nur die Zeile DEV und die fünf Zeilen.
+- **Prüfung:** `check_run task:typecheck` und `task:test` grün (inkl. `planning` und `projectRules`). `task:lint` rot: `max-lines-per-function` in `tools/k3c-dev/frontend/src/planning/SprintsBacklog.tsx` (61 Zeilen), steht schon auf `origin/develop` `1328fca7` (seit #329), außerhalb der erlaubten Dateien → Ticket B-465.
+- **Geprüft von:** Claude (autonom), keine manuellen Prüfungen.
+- **Abweichungen:** Sprint in dieser Session aktiviert (`Status: aktiv`, `Start-Commit: 1328fca7`); im Worktree fehlte `node_modules`, `task install` nachgeholt.
+- **Neue Tickets:** B-465.
