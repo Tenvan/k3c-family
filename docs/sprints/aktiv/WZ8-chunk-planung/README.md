@@ -1,6 +1,6 @@
 # WZ8 · REG, SIM, SRV, DEV · Chunks je Insel und Stufe planen: Seed oder feste Objekte
 
-- **Status:** geplant
+- **Status:** aktiv
 - **Projekt:** WZG
 - **Domäne:** REG, SIM, SRV, DEV
 - **Reife:** bereit
