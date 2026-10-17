@@ -1,11 +1,11 @@
 # WZ10 · DEV · Abspiel-Bausteine und Monarch-Vorschau im Asset-Studio
 
-- **Status:** geplant
+- **Status:** aktiv
 - **Projekt:** WZG
 - **Domäne:** DEV
 - **Reife:** bereit
 - **Tickets:** B-463
-- **Start-Commit:** – (wird beim Aktivieren gesetzt: `git rev-parse --short origin/develop`)
+- **Start-Commit:** 7dd3c818
 - **Spec:** freigegeben
 - **Revision:** 1
 - **Freigabe:** 2026-10-17, Ralf im Chat (Revision 1)
@@ -114,7 +114,7 @@ Vor der Freigabe offen: nichts.
 
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
-| WZ10.1 | `WZ10.1-abspiel-bausteine.md` | Umsetzung | autonom | offen |
+| WZ10.1 | `WZ10.1-abspiel-bausteine.md` | Umsetzung | autonom | in Arbeit |
 | WZ10.2 | `WZ10.2-monarch-seite-bewegung.md` | Umsetzung | autonom | offen |
 | WZ10.3 | `WZ10.3-monarch-seite-aktionen.md` | Umsetzung | autonom | offen |
 | WZ10.4 | `WZ10.4-review.md` | Review | autonom | offen |
