@@ -5,6 +5,8 @@ import { DEFAULT_CONTROL, type Anim, type Control } from '../abspiel/figure';
 import { FigureStage } from '../abspiel/FigureStage';
 import { GapBadge, PlaybackControls } from '../abspiel/PlaybackControls';
 import type { FigureInfo } from '../stage/PreviewStage';
+import { ACTIONS, actionOf, type ActionId } from './actions';
+import { SkillList } from './SkillList';
 import {
   DEFAULT_MOUNT, MONARCH_ANIMS, MOUNT_KEYS, MOVES, PLAYERS, monarchItems, monarchSlotId, moveOf, mountSlotId, slotOptions, type Choice, type MoveId, type SlotOption,
 } from './monarchLogic';
@@ -29,6 +31,8 @@ function useMonarch() {
   const [mount, setMount] = useState(DEFAULT_MOUNT);
   const [move, setMove] = useState<MoveId>('stand');
   const [anim, setAnim] = useState<Anim>('idle');
+  const [actionId, setActionId] = useState<ActionId | ''>('');
+  const action = actionId ? actionOf(actionId) : undefined;
   const [control, setControl] = useState<Control>(DEFAULT_CONTROL);
   const [riderPick, setRiderPick] = useState<Record<number, number>>({});
   const [mountPick, setMountPick] = useState<Record<string, number>>({});
@@ -40,10 +44,10 @@ function useMonarch() {
     riders: riders.map((o) => (o && !o.gap ? o.sheet : undefined)),
     ...(mountChoice && !mountChoice.gap ? { mountSheet: mountChoice.sheet } : {}),
   };
-  const key = JSON.stringify([mount, move, anim, choice]);
-  const items = useMemo(() => monarchItems(mount, moveOf(move), anim, choice), [key]); // eslint-disable-line react-hooks/exhaustive-deps
+  const key = JSON.stringify([mount, move, anim, choice, actionId]);
+  const items = useMemo(() => monarchItems(mount, moveOf(move), anim, choice, action), [key]); // eslint-disable-line react-hooks/exhaustive-deps
   return {
-    mount, setMount, move, setMove, anim, setAnim, control, setControl, items, riderOptions, mountOptions, riders, mountChoice,
+    mount, setMount, move, setMove, anim, setAnim, actionId, setActionId, action, control, setControl, items, riderOptions, mountOptions, riders, mountChoice,
     pickRider: (index: number, option: number) => setRiderPick({ ...riderPick, [index]: option }),
     pickMount: (option: number) => setMountPick({ ...mountPick, [mount]: option }),
   };
@@ -57,10 +61,14 @@ function Bar({ m, gap }: { m: Monarch; gap: FigureInfo['gap'] | undefined }) {
       <select className="wd-select" aria-label="Reittier" value={m.mount} onChange={(e) => m.setMount(e.target.value)}>
         {MOUNT_KEYS.map((k) => <option key={k} value={k}>{k}</option>)}
       </select>
-      <select className="wd-select" aria-label="Bewegung" value={m.move} onChange={(e) => m.setMove(e.target.value as MoveId)}>
+      <select className="wd-select" aria-label="Aktion" value={m.actionId} onChange={(e) => m.setActionId(e.target.value as ActionId | '')}>
+        <option value="">Keine (Bewegung)</option>
+        {ACTIONS.map((a) => <option key={a.id} value={a.id}>{a.label}</option>)}
+      </select>
+      <select className="wd-select" aria-label="Bewegung" disabled={m.actionId !== ''} value={m.move} onChange={(e) => m.setMove(e.target.value as MoveId)}>
         {MOVES.map((o) => <option key={o.id} value={o.id}>{o.label}</option>)}
       </select>
-      <select className="wd-select" aria-label="Animation" value={m.anim} onChange={(e) => m.setAnim(e.target.value as Anim)}>
+      <select className="wd-select" aria-label="Animation" disabled={m.actionId !== ''} value={m.anim} onChange={(e) => m.setAnim(e.target.value as Anim)}>
         {MONARCH_ANIMS.map((a) => <option key={a} value={a}>{a}</option>)}
       </select>
       {m.mountOptions.length > 0 && (
@@ -70,6 +78,7 @@ function Bar({ m, gap }: { m: Monarch; gap: FigureInfo['gap'] | undefined }) {
       )}
       {m.mountChoice?.gap && <GapBadge gap={m.mountChoice.gap} />}
       <GapBadge gap={gap} />
+      {m.action?.gaps.map((g) => <GapBadge key={g.reason} gap={g} />)}
     </div>
   );
 }
@@ -105,6 +114,7 @@ export function MonarchPage() {
       <PlaybackControls control={m.control} onChange={m.setControl} frames={infos[0]?.frames ?? 1} />
       <FigureStage items={m.items} control={m.control} onInfo={setInfos} />
       <Colors m={m} />
+      <SkillList />
     </div>
   );
 }

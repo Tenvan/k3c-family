@@ -116,7 +116,7 @@ Vor der Freigabe offen: nichts.
 |---|---|---|---|---|
 | WZ10.1 | `WZ10.1-abspiel-bausteine.md` | Umsetzung | autonom | fertig |
 | WZ10.2 | `WZ10.2-monarch-seite-bewegung.md` | Umsetzung | autonom | fertig |
-| WZ10.3 | `WZ10.3-monarch-seite-aktionen.md` | Umsetzung | autonom | in Arbeit |
+| WZ10.3 | `WZ10.3-monarch-seite-aktionen.md` | Umsetzung | autonom | fertig |
 | WZ10.4 | `WZ10.4-review.md` | Review | autonom | offen |
 | WZ10.5 | `WZ10.5-abnahme.md` | Review | Mensch | offen |
 

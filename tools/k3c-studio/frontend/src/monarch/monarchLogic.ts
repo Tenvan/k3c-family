@@ -4,6 +4,7 @@ import { PLAYER_COLORS } from '@game/core/constants';
 import type { AssetSlot } from '../api';
 import { ANIMS, MOUNTS, SHEETS, animInfo, gap, type Anim, type FigureSpec, type Gap } from '../abspiel/figure';
 import type { FigureItem } from '../abspiel/figureView';
+import type { Action } from './actions';
 
 // Reine Logik der Monarch-Seite (B-463, WZ10.2): Vorschau-Liste, Reittiere, Spielerfarben, Grafik-Auswahl. Werte stammen
 // aus `data/monarch.json` und `data/sprites.json`; die Seite zeichnet nur (abspiel/).
@@ -66,13 +67,17 @@ export interface Choice {
 }
 
 /** Vorschau-Figuren: die vier Spielerfarben nebeneinander im selben Takt, beritten auf dem Reittier `mountKey`. */
-export function monarchItems(mountKey: string, move: Move, anim: Anim, choice: Choice = {}): FigureItem[] {
+export function monarchItems(mountKey: string, move: Move, anim: Anim, choice: Choice = {}, action?: Action): FigureItem[] {
   return PLAYERS.map((p) => ({
     id: `monarch-${p.index}`,
     x: (p.index - (PLAYERS.length - 1) / 2) * SPACING,
     spec: { ...p.spec, sheet: choice.riders?.[p.index] ?? p.spec.sheet },
-    anim,
-    mount: { key: mountKey, refSpeed: REF_SPEED, speed: move.speed, ...(choice.mountSheet ? { sheet: choice.mountSheet } : {}) },
+    anim: action?.anim ?? anim,
+    mount: { key: mountKey, refSpeed: REF_SPEED, speed: action ? 0 : move.speed, ...(choice.mountSheet ? { sheet: choice.mountSheet } : {}) },
+    ...(action?.effect ? { effect: action.effect } : {}),
+    ...(action?.alpha !== undefined ? { alpha: action.alpha } : {}),
+    ...(action?.fade ? { fade: action.fade } : {}),
+    ...(action?.prop ? { prop: action.prop } : {}),
   }));
 }
 

@@ -1,5 +1,7 @@
 import Phaser from 'phaser';
 import { GAME_HEIGHT, UNIT_PX } from '@game/core/constants';
+import { EFFECT_CONFIG, type EffectKind } from '@game/scenes/effects';
+import { objectImage } from '@game/scenes/objectView';
 import { face, makeSprite, playAnim } from '@game/scenes/sprites';
 import { ANIMS, MOUNTS, SHEETS, animInfo, inAtlas, mountPoseOf, mountsWithSheet, resolveAnim, sheetFiles, unitTicks, type Anim, type Control, type FigureSpec, type Gap } from './figure';
 
@@ -20,6 +22,13 @@ export interface FigureItem {
   anim: Anim;
   /** Der Reiter sitzt auf dem Reittier `key`; `speed` ist das Tempo (0 = steht), `refSpeed` das Lauftempo ohne Sprint */
   mount?: { key: string; refSpeed: number; speed: number; sheet?: string };
+  /** Effekt des Spiels (Ring nach `EFFECT_CONFIG`, bei `noTarget` mit Text), der sich wiederholt */
+  effect?: { kind: EffectKind; text?: string };
+  /** Deckkraft: fest, oder `fade` wechselt zwischen den Werten (Respawn) */
+  alpha?: number;
+  fade?: { from: number; to: number };
+  /** Objekt des Spiels (`objectImage`, z. B. `coin`), das neben der Figur steht */
+  prop?: string;
 }
 
 /** Textur-Schlüssel eines Einzel-PNG-Sheets wie im Spiel */
@@ -68,7 +77,9 @@ export class FigureView {
   private readonly rider: Phaser.GameObjects.Sprite;
   private readonly mount: Phaser.GameObjects.Sprite | null;
   private readonly anim: Anim;
-  constructor(scene: Phaser.Scene, private readonly item: FigureItem) {
+  private readonly extras: { remove?: () => void; destroy?: () => void; stop?: () => void }[] = [];
+  private readonly props: Phaser.GameObjects.GameObject[] = [];
+  constructor(private readonly scene: Phaser.Scene, private readonly item: FigureItem) {
     const resolved = resolveAnim(item.spec.sheet, item.anim);
     this.anim = resolved.anim;
     this.rider = makeSprite(scene, item.spec);
@@ -86,6 +97,7 @@ export class FigureView {
     this.root = scene.add.container(item.x * UNIT_PX, GROUND_Y, this.mount ? [this.mount, this.rider] : [this.rider]);
     this.start(null);
     this.follow();
+    this.decorate();
   }
 
   /** Wiedergabe übernehmen: Schleife, Tempo und Einzelbild */
@@ -139,6 +151,37 @@ export class FigureView {
     this.rider.setCrop(0, 0, this.rider.frame.width, r.cropHeight);
   }
 
+  /** Deckkraft, Objekt und Effekt der Aktion (WZ10.3); alles aus den Daten des Spiels */
+  private decorate(): void {
+    const { alpha, fade, prop, effect } = this.item;
+    if (alpha !== undefined) this.root.setAlpha(alpha);
+    if (fade) {
+      this.root.setAlpha(fade.from);
+      this.extras.push(this.scene.tweens.add({ targets: this.root, alpha: fade.to, duration: 1200, hold: 600, repeat: -1, onRepeat: () => this.root.setAlpha(fade.from) }));
+    }
+    if (prop) {
+      const image = objectImage(this.scene, prop, this.root.x + 60, GROUND_Y);
+      if (image) this.props.push(image);
+    }
+    if (effect) {
+      const ring = () => this.ring(effect);
+      ring();
+      this.extras.push(this.scene.time.addEvent({ delay: EFFECT_CONFIG[effect.kind].durationMs + 700, loop: true, callback: ring }));
+    }
+  }
+
+  /** Ein Effekt: Ring in Farbe und Größe aus `EFFECT_CONFIG`, wächst und verblasst in der Dauer des Spiels */
+  private ring(effect: { kind: EffectKind; text?: string }): void {
+    const cfg = EFFECT_CONFIG[effect.kind];
+    const x = this.root.x;
+    const y = GROUND_Y - 40;
+    const made: Phaser.GameObjects.GameObject[] = [];
+    if (cfg.radius > 0) made.push(this.scene.add.circle(x, y, cfg.radius).setStrokeStyle(4, cfg.color));
+    if (effect.text) made.push(this.scene.add.text(x, y - 60, effect.text, { fontSize: '28px', color: '#ffffff' }).setOrigin(0.5));
+    if (made.length === 0) return;
+    this.scene.tweens.add({ targets: made, alpha: 0, scale: cfg.radius > 0 ? 2 : 1, duration: cfg.durationMs, onComplete: () => made.forEach((o) => o.destroy()) });
+  }
+
   /** Bildzahl der gespielten Animation (für die Einzelbild-Schaltung) */
   frames(): number {
     return animInfo(this.item.spec.sheet, this.anim)?.frames ?? 1;
@@ -151,6 +194,8 @@ export class FigureView {
   }
 
   destroy(): void {
+    for (const e of this.extras) { e.stop?.(); e.remove?.(); e.destroy?.(); }
+    for (const p of this.props) p.destroy();
     this.root.destroy();
   }
 }

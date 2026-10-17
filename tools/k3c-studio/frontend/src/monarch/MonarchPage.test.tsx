@@ -71,7 +71,7 @@ describe('Monarch-Seite (B-463/AC-01, AC-03, AC-04, AC-10)', () => {
     const walk = lastItems()[0]!.mount!.speed;
     await choose(move, 'sprint');
     expect(lastItems()[0]!.mount!.speed).toBeGreaterThan(walk);
-    expect(h.textContent).not.toContain('Lücke');
+    expect(h.querySelector('.wd-monarch > .wd-bar .wd-gap')).toBeNull(); // keine Lücke für Laufen oder Sprinten
   });
 
   it('Animation einzeln wählbar: idle, run, attack; Steuerung (Schleife, Einzelbild, Tempo) geht an die Bühne', async () => {
@@ -85,6 +85,50 @@ describe('Monarch-Seite (B-463/AC-01, AC-03, AC-04, AC-10)', () => {
     expect(calls.controls.at(-1)).toMatchObject({ frame: 1 });
     await choose(field(h, 'Tempo'), '2');
     expect(calls.controls.at(-1)).toMatchObject({ tempo: 2 });
+  });
+});
+
+describe('Aktionen und Skills (B-463/AC-05 bis AC-09)', () => {
+  it('Schlagen: attack mit dem Effekt swing, beritten; die Bewegung ist währenddessen gesperrt', async () => {
+    const h = await mount();
+    await choose(field(h, 'Aktion'), 'swing');
+    expect(lastItems().every((i) => i.anim === 'attack' && i.effect?.kind === 'swing' && i.mount?.key === 'horse')).toBe(true);
+    expect(field(h, 'Bewegung').disabled).toBe(true);
+    expect(field(h, 'Animation').disabled).toBe(true);
+    await choose(field(h, 'Aktion'), '');
+    expect(field(h, 'Bewegung').disabled).toBe(false);
+    expect(lastItems().every((i) => i.effect === undefined)).toBe(true);
+  });
+
+  it('Münze geben zeigt die Münze des Spiels und die Lücke des fehlenden Wurfs; Münze aufheben hat keine Lücke', async () => {
+    const h = await mount();
+    await choose(field(h, 'Aktion'), 'coinGive');
+    expect(lastItems()[0]).toMatchObject({ effect: { kind: 'coinGive' }, prop: 'coin' });
+    expect(h.querySelector('.wd-monarch > .wd-bar')!.textContent).toContain('Wurf-Animation');
+    await choose(field(h, 'Aktion'), 'coinPickup');
+    expect(lastItems()[0]).toMatchObject({ effect: { kind: 'coin' }, prop: 'coin' });
+    expect(h.querySelector('.wd-monarch > .wd-bar .wd-gap')).toBeNull();
+  });
+
+  it('Getroffen, Tod und Respawn: Effekte und Deckkraft des Spiels, Lücken markiert', async () => {
+    const h = await mount();
+    await choose(field(h, 'Aktion'), 'down');
+    expect(lastItems()[0]).toMatchObject({ effect: { kind: 'down' }, alpha: 0.25 });
+    await choose(field(h, 'Aktion'), 'respawn');
+    expect(lastItems()[0]).toMatchObject({ fade: { from: 0.25, to: 1 } });
+    await choose(field(h, 'Aktion'), 'hit');
+    expect(lastItems()[0]).toMatchObject({ effect: { kind: 'hit' } });
+    expect(h.querySelector('.wd-monarch > .wd-bar')!.textContent).toContain('Treffer-Animation');
+  });
+
+  it('die Skill-Liste zeigt alle Skills mit Linie, Stufe, Art und Lücke, auch backstab und smokeBomb', async () => {
+    const h = await mount();
+    const rows = h.querySelectorAll('.wd-skills tbody tr');
+    expect(rows).toHaveLength(26);
+    expect(h.querySelector('[data-skill="fireball"]')!.textContent).toContain('Zauberer');
+    expect(h.querySelector('[data-skill="fireball"]')!.textContent).toContain('keine Darstellung im Spiel');
+    expect(h.querySelector('[data-skill="backstab"]')!.textContent).toContain('Skill fehlt in data/monarch.json');
+    expect(h.querySelector('[data-skill="smokeBomb"] .wd-gap')).not.toBeNull();
   });
 });
 
