@@ -1,6 +1,6 @@
 # WZ6.1 · Domänentabelle und Glossar für das Asset-Studio
 
-- **Status:** offen
+- **Status:** in Arbeit
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** INF

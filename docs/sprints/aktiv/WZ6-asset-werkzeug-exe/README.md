@@ -1,11 +1,11 @@
 # WZ6 · INF, DEV · Asset-Studio als eigene EXE mit Seiten für Grafik und Sound
 
-- **Status:** geplant
+- **Status:** aktiv
 - **Projekt:** WZG
 - **Domäne:** INF, DEV
 - **Reife:** bereit
 - **Tickets:** B-459
-- **Start-Commit:** – (wird beim Aktivieren gesetzt: `git rev-parse --short origin/develop`)
+- **Start-Commit:** 1328fca7
 - **Spec:** freigegeben
 - **Revision:** 2
 - **Freigabe:** 2026-10-17, Chat (Ralf)
@@ -61,7 +61,7 @@ Entschieden von 🧑 am 2026-10-17 (B-459 › Offene Fragen); Revision 2 freigeg
 
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
-| WZ6.1 | `WZ6.1-domaene-glossar.md` | Umsetzung | autonom | offen |
+| WZ6.1 | `WZ6.1-domaene-glossar.md` | Umsetzung | autonom | in Arbeit |
 | WZ6.2 | `WZ6.2-geruest-k3c-studio.md` | Umsetzung | autonom | offen |
 | WZ6.3 | `WZ6.3-seite-grafik.md` | Umsetzung | autonom | offen |
 | WZ6.4 | `WZ6.4-seite-sound.md` | Umsetzung | autonom | offen |
