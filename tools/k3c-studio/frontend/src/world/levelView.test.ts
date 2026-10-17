@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import golden from '../../../../../testdata/golden/level-forest.json';
-import { DEFAULT_SCALE, INCOMPLETE, MAX_SCALE, MIN_SCALE, colorOf, levelModel, seedFromBytes, zoomScale, type LevelResponse } from './levelView';
+import { DEFAULT_SCALE, INCOMPLETE, MAX_SCALE, MIN_SCALE, colorOf, levelModel, openGameReason, seedFromBytes, zoomScale, type LevelResponse } from './levelView';
 
 // Aus src/tools/levelView.test.ts (B-092) umgezogen (B-460/AC-01): gleiche Erwartungen am Golden-Level.
 
@@ -83,5 +83,34 @@ describe('Zoom und Farben', () => {
     expect(colorOf('castle')).toBe('#ffd166');
     expect(colorOf('portal')).not.toBe(colorOf('exit'));
     expect(colorOf('gibt-es-nicht')).toBe('#c0c8d4');
+  });
+});
+
+describe('openGameReason (B-460/AC-06)', () => {
+  it('neu: Wald und gültiger Seed gehen, 32 Zeichen sind erlaubt', () => {
+    expect(openGameReason('new', 'probe', 'forest')).toBeNull();
+    expect(openGameReason('new', 'a-1', 'forest')).toBeNull();
+    expect(openGameReason('new', 'k'.repeat(32), 'forest')).toBeNull();
+  });
+
+  it('neu: Höhle, Mine und unbekannte Biome nur mit Grund (Start nur im Wald)', () => {
+    for (const biome of ['cave', 'mine', 'xyz', '']) expect(openGameReason('new', 'probe', biome)).toBe('Start nur für den Wald (Tiefe 0)');
+  });
+
+  it('neu: Seed außerhalb des Namensformats mit Grund', () => {
+    for (const seed of ['Probe', 'k'.repeat(33), '', 'mit leerzeichen', 'a/b', 'ä', 'a_b']) expect(openGameReason('new', seed, 'forest'), seed).not.toBeNull();
+  });
+
+  it('voll ausgebaut: jedes Biom, Seed höchstens 27 Zeichen', () => {
+    expect(openGameReason('full', 'probe', 'cave')).toBeNull();
+    expect(openGameReason('full', 'k'.repeat(27), 'forest')).toBeNull();
+    expect(openGameReason('full', 'k'.repeat(28), 'forest')).not.toBeNull();
+    expect(openGameReason('full', 'Probe', 'forest')).not.toBeNull();
+  });
+
+  it('ein Seed aus dem Zufallsknopf ist für beide Arten startbar', () => {
+    const seed = seedFromBytes([1, 2, 3, 4, 5, 6, 7, 8]);
+    expect(openGameReason('new', seed, 'forest')).toBeNull();
+    expect(openGameReason('full', seed, 'forest')).toBeNull();
   });
 });

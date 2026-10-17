@@ -21,6 +21,7 @@ type App struct {
 	root string
 	emit func(ctx context.Context, name string, data ...any) // Test-Naht; Produktion: runtime.EventsEmit
 	poll time.Duration                                       // Takt der Beobachtung (Test-Naht)
+	open func(url string)                                    // öffnet eine Adresse im Browser (Test-Naht; Produktion: runtime.BrowserOpenURL)
 	// ready schließt startup: Wails ruft OnStartup in einer eigenen Goroutine, Bindings können davor kommen.
 	ready chan struct{}
 	ctx   context.Context // aus OnStartup; endet beim Beenden, Recherche und Download laufen darin

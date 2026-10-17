@@ -3,8 +3,10 @@ import { BIOMES } from '@game/model/biome';
 import { GAME_HEIGHT } from '@game/core/constants';
 import type { World } from '@game/model/types';
 import { createViewWorld } from '@game/online/clientWorld';
+import { biomeBackground } from '@game/scenes/worldSprites';
 import type { WorldState } from '@game/online/clientProtocol';
 import type { WorldPreviewArgs, WorldPreviewView } from '../api';
+import type { SimPhase } from './timeOfDay';
 
 // Reine Logik der Live-Vorschau (B-460, WZ7.3): Auswahl der Hub-Stufen, Gebäude-Liste, Welt für den Renderer. Kein
 // Phaser, kein DOM.
@@ -31,11 +33,29 @@ export function buildingToggles(sites: readonly { kind: string; x: number }[]): 
 }
 
 /** Optionen der Vorschau: abgewählte Gebäude als `false`, die übrigen fehlen (= an). */
-export function previewArgsOf(seed: string, biome: string, hubLevel: number, off: ReadonlySet<string>): WorldPreviewArgs {
+export function previewArgsOf(
+  seed: string, biome: string, hubLevel: number, off: ReadonlySet<string>, time: { phase: SimPhase; progress: number } = { phase: 'day', progress: 0 },
+): WorldPreviewArgs {
   return {
-    seed, source: { biome }, hubLevel, phase: 'day', progress: 0,
+    seed, source: { biome }, hubLevel, phase: time.phase, progress: time.progress,
     buildings: Object.fromEntries([...off].sort().map((k) => [k, false])),
   };
+}
+
+export interface BackgroundToggle {
+  /** Textur-Schlüssel der Schicht (`bg:<biom>:<n>`), auch der Spiegelung im Fluss */
+  key: string;
+  label: string;
+  /** Scroll-Faktor: Parallaxe beim Scrollen, kleiner = ferner */
+  scroll: number;
+}
+
+const DEPTH_NAMES = ['fern', 'mittel', 'nah'];
+
+/** Hintergrund-Schichten eines Bioms von fern nach nah; leer bei einem Biom ohne Schichten (dann Silhouetten, Schalter ausgegraut). */
+export function backgroundToggles(biomeId: string): BackgroundToggle[] {
+  const layers = biomeBackground(biomeId)?.layers ?? [];
+  return layers.map((l, i) => ({ key: l.key, scroll: l.scroll, label: `Schicht ${i + 1}${layers.length === DEPTH_NAMES.length ? ` (${DEPTH_NAMES[i]})` : ''}` }));
 }
 
 /** Die Welt, die der Renderer zeichnet; null bei Hinweis, unbekanntem Biom oder fehlendem Zustand. */

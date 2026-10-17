@@ -1,5 +1,5 @@
 import fixture from './previewFixture.json';
-import type { WorldLevelView, WorldPreviewArgs, WorldPreviewView, WorldSource } from './types';
+import type { OpenGameResult, WorldLevelView, WorldPreviewArgs, WorldPreviewView, WorldSource } from './types';
 
 // Erfundenes Level für den Mock (Browser, Tests): immer gleich zu gleichem Seed, 1 Abschnitt = 30 Units. Der Seed
 // „fehler“ liefert den Hinweis einer abgelehnten Anfrage.
@@ -27,4 +27,13 @@ export function mockWorldPreview(args: WorldPreviewArgs): WorldPreviewView {
   state.hubLevel = args.hubLevel > 0 ? Math.min(args.hubLevel, top) : top;
   state.cycle = { ...(state.cycle as object), phase: args.phase || 'day', progress: args.progress };
   return { level: { ...(fixture.level as object), seed: args.seed, biomeId: args.source.biome ?? 'forest' } as never, state, error: '' };
+}
+
+/** „Im Spiel öffnen“ im Mock: öffnet nichts, prüft wie Go nur den Seed und meldet die Adresse (ohne Wails kein Browser-Start). */
+export function mockOpenGame(base: string, seed: string, biome: string, mode: 'new' | 'full'): OpenGameResult {
+  if (mode === 'new' && biome !== 'forest') return { url: '', save: '', error: 'Start nur für den Wald (Tiefe 0)' };
+  const max = mode === 'full' ? 27 : 32;
+  if (!new RegExp(`^[a-z0-9-]{1,${max}}$`).test(seed)) return { url: '', save: '', error: `Seed muss aus Kleinbuchstaben, Ziffern und - bestehen (höchstens ${max} Zeichen)` };
+  const save = mode === 'full' ? `voll-${seed}` : seed;
+  return { url: `${base}/#${encodeURIComponent(`game.html?autostart=1&save=${save}`)}`, save, error: '' };
 }

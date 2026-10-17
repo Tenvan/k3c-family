@@ -8,7 +8,7 @@ import { mockWorldLevel } from '../api/mockWorld';
 import { WorldPage } from './WorldPage';
 
 // Die Phaser-Bühne braucht ein Canvas; ihr Zusammenspiel prüft LivePreview.test.tsx mit einer Attrappe.
-vi.mock('../stage/PreviewStage', () => ({ PreviewStage: class { show() {} refresh() {} destroy() {} } }));
+vi.mock('../stage/PreviewStage', () => ({ PreviewStage: class { show() {} refresh() {} setLook() {} destroy() {} } }));
 
 // B-460/AC-01, AC-02 im DOM: der Mock (ohne Wails) liefert das Level, die Chunk-Vorschau ist beim Öffnen maximiert.
 (globalThis as { IS_REACT_ACT_ENVIRONMENT?: boolean }).IS_REACT_ACT_ENVIRONMENT = true;

@@ -14,11 +14,21 @@ import { levelKey, stageZoom } from './stageLogic';
 /** Scroll-Schritt je Mausrad-Tick und Pfeiltaste (Bildschirm-Pixel) */
 const SCROLL_STEP = 120;
 
+/** Darstellung der Bühne: Kamerahelligkeit (Tageszeit) und ausgeblendete Hintergrund-Schichten (Textur-Schlüssel) */
+export interface Look {
+  brightness: number;
+  hiddenLayers: ReadonlySet<string>;
+}
+
+const DEFAULT_LOOK: Look = { brightness: 1, hiddenLayers: new Set() };
+
 class PreviewScene extends Phaser.Scene {
   private ready = false;
   private pending: World | null = null;
   private view: StageView | null = null;
   private centeredFor = '';
+  private look: Look = DEFAULT_LOOK;
+  private fx: Phaser.Filters.ColorMatrix | null = null;
   private drag: { x: number; scroll: number } | null = null;
 
   constructor(private readonly onLoadError: (files: string[]) => void) {
@@ -41,6 +51,8 @@ class PreviewScene extends Phaser.Scene {
     createSpriteAnims(this);
     prepareBuildings(this);
     prepareWorld(this);
+    this.cameras.main.filters.internal.clear(); // wie GameScene: die Hauptkamera überlebt einen Neustart der Szene
+    this.fx = this.cameras.main.filters.internal.addColorMatrix();
     this.ready = true;
     this.scale.on('resize', () => this.fit());
     this.input.on('pointerdown', (p: Phaser.Input.Pointer) => { this.drag = { x: p.x, scroll: this.cameras.main.scrollX }; });
@@ -70,6 +82,21 @@ class PreviewScene extends Phaser.Scene {
     const key = levelKey(world);
     this.fit(key !== this.centeredFor); // nur ein anderes Level setzt die Kamera zurück zur Burg
     this.centeredFor = key;
+    this.applyLook();
+  }
+
+  /** Tageszeit-Helligkeit und Hintergrund-Schichten übernehmen; gilt auch für später gezeichnete Welten. */
+  setLook(look: Look): void {
+    this.look = look;
+    if (this.ready) this.applyLook();
+  }
+
+  private applyLook(): void {
+    this.fx?.colorMatrix.brightness(this.look.brightness);
+    // Schichten sind TileSprites mit Schlüssel bg:<biom>:<n>; die Spiegelung im Fluss nutzt dieselbe Textur und folgt mit.
+    for (const o of this.view?.layer.list ?? []) {
+      if (o instanceof Phaser.GameObjects.TileSprite && o.texture.key.startsWith('bg:')) o.setVisible(!this.look.hiddenLayers.has(o.texture.key));
+    }
   }
 
   /** Kamera: Spielhöhe passt in die Bühne; `center` stellt die Burg in die Mitte. */
@@ -117,6 +144,11 @@ export class PreviewStage {
 
   show(world: World | null): void {
     this.scene.show(world);
+  }
+
+  /** Helligkeit und Hintergrund-Schichten setzen */
+  setLook(look: Look): void {
+    this.scene.setLook(look);
   }
 
   /** Größe neu lesen, z. B. nachdem das Element sichtbar wurde */

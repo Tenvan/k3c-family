@@ -119,6 +119,13 @@ export interface WorldPreviewView {
   error: string;
 }
 
+/** Ergebnis von „Im Spiel öffnen“ (Go: OpenGameResult): geöffnete Adresse und geladener Spielstand, oder ein Hinweis in error. */
+export interface OpenGameResult {
+  url: string;
+  save: string;
+  error: string;
+}
+
 export type WorldLevelView = LevelLayout & { warnings: string[]; error: string };
 
 /** Ereignisse des Backends: assets:changed = data/assets.json geändert (MCP, Editor, eigenes Speichern) */
@@ -143,6 +150,8 @@ export interface Backend {
   worldLevel(seed: string, source: WorldSource): Promise<WorldLevelView>;
   /** Live-Vorschau: Welt zu den Optionen, aus der Vorschau-Funktion des Servers (B-460) */
   worldPreview(args: WorldPreviewArgs): Promise<WorldPreviewView>;
+  /** Im Spiel öffnen: `new` (neues Spiel mit dem Seed) oder `full` (voll ausgebaut), über die Landingpage des Servers unter base, nur Loopback */
+  worldOpenGame(base: string, seed: string, biome: string, mode: 'new' | 'full'): Promise<OpenGameResult>;
   openUrl(url: string): void;
   /** Abo eines Ereignisses; liefert die Abmeldung */
   on<E extends EventName>(event: E, fn: (data: Events[E]) => void): () => void;

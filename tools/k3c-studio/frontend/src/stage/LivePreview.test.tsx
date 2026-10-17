@@ -19,6 +19,7 @@ vi.mock('./PreviewStage', () => ({
     constructor(_parent: unknown, fail: (files: string[]) => void) { this.state = { shown: [], destroyed: false, fail }; stages.push(this.state); }
     show(world: unknown) { this.state.shown.push(world); }
     refresh() {}
+    setLook() {}
     destroy() { this.state.destroyed = true; }
   },
 }));

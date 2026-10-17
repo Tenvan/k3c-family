@@ -70,6 +70,21 @@ export function levelModel(res: Partial<LevelResponse> | null | undefined): Leve
   };
 }
 
+/** Namensformat eines Spielstands, wie `SAVE_FORMAT` in `src/scenes/lobbyLogic.ts` (der Seed eines neuen Spiels ist dieser Name). */
+const SAVE_NAME = /^[a-z0-9-]{1,32}$/;
+/** Für „voll ausgebaut“ muss `voll-<seed>` ins Namensformat passen (Go: fullSeed). */
+const FULL_SEED = /^[a-z0-9-]{1,27}$/;
+
+/** Grund, warum „Im Spiel öffnen“ nicht geht, oder null. Ein neues Spiel gibt es nur für den Wald und Seeds im Namensformat,
+ *  weil der Server den Seed aus dem Namen des Spielstands nimmt und beim Autostart in Tiefe 0 beginnt (B-095); „voll
+ *  ausgebaut“ hat jedes Biom, der Seed muss kürzer sein. Go prüft dasselbe (`WorldOpenGame`). */
+export function openGameReason(mode: 'new' | 'full', seed: string, biomeId: string): string | null {
+  if (mode === 'new' && biomeId !== 'forest') return 'Start nur für den Wald (Tiefe 0)';
+  if (mode === 'new' && !SAVE_NAME.test(seed)) return 'Seed muss aus Kleinbuchstaben, Ziffern und - bestehen (höchstens 32 Zeichen)';
+  if (mode === 'full' && !FULL_SEED.test(seed)) return 'Für „voll ausgebaut“ muss der Seed aus Kleinbuchstaben, Ziffern und - bestehen (höchstens 27 Zeichen)';
+  return null;
+}
+
 const ALPHABET = 'abcdefghijklmnopqrstuvwxyz0123456789';
 const SEED_LENGTH = 8;
 

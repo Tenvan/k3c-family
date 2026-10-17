@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import { mockWorldPreview } from '../api/mockWorld';
-import { buildingToggles, hubLevelChoices, levelKey, previewArgsOf, siteKey, stageZoom, worldOf } from './stageLogic';
+import { backgroundToggles, buildingToggles, hubLevelChoices, levelKey, previewArgsOf, siteKey, stageZoom, worldOf } from './stageLogic';
 
 describe('Hub-Stufen (B-460/AC-04)', () => {
   it('aus data/hub.json › levels: 1 bis Anzahl der Einträge', () => {
@@ -80,5 +80,28 @@ describe('Kamera', () => {
     expect(levelKey(hub3)).toBe(levelKey(base));
     expect(levelKey({ ...base, seed: 'anderer' })).not.toBe(levelKey(base));
     expect(levelKey({ ...base, biome: { ...base.biome, id: 'cave' } })).not.toBe(levelKey(base));
+  });
+});
+
+describe('Hintergrund-Schichten (B-460/AC-05)', () => {
+  it('jedes Biom hat drei Schichten von fern nach nah, Scroll-Faktoren steigen und liegen unter 1 (Parallaxe)', () => {
+    for (const biome of ['forest', 'cave', 'mine', 'ironhold', 'crystal']) {
+      const layers = backgroundToggles(biome);
+      expect(layers.map((l) => l.key), biome).toEqual([1, 2, 3].map((n) => `bg:${biome}:${n}`));
+      const scrolls = layers.map((l) => l.scroll);
+      expect(scrolls, biome).toEqual([...scrolls].sort((a, b) => a - b));
+      expect(scrolls.every((s) => s > 0 && s < 1), biome).toBe(true);
+    }
+    expect(backgroundToggles('forest').map((l) => l.label)).toEqual(['Schicht 1 (fern)', 'Schicht 2 (mittel)', 'Schicht 3 (nah)']);
+  });
+
+  it('ein Biom ohne Zuordnung hat keine Schichten', () => {
+    expect(backgroundToggles('nirgendwo')).toEqual([]);
+  });
+});
+
+describe('Optionen mit Tageszeit', () => {
+  it('Sim-Phase und Fortschritt gehen in die Optionen', () => {
+    expect(previewArgsOf('k3c', 'forest', 5, new Set(), { phase: 'dusk', progress: 0.25 })).toMatchObject({ phase: 'dusk', progress: 0.25 });
   });
 });
