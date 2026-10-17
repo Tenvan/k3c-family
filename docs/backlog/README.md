@@ -147,6 +147,11 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-445](B-445-dev-splitter-assets-mcp.md) | DEV | Idee | mittel | offen | – | Assets- und MCP-Seite von k3c-dev haben ziehbare Splitter zwischen den Panelen |
 | [B-452](B-452-geb7-abnahme-sichtpruefung.md) | CLI | Frage | hoch | offen | GEB7 | GEB7: Abnahme von Vorschau und Spiel durch Ralf |
 | [B-453](B-453-alte-biom-hintergruende-aufbewahren.md) | CLI | Idee | mittel | offen | – | Alte Biom-Hintergründe (Packs) als Grafik aufbewahren |
+| [B-454](B-454-baeume-hoeher-dichter-hoehle-wurzeln.md) | DEV | Problem | hoch | offen | – | Bäume höher und dichter, Höhle mit eigener Unterwelt-Flora (Wurzeln) |
+| [B-455](B-455-truhe-geschlossen.md) | DEV | Idee | mittel | offen | – | Truhe gibt es auch geschlossen |
+| [B-456](B-456-fahne-spielerfarbe-wimpel.md) | CLI | Idee | mittel | offen | – | Markierungsfahne als Wimpel in Spielerfarbe |
+| [B-457](B-457-geb6-abnahme-splitscreen-ausgang-geschmack.md) | CLI | Frage | mittel | offen | – | GEB6: Split-Screen, Ausgang-Beschriftung und Geschmacksfragen später prüfen |
+| [B-458](B-458-hub-ausbau-wachstum-feinstufen.md) | DEV | Idee | hoch | offen | – | Hub wächst in Ausbaustufen sichtbar und kleinteilig (Lagerfeuer bis Burg, K2C-Stil) |
 
 ## Archiv
 
@@ -414,3 +419,4 @@ Zeile in diesen Abschnitt.
 | [B-442](archiv/B-442-hintergrundmauer-typ-b.md) | CLI | Idee | hoch | erledigt | GEB3 | Hintergrundmauern verbinden die Mauern einer Seite wie in Kingdom Two Crowns |
 | [B-449](archiv/B-449-geb5-abnahme-sichtpruefung.md) | CLI | Frage | hoch | erledigt | – | GEB5: Abnahme von Vorschau und Spiel durch Ralf |
 | [B-448](archiv/B-448-planning-testrepo-entwurf-sprint.md) | DEV | Problem | mittel | erledigt | – | dev:test TestRepo scheitert an Entwurfs-Sprints ohne Sessions (GEB7) |
+| [B-451](archiv/B-451-geb6-abnahme-sichtpruefung.md) | CLI | Frage | hoch | erledigt | – | GEB6: Abnahme von Vorschau und Spiel durch Ralf |
