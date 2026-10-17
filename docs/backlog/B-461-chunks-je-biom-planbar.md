@@ -8,9 +8,9 @@
 - **Sprint:** WZ8
 - **Projekt:** WZG
 - **Erstellt:** 2026-10-17
-- **Spec:** Entwurf
+- **Spec:** freigegeben
 - **Revision:** 1
-- **Freigabe:** –
+- **Freigabe:** 2026-10-17, Ralf im Chat (Revision 1)
 
 ## Ausgangslage
 
@@ -35,9 +35,9 @@ Vorgebaute Gebäude (Ruinen) und feste Gegner (Gegnerlager) sind nicht Teil dies
 ## Anforderungen
 
 - **Ort:** Geplante Chunks stehen in `data/islands.json` je Insel und Tiefe (Entschieden 1). Sie gelten für jeden Spielstand dieser Insel. Level ohne Planung (andere Inseln oder Tiefen, Biom-Level ohne Insel wie `level_generate`) bleiben rein zufällig.
-- **Chunk-Platz:** Ein geplanter Chunk sitzt auf einem Platz relativ zu den Hub-Chunks (`-3` = dritter Chunk links davon, `+1` = erster rechts), damit er bei jeder gewürfelten Länge gleich weit vom Hub liegt (Annahme, WZ8.1 bestätigt). Die Hub-Chunks decken Hub ±50 Units ab (Hub-Breite 100, `count/2-1` und `count/2` bei 50-Unit-Chunks, vier Hub-Chunks bei 25-Unit-Chunks). Platz +1 beginnt also bei Hub +50 und Platz −1 endet bei Hub −50; in 50-Unit-Biomen beginnt Platz +n bei Hub +50·n und Platz −n bei Hub −50·(n+1). Allgemein: Anfang von +n = Hub + 50 + (n−1)·Chunk-Breite, Anfang von −n = Hub − 50 − n·Chunk-Breite. Die Lage `at` eines Objekts zählt ab Chunk-Anfang.
-- **Inhalt (Teil 1):** je geplantem Chunk die Chunk-Art (Pflicht), optional ein Chunk-Seed, optional feste Objekte (Art und Lage in Units ab Chunk-Anfang) aus Ressourcen laut `resourcesPerChunk` des Bioms, Ader (`veins.kind` des Bioms), Truhe, Camp und Portal. Ohne Objektliste würfelt der Inhalt der Chunk-Art aus dem eigenen Strom; mit Objektliste ist der Chunk vollständig fest (Annahme).
-- **Format (Annahme, WZ8.1 legt fest):**
+- **Chunk-Platz:** Ein geplanter Chunk sitzt auf einem Platz relativ zu den Hub-Chunks (`-3` = dritter Chunk links davon, `+1` = erster rechts), damit er bei jeder gewürfelten Länge gleich weit vom Hub liegt (Beschluss WZ8.1). Die Hub-Chunks decken Hub ±50 Units ab (Hub-Breite 100, `count/2-1` und `count/2` bei 50-Unit-Chunks, vier Hub-Chunks bei 25-Unit-Chunks). Platz +1 beginnt also bei Hub +50 und Platz −1 endet bei Hub −50; in 50-Unit-Biomen beginnt Platz +n bei Hub +50·n und Platz −n bei Hub −50·(n+1). Allgemein: Anfang von +n = Hub + 50 + (n−1)·Chunk-Breite, Anfang von −n = Hub − 50 − n·Chunk-Breite. Die Lage `at` eines Objekts zählt ab Chunk-Anfang.
+- **Inhalt (Teil 1):** je geplantem Chunk die Chunk-Art (Pflicht), optional ein Chunk-Seed, optional feste Objekte (Art und Lage in Units ab Chunk-Anfang) aus Ressourcen laut `resourcesPerChunk` des Bioms, Ader (`veins.kind` des Bioms), Truhe, Camp und Portal. Ohne Objektliste würfelt der Inhalt der Chunk-Art aus dem eigenen Strom; mit Objektliste ist der Chunk vollständig fest (Beschluss WZ8.1).
+- **Format (Beschluss WZ8.1, `docs/rules/geplante-chunks.md`):**
 
   ```json
   { "id": "island1", "depths": [0, 1, 2, 3, 4],
@@ -77,8 +77,8 @@ Vorgebaute Gebäude (Ruinen) und feste Gegner (Gegnerlager) sind nicht Teil dies
 
 ## Regeln und Einschränkungen
 
-- **Determinismus (`CLAUDE.md`, Glossar):** Zufall nur über `engine/rng` (`rng.New`), nie `math/rand` oder `Math.random()`. Jeder geplante Chunk würfelt aus einem eigenen Strom: ohne Chunk-Seed `<biom>:<seed>:chunk:<platz>` (Art fest, Inhalt wechselt mit dem Level-Seed), mit Chunk-Seed `<biom>:chunk:<chunk-seed>` (Inhalt in jedem Spielstand gleich). Die Namen sind eine Annahme; WZ8.1 legt sie fest, danach sind sie Vertrag wie die Reihenfolge des Haupt-Stroms.
-- **Haupt-Strom:** Ohne Planung ändern sich Reihenfolge und Zahl der Würfe nicht. Mit Planung reserviert der Generator die geplanten Plätze direkt nach `frame()`; Portale, Ereignisse, Chunk-Arten, Skill-Punkte und Adern würfeln nur über freie, nicht geplante Chunks. Dadurch dürfen sich ihre Würfe gegenüber dem Level ohne Planung verschieben (gewollt, eigener Golden-Fall). Übrige Portale verteilt der Generator abwechselnd, beginnend auf der Seite mit weniger festen Portalen (Annahme).
+- **Determinismus (`CLAUDE.md`, Glossar):** Zufall nur über `engine/rng` (`rng.New`), nie `math/rand` oder `Math.random()`. Jeder geplante Chunk würfelt aus einem eigenen Strom: ohne Chunk-Seed `<biom>:<seed>:chunk:<platz>` (Art fest, Inhalt wechselt mit dem Level-Seed), mit Chunk-Seed `<biom>:chunk:<chunk-seed>` (Inhalt in jedem Spielstand gleich). Die Namen sind mit WZ8.1 beschlossen und damit Vertrag wie die Reihenfolge des Haupt-Stroms.
+- **Haupt-Strom:** Ohne Planung ändern sich Reihenfolge und Zahl der Würfe nicht. Mit Planung reserviert der Generator die geplanten Plätze direkt nach `frame()`; Portale, Ereignisse, Chunk-Arten, Skill-Punkte und Adern würfeln nur über freie, nicht geplante Chunks. Dadurch dürfen sich ihre Würfe gegenüber dem Level ohne Planung verschieben (gewollt, eigener Golden-Fall). Übrige Portale verteilt der Generator abwechselnd, beginnend auf der Seite mit weniger festen Portalen (Beschluss WZ8.1).
 - **Golden (`arbeitsweise.md` › Golden aktualisieren):** `testdata/golden/level-*.json` und `sim-*.json` bleiben ohne Planung byte-gleich. Der Golden-Fall mit Planung nutzt eine Test-Planung unter `testdata/`, nicht `data/islands.json`, damit spätere Planungen von 🧑 ihn nicht brechen. Er entsteht in der Session WZ8.3 (neue Datei, `task golden:update` nur dafür) als **eigener Commit innerhalb der Session**, nach dem Code-Commit und mit Begründung im Commit-Text; `arbeitsweise.md` verlangt Golden-Änderungen in eigenem Commit, das ist die Ausnahme von „ein Commit je Session“. Der Code-Commit der Session enthält keine Golden-Dateien (gleiche Regel wie B-462). Ändert später eine echte Planung in `data/islands.json` Golden-Daten, ist das eine gewollte Datenänderung (REG): `task golden:update` in eigenem Commit, Begründung im Commit-Text, Prüfung im Review.
 - **Domänen (`arbeitsweise.md` › Domänen):**
   - REG: Regeltext und Begriffe (`docs/rules/`, `docs/glossar.md`).
@@ -90,13 +90,13 @@ Vorgebaute Gebäude (Ruinen) und feste Gegner (Gegnerlager) sind nicht Teil dies
 - **Schichten:** `engine/level` importiert nichts aus `engine/sim`, `engine/room` oder `engine/net`; Planung und Mauerlinien kommen als Parameter in Generator und Prüfung, ohne globalen Zustand. `level.Generate(b, seed)` bleibt für bestehende Aufrufer unverändert (Aufruf mit dem Nullwert der Options-Struktur). `engine/sim/lines.go` baut Mauer, Turm und Tor weiter aus `w.Level.Lines`; Linien aus einem Kandidaten wirken also über das Layout.
 - **Daten eingebettet:** `data/*.json` ist per `go:embed` im Binary (`data/embed.go`). Eine gespeicherte Planung wirkt im Spiel erst nach dem Neubau des Spielservers; die Vorschau nutzt bis dahin den Entwurf als Parameter.
 - **Verträge:** Kein Protokollwechsel, es gibt nur bestehende Chunk- und Objekt-Arten. Der Spielstand speichert weiter nur Seeds; Level-Objekte werden über `kind@x` zugeordnet, deshalb muss `kind@x` je Stufe eindeutig bleiben. Eine geänderte Planung ergibt für bestehende Spielstände ein anderes Level (keine Migration).
-- **Lage fester Objekte:** wie gewürfelte gleicher Art. Ressourcen, Truhen und Adern halten ≥ 2 Units Abstand zur Chunk-Grenze (wie `inside()`); Camps dürfen innerhalb der Linien liegen (Glossar › Camp); Portale halten `minDistanceFromHubUnits` zum Hub und liegen außerhalb des äußersten Tors (Q49, Q57). Adern sind Zahlziele (Markieren) und halten zusätzlich ≥ 4 Units zu jedem Bauplatz der Linien inklusive Streuung (+0 bis +4) und zum Farm-Weltplatz (Q57; Annahme, Offene Frage 8).
+- **Lage fester Objekte:** wie gewürfelte gleicher Art. Ressourcen, Truhen und Adern halten ≥ 2 Units Abstand zur Chunk-Grenze (wie `inside()`); Camps dürfen innerhalb der Linien liegen (Glossar › Camp); Portale halten `minDistanceFromHubUnits` zum Hub und liegen außerhalb des äußersten Tors (Q49, Q57). Adern sind Zahlziele (Markieren) und halten zusätzlich ≥ 4 Units zu jedem Bauplatz der Linien inklusive Streuung (+0 bis +4) und zum Farm-Weltplatz (Q57; Beschluss WZ8.1, Offene Frage 8).
 - **Budget:** Datei ≤ 400, Funktion ≤ 60 Zeilen. `level.go` (274 Zeilen) nicht weiter aufblähen; die Planung kommt in eine eigene Datei (z. B. `engine/level/planned.go`).
-- **Begriffe:** laut Glossar. Neue Begriffe (geplanter Chunk, Chunk-Platz, Chunk-Seed; für Teil 2 Ruine, Gegnerlager) trägt WZ8.1 ein, bevor die erste SIM-Session beginnt.
+- **Begriffe:** laut Glossar. Neue Begriffe (geplanter Chunk, Chunk-Platz, Chunk-Seed; für Teil 2 Ruine, Gegnerlager) hat WZ8.1 eingetragen, bevor die erste SIM-Session beginnt.
 
 ## Beispiele
 
-Plätze und Längen gerechnet aus `data/biomes/*.json` und `engine/level/level.go` (`frame()`) bei der kürzesten Länge; Platz +n beginnt in 50-Unit-Biomen bei Hub +50·n (Annahme Format und Stromnamen wie in Anforderungen und Regeln).
+Plätze und Längen gerechnet aus `data/biomes/*.json` und `engine/level/level.go` (`frame()`) bei der kürzesten Länge; Platz +n beginnt in 50-Unit-Biomen bei Hub +50·n (Format und Stromnamen laut Beschluss WZ8.1 wie in Anforderungen und Regeln).
 
 - **Wald, Tiefe 0, `{slot: -3, kind: "clearing", seed: "lichtung"}`** → In jedem Spielstand ist der dritte Chunk links von den Hub-Chunks (Hub −200 … −150) eine Lichtung mit immer denselben Bäumen und Büschen an derselben Lage (Strom `forest:chunk:lichtung`); alle anderen Chunks wechseln mit dem Seed.
 - **Wald, `{slot: 5, kind: "rocks"}` ohne Seed** → Chunk +5 (Hub +250 … +300) ist immer „Felsen“; Zahl und Lage der Felsen wechseln mit dem Level-Seed (Strom `forest:<seed>:chunk:5`).
@@ -117,11 +117,11 @@ Jede ungültige Planung wird abgelehnt und benannt (Insel, Tiefe, Platz, Grund).
 - **Sonder-Chunks:** `exit` und `edge` sind nicht planbar. `portal`, `chest` und `recruitCamp` sind als Art erlaubt und zählen auf die Biom-Summen.
 - **Doppelt:** zwei Einträge mit demselben Platz in derselben Tiefe; zwei Objekte gleicher Art an gleicher Lage (`kind@x` nicht eindeutig).
 - **Unbekannt:** Tiefe nicht in `depths` der Insel; Chunk-Art weder in `chunkWeights` des Bioms noch erlaubter Sonder-Chunk; Objekt-Art nicht im Biom (z. B. `ironVein` im Wald); Felder für Teil 2 (Gebäude, Gegner) → „noch nicht unterstützt“ (kommen mit B-468).
-- **Lage:** Objekt näher als 2 Units an der Chunk-Grenze; Ader näher als 4 Units an Mauer, Turm oder Tor einer Linie bei irgendeiner Streuung oder am Farm-Weltplatz. Beispiele Höhle: `{slot: 2, objects: [stoneVein bei 14]}` → Hub +114 liegt 2 Units vom Tor der Linie 4 (bis +112) und 2 Units vom Turm der Linie 5 (ab +116), also abgelehnt; `{slot: 1, objects: [stoneVein bei 14]}` → Hub +64 ist der Mauer-Platz der Linie 2.
+- **Lage:** Ressource, Truhe oder Ader näher als 2 Units an der Chunk-Grenze; Ader näher als 4 Units an Mauer, Turm oder Tor einer Linie bei irgendeiner Streuung oder am Farm-Weltplatz. Beispiele Höhle: `{slot: 2, objects: [stoneVein bei 14]}` → Hub +114 liegt 2 Units vom Tor der Linie 4 (bis +112) und 2 Units vom Turm der Linie 5 (ab +116), also abgelehnt; `{slot: 1, objects: [stoneVein bei 14]}` → Hub +64 ist der Mauer-Platz der Linie 2.
 - **Mauerlinien und Portale:** festes Portal näher am Hub als `minDistanceFromHubUnits` (Wald 150, also erst ab Platz ±3, Chunk-Mitte Hub ±175) oder innerhalb des äußersten Tors. Portal-Plätze: Wald ±3 bis ±7, Höhle ±3 bis ±5, Mine ±3 und ±4; Platz ±1 und ±2 sind für Portale gesperrt. In den 25-Unit-Biomen beginnt Platz ±4 bei Hub ±125; ein festes Portal als Objekt braucht dort `at` ≥ 10 (siehe Notizen).
 - **Summen:** mehr feste Portale als `portals.count`, mehr Truhen oder Camps als `eventChunks.max`, mehr Adern als `veins.count`. Der Wald hat keine Adern, jede feste Ader dort wird abgelehnt.
-- **Kein Platz mehr:** Nach der Reservierung bleiben bei der kürzesten Länge zu wenig freie Plätze für die übrigen Portale, die Mindestzahl der Ereignisse (Truhen und Camps) oder die Adern. Jede nicht feste Ader braucht einen eigenen Ressourcen-Chunk, der weder Hub, Rand, Ausgang, Portal, Ereignis noch vollständig fest ist (`veins.count` minus feste Adern; Annahme, Offene Frage 7). Skill-Punkte brauchen nur einen Chunk außerhalb von Hub, Rand und vollständig festen Chunks und dürfen sich einen Chunk teilen: `skillPoints.min` ist nie die Engstelle, feste Skill-Punkte gibt es nicht (Frage 7). Beispiel Mine mit geplanten Chunks `{slot: -4, kind: "shaft"}`, `{slot: -3, kind: "shaft"}` und `{slot: 3, kind: "shaft"}`: Bei 12 Chunks sind nur ±3 und ±4 portaltauglich, übrig bleibt Platz +4, Portal 2/2 findet keinen Platz → abgelehnt, statt später bei einem Seed zu scheitern.
-- **Bau des Endbosses** (Kristallhöhle) liegt an der inneren Kante des Ausgangs-Chunks; der 2-Units-Abstand zur Chunk-Grenze hält Objekte davon frei.
+- **Kein Platz mehr:** Nach der Reservierung bleiben bei der kürzesten Länge zu wenig freie Plätze für die übrigen Portale, die Mindestzahl der Ereignisse (Truhen und Camps) oder die Adern. Jede nicht feste Ader braucht einen eigenen Ressourcen-Chunk, der weder Hub, Rand, Ausgang, Portal, Ereignis noch vollständig fest ist (`veins.count` minus feste Adern; Beschluss WZ8.1, Offene Frage 7). Skill-Punkte brauchen nur einen Chunk außerhalb von Hub, Rand und vollständig festen Chunks und dürfen sich einen Chunk teilen: `skillPoints.min` ist nie die Engstelle, feste Skill-Punkte gibt es nicht (Frage 7). Beispiel Mine mit geplanten Chunks `{slot: -4, kind: "shaft"}`, `{slot: -3, kind: "shaft"}` und `{slot: 3, kind: "shaft"}`: Bei 12 Chunks sind nur ±3 und ±4 portaltauglich, übrig bleibt Platz +4, Portal 2/2 findet keinen Platz → abgelehnt, statt später bei einem Seed zu scheitern.
+- **Bau des Endbosses** (Kristallhöhle) liegt an der inneren Kante des Ausgangs-Chunks; der 2-Units-Abstand zur Chunk-Grenze hält Ressourcen, Truhen und Adern davon frei.
 - **Leer:** Feld fehlt, `{}` oder leere Liste = keine Planung (byte-gleich). Leerer Chunk-Seed = kein Chunk-Seed. Umlaute und Emoji im Chunk-Seed sind erlaubt (`rng` hasht UTF-16, `TestUmlauteUndEmoji`).
 - **Daten ändern sich später** (REG kürzt eine Biom-Länge, streicht eine Chunk-Art oder verschiebt eine Mauerlinie, etwa über den Gebäude-Planer B-462): Die Prüfung beim Laden meldet betroffene Planungen, `task check` wird rot, bis die Planung angepasst ist. Der Gebäude-Planer prüft die Planung vor dem Schreiben mit (B-462, Linien als Parameter).
 - **Vorschau mit ungültigem Entwurf:** Die Vorschau-Funktion lehnt eine ungültige Planung mit demselben Fehler ab; die Vorschau zeigt den Fehler und behält das letzte gültige Bild.
@@ -153,13 +153,14 @@ Jede ungültige Planung wird abgelehnt und benannt (Insel, Tiefe, Platz, Grund).
 3. **Editor:** im Welt-Betrachter des Asset-Studios (WZ7) mit sofortiger Chunk- und Live-Vorschau.
 4. **Teilung angenommen** (2026-10-17, Chat): WZ8 setzt feste Objekte und den Seed je Chunk um (Teil 1, dieses Ticket); Ruinen/Gebäude und Gegnerlager (b, d) wandern in **B-468** (Projekt WZG, Folge-Sprint nach WZ8, abhängig von WZ8).
 5. **SRV-Session aufgenommen** (2026-10-17, Chat): WZ8.4 erweitert die Vorschau-Funktion aus WZ7.1 um die Planung als Option, damit die Live-Vorschau ungespeicherte Entwürfe zeigt; der Sprint hat 7 Sessions.
+6. **Chunk-Platz** relativ zu den Hub-Chunks (Workshop WZ8.1, 🧑, 2026-10-17, Chat; Annahme bestätigt).
+7. **Objektliste ersetzt** die gewürfelten Ressourcen der Chunk-Art; **keine festen Skill-Punkte** (WZ8.1, Annahme bestätigt).
+8. **4 Units Abstand zu Bauplätzen nur für Adern**; Stromnamen wie in Regeln (WZ8.1, Annahme bestätigt).
+9. **Übrige Portale abwechselnd**, beginnend auf der Seite mit weniger festen Portalen; feste Truhen und Camps rechnen auf die Ereignis-Chunks an (WZ8.1, Annahme bestätigt).
 
-**Offen, im Workshop WZ8.1** (Teil von AC-01, blockiert die Freigabe nicht):
+Regeltext: `docs/rules/geplante-chunks.md`.
 
-6. Chunk-Platz relativ zu den Hub-Chunks (Annahme) oder relativ zu Tiefen-Eingang/Rand?
-7. Ersetzt eine Objektliste die gewürfelten Ressourcen der Chunk-Art (Annahme) oder ergänzt sie sie? Feste Skill-Punkte erlaubt (Annahme: nein)?
-8. Lage-Regeln: 4 Units Abstand zu Bauplätzen nur für Adern (Annahme) oder auch für Truhen und Camps? Stromnamen wie in Regeln?
-9. Verteilung übriger Portale bei festen Portalen (Annahme: abwechselnd, beginnend auf der Seite mit weniger festen) und Anrechnung fester Truhen/Camps auf die gewürfelte Zahl der Ereignis-Chunks.
+Offen: nichts.
 
 ## Notizen
 
@@ -186,6 +187,6 @@ Hinweis zu den 25-Unit-Biomen (Eisenstollen, Kristallhöhle): Platz ±4 beginnt 
 
 Ort der Bauplätze (Hub-Abstand, Streuung der Linien +0 bis +4, Turm 8 innen, Tor 4 außen, Linie 1 ohne Streuung): Linie 1 (Turm ±36, Mauer ±44, Tor ±48) liegt in den Hub-Chunks. Die Plätze ±1 und ±2 (50-Unit-Biome, Hub ±50 … ±150) enthalten die Linien 2–5 (Turm ab ±56, Tor bis ±132) und den Farm-Weltplatz ±52. Frei von Mauer, Turm und Tor um mindestens 4 Units (Regel der Adern) ist dort nur der Bereich ab Hub ±136, also Platz ±2 ab Lage 36.
 
-**Glossar-Befund:** „Chunk … 50 Units breit“ stimmt für Eisenstollen und Kristallhöhle nicht (25 Units); WZ8.1 korrigiert (AC-01).
+**Glossar-Befund:** „Chunk … 50 Units breit“ stimmt für Eisenstollen und Kristallhöhle nicht (25 Units); WZ8.1 hat sie korrigiert (AC-01).
 
 **Bezug:** B-460 (Welt-Betrachter, WZ7.1 Vorschau-Funktion SRV mit Options-Struktur, Studio `tools/k3c-studio` aus WZ6), B-462 (Gebäude-Planer, WZ9; gleiche Schreibregeln, Kandidaten-`hub.json` als Option der Vorschau-Funktion), B-468 (Teil 2), B-103 (mehrere Inseln).
