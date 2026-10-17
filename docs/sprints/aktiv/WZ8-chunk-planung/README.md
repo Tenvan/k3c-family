@@ -110,7 +110,7 @@ Vor der Freigabe offen: nichts Blockierendes.
 | WZ8.1 | `WZ8.1-workshop-format.md` | Workshop | Mensch | fertig |
 | WZ8.2 | `WZ8.2-feld-planung-pruefung.md` | Umsetzung | autonom | fertig |
 | WZ8.3 | `WZ8.3-generator-create-options.md` | Umsetzung | autonom | fertig |
-| WZ8.4 | `WZ8.4-vorschau-option-planung.md` | Umsetzung | autonom | offen |
+| WZ8.4 | `WZ8.4-vorschau-option-planung.md` | Umsetzung | autonom | in Arbeit |
 | WZ8.5 | `WZ8.5-editor-welt-betrachter.md` | Umsetzung | autonom | offen |
 | WZ8.6 | `WZ8.6-review.md` | Review | autonom | offen |
 | WZ8.7 | `WZ8.7-abnahme.md` | Review | Mensch | offen |

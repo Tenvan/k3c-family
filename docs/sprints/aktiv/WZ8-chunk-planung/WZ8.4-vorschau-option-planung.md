@@ -1,6 +1,6 @@
 # WZ8.4 · Vorschau-Option geplante Chunks
 
-- **Status:** offen
+- **Status:** in Arbeit
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** SRV
