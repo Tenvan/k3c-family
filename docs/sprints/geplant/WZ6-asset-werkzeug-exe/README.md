@@ -1,13 +1,13 @@
-# WZ6 · DEV · Asset-Studio als eigene EXE mit Seiten für Grafik und Sound
+# WZ6 · INF, DEV · Asset-Studio als eigene EXE mit Seiten für Grafik und Sound
 
 - **Status:** geplant
 - **Projekt:** WZG
-- **Domäne:** DEV
-- **Reife:** Entwurf
+- **Domäne:** INF, DEV
+- **Reife:** bereit
 - **Tickets:** B-459
 - **Start-Commit:** – (wird beim Aktivieren gesetzt: `git rev-parse --short origin/develop`)
 - **Spec:** Entwurf
-- **Revision:** 1
+- **Revision:** 2
 - **Freigabe:** –
 
 ## Ausgangslage
@@ -20,53 +20,55 @@ Ein eigenes Asset-Studio (EXE mit festem Pfad, eigener Task) mit je einer Seite 
 
 ## Beteiligte und Zielgruppen
 
-Wer profitiert, wer arbeitet, wer entscheidet oder prüft (🧑)?
+`B-459 › Beteiligte und Zielgruppen`; Agenten setzen um, ein getrennter Reviewer prüft, 🧑 nimmt am PC ab.
 
 ## Anforderungen
 
-Verweise auf die Ticket-Specs (`B-009 › Anforderungen`) statt Kopien, dazu nur sprint-eigene Anforderungen.
+`B-459 › Anforderungen`. Sprint-eigen: gemeinsames Go-Modul `tools/assetkit` (aus `tools/k3c-dev/internal/assets`, mit `replace` wie in `tools/k3c-dev/go.mod`, kein `go.work`); Studio-Frontend liest Spiel-Code aus `src/` nur über einen Vite-/TS-Alias; die reine Logik von `assetvorschau` zieht ins Studio-Frontend um.
 
 ## Nicht-Ziele
 
-Was ausdrücklich nicht dazugehört (verhindert Ausufern), mit Ticket-Nummer, falls es später kommt.
+`B-459 › Nicht-Ziele`.
 
 ## Regeln und Einschränkungen
 
-Entscheidungen, Domänen-Grenzen, Budget, Verträge, die für den ganzen Sprint gelten.
+`B-459 › Regeln und Einschränkungen`. Domänen nacheinander: INF (WZ6.1) → DEV (WZ6.2–WZ6.8). `assetvorschau.html` fällt als Grenzfall in DEV (wie B-299). Browser- oder Fensterprüfungen nur mit Freigabe von 🧑 für den Lauf.
 
 ## Beispiele
 
-Typische Situation → erwartetes Ergebnis.
+`B-459 › Beispiele`.
 
 ## Ausnahme- und Fehlerfälle
 
-Ungültige oder seltene Situation → gewolltes Verhalten.
+`B-459 › Ausnahme- und Fehlerfälle`.
 
 ## Akzeptanzkriterien
 
-- **AC-01** `B-459/AC-01` eigene EXE mit festem Pfad und Task, nur Loopback.
+- **AC-01** `B-459/AC-01` eigene EXE `bin/k3c-studio.exe` mit Task, nur Loopback.
 - **AC-02** `B-459/AC-02` Seiten Grafik und Sound mit heutigem Umfang.
-- **AC-03** `B-459/AC-03` Workbench ohne Assets-Seite, Neubau des Asset-Studios stört sie nicht.
-- **AC-04** `B-459/AC-04` Tests im Prüflauf.
+- **AC-03** `B-459/AC-03` Workbench ohne Assets-Seite, Verweis startet das Studio, Neubau stört sie nicht.
+- **AC-04** `B-459/AC-04` Tests in `task check:all` und CI.
 - **AC-05** `B-459/AC-05` Domänentabelle und Glossar.
-- **AC-06** `B-459/AC-06` `assetvorschau.html` umgezogen und entfernt; Inhalte von `grafiken.html` und `soundtest.html` zusätzlich im Asset-Studio, beide Seiten bleiben.
-- **AC-07** `B-459/AC-07` MCP bleibt in k3c-dev, Neuladen bei Änderung von `data/assets.json`.
-- **AC-08** 🧑 nimmt beide Seiten, die umgezogene Vorschau und die ruhige Workbench ab (Abnahme-Session).
+- **AC-06** `B-459/AC-06` gesamter Inhalt von `assetvorschau.html` (Grafik- und Sound-Szenen) im Studio, Seite und Skript entfernt; `grafiken.html`, `soundtest.html` bleiben, Inhalte zusätzlich im Studio.
+- **AC-07** `B-459/AC-07` MCP bleibt in k3c-dev; Neuladen ohne Verlust, Speichern auf veraltetem Stand abgelehnt.
+- **AC-08** 🧑 nimmt Studio, umgezogene Vorschau und ruhige Workbench ab und entscheidet über B-421 (Abnahme-Session).
 
 ## Offene Fragen
 
-Entschieden von 🧑 am 2026-10-17 (B-459 › Offene Fragen): Wails-App `tools/k3c-studio`, Name Asset-Studio, `assets_*` bleiben in k3c-dev, `assetvorschau.html` zieht um, `soundtest.html` und `grafiken.html` bleiben für die Xbox, Domäne DEV. Hinweis: Das Kopf-Feld Domäne zeigt nur DEV, bis die Session-Dateien (INF, DEV, PLAT) beim Bereitmachen angelegt sind. Offen: Freigabe der Spec.
+Entschieden von 🧑 am 2026-10-17 (B-459 › Offene Fragen). Revision 2 nach Review: Annahmen gemeinsames Modul `tools/assetkit`, Alias auf `src/`, Grenzfälle in DEV, Schreibregel für `data/assets.json` – warten auf Freigabe durch 🧑.
 
 ## Sessions
 
-- WZ6.1 (INF) Domänentabelle um `tools/k3c-studio/` (DEV) und Glossar um Asset-Studio und Folgebegriffe ergänzen (AC-05).
-- WZ6.2 (DEV) Gerüst `tools/k3c-studio`: Wails-App, EXE unter `bin/`, Task, Fenster, gemeinsame Go-Pakete mit k3c-dev, Neuladen bei Änderung von `data/assets.json` (AC-01, AC-04, AC-07).
-- WZ6.3 (DEV) Seite Grafik umziehen, dazu Inhalt von `assetvorschau.html` und `grafiken.html` (AC-02, AC-06).
-- WZ6.4 (DEV) Seite Sound umziehen, dazu Inhalt von `soundtest.html` (AC-02, AC-06).
-- WZ6.5 (DEV) Workbench: Assets-Seite entfernen, Verweis auf das Asset-Studio, Aufräumen (AC-03).
-- WZ6.6 (PLAT) `assetvorschau.html` samt `src/tools/assetvorschau*.ts` (mit Tests), Kachel in `src/tools/devTiles.ts`, Texten und Verweisen (`docs/standards/gebaeude-grafik.md`, `tests/projectRules.test.ts` falls betroffen) entfernen; `task check` bleibt grün (AC-06).
-- WZ6.7 (PLAT) Review (AC-01–AC-07, alle).
-- WZ6.8 (PLAT, Mensch) Abnahme durch 🧑 am PC (AC-08).
+| Nr. | Datei | Typ | Agent | Status |
+|---|---|---|---|---|
+| WZ6.1 | `WZ6.1-domaene-glossar.md` | Umsetzung | autonom | offen |
+| WZ6.2 | `WZ6.2-geruest-k3c-studio.md` | Umsetzung | autonom | offen |
+| WZ6.3 | `WZ6.3-seite-grafik.md` | Umsetzung | autonom | offen |
+| WZ6.4 | `WZ6.4-seite-sound.md` | Umsetzung | autonom | offen |
+| WZ6.5 | `WZ6.5-workbench-ohne-assets.md` | Umsetzung | autonom | offen |
+| WZ6.6 | `WZ6.6-assetvorschau-entfernen.md` | Umsetzung | autonom | offen |
+| WZ6.7 | `WZ6.7-review.md` | Review | autonom | offen |
+| WZ6.8 | `WZ6.8-abnahme.md` | Review | Mensch | offen |
 
 ## Abnahme
 
