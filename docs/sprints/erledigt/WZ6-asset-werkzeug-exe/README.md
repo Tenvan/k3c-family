@@ -1,6 +1,6 @@
 # WZ6 · INF, DEV · Asset-Studio als eigene EXE mit Seiten für Grafik und Sound
 
-- **Status:** aktiv
+- **Status:** erledigt
 - **Projekt:** WZG
 - **Domäne:** INF, DEV
 - **Reife:** bereit
@@ -66,11 +66,13 @@ Entschieden von 🧑 am 2026-10-17 (B-459 › Offene Fragen); Revision 2 freigeg
 | WZ6.3 | `WZ6.3-seite-grafik.md` | Umsetzung | autonom | fertig |
 | WZ6.4 | `WZ6.4-seite-sound.md` | Umsetzung | autonom | fertig |
 | WZ6.5 | `WZ6.5-workbench-ohne-assets.md` | Umsetzung | autonom | fertig |
-| WZ6.6 | `WZ6.6-assetvorschau-entfernen.md` | Umsetzung | autonom | offen |
-| WZ6.7 | `WZ6.7-review.md` | Review | autonom | offen |
-| WZ6.8 | `WZ6.8-abnahme.md` | Review | Mensch | offen |
+| WZ6.6 | `WZ6.6-assetvorschau-entfernen.md` | Umsetzung | autonom | fertig |
+| WZ6.7 | `WZ6.7-review.md` | Review | autonom | fertig |
+| WZ6.8 | `WZ6.8-abnahme.md` | Review | Mensch | fertig |
 
 ## Abnahme
 
-Wird von der Review-Session (Doku-Sprint: letzte Session) ausgefüllt, höchstens fünf Zeilen: Datum, Kriterien
-(Verweis auf Session-Ergebnisse), behobene Befunde, neue Tickets. Bis dahin `–`.
+- 2026-10-17 (Review WZ6.7): AC-01–AC-07 angenommen laut Ergebnissen WZ6.1–WZ6.6; Diff ohne schwere Befunde, Checks grün (`task check`, `check:go`, `dev:test`, `build`). Behobene Befunde: keine.
+- 2026-10-17 (WZ6.8): AC-08 von Ralf am PC abgenommen (alle 13 Punkte bestanden, Chat); AC-01 und AC-03 damit validiert. B-421 `erledigt` (B-298, B-299 ebenfalls), B-459 `erledigt`.
+- Neue Tickets: B-473 (CI auf `develop` rot, k3c-dev `internal/planning`), B-474 (`TestDownloadHit` lokal an Norton-TLS).
+- Version: v0.19.0 vorgeschlagen (neues Werkzeug Asset-Studio, Minor); nicht gesetzt, wartet auf grüne CI (B-473).

@@ -184,8 +184,8 @@ das **Material** (1 Stein, 2 Kupfer, 3 Eisen, 4 Kristall), nicht das Biom.
 1. Zuerst die Vorlage schreiben (§ 5), dann die Bausteine danach zeichnen; ändert sich das Bild, die Vorlage mitziehen.
    Daten-JSON in `public/grafik/gebaeude/` anlegen oder ändern.
 2. `task gebaeude` rendert `<id>-16.png`, `-32.png`, `-64.png`, `-128.png` und `index.json`; gleiche Daten → byte-gleiche PNGs.
-3. Vorschau: `assetvorschau.html?szene=gebaeude`, Streifen „Neue Gebäude (GEB)“ (Baum-Reihe, dann je Gebäude 32 px ×1 neben 16 px ×2).
-4. Hintergrund-Schichten: Streifen „Hintergründe“ derselben Seite (je Biom die drei Schichten fern → nah auf `palette.sky`, zwei Kacheln nebeneinander, 32 px ×1 und 16 px ×2).
+3. Vorschau: Asset-Studio, Seite Grafik, Reiter Szenen, Szene Gebäude, Streifen „Neue Gebäude (GEB)“ (Baum-Reihe, dann je Gebäude 32 px ×1 neben 16 px ×2).
+4. Hintergrund-Schichten: Streifen „Hintergründe“ (Szene Umgebung desselben Reiters) (je Biom die drei Schichten fern → nah auf `palette.sky`, zwei Kacheln nebeneinander, 32 px ×1 und 16 px ×2).
 5. PNGs und `index.json` mit committen.
 
 ## 10. Hintergrund-Schichten

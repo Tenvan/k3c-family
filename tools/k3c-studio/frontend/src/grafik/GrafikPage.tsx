@@ -8,7 +8,7 @@ import { ScenesView } from './ScenesView';
 const TABS = ['slots', 'szenen', 'packs'] as const;
 type Tab = (typeof TABS)[number];
 
-/** Seite Grafik des Asset-Studios (B-459): Slots (wie die frühere Workbench-Seite), Szenen (assetvorschau.html),
+/** Seite Grafik des Asset-Studios (B-459): Slots (wie die frühere Workbench-Seite), Szenen (frühere Asset-Vorschau),
  *  Packs (grafiken.html). */
 export function GrafikPage() {
   const [tab, setTab] = useState<Tab>(() => loadPref('grafik.tab', TABS, 'slots'));

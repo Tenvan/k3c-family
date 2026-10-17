@@ -1,0 +1,18 @@
+# Zeilenenden: Im Repo immer LF. Auf Windows (core.autocrlf=true) liegt der Arbeitsbaum mit CRLF vor,
+# auf Linux/CI/Docker mit LF. Git entscheidet je Datei selbst, was Text ist.
+* text=auto
+
+# Skripte und Container-Dateien laufen unter Linux und brauchen LF auch im Arbeitsbaum.
+*.sh text eol=lf
+Dockerfile text eol=lf
+*.yml text eol=lf
+*.yaml text eol=lf
+
+# Binärdateien nie umwandeln.
+*.png binary
+*.ogg binary
+*.mp3 binary
+*.wav binary
+*.exe binary
+*.ico binary
+*.woff2 binary

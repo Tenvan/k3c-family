@@ -9,7 +9,7 @@ import { SoundScenes } from './SoundScenes';
 const TABS = ['slots', 'szenen', 'hoerprobe'] as const;
 type Tab = (typeof TABS)[number];
 
-/** Seite Sound des Asset-Studios (B-459): Slots mit Hörprobe je Zuordnung, Szenen (assetvorschau.html) und Hörprobe
+/** Seite Sound des Asset-Studios (B-459): Slots mit Hörprobe je Zuordnung, Szenen (frühere Asset-Vorschau) und Hörprobe
  *  (soundtest.html). Verlassen der Seite stoppt alle Busse. */
 export function SoundPage() {
   const [tab, setTab] = useState<Tab>(() => loadPref('sound.tab', TABS, 'slots'));

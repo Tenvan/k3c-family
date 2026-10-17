@@ -5,7 +5,7 @@
 - **Prio:** niedrig
 - **Umgebung:** offline
 - **Status:** offen
-- **Sprint:** –
+- **Sprint:** WZ13
 - **Projekt:** WZG
 - **Erstellt:** 2026-10-17
 - **Spec:** Entwurf

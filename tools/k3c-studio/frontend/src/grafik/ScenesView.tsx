@@ -8,7 +8,7 @@ import { Hintergruende } from './Hintergruende';
 import { FigurenCards, ImageCard } from './SlotCards';
 import { resolveSlot, SCENES, slotsOf, type AssetSlot, type GebaeudeEintrag, type Query, type SceneId } from './szenenLogic';
 
-// Reiter „Szenen“ der Seite Grafik (B-459/AC-06, Inhalt von assetvorschau.html): je Kategorie eine Mini-Szene mit den
+// Reiter „Szenen“ der Seite Grafik (B-459/AC-06, Inhalt der früheren Asset-Vorschau): je Kategorie eine Mini-Szene mit den
 // aktiven Zuordnungen aus AssetsList; lädt bei assets:changed neu. Vergleich: Präferenz n eines Slots statt Präferenz 1.
 
 const GRAFIK = SCENES.filter((s) => s.art === 'grafik').map((s) => s.id);

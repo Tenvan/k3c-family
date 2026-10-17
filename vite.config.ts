@@ -1,6 +1,6 @@
 import { configDefaults, defineConfig } from 'vitest/config';
 import { execFileSync } from 'node:child_process';
-import { readdirSync, readFileSync } from 'node:fs';
+import { readdirSync } from 'node:fs';
 import { isAbsolute, relative, resolve } from 'node:path';
 
 /** Version des Clients: K3C_VERSION (Dockerfile, ohne .git), sonst `git describe`, sonst `dev`. */
@@ -48,11 +48,10 @@ export default defineConfig({
     target: 'es2022',
     chunkSizeWarningLimit: 2000,
     rollupOptions: {
-      // Jede *.html im Projektordner ist eine eigene Seite (Landingpage, Spiel, Testseiten),
-      // außer Dev-Seiten mit dem Marker k3c-dev-only (B-299): die gibt es nur im Dev-Server.
+      // Jede *.html im Projektordner ist eine eigene Seite (Landingpage, Spiel, Testseiten).
       input: Object.fromEntries(
         readdirSync(__dirname)
-          .filter((f) => f.endsWith('.html') && !readFileSync(resolve(__dirname, f), 'utf8').includes('name="k3c-dev-only"'))
+          .filter((f) => f.endsWith('.html'))
           .map((f) => [f.replace(/\.html$/, ''), resolve(__dirname, f)]),
       ),
     },

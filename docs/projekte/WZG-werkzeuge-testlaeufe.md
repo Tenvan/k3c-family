@@ -24,12 +24,15 @@ In Abarbeitungs-Reihenfolge; der erste nicht erledigte Sprint ist der nächste. 
 | WZ3 | Review-Nachträge zu WZ2: Filter-Zählung, Splitter-Test, Kleinigkeiten | erledigt |
 | WZ4 | Splitter-Test in DOM-Umgebung | erledigt |
 | WZ5 | Planungsseite im Look der erp-qs-Workbench | erledigt |
-| WZ6 | Asset-Studio als eigene EXE mit Seiten für Grafik und Sound | aktiv |
+| WZ6 | Asset-Studio als eigene EXE mit Seiten für Grafik und Sound | erledigt |
 | WZ7 | Welt-Betrachter im Asset-Studio mit Chunk- und Live-Vorschau | geplant |
 | WZ8 | Chunks je Insel und Stufe planen: Seed oder feste Objekte | geplant |
 | WZ9 | Gebäude-Planer für die Freischaltung je Hub-Stufe | geplant |
 | WZ10 | Abspiel-Bausteine und Monarch-Vorschau im Asset-Studio | geplant |
 | WZ11 | Gegner- und Boss-Vorschau im Asset-Studio, Figuren-Seiten entfernen | geplant |
+| WZ12 | Planungs-Werkzeug: Platzhalter-Zeilen und Worktree-Pills | geplant |
+| WZ13 | Glossar und Regeln: Verweis für das Morgengrauen auf B-470 | geplant |
+| WZ14 | Geplante Chunks tragen Ruinen und Gegnerlager | geplant |
 
 ## Nicht-Ziele
 

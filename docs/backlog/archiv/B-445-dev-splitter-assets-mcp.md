@@ -4,7 +4,7 @@
 - **Typ:** Idee
 - **Prio:** mittel
 - **Umgebung:** ?
-- **Status:** offen
+- **Status:** erledigt
 - **Sprint:** –
 - **Projekt:** WZG
 - **Erstellt:** 2026-10-16
@@ -56,4 +56,4 @@ Entscheidung, betroffener Umfang, wer entscheidet (🧑). Sonst `keine`.
 
 ## Notizen
 
-Links, Messwerte, verworfene Ansätze. Darf leer bleiben (`–`).
+2026-10-17: beim Einplanen als bereits umgesetzt erkannt: MCP-Seite mit Splittern in `mcp/McpPage.tsx` und `mcp/StatsView.tsx`; die Assets-Seite ist mit WZ6 ins Asset-Studio gezogen und hat dort den Splitter zwischen Slot-Liste und Detail (`tools/k3c-studio/frontend/src/assets/AssetsPage.tsx`). Ziehen im Mock (AC-03) wurde dabei nicht neu geprüft.

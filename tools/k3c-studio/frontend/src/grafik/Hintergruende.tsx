@@ -2,7 +2,7 @@ import { BIOMES } from '@game/model/biome';
 import { Pixel, ladeBild, pixelContext } from './pixel';
 import { hintergrundStreifen, type GebaeudeEintrag } from './szenenLogic';
 
-// Streifen „Hintergründe“ (GEB7, umgezogen aus src/tools/assetvorschau.ts, laut B-459/AC-06 in der Szene Umgebung):
+// Streifen „Hintergründe“ (GEB7, umgezogen aus der früheren Asset-Vorschau, laut B-459/AC-06 in der Szene Umgebung):
 // je Biom die drei Schichten fern → nah auf der Himmelsfarbe, zwei Kacheln nebeneinander (Naht sichtbar),
 // 32 px ×1 und 16 px ×2.
 

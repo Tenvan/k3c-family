@@ -1,4 +1,4 @@
-/* Reiter Szenen und Packs der Seite Grafik (aus assetvorschau.html und grafiken.html, B-459): Streifen mit Himmel und
+/* Reiter Szenen und Packs der Seite Grafik (aus der früheren Asset-Vorschau und grafiken.html, B-459): Streifen mit Himmel und
    Bodenlinie, Karten im Pixel-Look, Lücken gestrichelt. */
 .sz-page, .pk-page { display: flex; flex-direction: column; gap: 10px; }
 .sz-title { color: var(--title); font-size: 16px; margin: 12px 0 4px; }

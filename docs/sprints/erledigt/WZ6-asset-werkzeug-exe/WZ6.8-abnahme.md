@@ -1,6 +1,6 @@
 # WZ6.8 · Abnahme des Asset-Studios durch Ralf
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Review
 - **Agent:** Mensch
 - **Domäne:** DEV
@@ -32,7 +32,21 @@ Laut B-421 › Notizen werden B-298 und B-299 nach erledigter Abnahme ebenfalls 
 
 ### Abnahme-Liste
 
-– (schreibt WZ6.7)
+Was 🧑 am PC sieht (Studio: `task k3c-studio:build`, dann `bin/k3c-studio.exe`):
+
+1. **Studio-Fenster (WZ6/AC-01):** EXE startet als eigenes Fenster; kein Port offen (nur Loopback bzw. gar kein Listener). Zweiter Start holt das erste Fenster nach vorn.
+2. **Seite Grafik, Slots (B-421/AC-01):** echte Slots aus `data/assets.json` (Zahl wie `assets_list`), Filter Kategorie/Typ/Status/Suche, Lücken sichtbar.
+3. **Ausschnitt-Editor (B-421/AC-02):** `hub:3` speichern, in der Vorschau sehen; ein Ausschnitt außerhalb des Bildes wird abgelehnt. Testwert danach zurücknehmen.
+4. **Recherche (B-421/AC-03):** echte Treffer mit Link, Quelle und Lizenz; nach Neustart des Studios stehen sie noch.
+5. **Import (B-421/AC-04):** Datei unter `public/…/kandidaten/`, Credit „Lizenz prüfen“, „Lizenz bestätigen“ setzt auf bestätigt. Testdatei nicht einchecken.
+6. **Mini-Szene (B-421/AC-05):** folgt der gewählten Präferenz und lädt nach dem Speichern neu.
+7. **Grafik, Reiter Szenen (B-421/AC-06, AC-06 WZ6):** alle fünf Szenen (Figuren, Gebäude, Umgebung inkl. Hintergründe, Objekte, HUD) im Spielmaßstab, Lücken als rote Platzhalter. Reiter Packs wie `grafiken.html`.
+8. **Seite Sound (B-421/AC-07):** `sfx:coin` hörbar; Musikwechsel `music:tag` → `music:nacht` mit Überblendung; Umgebungsschleife; Stopp; Reiter Hörprobe wie `soundtest.html`.
+9. **Workbench ohne Assets-Seite (AC-03):** kein Reiter „Assets“; „Asset-Studio öffnen“ startet das Studio; bei fehlender EXE die Meldung „Asset-Studio nicht gebaut (`task k3c-studio:build`)“.
+10. **Neubau-Probe (AC-03, aus WZ6.5):** `task k3c-studio:build` bei laufender Workbench; Workbench und MCP bleiben davon unberührt.
+11. **Neuladen bei MCP-Änderung (AC-07):** `assets_set` per MCP während das Studio offen ist; Studio lädt neu, Auswahl, Filter und Eingaben bleiben; Speichern auf veraltetem Stand meldet „Register geändert, bitte erneut speichern“.
+12. **Entwicklerseite:** keine Kachel „Asset-Vorschau“ mehr; `grafiken.html` und `soundtest.html` laufen unverändert.
+13. **Entscheidung B-421** (erledigt mit Verweis auf WZ6.8 samt B-298/B-299, oder verworfen) und Abnahme AC-08.
 
 ## Erlaubte Dateien
 
@@ -68,5 +82,7 @@ Manuelle Prüfungen am PC (Asset-Studio- und Workbench-Fenster) macht 🧑. Clau
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+- **AC-08 erfüllt, geprüft von Ralf (🧑) am PC, Urteil im Chat am 2026-10-17:** Alle 13 Punkte der Abnahme-Liste bestanden, ohne Befund: Studio-Fenster ohne Port, Grafik-Slots/Filter, Ausschnitt-Editor `hub:3`, Recherche, Import mit Lizenz, Mini-Szene, fünf Grafik-Szenen, Sound (`sfx:coin`, `music:tag` → `music:nacht`), Workbench ohne Assets-Seite mit Verweis und Meldung, Neubau-Probe, Neuladen bei MCP-Änderung, Entwicklerseite ohne Asset-Vorschau, `grafiken.html`/`soundtest.html` unverändert. Das Urteil gab 🧑 pauschal für alle Punkte; Einzelheiten je Punkt nannte 🧑 nicht, Claude hat nichts selbst geprüft.
+- **B-421:** von 🧑 am 2026-10-17 (Chat) als `erledigt` entschieden, Verweis auf WZ6.8; B-298 und B-299 ebenfalls `erledigt`.
+- **AC-01** (Fenster/Port) und **AC-03** (Neubau-Probe) damit validiert. **Neue Tickets:** keine (B-473, B-474 stammen aus dem Review).
+- **Offen außerhalb der Session:** Tag v0.19.0 wartet auf grüne CI (B-473).
