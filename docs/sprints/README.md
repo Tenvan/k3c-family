@@ -3,7 +3,7 @@
 Alle Sprints mit Ordner und Status. Arbeitsweise: [`../arbeitsweise.md`](../arbeitsweise.md).
 **Lesen:** `aktiv/` immer, `geplant/` beim Planen, `erledigt/` nur auf Nachfrage.
 Jede Sprint-README ist eine Spec (SDD); aktiv wird ein Sprint erst mit `Spec: freigegeben` durch 🧑.
-Die Reihenfolge der Arbeit ist allein der Projekt-Rang: [`../projekte/README.md`](../projekte/README.md). Die Tabellen stehen nach Rang und in der Sprint-Reihenfolge des Projekts, ABN und ruhende Projekte zuletzt; je Projekt höchstens ein aktiver Sprint.
+Die Reihenfolge der Arbeit ist allein der Projekt-Rang: [`../projekte/README.md`](../projekte/README.md). Die Tabellen stehen nach Rang und in der Sprint-Reihenfolge des Projekts, ABN und ruhende Projekte zuletzt; je Projekt können mehrere Sprints aktiv sein.
 
 ## Aktiv
 

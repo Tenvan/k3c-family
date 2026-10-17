@@ -75,8 +75,8 @@ Eine Session muss **ohne Rückfragen und ohne Planungs-Werkzeuge** abzuarbeiten 
 1. `docs/sprints/aktiv/*/README.md` lesen. Liegt `sprint/<präfix>` schon auf `origin` (`git ls-remote --heads origin
    sprint/<präfix>`), gilt der Stand der Sprint-Dateien dort (`git show origin/sprint/<präfix>:<Pfad>`), sonst der von
    `develop`. Die nächste Session ergibt sich aus dem **Rang** (`projekte/README.md`): aktives Projekt mit dem kleinsten
-   Rang → sein aktiver Sprint → erste Session mit `Status: offen`, `Agent: autonom` und erledigten Abhängigkeiten.
-   Gibt es dort keine, kommt das Projekt mit dem nächsten Rang. Die **Domäne** der Session darf nicht gesperrt sein:
+   Rang → seine aktiven Sprints in der Reihenfolge der Projekt-Tabelle → erste Session mit `Status: offen`,
+   `Agent: autonom` und erledigten Abhängigkeiten. Gibt es dort keine, kommt das Projekt mit dem nächsten Rang. Die **Domäne** der Session darf nicht gesperrt sein:
    Steht auf einem anderen Sprint-Branch (`git ls-remote --heads origin 'sprint/*'`) eine Session derselben Domäne auf
    `in Arbeit`, die nächste passende Session nehmen. Gibt es keine: **nichts tun** und das melden.
 2. Sprint-Branch auschecken (fehlt er: von `origin/develop` anlegen, die erste Session setzt `Start-Commit`).
@@ -141,8 +141,8 @@ Datei `projekte/XXX-name.md` nach Vorlage, `XXX` = Kürzel aus drei Großbuchsta
 - **Rang:** Nur aktive Projekte haben einen Rang, eindeutig und lückenlos ab 1; er ist die **einzige Reihenfolge** der
   Arbeit. Den Rang setzt 🧑. `ruht` und `erledigt` tragen `Rang: –`.
 - **Sprints:** Die Tabelle im Projekt nennt seine Sprints in Abarbeitungs-Reihenfolge; jeder Sprint nennt sein Projekt
-  im Feld `Projekt`. Je Projekt ist **höchstens ein Sprint aktiv**; ein Sprint, in dem nur noch Sessions mit
-  `Agent: Mensch` offen sind, zählt nicht.
+  im Feld `Projekt`. Je Projekt dürfen **mehrere Sprints gleichzeitig aktiv** sein; was sie trennt, sind nur
+  Abhängigkeiten und die Sperre je Domäne (Abschnitt „Domänen“).
 - **Tickets** tragen ihr Projekt im Feld `Projekt`, auch ohne Sprint. Die **Ticket-Prio** ordnet Tickets innerhalb eines
   Projekts beim Einplanen. `Ziel-Tickets` eines Projekts beschreiben das Thema als Ganzes (z. B. B-011).
 - **Abnahmen am Gerät** sammelt das Projekt `ABN` ohne Rang; es läuft neben der Rangfolge, wann immer ein Gerät da ist.
@@ -156,16 +156,17 @@ Datei `projekte/XXX-name.md` nach Vorlage, `XXX` = Kürzel aus drei Großbuchsta
    Projekt wird so detailliert. Danach 🧑 um Freigabe der Spec bitten.
 3. **Aktivieren** (meist in der Review-Session des vorigen Sprints), nur mit `Spec: freigegeben`:
    `git mv docs/sprints/geplant/SPnn-name docs/sprints/aktiv/`,
-   `Status: aktiv`, Fahrplan in `sprints/README.md` anpassen. Höchstens ein aktiver Sprint **je Projekt**; aktiviert
-   wird der nächste Sprint aus der Tabelle des Projekts.
+   `Status: aktiv`, Fahrplan in `sprints/README.md` anpassen. Es gibt keine Obergrenze für aktive Sprints, weder je Projekt
+   noch insgesamt: **Aktiviert werden darf jeder Sprint ohne offene Abhängigkeit** (Sprints, Tickets oder Sessions, die
+   er laut „Regeln und Einschränkungen“ voraussetzt, sind erledigt). Hat ein Sprint eine offene Abhängigkeit, wartet er.
    Die Aktivierung ist der erste Commit auf `sprint/<präfix>`; ein Sprint mit Branch auf `origin`
    (`git ls-remote --heads origin 'sprint/*'`) gilt als aktiv, auch solange sein PR noch offen ist.
    Das Feld `Start-Commit` setzt die **erste Session** des Sprints: `git rev-parse --short origin/develop` beim Anlegen des Sprint-Branchs.
 4. **Abschließen:** Erledigt ist ein Sprint erst, wenn **alle** Sessions `fertig` oder `verworfen` sind. Die letzte
    davon (meist das Review, sonst die letzte Hardware-Session) verschiebt den Ordner nach `sprints/erledigt/` und setzt `Status: erledigt`.
 
-- **Reihenfolge:** Aktiviert und abgearbeitet wird nach dem **Rang** der Projekte und der Sprint-Tabelle im Projekt
-  (Abschnitt „Projekte und Rang“). Eine Sprint-Prio gibt es nicht mehr; die Prio gehört zum Ticket.
+- **Reihenfolge:** Abgearbeitet wird nach dem **Rang** der Projekte und der Sprint-Tabelle im Projekt
+  (Abschnitt „Projekte und Rang“); aktiviert werden darf jeder Sprint ohne offene Abhängigkeit (Schritt 3). Eine Sprint-Prio gibt es nicht mehr; die Prio gehört zum Ticket.
 - **Umgebung:** Ticket und Session tragen `offline` (ohne laufende Dienste prüfbar: Code, Unit-/Mock-Tests, Werkzeuge
   ohne Serverzugriff) oder `live` (braucht laufenden Server, Browser oder Gerät); `?` nur bis zur Einordnung beim
   Einplanen. Nur Sessions mit `Agent: autonom` und `Umgebung: offline` dürfen in einem eigenen Worktree ohne Rückfrage
@@ -184,9 +185,7 @@ Datei `projekte/XXX-name.md` nach Vorlage, `XXX` = Kürzel aus drei Großbuchsta
   Reviews: Das Review nimmt ab, führt das Kriterium als `angenommen, Validierung offen (Session)` und öffnet den PR,
   der Sprint bleibt aber **aktiv**, bis die Hardware-Session fertig ist (entkoppelt heißt: weiter zum nächsten Sprint,
   nicht erledigt). Offene Hardware-Sessions stehen im Fahrplan unter „Offen am Gerät“ und werden erledigt, wenn das
-  Gerät da ist; weicht das Ergebnis von der Annahme ab, entsteht ein Ticket (die Arbeit dahinter läuft weiter). Ein
-  aktiver Sprint, in dem nur noch Sessions mit `Agent: Mensch` offen sind, zählt nicht als aktiver Sprint seines
-  Projekts (`tests/planning.test.ts`).
+  Gerät da ist; weicht das Ergebnis von der Annahme ab, entsteht ein Ticket (die Arbeit dahinter läuft weiter).
 - **Richtwert Session:** ein Commit mit ≤ ~400 geänderten Code-Zeilen (ohne Bilder, Daten-JSON, Lockfiles).
 - **Übergang:** Sprints, die vor dieser Regel (2026-10-03) schon Session-PRs hatten (F4), schließen nach altem Ablauf ab
   (Review-Session mit eigenem PR). Ab dem nächsten aktivierten Sprint gilt ein PR je Sprint.
