@@ -3,7 +3,7 @@
 - **Status:** geplant
 - **Projekt:** WZG
 - **Domäne:** DEV
-- **Reife:** Entwurf
+- **Reife:** bereit
 - **Tickets:** B-436, B-467
 - **Start-Commit:** – (wird beim Aktivieren gesetzt: `git rev-parse --short origin/develop`)
 - **Spec:** Entwurf
@@ -53,7 +53,9 @@ Workflow-Check scheitert → keine Pills, Hinweis wie heute. Platzhalter-Zeile m
 
 ## Offene Fragen
 
-Entscheidet 🧑: Wo stehen Einträge, die nur im Worktree existieren (neues Ticket, neue Session)? (`B-467 › Offene Fragen`.) Blockiert die Freigabe.
+Entschieden von 🧑 am 2026-10-17 (Chat): Einträge, die nur im Worktree existieren (neues Ticket, neue Session), stehen in der normalen Liste an ihrem üblichen Ort (Ticket in der Ticket-Liste, Session unter ihrem Sprint) mit einer Pill „neu“ (`B-467 › Offene Fragen`, AC-04).
+
+Vor der Freigabe offen: nichts. `B-436`: Platzhalter-Zeilen mit anderer Nummer bleiben stehen (Annahme der Planung, nicht blockierend, im Ticket festgehalten).
 
 ## Sessions
 

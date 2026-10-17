@@ -108,16 +108,12 @@ Entschieden von 🧑 am 2026-10-17 (Chat):
 1. **Zustände:** Reiten (je Reittier), Schlagen, Skills, dazu Münzen werfen/geben, Getroffen/Tod/Respawn, Laufen/Sprinten (nur beritten), alle Spielerfarben nebeneinander. Fehlende Animationen (das Sheet hat nur `idle`/`run`/`attack`) werden als Lücke markiert, nicht gebaut.
 2. **Technik:** Abspielen mit Phaser und denselben Animationsdefinitionen wie das Spiel über die Aliase `@game`/`@data` aus WZ6; gemeinsame Abspiel-Bausteine für Monarch- und Gegner-Seite.
 3. **Ersatz:** `figuren.html` und `aufstellung.html` werden entfernt (Seiten, Kacheln, Texte, Verweise), Inhalte ins Asset-Studio; Grenzfall DEV wie WZ6.6/B-299.
-
-Offen (entscheidet 🧑, nicht blockierend, Vorschlag der Planung):
-
-4. Wohin kommen Truppen und die ungenutzten Sheets aus `figuren.html` („auch ungenutzte“)? Vorschlag: Truppen in der Figuren-Szene der Grafik-Seite (WZ6.3), ungenutzte Sheets nur im Katalog der Grafik-Seite (statisch, nicht animiert).
-5. Tempo-Stufen 0,5×, 1×, 2× (AC-01) sind ein Vorschlag der Planung; andere Stufen ändern AC-01 vor der Freigabe.
-
-Nachtrag, entschieden von 🧑 am 2026-10-17 (Chat):
-
+4. **Truppen und ungenutzte Sheets** (2026-10-17, Chat): Truppen in der Figuren-Szene der Grafik-Seite (WZ6.3), ungenutzte Sheets nur im Katalog der Grafik-Seite (statisch, nicht animiert).
+5. **Tempo-Stufen** (2026-10-17, Chat): 0,5×, 1×, 2× (AC-01).
 6. **Monarch immer beritten:** Laufen und Sprinten gibt es nur beritten, keine Lücke „zu Fuß“ (AC-04, Anforderungen, Beispiele angepasst; deckt sich mit Glossar › Monarch).
-7. **Phaser und Bühne:** B-460 führt beides mit WZ7.3 ein, B-463 ist nicht Eigentümer der Abhängigkeit; WZ10.1 nutzt die Bühne wieder (neues AC-16).
+7. **Phaser und Bühne:** B-460 führt beides mit WZ7.3 ein, B-463 ist nicht Eigentümer der Abhängigkeit; WZ10.1 nutzt die Bühne wieder (AC-16).
+
+Offen: nichts.
 
 ## Notizen
 

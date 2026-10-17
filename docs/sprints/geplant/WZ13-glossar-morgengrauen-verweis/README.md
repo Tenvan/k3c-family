@@ -51,7 +51,7 @@ nicht relevant: reine Textkorrektur.
 
 ## Offene Fragen
 
-Entscheidet 🧑: `docs/fragenkatalog.md` (Beschlussprotokoll Q65) unverändert lassen oder B-213 ebenfalls auf B-470 ändern? Vorschlag von Claude (ungeprüft): unverändert lassen (`B-466 › Offene Fragen`).
+Entschieden von 🧑 am 2026-10-17 (Chat): `docs/fragenkatalog.md` (Beschlussprotokoll Q65) bleibt unverändert, weil es die damals geplante Nummer B-213 dokumentiert (`B-466 › Offene Fragen`). Vor der Freigabe offen: nichts.
 
 ## Sessions
 

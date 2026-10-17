@@ -111,12 +111,13 @@ AC-01 bis AC-16 entsprechen B-464/AC-01 bis B-464/AC-16 mit gleicher Nummer. AC-
 
 Entschieden von 🧑 am 2026-10-17 (Chat): `B-464 › Offene Fragen` 1–5 (Bosse als Text und Lücke, Gruppierung nach Biom, Technik und Ersatz der Referenzseiten, Boss-Effekte als Lücke mit Anbindung in B-469, Bühne aus WZ7.3), `B-463 › Offene Fragen` 3 (`figuren.html` und `aufstellung.html` entfallen) sowie die Teilung von WZ10 in WZ10 (Monarch) und WZ11 (Gegner, Bosse, Entfernen).
 
-Offen (entscheidet 🧑 vor der Freigabe, nicht blockierend, Vorschlag im Ticket):
+**Ort für Truppen und ungenutzte Sheets** (`B-463 › Offene Fragen` 4): entschieden von 🧑 am 2026-10-17 (Chat): Truppen in der Figuren-Szene der Grafik-Seite (WZ6.3), ungenutzte Sheets nur im Katalog der Grafik-Seite (statisch). Gilt für AC-19 und WZ11.3.
 
-- `B-463 › Offene Fragen` 4: Wohin kommen Truppen und die ungenutzten Sheets aus `figuren.html`? Vorschlag: Truppen in der Figuren-Szene der Grafik-Seite (WZ6.3), ungenutzte Sheets nur im Katalog der Grafik-Seite (statisch). Betrifft AC-19 und WZ11.3.
-- `B-463 › Offene Fragen` 5 (Tempo-Stufen) gilt auch hier, weil die Steuerung ein gemeinsamer Abspiel-Baustein ist; entschieden mit WZ10.
+**Tempo-Stufen** (`B-463 › Offene Fragen` 5): entschieden mit WZ10 (0,5×, 1×, 2×).
 
-**Neue Begriffe ins Glossar vor der Freigabe:** Gegner-Seite, Warnkreis, Boss-Leiste, Event-Banner; Lücke und Abspiel-Baustein kommen aus WZ10.
+Vor der Freigabe offen: nichts.
+
+**Neue Begriffe im Glossar** (eingetragen mit PR 349): Gegner-Seite, Warnkreis, Boss-Leiste, Event-Banner; Lücke und Abspiel-Baustein kommen aus WZ10.
 
 ## Sessions
 
