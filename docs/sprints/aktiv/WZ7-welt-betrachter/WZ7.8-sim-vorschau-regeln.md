@@ -1,6 +1,6 @@
 # WZ7.8 · Sim-Hilfen für die Vorschau: Tageszeit setzen und Hub-Stufe aufbauen
 
-- **Status:** offen
+- **Status:** in Arbeit
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** SIM

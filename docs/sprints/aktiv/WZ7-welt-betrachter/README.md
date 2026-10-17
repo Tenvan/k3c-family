@@ -73,7 +73,7 @@ Beantwortet von 🧑 am 2026-10-17 (Chat), siehe `B-460 › Offene Fragen` 10–
 
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
-| WZ7.8 | `WZ7.8-sim-vorschau-regeln.md` | Umsetzung | autonom | offen |
+| WZ7.8 | `WZ7.8-sim-vorschau-regeln.md` | Umsetzung | autonom | in Arbeit |
 | WZ7.1 | `WZ7.1-vorschau-snapshot.md` | Umsetzung | autonom | offen |
 | WZ7.2 | `WZ7.2-seite-chunk-vorschau.md` | Umsetzung | autonom | offen |
 | WZ7.3 | `WZ7.3-live-vorschau.md` | Umsetzung | autonom | offen |
