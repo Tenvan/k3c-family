@@ -4,7 +4,7 @@
 - **Typ:** Problem
 - **Prio:** mittel
 - **Umgebung:** ?
-- **Status:** offen
+- **Status:** erledigt
 - **Sprint:** –
 - **Projekt:** WZG
 - **Erstellt:** 2026-10-16
@@ -56,4 +56,4 @@ Entscheidung, betroffener Umfang, wer entscheidet (🧑). Sonst `keine`.
 
 ## Notizen
 
-Links, Messwerte, verworfene Ansätze. Darf leer bleiben (`–`).
+2026-10-17: beim Einplanen als bereits umgesetzt erkannt: Spiel-Vite 5183 (`vite.config.ts`, `.claude/launch.json`, `services.json`), k3c-dev-Frontend 5191 (`tools/k3c-dev/frontend/vite.config.ts`, `strictPort`). Test-Fixtures mit Port 5173 sind Beispielwerte ohne Bezug. `task check` und `dev:test` (AC-03) wurden dabei nicht neu ausgeführt.

@@ -138,12 +138,9 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-425](B-425-fullsave-ausbauregeln.md) | SRV | Problem | mittel | offen | – | Der Voll-Ausbau-Stand hält die Ausbauregeln des Spiels ein |
 | [B-426](B-426-fullsave-review-kleinigkeiten.md) | SRV | Schuld | niedrig | offen | – | Kleine Befunde aus dem Review von SV1 sind erledigt |
 | [B-435](B-435-gebaeude-grafik-per-prompt.md) | DEV | Idee | mittel | eingeplant | GEB1 | Gebäude und Strukturen entstehen im Asset-Manager aus Beschreibung und Prompt |
-| [B-436](B-436-plan-create-entwurf-zeilen.md) | DEV | Problem | niedrig | offen | – | plan_create scheitert an Platzhalter-Zeilen „– (Entwurf)“ in der Session-Tabelle |
+| [B-436](B-436-plan-create-entwurf-zeilen.md) | DEV | Problem | niedrig | offen | WZ12 | plan_create scheitert an Platzhalter-Zeilen „– (Entwurf)“ in der Session-Tabelle |
 | [B-438](B-438-werkstatt-baeume-ins-spiel.md) | CLI | Idee | mittel | eingeplant | GEB6 | Werkstatt und Bäume aus tools/gebaeude erscheinen im Spiel |
 | [B-440](B-440-dev-test-entwurfs-sprints-ohne-sessions.md) | DEV | Problem | mittel | offen | – | k3c-dev-Planungstest lehnt Entwurfs-Sprints ohne Sessions ab |
-| [B-443](B-443-dev-logs-scrollen-liste.md) | DEV | Problem | mittel | offen | – | Auf der Log-Seite von k3c-dev scrollt nur die Log-Liste, nicht die ganze Seite |
-| [B-444](B-444-vite-ports-plus-zehn.md) | DEV | Problem | mittel | offen | – | Vite-Ports von Spiel und k3c-dev liegen 10 höher und kollidieren nicht mit dem Vite-Standardport |
-| [B-445](B-445-dev-splitter-assets-mcp.md) | DEV | Idee | mittel | offen | – | Assets- und MCP-Seite von k3c-dev haben ziehbare Splitter zwischen den Panelen |
 | [B-453](B-453-alte-biom-hintergruende-aufbewahren.md) | CLI | Idee | mittel | offen | – | Alte Biom-Hintergründe (Packs) als Grafik aufbewahren |
 | [B-454](B-454-baeume-hoeher-dichter-hoehle-wurzeln.md) | DEV | Problem | hoch | offen | – | Bäume höher und dichter, Höhle mit eigener Unterwelt-Flora (Wurzeln) |
 | [B-455](B-455-truhe-geschlossen.md) | DEV | Idee | mittel | offen | – | Truhe gibt es auch geschlossen |
@@ -157,9 +154,9 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-463](B-463-monarch-vorschau-animationen.md) | DEV | Idee | mittel | eingeplant | WZ10 | Eine Monarch-Seite im Asset-Studio zeigt Reiten, Schlagen, Skills und weitere Vorschauen |
 | [B-464](B-464-gegner-bosse-vorschau.md) | DEV | Idee | mittel | eingeplant | WZ11 | Eine Gegner-Seite im Asset-Studio zeigt alle Gegnertypen und Bosse mit ihren Vorschauen |
 | [B-465](B-465-lint-sprintsbacklog-zeilen.md) | DEV | Problem | hoch | offen | – | task lint ist auf develop rot, weil SprintsBacklog 61 Zeilen hat |
-| [B-466](B-466-glossar-morgengrauen-verweis.md) | INF | Problem | niedrig | offen | – | Der Glossar-Eintrag Tageszyklus verweist für das Morgengrauen auf das richtige Ticket |
-| [B-467](B-467-worktree-pill-am-eintrag.md) | DEV | Idee | mittel | offen | – | Worktree-Änderungen stehen als Pill am Projekt, Sprint oder an der Session statt als Leiste oben |
-| [B-468](B-468-geplante-chunks-ruinen-gegnerlager.md) | REG | Idee | mittel | offen | – | Geplante Chunks tragen Ruinen und Gegnerlager |
+| [B-466](B-466-glossar-morgengrauen-verweis.md) | INF | Problem | niedrig | offen | WZ13 | Der Glossar-Eintrag Tageszyklus verweist für das Morgengrauen auf das richtige Ticket |
+| [B-467](B-467-worktree-pill-am-eintrag.md) | DEV | Idee | mittel | offen | WZ12 | Worktree-Änderungen stehen als Pill am Projekt, Sprint oder an der Session statt als Leiste oben |
+| [B-468](B-468-geplante-chunks-ruinen-gegnerlager.md) | REG | Idee | mittel | offen | WZ14 | Geplante Chunks tragen Ruinen und Gegnerlager |
 | [B-469](B-469-gegner-seite-boss-effekte-nach-k5.md) | DEV | Idee | niedrig | offen | – | Die Gegner-Seite zeigt Warnkreis, Boss-Leiste, Phasen und Event-Banner aus K5.1 |
 | [B-470](B-470-morgengrauen-als-phase.md) | SIM | Idee | niedrig | offen | – | Der Tageszyklus hat eine eigene Phase Morgengrauen (Q65, 3:1:2:1) |
 | [B-471](B-471-renderreference-abmelden.md) | DEV | Schuld | niedrig | offen | – | renderReference beendet seine Animationsschleife, wenn die Karten verschwinden |
@@ -433,3 +430,6 @@ Zeile in diesen Abschnitt.
 | [B-451](archiv/B-451-geb6-abnahme-sichtpruefung.md) | CLI | Frage | hoch | erledigt | – | GEB6: Abnahme von Vorschau und Spiel durch Ralf |
 | [B-452](archiv/B-452-geb7-abnahme-sichtpruefung.md) | CLI | Frage | hoch | erledigt | GEB7 | GEB7: Abnahme von Vorschau und Spiel durch Ralf |
 | [B-439](archiv/B-439-planung-erpqs-look.md) | DEV | Idee | mittel | erledigt | WZ5 | Die Planungsseite von k3c-dev zeigt und bedient die Planung wie die erp-qs-Workbench |
+| [B-443](archiv/B-443-dev-logs-scrollen-liste.md) | DEV | Problem | mittel | erledigt | – | Auf der Log-Seite von k3c-dev scrollt nur die Log-Liste, nicht die ganze Seite |
+| [B-444](archiv/B-444-vite-ports-plus-zehn.md) | DEV | Problem | mittel | erledigt | – | Vite-Ports von Spiel und k3c-dev liegen 10 höher und kollidieren nicht mit dem Vite-Standardport |
+| [B-445](archiv/B-445-dev-splitter-assets-mcp.md) | DEV | Idee | mittel | erledigt | – | Assets- und MCP-Seite von k3c-dev haben ziehbare Splitter zwischen den Panelen |

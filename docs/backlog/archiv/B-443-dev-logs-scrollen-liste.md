@@ -4,7 +4,7 @@
 - **Typ:** Problem
 - **Prio:** mittel
 - **Umgebung:** ?
-- **Status:** offen
+- **Status:** erledigt
 - **Sprint:** –
 - **Projekt:** WZG
 - **Erstellt:** 2026-10-16
@@ -54,4 +54,4 @@ Entscheidung, betroffener Umfang, wer entscheidet (🧑). Sonst `keine`.
 
 ## Notizen
 
-Links, Messwerte, verworfene Ansätze. Darf leer bleiben (`–`).
+2026-10-17: beim Einplanen als bereits umgesetzt erkannt (`tools/k3c-dev/frontend/src/styles/logs.css`, Kommentar „B-443“: `min-height: 0` begrenzt die Höhe, die Liste scrollt). Die Prüfung im Mock (AC-01) wurde dabei nicht neu durchgeführt.
