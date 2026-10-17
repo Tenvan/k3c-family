@@ -26,7 +26,7 @@ In Abarbeitungs-Reihenfolge; der erste nicht erledigte Sprint ist der nächste. 
 | WZ5 | Planungsseite im Look der erp-qs-Workbench | erledigt |
 | WZ6 | Asset-Studio als eigene EXE mit Seiten für Grafik und Sound | geplant |
 | WZ7 | Welt-Betrachter im Asset-Studio mit Chunk- und Live-Vorschau | geplant |
-| WZ8 | Chunks je Biom planen: Seed oder feste Gebäude und Objekte | geplant |
+| WZ8 | Chunks je Insel und Stufe planen: Seed oder feste Objekte | geplant |
 | WZ9 | Gebäude-Planer für die Freischaltung je Hub-Stufe | geplant |
 | WZ10 | Monarch-, Gegner- und Boss-Vorschau im Asset-Studio | geplant |
 
