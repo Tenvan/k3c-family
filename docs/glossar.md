@@ -39,7 +39,9 @@ Regelwerk in [`rules/`](rules/), und das Glossar wird angepasst. Zahlen sind, wo
 | Bürger | Alle Figuren des Hubs, die kein Spieler steuert: Landstreicher, Bauer, Berufe, Kämpfer (Truppen), Händler. Kein Level, keine Skills. Regeltexte sagen „Bürger“, wo alle Figuren gemeint sind. Bürger sterben nicht, siehe Verlust-Kaskade. | `rules/buerger.md`, Q63, Q67 |
 | Camp | Rekrutierungs-Camp in der Welt mit höchstens 2 Landstreichern (Nachwuchs 25 s); darf innerhalb der Mauerlinien liegen. | `rules/wirtschaft.md` § 1, Q57 |
 | Cheat-Dialog | Modaler Dialog im Spiel mit den wichtigsten Dev-Aktionen für Tester; hält den Raum an, solange er offen ist. Aufruf: Ä, LB + RB 3 s, Doppeltap mit zwei Fingern. | B-231 |
-| Chunk | Abschnitt eines Levels, 50 Units breit; der Generator reiht Chunks links und rechts vom Hub nach `chunkWeights`. | `game-design.md` › Prozedurale Generierung |
+| Chunk | Abschnitt eines Levels, 50 Units breit (25 Units in Eisenstollen und Kristallhöhle); der Generator reiht Chunks links und rechts vom Hub nach `chunkWeights`. | `game-design.md` › Prozedurale Generierung |
+| Chunk-Platz | Position eines geplanten Chunks relativ zu den Hub-Chunks: `-n` n-ter Chunk links, `+n` n-ter rechts davon, `0` gibt es nicht. | `rules/geplante-chunks.md` § 1, B-461 |
+| Chunk-Seed | Optionaler Name, aus dem der Inhalt eines geplanten Chunks würfelt (`<biom>:chunk:<chunk-seed>`); der Inhalt ist dann in jedem Spielstand gleich. | `rules/geplante-chunks.md` § 2, B-461 |
 | Chunk-Vorschau | Streifen eines generierten Levels aus Chunks mit Objekten (Seed, Biom), im Welt-Betrachter beim Öffnen maximiert. | B-460 |
 | Couch-Koop | Mehrere Spieler an einem Gerät mit eigener Eingabe und Split-Screen; mit Online-Spielern im selben Raum mischbar. | `game-design.md` › Koop |
 | Couch-Raum | Raum, in dem alle Spieler an einem Gerät sitzen; dort hält die Pause den ganzen Raum an. | `rules/bedienung.md` § 1, Q01 |
@@ -70,6 +72,8 @@ Regelwerk in [`rules/`](rules/), und das Glossar wird angepasst. Zahlen sind, wo
 | Freigabe | Ausdrückliche Zustimmung von 🧑 zu genau einer Revision einer Spec (Feld `Freigabe`: Datum und Quelle); erst dann `Spec: freigegeben`. | `arbeitsweise.md` › SDD |
 | Gebäude-Planer | Seite im Asset-Studio, die je Hub-Stufe die freigeschalteten Gebäude mit Platz (`offsetUnits`), Tiefe (`fromDepth`) und Bedingungen zeigt und gültig nach `data/hub.json` zurückschreibt. | B-462 |
 | Gebäude-Vorlage (`vorlage`) | Strukturierte Motiv-Definition eines Gebäudes in seiner Daten-JSON (`public/grafik/gebaeude/<id>.json`): Motiv, Teile von links nach rechts, Materialien, Stimmung, `fein`-Details. Sie hält die Absicht neben den Koordinaten fest, damit eine spätere Session das Gebäude annähernd gleich neu erzeugen oder ändern kann. Nicht verwechseln mit Spec (SDD) oder den Planungs-Vorlagen in `docs/vorlagen/`. | B-441, `standards/gebaeude-grafik.md` § 5 |
+| Gegnerlager (geplant) | Fest platziertes Lager von Gegnern in einem geplanten Chunk; Teil 2 der Chunk-Planung, noch nicht umgesetzt. | B-468 |
+| geplanter Chunk | Chunk, dessen Art und Inhalt je Insel und Tiefe in `data/islands.json` (`plannedChunks`) festgelegt sind: Chunk-Art fest, Inhalt aus Chunk-Seed oder festen Objekten. Alle anderen Chunks bleiben zufällig. | `rules/geplante-chunks.md`, B-461 |
 | Getrennter Monarch (`Player.Free`) | Monarch, dessen Gerät die Verbindung verloren hat: 60 s reserviert (`waiting`), danach frei (`free`); unverwundbar, ausgeblendet, nicht wiederbelebbar. | `rules/bedienung.md` § 3, Q04, Q33 |
 | Gold | Währung je Spieler (Start 100, höchstens 100, morgens +5); bezahlt Bauten, Rekrutierung, Markierung. Gehört dem Spieler, ist kein Material. | `rules/wirtschaft.md` § 1 |
 | Golden (Golden-Daten) | Referenzergebnisse von Simulation und Level-Generator in `testdata/golden/`; Update nur bei gewollter Regeländerung per `task golden:update` mit Begründung. | `arbeitsweise.md` › Golden aktualisieren |
@@ -154,6 +158,7 @@ Regelwerk in [`rules/`](rules/), und das Glossar wird angepasst. Zahlen sind, wo
 | `revive` | Ereignis: Monarch steht nach der Wartezeit an der Burg wieder (Respawn). | `protocol.md` › Ereignisse, Q62 |
 | `revived` | Ereignis (geplant, B-120/W4.1, Protokoll mit W5): Monarch wurde von einem Mitspieler wiederbelebt. | Q62, B-120 |
 | RTT (Ping) | Umlaufzeit eines WebSocket-Pings vom Server zum Gerät und zurück, vom Server einmal je Sekunde gemessen (Messreihe je Gerät). Nicht die Latenz (die misst der Client über `ack`). | B-281, `engine/net/ping.go` |
+| Ruine (geplant) | Vorgebautes Gebäude in einem geplanten Chunk; Teil 2 der Chunk-Planung, noch nicht umgesetzt. | B-468 |
 | Rüstkammer | Gebäude der Hub-Stufe 4: Rüstungsstufen für alle Kämpfer. | `rules/materialien-gebaeude.md` § 3.2 |
 | Rüstungsstufe | Upgrade in der Rüstkammer, 2 Stufen (ab Hub-Stufe 4 und 5): +20 % bzw. +40 % Basis-HP für alle Kämpfer, sofort, ohne Vollheilung. | `rules/buerger.md` § 2, Q37 |
 | Schlag | Einfacher Nahkampfangriff des Monarchen (X bzw. E): 10 Schaden, Reichweite 1,5 Units, Abklingzeit 0,7 s. | `rules/monarch.md` § 1 |
