@@ -1,12 +1,16 @@
 import { BIOMES } from '@game/model/biome';
-import { Button, Select, TextField } from '@radix-ui/themes';
+import { Button, TextField } from '@radix-ui/themes';
 import { useCallback, useEffect, useRef, useState, type CSSProperties } from 'react';
 import { backend } from '../api';
 import type { WorldSource } from '../api';
+import type { PlanSource } from '../stage/stageLogic';
 import { BIG_KINDS, DEFAULT_SCALE, SPECIAL_CHUNKS, colorOf, levelModel, seedFromBytes, zoomScale, type LevelModel } from './levelView';
 
 const DEFAULT_SEED = 'k3c';
 const DEFAULT_BIOME = 'forest';
+
+/** Quelle der Anfrage: Insel + Stufe mit dem Entwurf (gleiche Quelle wie die Live-Vorschau), bis eine Insel geladen ist das Biom. */
+const toSource = (plan?: PlanSource): WorldSource => (plan ? { island: plan.island, stage: plan.stage, planned: plan.planned } : { biome: DEFAULT_BIOME });
 const SCROLL_STEP = 120; // Pixel je Pfeiltaste
 
 const chunkClass = (kind: string) => `wd-chunk${kind === 'hub' ? ' wd-hub' : SPECIAL_CHUNKS.has(kind) ? ' wd-special' : ''}`;
@@ -58,12 +62,11 @@ function useWorldLevel(onLoaded: (seed: string, biome: string) => void) {
     }
     const next = levelModel(view);
     setModel(next);
-    loaded.current(seed, source.biome ?? '');
+    loaded.current(seed, next.biomeId);
     const name = BIOMES.find((b) => b.id === next.biomeId)?.name ?? next.biomeId;
     setNote(`Seed „${next.seed}“ · ${name} · ${next.widthUnits} Units · ${next.chunks.length} Abschnitte · ${next.objects.length} Objekte`);
   }, []);
 
-  useEffect(() => { void load(DEFAULT_SEED, { biome: DEFAULT_BIOME }); }, [load]);
   return { model, note, load };
 }
 
@@ -82,12 +85,17 @@ function Legend({ model }: { model: LevelModel }) {
 
 /** Chunk-Vorschau des Welt-Betrachters (B-460/AC-01, AC-02): Seed und Biom wählen, das Level des Spiels als Streifen
  *  ansehen, mit Legende und Warnungen der Prüfung. Das Level rechnet das Studio selbst, ohne Spielserver. */
-export function ChunkPreview({ maximized, onToggle, onLoaded }: { maximized: boolean; onToggle: () => void; onLoaded: (seed: string, biome: string) => void }) {
+export function ChunkPreview({ maximized, onToggle, onLoaded, source }: { maximized: boolean; onToggle: () => void; onLoaded: (seed: string, biome: string) => void; source?: PlanSource }) {
   const [seed, setSeed] = useState(DEFAULT_SEED);
-  const [biome, setBiome] = useState(DEFAULT_BIOME);
   const [scale, setScale] = useState(DEFAULT_SCALE);
   const { model, note, load } = useWorldLevel(onLoaded);
   const viewport = useRef<HTMLDivElement>(null);
+
+  // Jede Änderung der Quelle (Insel, Stufe, Entwurf) lädt das Level neu, mit dem Seed, der zuletzt eingegeben wurde.
+  const latest = useRef({ seed, source });
+  latest.current = { seed, source };
+  const sourceKey = JSON.stringify(source ?? null);
+  useEffect(() => { void load(latest.current.seed, toSource(latest.current.source)); }, [sourceKey, load]);
 
   const zoom = (factor: number) => {
     const el = viewport.current;
@@ -119,19 +127,15 @@ export function ChunkPreview({ maximized, onToggle, onLoaded }: { maximized: boo
   const random = () => {
     const next = seedFromBytes(crypto.getRandomValues(new Uint8Array(8)));
     setSeed(next);
-    void load(next, { biome });
+    void load(next, toSource(source));
   };
 
   return (
     <div className={`wd-chunks${maximized ? ' wd-max' : ''}`} data-maximized={maximized}>
       <div className="wd-bar">
         <TextField.Root className="wd-seed" aria-label="Seed" value={seed} onChange={(e) => setSeed(e.target.value)}
-          onKeyDown={(e) => { if (e.key === 'Enter') void load(seed, { biome }); }} />
-        <Select.Root value={biome} onValueChange={(v) => { setBiome(v); void load(seed, { biome: v }); }}>
-          <Select.Trigger aria-label="Biom" />
-          <Select.Content>{BIOMES.map((b) => <Select.Item key={b.id} value={b.id}>{b.name}</Select.Item>)}</Select.Content>
-        </Select.Root>
-        <Button onClick={() => void load(seed, { biome })}>Laden</Button>
+          onKeyDown={(e) => { if (e.key === 'Enter') void load(seed, toSource(source)); }} />
+        <Button onClick={() => void load(seed, toSource(source))}>Laden</Button>
         <Button variant="soft" onClick={random}>Zufälliger Seed</Button>
         <Button variant="soft" aria-label="Herauszoomen" onClick={() => zoom(0.8)}>−</Button>
         <Button variant="soft" aria-label="Hineinzoomen" onClick={() => zoom(1.25)}>+</Button>

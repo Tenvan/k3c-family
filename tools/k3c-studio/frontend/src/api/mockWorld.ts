@@ -7,7 +7,7 @@ import type { OpenGameResult, WorldLevelView, WorldPreviewArgs, WorldPreviewView
 const KINDS = ['edge', 'normal', 'normal', 'recruitCamp', 'normal', 'hub', 'normal', 'chest', 'portal', 'normal', 'normal', 'exit'];
 
 export function mockWorldLevel(seed: string, source: WorldSource): WorldLevelView {
-  const empty = { seed, biomeId: source.biome ?? '', widthUnits: 0, chunkWidthUnits: 30, hubCenterUnits: 0, chunks: [], entities: [], warnings: [] };
+  const empty = { seed, biomeId: source.biome ?? 'forest', widthUnits: 0, chunkWidthUnits: 30, hubCenterUnits: 0, chunks: [], entities: [], warnings: [] };
   if (seed === 'fehler') return { ...empty, error: 'Seed braucht 1 bis 64 Zeichen' };
   const chunks = KINDS.map((kind, i) => ({ index: i, kind, startUnits: i * 30 })) as WorldLevelView['chunks'];
   const entities = [

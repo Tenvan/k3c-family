@@ -91,11 +91,58 @@ export interface ResearchResult {
 
 /** Level des Welt-Betrachters (Go: WorldLevelView): das Level wie im Spiel plus Warnungen der Prüfung; error ist der
  *  Hinweis für die Seite (dann sind Abschnitte und Objekte leer). */
-/** Quelle des Levels als Wert (Go: WorldSource): in WZ7 das Biom; Insel + Stufe trägt die Schnittstelle schon (WZ8.5). */
+/** Festes Objekt eines geplanten Chunks (Go: level.PlannedObject); at zählt in Units ab Chunk-Anfang. */
+export interface PlannedObject {
+  kind: string;
+  at: number;
+}
+
+/** Geplanter Chunk (Go: level.PlannedChunk): Platz relativ zum Hub (−n links, +n rechts, nie 0), Art, Chunk-Seed, Objekte. */
+export interface PlannedChunk {
+  slot: number;
+  kind: string;
+  seed?: string;
+  objects?: PlannedObject[];
+}
+
+/** Quelle des Levels als Wert (Go: WorldSource): ein Biom oder eine Insel mit Stufe (Index in ihren Tiefen). planned ist
+ *  der Entwurf der geplanten Chunks (auch ungespeichert); fehlt er, gilt bei einer Insel die gespeicherte Planung. */
 export interface WorldSource {
   biome?: string;
   island?: string;
   stage?: number;
+  planned?: PlannedChunk[] | null;
+}
+
+/** Insel mit Tiefen, Biom je Tiefe und gespeicherter Planung je Tiefe (Go: PlanIsland) */
+export interface PlanIsland {
+  id: string;
+  name: string;
+  depths: number[];
+  biomes: string[];
+  planned: Record<string, PlannedChunk[]>;
+}
+
+/** data/islands.json für den Editor (Go: PlanView); stand ist der Hash der Datei beim Lesen */
+export interface PlanView {
+  islands: PlanIsland[];
+  stand: string;
+  error: string;
+}
+
+/** Ergebnis der Prüfung eines Entwurfs (Go: PlanCheckView); slot nennt den Platz des Fehlers (0 = ohne Platz) */
+export interface PlanCheckView {
+  ok: boolean;
+  slot: number;
+  error: string;
+}
+
+/** Ergebnis des Speicherns (Go: PlanSaved); stale = Datei seit dem Laden von außen geändert, der Entwurf bleibt */
+export interface PlanSaved {
+  stand: string;
+  hint: string;
+  error: string;
+  stale: boolean;
 }
 
 /** Optionen der Live-Vorschau (Go: WorldPreviewArgs); Nullwerte: höchste Hub-Stufe, Tag, alle Gebäude. */
@@ -150,6 +197,10 @@ export interface Backend {
   worldLevel(seed: string, source: WorldSource): Promise<WorldLevelView>;
   /** Live-Vorschau: Welt zu den Optionen, aus der Vorschau-Funktion des Servers (B-460) */
   worldPreview(args: WorldPreviewArgs): Promise<WorldPreviewView>;
+  /** Geplante Chunks: data/islands.json lesen, einen Entwurf prüfen (ohne zu schreiben), die Planung einer Tiefe speichern (B-461) */
+  planLoad(): Promise<PlanView>;
+  planCheck(island: string, depth: number, chunks: PlannedChunk[]): Promise<PlanCheckView>;
+  planSave(island: string, depth: number, chunks: PlannedChunk[], stand: string): Promise<PlanSaved>;
   /** Im Spiel öffnen: `new` (neues Spiel mit dem Seed) oder `full` (voll ausgebaut), über die Landingpage des Servers unter base, nur Loopback */
   worldOpenGame(base: string, seed: string, biome: string, mode: 'new' | 'full'): Promise<OpenGameResult>;
   openUrl(url: string): void;

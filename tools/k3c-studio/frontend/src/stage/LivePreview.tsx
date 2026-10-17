@@ -4,7 +4,7 @@ import type { World } from '@game/model/types';
 import { backend, type WorldPreviewView } from '../api';
 import { useDebounced } from '../lib/useDebounced';
 import type { Look, PreviewStage } from './PreviewStage';
-import { backgroundToggles, buildingToggles, hubLevelChoices, previewArgsOf, worldOf } from './stageLogic';
+import { backgroundToggles, buildingToggles, hubLevelChoices, previewArgsOf, worldOf, type PlanSource } from './stageLogic';
 import { MAX_PROGRESS, TIMES_OF_DAY, brightnessOf, simTime, type TimeOfDayId } from './timeOfDay';
 
 const NONE: ReadonlySet<string> = new Set();
@@ -14,8 +14,8 @@ interface Answer { key: string; off: string; view: WorldPreviewView }
 /** Vorschau-Welt zu Seed, Biom, Hub-Stufe und Tageszeit. `all` hat alle Gebäude (daraus die Schalter), `view` die Auswahl.
  *  Die Auswahl gehört zu Seed, Biom und Hub-Stufe (`ctx`): wechselt eines davon, gilt sie sofort als leer. Jede Antwort
  *  trägt ihren Schlüssel, eine veraltete wird nie gezeigt; bis die neue da ist, bleibt die letzte Welt stehen. */
-function usePreviewWorld(seed: string, biome: string, hubLevel: number, time: { phase: 'day' | 'dusk' | 'night'; progress: number }) {
-  const ctx = `${seed}|${biome}|${hubLevel}`;
+function usePreviewWorld(seed: string, biome: string, hubLevel: number, time: { phase: 'day' | 'dusk' | 'night'; progress: number }, plan?: PlanSource) {
+  const ctx = `${seed}|${biome}|${hubLevel}|${JSON.stringify(plan ?? null)}`;
   const key = `${ctx}|${time.phase}|${time.progress}`;
   const [chosen, setChosen] = useState<{ ctx: string; off: ReadonlySet<string> }>({ ctx, off: NONE });
   const off = chosen.ctx === ctx ? chosen.off : NONE;
@@ -26,16 +26,16 @@ function usePreviewWorld(seed: string, biome: string, hubLevel: number, time: { 
 
   useEffect(() => {
     let current = true;
-    void backend.worldPreview(previewArgsOf(seed, biome, hubLevel, NONE, time)).then((view) => { if (current) setAll({ key, off: '', view }); });
+    void backend.worldPreview(previewArgsOf(seed, biome, hubLevel, NONE, time, plan)).then((view) => { if (current) setAll({ key, off: '', view }); });
     return () => { current = false; };
-  }, [seed, biome, hubLevel, time, key]);
+  }, [seed, biome, hubLevel, time, key, plan]);
 
   useEffect(() => {
     if (off.size === 0) return;
     let current = true;
-    void backend.worldPreview(previewArgsOf(seed, biome, hubLevel, off, time)).then((view) => { if (current) setPart({ key, off: offKey, view }); });
+    void backend.worldPreview(previewArgsOf(seed, biome, hubLevel, off, time, plan)).then((view) => { if (current) setPart({ key, off: offKey, view }); });
     return () => { current = false; };
-  }, [seed, biome, hubLevel, time, key, off, offKey]);
+  }, [seed, biome, hubLevel, time, key, off, offKey, plan]);
 
   const fresh = off.size === 0 ? (all?.key === key ? all.view : null) : (part?.key === key && part.off === offKey ? part.view : null);
   useEffect(() => { if (fresh) setShown(fresh); }, [fresh]);
@@ -105,7 +105,7 @@ function LookControls({ biome, timeId, setTimeId, progress, setProgress, hidden,
 /** Live-Vorschau des Welt-Betrachters (B-460/AC-04, AC-05): die Welt des Spiels mit der Spielgrafik auf der Phaser-Bühne
  *  des Studios. Hub-Stufe aus `data/hub.json` › `levels`, Gebäude einzeln ein und aus, Tageszeit, Hintergrund-Schichten
  *  mit Parallaxe (Kamera scrollt). `active` = sichtbar. */
-export function LivePreview({ seed, biome, active }: { seed: string; biome: string; active: boolean }) {
+export function LivePreview({ seed, biome, active, plan }: { seed: string; biome: string; active: boolean; plan?: PlanSource }) {
   const choices = useMemo(() => hubLevelChoices(), []);
   const [hubLevel, setHubLevel] = useState(choices.at(-1) ?? 1);
   const [timeId, setTimeId] = useState<TimeOfDayId>('day');
@@ -114,7 +114,7 @@ export function LivePreview({ seed, biome, active }: { seed: string; biome: stri
   const time = useMemo(() => simTime(timeId, settled), [timeId, settled]);
   const [hiddenFor, setHiddenFor] = useState<{ biome: string; hidden: ReadonlySet<string> }>({ biome, hidden: NONE });
   const hidden = hiddenFor.biome === biome ? hiddenFor.hidden : NONE;
-  const { all, view, off, toggle } = usePreviewWorld(seed, biome, hubLevel, time);
+  const { all, view, off, toggle } = usePreviewWorld(seed, biome, hubLevel, time, plan);
   const host = useRef<HTMLDivElement>(null);
   const world = useMemo(() => worldOf(view), [view]);
   const look = useMemo<Look>(() => ({ brightness: world ? brightnessOf(world.cycle) : 1, hiddenLayers: hidden }), [world, hidden]);

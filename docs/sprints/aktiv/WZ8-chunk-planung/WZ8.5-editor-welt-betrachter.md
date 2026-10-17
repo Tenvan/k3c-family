@@ -1,6 +1,6 @@
 # WZ8.5 · Editor für geplante Chunks im Welt-Betrachter
 
-- **Status:** in Arbeit
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** DEV
@@ -60,5 +60,13 @@ Bei laufender Workbench `check_run`. Fenster- und Browserprüfungen nur, wenn �
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+Umgesetzt von Claude (autonom), 2026-10-17; getrennter Reviewer-Agent vor dem Commit, keine schweren Befunde (Hinweise zu Dateirechten und `useMemo` sofort umgesetzt).
+
+- **AC-09 umgesetzt, geprüft:** Editor im Welt-Betrachter (`PlanEditor.tsx`, `usePlan.ts`, reine Logik `plan.ts`): Insel und Stufe wählen, Chunk am Platz anlegen, Art, Chunk-Seed und feste Objekte (Art, Lage) bearbeiten, löschen; der Entwurf bleibt im Speicher, jede Änderung ruft nach 200 ms die Prüfung (`PlanCheck`) auf; die Vorschauen zeigen den letzten gültigen Entwurf; Speichern nur bei gültigem Entwurf. Tests: `plan.test.ts` (Logik), `PlanEditor.test.tsx` (DOM mit Mock-Backend), `tools/k3c-studio/app_plan_test.go`.
+- **AC-06 geprüft:** Prüffehler stehen am Platz (`.wd-error` im Chunk, Test mit „volcano“ und Platz 0); Fehler ohne Platz (Summen, „kein Platz mehr“) stehen über der Liste. Go-Seite: `PlanCheck` liefert den Platz aus der Meldung der Prüfung.
+- **AC-11 geprüft:** `WorldLevel` und `WorldPreview` lösen die Quelle über dieselbe Funktion (`resolveSource`: Biom bzw. Insel + Stufe + Entwurf) und rufen denselben Generator; Go-Test `TestChunkUndLiveVorschauLesenDieselbeQuelle` (Layout der Chunk-Vorschau gleich `Level` der Live-Vorschau, das geplante Portal bei Hub +325 steht darin) und Frontend-Test (beide fragen mit Insel, Stufe, demselben Entwurf; bei ungültigem Entwurf bleibt das letzte Bild).
+- **AC-12 geprüft (Tests auf Kopien in `t.TempDir()`):** `PlanSave` schreibt format-stabil (nur der Wert von `plannedChunks` der Insel ändert sich, Offsets über den JSON-Decoder; fehlendes Feld wird angehängt), byte-gleich ohne Änderung, atomar (Temp-Datei im selben Ordner, Rechte bleiben, keine Reste), mit Stand-Prüfung (SHA-256; veraltet → `data/islands.json geändert, bitte neu laden`, Datei und Entwurf bleiben) und mit dem REG-Hinweis „REG-Änderung: Commit mit Begründung, `task golden:update` nur bei gewollter Änderung“. `git status` zeigt keine Änderung an `data/islands.json`.
+- **Chunk-Vorschau auf Insel und Stufe umgestellt:** `ChunkPreview` hat statt der Biom-Auswahl Insel und Stufe (im Editor), lädt bei jeder Änderung der Quelle neu; Stufe → Biom aus den Tiefen der Insel. `WorldSource.Planned` (nil = gespeicherte Planung bei einer Insel).
+- **Prüfläufe:** `task check` grün (`check_run`); `task check:studio` ist in der Workbench nicht freigegeben (Schloss geschlossen), deshalb dieselben Schritte einzeln in der Shell: `npm ci` im Studio-Frontend (Abhängigkeiten fehlten im Checkout), `vitest` (134 Tests grün), `tsc --noEmit`, `vite build`, `go test ./...` und `golangci-lint run` im Studio-Modul (0 Befunde). `task check:dev` nicht gefahren (k3c-dev unberührt).
+- **Abweichungen:** Der Umfang liegt über dem Richtwert von etwa 400 Zeilen (rund 1000 Zeilen mit Tests); ein Rest-Ticket gibt es nicht, weil kein Kriterium offen ist. `PreviewOptions.Planned == nil` bei der Quelle Biom bedeutet keine Planung (siehe WZ8.4).
+- **Manuelle Prüfung:** keine (Fenster- oder Browserprüfung nur durch 🧑 in WZ8.7). Neue Tickets: keine.
