@@ -1,6 +1,6 @@
 # WZ8.5 · Editor für geplante Chunks im Welt-Betrachter
 
-- **Status:** offen
+- **Status:** in Arbeit
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** DEV
