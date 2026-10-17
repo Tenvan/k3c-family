@@ -1,6 +1,6 @@
 # WZ6.3 · Seite Grafik mit Asset-Vorschau und Grafik-Packs im Asset-Studio
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** DEV
@@ -110,11 +110,11 @@ Sound-Teil: Hörprobe, Szenen `sfx`, `musik`, `ambient`, Inhalt von `soundtest.h
 
 ## Fertig, wenn
 
-- [ ] AC-02: Seite Grafik mit Slots, Filtern (Kategorie, Typ, Status, Suche), Präferenzen (umordnen, hinzufügen, entfernen), Mini-Szene, Katalog, Recherche, Ausschnitt-Editor und Import; kopierter `assets.test.ts` im Prüfziel des Studios grün.
-- [ ] AC-06: Reiter „Szenen“ zeigt Figuren (`renderReference`), Gebäude (Baum-Reihe, 32 px ×1 neben 16 px ×2, Stufenreihen, Gebäude-Vorlagen), Umgebung mit Hintergründen (je Biom fern → nah, 32 px ×1 und 16 px ×2), Objekte und HUD; Reiter „Packs“ zeigt `GRAFIK_PACKS` und die Bilder; kopierter Logik-Test grün; Screenshot im Ergebnis, falls 🧑 die Sichtprüfung freigegeben hat (sonst Nachweis in WZ6.8).
-- [ ] AC-07: Test: Neuladen hält Auswahl, Filter und Ausschnitt-Entwurf; Test: abgelehntes Speichern führt zu „Register geändert, bitte erneut speichern“, die Eingaben bleiben.
-- [ ] `git diff --name-only` der Session zeigt nichts unter `src/`, `data/`, `public/` und weder `grafiken.html` noch `assetvorschau.html`.
-- [ ] Prüfziel des Asset-Studios, `task check` und `task k3c-studio:build` grün (Oxlint: Datei ≤ 400, Funktion ≤ 60 Zeilen).
+- [x] AC-02: Seite Grafik mit Slots, Filtern (Kategorie, Typ, Status, Suche), Präferenzen (umordnen, hinzufügen, entfernen), Mini-Szene, Katalog, Recherche, Ausschnitt-Editor und Import; kopierter `assets.test.ts` im Prüfziel des Studios grün.
+- [x] AC-06: Reiter „Szenen“ zeigt Figuren (`renderReference`), Gebäude (Baum-Reihe, 32 px ×1 neben 16 px ×2, Stufenreihen, Gebäude-Vorlagen), Umgebung mit Hintergründen (je Biom fern → nah, 32 px ×1 und 16 px ×2), Objekte und HUD; Reiter „Packs“ zeigt `GRAFIK_PACKS` und die Bilder; kopierter Logik-Test grün; Screenshot im Ergebnis, falls 🧑 die Sichtprüfung freigegeben hat (sonst Nachweis in WZ6.8).
+- [x] AC-07: Test: Neuladen hält Auswahl, Filter und Ausschnitt-Entwurf; Test: abgelehntes Speichern führt zu „Register geändert, bitte erneut speichern“, die Eingaben bleiben.
+- [x] `git diff --name-only` der Session zeigt nichts unter `src/`, `data/`, `public/` und weder `grafiken.html` noch `assetvorschau.html`.
+- [ ] Prüfziel des Asset-Studios, `task check` und `task k3c-studio:build` grün (Oxlint: Datei ≤ 400, Funktion ≤ 60 Zeilen): `check:studio` und `k3c-studio:build` grün, Oxlint ohne Befund im Studio; `task check` rot nur durch den vorbestehenden Lint-Fehler auf `develop` (B-465), Typecheck und Tests grün.
 
 ## Prüfen
 
@@ -128,5 +128,10 @@ Browser-/Fensterprüfung nur mit Freigabe 🧑 für diesen Lauf: Mock des Studio
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+- **AC-02 umgesetzt, geprüft:** Seitenstruktur aus `tools/k3c-dev/frontend/src/assets/` nach `tools/k3c-studio/frontend/src/assets/` kopiert (Art fest je Seite, ohne Vite-Adresse und „Vite starten“, `fileUrl` relativ); Abhängigkeiten laut Tabelle kopiert (`lib/`, `ui/parts.tsx` ohne `Tip`, `ui/Splitter.tsx`, `styles/`), `api/` mit Wails-Bindings und Mock. `assets.test.ts` grün in `task check:studio`. Fenster (EXE, echte Daten): 119 Slots mit Filtern, Slot `farm` mit Präferenz, Ausschnitt-Editor und Mini-Szene.
+- **AC-06 umgesetzt, geprüft:** Reiter Szenen (Figuren über `renderReference`, Gebäude mit Baum-Reihe, 32/16 px, Stufenreihen, Vorlagen; Umgebung mit Hintergründen je Biom; Objekte; HUD; Vergleich Präferenz n) und Packs (`GRAFIK_PACKS`, `grafik/index.json`, Zoom). `szenenLogic.ts` (Kopie von `assetvorschauLogic.ts`, ohne `parseQuery`) mit Test grün. Sichtprüfung im Fenster `bin/k3c-studio.exe` mit Freigabe 🧑 (2026-10-17, Chat): Screenshots Slots, Slot farm, Figuren, Gebäude, Umgebung, Hintergründe, Packs im Notizordner der Session-Gruppe (`side-session-notes/…/wz6.3-screenshots/`). Bilder kommen über den Asset-Handler.
+- **AC-07 umgesetzt, geprüft:** `useAssets` lädt bei `assets:changed` neu und ersetzt nur `view`; ein kurz ungültiges Register lässt die letzten gültigen Daten stehen (Meldung statt leerer Seite); Speichern mit Stand, Ablehnung → neu laden, Meldung „Register geändert, bitte erneut speichern“. `reload.test.tsx` (happy-dom, Mock als Fremdschreiber): Auswahl, Suchfilter und Ausschnitt-Entwurf bleiben beim Neuladen; abgelehntes Speichern meldet, hält die Eingaben, das zweite Speichern gelingt. Unit-Tests für `applySaved`, `selectionOf` (verschwundener Slot → Hinweis) und `isStale` (Text von Wails, Error vom Mock).
+- **Prüfung:** `task check:studio` grün (42 Tests, Go-Tests, Lint), `task k3c-studio:build` grün (`public/` nicht in `dist/`), `check_run task:test` und `task:typecheck` grün; `task:lint` rot nur durch B-465 (vorbestehend, deshalb letztes Kästchen offen). Die EXE lauscht auf keinem Port.
+- **Review (getrennter Reviewer):** keine schweren Befunde; behoben: fehlende Tests der reinen Funktionen, Seite bleibt bei ungültigem Zwischenstand, Meldungen werden beim Neuladen geräumt, Rückweg im STALE-Test, Import `./paths.ts`. Offen gelassen: Reihenfolgeschutz paralleler Neuladen (heilt sich selbst), Filter Kategorie/Typ/Status gehen beim Reiterwechsel verloren (Neuladen hält sie), `studio:frontend`-`sources` ohne Alias-Eingaben (lokaler Cache; CI baut immer), Abbruch älterer `draw`-Aufrufe in `pixel.tsx`.
+- **Abweichungen:** Gebäude-Bodenlinie ohne Hintergrund-Schichten (in `assetvorschau.html` schoben die 15 Kacheln hohen Schichten seit GEB7 alles nach unten). CI-Job `k3c-studio` um den Studio-Vitest ergänzt (`.github/workflows/ci.yml`, nicht in den erlaubten Dateien; sonst liefe der Komponententest nach dem Ausschluss aus dem Wurzel-Vitest nicht mehr in der CI, AC-04). Studio-`tsconfig` mit Typen `node`; `vitest`, `happy-dom` und `@types/node` kommen aus den `node_modules` der Wurzel (`task install`). `PacksView` nutzt `textOf` aus `@game/tools/texts` für die Gruppennamen `grafik.group.*` (bleiben für `grafiken.html`).
+- **Geprüft von:** Claude (autonom, Fenster mit Freigabe 🧑). **Neue Tickets:** B-471 (Abmeldung der Animationsschleife in `renderReference`).

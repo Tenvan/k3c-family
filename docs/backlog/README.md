@@ -158,6 +158,7 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-464](B-464-gegner-bosse-vorschau.md) | DEV | Idee | mittel | eingeplant | WZ10 | Eine Gegner-Seite im Asset-Studio zeigt alle Gegnertypen und Bosse mit ihren Vorschauen |
 | [B-465](B-465-lint-sprintsbacklog-zeilen.md) | DEV | Problem | hoch | offen | – | task lint ist auf develop rot, weil SprintsBacklog 61 Zeilen hat |
 | [B-467](B-467-worktree-pill-am-eintrag.md) | DEV | Idee | mittel | offen | – | Worktree-Änderungen stehen als Pill am Projekt, Sprint oder an der Session statt als Leiste oben |
+| [B-471](B-471-renderreference-abmelden.md) | DEV | Schuld | niedrig | offen | – | renderReference beendet seine Animationsschleife, wenn die Karten verschwinden |
 
 ## Archiv
 

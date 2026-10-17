@@ -1,0 +1,36 @@
+/* Reiter Szenen und Packs der Seite Grafik (aus assetvorschau.html und grafiken.html, B-459): Streifen mit Himmel und
+   Bodenlinie, Karten im Pixel-Look, Lücken gestrichelt. */
+.sz-page, .pk-page { display: flex; flex-direction: column; gap: 10px; }
+.sz-title { color: var(--title); font-size: 16px; margin: 12px 0 4px; }
+.sz-dim { color: var(--dim); font-size: 12px; }
+.sz-strip {
+  display: flex; flex-wrap: wrap; gap: 24px; align-items: flex-end; overflow-x: auto; padding: 16px;
+  border-bottom: 4px solid #5b4a3a; background: linear-gradient(#2c3350, #4a3a5c); border-radius: 8px 8px 0 0;
+}
+.sz-top { align-items: flex-start; } /* Bilder per Rand auf eine Bodenlinie, Vorlagen-Text fließt darunter */
+.sz-umgebung { flex-wrap: nowrap; }
+.sz-hud { background: #0b0e13; border-bottom-color: var(--card-line); }
+.sz-column { flex-direction: column; align-items: flex-start; }
+.sz-row { display: flex; gap: 16px; align-items: flex-start; }
+.sz-fig { margin: 0; flex: 0 0 auto; max-width: 40rem; color: #e8edf4; }
+.sz-fig figcaption { font-size: 12px; margin-top: 4px; word-break: break-all; }
+.sz-canvas { display: block; image-rendering: pixelated; }
+.sz-nc { color: #ff8fa3; font-weight: bold; }
+.sz-gap { border: 2px dashed #ff8fa3; color: #ff8fa3; padding: 20px 14px; font-size: 13px; min-width: 120px; text-align: center; }
+.sz-change { max-width: 10rem; font-size: 12px; margin: 4px 0 0; }
+.sz-vorlage { max-width: 16rem; font-size: 12px; margin-top: 4px; }
+.sz-vorlage ul { margin: 2px 0 0; padding-left: 16px; }
+.sz-figuren .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(18rem, 1fr)); gap: 12px; }
+.sz-figuren article { background: var(--card); border: 1px solid var(--card-line); border-radius: 10px; padding: 10px; }
+.sz-figuren article canvas { width: 100%; aspect-ratio: 320 / 220; display: block; border-radius: 6px; background: linear-gradient(#2c3350, #4a3a5c); }
+.sz-figuren article h3 { font-size: 14px; margin: 8px 0 2px; color: var(--title); }
+.sz-figuren article p { margin: 0; font-size: 12px; word-break: break-all; }
+.sz-figuren h2 { font-size: 16px; color: var(--title); }
+.sz-figuren h2 small, .sz-figuren .dim { color: var(--dim); font-weight: normal; }
+.pk-pack { border-top: 1px solid var(--card-line); padding-top: 8px; }
+.pk-pack h4 { margin: 10px 0 4px; font-size: 13px; color: var(--dim); }
+.pk-chips { display: flex; flex-wrap: wrap; gap: 6px; }
+.pk-chips span { border: 1px solid var(--card-line); border-radius: 999px; padding: 1px 8px; font-size: 12px; }
+.pk-note { color: var(--dim); font-size: 13px; margin: 6px 0; }
+.pk-imgs { display: flex; flex-wrap: wrap; gap: 12px; align-items: flex-end; background: #11151c; border-radius: 8px; padding: 10px; }
+.pk-imgs img { display: block; image-rendering: pixelated; }

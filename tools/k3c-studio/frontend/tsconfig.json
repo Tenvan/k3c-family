@@ -1,5 +1,6 @@
 {
-  // Typecheck des Asset-Studio-Frontends (wie k3c-dev). Die Tests laufen im Vitest des Hauptprojekts.
+  // Typecheck des Asset-Studio-Frontends (wie k3c-dev). Spiel-Code und Daten nur über @game (src/) und @data (data/);
+  // die importierten Dateien aus src/ prüft dieser Typecheck mit. Die Tests laufen mit vitest.config.ts (task check:studio).
   "compilerOptions": {
     "target": "ES2022",
     "module": "ESNext",
@@ -10,9 +11,16 @@
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     "noFallthroughCasesInSwitch": true,
+    "resolveJsonModule": true,
+    "allowImportingTsExtensions": true,
+    "noEmit": true,
     "isolatedModules": true,
     "skipLibCheck": true,
-    "types": ["vite/client"]
+    "types": ["vite/client", "node"],
+    "paths": {
+      "@game/*": ["../../../src/*"],
+      "@data/*": ["../../../data/*"]
+    }
   },
-  "include": ["src", "vite.config.ts"]
+  "include": ["src", "paths.ts", "vite.config.ts", "vitest.config.ts"]
 }

@@ -1,37 +1,22 @@
 import { Tabs, Text, Theme } from '@radix-ui/themes';
 import { useState } from 'react';
+import { backend } from './api';
+import { GrafikPage } from './grafik/GrafikPage';
+import { loadPref, savePref } from './lib/prefs';
+import { StatusBadge } from './ui/parts';
 
 export const PAGES = ['grafik', 'sound'] as const;
 export type Page = (typeof PAGES)[number];
 
 const LABELS: Record<Page, string> = { grafik: 'Grafik', sound: 'Sound' };
-const PREF = 'studio.page';
 
-/** Gemerkte Seite; fehlt sie oder ist sie unbekannt, gilt Grafik. */
-function loadPage(): Page {
-  try {
-    const v = localStorage.getItem(PREF);
-    return PAGES.includes(v as Page) ? (v as Page) : 'grafik';
-  } catch {
-    return 'grafik';
-  }
-}
-
-function savePage(page: Page) {
-  try {
-    localStorage.setItem(PREF, page);
-  } catch {
-    // ohne Speicher (Test, gesperrt) bleibt die Wahl nur bis zum Neuladen
-  }
-}
-
-/** Rahmen des Asset-Studios (B-459): Kopfzeile mit Navigation Grafik/Sound; die Seiten füllen WZ6.3 und WZ6.4. */
+/** Rahmen des Asset-Studios (B-459): Kopfzeile mit Navigation Grafik/Sound; die Seite Sound füllt WZ6.4. */
 export function App({ initial }: { initial?: Page }) {
-  const [page, setPage] = useState<Page>(() => initial ?? loadPage());
+  const [page, setPage] = useState<Page>(() => initial ?? loadPref('app.page', PAGES, 'grafik'));
   const choose = (value: string) => {
-    const next = PAGES.includes(value as Page) ? (value as Page) : 'grafik';
+    const next = PAGES.find((p) => p === value) ?? 'grafik';
     setPage(next);
-    savePage(next);
+    savePref('app.page', next);
   };
   return (
     <Theme appearance="dark">
@@ -45,15 +30,13 @@ export function App({ initial }: { initial?: Page }) {
               </Tabs.Trigger>
             ))}
           </Tabs.List>
+          {backend.mock && <StatusBadge tone="warn">Mock</StatusBadge>}
         </header>
         <main className="page">
-          {PAGES.map((p) => (
-            <Tabs.Content key={p} value={p}>
-              <Text color="gray" size="2">
-                Seite {LABELS[p]} folgt.
-              </Text>
-            </Tabs.Content>
-          ))}
+          <Tabs.Content value="grafik">{page === 'grafik' && <GrafikPage />}</Tabs.Content>
+          <Tabs.Content value="sound">
+            <Text color="gray" size="2">Seite Sound folgt.</Text>
+          </Tabs.Content>
         </main>
       </Tabs.Root>
     </Theme>

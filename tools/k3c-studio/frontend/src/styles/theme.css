@@ -1,0 +1,35 @@
+/* Kopie aus k3c-dev (ohne Konsolen-Farben). Farben der Oberfläche: das Standard-Theme von Radix (Hell/Dunkel über `appearance`, Akzent und Grau unverändert).
+   Die eigenen Namen unten zeigen nur auf Radix-Variablen, die Seiten-CSS bleibt so lesbar. Radix definiert seine
+   Variablen am `.radix-themes`-Element, deshalb stehen auch diese Namen dort und nicht an :root. */
+.radix-themes {
+  --text: var(--gray-12);
+  --dim: var(--gray-11);
+  --card: var(--color-panel-solid);
+  --card-line: var(--gray-a5);
+  --ok: var(--green-9);
+  --error: var(--red-9);
+  --info: var(--blue-9);
+  --warn: var(--amber-9);
+  --neutral: var(--gray-9);
+  --title: var(--accent-11);
+  --gold: var(--accent-9);
+  --gold-deep: var(--accent-10);
+  --on-accent: var(--accent-contrast);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+  margin: 0;
+  min-height: 100%;
+}
+
+/* Scrollbars: schmal, Daumen in Theme-Grau, Spur transparent (scrollbar-color erbt an alle Kinder). Die Seiten-Scrollbar
+   hängt am <html> außerhalb von .radix-themes, deshalb dort ein neutrales Grau, das in hell und dunkel trägt. */
+html { scrollbar-width: thin; scrollbar-color: rgb(128 128 128 / 0.45) transparent; }
+.radix-themes { scrollbar-width: thin; scrollbar-color: var(--gray-a7) transparent; }
+.radix-themes :hover { scrollbar-color: var(--gray-a9) transparent; }

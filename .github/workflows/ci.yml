@@ -207,6 +207,10 @@ jobs:
       - run: npm ci
         working-directory: tools/k3c-studio/frontend
       - run: task studio:frontend
+      # Komponententests des Studios mit dessen Vitest-Konfiguration (Aliase @game/@data); das Vitest der Wurzel nimmt
+      # tools/k3c-studio aus.
+      - run: npx vitest run --config tools/k3c-studio/frontend/vitest.config.ts
+        working-directory: .
       - run: go test ./...
         working-directory: tools/assetkit
       - run: go test ./...

@@ -226,9 +226,10 @@ tasks:
       - dist/**/*
 
   check:studio:
-    desc: Asset-Studio und gemeinsame Asset-Logik prüfen (Frontend, go test, golangci-lint; B-459)
+    desc: Asset-Studio und gemeinsame Asset-Logik prüfen (Frontend mit Vitest, go test, golangci-lint; B-459)
     deps: [tmp, studio:frontend]
     cmds:
+      - npx vitest run --config {{.STUDIO}}/frontend/vitest.config.ts
       - cd tools/assetkit && go test ./...
       - cd tools/assetkit && golangci-lint run
       - cd {{.STUDIO}} && go test ./...
