@@ -67,7 +67,7 @@ Entschieden von 🧑 am 2026-10-17 (B-459 › Offene Fragen); Revision 2 freigeg
 | WZ6.4 | `WZ6.4-seite-sound.md` | Umsetzung | autonom | fertig |
 | WZ6.5 | `WZ6.5-workbench-ohne-assets.md` | Umsetzung | autonom | fertig |
 | WZ6.6 | `WZ6.6-assetvorschau-entfernen.md` | Umsetzung | autonom | fertig |
-| WZ6.7 | `WZ6.7-review.md` | Review | autonom | offen |
+| WZ6.7 | `WZ6.7-review.md` | Review | autonom | in Arbeit |
 | WZ6.8 | `WZ6.8-abnahme.md` | Review | Mensch | offen |
 
 ## Abnahme

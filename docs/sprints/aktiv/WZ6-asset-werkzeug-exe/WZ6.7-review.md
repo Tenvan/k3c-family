@@ -1,6 +1,6 @@
 # WZ6.7 · Review WZ6
 
-- **Status:** offen
+- **Status:** in Arbeit
 - **Typ:** Review
 - **Agent:** autonom
 - **Domäne:** DEV
