@@ -22,7 +22,7 @@ Abnahmen am Gerät (`Agent: Mensch`) sammelt das Projekt ABN im Sprint HW1: [`..
 |---|---|---|---|---|---|---|
 | WZ7 | DEV | WZG | Welt-Betrachter im Asset-Studio mit Chunk- und Live-Vorschau | – | Entwurf | `geplant/WZ7-welt-betrachter/` |
 | WZ8 | SIM | WZG | Chunks je Insel und Stufe planen: Seed oder feste Objekte | – | Entwurf | `geplant/WZ8-chunk-planung/` |
-| WZ9 | DEV | WZG | Gebäude-Planer für die Freischaltung je Hub-Stufe | – | Entwurf | `geplant/WZ9-gebaeude-planer/` |
+| WZ9 | REG, INF, SIM, SRV, DEV | WZG | Gebäude-Planer für die Freischaltung je Hub-Stufe | – | Entwurf | `geplant/WZ9-gebaeude-planer/` |
 | WZ10 | DEV | WZG | Abspiel-Bausteine und Monarch-Vorschau im Asset-Studio | – | Entwurf | `geplant/WZ10-figuren-vorschau/` |
 | WZ11 | DEV | WZG | Gegner- und Boss-Vorschau im Asset-Studio, Figuren-Seiten entfernen | – | Entwurf | `geplant/WZ11-gegner-bosse-vorschau/` |
 | WZ12 | DEV | WZG | Planungs-Werkzeug: Platzhalter-Zeilen und Worktree-Pills | – | Entwurf | `geplant/WZ12-planungs-werkzeug-nachtraege/` |

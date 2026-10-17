@@ -1,0 +1,67 @@
+# WZ9.2 · Generator und Task rules:update für die Regeltabelle
+
+- **Status:** offen
+- **Typ:** Umsetzung
+- **Agent:** autonom
+- **Domäne:** INF
+- **Umgebung:** offline
+- **Branch:** wz9/2-regeltabelle-generator
+- **Abhängig von:** WZ9.1
+- **Tickets:** B-462
+- **Kriterien:** AC-08, AC-09, AC-10
+
+## Ziel
+
+Ein Go-Generator (`tools/regeltabelle`, reine Funktion in `tools/regeltabelle/tabelle`) und der Task `rules:update` schreiben den Block aus WZ9.1 aus `data/hub.json` byte-gleich in § 3; Go-Test und Marker-Test sichern Block = JSON.
+
+## Kontext
+
+- Zielformat und Marker legt WZ9.1 in `docs/rules/materialien-gebaeude.md` § 3 fest; der Generator muss genau dieses Format erzeugen.
+- Das Paket `tools/regeltabelle/tabelle` wird vom Studio-Backend importiert (WZ9.5 Abweichungsanzeige, WZ9.6 schreibt den Block beim Speichern). Deshalb gehören auch das Ersetzen des Blocks zwischen den Markern und die Gegenprobe in dieses Paket, nicht in `main.go`: Es gibt nur eine Implementierung. Die EXE `bin/regeltabelle` entsteht nur über den Task (Firewall-Regel B-459: Generator nur als gebaute EXE).
+- Aufgaben laufen ausschließlich über `Taskfile.yml`. Tests: Go-Test (Block = JSON) und `tests/projectRules.test.ts` (Marker vorhanden, je einmal).
+- Eine 7-Stufen-Fixture unter `testdata/hub/` (Werte frei, nicht in `data/`) zeigt, dass der Generator keine feste 5 kennt (AC-09). `data/hub.json` bleibt unverändert.
+
+## Erlaubte Dateien
+
+- `Taskfile.yml`
+- `tools/regeltabelle/` (neu, inklusive `tabelle/` und Tests)
+- `tests/projectRules.test.ts`
+- `testdata/hub/` (neu, 7-Stufen-Fixture)
+- `.gitignore` nur für `bin/regeltabelle`, falls nötig
+
+## Nicht-Ziele
+
+Keine Änderung an `data/hub.json`, `docs/rules/` (außer durch den Task selbst, dann ohne Diff), `engine/` oder `tools/k3c-studio/`. Keine neue Abhängigkeit. Das Schreiben des Blocks aus dem Studio ist nicht Teil dieser Session (WZ9.6); sie liefert dafür die Funktionen.
+
+## Schritte
+
+1. WZ9.1-Ergebnis und `data/hub.json` lesen; Marker und Spalten übernehmen.
+2. `tools/regeltabelle/tabelle`: reine Funktion `Block(hubJSON []byte) (string, error)` für beliebig viele `levels`; `Ersetzen(doc, block string) (string, error)` ersetzt nur den Text zwischen den Markern (Rest byte-gleich, Marker fehlen oder doppelt → Fehler); Gegenprobe-Funktion (ist-Block gegen soll-Block) für das Studio.
+3. `tools/regeltabelle/main.go`: liest `data/hub.json`, ruft `Block` und `Ersetzen` auf, schreibt atomar.
+4. Task `rules:update` in `Taskfile.yml` (baut `bin/regeltabelle`, führt aus).
+5. Go-Test: Block der Datei = `Block(data/hub.json)`; Tests für `Ersetzen` (Rest byte-gleich, Fehlerfälle); Test mit der 7-Stufen-Fixture unter `testdata/hub/` (keine feste 5).
+6. `tests/projectRules.test.ts`: beide Marker je genau einmal in § 3.
+7. `task rules:update` auf dem Stand: kein Diff in `docs/rules/materialien-gebaeude.md`.
+
+## Fertig, wenn
+
+- [ ] AC-08: `task rules:update` erzeugt keinen Diff in § 3; Go-Test (Block = JSON) und Marker-Test grün.
+- [ ] AC-09: Test mit 7-Stufen-Fixture grün, im Generator keine feste 5.
+- [ ] AC-10: `git diff --stat origin/develop -- data/hub.json testdata/golden` leer.
+- [ ] `task check` und `task check:go` grün.
+
+## Prüfen
+
+```bash
+task rules:update
+git diff --stat docs/rules/materialien-gebaeude.md data/hub.json testdata/golden
+task check
+task check:go
+```
+
+Unter k3c-dev: `check_run` mit `checkout`. Keine manuelle Prüfung.
+
+## Ergebnis
+
+Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
+`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.

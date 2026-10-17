@@ -1,13 +1,13 @@
-# WZ9 · DEV · Gebäude-Planer für die Freischaltung je Hub-Stufe
+# WZ9 · REG, INF, SIM, SRV, DEV · Gebäude-Planer für die Freischaltung je Hub-Stufe
 
 - **Status:** geplant
 - **Projekt:** WZG
-- **Domäne:** DEV
+- **Domäne:** REG, INF, SIM, SRV, DEV
 - **Reife:** Entwurf
 - **Tickets:** B-462
 - **Start-Commit:** – (wird beim Aktivieren gesetzt: `git rev-parse --short origin/develop`)
 - **Spec:** Entwurf
-- **Revision:** 1
+- **Revision:** 3
 - **Freigabe:** –
 
 ## Ausgangslage
@@ -28,12 +28,13 @@ B-462 › Beteiligte und Zielgruppen. Im Sprint: Agenten setzen WZ9.1–WZ9.7 um
 
 B-462 › Anforderungen. Sprint-eigen:
 - **Reihenfolge:** Erst legt REG das Zielformat der Tabelle von Hand fest (WZ9.1), dann erzeugt INF genau diesen Block (WZ9.2), dann stellt SIM die Prüfung bereit (WZ9.3), dann baut SRV die Kandidaten-Option in den Snapshot (WZ9.4); der Planer (WZ9.5, WZ9.6) baut auf Generator, Prüfung und Snapshot-Option auf.
-- **Generator in Go:** `tools/regeltabelle` (Task, EXE `bin/regeltabelle`) und das Paket `tools/regeltabelle/tabelle` (reine Funktion, vom Studio-Backend importiert); das Studio zeigt nur die Abweichung, es schreibt die Tabelle nie (B-462 › Offene Fragen 10).
+- **Generator in Go:** `tools/regeltabelle` (Task, EXE `bin/regeltabelle`) und das Paket `tools/regeltabelle/tabelle` (reine Funktion, vom Studio-Backend importiert). Das Studio zeigt die Abweichung und **schreibt beim Speichern nach `data/hub.json` den erzeugten Block in § 3** (nur zwischen den Markern, atomar; B-462 › Offene Fragen 8 und 10).
+- **Bauplätze hinzufügen und entfernen (Entscheidung 5):** Der Planer lässt nur bekannte `kind`-Arten zu; die Prüfung (WZ9.3) kennt Pflichtplätze und die Arten-Liste; Bedienung in WZ9.6.
 - **Kandidat ohne globalen Zustand:** Prüfung (WZ9.3) und Snapshot-Option (WZ9.4) nehmen die Kandidaten-`hub.json` als Parameter; kein `sim.UseData`, keine globale Umschaltung. Die Options-Struktur der Snapshot-Funktion legt WZ7.1 an.
 - **Linien als Parameter in `engine/level` (darf WZ9.3 ändern):** Die Kandidaten-Linien erreichen Generator und Planungs-Prüfung nur über Parameter (Standard eingebettet, kein globaler Zustand). Hat WZ8 sie angelegt (WZ8.2, WZ8.3), baut WZ9.3 darauf auf; sonst legt WZ9.3 sie an (Zuschnitt wie B-461 › Anforderungen), auch ohne Planung. `sim.CreateIsland` nimmt die Options-Struktur aus WZ8.3; WZ9.3 ergänzt darin den Kandidaten als Feld (fehlt die Struktur, legt WZ9.3 sie an und passt alle Aufrufer an). **`sim.CreateOptions` ist eine neue Struktur nur für die Erzeugung, getrennt vom vorhandenen `sim.IslandOptions` (`engine/sim/island_options.go`, im Spielstand gespeichert); sie wird nicht gespeichert, Spielstand-Format und `IslandSaveVersion` bleiben unverändert.**
 - **Geplante Chunks (B-461, WZ8):** Die Prüfung aus WZ9.3 prüft sie mit, sofern WZ8 erledigt ist (Annahme: WZ7 → WZ8 → WZ9), gegen die Kandidaten-Linien; sonst Hinweis „geplante Chunks nicht geprüft“ und ein Ticket.
 - **Vorrang im Snapshot:** Sind „geplante Chunks“ (WZ8.4) und Kandidaten-`hub.json` (WZ9.4) zugleich gesetzt, gelten die Kandidaten-Linien, und die Planung wird gegen sie geprüft, nicht gegen die eingebetteten.
-- **Kein Datenwechsel im Sprint:** `data/hub.json` und `testdata/golden/` bleiben unverändert; Tests arbeiten auf Kopien. Die 7-Stufen-Fixture (AC-09) liegt unter `testdata/` (Vorschlag: `testdata/hub/`), nicht in `data/`; ihre Werte gibt der Sprint nicht vor, sie muss die Prüfung bestehen.
+- **Kein Datenwechsel im Sprint:** `data/hub.json`, die Regeltabelle (außer WZ9.1 und dem Task-Lauf ohne Diff) und `testdata/golden/` bleiben unverändert; Tests arbeiten auf Kopien. Die 7-Stufen-Fixture (AC-09) liegt unter `testdata/` (Vorschlag: `testdata/hub/`), nicht in `data/`; ihre Werte gibt der Sprint nicht vor, sie muss die Prüfung bestehen.
 - **Abhängigkeiten:** WZ9.4 braucht die Snapshot-Funktion WZ7.1; WZ9.5 braucht das Asset-Studio (WZ6), die Live-Vorschau (WZ7.3) und WZ9.4; WZ9.6 die Schreibregel aus B-459/AC-07.
 
 ## Nicht-Ziele
@@ -54,9 +55,9 @@ B-462 › Regeln und Einschränkungen. Für den Sprint:
 
 B-462 › Beispiele. Sprint-eigen:
 - Nach WZ9.2: `task rules:update` auf `develop`-Stand → kein Diff in `docs/rules/materialien-gebaeude.md`; Go-Test und Marker-Test grün.
-- Nach WZ9.3: `go test ./engine/sim` grün, `testdata/golden/` unverändert, `hubLevelRule` nicht mehr im Code; die 7-Stufen-Fixture besteht die Prüfung.
+- Nach WZ9.3: `go test ./engine/sim` grün, `testdata/golden/` unverändert, `hubLevelRule` nicht mehr im Code; die 7-Stufen-Fixture besteht die Prüfung; Heilplatz entfernen → kein Befund, Werkstatt entfernen → Befund.
 - Nach WZ9.4: Snapshot mit Kandidaten-`hub.json` (Rüstkammer ab Stufe 3) zeigt die Rüstkammer in Hub-Stufe 3, ohne Option nicht; zweimal derselbe Aufruf → byte-gleich.
-- Nach WZ9.6: Rüstkammer auf Stufe 3 im Planer → Live-Vorschau zeigt sie sofort → Speichern → Diff nur in einer Zeile, REG-Hinweis, Meldung „Regeltabelle veraltet“.
+- Nach WZ9.6: Rüstkammer auf Stufe 3 im Planer → Live-Vorschau zeigt sie sofort → Speichern → eine geänderte Zeile in `data/hub.json` und der neu erzeugte Block in § 3 (alles auf Kopien getestet), REG-Hinweis; „Regeltabelle veraltet“ nur, wenn das Schreiben des Blocks scheitert.
 
 ## Ausnahme- und Fehlerfälle
 
@@ -71,12 +72,12 @@ B-462 › Ausnahme- und Fehlerfälle. Sprint-eigen:
 ## Akzeptanzkriterien
 
 - **AC-01** `B-462/AC-01` Matrix Hub-Stufe × Bauplatz mit Platz und Tiefe.
-- **AC-02** `B-462/AC-02` Prüfung über eine Funktion in `engine/sim` ohne globalen Zustand (eine Quelle der Regeln), mit WZ8 inklusive geplanter Chunks aus `data/islands.json` gegen die Kandidaten-Linien (Linien als Parameter in `engine/level`); erst dann Schreiben von `data/hub.json`.
-- **AC-03** `B-462/AC-03` Abweichungen zur erzeugten Regeltabelle sichtbar (Berechnung im Go-Backend mit der Funktion des Tasks).
+- **AC-02** `B-462/AC-02` Prüfung über eine Funktion in `engine/sim` ohne globalen Zustand (eine Quelle der Regeln), auch für hinzugefügte und entfernte Plätze bekannter Arten, mit WZ8 inklusive geplanter Chunks aus `data/islands.json` gegen die Kandidaten-Linien (Linien als Parameter in `engine/level`); erst dann Schreiben von `data/hub.json`.
+- **AC-03** `B-462/AC-03` Abweichungen zur erzeugten Regeltabelle sichtbar (Berechnung im Go-Backend mit der Funktion des Tasks); beim Speichern schreibt der Planer den erzeugten Block in § 3 (nur zwischen den Markern, atomar, Fehler im zweiten Schritt → „Regeltabelle veraltet“).
 - **AC-04** `B-462/AC-04` Live-Vorschau zeigt den geprüften Stand des Planers, auch ungespeichert und ohne EXE-Neubau.
-- **AC-05** `B-462/AC-05` Hinweis auf REG-Änderung und Goldens.
+- **AC-05** `B-462/AC-05` Hinweis auf REG-Änderung (`data/hub.json` und Regeltabelle) und Goldens.
 - **AC-06** 🧑 nimmt den Gebäude-Planer im Asset-Studio ab (Abnahme-Session, Agent: Mensch).
-- **AC-07** `B-462/AC-06` Format stabil, atomar, Schreibregel bei extern geänderter Datei.
+- **AC-07** `B-462/AC-06` Format stabil, atomar, Schreibregel bei extern geänderter Datei (`data/hub.json` und Regeltabelle).
 - **AC-08** `B-462/AC-07` Regeltabelle in § 3 aus `data/hub.json` erzeugt (Go-Generator, Task `rules:update`), Go-Test Block = JSON, Marker-Test.
 - **AC-09** `B-462/AC-08` Mehr Hub-Stufen ohne Umbau: Eine Fixture mit 7 `levels` unter `testdata/`, die die Prüfung besteht, ohne vorgegebene Werte; sie darf Farm, Linie 1, `payRangeUnits` (soweit die Prüfung es als Parameter nimmt), Inset und Streuung frei wählen. Matrix, Prüfung, Generator und Snapshot-Option zeigen 7 Stufen (Tests), keine feste 5 im Code.
 - **AC-10** Der Sprint ändert weder `data/hub.json` noch `testdata/golden/`: `git diff --stat origin/develop -- data/hub.json testdata/golden` ist leer.
@@ -84,22 +85,34 @@ B-462 › Ausnahme- und Fehlerfälle. Sprint-eigen:
 
 ## Offene Fragen
 
-Entschieden von 🧑 am 2026-10-17 (Chat): B-462 › Offene Fragen 1–4 (Planer schreibt `data/hub.json` nach Go-Prüfung mit REG-Hinweis; Regeltabelle aus der JSON erzeugt per Task mit Test; erweiterbar für B-458, Matrix mit `sites`, `islandSites`, `wallLines`, Händler; Live-Vorschau aus WZ7 zeigt die Änderung) und B-462 › Offene Fragen 9 (eigene SRV-Session: Snapshot nimmt Kandidaten-`hub.json` als Option, Options-Struktur ohne globalen Zustand; Domänen REG → INF → SIM → SRV → DEV).
+Entschieden von 🧑 am 2026-10-17 (Chat): B-462 › Offene Fragen 1–4 und 9 (siehe Ticket) sowie 5 (Bauplätze hinzufügen und entfernen, nur bekannte `kind`-Arten), 6 (`wallUnits` bearbeitbar, nur der Platz), 8 (Planer schreibt beim Speichern auch den erzeugten Block der Regeltabelle) und 10 (Generator in Go). Frage 7 ist durch 9 beantwortet.
+
+Aus dem Code festgelegt, 🧑 bestätigt bei der Abnahme: **Pflichtplätze** (B-462 › Offene Fragen 12): Werkstatt, Treppe runter, Treppe hoch und Farm je Seite; Kaserne, Taverne, Lager, Heilplatz, Schmiede und Rüstkammer sind entfernbar. Die Tabelle mit den Gründen steht in WZ9.3 › Kontext, der Abnahmepunkt in WZ9.8.
 
 Offen, vor der Freigabe (entscheidet 🧑):
-1. B-462 › Offene Fragen 5, 6, 8 und 10 (Plätze hinzufügen, `wallUnits` bearbeitbar, Tabelle beim Speichern erzeugen, Generator in Go statt TS). Frage 7 (Vorschau ungespeichert) ist durch Entscheidung 9 beantwortet.
-2. **Umfang:** 8 Sessions überschreiten das Budget von 3–6 je Sprint (`docs/arbeitsweise.md`). Annahme: so lassen, weil REG, INF und SIM klein sind und die Abnahme getrennt laufen soll; Alternative: REG/INF/SIM als eigener Vorlauf-Sprint (WZ9.4 hängt an WZ7.1 und bliebe im Hauptsprint). Risiko: WZ9.3 ist wegen der Variante ohne globalen Zustand die größte Session und kann sich teilen.
+1. **Umfang:** 8 Sessions überschreiten das Budget von 3–6 je Sprint (`docs/arbeitsweise.md`). Annahme: so lassen, weil REG, INF und SIM klein sind und die Abnahme getrennt laufen soll; Alternative: REG/INF/SIM als eigener Vorlauf-Sprint (WZ9.4 hängt an WZ7.1 und bliebe im Hauptsprint). Risiko: WZ9.3 (Variante ohne globalen Zustand, jetzt auch hinzugefügte und entfernte Plätze) und WZ9.6 (Bearbeiten, Schreiben von `data/hub.json` und Regeltabelle) wachsen durch die Entscheidungen 5 und 8 und können sich teilen.
 
 ## Sessions
 
+| Nr. | Datei | Typ | Agent | Status |
+|---|---|---|---|---|
+| WZ9.1 | `WZ9.1-regeltabelle-form.md` | Umsetzung | autonom | offen |
+| WZ9.2 | `WZ9.2-regeltabelle-generator.md` | Umsetzung | autonom | offen |
+| WZ9.3 | `WZ9.3-pruefung-kandidat.md` | Umsetzung | autonom | offen |
+| WZ9.4 | `WZ9.4-snapshot-kandidat.md` | Umsetzung | autonom | offen |
+| WZ9.5 | `WZ9.5-planer-matrix.md` | Umsetzung | autonom | offen |
+| WZ9.6 | `WZ9.6-planer-bearbeiten.md` | Umsetzung | autonom | offen |
+| WZ9.7 | `WZ9.7-review.md` | Review | autonom | offen |
+| WZ9.8 | `WZ9.8-abnahme.md` | Workshop | Mensch | offen |
+
 - WZ9.1 (REG) Regeltabelle „Hub-Stufe → Gebäude“ in § 3 auf die erzeugbare Form umstellen: Marker, Spalten (Hub-Stufe, Material, Hub-Plätze mit Platz und Tiefe, Mauerlinie und Tor, Händler), Inhalt = heutige `data/hub.json`, Abgleich ohne Abweichung (AC-08, AC-10).
-- WZ9.2 (INF) Generator in Go (`tools/regeltabelle`, Funktion in `tools/regeltabelle/tabelle`) und Task `rules:update` schreiben den Block aus `data/hub.json` byte-gleich zu WZ9.1; Go-Test vergleicht Block und JSON, `tests/projectRules.test.ts` prüft die Marker; Test mit der 7-Stufen-Fixture unter `testdata/` (AC-08, AC-09, AC-10).
-- WZ9.3 (SIM) Exportierte Prüfung einer Kandidaten-`hub.json` (Parameter, kein globaler Zustand) in `engine/sim` aus den Regeln von `site_data_test.go`, mit WZ8 inklusive geplanter Chunks aus `data/islands.json` gegen die Kandidaten-Linien; `engine/level` darf geändert werden: Mauerlinien als Parameter von Generator und Planungs-Prüfung (Standard eingebettet), soweit WZ8.2/WZ8.3 sie nicht angelegt haben; `sim.CreateOptions` (aus WZ8.3, sonst hier angelegt, alle Aufrufer angepasst) bekommt den Kandidaten als Feld; Variante der Plätze-, Stufen- und Linien-Berechnung für den Bau aus einem Kandidaten (Grundlage für WZ9.4); Tests darauf umstellen, `hubLevelRule` entfernen, Fixture mit 7 `levels` unter `testdata/`, die die Prüfung besteht (Werte frei, nicht vorgegeben), Goldens unverändert (AC-02, AC-09, AC-10).
-- WZ9.4 (SRV) Snapshot nimmt Kandidaten-`hub.json` als Option: Prüfung mit der Funktion aus WZ9.3 und Bau aus dem Kandidaten über die Options-Struktur aus WZ7.1 und `sim.CreateOptions`, ohne EXE-Neubau; bei zugleich gesetzter Option „geplante Chunks“ (WZ8.4) gelten die Kandidaten-Linien, die Planung wird gegen sie geprüft; Go-Tests für Determinismus, Kandidat gegen eingebettet, ungültigen Kandidaten, den Vorrang und die 7-Stufen-Fixture (AC-11, AC-04, AC-09, AC-10).
+- WZ9.2 (INF) Generator in Go (`tools/regeltabelle`, Funktionen `Block`, `Ersetzen` und Gegenprobe in `tools/regeltabelle/tabelle`) und Task `rules:update` schreiben den Block aus `data/hub.json` byte-gleich zu WZ9.1; Go-Test vergleicht Block und JSON, `tests/projectRules.test.ts` prüft die Marker; Test mit der 7-Stufen-Fixture unter `testdata/hub/` (AC-08, AC-09, AC-10).
+- WZ9.3 (SIM) Exportierte Prüfung einer Kandidaten-`hub.json` (Parameter, kein globaler Zustand) in `engine/sim` aus den Regeln von `site_data_test.go`, nur bekannte `kind`-Arten, Pflichtplätze (Werkstatt, Treppe runter, Treppe hoch, Farm je Seite; Abnahmepunkt in WZ9.8), Regel „ein Platz je Bau“ geteilt (Pflicht genau einer, optional höchstens einer), mit WZ8 inklusive geplanter Chunks aus `data/islands.json` gegen die Kandidaten-Linien; `engine/level` darf geändert werden: Mauerlinien als Parameter von Generator und Planungs-Prüfung (Standard eingebettet), soweit WZ8.2/WZ8.3 sie nicht angelegt haben; `sim.CreateOptions` (aus WZ8.3, sonst hier angelegt, alle Aufrufer angepasst) bekommt den Kandidaten als Feld; Variante der Plätze-, Stufen- und Linien-Berechnung für den Bau aus einem Kandidaten (Grundlage für WZ9.4); Tests darauf umstellen, `hubLevelRule` entfernen, Fixture mit 7 `levels` unter `testdata/`, die die Prüfung besteht (Werte frei, nicht vorgegeben), Goldens unverändert (AC-02, AC-09, AC-10).
+- WZ9.4 (SRV) Snapshot nimmt Kandidaten-`hub.json` als Option: Prüfung mit der Funktion aus WZ9.3 und Bau aus dem Kandidaten über die Options-Struktur aus WZ7.1 und `sim.CreateOptions`, ohne EXE-Neubau; bei zugleich gesetzter Option „geplante Chunks“ (WZ8.4, falls erledigt) gelten die Kandidaten-Linien, die Planung wird gegen sie geprüft; Go-Tests für Determinismus, Kandidat gegen eingebettet, ungültigen Kandidaten, den Vorrang und die 7-Stufen-Fixture (AC-11, AC-04, AC-09, AC-10).
 - WZ9.5 (DEV) Gebäude-Planer im Asset-Studio: Matrix aus `data/hub.json`, Abweichung zur Regeltabelle über das Go-Backend, Live-Vorschau folgt dem Planer-Stand (Kandidat) und der gewählten Hub-Stufe (AC-01, AC-03, AC-04, AC-09).
-- WZ9.6 (DEV) Bearbeiten mit Prüfung über das Go-Backend, atomares format-stabiles Schreiben, Schreibregel bei externer Änderung, REG-Hinweis (AC-02, AC-05, AC-07, AC-10).
+- WZ9.6 (DEV) Bearbeiten (Stufe, Platz, Tiefe, `needsDeeper`, `gateHubLevel`, Händler, `wallUnits`, Plätze bekannter Arten hinzufügen und entfernen) mit Prüfung über das Go-Backend, atomares format-stabiles Schreiben von `data/hub.json` und danach des erzeugten Blocks der Regeltabelle, Schreibregel bei externer Änderung beider Dateien, REG-Hinweis (AC-02, AC-03, AC-05, AC-07, AC-10).
 - WZ9.7 (DEV) Review: Kriterien, Diff aller fünf Domänen, Begriffs-Treue, PR (alle außer AC-06).
-- WZ9.8 (DEV) Abnahme durch 🧑 im Asset-Studio (Agent: Mensch): Matrix, Beispiel Rüstkammer, Live-Vorschau ungespeichert, REG-Hinweis (AC-06).
+- WZ9.8 (DEV) Abnahme durch 🧑 im Asset-Studio (Agent: Mensch): Matrix, Beispiel Rüstkammer, Live-Vorschau ungespeichert, erzeugter Block und REG-Hinweis, Pflichtplatz-Liste bestätigen (AC-06).
 
 Domänen-Reihenfolge: REG → INF → SIM → SRV → DEV.
 
