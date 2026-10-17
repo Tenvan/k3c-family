@@ -68,7 +68,7 @@ nicht relevant: reine Textkorrektur.
 
 ## Offene Fragen
 
-Entscheidung von 🧑: Soll `docs/fragenkatalog.md` (Beschlussprotokoll Q65, Z. 78, 177, 181, 447) den Verweis B-213 ebenfalls auf B-470 ändern oder als Protokoll des damaligen Stands unverändert bleiben? Vorschlag von Claude (ungeprüft): unverändert lassen, weil es die damals geplante Nummer dokumentiert.
+Entschieden von 🧑 am 2026-10-17 (Chat): `docs/fragenkatalog.md` (Beschlussprotokoll Q65, Z. 78, 177, 181, 447) bleibt unverändert; es dokumentiert die damals geplante Nummer B-213. Offen: nichts.
 
 ## Notizen
 

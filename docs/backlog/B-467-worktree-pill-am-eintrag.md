@@ -54,7 +54,7 @@ Workflow-Check scheitert → keine Pills, Hinweis wie heute.
 
 ## Offene Fragen
 
-Wo stehen Einträge, die nur im Worktree existieren (neues Ticket, neue Session)? Entscheidet 🧑.
+Entschieden von 🧑 am 2026-10-17 (Chat): Einträge, die nur im Worktree existieren (neues Ticket, neue Session), stehen in der normalen Liste an ihrem üblichen Ort (Ticket in der Ticket-Liste, Session unter ihrem Sprint) mit einer Pill „neu“ (AC-03). Offen: nichts.
 
 ## Notizen
 

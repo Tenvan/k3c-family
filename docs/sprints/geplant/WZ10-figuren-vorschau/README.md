@@ -100,15 +100,15 @@ Die Kriterien von B-463 behalten ihre Nummer als AC-01 bis AC-16; AC-13 und AC-1
 
 Entschieden von 🧑 am 2026-10-17 (Chat): `B-463 › Offene Fragen` 1, 2 und 3 (Zustände, Technik, Ersatz der Referenzseiten), 6 (Monarch immer beritten) und 7 (Phaser und Bühne aus B-460/WZ7.3).
 
-**Sprintgröße:** entschieden (geteilt, 🧑 am 2026-10-17). WZ10 = Abspiel-Bausteine und Monarch-Seite (B-463); WZ11 = Gegner-Seite nach Biom, Bosse mit Lücken für Boss-Effekte (B-464, Anbindung B-469) und Entfernen von `figuren.html`/`aufstellung.html` (WZ11 hängt von WZ10 ab). Die frühere Option A (ein Sprint mit 8 Sessions) entfällt.
+**Sprintgröße:** entschieden (geteilt, 🧑 am 2026-10-17). WZ10 = Abspiel-Bausteine und Monarch-Seite (B-463); WZ11 = Gegner-Seite nach Biom, Bosse mit Lücken für Boss-Effekte (B-464, Anbindung B-469) und Entfernen von `figuren.html`/`aufstellung.html` (WZ11 hängt von WZ10 ab).
 
-Offen (entscheidet 🧑 vor der Freigabe, nicht blockierend, Vorschlag im Ticket):
+**Tempo-Stufen:** entschieden von 🧑 am 2026-10-17 (Chat): 0,5×, 1×, 2× (`B-463 › Offene Fragen` 5, AC-01 unverändert).
 
-- `B-463 › Offene Fragen` 5: Tempo-Stufen 0,5×, 1×, 2× (AC-01).
+`B-463 › Offene Fragen` 4 (Ort für Truppen und ungenutzte Sheets) betrifft das Entfernen der Referenzseiten und steht unter `WZ11 › Offene Fragen` (dort entschieden).
 
-`B-463 › Offene Fragen` 4 (Ort für Truppen und ungenutzte Sheets) betrifft das Entfernen der Referenzseiten und steht jetzt unter `WZ11 › Offene Fragen`.
+Vor der Freigabe offen: nichts.
 
-**Neue Begriffe ins Glossar vor der Freigabe:** Monarch-Seite, Abspiel-Baustein, Lücke, Spielerfarbe (Variante des Monarchen je Spieler-Index), Kennfarbe (Farbe des Spielers aus `PLAYER_COLORS`). Gegner-Seite, Warnkreis, Boss-Leiste und Event-Banner gehören zu WZ11.
+**Neue Begriffe im Glossar** (eingetragen mit PR 349): Monarch-Seite, Abspiel-Baustein, Lücke, Spielerfarbe, Kennfarbe. Gegner-Seite, Warnkreis, Boss-Leiste und Event-Banner gehören zu WZ11.
 
 ## Sessions
 
