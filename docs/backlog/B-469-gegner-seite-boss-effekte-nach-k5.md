@@ -16,11 +16,11 @@
 
 K5.1 (B-132, Domäne CLI, geplant) baut im Spiel die Boss-Anzeigen: Warnkreis (`enemies[].warn`), Boss-Leiste, Phasen-Text (`enemies[].phase`) und Event-Banner für `bossSpawned`, `bossPhase` und `bossDefeated`. Geplante Dateien laut K5.1 sind `src/scenes/kampfAnzeige.ts` (reine Funktionen) und `src/scenes/kampfView.ts` (Phaser); maßgeblich sind die Namen im Code nach K5.
 
-Die Gegner-Seite im Asset-Studio (B-464, Sprint WZ10) läuft vor K5.1 (Projekt WZG hat Rang 1, KMP Rang 10). Sie zeigt Warnkreis, Boss-Leiste, Phasen-Text und Event-Banner deshalb nur als Lücke („Anzeige im Spiel fehlt (B-132, Anbindung B-469)“), je Boss nur für die zutreffenden Effekte (Warnkreis nur bei Flächenschlag, Phasen-Text nur beim Endboss mit Phasen, Boss-Leiste und Event-Banner bei jedem Boss) und ohne eigenen Ersatz. Entschieden von 🧑 am 2026-10-17: Die Anbindung der vier Anzeigen an die Gegner-Seite ist ein eigenes Folge-Ticket; die früheren Kriterien B-464/AC-09, AC-10 und AC-11 wandern hierher.
+Die Gegner-Seite im Asset-Studio (B-464, Sprint WZ11) läuft vor K5.1 (Projekt WZG hat Rang 1, KMP Rang 10). Sie zeigt Warnkreis, Boss-Leiste, Phasen-Text und Event-Banner deshalb nur als Lücke („Anzeige im Spiel fehlt (B-132, Anbindung B-469)“), je Boss nur für die zutreffenden Effekte (Warnkreis nur bei Flächenschlag, Phasen-Text nur beim Endboss mit Phasen, Boss-Leiste und Event-Banner bei jedem Boss) und ohne eigenen Ersatz. Entschieden von 🧑 am 2026-10-17: Die Anbindung der vier Anzeigen an die Gegner-Seite ist ein eigenes Folge-Ticket; die früheren Kriterien B-464/AC-09, AC-10 und AC-11 wandern hierher.
 
 ## Ziel
 
-Die Gegner-Seite im Asset-Studio zeigt Warnkreis, Boss-Leiste, Phasen-Text und Event-Banner mit dem Zeichencode des Spiels aus K5.1, an Beispielzuständen aus `data/bosses.json`. Die vier Lücken-Markierungen aus WZ10 entfallen. Nutzen: 🧑 beurteilt Boss-Anzeigen im Asset-Studio, ohne einen Boss im Spiel auszulösen.
+Die Gegner-Seite im Asset-Studio zeigt Warnkreis, Boss-Leiste, Phasen-Text und Event-Banner mit dem Zeichencode des Spiels aus K5.1, an Beispielzuständen aus `data/bosses.json`. Die vier Lücken-Markierungen aus WZ11 entfallen. Nutzen: 🧑 beurteilt Boss-Anzeigen im Asset-Studio, ohne einen Boss im Spiel auszulösen.
 
 ## Beteiligte und Zielgruppen
 
@@ -39,7 +39,7 @@ Die Gegner-Seite im Asset-Studio zeigt Warnkreis, Boss-Leiste, Phasen-Text und E
 ## Nicht-Ziele
 
 - Zeichnen von Warnkreis, Boss-Leiste, Phasen-Text und Event-Banner im Spiel: K5.1 (B-132, CLI).
-- Gegner-Seite selbst, Gruppen, Merkmale und Bosse ohne Anzeigen: B-464 (WZ10).
+- Gegner-Seite selbst, Gruppen, Merkmale und Bosse ohne Anzeigen: B-464 (WZ11).
 - Boss-Kampfablauf als Simulation (Beschwörung, Flammenspur, Splitter-Wurf); die Seite zeigt Beispielzustände.
 - Neue Boss-Grafiken (Projekt GRA), Änderungen an `data/bosses.json`, `data/events.json`, `data/assets.json`.
 - Änderungen an `src/scenes/`, `src/model/`, `src/online/`: reicht eine Funktion des Spiels nicht, entsteht ein CLI-Ticket.
@@ -48,10 +48,10 @@ Die Gegner-Seite im Asset-Studio zeigt Warnkreis, Boss-Leiste, Phasen-Text und E
 ## Regeln und Einschränkungen
 
 - **Domäne DEV:** `tools/k3c-studio/` (Studio-Frontend) und `src/tools/`; Spiel-Code aus `src/scenes/`, `src/core/` und `src/model/` nur lesend über `@game`.
-- **Abhängigkeiten (beide vor Planung und Umsetzung):** K5.1 (B-132) ist erledigt und der Zeichencode für Warnkreis, Boss-Leiste, Phasen-Text und Event-Banner liegt im Code; WZ10 ist erledigt (Gegner-Seite und Abspiel-Bausteine aus B-463/WZ10.1, Bühne aus B-460/WZ7.3). Bis dahin bleibt das Ticket `offen`, ohne Sprint.
+- **Abhängigkeiten (beide vor Planung und Umsetzung):** K5.1 (B-132) ist erledigt und der Zeichencode für Warnkreis, Boss-Leiste, Phasen-Text und Event-Banner liegt im Code; WZ11 ist erledigt (Gegner-Seite, B-464; sie hängt von WZ10 ab: Abspiel-Bausteine aus B-463/WZ10.1, Bühne aus B-460/WZ7.3). Bis dahin bleibt das Ticket `offen`, ohne Sprint.
 - **Kein Nachbau im Studio:** nur der Zeichencode des Spiels; der Client rechnet nichts (`src/scenes/noSim.test.ts`), Beispielzustände baut die Seite aus den Daten, nicht aus der Simulation.
 - **Spec-Stand:** Die Namen und Signaturen des Zeichencodes stehen erst nach K5.1 fest; vor der Freigabe prüft die Planung sie im Code und passt die Kriterien an.
-- **Begriffe** nach `docs/glossar.md` (Boss, Miniboss, Endboss, Tiefe). Die neuen Begriffe Warnkreis, Boss-Leiste, Event-Banner, Lücke und Gegner-Seite stehen vor der Freigabe im Glossar (wie in `WZ10 › Offene Fragen` und `B-464 › Regeln und Einschränkungen`), nicht erst in den Sessions.
+- **Begriffe** nach `docs/glossar.md` (Boss, Miniboss, Endboss, Tiefe). Die neuen Begriffe Warnkreis, Boss-Leiste, Event-Banner, Lücke und Gegner-Seite stehen vor der Freigabe im Glossar (wie in `WZ11 › Offene Fragen` und `B-464 › Regeln und Einschränkungen`), nicht erst in den Sessions.
 - **Komplexitäts-Budget:** Datei ≤ 400, Funktion ≤ 60 Zeilen, Session ≤ ~400 geänderte Code-Zeilen; Fensterprüfungen nur mit Freigabe von 🧑 für den Lauf.
 
 ## Beispiele
@@ -82,16 +82,16 @@ Die Gegner-Seite im Asset-Studio zeigt Warnkreis, Boss-Leiste, Phasen-Text und E
 
 Entschieden von 🧑 am 2026-10-17 (Chat):
 
-1. Die Anbindung der Boss-Anzeigen (Warnkreis, Boss-Leiste, Phasen, Event-Banner) an die Gegner-Seite ist ein Folge-Ticket nach K5.1/B-132; WZ10 zeigt sie bis dahin als Lücke.
+1. Die Anbindung der Boss-Anzeigen (Warnkreis, Boss-Leiste, Phasen, Event-Banner) an die Gegner-Seite ist ein Folge-Ticket nach K5.1/B-132; WZ11 zeigt sie bis dahin als Lücke.
 
 Offen (entscheidet 🧑, nicht blockierend, Vorschlag der Planung):
 
 2. **Event-Banner:** nur für Boss-Ereignisse (Vorschlag) oder auch für Nacht-Events (`fullMoon` mit `alphaWolf`, `bloodMoon`)? Übernommen aus B-464 › Offene Fragen 5.
-3. **Sprint:** Das Ticket hat keinen Sprint; ein neuer Sprint in Projekt WZG oder ein Platz in einem späteren Sprint wird beim Planen entschieden, nachdem K5.1 und WZ10 erledigt sind.
+3. **Sprint:** Das Ticket hat keinen Sprint; ein neuer Sprint in Projekt WZG oder ein Platz in einem späteren Sprint wird beim Planen entschieden, nachdem K5.1 und WZ11 erledigt sind.
 4. **Namen des Zeichencodes:** Die Namen aus K5.1 stehen erst nach der Umsetzung fest; die Kriterien werden vor der Freigabe daran angepasst.
 
 ## Notizen
 
-- Verwandt: B-464 (Gegner-Seite, WZ10; AC-09, AC-10 und AC-11 sind hierher verschoben), B-463 (Abspiel-Bausteine), B-460 (Phaser-Bühne, WZ7.3), B-132/K5.1 (Anzeigen im Spiel, CLI), B-329 (echte Figuren).
+- Verwandt: B-464 (Gegner-Seite, WZ11; AC-09, AC-10 und AC-11 sind hierher verschoben), B-463 (Abspiel-Bausteine, WZ10), B-460 (Phaser-Bühne, WZ7.3), B-132/K5.1 (Anzeigen im Spiel, CLI), B-329 (echte Figuren).
 - Datenlage zu den Beispielzuständen: `data/bosses.json` › `bosses` je Tiefe 0–4 (Fähigkeiten `summon`, `aoe`, `flameTrail`, `shardThrow`) und `endBosses` (`crystalHeartWarden`, 3 Phasen); Zustand im Protokoll: `enemies[].phase`, `enemies[].warn` (`docs/protocol.md` › Kampf).
-- Spec-Stand: Entwurf, noch nicht freigegeben. Das Ticket entstand am 2026-10-17 aus der Entscheidung von 🧑, die vier Boss-Anzeigen nicht in WZ10 zu zeigen.
+- Spec-Stand: Entwurf, noch nicht freigegeben. Das Ticket entstand am 2026-10-17 aus der Entscheidung von 🧑, die vier Boss-Anzeigen nicht in der Gegner-Seiten-Vorschau (WZ11) zu zeigen.

@@ -130,6 +130,8 @@ Nachtrag, entschieden von 🧑 am 2026-10-17 (Chat):
 - `src/tools/codemap.md` (Z. ~9, 11, 19, 27), `docs/game-design.md` (Z. ~187–188), `public/sprites/CREDITS.md` (Z. ~56)
 - `.codemap/state.json` erzeugt das Codemap-Werkzeug, nicht von Hand ändern.
 
-**Hinweise:** HW1.4 (Abnahme Entwicklerseite am PC, B-335) nennt die beiden Kacheln nicht einzeln; nach WZ10 fehlen sie dort, B-335/AC-02 bleibt erfüllt. Keine Spieler-Seite und keine offene Abnahme verweist auf `figuren.html` oder `aufstellung.html`. Das Spiel lädt nur das Standard-Reittier `horse`; die übrigen 12 Reittiere sind erst auf der Monarch-Seite mit dem Spiel-Code zu sehen.
+**Hinweise:** HW1.4 (Abnahme Entwicklerseite am PC, B-335) nennt die beiden Kacheln nicht einzeln; nach WZ11 fehlen sie dort, B-335/AC-02 bleibt erfüllt. Keine Spieler-Seite und keine offene Abnahme verweist auf `figuren.html` oder `aufstellung.html`. Das Spiel lädt nur das Standard-Reittier `horse`; die übrigen 12 Reittiere sind erst auf der Monarch-Seite mit dem Spiel-Code zu sehen.
 
 **Korrektur 2026-10-17 (nach Entscheidungen von 🧑, Spec weiter Entwurf):** Monarch immer beritten (kein Laufen und Sprinten zu Fuß, AC-04); Phaser und Bühne gehören B-460/WZ7.3 (neues AC-16, Text zur Abhängigkeit korrigiert); „Kennfarbe“ und „Spielerfarbe“ sind getrennt definiert und im Glossar einzutragen. Boss-Effekte betreffen B-464 und B-469, nicht diese Seite.
+
+**Sprint-Teilung 2026-10-17 (Entscheidung von 🧑):** B-463 gehört zu WZ10 (Abspiel-Bausteine und Monarch-Seite, WZ10.1–WZ10.3). Die Kriterien AC-13 (Entfernen von `figuren.html`/`aufstellung.html`) und AC-14 (Ort im Studio vor dem Entfernen) laufen in WZ11 (dort AC-18 und AC-19, Session WZ11.3), weil sie auch die Gegner-Seite (B-464) belegen muss.

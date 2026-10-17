@@ -5,7 +5,7 @@
 - **Prio:** mittel
 - **Umgebung:** offline
 - **Status:** eingeplant
-- **Sprint:** WZ10
+- **Sprint:** WZ11
 - **Projekt:** WZG
 - **Erstellt:** 2026-10-17
 - **Spec:** Entwurf
@@ -48,7 +48,7 @@ Eine Gegner-Seite im Asset-Studio (B-459) zeigt alle Gegnertypen nach Biom und a
 
 - Neue Gegner, Bosse oder Grafiken (Projekt GRA, B-329); Werte, Wellen, Fähigkeiten (REG/SIM); Änderungen an `data/enemies.json`, `data/bosses.json`, `data/biomes/*.json`, `data/sprites.json`, `data/assets.json` (auch keine eigenen Slots je Boss).
 - Boss-Kampfablauf: Beschwörung, Flammenspur oder Splitter-Wurf laufen nicht als Simulation ab.
-- Warnkreis, Boss-Leiste, Phasen-Text und Event-Banner zeigen (statt als Lücke markieren): Folge-Ticket **B-469**, abhängig von K5.1 (B-132) und WZ10. Ebenso Beispielzustände für Boss, Phase und Warnkreis.
+- Warnkreis, Boss-Leiste, Phasen-Text und Event-Banner zeigen (statt als Lücke markieren): Folge-Ticket **B-469**, abhängig von K5.1 (B-132) und WZ11. Ebenso Beispielzustände für Boss, Phase und Warnkreis.
 - Zeichnen dieser Anzeigen im Spiel (K5.1, B-132, CLI); Änderungen an `src/scenes/`, `src/model/`, `src/online/`.
 - Phaser oder die Bühne einführen (B-460, WZ7.3).
 - Monarch-Vorschauen (B-463); Truppen; Entfernen von `figuren.html`/`aufstellung.html` (B-463/AC-13).
@@ -56,7 +56,7 @@ Eine Gegner-Seite im Asset-Studio (B-459) zeigt alle Gegnertypen nach Biom und a
 ## Regeln und Einschränkungen
 
 - `B-463 › Regeln und Einschränkungen` gilt: Domäne DEV (`tools/k3c-studio/`, `src/tools/`), Spiel-Code nur lesend über `@game`, Grenzfall DEV beim Entfernen der Referenzseiten, Firewall, Fensterprüfung nur mit Freigabe von 🧑, Komplexitäts-Budget.
-- **Abhängigkeiten:** WZ6 erledigt; Phaser und Bühne aus B-460 (WZ7.3); Abspiel-Bausteine aus B-463 (WZ10.1). K5.1 (B-132) ist keine Abhängigkeit: Läuft WZ10 vor K5 (WZG hat Rang 1, KMP Rang 10), zeigt die Seite die Boss-Effekte als Lücke (AC-12). Die Anbindung an den Zeichencode aus K5.1 (`src/scenes/kampfAnzeige.ts`, `kampfView.ts`, Namen laut K5.1) macht B-469.
+- **Abhängigkeiten:** WZ6 erledigt; Phaser und Bühne aus B-460 (WZ7.3); Abspiel-Bausteine aus B-463 (WZ10.1). K5.1 (B-132) ist keine Abhängigkeit: Läuft WZ11 vor K5 (WZG hat Rang 1, KMP Rang 10), zeigt die Seite die Boss-Effekte als Lücke (AC-12). Die Anbindung an den Zeichencode aus K5.1 (`src/scenes/kampfAnzeige.ts`, `kampfView.ts`, Namen laut K5.1) macht B-469.
 - Der Client rechnet nichts (`src/scenes/noSim.test.ts`).
 - **Begriffe** nach `docs/glossar.md` (Biom, Tiefe, Miniboss, Endboss). Neue Begriffe (Gegner-Seite, Warnkreis, Boss-Leiste, Event-Banner, Lücke) kommen vor der Freigabe ins Glossar.
 
@@ -89,9 +89,9 @@ Eine Gegner-Seite im Asset-Studio (B-459) zeigt alle Gegnertypen nach Biom und a
 - **AC-06** Merkmale aus `traits` und die Zusatzfelder `swarmSize`, `aoe`, `phases`, `kiteDistance` stehen an der Karte; ein Merkmal ohne Darstellung im Spiel trägt die Markierung „Lücke“.
 - **AC-07** Die Bosse bilden eine eigene Gruppe je Tiefe 0–4 mit allen 5 Einträgen aus `data/bosses.json` › `bosses` und `crystalHeartWarden` aus `endBosses` in Tiefe 4, je mit Name, Art, Fähigkeit und Phasen (mit Schwelle `belowHpPercent` als Text); ein Vitest-Test zählt 6 Bosse.
 - **AC-08** Jeder Boss erscheint mit der Grafik, die das Spiel zeichnet (heute Rückfall `goblin`), und der Lücke „keine eigene Boss-Grafik“, solange `sprites.json` › `enemies` keinen Eintrag für seine ID hat.
-- **AC-09** Verschoben nach B-469 (dort AC-01): Warnkreis mit Radius `ability.radius` aus dem Zeichencode des Spiels. In B-464 und WZ10 nicht zu erfüllen; die Lücke deckt AC-12 ab.
-- **AC-10** Verschoben nach B-469 (dort AC-02 und AC-03): Boss-Leiste und einzeln wählbare Endboss-Phasen mit Phasen-Text. In B-464 und WZ10 nicht zu erfüllen; die Lücke deckt AC-12 ab.
-- **AC-11** Verschoben nach B-469 (dort AC-04): Event-Banner für `bossSpawned`, `bossPhase` und `bossDefeated`. In B-464 und WZ10 nicht zu erfüllen; die Lücke deckt AC-12 ab.
+- **AC-09** Verschoben nach B-469 (dort AC-01): Warnkreis mit Radius `ability.radius` aus dem Zeichencode des Spiels. In B-464 und WZ11 nicht zu erfüllen; die Lücke deckt AC-12 ab.
+- **AC-10** Verschoben nach B-469 (dort AC-02 und AC-03): Boss-Leiste und einzeln wählbare Endboss-Phasen mit Phasen-Text. In B-464 und WZ11 nicht zu erfüllen; die Lücke deckt AC-12 ab.
+- **AC-11** Verschoben nach B-469 (dort AC-04): Event-Banner für `bossSpawned`, `bossPhase` und `bossDefeated`. In B-464 und WZ11 nicht zu erfüllen; die Lücke deckt AC-12 ab.
 - **AC-12** Für jeden Boss zeigt die Gegner-Seite für die zutreffenden der vier Effekte Warnkreis, Boss-Leiste, Phasen-Text und Event-Banner die Lücke „Anzeige im Spiel fehlt (B-132, Anbindung B-469)“ an der Boss-Karte: Warnkreis nur bei Bossen mit Flächenschlag (`aoe`: `trollKing`, `crystalHeartWarden`), Phasen-Text nur beim Endboss mit Phasen (`crystalHeartWarden`), Boss-Leiste und Event-Banner bei jedem der 6 Bosse; das Studio zeichnet keinen eigenen Ersatz. Nachweis: Vitest-Test der Lücken-Liste (je Boss nur die zutreffenden Einträge, zusammen 15: 6 Boss-Leisten, 6 Event-Banner, 2 Warnkreise, 1 Phasen-Text; kein Warnkreis und kein Phasen-Text beim `goblinLeader`), Review des Diffs (kein eigener Zeichencode für diese Anzeigen).
 - **AC-13** Größe und Maßstab entsprechen dem Spiel (`UNIT_PX`, `scale`); ein zuschaltbarer Vergleich stellt den Monarchen (Index 0, beritten auf `MONARCH.mount.sprite`) auf derselben Bodenlinie neben jeden Gegner und Boss.
 - **AC-14** Die Gegner-Seite nutzt dieselben Abspiel-Bausteine wie die Monarch-Seite (B-463) und die Bühne aus B-460/WZ7.3; Bühne, Steuerung und Lücken-Markierung gibt es im Studio-Frontend je nur einmal (Review).
@@ -108,7 +108,7 @@ Entschieden von 🧑 am 2026-10-17 (Chat):
 
 Nachtrag, entschieden von 🧑 am 2026-10-17 (Chat):
 
-4. **Boss-Effekte:** Warnkreis, Boss-Leiste, Phasen und Event-Banner zeigt WZ10 als Lücke; das Folge-Ticket **B-469** (nach K5.1/B-132) bindet sie an. Die früheren AC-09, AC-10 und AC-11 sind dorthin verschoben (hier als „verschoben“ vermerkt), AC-12 bleibt als Lücken-Kriterium. Damit ist die frühere offene Frage 4 (Reihenfolge zu K5) beantwortet.
+4. **Boss-Effekte:** Warnkreis, Boss-Leiste, Phasen und Event-Banner zeigt WZ11 als Lücke; das Folge-Ticket **B-469** (nach K5.1/B-132) bindet sie an. Die früheren AC-09, AC-10 und AC-11 sind dorthin verschoben (hier als „verschoben“ vermerkt), AC-12 bleibt als Lücken-Kriterium. Damit ist die frühere offene Frage 4 (Reihenfolge zu K5) beantwortet.
 5. **Phaser und Bühne:** B-460 führt beides mit WZ7.3 ein; die Gegner-Seite nutzt dieselbe Bühne (AC-14).
 
 Offen: keine. Die frühere Frage 5 (Event-Banner nur für Boss-Ereignisse oder auch für Nacht-Events) ist nach `B-469 › Offene Fragen` 2 gewandert.
