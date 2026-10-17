@@ -23,8 +23,14 @@ export const EMPTY_FILTER: PlanFilter = { q: '', quick: [], prios: [], envs: [],
 /** Anteil des Detailbereichs an der rechten Spalte in Prozent (B-400); Grenzen wie auf der Tasks-Seite. */
 export const SPLIT_DEFAULT = 48;
 
-/** Status der Projekte für den Projekt-Filter. */
-export const PROJECT_STATES = ['aktiv', 'ruht', 'erledigt'];
+/** Zustände der Projekte für den Projekt-Filter; „inaktiv“ ist abgeleitet (siehe projectState). */
+export const PROJECT_STATES = ['aktiv', 'inaktiv', 'ruht', 'erledigt'];
+
+/** Zustand eines Projekts: Status, nur „aktiv“ ohne offenen (nicht erledigten) Sprint heißt „inaktiv“. */
+export function projectState(p: PlanProject, sprints: PlanSprint[]): string {
+  const open = p.sprints.some((id) => sprints.find((s) => s.id === id)?.status !== 'erledigt');
+  return p.status === 'aktiv' && !open ? 'inaktiv' : p.status;
+}
 
 const PRIO = ['hoch', 'mittel', 'niedrig'];
 
@@ -92,7 +98,7 @@ export function filterProjects(d: PlanningData, f: PlanFilter): PlanProject[] {
     d.tickets.some((t) => t.project === p.id && f.doms.includes(t.domain || '–'));
   const mine = (p: PlanProject) => d.sprints.filter((s) => p.sprints.includes(s.id));
   const pquick = PQUICK.filter((x) => f.pquick.includes(x.id));
-  return (d.projects ?? []).filter((p) => oneOf(f.pstatus, p.status) && inDomain(p) &&
+  return (d.projects ?? []).filter((p) => oneOf(f.pstatus, projectState(p, d.sprints)) && inDomain(p) &&
     pquick.every((x) => mine(p).some(x.sprint)));
 }
 
