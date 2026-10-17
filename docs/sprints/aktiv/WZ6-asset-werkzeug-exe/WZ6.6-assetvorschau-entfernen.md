@@ -1,6 +1,6 @@
 # WZ6.6 · assetvorschau.html samt Skript, Kachel und Verweisen entfernen
 
-- **Status:** offen
+- **Status:** in Arbeit
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** DEV
