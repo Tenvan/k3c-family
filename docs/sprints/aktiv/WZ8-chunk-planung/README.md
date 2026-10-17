@@ -1,11 +1,11 @@
 # WZ8 · REG, SIM, SRV, DEV · Chunks je Insel und Stufe planen: Seed oder feste Objekte
 
-- **Status:** geplant
+- **Status:** aktiv
 - **Projekt:** WZG
 - **Domäne:** REG, SIM, SRV, DEV
 - **Reife:** bereit
 - **Tickets:** B-461
-- **Start-Commit:** – (wird beim Aktivieren gesetzt: `git rev-parse --short origin/develop`)
+- **Start-Commit:** 9a9bc440
 - **Spec:** freigegeben
 - **Revision:** 1
 - **Freigabe:** 2026-10-17, Ralf im Chat (Revision 1)
