@@ -8,7 +8,7 @@ import { ActionButton, NoticeCard } from '../ui/parts';
 import { playChoice, stopAll } from './audio';
 import { playStatus } from './playback';
 
-// Reiter „Szenen“ der Seite Sound (B-459/AC-06, Sound-Teil von assetvorschau.html): Ereignis-SFX, Musik (Wechsel blendet
+// Reiter „Szenen“ der Seite Sound (B-459/AC-06, Sound-Teil der früheren Asset-Vorschau): Ereignis-SFX, Musik (Wechsel blendet
 // mit CROSSFADE_SECONDS über, z. B. music:tag → music:nacht) und Umgebungsgeräusche (Schleife), Präferenz 1 oder
 // zum Vergleich Präferenz n eines Slots; Stopp und Statuszeile.
 

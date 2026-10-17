@@ -5,7 +5,7 @@ import { fileUrl } from '../assets/assets';
 import { Pixel, ladeBild, pixelContext } from './pixel';
 import { figureCard, GRAFIK_SCALE, licenseFlag, type Resolved } from './szenenLogic';
 
-// Karten der Slot-Szenen (umgezogen aus src/tools/assetvorschau.ts): Bildkarte im Spielmaßstab mit Ausschnitt,
+// Karten der Slot-Szenen (umgezogen aus der früheren Asset-Vorschau): Bildkarte im Spielmaßstab mit Ausschnitt,
 // NC-Kennzeichen, Lücke und fehlende Datei markiert; Figuren über renderReference aus dem Spiel-Code.
 
 /** Beschriftung: Slot-ID, Beschreibung, Datei, Präferenz (Vergleich) und NC-Kennzeichen (Q70) */

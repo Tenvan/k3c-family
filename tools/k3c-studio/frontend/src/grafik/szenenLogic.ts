@@ -1,5 +1,5 @@
 /**
- * Szenen des Asset-Studios (B-299, umgezogen aus src/tools/assetvorschauLogic.ts mit B-459): reine Logik ohne Browser.
+ * Szenen des Asset-Studios (B-299, umgezogen aus der früheren Asset-Vorschau mit B-459): reine Logik ohne Browser.
  * Die Slots kommen aus AssetsList (nicht aus einem Import von data/assets.json, sonst greift das Neuladen nicht);
  * je Slot das aktive Asset (Präferenz 1, zum Vergleich `wahl=n`, Ausschnitt).
  */
