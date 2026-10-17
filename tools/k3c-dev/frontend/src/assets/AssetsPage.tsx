@@ -25,10 +25,10 @@ export function AssetsPage() {
   const [selected, setSelected] = useState(() => loadText('assets.selected', ''));
   const [split, setSplit, resetSplit] = useSplit('assets.split', SPLIT_DEFAULT);
   const slots = useMemo(() => data.view?.slots ?? [], [data.view]);
-  const visible = useMemo(() => filterSlots(slots, { art, kategorie, typ, status, query }), [slots, art, kategorie, typ, status, query]);
-
-  const used = useMemo(() => new Set(slots.flatMap((s) => s.wahl.map((c) => c.datei))), [slots]);
   const typList = useMemo(() => typen(slots.filter((s) => s.art === art && (!kategorie || s.kategorie === kategorie))), [slots, art, kategorie]);
+  const aktivTyp = typList.includes(typ) ? typ : ''; // Typ, der nach einem Reload fehlt, filtert nicht unsichtbar weiter
+  const visible = useMemo(() => filterSlots(slots, { art, kategorie, typ: aktivTyp, status, query }), [slots, art, kategorie, aktivTyp, status, query]);
+  const used = useMemo(() => new Set(slots.flatMap((s) => s.wahl.map((c) => c.datei))), [slots]);
 
   if (!data.view) return data.error ? <NoticeCard title="Slot-Register nicht lesbar" tone="error">{data.error}</NoticeCard> : <Text color="gray">Lade Slot-Register …</Text>;
   if (data.view.error) return <NoticeCard title="Slot-Register ungültig" tone="error">{data.view.error}</NoticeCard>;

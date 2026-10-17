@@ -33,7 +33,7 @@ export function filterSlots(slots: readonly AssetSlot[], f: SlotFilter): AssetSl
   });
 }
 
-/** Typ eines Slots: Text vor dem Doppelpunkt der Beschreibung („Gebäude: wall“ → Gebäude, „Monarch 2“ → Monarch), sonst „Sonstige“. */
+/** Typ eines Slots: Text vor dem Doppelpunkt der Beschreibung („Gebäude: wall“ → Gebäude, „Monarch 2: rot“ → Monarch), sonst „Sonstige“. */
 export function typOf(s: Pick<AssetSlot, 'beschreibung'>): string {
   const head = s.beschreibung.split(':')[0]?.trim() ?? '';
   return s.beschreibung.includes(':') && head.length > 0 && head.length <= 24 ? head.replace(/\s+\d+$/, '') : 'Sonstige';
