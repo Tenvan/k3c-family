@@ -4,7 +4,7 @@
 - **Typ:** Frage
 - **Prio:** hoch
 - **Umgebung:** live
-- **Status:** offen
+- **Status:** erledigt
 - **Sprint:** –
 - **Projekt:** GEB
 - **Erstellt:** 2026-10-17

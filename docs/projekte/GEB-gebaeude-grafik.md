@@ -20,7 +20,7 @@ In Abarbeitungs-Reihenfolge; der erste nicht erledigte Sprint ist der nächste. 
 | GEB3 | Mauer und Turm, Stufen 1 bis 5 | erledigt |
 | GEB4 | Burg und Hub-Stufen 1 bis 5, Tor | erledigt |
 | GEB5 | Lager, Farm mit Plantage, Kaserne, Treppen | erledigt |
-| GEB6 | Natur und Objekte: Bäume, Fels, Erz, Adern, Truhe, Portal, Rekrutierungslager | aktiv |
+| GEB6 | Natur und Objekte: Bäume, Fels, Erz, Adern, Truhe, Portal, Rekrutierungslager | erledigt |
 | GEB7 | Hintergründe je Biom | geplant |
 
 ## Nicht-Ziele
