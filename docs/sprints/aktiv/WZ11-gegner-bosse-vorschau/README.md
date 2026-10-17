@@ -124,7 +124,7 @@ Vor der Freigabe offen: nichts.
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
 | WZ11.1 | `WZ11.1-gegner-seite.md` | Umsetzung | autonom | fertig |
-| WZ11.2 | `WZ11.2-bosse.md` | Umsetzung | autonom | offen |
+| WZ11.2 | `WZ11.2-bosse.md` | Umsetzung | autonom | in Arbeit |
 | WZ11.3 | `WZ11.3-figuren-seiten-entfernen.md` | Umsetzung | autonom | offen |
 | WZ11.4 | `WZ11.4-review.md` | Review | autonom | offen |
 | WZ11.5 | `WZ11.5-abnahme.md` | Review | Mensch | offen |
