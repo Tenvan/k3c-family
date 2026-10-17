@@ -121,7 +121,7 @@ export function figureCard(slot: AssetSlot, choice: Choice & { sheet: string }):
 }
 
 /** Spielmaßstab einer Umgebungs-Grafik: 16-px-Raster ×2 auf `UNIT_PX` = 32 (Q13) */
-// ponytail: ein Faktor für alle; im Spiel haben einzelne Objekte eigene Zooms (Portal ×1, Wald-Hintergrund ×3,
+// ponytail: ein Faktor für alle; im Spiel haben einzelne Objekte eigene Zooms (Portal ×1, Hintergründe aller fünf Biome ×1,
 // src/scenes/worldSprites.ts). Erst übernehmen, wenn die Vorschau dort täuscht.
 export const GRAFIK_SCALE = 2;
 
