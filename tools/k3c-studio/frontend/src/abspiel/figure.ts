@@ -137,13 +137,24 @@ export function sheetFiles(sheet: string): SheetFile[] {
 // ---- Reittier ------------------------------------------------------------------------------------------------------
 
 /** Kontext von `mountPose` für einen Reiter auf dem Reittier `mountKey`; `refSpeed` ist das Lauftempo ohne Sprint. */
-export function riderContext(mountKey: string, rider: FigureSpec, refSpeed: number): MountContext {
-  return { key: mountKey, rider, refSpeed, mounts: MOUNTS, sheets: SHEETS, riderWaist: DATA.riderWaist };
+export function riderContext(mountKey: string, rider: FigureSpec, refSpeed: number, mounts: Record<string, MountData> = MOUNTS): MountContext {
+  return { key: mountKey, rider, refSpeed, mounts, sheets: SHEETS, riderWaist: DATA.riderWaist };
+}
+
+/** Die Reittiere mit einem anderen Sheet für `mountKey` (Grafik-Auswahl: eine andere Zuordnung des Slots als Vorschau) */
+export function mountsWithSheet(mountKey: string, sheet: string): Record<string, MountData> {
+  const mount = MOUNTS[mountKey];
+  return mount ? { ...MOUNTS, [mountKey]: { ...mount, sheet } } : MOUNTS;
 }
 
 /** Pose des Reiters wie im Spiel (`mountPose`) bei Tempo `speed` (0 = steht); null mit Lücke, wenn das Reittier fehlt. */
-export function mountPoseOf(mountKey: string, rider: FigureSpec, refSpeed: number, speed: number, frame = 0): { pose: MountPose | null; gap: Gap | null } {
-  const pose = mountPose({ vx: speed, facing: 1 }, frame, riderContext(mountKey, rider, refSpeed));
+export function mountPoseOf(
+  mountKey: string, rider: FigureSpec, refSpeed: number, speed: number, frame = 0, mounts: Record<string, MountData> = MOUNTS,
+): { pose: MountPose | null; gap: Gap | null } {
+  const pose = mountPose({ vx: speed, facing: 1 }, frame, riderContext(mountKey, rider, refSpeed, mounts));
   if (pose) return { pose, gap: null };
-  return { pose: null, gap: gap('mount', MOUNTS[mountKey] ? `Lücke: Reittier ${mountKey} ohne Sattelpunkt` : `Lücke: Reittier ${mountKey} unbekannt`) };
+  const mount = mounts[mountKey];
+  if (!mount) return { pose: null, gap: gap('mount', `Lücke: Reittier ${mountKey} unbekannt`) };
+  if (!SHEETS[mount.sheet] || !SHEETS[rider.sheet]) return { pose: null, gap: gap('sheet', `Lücke: Sheet ${SHEETS[mount.sheet] ? rider.sheet : mount.sheet} fehlt in data/sprites.json`) };
+  return { pose: null, gap: gap('mount', `Lücke: Reittier ${mountKey} ohne Sattelpunkt`) };
 }

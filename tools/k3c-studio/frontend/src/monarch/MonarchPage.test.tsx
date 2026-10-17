@@ -1,0 +1,118 @@
+// @vitest-environment happy-dom
+import { Theme } from '@radix-ui/themes';
+import { act } from 'react';
+import { createRoot, type Root } from 'react-dom/client';
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
+import { backend } from '../api';
+import type { AssetSlot } from '../api';
+import type { FigureItem } from '../abspiel/figureView';
+import { MonarchPage } from './MonarchPage';
+
+// B-463 (WZ10.2) im DOM: Monarch-Seite mit einer Attrappe statt Phaser; die Bühne bekommt, was die Seite wählt.
+(globalThis as { IS_REACT_ACT_ENVIRONMENT?: boolean }).IS_REACT_ACT_ENVIRONMENT = true;
+
+const calls = vi.hoisted(() => ({ shown: [] as unknown[], controls: [] as unknown[] }));
+vi.mock('../stage/PreviewStage', () => ({
+  PreviewStage: class {
+    async showFigures(items: unknown) { calls.shown.push(items); return [{ gap: null, frames: 6 }]; }
+    setControl(c: unknown) { calls.controls.push(c); }
+    destroy() {}
+  },
+}));
+
+let root: Root | null = null;
+let host: HTMLElement | null = null;
+const flush = () => act(async () => { for (let i = 0; i < 5; i++) await new Promise((r) => setTimeout(r, 0)); });
+const lastItems = () => calls.shown.at(-1) as FigureItem[];
+
+async function mount(node: React.ReactNode = <MonarchPage />): Promise<HTMLElement> {
+  host = document.createElement('div');
+  document.body.append(host);
+  root = createRoot(host);
+  await act(async () => root!.render(<Theme>{node}</Theme>));
+  await flush();
+  return host;
+}
+
+const field = (h: HTMLElement, label: string) => h.querySelector<HTMLSelectElement>(`[aria-label="${label}"]`)!;
+async function choose(el: HTMLSelectElement, value: string) {
+  await act(async () => { el.value = value; el.dispatchEvent(new Event('change', { bubbles: true })); });
+  await flush();
+}
+
+const slot = (id: string, wahl: AssetSlot['wahl']): AssetSlot => ({ id, art: 'grafik', kategorie: 'figuren', beschreibung: id, wahl, status: 'zugeordnet' });
+
+beforeEach(() => { calls.shown.length = 0; calls.controls.length = 0; });
+afterEach(() => { vi.restoreAllMocks(); act(() => root?.unmount()); host?.remove(); });
+
+describe('Monarch-Seite (B-463/AC-01, AC-03, AC-04, AC-10)', () => {
+  it('zeigt die vier Spielerfarben beritten auf dem Standard-Reittier', async () => {
+    const h = await mount();
+    expect(lastItems()).toHaveLength(4);
+    expect(lastItems().every((i) => i.mount?.key === 'horse' && i.anim === 'idle')).toBe(true);
+    expect(h.querySelectorAll('.wd-colors li')).toHaveLength(4);
+    expect(h.querySelectorAll('.wd-badge')).toHaveLength(4);
+    expect(h.querySelector('.wd-colors')!.textContent).toContain('Spieler 4');
+  });
+
+  it('Reittier wechseln: alle 13 stehen zur Wahl, die Bühne bekommt das gewählte', async () => {
+    const h = await mount();
+    const select = field(h, 'Reittier');
+    expect(select.options).toHaveLength(13);
+    await choose(select, 'unicorn');
+    expect(lastItems().every((i) => i.mount?.key === 'unicorn')).toBe(true);
+  });
+
+  it('Bewegung: nur Stehen, Laufen und Sprinten beritten, nichts zu Fuß; Sprinten ist schneller als Laufen', async () => {
+    const h = await mount();
+    const move = field(h, 'Bewegung');
+    expect([...move.options].map((o) => o.textContent)).toEqual(['Stehen', 'Laufen (beritten)', 'Sprinten (beritten)']);
+    await choose(move, 'walk');
+    const walk = lastItems()[0]!.mount!.speed;
+    await choose(move, 'sprint');
+    expect(lastItems()[0]!.mount!.speed).toBeGreaterThan(walk);
+    expect(h.textContent).not.toContain('Lücke');
+  });
+
+  it('Animation einzeln wählbar: idle, run, attack; Steuerung (Schleife, Einzelbild, Tempo) geht an die Bühne', async () => {
+    const h = await mount();
+    const anim = field(h, 'Animation');
+    expect([...anim.options].map((o) => o.value)).toEqual(['idle', 'run', 'attack']);
+    await choose(anim, 'attack');
+    expect(lastItems().every((i) => i.anim === 'attack')).toBe(true);
+    await act(async () => [...h.querySelectorAll('button')].find((b) => b.getAttribute('aria-label') === 'Bild vor')!.click());
+    await flush();
+    expect(calls.controls.at(-1)).toMatchObject({ frame: 1 });
+    await choose(field(h, 'Tempo'), '2');
+    expect(calls.controls.at(-1)).toMatchObject({ tempo: 2 });
+  });
+});
+
+describe('Grafik-Auswahl (B-463/AC-12)', () => {
+  const slots = [
+    slot('monarch:2', [{ datei: 'sprites/medieval-king-2/idle.png', sheet: 'medieval-king-2' }, { datei: 'sprites/medieval-king/idle.png', sheet: 'medieval-king' }, { datei: 'sprites/x/idle.png', sheet: 'gibtsnicht' }]),
+    slot('mount:horse', [{ datei: 'sprites/horse/idle.png', sheet: 'horse' }, { datei: 'sprites/white-horse/idle.png', sheet: 'white-horse' }]),
+  ];
+
+  it('Präferenz 1 ist voreingestellt, eine andere Zuordnung wechselt das Sheet der Vorschau, das Register bleibt unverändert', async () => {
+    vi.spyOn(backend, 'assetsList').mockResolvedValue({ slots, error: '', preview: '/', stand: 's' });
+    const set = vi.spyOn(backend, 'assetsSet');
+    const h = await mount();
+    const rider = field(h, 'Grafik Monarch 2');
+    expect(rider.value).toBe('0');
+    expect(lastItems()[1]!.spec.sheet).toBe('medieval-king-2');
+    await choose(rider, '1');
+    expect(lastItems()[1]!.spec.sheet).toBe('medieval-king');
+    await choose(field(h, 'Grafik Reittier'), '1');
+    expect(lastItems()[0]!.mount!.sheet).toBe('white-horse');
+    expect(set).not.toHaveBeenCalled();
+  });
+
+  it('ein Sheet ohne Eintrag in data/sprites.json ist eine Lücke, die Vorschau zeigt die Spiel-Figur', async () => {
+    vi.spyOn(backend, 'assetsList').mockResolvedValue({ slots, error: '', preview: '/', stand: 's' });
+    const h = await mount();
+    await choose(field(h, 'Grafik Monarch 2'), '2');
+    expect(h.querySelector('.wd-colors li[data-index="1"] .wd-gap')!.textContent).toContain('gibtsnicht');
+    expect(lastItems()[1]!.spec.sheet).toBe('medieval-king-2');
+  });
+});

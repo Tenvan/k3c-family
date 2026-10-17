@@ -35,3 +35,9 @@
 /* Abspiel-Bausteine (B-463, WZ10.1) */
 .wd-playback { align-items: center; }
 .wd-gap { display: inline-block; padding: 0 6px; border: 1px solid var(--amber-8); border-radius: 4px; color: var(--amber-11); font-size: 0.75rem; }
+
+/* Monarch-Seite (B-463, WZ10.2) */
+.wd-colors { list-style: none; margin: 8px 0 0; padding: 0; display: flex; flex-direction: column; gap: 4px; }
+.wd-colors li { display: flex; align-items: center; gap: 8px; }
+.wd-badge { display: inline-block; width: 14px; height: 14px; border-radius: 50%; }
+.wd-monarch .wd-stage { min-height: 22rem; }

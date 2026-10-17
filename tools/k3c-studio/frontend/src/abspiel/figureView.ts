@@ -1,7 +1,7 @@
 import Phaser from 'phaser';
 import { GAME_HEIGHT, UNIT_PX } from '@game/core/constants';
 import { face, makeSprite, playAnim } from '@game/scenes/sprites';
-import { ANIMS, MOUNTS, SHEETS, animInfo, inAtlas, mountPoseOf, resolveAnim, sheetFiles, unitTicks, type Anim, type Control, type FigureSpec, type Gap } from './figure';
+import { ANIMS, MOUNTS, SHEETS, animInfo, inAtlas, mountPoseOf, mountsWithSheet, resolveAnim, sheetFiles, unitTicks, type Anim, type Control, type FigureSpec, type Gap } from './figure';
 
 // Phaser-Anteil der Abspiel-Bausteine (B-463, WZ10.1): zeichnet Figuren mit den Animationen und Definitionen des Spiels
 // (`makeSprite`, `playAnim`, `face` aus `src/scenes/sprites.ts`) auf der Bühne des Studios. Die Entscheidungen
@@ -19,7 +19,7 @@ export interface FigureItem {
   spec: FigureSpec;
   anim: Anim;
   /** Der Reiter sitzt auf dem Reittier `key`; `speed` ist das Tempo (0 = steht), `refSpeed` das Lauftempo ohne Sprint */
-  mount?: { key: string; refSpeed: number; speed: number };
+  mount?: { key: string; refSpeed: number; speed: number; sheet?: string };
 }
 
 /** Textur-Schlüssel eines Einzel-PNG-Sheets wie im Spiel */
@@ -29,7 +29,7 @@ const textureKey = (sheet: string, anim: Anim) => `${sheet}-${anim}`;
 export function loadFigureSheets(scene: Phaser.Scene, items: readonly FigureItem[]): Promise<void> {
   const sheets = new Set<string>();
   for (const i of items) {
-    if (i.mount) sheets.add(MOUNT_SHEET(i.mount.key));
+    if (i.mount) sheets.add(MOUNT_SHEET(i.mount));
     if (!inAtlas(i.spec.sheet)) sheets.add(i.spec.sheet);
   }
   let queued = 0;
@@ -48,7 +48,8 @@ export function loadFigureSheets(scene: Phaser.Scene, items: readonly FigureItem
   });
 }
 
-const MOUNT_SHEET = (key: string): string => MOUNTS[key]?.sheet ?? key;
+const MOUNT_SHEET = (m: NonNullable<FigureItem['mount']>): string => m.sheet ?? MOUNTS[m.key]?.sheet ?? m.key;
+const mountsOf = (m: NonNullable<FigureItem['mount']>) => (m.sheet ? mountsWithSheet(m.key, m.sheet) : MOUNTS);
 
 function createSheetAnims(scene: Phaser.Scene, sheet: string): void {
   for (const anim of ANIMS) {
@@ -73,7 +74,7 @@ export class FigureView {
     this.rider = makeSprite(scene, item.spec);
     let mountGap: Gap | null = null;
     if (item.mount) {
-      const m = mountPoseOf(item.mount.key, item.spec, item.mount.refSpeed, item.mount.speed);
+      const m = mountPoseOf(item.mount.key, item.spec, item.mount.refSpeed, item.mount.speed, 0, mountsOf(item.mount));
       mountGap = m.gap;
       const sheet = m.pose?.sheet;
       this.mount = m.pose && sheet && scene.textures.exists(textureKey(sheet, 'idle')) ? scene.add.sprite(0, 0, textureKey(sheet, 'idle'), 0).setData('sheet', sheet) : null;
@@ -98,7 +99,7 @@ export class FigureView {
     this.play(this.rider, this.anim, c);
     const mount = this.mount;
     if (!mount || !this.item.mount) return;
-    const { pose } = mountPoseOf(this.item.mount.key, this.item.spec, this.item.mount.refSpeed, this.item.mount.speed);
+    const { pose } = mountPoseOf(this.item.mount.key, this.item.spec, this.item.mount.refSpeed, this.item.mount.speed, 0, mountsOf(this.item.mount));
     if (!pose) return;
     this.play(mount, pose.anim, c);
     mount.anims.timeScale = pose.timeScale * (c?.tempo ?? 1);
@@ -127,7 +128,7 @@ export class FigureView {
   follow(): void {
     if (!this.mount || !this.item.mount) return;
     const frame = Number(this.mount.frame.name);
-    const { pose } = mountPoseOf(this.item.mount.key, this.item.spec, this.item.mount.refSpeed, this.item.mount.speed, Number.isFinite(frame) ? frame : 0);
+    const { pose } = mountPoseOf(this.item.mount.key, this.item.spec, this.item.mount.refSpeed, this.item.mount.speed, Number.isFinite(frame) ? frame : 0, mountsOf(this.item.mount));
     if (!pose) return;
     const mount = this.mount;
     face(mount, 1);
