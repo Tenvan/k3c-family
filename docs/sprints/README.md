@@ -3,12 +3,13 @@
 Alle Sprints mit Ordner und Status. Arbeitsweise: [`../arbeitsweise.md`](../arbeitsweise.md).
 **Lesen:** `aktiv/` immer, `geplant/` beim Planen, `erledigt/` nur auf Nachfrage.
 Jede Sprint-README ist eine Spec (SDD); aktiv wird ein Sprint erst mit `Spec: freigegeben` durch 🧑.
-Die Reihenfolge der Arbeit ist allein der Projekt-Rang: [`../projekte/README.md`](../projekte/README.md). Die Tabellen stehen nach Rang und in der Sprint-Reihenfolge des Projekts, ABN und ruhende Projekte zuletzt; je Projekt höchstens ein aktiver Sprint.
+Die Reihenfolge der Arbeit ist allein der Projekt-Rang: [`../projekte/README.md`](../projekte/README.md). Die Tabellen stehen nach Rang und in der Sprint-Reihenfolge des Projekts, ABN und ruhende Projekte zuletzt; je Projekt können mehrere Sprints aktiv sein.
 
 ## Aktiv
 
 | Sprint | Domäne | Projekt | Thema | Am Ende sichtbar | Ordner |
 |---|---|---|---|---|---|
+| WZ8 | REG, SIM, SRV, DEV | WZG | Chunks je Insel und Stufe planen: Seed oder feste Objekte | – | `aktiv/WZ8-chunk-planung/` |
 | GR7 | CLI | GRA | Figuren-Lücken, ganzzahlige Skalierung und Schrift | – | `aktiv/GR7-figuren-schrift/` |
 | SO4 | CLI | SND | Musik je Zustand | – | `aktiv/SO4-musik/` |
 
@@ -21,12 +22,11 @@ Abnahmen am Gerät (`Agent: Mensch`) sammelt das Projekt ABN im Sprint HW1: [`..
 | Sprint | Domäne | Projekt | Thema | Am Ende sichtbar | Reife | Ordner |
 |---|---|---|---|---|---|---|
 | WZ7 | DEV | WZG | Welt-Betrachter im Asset-Studio mit Chunk- und Live-Vorschau | – | Entwurf | `geplant/WZ7-welt-betrachter/` |
-| WZ8 | SIM | WZG | Chunks je Insel und Stufe planen: Seed oder feste Objekte | – | Entwurf | `geplant/WZ8-chunk-planung/` |
 | WZ9 | SRV, DEV | WZG | Gebäude-Planer für die Freischaltung je Hub-Stufe | – | Entwurf | `geplant/WZ9-gebaeude-planer/` |
-| WZ10 | DEV | WZG | Abspiel-Bausteine und Monarch-Vorschau im Asset-Studio | – | Entwurf | `geplant/WZ10-figuren-vorschau/` |
-| WZ11 | DEV | WZG | Gegner- und Boss-Vorschau im Asset-Studio, Figuren-Seiten entfernen | – | Entwurf | `geplant/WZ11-gegner-bosse-vorschau/` |
+| WZ10 | DEV | WZG | Abspiel-Bausteine und Monarch-Vorschau im Asset-Studio | – | bereit | `geplant/WZ10-figuren-vorschau/` |
+| WZ11 | DEV | WZG | Gegner- und Boss-Vorschau im Asset-Studio, Figuren-Seiten entfernen | – | bereit | `geplant/WZ11-gegner-bosse-vorschau/` |
 | WZ12 | DEV | WZG | Planungs-Werkzeug: Platzhalter-Zeilen und Worktree-Pills | – | Entwurf | `geplant/WZ12-planungs-werkzeug-nachtraege/` |
-| WZ13 | INF | WZG | Glossar und Regeln: Verweis für das Morgengrauen auf B-470 | – | Entwurf | `geplant/WZ13-glossar-morgengrauen-verweis/` |
+| WZ13 | INF, REG | WZG | Glossar und Regeln: Verweis für das Morgengrauen auf B-470 | – | bereit | `geplant/WZ13-glossar-morgengrauen-verweis/` |
 | WZ14 | REG | WZG | Geplante Chunks tragen Ruinen und Gegnerlager | – | Entwurf | `geplant/WZ14-ruinen-gegnerlager/` |
 | WZ15 | REG, INF, SIM | WZG | Hub-Planung Vorlauf: Regeltabelle erzeugt, Prüfung ohne globalen Zustand | – | Entwurf | `geplant/WZ15-hub-planung-vorlauf/` |
 | BD2 | SIM, SRV, CLI | BED | Rückmeldungs-Ereignisse gedrosselt und geprüft, Lobby startet nie still leer | – | Entwurf | `geplant/BD2-rueckmeldung-lobby-nachtraege/` |

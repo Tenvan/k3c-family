@@ -59,6 +59,10 @@ Entscheidet 🧑 im Regel-Workshop nach WZ8: Regeln für Ruinen und Gegnerlager,
 
 ## Sessions
 
+| Nr. | Datei | Typ | Agent | Status |
+|---|---|---|---|---|
+| WZ14.1 | `WZ14.1-workshop-regeln.md` | Workshop | Mensch | offen |
+
 - WZ14.1 (REG) Workshop mit 🧑: Regeln für Ruinen und Gegnerlager, Regeltext, Glossar (AC-01).
 - WZ14.2 (SIM) Reservierte Felder lesen und prüfen, Sim-Logik für Ruine und Gegnerlager (AC-02, AC-03, AC-04).
 - WZ14.3 (SRV) Vorschau-Snapshot und Spielstand (AC-03, AC-05).
