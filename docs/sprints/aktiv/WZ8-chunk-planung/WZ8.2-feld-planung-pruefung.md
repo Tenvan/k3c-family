@@ -1,6 +1,6 @@
 # WZ8.2 · Feld plannedChunks und Prüfung der Planung
 
-- **Status:** offen
+- **Status:** in Arbeit
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** SIM
