@@ -1,6 +1,6 @@
 # WZ7.3 · Live-Vorschau mit Phaser-Bühne im Studio
 
-- **Status:** offen
+- **Status:** in Arbeit
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** DEV

@@ -76,7 +76,7 @@ Beantwortet von 🧑 am 2026-10-17 (Chat), siehe `B-460 › Offene Fragen` 10–
 | WZ7.8 | `WZ7.8-sim-vorschau-regeln.md` | Umsetzung | autonom | fertig |
 | WZ7.1 | `WZ7.1-vorschau-snapshot.md` | Umsetzung | autonom | fertig |
 | WZ7.2 | `WZ7.2-seite-chunk-vorschau.md` | Umsetzung | autonom | fertig |
-| WZ7.3 | `WZ7.3-live-vorschau.md` | Umsetzung | autonom | offen |
+| WZ7.3 | `WZ7.3-live-vorschau.md` | Umsetzung | autonom | in Arbeit |
 | WZ7.4 | `WZ7.4-live-optionen-im-spiel.md` | Umsetzung | autonom | offen |
 | WZ7.5 | `WZ7.5-leveltest-entfernen.md` | Umsetzung | autonom | offen |
 | WZ7.6 | `WZ7.6-review.md` | Review | autonom | offen |
