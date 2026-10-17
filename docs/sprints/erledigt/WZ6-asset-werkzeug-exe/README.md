@@ -1,6 +1,6 @@
 # WZ6 · INF, DEV · Asset-Studio als eigene EXE mit Seiten für Grafik und Sound
 
-- **Status:** aktiv
+- **Status:** erledigt
 - **Projekt:** WZG
 - **Domäne:** INF, DEV
 - **Reife:** bereit
@@ -68,11 +68,11 @@ Entschieden von 🧑 am 2026-10-17 (B-459 › Offene Fragen); Revision 2 freigeg
 | WZ6.5 | `WZ6.5-workbench-ohne-assets.md` | Umsetzung | autonom | fertig |
 | WZ6.6 | `WZ6.6-assetvorschau-entfernen.md` | Umsetzung | autonom | fertig |
 | WZ6.7 | `WZ6.7-review.md` | Review | autonom | fertig |
-| WZ6.8 | `WZ6.8-abnahme.md` | Review | Mensch | offen |
+| WZ6.8 | `WZ6.8-abnahme.md` | Review | Mensch | fertig |
 
 ## Abnahme
 
-- 2026-10-17 (Review WZ6.7): AC-01–AC-07 angenommen laut Ergebnissen WZ6.1–WZ6.6, AC-01 (Fenster/Port) und AC-03 (Neubau-Probe) mit Validierung offen (WZ6.8); AC-08 offen (WZ6.8).
-- Checks grün: `task check`, `task check:go`, `dev:test`, `task build`; Diff gegen `develop` (Rest nach PR #341: Entfernung `assetvorschau`, `.gitattributes`) ohne schwere Befunde; keine Reste von `assetvorschau`/`k3c-dev-only` außerhalb `docs/`.
-- Behobene Befunde: keine. Neue Tickets: keine.
-- Version: v0.19.0 vorgeschlagen (neues Werkzeug Asset-Studio, Minor); nicht gesetzt.
+- 2026-10-17 (Review WZ6.7): AC-01–AC-07 angenommen laut Ergebnissen WZ6.1–WZ6.6; Diff ohne schwere Befunde, Checks grün (`task check`, `check:go`, `dev:test`, `build`). Behobene Befunde: keine.
+- 2026-10-17 (WZ6.8): AC-08 von Ralf am PC abgenommen (alle 13 Punkte bestanden, Chat); AC-01 und AC-03 damit validiert. B-421 `erledigt` (B-298, B-299 ebenfalls), B-459 `erledigt`.
+- Neue Tickets: B-473 (CI auf `develop` rot, k3c-dev `internal/planning`), B-474 (`TestDownloadHit` lokal an Norton-TLS).
+- Version: v0.19.0 vorgeschlagen (neues Werkzeug Asset-Studio, Minor); nicht gesetzt, wartet auf grüne CI (B-473).
