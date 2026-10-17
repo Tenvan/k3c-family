@@ -1,6 +1,6 @@
 # WZ7.1 · Vorschau-Snapshot als exportierte Go-Funktion
 
-- **Status:** offen
+- **Status:** in Arbeit
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** SRV
