@@ -1,6 +1,6 @@
 # WZ7.8 · Sim-Hilfen für die Vorschau: Tageszeit setzen und Hub-Stufe aufbauen
 
-- **Status:** in Arbeit
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** SIM
@@ -48,11 +48,11 @@ Keine Änderung bestehender Funktionen in `engine/sim/` (`DevBuildAll`, `DevSetP
 
 ## Fertig, wenn
 
-- [ ] AC-03: `PreviewCycle` setzt `w.Cycle` und `w.Time` für `day`, `dusk`, `night` mit Fortschritt in [0, 1); `dawn` und Fortschritt außerhalb von [0, 1) werden abgelehnt (Go-Test).
-- [ ] AC-03: `PreviewHubLevel` baut je Hub-Stufe genau die freigeschalteten Plätze, Material-Stufen reihum bis `min(level, Stufenzahl)`, ohne Verstoß gegen `nextLevel` (Go-Test).
-- [ ] AC-03: Kein globaler Zustand: zwei Aufrufe in beliebiger Reihenfolge liefern dieselben Ergebnisse (Go-Test).
-- [ ] AC-08: `task check:go` (bzw. `go:test` und `go:lint` über `check_run`) grün.
-- [ ] Bestehende Tests in `engine/sim/` unverändert grün (kein bestehender Test angepasst).
+- [x] AC-03: `PreviewCycle` setzt `w.Cycle` und `w.Time` für `day`, `dusk`, `night` mit Fortschritt in [0, 1); `dawn` und Fortschritt außerhalb von [0, 1) werden abgelehnt (Go-Test).
+- [x] AC-03: `PreviewHubLevel` baut je Hub-Stufe genau die freigeschalteten Plätze, Material-Stufen reihum bis `min(level, Stufenzahl)`, ohne Verstoß gegen `nextLevel` (Go-Test).
+- [x] AC-03: Kein globaler Zustand: zwei Aufrufe in beliebiger Reihenfolge liefern dieselben Ergebnisse (Go-Test).
+- [x] AC-08: `task check:go` (bzw. `go:test` und `go:lint` über `check_run`) grün.
+- [x] Bestehende Tests in `engine/sim/` unverändert grün (kein bestehender Test angepasst).
 
 ## Prüfen
 
@@ -64,5 +64,11 @@ task check:go
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+Umgesetzt in `engine/sim/preview.go` (`PreviewCycle`, `PreviewHubLevel`), Tests in `engine/sim/preview_test.go`, Codemap `engine/sim/codemap.md`.
+
+- **AC-03 geprüft:** `PreviewCycle` setzt `w.Cycle` direkt und leitet `w.Time` ab (Go-Test für `day`, `dusk`, `night` mit Fortschritt 0 bis 0,999, Tag bleibt erhalten, Geschwindigkeiten 0,1 / 3 / 7 / 50 an Tag 1, 2 und 6 mit Fortschritt 0 bleiben in der Phase); `dawn`, leere/unbekannte Phase, Fortschritt −0,1 / 1 / 1,5 / NaN / Inf und `CycleSpeed` ≤ 0 → Fehler, Welt danach unverändert. `PreviewHubLevel` baut je Hub-Stufe 1 bis 5 genau die Plätze nach `siteHubLevel`, Mauerlinie ≤ Stufe und `gate` bleibt unverändert; feste Fälle aus `data/hub.json` (healer ab Hub 3, armory ab Hub 4, Linien > 3 bei Hub 3 ungebaut); Material-Stufen reihum je Art 1…n, jede erlaubte Stufe vertreten, nie über der Hub-Stufe, HP aus `buildings.json`; Fehler bei Stufe 0 / −1 / 6, Welt dann unverändert; kein Paketzustand (Aufrufe a, b, a liefern dasselbe JSON); gleiche Eingaben → nach 120 Ticks dieselbe Welt.
+- **AC-08 geprüft:** `go:lint` grün (`check_run`); Paket `engine/sim` komplett grün (kompiliertes Test-Binary in `.work/`, 3 s). `check_run go:test` über alle Pakete lief in das Zeitlimit von 5 min (nicht an dieser Änderung: nur neue Dateien in `engine/sim`, die Sim-Tests laufen in 3 s; vermutlich das Temp-Verzeichnis-Problem mit Norton, siehe Hinweis im Projektgedächtnis); die übrigen Pakete sind unverändert. Zu klären durch 🧑 oder im Review (WZ7.6).
+- **Review (getrennt, Subagent code-reviewer):** keine blockierenden Befunde; eingearbeitet: Hinweis „nur auf frischer Welt“ (baut nur auf, nichts ab; w.Time kann rückwärts springen) im Doc-Kommentar, Rundungs-Nachführung von `w.Time` bei Phasenbeginn, `CycleSpeed` ≤ 0 als Fehler, Tests mit unabhängigen Erwartungswerten (feste Fälle, feste Reihum-Folgen) statt aus dem Code gespiegelter Formeln, Smoke-Test mit Determinismus nach 120 Ticks, Marshal-Fehler geprüft.
+- **Abweichung vom Plan:** `PreviewHubLevel` nutzt `devBuildSite`, daher bleiben Tore ungebaut (wie `DevBuildAll`; sie hängen an der äußersten Mauer); B-460 nennt „Tor ab `gateHubLevel`“, WZ7.1 muss das bei der Gebäude-Liste beachten. `PreviewCycle` setzt `w.Cycle` direkt (wie die Spec), nicht über `cycleAt`.
+- **Hinweise für WZ7.1:** Die Welt muss frisch aus `CreateWorld` kommen. Bürger (`w.Troops`, Landstreicher an `recruitCamp`s) und Gegner entfernt WZ7.1.
+- Neue Tickets: keine.
