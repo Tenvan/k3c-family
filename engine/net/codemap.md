@@ -17,6 +17,8 @@ Transport- und API-Schicht des Go-Servers (Adapter zwischen HTTP/WebSocket und d
 - Dev-Seite: `dev.go` – `/api/dev` (`devBody`, `dev`, `devAction`): GET Raumliste/Diagnose, POST Dev-Aktion nur im Dev-Mode (sonst 403).
 - `saves.go`: `GET /api/saves` listet Spielstände über `Saves.List`; `static.go`: `resolve` schützt gegen Path Traversal im `dist/`-Ordner; `level.go`: zustandslose Level-Berechnung über `engine/level`.
 
+- Vorschau (WZ7.1): `preview.go` – `Preview(room.PreviewOptions)` liefert `PreviewResult{Level, State}` im Format von `level` und `snap` (über `stateOf`); direkter Aufruf aus dem Asset-Studio, kein HTTP-Endpunkt.
+
 ## Flow
 
 1. `cmd/k3c-server` ruft `NewHandler(Config)`; Routen: `/api/health`, `/api/save`, `/api/saves`, `/api/save/backups`, `/api/save/restore`, `/api/status[/log|/disconnect|/save]`, `/api/metrics`, `/api/report`, `/api/level`, `/api/clientlog`, `/api/dev`, `/ws`, `/` (static).

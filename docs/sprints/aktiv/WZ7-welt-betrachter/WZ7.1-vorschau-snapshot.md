@@ -1,6 +1,6 @@
 # WZ7.1 · Vorschau-Snapshot als exportierte Go-Funktion
 
-- **Status:** in Arbeit
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** SRV
@@ -48,9 +48,9 @@ Keine Änderung in `engine/sim/` (WZ7.8), `engine/level/`, `src/`, `tools/`, `da
 
 ## Fertig, wenn
 
-- [ ] AC-03: Go-Funktion mit Options-Struktur liefert Level und Zustand deterministisch (byte-gleiches JSON), ohne globalen Zustand, ohne Bürger und Gegner (Go-Test).
-- [ ] AC-03: Hub-Stufen, Gebäude-Abwahl, Tageszeit der drei Sim-Phasen und alle Fehlerfälle getestet.
-- [ ] AC-08: `check_run` `go:test` und `go:lint` grün.
+- [x] AC-03: Go-Funktion mit Options-Struktur liefert Level und Zustand deterministisch (byte-gleiches JSON), ohne globalen Zustand, ohne Bürger und Gegner (Go-Test).
+- [x] AC-03: Hub-Stufen, Gebäude-Abwahl, Tageszeit der drei Sim-Phasen und alle Fehlerfälle getestet.
+- [x] AC-08: `check_run` `go:test` und `go:lint` grün.
 
 ## Prüfen
 
@@ -58,5 +58,11 @@ Keine Änderung in `engine/sim/` (WZ7.8), `engine/level/`, `src/`, `tools/`, `da
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+Umgesetzt: `engine/room/preview.go` (`PreviewOptions`, `PreviewSource`, `PreviewSiteKey`, `BuildPreview`) und `engine/net/preview.go` (`Preview`, `PreviewResult{Level, State}`), Tests in `preview_test.go` beider Pakete, Codemaps von `engine/room` und `engine/net`.
+
+- **AC-03 geprüft (Go-Tests):** gleiche Optionen → gleiche Welt bzw. byte-gleiches JSON, auch nach einem Aufruf mit anderen Optionen (kein Paketzustand); je Hub-Stufe 0 (= höchste) bis 5 dieselben gebauten Plätze je Art wie `sim.PreviewHubLevel` auf frischer Welt, feste Erwartung healer ab Hub 3, armory ab Hub 4; Tageszeit `day`/`dusk`/`night` landet im Zustand (`cycle.phase`, `cycle.progress`); `dawn`, Fortschritt −0,1 / 1 / 1,5, Hub-Stufe −1 und über der Stufenzahl, Seed leer / > 64 Zeichen, Quelle fehlt, Biom unbekannt oder mit Pfad → Fehler; keine Bürger, Truppen, Landstreicher, Gegner (Listen `[]`, Ausgangswelt hatte Truppen), Umgebung (Ressourcen, Plätze) bleibt; Abwahl entfernt nur den Platz, unbekannte Schlüssel werden ignoriert, Stufen der übrigen bleiben; Nullwerte = Standardbild; Level = `level.Generate`; Zustand hat dieselben Felder wie `stateOf`, ohne `seed`, `widthUnits`, `devTimescale`; `Preview` legt keine Dateien an.
+- **AC-08 geprüft:** `go:lint` grün (`check_run`); Pakete `engine/room`, `engine/net` und `engine/sim` komplett grün (kompilierte Test-Binaries in `.work/`). `check_run go:test` über alle Pakete lief wie schon in WZ7.8 ins Zeitlimit (Temp-Datei-Sperre auf diesem Rechner); die übrigen Pakete sind unverändert.
+- **Review (getrennt, Subagent code-reviewer):** keine blockierenden Befunde. Eingearbeitet: Hub-Test vergleicht alle Arten gegen `sim.PreviewHubLevel`, Stufenzahl aus den Daten statt fest 5, Test prüft, dass die Ausgangswelt Truppen hatte.
+- **Abweichung vom Plan:** Der Seed wird wie bei `GET /api/level` auf 1 bis 64 Zeichen geprüft (B-460 › Ausnahmefälle), nicht mit dem engeren Format von `fullSeed`; das Studio sperrt den Voll-Ausbau selbst bei unpassendem Seed (WZ7.4).
+- **Hinweis für WZ7.3/WZ7.4:** Schlüssel der Gebäude-Auswahl `kind@x` mit X in Units als kürzeste Dezimaldarstellung (`strconv.FormatFloat(x, 'f', -1, 64)`); das Frontend bildet ihn aus dem Snapshot (`sites[].kind`, `sites[].x`). Tore bleiben ungebaut (wie `DevBuildAll`). Wails-Binding folgt in WZ7.3.
+- Neue Tickets: keine.
