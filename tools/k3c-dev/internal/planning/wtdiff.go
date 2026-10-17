@@ -105,76 +105,55 @@ func diffWorktree(root string, w worktree, bases map[string]Data) ([]Change, err
 }
 
 func diffData(base, wt Data) []Change {
+	cs := diffByID("Projekt", base.Projects, wt.Projects, func(p Project) (string, string) { return p.ID, p.Title },
+		func(old, p Project) []Change {
+			return append(changed("Projekt", p.ID, "Status", old.Status, p.Status), changed("Projekt", p.ID, "Rang", old.Rang, p.Rang)...)
+		})
+	cs = append(cs, diffByID("Sprint", base.Sprints, wt.Sprints, func(s Sprint) (string, string) { return s.ID, s.Title },
+		func(old, s Sprint) []Change {
+			out := append(changed("Sprint", s.ID, "Status", old.Status, s.Status), changed("Sprint", s.ID, "Projekt", old.Project, s.Project)...)
+			return append(out, diffSessions(old, s)...)
+		})...)
+	return append(cs, diffByID("Ticket", base.Tickets, wt.Tickets, func(t Ticket) (string, string) { return t.Nr, t.Title },
+		func(old, t Ticket) []Change {
+			out := append(changed("Ticket", t.Nr, "Status", old.Status, t.Status), changed("Ticket", t.Nr, "Prio", old.Prio, t.Prio)...)
+			return append(out, changed("Ticket", t.Nr, "Sprint", old.Sprint, t.Sprint)...)
+		})...)
+}
+
+// diffByID vergleicht zwei Listen über die ID: in Reihenfolge des Worktrees neu oder die Feldänderungen aus fields,
+// danach die in base vorhandenen, im Worktree fehlenden Einträge als entfernt.
+func diffByID[T any](item string, base, wt []T, key func(T) (id, title string), fields func(old, now T) []Change) []Change {
 	var cs []Change
-	add := func(kind, item, id, text string) { cs = append(cs, Change{kind, item, id, text}) }
-	field := func(item, id, name, a, b string) {
-		if a != b {
-			add("geändert", item, id, name+" "+a+" → "+b)
+	old := map[string]T{}
+	for _, b := range base {
+		id, _ := key(b)
+		old[id] = b
+	}
+	seen := map[string]bool{}
+	for _, w := range wt {
+		id, title := key(w)
+		seen[id] = true
+		if o, ok := old[id]; ok {
+			cs = append(cs, fields(o, w)...)
+		} else {
+			cs = append(cs, Change{"neu", item, id, title})
 		}
 	}
-	bp := map[string]Project{}
-	for _, p := range base.Projects {
-		bp[p.ID] = p
-	}
-	wp := map[string]bool{}
-	for _, p := range wt.Projects {
-		wp[p.ID] = true
-		old, ok := bp[p.ID]
-		if !ok {
-			add("neu", "Projekt", p.ID, p.Title)
-			continue
-		}
-		field("Projekt", p.ID, "Status", old.Status, p.Status)
-		field("Projekt", p.ID, "Rang", old.Rang, p.Rang)
-	}
-	for _, p := range base.Projects {
-		if !wp[p.ID] {
-			add("entfernt", "Projekt", p.ID, p.Title)
-		}
-	}
-	bs := map[string]Sprint{}
-	for _, s := range base.Sprints {
-		bs[s.ID] = s
-	}
-	ws := map[string]bool{}
-	for _, s := range wt.Sprints {
-		ws[s.ID] = true
-		old, ok := bs[s.ID]
-		if !ok {
-			add("neu", "Sprint", s.ID, s.Title)
-			continue
-		}
-		field("Sprint", s.ID, "Status", old.Status, s.Status)
-		field("Sprint", s.ID, "Projekt", old.Project, s.Project)
-		cs = append(cs, diffSessions(old, s)...)
-	}
-	for _, s := range base.Sprints {
-		if !ws[s.ID] {
-			add("entfernt", "Sprint", s.ID, s.Title)
-		}
-	}
-	bt := map[string]Ticket{}
-	for _, t := range base.Tickets {
-		bt[t.Nr] = t
-	}
-	wtk := map[string]bool{}
-	for _, t := range wt.Tickets {
-		wtk[t.Nr] = true
-		old, ok := bt[t.Nr]
-		if !ok {
-			add("neu", "Ticket", t.Nr, t.Title)
-			continue
-		}
-		field("Ticket", t.Nr, "Status", old.Status, t.Status)
-		field("Ticket", t.Nr, "Prio", old.Prio, t.Prio)
-		field("Ticket", t.Nr, "Sprint", old.Sprint, t.Sprint)
-	}
-	for _, t := range base.Tickets {
-		if !wtk[t.Nr] {
-			add("entfernt", "Ticket", t.Nr, t.Title)
+	for _, b := range base {
+		if id, title := key(b); !seen[id] {
+			cs = append(cs, Change{"entfernt", item, id, title})
 		}
 	}
 	return cs
+}
+
+// changed ist eine Änderung „name a → b“, wenn sich das Feld unterscheidet, sonst nichts.
+func changed(item, id, name, a, b string) []Change {
+	if a == b {
+		return nil
+	}
+	return []Change{{"geändert", item, id, name + " " + a + " → " + b}}
 }
 
 func diffSessions(old, now Sprint) []Change {
