@@ -1,14 +1,14 @@
-# WZ9.5 · Gebäude-Planer: Matrix, Abweichung, Live-Vorschau
+# WZ9.2 · Gebäude-Planer: Matrix, Abweichung, Live-Vorschau
 
 - **Status:** offen
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** DEV
 - **Umgebung:** offline
-- **Branch:** wz9/5-planer-matrix
-- **Abhängig von:** WZ9.4, WZ6, WZ7.3
+- **Branch:** wz9/2-planer-matrix
+- **Abhängig von:** WZ9.1, WZ15.2, WZ6, WZ7.3
 - **Tickets:** B-462
-- **Kriterien:** AC-01, AC-03, AC-04, AC-09
+- **Kriterien:** AC-01, AC-03, AC-04, AC-08
 
 ## Ziel
 
@@ -16,8 +16,8 @@ Im Asset-Studio zeigt die Seite Gebäude-Planer die Matrix Hub-Stufe × Bauplatz
 
 ## Kontext
 
-- Voraussetzungen: Asset-Studio (WZ6, erledigt), Live-Vorschau (WZ7.3), Snapshot-Option (WZ9.4), Generator-Paket `tools/regeltabelle/tabelle` (WZ9.2). Fehlt WZ7.3 oder WZ9.4, Session `blockiert`.
-- Das Studio ist ein eigenes Go-Modul mit Wails-Oberfläche (`tools/k3c-studio/`: `app.go`, `frontend/`). Die Abweichung (Ist-Block der Tabelle gegen soll-Block aus der JSON) rechnet das Go-Backend mit der Funktion aus `tools/regeltabelle/tabelle`. Geschrieben wird der Block erst in WZ9.6.
+- Voraussetzungen: Asset-Studio (WZ6, erledigt), Live-Vorschau (WZ7.3), Snapshot-Option (WZ9.1), Generator-Paket `tools/regeltabelle/tabelle` (WZ15.2). Fehlt WZ7.3, WZ9.1 oder WZ15.2, Session `blockiert`.
+- Das Studio ist ein eigenes Go-Modul mit Wails-Oberfläche (`tools/k3c-studio/`: `app.go`, `frontend/`). Die Abweichung (Ist-Block der Tabelle gegen soll-Block aus der JSON) rechnet das Go-Backend mit der Funktion aus `tools/regeltabelle/tabelle`. Geschrieben wird der Block erst in WZ9.3.
 - Matrix: Zeilen Bauplatz (`sites`, `islandSites`, Mauerlinien, Tor, Händler), Spalten Hub-Stufen aus `levels` (beliebig viele, keine feste 5). Begriffe laut Glossar („Gebäude-Planer“, „Live-Vorschau“, „Hub-Stufe“).
 - Firewall-Regel des Studios (B-459) und Dateiregeln (≤ 400 Zeilen, Funktion ≤ 60) beachten.
 
@@ -29,11 +29,11 @@ Im Asset-Studio zeigt die Seite Gebäude-Planer die Matrix Hub-Stufe × Bauplatz
 
 ## Nicht-Ziele
 
-Kein Bearbeiten und kein Schreiben von `data/hub.json` oder der Regeltabelle (WZ9.6), keine Änderung an Werten oder Kosten, keine manuelle Browser- oder Studio-Abnahme (WZ9.8), keine neue Abhängigkeit.
+Kein Bearbeiten und kein Schreiben von `data/hub.json` oder der Regeltabelle (WZ9.3), keine Änderung an Werten oder Kosten, keine manuelle Browser- oder Studio-Abnahme (WZ9.5), keine neue Abhängigkeit.
 
 ## Schritte
 
-1. Stand von WZ6, WZ7.3, WZ9.2 und WZ9.4 prüfen; sonst `blockiert`.
+1. Stand von WZ6, WZ7.3, WZ15.2 und WZ9.1 prüfen; sonst `blockiert`.
 2. Backend-Methode: `hub.json` laden und als Matrix-Modell liefern (Stufen, Plätze, Tiefen, Linien, Tor, Händler).
 3. Backend-Methode: Abweichung zur Regeltabelle über `tabelle` berechnen (Ist gegen Soll).
 4. Seite Gebäude-Planer im Frontend: Matrix, Abweichungsanzeige, Auswahl der Hub-Stufe.
@@ -46,7 +46,7 @@ Kein Bearbeiten und kein Schreiben von `data/hub.json` oder der Regeltabelle (WZ
 - [ ] AC-01: Matrix Hub-Stufe × Bauplatz mit Platz und Tiefe (Test auf das Matrix-Modell).
 - [ ] AC-03: Abweichung zur erzeugten Regeltabelle wird im Backend berechnet und angezeigt (Test mit absichtlich abweichender Tabelle).
 - [ ] AC-04: Live-Vorschau folgt dem Planer-Stand und der gewählten Hub-Stufe (Test über die Snapshot-Option).
-- [ ] AC-09: Fixture mit 7 Stufen zeigt 7 Spalten.
+- [ ] AC-08: Fixture mit 7 Stufen zeigt 7 Spalten.
 - [ ] Prüfläufe der Studio-Module grün.
 
 ## Prüfen
@@ -56,7 +56,7 @@ task check
 task check:go
 ```
 
-Unter k3c-dev: `check_run` mit `checkout` (inklusive Studio-Modul). Keine manuelle Prüfung; die Sichtprüfung gehört 🧑 (WZ9.8).
+Unter k3c-dev: `check_run` mit `checkout` (inklusive Studio-Modul). Keine manuelle Prüfung; die Sichtprüfung gehört 🧑 (WZ9.5).
 
 ## Ergebnis
 

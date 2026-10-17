@@ -1,25 +1,25 @@
-# WZ9.6 · Gebäude-Planer: Bearbeiten, Prüfen, Schreiben
+# WZ9.3 · Gebäude-Planer: Bearbeiten, Prüfen, Schreiben
 
 - **Status:** offen
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** DEV
 - **Umgebung:** offline
-- **Branch:** wz9/6-planer-bearbeiten
-- **Abhängig von:** WZ9.5
+- **Branch:** wz9/3-planer-bearbeiten
+- **Abhängig von:** WZ9.2
 - **Tickets:** B-462
 - **Kriterien:** AC-02, AC-03, AC-05, AC-07, AC-10
 
 ## Ziel
 
-Der Gebäude-Planer bearbeitet die Freischaltung (Stufe, Platz, Tiefe, `needsDeeper`, `gateHubLevel`, Händler-Zahlziele, `wallUnits`, Plätze bekannter Arten hinzufügen und entfernen), prüft sie über das Go-Backend (Funktion aus WZ9.3), schreibt `data/hub.json` und danach den erzeugten Block der Regeltabelle atomar und format-stabil, mit Schreibregel bei extern geänderten Dateien und dem Hinweis auf REG-Änderung und Goldens.
+Der Gebäude-Planer bearbeitet die Freischaltung (Stufe, Platz, Tiefe, `needsDeeper`, `gateHubLevel`, Händler-Zahlziele, `wallUnits`, Plätze bekannter Arten hinzufügen und entfernen), prüft sie über das Go-Backend (Funktion aus WZ15.3), schreibt `data/hub.json` und danach den erzeugten Block der Regeltabelle atomar und format-stabil, mit Schreibregel bei extern geänderten Dateien und dem Hinweis auf REG-Änderung und Goldens.
 
 ## Kontext
 
-- Baut auf WZ9.5 (Matrix, Kandidat, Live-Vorschau) und der Schreibregel aus B-459/AC-07 (atomar, bei extern geänderter Datei nicht überschreiben).
+- Baut auf WZ9.2 (Matrix, Kandidat, Live-Vorschau) und der Schreibregel aus B-459/AC-07 (atomar, bei extern geänderter Datei nicht überschreiben).
 - Das Speichern im Planer ist eine REG-Änderung durch 🧑 außerhalb des Sprints: Kein Sprint-Commit enthält eine geänderte `data/hub.json` oder Regeltabelle; Tests arbeiten auf Kopien (temporäres Verzeichnis).
-- Prüfung ausschließlich über die Go-Funktion aus WZ9.3 (eine Quelle der Regeln), nicht im Frontend nachbauen. Format-stabil: Schlüsselreihenfolge, Einrückung und Zahlenformat der Datei bleiben, Diff nur in geänderten Zeilen.
-- Das Ersetzen des Blocks zwischen den Markern kommt aus `tools/regeltabelle/tabelle` (Funktion aus WZ9.2), nicht aus `main`; das Studio baut es nicht nach.
+- Prüfung ausschließlich über die Go-Funktion aus WZ15.3 (eine Quelle der Regeln), nicht im Frontend nachbauen. Format-stabil: Schlüsselreihenfolge, Einrückung und Zahlenformat der Datei bleiben, Diff nur in geänderten Zeilen.
+- Das Ersetzen des Blocks zwischen den Markern kommt aus `tools/regeltabelle/tabelle` (Funktion aus WZ15.2), nicht aus `main`; das Studio baut es nicht nach.
 - Beispiel: Rüstkammer auf Stufe 3 → Live-Vorschau zeigt sie sofort → Speichern → zwei Diffs: eine Zeile in `data/hub.json` und der neu erzeugte Block in § 3; Hinweis „REG-Änderung, Goldens prüfen“. Die Meldung „Regeltabelle veraltet“ erscheint nur, wenn das Schreiben des Blocks scheitert.
 
 ## Erlaubte Dateien
@@ -35,7 +35,7 @@ Keine echte Änderung an `data/hub.json`, der Regeltabelle oder `testdata/golden
 ## Schritte
 
 1. Frontend: Zellen der Matrix bearbeiten (`hubLevel`, `offsetUnits`, `fromDepth`, `needsDeeper` je Platz; `gateHubLevel`; `wallUnits[k]`; Händler `buyOffsetUnits`, `sellOffsetUnits`, `onlyDepth`), Plätze bekannter Arten hinzufügen und entfernen (Hinweis, dass alte Spielstände den entfernten Platz verlieren); Änderung als Kandidat führen, Live-Vorschau folgt.
-2. Backend: Kandidat mit der Funktion aus WZ9.3 prüfen, Befunde (inklusive geplanter Chunks, sofern WZ8) anzeigen; Speichern nur ohne Befund.
+2. Backend: Kandidat mit der Funktion aus WZ15.3 prüfen, Befunde (inklusive geplanter Chunks, sofern WZ8) anzeigen; Speichern nur ohne Befund.
 3. Backend: atomares, format-stabiles Schreiben nach `data/hub.json`, danach den erzeugten Block (Funktionen aus `tools/regeltabelle/tabelle`) zwischen den Markern in `docs/rules/materialien-gebaeude.md` § 3, ebenfalls atomar; Text außerhalb der Marker bleibt byte-gleich. Scheitert der zweite Schritt, bleibt `data/hub.json` gespeichert, Meldung „Regeltabelle veraltet, `task rules:update`“.
 4. Schreibregel: Hash beider Dateien beim Laden merken; hat sich eine seither geändert, nicht schreiben, Neuladen anbieten, Eingaben behalten.
 5. Hinweis nach dem Speichern: „REG-Änderung: Commit mit Begründung (`data/hub.json` und Regeltabelle), `task golden:update` nur bei gewollter Änderung“.
@@ -59,7 +59,7 @@ task check:go
 git diff --stat origin/develop -- data/hub.json testdata/golden
 ```
 
-Unter k3c-dev: `check_run` mit `checkout`. Keine manuelle Prüfung; die gehört 🧑 (WZ9.8).
+Unter k3c-dev: `check_run` mit `checkout`. Keine manuelle Prüfung; die gehört 🧑 (WZ9.5).
 
 ## Ergebnis
 

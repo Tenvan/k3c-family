@@ -125,14 +125,14 @@ Entschieden von 🧑 am 2026-10-17 (Chat):
 6. **Mauerlinien-Offsets (`wallUnits`):** bearbeitbar (Option A), nur der Platz; Streuung, Turm-Inset und Tor-Outset nur Anzeige. Folge: Level-Goldens verschieben sich, geplante Chunks (B-461) werden mitgeprüft (AC-02, AC-09).
 7. **Live-Vorschau mit ungespeichertem Stand:** ja, durch Entscheidung 9.
 8. **Tabelle beim Speichern erzeugen:** ja (Option B). Der Planer schreibt nach `data/hub.json` auch den erzeugten Block in § 3 (AC-03); nur der Block zwischen den Markern, atomar, Fehler im zweiten Schritt meldet „Regeltabelle veraltet“.
-9. **SRV-Session für die Live-Vorschau ungespeicherter Stände:** Die Snapshot-Funktion aus WZ7.1 hat eine Options-Struktur ohne globalen Zustand; WZ9 bekommt eine eigene SRV-Session „Snapshot nimmt Kandidaten-`hub.json` als Option“ (AC-04, AC-09). Reihenfolge der Domänen REG → INF → SIM → SRV → DEV.
+9. **SRV-Session für die Live-Vorschau ungespeicherter Stände:** Die Snapshot-Funktion aus WZ7.1 hat eine Options-Struktur ohne globalen Zustand; WZ9 bekommt eine eigene SRV-Session „Snapshot nimmt Kandidaten-`hub.json` als Option“ (AC-04, AC-09).
 10. **Ort des Generators:** Go (Option A), Paket `tools/regeltabelle/tabelle` plus `tools/regeltabelle/main.go`; der Abgleich Block = JSON ist ein Go-Test.
+11. **Sprintgröße (entschieden 2026-10-17):** Vorlauf-Sprint abtrennen. **WZ15** (REG, INF, SIM; Regeltabelle erzeugt, Prüfung ohne globalen Zustand) läuft vor **WZ9** (SRV, DEV; Snapshot-Option, Planer, Abnahme). Zuordnung der früheren Session-Nummern in den Texten dieses Tickets: „WZ9.1“ → WZ15.1, „WZ9.2“ → WZ15.2, „WZ9.3“ → WZ15.3, „WZ9.4“ → WZ9.1, „WZ9.5“ → WZ9.2, „WZ9.6“ → WZ9.3, „WZ9.7“ → WZ9.4, „WZ9.8“ → WZ9.5; Kriterien dieses Tickets verteilen sich auf WZ15 und WZ9.
 
-Aus dem Code festgelegt, 🧑 bestätigt bei der Abnahme (WZ9.8):
-12. **Pflichtplätze beim Entfernen:** Werkstatt (`workshop`), Treppe runter (`stairsDown`), Treppe hoch (`stairsUp`) und Farm je Seite (`farm`, links und rechts) sind Pflicht, weil Truppen, Stufenwechsel und Holz-Nachwuchs daran hängen; Kaserne, Taverne, Lager (`islandSites`), Heilplatz, Schmiede und Rüstkammer sind entfernbar. Burg, Mauern, Türme, Tore und Händler kommen nicht aus `sites`. Die Liste mit Gründen steht in WZ9.3 › Kontext und wird dort am dann aktuellen Code geprüft.
+Aus dem Code festgelegt, 🧑 bestätigt bei der Abnahme (WZ9.5):
+12. **Pflichtplätze beim Entfernen:** Werkstatt (`workshop`), Treppe runter (`stairsDown`), Treppe hoch (`stairsUp`) und Farm je Seite (`farm`, links und rechts) sind Pflicht, weil Truppen, Stufenwechsel und Holz-Nachwuchs daran hängen; Kaserne, Taverne, Lager (`islandSites`), Heilplatz, Schmiede und Rüstkammer sind entfernbar. Burg, Mauern, Türme, Tore und Händler kommen nicht aus `sites`. Die Liste mit Gründen steht in WZ15.3 › Kontext und wird dort am dann aktuellen Code geprüft.
 
-Offen:
-11. **Umfang der Sprintgröße:** 8 Sessions (statt 7) über dem Richtwert 3–6; siehe WZ9 › Offene Fragen. Die Entscheidungen 5 und 8 vergrößern WZ9.3 und WZ9.6 weiter.
+Offen: keine.
 
 ## Notizen
 
