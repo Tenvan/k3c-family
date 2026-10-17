@@ -25,7 +25,7 @@ type PreviewSource struct {
 }
 
 // PreviewOptions beschreiben eine Vorschau-Welt. Der Nullwert jedes Feldes außer Seed und Source ist das Standardbild:
-// höchste Hub-Stufe, Tag mit Fortschritt 0, alle Gebäude. Neue Felder (WZ8.4 „geplante Chunks“, WZ9
+// höchste Hub-Stufe, Tag mit Fortschritt 0, alle Gebäude. Neue Felder („geplante Chunks“ seit WZ8.4, WZ9
 // „Kandidaten-hub.json“) kommen hinzu, ohne bestehende Aufrufer zu ändern.
 type PreviewOptions struct {
 	Seed     string
@@ -37,6 +37,10 @@ type PreviewOptions struct {
 	// Buildings: false schaltet einen Platz aus (Schlüssel PreviewSiteKey); fehlende und unbekannte Schlüssel
 	// bleiben an bzw. werden ignoriert.
 	Buildings map[string]bool
+	// Planned sind die geplanten Chunks dieses Levels (WZ8.4, docs/rules/geplante-chunks.md), auch ein ungespeicherter
+	// Entwurf. nil oder leer = reiner Zufall, wie bei jedem Biom-Level ohne Insel; eine ungültige Planung wird mit dem
+	// Fehler der Prüfung (level.ValidatePlan) abgelehnt. Sie wird als Parameter durchgereicht, nie gespeichert.
+	Planned []level.PlannedChunk
 }
 
 // PreviewSiteKey ist der Schlüssel eines Bauplatzes in PreviewOptions.Buildings: Art und X-Position in Units.
@@ -73,7 +77,7 @@ func BuildPreview(o PreviewOptions) (*sim.World, error) {
 	if err != nil {
 		return nil, fmt.Errorf("vorschau: Biom %q nicht ladbar: %w", o.Source.Biome, err)
 	}
-	w, err := sim.CreateWorld(biome, o.Seed, sim.Options{CycleSpeed: 1})
+	w, err := sim.CreateWorld(biome, o.Seed, sim.Options{CycleSpeed: 1, Planned: o.Planned})
 	if err != nil {
 		return nil, fmt.Errorf("vorschau: Level nicht erzeugbar: %w", err)
 	}
