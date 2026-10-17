@@ -1,6 +1,6 @@
 # WZ8.3 · Generator mit Planung, CreateOptions und Benchmark
 
-- **Status:** offen
+- **Status:** in Arbeit
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** SIM
