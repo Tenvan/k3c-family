@@ -191,7 +191,7 @@ func ParseSprint(text, dir, status string) Sprint {
 	lines := strings.Split(strings.ReplaceAll(text, "\r\n", "\n"), "\n")
 	f := fields(lines)
 	s := Sprint{ID: strings.SplitN(dir, "-", 2)[0], Title: dir, Domain: f["Domäne"], Project: f["Projekt"], Status: status, Reife: f["Reife"],
-		Spec: f["Spec"], Tickets: []string{}, Sessions: []Session{}}
+		Spec: f["Spec"], Tickets: []string{}}
 	if h := header(lines); len(h) >= 3 {
 		s.ID, s.Domain, s.Title = h[0], h[1], strings.Join(h[2:], " · ")
 	}
@@ -200,6 +200,14 @@ func ParseSprint(text, dir, status string) Sprint {
 			s.Tickets = append(s.Tickets, t)
 		}
 	}
+	s.Sessions = parseSessions(lines)
+	return s
+}
+
+// parseSessions liest den Abschnitt „## Sessions“: Tabellenzeilen, dazu Stichpunkte (Entwurf), deren Nr. nicht schon
+// in der Tabelle steht. Erledigte Sprints führen beides nebeneinander; sonst zählte jede Session doppelt.
+func parseSessions(lines []string) []Session {
+	var table, bullets []Session
 	inSessions := false
 	for _, l := range lines {
 		if strings.HasPrefix(l, "## ") {
@@ -210,12 +218,22 @@ func ParseSprint(text, dir, status string) Sprint {
 			continue
 		}
 		if m := session.FindStringSubmatch(l); m != nil {
-			s.Sessions = append(s.Sessions, Session{Nr: m[1], File: m[2], Typ: m[3], Agent: m[4], Status: m[5]})
+			table = append(table, Session{Nr: m[1], File: m[2], Typ: m[3], Agent: m[4], Status: m[5]})
 		} else if m := bullet.FindStringSubmatch(l); m != nil {
-			s.Sessions = append(s.Sessions, Session{Nr: m[1], Status: "entwurf", Titel: m[2]})
+			bullets = append(bullets, Session{Nr: m[1], Status: "entwurf", Titel: m[2]})
 		}
 	}
-	return s
+	known := map[string]bool{}
+	for _, x := range table {
+		known[x.Nr] = true
+	}
+	out := append([]Session{}, table...)
+	for _, x := range bullets {
+		if !known[x.Nr] {
+			out = append(out, x)
+		}
+	}
+	return out
 }
 
 // ParseTicket liest den Kopf einer Backlog-Datei.
