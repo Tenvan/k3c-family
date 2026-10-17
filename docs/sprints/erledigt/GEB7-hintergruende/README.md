@@ -1,6 +1,6 @@
 # GEB7 · DEV, PLAT, CLI · Hintergründe je Biom
 
-- **Status:** geplant
+- **Status:** erledigt
 - **Projekt:** GEB
 - **Domäne:** DEV, PLAT, CLI
 - **Reife:** bereit
@@ -120,12 +120,12 @@ Keine blockiert die Planung; jede Annahme gilt mit der Freigabe als bestätigt, 
 | GEB7.3 | `GEB7.3-eisenstollen-kristall.md` | Umsetzung | autonom | fertig |
 | GEB7.4 | `GEB7.4-pages-umstellen.md` | Umsetzung | autonom | fertig |
 | GEB7.5 | `GEB7.5-zuordnung-aufraeumen.md` | Umsetzung | autonom | fertig |
-| GEB7.6 | `GEB7.6-review-abnahme.md` | Review | autonom | blockiert |
+| GEB7.6 | `GEB7.6-review-abnahme.md` | Review | autonom | fertig |
 
 ## Abnahme
 
-2026-10-16 (Review GEB7.6, getrennter Reviewer, keine schweren Befunde): AC-01 bis AC-04 geprüft (GEB7.1–GEB7.3), AC-05 und AC-06 geprüft (GEB7.5), AC-07 geprüft (GEB7.4); `task check`, `task check:go`, `dev:test`, `task build` grün.
-AC-08 offen für 🧑 (B-450): Vorschau, Spiel und Pages-Seite sieht nur 🧑 ab; Wald-Gate entfiel (Revision 2), Annahmen 1–9 gelten bis zur Antwort.
-Behobene Befunde: Lint `errcheck` (GEB7.1), Höhle `mitte` mit unterbrochener Decke (auf Wunsch von 🧑). Neue Tickets: B-450.
-Hinweis: GEB7 liegt in `geplant/`, bis GEB6 `erledigt` ist (ein aktiver Sprint je Projekt); dann nach `aktiv/` und mit Abnahme nach `erledigt/`.
+2026-10-17 (Review GEB7.6, getrennter Reviewer, keine schweren Befunde): AC-01 bis AC-04 geprüft (GEB7.1–GEB7.3), AC-05/AC-06 (GEB7.5), AC-07 (GEB7.4); `task check` und `task check:go` grün.
+AC-08 abgenommen durch Ralf (2026-10-17, Chat, B-452): Vorschau, Spiel und Pages-Seite; Annahmen 1–9 bestätigt.
+Behobene Befunde: keine. Neue Tickets: B-452 (erledigt), B-453 (alte Hintergründe aufbewahren, Projekt GRJ).
+Hinweis: Hintergründe und alle Grafiken werden im Projekt GRJ nochmals begutachtet und justiert.
 Version: Minor vorgeschlagen (Wirkung im Spiel und Werkzeug; Nummer nach dem GEB6-Vorschlag), gesetzt wird sie erst nach Bestätigung durch 🧑.

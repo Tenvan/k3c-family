@@ -26,6 +26,7 @@ Jedes Projekt ist eine Datei `XXX-name.md` nach [`../vorlagen/projekt.md`](../vo
 | Projekt | Grund | Datei |
 |---|---|---|
 | BAL · Balancing & Spieleabende | Seit 2026-10-07 zurückgestellt: Spieleabende und Werte-Runden später (B-359) | [BAL-balancing-spieleabende.md](BAL-balancing-spieleabende.md) |
+| GRJ · Grafik-Justierung | – | [GRJ-grafik-justierung.md](GRJ-grafik-justierung.md) |
 
 ## Erledigt
 
