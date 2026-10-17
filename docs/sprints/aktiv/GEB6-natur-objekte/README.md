@@ -133,7 +133,6 @@ Keine blockiert den Start der Planung; jede Annahme gilt mit der Freigabe als be
 
 ## Abnahme
 
-2026-10-16 (Review, Agent): AC-01, AC-02, AC-04, AC-05, AC-06 geprüft laut Ergebnis GEB6.1–GEB6.5 (`task check` und `task check:go` grün, getrennte Reviews ohne schwere Befunde, keine Befunde zu beheben). **AC-03 offen für 🧑:** Vorschau je Biom und Spiel noch nicht abgenommen (GEB6.6 `blockiert`, Sprint bleibt `aktiv`); Offene Frage 4 (Materialien) ist von 🧑 mit Option 1 bestätigt (2026-10-16).
-Sichtfragen für 🧑: Mine-Look des Felsens eher dunkelgrau als braun, Feuerstelle im Lager klein, Ausgang ohne freien Platz für die Beschriftung, Kristall-Ader ohne durchgehende Fuge.
-Neue Tickets: keine. Hinweis: `develop`-CI rot wegen k3c-dev-Tests (`TestRepo`: GEB7 ohne Sessions, `TestTicketNummer*`), nicht durch GEB6.
+2026-10-17 (Review, Agent): AC-01, AC-02, AC-04, AC-05, AC-06 geprüft laut Ergebnis GEB6.1–GEB6.6 (`task check` und `task check:go` grün, getrennter Reviewer ohne schwere Befunde, keine Befunde zu beheben). **AC-03 offen für 🧑** (Abnahmeliste in GEB6.6, Ticket B-451; GEB6.6 `blockiert`, Sprint bleibt `aktiv`); Offene Frage 4 ist von 🧑 mit Option 1 bestätigt (2026-10-16).
+Sichtfragen für 🧑: Mine-Fels eher dunkelgrau als braun, Feuerstelle klein, Ausgang ohne Platz für die Beschriftung, Kristall-Ader ohne durchgehende Fuge. Neue Tickets: B-451 (Abnahme).
 Version: v0.19.0 vorgeschlagen (Minor, Wirkung im Spiel: neue Welt-Grafik); gesetzt wird sie erst nach Bestätigung durch 🧑.

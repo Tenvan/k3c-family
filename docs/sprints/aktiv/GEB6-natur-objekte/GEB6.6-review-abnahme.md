@@ -55,9 +55,11 @@ Manuelle Prüfung im Browser-Pane nur mit Freigabe von 🧑 für diesen Lauf.
 
 ## Ergebnis
 
-- **AC-03 blockiert (🧑):** Abnahme der Vorschau je Biom und des Spiels steht aus; niemand außer Agenten hat Bilder gesehen. Nach Arbeitsweise › Wenn etwas nicht passt bleibt die Session `blockiert`, der PR ist ein Entwurfs-PR ohne Auto-Merge.
-- **AC-01, AC-02, AC-04, AC-05, AC-06 geprüft:** Ergebnisse GEB6.1–GEB6.5; `task check` und `task check:go` grün (pro Session), Sprint-Diff `origin/develop...HEAD` von einem getrennten Agenten gelesen (Domänen DEV, CLI): keine schweren Befunde, alte Gebäude-PNGs unverändert (nur `index.json` geändert), Baumwahl ohne `Math.random()`, Plantage-Pappel unverändert, Datei ≤ 400 und Funktion ≤ 60 Zeilen.
-- **Hinweise:** GEB6 wurde erst nach dem Merge von GEB5 aktiviert (Planungstest: ein aktiver Sprint je Projekt); GEB6.1–6.4 liefen davor in `geplant/` auf `sprint/geb6`. Offene Frage 4 bleibt offen für 🧑 (Annahme umgesetzt, Änderungsweg in der Sprint-README).
+- **AC-03 blockiert (🧑):** Abnahme der Vorschau je Biom und des Spiels steht aus; niemand außer Agenten hat Bilder gesehen, es lief keine Browser-Sichtprüfung. Nach Arbeitsweise › Wenn etwas nicht passt bleibt die Session `blockiert`; Abnahme-Ticket **B-451**, Liste unten. Der PR bekommt kein Auto-Merge.
+- **Review 2026-10-17 (getrennter Reviewer-Agent, Diffs #319 und #323 auf `develop`):** keine schweren Befunde. Alle 28 `*-32.png` der Natur-Objekte und alle Einträge in `public/grafik/index.json` existieren; kein `Math.random` in `src/scenes`, Baumform nur aus Position und Biom (`treeTexture`, rein); keine Pfad- oder Shell-Eingaben; keine Seiten-, Vollbild- oder B-Tasten-Änderung; gelöschte Pack-Grafik nirgends mehr referenziert (Treffer nur in Doku); alte Gebäude-PNGs unverändert (nur `index.json` geändert), Plantage-Pappel unverändert. Hinweis, nicht schwer: `vein:*` in `data/assets.json` zeigt auf dieselben `ader-N-32.png`, der Renderer wählt aber über `veinSlot` und feste Texturschlüssel; beide Stellen müssen synchron bleiben.
+- **Prüfläufe 2026-10-17:** `task check` grün (19 s, k3c-dev `check_run` im Worktree auf `develop` e29dcc8c); `task check:go` grün (3 min 44 s).
+- **Nachweis je Kriterium:** AC-01 geprüft (JSON und PNG der Natur-Objekte vorhanden, Ergebnisse GEB6.1–GEB6.4, Reviewer-Check der Dateien); AC-02 geprüft (Slots in `data/assets.json` und `worldSprites.ts` auf neue PNGs, GEB6.5, Review); AC-03 blockiert (🧑); AC-04 geprüft (Maße und Byte-Gleichheit laut GEB6.1–GEB6.4, alte PNGs unverändert); AC-05 geprüft (Auswahl-Funktionen mit Vitest in `worldSprites.test.ts`, kein `Math.random`, Plantage bleibt Pappel); AC-06 geprüft (Suche nach gelöschten Namen ohne Treffer außerhalb Doku, `task check` und `task check:go` grün).
+- **Doku-Stand:** Die Doku-Commits von `origin/sprint/geb6` (Abnahmeliste, Offene Frage 4 bestätigt) stehen über den Squash #323 schon auf `develop`; nichts nachzuziehen.
 
 **Abnahmeliste AC-03 (🧑)** — Vorschau `assetvorschau.html?szene=gebaeude`:
 
@@ -81,4 +83,4 @@ Entscheidungen:
 
 - [x] 13. Materialien (Offene Frage 4) von 🧑 bestätigt, Option 1, 2026-10-16: Fels = Stein, Zelt = „Stoff hell“, Erde = „Pfosten, Balken“, Gold = Glut.
 - [ ] 14. Geschmack: Mine-Fels eher dunkelgrau als braun, Feuerstelle klein, Ausgang ohne Platz oben, Kristall-Ader ohne durchgehende Fuge; Animationen von Portal und Feuer entfallen (Nicht-Ziel).
-- [ ] 15. Ergebnis: „abgenommen“ oder Nachbesserungen nennen. Danach setzt Claude GEB6.6 auf `fertig`, verschiebt den Sprint nach `erledigt/`, nimmt PR #319 aus dem Entwurf und schaltet Auto-Merge ein.
+- [ ] 15. Ergebnis: „abgenommen“ oder Nachbesserungen nennen. Danach setzt Claude GEB6.6 auf `fertig`, verschiebt den Sprint nach `erledigt/`, setzt B-451 auf `erledigt` und lässt die Version (v0.19.0 vorgeschlagen) von 🧑 bestätigen.
