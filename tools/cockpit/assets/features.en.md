@@ -13,6 +13,7 @@ Band above the prompt
 • Breathing exercise – while Claude works, a circle breathes in the band; the working line counts the phase (exercise in the settings).
 • Merge requests – on GitLab, GitHub and Bitbucket repos the branch MR/PR in the band (pipeline, approvals, threads), notices on changes, and in the panel rebase, merge, retry pipeline, comments to Claude and “Create MR” with a draft.
 • Follow-up steps – three suggestions side by side after each answer, keys 1–3.
+• Checklist – Claude’s task list at the very top with status (working, needs you, stuck?, done), progress, time left, pause/continue and a plan card; /cockpit-verlauf with a day and week report to copy.
 
 Panel on the right (/cockpit)
 • Agent working – run time, tool calls and edits while a turn runs.

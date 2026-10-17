@@ -152,12 +152,16 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-458](B-458-hub-ausbau-wachstum-feinstufen.md) | DEV | Idee | hoch | offen | – | Hub wächst in Ausbaustufen sichtbar und kleinteilig (Lagerfeuer bis Burg, K2C-Stil) |
 | [B-459](B-459-asset-werkzeug-eigene-exe.md) | DEV | Idee | hoch | eingeplant | WZ6 | Die Asset-Seiten für Grafik und Sound laufen in einer eigenen EXE getrennt von der Workbench |
 | [B-460](B-460-welt-betrachter-live-vorschau.md) | DEV | Idee | hoch | eingeplant | WZ7 | Der Welt-Betrachter im Asset-Studio zeigt Chunks maximiert und eine Live-Vorschau mit Hub-Stufen und schaltbaren Gebäuden |
-| [B-461](B-461-chunks-je-biom-planbar.md) | SIM | Idee | mittel | eingeplant | WZ8 | Chunks eines Bioms lassen sich individuell planen, per Seed oder mit festen Gebäuden und Objekten |
+| [B-461](B-461-chunks-je-biom-planbar.md) | SIM | Idee | mittel | eingeplant | WZ8 | Chunks einer Insel-Stufe lassen sich planen, per Seed oder mit festen Objekten |
 | [B-462](B-462-gebaeude-planer-hub-stufen.md) | DEV | Idee | mittel | eingeplant | WZ9 | Ein Gebäude-Planer bearbeitet, welches Gebäude ab welcher Hub-Stufe verfügbar ist |
 | [B-463](B-463-monarch-vorschau-animationen.md) | DEV | Idee | mittel | eingeplant | WZ10 | Eine Monarch-Seite im Asset-Studio zeigt Reiten, Schlagen, Skills und weitere Vorschauen |
-| [B-464](B-464-gegner-bosse-vorschau.md) | DEV | Idee | mittel | eingeplant | WZ10 | Eine Gegner-Seite im Asset-Studio zeigt alle Gegnertypen und Bosse mit ihren Vorschauen |
+| [B-464](B-464-gegner-bosse-vorschau.md) | DEV | Idee | mittel | eingeplant | WZ11 | Eine Gegner-Seite im Asset-Studio zeigt alle Gegnertypen und Bosse mit ihren Vorschauen |
 | [B-465](B-465-lint-sprintsbacklog-zeilen.md) | DEV | Problem | hoch | offen | – | task lint ist auf develop rot, weil SprintsBacklog 61 Zeilen hat |
+| [B-466](B-466-glossar-morgengrauen-verweis.md) | INF | Problem | niedrig | offen | – | Der Glossar-Eintrag Tageszyklus verweist für das Morgengrauen auf das richtige Ticket |
 | [B-467](B-467-worktree-pill-am-eintrag.md) | DEV | Idee | mittel | offen | – | Worktree-Änderungen stehen als Pill am Projekt, Sprint oder an der Session statt als Leiste oben |
+| [B-468](B-468-geplante-chunks-ruinen-gegnerlager.md) | REG | Idee | mittel | offen | – | Geplante Chunks tragen Ruinen und Gegnerlager |
+| [B-469](B-469-gegner-seite-boss-effekte-nach-k5.md) | DEV | Idee | niedrig | offen | – | Die Gegner-Seite zeigt Warnkreis, Boss-Leiste, Phasen und Event-Banner aus K5.1 |
+| [B-470](B-470-morgengrauen-als-phase.md) | SIM | Idee | niedrig | offen | – | Der Tageszyklus hat eine eigene Phase Morgengrauen (Q65, 3:1:2:1) |
 | [B-471](B-471-renderreference-abmelden.md) | DEV | Schuld | niedrig | offen | – | renderReference beendet seine Animationsschleife, wenn die Karten verschwinden |
 
 ## Archiv

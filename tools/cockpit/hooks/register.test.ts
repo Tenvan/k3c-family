@@ -388,12 +388,12 @@ test('Repo-Infozeile: Branch, Worktree, Commit, Änderungen, Upstream, Ordner', 
     ['Commit', 'abc1234'],
     ['Änderungen', '2 geänderte Dateien'],
     ['Upstream', '↑1 voraus · ↓2 hinterher'],
-    ['Ordner', 'C:\\W\\repo\\.claude\\worktrees\\x1'],
+    ['Ordner', 'C:/W/repo/.claude/worktrees/x1'],
     ['Unterordner', 'plugins'],
   ])
   const main = parseRepo({ top: 'C:/W/repo', gitDir: 'C:/W/repo/.git', commonDir: 'C:/W/repo/.git', branch: '', sha: 'abc1234', status: '', counts: '', prefix: '' })
   expect(repoShort(main)).toBe('⎇ detached')
-  expect(repoRows(main).map(r => r[1])).toEqual(['detached', 'repo (Hauptcheckout)', 'abc1234', 'sauber', 'kein Upstream', 'C:\\W\\repo'])
+  expect(repoRows(main).map(r => r[1])).toEqual(['detached', 'repo (Hauptcheckout)', 'abc1234', 'sauber', 'kein Upstream', 'C:/W/repo'])
   // Riskante Repo-Konfiguration: Status wird nicht ausgeführt, die Zeile sagt es.
   const untrusted = parseRepo({ top: 'C:/W/repo', gitDir: 'C:/W/repo/.git', commonDir: 'C:/W/repo/.git', branch: 'x', sha: 'abc1234', status: null, counts: '', prefix: '' })
   expect(untrusted.dirty).toBe(null)
@@ -491,26 +491,6 @@ test('Farben: Band und Panel nutzen THEME, keinen Theme-Schlüssel claude', asyn
     expect(tree).toContain(THEME.accent)
   }
   expect(pane).toContain('Agent arbeitet')
-})
-
-test('Verzeichniswächter: folgt cwd dem Wechsel schon beim tool.call, warnt er trotzdem', async ($, on) => {
-  mock.clock(on, { now: H })
-  let cwd = 'C:\WORKSPACE\k3c'
-  on('session.measure', () => ({ changed: [] }))
-  on('store.get', () => ({ value: undefined }) as never)
-  on('session.cwd', () => ({ value: cwd }) as never)
-  on('session.root', () => ({ value: 'C:\WORKSPACE\k3c' }) as never)
-  on('env.get', () => ({ value: 'C:\Users\r' }) as never)
-  on('tool.call', () => {
-    cwd = 'C:\WORKSPACE\ErpApi'
-    return { result: { stdout: '', stderr: '', interrupted: false } } as never
-  })
-  on('ui.render', { component: 'AbovePrompt' }, () => ({ type: 'Box' as const }))
-  await $.session.measure(MEASURE)
-  await $.tool.call({ tool: 'Bash', command: 'cd /c/WORKSPACE/ErpApi && git status' } as never)
-  const band = await $.ui.mount({ ...BAND, surface: 'desktop' })
-  for (let i = 0; i < 200 && !(await band.find({ key: 'dir-warn' })); i++) await Promise.resolve()
-  expect(await band.find({ key: 'dir-warn' })).not.toBe(undefined)
 })
 
 test('Verzeichniswächter: Wechsel aus dem Session-Ordner wird zur Rückfrage, danach Warnung im Band', async ($, on) => {

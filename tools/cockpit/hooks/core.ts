@@ -1,9 +1,9 @@
 // Reine Rechen- und Formatfunktionen, ohne `$` – direkt testbar.
-import type { About, Agent, Breakdown, BreakdownRow, CallMark, CatchUp, LoopAlert, UiLang, Limit, McpSchema, Repo, LinkedSession, ModSettings, SidebarPin, Step, TurnRecord } from '../types'
+import type { About, Agent, Breakdown, BreakdownRow, CallMark, CatchUp, LoopAlert, UiLang, Limit, McpSchema, Repo, LinkedSession, ModSettings, Step, TurnRecord } from '../types'
 import { t, type Key } from './i18n'
 
 // Alle Farben des Mods, fest eingetragen (kein Lesen von ErpApi zur Laufzeit). Primitive aus
-// ErpApi/design-system/tokens/artifact-snapshot.json (Artifact „Tenvan Design System Product“, Snapshot 1790238895-8d9a,
+// ErpApi/design-system/tokens/artifact-snapshot.json (Artifact „orgaMAX Design System Product“, Snapshot 1790238895-8d9a,
 // `om-*`, nur hell); die dunklen Rollen (--text-*, --status-*-fg, --border-default) nach design-system/tokens/README.md
 // aus apps/frontend/src/themes/mobile-tokens.scss (`.radix-themes.dark`). Keine Theme-Schlüssel des Hosts ('claude',
 // 'success' …): die färben in dessen Farben. Ein Muster für Ladezustände hat das Design-System noch nicht.
@@ -19,8 +19,8 @@ export const THEME = {
   textMuted: '#8c929c', // om-ink-400 · --text-muted
   border: '#4a5565', // om-ink-600 · --border-default / --divider
   chip: '#2f3a59', // om-navy-700: Grund der Nummern- und Typ-Chips
-  max: '#82b1ff', // nur die Wortmarke „MAX“ (brand/README.md)
-  orga: '#ffffff', // Wortmarke „orga“ auf dunklem Grund
+  max: '#82b1ff', // Akzent hell (om-blue-300), u. a. Suche und Versionen
+  orga: '#ffffff', // Weiß auf dunklem Grund (Diagrammtext)
   surface: '#222222', // Grund schwebender Hinweise
   violet: '#aa8ed6', // Agent-Symbol, Hinweis „Wichtig“; wie die fünfte Kategorie-Farbe
 } as const
@@ -45,6 +45,7 @@ export const CARD_TINT: Record<string, string> = {
   cardTurn: '#1f2e2a', // Tannengrün
   cardAgents: '#2d2733', // Pflaume
   cardTasks: '#1f2b36', // Stahlblau
+  cardPlan: '#33261e', // Kupfer: warm, setzt sich vom blauen Arbeitsblock darüber ab
   cardLog: '#2e2a24', // Sand
 }
 // Dieselben Töne als Folge für Seiten mit gleichartigen Karten (Einstellungen, Zusammenfassung): Karte i nimmt CARD_CYCLE[i % n].
@@ -207,7 +208,7 @@ export function repoRows(r: Repo, lang: UiLang = 'de'): [label: string, value: s
     [t(lang, 'panel.repoCommit'), r.sha],
     [t(lang, 'panel.repoChanges'), changes],
     [t(lang, 'panel.repoUpstream'), sync],
-    [t(lang, 'panel.repoFolder'), displayDir(r.path)],
+    [t(lang, 'panel.repoFolder'), r.path],
     ...(r.subdir === '' ? [] : [[t(lang, 'panel.repoSubfolder'), r.subdir] as [string, string]]),
   ]
 }
@@ -352,7 +353,7 @@ export function breakdownBarSvg(b: Breakdown, width = 600, height = 14): string 
 // Einstellungen: Gruppe je Schalter; Beschriftung und Erklärung liegen in i18n.ts unter `settings.<key>` und `settings.<key>.hint`.
 // Die Reihenfolge ist die der Einstellungsseite, Gruppen in der Reihenfolge ihres ersten Schalters.
 export type SettingKey = Exclude<keyof ModSettings, 'lang' | 'breathKey' | 'agentTiles'>
-export type SettingGroup = 'band' | 'work' | 'effort' | 'panel' | 'summary' | 'mr' | 'sidebar' | 'skins' | 'tools' | 'input' | 'marks'
+export type SettingGroup = 'band' | 'glance' | 'work' | 'effort' | 'panel' | 'summary' | 'mr' | 'skins' | 'tools' | 'input' | 'marks'
 
 export const SETTING_DEFS: readonly { key: SettingKey; group: SettingGroup }[] = [
   { key: 'rings', group: 'band' },
@@ -362,6 +363,9 @@ export const SETTING_DEFS: readonly { key: SettingKey; group: SettingGroup }[] =
   { key: 'legend', group: 'band' },
   { key: 'branch', group: 'band' },
   { key: 'steps', group: 'band' },
+  { key: 'glance', group: 'glance' },
+  { key: 'cardPlan', group: 'glance' },
+  { key: 'glanceHistory', group: 'glance' },
   { key: 'chatLines', group: 'work' },
   { key: 'dirGuard', group: 'work' },
   { key: 'breath', group: 'work' },
@@ -383,9 +387,6 @@ export const SETTING_DEFS: readonly { key: SettingKey; group: SettingGroup }[] =
   { key: 'mrNotify', group: 'mr' },
   { key: 'mrFooter', group: 'mr' },
   { key: 'mrPane', group: 'mr' },
-  { key: 'sidebarDone', group: 'sidebar' },
-  { key: 'sidebarUnread', group: 'sidebar' },
-  { key: 'sidebarPin', group: 'sidebar' },
   { key: 'skinPrompt', group: 'skins' },
   { key: 'skinCards', group: 'skins' },
   { key: 'skinInline', group: 'skins' },
@@ -420,8 +421,7 @@ export const DEFAULT_SETTINGS: ModSettings = {
   breath: true, breathKey: 'hrv',
   agentTiles: 6,
   mrBand: true, mrNotify: true, mrFooter: true,
-  // Sitzungsleiste: greift in die Desktop-App ein und ist deshalb Opt-in.
-  sidebarDone: false, sidebarUnread: false, sidebarPin: false,
+  glance: true, cardPlan: true, glanceHistory: true,
 }
 
 // Kachelzahl der Subagents: gerade Werte von 2 bis 12.
@@ -435,32 +435,6 @@ export const clampTiles = (n: unknown): number => {
 export const settingsOf = (saved: Partial<ModSettings> | null | undefined): ModSettings => {
   const s = { ...DEFAULT_SETTINGS, ...saved }
   return { ...s, agentTiles: clampTiles(s.agentTiles), lang: s.lang === 'en' ? 'en' : 'de', breathKey: ['hrv', 'sigh', 'box', '478'].includes(s.breathKey) ? s.breathKey : 'hrv' }
-}
-
-// Sitzungsleiste der Desktop-App (Opt-in, `ccd_sidebar`): welche Aufrufe ein MR-Wechsel auslöst und wem die Nadel gehört.
-// `open` = Kürzel des offenen Branch-MR, sonst null; `pin` = MR, für den das Mod angepinnt hat (`mine: false`: war schon angepinnt).
-export type SidebarCall = { tool: 'mark_completed' } | { tool: 'set_unread' } | { tool: 'set_pinned'; pinned: boolean }
-export function sidebarCalls(
-  s: Pick<ModSettings, 'sidebarDone' | 'sidebarUnread' | 'sidebarPin'>,
-  events: readonly string[],
-  idle: boolean,
-  open: string | null,
-  pin: SidebarPin,
-): { calls: SidebarCall[]; pin: SidebarPin } {
-  const calls: SidebarCall[] = []
-  if (s.sidebarDone && events.includes('merged')) calls.push({ tool: 'mark_completed' })
-  if (s.sidebarUnread && idle && (events.includes('pipelineFailed') || events.includes('conflict'))) calls.push({ tool: 'set_unread' })
-  const want = s.sidebarPin && open !== null
-  if (want && pin?.ref !== open) {
-    calls.push({ tool: 'set_pinned', pinned: true })
-    return { calls, pin: { ref: open, mine: true } }
-  }
-  if (!want && pin !== null) {
-    // Eine Nadel, die schon vor dem MR da war, bleibt stehen.
-    if (pin.mine) calls.push({ tool: 'set_pinned', pinned: false })
-    return { calls, pin: null }
-  }
-  return { calls, pin }
 }
 
 export const CATCH_CHUNK = 100_000
@@ -635,6 +609,21 @@ export function pushCapped<T>(list: readonly T[], item: T, max = 50): T[] {
   return [...list, item].slice(-max)
 }
 
+// Die letzten `max` Fragen aus einer Antwort: Sätze, die mit „?“ enden, außerhalb von Codeblöcken und Inline-Code, ohne
+// Markdown-Zeichen davor; doppelte nur einmal.
+// shortcut: nur die letzte Antwort und nur Sätze mit „?“; Fragen ohne Fragezeichen („Sag Bescheid, ob …“) fallen durch
+export function questionsOf(text: string, max = 3): string[] {
+  const prose = text.replace(/```[\s\S]*?```/g, '\n').replace(/`[^`\n]*`/g, '')
+  const found: string[] = []
+  for (const line of prose.split('\n')) {
+    for (const m of line.matchAll(/[^.!?:\n]*\?/g)) {
+      const q = m[0].replace(/^[\s>*\-#\d.)]+/, '').replace(/\*\*/g, '').trim()
+      if (q.length >= 8 && !found.includes(q)) found.push(q)
+    }
+  }
+  return found.slice(-max)
+}
+
 // Liest bis zu `max` Vorschläge aus einer Modellantwort, die ein JSON-Array enthalten soll.
 export function parseSteps(text: string, max = 3): Step[] {
   const match = /\[[\s\S]*\]/.exec(text)
@@ -772,14 +761,14 @@ export function parseTaskNotifications(text: string): { id: string; status: stri
 
 // ---- Verzeichniswächter: arbeitet Claude außerhalb des Session-Ordners? ----
 
-const normDir = (p: string): string =>
-  p.trim().replace(/\\/g, '/').replace(/^\/([a-z])(?=\/|$)/i, '$1:').replace(/\/{2,}/g, '/').replace(/\/+$/, '').toLowerCase()
-
-// Anzeige: Laufwerkspfade (auch Git-Bash `/c/x`) in der Windows-Schreibweise.
-export function displayDir(p: string): string {
-  const m = /^\/([a-z])(?=\/|$)(.*)$/i.exec(p.replace(/\\/g, '/'))
-  const w = m ? `${(m[1] ?? '').toUpperCase()}:${m[2] ?? ''}` : p
-  return /^[a-z]:/i.test(w) ? w.replace(/\//g, '\\') : p
+// Vergleichbare Form: Schrägstriche, Git-Bash-Laufwerk (/c/…) als c:/…, `.` und `..` aufgelöst, klein geschrieben.
+export const normDir = (p: string): string => {
+  const out: string[] = []
+  for (const s of p.replace(/\\/g, '/').replace(/^\/([a-z])(\/|$)/i, '$1:/').toLowerCase().split('/')) {
+    if (s === '.' || (s === '' && out.length > 0)) continue
+    if (s === '..') { if (out.length > 1) out.pop() } else out.push(s)
+  }
+  return out.join('/')
 }
 
 // Absoluter Pfad aus einem (evtl. relativen, evtl. Git-Bash-) Pfad; `~` = Home.
@@ -803,24 +792,33 @@ export function dirTarget(tool: string, input: Record<string, unknown>, cwd: str
   }
   if (!SHELL_TOOLS.has(tool)) return null
   const cmd = str(input.command)
-  const cd = /(?:^|&&|;|\|\|)\s*(?:cd|pushd|Set-Location|sl|chdir)\s+(?:-LiteralPath\s+|-Path\s+)?("[^"]+"|'[^']+'|[^\s;&|]+)/i.exec(cmd)
-  if (cd?.[1] !== undefined && cd[1] !== '-') return resolveDir(cd[1], cwd, home)
-  const git = /\bgit\s+-C\s+("[^"]+"|'[^']+'|[^\s;&|]+)/.exec(cmd)
-  return git?.[1] !== undefined ? resolveDir(git[1], cwd, home) : null
+  // Variablen und Befehlsersetzung ($HOME, $(…), %TEMP%, `…`) lassen sich hier nicht auflösen: kein Ziel statt Fehlalarm.
+  const known = (p: string | undefined) => (p === undefined || p === '-' || /[$%`]/.test(p) ? null : resolveDir(p, cwd, home))
+  const cd = /(?:^|&&|;|\|\|)\s*(?:cd|pushd|Set-Location|sl|chdir)\s+(?:\/d\s+)?(?:-LiteralPath\s+|-Path\s+)?("[^"]+"|'[^']+'|[^\s;&|]+)/i.exec(cmd)
+  if (cd !== null) return known(cd[1])
+  return known(/\bgit\s+-C\s+("[^"]+"|'[^']+'|[^\s;&|]+)/.exec(cmd)?.[1])
 }
 
 // Liegt `dir` außerhalb des Session-Ordners `root` und ist kein Arbeitsplatz für Hilfsdateien (Temp, AppData, Punkt-Ordner
 // im Home wie ~/.claude)? Nur dann ist es ein anderes Projekt, in das Claude gerade wechselt.
-// ponytail: Ausnahmen als feste Muster, erweiterbar über eine Einstellung, falls Fehlalarme auftreten
-// Ein Ordner gilt als drinnen, wenn er im Session-Ordner oder im aktuellen Prozess-Ordner (`cwd`) liegt oder dessen Unterordner ist;
-// die Schreibweise (C:\x, C:/x, /c/x) und Groß-/Kleinschreibung spielen keine Rolle.
-export function isForeignDir(dir: string, root: string, home: string, cwd = ''): boolean {
-  const d = normDir(dir)
-  const inside = (base: string) => {
-    const b = normDir(base)
-    return b !== '' && (d === b || d.startsWith(`${b}/`))
+// Pfad in der Schreibweise des Session-Ordners: unter Windows C:\a\b statt Git-Bash /c/a/b, `.` und `..` aufgelöst.
+export function nativeDir(dir: string, root: string): string {
+  if (!root.includes('\\')) return dir
+  const parts: string[] = []
+  for (const s of dir.replace(/^\/([a-z])(?=\/|$)/i, (_, l: string) => `${l.toUpperCase()}:`).split(/[\\/]+/)) {
+    if (s === '' || s === '.') continue
+    if (s === '..') { if (parts.length > 1) parts.pop() } else parts.push(s)
   }
-  if (inside(root) || inside(cwd)) return false
+  return parts.join('\\')
+}
+
+// ponytail: Ausnahmen als feste Muster, erweiterbar über eine Einstellung, falls Fehlalarme auftreten
+
+export function isForeignDir(dir: string, root: string, home: string): boolean {
+  const d = normDir(dir)
+  // Ein Worktree unter <repo>/.claude/worktrees/<name> gehört zu seinem Repo: dessen Ordner zählen als innen.
+  const r = normDir(root).replace(/\/\.claude\/worktrees\/[^/]+$/, '')
+  if (d === r || d.startsWith(`${r}/`)) return false
   const h = normDir(home)
   if (h !== '' && (d === h || d.startsWith(`${h}/.`) || d.startsWith(`${h}/appdata/`))) return false
   return !/(^|\/)(tmp|temp)(\/|$)/.test(d)

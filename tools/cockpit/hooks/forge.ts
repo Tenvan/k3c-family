@@ -226,16 +226,17 @@ export async function forgeRetry(io: Io, r: Remote, m: Mr): Promise<Done> {
 // Auto-Merge bei laufender Pipeline können GitLab und GitHub; Bitbucket Server nicht.
 export const canAutoMerge = (m: Mr): boolean => m.forge !== 'bitbucket'
 
-export async function forgeMerge(io: Io, r: Remote, m: Mr, auto: boolean): Promise<Done> {
-  if (r.kind === 'gitlab') return cli(io, ['glab', 'api', '-X', 'PUT', `projects/:id/merge_requests/${m.iid}/merge`, ...(auto ? ['-f', 'merge_when_pipeline_succeeds=true'] : [])])
+// `squash`: Commits beim Mergen zu einem zusammenfassen (Knopf neben „Mergen“, Standard aus).
+export async function forgeMerge(io: Io, r: Remote, m: Mr, auto: boolean, squash = false): Promise<Done> {
+  if (r.kind === 'gitlab') return cli(io, ['glab', 'api', '-X', 'PUT', `projects/:id/merge_requests/${m.iid}/merge`, '-F', `squash=${squash}`, ...(auto ? ['-f', 'merge_when_pipeline_succeeds=true'] : [])])
   if (r.kind === 'github') {
     // gh verlangt eine Methode: die erste, die das Repo erlaubt (Merge-Commit, Squash, Rebase).
     const p = (await cliJson(io, ['gh', 'repo', 'view', ghRepo(r), '--json', 'mergeCommitAllowed,squashMergeAllowed,rebaseMergeAllowed'])) as Record<string, unknown> | null
-    const how = p?.mergeCommitAllowed !== false ? '--merge' : p.squashMergeAllowed !== false ? '--squash' : '--rebase'
+    const how = squash ? '--squash' : p?.mergeCommitAllowed !== false ? '--merge' : p.squashMergeAllowed !== false ? '--squash' : '--rebase'
     return cli(io, ['gh', 'pr', 'merge', String(m.iid), '-R', ghRepo(r), how, ...(auto ? ['--auto'] : [])])
   }
   const pr = (await bbGet(io, r, `${bbRepo(r)}/pull-requests/${m.iid}`)) as { version?: unknown } | null
-  return bbDone(await bb(io, r, 'POST', `${bbRepo(r)}/pull-requests/${m.iid}/merge?version=${String(pr?.version ?? 0)}`, {}))
+  return bbDone(await bb(io, r, 'POST', `${bbRepo(r)}/pull-requests/${m.iid}/merge?version=${String(pr?.version ?? 0)}`, squash ? { strategyId: 'squash' } : {}))
 }
 
 // MR/PR aus dem Entwurf anlegen; der Branch ist schon gepusht.

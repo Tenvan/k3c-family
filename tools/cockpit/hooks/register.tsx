@@ -4,16 +4,19 @@ import type { EngineInterface, PressedLink, Register, RenderChildren, RenderElem
 import type { BgTask, LinkedSession, About, ModelInfo, Agent, Breakdown, CallMark, CatchUp, Decision, LoopAlert, McpSchema, UiLang, Repo, Gate, LogEntry, LogSrc, ModSettings, Step, Turn, TurnRecord, Usage } from '../types'
 import { mockData } from './mock'
 import { BREATHS, breathFrameSvg, breathOf, breathSvg, phaseAt } from './breath'
+import type { BreathKey } from './breath'
+// Jede Atemübung in eigener Farbe aus dem Design-System, damit der Wechsel auf einen Blick erkennbar ist.
+const BREATH_COLOR: Record<BreathKey, string> = { hrv: THEME.accent, sigh: THEME.success, box: THEME.violet, '478': THEME.warning }
 import { canMergeNow, conflictPrompt, draftPrompt, inRepo, refOf, forgeRemote, mrBadge, mrRef, isPipelineRunning, mrEvents, parseDraft, pipelineTone, pollDelayMs, threadsPrompt } from './mr'
 import { authMissing, canAutoMerge, forgeCreate, forgeDefault, forgeFind, forgeLists, forgeLoad, forgeMerge, forgeRebase, forgeRetry, forgeThreads } from './forge'
 import type { Io, Remote } from './forge'
-import type { Mr, MrDraft, MrMine, SidebarPin } from '../types'
-import { THEME, TINT, CARD_TINT, cycleTint, summarySections, splitTool, toolText, withClaude, parseTaskNotifications, backgroundOf, NEW_STYLES, todosOf, wrapupOf, resetLeft, dirTarget, isForeignDir, displayDir, parseLinkedSessions, infoSvg, legendSvg, modelLabel, SPIN_MODE, spinnerText, timelineSvg, demoTable, agentStats, agentFlags, breakdownBarSvg, contextTip, limitTip, cacheTip, summaryLines, topRows, resetLabel, CATCH0, CATCH_KEEP, DEFAULT_SETTINGS, SETTING_DEFS, settingLabel, settingHint, catchUpPrompt, catchUpSystem, nextChunk, settingsOf, startIndex, fingerprint, sidebarCalls } from './core'
+import type { Mr, MrDraft, MrMine } from '../types'
+import { THEME, TINT, CARD_TINT, cycleTint, summarySections, splitTool, toolText, withClaude, parseTaskNotifications, backgroundOf, NEW_STYLES, todosOf, wrapupOf, resetLeft, dirTarget, isForeignDir, nativeDir, parseLinkedSessions, infoSvg, legendSvg, modelLabel, SPIN_MODE, spinnerText, timelineSvg, demoTable, agentStats, agentFlags, breakdownBarSvg, contextTip, limitTip, cacheTip, summaryLines, topRows, resetLabel, CATCH0, CATCH_KEEP, DEFAULT_SETTINGS, SETTING_DEFS, settingLabel, settingHint, catchUpPrompt, catchUpSystem, nextChunk, settingsOf, startIndex, fingerprint } from './core'
 import type { SettingGroup, SettingKey, Tone } from './core'
 import { TILES, EFFORT_LEVELS, effortColor, effectiveEffort, effortJudgeText, handoffMarkdown, handoffPays, isTrivialPrompt, limitAlert } from './core'
 import type { EffortLevel } from './core'
 import { CACHE_WARN_MS, WASTE_USD, compactFocus, detectLoop, isAgentHeavy, isWasteful, mcpDiet, mcpKey, turnBarsSvg, turnBarsText } from './core'
-import { RISKY_GIT_CONFIG, COMPACT_AT, DECISION_COLOR, RING_HEX, contextColor, LEGEND, LEGEND_NOTE, paceText, LIMIT_LABEL, LOG_MAX, SRC_COLOR, bar, cacheHitPct, cacheLeftMs, clockTime, duration, limitColor, pace, parseSteps, pushCapped, markdownStats, shortHash, statsLines, toolInfoLines, oneLine, parseRepo, repoRows, repoShort, ringSvg, svgSource, titleText, toBreakdown, breakdownTitle, categoryColor, spinner, title, toolTarget, toolKind, tokens, usd } from './core'
+import { RISKY_GIT_CONFIG, COMPACT_AT, DECISION_COLOR, RING_HEX, contextColor, LEGEND, LEGEND_NOTE, paceText, LIMIT_LABEL, LOG_MAX, SRC_COLOR, bar, cacheHitPct, cacheLeftMs, clockTime, duration, limitColor, pace, parseSteps, questionsOf, pushCapped, markdownStats, shortHash, statsLines, toolInfoLines, oneLine, parseRepo, repoRows, repoShort, ringSvg, svgSource, titleText, toBreakdown, breakdownTitle, categoryColor, spinner, title, toolTarget, toolKind, tokens, usd } from './core'
 import { t } from './i18n'
 import type { Key } from './i18n'
 import { ALERT_COLOR, CODE_BG, CODE_FG, ICON_COLOR, TONE_COLOR, detailInput, detailOutput, diffCardSvg, diffOf, errorText, firstErrorLine, iconKind, inlineTokens, inputPath, isReadOnlyShell, isShell, isStyled, lineCountOf, mdLiteral, QUIET_TOOLS, quietLine, shellCommand, splitMessage, toolIconSvg } from './skins'
@@ -22,6 +25,9 @@ import type { RichPart, Segment, SplitOptions } from './skins'
 import { diagramType, mermaidSvg } from './mermaid'
 import { chip, labelRow, pill, tile } from './ui'
 import type { Ui } from './ui'
+import { addRecord, avgStepMs, continuePrompt, dayKey, dayReport, etaOf, finishJob, isWorthShowing, newJob, noteAct, noteFile, planUpdate, progressOf, recordsOf, shiftDay, shownPhase, staleKeys, stepGuessMs, storeKey, toRecord, touch, visibleSteps, weekReport } from './glance'
+import type { ShownPhase } from './glance'
+import type { Job, JobRecord, JobStep } from '../types'
 
 const PLUGIN = 'tenvan-cc'
 // Slash-Command des Hauptpanels: kurz statt der Plugin-ID.
@@ -34,6 +40,7 @@ const panes = (lang: UiLang) => ({
   summary: { id: 'tenvan-cc-summary', title: t(lang, 'common.paneSummary') },
   settings: { id: 'tenvan-cc-settings', title: t(lang, 'common.paneSettings') },
   mr: { id: 'tenvan-cc-mr', title: t(lang, 'common.paneMr') },
+  history: { id: 'tenvan-cc-history', title: t(lang, 'common.paneHistory') },
 })
 const EDIT_TOOLS = new Set(['Edit', 'Write', 'NotebookEdit'])
 const LIVE = new Set(['pending', 'running', 'waiting'])
@@ -57,6 +64,7 @@ const log = atom({ plugin: 'tenvan-cc', key: 'log' } as const, [] as LogEntry[])
 // Jede Änderung zeichnet Band und Panel neu – hält Cache-Countdown und Laufzeiten aktuell.
 const tick = atom({ plugin: 'tenvan-cc', key: 'tick' } as const, 0)
 const steps = atom({ plugin: 'tenvan-cc', key: 'steps' } as const, [] as Step[])
+const asks = atom({ plugin: 'tenvan-cc', key: 'asks' } as const, [] as Step[])
 const cacheHit = atom({ plugin: 'tenvan-cc', key: 'cacheHit' } as const, null)
 const about = atom({ plugin: 'tenvan-cc', key: 'about' } as const, null)
 const bgTasks = atom({ plugin: 'tenvan-cc', key: 'bgTasks' } as const, [] as BgTask[])
@@ -85,8 +93,7 @@ const collapsed = atom({ plugin: 'tenvan-cc', key: 'collapsed' } as const, [] as
 const marks = atom({ plugin: 'tenvan-cc', key: 'marks' } as const, [] as CallMark[])
 const loopAlert = atom({ plugin: 'tenvan-cc', key: 'loopAlert' } as const, null as LoopAlert | null)
 // Verzeichniswächter: Session-Ordner (root), Prozess-Ordner (cwd), Home; letzter Wechsel nach außerhalb im laufenden Turn.
-type Dirs = { cwd: string; root: string; home: string }
-const dirs = atom({ plugin: 'tenvan-cc', key: 'dirs' } as const, { cwd: '', root: '', home: '' } as Dirs)
+const dirs = atom({ plugin: 'tenvan-cc', key: 'dirs' } as const, { cwd: '', root: '', home: '' })
 const dirAlert = atom({ plugin: 'tenvan-cc', key: 'dirAlert' } as const, null as { dir: string; tool: string } | null)
 const loopIgnored = atom({ plugin: 'tenvan-cc', key: 'loopIgnored' } as const, [] as string[])
 const loopKey = (a: LoopAlert) => `${a.kind}:${a.target}`
@@ -104,7 +111,6 @@ const mrHost = atom({ plugin: 'tenvan-cc', key: 'mrHost' } as const, '')
 const mrCur = atom({ plugin: 'tenvan-cc', key: 'mrCur' } as const, null as Mr | null)
 const mrMine = atom({ plugin: 'tenvan-cc', key: 'mrMine' } as const, [] as MrMine[])
 const mrDetails = atom({ plugin: 'tenvan-cc', key: 'mrDetails' } as const, {} as Record<string, Mr>)
-const sidebarPin = atom({ plugin: 'tenvan-cc', key: 'sidebarPin' } as const, null as SidebarPin)
 const mrReview = atom({ plugin: 'tenvan-cc', key: 'mrReview' } as const, [] as MrMine[])
 const mrAhead = atom({ plugin: 'tenvan-cc', key: 'mrAhead' } as const, 0)
 const mrDraft = atom({ plugin: 'tenvan-cc', key: 'mrDraft' } as const, null as MrDraft | null)
@@ -112,6 +118,8 @@ const mrBusy = atom({ plugin: 'tenvan-cc', key: 'mrBusy' } as const, '')
 // Knopf, dessen Aktion gerade läuft: zeichnet „◌ … “ statt seines Labels, bis die Aktion fertig ist.
 const pressed = atom({ plugin: 'tenvan-cc', key: 'pressed' } as const, '')
 const mrConfirm = atom({ plugin: 'tenvan-cc', key: 'mrConfirm' } as const, '')
+// MRs (Schlüssel `merge-<iid>`), bei denen „Squash“ angehakt ist; Standard aus, nach dem Mergen wieder aus.
+const mrSquash = atom({ plugin: 'tenvan-cc', key: 'mrSquash' } as const, [] as string[])
 const devMock = atom({ plugin: 'tenvan-cc', key: 'devMock' } as const, false)
 // Subagents, deren weitere Tool-Calls das Cockpit ablehnt (Agent-Bremse: die API kann einen Subagent nicht abbrechen).
 const braked = atom({ plugin: 'tenvan-cc', key: 'braked' } as const, [] as string[])
@@ -121,6 +129,13 @@ const handoffNote = atom({ plugin: 'tenvan-cc', key: 'handoffNote' } as const, '
 const effortNote = atom({ plugin: 'tenvan-cc', key: 'effortNote' } as const, '')
 const effortShift = atom({ plugin: 'tenvan-cc', key: 'effortShift' } as const, null as { from: string | null; to: string; step: number } | null)
 // Animation alt ─→ neu: EFFORT_STEPS Bilder im Abstand von EFFORT_FRAME_MS, danach bleibt „Haiku: neu“ stehen.
+// Checkliste (Idee: glanceflow): aktueller Job der Session, angezeigter Verlaufstag (JJJJ-MM-TT) mit seinen Einträgen und
+// die mittlere Schrittdauer aus dem Verlauf (für die Restzeit, solange der Job selbst noch keine zwei Schritte gemessen hat).
+const glanceJob = atom({ plugin: 'tenvan-cc', key: 'job' } as const, null as Job | null)
+const glanceDay = atom({ plugin: 'tenvan-cc', key: 'historyDay' } as const, '')
+const glanceList = atom({ plugin: 'tenvan-cc', key: 'historyList' } as const, [] as JobRecord[])
+const glanceAvg = atom({ plugin: 'tenvan-cc', key: 'stepAvg' } as const, null as number | null)
+
 const EFFORT_STEPS = 10
 const EFFORT_FRAME_MS = 140
 let effortTimer: { cancel(): void } | undefined
@@ -219,6 +234,28 @@ async function syncAgents($: EngineInterface) {
   await update($, agents, list => list.map(a => (LIVE.has(a.status) && status.has(a.id) ? { ...a, status: status.get(a.id) ?? a.status } : a)))
 }
 
+const ASKS_SYSTEM =
+  'Du formulierst Rückfragen eines Coding-Assistenten (Claude) an den Nutzer in Aufträge um, die der Nutzer Claude als Antwort schickt. ' +
+  'Antworte nur mit einem JSON-Array, je Frage in derselben Reihenfolge ein Objekt {"label": string, "prompt": string}. ' +
+  '"prompt": die zustimmende Antwort als Auftrag AN CLAUDE im Imperativ, Du-Form (aus "Soll Claude die Tests fahren?" wird "Fahre die Tests"), ' +
+  'knapp, ohne Höflichkeitsfloskeln. Bei einer Auswahlfrage ("A oder B?") die erstgenannte Option. ' +
+  '"label": derselbe Auftrag in höchstens 6 Wörtern. Sprache der Fragen verwenden. Ist eine Frage keine Rückfrage an den Nutzer, lass sie weg.'
+
+// Fragen aus der letzten Antwort als Aufträge; ohne Fragen kein Model-Call.
+async function questionSteps($: EngineInterface, answer: string): Promise<Step[]> {
+  const qs = questionsOf(answer)
+  if (qs.length === 0) return []
+  const r = await $.model.complete({
+    model: 'haiku',
+    system: ASKS_SYSTEM,
+    prompt: `Fragen:\n${qs.map(q => `- ${q}`).join('\n')}\n\nAufträge (JSON-Array):`,
+    maxTokens: 600,
+    effort: 'low',
+    timeoutMs: 15_000,
+  })
+  return r.isAnswered ? parseSteps(r.text) : []
+}
+
 // ponytail: ein Haiku-Call pro Antwort, kein Cache – abschaltbar über die Option nextSteps
 async function suggest($: EngineInterface, asked: string, answer: string, avoid: readonly string[] = []): Promise<Step[]> {
   const r = await $.model.complete({
@@ -278,30 +315,32 @@ async function loadLogo($: EngineInterface): Promise<string | null> {
 }
 
 // Ein git-Aufruf, rein lesend: fsmonitor aus, kein Neuschreiben von Index oder Cache; bei Fehler ''.
-async function gitText($: EngineInterface, args: readonly string[]): Promise<string> {
-  const r = await $.process.run(['git', '-c', 'core.fsmonitor=false', '--no-optional-locks', ...args])
+async function gitText($: EngineInterface, args: readonly string[], cwd?: string): Promise<string> {
+  const r = await $.process.run(['git', '-c', 'core.fsmonitor=false', '--no-optional-locks', ...args], cwd === undefined ? undefined : { cwd })
   return r.exitCode === 0 ? r.stdout.trim() : ''
 }
 
 // Enthält die lokale Konfiguration Schlüssel, über die das Repo beim Lesen Befehle starten kann?
 // Nur Exit 1 („kein Treffer“) gilt als unbedenklich; ein Treffer oder jeder Fehler (kaputte Konfiguration) als riskant.
-async function isRiskyRepo($: EngineInterface): Promise<boolean> {
-  const r = await $.process.run(['git', '-c', 'core.fsmonitor=false', '--no-optional-locks', 'config', '--local', '--includes', '--name-only', '--get-regexp', RISKY_GIT_CONFIG])
+async function isRiskyRepo($: EngineInterface, cwd?: string): Promise<boolean> {
+  const r = await $.process.run(['git', '-c', 'core.fsmonitor=false', '--no-optional-locks', 'config', '--local', '--includes', '--name-only', '--get-regexp', RISKY_GIT_CONFIG], cwd === undefined ? undefined : { cwd })
   return r.exitCode !== 1
 }
 
 // Git-Stand des Arbeitsverzeichnisses; rein lesend, ohne Netzwerk. Außerhalb eines Repos null.
 // Ein fremdes Repo kann über seine Konfiguration Befehle starten (Filter, fsmonitor, textconv). Nur `git status`
 // kann das hier auslösen; es läuft deshalb nur, wenn die lokale Konfiguration keinen solchen Schlüssel enthält.
-// Nur „kein Repository“ ergibt null (die Kachel bleibt trotzdem, ohne Git-Zeilen). Jeder andere Fehler (Timeout, Sperre, Ordner kurz weg beim Worktree-Wechsel) ergibt
+// Nur „kein Repository“ ergibt null. Jeder andere Fehler (Timeout, Sperre, Ordner kurz weg beim Worktree-Wechsel) ergibt
 // undefined: der zuletzt bekannte Stand bleibt stehen, statt die Kachel bis zum nächsten Turn verschwinden zu lassen.
+// Git läuft im Session-Ordner, nicht im Prozess-Ordner: ein `cd` nach Temp oder ~/.claude ließe das Repo sonst verschwinden.
 async function loadRepo($: EngineInterface): Promise<Repo | null | undefined> {
-  const git = (...args: string[]) => gitText($, args)
-  const probe = await $.process.run(['git', '-c', 'core.fsmonitor=false', '--no-optional-locks', 'rev-parse', '--show-toplevel']).catch(() => null)
+  const cwd = await $.session.root().catch(() => undefined)
+  const git = (...args: string[]) => gitText($, args, cwd)
+  const probe = await $.process.run(['git', '-c', 'core.fsmonitor=false', '--no-optional-locks', 'rev-parse', '--show-toplevel'], cwd === undefined ? undefined : { cwd }).catch(() => null)
   if (probe === null) return undefined
   if (probe.exitCode !== 0) return /not a git repository/i.test(probe.stderr) ? null : undefined
   const top = probe.stdout.trim()
-  const risky = await isRiskyRepo($)
+  const risky = await isRiskyRepo($, cwd)
   const [gitDir, commonDir, branch, sha, status, counts, prefix] = await Promise.all([
     git('rev-parse', '--absolute-git-dir'),
     git('rev-parse', '--path-format=absolute', '--git-common-dir'),
@@ -322,27 +361,17 @@ async function refreshDirs($: EngineInterface) {
   ])
   const next = { cwd, root, home }
   if (!same(await read($, dirs), next)) await update($, dirs, () => next)
-  const alert = await read($, dirAlert)
-  if (alert !== null && !isForeignDir(alert.dir, root, home)) await update($, dirAlert, () => null)
   return next
 }
 
-// Ziel eines Aufrufs außerhalb des Session-Ordners, sonst null.
-// `before`: Ordner von vor dem Aufruf (tool.call läuft nach dem Aufruf, ein cd hat `cwd` dann schon umgesetzt).
-async function foreignTarget($: EngineInterface, tool: string, input: Record<string, unknown>, before?: Dirs): Promise<string | null> {
-  const d = before ?? (await refreshDirs($))
+// Ziel eines Aufrufs außerhalb des Session-Ordners, sonst null. Immer vor dem Lauf und mit frischen Ordnern aufrufen:
+// ein `cd` verschiebt den Prozess-Ordner, gegen den relative Ziele aufgelöst werden.
+async function foreignTarget($: EngineInterface, tool: string, input: Record<string, unknown>): Promise<string | null> {
+  const d = await refreshDirs($)
   // Argumente liegen bei tool.call im Event, bei tool.check unter `input`.
   const args = (typeof input.input === 'object' && input.input !== null ? input.input : input) as Record<string, unknown>
   const dir = dirTarget(tool, args, d.cwd, d.home)
-  return dir !== null && isForeignDir(dir, d.root, d.home, d.cwd) ? displayDir(dir) : null
-}
-
-// Gemerkte Warnung nur, solange der Ordner nach dem aktuellen Session-Ordner noch außerhalb liegt (Wechsel zurück,
-// Schreibweise, Stand vor einem Reload). Rein lesend: Beim Zeichnen darf kein Zustand geschrieben werden; verworfen wird
-// in `refreshDirs`. Ohne `cwd`: Nach einem cd ist der neue Ordner schon `cwd`, die Warnung gälte sonst als erledigt.
-async function liveDirAlert($: EngineInterface): Promise<{ dir: string; tool: string } | null> {
-  const [a, d] = await Promise.all([read($, dirAlert), read($, dirs)])
-  return a !== null && isForeignDir(a.dir, d.root, d.home) ? { ...a, dir: displayDir(a.dir) } : null
+  return dir !== null && isForeignDir(dir, d.root, d.home) ? nativeDir(dir, d.root) : null
 }
 
 async function refreshRepo($: EngineInterface) {
@@ -546,11 +575,6 @@ function titleRow(ui: Ui, info: About | null, mark: string | null) {
   return (
     <Box flexDirection="row" columnGap={1} alignItems="center">
       <Svg source={mark} alt="Tenvan" width={16} height={20} />
-      {/* Wortmarke als Text in den Markenfarben für dunklen Grund: „orga“ weiß, „MAX“ #82b1ff (brand/README.md) */}
-      <Text italic>
-        <Text color={THEME.orga}>orga</Text>
-        <Text bold color={THEME.max}>MAX</Text>
-      </Text>
       <Text bold color={THEME.accent}>{titleText(info)}</Text>
     </Box>
   )
@@ -938,6 +962,264 @@ async function startTurn($: EngineInterface, text: string) {
   await note($, 'you', oneLine(text))
 }
 
+// ── Checkliste (Idee: glanceflow, kein Code übernommen) ──
+// Rein beobachtend: liest Prompt, Tool-Aufrufe und Turn-Ende mit; kein Prompt-Einschub, keine eigenen Tools, kein deny.
+// Pause bricht nur den laufenden Turn ab, „Weiter“ sendet einen sichtbaren Auftrag wie getippt.
+// Der Job selbst liegt im Atom und übersteht einen Reload; „Weiter“ funktioniert danach normal, weil sein Merker erst beim
+// Klick entsteht.
+// ponytail: die turnId für „Pause“ liegt in einer Modul-Variablen; nach einem Reload mitten im Turn meldet Pause bis zum
+// nächsten Turn „nicht möglich“ (Esc geht immer). Ausbau: turnId ins Atom `job`
+let mainTurnId: string | null = null
+let pauseAsked = false
+let lastContinue = ''
+// Laufende Tool-Aufrufe der Hauptschleife: solange einer läuft, ist Claude nicht „hängt?“.
+let toolsInFlight = 0
+
+const updJob = ($: EngineInterface, fn: (j: Job) => Job) => update($, glanceJob, j => (j === null ? null : fn(j)))
+
+// Projekt des Jobs: Session-Ordner, sonst Prozess-Ordner; ohne beides (Test, frischer Start) der Session-Ordner der Engine.
+async function projectCwd($: EngineInterface): Promise<string> {
+  const d = await read($, dirs)
+  if (d.root !== '') return d.root
+  if (d.cwd !== '') return d.cwd
+  try {
+    return await $.session.root()
+  } catch {
+    return ''
+  }
+}
+
+// Erste Frage einer AskUserQuestion (Argumente liegen bei tool.call im Event).
+function askText(args: Record<string, unknown>): string {
+  const qs = Array.isArray(args.questions) ? args.questions : []
+  const q = (qs[0] ?? {}) as Record<string, unknown>
+  return typeof q.question === 'string' ? oneLine(q.question, 160) : ''
+}
+
+// Neuer Prompt: neuer Job. Kommt genau der Auftrag zurück, den „Weiter“ gesendet hat, läuft der alte Job weiter.
+async function startJob($: EngineInterface, text: string) {
+  const now = await $.clock.now()
+  pauseAsked = false
+  // Prompt aus einem Slash-Befehl (Skill, Command mit Prompt): gehört zum Befehls-Job, der Titel bleibt „/name“.
+  const cur = await read($, glanceJob)
+  if (cur !== null && cur.cmd === true && cur.endedAt === undefined && now - cur.startedAt < CMD_ADOPT_MS) return
+  const resumed = lastContinue !== '' && text.trim() === lastContinue.trim()
+  lastContinue = ''
+  const old = await read($, glanceJob)
+  if (resumed && old !== null) {
+    // Ohne endedAt gilt der Job wieder als offen; finishGlance schließt ihn am Ende dieses Turns erneut.
+    await updJob($, ({ endedAt: _ended, ...j }) => ({ ...j, phase: 'working', question: '', ask: '', signAt: now }))
+    return
+  }
+  // Ein noch offener Job (neuer Prompt mitten im Turn, verlorenes Turn-Ende) landet als gestoppt im Verlauf.
+  if (old !== null && old.endedAt === undefined) void saveJob($, { ...old, phase: 'stopped', endedAt: now }, now).catch(() => undefined)
+  const cwd = await projectCwd($)
+  await update($, glanceJob, () => newJob(String(now), text, cwd, now))
+}
+
+// Slash-Befehl als eigener Job „/name args“. Druckt der Befehl nur Text (oder öffnet ein Panel), ist er gleich fertig;
+// startet er einen Turn, übernimmt startJob den Prompt und turn.complete schließt den Job.
+const CMD_ADOPT_MS = 10_000
+let cmdTurnStarted = false
+async function startCommand($: EngineInterface, command: string, args: string) {
+  await startJob($, `/${command}${args.trim() === '' ? '' : ` ${args.trim()}`}`)
+  cmdTurnStarted = false
+  await updJob($, j => ({ ...j, cmd: true }))
+}
+async function endCommand($: EngineInterface) {
+  if (cmdTurnStarted) return
+  const now = await $.clock.now()
+  await updJob($, j => (j.cmd === true && j.endedAt === undefined ? { ...j, phase: 'done', endedAt: now } : j))
+}
+
+// Lebenszeichen (Model-Request, Subagent): nur ein laufender Job braucht es, sonst kein Neuzeichnen.
+async function touchJob($: EngineInterface) {
+  // Ein Lebenszeichen (Subagent startet oder arbeitet, Model-Request) heißt: eine offene Rückfrage ist entschieden. Ohne das
+  // bliebe ein „ask“, das der Modus (auto) selbst freigibt, bis zum Ende des Tools offen, beim Agent-Tool minutenlang.
+  // ponytail: ein langes Shell-Tool ohne Lebenszeichen bleibt bis zu seinem Ende „wartet auf Freigabe“; Ausbau, sobald die
+  // Engine ein Ereignis für die Entscheidung einer Rückfrage liefert.
+  for (const id of gateOf(await read($, gate)).asked) await settleAsk($, id, false)
+  const j = await read($, glanceJob)
+  if (j === null || j.phase !== 'working') return
+  const now = await $.clock.now()
+  await update($, glanceJob, () => touch(j, now))
+}
+
+// Ende des Haupt-Turns: Phase setzen, Verlauf schreiben, bei Rückfrage oder langem Job Ton/Hinweis.
+async function finishGlance($: EngineInterface, answer: string, isAborted: boolean) {
+  mainTurnId = null
+  const paused = pauseAsked
+  pauseAsked = false
+  const j = await read($, glanceJob)
+  // Ein Turn ohne eigenen Prompt (Benachrichtigung eines Hintergrund-Tasks) schließt einen abgeschlossenen Job nicht noch
+  // einmal: sonst würde aus „braucht dich“ ein „fertig“, mit zweitem Ton und zweitem Verlaufseintrag.
+  if (j === null || j.endedAt !== undefined) return
+  const now = await $.clock.now()
+  const done = finishJob(j, answer, isAborted, paused, now)
+  await update($, glanceJob, () => done)
+  void saveJob($, done, now).catch(() => undefined)
+}
+
+// Verlauf: ein Eintrag je Job im Tagesschlüssel, Tage älter als 30 Tage löschen, danach die mittlere Schrittdauer neu.
+async function saveJob($: EngineInterface, j: Job, now: number) {
+  if (!(await read($, settings)).glanceHistory || !isWorthShowing(j)) return
+  const day = dayKey(now)
+  const key = storeKey(day)
+  const list = addRecord(recordsOf(await $.store.get(key)), toRecord(j, now))
+  await $.store.set(key, list)
+  if ((await read($, glanceDay)) === day) await update($, glanceList, () => list)
+  for (const k of staleKeys(await $.store.keys(), day)) await $.store.delete(k)
+  await loadAvg($, j.cwd, now, list)
+}
+
+// Mittlere Schrittdauer dieses Projekts aus den letzten sieben Tagen (heute ggf. schon geladen).
+async function loadAvg($: EngineInterface, cwd: string, now: number, today?: JobRecord[]) {
+  const days = Array.from({ length: 7 }, (_, i) => shiftDay(dayKey(now), -i))
+  const lists = await Promise.all(days.map((d, i) => (i === 0 && today !== undefined ? today : $.store.get(storeKey(d)).then(recordsOf))))
+  const avg = avgStepMs(lists.flat(), cwd)
+  if ((await read($, glanceAvg)) !== avg) await update($, glanceAvg, () => avg)
+}
+
+// Verlaufstag ins Panel laden.
+async function loadHistory($: EngineInterface, day: string) {
+  await update($, glanceDay, () => day)
+  const list = recordsOf(await $.store.get(storeKey(day)))
+  // Nur übernehmen, wenn inzwischen kein anderer Tag gewählt wurde.
+  if ((await read($, glanceDay)) === day) await update($, glanceList, () => list)
+}
+
+async function openHistory($: EngineInterface) {
+  const L = await langOf($)
+  await loadHistory($, dayKey(await $.clock.now())).catch(() => undefined)
+  await $.ui.open({ ...panes(L).history, focus: true })
+}
+
+async function copyReport($: EngineInterface, kind: 'day' | 'week', surface: RenderSurface) {
+  const L = await langOf($)
+  const day = (await read($, glanceDay)) || dayKey(await $.clock.now())
+  let text: string
+  if (kind === 'day') text = dayReport(recordsOf(await $.store.get(storeKey(day))), day, await projectCwd($), L)
+  else {
+    const days = Array.from({ length: 7 }, (_, i) => shiftDay(day, i - 6))
+    const lists = await Promise.all(days.map(d => $.store.get(storeKey(d)).then(recordsOf)))
+    text = weekReport(Object.fromEntries(days.map((d, i) => [d, lists[i] ?? []])), day, L)
+  }
+  await $.ui.copy({ text, surface })
+  $.ui.toast(t(L, 'glance.copied'))
+}
+
+// Pause: laufenden Haupt-Turn abbrechen; turn.complete wertet den Abbruch dann als „pausiert“.
+async function pauseJob($: EngineInterface) {
+  const L = await langOf($)
+  const id = mainTurnId
+  if (id === null) return $.ui.toast(t(L, 'glance.pauseFail'))
+  pauseAsked = true
+  try {
+    await $.turn.abort({ turnId: id })
+    $.ui.toast(t(L, 'glance.pausedToast'))
+  } catch {
+    pauseAsked = false
+    $.ui.toast(t(L, 'glance.pauseFail'))
+  }
+}
+
+// Weiter: Auftrag mit den offenen Schritten wie getippt senden (aus einem Knopf erst nach dem Klick, sonst wartet der Prompt
+// auf den eigenen Hook); klappt das nicht, steht er im Eingabefeld.
+async function continueJob($: EngineInterface) {
+  const j = await read($, glanceJob)
+  if (j === null) return
+  const L = await langOf($)
+  const text = continuePrompt(j, L)
+  lastContinue = text
+  $.clock.after(50, () =>
+    void $.prompt
+      .submit({ text, asUser: true })
+      .catch(() => $.prompt.fill({ text }).then(() => $.ui.toast(t(L, 'glance.continueFail'))))
+      .catch(() => undefined),
+  )
+}
+
+// Phase, wie Band und Plan-Karte sie zeigen: eine offene Freigabe ist „braucht dich“, ein laufendes Tool nie „hängt?“.
+const glancePhase = (j: Job, now: number, asking: number): ShownPhase =>
+  asking > 0 && j.phase === 'working' ? 'needsYou' : shownPhase(j, now, toolsInFlight > 0)
+
+// Farbe und Wort je Phase, wie das Band sie zeigt.
+const PHASE_COLOR: Record<ShownPhase, string> = { working: THEME.accent, needsYou: THEME.warning, stuck: THEME.warning, done: THEME.success, stopped: THEME.textMuted, paused: THEME.textMuted }
+const actText = (j: Job, L: UiLang): string => (j.act === null ? '' : `${t(L, `glance.act.${j.act.kind}`)}${j.act.n > 1 ? ` (${j.act.n})` : ''}`)
+const stepMs = (s: JobStep, now: number): number | null => (s.startedAt === undefined ? null : (s.doneAt ?? now) - s.startedAt)
+
+// Checkliste ganz oben im Band: Kopfzeile mit Status, Titel, Fortschritt, Restzeit und Knöpfen, darunter die Schritte.
+// Nur Text (im Terminal identisch); auf dem Desktop zusätzlich ein kleiner Fortschrittsring.
+function glanceBand($: EngineInterface, ui: Ui, j: Job, o: { L: UiLang; now: number; avg: number | null; asking: number; live: readonly Agent[] }): RenderElement {
+  const { Box, Text } = ui
+  const Svg = 'Svg' in ui ? ui.Svg : undefined
+  const { L, now } = o
+  const shown = glancePhase(j, now, o.asking)
+  // Offene Freigabe: „braucht dich“ ohne Weiter (Claude arbeitet ja noch), mit dem Grund als Fragezeile.
+  const waiting = o.asking > 0 && j.phase === 'working'
+  const { done, total } = progressOf(j)
+  const eta = etaOf(j, now, o.avg)
+  const open = j.steps.some(s => s.status !== 'done')
+  const canContinue = !waiting && (shown === 'paused' || shown === 'stopped' || shown === 'stuck' || (shown === 'needsYou' && open))
+  const muted = THEME.textMuted
+  const when =
+    eta !== null ? t(L, eta.longer ? 'glance.longer' : 'glance.eta', { d: duration(eta.ms) })
+    : j.endedAt !== undefined && shown !== 'working' && shown !== 'stuck' ? t(L, 'glance.took', { d: duration(j.endedAt - j.startedAt) })
+    : ''
+  // Helfer gebündelt: gleiche Art und gleiches Modell als „3× planner · Opus 5.5“, Plugin-Präfix weg; spart Zeilen,
+  // denn der Desktop begrenzt die Höhe des Bands.
+  const helpers = (() => {
+    const groups = new Map<string, number>()
+    for (const a of o.live) {
+      const name = `${a.type.replace(/^[^:]+:/, '')}${a.model !== undefined ? ` · ${modelLabel(a.model)}` : ''}`
+      groups.set(name, (groups.get(name) ?? 0) + 1)
+    }
+    return [...groups].map(([name, n]) => (n > 1 ? `${n}× ${name}` : name)).join(', ')
+  })()
+  // Eine Zeile unter dem laufenden Schritt: was Claude tut und welche Helfer laufen.
+  const nowLine = (key: string) => {
+    const now = j.act !== null && j.phase === 'working' ? t(L, 'glance.now', { what: actText(j, L) }) : ''
+    const text = [now, helpers === '' ? '' : `↳ ${helpers}`].filter(x => x !== '').join(' · ')
+    return text === '' ? null : <Text key={key} color={muted} wrap="truncate-end">{'    '}{text}</Text>
+  }
+  const hasActive = j.steps.some(s => s.status === 'active')
+  return (
+    <Box key="glance" flexDirection="column">
+      <Box key="glance-head" flexDirection="row" justifyContent="space-between" alignItems="center" columnGap={2}>
+        <Box flexDirection="row" columnGap={1} alignItems="center" flexShrink={1}>
+          {Svg && total > 0 && <Svg key="glance-ring" source={ringSvg((100 * done) / total, PHASE_COLOR[shown], 14)} alt={t(L, 'glance.progress', { done, total })} width={14} height={14} />}
+          <Text key="glance-phase" bold color={PHASE_COLOR[shown]}>{t(L, `glance.${shown}`)}</Text>
+          <Box flexShrink={1}><Text key="glance-title" bold wrap="truncate-end">{j.title}</Text></Box>
+          <Text key="glance-progress" color={muted}>{total > 0 ? `· ${t(L, 'glance.progress', { done, total })}` : `· ${t(L, 'glance.noSteps')}`}{when !== '' ? ` · ${when}` : ''}</Text>
+        </Box>
+        <Box flexDirection="row" columnGap={1} alignItems="center" flexShrink={0}>
+          {pill(ui, 'band', 'glance-history', t(L, 'glance.history'), () => void openHistory($).catch(() => undefined))}
+          {shown === 'working' && pill(ui, 'band', 'glance-pause', t(L, 'glance.pause'), () => void pauseJob($).catch(() => undefined))}
+          {canContinue && pill(ui, 'band', 'glance-continue', t(L, 'glance.continue'), () => void continueJob($).catch(() => undefined))}
+        </Box>
+      </Box>
+      {shown === 'stuck' && <Text key="glance-stuck" color={THEME.warning} wrap="truncate-end">{t(L, 'glance.stuckNote', { d: duration(now - j.signAt) })}</Text>}
+      {waiting && <Text key="glance-perm" color={THEME.warning} wrap="truncate-end">? {t(L, 'glance.permission')}</Text>}
+      {!waiting && shown === 'needsYou' && j.question !== '' && <Text key="glance-question" color={THEME.warning} wrap="truncate-end">? {j.question}</Text>}
+      {visibleSteps(j.steps).map(r => {
+        if (r.kind === 'fold') return <Text key={`glance-fold-${r.isDone ? 'done' : 'more'}`} color={r.isDone ? THEME.success : muted} dimColor={r.isDone}>{t(L, r.isDone ? 'glance.foldDone' : 'glance.foldMore', { n: r.n })}</Text>
+        const s = r.step
+        const ms = stepMs(s, now)
+        if (s.status === 'done') return <Text key={`glance-s-${r.index}`} wrap="truncate-end"><Text color={THEME.success}>✓ {s.name}</Text>{ms !== null && <Text color={muted}> {duration(ms)}</Text>}</Text>
+        if (s.status === 'upcoming') return <Text key={`glance-s-${r.index}`} color={muted} wrap="truncate-end">○ {s.name}</Text>
+        return (
+          <Box key={`glance-s-${r.index}`} flexDirection="column">
+            <Text wrap="truncate-end"><Text bold color={THEME.accent}>▸ {s.name}</Text>{ms !== null && <Text color={muted}> {duration(ms)}</Text>}</Text>
+            {nowLine(`glance-now-${r.index}`)}
+          </Box>
+        )
+      })}
+      {/* Ohne laufenden Schritt (kein Plan oder alles abgehakt) stehen Tätigkeit und Helfer unter der Kopfzeile. */}
+      {!hasActive && nowLine('glance-now')}
+    </Box>
+  )
+}
+
 // ── Merge/Pull Requests (GitLab über glab, GitHub über gh, Bitbucket Server über REST; Ein-/Ausgabe in forge.ts) ──
 // Lesend im Takt; schreibend nur per Klick.
 let mrPolledAt = 0
@@ -978,7 +1260,7 @@ function forgeIo($: EngineInterface): Io {
 async function refreshMr($: EngineInterface, force = false) {
   if (force && mrInflight !== null) await mrInflight.catch(() => undefined)
   const s = await read($, settings)
-  if (!s.mrBand && !s.mrPane && !s.mrNotify && !s.mrFooter && !s.sidebarDone && !s.sidebarUnread && !s.sidebarPin) return
+  if (!s.mrBand && !s.mrPane && !s.mrNotify && !s.mrFooter) return
   const prev = await read($, mrCur)
   const now = await $.clock.now()
   if (mrInflight !== null || (!force && now - mrPolledAt < pollDelayMs(prev))) return
@@ -990,31 +1272,6 @@ async function refreshMr($: EngineInterface, force = false) {
   await run
 }
 
-// Sitzungsleiste der Desktop-App (Opt-in): MR gemergt → erledigt, Pipeline rot oder Konflikt im Leerlauf → ungelesen,
-// offener MR → angepinnt. Ohne Desktop-App (Terminal) scheitern die Aufrufe still.
-let sidebarWarned = false
-async function syncSidebar($: EngineInterface, s: ModSettings, events: readonly string[], next: Mr | null) {
-  const [pin, tn] = await Promise.all([read($, sidebarPin), read($, turn)])
-  const idle = tn === null || tn.durationMs !== undefined
-  const plan = sidebarCalls(s, events, idle, next !== null && next.state === 'opened' ? mrRef(next) : null, pin)
-  let nextPin = plan.pin
-  for (const c of plan.calls) {
-    // War die Session schon angepinnt, gehört die Nadel dem Nutzer und bleibt nach dem Merge stehen.
-    if (c.tool === 'set_pinned' && c.pinned && nextPin !== null && (await pinnedNow($))) {
-      nextPin = { ...nextPin, mine: false }
-      continue
-    }
-    const args = c.tool === 'set_pinned' ? { session_id: 'self', pinned: c.pinned } : c.tool === 'set_unread' ? { session_id: 'self', unread: true } : { session_id: 'self' }
-    // Im Auto-Modus lehnt der Classifier Schreibaufrufe ohne Auftrag ab: einmal je Session ins Log, sonst still.
-    await $.mcp.call('ccd_sidebar', c.tool, args).catch(async (err: unknown) => {
-      if (sidebarWarned) return
-      sidebarWarned = true
-      await note($, 'main', t(s.lang, 'sidebar.refused', { why: String(err).slice(0, 120) }))
-    })
-  }
-  if (!same(pin, nextPin)) await update($, sidebarPin, () => nextPin)
-}
-
 // Verknüpfte Sessions der Desktop-App (lesend, geht auch im Auto-Modus). Ohne Desktop-Tools (CLI) oder bei Fehlern bleibt der Stand.
 async function refreshLinked($: EngineInterface) {
   const r = await $.mcp.call('ccd_session_mgmt', 'list_sessions', { linked: true, include_archived: true, limit: 10 }).catch(() => null)
@@ -1022,17 +1279,6 @@ async function refreshLinked($: EngineInterface) {
   const block = r.content.find(b => b.type === 'text')
   const list = parseLinkedSessions(block !== undefined && 'text' in block ? block.text : undefined)
   if (!same(await read($, linked), list)) await update($, linked, () => list)
-}
-
-async function pinnedNow($: EngineInterface): Promise<boolean> {
-  const r = await $.mcp.call('ccd_session_mgmt', 'get_session', { session_id: 'self' }).catch(() => null)
-  const block = r?.content.find(b => b.type === 'text')
-  const text = block !== undefined && 'text' in block ? block.text : undefined
-  try {
-    return typeof text === 'string' && (JSON.parse(text) as { pinned?: unknown }).pinned === true
-  } catch {
-    return false
-  }
 }
 
 async function pollMr($: EngineInterface, s: ModSettings, prev: Mr | null) {
@@ -1064,7 +1310,6 @@ async function pollMr($: EngineInterface, s: ModSettings, prev: Mr | null) {
         await note($, 'main', text)
       }
     }
-    await syncSidebar($, s, mrEvents(prev, next), next)
     { const v = next; if (!same(await read($, mrCur), v)) await update($, mrCur, () => v) }
     // Ein Entwurf gilt nur für seinen Branch und nur, solange es dafür keinen offenen MR gibt (etwa weil er anderswo angelegt wurde).
     const draft = await read($, mrDraft)
@@ -1152,7 +1397,15 @@ async function mergeMr($: EngineInterface, ref?: string) {
   }
   await update($, mrConfirm, () => '')
   const auto = isPipelineRunning(m) && canAutoMerge(m)
-  await mrStep($, t((await read($, settings)).lang, auto ? 'mr.mergeAuto' : 'mr.merge'), (r, cur) => forgeMerge(forgeIo($), r, cur, auto), ref)
+  const squash = (await read($, mrSquash)).includes(key)
+  await update($, mrSquash, l => l.filter(k => k !== key))
+  await mrStep($, t((await read($, settings)).lang, auto ? 'mr.mergeAuto' : 'mr.merge'), (r, cur) => forgeMerge(forgeIo($), r, cur, auto, squash), ref)
+}
+
+// Squash-Haken je MR umschalten.
+async function toggleSquash($: EngineInterface, iid: number) {
+  const key = `merge-${iid}`
+  await update($, mrSquash, l => (l.includes(key) ? l.filter(k => k !== key) : [...l, key]))
 }
 
 // Entwurf für einen neuen MR: Haiku schreibt Titel und Beschreibung aus Commits und Diffstat; angelegt wird erst per Klick.
@@ -1212,11 +1465,11 @@ async function threadsToClaude($: EngineInterface) {
   await $.prompt.fill({ text: threadsPrompt(m, threads, (await read($, settings)).lang) })
 }
 
-// Konflikt als Auftrag ins Eingabefeld; gesendet wird erst mit Enter.
-async function conflictToClaude($: EngineInterface) {
-  const m = await read($, mrCur)
+// Konflikt als Auftrag ins Eingabefeld; gesendet wird erst mit Enter. Mit `ref` ein eigener MR eines anderen Branches (Worktree).
+async function conflictToClaude($: EngineInterface, ref?: string) {
+  const m = ref === undefined ? await read($, mrCur) : ((await read($, mrDetails))[ref] ?? null)
   if (m === null || !m.conflicts) return
-  await $.prompt.fill({ text: conflictPrompt(m, (await read($, settings)).lang) })
+  await $.prompt.fill({ text: conflictPrompt(m, (await read($, settings)).lang, ref !== undefined) })
 }
 
 // Statusteile eines MR für Band und Panel: Nummer, Zustand, Pipeline, Approvals, Threads, Konflikt.
@@ -1326,7 +1579,7 @@ async function mrPaneBody($: EngineInterface, ui: Ui, L: UiLang, mock: { mr: Mr;
   const details = mock !== null ? mock.mrDetails : await read($, mrDetails)
   if (mock === null) mrPaneAt = now
   const reviews = mock !== null ? [] : await read($, mrReview)
-  const [ahead, draft, busy, confirm, down] = await Promise.all([read($, mrAhead), read($, mrDraft), read($, mrBusy), read($, mrConfirm), read($, pressed)])
+  const [ahead, draft, busy, confirm, down, squashed] = await Promise.all([read($, mrAhead), read($, mrDraft), read($, mrBusy), read($, mrConfirm), read($, pressed), read($, mrSquash)])
   const btn = (key: string, label: string, run: () => Promise<unknown>) => pill(ui, 'pane', key, label, () => void act($, key, run).catch(() => undefined), down === key)
   const out: RenderElement[] = []
   const branch: RenderChildren[] = [<Text key="mr-bh" bold>{t(L, 'mr.branchHead')}</Text>]
@@ -1357,6 +1610,8 @@ async function mrPaneBody($: EngineInterface, ui: Ui, L: UiLang, mock: { mr: Mr;
             ) : (
               pill(ui, 'pane', 'mr-a-merge', mergeLabel, () => void mergeMr($).catch(() => undefined))
             ))}
+          {(canMergeNow(m) || (isPipelineRunning(m) && canAutoMerge(m))) &&
+            pill(ui, 'pane', 'mr-a-squash', t(L, squashed.includes(`merge-${m.iid}`) ? 'mr.squashOn' : 'mr.squashOff'), () => void toggleSquash($, m.iid).catch(() => undefined))}
           {m.pipeline !== null && m.pipeline.status === 'failed' && m.pipeline.id > 0 && btn('mr-a-retry', t(L, 'mr.retry'), () => retryPipeline($))}
           {refreshBtn}
         </Box>,
@@ -1409,8 +1664,7 @@ async function mrPaneBody($: EngineInterface, ui: Ui, L: UiLang, mock: { mr: Mr;
     )
   }
   const list = (items: readonly MrMine[]) => items.map(x => `- [${mdText(x.ref)}](${x.url}) ${mdText(x.title)}${x.draft ? ' · Draft' : ''}`).join('\n')
-  // Je eigener MR: Link, darunter (wenn geladen) Status und Aktionen. Konflikte löst Claude nur im ausgecheckten Branch, deshalb
-  // hier nur der Hinweis „Konflikt“ aus dem Status.
+  // Je eigener MR: Link, darunter (wenn geladen) Status und Aktionen; ein Konflikt geht als Auftrag an Claude (Lösung im Worktree).
   const mineRows = mine.map(x => {
     const d = details[x.ref]
     const asking = d !== undefined && confirm === `merge-${d.iid}`
@@ -1421,6 +1675,7 @@ async function mrPaneBody($: EngineInterface, ui: Ui, L: UiLang, mock: { mr: Mr;
         {d !== undefined && (
           <Box key={`mine-s-${x.ref}`} flexDirection="row" columnGap={1} flexWrap="wrap" marginLeft={2}>
             {withDots(ui, mrParts(ui, d, L).slice(1), `mine-p-${d.iid}`)}
+            {d.state === 'opened' && d.conflicts && btn(`mine-fix-${d.iid}`, t(L, 'mr.fixConflict'), () => conflictToClaude($, x.ref))}
             {d.state === 'opened' && btn(`mine-rebase-${d.iid}`, t(L, 'mr.rebase'), () => rebaseMr($, x.ref))}
             {mergeable && d !== undefined &&
               (asking ? (
@@ -1428,6 +1683,8 @@ async function mrPaneBody($: EngineInterface, ui: Ui, L: UiLang, mock: { mr: Mr;
               ) : (
                 pill(ui, 'pane', `mine-merge-${d.iid}`, t(L, canMergeNow(d) || !canAutoMerge(d) ? 'mr.merge' : 'mr.mergeAuto'), () => void mergeMr($, x.ref).catch(() => undefined))
               ))}
+            {mergeable && d !== undefined &&
+              pill(ui, 'pane', `mine-squash-${d.iid}`, t(L, squashed.includes(`merge-${d.iid}`) ? 'mr.squashOn' : 'mr.squashOff'), () => void toggleSquash($, d.iid).catch(() => undefined))}
           </Box>
         )}
       </Box>
@@ -1439,6 +1696,16 @@ async function mrPaneBody($: EngineInterface, ui: Ui, L: UiLang, mock: { mr: Mr;
 }
 
 export const register: Register = (on, options) => {
+  // Checkliste: jeder Slash-Befehl wird ein Job (nur beobachten, Ausgabe unverändert). Als erster Hook registriert, damit er
+  // auch die eigenen Befehle sieht, die ohne next antworten.
+  on('command.run', async ($, e, next) => {
+    // Nur getippte Befehle (Herkunft composer, Bridge, SDK); Aufrufe von Plugins und ohne Herkunft (Test-Host) gehen durch.
+    if (e.origin === undefined || e.origin.kind === 'plugin' || !(await read($, settings)).glance) return next(e)
+    await startCommand($, e.command, e.args)
+    const out = await next(e)
+    $.clock.after(1_500, () => void endCommand($).catch(() => undefined))
+    return out
+  }).catch(($, e, next) => next(e))
 
   on('session.start', async ($, e, next) => {
     const info = await loadAbout($)
@@ -1460,7 +1727,11 @@ export const register: Register = (on, options) => {
     await $.command.register({ name: 'cockpit-dev', description: t(lang, 'common.cmdDev') })
     await $.command.register({ name: 'cockpit-mr', description: t(lang, 'common.cmdMr') })
     await $.command.register({ name: 'cockpit-features', description: t(lang, 'common.cmdFeatures') })
+    await $.command.register({ name: 'cockpit-verlauf', description: t(lang, 'common.cmdHistory') })
+    // Checkliste: mittlere Schrittdauer aus dem Verlauf, sobald der Session-Ordner bekannt ist.
+    void refreshDirs($).then(() => projectCwd($)).then(async cwd => loadAvg($, cwd, await $.clock.now())).catch(() => undefined)
     // ponytail: Git-Stand alle 30 s neu (auch nach Worktree-Wechsel oder Neustart ohne neuen Turn), classic.CwdChanged wäre sofort
+    // Im selben Takt prüft die Checkliste „hängt?“ (das Band zeichnet über `tick` ohnehin neu).
     void $.clock.every(30_000, () => void Promise.all([update($, tick, n => n + 1), syncAgents($), watchCache($), refreshRepo($), refreshLinked($), refreshDirs($)]).catch(() => undefined))
     void $.clock.every(15_000, () => void refreshMr($).then(() => loadMineDetails($)).catch(() => undefined))
     void $.clock.every(10_000, () => void syncSettings($).catch(() => undefined))
@@ -1663,7 +1934,7 @@ export const register: Register = (on, options) => {
       <Box flexDirection="row" columnGap={1} alignItems="center">
         {skinMark(elementsOf($, e), await markerOf($), 'om-spin-m', 'style.spinner')}
         <Text color={mode.color} bold>{spinner(await read($, frame))} {t(s.lang, mode.label)}</Text>
-        {ph !== null && <Text key="breath-phase" color={THEME.accent}>{t(s.lang, `breath.${ph.phase}`)} {Math.ceil(ph.leftMs / 1000)}s ·</Text>}
+        {ph !== null && <Text key="breath-phase" color={BREATH_COLOR[breathOf(s.breathKey).key]}>{t(s.lang, `breath.${ph.phase}`)} {Math.ceil(ph.leftMs / 1000)}s ·</Text>}
         {step !== '' && <Text color={THEME.textSecondary} wrap="truncate-end">{step}</Text>}
         {tn !== null && (
           <Text color={THEME.textMuted}>· {duration(now - tn.startedAt)} · {t(s.lang, 'chat.toolCalls', { n: tn.tools })}{tn.edits > 0 ? ` · ${t(s.lang, 'chat.edits', { n: tn.edits })}` : ''}</Text>
@@ -1801,6 +2072,12 @@ export const register: Register = (on, options) => {
     return { text: t(lang, 'common.openedSettings') }
   })
 
+  // Verlauf der Aufgaben: heutigen Tag laden und das Panel öffnen.
+  on('command.run', { command: 'cockpit-verlauf' }, async $ => {
+    await openHistory($)
+    return {}
+  })
+
   on('command.run', { command: COMMAND }, async $ => {
     const lang = await langOf($)
     await $.ui.open({ ...panes(lang).main, focus: true })
@@ -1840,6 +2117,8 @@ export const register: Register = (on, options) => {
     await finishBackground($, e.text)
     await update($, dirAlert, () => null)
     if (e.origin?.kind !== 'task-notification') await judgeEffort($, e.text)
+    // Checkliste: jeder eigene Prompt ist ein neuer Job; eine Benachrichtigung eines Hintergrund-Tasks nicht.
+    if (e.origin?.kind !== 'task-notification') await startJob($, e.text)
     await startTurn($, e.text)
     return next(e)
   })
@@ -1848,12 +2127,44 @@ export const register: Register = (on, options) => {
     if (e.agentId !== undefined && (await read($, braked)).includes(e.agentId)) return { deny: t(await langOf($), 'agents.brakeDeny') }
     // Vor dem Lauf merken, damit das Ergebnis beim ersten Zeichnen schon als ruhig erkannt wird.
     if (isShell(e.tool) && isReadOnlyShell(shellCommand(e))) await update($, quietIds, ids => pushCapped(ids, e.tool_use_id, 200))
-    const dirsBefore = await refreshDirs($).catch(() => undefined)
-    const ran = await next(e)
+    const out = await foreignTarget($, e.tool, e).catch(() => null)
+    // Argumente liegen bei tool.call im Event selbst (ältere Aufrufer und Tests: unter `input`).
+    const ev = e as unknown as Record<string, unknown>
+    const args = (typeof ev.input === 'object' && ev.input !== null ? ev.input : ev) as Record<string, unknown>
+    // Checkliste: solange eine AskUserQuestion offen ist, „braucht dich“ mit der Frage.
+    if (e.agentId === undefined && e.tool === 'AskUserQuestion') {
+      const question = askText(args)
+      await updJob($, j => ({ ...j, phase: 'needsYou', question }))
+    }
+    // Ein laufender Aufruf der Hauptschleife (langer Build, offene Freigabe) ist kein „hängt?“.
+    const isMain = e.agentId === undefined
+    if (isMain) toolsInFlight++
+    let ran: Awaited<ReturnType<typeof next>>
+    try {
+      ran = await next(e)
+    } finally {
+      if (isMain) toolsInFlight = Math.max(0, toolsInFlight - 1)
+    }
     const isEdit = EDIT_TOOLS.has(e.tool)
     const isError = ran.isError === true
     const path = isEdit && !isError ? inputPath(e) : ''
     if (path !== '') await update($, touched, list => (list.includes(path) ? list : pushCapped(list, path, 100)))
+    {
+      // Checkliste: Hauptschleife zählt Tätigkeit, Plan und geänderte Dateien; ein Subagent-Aufruf ist nur ein Lebenszeichen.
+      const now = await $.clock.now()
+      if (e.agentId !== undefined) await touchJob($)
+      else
+        await updJob($, j => {
+          let nj = noteAct(j, e.tool, now)
+          // Ein fehlgeschlagener Aufruf der Aufgabenliste hat den Plan nicht geändert.
+          if (!isError) nj = planUpdate(nj, e.tool, args, ran.result, now) ?? nj
+          if (path !== '') nj = noteFile(nj, path)
+          if (e.tool === 'AskUserQuestion' && nj.phase === 'needsYou') nj = { ...nj, phase: 'working', question: '' }
+          // Desktop-Abschlussbox: ihre Frage hat am Turn-Ende Vorrang vor der Frage aus der Antwort.
+          if (e.tool === 'mcp__ccd_turn__wrap_up' && typeof args.ask === 'string' && args.ask.trim() !== '') nj = { ...nj, ask: oneLine(args.ask, 160) }
+          return nj
+        })
+    }
     await update($, turn, t => t && { ...t, tools: t.tools + 1, edits: t.edits + (isEdit ? 1 : 0), errors: t.errors + (isError ? 1 : 0) })
     const target = toolTarget(e)
     const server = mcpKey(e.tool)
@@ -1871,7 +2182,6 @@ export const register: Register = (on, options) => {
     if (e.agentId !== undefined) await update($, agents, list => list.map(a => (a.id === e.agentId ? { ...a, steps: (a.steps ?? 0) + 1 } : a)))
     await trackBackground($, e, ran)
     if (!isError && ran.deny === undefined) {
-      const out = await foreignTarget($, e.tool, e, dirsBefore).catch(() => null)
       if (out !== null && (await read($, dirAlert))?.dir !== out) {
         const L = await langOf($)
         await update($, dirAlert, () => ({ dir: out, tool: e.tool }))
@@ -1932,6 +2242,8 @@ export const register: Register = (on, options) => {
   on('turn.step', async function* ($, e, next) {
     // Auto-Effort nur für die Hauptschleife; Subagents behalten ihren Effort.
     const want = e.agentId ? undefined : await effortFor($, e.effort)
+    // Checkliste: jeder Model-Request (auch eines Subagents) ist ein Lebenszeichen.
+    await touchJob($)
     const result = yield* next(want === undefined ? e : { ...e, effort: want })
     if (!e.agentId) {
       const v = { ...(await read($, modelInfo)), model: e.model, effort: want ?? e.effort }
@@ -1968,7 +2280,19 @@ export const register: Register = (on, options) => {
       await update($, agents, list => pushCapped(list, agent, 20))
       await note($, 'agent', t(await langOf($), 'log.agentStarted', { type: e.subagentType }))
     }
+    await touchJob($)
     return spawned
+  })
+
+  // Checkliste: turnId des Haupt-Turns für „Pause“ merken; der Start eines Subagent-Laufs ist ein Lebenszeichen.
+  on('turn.start', async ($, e, next) => {
+    const started = await next(e)
+    if (e.agentId === undefined) {
+      mainTurnId = e.turnId
+      cmdTurnStarted = true
+    }
+    else await touchJob($)
+    return started
   })
 
   on('turn.complete', async ($, e, next) => {
@@ -1983,9 +2307,11 @@ export const register: Register = (on, options) => {
         ...(u === undefined ? {} : { model: u.model, tokensIn: u.input_tokens + u.cache_read_input_tokens + u.cache_creation_input_tokens, tokensOut: u.output_tokens, cacheHit: cacheHitPct(u) }),
       }
       await update($, agents, list => list.map(a => (a.id === e.agentId ? { ...a, ...end } : a)))
+      await touchJob($)
       return done
     }
     stopSpin()
+    await finishGlance($, e.answer, e.isAborted)
     // Nach dem Turn ist keine Rückfrage mehr offen (beantwortet oder abgebrochen): Zähler leeren.
     await update($, gate, old => ({ ...gateOf(old), ask: 0, asked: [] }))
     await syncAgents($)
@@ -2008,6 +2334,10 @@ export const register: Register = (on, options) => {
       void suggest($, asked, e.answer)
         .then(async list => ((await read($, lastPrompt)) === asked ? update($, steps, () => list).then(() => mergeHint($)) : undefined))
         .catch(() => undefined)
+      await update($, asks, () => [])
+      void questionSteps($, e.answer)
+        .then(async list => ((await read($, lastPrompt)) === asked ? update($, asks, () => list) : undefined))
+        .catch(() => undefined)
     }
     return done
   })
@@ -2017,13 +2347,18 @@ export const register: Register = (on, options) => {
     const u = await read($, usage)
     // Kappung auch hier: $.state überlebt Reloads und kann noch Listen älterer Versionen (fünf Schritte) halten.
     const next3 = e.props.isWorking || !s.steps ? [] : (await read($, steps)).slice(0, 3)
+    const asks3 = e.props.isWorking || !s.steps ? [] : (await read($, asks)).slice(0, 3)
     // Die Zeile mit „↻ Neue“ steht immer, wenn Folge-Schritte an sind und Claude nicht arbeitet, auch ohne Vorschläge.
     const showSteps = s.steps && !e.props.isWorking
     const busySteps = await read($, stepsBusy)
-    if (!drawsOn(e.surface) || e.props.hasSurvey || (u === null && next3.length === 0 && (await read($, loopAlert)) === null && (await read($, dirAlert)) === null)) return next(e)
+    // Checkliste: zeigt sich auch ohne Messung, sobald der Job Plan, Tool-Arbeit oder eine Rückfrage hat.
+    const job = s.glance ? await read($, glanceJob) : null
+    const showJob = job !== null && isWorthShowing(job)
+    if (!drawsOn(e.surface) || e.props.hasSurvey || (u === null && !showJob && next3.length === 0 && (await read($, loopAlert)) === null && (await read($, dirAlert)) === null)) return next(e)
     await read($, tick)
     const now = await $.clock.now()
-    const running = (await read($, agents)).filter(a => LIVE.has(a.status)).length
+    const liveAgents = (await read($, agents)).filter(a => LIVE.has(a.status))
+    const running = liveAgents.length
     const ui = elementsOf($, e)
     const { Box, Text, Button } = ui
     // Ringe nur, wo die Oberfläche Svg zeichnet; sonst bleibt der Textbalken.
@@ -2042,7 +2377,7 @@ export const register: Register = (on, options) => {
     const head = titleRow(ui, await read($, about), await read($, logo))
     const where = s.branch ? repoRow(ui, await read($, repo)) : null
     const alert = await read($, loopAlert)
-    const dirWarn = await liveDirAlert($)
+    const dirWarn = await read($, dirAlert)
     const loopText = alert === null ? '' : t(L, alert.kind === 'error' ? 'loop.error' : 'loop.edit', { target: alert.target, n: alert.n })
     const fillCompact = async () => {
       const focus = compactFocus(await read($, lastPrompt), await read($, touched), await read($, steps), L)
@@ -2055,6 +2390,8 @@ export const register: Register = (on, options) => {
       </Box>
     )
     const sep = (key: string) => <Text key={key} color={THEME.border}>│</Text>
+    // Waagerechte Trennlinie als Text: der Desktop zeichnet das Svg-Band nicht zuverlässig, Text schon.
+    const sepLine = (key: string) => <Text key={key} color={THEME.border} wrap="truncate-end">{'─'.repeat(Math.max(10, e.props.bodyColumns - 2))}</Text>
     const mini = (key: string, label: string, onPress: () => void) => pill(ui, 'band', key, label, onPress)
     const mi = await read($, modelInfo)
     const pick = await read($, effortPick)
@@ -2101,11 +2438,14 @@ export const register: Register = (on, options) => {
     }
     const toggleAuto = () => void update($, effortBase, () => null).then(() => setSettings($, { autoEffort: !s.autoEffort })).catch(() => undefined)
 
-    // Im Terminal setzt ein Rahmen in Tenvan-Blau (om-blue-500) auf dunkelblauem Grund das Band vom Transcript ab;
+    // Im Terminal setzt ein Rahmen in orgaMAX-Blau (om-blue-500) auf dunkelblauem Grund das Band vom Transcript ab;
     // der Desktop rahmt es selbst. Voller blauer Grund wäre für die Statusfarben (grün, gelb) zu kontrastarm.
     const term = e.surface === 'terminal'
     const body = (
       <Box flexDirection="column" {...(term ? { borderStyle: 'round', borderColor: THEME.accentFill, backgroundColor: TINT.accent, paddingX: 1 } : {})}>
+        {/* Checkliste ganz oben, über der Titelzeile. */}
+        {showJob && job !== null && glanceBand($, ui, job, { L, now, avg: await read($, glanceAvg), asking: gateOf(await read($, gate)).ask, live: liveAgents })}
+        {showJob && sepLine('glance-sep')}
         <Box flexDirection="row" justifyContent="space-between" alignItems="center">
           <Box flexDirection="row" columnGap={2} alignItems="center">
             {head}
@@ -2131,15 +2471,18 @@ export const register: Register = (on, options) => {
           if (!working && !(await read($, devMock))) return null
           if (working) await read($, frame)
           const img = working
-            ? <Svg key="breath" source={breathFrameSvg(breathOf(s.breathKey), now - (tn?.startedAt ?? now), labels, name, THEME.accent, THEME.textMuted)} alt={t(L, 'settings.breath')} height={56} />
-            : <Svg key="breath" source={breathSvg(breathOf(s.breathKey), labels, name, THEME.accent, THEME.textMuted)} alt={t(L, 'settings.breath')} height={56} />
+            ? <Svg key="breath" source={breathFrameSvg(breathOf(s.breathKey), now - (tn?.startedAt ?? now), labels, name, BREATH_COLOR[breathOf(s.breathKey).key], THEME.textMuted)} alt={t(L, 'settings.breath')} height={56} />
+            : <Svg key="breath" source={breathSvg(breathOf(s.breathKey), labels, name, BREATH_COLOR[breathOf(s.breathKey).key], THEME.textMuted)} alt={t(L, 'settings.breath')} height={56} />
           // Durchschalten: nächste Übung der Reihe nach, gilt sofort und bleibt gespeichert.
           const idx = BREATHS.findIndex(b => b.key === s.breathKey)
           const nextKey = (BREATHS[(idx + 1) % BREATHS.length] ?? BREATHS[0])!.key
           return (
-            <Box key="breath-row" flexDirection="row" columnGap={1} alignItems="center" justifyContent="center">
-              {img}
-              {pill(ui, 'band', 'breath-next', t(L, 'breath.next'), () => void setSettings($, { breathKey: nextKey }).catch(() => undefined))}
+            <Box key="breath-block" flexDirection="column">
+              {sepLine('breath-sep')}
+              <Box key="breath-row" flexDirection="row" columnGap={1} alignItems="center" justifyContent="center">
+                {img}
+                {pill(ui, 'band', 'breath-next', t(L, 'breath.next'), () => void setSettings($, { breathKey: nextKey }).catch(() => undefined))}
+              </Box>
             </Box>
           )
         })())}
@@ -2159,8 +2502,9 @@ export const register: Register = (on, options) => {
           // Drei Spalten gleicher Breite: „1: Label“ (Taste 1–3, auch im leeren Eingabefeld), die Begründung als Tooltip am ⓘ
           // dahinter; ohne Svg (Terminal) als Zeile darunter.
           <Box flexDirection="column">
-            <Text dimColor>{t(L, 'band.next')}</Text>
-            <Box flexDirection="row" columnGap={2}>
+            {sepLine('steps-sep')}
+            <Box flexDirection="row" columnGap={2} alignItems="flex-start">
+            <Text color={THEME.warning} bold>{t(L, 'band.next')}</Text>
             {next3.length === 0 && <Text key="steps-none" color={THEME.textMuted}>{t(L, 'band.noSteps')}</Text>}
             {next3.map((s, i) => (
               <Box key={`step-col-${i}`} flexDirection="column" width={stepCols}>
@@ -2181,12 +2525,32 @@ export const register: Register = (on, options) => {
             ))}
             {pill(ui, 'band', 'steps-refresh', t(L, 'band.moreSteps'), () => void refreshSteps($).catch(() => undefined), busySteps)}
             </Box>
+            {/* Zweite Zeile: Claudes Rückfragen aus der letzten Antwort als Aufträge (Tasten 4–6), nur ins Eingabefeld. */}
+            {asks3.length > 0 && (
+              <Box key="asks-row" flexDirection="row" columnGap={2} alignItems="flex-start">
+                <Text color={THEME.warning} bold>{t(L, 'band.asks')}</Text>
+                {asks3.map((a, i) => (
+                  <Box key={`ask-col-${i}`} width={stepCols}>
+                    <Button
+                      key={`ask-${i}`}
+                      label={clip(a.label, Math.max(12, stepCols - 4))}
+                      hotkey={String(i + 4)}
+                      plain
+                      onPress={() => void $.prompt.fill({ text: a.prompt }).catch(() => undefined)}
+                    />
+                  </Box>
+                ))}
+              </Box>
+            )}
           </Box>
         )}
       </Box>
     )
     // Der Rahmen selbst nimmt keinen Grund an (nur sein Inneres): eine äußere Box mit demselben Grund füllt auch die Rahmenzellen.
-    return term ? <Box key="band-bg" flexDirection="column" backgroundColor={TINT.accent}>{body}</Box> : body
+    const ours = term ? <Box key="band-bg" flexDirection="column" backgroundColor={TINT.accent}>{body}</Box> : body
+    // Bänder anderer Mods (ponytail, effortless …) unter unserem mitzeichnen statt sie zu verdecken.
+    const theirs = await next(e)
+    return <Box key="band-stack" flexDirection="column">{ours}{theirs}</Box>
 
     function metrics(u: Usage, lastAt: number | null, hit: number | null, bd: Breakdown | null) {
       const ttl = u.limits.length > 0 ? 3600_000 : 300_000
@@ -2322,6 +2686,67 @@ export const register: Register = (on, options) => {
     return {}
   })
 
+  // Verlauf der Checkliste: Aufgaben eines Tages in diesem Projekt, Blättern nach Tagen, Tages- und Wochenbericht zum Kopieren.
+  on('ui.render', { component: 'Pane', requestId: 'tenvan-cc-history' }, async ($, e, next) => {
+    if (!drawsOn(e.surface)) return next(e)
+    const s = await read($, settings)
+    const L = s.lang
+    const marg = s.paneMargins ? 1 : 0
+    const ui = elementsOf($, e)
+    const { Box, Text } = ui
+    const today = dayKey(await $.clock.now())
+    const picked = await read($, glanceDay)
+    // Nach einem Reload ist noch kein Tag geladen: heute nachladen, das Atom zeichnet dann neu.
+    if (picked === '') void loadHistory($, today).catch(() => undefined)
+    const day = picked || today
+    const cwd = await projectCwd($)
+    const list = (await read($, glanceList)).filter(r => r.cwd === cwd && (r.steps.length > 0 || r.tools > 0))
+    const go = (d: string) => () => void loadHistory($, d).catch(() => undefined)
+    const at = (ms: number) => clockTime(new Date(ms).toISOString())
+    const OUTCOME_COLOR = { done: THEME.success, needsYou: THEME.warning, stopped: THEME.textMuted } as const
+    const spent = list.reduce((a, r) => a + Math.max(0, r.endedAt - r.startedAt), 0)
+    const stepsDone = list.reduce((a, r) => a + r.steps.filter(x => x.done).length, 0)
+    return (
+      <Box flexDirection="column">
+        {await paneHead($, ui, L)}
+        <Box key="hist-nav" flexDirection="row" columnGap={2} alignItems="center">
+          {pill(ui, 'pane', 'hist-prev', t(L, 'glance.prevDay'), go(shiftDay(day, -1)))}
+          {day !== today && pill(ui, 'pane', 'hist-today', t(L, 'glance.today'), go(today))}
+          {day < today && pill(ui, 'pane', 'hist-next', t(L, 'glance.nextDay'), go(shiftDay(day, 1)))}
+          <Text bold>{day === today ? `${t(L, 'glance.today')} · ${day}` : day}</Text>
+        </Box>
+        {!s.glanceHistory && <Text key="hist-off" color={THEME.warning} wrap="wrap">{t(L, 'glance.historyOff')}</Text>}
+        {tile(
+          ui,
+          'pane',
+          { key: 'hist-card', tint: CARD_TINT.cardPlan ?? TINT.neutral, marg },
+          list.length === 0 && <Text key="hist-none" dimColor>{t(L, 'glance.noJobs')}</Text>,
+          ...list.map(r => (
+            <Box key={`hist-${r.id}`} flexDirection="column" marginBottom={1}>
+              <Box flexDirection="row" columnGap={1}>
+                <Text dimColor>{at(r.startedAt)}</Text>
+                <Box width={10} flexShrink={0}><Text color={OUTCOME_COLOR[r.outcome]}>{t(L, `glance.outcome.${r.outcome}`)}</Text></Box>
+                <Text bold wrap="truncate-end">{r.title}</Text>
+              </Box>
+              <Text dimColor wrap="truncate-end">
+                {'      '}
+                {[r.steps.length > 0 ? t(L, 'glance.stepsOf', { done: r.steps.filter(x => x.done).length, total: r.steps.length }) : '', duration(Math.max(0, r.endedAt - r.startedAt)), r.files.length > 0 ? t(L, 'glance.files', { list: r.files.slice(0, 6).join(', ') + (r.files.length > 6 ? ' …' : '') }) : '']
+                  .filter(x => x !== '')
+                  .join(' · ')}
+              </Text>
+              {r.outcome === 'needsYou' && r.question !== '' && <Text color={THEME.warning} wrap="truncate-end">{'      '}? {r.question}</Text>}
+            </Box>
+          )),
+          list.length > 0 && <Text key="hist-total" bold>{t(L, 'glance.total', { n: list.length, steps: stepsDone, d: duration(spent) })}</Text>,
+        )}
+        <Box key="hist-copy" flexDirection="row" columnGap={2} marginTop={1}>
+          {pill(ui, 'pane', 'hist-day-report', t(L, 'glance.dayReport'), () => void copyReport($, 'day', e.surface).catch(() => undefined))}
+          {pill(ui, 'pane', 'hist-week-report', t(L, 'glance.weekReport'), () => void copyReport($, 'week', e.surface).catch(() => undefined))}
+        </Box>
+      </Box>
+    )
+  })
+
   // Einstellungsseite: jedes Detail von Band, Panel und Chat ein- oder ausblenden; gilt sofort und für alle Sessions.
   on('ui.render', { component: 'Pane', requestId: 'tenvan-cc-settings' }, async ($, e, next) => {
     if (!drawsOn(e.surface)) return next(e)
@@ -2337,7 +2762,7 @@ export const register: Register = (on, options) => {
     const card = (i: number, id: string, head: RenderElement, ...children: RenderChildren[]) => {
       const key = `set:${id}`
       const fold = { id: `set-fold-${id}`, open: !folded.includes(key), onToggle: () => void toggleCard($, key).catch(() => undefined) }
-      return tile(ui, id === 'sidebar' ? 'sidebar' : 'pane', { key: `set-card-${id}`, tint: cycleTint(i), marg, head, fold }, ...children)
+      return tile(ui, 'pane', { key: `set-card-${id}`, tint: cycleTint(i), marg, head, fold }, ...children)
     }
     const cardKeys = ['lang', 'tiles', 'breath', ...groups].map(id => `set:${id}`)
     const keysOf = (group: SettingGroup): SettingKey[] => SETTING_DEFS.filter(d => d.group === group).map(d => d.key)
@@ -2399,7 +2824,7 @@ export const register: Register = (on, options) => {
                   <Button key={`breath-${b.key}`} label={`○ ${t(L, 'settings.off')}`} dimColor onPress={() => void setSettings($, { breathKey: b.key }).catch(() => undefined)} />
                 )}
               </Box>
-              <Text bold>{t(L, `breath.name.${b.key}`)}</Text>
+              <Text bold color={BREATH_COLOR[b.key]}>{t(L, `breath.name.${b.key}`)}</Text>
             </Box>
           )),
         )}
@@ -2584,24 +3009,73 @@ export const register: Register = (on, options) => {
             )}
           </Box>
         )}
-        {s.cardWorkdir &&
+        {s.cardPlan && (await (async () => {
+          // Plan-Karte: ganzer Plan des aktuellen Jobs mit Start, voraussichtlichem Ende, Dauer je Schritt und Dateien.
+          const j = m?.job ?? (await read($, glanceJob))
+          if (j === null) return card('cardPlan', t(L, 'glance.cardTitle'), <Text dimColor>{t(L, 'glance.noJob')}</Text>)
+          const avg = await read($, glanceAvg)
+          // Im Dev-Mode zählt die Mock-Freigabe nicht, sonst stünde der Mock-Job immer auf „braucht dich“.
+          const asking = m === null ? g.ask : 0
+          const shown = glancePhase(j, now, asking)
+          const eta = etaOf(j, now, avg)
+          const guess = stepGuessMs(j, avg)
+          const { done, total } = progressOf(j)
+          const at = (ms: number) => clockTime(new Date(ms).toISOString())
+          const when = [
+            t(L, 'glance.started', { at: at(j.startedAt) }),
+            eta !== null && !eta.longer ? t(L, 'glance.until', { at: at(now + eta.ms) }) : eta?.longer ? t(L, 'glance.longer') : '',
+            j.endedAt !== undefined && shown !== 'working' && shown !== 'stuck' ? t(L, 'glance.took', { d: duration(j.endedAt - j.startedAt) }) : '',
+          ].filter(x => x !== '')
+          const icon = (st: JobStep) => (st.status === 'done' ? '✓' : st.status === 'active' ? '▸' : '○')
+          const tone = (st: JobStep) => (st.status === 'done' ? THEME.success : st.status === 'active' ? THEME.accent : THEME.textMuted)
+          const timeOf = (st: JobStep) => {
+            const ms = stepMs(st, now)
+            if (st.status === 'done') return ms === null ? '' : duration(ms)
+            const exp = guess === null ? '' : t(L, 'glance.expected', { d: duration(guess) })
+            if (st.status === 'active') return [ms === null ? '' : duration(ms), exp].filter(x => x !== '').join(' / ')
+            return exp
+          }
+          return card(
+            'cardPlan',
+            t(L, 'glance.cardTitle'),
+            <Box key="plan-head" flexDirection="row" columnGap={1}>
+              <Text bold color={PHASE_COLOR[shown]}>{t(L, `glance.${shown}`)}</Text>
+              <Text bold wrap="truncate-end">{j.title}</Text>
+            </Box>,
+            <Text key="plan-when" dimColor wrap="truncate-end">{[...when, ...(total > 0 ? [t(L, 'glance.progress', { done, total })] : [])].join(' · ')}</Text>,
+            shown === 'needsYou' && (asking > 0 && j.phase === 'working' ? t(L, 'glance.permission') : j.question) !== '' && (
+              <Text key="plan-q" color={THEME.warning} wrap="wrap">? {asking > 0 && j.phase === 'working' ? t(L, 'glance.permission') : j.question}</Text>
+            ),
+            j.steps.length === 0 && <Text key="plan-none" dimColor>{t(L, 'glance.noPlan')}</Text>,
+            j.steps.length === 0 && j.files.length > 0 && <Text key="plan-files" color={THEME.textMuted} wrap="truncate-end">{t(L, 'glance.files', { list: j.files.join(', ') })}</Text>,
+            ...j.steps.map((st, i) => (
+              <Box key={`plan-s-${i}`} flexDirection="column" marginTop={i === 0 ? 1 : 0}>
+                <Box flexDirection="row" justifyContent="space-between" columnGap={2}>
+                  <Text color={tone(st)} bold={st.status === 'active'} wrap="truncate-end">{icon(st)} {st.name}</Text>
+                  <Text dimColor>{timeOf(st)}</Text>
+                </Box>
+                {st.files.length > 0 && <Text color={THEME.textMuted} wrap="truncate-end">{'  '}{t(L, 'glance.files', { list: st.files.join(', ') })}</Text>}
+              </Box>
+            )),
+            j.act !== null && j.phase === 'working' && <Text key="plan-act" color={THEME.textMuted} wrap="truncate-end">{t(L, 'glance.now', { what: actText(j, L) })}</Text>,
+          )
+        })())}
+        {s.cardWorkdir && (place !== null || (await read($, dirs)).root !== '') &&
           card(
             'cardWorkdir',
             t(L, 'panel.workdir'),
             await (async () => {
               const d = await read($, dirs)
-              const out = await liveDirAlert($)
+              const out = await read($, dirAlert)
               return (
                 <Box key="wd-dirs" flexDirection="column" marginBottom={1}>
-                  {labelRow(ui, 'pane', 'wd-root', t(L, 'dir.session'), <Text color={THEME.accent} bold wrap="truncate-end">{d.root || place?.path || d.cwd}</Text>)}
+                  {labelRow(ui, 'pane', 'wd-root', t(L, 'dir.session'), <Text color={THEME.accent} bold wrap="truncate-end">{d.root || place?.path}</Text>)}
                   {d.cwd !== '' && d.cwd !== d.root && labelRow(ui, 'pane', 'wd-cwd', t(L, 'dir.process'), d.cwd)}
                   {out !== null && labelRow(ui, 'pane', 'wd-out', t(L, 'dir.outside'), <Text color={THEME.error} bold wrap="truncate-end">⚠ {out.dir}</Text>)}
                 </Box>
               )
             })(),
-            ...(place === null
-              ? [labelRow(ui, 'pane', 'wd-norepo', t(L, 'panel.repoBranch'), <Text dimColor>{t(L, 'panel.noRepo')}</Text>)]
-              : repoRows(place, L).map(([label, value]) => labelRow(ui, 'pane', `wd-row-${label}`, label, value))),
+            ...(place === null ? [] : repoRows(place, L)).map(([label, value]) => labelRow(ui, 'pane', `wd-row-${label}`, label, value)),
             // Kurzer MR-Status unter Upstream (nur GitLab): Knopf öffnet das MR-Panel, ohne MR „n Commits ohne MR“.
             await (async () => {
               const wm = m?.mr ?? (await read($, mrCur))

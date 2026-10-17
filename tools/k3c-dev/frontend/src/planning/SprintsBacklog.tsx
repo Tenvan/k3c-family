@@ -65,13 +65,7 @@ export function SprintsBacklog() {
       <div className="pl-grid" style={{ '--pl-split': `${cols}%`, '--pl-detail': rows } as CSSProperties}>
         <section className="pl-pane pl-projects" aria-label="Projekte">
           <ColumnHead data={shown} all={visibleSprints(data, shown.projects)} shown={sprints} />
-          {picked.length > 0 && (
-            <div className="pl-picked">
-              <Text size="1" weight="medium">{picked.length} Session{picked.length > 1 ? 's' : ''} markiert</Text>
-              <CopyPrompt prompt={promptSessions(picked, data.projects)} what={`${picked.length} markierte Sessions`} />
-              <button type="button" className="pl-textlink" onClick={() => setChecked(new Set())}>Auswahl aufheben</button>
-            </div>
-          )}
+          <PickedBar picked={picked} data={data} onClear={() => setChecked(new Set())} />
           <div className="pl-list">
             {data.projects?.length
               ? <ProjectsView data={shown} sprints={sprints} tickets={tickets} sel={filter.sel} onPick={pick} renderSprint={card} reload={load} />
@@ -83,6 +77,18 @@ export function SprintsBacklog() {
         <SidePane data={data} tickets={tickets} sel={filter.sel} onPick={select} onReveal={reveal} onClose={() => setFilter({ ...filter, sel: '' })}
           rows={rows} setRows={setRows} resetRows={resetRows} goal={goal} choose={choose} />
       </div>
+    </div>
+  );
+}
+
+/** Leiste der markierten Sessions: Zahl, Prompt kopieren, Auswahl aufheben; ohne Markierung nichts. */
+function PickedBar({ picked, data, onClear }: { picked: ReturnType<typeof openSessions>; data: PlanningData; onClear: () => void }) {
+  if (picked.length === 0) return null;
+  return (
+    <div className="pl-picked">
+      <Text size="1" weight="medium">{picked.length} Session{picked.length > 1 ? 's' : ''} markiert</Text>
+      <CopyPrompt prompt={promptSessions(picked, data.projects)} what={`${picked.length} markierte Sessions`} />
+      <button type="button" className="pl-textlink" onClick={onClear}>Auswahl aufheben</button>
     </div>
   );
 }

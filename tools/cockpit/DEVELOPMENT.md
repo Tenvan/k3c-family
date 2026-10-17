@@ -4,7 +4,7 @@ Mod für Claude Desktop und die Claude-Code-CLI (Claude Code Function Hooks, Ear
 
 ## Session-Start
 
-1. Ort prüfen: `git status --short --branch`. Entwickelt wird in `plugins/tenvan-cc` des Hauptcheckouts; die globale Junction `~/.claude/skills/tenvan-cc` lädt genau diesen Ordner in jeder Claude-Code-Session (`/reload-plugins` nach Änderungen). Keine zweite Junction im Projekt und keine Marketplace-Installation daneben, sonst lädt das Mod doppelt und das Panel bleibt leer. Prüfen: `claude plugin list` zeigt `tenvan-cc@skills-dir` genau einmal mit Scope `user`.
+1. Ort prüfen: `git status --short --branch`. Das Mod liegt in `tools/cockpit` des k3c-Repos und wird zum Entwickeln per `claude --plugin-dir tools/cockpit` geladen (`/reload-plugins` nach Änderungen). Nicht zusätzlich per Junction oder Marketplace installieren, sonst lädt es doppelt und das Panel bleibt leer.
 2. [SPEC.md](SPEC.md) lesen: Leitplanken, offene Akzeptanzkriterien, Backlog.
 3. Skill `plugin-authoring` laden. Er nennt den Pfad zur aktuellen API-Typdatei `claude-code.d.ts` (rund 21.000 Zeilen). Gezielt danach greppen, nie ganz lesen, z. B. `'tool.check'`, `export type SessionUsage =`, `AbovePrompt: {`.
 
@@ -16,6 +16,7 @@ Mod für Claude Desktop und die Claude-Code-CLI (Claude Code Function Hooks, Ear
 | `hooks/ui.tsx` | Design-System: Tokens je Bereich (`MODES`: pane, skin, sidebar, band), Atome `pill`, `chip`, Moleküle `labelRow`, `tile` | Knöpfe, Chips, Raster-Zeilen und Karten nur hierüber, mit dem Bereich als `mode`; Style-Änderungen in `MODES`, nie an der Aufrufstelle. Kein `$` (Engine 2.1.295 lädt keine `$`-Funktionen aus anderen Dateien) |
 | `hooks/core.ts` | reine Funktionen ohne `$` | neue Rechen-/Formatlogik hierher, damit sie direkt testbar ist |
 | `hooks/mr.ts`, `hooks/forge.ts` | MR/PR: Übersetzung der Plattform-Antworten (rein) bzw. Aufrufe von glab, gh, Bitbucket-REST (über `io`, ohne `$`) | neue Plattform: Konverter in `mr.ts`, Aufrufe in `forge.ts` |
+| `hooks/glance.ts` | Checkliste: Plan aus Claudes Aufgabenliste (`planUpdate`), Status (`finishJob`, `isStuck`), Restzeit (`etaOf`), Verlauf (`toRecord`, `dayKey`) und Berichte (`dayReport`, `weekReport`), rein ohne `$` | Rein beobachtend (kein `deny`, kein Prompt-Einschub, keine eigenen Tools); neue Auswertung hierher, Texte unter `glance.*` in `i18n.ts`, Typen `Job`/`JobRecord` in `types/index.d.ts` |
 | `hooks/mock.ts` | Mockdaten für den Dev-Mode (`/cockpit-dev`) | neue Panel-Werte hier mitpflegen |
 | `types/index.d.ts` | `$.state`-Vertrag `PluginState['tenvan-cc']` | jedes neue Atom hier deklarieren, sonst schlägt `validate` fehl |
 | `hooks/register.test.ts` | Tests (`claude-code/testing`) | pro Akzeptanzkriterium ein Test |
@@ -25,14 +26,14 @@ Mod für Claude Desktop und die Claude-Code-CLI (Claude Code Function Hooks, Ear
 ## Prüfen (vor jedem Abschluss alle drei)
 
 ```bash
-claude plugin validate plugins/tenvan-cc
+claude plugin validate tools/cockpit
 ```
 
 ```bash
-claude plugin test plugins/tenvan-cc
+claude plugin test tools/cockpit
 ```
 
-Typecheck: Die Engine legt die Typen nur unter `.claude-plugin/types/` ab, wenn sie das Mod per `--plugin-dir` lädt. Bei der Junction tut sie das nicht. Deshalb eine tsconfig außerhalb des Plugins (Scratchpad) mit diesen Optionen anlegen; `include` nennt die `claude-code.d.ts` aus dem Skill, `plugins/tenvan-cc/hooks` und `plugins/tenvan-cc/types`:
+Typecheck: Die Engine legt die Typen nur unter `.claude-plugin/types/` ab, wenn sie das Mod per `--plugin-dir` lädt. Bei der Junction tut sie das nicht. Deshalb eine tsconfig außerhalb des Plugins (Scratchpad) mit diesen Optionen anlegen; `include` nennt die `claude-code.d.ts` aus dem Skill, `tools/cockpit/hooks` und `tools/cockpit/types`:
 
 ```json
 { "compilerOptions": { "target": "es2023", "lib": ["es2023"], "types": [], "module": "esnext", "moduleResolution": "bundler", "strict": true, "noUncheckedIndexedAccess": true, "noEmit": true, "skipLibCheck": true, "jsx": "react", "jsxFactory": "h", "jsxFragmentFactory": "Fragment" } }
@@ -57,7 +58,7 @@ Nach Änderungen am Manifest zusätzlich im Repo-Root `npm run validate` und `np
 - **`$` verlässt nie das Modul**: auch nicht an importierte Funktionen (`forgeFind($, …)` lädt nicht). Andere Module bekommen ein `io`-Objekt aus `$.process.run`/`$.http.fetch` (siehe `forgeIo`).
 - **`Button` ohne Kinder-Elemente**: Engine 2.1.295 nimmt nur `label` oder ein String-Kind, keinen farbigen `Text` (entgegen den Typen). Farbe über eine getönte Box drumherum.
 - **Op-Stubs im Test** antworten immer mit `{ value: … }`, auch ohne Ergebnis: `on('store.set', () => ({ value: undefined }) as never)`. `{}` lehnt Engine 2.1.295 ab.
-- **CLI-Version**: `claude` im PATH kann älter sein als die Engine der Desktop-App. Prüfen mit der Desktop-Engine: `"$APPDATA/Claude/claude-code/<version>/<hash>/claude.exe" plugin test plugins/tenvan-cc`.
+- **CLI-Version**: `claude` im PATH kann älter sein als die Engine der Desktop-App. Prüfen mit der Desktop-Engine: `"$APPDATA/Claude/claude-code/<version>/<hash>/claude.exe" plugin test tools/cockpit`.
 - **Elemente**: `Box`, `Text`, `Button`, `Input`, `Select`, `Code`, `Markdown` auf Desktop und Terminal, `Svg` nur auf dem Desktop. Farben über Theme-Keys (`success`, `warning`, `error`, `claude`).
 
 ## Offizielle Quelle: anthropics/claude-code

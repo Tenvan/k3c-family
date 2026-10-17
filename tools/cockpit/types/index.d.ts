@@ -9,7 +9,6 @@ export type Usage = {
 }
 
 // MR, für den das Cockpit die Session angepinnt hat; `mine: false`, wenn sie schon vorher angepinnt war
-export type SidebarPin = { ref: string; mine: boolean } | null
 
 export type Turn = {
   startedAt: number
@@ -160,13 +159,13 @@ export type ModSettings = {
   mrBand: boolean
   mrNotify: boolean
   mrFooter: boolean
-  // Sitzungsleiste der Desktop-App (ccd_sidebar), Opt-in
-  sidebarDone: boolean
-  sidebarUnread: boolean
-  sidebarPin: boolean
   breathKey: 'hrv' | 'sigh' | 'box' | '478'
   // Anzahl der Subagent-Kacheln im Hauptpanel (gerade, 2 bis 12)
   agentTiles: number
+  // Checkliste (Idee: glanceflow): Band, Plan-Karte, Verlauf
+  glance: boolean
+  cardPlan: boolean
+  glanceHistory: boolean
   lang: UiLang
 }
 
@@ -187,6 +186,45 @@ export type McpSchema = { name: string; serverName: string; tokens: number; isLo
 // Ein abgeschlossener Turn für die Turn-Bilanz.
 export type TurnRecord = { usd?: number; tools: number; edits: number; durationMs: number }
 
+// Checkliste im Band (Idee: glanceflow): ein Job je Prompt, Schritte aus Claudes eigener Aufgabenliste.
+export type JobStepStatus = 'upcoming' | 'active' | 'done'
+// `ref`: Nummer aus TaskCreate, damit TaskUpdate den Schritt findet; `files`: geänderte Dateien (nur Namen)
+export type JobStep = { name: string; status: JobStepStatus; ref?: string; startedAt?: number; doneAt?: number; files: string[] }
+// `stuck` ist nicht gespeichert, sondern aus `signAt` abgeleitet (glance.ts, isStuck)
+export type JobPhase = 'working' | 'needsYou' | 'paused' | 'stopped' | 'done'
+export type ActKind = 'read' | 'search' | 'edit' | 'shell' | 'web' | 'agent' | 'plan' | 'ask' | 'other'
+// `ask`: Frage aus der Desktop-Abschlussbox (wrap_up), hat Vorrang vor der Frage aus der Antwort; `signAt`: letztes Lebenszeichen
+export type Job = {
+  id: string
+  title: string
+  cwd: string
+  startedAt: number
+  endedAt?: number
+  phase: JobPhase
+  question: string
+  ask: string
+  steps: JobStep[]
+  act: { kind: ActKind; n: number } | null
+  signAt: number
+  tools: number
+  files: string[]
+  // Slash-Befehl (`/name args`): sichtbar auch ohne Tools; geht ein Turn daraus hervor, gehört er zu diesem Job
+  cmd?: boolean
+}
+// Verlaufseintrag im $.store unter `glance:<JJJJ-MM-TT>` (30 Tage, über alle Projekte)
+export type JobRecord = {
+  id: string
+  title: string
+  cwd: string
+  startedAt: number
+  endedAt: number
+  outcome: 'done' | 'needsYou' | 'stopped'
+  question: string
+  tools: number
+  steps: { name: string; done: boolean; ms?: number }[]
+  files: string[]
+}
+
 declare module 'claude-code' {
   interface PluginState {
     'tenvan-cc': {
@@ -198,6 +236,8 @@ declare module 'claude-code' {
       log: LogEntry[]
       tick: number
       steps: Step[]
+      // Fragen aus Claudes letzter Antwort, als Aufträge an Claude umformuliert (zweite Zeile unter den Folge-Schritten)
+      asks: Step[]
       bgTasks: BgTask[]
       claudeHint: Step | null
       cacheHit: number | null
@@ -246,20 +286,25 @@ declare module 'claude-code' {
       mrMine: MrMine[]
       // Status der eigenen MRs im selben Repo (Schlüssel = Referenz aus mrMine), nur bei offenem MR-Panel nachgeladen
       mrDetails: Record<string, Mr>
-      // Sitzungsleiste (Opt-in): Nadel des Cockpits
-      sidebarPin: SidebarPin
       // offene MRs, in denen du als Reviewer eingetragen bist
       mrReview: MrMine[]
       mrAhead: number
       mrDraft: MrDraft | null
       mrBusy: string
       mrConfirm: string
+      // MRs mit angehaktem „Squash“ (`merge-<iid>`), Standard aus
+      mrSquash: string[]
       // ignorierte Schleifen-Warnungen (`kind:target`), gelten bis zum Ende der Session
       loopIgnored: string[]
       // Wechsel der Auto-Effort-Stufe für die kurze Animation im Band; `step` zählt die Bilder hoch
       effortShift: { from: string | null; to: string; step: number } | null
       // Dev-Mode: Panel zeigt Mockdaten statt der Session-Werte (nur Session)
       devMock: boolean
+      // Checkliste: aktueller Job dieser Session, angezeigter Verlaufstag (JJJJ-MM-TT) und dessen Einträge, mittlere Schrittdauer
+      job: Job | null
+      historyDay: string
+      historyList: JobRecord[]
+      stepAvg: number | null
     }
   }
 }

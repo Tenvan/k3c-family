@@ -49,7 +49,7 @@ func loadAt(root, rev string) (Data, error) {
 	if err != nil {
 		return Data{}, err
 	}
-	defer os.RemoveAll(dir)
+	defer func() { _ = os.RemoveAll(dir) }() // Wegwerf-Ordner; bleibt er liegen, räumt das System ihn auf
 	if err := untar(bytes.NewReader(out), dir); err != nil {
 		return Data{}, err
 	}
