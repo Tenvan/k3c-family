@@ -1,4 +1,5 @@
 import { mockAssets } from './mockAssets';
+import { mockOpenGame, mockWorldLevel, mockWorldPreview } from './mockWorld';
 import type { AssetChoice, Backend, EventName, Events } from './types';
 
 /** Backend ohne Wails (Browser, Tests): erfundene Daten; `external` spielt einen fremden Schreiber nach. */
@@ -8,6 +9,9 @@ export function mockBackend(): Backend & { external: (id: string, wahl: AssetCho
   return {
     mock: true,
     ...mockAssets(() => emit('assets:changed', null)),
+    worldLevel: async (seed, source) => mockWorldLevel(seed, source),
+    worldPreview: async (args) => mockWorldPreview(args),
+    worldOpenGame: async (base, seed, biome, mode) => mockOpenGame(base, seed, biome, mode),
     openUrl: (url) => window.open(url, '_blank', 'noopener'),
     on: <E extends EventName>(event: E, fn: (data: Events[E]) => void) => {
       const set = subs.get(event) ?? new Set();

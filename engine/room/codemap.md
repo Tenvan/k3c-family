@@ -17,6 +17,8 @@ Raummodell des Servers (Domain/Service Layer): ein `Room` ist ein laufendes Spie
 - Supervisor: `Manager.Run`/`Room.run` (`run.go`) – Goroutine je Raum mit `TickHz`, Ticker für `Sweep` (Fristen `WaitFor`, `EmptyFor`), Statistik-Log und `Sample`; `safeTick` fängt Panics, `crash` erzeugt `Failure`.
 - Read Model: `Status`, `StageStatus`, `Summary`, `DeviceInfo` (`status.go`), `Info` (`actions.go`); strukturiertes Logging mit Tick-Warnung, `logStats`, `logRejected` (`logging.go`).
 
+- Vorschau-Welt (WZ7.1): `preview.go` – `BuildPreview(PreviewOptions)` baut ohne Raum und Spielstand eine `sim.World` aus Seed und Biom (`PreviewSource`), ohne Bürger und Gegner, mit Hub-Stufe (`sim.PreviewHubLevel`), Tageszeit (`sim.PreviewCycle`) und Gebäude-Auswahl (`PreviewSiteKey`); kein globaler Zustand, Struktur offen für weitere Felder (WZ8.4, WZ9).
+
 ## Flow
 
 1. `Manager.Create(id, peer, name, fresh, depth, slots, opts)` → `open` lädt Stand über `Store.Load` oder startet frisch (Level über `engine/level`, `sim.Island`) → `lockedJoin` → Raum bekommt Code und Run-Goroutine.
