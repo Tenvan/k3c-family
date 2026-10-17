@@ -1,6 +1,6 @@
 // Dev-Mode (`/cockpit-dev`): Mockdaten für das Panel, damit jede Karte in allen Zuständen sichtbar ist,
 // ohne dass eine Session sie erst erzeugen muss. Rein, nur von `now` abhängig; echte Atome bleiben unberührt.
-import type { Agent, BgTask, Breakdown, Decision, Gate, LogEntry, McpSchema, Mr, MrMine, Repo, LinkedSession, Turn, TurnRecord, Usage } from '../types'
+import type { Agent, BgTask, Breakdown, Decision, Gate, Job, LogEntry, McpSchema, Mr, MrMine, Repo, LinkedSession, Turn, TurnRecord, Usage } from '../types'
 
 export type Mock = {
   usage: Usage
@@ -22,6 +22,8 @@ export type Mock = {
   mrMine: MrMine[]
   // Status je eigenem MR im selben Repo, Schlüssel = `ref` aus mrMine
   mrDetails: Record<string, Mr>
+  // Checkliste: laufender Job mit Plan (Plan-Karte)
+  job: Job
 }
 
 const MIN = 60_000
@@ -51,6 +53,27 @@ function mockBase(now: number): Omit<Mock, 'mrDetails'> {
         { kind: 'seven_day', percentUsed: 91, resetsAt: iso(30 * 60 * MIN) },
       ],
       usd: 7.84,
+    },
+    // Checkliste: zwei Schritte erledigt, einer läuft, zwei offen; zeigt Dauer, Erwartung und Dateien je Schritt.
+    job: {
+      id: 'mock-job',
+      title: 'Checkliste im Band mit Plan-Karte und Verlauf',
+      cwd: 'C:/WORKSPACE/demo',
+      startedAt: now - 7 * MIN,
+      phase: 'working',
+      question: '',
+      ask: '',
+      steps: [
+        { name: 'Typen und Atome anlegen', status: 'done', startedAt: now - 7 * MIN, doneAt: now - 5 * MIN, files: ['types/index.d.ts'] },
+        { name: 'Reine Job-Logik schreiben', status: 'done', startedAt: now - 5 * MIN, doneAt: now - 2 * MIN, files: ['hooks/glance.ts', 'hooks/core.ts'] },
+        { name: 'Band und Panel zeichnen', status: 'active', startedAt: now - 2 * MIN, files: ['hooks/register.tsx'] },
+        { name: 'Tests ergänzen', status: 'upcoming', files: [] },
+        { name: 'Doku nachziehen', status: 'upcoming', files: [] },
+      ],
+      act: { kind: 'edit', n: 3 },
+      signAt: now - 10_000,
+      tools: 23,
+      files: ['types/index.d.ts', 'hooks/glance.ts', 'hooks/core.ts', 'hooks/register.tsx'],
     },
     // Laufender Turn: zeigt die Karte „Agent arbeitet“.
     turn: { startedAt: now - 83_000, tools: 14, edits: 3, errors: 1, usdDelta: 0.42 },

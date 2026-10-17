@@ -6,7 +6,7 @@ Two layers: the **components** a mod can draw via `ui.render`, and the **Markdow
 
 ### Working and duration line
 
-Colors from the dark tokens of the Tenvan design system. It has no pattern for loading states yet, so only the color roles are used. Toggle: Settings → Chat → "Working and duration line".
+Colors from the dark tokens of the orgaMAX design system. It has no pattern for loading states yet, so only the color roles are used. Toggle: Settings → Chat → "Working and duration line".
 
 | Line | Part | Token | Color |
 | --- | --- | --- | --- |

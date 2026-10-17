@@ -1,6 +1,6 @@
 import { expect, test } from 'claude-code/testing'
 
-import { splitTool, toolText, parseTaskNotifications, backgroundOf, todosOf, wrapupOf, resetLeft, parseLinkedSessions, dirTarget, isForeignDir, withClaude, modelLabel, timelineSvg, summaryLines, summarySections, topRows, resetLabel, agentStats, agentFlags, DEFAULT_SETTINGS, SETTING_DEFS, settingHint, settingLabel, catchUpPrompt, catchUpSystem, fingerprint, formatMessage, nextChunk, settingsOf, startIndex } from './core'
+import { splitTool, toolText, parseTaskNotifications, backgroundOf, todosOf, wrapupOf, resetLeft, parseLinkedSessions, questionsOf, dirTarget, isForeignDir, nativeDir, withClaude, modelLabel, timelineSvg, summaryLines, summarySections, topRows, resetLabel, agentStats, agentFlags, DEFAULT_SETTINGS, SETTING_DEFS, settingHint, settingLabel, catchUpPrompt, catchUpSystem, fingerprint, formatMessage, nextChunk, settingsOf, startIndex } from './core'
 import { STRINGS, t, type Key } from './i18n'
 
 type Msg = Parameters<typeof fingerprint>[0]
@@ -21,7 +21,7 @@ test('settingsOf: Standard, Teileingabe und leere Altzustände', () => {
 test('SETTING_DEFS: deckt alle Schalter außer lang, breathKey und agentTiles genau einmal ab', () => {
   const keys = SETTING_DEFS.map(d => d.key as string).sort()
   expect(keys).toEqual(Object.keys(DEFAULT_SETTINGS).filter(k => k !== 'lang' && k !== 'breathKey' && k !== 'agentTiles').sort())
-  const groups = ['band', 'work', 'effort', 'panel', 'summary', 'mr', 'sidebar', 'skins', 'tools', 'input', 'marks']
+  const groups = ['band', 'glance', 'work', 'effort', 'panel', 'summary', 'mr', 'skins', 'tools', 'input', 'marks']
   for (const d of SETTING_DEFS) {
     for (const lang of ['de', 'en'] as const) {
       expect(settingLabel(d.key, lang).trim()).not.toBe('')
@@ -235,10 +235,18 @@ test('dirTarget/isForeignDir: Wechsel per cd, git -C, Desktop und Schreiben; Tem
   expect(isForeignDir('C:/WORKSPACE/ErpApi', cwd, home)).toBe(true)
   expect(isForeignDir('/c/WORKSPACE/ErpApi', cwd, home)).toBe(true)
   expect(isForeignDir('C:\\WORKSPACE\\k3c/src', cwd, home)).toBe(false)
-  expect(isForeignDir('/c/WORKSPACE/K3C/tools/cockpit', 'C:\\WORKSPACE\\K3C\\wt', home, 'C:\\WORKSPACE\\K3C\\tools\\cockpit')).toBe(false)
   expect(isForeignDir('/c/workspace/K3C/.claude/worktrees/x', cwd, home)).toBe(false)
   expect(isForeignDir('C:/Users/r/.claude/projects', cwd, home)).toBe(false)
   expect(isForeignDir('C:/Users/r/AppData/Local/Temp/x', cwd, home)).toBe(false)
+  // `..` wird aufgelöst: zurück in den Session-Ordner ist kein Wechsel, darüber hinaus schon.
+  expect(isForeignDir(dirTarget('Bash', { command: 'cd ../..' }, 'C:\\WORKSPACE\\k3c\\src\\app', home) ?? '', cwd, home)).toBe(false)
+  expect(isForeignDir(dirTarget('Bash', { command: 'cd ..' }, cwd, home) ?? '', cwd, home)).toBe(true)
+  expect(isForeignDir('/c/WORKSPACE/k3c', 'C:\\WORKSPACE\\k3c\\', home)).toBe(false)
+  expect(isForeignDir('C:/WORKSPACE/k3c-old', cwd, home)).toBe(true)
+  // Variablen und Befehlsersetzung bleiben unaufgelöst: kein Ziel, kein Fehlalarm.
+  expect(dirTarget('Bash', { command: 'cd "$CLAUDE_PROJECT_DIR" && ls' }, cwd, home)).toBe(null)
+  expect(dirTarget('Bash', { command: 'cd $(git rev-parse --show-toplevel)' }, cwd, home)).toBe(null)
+  expect(dirTarget('PowerShell', { command: 'cd /d C:\\WORKSPACE\\ErpApi' }, cwd, home)).toBe('C:\\WORKSPACE\\ErpApi')
 })
 
 test('resetLeft: Minuten, Stunden, Tage; abgelaufen 0m', () => {
@@ -247,4 +255,30 @@ test('resetLeft: Minuten, Stunden, Tage; abgelaufen 0m', () => {
   expect(resetLeft(new Date(now + 133 * 60_000).toISOString(), now)).toBe('2h 13m')
   expect(resetLeft(new Date(now + (3 * 24 + 4) * 3600_000).toISOString(), now)).toBe('3d 4h')
   expect(resetLeft(new Date(now - 60_000).toISOString(), now)).toBe('0m')
+})
+
+
+test('Verzeichniswächter: Haupt-Repo eines Worktrees zählt als innen; Anzeige in Windows-Schreibweise', () => {
+  const wt = 'C:\\WORKSPACE\\k3c\\.claude\\worktrees\\sprint-geb6-plan-9824bd'
+  const home = 'C:\\Users\\r'
+  expect(isForeignDir('/c/WORKSPACE/k3c/tools/k3c-dev', wt, home)).toBe(false)
+  expect(isForeignDir('C:/WORKSPACE/k3c/.claude/worktrees/other', wt, home)).toBe(false)
+  expect(isForeignDir('/c/WORKSPACE/ErpApi', wt, home)).toBe(true)
+  expect(nativeDir('/c/WORKSPACE/ErpApi/src/../x', wt)).toBe('C:\\WORKSPACE\\ErpApi\\x')
+  expect(nativeDir('/home/r/x', '/home/r')).toBe('/home/r/x')
+})
+
+test('questionsOf: letzte Fragen der Antwort, ohne Code und Markdown, ohne Doppelte', () => {
+  const text = [
+    'Erledigt. `git status?` ist sauber.',
+    '```bash',
+    'echo "wirklich?"',
+    '```',
+    '- **Soll Claude die Tests fahren?**',
+    'Soll Claude committen? Oder erst pushen?',
+    'Soll Claude committen?',
+  ].join('\n')
+  expect(questionsOf(text)).toEqual(['Soll Claude die Tests fahren?', 'Soll Claude committen?', 'Oder erst pushen?'])
+  expect(questionsOf('Keine Frage hier.')).toEqual([])
+  expect(questionsOf('Läuft `git status?` sauber.')).toEqual([])
 })

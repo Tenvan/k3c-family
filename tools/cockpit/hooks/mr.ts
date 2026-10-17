@@ -304,18 +304,23 @@ export function parseDraft(text: string, fallbackTitle: string): { title: string
   return { title: fallbackTitle.slice(0, 200), description: '' }
 }
 
-// Merge-Konflikt als Auftrag an Claude: Ziel-Branch einmergen, Konflikte lösen, nichts pushen.
-export function conflictPrompt(m: Mr, lang: 'de' | 'en'): string {
+// Merge-Konflikt als Auftrag an Claude: Ziel-Branch einmergen, Konflikte lösen, nichts pushen. `elsewhere`: der MR gehört zu einem
+// anderen Branch als dem ausgecheckten; dann in einem eigenen Worktree lösen, damit der aktuelle Arbeitsstand unberührt bleibt.
+export function conflictPrompt(m: Mr, lang: 'de' | 'en', elsewhere = false): string {
   return lang === 'de'
     ? [
-        `${mrRef(m)} („${m.title}“) hat einen Merge-Konflikt mit \`${m.target}\`. Löse ihn im aktuellen Branch \`${m.source}\`:`,
+        elsewhere
+          ? `${mrRef(m)} („${m.title}“) hat einen Merge-Konflikt mit \`${m.target}\`. Löse ihn im Branch \`${m.source}\` in einem eigenen Worktree, nicht im aktuellen Arbeitsverzeichnis:`
+          : `${mrRef(m)} („${m.title}“) hat einen Merge-Konflikt mit \`${m.target}\`. Löse ihn im aktuellen Branch \`${m.source}\`:`,
         `1. Hole den aktuellen Stand von \`${m.target}\` vom Remote und merge ihn in den Branch.`,
         '2. Löse jeden Konflikt, indem du beide Seiten verstehst und ihre Absicht erhältst; bei einer echten inhaltlichen Entscheidung frag mich.',
         '3. Baue bzw. teste, was das Projekt dafür vorsieht, und schließe den Merge mit einem Commit ab.',
         '4. Pushe nicht; sag mir kurz, welche Dateien betroffen waren und wie du entschieden hast.',
       ].join('\n')
     : [
-        `${mrRef(m)} ("${m.title}") has a merge conflict with \`${m.target}\`. Resolve it on the current branch \`${m.source}\`:`,
+        elsewhere
+          ? `${mrRef(m)} ("${m.title}") has a merge conflict with \`${m.target}\`. Resolve it on branch \`${m.source}\` in a worktree of its own, not in the current working directory:`
+          : `${mrRef(m)} ("${m.title}") has a merge conflict with \`${m.target}\`. Resolve it on the current branch \`${m.source}\`:`,
         `1. Fetch the latest \`${m.target}\` from the remote and merge it into the branch.`,
         '2. Resolve each conflict by understanding both sides and keeping their intent; ask me where it is a real content decision.',
         '3. Build or test as the project provides, then finish the merge with a commit.',

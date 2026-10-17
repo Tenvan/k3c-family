@@ -6,7 +6,7 @@ Zwei Ebenen: die **Komponenten**, die ein Mod über `ui.render` zeichnen kann, u
 
 ### Arbeits- und Dauerzeile
 
-Farben aus den Dark-Tokens des Tenvan-Design-Systems. Ein eigenes Muster für Ladezustände gibt es dort noch nicht, darum nur die Farbrollen. Schalter: Einstellungen → Chat → „Arbeits- und Dauerzeile“.
+Farben aus den Dark-Tokens des orgaMAX-Design-Systems. Ein eigenes Muster für Ladezustände gibt es dort noch nicht, darum nur die Farbrollen. Schalter: Einstellungen → Chat → „Arbeits- und Dauerzeile“.
 
 | Zeile | Teil | Token | Farbe |
 | --- | --- | --- | --- |
