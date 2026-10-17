@@ -1,11 +1,11 @@
 # WZ11 · DEV · Gegner- und Boss-Vorschau im Asset-Studio, Figuren-Seiten entfernen
 
-- **Status:** geplant
+- **Status:** aktiv
 - **Projekt:** WZG
 - **Domäne:** DEV
 - **Reife:** bereit
 - **Tickets:** B-464
-- **Start-Commit:** – (wird beim Aktivieren gesetzt: `git rev-parse --short origin/develop`)
+- **Start-Commit:** 2ab60241
 - **Spec:** freigegeben
 - **Revision:** 1
 - **Freigabe:** 2026-10-17, Ralf im Chat (Revision 1)
@@ -123,7 +123,7 @@ Vor der Freigabe offen: nichts.
 
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
-| WZ11.1 | `WZ11.1-gegner-seite.md` | Umsetzung | autonom | offen |
+| WZ11.1 | `WZ11.1-gegner-seite.md` | Umsetzung | autonom | in Arbeit |
 | WZ11.2 | `WZ11.2-bosse.md` | Umsetzung | autonom | offen |
 | WZ11.3 | `WZ11.3-figuren-seiten-entfernen.md` | Umsetzung | autonom | offen |
 | WZ11.4 | `WZ11.4-review.md` | Review | autonom | offen |
