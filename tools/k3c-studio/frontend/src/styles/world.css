@@ -31,3 +31,7 @@
 .wd-launch .wd-base { width: 15rem; }
 .wd-bar input[type='range'] { width: 8rem; }
 .wd-select { height: 2rem; padding: 0 0.5rem; border-radius: 6px; border: 1px solid var(--card-line); background: var(--card); color: var(--text); }
+
+/* Abspiel-Bausteine (B-463, WZ10.1) */
+.wd-playback { align-items: center; }
+.wd-gap { display: inline-block; padding: 0 6px; border: 1px solid var(--amber-8); border-radius: 4px; color: var(--amber-11); font-size: 0.75rem; }

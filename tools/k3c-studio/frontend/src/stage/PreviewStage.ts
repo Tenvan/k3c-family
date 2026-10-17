@@ -5,6 +5,8 @@ import { StageView } from '@game/scenes/stageView';
 import { prepareWorld, preloadWorld } from '@game/scenes/objectView';
 import { prepareBuildings, preloadBuildings } from '@game/scenes/siteView';
 import { createSpriteAnims, preloadSprites } from '@game/scenes/sprites';
+import { DEFAULT_CONTROL, SHEETS, resolveAnim, type Control, type Gap } from '../abspiel/figure';
+import { FigureView, GROUND_Y, drawScale, loadFigureSheets, type FigureItem } from '../abspiel/figureView';
 import { levelKey, stageZoom } from './stageLogic';
 
 // Die wiederverwendbare Phaser-Bühne des Asset-Studios (B-460, WZ7.3; WZ10/WZ11 nutzen sie wieder, eine zweite entsteht
@@ -30,6 +32,11 @@ class PreviewScene extends Phaser.Scene {
   private look: Look = DEFAULT_LOOK;
   private fx: Phaser.Filters.ColorMatrix | null = null;
   private drag: { x: number; scroll: number } | null = null;
+  // Figuren-Modus (WZ10.1): statt der Welt zeichnet die Bühne Figuren auf einer Bodenlinie mit Unit-Skala
+  private figures: FigureView[] = [];
+  private extras: Phaser.GameObjects.GameObject[] = [];
+  private figureItems: readonly FigureItem[] | null = null;
+  private control: Control = DEFAULT_CONTROL;
 
   constructor(private readonly onLoadError: (files: string[]) => void) {
     super('preview');
@@ -43,6 +50,9 @@ class PreviewScene extends Phaser.Scene {
   }
 
   private readonly failed: string[] = [];
+  private resolveReady: () => void = () => {};
+  /** Erfüllt, sobald die Grafiken geladen sind und die Szene zeichnen kann */
+  readonly whenReady = new Promise<void>((resolve) => { this.resolveReady = resolve; });
 
   create(): void {
     // Fehlende Dateien melden, die Bühne zeichnet trotzdem, was da ist: der Figuren-Atlas (public/atlas/) ist erzeugt und
@@ -54,6 +64,7 @@ class PreviewScene extends Phaser.Scene {
     this.cameras.main.filters.internal.clear(); // wie GameScene: die Hauptkamera überlebt einen Neustart der Szene
     this.fx = this.cameras.main.filters.internal.addColorMatrix();
     this.ready = true;
+    this.resolveReady();
     this.scale.on('resize', () => this.fit());
     this.input.on('pointerdown', (p: Phaser.Input.Pointer) => { this.drag = { x: p.x, scroll: this.cameras.main.scrollX }; });
     this.input.on('pointermove', (p: Phaser.Input.Pointer) => {
@@ -99,6 +110,58 @@ class PreviewScene extends Phaser.Scene {
     }
   }
 
+  /** Zeigt Figuren (null = zurück zur Welt). Antwortet, wenn alle Bilder geladen und gezeichnet sind, mit Lücke und
+   *  Bildzahl je Figur. Eine neuere Anfrage macht eine ältere ungültig (Antwort leer). */
+  async showFigures(items: readonly FigureItem[] | null): Promise<FigureInfo[]> {
+    this.figureItems = items;
+    if (!this.ready) return [];
+    this.clearFigures();
+    if (!items) {
+      this.show(this.pending);
+      return [];
+    }
+    this.view?.destroy();
+    this.view = null;
+    await loadFigureSheets(this, items);
+    if (this.figureItems !== items) return [];
+    // Ein unbekanntes Sheet ist eine Lücke ohne Figur (makeSprite würde abstürzen).
+    const views = items.map((i) => (SHEETS[i.spec.sheet] ? new FigureView(this, i) : null));
+    this.figures = views.filter((v): v is FigureView => v !== null);
+    this.fitFigures(items);
+    this.setControl(this.control);
+    return views.map((v, i) => (v ? { gap: v.gap, frames: v.frames() } : { gap: resolveAnim(items[i]!.spec.sheet, items[i]!.anim).gap, frames: 1 }));
+  }
+
+  /** Wiedergabe (Schleife, Tempo, Einzelbild) aller Figuren */
+  setControl(control: Control): void {
+    this.control = control;
+    for (const f of this.figures) f.apply(control);
+  }
+
+  update(): void {
+    for (const f of this.figures) f.follow();
+  }
+
+  private clearFigures(): void {
+    for (const f of this.figures) f.destroy();
+    for (const o of this.extras) o.destroy();
+    this.figures = [];
+    this.extras = [];
+  }
+
+  /** Kamera: alle Figuren und die Unit-Skala im Bild, Bodenlinie unten */
+  private fitFigures(items: readonly FigureItem[]): void {
+    const xs = items.map((i) => i.x);
+    const from = Math.floor(Math.min(...xs, 0) - 6);
+    const to = Math.ceil(Math.max(...xs, 0) + 6);
+    this.extras = drawScale(this, from, to);
+    const cam = this.cameras.main;
+    const zoom = Math.min(stageZoom(this.scale.height), this.scale.width / ((to - from) * UNIT_PX));
+    cam.setZoom(zoom);
+    cam.removeBounds();
+    cam.centerOn(((from + to) / 2) * UNIT_PX, GROUND_Y - 140);
+  }
+
   /** Kamera: Spielhöhe passt in die Bühne; `center` stellt die Burg in die Mitte. */
   private fit(center = false): void {
     const world = this.pending;
@@ -114,6 +177,12 @@ class PreviewScene extends Phaser.Scene {
 
 /** Phaser-Spiel im Element `parent`; die Größe folgt dem Element (Höhe per CSS festlegen), Pfeiltasten scrollen, solange
  *  das Element den Fokus hat. `onLoadError` meldet Grafiken, die nicht geladen werden konnten. */
+/** Lücke und Bildzahl einer gezeichneten Figur */
+export interface FigureInfo {
+  gap: Gap | null;
+  frames: number;
+}
+
 export class PreviewStage {
   private readonly game: Phaser.Game;
   private readonly scene: PreviewScene;
@@ -144,6 +213,17 @@ export class PreviewStage {
 
   show(world: World | null): void {
     this.scene.show(world);
+  }
+
+  /** Figuren statt der Welt zeigen (null = zurück zur Welt); antwortet mit Lücke und Bildzahl je Figur (WZ10.1) */
+  async showFigures(items: readonly FigureItem[] | null): Promise<FigureInfo[]> {
+    await this.scene.whenReady;
+    return this.scene.showFigures(items);
+  }
+
+  /** Wiedergabe der Figuren: Schleife, Tempo, Einzelbild */
+  setControl(control: Control): void {
+    this.scene.setControl(control);
   }
 
   /** Helligkeit und Hintergrund-Schichten setzen */
