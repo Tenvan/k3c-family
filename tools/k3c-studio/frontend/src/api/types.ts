@@ -98,6 +98,27 @@ export interface WorldSource {
   stage?: number;
 }
 
+/** Optionen der Live-Vorschau (Go: WorldPreviewArgs); Nullwerte: höchste Hub-Stufe, Tag, alle Gebäude. */
+export interface WorldPreviewArgs {
+  seed: string;
+  source: WorldSource;
+  hubLevel: number;
+  /** Sim-Phase day, dusk, night */
+  phase: string;
+  /** Fortschritt in der Phase, [0, 1) */
+  progress: number;
+  /** false schaltet einen Platz aus (Schlüssel kind@x) */
+  buildings: Record<string, boolean>;
+}
+
+/** Vorschau-Welt (Go: WorldPreviewView): Level wie die Nachricht level, Zustand wie snap, oder ein Hinweis in error. */
+export interface WorldPreviewView {
+  level: LevelLayout;
+  /** null bei einem Hinweis in error (Go: nil) */
+  state: (Record<string, unknown> & { sites: { kind: string; x: number }[] }) | null;
+  error: string;
+}
+
 export type WorldLevelView = LevelLayout & { warnings: string[]; error: string };
 
 /** Ereignisse des Backends: assets:changed = data/assets.json geändert (MCP, Editor, eigenes Speichern) */
@@ -120,6 +141,8 @@ export interface Backend {
   assetsLicenseOk(id: string, hit: string): Promise<void>;
   /** Welt-Betrachter: Level zu Seed und Biom, ohne Spielserver (B-460) */
   worldLevel(seed: string, source: WorldSource): Promise<WorldLevelView>;
+  /** Live-Vorschau: Welt zu den Optionen, aus der Vorschau-Funktion des Servers (B-460) */
+  worldPreview(args: WorldPreviewArgs): Promise<WorldPreviewView>;
   openUrl(url: string): void;
   /** Abo eines Ereignisses; liefert die Abmeldung */
   on<E extends EventName>(event: E, fn: (data: Events[E]) => void): () => void;

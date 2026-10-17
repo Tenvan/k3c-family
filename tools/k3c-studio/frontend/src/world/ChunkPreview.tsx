@@ -33,10 +33,12 @@ export function Strip({ model, scale }: { model: LevelModel; scale: number }) {
 }
 
 /** Lädt das Level über das Backend; eine neuere Anfrage macht die ältere ungültig. note ist die Zeile unter der Leiste. */
-function useWorldLevel() {
+function useWorldLevel(onLoaded: (seed: string, biome: string) => void) {
   const [model, setModel] = useState<LevelModel | null>(null);
   const [note, setNote] = useState('Lade …');
   const request = useRef(0);
+  const loaded = useRef(onLoaded);
+  loaded.current = onLoaded;
 
   const load = useCallback(async (seed: string, source: WorldSource) => {
     const mine = ++request.current;
@@ -56,6 +58,7 @@ function useWorldLevel() {
     }
     const next = levelModel(view);
     setModel(next);
+    loaded.current(seed, source.biome ?? '');
     const name = BIOMES.find((b) => b.id === next.biomeId)?.name ?? next.biomeId;
     setNote(`Seed „${next.seed}“ · ${name} · ${next.widthUnits} Units · ${next.chunks.length} Abschnitte · ${next.objects.length} Objekte`);
   }, []);
@@ -79,11 +82,11 @@ function Legend({ model }: { model: LevelModel }) {
 
 /** Chunk-Vorschau des Welt-Betrachters (B-460/AC-01, AC-02): Seed und Biom wählen, das Level des Spiels als Streifen
  *  ansehen, mit Legende und Warnungen der Prüfung. Das Level rechnet das Studio selbst, ohne Spielserver. */
-export function ChunkPreview({ maximized, onToggle }: { maximized: boolean; onToggle: () => void }) {
+export function ChunkPreview({ maximized, onToggle, onLoaded }: { maximized: boolean; onToggle: () => void; onLoaded: (seed: string, biome: string) => void }) {
   const [seed, setSeed] = useState(DEFAULT_SEED);
   const [biome, setBiome] = useState(DEFAULT_BIOME);
   const [scale, setScale] = useState(DEFAULT_SCALE);
-  const { model, note, load } = useWorldLevel();
+  const { model, note, load } = useWorldLevel(onLoaded);
   const viewport = useRef<HTMLDivElement>(null);
 
   const zoom = (factor: number) => {

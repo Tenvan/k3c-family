@@ -24,3 +24,7 @@
 .wd-warnings { margin: 0; padding-left: 18px; color: #ff8fa3; font-size: 13px; }
 .wd-live { border: 1px dashed var(--card-line); border-radius: 8px; padding: 16px; min-height: 12rem; }
 .wd-live[hidden] { display: none; }
+.wd-live-body { display: flex; flex-direction: column; gap: 8px; }
+.wd-stage { height: 28rem; border: 1px solid var(--card-line); border-radius: 8px; overflow: hidden; background: #101018; }
+.wd-stage canvas { display: block; }
+.wd-buildings { display: flex; flex-wrap: wrap; gap: 4px 14px; list-style: none; margin: 0; padding: 0; }

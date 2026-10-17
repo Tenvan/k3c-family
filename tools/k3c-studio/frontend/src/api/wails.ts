@@ -1,4 +1,4 @@
-import type { AssetChoice, AssetHit, AssetSaved, AssetsView, Backend, CatalogAsset, EventName, Events, ResearchResult, WorldLevelView, WorldSource } from './types';
+import type { AssetChoice, AssetHit, AssetSaved, AssetsView, Backend, CatalogAsset, EventName, Events, ResearchResult, WorldLevelView, WorldPreviewArgs, WorldPreviewView, WorldSource } from './types';
 
 // Die Wails-Laufzeit legt window.go (Bindings der App) und window.runtime an. Die generierten Dateien unter
 // frontend/wailsjs/ bindet die Oberfläche bewusst nicht ein (wie k3c-dev): so braucht der Typecheck keine Wails-CLI.
@@ -13,6 +13,7 @@ interface GoApp {
   AssetsDownload(id: string, hit: string): Promise<string>;
   AssetsLicenseOK(id: string, hit: string): Promise<void>;
   WorldLevel(seed: string, source: WorldSource): Promise<WorldLevelView>;
+  WorldPreview(args: WorldPreviewArgs): Promise<WorldPreviewView>;
 }
 
 interface WailsRuntime {
@@ -46,6 +47,7 @@ export function wailsBackend(): Backend {
     assetsDownload: (id, hit) => app.AssetsDownload(id, hit),
     assetsLicenseOk: (id, hit) => app.AssetsLicenseOK(id, hit),
     worldLevel: (seed, source) => app.WorldLevel(seed, source),
+    worldPreview: (args) => app.WorldPreview(args),
     openUrl: (url) => runtime.BrowserOpenURL(url),
     on: <E extends EventName>(event: E, fn: (data: Events[E]) => void) => runtime.EventsOn(event, (data) => fn(data as Events[E])),
   };

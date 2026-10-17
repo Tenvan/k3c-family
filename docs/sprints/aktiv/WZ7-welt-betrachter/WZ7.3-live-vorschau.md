@@ -1,6 +1,6 @@
 # WZ7.3 · Live-Vorschau mit Phaser-Bühne im Studio
 
-- **Status:** in Arbeit
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** DEV
@@ -44,9 +44,9 @@ Keine Änderung unter `src/scenes/`, `src/online/`, `src/model/`, `public/`, `da
 
 ## Fertig, wenn
 
-- [ ] AC-04: Live-Vorschau zeichnet den Snapshot auf der wiederverwendbaren Phaser-Bühne; Hub-Stufen aus `levels`, Gebäude ein/aus; gleiche Eingaben → gleiches Bild (Frontend-Tests).
-- [ ] AC-04: `git diff` ohne Änderung unter `src/scenes/`.
-- [ ] AC-08: `check_run` `task:check`, `go:test` und `go:lint` grün.
+- [x] AC-04: Live-Vorschau zeichnet den Snapshot auf der wiederverwendbaren Phaser-Bühne; Hub-Stufen aus `levels`, Gebäude ein/aus; gleiche Eingaben → gleiches Bild (Frontend-Tests).
+- [x] AC-04: `git diff` ohne Änderung unter `src/scenes/`.
+- [x] AC-08: `check_run` `task:check`, `go:test` und `go:lint` grün.
 
 ## Prüfen
 
@@ -54,5 +54,12 @@ Keine Änderung unter `src/scenes/`, `src/online/`, `src/model/`, `public/`, `da
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+Umgesetzt: Go-Binding `WorldPreview(WorldPreviewArgs)` (`tools/k3c-studio/app_preview.go`, ruft `net.Preview` aus WZ7.1), wiederverwendbare Phaser-Bühne und Live-Vorschau in `frontend/src/stage/` (`PreviewStage`, `stageLogic.ts`, `LivePreview`), Anbindung in `WorldPage` (Live-Vorschau unter der Chunk-Vorschau), Mock mit vom Server erzeugter Fixture (`api/mockWorld.ts`, `api/previewFixture.json`), Codemap. Unter `src/scenes/`, `src/online/`, `src/model/`, `public/`, `data/` und `engine/` gibt es keine Änderung (`git diff -- src engine data public` leer).
+
+- **AC-04 geprüft:** Go-Tests: das Binding liefert dasselbe wie `net.Preview`, deterministisch, JSON mit `level`, `state`, `error`, Gebäude-Abwahl entfernt genau den Platz, `dawn`, Fortschritt 1, Hub-Stufe 99, unbekanntes Biom und die Quelle Insel + Stufe → Hinweis ohne Zustand; die Mock-Fixture ist gleich zu `net.Preview(k3c, forest, Hub 5)`. Frontend-Tests: Hub-Stufen aus `data/hub.json` › `levels` (1 bis 5; ein sechster Eintrag in einer Fixture erscheint ohne Code-Änderung), Gebäude-Liste und Schlüssel `kind@x` wie in Go, Optionen, `worldOf` (Biom, Level, Zustand, ohne Bürger und Gegner; Hinweis, fehlender Zustand und unbekanntes Biom → keine Welt), DOM-Test der Live-Vorschau mit Attrappe der Bühne: Abfrage mit Seed, Biom, höchster Hub-Stufe, Bühne erst beim Sichtbarwerden, Abwählen und Wiederanwählen eines Gebäudes, Seed-Wechsel bei abgewählten Gebäuden (Auswahl beginnt neu), gleiche Eingaben → gleiche Welt (zweimal gemountet), Hinweis mit `state: null` ohne Absturz, Meldung nicht geladener Grafiken, Abbau beim Verlassen. `git diff` ohne Änderung unter `src/scenes/`.
+- **Beobachtet (Agent, Browser-Pane, Vite-Dev mit Mock):** Die Bühne zeichnet im Studio Hintergrund, Boden, Fluss, Burg der Hub-Stufe 5 und alle Gebäude mit Spielgrafik, die Burg steht mittig, Gebäude-Schalter wirken, Pfeiltasten scrollen. Die Beobachtung im Studio-Fenster durch 🧑 steht aus (WZ7.7).
+- **AC-08 geprüft:** `check_run task:check` grün (Root-Vitest 2342 Tests, Typecheck, `oxlint`), `golangci-lint run` im Studio 0 Befunde, Studio-Vitest (11 Dateien, 87 Tests), `tsc --noEmit`, `vite build`, Go-Tests des Studio-Moduls (kompiliertes Binary in `.work/`) grün. `task check:studio` selbst läuft im Worktree nicht über `check_run`; seine Bestandteile habe ich einzeln ausgeführt.
+- **Entscheidungen:** Phaser kommt aus der Wurzel-`node_modules` (Version der Wurzel-`package.json`, 4.2.1); Studio und `src/scenes/` lösen `phaser` beide dorthin auf, es gibt eine Instanz und keinen Eintrag im Studio-`package.json` (CI und `task install` installieren die Wurzel zuerst). Phaser wird erst beim ersten Sichtbarwerden der Vorschau geladen. Fehlende Grafiken (z. B. der erzeugte Figuren-Atlas `public/atlas/`, in diesem Worktree nicht vorhanden) meldet die Bühne als Hinweis und zeichnet weiter; die Vorschau zeigt keine Figuren.
+- **Review (getrennt, Subagent code-reviewer):** eingearbeitet: Absturz bei Hinweis des Servers (`state` ist dann `null`, Typ, Mock und Seite angepasst), Race zwischen den beiden Anfragen (Antworten tragen ihren Kontext, Auswahl gehört zu Seed, Biom und Hub-Stufe), Kamera (`centerOnX` statt eigener Scroll-Rechnung, nur bei anderem Level neu zentriert), Meldung nicht geladener Grafiken, Pfeiltasten nur mit Fokus auf der Bühne, `ResizeObserver`, Fixture-Abgleich mit Go, Determinismus-Test über zwei Mounts.
+- **Hinweis:** `go.mod` des Studios bekommt `github.com/coder/websocket` (indirekt), weil `engine/net` als Ganzes in die EXE kommt; ein kleineres Paket nur für `Preview` wäre ein Ticket für SRV. `wails build` habe ich nicht gestartet.
+- Neue Tickets: keine.

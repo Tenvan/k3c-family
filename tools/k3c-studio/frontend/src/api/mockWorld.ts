@@ -1,4 +1,5 @@
-import type { WorldLevelView, WorldSource } from './types';
+import fixture from './previewFixture.json';
+import type { WorldLevelView, WorldPreviewArgs, WorldPreviewView, WorldSource } from './types';
 
 // Erfundenes Level für den Mock (Browser, Tests): immer gleich zu gleichem Seed, 1 Abschnitt = 30 Units. Der Seed
 // „fehler“ liefert den Hinweis einer abgelehnten Anfrage.
@@ -14,4 +15,16 @@ export function mockWorldLevel(seed: string, source: WorldSource): WorldLevelVie
     { kind: 'rock', x: 100 }, { kind: 'chest', x: 225 }, { kind: 'recruitCamp', x: 105 },
   ];
   return { ...empty, widthUnits: KINDS.length * 30, hubCenterUnits: 165, chunks, entities, warnings: seed === 'warnung' ? ['Level zu kurz'] : [], error: '' };
+}
+
+// Vorschau-Welt für den Mock: ein von der Vorschau-Funktion des Servers erzeugter Zustand (Seed k3c, Wald, Hub-Stufe 5,
+// ohne Bürger und Gegner). Hub-Stufe, Tageszeit und Gebäude-Auswahl wirken hier nur auf die Felder, nicht auf den Ausbau.
+export function mockWorldPreview(args: WorldPreviewArgs): WorldPreviewView {
+  if (args.seed === 'fehler') return { level: fixture.level as never, state: null, error: 'Seed braucht 1 bis 64 Zeichen' };
+  const state = structuredClone(fixture.state) as unknown as NonNullable<WorldPreviewView['state']>;
+  state.sites = state.sites.filter((s) => args.buildings[`${s.kind}@${s.x}`] !== false);
+  const top = 5;
+  state.hubLevel = args.hubLevel > 0 ? Math.min(args.hubLevel, top) : top;
+  state.cycle = { ...(state.cycle as object), phase: args.phase || 'day', progress: args.progress };
+  return { level: { ...(fixture.level as object), seed: args.seed, biomeId: args.source.biome ?? 'forest' } as never, state, error: '' };
 }
