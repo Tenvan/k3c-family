@@ -1,11 +1,12 @@
 import { Flex, Switch, Tabs, Text } from '@radix-ui/themes';
 import type { McpState } from './api';
+import { StudioLink } from './StudioLink';
 import { StatusBadge, Tip } from './ui/parts';
 
-export const PAGES = ['dienste', 'tasks', 'planung', 'assets', 'mcp'] as const;
+export const PAGES = ['dienste', 'tasks', 'planung', 'mcp'] as const;
 export type Page = (typeof PAGES)[number];
 
-const LABELS: Record<Page, string> = { dienste: 'Dienste & Logs', tasks: 'Tasks', planung: 'Planung', assets: 'Assets', mcp: 'MCP' };
+const LABELS: Record<Page, string> = { dienste: 'Dienste & Logs', tasks: 'Tasks', planung: 'Planung', mcp: 'MCP' };
 
 interface Props {
   mcp: McpState | null;
@@ -27,6 +28,7 @@ export function Header({ mcp, mock, dark, onDark }: Props) {
         ))}
       </Tabs.List>
       <div className="header-right">
+        <StudioLink />
         <McpBadge mcp={mcp} />
         {mock && (
           <Tip content="Keine Wails-Laufzeit: erfundene Daten">

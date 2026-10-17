@@ -1,6 +1,6 @@
 # WZ6.5 · Workbench ohne Assets-Seite, Verweis auf das Asset-Studio
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** DEV
@@ -51,10 +51,10 @@ MCP-Tools `assets_*` oder das gemeinsame Asset-Paket ändern; das Asset-Studio s
 
 ## Fertig, wenn
 
-- [ ] AC-03: Die Kopfzeile der Workbench hat keinen Reiter „Assets“, `tools/k3c-dev/frontend/src/assets/` gibt es nicht mehr; der Verweis „Asset-Studio öffnen“ startet `bin/k3c-studio.exe` (Go-Test `app_studio_test.go`).
-- [ ] AC-03: Fehlt die EXE, meldet die Workbench „Asset-Studio nicht gebaut (`task k3c-studio:build`)“ (Go-Test und Frontend-Test mit Mock).
-- [ ] AC-03: Ein Neubau des Asset-Studios bei laufender Workbench führt zu keinem Neustart und keinem MCP-Abbruch: Beobachtung mit Freigabevermerk im Ergebnis, sonst als offener Punkt in der Abnahme-Liste von WZ6.8.
-- [ ] Die MCP-Tools `assets_*` sind unverändert; `check_run dev:test`, `task check:dev` und `task check` sind grün.
+- [x] AC-03: Die Kopfzeile der Workbench hat keinen Reiter „Assets“, `tools/k3c-dev/frontend/src/assets/` gibt es nicht mehr; der Verweis „Asset-Studio öffnen“ startet `bin/k3c-studio.exe` (Go-Test `app_studio_test.go`).
+- [x] AC-03: Fehlt die EXE, meldet die Workbench „Asset-Studio nicht gebaut (`task k3c-studio:build`)“ (Go-Test und Frontend-Test mit Mock).
+- [ ] AC-03: Ein Neubau des Asset-Studios bei laufender Workbench führt zu keinem Neustart und keinem MCP-Abbruch: Probe offen (WZ6.8), für diesen Lauf nicht freigegeben.
+- [ ] Die MCP-Tools `assets_*` sind unverändert; `check_run dev:test`, `task check:dev` und `task check` sind grün: MCP-Tools unverändert, Go-Tests und Frontend-Tests grün; `task:lint` und `golangci-lint` rot nur durch B-465 (Fix in PR #339, noch nicht in `develop`).
 
 ## Prüfen
 
@@ -67,5 +67,7 @@ Manuelle Prüfung: nur die Neubau-Probe (Schritt 5) samt Klick auf den Verweis i
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+- **AC-03 (Assets-Seite weg, Verweis) umgesetzt, geprüft:** Reiter „Assets“ aus `Header.tsx`/`App.tsx` entfernt; `frontend/src/assets/`, `api/assetTypes.ts`, `api/mockAssets.ts`, `styles/assets.css` und die Asset-Teile von `api/types.ts`, `api/wails.ts`, `api/mock.ts` entfernt; `app_assets.go` und `app_assets_test.go` ganz entfernt (nur die Oberfläche nutzte sie). Neu `app_studio.go` (`StudioOpen`, fester Pfad `<Wurzel>/bin/k3c-studio.exe`, Start ohne Job Object, Arbeitsordner = Repo-Wurzel) mit `app_studio_test.go` (fehlende EXE → genauer Hinweis, Ordner statt EXE → Hinweis, sonst genau dieser Pfad, Startfehler wird durchgereicht; kein echter Prozess). Kopfzeile: `StudioLink` „Asset-Studio öffnen“, Hinweis daneben; `StudioLink.test.tsx` (kein Reiter Assets, Hinweis bei fehlender EXE, kein Hinweis bei Erfolg).
+- **AC-03 (Neubau-Probe):** Probe offen (WZ6.8), für diesen Lauf nicht freigegeben.
+- **Prüfung:** `task check:dev`: Frontend-Build und `go test` grün, `golangci-lint` nur mit den zwei B-465-Befunden; `check_run task:check`: Typecheck und Tests grün, Lint nur B-465 (Fix in PR #339). MCP-Tools `assets_*` und `tools/assetkit` unverändert.
+- **Geprüft von:** Claude (autonom). **Neue Tickets:** keine.

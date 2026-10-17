@@ -65,7 +65,7 @@ Entschieden von 🧑 am 2026-10-17 (B-459 › Offene Fragen); Revision 2 freigeg
 | WZ6.2 | `WZ6.2-geruest-k3c-studio.md` | Umsetzung | autonom | fertig |
 | WZ6.3 | `WZ6.3-seite-grafik.md` | Umsetzung | autonom | fertig |
 | WZ6.4 | `WZ6.4-seite-sound.md` | Umsetzung | autonom | fertig |
-| WZ6.5 | `WZ6.5-workbench-ohne-assets.md` | Umsetzung | autonom | offen |
+| WZ6.5 | `WZ6.5-workbench-ohne-assets.md` | Umsetzung | autonom | fertig |
 | WZ6.6 | `WZ6.6-assetvorschau-entfernen.md` | Umsetzung | autonom | offen |
 | WZ6.7 | `WZ6.7-review.md` | Review | autonom | offen |
 | WZ6.8 | `WZ6.8-abnahme.md` | Review | Mensch | offen |

@@ -1,5 +1,3 @@
-import type { AssetChoice, AssetHit, AssetSlot, AssetsView, CatalogAsset, ResearchResult } from './assetTypes';
-
 // Backend-Vertrag der Oberfläche (B-064 › Backend-Vertrag). Go-Seite: tools/k3c-dev/app.go.
 // Wails-Laufzeit → wails.ts, ohne sie → mock.ts; welche gilt, entscheidet index.ts.
 
@@ -432,9 +430,6 @@ export interface Events {
 
 export type EventName = keyof Events;
 
-
-export type * from './assetTypes';
-
 export interface Backend {
   /** true ohne Wails-Laufzeit: erfundene Daten, Badge `Mock`. */
   readonly mock: boolean;
@@ -492,24 +487,8 @@ export interface Backend {
   planningDoc(name: PlanDoc): Promise<string>;
   /** Ticket, Sprint-README, Session oder Projekt als Markdown, erste Zeile der Pfad (wie plan_get); Lesemodus. */
   planningGet(id: string): Promise<string>;
-  /** Slot-Register frisch aus data/assets.json (Go: AssetsList); ein ungültiges Register steht in error. */
-  assetsList(): Promise<AssetsView>;
-  /** Ersetzt die Zuordnungen eines Slots (Reihenfolge = Präferenz); Go lehnt fehlende Datei oder Ausschnitt außerhalb ab. */
-  assetsSet(id: string, wahl: AssetChoice[]): Promise<AssetSlot>;
-  /** Suche im Asset-Katalog: alle Wörter in Datei, Pack, Gruppe, Titel oder Lizenz; art leer = beide. */
-  assetsCatalog(query: string, art: string, limit: number): Promise<CatalogAsset[]>;
-  /** Gespeicherte Recherche-Treffer eines Slots (data/assets-recherche.json). */
-  assetsHits(id: string): Promise<AssetHit[]>;
-  /** Sucht im Netz (freesound, Wikimedia Commons, OpenGameArt) und speichert neue Treffer; query leer = Beschreibung. */
-  assetsResearch(id: string, query: string): Promise<ResearchResult>;
-  /** Verwirft einen Treffer. */
-  assetsHitDrop(id: string, hit: string): Promise<void>;
-  /** Dateidialog, dann Import zum Treffer (Ablage, Credit, letzte Präferenz); Abbruch = leere Antwort. */
-  assetsImport(id: string, hit: string): Promise<string>;
-  /** Direkter Download eines Treffers mit erkannter Lizenz. */
-  assetsDownload(id: string, hit: string): Promise<string>;
-  /** Lizenz bestätigen (nur 🧑). */
-  assetsLicenseOk(id: string, hit: string): Promise<void>;
+  /** Startet das Asset-Studio (bin/k3c-studio.exe, B-459); fehlt es: „Asset-Studio nicht gebaut (`task k3c-studio:build`)“. */
+  studioOpen(): Promise<void>;
   /** Abonniert ein Ereignis; die Rückgabe meldet wieder ab. */
   on<E extends EventName>(event: E, fn: (data: Events[E]) => void): () => void;
 }

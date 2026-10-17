@@ -1,4 +1,3 @@
-import { mockAssets } from './mockAssets';
 import { mockLogFiles } from './mockLogFiles';
 import { mockLogs } from './mockLogs';
 import { mockMcp } from './mockMcp';
@@ -65,7 +64,10 @@ export function mockBackend(): Backend {
     taskRuns: tasks.taskRuns,
     ...mockGates(),
     ...mockPlanning(() => emit('planning:changed', null)),
-    ...mockAssets(),
+    // Im Browser gibt es keine EXE: der Verweis zeigt den Hinweis wie in Go (app_studio.go).
+    studioOpen: async () => {
+      throw new Error('Asset-Studio nicht gebaut (`task k3c-studio:build`)');
+    },
     mcpInstructions: async () => INSTRUCTIONS,
     mcpRestart: async () => {
       mcp = { ...mcp, listening: false, error: '' };
