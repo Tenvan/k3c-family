@@ -3,9 +3,12 @@ package sim
 import (
 	"fmt"
 	"io/fs"
+	"maps"
 	"slices"
+	"strconv"
 
 	"k3c/data"
+	"k3c/engine/level"
 )
 
 // Inseln als Daten (data/islands.json, B-103): Liste in fester Reihenfolge, je Insel ihre Tiefen und ihre Tabelle der
@@ -16,6 +19,8 @@ type IslandDef struct {
 	ID, Name     string
 	Depths       []int
 	DepthScaling struct{ HP, Damage, Speed float64 }
+	// PlannedChunks sind die geplanten Chunks je Tiefe (Schlüssel = Tiefe, docs/rules/geplante-chunks.md); leer = reiner Zufall.
+	PlannedChunks map[string][]level.PlannedChunk
 }
 
 var islandDefs = loadIslandDefs()
@@ -70,6 +75,22 @@ func checkIsland(d IslandDef) error {
 		}
 		if miniBoss(depth) == nil {
 			return fmt.Errorf("kein Miniboss in Tiefe %d", depth)
+		}
+	}
+	return checkPlannedChunks(d, level.DefaultWallLines())
+}
+
+// checkPlannedChunks prüft die geplanten Chunks jeder Tiefe unabhängig vom Seed (level.ValidatePlan) gegen die
+// Mauerlinien lines; Fehler nennen Tiefe und Platz (der Aufrufer ergänzt die Insel).
+func checkPlannedChunks(d IslandDef, lines level.WallLineData) error {
+	for _, key := range slices.Sorted(maps.Keys(d.PlannedChunks)) {
+		plan := d.PlannedChunks[key]
+		depth, err := strconv.Atoi(key)
+		if err != nil || strconv.Itoa(depth) != key || !slices.Contains(d.Depths, depth) {
+			return fmt.Errorf("plannedChunks: Tiefe %q ist keine Tiefe der Insel", key)
+		}
+		if err := level.ValidatePlan(biomeForDepth(depth), plan, lines); err != nil {
+			return fmt.Errorf("plannedChunks Tiefe %d: %w", depth, err)
 		}
 	}
 	return nil

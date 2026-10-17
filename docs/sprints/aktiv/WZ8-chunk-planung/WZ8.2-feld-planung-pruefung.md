@@ -1,6 +1,6 @@
 # WZ8.2 · Feld plannedChunks und Prüfung der Planung
 
-- **Status:** in Arbeit
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** SIM
@@ -64,5 +64,10 @@ Der Golden-Diff muss leer sein; sonst nicht einchecken. Bei laufender Workbench 
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+Umgesetzt von Claude (autonom), 2026-10-17; Code-Review durch getrennten Reviewer-Agenten vor dem Commit, schwere Befunde behoben (siehe unten).
+
+- **AC-06 umgesetzt, geprüft (`task check:go` grün):** `level.ValidatePlan(b, plan, lines)` in `engine/level/planned.go` und `planned_totals.go`; die Mauerlinien sind der Parameter `WallLineData` (exportiert, `DefaultWallLines()` liefert die eingebetteten, kein globaler Zustand für Planung oder Linien; `farmOffsets` ist ein beim Start geladener, unveränderlicher Wert). `engine/sim/island_data.go` lädt `plannedChunks` je Tiefe und prüft beim Laden; Fehler nennen Insel (`data/islands.json: <id>`), Tiefe, Platz und Grund. Tests: `engine/level/planned_test.go` (Gültig-Fälle, ein Test je Ablehnungsfall, Platz-Grenzen je Biom, Ader bei Hub +136: Linie 5 bei 124 gültig, bei 126 abgelehnt, vier Aufrufe nacheinander mit wechselnden Linien, Farm-Platz, strenges Lesen unbekannter Felder) und `engine/sim/island_planned_test.go`.
+- **AC-02 geprüft:** `data/islands.json` enthält nur das leere Feld `"plannedChunks": {}`; `TestGolden` und alle Golden-Tests in `task check:go` grün, damit sind `level-*.json` und `sim-*.json` byte-gleich (`task golden:update` selbst nicht gefahren, um keine Dateien zu schreiben).
+- **Reviewer-Befunde:** (1) Summen zählen nach Objekt-Art (Entity-Semantik, siehe Annahmen) – bewusst, dokumentiert; (2) Portal und Camp haben jetzt `at ≤ Chunk-Breite`; (3) `kind@x` ist über alle Chunks eindeutig (absolute Lage); (5) `PlannedChunk` liest streng (unbekannte Felder abgelehnt), Tiefen-Schlüssel müssen kanonisch sein (`"00"` abgelehnt). Befund (4) siehe Abweichung.
+- **Annahmen (nach Auftrag von Ralf „nach deinen Annahmen“, in der nächsten Session zu klären):** (a) Ereignis-Objekte (`portal`, `chest`, `recruitCamp`) zählen als Entities auf die Biom-Summen; ein Ereignis-Chunk ohne Objektliste trägt sein Objekt in der Chunk-Mitte; Truhen und Camps dürfen auch als Objekt in anderen Chunk-Arten stehen (wie im Beispiel des Regeltexts). WZ8.3 zählt in `Validate` dafür Entities statt Chunk-Arten. (b) „Kein Platz mehr“ rechnet mit dem Maximum der Ereignis-Chunks (ungünstigster Wurf), nicht mit dem Minimum aus dem Regeltext § 5, damit kein Seed zur Laufzeit scheitert; Regeltext und Code weichen hier ab, Ticket B-475.
+- **Manuelle Prüfung:** keine. Neue Tickets: B-475 (Frage zur Zählung der Ereignisse und zum Maximum).

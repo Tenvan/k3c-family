@@ -18,8 +18,9 @@ type WallLine struct {
 	Gate  float64 // GateOutsetUnits außen
 }
 
-// wallLineData sind die Felder aus data/hub.json › wallLines, die der Generator braucht.
-type wallLineData struct {
+// WallLineData sind die Felder aus data/hub.json › wallLines, die Generator und Prüfung der Planung brauchen. Die
+// eingebetteten Daten liefert DefaultWallLines; Prüfungen nehmen andere Linien als Parameter (kein globaler Zustand).
+type WallLineData struct {
 	WallUnits          []float64 `json:"wallUnits"`
 	FixedLines         int       `json:"fixedLines"`
 	JitterOutwardUnits int       `json:"jitterOutwardUnits"`
@@ -42,9 +43,9 @@ func readData(name string, v any) {
 	}
 }
 
-func loadWallLines() wallLineData {
+func loadWallLines() WallLineData {
 	var hub struct {
-		WallLines wallLineData `json:"wallLines"`
+		WallLines WallLineData `json:"wallLines"`
 	}
 	readData("hub.json", &hub)
 	return hub.WallLines
@@ -96,6 +97,29 @@ func generateLines(biomeID, seed string, hub float64) []WallLine {
 				Side: side, Index: k + 1, Wall: hub + s*offset,
 				Tower: hub + s*(offset-d.TowerInsetUnits), Gate: hub + s*(offset+d.GateOutsetUnits),
 			})
+		}
+	}
+	return out
+}
+
+// DefaultWallLines liefert die eingebetteten Linien aus data/hub.json › wallLines.
+func DefaultWallLines() WallLineData { return wallLines }
+
+// farmOffsets sind die Abstände der Farm-Bauplätze zur Hub-Mitte aus data/hub.json › sites (beide Seiten, Q57).
+var farmOffsets = loadFarmOffsets()
+
+func loadFarmOffsets() []float64 {
+	var hub struct {
+		Sites []struct {
+			Kind        string  `json:"kind"`
+			OffsetUnits float64 `json:"offsetUnits"`
+		} `json:"sites"`
+	}
+	readData("hub.json", &hub)
+	var out []float64
+	for _, s := range hub.Sites {
+		if s.Kind == "farm" {
+			out = append(out, math.Abs(s.OffsetUnits))
 		}
 	}
 	return out
