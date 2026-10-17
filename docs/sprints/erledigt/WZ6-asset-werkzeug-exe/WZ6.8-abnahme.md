@@ -1,6 +1,6 @@
 # WZ6.8 · Abnahme des Asset-Studios durch Ralf
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Review
 - **Agent:** Mensch
 - **Domäne:** DEV
@@ -82,5 +82,7 @@ Manuelle Prüfungen am PC (Asset-Studio- und Workbench-Fenster) macht 🧑. Clau
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+- **AC-08 erfüllt, geprüft von Ralf (🧑) am PC, Urteil im Chat am 2026-10-17:** Alle 13 Punkte der Abnahme-Liste bestanden, ohne Befund: Studio-Fenster ohne Port, Grafik-Slots/Filter, Ausschnitt-Editor `hub:3`, Recherche, Import mit Lizenz, Mini-Szene, fünf Grafik-Szenen, Sound (`sfx:coin`, `music:tag` → `music:nacht`), Workbench ohne Assets-Seite mit Verweis und Meldung, Neubau-Probe, Neuladen bei MCP-Änderung, Entwicklerseite ohne Asset-Vorschau, `grafiken.html`/`soundtest.html` unverändert. Das Urteil gab 🧑 pauschal für alle Punkte; Einzelheiten je Punkt nannte 🧑 nicht, Claude hat nichts selbst geprüft.
+- **B-421:** von 🧑 am 2026-10-17 (Chat) als `erledigt` entschieden, Verweis auf WZ6.8; B-298 und B-299 ebenfalls `erledigt`.
+- **AC-01** (Fenster/Port) und **AC-03** (Neubau-Probe) damit validiert. **Neue Tickets:** keine (B-473, B-474 stammen aus dem Review).
+- **Offen außerhalb der Session:** Tag v0.19.0 wartet auf grüne CI (B-473).
