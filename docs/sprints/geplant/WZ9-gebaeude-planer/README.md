@@ -12,11 +12,11 @@
 
 ## Ausgangslage
 
-B-462 › Ausgangslage: Die Freischaltung je Hub-Stufe steht in `data/hub.json` › `sites`/`islandSites` und wird von Hand gepflegt; GEB9 und B-458 hängen daran. Voraussetzung: Asset-Werkzeug (WZ6), Live-Vorschau (WZ7).
+B-462 › Ausgangslage: Die Freischaltung je Hub-Stufe steht in `data/hub.json` › `sites`/`islandSites` und wird von Hand gepflegt; GEB9 und B-458 hängen daran. Voraussetzung: Asset-Studio (WZ6), Live-Vorschau (WZ7).
 
 ## Ziel
 
-Ein Gebäude-Planer im Asset-Werkzeug zeigt und bearbeitet, welches Gebäude ab welcher Hub-Stufe an welchem Platz verfügbar ist, prüft und schreibt `data/hub.json` und zeigt das Ergebnis in der Live-Vorschau. Am Ende von 🧑 abgenommen.
+Ein Gebäude-Planer im Asset-Studio zeigt und bearbeitet, welches Gebäude ab welcher Hub-Stufe an welchem Platz verfügbar ist, prüft und schreibt `data/hub.json` und zeigt das Ergebnis in der Live-Vorschau. Am Ende von 🧑 abgenommen.
 
 ## Beteiligte und Zielgruppen
 

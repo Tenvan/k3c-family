@@ -1,4 +1,4 @@
-# WZ10 · DEV · Monarch-, Gegner- und Boss-Vorschau im Asset-Werkzeug
+# WZ10 · DEV · Monarch-, Gegner- und Boss-Vorschau im Asset-Studio
 
 - **Status:** geplant
 - **Projekt:** WZG
@@ -12,11 +12,11 @@
 
 ## Ausgangslage
 
-B-463 und B-464 › Ausgangslage: Monarch, 17 Gegnertypen und 5 Bosse sind nur statisch in `figuren.html`/`aufstellung.html` zu sehen; Animationen (Reiten, Schlagen, Skills, Angriff, Tod, Boss-Effekte) nur im Spiel. Voraussetzung: Asset-Werkzeug aus WZ6.
+B-463 und B-464 › Ausgangslage: Monarch, 17 Gegnertypen und 5 Bosse sind nur statisch in `figuren.html`/`aufstellung.html` zu sehen; Animationen (Reiten, Schlagen, Skills, Angriff, Tod, Boss-Effekte) nur im Spiel. Voraussetzung: Asset-Studio aus WZ6.
 
 ## Ziel
 
-Das Asset-Werkzeug hat eine Monarch-Seite (Reiten, Schlagen, Skills, weitere Zustände) und eine Gegner-Seite (Gegnertypen nach Biom, Bosse), beide mit abspielbaren Animationen im Spielmaßstab und gemeinsamen Abspiel-Bausteinen. Am Ende von 🧑 abgenommen.
+Das Asset-Studio hat eine Monarch-Seite (Reiten, Schlagen, Skills, weitere Zustände) und eine Gegner-Seite (Gegnertypen nach Biom, Bosse), beide mit abspielbaren Animationen im Spielmaßstab und gemeinsamen Abspiel-Bausteinen. Am Ende von 🧑 abgenommen.
 
 ## Beteiligte und Zielgruppen
 

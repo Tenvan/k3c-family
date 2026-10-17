@@ -6,7 +6,7 @@
 
 ## Ziel
 
-Die Entwickler-Werkzeuge (k3c-dev mit MCP und Planung, Werkzeug-Seiten unter `src/tools/`) decken Planung, Prüfung und Diagnose ab. Dazu kommt ein eigenes Asset-Werkzeug (WZ6–WZ10, B-459–B-464), getrennt von der Workbench, weil Ralf dort laufend ändert: Seiten für Grafik und Sound, Welt-Betrachter mit Chunk- und Live-Vorschau, Chunk-Planung je Biom, Gebäude-Planer für die Freischaltung je Hub-Stufe sowie Vorschauen für Monarch, Gegner und Bosse.
+Die Entwickler-Werkzeuge (k3c-dev mit MCP und Planung, Werkzeug-Seiten unter `src/tools/`) decken Planung, Prüfung und Diagnose ab. Dazu kommt ein eigenes Asset-Studio (WZ6–WZ10, B-459–B-464), getrennt von der Workbench, weil Ralf dort laufend ändert: Seiten für Grafik und Sound, Welt-Betrachter mit Chunk- und Live-Vorschau, Chunk-Planung je Biom, Gebäude-Planer für die Freischaltung je Hub-Stufe sowie Vorschauen für Monarch, Gegner und Bosse.
 
 ## Sprints
 
@@ -24,11 +24,11 @@ In Abarbeitungs-Reihenfolge; der erste nicht erledigte Sprint ist der nächste. 
 | WZ3 | Review-Nachträge zu WZ2: Filter-Zählung, Splitter-Test, Kleinigkeiten | erledigt |
 | WZ4 | Splitter-Test in DOM-Umgebung | erledigt |
 | WZ5 | Planungsseite im Look der erp-qs-Workbench | erledigt |
-| WZ6 | Asset-Werkzeug als eigene EXE mit Seiten für Grafik und Sound | geplant |
-| WZ7 | Welt-Betrachter im Asset-Werkzeug mit Chunk- und Live-Vorschau | geplant |
+| WZ6 | Asset-Studio als eigene EXE mit Seiten für Grafik und Sound | geplant |
+| WZ7 | Welt-Betrachter im Asset-Studio mit Chunk- und Live-Vorschau | geplant |
 | WZ8 | Chunks je Biom planen: Seed oder feste Gebäude und Objekte | geplant |
 | WZ9 | Gebäude-Planer für die Freischaltung je Hub-Stufe | geplant |
-| WZ10 | Monarch-, Gegner- und Boss-Vorschau im Asset-Werkzeug | geplant |
+| WZ10 | Monarch-, Gegner- und Boss-Vorschau im Asset-Studio | geplant |
 
 ## Nicht-Ziele
 

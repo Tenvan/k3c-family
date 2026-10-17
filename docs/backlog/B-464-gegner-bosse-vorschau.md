@@ -1,4 +1,4 @@
-# B-464 · Eine Gegner-Seite im Asset-Werkzeug zeigt alle Gegnertypen und Bosse mit ihren Vorschauen
+# B-464 · Eine Gegner-Seite im Asset-Studio zeigt alle Gegnertypen und Bosse mit ihren Vorschauen
 
 - **Domäne:** DEV
 - **Typ:** Idee
@@ -18,7 +18,7 @@
 
 ## Ziel
 
-Eine Gegner-Seite im Asset-Werkzeug (B-459) zeigt alle Gegnertypen und Bosse mit ihren Animationen (laufen, angreifen, getroffen, sterben, Sonderfähigkeiten), gruppiert nach Biom bzw. Tiefe, im Spielmaßstab und mit Grafik-Auswahl aus dem Slot-Register.
+Eine Gegner-Seite im Asset-Studio (B-459) zeigt alle Gegnertypen und Bosse mit ihren Animationen (laufen, angreifen, getroffen, sterben, Sonderfähigkeiten), gruppiert nach Biom bzw. Tiefe, im Spielmaßstab und mit Grafik-Auswahl aus dem Slot-Register.
 
 ## Beteiligte und Zielgruppen
 

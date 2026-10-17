@@ -1,4 +1,4 @@
-# WZ6 · DEV · Asset-Werkzeug als eigene EXE mit Seiten für Grafik und Sound
+# WZ6 · DEV · Asset-Studio als eigene EXE mit Seiten für Grafik und Sound
 
 - **Status:** geplant
 - **Projekt:** WZG
@@ -16,7 +16,7 @@ B-459 › Ausgangslage: Die Assets-Seite steckt in k3c-dev; jede geplante Änder
 
 ## Ziel
 
-Ein eigenes Asset-Werkzeug (EXE mit festem Pfad, eigener Task) mit je einer Seite für Grafik und Sound; die Workbench ist davon entkoppelt. Am Ende sichtbar: beide Seiten im neuen Fenster, Workbench ohne Assets-Seite, von 🧑 abgenommen.
+Ein eigenes Asset-Studio (EXE mit festem Pfad, eigener Task) mit je einer Seite für Grafik und Sound; die Workbench ist davon entkoppelt. Am Ende sichtbar: beide Seiten im neuen Fenster, Workbench ohne Assets-Seite, von 🧑 abgenommen.
 
 ## Beteiligte und Zielgruppen
 
@@ -46,24 +46,27 @@ Ungültige oder seltene Situation → gewolltes Verhalten.
 
 - **AC-01** `B-459/AC-01` eigene EXE mit festem Pfad und Task, nur Loopback.
 - **AC-02** `B-459/AC-02` Seiten Grafik und Sound mit heutigem Umfang.
-- **AC-03** `B-459/AC-03` Workbench ohne Assets-Seite, Neubau des Asset-Werkzeugs stört sie nicht.
+- **AC-03** `B-459/AC-03` Workbench ohne Assets-Seite, Neubau des Asset-Studios stört sie nicht.
 - **AC-04** `B-459/AC-04` Tests im Prüflauf.
 - **AC-05** `B-459/AC-05` Domänentabelle und Glossar.
-- **AC-06** 🧑 nimmt beide Seiten und die ruhige Workbench ab (Review-Session).
+- **AC-06** `B-459/AC-06` `assetvorschau.html` umgezogen und entfernt; Inhalte von `grafiken.html` und `soundtest.html` zusätzlich im Asset-Studio, beide Seiten bleiben.
+- **AC-07** `B-459/AC-07` MCP bleibt in k3c-dev, Neuladen bei Änderung von `data/assets.json`.
+- **AC-08** 🧑 nimmt beide Seiten, die umgezogene Vorschau und die ruhige Workbench ab (Abnahme-Session).
 
 ## Offene Fragen
 
-B-459 › Offene Fragen 1–4 (Technik Wails oder Web, MCP-Tools `assets_*`, Name, Zukunft von `assetvorschau.html`/`grafiken.html`/`soundtest.html`). Entscheidet 🧑 im Workshop WZ6.1.
+Entschieden von 🧑 am 2026-10-17 (B-459 › Offene Fragen): Wails-App `tools/k3c-studio`, Name Asset-Studio, `assets_*` bleiben in k3c-dev, `assetvorschau.html` zieht um, `soundtest.html` und `grafiken.html` bleiben für die Xbox, Domäne DEV. Hinweis: Das Kopf-Feld Domäne zeigt nur DEV, bis die Session-Dateien (INF, DEV, PLAT) beim Bereitmachen angelegt sind. Offen: Freigabe der Spec.
 
 ## Sessions
 
-- WZ6.1 (DEV) Workshop: Technik, Name, MCP-Schnitt, zwei Schreiber auf `data/assets.json`, Umgang mit den Dev-Seiten festlegen (AC-01–AC-03).
-- WZ6.2 (INF) Domänentabelle um `tools/k3c-assets/` und Glossar-Begriffe ergänzen (AC-05).
-- WZ6.3 (DEV) Gerüst `tools/k3c-assets`: EXE, Task, Fenster, gemeinsame Go-Pakete mit k3c-dev (AC-01, AC-04).
-- WZ6.4 (DEV) Seite Grafik umziehen (AC-02).
-- WZ6.5 (DEV) Seite Sound als eigene Seite umziehen (AC-02).
-- WZ6.6 (DEV) Workbench: Assets-Seite entfernen, Verweis auf das Asset-Werkzeug, Aufräumen (AC-03).
-- WZ6.7 (DEV) Review und Abnahme durch 🧑 (AC-06, alle).
+- WZ6.1 (INF) Domänentabelle um `tools/k3c-studio/` (DEV) und Glossar um Asset-Studio und Folgebegriffe ergänzen (AC-05).
+- WZ6.2 (DEV) Gerüst `tools/k3c-studio`: Wails-App, EXE unter `bin/`, Task, Fenster, gemeinsame Go-Pakete mit k3c-dev, Neuladen bei Änderung von `data/assets.json` (AC-01, AC-04, AC-07).
+- WZ6.3 (DEV) Seite Grafik umziehen, dazu Inhalt von `assetvorschau.html` und `grafiken.html` (AC-02, AC-06).
+- WZ6.4 (DEV) Seite Sound umziehen, dazu Inhalt von `soundtest.html` (AC-02, AC-06).
+- WZ6.5 (DEV) Workbench: Assets-Seite entfernen, Verweis auf das Asset-Studio, Aufräumen (AC-03).
+- WZ6.6 (PLAT) `assetvorschau.html` samt `src/tools/assetvorschau*.ts` (mit Tests), Kachel in `src/tools/devTiles.ts`, Texten und Verweisen (`docs/standards/gebaeude-grafik.md`, `tests/projectRules.test.ts` falls betroffen) entfernen; `task check` bleibt grün (AC-06).
+- WZ6.7 (PLAT) Review (AC-01–AC-07, alle).
+- WZ6.8 (PLAT, Mensch) Abnahme durch 🧑 am PC (AC-08).
 
 ## Abnahme
 

@@ -151,11 +151,11 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-457](B-457-geb6-abnahme-splitscreen-ausgang-geschmack.md) | CLI | Frage | mittel | offen | – | GEB6: Split-Screen, Ausgang-Beschriftung und Geschmacksfragen später prüfen |
 | [B-458](B-458-hub-ausbau-wachstum-feinstufen.md) | DEV | Idee | hoch | offen | – | Hub wächst in Ausbaustufen sichtbar und kleinteilig (Lagerfeuer bis Burg, K2C-Stil) |
 | [B-459](B-459-asset-werkzeug-eigene-exe.md) | DEV | Idee | hoch | eingeplant | WZ6 | Die Asset-Seiten für Grafik und Sound laufen in einer eigenen EXE getrennt von der Workbench |
-| [B-460](B-460-welt-betrachter-live-vorschau.md) | DEV | Idee | hoch | eingeplant | WZ7 | Der Welt-Betrachter im Asset-Werkzeug zeigt Chunks maximiert und eine Live-Vorschau mit Hub-Stufen und schaltbaren Gebäuden |
+| [B-460](B-460-welt-betrachter-live-vorschau.md) | DEV | Idee | hoch | eingeplant | WZ7 | Der Welt-Betrachter im Asset-Studio zeigt Chunks maximiert und eine Live-Vorschau mit Hub-Stufen und schaltbaren Gebäuden |
 | [B-461](B-461-chunks-je-biom-planbar.md) | SIM | Idee | mittel | eingeplant | WZ8 | Chunks eines Bioms lassen sich individuell planen, per Seed oder mit festen Gebäuden und Objekten |
 | [B-462](B-462-gebaeude-planer-hub-stufen.md) | DEV | Idee | mittel | eingeplant | WZ9 | Ein Gebäude-Planer bearbeitet, welches Gebäude ab welcher Hub-Stufe verfügbar ist |
-| [B-463](B-463-monarch-vorschau-animationen.md) | DEV | Idee | mittel | eingeplant | WZ10 | Eine Monarch-Seite im Asset-Werkzeug zeigt Reiten, Schlagen, Skills und weitere Vorschauen |
-| [B-464](B-464-gegner-bosse-vorschau.md) | DEV | Idee | mittel | eingeplant | WZ10 | Eine Gegner-Seite im Asset-Werkzeug zeigt alle Gegnertypen und Bosse mit ihren Vorschauen |
+| [B-463](B-463-monarch-vorschau-animationen.md) | DEV | Idee | mittel | eingeplant | WZ10 | Eine Monarch-Seite im Asset-Studio zeigt Reiten, Schlagen, Skills und weitere Vorschauen |
+| [B-464](B-464-gegner-bosse-vorschau.md) | DEV | Idee | mittel | eingeplant | WZ10 | Eine Gegner-Seite im Asset-Studio zeigt alle Gegnertypen und Bosse mit ihren Vorschauen |
 
 ## Archiv
 

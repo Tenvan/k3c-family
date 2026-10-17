@@ -1,4 +1,4 @@
-# WZ7 · DEV · Welt-Betrachter im Asset-Werkzeug mit Chunk- und Live-Vorschau
+# WZ7 · DEV · Welt-Betrachter im Asset-Studio mit Chunk- und Live-Vorschau
 
 - **Status:** geplant
 - **Projekt:** WZG
@@ -12,11 +12,11 @@
 
 ## Ausgangslage
 
-B-460 › Ausgangslage: `leveltest.html` zeigt ein generiertes Level als Chunk-Streifen (B-092) und erzeugt einen voll ausgebauten Spielstand (B-315); keine maximierte Vorschau, keine Live-Ansicht mit Spielgrafik. Voraussetzung: Asset-Werkzeug aus WZ6.
+B-460 › Ausgangslage: `leveltest.html` zeigt ein generiertes Level als Chunk-Streifen (B-092) und erzeugt einen voll ausgebauten Spielstand (B-315); keine maximierte Vorschau, keine Live-Ansicht mit Spielgrafik. Voraussetzung: Asset-Studio aus WZ6.
 
 ## Ziel
 
-Der Welt-Betrachter läuft im Asset-Werkzeug: Chunk-Vorschau im Standard maximiert, darunter eine Live-Vorschau mit Spielgrafik, Hub-Stufe 1–5 umschaltbar und Gebäude einzeln ein- und ausschaltbar. Am Ende von 🧑 abgenommen.
+Der Welt-Betrachter läuft im Asset-Studio: Chunk-Vorschau im Standard maximiert, darunter eine Live-Vorschau mit Spielgrafik, Hub-Stufe 1–5 umschaltbar und Gebäude einzeln ein- und ausschaltbar. Am Ende von 🧑 abgenommen.
 
 ## Beteiligte und Zielgruppen
 
@@ -44,7 +44,7 @@ Ungültige oder seltene Situation → gewolltes Verhalten.
 
 ## Akzeptanzkriterien
 
-- **AC-01** `B-460/AC-01` Funktionsumfang von `leveltest.html` im Asset-Werkzeug.
+- **AC-01** `B-460/AC-01` Funktionsumfang von `leveltest.html` im Asset-Studio.
 - **AC-02** `B-460/AC-02` Chunk-Vorschau maximiert beim Öffnen.
 - **AC-03** `B-460/AC-03` Live-Vorschau mit Spielgrafik, Hub-Stufen und Gebäuden schaltbar, deterministisch.
 - **AC-04** `B-460/AC-04` Umgang mit `leveltest.html` nach Entscheidung 🧑.
@@ -56,7 +56,7 @@ B-460 › Offene Fragen 1–3 (Technik der Live-Vorschau, Gebäude nur Darstellu
 
 ## Sessions
 
-- WZ7.1 (DEV) Leveltest-Ansicht ins Asset-Werkzeug migrieren, Chunk-Vorschau maximiert (AC-01, AC-02).
+- WZ7.1 (DEV) Leveltest-Ansicht ins Asset-Studio migrieren, Chunk-Vorschau maximiert (AC-01, AC-02).
 - WZ7.2 (SRV) Snapshot für Seed, Biom und Hub-Stufe bereitstellen (Voll-Ausbau aus `engine/room/fullsave.go`) (AC-03).
 - WZ7.3 (DEV) Live-Vorschau mit Spielgrafik, Hub-Stufe umschalten, Gebäude ein/aus (AC-03).
 - WZ7.4 (PLAT) `leveltest.html` nach Entscheidung behalten, entfernen oder verweisen, Kacheln nachziehen (AC-04).

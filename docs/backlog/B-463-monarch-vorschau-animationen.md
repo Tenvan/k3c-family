@@ -1,4 +1,4 @@
-# B-463 · Eine Monarch-Seite im Asset-Werkzeug zeigt Reiten, Schlagen, Skills und weitere Vorschauen
+# B-463 · Eine Monarch-Seite im Asset-Studio zeigt Reiten, Schlagen, Skills und weitere Vorschauen
 
 - **Domäne:** DEV
 - **Typ:** Idee
@@ -18,7 +18,7 @@ Der Monarch nutzt das Sheet `medieval-king` (`data/sprites.json` › `players`) 
 
 ## Ziel
 
-Eine Monarch-Seite im Asset-Werkzeug (B-459) spielt alle Vorschauen des Monarchen ab: stehen, laufen, sprinten, reiten (je Reittier), schlagen, Skills und weitere Zustände; je Spielerfarbe und im Spielmaßstab, mit Auswahl der Grafik aus dem Slot-Register.
+Eine Monarch-Seite im Asset-Studio (B-459) spielt alle Vorschauen des Monarchen ab: stehen, laufen, sprinten, reiten (je Reittier), schlagen, Skills und weitere Zustände; je Spielerfarbe und im Spielmaßstab, mit Auswahl der Grafik aus dem Slot-Register.
 
 ## Beteiligte und Zielgruppen
 

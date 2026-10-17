@@ -18,7 +18,7 @@ Welches Gebäude ab welcher Hub-Stufe verfügbar ist, steht in `data/hub.json`: 
 
 ## Ziel
 
-Ein Gebäude-Planer im Asset-Werkzeug zeigt und bearbeitet die Freischaltung: je Hub-Stufe die verfügbaren Gebäude mit Platz (`offsetUnits`), Tiefe (`fromDepth`) und Bedingungen; er schreibt `data/hub.json` gültig zurück und zeigt das Ergebnis in der Live-Vorschau (B-460).
+Ein Gebäude-Planer im Asset-Studio zeigt und bearbeitet die Freischaltung: je Hub-Stufe die verfügbaren Gebäude mit Platz (`offsetUnits`), Tiefe (`fromDepth`) und Bedingungen; er schreibt `data/hub.json` gültig zurück und zeigt das Ergebnis in der Live-Vorschau (B-460).
 
 ## Beteiligte und Zielgruppen
 
