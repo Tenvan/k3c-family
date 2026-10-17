@@ -1,4 +1,4 @@
-# CI: Lint, Typecheck, Tests, Build (auch GitHub-Pages-Seite); Go: Tests (auch Heimnetz-Server), Lint, Cross-Build; Docker: Image amd64/arm64 mit Smoke-Test; k3c-dev: Frontend, Tests, Lint, Wails-Build (Windows). Tests nur nach dem Merge (Push auf develop/main) oder von Hand (workflow_dispatch); im Pull Request nur Merge-Konflikt-Prüfung, Tests laufen lokal vor dem Push (task check).
+# CI: Lint, Typecheck, Tests, Build (auch GitHub-Pages-Seite); Go: Tests (auch Heimnetz-Server), Lint, Cross-Build; Docker: Image amd64/arm64 mit Smoke-Test; k3c-dev und Asset-Studio: Frontend, Tests, Lint, Wails-Build (Windows). Tests nur nach dem Merge (Push auf develop/main) oder von Hand (workflow_dispatch); im Pull Request nur Merge-Konflikt-Prüfung, Tests laufen lokal vor dem Push (task check).
 name: CI
 
 on:
@@ -46,11 +46,12 @@ jobs:
           cache-dependency-path: |
             package-lock.json
             tools/k3c-dev/frontend/package-lock.json
+            tools/k3c-studio/frontend/package-lock.json
       - uses: actions/setup-go@v7
         with:
           go-version-file: go.mod
       - uses: go-task/setup-task@v1
-      # Wie lokal: Client und Frontend von k3c-dev, dessen Komponententests (React, Radix) laufen in task test mit.
+      # Wie lokal: Client und Frontends von k3c-dev und Asset-Studio, deren Komponententests (React, Radix) laufen in task test mit.
       - run: task install
       - run: task lint
       - run: task typecheck
@@ -174,5 +175,48 @@ jobs:
         with:
           version: v2.14
           working-directory: tools/k3c-dev
+      - run: go install github.com/wailsapp/wails/v2/cmd/wails@v2.16.0
+      - run: wails build -s
+
+  # Asset-Studio (B-459) wie k3c-dev: Frontend, Go-Tests und Lint für tools/assetkit und tools/k3c-studio, Wails-Build.
+  k3c-studio:
+    if: github.event_name != 'pull_request'
+    name: Asset-Studio · Frontend · Tests · Lint · Wails (Windows)
+    runs-on: windows-latest
+    timeout-minutes: 15
+    defaults:
+      run:
+        working-directory: tools/k3c-studio
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-go@v7
+        with:
+          go-version-file: tools/k3c-studio/go.mod
+          cache-dependency-path: tools/k3c-studio/go.sum
+      - uses: actions/setup-node@v7
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+          cache-dependency-path: |
+            package-lock.json
+            tools/k3c-studio/frontend/package-lock.json
+      - uses: go-task/setup-task@v1
+      - run: npm ci
+        working-directory: .
+      # go:embed braucht frontend/dist, deshalb zuerst das Frontend (mit Typecheck).
+      - run: npm ci
+        working-directory: tools/k3c-studio/frontend
+      - run: task studio:frontend
+      - run: go test ./...
+        working-directory: tools/assetkit
+      - run: go test ./...
+      - uses: golangci/golangci-lint-action@v9
+        with:
+          version: v2.14
+          working-directory: tools/assetkit
+      - uses: golangci/golangci-lint-action@v9
+        with:
+          version: v2.14
+          working-directory: tools/k3c-studio
       - run: go install github.com/wailsapp/wails/v2/cmd/wails@v2.16.0
       - run: wails build -s

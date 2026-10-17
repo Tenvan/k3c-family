@@ -10,6 +10,7 @@ require (
 	github.com/wailsapp/wails/v2 v2.16.0
 	golang.org/x/sys v0.47.0
 	k3c v0.0.0
+	k3c/tools/assetkit v0.0.0
 )
 
 require (
@@ -56,3 +57,6 @@ require (
 
 // Level-Generator und Simulation des Hauptmoduls, in-process (M6, B-047).
 replace k3c => ../..
+
+// Asset-Logik, gemeinsam mit dem Asset-Studio tools/k3c-studio (B-459).
+replace k3c/tools/assetkit => ../assetkit

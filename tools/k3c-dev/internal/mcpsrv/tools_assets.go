@@ -7,7 +7,7 @@ import (
 
 	"github.com/modelcontextprotocol/go-sdk/mcp"
 
-	"k3c/tools/k3c-dev/internal/assets"
+	assets "k3c/tools/assetkit"
 )
 
 type assetsListIn struct {

@@ -1,6 +1,6 @@
 # WZ6.2 · Gerüst k3c-studio: Wails-App, EXE, Task, gemeinsames Asset-Paket
 
-- **Status:** in Arbeit
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** DEV
@@ -83,11 +83,11 @@ Entscheidungen 🧑 2026-10-17 (B-459 › Offene Fragen, Sprint-README › Anfor
 
 ## Fertig, wenn
 
-- [ ] AC-01: `task k3c-studio:build` erzeugt `bin/k3c-studio.exe`; `task k3c-studio` und die EXE öffnen das Fenster „Asset-Studio“ ohne Firewall-Abfrage (kein eigener Port). Fensterprüfung nur mit Freigabe 🧑, sonst offen für WZ6.8.
-- [ ] AC-04: `task check:studio` (Go-Tests und golangci-lint für `tools/assetkit` und `tools/k3c-studio`, Frontend-Build) läuft in `task check:all`; der Komponententest des Studio-Frontends läuft in `task test`; die CI prüft das Asset-Studio (Frontend, Go-Tests, Lint, `wails build -s`).
-- [ ] AC-07 (Backend): Tests in `tools/assetkit` bzw. `tools/k3c-studio` belegen: Speichern auf veraltetem Stand wird abgelehnt und schreibt nichts; eine Änderung von `data/assets.json` durch einen anderen Prozess löst `assets:changed` aus. Die MCP-Tools `assets_*` funktionieren unverändert (`go test ./...` in `tools/k3c-dev` grün, `internal/mcpsrv/tools_assets*_test.go` und `app_assets_test.go` eingeschlossen).
-- [ ] `tools/k3c-dev/internal/assets/` existiert nicht mehr; kein Import von `k3c/tools/k3c-dev/internal/assets` bleibt (`git grep` leer); kein `go.work`.
-- [ ] `task check`, `task check:dev` und `task check:studio` grün.
+- [ ] AC-01: `task k3c-studio:build` erzeugt `bin/k3c-studio.exe` (geprüft); Fensterstart von `task k3c-studio` und der EXE ohne Freigabe 🧑 nicht geprüft → offen für WZ6.8.
+- [x] AC-04: `task check:studio` (Go-Tests und golangci-lint für `tools/assetkit` und `tools/k3c-studio`, Frontend-Build) läuft in `task check:all`; der Komponententest des Studio-Frontends läuft in `task test`; die CI prüft das Asset-Studio (Job `k3c-studio`: Frontend, Go-Tests, Lint, `wails build -s`).
+- [x] AC-07 (Backend): Tests in `tools/assetkit` bzw. `tools/k3c-studio` belegen: Speichern auf veraltetem Stand wird abgelehnt und schreibt nichts; eine Änderung von `data/assets.json` durch einen anderen Prozess löst `assets:changed` aus. Die MCP-Tools `assets_*` funktionieren unverändert (`go test ./...` in `tools/k3c-dev` grün).
+- [x] `tools/k3c-dev/internal/assets/` existiert nicht mehr; kein Import von `k3c/tools/k3c-dev/internal/assets` bleibt (`git grep` leer); kein `go.work`.
+- [ ] `task check`, `task check:dev` und `task check:studio` grün: `check:studio` grün; `task check` und `check:dev` nur durch vorbestehende Lint-Befunde auf `develop` rot (B-465), Tests und Typecheck grün.
 
 ## Prüfen
 
@@ -104,5 +104,11 @@ Umgebung `live`: Schritt 7 (Fenster starten) braucht die laufende Oberfläche im
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+- **AC-01 teilweise geprüft:** `task k3c-studio:build` baut `tools/k3c-studio/build/bin/k3c-studio.exe` und kopiert nach `bin/k3c-studio.exe` (im Worktree, nicht gestartet). Das Asset-Studio öffnet keinen Port (kein MCP, kein HTTP-Server; Dateien aus `public/` über den Wails-Asset-Handler). Fensterprüfung (Schritt 7) ohne Freigabe 🧑 nicht gelaufen → offen für WZ6.8.
+- **AC-04 umgesetzt, geprüft:** `task check:studio` grün (Go-Tests und golangci-lint `tools/assetkit` und `tools/k3c-studio`, Frontend-Build), in `task check:all` eingetragen; `tools/k3c-studio/frontend/src/App.test.tsx` läuft in `check_run task:test` (grün); CI-Job `k3c-studio` (Windows) und Lockfile im Cache des Jobs `check`.
+- **AC-07 (Backend) umgesetzt, geprüft:** `assetkit.SetChoicesIf`/`ErrStale` („Register geändert, bitte erneut speichern“), `Stamp`, `Watch` mit Tests (`stamp_test.go`); Studio-Tests `TestAssetsSetSchreibregel`, `TestAssetsChangedEreignis`, `TestPublicHandler`. `go test ./...` in `tools/k3c-dev` grün (MCP `assets_*` unverändert, nur Importpfad).
+- **Prüfung:** `check_run task:test` und `task:typecheck` grün; `task:lint` und `golangci-lint` in `tools/k3c-dev` rot nur durch vorbestehende Befunde auf `develop` (`SprintsBacklog.tsx`, `internal/planning/mergebase.go`, `wtdiff.go`, alle aus #329) → B-465 ergänzt.
+- **Review (getrennter Reviewer):** keine schweren Befunde. Behoben: Single-Instance-Lock je Checkout (Hash der Wurzel), `secondInstance` wie k3c-dev, `Watch` übernimmt den Stand nach Lesefehler nicht, Hinweis in `k3c-studio:build` (laufendes Studio schließen), Testkommentar. Vite `appType: 'mpa'`, damit `wails dev` Bilder aus `public/` über den Handler liefert (ungeprüft bis zum ersten Fensterlauf, WZ6.3 prüft). Bewusst gelassen (ponytail-Kommentar): Fenster zwischen Stamp und Save bei einem fremden Prozess. Kommentar `internal/assets` in `tools/k3c-dev/frontend/src/api/assetTypes.ts` nimmt WZ6.5 mit.
+- **Wahl `replace` statt `go.work`:** wie das bestehende `replace k3c => ../..` in k3c-dev; jedes Werkzeug bleibt allein baubar (CI, `wails build`), kein Arbeitsbereich-Zustand im Repo, den Go-Befehle in anderen Modulen still mitlesen.
+- **Abweichungen:** `tools/codemap.md` und `tools/k3c-dev/internal/codemap.md` mitgezogen (Verweis auf das verschobene Paket, sonst tote Links); `.gitignore` der Wurzel unverändert, stattdessen `tools/k3c-studio/.gitignore` wie bei k3c-dev. Vite-Port des Studios 5192.
+- **Geprüft von:** Claude (autonom). **Neue Tickets:** B-467 (Wunsch 🧑 während der Session: Worktree-Pills auf der Planungsseite).

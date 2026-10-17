@@ -1,0 +1,41 @@
+/* Rahmen des Asset-Studios: Kopfzeile mit Navigation, darunter die Seite. Farben aus dem Radix-Theme. */
+* {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+  margin: 0;
+  min-height: 100%;
+}
+
+.shell {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.header {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  padding: 10px 20px;
+  border-bottom: 1px solid var(--gray-a5);
+  background: var(--color-panel-solid);
+}
+
+.header-title {
+  color: var(--accent-11);
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  white-space: nowrap;
+}
+
+.page {
+  flex: 1;
+  padding: 20px;
+}

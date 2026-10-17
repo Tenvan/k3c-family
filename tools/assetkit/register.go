@@ -120,6 +120,11 @@ func (r *Register) Save(root string) error {
 func SetChoices(root, id string, choices []Choice) (*Slot, error) {
 	mu.Lock()
 	defer mu.Unlock()
+	return setChoices(root, id, choices)
+}
+
+// setChoices ist SetChoices ohne Sperre; der Aufrufer hält mu.
+func setChoices(root, id string, choices []Choice) (*Slot, error) {
 	reg, err := Load(root)
 	if err != nil {
 		return nil, err

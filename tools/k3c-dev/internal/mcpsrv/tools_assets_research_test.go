@@ -8,7 +8,7 @@ import (
 	"strings"
 	"testing"
 
-	"k3c/tools/k3c-dev/internal/assets"
+	assets "k3c/tools/assetkit"
 )
 
 // B-298/AC-06: Recherche-Tools antworten; Netz ersetzt ein Testserver mit einer OpenGameArt-Zeile.

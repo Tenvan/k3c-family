@@ -9,7 +9,7 @@ import (
 	"testing"
 	"time"
 
-	assetreg "k3c/tools/k3c-dev/internal/assets"
+	assetreg "k3c/tools/assetkit"
 )
 
 func assetApp(t *testing.T) *App {

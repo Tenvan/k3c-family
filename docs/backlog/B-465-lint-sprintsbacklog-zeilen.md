@@ -56,4 +56,4 @@ keine
 
 ## Notizen
 
-Gefunden in WZ6.1 (2026-10-17), oxlint 1.86.0.
+Gefunden in WZ6.1 (2026-10-17), oxlint 1.86.0. Dazu in WZ6.2: `golangci-lint run` in `tools/k3c-dev` meldet auf demselben Stand zwei Befunde, beide aus #329: `internal/planning/mergebase.go:52` (`errcheck`, `defer os.RemoveAll`) und `internal/planning/wtdiff.go:107` (`gocyclo` 17 > 15 in `diffData`). Mit diesem Ticket beheben, `task check:dev` gehört dann zu AC-02.

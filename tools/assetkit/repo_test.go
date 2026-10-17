@@ -10,7 +10,7 @@ import (
 // Das echte Slot-Register des Repos: jede Zuordnung gültig, Kategorien bekannt, IDs eindeutig,
 // und Speichern ändert kein Byte (k3c-dev schreibt dasselbe Format wie die Erstbefüllung).
 func TestEchtesRegister(t *testing.T) {
-	root, _ := filepath.Abs(filepath.Join("..", "..", "..", ".."))
+	root := repoRoot(t)
 	reg, err := Load(root)
 	if err != nil {
 		t.Fatal(err)
@@ -54,4 +54,23 @@ func normalize(b []byte) []byte {
 		out = append(out, c)
 	}
 	return out
+}
+
+// repoRoot ist das erste Verzeichnis über dem Paket mit data/assets.json (kein fester Relativpfad).
+func repoRoot(t *testing.T) string {
+	t.Helper()
+	dir, err := filepath.Abs(".")
+	if err != nil {
+		t.Fatal(err)
+	}
+	for {
+		if _, err := os.Stat(filepath.Join(dir, RegisterPath)); err == nil {
+			return dir
+		}
+		parent := filepath.Dir(dir)
+		if parent == dir {
+			t.Fatal("keine Repo-Wurzel mit " + RegisterPath + " über dem Paket")
+		}
+		dir = parent
+	}
 }

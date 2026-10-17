@@ -8,7 +8,7 @@ import (
 
 	"github.com/wailsapp/wails/v2/pkg/runtime"
 
-	assetreg "k3c/tools/k3c-dev/internal/assets"
+	assetreg "k3c/tools/assetkit"
 	"k3c/tools/k3c-dev/internal/services"
 )
 
