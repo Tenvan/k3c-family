@@ -1,6 +1,6 @@
 # WZ7.5 · leveltest.html entfernen
 
-- **Status:** offen
+- **Status:** in Arbeit
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** DEV
