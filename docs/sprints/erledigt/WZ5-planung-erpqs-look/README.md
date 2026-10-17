@@ -1,12 +1,12 @@
 # WZ5 · DEV · Planungsseite im Look der erp-qs-Workbench
 
-- **Status:** geplant
+- **Status:** erledigt
 - **Projekt:** WZG
 - **Domäne:** DEV
 - **Reife:** Entwurf
 - **Tickets:** B-439
 - **Start-Commit:** – (wird beim Aktivieren gesetzt: `git rev-parse --short origin/develop`)
-- **Spec:** Entwurf
+- **Spec:** rückwirkend
 - **Revision:** 1
 - **Freigabe:** –
 
@@ -59,13 +59,12 @@ Die Planungsseite zeigt und bedient die k3c-Planung im Look der erp-qs-Workbench
 
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
-| WZ5.1 | `WZ5.1-umsetzung.md` | Umsetzung | autonom | offen |
-| WZ5.2 | `WZ5.2-review.md` | Review | autonom | offen |
+| WZ5.1 | `WZ5.1-umsetzung.md` | Umsetzung | autonom | fertig |
+| WZ5.2 | `WZ5.2-review.md` | Review | autonom | fertig |
 
 Bei `Reife: Entwurf` genügen Stichpunkte mit den Kriterien in Klammern statt Session-Dateien. Vor dem Aktivieren
 wird jede Session als eigene Datei nach `docs/vorlagen/session.md` geschrieben.
 
 ## Abnahme
 
-Wird von der Review-Session (Doku-Sprint: letzte Session) ausgefüllt, höchstens fünf Zeilen: Datum, Kriterien
-(Verweis auf Session-Ergebnisse), behobene Befunde, neue Tickets. Bis dahin `–`.
+2026-10-17, Chat (Ralf): WZ5.1 ist umgesetzt (#306, B-439), WZ5.2 damit abgenommen. Kriterien AC-01–AC-06 laut Ralf erfüllt; keine neuen Tickets.

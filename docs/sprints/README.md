@@ -20,7 +20,11 @@ Abnahmen am Gerät (`Agent: Mensch`) sammelt das Projekt ABN im Sprint HW1: [`..
 
 | Sprint | Domäne | Projekt | Thema | Am Ende sichtbar | Reife | Ordner |
 |---|---|---|---|---|---|---|
-| WZ5 | DEV | WZG | Planungsseite im Look der erp-qs-Workbench | – | Entwurf | `geplant/WZ5-planung-erpqs-look/` |
+| WZ6 | DEV | WZG | Asset-Werkzeug als eigene EXE mit Seiten für Grafik und Sound | – | Entwurf | `geplant/WZ6-asset-werkzeug-exe/` |
+| WZ7 | DEV | WZG | Welt-Betrachter im Asset-Werkzeug mit Chunk- und Live-Vorschau | – | Entwurf | `geplant/WZ7-welt-betrachter/` |
+| WZ8 | SIM | WZG | Chunks je Biom planen: Seed oder feste Gebäude und Objekte | – | Entwurf | `geplant/WZ8-chunk-planung/` |
+| WZ9 | DEV | WZG | Gebäude-Planer für die Freischaltung je Hub-Stufe | – | Entwurf | `geplant/WZ9-gebaeude-planer/` |
+| WZ10 | DEV | WZG | Monarch-, Gegner- und Boss-Vorschau im Asset-Werkzeug | – | Entwurf | `geplant/WZ10-figuren-vorschau/` |
 | BD2 | SIM, SRV, CLI | BED | Rückmeldungs-Ereignisse gedrosselt und geprüft, Lobby startet nie still leer | – | Entwurf | `geplant/BD2-rueckmeldung-lobby-nachtraege/` |
 | BD3 | SRV | BED | Raum-Pause im Couch-Raum, Schutz des pausierten Monarchen online | – | Entwurf | `geplant/BD3-raum-pause/` |
 | BD4 | CLI | BED | Gemeinsame HUD-Leiste oben, Fluss unten, lokale Spieler treten einzeln aus | – | Entwurf | `geplant/BD4-hud-leiste-austreten/` |
@@ -183,3 +187,4 @@ Gesamtplan und Begründung: [`../plan-weiterentwicklung.md`](../plan-weiterentwi
 | GEB5 | Lager, Farm mit Plantage, Kaserne, Treppen | `erledigt/GEB5-hub-gebaeude-rest/` |
 | GEB6 | Natur und Objekte: Bäume, Fels, Erz, Adern, Truhe, Portal, Rekrutierungslager | `erledigt/GEB6-natur-objekte/` |
 | GEB7 | Hintergründe je Biom | `erledigt/GEB7-hintergruende/` |
+| WZ5 | Planungsseite im Look der erp-qs-Workbench | `erledigt/WZ5-planung-erpqs-look/` |

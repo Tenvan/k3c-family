@@ -1,6 +1,6 @@
 # WZ5.1 · Planungsseite im erp-qs-Look umsetzen
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** DEV
