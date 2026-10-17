@@ -44,7 +44,7 @@ Workflow-Check scheitert → keine Pills, Hinweis wie heute. Platzhalter-Zeile m
 
 ## Akzeptanzkriterien
 
-- **AC-01** `plan_create` ersetzt Platzhalter-Zeilen ohne Datei (`–`, `– (Entwurf)`) durch die neue Session-Zeile statt abzubrechen; Go-Test auf einer Kopie (`B-436/AC-01`, wird in B-436 ergänzt).
+- **AC-01** `plan_create` ersetzt Platzhalter-Zeilen ohne Datei (`–`, `– (Entwurf)`) durch die neue Session-Zeile statt abzubrechen; Go-Test auf einer Kopie (`B-436/AC-01`); eine Platzhalter-Zeile mit anderer Nummer bleibt stehen, eine Zeile mit fehlender Datei bleibt Fehler (`B-436/AC-02`).
 - **AC-02** Die Planungsseite zeigt keine Worktree-Leiste mit Änderungs-Chips mehr (`B-467/AC-01`).
 - **AC-03** Projekt, Sprint, Session und Ticket mit Änderung in einem Worktree tragen eine Worktree-Pill, Tooltip mit Branch und Änderung(en) (`B-467/AC-02`).
 - **AC-04** Neu im Worktree angelegte Einträge bleiben sichtbar (`B-467/AC-03`).
@@ -56,6 +56,13 @@ Workflow-Check scheitert → keine Pills, Hinweis wie heute. Platzhalter-Zeile m
 Entscheidet 🧑: Wo stehen Einträge, die nur im Worktree existieren (neues Ticket, neue Session)? (`B-467 › Offene Fragen`.) Blockiert die Freigabe.
 
 ## Sessions
+
+| Nr. | Datei | Typ | Agent | Status |
+|---|---|---|---|---|
+| WZ12.1 | `WZ12.1-platzhalter-zeilen.md` | Umsetzung | autonom | offen |
+| WZ12.2 | `WZ12.2-worktree-pills.md` | Umsetzung | autonom | offen |
+| WZ12.3 | `WZ12.3-review.md` | Review | autonom | offen |
+| WZ12.4 | `WZ12.4-abnahme.md` | Review | Mensch | offen |
 
 - WZ12.1 (DEV) Platzhalter-Zeilen ohne Datei in `plan_create` und Session-Tabelle behandeln, Go-Test (AC-01).
 - WZ12.2 (DEV) Worktree-Pills statt Leiste: Daten aus `WorktreeCheck`, Pill-Baustein, Komponententest (AC-02, AC-03, AC-04, AC-05).

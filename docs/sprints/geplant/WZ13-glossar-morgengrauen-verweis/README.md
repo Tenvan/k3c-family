@@ -1,9 +1,9 @@
-# WZ13 · INF · Glossar und Regeln: Verweis für das Morgengrauen auf B-470
+# WZ13 · INF, REG · Glossar und Regeln: Verweis für das Morgengrauen auf B-470
 
 - **Status:** geplant
 - **Projekt:** WZG
-- **Domäne:** INF
-- **Reife:** Entwurf
+- **Domäne:** INF, REG
+- **Reife:** bereit
 - **Tickets:** B-466
 - **Start-Commit:** – (wird beim Aktivieren gesetzt: `git rev-parse --short origin/develop`)
 - **Spec:** Entwurf
@@ -54,6 +54,11 @@ nicht relevant: reine Textkorrektur.
 Entscheidet 🧑: `docs/fragenkatalog.md` (Beschlussprotokoll Q65) unverändert lassen oder B-213 ebenfalls auf B-470 ändern? Vorschlag von Claude (ungeprüft): unverändert lassen (`B-466 › Offene Fragen`).
 
 ## Sessions
+
+| Nr. | Datei | Typ | Agent | Status |
+|---|---|---|---|---|
+| WZ13.1 | `WZ13.1-glossar-verweis.md` | Umsetzung | autonom | offen |
+| WZ13.2 | `WZ13.2-regeln-verweis.md` | Umsetzung | autonom | offen |
 
 - WZ13.1 (INF) `docs/glossar.md`: sieben Stellen auf B-470, Einträge Morgengrauen und Tageszyklus (AC-01, AC-02, AC-04).
 - WZ13.2 (REG) `docs/rules/wirtschaft.md`, `docs/rules/zielkorridore.md`, `docs/game-design.md` auf B-470; schließt den Sprint ab (AC-02, AC-03).

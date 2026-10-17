@@ -9,6 +9,7 @@ Regelwerk in [`rules/`](rules/), und das Glossar wird angepasst. Zahlen sind, wo
 | Abbaurate | Zielrate einer Ader bei 2 Bauern: Stein 60, Kupfer 45, Eisen 35, Kristall 25 je Minute (Startwerte). Sie steuert den Materialfluss, nicht die Fundmenge. | `rules/materialien-gebaeude.md` § 1 |
 | Abend | Kein eigener Begriff: Der Musik-Zustand „Abend“ (Q16) ist die Dämmerung. | Q16, Q65 |
 | ABN (Projekt ohne Rang) | Projekt `ABN` für Abnahmen am Gerät (`Agent: Mensch`): aktiv, aber ohne Rang; es läuft neben der Rangfolge, wann immer ein Gerät bereit ist (Sprint HW1). | `arbeitsweise.md` › Projekte und Rang, `projekte/ABN-abnahmen-geraet.md` |
+| Abspiel-Baustein | Gemeinsamer Baustein im Studio-Frontend für Monarch- und Gegner-Seite auf der Phaser-Bühne (Steuerung, Maßstab, Reittier-Lader, Lücken-Marke); nimmt Sheet, Animation, `tint`, `scale`, `alpha` und `y` als Parameter. | B-463, B-464 |
 | AC (Akzeptanzkriterium) | Prüfbares Kriterium einer Spec mit stabiler ID `AC-01`, `AC-02` … (lückenlos, nie umnummeriert). Sprints verweisen auf Ticket-Kriterien als `B-009/AC-01`, Sessions nennen sie im Feld `Kriterien`. | `arbeitsweise.md` › SDD |
 | Ader | Unendliche Quelle für Stein, Kupfer, Eisen oder Kristall, 2 je Stufe. Wird einmal markiert (`markCost`), höchstens 2 Bauern gleichzeitig; zählt nicht für „Alles abbauen“. | `rules/materialien-gebaeude.md` § 1, Q25; `data/economy.json` › `veins` |
 | Aggressionspool | Wellen-Auslöser unter Tage: +1 %/min, +5 % je Kill, +1 % je gesammelter Ressource; bei 100 % kommt eine Welle, danach zurück auf 0. | `rules/stufen.md` § 2, `rules/gegner.md` § 3 |
@@ -33,6 +34,7 @@ Regelwerk in [`rules/`](rules/), und das Glossar wird angepasst. Zahlen sind, wo
 | Biom | Thema und Eckdaten einer Stufe (Länge, Chunks, Ressourcen, Gegner, Zyklus) in `data/biomes/<biom>.json`: heute `forest`, `cave`, `mine`; geplant `ironhold`, `crystal`. | `game-design.md` › Welt & Stufen, `rules/stufen.md` § 1 |
 | Bogenschütze | Kämpfer: Bauer plus Bogen aus der Werkstatt. Posten auf einem Turm oder hinter der äußersten Mauer (`outerWall`), Fernkampf. | `rules/buerger.md` § 1 |
 | Börse | Das Gold, das ein Spieler trägt (Beutel, höchstens 100); beim Verkaufen an den Händler fließt Gold hinein. | `rules/wirtschaft.md` § 1 (`purse`), W4.2 |
+| Boss-Leiste | Lebensanzeige eines Bosses im HUD; das Spiel zeichnet sie erst nach K5.1 (B-132), das Asset-Studio zeigt sie bis zur Anbindung (B-469) als Lücke. | B-464, B-469 |
 | Bot-Eingabe (`BotInput`) | Eingabe-Quelle im Client für Testläufe: Die Aktionen der lokalen Spieler kommen aus dem Bot-Feed der Workbench (`?botfeed=…`); der Client entscheidet nichts. | B-349 |
 | Bot-Feed | WebSocket der Workbench je Testlauf, über den Bots die Kommandos je Slot an einen Client schicken; nur Loopback. | B-348, B-349 |
 | Burg | Hub-Kern in der Hub-Mitte und Basislager; Zahlziel des Hub-Ausbaus, Ort für Respawn und Respec. Fällt sie, wirkt der Niederlage-Modus. | `rules/materialien-gebaeude.md` §§ 2–3, `rules/stufen.md` § 4 |
@@ -64,6 +66,7 @@ Regelwerk in [`rules/`](rules/), und das Glossar wird angepasst. Zahlen sind, wo
 | Endboss | Boss einer Insel in seinem Bau, sitzt immer in der tiefsten Stufe (bis W2 die Mine, danach die Kristallhöhle); ausgelöst bei Ankunft eines Spielers, sein Sieg öffnet den Inselwechsel. | `rules/bosse.md` § 1, `rules/stufen.md` § 3, Q60 |
 | `equipmentTaken` | Ereignis (geplant): Ein Gegner hat Ausrüstung zum Portal getragen, sie ist verloren. | `rules/buerger.md` § 3, `rules/gegner.md` § 4, Q68, Q69 |
 | Ereignis (Event) | Meldung der Simulation im letzten Tick einer Stufe (`events` in `snap`/`delta`), z. B. `hit`, `kill`, `built`, `playerDown`, `revive` (Respawn), `revived` (Wiederbeleben, kommt mit W4.1/W5), `disarmed` und `equipmentTaken` (geplant, Q69); höchstens 32 je Tick und Stufe. | `protocol.md` › Ereignisse, `engine/sim/events.go`, Q62 |
+| Event-Banner | Einblendung im HUD, wenn ein Boss erscheint, die Phase wechselt oder er fällt (`bossSpawned`, `bossPhase`, `bossDefeated`); bis zur Anbindung (B-469) im Asset-Studio eine Lücke. | B-464, B-469 |
 | Extrapolation | Läuft die Zeitleiste leer, laufen Figuren mit ihrer letzten Bewegung höchstens 100 ms weiter (angenommen) und bleiben dann stehen. | B-277 |
 | Farm | Gebäude der Hub-Stufe 1 auf einem festen Farm-Weltplatz je Seite zwischen Linie 1 und 2 (±52); wirkt als Plantage. | `rules/materialien-gebaeude.md` § 3, Q51 |
 | Filterleiste | Leiste über beiden Spalten der Planungsseite, nach Wirkung gegliedert: Gemeinsam (Suche, Prio, Umgebung, Projekt = Backlog-Filter), Projekte (Zustand, Sprints, Domänen = Projekt-Filter), Backlog (Einplanung). Je Gruppe eine Checkliste, angehakte Werte als Chips mit ×, rechts die Trefferzahl. | B-439, `tools/k3c-dev/frontend/src/planning/filterGroups.ts` |
@@ -72,6 +75,7 @@ Regelwerk in [`rules/`](rules/), und das Glossar wird angepasst. Zahlen sind, wo
 | Freigabe | Ausdrückliche Zustimmung von 🧑 zu genau einer Revision einer Spec (Feld `Freigabe`: Datum und Quelle); erst dann `Spec: freigegeben`. | `arbeitsweise.md` › SDD |
 | Gebäude-Planer | Seite im Asset-Studio, die je Hub-Stufe die freigeschalteten Gebäude mit Platz (`offsetUnits`), Tiefe (`fromDepth`) und Bedingungen zeigt und gültig nach `data/hub.json` zurückschreibt. | B-462 |
 | Gebäude-Vorlage (`vorlage`) | Strukturierte Motiv-Definition eines Gebäudes in seiner Daten-JSON (`public/grafik/gebaeude/<id>.json`): Motiv, Teile von links nach rechts, Materialien, Stimmung, `fein`-Details. Sie hält die Absicht neben den Koordinaten fest, damit eine spätere Session das Gebäude annähernd gleich neu erzeugen oder ändern kann. Nicht verwechseln mit Spec (SDD) oder den Planungs-Vorlagen in `docs/vorlagen/`. | B-441, `standards/gebaeude-grafik.md` § 5 |
+| Gegner-Seite | Seite im Asset-Studio neben Grafik, Sound und Monarch: alle Gegnertypen nach Biom und die Bosse je Tiefe mit den Animationen des Spiels; Lücken sind markiert. | B-464 |
 | Gegnerlager (geplant) | Fest platziertes Lager von Gegnern in einem geplanten Chunk; Teil 2 der Chunk-Planung, noch nicht umgesetzt. | B-468 |
 | geplanter Chunk | Chunk, dessen Art und Inhalt je Insel und Tiefe in `data/islands.json` (`plannedChunks`) festgelegt sind: Chunk-Art fest, Inhalt aus Chunk-Seed oder festen Objekten. Alle anderen Chunks bleiben zufällig. | `rules/geplante-chunks.md`, B-461 |
 | Getrennter Monarch (`Player.Free`) | Monarch, dessen Gerät die Verbindung verloren hat: 60 s reserviert (`waiting`), danach frei (`free`); unverwundbar, ausgeblendet, nicht wiederbelebbar. | `rules/bedienung.md` § 3, Q04, Q33 |
@@ -99,6 +103,7 @@ Regelwerk in [`rules/`](rules/), und das Glossar wird angepasst. Zahlen sind, wo
 | Kampagne | Das gesamte Spiel eines Spielstands bis zum Ziel des Raums (Standard: Endboss der letzten Insel). | `rules/stufen.md` § 3 |
 | Kämpfer | Bürger, die kämpfen und zum Truppen-Limit zählen: Bogenschützen und Krieger, auch Elite. Gleichbedeutend mit Truppe. | `rules/buerger.md` § 3, Q63 |
 | Kaserne | Gebäude der Hub-Stufe 2: Truppen-Limit +10. | `rules/materialien-gebaeude.md` § 3.2 |
+| Kennfarbe | Farbe des Spielers aus `PLAYER_COLORS`, steht an seiner Figur. Nicht verwechseln mit Spielerfarbe (Variante des Monarchen). | B-463 |
 | `kind@x` | Schlüssel aus Art und Position, mit dem der Spielstand Plätze und Level-Objekte zuordnet; bleibt stabil, weil kein Platz wandert. | Q42, B-201, B-202 |
 | Krieger | Kämpfer: Bauer plus Schwert aus der Werkstatt, Nahkampf; Posten hinter der äußersten gebauten Sperre. | `rules/buerger.md` § 1, Q46 |
 | Kristall | Material der Hub-Stufe 5 aus Adern in der Kristallhöhle; für Kristallmauer und Zaubertum. | `rules/materialien-gebaeude.md` § 1 |
@@ -115,6 +120,7 @@ Regelwerk in [`rules/`](rules/), und das Glossar wird angepasst. Zahlen sind, wo
 | Level | Eine Stufe: aus Biom-Daten und Seed prozedural erzeugte Welt (der Generator erzeugt je Stufe ein Level); gespeichert wird nur der Seed. Die Insel ist die Sammlung ihrer Stufen. | `game-design.md` › Prozedurale Generierung, `rules/stufen.md` § 1, Q61 |
 | Linie | Kurz für Mauerlinie; „Linie k“ ist die k-te Linie einer Seite von innen. | Q48, Q49 |
 | Live-Vorschau | Ansicht des Levels mit der Spielgrafik (`worldRenderer`) im Welt-Betrachter, Hub-Stufe umschaltbar, Gebäude einzeln ein- und ausschaltbar; gleiche Eingaben ergeben das gleiche Bild. | B-460 |
+| Lücke | Darstellung oder Animation, die das Spiel nicht hat; die Studio-Seite zeigt den Ersatz des Spiels (z. B. `idle`) mit der Marke „Lücke“ und dem Grund, baut aber keinen Ersatz. Grundlage für Grafik- und Client-Tickets. | B-463, B-464 |
 | Markieren (`markCost`) | Auftrag an Bauern, eine Ressource abzubauen, gegen Gold (Baum, Fels, Erz 1–2 Gold); Adern einmalig mit `markCost` (Stein 1, Kupfer 2, Eisen 2, Kristall 2). Plantage-Bäume ohne Markierung. | `rules/materialien-gebaeude.md` § 1, Q25 |
 | Material | Baumaterial der Insel: Holz, Stein, Kupfer, Eisen, Kristall, eines je Hub-Stufe. Gold ist kein Material. | `rules/materialien-gebaeude.md` § 1 |
 | Material-Stufe | Stufe 1–5 einer Mauer oder eines Turms nach Material (Holz bis Kristall); Ausbau am selben Platz. Bei Zerstörung geht sie verloren (neu ab Holz). | `rules/materialien-gebaeude.md` §§ 3.1, 4 |
@@ -125,6 +131,7 @@ Regelwerk in [`rules/`](rules/), und das Glossar wird angepasst. Zahlen sind, wo
 | Mini-Szene | Kleine Szene je Kategorie auf der Grafik- und der Sound-Seite des Asset-Studios (Reiter Szenen), die die aktiven Zuordnungen der Asset-Slots im Spielmaßstab zeigt bzw. abspielt (Grafik: Figuren, Gebäude, Umgebung, Objekte, HUD; Sound: Ereignis-SFX, Musik, Umgebung). | B-299 |
 | Miniboss | Boss je Stufe; kommt mit Welle 5 (Wald) bzw. Welle 3 (unten) und kehrt nach dem Sieg nie zurück. | `rules/bosse.md` § 1 |
 | Monarch | Figur eines Spielers (Index 0–3), immer beritten; kämpft mit Schlag und Skills, seine Hauptrolle ist das Management der Bürger. | `protocol.md` › Begriffe, `rules/monarch.md` |
+| Monarch-Seite | Seite im Asset-Studio neben Grafik und Sound: spielt den Monarchen immer beritten mit den Animationen und Effekten des Spiels ab (Reittiere, Skills, Münzen, Spielerfarben); Lücken sind markiert. | B-463 |
 | Monitoring-Seite | Seite `monitor.html` (Kachel „Monitor“) mit Ampel je Raum, Verläufen der Messreihen mit Perzentilen und der Fehler-Zeitleiste aus `/api/metrics`; rechnet nur Statistik, keine Spiel-Logik. | B-282 |
 | Morgengrauen | Phase des Tageszyklus zwischen Nacht und Tag, Startwert 2 min; beginnt mit `dawn` (Nacht endet, Gegner ziehen ab). Noch nicht gebaut, Code-Name legt B-213 fest. | `rules/wirtschaft.md` § 3, Q65, B-213 |
 | Münze | Ein Gold als Gegenstand: per A-Halten bezahlt (alle 0,25 s, Reichweite 2 Units); fallen gelassen nach 1,5 s für andere aufhebbar. | `rules/wirtschaft.md` § 1 |
@@ -177,6 +184,7 @@ Regelwerk in [`rules/`](rules/), und das Glossar wird angepasst. Zahlen sind, wo
 | Slot-Register | `data/assets.json`: einzige Quelle aller Asset-Slots mit Art, Kategorie, Beschreibung, Zielmaß bzw. Bus und Zuordnungen nach Präferenz; k3c-dev schreibt es, die Dev-Seite liest es. | B-298, M10 |
 | Snapshot | Zustand der Welt, den der Server an ein Gerät schickt: voll als `snap`, danach als `delta`; der Client zeichnet nur ihn. | `protocol.md` › Nachrichten |
 | Spec | Anforderung eines Tickets oder Sprints (README) mit Akzeptanzkriterien; Status `Entwurf`, `freigegeben` oder `rückwirkend`. | `arbeitsweise.md` › SDD |
+| Spielerfarbe | Variante des Monarchen je Spieler-Index 0–3 (Sheet und `tint` aus `data/sprites.json` › `players`). Nicht verwechseln mit Kennfarbe. | B-463 |
 | Spielstand | Gespeicherter Zustand eines Raums (`saves/<name>.json`) mit Seeds, Hubs, Vorrat und Raum-Optionen; Gegner und Level-Layout werden nicht gespeichert. | `protocol.md` › Begriffe, `game-design.md` › Speichern |
 | Spielstand-Version | `IslandSaveVersion` (`engine/sim/island_save.go`), heute 3 (Fund-Pool `skillPool`, je Spieler `skills` und `slots`, S1). Jede Formatänderung erhöht sie und bringt eine Fixture; Hub- und Platz-Stufe kommen mit W1.3 optional in v3 dazu (Q42). | `arbeitsweise.md` › Spielstand-Format, Q42 |
 | Split-Screen | Geteilter Bildschirm für 1–4 lokale Spieler, jeder mit eigener Kamera (`src/scenes/layout.ts`). | `game-design.md` › Koop, `rules/bedienung.md` § 2 |
@@ -210,6 +218,7 @@ Regelwerk in [`rules/`](rules/), und das Glossar wird angepasst. Zahlen sind, wo
 | Vorhersage | Anzeige-Vorhersage des eigenen Monarchen: Nur seine x-Position läuft im Client sofort mit der Eingabe und wird weich zum Server-Zustand (plus Vorlauf um die Latenz) zurückgeführt. Keine Spiel-Logik; fremde Figuren werden nicht vorhergesagt. | B-039, B-277, `src/online/clientPredict.ts` |
 | Vorlage | Pflicht-Kopiervorlage für Ticket, Sprint und Session in `docs/vorlagen/`; `tests/planning.test.ts` prüft sie. | `arbeitsweise.md` › Ablage |
 | Wald | Stufe der Tiefe 0 (Oberwelt, Biom `forest`) mit Bäumen und Tag-Nacht-Zyklus; eine Welle je Nacht. | `game-design.md` › Welt & Stufen |
+| Warnkreis | Kreisanzeige am Boden vor einem Flächenschlag eines Bosses (`trollKing`, `crystalHeartWarden`); das Spiel zeichnet sie erst nach K5.1 (B-132), bis zur Anbindung (B-469) im Asset-Studio eine Lücke. | B-464, B-469 |
 | Welle | Gruppe Gegner aus den Portalen: in der Oberwelt eine je Nacht, unten bei 100 % Aggressionspool. Größe nach Tabelle, Spieleranzahl der Insel und Grad; Zähler je Stufe. | `rules/gegner.md` § 3 |
 | Welt-Betrachter | Seite im Asset-Studio mit Chunk-Vorschau oben und Live-Vorschau darunter. Früher Level-Betrachter. | B-460 |
 | Weltposition | Eine x-Stelle der Welt in Units. Je Weltposition zeigt die Welt höchstens **ein** Anzeige-Element (Hinweis des Aktionen-Overlays, Preisschild, Meldung); treffen mehrere zusammen, gilt nur das wichtigste bzw. nächste. | `rules/monarch.md` § 4, Beschluss 🧑 2026-10-06 (S3.4) |
