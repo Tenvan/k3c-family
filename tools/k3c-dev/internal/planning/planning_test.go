@@ -87,13 +87,14 @@ func TestRepo(t *testing.T) {
 
 func TestWorktrees(t *testing.T) {
 	b := parseWorktrees("worktree C:/k3c\nHEAD 1\nbranch refs/heads/develop\n\nworktree C:/w1\nbranch refs/heads/sprint/s4\n\n" +
-		"worktree C:/w2\nbranch refs/heads/gr4-4-work\n\nworktree C:/w3\ndetached\n")
-	if len(b) != 3 {
+		"worktree C:/w2\nbranch refs/heads/gr4-4-work\n\nworktree C:/w3\ndetached\n\n" +
+		"worktree C:/w4\nbranch refs/heads/claude/s4-review-ab12\n\nworktree C:/w5\nbranch refs/heads/claude/sprint-s4-cd34\n")
+	if len(b) != 5 {
 		t.Fatalf("%v", b)
 	}
 	sp := []Sprint{{ID: "S4"}, {ID: "GR4"}, {ID: "S40"}, {ID: "F1"}}
 	markWorktrees(sp, b)
-	if sp[0].Worktree != "sprint/s4" || sp[1].Worktree != "gr4-4-work" || sp[2].Worktree != "" || sp[3].Worktree != "" {
+	if sp[0].Worktree != "sprint/s4" || len(sp[0].Worktrees) != 3 || sp[1].Worktree != "gr4-4-work" || sp[2].Worktree != "" || sp[3].Worktree != "" {
 		t.Fatalf("%+v", sp)
 	}
 }

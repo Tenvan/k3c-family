@@ -42,7 +42,8 @@ export function SprintCard({ sprint: s, gh, sel, onSelect, onPick, checked, onCh
         <span className="pl-dim">{s.domain}</span>
         <span className="pl-sprint-title">{s.title}</span>
         <span className="pl-pills">
-          {s.worktree && <Pill tone="violet" title="Ein Worktree arbeitet gerade an diesem Sprint">⎇ {s.worktree}</Pill>}
+          {(s.worktrees ?? (s.worktree ? [s.worktree] : [])).map((w) =>
+            <Pill key={w} tone="violet" title="Ein Worktree arbeitet gerade an diesem Sprint">⎇ {w}</Pill>)}
           <Pill tone={stateTone(s.status)}>{s.status}</Pill>
           <Pill tone={specTone(s.spec)} title={`Reife: ${s.reife || '–'}`}>Spec: {s.spec || '–'}</Pill>
           <DepLinks ids={s.deps} title="Wartet auf Sessions dieser Sprints" onPick={scrollToSprint} />
