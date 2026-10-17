@@ -1,6 +1,6 @@
 # WZ7.2 · Seite Welt-Betrachter mit Chunk-Vorschau im Studio
 
-- **Status:** offen
+- **Status:** in Arbeit
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** DEV
