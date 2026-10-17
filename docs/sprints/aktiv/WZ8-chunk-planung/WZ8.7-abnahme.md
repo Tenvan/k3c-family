@@ -16,9 +16,20 @@
 
 ## Kontext
 
-Die Abnahme-Liste schreibt WZ8.6 unten in `### Abnahme-Liste`. Start: `task k3c-studio:build`, dann `bin/k3c-studio.exe` oder der Verweis in der Workbench. **Umgebung live:** Claude bereitet vor und trägt das Urteil von 🧑 ein, urteilt aber nicht selbst. Fenster- oder Browser-Prüfungen durch Claude nur mit Freigabe von 🧑 für diesen Lauf.
+Die Abnahme-Liste schreibt WZ8.6 unten in `### Abnahme-Liste`. Start: `task k3c-studio:build`, dann `bin/k3c-studio.exe` oder der Verweis in der Workbench. **Umgebung live:** Claude bereitet vor und trägt das Urteil von 🧑 ein, urteilt aber nicht selbst. Fenster- oder Browser-Prüfungen durch Claude nur mit Freigabe von 🧑 für diesen Lauf. Hardware entkoppelt: WZ8.7 ist keine Abhängigkeit des Reviews.
 
-Vorläufige Punkte (WZ8.6 überarbeitet sie): (1) Beispiel Wald Platz +6 (Hub +300 … +350) festes Portal setzen → beide Vorschauen zeigen es sofort bei Hub +325, das zweite Portal springt nach links; (2) Sondergegend planen, zwei Seeds, gleicher Ort und gleicher Inhalt in Chunk- und Live-Vorschau; (3) ungültigen Entwurf provozieren → Fehler am Platz, letztes gültiges Bild bleibt; (4) Speichern zeigt den REG-Hinweis (nur auf einer Kopie oder mit anschließendem Zurücksetzen, nichts einchecken); (5) `data/islands.json` extern ändern → Speichern wird abgelehnt, Entwurf bleibt. Hardware entkoppelt: WZ8.7 ist keine Abhängigkeit des Reviews.
+### Abnahme-Liste
+
+Ablauf am PC im Studio-Fenster, Seite „Welt-Betrachter“, Editor „Planung“ unter der Chunk-Vorschau (AC-10):
+
+1. Insel 1, Stufe 1 (Wald) wählen. Beispiel der Spec: Chunk hinzufügen, Platz auf +6 setzen, Art `portal` → Chunk- und Live-Vorschau zeigen das feste Portal sofort an derselben Stelle (Hub +325), das zweite Portal springt nach links.
+2. Sondergegend planen (Chunk-Seed, feste Objekte, Truhe), mit zwei verschiedenen Seeds in der Chunk-Vorschau und in der Live-Vorschau prüfen: gleicher Ort und gleicher Inhalt in beiden Vorschauen.
+3. Einen ungültigen Entwurf provozieren (z. B. Art `volcano`, Platz 0, Platz +9 im Wald): Der Fehler steht am Platz, Speichern ist gesperrt, das letzte gültige Bild bleibt stehen.
+4. Speichern (nur auf einer Kopie von `data/islands.json` oder mit anschließendem Zurücksetzen, nichts einchecken): Der Hinweis „REG-Änderung: Commit mit Begründung, `task golden:update` nur bei gewollter Änderung“ erscheint; `git diff data/islands.json` zeigt nur den Wert von `plannedChunks`.
+5. `data/islands.json` von außen ändern, dann Speichern: Es wird abgelehnt („data/islands.json geändert, bitte neu laden“), der Entwurf bleibt.
+6. Entscheidung: Entwurf bleibt ungespeichert oder wird als REG-Ticket festgehalten (Sondergegend); offene Fragen zu den Annahmen in B-475 (Zählung fester Ereignis-Objekte, Minimum oder Maximum bei „kein Platz mehr“), WZ8.4 (Vorschau ohne Option = keine Planung) und der neuen Abhängigkeit in `tools/k3c-studio/go.mod` (aus WZ7, `replace k3c`, `coder/websocket`).
+
+Hinweis des Reviews (2026-10-17): keine schweren Befunde; Optik und Bedienung des Editors sind nur durch Tests, nicht im Fenster geprüft.
 
 ## Erlaubte Dateien
 

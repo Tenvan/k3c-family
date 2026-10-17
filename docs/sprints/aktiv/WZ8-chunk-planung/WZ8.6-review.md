@@ -1,6 +1,6 @@
 # WZ8.6 · Review WZ8
 
-- **Status:** in Arbeit
+- **Status:** fertig
 - **Typ:** Review
 - **Agent:** autonom
 - **Domäne:** DEV
@@ -66,5 +66,12 @@ Manuelle Prüfungen (Browser, Xbox, TV) nennt diese Session nicht; sie gehören 
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+Review durch Claude (autonom), 2026-10-17; Code-Review durch einen getrennten Reviewer-Agenten auf dem Sprint-Diff (Querschnitt) nach den Reviews je Session (WZ8.2–WZ8.5). Kein PR in dieser Session (Auftrag von Ralf: PRs macht er extra); der Sprint bleibt `aktiv`, bis WZ8.7 (Mensch) fertig ist.
+
+- **Prüfläufe:** `task check` und `task check:go` (inkl. aller Golden-Tests) grün (`check_run`); Studio: `vitest` (134), `tsc`, `vite build`, `go test` und `golangci-lint` grün (in der Shell, `check:studio` ist in der Workbench nicht freigegeben); `check_run dev:test` grün. `task check:all` und `task check:dev` nicht als Lauf gefahren (kein `check_run`-Ziel; ihre Bestandteile einzeln grün).
+- **AC-01 bis AC-09, AC-11 bis AC-13 umgesetzt, geprüft** (Nachweise in den Ergebnissen WZ8.2–WZ8.5): Regeltext `docs/rules/geplante-chunks.md` (AC-01, WZ8.1); `level.ValidatePlan` mit Linien als Parameter und ein Test je Ablehnungsfall (AC-06); Generator `GenerateWith`, eigener Strom, Biom-Summen, Chunk-Seed stabil, Golden-Fall (AC-02 bis AC-05); `sim.CreateOptions` mit allen Aufrufern und Sim-Test mit 2 Spielern (AC-07); Vorschau-Option (AC-08); Editor, Schreibregeln, gleiche Quelle für beide Vorschauen (AC-09, AC-11, AC-12); Benchmark +2,7 % mit Planung (AC-13).
+- **AC-10:** `offen (WZ8.7)`, Abnahme durch 🧑.
+- **AC-14:** Querschnitt geprüft: bestehende Golden-Dateien unverändert, nur `testdata/golden/level-planned.json` neu (eigener Commit mit Begründung); `data/islands.json` enthält nur das leere Feld `plannedChunks` (und einen Satz in `notes`); keine globalen Zustände für Planung und Linien, `engine/level` importiert nichts aus `sim`, `room`, `net`; `IslandSaveVersion` unverändert; kein `math/rand`; Dateien ≤ 400 und Funktionen ≤ 60 Zeilen (Nicht-Test-Code); kein Kriterium umformuliert.
+- **Schwere Befunde:** keine. Hinweise ohne Befund: Der Umfang von WZ8.5 liegt über dem Richtwert; `tools/k3c-studio/go.mod` und `go.sum` enthalten Änderungen aus WZ7 (B-460), die Spec von WZ8 sagt „keine neue Abhängigkeit“ (aus WZ7 übernommen, zur Kenntnis in der Abnahme-Liste); der Benchmark lief als `go test -bench` in der Shell.
+- **Neue Tickets:** B-475 (Frage zu den Annahmen, angelegt in WZ8.2).
+- **Abnahme-Liste** für WZ8.7 steht in dessen Kontext; die Abnahme steht in der Sprint-README.

@@ -112,7 +112,7 @@ Vor der Freigabe offen: nichts Blockierendes.
 | WZ8.3 | `WZ8.3-generator-create-options.md` | Umsetzung | autonom | fertig |
 | WZ8.4 | `WZ8.4-vorschau-option-planung.md` | Umsetzung | autonom | fertig |
 | WZ8.5 | `WZ8.5-editor-welt-betrachter.md` | Umsetzung | autonom | fertig |
-| WZ8.6 | `WZ8.6-review.md` | Review | autonom | in Arbeit |
+| WZ8.6 | `WZ8.6-review.md` | Review | autonom | fertig |
 | WZ8.7 | `WZ8.7-abnahme.md` | Review | Mensch | offen |
 
 - WZ8.1 (REG) Workshop mit 🧑: Format, Chunk-Platz, Stromnamen, Anrechnung auf die Biom-Summen, Lage-Regeln; Regeltext in `docs/rules/`; Glossar „geplanter Chunk“, „Chunk-Platz“, „Chunk-Seed“, „Ruine“ und „Gegnerlager“ (geplant, B-468) und Chunk-Breite korrigieren (25 Units in Eisenstollen und Kristallhöhle) (AC-01).
@@ -125,5 +125,6 @@ Vor der Freigabe offen: nichts Blockierendes.
 
 ## Abnahme
 
-Wird von der Review-Session (Doku-Sprint: letzte Session) ausgefüllt, höchstens fünf Zeilen: Datum, Kriterien
-(Verweis auf Session-Ergebnisse), behobene Befunde, neue Tickets. Bis dahin `–`.
+2026-10-17 (Review WZ8.6): AC-01 bis AC-09, AC-11 bis AC-14 mit Nachweis aus Code, Tests und getrennten Reviewern (Ergebnisse WZ8.2–WZ8.6); AC-10 offen (WZ8.7, 🧑 am PC).
+Befunde: keine schweren. Neues Ticket: B-475 (Annahmen zu festen Ereignis-Objekten und „kein Platz mehr“).
+Version: v… vorgeschlagen: keine Änderung (Werkzeug- und Generator-Sprint, Golden und Spielstand-Format unverändert).
