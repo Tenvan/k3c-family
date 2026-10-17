@@ -1,6 +1,6 @@
 # WZ7.4 · Live-Optionen und Im Spiel öffnen
 
-- **Status:** offen
+- **Status:** in Arbeit
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** DEV
