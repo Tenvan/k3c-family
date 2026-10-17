@@ -41,6 +41,8 @@ test('Auto-Effort: Knopf schaltet ein, Haiku-Stufe geht in den Haupt-Request, Ha
   on('store.get', () => ({ value: undefined }) as never)
   on('store.set', () => ({ value: undefined }) as never)
   on('prompt.submit', ($, e) => ({ text: e.text }))
+  // Das Band zeichnet die Bänder darunter mit: hier antwortet niemand sonst auf AbovePrompt.
+  on('ui.render', { component: 'AbovePrompt' }, () => ({ type: 'Box' as const }))
   let judged = 0
   on('model.classify', () => {
     judged += 1

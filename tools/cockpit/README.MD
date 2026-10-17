@@ -1,10 +1,11 @@
 # Tenvan CC 🛩️ (`tenvan-cc`)
 
-Universal-Mod für **Claude Desktop** und die **Claude-Code-CLI**: ein schmales Band über der Prompt-Eingabe und ein ausführliches Panel rechts. Eigene Implementierung, die den Funktionsumfang dreier Community-Mods bündelt und verschlankt:
+Universal-Mod für **Claude Desktop** und die **Claude-Code-CLI**: ein schmales Band über der Prompt-Eingabe und ein ausführliches Panel rechts. Eigene Implementierung, die den Funktionsumfang mehrerer Community-Mods bündelt und verschlankt:
 
 - [scasella/claude-flightdeck](https://github.com/scasella/claude-flightdeck) – Panel mit Turn-Beleg, Gate, Agents, Log
 - [augiefra/token-weather-usage](https://github.com/augiefra/claude-mods/tree/main/plugins/token-weather-usage) – Band mit Kontext, Limits, Cache, Kosten
 - [pawandeepdhall/next-steps](https://github.com/pawandeepdhall/claude-mods/tree/main/plugins/next-steps) – Folge-Schritte als Buttons
+- [Antreas-Strb/glanceflow](https://github.com/Antreas-Strb/glanceflow) – Checkliste mit Status, Fortschritt und Verlauf
 
 Kein Code aus diesen Projekten wurde übernommen. Kein Netzwerk, keine Telemetrie, kein Lesen von Transcripts – alle Werte kommen aus den Mod-Events der Engine und `$.session.usage()`. Einzige Ausnahme sind die Folge-Schritte: Sie kosten einen kurzen Haiku-Call pro Antwort über die eigene Claude-Anbindung.
 
@@ -14,6 +15,7 @@ Kein Code aus diesen Projekten wurde übernommen. Kein Netzwerk, keine Telemetri
 
 | Teil | Inhalt |
 | --- | --- |
+| Checkliste | Ganz oben im Band: Claudes Aufgabenliste mit Status, Fortschritt, Restzeit und Knöpfen (siehe Abschnitt „Checkliste“) |
 | Titelleiste | `Tenvan CC (Version x, Build: Datum Uhrzeit)`, auch erste Zeile im Panel |
 | Features | Knopf hinter der Legende: gibt alle Funktionen mit aktuellem Einstellungsstand als Bericht im Chat aus (`/cockpit-features`) |
 | Kontext | Füllstand des Kontextfensters in Prozent; ab 85 % gelb mit Button „Kompaktieren“ |
@@ -42,6 +44,29 @@ Kein Code aus diesen Projekten wurde übernommen. Kein Netzwerk, keine Telemetri
 
 „Takt“ = Verbrauch minus verstrichener Anteil des Fensters, in Prozentpunkten. `+12` heißt: 12 Punkte schneller als gleichmäßig.
 
+## Checkliste
+
+Oben im Band steht Claudes Aufgabenliste als Checkliste. Die gleichbleibenden Cockpit-Zeilen bleiben direkt über der Prompt-Eingabe, die Checkliste wächst nach oben. Sie liest nur mit: Das Cockpit schiebt Claude keine Anweisungen unter, legt keine eigenen Werkzeuge an und sperrt nichts.
+
+| Teil | Inhalt |
+| --- | --- |
+| Schritte | Nur was Claude selbst als Aufgabenliste anlegt (`TodoWrite`, Aufgabenliste der Desktop-App, `TaskCreate`/`TaskUpdate`). Legt Claude keine an, steht dort „ohne Aufgabenliste“. Ab 5 Schritten faltet das Band erledigte und spätere Schritte in je eine Zeile |
+| Status | Arbeitet · Braucht dich (Frage in Claudes Antwort, Abschlussfrage der Desktop-App oder Freigabe, die auf dich wartet) · Hängt? (3 Minuten ohne Lebenszeichen) · Pausiert · Gestoppt · Fertig |
+| Fortschritt, Restzeit | „n von m erledigt“ und „~Dauer übrig“, gerechnet aus den eigenen erledigten Schritten, sonst aus dem Verlauf des Projekts; „dauert länger“, wenn ein Schritt doppelt so lange läuft wie üblich |
+| Jetzt | Was Claude gerade tut (Dateien lesen, suchen, ändern, Befehle, Web, Helfer, Planen, Frage an dich); die laufenden Helfer stehen in derselben Zeile, gruppiert als `↳ 3× planner · Opus 5.5` |
+| ‖ Pause / ▶ Weiter | Pause stoppt den laufenden Turn; Weiter schickt Claude den Auftrag mit den noch offenen Schritten erneut. Geht das Senden nicht, steht der Auftrag im Eingabefeld |
+| ≣ Verlauf | `/cockpit-verlauf`: Aufgaben je Tag (Ergebnis, Schritte, Dauer) mit Vortag/Folgetag und zwei Knöpfen, die einen Bericht in die Zwischenablage kopieren: **Tagesbericht** (dieses Projekt: erledigt, offen, braucht eine Entscheidung, Zeit) und **Wochenbericht** (alle Projekte, sieben Tage) |
+
+Einstellungen (Gruppe „Checkliste“ unter `/cockpit-einstellungen`):
+
+| Schalter | Standard | Wirkung |
+| --- | --- | --- |
+| Checkliste im Band | an | Zeigt die Checkliste oben im Band |
+| Plan-Karte im Panel | an | Karte „Plan“ mit allen Schritten |
+| Verlauf speichern | an | Jede Aufgabe mit Ergebnis, Schritten, Dauer und Dateinamen 30 Tage lokal speichern; Grundlage der Berichte |
+
+Im Verlauf stehen Aufgabentitel (die ersten 70 Zeichen deines Prompts), Schrittnamen, die letzte Rückfrage und Dateinamen, nur lokal im Speicher des Mods. Die Berichte enthalten weder Tokens noch Modelle noch Dateinamen.
+
 ## Grenzen
 
 - Zeichnet auf Desktop und im Terminal. Im Terminal gibt es kein Svg: Ringe werden Textbalken, Turn-Bilanz Blockzeichen, Formeln Unicode-Text; Tooltips, Atemkreis, Logo, Tool-Symbole und Diff-Karte entfallen dort (Mermaid und Diffs zeichnet die Engine).
@@ -50,6 +75,7 @@ Kein Code aus diesen Projekten wurde übernommen. Kein Netzwerk, keine Telemetri
 - Tool-Freigaben werden nur gezählt, das Mod lehnt selbst nie etwas ab.
 - Die Sitzungsleiste gibt es nur in der Desktop-App; im Terminal bleiben die Schalter wirkungslos. Sie folgt dem MR-Abruf (jede Minute, bei laufender Pipeline alle 15 s). Im Auto-Modus lehnt der Classifier die Aufrufe ab (das Log nennt den Grund einmal je Session).
 - Folge-Schritte sind Einzelklicks (keine Mehrfachauswahl) und lassen sich abschalten.
+- Die Checkliste kennt nur Schritte, die Claude selbst anlegt, und erfindet keine. Die Restzeit ist eine Schätzung aus der bisherigen Schrittdauer; ohne mindestens zwei erledigte Schritte oder drei Aufgaben im Verlauf des Projekts steht keine. „Hängt?“ heißt nur: seit 3 Minuten kein Tool-Aufruf und kein Request. Pause stoppt den Turn wie Esc, Weiter setzt mit einem neuen Auftrag fort (kein Weiterlaufen an derselben Stelle).
 
 ## Optionen
 
@@ -64,7 +90,7 @@ Gesetzt über `/config` oder in den Settings unter `pluginConfigs.tenvan-cc`.
 Im Terminal (der Desktop-Code-Tab kennt `/plugin` nicht, lädt das Mod aber mit):
 
 ```shell
-claude plugin install tenvan-cc@orga-marketplace
+claude --plugin-dir tools/cockpit
 ```
 
 ## Entwicklung
@@ -81,10 +107,10 @@ Mod-API: Claude Code Function Hooks (Engine ≥ 2.1.295, Early Access). Struktur
 | `hooks/register.test.ts` | Tests |
 
 ```shell
-claude plugin validate plugins/tenvan-cc
-claude plugin test plugins/tenvan-cc
+claude plugin validate tools/cockpit
+claude plugin test tools/cockpit
 ```
 
-Live ausprobieren ohne Installation: `claude --plugin-dir plugins/tenvan-cc`, oder den Pfad in `CLAUDE_CODE_PLUGIN_DIRS` (env-Block der `~/.claude/settings.json`) eintragen, damit die Desktop-App das Mod lädt.
+Live ausprobieren ohne Installation: `claude --plugin-dir tools/cockpit`, oder den Pfad in `CLAUDE_CODE_PLUGIN_DIRS` (env-Block der `~/.claude/settings.json`) eintragen, damit die Desktop-App das Mod lädt.
 
 Weitere Community-Mods werden als zusätzliche Abschnitte in Band oder Panel ergänzt, nicht als eigene Plugins.

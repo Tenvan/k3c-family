@@ -129,6 +129,8 @@ test('conflictPrompt: nennt MR, Ziel und Quelle, verbietet Push, kommt auch auf 
   expect(de).toContain(`aktuellen Branch \`${m.source}\``)
   expect(de).toContain('Pushe nicht')
   expect(conflictPrompt(m, 'en')).toContain('Do not push')
+  expect(conflictPrompt(m, 'de', true)).toContain('eigenen Worktree')
+  expect(conflictPrompt(m, 'en', true)).toContain('worktree of its own')
 })
 
 test('refOf/inRepo: Projekt und Nummer aus GitLab-, GitHub- und Bitbucket-Referenzen', () => {

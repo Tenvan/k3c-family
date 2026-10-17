@@ -151,8 +151,8 @@ test('Einstellungsseite: „Alle aus” einer Gruppe und Zurücksetzen', async (
   const main = await $.ui.mount({ plugin: 'tenvan-cc', surface: 'desktop', component: 'Pane', requestId: 'tenvan-cc', props: PANE_PROPS })
   expect(await main.find({ type: 'Text', text: 'Übersicht' })).not.toBe(undefined)
 
-  // Gruppen in Reihenfolge des ersten Schalters: Band, Während Claude arbeitet, Effort & Kosten, Panel …
-  await page.press({ key: 'grp-off-3' })
+  // Gruppen in Reihenfolge des ersten Schalters: Band, Checkliste, Während Claude arbeitet, Effort & Kosten, Panel …
+  await page.press({ key: 'grp-off-4' })
   for (let i = 0; i < 3000 && (await main.find({ type: 'Text', text: 'Übersicht' })) !== undefined; i++) await Promise.resolve()
   expect(await waitFind(page, /^0\/\d+ an$/)).not.toBe(undefined)
   for (const card of ['Übersicht', 'Log', 'Letzter Turn']) expect(await main.find({ type: 'Text', text: card })).toBe(undefined)
@@ -289,7 +289,7 @@ test('Einstellungen: „Neu laden“ meldet das Ergebnis als Toast', async ($, o
   expect(toasts[1]).toBe('Einstellungen neu geladen')
 })
 
-test('Arbeitsverzeichnis: ein Git-Fehler lässt die Kachel stehen, auch „kein Repository“ lässt sie stehen', async ($, on) => {
+test('Arbeitsverzeichnis: ein Git-Fehler lässt die Kachel stehen, nur „kein Repository“ blendet sie aus', async ($, on) => {
   const clock = mock.clock(on, { now: 1 })
   on('session.measure', () => ({ changed: [] }))
   on('store.get', () => ({ value: undefined }) as never)
@@ -317,8 +317,8 @@ test('Arbeitsverzeichnis: ein Git-Fehler lässt die Kachel stehen, auch „kein 
   expect(await pane.find({ type: 'Text', text: 'Arbeitsverzeichnis' })).not.toBe(undefined)
   mode = 'none'
   await clock.advance(30_000)
-  expect(await waitFind(pane, 'kein Git-Repository')).not.toBe(undefined)
-  expect(await pane.find({ type: 'Text', text: 'Arbeitsverzeichnis' })).not.toBe(undefined)
+  for (let i = 0; i < 100 && (await pane.find({ type: 'Text', text: 'Arbeitsverzeichnis' })); i++) await Promise.resolve()
+  expect(await pane.find({ type: 'Text', text: 'Arbeitsverzeichnis' })).toBe(undefined)
 })
 
 test('Einstellungen: ▾/▸ klappt jede Gruppe zu und auf', async ($, on) => {

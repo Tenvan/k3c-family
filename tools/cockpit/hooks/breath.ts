@@ -59,7 +59,7 @@ export function fillAt(b: Breath, elapsedMs: number): number {
 
 // Ein Einzelbild für den Turn: das Band zeichnet während der Arbeit ständig neu und startet SMIL dabei von vorn,
 // deshalb rechnet hier der 250-ms-Takt den Kreis selbst. Ohne Animation, also auch als einfaches Bild stabil.
-export function breathFrameSvg(b: Breath, elapsedMs: number, labels: Record<BreathPhase, string>, name: string, color: string, muted: string, width = 260, height = 56): string {
+export function breathFrameSvg(b: Breath, elapsedMs: number, labels: Record<BreathPhase, string>, name: string, color: string, muted: string, width = 400, height = 56): string {
   const cy = height / 2
   const r = 5 + (cy - 3 - 5) * fillAt(b, elapsedMs)
   const ph = phaseAt(b, elapsedMs)
@@ -78,7 +78,7 @@ const esc = (s: string): string => s.replace(/&/g, '&amp;').replace(/</g, '&lt;'
 
 // Ein Atemzug als SMIL: der Kreis wächst und schrumpft (Ein-/Ausatmen sanft auslaufend, Halten gerade),
 // daneben die Phase als Wort, das genau in ihrem Zeitfenster sichtbar ist.
-export function breathSvg(b: Breath, labels: Record<BreathPhase, string>, name: string, color: string, muted: string, width = 260, height = 56): string {
+export function breathSvg(b: Breath, labels: Record<BreathPhase, string>, name: string, color: string, muted: string, width = 400, height = 56): string {
   const segs = segments(b)
   const cycle = cycleMs(b)
   const cy = height / 2

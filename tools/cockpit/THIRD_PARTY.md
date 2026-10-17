@@ -40,3 +40,7 @@ Die Atemübung im Band folgt der Idee von Mindful-Claude (https://github.com/hal
 ## guided-mr (Alex Jacobs)
 
 Die Merge-Request-Funktion übernimmt Ideen aus guided-mr (https://github.com/alexjacobs08/guided-mr, Stand 46027a2): MRs über `glab` lesen, Status im Pane, Aktionen per Taste. Das Repo hat keine Lizenzdatei; es wurde kein Code übernommen, die Umsetzung (`hooks/mr.ts`, Teile in `hooks/register.tsx`) ist eigen.
+
+## glanceflow (Antreas-Strb)
+
+Die Checkliste im Band folgt der Idee von glanceflow (https://github.com/Antreas-Strb/glanceflow): Aufgabenliste mit Status, Fortschritt und Restzeit, Verlauf mit Tages- und Wochenbericht, Pause und Weiter. Kein Code übernommen; die Umsetzung (`hooks/glance.ts`, Teile in `hooks/register.tsx`) ist eigen und rein beobachtend: Schritte stammen nur aus Claudes eigener Aufgabenliste, es gibt weder Prompt-Einschub noch eigene Werkzeuge noch ein Sperren von Tools. Lizenz: MIT, Copyright (c) 2026 Antreas-Strb.

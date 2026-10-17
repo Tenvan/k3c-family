@@ -13,6 +13,7 @@ Band über der Eingabe
 • Atemübung – solange Claude arbeitet, atmet ein Kreis im Band; die Arbeitszeile zählt die Phase mit (Übung in den Einstellungen).
 • Merge Requests – auf GitLab-, GitHub- und Bitbucket-Repos MR/PR des Branches im Band (Pipeline, Freigaben, Threads), Hinweise bei Änderungen, im Panel Rebase, Mergen, Pipeline neu, Anmerkungen an Claude und „MR anlegen“ mit Entwurf.
 • Folge-Schritte – drei Vorschläge nebeneinander nach jeder Antwort, Tasten 1–3.
+• Checkliste – ganz oben Claudes Aufgabenliste mit Status (arbeitet, braucht dich, hängt?, fertig), Fortschritt, Restzeit, Pause/Weiter und Plan-Karte; /cockpit-verlauf mit Tages- und Wochenbericht zum Kopieren.
 
 Panel rechts (/cockpit)
 • Agent arbeitet – Laufzeit, Tool-Calls und Edits, solange ein Turn läuft.
