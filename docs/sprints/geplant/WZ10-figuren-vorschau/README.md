@@ -3,7 +3,7 @@
 - **Status:** geplant
 - **Projekt:** WZG
 - **Domäne:** DEV
-- **Reife:** Entwurf
+- **Reife:** bereit
 - **Tickets:** B-463
 - **Start-Commit:** – (wird beim Aktivieren gesetzt: `git rev-parse --short origin/develop`)
 - **Spec:** Entwurf
@@ -111,6 +111,14 @@ Offen (entscheidet 🧑 vor der Freigabe, nicht blockierend, Vorschlag im Ticket
 **Neue Begriffe ins Glossar vor der Freigabe:** Monarch-Seite, Abspiel-Baustein, Lücke, Spielerfarbe (Variante des Monarchen je Spieler-Index), Kennfarbe (Farbe des Spielers aus `PLAYER_COLORS`). Gegner-Seite, Warnkreis, Boss-Leiste und Event-Banner gehören zu WZ11.
 
 ## Sessions
+
+| Nr. | Datei | Typ | Agent | Status |
+|---|---|---|---|---|
+| WZ10.1 | `WZ10.1-abspiel-bausteine.md` | Umsetzung | autonom | offen |
+| WZ10.2 | `WZ10.2-monarch-seite-bewegung.md` | Umsetzung | autonom | offen |
+| WZ10.3 | `WZ10.3-monarch-seite-aktionen.md` | Umsetzung | autonom | offen |
+| WZ10.4 | `WZ10.4-review.md` | Review | autonom | offen |
+| WZ10.5 | `WZ10.5-abnahme.md` | Review | Mensch | offen |
 
 - WZ10.1 (DEV) Abspiel-Bausteine auf der Bühne aus WZ7.3 (kein neues Phaser): Spiel-Animationen, Steuerung, Maßstab, Reittier-Lader, Lücken-Markierung, als Parameter statt Monarch-Festwerte, damit WZ11 sie nutzt (AC-02, AC-11, AC-16)
 - WZ10.2 (DEV) Monarch-Seite: Laufen und Sprinten beritten, Reiten je Reittier, Spielerfarben mit Kennfarbe, Grafik-Auswahl (AC-01, AC-03, AC-04, AC-10, AC-12, AC-15)
