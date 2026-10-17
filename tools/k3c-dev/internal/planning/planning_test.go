@@ -28,6 +28,15 @@ func TestParseSprint(t *testing.T) {
 	}
 }
 
+func TestParseSprintStichpunkteNebenTabelle(t *testing.T) {
+	text := strings.Replace(sprint, "\n\n## Abnahme", "\n\n- SP11.1 Stichpunkt zur Tabelle\n- SP11.2 noch einer\n- SP11.3 nur als Stichpunkt\n\n## Abnahme", 1)
+	s := ParseSprint(text, "SP11-raspberry-pi", "aktiv")
+	if len(s.Sessions) != 3 || s.Sessions[0].Status != "fertig" || s.Sessions[1].Status != "offen" || s.Sessions[2].Nr != "SP11.3" ||
+		s.Sessions[2].Status != "entwurf" || s.Sessions[2].Titel != "nur als Stichpunkt" {
+		t.Fatalf("Stichpunkt mit Nr. aus der Tabelle doppelt gezählt oder eigener Stichpunkt fehlt: %+v", s.Sessions)
+	}
+}
+
 func TestLoad(t *testing.T) {
 	root := t.TempDir()
 	w := func(rel, text string) {
