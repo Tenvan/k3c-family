@@ -1,6 +1,6 @@
 # WZ5.2 · Review und Abnahme der Planungsseite
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Review
 - **Agent:** autonom
 - **Domäne:** DEV

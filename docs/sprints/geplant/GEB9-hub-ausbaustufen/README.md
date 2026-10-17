@@ -47,7 +47,8 @@ Kleinteiligere Hub-Stufen oder neue Stufenfolge (Lagerfeuer bis Burg) und Freisc
 
 ## Regeln und Einschränkungen
 
-- Domänen nacheinander: **DEV** (GEB9.1–9.4: `public/grafik/gebaeude/`, `tools/gebaeude/` für den Übergang, `src/tools/assetvorschau*.ts`, Regeldatei) → **CLI** (GEB9.5–9.6: `src/scenes/buildingSprites.ts`, `src/scenes/siteView.ts`, ggf. `src/scenes/natureSprites.ts`, `data/assets.json`, `docs/assets/zuordnung-*.md`, Löschen der Grundform-Dateien). `engine/` bleibt unberührt.
+- Domänen nacheinander: **DEV** (GEB9.1–9.4: `public/grafik/gebaeude/`, `tools/gebaeude/` für den Übergang, Stufenreihe in der Asset-Vorschau, Regeldatei) → **CLI** (GEB9.5–9.6: `src/scenes/buildingSprites.ts`, `src/scenes/siteView.ts`, ggf. `src/scenes/natureSprites.ts`, `data/assets.json`, `docs/assets/zuordnung-*.md`, Löschen der Grundform-Dateien). `engine/` bleibt unberührt.
+- **Asset-Vorschau:** Läuft WZ6 vorher (WZG hat Rang 1), liegt die Vorschau nicht mehr in `src/tools/assetvorschau*.ts`, sondern auf der Grafik-Seite des Asset-Studios (`tools/k3c-studio`, B-459/AC-06); die Stufenreihe entsteht dann dort.
 - Stufen nur über `farben` und `zusaetze` (§ 6), kein Neuzeichnen; Farben nur aus DB32.
 - Die Hub-Stufe kommt aus dem Snapshot; im Client keine Würfel, keine eigene Stufenlogik außer der Zuordnung.
 - 2 Spieler: Die Stufe gilt je Hub, beide Spieler sehen dasselbe.

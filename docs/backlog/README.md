@@ -140,7 +140,6 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-435](B-435-gebaeude-grafik-per-prompt.md) | DEV | Idee | mittel | eingeplant | GEB1 | Gebäude und Strukturen entstehen im Asset-Manager aus Beschreibung und Prompt |
 | [B-436](B-436-plan-create-entwurf-zeilen.md) | DEV | Problem | niedrig | offen | – | plan_create scheitert an Platzhalter-Zeilen „– (Entwurf)“ in der Session-Tabelle |
 | [B-438](B-438-werkstatt-baeume-ins-spiel.md) | CLI | Idee | mittel | eingeplant | GEB6 | Werkstatt und Bäume aus tools/gebaeude erscheinen im Spiel |
-| [B-439](B-439-planung-erpqs-look.md) | DEV | Idee | mittel | eingeplant | WZ5 | Die Planungsseite von k3c-dev zeigt und bedient die Planung wie die erp-qs-Workbench |
 | [B-440](B-440-dev-test-entwurfs-sprints-ohne-sessions.md) | DEV | Problem | mittel | offen | – | k3c-dev-Planungstest lehnt Entwurfs-Sprints ohne Sessions ab |
 | [B-443](B-443-dev-logs-scrollen-liste.md) | DEV | Problem | mittel | offen | – | Auf der Log-Seite von k3c-dev scrollt nur die Log-Liste, nicht die ganze Seite |
 | [B-444](B-444-vite-ports-plus-zehn.md) | DEV | Problem | mittel | offen | – | Vite-Ports von Spiel und k3c-dev liegen 10 höher und kollidieren nicht mit dem Vite-Standardport |
@@ -151,6 +150,12 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-456](B-456-fahne-spielerfarbe-wimpel.md) | CLI | Idee | mittel | offen | – | Markierungsfahne als Wimpel in Spielerfarbe |
 | [B-457](B-457-geb6-abnahme-splitscreen-ausgang-geschmack.md) | CLI | Frage | mittel | offen | – | GEB6: Split-Screen, Ausgang-Beschriftung und Geschmacksfragen später prüfen |
 | [B-458](B-458-hub-ausbau-wachstum-feinstufen.md) | DEV | Idee | hoch | offen | – | Hub wächst in Ausbaustufen sichtbar und kleinteilig (Lagerfeuer bis Burg, K2C-Stil) |
+| [B-459](B-459-asset-werkzeug-eigene-exe.md) | DEV | Idee | hoch | eingeplant | WZ6 | Die Asset-Seiten für Grafik und Sound laufen in einer eigenen EXE getrennt von der Workbench |
+| [B-460](B-460-welt-betrachter-live-vorschau.md) | DEV | Idee | hoch | eingeplant | WZ7 | Der Welt-Betrachter im Asset-Studio zeigt Chunks maximiert und eine Live-Vorschau mit Hub-Stufen und schaltbaren Gebäuden |
+| [B-461](B-461-chunks-je-biom-planbar.md) | SIM | Idee | mittel | eingeplant | WZ8 | Chunks eines Bioms lassen sich individuell planen, per Seed oder mit festen Gebäuden und Objekten |
+| [B-462](B-462-gebaeude-planer-hub-stufen.md) | DEV | Idee | mittel | eingeplant | WZ9 | Ein Gebäude-Planer bearbeitet, welches Gebäude ab welcher Hub-Stufe verfügbar ist |
+| [B-463](B-463-monarch-vorschau-animationen.md) | DEV | Idee | mittel | eingeplant | WZ10 | Eine Monarch-Seite im Asset-Studio zeigt Reiten, Schlagen, Skills und weitere Vorschauen |
+| [B-464](B-464-gegner-bosse-vorschau.md) | DEV | Idee | mittel | eingeplant | WZ10 | Eine Gegner-Seite im Asset-Studio zeigt alle Gegnertypen und Bosse mit ihren Vorschauen |
 
 ## Archiv
 
@@ -420,3 +425,4 @@ Zeile in diesen Abschnitt.
 | [B-448](archiv/B-448-planning-testrepo-entwurf-sprint.md) | DEV | Problem | mittel | erledigt | – | dev:test TestRepo scheitert an Entwurfs-Sprints ohne Sessions (GEB7) |
 | [B-451](archiv/B-451-geb6-abnahme-sichtpruefung.md) | CLI | Frage | hoch | erledigt | – | GEB6: Abnahme von Vorschau und Spiel durch Ralf |
 | [B-452](archiv/B-452-geb7-abnahme-sichtpruefung.md) | CLI | Frage | hoch | erledigt | GEB7 | GEB7: Abnahme von Vorschau und Spiel durch Ralf |
+| [B-439](archiv/B-439-planung-erpqs-look.md) | DEV | Idee | mittel | erledigt | WZ5 | Die Planungsseite von k3c-dev zeigt und bedient die Planung wie die erp-qs-Workbench |
