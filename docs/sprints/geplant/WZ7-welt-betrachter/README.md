@@ -67,9 +67,7 @@ Entschieden von 🧑 am 2026-10-17 (Chat), siehe `B-460 › Offene Fragen` 1–5
 
 Querschnitts-Entscheidungen WZ7–WZ10 (Planung, gelten mit der Freigabe), siehe `B-460 › Offene Fragen` 6–9: Snapshot mit Options-Struktur ohne globalen Zustand, eigene Tageszeit-Setzfunktion für die drei Sim-Phasen mit vier Einträgen in der Oberfläche (Morgengrauen als `night` 0,9 + 0,1·p, bis B-470 eine echte Phase baut), Phaser-Bühne aus WZ7.3 für WZ10, Chunk-Quelle Biom oder Insel + Stufe.
 
-Beantwortet von 🧑 am 2026-10-17 (Chat), siehe `B-460 › Offene Fragen` 10–13: Hub-Stufe reihum wie im Voll-Ausbau; keine Bürger und keine Gegner, dafür die Umgebung; kein HTTP-Endpunkt (Wails-Binding); Nacht und Morgengrauen generell dunkler mit Licht von Fackeln und Lagerfeuern, ausgelagert in B-472 (nicht Teil von WZ7).
-
-Von 🧑 bestätigt (2026-10-17): „Umgebung“ heißt Gelände, Natur-Objekte und Hintergrund-Schichten; der Schalter „Bürger ein/aus“ entfällt, die Vorschau zeigt weder Bürger noch Gegner. Frage 10 (Hub-Stufe reihum) präzisiert den Aufbau des Bildes in WZ7.1/WZ7.3.
+Beantwortet von 🧑 am 2026-10-17 (Chat), siehe `B-460 › Offene Fragen` 10–13: Hub-Stufe reihum wie im Voll-Ausbau; keine Bürger und keine Gegner, dafür die Umgebung; kein HTTP-Endpunkt (Wails-Binding); Nacht und Morgengrauen generell dunkler mit Licht von Fackeln und Lagerfeuern, ausgelagert in B-472 (nicht Teil von WZ7; ändert `daylight()`, auf das WZ7.4/AC-05 testet, wer später landet zieht nach).
 
 ## Sessions
 
