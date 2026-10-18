@@ -36,6 +36,8 @@ In Abarbeitungs-Reihenfolge; der erste nicht erledigte Sprint ist der nächste. 
 | WZ13 | Glossar und Regeln: Verweis für das Morgengrauen auf B-470 | erledigt |
 | WZ14 | Geplante Chunks tragen Ruinen und Gegnerlager | geplant |
 | WZ17 | Chunk-Editor komfortabel: Inselgrößen, getrennter Zoom, Seed-Chunk umwandeln | geplant |
+| WZ18 | Welten im Spiel: Welt-Dateien, Welt-Wahl im Raum und Welten-Editor | geplant |
+| WZ19 | Chat im Studio mit Claude Code CLI und Welt per Prompt füllen | geplant |
 
 ## Nicht-Ziele
 
