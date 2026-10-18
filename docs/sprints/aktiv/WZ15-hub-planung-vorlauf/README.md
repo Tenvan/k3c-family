@@ -78,7 +78,7 @@ Offen: keine.
 
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
-| WZ15.1 | `WZ15.1-regeltabelle-form.md` | Umsetzung | autonom | offen |
+| WZ15.1 | `WZ15.1-regeltabelle-form.md` | Umsetzung | autonom | fertig |
 | WZ15.2 | `WZ15.2-regeltabelle-generator.md` | Umsetzung | autonom | offen |
 | WZ15.3 | `WZ15.3-pruefung-kandidat.md` | Umsetzung | autonom | offen |
 | WZ15.4 | `WZ15.4-review.md` | Review | autonom | offen |
