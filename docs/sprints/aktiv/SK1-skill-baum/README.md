@@ -1,14 +1,14 @@
 # SK1 · SIM · Skill-Baum mit Tank und Zauberer, Respec-Regeln abfragbar
 
-- **Status:** geplant
+- **Status:** aktiv
 - **Projekt:** SKL
 - **Domäne:** SIM
 - **Reife:** bereit
 - **Tickets:** B-007, B-270
-- **Start-Commit:** –
-- **Spec:** Entwurf
+- **Start-Commit:** f62db6a6
+- **Spec:** freigegeben
 - **Revision:** 1
-- **Freigabe:** –
+- **Freigabe:** 2026-10-18, Chat (Ralf), Revision 1
 
 ## Ausgangslage
 
@@ -61,7 +61,7 @@ keine
 
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
-| SK1.1 | `SK1.1-pruefungen-ohne-seiteneffekt.md` | Umsetzung | autonom | offen |
+| SK1.1 | `SK1.1-pruefungen-ohne-seiteneffekt.md` | Umsetzung | autonom | in Arbeit |
 | SK1.2 | `SK1.2-skill-baum-nachweis.md` | Umsetzung | autonom | offen |
 | SK1.3 | `SK1.3-ereignis-ohne-ziel.md` | Umsetzung | autonom | verworfen |
 | SK1.4 | `SK1.4-review.md` | Review | autonom | offen |

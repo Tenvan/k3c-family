@@ -14,7 +14,7 @@ In Abarbeitungs-Reihenfolge; der erste nicht erledigte Sprint ist der nächste. 
 
 | Sprint | Thema | Status |
 |---|---|---|
-| SK1 | Skill-Baum mit Tank und Zauberer, Respec-Regeln abfragbar | geplant |
+| SK1 | Skill-Baum mit Tank und Zauberer, Respec-Regeln abfragbar | aktiv |
 | RM1 | Raum-Pause im Couch-Raum und lernbare Skills vom Server | geplant |
 
 ## Nicht-Ziele

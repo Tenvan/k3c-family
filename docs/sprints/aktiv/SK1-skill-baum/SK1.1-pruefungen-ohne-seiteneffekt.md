@@ -1,6 +1,6 @@
 # SK1.1 · Lern- und Respec-Regeln ohne Seiteneffekt abfragbar
 
-- **Status:** offen
+- **Status:** in Arbeit
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** SIM
