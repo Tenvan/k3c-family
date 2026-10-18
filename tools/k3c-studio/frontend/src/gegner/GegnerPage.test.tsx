@@ -48,7 +48,7 @@ describe('Gegner-Seite (B-464/AC-01 bis AC-06, AC-13)', () => {
   it('zeigt die Gruppen je Biom nach Tiefe und als erste den Wald mit den Gegnern von Portal und Nacht', async () => {
     const h = await mount();
     const group = field(h, 'Gruppe');
-    expect([...group.options].map((o) => o.textContent)).toEqual([...BIOMES].sort((a, b) => a.depth - b.depth).map((b) => b.name).concat('ohne Biom'));
+    expect([...group.options].map((o) => o.textContent)).toEqual([...BIOMES].sort((a, b) => a.depth - b.depth).map((b) => b.name).concat('ohne Biom', 'Bosse (je Tiefe)'));
     expect(lastItems().map((i) => i.id)).toEqual(['enemy-greed', 'enemy-goblin', 'enemy-goblinArcher', 'enemy-wolf']);
     expect([...h.querySelectorAll('.wd-card')].map((c) => (c as HTMLElement).dataset.enemy)).toEqual(['greed', 'goblin', 'goblinArcher', 'wolf']);
   });
@@ -89,5 +89,20 @@ describe('Gegner-Seite (B-464/AC-01 bis AC-06, AC-13)', () => {
     await choose(pick, '1');
     expect(lastItems()[0]!.spec.sheet).toBe('hell-hound');
     expect(set).not.toHaveBeenCalled();
+  });
+
+  it('Gruppe „Bosse“: 6 Bosse mit Lücken der Anzeigen, Rückfall-Grafik und Fähigkeit', async () => {
+    const h = await mount();
+    await choose(field(h, 'Gruppe'), 'bosse');
+    expect(lastItems().map((i) => i.id)).toEqual(['goblinLeader', 'trollKing', 'ratQueen', 'lavaGolem', 'shardTitan', 'crystalHeartWarden'].map((id) => `enemy-${id}`));
+    const goblin = h.querySelector('[data-enemy="goblinLeader"]')!;
+    expect(goblin.textContent).toContain('Boss-Leiste');
+    expect(goblin.textContent).toContain('Event-Banner');
+    expect(goblin.textContent).not.toContain('Warnkreis');
+    expect(goblin.textContent).toContain('keine eigene Boss-Grafik');
+    const warden = h.querySelector('[data-enemy="crystalHeartWarden"]')!;
+    for (const what of ['Warnkreis', 'Boss-Leiste', 'Phasen-Text', 'Event-Banner']) expect(warden.textContent).toContain(what);
+    expect(warden.textContent).toContain('Endboss');
+    expect(h.querySelectorAll('.wd-boss .wd-gap')).toHaveLength(15);
   });
 });

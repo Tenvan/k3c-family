@@ -36,6 +36,14 @@ export interface TraitView {
   gap: Gap | null;
 }
 
+/** Zusatz einer Boss-Karte (bossLogic.ts): Art, Fähigkeit, Phasen und die Lücken der Anzeigen, die das Spiel noch nicht zeichnet */
+export interface BossInfo {
+  kind: 'mini' | 'end';
+  ability: string;
+  phases: string[];
+  displays: Gap[];
+}
+
 export interface EnemyCard {
   id: string;
   /** null = der Gegner steht im Biom, fehlt aber in `data/enemies.json` */
@@ -44,6 +52,8 @@ export interface EnemyCard {
   traits: TraitView[];
   /** Lücken der Karte: fehlende Daten, Rückfall-Grafik */
   gaps: Gap[];
+  /** nur bei Bossen */
+  boss?: BossInfo;
 }
 
 /** Das Spiel zeichnet kein Merkmal besonders (nur `src/model` kennt die Merkmale); `flying` zeigt sich über die Höhe `y`

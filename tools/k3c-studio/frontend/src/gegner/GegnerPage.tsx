@@ -6,7 +6,11 @@ import { FigureStage } from '../abspiel/FigureStage';
 import { GapBadge, PlaybackControls } from '../abspiel/PlaybackControls';
 import { slotOptions } from '../monarch/monarchLogic';
 import type { FigureInfo } from '../stage/PreviewStage';
-import { ENEMY_ACTIONS, ENEMY_ANIMS, cardOf, enemyItems, groups, type EnemyActionId, type EnemyCard } from './enemyLogic';
+import { bossCards } from './bossLogic';
+import { ENEMY_ACTIONS, ENEMY_ANIMS, cardOf, enemyItems, groups, type EnemyActionId, type EnemyCard, type Group } from './enemyLogic';
+
+/** Gruppe der Bosse: je Tiefe einer (5 Minibosse und der Endboss), Daten aus `data/bosses.json` */
+const BOSS_GROUP_ID = 'bosse';
 
 /** Slot-Register des Studios (nur lesen): Zuordnungen der Slots je Gegner-ID als Vorschau-Auswahl */
 function useSlots(): AssetSlot[] {
@@ -20,15 +24,22 @@ function useSlots(): AssetSlot[] {
 }
 
 function CardRow({ card, slots, pick, onPick, gap }: { card: EnemyCard; slots: AssetSlot[]; pick: number; onPick: (n: number) => void; gap: FigureInfo['gap'] | undefined }) {
-  const options = slotOptions(slots, card.id);
+  const options = slotOptions(slots, card.boss ? 'boss' : card.id);
   const d = card.def;
   return (
     <li className="wd-card" data-enemy={card.id}>
       <Text size="2" weight="bold">{d?.name ?? card.id}</Text>
-      <Text size="1" color="gray">{d ? `${card.id} · ${d.tier} · Tiefe ${d.depth} · ${d.hp} HP · ${d.damage} Schaden · Tempo ${d.speed} · Reichweite ${d.range}` : card.id}</Text>
+      <Text size="1" color="gray">{d ? (card.boss ? `${card.id} · Tiefe ${d.depth} · Tempo ${d.speed} · Reichweite ${d.range}` : `${card.id} · ${d.tier} · Tiefe ${d.depth} · ${d.hp} HP · ${d.damage} Schaden · Tempo ${d.speed} · Reichweite ${d.range}`) : card.id}</Text>
       <span className="wd-traits">
         {card.traits.map((t) => <span key={t.trait} className="wd-trait" data-trait={t.trait}>{t.trait}{t.gap && <GapBadge gap={t.gap} />}</span>)}
       </span>
+      {card.boss && (
+        <span className="wd-boss">
+          <Text size="1">{card.boss.kind === 'end' ? 'Endboss' : 'Miniboss'}{card.boss.ability ? ` · ${card.boss.ability}` : ''}</Text>
+          {card.boss.phases.map((p) => <Text key={p} size="1" color="gray">{p}</Text>)}
+          {card.boss.displays.map((g) => <GapBadge key={g.reason} gap={g} />)}
+        </span>
+      )}
       {card.gaps.map((g) => <GapBadge key={g.reason} gap={g} />)}
       <GapBadge gap={gap} />
       {options.length > 0 && (
@@ -45,7 +56,7 @@ function CardRow({ card, slots, pick, onPick, gap }: { card: EnemyCard; slots: A
  *  Monarch-Vergleich auf derselben Bodenlinie, Grafik-Auswahl je Gegner-ID als Vorschau (das Register bleibt unverändert). */
 export function GegnerPage() {
   const slots = useSlots();
-  const all = useMemo(groups, []);
+  const all = useMemo<Group[]>(() => [...groups(), { id: BOSS_GROUP_ID, title: 'Bosse (je Tiefe)', depth: null, ids: [] }], []);
   const [groupId, setGroupId] = useState(all[0]!.id);
   const [anim, setAnim] = useState<Anim>('idle');
   const [actionId, setActionId] = useState<EnemyActionId | ''>('');
@@ -54,10 +65,10 @@ export function GegnerPage() {
   const [infos, setInfos] = useState<FigureInfo[]>([]);
   const [picks, setPicks] = useState<Record<string, number>>({});
   const group = all.find((g) => g.id === groupId) ?? all[0]!;
-  const cards = useMemo(() => group.ids.map(cardOf), [group]);
+  const cards = useMemo(() => (group.id === BOSS_GROUP_ID ? bossCards() : group.ids.map(cardOf)), [group]);
   const sheets: Record<string, string | undefined> = {};
   for (const c of cards) {
-    const options = slotOptions(slots, c.id);
+    const options = slotOptions(slots, c.boss ? 'boss' : c.id);
     const chosen = options.find((o) => o.index === (picks[c.id] ?? 0)) ?? options[0];
     sheets[c.id] = chosen && !chosen.gap ? chosen.sheet : undefined;
   }

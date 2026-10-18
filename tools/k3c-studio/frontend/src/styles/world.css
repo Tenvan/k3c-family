@@ -51,3 +51,4 @@
 .wd-traits { display: inline-flex; gap: 6px; flex-wrap: wrap; }
 .wd-trait { font-size: 0.75rem; color: var(--gray-11); }
 .wd-gegner .wd-stage { min-height: 22rem; }
+.wd-boss { display: flex; flex-direction: column; gap: 2px; }
