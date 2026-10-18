@@ -79,7 +79,7 @@ Nichts Blockierendes offen.
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
 | WZ17.1 | `WZ17.1-workshop-chunk-anzahl.md` | Workshop | Mensch | fertig |
-| WZ17.2 | `WZ17.2-generator-chunk-anzahl.md` | Umsetzung | autonom | in Arbeit |
+| WZ17.2 | `WZ17.2-generator-chunk-anzahl.md` | Umsetzung | autonom | fertig |
 | WZ17.3 | `WZ17.3-vorschau-option-chunk-anzahl.md` | Umsetzung | autonom | offen |
 | WZ17.4 | `WZ17.4-listen-icons-zoom.md` | Umsetzung | autonom | offen |
 | WZ17.5 | `WZ17.5-editor-groessen-umwandlung.md` | Umsetzung | autonom | offen |
