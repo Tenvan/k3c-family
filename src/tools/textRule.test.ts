@@ -67,7 +67,7 @@ describe('Keine deutschen Text-Literale in den Werkzeug-Seiten (PL2 AC-01)', () 
   const checked = all.filter(([name]) => !(name in DATEN));
 
   it('findet die Dateien, und jeder Eintrag in DATEN existiert', () => {
-    expect(checked.map(([n]) => n)).toEqual(expect.arrayContaining(['./leveltest.ts', './soundtest.ts']));
+    expect(checked.map(([n]) => n)).toEqual(expect.arrayContaining(['./dm.ts', './soundtest.ts']));
     for (const name of Object.keys(DATEN)) expect(sources[name], name).toBeDefined();
   });
 
@@ -80,7 +80,7 @@ describe('Keine deutschen Text-Literale in den Werkzeug-Seiten (PL2 AC-01)', () 
       "const a = 'Nacht naht!'; // schöner Kommentar mit Umlaut",
       'const b = `${x} wartet auf Bauer`;',
       "clientLog('warn', 'Nachricht des Servers nicht lesbar');",
-      "const c = { fontFamily: 'sans-serif', color: '#ffffff', k: t('level.load') };",
+      "const c = { fontFamily: 'sans-serif', color: '#ffffff', k: t('sound.volUp') };",
       'el.innerHTML = `<span class="mark"></span><span class="name"></span>`;',
       "const items = document.querySelectorAll('main button, main input'); ctx.font = '12px system-ui, sans-serif';",
       "/* ein Block mit zwei Wörtern */ const d = 'wood';",

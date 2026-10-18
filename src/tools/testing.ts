@@ -1,13 +1,12 @@
 import { installPageChrome, openPage } from '../core/shell';
 import { SCENARIOS, scenarioUrl } from './testScenarios';
 import { applyTexts, t } from './texts';
-import { LEVEL_TILES, nextFocus } from './testTiles';
+import { nextFocus } from './testTiles';
 
 installPageChrome();
 applyTexts();
 
 const list = document.getElementById('scenarios')!;
-const levels = document.getElementById('levels')!;
 const note = document.getElementById('note')!;
 
 function addTile(parent: HTMLElement, titleText: string, descriptionText: string, onClick: () => void): void {
@@ -26,12 +25,6 @@ for (const scenario of SCENARIOS) {
   addTile(list, scenario.title, scenario.description, () => {
     note.textContent = t('test.starting', { title: scenario.title });
     openPage(scenarioUrl(scenario, Date.now().toString(36))); // Uhrzeit als Kennung: jeder Start bekommt einen neuen Spielstand
-  });
-}
-for (const tile of LEVEL_TILES) {
-  addTile(levels, tile.title, tile.description, () => {
-    note.textContent = t('tool.opening', { title: tile.title });
-    openPage(tile.href);
   });
 }
 

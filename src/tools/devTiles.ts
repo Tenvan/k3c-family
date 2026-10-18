@@ -54,7 +54,6 @@ const section = (id: DevSection['id'], tiles: readonly DevTile[]): DevSection =>
 export const DEV_SECTIONS: readonly DevSection[] = [
   section('dev', [
     tile('testing', '🧪', 'testing.html'),
-    tile('level', '🗺️', 'leveltest.html'),
     tile('gamepad', '🎮', 'gamepad-test.html'),
     tile('grafiken', '🏰', 'grafiken.html'),
     tile('sound', '🔊', 'soundtest.html'),

@@ -22,19 +22,19 @@ describe('Textdateien der Werkzeug-Seiten (PL2 AC-01)', () => {
 
 describe('t() der Werkzeug-Seiten', () => {
   it('liefert die gewählte Sprache und ersetzt Platzhalter', () => {
-    expect(t('level.objectTitle', { kind: 'tree', x: 12 })).toBe('tree bei 12 Units');
+    expect(t('test.starting', { title: 'Wald' })).toBe('Starte „Wald“ …');
     setLanguage('en');
-    expect(t('level.objectTitle', { kind: 'tree', x: 12 })).toBe('tree at 12 units');
+    expect(t('test.starting', { title: 'Wald' })).toBe('Starting “Wald” …');
   });
 
   it('fällt auf Deutsch zurück, wenn der englische Text fehlt', () => {
     setLanguage('en');
-    const saved = en['level.load'];
-    delete en['level.load'];
+    const saved = en['sound.volUp'];
+    delete en['sound.volUp'];
     try {
-      expect(t('level.load')).toBe('Laden');
+      expect(t('sound.volUp')).toBe('Lauter +');
     } finally {
-      en['level.load'] = saved;
+      en['sound.volUp'] = saved;
     }
   });
 });
@@ -47,10 +47,10 @@ describe('applyTexts()', () => {
 
   it('setzt Inhalt, aria-label und Platzhalter; ein unbekannter Schlüssel lässt den HTML-Text stehen', () => {
     setLanguage('en');
-    const els = [target({ t: 'level.load' }), target({ tAria: 'sound.volUpAria', t: 'sound.volUp' }), target({ tPlaceholder: 'level.seed' }), target({ t: 'gibt.es.nicht' })];
+    const els = [target({ t: 'tool.opening' }), target({ tAria: 'sound.volUpAria', t: 'sound.volUp' }), target({ tPlaceholder: 'test.h.players' }), target({ t: 'gibt.es.nicht' })];
     applyTexts({ querySelectorAll: () => els });
-    expect(els.map((e) => e.textContent)).toEqual(['Load', 'Louder +', 'alt', 'alt']);
+    expect(els.map((e) => e.textContent)).toEqual(['Opening “{title}” …', 'Louder +', 'alt', 'alt']);
     expect(els[1]!.attrs).toEqual({ 'aria-label': 'Louder' });
-    expect(els[2]!.attrs).toEqual({ placeholder: 'Seed' });
+    expect(els[2]!.attrs).toEqual({ placeholder: 'Players' });
   });
 });
