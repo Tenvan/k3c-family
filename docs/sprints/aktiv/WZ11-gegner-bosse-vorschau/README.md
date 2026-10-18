@@ -126,7 +126,7 @@ Vor der Freigabe offen: nichts.
 | WZ11.1 | `WZ11.1-gegner-seite.md` | Umsetzung | autonom | fertig |
 | WZ11.2 | `WZ11.2-bosse.md` | Umsetzung | autonom | fertig |
 | WZ11.3 | `WZ11.3-figuren-seiten-entfernen.md` | Umsetzung | autonom | fertig |
-| WZ11.4 | `WZ11.4-review.md` | Review | autonom | offen |
+| WZ11.4 | `WZ11.4-review.md` | Review | autonom | fertig |
 | WZ11.5 | `WZ11.5-abnahme.md` | Review | Mensch | offen |
 
 - WZ11.1 (DEV) Gegner-Seite: Gegnertypen nach Biom, Animationen mit `tint`/`scale`/`alpha`/`y`, Rückfall `idle`, Getroffen/Sterben, Merkmale, Monarch-Vergleich, Grafik-Auswahl je Gegner-ID (AC-01, AC-02, AC-03, AC-04, AC-05, AC-06, AC-13, AC-14, AC-15, AC-16)
@@ -139,5 +139,7 @@ Bei `Reife: Entwurf` genügen Stichpunkte; vor dem Aktivieren wird jede Session 
 
 ## Abnahme
 
-Wird von der Review-Session (Doku-Sprint: letzte Session) ausgefüllt, höchstens fünf Zeilen: Datum, Kriterien
-(Verweis auf Session-Ergebnisse), behobene Befunde, neue Tickets. Bis dahin `–`.
+2026-10-18, Review WZ11.4 (autonom, getrennter Reviewer): AC-01 bis AC-08, AC-12 bis AC-16, AC-18, AC-19 geprüft; AC-09 bis AC-11 verschoben (B-469); AC-17 offen (WZ11.5).
+Behoben: AC-06 (Zusatzfelder `swarmSize`, `aoe`, `phases`, `kiteDistance` an der Karte, mit Lücke). Keine neuen Tickets.
+Lücken-Liste und Abnahme-Liste: `WZ11.5-abnahme.md` › Kontext.
+Version: v– vorgeschlagen (keine, reines Entwickler-Werkzeug).

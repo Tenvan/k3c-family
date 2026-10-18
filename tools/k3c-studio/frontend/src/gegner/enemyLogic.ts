@@ -19,6 +19,11 @@ export interface EnemyDef {
   range: number;
   attacksPerSecond: number;
   traits: string[];
+  /** Zusatzfelder einzelner Gegner (B-464/AC-06) */
+  swarmSize?: number;
+  aoe?: { radius: number; intervalSeconds: number };
+  phases?: { everySeconds: number; durationSeconds: number };
+  kiteDistance?: number;
 }
 
 const DEFS = enemiesJson as unknown as Record<string, EnemyDef>;
@@ -44,12 +49,21 @@ export interface BossInfo {
   displays: Gap[];
 }
 
+/** Zusatzfeld einer Karte (`swarmSize`, `aoe`, `phases`, `kiteDistance`) mit Wert; das Spiel zeichnet keines davon besonders. */
+export interface ExtraView {
+  field: string;
+  value: string;
+  gap: Gap | null;
+}
+
 export interface EnemyCard {
   id: string;
   /** null = der Gegner steht im Biom, fehlt aber in `data/enemies.json` */
   def: EnemyDef | null;
   spec: FigureSpec;
   traits: TraitView[];
+  /** Zusatzfelder aus `data/enemies.json` */
+  extras: ExtraView[];
   /** Lücken der Karte: fehlende Daten, Rückfall-Grafik */
   gaps: Gap[];
   /** nur bei Bossen */
@@ -63,6 +77,18 @@ function traitView(trait: string, spec: FigureSpec): TraitView {
   return { trait, gap: gap('display', `Lücke: Merkmal ${trait} ohne Darstellung im Spiel`) };
 }
 
+/** Zusatzfelder des Gegners als Text (Wert aus den Daten); ohne Darstellung im Spiel mit Lücke. */
+export function extrasOf(def: EnemyDef | null): ExtraView[] {
+  if (!def) return [];
+  const out: [string, string | undefined][] = [
+    ['swarmSize', def.swarmSize === undefined ? undefined : String(def.swarmSize)],
+    ['aoe', def.aoe ? `Radius ${def.aoe.radius}, alle ${def.aoe.intervalSeconds} s` : undefined],
+    ['phases', def.phases ? `alle ${def.phases.everySeconds} s für ${def.phases.durationSeconds} s` : undefined],
+    ['kiteDistance', def.kiteDistance === undefined ? undefined : String(def.kiteDistance)],
+  ];
+  return out.flatMap(([field, value]) => (value === undefined ? [] : [{ field, value, gap: gap('display', `Lücke: ${field} ohne Darstellung im Spiel`) }]));
+}
+
 /** Karte eines Gegners: Daten, Grafik (Rückfall `goblin` mit Lücke „keine eigene Grafik“), Merkmale. Ein Gegner ohne
  *  Eintrag in `data/enemies.json` ergibt eine Karte mit Lücke, keinen Absturz. */
 export function cardOf(id: string): EnemyCard {
@@ -72,7 +98,7 @@ export function cardOf(id: string): EnemyCard {
   const gaps: Gap[] = [];
   if (!def) gaps.push(gap('display', 'Lücke: Gegner fehlt in data/enemies.json'));
   if (!own) gaps.push(gap('sheet', 'Lücke: keine eigene Grafik'));
-  return { id, def, spec, traits: (def?.traits ?? []).map((t) => traitView(t, spec)), gaps };
+  return { id, def, spec, traits: (def?.traits ?? []).map((t) => traitView(t, spec)), extras: extrasOf(def), gaps };
 }
 
 export interface Group {

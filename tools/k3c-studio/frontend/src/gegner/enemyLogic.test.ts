@@ -102,4 +102,21 @@ describe('Monarch-Vergleich (B-464/AC-13)', () => {
     expect(items.slice(1).every((i) => i.mount === undefined)).toBe(true);
     expect(enemyItems([cardOf('greed')], { anim: 'idle' })).toHaveLength(1);
   });
+
+  it('Zusatzfelder swarmSize, aoe, phases und kiteDistance stehen an der Karte, ohne Darstellung im Spiel mit Lücke (B-464/AC-06)', () => {
+    const fields = (id: string) => cardOf(id).extras.map((x) => x.field);
+    expect(fields('ratSwarm')).toEqual(['swarmSize']);
+    expect(fields('shardling')).toEqual(['swarmSize']);
+    expect(fields('caveTroll')).toEqual(['aoe']);
+    expect(fields('crystalGuardian')).toEqual(['aoe']);
+    expect(fields('mineGhost')).toEqual(['phases']);
+    expect(fields('goblinArcher')).toEqual(['kiteDistance']);
+    expect(fields('fireSpirit')).toEqual(['kiteDistance']);
+    expect(fields('greed')).toEqual([]);
+    const aoe = cardOf('caveTroll').extras[0]!;
+    expect(aoe.value).toBe('Radius 3, alle 4 s');
+    expect(aoe.gap?.reason).toBe('Lücke: aoe ohne Darstellung im Spiel');
+    expect(cardOf('ratSwarm').extras[0]!.value).toBe('4');
+    expect(cardOf('gibtsnicht').extras).toEqual([]);
+  });
 });

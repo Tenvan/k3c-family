@@ -106,3 +106,14 @@ describe('Gegner-Seite (B-464/AC-01 bis AC-06, AC-13)', () => {
     expect(h.querySelectorAll('.wd-boss .wd-gap')).toHaveLength(15);
   });
 });
+
+describe('Gegner-Seite: Zusatzfelder (B-464/AC-06)', () => {
+  it('Zusatzfelder stehen an der Karte (Höhlentroll: aoe, Rattenschwarm: swarmSize) mit Lücke', async () => {
+    const h = await mount();
+    await choose(field(h, 'Gruppe'), 'cave');
+    expect(h.querySelector('[data-enemy="caveTroll"] [data-extra="aoe"]')!.textContent).toContain('Radius 3');
+    expect(h.querySelector('[data-enemy="caveTroll"] [data-extra="aoe"] .wd-gap')).not.toBeNull();
+    await choose(field(h, 'Gruppe'), 'mine');
+    expect(h.querySelector('[data-extra="swarmSize"]')).not.toBeNull();
+  });
+});

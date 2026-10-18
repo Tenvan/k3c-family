@@ -85,7 +85,7 @@ export function bossCard(b: BossData): EnemyCard {
   };
   return {
     id: b.id, def: { name: b.name, depth: b.depth, tier: b.kind === 'end' ? 'Endboss' : 'Miniboss', hp: 0, damage: 0, speed: b.speed, range: b.range, attacksPerSecond: 0, traits: [] },
-    spec: base.spec, traits: [], gaps: [gap('sheet', 'Lücke: keine eigene Boss-Grafik')], boss: info,
+    spec: base.spec, traits: [], extras: [], gaps: [gap('sheet', 'Lücke: keine eigene Boss-Grafik')], boss: info,
   };
 }
 

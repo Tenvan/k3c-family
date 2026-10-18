@@ -33,6 +33,7 @@ function CardRow({ card, slots, pick, onPick, gap }: { card: EnemyCard; slots: A
       <span className="wd-traits">
         {card.traits.map((t) => <span key={t.trait} className="wd-trait" data-trait={t.trait}>{t.trait}{t.gap && <GapBadge gap={t.gap} />}</span>)}
       </span>
+      {card.extras.map((x) => <span key={x.field} className="wd-trait" data-extra={x.field}>{x.field} {x.value}{x.gap && <GapBadge gap={x.gap} />}</span>)}
       {card.boss && (
         <span className="wd-boss">
           <Text size="1">{card.boss.kind === 'end' ? 'Endboss' : 'Miniboss'}{card.boss.ability ? ` · ${card.boss.ability}` : ''}</Text>
