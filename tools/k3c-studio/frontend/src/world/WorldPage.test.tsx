@@ -36,7 +36,14 @@ async function mount(): Promise<HTMLElement> {
 const button = (h: HTMLElement, label: string) => [...h.querySelectorAll('button')].find((b) => b.textContent === label || b.getAttribute('aria-label') === label)!;
 const live = (h: HTMLElement) => h.querySelector<HTMLElement>('.wd-live')!;
 const page = (h: HTMLElement) => h.querySelector<HTMLElement>('.wd-page')!;
-const position = (h: HTMLElement) => h.querySelector<HTMLInputElement>('input[aria-label="Position"]')!;
+const position = (h: HTMLElement) => h.querySelector<HTMLElement>('[role="slider"][aria-label="Position"]')!;
+/** Klick auf die Spur des Bereichs-Schiebers bei Weltposition x (die Spur misst im Test 1000 px). */
+const seek = (h: HTMLElement, x: number) => act(async () => {
+  const track = h.querySelector<HTMLElement>('.wd-range')!;
+  track.getBoundingClientRect = () => ({ left: 0, width: 1000, top: 0, height: 20, right: 1000, bottom: 20, x: 0, y: 0, toJSON: () => ({}) });
+  const units = Number(h.querySelector('.wd-note')!.textContent!.match(/(\d+) Units/)![1]);
+  track.dispatchEvent(new MouseEvent('pointerdown', { bubbles: true, clientX: (x / units) * 1000 }));
+});
 const stripWidth = (h: HTMLElement) => parseFloat(h.querySelector<HTMLElement>('.wd-strip')!.style.width);
 /** Mausrad mit Alt an `send` schicken; true, wenn die Seite das Ereignis abgebrochen hat. */
 const altWheel = (send: (e: WheelEvent) => void, deltaY: number) => {
@@ -82,7 +89,7 @@ describe('Seite Welt-Betrachter: Chunk-Vorschau (B-460/AC-01, AC-02)', () => {
 
   it('hat genau eine Positions-Leiste und der Streifen scrollt nicht selbst (B-477/AC-01)', async () => {
     const h = await mount();
-    expect(h.querySelectorAll('input[aria-label="Position"]')).toHaveLength(1);
+    expect(h.querySelectorAll('[aria-label="Position"]')).toHaveLength(1);
     expect(h.querySelector('.wd-viewport')!.tagName).toBe('DIV');
   });
 
@@ -121,14 +128,14 @@ describe('Seite Welt-Betrachter: gemeinsame Ansicht (B-477/AC-01 bis AC-03)', ()
     expect(views.at(-1)!.scale).toBe(scaleOfPercent(50));
   });
 
-  it('die Positions-Leiste (Weltposition der Bildmitte) bewegt Streifen und Bühne gemeinsam (B-477/AC-01)', async () => {
+  it('der Bereichs-Schieber (Weltposition der Bildmitte) bewegt Streifen und Bühne gemeinsam (B-477/AC-01, B-485/AC-05)', async () => {
     const h = await mount();
     const viewport = h.querySelector<HTMLElement>('.wd-viewport')!;
-    expect(position(h).max).not.toBe('0');
-    await setInput(position(h), '200');
+    expect(Number(position(h).getAttribute('aria-valuemax'))).toBeGreaterThan(0);
+    await seek(h, 200);
     expect(views.at(-1)!.left).toBeCloseTo(200 - 1000 / views.at(-1)!.scale / 2); // Ansicht 1000 px breit
     expect(viewport.scrollLeft).toBeCloseTo(views.at(-1)!.left * views.at(-1)!.scale);
-    await setInput(position(h), '0');
+    await seek(h, 0);
     expect(viewport.scrollLeft).toBe(0);
     expect(views.at(-1)!.left).toBe(0);
   });
@@ -195,7 +202,7 @@ describe('Seite Welt-Betrachter: Tasten und Anfragen (B-460/AC-02)', () => {
     await press('-');
     await press('-');
     expect(stripWidth(h)).toBeLessThan(base);
-    await setInput(position(h), String(Math.floor(Number(position(h).max) / 2)));
+    await seek(h, Number(position(h).getAttribute('aria-valuemax')) / 2);
     const start = views.at(-1)!.left;
     const step = 120 / views.at(-1)!.scale; // 120 Pixel je Pfeiltaste
     await press('ArrowLeft');
@@ -241,6 +248,20 @@ describe('Seite Welt-Betrachter: getrennter Zoom, gemeinsame Mitte (B-485/AC-05)
     expect(stripWidth(h)).toBeGreaterThan(before);
     expect(views.at(-1)!.scale).toBe(live);
     expect(chunkCenter(h)).toBeCloseTo(liveCenter());
+  });
+
+  it('der Griff ist so breit wie der Sichtbereich; bei verschiedenem Zoom zeigt ein zweiter Griff die Live-Vorschau (B-485/AC-05)', async () => {
+    const h = await mount();
+    const units = Number(h.querySelector('.wd-note')!.textContent!.match(/(\d+) Units/)![1]);
+    const width = () => parseFloat(position(h).style.width);
+    expect(width()).toBeCloseTo((1000 / DEFAULT_SCALE / units) * 100);
+    expect(h.querySelector('.wd-range-second')).toBeNull();
+    await act(async () => button(h, 'Hineinzoomen').click());
+    expect(width()).toBeCloseTo((1000 / (DEFAULT_SCALE * 1.25) / units) * 100);
+    altWheel(stage.wheel, -100);
+    const second = h.querySelector<HTMLElement>('.wd-range-second')!;
+    expect(parseFloat(second.style.width)).toBeCloseTo((1000 / views.at(-1)!.scale / units) * 100);
+    expect(parseFloat(second.style.width)).toBeLessThan(width());
   });
 
   it('bei verschiedenem Zoom verschiebt der Bildlauf beide um dieselbe Welt-Strecke (B-485/AC-05)', async () => {

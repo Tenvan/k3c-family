@@ -1,19 +1,21 @@
 import { Button } from '@radix-ui/themes';
-import { MAX_SCALE, MIN_SCALE, ZOOM_PERCENTS, scaleOfPercent, type JumpPoint, type Views } from './viewState';
+import { RangeSlider } from './RangeSlider';
+import { MAX_SCALE, MIN_SCALE, ZOOM_PERCENTS, scaleOfPercent, type JumpPoint, type View, type Views } from './viewState';
 
 const ZOOM_STEP = 1.25;
 const percentOf = (scale: number) => Math.round((scale / scaleOfPercent(100)) * 100);
 
 /** Leiste der Ansicht (B-477/AC-01 bis AC-03, B-485/AC-05): Zoom beider Vorschauen (Knöpfe, Regler stufenlos, feste Stufen;
- *  Regler und Stufen zeigen die Chunk-Vorschau und setzen beide gleich), Sprungpunkte und die eine Positions-Leiste. Sie
- *  führt die Weltposition der Bildmitte im Bereich `range`. Hat die Live-Vorschau einen eigenen Zoom (Alt + Rad), steht er daneben. */
-export function ViewBar({ views, range, jumps, onScale, onZoom, onCenter }: {
-  views: Views; range: [number, number]; jumps: JumpPoint[];
+ *  Regler und Stufen zeigen die Chunk-Vorschau und setzen beide gleich), Sprungpunkte und der eine Bereichs-Schieber für
+ *  die Weltposition der Bildmitte im Bereich `range`. Hat die Live-Vorschau einen eigenen Zoom (Alt + Rad), steht er
+ *  daneben und ihr Bereich erscheint als zweiter, dünner Griff. `panes` sind die Ansichten beider Vorschauen, `viewPx` ihre Breite. */
+export function ViewBar({ views, panes, viewPx, widthUnits, range, jumps, onScale, onZoom, onCenter }: {
+  views: Views; panes: { chunk: View; live: View }; viewPx: number; widthUnits: number; range: [number, number]; jumps: JumpPoint[];
   onScale: (scale: number) => void; onZoom: (factor: number) => void; onCenter: (x: number) => void;
 }) {
   const scale = views.chunk;
   const fixed = ZOOM_PERCENTS.includes(percentOf(scale));
-  const [lo, hi] = range;
+  const span = (v: View) => ({ left: v.left, units: viewPx / v.scale });
   return (
     <div className="wd-viewbar">
       <div className="wd-bar">
@@ -31,8 +33,8 @@ export function ViewBar({ views, range, jumps, onScale, onZoom, onCenter }: {
           ))}
         </span>
       </div>
-      <input className="wd-position" type="range" aria-label="Position" min={lo} max={hi} step="any"
-        value={Math.min(hi, Math.max(lo, views.center))} disabled={hi - lo < 1} onChange={(e) => onCenter(Number(e.target.value))} />
+      <RangeSlider label="Position" widthUnits={widthUnits} center={views.center} range={range} main={span(panes.chunk)}
+        second={views.live !== scale ? span(panes.live) : undefined} onCenter={onCenter} />
     </div>
   );
 }

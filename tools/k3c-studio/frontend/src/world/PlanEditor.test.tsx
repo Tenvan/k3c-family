@@ -4,7 +4,7 @@ import { act } from 'react';
 import { createRoot, type Root } from 'react-dom/client';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { backend } from '../api';
-import { iconOf } from './kindIcons';
+import { iconOf, nameOf } from './kindIcons';
 import { CHUNK_KINDS, OBJECT_KINDS } from './plan';
 import { WorldPage } from './WorldPage';
 
@@ -208,12 +208,29 @@ describe('Durchsuchbare Auswahlliste mit Emoji (B-485/AC-01)', () => {
     await type(art, 'cr');
     const ranked = options(h, 'Art Platz +1');
     expect(ranked).toHaveLength(CHUNK_KINDS.length);
-    expect(ranked[0].textContent).toBe(`${iconOf('crystals')} crystals`);
+    expect(ranked[0].textContent).toBe(`${iconOf('crystals')} Kristalle`);
     expect(ranked.filter((o) => o.classList.contains('wd-dim')).length).toBeGreaterThan(0);
     expect(ranked.findIndex((o) => o.classList.contains('wd-dim'))).toBeGreaterThan(0);
-    await act(async () => ranked.find((o) => o.textContent?.endsWith(' rocks'))!.click());
-    expect(field(h, 'Art Platz +1').value).toBe('rocks');
+    await act(async () => ranked.find((o) => o.textContent?.endsWith(' Felsen'))!.click());
+    expect(field(h, 'Art Platz +1').dataset.value).toBe('rocks');
+    expect(field(h, 'Art Platz +1').value).toBe('Felsen'); // das Feld zeigt den deutschen Namen
     expect(options(h, 'Art Platz +1')).toHaveLength(0);
+  });
+
+  it('deutscher Name in Feld und Liste: „lich“ und „clearing“ stellen die Lichtung nach oben, der Name wird zur Art', async () => {
+    const h = await mount();
+    await addChunk(h);
+    const art = field(h, 'Art Platz +1');
+    expect(art.value).toBe(nameOf(art.dataset.value!));
+    await type(art, 'lich');
+    expect(options(h, 'Art Platz +1')[0].textContent).toBe(`${iconOf('clearing')} Lichtung`);
+    await type(art, 'clearing');
+    expect(options(h, 'Art Platz +1')[0].textContent).toBe(`${iconOf('clearing')} Lichtung`);
+    await type(art, 'Lichtung');
+    expect(field(h, 'Art Platz +1').dataset.value).toBe('clearing');
+    await act(async () => art.dispatchEvent(new FocusEvent('focusout', { bubbles: true })));
+    expect(field(h, 'Art Platz +1').value).toBe('Lichtung');
+    expect(h.querySelector('.wd-strip')!.textContent).toContain('Truhe'); // auch der Streifen zeigt deutsche Namen
   });
 
   it('das Feld zeigt das Emoji der Art; das Objekt wählt man in derselben Liste', async () => {
@@ -223,11 +240,12 @@ describe('Durchsuchbare Auswahlliste mit Emoji (B-485/AC-01)', () => {
     expect(h.querySelector('.wd-planned .wd-pick-icon')!.textContent).toBe(iconOf('stream'));
     await act(async () => button(h, 'Objekt').click());
     const objekt = field(h, 'Objekt 1 Platz +1');
-    expect(objekt.value).toBe(OBJECT_KINDS[0]);
+    expect(objekt.dataset.value).toBe(OBJECT_KINDS[0]);
+    expect(objekt.value).toBe(nameOf(OBJECT_KINDS[0]));
     await act(async () => objekt.click());
     expect(options(h, 'Objekt 1 Platz +1')).toHaveLength(OBJECT_KINDS.length);
-    await act(async () => options(h, 'Objekt 1 Platz +1').find((o) => o.textContent?.endsWith(' portal'))!.click());
-    expect(field(h, 'Objekt 1 Platz +1').value).toBe('portal');
+    await act(async () => options(h, 'Objekt 1 Platz +1').find((o) => o.textContent?.endsWith(' Portal'))!.click());
+    expect(field(h, 'Objekt 1 Platz +1').dataset.value).toBe('portal');
     expect(h.querySelectorAll('.wd-object .wd-pick-icon')[0].textContent).toBe(iconOf('portal'));
   });
 });

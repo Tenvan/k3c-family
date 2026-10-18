@@ -95,7 +95,8 @@ export function WorldPage() {
   return (
     <div className="wd-page" data-maximized={maximized} ref={frame}>
       <ChunkPreview maximized={maximized} onToggle={() => setMaximized((m) => !m)} onLoaded={onLoaded} source={plan.source} view={chunkView} onWheel={(e) => onWheel(e, 'chunk')}>
-        <ViewBar views={views} range={centerRange([views.chunk, views.live], widthUnits, viewPx)} jumps={jumpPoints(model, gates)}
+        <ViewBar views={views} panes={{ chunk: chunkView, live: liveView }} viewPx={viewPx} widthUnits={widthUnits}
+          range={centerRange([views.chunk, views.live], widthUnits, viewPx)} jumps={jumpPoints(model, gates)}
           onScale={(scale) => zoom(BOTH, () => scale)} onZoom={zoomBy} onCenter={setCenter} />
       </ChunkPreview>
       <PlanEditor plan={plan} />

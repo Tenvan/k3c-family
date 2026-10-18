@@ -5,7 +5,7 @@ import { backend } from '../api';
 import type { WorldSource } from '../api';
 import type { PlanSource } from '../stage/stageLogic';
 import { BIG_KINDS, SPECIAL_CHUNKS, colorOf, levelModel, seedFromBytes, type LevelModel } from './levelView';
-import { iconOf } from './kindIcons';
+import { iconOf, nameOf } from './kindIcons';
 import type { View } from './viewState';
 
 const DEFAULT_SEED = 'k3c';
@@ -22,8 +22,8 @@ export function Strip({ model, scale }: { model: LevelModel; scale: number }) {
     <div className="wd-strip" style={{ width: model.widthUnits * scale }}>
       {model.chunks.map((c) => (
         <div key={c.index} className={chunkClass(c.kind)} style={{ left: c.from * scale, width: (c.to - c.from) * scale }}
-          title={`Abschnitt ${c.index}: ${c.kind} (${c.from}–${c.to} Units)`}>
-          {c.index} {iconOf(c.kind)} {c.kind}
+          title={`Abschnitt ${c.index}: ${nameOf(c.kind)} (${c.kind}, ${c.from}–${c.to} Units)`}>
+          {c.index} {iconOf(c.kind)} {nameOf(c.kind)}
         </div>
       ))}
       {model.objects.map((o, i) => {
