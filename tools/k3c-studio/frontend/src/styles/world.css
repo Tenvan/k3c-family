@@ -102,3 +102,19 @@
 .wd-mark-error { --wd-mark: var(--red-9, #e5484d); }
 /* Rahmen im Streifen: die Chunks, die die Live-Vorschau gerade zeigt (gleiche Farbe wie ihr Griff im Schieber) */
 .wd-live-range { position: absolute; top: 0; bottom: 0; box-sizing: border-box; border: 2px solid #ffd166; border-radius: 4px; pointer-events: none; }
+
+/* Chunk-Infos im Bodenstreifen der Live-Vorschau (B-485): Overlay über der Bühne, zwischen Boden-Oberfläche und Fluss */
+.wd-live .wd-stage { position: relative; }
+.wd-band { position: absolute; left: 0; right: 0; overflow: hidden; pointer-events: none; }
+.wd-band-chunk {
+  position: absolute; top: 0; bottom: 0; box-sizing: border-box; display: flex; flex-direction: column; justify-content: center;
+  padding: 0 4px; overflow: hidden; border-left: 3px solid var(--wd-band); color: #fff;
+  background: color-mix(in srgb, var(--wd-band) 30%, rgb(0 0 0 / 55%));
+}
+.wd-band-line { overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
+.wd-band-chunk[data-mode='compact'] { padding: 0 2px; }
+.wd-band-planned { --wd-band: var(--blue-9, #0090ff); }
+.wd-band-error { --wd-band: var(--red-9, #e5484d); }
+.wd-band-hub { --wd-band: #ffd166; }
+.wd-band-special { --wd-band: #b388ff; }
+.wd-band-none { --wd-band: var(--gray-8, #5a6169); }

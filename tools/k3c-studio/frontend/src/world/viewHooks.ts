@@ -6,7 +6,7 @@ import { DEFAULT_SCALE, centerViews, panViews, paneView, wheelAction, zoomPanes,
 const FALLBACK_PX = 1000; // Breite einer Vorschau, solange sie nicht gemessen ist
 export const BOTH: readonly Pane[] = ['chunk', 'live'];
 
-/** Gemessenes Element: Breite und Höhe in Pixeln (Inhalt ohne Rahmen) */
+/** Gemessenes Element: Breite und Höhe in Pixeln */
 export interface Box {
   el: HTMLElement | null;
   w: number;
@@ -14,22 +14,24 @@ export interface Box {
 }
 
 /** Größe des ersten Elements unter `root`, das zu `selector` passt; folgt ihm bei jeder Größenänderung. Die Ansicht rechnet
- *  mit der echten Breite jeder Vorschau (Streifen und Bühne sind verschieden breit), sonst passen ihre Bildmitten nicht. */
-export function useBox(root: RefObject<HTMLElement | null>, selector: string): Box {
+ *  mit der echten Breite jeder Vorschau (Streifen und Bühne sind verschieden breit), sonst passen ihre Bildmitten nicht.
+ *  `outer`: samt Rahmen messen, wie Phaser (Scale.RESIZE) die Bühne misst; sonst den Inhalt (Streifen). */
+export function useBox(root: RefObject<HTMLElement | null>, selector: string, outer = false): Box {
   const [box, setBox] = useState<Box>({ el: null, w: FALLBACK_PX, h: 0 });
   useLayoutEffect(() => {
     const el = root.current?.querySelector<HTMLElement>(selector) ?? null;
     if (!el) return;
     const read = () => setBox((b) => {
-      const w = el.clientWidth > 0 ? el.clientWidth : b.w;
-      return b.el === el && b.w === w && b.h === el.clientHeight ? b : { el, w, h: el.clientHeight };
+      const [cw, ch] = outer ? [el.offsetWidth, el.offsetHeight] : [el.clientWidth, el.clientHeight];
+      const w = cw > 0 ? cw : b.w;
+      return b.el === el && b.w === w && b.h === ch ? b : { el, w, h: ch };
     });
     read();
     if (typeof ResizeObserver === 'undefined') return;
     const watch = new ResizeObserver(read);
     watch.observe(el);
     return () => watch.disconnect();
-  }, [root, selector]);
+  }, [root, selector, outer]);
   return box;
 }
 

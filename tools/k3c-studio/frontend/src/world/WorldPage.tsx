@@ -3,6 +3,7 @@ import { LivePreview } from '../stage/LivePreview';
 import { ChunkPreview } from './ChunkPreview';
 import { slotHints } from './chunkMarks';
 import { GameLauncher } from './GameLauncher';
+import { LiveChunkBand } from './LiveChunkBand';
 import { PlanEditor } from './PlanEditor';
 import { usePlan } from './usePlan';
 import type { LevelModel } from './levelView';
@@ -27,12 +28,13 @@ export function WorldPage() {
   const [gates, setGates] = useState<number[]>([]);
   const frame = useRef<HTMLDivElement>(null);
   const strip = useBox(frame, '.wd-viewport');
-  const stage = useBox(frame, '.wd-stage');
+  const stage = useBox(frame, '.wd-stage', true);
   const px = useMemo(() => ({ chunk: strip.w, live: stage.w }), [strip.w, stage.w]);
   const widthUnits = model?.widthUnits ?? 0;
   const { views, setViews, chunkView, liveView, panBy, panLive, zoom, zoomBy, setCenter, onWheel } = useViews(widthUnits, px);
   const spans = { chunk: spanOf(chunkView, paneUnits(views, 'chunk', px)), live: spanOf(liveView, paneUnits(views, 'live', px)) };
   const ownLive = views.live !== views.chunk;
+  const hints = slotHints(plan.draft, plan.check);
 
   // Pfeile scrollen, + und − zoomen, M verkleinert und maximiert (nicht, solange im Eingabefeld getippt wird).
   const keys = useRef({ panBy, zoomBy });
@@ -63,13 +65,14 @@ export function WorldPage() {
   return (
     <div className="wd-page" data-maximized={maximized} ref={frame}>
       <ChunkPreview maximized={maximized} onToggle={() => setMaximized((m) => !m)} onLoaded={onLoaded} source={plan.source} view={chunkView} onWheel={(e) => onWheel(e, 'chunk')}
-        hints={slotHints(plan.draft, plan.check)} liveSpan={ownLive ? spans.live : undefined}>
+        hints={hints} liveSpan={ownLive ? spans.live : undefined}>
         <ViewBar views={views} spans={spans} widthUnits={widthUnits} range={centerRange(views, widthUnits, px)} jumps={jumpPoints(model, gates)}
           onScale={(scale) => zoom(BOTH, () => scale)} onZoom={zoomBy} onCenter={setCenter} />
       </ChunkPreview>
       <PlanEditor plan={plan} />
       <section className="wd-live" aria-label="Live-Vorschau">
         <LivePreview seed={source.seed} biome={source.biome} position={liveView} onPan={panLive} onWheel={(e) => onWheel(e, 'live')} onSites={onSites} plan={plan.source} />
+        <LiveChunkBand stage={stage} view={liveView} model={model} draft={plan.draft} hints={hints} />
       </section>
       <GameLauncher seed={source.seed} biome={source.biome} />
     </div>

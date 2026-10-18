@@ -294,11 +294,11 @@ describe('Seite Welt-Betrachter: getrennter Zoom, gemeinsame Mitte (B-485/AC-05)
 describe('Live-Bereich mit der Breite der Bühne (B-485/AC-05, Fehler aus der Abnahme)', () => {
   /** Bühne 600 px, Streifen 1000 px breit (happy-dom misst sonst 0) */
   function stubWidths() {
-    const original = Object.getOwnPropertyDescriptor(HTMLElement.prototype, 'clientWidth')!;
-    Object.defineProperty(HTMLElement.prototype, 'clientWidth', { configurable: true, get(this: HTMLElement) {
-      return this.classList.contains('wd-stage') ? 600 : this.classList.contains('wd-viewport') ? 1000 : 0;
-    } });
-    return () => Object.defineProperty(HTMLElement.prototype, 'clientWidth', original);
+    const props = ['clientWidth', 'offsetWidth'] as const; // Bühne mit Rahmen wie Phaser (offsetWidth), Streifen ohne (clientWidth)
+    const originals = props.map((p) => Object.getOwnPropertyDescriptor(HTMLElement.prototype, p)!);
+    Object.defineProperty(HTMLElement.prototype, 'offsetWidth', { configurable: true, get(this: HTMLElement) { return this.classList.contains('wd-stage') ? 600 : 0; } });
+    Object.defineProperty(HTMLElement.prototype, 'clientWidth', { configurable: true, get(this: HTMLElement) { return this.classList.contains('wd-viewport') ? 1000 : 0; } });
+    return () => props.forEach((p, i) => Object.defineProperty(HTMLElement.prototype, p, originals[i]));
   }
 
   it('die Bühne zeigt dieselbe Mitte wie der Streifen; gelber Griff und Rahmen im Streifen zeigen genau ihren Bereich', async () => {
