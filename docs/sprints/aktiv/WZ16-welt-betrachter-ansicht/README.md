@@ -64,7 +64,7 @@ keine. Freigabe der Sprint-Spec steht aus (die Ticket-Spec B-477 ist am 2026-10-
 |---|---|---|---|---|
 | WZ16.1 | `WZ16.1-gemeinsame-ansicht.md` | Umsetzung | autonom | fertig |
 | WZ16.2 | `WZ16.2-gebaeude-filter.md` | Umsetzung | autonom | fertig |
-| WZ16.3 | `WZ16.3-review.md` | Review | autonom | offen |
+| WZ16.3 | `WZ16.3-review.md` | Review | autonom | fertig |
 | WZ16.4 | `WZ16.4-abnahme.md` | Review | Mensch | offen |
 
 Bei `Reife: Entwurf` genügen Stichpunkte mit den Kriterien in Klammern statt Session-Dateien. Vor dem Aktivieren
@@ -72,5 +72,5 @@ wird jede Session als eigene Datei nach `docs/vorlagen/session.md` geschrieben.
 
 ## Abnahme
 
-Wird von der Review-Session (Doku-Sprint: letzte Session) ausgefüllt, höchstens fünf Zeilen: Datum, Kriterien
-(Verweis auf Session-Ergebnisse), behobene Befunde, neue Tickets. Bis dahin `–`.
+2026-10-18 (Review WZ16.3): AC-01 bis AC-05 mit Nachweis aus Tests und Browser-Pane (Ergebnis WZ16.1, WZ16.2, WZ16.3); AC-06 teilweise (`task check:all` lokal nur an `assetkit` `TestDownloadHit` rot, B-480, CI zeigt der PR); AC-07 offen (WZ16.4, 🧑 am PC). Befunde: keine schweren. Neue Tickets: B-480.
+Version: Minor vorgeschlagen (Wirkung im Werkzeug); gesetzt wird nach WZ16.4 und Entscheidung 🧑 (zusammen mit WZ7).
