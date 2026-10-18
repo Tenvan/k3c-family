@@ -1,6 +1,6 @@
 # CI1.2 · Abdeckung pro engine-Paket
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** INF
@@ -52,5 +52,6 @@ task check
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+- **AC-02 geprüft (B-019/AC-01):** `go test -cover ./engine/...` lokal: conlog 91,2 %, internal/golden 0,0 % (keine Tests, erscheint mit 0 %), level 95,6 %, net 88,7 %, rng 96,7 %, room 91,8 %, sim 96,3 %, store 89,7 %. Neuer Task `coverage` im `Taskfile.yml`, neuer CI-Schritt „Abdeckung (engine/)“ im Job `go` mit Tabelle in `$GITHUB_STEP_SUMMARY`; `set -o pipefail`, kein Mindestwert (awk-Ausdruck an Beispielzeilen geprüft). Der CI-Nachweis folgt im Review CI1.3.
+- `task check` grün. Getrenntes Review (Subagent, 2026-10-18): keine Befunde; die Anmerkung zu fehlendem `pipefail` ist umgesetzt.
+- Neue Tickets: keine.

@@ -81,6 +81,17 @@ jobs:
       - run: task go:test
       - name: Race-Detector für engine/ (B-077)
         run: task check:race
+      # Abdeckung je Paket unter engine/ (B-019): nur Anzeige in der Job-Zusammenfassung, kein Mindestwert.
+      - name: Abdeckung (engine/)
+        run: |
+          set -o pipefail
+          task coverage | tee coverage.txt
+          {
+            echo '### Abdeckung engine/'
+            echo '| Paket | Abdeckung |'
+            echo '|---|---|'
+            awk '/coverage:/ { pkg = ($1 == "ok" ? $2 : $1); for (i = 1; i <= NF; i++) if ($i == "coverage:") print "| " pkg " | " $(i+1) " |" }' coverage.txt
+          } >> "$GITHUB_STEP_SUMMARY"
       - uses: golangci/golangci-lint-action@v9
         with:
           version: v2.14
