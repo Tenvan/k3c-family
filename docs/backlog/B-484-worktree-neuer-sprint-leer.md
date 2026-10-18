@@ -1,4 +1,4 @@
-# B-481 · Worktree-Vergleich: Sessions und Projekt eines neuen Sprints fehlen in den Pills
+# B-484 · Worktree-Vergleich: Sessions und Projekt eines neuen Sprints fehlen in den Pills
 
 - **Domäne:** DEV
 - **Typ:** Problem
@@ -35,7 +35,7 @@ Ralf (🧑) plant mit Worktrees und entscheidet, ob der Zuschnitt in WZ12 oder B
 
 ## Nicht-Ziele
 
-- Schreibende Aktionen auf Worktree-Einträgen (siehe B-480, nur lesend).
+- Schreibende Aktionen auf Worktree-Einträgen (siehe B-483, nur lesend).
 - Änderungen am Format der Worktree-Prüfung oder des Prüfwerts außerhalb der Zuordnung neuer Sprints.
 - Sprints, die in der Wurzel schon existieren (laufen bereits über `diffSessions`).
 
@@ -65,8 +65,8 @@ Domäne DEV; Datei ≤ 400 Zeilen, Funktion ≤ 60 Zeilen (`wtdiff.go` prüfen).
 ## Offene Fragen
 
 1. Gehört die Arbeit in WZ12 (Nachtrag) oder in B-465, weil sie die Zuordnung der Worktree-Prüfung berührt? Entscheidet Ralf (🧑).
-2. Annahme bis zur Antwort: eigenes Ticket, Umsetzung später im selben Sprint wie B-480.
+2. Annahme bis zur Antwort: eigenes Ticket, Umsetzung später im selben Sprint wie B-483.
 
 ## Notizen
 
-Quelle: Review von WZ12.2. Code: `tools/k3c-dev/internal/planning/wtdiff.go` (`diffData`, `diffSessions`), `tools/k3c-dev/frontend/src/planning/wtPills.ts` (`withWorktreeEntries`). Verwandt: B-467, B-465, B-480.
+Quelle: Review von WZ12.2. Code: `tools/k3c-dev/internal/planning/wtdiff.go` (`diffData`, `diffSessions`), `tools/k3c-dev/frontend/src/planning/wtPills.ts` (`withWorktreeEntries`). Verwandt: B-467, B-465, B-483.

@@ -56,7 +56,7 @@ func parseWorktreePaths(porcelain, root string) []worktree {
 	}
 	var others []worktree
 	for _, w := range list {
-		if !strings.EqualFold(w.path, filepath.Clean(root)) {
+		if !samePath(w.path, root) {
 			others = append(others, w)
 		}
 	}

@@ -1,14 +1,13 @@
 import { BIOMES } from '@game/model/biome';
 import { Button, Select, TextField } from '@radix-ui/themes';
-import { useCallback, useEffect, useRef, useState, type CSSProperties } from 'react';
+import { useCallback, useEffect, useRef, useState, type CSSProperties, type ReactNode } from 'react';
 import { backend } from '../api';
 import type { WorldSource } from '../api';
-import { BIG_KINDS, DEFAULT_SCALE, SPECIAL_CHUNKS, colorOf, levelModel, seedFromBytes, zoomScale, type LevelModel } from './levelView';
+import { BIG_KINDS, SPECIAL_CHUNKS, colorOf, levelModel, seedFromBytes, type LevelModel } from './levelView';
+import type { View } from './viewState';
 
 const DEFAULT_SEED = 'k3c';
 const DEFAULT_BIOME = 'forest';
-const SCROLL_STEP = 120; // Pixel je Pfeiltaste
-
 const chunkClass = (kind: string) => `wd-chunk${kind === 'hub' ? ' wd-hub' : SPECIAL_CHUNKS.has(kind) ? ' wd-special' : ''}`;
 
 /** Streifen mit Abschnitten, Objekten und Hub-Mitte im Maßstab scale (Pixel je Unit). */
@@ -33,7 +32,7 @@ export function Strip({ model, scale }: { model: LevelModel; scale: number }) {
 }
 
 /** Lädt das Level über das Backend; eine neuere Anfrage macht die ältere ungültig. note ist die Zeile unter der Leiste. */
-function useWorldLevel(onLoaded: (seed: string, biome: string) => void) {
+function useWorldLevel(onLoaded: (seed: string, biome: string, model: LevelModel) => void) {
   const [model, setModel] = useState<LevelModel | null>(null);
   const [note, setNote] = useState('Lade …');
   const request = useRef(0);
@@ -58,7 +57,7 @@ function useWorldLevel(onLoaded: (seed: string, biome: string) => void) {
     }
     const next = levelModel(view);
     setModel(next);
-    loaded.current(seed, source.biome ?? '');
+    loaded.current(seed, source.biome ?? '', next);
     const name = BIOMES.find((b) => b.id === next.biomeId)?.name ?? next.biomeId;
     setNote(`Seed „${next.seed}“ · ${name} · ${next.widthUnits} Units · ${next.chunks.length} Abschnitte · ${next.objects.length} Objekte`);
   }, []);
@@ -81,39 +80,29 @@ function Legend({ model }: { model: LevelModel }) {
 }
 
 /** Chunk-Vorschau des Welt-Betrachters (B-460/AC-01, AC-02): Seed und Biom wählen, das Level des Spiels als Streifen
- *  ansehen, mit Legende und Warnungen der Prüfung. Das Level rechnet das Studio selbst, ohne Spielserver. */
-export function ChunkPreview({ maximized, onToggle, onLoaded }: { maximized: boolean; onToggle: () => void; onLoaded: (seed: string, biome: string) => void }) {
+ *  ansehen, mit Legende und Warnungen der Prüfung. Das Level rechnet das Studio selbst, ohne Spielserver. Position und
+ *  Zoom kommen von außen (`view`, B-477): der Streifen hat keine eigene Scrollbar, das Mausrad geht an `onWheel`.
+ *  `children` stehen unter der Zeile mit der Zusammenfassung (Leiste für Zoom, Sprünge und Position). */
+export function ChunkPreview({ maximized, onToggle, onLoaded, view, onWheel, children }: {
+  maximized: boolean; onToggle: () => void; onLoaded: (seed: string, biome: string, model: LevelModel) => void;
+  view: View; onWheel: (e: WheelEvent) => void; children?: ReactNode;
+}) {
   const [seed, setSeed] = useState(DEFAULT_SEED);
   const [biome, setBiome] = useState(DEFAULT_BIOME);
-  const [scale, setScale] = useState(DEFAULT_SCALE);
   const { model, note, load } = useWorldLevel(onLoaded);
   const viewport = useRef<HTMLDivElement>(null);
 
-  const zoom = (factor: number) => {
-    const el = viewport.current;
-    const next = zoomScale(scale, factor);
-    if (next === scale) return;
-    const center = el ? (el.scrollLeft + el.clientWidth / 2) / scale : 0;
-    setScale(next);
-    if (el) requestAnimationFrame(() => { el.scrollLeft = center * next - el.clientWidth / 2; });
-  };
+  useEffect(() => { if (viewport.current) viewport.current.scrollLeft = view.left * view.scale; }, [view, model]);
 
-  // Tastatur wie auf der früheren Seite: Pfeile scrollen, + und − zoomen; dazu M zum Verkleinern und Maximieren
-  // (nicht, solange im Eingabefeld getippt wird).
-  const keys = useRef({ zoom, onToggle });
-  keys.current = { zoom, onToggle };
+  // Ein React-Handler für das Rad wäre passiv (kein preventDefault), daher am Element; die Seite entscheidet und bricht ab.
+  const wheel = useRef(onWheel);
+  wheel.current = onWheel;
   useEffect(() => {
-    const onKey = (e: KeyboardEvent) => {
-      if (e.target instanceof HTMLInputElement || e.target instanceof HTMLSelectElement || e.ctrlKey || e.metaKey || e.altKey) return;
-      const el = viewport.current;
-      if (e.key === 'ArrowLeft' && el) el.scrollLeft -= SCROLL_STEP;
-      else if (e.key === 'ArrowRight' && el) el.scrollLeft += SCROLL_STEP;
-      else if (e.key === '+' || e.key === '=') keys.current.zoom(1.25);
-      else if (e.key === '-') keys.current.zoom(0.8);
-      else if (e.key === 'm' || e.key === 'M') keys.current.onToggle();
-    };
-    document.addEventListener('keydown', onKey);
-    return () => document.removeEventListener('keydown', onKey);
+    const el = viewport.current;
+    if (!el) return;
+    const handler = (e: WheelEvent) => wheel.current(e);
+    el.addEventListener('wheel', handler, { passive: false });
+    return () => el.removeEventListener('wheel', handler);
   }, []);
 
   const random = () => {
@@ -123,7 +112,7 @@ export function ChunkPreview({ maximized, onToggle, onLoaded }: { maximized: boo
   };
 
   return (
-    <div className={`wd-chunks${maximized ? ' wd-max' : ''}`} data-maximized={maximized}>
+    <div className="wd-chunks" data-maximized={maximized}>
       <div className="wd-bar">
         <TextField.Root className="wd-seed" aria-label="Seed" value={seed} onChange={(e) => setSeed(e.target.value)}
           onKeyDown={(e) => { if (e.key === 'Enter') void load(seed, { biome }); }} />
@@ -133,13 +122,12 @@ export function ChunkPreview({ maximized, onToggle, onLoaded }: { maximized: boo
         </Select.Root>
         <Button onClick={() => void load(seed, { biome })}>Laden</Button>
         <Button variant="soft" onClick={random}>Zufälliger Seed</Button>
-        <Button variant="soft" aria-label="Herauszoomen" onClick={() => zoom(0.8)}>−</Button>
-        <Button variant="soft" aria-label="Hineinzoomen" onClick={() => zoom(1.25)}>+</Button>
         <span className="wd-grow" />
         <Button variant="outline" onClick={onToggle}>{maximized ? 'Verkleinern' : 'Maximieren'}</Button>
       </div>
       <p className="wd-note" role="status">{note}</p>
-      <div className="wd-viewport" ref={viewport}>{model && <Strip model={model} scale={scale} />}</div>
+      {children}
+      <div className="wd-viewport" ref={viewport}>{model && <Strip model={model} scale={view.scale} />}</div>
       {model && <Legend model={model} />}
     </div>
   );

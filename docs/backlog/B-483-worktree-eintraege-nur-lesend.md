@@ -1,4 +1,4 @@
-# B-480 · Planungsseite: Einträge nur im Worktree sind nur lesbar (Detail, Menüs, Rang)
+# B-483 · Planungsseite: Einträge nur im Worktree sind nur lesbar (Detail, Menüs, Rang)
 
 - **Domäne:** DEV
 - **Typ:** Problem
@@ -36,7 +36,7 @@ Ralf (🧑) liest und pflegt die Planung auf der Planungsseite, auch mit Einträ
 
 - Bearbeiten von Worktree-Einträgen über die Planungsseite (Schreiben läuft mit `checkout` über MCP).
 - Neue Anzeigen für Worktrees; die Pills aus WZ12.2 bleiben.
-- Der Zuordnungsfehler neuer Sprints (B-481).
+- Der Zuordnungsfehler neuer Sprints (B-484).
 
 ## Regeln und Einschränkungen
 
@@ -69,4 +69,4 @@ Domäne DEV; Datei ≤ 400 Zeilen, Funktion ≤ 60 Zeilen. Planung nur über MCP
 
 ## Notizen
 
-Quelle: Review von WZ12.2. Code: `tools/k3c-dev/frontend/src/planning/` (`wtPills.ts` › `withWorktreeEntries`, `Reader.tsx`, `Backlog.tsx`, `Detail.tsx`, `ProjectCard.tsx`). Das Backend lehnt `plan_set` mit einer unbekannten, gültig geformten ID sauber ab (geprüft). Gilt auch für über B-481 in ein Projekt eingehängte Sprints: sie sind synthetisch, markiert und nur lesend. Verwandt: B-467, B-481.
+Quelle: Review von WZ12.2. Code: `tools/k3c-dev/frontend/src/planning/` (`wtPills.ts` › `withWorktreeEntries`, `Reader.tsx`, `Backlog.tsx`, `Detail.tsx`, `ProjectCard.tsx`). Das Backend lehnt `plan_set` mit einer unbekannten, gültig geformten ID sauber ab (geprüft). Gilt auch für über B-484 in ein Projekt eingehängte Sprints: sie sind synthetisch, markiert und nur lesend. Verwandt: B-467, B-484.

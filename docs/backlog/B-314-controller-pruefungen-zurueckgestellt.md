@@ -69,5 +69,5 @@ Zurückgestellt am 2026-10-06 (Controller-Anteil, sonst unverändert):
 - GR5.4 (GR5/AC-06): Vibration, Controller ohne Vibration
 - N2.4: Zeitleiste und Vorhersage auf der Xbox mit Controller
 - K5.4, W6.4 (geplant): Controller-Schritte der Abnahmen
-- B-092/AC-05: Level-Betrachter mit Controller am TV
+- ~~B-092/AC-05: Level-Betrachter mit Controller am TV~~ entfällt (B-092 verworfen 2026-10-18)
 - B-195/AC-02: Debug-Overlay auf der Xbox mit Controller

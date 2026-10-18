@@ -5,14 +5,18 @@ import { StageView } from '@game/scenes/stageView';
 import { prepareWorld, preloadWorld } from '@game/scenes/objectView';
 import { prepareBuildings, preloadBuildings } from '@game/scenes/siteView';
 import { createSpriteAnims, preloadSprites } from '@game/scenes/sprites';
-import { levelKey, stageZoom } from './stageLogic';
 
 // Die wiederverwendbare Phaser-Bühne des Asset-Studios (B-460, WZ7.3; WZ10/WZ11 nutzen sie wieder, eine zweite entsteht
 // nicht): lädt die Grafiken wie das Spiel (LoadScene) und zeichnet eine `World` mit `StageView`/`WorldRenderer` aus
 // `src/scenes/` (unverändert, über @game). Die Bühne rechnet nichts: sie zeichnet, was sie bekommt.
 
-/** Scroll-Schritt je Mausrad-Tick und Pfeiltaste (Bildschirm-Pixel) */
-const SCROLL_STEP = 120;
+/** Position und Zoom, von außen gesetzt: linke Kante in Units, Maßstab in Pixel je Unit (wie der Chunk-Streifen) */
+export interface StagePosition {
+  left: number;
+  scale: number;
+}
+
+const DEFAULT_VIEW: StagePosition = { left: 0, scale: 12 };
 
 /** Darstellung der Bühne: Kamerahelligkeit (Tageszeit) und ausgeblendete Hintergrund-Schichten (Textur-Schlüssel) */
 export interface Look {
@@ -26,12 +30,12 @@ class PreviewScene extends Phaser.Scene {
   private ready = false;
   private pending: World | null = null;
   private view: StageView | null = null;
-  private centeredFor = '';
+  private position: StagePosition = DEFAULT_VIEW;
   private look: Look = DEFAULT_LOOK;
   private fx: Phaser.Filters.ColorMatrix | null = null;
-  private drag: { x: number; scroll: number } | null = null;
+  private dragX: number | null = null;
 
-  constructor(private readonly onLoadError: (files: string[]) => void) {
+  constructor(private readonly onLoadError: (files: string[]) => void, private readonly onPan: (px: number) => void) {
     super('preview');
   }
 
@@ -54,20 +58,16 @@ class PreviewScene extends Phaser.Scene {
     this.cameras.main.filters.internal.clear(); // wie GameScene: die Hauptkamera überlebt einen Neustart der Szene
     this.fx = this.cameras.main.filters.internal.addColorMatrix();
     this.ready = true;
-    this.scale.on('resize', () => this.fit());
-    this.input.on('pointerdown', (p: Phaser.Input.Pointer) => { this.drag = { x: p.x, scroll: this.cameras.main.scrollX }; });
+    this.scale.on('resize', () => this.applyView());
+    // Die Position gehört der Seite: Ziehen und Mausrad melden nur die Bewegung (Bildschirm-Pixel), die Seite setzt sie neu.
+    this.input.on('pointerdown', (p: Phaser.Input.Pointer) => { this.dragX = p.x; });
     this.input.on('pointermove', (p: Phaser.Input.Pointer) => {
-      if (this.drag && p.isDown) this.cameras.main.scrollX = this.drag.scroll - (p.x - this.drag.x) / this.cameras.main.zoom;
+      if (this.dragX === null || !p.isDown) return;
+      this.onPan(this.dragX - p.x);
+      this.dragX = p.x;
     });
-    this.input.on('pointerup', () => { this.drag = null; });
-    this.input.on('wheel', (_p: unknown, _o: unknown, dx: number, dy: number) => this.scrollBy((Math.abs(dx) > Math.abs(dy) ? dx : dy) > 0 ? SCROLL_STEP : -SCROLL_STEP));
+    this.input.on('pointerup', () => { this.dragX = null; });
     this.show(this.pending);
-  }
-
-  /** Kamera um Bildschirm-Pixel verschieben (Pfeiltasten und Mausrad) */
-  scrollBy(px: number): void {
-    const cam = this.cameras.main;
-    cam.scrollX += px / cam.zoom;
   }
 
   /** Zeigt die Welt (null = leer). Vor dem Laden der Grafiken wird sie gemerkt. */
@@ -78,10 +78,9 @@ class PreviewScene extends Phaser.Scene {
     this.view = null;
     if (!world) return;
     this.view = new StageView(this, world);
+    this.cameras.main.setBackgroundColor(world.biome.palette.sky); // wie GameScene: der Himmel des Bioms, die Helligkeit der Tageszeit liegt als Filter darüber
     this.view.renderer.sync(world);
-    const key = levelKey(world);
-    this.fit(key !== this.centeredFor); // nur ein anderes Level setzt die Kamera zurück zur Burg
-    this.centeredFor = key;
+    this.applyView();
     this.applyLook();
   }
 
@@ -99,51 +98,62 @@ class PreviewScene extends Phaser.Scene {
     }
   }
 
-  /** Kamera: Spielhöhe passt in die Bühne; `center` stellt die Burg in die Mitte. */
-  private fit(center = false): void {
+  /** Position und Zoom von der Seite übernehmen (gleicher Maßstab wie der Chunk-Streifen). */
+  setPosition(pos: StagePosition): void {
+    this.position = pos;
+    if (this.ready) this.applyView();
+  }
+
+  /** Kamera: Maßstab (Pixel je Unit) als Zoom, linke Kante an die gesetzte Position; der Boden steht unten in der Bühne. */
+  private applyView(): void {
     const world = this.pending;
     if (!world || !this.view) return;
     const cam = this.cameras.main;
-    const zoom = stageZoom(this.scale.height);
+    const { left, scale } = this.position;
+    const zoom = scale / UNIT_PX;
+    const heightPx = this.scale.height / zoom;
     cam.setZoom(zoom);
-    cam.setBounds(0, 0, world.widthUnits * UNIT_PX, GAME_HEIGHT);
+    cam.setBounds(0, GAME_HEIGHT - heightPx, world.widthUnits * UNIT_PX, heightPx);
     this.view.scaleTexts(1 / zoom);
-    if (center) cam.centerOnX(world.castle.x * UNIT_PX);
+    cam.centerOnX((left + this.scale.width / scale / 2) * UNIT_PX);
   }
 }
 
-/** Phaser-Spiel im Element `parent`; die Größe folgt dem Element (Höhe per CSS festlegen), Pfeiltasten scrollen, solange
- *  das Element den Fokus hat. `onLoadError` meldet Grafiken, die nicht geladen werden konnten. */
+/** Phaser-Spiel im Element `parent`; die Größe folgt dem Element (Höhe per CSS festlegen); Ziehen meldet `onPan`, das Mausrad `onWheel`
+ *  (die Pfeiltasten fängt die Seite, sonst würde jeder Druck doppelt scrollen). `onLoadError` meldet Grafiken, die nicht geladen werden konnten. */
 export class PreviewStage {
   private readonly game: Phaser.Game;
   private readonly scene: PreviewScene;
   private readonly resize: ResizeObserver;
-  private readonly onKey: (e: KeyboardEvent) => void;
+  private readonly wheel: (e: WheelEvent) => void;
+  private readonly parent: HTMLElement;
 
-  constructor(private readonly parent: HTMLElement, onLoadError: (files: string[]) => void = () => {}) {
-    this.scene = new PreviewScene(onLoadError);
+  constructor(parent: HTMLElement, onLoadError: (files: string[]) => void = () => {}, onPan: (px: number) => void = () => {}, onWheel: (e: WheelEvent) => void = () => {}) {
+    this.parent = parent;
+    this.scene = new PreviewScene(onLoadError, onPan);
     this.game = new Phaser.Game({
       type: Phaser.AUTO,
       parent,
       backgroundColor: '#101018',
       scale: { mode: Phaser.Scale.RESIZE, width: '100%', height: '100%' },
       audio: { noAudio: true },
-      input: { gamepad: false, keyboard: false },
+      input: { gamepad: false, keyboard: false, mouse: { preventDefaultWheel: false } }, // das Rad entscheidet die Seite (wheelAction)
       scene: this.scene,
     });
     // Phaser hört nur auf das Fenster: ein Beobachter am Element fängt auch Layout-Änderungen ohne Fenster-Resize ab.
     this.resize = new ResizeObserver(() => this.game.scale.refresh());
     this.resize.observe(parent);
-    parent.tabIndex = 0;
-    this.onKey = (e) => {
-      if (e.key === 'ArrowLeft') this.scene.scrollBy(-SCROLL_STEP);
-      else if (e.key === 'ArrowRight') this.scene.scrollBy(SCROLL_STEP);
-    };
-    parent.addEventListener('keydown', this.onKey);
+    this.wheel = (e) => onWheel(e);
+    parent.addEventListener('wheel', this.wheel, { passive: false }); // nicht passiv: die Seite bricht das Ereignis bei Zoom und Scrollen ab
   }
 
   show(world: World | null): void {
     this.scene.show(world);
+  }
+
+  /** Position und Zoom setzen */
+  setPosition(pos: StagePosition): void {
+    this.scene.setPosition(pos);
   }
 
   /** Helligkeit und Hintergrund-Schichten setzen */
@@ -158,7 +168,7 @@ export class PreviewStage {
 
   destroy(): void {
     this.resize.disconnect();
-    this.parent.removeEventListener('keydown', this.onKey);
+    this.parent.removeEventListener('wheel', this.wheel);
     this.game.destroy(true);
   }
 }
