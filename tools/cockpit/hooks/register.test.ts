@@ -256,6 +256,11 @@ test('Protokoll: Prompt gekürzt, Ziel des Tool-Calls, Pfade auf zwei Segmente',
   expect(toolTarget({ file_path: ['C:', 'W', 'bridge', 'appconfig.go'].join(String.fromCharCode(92)) })).toBe('bridge/appconfig.go')
   expect(toolTarget({ pattern: 'erpapi' })).toBe('erpapi')
   expect(toolTarget(undefined)).toBe('')
+  // Fremde MCP-Tools: Titel, Kennung und Abschnitt statt nichts; lange Texte und Objekte zählen nicht
+  expect(toolTarget({ kind: 'ticket', slug: 'x', title: 'Welt-Betrachter Nacharbeit' })).toBe('Welt-Betrachter Nacharbeit')
+  expect(toolTarget({ id: 'B-426', section: 'Notizen', text: 'x'.repeat(200) })).toBe('B-426 · Notizen')
+  expect(toolTarget({ id: 'B-092', fields: { Status: 'verworfen' } })).toBe('B-092')
+  expect(toolTarget({ checkout: 'C:/x', limit: 5 })).toBe('')
 })
 
 test('Spinner: wechselt das Zeichen je Frame', () => {

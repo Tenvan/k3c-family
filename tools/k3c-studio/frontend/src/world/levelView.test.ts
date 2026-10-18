@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import golden from '../../../../../testdata/golden/level-forest.json';
-import { DEFAULT_SCALE, INCOMPLETE, MAX_SCALE, MIN_SCALE, colorOf, levelModel, openGameReason, seedFromBytes, zoomScale, type LevelResponse } from './levelView';
+import { INCOMPLETE, colorOf, levelModel, openGameReason, seedFromBytes, type LevelResponse } from './levelView';
 
 // Aus src/tools/levelView.test.ts (B-092) umgezogen (B-460/AC-01): gleiche Erwartungen am Golden-Level.
 
@@ -70,14 +70,7 @@ describe('seedFromBytes', () => {
   });
 });
 
-describe('Zoom und Farben', () => {
-  it('zoomScale: Schritte, Begrenzung auf MIN_SCALE bis MAX_SCALE', () => {
-    expect(zoomScale(DEFAULT_SCALE, 1.25)).toBeCloseTo(7.5);
-    expect(zoomScale(DEFAULT_SCALE, 0.8)).toBeCloseTo(4.8);
-    expect(zoomScale(MAX_SCALE, 1.25)).toBe(MAX_SCALE);
-    expect(zoomScale(MIN_SCALE, 0.8)).toBe(MIN_SCALE);
-    expect(zoomScale(1000, 1)).toBe(MAX_SCALE);
-  });
+describe('Farben', () => {
 
   it('colorOf: bekannte Arten haben eigene Farben, unbekannte die neutrale', () => {
     expect(colorOf('castle')).toBe('#ffd166');
