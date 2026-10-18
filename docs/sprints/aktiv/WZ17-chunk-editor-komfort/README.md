@@ -5,10 +5,10 @@
 - **Domäne:** REG, SIM, SRV, DEV
 - **Reife:** bereit
 - **Tickets:** B-485
-- **Start-Commit:** – (wird beim Aktivieren gesetzt: `git rev-parse --short origin/develop`)
+- **Start-Commit:** a6d676b4
 - **Spec:** freigegeben
-- **Revision:** 1
-- **Freigabe:** 2026-10-18, Ralf im Chat (Revision 1)
+- **Revision:** 2
+- **Freigabe:** 2026-10-18, Ralf im Chat (Revision 2: Größen-Tabelle im Workshop WZ17.1)
 
 ## Ausgangslage
 
@@ -16,9 +16,9 @@
 
 ## Ziel
 
-Der Editor bietet durchsuchbare Auswahllisten mit Emoji-Icons, eine Chunk-Anzahl je Stufe über die Inselgrößen (sehr klein 8 · klein 12 · mittel 16 · groß 24 · sehr groß 32 · mega groß 48), die die Level-Länge im Spiel ändert, einen getrennten Zoom der Vorschauen (Alt + Mausrad, gleiche Weltposition) und die Umwandlung eines Seed-Chunks in feste Objekte (`B-485 › Ziel`).
+Der Editor bietet durchsuchbare Auswahllisten mit Emoji-Icons, eine Chunk-Anzahl je Stufe über die Inselgrößen (sehr klein 16 · klein 20 · mittel 24 · groß 32 · sehr groß 40 · mega groß 48), die die Level-Länge im Spiel ändert, einen getrennten Zoom der Vorschauen (Alt + Mausrad, gleiche Weltposition) und die Umwandlung eines Seed-Chunks in feste Objekte (`B-485 › Ziel`).
 
-**Am Ende sichtbar:** im Asset-Studio eine Stufe auf „klein“ gestellt (12 Chunks) in Chunk- und Live-Vorschau als Entwurf, getrennter Zoom bei synchronem Bildlauf und ein umgewandelter Seed-Chunk mit unverändertem Bild; in der CI unveränderte Golden-Daten plus ein neuer Golden-Fall mit Chunk-Anzahl; von 🧑 abgenommen. Der Sprint liefert keine echte Planung und keine Golden-Änderung außer dem neuen Fall aus.
+**Am Ende sichtbar:** im Asset-Studio eine Stufe auf „klein“ gestellt (20 Chunks) in Chunk- und Live-Vorschau als Entwurf, getrennter Zoom bei synchronem Bildlauf und ein umgewandelter Seed-Chunk mit unverändertem Bild; in der CI unveränderte Golden-Daten plus ein neuer Golden-Fall mit Chunk-Anzahl; von 🧑 abgenommen. Der Sprint liefert keine echte Planung und keine Golden-Änderung außer dem neuen Fall aus.
 
 ## Beteiligte und Zielgruppen
 
@@ -49,12 +49,12 @@ Nur für den Sprint:
 
 ## Beispiele
 
-`B-485 › Beispiele`: Wald auf „klein“ → 12 Chunks, Hub mittig, beide Vorschauen zeigen die kürzere Stufe als Entwurf; Platz +9 bei 12 Chunks → Fehler am Platz; Alt + Mausrad über der Live-Vorschau → nur diese zoomt; Seed-Chunk „lichtung“ umwandeln → gleiche Vorschau, Objekte einzeln in der Liste.
+`B-485 › Beispiele`: Wald auf „klein“ → 20 Chunks, Hub mittig, beide Vorschauen zeigen die Stufe als Entwurf; Platz +11 bei 20 Chunks → Fehler am Platz; Alt + Mausrad über der Live-Vorschau → nur diese zoomt; Seed-Chunk „lichtung“ umwandeln → gleiche Vorschau, Objekte einzeln in der Liste.
 
 ## Ausnahme- und Fehlerfälle
 
 `B-485 › Ausnahme- und Fehlerfälle` (Anzahl außerhalb der Tabelle, geplanter Chunk passt nicht mehr, Datei extern geändert, Seed-Chunk ohne Seed). Dazu für den Sprint:
-- Der Generator verträgt 8 Chunks nicht (Hub, Ausgang, Portale, Biom-Summen) → WZ17.2 `blockiert`, Untergrenze oder Prüfung mit 🧑 festlegen (Spec-Revision), nicht stillschweigend ändern.
+- Der Generator verträgt 16 Chunks in einem Biom nicht (Hub, Ausgang, Portale, Biom-Summen) → WZ17.2 `blockiert`, Untergrenze mit 🧑 festlegen (Spec-Revision), nicht stillschweigend ändern.
 - Der Benchmark der Level-Erzeugung überschreitet +10 % gegenüber der Baseline aus WZ8.3 → Ursache beheben oder Grenze mit 🧑 neu festlegen.
 - Der Editor sprengt das Budget (≈ 400 Code-Zeilen je Session) → Rest als Ticket, das Kriterium nicht umformulieren.
 
@@ -71,17 +71,15 @@ Nur für den Sprint:
 
 ## Offene Fragen
 
-Entschieden von 🧑 am 2026-10-18: `B-485 › Offene Fragen` (Entscheidungen). Spec-Freigabe von B-485: 2026-10-18, Ralf im Chat.
+Entschieden von 🧑 am 2026-10-18: `B-485 › Offene Fragen` (Entscheidungen, Revision 2). Im Workshop WZ17.1 (2026-10-18) entschieden: Größen 16 · 20 · 24 · 32 · 40 · 48 für alle Biome, Tabelle in `data/island-sizes.json`, Feld `chunkCounts` je Insel neben `plannedChunks`, ohne Eintrag gilt die Biom-Länge wie heute, Seed-Inhalt aus dem Vorschau-Level.
 
-Im Workshop WZ17.1 zu klären (nicht blockierend für die Freigabe): Wo steht die Chunk-Anzahl (Annahme: Feld je Stufe in `data/islands.json`, Größen-Tabelle in `data/`), Untergrenze und Gültigkeit von 8 Chunks, Wert „ohne Einstellung“, Quelle des Seed-Inhalts für die Umwandlung (`B-485 › Offene Fragen` 1–4).
-
-Vor der Freigabe dieses Sprints offen: die Spec dieses Sprints (`Spec: Entwurf`) braucht die Freigabe von 🧑.
+Nichts Blockierendes offen. Nachzuweisen in WZ17.2: Die Untergrenze 16 gilt in allen fünf Biomen.
 
 ## Sessions
 
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
-| WZ17.1 | `WZ17.1-workshop-chunk-anzahl.md` | Workshop | Mensch | offen |
+| WZ17.1 | `WZ17.1-workshop-chunk-anzahl.md` | Workshop | Mensch | fertig |
 | WZ17.2 | `WZ17.2-generator-chunk-anzahl.md` | Umsetzung | autonom | offen |
 | WZ17.3 | `WZ17.3-vorschau-option-chunk-anzahl.md` | Umsetzung | autonom | offen |
 | WZ17.4 | `WZ17.4-listen-icons-zoom.md` | Umsetzung | autonom | offen |

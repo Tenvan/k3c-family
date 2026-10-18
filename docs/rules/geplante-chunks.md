@@ -58,3 +58,15 @@ Beispiel (Reihenfolge der Schlüssel: `slot`, `kind`, `seed`, `objects`; Teil-2-
 | Regel | Begründung | Daten |
 |---|---|---|
 | Der Chunk-Editor im Welten Editor schreibt `data/islands.json` atomar und format-stabil und nur nach einer Stand-Prüfung (geändert seit dem Laden → nicht speichern, Entwurf bleibt). Nach jedem Speichern erscheint „REG-Änderung: Commit mit Begründung, `task golden:update` nur bei gewollter Änderung“. Eine gespeicherte Planung ist eine REG-Änderung durch 🧑. | Das Werkzeug schreibt REG-Daten; Golden ändert sich nur gewollt. | `data/islands.json` |
+
+## 7. Chunk-Anzahl und Inselgrößen
+
+Beschlossen von 🧑 im Workshop WZ17.1 am 2026-10-18 (Chat, B-485 Revision 2).
+
+| Regel | Begründung | Daten |
+|---|---|---|
+| Die **Chunk-Anzahl** einer Stufe steht je Insel im Feld `chunkCounts` (Schlüssel = Tiefe, Wert = Anzahl), neben `plannedChunks`. Sie legt die Länge der Stufe in Chunks fest und ersetzt die gewürfelte Länge aus `lengthUnits`. Fehlt das Feld oder der Eintrag der Tiefe, gilt die Länge des Bioms wie bisher (Level, Golden und Spielstände bleiben unverändert). Die Länge in Units ist Anzahl × Chunk-Breite des Bioms (50 oder 25 Units). | Inseln lassen sich gezielt größer oder kleiner planen, ohne bestehende Level zu ändern. | `data/islands.json` › `chunkCounts` |
+| Erlaubt sind nur die **Inselgrößen** der Tabelle: sehr klein **16** · klein **20** · mittel **24** · groß **32** · sehr groß **40** · mega groß **48**. Die Tabelle gilt für alle Biome; alle Anzahlen sind gerade, der Hub liegt mittig. Jede andere Anzahl wird beim Laden abgelehnt (Fehler nennt Insel, Tiefe und die gültigen Werte). | 16 ist die kleinste Anzahl, die in allen Biomen Platz für Hub, Portale mit Mindestabstand und Ausgang lässt (Eisenfeste und Kristallhöhle mit 25-Unit-Chunks und je 3 Portalen); 8 und 12 gehen nicht. | `data/island-sizes.json` |
+| Die Planung wird gegen die eingestellte Anzahl geprüft: Ein geplanter Platz jenseits der Anzahl wird abgelehnt (Fehler nennt Insel, Tiefe, Platz). Die Prüfung rechnet mit der eingestellten Anzahl statt mit der kürzesten Länge des Bioms. Biom-Summen (Portale, Ereignisse, Adern, Skill-Punkte) gelten unverändert; die Prüfung weist nach, dass alle fünf Biome bei 16 Chunks gültige Level erzeugen (`level.Validate`, 100 Seeds je Größe und Biom). | Fail closed; kein Seed scheitert zur Laufzeit. | `engine/level/` |
+| Der Editor bietet nur die Größen der Tabelle an (kein Freitext). Chunk- und Live-Vorschau zeigen die eingestellte Länge für ungespeicherte Entwürfe aus derselben Quelle. Eine gespeicherte Chunk-Anzahl ist wie eine gespeicherte Planung eine REG-Änderung durch 🧑 (Hinweis nach dem Speichern, Golden nur gewollt). | Gleiche Schreibregel wie § 6. | `data/islands.json` |
+| Die **Umwandlung** eines Seed-Chunks in feste Objekte übernimmt dessen Inhalt aus dem Vorschau-Level des Servers (Art und Lage der Objekte); Chunk- und Live-Vorschau zeigen danach dasselbe wie vorher. | Kein neuer Generator-Code; fest heißt fest (§ 2). | – |

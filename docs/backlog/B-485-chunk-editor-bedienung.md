@@ -9,8 +9,8 @@
 - **Projekt:** WZG
 - **Erstellt:** 2026-10-18
 - **Spec:** freigegeben
-- **Revision:** 1
-- **Freigabe:** 2026-10-18, Ralf im Chat
+- **Revision:** 2
+- **Freigabe:** 2026-10-18, Ralf im Chat (Revision 2: Größen-Tabelle im Workshop WZ17.1)
 
 ## Ausgangslage
 
@@ -26,15 +26,15 @@ Der Chunk-Editor lässt sich flüssig bedienen: durchsuchbare Auswahllisten mit 
 
 ## Anforderungen
 
-Entschieden von 🧑 am 2026-10-18 (Chat):
+Entschieden von 🧑 am 2026-10-18 (Chat, Revision 2 im Workshop WZ17.1):
 
 **Auswahllisten und Icons (DEV)**
 - Art und Objekt wählt man in einer durchsuchbaren Liste: ein Feld mit großem Dropdown, alle Einträge sichtbar. Tippen sortiert Treffer nach oben und blendet nicht passende nur grau ab, statt sie zu verbergen.
 - Jeder Eintrag trägt ein Emoji vor dem Text (ohne neue Dateien), auch im Feld und in der Chunk-Liste.
 
 **Chunk-Anzahl je Stufe mit Inselgrößen (REG, SIM, DEV)**
-- Die Chunk-Anzahl einer Stufe ist einstellbar und ändert die Level-Länge im Spiel (nicht nur die Anzeige im Editor). Eine Vorauswahl nennt feste Chunk-Anzahlen: sehr klein 8 · klein 12 · mittel 16 · groß 24 · sehr groß 32 · mega groß 48 (alle gerade, der Hub liegt mittig). Die Tabelle ist eine Annahme von 🧑 und gehört als Wert in die Daten, nicht in den Code.
-- Gilt je Stufe; ohne Einstellung bleibt die Länge aus `lengthUnits` des Bioms (heutiges Verhalten, Golden-Daten byte-gleich, wie WZ8 AC-02).
+- Die Chunk-Anzahl einer Stufe ist einstellbar und ändert die Level-Länge im Spiel (nicht nur die Anzeige im Editor). Eine Vorauswahl nennt feste Chunk-Anzahlen: sehr klein 16 · klein 20 · mittel 24 · groß 32 · sehr groß 40 · mega groß 48 (alle gerade, der Hub liegt mittig). Die Tabelle gilt für alle Biome und steht als Wert in den Daten (`data/island-sizes.json`), nicht im Code. Grund für 16 als kleinste Größe (Workshop WZ17.1): Portale brauchen Platz ab ±3 Chunks vom Hub; die kürzeste Stufe der Eisenfeste und Kristallhöhle (Chunk 25 Units, Hub 4 Chunks, 3 Portale) hat 16 Chunks. Die Länge in Units hängt von der Chunk-Breite des Bioms ab (16 Chunks = 800 Units im Wald, 400 in der Kristallhöhle).
+- Die Anzahl steht je Insel im Feld `chunkCounts` neben `plannedChunks` (Tiefe als Schlüssel, z. B. `{"0": 24}`) in `data/islands.json`. Gilt je Stufe; fehlt der Eintrag, bleibt die Länge aus `lengthUnits` des Bioms (heutiges Verhalten, Golden-Daten byte-gleich, wie WZ8 AC-02).
 - Die Planung (Chunk-Plätze, Mauerlinien, Biom-Summen) wird gegen die eingestellte Anzahl geprüft; passt ein geplanter Chunk nicht mehr hinein, wird der Entwurf abgelehnt und der Fehler steht am Platz.
 - Chunk- und Live-Vorschau zeigen die eingestellte Länge ohne Speichern (Entwurf), aus derselben Quelle wie bisher.
 
@@ -43,8 +43,8 @@ Entschieden von 🧑 am 2026-10-18 (Chat):
 - Beide Vorschauen zeigen dieselbe Weltposition in der Bildmitte, auch bei verschiedenem Zoom; Scrollen verschiebt beide um dieselbe Welt-Strecke.
 - Beide Zoom-Faktoren bleiben pro Fenster erhalten (auch beim Wechsel von Insel und Stufe), nicht dauerhaft gespeichert.
 
-**Seed-Chunk anpassen (DEV, ggf. SIM)**
-- Ein Chunk mit Chunk-Seed lässt sich in feste Objekte umwandeln: Der Inhalt aus dem Seed (Bäume, Felsen, Truhe …) wird übernommen und ist dann einzeln verschiebbar, löschbar und ergänzbar.
+**Seed-Chunk anpassen (DEV, SRV)**
+- Ein Chunk mit Chunk-Seed lässt sich in feste Objekte umwandeln: Der Inhalt aus dem Seed (Bäume, Felsen, Truhe …) wird übernommen und ist dann einzeln verschiebbar, löschbar und ergänzbar. Den Inhalt liefert das Vorschau-Level (der Server rechnet das Level mit dem Entwurf und gibt die Objekte des Chunks mit Art und Lage zurück), kein neuer Generator-Code.
 - Die Umwandlung ist verlustfrei: Chunk- und Live-Vorschau zeigen unmittelbar danach dasselbe wie vorher.
 
 ## Nicht-Ziele
@@ -64,14 +64,14 @@ Entschieden von 🧑 am 2026-10-18 (Chat):
 
 ## Beispiele
 
-- Stufe 1 (Wald) auf „klein“ stellen → 12 Chunks, Hub in der Mitte; Chunk- und Live-Vorschau zeigen die kürzere Stufe sofort als Entwurf.
-- Planungs-Chunk auf Platz +9 bei 12 Chunks → Fehler am Platz +9, Speichern gesperrt.
+- Stufe 1 (Wald) auf „klein“ stellen → 20 Chunks (1000 Units), Hub in der Mitte; Chunk- und Live-Vorschau zeigen die Stufe sofort als Entwurf.
+- Planungs-Chunk auf Platz +11 bei 20 Chunks → Fehler am Platz +11, Speichern gesperrt.
 - Alt + Mausrad über der Live-Vorschau → nur diese zoomt; Bildlauf verschiebt beide Vorschauen um dieselbe Welt-Strecke.
 - Chunk mit Seed „lichtung“ → „In feste Objekte umwandeln“ → die Vorschau sieht gleich aus, die Objekte stehen einzeln in der Liste.
 
 ## Ausnahme- und Fehlerfälle
 
-- Chunk-Anzahl ungerade oder außerhalb der Tabelle → abgelehnt mit Nennung der gültigen Werte (Annahme: nur die sechs Größen, ggf. Freitext gerade Zahl ab Untergrenze, siehe Offene Fragen 2).
+- Chunk-Anzahl, die nicht in der Größen-Tabelle steht (ungerade, kleiner als 16 oder sonst nicht eine der sechs Größen) → beim Laden abgelehnt mit Insel, Tiefe und den gültigen Werten (Freitext im Editor gibt es nicht, nur die Vorauswahl).
 - Verkleinern der Stufe mit bestehender Planung, die nicht mehr passt → Fehler am Platz, Entwurf bleibt.
 - Datei von außen geändert → Stand-Prüfung wie WZ8 (B-486).
 - Seed-Chunk ohne Seed oder ungültiger Chunk → Umwandlung gesperrt, Fehler am Platz.
@@ -79,22 +79,18 @@ Entschieden von 🧑 am 2026-10-18 (Chat):
 ## Akzeptanzkriterien
 
 - **AC-01** Frontend-Test: Die Art-/Objekt-Liste zeigt alle Einträge, Tippen sortiert Treffer nach oben, nicht passende sind abgeblendet aber vorhanden; jeder Eintrag hat ein Emoji.
-- **AC-02** Go-Test (Generator): Ohne Chunk-Anzahl sind `level-*.json` und `sim-*.json` byte-gleich; mit Anzahl 8, 12, 16, 24, 32, 48 hat das Level genau diese Chunks (gerade, Hub mittig), `level.Validate` über 100 Seeds je Größe ohne Befund.
-- **AC-03** Go-Test: Die Prüfung der Planung lehnt einen Chunk-Platz außerhalb der eingestellten Anzahl ab und nennt den Platz.
+- **AC-02** Go-Test (Generator): Ohne Chunk-Anzahl sind `level-*.json` und `sim-*.json` byte-gleich; mit Anzahl 16, 20, 24, 32, 40, 48 hat das Level in jedem Biom genau diese Chunks (gerade, Hub mittig), `level.Validate` über 100 Seeds je Größe und Biom ohne Befund.
+- **AC-03** Go-Test: Die Prüfung der Planung lehnt einen Chunk-Platz außerhalb der eingestellten Anzahl ab und nennt den Platz; `chunkCounts` mit einer Anzahl außerhalb der Tabelle wird beim Laden mit Insel und Tiefe abgelehnt.
 - **AC-04** Frontend-Test: Die Größen-Vorauswahl setzt die Anzahl; Chunk- und Live-Vorschau zeigen die Länge des Entwurfs aus derselben Quelle.
 - **AC-05** Frontend-Test: Alt + Mausrad ändert nur den Zoom der Vorschau unter dem Zeiger; Scrollen verschiebt beide um dieselbe Welt-Strecke (gleiche Weltposition in der Bildmitte); Zoom bleibt beim Wechsel von Insel und Stufe.
-- **AC-06** Test: Die Umwandlung eines Seed-Chunks in feste Objekte liefert in Chunk- und Live-Vorschau denselben Inhalt wie vorher (gleiche Objekte und Orte).
+- **AC-06** Test: Die Umwandlung eines Seed-Chunks in feste Objekte liefert in Chunk- und Live-Vorschau denselben Inhalt wie vorher (gleiche Objekte und Orte); der Server liefert die Objekte eines Chunks aus dem Vorschau-Level.
 - **AC-07** Abnahme von 🧑 am PC im Studio-Fenster: Bedienung der Listen, Größen-Auswahl, getrennter Zoom und Umwandlung (Liste in der Abnahme-Session).
 
 ## Offene Fragen
 
-Entschieden von 🧑 am 2026-10-18: Chunk-Anzahl ändert die Level-Länge je Stufe (feste Anzahlen 8/12/16/24/32/48); Zoom mit gleicher Weltposition, pro Fenster gemerkt; Seed-Chunk wird in feste Objekte übernommen; durchsuchbare Liste mit Emoji-Icons; keine weiteren Mängel.
+Entschieden von 🧑 am 2026-10-18 (Chat und Workshop WZ17.1, Revision 2): Chunk-Anzahl ändert die Level-Länge je Stufe; Größen 16 · 20 · 24 · 32 · 40 · 48 (ersetzen die ersten Annahmen 8 · 12 · 16 · 24 · 32 · 48, weil 8 und 12 für Portale mit Mindestabstand nicht reichen), Feld `chunkCounts` neben `plannedChunks`, Tabelle in `data/island-sizes.json`; Seed-Inhalt aus dem Vorschau-Level; Zoom mit gleicher Weltposition, pro Fenster gemerkt; Seed-Chunk wird in feste Objekte übernommen; durchsuchbare Liste mit Emoji-Icons; keine weiteren Mängel.
 
-Noch offen (für die Sprint-Planung, nicht blockierend für die Spec):
-1. Wo steht die Chunk-Anzahl? Annahme: Feld je Stufe in `data/islands.json` (REG-Änderung), Größen-Tabelle in `data/`; das Format klärt ein Workshop wie WZ8.1.
-2. Verträgt der Generator eine Anzahl unter den heutigen Mindestwerten (8 Chunks) mit Hub, Ausgang, Portalen und Biom-Summen? Sonst Untergrenze oder Prüfung festlegen.
-3. Im Spielstand gespeicherte Welten ändern sich nicht (Spielstand-Format bleibt); die Länge gilt nur für neu erzeugte Stufen.
-4. Wie holt die Umwandlung den Seed-Inhalt (Vorschau-Level oder Generator-Funktion), ohne die Vorschau-Funktion aus WZ7.1 zu verbiegen?
+Offen: nichts Blockierendes. In WZ17.2 nachzuweisen: Die Untergrenze 16 gilt in allen fünf Biomen (`level.Validate` über 100 Seeds je Größe und Biom). Im Spielstand gespeicherte Welten ändern sich nicht (Spielstand-Format bleibt); die Länge gilt nur für neu erzeugte Stufen.
 
 ## Notizen
 
