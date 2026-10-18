@@ -47,7 +47,11 @@ export function useViews(widthUnits: number, px: PanePx) {
   const panLive = useCallback((by: number) => panBy(by, 'live'), [panBy]);
   const zoom = (panes: readonly Pane[], to: (scale: number) => number) => setViews((v) => zoomPanes(v, panes, to, widthUnits, px));
   const zoomBy = (factor: number) => zoom(BOTH, (s) => s * factor);
-  const setCenter = (x: number) => setViews((v) => centerViews(v, x, widthUnits, px));
+  // Steht die Mitte schon dort, bleibt der Zustand (kein neues Bild, z. B. beim Tippen im zentrierten Chunk).
+  const setCenter = (x: number) => setViews((v) => {
+    const next = centerViews(v, x, widthUnits, px);
+    return next.center === v.center && next.chunk === v.chunk && next.live === v.live ? v : next;
+  });
 
   // Strg + Rad zoomt beide, Alt + Rad nur die Vorschau unter dem Zeiger, Umschalt + Rad scrollt (das gewöhnliche Rad scrollt die Seite).
   const onWheel = (e: WheelEvent, pane: Pane) => {

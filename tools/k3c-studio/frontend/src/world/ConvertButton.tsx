@@ -9,8 +9,8 @@ export const CONVERT_STALE = 'Der Entwurf hat sich inzwischen geändert, bitte e
 
 /** Knopf „In feste Objekte umwandeln“ eines geplanten Chunks (B-485/AC-06): nur für einen Chunk mit Chunk-Seed, ohne
  *  feste Objekte und bei geprüftem Entwurf; sonst gesperrt, der Hinweis (title) nennt den Grund. Das Ergebnis gilt nur,
- *  wenn die Quelle der Vorschauen nach dem Aufruf noch dieselbe ist; ein Fehler steht am Chunk, solange sein Seed gilt. */
-export function ConvertButton({ plan, seed, index }: { plan: PlanState; seed: string; index: number }) {
+ *  wenn die Quelle der Vorschauen nach dem Aufruf noch dieselbe ist, danach meldet `onDone` den Platz; ein Fehler steht am Chunk, solange sein Seed gilt. */
+export function ConvertButton({ plan, seed, index, onDone }: { plan: PlanState; seed: string; index: number; onDone?: (slot: number) => void }) {
   const [error, setError] = useState<{ seed: string; text: string } | null>(null);
   const [busy, setBusy] = useState(false);
   const latest = useRef(plan);
@@ -31,6 +31,7 @@ export function ConvertButton({ plan, seed, index }: { plan: PlanState; seed: st
     const fail = result.error || (now.source !== at || target < 0 || !inSync(now.draft, now.count, now.source) ? CONVERT_STALE : '');
     if (fail) { setError({ seed: chunk.seed ?? '', text: fail }); return; }
     now.edit(convertChunk(now.draft, target, result.objects));
+    onDone?.(slot);
   };
   return (
     <>

@@ -54,10 +54,15 @@ export function WorldPage() {
     return () => document.removeEventListener('keydown', onKey);
   }, []);
 
+  // Ein neues Level (Seed, Biom, Insel, Stufe, Inselgröße) beginnt beim Hub, der Zoom bleibt; lädt nur der Entwurf der
+  // Planung neu, bleibt die Mitte (sonst spränge die Ansicht nach jeder Änderung eines Chunks zurück, WZ17.5).
+  const levelKey = useRef('');
   const onLoaded = (seed: string, biome: string, next: LevelModel) => {
     setSource((s) => (s.seed === seed && s.biome === biome ? s : { seed, biome }));
     setModel(next);
-    setViews((v) => centerViews(v, next.hubCenterUnits, next.widthUnits, px)); // ein neues Level beginnt beim Hub, der Zoom bleibt
+    const key = [seed, biome, plan.source?.island, plan.source?.stage, plan.source?.chunkCount].join('|');
+    if (key !== levelKey.current) setViews((v) => centerViews(v, next.hubCenterUnits, next.widthUnits, px));
+    levelKey.current = key;
   };
   const onSites = useCallback((sites: readonly { kind: string; x: number }[]) => {
     setGates(sites.filter((s) => s.kind === 'gate').map((s) => s.x));
