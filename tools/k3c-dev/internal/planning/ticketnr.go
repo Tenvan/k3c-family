@@ -77,8 +77,15 @@ func worktreePaths(root string) ([]string, error) {
 	return paths, nil
 }
 
+// samePath: derselbe Ordner. Maßgeblich ist die Identität (os.SameFile): git nennt den Langpfad, ein Aufrufer kann einen
+// 8.3-Kurzpfad (RUNNER~1 statt runneradmin) oder einen Link übergeben (B-482). Ist ein Pfad nicht lesbar, gilt der Textvergleich.
 func samePath(a, b string) bool {
-	return strings.EqualFold(filepath.ToSlash(filepath.Clean(a)), filepath.ToSlash(filepath.Clean(b)))
+	if strings.EqualFold(filepath.ToSlash(filepath.Clean(a)), filepath.ToSlash(filepath.Clean(b))) {
+		return true
+	}
+	ia, errA := os.Stat(a)
+	ib, errB := os.Stat(b)
+	return errA == nil && errB == nil && os.SameFile(ia, ib)
 }
 
 // remoteHighest liefert je lokalem Remote-Ref (origin/develop, origin/sprint/*) die größte Ticket-Nummer.
