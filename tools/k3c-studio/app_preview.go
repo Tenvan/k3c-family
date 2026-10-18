@@ -17,6 +17,8 @@ type WorldPreviewArgs struct {
 	Phase    string          `json:"phase"`
 	Progress float64         `json:"progress"`
 	Off      map[string]bool `json:"buildings"` // Schlüssel kind@x; false schaltet den Platz aus
+	// HubCandidate ist der Planer-Stand (Gebäude-Planer, WZ9.2), auch ungespeichert; leer = eingebettete data/hub.json.
+	HubCandidate string `json:"hubCandidate"`
 }
 
 // WorldPreviewView ist Level und Zustand der Vorschau (Felder wie net.PreviewResult) oder ein Hinweis in Error.
@@ -32,7 +34,7 @@ func (a *App) WorldPreview(args WorldPreviewArgs) WorldPreviewView {
 	}
 	res, err := net.Preview(room.PreviewOptions{
 		Seed: args.Seed, Source: room.PreviewSource{Biome: args.Source.Biome}, HubLevel: args.HubLevel,
-		Phase: args.Phase, Progress: args.Progress, Buildings: args.Off,
+		Phase: args.Phase, Progress: args.Progress, Buildings: args.Off, HubCandidate: []byte(args.HubCandidate),
 	})
 	if err != nil {
 		return WorldPreviewView{Error: err.Error()}

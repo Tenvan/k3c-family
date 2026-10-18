@@ -61,13 +61,16 @@ export function buildingGroups(toggles: readonly BuildingToggle[], off: Readonly
     });
 }
 
-/** Optionen der Vorschau: abgewählte Gebäude als `false`, die übrigen fehlen (= an). */
+/** Optionen der Vorschau: abgewählte Gebäude als `false`, die übrigen fehlen (= an). Ein Planer-Stand (`hubCandidate`,
+ *  Gebäude-Planer) geht nur mit, wenn er gesetzt ist. */
 export function previewArgsOf(
   seed: string, biome: string, hubLevel: number, off: ReadonlySet<string>, time: { phase: SimPhase; progress: number } = { phase: 'day', progress: 0 },
+  hubCandidate = '',
 ): WorldPreviewArgs {
   return {
     seed, source: { biome }, hubLevel, phase: time.phase, progress: time.progress,
     buildings: Object.fromEntries([...off].sort().map((k) => [k, false])),
+    ...(hubCandidate ? { hubCandidate } : {}),
   };
 }
 

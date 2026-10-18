@@ -201,17 +201,32 @@ func Status(root string, s Slot) string {
 	return StatusAssigned
 }
 
-// writeAtomic schreibt über eine Temp-Datei im selben Ordner, damit nie ein halbes Register liegt.
+// WriteAtomic schreibt data atomar nach path (Schreibregel B-459/AC-07), auch für den Gebäude-Planer des Studios
+// (WZ9.3): nie eine halbe Datei, scheitert ein Schritt, bleibt die alte Datei unverändert.
+func WriteAtomic(path string, data []byte) error { return writeAtomic(path, data) }
+
+// writeAtomic schreibt über eine Temp-Datei im selben Ordner (Sync vor dem Umbenennen), damit nie ein halbes Register
+// liegt; die Rechte einer vorhandenen Datei bleiben, scheitert das Umbenennen, wird die Temp-Datei entfernt.
 func writeAtomic(path string, data []byte) error {
 	tmp, err := os.CreateTemp(filepath.Dir(path), ".assets-*")
 	if err != nil {
 		return err
 	}
 	_, werr := tmp.Write(data)
+	if werr == nil {
+		werr = tmp.Sync()
+	}
 	cerr := tmp.Close()
 	if werr != nil || cerr != nil {
 		_ = os.Remove(tmp.Name())
 		return fmt.Errorf("schreiben: %v %v", werr, cerr)
 	}
-	return os.Rename(tmp.Name(), path)
+	if info, err := os.Stat(path); err == nil && info.Mode().IsRegular() {
+		_ = os.Chmod(tmp.Name(), info.Mode().Perm()) // Rechte der alten Datei behalten (CreateTemp legt 0600 an)
+	}
+	if err := os.Rename(tmp.Name(), path); err != nil {
+		_ = os.Remove(tmp.Name())
+		return err
+	}
+	return nil
 }

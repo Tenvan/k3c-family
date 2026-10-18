@@ -1,6 +1,7 @@
 package sim
 
 import (
+	"encoding/json"
 	"slices"
 	"strings"
 	"testing"
@@ -110,5 +111,39 @@ func TestCreateIslandKopiertDenKandidaten(t *testing.T) {
 	}
 	if hubOf(isl.Stages[0]).WallLines.WallUnits[0] == 1 || len(hubOf(isl.Stages[0]).Sites) == 0 {
 		t.Fatal("die Welt liest den Kandidaten des Aufrufers")
+	}
+}
+
+// WZ9.1: CreateWorldWith baut eine Stufe ohne Insel aus dem Kandidaten (Vorschau des Gebäude-Planers).
+func TestCreateWorldWithKandidat(t *testing.T) {
+	b := biomeForDepth(0)
+	bad := hubCopy(t)
+	bad.Levels = nil
+	if w, err := CreateWorldWith(b, "with", CreateOptions{Candidate: bad}); err == nil || w != nil {
+		t.Errorf("ungültiger Kandidat: Welt %v, Fehler %v", w != nil, err)
+	}
+	plain, err := CreateWorld(b, "with", Options{CycleSpeed: 1})
+	if err != nil {
+		t.Fatal(err)
+	}
+	h := hubCopy(t)
+	cand, err := CreateWorldWith(b, "with", CreateOptions{Candidate: h})
+	if err != nil {
+		t.Fatal(err)
+	}
+	want, err := json.Marshal(plain)
+	if err != nil {
+		t.Fatal(err)
+	}
+	got, err := json.Marshal(cand)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if string(got) != string(want) || cand.island != nil {
+		t.Error("Kandidat = eingebettete hub.json: Welt ungleich CreateWorld oder mit Insel")
+	}
+	h.Levels, h.Sites[0].HubLevel = nil, 99 // Aufrufer ändert den Kandidaten nach dem Bau
+	if len(hubOf(cand).Levels) == 0 || hubOf(cand).Sites[0].HubLevel == 99 {
+		t.Error("Änderung am Kandidaten nach dem Bau wirkt auf die Welt (keine Kopie)")
 	}
 }
