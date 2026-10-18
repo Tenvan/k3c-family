@@ -9,8 +9,8 @@
 - **Projekt:** WZG
 - **Erstellt:** 2026-10-18
 - **Spec:** freigegeben
-- **Revision:** 2
-- **Freigabe:** 2026-10-18, Ralf im Chat (Revision 2: Größen-Tabelle im Workshop WZ17.1)
+- **Revision:** 3
+- **Freigabe:** 2026-10-18, Ralf im Chat (Revision 3: ohne Nachweisläufe)
 
 ## Ausgangslage
 
@@ -79,18 +79,20 @@ Entschieden von 🧑 am 2026-10-18 (Chat, Revision 2 im Workshop WZ17.1):
 ## Akzeptanzkriterien
 
 - **AC-01** Frontend-Test: Die Art-/Objekt-Liste zeigt alle Einträge, Tippen sortiert Treffer nach oben, nicht passende sind abgeblendet aber vorhanden; jeder Eintrag hat ein Emoji.
-- **AC-02** Go-Test (Generator): Ohne Chunk-Anzahl sind `level-*.json` und `sim-*.json` byte-gleich; mit Anzahl 16, 20, 24, 32, 40, 48 hat das Level in jedem Biom genau diese Chunks (gerade, Hub mittig), `level.Validate` über 100 Seeds je Größe und Biom ohne Befund.
+- **AC-02** Go-Test (Generator): Ohne Chunk-Anzahl sind `level-*.json` und `sim-*.json` byte-gleich; mit Anzahl 16, 20, 24, 32, 40, 48 hat das Level (Einzeltest je Größe, ein Biom, ein Seed) genau diese Chunks (gerade, Hub mittig); erzeugt eine Größe in einem Biom kein gültiges Level, meldet die Erzeugung den Fehler sauber (kein Panic). Ein Nachweis über viele Seeds und alle Biome entfällt (Entscheidung von 🧑 am 2026-10-18); wie viele Chunks sinnvoll sind, ermittelt ein eigenes Projekt.
 - **AC-03** Go-Test: Die Prüfung der Planung lehnt einen Chunk-Platz außerhalb der eingestellten Anzahl ab und nennt den Platz; `chunkCounts` mit einer Anzahl außerhalb der Tabelle wird beim Laden mit Insel und Tiefe abgelehnt.
-- **AC-04** Frontend-Test: Die Größen-Vorauswahl setzt die Anzahl; Chunk- und Live-Vorschau zeigen die Länge des Entwurfs aus derselben Quelle.
+- **AC-04** Frontend-Test: Die Größen-Vorauswahl setzt die Anzahl; Chunk- und Live-Vorschau zeigen die Länge des Entwurfs aus derselben Quelle; ist die Anzahl für das Biom nicht erzeugbar, steht der Fehler am Entwurf und Speichern ist gesperrt.
 - **AC-05** Frontend-Test: Alt + Mausrad ändert nur den Zoom der Vorschau unter dem Zeiger; Scrollen verschiebt beide um dieselbe Welt-Strecke (gleiche Weltposition in der Bildmitte); Zoom bleibt beim Wechsel von Insel und Stufe.
 - **AC-06** Test: Die Umwandlung eines Seed-Chunks in feste Objekte liefert in Chunk- und Live-Vorschau denselben Inhalt wie vorher (gleiche Objekte und Orte); der Server liefert die Objekte eines Chunks aus dem Vorschau-Level.
-- **AC-07** Abnahme von 🧑 am PC im Studio-Fenster: Bedienung der Listen, Größen-Auswahl, getrennter Zoom und Umwandlung (Liste in der Abnahme-Session).
+- **AC-07** Abnahme von 🧑 am PC im laufenden Studio (Watch-Modus, direkt nach der Umsetzung): Bedienung der Listen, Größen-Auswahl, getrennter Zoom und Umwandlung.
 
 ## Offene Fragen
 
-Entschieden von 🧑 am 2026-10-18 (Chat und Workshop WZ17.1, Revision 2): Chunk-Anzahl ändert die Level-Länge je Stufe; Größen 16 · 20 · 24 · 32 · 40 · 48 (ersetzen die ersten Annahmen 8 · 12 · 16 · 24 · 32 · 48, weil 8 und 12 für Portale mit Mindestabstand nicht reichen), Feld `chunkCounts` neben `plannedChunks`, Tabelle in `data/island-sizes.json`; Seed-Inhalt aus dem Vorschau-Level; Zoom mit gleicher Weltposition, pro Fenster gemerkt; Seed-Chunk wird in feste Objekte übernommen; durchsuchbare Liste mit Emoji-Icons; keine weiteren Mängel.
+Entschieden von 🧑 am 2026-10-18 (Chat und Workshop WZ17.1, Revision 3): Chunk-Anzahl ändert die Level-Länge je Stufe; Größen 16 · 20 · 24 · 32 · 40 · 48 (ersetzen die ersten Annahmen 8 · 12 · 16 · 24 · 32 · 48), Feld `chunkCounts` neben `plannedChunks`, Tabelle in `data/island-sizes.json`; Seed-Inhalt aus dem Vorschau-Level; Zoom mit gleicher Weltposition, pro Fenster gemerkt; Seed-Chunk wird in feste Objekte übernommen; durchsuchbare Liste mit Emoji-Icons; keine weiteren Mängel.
 
-Offen: nichts Blockierendes. In WZ17.2 nachzuweisen: Die Untergrenze 16 gilt in allen fünf Biomen (`level.Validate` über 100 Seeds je Größe und Biom). Im Spielstand gespeicherte Welten ändern sich nicht (Spielstand-Format bleibt); die Länge gilt nur für neu erzeugte Stufen.
+**Revision 3 (2026-10-18, 🧑):** Aufwendige Simulations- und Nachweisläufe entfallen (100 Seeds je Größe und Biom, Benchmark, neuer Golden-Fall). Der Editor legt an, was anlegbar ist; was der Generator für ein Biom nicht erzeugen kann, meldet die Prüfung als Fehler am Entwurf. Wie viele Chunks je Stufe und wie viele Inseln je Welt sinnvoll sind, ermittelt später ein eigenes Projekt.
+
+Offen: nichts Blockierendes. Im Spielstand gespeicherte Welten ändern sich nicht (Spielstand-Format bleibt); die Länge gilt nur für neu erzeugte Stufen.
 
 ## Notizen
 
