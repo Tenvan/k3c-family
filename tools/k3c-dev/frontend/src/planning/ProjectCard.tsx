@@ -8,6 +8,7 @@ import { sessionProgress, stepRank, type ProjectView } from './projects';
 import { CopyPrompt, DepLinks } from './PromptParts';
 import { promptProject, promptSession } from './prompts';
 import { scrollToSprint } from './SprintCard';
+import { WtPills } from './WorktreePills';
 
 interface Props {
   view: ProjectView;
@@ -51,6 +52,7 @@ export function ProjectCard({ view, count, error, onMove, data, sel, onPick, ren
         </span>
         {count !== undefined && <RankButtons view={view} count={count} onMove={onMove} />}
         <span className="pl-pills">
+          <WtPills item="Projekt" id={p.id} />
           <StatePill view={view} />
           <CopyPrompt prompt={promptProject(p)} what={`Projekt ${p.id}`} />
         </span>
