@@ -9,7 +9,6 @@ Die Reihenfolge der Arbeit ist allein der Projekt-Rang: [`../projekte/README.md`
 
 | Sprint | Domäne | Projekt | Thema | Am Ende sichtbar | Ordner |
 |---|---|---|---|---|---|
-| WZ8 | REG, SIM, SRV, DEV | WZG | Chunks je Insel und Stufe planen: Seed oder feste Objekte | – | `aktiv/WZ8-chunk-planung/` |
 | WZ9 | SRV, DEV | WZG | Gebäude-Planer für die Freischaltung je Hub-Stufe | – | `aktiv/WZ9-gebaeude-planer/` |
 | WZ10 | DEV | WZG | Abspiel-Bausteine und Monarch-Vorschau im Asset-Studio | – | `aktiv/WZ10-figuren-vorschau/` |
 | WZ11 | DEV | WZG | Gegner- und Boss-Vorschau im Asset-Studio, Figuren-Seiten entfernen | – | `aktiv/WZ11-gegner-bosse-vorschau/` |
@@ -26,6 +25,7 @@ Abnahmen am Gerät (`Agent: Mensch`) sammelt das Projekt ABN im Sprint HW1: [`..
 | Sprint | Domäne | Projekt | Thema | Am Ende sichtbar | Reife | Ordner |
 |---|---|---|---|---|---|---|
 | WZ14 | REG | WZG | Geplante Chunks tragen Ruinen und Gegnerlager | – | Entwurf | `geplant/WZ14-ruinen-gegnerlager/` |
+| WZ17 | REG, SIM, SRV, DEV | WZG | Chunk-Editor komfortabel: Inselgrößen, getrennter Zoom, Seed-Chunk umwandeln | – | bereit | `geplant/WZ17-chunk-editor-komfort/` |
 | BD2 | SIM, SRV, CLI | BED | Rückmeldungs-Ereignisse gedrosselt und geprüft, Lobby startet nie still leer | – | Entwurf | `geplant/BD2-rueckmeldung-lobby-nachtraege/` |
 | BD3 | SRV | BED | Raum-Pause im Couch-Raum, Schutz des pausierten Monarchen online | – | Entwurf | `geplant/BD3-raum-pause/` |
 | BD4 | CLI | BED | Gemeinsame HUD-Leiste oben, Fluss unten, lokale Spieler treten einzeln aus | – | Entwurf | `geplant/BD4-hud-leiste-austreten/` |
@@ -194,3 +194,4 @@ Gesamtplan und Begründung: [`../plan-weiterentwicklung.md`](../plan-weiterentwi
 | WZ13 | Glossar und Regeln: Verweis für das Morgengrauen auf B-470 | `erledigt/WZ13-glossar-morgengrauen-verweis/` |
 | WZ15 | Hub-Planung Vorlauf: Regeltabelle erzeugt, Prüfung ohne globalen Zustand | `erledigt/WZ15-hub-planung-vorlauf/` |
 | WZ16 | Welt-Betrachter: eine gemeinsame Ansicht mit Sprungleiste, Zoom und Gebäude-Filter | `erledigt/WZ16-welt-betrachter-ansicht/` |
+| WZ8 | Chunks je Insel und Stufe planen: Seed oder feste Objekte | `erledigt/WZ8-chunk-planung/` |

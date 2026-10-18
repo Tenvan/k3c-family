@@ -185,6 +185,29 @@ func TestPlanSaveLehntVeralteteDateiAb(t *testing.T) {
 	}
 }
 
+// B-486: Nach einem erfolgreichen Speichern (neuer Stand) lehnt auch ein zweites Speichern eine von außen geänderte Datei
+// ab und meldet es; die Datei bleibt, wie die externe Änderung sie hinterlassen hat. Danach klappt Speichern mit dem
+// frisch geladenen Stand wieder.
+func TestPlanSaveNachSpeichernLehntExterneAenderungAb(t *testing.T) {
+	app, path := planApp(t, islandsFixture)
+	first := app.PlanSave("island1", 0, portalPlan, app.PlanLoad().Stand)
+	if first.Error != "" || first.Stale || first.Stand == "" {
+		t.Fatalf("erstes Speichern: %+v", first)
+	}
+	external := strings.Replace(readFile(t, path), `"notes": "Fixture"`, `"notes": "extern geändert"`, 1)
+	if err := os.WriteFile(path, []byte(external), 0o644); err != nil {
+		t.Fatal(err)
+	}
+	second := app.PlanSave("island1", 1, []level.PlannedChunk{{Slot: 4, Kind: "cavern"}}, first.Stand)
+	if !second.Stale || second.Error != errPlanStale.Error() || readFile(t, path) != external {
+		t.Fatalf("zweites Speichern: %+v, Datei unverändert: %v", second, readFile(t, path) == external)
+	}
+	reloaded := app.PlanLoad()
+	if third := app.PlanSave("island1", 1, []level.PlannedChunk{{Slot: 4, Kind: "cavern"}}, reloaded.Stand); third.Error != "" || third.Stale {
+		t.Errorf("nach Neuladen: %+v", third)
+	}
+}
+
 // AC-11: Chunk- und Live-Vorschau lesen dieselbe Quelle: gleicher Entwurf, gleiche Insel und Stufe, gleicher Seed
 // ergeben dieselben Chunks und Objekte; der Entwurf (auch ungespeichert) steht im Level.
 func TestChunkUndLiveVorschauLesenDieselbeQuelle(t *testing.T) {

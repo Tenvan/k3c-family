@@ -17,9 +17,9 @@ describe('Asset-Studio-Rahmen (B-459)', () => {
     expect(renderToStaticMarkup(<App initial="sound" />)).toMatch(/aria-selected="true"[^>]*>.*?Sound/);
   });
 
-  it('bietet die Seite Welt-Betrachter an (B-460) und öffnet sie', () => {
+  it('bietet die Seite Welten Editor an (B-460) und öffnet sie', () => {
     const html = renderToStaticMarkup(<App initial="welt" />);
-    expect(html).toMatch(/aria-selected="true"[^>]*>.*?Welt-Betrachter/);
+    expect(html).toMatch(/aria-selected="true"[^>]*>.*?Welten Editor/);
     expect(html).toContain('data-maximized="true"');
   });
 
@@ -28,7 +28,7 @@ describe('Asset-Studio-Rahmen (B-459)', () => {
     expect(html).toMatch(/aria-selected="true"[^>]*>.*?Monarch/);
     expect(html).toContain('Reittier');
     const tabs = [...html.matchAll(/role="tab"[^>]*>(?:<[^>]+>)*([^<]+)/g)].map((m) => m[1]);
-    expect(tabs).toEqual(['Grafik', 'Sound', 'Welt-Betrachter', 'Gebäude-Planer', 'Monarch', 'Gegner']);
+    expect(tabs).toEqual(['Grafik', 'Sound', 'Welten Editor', 'Gebäude-Planer', 'Monarch', 'Gegner']);
   });
 
   it('bietet die Seite Gebäude-Planer an (B-462) und öffnet sie', () => {

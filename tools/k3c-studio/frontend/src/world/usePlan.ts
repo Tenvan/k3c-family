@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { backend } from '../api';
-import type { PlanCheckView, PlanIsland, PlanView, PlannedChunk } from '../api';
+import type { PlanCheckView, PlanIsland, PlanSaved, PlanView, PlannedChunk } from '../api';
 import type { PlanSource } from '../stage/stageLogic';
 import { isDirty, normalized, savedPlan } from './plan';
 
@@ -57,7 +57,13 @@ export function usePlan() {
   const save = useCallback(async () => {
     if (!island || depth === undefined || !view) return;
     const chunks = normalized(draft);
-    const result = await backend.planSave(island.id, depth, chunks, view.stand);
+    let result: PlanSaved;
+    try {
+      result = await backend.planSave(island.id, depth, chunks, view.stand);
+    } catch (e) { // Wails lehnt mit Text ab: sonst bliebe das Speichern ohne jede Meldung (B-486)
+      setNotice({ kind: 'error', text: `Speichern fehlgeschlagen: ${e instanceof Error ? e.message : String(e)}` });
+      return;
+    }
     if (result.error) { setNotice({ kind: result.stale ? 'stale' : 'error', text: result.error }); return; }
     setView({
       ...view, stand: result.stand,

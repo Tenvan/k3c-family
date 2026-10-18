@@ -57,4 +57,4 @@ Beispiel (Reihenfolge der Schlüssel: `slot`, `kind`, `seed`, `objects`; Teil-2-
 
 | Regel | Begründung | Daten |
 |---|---|---|
-| Der Editor im Welt-Betrachter schreibt `data/islands.json` atomar und format-stabil und nur nach einer Stand-Prüfung (geändert seit dem Laden → nicht speichern, Entwurf bleibt). Nach jedem Speichern erscheint „REG-Änderung: Commit mit Begründung, `task golden:update` nur bei gewollter Änderung“. Eine gespeicherte Planung ist eine REG-Änderung durch 🧑. | Das Werkzeug schreibt REG-Daten; Golden ändert sich nur gewollt. | `data/islands.json` |
+| Der Chunk-Editor im Welten Editor schreibt `data/islands.json` atomar und format-stabil und nur nach einer Stand-Prüfung (geändert seit dem Laden → nicht speichern, Entwurf bleibt). Nach jedem Speichern erscheint „REG-Änderung: Commit mit Begründung, `task golden:update` nur bei gewollter Änderung“. Eine gespeicherte Planung ist eine REG-Änderung durch 🧑. | Das Werkzeug schreibt REG-Daten; Golden ändert sich nur gewollt. | `data/islands.json` |
