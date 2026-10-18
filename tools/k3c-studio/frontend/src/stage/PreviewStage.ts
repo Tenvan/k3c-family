@@ -7,7 +7,7 @@ import { prepareBuildings, preloadBuildings } from '@game/scenes/siteView';
 import { createSpriteAnims, preloadSprites } from '@game/scenes/sprites';
 import { DEFAULT_CONTROL, SHEETS, resolveAnim, type Control, type Gap } from '../abspiel/figure';
 import { FigureView, GROUND_Y, drawScale, loadFigureSheets, type FigureItem } from '../abspiel/figureView';
-import { refreshToParent } from './stageResize';
+import { refreshToParent, settleToParent } from './stageResize';
 
 // Die wiederverwendbare Phaser-Bühne des Asset-Studios (B-460, WZ7.3; WZ10/WZ11 nutzen sie wieder, eine zweite entsteht
 // nicht): lädt die Grafiken wie das Spiel (LoadScene) und zeichnet eine `World` mit `StageView`/`WorldRenderer` aus
@@ -198,6 +198,7 @@ export class PreviewStage {
   private readonly game: Phaser.Game;
   private readonly scene: PreviewScene;
   private readonly resize: ResizeObserver;
+  private readonly layout: ResizeObserver;
   private readonly wheel: (e: WheelEvent) => void;
   private readonly parent: HTMLElement;
 
@@ -217,6 +218,10 @@ export class PreviewStage {
     // misst die Elterngröße dabei neu (refresh allein rechnet mit der alten, WZ17.5).
     this.resize = new ResizeObserver(() => refreshToParent(this.game.scale));
     this.resize.observe(parent);
+    // Wächst oder schrumpft die Seite (Zeilen darüber, auch aus lokalem Zustand einer Kind-Komponente), kann sich nur die
+    // Lage der Bühne ändern; Phaser prüft dann Größe und Lage (WZ17.5).
+    this.layout = new ResizeObserver(() => this.settle());
+    this.layout.observe(document.body);
     this.wheel = (e) => onWheel(e);
     parent.addEventListener('wheel', this.wheel, { passive: false }); // nicht passiv: die Seite bricht das Ereignis bei Zoom und Scrollen ab
   }
@@ -246,6 +251,11 @@ export class PreviewStage {
     this.scene.setLook(look);
   }
 
+  /** Nach einer Layout-Änderung der Seite: neu skalieren, wenn sich Größe oder Lage des Elements geändert hat */
+  settle(): void {
+    settleToParent(this.game.scale);
+  }
+
   /** Größe neu lesen, z. B. nachdem das Element sichtbar wurde */
   refresh(): void {
     refreshToParent(this.game.scale);
@@ -253,6 +263,7 @@ export class PreviewStage {
 
   destroy(): void {
     this.resize.disconnect();
+    this.layout.disconnect();
     this.parent.removeEventListener('wheel', this.wheel);
     this.game.destroy(true);
   }

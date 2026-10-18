@@ -108,3 +108,20 @@ describe('Leiste folgt Höhenänderungen der Bühne (WZ17.5)', () => {
   });
 });
 
+describe('Leiste ohne Beobachter-Meldung (WZ17.5)', () => {
+  it('ändert sich die Bühnenhöhe ohne ResizeObserver-Meldung, misst das nächste Rendern (Objekt, Meldung) neu', async () => {
+    const original = globalThis.ResizeObserver;
+    globalThis.ResizeObserver = class { observe() {} unobserve() {} disconnect() {} } as unknown as typeof ResizeObserver;
+    restore.push(() => { globalThis.ResizeObserver = original; });
+    let height = 400;
+    const desc = Object.getOwnPropertyDescriptor(HTMLElement.prototype, 'offsetHeight')!;
+    Object.defineProperty(HTMLElement.prototype, 'offsetHeight', { configurable: true, get(this: HTMLElement) { return this.classList.contains('wd-stage') ? height : 0; } });
+    restore.push(() => Object.defineProperty(HTMLElement.prototype, 'offsetHeight', desc));
+    const h = await mount();
+    const top = () => parseFloat(h.querySelector<HTMLElement>('.wd-stage .wd-band')!.style.top);
+    height = 360; // der neue Chunk-Eintrag schiebt die Bühne zusammen
+    await act(async () => [...h.querySelectorAll('button')].find((b) => b.textContent === 'Chunk hinzufügen')!.click());
+    await flush();
+    expect(top()).toBeCloseTo(360 - 180 * (12 / 32));
+  });
+});

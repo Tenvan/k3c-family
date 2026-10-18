@@ -11,15 +11,16 @@ import { LivePreview } from './LivePreview';
 // reicht die Welt an die Bühne. Die Phaser-Bühne ersetzt hier eine Attrappe (ein Canvas gibt es im Test nicht).
 (globalThis as { IS_REACT_ACT_ENVIRONMENT?: boolean }).IS_REACT_ACT_ENVIRONMENT = true;
 
-interface Shown { shown: unknown[]; views: { left: number; scale: number }[]; destroyed: boolean; fail: (files: string[]) => void; pan: (px: number) => void }
+interface Shown { shown: unknown[]; views: { left: number; scale: number }[]; settled: number; destroyed: boolean; fail: (files: string[]) => void; pan: (px: number) => void }
 const stages: Shown[] = [];
 vi.mock('./PreviewStage', () => ({
   PreviewStage: class {
     state: Shown;
-    constructor(_parent: unknown, fail: (files: string[]) => void, pan: (px: number) => void) { this.state = { shown: [], views: [], destroyed: false, fail, pan }; stages.push(this.state); }
+    constructor(_parent: unknown, fail: (files: string[]) => void, pan: (px: number) => void) { this.state = { shown: [], views: [], settled: 0, destroyed: false, fail, pan }; stages.push(this.state); }
     show(world: unknown) { this.state.shown.push(world); }
     setPosition(view: { left: number; scale: number }) { this.state.views.push(view); }
     setLook() {}
+    settle() { this.state.settled++; }
     destroy() { this.state.destroyed = true; }
   },
 }));
@@ -167,5 +168,16 @@ describe('Live-Vorschau: Wechsel, Fehler, Lebenszyklus (B-460/AC-04)', () => {
     await act(async () => root!.unmount());
     root = null;
     expect(stages[0]!.destroyed).toBe(true);
+  });
+});
+
+// Fehler aus dem Live-Test (WZ17.5): Zeilen über der Vorschau ändern Größe oder Lage der Bühne ohne Meldung eines
+// Beobachters; nach jedem Rendern prüft die Bühne ihre Größe und Lage.
+describe('Bühne nach jedem Rendern prüfen (WZ17.5)', () => {
+  it('nach einem neuen Rendern ruft die Live-Vorschau settle der Bühne auf', async () => {
+    await mount();
+    const before = stages[0]!.settled;
+    await act(async () => root!.render(element('k3c', { left: 41, scale: 12 })));
+    expect(stages[0]!.settled).toBeGreaterThan(before);
   });
 });

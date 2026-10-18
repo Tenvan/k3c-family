@@ -14,3 +14,9 @@ export function refreshToParent(scale: ParentScale): void {
   scale.getParentBounds();
   scale.refresh();
 }
+
+/** Nach dem Layout prüfen: neu skalieren nur, wenn sich Größe oder Lage des Elements geändert hat (getParentBounds
+ *  vergleicht beides); so kostet der Abgleich nach jedem Rendern der Seite nichts, solange alles passt. */
+export function settleToParent(scale: ParentScale): void {
+  if (scale.getParentBounds()) scale.refresh();
+}

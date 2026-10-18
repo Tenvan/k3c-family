@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { refreshToParent } from './stageResize';
+import { refreshToParent, settleToParent } from './stageResize';
 
 // Fehler aus dem Live-Test (WZ17.5): Ändern sich Zeilen über der Live-Vorschau, ändert sich die Höhe der Bühne ohne
 // Fenster-Resize. Phasers `refresh()` rechnet mit der zuletzt gemessenen Elterngröße (`parentSize`), die nur der eigene
@@ -22,5 +22,15 @@ describe('Bühne folgt dem Element', () => {
     const calls: string[] = [];
     refreshToParent({ getParentBounds: () => { calls.push('bounds'); return false; }, refresh: () => { calls.push('refresh'); } });
     expect(calls).toEqual(['bounds', 'refresh']);
+  });
+
+  it('nach dem Layout: neu skalieren nur, wenn sich Größe oder Lage geändert hat (keine Arbeit bei jedem Rendern)', () => {
+    let changed = true;
+    let refreshed = 0;
+    const scale = { getParentBounds: () => changed, refresh: () => { refreshed++; } };
+    settleToParent(scale);
+    changed = false;
+    settleToParent(scale);
+    expect(refreshed).toBe(1);
   });
 });

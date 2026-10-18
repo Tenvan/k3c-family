@@ -1,4 +1,4 @@
-import { useCallback, useLayoutEffect, useMemo, useState, type RefObject } from 'react';
+import { useCallback, useLayoutEffect, useMemo, useRef, useState, type RefObject } from 'react';
 import { DEFAULT_SCALE, centerViews, panViews, paneView, wheelAction, zoomPanes, type Pane, type PanePx, type Views } from './viewState';
 
 // Zustand der Ansicht im Welt-Betrachter (B-477, B-485/AC-05): gemessene Größen der beiden Vorschauen und die Ansicht selbst.
@@ -18,20 +18,25 @@ export interface Box {
  *  `outer`: samt Rahmen messen, wie Phaser (Scale.RESIZE) die Bühne misst; sonst den Inhalt (Streifen). */
 export function useBox(root: RefObject<HTMLElement | null>, selector: string, outer = false): Box {
   const [box, setBox] = useState<Box>({ el: null, w: FALLBACK_PX, h: 0 });
+  const remeasure = useRef<() => void>(() => {});
   useLayoutEffect(() => {
     const el = root.current?.querySelector<HTMLElement>(selector) ?? null;
     if (!el) return;
     const read = () => setBox((b) => {
-      const [cw, ch] = outer ? [el.offsetWidth, el.offsetHeight] : [el.clientWidth, el.clientHeight];
+      const rect = outer ? el.getBoundingClientRect() : null; // samt Rahmen mit Bruchteilen, wie Phaser (getParentBounds) misst
+      const [cw, ch] = rect ? [rect.width || el.offsetWidth, rect.height || el.offsetHeight] : [el.clientWidth, el.clientHeight];
       const w = cw > 0 ? cw : b.w;
       return b.el === el && b.w === w && b.h === ch ? b : { el, w, h: ch };
     });
     read();
+    remeasure.current = read;
     if (typeof ResizeObserver === 'undefined') return;
     const watch = new ResizeObserver(read);
     watch.observe(el);
     return () => watch.disconnect();
   }, [root, selector, outer]);
+  // Nach jedem Rendern der Seite neu messen (Zeilen, Meldungen, Objekte darüber, WZ17.5); ohne Änderung bleibt der Zustand.
+  useLayoutEffect(() => { remeasure.current(); });
   return box;
 }
 
