@@ -61,3 +61,4 @@ keine
 ## Notizen
 
 Gefunden im Review I1.4 (2026-10-02).
+2026-10-18: Auf Wunsch von 🧑 (Chat) die drei Binärdateien `k3c-server`, `k3c-server.exe` und `k3c-tui.exe` (zusammen rund 34 MB; `k3c-tui.exe` kam später dazu) mit `git rm --cached` aus der Versionierung genommen und im Wurzelverzeichnis in `.gitignore` eingetragen (`/k3c-server`, `/k3c-server.exe`, `/k3c-tui.exe`); die Dateien bleiben lokal liegen. Damit ist der Teil von AC-01 zu den Binärdateien erfüllt; offen bleiben der `grep`-Nachweis `npm run` und AC-02 (`scripts` in `tools/k3c-dev/frontend/package.json`). Die alten Commits behalten die Dateien (Historie wird nicht umgeschrieben, `.git` ist ~38 MB groß).
