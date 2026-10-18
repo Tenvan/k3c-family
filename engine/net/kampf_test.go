@@ -14,7 +14,7 @@ import (
 // kampfWelt ist Stufe 0 einer Insel mit 4 Spielern und einem Endboss in Phase 2 (Flächenschlag in 3,4 s).
 func kampfWelt(t *testing.T) *sim.World {
 	t.Helper()
-	isl, err := sim.CreateIsland("k4-kampf", []int{4}, 1)
+	isl, err := sim.CreateIsland("k4-kampf", []int{4}, 1, sim.CreateOptions{})
 	if err != nil {
 		t.Fatal(err)
 	}

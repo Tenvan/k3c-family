@@ -20,7 +20,7 @@ const wardenID = "crystalHeartWarden"
 // damit nur der Endboss und seine Beschwörungen kämpfen.
 func endIsland(t *testing.T, players int) (*Island, *World, float64) {
 	t.Helper()
-	isl, err := CreateIsland("endboss", []int{4}, 1)
+	isl, err := CreateIsland("endboss", []int{4}, 1, CreateOptions{})
 	if err != nil {
 		t.Fatal(err)
 	}

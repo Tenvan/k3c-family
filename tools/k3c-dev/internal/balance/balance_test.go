@@ -58,7 +58,7 @@ func TestProfileZahlenOderNicht(t *testing.T) {
 
 // Beide Monarchen bezahlen: Mit „sparsam“ geben beide Spieler Gold aus.
 func TestSparsamZweiSpielerZahlenBeide(t *testing.T) {
-	isl, err := sim.CreateIsland("1", []int{0}, 1)
+	isl, err := sim.CreateIsland("1", []int{0}, 1, sim.CreateOptions{})
 	if err != nil {
 		t.Fatal(err)
 	}

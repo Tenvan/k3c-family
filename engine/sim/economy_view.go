@@ -10,7 +10,7 @@ type Economy struct {
 	StockMax int `json:"stockMax,omitempty"`
 	// PurseMax ist das Gold-Maximum je Spieler; fehlt ohne Dev-Bonus (dann gilt economy.purse.maxGold aus data/).
 	PurseMax int `json:"purseMax,omitempty"`
-	// HubLevel ist die Hub-Stufe (1 bis 5).
+	// HubLevel ist die Hub-Stufe (1 bis Anzahl der `levels` in data/hub.json).
 	HubLevel int `json:"hubLevel"`
 	// HubUpgrade ist der Ausbau auf die nächste Hub-Stufe; fehlt auf der letzten Stufe (keine Kosten).
 	HubUpgrade *HubUpgrade `json:"hubUpgrade,omitempty"`
