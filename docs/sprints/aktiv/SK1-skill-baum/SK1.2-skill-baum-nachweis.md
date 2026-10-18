@@ -1,6 +1,6 @@
 # SK1.2 · Skill-Baum Tank und Zauberer: Nachweis mit zwei Linien gleichzeitig
 
-- **Status:** in Arbeit
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** SIM
@@ -53,4 +53,10 @@ task check:go
 
 ## Ergebnis
 
-–
+Neue Datei `engine/sim/skills_linien_test.go`, kein Produktivcode geändert. `TestSkillsTankUndZaubererImSelbenTick`: Spieler 1 (Tank, Taunt) und Spieler 2 (Zauberer, Fireball) wirken im selben `Step`; der Gegner beim Tank ist verspottet und unverletzt, der beim Zauberer verliert Leben ohne Taunt, jede Abklingzeit läuft nur beim eigenen Spieler, Slots getrennt. `TestSkillsFremdeLinieOhnePunkteAbgelehnt`: Lernen ohne freien Punkt und ohne Tier wird abgelehnt, `Skills` und `AvailablePoints` bleiben unverändert, der andere Spieler ist unberührt.
+
+- **AC-01 geprüft:** `go test ./engine/sim -run 'Skills|Can|Monarch|Tank|Caster'` grün, inklusive der beiden neuen Tests.
+  - B-007/AC-01 (Sim): aktive Skills Tank und Zauberer aus S1 (`skills_tank_test.go`, `skills_caster_test.go`) plus der neue Test mit beiden Linien gleichzeitig.
+  - B-007/AC-02 (Client bedienbar): nachgewiesen in S3 (`docs/sprints/erledigt/S3-skill-menue-overlay/`, B-124, B-125); Abnahme am Gerät S3.4 offen, angenommen, Validierung offen (S3.4). Kein Client-Code geändert.
+  - B-007/AC-03 (Spielstand): S1.4, Spielstand v3 speichert Pool, Verteilung und Skills.
+- **AC-03 geprüft:** kein Diff unter `testdata/`, `task check:go` grün (Lauf L13, Exit 0). Lauf L11 scheiterte einmal an `tools/regeltabelle` (`TestRunSchreibtAbweichendenBlock`, Windows-Rename „Access is denied“); allein und im Wiederholungslauf grün, vermutet Flake, unabhängig von dieser Session. Review: nur eine neue Testdatei, kein Produktivcode.
