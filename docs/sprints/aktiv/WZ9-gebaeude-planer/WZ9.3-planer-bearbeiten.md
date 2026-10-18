@@ -1,6 +1,6 @@
 # WZ9.3 · Gebäude-Planer: Bearbeiten, Prüfen, Schreiben
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** DEV
@@ -63,5 +63,11 @@ Unter k3c-dev: `check_run` mit `checkout`. Keine manuelle Prüfung; die gehört 
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+AC-02 geprüft: Bearbeiten der Matrix im Frontend (`planerEdit.ts`, `usePlaner.ts`, `PlanerEditor.tsx`: hubLevel, offsetUnits, fromDepth, needsDeeper, gateHubLevel, wallUnits, Händler, Plätze bekannter Arten hinzufügen/entfernen mit Hinweis auf alte Spielstände); Prüfung nur im Backend über `sim.ValidateHubData` (`HubCheck`, `placeableKinds` per Probe je Art, keine Regel im Studio nachgebaut); Speichern nur ohne Befund, ungültige Kandidaten lassen die Dateien byte-gleich (5 Fälle, Test).
+AC-03 geprüft: `HubSave` (`app_planer_save.go`) schreibt zuerst `data/hub.json` (`WriteAtomic` aus `tools/assetkit`), danach den erzeugten Block (`tabelle.Block` + `Ersetzen` aus dem tatsächlich geschriebenen Stand); Text außerhalb der Marken byte-gleich; scheitert der zweite Schritt, bleibt `hub.json` gespeichert und es kommt „Regeltabelle veraltet, task rules:update“ (Test auf Kopie).
+AC-05 geprüft: nach dem Speichern der Hinweis „REG-Änderung: Commit mit Begründung (data/hub.json und Regeltabelle), task golden:update nur bei gewollter Änderung“ (Test); bei unverändertem Stand statt Erfolg „Unverändert“ ohne Hinweis.
+AC-07 geprüft: `patchJSON` (`hub_patch.go`) ersetzt nur geänderte Werte an ihrer Stelle (Ein-Zeilen-Diff Rüstkammer auf Stufe 3, gateHubLevel, Händler, `wallUnits[4]` 124→126), Einrückung, Zahlenformat, CRLF/LF und Schlüsselreihenfolge bleiben, Sicherheitsnetz `sameJSON` (nichts schreiben, wenn nicht semantisch gleich dem Kandidaten); atomar mit `Sync` und übernommenen Rechten; Schreibregel: SHA-256 beider Dateien beim Laden, extern geänderte Datei → nichts schreiben, Neuladen anbieten, Eingaben bleiben (je Datei getestet).
+AC-10 geprüft: `git diff --stat origin/develop -- data/hub.json testdata/golden` leer; alle Schreibtests auf Kopien in `t.TempDir()`.
+Review (getrennter Agent, 0 CRITICAL/HIGH, kein Datenverlust): behoben nicht lesbarer Kandidat (z. B. 1.5 in ganzzahligem Feld) blieb bei „wird geprüft“ (Raw vor dem Parsen, `integerOf`, Fehlertext), `Sync` und Rechte in `WriteAtomic`, „Unverändert“ statt Erfolg, Felder beim Speichern gesperrt, Matrix zeigt den zuletzt geprüften Stand, Tabellenfälle CRLF/44 vs 44.0/Umlaute/doppelter Schlüssel.
+Bekannte Grenzen (nicht geändert): kurzes Zeitfenster zwischen Stand-Prüfung und Rename gegenüber anderen Prozessen (Mutex gilt nur im Studio); ein Neuladen zwischen den zwei Schreibschritten gibt beim nächsten Speichern „Regeltabelle geändert, neu laden“ (ein Klick); Zeilen-Diff der Abweichung bleibt nach Position (Block-Zeilen sind nach Stufe sortiert); der Mock gibt für `hubCheck` immer die Fixture-Matrix zurück (echte Prüfung nur in Go).
+Prüfung: Studio-Vitest (18 Dateien, 148 Tests), `tsc --noEmit`, `vite build`, oxlint, Studio und assetkit `go vet`/`go test`/`golangci-lint`, `task:check`, `task:check:go`, `go:lint` grün (einmal flackerte `cmd/k3c-load TestGleicherSeedGleicheEingaben`, vermutlich lastabhängig, ungeprüft).

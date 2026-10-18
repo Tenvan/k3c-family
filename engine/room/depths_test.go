@@ -31,7 +31,7 @@ func TestNeuerRaumHatAlleStufen(t *testing.T) {
 
 func TestGespeicherterStandBehaeltStufen(t *testing.T) {
 	f := newFixture()
-	isl := need(sim.CreateIsland("drei", []int{0, 1, 2}, 1))(t)
+	isl := need(sim.CreateIsland("drei", []int{0, 1, 2}, 1, sim.CreateOptions{}))(t)
 	f.store.data["drei"] = need(json.Marshal(isl.ToSave("2026-10-01T12:00:00.000Z")))(t)
 	r := need(f.m.Create("xbox", &peer{}, "drei", false, 0, []int{0}, Options{}))(t)
 	if len(r.isl.Stages) != 3 {

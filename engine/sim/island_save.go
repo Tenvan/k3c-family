@@ -175,7 +175,7 @@ func FromIslandSave(s IslandSave, cycleSpeed float64) (*Island, error) {
 	for i, h := range s.Stages {
 		depths[i] = h.Depth
 	}
-	isl, err := createIsland(s.Seed, depths, cycleSpeed, s.Time)
+	isl, err := createIsland(s.Seed, depths, cycleSpeed, s.Time, nil)
 	if err != nil {
 		return nil, err
 	}

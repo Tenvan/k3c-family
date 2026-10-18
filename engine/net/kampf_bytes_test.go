@@ -16,7 +16,7 @@ import (
 // seinen ersten Warnkreis.
 func bossWelt(t *testing.T) (*sim.Island, *sim.World) {
 	t.Helper()
-	isl, err := sim.CreateIsland("bossbench", []int{4}, 1)
+	isl, err := sim.CreateIsland("bossbench", []int{4}, 1, sim.CreateOptions{})
 	if err != nil {
 		t.Fatal(err)
 	}

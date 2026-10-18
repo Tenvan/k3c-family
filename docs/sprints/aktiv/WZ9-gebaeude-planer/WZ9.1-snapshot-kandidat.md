@@ -1,6 +1,6 @@
 # WZ9.1 · Snapshot-Option Kandidaten-hub.json
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** SRV
@@ -58,5 +58,9 @@ Unter k3c-dev: `check_run` mit `checkout`. Keine manuelle Prüfung.
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+AC-09 teilweise geprüft: `engine/room/preview.go` (`PreviewOptions.HubCandidate []byte`, leer = eingebettete `data/hub.json`), `preview_candidate.go` (`candidateWorld`: ein `sim.ParseHub`, Parse-Fehler und Befunde als `*CandidateError`, dann `sim.CreateWorldWith`). Prüfung mit der Funktion aus WZ15.3 vor dem Bau (fail closed), kein globaler Zustand. Ohne Option bleibt der Pfad unverändert: SHA-256 über 90 Vorschauen (5 Biome × Stufen 0–5 × 3 Phasen) vor und nach der Änderung identisch. Der Vorrang „geplante Chunks“ (Kandidaten-Linien gelten, Planung wird dagegen geprüft) fehlt, weil `PreviewOptions.Planned` (WZ8.4) nicht im Branch liegt: verschoben nach B-479 (inkl. Vorrang-Test „Linie 5 bei 126“).
+AC-04 geprüft: Rüstkammer ab Stufe 3 erscheint in Hub-Stufe 3, ohne Option nicht, in Stufe 2 auch mit Kandidat nicht; zweimal derselbe Aufruf byte-gleich; Kandidat gleich eingebettet ergibt für forest, cave, crystal und alle Hub-Stufen byte-gleiches JSON und gleiche `EconomyOf`-Werte.
+AC-08 geprüft: `testdata/hub/hub7.json` gibt 7 wählbare Stufen (Standard 7), Schmiede ab Stufe 6, Stufe 8 → Fehler; keine feste 5.
+AC-10 geprüft: `git diff --stat origin/develop -- data/hub.json testdata/golden` leer.
+Review (getrennter Agent): HIGH — mit Kandidat blieb `w.island` an der Welt (`stockMax` in der Vorschau, andere Inselzweige aktiv) → behoben mit **Abweichung von der Spec (SIM-Änderung in einer SRV-Session, von Claude freigegeben):** neue exportierte Hülle `sim.CreateWorldWith(biome, seed, CreateOptions)` baut eine einzelne Welt mit Kandidaten-Kopie ohne Insel (fail closed); das Aufräumen mit Interna (Plätze, `NextID`, Vorrat) ist entfallen. MEDIUM/LOW: ein Parse statt drei, Gleichheitstest vergleicht zusätzlich `EconomyOf`, 7-Stufen-Fehlerfall an `hubLevels+1` gekoppelt, B-479 um den Snapshot-Vorrang ergänzt. Rest: `Notes` der Prüfung (`NotePlannedChunksUnchecked`) werden nicht durchgereicht (Signaturbruch von `BuildPreview`); die Vorschau zeigt keine Insel-Plätze (Lager), auch nicht mit Kandidat, damit „Kandidat = eingebettet“ byte-gleich bleibt.
+Prüfung: `go:test`, `task:check:go`, `go:lint` grün; Studio-Modul `go vet`/`go test` grün.
