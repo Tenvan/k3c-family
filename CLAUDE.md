@@ -65,8 +65,9 @@ prüft die Regeln unten automatisch (Seiten eingetragen, `installPageChrome()`, 
 - `engine/` – Go: `sim/` (Simulation, deterministisch), `level/` (Level-Generator), `room/`, `net/` (HTTP, WebSocket `/ws`,
   Protokoll laut `docs/protocol.md`), `store/` (Spielstände → `saves/`, Berichte → `reports/`).
 - `cmd/` – Go-Binaries: `k3c-server` (liefert `dist/` und die API aus), `k3c-load` (Lasttest), `k3c-tui`.
-  `tools/k3c-dev` – Entwickler-Werkzeug (Wails-Fenster + MCP-Server `k3c-dev`). `tools/k3c-studio` – Asset-Studio
-  (Wails-Fenster, Seiten Grafik und Sound, EXE `bin/k3c-studio.exe`, B-459). `tools/assetkit` – gemeinsame Asset-Logik
+  `tools/k3c-dev` – Entwickler-Werkzeug (Wails-Fenster + MCP-Server `k3c-dev`). Asset-Studio als
+  Seite des Go-Servers: Backend `engine/studio` (`/api/studio/`), Frontend `tools/k3c-studio/frontend` (Build nach `dist/studio/`,
+  `task studio:frontend`), Kachel „Welten bauen“ auf der Landingpage (`studio.html`); nur im Dev-Mode und nur Loopback (B-459). `tools/assetkit` – gemeinsame Asset-Logik
   beider (eigenes Go-Modul, per `replace` eingebunden). `tools/k3c-starter` – Windows-Starter für den Server (Wails-Fenster
   startet `bin/k3c-server`, zeigt Status und Adresse, EXE `bin/k3c-starter.exe`, `task k3c-starter:build`, B-041).
 - `src/model/` – Typen und Daten, die der Client vom Server kennt (`World`, `GameEvent`, `BIOMES`, `SaveGame` …), keine Logik.

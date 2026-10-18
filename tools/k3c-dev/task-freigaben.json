@@ -11,8 +11,6 @@
     "go:lint",
     "go:test",
     "install",
-    "k3c-studio",
-    "k3c-studio:build",
     "lint",
     "pages",
     "studio:frontend",

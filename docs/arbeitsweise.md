@@ -124,7 +124,7 @@ sie in der Reihenfolge der Sessions. Was eine Domäne außerhalb des Sprints bra
 | **CLI** | Client: Darstellung, HUD, Grafik, Audio, Verbindung | `src/scenes/`, `public/`, `src/online/client.ts`, `src/core/saveStore.ts` |
 | **PLAT** | Plattform: Eingabe, Shell, Seiten | `src/input/`, `src/core/shell.ts`, `src/core/fullscreen.ts`, `src/landing/`, `*.html`, Pages-Präsentation `site/` |
 | **INF** | Frameworks, Tooling, CI, Repo-Aufbau, Arbeitsweise | `package.json`, `go.mod`, `vite*.ts`, `tsconfig.json`, Lint-Konfiguration, `.github/`, `tests/projectRules.test.ts`, `tests/planning.test.ts`, `docs/arbeitsweise.md`, `docs/vorlagen/` |
-| **DEV** | Entwickler-Werkzeug | `tools/k3c-dev/` (eigenes Go-Modul mit Oberfläche, MCP-Server), `tools/k3c-studio/` (Asset-Studio, eigenes Go-Modul mit Wails-Oberfläche), `tools/assetkit/` (gemeinsame Asset-Logik von k3c-dev und Asset-Studio), `cmd/k3c-load/`, `cmd/k3c-tui/`, Werkzeug-Seiten `src/tools/` |
+| **DEV** | Entwickler-Werkzeug | `tools/k3c-dev/` (eigenes Go-Modul mit Oberfläche, MCP-Server), `engine/studio/` und `tools/k3c-studio/` (Asset-Studio: Backend als Seite des Go-Servers, Frontend in `tools/k3c-studio/frontend`), `tools/assetkit/` (gemeinsame Asset-Logik von k3c-dev und Asset-Studio), `cmd/k3c-load/`, `cmd/k3c-tui/`, Werkzeug-Seiten `src/tools/` |
 
 Grenzfälle:
 

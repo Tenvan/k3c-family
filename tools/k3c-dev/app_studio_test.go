@@ -2,41 +2,28 @@ package main
 
 import (
 	"errors"
-	"os"
-	"path/filepath"
+	"log/slog"
 	"testing"
+
+	"k3c/tools/k3c-dev/internal/applog"
 )
 
-// B-459/AC-03: Fehlt bin/k3c-studio.exe, kommt genau der Hinweis; sonst wird genau dieser Pfad im Ordner der
-// Repo-Wurzel gestartet (ohne echten Prozess).
-func TestOpenStudio(t *testing.T) {
-	root := t.TempDir()
-	var got []string
-	start := func(path, dir string) error {
-		got = []string{path, dir}
-		return nil
+// B-459: Das Studio öffnet sich auf dem Port des Dienstes „Spielserver“ (im Worktree mit Versatz); ohne Dienst kommt der
+// Hinweis und nichts wird geöffnet.
+func TestStudioOpen(t *testing.T) {
+	app, _ := serviceApp(t)
+	var opened []string
+	app.log = &applog.Log{Logger: slog.Default()}
+	app.open = func(url string) { opened = append(opened, url) }
+	if err := app.StudioOpen(); err != nil || len(opened) != 1 || opened[0] != "http://localhost:8080/studio/index.html" {
+		t.Fatalf("geöffnet %v, Fehler %v", opened, err)
 	}
-	err := openStudio(root, start)
-	if !errors.Is(err, errStudioMissing) || err.Error() != "Asset-Studio nicht gebaut (`task k3c-studio:build`)" || got != nil {
-		t.Fatalf("ohne EXE: %v, gestartet %v", err, got)
-	}
-	exe := filepath.Join(root, "bin", "k3c-studio.exe")
-	if err := os.MkdirAll(exe, 0o755); err != nil { // ein Ordner mit dem Namen zählt nicht
-		t.Fatal(err)
-	}
-	if err := openStudio(root, start); !errors.Is(err, errStudioMissing) {
-		t.Fatalf("Ordner statt EXE: %v", err)
-	}
-	if err := os.Remove(exe); err != nil {
-		t.Fatal(err)
-	}
-	if err := os.WriteFile(exe, []byte("exe"), 0o755); err != nil {
-		t.Fatal(err)
-	}
-	if err := openStudio(root, start); err != nil || len(got) != 2 || got[0] != exe || got[1] != root {
-		t.Fatalf("mit EXE: %v, gestartet %v", err, got)
-	}
-	if err := openStudio(root, func(string, string) error { return errors.New("kaputt") }); err == nil || err.Error() != "kaputt" {
-		t.Fatalf("Startfehler: %v", err)
+}
+
+func TestStudioOpenOhneSpielserver(t *testing.T) {
+	app := &App{svcErr: errors.New("services.json fehlt")}
+	app.open = func(string) { t.Fatal("trotz Fehler geöffnet") }
+	if err := app.StudioOpen(); err == nil {
+		t.Fatal("Fehler erwartet")
 	}
 }

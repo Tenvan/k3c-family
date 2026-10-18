@@ -11,5 +11,8 @@ export const ALIAS = {
   '@data': fileURLToPath(new URL('../../../data', import.meta.url)),
 };
 
-/** public/ des Spiels: liefert im Dev-Modus der Studio-Vite, in der EXE der Asset-Handler (public.go) */
+/** public/ des Spiels: liefert im Dev-Modus der Studio-Vite, sonst der Spielserver aus dist/ */
 export const PUBLIC = fileURLToPath(new URL('../../../public', import.meta.url));
+
+/** Ausgabe des Builds: der Studio-Teil von dist/, den der Go-Server unter /studio/ ausliefert */
+export const DIST = fileURLToPath(new URL('../../../dist/studio', import.meta.url));
