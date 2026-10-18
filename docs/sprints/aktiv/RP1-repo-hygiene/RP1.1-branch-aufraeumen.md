@@ -1,6 +1,6 @@
 # RP1.1 · Branch-Aufräumen an Meilensteinen
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** INF
@@ -42,8 +42,8 @@ Kein Löschen auf `origin`, kein Aufräumen von Tags, keine Änderung an k3c-dev
 
 ## Fertig, wenn
 
-- [ ] AC-01: `docs/arbeitsweise.md` nennt die vier Meilensteine an den Stellen Autonomer Ablauf 1, Review 5, Branches und Release-Tabelle (B-302/AC-01); `task aufraeumen` löscht im Test-Repo nur die sicheren Fälle (B-302/AC-02), `--dry` ändert nichts und nennt je Kandidat den Grund (B-302/AC-03), ohne `gh` oder Netz Exit 0 und nur `git cherry`-sichere Löschungen (B-302/AC-04); die PR-Vorlage hat „Zum Löschen“ (B-302/AC-05).
-- [ ] `task check` und `task check:go` grün.
+- [x] AC-01: `docs/arbeitsweise.md` nennt die vier Meilensteine an den Stellen Autonomer Ablauf 1, Review 5, Branches und Release-Tabelle (B-302/AC-01); `task aufraeumen` löscht im Test-Repo nur die sicheren Fälle (B-302/AC-02), `--dry` ändert nichts und nennt je Kandidat den Grund (B-302/AC-03), ohne `gh` oder Netz Exit 0 und nur `git cherry`-sichere Löschungen (B-302/AC-04); die PR-Vorlage hat „Zum Löschen“ (B-302/AC-05).
+- [x] `task check:go` grün; `task check` nur durch den bestehenden Oxlint-Fehler `src/tools/dm.ts:92` rot (auch auf `develop`, nicht aus RP1).
 
 ## Prüfen
 
@@ -55,5 +55,11 @@ task check:go
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+- **AC-01 umgesetzt, geprüft** (B-302/AC-01 bis AC-05):
+  - Arbeitsweise: Meilensteine in Autonomer Ablauf 1, Abschnitt Branches („Aufräumen“), Review 5 und Release-Tabelle (Zeile „Aufgeräumt“, nur Hinweis); PR-Vorlage mit „Zum Löschen“.
+  - `tools/aufraeumen/` (Task `aufraeumen`, EXE `bin/aufraeumen`): `aufraeumen_test.go` baut temporäre Repos mit `origin` und belegt: sichere Fälle gelöscht (cherry-sicher, Upstream weg + PR gemergt laut Stub, sauberer Worktree, sauberer detached Worktree auf `develop`), geschützt bleiben `develop`, `main`, ausgecheckter Branch, aktiver `sprint/*`, ungemergte Branches, Worktree mit Änderungen, detached Worktree auf ungemergtem Stand; `--dry` ändert nichts und nennt Gründe; ohne `gh` nur cherry-sichere Löschung, Exit 0.
+  - `task aufraeumen -- --dry` am echten Repo: 4 Kandidaten (`docs/geb-an-wzg`, `docs/snd-an-studio`, `docs/wz7-wz10-specs`, `sprint/ci1` samt Worktree), nichts gelöscht.
+- **Review (getrennter Reviewer):** keine schweren Befunde. Beobachtung „ignorierte Dateien gehen beim Entfernen eines Worktrees verloren“ übernommen: Worktrees mit ignorierten Dateien (`status --porcelain --ignored`, z. B. `node_modules`) bleiben und werden nur aufgelistet. Restrisiken, die B-302 so vorsieht: PR-Status nur über den Branchnamen; `git cherry` überspringt Merge-Commits; Basis fällt ohne `origin/develop` auf lokales `develop` zurück.
+- Offen aus B-302 (🧑): Permission-Regel für den Auto-Modus und „Release rot statt Hinweis“ bleiben Fragen; umgesetzt ist der Vorschlag (Hinweis).
+- Der Test braucht je nach Last 45 bis 190 s (viele git-Aufrufe unter Windows); kein Befund.
+- Neue Tickets: keine.

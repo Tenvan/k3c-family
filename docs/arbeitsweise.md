@@ -64,6 +64,11 @@ Ticket und Sprint-README **sind** die Spec, eine eigene Spec-Datei gibt es nicht
   der Teil vor `/` im Feld `Branch` seiner Sessions (z. B. `f5/1-…` → `sprint/f5`). Alle Sessions committen dort,
   am Ende steht **ein PR je Sprint** gegen `develop`. Abgleich mit `develop` per `git merge origin/develop`, nie Rebase
   oder Force-Push auf einem geteilten Sprint-Branch.
+- **Aufräumen (B-302):** Lokal und auf `origin` liegen nur `develop`, `main`, die Branches aktiver Sprints und ihre Worktrees. Vier Meilensteine:
+  Session-Start (Autonomer Ablauf, Schritt 1: `task aufraeumen`) · Sprint erledigt (Review, Schritt 5: `wip/<präfix>…`-Branches des Sprints prüfen; was im Sprint-Branch steckt, steht im PR-Text unter „Zum Löschen“) ·
+  Sprint-PR gemergt (🧑 löscht die genannten `origin/wip/…`-Branches; auf `origin` löscht nur 🧑) · Release (Zeile „Aufgeräumt“ der Checkliste, nur Hinweis).
+  `task aufraeumen` löscht lokal nur Branches, deren Commits per `git cherry` in `origin/develop` stecken oder deren Upstream weg ist und deren Pull Request laut `gh` gemergt ist, dazu saubere Worktrees dieser Branches.
+  Nie gelöscht werden `develop`, `main`, der ausgecheckte Branch und `sprint/*` mit Ordner in `docs/sprints/aktiv/`. Ohne `gh` oder Netz listet der Task nur.
 - **`main`** ist geschützt und trägt nur Release-Stände. Nur 🧑 gleicht ihn bei einem neuen Major-Release ab,
   per Fast-Forward: `git fetch && git push origin origin/develop:main`, danach Tag `v*` auf `main`
   (startet `release.yml`; GitHub Pages baut aus `main`). Nie direkt auf `main` committen oder einen PR gegen `main` öffnen.
@@ -72,7 +77,8 @@ Ticket und Sprint-README **sind** die Spec, eine eigene Spec-Datei gibt es nicht
 
 Eine Session muss **ohne Rückfragen und ohne Planungs-Werkzeuge** abzuarbeiten sein. Deshalb:
 
-1. `docs/sprints/aktiv/*/README.md` lesen. Liegt `sprint/<präfix>` schon auf `origin` (`git ls-remote --heads origin
+1. **Aufräumen:** `git fetch --prune`, dann `task aufraeumen` (löscht nur sichere lokale Branches und Worktrees, listet den Rest mit Grund; `task aufraeumen -- --dry` zeigt nur an).
+   `docs/sprints/aktiv/*/README.md` lesen. Liegt `sprint/<präfix>` schon auf `origin` (`git ls-remote --heads origin
    sprint/<präfix>`), gilt der Stand der Sprint-Dateien dort (`git show origin/sprint/<präfix>:<Pfad>`), sonst der von
    `develop`. Die nächste Session ergibt sich aus dem **Rang** (`projekte/README.md`): aktives Projekt mit dem kleinsten
    Rang → seine aktiven Sprints in der Reihenfolge der Projekt-Tabelle → erste Session mit `Status: offen`,
@@ -212,7 +218,8 @@ Modell (z. B. Sonnet) reicht.
    im Review-Commit beheben, außerhalb → Ticket. Die Review-Session trägt die Domäne der letzten Umsetzungs-Session. Das Review läuft auf dem Sprint-Branch, nie im selben Lauf wie eine Umsetzung.
 4. **Abnahme** in der Sprint-README, höchstens fünf Zeilen: Datum, Kriterien (Verweis auf die Session-Ergebnisse,
    `verschoben` mit Ticket), behobene Befunde, neue Tickets.
-5. Sind alle anderen Sessions fertig: Sprint-Ordner nach `sprints/erledigt/` verschieben, `Status: erledigt`; sonst bleibt
+5. **Wip-Branches prüfen** (B-302): Was inhaltlich von `wip/<präfix>…` im Sprint-Branch steckt, kommt in den PR-Text unter „Zum Löschen“.
+   Sind alle anderen Sessions fertig: Sprint-Ordner nach `sprints/erledigt/` verschieben, `Status: erledigt`; sonst bleibt
    er in `aktiv/` (Hardware entkoppelt). Fahrplan anpassen, committen, `git merge origin/develop`,
    pushen und **den einen PR des Sprints** öffnen (Vorlage, eine Zeile je Session), danach **Auto-Merge einschalten**:
    `gh pr merge --auto --squash`. Ist der PR schon `CLEAN` (Konflikt-Check fertig), lehnt GitHub `--auto` ab: dann
@@ -281,4 +288,5 @@ Gespeicherte Stände (`saves/`) überleben jedes Update; dafür sorgt die Regel 
 | Pi-Image | CI-Job `docker` (amd64 und arm64); beim Tag schiebt `release.yml` das Image nach `ghcr.io/tenvan/k3c-family` | beide Plattformen gebaut, Image mit Tag und `latest` vorhanden |
 | Version stimmt (B-141) | `VERSION` im `Taskfile.yml` (`git describe`), `/api/health` (Feld `version`), Versionszeile der Landingpage | alle drei nennen den Tag, kein Versionsunterschied zwischen Client und Server |
 | Credits vollständig (B-165) | `src/tools/credits.ts` und `credits.test.ts` über `task test` | Test grün, jedes Verzeichnis unter `public/grafik/` und `public/sprites/` hat einen Credits-Eintrag |
+| Aufgeräumt (B-302) | `task aufraeumen -- --dry` | keine Reste, sonst Hinweis (blockiert den Tag nicht) |
 | Tag-Schema | „Entscheidungen und Versionen“ | Minor bei Wirkung, Patch bei Doku oder Korrektur |
