@@ -10,6 +10,7 @@ Die Reihenfolge der Arbeit ist allein der Projekt-Rang: [`../projekte/README.md`
 | Sprint | Domäne | Projekt | Thema | Am Ende sichtbar | Ordner |
 |---|---|---|---|---|---|
 | WZ8 | REG, SIM, SRV, DEV | WZG | Chunks je Insel und Stufe planen: Seed oder feste Objekte | – | `aktiv/WZ8-chunk-planung/` |
+| WZ9 | SRV, DEV | WZG | Gebäude-Planer für die Freischaltung je Hub-Stufe | – | `aktiv/WZ9-gebaeude-planer/` |
 | GR7 | CLI | GRA | Figuren-Lücken, ganzzahlige Skalierung und Schrift | – | `aktiv/GR7-figuren-schrift/` |
 | SO4 | CLI | SND | Musik je Zustand | – | `aktiv/SO4-musik/` |
 
@@ -21,7 +22,6 @@ Abnahmen am Gerät (`Agent: Mensch`) sammelt das Projekt ABN im Sprint HW1: [`..
 
 | Sprint | Domäne | Projekt | Thema | Am Ende sichtbar | Reife | Ordner |
 |---|---|---|---|---|---|---|
-| WZ9 | SRV, DEV | WZG | Gebäude-Planer für die Freischaltung je Hub-Stufe | – | bereit | `geplant/WZ9-gebaeude-planer/` |
 | WZ10 | DEV | WZG | Abspiel-Bausteine und Monarch-Vorschau im Asset-Studio | – | bereit | `geplant/WZ10-figuren-vorschau/` |
 | WZ11 | DEV | WZG | Gegner- und Boss-Vorschau im Asset-Studio, Figuren-Seiten entfernen | – | bereit | `geplant/WZ11-gegner-bosse-vorschau/` |
 | WZ12 | DEV | WZG | Planungs-Werkzeug: Platzhalter-Zeilen und Worktree-Pills | – | bereit | `geplant/WZ12-planungs-werkzeug-nachtraege/` |

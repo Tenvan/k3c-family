@@ -1,11 +1,11 @@
 # WZ9 · SRV, DEV · Gebäude-Planer für die Freischaltung je Hub-Stufe
 
-- **Status:** geplant
+- **Status:** aktiv
 - **Projekt:** WZG
 - **Domäne:** SRV, DEV
 - **Reife:** bereit
 - **Tickets:** B-462
-- **Start-Commit:** – (wird beim Aktivieren gesetzt: `git rev-parse --short origin/develop`)
+- **Start-Commit:** b1b6062a
 - **Spec:** freigegeben
 - **Revision:** 3
 - **Freigabe:** 2026-10-18, Ralf im Chat (Revision 3)
