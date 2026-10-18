@@ -1,4 +1,4 @@
-# B-478 · Worktree-Vergleich: Sessions und Projekt eines neuen Sprints fehlen in den Pills
+# B-480 · Planungsseite: Einträge nur im Worktree sind nur lesbar (Detail, Menüs, Rang)
 
 - **Domäne:** DEV
 - **Typ:** Problem
@@ -14,7 +14,7 @@
 
 ## Ausgangslage
 
-Aus dem Review von WZ12.2: `diffSessions` in `wtdiff.go` läuft nur für Sprints, die es in der Wurzel schon gibt. Ein neuer Sprint aus einem Worktree erscheint daher leer (keine Sessions), ohne Projekt und ohne Eintrag in `project.sprints`; ein neues Projekt mit neuem Sprint zeigt ein leeres Projekt und daneben einen losen Sprint. B-467/AC-04 („an ihrem üblichen Ort“) ist damit für neue Sprints nur teilweise erfüllt. Vorschlag: `wtdiff.go` liefert für neue Sprints Sessions und Projekt-Zuordnung mit (B-465 berühren).
+Aus dem Review von WZ12.2: Einträge, die nur in einem Worktree existieren (Pill „neu“, `withWorktreeEntries`), sehen aus wie Wurzel-Einträge. Die Detailansicht (`Reader.tsx` › `planningGet`), die Prio-/Projekt-/Umgebungs-Menüs und die Rang-Knöpfe laufen gegen die Wurzel und scheitern. Vorschlag: synthetische Einträge markieren (`wt?: branch`), Menüs und Rang-Knöpfe ausblenden, Detail zeigt „nur im Worktree <branch>“. Ungeprüft: ob `plan_set` eine unbekannte ID sauber ablehnt.
 
 ## Ziel
 

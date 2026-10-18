@@ -74,5 +74,5 @@ Vor der Freigabe offen: nichts. `B-436`: Platzhalter-Zeilen mit anderer Nummer b
 ## Abnahme
 
 2026-10-18, Review WZ12.3 (autonom, getrennte Reviewer): AC-01 bis AC-05 geprüft (`task:check`, `dev:test`, `go:lint` grün); AC-06 offen (WZ12.4).
-Behoben: Pills veraltet/überholt (Fokus-Neuladen, Antwort-Zähler), Auswahl vor erstem Check, Verdrahtungstests. Tickets: B-477, B-478.
+Behoben: Pills veraltet/überholt (Fokus-Neuladen, Antwort-Zähler), Auswahl vor erstem Check, Verdrahtungstests. Tickets: B-480, B-481.
 Version: v– vorgeschlagen (reines Entwickler-Werkzeug).
