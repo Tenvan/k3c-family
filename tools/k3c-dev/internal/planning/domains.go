@@ -18,7 +18,7 @@ func syncSprintDomain(c *changeSet, dir, state string) error {
 	sp := ParseSprint(readme, path.Base(dir), state)
 	var list []string
 	for _, x := range sp.Sessions {
-		if x.File == "" || strings.ContainsAny(x.File, `/\`) {
+		if !isSessionFile(x.File) {
 			continue
 		}
 		text, err := c.read(dir + "/" + x.File)
