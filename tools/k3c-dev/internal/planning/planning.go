@@ -132,7 +132,7 @@ func loadSprint(dir, status string) (Sprint, bool) {
 	}
 	sp := ParseSprint(string(text), filepath.Base(dir), status)
 	for i, x := range sp.Sessions {
-		if x.File != "" && !strings.ContainsAny(x.File, `/\`) {
+		if isSessionFile(x.File) {
 			if b, err := os.ReadFile(filepath.Join(dir, x.File)); err == nil {
 				sp.Sessions[i].Text = string(b)
 				// B-402: Titel aus `# WZ2.1 · Titel`; ein Stichpunkt-Titel bleibt.
@@ -202,6 +202,12 @@ func ParseSprint(text, dir, status string) Sprint {
 	}
 	s.Sessions = parseSessions(lines)
 	return s
+}
+
+// isSessionFile sagt, ob die Datei-Zelle einer Session-Zeile eine Datei nennt; Platzhalter wie `–` oder `– (Entwurf)`
+// (Sprint im Entwurf, B-436) sind keine Datei.
+func isSessionFile(f string) bool {
+	return strings.HasSuffix(f, ".md") && !strings.ContainsAny(f, `/\`)
 }
 
 // parseSessions liest den Abschnitt „## Sessions“: Tabellenzeilen, dazu Stichpunkte (Entwurf), deren Nr. nicht schon

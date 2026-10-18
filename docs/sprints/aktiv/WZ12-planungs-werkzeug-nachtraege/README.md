@@ -1,11 +1,11 @@
 # WZ12 · DEV · Planungs-Werkzeug: Platzhalter-Zeilen und Worktree-Pills
 
-- **Status:** geplant
+- **Status:** aktiv
 - **Projekt:** WZG
 - **Domäne:** DEV
 - **Reife:** bereit
 - **Tickets:** B-436, B-467
-- **Start-Commit:** – (wird beim Aktivieren gesetzt: `git rev-parse --short origin/develop`)
+- **Start-Commit:** f6912198
 - **Spec:** freigegeben
 - **Revision:** 1
 - **Freigabe:** 2026-10-17, Ralf im Chat (Revision 1)
@@ -61,7 +61,7 @@ Vor der Freigabe offen: nichts. `B-436`: Platzhalter-Zeilen mit anderer Nummer b
 
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
-| WZ12.1 | `WZ12.1-platzhalter-zeilen.md` | Umsetzung | autonom | offen |
+| WZ12.1 | `WZ12.1-platzhalter-zeilen.md` | Umsetzung | autonom | fertig |
 | WZ12.2 | `WZ12.2-worktree-pills.md` | Umsetzung | autonom | offen |
 | WZ12.3 | `WZ12.3-review.md` | Review | autonom | offen |
 | WZ12.4 | `WZ12.4-abnahme.md` | Review | Mensch | offen |
