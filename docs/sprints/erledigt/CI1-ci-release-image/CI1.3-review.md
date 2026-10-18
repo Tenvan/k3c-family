@@ -1,6 +1,6 @@
 # CI1.3 · Review des Sprints CI1
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Review
 - **Agent:** autonom
 - **Domäne:** INF
@@ -36,9 +36,9 @@ Neue Funktionen, neue Prüfungen über die Abdeckung hinaus, Ändern von Kriteri
 
 ## Fertig, wenn
 
-- [ ] AC-01 und AC-02 sind am Diff und am CI-Lauf belegt (Nachweis im Ergebnis).
-- [ ] Befunde sind behoben oder als Ticket festgehalten; `task check` grün.
-- [ ] Abnahme der Sprint-README ist gefüllt, Sprint, B-273 und B-019 sind `erledigt`.
+- [x] AC-01 und AC-02 sind am Diff und am CI-Lauf belegt (Nachweis im Ergebnis).
+- [x] Befunde sind behoben oder als Ticket festgehalten; `task check` grün.
+- [x] Abnahme der Sprint-README ist gefüllt, Sprint, B-273 und B-019 sind `erledigt`.
 
 ## Prüfen
 
@@ -48,5 +48,7 @@ task check
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+- **Review (getrennter Reviewer, 2026-10-18):** `git diff --stat origin/develop...sprint/ci1 -- cmd engine` leer; AC-01 und AC-02 am Diff belegt.
+- **CI-Nachweis:** Lauf 39128694546 (`workflow_dispatch` auf `sprint/ci1`, alle Jobs grün): Docker-Job loggt `dev=false` beim Start ohne Variablen, der Schritt mit `K3C_DEV=1` ist grün; im Job `go` zeigt der Schritt „Abdeckung (engine/)“ alle acht Pakete (u. a. `internal/golden` mit 0,0 %). Die Zahlen weichen minimal von lokal ab (`net` CI 89,1 %), kein Befund.
+- **Befunde, behoben:** Widerspruch in der Sprint-README (Offene Fragen nannte die Freigabe als ausstehend); Kontrollkästchen der Sessions CI1.1 und CI1.2 abgehakt.
+- Neue Tickets: keine.

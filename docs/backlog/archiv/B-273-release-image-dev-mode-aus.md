@@ -4,7 +4,7 @@
 - **Typ:** Schuld
 - **Prio:** hoch
 - **Umgebung:** live
-- **Status:** eingeplant
+- **Status:** erledigt
 - **Sprint:** CI1
 - **Projekt:** REL
 - **Erstellt:** 2026-10-04

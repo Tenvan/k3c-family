@@ -1,6 +1,6 @@
 # CI1 · INF · CI-Nachweis, Release-Image ohne Dev-Mode, Test-Abdeckung
 
-- **Status:** aktiv
+- **Status:** erledigt
 - **Projekt:** REL
 - **Domäne:** INF
 - **Reife:** bereit
@@ -52,7 +52,7 @@ CI rot wegen Flake → Ticket (NT1), nicht wiederholen bis grün.
 
 ## Offene Fragen
 
-Entschieden von 🧑 am 2026-10-18 (Chat): Dev-Mode im Image aus (B-273), Abdeckung nur anzeigen (B-019), B-053 erledigt. Offen: keine; die Spec-Freigabe steht aus.
+Entschieden von 🧑 am 2026-10-18 (Chat): Dev-Mode im Image aus (B-273), Abdeckung nur anzeigen (B-019), B-053 erledigt. Spec freigegeben am 2026-10-18 (Revision 1). Offen: keine.
 
 ## Sessions
 
@@ -60,7 +60,7 @@ Entschieden von 🧑 am 2026-10-18 (Chat): Dev-Mode im Image aus (B-273), Abdeck
 |---|---|---|---|---|
 | CI1.1 | `CI1.1-release-image-dev-mode.md` | Umsetzung | autonom | fertig |
 | CI1.2 | `CI1.2-abdeckung-engine.md` | Umsetzung | autonom | fertig |
-| CI1.3 | `CI1.3-review.md` | Review | autonom | offen |
+| CI1.3 | `CI1.3-review.md` | Review | autonom | fertig |
 
 - CI1.1 Release-Image ohne Dev-Mode: `Dockerfile`, `compose.yaml`, Smoke-Test in der CI (AC-01).
 - CI1.2 Abdeckung pro `engine/`-Paket als Task und im CI-Bericht (AC-02).
@@ -68,4 +68,6 @@ Entschieden von 🧑 am 2026-10-18 (Chat): Dev-Mode im Image aus (B-273), Abdeck
 
 ## Abnahme
 
-–
+2026-10-18, Review CI1.3 (getrennter Reviewer): AC-01 und AC-02 geprüft (Diff, Lauf 39128694546 auf `sprint/ci1` grün; `dev=false`/`dev=true`, Abdeckung je Paket in der Job-Zusammenfassung; `task check` grün).
+Behoben: Widerspruch zur Spec-Freigabe, Kontrollkästchen CI1.1/CI1.2. Neue Tickets: keine. B-053 vorab erledigt.
+Version: v– vorgeschlagen (Patch: Release-Image-Standard `K3C_DEV=0`, kein Spielinhalt), gesetzt erst nach Bestätigung durch 🧑.

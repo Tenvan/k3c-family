@@ -39,9 +39,9 @@ Mindestabdeckung oder Gate, Abdeckung des TypeScript-Clients, zusätzliche Tests
 
 ## Fertig, wenn
 
-- [ ] AC-02 (B-019/AC-01): `task coverage` zeigt für jedes Paket unter `engine/` eine Abdeckung (Pakete ohne Tests mit 0 %), Nachweis: Ausgabe im Ergebnis.
-- [ ] AC-02: Der CI-Lauf nennt die Abdeckung je Paket in der Job-Zusammenfassung, ohne Mindestwert (kein Schritt scheitert an der Zahl).
-- [ ] `task check` grün; der Job `go` der CI nach dem Push grün (Nachweis im Ergebnis des Reviews).
+- [x] AC-02 (B-019/AC-01): `task coverage` zeigt für jedes Paket unter `engine/` eine Abdeckung (Pakete ohne Tests mit 0 %), Nachweis: Ausgabe im Ergebnis.
+- [x] AC-02: Der CI-Lauf nennt die Abdeckung je Paket in der Job-Zusammenfassung, ohne Mindestwert (kein Schritt scheitert an der Zahl).
+- [x] `task check` grün; der Job `go` der CI nach dem Push grün (Lauf 39128694546 auf `sprint/ci1`, Nachweis im Review CI1.3).
 
 ## Prüfen
 

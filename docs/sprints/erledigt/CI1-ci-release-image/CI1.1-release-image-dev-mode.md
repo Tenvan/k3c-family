@@ -40,10 +40,10 @@ Das Release-Image und `compose.yaml` starten den Server mit Dev-Mode aus (`K3C_D
 
 ## Fertig, wenn
 
-- [ ] AC-01 (B-273/AC-01): `Dockerfile` und `compose.yaml` setzen `K3C_DEV` auf `0`; der Docker-Job der CI prüft `dev=false` beim Start ohne Variablen.
-- [ ] AC-01 (B-273/AC-02): Mit `K3C_DEV=1` loggt der Container `dev=true` (Prüfung im Docker-Job der CI).
-- [ ] AC-01 (B-273/AC-03): `cmd/k3c-server/main.go` ist unverändert, `task start` bleibt Dev (`git diff --stat -- cmd engine` leer).
-- [ ] `task check` grün; der Docker-Job der CI nach dem Push grün (Nachweis im Ergebnis des Reviews).
+- [x] AC-01 (B-273/AC-01): `Dockerfile` und `compose.yaml` setzen `K3C_DEV` auf `0`; der Docker-Job der CI prüft `dev=false` beim Start ohne Variablen.
+- [x] AC-01 (B-273/AC-02): Mit `K3C_DEV=1` loggt der Container `dev=true` (Prüfung im Docker-Job der CI).
+- [x] AC-01 (B-273/AC-03): `cmd/k3c-server/main.go` ist unverändert, `task start` bleibt Dev (`git diff --stat -- cmd engine` leer).
+- [x] `task check` grün; der Docker-Job der CI nach dem Push grün (Lauf 39128694546 auf `sprint/ci1`, Nachweis im Review CI1.3).
 
 ## Prüfen
 

@@ -12,7 +12,6 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-008](B-008-spieleabend.md) | REG | Frage | niedrig | eingeplant | P1 | Familie hat einen Spieleabend gespielt und Feedback gegeben |
 | [B-011](B-011-sound.md) | CLI | Idee | mittel | eingeplant | SO2 | Spiel hat Sound und Musik |
 | [B-015](B-015-gebaeude-werte.md) | REG | Problem | niedrig | eingeplant | BR1 | Gebäude-HP und -Kosten sind gebalanced |
-| [B-019](B-019-test-abdeckung.md) | INF | Idee | niedrig | eingeplant | CI1 | Test-Abdeckung der Engine ist sichtbar |
 | [B-023](B-023-itch-io.md) | INF | Idee | niedrig | eingeplant | PB1 | Spiel ist auf itch.io veröffentlicht |
 | [B-024](B-024-tiefe-3-4.md) | REG | Idee | niedrig | eingeplant | RG2 | Tiefe 3 und 4 sind beschrieben |
 | [B-041](B-041-wails-starter.md) | SRV | Idee | niedrig | eingeplant | BT1 | Wails-Starter für Windows existiert |
@@ -65,7 +64,6 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-217](B-217-ereignisse-built-playerdown-ort.md) | SIM | Schuld | niedrig | eingeplant | LV1 | Die Ereignisse `built` und `playerDown` tragen ihren Ort |
 | [B-219](B-219-doku-gating-und-schlag.md) | REG | Schuld | niedrig | eingeplant | RG2 | Game-Design und Ereignis-Doku nennen Tier-Gating 2/4/6 und den Schlag des Monarchen |
 | [B-218](B-218-optionen-ambient-lautstaerke.md) | CLI | Idee | hoch | eingeplant | SO4 | Die Optionen-Szene regelt auch die Lautstärke des Ambient-Busses |
-| [B-273](B-273-release-image-dev-mode-aus.md) | INF | Schuld | hoch | eingeplant | CI1 | Das Release-Image startet den Server ohne Dev-Mode |
 | [B-274](B-274-testrestore-flackert-windows.md) | SRV | Problem | mittel | eingeplant | NT1 | TestRestore läuft unter Windows auch in task check:all stabil grün |
 | [B-280](B-280-warteschlange-nicht-zustaende.md) | SRV | Problem | niedrig | eingeplant | NT1 | Die Warteschlange einer Verbindung läuft nicht voll, wenn andere Nachrichten zwischen Zuständen stehen |
 | [B-284](B-284-lasttest-eingaben-flake.md) | DEV | Problem | niedrig | eingeplant | NT1 | TestGleicherSeedGleicheEingaben scheitert nicht, wenn task check:go parallel läuft |
@@ -444,3 +442,5 @@ Zeile in diesen Abschnitt.
 | [B-480](archiv/B-480-assetkit-downloadhit-tls.md) | DEV | Problem | mittel | verworfen | – | TestDownloadHit in tools/assetkit scheitert lokal am TLS-Zertifikat und blockiert task check:all |
 | [B-466](archiv/B-466-glossar-morgengrauen-verweis.md) | INF | Problem | niedrig | erledigt | WZ13 | Der Glossar-Eintrag Tageszyklus verweist für das Morgengrauen auf das richtige Ticket |
 | [B-053](archiv/B-053-ci-lauf-sp01.md) | INF | Problem | hoch | erledigt | CI1 | Die CI hat die Prüfungen aus SP01 einmal grün durchlaufen |
+| [B-273](archiv/B-273-release-image-dev-mode-aus.md) | INF | Schuld | hoch | erledigt | CI1 | Das Release-Image startet den Server ohne Dev-Mode |
+| [B-019](archiv/B-019-test-abdeckung.md) | INF | Idee | niedrig | erledigt | CI1 | Test-Abdeckung der Engine ist sichtbar |
