@@ -24,8 +24,9 @@ Katalog Ereignis → Sound → Quelle → Lizenz (B-167, SO2). Die Zuordnung ste
 | Skill je Klasse | – | – | – | – | – | **Lücke** (B-492) |
 | Boss-Auftritt | – | – | – | – | – | **Lücke** (B-492) |
 | UI-Klicks | – | – | – | – | – | **Lücke** (B-492) |
+| Reiten (Hufschlag, Schleife) | `sfx:ride` | `audio/kandidaten/horse-gallop-loop-01.ogg` (+2) | https://opengameart.org/content/horse-gallop-loop | AntumDeluge | CC-BY 3.0 | zugeordnet, Einbau offen (B-492) |
 
-Lücken (Münze geben, Bau-Fortschritt, `revived`, Hub-Ausbau, Skill je Klasse, Boss-Auftritt, UI-Klicks) führt B-492; „Selbst erzeugt“-Füller waren nicht nötig, weil alle Pflicht-Ereignisse (Q08) einen Sound haben.
+Lücken (Münze geben, Bau-Fortschritt, `revived`, Hub-Ausbau, Skill je Klasse, Boss-Auftritt, UI-Klicks) führt B-492; für Reiten ist der Slot `sfx:ride` angelegt und mit Kandidaten belegt, der Einbau (Schleife je berittenem Spieler) steht in B-492; „Selbst erzeugt“-Füller waren nicht nötig, weil alle Pflicht-Ereignisse (Q08) einen Sound haben.
 
 ## Musik (Stand SO2, Auswahl und Einbau in SO4)
 

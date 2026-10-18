@@ -8,7 +8,7 @@ import credits from '../../public/audio/README.md?raw';
 
 /** Ereignisse aus B-167 › Anforderungen (Spalte „Ereignis“ des Katalogs) */
 const EREIGNISSE = ['Treffer', 'Gegner-Tod', 'Münze aufheben', 'Münze geben', 'Pfeil', 'Schlag', 'Bau-Fortschritt', 'Bau fertig', 'Tod', 'Skill',
-  'Nacht naht', 'Portal öffnet', 'Respawn (`revive`)', 'Wiederbeleben durch Mitspieler (`revived`)', 'Hub-Ausbau', 'Skill je Klasse', 'Boss-Auftritt', 'UI-Klicks'];
+  'Nacht naht', 'Portal öffnet', 'Respawn (`revive`)', 'Wiederbeleben durch Mitspieler (`revived`)', 'Hub-Ausbau', 'Skill je Klasse', 'Boss-Auftritt', 'UI-Klicks', 'Reiten (Hufschlag, Schleife)'];
 const ZUSTAENDE = ['Tag', 'Abend', 'Nacht', 'Kampf', 'Tiefe/Höhle', 'Boss', 'Lobby', 'Niederlage/Sieg'];
 /** Selbst erzeugt, kein Credit nötig (public/audio/README.md) */
 const SELBST = /^audio\/(atlas|probe-[ab])\.(ogg|mp3)$/;

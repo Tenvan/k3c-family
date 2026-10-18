@@ -1258,6 +1258,41 @@
         "datei": "audio/kandidaten/kenney-digital-audio-phaserup5.ogg"
       }
     ],
+    "sfx:ride": [
+      {
+        "id": "2acc9404",
+        "titel": "Horse Gallop Loop 01",
+        "link": "https://opengameart.org/content/horse-gallop-loop#gallop_01",
+        "quelle": "OpenGameArt",
+        "urheber": "AntumDeluge",
+        "lizenz": "CC-BY 3.0",
+        "lizenzStatus": "erkannt",
+        "erstellt": "2026-10-18",
+        "datei": "audio/kandidaten/horse-gallop-loop-01.ogg"
+      },
+      {
+        "id": "22a65c23",
+        "titel": "Horse Gallop Loop 02",
+        "link": "https://opengameart.org/content/horse-gallop-loop#gallop_02",
+        "quelle": "OpenGameArt",
+        "urheber": "AntumDeluge",
+        "lizenz": "CC-BY 3.0",
+        "lizenzStatus": "erkannt",
+        "erstellt": "2026-10-18",
+        "datei": "audio/kandidaten/horse-gallop-loop-02.ogg"
+      },
+      {
+        "id": "283ac0a2",
+        "titel": "Horse gallop on different surfaces",
+        "link": "https://opengameart.org/content/horse-gallop-on-different-surfaces",
+        "quelle": "OpenGameArt",
+        "urheber": "medicinestorm",
+        "lizenz": "CC-BY 4.0",
+        "lizenzStatus": "erkannt",
+        "erstellt": "2026-10-18",
+        "datei": "audio/kandidaten/horse-gallop-on-different-surfaces.mp3"
+      }
+    ],
     "sfx:skill": [
       {
         "id": "b2b500a9",

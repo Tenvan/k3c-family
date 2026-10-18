@@ -1,5 +1,7 @@
 import { describe, expect, it } from 'vitest';
-import { attenuation, cueFor, EDGE_GAIN, type Listener } from './events';
+import assets from '../../data/assets.json';
+import type { GameEvent } from '../model/types';
+import { attenuation, cueFor, EDGE_GAIN, eventX, NIGHT_GAIN, nightGain, SFX_URLS, sfxUrls, type Listener, type SfxSlot } from './events';
 
 const p1: Listener = { center: 20, span: 20 }; // sieht 10..30
 const p2: Listener = { center: 100, span: 20 }; // sieht 90..110
@@ -22,11 +24,76 @@ describe('attenuation (AC-06)', () => {
   it('1 Spieler: im sichtbaren Bereich keine Dämpfung', () => expect(attenuation(10, [p1], false)).toBe(1));
 });
 
-describe('cueFor', () => {
-  it('built → Demo-Ton positionsgebunden, wave/castleFallen → global, sonst stumm', () => {
-    expect(cueFor({ type: 'built', kind: 'wall' })).toEqual({ sprite: 'coin', global: false });
+/** Ein Beispiel je Ereignis-Typ, den der Katalog `docs/assets/sounds.md` einem Slot zuordnet */
+const EVENTS: Record<string, GameEvent> = {
+  'sfx:coin': { type: 'coinPickup', player: 0, x: 3 },
+  'sfx:hit': { type: 'hit', x: 3, target: 'enemy', id: 1, damage: 1 },
+  'sfx:kill': { type: 'kill', kind: 'goblin', x: 3, gold: 1 },
+  'sfx:arrow': { type: 'arrow', from: 1, to: 2, x: 3, team: 'player' },
+  'sfx:strike': { type: 'strike', from: 1, x: 3 },
+  'sfx:build': { type: 'built', kind: 'wall' },
+  'sfx:death': { type: 'playerDown', player: 0 },
+  'sfx:revive': { type: 'revive', player: 0, x: 3 },
+  'sfx:skill': { type: 'skillPoint', player: 0, total: 1 },
+  'sfx:portal': { type: 'arrived', depth: 1, name: 'Höhle' },
+  'sfx:warn': { type: 'dusk' },
+};
+
+describe('cueFor (B-167/AC-03, AC-04)', () => {
+  it.each(Object.entries(EVENTS))('%s: coinPickup, strike, kill, built, dusk und die übrigen Ereignisse des Katalogs haben je einen Slot', (slot, e) => {
+    expect(cueFor(e)?.slot).toBe(slot);
+  });
+  it('Warnungen (dusk, wave, castleFallen) sind global, alles andere positionsgebunden', () => {
+    expect(cueFor({ type: 'dusk' })?.global).toBe(true);
     expect(cueFor({ type: 'wave', wave: 1, count: 3 })?.global).toBe(true);
     expect(cueFor({ type: 'castleFallen' })?.global).toBe(true);
-    expect(cueFor({ type: 'dusk' })).toBeNull();
+    expect(cueFor(EVENTS['sfx:coin']!)?.global).toBe(false);
+  });
+  it('Lücken des Katalogs und unbekannte Typen sind stumm (kein Fehler)', () => {
+    expect(cueFor({ type: 'coinGive', player: 0, x: 1, to: 'site' })).toBeNull();
+    expect(cueFor({ type: 'buildProgress', site: 1, kind: 'wall', x: 1, percent: 25 })).toBeNull();
+    expect(cueFor({ type: 'revived', player: 0, x: 1 })).toBeNull();
+    expect(cueFor({ type: 'night', day: 2 })).toBeNull();
+  });
+  it('cueFor liest nur: dasselbe Ereignis bleibt unverändert (reine Funktion)', () => {
+    const e: GameEvent = { type: 'hit', x: 3, target: 'enemy', id: 1, damage: 4 };
+    const copy = structuredClone(e);
+    cueFor(e);
+    expect(e).toEqual(copy);
+  });
+  it('jeder Effekt-Slot des Registers mit Datei, der ein Ereignis hat, ist über cueFor erreichbar; sfx:ride wartet auf B-492', () => {
+    const slots = (assets.slots as SfxSlot[]).filter((s) => s.art === 'sound' && s.bus === 'sfx' && s.wahl.length > 0).map((s) => s.id);
+    const reachable = new Set(Object.values(EVENTS).map((e) => cueFor(e)?.slot));
+    expect(slots.filter((id) => !reachable.has(id))).toEqual(['sfx:ride']);
+  });
+});
+
+describe('Slot → Datei (sfxUrls)', () => {
+  it('erste Präferenz ohne Atlas-Sprite, nur Effekt-Slots mit Datei', () => {
+    const slots: SfxSlot[] = [
+      { id: 'sfx:a', art: 'sound', bus: 'sfx', wahl: [{ datei: 'audio/atlas.ogg', sprite: 'coin' }, { datei: 'audio/a.ogg' }] },
+      { id: 'sfx:b', art: 'sound', bus: 'sfx', wahl: [] },
+      { id: 'music:c', art: 'sound', bus: 'music', wahl: [{ datei: 'audio/c.ogg' }] },
+      { id: 'x', art: 'grafik', wahl: [{ datei: 'grafik/x.png' }] },
+    ];
+    expect(sfxUrls(slots)).toEqual({ 'sfx:a': 'audio/a.ogg' });
+  });
+  it('das Register liefert für jeden Slot des Mappings eine Datei', () => {
+    for (const e of Object.values(EVENTS)) expect(SFX_URLS[cueFor(e)!.slot], cueFor(e)!.slot).toMatch(/^audio\/.+\.(ogg|mp3|wav)$/);
+  });
+});
+
+describe('Nacht leise (B-167/AC-06) und Ort', () => {
+  it('nachts leiser als am Tag, sonst unverändert', () => {
+    expect(nightGain('night')).toBe(NIGHT_GAIN);
+    expect(NIGHT_GAIN).toBeLessThan(1);
+    expect(nightGain('day')).toBe(1);
+    expect(nightGain('dusk')).toBe(1);
+    expect(nightGain(undefined)).toBe(1);
+  });
+  it('eventX nimmt x des Ereignisses, sonst den Ersatz, sonst nichts', () => {
+    expect(eventX({ type: 'hit', x: 7, target: 'enemy', id: 1, damage: 1 }, 99)).toBe(7);
+    expect(eventX({ type: 'built', kind: 'wall' }, 99)).toBe(99);
+    expect(eventX({ type: 'dusk' })).toBeUndefined();
   });
 });

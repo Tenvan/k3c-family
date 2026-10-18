@@ -14,7 +14,7 @@
 
 ## Ausgangslage
 
-SO2 deckt elf Ereignis-Slots ab (`sfx:hit`, `kill`, `coin`, `arrow`, `strike`, `build`, `death`, `revive`, `skill`, `warn`, `portal`). Im Katalog `docs/assets/sounds.md` stehen weitere Ereignisse aus B-167 als Lücke: Münze geben, Bau-Fortschritt, `revived` (Wiederbeleben durch einen Mitspieler, Q62), Hub-Ausbau, Skill je Klasse, Boss-Auftritt und UI-Klicks. Ihre Auslöser und die Wahl durch 🧑 waren in SO2.1 nicht Teil der Auswahl.
+SO2 deckt elf Ereignis-Slots ab (`sfx:hit`, `kill`, `coin`, `arrow`, `strike`, `build`, `death`, `revive`, `skill`, `warn`, `portal`). Im Katalog `docs/assets/sounds.md` stehen weitere Ereignisse als Lücke: Münze geben, Bau-Fortschritt, `revived` (Wiederbeleben durch einen Mitspieler, Q62), Hub-Ausbau, Skill je Klasse, Boss-Auftritt, UI-Klicks und **Reiten** (Hufschlag, Wunsch von 🧑 am 2026-10-18). Ihre Auslöser und die Wahl durch 🧑 waren in SO2.1 nicht Teil der Auswahl. Reiten hat kein Ereignis: der Ton hängt am Zustand „Spieler ist berittener und bewegt sich“ (Snapshot), nicht an einem Feedback-Event.
 
 ## Ziel
 
@@ -28,6 +28,7 @@ Jedes im Katalog als Lücke geführte Ereignis hat einen Sound-Slot in `data/ass
 
 - Je Ereignis der Lücken-Liste ein Slot mit Kandidaten (CC0 oder CC-BY, Credits in `public/audio/README.md`), oder die Lücke bleibt mit Begründung.
 - Auslöser klären: Hub-Ausbau ist nur als Wechsel von `hubLevel` im Snapshot sichtbar, UI-Klicks haben kein Feedback-Event (Q08); Boss-Auftritt hat `bossSpawned`, `bossPhase`, `bossDefeated` (`docs/protocol.md`).
+- **Reiten:** Slot `sfx:ride` (Hufschlag), spielt als Schleife, solange ein berittener Spieler läuft, je Spieler und nach Position gedämpft; Tempo (Schritt, Trab, Galopp) und Reittier-Art können den Ton wechseln. Der Zustand kommt aus dem Snapshot (`players`), der Client rechnet nichts.
 - Katalog `docs/assets/sounds.md` und das Mapping im Client (SO2.3) nachziehen; keine Spiel-Logik im Audio-Code.
 
 ## Nicht-Ziele
@@ -56,6 +57,7 @@ Sound-Datei fehlt oder lädt nicht → stumm, höchstens ein Logeintrag je Schl�
 
 - Woher kommen die Auslöser für Hub-Ausbau und UI-Klicks (kein Feedback-Event in Q08)? Entscheidet 🧑.
 - Gehören „Skill je Klasse“ und „Münze geben“ wirklich zum Umfang, oder reicht je ein gemeinsamer Ton (`sfx:skill`, `sfx:coin`)? Entscheidet 🧑.
+- Reiten: Der Audio-Kern kennt nur einmalige Effekte (`playSample`) und je Bus ein Stück (`playFile`). Eine Schleife je Spieler braucht eine Erweiterung des Kerns (Ticket CLI) oder ein Ereignis `step` vom Server. Welcher Weg?
 
 ## Notizen
 

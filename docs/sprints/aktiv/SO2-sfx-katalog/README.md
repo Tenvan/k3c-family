@@ -63,7 +63,7 @@ Sound lädt nicht → stumm und Log-Eintrag, kein Absturz.
 |---|---|---|---|---|
 | SO2.1 | `SO2.1-workshop-auswahl.md` | Workshop | Mensch | fertig |
 | SO2.2 | `SO2.2-sounds-beschaffen.md` | Umsetzung | autonom | fertig |
-| SO2.3 | `SO2.3-einbau-rueckfall.md` | Umsetzung | autonom | in Arbeit |
+| SO2.3 | `SO2.3-einbau-rueckfall.md` | Umsetzung | autonom | fertig |
 | SO2.4 | `SO2.4-review.md` | Review | autonom | offen |
 | SO2.5 | `SO2.5-hoerprobe-tv.md` | Workshop | Mensch | offen |
 

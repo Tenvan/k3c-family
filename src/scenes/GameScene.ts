@@ -23,7 +23,7 @@ import { PLACEHOLDER_BG, StageView, placeholderLayer, showOnly } from './stageVi
 import { clientLog } from '../core/clientLog';
 import { audioCore } from '../audio/audioCore';
 import { musicDirector, musicViewOf } from '../audio/music';
-import type { Listener } from '../audio/events';
+import { eventX, type Listener } from '../audio/events';
 import { loadSettings } from '../core/settings';
 import { EFFECT_CONFIG, SHAKE, effectFor, type BuildSpots } from './effects';
 import { hurtSeat, rumblePad, runEffect, shakeCell } from './effectRules';
@@ -287,7 +287,7 @@ export class GameScene extends Phaser.Scene {
     for (const e of events) {
       this.feedback(e, settings.screenshake);
       const fx = effectFor(e, playerX, this.buildSpots);
-      audioCore().onEvent(e, fx ? fx.x / UNIT_PX : undefined, this.listeners());
+      audioCore().onEvent(e, eventX(e, fx ? fx.x / UNIT_PX : undefined), this.listeners(), this.world_?.cycle.phase);
       if (!fx) continue;
       const isFlash = EFFECT_CONFIG[fx.kind].flash;
       if (!runEffect(isFlash, settings, now, this.lastFlashAt)) continue;

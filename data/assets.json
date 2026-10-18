@@ -1680,6 +1680,24 @@
           "datei": "audio/kandidaten/kenney-digital-audio-zapthreetoneup.ogg"
         }
       ]
+    },
+    {
+      "id": "sfx:ride",
+      "art": "sound",
+      "kategorie": "sfx",
+      "beschreibung": "Reiten (Hufschlag)",
+      "bus": "sfx",
+      "wahl": [
+        {
+          "datei": "audio/kandidaten/horse-gallop-loop-01.ogg"
+        },
+        {
+          "datei": "audio/kandidaten/horse-gallop-loop-02.ogg"
+        },
+        {
+          "datei": "audio/kandidaten/horse-gallop-on-different-surfaces.mp3"
+        }
+      ]
     }
   ]
 }

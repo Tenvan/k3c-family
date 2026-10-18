@@ -84,3 +84,6 @@ Kenney-Dateien (Packs Digital Audio, RPG Audio, Impact Sounds, Interface Sounds,
 | kandidaten/a-big-adventure.ogg | A Big Adventure | Alexandr Zhelanov | CC-BY 4.0 | https://opengameart.org/content/a-big-adventure | bestätigt 🧑 2026-10-18 |
 | kandidaten/the-adventure-begins.wav | The Adventure Begins. | mismatchedmisfitz | CC0 | https://opengameart.org/content/the-adventure-begins | bestätigt 🧑 2026-10-18 |
 | kandidaten/summer-adventure-background-music.mp3 | Summer Adventure background music | dionelou | CC-BY 4.0 | https://opengameart.org/content/summer-adventure-background-music | bestätigt 🧑 2026-10-18 |
+| kandidaten/horse-gallop-loop-01.ogg | Horse Gallop Loop 01 | AntumDeluge | CC-BY 3.0 | https://opengameart.org/content/horse-gallop-loop#gallop_01 | Lizenz erkannt (OpenGameArt) |
+| kandidaten/horse-gallop-loop-02.ogg | Horse Gallop Loop 02 | AntumDeluge | CC-BY 3.0 | https://opengameart.org/content/horse-gallop-loop#gallop_02 | Lizenz erkannt (OpenGameArt) |
+| kandidaten/horse-gallop-on-different-surfaces.mp3 | Horse gallop on different surfaces | medicinestorm | CC-BY 4.0 | https://opengameart.org/content/horse-gallop-on-different-surfaces | Lizenz erkannt (OpenGameArt) |
