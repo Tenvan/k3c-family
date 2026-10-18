@@ -146,6 +146,21 @@ describe('Stand-Prüfung (B-461/AC-12)', () => {
   });
 });
 
+describe('Speichern schlägt fehl (B-486)', () => {
+  it('wirft der Aufruf (Bindung, Serialisierung), steht der Grund am Editor und der Entwurf bleibt', async () => {
+    vi.spyOn(backend, 'planSave').mockRejectedValue('Wails: Argument nicht lesbar');
+    const h = await mount();
+    await addChunk(h);
+    await settle();
+    await act(async () => button(h, 'Speichern').click());
+    await flush();
+    expect(h.querySelector('.wd-notice')!.textContent).toContain('Speichern fehlgeschlagen');
+    expect(h.querySelector('.wd-notice')!.textContent).toContain('Wails: Argument nicht lesbar');
+    expect(h.querySelectorAll('.wd-planned')).toHaveLength(1);
+    expect(button(h, 'Speichern').disabled).toBe(false);
+  });
+});
+
 describe('Chunk- und Live-Vorschau lesen dieselbe Quelle (B-461/AC-11)', () => {
   it('beide fragen mit Insel, Stufe und demselben Entwurf', async () => {
     const level = vi.spyOn(backend, 'worldLevel');
