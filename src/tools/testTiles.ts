@@ -1,12 +1,6 @@
 /**
- * Kacheln der Testseite (`testing.html`) für Werkzeug-Seiten und die Fokus-Weiterschaltung per Controller.
- * Szenarien stehen in `testScenarios.ts`; hier liegt, was auf eine andere Seite führt.
+ * Fokus-Weiterschaltung der Testseite (`testing.html`) per Controller. Szenarien stehen in `testScenarios.ts`.
  */
-import { type DevTile, tile } from './devTiles';
-
-/** Abschnitt „Level“ (B-092): Der Level-Betrachter ist von der Testseite aus erreichbar, mit demselben Text wie auf der Entwicklerseite. */
-export const LEVEL_TILES: readonly DevTile[] = [tile('level', '🗺️', 'leveltest.html')];
-
 export type FocusKey = 'prev' | 'next';
 
 /** Index der Kachel, die nach `key` den Fokus bekommt; an den Rändern bleibt der Fokus stehen. */

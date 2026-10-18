@@ -1,4 +1,4 @@
-/* Seite Welt-Betrachter (B-460, WZ7.2): Chunk-Vorschau aus der früheren leveltest.html, Farben aus theme.css. */
+/* Seite Welt-Betrachter (B-460, WZ7.2): Chunk-Vorschau (früher eine eigene Seite), Farben aus theme.css. */
 .wd-page { display: flex; flex-direction: column; gap: 12px; }
 .wd-chunks { display: flex; flex-direction: column; gap: 8px; min-height: 16rem; }
 .wd-chunks.wd-max { min-height: calc(100vh - 7rem); }

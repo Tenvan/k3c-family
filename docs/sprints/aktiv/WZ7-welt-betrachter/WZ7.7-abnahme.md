@@ -16,11 +16,24 @@
 
 ## Kontext
 
-Sprint WZ7 (`docs/sprints/geplant/WZ7-welt-betrachter/README.md`), Ticket `docs/backlog/B-460-welt-betrachter-live-vorschau.md` (Spec freigegeben 2026-10-17). Maßgeblich sind die Anforderungen, Beispiele und Ausnahmefälle dort.
+Sprint WZ7 (`docs/sprints/aktiv/WZ7-welt-betrachter/README.md`), Ticket `docs/backlog/B-460-welt-betrachter-live-vorschau.md` (Spec freigegeben 2026-10-17). Maßgeblich sind die Anforderungen, Beispiele und Ausnahmefälle dort.
 
-- Die Abnahme-Liste schreibt WZ7.6 unten in `### Abnahme-Liste`. Start: `task k3c-studio:build`, dann `bin/k3c-studio.exe`.
+- Die Abnahme-Liste steht unten in `### Abnahme-Liste`. Start: `task k3c-studio:build`, dann `bin/k3c-studio.exe`.
 - **Umgebung live:** das Studio ist gebaut. Claude bereitet vor und trägt das Urteil von 🧑 ein, urteilt aber nicht selbst. Fenster- oder Browser-Prüfungen durch Claude nur mit Freigabe von 🧑 für diesen Lauf.
 - Zu entscheiden: B-092 (Level-Betrachter, HW1) wird umgeplant; B-426 Punkt 1 (Biom-Wahl beim Voll-Ausbau) und Punkt 4 (Taste V mit Strg) gelten für das Studio oder entfallen (`B-460 › Notizen`).
+
+### Abnahme-Liste
+
+Ablauf am PC im Studio-Fenster, Seite „Welt-Betrachter“ (AC-09):
+
+1. Beim Öffnen ist die Chunk-Vorschau maximiert und lässt sich verkleinern (Taste M); Seed und Biom wechseln, Zoom mit + und −, Scrollen mit Pfeiltasten.
+2. Live-Vorschau: Hub-Stufe 1 bis 5 umschalten, Gebäude ein und aus, Bürger ein und aus; gleicher Seed zeigt dasselbe Bild.
+3. Tageszeit: Tag, Dämmerung, Nacht, Morgengrauen mit Fortschritt; Hintergrund-Schichten mit Parallaxe sichtbar.
+4. „Im Spiel öffnen“ (neu und voll ausgebaut) öffnet die Landingpage des lokalen Spielservers; eine Adresse außerhalb von Loopback wird abgelehnt.
+5. `dev.html` zeigt keine Kachel „Level“, `testing.html` keinen Abschnitt „Level“.
+6. Entscheidung: Umplanung von B-092 (HW1) sowie B-426 Punkt 1 und Punkt 4.
+
+Hinweis des Reviews (2026-10-17): keine schweren Befunde; Frontend-Nachweise nur per Grep und Tests, die Optik ist ungeprüft.
 
 ## Erlaubte Dateien
 

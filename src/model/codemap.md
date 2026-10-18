@@ -18,5 +18,5 @@ Domain Model des Clients: Typen und Balancing-Daten, die der Client vom Go-Serve
 
 ## Integration
 
-- Konsumenten: `src/scenes/` (`GameScene`, `HudScene`, `worldRenderer`, `viewRules`, `radar`, `radarView`, `stageView`, `effects`, `effectRules`, `debugOverlay*`), `src/audio/` (`audioCore`, `events`), `src/online/` (`clientConnection`, `clientProtocol`, `clientWorld`, `protocol`), `src/core/saveStore.ts`, `src/tools/` (`leveltest`, `levelView`).
+- Konsumenten: `src/scenes/` (`GameScene`, `HudScene`, `worldRenderer`, `viewRules`, `radar`, `radarView`, `stageView`, `effects`, `effectRules`, `debugOverlay*`), `src/audio/` (`audioCore`, `events`), `src/online/` (`clientConnection`, `clientProtocol`, `clientWorld`, `protocol`), `src/core/saveStore.ts`, `src/tools/`.
 - Abhängigkeiten: `data/*.json`, `data/biomes/*.json`; intern `types.ts` → `biome.ts`/`data.ts` (nur Typen).

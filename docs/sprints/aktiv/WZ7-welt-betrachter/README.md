@@ -78,8 +78,8 @@ Beantwortet von 🧑 am 2026-10-17 (Chat), siehe `B-460 › Offene Fragen` 10–
 | WZ7.2 | `WZ7.2-seite-chunk-vorschau.md` | Umsetzung | autonom | fertig |
 | WZ7.3 | `WZ7.3-live-vorschau.md` | Umsetzung | autonom | fertig |
 | WZ7.4 | `WZ7.4-live-optionen-im-spiel.md` | Umsetzung | autonom | fertig |
-| WZ7.5 | `WZ7.5-leveltest-entfernen.md` | Umsetzung | autonom | offen |
-| WZ7.6 | `WZ7.6-review.md` | Review | autonom | offen |
+| WZ7.5 | `WZ7.5-leveltest-entfernen.md` | Umsetzung | autonom | fertig |
+| WZ7.6 | `WZ7.6-review.md` | Review | autonom | fertig |
 | WZ7.7 | `WZ7.7-abnahme.md` | Review | Mensch | offen |
 
 
@@ -87,5 +87,5 @@ Domänen-Reihenfolge: SIM (WZ7.8, zuerst) → SRV (WZ7.1) → DEV (WZ7.2–WZ7.7
 
 ## Abnahme
 
-Wird von der Review-Session (Doku-Sprint: letzte Session) ausgefüllt, höchstens fünf Zeilen: Datum, Kriterien
-(Verweis auf Session-Ergebnisse), behobene Befunde, neue Tickets. Bis dahin `–`.
+2026-10-17 (Review WZ7.6): AC-01 bis AC-08 mit Nachweis aus Code, Tests und getrenntem Reviewer (Ergebnis WZ7.6); AC-09 offen (WZ7.7, 🧑 am PC). Befunde: keine schweren. Neue Tickets: keine.
+Version: v… vorgeschlagen: keine Änderung (Werkzeug-Sprint ohne Spielstand- oder Protokoll-Wechsel).
