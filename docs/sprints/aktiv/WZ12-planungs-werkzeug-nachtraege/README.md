@@ -62,7 +62,7 @@ Vor der Freigabe offen: nichts. `B-436`: Platzhalter-Zeilen mit anderer Nummer b
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
 | WZ12.1 | `WZ12.1-platzhalter-zeilen.md` | Umsetzung | autonom | fertig |
-| WZ12.2 | `WZ12.2-worktree-pills.md` | Umsetzung | autonom | offen |
+| WZ12.2 | `WZ12.2-worktree-pills.md` | Umsetzung | autonom | fertig |
 | WZ12.3 | `WZ12.3-review.md` | Review | autonom | offen |
 | WZ12.4 | `WZ12.4-abnahme.md` | Review | Mensch | offen |
 

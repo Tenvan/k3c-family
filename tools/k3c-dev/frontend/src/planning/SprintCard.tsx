@@ -6,6 +6,7 @@ import { ghBadges, isNext } from './planning';
 import { sessionProgress } from './projects';
 import { CopyPrompt, DepLinks } from './PromptParts';
 import { pickable, promptSession, promptSprint } from './prompts';
+import { WtPills } from './WorktreePills';
 
 /** Sprung zu einem Sprint-Panel (Sprint-Abhängigkeit, Sprint-Chip). */
 export const scrollToSprint = (id: string) =>
@@ -44,6 +45,7 @@ export function SprintCard({ sprint: s, gh, sel, onSelect, onPick, checked, onCh
         <span className="pl-pills">
           {(s.worktrees ?? (s.worktree ? [s.worktree] : [])).map((w) =>
             <Pill key={w} tone="violet" title="Ein Worktree arbeitet gerade an diesem Sprint">⎇ {w}</Pill>)}
+          <WtPills item="Sprint" id={s.id} />
           <Pill tone={stateTone(s.status)}>{s.status}</Pill>
           <Pill tone={specTone(s.spec)} title={`Reife: ${s.reife || '–'}`}>Spec: {s.spec || '–'}</Pill>
           <DepLinks ids={s.deps} title="Wartet auf Sessions dieser Sprints" onPick={scrollToSprint} />
@@ -86,6 +88,7 @@ export function SessionRow({ sprint: s, x, onSelect, checked, onCheck }:
         {x.titel || [x.typ, x.agent].filter(Boolean).join(' · ')}
       </span>
       <span className="pl-row-meta">
+        <WtPills item="Session" id={x.nr} />
         {open && <ModePill agent={x.agent} env={x.env} />}
         {open && <DepLinks ids={x.deps} title="Abhängig von" onPick={onSelect} />}
       </span>
