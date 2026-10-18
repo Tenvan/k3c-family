@@ -61,7 +61,7 @@ keine
 
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
-| SK1.1 | `SK1.1-pruefungen-ohne-seiteneffekt.md` | Umsetzung | autonom | in Arbeit |
+| SK1.1 | `SK1.1-pruefungen-ohne-seiteneffekt.md` | Umsetzung | autonom | fertig |
 | SK1.2 | `SK1.2-skill-baum-nachweis.md` | Umsetzung | autonom | offen |
 | SK1.3 | `SK1.3-ereignis-ohne-ziel.md` | Umsetzung | autonom | verworfen |
 | SK1.4 | `SK1.4-review.md` | Review | autonom | offen |

@@ -85,9 +85,8 @@ func tierNeed(tier int) int {
 	return monarch.TierPoints[tier-1]
 }
 
-// LearnSkill lernt einen Skill für einen Punkt. Aktive Skills belegen den ersten freien Slot 1 bis 4; ohne freien Slot
-// bleibt der Skill gelernt ohne Slot.
-func LearnSkill(w *World, p *Player, id string) error {
+// CanLearn prüft, ob der Spieler den Skill jetzt lernen darf, ohne etwas zu ändern (B-270). LearnSkill nutzt sie selbst.
+func CanLearn(w *World, p *Player, id string) error {
 	s, ok := skillByID(id)
 	switch {
 	case !ok:
@@ -99,6 +98,16 @@ func LearnSkill(w *World, p *Player, id string) error {
 	case lineCount(p, s.Line) < tierNeed(s.Tier):
 		return fmt.Errorf("skill %q: Tier %d verlangt %d gelernte Skills der Linie %s", id, s.Tier, tierNeed(s.Tier), s.Line)
 	}
+	return nil
+}
+
+// LearnSkill lernt einen Skill für einen Punkt. Aktive Skills belegen den ersten freien Slot 1 bis 4; ohne freien Slot
+// bleibt der Skill gelernt ohne Slot.
+func LearnSkill(w *World, p *Player, id string) error {
+	if err := CanLearn(w, p, id); err != nil {
+		return err
+	}
+	s, _ := skillByID(id)
 	p.Skills = append(p.Skills, id)
 	if s.Kind != "active" {
 		return nil
@@ -111,13 +120,21 @@ func LearnSkill(w *World, p *Player, id string) error {
 	return nil
 }
 
-// Respec setzt alle Skills zurück, kostenlos, nur am Tag und an der Burg.
-func Respec(w *World, p *Player) error {
+// CanRespec prüft Tag und Burg-Nähe, ohne etwas zu ändern (B-270). Ohne gelernte Skills ist Respec erlaubt, ohne Wirkung.
+func CanRespec(w *World, p *Player) error {
 	if w.Cycle.Phase != "day" {
 		return fmt.Errorf("respec nur am Tag (jetzt %s)", w.Cycle.Phase)
 	}
 	if math.Abs(p.X-w.Castle.X) > hub.CastleRadiusUnits {
 		return fmt.Errorf("respec nur an der Burg")
+	}
+	return nil
+}
+
+// Respec setzt alle Skills zurück, kostenlos, nur am Tag und an der Burg.
+func Respec(w *World, p *Player) error {
+	if err := CanRespec(w, p); err != nil {
+		return err
 	}
 	p.Skills, p.Slots, p.SkillBase = nil, nil, 0
 	return nil
