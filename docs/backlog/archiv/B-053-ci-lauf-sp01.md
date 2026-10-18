@@ -4,7 +4,7 @@
 - **Typ:** Problem
 - **Prio:** hoch
 - **Umgebung:** offline
-- **Status:** eingeplant
+- **Status:** erledigt
 - **Sprint:** CI1
 - **Projekt:** REL
 - **Erstellt:** 2026-09-30
@@ -64,3 +64,5 @@ Wann pusht 🧑 den lokalen Stand (7 Commits vor `origin/main` plus Review)? (�
 
 Lokal geprüft im Review SP01.4 (Go 1.27.0, golangci-lint 2.14.0, Node 26.7): `npm run check`, `npm run build`,
 `npm run check:go`, beide Cross-Builds und `golangci-lint config verify` grün.
+
+Erledigt (Ralf, 2026-10-18, Chat): Die CI läuft seit Langem auf GitHub; der Lauf auf `develop` zu Commit 63e7abea war grün in allen Jobs (Typecheck · Tests · Build, Go · Tests · Lint · Cross-Build, Go arm64, Docker, k3c-dev, Asset-Studio). `npm run lint` und `npm run check` gibt es nicht mehr, die Jobs rufen `task` auf; die Aussage der Kriterien gilt damit als erfüllt.

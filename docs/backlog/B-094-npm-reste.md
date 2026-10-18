@@ -31,7 +31,7 @@ Entwickler und Coding-Agenten.
 ## Anforderungen
 
 - `k3c-server` und `k3c-server.exe` sind nicht mehr versioniert; `.gitignore` verhindert, dass sie an der Wurzel wieder eingecheckt werden.
-- `tools/k3c-dev/frontend/package.json` enthält keine `scripts`, solange nichts sie aufruft.
+- Außerhalb von `tools/` verweist nichts mehr auf `npm run`; die `scripts` `dev` und `build` in `tools/k3c-dev/frontend/package.json` (und im Studio) bleiben, weil Wails sie aufruft (Entscheidung 🧑 2026-10-18).
 
 ## Nicht-Ziele
 
@@ -51,8 +51,8 @@ Wer die Server-EXE lokal braucht, baut sie mit `task start` nach `bin/` (bleibt 
 
 ## Akzeptanzkriterien
 
-- **AC-01** `git ls-files k3c-server k3c-server.exe` ist leer; `grep -rn "npm run" .` (Ausnahmen wie I1/AC-04) liefert keinen Treffer.
-- **AC-02** `tools/k3c-dev/frontend/package.json` hat keine `scripts`; `task check:dev` ist grün.
+- **AC-01** `git ls-files k3c-server k3c-server.exe` ist leer; `git grep -n "npm run" -- . ':!tools' ':!docs/backlog' ':!docs/sprints'` liefert keinen Treffer.
+- **AC-02** `task check:dev` ist grün (die `scripts` im k3c-dev-Frontend bleiben, Wails braucht sie).
 
 ## Offene Fragen
 

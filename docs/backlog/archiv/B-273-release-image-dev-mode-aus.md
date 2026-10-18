@@ -4,13 +4,13 @@
 - **Typ:** Schuld
 - **Prio:** hoch
 - **Umgebung:** live
-- **Status:** eingeplant
+- **Status:** erledigt
 - **Sprint:** CI1
 - **Projekt:** REL
 - **Erstellt:** 2026-10-04
-- **Spec:** Entwurf
+- **Spec:** freigegeben
 - **Revision:** 1
-- **Freigabe:** –
+- **Freigabe:** 2026-10-18, Ralf im Chat (mit Sprint CI1 Revision 1)
 
 ## Ausgangslage
 
@@ -53,7 +53,7 @@ Ungültiger Wert für `K3C_DEV` → Verhalten wie heute in `main.go` (nur `0` sc
 
 ## Offene Fragen
 
-Soll der Dev-Mode am Pi während der Entwicklungsphase bewusst an bleiben (wie das Overlay nach B-093 Revision 2)? Entscheidet 🧑.
+Entschieden von 🧑 am 2026-10-18 (Chat): Der Dev-Mode ist im Image standardmäßig aus (`K3C_DEV=0` im Image und in `compose.yaml`), am Pi per `K3C_DEV=1` einschaltbar.
 
 ## Notizen
 

@@ -47,7 +47,6 @@ Abnahmen am Gerät (`Agent: Mensch`) sammelt das Projekt ABN im Sprint HW1: [`..
 | LV1 | SIM | KMP | Level und Gegner: Lava, Camps, Adern-Takt, Orte und IDs | Keine Lava auf Linien, Camps mit Abstand, besiegte Gegner lassen Gold fallen, Ereignisse mit Ort | Entwurf | `geplant/LV1-level-gegner-korrektur/` |
 | KB1 | SIM | KMP | Kampf-Nachträge: Mond-Events, Endboss-Bau, Golden-Läufe, Feuergeist | – | Entwurf | `geplant/KB1-events-boss-golden/` |
 | KB2 | SRV, CLI | KMP | Protokoll-Nachträge Kampf: Inselwechsel, Game Over, Händler, Client-Typen | – | Entwurf | `geplant/KB2-protokoll-kampf-nachtraege/` |
-| CI1 | INF | REL | CI-Nachweis, Release-Image ohne Dev-Mode, Test-Abdeckung | CI grün mit SP01-Prüfungen, Release-Image lehnt Dev-Aktionen ab, Abdeckung im CI-Bericht | Entwurf | `geplant/CI1-ci-release-image/` |
 | RP1 | INF | REL | Repo-Hygiene: Branches aufräumen, Altlasten, Regeln | – | Entwurf | `geplant/RP1-repo-hygiene/` |
 | BT1 | SRV | REL | Server im Heimnetz finden, Windows-Starter, Start mit Seed | – | Entwurf | `geplant/BT1-heimnetz-start/` |
 | PG1 | PLAT | REL | Präsentationsseite mit echten Spielbildern | – | Entwurf | `geplant/PG1-praesentation-bilder/` |
@@ -196,4 +195,5 @@ Gesamtplan und Begründung: [`../plan-weiterentwicklung.md`](../plan-weiterentwi
 | WZ13 | Glossar und Regeln: Verweis für das Morgengrauen auf B-470 | `erledigt/WZ13-glossar-morgengrauen-verweis/` |
 | WZ15 | Hub-Planung Vorlauf: Regeltabelle erzeugt, Prüfung ohne globalen Zustand | `erledigt/WZ15-hub-planung-vorlauf/` |
 | WZ16 | Welt-Betrachter: eine gemeinsame Ansicht mit Sprungleiste, Zoom und Gebäude-Filter | `erledigt/WZ16-welt-betrachter-ansicht/` |
+| CI1 | CI-Nachweis, Release-Image ohne Dev-Mode, Test-Abdeckung | `erledigt/CI1-ci-release-image/` |
 | WZ8 | Chunks je Insel und Stufe planen: Seed oder feste Objekte | `erledigt/WZ8-chunk-planung/` |

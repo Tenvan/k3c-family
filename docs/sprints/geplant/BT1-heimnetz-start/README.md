@@ -58,9 +58,8 @@ keine (der Weg der Server-Suche mit QR-Code entfällt, B-040 verworfen).
 Entwurf. Vor dem Aktivieren jede Session als Datei nach `docs/vorlagen/session.md` schreiben, die Kriterien in Klammern werden ihr Feld `Kriterien`.
 
 - BT1.1 Start mit Seed und Tiefe per URL, Nachweis B-048 (AC-03, AC-04).
-- BT1.2 Server-Suche im Heimnetz (AC-01).
-- BT1.3 Wails-Starter für Windows (AC-02).
-- BT1.4 Review (Code-Sprint): alle Kriterien prüfen.
+- BT1.2 Wails-Starter für Windows (AC-02); Vorbild sind die Wails-Fenster von k3c-dev und Asset-Studio.
+- BT1.3 Review (Code-Sprint): alle Kriterien prüfen.
 
 ## Abnahme
 

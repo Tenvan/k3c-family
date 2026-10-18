@@ -4,13 +4,13 @@
 - **Typ:** Idee
 - **Prio:** niedrig
 - **Umgebung:** offline
-- **Status:** eingeplant
+- **Status:** erledigt
 - **Sprint:** CI1
 - **Projekt:** REL
 - **Erstellt:** 2026-09-29
-- **Spec:** Entwurf
+- **Spec:** freigegeben
 - **Revision:** 1
-- **Freigabe:** –
+- **Freigabe:** 2026-10-18, Ralf im Chat (mit Sprint CI1 Revision 1)
 
 ## Ausgangslage
 
@@ -51,7 +51,7 @@ Paket ohne Tests → erscheint mit 0 %, nicht gar nicht.
 
 ## Offene Fragen
 
-Soll eine Mindestabdeckung die CI scheitern lassen? (🧑)
+Entschieden von 🧑 am 2026-10-18 (Chat): Die Abdeckung wird nur angezeigt, kein Mindestwert, die CI scheitert nicht daran.
 
 ## Notizen
 

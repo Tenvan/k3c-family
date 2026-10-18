@@ -180,6 +180,15 @@ tasks:
     cmds:
       - golangci-lint run
 
+  coverage:
+    desc: Abdeckung der Go-Tests je Paket unter engine/ anzeigen (kein Gate, B-019)
+    deps: [tmp]
+    preconditions:
+      - sh: command -v go
+        msg: Go fehlt (requirements.md)
+    cmds:
+      - go test -cover ./engine/...
+
   check:go:
     desc: Go-Tests, Race-Detector (falls möglich) und golangci-lint
     cmds:
