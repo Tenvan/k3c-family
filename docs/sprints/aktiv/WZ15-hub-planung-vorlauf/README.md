@@ -1,14 +1,14 @@
 # WZ15 · REG, INF, SIM · Hub-Planung Vorlauf: Regeltabelle erzeugt, Prüfung ohne globalen Zustand
 
-- **Status:** geplant
+- **Status:** aktiv
 - **Projekt:** WZG
 - **Domäne:** REG, INF, SIM
-- **Reife:** Entwurf
+- **Reife:** bereit
 - **Tickets:** B-462
-- **Start-Commit:** – (wird beim Aktivieren gesetzt: `git rev-parse --short origin/develop`)
-- **Spec:** Entwurf
+- **Start-Commit:** f6912198
+- **Spec:** freigegeben
 - **Revision:** 1
-- **Freigabe:** –
+- **Freigabe:** 2026-10-18, Ralf im Chat (Revision 1)
 
 ## Ausgangslage
 

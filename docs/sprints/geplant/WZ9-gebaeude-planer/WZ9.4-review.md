@@ -8,7 +8,7 @@
 - **Branch:** wz9/4-review
 - **Abhängig von:** WZ9.3
 - **Tickets:** B-462
-- **Kriterien:** alle außer AC-06
+- **Kriterien:** AC-01, AC-02, AC-03, AC-04, AC-05, AC-07, AC-08, AC-09, AC-10
 
 ## Ziel
 
