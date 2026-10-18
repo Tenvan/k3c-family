@@ -1,11 +1,11 @@
 # SO2 · CLI · SFX-Katalog und Einbau
 
-- **Status:** geplant
+- **Status:** aktiv
 - **Projekt:** SND
 - **Domäne:** CLI
 - **Reife:** bereit
 - **Tickets:** B-167, B-011
-- **Start-Commit:** –
+- **Start-Commit:** b665406c
 - **Spec:** freigegeben
 - **Revision:** 1
 - **Freigabe:** 2026-10-04, Chat, durch 🧑, Revision 1; mit Änderungen aus der Spec-Prüfung

@@ -1,0 +1,571 @@
+{
+  "_comment": "Recherche-Treffer je Asset-Slot (B-298, M10.4): Vorschläge mit Link, Quelle, Urheber, Lizenz und Vorschau. Schreibt k3c-dev (Recherche, MCP assets_hit_add); ein Treffer bleibt, bis 🧑 ihn verwirft. lizenzStatus: erkannt, pruefen, ausgeschlossen (Q70), bestaetigt (🧑).",
+  "treffer": {
+    "music:abend": [
+      {
+        "id": "96c07a73",
+        "titel": "[Chiptune] Medieval: The Old Tower Inn",
+        "link": "https://opengameart.org/content/chiptune-medieval-the-old-tower-inn",
+        "quelle": "OpenGameArt",
+        "urheber": "Snabisch",
+        "lizenz": "CC0",
+        "lizenzStatus": "erkannt",
+        "erstellt": "2026-10-18",
+        "datei": "audio/kandidaten/chiptune-medieval-the-old-tower-inn.ogg"
+      }
+    ],
+    "music:boss": [
+      {
+        "id": "81b39195",
+        "titel": "NES Shooter Music: Boss",
+        "link": "https://opengameart.org/content/nes-shooter-music-5-tracks-3-jingles#Boss",
+        "quelle": "OpenGameArt",
+        "urheber": "chrismthegamedude",
+        "lizenz": "CC0",
+        "lizenzStatus": "erkannt",
+        "erstellt": "2026-10-18",
+        "datei": "audio/kandidaten/nes-shooter-music-boss.ogg"
+      },
+      {
+        "id": "f074d328",
+        "titel": "Gods Forbid",
+        "link": "https://opengameart.org/content/gods-forbid",
+        "quelle": "OpenGameArt",
+        "urheber": "Mjorlaja",
+        "lizenz": "CC0",
+        "lizenzStatus": "erkannt",
+        "erstellt": "2026-10-18",
+        "datei": "audio/kandidaten/gods-forbid.ogg"
+      }
+    ],
+    "music:ende": [
+      {
+        "id": "05bc4ef6",
+        "titel": "8-Bit Victory Loop",
+        "link": "https://opengameart.org/content/8-bit-victory-loop",
+        "quelle": "OpenGameArt",
+        "urheber": "josepharaoh99",
+        "lizenz": "CC0",
+        "lizenzStatus": "erkannt",
+        "erstellt": "2026-10-18",
+        "datei": "audio/kandidaten/8-bit-victory-loop.ogg"
+      }
+    ],
+    "music:kampf": [
+      {
+        "id": "034b1a73",
+        "titel": "8-Bit Battle Loop",
+        "link": "https://opengameart.org/content/8-bit-battle-loop",
+        "quelle": "OpenGameArt",
+        "urheber": "AntumDeluge",
+        "lizenz": "CC0",
+        "lizenzStatus": "erkannt",
+        "erstellt": "2026-10-18",
+        "datei": "audio/kandidaten/8-bit-battle-loop.ogg"
+      },
+      {
+        "id": "5b30c7a4",
+        "titel": "Confrontation",
+        "link": "https://opengameart.org/content/confrontation-1",
+        "quelle": "OpenGameArt",
+        "urheber": "DraymaDev",
+        "lizenz": "CC0",
+        "lizenzStatus": "erkannt",
+        "erstellt": "2026-10-18",
+        "datei": "audio/kandidaten/confrontation.ogg"
+      },
+      {
+        "id": "f76b6d57",
+        "titel": "Pixel Sprinter",
+        "link": "https://opengameart.org/content/pixel-sprinter",
+        "quelle": "OpenGameArt",
+        "urheber": "Zamoar",
+        "lizenz": "CC0",
+        "lizenzStatus": "erkannt",
+        "erstellt": "2026-10-18",
+        "datei": "audio/kandidaten/pixel-sprinter.ogg"
+      }
+    ],
+    "music:lobby": [
+      {
+        "id": "252981a1",
+        "titel": "NES Shooter Music: Map",
+        "link": "https://opengameart.org/content/nes-shooter-music-5-tracks-3-jingles#Map",
+        "quelle": "OpenGameArt",
+        "urheber": "chrismthegamedude",
+        "lizenz": "CC0",
+        "lizenzStatus": "erkannt",
+        "erstellt": "2026-10-18",
+        "datei": "audio/kandidaten/nes-shooter-music-map.ogg"
+      },
+      {
+        "id": "dcf6f6fa",
+        "titel": "[Chiptune] Medieval: The Bard's Tale",
+        "link": "https://opengameart.org/content/chiptune-medieval-the-bards-tale",
+        "quelle": "OpenGameArt",
+        "urheber": "Snabisch",
+        "lizenz": "CC0",
+        "lizenzStatus": "erkannt",
+        "erstellt": "2026-10-18",
+        "datei": "audio/kandidaten/chiptune-medieval-the-bard-s-tale.ogg"
+      }
+    ],
+    "music:nacht": [
+      {
+        "id": "3adbe1bc",
+        "titel": "Haunting Chiptune Loop [Void Estate]",
+        "link": "https://opengameart.org/content/haunting-chiptune-loop-void-estate",
+        "quelle": "OpenGameArt",
+        "urheber": "-Ryu-",
+        "lizenz": "CC0",
+        "lizenzStatus": "erkannt",
+        "erstellt": "2026-10-18",
+        "datei": "audio/kandidaten/haunting-chiptune-loop-void-estate.ogg"
+      },
+      {
+        "id": "64c2bd4a",
+        "titel": "Delayed Chiptune",
+        "link": "https://opengameart.org/content/delayed-chiptune",
+        "quelle": "OpenGameArt",
+        "urheber": "DraymaDev",
+        "lizenz": "CC0",
+        "lizenzStatus": "erkannt",
+        "erstellt": "2026-10-18",
+        "datei": "audio/kandidaten/delayed-chiptune.ogg"
+      }
+    ],
+    "music:tag": [
+      {
+        "id": "1d793813",
+        "titel": "Happy Adventure (Loop)",
+        "link": "https://opengameart.org/content/happy-adventure-loop",
+        "quelle": "OpenGameArt",
+        "urheber": "fluffrabbit",
+        "lizenz": "CC0",
+        "lizenzStatus": "erkannt",
+        "erstellt": "2026-10-18",
+        "datei": "audio/kandidaten/happy-adventure-loop.ogg"
+      },
+      {
+        "id": "c47b2334",
+        "titel": "Flowerbed Fields [Loop]",
+        "link": "https://opengameart.org/content/flowerbed-fields-loop",
+        "quelle": "OpenGameArt",
+        "urheber": "Dylan_B",
+        "lizenz": "CC0",
+        "lizenzStatus": "erkannt",
+        "erstellt": "2026-10-18",
+        "datei": "audio/kandidaten/flowerbed-fields-loop.ogg"
+      },
+      {
+        "id": "ef8c6a73",
+        "titel": "Lasso Lady (seamless loop)",
+        "link": "https://opengameart.org/content/lasso-lady-seamless-loop",
+        "quelle": "OpenGameArt",
+        "urheber": "looneybits",
+        "lizenz": "CC0",
+        "lizenzStatus": "erkannt",
+        "erstellt": "2026-10-18",
+        "datei": "audio/kandidaten/lasso-lady-seamless-loop.ogg"
+      }
+    ],
+    "music:tiefe": [
+      {
+        "id": "734acf27",
+        "titel": "8-Bit Cave Loop",
+        "link": "https://opengameart.org/content/8-bit-cave-loop",
+        "quelle": "OpenGameArt",
+        "urheber": "haxx",
+        "lizenz": "CC0",
+        "lizenzStatus": "erkannt",
+        "erstellt": "2026-10-18",
+        "datei": "audio/kandidaten/8-bit-cave-loop.ogg"
+      }
+    ],
+    "sfx:arrow": [
+      {
+        "id": "396c4f0e",
+        "titel": "Kenney RPG Audio: drawKnife1",
+        "link": "https://kenney.nl/assets/rpg-audio#drawKnife1",
+        "quelle": "Kenney",
+        "urheber": "Kenney",
+        "lizenz": "CC0",
+        "lizenzStatus": "erkannt",
+        "erstellt": "2026-10-18",
+        "datei": "audio/kandidaten/kenney-rpg-audio-drawknife1.ogg"
+      },
+      {
+        "id": "1d4a26af",
+        "titel": "Kenney Digital Audio: phaserUp2",
+        "link": "https://kenney.nl/assets/digital-audio#phaserUp2",
+        "quelle": "Kenney",
+        "urheber": "Kenney",
+        "lizenz": "CC0",
+        "lizenzStatus": "erkannt",
+        "erstellt": "2026-10-18",
+        "datei": "audio/kandidaten/kenney-digital-audio-phaserup2.ogg"
+      },
+      {
+        "id": "fa6b1d95",
+        "titel": "Kenney Digital Audio: laser5",
+        "link": "https://kenney.nl/assets/digital-audio#laser5",
+        "quelle": "Kenney",
+        "urheber": "Kenney",
+        "lizenz": "CC0",
+        "lizenzStatus": "erkannt",
+        "erstellt": "2026-10-18",
+        "datei": "audio/kandidaten/kenney-digital-audio-laser5.ogg"
+      }
+    ],
+    "sfx:build": [
+      {
+        "id": "d65e7202",
+        "titel": "Kenney Impact Sounds: impactWood_medium_000",
+        "link": "https://kenney.nl/assets/impact-sounds#impactWood_medium_000",
+        "quelle": "Kenney",
+        "urheber": "Kenney",
+        "lizenz": "CC0",
+        "lizenzStatus": "erkannt",
+        "erstellt": "2026-10-18",
+        "datei": "audio/kandidaten/kenney-impact-sounds-impactwood-medium-0.ogg"
+      },
+      {
+        "id": "13acb03c",
+        "titel": "Kenney RPG Audio: metalLatch",
+        "link": "https://kenney.nl/assets/rpg-audio#metalLatch",
+        "quelle": "Kenney",
+        "urheber": "Kenney",
+        "lizenz": "CC0",
+        "lizenzStatus": "erkannt",
+        "erstellt": "2026-10-18",
+        "datei": "audio/kandidaten/kenney-rpg-audio-metallatch.ogg"
+      },
+      {
+        "id": "f071c270",
+        "titel": "Kenney Impact Sounds: impactMining_000",
+        "link": "https://kenney.nl/assets/impact-sounds#impactMining_000",
+        "quelle": "Kenney",
+        "urheber": "Kenney",
+        "lizenz": "CC0",
+        "lizenzStatus": "erkannt",
+        "erstellt": "2026-10-18",
+        "datei": "audio/kandidaten/kenney-impact-sounds-impactmining-000.ogg"
+      }
+    ],
+    "sfx:coin": [
+      {
+        "id": "4895fc3b",
+        "titel": "Kenney RPG Audio: handleCoins",
+        "link": "https://kenney.nl/assets/rpg-audio#handleCoins",
+        "quelle": "Kenney",
+        "urheber": "Kenney",
+        "lizenz": "CC0",
+        "lizenzStatus": "erkannt",
+        "erstellt": "2026-10-18",
+        "datei": "audio/kandidaten/kenney-rpg-audio-handlecoins.ogg"
+      },
+      {
+        "id": "698f2bf5",
+        "titel": "Kenney RPG Audio: handleCoins2",
+        "link": "https://kenney.nl/assets/rpg-audio#handleCoins2",
+        "quelle": "Kenney",
+        "urheber": "Kenney",
+        "lizenz": "CC0",
+        "lizenzStatus": "erkannt",
+        "erstellt": "2026-10-18",
+        "datei": "audio/kandidaten/kenney-rpg-audio-handlecoins2.ogg"
+      },
+      {
+        "id": "bd7f2d6f",
+        "titel": "Kenney Digital Audio: pepSound3",
+        "link": "https://kenney.nl/assets/digital-audio#pepSound3",
+        "quelle": "Kenney",
+        "urheber": "Kenney",
+        "lizenz": "CC0",
+        "lizenzStatus": "erkannt",
+        "erstellt": "2026-10-18",
+        "datei": "audio/kandidaten/kenney-digital-audio-pepsound3.ogg"
+      }
+    ],
+    "sfx:death": [
+      {
+        "id": "4c24f55b",
+        "titel": "Kenney Digital Audio: lowDown",
+        "link": "https://kenney.nl/assets/digital-audio#lowDown",
+        "quelle": "Kenney",
+        "urheber": "Kenney",
+        "lizenz": "CC0",
+        "lizenzStatus": "erkannt",
+        "erstellt": "2026-10-18",
+        "datei": "audio/kandidaten/kenney-digital-audio-lowdown.ogg"
+      },
+      {
+        "id": "3dc71450",
+        "titel": "Kenney Digital Audio: lowThreeTone",
+        "link": "https://kenney.nl/assets/digital-audio#lowThreeTone",
+        "quelle": "Kenney",
+        "urheber": "Kenney",
+        "lizenz": "CC0",
+        "lizenzStatus": "erkannt",
+        "erstellt": "2026-10-18",
+        "datei": "audio/kandidaten/kenney-digital-audio-lowthreetone.ogg"
+      },
+      {
+        "id": "583ecc16",
+        "titel": "Kenney Impact Sounds: impactPunch_heavy_000",
+        "link": "https://kenney.nl/assets/impact-sounds#impactPunch_heavy_000",
+        "quelle": "Kenney",
+        "urheber": "Kenney",
+        "lizenz": "CC0",
+        "lizenzStatus": "erkannt",
+        "erstellt": "2026-10-18",
+        "datei": "audio/kandidaten/kenney-impact-sounds-impactpunch-heavy-0.ogg"
+      }
+    ],
+    "sfx:hit": [
+      {
+        "id": "efa016b1",
+        "titel": "Kenney Impact Sounds: impactPunch_medium_000",
+        "link": "https://kenney.nl/assets/impact-sounds#impactPunch_medium_000",
+        "quelle": "Kenney",
+        "urheber": "Kenney",
+        "lizenz": "CC0",
+        "lizenzStatus": "erkannt",
+        "erstellt": "2026-10-18",
+        "datei": "audio/kandidaten/kenney-impact-sounds-impactpunch-medium.ogg"
+      },
+      {
+        "id": "dd0a10c4",
+        "titel": "Kenney Impact Sounds: impactSoft_medium_000",
+        "link": "https://kenney.nl/assets/impact-sounds#impactSoft_medium_000",
+        "quelle": "Kenney",
+        "urheber": "Kenney",
+        "lizenz": "CC0",
+        "lizenzStatus": "erkannt",
+        "erstellt": "2026-10-18",
+        "datei": "audio/kandidaten/kenney-impact-sounds-impactsoft-medium-0.ogg"
+      },
+      {
+        "id": "4afee728",
+        "titel": "Kenney Impact Sounds: impactMetal_light_000",
+        "link": "https://kenney.nl/assets/impact-sounds#impactMetal_light_000",
+        "quelle": "Kenney",
+        "urheber": "Kenney",
+        "lizenz": "CC0",
+        "lizenzStatus": "erkannt",
+        "erstellt": "2026-10-18",
+        "datei": "audio/kandidaten/kenney-impact-sounds-impactmetal-light-0.ogg"
+      }
+    ],
+    "sfx:kill": [
+      {
+        "id": "2fa17041",
+        "titel": "Kenney Digital Audio: spaceTrash2",
+        "link": "https://kenney.nl/assets/digital-audio",
+        "quelle": "Kenney",
+        "urheber": "Kenney",
+        "lizenz": "CC0",
+        "lizenzStatus": "erkannt",
+        "erstellt": "2026-10-18",
+        "datei": "audio/kandidaten/kenney-digital-audio-spacetrash2.ogg"
+      },
+      {
+        "id": "34136358",
+        "titel": "Kenney Digital Audio: zapThreeToneDown",
+        "link": "https://kenney.nl/assets/digital-audio#zapThreeToneDown",
+        "quelle": "Kenney",
+        "urheber": "Kenney",
+        "lizenz": "CC0",
+        "lizenzStatus": "erkannt",
+        "erstellt": "2026-10-18",
+        "datei": "audio/kandidaten/kenney-digital-audio-zapthreetonedown.ogg"
+      },
+      {
+        "id": "4c51b161",
+        "titel": "Kenney Impact Sounds: impactGeneric_light_000",
+        "link": "https://kenney.nl/assets/impact-sounds#impactGeneric_light_000",
+        "quelle": "Kenney",
+        "urheber": "Kenney",
+        "lizenz": "CC0",
+        "lizenzStatus": "erkannt",
+        "erstellt": "2026-10-18",
+        "datei": "audio/kandidaten/kenney-impact-sounds-impactgeneric-light.ogg"
+      }
+    ],
+    "sfx:portal": [
+      {
+        "id": "30460165",
+        "titel": "Kenney Digital Audio: zapThreeToneUp",
+        "link": "https://kenney.nl/assets/digital-audio#zapThreeToneUp",
+        "quelle": "Kenney",
+        "urheber": "Kenney",
+        "lizenz": "CC0",
+        "lizenzStatus": "erkannt",
+        "erstellt": "2026-10-18",
+        "datei": "audio/kandidaten/kenney-digital-audio-zapthreetoneup.ogg"
+      },
+      {
+        "id": "e44fbd48",
+        "titel": "Kenney Digital Audio: phaseJump3",
+        "link": "https://kenney.nl/assets/digital-audio#phaseJump3",
+        "quelle": "Kenney",
+        "urheber": "Kenney",
+        "lizenz": "CC0",
+        "lizenzStatus": "erkannt",
+        "erstellt": "2026-10-18",
+        "datei": "audio/kandidaten/kenney-digital-audio-phasejump3.ogg"
+      },
+      {
+        "id": "24aad0a7",
+        "titel": "Kenney Digital Audio: phaserDown2",
+        "link": "https://kenney.nl/assets/digital-audio#phaserDown2",
+        "quelle": "Kenney",
+        "urheber": "Kenney",
+        "lizenz": "CC0",
+        "lizenzStatus": "erkannt",
+        "erstellt": "2026-10-18",
+        "datei": "audio/kandidaten/kenney-digital-audio-phaserdown2.ogg"
+      }
+    ],
+    "sfx:revive": [
+      {
+        "id": "acee266f",
+        "titel": "Kenney Digital Audio: powerUp3",
+        "link": "https://kenney.nl/assets/digital-audio#powerUp3",
+        "quelle": "Kenney",
+        "urheber": "Kenney",
+        "lizenz": "CC0",
+        "lizenzStatus": "erkannt",
+        "erstellt": "2026-10-18",
+        "datei": "audio/kandidaten/kenney-digital-audio-powerup3.ogg"
+      },
+      {
+        "id": "c4c3c721",
+        "titel": "Kenney Digital Audio: highUp",
+        "link": "https://kenney.nl/assets/digital-audio#highUp",
+        "quelle": "Kenney",
+        "urheber": "Kenney",
+        "lizenz": "CC0",
+        "lizenzStatus": "erkannt",
+        "erstellt": "2026-10-18",
+        "datei": "audio/kandidaten/kenney-digital-audio-highup.ogg"
+      },
+      {
+        "id": "7ce0e679",
+        "titel": "Kenney Digital Audio: phaserUp5",
+        "link": "https://kenney.nl/assets/digital-audio#phaserUp5",
+        "quelle": "Kenney",
+        "urheber": "Kenney",
+        "lizenz": "CC0",
+        "lizenzStatus": "erkannt",
+        "erstellt": "2026-10-18",
+        "datei": "audio/kandidaten/kenney-digital-audio-phaserup5.ogg"
+      }
+    ],
+    "sfx:skill": [
+      {
+        "id": "b2b500a9",
+        "titel": "Kenney Digital Audio: powerUp7",
+        "link": "https://kenney.nl/assets/digital-audio#powerUp7",
+        "quelle": "Kenney",
+        "urheber": "Kenney",
+        "lizenz": "CC0",
+        "lizenzStatus": "erkannt",
+        "erstellt": "2026-10-18",
+        "datei": "audio/kandidaten/kenney-digital-audio-powerup7.ogg"
+      },
+      {
+        "id": "9c6b92fe",
+        "titel": "Kenney Digital Audio: powerUp11",
+        "link": "https://kenney.nl/assets/digital-audio#powerUp11",
+        "quelle": "Kenney",
+        "urheber": "Kenney",
+        "lizenz": "CC0",
+        "lizenzStatus": "erkannt",
+        "erstellt": "2026-10-18",
+        "datei": "audio/kandidaten/kenney-digital-audio-powerup11.ogg"
+      },
+      {
+        "id": "bc890e49",
+        "titel": "Kenney Digital Audio: twoTone1",
+        "link": "https://kenney.nl/assets/digital-audio#twoTone1",
+        "quelle": "Kenney",
+        "urheber": "Kenney",
+        "lizenz": "CC0",
+        "lizenzStatus": "erkannt",
+        "erstellt": "2026-10-18",
+        "datei": "audio/kandidaten/kenney-digital-audio-twotone1.ogg"
+      }
+    ],
+    "sfx:strike": [
+      {
+        "id": "d77ca17b",
+        "titel": "Kenney RPG Audio: knifeSlice",
+        "link": "https://kenney.nl/assets/rpg-audio#knifeSlice",
+        "quelle": "Kenney",
+        "urheber": "Kenney",
+        "lizenz": "CC0",
+        "lizenzStatus": "erkannt",
+        "erstellt": "2026-10-18",
+        "datei": "audio/kandidaten/kenney-rpg-audio-knifeslice.ogg"
+      },
+      {
+        "id": "3520758c",
+        "titel": "Kenney RPG Audio: knifeSlice2",
+        "link": "https://kenney.nl/assets/rpg-audio#knifeSlice2",
+        "quelle": "Kenney",
+        "urheber": "Kenney",
+        "lizenz": "CC0",
+        "lizenzStatus": "erkannt",
+        "erstellt": "2026-10-18",
+        "datei": "audio/kandidaten/kenney-rpg-audio-knifeslice2.ogg"
+      },
+      {
+        "id": "1b30ebda",
+        "titel": "Kenney RPG Audio: chop",
+        "link": "https://kenney.nl/assets/rpg-audio#chop",
+        "quelle": "Kenney",
+        "urheber": "Kenney",
+        "lizenz": "CC0",
+        "lizenzStatus": "erkannt",
+        "erstellt": "2026-10-18",
+        "datei": "audio/kandidaten/kenney-rpg-audio-chop.ogg"
+      }
+    ],
+    "sfx:warn": [
+      {
+        "id": "c464f2c6",
+        "titel": "Kenney Impact Sounds: impactBell_heavy_000",
+        "link": "https://kenney.nl/assets/impact-sounds#impactBell_heavy_000",
+        "quelle": "Kenney",
+        "urheber": "Kenney",
+        "lizenz": "CC0",
+        "lizenzStatus": "erkannt",
+        "erstellt": "2026-10-18",
+        "datei": "audio/kandidaten/kenney-impact-sounds-impactbell-heavy-00.ogg"
+      },
+      {
+        "id": "01a1384c",
+        "titel": "Kenney Interface Sounds: bong_001",
+        "link": "https://kenney.nl/assets/interface-sounds#bong_001",
+        "quelle": "Kenney",
+        "urheber": "Kenney",
+        "lizenz": "CC0",
+        "lizenzStatus": "erkannt",
+        "erstellt": "2026-10-18",
+        "datei": "audio/kandidaten/kenney-interface-sounds-bong-001.ogg"
+      },
+      {
+        "id": "8e0c5b6e",
+        "titel": "Kenney Digital Audio: threeTone2",
+        "link": "https://kenney.nl/assets/digital-audio#threeTone2",
+        "quelle": "Kenney",
+        "urheber": "Kenney",
+        "lizenz": "CC0",
+        "lizenzStatus": "erkannt",
+        "erstellt": "2026-10-18",
+        "datei": "audio/kandidaten/kenney-digital-audio-threetone2.ogg"
+      }
+    ]
+  }
+}
