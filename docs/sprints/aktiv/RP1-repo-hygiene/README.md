@@ -1,14 +1,14 @@
 # RP1 · INF · Repo-Hygiene: Branches aufräumen, Altlasten, Regeln
 
-- **Status:** geplant
+- **Status:** aktiv
 - **Projekt:** REL
 - **Domäne:** INF
-- **Reife:** Entwurf
+- **Reife:** bereit
 - **Tickets:** B-302, B-288, B-094, B-058
-- **Start-Commit:** –
-- **Spec:** Entwurf
+- **Start-Commit:** a6d676b4
+- **Spec:** freigegeben
 - **Revision:** 1
-- **Freigabe:** –
+- **Freigabe:** 2026-10-18, Chat (Ralf), Revision 1
 
 ## Ausgangslage
 
@@ -54,6 +54,12 @@ Branch mit ungemergten Commits → bleibt, Hinweis im Ergebnis.
 - B-058: Empfehlung zur Execution-Policy, entscheidet 🧑.
 
 ## Sessions
+
+| Nr. | Datei | Typ | Agent | Status |
+|---|---|---|---|---|
+| RP1.1 | `RP1.1-branch-aufraeumen.md` | Umsetzung | autonom | offen |
+| RP1.2 | `RP1.2-regeln-altlasten.md` | Umsetzung | autonom | offen |
+| RP1.3 | `RP1.3-review.md` | Review | autonom | offen |
 
 Entwurf. Vor dem Aktivieren jede Session als Datei nach `docs/vorlagen/session.md` schreiben, die Kriterien in Klammern werden ihr Feld `Kriterien`.
 
