@@ -1,7 +1,7 @@
 /* Seite Welt-Betrachter (B-460, B-477): eine Ansicht aus Chunk-Streifen und Live-Vorschau; sie wächst mit dem Inhalt und
    scrollt senkrecht mit der Seite (keine feste Fensterhöhe, nichts wird abgeschnitten). Höhen laut maximiert/verkleinert. */
-.wd-page { --wd-strip-h: 5.5rem; --wd-stage-h: clamp(16rem, 42vh, 30rem); display: flex; flex-direction: column; gap: 12px; }
-.wd-page[data-maximized='true'] { --wd-strip-h: 8.5rem; --wd-stage-h: clamp(20rem, 58vh, 44rem); }
+.wd-page { --wd-strip-h: 5.5rem; --wd-stage-min: 16rem; display: flex; flex-direction: column; gap: 12px; min-height: calc(100vh - 9.5rem); }
+.wd-page[data-maximized='true'] { --wd-strip-h: 8.5rem; --wd-stage-min: 22rem; }
 .wd-chunks { display: flex; flex-direction: column; gap: 8px; }
 .wd-viewbar { display: flex; flex-direction: column; gap: 4px; }
 .wd-jumps { display: inline-flex; flex-wrap: wrap; gap: 4px; margin-left: 8px; }
@@ -26,9 +26,10 @@
   content: ''; display: inline-block; width: 9px; height: 9px; margin-right: 5px; border-radius: 50%; background: var(--dot);
 }
 .wd-warnings { margin: 0; padding-left: 18px; color: #ff8fa3; font-size: 13px; }
-.wd-live { border: 1px solid var(--card-line); border-radius: 8px; padding: 12px; }
-.wd-live-body { display: flex; flex-direction: column; gap: 8px; }
-.wd-stage { height: var(--wd-stage-h); border: 1px solid var(--card-line); border-radius: 8px; overflow: hidden; background: #101018; }
+/* Die Live-Vorschau nimmt den Rest der Fensterhöhe (Basis 0: der Inhalt, auch das Canvas, vergrößert sie nie), mindestens --wd-stage-min. */
+.wd-live { flex: 1; display: flex; flex-direction: column; }
+.wd-live-body { flex: 1; display: flex; flex-direction: column; gap: 8px; }
+.wd-stage { flex: 1 1 0; min-height: var(--wd-stage-min); border: 1px solid var(--card-line); border-radius: 8px; overflow: hidden; background: #101018; }
 .wd-stage canvas { display: block; }
 .wd-buildings { display: flex; flex-wrap: wrap; gap: 4px 14px; list-style: none; margin: 0; padding: 0; }
 .wd-launch .wd-base { width: 15rem; }
