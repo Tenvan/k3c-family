@@ -92,24 +92,28 @@ describe('Position (B-477/AC-01)', () => {
 });
 
 describe('Mausrad (B-477/AC-01, AC-03)', () => {
-  const wheel = (o: Partial<{ deltaX: number; deltaY: number; ctrlKey: boolean; shiftKey: boolean; altKey: boolean }>) => wheelAction({ deltaX: 0, deltaY: 0, ctrlKey: false, shiftKey: false, altKey: false, ...o });
+  const wheel = (o: Partial<{ deltaX: number; deltaY: number; ctrlKey: boolean; shiftKey: boolean}>) => wheelAction({ deltaX: 0, deltaY: 0, ctrlKey: false, shiftKey: false, ...o });
 
   it('das gewöhnliche Rad bewirkt nichts (die Seite scrollt senkrecht)', () => {
     expect(wheel({ deltaY: 100 })).toBeNull();
   });
 
-  it('Strg + Rad zoomt, Umschalt + Rad und seitliches Rad scrollen', () => {
+  it('Strg + Rad zoomt, das seitliche Rad scrollt', () => {
     expect(wheel({ deltaY: -100, ctrlKey: true })).toEqual({ kind: 'zoom', factor: 1.25 });
     expect(wheel({ deltaY: 100, ctrlKey: true })).toEqual({ kind: 'zoom', factor: 0.8 });
-    expect(wheel({ deltaY: 100, shiftKey: true })).toEqual({ kind: 'pan', px: 100 });
     expect(wheel({ deltaX: -60 })).toEqual({ kind: 'pan', px: -60 });
     expect(wheel({ ctrlKey: true })).toBeNull();
   });
 
-  it('Alt + Rad zoomt nur die Vorschau unter dem Zeiger (B-485/AC-05)', () => {
-    expect(wheel({ deltaY: -100, altKey: true })).toEqual({ kind: 'zoom', factor: 1.25, own: true });
-    expect(wheel({ deltaY: 100, altKey: true })).toEqual({ kind: 'zoom', factor: 0.8, own: true });
-    expect(wheel({ altKey: true })).toBeNull();
+  it('Umschalt + Rad zoomt nur die Vorschau unter dem Zeiger (B-485/AC-05)', () => {
+    expect(wheel({ deltaY: -100, shiftKey: true })).toEqual({ kind: 'zoom', factor: 1.25, own: true });
+    expect(wheel({ deltaY: 100, shiftKey: true })).toEqual({ kind: 'zoom', factor: 0.8, own: true });
+    expect(wheel({ shiftKey: true })).toBeNull();
+  });
+
+  it('Umschalt oder Strg + Rad als deltaX (Treiber, Windows) zoomt ebenso', () => {
+    expect(wheel({ deltaX: -100, shiftKey: true })).toEqual({ kind: 'zoom', factor: 1.25, own: true });
+    expect(wheel({ deltaX: 100, ctrlKey: true })).toEqual({ kind: 'zoom', factor: 0.8 });
   });
 });
 
