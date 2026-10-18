@@ -4,16 +4,17 @@ import { backend } from './api';
 import { GrafikPage } from './grafik/GrafikPage';
 import { loadPref, savePref } from './lib/prefs';
 import { MonarchPage } from './monarch/MonarchPage';
+import { PlanerPage } from './planer/PlanerPage';
 import { SoundPage } from './sound/SoundPage';
 import { WorldPage } from './world/WorldPage';
 import { StatusBadge } from './ui/parts';
 
-export const PAGES = ['grafik', 'sound', 'welt', 'monarch'] as const;
+export const PAGES = ['grafik', 'sound', 'welt', 'planer', 'monarch'] as const;
 export type Page = (typeof PAGES)[number];
 
-const LABELS: Record<Page, string> = { grafik: 'Grafik', sound: 'Sound', welt: 'Welt-Betrachter', monarch: 'Monarch' };
+const LABELS: Record<Page, string> = { grafik: 'Grafik', sound: 'Sound', welt: 'Welt-Betrachter', planer: 'Gebäude-Planer', monarch: 'Monarch' };
 
-/** Rahmen des Asset-Studios (B-459): Kopfzeile mit Navigation Grafik/Sound/Welt-Betrachter/Monarch. Nur die offene Seite ist eingehängt, das
+/** Rahmen des Asset-Studios (B-459): Kopfzeile mit Navigation Grafik/Sound/Welt-Betrachter/Gebäude-Planer/Monarch. Nur die offene Seite ist eingehängt, das
  *  Verlassen der Seite Sound stoppt deshalb alle Busse. */
 export function App({ initial }: { initial?: Page }) {
   const [page, setPage] = useState<Page>(() => initial ?? loadPref('app.page', PAGES, 'grafik'));
@@ -40,6 +41,7 @@ export function App({ initial }: { initial?: Page }) {
           <Tabs.Content value="grafik"><GrafikPage /></Tabs.Content>
           <Tabs.Content value="sound"><SoundPage /></Tabs.Content>
           <Tabs.Content value="welt"><WorldPage /></Tabs.Content>
+          <Tabs.Content value="planer"><PlanerPage /></Tabs.Content>
           <Tabs.Content value="monarch"><MonarchPage /></Tabs.Content>
         </main>
       </Tabs.Root>

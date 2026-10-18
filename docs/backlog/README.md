@@ -158,6 +158,7 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-473](B-473-ci-rot-k3c-dev-planning-worktree-tests.md) | DEV | Problem | hoch | offen | – | CI auf develop rot: k3c-dev internal/planning Worktree-Tests scheitern auf dem Windows-Runner |
 | [B-474](B-474-testdownloadhit-norton-tls.md) | DEV | Problem | mittel | offen | – | TestDownloadHit scheitert lokal am TLS-Zertifikat (Norton), check:all rot |
 | [B-476](B-476-preload-sprites-beliebige-reittiere.md) | CLI | Schuld | niedrig | offen | – | preloadSprites und createSpriteAnims laden beliebige Reittiere statt nur das Standard-Reittier |
+| [B-479](B-479-hub-pruefung-geplante-chunks.md) | SIM | Schuld | niedrig | offen | – | Prüfung der Kandidaten-hub.json: geplante Chunks nach WZ8 mitprüfen |
 | [B-483](B-483-worktree-eintraege-nur-lesend.md) | DEV | Problem | niedrig | offen | – | Planungsseite: Einträge nur im Worktree sind nur lesbar (Detail, Menüs, Rang) |
 | [B-484](B-484-worktree-neuer-sprint-leer.md) | DEV | Problem | niedrig | offen | – | Worktree-Vergleich: Sessions und Projekt eines neuen Sprints fehlen in den Pills |
 

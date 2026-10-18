@@ -130,7 +130,7 @@ func TestReviveRespawnOhneHilfeAnDerBurg(t *testing.T) {
 
 // (e): Wer fällt, bekommt halb bezahlte Münzen zurück (auch in Stufe 1 einer Insel); Respawn an der Burg von Stufe 1.
 func TestReviveErstattungUndRespawnInStufe1(t *testing.T) {
-	isl, err := CreateIsland("revive", []int{0, 1}, 1)
+	isl, err := CreateIsland("revive", []int{0, 1}, 1, CreateOptions{})
 	if err != nil {
 		t.Fatal(err)
 	}

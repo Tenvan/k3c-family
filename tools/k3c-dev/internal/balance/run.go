@@ -155,7 +155,7 @@ func runOne(sc Scenario, threshold int) (res Result) {
 
 // newIsland erzeugt die Insel eines Szenarios mit seinen Monarchen auf Stufe 0 (Lauf und Wiedergabe).
 func newIsland(sc Scenario) (*sim.Island, error) {
-	isl, err := sim.CreateIsland(sc.Seed, []int{sc.Depth}, 1)
+	isl, err := sim.CreateIsland(sc.Seed, []int{sc.Depth}, 1, sim.CreateOptions{})
 	if err != nil {
 		return nil, err
 	}

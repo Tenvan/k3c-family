@@ -29,7 +29,7 @@ func BenchmarkIslandStep3Stages4Players(b *testing.B) {
 // 6 s); gewartet wird bis zum ersten Warnkreis (K4.2, B-154/AC-05).
 func bossBenchIsland(b *testing.B) *Island {
 	b.Helper()
-	isl, err := CreateIsland("bossbench", []int{4}, 1)
+	isl, err := CreateIsland("bossbench", []int{4}, 1, CreateOptions{})
 	if err != nil {
 		b.Fatal(err)
 	}

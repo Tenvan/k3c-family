@@ -14,7 +14,7 @@ const eventBudgetBytes = 200
 // die Nacht mit Gegnern.
 func benchIsland(tb testing.TB) (*Island, []PlayerCommand) {
 	tb.Helper()
-	isl, err := CreateIsland("bench", []int{0, 1, 2}, islandSpeed)
+	isl, err := CreateIsland("bench", []int{0, 1, 2}, islandSpeed, CreateOptions{})
 	if err != nil {
 		tb.Fatal(err)
 	}

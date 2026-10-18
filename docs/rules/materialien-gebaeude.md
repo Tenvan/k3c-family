@@ -70,13 +70,17 @@ Hub-Plätze dürfen zwischen Linie 1 und Linie 2 liegen; sie sind ungeschützt, 
 
 **Auswahl am Platz** (Q34, Q52, 2026-10-04): Bietet ein Gebäude mehrere Angebote (Werkstatt, Schmiede, Rüstkammer), hat jedes Angebot ein **eigenes Zahlziel** als Anhang mit festem `dx` am Gebäude, keine neue Taste; alle `dx` liegen frei (Test). Ausgebildet bzw. aufgewertet wird der nächste freie Bauer bzw. Bogenschütze/Krieger.
 
-| Hub-Stufe | Gebäude |
-|---|---|
-| 1 (Holz) | Burg, Holzmauer ×2, Holzturm ×2, Werkstatt, Farm |
-| 2 (Stein) | Steinmauer, Steinturm (Ausbau), Tor, Kaserne, Lager, Taverne, Treppe hoch, Treppe runter |
-| 3 (Kupfer) | Kupfermauer, Kupferturm (Ausbau), Schmiede, Heilplatz |
-| 4 (Eisen) | Eisenmauer, Eisenturm (Ausbau), Rüstkammer |
-| 5 (Kristall) | Kristallmauer, Zaubertum (Turm-Stufe 5) |
+<!-- rules:hub-levels:start -->
+| Hub-Stufe | Material | Hub-Plätze | Mauerlinie und Tor | Händler |
+|---|---|---|---|---|
+| 1 | Holz | Werkstatt −16; Farm −52, +52 | Linie 1: Mauer ±44, Turm ±36 (fest) | Kaufen +16, Verkaufen +20 (nur Tiefe 0) |
+| 2 | Stein | Treppe hoch +16 (ab Tiefe 1); Treppe runter +8 (nur mit tieferer Stufe); Taverne −32; Kaserne +24; Lager −26 (je Insel) | Linie 2: Mauer ±64, Turm ±56, Tor ±68 (0…+4 je Seed); Tor Linie 1 ±48 | – |
+| 3 | Kupfer | Heilplatz −40; Schmiede +28 | Linie 3: Mauer ±84, Turm ±76, Tor ±88 (0…+4 je Seed) | – |
+| 4 | Eisen | Rüstkammer +40 | Linie 4: Mauer ±104, Turm ±96, Tor ±108 (0…+4 je Seed) | – |
+| 5 | Kristall | – | Linie 5: Mauer ±124, Turm ±116, Tor ±128 (0…+4 je Seed) | – |
+<!-- rules:hub-levels:end -->
+
+Der Block zwischen den Marken wird aus `data/hub.json` erzeugt (`task rules:update`, WZ15.2) und nicht von Hand geändert. Form: eine Zeile je Hub-Stufe (`levels`); Material der Stufe = das eine Material der Ausbaukosten, Stufe 1 ohne Kosten = Holz; Plätze nach Art gruppiert in der Reihenfolge der JSON (`sites`, dann `islandSites`, diese mit „(je Insel)“), Offsets mit Minuszeichen U+2212; leere Zellen „–“. Mauer und Turm der Linie k stehen in Zeile k, das Tor der Linie k in der Zeile max(`gateHubLevel`, k), also das Tor der Linie 1 in Zeile 2. Der Händler hängt in der JSON an keiner Stufe und steht in Stufe 1. Die Burg liegt in der Hub-Mitte. Hub-Stufe n schaltet außerdem Mauer- und Turm-Stufe n frei (Ausbau am selben Platz); Stufe 5 ist der Zaubertum (Turm-Stufe 5).
 
 Zusatzgebäude: **Lager** (Stufe 2), Taverne (Stufe 2), Heilplatz (Stufe 3).
 
