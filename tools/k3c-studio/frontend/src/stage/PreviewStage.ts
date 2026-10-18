@@ -78,6 +78,7 @@ class PreviewScene extends Phaser.Scene {
     this.view = null;
     if (!world) return;
     this.view = new StageView(this, world);
+    this.cameras.main.setBackgroundColor(world.biome.palette.sky); // wie GameScene: der Himmel des Bioms, die Helligkeit der Tageszeit liegt als Filter darüber
     this.view.renderer.sync(world);
     this.applyView();
     this.applyLook();
