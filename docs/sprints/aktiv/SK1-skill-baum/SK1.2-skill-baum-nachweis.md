@@ -1,6 +1,6 @@
 # SK1.2 · Skill-Baum Tank und Zauberer: Nachweis mit zwei Linien gleichzeitig
 
-- **Status:** offen
+- **Status:** in Arbeit
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** SIM
