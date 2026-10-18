@@ -112,7 +112,7 @@ func TestSensitivityByteGleichUndZurueckgesetzt(t *testing.T) {
 	if !bytes.Equal(out[0], out[1]) {
 		t.Error("Bericht nicht byte-gleich")
 	}
-	isl, err := sim.CreateIsland("1", []int{0}, 1)
+	isl, err := sim.CreateIsland("1", []int{0}, 1, sim.CreateOptions{})
 	if err != nil {
 		t.Fatal(err)
 	}

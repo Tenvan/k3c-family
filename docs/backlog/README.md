@@ -158,6 +158,7 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-473](B-473-ci-rot-k3c-dev-planning-worktree-tests.md) | DEV | Problem | hoch | offen | – | CI auf develop rot: k3c-dev internal/planning Worktree-Tests scheitern auf dem Windows-Runner |
 | [B-474](B-474-testdownloadhit-norton-tls.md) | DEV | Problem | mittel | offen | – | TestDownloadHit scheitert lokal am TLS-Zertifikat (Norton), check:all rot |
 | [B-477](B-477-welt-betrachter-nacharbeit.md) | DEV | Problem | hoch | eingeplant | WZ16 | Der Welt-Betrachter zeigt Chunk- und Live-Vorschau in einer gemeinsamen, synchron scrollenden Ansicht |
+| [B-479](B-479-hub-pruefung-geplante-chunks.md) | SIM | Schuld | niedrig | offen | – | Prüfung der Kandidaten-hub.json: geplante Chunks nach WZ8 mitprüfen |
 
 ## Archiv
 

@@ -12,7 +12,7 @@ import (
 // zweiStufenSave ist ein Spielstand mit zwei Spielern: Spieler 0 in Stufe 0, Spieler 1 in Stufe 1.
 func zweiStufenSave(t *testing.T) []byte {
 	t.Helper()
-	isl, err := sim.CreateIsland("stufen", []int{0, 1, 2}, 1)
+	isl, err := sim.CreateIsland("stufen", []int{0, 1, 2}, 1, sim.CreateOptions{})
 	if err != nil {
 		t.Fatal(err)
 	}

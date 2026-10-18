@@ -18,9 +18,9 @@ type MerchantData struct {
 // Merchant ist der anwesende Händler: Resource ist sein Material, Leaves der Tag, an dessen dawn er abreist,
 // BuyPaid das Gold für den laufenden Kauf. Gegner greifen ihn am Kaufen-Zahlziel an (HP, B-373); bei 0 flieht er.
 type Merchant struct {
-	Resource string  `json:"resource"`
-	Leaves   int     `json:"leaves"`
-	BuyPaid  int     `json:"buyPaid,omitempty"`
+	Resource string `json:"resource"`
+	Leaves   int    `json:"leaves"`
+	BuyPaid  int    `json:"buyPaid,omitempty"`
 	// Raid: Dieser Besuch wird überfallen (events_merchant.go); Gegner greifen den Händler zuerst an.
 	Raid bool `json:"raid,omitempty"`
 	// HP, MaxHP: nicht im Zustand (Protokoll unverändert, Anzeige mit K4/K5); gespeichert über MerchantSave.
@@ -44,7 +44,7 @@ const merchantID = -1
 
 // merchantDawn: Abreise, dann Ankunft nach Rhythmus (aus stepCycle beim dawn).
 func merchantDawn(w *World) {
-	if w.Biome.Depth != hub.Merchant.OnlyDepth {
+	if w.Biome.Depth != hubOf(w).Merchant.OnlyDepth {
 		return
 	}
 	m, day := economy.Merchant, w.Cycle.Day
@@ -103,9 +103,9 @@ func tavernOnIsland(w *World) bool {
 
 func merchantX(w *World, side string) float64 {
 	if side == "sell" {
-		return w.HubX + hub.Merchant.SellOffsetUnits
+		return w.HubX + hubOf(w).Merchant.SellOffsetUnits
 	}
-	return w.HubX + hub.Merchant.BuyOffsetUnits
+	return w.HubX + hubOf(w).Merchant.BuyOffsetUnits
 }
 
 // merchantAt ist "buy" oder "sell", wenn x in Zahl-Reichweite eines Zahlziels des anwesenden Händlers liegt, sonst "".

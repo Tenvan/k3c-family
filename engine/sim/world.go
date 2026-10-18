@@ -13,13 +13,27 @@ import (
 
 // Options für CreateWorld. CycleSpeed 0 bedeutet 1 (wie `?? 1` in TS).
 type Options struct {
-	CycleSpeed float64 // beschleunigt den Tag/Nacht-Zyklus (Tests, Dev)
-	Time       float64 // Startzeit in Sekunden, damit der globale Zyklus beim Stufenwechsel weiterläuft
+	CycleSpeed float64  // beschleunigt den Tag/Nacht-Zyklus (Tests, Dev)
+	Time       float64  // Startzeit in Sekunden, damit der globale Zyklus beim Stufenwechsel weiterläuft
+	hub        *HubData // Kandidaten-hub.json (CreateOptions.Candidate); nil = eingebettete data/hub.json
+}
+
+// hubOf ist die hub.json, aus der die Stufe gebaut ist: der Kandidat aus CreateOptions oder die eingebettete.
+func hubOf(w *World) *HubData {
+	if w.hubData != nil {
+		return w.hubData
+	}
+	return &hub
 }
 
 // CreateWorld baut den Startzustand einer Stufe.
 func CreateWorld(b level.Biome, seed string, opts Options) (*World, error) {
-	lv, err := level.Generate(b, seed)
+	var lo level.Options
+	if opts.hub != nil { // nur mit Kandidat: sonst bleibt der eingebettete Stand aus engine/level (Goldens)
+		lines := levelLines(opts.hub.WallLines)
+		lo.Lines = &lines
+	}
+	lv, err := level.GenerateWith(b, seed, lo)
 	if err != nil {
 		return nil, err
 	}
@@ -36,7 +50,7 @@ func CreateWorld(b level.Biome, seed string, opts Options) (*World, error) {
 		Castle:  Castle{X: hubX, HP: buildings["castle"].HP, MaxHP: buildings["castle"].HP},
 		Stock:   &Stock{},
 		Enemies: []*Enemy{}, Projectiles: []*Projectile{}, Pickups: []*Pickup{}, Camps: []*Camp{},
-		Portals: []float64{}, SpawnQueue: []QueuedSpawn{}, Events: []Event{},
+		Portals: []float64{}, SpawnQueue: []QueuedSpawn{}, Events: []Event{}, hubData: opts.hub,
 	}
 	if b.Cycle.Type == "aggressionPool" {
 		w.Aggression = new(float64)

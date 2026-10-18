@@ -162,7 +162,7 @@ type Enemy struct {
 	Fleeing     bool     `json:"fleeing"`
 	CarriedGold int      `json:"carriedGold"`
 	Carried     *Drop    `json:"carried,omitempty"` // weggetragene Ausrüstung (equipment_taken.go)
-	HomeX       float64  `json:"homeX"` // Portal, aus dem der Gegner kam
+	HomeX       float64  `json:"homeX"`             // Portal, aus dem der Gegner kam
 	// Stun: Sekunden betäubt (kein Schritt, kein Angriff). TauntFor: so lange zielt der Gegner auf den Spieler TauntID.
 	Stun     float64 `json:"stun,omitempty"`
 	TauntID  int     `json:"tauntId,omitempty"`
@@ -276,7 +276,9 @@ type World struct {
 	// ArmorLevel ist die Rüstungsstufe der Kämpfer dieses Hubs (0 = keine, Rüstkammer: upgrades.go).
 	ArmorLevel int `json:"armorLevel,omitempty"`
 	// hubSite ist der Zahlplatz für den Hub-Ausbau an der Burg (nicht in Sites, hub_level.go).
-	hubSite    *Site
+	hubSite *Site
+	// hubData: Kandidaten-hub.json, aus der die Stufe gebaut ist (CreateOptions); nil = eingebettete (hubOf).
+	hubData    *HubData
 	Cycle      CycleInfo `json:"cycle"`
 	Aggression *float64  `json:"aggression"` // nur unter Tage (0..100), sonst null
 	Wave       int       `json:"wave"`

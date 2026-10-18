@@ -15,7 +15,7 @@ import (
 // anwesendem Händler; geliefert wird Stufe 0.
 func wirtschaftsInsel(t *testing.T) (*sim.Island, *sim.World) {
 	t.Helper()
-	isl, err := sim.CreateIsland("w5-wirtschaft", []int{0, 1, 2}, 1)
+	isl, err := sim.CreateIsland("w5-wirtschaft", []int{0, 1, 2}, 1, sim.CreateOptions{})
 	if err != nil {
 		t.Fatal(err)
 	}

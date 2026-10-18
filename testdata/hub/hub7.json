@@ -1,6 +1,6 @@
 {
   "notes": [
-    "Fixture: 7 Hub-Stufen, nur für Tests (WZ15), nicht im Spiel."
+    "Fixture: 7 Hub-Stufen, nur für Tests (WZ15), nicht im Spiel. Besteht die Prüfung (sim.ValidateHub): ein Platz je Bau, Farm ±44, Linie 1 bei 52, Linien alle 12 Units, Turm 4 innen, Tor 4 außen, ohne Streuung; äußerstes Tor 128 unter dem Portal-Mindestabstand."
   ],
   "levels": [
     {
@@ -70,7 +70,7 @@
     },
     {
       "kind": "farm",
-      "offsetUnits": -52,
+      "offsetUnits": -44,
       "hubLevel": 1
     },
     {
@@ -91,27 +91,17 @@
     {
       "kind": "smithy",
       "offsetUnits": 28,
-      "hubLevel": 3
+      "hubLevel": 6
     },
     {
       "kind": "armory",
       "offsetUnits": 40,
-      "hubLevel": 4
+      "hubLevel": 7
     },
     {
       "kind": "farm",
-      "offsetUnits": 52,
-      "hubLevel": 1
-    },
-    {
-      "kind": "smithy",
       "offsetUnits": 44,
-      "hubLevel": 6
-    },
-    {
-      "kind": "healer",
-      "offsetUnits": -44,
-      "hubLevel": 7
+      "hubLevel": 1
     }
   ],
   "islandSites": [
@@ -123,17 +113,17 @@
   ],
   "wallLines": {
     "wallUnits": [
-      44,
+      52,
       64,
-      84,
-      104,
-      124,
-      144,
-      164
+      76,
+      88,
+      100,
+      112,
+      124
     ],
     "fixedLines": 1,
-    "jitterOutwardUnits": 4,
-    "towerInsetUnits": 8,
+    "jitterOutwardUnits": 0,
+    "towerInsetUnits": 4,
     "gateOutsetUnits": 4,
     "gateHubLevel": 2
   },

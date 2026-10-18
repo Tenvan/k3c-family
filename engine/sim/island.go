@@ -52,19 +52,36 @@ type Island struct {
 	travel map[int]*islandTravel
 }
 
+// CreateOptions steuern nur die Erzeugung einer Insel (B-461, B-462). Sie werden nicht gespeichert und sind getrennt
+// von IslandOptions (Grad, Ziel, Niederlage; im Spielstand). Der Nullwert ist das heutige Verhalten; Laden eines
+// Spielstands und Inselwechsel nutzen immer die eingebetteten Daten.
+type CreateOptions struct {
+	// Candidate: Kandidaten-hub.json (Gebäude-Planer, B-462); nil = eingebettete data/hub.json. Plätze, Hub-Stufen,
+	// Mauerlinien, Tor-Stufe, Händler und Startvorrat kommen dann aus ihm. CreateIsland prüft ihn vorher mit
+	// ValidateHubData und lehnt ihn bei Befunden ab (fail closed).
+	Candidate *HubData
+}
+
 // CreateIsland baut die Stufen für die angegebenen Tiefen (Reihenfolge = Stufenindex). CycleSpeed 0 bedeutet 1.
 // Eine neue Insel startet mit dem Vorrat aus hub.json › islandStartStock; Spielstände setzen ihren eigenen (FromIslandSave).
-func CreateIsland(seed string, depths []int, cycleSpeed float64) (*Island, error) {
-	isl, err := createIsland(seed, depths, cycleSpeed, 0)
+func CreateIsland(seed string, depths []int, cycleSpeed float64, opts CreateOptions) (*Island, error) {
+	h := &hub
+	if opts.Candidate != nil {
+		if r := ValidateHubData(opts.Candidate); len(r.Findings) > 0 {
+			return nil, fmt.Errorf("insel: Kandidaten-hub.json abgelehnt: %s", r.Findings[0])
+		}
+		h = cloneHub(opts.Candidate) // geprüft wird die Kopie, die die Welt behält: spätere Änderungen des Aufrufers wirken nicht
+	}
+	isl, err := createIsland(seed, depths, cycleSpeed, 0, h)
 	if err != nil {
 		return nil, err
 	}
-	*isl.Stock = hub.IslandStartStock
+	*isl.Stock = h.IslandStartStock
 	return isl, nil
 }
 
-// createIsland wie CreateIsland, mit Startzeit (Laden eines Spielstands).
-func createIsland(seed string, depths []int, cycleSpeed, startTime float64) (*Island, error) {
+// createIsland wie CreateIsland, mit Startzeit (Laden eines Spielstands); candidate nil = eingebettete hub.json.
+func createIsland(seed string, depths []int, cycleSpeed, startTime float64, candidate *HubData) (*Island, error) {
 	if len(depths) == 0 {
 		return nil, fmt.Errorf("insel: keine Stufen")
 	}
@@ -74,13 +91,13 @@ func createIsland(seed string, depths []int, cycleSpeed, startTime float64) (*Is
 		if !hasDepth(d) {
 			return nil, fmt.Errorf("insel: unbekannte Tiefe %d", d)
 		}
-		w, err := CreateWorld(biomeForDepth(d), seed, Options{CycleSpeed: cycleSpeed, Time: startTime})
+		w, err := CreateWorld(biomeForDepth(d), seed, Options{CycleSpeed: cycleSpeed, Time: startTime, hub: candidate})
 		if err != nil {
 			return nil, fmt.Errorf("insel: Stufe mit Tiefe %d: %w", d, err)
 		}
 		w.Stock = isl.Stock
 		w.island = isl
-		for _, s := range hub.IslandSites {
+		for _, s := range hubOf(w).IslandSites {
 			w.Sites = append(w.Sites, emptySite(w, s.Kind, w.HubX+s.OffsetUnits))
 		}
 		w.noTravel = true

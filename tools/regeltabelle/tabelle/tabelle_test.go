@@ -54,7 +54,7 @@ func TestSiebenStufenFixture(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	for _, want := range []string{"| 6 | Stein | Schmiede +44 | Linie 6: Mauer ±144, Turm ±136, Tor ±148 (0…+4 je Seed) | – |", "| 7 | Eisen | Heilplatz −44 | Linie 7: Mauer ±164"} {
+	for _, want := range []string{"| 6 | Stein | Schmiede +28 | Linie 6: Mauer ±112, Turm ±108, Tor ±116 (0…+0 je Seed) | – |", "| 7 | Eisen | Rüstkammer +40 | Linie 7: Mauer ±124"} {
 		if !strings.Contains(block, want) {
 			t.Errorf("Zeile fehlt: %s\n%s", want, block)
 		}

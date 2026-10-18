@@ -1,7 +1,7 @@
 package sim
 
-// Ausbau-Stufen (B-112, materialien-gebaeude.md §§ 2–4): Hub-Stufe 1 bis 5 an der Burg (Q44), Mauer und Turm 1 bis 5
-// am selben Platz (Q45). Ein Ausbau läuft wie jeder Bau: Gold zahlen → Material aus dem Vorrat → ein Bauer baut.
+// Ausbau-Stufen (B-112, materialien-gebaeude.md §§ 2–4): Hub-Stufe 1 bis Anzahl hub.json › levels an der Burg (Q44),
+// Mauer und Turm 1 bis Anzahl ihrer levels am selben Platz (Q45). Ein Ausbau läuft wie jeder Bau: Gold zahlen → Material aus dem Vorrat → ein Bauer baut.
 // Während des Ausbaus bleibt die alte Stufe gebaut und wirkt weiter. Der Ausbau wartet bei Gefahr (Bauer baut danach).
 //
 // Der Hub-Ausbau ist ein Platz ohne Liste (`World.hubSite`, Art castle, ID der Burg): Er steht nicht in `w.Sites`,
@@ -31,7 +31,8 @@ func eachSite(w *World, f func(*Site)) {
 // siteHubLevel ist die Hub-Stufe, ab der ein Hub-Platz bezahlbar ist (data/hub.json › sites, islandSites); 1 für
 // Plätze ohne Eintrag (Mauerlinien regelt lineOpen).
 func siteHubLevel(w *World, s *Site) int {
-	for _, list := range [][]HubSite{hub.Sites, hub.IslandSites} {
+	h := hubOf(w)
+	for _, list := range [][]HubSite{h.Sites, h.IslandSites} {
 		for _, h := range list {
 			if h.Kind == s.Kind && w.HubX+h.OffsetUnits == s.X {
 				return max(1, h.HubLevel)
@@ -54,7 +55,7 @@ func levelOf(w *World, s *Site) int {
 func nextLevel(w *World, s *Site) *LevelData {
 	levels := buildings[s.Kind].Levels
 	if s == w.hubSite {
-		levels = hub.Levels
+		levels = hubOf(w).Levels
 	}
 	n := levelOf(w, s) + 1
 	if s.State != "built" || n > len(levels) || (s != w.hubSite && w.HubLevel < n) {

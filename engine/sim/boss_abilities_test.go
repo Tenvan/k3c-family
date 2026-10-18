@@ -12,7 +12,7 @@ import (
 // Gegner, damit nur der Boss kämpft.
 func deepIsland(t *testing.T, players, stage int) *Island {
 	t.Helper()
-	isl, err := CreateIsland("boss", []int{0, 1, 2, 3, 4}, 1)
+	isl, err := CreateIsland("boss", []int{0, 1, 2, 3, 4}, 1, CreateOptions{})
 	if err != nil {
 		t.Fatal(err)
 	}
