@@ -48,7 +48,7 @@ func TestChunkInhaltEntsprichtDenObjektenImLevel(t *testing.T) {
 		"Seed-Chunk":            {plannedOpts(planB...), -3},
 		"feste Objekte":         {plannedOpts(planB...), 2},
 		"ungeplant":             {plannedOpts(planB...), 5},
-		"Seed-Chunk, Anzahl 20": {countOpts(20, level.PlannedChunk{Slot: 8, Kind: "clearing", Seed: "lichtung"}), 8},
+		"Seed-Chunk, Anzahl 24": {countOpts(24, level.PlannedChunk{Slot: 8, Kind: "clearing", Seed: "lichtung"}), 8},
 		"Kristallhöhle links":   {PreviewOptions{Seed: "abc", Source: PreviewSource{Biome: "crystal"}}, -2},
 	}
 	for name, c := range cases {

@@ -46,8 +46,8 @@ const seek = (h: HTMLElement, x: number) => act(async () => {
 });
 const stripWidth = (h: HTMLElement) => parseFloat(h.querySelector<HTMLElement>('.wd-strip')!.style.width);
 /** Mausrad mit Alt an `send` schicken; true, wenn die Seite das Ereignis abgebrochen hat. */
-const ownWheel = (send: (e: WheelEvent) => void, deltaY: number) => {
-  const e = Object.assign(new Event('wheel', { bubbles: true, cancelable: true }), { deltaX: 0, deltaY, ctrlKey: false, shiftKey: true }) as WheelEvent;
+const altWheel = (send: (e: WheelEvent) => void, deltaY: number) => {
+  const e = Object.assign(new Event('wheel', { bubbles: true, cancelable: true }), { deltaX: 0, deltaY, ctrlKey: false, shiftKey: false, altKey: true }) as WheelEvent;
   act(() => { send(e); });
   return e.defaultPrevented;
 };
@@ -229,22 +229,22 @@ describe('Seite Welt-Betrachter: Mausrad und Anfragen (B-477)', () => {
     expect(wheel({ deltaY: -100, ctrlKey: true })).toBe(true);
     expect(stripWidth(h)).toBeGreaterThan(before);
     const left = views.at(-1)!.left;
-    expect(wheel({ deltaX: 100 })).toBe(true);
+    expect(wheel({ deltaY: 100, shiftKey: true })).toBe(true);
     expect(views.at(-1)!.left).toBeGreaterThan(left);
   });
 
 });
 
 describe('Seite Welt-Betrachter: getrennter Zoom, gemeinsame Mitte (B-485/AC-05)', () => {
-  it('Umschalt + Rad zoomt nur die Vorschau unter dem Zeiger, beide behalten dieselbe Mitte (B-485/AC-05)', async () => {
+  it('Alt + Rad zoomt nur die Vorschau unter dem Zeiger, beide behalten dieselbe Mitte (B-485/AC-05)', async () => {
     const h = await mount();
     const before = stripWidth(h);
-    expect(ownWheel(stage.wheel, -100)).toBe(true);
+    expect(altWheel(stage.wheel, -100)).toBe(true);
     expect(stripWidth(h)).toBe(before);
     expect(views.at(-1)!.scale).toBeCloseTo(DEFAULT_SCALE * 1.25);
     expect(chunkCenter(h)).toBeCloseTo(liveCenter());
     const live = views.at(-1)!.scale;
-    expect(ownWheel((e) => h.querySelector('.wd-viewport')!.dispatchEvent(e), -100)).toBe(true);
+    expect(altWheel((e) => h.querySelector('.wd-viewport')!.dispatchEvent(e), -100)).toBe(true);
     expect(stripWidth(h)).toBeGreaterThan(before);
     expect(views.at(-1)!.scale).toBe(live);
     expect(chunkCenter(h)).toBeCloseTo(liveCenter());
@@ -258,7 +258,7 @@ describe('Seite Welt-Betrachter: getrennter Zoom, gemeinsame Mitte (B-485/AC-05)
     expect(h.querySelector('.wd-range-second')).toBeNull();
     await act(async () => button(h, 'Hineinzoomen').click());
     expect(width()).toBeCloseTo((1000 / (DEFAULT_SCALE * 1.25) / units) * 100);
-    ownWheel(stage.wheel, -100);
+    altWheel(stage.wheel, -100);
     const second = h.querySelector<HTMLElement>('.wd-range-second')!;
     expect(parseFloat(second.style.width)).toBeCloseTo((1000 / views.at(-1)!.scale / units) * 100);
     expect(parseFloat(second.style.width)).toBeLessThan(width());
@@ -266,8 +266,8 @@ describe('Seite Welt-Betrachter: getrennter Zoom, gemeinsame Mitte (B-485/AC-05)
 
   it('bei verschiedenem Zoom verschiebt der Bildlauf beide um dieselbe Welt-Strecke (B-485/AC-05)', async () => {
     const h = await mount();
-    ownWheel(stage.wheel, -100);
-    ownWheel(stage.wheel, -100);
+    altWheel(stage.wheel, -100);
+    altWheel(stage.wheel, -100);
     const [chunk, live] = [chunkCenter(h), liveCenter()];
     await act(async () => { document.body.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowRight', bubbles: true })); });
     const step = chunkCenter(h) - chunk;
@@ -278,8 +278,8 @@ describe('Seite Welt-Betrachter: getrennter Zoom, gemeinsame Mitte (B-485/AC-05)
 
   it('beide Zoom-Faktoren bleiben beim Wechsel der Stufe erhalten (B-485/AC-05)', async () => {
     const h = await mount();
-    ownWheel(stage.wheel, -100);
-    ownWheel((e) => h.querySelector('.wd-viewport')!.dispatchEvent(e), 100);
+    altWheel(stage.wheel, -100);
+    altWheel((e) => h.querySelector('.wd-viewport')!.dispatchEvent(e), 100);
     const [chunk, live] = [stripScale(h), views.at(-1)!.scale];
     expect(chunk).not.toBe(live);
     const stufe = h.querySelector<HTMLSelectElement>('select[aria-label="Stufe"]')!;
@@ -305,7 +305,7 @@ describe('Live-Bereich mit der Breite der Bühne (B-485/AC-05, Fehler aus der Ab
     const restore = stubWidths();
     try {
       const h = await mount();
-      ownWheel(stage.wheel, -100);
+      altWheel(stage.wheel, -100);
       const live = views.at(-1)!;
       expect(live.left + 600 / live.scale / 2).toBeCloseTo(chunkCenter(h)); // PreviewStage zentriert auf left + Bühnenbreite / Zoom / 2
       const units = Number(h.querySelector('.wd-note')!.textContent!.match(/(\d+) Units/)![1]);

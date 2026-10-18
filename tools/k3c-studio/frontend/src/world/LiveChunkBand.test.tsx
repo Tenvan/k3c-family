@@ -33,8 +33,8 @@ async function mount(): Promise<HTMLElement> {
   await flush();
   return host;
 }
-const ownWheel = (deltaY: number) => act(() => {
-  stage.wheel(Object.assign(new Event('wheel', { cancelable: true }), { deltaX: 0, deltaY, ctrlKey: false, shiftKey: true }) as WheelEvent);
+const altWheel = (deltaY: number) => act(() => {
+  stage.wheel(Object.assign(new Event('wheel', { cancelable: true }), { deltaX: 0, deltaY, ctrlKey: false, shiftKey: false, altKey: true }) as WheelEvent);
 });
 const cells = (h: HTMLElement) => [...h.querySelectorAll<HTMLElement>('.wd-stage .wd-band .wd-band-chunk')];
 
@@ -64,9 +64,9 @@ describe('Chunk-Infos im Bodenstreifen (B-485)', () => {
 
   it('herausgezoomt kompakt bzw. nur Farbe, hineingezoomt mehrzeilig; nie breiter als der Chunk', async () => {
     const h = await mount();
-    for (let i = 0; i < 12; i++) ownWheel(100);
+    for (let i = 0; i < 12; i++) altWheel(100);
     expect(cells(h).every((c) => c.dataset.mode === 'color' || c.dataset.mode === 'compact')).toBe(true);
-    for (let i = 0; i < 24; i++) ownWheel(-100);
+    for (let i = 0; i < 24; i++) altWheel(-100);
     expect(cells(h).every((c) => c.dataset.mode === 'line')).toBe(true); // nur eine Zeile Inhalt: bleibt einzeilig
     expect(cells(h).every((c) => parseFloat(c.style.width) <= 30 * 48 && parseFloat(c.style.left) >= 0)).toBe(true); // Chunk 30 Units bei Maßstab 48
     expect(cells(h).every((c) => parseFloat(c.style.left) + parseFloat(c.style.width) <= 600)).toBe(true); // nie über die Bühne hinaus
@@ -76,10 +76,52 @@ describe('Chunk-Infos im Bodenstreifen (B-485)', () => {
     const view = await backend.planLoad();
     await backend.planSave('island1', 0, [{ slot: 1, kind: 'forest', seed: 'abc', objects: [{ kind: 'tree', at: 5 }] }], 0, view.stand);
     const h = await mount();
-    for (let i = 0; i < 6; i++) ownWheel(-100); // Bodenstreifen hoch genug für drei Zeilen
+    for (let i = 0; i < 6; i++) altWheel(-100); // Bodenstreifen hoch genug für drei Zeilen
     for (let i = 0; i < 3; i++) await act(async () => { document.body.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowRight', bubbles: true })); });
     const planned = cells(h).find((c) => c.classList.contains('wd-band-planned'))!;
     expect(planned.dataset.mode).toBe('full');
     expect([...planned.querySelectorAll('.wd-band-line')].map((l) => l.textContent)).toEqual(['🧩 normal +1', 'Seed „abc“', '1 feste Obj.']); // Art aus dem Level (der Mock kennt nur „normal“)
+  });
+});
+
+// Sichert nur die Leiste ab (PreviewStage ist hier gemockt); dass das Canvas mitzieht, prüfen stage/stageResize.test.ts
+// und die Messung im Browser.
+describe('Leiste folgt Höhenänderungen der Bühne (WZ17.5)', () => {
+  it('ändert sich die Bühnenhöhe nach dem Mount (Zeilen darüber), liegt die Leiste wieder auf dem Boden', async () => {
+    const watchers: ResizeObserverCallback[] = [];
+    const original = globalThis.ResizeObserver;
+    globalThis.ResizeObserver = class { constructor(cb: ResizeObserverCallback) { watchers.push(cb); } observe() {} unobserve() {} disconnect() {} } as unknown as typeof ResizeObserver;
+    restore.push(() => { globalThis.ResizeObserver = original; });
+    let height = 400;
+    const desc = Object.getOwnPropertyDescriptor(HTMLElement.prototype, 'offsetHeight')!;
+    Object.defineProperty(HTMLElement.prototype, 'offsetHeight', { configurable: true, get(this: HTMLElement) { return this.classList.contains('wd-stage') ? height : 0; } });
+    restore.push(() => Object.defineProperty(HTMLElement.prototype, 'offsetHeight', desc));
+    const h = await mount();
+    const top = () => parseFloat(h.querySelector<HTMLElement>('.wd-stage .wd-band')!.style.top);
+    expect(top()).toBeCloseTo(400 - 180 * (12 / 32));
+    height = 322; // Editor wächst: die Bühne (flex) wird niedriger
+    await act(async () => watchers.forEach((cb) => cb([], {} as ResizeObserver)));
+    expect(top()).toBeCloseTo(322 - 180 * (12 / 32));
+    height = 450; // Zeilen entfernt: die Bühne wächst
+    await act(async () => watchers.forEach((cb) => cb([], {} as ResizeObserver)));
+    expect(top()).toBeCloseTo(450 - 180 * (12 / 32));
+  });
+});
+
+describe('Leiste ohne Beobachter-Meldung (WZ17.5)', () => {
+  it('ändert sich die Bühnenhöhe ohne ResizeObserver-Meldung, misst das nächste Rendern (Objekt, Meldung) neu', async () => {
+    const original = globalThis.ResizeObserver;
+    globalThis.ResizeObserver = class { observe() {} unobserve() {} disconnect() {} } as unknown as typeof ResizeObserver;
+    restore.push(() => { globalThis.ResizeObserver = original; });
+    let height = 400;
+    const desc = Object.getOwnPropertyDescriptor(HTMLElement.prototype, 'offsetHeight')!;
+    Object.defineProperty(HTMLElement.prototype, 'offsetHeight', { configurable: true, get(this: HTMLElement) { return this.classList.contains('wd-stage') ? height : 0; } });
+    restore.push(() => Object.defineProperty(HTMLElement.prototype, 'offsetHeight', desc));
+    const h = await mount();
+    const top = () => parseFloat(h.querySelector<HTMLElement>('.wd-stage .wd-band')!.style.top);
+    height = 360; // der neue Chunk-Eintrag schiebt die Bühne zusammen
+    await act(async () => [...h.querySelectorAll('button')].find((b) => b.textContent === 'Chunk hinzufügen')!.click());
+    await flush();
+    expect(top()).toBeCloseTo(360 - 180 * (12 / 32));
   });
 });

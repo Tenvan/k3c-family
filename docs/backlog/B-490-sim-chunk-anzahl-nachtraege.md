@@ -14,7 +14,7 @@
 
 ## Ausgangslage
 
-Befunde der Umsetzung WZ17.3 (2026-10-18): (1) `room.BuildPreview` lehnt die Chunk-Anzahl zusammen mit einer Kandidaten-`hub.json` ab („Chunk-Anzahl mit Kandidaten-hub.json noch nicht möglich“), weil `sim.CreateWorldWith` keine Anzahl nimmt und `sim.Options.hub` nicht exportiert ist. (2) Die Prüfung „Anzahl ist eine Inselgröße“ steht zweimal: `sim.checkChunkCount` (nicht exportiert) und `room.checkPreviewCount`; die Meldungen sind gleich formuliert, kommen aber nicht aus einer Funktion.
+Befunde der Umsetzung WZ17.3 und WZ17.5 (2026-10-18): (1) `room.BuildPreview` lehnt die Chunk-Anzahl zusammen mit einer Kandidaten-`hub.json` ab („Chunk-Anzahl mit Kandidaten-hub.json noch nicht möglich“), weil `sim.CreateWorldWith` keine Anzahl nimmt und `sim.Options.hub` nicht exportiert ist. (2) Die Prüfung „Anzahl ist eine Inselgröße“ steht **dreimal**: `sim.checkChunkCount` (nicht exportiert), `room.checkPreviewCount` und `checkIslandSize` im Studio; die Meldungen sind gleich formuliert, kommen aber nicht aus einer Funktion. Eine exportierte `sim.CheckIslandSize` würde sie bündeln.
 
 ## Ziel
 

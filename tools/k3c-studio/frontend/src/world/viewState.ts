@@ -81,18 +81,17 @@ export const panViews = (v: Views, units: number, widthUnits: number, px: PanePx
 /** Mitte auf `x` (Units) stellen, am Rand begrenzt. */
 export const centerViews = (v: Views, x: number, widthUnits: number, px: PanePx): Views => settle({ ...v, center: x }, widthUnits, px);
 
-/** `own`: nur die Vorschau unter dem Zeiger zoomen (Umschalt + Rad, B-485/AC-05) */
+/** `own`: nur die Vorschau unter dem Zeiger zoomen (Alt + Rad, B-485/AC-05) */
 export type WheelAction = { kind: 'pan'; px: number } | { kind: 'zoom'; factor: number; own?: true } | null;
 
-/** Was ein Mausrad-Ereignis über einer Vorschau bewirkt: Strg + Rad zoomt, Umschalt + Rad zoomt nur diese Vorschau,
- *  das seitliche Rad scrollt nach links und rechts; das gewöhnliche Rad bewirkt nichts, damit die Seite senkrecht scrollen kann. */
-export function wheelAction(e: { deltaX: number; deltaY: number; ctrlKey: boolean; shiftKey: boolean }): WheelAction {
-  // Mit Umschalt (und Strg) macht Chromium unter Windows aus dem Rad ein deltaX ohne deltaY: dann gilt deltaX.
-  const d = e.deltaY !== 0 ? e.deltaY : e.ctrlKey || e.shiftKey ? e.deltaX : 0;
-  const factor = d < 0 ? 1.25 : 0.8;
-  if (e.ctrlKey) return d === 0 ? null : { kind: 'zoom', factor };
-  if (e.shiftKey) return d === 0 ? null : { kind: 'zoom', factor, own: true };
-  return e.deltaX === 0 ? null : { kind: 'pan', px: e.deltaX };
+/** Was ein Mausrad-Ereignis über einer Vorschau bewirkt: Strg + Rad zoomt, Alt + Rad zoomt nur diese Vorschau, Umschalt + Rad
+ *  oder seitliches Rad scrollt nach links und rechts; das gewöhnliche Rad bewirkt nichts, damit die Seite senkrecht scrollen kann. */
+export function wheelAction(e: { deltaX: number; deltaY: number; ctrlKey: boolean; shiftKey: boolean; altKey?: boolean }): WheelAction {
+  const factor = e.deltaY < 0 ? 1.25 : 0.8;
+  if (e.ctrlKey) return e.deltaY === 0 ? null : { kind: 'zoom', factor };
+  if (e.altKey) return e.deltaY === 0 ? null : { kind: 'zoom', factor, own: true };
+  const px = Math.abs(e.deltaX) > Math.abs(e.deltaY) ? e.deltaX : e.shiftKey ? e.deltaY : 0;
+  return px === 0 ? null : { kind: 'pan', px };
 }
 
 export interface JumpPoint {

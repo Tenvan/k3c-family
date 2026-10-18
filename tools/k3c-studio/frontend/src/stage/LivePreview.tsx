@@ -77,6 +77,10 @@ function useStage(host: RefObject<HTMLDivElement | null>, world: World | null, l
   useEffect(() => { stage.current?.show(world); }, [world]);
   useEffect(() => { stage.current?.setLook(look); }, [look]);
   useEffect(() => { stage.current?.setPosition(position); }, [position]);
+  // Nach jedem Rendern (Zeilen, Meldungen, Objekte über der Bühne) Größe und Lage prüfen: Beobachter melden erst im
+  // nächsten Bild-Takt (bei verdecktem Fenster nie); die Messung erzwingt das fertige Layout (WZ17.5). Optional, weil
+  // Test-Attrappen der Bühne settle nicht kennen.
+  useEffect(() => { stage.current?.settle?.(); });
   return failed;
 }
 

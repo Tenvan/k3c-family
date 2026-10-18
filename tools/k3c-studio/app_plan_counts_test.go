@@ -16,7 +16,7 @@ const countsFixture = `{
   "notes": "Fixture",
   "islands": [
     { "id": "island1", "name": "Insel 1", "depths": [0, 1, 2, 3, 4], "plannedChunks": {} },
-    {"id":"island2","name":"Zwei","depths":[0,1],"plannedChunks":{},"chunkCounts":{"1": 20}}
+    {"id":"island2","name":"Zwei","depths":[0,1],"plannedChunks":{},"chunkCounts":{"1": 24}}
   ]
 }
 `
@@ -27,13 +27,13 @@ func TestPlanLoadLiefertAnzahlenUndInselgroessen(t *testing.T) {
 	if view.Error != "" {
 		t.Fatal(view.Error)
 	}
-	if got := view.Islands[1].ChunkCounts; !reflect.DeepEqual(got, map[string]int{"1": 20}) {
+	if got := view.Islands[1].ChunkCounts; !reflect.DeepEqual(got, map[string]int{"1": 24}) {
 		t.Errorf("Anzahlen Insel 2: %v", got)
 	}
 	if got := view.Islands[0].ChunkCounts; got == nil || len(got) != 0 {
 		t.Errorf("Insel 1 ohne Anzahlen braucht eine leere Tabelle, nicht %v", got)
 	}
-	if !reflect.DeepEqual(view.Sizes, sim.IslandSizes()) || len(view.Sizes) != 6 || view.Sizes[1] != (sim.IslandSize{Name: "klein", ChunkCount: 20}) {
+	if !reflect.DeepEqual(view.Sizes, sim.IslandSizes()) || len(view.Sizes) != 6 || view.Sizes[1] != (sim.IslandSize{Name: "klein", ChunkCount: 24}) {
 		t.Errorf("Inselgrößen: %+v", view.Sizes)
 	}
 }
@@ -41,18 +41,21 @@ func TestPlanLoadLiefertAnzahlenUndInselgroessen(t *testing.T) {
 // AC-04: Ein Platz jenseits der Anzahl steht als Fehler am Platz; eine Anzahl außerhalb der Tabelle am Entwurf (Platz 0).
 func TestPlanCheckPrueftGegenDieAnzahl(t *testing.T) {
 	app, _ := planApp(t, countsFixture)
-	if v := app.PlanCheck("island1", 0, portalPlan, 20); !v.OK {
-		t.Fatalf("Portal +6 bei 20 Chunks abgelehnt: %s", v.Error)
+	if v := app.PlanCheck("island1", 0, portalPlan, 24); !v.OK {
+		t.Fatalf("Portal +6 bei 24 Chunks abgelehnt: %s", v.Error)
 	}
 	far := []level.PlannedChunk{{Slot: 11, Kind: "clearing"}}
-	if v := app.PlanCheck("island1", 0, far, 20); v.OK || v.Slot != 11 || !strings.Contains(v.Error, "Platz +11") {
-		t.Errorf("Platz +11 bei 20 Chunks: %+v", v)
+	if v := app.PlanCheck("island1", 0, far, 24); v.OK || v.Slot != 11 || !strings.Contains(v.Error, "Platz +11") {
+		t.Errorf("Platz +11 bei 24 Chunks: %+v", v)
 	}
-	if v := app.PlanCheck("island1", 0, far, 48); !v.OK {
-		t.Errorf("Platz +11 bei 48 Chunks abgelehnt: %s", v.Error)
+	if v := app.PlanCheck("island1", 0, []level.PlannedChunk{{Slot: 10, Kind: "clearing"}}, 24); !v.OK {
+		t.Errorf("Platz +10 bei 24 Chunks (Grenze) abgelehnt: %s", v.Error)
+	}
+	if v := app.PlanCheck("island1", 0, far, 160); !v.OK {
+		t.Errorf("Platz +11 bei 160 Chunks abgelehnt: %s", v.Error)
 	}
 	v := app.PlanCheck("island1", 0, nil, 18)
-	if v.OK || v.Slot != 0 || !strings.Contains(v.Error, "keine Inselgröße") || !strings.Contains(v.Error, "16, 20, 24, 32, 40, 48") {
+	if v.OK || v.Slot != 0 || !strings.Contains(v.Error, "keine Inselgröße") || !strings.Contains(v.Error, "16, 24, 40, 64, 100, 160") {
 		t.Errorf("Anzahl 18: %+v", v)
 	}
 }
@@ -62,29 +65,29 @@ func TestPlanCheckPrueftGegenDieAnzahl(t *testing.T) {
 func TestPlanSaveSchreibtNurDieAnzahlDerStufe(t *testing.T) {
 	app, path := planApp(t, countsFixture)
 	before := readFile(t, path)
-	s := app.PlanSave("island1", 0, nil, 20, app.PlanLoad().Stand)
+	s := app.PlanSave("island1", 0, nil, 24, app.PlanLoad().Stand)
 	if s.Error != "" || s.Hint != planRegHint {
 		t.Fatalf("Speichern: %+v", s)
 	}
-	want := strings.Replace(before, `"plannedChunks": {} },`, `"plannedChunks": {}, "chunkCounts": {"0": 20} },`, 1)
+	want := strings.Replace(before, `"plannedChunks": {} },`, `"plannedChunks": {}, "chunkCounts": {"0": 24} },`, 1)
 	if got := readFile(t, path); got != want {
 		t.Fatalf("Datei:\n%s\nerwartet:\n%s", got, want)
 	}
-	if s = app.PlanSave("island1", 2, nil, 32, s.Stand); s.Error != "" {
+	if s = app.PlanSave("island1", 2, nil, 40, s.Stand); s.Error != "" {
 		t.Fatal(s.Error)
 	}
-	want = strings.Replace(want, `{"0": 20}`, `{"0": 20, "2": 32}`, 1)
+	want = strings.Replace(want, `{"0": 24}`, `{"0": 24, "2": 40}`, 1)
 	if got := readFile(t, path); got != want {
 		t.Fatalf("zweite Tiefe:\n%s\nerwartet:\n%s", got, want)
 	}
 	if s = app.PlanSave("island1", 0, nil, 0, s.Stand); s.Error != "" {
 		t.Fatal(s.Error)
 	}
-	want = strings.Replace(want, `{"0": 20, "2": 32}`, `{"2": 32}`, 1)
+	want = strings.Replace(want, `{"0": 24, "2": 40}`, `{"2": 40}`, 1)
 	if got := readFile(t, path); got != want {
 		t.Fatalf("Biom-Länge:\n%s\nerwartet:\n%s", got, want)
 	}
-	if got := app.PlanLoad().Islands[0].ChunkCounts; !reflect.DeepEqual(got, map[string]int{"2": 32}) {
+	if got := app.PlanLoad().Islands[0].ChunkCounts; !reflect.DeepEqual(got, map[string]int{"2": 40}) {
 		t.Errorf("PlanLoad nach dem Speichern: %v", got)
 	}
 }
@@ -93,7 +96,7 @@ func TestPlanSaveAnzahlOhneAenderungIstByteGleich(t *testing.T) {
 	app, path := planApp(t, countsFixture)
 	before := readFile(t, path)
 	stand := app.PlanLoad().Stand
-	if s := app.PlanSave("island2", 1, nil, 20, stand); s.Error != "" || s.Stand != stand || readFile(t, path) != before {
+	if s := app.PlanSave("island2", 1, nil, 24, stand); s.Error != "" || s.Stand != stand || readFile(t, path) != before {
 		t.Errorf("gleiche Anzahl: %+v", s)
 	}
 	if s := app.PlanSave("island1", 3, nil, 0, stand); s.Error != "" || readFile(t, path) != before {
@@ -110,7 +113,7 @@ func TestPlanSaveAnzahlNurGueltigUndAufDemStand(t *testing.T) {
 		t.Errorf("Anzahl 18: %+v", s)
 	}
 	far := []level.PlannedChunk{{Slot: 11, Kind: "clearing"}}
-	if s := app.PlanSave("island1", 0, far, 20, stand); s.Error == "" || readFile(t, path) != before {
+	if s := app.PlanSave("island1", 0, far, 24, stand); s.Error == "" || readFile(t, path) != before {
 		t.Errorf("Platz jenseits der Anzahl: %+v", s)
 	}
 	if s := app.PlanSave("island1", 0, nil, 24, "alt"); !s.Stale || readFile(t, path) != before {
@@ -122,17 +125,17 @@ func TestPlanSaveAnzahlNurGueltigUndAufDemStand(t *testing.T) {
 // Anzahl, der Entwurf 0 (Biom-Länge) überdeckt sie.
 func TestVorschauenZeigenDieAnzahlDesEntwurfs(t *testing.T) {
 	app, _ := planApp(t, countsFixture)
-	count := 20
+	count := 24
 	src := WorldSource{Island: "island1", Stage: 0, ChunkCount: &count}
 	chunks := app.WorldLevel("abc", src)
 	live := app.WorldPreview(WorldPreviewArgs{Seed: "abc", Source: src})
 	if chunks.Error != "" || live.Error != "" {
 		t.Fatalf("Fehler: %q / %q", chunks.Error, live.Error)
 	}
-	if len(chunks.Chunks) != 20 || !reflect.DeepEqual(chunks.Layout, live.Level) || len(chunks.Warnings) != 0 {
+	if len(chunks.Chunks) != 24 || !reflect.DeepEqual(chunks.Layout, live.Level) || len(chunks.Warnings) != 0 {
 		t.Errorf("Chunk-Vorschau %d Chunks, Warnungen %v, gleich zur Live-Vorschau: %v", len(chunks.Chunks), chunks.Warnings, reflect.DeepEqual(chunks.Layout, live.Level))
 	}
-	if saved := app.WorldLevel("abc", WorldSource{Island: "island2", Stage: 1}); len(saved.Chunks) != 20 {
+	if saved := app.WorldLevel("abc", WorldSource{Island: "island2", Stage: 1}); len(saved.Chunks) != 24 {
 		t.Errorf("gespeicherte Anzahl: %d Chunks, %q", len(saved.Chunks), saved.Error)
 	}
 	zero := 0
@@ -147,5 +150,26 @@ func TestVorschauenZeigenDieAnzahlDesEntwurfs(t *testing.T) {
 	}
 	if v := app.WorldPreview(WorldPreviewArgs{Seed: "abc", Source: WorldSource{Island: "island1", ChunkCount: &bad}}); v.Error == "" {
 		t.Error("Live-Vorschau: Anzahl 18 muss abgelehnt werden")
+	}
+}
+
+// Planung und Anzahl in einem Schreibvorgang: fehlen beide Felder, werden beide angehängt, sonst nur ihre Werte ersetzt.
+func TestPlanSaveSchreibtPlanungUndAnzahlZusammen(t *testing.T) {
+	const bare = "{\n  \"islands\": [\n    { \"id\": \"island1\", \"depths\": [0, 1, 2, 3, 4] }\n  ]\n}\n"
+	app, path := planApp(t, bare)
+	s := app.PlanSave("island1", 0, portalPlan, 24, app.PlanLoad().Stand)
+	if s.Error != "" {
+		t.Fatal(s.Error)
+	}
+	want := strings.Replace(bare, `[0, 1, 2, 3, 4] }`, `[0, 1, 2, 3, 4], "plannedChunks": {"0": [{"slot":6,"kind":"portal"}]}, "chunkCounts": {"0": 24} }`, 1)
+	if got := readFile(t, path); got != want {
+		t.Fatalf("Datei:\n%s\nerwartet:\n%s", got, want)
+	}
+	if s = app.PlanSave("island1", 0, nil, 40, s.Stand); s.Error != "" {
+		t.Fatal(s.Error)
+	}
+	want = strings.Replace(want, `{"0": [{"slot":6,"kind":"portal"}]}, "chunkCounts": {"0": 24}`, `{}, "chunkCounts": {"0": 40}`, 1)
+	if got := readFile(t, path); got != want {
+		t.Errorf("zweites Speichern:\n%s\nerwartet:\n%s", got, want)
 	}
 }

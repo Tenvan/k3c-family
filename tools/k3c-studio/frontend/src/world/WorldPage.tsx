@@ -17,7 +17,7 @@ const spanOf = (v: View, units: number) => ({ left: v.left, units });
 
 /** Seite Welt-Betrachter des Asset-Studios (B-460, B-461, B-477): Chunk-Streifen und Live-Vorschau in einer Ansicht, dazwischen
  *  der Editor für geplante Chunks. Beide zeigen dieselbe Weltposition in der Bildmitte (eine Positions-Leiste, Sprungpunkte);
- *  der Zoom gilt je Vorschau (Umschalt + Rad), die Leiste und Strg + Rad zoomen beide (B-485/AC-05). Beide lesen dieselbe
+ *  der Zoom gilt je Vorschau (Alt + Rad), die Leiste und Strg + Rad zoomen beide (B-485/AC-05). Beide lesen dieselbe
  *  Quelle: Insel, Stufe und der Entwurf der Planung (B-461/AC-11).
  *  „Verkleinern“ und „Maximieren“ ändern die Höhe der beiden Vorschauen, nie ihre Sichtbarkeit. */
 export function WorldPage() {
@@ -54,10 +54,15 @@ export function WorldPage() {
     return () => document.removeEventListener('keydown', onKey);
   }, []);
 
+  // Ein neues Level (Seed, Biom, Insel, Stufe, Inselgröße) beginnt beim Hub, der Zoom bleibt; lädt nur der Entwurf der
+  // Planung neu, bleibt die Mitte (sonst spränge die Ansicht nach jeder Änderung eines Chunks zurück, WZ17.5).
+  const levelKey = useRef('');
   const onLoaded = (seed: string, biome: string, next: LevelModel) => {
     setSource((s) => (s.seed === seed && s.biome === biome ? s : { seed, biome }));
     setModel(next);
-    setViews((v) => centerViews(v, next.hubCenterUnits, next.widthUnits, px)); // ein neues Level beginnt beim Hub, der Zoom bleibt
+    const key = [seed, biome, plan.source?.island, plan.source?.stage, plan.source?.chunkCount].join('|');
+    if (key !== levelKey.current) setViews((v) => centerViews(v, next.hubCenterUnits, next.widthUnits, px));
+    levelKey.current = key;
   };
   const onSites = useCallback((sites: readonly { kind: string; x: number }[]) => {
     setGates(sites.filter((s) => s.kind === 'gate').map((s) => s.x));

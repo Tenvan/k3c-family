@@ -1,14 +1,14 @@
 # WZ17 · REG, SIM, SRV, DEV · Chunk-Editor komfortabel: Inselgrößen, getrennter Zoom, Seed-Chunk umwandeln
 
-- **Status:** aktiv
+- **Status:** erledigt
 - **Projekt:** WZG
 - **Domäne:** REG, SIM, SRV, DEV
 - **Reife:** bereit
 - **Tickets:** B-485
 - **Start-Commit:** a6d676b4
 - **Spec:** freigegeben
-- **Revision:** 3
-- **Freigabe:** 2026-10-18, Ralf im Chat (Revision 3: ohne Nachweisläufe)
+- **Revision:** 5
+- **Freigabe:** 2026-10-18, Ralf im Chat (Revision 5: Inselgrößen 16/24/40/64/100/160)
 
 ## Ausgangslage
 
@@ -70,7 +70,7 @@ Nur für den Sprint:
 
 ## Offene Fragen
 
-Entschieden von 🧑 am 2026-10-18: `B-485 › Offene Fragen` (Entscheidungen, Revision 3). Im Workshop WZ17.1 entschieden: Größen 16 · 20 · 24 · 32 · 40 · 48 für alle Biome, Tabelle in `data/island-sizes.json`, Feld `chunkCounts` je Insel neben `plannedChunks`, ohne Eintrag gilt die Biom-Länge wie heute, Seed-Inhalt aus dem Vorschau-Level. **Revision 3:** Nachweisläufe (100 Seeds je Größe und Biom, Benchmark, neuer Golden-Fall) entfallen; ob eine Größe in einem Biom erzeugbar ist, zeigt die Erzeugung als Fehler; sinnvolle Chunk- und Inselzahlen ermittelt später ein eigenes Projekt. Abnahme im laufenden Studio (Watch-Modus) direkt nach den DEV-Sessions.
+Entschieden von 🧑 am 2026-10-18: `B-485 › Offene Fragen` (Entscheidungen, Revisionen 3 bis 5). Im Workshop WZ17.1 entschieden: Tabelle in `data/island-sizes.json`, Feld `chunkCounts` je Insel neben `plannedChunks`, ohne Eintrag gilt die Biom-Länge wie heute, Seed-Inhalt aus dem Vorschau-Level. **Revision 3:** Nachweisläufe (100 Seeds je Größe und Biom, Benchmark, neuer Golden-Fall) entfallen. **Revision 5 (nach dem Live-Test von WZ17.5):** Die Größen sind **16 · 24 · 40 · 64 · 100 · 160** Chunks (ersetzen 16 · 20 · 24 · 32 · 40 · 48 überall in diesem Sprint, auch in Ziel und Beispielen); „Wald auf klein“ = 24 Chunks. Abnahme im laufenden Studio (Watch-Modus) direkt nach den DEV-Sessions.
 
 Nichts Blockierendes offen.
 
@@ -82,9 +82,9 @@ Nichts Blockierendes offen.
 | WZ17.2 | `WZ17.2-generator-chunk-anzahl.md` | Umsetzung | autonom | fertig |
 | WZ17.3 | `WZ17.3-vorschau-option-chunk-anzahl.md` | Umsetzung | autonom | fertig |
 | WZ17.4 | `WZ17.4-listen-icons-zoom.md` | Umsetzung | autonom | fertig |
-| WZ17.5 | `WZ17.5-editor-groessen-umwandlung.md` | Umsetzung | autonom | in Arbeit |
-| WZ17.6 | `WZ17.6-review.md` | Review | autonom | offen |
-| WZ17.7 | `WZ17.7-abnahme.md` | Review | Mensch | offen |
+| WZ17.5 | `WZ17.5-editor-groessen-umwandlung.md` | Umsetzung | autonom | fertig |
+| WZ17.6 | `WZ17.6-review.md` | Review | autonom | fertig |
+| WZ17.7 | `WZ17.7-abnahme.md` | Review | Mensch | fertig |
 
 - WZ17.1 (REG) Workshop mit 🧑: Format der Chunk-Anzahl, Größen-Tabelle, Untergrenze, Wert ohne Einstellung, Quelle des Seed-Inhalts; Regeltext in `docs/rules/`, Glossar „Inselgröße“ (AC-01).
 - WZ17.2 (SIM) Generator und Prüfung nehmen die Chunk-Anzahl je Stufe (Daten, kein globaler Zustand), Benchmark, 100-Seed-Test je Größe, neuer Golden-Fall als eigener Commit (AC-02, AC-03).
@@ -96,5 +96,6 @@ Nichts Blockierendes offen.
 
 ## Abnahme
 
-Wird von der Review-Session (Doku-Sprint: letzte Session) ausgefüllt, höchstens fünf Zeilen: Datum, Kriterien
-(Verweis auf Session-Ergebnisse), behobene Befunde, neue Tickets. Bis dahin `–`.
+2026-10-18 (Review WZ17.6): AC-01 bis AC-06 und AC-08 mit Nachweis aus Code, Tests und getrenntem Reviewer (Ergebnisse WZ17.1–WZ17.6); AC-07 von 🧑 im laufenden Studio je Punkt mit „passt“ abgenommen (WZ17.4, WZ17.5, WZ17.7).
+Befunde: keine schweren. Neue Tickets: B-486 (behoben), B-487, B-489 (Spielstand und Chunk-Anzahl), B-490 (Sim-Nachträge), B-491 (Kleinigkeiten), B-496 (Fensterposition), B-497 (große Inseln, Last).
+Version: v… vorgeschlagen: keine Änderung (Werkzeug-Sprint; Golden, Spielstand-Format und Protokoll unverändert).

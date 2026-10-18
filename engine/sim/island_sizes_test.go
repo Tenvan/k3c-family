@@ -14,7 +14,7 @@ func islandsWith(fields string) fstest.MapFS {
 }
 
 func TestInselgroessenAusDenDaten(t *testing.T) {
-	want := []IslandSize{{"sehr klein", 16}, {"klein", 20}, {"mittel", 24}, {"groß", 32}, {"sehr groß", 40}, {"mega groß", 48}}
+	want := []IslandSize{{"sehr klein", 16}, {"klein", 24}, {"mittel", 40}, {"groß", 64}, {"sehr groß", 100}, {"mega groß", 160}}
 	got := IslandSizes()
 	if len(got) != len(want) {
 		t.Fatalf("Inselgrößen %v, erwartet %v", got, want)
@@ -49,18 +49,18 @@ func TestInselgroessenWerdenGeprueft(t *testing.T) {
 
 func TestChunkAnzahlWirdBeimLadenGeprueft(t *testing.T) {
 	var dst []IslandDef
-	if err := loadIslands(islandsWith(`,"chunkCounts":{"0":20,"4":48}`), &dst); err != nil {
+	if err := loadIslands(islandsWith(`,"chunkCounts":{"0":24,"4":160}`), &dst); err != nil {
 		t.Fatalf("gültige Anzahl abgelehnt: %v", err)
 	}
-	if o := dst[0].CreateOptions(); dst[0].ChunkCounts["0"] != 20 || o.ChunkCounts[0] != 20 || o.ChunkCounts[4] != 48 || len(o.ChunkCounts) != 2 {
+	if o := dst[0].CreateOptions(); dst[0].ChunkCounts["0"] != 24 || o.ChunkCounts[0] != 24 || o.ChunkCounts[4] != 160 || len(o.ChunkCounts) != 2 {
 		t.Errorf("Anzahl nicht geladen: %v, CreateOptions %v", dst[0].ChunkCounts, o.ChunkCounts)
 	}
 	bad := map[string][]string{
-		`,"chunkCounts":{"0":18}`:  {"data/islands.json: a:", "Tiefe 0", "18", "16, 20, 24, 32, 40, 48"},
-		`,"chunkCounts":{"3":12}`:  {"data/islands.json: a:", "Tiefe 3", "12", "16, 20, 24, 32, 40, 48"},
-		`,"chunkCounts":{"7":20}`:  {"data/islands.json: a:", "Tiefe \"7\""},
-		`,"chunkCounts":{"x":20}`:  {"data/islands.json: a:", "Tiefe \"x\""},
-		`,"chunkCounts":{"01":20}`: {"data/islands.json: a:", "Tiefe \"01\""},
+		`,"chunkCounts":{"0":18}`:  {"data/islands.json: a:", "Tiefe 0", "18", "16, 24, 40, 64, 100, 160"},
+		`,"chunkCounts":{"3":12}`:  {"data/islands.json: a:", "Tiefe 3", "12", "16, 24, 40, 64, 100, 160"},
+		`,"chunkCounts":{"7":24}`:  {"data/islands.json: a:", "Tiefe \"7\""},
+		`,"chunkCounts":{"x":24}`:  {"data/islands.json: a:", "Tiefe \"x\""},
+		`,"chunkCounts":{"01":24}`: {"data/islands.json: a:", "Tiefe \"01\""},
 	}
 	for fields, want := range bad {
 		var out []IslandDef
@@ -93,7 +93,7 @@ func TestPlanungGegenChunkAnzahl(t *testing.T) {
 }
 
 func TestInselMitChunkAnzahl(t *testing.T) {
-	isl, err := CreateIsland("groesse", []int{0, 1, 4}, 1, CreateOptions{ChunkCounts: map[int]int{0: 16, 4: 48}})
+	isl, err := CreateIsland("groesse", []int{0, 1, 4}, 1, CreateOptions{ChunkCounts: map[int]int{0: 16, 4: 160}})
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -101,12 +101,12 @@ func TestInselMitChunkAnzahl(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	for i, want := range []float64{16 * 50, plain.Stages[0].WidthUnits, 48 * 25} {
+	for i, want := range []float64{16 * 50, plain.Stages[0].WidthUnits, 160 * 25} {
 		if got := isl.Stages[i].WidthUnits; got != want {
 			t.Errorf("Stufe %d: Breite %v, erwartet %v", i, got, want)
 		}
 	}
-	if _, err := CreateIsland("groesse", []int{0}, 1, CreateOptions{ChunkCounts: map[int]int{0: 18}}); err == nil || !strings.Contains(err.Error(), "16, 20, 24, 32, 40, 48") {
+	if _, err := CreateIsland("groesse", []int{0}, 1, CreateOptions{ChunkCounts: map[int]int{0: 18}}); err == nil || !strings.Contains(err.Error(), "16, 24, 40, 64, 100, 160") {
 		t.Errorf("Anzahl 18 angenommen: %v", err)
 	}
 }

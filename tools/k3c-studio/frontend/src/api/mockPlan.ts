@@ -7,8 +7,8 @@ import type { Backend, IslandSize, PlanCheckView, PlannedChunk, PlanObjectsView,
 const BIOMES = ['forest', 'cave', 'mine', 'ironhold', 'crystal'];
 /** Inselgrößen wie data/island-sizes.json */
 export const MOCK_SIZES: IslandSize[] = [
-  { name: 'sehr klein', chunkCount: 16 }, { name: 'klein', chunkCount: 20 }, { name: 'mittel', chunkCount: 24 },
-  { name: 'groß', chunkCount: 32 }, { name: 'sehr groß', chunkCount: 40 }, { name: 'mega groß', chunkCount: 48 },
+  { name: 'sehr klein', chunkCount: 16 }, { name: 'klein', chunkCount: 24 }, { name: 'mittel', chunkCount: 40 },
+  { name: 'groß', chunkCount: 64 }, { name: 'sehr groß', chunkCount: 100 }, { name: 'mega groß', chunkCount: 160 },
 ];
 const sign = (n: number) => (n > 0 ? `+${n}` : String(n));
 

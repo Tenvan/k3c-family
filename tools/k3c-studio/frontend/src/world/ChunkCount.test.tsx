@@ -55,29 +55,29 @@ describe('Inselgröße je Stufe (B-485/AC-04)', () => {
   it('bietet „Biom-Länge“ und die sechs Inselgrößen mit deutschem Namen und Anzahl, vorgewählt ist die Biom-Länge', async () => {
     const h = await mount();
     expect([...size(h).options].map((o) => o.textContent)).toEqual([
-      'Biom-Länge', 'sehr klein · 16', 'klein · 20', 'mittel · 24', 'groß · 32', 'sehr groß · 40', 'mega groß · 48',
+      'Biom-Länge', 'sehr klein · 16', 'klein · 24', 'mittel · 40', 'groß · 64', 'sehr groß · 100', 'mega groß · 160',
     ]);
     expect(size(h).value).toBe('0');
   });
 
-  it('„klein“ setzt die Anzahl 20: Chunk- und Live-Vorschau fragen mit derselben Quelle, der Streifen hat 20 Chunks', async () => {
+  it('„klein“ setzt die Anzahl 24: Chunk- und Live-Vorschau fragen mit derselben Quelle, der Streifen hat 24 Chunks', async () => {
     const level = vi.spyOn(backend, 'worldLevel');
     const preview = vi.spyOn(backend, 'worldPreview');
     const h = await mount();
-    await choose(h, '20');
+    await choose(h, '24');
     await settle();
     const chunkSource = level.mock.calls.at(-1)![1];
     const liveSource = preview.mock.calls.at(-1)![0].source;
-    expect(chunkSource.chunkCount).toBe(20);
+    expect(chunkSource.chunkCount).toBe(24);
     expect({ island: liveSource.island, stage: liveSource.stage, planned: liveSource.planned, chunkCount: liveSource.chunkCount })
-      .toEqual({ island: chunkSource.island, stage: chunkSource.stage, planned: chunkSource.planned, chunkCount: 20 });
-    expect(h.querySelectorAll('.wd-chunk')).toHaveLength(20);
+      .toEqual({ island: chunkSource.island, stage: chunkSource.stage, planned: chunkSource.planned, chunkCount: 24 });
+    expect(h.querySelectorAll('.wd-chunk')).toHaveLength(24);
     expect(button(h, 'Speichern').disabled).toBe(false);
   });
 
   it('ein Platz jenseits der Anzahl zeigt den Fehler am Platz und sperrt Speichern', async () => {
     const h = await mount();
-    await choose(h, '20');
+    await choose(h, '24');
     await act(async () => button(h, 'Chunk hinzufügen').click());
     await typeIn(h.querySelector<HTMLInputElement>('[aria-label="Platz +1"]')!, '11');
     await settle();
@@ -86,7 +86,7 @@ describe('Inselgröße je Stufe (B-485/AC-04)', () => {
   });
 
   it('ein Fehler der Anzahl (nicht erzeugbar) steht am Entwurf und sperrt Speichern', async () => {
-    vi.spyOn(backend, 'planCheck').mockResolvedValue({ ok: false, slot: 0, error: 'eingestellte Chunk-Anzahl 16 in ironhold: gerade und mindestens 18' });
+    vi.spyOn(backend, 'planCheck').mockResolvedValue({ ok: false, slot: 0, error: 'Level nicht erzeugbar: kein Platz für die Portale bei Chunk-Anzahl 16' });
     const h = await mount();
     await choose(h, '16');
     await settle();
@@ -100,15 +100,15 @@ describe('Inselgröße speichern und verwerfen (B-485/AC-04)', () => {
   it('Speichern schreibt die Anzahl mit REG-Hinweis; „Biom-Länge“ entfernt den Eintrag wieder', async () => {
     const save = vi.spyOn(backend, 'planSave');
     const h = await mount();
-    await choose(h, '20');
+    await choose(h, '24');
     await settle();
     await act(async () => button(h, 'Speichern').click());
     await flush();
-    expect(save.mock.calls.at(-1)!.slice(0, 4)).toEqual(['island1', 0, [], 20]);
+    expect(save.mock.calls.at(-1)!.slice(0, 4)).toEqual(['island1', 0, [], 24]);
     expect(h.querySelector('.wd-notice')!.textContent).toContain('REG-Änderung');
     expect(button(h, 'Speichern').disabled).toBe(true);
-    expect((await backend.planLoad()).islands[0].chunkCounts).toEqual({ '0': 20 });
-    expect(size(h).value).toBe('20');
+    expect((await backend.planLoad()).islands[0].chunkCounts).toEqual({ '0': 24 });
+    expect(size(h).value).toBe('24');
     await choose(h, '0');
     await settle();
     await act(async () => button(h, 'Speichern').click());
@@ -118,7 +118,7 @@ describe('Inselgröße speichern und verwerfen (B-485/AC-04)', () => {
 
   it('Verwerfen stellt die gespeicherte Größe wieder her', async () => {
     const h = await mount();
-    await choose(h, '48');
+    await choose(h, '160');
     expect(button(h, 'Verwerfen').disabled).toBe(false);
     await act(async () => button(h, 'Verwerfen').click());
     expect(size(h).value).toBe('0');

@@ -93,12 +93,28 @@ describe('Seed-Chunk in feste Objekte umwandeln (B-485/AC-06)', () => {
     expect(button(h, CONVERT).title).toContain('feste Objekte');
   });
 
+});
+
+describe('Umwandeln bei Änderungen und Fehlern (B-485/AC-06)', () => {
   it('solange der Entwurf ungültig ist, gesperrt', async () => {
     const h = await mount();
     await seedChunk(h);
     await type(field(h, 'Art Platz +1'), 'volcano');
     await settle();
     expect(button(h, CONVERT).disabled).toBe(true);
+  });
+
+  it('ändert sich der Entwurf während des Aufrufs, gilt das Ergebnis nicht und die Änderung bleibt', async () => {
+    let resolve: (v: { objects: { kind: string; at: number }[]; error: string }) => void = () => {};
+    vi.spyOn(backend, 'planChunkObjects').mockReturnValue(new Promise((r) => { resolve = r; }));
+    const h = await mount();
+    await seedChunk(h);
+    await act(async () => button(h, CONVERT).click());
+    await type(field(h, 'Chunk-Seed Platz +1'), 'anders');
+    await act(async () => resolve({ objects: [{ kind: 'tree', at: 9 }], error: '' }));
+    await flush();
+    expect(field(h, 'Chunk-Seed Platz +1').value).toBe('anders');
+    expect(h.querySelector('[aria-label="Lage Objekt 1 Platz +1"]')).toBeNull();
   });
 
   it('ein Fehler der Umwandlung steht am Chunk, der Entwurf bleibt', async () => {

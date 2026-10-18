@@ -16,10 +16,10 @@ describe('Seed-Chunk umwandeln', () => {
   });
 
   it('inSync vergleicht Entwurf und Anzahl mit der Quelle der Vorschauen', () => {
-    const source = { island: 'i', stage: 0, planned: [seeded], chunkCount: 20 };
-    expect(inSync([{ ...seeded, objects: [] }], 20, source)).toBe(true);
-    expect(inSync([seeded], 24, source)).toBe(false);
-    expect(inSync([{ ...seeded, seed: 'x' }], 20, source)).toBe(false);
+    const source = { island: 'i', stage: 0, planned: [seeded], chunkCount: 24 };
+    expect(inSync([{ ...seeded, objects: [] }], 24, source)).toBe(true);
+    expect(inSync([seeded], 40, source)).toBe(false);
+    expect(inSync([{ ...seeded, seed: 'x' }], 24, source)).toBe(false);
     expect(inSync([seeded], 0, undefined)).toBe(false);
     expect(inSync([], 0, { island: 'i', stage: 0, planned: [] })).toBe(true);
   });

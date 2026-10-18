@@ -13,7 +13,6 @@ Die Reihenfolge der Arbeit ist allein der Projekt-Rang: [`../projekte/README.md`
 | WZ10 | DEV | WZG | Abspiel-Bausteine und Monarch-Vorschau im Asset-Studio | – | `aktiv/WZ10-figuren-vorschau/` |
 | WZ11 | DEV | WZG | Gegner- und Boss-Vorschau im Asset-Studio, Figuren-Seiten entfernen | – | `aktiv/WZ11-gegner-bosse-vorschau/` |
 | WZ12 | DEV | WZG | Planungs-Werkzeug: Platzhalter-Zeilen und Worktree-Pills | – | `aktiv/WZ12-planungs-werkzeug-nachtraege/` |
-| WZ17 | REG, SIM, SRV, DEV | WZG | Chunk-Editor komfortabel: Inselgrößen, getrennter Zoom, Seed-Chunk umwandeln | – | `aktiv/WZ17-chunk-editor-komfort/` |
 | GR7 | CLI | GRA | Figuren-Lücken, ganzzahlige Skalierung und Schrift | – | `aktiv/GR7-figuren-schrift/` |
 | SO2 | CLI | SND | SFX-Katalog und Einbau | – | `aktiv/SO2-sfx-katalog/` |
 | SO4 | CLI | SND | Musik je Zustand | – | `aktiv/SO4-musik/` |
@@ -197,3 +196,4 @@ Gesamtplan und Begründung: [`../plan-weiterentwicklung.md`](../plan-weiterentwi
 | WZ8 | Chunks je Insel und Stufe planen: Seed oder feste Objekte | `erledigt/WZ8-chunk-planung/` |
 | RP1 | Repo-Hygiene: Branches aufräumen, Altlasten, Regeln | `erledigt/RP1-repo-hygiene/` |
 | SK1 | Skill-Baum mit Tank und Zauberer, Respec-Regeln abfragbar | `erledigt/SK1-skill-baum/` |
+| WZ17 | Chunk-Editor komfortabel: Inselgrößen, getrennter Zoom, Seed-Chunk umwandeln | `erledigt/WZ17-chunk-editor-komfort/` |
