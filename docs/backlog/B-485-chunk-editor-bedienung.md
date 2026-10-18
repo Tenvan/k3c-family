@@ -9,8 +9,8 @@
 - **Projekt:** WZG
 - **Erstellt:** 2026-10-18
 - **Spec:** freigegeben
-- **Revision:** 3
-- **Freigabe:** 2026-10-18, Ralf im Chat (Revision 3: ohne Nachweisläufe)
+- **Revision:** 4
+- **Freigabe:** 2026-10-18, Ralf im Chat (Revision 4: Nachträge aus der Live-Abnahme WZ17.4)
 
 ## Ausgangslage
 
@@ -96,4 +96,8 @@ Offen: nichts Blockierendes. Im Spielstand gespeicherte Welten ändern sich nich
 
 ## Notizen
 
-Links, Messwerte, verworfene Ansätze. Darf leer bleiben (`–`).
+**Nachträge von 🧑 aus der Live-Abnahme von WZ17.4 (2026-10-18, Revision 4), gelten als Teil von AC-01 und AC-05:**
+- Die Auswahllisten zeigen **deutsche Namen** als Text (Glossar-Begriffe, wo es sie gibt); der technische Wert (`kind`) bleibt in den Daten. Der Filter findet deutschen Namen und Wert. (Abgenommen: passt.)
+- Statt der Positions-Leiste gibt es einen **Bereichs-Schieber**: Die Spur steht für die ganze Stufe, der Griff für den sichtbaren Bereich (Breite folgt dem Zoom); Ziehen und Klick auf die Spur verschieben beide Vorschauen um dieselbe Welt-Strecke. Der zweite (gelbe) Griff für die Live-Vorschau muss zum tatsächlich sichtbaren Bereich passen (Fehler gemeldet, Korrektur in Arbeit).
+- **Manuell geplante Chunks** sind in der Chunk-Vorschau mit einem farbigen, dickeren unteren Rand hervorgehoben (blau, bei Prüffehler rot); der Mechanismus ist allgemein (Markierung je Platz mit Art, Farbe und Tooltip). (Abgenommen: passt.)
+- **Chunk-Infos im Bodenstreifen der Live-Vorschau** (Wunsch 2026-10-18): Im Welten Editor zeigt der grüne Streifen zwischen Oberfläche und Fluss je Chunk Farbe, Art (deutsch), Platz, Chunk-Seed, Anzahl fester Objekte; bei starkem Zoom lesbar, bei weitem Herauszoomen kompakt.
