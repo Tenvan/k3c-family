@@ -1,14 +1,14 @@
 # WZ9 · SRV, DEV · Gebäude-Planer für die Freischaltung je Hub-Stufe
 
-- **Status:** geplant
+- **Status:** aktiv
 - **Projekt:** WZG
 - **Domäne:** SRV, DEV
-- **Reife:** Entwurf
+- **Reife:** bereit
 - **Tickets:** B-462
-- **Start-Commit:** – (wird beim Aktivieren gesetzt: `git rev-parse --short origin/develop`)
-- **Spec:** Entwurf
+- **Start-Commit:** b1b6062a
+- **Spec:** freigegeben
 - **Revision:** 3
-- **Freigabe:** –
+- **Freigabe:** 2026-10-18, Ralf im Chat (Revision 3)
 
 ## Ausgangslage
 
@@ -89,10 +89,10 @@ Offen: keine.
 
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
-| WZ9.1 | `WZ9.1-snapshot-kandidat.md` | Umsetzung | autonom | offen |
-| WZ9.2 | `WZ9.2-planer-matrix.md` | Umsetzung | autonom | offen |
-| WZ9.3 | `WZ9.3-planer-bearbeiten.md` | Umsetzung | autonom | offen |
-| WZ9.4 | `WZ9.4-review.md` | Review | autonom | offen |
+| WZ9.1 | `WZ9.1-snapshot-kandidat.md` | Umsetzung | autonom | fertig |
+| WZ9.2 | `WZ9.2-planer-matrix.md` | Umsetzung | autonom | fertig |
+| WZ9.3 | `WZ9.3-planer-bearbeiten.md` | Umsetzung | autonom | fertig |
+| WZ9.4 | `WZ9.4-review.md` | Review | autonom | fertig |
 | WZ9.5 | `WZ9.5-abnahme.md` | Workshop | Mensch | offen |
 
 - WZ9.1 (SRV) Snapshot nimmt Kandidaten-`hub.json` als Option: Prüfung mit der Funktion aus WZ15.3 und Bau aus dem Kandidaten über die Options-Struktur aus WZ7.1 und `sim.CreateOptions`, ohne EXE-Neubau; bei zugleich gesetzter Option „geplante Chunks“ (WZ8.4, falls erledigt) gelten die Kandidaten-Linien; Go-Tests für Determinismus, Kandidat gegen eingebettet, ungültigen Kandidaten, Vorrang und 7-Stufen-Fixture (AC-09, AC-04, AC-08, AC-10).
@@ -105,5 +105,6 @@ Domänen-Reihenfolge: SRV → DEV.
 
 ## Abnahme
 
-Wird von der Review-Session (Doku-Sprint: letzte Session) ausgefüllt, höchstens fünf Zeilen: Datum, Kriterien
-(Verweis auf Session-Ergebnisse), behobene Befunde, neue Tickets. Bis dahin `–`.
+2026-10-18, Review WZ9.4 (autonom, getrennte Reviewer): AC-01 bis AC-05, AC-07, AC-08, AC-10 geprüft (`task:check`, `task:check:go`, `go:lint`, Studio-Tests grün, Golden-Diff leer); AC-09 teilweise (Vorrang geplanter Chunks → B-479); AC-06 angenommen, Validierung offen (WZ9.5).
+Behoben: Befunde der Reviews von WZ9.1 bis WZ9.3 (u. a. Welt ohne Insel, unbehandelte Promises, nicht lesbarer Kandidat, Sync und Rechte beim Schreiben). Tickets: B-479.
+Version: v– vorgeschlagen (Entwickler-Werkzeug).

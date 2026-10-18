@@ -1,5 +1,6 @@
 import { mockAssets } from './mockAssets';
 import { mockPlan } from './mockPlan';
+import { mockHubCheck, mockHubPlan, mockHubRules, mockHubSave } from './mockHub';
 import { mockOpenGame, mockWorldLevel, mockWorldPreview } from './mockWorld';
 import type { AssetChoice, Backend, EventName, Events } from './types';
 
@@ -14,6 +15,10 @@ export function mockBackend(): Backend & { external: (id: string, wahl: AssetCho
     worldPreview: async (args) => mockWorldPreview(args),
     worldOpenGame: async (base, seed, biome, mode) => mockOpenGame(base, seed, biome, mode),
     ...mockPlan(),
+    hubPlan: async () => mockHubPlan(),
+    hubRules: async (hubJSON) => mockHubRules(hubJSON),
+    hubCheck: async (candidate) => mockHubCheck(candidate),
+    hubSave: async (candidate, stand) => mockHubSave(candidate, stand),
     openUrl: (url) => window.open(url, '_blank', 'noopener'),
     on: <E extends EventName>(event: E, fn: (data: Events[E]) => void) => {
       const set = subs.get(event) ?? new Set();

@@ -30,13 +30,13 @@ type BuildingData struct {
 	SwordRack                        int                // Werkstatt: Schwerter im Regal (warrior.go)
 	Offers                           []Offer            // Angebots-Zahlziele am Gebäude (Q52), Berufe: professions.go
 	CraftSeconds                     map[string]float64 // Herstellungszeit je Stück (Q35, professions.go)
-	Levels                           []LevelData // Ausbau-Stufen am Platz (Mauer, Turm; hub_level.go)
-	Plantation                       Plantation  // Farm: Bäume wachsen nach (plantation.go)
-	TroopLimit                       TroopLimit  // Kaserne: Kämpfer-Limit je Hub (barracks.go)
-	Vagrants                         Vagrants    // Taverne: Landstreicher je dawn (tavern.go)
-	Heal                             Heal        // Heilplatz (healing.go)
-	Spell                            Spell       // Turm ab Stufe FromLevel: Zaubertum (spell_tower.go)
-	Armor                            []ArmorStage // Rüstkammer: Rüstungsstufen (upgrades.go)
+	Levels                           []LevelData        // Ausbau-Stufen am Platz (Mauer, Turm; hub_level.go)
+	Plantation                       Plantation         // Farm: Bäume wachsen nach (plantation.go)
+	TroopLimit                       TroopLimit         // Kaserne: Kämpfer-Limit je Hub (barracks.go)
+	Vagrants                         Vagrants           // Taverne: Landstreicher je dawn (tavern.go)
+	Heal                             Heal               // Heilplatz (healing.go)
+	Spell                            Spell              // Turm ab Stufe FromLevel: Zaubertum (spell_tower.go)
+	Armor                            []ArmorStage       // Rüstkammer: Rüstungsstufen (upgrades.go)
 }
 
 // ArmorStage: Rüstungsstufe ab HubLevel, HPBonus als Anteil der Basis-HP aller Kämpfer (Q37).
@@ -120,6 +120,22 @@ type WallLineData struct {
 	GateHubLevel                     int
 }
 
+// HubData ist data/hub.json; eine Kandidaten-hub.json (Gebäude-Planer, B-462) hat dieselbe Form (hub_validate.go).
+type HubData struct {
+	Levels           []LevelData // Hub-Stufen (hub_level.go)
+	Sites            []HubSite
+	IslandSites      []HubSite // nur Insel-Stufen (island_storage.go)
+	IslandStartStock Stock     // Vorrat einer neuen Insel (B-177)
+	WallLines        WallLineData
+	Merchant         struct {
+		BuyOffsetUnits, SellOffsetUnits float64
+		OnlyDepth                       int
+	}
+	CastleRadiusUnits, HomeRadiusUnits float64
+	StartTroops                        struct{ Peasant, Archer int }
+	Travel                             struct{ RangeUnits, Seconds float64 }
+}
+
 var (
 	buildings = load[map[string]BuildingData]("buildings.json")
 	troops    = load[map[string]TroopData]("troops.json")
@@ -142,20 +158,7 @@ var (
 		}
 		Merchant MerchantData // Händler (merchant.go)
 	}]("economy.json")
-	hub = load[struct {
-		Levels           []LevelData // Hub-Stufen (hub_level.go)
-		Sites            []HubSite
-		IslandSites      []HubSite // nur Insel-Stufen (island_storage.go)
-		IslandStartStock Stock     // Vorrat einer neuen Insel (B-177)
-		WallLines        WallLineData
-		Merchant         struct {
-			BuyOffsetUnits, SellOffsetUnits float64
-			OnlyDepth                       int
-		}
-		CastleRadiusUnits, HomeRadiusUnits float64
-		StartTroops                        struct{ Peasant, Archer int }
-		Travel                             struct{ RangeUnits, Seconds float64 }
-	}]("hub.json")
+	hub       = load[HubData]("hub.json")
 	monarch   = load[monarchData]("monarch.json")
 	enemyData = loadEnemyData()
 	waves     = load[struct {

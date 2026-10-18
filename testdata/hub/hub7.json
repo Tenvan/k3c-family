@@ -1,0 +1,148 @@
+{
+  "notes": [
+    "Fixture: 7 Hub-Stufen, nur für Tests (WZ15), nicht im Spiel. Besteht die Prüfung (sim.ValidateHub): ein Platz je Bau, Farm ±44, Linie 1 bei 52, Linien alle 12 Units, Turm 4 innen, Tor 4 außen, ohne Streuung; äußerstes Tor 128 unter dem Portal-Mindestabstand."
+  ],
+  "levels": [
+    {
+      "cost": {},
+      "buildSeconds": 0
+    },
+    {
+      "cost": {
+        "stone": 100,
+        "gold": 50
+      },
+      "buildSeconds": 20
+    },
+    {
+      "cost": {
+        "copper": 150,
+        "gold": 100
+      },
+      "buildSeconds": 30
+    },
+    {
+      "cost": {
+        "iron": 200,
+        "gold": 200
+      },
+      "buildSeconds": 40
+    },
+    {
+      "cost": {
+        "crystal": 250,
+        "gold": 400
+      },
+      "buildSeconds": 50
+    },
+    {
+      "cost": {
+        "stone": 300,
+        "gold": 500
+      },
+      "buildSeconds": 60
+    },
+    {
+      "cost": {
+        "iron": 350,
+        "gold": 600
+      },
+      "buildSeconds": 70
+    }
+  ],
+  "sites": [
+    {
+      "kind": "workshop",
+      "offsetUnits": -16,
+      "hubLevel": 1
+    },
+    {
+      "kind": "stairsUp",
+      "offsetUnits": 16,
+      "fromDepth": 1,
+      "hubLevel": 2
+    },
+    {
+      "kind": "stairsDown",
+      "offsetUnits": 8,
+      "needsDeeper": true,
+      "hubLevel": 2
+    },
+    {
+      "kind": "farm",
+      "offsetUnits": -44,
+      "hubLevel": 1
+    },
+    {
+      "kind": "healer",
+      "offsetUnits": -40,
+      "hubLevel": 3
+    },
+    {
+      "kind": "tavern",
+      "offsetUnits": -32,
+      "hubLevel": 2
+    },
+    {
+      "kind": "barracks",
+      "offsetUnits": 24,
+      "hubLevel": 2
+    },
+    {
+      "kind": "smithy",
+      "offsetUnits": 28,
+      "hubLevel": 6
+    },
+    {
+      "kind": "armory",
+      "offsetUnits": 40,
+      "hubLevel": 7
+    },
+    {
+      "kind": "farm",
+      "offsetUnits": 44,
+      "hubLevel": 1
+    }
+  ],
+  "islandSites": [
+    {
+      "kind": "storage",
+      "offsetUnits": -26,
+      "hubLevel": 2
+    }
+  ],
+  "wallLines": {
+    "wallUnits": [
+      52,
+      64,
+      76,
+      88,
+      100,
+      112,
+      124
+    ],
+    "fixedLines": 1,
+    "jitterOutwardUnits": 0,
+    "towerInsetUnits": 4,
+    "gateOutsetUnits": 4,
+    "gateHubLevel": 2
+  },
+  "merchant": {
+    "buyOffsetUnits": 16,
+    "sellOffsetUnits": 20,
+    "onlyDepth": 0
+  },
+  "islandStartStock": {
+    "wood": 100
+  },
+  "castleRadiusUnits": 5,
+  "homeRadiusUnits": 12,
+  "startTroops": {
+    "peasant": 1,
+    "archer": 2
+  },
+  "travel": {
+    "rangeUnits": 3,
+    "seconds": 2
+  }
+}

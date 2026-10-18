@@ -107,7 +107,7 @@ func TestValidatePlanLinienAlsParameter(t *testing.T) {
 	lines124.WallUnits = []float64{44, 64, 84, 104, 124}
 	lines126.WallUnits = []float64{44, 64, 84, 104, 126}
 	for i, c := range []struct {
-		lines WallLineData
+		lines WallLines
 		ok    bool
 	}{{lines124, true}, {lines126, false}, {lines124, true}, {lines126, false}} {
 		err := ValidatePlan(cave, plan, c.lines)

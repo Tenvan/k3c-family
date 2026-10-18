@@ -148,7 +148,7 @@ func TestGenerateWithLehntUngueltigePlanungAb(t *testing.T) {
 }
 
 // AC-03: Die Linien sind ein Parameter; verschiedene Linien nacheinander liefern je ihr Layout.
-func TestGenerateWithLinienAlsParameter(t *testing.T) {
+func TestGenerateWithLinienParameterWirkenBeiPlanung(t *testing.T) {
 	b := biome(t, "cave")
 	wide := DefaultWallLines()
 	wide.WallUnits = []float64{44, 64, 84, 104, 126}

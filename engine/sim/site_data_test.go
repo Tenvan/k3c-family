@@ -1,200 +1,250 @@
 package sim
 
 import (
-	"fmt"
-	"math"
-	"sort"
+	"encoding/json"
+	"os"
+	"slices"
 	"strings"
 	"testing"
+
+	"k3c/data"
 )
 
-// W0.1 (B-206/AC-05): Plätze und Zahlziele allein aus data/hub.json und data/buildings.json, ohne Welt.
+// W0.1 (B-206/AC-05), W11.1 (B-409), WZ15.3 (B-462/AC-02): Die Platz-Regeln stehen in ValidateHubData
+// (hub_validate.go, eine Quelle); diese Tests prüfen data/hub.json und Kopien mit gezielten Verstößen.
 
-// dataTarget ist ein Zahlziel mit Offset zur Hub-Mitte.
-type dataTarget struct {
-	name string
-	x    float64
-}
-
-// sideX ist die Seite eines Offsets: −1 links, +1 rechts.
-func sideX(x float64) int {
-	if x < 0 {
-		return -1
+// hubCopy ist eine frische Kopie der eingebetteten data/hub.json (Tests ändern nur Kopien).
+func hubCopy(t *testing.T) *HubData {
+	t.Helper()
+	raw, err := data.Files.ReadFile("hub.json")
+	if err != nil {
+		t.Fatal(err)
 	}
-	return 1
+	h, err := ParseHub(raw)
+	if err != nil {
+		t.Fatal(err)
+	}
+	return h
 }
 
-// lineWalls liefert die Mauer-Offsets einer Seite für eine Streuung je Linie (Bit i gesetzt = Linie i+1 voll gestreut).
-func lineWalls(mask int) []float64 {
-	l := hub.WallLines
-	out := make([]float64, len(l.WallUnits))
-	for i, w := range l.WallUnits {
-		out[i] = w
-		if i >= l.FixedLines && mask&(1<<i) != 0 {
-			out[i] += l.JitterOutwardUnits
+// readHub7 ist die 7-Stufen-Fixture (WZ15, AC-03).
+func readHub7(t *testing.T) *HubData {
+	t.Helper()
+	raw, err := os.ReadFile("../../testdata/hub/hub7.json")
+	if err != nil {
+		t.Fatal(err)
+	}
+	h, err := ParseHub(raw)
+	if err != nil {
+		t.Fatal(err)
+	}
+	return h
+}
+
+// hasFinding: Gibt es einen Befund der Regel, dessen Platz site enthält?
+func hasFinding(r HubReport, rule, site string) bool {
+	return slices.ContainsFunc(r.Findings, func(f HubFinding) bool { return f.Rule == rule && strings.Contains(f.Site, site) })
+}
+
+// withoutKind entfernt alle Plätze der Art aus sites und islandSites.
+func withoutKind(h *HubData, kind string) {
+	drop := func(s HubSite) bool { return s.Kind == kind }
+	h.Sites = slices.DeleteFunc(h.Sites, drop)
+	h.IslandSites = slices.DeleteFunc(h.IslandSites, drop)
+}
+
+func TestSiteDataHubJSONGueltig(t *testing.T) {
+	raw, err := data.Files.ReadFile("hub.json")
+	if err != nil {
+		t.Fatal(err)
+	}
+	r := ValidateHub(raw)
+	for _, f := range r.Findings {
+		t.Errorf("data/hub.json: %s", f)
+	}
+	if !slices.Contains(r.Notes, NotePlannedChunksUnchecked) {
+		t.Errorf("Hinweis %q fehlt: %q", NotePlannedChunksUnchecked, r.Notes)
+	}
+}
+
+// WZ15.3/AC-03: Mehr Hub-Stufen ohne Umbau, keine feste 5.
+func TestSiteDataSiebenStufen(t *testing.T) {
+	h := readHub7(t)
+	if len(h.Levels) != 7 || len(h.WallLines.WallUnits) != 7 {
+		t.Fatalf("Fixture: %d Stufen, %d Linien, erwartet je 7", len(h.Levels), len(h.WallLines.WallUnits))
+	}
+	for _, f := range ValidateHubData(h).Findings {
+		t.Errorf("hub7.json: %s", f)
+	}
+}
+
+func TestSiteDataPflichtplatzFehlt(t *testing.T) {
+	for _, kind := range RequiredSiteKinds() {
+		h := hubCopy(t)
+		i := slices.IndexFunc(h.Sites, func(s HubSite) bool { return s.Kind == kind })
+		if i < 0 {
+			t.Fatalf("%s steht nicht in data/hub.json", kind)
 		}
-	}
-	return out
-}
-
-// lineTargets: Mauer, Turm und Tor jeder Linie beider Seiten.
-func lineTargets(left, right int) []dataTarget {
-	l := hub.WallLines
-	var out []dataTarget
-	for _, side := range []struct {
-		dir  float64
-		mask int
-	}{{-1, left}, {1, right}} {
-		for i, w := range lineWalls(side.mask) {
-			k := fmt.Sprintf("L%d@%+.0f", i+1, side.dir)
-			out = append(out,
-				dataTarget{"wall " + k, side.dir * w},
-				dataTarget{"tower " + k, side.dir * (w - l.TowerInsetUnits)},
-				dataTarget{"gate " + k, side.dir * (w + l.GateOutsetUnits)})
-		}
-	}
-	return out
-}
-
-// isLineKind: Mauer, Turm und Tor gehören zu den Linien, nicht zu den Hub-Plätzen.
-func isLineKind(kind string) bool { return kind == "wall" || kind == "tower" || kind == "gate" }
-
-// fixedTargets: Burg, Hub- und Insel-Plätze (ohne Linien), Händler und Angebote, die es in Tiefe depth gibt
-// (deeper: es gibt eine tiefere Stufe), wie engine/sim/lines.go und merchant.go sie anlegen.
-func fixedTargets(depth int, deeper bool) []dataTarget {
-	out := []dataTarget{{"castle", 0}}
-	if depth == hub.Merchant.OnlyDepth {
-		out = append(out, dataTarget{"merchant buy", hub.Merchant.BuyOffsetUnits},
-			dataTarget{"merchant sell", hub.Merchant.SellOffsetUnits})
-	}
-	for _, s := range append(append([]HubSite{}, hub.Sites...), hub.IslandSites...) {
-		if isLineKind(s.Kind) || depth < s.FromDepth || (s.NeedsDeeper && !deeper) {
-			continue
-		}
-		out = append(out, dataTarget{fmt.Sprintf("%s@%+.0f", s.Kind, s.OffsetUnits), s.OffsetUnits})
-		for _, o := range buildings[s.Kind].Offers {
-			out = append(out, dataTarget{fmt.Sprintf("%s:%s", s.Kind, o.Kind), s.OffsetUnits + o.DX})
-		}
-	}
-	return out
-}
-
-// eachLayout ruft fn für jede Tiefe (0 und tiefer, mit und ohne tiefere Stufe) bei jeder Streuung der Linien auf.
-func eachLayout(fn func(desc string, all []dataTarget)) {
-	combos := 1 << len(hub.WallLines.WallUnits)
-	for _, depth := range []int{0, 1} {
-		for _, deeper := range []bool{true, false} {
-			fixed := fixedTargets(depth, deeper)
-			for left := range combos {
-				for right := range combos {
-					desc := fmt.Sprintf("Tiefe %d (tiefer %v), Streuung links %05b rechts %05b", depth, deeper, left, right)
-					fn(desc, append(append([]dataTarget{}, fixed...), lineTargets(left, right)...))
-				}
-			}
+		h.Sites = slices.Delete(h.Sites, i, i+1) // farm: nur eine Seite
+		if r := ValidateHubData(h); !hasFinding(r, RuleRequired, kind) {
+			t.Errorf("%s entfernt: Befund %q erwartet, bekommen %q", kind, RuleRequired, r.Findings)
 		}
 	}
 }
 
-func TestSiteDataGenauEinPlatzJeBau(t *testing.T) {
-	count := map[string]map[int]int{}
-	for _, s := range append(append([]HubSite{}, hub.Sites...), hub.IslandSites...) {
-		if count[s.Kind] == nil {
-			count[s.Kind] = map[int]int{}
-		}
-		count[s.Kind][sideX(s.OffsetUnits)]++
-	}
-	for kind := range buildings {
-		c := count[kind]
-		switch {
-		case kind == "castle" || isLineKind(kind):
-		case kind == "farm":
-			if c[-1] != 1 || c[1] != 1 {
-				t.Errorf("farm: je Seite genau ein Platz erwartet, links %d, rechts %d", c[-1], c[1])
-			}
-		case c[-1]+c[1] != 1:
-			t.Errorf("%s: genau ein Hub-Platz erwartet, gefunden %d", kind, c[-1]+c[1])
+func TestSiteDataOptionaleArtEntfernbar(t *testing.T) {
+	var optional []string
+	for _, s := range allSites(hubCopy(t)) {
+		if !slices.Contains(RequiredSiteKinds(), s.Kind) && !slices.Contains(optional, s.Kind) {
+			optional = append(optional, s.Kind)
 		}
 	}
-	for kind := range count {
-		if _, ok := buildings[kind]; !ok {
-			t.Errorf("Platz %q ohne Eintrag in buildings.json", kind)
+	for _, want := range []string{"barracks", "tavern", "storage", "healer", "smithy", "armory"} {
+		if !slices.Contains(optional, want) {
+			t.Errorf("optionale Art %s fehlt in data/hub.json", want)
 		}
 	}
-	for _, kind := range []string{"wall", "tower", "gate"} {
-		if count[kind] != nil {
-			t.Errorf("%s gehört nur auf die Mauerlinien, nicht in sites", kind)
+	for _, kind := range optional {
+		h := hubCopy(t)
+		withoutKind(h, kind)
+		if r := ValidateHubData(h); len(r.Findings) > 0 {
+			t.Errorf("%s entfernt: kein Befund erwartet, bekommen %q", kind, r.Findings)
+		}
+	}
+}
+
+func TestSiteDataEinPlatzJeBau(t *testing.T) {
+	for _, c := range []struct {
+		site       HubSite
+		rule, kind string
+	}{
+		{HubSite{Kind: "healer", OffsetUnits: -140, HubLevel: 3}, RuleOnePerBau, "healer"},
+		{HubSite{Kind: "workshop", OffsetUnits: -140, HubLevel: 1}, RuleRequired, "workshop"},
+		{HubSite{Kind: "farm", OffsetUnits: -140, HubLevel: 1}, RuleRequired, "farm"},
+	} {
+		h := hubCopy(t)
+		h.Sites = append(h.Sites, c.site)
+		if r := ValidateHubData(h); !hasFinding(r, c.rule, c.kind) {
+			t.Errorf("%s doppelt: Befund %q erwartet, bekommen %q", c.kind, c.rule, r.Findings)
+		}
+	}
+}
+
+func TestSiteDataNurBekannteArten(t *testing.T) {
+	for _, kind := range []string{"dragon", "wall", "tower", "gate", "castle"} {
+		h := hubCopy(t)
+		h.Sites = append(h.Sites, HubSite{Kind: kind, OffsetUnits: -140, HubLevel: 1})
+		if r := ValidateHubData(h); !hasFinding(r, RuleKind, kind+"@") {
+			t.Errorf("Art %s: Befund %q erwartet, bekommen %q", kind, RuleKind, r.Findings)
+		}
+	}
+}
+
+func TestSiteDataHubStufeImBereich(t *testing.T) {
+	n := len(hubCopy(t).Levels)
+	for name, c := range map[string]struct {
+		edit func(*HubData)
+		site string
+	}{
+		"Stufe 0":       {func(h *HubData) { h.Sites[0].HubLevel = 0 }, "@"},
+		"Stufe n+1":     {func(h *HubData) { h.IslandSites[0].HubLevel = n + 1 }, "storage@"},
+		"Tor n+1":       {func(h *HubData) { h.WallLines.GateHubLevel = n + 1 }, "gateHubLevel"},
+		"ohne Stufen":   {func(h *HubData) { h.Levels = nil }, "levels"},
+		"Tor Stufe 0":   {func(h *HubData) { h.WallLines.GateHubLevel = 0 }, "gateHubLevel"},
+		"letzte Stufe+": {func(h *HubData) { h.Sites[len(h.Sites)-1].HubLevel = n + 1 }, "farm@"},
+	} {
+		h := hubCopy(t)
+		c.edit(h)
+		if r := ValidateHubData(h); !hasFinding(r, RuleLevels, c.site) {
+			t.Errorf("%s: Befund %q erwartet, bekommen %q", name, RuleLevels, r.Findings)
 		}
 	}
 }
 
 func TestSiteDataAbstandBeiVollerStreuung(t *testing.T) {
-	minGap := 2 * economy.PayRangeUnits // zwei Reichweiten: kein Zahlziel überdeckt ein anderes
-	eachLayout(func(desc string, all []dataTarget) {
-		sort.Slice(all, func(i, j int) bool { return all[i].x < all[j].x })
-		for i := 1; i < len(all); i++ {
-			if gap := all[i].x - all[i-1].x; gap < minGap {
-				t.Fatalf("%s: %s (%v) und %s (%v) nur %v Units auseinander, mindestens %v",
-					desc, all[i-1].name, all[i-1].x, all[i].name, all[i].x, gap, minGap)
-			}
-		}
-	})
+	h := hubCopy(t)
+	h.Sites[0].OffsetUnits = h.Sites[0].OffsetUnits + 2*economy.PayRangeUnits - 1 // workshop neben seine Angebote
+	if r := ValidateHubData(h); !hasFinding(r, RuleGap, "workshop") {
+		t.Errorf("Platz zu nah: Befund %q erwartet, bekommen %q", RuleGap, r.Findings)
+	}
+	// Nur bei voller Streuung der Linie 2 zu nah: ungestreut 4 Units zu Turm und Mauer, gestreut auf dem Turm.
+	h = hubCopy(t)
+	l := h.WallLines
+	x := l.WallUnits[1] - l.TowerInsetUnits + l.JitterOutwardUnits
+	withoutKind(h, "barracks")
+	h.Sites = append(h.Sites, HubSite{Kind: "barracks", OffsetUnits: x, HubLevel: 2})
+	r := ValidateHubData(h)
+	if !hasFinding(r, RuleGap, "tower L2@+1") {
+		t.Errorf("Streuung: Befund %q mit Turm der Linie 2 erwartet, bekommen %q", RuleGap, r.Findings)
+	}
 }
 
-// W11.1 (B-409): Treppen brauchen Platz für Preisschild und Wartegrund, mindestens 8 Units zu jedem Zahlziel.
 func TestSiteDataTreppenAbstand(t *testing.T) {
-	const minGap = 8
-	eachLayout(func(desc string, all []dataTarget) {
-		for _, s := range all {
-			if !strings.HasPrefix(s.name, "stairs") {
-				continue
-			}
-			for _, o := range all {
-				if gap := math.Abs(o.x - s.x); o.name != s.name && gap < minGap {
-					t.Fatalf("%s: %s (%v) und %s (%v) nur %v Units auseinander, mindestens %v",
-						desc, s.name, s.x, o.name, o.x, gap, minGap)
-				}
-			}
-		}
-	})
+	h := hubCopy(t)
+	i := slices.IndexFunc(h.Sites, func(s HubSite) bool { return s.Kind == "stairsDown" })
+	h.Sites[i].OffsetUnits = 2 * economy.PayRangeUnits // Abstand zur Burg reicht für Zahlziele, nicht für Treppen
+	if r := ValidateHubData(h); !hasFinding(r, RuleStairs, "stairsDown") {
+		t.Errorf("Treppe zu nah: Befund %q erwartet, bekommen %q", RuleStairs, r.Findings)
+	}
 }
 
 func TestSiteDataLinien(t *testing.T) {
-	l := hub.WallLines
-	if len(l.WallUnits) == 0 || l.FixedLines < 1 {
-		t.Fatalf("Linie 1 muss fest sein: %d Linien, %d fest", len(l.WallUnits), l.FixedLines)
-	}
-	if l.JitterOutwardUnits < 0 || l.TowerInsetUnits <= 0 || l.GateOutsetUnits <= 0 {
-		t.Errorf("Streuung %v, Turm %v innen, Tor %v außen: alle positiv erwartet",
-			l.JitterOutwardUnits, l.TowerInsetUnits, l.GateOutsetUnits)
-	}
-	for i := 1; i < len(l.WallUnits); i++ {
-		if l.WallUnits[i] <= l.WallUnits[i-1] {
-			t.Errorf("Mauer-Offsets nicht steigend: Linie %d = %v nach %v", i+1, l.WallUnits[i], l.WallUnits[i-1])
-		}
-	}
-	outer := l.WallUnits[len(l.WallUnits)-1] + l.JitterOutwardUnits + l.GateOutsetUnits
-	for _, b := range biomes {
-		if outer >= b.Portals.MinDistanceFromHubUnits {
-			t.Errorf("%s: äußerstes Tor bei %v nicht unter dem Portal-Mindestabstand %v", b.ID, outer,
-				b.Portals.MinDistanceFromHubUnits)
+	for name, edit := range map[string]func(*WallLineData){
+		"nicht steigend":     func(l *WallLineData) { l.WallUnits[1] = l.WallUnits[0] },
+		"über dem Portal":    func(l *WallLineData) { l.WallUnits[len(l.WallUnits)-1] = 200 },
+		"Linie 1 nicht fest": func(l *WallLineData) { l.FixedLines = 0 },
+		"Streuung gebrochen": func(l *WallLineData) { l.JitterOutwardUnits = 1.5 },
+		"Turm nicht innen":   func(l *WallLineData) { l.TowerInsetUnits = 0 },
+		"ohne Linien":        func(l *WallLineData) { l.WallUnits = nil },
+		"zu viele gestreut": func(l *WallLineData) {
+			l.WallUnits = nil
+			for i := 0; i < maxJitteredLines+3; i++ {
+				l.WallUnits = append(l.WallUnits, 20+4*float64(i))
+			}
+		},
+		"Turm von Linie 1 jenseits der Burg": func(l *WallLineData) { l.TowerInsetUnits = l.WallUnits[0] },
+		"Tor nicht außen":                    func(l *WallLineData) { l.GateOutsetUnits = -1 },
+		"Streuung nach innen":                func(l *WallLineData) { l.JitterOutwardUnits = -1 },
+		"Linien ohne Abstand":                func(l *WallLineData) { l.WallUnits[2] = l.WallUnits[1] - 1 },
+		"äußerste zu weit weg":               func(l *WallLineData) { l.WallUnits = append(l.WallUnits, 140) },
+	} {
+		h := hubCopy(t)
+		edit(&h.WallLines)
+		if r := ValidateHubData(h); !hasFinding(r, RuleLines, "wallLines") {
+			t.Errorf("%s: Befund %q erwartet, bekommen %q", name, RuleLines, r.Findings)
 		}
 	}
 }
 
-// Zuordnung Art → Hub-Stufe aus docs/rules/materialien-gebaeude.md § 3.
-var hubLevelRule = map[string]int{
-	"wall": 1, "tower": 1, "workshop": 1, "farm": 1,
-	"gate": 2, "barracks": 2, "storage": 2, "tavern": 2, "stairsUp": 2, "stairsDown": 2,
-	"smithy": 3, "healer": 3, "armory": 4,
+func TestValidateHubKaputtesJSON(t *testing.T) {
+	if r := ValidateHub([]byte("{")); !hasFinding(r, RuleJSON, "hub.json") {
+		t.Errorf("Befund %q erwartet, bekommen %q", RuleJSON, r.Findings)
+	}
 }
 
-func TestSiteDataHubStufe(t *testing.T) {
-	for _, s := range append(append([]HubSite{}, hub.Sites...), hub.IslandSites...) {
-		if want, ok := hubLevelRule[s.Kind]; !ok || s.HubLevel != want {
-			t.Errorf("%s@%v: hubLevel %d, laut § 3 %d", s.Kind, s.OffsetUnits, s.HubLevel, want)
-		}
+// Die Prüfung ändert den Kandidaten nicht (kein globaler Zustand, keine Seiteneffekte).
+func TestValidateHubLaesstKandidatUnveraendert(t *testing.T) {
+	h := readHub7(t)
+	before, _ := json.Marshal(h)
+	ValidateHubData(h)
+	if after, _ := json.Marshal(h); string(before) != string(after) {
+		t.Errorf("Kandidat verändert")
 	}
-	if hub.WallLines.GateHubLevel != hubLevelRule["gate"] {
-		t.Errorf("Tor: gateHubLevel %d, laut § 3 %d", hub.WallLines.GateHubLevel, hubLevelRule["gate"])
+	if embedded, _ := json.Marshal(hub); string(embedded) == string(before) {
+		t.Errorf("Fixture gleich der eingebetteten hub.json, Test sagt nichts")
+	}
+}
+
+// Mehr Linien als Hub-Stufen sind nie bezahlbar (Linie k öffnet ab Stufe k).
+func TestSiteDataMehrLinienAlsStufen(t *testing.T) {
+	h := hubCopy(t)
+	h.Levels = h.Levels[:len(h.WallLines.WallUnits)-1]
+	for i, s := range h.Sites {
+		h.Sites[i].HubLevel = min(s.HubLevel, len(h.Levels))
+	}
+	h.IslandSites[0].HubLevel = min(h.IslandSites[0].HubLevel, len(h.Levels))
+	h.WallLines.GateHubLevel = min(h.WallLines.GateHubLevel, len(h.Levels))
+	if r := ValidateHubData(h); !hasFinding(r, RuleLines, "wallLines") {
+		t.Errorf("Befund %q erwartet, bekommen %q", RuleLines, r.Findings)
 	}
 }

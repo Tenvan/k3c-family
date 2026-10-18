@@ -57,8 +57,8 @@ func PreviewCycle(w *World, phase string, progress float64) error {
 // nie verletzt wird. Bei einem Fehler bleibt die Welt unverändert. Sie baut nur auf, nichts ab: gedacht für eine
 // frisch erzeugte Welt (CreateWorld), nicht für eine, die schon höher ausgebaut ist.
 func PreviewHubLevel(w *World, level int) error {
-	if level < 1 || level > len(hub.Levels) {
-		return fmt.Errorf("vorschau: Hub-Stufe %d außerhalb von 1 bis %d", level, len(hub.Levels))
+	if n := len(hubOf(w).Levels); level < 1 || level > n {
+		return fmt.Errorf("vorschau: Hub-Stufe %d außerhalb von 1 bis %d", level, n)
 	}
 	w.HubLevel = level
 	if h := w.hubSite; h != nil {

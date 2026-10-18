@@ -10,12 +10,12 @@ import (
 // mit den eingebetteten Mauerlinien. Es gibt keinen globalen Zustand zum Umschalten.
 type Options struct {
 	// Lines sind die Mauerlinien (nil = eingebettete aus data/hub.json).
-	Lines *WallLineData
+	Lines *WallLines
 	// Planned sind die geplanten Chunks dieser Stufe (docs/rules/geplante-chunks.md).
 	Planned []PlannedChunk
 }
 
-func (o Options) lines() WallLineData {
+func (o Options) lines() WallLines {
 	if o.Lines != nil {
 		return *o.Lines
 	}

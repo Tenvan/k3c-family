@@ -8,9 +8,9 @@
 - **Sprint:** WZ9
 - **Projekt:** WZG
 - **Erstellt:** 2026-10-17
-- **Spec:** Entwurf
+- **Spec:** freigegeben
 - **Revision:** 3
-- **Freigabe:** –
+- **Freigabe:** 2026-10-18, Ralf im Chat (Revision 3)
 
 ## Ausgangslage
 

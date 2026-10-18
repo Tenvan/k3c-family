@@ -22,4 +22,10 @@ describe('Asset-Studio-Rahmen (B-459)', () => {
     expect(html).toMatch(/aria-selected="true"[^>]*>.*?Welt-Betrachter/);
     expect(html).toContain('data-maximized="true"');
   });
+
+  it('bietet die Seite Gebäude-Planer an (B-462) und öffnet sie', () => {
+    const html = renderToStaticMarkup(<App initial="planer" />);
+    expect(html).toMatch(/aria-selected="true"[^>]*>.*?Gebäude-Planer/);
+    expect(html).toContain('class="pl-page"');
+  });
 });

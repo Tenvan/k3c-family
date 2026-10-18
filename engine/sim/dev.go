@@ -120,11 +120,11 @@ func DevSetCheapBuild(isl *Island, on bool) {
 	isl.Dev.CheapBuild = on
 }
 
-// DevBuildAll baut jede Stufe der Insel auf level (1 bis 5) aus: Hub-Stufe, gebaute Plätze mit Ausbau-Stufen (Mauer,
+// DevBuildAll baut jede Stufe der Insel auf level aus: Hub-Stufe, gebaute Plätze mit Ausbau-Stufen (Mauer,
 // Turm) und alle noch freien Plätze, deren Hub-Stufe und Linie bis level reicht (Tore bleiben, sie hängen an der
-// äußersten Mauer). Laufende Ausbauten und Aufträge entfallen. false: level außerhalb 1 bis 5.
+// äußersten Mauer). Laufende Ausbauten und Aufträge entfallen. false: level außerhalb 1 bis Anzahl hub.json › levels.
 func DevBuildAll(isl *Island, level int) bool {
-	if level < 1 || level > len(hub.Levels) {
+	if len(isl.Stages) == 0 || level < 1 || level > len(hubOf(isl.Stages[0]).Levels) {
 		return false
 	}
 	for _, w := range isl.Stages {

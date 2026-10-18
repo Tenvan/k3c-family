@@ -1,14 +1,14 @@
 # WZ15 · REG, INF, SIM · Hub-Planung Vorlauf: Regeltabelle erzeugt, Prüfung ohne globalen Zustand
 
-- **Status:** geplant
+- **Status:** erledigt
 - **Projekt:** WZG
 - **Domäne:** REG, INF, SIM
-- **Reife:** Entwurf
+- **Reife:** bereit
 - **Tickets:** B-462
-- **Start-Commit:** – (wird beim Aktivieren gesetzt: `git rev-parse --short origin/develop`)
-- **Spec:** Entwurf
+- **Start-Commit:** f6912198
+- **Spec:** freigegeben
 - **Revision:** 1
-- **Freigabe:** –
+- **Freigabe:** 2026-10-18, Ralf im Chat (Revision 1)
 
 ## Ausgangslage
 
@@ -78,10 +78,10 @@ Offen: keine.
 
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
-| WZ15.1 | `WZ15.1-regeltabelle-form.md` | Umsetzung | autonom | offen |
-| WZ15.2 | `WZ15.2-regeltabelle-generator.md` | Umsetzung | autonom | offen |
-| WZ15.3 | `WZ15.3-pruefung-kandidat.md` | Umsetzung | autonom | offen |
-| WZ15.4 | `WZ15.4-review.md` | Review | autonom | offen |
+| WZ15.1 | `WZ15.1-regeltabelle-form.md` | Umsetzung | autonom | fertig |
+| WZ15.2 | `WZ15.2-regeltabelle-generator.md` | Umsetzung | autonom | fertig |
+| WZ15.3 | `WZ15.3-pruefung-kandidat.md` | Umsetzung | autonom | fertig |
+| WZ15.4 | `WZ15.4-review.md` | Review | autonom | fertig |
 
 - WZ15.1 (REG) Regeltabelle „Hub-Stufe → Gebäude“ in § 3 auf die erzeugbare Form umstellen: Marker, Spalten, Inhalt = heutige `data/hub.json`, Abgleich ohne Abweichung (AC-01, AC-04).
 - WZ15.2 (INF) Generator in Go (`tools/regeltabelle`, Funktionen `Block`, `Ersetzen`, Gegenprobe in `tools/regeltabelle/tabelle`) und Task `rules:update`; Go-Test Block = JSON, Marker-Test, 7-Stufen-Fixture unter `testdata/hub/` (AC-01, AC-03, AC-04).
@@ -92,5 +92,6 @@ Domänen-Reihenfolge: REG → INF → SIM.
 
 ## Abnahme
 
-Wird von der Review-Session (Doku-Sprint: letzte Session) ausgefüllt, höchstens fünf Zeilen: Datum, Kriterien
-(Verweis auf Session-Ergebnisse), behobene Befunde, neue Tickets. Bis dahin `–`.
+2026-10-18, Review WZ15.4 (autonom, getrennte Reviewer): AC-01 bis AC-04 geprüft (`task:check`, `task:check:go`, `go:lint` grün, Golden-Diff leer).
+Behoben: Befunde der Reviews von WZ15.1 bis WZ15.3 (u. a. Tor Linie 1, float64/hubLevel im Generator, Kandidaten-Kopie, Linienzahl ≤ Hub-Stufen). Neue Tickets: B-479 (geplante Chunks nach WZ8 prüfen, `CreateOptions` vereinen).
+Version: v– vorgeschlagen (Vorlauf für WZ9, kein Spielinhalt).

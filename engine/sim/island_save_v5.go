@@ -43,7 +43,7 @@ func restoreProgress(isl *Island, s IslandSave) {
 	isl.MerchantVisits = s.MerchantVisits // Version 6 (B-373); ältere Stände: 0, kein Händler
 	if s.Merchant != nil {
 		for _, w := range isl.Stages {
-			if w.Biome.Depth == hub.Merchant.OnlyDepth {
+			if w.Biome.Depth == hubOf(w).Merchant.OnlyDepth {
 				m := s.Merchant
 				w.Merchant = &Merchant{Resource: m.Resource, Leaves: m.Leaves, BuyPaid: m.BuyPaid, HP: m.HP, MaxHP: m.MaxHP, Raid: m.Raid}
 			}

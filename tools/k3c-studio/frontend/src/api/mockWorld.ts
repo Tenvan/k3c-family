@@ -1,4 +1,5 @@
 import fixture from './previewFixture.json';
+import { hubLevelChoices } from '../stage/stageLogic';
 import type { OpenGameResult, WorldLevelView, WorldPreviewArgs, WorldPreviewView, WorldSource } from './types';
 
 // Erfundenes Level für den Mock (Browser, Tests): immer gleich zu gleichem Seed, 1 Abschnitt = 30 Units. Der Seed
@@ -17,13 +18,25 @@ export function mockWorldLevel(seed: string, source: WorldSource): WorldLevelVie
   return { ...empty, widthUnits: KINDS.length * 30, hubCenterUnits: 165, chunks, entities, warnings: seed === 'warnung' ? ['Level zu kurz'] : [], error: '' };
 }
 
+/** Hub-Stufen im Mock: die des Planer-Stands, sonst die von data/hub.json; null = Kandidat kein JSON mit levels. */
+function levelsOf(candidate: string | undefined): number | null {
+  if (!candidate) return hubLevelChoices().length;
+  try {
+    const levels = (JSON.parse(candidate) as { levels?: unknown }).levels;
+    return Array.isArray(levels) ? levels.length : null;
+  } catch {
+    return null;
+  }
+}
+
 // Vorschau-Welt für den Mock: ein von der Vorschau-Funktion des Servers erzeugter Zustand (Seed k3c, Wald, Hub-Stufe 5,
 // ohne Bürger und Gegner). Hub-Stufe, Tageszeit und Gebäude-Auswahl wirken hier nur auf die Felder, nicht auf den Ausbau.
 export function mockWorldPreview(args: WorldPreviewArgs): WorldPreviewView {
   if (args.seed === 'fehler') return { level: fixture.level as never, state: null, error: 'Seed braucht 1 bis 64 Zeichen' };
   const state = structuredClone(fixture.state) as unknown as NonNullable<WorldPreviewView['state']>;
   state.sites = state.sites.filter((s) => args.buildings[`${s.kind}@${s.x}`] !== false);
-  const top = 5;
+  const top = levelsOf(args.hubCandidate);
+  if (top === null) return { level: fixture.level as never, state: null, error: 'vorschau: Kandidaten-hub.json nicht lesbar' };
   state.hubLevel = args.hubLevel > 0 ? Math.min(args.hubLevel, top) : top;
   state.cycle = { ...(state.cycle as object), phase: args.phase || 'day', progress: args.progress };
   return { level: { ...(fixture.level as object), seed: args.seed, biomeId: args.source.biome ?? 'forest' } as never, state, error: '' };

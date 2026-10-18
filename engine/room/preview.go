@@ -41,6 +41,10 @@ type PreviewOptions struct {
 	// Entwurf. nil oder leer = reiner Zufall, wie bei jedem Biom-Level ohne Insel; eine ungültige Planung wird mit dem
 	// Fehler der Prüfung (level.ValidatePlan) abgelehnt. Sie wird als Parameter durchgereicht, nie gespeichert.
 	Planned []level.PlannedChunk
+	// HubCandidate: Kandidaten-hub.json als Bytes (Gebäude-Planer, WZ9.1, B-462); leer = eingebettete data/hub.json.
+	// Geprüft mit sim.ValidateHub (Befunde → *CandidateError), gebaut über sim.CreateOptions; HubLevel 0 ist dann
+	// die höchste Stufe des Kandidaten. Nur Parameter, kein globaler Zustand.
+	HubCandidate []byte
 }
 
 // PreviewSiteKey ist der Schlüssel eines Bauplatzes in PreviewOptions.Buildings: Art und X-Position in Units.
@@ -61,25 +65,21 @@ func BuildPreview(o PreviewOptions) (*sim.World, error) {
 	if !previewBiome.MatchString(o.Source.Biome) {
 		return nil, fmt.Errorf("vorschau: ungültiges Biom %q", o.Source.Biome)
 	}
-	data, err := fullData()
+	biome, err := level.LoadBiome(o.Source.Biome)
+	if err != nil {
+		return nil, fmt.Errorf("vorschau: Biom %q nicht ladbar: %w", o.Source.Biome, err)
+	}
+	w, top, err := previewWorld(biome, o)
 	if err != nil {
 		return nil, err
 	}
 	hubLevel := o.HubLevel
 	if hubLevel == 0 {
-		hubLevel = data.hub
+		hubLevel = top
 	}
 	phase := o.Phase
 	if phase == "" {
 		phase = "day"
-	}
-	biome, err := level.LoadBiome(o.Source.Biome)
-	if err != nil {
-		return nil, fmt.Errorf("vorschau: Biom %q nicht ladbar: %w", o.Source.Biome, err)
-	}
-	w, err := sim.CreateWorld(biome, o.Seed, sim.Options{CycleSpeed: 1, Planned: o.Planned})
-	if err != nil {
-		return nil, fmt.Errorf("vorschau: Level nicht erzeugbar: %w", err)
 	}
 	w.Troops, w.Enemies, w.SpawnQueue = []*sim.Troop{}, []*sim.Enemy{}, []sim.QueuedSpawn{}
 	if err := sim.PreviewHubLevel(w, hubLevel); err != nil {
@@ -96,4 +96,21 @@ func BuildPreview(o PreviewOptions) (*sim.World, error) {
 	}
 	w.Sites = sites
 	return w, nil
+}
+
+// previewWorld erzeugt die frische Welt und nennt die höchste Hub-Stufe: ohne Kandidat aus der eingebetteten
+// hub.json (wie vor WZ9.1), mit Kandidat aus ihm (candidateWorld).
+func previewWorld(biome level.Biome, o PreviewOptions) (*sim.World, int, error) {
+	if len(o.HubCandidate) > 0 {
+		return candidateWorld(biome, o.Seed, o.HubCandidate, o.Planned)
+	}
+	data, err := fullData()
+	if err != nil {
+		return nil, 0, err
+	}
+	w, err := sim.CreateWorld(biome, o.Seed, sim.Options{CycleSpeed: 1, Planned: o.Planned})
+	if err != nil {
+		return nil, 0, fmt.Errorf("vorschau: Level nicht erzeugbar: %w", err)
+	}
+	return w, data.hub, nil
 }

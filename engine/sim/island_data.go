@@ -82,7 +82,7 @@ func checkIsland(d IslandDef) error {
 
 // checkPlannedChunks prüft die geplanten Chunks jeder Tiefe unabhängig vom Seed (level.ValidatePlan) gegen die
 // Mauerlinien lines; Fehler nennen Tiefe und Platz (der Aufrufer ergänzt die Insel).
-func checkPlannedChunks(d IslandDef, lines level.WallLineData) error {
+func checkPlannedChunks(d IslandDef, lines level.WallLines) error {
 	for _, key := range slices.Sorted(maps.Keys(d.PlannedChunks)) {
 		plan := d.PlannedChunks[key]
 		depth, err := strconv.Atoi(key)

@@ -51,12 +51,12 @@ type gen struct {
 	b     Biome
 	r     *rng.Rng
 	seed  string
-	lines WallLineData
 	kinds []string
 	cw    float64
 	hub   float64
 	// Geplante Chunks (planned_gen.go): hubStart und hubChunks legen die Plätze fest, planned ordnet Chunk-Index
 	// und Plan zu, fixed zählt feste Portale, Truhen, Camps und Adern, sideFixed feste Portale je Seite.
+	lines WallLines
 	hubStart, hubChunks int
 	planned             map[int]PlannedChunk
 	fixed               map[string]int
@@ -109,7 +109,7 @@ func GenerateWith(b Biome, seed string, o Options) (Layout, error) {
 	sort.SliceStable(entities, func(i, j int) bool { return entities[i].X < entities[j].X })
 	return Layout{
 		Seed: seed, BiomeID: b.ID, WidthUnits: float64(len(chunks)) * g.cw, ChunkWidthUnits: g.cw,
-		HubCenterUnits: g.hub, Chunks: chunks, Entities: entities, Lines: generateLines(lines, b.ID, seed, g.hub),
+		HubCenterUnits: g.hub, Chunks: chunks, Entities: entities, Lines: lines.generate(b.ID, seed, g.hub),
 	}, nil
 }
 
@@ -195,7 +195,7 @@ func (g *gen) placeEvents(seed string) error {
 			// Stabil: gleich gute Slots behalten ihre Reihenfolge aus dem Mischen.
 			sort.SliceStable(slots, func(i, j int) bool {
 				di, dj := g.center(slots[i])-g.hub, g.center(slots[j])-g.hub
-				if ci, cj := clearOfLines(g.lines, di), clearOfLines(g.lines, dj); ci != cj {
+				if ci, cj := g.lines.ClearOf(di), g.lines.ClearOf(dj); ci != cj {
 					return ci
 				}
 				return math.Abs(di) < math.Abs(dj)
@@ -214,12 +214,12 @@ func (g *gen) placeEvents(seed string) error {
 func (g *gen) swapCampsWithChests() {
 	dist := func(i int) float64 { return math.Abs(g.center(i) - g.hub) }
 	for i, k := range g.kinds {
-		if _, fixed := g.planned[i]; k != "recruitCamp" || fixed || clearOfLines(g.lines, g.center(i)-g.hub) {
+		if _, fixed := g.planned[i]; k != "recruitCamp" || fixed || g.lines.ClearOf(g.center(i)-g.hub) {
 			continue
 		}
 		best := -1
 		for j, kj := range g.kinds {
-			if _, fixed := g.planned[j]; kj == "chest" && !fixed && clearOfLines(g.lines, g.center(j)-g.hub) && (best < 0 || dist(j) < dist(best)) {
+			if _, fixed := g.planned[j]; kj == "chest" && !fixed && g.lines.ClearOf(g.center(j)-g.hub) && (best < 0 || dist(j) < dist(best)) {
 				best = j
 			}
 		}
