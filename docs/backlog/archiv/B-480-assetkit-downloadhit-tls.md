@@ -4,7 +4,7 @@
 - **Typ:** Problem
 - **Prio:** mittel
 - **Umgebung:** offline
-- **Status:** offen
+- **Status:** verworfen
 - **Sprint:** –
 - **Projekt:** WZG
 - **Erstellt:** 2026-10-18
@@ -14,7 +14,9 @@
 
 ## Ausgangslage
 
-`task check:studio` (und damit `task check:all`) bricht lokal bei `tools/assetkit` ab: `TestDownloadHit` (`import_test.go`) meldet `tls: failed to verify certificate: x509: certificate signed by unknown authority` für den Testserver (`httptest.NewTLSServer`, Client `srv.Client()`). Der Fehler tritt auch ohne Änderungen an Go-Dateien auf (festgestellt in WZ16.1/WZ16.2, 2026-10-18, Rechner von 🧑). Ursache nicht untersucht: möglich sind eine TLS-Abfangung durch Sicherheitssoftware auf dem Rechner (siehe Norton-Notiz im Projektspeicher) oder ein Client in `DownloadHit`/`fetchToTemp`, der das Zertifikat des Testservers nicht kennt.
+`task check:studio` (und damit `task check:all`) bricht lokal bei `tools/assetkit` ab: `TestDownloadHit` (`import_test.go`) meldet `tls: failed to verify certificate: x509: certificate signed by unknown authority` für den Testserver (`httptest.NewTLSServer`, Client `srv.Client()`). Der Fehler trat auch ohne Änderungen an Go-Dateien auf (festgestellt in WZ16.1/WZ16.2, 2026-10-18, Rechner von 🧑); in der CI ist der Test grün.
+
+**Ursache (geklärt 2026-10-18):** Norton Web/Mail Shield fängt auf dem Rechner von 🧑 auch TLS über Loopback ab und tauscht das Zertifikat aus. Ein Testprogramm (Go, `httptest.NewTLSServer`, `tls.Dial` auf `127.0.0.1`) zeigte als Aussteller des Zertifikats beim Client „Norton Web/Mail Shield Self-signed Root“ statt des Testzertifikats „Acme Co“; `srv.Client()` vertraut nur dem Testzertifikat und lehnt es deshalb ab. Der Code in `DownloadHit`/`fetchToTemp` ist unauffällig (er benutzt den übergebenen Client). Auf dem GitHub-Runner gibt es kein Norton.
 
 ## Ziel
 
@@ -56,3 +58,4 @@ keine
 ## Notizen
 
 Entdeckt in WZ16.2 (Sprint WZ16). Die Frontend-Tests des Studios und alle übrigen Go-Tests von `task check:all` sind grün.
+**Verworfen 2026-10-18** durch 🧑 (Chat) mit der Ursache oben: Sicherheitssoftware auf dem Entwickler-Rechner, kein Fehler in Code oder Test; AC-01 erfüllt (Ursache festgestellt), AC-02 entfällt. Lokal grün wird der Test nur, wenn Loopback (`127.0.0.1`) im Norton Web/Mail Shield von der Prüfung ausgenommen ist; dasselbe gilt für jeden anderen `httptest.NewTLSServer`-Test auf diesem Rechner. Bezug: Norton-Notizen im Projektspeicher (SSLKEYLOGFILE, Netzwerkfilter).
