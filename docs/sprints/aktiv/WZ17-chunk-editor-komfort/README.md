@@ -7,8 +7,8 @@
 - **Tickets:** B-485
 - **Start-Commit:** a6d676b4
 - **Spec:** freigegeben
-- **Revision:** 3
-- **Freigabe:** 2026-10-18, Ralf im Chat (Revision 3: ohne Nachweisläufe)
+- **Revision:** 5
+- **Freigabe:** 2026-10-18, Ralf im Chat (Revision 5: Inselgrößen 16/24/40/64/100/160)
 
 ## Ausgangslage
 
@@ -70,7 +70,7 @@ Nur für den Sprint:
 
 ## Offene Fragen
 
-Entschieden von 🧑 am 2026-10-18: `B-485 › Offene Fragen` (Entscheidungen, Revision 3). Im Workshop WZ17.1 entschieden: Größen 16 · 20 · 24 · 32 · 40 · 48 für alle Biome, Tabelle in `data/island-sizes.json`, Feld `chunkCounts` je Insel neben `plannedChunks`, ohne Eintrag gilt die Biom-Länge wie heute, Seed-Inhalt aus dem Vorschau-Level. **Revision 3:** Nachweisläufe (100 Seeds je Größe und Biom, Benchmark, neuer Golden-Fall) entfallen; ob eine Größe in einem Biom erzeugbar ist, zeigt die Erzeugung als Fehler; sinnvolle Chunk- und Inselzahlen ermittelt später ein eigenes Projekt. Abnahme im laufenden Studio (Watch-Modus) direkt nach den DEV-Sessions.
+Entschieden von 🧑 am 2026-10-18: `B-485 › Offene Fragen` (Entscheidungen, Revisionen 3 bis 5). Im Workshop WZ17.1 entschieden: Tabelle in `data/island-sizes.json`, Feld `chunkCounts` je Insel neben `plannedChunks`, ohne Eintrag gilt die Biom-Länge wie heute, Seed-Inhalt aus dem Vorschau-Level. **Revision 3:** Nachweisläufe (100 Seeds je Größe und Biom, Benchmark, neuer Golden-Fall) entfallen. **Revision 5 (nach dem Live-Test von WZ17.5):** Die Größen sind **16 · 24 · 40 · 64 · 100 · 160** Chunks (ersetzen 16 · 20 · 24 · 32 · 40 · 48 überall in diesem Sprint, auch in Ziel und Beispielen); „Wald auf klein“ = 24 Chunks. Abnahme im laufenden Studio (Watch-Modus) direkt nach den DEV-Sessions.
 
 Nichts Blockierendes offen.
 
@@ -82,7 +82,7 @@ Nichts Blockierendes offen.
 | WZ17.2 | `WZ17.2-generator-chunk-anzahl.md` | Umsetzung | autonom | fertig |
 | WZ17.3 | `WZ17.3-vorschau-option-chunk-anzahl.md` | Umsetzung | autonom | fertig |
 | WZ17.4 | `WZ17.4-listen-icons-zoom.md` | Umsetzung | autonom | fertig |
-| WZ17.5 | `WZ17.5-editor-groessen-umwandlung.md` | Umsetzung | autonom | in Arbeit |
+| WZ17.5 | `WZ17.5-editor-groessen-umwandlung.md` | Umsetzung | autonom | fertig |
 | WZ17.6 | `WZ17.6-review.md` | Review | autonom | offen |
 | WZ17.7 | `WZ17.7-abnahme.md` | Review | Mensch | offen |
 

@@ -159,6 +159,8 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-489](B-489-spielstand-chunk-anzahl.md) | SIM | Problem | mittel | offen | – | Spielstände laden Chunk-Anzahl und Planung aus den aktuellen Daten |
 | [B-490](B-490-sim-chunk-anzahl-nachtraege.md) | SIM | Schuld | niedrig | offen | – | Sim: Chunk-Anzahl mit Kandidaten-hub.json und gemeinsame Prüfung der Inselgröße |
 | [B-491](B-491-welten-editor-kleinigkeiten.md) | DEV | Schuld | niedrig | offen | – | Welten Editor: kleine Nachträge zu Schieber, Klick-Sprung und Planungsliste |
+| [B-492](B-492-studio-fensterposition-merken.md) | DEV | Idee | mittel | offen | – | Das Asset-Studio merkt sich Fensterposition und Größe und stellt sie sicher wieder her |
+| [B-495](B-495-grosse-inseln-last-und-umwandlung.md) | SIM | Frage | niedrig | offen | – | Große Inseln: Last im Spiel messen, Umwandlung in allen Biomen testen, PlanSave gegen Parallelität |
 
 ## Archiv
 
