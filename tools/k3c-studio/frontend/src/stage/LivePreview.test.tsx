@@ -97,6 +97,24 @@ describe('Live-Vorschau: Wechsel, Fehler, Lebenszyklus (B-460/AC-04)', () => {
     expect(boxes(h).every((b) => b.getAttribute('aria-checked') === 'true')).toBe(true);
   });
 
+  it('Planer-Stand wechseln bei abgewählten Gebäuden: Auswahl beginnt neu, die Anfrage trägt den neuen Kandidaten (B-462)', async () => {
+    const spy = vi.spyOn(backend, 'worldPreview');
+    const planer = (candidate: string) => ({ candidate, levels: 5, hubLevel: 5, onHubLevel: () => {} });
+    const withPlaner = (candidate: string) => <Theme><LivePreview seed="k3c" biome="forest" active planer={planer(candidate)} /></Theme>;
+    const h = await mount();
+    await act(async () => root!.render(withPlaner('{"levels":[{},{},{},{},{}]}')));
+    await flush();
+    const count = boxes(h).length;
+    await act(async () => boxes(h)[0]!.click());
+    await flush();
+    expect(lastWorld().sites).toHaveLength(count - 1);
+    await act(async () => root!.render(withPlaner('{"levels":[{},{},{},{},{}],"x":1}')));
+    await flush();
+    expect(spy).toHaveBeenLastCalledWith(expect.objectContaining({ hubCandidate: '{"levels":[{},{},{},{},{}],"x":1}', buildings: {} }));
+    expect(lastWorld().sites).toHaveLength(count);
+    expect(boxes(h).every((b) => b.getAttribute('aria-checked') === 'true')).toBe(true);
+  });
+
   it('gleiche Eingaben → gleiche Welt auf der Bühne (zweimal gemountet)', async () => {
     await mount();
     const first = JSON.stringify(lastWorld());

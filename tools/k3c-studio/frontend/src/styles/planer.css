@@ -1,0 +1,21 @@
+/* Seite Gebäude-Planer (B-462, WZ9.2): Matrix Hub-Stufe × Bauplatz, Abweichung der Regeltabelle; Farben aus theme.css. */
+.pl-page { display: flex; flex-direction: column; gap: 12px; }
+.pl-findings { display: flex; flex-direction: column; gap: 4px; }
+.pl-scroll { overflow-x: auto; border: 1px solid var(--card-line); border-radius: 8px; background: var(--card); }
+.pl-matrix, .pl-diff-table { border-collapse: collapse; font-size: 12px; }
+.pl-matrix th, .pl-matrix td, .pl-diff-table th, .pl-diff-table td {
+  padding: 4px 8px; border-bottom: 1px solid var(--card-line); text-align: left; vertical-align: top;
+}
+.pl-matrix th[scope='row'] { white-space: nowrap; font-weight: 500; }
+.pl-extra, .pl-depth { display: block; color: var(--dim); font-size: 11px; font-weight: 400; }
+.pl-source code { color: var(--dim); }
+.pl-cell { min-width: 5.5rem; }
+.pl-off { color: var(--dim); }
+.pl-on { background: color-mix(in srgb, #7bd389 10%, transparent); }
+.pl-from { background: color-mix(in srgb, #7bd389 26%, transparent); }
+.pl-chosen { outline: 1px solid #ffd166; outline-offset: -1px; }
+.pl-level { all: unset; cursor: pointer; white-space: nowrap; }
+.pl-level[aria-pressed='true'] { color: #ffd166; }
+.pl-diff { display: flex; flex-direction: column; gap: 6px; }
+.pl-ist { color: #ff8fa3; }
+.pl-soll { color: #7bd389; }

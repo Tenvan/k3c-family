@@ -109,6 +109,83 @@ export interface WorldPreviewArgs {
   progress: number;
   /** false schaltet einen Platz aus (Schlüssel kind@x) */
   buildings: Record<string, boolean>;
+  /** Planer-Stand als Kandidaten-hub.json (Gebäude-Planer), auch ungespeichert; fehlt = eingebettete data/hub.json */
+  hubCandidate?: string;
+}
+
+/** Zelle der Matrix des Gebäude-Planers (Go: HubCell): verfügbar ab der Stufe der Zeile, dann mit Platz und Tiefe. */
+export interface HubCell {
+  available: boolean;
+  /** Platz zur Hub-Mitte in Units; bei Mauerlinie und Tor je Seite (±) */
+  offsetUnits: number;
+  fromDepth: number;
+  needsDeeper: boolean;
+  /** nur in dieser Tiefe (Händler); -1 = jede Tiefe */
+  onlyDepth: number;
+}
+
+/** Herkunft einer Zeile: Liste bzw. Block in hub.json */
+export type HubSource = 'sites' | 'islandSites' | 'wallLines' | 'merchant';
+
+/** Bauplatz der Matrix (Go: HubRow): Hub-Platz, Insel-Platz, Mauerlinie mit Turm, Tor oder Händler. */
+export interface HubRow {
+  /** kind@offset wie room.PreviewSiteKey, Linien line@k, Tore gate@k */
+  key: string;
+  /** Art aus hub.json; wall, gate, merchantBuy, merchantSell */
+  kind: string;
+  source: HubSource;
+  hubLevel: number;
+  /** Mauerlinie bzw. Tor: Linie k; sonst 0 */
+  line: number;
+  bothSides: boolean;
+  towerUnits: number;
+  /** Streuung nach außen je Seed; 0 = fest */
+  jitterUnits: number;
+  /** je Hub-Stufe 1 … levels */
+  cells: HubCell[];
+}
+
+/** Matrix Hub-Stufe × Bauplatz (Go: HubMatrix); levels = Anzahl hub.json › levels, keine feste Zahl. */
+export interface HubMatrix {
+  levels: number;
+  rows: HubRow[];
+}
+
+/** Befund der Prüfung im Go-Backend (sim.ValidateHub) */
+export interface HubFinding {
+  rule: string;
+  site: string;
+  detail: string;
+}
+
+/** Stand des Gebäude-Planers (Go: HubPlanView): raw ist der Kandidat der Live-Vorschau; error nennt eine nicht lesbare
+ *  oder ungültige Datei mit Pfad, dann ist die Matrix leer. */
+export interface HubPlanView {
+  path: string;
+  raw: string;
+  matrix: HubMatrix;
+  findings: HubFinding[];
+  notes: string[];
+  error: string;
+}
+
+/** Abweichende Zeile des erzeugten Blocks (1-basiert); fehlt sie auf einer Seite, ist der Text dort leer. */
+export interface HubRulesLine {
+  line: number;
+  ist: string;
+  soll: string;
+}
+
+/** Abweichung der Regeltabelle (Go: HubRulesView): Block im Regeltext (ist) gegen den aus dem Planer-Stand erzeugten
+ *  (soll), mit dem Task, der den Block neu schreibt. */
+export interface HubRulesView {
+  path: string;
+  task: string;
+  same: boolean;
+  ist: string;
+  soll: string;
+  lines: HubRulesLine[];
+  error: string;
 }
 
 /** Vorschau-Welt (Go: WorldPreviewView): Level wie die Nachricht level, Zustand wie snap, oder ein Hinweis in error. */
@@ -152,6 +229,10 @@ export interface Backend {
   worldPreview(args: WorldPreviewArgs): Promise<WorldPreviewView>;
   /** Im Spiel öffnen: `new` (neues Spiel mit dem Seed) oder `full` (voll ausgebaut), über die Landingpage des Servers unter base, nur Loopback */
   worldOpenGame(base: string, seed: string, biome: string, mode: 'new' | 'full'): Promise<OpenGameResult>;
+  /** Gebäude-Planer: data/hub.json als Matrix mit Befunden der Prüfung (B-462) */
+  hubPlan(): Promise<HubPlanView>;
+  /** Gebäude-Planer: Abweichung der Regeltabelle vom Planer-Stand (leer = data/hub.json) */
+  hubRules(hubJSON: string): Promise<HubRulesView>;
   openUrl(url: string): void;
   /** Abo eines Ereignisses; liefert die Abmeldung */
   on<E extends EventName>(event: E, fn: (data: Events[E]) => void): () => void;
