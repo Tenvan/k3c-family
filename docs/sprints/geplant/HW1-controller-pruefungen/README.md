@@ -4,7 +4,7 @@
 - **Projekt:** ABN
 - **Domäne:** PLAT, SRV, INF, CLI
 - **Reife:** Entwurf
-- **Tickets:** B-314, B-042, B-090, B-092, B-335, B-394
+- **Tickets:** B-314, B-042, B-090, B-335, B-394
 - **Start-Commit:** –
 - **Spec:** Entwurf
 - **Revision:** 1

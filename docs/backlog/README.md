@@ -22,7 +22,6 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-058](B-058-execution-policy.md) | INF | Frage | niedrig | eingeplant | RP1 | requirements.md empfiehlt keine Sicherheitseinstellung ohne Entscheidung von 🧑 |
 | [B-080](B-080-dev-tasten-server.md) | SRV | Idee | niedrig | eingeplant | KB2 | Dev-Tasten (Gold, Stufe, Neustart) wirken über den Server |
 | [B-090](B-090-radar.md) | CLI | Idee | mittel | eingeplant | HW1 | Ein Radar im HUD zeigt Burg, Portale, Ausgang, Mitspieler und Gegner |
-| [B-092](B-092-level-betrachter.md) | PLAT | Idee | mittel | eingeplant | HW1 | Eine Testseite zeigt ein generiertes Level (Seed und Biom) ohne zu spielen |
 | [B-094](B-094-npm-reste.md) | INF | Schuld | niedrig | eingeplant | RP1 | Im Repo liegen keine Alt-Binaries und keine npm-Skripte mehr |
 | [B-095](B-095-start-mit-seed-und-tiefe.md) | SRV | Idee | niedrig | eingeplant | BT1 | Ein neues Spiel startet per URL mit eigenem Seed und gewählter Tiefe |
 | [B-098](B-098-debug-overlay-standard-zurueck.md) | CLI | Schuld | niedrig | eingeplant | K5 | Das Debug-Overlay ist vor dem Release wieder nur mit ?dev=1 verfügbar |
@@ -144,7 +143,6 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-456](B-456-fahne-spielerfarbe-wimpel.md) | CLI | Idee | mittel | offen | – | Markierungsfahne als Wimpel in Spielerfarbe |
 | [B-457](B-457-geb6-abnahme-splitscreen-ausgang-geschmack.md) | CLI | Frage | mittel | offen | – | GEB6: Split-Screen, Ausgang-Beschriftung und Geschmacksfragen später prüfen |
 | [B-458](B-458-hub-ausbau-wachstum-feinstufen.md) | DEV | Idee | hoch | offen | – | Hub wächst in Ausbaustufen sichtbar und kleinteilig (Lagerfeuer bis Burg, K2C-Stil) |
-| [B-460](B-460-welt-betrachter-live-vorschau.md) | DEV | Idee | hoch | eingeplant | WZ7 | Der Welt-Betrachter im Asset-Studio zeigt Chunks maximiert und eine Live-Vorschau mit Hub-Stufen und schaltbaren Gebäuden |
 | [B-461](B-461-chunks-je-biom-planbar.md) | SIM | Idee | mittel | eingeplant | WZ8 | Chunks einer Insel-Stufe lassen sich planen, per Seed oder mit festen Objekten |
 | [B-462](B-462-gebaeude-planer-hub-stufen.md) | DEV | Idee | mittel | eingeplant | WZ9 | Ein Gebäude-Planer bearbeitet, welches Gebäude ab welcher Hub-Stufe verfügbar ist |
 | [B-463](B-463-monarch-vorschau-animationen.md) | DEV | Idee | mittel | eingeplant | WZ10 | Eine Monarch-Seite im Asset-Studio zeigt Reiten, Schlagen, Skills und weitere Vorschauen |
@@ -159,6 +157,7 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-472](B-472-nacht-dunkler-fackeln-lagerfeuer-licht.md) | CLI | Idee | niedrig | offen | – | Nacht und Morgengrauen sind dunkler, Fackeln und Lagerfeuer machen Licht |
 | [B-473](B-473-ci-rot-k3c-dev-planning-worktree-tests.md) | DEV | Problem | hoch | offen | – | CI auf develop rot: k3c-dev internal/planning Worktree-Tests scheitern auf dem Windows-Runner |
 | [B-474](B-474-testdownloadhit-norton-tls.md) | DEV | Problem | mittel | offen | – | TestDownloadHit scheitert lokal am TLS-Zertifikat (Norton), check:all rot |
+| [B-480](B-480-assetkit-downloadhit-tls.md) | DEV | Problem | mittel | offen | – | TestDownloadHit in tools/assetkit scheitert lokal am TLS-Zertifikat und blockiert task check:all |
 | [B-475](B-475-frage-geplante-ereignisse-zaehlung.md) | REG | Frage | niedrig | offen | – | Frage: Wie zählen feste Ereignis-Objekte in geplanten Chunks, und gilt für „kein Platz mehr“ das Minimum oder das Maximum? |
 
 ## Archiv
@@ -437,3 +436,7 @@ Zeile in diesen Abschnitt.
 | [B-443](archiv/B-443-dev-logs-scrollen-liste.md) | DEV | Problem | mittel | erledigt | – | Auf der Log-Seite von k3c-dev scrollt nur die Log-Liste, nicht die ganze Seite |
 | [B-444](archiv/B-444-vite-ports-plus-zehn.md) | DEV | Problem | mittel | erledigt | – | Vite-Ports von Spiel und k3c-dev liegen 10 höher und kollidieren nicht mit dem Vite-Standardport |
 | [B-445](archiv/B-445-dev-splitter-assets-mcp.md) | DEV | Idee | mittel | erledigt | – | Assets- und MCP-Seite von k3c-dev haben ziehbare Splitter zwischen den Panelen |
+| [B-092](archiv/B-092-level-betrachter.md) | PLAT | Idee | mittel | verworfen | HW1 | Eine Testseite zeigt ein generiertes Level (Seed und Biom) ohne zu spielen |
+| [B-460](archiv/B-460-welt-betrachter-live-vorschau.md) | DEV | Idee | hoch | erledigt | WZ7 | Der Welt-Betrachter im Asset-Studio zeigt Chunks maximiert und eine Live-Vorschau mit Hub-Stufen und schaltbaren Gebäuden |
+| [B-477](archiv/B-477-welt-betrachter-nacharbeit.md) | DEV | Problem | hoch | erledigt | WZ16 | Der Welt-Betrachter zeigt Chunk- und Live-Vorschau in einer gemeinsamen, synchron scrollenden Ansicht |
+| [B-482](archiv/B-482-planung-kurzpfad-vergleich.md) | DEV | Problem | hoch | erledigt | – | Planungs-Tools erkennen die Repo-Wurzel auch bei Kurzpfaden (8.3) und die CI-Tests des k3c-dev-Jobs sind grün |

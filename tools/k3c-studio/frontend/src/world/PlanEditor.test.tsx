@@ -7,7 +7,7 @@ import { backend } from '../api';
 import { WorldPage } from './WorldPage';
 
 // B-461/AC-06, AC-09, AC-11, AC-12 im DOM: der Editor für geplante Chunks mit dem Mock-Backend (ohne Wails).
-vi.mock('../stage/PreviewStage', () => ({ PreviewStage: class { show() {} refresh() {} setLook() {} destroy() {} } }));
+vi.mock('../stage/PreviewStage', () => ({ PreviewStage: class { show() {} refresh() {} setLook() {} setPosition() {} destroy() {} } }));
 (globalThis as { IS_REACT_ACT_ENVIRONMENT?: boolean }).IS_REACT_ACT_ENVIRONMENT = true;
 
 let root: Root | null = null;

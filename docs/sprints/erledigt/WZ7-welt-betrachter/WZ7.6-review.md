@@ -1,6 +1,6 @@
 # WZ7.6 · Review WZ7
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Review
 - **Agent:** autonom
 - **Domäne:** DEV
@@ -52,5 +52,11 @@ Neue Funktionen oder Umbauten über schwere Befunde hinaus; Stil, Doku, Benennun
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+Review durch Claude (autonom), 2026-10-17; Code-Review durch getrennten Reviewer-Agenten auf dem Diff `dd2ee75d...HEAD` (SIM, SRV, DEV).
+
+- **Prüfläufe:** `task check`, `task check:go`, `check_run dev:test` grün. `task check:all` und der Studio-Lauf ist über die Kette `check`, `check:go`, `dev:test` und die Vitests des Studios in `task check` abgedeckt, aber nicht als ein Lauf gefahren (kein `check_run`-Ziel `task:check:all`).
+- **AC-01 bis AC-08 geprüft** (Nachweise im Reviewer-Bericht): Chunk-Vorschau `app_world.go`, `ChunkPreview.tsx`; maximiert `WorldPage.tsx`; Vorschau-Funktion `engine/net/preview.go`, `engine/room/preview.go`, `engine/sim/preview.go` ohne globalen Zustand, Ablehnung von `dawn` und Fortschritt außerhalb [0, 1); Live-Vorschau `PreviewStage.ts`; Tageszeit `timeOfDay.ts` mit `toBeCloseTo`; „Im Spiel öffnen“ `app_game.go` nur Loopback, keine Weiterleitungen; `leveltest` entfernt (WZ7.5); Tests in `check:all` laut `Taskfile.yml`.
+- **AC-09:** `offen (WZ7.7)`, Abnahme durch 🧑.
+- **Schwere Befunde:** keine. Hinweis (kein Befund): Die Basisadresse des Spielservers kommt aus einem Feld im Frontend, Go prüft sie vor jedem Zugriff erneut auf Loopback.
+- **Abnahme-Liste** für WZ7.7 steht in dessen Kontext. Kein PR in dieser Session (Auftrag von Ralf: PRs macht er extra); der Sprint bleibt `aktiv`, bis WZ7.7 fertig ist.
+- Neue Tickets: keine.

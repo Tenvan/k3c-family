@@ -6,7 +6,7 @@
 - **Domäne:** DEV
 - **Umgebung:** offline
 - **Branch:** wz8/5-editor-welt-betrachter
-- **Abhängig von:** WZ8.4, WZ7.4
+- **Abhängig von:** WZ8.4, WZ7.4, WZ16.2
 - **Tickets:** B-461
 - **Kriterien:** AC-06, AC-09, AC-11, AC-12
 
@@ -30,7 +30,7 @@ Budget: ≈ 400 Code-Zeilen je Session. Sprengt der Editor es, Rest als Ticket, 
 
 ## Nicht-Ziele
 
-Änderungen an `engine/` oder `data/` (→ Ticket); eine Planung in `data/islands.json` speichern oder einchecken; Gebäude-Planer (WZ9); Ruinen und Gegnerlager (B-468); `leveltest.html` (B-460, WZ7.5); neue Abhängigkeiten; Fenster- oder Browserprüfung durch Claude ohne Freigabe von 🧑.
+Änderungen an `engine/` oder `data/` (→ Ticket); eine Planung in `data/islands.json` speichern oder einchecken; Gebäude-Planer (WZ9); Ruinen und Gegnerlager (B-468); den Level-Betrachter der Wurzel (B-460, WZ7.5); neue Abhängigkeiten; Fenster- oder Browserprüfung durch Claude ohne Freigabe von 🧑.
 
 ## Schritte
 
