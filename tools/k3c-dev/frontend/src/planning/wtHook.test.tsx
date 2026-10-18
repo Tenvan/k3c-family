@@ -3,7 +3,7 @@ import { Theme } from '@radix-ui/themes';
 import { act } from 'react';
 import { createRoot } from 'react-dom/client';
 import { renderToStaticMarkup } from 'react-dom/server';
-import { describe, expect, it, vi } from 'vitest';
+import { afterEach, describe, expect, it, vi } from 'vitest';
 import type { WorktreeDiff } from '../api';
 import { mockPlanningData } from '../api/mockPlanning';
 import { groupProjects, rankedCount } from './projects';
@@ -17,6 +17,8 @@ const check = vi.fn();
 const handlers: Record<string, () => void> = {};
 vi.mock('../api', () => ({ backend: { worktreeCheck: () => check(), on: (ev: string, fn: () => void) => { handlers[ev] = fn; return () => {}; } } }));
 (globalThis as { IS_REACT_ACT_ENVIRONMENT?: boolean }).IS_REACT_ACT_ENVIRONMENT = true;
+
+afterEach(() => { check.mockReset(); for (const k of Object.keys(handlers)) delete handlers[k]; });
 
 type State = ReturnType<typeof useWorktreeDiffs>;
 async function mount(): Promise<{ get: () => State; done: () => void }> {
@@ -44,7 +46,10 @@ describe('useWorktreeDiffs', () => {
     await act(async () => { window.dispatchEvent(new Event('focus')); });
     expect(m.get().error).toBe('');
     expect(m.get().diffs[0]!.changes[0]!.id).toBe('B-2');
+    expect(check).toHaveBeenCalledTimes(3);
     m.done();
+    window.dispatchEvent(new Event('focus')); // nach dem Unmount kein weiterer Check
+    expect(check).toHaveBeenCalledTimes(3);
   });
 });
 
