@@ -1,7 +1,7 @@
 import type { LevelLayout } from '@game/model/types';
 
 // Chunk-Vorschau des Welt-Betrachters (B-460, WZ7.2): reine Funktionen, aus der früheren Level-Betrachter-Seite
-// (B-092, src/tools/levelView.ts) hierher umgezogen. Aus dem Level wird das Zeichenmodell; dazu Zoom und Zufalls-Seed.
+// (B-092, src/tools/levelView.ts) hierher umgezogen. Aus dem Level wird das Zeichenmodell; dazu Zufalls-Seed (Zoom: viewState.ts).
 // Kein DOM, kein Netz. „Im Spiel starten“ und „Voll ausgebaut“ folgen in WZ7.4.
 
 /** Das Level wie im Spiel plus die Warnungen der Spielbarkeits-Prüfung (Go: WorldLevelView ohne Error). */
@@ -91,15 +91,6 @@ const SEED_LENGTH = 8;
 /** Startbarer Zufalls-Seed (Kleinbuchstaben und Ziffern) aus Zufallsbytes; gleiche Bytes ergeben denselben Seed. */
 export function seedFromBytes(bytes: ArrayLike<number>): string {
   return Array.from({ length: SEED_LENGTH }, (_, i) => ALPHABET[(bytes[i] ?? 0) % ALPHABET.length]).join('');
-}
-
-export const MIN_SCALE = 2;
-export const MAX_SCALE = 24;
-export const DEFAULT_SCALE = 6;
-
-/** Neuer Maßstab (Pixel je Unit) nach einem Zoomschritt, begrenzt auf MIN_SCALE bis MAX_SCALE. */
-export function zoomScale(scale: number, factor: number): number {
-  return Math.min(MAX_SCALE, Math.max(MIN_SCALE, scale * factor));
 }
 
 const COLORS: Record<string, string> = {

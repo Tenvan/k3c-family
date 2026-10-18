@@ -1,6 +1,5 @@
 import hubData from '@data/hub.json';
 import { BIOMES } from '@game/model/biome';
-import { GAME_HEIGHT } from '@game/core/constants';
 import type { World } from '@game/model/types';
 import { createViewWorld } from '@game/online/clientWorld';
 import { biomeBackground } from '@game/scenes/worldSprites';
@@ -64,14 +63,4 @@ export function worldOf(view: WorldPreviewView | null): World | null {
   const biome = BIOMES.find((b) => b.id === view.level.biomeId);
   if (!biome) return null;
   return createViewWorld({ depth: biome.depth, layout: view.level, biome }, view.state as unknown as WorldState);
-}
-
-/** Kamera-Zoom, bei dem die Spielhöhe in die Höhe der Bühne passt (Texte der Stufe gleicht `scaleTexts` aus). */
-export function stageZoom(stageHeightPx: number): number {
-  return stageHeightPx > 0 ? stageHeightPx / GAME_HEIGHT : 1;
-}
-
-/** Ob die Kamera neu auf die Burg gesetzt wird: nur bei einem anderen Level (Seed oder Biom), nicht bei Hub-Stufe oder Gebäude-Auswahl. */
-export function levelKey(world: Pick<World, 'seed' | 'biome'>): string {
-  return `${world.seed}:${world.biome.id}`;
 }

@@ -3,7 +3,7 @@ import { useEffect, useMemo, useRef, useState, type RefObject } from 'react';
 import type { World } from '@game/model/types';
 import { backend, type WorldPreviewView } from '../api';
 import { useDebounced } from '../lib/useDebounced';
-import type { Look, PreviewStage } from './PreviewStage';
+import type { Look, PreviewStage, StagePosition } from './PreviewStage';
 import { backgroundToggles, buildingToggles, hubLevelChoices, previewArgsOf, worldOf } from './stageLogic';
 import { MAX_PROGRESS, TIMES_OF_DAY, brightnessOf, simTime, type TimeOfDayId } from './timeOfDay';
 
@@ -51,27 +51,29 @@ function usePreviewWorld(seed: string, biome: string, hubLevel: number, time: { 
 /** Phaser wird erst beim ersten Sichtbarwerden geladen (eigener Baustein, groß) und baut die Bühne im Element auf; danach
  *  zeichnet sie jede neue Welt mit der aktuellen Darstellung (`look`). Beim Verlassen wird sie abgebaut. Liefert Grafiken,
  *  die nicht geladen werden konnten. */
-function useStage(host: RefObject<HTMLDivElement | null>, active: boolean, world: World | null, look: Look): string[] {
+function useStage(host: RefObject<HTMLDivElement | null>, world: World | null, look: Look, position: StagePosition, onPan: (px: number) => void): string[] {
   const stage = useRef<PreviewStage | null>(null);
-  const latest = useRef({ world, look });
-  latest.current = { world, look };
+  const latest = useRef({ world, look, position });
+  latest.current = { world, look, position };
+  const pan = useRef(onPan);
+  pan.current = onPan;
   const [failed, setFailed] = useState<string[]>([]);
 
   useEffect(() => {
-    if (!active) return;
-    if (stage.current) { stage.current.refresh(); return; }
     let cancelled = false;
     void import('./PreviewStage').then(({ PreviewStage: Stage }) => {
       if (cancelled || stage.current || !host.current) return;
-      stage.current = new Stage(host.current, setFailed);
+      stage.current = new Stage(host.current, setFailed, (px) => pan.current(px));
       stage.current.setLook(latest.current.look);
+      stage.current.setPosition(latest.current.position);
       stage.current.show(latest.current.world);
     });
     return () => { cancelled = true; };
-  }, [active, host]);
+  }, [host]);
   useEffect(() => () => { stage.current?.destroy(); stage.current = null; }, []);
   useEffect(() => { stage.current?.show(world); }, [world]);
   useEffect(() => { stage.current?.setLook(look); }, [look]);
+  useEffect(() => { stage.current?.setPosition(position); }, [position]);
   return failed;
 }
 
@@ -104,8 +106,11 @@ function LookControls({ biome, timeId, setTimeId, progress, setProgress, hidden,
 
 /** Live-Vorschau des Welt-Betrachters (B-460/AC-04, AC-05): die Welt des Spiels mit der Spielgrafik auf der Phaser-Bühne
  *  des Studios. Hub-Stufe aus `data/hub.json` › `levels`, Gebäude einzeln ein und aus, Tageszeit, Hintergrund-Schichten
- *  mit Parallaxe (Kamera scrollt). `active` = sichtbar. */
-export function LivePreview({ seed, biome, active }: { seed: string; biome: string; active: boolean }) {
+ *  mit Parallaxe (Kamera scrollt). Position und Zoom kommen von außen (`position`, B-477, gleich wie im Chunk-Streifen);
+ *  Ziehen und Mausrad melden `onPan` (Pixel); `onSites` meldet die Bauplätze (für die Sprungpunkte). */
+export function LivePreview({ seed, biome, position, onPan, onSites }: {
+  seed: string; biome: string; position: StagePosition; onPan: (px: number) => void; onSites?: (sites: readonly { kind: string; x: number }[]) => void;
+}) {
   const choices = useMemo(() => hubLevelChoices(), []);
   const [hubLevel, setHubLevel] = useState(choices.at(-1) ?? 1);
   const [timeId, setTimeId] = useState<TimeOfDayId>('day');
@@ -118,8 +123,10 @@ export function LivePreview({ seed, biome, active }: { seed: string; biome: stri
   const host = useRef<HTMLDivElement>(null);
   const world = useMemo(() => worldOf(view), [view]);
   const look = useMemo<Look>(() => ({ brightness: world ? brightnessOf(world.cycle) : 1, hiddenLayers: hidden }), [world, hidden]);
-  const failed = useStage(host, active, world, look);
-  const toggles = useMemo(() => buildingToggles(all?.state?.sites ?? []), [all]);
+  const failed = useStage(host, world, look, position, onPan);
+  const sites = all?.state?.sites;
+  const toggles = useMemo(() => buildingToggles(sites ?? []), [sites]);
+  useEffect(() => { onSites?.(sites ?? []); }, [sites, onSites]);
   const note = view?.error || (failed.length > 0 ? `Grafiken nicht geladen: ${failed.join(', ')}` : '');
   const toggleLayer = (key: string, on: boolean) => setHiddenFor(() => {
     const next = new Set(hidden);

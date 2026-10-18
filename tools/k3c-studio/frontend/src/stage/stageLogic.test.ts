@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import { mockWorldPreview } from '../api/mockWorld';
-import { backgroundToggles, buildingToggles, hubLevelChoices, levelKey, previewArgsOf, siteKey, stageZoom, worldOf } from './stageLogic';
+import { backgroundToggles, buildingToggles, hubLevelChoices, previewArgsOf, siteKey, worldOf } from './stageLogic';
 
 describe('Hub-Stufen (B-460/AC-04)', () => {
   it('aus data/hub.json › levels: 1 bis Anzahl der Einträge', () => {
@@ -64,22 +64,6 @@ describe('Welt für den Renderer (B-460/AC-04)', () => {
     expect(worldOf(mockWorldPreview(previewArgsOf('fehler', 'forest', 5, new Set())))).toBeNull();
     const view = mockWorldPreview(previewArgsOf('k3c', 'forest', 5, new Set()));
     expect(worldOf({ ...view, level: { ...view.level, biomeId: 'nirgendwo' } })).toBeNull();
-  });
-});
-
-describe('Kamera', () => {
-  it('Zoom: Spielhöhe 1080 passt in die Bühnenhöhe', () => {
-    expect(stageZoom(540)).toBe(0.5);
-    expect(stageZoom(1080)).toBe(1);
-    expect(stageZoom(0)).toBe(1);
-  });
-
-  it('levelKey: ein anderes Level (Seed, Biom) zentriert neu, Hub-Stufe und Gebäude-Auswahl nicht', () => {
-    const base = worldOf(mockWorldPreview(previewArgsOf('k3c', 'forest', 5, new Set())))!;
-    const hub3 = worldOf(mockWorldPreview(previewArgsOf('k3c', 'forest', 3, new Set(['wall@322']))))!;
-    expect(levelKey(hub3)).toBe(levelKey(base));
-    expect(levelKey({ ...base, seed: 'anderer' })).not.toBe(levelKey(base));
-    expect(levelKey({ ...base, biome: { ...base.biome, id: 'cave' } })).not.toBe(levelKey(base));
   });
 });
 

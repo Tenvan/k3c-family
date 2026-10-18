@@ -15,7 +15,7 @@ const looks: Look[] = [];
 vi.mock('./PreviewStage', () => ({
   PreviewStage: class {
     show() {}
-    refresh() {}
+    setPosition() {}
     destroy() {}
     setLook(look: Look) { looks.push(look); }
   },
@@ -29,7 +29,7 @@ async function mount(biome = 'forest'): Promise<HTMLElement> {
   host = document.createElement('div');
   document.body.append(host);
   root = createRoot(host);
-  await act(async () => root!.render(<Theme><LivePreview seed="k3c" biome={biome} active /></Theme>));
+  await act(async () => root!.render(<Theme><LivePreview seed="k3c" biome={biome} position={{ left: 0, scale: 12 }} onPan={() => {}} /></Theme>));
   await flush();
   return host;
 }
