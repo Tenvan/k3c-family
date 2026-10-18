@@ -1,6 +1,6 @@
 # WZ8.7 · Abnahme der Chunk-Planung durch Ralf
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Review
 - **Agent:** Mensch
 - **Domäne:** DEV
@@ -62,5 +62,15 @@ Manuelle Prüfungen am PC (Asset-Studio-Fenster) macht 🧑. Claude prüft im Fe
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+Urteil von 🧑 am PC im Studio-Fenster (EXE von 🧑 selbst gebaut), 2026-10-18, Quelle Chat; Claude hat nicht geurteilt.
+
+- Punkt 1 (festes Portal Wald, Platz +6): ok.
+- Punkt 2 (Sondergegend, zwei Seeds, Chunk- und Live-Vorschau): Verhalten ok. Bedienung des Chunk-Editors könnte komfortabler sein (Dropdown zu klein, Schnellfilter zeigt die übrigen Auswahlmöglichkeiten nicht, Icon zum Text wünschenswert) → B-485 (Spec freigegeben, Sprint WZ17).
+- Punkt 3 (ungültige Entwürfe): ok.
+- Punkt 4 (Speichern, REG-Hinweis, Diff nur `plannedChunks`): ok.
+- Punkt 5 (Datei von außen geändert, dann Speichern): beim ersten Durchgang **Verhalten falsch** (nichts gespeichert, keine Meldung) → B-486. Wiederholt mit neuem Build (Korrektur in `usePlan.save`: Ablehnung des Aufrufs zeigt jetzt „Speichern fehlgeschlagen: <Grund>“): **passt** (Urteil von 🧑 im Chat, 2026-10-18; der angezeigte Text wurde nicht zitiert).
+- Punkt 6: Sondergegend und Chunk-Anpassungen kommen später und werden gezielt geplant (bleibt Entwurf, kein REG-Ticket jetzt); B-475 erstmal ok; WZ8.4 wie umgesetzt bestätigt (Biom-Vorschau ohne Option = keine Planung, eingebettete Planung erst bei Insel + Stufe); Abhängigkeit in `tools/k3c-studio/go.mod` ok.
+
+AC-10 abgenommen: Punkte 1–5 von 🧑 mit „ok“ beurteilt. Die Korrektur zu B-486 hat ein getrennter Reviewer geprüft (keine schweren Befunde, mittlere Befunde → B-487). B-461 und WZ8 sind `erledigt`.
+
+Neue Tickets: B-485 (Bedienung des Chunk-Editors), B-486 (Speichern schweigt, behoben).
