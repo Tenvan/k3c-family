@@ -1,5 +1,5 @@
 /**
- * Auswahl auf den Referenzseiten (figuren.html, aufstellung.html, grafiken.html): Jede Figur, jedes Pack und jedes Bild hat ein Kästchen mit stabiler ID.
+ * Auswahl auf den Referenzseiten (grafiken.html): Jede Figur, jedes Pack und jedes Bild hat ein Kästchen mit stabiler ID.
  * Unten steht die Auswahl als Satz zum Kopieren („Auswahl Figuren: goblin, skeleton“), damit man im Chat einfach sagen kann, was mit welcher Grafik geschehen soll.
  * Die Auswahl bleibt im Browser (localStorage) erhalten.
  */

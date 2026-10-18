@@ -181,10 +181,6 @@ export const de = {
   'tile.level.desc': 'Seed und Biom wählen, das generierte Level ansehen · Warnungen der Prüfung (Go-Server nötig)',
   'tile.gamepad.title': 'Gamepad-Test',
   'tile.gamepad.desc': 'Controller, B-Taste, Vollbild, Vibration, FPS · Bericht an den PC',
-  'tile.aufstellung.title': 'Unsere Aufstellung',
-  'tile.aufstellung.desc': 'Jede Rolle im Spiel mit ihrer Figur · Monarchen, Truppen, Gegner',
-  'tile.figuren.title': 'Alle Figuren',
-  'tile.figuren.desc': 'Alle Sprites aus LuizMelo und Gothicvania, auch ungenutzte',
   'tile.grafiken.title': 'Alle Grafiken',
   'tile.grafiken.desc': 'Gewählte CC0-Packs für Gebäude, Ressourcen und Hintergründe · mit Urheber, Lizenz und Quelle',
   'tile.sound.title': 'Hörprobe',
@@ -210,15 +206,7 @@ export const de = {
   'test.layout.3': 'zwei oben, einer breit unten',
   'test.layout.4': '2×2-Raster',
 
-  // Reference pages (figuren.html, aufstellung.html) and the selection bar
-  'fig.pageTitle': 'K3C Alle Figuren',
-  'fig.title': 'Alle Figuren',
-  'fig.sub':
-    'Alle Figuren aus LuizMelo (unsere Seite) und Gothicvania von ansimuz (Gegenseite), auch die noch ohne Rolle. Alle CC0, Quellen in public/sprites/CREDITS.md. Jede Figur wird einzeln eingepasst. Scrollen mit Stick oder Steuerkreuz. Mit den Kästchen „Auswahl“ stellst du unten einen Satz mit den Figuren-IDs zusammen, den du im Chat nennen kannst.',
-  'auf.pageTitle': 'K3C Unsere Aufstellung',
-  'auf.title': 'Unsere Aufstellung',
-  'auf.sub':
-    'Jede Rolle im Spiel mit Bild, Einfärbung und Größe aus data/sprites.json. Monarchen, Truppen und Gegner stehen im gleichen Maßstab, so wie die Größen im Spiel zueinander passen. Unten die Figuren, die noch keine Rolle haben. Scrollen mit Stick oder Steuerkreuz. Mit den Kästchen „Auswahl“ stellst du unten einen Satz mit den Figuren-IDs zusammen, den du im Chat nennen kannst.',
+  // Selection bar of the reference pages
   'sprite.ours': 'Unsere Seite',
   'sprite.enemy': 'Gegenseite',
   'sprite.mountsKing': 'Reittiere (mit König 1)',
@@ -238,8 +226,6 @@ export const de = {
   'sel.copy': 'Kopieren',
   'sel.clear': 'Leeren',
   'sel.text': 'Auswahl {label}: {ids}',
-  'sel.figuren': 'Figuren',
-  'sel.aufstellung': 'Aufstellung',
   'sel.grafiken': 'Grafiken',
 
   // Gamepad test (gamepad-test.html) and its audio probe

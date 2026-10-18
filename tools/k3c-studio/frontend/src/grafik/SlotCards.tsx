@@ -37,7 +37,7 @@ export function ImageCard({ r }: { r: Resolved }) {
   );
 }
 
-/** Figuren im selben Maßstab wie im Spiel (renderReference, gleiche Karten wie figuren.html). */
+/** Figuren im selben Maßstab wie im Spiel (renderReference, Karten aus data/sprites.json). */
 // renderReference startet je Aufruf eine eigene requestAnimationFrame-Schleife ohne Abmeldung; alte Schleifen laufen auf
 // abgehängten Canvases weiter, zeichnen aber nichts (isVisible). Abmeldung in spriteReference.ts: B-471.
 export function FigurenCards({ title, items }: { title: string; items: Resolved[] }) {

@@ -180,10 +180,6 @@ export const en: Partial<Record<ToolTextKey, string>> = {
   'tile.level.desc': 'Pick seed and biome, view the generated level · validation warnings (Go server required)',
   'tile.gamepad.title': 'Gamepad Test',
   'tile.gamepad.desc': 'Controller, B button, fullscreen, rumble, FPS · report to the PC',
-  'tile.aufstellung.title': 'Our Lineup',
-  'tile.aufstellung.desc': 'Every role in the game with its figure · monarchs, troops, enemies',
-  'tile.figuren.title': 'All Figures',
-  'tile.figuren.desc': 'All sprites from LuizMelo and Gothicvania, including unused ones',
   'tile.grafiken.title': 'All Graphics',
   'tile.grafiken.desc': 'Chosen CC0 packs for buildings, resources and backgrounds · with author, license and source',
   'tile.sound.title': 'Listening Test',
@@ -209,15 +205,7 @@ export const en: Partial<Record<ToolTextKey, string>> = {
   'test.layout.3': 'two on top, one wide below',
   'test.layout.4': '2×2 grid',
 
-  // Reference pages (figuren.html, aufstellung.html) and the selection bar
-  'fig.pageTitle': 'K3C All Figures',
-  'fig.title': 'All Figures',
-  'fig.sub':
-    'All figures from LuizMelo (our side) and Gothicvania by ansimuz (enemy side), including those without a role yet. All CC0, sources in public/sprites/CREDITS.md. Each figure is fitted on its own. Scroll with stick or D-pad. With the “Selection” boxes you build a sentence of figure IDs below that you can mention in the chat.',
-  'auf.pageTitle': 'K3C Our Lineup',
-  'auf.title': 'Our Lineup',
-  'auf.sub':
-    'Every role in the game with image, tint and size from data/sprites.json. Monarchs, troops and enemies share one scale, just as their sizes relate in the game. Below are the figures that have no role yet. Scroll with stick or D-pad. With the “Selection” boxes you build a sentence of figure IDs below that you can mention in the chat.',
+  // Selection bar of the reference pages
   'sprite.ours': 'Our side',
   'sprite.enemy': 'Enemy side',
   'sprite.mountsKing': 'Mounts (with king 1)',
@@ -237,8 +225,6 @@ export const en: Partial<Record<ToolTextKey, string>> = {
   'sel.copy': 'Copy',
   'sel.clear': 'Clear',
   'sel.text': 'Selection {label}: {ids}',
-  'sel.figuren': 'figures',
-  'sel.aufstellung': 'lineup',
   'sel.grafiken': 'graphics',
 
   // Gamepad test (gamepad-test.html) and its audio probe
