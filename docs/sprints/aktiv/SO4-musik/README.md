@@ -12,7 +12,7 @@
 
 ## Ausgangslage
 
-Audio-Kern (SO1), Effekte (SO2) und Hörprobenseite (SO3) stehen; Musik fehlt. Details in B-168.
+Audio-Kern (SO1) und Hörprobenseite (SO3) stehen; die Effekte (SO2) sind noch nicht gestartet, Musik fehlt. Die Hörprobe gibt es zusätzlich als Reiter der Sound-Seite im Asset-Studio (WZ6.4, am PC). Details in B-168.
 
 ## Ziel
 
@@ -20,7 +20,7 @@ Die Musik wechselt je Spielzustand mit Crossfade. Am Ende sichtbar: Die 8 Zustä
 
 ## Beteiligte und Zielgruppen
 
-🧑 wählt Stücke mit `soundtest.html` (Q16); Agent baut ein; Spieler am TV.
+🧑 wählt Stücke mit `soundtest.html` am TV (Q16) oder im Reiter „Hörprobe“ der Sound-Seite des Asset-Studios am PC; Agent baut ein; Spieler am TV.
 
 ## Anforderungen
 
@@ -56,7 +56,7 @@ Stück fehlt → vorheriger Zustand oder Stille, kein Absturz.
 
 ## Offene Fragen
 
-- Welches Stück läuft im Morgengrauen? Q65 führt die Phase ein, Q16 nennt dafür keinen eigenen Zustand (B-168 › Offene Fragen, B-213).
+- Welches Stück läuft im Morgengrauen? Q65 führt die Phase ein, Q16 nennt dafür keinen eigenen Zustand (B-168 › Offene Fragen). Die Phase selbst baut B-470; bis dahin gibt es `day`, `dusk` und `night`, das Morgengrauen läuft als Ende der Nacht. Entscheidet 🧑 mit den Hörproben.
 
 ## Sessions
 

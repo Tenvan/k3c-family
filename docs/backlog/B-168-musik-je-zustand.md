@@ -59,7 +59,7 @@ Stück fehlt → die Musik bleibt beim vorherigen Zustand oder still, kein Abstu
 
 ## Offene Fragen
 
-- Welches Stück läuft im Morgengrauen (Q65)? Q16 nennt dafür keinen eigenen Zustand; klärt B-213 bzw. 🧑 mit den Hörproben.
+- Welches Stück läuft im Morgengrauen (Q65)? Q16 nennt dafür keinen eigenen Zustand; klärt 🧑 mit den Hörproben. Die Phase selbst baut B-470 (B-213 ist ein anderes Ticket und gehört nicht mehr hierher).
 
 ## Notizen
 
