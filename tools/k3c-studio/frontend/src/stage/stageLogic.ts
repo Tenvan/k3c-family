@@ -1,6 +1,5 @@
 import hubData from '@data/hub.json';
 import { BIOMES } from '@game/model/biome';
-import { GAME_HEIGHT } from '@game/core/constants';
 import type { World } from '@game/model/types';
 import { createViewWorld } from '@game/online/clientWorld';
 import { biomeBackground } from '@game/scenes/worldSprites';
@@ -30,6 +29,36 @@ export function buildingToggles(sites: readonly { kind: string; x: number }[]): 
   return sites
     .map((s) => ({ key: siteKey(s.kind, s.x), kind: s.kind, x: s.x }))
     .sort((a, b) => a.x - b.x || a.kind.localeCompare(b.kind));
+}
+
+/** Reihenfolge und Namen der Gruppen im Gebäude-Filter; unbekannte Arten folgen alphabetisch, mit ihrem Namen. */
+const GROUPS: readonly [kind: string, label: string][] = [
+  ['wall', 'Mauern'], ['tower', 'Türme'], ['gate', 'Tore'], ['farm', 'Farmen'], ['barracks', 'Kasernen'], ['workshop', 'Werkstätten'],
+  ['tavern', 'Tavernen'], ['healer', 'Heilplätze'], ['smithy', 'Schmieden'], ['armory', 'Rüstkammern'], ['stairsDown', 'Treppen runter'],
+  ['stairsUp', 'Treppen hoch'],
+];
+
+export interface BuildingGroup {
+  kind: string;
+  label: string;
+  items: BuildingToggle[];
+  /** Zahl der eingeschalteten Plätze */
+  on: number;
+  /** alle, keiner oder gemischt: Zustand des Gruppenschalters */
+  state: 'all' | 'none' | 'some';
+}
+
+/** Gebäude-Schalter nach Art gruppiert (B-477/AC-05): Gruppen in fester Reihenfolge, Plätze von links nach rechts; `off` sind die abgewählten Schlüssel. */
+export function buildingGroups(toggles: readonly BuildingToggle[], off: ReadonlySet<string>): BuildingGroup[] {
+  const byKind = new Map<string, BuildingToggle[]>();
+  for (const t of toggles) byKind.set(t.kind, [...(byKind.get(t.kind) ?? []), t]);
+  const order = (kind: string) => { const i = GROUPS.findIndex(([k]) => k === kind); return i < 0 ? GROUPS.length : i; };
+  return [...byKind.entries()]
+    .sort(([a], [b]) => order(a) - order(b) || a.localeCompare(b))
+    .map(([kind, items]) => {
+      const on = items.filter((t) => !off.has(t.key)).length;
+      return { kind, label: GROUPS.find(([k]) => k === kind)?.[1] ?? kind, items, on, state: on === items.length ? 'all' : on === 0 ? 'none' : 'some' };
+    });
 }
 
 /** Optionen der Vorschau: abgewählte Gebäude als `false`, die übrigen fehlen (= an). Ein Planer-Stand (`hubCandidate`,
@@ -67,14 +96,4 @@ export function worldOf(view: WorldPreviewView | null): World | null {
   const biome = BIOMES.find((b) => b.id === view.level.biomeId);
   if (!biome) return null;
   return createViewWorld({ depth: biome.depth, layout: view.level, biome }, view.state as unknown as WorldState);
-}
-
-/** Kamera-Zoom, bei dem die Spielhöhe in die Höhe der Bühne passt (Texte der Stufe gleicht `scaleTexts` aus). */
-export function stageZoom(stageHeightPx: number): number {
-  return stageHeightPx > 0 ? stageHeightPx / GAME_HEIGHT : 1;
-}
-
-/** Ob die Kamera neu auf die Burg gesetzt wird: nur bei einem anderen Level (Seed oder Biom), nicht bei Hub-Stufe oder Gebäude-Auswahl. */
-export function levelKey(world: Pick<World, 'seed' | 'biome'>): string {
-  return `${world.seed}:${world.biome.id}`;
 }

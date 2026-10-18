@@ -7,6 +7,7 @@ import { HubMatrixView, rowId } from './HubMatrixView';
 import { AddSite, RowEditor } from './PlanerEditor';
 import { parseHub } from './planerEdit';
 import { usePlaner } from './usePlaner';
+import { usePlanerView } from './usePlanerView';
 
 /** Seed und Biom der Live-Vorschau im Gebäude-Planer: fest, damit nur Planer-Stand und Hub-Stufe das Bild ändern. */
 const PREVIEW = { seed: 'k3c', biome: 'forest' };
@@ -92,6 +93,7 @@ function PlanerBody({ planer, plan, shown }: { planer: ReturnType<typeof usePlan
   const levels = shown.matrix.levels;
   const hubLevel = chosen !== null && chosen <= levels ? chosen : Math.max(1, levels);
   const source = useMemo<PlanerSource>(() => ({ candidate, levels, hubLevel, onHubLevel: setChosen }), [candidate, levels, hubLevel]);
+  const view = usePlanerView();
   const current = useMemo(() => hub ?? parseHub(plan.raw), [hub, plan]);
   const row = shown.matrix.rows.find((r) => rowId(r) === selected) ?? null;
   return (
@@ -106,7 +108,7 @@ function PlanerBody({ planer, plan, shown }: { planer: ReturnType<typeof usePlan
       </fieldset>
       <section className="wd-live" aria-label="Live-Vorschau">
         <Text size="2" color="gray">Live-Vorschau des Planer-Stands, Seed {PREVIEW.seed}, Wald</Text>
-        <LivePreview seed={PREVIEW.seed} biome={PREVIEW.biome} active planer={source} />
+        <LivePreview seed={PREVIEW.seed} biome={PREVIEW.biome} position={view.position} onPan={view.onPan} onWheel={view.onWheel} planer={source} />
       </section>
     </>
   );

@@ -3,7 +3,8 @@ import { useEffect, useMemo, useRef, useState, type RefObject } from 'react';
 import type { World } from '@game/model/types';
 import { backend, type WorldPreviewView } from '../api';
 import { useDebounced } from '../lib/useDebounced';
-import type { Look, PreviewStage } from './PreviewStage';
+import type { Look, PreviewStage, StagePosition } from './PreviewStage';
+import { BuildingFilter } from './BuildingFilter';
 import { backgroundToggles, buildingToggles, hubLevelChoices, previewArgsOf, worldOf } from './stageLogic';
 import { MAX_PROGRESS, TIMES_OF_DAY, brightnessOf, simTime, type TimeOfDayId } from './timeOfDay';
 
@@ -40,38 +41,42 @@ function usePreviewWorld(seed: string, biome: string, hubLevel: number, time: { 
   const fresh = off.size === 0 ? (all?.key === key ? all.view : null) : (part?.key === key && part.off === offKey ? part.view : null);
   useEffect(() => { if (fresh) setShown(fresh); }, [fresh]);
 
-  const toggle = (name: string, on: boolean) => setChosen(() => {
+  const setMany = (names: readonly string[], on: boolean) => setChosen(() => {
     const next = new Set(off);
-    if (on) next.delete(name); else next.add(name);
+    for (const name of names) { if (on) next.delete(name); else next.add(name); }
     return { ctx, off: next };
   });
-  return { all: all?.view ?? null, view: shown, off, toggle };
+  return { all: all?.view ?? null, view: shown, off, setMany };
 }
 
 /** Phaser wird erst beim ersten Sichtbarwerden geladen (eigener Baustein, groß) und baut die Bühne im Element auf; danach
  *  zeichnet sie jede neue Welt mit der aktuellen Darstellung (`look`). Beim Verlassen wird sie abgebaut. Liefert Grafiken,
  *  die nicht geladen werden konnten. */
-function useStage(host: RefObject<HTMLDivElement | null>, active: boolean, world: World | null, look: Look): string[] {
+function useStage(host: RefObject<HTMLDivElement | null>, world: World | null, look: Look, position: StagePosition, onPan: (px: number) => void, onWheel: (e: WheelEvent) => void): string[] {
   const stage = useRef<PreviewStage | null>(null);
-  const latest = useRef({ world, look });
-  latest.current = { world, look };
+  const latest = useRef({ world, look, position });
+  latest.current = { world, look, position };
+  const pan = useRef(onPan);
+  pan.current = onPan;
+  const wheel = useRef(onWheel);
+  wheel.current = onWheel;
   const [failed, setFailed] = useState<string[]>([]);
 
   useEffect(() => {
-    if (!active) return;
-    if (stage.current) { stage.current.refresh(); return; }
     let cancelled = false;
     void import('./PreviewStage').then(({ PreviewStage: Stage }) => {
       if (cancelled || stage.current || !host.current) return;
-      stage.current = new Stage(host.current, setFailed);
+      stage.current = new Stage(host.current, setFailed, (px) => pan.current(px), (e) => wheel.current(e));
       stage.current.setLook(latest.current.look);
+      stage.current.setPosition(latest.current.position);
       stage.current.show(latest.current.world);
     });
     return () => { cancelled = true; };
-  }, [active, host]);
+  }, [host]);
   useEffect(() => () => { stage.current?.destroy(); stage.current = null; }, []);
   useEffect(() => { stage.current?.show(world); }, [world]);
   useEffect(() => { stage.current?.setLook(look); }, [look]);
+  useEffect(() => { stage.current?.setPosition(position); }, [position]);
   return failed;
 }
 
@@ -111,27 +116,38 @@ export interface PlanerSource {
   onHubLevel: (level: number) => void;
 }
 
-/** Live-Vorschau des Welt-Betrachters (B-460/AC-04, AC-05): die Welt des Spiels mit der Spielgrafik auf der Phaser-Bühne
- *  des Studios. Hub-Stufe aus `data/hub.json` › `levels` (mit `planer` aus dem Planer-Stand), Gebäude einzeln ein und
- *  aus, Tageszeit, Hintergrund-Schichten mit Parallaxe (Kamera scrollt). `active` = sichtbar. */
-export function LivePreview({ seed, biome, active, planer }: { seed: string; biome: string; active: boolean; planer?: PlanerSource }) {
+/** Wählbare Hub-Stufen und die gewählte: aus `data/hub.json`, mit Planer-Stand aus dessen Stufen und gesteuert von der Seite. */
+function useHubLevel(planer: PlanerSource | undefined) {
   const levels = planer?.levels;
   const choices = useMemo(() => (levels === undefined ? hubLevelChoices() : hubLevelChoices(Array.from({ length: levels }))), [levels]);
   const [ownLevel, setOwnLevel] = useState(choices.at(-1) ?? 1);
-  const hubLevel = planer?.hubLevel ?? ownLevel;
-  const setHubLevel = planer?.onHubLevel ?? setOwnLevel;
+  return { choices, hubLevel: planer?.hubLevel ?? ownLevel, setHubLevel: planer?.onHubLevel ?? setOwnLevel };
+}
+
+/** Live-Vorschau des Welt-Betrachters (B-460/AC-04, AC-05): die Welt des Spiels mit der Spielgrafik auf der Phaser-Bühne
+ *  des Studios. Hub-Stufe aus `data/hub.json` › `levels` (mit `planer` aus dem Planer-Stand), Gebäude einzeln ein und aus,
+ *  Tageszeit, Hintergrund-Schichten mit Parallaxe (Kamera scrollt). Position und Zoom kommen von außen (`position`, B-477,
+ *  gleich wie im Chunk-Streifen); Ziehen meldet `onPan` (Pixel), das Mausrad geht an `onWheel`; `onSites` meldet die Bauplätze
+ *  (für die Sprungpunkte). */
+export function LivePreview({ seed, biome, position, onPan, onWheel, onSites, planer }: {
+  seed: string; biome: string; position: StagePosition; onPan: (px: number) => void; onWheel: (e: WheelEvent) => void;
+  onSites?: (sites: readonly { kind: string; x: number }[]) => void; planer?: PlanerSource;
+}) {
+  const { choices, hubLevel, setHubLevel } = useHubLevel(planer);
   const [timeId, setTimeId] = useState<TimeOfDayId>('day');
   const [progress, setProgress] = useState(0);
   const settled = useDebounced(progress, 120);
   const time = useMemo(() => simTime(timeId, settled), [timeId, settled]);
   const [hiddenFor, setHiddenFor] = useState<{ biome: string; hidden: ReadonlySet<string> }>({ biome, hidden: NONE });
   const hidden = hiddenFor.biome === biome ? hiddenFor.hidden : NONE;
-  const { all, view, off, toggle } = usePreviewWorld(seed, biome, hubLevel, time, planer?.candidate ?? '');
+  const { all, view, off, setMany } = usePreviewWorld(seed, biome, hubLevel, time, planer?.candidate ?? '');
   const host = useRef<HTMLDivElement>(null);
   const world = useMemo(() => worldOf(view), [view]);
   const look = useMemo<Look>(() => ({ brightness: world ? brightnessOf(world.cycle) : 1, hiddenLayers: hidden }), [world, hidden]);
-  const failed = useStage(host, active, world, look);
-  const toggles = useMemo(() => buildingToggles(all?.state?.sites ?? []), [all]);
+  const failed = useStage(host, world, look, position, onPan, onWheel);
+  const sites = all?.state?.sites;
+  const toggles = useMemo(() => buildingToggles(sites ?? []), [sites]);
+  useEffect(() => { onSites?.(sites ?? []); }, [sites, onSites]);
   const note = view?.error || (failed.length > 0 ? `Grafiken nicht geladen: ${failed.join(', ')}` : '');
   const toggleLayer = (key: string, on: boolean) => setHiddenFor(() => {
     const next = new Set(hidden);
@@ -151,15 +167,7 @@ export function LivePreview({ seed, biome, active, planer }: { seed: string; bio
         {note && <Text size="2" color="red" role="status">{note}</Text>}
       </div>
       <div className="wd-stage" ref={host} />
-      <ul className="wd-buildings" aria-label="Gebäude">
-        {toggles.map((b) => (
-          <li key={b.key}>
-            <Text as="label" size="1">
-              <Checkbox checked={!off.has(b.key)} onCheckedChange={(c) => toggle(b.key, c === true)} aria-label={b.key} /> {b.kind} {b.x}
-            </Text>
-          </li>
-        ))}
-      </ul>
+      <BuildingFilter toggles={toggles} off={off} onSet={setMany} />
     </div>
   );
 }

@@ -1,14 +1,14 @@
 # WZ16 · DEV · Welt-Betrachter: eine gemeinsame Ansicht mit Sprungleiste, Zoom und Gebäude-Filter
 
-- **Status:** geplant
+- **Status:** erledigt
 - **Projekt:** WZG
 - **Domäne:** DEV
 - **Reife:** bereit
 - **Tickets:** B-477
-- **Start-Commit:** – (wird beim Aktivieren gesetzt: `git rev-parse --short origin/develop`)
-- **Spec:** Entwurf
+- **Start-Commit:** 64c2da42
+- **Spec:** freigegeben
 - **Revision:** 1
-- **Freigabe:** –
+- **Freigabe:** 2026-10-18, Chat (Ralf: „WZ16 ist freigegeben (Sprint-Spec so)“)
 
 ## Ausgangslage
 
@@ -62,15 +62,15 @@ keine. Freigabe der Sprint-Spec steht aus (die Ticket-Spec B-477 ist am 2026-10-
 
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
-| WZ16.1 | `WZ16.1-gemeinsame-ansicht.md` | Umsetzung | autonom | offen |
-| WZ16.2 | `WZ16.2-gebaeude-filter.md` | Umsetzung | autonom | offen |
-| WZ16.3 | `WZ16.3-review.md` | Review | autonom | offen |
-| WZ16.4 | `WZ16.4-abnahme.md` | Review | Mensch | offen |
+| WZ16.1 | `WZ16.1-gemeinsame-ansicht.md` | Umsetzung | autonom | fertig |
+| WZ16.2 | `WZ16.2-gebaeude-filter.md` | Umsetzung | autonom | fertig |
+| WZ16.3 | `WZ16.3-review.md` | Review | autonom | fertig |
+| WZ16.4 | `WZ16.4-abnahme.md` | Review | Mensch | fertig |
 
 Bei `Reife: Entwurf` genügen Stichpunkte mit den Kriterien in Klammern statt Session-Dateien. Vor dem Aktivieren
 wird jede Session als eigene Datei nach `docs/vorlagen/session.md` geschrieben.
 
 ## Abnahme
 
-Wird von der Review-Session (Doku-Sprint: letzte Session) ausgefüllt, höchstens fünf Zeilen: Datum, Kriterien
-(Verweis auf Session-Ergebnisse), behobene Befunde, neue Tickets. Bis dahin `–`.
+2026-10-18 (Review WZ16.3, Abnahme WZ16.4 durch 🧑 am PC): AC-01 bis AC-05 mit Nachweis aus Tests und Browser-Pane (Ergebnis WZ16.1 bis WZ16.3); AC-07 erfüllt (WZ16.4, damit auch WZ7/AC-09). AC-06 teilweise: `task check:all` lokal nur an `assetkit` `TestDownloadHit` rot (B-480); CI auf `develop` nach dem Merge. Befunde: keine schweren. Neue Tickets: B-480.
+Version: Minor vorgeschlagen (Wirkung im Werkzeug, zusammen mit WZ7); nicht gesetzt (Entscheidung 🧑).

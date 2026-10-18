@@ -9,7 +9,7 @@ import { PlanerPage } from './PlanerPage';
 
 // B-462/AC-01, AC-03, AC-04, AC-08 im DOM: der Mock liefert die Antworten des Backends für die 7-Stufen-Fixture
 // (api/hubFixture.json). Die Phaser-Bühne braucht ein Canvas; ihr Zusammenspiel prüft LivePreview.test.tsx.
-vi.mock('../stage/PreviewStage', () => ({ PreviewStage: class { show() {} refresh() {} setLook() {} destroy() {} } }));
+vi.mock('../stage/PreviewStage', () => ({ PreviewStage: class { show() {} refresh() {} setLook() {} setPosition() {} destroy() {} } }));
 (globalThis as { IS_REACT_ACT_ENVIRONMENT?: boolean }).IS_REACT_ACT_ENVIRONMENT = true;
 
 let root: Root | null = null;

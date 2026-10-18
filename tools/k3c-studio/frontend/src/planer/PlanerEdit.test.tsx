@@ -8,7 +8,7 @@ import { mockHubCheck, mockHubPlan, mockHubSave } from '../api/mockHub';
 import { PlanerPage } from './PlanerPage';
 
 // WZ9.3 (B-462/AC-02, AC-05, AC-06) im DOM: Bearbeiten als Kandidat, Prüfung und Speichern über das Backend (Mock).
-vi.mock('../stage/PreviewStage', () => ({ PreviewStage: class { show() {} refresh() {} setLook() {} destroy() {} } }));
+vi.mock('../stage/PreviewStage', () => ({ PreviewStage: class { show() {} refresh() {} setLook() {} setPosition() {} destroy() {} } }));
 (globalThis as { IS_REACT_ACT_ENVIRONMENT?: boolean }).IS_REACT_ACT_ENVIRONMENT = true;
 
 let root: Root | null = null;

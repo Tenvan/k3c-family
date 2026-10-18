@@ -11,14 +11,14 @@ import { LivePreview } from './LivePreview';
 // reicht die Welt an die Bühne. Die Phaser-Bühne ersetzt hier eine Attrappe (ein Canvas gibt es im Test nicht).
 (globalThis as { IS_REACT_ACT_ENVIRONMENT?: boolean }).IS_REACT_ACT_ENVIRONMENT = true;
 
-interface Shown { shown: unknown[]; destroyed: boolean; fail: (files: string[]) => void }
+interface Shown { shown: unknown[]; views: { left: number; scale: number }[]; destroyed: boolean; fail: (files: string[]) => void; pan: (px: number) => void }
 const stages: Shown[] = [];
 vi.mock('./PreviewStage', () => ({
   PreviewStage: class {
     state: Shown;
-    constructor(_parent: unknown, fail: (files: string[]) => void) { this.state = { shown: [], destroyed: false, fail }; stages.push(this.state); }
+    constructor(_parent: unknown, fail: (files: string[]) => void, pan: (px: number) => void) { this.state = { shown: [], views: [], destroyed: false, fail, pan }; stages.push(this.state); }
     show(world: unknown) { this.state.shown.push(world); }
-    refresh() {}
+    setPosition(view: { left: number; scale: number }) { this.state.views.push(view); }
     setLook() {}
     destroy() { this.state.destroyed = true; }
   },
@@ -31,18 +31,21 @@ let root: Root | null = null;
 let host: HTMLElement | null = null;
 const flush = () => act(async () => { for (let i = 0; i < 5; i++) await new Promise((r) => setTimeout(r, 0)); });
 const lastWorld = (stage = 0) => stages[stage]!.shown.at(-1) as World;
-const element = (seed: string, active: boolean) => <Theme><LivePreview seed={seed} biome="forest" active={active} /></Theme>;
+const VIEW = { left: 40, scale: 12 };
+const element = (seed: string, view = VIEW, onPan: (px: number) => void = () => {}) => <Theme><LivePreview seed={seed} biome="forest" position={view} onPan={onPan} onWheel={() => {}} /></Theme>;
 
-async function mount(active = true, seed = 'k3c'): Promise<HTMLElement> {
+async function mount(seed = 'k3c', onPan: (px: number) => void = () => {}): Promise<HTMLElement> {
   host = document.createElement('div');
   document.body.append(host);
   root = createRoot(host);
-  await act(async () => root!.render(element(seed, active)));
+  await act(async () => root!.render(element(seed, VIEW, onPan)));
   await flush();
+  await expandAll(host);
   return host;
 }
 
-const boxes = (h: HTMLElement) => [...h.querySelectorAll<HTMLElement>('.wd-buildings button[role="checkbox"]')];
+const boxes = (h: HTMLElement) => [...h.querySelectorAll<HTMLElement>('.wd-group-items button[role="checkbox"]')];
+const expandAll = (h: HTMLElement) => act(async () => { h.querySelectorAll<HTMLElement>('.wd-group-name[aria-expanded="false"]').forEach((b) => b.click()); });
 
 beforeEach(() => { stages.length = 0; });
 afterEach(() => {
@@ -61,9 +64,28 @@ describe('Live-Vorschau (B-460/AC-04)', () => {
     expect(boxes(h)).toHaveLength(lastWorld().sites.length);
   });
 
-  it('eine eingeklappte Vorschau (nicht aktiv) baut keine Bühne auf', async () => {
-    await mount(false);
-    expect(stages).toHaveLength(0);
+  it('Position und Zoom kommen von außen und gehen an die Bühne; eine neue Ansicht wird nachgezogen (B-477/AC-01)', async () => {
+    await mount();
+    expect(stages[0]!.views.at(-1)).toEqual(VIEW);
+    await act(async () => root!.render(element('k3c', { left: 100, scale: 24 })));
+    expect(stages[0]!.views.at(-1)).toEqual({ left: 100, scale: 24 });
+  });
+
+  it('Ziehen und Mausrad der Bühne gehen als Pixel an die Seite (B-477/AC-01)', async () => {
+    const pans: number[] = [];
+    await mount('k3c', (px) => pans.push(px));
+    stages[0]!.pan(-120);
+    expect(pans).toEqual([-120]);
+  });
+
+  it('meldet die Bauplätze für die Sprungpunkte', async () => {
+    const seen: unknown[][] = [];
+    host = document.createElement('div');
+    document.body.append(host);
+    root = createRoot(host);
+    await act(async () => root!.render(<Theme><LivePreview seed="k3c" biome="forest" position={VIEW} onPan={() => {}} onWheel={() => {}} onSites={(s) => seen.push([...s])} /></Theme>));
+    await flush();
+    expect(seen.at(-1)).toHaveLength(lastWorld().sites.length);
   });
 
   it('Gebäude abwählen: neue Anfrage mit dem Schlüssel, der Platz fehlt in der Welt, der Schalter bleibt', async () => {
@@ -90,7 +112,7 @@ describe('Live-Vorschau: Wechsel, Fehler, Lebenszyklus (B-460/AC-04)', () => {
     const count = boxes(h).length;
     await act(async () => boxes(h)[0]!.click());
     await flush();
-    await act(async () => root!.render(element('zwei', true)));
+    await act(async () => root!.render(element('zwei')));
     await flush();
     expect(lastWorld().seed).toBe('zwei');
     expect(lastWorld().sites).toHaveLength(count);
@@ -100,7 +122,7 @@ describe('Live-Vorschau: Wechsel, Fehler, Lebenszyklus (B-460/AC-04)', () => {
   it('Planer-Stand wechseln bei abgewählten Gebäuden: Auswahl beginnt neu, die Anfrage trägt den neuen Kandidaten (B-462)', async () => {
     const spy = vi.spyOn(backend, 'worldPreview');
     const planer = (candidate: string) => ({ candidate, levels: 5, hubLevel: 5, onHubLevel: () => {} });
-    const withPlaner = (candidate: string) => <Theme><LivePreview seed="k3c" biome="forest" active planer={planer(candidate)} /></Theme>;
+    const withPlaner = (candidate: string) => <Theme><LivePreview seed="k3c" biome="forest" position={VIEW} onPan={() => {}} onWheel={() => {}} planer={planer(candidate)} /></Theme>;
     const h = await mount();
     await act(async () => root!.render(withPlaner('{"levels":[{},{},{},{},{}]}')));
     await flush();
