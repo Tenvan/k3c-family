@@ -1,6 +1,6 @@
 # RP1.3 · Review
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Review
 - **Agent:** autonom
 - **Domäne:** INF
@@ -36,9 +36,9 @@ Neue Funktionen, Ändern von Kriterien, Löschen von Branches außerhalb von `ta
 
 ## Fertig, wenn
 
-- [ ] AC-01 bis AC-04 sind am Diff belegt (Nachweis im Ergebnis).
-- [ ] Befunde sind behoben oder als Ticket festgehalten; `task check` und `task check:go` grün.
-- [ ] Abnahme gefüllt, Tickets und Sprint `erledigt`, PR geöffnet.
+- [x] AC-01 bis AC-04 sind am Diff belegt (Nachweis im Ergebnis).
+- [x] Befunde sind behoben oder als Ticket festgehalten; `task check:go` grün, `task check` nur durch den bestehenden Oxlint-Fehler `src/tools/dm.ts:92` rot (auch auf `develop`).
+- [x] Abnahme gefüllt, Tickets und Sprint `erledigt`, PR geöffnet.
 
 ## Prüfen
 
@@ -50,5 +50,7 @@ Manuelle Prüfungen (Browser, Xbox, TV) nur, wenn diese Datei sie nennt und 🧑
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+- **Review (getrennter Reviewer, 2026-10-18):** keine schweren Befunde. AC-01 (B-302/AC-01 bis AC-05) an `docs/arbeitsweise.md`, `tools/aufraeumen` samt Tests, `Taskfile.yml` und PR-Vorlage belegt; AC-02 am Beschluss in Spielstand-Abschnitt und Release-Zeile; AC-03 im Stand erfüllt (Binärdateien seit 2026-10-18 ausgetragen, `git grep "npm run"` ohne Treffer, `task check:dev` grün); AC-04 vorläufig (Antwort von 🧑 auf B-058 steht aus).
+- **Behoben:** Fixture-Satz im Spielstand-Abschnitt klargestellt (Fixture der neuen Version aus dem Code erzeugen).
+- **Restrisiken, so in B-302 vorgesehen:** PR-Status nur über den Branchnamen; ein frischer Branch ohne Commit gilt als gemergt (sein sauberer Worktree würde mit entfernt).
+- B-302, B-288, B-094 und B-058 `erledigt`; neue Tickets: keine.

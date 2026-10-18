@@ -15,7 +15,6 @@ Die Reihenfolge der Arbeit ist allein der Projekt-Rang: [`../projekte/README.md`
 | WZ12 | DEV | WZG | Planungs-Werkzeug: Platzhalter-Zeilen und Worktree-Pills | – | `aktiv/WZ12-planungs-werkzeug-nachtraege/` |
 | GR7 | CLI | GRA | Figuren-Lücken, ganzzahlige Skalierung und Schrift | – | `aktiv/GR7-figuren-schrift/` |
 | SO4 | CLI | SND | Musik je Zustand | – | `aktiv/SO4-musik/` |
-| RP1 | INF | REL | Repo-Hygiene: Branches aufräumen, Altlasten, Regeln | – | `aktiv/RP1-repo-hygiene/` |
 
 ## Offen am Gerät
 
@@ -197,3 +196,4 @@ Gesamtplan und Begründung: [`../plan-weiterentwicklung.md`](../plan-weiterentwi
 | WZ16 | Welt-Betrachter: eine gemeinsame Ansicht mit Sprungleiste, Zoom und Gebäude-Filter | `erledigt/WZ16-welt-betrachter-ansicht/` |
 | CI1 | CI-Nachweis, Release-Image ohne Dev-Mode, Test-Abdeckung | `erledigt/CI1-ci-release-image/` |
 | WZ8 | Chunks je Insel und Stufe planen: Seed oder feste Objekte | `erledigt/WZ8-chunk-planung/` |
+| RP1 | Repo-Hygiene: Branches aufräumen, Altlasten, Regeln | `erledigt/RP1-repo-hygiene/` |

@@ -265,7 +265,7 @@ Die Golden-Daten (`testdata/golden/`) halten fest, was Simulation und Level-Gene
 Eine Session baut keine Migration, kein neues Fixture und keinen Ladetest nur für alte Stände. Die Regel aus B-137 unten bleibt als Stand der Technik für den Widerruf, ihr vorhandener Code in `engine/sim/` bleibt bis zu einem eigenen SIM-Ticket unangetastet.
 
 - **Formatänderung** des Spielstands (Feld neu, entfernt, umbenannt oder mit neuer Bedeutung): `IslandSaveVersion` (`engine/sim/island_save.go`) darf steigen; ohne Widerruf ist eine Migration nicht nötig.
-- **Fixture:** Der kleine, aus dem Code erzeugte Stand unter `testdata/saves/v<n>/` der aktuellen Version bleibt gültig, wenn die Tests ihn verlangen; alte Fixtures werden nicht ergänzt. `TestJedeVersionHatFixture` bleibt bestehen, bis 🧑 das Löschen beschließt.
+- **Fixture:** Steigt die Version, entsteht das Fixture der neuen Version aus dem Code neu (`TestJedeVersionHatFixture` bleibt bestehen, bis 🧑 das Löschen beschließt); für ältere Versionen wird nichts ergänzt.
 - **Test „alter Stand lädt“:** `engine/sim/save_migration_test.go` bleibt, eine neue Version braucht dort ohne Widerruf keinen eigenen Fall.
 - **Neuere Version** (Stand von einem neueren Server): `ParseIslandSave` meldet gefundene und unterstützte Versionen und ändert keine Datei.
 
