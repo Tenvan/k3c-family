@@ -6,7 +6,7 @@
 - **Domäne:** DEV
 - **Umgebung:** offline
 - **Branch:** wz8/5-editor-welt-betrachter
-- **Abhängig von:** WZ8.4, WZ7.4
+- **Abhängig von:** WZ8.4, WZ7.4, WZ16.2
 - **Tickets:** B-461
 - **Kriterien:** AC-06, AC-09, AC-11, AC-12
 
