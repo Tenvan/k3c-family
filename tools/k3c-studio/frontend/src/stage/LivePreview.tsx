@@ -4,6 +4,7 @@ import type { World } from '@game/model/types';
 import { backend, type WorldPreviewView } from '../api';
 import { useDebounced } from '../lib/useDebounced';
 import type { Look, PreviewStage, StagePosition } from './PreviewStage';
+import { BuildingFilter } from './BuildingFilter';
 import { backgroundToggles, buildingToggles, hubLevelChoices, previewArgsOf, worldOf } from './stageLogic';
 import { MAX_PROGRESS, TIMES_OF_DAY, brightnessOf, simTime, type TimeOfDayId } from './timeOfDay';
 
@@ -40,12 +41,12 @@ function usePreviewWorld(seed: string, biome: string, hubLevel: number, time: { 
   const fresh = off.size === 0 ? (all?.key === key ? all.view : null) : (part?.key === key && part.off === offKey ? part.view : null);
   useEffect(() => { if (fresh) setShown(fresh); }, [fresh]);
 
-  const toggle = (name: string, on: boolean) => setChosen(() => {
+  const setMany = (names: readonly string[], on: boolean) => setChosen(() => {
     const next = new Set(off);
-    if (on) next.delete(name); else next.add(name);
+    for (const name of names) { if (on) next.delete(name); else next.add(name); }
     return { ctx, off: next };
   });
-  return { all: all?.view ?? null, view: shown, off, toggle };
+  return { all: all?.view ?? null, view: shown, off, setMany };
 }
 
 /** Phaser wird erst beim ersten Sichtbarwerden geladen (eigener Baustein, groß) und baut die Bühne im Element auf; danach
@@ -121,7 +122,7 @@ export function LivePreview({ seed, biome, position, onPan, onWheel, onSites }: 
   const time = useMemo(() => simTime(timeId, settled), [timeId, settled]);
   const [hiddenFor, setHiddenFor] = useState<{ biome: string; hidden: ReadonlySet<string> }>({ biome, hidden: NONE });
   const hidden = hiddenFor.biome === biome ? hiddenFor.hidden : NONE;
-  const { all, view, off, toggle } = usePreviewWorld(seed, biome, hubLevel, time);
+  const { all, view, off, setMany } = usePreviewWorld(seed, biome, hubLevel, time);
   const host = useRef<HTMLDivElement>(null);
   const world = useMemo(() => worldOf(view), [view]);
   const look = useMemo<Look>(() => ({ brightness: world ? brightnessOf(world.cycle) : 1, hiddenLayers: hidden }), [world, hidden]);
@@ -148,15 +149,7 @@ export function LivePreview({ seed, biome, position, onPan, onWheel, onSites }: 
         {note && <Text size="2" color="red" role="status">{note}</Text>}
       </div>
       <div className="wd-stage" ref={host} />
-      <ul className="wd-buildings" aria-label="Gebäude">
-        {toggles.map((b) => (
-          <li key={b.key}>
-            <Text as="label" size="1">
-              <Checkbox checked={!off.has(b.key)} onCheckedChange={(c) => toggle(b.key, c === true)} aria-label={b.key} /> {b.kind} {b.x}
-            </Text>
-          </li>
-        ))}
-      </ul>
+      <BuildingFilter toggles={toggles} off={off} onSet={setMany} />
     </div>
   );
 }

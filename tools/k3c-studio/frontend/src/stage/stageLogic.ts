@@ -31,6 +31,36 @@ export function buildingToggles(sites: readonly { kind: string; x: number }[]): 
     .sort((a, b) => a.x - b.x || a.kind.localeCompare(b.kind));
 }
 
+/** Reihenfolge und Namen der Gruppen im Gebäude-Filter; unbekannte Arten folgen alphabetisch, mit ihrem Namen. */
+const GROUPS: readonly [kind: string, label: string][] = [
+  ['wall', 'Mauern'], ['tower', 'Türme'], ['gate', 'Tore'], ['farm', 'Farmen'], ['barracks', 'Kasernen'], ['workshop', 'Werkstätten'],
+  ['tavern', 'Tavernen'], ['healer', 'Heilplätze'], ['smithy', 'Schmieden'], ['armory', 'Rüstkammern'], ['stairsDown', 'Treppen runter'],
+  ['stairsUp', 'Treppen hoch'],
+];
+
+export interface BuildingGroup {
+  kind: string;
+  label: string;
+  items: BuildingToggle[];
+  /** Zahl der eingeschalteten Plätze */
+  on: number;
+  /** alle, keiner oder gemischt: Zustand des Gruppenschalters */
+  state: 'all' | 'none' | 'some';
+}
+
+/** Gebäude-Schalter nach Art gruppiert (B-477/AC-05): Gruppen in fester Reihenfolge, Plätze von links nach rechts; `off` sind die abgewählten Schlüssel. */
+export function buildingGroups(toggles: readonly BuildingToggle[], off: ReadonlySet<string>): BuildingGroup[] {
+  const byKind = new Map<string, BuildingToggle[]>();
+  for (const t of toggles) byKind.set(t.kind, [...(byKind.get(t.kind) ?? []), t]);
+  const order = (kind: string) => { const i = GROUPS.findIndex(([k]) => k === kind); return i < 0 ? GROUPS.length : i; };
+  return [...byKind.entries()]
+    .sort(([a], [b]) => order(a) - order(b) || a.localeCompare(b))
+    .map(([kind, items]) => {
+      const on = items.filter((t) => !off.has(t.key)).length;
+      return { kind, label: GROUPS.find(([k]) => k === kind)?.[1] ?? kind, items, on, state: on === items.length ? 'all' : on === 0 ? 'none' : 'some' };
+    });
+}
+
 /** Optionen der Vorschau: abgewählte Gebäude als `false`, die übrigen fehlen (= an). */
 export function previewArgsOf(
   seed: string, biome: string, hubLevel: number, off: ReadonlySet<string>, time: { phase: SimPhase; progress: number } = { phase: 'day', progress: 0 },

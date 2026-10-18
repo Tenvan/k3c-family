@@ -31,7 +31,14 @@
 .wd-live-body { flex: 1; display: flex; flex-direction: column; gap: 8px; }
 .wd-stage { flex: 1 1 0; min-height: var(--wd-stage-min); border: 1px solid var(--card-line); border-radius: 8px; overflow: hidden; background: #101018; }
 .wd-stage canvas { display: block; }
-.wd-buildings { display: flex; flex-wrap: wrap; gap: 4px 14px; list-style: none; margin: 0; padding: 0; }
+/* Gebäude-Filter (B-477/AC-05): eine Zeile je Art, die Plätze klappen darunter auf */
+.wd-buildings { display: flex; flex-wrap: wrap; align-items: flex-start; gap: 6px 10px; list-style: none; margin: 0; padding: 0; }
+.wd-group { border: 1px solid var(--card-line); border-radius: 8px; padding: 4px 8px; background: var(--card); }
+.wd-group-head { display: flex; align-items: center; gap: 6px; }
+.wd-group-name { all: unset; cursor: pointer; font-size: 13px; padding: 2px 4px; border-radius: 4px; }
+.wd-group-name:focus-visible { outline: 2px solid var(--accent-8); }
+.wd-group[data-state='none'] .wd-group-name { opacity: 0.55; }
+.wd-group-items { display: flex; flex-wrap: wrap; gap: 2px 10px; list-style: none; margin: 4px 0 2px; padding: 4px 0 0; border-top: 1px solid var(--card-line); max-width: 24rem; }
 .wd-launch .wd-base { width: 15rem; }
 .wd-bar input[type='range'] { width: 8rem; }
 .wd-select { height: 2rem; padding: 0 0.5rem; border-radius: 6px; border: 1px solid var(--card-line); background: var(--card); color: var(--text); }

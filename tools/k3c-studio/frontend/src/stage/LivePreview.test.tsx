@@ -40,10 +40,12 @@ async function mount(seed = 'k3c', onPan: (px: number) => void = () => {}): Prom
   root = createRoot(host);
   await act(async () => root!.render(element(seed, VIEW, onPan)));
   await flush();
+  await expandAll(host);
   return host;
 }
 
-const boxes = (h: HTMLElement) => [...h.querySelectorAll<HTMLElement>('.wd-buildings button[role="checkbox"]')];
+const boxes = (h: HTMLElement) => [...h.querySelectorAll<HTMLElement>('.wd-group-items button[role="checkbox"]')];
+const expandAll = (h: HTMLElement) => act(async () => { h.querySelectorAll<HTMLElement>('.wd-group-name[aria-expanded="false"]').forEach((b) => b.click()); });
 
 beforeEach(() => { stages.length = 0; });
 afterEach(() => {

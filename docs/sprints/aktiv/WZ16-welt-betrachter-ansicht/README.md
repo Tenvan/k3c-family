@@ -63,7 +63,7 @@ keine. Freigabe der Sprint-Spec steht aus (die Ticket-Spec B-477 ist am 2026-10-
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
 | WZ16.1 | `WZ16.1-gemeinsame-ansicht.md` | Umsetzung | autonom | fertig |
-| WZ16.2 | `WZ16.2-gebaeude-filter.md` | Umsetzung | autonom | in Arbeit |
+| WZ16.2 | `WZ16.2-gebaeude-filter.md` | Umsetzung | autonom | fertig |
 | WZ16.3 | `WZ16.3-review.md` | Review | autonom | offen |
 | WZ16.4 | `WZ16.4-abnahme.md` | Review | Mensch | offen |
 
