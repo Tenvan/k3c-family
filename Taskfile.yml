@@ -339,11 +339,34 @@ tasks:
       - mkdir -p bin
       - cp {{.STUDIO}}/build/bin/k3c-studio{{exeExt}} bin/k3c-studio{{exeExt}}
 
+  check:starter:
+    desc: Windows-Starter prüfen (go test, golangci-lint; B-041)
+    deps: [tmp]
+    cmds:
+      - cd tools/k3c-starter && go test ./...
+      - cd tools/k3c-starter && golangci-lint run
+
+  k3c-starter:build:
+    desc: Windows-Starter bauen, feste EXE bin/k3c-starter (dazu bin/k3c-server und dist/; laufenden Starter vorher schließen, sonst scheitert die Kopie; B-041)
+    deps: [tmp, build]
+    vars:
+      VERSION:
+        sh: git describe --tags --always --dirty || echo dev
+    preconditions:
+      - sh: command -v wails
+        msg: 'Wails-CLI fehlt – go install github.com/wailsapp/wails/v2/cmd/wails@v2.16.0 (requirements.md)'
+    cmds:
+      - go build -ldflags "-X main.version={{.VERSION}}" -o bin/k3c-server{{exeExt}} ./cmd/k3c-server
+      - cd tools/k3c-starter && wails build -s
+      - mkdir -p bin
+      - cp tools/k3c-starter/build/bin/k3c-starter{{exeExt}} bin/k3c-starter{{exeExt}}
+
   check:all:
-    desc: Alles prüfen (Client, Go, k3c-dev, Asset-Studio, Build)
+    desc: Alles prüfen (Client, Go, k3c-dev, Asset-Studio, Starter, Build)
     cmds:
       - task: check
       - task: build
       - task: check:go
       - task: check:dev
       - task: check:studio
+      - task: check:starter

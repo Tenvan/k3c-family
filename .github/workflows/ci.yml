@@ -1,4 +1,4 @@
-# CI: Lint, Typecheck, Tests, Build (auch GitHub-Pages-Seite); Go: Tests (auch Heimnetz-Server), Lint, Cross-Build; Docker: Image amd64/arm64 mit Smoke-Test; k3c-dev und Asset-Studio: Frontend, Tests, Lint, Wails-Build (Windows). Tests nur nach dem Merge (Push auf develop/main) oder von Hand (workflow_dispatch); im Pull Request nur Merge-Konflikt-Prüfung, Tests laufen lokal vor dem Push (task check).
+# CI: Lint, Typecheck, Tests, Build (auch GitHub-Pages-Seite); Go: Tests (auch Heimnetz-Server), Lint, Cross-Build; Docker: Image amd64/arm64 mit Smoke-Test; k3c-dev, Asset-Studio und Windows-Starter: Frontend, Tests, Lint, Wails-Build (Windows). Tests nur nach dem Merge (Push auf develop/main) oder von Hand (workflow_dispatch); im Pull Request nur Merge-Konflikt-Prüfung, Tests laufen lokal vor dem Push (task check).
 name: CI
 
 on:
@@ -240,5 +240,28 @@ jobs:
         with:
           version: v2.14
           working-directory: tools/k3c-studio
+      - run: go install github.com/wailsapp/wails/v2/cmd/wails@v2.16.0
+      - run: wails build -s
+
+  # Windows-Starter (B-041, BT1.2): statische Oberfläche in web/ (kein Frontend-Build), Go-Tests, Lint, Wails-Build.
+  k3c-starter:
+    if: github.event_name != 'pull_request'
+    name: Windows-Starter · Tests · Lint · Wails (Windows)
+    runs-on: windows-latest
+    timeout-minutes: 15
+    defaults:
+      run:
+        working-directory: tools/k3c-starter
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-go@v7
+        with:
+          go-version-file: tools/k3c-starter/go.mod
+          cache-dependency-path: tools/k3c-starter/go.sum
+      - run: go test ./...
+      - uses: golangci/golangci-lint-action@v9
+        with:
+          version: v2.14
+          working-directory: tools/k3c-starter
       - run: go install github.com/wailsapp/wails/v2/cmd/wails@v2.16.0
       - run: wails build -s

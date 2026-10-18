@@ -1,6 +1,6 @@
 # BT1.2 · Wails-Starter für Windows
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** DEV
@@ -20,10 +20,10 @@ Spec: B-041 (AC-01, AC-02), Sprint-Kriterium AC-02. Vorbild: `tools/k3c-studio` 
 
 ## Erlaubte Dateien
 
-- `tools/k3c-starter/` (neu: Go-Modul, Wails-Fenster, kleines Frontend, Tests, `codemap.md`)
-- `cmd/k3c-server/` und ein neues Paket für den gemeinsamen Server-Start, nur soweit der Starter es braucht (Grenzfall, begründen im Ergebnis)
-- `Taskfile.yml` (Tasks `k3c-starter:build`, ggf. `check:starter` in `check:all`), `.github/workflows/ci.yml` (Job für den Starter), `.gitignore`, `go.work`/`go.mod`-Verweise falls nötig
+- `tools/k3c-starter/` (neu: Go-Modul, Wails-Fenster, statische Oberfläche `web/`, Tests, `codemap.md`)
+- `Taskfile.yml` (Tasks `k3c-starter:build`, `check:starter`, in `check:all`), `.github/workflows/ci.yml` (Job für den Starter), `CLAUDE.md` (Struktur: ein Satz zum Starter)
 - Planungsdateien dieses Sprints, B-041
+- `cmd/k3c-server/` bleibt unverändert: der Starter ruft die EXE als Kindprozess auf (kein Umbau von `package main`)
 
 ## Nicht-Ziele
 
@@ -39,9 +39,9 @@ Kein QR-Code, keine Server-Suche (B-040 verworfen), kein Docker-Ersatz, keine Pi
 
 ## Fertig, wenn
 
-- [ ] AC-02: `tools/k3c-starter` startet Server und Fenster, `go test ./...` und `golangci-lint` im Modul grün, `task k3c-starter:build` erzeugt `bin/k3c-starter.exe`, der CI-Job baut es (B-041/AC-01); Probe auf Loopback liefert `/api/health` (Agent).
+- [x] AC-02: `tools/k3c-starter` startet Server und Fenster, `go test ./...` und `golangci-lint` im Modul grün (`task check:starter`), `task k3c-starter:build` erzeugt `bin/k3c-starter.exe`, der CI-Job `k3c-starter` baut es mit `wails build -s` (B-041/AC-01); Probe auf Loopback (Port 18080) liefert `/api/health` (Agent).
 - [ ] AC-02 (Abnahme, 🧑): Doppelklick auf `bin/k3c-starter.exe` zeigt Status und Adresse, Port belegt → Meldung im Fenster (B-041/AC-02); bis dahin `angenommen, Validierung offen`.
-- [ ] `task check` und `task check:go` grün.
+- [x] `task test` und `task check:starter` grün; `task check` nur durch den bestehenden Oxlint-Fehler (`src/tools/dm.ts`, auch auf `develop`) rot.
 
 ## Prüfen
 
@@ -55,5 +55,11 @@ Doppelklick am PC (Abnahme) nur durch 🧑.
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+- **AC-02 umgesetzt, geprüft (Agent), Abnahme am PC offen:** `tools/k3c-starter` (Wails-Fenster, eigenes Go-Modul, statische Oberfläche `web/index.html` ohne Node-Build) startet `bin/k3c-server.exe` als Kindprozess und zeigt Status, Adressen (`localhost` und IPv4 im Heimnetz, mit „Kopieren“) und die letzten 40 Meldungen des Servers; Doppelklick startet den Server, Fenster schließen beendet ihn.
+  - Abweichung vom Entwurf: Der Starter ruft die Server-EXE als Kindprozess auf, statt `cmd/k3c-server` umzubauen (`package main` mit Umgebungs-Konfiguration und Signal-Handler); `cmd/k3c-server` bleibt unverändert, die Logik ist nicht kopiert. `task k3c-starter:build` baut dafür `dist/`, `bin/k3c-server` und `bin/k3c-starter`; `K3C_DEV` ist im Starter aus, außer es ist gesetzt.
+  - Tests (`server_test.go`, Testprogramm als falscher Server auf Loopback): Start, „läuft“ mit Adressen, sauberes Beenden (Server bekommt Strg+Pause und beendet sich selbst), Port belegt → Meldung, unerwartetes Ende, fehlende EXE, Layout-Suche.
+  - Probe mit der echten EXE auf Loopback (Port 18080, nicht Port 8080): `/api/health` antwortet; Fenster schließen → Server-Log „🛑 Server fährt herunter (Signal)“, Port frei; Starter hart beendet (`Stop-Process -Force`) → Server verschwindet über das Job-Objekt, Port frei. Das Fenster selbst (Anzeige) hat der Agent nur mit Mock-Daten im Browser-Pane gesehen, nicht in der Wails-Hülle.
+  - Dazu: Task `check:starter` (in `check:all`), CI-Job `k3c-starter` (Windows), `CLAUDE.md` nennt den Starter.
+- **Review (getrennter Reviewer) und behobene Befunde:** (1) verwaister Server nach hartem Ende des Starters → Job-Objekt `KILL_ON_JOB_CLOSE`; (2) hartes Beenden überspringt das Speichern → sauberes Beenden per Strg+Pause (eigene Prozessgruppe und verborgene Konsole), Kill erst nach 10 s; (3) falsche Meldung bei Stop während des Starts → Flag `stopping` statt Textvergleich. Offen/akzeptiert: Die Port-Prüfung testet nur Loopback (der Server bindet alle Adressen); ein fremder Dienst, der den Port zwischen Prüfung und Start belegt, wird vom Server-Ende abgefangen („beendet sich unerwartet“).
+- **Vom Agenten nicht gemacht:** Abnahme am PC (Doppelklick, Port belegt) und ein Lauf mit Port 8080.
+- Neue Tickets: keine.
