@@ -1,6 +1,6 @@
 # WZ8 · REG, SIM, SRV, DEV · Chunks je Insel und Stufe planen: Seed oder feste Objekte
 
-- **Status:** aktiv
+- **Status:** erledigt
 - **Projekt:** WZG
 - **Domäne:** REG, SIM, SRV, DEV
 - **Reife:** bereit
@@ -113,7 +113,7 @@ Vor der Freigabe offen: nichts Blockierendes.
 | WZ8.4 | `WZ8.4-vorschau-option-planung.md` | Umsetzung | autonom | fertig |
 | WZ8.5 | `WZ8.5-editor-welt-betrachter.md` | Umsetzung | autonom | fertig |
 | WZ8.6 | `WZ8.6-review.md` | Review | autonom | fertig |
-| WZ8.7 | `WZ8.7-abnahme.md` | Review | Mensch | offen |
+| WZ8.7 | `WZ8.7-abnahme.md` | Review | Mensch | fertig |
 
 - WZ8.1 (REG) Workshop mit 🧑: Format, Chunk-Platz, Stromnamen, Anrechnung auf die Biom-Summen, Lage-Regeln; Regeltext in `docs/rules/`; Glossar „geplanter Chunk“, „Chunk-Platz“, „Chunk-Seed“, „Ruine“ und „Gegnerlager“ (geplant, B-468) und Chunk-Breite korrigieren (25 Units in Eisenstollen und Kristallhöhle) (AC-01).
 - WZ8.2 (SIM) Feld `plannedChunks` in `data/islands.json` (leer) mit Laden und vom Seed unabhängiger Prüfung gegen die kürzeste Länge; die Prüfung nimmt die Mauerlinien als Parameter (Options-Struktur in `engine/level`, Standard eingebettet, kein globaler Zustand, Typ der Linien-Daten exportiert); benannte Fehler, je Fall ein Test, darunter Ader bei Hub +136 mit Linie 5 bei 124 gültig und bei 126 abgelehnt; Portal- und Platz-Grenzen gegen `frame()`/`eligible()` gerechnet (AC-06, AC-02).
@@ -125,6 +125,7 @@ Vor der Freigabe offen: nichts Blockierendes.
 
 ## Abnahme
 
-2026-10-17 (Review WZ8.6): AC-01 bis AC-09, AC-11 bis AC-14 mit Nachweis aus Code, Tests und getrennten Reviewern (Ergebnisse WZ8.2–WZ8.6); AC-10 offen (WZ8.7, 🧑 am PC).
-Befunde: keine schweren. Neues Ticket: B-475 (Annahmen zu festen Ereignis-Objekten und „kein Platz mehr“).
+2026-10-17 (Review WZ8.6): AC-01 bis AC-09, AC-11 bis AC-14 mit Nachweis aus Code, Tests und getrennten Reviewern (Ergebnisse WZ8.2–WZ8.6).
+2026-10-18 (WZ8.7, 🧑 am PC): AC-10 abgenommen; Punkt 5 der Abnahme-Liste erst nach der Korrektur B-486 (stumme Ablehnung beim Speichern, getrennter Reviewer: keine schweren Befunde).
+Befunde und neue Tickets: B-475 (Annahmen zu festen Ereignis-Objekten), B-485 (Bedienung des Chunk-Editors, Sprint WZ17), B-486 (behoben), B-487 (Laden und Prüfung ohne Meldung bei Ablehnung).
 Version: v… vorgeschlagen: keine Änderung (Werkzeug- und Generator-Sprint, Golden und Spielstand-Format unverändert).
