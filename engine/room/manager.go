@@ -11,6 +11,7 @@ import (
 	"strings"
 	"sync"
 	"time"
+	"unicode/utf8"
 
 	"k3c/engine/sim"
 	"k3c/engine/store"
@@ -157,6 +158,17 @@ func (m *Manager) create(id string, peer Peer, name string, fresh bool, depth in
 	return r, r.lockedJoin(id, peer, slots)
 }
 
+// seedOf ist der Seed eines neuen Stands: `create.seed`, ohne Angabe der Name (B-095); zu lang → ErrBadRequest.
+func seedOf(name string, opts Options) (string, error) {
+	switch {
+	case opts.Seed == "":
+		return name, nil
+	case utf8.RuneCountInString(opts.Seed) > MaxSeedRunes:
+		return "", ErrBadRequest
+	}
+	return opts.Seed, nil
+}
+
 // open lädt den Spielstand (Version 1 oder 2) oder legt eine neue Insel mit einer Stufe je Biom an (islandDepths). Die Spieler eines
 // geladenen Stands sind im Raum freie Monarchen.
 func (m *Manager) open(name string, fresh bool, depth int, opts Options) (*sim.Island, error) {
@@ -169,7 +181,10 @@ func (m *Manager) open(name string, fresh bool, depth int, opts Options) (*sim.I
 	case err != nil && !errors.Is(err, store.ErrNotFound):
 		return nil, err
 	case fresh:
-		// ponytail: Seed ist der Name; ein eigener Seed käme mit einem Feld in `create` (Protokoll-Änderung).
+		seed, err := seedOf(name, opts)
+		if err != nil {
+			return nil, err
+		}
 		depths, err := islandDepths()
 		if err != nil {
 			return nil, err
@@ -177,7 +192,7 @@ func (m *Manager) open(name string, fresh bool, depth int, opts Options) (*sim.I
 		if !slices.Contains(depths, depth) {
 			return nil, ErrBadRequest // unbekannte Startstufe
 		}
-		isl, err := sim.CreateIsland(name, depths, 1, sim.CreateOptions{})
+		isl, err := sim.CreateIsland(seed, depths, 1, sim.CreateOptions{})
 		if err != nil {
 			return nil, err
 		}

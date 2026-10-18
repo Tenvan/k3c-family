@@ -1,0 +1,7 @@
+{
+  "$schema": "https://wails.io/schemas/config.v2.json",
+  "name": "k3c-starter",
+  "outputfilename": "k3c-starter",
+  "author": { "name": "Ralf Stich" },
+  "info": { "productName": "K3C Server-Starter" }
+}

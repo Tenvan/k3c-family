@@ -10,12 +10,13 @@ import (
 
 	"k3c/data"
 	"k3c/engine/level"
+	"k3c/engine/room"
 )
 
 const (
 	defaultLevelSeed  = "k3c"
 	defaultLevelBiome = "forest"
-	maxLevelSeedRunes = 64
+	maxLevelSeedRunes = room.MaxSeedRunes
 )
 
 // levelBiomes sind die Biome, die der Server kennt: die eingebetteten data/biomes/*.json, nach Namen sortiert.

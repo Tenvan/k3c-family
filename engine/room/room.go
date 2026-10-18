@@ -53,8 +53,11 @@ type Seat struct {
 	Stage   int `json:"stage"` // Index der Stufe in Island.Stages: gehört zum Strom mit diesem stage (B-176)
 }
 
-// Options sind die Raum-Optionen aus `create` (leer = Standard). Der Manager prüft sie beim Anlegen eines neuen Stands und setzt sie auf die Insel.
-type Options struct{ Grade, Goal, Defeat string }
+// Options sind die Raum-Optionen aus `create` (leer = Standard); Seed ersetzt bei einem neuen Stand den Namen als Seed (B-095). Der Manager prüft sie beim Anlegen eines neuen Stands und setzt sie auf die Insel.
+type Options struct{ Grade, Goal, Defeat, Seed string }
+
+// MaxSeedRunes ist die Höchstlänge von `create.seed` (wie bei GET /api/level).
+const MaxSeedRunes = 64
 
 // Peer ist die Verbindung eines Geräts. Der Raum ruft die Methoden unter seiner Sperre auf: Sie dürfen nicht blockieren
 // und nicht in den Raum oder Manager zurückrufen. Level und State tragen die Stufe (Index in Island.Stages), je Stufe
