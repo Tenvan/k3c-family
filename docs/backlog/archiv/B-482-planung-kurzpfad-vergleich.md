@@ -4,7 +4,7 @@
 - **Typ:** Problem
 - **Prio:** hoch
 - **Umgebung:** offline
-- **Status:** offen
+- **Status:** erledigt
 - **Sprint:** –
 - **Projekt:** WZG
 - **Erstellt:** 2026-10-18
@@ -59,3 +59,4 @@ keine
 ## Notizen
 
 Gefunden bei der Release-Prüfung für v0.19.0 (2026-10-18). Auftrag von 🧑 im Chat: Fix mit `os.SameFile` und Kurzpfad-Test. Bezug: B-480 (anderes Problem, nur lokal).
+Erledigt 2026-10-18 mit PR #359 (`samePath` und `parseWorktreePaths` per `os.SameFile`, Test `kurzpfad_windows_test.go`). AC-01 und AC-02 lokal geprüft (rot ohne, grün mit Fix, auch mit `TMP` auf Kurzpfad); AC-03: CI-Lauf 39116599900 auf `develop` (`ea750844`) komplett grün, darunter „k3c-dev · Frontend · Tests · Lint · Wails (Windows)“.
