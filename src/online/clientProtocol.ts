@@ -76,7 +76,7 @@ export type ServerMessage =
 
 export type ClientMessage =
   | { t: 'hello'; v: number; device: string }
-  | { t: 'create'; save: string; fresh: boolean; depth?: number; slots: number[]; grade?: string; goal?: string; defeat?: string }
+  | { t: 'create'; save: string; fresh: boolean; depth?: number; seed?: string; slots: number[]; grade?: string; goal?: string; defeat?: string }
   | { t: 'join'; room: string; slots: number[] }
   | { t: 'addSlot'; slot: number }
   | { t: 'removeSlot'; slot: number }

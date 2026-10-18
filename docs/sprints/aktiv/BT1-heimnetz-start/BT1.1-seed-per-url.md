@@ -1,6 +1,6 @@
 # BT1.1 · Start mit Seed und Tiefe per URL, Nachweis B-048
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** SRV
@@ -39,9 +39,9 @@ Kein Eingabefeld für Seed in der Lobby, keine neuen Tasten oder Menüs, keine �
 
 ## Fertig, wenn
 
-- [ ] AC-03: Go-Test (`create` mit `seed` und `depth` = `GET /api/level`), Vitest für `parseStartParams` (`?seed=`, `?depth=`), Protokoll-Beispiele und `docs/protocol.md` aktualisiert, ein Client ohne `seed` funktioniert weiter (B-095/AC-01 bis AC-03).
-- [ ] AC-04: Entscheidung 001 nennt die Standardbibliothek, `B-001/AC-01` ist damit belegt (B-048/AC-01).
-- [ ] `task check` und `task check:go` grün.
+- [x] AC-03: Go-Test (`create` mit `seed` und `depth` = `GET /api/level`, `engine/net/create_seed_test.go`), Vitest für `parseStartParams` (`?seed=`, `?depth=`), Protokoll-Beispiel `c2s-create-seed.json` und `docs/protocol.md` aktualisiert, ein Client ohne `seed` funktioniert weiter (B-095/AC-01 bis AC-03).
+- [x] AC-04: Entscheidung 001 nennt die Standardbibliothek, `B-001/AC-01` ist damit belegt (B-048/AC-01).
+- [x] `task test`, `task typecheck` und `task check:go` grün; `task check` nur durch den bestehenden Oxlint-Fehler (`src/tools/dm.ts`, auch auf `develop`) rot.
 
 ## Prüfen
 
@@ -53,5 +53,11 @@ task check:go
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+- **AC-03 umgesetzt, geprüft** (B-095/AC-01 bis AC-03):
+  - Server: `create.seed` (`engine/net/protocol.go`, `dispatch.go`) → `room.Options.Seed` → `seedOf` in `engine/room/manager.go` (leer = Name, mehr als 64 Zeichen = `bad_request`, bei `fresh: false` ignoriert); `MaxSeedRunes` teilt sich mit `GET /api/level`. Protokollversion bleibt 6 (optionales Feld).
+  - Test `TestCreateMitSeedUndTiefe`: Level der `level`-Nachricht = Antwort von `/api/level` für Seed und Biom der Tiefe 0, 1 und 2 (Seed mit Umlauten, 64 Zeichen, ohne Seed = Name); `TestCreateSeedZuLang` (65 Zeichen → `bad_request`).
+  - Client: `parseStartParams` wertet `?seed=` (höchstens 64 Zeichen) und `?depth=` (0–9, der Server prüft die Stufe) aus, `create` trägt beides nur bei `fresh`; Vitest in `lobbyLogic.test.ts` und `clientConnection.test.ts`. Die Aussage „`seed=5&depth=2` werden ignoriert“ im Altparameter-Test wurde dafür entfernt (sie widersprach AC-02; kein Kriterium geändert).
+  - `docs/protocol.md` (Kopfabschnitt, Zeile „create“) und `testdata/protocol/c2s-create-seed.json`.
+- **AC-04 umgesetzt:** Entscheidung 001 nennt die Standardbibliothek (`net/http`, `log/slog`) mit Quelle; die Dateiliste dort nennt den Starter jetzt als `tools/k3c-starter` (statt `cmd/k3c-desktop`, Beschluss B-041).
+- **Review (getrennter Reviewer):** keine schweren Befunde; veralteter Kommentar zum Retry und Zyklomatik 16 in `open` (Lint) behoben (`seedOf` ausgelagert).
+- Neue Tickets: keine.

@@ -59,6 +59,7 @@ type inMsg struct {
 	Grade    string    `json:"grade"`
 	Goal     string    `json:"goal"`
 	Defeat   string    `json:"defeat"`
+	Seed     string    `json:"seed"` // create: Seed des neuen Stands (höchstens 64 Zeichen), leer = Name
 	Slots    []int     `json:"slots"`
 	Room     string    `json:"room"`
 	Slot     *int      `json:"slot"`

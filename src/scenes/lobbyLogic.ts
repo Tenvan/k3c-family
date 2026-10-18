@@ -12,6 +12,9 @@ const SAVE_FORMAT = /^[a-z0-9-]{1,32}$/;
 const ROOM_FORMAT = /^[A-HJ-NP-Z]{4}$/;
 const MOCK_FORMAT = /^[0-3]$/;
 const PLAYERS_FORMAT = /^[1-4]$/;
+const DEPTH_FORMAT = /^[0-9]$/;
+/** Höchstlänge von `create.seed` in Zeichen (docs/protocol.md, B-095) */
+export const MAX_SEED_LENGTH = 64;
 
 export interface StartParams {
   autostart: boolean;
@@ -23,15 +26,21 @@ export interface StartParams {
   room: string | null;
   /** Lokale Spieler beim Beitritt aus `?players=` (1–4, B-353) */
   players: number;
+  /** Startstufe eines neuen Spiels aus `?depth=` (0–9, der Server prüft die Stufen), sonst 0 (B-095) */
+  depth: number;
+  /** Seed eines neuen Spiels aus `?seed=` (höchstens 64 Zeichen), leer = der Name des Spielstands (B-095) */
+  seed: string;
 }
 
-/** Wertet `?autostart=1&fresh=1&save=NAME&mock=N&room=CODE&players=N` aus; ungültige Werte gelten als nicht gesetzt. */
+/** Wertet `?autostart=1&fresh=1&save=NAME&mock=N&room=CODE&players=N&depth=N&seed=TEXT` aus; ungültige Werte gelten als nicht gesetzt. */
 export function parseStartParams(search: string): StartParams {
   const p = new URLSearchParams(search);
   const save = p.get('save') ?? '';
   const mock = p.get('mock') ?? '';
   const room = (p.get('room') ?? '').toUpperCase();
   const players = p.get('players') ?? '';
+  const depth = p.get('depth') ?? '';
+  const seed = p.get('seed') ?? '';
   return {
     autostart: p.get('autostart') === '1',
     fresh: p.get('fresh') === '1',
@@ -39,6 +48,8 @@ export function parseStartParams(search: string): StartParams {
     mock: MOCK_FORMAT.test(mock) ? Number(mock) : 0,
     room: ROOM_FORMAT.test(room) ? room : null,
     players: PLAYERS_FORMAT.test(players) ? Number(players) : 1,
+    depth: DEPTH_FORMAT.test(depth) ? Number(depth) : 0,
+    seed: [...seed].length <= MAX_SEED_LENGTH ? seed : '',
   };
 }
 
@@ -48,16 +59,16 @@ export function slotsFor(mock: number, players = 1): number[] {
 }
 
 export type LobbyCommand =
-  | { t: 'create'; save: string; fresh: boolean; depth: number; slots: number[] }
+  | { t: 'create'; save: string; fresh: boolean; depth: number; slots: number[]; seed?: string }
   | { t: 'join'; room: string; slots: number[] };
 
 export interface LobbyClient {
-  create(save: string, fresh: boolean, depth: number, slots: number[]): void;
+  create(save: string, fresh: boolean, depth: number, slots: number[], seed?: string): void;
   join(room: string, slots: number[]): void;
 }
 
 export function applyCommand(client: LobbyClient, cmd: LobbyCommand): void {
-  if (cmd.t === 'create') client.create(cmd.save, cmd.fresh, cmd.depth, cmd.slots);
+  if (cmd.t === 'create') client.create(cmd.save, cmd.fresh, cmd.depth, cmd.slots, cmd.seed);
   else client.join(cmd.room, cmd.slots);
 }
 
@@ -129,7 +140,7 @@ export function leavesGame(status: Status): boolean {
 
 /**
  * Wann die Lobby welchen Befehl sendet: Start-Parameter (`?room`, `?autostart`) einmal, Auswahl aus der Liste,
- * `save_not_found` → ein zweiter Versuch mit `fresh: true`, `depth: 0`.
+ * `save_not_found` → ein zweiter Versuch mit `fresh: true` (und `depth`, `seed` der Start-Parameter).
  */
 export class LobbyFlow {
   private started = false;
@@ -168,7 +179,8 @@ export class LobbyFlow {
   }
 
   private create(fresh: boolean, save = this.params.save): LobbyCommand {
-    return { t: 'create', save, fresh, depth: 0, slots: this.slots() };
+    const { depth, seed } = this.params;
+    return { t: 'create', save, fresh, depth, slots: this.slots(), ...(fresh && seed ? { seed } : {}) };
   }
 
   private slots(): number[] {

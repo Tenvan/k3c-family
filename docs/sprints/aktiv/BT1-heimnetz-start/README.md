@@ -57,7 +57,7 @@ keine (Entscheidungen 🧑 2026-10-18: neues Protokollfeld `seed` (B-095), Entsc
 
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
-| BT1.1 | `BT1.1-seed-per-url.md` | Umsetzung | autonom | offen |
+| BT1.1 | `BT1.1-seed-per-url.md` | Umsetzung | autonom | fertig |
 | BT1.2 | `BT1.2-windows-starter.md` | Umsetzung | autonom | offen |
 | BT1.3 | `BT1.3-review.md` | Review | autonom | offen |
 
