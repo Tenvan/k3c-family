@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import { levelModel } from './levelView';
-import { DEFAULT_SCALE, MAX_SCALE, MIN_SCALE, ZOOM_PERCENTS, centerRange, clampCenter, clampLeft, clampScale, jumpPoints, panViews, paneView, scaleOfPercent, wheelAction, zoomPanes } from './viewState';
+import { DEFAULT_SCALE, MAX_SCALE, MIN_SCALE, ZOOM_PERCENTS, centerRange, clampCenter, paneUnits, clampLeft, clampScale, jumpPoints, panViews, paneView, scaleOfPercent, wheelAction, zoomPanes } from './viewState';
 
 const model = levelModel({
   seed: 's', biomeId: 'forest', widthUnits: 900, chunkWidthUnits: 50, hubCenterUnits: 450, warnings: [],
@@ -51,13 +51,34 @@ describe('Getrennter Zoom, gemeinsame Mitte (B-485/AC-05)', () => {
   });
 
   it('die Mitte reicht so weit, dass die engste Ansicht an die Ränder kommt; die weitere bleibt am Rand stehen', () => {
-    expect(centerRange([10, 20], 900, 1000)).toEqual([25, 875]); // halbe Ansicht der Live-Vorschau: 25 Units
-    expect(clampCenter(0, [10, 20], 900, 1000)).toBe(25);
-    expect(clampCenter(5000, [10, 20], 900, 1000)).toBe(875);
+    expect(centerRange({ chunk: 10, live: 20 }, 900, 1000)).toEqual([25, 875]); // halbe Ansicht der Live-Vorschau: 25 Units
+    expect(clampCenter(0, { chunk: 10, live: 20 }, 900, 1000)).toBe(25);
+    expect(clampCenter(5000, { chunk: 10, live: 20 }, 900, 1000)).toBe(875);
     expect(paneView({ center: 25, chunk: 10, live: 20 }, 'chunk', 900, 1000).left).toBe(0); // die weitere Ansicht hält am Rand
-    expect(clampCenter(10, [2, 2], 100, 1000)).toBe(50); // Welt schmaler als die Ansicht: Weltmitte
+    expect(clampCenter(10, { chunk: 2, live: 2 }, 100, 1000)).toBe(50); // Welt schmaler als die Ansicht: Weltmitte
     expect(zoomPanes({ center: 50, chunk: 20, live: 20 }, ['chunk'], () => 10, 900, 1000).center).toBe(50);
     expect(zoomPanes({ center: 20, chunk: 20, live: 20 }, ['chunk', 'live'], () => 5, 900, 1000).center).toBe(100);
+  });
+});
+
+describe('Jede Vorschau mit ihrer eigenen Breite (B-485/AC-05)', () => {
+  const v = { center: 450, chunk: 10, live: 20 };
+  const px = { chunk: 1000, live: 600 }; // Bühne schmaler als der Streifen
+
+  it('Live-Bereich = Bildmitte ± (Breite der Bühne in px / Live-Zoom) / 2', () => {
+    expect(paneUnits(v, 'live', px)).toBe(30);
+    expect(paneView(v, 'live', 900, px)).toEqual({ left: 450 - 15, scale: 20 });
+    expect(paneView(v, 'chunk', 900, px)).toEqual({ left: 450 - 50, scale: 10 });
+  });
+
+  it('die Bühne zentriert auf left + Breite der Bühne / Zoom / 2 (PreviewStage.applyView): das ist wieder die Mitte', () => {
+    const live = paneView(v, 'live', 900, px);
+    expect(live.left + px.live / live.scale / 2).toBe(v.center);
+  });
+
+  it('der Bereich der Mitte folgt der engsten Ansicht in Units', () => {
+    expect(centerRange(v, 900, px)).toEqual([15, 885]);
+    expect(centerRange({ chunk: 40, live: 10 }, 900, px)).toEqual([12.5, 887.5]);
   });
 });
 

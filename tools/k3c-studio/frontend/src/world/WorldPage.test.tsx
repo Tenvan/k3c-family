@@ -291,6 +291,36 @@ describe('Seite Welt-Betrachter: getrennter Zoom, gemeinsame Mitte (B-485/AC-05)
   });
 });
 
+describe('Live-Bereich mit der Breite der Bühne (B-485/AC-05, Fehler aus der Abnahme)', () => {
+  /** Bühne 600 px, Streifen 1000 px breit (happy-dom misst sonst 0) */
+  function stubWidths() {
+    const original = Object.getOwnPropertyDescriptor(HTMLElement.prototype, 'clientWidth')!;
+    Object.defineProperty(HTMLElement.prototype, 'clientWidth', { configurable: true, get(this: HTMLElement) {
+      return this.classList.contains('wd-stage') ? 600 : this.classList.contains('wd-viewport') ? 1000 : 0;
+    } });
+    return () => Object.defineProperty(HTMLElement.prototype, 'clientWidth', original);
+  }
+
+  it('die Bühne zeigt dieselbe Mitte wie der Streifen; gelber Griff und Rahmen im Streifen zeigen genau ihren Bereich', async () => {
+    const restore = stubWidths();
+    try {
+      const h = await mount();
+      altWheel(stage.wheel, -100);
+      const live = views.at(-1)!;
+      expect(live.left + 600 / live.scale / 2).toBeCloseTo(chunkCenter(h)); // PreviewStage zentriert auf left + Bühnenbreite / Zoom / 2
+      const units = Number(h.querySelector('.wd-note')!.textContent!.match(/(\d+) Units/)![1]);
+      const second = h.querySelector<HTMLElement>('.wd-range-second')!;
+      expect(parseFloat(second.style.width)).toBeCloseTo((600 / live.scale / units) * 100);
+      expect(parseFloat(second.style.left)).toBeCloseTo((live.left / units) * 100);
+      const frame = h.querySelector<HTMLElement>('.wd-live-range')!; // Rahmen im Streifen über den Chunks der Live-Vorschau
+      expect(parseFloat(frame.style.left)).toBeCloseTo(live.left * stripScale(h));
+      expect(parseFloat(frame.style.width)).toBeCloseTo((600 / live.scale) * stripScale(h));
+    } finally {
+      restore();
+    }
+  });
+});
+
 describe('Seite Welt-Betrachter: Anfragen (B-460)', () => {
   it('bei zwei schnellen Anfragen gilt nur die letzte, auch wenn die erste später antwortet', async () => {
     let resolveFirst: (v: ReturnType<typeof mockWorldLevel>) => void = () => {};

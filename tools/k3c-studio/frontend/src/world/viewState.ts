@@ -39,38 +39,47 @@ export interface Views {
   live: number;
 }
 
-/** Erlaubter Bereich der Mitte: die engste Ansicht (größter Maßstab) reicht bis an die Ränder der Welt; ist die Welt
- *  schmaler, gilt ihre Mitte. Eine weitere Ansicht hält `paneView` am Rand fest, nur dort weicht ihre Bildmitte ab. */
-export function centerRange(scales: readonly number[], widthUnits: number, viewPx: number): [number, number] {
-  const half = viewPx / Math.max(...scales) / 2;
+/** Sichtbare Breite je Vorschau in Pixeln (Streifen und Bühne sind verschieden breit); eine Zahl gilt für beide. */
+export type PanePx = number | Readonly<Record<Pane, number>>;
+const pxOf = (px: PanePx, pane: Pane): number => (typeof px === 'number' ? px : px[pane]);
+/** Sichtbare Breite einer Vorschau in Units */
+export const paneUnits = (v: Views, pane: Pane, px: PanePx): number => pxOf(px, pane) / v[pane];
+
+type Scales = Pick<Views, Pane>;
+const PANES: readonly Pane[] = ['chunk', 'live'];
+
+/** Erlaubter Bereich der Mitte: die engste Ansicht (kleinste Breite in Units) reicht bis an die Ränder der Welt; ist die
+ *  Welt schmaler, gilt ihre Mitte. Eine weitere Ansicht hält `paneView` am Rand fest, nur dort weicht ihre Bildmitte ab. */
+export function centerRange(v: Scales, widthUnits: number, px: PanePx): [number, number] {
+  const half = Math.min(...PANES.map((p) => pxOf(px, p) / v[p])) / 2;
   return widthUnits <= 2 * half ? [widthUnits / 2, widthUnits / 2] : [half, widthUnits - half];
 }
 
-export function clampCenter(center: number, scales: readonly number[], widthUnits: number, viewPx: number): number {
-  const [lo, hi] = centerRange(scales, widthUnits, viewPx);
+export function clampCenter(center: number, v: Scales, widthUnits: number, px: PanePx): number {
+  const [lo, hi] = centerRange(v, widthUnits, px);
   return Math.max(lo, Math.min(center, hi));
 }
 
-const settle = (v: Views, widthUnits: number, viewPx: number): Views => ({ ...v, center: clampCenter(v.center, [v.chunk, v.live], widthUnits, viewPx) });
+const settle = (v: Views, widthUnits: number, px: PanePx): Views => ({ ...v, center: clampCenter(v.center, v, widthUnits, px) });
 
-/** Linke Kante und Maßstab einer Vorschau: ihre Bildmitte liegt auf `center`. */
-export function paneView(v: Views, pane: Pane, widthUnits: number, viewPx: number): View {
-  const scale = v[pane];
-  return { left: clampLeft(v.center - viewPx / scale / 2, widthUnits, viewPx / scale), scale };
+/** Linke Kante und Maßstab einer Vorschau: ihre Bildmitte liegt auf `center`, ihre Breite ist ihre eigene (`px`). */
+export function paneView(v: Views, pane: Pane, widthUnits: number, px: PanePx): View {
+  const units = paneUnits(v, pane, px);
+  return { left: clampLeft(v.center - units / 2, widthUnits, units), scale: v[pane] };
 }
 
 /** Neuer Zoom für die genannten Vorschauen (`to` bekommt den alten Maßstab); die Mitte bleibt, soweit die Welt reicht. */
-export function zoomPanes(v: Views, panes: readonly Pane[], to: (scale: number) => number, widthUnits: number, viewPx: number): Views {
+export function zoomPanes(v: Views, panes: readonly Pane[], to: (scale: number) => number, widthUnits: number, px: PanePx): Views {
   const next = { ...v };
   for (const p of panes) next[p] = clampScale(to(v[p]));
-  return settle(next, widthUnits, viewPx);
+  return settle(next, widthUnits, px);
 }
 
 /** Bildlauf um `units` (Welt-Strecke): beide Vorschauen wandern gleich weit. */
-export const panViews = (v: Views, units: number, widthUnits: number, viewPx: number): Views => settle({ ...v, center: v.center + units }, widthUnits, viewPx);
+export const panViews = (v: Views, units: number, widthUnits: number, px: PanePx): Views => settle({ ...v, center: v.center + units }, widthUnits, px);
 
 /** Mitte auf `x` (Units) stellen, am Rand begrenzt. */
-export const centerViews = (v: Views, x: number, widthUnits: number, viewPx: number): Views => settle({ ...v, center: x }, widthUnits, viewPx);
+export const centerViews = (v: Views, x: number, widthUnits: number, px: PanePx): Views => settle({ ...v, center: x }, widthUnits, px);
 
 /** `own`: nur die Vorschau unter dem Zeiger zoomen (Alt + Rad, B-485/AC-05) */
 export type WheelAction = { kind: 'pan'; px: number } | { kind: 'zoom'; factor: number; own?: true } | null;

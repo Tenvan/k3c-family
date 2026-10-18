@@ -6,6 +6,7 @@ import type { WorldSource } from '../api';
 import type { PlanSource } from '../stage/stageLogic';
 import { BIG_KINDS, SPECIAL_CHUNKS, colorOf, levelModel, seedFromBytes, type LevelModel } from './levelView';
 import { chunkMarks, type SlotHint } from './chunkMarks';
+import type { Span } from './RangeSlider';
 import { iconOf, nameOf } from './kindIcons';
 import type { View } from './viewState';
 
@@ -18,8 +19,9 @@ const toSource = (plan?: PlanSource): WorldSource => (plan ? { island: plan.isla
 const chunkClass = (kind: string) => `wd-chunk${kind === 'hub' ? ' wd-hub' : SPECIAL_CHUNKS.has(kind) ? ' wd-special' : ''}`;
 
 /** Streifen mit Abschnitten, Objekten und Hub-Mitte im Maßstab scale (Pixel je Unit). `hints` markieren Chunk-Plätze mit
- *  einem farbigen unteren Rand im Abschnitt (B-485); der Rand liegt über der Unterkante und ändert die Größe nicht. */
-export function Strip({ model, scale, hints = [] }: { model: LevelModel; scale: number; hints?: readonly SlotHint[] }) {
+ *  einem farbigen unteren Rand im Abschnitt (B-485); der Rand liegt über der Unterkante und ändert die Größe nicht.
+ *  `liveSpan` rahmt die Chunks ein, die die Live-Vorschau gerade zeigt (bei eigenem Zoom, B-485/AC-05). */
+export function Strip({ model, scale, hints = [], liveSpan }: { model: LevelModel; scale: number; hints?: readonly SlotHint[]; liveSpan?: Span }) {
   const marks = chunkMarks(model, hints);
   return (
     <div className="wd-strip" style={{ width: model.widthUnits * scale }}>
@@ -41,6 +43,7 @@ ${mark.label}` : title}>
         const style: CSSProperties = { left: o.x * scale - size / 2, top: big ? '0.5rem' : '3.25rem', width: size, height: size, background: colorOf(o.kind) };
         return <div key={i} className="wd-marker" style={style} title={`${o.kind} bei ${o.x} Units`} />;
       })}
+      {liveSpan && <div className="wd-live-range" title="Bereich der Live-Vorschau" style={{ left: liveSpan.left * scale, width: liveSpan.units * scale }} />}
       <div className="wd-hubline" style={{ left: model.hubCenterUnits * scale }} title={`Hub-Mitte bei ${model.hubCenterUnits} Units`} />
     </div>
   );
@@ -98,9 +101,9 @@ function Legend({ model }: { model: LevelModel }) {
  *  Zoom kommen von außen (`view`, B-477): der Streifen hat keine eigene Scrollbar, das Mausrad geht an `onWheel`.
  *  `children` stehen unter der Zeile mit der Zusammenfassung (Leiste für Zoom, Sprünge und Position). Mit `source` zeigt er
  *  Insel und Stufe samt Entwurf der geplanten Chunks; `hints` markieren Chunk-Plätze (geplant, Prüffehler). */
-export function ChunkPreview({ maximized, onToggle, onLoaded, source, view, onWheel, hints, children }: {
+export function ChunkPreview({ maximized, onToggle, onLoaded, source, view, onWheel, hints, liveSpan, children }: {
   maximized: boolean; onToggle: () => void; onLoaded: (seed: string, biome: string, model: LevelModel) => void;
-  source?: PlanSource; view: View; onWheel: (e: WheelEvent) => void; hints?: readonly SlotHint[]; children?: ReactNode;
+  source?: PlanSource; view: View; onWheel: (e: WheelEvent) => void; hints?: readonly SlotHint[]; liveSpan?: Span; children?: ReactNode;
 }) {
   const [seed, setSeed] = useState(DEFAULT_SEED);
   const { model, note, load } = useWorldLevel(onLoaded);
@@ -143,7 +146,7 @@ export function ChunkPreview({ maximized, onToggle, onLoaded, source, view, onWh
       </div>
       <p className="wd-note" role="status">{note}</p>
       {children}
-      <div className="wd-viewport" ref={viewport}>{model && <Strip model={model} scale={view.scale} hints={hints} />}</div>
+      <div className="wd-viewport" ref={viewport}>{model && <Strip model={model} scale={view.scale} hints={hints} liveSpan={liveSpan} />}</div>
       {model && <Legend model={model} />}
     </div>
   );

@@ -100,3 +100,5 @@
 .wd-mark { position: absolute; left: 0; right: 0; bottom: 0; height: 5px; background: var(--wd-mark); pointer-events: none; }
 .wd-mark-planned { --wd-mark: var(--blue-9, #0090ff); }
 .wd-mark-error { --wd-mark: var(--red-9, #e5484d); }
+/* Rahmen im Streifen: die Chunks, die die Live-Vorschau gerade zeigt (gleiche Farbe wie ihr Griff im Schieber) */
+.wd-live-range { position: absolute; top: 0; bottom: 0; box-sizing: border-box; border: 2px solid #ffd166; border-radius: 4px; pointer-events: none; }
