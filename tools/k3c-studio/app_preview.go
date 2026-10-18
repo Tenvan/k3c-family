@@ -30,14 +30,14 @@ type WorldPreviewView struct {
 // WorldPreview baut die Vorschau-Welt (Binding). Die Quelle ist ein Biom oder Insel + Stufe, mit dem Entwurf der
 // geplanten Chunks wie bei WorldLevel (dieselbe Quelle für Chunk- und Live-Vorschau, B-461/AC-11).
 func (a *App) WorldPreview(args WorldPreviewArgs) WorldPreviewView {
-	biome, planned, err := a.resolveSource(args.Source)
+	r, err := a.resolveSource(args.Source)
 	if err != nil {
 		return WorldPreviewView{Error: err.Error()}
 	}
 	res, err := net.Preview(room.PreviewOptions{
-		Seed: args.Seed, Source: room.PreviewSource{Biome: biome}, HubLevel: args.HubLevel,
-		Phase: args.Phase, Progress: args.Progress, Buildings: args.Off, Planned: planned,
-		HubCandidate: []byte(args.HubCandidate),
+		Seed: args.Seed, Source: room.PreviewSource{Biome: r.biome}, HubLevel: args.HubLevel,
+		Phase: args.Phase, Progress: args.Progress, Buildings: args.Off, Planned: r.planned,
+		HubCandidate: []byte(args.HubCandidate), ChunkCount: r.count,
 	})
 	if err != nil {
 		return WorldPreviewView{Error: err.Error()}

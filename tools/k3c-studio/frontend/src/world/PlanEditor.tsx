@@ -3,6 +3,7 @@ import { Button, Text } from '@radix-ui/themes';
 import { useState } from 'react';
 import { KindPicker } from './KindPicker';
 import { CHUNK_KINDS, OBJECT_KINDS, addChunk, addObject, moveObject, removeChunk, removeObject, slotLabel, updateChunk } from './plan';
+import { SizePicker } from './SizePicker';
 import type { PlanState } from './usePlan';
 
 const biomeName = (id: string) => BIOMES.find((b) => b.id === id)?.name ?? id;
@@ -12,7 +13,7 @@ const isControl = (target: EventTarget) => target instanceof Element && target.c
 const number = (value: string, fallback: number) => (value === '' || Number.isNaN(Number(value)) ? fallback : Number(value));
 
 /** Editor für geplante Chunks im Welt-Betrachter (B-461/AC-09): Insel und Stufe wählen, Chunks am Platz anlegen, Art,
- *  Chunk-Seed und feste Objekte bearbeiten; ein Klick auf einen Eintrag (nicht auf ein Feld) meldet seinen Platz an `onSlot`; Art und Objekt in der durchsuchbaren Liste mit Emoji (B-485/AC-01). Prüffehler stehen am Platz (AC-06); Speichern nur, wenn der Entwurf gültig ist. */
+ *  Chunk-Seed und feste Objekte bearbeiten, die Inselgröße der Stufe wählen (B-485/AC-04); ein Klick auf einen Eintrag (nicht auf ein Feld) meldet seinen Platz an `onSlot`; Art und Objekt in der durchsuchbaren Liste mit Emoji (B-485/AC-01). Prüffehler stehen am Platz (AC-06); Speichern nur, wenn der Entwurf gültig ist. */
 export function PlanEditor({ plan, onSlot }: { plan: PlanState; onSlot?: (slot: number) => void }) {
   const { island, stage, draft, check, notice, dirty } = plan;
   const [slot, setSlot] = useState(1);
@@ -28,6 +29,7 @@ export function PlanEditor({ plan, onSlot }: { plan: PlanState; onSlot?: (slot: 
         <select className="wd-select" aria-label="Stufe" value={stage} disabled={dirty} title={lock} onChange={(e) => plan.selectStage(Number(e.target.value))}>
           {island.depths.map((d, i) => <option key={d} value={i}>{`Stufe ${i + 1} · ${biomeName(island.biomes[i] ?? '')}`}</option>)}
         </select>
+        <SizePicker plan={plan} />
         <input className="wd-slot" type="number" aria-label="Neuer Platz" value={slot} onChange={(e) => setSlot(number(e.target.value, slot))} />
         <Button variant="soft" onClick={() => plan.edit(addChunk(draft, slot, defaultKind(island.biomes[stage])))}>Chunk hinzufügen</Button>
         <span className="wd-grow" />

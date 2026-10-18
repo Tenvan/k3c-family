@@ -60,7 +60,7 @@ beforeEach(async () => {
   stub('offsetHeight', (el) => (el.classList.contains('wd-stage') ? 400 : 0));
   stub('clientWidth', (el) => (el.classList.contains('wd-viewport') ? 1000 : 0));
   const view = await backend.planLoad();
-  await backend.planSave('island1', 0, [], view.stand);
+  await backend.planSave('island1', 0, [], 0, view.stand);
 });
 afterEach(() => {
   act(() => root?.unmount());

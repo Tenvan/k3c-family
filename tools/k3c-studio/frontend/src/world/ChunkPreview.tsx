@@ -14,7 +14,7 @@ const DEFAULT_SEED = 'k3c';
 const DEFAULT_BIOME = 'forest';
 
 /** Quelle der Anfrage: Insel + Stufe mit dem Entwurf (gleiche Quelle wie die Live-Vorschau), bis eine Insel geladen ist das Biom. */
-const toSource = (plan?: PlanSource): WorldSource => (plan ? { island: plan.island, stage: plan.stage, planned: plan.planned } : { biome: DEFAULT_BIOME });
+const toSource = (plan?: PlanSource): WorldSource => (plan ? { island: plan.island, stage: plan.stage, planned: plan.planned, chunkCount: plan.chunkCount } : { biome: DEFAULT_BIOME });
 
 const chunkClass = (kind: string) => `wd-chunk${kind === 'hub' ? ' wd-hub' : SPECIAL_CHUNKS.has(kind) ? ' wd-special' : ''}`;
 

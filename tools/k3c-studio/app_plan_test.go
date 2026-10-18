@@ -69,17 +69,17 @@ func TestPlanLoadListetInselnMitBiomen(t *testing.T) {
 
 func TestPlanCheckNenntDenPlatz(t *testing.T) {
 	app, _ := planApp(t, islandsFixture)
-	if v := app.PlanCheck("island1", 0, portalPlan); !v.OK {
+	if v := app.PlanCheck("island1", 0, portalPlan, 0); !v.OK {
 		t.Fatalf("gültige Planung abgelehnt: %s", v.Error)
 	}
-	v := app.PlanCheck("island1", 0, []level.PlannedChunk{{Slot: 5, Kind: "volcano"}})
+	v := app.PlanCheck("island1", 0, []level.PlannedChunk{{Slot: 5, Kind: "volcano"}}, 0)
 	if v.OK || v.Slot != 5 || !strings.Contains(v.Error, "Platz +5") {
 		t.Errorf("Prüfung: %+v", v)
 	}
-	if v := app.PlanCheck("island1", 9, portalPlan); v.OK {
+	if v := app.PlanCheck("island1", 9, portalPlan, 0); v.OK {
 		t.Error("Tiefe außerhalb der Insel muss abgelehnt werden")
 	}
-	if v := app.PlanCheck("nirgends", 0, portalPlan); v.OK {
+	if v := app.PlanCheck("nirgends", 0, portalPlan, 0); v.OK {
 		t.Error("unbekannte Insel muss abgelehnt werden")
 	}
 }
@@ -89,7 +89,7 @@ func TestPlanSaveIstFormatStabilUndAtomar(t *testing.T) {
 	app, path := planApp(t, islandsFixture)
 	before := readFile(t, path)
 	stand := app.PlanLoad().Stand
-	saved := app.PlanSave("island1", 0, portalPlan, stand)
+	saved := app.PlanSave("island1", 0, portalPlan, 0, stand)
 	if saved.Error != "" || saved.Hint != planRegHint || saved.Stand == stand {
 		t.Fatalf("Speichern: %+v", saved)
 	}
@@ -115,12 +115,12 @@ func TestPlanSaveOhneAenderungIstByteGleich(t *testing.T) {
 	before := readFile(t, path)
 	view := app.PlanLoad()
 	same := view.Islands[1].Planned["1"]
-	saved := app.PlanSave("island2", 1, same, view.Stand)
+	saved := app.PlanSave("island2", 1, same, 0, view.Stand)
 	if saved.Error != "" || saved.Stand != view.Stand || readFile(t, path) != before {
 		t.Fatalf("Speichern ohne Änderung: %+v, Datei geändert: %v", saved, readFile(t, path) != before)
 	}
 	// Planung leer lassen, wo keine war: ebenfalls byte-gleich
-	if s := app.PlanSave("island1", 0, nil, view.Stand); s.Error != "" || readFile(t, path) != before {
+	if s := app.PlanSave("island1", 0, nil, 0, view.Stand); s.Error != "" || readFile(t, path) != before {
 		t.Errorf("leere Planung ohne vorherige: %+v", s)
 	}
 }
@@ -129,7 +129,7 @@ func TestPlanSaveBeruehrtNurDenBetroffenenEintrag(t *testing.T) {
 	app, path := planApp(t, islandsFixture)
 	stand := app.PlanLoad().Stand
 	next := []level.PlannedChunk{{Slot: -2, Kind: "tunnel", Seed: "x"}}
-	if s := app.PlanSave("island2", 1, next, stand); s.Error != "" {
+	if s := app.PlanSave("island2", 1, next, 0, stand); s.Error != "" {
 		t.Fatal(s.Error)
 	}
 	after := readFile(t, path)
@@ -145,7 +145,7 @@ func TestPlanSaveBeruehrtNurDenBetroffenenEintrag(t *testing.T) {
 		t.Errorf("Planung nach dem Speichern: %+v", view.Islands)
 	}
 	// Planung entfernen bringt die Insel auf {} zurück
-	if s := app.PlanSave("island2", 1, nil, view.Stand); s.Error != "" || !strings.Contains(readFile(t, path), `"plannedChunks":{}`) {
+	if s := app.PlanSave("island2", 1, nil, 0, view.Stand); s.Error != "" || !strings.Contains(readFile(t, path), `"plannedChunks":{}`) {
 		t.Errorf("Planung entfernen: %+v\n%s", s, readFile(t, path))
 	}
 }
@@ -153,7 +153,7 @@ func TestPlanSaveBeruehrtNurDenBetroffenenEintrag(t *testing.T) {
 func TestPlanSaveLegtFehlendesFeldAn(t *testing.T) {
 	const bare = "{\n  \"islands\": [\n    { \"id\": \"island1\", \"depths\": [0, 1, 2, 3, 4] }\n  ]\n}\n"
 	app, path := planApp(t, bare)
-	if s := app.PlanSave("island1", 0, portalPlan, app.PlanLoad().Stand); s.Error != "" {
+	if s := app.PlanSave("island1", 0, portalPlan, 0, app.PlanLoad().Stand); s.Error != "" {
 		t.Fatal(s.Error)
 	}
 	want := "{\n  \"islands\": [\n    { \"id\": \"island1\", \"depths\": [0, 1, 2, 3, 4], \"plannedChunks\": {\"0\": [{\"slot\":6,\"kind\":\"portal\"}]} }\n  ]\n}\n"
@@ -165,7 +165,7 @@ func TestPlanSaveLegtFehlendesFeldAn(t *testing.T) {
 func TestPlanSaveSchreibtNurGueltiges(t *testing.T) {
 	app, path := planApp(t, islandsFixture)
 	before := readFile(t, path)
-	s := app.PlanSave("island1", 0, []level.PlannedChunk{{Slot: 0, Kind: "forest"}}, app.PlanLoad().Stand)
+	s := app.PlanSave("island1", 0, []level.PlannedChunk{{Slot: 0, Kind: "forest"}}, 0, app.PlanLoad().Stand)
 	if s.Error == "" || s.Stale || readFile(t, path) != before {
 		t.Errorf("ungültige Planung: %+v, Datei geändert: %v", s, readFile(t, path) != before)
 	}
@@ -179,7 +179,7 @@ func TestPlanSaveLehntVeralteteDateiAb(t *testing.T) {
 	if err := os.WriteFile(path, []byte(external), 0o644); err != nil {
 		t.Fatal(err)
 	}
-	s := app.PlanSave("island1", 0, portalPlan, stand)
+	s := app.PlanSave("island1", 0, portalPlan, 0, stand)
 	if !s.Stale || s.Error != "data/islands.json geändert, bitte neu laden" || readFile(t, path) != external {
 		t.Errorf("veralteter Stand: %+v, Datei: %q", s, readFile(t, path))
 	}
@@ -190,7 +190,7 @@ func TestPlanSaveLehntVeralteteDateiAb(t *testing.T) {
 // frisch geladenen Stand wieder.
 func TestPlanSaveNachSpeichernLehntExterneAenderungAb(t *testing.T) {
 	app, path := planApp(t, islandsFixture)
-	first := app.PlanSave("island1", 0, portalPlan, app.PlanLoad().Stand)
+	first := app.PlanSave("island1", 0, portalPlan, 0, app.PlanLoad().Stand)
 	if first.Error != "" || first.Stale || first.Stand == "" {
 		t.Fatalf("erstes Speichern: %+v", first)
 	}
@@ -198,12 +198,12 @@ func TestPlanSaveNachSpeichernLehntExterneAenderungAb(t *testing.T) {
 	if err := os.WriteFile(path, []byte(external), 0o644); err != nil {
 		t.Fatal(err)
 	}
-	second := app.PlanSave("island1", 1, []level.PlannedChunk{{Slot: 4, Kind: "cavern"}}, first.Stand)
+	second := app.PlanSave("island1", 1, []level.PlannedChunk{{Slot: 4, Kind: "cavern"}}, 0, first.Stand)
 	if !second.Stale || second.Error != errPlanStale.Error() || readFile(t, path) != external {
 		t.Fatalf("zweites Speichern: %+v, Datei unverändert: %v", second, readFile(t, path) == external)
 	}
 	reloaded := app.PlanLoad()
-	if third := app.PlanSave("island1", 1, []level.PlannedChunk{{Slot: 4, Kind: "cavern"}}, reloaded.Stand); third.Error != "" || third.Stale {
+	if third := app.PlanSave("island1", 1, []level.PlannedChunk{{Slot: 4, Kind: "cavern"}}, 0, reloaded.Stand); third.Error != "" || third.Stale {
 		t.Errorf("nach Neuladen: %+v", third)
 	}
 }

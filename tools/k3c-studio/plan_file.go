@@ -40,7 +40,7 @@ func planStand(raw []byte) string {
 func plannedOf(raw []byte, id string) (map[string][]level.PlannedChunk, error) {
 	var f struct {
 		Islands []struct {
-			ID      string                           `json:"id"`
+			ID      string                          `json:"id"`
 			Planned map[string][]level.PlannedChunk `json:"plannedChunks"`
 		} `json:"islands"`
 	}
@@ -128,9 +128,10 @@ func encodePlanned(planned map[string][]level.PlannedChunk) ([]byte, error) {
 	return b.Bytes(), nil
 }
 
-func sortedDepths(planned map[string][]level.PlannedChunk) []string {
-	keys := make([]string, 0, len(planned))
-	for k := range planned {
+// sortedDepths liefert die Schlüssel (Tiefen) einer Tabelle je Tiefe, nach Zahl aufsteigend.
+func sortedDepths[V any](byDepth map[string]V) []string {
+	keys := make([]string, 0, len(byDepth))
+	for k := range byDepth {
 		keys = append(keys, k)
 	}
 	for i := 1; i < len(keys); i++ { // wenige Schlüssel: Einfügesortierung nach Zahl
@@ -187,17 +188,23 @@ func patchPlanned(raw []byte, id string, depth int, chunks []level.PlannedChunk)
 	if err != nil {
 		return nil, err
 	}
+	return replaceField(raw, id, "plannedChunks", text)
+}
+
+// replaceField ersetzt den Wert des Feldes key der Insel id durch text; fehlt das Feld, wird es vor der schließenden
+// Klammer der Insel angehängt. Alle übrigen Bytes bleiben.
+func replaceField(raw []byte, id, key string, text []byte) ([]byte, error) {
 	island, err := islandSpan(raw, id)
 	if err != nil {
 		return nil, err
 	}
-	at, found, err := valueSpan(raw, island, "plannedChunks")
+	at, found, err := valueSpan(raw, island, key)
 	if err != nil {
 		return nil, err
 	}
-	if !found { // Feld fehlt: vor der schließenden Klammer der Insel anhängen
+	if !found {
 		at = insertSpan(raw, island)
-		text = append([]byte(`, "plannedChunks": `), text...)
+		text = append([]byte(fmt.Sprintf(`, %q: `, key)), text...)
 	}
 	return append(append(append([]byte{}, raw[:at.from]...), text...), raw[at.to:]...), nil
 }
