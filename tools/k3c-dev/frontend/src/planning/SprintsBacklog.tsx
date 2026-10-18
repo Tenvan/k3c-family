@@ -1,5 +1,5 @@
 import { Text } from '@radix-ui/themes';
-import { useEffect, useState, type CSSProperties } from 'react';
+import { useEffect, useMemo, useState, type CSSProperties } from 'react';
 import { backend, type PlanningData, type PlanSprint } from '../api';
 import { errorText } from '../lib/errors';
 import { loadText, savePref } from '../lib/prefs';
@@ -9,7 +9,8 @@ import { BacklogView, useTarget } from './Backlog';
 import { PlanDetail } from './Detail';
 import { foldAll, unfold } from './fold';
 import { GitHubBar, useGitHub } from './GitHubBar';
-import { WorktreeBar } from './WorktreeBar';
+import { indexChanges, withWorktreeEntries } from './wtPills';
+import { useWorktreeDiffs, WtContext } from './WorktreePills';
 import { exists, filterProjects, filterSprints, filterTickets, findSession, parseFilter, projectHits, sortSprints, SPLIT_DEFAULT, type PlanFilter } from './planning';
 import { PlanToolbar } from './PlanToolbar';
 import { ProjectsView } from './ProjectsView';
@@ -24,7 +25,10 @@ const PREF = 'planning.filter';
  *  links die Projekte, rechts der Backlog und darunter das Detail der Auswahl, beide Grenzen mit Splitter. Lädt bei
  *  `planning:changed` neu; Filter (ohne Freitext), Auswahl und Splitter bleiben gemerkt. */
 export function SprintsBacklog() {
-  const [data, setData] = useState<PlanningData | null>(null);
+  const [root, setData] = useState<PlanningData | null>(null);
+  const wt = useWorktreeDiffs();
+  const data = useMemo(() => (root ? withWorktreeEntries(root, wt.diffs) : null), [root, wt.diffs]); // + Einträge nur im Worktree (B-467)
+  const wtIndex = useMemo(() => indexChanges(wt.diffs), [wt.diffs]);
   const [error, setError] = useState('');
   const [filter, setFilterState] = useState<PlanFilter>(() => parseFilter(loadText(PREF, '{}')));
   const [gh, reloadGh] = useGitHub();
@@ -42,7 +46,7 @@ export function SprintsBacklog() {
     return backend.on('planning:changed', () => void load()); // Wächter in Go: Datei in docs/ geändert
   }, []);
   // Verschwundene Auswahl (archiviert, gelöscht) schließt das Detail.
-  useEffect(() => { if (data && filter.sel && !exists(data, filter.sel)) setFilter({ ...filter, sel: '' }); }, [data]);
+  useEffect(() => { if (data && wt.loaded && filter.sel && !exists(data, filter.sel)) setFilter({ ...filter, sel: '' }); }, [data, wt.loaded]);
   if (error) return <NoticeCard title="Planung nicht geladen" tone="error">{error}</NoticeCard>;
   if (data === null) return <Text color="gray">Lade Planung …</Text>;
   const sprints = sortSprints(filterSprints(data, filter), gh?.sprints);
@@ -58,9 +62,10 @@ export function SprintsBacklog() {
   );
   const picked = sprints.flatMap(openSessions).filter((it) => checked.has(it.session.nr)); // fertige oder verschwundene fallen heraus
   return (
+    <WtContext.Provider value={wtIndex}>
     <div className="pl-board">
       <GitHubBar gh={gh} reload={reloadGh} />
-      <WorktreeBar />
+      {wt.error && <WorktreeNotice error={wt.error} reload={wt.reload} />}
       <PlanToolbar data={data} filter={filter} setFilter={setFilter} hits={(shown.projects?.length ?? 0) + tickets.length} />
       <div className="pl-grid" style={{ '--pl-split': `${cols}%`, '--pl-detail': rows } as CSSProperties}>
         <section className="pl-pane pl-projects" aria-label="Projekte">
@@ -78,6 +83,16 @@ export function SprintsBacklog() {
           rows={rows} setRows={setRows} resetRows={resetRows} goal={goal} choose={choose} />
       </div>
     </div>
+    </WtContext.Provider>
+  );
+}
+
+/** Hinweis, wenn der Workflow-Check der Worktrees scheitert: keine Pills, dafür der Grund und ein neuer Versuch. */
+function WorktreeNotice({ error, reload }: { error: string; reload: () => void }) {
+  return (
+    <Text size="1" color="gray" role="status">
+      Worktree-Pills nicht verfügbar: {error} <button type="button" className="pl-textlink" onClick={reload}>erneut prüfen</button>
+    </Text>
   );
 }
 
