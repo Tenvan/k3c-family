@@ -56,4 +56,22 @@ describe('Seite Sound (B-459)', () => {
     expect(h.textContent).toContain('probe-a (music:tag, 1)');
     expect(h.textContent).not.toContain('coin');
   });
+
+  it('Hörprobe: Auswahlwechsel mit scrollIntoView, das etwas zurückgibt, zerlegt die Seite nicht (leerer Bildschirm)', async () => {
+    const original = Element.prototype.scrollIntoView;
+    Element.prototype.scrollIntoView = () => ({ ignoriert: true }) as unknown as undefined; // wie die WebView des Studios
+    try {
+      const h = await mount(<Hoerprobe />);
+      const warn = vi.spyOn(console, 'error').mockImplementation(() => {});
+      const pick = (i: number) => act(async () => { h.querySelectorAll<HTMLButtonElement>('.hp-item')[i]!.click(); });
+      await pick(1); // Auswahl wechselt: der Effekt läuft erneut
+      await pick(2);
+      await act(async () => root!.render(<Theme><div /></Theme>)); // Aufräumen aller Effekte
+      const bad = warn.mock.calls.filter((c) => String(c[0]).includes('must not return anything'));
+      warn.mockRestore();
+      expect(bad).toEqual([]);
+    } finally {
+      Element.prototype.scrollIntoView = original;
+    }
+  });
 });

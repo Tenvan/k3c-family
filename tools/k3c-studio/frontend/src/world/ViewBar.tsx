@@ -7,7 +7,7 @@ const percentOf = (scale: number) => Math.round((scale / scaleOfPercent(100)) * 
 
 /** Leiste der Ansicht (B-477/AC-01 bis AC-03, B-485/AC-05): Zoom beider Vorschauen (Knöpfe, Regler stufenlos, feste Stufen;
  *  Regler und Stufen zeigen die Chunk-Vorschau und setzen beide gleich), Sprungpunkte und der eine Bereichs-Schieber für
- *  die Weltposition der Bildmitte im Bereich `range`. Hat die Live-Vorschau einen eigenen Zoom (Alt + Rad), steht er
+ *  die Weltposition der Bildmitte im Bereich `range`. Hat die Live-Vorschau einen eigenen Zoom (Umschalt + Rad), steht er
  *  daneben und ihr Bereich erscheint als zweiter, dünner Griff. `spans` sind die sichtbaren Bereiche beider Vorschauen. */
 export function ViewBar({ views, spans, widthUnits, range, jumps, onScale, onZoom, onCenter }: {
   views: Views; spans: { chunk: Span; live: Span }; widthUnits: number; range: [number, number]; jumps: JumpPoint[];

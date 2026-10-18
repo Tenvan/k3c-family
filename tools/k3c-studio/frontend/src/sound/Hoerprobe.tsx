@@ -68,7 +68,8 @@ export function Hoerprobe() {
   const list = useMemo(() => groups.flatMap((g) => g.items), [groups]);
   const h = useHoerprobe(list);
   const box = useRef<HTMLDivElement>(null);
-  useEffect(() => box.current?.querySelector('.hp-sel')?.scrollIntoView?.({ block: 'nearest' }), [h.selected]);
+  // Block statt Ausdruck: ein Rückgabewert von scrollIntoView würde React als Aufräumfunktion nehmen („destroy is not a function“).
+  useEffect(() => { box.current?.querySelector('.hp-sel')?.scrollIntoView?.({ block: 'nearest' }); }, [h.selected]);
   if (!data.view) return data.error ? <NoticeCard title="Slot-Register nicht lesbar" tone="error">{data.error}</NoticeCard> : <Text color="gray">Lade Slot-Register …</Text>;
   return (
     <div ref={box} className="hp-page" tabIndex={0} onKeyDown={(e) => onKey(e, h.act)}>

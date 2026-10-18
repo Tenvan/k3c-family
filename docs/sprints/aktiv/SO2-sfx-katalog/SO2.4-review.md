@@ -1,6 +1,6 @@
 # SO2.4 · Review und Abnahme des Sprints SO2
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Review
 - **Agent:** autonom
 - **Domäne:** CLI
@@ -49,4 +49,10 @@ task check
 
 ## Ergebnis
 
-–
+2026-10-18, im selben Lauf wie SO2.3 auf ausdrückliche Anweisung von 🧑 (Abweichung von „Review nie im selben Lauf“).
+
+- `task check` grün; Diff `origin/develop...sprint/so2` gelesen (35 Dateien ohne Sounds, 51 Sound-Dateien unter `public/audio/kandidaten/`).
+- **Kein schwerer Befund** im Sinne von `docs/arbeitsweise.md`: keine Quelldateien im Repo (`.work/` ist ignoriert), nur CC0 oder CC-BY (Test), `src/scenes/noSim.test.ts` grün, vor der ersten Eingabe kein Audio-Request, `src/tools/` und `lizenzen.html` unverändert.
+- **Zu beachten:** (1) Der Audio-Kern wurde erweitert (`playSample`, `preloadEffects`), siehe Ergebnis SO2.3; (2) fünf CC-BY-Stücke liegen unter `public/` und damit im Build, ihre Namensnennung steht nur in `public/audio/README.md`, nicht auf `lizenzen.html`: B-493 auf Prio hoch, **vor einem Release B-493 umsetzen oder die Dateien entfernen**; (3) drei Studio-Fixes (Umschalt+Rad-Zoom, Neu laden, Hörprobe) liegen im Sprint-Diff (Domäne DEV, Studio-Tests grün); (4) `public/audio/kandidaten/` hat 19 MB.
+- **Kriterien:** AC-01, AC-02, AC-04, AC-05, AC-06, AC-07 geprüft (Ergebnisse SO2.2, SO2.3); **AC-03 angenommen, Validierung offen (SO2.5)**: im Browser-Pane lösen alle 11 Ereignisse `onEvent` aus, gehört am TV wurde noch nichts.
+- Neue Tickets aus dem Sprint: B-492, B-493, B-494. Der Sprint bleibt `aktiv`, bis SO2.5 (Hören am TV) fertig ist (Hardware entkoppelt).

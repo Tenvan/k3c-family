@@ -17,7 +17,7 @@ const spanOf = (v: View, units: number) => ({ left: v.left, units });
 
 /** Seite Welt-Betrachter des Asset-Studios (B-460, B-461, B-477): Chunk-Streifen und Live-Vorschau in einer Ansicht, dazwischen
  *  der Editor für geplante Chunks. Beide zeigen dieselbe Weltposition in der Bildmitte (eine Positions-Leiste, Sprungpunkte);
- *  der Zoom gilt je Vorschau (Alt + Rad), die Leiste und Strg + Rad zoomen beide (B-485/AC-05). Beide lesen dieselbe
+ *  der Zoom gilt je Vorschau (Umschalt + Rad), die Leiste und Strg + Rad zoomen beide (B-485/AC-05). Beide lesen dieselbe
  *  Quelle: Insel, Stufe und der Entwurf der Planung (B-461/AC-11).
  *  „Verkleinern“ und „Maximieren“ ändern die Höhe der beiden Vorschauen, nie ihre Sichtbarkeit. */
 export function WorldPage() {

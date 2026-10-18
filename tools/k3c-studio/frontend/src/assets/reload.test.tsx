@@ -71,4 +71,18 @@ describe('Neuladen und Schreibregel (B-459/AC-07)', () => {
     expect(h.textContent).not.toContain(STALE);
     expect(h.textContent).toContain('Ausschnitt 0,0,40,65');
   });
+
+  it('„Neu laden“ holt fremde Änderungen, auch ohne Ereignis, und hält Auswahl und Filter', async () => {
+    const h = await mount();
+    await act(async () => type(filter(h), 'farm'));
+    await act(async () => mock.external('farm', [{ datei: `${TOWN}/well.png` }, { datei: `${TOWN}/crate.png` }], true));
+    await flush();
+    expect(h.textContent).not.toContain(`2. ${TOWN}/crate.png`); // ohne Ereignis bleibt die Seite alt
+    const reload = [...h.querySelectorAll('button')].find((b) => b.textContent === 'Neu laden')!;
+    await act(async () => reload.click());
+    await flush();
+    expect(h.textContent).toContain(`2. ${TOWN}/crate.png`);
+    expect(h.querySelector('[aria-selected="true"]')?.textContent).toContain('farm');
+    expect(filter(h).value).toBe('farm');
+  });
 });

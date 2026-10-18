@@ -1374,7 +1374,22 @@
       "bus": "music",
       "wahl": [
         {
-          "datei": "audio/probe-a.ogg"
+          "datei": "audio/kandidaten/happy-adventure-loop.ogg"
+        },
+        {
+          "datei": "audio/kandidaten/flowerbed-fields-loop.ogg"
+        },
+        {
+          "datei": "audio/kandidaten/lasso-lady-seamless-loop.ogg"
+        },
+        {
+          "datei": "audio/kandidaten/a-big-adventure.ogg"
+        },
+        {
+          "datei": "audio/kandidaten/the-adventure-begins.wav"
+        },
+        {
+          "datei": "audio/kandidaten/summer-adventure-background-music.mp3"
         }
       ]
     },
@@ -1384,7 +1399,11 @@
       "kategorie": "musik",
       "beschreibung": "Abend",
       "bus": "music",
-      "wahl": []
+      "wahl": [
+        {
+          "datei": "audio/kandidaten/chiptune-medieval-the-old-tower-inn.ogg"
+        }
+      ]
     },
     {
       "id": "music:nacht",
@@ -1394,7 +1413,10 @@
       "bus": "music",
       "wahl": [
         {
-          "datei": "audio/probe-b.ogg"
+          "datei": "audio/kandidaten/haunting-chiptune-loop-void-estate.ogg"
+        },
+        {
+          "datei": "audio/kandidaten/delayed-chiptune.ogg"
         }
       ]
     },
@@ -1404,7 +1426,17 @@
       "kategorie": "musik",
       "beschreibung": "Kampf",
       "bus": "music",
-      "wahl": []
+      "wahl": [
+        {
+          "datei": "audio/kandidaten/pixel-sprinter.ogg"
+        },
+        {
+          "datei": "audio/kandidaten/8-bit-battle-loop.ogg"
+        },
+        {
+          "datei": "audio/kandidaten/confrontation.ogg"
+        }
+      ]
     },
     {
       "id": "music:tiefe",
@@ -1412,7 +1444,11 @@
       "kategorie": "musik",
       "beschreibung": "Tiefe/Höhle",
       "bus": "music",
-      "wahl": []
+      "wahl": [
+        {
+          "datei": "audio/kandidaten/8-bit-cave-loop.ogg"
+        }
+      ]
     },
     {
       "id": "music:boss",
@@ -1420,7 +1456,14 @@
       "kategorie": "musik",
       "beschreibung": "Boss",
       "bus": "music",
-      "wahl": []
+      "wahl": [
+        {
+          "datei": "audio/kandidaten/nes-shooter-music-boss.ogg"
+        },
+        {
+          "datei": "audio/kandidaten/gods-forbid.ogg"
+        }
+      ]
     },
     {
       "id": "music:lobby",
@@ -1428,7 +1471,14 @@
       "kategorie": "musik",
       "beschreibung": "Lobby",
       "bus": "music",
-      "wahl": []
+      "wahl": [
+        {
+          "datei": "audio/kandidaten/nes-shooter-music-map.ogg"
+        },
+        {
+          "datei": "audio/kandidaten/chiptune-medieval-the-bard-s-tale.ogg"
+        }
+      ]
     },
     {
       "id": "music:ende",
@@ -1436,7 +1486,11 @@
       "kategorie": "musik",
       "beschreibung": "Niederlage/Sieg",
       "bus": "music",
-      "wahl": []
+      "wahl": [
+        {
+          "datei": "audio/kandidaten/8-bit-victory-loop.ogg"
+        }
+      ]
     },
     {
       "id": "sfx:hit",
@@ -1446,8 +1500,13 @@
       "bus": "sfx",
       "wahl": [
         {
-          "datei": "audio/atlas.ogg",
-          "sprite": "hit"
+          "datei": "audio/kandidaten/kenney-impact-sounds-impactpunch-medium.ogg"
+        },
+        {
+          "datei": "audio/kandidaten/kenney-impact-sounds-impactsoft-medium-0.ogg"
+        },
+        {
+          "datei": "audio/kandidaten/kenney-impact-sounds-impactmetal-light-0.ogg"
         }
       ]
     },
@@ -1457,7 +1516,14 @@
       "kategorie": "sfx",
       "beschreibung": "Kill",
       "bus": "sfx",
-      "wahl": []
+      "wahl": [
+        {
+          "datei": "audio/kandidaten/kenney-digital-audio-spacetrash2.ogg"
+        },
+        {
+          "datei": "audio/kandidaten/kenney-digital-audio-zapthreetonedown.ogg"
+        }
+      ]
     },
     {
       "id": "sfx:coin",
@@ -1467,11 +1533,13 @@
       "bus": "sfx",
       "wahl": [
         {
-          "datei": "audio/atlas.ogg",
-          "sprite": "coin"
+          "datei": "audio/kandidaten/kenney-rpg-audio-handlecoins.ogg"
         },
         {
-          "datei": "audio-test/test.ogg"
+          "datei": "audio/kandidaten/kenney-rpg-audio-handlecoins2.ogg"
+        },
+        {
+          "datei": "audio/kandidaten/kenney-digital-audio-pepsound3.ogg"
         }
       ]
     },
@@ -1481,7 +1549,17 @@
       "kategorie": "sfx",
       "beschreibung": "Pfeil",
       "bus": "sfx",
-      "wahl": []
+      "wahl": [
+        {
+          "datei": "audio/kandidaten/kenney-digital-audio-phaserup2.ogg"
+        },
+        {
+          "datei": "audio/kandidaten/kenney-digital-audio-laser5.ogg"
+        },
+        {
+          "datei": "audio/kandidaten/kenney-rpg-audio-drawknife1.ogg"
+        }
+      ]
     },
     {
       "id": "sfx:strike",
@@ -1489,7 +1567,17 @@
       "kategorie": "sfx",
       "beschreibung": "Schlag",
       "bus": "sfx",
-      "wahl": []
+      "wahl": [
+        {
+          "datei": "audio/kandidaten/kenney-rpg-audio-chop.ogg"
+        },
+        {
+          "datei": "audio/kandidaten/kenney-rpg-audio-knifeslice.ogg"
+        },
+        {
+          "datei": "audio/kandidaten/kenney-rpg-audio-knifeslice2.ogg"
+        }
+      ]
     },
     {
       "id": "sfx:build",
@@ -1497,7 +1585,14 @@
       "kategorie": "sfx",
       "beschreibung": "Bau",
       "bus": "sfx",
-      "wahl": []
+      "wahl": [
+        {
+          "datei": "audio/kandidaten/kenney-rpg-audio-metallatch.ogg"
+        },
+        {
+          "datei": "audio/kandidaten/kenney-impact-sounds-impactmining-000.ogg"
+        }
+      ]
     },
     {
       "id": "sfx:death",
@@ -1505,7 +1600,14 @@
       "kategorie": "sfx",
       "beschreibung": "Tod",
       "bus": "sfx",
-      "wahl": []
+      "wahl": [
+        {
+          "datei": "audio/kandidaten/kenney-digital-audio-lowdown.ogg"
+        },
+        {
+          "datei": "audio/kandidaten/kenney-digital-audio-lowthreetone.ogg"
+        }
+      ]
     },
     {
       "id": "sfx:revive",
@@ -1513,7 +1615,17 @@
       "kategorie": "sfx",
       "beschreibung": "Wiederbeleben",
       "bus": "sfx",
-      "wahl": []
+      "wahl": [
+        {
+          "datei": "audio/kandidaten/kenney-digital-audio-powerup3.ogg"
+        },
+        {
+          "datei": "audio/kandidaten/kenney-digital-audio-highup.ogg"
+        },
+        {
+          "datei": "audio/kandidaten/kenney-digital-audio-phaserup5.ogg"
+        }
+      ]
     },
     {
       "id": "sfx:skill",
@@ -1521,7 +1633,17 @@
       "kategorie": "sfx",
       "beschreibung": "Skill",
       "bus": "sfx",
-      "wahl": []
+      "wahl": [
+        {
+          "datei": "audio/kandidaten/kenney-digital-audio-powerup11.ogg"
+        },
+        {
+          "datei": "audio/kandidaten/kenney-digital-audio-powerup7.ogg"
+        },
+        {
+          "datei": "audio/kandidaten/kenney-digital-audio-twotone1.ogg"
+        }
+      ]
     },
     {
       "id": "sfx:warn",
@@ -1531,8 +1653,13 @@
       "bus": "sfx",
       "wahl": [
         {
-          "datei": "audio/atlas.ogg",
-          "sprite": "warn"
+          "datei": "audio/kandidaten/kenney-impact-sounds-impactbell-heavy-00.ogg"
+        },
+        {
+          "datei": "audio/kandidaten/kenney-digital-audio-threetone2.ogg"
+        },
+        {
+          "datei": "audio/kandidaten/kenney-interface-sounds-bong-001.ogg"
         }
       ]
     },
@@ -1542,7 +1669,35 @@
       "kategorie": "sfx",
       "beschreibung": "Portal",
       "bus": "sfx",
-      "wahl": []
+      "wahl": [
+        {
+          "datei": "audio/kandidaten/kenney-digital-audio-phasejump3.ogg"
+        },
+        {
+          "datei": "audio/kandidaten/kenney-digital-audio-phaserdown2.ogg"
+        },
+        {
+          "datei": "audio/kandidaten/kenney-digital-audio-zapthreetoneup.ogg"
+        }
+      ]
+    },
+    {
+      "id": "sfx:ride",
+      "art": "sound",
+      "kategorie": "sfx",
+      "beschreibung": "Reiten (Hufschlag)",
+      "bus": "sfx",
+      "wahl": [
+        {
+          "datei": "audio/kandidaten/horse-gallop-loop-01.ogg"
+        },
+        {
+          "datei": "audio/kandidaten/horse-gallop-loop-02.ogg"
+        },
+        {
+          "datei": "audio/kandidaten/horse-gallop-on-different-surfaces.mp3"
+        }
+      ]
     }
   ]
 }

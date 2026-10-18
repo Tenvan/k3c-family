@@ -1,6 +1,6 @@
 # SO2.2 · Sounds beschaffen, nach public/audio/ legen, Credits
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** CLI
@@ -57,4 +57,14 @@ Manuelle Prüfungen (Browser, Xbox, TV) nur, wenn diese Datei sie nennt und 🧑
 
 ## Ergebnis
 
-–
+2026-10-18, autonom, Branch `sprint/so2`.
+
+- **AC-01 geprüft:** `src/audio/soundKatalog.test.ts` liest `docs/assets/sounds.md` und prüft jede Zeile der Ereignisliste aus B-167 und alle acht Musik-Zustände: Sound, Quelle, Urheber und CC0/CC-BY, oder Lücke mit vorhandenem Ticket (B-492); der aktive Sound jeder Zeile ist die erste Präferenz im Slot-Register. 11 Effekt-Ereignisse zugeordnet, 7 als Lücke (B-492: Münze geben, Bau-Fortschritt, `revived`, Hub-Ausbau, Skill je Klasse, Boss-Auftritt, UI-Klicks); Musik 8 von 8 Zuständen belegt, Niederlage-Musik fehlt (B-168/SO4).
+- **AC-02 geprüft:** derselbe Test prüft, dass jede fremde Datei unter `public/audio/` (ogg, mp3, wav) eine Credit-Zeile mit Urheber, Quelle und CC0 oder CC-BY hat und dass jede Zeile auf eine vorhandene Datei zeigt. Dateien: 48 unter `kandidaten/` (CC0, dazu CC-BY 4.0: `a-big-adventure.ogg`, `summer-adventure-background-music.mp3`).
+- **Credits-Seite:** Ticket B-493 (PLAT) liegt vor; `lizenzen.html` kennt Audio noch nicht.
+- **Abweichungen von der Session, offen für 🧑:**
+  1. Die Credit-Datei der Sounds ist `public/audio/README.md` › Importe statt `public/audio/CREDITS.md`, weil k3c-dev dort schreibt (`tools/assetkit/catalog.go`); B-493 hat die Frage.
+  2. Die Dateien bleiben unter `public/audio/kandidaten/` statt `public/audio/<quelle>/`, das Slot-Register verweist darauf und das Studio verwaltet sie. Nicht gewählte Kandidaten sind entfernt (3 Kenney-Dateien, von 🧑 im Studio aus dem Register genommen).
+  3. Einzeldateien statt Atlas, daher mehr Audio-Anfragen als im Atlas; Ticket B-494 (INF). Selbst erzeugte Füller waren nicht nötig (alle Q08-Ereignisse haben einen Kenney-Sound).
+- **Hinweis Größe:** `public/audio/kandidaten/` hat jetzt 19 MB, vor allem durch zwei Studio-Importe von 🧑 (`the-adventure-begins.wav` 6 MB, `a-big-adventure.ogg` 1,3 MB). Urheber und Lizenz dieser Zeilen standen auf „unbekannt“ und sind von den OpenGameArt-Seiten nachgetragen (Alexandr Zhelanov CC-BY 4.0, mismatchedmisfitz CC0, dionelou CC-BY 4.0); die Bestätigung der Lizenzen in k3c-dev steht bei 🧑.
+- **Prüfen:** `task check` grün.

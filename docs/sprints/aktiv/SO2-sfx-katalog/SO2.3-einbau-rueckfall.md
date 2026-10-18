@@ -1,6 +1,6 @@
 # SO2.3 · Einbau über den Audio-Kern, Rückfall bei fehlender Datei
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** CLI
@@ -61,4 +61,14 @@ Manuelle Prüfungen (Browser, Xbox, TV) nur, wenn diese Datei sie nennt und 🧑
 
 ## Ergebnis
 
-–
+2026-10-18, autonom, Branch `sprint/so2`.
+
+- **AC-03 geprüft:** `cueFor` (`src/audio/events.ts`) bildet `coinPickup`, `hit`, `kill`, `arrow`, `strike`, `built`, `playerDown`, `revive`, `skillPoint`, `arrived` und `dusk` (mit `wave`, `castleFallen`) auf je einen Effekt-Slot ab; Test je Ereignis in `events.test.ts`. Browser-Pane (Vite 5183, Audio-Kern entsperrt): alle 11 Ereignis-Typen lösen `onEvent` → `true` aus, Konsole ohne Warnung und Fehler. Hören am TV: SO2.5.
+- **AC-04 geprüft:** `cueFor`, `eventX`, `nightGain`, `sfxUrls` sind reine Funktionen (Test: Ereignis bleibt unverändert); `src/scenes/noSim.test.ts` grün.
+- **AC-05 geprüft:** Test „Rückfall“ in `audioCore.test.ts`: eine nicht ladbare Datei bleibt stumm (ein Logeintrag über `loadBuffer`, keine Ausnahme), die übrigen spielen.
+- **AC-07 geprüft:** `NIGHT_GAIN` (0,6) in `events.ts`; `onEvent(..., phase)` dämpft nachts (Test: Tag ohne Dämpfungsknoten, Nacht Pegel < 1); `GameScene` reicht `world.cycle.phase` durch.
+- **AC-06:** `task check` grün.
+- **Dichte:** `MAX_SAMPLE_VOICES` = 4 gleichzeitige Instanzen je Datei (Test mit 7 gleichen Ereignissen, danach wieder Platz).
+- **Abweichung (Kern geändert, offen für 🧑):** Der Audio-Kern bekam `playSample` und `preloadEffects`, weil die gewählten Sounds Einzeldateien aus dem Slot-Register sind, nicht Atlas-Sprites (B-494); `cueFor` liefert jetzt `slot` statt `sprite`, `SFX_URLS` kommt aus `data/assets.json` (erste Präferenz je Slot). Ort der Quelle: `eventX` (`x` des Ereignisses, sonst Ort des Effekts). Der Atlas (`atlas.json`, `atlas.ogg`) wird weiter geladen (2 Requests, noch von Hörprobe und `play` genutzt).
+- **Audio-Requests:** nach der ersten Eingabe 14 (Atlas 2, Effekt-Dateien 12; die Datei von `sfx:ride` wird mitgeladen, obwohl noch kein Ereignis sie spielt).
+- **Reiten:** Slot `sfx:ride` mit drei Kandidaten (AntumDeluge CC-BY 3.0, medicinestorm CC-BY 4.0) für den Sound-Editor angelegt; Einbau (Schleife je berittenem Spieler) in B-492.

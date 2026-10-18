@@ -49,7 +49,7 @@ export function useViews(widthUnits: number, px: PanePx) {
   const zoomBy = (factor: number) => zoom(BOTH, (s) => s * factor);
   const setCenter = (x: number) => setViews((v) => centerViews(v, x, widthUnits, px));
 
-  // Strg + Rad zoomt beide, Alt + Rad nur die Vorschau unter dem Zeiger, Umschalt + Rad scrollt (das gewöhnliche Rad scrollt die Seite).
+  // Strg + Rad zoomt beide, Umschalt + Rad nur die Vorschau unter dem Zeiger, das seitliche Rad scrollt (das gewöhnliche Rad scrollt die Seite).
   const onWheel = (e: WheelEvent, pane: Pane) => {
     const a = wheelAction(e);
     if (!a) return;

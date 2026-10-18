@@ -30,7 +30,6 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-155](B-155-balancing-runde-wirtschaft.md) | REG | Idee | niedrig | eingeplant | BR1 | Die Wirtschaft ist in einer Balancing-Runde gegen die Zielkorridore abgestimmt |
 | [B-156](B-156-balancing-runde-kampf-bosse.md) | REG | Idee | niedrig | eingeplant | BR2 | Kampf, Gegner und Bosse sind in einer Balancing-Runde gegen die Zielkorridore abgestimmt |
 | [B-160](B-160-abgleich-spielmetrik-simulator.md) | REG | Idee | mittel | eingeplant | BAL4 | Spielmetrik echter Abende und Simulatorwerte sind abgeglichen |
-| [B-167](B-167-sfx-katalog.md) | CLI | Idee | hoch | eingeplant | SO2 | Jedes wichtige Ereignis hat einen Sound mit Quelle und Lizenz |
 | [B-168](B-168-musik-je-zustand.md) | CLI | Idee | hoch | eingeplant | SO4 | Die Musik wechselt je Spielzustand mit Crossfade |
 | [B-250](B-250-audiokern-datei-wiedergabe.md) | CLI | Schuld | hoch | eingeplant | SO4 | Der Audio-Kern spielt ganze Dateien mit Crossfade, die Hörprobe nutzt ihn |
 | [B-270](B-270-respec-pruefung-ohne-seiteneffekt.md) | SIM | Schuld | mittel | eingeplant | SK1 | Die Sim prüft Respec und Lernen ohne Seiteneffekt |
@@ -157,6 +156,9 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-489](B-489-spielstand-chunk-anzahl.md) | SIM | Problem | mittel | offen | – | Spielstände laden Chunk-Anzahl und Planung aus den aktuellen Daten |
 | [B-490](B-490-sim-chunk-anzahl-nachtraege.md) | SIM | Schuld | niedrig | offen | – | Sim: Chunk-Anzahl mit Kandidaten-hub.json und gemeinsame Prüfung der Inselgröße |
 | [B-491](B-491-welten-editor-kleinigkeiten.md) | DEV | Schuld | niedrig | offen | – | Welten Editor: kleine Nachträge zu Schieber, Klick-Sprung und Planungsliste |
+| [B-492](B-492-sfx-luecken-weitere-ereignisse.md) | CLI | Idee | mittel | offen | – | Weitere Ereignisse bekommen eigene Sound-Slots und Sounds |
+| [B-493](B-493-credits-seite-audio.md) | PLAT | Idee | hoch | offen | – | Die Credits-Seite zeigt auch die Sounds unter public/audio |
+| [B-494](B-494-sound-atlas-werkzeug.md) | INF | Idee | niedrig | offen | – | Ein Werkzeug packt die gewählten Sounds in einen Sound-Atlas |
 
 ## Archiv
 
@@ -451,3 +453,4 @@ Zeile in diesen Abschnitt.
 | [B-058](archiv/B-058-execution-policy.md) | INF | Frage | niedrig | erledigt | RP1 | requirements.md empfiehlt keine Sicherheitseinstellung ohne Entscheidung von 🧑 |
 | [B-095](archiv/B-095-start-mit-seed-und-tiefe.md) | SRV | Idee | niedrig | erledigt | BT1 | Ein neues Spiel startet per URL mit eigenem Seed und gewählter Tiefe |
 | [B-048](archiv/B-048-standardbibliothek-in-001.md) | SRV | Frage | niedrig | erledigt | BT1 | Die Wahl der Go-Standardbibliothek ist dort festgehalten, wo B-001 auf sie verweist |
+| [B-167](archiv/B-167-sfx-katalog.md) | CLI | Idee | hoch | erledigt | SO2 | Jedes wichtige Ereignis hat einen Sound mit Quelle und Lizenz |
