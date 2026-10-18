@@ -1,14 +1,14 @@
 # WZ16 · DEV · Welt-Betrachter: eine gemeinsame Ansicht mit Sprungleiste, Zoom und Gebäude-Filter
 
-- **Status:** geplant
+- **Status:** aktiv
 - **Projekt:** WZG
 - **Domäne:** DEV
 - **Reife:** bereit
 - **Tickets:** B-477
-- **Start-Commit:** – (wird beim Aktivieren gesetzt: `git rev-parse --short origin/develop`)
-- **Spec:** Entwurf
+- **Start-Commit:** 64c2da42
+- **Spec:** freigegeben
 - **Revision:** 1
-- **Freigabe:** –
+- **Freigabe:** 2026-10-18, Chat (Ralf: „WZ16 ist freigegeben (Sprint-Spec so)“)
 
 ## Ausgangslage
 
@@ -62,7 +62,7 @@ keine. Freigabe der Sprint-Spec steht aus (die Ticket-Spec B-477 ist am 2026-10-
 
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
-| WZ16.1 | `WZ16.1-gemeinsame-ansicht.md` | Umsetzung | autonom | offen |
+| WZ16.1 | `WZ16.1-gemeinsame-ansicht.md` | Umsetzung | autonom | in Arbeit |
 | WZ16.2 | `WZ16.2-gebaeude-filter.md` | Umsetzung | autonom | offen |
 | WZ16.3 | `WZ16.3-review.md` | Review | autonom | offen |
 | WZ16.4 | `WZ16.4-abnahme.md` | Review | Mensch | offen |
