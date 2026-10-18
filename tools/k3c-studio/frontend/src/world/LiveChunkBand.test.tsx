@@ -83,3 +83,28 @@ describe('Chunk-Infos im Bodenstreifen (B-485)', () => {
     expect([...planned.querySelectorAll('.wd-band-line')].map((l) => l.textContent)).toEqual(['🧩 normal +1', 'Seed „abc“', '1 feste Obj.']); // Art aus dem Level (der Mock kennt nur „normal“)
   });
 });
+
+// Sichert nur die Leiste ab (PreviewStage ist hier gemockt); dass das Canvas mitzieht, prüfen stage/stageResize.test.ts
+// und die Messung im Browser.
+describe('Leiste folgt Höhenänderungen der Bühne (WZ17.5)', () => {
+  it('ändert sich die Bühnenhöhe nach dem Mount (Zeilen darüber), liegt die Leiste wieder auf dem Boden', async () => {
+    const watchers: ResizeObserverCallback[] = [];
+    const original = globalThis.ResizeObserver;
+    globalThis.ResizeObserver = class { constructor(cb: ResizeObserverCallback) { watchers.push(cb); } observe() {} unobserve() {} disconnect() {} } as unknown as typeof ResizeObserver;
+    restore.push(() => { globalThis.ResizeObserver = original; });
+    let height = 400;
+    const desc = Object.getOwnPropertyDescriptor(HTMLElement.prototype, 'offsetHeight')!;
+    Object.defineProperty(HTMLElement.prototype, 'offsetHeight', { configurable: true, get(this: HTMLElement) { return this.classList.contains('wd-stage') ? height : 0; } });
+    restore.push(() => Object.defineProperty(HTMLElement.prototype, 'offsetHeight', desc));
+    const h = await mount();
+    const top = () => parseFloat(h.querySelector<HTMLElement>('.wd-stage .wd-band')!.style.top);
+    expect(top()).toBeCloseTo(400 - 180 * (12 / 32));
+    height = 322; // Editor wächst: die Bühne (flex) wird niedriger
+    await act(async () => watchers.forEach((cb) => cb([], {} as ResizeObserver)));
+    expect(top()).toBeCloseTo(322 - 180 * (12 / 32));
+    height = 450; // Zeilen entfernt: die Bühne wächst
+    await act(async () => watchers.forEach((cb) => cb([], {} as ResizeObserver)));
+    expect(top()).toBeCloseTo(450 - 180 * (12 / 32));
+  });
+});
+

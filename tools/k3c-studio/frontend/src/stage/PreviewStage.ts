@@ -7,6 +7,7 @@ import { prepareBuildings, preloadBuildings } from '@game/scenes/siteView';
 import { createSpriteAnims, preloadSprites } from '@game/scenes/sprites';
 import { DEFAULT_CONTROL, SHEETS, resolveAnim, type Control, type Gap } from '../abspiel/figure';
 import { FigureView, GROUND_Y, drawScale, loadFigureSheets, type FigureItem } from '../abspiel/figureView';
+import { refreshToParent } from './stageResize';
 
 // Die wiederverwendbare Phaser-Bühne des Asset-Studios (B-460, WZ7.3; WZ10/WZ11 nutzen sie wieder, eine zweite entsteht
 // nicht): lädt die Grafiken wie das Spiel (LoadScene) und zeichnet eine `World` mit `StageView`/`WorldRenderer` aus
@@ -212,8 +213,9 @@ export class PreviewStage {
       input: { gamepad: false, keyboard: false, mouse: { preventDefaultWheel: false } }, // das Rad entscheidet die Seite (wheelAction)
       scene: this.scene,
     });
-    // Phaser hört nur auf das Fenster: ein Beobachter am Element fängt auch Layout-Änderungen ohne Fenster-Resize ab.
-    this.resize = new ResizeObserver(() => this.game.scale.refresh());
+    // Phaser hört nur auf das Fenster: ein Beobachter am Element fängt auch Layout-Änderungen ohne Fenster-Resize ab und
+    // misst die Elterngröße dabei neu (refresh allein rechnet mit der alten, WZ17.5).
+    this.resize = new ResizeObserver(() => refreshToParent(this.game.scale));
     this.resize.observe(parent);
     this.wheel = (e) => onWheel(e);
     parent.addEventListener('wheel', this.wheel, { passive: false }); // nicht passiv: die Seite bricht das Ereignis bei Zoom und Scrollen ab
@@ -246,7 +248,7 @@ export class PreviewStage {
 
   /** Größe neu lesen, z. B. nachdem das Element sichtbar wurde */
   refresh(): void {
-    this.game.scale.refresh();
+    refreshToParent(this.game.scale);
   }
 
   destroy(): void {
