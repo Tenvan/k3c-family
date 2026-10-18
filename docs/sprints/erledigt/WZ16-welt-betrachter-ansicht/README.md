@@ -73,4 +73,4 @@ wird jede Session als eigene Datei nach `docs/vorlagen/session.md` geschrieben.
 ## Abnahme
 
 2026-10-18 (Review WZ16.3, Abnahme WZ16.4 durch 🧑 am PC): AC-01 bis AC-05 mit Nachweis aus Tests und Browser-Pane (Ergebnis WZ16.1 bis WZ16.3); AC-07 erfüllt (WZ16.4, damit auch WZ7/AC-09). AC-06 teilweise: `task check:all` lokal nur an `assetkit` `TestDownloadHit` rot (B-480); CI auf `develop` nach dem Merge. Befunde: keine schweren. Neue Tickets: B-480.
-Version: Minor vorgeschlagen (Wirkung im Werkzeug, zusammen mit WZ7); nicht gesetzt (Entscheidung 🧑).
+Version: v0.19.0 gesetzt (2026-10-18, Minor wegen Wirkung im Werkzeug, zusammen mit WZ7; Tag auf `ea750844`). `task check:all` lokal nur an B-480 rot, die CI-Läufe auf `develop` und der Release-Lauf sind grün.
