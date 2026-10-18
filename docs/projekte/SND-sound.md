@@ -21,8 +21,10 @@ In Abarbeitungs-Reihenfolge; der erste nicht erledigte Sprint ist der nächste. 
 
 ## Nicht-Ziele
 
-Was zu einem anderen Projekt gehört, mit Kürzel.
+Das Asset-Studio und seine Sound-Seite als Werkzeug (WZG, WZ6); Figuren, Gebäude und Grafik (GRA, GEB); der Tageszyklus mit Morgengrauen als Phase (B-470, SIM).
 
 ## Notizen
 
-Entscheidungen, Zurückstellungen (Grund und Datum bei `ruht`). Darf leer bleiben (`–`).
+Stand 2026-10-18: Die Sound-Slots werden im Asset-Studio verwaltet (Sound-Seite mit Reiter „Hörprobe“, WZ6.4); `soundtest.html` bleibt für die Auswahl am TV (Gamepad), die Logik teilen beide (`src/tools/soundtestLogic.ts`). SO2 (SFX-Katalog) ist noch nicht gestartet, SO4 (Musik) läuft mit SO4.2 und SO4.6 fertig.
+
+Morgengrauen: Das Musikstück dafür ist eine offene Frage von SO4. Die Phase selbst baut B-470 (WRT, SIM); bis dahin endet die Nacht mit dem Ereignis `dawn`, der Client zeichnet das Morgengrauen als letzte 10 % der Nacht.

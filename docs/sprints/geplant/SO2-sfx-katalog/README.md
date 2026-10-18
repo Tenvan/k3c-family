@@ -54,7 +54,8 @@ Sound lädt nicht → stumm und Log-Eintrag, kein Absturz.
 
 ## Offene Fragen
 
-- Hub-Ausbau, Boss-Auftritt und UI-Klicks: Woher kommen die Auslöser (kein Feedback-Event in Q08)? Bis dahin nicht in der Ereignisliste (B-167 › Offene Fragen).
+- Hub-Ausbau und UI-Klicks: Woher kommen die Auslöser (kein Feedback-Event in Q08)? Bis dahin nicht in der Ereignisliste (B-167 › Offene Fragen). Der Hub-Ausbau ist nur als Wechsel von `hubLevel` im Snapshot sichtbar.
+- Boss-Auftritt: Auslöser gibt es inzwischen (`bossSpawned`, `bossPhase`, `bossDefeated`, `docs/protocol.md`); ob der Katalog sie aufnimmt, entscheidet 🧑 im Workshop SO2.1.
 
 ## Sessions
 

@@ -58,3 +58,5 @@ Anzahl Stufen je Level, Reihenfolge der freigeschalteten Gebäude, Schilde; Abgr
 ## Notizen
 
 Abstimmung mit GEB9 (Ausbaustufen 1–5 aller Hub-Gebäude, Entwurf 2026-10-17): GEB9 baut auf den heutigen fünf Hub-Stufen auf und bleibt über `stufen` erweiterbar; ändert B-458 die Stufenfolge, kommen weitere Stufen in dieselben JSONs. Reihenfolge entscheidet 🧑 (GEB9 › Offene Fragen 2).
+
+Stand WZG (2026-10-18): Die Freischaltung je Stufe wird im Gebäude-Planer des Asset-Studios bearbeitet (WZ9, B-462); `data/hub.json` ist einzige Quelle, die Regeltabelle in `docs/rules/materialien-gebaeude.md` § 3 wird erzeugt (`task rules:update`, WZ15), Prüfung und Matrix kennen keine feste 5 (Fixture mit 7 Stufen). Damit entfällt für B-458 ein eigenes Werkzeug. Grenzen: Die Linienzahl hängt an `wallLines` und die Regel „Linie k ab Hub-Stufe k“ bleibt Code (`engine/sim/lines.go`), Mauer-/Turm-Stufen an `data/buildings.json` › `levels`; mehr Hub-Stufen brauchen dafür ein SIM/REG-Ticket (AC-04). Die Hub-Grafik je Stufe entsteht im Asset-Studio (Grafik-Seite, Stufenreihe).
