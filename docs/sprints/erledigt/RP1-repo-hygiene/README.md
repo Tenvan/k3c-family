@@ -1,14 +1,14 @@
 # RP1 · INF · Repo-Hygiene: Branches aufräumen, Altlasten, Regeln
 
-- **Status:** geplant
+- **Status:** erledigt
 - **Projekt:** REL
 - **Domäne:** INF
-- **Reife:** Entwurf
+- **Reife:** bereit
 - **Tickets:** B-302, B-288, B-094, B-058
-- **Start-Commit:** –
-- **Spec:** Entwurf
+- **Start-Commit:** a6d676b4
+- **Spec:** freigegeben
 - **Revision:** 1
-- **Freigabe:** –
+- **Freigabe:** 2026-10-18, Chat (Ralf), Revision 1
 
 ## Ausgangslage
 
@@ -55,6 +55,12 @@ Branch mit ungemergten Commits → bleibt, Hinweis im Ergebnis.
 
 ## Sessions
 
+| Nr. | Datei | Typ | Agent | Status |
+|---|---|---|---|---|
+| RP1.1 | `RP1.1-branch-aufraeumen.md` | Umsetzung | autonom | fertig |
+| RP1.2 | `RP1.2-regeln-altlasten.md` | Umsetzung | autonom | fertig |
+| RP1.3 | `RP1.3-review.md` | Review | autonom | fertig |
+
 Entwurf. Vor dem Aktivieren jede Session als Datei nach `docs/vorlagen/session.md` schreiben, die Kriterien in Klammern werden ihr Feld `Kriterien`.
 
 - RP1.1 Branch-Aufräumen an Meilensteinen (AC-01).
@@ -63,4 +69,7 @@ Entwurf. Vor dem Aktivieren jede Session als Datei nach `docs/vorlagen/session.m
 
 ## Abnahme
 
-–
+- 2026-10-18, Review RP1.3 (getrennter Reviewer): AC-01 bis AC-04 am Diff belegt (RP1.1: B-302/AC-01 bis AC-05 mit `tools/aufraeumen` und Test; RP1.2: B-288, B-094, B-058 vorläufig).
+- Behoben: Fixture-Satz im Spielstand-Abschnitt klargestellt. Restrisiken von `task aufraeumen` (PR-Status nur über Branchnamen, frischer Branch ohne Commit gilt als gemergt) stehen so in B-302; offen für 🧑: Auto-Modus-Regel, Release bei Resten rot, B-058 `RemoteSigned`.
+- Neue Tickets: keine.
+- Version: v0.19.1 vorgeschlagen (Patch: Werkzeug und Doku ohne Wirkung im Spiel); gesetzt nur nach Bestätigung durch 🧑.

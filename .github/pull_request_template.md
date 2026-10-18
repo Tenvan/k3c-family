@@ -10,6 +10,10 @@ Sessions (ein Commit je Session):
 
 -
 
+## Zum Löschen
+
+- `origin/wip/…`-Branches, deren Inhalt in diesem Sprint-Branch steckt (🧑 löscht nach dem Merge), sonst `–`
+
 ## Checkliste
 
 - [ ] Nur Dateien der Domäne geändert (sonst begründet)

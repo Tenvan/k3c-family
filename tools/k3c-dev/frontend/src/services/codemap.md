@@ -6,7 +6,7 @@ Reiter Dienste: Übersicht und Steuerung der vom Werkzeug verwalteten Dienste (V
 
 ## Design
 
-- Pure Logik: `tables.ts` (`badgeFor`, `buttonsFor`, `Command`, `applyStatus` verwirft Updates mit kleinerer `seq`, `orderLine`, `levelShares` über `LEVELS`, `metricsOf` für CPU/Speicher/Uptime).
+- Pure Logik: `tables.ts` (`badgeFor`, `buttonsFor`, `Command`, `preferredSource` (gemerkte Quelle, sonst ein laufender Dienst), `applyStatus` verwirft Updates mit kleinerer `seq`, `orderLine`, `levelShares` über `LEVELS`, `metricsOf` für CPU/Speicher/Uptime).
 - Container: `ServicesPage.tsx` – Kartenliste, `BulkBar` mit „Neu laden“ (`servicesReload`), „Alle starten/stoppen“ und `orderLine`, gemerkte Quellenwahl mit `logs/SourceBar` und `logs/SourcePanel`.
 - Präsentation: `ServiceCard.tsx` (Aktionen, `AlertDialog` für erzwungenes Stoppen, `RoleTags`, `HealthUrl` mit klickbarer http-Adresse über `backend.openUrl`, `Notes` mit Neustart-Zähler, Änderungsdatei und Fehlern, `Metrics`), `LogBox.tsx` (Level-Verteilung der letzten 60 min).
 - Event-getriebener Zustand: `service:state` aktualisiert einzelne Karten, ältere `seq` werden ignoriert.

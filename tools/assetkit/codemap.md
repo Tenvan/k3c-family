@@ -18,6 +18,6 @@ Eigenes Go-Modul `k3c/tools/assetkit` (Paket `assets`), gemeinsam von k3c-dev un
 3. `Catalog(root)` → `Search(list, query, art, limit)`.
 
 ## Integration
-- Konsumenten k3c-dev: `internal/mcpsrv/tools_assets.go` (`assets_list`, `assets_get`, `assets_set`, `assets_catalog`), `tools_assets_research.go` (`assets_research`, `assets_hits`, `assets_hit_add`, `assets_hit_drop`, `assets_import`), `app_assets.go` (Bindings). Asset-Studio: `tools/k3c-studio/app_assets.go` (Bindings mit `Stamp`/`SetChoicesIf`), `app.go` (`Watch` → Ereignis `assets:changed`), `main.go` (`FindRoot`).
+- Konsumenten k3c-dev: `internal/mcpsrv/tools_assets.go` (`assets_list`, `assets_get`, `assets_set`, `assets_catalog`), `tools_assets_research.go` (`assets_research`, `assets_hits`, `assets_hit_add`, `assets_hit_drop`, `assets_import`). Asset-Studio: `tools/k3c-studio/app_assets.go` (Bindings mit `Stamp`/`SetChoicesIf`), `app.go` (`Watch` → Ereignis `assets:changed`), `main.go` (`FindRoot`).
 - Daten: `data/assets.json` (Erstbefüllung aus `docs/assets/zuordnung*.md`), `public/**/CREDITS.md`, `public/audio/README.md`.
 - Tests: `repo_test.go` prüft das echte Register (gültig, byte-gleiche Rundreise); `src/tools/assets.test.ts` prüft es gegen die Zuordnungstabellen.

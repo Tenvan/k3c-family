@@ -17,10 +17,8 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-041](B-041-wails-starter.md) | SRV | Idee | niedrig | eingeplant | BT1 | Wails-Starter für Windows existiert |
 | [B-042](B-042-pi-leistungsziel.md) | SRV | Frage | hoch | eingeplant | HW1 | Pi-Modell und Leistungsziel sind festgelegt |
 | [B-048](B-048-standardbibliothek-in-001.md) | SRV | Frage | niedrig | eingeplant | BT1 | Die Wahl der Go-Standardbibliothek ist dort festgehalten, wo B-001 auf sie verweist |
-| [B-058](B-058-execution-policy.md) | INF | Frage | niedrig | eingeplant | RP1 | requirements.md empfiehlt keine Sicherheitseinstellung ohne Entscheidung von 🧑 |
 | [B-080](B-080-dev-tasten-server.md) | SRV | Idee | niedrig | eingeplant | KB2 | Dev-Tasten (Gold, Stufe, Neustart) wirken über den Server |
 | [B-090](B-090-radar.md) | CLI | Idee | mittel | eingeplant | HW1 | Ein Radar im HUD zeigt Burg, Portale, Ausgang, Mitspieler und Gegner |
-| [B-094](B-094-npm-reste.md) | INF | Schuld | niedrig | eingeplant | RP1 | Im Repo liegen keine Alt-Binaries und keine npm-Skripte mehr |
 | [B-095](B-095-start-mit-seed-und-tiefe.md) | SRV | Idee | niedrig | eingeplant | BT1 | Ein neues Spiel startet per URL mit eigenem Seed und gewählter Tiefe |
 | [B-098](B-098-debug-overlay-standard-zurueck.md) | CLI | Schuld | niedrig | eingeplant | K5 | Das Debug-Overlay ist vor dem Release wieder nur mit ?dev=1 verfügbar |
 | [B-099](B-099-balancing-tester.md) | SIM | Idee | mittel | eingeplant | BAL6 | Ein automatischer Balancing-Tester prüft Regeln und Werte gegen messbare Ziele |
@@ -70,7 +68,6 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-285](B-285-lernbare-skills-im-protokoll.md) | SRV | Problem | mittel | eingeplant | RM1 | Der Server nennt je Spieler die lernbaren Skills |
 | [B-286](B-286-lasttest-tick-reihe-wackelt.md) | SRV | Problem | niedrig | eingeplant | NT1 | TestTickReiheJeRaum schlägt im Gesamtlauf gelegentlich fehl |
 | [B-287](B-287-hub-ausbau-beutel-maximum.md) | REG | Problem | mittel | eingeplant | RG1 | Hub-Stufe 4 und 5 sind mit dem Beutel-Maximum bezahlbar |
-| [B-288](B-288-alte-spielstaende-ohne-ruecksicht.md) | INF | Schuld | mittel | eingeplant | RP1 | Formatänderungen am Spielstand nehmen keine Rücksicht auf alte Stände |
 | [B-289](B-289-aggressionspool-mit-adern.md) | REG | Problem | mittel | eingeplant | RG1 | Der Aggressionspool steigt mit Adern nicht zu schnell |
 | [B-291](B-291-lava-nicht-auf-mauerlinien.md) | SIM | Problem | mittel | eingeplant | LV1 | Lava liegt nicht auf den Mauerlinien |
 | [B-293](B-293-spiel-im-menue-verlassen.md) | CLI | Idee | hoch | eingeplant | S8 | Das Spielmenü hat neben „Weiter“ einen Eintrag „Spiel verlassen“ |
@@ -78,7 +75,6 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-295](B-295-handwerker-schmiede-ruestkammer.md) | REG | Frage | mittel | eingeplant | RG2 | Handwerker lassen sich auch für Schmiede und Rüstkammer ausbilden |
 | [B-300](B-300-mauern-zuerst-wie-sparsam.md) | SIM | Frage | mittel | eingeplant | BAL6 | Das Profil „Mauern zuerst“ spielt messbar anders als „sparsam“ |
 | [B-301](B-301-vary-ohne-wirkung.md) | SIM | Problem | niedrig | eingeplant | BAL6 | Ein Sensitivitäts-Pfad ohne Wirkung ergibt einen Fehler |
-| [B-302](B-302-aufraeumen-branches-worktrees.md) | INF | Schuld | mittel | eingeplant | RP1 | Lokale Branches und Worktrees werden an festen Meilensteinen aufgeräumt |
 | [B-314](B-314-controller-pruefungen-zurueckgestellt.md) | PLAT | Schuld | niedrig | eingeplant | HW1 | Alle Controller-Prüfungen sind gesammelt nachgeholt |
 | [B-315](B-315-spielstand-voll-ausgebaut.md) | SRV | Idee | hoch | eingeplant | SV1 | Der Level-Betrachter erzeugt einen Spielstand mit allen Gebäuden voll ausgebaut |
 | [B-317](B-317-cheat-dialog-fokus-tastatur.md) | CLI | Problem | hoch | eingeplant | U5 | Der Cheat-Dialog zeigt den Fokus und lässt sich mit Pfeiltasten, Leertaste und Controller bedienen |
@@ -451,3 +447,7 @@ Zeile in diesen Abschnitt.
 | [B-019](archiv/B-019-test-abdeckung.md) | INF | Idee | niedrig | erledigt | CI1 | Test-Abdeckung der Engine ist sichtbar |
 | [B-486](archiv/B-486-chunk-editor-speichern-nach-externer-aenderung.md) | DEV | Problem | hoch | erledigt | – | Chunk-Editor: Speichern nach externer Änderung von islands.json schweigt |
 | [B-461](archiv/B-461-chunks-je-biom-planbar.md) | SIM | Idee | mittel | erledigt | WZ8 | Chunks einer Insel-Stufe lassen sich planen, per Seed oder mit festen Objekten |
+| [B-302](archiv/B-302-aufraeumen-branches-worktrees.md) | INF | Schuld | mittel | erledigt | RP1 | Lokale Branches und Worktrees werden an festen Meilensteinen aufgeräumt |
+| [B-288](archiv/B-288-alte-spielstaende-ohne-ruecksicht.md) | INF | Schuld | mittel | erledigt | RP1 | Formatänderungen am Spielstand nehmen keine Rücksicht auf alte Stände |
+| [B-094](archiv/B-094-npm-reste.md) | INF | Schuld | niedrig | erledigt | RP1 | Im Repo liegen keine Alt-Binaries und keine npm-Skripte mehr |
+| [B-058](archiv/B-058-execution-policy.md) | INF | Frage | niedrig | erledigt | RP1 | requirements.md empfiehlt keine Sicherheitseinstellung ohne Entscheidung von 🧑 |

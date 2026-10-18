@@ -64,6 +64,11 @@ Ticket und Sprint-README **sind** die Spec, eine eigene Spec-Datei gibt es nicht
   der Teil vor `/` im Feld `Branch` seiner Sessions (z. B. `f5/1-…` → `sprint/f5`). Alle Sessions committen dort,
   am Ende steht **ein PR je Sprint** gegen `develop`. Abgleich mit `develop` per `git merge origin/develop`, nie Rebase
   oder Force-Push auf einem geteilten Sprint-Branch.
+- **Aufräumen (B-302):** Lokal und auf `origin` liegen nur `develop`, `main`, die Branches aktiver Sprints und ihre Worktrees. Vier Meilensteine:
+  Session-Start (Autonomer Ablauf, Schritt 1: `task aufraeumen`) · Sprint erledigt (Review, Schritt 5: `wip/<präfix>…`-Branches des Sprints prüfen; was im Sprint-Branch steckt, steht im PR-Text unter „Zum Löschen“) ·
+  Sprint-PR gemergt (🧑 löscht die genannten `origin/wip/…`-Branches; auf `origin` löscht nur 🧑) · Release (Zeile „Aufgeräumt“ der Checkliste, nur Hinweis).
+  `task aufraeumen` löscht lokal nur Branches, deren Commits per `git cherry` in `origin/develop` stecken oder deren Upstream weg ist und deren Pull Request laut `gh` gemergt ist, dazu saubere Worktrees dieser Branches.
+  Nie gelöscht werden `develop`, `main`, der ausgecheckte Branch und `sprint/*` mit Ordner in `docs/sprints/aktiv/`. Ohne `gh` oder Netz listet der Task nur.
 - **`main`** ist geschützt und trägt nur Release-Stände. Nur 🧑 gleicht ihn bei einem neuen Major-Release ab,
   per Fast-Forward: `git fetch && git push origin origin/develop:main`, danach Tag `v*` auf `main`
   (startet `release.yml`; GitHub Pages baut aus `main`). Nie direkt auf `main` committen oder einen PR gegen `main` öffnen.
@@ -72,7 +77,8 @@ Ticket und Sprint-README **sind** die Spec, eine eigene Spec-Datei gibt es nicht
 
 Eine Session muss **ohne Rückfragen und ohne Planungs-Werkzeuge** abzuarbeiten sein. Deshalb:
 
-1. `docs/sprints/aktiv/*/README.md` lesen. Liegt `sprint/<präfix>` schon auf `origin` (`git ls-remote --heads origin
+1. **Aufräumen:** `git fetch --prune`, dann `task aufraeumen` (löscht nur sichere lokale Branches und Worktrees, listet den Rest mit Grund; `task aufraeumen -- --dry` zeigt nur an).
+   `docs/sprints/aktiv/*/README.md` lesen. Liegt `sprint/<präfix>` schon auf `origin` (`git ls-remote --heads origin
    sprint/<präfix>`), gilt der Stand der Sprint-Dateien dort (`git show origin/sprint/<präfix>:<Pfad>`), sonst der von
    `develop`. Die nächste Session ergibt sich aus dem **Rang** (`projekte/README.md`): aktives Projekt mit dem kleinsten
    Rang → seine aktiven Sprints in der Reihenfolge der Projekt-Tabelle → erste Session mit `Status: offen`,
@@ -212,7 +218,8 @@ Modell (z. B. Sonnet) reicht.
    im Review-Commit beheben, außerhalb → Ticket. Die Review-Session trägt die Domäne der letzten Umsetzungs-Session. Das Review läuft auf dem Sprint-Branch, nie im selben Lauf wie eine Umsetzung.
 4. **Abnahme** in der Sprint-README, höchstens fünf Zeilen: Datum, Kriterien (Verweis auf die Session-Ergebnisse,
    `verschoben` mit Ticket), behobene Befunde, neue Tickets.
-5. Sind alle anderen Sessions fertig: Sprint-Ordner nach `sprints/erledigt/` verschieben, `Status: erledigt`; sonst bleibt
+5. **Wip-Branches prüfen** (B-302): Was inhaltlich von `wip/<präfix>…` im Sprint-Branch steckt, kommt in den PR-Text unter „Zum Löschen“.
+   Sind alle anderen Sessions fertig: Sprint-Ordner nach `sprints/erledigt/` verschieben, `Status: erledigt`; sonst bleibt
    er in `aktiv/` (Hardware entkoppelt). Fahrplan anpassen, committen, `git merge origin/develop`,
    pushen und **den einen PR des Sprints** öffnen (Vorlage, eine Zeile je Session), danach **Auto-Merge einschalten**:
    `gh pr merge --auto --squash`. Ist der PR schon `CLEAN` (Konflikt-Check fertig), lehnt GitHub `--auto` ab: dann
@@ -254,11 +261,12 @@ Die Golden-Daten (`testdata/golden/`) halten fest, was Simulation und Level-Gene
 
 ## Spielstand-Format ändern
 
-Gespeicherte Stände (`saves/`) überleben jedes Update; dafür sorgt die Regel aus B-137.
+**Beschluss 🧑 (2026-10-05, B-288): Bis auf Widerruf nimmt keine Formatänderung Rücksicht auf alte Spielstände** (es gibt noch keine relevanten).
+Eine Session baut keine Migration, kein neues Fixture und keinen Ladetest nur für alte Stände. Die Regel aus B-137 unten bleibt als Stand der Technik für den Widerruf, ihr vorhandener Code in `engine/sim/` bleibt bis zu einem eigenen SIM-Ticket unangetastet.
 
-- **Jede Formatänderung** des Spielstands (Feld neu, entfernt, umbenannt oder mit neuer Bedeutung) erhöht `IslandSaveVersion` (`engine/sim/island_save.go`); `ParseIslandSave` liest jede ältere Version und überführt sie.
-- **Fixture:** Ein kleiner, aus dem Code erzeugter Stand liegt unter `testdata/saves/v<n>/`; alte Fixtures bleiben unverändert liegen. `TestJedeVersionHatFixture` ist rot, solange eines fehlt.
-- **Test „alter Stand lädt“:** `engine/sim/save_migration_test.go` lädt jedes Fixture über `ParseIslandSave` und prüft Seed, Spieler und Hubs; eine neue Version ergänzt dort ihren Fall.
+- **Formatänderung** des Spielstands (Feld neu, entfernt, umbenannt oder mit neuer Bedeutung): `IslandSaveVersion` (`engine/sim/island_save.go`) darf steigen; ohne Widerruf ist eine Migration nicht nötig.
+- **Fixture:** Steigt die Version, entsteht das Fixture der neuen Version aus dem Code neu (`TestJedeVersionHatFixture` bleibt bestehen, bis 🧑 das Löschen beschließt); für ältere Versionen wird nichts ergänzt.
+- **Test „alter Stand lädt“:** `engine/sim/save_migration_test.go` bleibt, eine neue Version braucht dort ohne Widerruf keinen eigenen Fall.
 - **Neuere Version** (Stand von einem neueren Server): `ParseIslandSave` meldet gefundene und unterstützte Versionen und ändert keine Datei.
 
 ## Entscheidungen und Versionen
@@ -276,9 +284,10 @@ Gespeicherte Stände (`saves/`) überleben jedes Update; dafür sorgt die Regel 
 | Golden amd64 | CI-Job `go` (`task go:test`) auf dem Stand, der getaggt wird | grün |
 | Golden arm64 | CI-Job `go-arm64` (nativer arm64-Runner, B-071) | grün |
 | Alles grün | `task check:all` | Exit 0 (Client, Build, Go, k3c-dev) |
-| Spielstand-Migration | `testdata/saves/v<n>/` je `IslandSaveVersion` (`engine/sim/island_save.go`), `engine/sim/save_migration_test.go` | `TestJedeVersionHatFixture` und Ladetests grün (Abschnitt „Spielstand-Format ändern“) |
+| Spielstand-Migration (Beschluss 2026-10-05, B-288: bis auf Widerruf keine Rücksicht auf alte Stände) | `engine/sim/save_migration_test.go` | vorhandene Tests grün; neue Version ohne Migration zulässig (Abschnitt „Spielstand-Format ändern“) |
 | Dev-Reste aus (B-098, B-107, B-080) | Release-Server ohne `K3C_DEV` (`engine/room/dev.go` lehnt Dev-Aktionen ab); Client: Debug-Overlay und `window.game` nur mit `?dev=1` (`src/main.ts`) | Dev-Aktion wird mit „🚫 Dev-Aktion abgelehnt“ geloggt, ohne `?dev=1` kein Overlay |
 | Pi-Image | CI-Job `docker` (amd64 und arm64); beim Tag schiebt `release.yml` das Image nach `ghcr.io/tenvan/k3c-family` | beide Plattformen gebaut, Image mit Tag und `latest` vorhanden |
 | Version stimmt (B-141) | `VERSION` im `Taskfile.yml` (`git describe`), `/api/health` (Feld `version`), Versionszeile der Landingpage | alle drei nennen den Tag, kein Versionsunterschied zwischen Client und Server |
 | Credits vollständig (B-165) | `src/tools/credits.ts` und `credits.test.ts` über `task test` | Test grün, jedes Verzeichnis unter `public/grafik/` und `public/sprites/` hat einen Credits-Eintrag |
+| Aufgeräumt (B-302) | `task aufraeumen -- --dry` | keine Reste, sonst Hinweis (blockiert den Tag nicht) |
 | Tag-Schema | „Entscheidungen und Versionen“ | Minor bei Wirkung, Patch bei Doku oder Korrektur |
