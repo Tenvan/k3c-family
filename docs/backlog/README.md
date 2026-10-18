@@ -149,7 +149,6 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-479](B-479-hub-pruefung-geplante-chunks.md) | SIM | Schuld | niedrig | offen | – | Prüfung der Kandidaten-hub.json: geplante Chunks nach WZ8 mitprüfen |
 | [B-483](B-483-worktree-eintraege-nur-lesend.md) | DEV | Problem | niedrig | offen | – | Planungsseite: Einträge nur im Worktree sind nur lesbar (Detail, Menüs, Rang) |
 | [B-484](B-484-worktree-neuer-sprint-leer.md) | DEV | Problem | niedrig | offen | – | Worktree-Vergleich: Sessions und Projekt eines neuen Sprints fehlen in den Pills |
-| [B-485](B-485-chunk-editor-bedienung.md) | DEV | Idee | mittel | offen | WZ17 | Chunk-Editor im Welt-Betrachter komfortabler bedienen |
 | [B-487](B-487-plan-editor-load-check-ablehnung.md) | DEV | Problem | niedrig | offen | – | Chunk-Editor: abgelehnte Aufrufe von planLoad und planCheck bleiben stumm |
 | [B-488](B-488-welten-inseln-editor-prompt.md) | DEV | Idee | mittel | offen | WZ18 | Welten und Inseln im Asset-Studio anlegen und bearbeiten, Welt per Prompt füllen |
 | [B-489](B-489-spielstand-chunk-anzahl.md) | SIM | Problem | mittel | offen | – | Spielstände laden Chunk-Anzahl und Planung aus den aktuellen Daten |
@@ -457,3 +456,4 @@ Zeile in diesen Abschnitt.
 | [B-048](archiv/B-048-standardbibliothek-in-001.md) | SRV | Frage | niedrig | erledigt | BT1 | Die Wahl der Go-Standardbibliothek ist dort festgehalten, wo B-001 auf sie verweist |
 | [B-167](archiv/B-167-sfx-katalog.md) | CLI | Idee | hoch | erledigt | SO2 | Jedes wichtige Ereignis hat einen Sound mit Quelle und Lizenz |
 | [B-270](archiv/B-270-respec-pruefung-ohne-seiteneffekt.md) | SIM | Schuld | mittel | erledigt | SK1 | Die Sim prüft Respec und Lernen ohne Seiteneffekt |
+| [B-485](archiv/B-485-chunk-editor-bedienung.md) | DEV | Idee | mittel | erledigt | WZ17 | Chunk-Editor im Welt-Betrachter komfortabler bedienen |
