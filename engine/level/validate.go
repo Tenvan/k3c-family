@@ -11,6 +11,7 @@ func Validate(l Layout, b Biome) []string {
 	var errs []string
 	add := func(format string, args ...any) { errs = append(errs, fmt.Sprintf(format, args...)) }
 	count := func(kind string) int { return countKind(l, kind) }
+	// Portale, Truhen und Camps zählen als Objekte: feste Objekte geplanter Chunks stehen auch in anderen Chunk-Arten.
 
 	// Toleranz: Runden auf ganze Chunks (±0.5) plus Auffüllen auf gerade Chunk-Anzahl (+1).
 	tolerance := float64(l.ChunkWidthUnits * 1.5) // float64(…) verhindert FMA (B-071)
@@ -23,7 +24,7 @@ func Validate(l Layout, b Biome) []string {
 	if count("exit") != 1 {
 		add("Genau ein Tiefen-Eingang erwartet")
 	}
-	if n := count("portal"); n != b.Portals.Count {
+	if n := countEntities(l, "portal"); n != b.Portals.Count {
 		add("%d Portale erwartet, %d gefunden", b.Portals.Count, n)
 	}
 	return append(append(errs, validateChunks(l, b)...), validateEntities(l, b)...)
@@ -45,16 +46,16 @@ func validateChunks(l Layout, b Biome) []string {
 			break
 		}
 	}
-	for _, c := range l.Chunks {
-		dist := math.Abs(c.StartUnits + l.ChunkWidthUnits/2 - l.HubCenterUnits)
-		if c.Kind == "portal" && dist < b.Portals.MinDistanceFromHubUnits {
+	for _, e := range l.Entities {
+		dist := math.Abs(e.X - l.HubCenterUnits)
+		if e.Kind == "portal" && dist < b.Portals.MinDistanceFromHubUnits {
 			add("Portal zu nah am Hub (%s Units)", strconv.FormatFloat(dist, 'f', -1, 64))
 		}
 	}
 	errs = append(errs, validatePortalsOutsideLines(l)...)
 	errs = append(errs, validateLair(l, b)...)
 	for _, kind := range eventKinds {
-		want, n := b.EventChunks[kind], countKind(l, kind)
+		want, n := b.EventChunks[kind], countEntities(l, kind)
 		if n < want.Min || n > want.Max {
 			add("%s: %d (erwartet %d-%d)", kind, n, want.Min, want.Max)
 		}
@@ -65,11 +66,11 @@ func validateChunks(l Layout, b Biome) []string {
 // validatePortalsOutsideLines meldet Portale, die nicht außerhalb des äußersten Tors ihrer Seite liegen (Q49, Q57).
 func validatePortalsOutsideLines(l Layout) []string {
 	var errs []string
-	for _, c := range l.Chunks {
-		if c.Kind != "portal" {
+	for _, e := range l.Entities {
+		if e.Kind != "portal" {
 			continue
 		}
-		dx := c.StartUnits + l.ChunkWidthUnits/2 - l.HubCenterUnits
+		dx := e.X - l.HubCenterUnits
 		for _, line := range l.Lines {
 			if float64(line.Side)*dx > 0 && math.Abs(dx) <= math.Abs(line.Gate-l.HubCenterUnits) {
 				errs = append(errs, fmt.Sprintf("Portal innerhalb der äußersten Linie (%s Units)", strconv.FormatFloat(math.Abs(dx), 'f', -1, 64)))

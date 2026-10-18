@@ -88,15 +88,9 @@ func TestValidateMeldetPortalInnerhalbDerLinien(t *testing.T) {
 		t.Fatal(err)
 	}
 	outer := l.Lines[len(l.Lines)-1].Gate // äußerstes Tor rechts
-	for i, c := range l.Chunks {
-		if c.StartUnits > l.HubCenterUnits && c.StartUnits+l.ChunkWidthUnits/2 <= outer && c.Kind != "hub" {
-			l.Chunks[i].Kind = "portal"
-			for j, d := range l.Chunks { // Portal-Zahl gleich halten
-				if d.Kind == "portal" && j != i {
-					l.Chunks[j].Kind = "forest"
-					break
-				}
-			}
+	for i, e := range l.Entities { // ein Portal rechts rückt hinter die Linien (Portale zählen als Objekte)
+		if e.Kind == "portal" && e.X > l.HubCenterUnits {
+			l.Entities[i].X = (l.HubCenterUnits + outer) / 2
 			break
 		}
 	}

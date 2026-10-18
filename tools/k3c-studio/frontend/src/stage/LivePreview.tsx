@@ -5,7 +5,7 @@ import { backend, type WorldPreviewView } from '../api';
 import { useDebounced } from '../lib/useDebounced';
 import type { Look, PreviewStage, StagePosition } from './PreviewStage';
 import { BuildingFilter } from './BuildingFilter';
-import { backgroundToggles, buildingToggles, hubLevelChoices, previewArgsOf, worldOf } from './stageLogic';
+import { backgroundToggles, buildingToggles, hubLevelChoices, previewArgsOf, worldOf, type PlanSource } from './stageLogic';
 import { MAX_PROGRESS, TIMES_OF_DAY, brightnessOf, simTime, type TimeOfDayId } from './timeOfDay';
 
 const NONE: ReadonlySet<string> = new Set();
@@ -15,8 +15,8 @@ interface Answer { key: string; off: string; view: WorldPreviewView }
 /** Vorschau-Welt zu Seed, Biom, Hub-Stufe und Tageszeit. `all` hat alle Gebäude (daraus die Schalter), `view` die Auswahl.
  *  Die Auswahl gehört zu Seed, Biom, Hub-Stufe und Planer-Stand (`ctx`): wechselt eines davon, gilt sie sofort als leer. Jede Antwort
  *  trägt ihren Schlüssel, eine veraltete wird nie gezeigt; bis die neue da ist, bleibt die letzte Welt stehen. */
-function usePreviewWorld(seed: string, biome: string, hubLevel: number, time: { phase: 'day' | 'dusk' | 'night'; progress: number }, candidate: string) {
-  const ctx = `${seed}|${biome}|${hubLevel}|${candidate}`; // ein anderer Planer-Stand leert die Auswahl wie eine andere Stufe
+function usePreviewWorld(seed: string, biome: string, hubLevel: number, time: { phase: 'day' | 'dusk' | 'night'; progress: number }, plan: PlanSource | undefined, candidate: string) {
+  const ctx = `${seed}|${biome}|${hubLevel}|${candidate}|${JSON.stringify(plan ?? null)}`; // ein anderer Planer-Stand oder Entwurf leert die Auswahl wie eine andere Stufe
   const key = `${ctx}|${time.phase}|${time.progress}`;
   const [chosen, setChosen] = useState<{ ctx: string; off: ReadonlySet<string> }>({ ctx, off: NONE });
   const off = chosen.ctx === ctx ? chosen.off : NONE;
@@ -27,16 +27,16 @@ function usePreviewWorld(seed: string, biome: string, hubLevel: number, time: { 
 
   useEffect(() => {
     let current = true;
-    void backend.worldPreview(previewArgsOf(seed, biome, hubLevel, NONE, time, candidate)).then((view) => { if (current) setAll({ key, off: '', view }); });
+    void backend.worldPreview(previewArgsOf(seed, biome, hubLevel, NONE, time, plan, candidate)).then((view) => { if (current) setAll({ key, off: '', view }); });
     return () => { current = false; };
-  }, [seed, biome, hubLevel, time, candidate, key]);
+  }, [seed, biome, hubLevel, time, key, plan, candidate]);
 
   useEffect(() => {
     if (off.size === 0) return;
     let current = true;
-    void backend.worldPreview(previewArgsOf(seed, biome, hubLevel, off, time, candidate)).then((view) => { if (current) setPart({ key, off: offKey, view }); });
+    void backend.worldPreview(previewArgsOf(seed, biome, hubLevel, off, time, plan, candidate)).then((view) => { if (current) setPart({ key, off: offKey, view }); });
     return () => { current = false; };
-  }, [seed, biome, hubLevel, time, candidate, key, off, offKey]);
+  }, [seed, biome, hubLevel, time, key, off, offKey, plan, candidate]);
 
   const fresh = off.size === 0 ? (all?.key === key ? all.view : null) : (part?.key === key && part.off === offKey ? part.view : null);
   useEffect(() => { if (fresh) setShown(fresh); }, [fresh]);
@@ -128,10 +128,10 @@ function useHubLevel(planer: PlanerSource | undefined) {
  *  des Studios. Hub-Stufe aus `data/hub.json` › `levels` (mit `planer` aus dem Planer-Stand), Gebäude einzeln ein und aus,
  *  Tageszeit, Hintergrund-Schichten mit Parallaxe (Kamera scrollt). Position und Zoom kommen von außen (`position`, B-477,
  *  gleich wie im Chunk-Streifen); Ziehen meldet `onPan` (Pixel), das Mausrad geht an `onWheel`; `onSites` meldet die Bauplätze
- *  (für die Sprungpunkte). */
-export function LivePreview({ seed, biome, position, onPan, onWheel, onSites, planer }: {
+ *  (für die Sprungpunkte). Mit `plan` zeigt sie den Entwurf der geplanten Chunks (B-461/AC-11). */
+export function LivePreview({ seed, biome, position, onPan, onWheel, onSites, plan, planer }: {
   seed: string; biome: string; position: StagePosition; onPan: (px: number) => void; onWheel: (e: WheelEvent) => void;
-  onSites?: (sites: readonly { kind: string; x: number }[]) => void; planer?: PlanerSource;
+  onSites?: (sites: readonly { kind: string; x: number }[]) => void; plan?: PlanSource; planer?: PlanerSource;
 }) {
   const { choices, hubLevel, setHubLevel } = useHubLevel(planer);
   const [timeId, setTimeId] = useState<TimeOfDayId>('day');
@@ -140,7 +140,7 @@ export function LivePreview({ seed, biome, position, onPan, onWheel, onSites, pl
   const time = useMemo(() => simTime(timeId, settled), [timeId, settled]);
   const [hiddenFor, setHiddenFor] = useState<{ biome: string; hidden: ReadonlySet<string> }>({ biome, hidden: NONE });
   const hidden = hiddenFor.biome === biome ? hiddenFor.hidden : NONE;
-  const { all, view, off, setMany } = usePreviewWorld(seed, biome, hubLevel, time, planer?.candidate ?? '');
+  const { all, view, off, setMany } = usePreviewWorld(seed, biome, hubLevel, time, plan, planer?.candidate ?? '');
   const host = useRef<HTMLDivElement>(null);
   const world = useMemo(() => worldOf(view), [view]);
   const look = useMemo<Look>(() => ({ brightness: world ? brightnessOf(world.cycle) : 1, hiddenLayers: hidden }), [world, hidden]);

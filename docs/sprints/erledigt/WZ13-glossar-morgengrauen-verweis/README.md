@@ -1,11 +1,11 @@
 # WZ13 · INF, REG · Glossar und Regeln: Verweis für das Morgengrauen auf B-470
 
-- **Status:** geplant
+- **Status:** erledigt
 - **Projekt:** WZG
 - **Domäne:** INF, REG
 - **Reife:** bereit
 - **Tickets:** B-466
-- **Start-Commit:** – (wird beim Aktivieren gesetzt: `git rev-parse --short origin/develop`)
+- **Start-Commit:** f6912198
 - **Spec:** freigegeben
 - **Revision:** 1
 - **Freigabe:** 2026-10-17, Ralf im Chat (Revision 1)
@@ -57,13 +57,14 @@ Entschieden von 🧑 am 2026-10-17 (Chat): `docs/fragenkatalog.md` (Beschlusspro
 
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
-| WZ13.1 | `WZ13.1-glossar-verweis.md` | Umsetzung | autonom | offen |
-| WZ13.2 | `WZ13.2-regeln-verweis.md` | Umsetzung | autonom | offen |
+| WZ13.1 | `WZ13.1-glossar-verweis.md` | Umsetzung | autonom | fertig |
+| WZ13.2 | `WZ13.2-regeln-verweis.md` | Umsetzung | autonom | fertig |
 
 - WZ13.1 (INF) `docs/glossar.md`: sieben Stellen auf B-470, Einträge Morgengrauen und Tageszyklus (AC-01, AC-02, AC-04).
 - WZ13.2 (REG) `docs/rules/wirtschaft.md`, `docs/rules/zielkorridore.md`, `docs/game-design.md` auf B-470; schließt den Sprint ab (AC-02, AC-03).
 
 ## Abnahme
 
-Wird von der Review-Session (Doku-Sprint: letzte Session) ausgefüllt, höchstens fünf Zeilen: Datum, Kriterien
-(Verweis auf Session-Ergebnisse), behobene Befunde, neue Tickets. Bis dahin `–`.
+2026-10-18, WZ13.1 und WZ13.2 (autonom, getrennter Reviewer: APPROVE): AC-01 bis AC-04 geprüft; `git grep -n "B-213"` in Glossar, `docs/rules`, `game-design.md` leer, Zielregel Q65 unverändert, `task check` grün.
+Behoben: nichts offen. Neue Tickets: keine.
+Version: v– vorgeschlagen (reine Doku).

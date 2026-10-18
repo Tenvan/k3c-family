@@ -1,13 +1,18 @@
 import { BIOMES } from '@game/model/biome';
-import { Button, Select, TextField } from '@radix-ui/themes';
+import { Button, TextField } from '@radix-ui/themes';
 import { useCallback, useEffect, useRef, useState, type CSSProperties, type ReactNode } from 'react';
 import { backend } from '../api';
 import type { WorldSource } from '../api';
+import type { PlanSource } from '../stage/stageLogic';
 import { BIG_KINDS, SPECIAL_CHUNKS, colorOf, levelModel, seedFromBytes, type LevelModel } from './levelView';
 import type { View } from './viewState';
 
 const DEFAULT_SEED = 'k3c';
 const DEFAULT_BIOME = 'forest';
+
+/** Quelle der Anfrage: Insel + Stufe mit dem Entwurf (gleiche Quelle wie die Live-Vorschau), bis eine Insel geladen ist das Biom. */
+const toSource = (plan?: PlanSource): WorldSource => (plan ? { island: plan.island, stage: plan.stage, planned: plan.planned } : { biome: DEFAULT_BIOME });
+
 const chunkClass = (kind: string) => `wd-chunk${kind === 'hub' ? ' wd-hub' : SPECIAL_CHUNKS.has(kind) ? ' wd-special' : ''}`;
 
 /** Streifen mit Abschnitten, Objekten und Hub-Mitte im Maßstab scale (Pixel je Unit). */
@@ -57,12 +62,11 @@ function useWorldLevel(onLoaded: (seed: string, biome: string, model: LevelModel
     }
     const next = levelModel(view);
     setModel(next);
-    loaded.current(seed, source.biome ?? '', next);
+    loaded.current(seed, next.biomeId, next);
     const name = BIOMES.find((b) => b.id === next.biomeId)?.name ?? next.biomeId;
     setNote(`Seed „${next.seed}“ · ${name} · ${next.widthUnits} Units · ${next.chunks.length} Abschnitte · ${next.objects.length} Objekte`);
   }, []);
 
-  useEffect(() => { void load(DEFAULT_SEED, { biome: DEFAULT_BIOME }); }, [load]);
   return { model, note, load };
 }
 
@@ -82,15 +86,21 @@ function Legend({ model }: { model: LevelModel }) {
 /** Chunk-Vorschau des Welt-Betrachters (B-460/AC-01, AC-02): Seed und Biom wählen, das Level des Spiels als Streifen
  *  ansehen, mit Legende und Warnungen der Prüfung. Das Level rechnet das Studio selbst, ohne Spielserver. Position und
  *  Zoom kommen von außen (`view`, B-477): der Streifen hat keine eigene Scrollbar, das Mausrad geht an `onWheel`.
- *  `children` stehen unter der Zeile mit der Zusammenfassung (Leiste für Zoom, Sprünge und Position). */
-export function ChunkPreview({ maximized, onToggle, onLoaded, view, onWheel, children }: {
+ *  `children` stehen unter der Zeile mit der Zusammenfassung (Leiste für Zoom, Sprünge und Position). Mit `source` zeigt er
+ *  Insel und Stufe samt Entwurf der geplanten Chunks. */
+export function ChunkPreview({ maximized, onToggle, onLoaded, source, view, onWheel, children }: {
   maximized: boolean; onToggle: () => void; onLoaded: (seed: string, biome: string, model: LevelModel) => void;
-  view: View; onWheel: (e: WheelEvent) => void; children?: ReactNode;
+  source?: PlanSource; view: View; onWheel: (e: WheelEvent) => void; children?: ReactNode;
 }) {
   const [seed, setSeed] = useState(DEFAULT_SEED);
-  const [biome, setBiome] = useState(DEFAULT_BIOME);
   const { model, note, load } = useWorldLevel(onLoaded);
   const viewport = useRef<HTMLDivElement>(null);
+
+  // Jede Änderung der Quelle (Insel, Stufe, Entwurf) lädt das Level neu, mit dem Seed, der zuletzt eingegeben wurde.
+  const latest = useRef({ seed, source });
+  latest.current = { seed, source };
+  const sourceKey = JSON.stringify(source ?? null);
+  useEffect(() => { void load(latest.current.seed, toSource(latest.current.source)); }, [sourceKey, load]);
 
   useEffect(() => { if (viewport.current) viewport.current.scrollLeft = view.left * view.scale; }, [view, model]);
 
@@ -108,19 +118,15 @@ export function ChunkPreview({ maximized, onToggle, onLoaded, view, onWheel, chi
   const random = () => {
     const next = seedFromBytes(crypto.getRandomValues(new Uint8Array(8)));
     setSeed(next);
-    void load(next, { biome });
+    void load(next, toSource(source));
   };
 
   return (
     <div className="wd-chunks" data-maximized={maximized}>
       <div className="wd-bar">
         <TextField.Root className="wd-seed" aria-label="Seed" value={seed} onChange={(e) => setSeed(e.target.value)}
-          onKeyDown={(e) => { if (e.key === 'Enter') void load(seed, { biome }); }} />
-        <Select.Root value={biome} onValueChange={(v) => { setBiome(v); void load(seed, { biome: v }); }}>
-          <Select.Trigger aria-label="Biom" />
-          <Select.Content>{BIOMES.map((b) => <Select.Item key={b.id} value={b.id}>{b.name}</Select.Item>)}</Select.Content>
-        </Select.Root>
-        <Button onClick={() => void load(seed, { biome })}>Laden</Button>
+          onKeyDown={(e) => { if (e.key === 'Enter') void load(seed, toSource(source)); }} />
+        <Button onClick={() => void load(seed, toSource(source))}>Laden</Button>
         <Button variant="soft" onClick={random}>Zufälliger Seed</Button>
         <span className="wd-grow" />
         <Button variant="outline" onClick={onToggle}>{maximized ? 'Verkleinern' : 'Maximieren'}</Button>

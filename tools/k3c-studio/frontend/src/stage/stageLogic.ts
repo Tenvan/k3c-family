@@ -4,7 +4,7 @@ import type { World } from '@game/model/types';
 import { createViewWorld } from '@game/online/clientWorld';
 import { biomeBackground } from '@game/scenes/worldSprites';
 import type { WorldState } from '@game/online/clientProtocol';
-import type { WorldPreviewArgs, WorldPreviewView } from '../api';
+import type { PlannedChunk, WorldPreviewArgs, WorldPreviewView } from '../api';
 import type { SimPhase } from './timeOfDay';
 
 // Reine Logik der Live-Vorschau (B-460, WZ7.3): Auswahl der Hub-Stufen, Gebäude-Liste, Welt für den Renderer. Kein
@@ -29,6 +29,13 @@ export function buildingToggles(sites: readonly { kind: string; x: number }[]): 
   return sites
     .map((s) => ({ key: siteKey(s.kind, s.x), kind: s.kind, x: s.x }))
     .sort((a, b) => a.x - b.x || a.kind.localeCompare(b.kind));
+}
+
+/** Quelle Insel + Stufe mit dem Entwurf der geplanten Chunks (gleiche Quelle wie die Chunk-Vorschau, B-461/AC-11). */
+export interface PlanSource {
+  island: string;
+  stage: number;
+  planned: PlannedChunk[];
 }
 
 /** Reihenfolge und Namen der Gruppen im Gebäude-Filter; unbekannte Arten folgen alphabetisch, mit ihrem Namen. */
@@ -65,10 +72,11 @@ export function buildingGroups(toggles: readonly BuildingToggle[], off: Readonly
  *  Gebäude-Planer) geht nur mit, wenn er gesetzt ist. */
 export function previewArgsOf(
   seed: string, biome: string, hubLevel: number, off: ReadonlySet<string>, time: { phase: SimPhase; progress: number } = { phase: 'day', progress: 0 },
+  plan?: PlanSource,
   hubCandidate = '',
 ): WorldPreviewArgs {
   return {
-    seed, source: { biome }, hubLevel, phase: time.phase, progress: time.progress,
+    seed, source: plan ? { biome, island: plan.island, stage: plan.stage, planned: plan.planned } : { biome }, hubLevel, phase: time.phase, progress: time.progress,
     buildings: Object.fromEntries([...off].sort().map((k) => [k, false])),
     ...(hubCandidate ? { hubCandidate } : {}),
   };

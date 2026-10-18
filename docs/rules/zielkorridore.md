@@ -68,9 +68,9 @@ Messung vor der Runde (BR1.1, 2026-10-07, Commit `69fce4a`, Stand `develop` `edb
 
 ### Korridore der Wirtschaft
 
-Zur Wirtschaft zählen die Zeilen aus § 1–3 mit Quelle `wirtschaft.md`, `materialien-gebaeude.md` oder `buerger.md`. Die Zeitgrenzen hängen an Tag und Phase, nicht an Minuten. Umgerechnet auf den Tageszyklus nach Q65 (Tag 6, Dämmerung 2, Nacht 4, Morgengrauen 2 min, 14 min je Tag) bzw. auf den heutigen Code bis B-213 (10/1/5 min, 16 min je Tag) ergibt das:
+Zur Wirtschaft zählen die Zeilen aus § 1–3 mit Quelle `wirtschaft.md`, `materialien-gebaeude.md` oder `buerger.md`. Die Zeitgrenzen hängen an Tag und Phase, nicht an Minuten. Umgerechnet auf den Tageszyklus nach Q65 (Tag 6, Dämmerung 2, Nacht 4, Morgengrauen 2 min, 14 min je Tag) bzw. auf den heutigen Code bis B-470 (10/1/5 min, 16 min je Tag) ergibt das:
 
-| Kennzahl | Korridor | Grenze nach Q65 | Grenze heute (bis B-213) | Quelle |
+| Kennzahl | Korridor | Grenze nach Q65 | Grenze heute (bis B-470) | Quelle |
 |---|---|---|---|---|
 | Burg hält Nacht 1–5, Normal | 75–90 % | Tagesanbruch nach Nacht 5 = 68 min | 80 min | § 1, `wirtschaft.md` § 4 |
 | Burg hält Nacht 1–5, Dev / Leicht / Hart / Ultra | ≥ 99 % / 90–100 % / 50–70 % / 25–45 % | wie Normal | wie Normal | § 2 |

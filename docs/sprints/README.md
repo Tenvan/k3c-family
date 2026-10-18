@@ -25,7 +25,6 @@ Abnahmen am Gerät (`Agent: Mensch`) sammelt das Projekt ABN im Sprint HW1: [`..
 | Sprint | Domäne | Projekt | Thema | Am Ende sichtbar | Reife | Ordner |
 |---|---|---|---|---|---|---|
 | WZ11 | DEV | WZG | Gegner- und Boss-Vorschau im Asset-Studio, Figuren-Seiten entfernen | – | bereit | `geplant/WZ11-gegner-bosse-vorschau/` |
-| WZ13 | INF, REG | WZG | Glossar und Regeln: Verweis für das Morgengrauen auf B-470 | – | bereit | `geplant/WZ13-glossar-morgengrauen-verweis/` |
 | WZ14 | REG | WZG | Geplante Chunks tragen Ruinen und Gegnerlager | – | Entwurf | `geplant/WZ14-ruinen-gegnerlager/` |
 | BD2 | SIM, SRV, CLI | BED | Rückmeldungs-Ereignisse gedrosselt und geprüft, Lobby startet nie still leer | – | Entwurf | `geplant/BD2-rueckmeldung-lobby-nachtraege/` |
 | BD3 | SRV | BED | Raum-Pause im Couch-Raum, Schutz des pausierten Monarchen online | – | Entwurf | `geplant/BD3-raum-pause/` |
@@ -192,5 +191,6 @@ Gesamtplan und Begründung: [`../plan-weiterentwicklung.md`](../plan-weiterentwi
 | WZ5 | Planungsseite im Look der erp-qs-Workbench | `erledigt/WZ5-planung-erpqs-look/` |
 | WZ6 | Asset-Studio als eigene EXE mit Seiten für Grafik und Sound | `erledigt/WZ6-asset-werkzeug-exe/` |
 | WZ7 | Welt-Betrachter im Asset-Studio mit Chunk- und Live-Vorschau | `erledigt/WZ7-welt-betrachter/` |
+| WZ13 | Glossar und Regeln: Verweis für das Morgengrauen auf B-470 | `erledigt/WZ13-glossar-morgengrauen-verweis/` |
 | WZ15 | Hub-Planung Vorlauf: Regeltabelle erzeugt, Prüfung ohne globalen Zustand | `erledigt/WZ15-hub-planung-vorlauf/` |
 | WZ16 | Welt-Betrachter: eine gemeinsame Ansicht mit Sprungleiste, Zoom und Gebäude-Filter | `erledigt/WZ16-welt-betrachter-ansicht/` |
