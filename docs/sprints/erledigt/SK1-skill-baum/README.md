@@ -1,6 +1,6 @@
 # SK1 · SIM · Skill-Baum mit Tank und Zauberer, Respec-Regeln abfragbar
 
-- **Status:** aktiv
+- **Status:** erledigt
 - **Projekt:** SKL
 - **Domäne:** SIM
 - **Reife:** bereit
@@ -64,8 +64,11 @@ keine
 | SK1.1 | `SK1.1-pruefungen-ohne-seiteneffekt.md` | Umsetzung | autonom | fertig |
 | SK1.2 | `SK1.2-skill-baum-nachweis.md` | Umsetzung | autonom | fertig |
 | SK1.3 | `SK1.3-ereignis-ohne-ziel.md` | Umsetzung | autonom | verworfen |
-| SK1.4 | `SK1.4-review.md` | Review | autonom | offen |
+| SK1.4 | `SK1.4-review.md` | Review | autonom | fertig |
 
 ## Abnahme
 
-–
+2026-10-18, Review SK1.4 (Diff `origin/develop...origin/sprint/sk1`, `task check` und `task check:go` grün). Keine schweren Befunde; `CanLearn`/`CanRespec` sind die einzige Kopie der Regeln, Fehlertexte und Golden-Daten unverändert.
+AC-01 SK1.2 (B-007/AC-02 angenommen, Validierung offen: S3.4 verworfen, Abnahme in B-337/AC-05; B-007 bleibt offen) · AC-02 SK1.1 · AC-03 SK1.1, SK1.2 · AC-04 verschoben nach S9.1a (SK1.3 verworfen, B-321 erledigt).
+Neues Ticket: B-495 (`respec` in der Aktionsliste, SRV). B-270 archiviert.
+Version: v0.20.1 vorgeschlagen (Patch: neue Prüffunktionen und Tests in der Sim, keine sichtbare Funktion).

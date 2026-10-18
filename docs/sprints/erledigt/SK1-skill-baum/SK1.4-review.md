@@ -1,6 +1,6 @@
 # SK1.4 · Review und Abnahme des Sprints SK1
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Review
 - **Agent:** autonom
 - **Domäne:** SIM
@@ -51,4 +51,10 @@ task check:go
 
 ## Ergebnis
 
-–
+Review ohne schwere Befunde; `task check` (Exit 0) und `task check:go` (L15, Exit 0) grün. Diff berührt nur `engine/sim/` (`monarch.go`, zwei neue Testdateien) und Planungs-Dateien; keine Zahl im Code, keine Datei über 400 Zeilen, keine Funktion über 60. Läuft in derselben Claude-Sitzung wie SK1.1/SK1.2 auf ausdrücklichen Wunsch 🧑 (Ralf, Chat), abweichend von „nie im selben Lauf“.
+
+- **AC-01:** Nachweis in SK1.2 (`skills_linien_test.go`); B-007/AC-02 angenommen, Validierung offen (S3.4 verworfen, Abnahme geht in B-337/AC-05), B-007 bleibt offen.
+- **AC-02:** SK1.1 (`monarch_can_test.go`), geprüft.
+- **AC-03:** SK1.1 und SK1.2, `task check:go` grün, `testdata/` unverändert.
+- **AC-04:** verschoben, Grund: SK1.3 verworfen, B-321 als S9.1a in Sprint S9 erledigt (`strike` mit `hit: false`).
+- Neues Ticket B-495 (`respec` in `engine/net/actions.go`). B-270 erledigt und archiviert.
