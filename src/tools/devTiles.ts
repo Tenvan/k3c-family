@@ -55,8 +55,6 @@ export const DEV_SECTIONS: readonly DevSection[] = [
   section('dev', [
     tile('testing', '🧪', 'testing.html'),
     tile('gamepad', '🎮', 'gamepad-test.html'),
-    tile('aufstellung', '🛡️', 'aufstellung.html'),
-    tile('figuren', '🧙', 'figuren.html'),
     tile('grafiken', '🏰', 'grafiken.html'),
     tile('sound', '🔊', 'soundtest.html'),
     tile('dm', '🎲', 'dm.html', true),

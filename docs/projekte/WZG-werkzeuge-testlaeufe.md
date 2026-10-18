@@ -31,7 +31,7 @@ In Abarbeitungs-Reihenfolge; der erste nicht erledigte Sprint ist der nächste. 
 | WZ15 | Hub-Planung Vorlauf: Regeltabelle erzeugt, Prüfung ohne globalen Zustand | erledigt |
 | WZ9 | Gebäude-Planer für die Freischaltung je Hub-Stufe | aktiv |
 | WZ10 | Abspiel-Bausteine und Monarch-Vorschau im Asset-Studio | aktiv |
-| WZ11 | Gegner- und Boss-Vorschau im Asset-Studio, Figuren-Seiten entfernen | geplant |
+| WZ11 | Gegner- und Boss-Vorschau im Asset-Studio, Figuren-Seiten entfernen | aktiv |
 | WZ12 | Planungs-Werkzeug: Platzhalter-Zeilen und Worktree-Pills | aktiv |
 | WZ13 | Glossar und Regeln: Verweis für das Morgengrauen auf B-470 | erledigt |
 | WZ14 | Geplante Chunks tragen Ruinen und Gegnerlager | geplant |

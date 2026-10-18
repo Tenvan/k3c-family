@@ -56,6 +56,14 @@
 .wd-skills { border-collapse: collapse; margin-top: 4px; }
 .wd-skills th, .wd-skills td { padding: 2px 10px; text-align: left; border-bottom: 1px solid var(--gray-5); font-size: 0.8rem; }
 
+/* Gegner-Seite (B-464, WZ11) */
+.wd-cards { list-style: none; margin: 8px 0 0; padding: 0; display: flex; flex-direction: column; gap: 4px; }
+.wd-card { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; border-bottom: 1px solid var(--gray-5); padding: 2px 0; }
+.wd-traits { display: inline-flex; gap: 6px; flex-wrap: wrap; }
+.wd-trait { font-size: 0.75rem; color: var(--gray-11); }
+.wd-gegner .wd-stage { min-height: 22rem; }
+.wd-boss { display: flex; flex-direction: column; gap: 2px; }
+
 /* Editor für geplante Chunks (B-461, WZ8.5) */
 .wd-plan { display: flex; flex-direction: column; gap: 6px; margin-top: 8px; }
 .wd-chunklist { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 6px; }

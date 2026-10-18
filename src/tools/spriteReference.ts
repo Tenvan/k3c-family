@@ -1,11 +1,9 @@
 /**
- * Referenzseiten für die Figuren (figuren.html = alle Figuren, aufstellung.html = Rollen im Spiel).
+ * Figuren-Karten für die Grafik-Seite des Asset-Studios (`renderReference`) und die Pad-Bedienung (`installPadScroll`).
  * Liest alles aus data/sprites.json und zeichnet die Sprites auf einfache Canvas, ohne Phaser.
  * Jede Karte spielt im Wechsel: Laufen rechts, Angriff, Stehen, Laufen links, Angriff, Stehen.
  */
-import enemiesJson from '../../data/enemies.json';
 import spritesJson from '../../data/sprites.json';
-import troopsJson from '../../data/troops.json';
 import type { Selection } from './selection';
 import { t } from './texts';
 
@@ -49,10 +47,6 @@ const DATA = spritesJson as unknown as {
   mounts: Record<string, Mount>;
   riderWaist: number;
 };
-/** Reiter auf den Referenzseiten */
-const RIDER: Spec = { sheet: 'medieval-king' };
-const TROOP_NAMES = troopsJson as Record<string, { name: string }>;
-const ENEMY_NAMES = enemiesJson as Record<string, { name: string; depth: number }>;
 
 export interface Card {
   title: string;
@@ -67,53 +61,6 @@ export interface Group {
   cards: Card[];
   /** Figuren einzeln einpassen statt im gemeinsamen Maßstab */
   fit?: boolean;
-}
-
-function mountCards(): Card[] {
-  return Object.entries(DATA.mounts).map(([id, m]) => {
-    const s = DATA.sheets[m.sheet];
-    return { title: m.label, note: `${s.pack} · ${s.license ?? 'CC0'}${s.authors ? ` · ${s.authors}` : ''}`, spec: RIDER, mount: id };
-  });
-}
-
-const sheetNote = (s: Sheet) => `${s.pack}`;
-const tintNote = (spec: Spec) => (spec.tint ? ` · ${t('sprite.tinted', { tint: spec.tint })}` : '') + (spec.alpha !== undefined ? ` · ${t('sprite.translucent')}` : '');
-
-/** Alle Figuren beider Sets, nach Seite getrennt. */
-export function allFigures(): Group[] {
-  const used = usedSheets();
-  const cards = (side: Sheet['side']) =>
-    Object.entries(DATA.sheets)
-      .filter(([, s]) => s.side === side)
-      .map(([id, s]) => ({ title: s.label, note: `${sheetNote(s)}${used.has(id) ? '' : ` · ${t('sprite.noRole')}`}`, spec: { sheet: id } }));
-  return [
-    { title: t('sprite.ours'), cards: cards('ours') },
-    { title: t('sprite.enemy'), cards: cards('enemy') },
-    { title: t('sprite.mountsKing'), cards: mountCards() },
-  ];
-}
-
-/** Jede Rolle im Spiel mit dem Sprite aus sprites.json, danach die Figuren ohne Rolle. */
-export function lineup(): Group[] {
-  const card = (title: string, spec: Spec): Card => ({ title, note: `${DATA.sheets[spec.sheet].label} · ${sheetNote(DATA.sheets[spec.sheet])}${tintNote(spec)}`, spec });
-  const used = usedSheets();
-  return [
-    { title: t('sprite.monarchs'), cards: DATA.players.map((s, i) => card(t('sprite.player', { n: i + 1 }), s)) },
-    { title: t('sprite.troops'), cards: Object.entries(DATA.troops).map(([k, s]) => card(TROOP_NAMES[k]?.name ?? k, s)) },
-    { title: t('sprite.enemies'), cards: Object.entries(DATA.enemies).map(([k, s]) => card(t('sprite.depth', { name: ENEMY_NAMES[k]?.name ?? k, depth: ENEMY_NAMES[k]?.depth ?? '?' }), s)) },
-    { title: t('sprite.mountsLater'), cards: mountCards(), fit: true },
-    {
-      title: t('sprite.reserve'),
-      fit: true,
-      cards: Object.keys(DATA.sheets)
-        .filter((id) => !used.has(id) && DATA.sheets[id].side !== 'mount')
-        .map((id) => card(DATA.sheets[id].label, { sheet: id })),
-    },
-  ];
-}
-
-function usedSheets(): Set<string> {
-  return new Set([...DATA.players, ...Object.values(DATA.troops), ...Object.values(DATA.enemies)].map((s) => s.sheet));
 }
 
 // ---------------------------------------------------------------- Zeichnen
