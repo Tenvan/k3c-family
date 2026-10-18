@@ -63,7 +63,7 @@ Vor der Freigabe offen: nichts. `B-436`: Platzhalter-Zeilen mit anderer Nummer b
 |---|---|---|---|---|
 | WZ12.1 | `WZ12.1-platzhalter-zeilen.md` | Umsetzung | autonom | fertig |
 | WZ12.2 | `WZ12.2-worktree-pills.md` | Umsetzung | autonom | fertig |
-| WZ12.3 | `WZ12.3-review.md` | Review | autonom | offen |
+| WZ12.3 | `WZ12.3-review.md` | Review | autonom | fertig |
 | WZ12.4 | `WZ12.4-abnahme.md` | Review | Mensch | offen |
 
 - WZ12.1 (DEV) Platzhalter-Zeilen ohne Datei in `plan_create` und Session-Tabelle behandeln, Go-Test (AC-01).
@@ -73,5 +73,6 @@ Vor der Freigabe offen: nichts. `B-436`: Platzhalter-Zeilen mit anderer Nummer b
 
 ## Abnahme
 
-Wird von der Review-Session (Doku-Sprint: letzte Session) ausgefüllt, höchstens fünf Zeilen: Datum, Kriterien
-(Verweis auf Session-Ergebnisse), behobene Befunde, neue Tickets. Bis dahin `–`.
+2026-10-18, Review WZ12.3 (autonom, getrennte Reviewer): AC-01 bis AC-05 geprüft (`task:check`, `dev:test`, `go:lint` grün); AC-06 offen (WZ12.4).
+Behoben: Pills veraltet/überholt (Fokus-Neuladen, Antwort-Zähler), Auswahl vor erstem Check, Verdrahtungstests. Tickets: B-477, B-478.
+Version: v– vorgeschlagen (reines Entwickler-Werkzeug).
