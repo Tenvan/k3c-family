@@ -2,22 +2,22 @@
 
 ## Responsibility
 
-Network-Client-Schicht (Protocol Adapter) zum Go-Server: WebSocket `/ws`, Protokoll v4 (`docs/protocol.md`). Der Browser sendet nur Eingaben und empfängt Zustand; er simuliert nichts und würfelt nicht. Phaser-frei und per `ClientEnv` testbar.
+Network-Client-Schicht (Protocol Adapter) zum Go-Server: WebSocket `/ws`, Protokoll v6 (`docs/protocol.md`). Der Browser sendet nur Eingaben und empfängt Zustand; er simuliert nichts und würfelt nicht. Phaser-frei und per `ClientEnv` testbar.
 
 ## Design
 
 - State Machine: `RoomClient` (`clientConnection.ts`), `Status` = `connecting | lobby | room | reconnecting | ended | lost`. Öffentliche Operationen `create`, `join`, `addSlot`, `removeSlot`, `leave`, `learn`, `respec`, `sendInput`, `sendDev`, `takeFrames`, `takeFramesOf`, `stages`, `levelOf`, `retry`, `close`; `onChange` meldet jede Änderung an die Szene.
 - Dependency Injection: `ClientEnv` (Socket-Factory, Uhr, Timer, Geräte-ID) und `SocketLike` ersetzen Browser-APIs in Tests; `createRoomClient()` baut die Browser-Variante (`ws(s)://<Host>/ws`).
 - Reconnect: `dropped()` mit Backoff (`RETRY_FIRST_MS` 500 bis `RETRY_MAX_MS` 4000), Aufgabe nach `RECONNECT_LIMIT_MS` (`lost`); Geräte-ID dauerhaft in `localStorage` (`getDeviceId`).
-- Nachrichtentypen: `clientProtocol.ts` (`PROTOCOL_VERSION` 4, `WS_PATH`, `ServerMessage`, `ClientMessage`, `DevMessage`, `WorldState`, `ErrorCode`, `INPUT_KEEPALIVE_MS`).
+- Nachrichtentypen: `clientProtocol.ts` (`PROTOCOL_VERSION` 6, `WS_PATH`, `ServerMessage`, `ClientMessage` (`create` mit `save`, `fresh`, `depth`, `slots`, `grade`, `goal`, `defeat`), `DevMessage` (u. a. `gold`, `material`, `timescale`, `pause`, `maxStock`, `fillStock`, `cheapBuild`, `buildAll`, `timescaleAuto`, `nextPhase`), `WorldState` (mit `devTimescale`, `devPaused`), `SlotInput` (`attack`, `skill`), `RoomInfo`, `SlotSeat`, `ErrorCode`, `INPUT_KEEPALIVE_MS`).
 - Stufen: `clientStages.ts` `StageStreams` hält je `stage` Level (`LevelInfo`), Zustand und Frame-Queue (`Frame`, `StateMessage`); `level` startet einen Strom neu, `state` verwirft `delta` ohne `snap`, `keep(you)` entfernt Ströme ohne eigenen Slot. `RoomClient` liest die Hauptstufe (`takeFrames`) oder jede andere (`takeFramesOf`).
-- Delta-Anwendung: `clientDelta.ts` `applyDelta()` (Listen mit `id` als `{set, del}` gemerged, `null` ist ein Wert, `unset` löscht Felder, `events` pro Tick neu).
+- Delta-Anwendung: `clientDelta.ts` `applyDelta()` (Listen `players`, `coins`, `troops`, `nodes`, `sites`, `enemies`, `projectiles`, `pickups`, `drops` mit `id` als `{set, del}` gemerged, `null` ist ein Wert, `unset` löscht Felder, `events` pro Tick neu).
 - Darstellung: `clientTimeline.ts` (`Timeline`: Puffer empfangener Zustände, gezeichnet zur geschätzten Server-Zeit minus `delayMs` (1 Tick bis `MAX_DELAY_MS` 150, folgt der Ankunfts-Schwankung), Tempo der Darstellungszeit ±25 %, Extrapolation bis `MAX_EXTRAPOLATE_MS` 100), `clientInterpolation.ts` (`interpolate`, `alpha` > 1 extrapoliert, `TELEPORT_UNITS` 15, ohne Überblendung), `clientPredict.ts` (`Predictor`: Anzeige-Vorhersage des x der lokalen Monarchen, Zug `PULL` zum neuesten Server-x plus Vorlauf (eigene Schritte der letzten Latenz, höchstens `MAX_LEAD_MS` 150), `SNAP_UNITS` bzw. 0,4 s Laufzeit übernimmt, tot oder angehalten keine Bewegung, Geschwindigkeit beobachtet, Rückfall `base.speed`), `clientLatency.ts` (`LatencyMeter`: `seq` → erster Zustand mit `ack` ≥ `seq`, Mittel/p95 über 60 s, `RoomClient.latency`), `clientWorld.ts` (`createViewWorld`, `applyState` schreibt in dasselbe `World`-Objekt).
 - `protocol.ts`: ältere Snapshot-Hilfen (`ONLINE_PATH`, `snapshotWorld`, `applySnapshot`, `sanitizeInput`); nur in `src/scenes/noSim.test.ts` referenziert.
 
 ## Flow
 
-1. `createRoomClient()` → `open()` → `hello {v, device}` → `welcome {tickHz, limits}` → Status `lobby`.
+1. `createRoomClient()` → `open()` → `hello {v: PROTOCOL_VERSION, device}` → `welcome {tickHz, limits}` → Status `lobby`.
 2. `rooms` füllt die Lobby; `create`/`join` → `joined {room, you}` → Status `room`; `level {depth, layout}` setzt `LevelInfo`.
 3. `snap` setzt den vollen Zustand, `delta` wird per `applyDelta` darauf angewendet (ohne vorherigen `snap` der Stufe verworfen); `level` und `snap`/`delta` laufen je `stage` durch `StageStreams`, jeder Tick landet als `Frame {tick, ack, receivedAt, state}` in der Queue seiner Stufe.
 4. Szene holt pro Frame `takeFrames()`, schiebt sie in die `Timeline` (Ereignisse sofort je Frame), zeichnet `timeline.sample(now)` und schreibt über `applyState` ins `World`.

@@ -1,7 +1,7 @@
 # Repository Atlas: K3C – Family Three Crowns
 
 ## Project Responsibility
-Couch-Koop-Side-Scroller im Stil von Kingdom Two Crowns für Edge auf der Xbox (Gamepad API), gehostet im Heimnetz. Ein Go-Server (`engine/`, `cmd/k3c-server`) rechnet die deterministische Simulation und verteilt Snapshots über WebSocket (Protokoll v4). Der Browser-Client (`src/`, TypeScript + Phaser 4 + Vite) sendet nur Eingaben und zeichnet. Balancing liegt als JSON in `data/` und ist die einzige Quelle für beide Seiten. `tools/k3c-dev` ist das Entwickler-Werkzeug (Wails-Desktop-App + MCP-Server), `tools/k3c-studio` das Asset-Studio (Wails-Desktop-App für Grafik und Sound).
+Couch-Koop-Side-Scroller im Stil von Kingdom Two Crowns für Edge auf der Xbox (Gamepad API), gehostet im Heimnetz. Ein Go-Server (`engine/`, `cmd/k3c-server`) rechnet die deterministische Simulation und verteilt Snapshots über WebSocket (Protokoll v6). Der Browser-Client (`src/`, TypeScript + Phaser 4 + Vite) sendet nur Eingaben und zeichnet. Balancing liegt als JSON in `data/` und ist die einzige Quelle für beide Seiten. `tools/k3c-dev` ist das Entwickler-Werkzeug (Wails-Desktop-App + MCP-Server), `tools/k3c-studio` das Asset-Studio (Wails-Desktop-App für Grafik, Sound, Monarch, Gegner, Gebäude-Planer und Welten Editor).
 
 ## System Entry Points
 - `game.html` → `src/main.ts`: Spiel-Client (Phaser-Szenen `load` → `lobby` → `game` + `hud`)
@@ -25,24 +25,29 @@ Couch-Koop-Side-Scroller im Stil von Kingdom Two Crowns für Edge auf der Xbox (
 | `engine/sim/` | Domain Model und deterministischer Tick-Core (Stufe, Insel, Campaign): Wirtschaft, Bürger/Berufe, Monarch-Skills, Gegner-Traits, Saves, ohne I/O | [View Map](engine/sim/codemap.md) |
 | `engine/level/` | Deterministischer Level-Generator mit Validator, Biome-Loader, Mauerlinien, Adern und Lava | [View Map](engine/level/codemap.md) |
 | `engine/room/` | Room/Manager: Geräte, Slots, Takt, Fristen, Speichern (`saver`), Skills, Monitor-Messreihen, Crash-Supervision | [View Map](engine/room/codemap.md) |
-| `engine/net/` | HTTP/WebSocket-Adapter (Protokoll v4): REST inkl. Saves/Metriken/Dev, Delta-Zustand, Aktionen, RTT-Ping | [View Map](engine/net/codemap.md) |
+| `engine/net/` | HTTP/WebSocket-Adapter (Protokoll v6): REST inkl. Saves/Metriken/Dev, Delta-Zustand, Aktionen, RTT-Ping | [View Map](engine/net/codemap.md) |
 | `engine/store/` | File-Repository für Spielstände, Berichte und Spielmetrik (atomar, rotierende Sicherungen, `Saves.List`) | [View Map](engine/store/codemap.md) |
 | `engine/rng/` | Deterministischer mulberry32-Generator, einzige Zufallsquelle | [View Map](engine/rng/codemap.md) |
 | `engine/conlog/` | Farbiger `slog.Handler` mit Emoji-Topics | [View Map](engine/conlog/codemap.md) |
 | `src/` | Browser-Client (Thin Client): Composition Root `main.ts` | [View Map](src/codemap.md) |
 | `src/scenes/` | Presentation Layer: Phaser-Szenen, Split-Screen, Rendering, Glyph-Hinweise, Skill-Menü, Reittier, Debug-Overlay | [View Map](src/scenes/codemap.md) |
-| `src/online/` | WebSocket-Client `/ws` (Protokoll v4): `RoomClient`, Stufen-Streams, Delta, Timeline, Interpolation, Vorhersage, Latenz | [View Map](src/online/codemap.md) |
+| `src/online/` | WebSocket-Client `/ws` (Protokoll v6): `RoomClient`, Stufen-Streams, Delta, Timeline, Interpolation, Vorhersage, Latenz | [View Map](src/online/codemap.md) |
 | `src/model/` | Client-Typen (`World`, `GameEvent` …) und typisierter `data/*.json`-Zugriff | [View Map](src/model/codemap.md) |
 | `src/input/` | `PlayerInput`-Adapter für Tastatur, Gamepad und Touch; Tastenbelegung der Slots in `slotBindings.ts` | [View Map](src/input/codemap.md) |
 | `src/audio/` | Web-Audio: `AudioCore`, `Mixer`-Busse, Ton aus `GameEvent`s | [View Map](src/audio/codemap.md) |
 | `src/core/` | Infrastructure: Shell-Protokoll, Vollbild, Client-Log, Persistenz, i18n, Hinweis-Merker, Version | [View Map](src/core/codemap.md) |
 | `src/landing/` | Landingpage/Shell: Kacheln aus `pages.ts`, iframe-Host | [View Map](src/landing/codemap.md) |
-| `src/tools/` | Test- und Info-Seiten (Gamepad-Test, Level-Betrachter, Grafiken, Monitor, Hörprobe, Dungeon Master, Lizenzen) | [View Map](src/tools/codemap.md) |
+| `src/tools/` | Entry-Scripts der Test- und Info-Seiten (Entwicklerseite, Gamepad-Test, Szenarien, Grafiken, Monitor, Hörprobe, Dungeon Master, Lizenzen) | [View Map](src/tools/codemap.md) |
 | `tools/` | Entwickler-Werkzeuge außerhalb des Spiels | [View Map](tools/codemap.md) |
 | `tools/atlas/` | Build-Time-CLI: packt Sprites zu Atlas-PNGs und Phaser-`atlas.json` | [View Map](tools/atlas/codemap.md) |
 | `tools/assetkit/` | Gemeinsame Asset-Logik von k3c-dev und Asset-Studio: Slot-Register, Katalog, Recherche, Schreibregel | [View Map](tools/assetkit/codemap.md) |
+| `tools/cockpit/` | Claude-Code-Plugin `tenvan-cc`: Band, Panels (Kontext, Limits, Kosten, Subagents …) und Chat-Skins | [View Map](tools/cockpit/codemap.md) |
+| `tools/gebaeude/` | CLI: rendert Gebäude-JSON deterministisch zu PNGs (Dichten 16/32/64/128) | [View Map](tools/gebaeude/codemap.md) |
+| `tools/regeltabelle/` | CLI (`rules:update`): schreibt den Block Hub-Stufe → Gebäude in die Regeldoku | [View Map](tools/regeltabelle/codemap.md) |
+| `tools/regeltabelle/tabelle/` | Paket: erzeugt, ersetzt und prüft den Regeltabellen-Block aus `hub.json` | [View Map](tools/regeltabelle/tabelle/codemap.md) |
+| `tools/aufraeumen/` | CLI: löscht lokale Branches und Worktrees nur in sicheren Fällen | [View Map](tools/aufraeumen/codemap.md) |
 | `tools/k3c-dev/` | Wails-Desktop-Host: Composition Root, App-Bindings, MCP-Server, Dienste | [View Map](tools/k3c-dev/codemap.md) |
-| `tools/k3c-studio/` | Asset-Studio: Wails-Fenster mit Seiten Grafik und Sound auf `data/assets.json` | [View Map](tools/k3c-studio/codemap.md) |
+| `tools/k3c-studio/` | Asset-Studio: Wails-Fenster mit Seiten Grafik, Sound, Monarch, Gegner, Gebäude-Planer und Welten Editor | [View Map](tools/k3c-studio/codemap.md) |
 | `tools/k3c-dev/internal/` | Interne Packages von k3c-dev | [View Map](tools/k3c-dev/internal/codemap.md) |
 | `tools/k3c-dev/internal/mcpsrv/` | MCP-Server (Streamable HTTP): Tool-Katalog, Worktree-Scoping, Check-Pipeline | [View Map](tools/k3c-dev/internal/mcpsrv/codemap.md) |
 | `tools/k3c-dev/internal/planning/` | Tickets, Sprints, Sessions, Roadmap unter `docs/`, transaktional mit Vorlagenpflicht, Prio-Vererbung | [View Map](tools/k3c-dev/internal/planning/codemap.md) |
@@ -54,6 +59,10 @@ Couch-Koop-Side-Scroller im Stil von Kingdom Two Crowns für Edge auf der Xbox (
 | `tools/k3c-dev/internal/logs/` | Rückwärts-Reader für `logs/*.jsonl` mit Cursor, Filter, Digest | [View Map](tools/k3c-dev/internal/logs/codemap.md) |
 | `tools/k3c-dev/internal/taskcat/` | Task-Katalog aus `task --list-all --json` | [View Map](tools/k3c-dev/internal/taskcat/codemap.md) |
 | `tools/k3c-dev/internal/taskrun/` | Task-Runner (ein Lauf je Task) und Argument-Validierung | [View Map](tools/k3c-dev/internal/taskrun/codemap.md) |
+| `tools/k3c-dev/internal/taskgate/` | Freigabe-Schloss: darf ein Agent einen Task starten (`task-freigaben.json`) | [View Map](tools/k3c-dev/internal/taskgate/codemap.md) |
+| `tools/k3c-dev/internal/botdev/` | Bot-Gerät: belegt per WebSocket einen Slot und sendet Balancing-Bot-Eingaben | [View Map](tools/k3c-dev/internal/botdev/codemap.md) |
+| `tools/k3c-dev/internal/botfeed/` | Loopback-WebSocket-Feed je Testlauf-Client für Bot-Kommandos | [View Map](tools/k3c-dev/internal/botfeed/codemap.md) |
+| `tools/k3c-dev/internal/browser/` | Findet Edge/Chrome und startet ihn headless mit eigenem Profil | [View Map](tools/k3c-dev/internal/browser/codemap.md) |
 | `tools/k3c-dev/internal/enginetools/` | In-process-Facade auf `engine/level` und `engine/sim` (`level_generate`, `sim_run`) | [View Map](tools/k3c-dev/internal/enginetools/codemap.md) |
 | `tools/k3c-dev/internal/balance/` | Balancing-Tester: Bot-Szenario-Matrix, Zielkorridor, Baseline, Sensitivität, Kurven, Replays | [View Map](tools/k3c-dev/internal/balance/codemap.md) |
 | `tools/k3c-dev/internal/balance/cmd/` | CLI `k3c-balance` für Matrix-Läufe und Replays | [View Map](tools/k3c-dev/internal/balance/cmd/codemap.md) |
@@ -70,3 +79,16 @@ Couch-Koop-Side-Scroller im Stil von Kingdom Two Crowns für Edge auf der Xbox (
 | `tools/k3c-dev/frontend/src/mcp/` | Reiter MCP: Server-Zustand, Live-Verlauf, Aufruf-Log, Statistik, Instructions | [View Map](tools/k3c-dev/frontend/src/mcp/codemap.md) |
 | `tools/k3c-dev/frontend/src/ui/` | Gemeinsame UI-Bausteine über Radix Themes | [View Map](tools/k3c-dev/frontend/src/ui/codemap.md) |
 | `tools/k3c-dev/frontend/src/lib/` | Utilities und Hooks (Formatierung, Prefs, `useDebounced`, `useNow`) | [View Map](tools/k3c-dev/frontend/src/lib/codemap.md) |
+| `tools/k3c-studio/frontend/` | Vite/React-Frontend des Asset-Studios (Aliase `@game`, `@data`) | [View Map](tools/k3c-studio/frontend/codemap.md) |
+| `tools/k3c-studio/frontend/src/` | React-Rahmen mit Seitenwahl und sechs Seiten | [View Map](tools/k3c-studio/frontend/src/codemap.md) |
+| `tools/k3c-studio/frontend/src/abspiel/` | Abspiel-Bausteine für Figuren-Seiten | [View Map](tools/k3c-studio/frontend/src/abspiel/codemap.md) |
+| `tools/k3c-studio/frontend/src/api/` | Typen, Wails-Bindings und Mock zum Go-Backend | [View Map](tools/k3c-studio/frontend/src/api/codemap.md) |
+| `tools/k3c-studio/frontend/src/assets/` | Gemeinsame Seitenstruktur für Grafik und Sound | [View Map](tools/k3c-studio/frontend/src/assets/codemap.md) |
+| `tools/k3c-studio/frontend/src/gegner/` | Seite Gegner: Typen und Bosse nach Biom und Tiefe | [View Map](tools/k3c-studio/frontend/src/gegner/codemap.md) |
+| `tools/k3c-studio/frontend/src/grafik/` | Seite Grafik: Slots, Szenen, Packs | [View Map](tools/k3c-studio/frontend/src/grafik/codemap.md) |
+| `tools/k3c-studio/frontend/src/lib/` | Fehlertext, Prefs, Debounce-Hook | [View Map](tools/k3c-studio/frontend/src/lib/codemap.md) |
+| `tools/k3c-studio/frontend/src/monarch/` | Seite Monarch: Reittier, Bewegung, Aktionen, Skills | [View Map](tools/k3c-studio/frontend/src/monarch/codemap.md) |
+| `tools/k3c-studio/frontend/src/planer/` | Seite Gebäude-Planer: `hub.json` als Matrix | [View Map](tools/k3c-studio/frontend/src/planer/codemap.md) |
+| `tools/k3c-studio/frontend/src/sound/` | Seite Sound: Slots, Szenen, Hörprobe | [View Map](tools/k3c-studio/frontend/src/sound/codemap.md) |
+| `tools/k3c-studio/frontend/src/stage/` | Wiederverwendbare Phaser-Bühne für Live-Vorschau | [View Map](tools/k3c-studio/frontend/src/stage/codemap.md) |
+| `tools/k3c-studio/frontend/src/world/` | Seite Welten Editor: Chunk-Streifen, Live-Vorschau, Plan-Editor | [View Map](tools/k3c-studio/frontend/src/world/codemap.md) |
