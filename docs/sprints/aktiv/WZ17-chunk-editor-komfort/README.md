@@ -1,6 +1,6 @@
 # WZ17 · REG, SIM, SRV, DEV · Chunk-Editor komfortabel: Inselgrößen, getrennter Zoom, Seed-Chunk umwandeln
 
-- **Status:** geplant
+- **Status:** aktiv
 - **Projekt:** WZG
 - **Domäne:** REG, SIM, SRV, DEV
 - **Reife:** bereit
