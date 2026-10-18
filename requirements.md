@@ -47,7 +47,8 @@ Hinweise:
 - Ohne `winget`: Installer von den Download-Links unten, Standardoptionen, „Add to PATH“ aktiv lassen.
 - Ohne Go läuft alles außer `task check:go`; Client und `task check` brauchen nur Node.
 - Skripte blockiert von der Execution Policy (`npm.ps1 kann nicht geladen werden`)?
-  Einmalig `Set-ExecutionPolicy -Scope CurrentUser RemoteSigned`, oder `npm.cmd` statt `npm` aufrufen.
+  Zuerst `npm.cmd` statt `npm` aufrufen (oder Git Bash/`cmd` nutzen); das ändert keine Systemeinstellung.
+  Nur wenn das nicht reicht: `Set-ExecutionPolicy -Scope CurrentUser RemoteSigned` (dauerhaft, gilt für alle Skripte des Benutzerkontos, ohne Adminrechte).
 
 ## Einrichten
 
