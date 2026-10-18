@@ -8,7 +8,7 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 
 | Nr. | Domäne | Typ | Prio | Status | Sprint | Titel |
 |---|---|---|---|---|---|---|
-| [B-007](B-007-skill-baum.md) | SIM | Idee | hoch | eingeplant | SK1 | Skill-Baum mit Tank und Zauberer ist spielbar |
+| [B-007](B-007-skill-baum.md) | SIM | Idee | hoch | offen | – | Skill-Baum mit Tank und Zauberer ist spielbar |
 | [B-008](B-008-spieleabend.md) | REG | Frage | niedrig | eingeplant | P1 | Familie hat einen Spieleabend gespielt und Feedback gegeben |
 | [B-011](B-011-sound.md) | CLI | Idee | mittel | eingeplant | SO2 | Spiel hat Sound und Musik |
 | [B-015](B-015-gebaeude-werte.md) | REG | Problem | niedrig | eingeplant | BR1 | Gebäude-HP und -Kosten sind gebalanced |
@@ -32,7 +32,6 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-160](B-160-abgleich-spielmetrik-simulator.md) | REG | Idee | mittel | eingeplant | BAL4 | Spielmetrik echter Abende und Simulatorwerte sind abgeglichen |
 | [B-168](B-168-musik-je-zustand.md) | CLI | Idee | hoch | eingeplant | SO4 | Die Musik wechselt je Spielzustand mit Crossfade |
 | [B-250](B-250-audiokern-datei-wiedergabe.md) | CLI | Schuld | hoch | eingeplant | SO4 | Der Audio-Kern spielt ganze Dateien mit Crossfade, die Hörprobe nutzt ihn |
-| [B-270](B-270-respec-pruefung-ohne-seiteneffekt.md) | SIM | Schuld | mittel | eingeplant | SK1 | Die Sim prüft Respec und Lernen ohne Seiteneffekt |
 | [B-272](B-272-rotation-session-reports.md) | SRV | Schuld | mittel | eingeplant | ST1 | Die Rotation in reports/ erfasst auch die Spielmetrik-Reports |
 | [B-260](B-260-schutzplatz-ohne-id.md) | SIM | Schuld | niedrig | eingeplant | LV1 | Der Schutzplatz einer Truppe hängt nicht an ihrer Entity-ID |
 | [B-262](B-262-camps-nahe-portalen.md) | SIM | Frage | mittel | eingeplant | LV1 | Camps liegen nach dem Abstand zu den Linien nicht zu nah an den Portalen |
@@ -159,6 +158,7 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-492](B-492-sfx-luecken-weitere-ereignisse.md) | CLI | Idee | mittel | offen | – | Weitere Ereignisse bekommen eigene Sound-Slots und Sounds |
 | [B-493](B-493-credits-seite-audio.md) | PLAT | Idee | hoch | offen | – | Die Credits-Seite zeigt auch die Sounds unter public/audio |
 | [B-494](B-494-sound-atlas-werkzeug.md) | INF | Idee | niedrig | offen | – | Ein Werkzeug packt die gewählten Sounds in einen Sound-Atlas |
+| [B-495](B-495-respec-in-aktionsliste.md) | SRV | Schuld | niedrig | offen | – | Die Aktionsliste nennt respec, wenn CanRespec erlaubt |
 
 ## Archiv
 
@@ -454,3 +454,4 @@ Zeile in diesen Abschnitt.
 | [B-095](archiv/B-095-start-mit-seed-und-tiefe.md) | SRV | Idee | niedrig | erledigt | BT1 | Ein neues Spiel startet per URL mit eigenem Seed und gewählter Tiefe |
 | [B-048](archiv/B-048-standardbibliothek-in-001.md) | SRV | Frage | niedrig | erledigt | BT1 | Die Wahl der Go-Standardbibliothek ist dort festgehalten, wo B-001 auf sie verweist |
 | [B-167](archiv/B-167-sfx-katalog.md) | CLI | Idee | hoch | erledigt | SO2 | Jedes wichtige Ereignis hat einen Sound mit Quelle und Lizenz |
+| [B-270](archiv/B-270-respec-pruefung-ohne-seiteneffekt.md) | SIM | Schuld | mittel | erledigt | SK1 | Die Sim prüft Respec und Lernen ohne Seiteneffekt |

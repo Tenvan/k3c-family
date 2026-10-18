@@ -1,6 +1,6 @@
 # SK1.1 · Lern- und Respec-Regeln ohne Seiteneffekt abfragbar
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** SIM
@@ -55,4 +55,7 @@ task check:go
 
 ## Ergebnis
 
-–
+`CanLearn(w, p, id)` und `CanRespec(w, p)` in `engine/sim/monarch.go`: die Prüfungen sind unverändert (gleiche Texte und Reihenfolge) aus `LearnSkill` und `Respec` herausgelöst, beide rufen sie zuerst auf. Respec ohne gelernte Skills am Tag an der Burg: `CanRespec` nil.
+
+- **AC-02 umgesetzt, geprüft:** `go test ./engine/sim -run Can` grün (`monarch_can_test.go`). Tabellentests je Fall (unbekannt, schon gelernt, keine Punkte, Tier fehlt, erlaubt; Nacht, fern der Burg, Tag an der Burg, ohne gelernte Skills): `Can…` liefert denselben Fehler (bzw. nil) wie die Aktion auf einer Kopie, `p.Skills`, `p.Slots`, `p.SkillBase` bleiben nach `Can…` unverändert.
+- **AC-03 geprüft:** kein Diff unter `testdata/`; `task check:go` grün (Exit 0, Lauf L10). Code-Review (low) ohne Befund.
