@@ -91,7 +91,7 @@ Offen: keine.
 |---|---|---|---|---|
 | WZ9.1 | `WZ9.1-snapshot-kandidat.md` | Umsetzung | autonom | fertig |
 | WZ9.2 | `WZ9.2-planer-matrix.md` | Umsetzung | autonom | fertig |
-| WZ9.3 | `WZ9.3-planer-bearbeiten.md` | Umsetzung | autonom | offen |
+| WZ9.3 | `WZ9.3-planer-bearbeiten.md` | Umsetzung | autonom | fertig |
 | WZ9.4 | `WZ9.4-review.md` | Review | autonom | offen |
 | WZ9.5 | `WZ9.5-abnahme.md` | Workshop | Mensch | offen |
 

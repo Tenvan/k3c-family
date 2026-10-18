@@ -13,9 +13,23 @@ function Cell({ row, cell, level, chosen }: { row: HubRow; cell: HubCell; level:
   );
 }
 
+/** Kennung einer Zeile für die Auswahl: bleibt, wenn sich Platz oder Stufe ändern (Schlüssel kind@x tut das nicht). */
+export function rowId(row: Pick<HubRow, 'source' | 'index' | 'kind'>): string {
+  return `${row.source}#${row.index}#${row.kind}`;
+}
+
+interface MatrixProps {
+  matrix: HubMatrix;
+  hubLevel: number;
+  onHubLevel: (level: number) => void;
+  /** gewählte Zeile (rowId) und ihre Wahl per Klick auf den Namen (WZ9.3) */
+  selected?: string;
+  onSelect?: (id: string) => void;
+}
+
 /** Matrix Hub-Stufe × Bauplatz (B-462/AC-01): Zeilen aus dem Matrix-Modell des Backends, Spalten = Hub-Stufen (beliebig
- *  viele, AC-08). Ein Klick auf eine Spalte wählt die Hub-Stufe der Live-Vorschau. */
-export function HubMatrixView({ matrix, hubLevel, onHubLevel }: { matrix: HubMatrix; hubLevel: number; onHubLevel: (level: number) => void }) {
+ *  viele, AC-08). Ein Klick auf eine Spalte wählt die Hub-Stufe der Live-Vorschau, ein Klick auf den Namen die Zeile. */
+export function HubMatrixView({ matrix, hubLevel, onHubLevel, selected, onSelect }: MatrixProps) {
   const columns = levelColumns(matrix.levels);
   return (
     <div className="pl-scroll">
@@ -33,10 +47,12 @@ export function HubMatrixView({ matrix, hubLevel, onHubLevel }: { matrix: HubMat
         </thead>
         <tbody>
           {matrix.rows.map((row, i) => (
-            <tr key={`${row.key}#${i}`} data-key={row.key}>
+            <tr key={`${row.key}#${i}`} data-key={row.key} className={rowId(row) === selected ? 'pl-selected' : undefined}>
               <th scope="row">
-                {rowLabel(row)}
-                {rowExtra(row) && <span className="pl-extra">{rowExtra(row)}</span>}
+                <button type="button" className="pl-row" aria-pressed={rowId(row) === selected} onClick={() => onSelect?.(rowId(row))}>
+                  {rowLabel(row)}
+                  {rowExtra(row) && <span className="pl-extra">{rowExtra(row)}</span>}
+                </button>
               </th>
               <td className="pl-source"><code>{row.source}</code></td>
               {row.cells.map((cell, j) => <Cell key={j} row={row} cell={cell} level={j + 1} chosen={j + 1 === hubLevel} />)}

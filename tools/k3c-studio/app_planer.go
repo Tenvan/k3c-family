@@ -10,8 +10,8 @@ import (
 )
 
 // Gebäude-Planer (B-462, WZ9.2): liest data/hub.json und zeigt die Freischaltung als Matrix Hub-Stufe × Bauplatz. Nur
-// lesen; die Prüfung kommt aus engine/sim (ValidateHubData), nichts davon steht im Frontend. Bearbeiten und Schreiben
-// folgen mit WZ9.3.
+// lesen; die Prüfung kommt aus engine/sim (ValidateHubData), nichts davon steht im Frontend. Bearbeiten und Schreiben:
+// app_planer_edit.go, app_planer_save.go (WZ9.3).
 
 // hubFile ist die Quelle des Planers, relativ zur Repo-Wurzel.
 const hubFile = "data/hub.json"
@@ -38,6 +38,7 @@ type HubRow struct {
 	Key         string    `json:"key"`         // kind@offset wie room.PreviewSiteKey, Linien line@k, Tore gate@k
 	Kind        string    `json:"kind"`        // Art aus hub.json; wall, gate, merchantBuy, merchantSell
 	Source      string    `json:"source"`      // sites, islandSites, wallLines, merchant
+	Index       int       `json:"index"`       // Eintrag in seiner Liste (sites, islandSites, wallUnits); Händler 0
 	HubLevel    int       `json:"hubLevel"`    // ab dieser Hub-Stufe verfügbar
 	Line        int       `json:"line"`        // Mauerlinie bzw. Tor: Linie k; sonst 0
 	BothSides   bool      `json:"bothSides"`   // je Seite (±): Mauerlinie und Tor
@@ -61,7 +62,8 @@ type HubFindingView struct {
 }
 
 // HubPlanView ist der geladene Stand des Planers: Pfad, Inhalt (Kandidat der Live-Vorschau), Matrix und Prüfung; Error
-// nennt eine nicht lesbare oder ungültige Datei mit Pfad, dann ist die Matrix leer.
+// nennt eine nicht lesbare oder ungültige Datei mit Pfad, dann ist die Matrix leer. Stand ist der Inhalt beider
+// Dateien beim Laden (Schreibregel), Kinds die Arten, die als Platz hinzukommen dürfen.
 type HubPlanView struct {
 	Path     string           `json:"path"`
 	Raw      string           `json:"raw"`
@@ -69,30 +71,43 @@ type HubPlanView struct {
 	Findings []HubFindingView `json:"findings"`
 	Notes    []string         `json:"notes"`
 	Error    string           `json:"error"`
+	Stand    HubStand         `json:"stand"`
+	Kinds    []string         `json:"kinds"`
 }
 
 // HubPlan lädt data/hub.json des Checkouts und liefert Matrix und Befunde (Binding).
 func (a *App) HubPlan() HubPlanView { return hubPlanFrom(a.root, hubFile) }
 
-// hubPlanFrom liest rel unter root (Schrägstriche), prüft mit sim.ValidateHubData und baut die Matrix.
+// hubPlanFrom liest rel unter root (Schrägstriche), prüft mit sim.ValidateHubData, baut die Matrix und merkt den Stand
+// von rel und der Regeltabelle.
 func hubPlanFrom(root, rel string) HubPlanView {
-	view := HubPlanView{Path: rel, Matrix: HubMatrix{Rows: []HubRow{}}, Findings: []HubFindingView{}, Notes: []string{}}
 	raw, err := os.ReadFile(filepath.Join(root, filepath.FromSlash(rel)))
 	if err != nil {
+		view := emptyPlan(rel)
 		view.Error = fmt.Sprintf("%s nicht lesbar: %v", rel, err)
 		return view
 	}
+	view := hubPlanOf(rel, raw)
+	view.Stand = HubStand{Hub: stamp(raw), Rules: fileStamp(root, rulesFile)}
+	return view
+}
+
+func emptyPlan(rel string) HubPlanView {
+	return HubPlanView{Path: rel, Matrix: HubMatrix{Rows: []HubRow{}}, Findings: []HubFindingView{}, Notes: []string{}, Kinds: placeableKinds()}
+}
+
+// hubPlanOf prüft den Inhalt raw (Datei oder Kandidat) und baut die Matrix; ohne Stand.
+func hubPlanOf(rel string, raw []byte) HubPlanView {
+	view := emptyPlan(rel)
+	view.Raw = string(raw) // auch bei Fehler: das Frontend ordnet die Antwort seinem Kandidaten zu
 	h, err := sim.ParseHub(raw)
 	if err != nil {
 		view.Error = fmt.Sprintf("%s nicht lesbar als hub.json: %v", rel, err)
 		return view
 	}
-	view.Raw = string(raw)
 	view.Matrix = hubMatrix(h)
 	report := sim.ValidateHubData(h)
-	for _, f := range report.Findings {
-		view.Findings = append(view.Findings, HubFindingView{Rule: f.Rule, Site: f.Site, Detail: f.Detail})
-	}
+	view.Findings = findingViews(report)
 	view.Notes = append(view.Notes, report.Notes...)
 	return view
 }
@@ -100,11 +115,11 @@ func hubPlanFrom(root, rel string) HubPlanView {
 // hubMatrix baut das Matrix-Modell aus einer gelesenen hub.json; h bleibt unverändert.
 func hubMatrix(h *sim.HubData) HubMatrix {
 	m := HubMatrix{Levels: len(h.Levels), Rows: []HubRow{}}
-	for _, s := range h.Sites {
-		m.Rows = append(m.Rows, siteRow(s, srcSites, m.Levels))
+	for i, s := range h.Sites {
+		m.Rows = append(m.Rows, siteRow(s, i, srcSites, m.Levels))
 	}
-	for _, s := range h.IslandSites {
-		m.Rows = append(m.Rows, siteRow(s, srcIslandSites, m.Levels))
+	for i, s := range h.IslandSites {
+		m.Rows = append(m.Rows, siteRow(s, i, srcIslandSites, m.Levels))
 	}
 	m.Rows = append(m.Rows, lineRows(h.WallLines, m.Levels)...)
 	return appendMerchant(m, h)
@@ -125,10 +140,10 @@ func cells(levels, from int, place HubCell) []HubCell {
 	return out
 }
 
-func siteRow(s sim.HubSite, source string, levels int) HubRow {
+func siteRow(s sim.HubSite, index int, source string, levels int) HubRow {
 	from := hubLevelOf(s.HubLevel)
 	place := HubCell{OffsetUnits: s.OffsetUnits, FromDepth: s.FromDepth, NeedsDeeper: s.NeedsDeeper, OnlyDepth: -1}
-	return HubRow{Key: room.PreviewSiteKey(s.Kind, s.OffsetUnits), Kind: s.Kind, Source: source, HubLevel: from, Cells: cells(levels, from, place)}
+	return HubRow{Key: room.PreviewSiteKey(s.Kind, s.OffsetUnits), Kind: s.Kind, Source: source, Index: index, HubLevel: from, Cells: cells(levels, from, place)}
 }
 
 // lineRows: Mauerlinie k (Mauer, Turm innen) ab Hub-Stufe k, ihr Tor außen ab max(k, gateHubLevel); je Seite.
@@ -144,9 +159,9 @@ func lineRows(w sim.WallLineData, levels int) []HubRow {
 		wall := HubCell{OffsetUnits: n, OnlyDepth: -1}
 		gate := HubCell{OffsetUnits: n + w.GateOutsetUnits, OnlyDepth: -1}
 		rows = append(rows,
-			HubRow{Key: fmt.Sprintf("line@%d", k), Kind: "wall", Source: srcWallLines, HubLevel: k, Line: k, BothSides: true,
+			HubRow{Key: fmt.Sprintf("line@%d", k), Kind: "wall", Source: srcWallLines, Index: i, HubLevel: k, Line: k, BothSides: true,
 				TowerUnits: n - w.TowerInsetUnits, JitterUnits: jitter, Cells: cells(levels, k, wall)},
-			HubRow{Key: fmt.Sprintf("gate@%d", k), Kind: "gate", Source: srcWallLines, HubLevel: gateFrom, Line: k, BothSides: true,
+			HubRow{Key: fmt.Sprintf("gate@%d", k), Kind: "gate", Source: srcWallLines, Index: i, HubLevel: gateFrom, Line: k, BothSides: true,
 				JitterUnits: jitter, Cells: cells(levels, gateFrom, gate)})
 	}
 	return rows

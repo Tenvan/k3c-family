@@ -19,3 +19,12 @@
 .pl-diff { display: flex; flex-direction: column; gap: 6px; }
 .pl-ist { color: #ff8fa3; }
 .pl-soll { color: #7bd389; }
+/* Bearbeiten (WZ9.3): Zeile wählen, Felder der Zeile, Platz hinzufügen, Speichern. */
+.pl-row { all: unset; cursor: pointer; display: block; }
+.pl-selected th[scope='row'] { outline: 1px solid var(--accent-9); outline-offset: -1px; }
+.pl-editor, .pl-add { display: flex; flex-wrap: wrap; align-items: flex-end; gap: 8px 16px; padding: 8px; border: 1px solid var(--card-line); border-radius: 8px; background: var(--card); }
+.pl-field { display: flex; flex-direction: column; gap: 2px; font-size: 12px; color: var(--dim); }
+.pl-field input[type='number'] { width: 7rem; }
+.pl-remove { display: flex; flex-direction: column; gap: 2px; }
+.pl-save { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; }
+.pl-fieldset { display: flex; flex-direction: column; gap: 12px; margin: 0; padding: 0; border: 0; min-width: 0; }

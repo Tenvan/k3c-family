@@ -1,10 +1,12 @@
 import { Text } from '@radix-ui/themes';
-import { useCallback, useEffect, useMemo, useState } from 'react';
-import { backend, type HubPlanView, type HubRulesView } from '../api';
+import { useMemo, useState } from 'react';
+import type { HubPlanView, HubRulesView, HubSaveResult } from '../api';
 import { LivePreview, type PlanerSource } from '../stage/LivePreview';
-import { errorText } from '../lib/errors';
 import { ActionButton, NoticeCard, StatusBadge } from '../ui/parts';
-import { HubMatrixView } from './HubMatrixView';
+import { HubMatrixView, rowId } from './HubMatrixView';
+import { AddSite, RowEditor } from './PlanerEditor';
+import { parseHub } from './planerEdit';
+import { usePlaner } from './usePlaner';
 
 /** Seed und Biom der Live-Vorschau im Gebäude-Planer: fest, damit nur Planer-Stand und Hub-Stufe das Bild ändern. */
 const PREVIEW = { seed: 'k3c', biome: 'forest' };
@@ -44,50 +46,80 @@ function Findings({ plan }: { plan: HubPlanView }) {
   );
 }
 
-/** Lädt Planer-Stand und Abweichung; jede Ladung ersetzt die vorige, eine veraltete Antwort wird verworfen. Lehnt das
- *  Backend ab (Binding nicht erreichbar, Absturz), steht der Text in `failed` bzw. `rulesFailed`. */
-function usePlan() {
-  const [plan, setPlan] = useState<HubPlanView | null>(null);
-  const [rules, setRules] = useState<HubRulesView | null>(null);
-  const [failed, setFailed] = useState('');
-  const [rulesFailed, setRulesFailed] = useState('');
-  const [round, setRound] = useState(0);
-  useEffect(() => {
-    let current = true;
-    const rulesOf = (raw: string) => backend.hubRules(raw)
-      .then((r) => { if (current) setRules(r); })
-      .catch((e: unknown) => { if (current) setRulesFailed(errorText(e)); });
-    void backend.hubPlan().then((next) => {
-      if (!current) return;
-      setPlan(next);
-      setFailed('');
-      setRules(null);
-      setRulesFailed('');
-      if (!next.error) void rulesOf(next.raw);
-    }).catch((e: unknown) => {
-      if (!current) return;
-      setPlan(null);
-      setFailed(errorText(e));
-    });
-    return () => { current = false; };
-  }, [round]);
-  const reload = useCallback(() => setRound((r) => r + 1), []);
-  return { plan, rules, failed, rulesFailed, reload };
+/** Ergebnis des Speicherns: Schreibregel (extern geändert, neu laden), Fehler, REG-Hinweis, veraltete Regeltabelle. */
+function SaveOutcome({ result, onReload }: { result: HubSaveResult | null; onReload: () => void }) {
+  if (!result) return null;
+  if (result.stale) {
+    return (
+      <NoticeCard title="Datei extern geändert" tone="error">
+        {result.stale} <ActionButton onClick={onReload}>Neu laden (Änderungen verwerfen)</ActionButton>
+      </NoticeCard>
+    );
+  }
+  if (result.unchanged) return <NoticeCard title="Unverändert" tone="info">Der Stand entspricht der Datei, nichts gespeichert.</NoticeCard>;
+  if (!result.saved) return <NoticeCard title="Nicht gespeichert" tone="error">{result.error}</NoticeCard>;
+  return (
+    <>
+      <NoticeCard title="Gespeichert" tone="ok">{result.notice}</NoticeCard>
+      {result.rulesError && <NoticeCard title="Regeltabelle veraltet" tone="warn">{result.rulesError}</NoticeCard>}
+    </>
+  );
 }
 
-/** Seite Gebäude-Planer des Asset-Studios (B-462, WZ9.2): Matrix Hub-Stufe × Bauplatz aus `data/hub.json`, Befunde der
- *  Prüfung, Abweichung der Regeltabelle und die Live-Vorschau des Planer-Stands in der gewählten Hub-Stufe. Nur lesen;
- *  Bearbeiten und Speichern folgen mit WZ9.3. */
-export function PlanerPage() {
-  const { plan, rules, failed, rulesFailed, reload } = usePlan();
-  const [chosen, setChosen] = useState<number | null>(null);
-  const levels = plan?.matrix.levels ?? 0;
-  const hubLevel = chosen !== null && chosen <= levels ? chosen : Math.max(1, levels);
-  const source = useMemo<PlanerSource | null>(
-    () => (plan && !plan.error ? { candidate: plan.raw, levels, hubLevel, onHubLevel: setChosen } : null),
-    [plan, levels, hubLevel],
+/** Speichern: nur ein geänderter Stand ohne Befund der Prüfung im Go-Backend (B-462/AC-02). */
+function SaveBar({ planer }: { planer: ReturnType<typeof usePlaner> }) {
+  const { hub, checked, canSave, save, reload, saveResult, checkFailed, saving } = planer;
+  const state = !hub ? 'keine Änderung'
+    : checkFailed ? `Prüfung nicht erreichbar: ${checkFailed}`
+      : saving ? 'wird gespeichert …'
+        : !checked ? 'wird geprüft …'
+          : checked.findings.length > 0 || checked.error ? `nicht speicherbar: ${checked.error || `${checked.findings.length} Befunde`}` : 'geändert, Prüfung ohne Befund';
+  return (
+    <section className="pl-save" aria-label="Speichern">
+      <ActionButton disabled={!canSave} onClick={save}>Speichern</ActionButton>
+      {hub && <ActionButton variant="soft" onClick={reload}>Änderungen verwerfen</ActionButton>}
+      <Text size="2" color="gray" role="status">{state}</Text>
+      <SaveOutcome result={saveResult} onReload={reload} />
+    </section>
   );
+}
 
+/** Hauptteil des geladenen Planers: Befunde, Abweichung, Speichern, Matrix, Bearbeiten und Live-Vorschau. */
+function PlanerBody({ planer, plan, shown }: { planer: ReturnType<typeof usePlaner>; plan: HubPlanView; shown: HubPlanView }) {
+  const { rules, rulesFailed, hub, candidate, edit, saving } = planer;
+  const [chosen, setChosen] = useState<number | null>(null);
+  const [selected, setSelected] = useState('');
+  const levels = shown.matrix.levels;
+  const hubLevel = chosen !== null && chosen <= levels ? chosen : Math.max(1, levels);
+  const source = useMemo<PlanerSource>(() => ({ candidate, levels, hubLevel, onHubLevel: setChosen }), [candidate, levels, hubLevel]);
+  const current = useMemo(() => hub ?? parseHub(plan.raw), [hub, plan]);
+  const row = shown.matrix.rows.find((r) => rowId(r) === selected) ?? null;
+  return (
+    <>
+      <Findings plan={shown} />
+      <RulesDiff rules={rules} failed={rulesFailed} />
+      <SaveBar planer={planer} />
+      <HubMatrixView matrix={shown.matrix} hubLevel={hubLevel} onHubLevel={setChosen} selected={selected} onSelect={setSelected} />
+      <fieldset className="pl-fieldset" disabled={saving} aria-label="Bearbeiten">
+        <RowEditor hub={current} row={row} edit={edit} onRemoved={() => setSelected('')} />
+        <AddSite kinds={plan.kinds} levels={levels} edit={edit} />
+      </fieldset>
+      <section className="wd-live" aria-label="Live-Vorschau">
+        <Text size="2" color="gray">Live-Vorschau des Planer-Stands, Seed {PREVIEW.seed}, Wald</Text>
+        <LivePreview seed={PREVIEW.seed} biome={PREVIEW.biome} active planer={source} />
+      </section>
+    </>
+  );
+}
+
+/** Seite Gebäude-Planer des Asset-Studios (B-462, WZ9.2 und WZ9.3): Matrix Hub-Stufe × Bauplatz aus `data/hub.json`,
+ *  Bearbeiten der gewählten Zeile als Kandidat, Befunde der Prüfung, Abweichung der Regeltabelle, Speichern und die
+ *  Live-Vorschau des Planer-Stands (auch ungespeichert) in der gewählten Hub-Stufe. */
+export function PlanerPage() {
+  const planer = usePlaner();
+  const { plan, failed, reload } = planer;
+  const shown = planer.view ?? plan;
+  const levels = shown?.matrix.levels ?? 0;
   return (
     <div className="pl-page">
       <div className="wd-bar">
@@ -96,17 +128,7 @@ export function PlanerPage() {
       </div>
       {failed && <NoticeCard title="Gebäude-Planer nicht geladen" tone="error">{failed}</NoticeCard>}
       {plan?.error && <Text size="2" color="red" role="alert">{plan.error}</Text>}
-      {source && plan && (
-        <>
-          <Findings plan={plan} />
-          <RulesDiff rules={rules} failed={rulesFailed} />
-          <HubMatrixView matrix={plan.matrix} hubLevel={hubLevel} onHubLevel={setChosen} />
-          <section className="wd-live" aria-label="Live-Vorschau">
-            <Text size="2" color="gray">Live-Vorschau des Planer-Stands, Seed {PREVIEW.seed}, Wald</Text>
-            <LivePreview seed={PREVIEW.seed} biome={PREVIEW.biome} active planer={source} />
-          </section>
-        </>
-      )}
+      {plan && !plan.error && shown && <PlanerBody planer={planer} plan={plan} shown={shown} />}
     </div>
   );
 }

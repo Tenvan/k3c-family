@@ -134,6 +134,8 @@ export interface HubRow {
   /** Art aus hub.json; wall, gate, merchantBuy, merchantSell */
   kind: string;
   source: HubSource;
+  /** Eintrag in seiner Liste (sites, islandSites, wallUnits); Händler 0 */
+  index: number;
   hubLevel: number;
   /** Mauerlinie bzw. Tor: Linie k; sonst 0 */
   line: number;
@@ -167,6 +169,30 @@ export interface HubPlanView {
   findings: HubFinding[];
   notes: string[];
   error: string;
+  /** Stand beider Dateien beim Laden (Schreibregel); leer bei einem geprüften Kandidaten */
+  stand: HubStand;
+  /** Arten, die als Platz hinzukommen dürfen (entscheidet die Prüfung im Go-Backend) */
+  kinds: string[];
+}
+
+/** Stand von data/hub.json und Regeltabelle beim Laden (Go: HubStand, SHA-256) */
+export interface HubStand {
+  hub: string;
+  rules: string;
+}
+
+/** Ergebnis des Speicherns (Go: HubSaveResult): stale = Datei extern geändert, nichts geschrieben; rulesError = hub.json
+ *  gespeichert, Regeltabelle veraltet; notice = Hinweis auf die REG-Änderung. */
+export interface HubSaveResult {
+  saved: boolean;
+  /** Stand bedeutet dasselbe wie die Datei: nichts geschrieben, keine REG-Änderung */
+  unchanged: boolean;
+  stale: string;
+  findings: HubFinding[];
+  error: string;
+  rulesError: string;
+  notice: string;
+  stand: HubStand;
 }
 
 /** Abweichende Zeile des erzeugten Blocks (1-basiert); fehlt sie auf einer Seite, ist der Text dort leer. */
@@ -233,6 +259,10 @@ export interface Backend {
   hubPlan(): Promise<HubPlanView>;
   /** Gebäude-Planer: Abweichung der Regeltabelle vom Planer-Stand (leer = data/hub.json) */
   hubRules(hubJSON: string): Promise<HubRulesView>;
+  /** Gebäude-Planer: Matrix und Befunde eines geänderten Stands (Prüfung im Go-Backend), schreibt nichts */
+  hubCheck(candidate: string): Promise<HubPlanView>;
+  /** Gebäude-Planer: speichert den Stand, wenn beide Dateien noch den Stand `stand` haben (B-462/AC-02, AC-06) */
+  hubSave(candidate: string, stand: HubStand): Promise<HubSaveResult>;
   openUrl(url: string): void;
   /** Abo eines Ereignisses; liefert die Abmeldung */
   on<E extends EventName>(event: E, fn: (data: Events[E]) => void): () => void;

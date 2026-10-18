@@ -20,6 +20,7 @@ func freshPlanerFixture(t *testing.T) planerFixture {
 	t.Helper()
 	plan := hubPlanFrom(repoRoot, "testdata/hub/hub7.json")
 	plan.Raw = strings.ReplaceAll(plan.Raw, "\r\n", "\n") // Arbeitsbaum mit CRLF (Windows) oder LF (CI): gleiche Fixture
+	plan.Stand = HubStand{}                               // hängt an den Zeilenenden; der Mock speichert nicht
 	return planerFixture{Plan: plan, Rules: hubRulesFrom(repoRoot, []byte(plan.Raw))}
 }
 
