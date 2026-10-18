@@ -10,7 +10,6 @@ Die Reihenfolge der Arbeit ist allein der Projekt-Rang: [`../projekte/README.md`
 | Sprint | Domäne | Projekt | Thema | Am Ende sichtbar | Ordner |
 |---|---|---|---|---|---|
 | WZ8 | REG, SIM, SRV, DEV | WZG | Chunks je Insel und Stufe planen: Seed oder feste Objekte | – | `aktiv/WZ8-chunk-planung/` |
-| WZ15 | REG, INF, SIM | WZG | Hub-Planung Vorlauf: Regeltabelle erzeugt, Prüfung ohne globalen Zustand | – | `aktiv/WZ15-hub-planung-vorlauf/` |
 | GR7 | CLI | GRA | Figuren-Lücken, ganzzahlige Skalierung und Schrift | – | `aktiv/GR7-figuren-schrift/` |
 | SO4 | CLI | SND | Musik je Zustand | – | `aktiv/SO4-musik/` |
 
@@ -194,3 +193,4 @@ Gesamtplan und Begründung: [`../plan-weiterentwicklung.md`](../plan-weiterentwi
 | WZ5 | Planungsseite im Look der erp-qs-Workbench | `erledigt/WZ5-planung-erpqs-look/` |
 | WZ6 | Asset-Studio als eigene EXE mit Seiten für Grafik und Sound | `erledigt/WZ6-asset-werkzeug-exe/` |
 | WZ7 | Welt-Betrachter im Asset-Studio mit Chunk- und Live-Vorschau | `erledigt/WZ7-welt-betrachter/` |
+| WZ15 | Hub-Planung Vorlauf: Regeltabelle erzeugt, Prüfung ohne globalen Zustand | `erledigt/WZ15-hub-planung-vorlauf/` |
