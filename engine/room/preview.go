@@ -25,7 +25,7 @@ type PreviewSource struct {
 }
 
 // PreviewOptions beschreiben eine Vorschau-Welt. Der Nullwert jedes Feldes außer Seed und Source ist das Standardbild:
-// höchste Hub-Stufe, Tag mit Fortschritt 0, alle Gebäude. Neue Felder (WZ8.4 „geplante Chunks“, WZ9
+// höchste Hub-Stufe, Tag mit Fortschritt 0, alle Gebäude. Neue Felder („geplante Chunks“ seit WZ8.4, WZ9
 // „Kandidaten-hub.json“) kommen hinzu, ohne bestehende Aufrufer zu ändern.
 type PreviewOptions struct {
 	Seed     string
@@ -37,6 +37,10 @@ type PreviewOptions struct {
 	// Buildings: false schaltet einen Platz aus (Schlüssel PreviewSiteKey); fehlende und unbekannte Schlüssel
 	// bleiben an bzw. werden ignoriert.
 	Buildings map[string]bool
+	// Planned sind die geplanten Chunks dieses Levels (WZ8.4, docs/rules/geplante-chunks.md), auch ein ungespeicherter
+	// Entwurf. nil oder leer = reiner Zufall, wie bei jedem Biom-Level ohne Insel; eine ungültige Planung wird mit dem
+	// Fehler der Prüfung (level.ValidatePlan) abgelehnt. Sie wird als Parameter durchgereicht, nie gespeichert.
+	Planned []level.PlannedChunk
 	// HubCandidate: Kandidaten-hub.json als Bytes (Gebäude-Planer, WZ9.1, B-462); leer = eingebettete data/hub.json.
 	// Geprüft mit sim.ValidateHub (Befunde → *CandidateError), gebaut über sim.CreateOptions; HubLevel 0 ist dann
 	// die höchste Stufe des Kandidaten. Nur Parameter, kein globaler Zustand.
@@ -98,13 +102,13 @@ func BuildPreview(o PreviewOptions) (*sim.World, error) {
 // hub.json (wie vor WZ9.1), mit Kandidat aus ihm (candidateWorld).
 func previewWorld(biome level.Biome, o PreviewOptions) (*sim.World, int, error) {
 	if len(o.HubCandidate) > 0 {
-		return candidateWorld(biome, o.Seed, o.HubCandidate)
+		return candidateWorld(biome, o.Seed, o.HubCandidate, o.Planned)
 	}
 	data, err := fullData()
 	if err != nil {
 		return nil, 0, err
 	}
-	w, err := sim.CreateWorld(biome, o.Seed, sim.Options{CycleSpeed: 1})
+	w, err := sim.CreateWorld(biome, o.Seed, sim.Options{CycleSpeed: 1, Planned: o.Planned})
 	if err != nil {
 		return nil, 0, fmt.Errorf("vorschau: Level nicht erzeugbar: %w", err)
 	}

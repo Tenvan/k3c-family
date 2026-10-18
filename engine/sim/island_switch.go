@@ -71,7 +71,7 @@ func (isl *Island) NextDef() (def IslandDef, ok bool) {
 // der Burg der ersten Stufe; ihre Skill-Basis ist die Zahl der mitgebrachten Skills.
 func NextIsland(cur *Island, def IslandDef) (*Island, error) {
 	number := cur.Number + 1
-	next, err := createIsland(fmt.Sprintf("%s:%d", cur.ID, number), def.Depths, cur.CycleSpeed, 0, nil)
+	next, err := createIsland(fmt.Sprintf("%s:%d", cur.ID, number), def.Depths, cur.CycleSpeed, 0, def.CreateOptions())
 	if err != nil {
 		return nil, err
 	}

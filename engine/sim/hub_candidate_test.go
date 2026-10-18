@@ -119,7 +119,7 @@ func TestCreateWorldWithKandidat(t *testing.T) {
 	b := biomeForDepth(0)
 	bad := hubCopy(t)
 	bad.Levels = nil
-	if w, err := CreateWorldWith(b, "with", CreateOptions{Candidate: bad}); err == nil || w != nil {
+	if w, err := CreateWorldWith(b, "with", CreateOptions{Candidate: bad}, nil); err == nil || w != nil {
 		t.Errorf("ungültiger Kandidat: Welt %v, Fehler %v", w != nil, err)
 	}
 	plain, err := CreateWorld(b, "with", Options{CycleSpeed: 1})
@@ -127,7 +127,7 @@ func TestCreateWorldWithKandidat(t *testing.T) {
 		t.Fatal(err)
 	}
 	h := hubCopy(t)
-	cand, err := CreateWorldWith(b, "with", CreateOptions{Candidate: h})
+	cand, err := CreateWorldWith(b, "with", CreateOptions{Candidate: h}, nil)
 	if err != nil {
 		t.Fatal(err)
 	}

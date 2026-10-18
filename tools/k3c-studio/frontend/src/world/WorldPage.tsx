@@ -2,6 +2,8 @@ import { useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react
 import { LivePreview } from '../stage/LivePreview';
 import { ChunkPreview } from './ChunkPreview';
 import { GameLauncher } from './GameLauncher';
+import { PlanEditor } from './PlanEditor';
+import { usePlan } from './usePlan';
 import type { LevelModel } from './levelView';
 import { ViewBar } from './ViewBar';
 import { DEFAULT_SCALE, clampLeft, jumpPoints, leftFor, wheelAction, zoomView, type View } from './viewState';
@@ -23,12 +25,14 @@ function useWidth(el: React.RefObject<HTMLElement | null>): number {
   return px;
 }
 
-/** Seite Welt-Betrachter des Asset-Studios (B-460, B-477): Chunk-Streifen und Live-Vorschau in einer Ansicht. Position und
- *  Zoom gelten für beide gleich (eine Positions-Leiste, Sprungpunkte, Zoom stufenlos und in festen Stufen); „Verkleinern“
- *  und „Maximieren“ ändern die Höhe der beiden Vorschauen, nie ihre Sichtbarkeit. */
+/** Seite Welt-Betrachter des Asset-Studios (B-460, B-461, B-477): Chunk-Streifen und Live-Vorschau in einer Ansicht, dazwischen
+ *  der Editor für geplante Chunks. Position und Zoom gelten für beide Vorschauen gleich (eine Positions-Leiste, Sprungpunkte,
+ *  Zoom stufenlos und in festen Stufen); beide lesen dieselbe Quelle: Insel, Stufe und der Entwurf der Planung (B-461/AC-11).
+ *  „Verkleinern“ und „Maximieren“ ändern die Höhe der beiden Vorschauen, nie ihre Sichtbarkeit. */
 export function WorldPage() {
   const [maximized, setMaximized] = useState(true);
   const [source, setSource] = useState({ seed: 'k3c', biome: 'forest' });
+  const plan = usePlan();
   const [model, setModel] = useState<LevelModel | null>(null);
   const [gates, setGates] = useState<number[]>([]);
   const [view, setView] = useState<View>({ left: 0, scale: DEFAULT_SCALE });
@@ -78,11 +82,12 @@ export function WorldPage() {
 
   return (
     <div className="wd-page" data-maximized={maximized} ref={frame}>
-      <ChunkPreview maximized={maximized} onToggle={() => setMaximized((m) => !m)} onLoaded={onLoaded} view={view} onWheel={onWheel}>
+      <ChunkPreview maximized={maximized} onToggle={() => setMaximized((m) => !m)} onLoaded={onLoaded} source={plan.source} view={view} onWheel={onWheel}>
         <ViewBar view={view} widthUnits={widthUnits} viewUnits={viewUnits} jumps={jumpPoints(model, gates)} onScale={setScale} onLeft={setLeft} onJump={jump} />
       </ChunkPreview>
+      <PlanEditor plan={plan} />
       <section className="wd-live" aria-label="Live-Vorschau">
-        <LivePreview seed={source.seed} biome={source.biome} position={view} onPan={panBy} onWheel={onWheel} onSites={onSites} />
+        <LivePreview seed={source.seed} biome={source.biome} position={view} onPan={panBy} onWheel={onWheel} onSites={onSites} plan={plan.source} />
       </section>
       <GameLauncher seed={source.seed} biome={source.biome} />
     </div>

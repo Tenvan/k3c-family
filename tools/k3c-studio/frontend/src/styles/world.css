@@ -42,3 +42,12 @@
 .wd-launch .wd-base { width: 15rem; }
 .wd-bar input[type='range'] { width: 8rem; }
 .wd-select { height: 2rem; padding: 0 0.5rem; border-radius: 6px; border: 1px solid var(--card-line); background: var(--card); color: var(--text); }
+
+/* Editor für geplante Chunks (B-461, WZ8.5) */
+.wd-plan { display: flex; flex-direction: column; gap: 6px; margin-top: 8px; }
+.wd-chunklist { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 6px; }
+.wd-planned { border: 1px solid var(--gray-6); border-radius: 6px; padding: 6px 8px; display: flex; flex-direction: column; gap: 4px; }
+.wd-object { display: flex; align-items: center; gap: 8px; margin-left: 1.5rem; }
+.wd-slot { width: 5rem; }
+.wd-kind, .wd-seed { width: 9rem; }
+.wd-error, .wd-notice { margin: 0; }

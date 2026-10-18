@@ -1,6 +1,6 @@
 # WZ8.3 · Generator mit Planung, CreateOptions und Benchmark
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** SIM
@@ -72,5 +72,14 @@ Benchmark und Sim-Läufe mit 2 Spielern bei laufender Workbench über `check_run
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+Umgesetzt von Claude (autonom), 2026-10-17; getrennter Reviewer-Agent vor dem Commit, keine schweren Befunde.
+
+- **AC-02 geprüft:** Code-Commit ohne Golden-Dateien; `TestGolden` (alle `level-*.json`, `sim-*.json`, `campaign-*.json`) in `task check:go` grün, damit bleiben die bestehenden Golden-Daten byte-gleich; ohne Planung sind Reihenfolge und Zahl der Würfe des Haupt-Stroms unverändert (Reviewer-Prüfung der RNG-Reihenfolge).
+- **AC-03 umgesetzt, geprüft:** `level.GenerateWith(b, seed, level.Options{Lines, Planned})` (neu `engine/level/planned_gen.go`), `level.Generate` bleibt (Nullwert); `clearOfLines` und `generateLines` nehmen `WallLineData` als Parameter, keine Paket-Variable beim Erzeugen. Tests: Nullwert gleich `Generate` (auch mit explizit übergebenen eingebetteten Linien), Determinismus und `Validate` über 500 Seeds je Biom mit Beispiel-Planung, Chunk-Seed über 100 Level-Seeds stabil (gemessen am Abstand zum Hub), Linien als Parameter (zwei Aufrufe nacheinander, je ihr Layout), Portal bei Hub +325 (Beispiel der Spec). Golden-Fall `testdata/golden/level-planned.json` mit Test-Planung `testdata/planned/forest.json` (`TestGoldenPlanned`, `-update`) im zweiten Commit.
+- **AC-04 geprüft:** Test: Wechsel von Chunk-Seed oder Objektliste eines geplanten Chunks lässt alle anderen Chunks gleich (50 Seeds, vier Varianten); geplanter Inhalt kommt nur aus `chunkStream` (`<biom>:<seed>:chunk:<platz>` bzw. `<biom>:chunk:<chunk-seed>`).
+- **AC-05 geprüft:** `level.Validate` über 500 Seeds je Biom mit Beispiel-Planung leer (feste Portale, Truhen, Camps und Adern ersetzen gewürfelte). `Validate` zählt Portale, Truhen, Camps jetzt nach Objekten statt nach Chunk-Art (Annahme B-475).
+- **AC-07 geprüft:** `sim.CreateOptions` (neu, nur Erzeugung, nicht gespeichert; `IslandSaveVersion` unverändert, getrennt von `IslandOptions`); `CreateIsland` nimmt sie, alle Aufrufer (`engine/room/fullsave.go`, `manager.go`, `tools/k3c-dev/internal/balance/run.go` und 16 Testdateien) mit `CreateOptions{}` angepasst; ohne Angabe gilt die Planung der eingebetteten ersten Insel (heute leer), `NextIsland` und Spielstand-Laden nehmen die Planung ihrer Insel aus den Daten. Sim-Test mit 2 Spielern (`island_planned_world_test.go`): fester Baum markierbar, feste Truhe aufhebbar, festes Camp mit Landstreichern, Welle aus festem Portal; feste Objekte stehen an der geplanten Lage.
+- **AC-13 geprüft (Benchmark, `go test -bench`, 10 Läufe, Median):** `BenchmarkGenerate` (Baseline vor den Änderungen, 5 Läufe) Wald 21,8 µs, Höhle 12,1 µs, Mine 8,9 µs, Eisenstollen 17,3 µs, Kristallhöhle 10,1 µs; nach den Änderungen Wald 17,8 µs (Messrauschen ±25 %), alle Biome nicht über der Baseline. Mit Test-Planung (`BenchmarkGenerateGeplant`) 18,3 µs gegen 17,8 µs ohne Planung = +2,7 % (Grenze +10 %). Abweichung vom Ablauf: Der Benchmark lief als `go test -bench` in der Shell, weil `check_run` und `sim_test` kein Go-Microbenchmark-Ziel haben.
+- **Gate-Prüfläufe:** `task check:go` und `check_run dev:test` grün, `task check` grün.
+- **Hinweis des Reviews (kein Befund):** `engine/room/preview.go` (Vorschau), `engine/net/level.go` (`GET /api/level`) und `tools/k3c-dev/.../enginetools/level.go` (`level_generate`) erzeugen weiter ohne Planung; WZ8.4 reicht die Planung in die Vorschau durch, die beiden anderen bleiben Zufalls-Level, bis jemand sie braucht.
+- **Manuelle Prüfung:** keine. Neue Tickets: keine (Frage B-475 aus WZ8.2 gilt weiter).
