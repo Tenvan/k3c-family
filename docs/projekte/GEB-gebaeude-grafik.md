@@ -26,11 +26,11 @@ In Abarbeitungs-Reihenfolge; der erste nicht erledigte Sprint ist der nächste. 
 
 ## Nicht-Ziele
 
-Figuren, Gegner und Animationen (GRA); Münzen, Icons, Items und HUD; die Palette-Pipeline für fremde Packs (GRA, B-331).
+Figuren, Gegner und Animationen (GRA); Münzen, Icons, Items und HUD; die Palette-Pipeline für fremde Packs (GRA, B-331). Freischaltung der Gebäude je Hub-Stufe und der Gebäude-Planer (WZG, WZ9/WZ15, B-462); GEB liefert nur die Grafik je Stufe.
 
 ## Notizen
 
-Umfang und Ist-Stand je Slot: B-435 › Notizen. Alle sieben Sprints sind als Entwurf angelegt (Tabelle oben). Zuschnitt:
+Umfang und Ist-Stand je Slot: B-435 › Notizen (Stand 2026-10-15, überholt: GEB2–GEB7 haben die Lücken geschlossen; aktuell `assets_list` und `public/grafik/gebaeude/index.json`). Von neun Sprints sind GEB1–GEB8 erledigt, GEB9 (Ausbaustufen aller Hub-Gebäude) ist als Entwurf geplant. Zuschnitt:
 
 - GEB1 Grundregeln, Werkstatt, drei Bäume (Stilvorlage und Regeln)
 - GEB2 Lücken-Gebäude: Taverne, Heilplatz, Schmiede, Rüstkammer
@@ -38,8 +38,12 @@ Umfang und Ist-Stand je Slot: B-435 › Notizen. Alle sieben Sprints sind als En
 - GEB4 Burg, Hub-Stufen 1–5 und Tor
 - GEB5 Lager, Farm samt Plantage, Kaserne, Treppen
 - GEB6 Natur und Objekte (Bäume, Fels, Erz, Busch, Adern, Truhe, Portal, Ausgang, Rekrutierungslager)
-- GEB7 Hintergründe je Biom (auf Wunsch von 🧑 am 2026-10-16 geplant, am 2026-10-16 freigegeben und aktiviert: 15 Hintergrund-Schichten; GEB7.5 (CLI) wartet auf den Merge von GEB6)
+- GEB7 Hintergründe je Biom (15 Hintergrund-Schichten)
+- GEB8 Gebäude-Vorlagen in den Daten-JSONs
+- GEB9 Ausbaustufen 1–5 für alle Hub-Gebäude (offen: Stufen-Looks, Camp, Reihenfolge zu B-458)
 
 Rang 3 (vor GRA und SND) von 🧑 am 2026-10-15 im Chat gesetzt.
+
+**Abgrenzung zu WZG (Stand 2026-10-18):** Die Asset-Vorschau liegt auf der Grafik-Seite des Asset-Studios (WZ6), die Freischaltung je Hub-Stufe pflegt der Gebäude-Planer (WZ9, Regeltabelle aus `data/hub.json` erzeugt, WZ15). B-458 (Hub wächst kleinteiliger) bleibt Ticket des Projekts GEB, nutzt aber den Planer für die neue Stufenfolge; ein Sprint dafür ist noch nicht angelegt.
 
 **Anforderung an jeden GEB-Sprint (🧑, 2026-10-16, Chat):** Alte Grafik, die das Gebäudesystem im Spiel ersetzt, wird im selben Sprint aufgeräumt und gelöscht: PNG unter `public/grafik/`, Einträge in `public/grafik/index.json`, Register-Wahl in `data/assets.json`, Zuordnungs-Doku (`docs/assets/zuordnung-*.md`), Test-Fixtures und Mocks, CREDITS-Zeilen (wird ein Pack leer, fällt er ganz weg). Gelöscht wird nur, was keine andere Stelle mehr nutzt (vorher per Suche belegen). Wer einen Sprint bereit macht, nimmt das als Anforderung und Kriterium auf.
