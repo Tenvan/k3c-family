@@ -8,9 +8,9 @@
 - **Sprint:** BT1
 - **Projekt:** REL
 - **Erstellt:** 2026-09-30
-- **Spec:** Entwurf
+- **Spec:** freigegeben
 - **Revision:** 1
-- **Freigabe:** –
+- **Freigabe:** 2026-10-18, Chat (Ralf), Revision 1
 
 ## Ausgangslage
 
@@ -30,7 +30,7 @@ Der Nachweis von `B-001/AC-01` (und damit SP00/AC-02) stimmt mit dem Inhalt von 
 
 ## Anforderungen
 
-- Entweder nennt Entscheidung 001 die Standardbibliothek (`net/http`), oder `B-001/AC-01` verweist auf die tatsächliche Quelle.
+- Entscheidung 001 nennt die Standardbibliothek (`net/http`, `log/slog`) in einem Satz; `B-001/AC-01` bleibt unverändert (Entscheidung 🧑 2026-10-18).
 
 ## Nicht-Ziele
 
@@ -54,7 +54,7 @@ nicht relevant – reine Doku-Korrektur.
 
 ## Offene Fragen
 
-Entscheidung 001 um einen Satz ergänzen oder B-001 auf Revision 2 setzen? (🧑)
+keine (Entscheidung 🧑 2026-10-18: Entscheidung 001 um einen Satz ergänzen).
 
 ## Notizen
 

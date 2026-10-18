@@ -8,9 +8,9 @@
 - **Sprint:** BT1
 - **Projekt:** REL
 - **Erstellt:** 2026-10-02
-- **Spec:** Entwurf
+- **Spec:** freigegeben
 - **Revision:** 1
-- **Freigabe:** –
+- **Freigabe:** 2026-10-18, Chat (Ralf), Revision 1
 
 ## Ausgangslage
 
@@ -54,7 +54,7 @@ Ungültige Tiefe (nicht 0–2) oder zu langer Seed → Fehlermeldung des Servers
 
 ## Offene Fragen
 
-Soll der Seed ohne weiteres vom Namen des Spielstands getrennt werden (neues Feld) oder reicht der Name mit erweitertem Format? Entscheidet 🧑.
+keine (Entscheidung 🧑 2026-10-18: neues Feld `seed`, getrennt vom Namen des Spielstands).
 
 ## Notizen
 

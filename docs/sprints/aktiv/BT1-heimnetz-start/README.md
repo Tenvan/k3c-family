@@ -1,14 +1,14 @@
-# BT1 · SRV · Server im Heimnetz finden, Windows-Starter, Start mit Seed
+# BT1 · SRV, DEV · Server im Heimnetz finden, Windows-Starter, Start mit Seed
 
-- **Status:** geplant
+- **Status:** aktiv
 - **Projekt:** REL
-- **Domäne:** SRV
-- **Reife:** Entwurf
+- **Domäne:** SRV, DEV
+- **Reife:** bereit
 - **Tickets:** B-041, B-095, B-048
-- **Start-Commit:** –
-- **Spec:** Entwurf
+- **Start-Commit:** c7ea4fd7
+- **Spec:** freigegeben
 - **Revision:** 1
-- **Freigabe:** –
+- **Freigabe:** 2026-10-18, Chat (Ralf), Revision 1
 
 ## Ausgangslage
 
@@ -32,7 +32,7 @@ Internet-Zugriff, Konten.
 
 ## Regeln und Einschränkungen
 
-SRV; keine neue Abhängigkeit ohne Begründung im Ticket.
+Domänen SRV (BT1.1, Protokoll mit beiden Enden) und DEV (BT1.2, `tools/k3c-starter`); keine neue Abhängigkeit außer Wails (bereits im Repo). Protokoll-Änderung nur in einer eigenen Session (Arbeitsweise › Protokoll). AC-02 verlangt eine Abnahme am PC durch 🧑 (live).
 
 ## Beispiele
 
@@ -40,20 +40,26 @@ SRV; keine neue Abhängigkeit ohne Begründung im Ticket.
 
 ## Ausnahme- und Fehlerfälle
 
-Server nicht gefunden → Eingabefeld für die Adresse bleibt.
+Port belegt → Meldung im Fenster des Starters (B-041); ungültiger Seed oder ungültige Tiefe → Fehlermeldung des Servers, kein Raum (B-095). Die Server-Suche entfällt (B-040 verworfen).
 
 ## Akzeptanzkriterien
 
 - **AC-01** Entfällt (Beschluss 🧑 2026-10-11, B-040 verworfen: QR-Code und Handy); ehemals „Geräte finden den Server im Heimnetz“ (B-040/AC-01).
-- **AC-02** Wails-Starter für Windows existiert (B-041/AC-01).
+- **AC-02** Der Windows-Starter `tools/k3c-starter` existiert und läuft per Doppelklick (B-041/AC-01, B-041/AC-02).
 - **AC-03** Ein neues Spiel startet per URL mit eigenem Seed und gewählter Tiefe (B-095/AC-01, B-095/AC-02, B-095/AC-03).
 - **AC-04** Die Wahl der Go-Standardbibliothek ist dort festgehalten, wo B-001 auf sie verweist (B-048/AC-01).
 
 ## Offene Fragen
 
-keine (der Weg der Server-Suche mit QR-Code entfällt, B-040 verworfen).
+keine (Entscheidungen 🧑 2026-10-18: neues Protokollfeld `seed` (B-095), Entscheidung 001 um einen Satz ergänzen (B-048), Starter als `tools/k3c-starter` in Domäne DEV (B-041); B-040 verworfen).
 
 ## Sessions
+
+| Nr. | Datei | Typ | Agent | Status |
+|---|---|---|---|---|
+| BT1.1 | `BT1.1-seed-per-url.md` | Umsetzung | autonom | offen |
+| BT1.2 | `BT1.2-windows-starter.md` | Umsetzung | autonom | offen |
+| BT1.3 | `BT1.3-review.md` | Review | autonom | offen |
 
 Entwurf. Vor dem Aktivieren jede Session als Datei nach `docs/vorlagen/session.md` schreiben, die Kriterien in Klammern werden ihr Feld `Kriterien`.
 
