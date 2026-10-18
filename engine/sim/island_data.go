@@ -21,6 +21,9 @@ type IslandDef struct {
 	DepthScaling struct{ HP, Damage, Speed float64 }
 	// PlannedChunks sind die geplanten Chunks je Tiefe (Schlüssel = Tiefe, docs/rules/geplante-chunks.md); leer = reiner Zufall.
 	PlannedChunks map[string][]level.PlannedChunk
+	// ChunkCounts sind die Chunk-Anzahlen je Tiefe (Schlüssel = Tiefe, Wert = Inselgröße, geplante-chunks.md § 7);
+	// ohne Eintrag gilt die Länge des Bioms.
+	ChunkCounts map[string]int
 }
 
 var islandDefs = loadIslandDefs()
@@ -77,11 +80,14 @@ func checkIsland(d IslandDef) error {
 			return fmt.Errorf("kein Miniboss in Tiefe %d", depth)
 		}
 	}
+	if err := checkChunkCounts(d); err != nil {
+		return err
+	}
 	return checkPlannedChunks(d, level.DefaultWallLines())
 }
 
-// checkPlannedChunks prüft die geplanten Chunks jeder Tiefe unabhängig vom Seed (level.ValidatePlan) gegen die
-// Mauerlinien lines; Fehler nennen Tiefe und Platz (der Aufrufer ergänzt die Insel).
+// checkPlannedChunks prüft die geplanten Chunks jeder Tiefe unabhängig vom Seed (level.ValidatePlanFor) gegen die
+// Mauerlinien lines und die Chunk-Anzahl der Tiefe; Fehler nennen Tiefe und Platz (der Aufrufer ergänzt die Insel).
 func checkPlannedChunks(d IslandDef, lines level.WallLines) error {
 	for _, key := range slices.Sorted(maps.Keys(d.PlannedChunks)) {
 		plan := d.PlannedChunks[key]
@@ -89,7 +95,7 @@ func checkPlannedChunks(d IslandDef, lines level.WallLines) error {
 		if err != nil || strconv.Itoa(depth) != key || !slices.Contains(d.Depths, depth) {
 			return fmt.Errorf("plannedChunks: Tiefe %q ist keine Tiefe der Insel", key)
 		}
-		if err := level.ValidatePlan(biomeForDepth(depth), plan, lines); err != nil {
+		if err := level.ValidatePlanFor(biomeForDepth(depth), plan, lines, d.countAt(depth)); err != nil {
 			return fmt.Errorf("plannedChunks Tiefe %d: %w", depth, err)
 		}
 	}

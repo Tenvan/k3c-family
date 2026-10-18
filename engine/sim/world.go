@@ -19,7 +19,9 @@ type Options struct {
 	Time       float64  // Startzeit in Sekunden, damit der globale Zyklus beim Stufenwechsel weiterläuft
 	// Planned sind die geplanten Chunks dieser Stufe (docs/rules/geplante-chunks.md); leer = reiner Zufall.
 	Planned []level.PlannedChunk
-	hub     *HubData // Kandidaten-hub.json (CreateOptions.Candidate); nil = eingebettete data/hub.json
+	// ChunkCount ist die Chunk-Anzahl dieser Stufe (Inselgröße, geplante-chunks.md § 7); 0 = Länge des Bioms.
+	ChunkCount int
+	hub        *HubData // Kandidaten-hub.json (CreateOptions.Candidate); nil = eingebettete data/hub.json
 }
 
 // hubOf ist die hub.json, aus der die Stufe gebaut ist: der Kandidat aus CreateOptions oder die eingebettete.
@@ -32,7 +34,7 @@ func hubOf(w *World) *HubData {
 
 // CreateWorld baut den Startzustand einer Stufe.
 func CreateWorld(b level.Biome, seed string, opts Options) (*World, error) {
-	lo := level.Options{Planned: opts.Planned}
+	lo := level.Options{Planned: opts.Planned, ChunkCount: opts.ChunkCount}
 	if opts.hub != nil { // nur mit Kandidat: sonst bleibt der eingebettete Stand aus engine/level (Goldens)
 		lines := levelLines(opts.hub.WallLines)
 		lo.Lines = &lines

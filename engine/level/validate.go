@@ -7,27 +7,41 @@ import (
 )
 
 // Validate prüft die Spielbarkeits-Regeln wie `validateLevel` in TS. Leere Liste = Level ist gültig.
-func Validate(l Layout, b Biome) []string {
-	var errs []string
-	add := func(format string, args ...any) { errs = append(errs, fmt.Sprintf(format, args...)) }
-	count := func(kind string) int { return countKind(l, kind) }
-	// Portale, Truhen und Camps zählen als Objekte: feste Objekte geplanter Chunks stehen auch in anderen Chunk-Arten.
+func Validate(l Layout, b Biome) []string { return ValidateWith(l, b, Options{}) }
 
-	// Toleranz: Runden auf ganze Chunks (±0.5) plus Auffüllen auf gerade Chunk-Anzahl (+1).
-	tolerance := float64(l.ChunkWidthUnits * 1.5) // float64(…) verhindert FMA (B-071)
-	if l.WidthUnits < float64(b.LengthUnits.Min)-tolerance {
-		add("Level zu kurz")
-	}
-	if l.WidthUnits > float64(b.LengthUnits.Max)+tolerance {
-		add("Level zu lang")
-	}
-	if count("exit") != 1 {
+// ValidateWith prüft wie Validate; mit eingestellter Chunk-Anzahl (o.ChunkCount) gilt die Länge gegen die Anzahl statt
+// gegen lengthUnits (geplante-chunks.md § 7).
+func ValidateWith(l Layout, b Biome, o Options) []string {
+	errs := validateLength(l, b, o.ChunkCount)
+	add := func(format string, args ...any) { errs = append(errs, fmt.Sprintf(format, args...)) }
+	// Portale, Truhen und Camps zählen als Objekte: feste Objekte geplanter Chunks stehen auch in anderen Chunk-Arten.
+	if countKind(l, "exit") != 1 {
 		add("Genau ein Tiefen-Eingang erwartet")
 	}
 	if n := countEntities(l, "portal"); n != b.Portals.Count {
 		add("%d Portale erwartet, %d gefunden", b.Portals.Count, n)
 	}
 	return append(append(errs, validateChunks(l, b)...), validateEntities(l, b)...)
+}
+
+// validateLength prüft die Länge: mit eingestellter Anzahl genau so viele Chunks, sonst innerhalb von lengthUnits.
+func validateLength(l Layout, b Biome, count int) []string {
+	if count > 0 {
+		if len(l.Chunks) != count || l.WidthUnits != float64(count)*l.ChunkWidthUnits {
+			return []string{fmt.Sprintf("Level hat %d Chunks, erwartet %d", len(l.Chunks), count)}
+		}
+		return nil
+	}
+	var errs []string
+	// Toleranz: Runden auf ganze Chunks (±0.5) plus Auffüllen auf gerade Chunk-Anzahl (+1).
+	tolerance := float64(l.ChunkWidthUnits * 1.5) // float64(…) verhindert FMA (B-071)
+	if l.WidthUnits < float64(b.LengthUnits.Min)-tolerance {
+		errs = append(errs, "Level zu kurz")
+	}
+	if l.WidthUnits > float64(b.LengthUnits.Max)+tolerance {
+		errs = append(errs, "Level zu lang")
+	}
+	return errs
 }
 
 // validateChunks prüft Lage von Ausgang und Portalen sowie die Zahl der Ereignis-Chunks.

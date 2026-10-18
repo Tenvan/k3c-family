@@ -1,0 +1,11 @@
+{
+  "notes": "Inselgrößen (docs/rules/geplante-chunks.md § 7, B-485): die erlaubten Chunk-Anzahlen einer Stufe, gleich für alle Biome. Gesetzt je Insel und Tiefe in islands.json › chunkCounts; ohne Eintrag gilt die Länge des Bioms (lengthUnits). Alle Anzahlen gerade, der Hub liegt mittig; 16 ist die kleinste Anzahl, die in allen Biomen Platz für Hub, Portale mit Mindestabstand und Ausgang lässt.",
+  "sizes": [
+    { "name": "sehr klein", "chunkCount": 16 },
+    { "name": "klein", "chunkCount": 20 },
+    { "name": "mittel", "chunkCount": 24 },
+    { "name": "groß", "chunkCount": 32 },
+    { "name": "sehr groß", "chunkCount": 40 },
+    { "name": "mega groß", "chunkCount": 48 }
+  ]
+}

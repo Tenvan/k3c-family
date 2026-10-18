@@ -10,7 +10,7 @@ import (
 // und, wo das Biom Adern hat, eine feste Ader hinter dem äußersten Tor.
 func examplePlan(t *testing.T, b Biome) []PlannedChunk {
 	t.Helper()
-	g := shortest(b)
+	g := geometryOf(b, 0)
 	first := b.ChunkWeights[0].Key
 	plan := []PlannedChunk{
 		{Slot: -3, Kind: first, Seed: "lichtung"},

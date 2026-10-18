@@ -68,6 +68,9 @@ type CreateOptions struct {
 	// Mauerlinien, Tor-Stufe, Händler und Startvorrat kommen dann aus ihm. CreateIsland prüft ihn vorher mit
 	// ValidateHubData und lehnt ihn bei Befunden ab (fail closed).
 	Candidate *HubData
+	// ChunkCounts sind die Chunk-Anzahlen je Tiefe (Inselgrößen, geplante-chunks.md § 7). nil = die der eingebetteten
+	// ersten Insel; ohne Eintrag gilt die Länge des Bioms. CreateIsland lehnt eine Anzahl ab, die keine Inselgröße ist.
+	ChunkCounts map[int]int
 }
 
 // plannedFor liefert die geplanten Chunks der Tiefe.
@@ -78,18 +81,29 @@ func (o CreateOptions) plannedFor(depth int) []level.PlannedChunk {
 	return islandDefs[0].plannedAt(depth)
 }
 
+// countFor liefert die Chunk-Anzahl der Tiefe (0 = Länge des Bioms).
+func (o CreateOptions) countFor(depth int) int {
+	if o.ChunkCounts != nil {
+		return o.ChunkCounts[depth]
+	}
+	return islandDefs[0].countAt(depth)
+}
+
 // plannedAt liefert die geplanten Chunks der Insel für eine Tiefe (leer = reiner Zufall).
 func (d IslandDef) plannedAt(depth int) []level.PlannedChunk { return d.PlannedChunks[strconv.Itoa(depth)] }
 
-// CreateOptions liefert die Erzeugungs-Parameter dieser Insel aus den Daten (ihre eigene Planung).
+// CreateOptions liefert die Erzeugungs-Parameter dieser Insel aus den Daten (ihre eigene Planung und Chunk-Anzahl).
 func (d IslandDef) CreateOptions() CreateOptions {
-	planned := map[int][]level.PlannedChunk{}
+	planned, counts := map[int][]level.PlannedChunk{}, map[int]int{}
 	for _, depth := range d.Depths {
 		if plan := d.plannedAt(depth); len(plan) > 0 {
 			planned[depth] = plan
 		}
+		if n := d.countAt(depth); n > 0 {
+			counts[depth] = n
+		}
 	}
-	return CreateOptions{Planned: planned}
+	return CreateOptions{Planned: planned, ChunkCounts: counts}
 }
 
 // CreateIsland baut die Stufen für die angegebenen Tiefen (Reihenfolge = Stufenindex). CycleSpeed 0 bedeutet 1.
@@ -122,7 +136,13 @@ func createIsland(seed string, depths []int, cycleSpeed, startTime float64, opts
 		if !hasDepth(d) {
 			return nil, fmt.Errorf("insel: unbekannte Tiefe %d", d)
 		}
-		w, err := CreateWorld(biomeForDepth(d), seed, Options{CycleSpeed: cycleSpeed, Time: startTime, Planned: opts.plannedFor(d), hub: opts.Candidate})
+		count := opts.countFor(d)
+		if count != 0 {
+			if err := checkChunkCount(count); err != nil {
+				return nil, fmt.Errorf("insel: Stufe mit Tiefe %d: %w", d, err)
+			}
+		}
+		w, err := CreateWorld(biomeForDepth(d), seed, Options{CycleSpeed: cycleSpeed, Time: startTime, Planned: opts.plannedFor(d), ChunkCount: count, hub: opts.Candidate})
 		if err != nil {
 			return nil, fmt.Errorf("insel: Stufe mit Tiefe %d: %w", d, err)
 		}
