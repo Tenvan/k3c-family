@@ -31,11 +31,13 @@ export function buildingToggles(sites: readonly { kind: string; x: number }[]): 
     .sort((a, b) => a.x - b.x || a.kind.localeCompare(b.kind));
 }
 
-/** Quelle Insel + Stufe mit dem Entwurf der geplanten Chunks (gleiche Quelle wie die Chunk-Vorschau, B-461/AC-11). */
+/** Quelle Insel + Stufe mit dem Entwurf der geplanten Chunks und der Chunk-Anzahl (0 = Biom-Länge; gleiche Quelle wie
+ *  die Chunk-Vorschau, B-461/AC-11, B-485/AC-04). */
 export interface PlanSource {
   island: string;
   stage: number;
   planned: PlannedChunk[];
+  chunkCount?: number;
 }
 
 /** Reihenfolge und Namen der Gruppen im Gebäude-Filter; unbekannte Arten folgen alphabetisch, mit ihrem Namen. */
@@ -76,7 +78,7 @@ export function previewArgsOf(
   hubCandidate = '',
 ): WorldPreviewArgs {
   return {
-    seed, source: plan ? { biome, island: plan.island, stage: plan.stage, planned: plan.planned } : { biome }, hubLevel, phase: time.phase, progress: time.progress,
+    seed, source: plan ? { biome, island: plan.island, stage: plan.stage, planned: plan.planned, chunkCount: plan.chunkCount } : { biome }, hubLevel, phase: time.phase, progress: time.progress,
     buildings: Object.fromEntries([...off].sort().map((k) => [k, false])),
     ...(hubCandidate ? { hubCandidate } : {}),
   };

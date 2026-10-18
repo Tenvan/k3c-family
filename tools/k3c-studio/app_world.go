@@ -31,15 +31,19 @@ type WorldSource struct {
 	Island  string                `json:"island"`
 	Stage   int                   `json:"stage"`
 	Planned *[]level.PlannedChunk `json:"planned"`
+	// ChunkCount ist der Entwurf der Chunk-Anzahl (Inselgröße, WZ17.5; 0 = Biom-Länge); nil nimmt bei einer Insel die
+	// gespeicherte Anzahl der Tiefe, bei einem Biom die Biom-Länge.
+	ChunkCount *int `json:"chunkCount"`
 }
 
 // WorldLevel berechnet das Level zu Seed und Quelle (Binding). Ein ungültiger Seed, eine fehlende oder unbekannte
 // Quelle ergibt Error, nie einen Pfadzugriff.
 func (a *App) WorldLevel(seed string, src WorldSource) WorldLevelView {
-	biome, planned, err := a.resolveSource(src)
+	r, err := a.resolveSource(src)
 	if err != nil {
 		return WorldLevelView{Warnings: []string{}, Error: err.Error()}
 	}
+	biome := r.biome
 	if n := utf8.RuneCountInString(seed); n == 0 || n > maxWorldSeedRunes {
 		return WorldLevelView{Warnings: []string{}, Error: fmt.Sprintf("Seed braucht 1 bis %d Zeichen", maxWorldSeedRunes)}
 	}
@@ -50,11 +54,12 @@ func (a *App) WorldLevel(seed string, src WorldSource) WorldLevelView {
 	if err != nil {
 		return WorldLevelView{Warnings: []string{}, Error: fmt.Sprintf("Unbekanntes Biom %q", biome)}
 	}
-	layout, err := level.GenerateWith(b, seed, level.Options{Planned: planned})
+	opts := level.Options{Planned: r.planned, ChunkCount: r.count}
+	layout, err := level.GenerateWith(b, seed, opts)
 	if err != nil {
 		return WorldLevelView{Warnings: []string{}, Error: "Level nicht erzeugbar: " + err.Error()}
 	}
-	warnings := level.Validate(layout, b)
+	warnings := level.ValidateWith(layout, b, opts)
 	if warnings == nil {
 		warnings = []string{} // immer ein Array, nie null
 	}

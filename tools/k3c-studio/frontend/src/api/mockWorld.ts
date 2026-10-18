@@ -6,16 +6,20 @@ import type { OpenGameResult, WorldLevelView, WorldPreviewArgs, WorldPreviewView
 // „fehler“ liefert den Hinweis einer abgelehnten Anfrage.
 
 const KINDS = ['edge', 'normal', 'normal', 'recruitCamp', 'normal', 'hub', 'normal', 'chest', 'portal', 'normal', 'normal', 'exit'];
+/** Abschnitte: ohne Chunk-Anzahl die festen zwölf, mit Anzahl n genau n (Rand, Hub in der Mitte, Ausgang; B-485/AC-04). */
+const kindsOf = (n?: number | null): string[] =>
+  (n ? Array.from({ length: n }, (_, i) => (i === 0 ? 'edge' : i === n - 1 ? 'exit' : i === n / 2 ? 'hub' : 'normal')) : KINDS);
 
 export function mockWorldLevel(seed: string, source: WorldSource): WorldLevelView {
   const empty = { seed, biomeId: source.biome ?? 'forest', widthUnits: 0, chunkWidthUnits: 30, hubCenterUnits: 0, chunks: [], entities: [], warnings: [] };
   if (seed === 'fehler') return { ...empty, error: 'Seed braucht 1 bis 64 Zeichen' };
-  const chunks = KINDS.map((kind, i) => ({ index: i, kind, startUnits: i * 30 })) as WorldLevelView['chunks'];
+  const kinds = kindsOf(source.chunkCount);
+  const chunks = kinds.map((kind, i) => ({ index: i, kind, startUnits: i * 30 })) as WorldLevelView['chunks'];
   const entities = [
     { kind: 'castle', x: 165 }, { kind: 'portal', x: 255 }, { kind: 'exit', x: 345 }, { kind: 'tree', x: 40 }, { kind: 'tree', x: 70 },
     { kind: 'rock', x: 100 }, { kind: 'chest', x: 225 }, { kind: 'recruitCamp', x: 105 },
   ];
-  return { ...empty, widthUnits: KINDS.length * 30, hubCenterUnits: 165, chunks, entities, warnings: seed === 'warnung' ? ['Level zu kurz'] : [], error: '' };
+  return { ...empty, widthUnits: kinds.length * 30, hubCenterUnits: kinds.indexOf('hub') * 30 + 15, chunks, entities, warnings: seed === 'warnung' ? ['Level zu kurz'] : [], error: '' };
 }
 
 /** Hub-Stufen im Mock: die des Planer-Stands, sonst die von data/hub.json; null = Kandidat kein JSON mit levels. */

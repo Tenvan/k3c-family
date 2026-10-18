@@ -42,7 +42,7 @@ beforeEach(async () => {
   stub('offsetWidth', 600);
   stub('offsetHeight', 400);
   const view = await backend.planLoad();
-  await backend.planSave('island1', 0, [], view.stand);
+  await backend.planSave('island1', 0, [], 0, view.stand);
 });
 afterEach(() => {
   act(() => root?.unmount());
@@ -74,7 +74,7 @@ describe('Chunk-Infos im Bodenstreifen (B-485)', () => {
 
   it('ein geplanter Chunk zeigt blau Name, Platz, Seed und feste Objekte', async () => {
     const view = await backend.planLoad();
-    await backend.planSave('island1', 0, [{ slot: 1, kind: 'forest', seed: 'abc', objects: [{ kind: 'tree', at: 5 }] }], view.stand);
+    await backend.planSave('island1', 0, [{ slot: 1, kind: 'forest', seed: 'abc', objects: [{ kind: 'tree', at: 5 }] }], 0, view.stand);
     const h = await mount();
     for (let i = 0; i < 6; i++) altWheel(-100); // Bodenstreifen hoch genug für drei Zeilen
     for (let i = 0; i < 3; i++) await act(async () => { document.body.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowRight', bubbles: true })); });

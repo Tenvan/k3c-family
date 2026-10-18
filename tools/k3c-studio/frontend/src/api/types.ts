@@ -106,26 +106,37 @@ export interface PlannedChunk {
 }
 
 /** Quelle des Levels als Wert (Go: WorldSource): ein Biom oder eine Insel mit Stufe (Index in ihren Tiefen). planned ist
- *  der Entwurf der geplanten Chunks (auch ungespeichert); fehlt er, gilt bei einer Insel die gespeicherte Planung. */
+ *  der Entwurf der geplanten Chunks (auch ungespeichert); fehlt er, gilt bei einer Insel die gespeicherte Planung.
+ *  chunkCount ist der Entwurf der Chunk-Anzahl (0 = Biom-Länge); fehlt er, gilt bei einer Insel die gespeicherte. */
 export interface WorldSource {
   biome?: string;
   island?: string;
   stage?: number;
   planned?: PlannedChunk[] | null;
+  chunkCount?: number | null;
 }
 
-/** Insel mit Tiefen, Biom je Tiefe und gespeicherter Planung je Tiefe (Go: PlanIsland) */
+/** Inselgröße (Go: sim.IslandSize, data/island-sizes.json): deutscher Name und Chunk-Anzahl */
+export interface IslandSize {
+  name: string;
+  chunkCount: number;
+}
+
+/** Insel mit Tiefen, Biom je Tiefe, gespeicherter Planung und Chunk-Anzahl je Tiefe (Go: PlanIsland); ohne Eintrag in
+ *  chunkCounts gilt die Biom-Länge. */
 export interface PlanIsland {
   id: string;
   name: string;
   depths: number[];
   biomes: string[];
   planned: Record<string, PlannedChunk[]>;
+  chunkCounts: Record<string, number>;
 }
 
-/** data/islands.json für den Editor (Go: PlanView); stand ist der Hash der Datei beim Lesen */
+/** data/islands.json für den Editor (Go: PlanView); stand ist der Hash der Datei beim Lesen, sizes die Inselgrößen */
 export interface PlanView {
   islands: PlanIsland[];
+  sizes: IslandSize[];
   stand: string;
   error: string;
 }
@@ -134,6 +145,12 @@ export interface PlanView {
 export interface PlanCheckView {
   ok: boolean;
   slot: number;
+  error: string;
+}
+
+/** Seed-Inhalt eines geplanten Chunks (Go: PlanObjectsView) zum Umwandeln in feste Objekte, oder der Grund in error */
+export interface PlanObjectsView {
+  objects: PlannedObject[];
   error: string;
 }
 
@@ -300,10 +317,13 @@ export interface Backend {
   worldLevel(seed: string, source: WorldSource): Promise<WorldLevelView>;
   /** Live-Vorschau: Welt zu den Optionen, aus der Vorschau-Funktion des Servers (B-460) */
   worldPreview(args: WorldPreviewArgs): Promise<WorldPreviewView>;
-  /** Geplante Chunks: data/islands.json lesen, einen Entwurf prüfen (ohne zu schreiben), die Planung einer Tiefe speichern (B-461) */
+  /** Geplante Chunks: data/islands.json lesen, einen Entwurf (Planung und Chunk-Anzahl, 0 = Biom-Länge) prüfen, ohne zu
+   *  schreiben, und Planung und Anzahl einer Tiefe speichern (B-461, B-485) */
   planLoad(): Promise<PlanView>;
-  planCheck(island: string, depth: number, chunks: PlannedChunk[]): Promise<PlanCheckView>;
-  planSave(island: string, depth: number, chunks: PlannedChunk[], stand: string): Promise<PlanSaved>;
+  planCheck(island: string, depth: number, chunks: PlannedChunk[], count: number): Promise<PlanCheckView>;
+  planSave(island: string, depth: number, chunks: PlannedChunk[], count: number, stand: string): Promise<PlanSaved>;
+  /** Seed-Inhalt des geplanten Chunks am Platz slot im Level zu Seed und Quelle (Umwandlung in feste Objekte, B-485/AC-06) */
+  planChunkObjects(seed: string, source: WorldSource, slot: number): Promise<PlanObjectsView>;
   /** Im Spiel öffnen: `new` (neues Spiel mit dem Seed) oder `full` (voll ausgebaut), über die Landingpage des Servers unter base, nur Loopback */
   worldOpenGame(base: string, seed: string, biome: string, mode: 'new' | 'full'): Promise<OpenGameResult>;
   /** Gebäude-Planer: data/hub.json als Matrix mit Befunden der Prüfung (B-462) */

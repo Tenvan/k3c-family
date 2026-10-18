@@ -44,7 +44,7 @@ async function addChunk(h: HTMLElement) {
 
 beforeEach(async () => { // der Mock hält die Planung im Speicher: jeder Test beginnt ohne gespeicherte Planung
   const view = await backend.planLoad();
-  await backend.planSave('island1', 0, [], view.stand);
+  await backend.planSave('island1', 0, [], 0, view.stand);
 });
 
 afterEach(() => {

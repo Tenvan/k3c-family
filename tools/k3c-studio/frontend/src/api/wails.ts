@@ -1,4 +1,4 @@
-import type { AssetChoice, AssetHit, AssetSaved, AssetsView, Backend, CatalogAsset, EventName, Events, HubPlanView, HubRulesView, HubSaveResult, HubStand, ResearchResult, OpenGameResult, PlanCheckView, PlanSaved, PlanView, PlannedChunk, WorldLevelView, WorldPreviewArgs, WorldPreviewView, WorldSource } from './types';
+import type { AssetChoice, AssetHit, AssetSaved, AssetsView, Backend, CatalogAsset, EventName, Events, HubPlanView, HubRulesView, HubSaveResult, HubStand, ResearchResult, OpenGameResult, PlanCheckView, PlanObjectsView, PlanSaved, PlanView, PlannedChunk, WorldLevelView, WorldPreviewArgs, WorldPreviewView, WorldSource } from './types';
 
 // Die Wails-Laufzeit legt window.go (Bindings der App) und window.runtime an. Die generierten Dateien unter
 // frontend/wailsjs/ bindet die Oberfläche bewusst nicht ein (wie k3c-dev): so braucht der Typecheck keine Wails-CLI.
@@ -16,8 +16,9 @@ interface GoApp {
   WorldPreview(args: WorldPreviewArgs): Promise<WorldPreviewView>;
   WorldOpenGame(base: string, seed: string, biome: string, mode: string): Promise<OpenGameResult>;
   PlanLoad(): Promise<PlanView>;
-  PlanCheck(island: string, depth: number, chunks: PlannedChunk[]): Promise<PlanCheckView>;
-  PlanSave(island: string, depth: number, chunks: PlannedChunk[], stand: string): Promise<PlanSaved>;
+  PlanCheck(island: string, depth: number, chunks: PlannedChunk[], count: number): Promise<PlanCheckView>;
+  PlanSave(island: string, depth: number, chunks: PlannedChunk[], count: number, stand: string): Promise<PlanSaved>;
+  PlanChunkObjects(seed: string, source: WorldSource, slot: number): Promise<PlanObjectsView>;
   HubPlan(): Promise<HubPlanView>;
   HubRules(hubJSON: string): Promise<HubRulesView>;
   HubCheck(candidate: string): Promise<HubPlanView>;
@@ -58,8 +59,9 @@ export function wailsBackend(): Backend {
     worldPreview: (args) => app.WorldPreview(args),
     worldOpenGame: (base, seed, biome, mode) => app.WorldOpenGame(base, seed, biome, mode),
     planLoad: () => app.PlanLoad(),
-    planCheck: (island, depth, chunks) => app.PlanCheck(island, depth, chunks),
-    planSave: (island, depth, chunks, stand) => app.PlanSave(island, depth, chunks, stand),
+    planCheck: (island, depth, chunks, count) => app.PlanCheck(island, depth, chunks, count),
+    planSave: (island, depth, chunks, count, stand) => app.PlanSave(island, depth, chunks, count, stand),
+    planChunkObjects: (seed, source, slot) => app.PlanChunkObjects(seed, source, slot),
     hubPlan: () => app.HubPlan(),
     hubRules: (hubJSON) => app.HubRules(hubJSON),
     hubCheck: (candidate) => app.HubCheck(candidate),
