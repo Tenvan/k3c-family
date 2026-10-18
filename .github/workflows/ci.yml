@@ -132,6 +132,13 @@ jobs:
           test "$(curl -s -o /dev/null -w '%{http_code}' http://localhost:8080/api/status)" = 404
           case "$(docker inspect --format '{{.Config.User}}' k3c-server:ci)" in nonroot | 65532 | 65532:65532) ;; *) exit 1 ;; esac
           docker logs k3c
+          # Release-Image ohne Dev-Mode (B-273): Startzeile nennt dev=false
+          docker logs k3c 2>&1 | grep -q 'dev=false'
+      - name: Dev-Mode per K3C_DEV=1 einschaltbar
+        run: |
+          docker run -d --name k3c-dev -e K3C_DEV=1 k3c-server:ci
+          for i in $(seq 1 30); do docker exec k3c-dev /app/k3c-server -health && break; sleep 1; done
+          docker logs k3c-dev 2>&1 | grep -q 'dev=true'
       # Diagnose-TUI im Image (SP10, B-002): ein zweiter Container mit Token, k3c-tui -once ohne Terminal.
       - name: k3c-tui im Image prüfen
         run: |

@@ -1,6 +1,6 @@
 # CI1.1 · Release-Image ohne Dev-Mode
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** INF
@@ -56,5 +56,8 @@ Der Docker-Smoke-Test läuft nur in der CI; lokal nur, wenn Docker verfügbar is
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+- **AC-01 geprüft (B-273/AC-01, AC-02):** `Dockerfile` setzt `K3C_DEV=0` in der `ENV`-Zeile, `compose.yaml` reicht `K3C_DEV: ${K3C_DEV:-0}` durch; der Docker-Job der CI prüft `dev=false` (Start ohne Variablen) und `dev=true` (neuer Schritt mit `-e K3C_DEV=1`). Die Prüfung läuft nur in der CI (kein Docker lokal); der Nachweis der CI folgt im Review CI1.3.
+- **AC-01 geprüft (B-273/AC-03):** `git diff --stat -- cmd engine` leer, `main.go` unverändert, `task start` bleibt Dev.
+- `task check` grün (17 s). Grenzfall SRV: `Dockerfile` und `compose.yaml` in dieser INF-Session angefasst, zwei Zeilen.
+- Getrenntes Review (Subagent, 2026-10-18): keine Befunde.
+- Neue Tickets: keine.

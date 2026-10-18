@@ -58,7 +58,7 @@ Entschieden von 🧑 am 2026-10-18 (Chat): Dev-Mode im Image aus (B-273), Abdeck
 
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
-| CI1.1 | `CI1.1-release-image-dev-mode.md` | Umsetzung | autonom | offen |
+| CI1.1 | `CI1.1-release-image-dev-mode.md` | Umsetzung | autonom | fertig |
 | CI1.2 | `CI1.2-abdeckung-engine.md` | Umsetzung | autonom | offen |
 | CI1.3 | `CI1.3-review.md` | Review | autonom | offen |
 
