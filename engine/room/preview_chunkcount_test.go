@@ -31,7 +31,7 @@ func TestVorschauMitChunkAnzahlHatGenauDieseChunks(t *testing.T) {
 }
 
 func TestVorschauMitChunkAnzahlIstDeterministisch(t *testing.T) {
-	a, b := mustPreview(t, countOpts(20)), mustPreview(t, countOpts(20))
+	a, b := mustPreview(t, countOpts(24)), mustPreview(t, countOpts(24))
 	if jsonOf(t, a) != jsonOf(t, b) {
 		t.Error("gleiche Anzahl und gleicher Seed, verschiedene Welt")
 	}
@@ -79,21 +79,21 @@ func TestVorschauMeldetFehlerDerErzeugung(t *testing.T) {
 }
 
 func TestVorschauAufeinanderfolgendeAufrufeMitVerschiedenerAnzahl(t *testing.T) {
-	first := jsonOf(t, mustPreview(t, countOpts(20)))
-	other := mustPreview(t, countOpts(32))
+	first := jsonOf(t, mustPreview(t, countOpts(24)))
+	other := mustPreview(t, countOpts(40))
 	plain := mustPreview(t, countOpts(0))
-	again := jsonOf(t, mustPreview(t, countOpts(20)))
+	again := jsonOf(t, mustPreview(t, countOpts(24)))
 	if first != again {
-		t.Error("zweiter Aufruf mit Anzahl 20 liefert einen anderen Snapshot")
+		t.Error("zweiter Aufruf mit Anzahl 24 liefert einen anderen Snapshot")
 	}
-	if len(other.Level.Chunks) != 32 || first == jsonOf(t, other) || first == jsonOf(t, plain) {
-		t.Errorf("Anzahl 32 hat %d Chunks oder gleicht der Welt mit Anzahl 20 bzw. 0", len(other.Level.Chunks))
+	if len(other.Level.Chunks) != 40 || first == jsonOf(t, other) || first == jsonOf(t, plain) {
+		t.Errorf("Anzahl 40 hat %d Chunks oder gleicht der Welt mit Anzahl 24 bzw. 0", len(other.Level.Chunks))
 	}
 }
 
 // sim.CreateWorldWith nimmt noch keine Chunk-Anzahl: mit Kandidat wird sie abgelehnt statt still übergangen.
 func TestVorschauChunkAnzahlMitKandidatAbgelehnt(t *testing.T) {
-	o := countOpts(20)
+	o := countOpts(24)
 	o.HubCandidate = embeddedHub(t)
 	if _, err := BuildPreview(o); err == nil || !strings.Contains(err.Error(), "Kandidat") {
 		t.Errorf("Fehler %v, erwartet die Ablehnung der Anzahl mit Kandidat", err)
@@ -108,9 +108,9 @@ func TestVorschauPrueftPlanungGegenAnzahl(t *testing.T) {
 	if _, err := BuildPreview(plannedOpts(far)); err == nil || !strings.Contains(err.Error(), "Platz +8") {
 		t.Errorf("ohne Anzahl: Fehler %v, erwartet Platz +8 jenseits der kürzesten Länge", err)
 	}
-	w := mustPreview(t, countOpts(20, far))
-	if len(w.Level.Chunks) != 20 {
-		t.Errorf("Anzahl 20 mit Planung: %d Chunks", len(w.Level.Chunks))
+	w := mustPreview(t, countOpts(24, far))
+	if len(w.Level.Chunks) != 24 {
+		t.Errorf("Anzahl 24 mit Planung: %d Chunks", len(w.Level.Chunks))
 	}
 	_, err := BuildPreview(countOpts(16, level.PlannedChunk{Slot: -7, Kind: "clearing"}))
 	if err == nil || !strings.Contains(err.Error(), "Platz -7") || !strings.Contains(err.Error(), "Chunk-Anzahl 16") {

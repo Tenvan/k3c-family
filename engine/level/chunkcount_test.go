@@ -32,8 +32,8 @@ func sizeCounts(t *testing.T) []int {
 	for i, s := range v.Sizes {
 		out[i] = s.ChunkCount
 	}
-	if !slices.Equal(out, []int{16, 20, 24, 32, 40, 48}) {
-		t.Fatalf("Inselgrößen %v, laut Regel 16·20·24·32·40·48", out)
+	if !slices.Equal(out, []int{16, 24, 40, 64, 100, 160}) {
+		t.Fatalf("Inselgrößen %v, laut Regel 16·24·40·64·100·160", out)
 	}
 	return out
 }
@@ -65,19 +65,21 @@ func TestOhneAnzahlWieBisher(t *testing.T) {
 	}
 }
 
-// Je Inselgröße ein Einzeltest (ein Biom, ein Seed): genau diese Chunks, gerade, Hub mittig, Validate ohne Befund.
-// Kein Nachweis, dass jede Größe in jedem Biom gültig ist; geht eine nicht, meldet GenerateWith einen Fehler.
+// Je Inselgröße und Biom ein Einzeltest (ein Seed): genau diese Chunks, gerade, Hub mittig, Validate ohne Befund.
+// Kein Nachweis über viele Seeds; geht eine Größe nicht, meldet GenerateWith einen Fehler.
 func TestChunkAnzahlJeGroesse(t *testing.T) {
-	b := biome(t, "forest")
-	for _, n := range sizeCounts(t) {
-		o := Options{ChunkCount: n}
-		l, err := GenerateWith(b, "groesse", o)
-		if err != nil {
-			t.Fatalf("%d Chunks: %v", n, err)
-		}
-		checkFrame(t, l, b, n)
-		if errs := ValidateWith(l, b, o); len(errs) > 0 {
-			t.Errorf("%d Chunks: %v", n, errs)
+	for _, id := range biomeIDs(t) {
+		b := biome(t, id)
+		for _, n := range sizeCounts(t) {
+			o := Options{ChunkCount: n}
+			l, err := GenerateWith(b, "groesse", o)
+			if err != nil {
+				t.Fatalf("Biom %s, %d Chunks: %v", id, n, err)
+			}
+			checkFrame(t, l, b, n)
+			if errs := ValidateWith(l, b, o); len(errs) > 0 {
+				t.Errorf("Biom %s, %d Chunks: %v", id, n, errs)
+			}
 		}
 	}
 }

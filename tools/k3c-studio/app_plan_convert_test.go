@@ -26,7 +26,7 @@ func converted(draft []level.PlannedChunk, slot int, objects []level.PlannedObje
 func TestUmwandlungAendertDasBildNicht(t *testing.T) {
 	app, _ := planApp(t, islandsFixture)
 	draft := []level.PlannedChunk{{Slot: 6, Kind: "portal"}, {Slot: -3, Kind: "clearing", Seed: "lichtung"}, {Slot: 2, Kind: "forest", Seed: "wald"}}
-	for _, count := range []int{0, 20, 48} {
+	for _, count := range []int{0, 24, 160} {
 		for _, seed := range []string{"abc", "k3c", "x7"} {
 			n := count
 			src := WorldSource{Island: "island1", Stage: 0, Planned: &draft, ChunkCount: &n}

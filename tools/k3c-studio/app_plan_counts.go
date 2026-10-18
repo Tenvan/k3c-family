@@ -50,7 +50,7 @@ func countsOf(raw []byte, id string) (map[string]int, error) {
 	return nil, fmt.Errorf("die Insel %q gibt es nicht in %s", id, islandsPath)
 }
 
-// encodeCounts schreibt die Anzahlen kompakt, Tiefen aufsteigend: {"0": 20, "2": 32}.
+// encodeCounts schreibt die Anzahlen kompakt, Tiefen aufsteigend: {"0": 24, "2": 40}.
 func encodeCounts(counts map[string]int) []byte {
 	var b strings.Builder
 	b.WriteByte('{')
