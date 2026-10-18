@@ -14,3 +14,9 @@ _site/
 
 # Test-Binaries (feste Namen, damit Norton sie nur einmal prüft)
 .work/
+
+# Server- und TUI-Binaries an der Wurzel (seit SP03 versehentlich eingecheckt, B-094); gebaut wird nach bin/ (task start)
+/k3c-server
+/k3c-server.exe
+/k3c-tui.exe
+/k3c-tui
