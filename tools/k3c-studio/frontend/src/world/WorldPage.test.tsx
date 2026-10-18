@@ -6,11 +6,15 @@ import { afterEach, describe, expect, it, vi } from 'vitest';
 import { backend } from '../api';
 import { mockWorldLevel } from '../api/mockWorld';
 import { WorldPage } from './WorldPage';
-import { MAX_SCALE, scaleOfPercent } from './viewState';
+import { DEFAULT_SCALE, MAX_SCALE, scaleOfPercent } from './viewState';
 
 // Die Phaser-Bühne braucht ein Canvas; ihr Zusammenspiel prüft LivePreview.test.tsx mit einer Attrappe.
 const views: { left: number; scale: number }[] = [];
-vi.mock('../stage/PreviewStage', () => ({ PreviewStage: class { show() {} setPosition(v: { left: number; scale: number }) { views.push(v); } setLook() {} destroy() {} } }));
+const stage = { wheel: (_e: WheelEvent) => {} }; // Mausrad über der Bühne (die Attrappe leitet es wie PreviewStage weiter)
+vi.mock('../stage/PreviewStage', () => ({ PreviewStage: class {
+  constructor(_host: HTMLElement, _failed: unknown, _pan: unknown, wheel: (e: WheelEvent) => void) { stage.wheel = wheel; }
+  show() {} setPosition(v: { left: number; scale: number }) { views.push(v); } setLook() {} destroy() {}
+} }));
 
 // B-460/AC-01, AC-02 im DOM: der Mock (ohne Wails) liefert das Level, die Chunk-Vorschau ist beim Öffnen maximiert.
 (globalThis as { IS_REACT_ACT_ENVIRONMENT?: boolean }).IS_REACT_ACT_ENVIRONMENT = true;
@@ -34,6 +38,15 @@ const live = (h: HTMLElement) => h.querySelector<HTMLElement>('.wd-live')!;
 const page = (h: HTMLElement) => h.querySelector<HTMLElement>('.wd-page')!;
 const position = (h: HTMLElement) => h.querySelector<HTMLInputElement>('input[aria-label="Position"]')!;
 const stripWidth = (h: HTMLElement) => parseFloat(h.querySelector<HTMLElement>('.wd-strip')!.style.width);
+/** Mausrad mit Alt an `send` schicken; true, wenn die Seite das Ereignis abgebrochen hat. */
+const altWheel = (send: (e: WheelEvent) => void, deltaY: number) => {
+  const e = Object.assign(new Event('wheel', { bubbles: true, cancelable: true }), { deltaX: 0, deltaY, ctrlKey: false, shiftKey: false, altKey: true }) as WheelEvent;
+  act(() => { send(e); });
+  return e.defaultPrevented;
+};
+const stripScale = (h: HTMLElement) => stripWidth(h) / Number(h.querySelector('.wd-note')!.textContent!.match(/(\d+) Units/)![1]);
+const chunkCenter = (h: HTMLElement) => h.querySelector<HTMLElement>('.wd-viewport')!.scrollLeft / stripScale(h) + 1000 / stripScale(h) / 2;
+const liveCenter = () => views.at(-1)!.left + 1000 / views.at(-1)!.scale / 2;
 const setInput = (el: HTMLInputElement, value: string) => act(async () => {
   Object.getOwnPropertyDescriptor(HTMLInputElement.prototype, 'value')!.set!.call(el, value);
   el.dispatchEvent(new Event('input', { bubbles: true }));
@@ -108,13 +121,13 @@ describe('Seite Welt-Betrachter: gemeinsame Ansicht (B-477/AC-01 bis AC-03)', ()
     expect(views.at(-1)!.scale).toBe(scaleOfPercent(50));
   });
 
-  it('die Positions-Leiste bewegt Streifen und Bühne gemeinsam (B-477/AC-01)', async () => {
+  it('die Positions-Leiste (Weltposition der Bildmitte) bewegt Streifen und Bühne gemeinsam (B-477/AC-01)', async () => {
     const h = await mount();
     const viewport = h.querySelector<HTMLElement>('.wd-viewport')!;
     expect(position(h).max).not.toBe('0');
     await setInput(position(h), '200');
-    expect(viewport.scrollLeft).toBe(200 * views.at(-1)!.scale);
-    expect(views.at(-1)!.left).toBe(200);
+    expect(views.at(-1)!.left).toBeCloseTo(200 - 1000 / views.at(-1)!.scale / 2); // Ansicht 1000 px breit
+    expect(viewport.scrollLeft).toBeCloseTo(views.at(-1)!.left * views.at(-1)!.scale);
     await setInput(position(h), '0');
     expect(viewport.scrollLeft).toBe(0);
     expect(views.at(-1)!.left).toBe(0);
@@ -213,6 +226,51 @@ describe('Seite Welt-Betrachter: Mausrad und Anfragen (B-477)', () => {
     expect(views.at(-1)!.left).toBeGreaterThan(left);
   });
 
+});
+
+describe('Seite Welt-Betrachter: getrennter Zoom, gemeinsame Mitte (B-485/AC-05)', () => {
+  it('Alt + Rad zoomt nur die Vorschau unter dem Zeiger, beide behalten dieselbe Mitte (B-485/AC-05)', async () => {
+    const h = await mount();
+    const before = stripWidth(h);
+    expect(altWheel(stage.wheel, -100)).toBe(true);
+    expect(stripWidth(h)).toBe(before);
+    expect(views.at(-1)!.scale).toBeCloseTo(DEFAULT_SCALE * 1.25);
+    expect(chunkCenter(h)).toBeCloseTo(liveCenter());
+    const live = views.at(-1)!.scale;
+    expect(altWheel((e) => h.querySelector('.wd-viewport')!.dispatchEvent(e), -100)).toBe(true);
+    expect(stripWidth(h)).toBeGreaterThan(before);
+    expect(views.at(-1)!.scale).toBe(live);
+    expect(chunkCenter(h)).toBeCloseTo(liveCenter());
+  });
+
+  it('bei verschiedenem Zoom verschiebt der Bildlauf beide um dieselbe Welt-Strecke (B-485/AC-05)', async () => {
+    const h = await mount();
+    altWheel(stage.wheel, -100);
+    altWheel(stage.wheel, -100);
+    const [chunk, live] = [chunkCenter(h), liveCenter()];
+    await act(async () => { document.body.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowRight', bubbles: true })); });
+    const step = chunkCenter(h) - chunk;
+    expect(step).toBeGreaterThan(0);
+    expect(liveCenter() - live).toBeCloseTo(step);
+    expect(chunkCenter(h)).toBeCloseTo(liveCenter());
+  });
+
+  it('beide Zoom-Faktoren bleiben beim Wechsel der Stufe erhalten (B-485/AC-05)', async () => {
+    const h = await mount();
+    altWheel(stage.wheel, -100);
+    altWheel((e) => h.querySelector('.wd-viewport')!.dispatchEvent(e), 100);
+    const [chunk, live] = [stripScale(h), views.at(-1)!.scale];
+    expect(chunk).not.toBe(live);
+    const stufe = h.querySelector<HTMLSelectElement>('select[aria-label="Stufe"]')!;
+    await act(async () => { stufe.value = '2'; stufe.dispatchEvent(new Event('change', { bubbles: true })); });
+    await flush();
+    expect(h.querySelector('[role="status"]')!.textContent).not.toContain('forest');
+    expect(stripScale(h)).toBeCloseTo(chunk);
+    expect(views.at(-1)!.scale).toBeCloseTo(live);
+  });
+});
+
+describe('Seite Welt-Betrachter: Anfragen (B-460)', () => {
   it('bei zwei schnellen Anfragen gilt nur die letzte, auch wenn die erste später antwortet', async () => {
     let resolveFirst: (v: ReturnType<typeof mockWorldLevel>) => void = () => {};
     const first = new Promise<ReturnType<typeof mockWorldLevel>>((r) => { resolveFirst = r; });

@@ -4,6 +4,8 @@ import { act } from 'react';
 import { createRoot, type Root } from 'react-dom/client';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { backend } from '../api';
+import { iconOf } from './kindIcons';
+import { CHUNK_KINDS, OBJECT_KINDS } from './plan';
 import { WorldPage } from './WorldPage';
 
 // B-461/AC-06, AC-09, AC-11, AC-12 im DOM: der Editor für geplante Chunks mit dem Mock-Backend (ohne Wails).
@@ -186,5 +188,46 @@ describe('Chunk- und Live-Vorschau lesen dieselbe Quelle (B-461/AC-11)', () => {
     await settle();
     expect(level.mock.calls.length).toBe(calls);
     expect(h.querySelector('.wd-strip')).not.toBeNull();
+  });
+});
+
+describe('Durchsuchbare Auswahlliste mit Emoji (B-485/AC-01)', () => {
+  const options = (h: HTMLElement, label: string) => [...h.querySelectorAll<HTMLElement>(`[role="listbox"][aria-label="${label} Liste"] [role="option"]`)];
+  const EMOJI_TEXT = /^\p{Extended_Pictographic} \S/u;
+
+  it('Art: großes Dropdown mit allen Einträgen und Emoji; Tippen stellt Treffer nach oben, der Rest bleibt abgeblendet', async () => {
+    const h = await mount();
+    await addChunk(h);
+    const art = field(h, 'Art Platz +1');
+    expect(options(h, 'Art Platz +1')).toHaveLength(0); // zu, bis man ins Feld klickt
+    await act(async () => art.click());
+    const all = options(h, 'Art Platz +1');
+    expect(all).toHaveLength(CHUNK_KINDS.length);
+    expect(all.every((o) => EMOJI_TEXT.test(o.textContent ?? ''))).toBe(true);
+    expect(h.querySelectorAll('[role="option"].wd-dim')).toHaveLength(0);
+    await type(art, 'cr');
+    const ranked = options(h, 'Art Platz +1');
+    expect(ranked).toHaveLength(CHUNK_KINDS.length);
+    expect(ranked[0].textContent).toBe(`${iconOf('crystals')} crystals`);
+    expect(ranked.filter((o) => o.classList.contains('wd-dim')).length).toBeGreaterThan(0);
+    expect(ranked.findIndex((o) => o.classList.contains('wd-dim'))).toBeGreaterThan(0);
+    await act(async () => ranked.find((o) => o.textContent?.endsWith(' rocks'))!.click());
+    expect(field(h, 'Art Platz +1').value).toBe('rocks');
+    expect(options(h, 'Art Platz +1')).toHaveLength(0);
+  });
+
+  it('das Feld zeigt das Emoji der Art; das Objekt wählt man in derselben Liste', async () => {
+    const h = await mount();
+    await addChunk(h);
+    await type(field(h, 'Art Platz +1'), 'stream');
+    expect(h.querySelector('.wd-planned .wd-pick-icon')!.textContent).toBe(iconOf('stream'));
+    await act(async () => button(h, 'Objekt').click());
+    const objekt = field(h, 'Objekt 1 Platz +1');
+    expect(objekt.value).toBe(OBJECT_KINDS[0]);
+    await act(async () => objekt.click());
+    expect(options(h, 'Objekt 1 Platz +1')).toHaveLength(OBJECT_KINDS.length);
+    await act(async () => options(h, 'Objekt 1 Platz +1').find((o) => o.textContent?.endsWith(' portal'))!.click());
+    expect(field(h, 'Objekt 1 Platz +1').value).toBe('portal');
+    expect(h.querySelectorAll('.wd-object .wd-pick-icon')[0].textContent).toBe(iconOf('portal'));
   });
 });

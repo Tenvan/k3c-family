@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import { levelModel } from './levelView';
-import { DEFAULT_SCALE, MAX_SCALE, MIN_SCALE, ZOOM_PERCENTS, clampLeft, clampScale, jumpPoints, leftFor, scaleOfPercent, wheelAction, zoomView } from './viewState';
+import { DEFAULT_SCALE, MAX_SCALE, MIN_SCALE, ZOOM_PERCENTS, centerRange, clampCenter, clampLeft, clampScale, jumpPoints, panViews, paneView, scaleOfPercent, wheelAction, zoomPanes } from './viewState';
 
 const model = levelModel({
   seed: 's', biomeId: 'forest', widthUnits: 900, chunkWidthUnits: 50, hubCenterUnits: 450, warnings: [],
@@ -22,22 +22,42 @@ describe('Zoom (B-477/AC-03)', () => {
     expect(scaleOfPercent(100000)).toBe(MAX_SCALE);
   });
 
-  it('die Mitte der Ansicht bleibt beim Zoomen an ihrer Stelle', () => {
-    const view = { left: 100, scale: 10 };
-    const next = zoomView(view, 20, 900, 1000); // 1000 px: Mitte bei 100 + 50 = 150 Units
-    expect(next.scale).toBe(20);
-    expect(next.left + 1000 / 20 / 2).toBeCloseTo(150);
-  });
-
-  it('beim Herauszoomen am Rand bleibt die Ansicht in der Welt', () => {
-    const next = zoomView({ left: 0, scale: 20 }, 2, 900, 1000); // Ansicht 500 Units breit, Welt 900
-    expect(next.left).toBe(0);
-    expect(zoomView({ left: 400, scale: 20 }, 2, 900, 1000).left).toBe(175); // Mitte 425 bleibt: 425 - 250
-  });
-
   it('der Zoom wird begrenzt, ohne Fehler', () => {
-    expect(zoomView({ left: 0, scale: 12 }, 9999, 900, 1000).scale).toBe(MAX_SCALE);
-    expect(zoomView({ left: 0, scale: 12 }, 0, 900, 1000).scale).toBe(MIN_SCALE);
+    expect(zoomPanes({ center: 450, chunk: 12, live: 12 }, ['chunk', 'live'], () => 9999, 900, 1000)).toMatchObject({ chunk: MAX_SCALE, live: MAX_SCALE });
+    expect(zoomPanes({ center: 450, chunk: 12, live: 12 }, ['chunk'], () => 0, 900, 1000).chunk).toBe(MIN_SCALE);
+  });
+});
+
+describe('Getrennter Zoom, gemeinsame Mitte (B-485/AC-05)', () => {
+  const v = { center: 450, chunk: 10, live: 20 };
+  const mid = (view: { left: number; scale: number }) => view.left + 1000 / view.scale / 2;
+
+  it('beide Vorschauen zeigen dieselbe Weltposition in der Bildmitte, auch bei verschiedenem Zoom', () => {
+    expect(paneView(v, 'chunk', 900, 1000)).toEqual({ left: 400, scale: 10 });
+    expect(paneView(v, 'live', 900, 1000)).toEqual({ left: 425, scale: 20 });
+    expect(mid(paneView(v, 'chunk', 900, 1000))).toBeCloseTo(mid(paneView(v, 'live', 900, 1000)));
+  });
+
+  it('zoomPanes ändert nur den Zoom der genannten Vorschau, die Mitte bleibt', () => {
+    expect(zoomPanes(v, ['live'], (s) => s * 2, 900, 1000)).toEqual({ center: 450, chunk: 10, live: 40 });
+    expect(zoomPanes(v, ['chunk', 'live'], () => 12, 900, 1000)).toEqual({ center: 450, chunk: 12, live: 12 });
+  });
+
+  it('Bildlauf verschiebt beide um dieselbe Welt-Strecke', () => {
+    const next = panViews(v, 30, 900, 1000);
+    expect(next.center).toBe(480);
+    expect(paneView(next, 'chunk', 900, 1000).left - paneView(v, 'chunk', 900, 1000).left).toBe(30);
+    expect(paneView(next, 'live', 900, 1000).left - paneView(v, 'live', 900, 1000).left).toBe(30);
+  });
+
+  it('die Mitte reicht so weit, dass die engste Ansicht an die Ränder kommt; die weitere bleibt am Rand stehen', () => {
+    expect(centerRange([10, 20], 900, 1000)).toEqual([25, 875]); // halbe Ansicht der Live-Vorschau: 25 Units
+    expect(clampCenter(0, [10, 20], 900, 1000)).toBe(25);
+    expect(clampCenter(5000, [10, 20], 900, 1000)).toBe(875);
+    expect(paneView({ center: 25, chunk: 10, live: 20 }, 'chunk', 900, 1000).left).toBe(0); // die weitere Ansicht hält am Rand
+    expect(clampCenter(10, [2, 2], 100, 1000)).toBe(50); // Welt schmaler als die Ansicht: Weltmitte
+    expect(zoomPanes({ center: 50, chunk: 20, live: 20 }, ['chunk'], () => 10, 900, 1000).center).toBe(50);
+    expect(zoomPanes({ center: 20, chunk: 20, live: 20 }, ['chunk', 'live'], () => 5, 900, 1000).center).toBe(100);
   });
 });
 
@@ -48,16 +68,10 @@ describe('Position (B-477/AC-01)', () => {
     expect(clampLeft(300, 900, 100)).toBe(300);
     expect(clampLeft(10, 50, 100)).toBe(0);
   });
-
-  it('leftFor stellt x in die Mitte, am Rand begrenzt', () => {
-    expect(leftFor(450, 900, 100)).toBe(400);
-    expect(leftFor(0, 900, 100)).toBe(0);
-    expect(leftFor(900, 900, 100)).toBe(800);
-  });
 });
 
 describe('Mausrad (B-477/AC-01, AC-03)', () => {
-  const wheel = (o: Partial<{ deltaX: number; deltaY: number; ctrlKey: boolean; shiftKey: boolean }>) => wheelAction({ deltaX: 0, deltaY: 0, ctrlKey: false, shiftKey: false, ...o });
+  const wheel = (o: Partial<{ deltaX: number; deltaY: number; ctrlKey: boolean; shiftKey: boolean; altKey: boolean }>) => wheelAction({ deltaX: 0, deltaY: 0, ctrlKey: false, shiftKey: false, altKey: false, ...o });
 
   it('das gewöhnliche Rad bewirkt nichts (die Seite scrollt senkrecht)', () => {
     expect(wheel({ deltaY: 100 })).toBeNull();
@@ -69,6 +83,12 @@ describe('Mausrad (B-477/AC-01, AC-03)', () => {
     expect(wheel({ deltaY: 100, shiftKey: true })).toEqual({ kind: 'pan', px: 100 });
     expect(wheel({ deltaX: -60 })).toEqual({ kind: 'pan', px: -60 });
     expect(wheel({ ctrlKey: true })).toBeNull();
+  });
+
+  it('Alt + Rad zoomt nur die Vorschau unter dem Zeiger (B-485/AC-05)', () => {
+    expect(wheel({ deltaY: -100, altKey: true })).toEqual({ kind: 'zoom', factor: 1.25, own: true });
+    expect(wheel({ deltaY: 100, altKey: true })).toEqual({ kind: 'zoom', factor: 0.8, own: true });
+    expect(wheel({ altKey: true })).toBeNull();
   });
 });
 

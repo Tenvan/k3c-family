@@ -72,3 +72,16 @@
 .wd-slot { width: 5rem; }
 .wd-kind, .wd-seed { width: 9rem; }
 .wd-error, .wd-notice { margin: 0; }
+
+/* Durchsuchbare Auswahlliste mit Emoji (B-485/AC-01, WZ17.4): große Liste unter dem Feld, Treffer oben, Rest abgeblendet */
+.wd-pick { position: relative; display: inline-flex; align-items: center; gap: 4px; }
+.wd-pick-icon { width: 1.4rem; text-align: center; }
+.wd-pick-list {
+  position: absolute; top: 100%; left: 0; z-index: 20; min-width: 16rem; max-height: 60vh; overflow-y: auto; margin: 2px 0 0; padding: 4px 0;
+  list-style: none; border: 1px solid var(--card-line); border-radius: 6px; background: var(--card); box-shadow: 0 6px 18px rgb(0 0 0 / 35%);
+}
+.wd-pick-list li { padding: 4px 10px; cursor: pointer; white-space: nowrap; }
+.wd-pick-list li:hover, .wd-pick-list li.wd-active { background: var(--accent-a4, rgb(110 86 207 / 25%)); }
+.wd-pick-list li[aria-selected='true'] { font-weight: 600; }
+.wd-pick-list li.wd-dim { opacity: 0.4; }
+.wd-zoom-live { color: var(--dim); font-size: 12px; }

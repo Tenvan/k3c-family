@@ -1,7 +1,8 @@
 import type { LevelModel } from './levelView';
 
-// Gemeinsame Ansicht des Welt-Betrachters (B-477, WZ16.1): Position und Zoom gelten für Chunk-Streifen und Live-Vorschau
-// gleich. Reine Funktionen, kein DOM. Der Maßstab ist „Pixel je Unit“; die Position ist die linke Kante in Units.
+// Ansicht des Welt-Betrachters (B-477, WZ16.1; B-485, WZ17.4): Chunk-Streifen und Live-Vorschau teilen die Weltposition
+// der Bildmitte, der Zoom gilt je Vorschau. Reine Funktionen, kein DOM. Der Maßstab ist „Pixel je Unit“; `View` ist die
+// Ansicht einer Vorschau mit linker Kante in Units.
 
 export const MIN_SCALE = 2;
 export const MAX_SCALE = 48;
@@ -25,22 +26,61 @@ export function clampLeft(left: number, widthUnits: number, viewUnits: number): 
   return Math.max(0, Math.min(left, widthUnits - viewUnits));
 }
 
-/** Ansicht nach einem Wechsel auf `scale`: die Mitte der Ansicht bleibt an ihrer Stelle in der Welt. */
-export function zoomView(view: View, scale: number, widthUnits: number, viewPx: number): View {
-  const next = clampScale(scale);
-  const center = view.left + viewPx / view.scale / 2;
-  return { scale: next, left: clampLeft(center - viewPx / next / 2, widthUnits, viewPx / next) };
+/** Die beiden Vorschauen des Welt-Betrachters */
+export type Pane = 'chunk' | 'live';
+
+/** Ansicht beider Vorschauen (B-485/AC-05): eine gemeinsame Weltposition der Bildmitte, ein Zoom je Vorschau. */
+export interface Views {
+  /** Weltposition der Bildmitte in Units, gilt für beide Vorschauen */
+  center: number;
+  /** Pixel je Unit der Chunk-Vorschau */
+  chunk: number;
+  /** Pixel je Unit der Live-Vorschau */
+  live: number;
 }
 
-/** Linke Kante, die `x` (Units) in die Mitte der Ansicht stellt. */
-export const leftFor = (x: number, widthUnits: number, viewUnits: number): number => clampLeft(x - viewUnits / 2, widthUnits, viewUnits);
+/** Erlaubter Bereich der Mitte: die engste Ansicht (größter Maßstab) reicht bis an die Ränder der Welt; ist die Welt
+ *  schmaler, gilt ihre Mitte. Eine weitere Ansicht hält `paneView` am Rand fest, nur dort weicht ihre Bildmitte ab. */
+export function centerRange(scales: readonly number[], widthUnits: number, viewPx: number): [number, number] {
+  const half = viewPx / Math.max(...scales) / 2;
+  return widthUnits <= 2 * half ? [widthUnits / 2, widthUnits / 2] : [half, widthUnits - half];
+}
 
-export type WheelAction = { kind: 'pan'; px: number } | { kind: 'zoom'; factor: number } | null;
+export function clampCenter(center: number, scales: readonly number[], widthUnits: number, viewPx: number): number {
+  const [lo, hi] = centerRange(scales, widthUnits, viewPx);
+  return Math.max(lo, Math.min(center, hi));
+}
 
-/** Was ein Mausrad-Ereignis über einer Vorschau bewirkt: Strg + Rad zoomt, Umschalt + Rad oder seitliches Rad scrollt
- *  nach links und rechts; das gewöhnliche Rad bewirkt nichts, damit die Seite senkrecht scrollen kann. */
-export function wheelAction(e: { deltaX: number; deltaY: number; ctrlKey: boolean; shiftKey: boolean }): WheelAction {
-  if (e.ctrlKey) return e.deltaY === 0 ? null : { kind: 'zoom', factor: e.deltaY < 0 ? 1.25 : 0.8 };
+const settle = (v: Views, widthUnits: number, viewPx: number): Views => ({ ...v, center: clampCenter(v.center, [v.chunk, v.live], widthUnits, viewPx) });
+
+/** Linke Kante und Maßstab einer Vorschau: ihre Bildmitte liegt auf `center`. */
+export function paneView(v: Views, pane: Pane, widthUnits: number, viewPx: number): View {
+  const scale = v[pane];
+  return { left: clampLeft(v.center - viewPx / scale / 2, widthUnits, viewPx / scale), scale };
+}
+
+/** Neuer Zoom für die genannten Vorschauen (`to` bekommt den alten Maßstab); die Mitte bleibt, soweit die Welt reicht. */
+export function zoomPanes(v: Views, panes: readonly Pane[], to: (scale: number) => number, widthUnits: number, viewPx: number): Views {
+  const next = { ...v };
+  for (const p of panes) next[p] = clampScale(to(v[p]));
+  return settle(next, widthUnits, viewPx);
+}
+
+/** Bildlauf um `units` (Welt-Strecke): beide Vorschauen wandern gleich weit. */
+export const panViews = (v: Views, units: number, widthUnits: number, viewPx: number): Views => settle({ ...v, center: v.center + units }, widthUnits, viewPx);
+
+/** Mitte auf `x` (Units) stellen, am Rand begrenzt. */
+export const centerViews = (v: Views, x: number, widthUnits: number, viewPx: number): Views => settle({ ...v, center: x }, widthUnits, viewPx);
+
+/** `own`: nur die Vorschau unter dem Zeiger zoomen (Alt + Rad, B-485/AC-05) */
+export type WheelAction = { kind: 'pan'; px: number } | { kind: 'zoom'; factor: number; own?: true } | null;
+
+/** Was ein Mausrad-Ereignis über einer Vorschau bewirkt: Strg + Rad zoomt, Alt + Rad zoomt nur diese Vorschau, Umschalt + Rad
+ *  oder seitliches Rad scrollt nach links und rechts; das gewöhnliche Rad bewirkt nichts, damit die Seite senkrecht scrollen kann. */
+export function wheelAction(e: { deltaX: number; deltaY: number; ctrlKey: boolean; shiftKey: boolean; altKey?: boolean }): WheelAction {
+  const factor = e.deltaY < 0 ? 1.25 : 0.8;
+  if (e.ctrlKey) return e.deltaY === 0 ? null : { kind: 'zoom', factor };
+  if (e.altKey) return e.deltaY === 0 ? null : { kind: 'zoom', factor, own: true };
   const px = Math.abs(e.deltaX) > Math.abs(e.deltaY) ? e.deltaX : e.shiftKey ? e.deltaY : 0;
   return px === 0 ? null : { kind: 'pan', px };
 }
