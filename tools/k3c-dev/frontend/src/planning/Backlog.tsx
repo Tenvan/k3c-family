@@ -8,6 +8,7 @@ import { Pill, prioTone, type PillTone } from './Pill';
 import { groupTickets, linkedTickets } from './planning';
 import { CopyPrompt, FieldMenu } from './PromptParts';
 import { backlogPrompt, NEW_SPRINT, type SprintTarget } from './prompts';
+import { WtPills } from './WorktreePills';
 
 const PRIOS = ['hoch', 'mittel', 'niedrig', '?'];
 export const ENVS = ['offline', 'live', '?'];
@@ -131,6 +132,7 @@ function TicketRow({ t, data, sel, linked, checked, onCheck, target, goal, onPic
       <span className="pl-bl-id">{t.nr}</span>
       <span className="pl-bl-title">{t.title}</span>
       <span className="pl-pills">
+        <WtPills item="Ticket" id={t.nr} />
         <FieldMenu label="Prio" value={t.prio} options={PRIOS} onPick={(v) => void setField(t.nr, 'Prio', v)}>
           <Pill tone={prioTone(t.prio)}>{t.prio || '?'}</Pill>
         </FieldMenu>
