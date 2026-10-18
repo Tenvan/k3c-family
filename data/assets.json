@@ -1374,9 +1374,6 @@
       "bus": "music",
       "wahl": [
         {
-          "datei": "audio/probe-a.ogg"
-        },
-        {
           "datei": "audio/kandidaten/happy-adventure-loop.ogg"
         },
         {
@@ -1384,6 +1381,15 @@
         },
         {
           "datei": "audio/kandidaten/lasso-lady-seamless-loop.ogg"
+        },
+        {
+          "datei": "audio/kandidaten/a-big-adventure.ogg"
+        },
+        {
+          "datei": "audio/kandidaten/the-adventure-begins.wav"
+        },
+        {
+          "datei": "audio/kandidaten/summer-adventure-background-music.mp3"
         }
       ]
     },
@@ -1407,9 +1413,6 @@
       "bus": "music",
       "wahl": [
         {
-          "datei": "audio/probe-b.ogg"
-        },
-        {
           "datei": "audio/kandidaten/haunting-chiptune-loop-void-estate.ogg"
         },
         {
@@ -1425,13 +1428,13 @@
       "bus": "music",
       "wahl": [
         {
+          "datei": "audio/kandidaten/pixel-sprinter.ogg"
+        },
+        {
           "datei": "audio/kandidaten/8-bit-battle-loop.ogg"
         },
         {
           "datei": "audio/kandidaten/confrontation.ogg"
-        },
-        {
-          "datei": "audio/kandidaten/pixel-sprinter.ogg"
         }
       ]
     },
@@ -1497,10 +1500,6 @@
       "bus": "sfx",
       "wahl": [
         {
-          "datei": "audio/atlas.ogg",
-          "sprite": "hit"
-        },
-        {
           "datei": "audio/kandidaten/kenney-impact-sounds-impactpunch-medium.ogg"
         },
         {
@@ -1523,9 +1522,6 @@
         },
         {
           "datei": "audio/kandidaten/kenney-digital-audio-zapthreetonedown.ogg"
-        },
-        {
-          "datei": "audio/kandidaten/kenney-impact-sounds-impactgeneric-light.ogg"
         }
       ]
     },
@@ -1536,13 +1532,6 @@
       "beschreibung": "Münze",
       "bus": "sfx",
       "wahl": [
-        {
-          "datei": "audio/atlas.ogg",
-          "sprite": "coin"
-        },
-        {
-          "datei": "audio-test/test.ogg"
-        },
         {
           "datei": "audio/kandidaten/kenney-rpg-audio-handlecoins.ogg"
         },
@@ -1562,13 +1551,13 @@
       "bus": "sfx",
       "wahl": [
         {
-          "datei": "audio/kandidaten/kenney-rpg-audio-drawknife1.ogg"
-        },
-        {
           "datei": "audio/kandidaten/kenney-digital-audio-phaserup2.ogg"
         },
         {
           "datei": "audio/kandidaten/kenney-digital-audio-laser5.ogg"
+        },
+        {
+          "datei": "audio/kandidaten/kenney-rpg-audio-drawknife1.ogg"
         }
       ]
     },
@@ -1580,13 +1569,13 @@
       "bus": "sfx",
       "wahl": [
         {
+          "datei": "audio/kandidaten/kenney-rpg-audio-chop.ogg"
+        },
+        {
           "datei": "audio/kandidaten/kenney-rpg-audio-knifeslice.ogg"
         },
         {
           "datei": "audio/kandidaten/kenney-rpg-audio-knifeslice2.ogg"
-        },
-        {
-          "datei": "audio/kandidaten/kenney-rpg-audio-chop.ogg"
         }
       ]
     },
@@ -1597,9 +1586,6 @@
       "beschreibung": "Bau",
       "bus": "sfx",
       "wahl": [
-        {
-          "datei": "audio/kandidaten/kenney-impact-sounds-impactwood-medium-0.ogg"
-        },
         {
           "datei": "audio/kandidaten/kenney-rpg-audio-metallatch.ogg"
         },
@@ -1620,9 +1606,6 @@
         },
         {
           "datei": "audio/kandidaten/kenney-digital-audio-lowthreetone.ogg"
-        },
-        {
-          "datei": "audio/kandidaten/kenney-impact-sounds-impactpunch-heavy-0.ogg"
         }
       ]
     },
@@ -1652,10 +1635,10 @@
       "bus": "sfx",
       "wahl": [
         {
-          "datei": "audio/kandidaten/kenney-digital-audio-powerup7.ogg"
+          "datei": "audio/kandidaten/kenney-digital-audio-powerup11.ogg"
         },
         {
-          "datei": "audio/kandidaten/kenney-digital-audio-powerup11.ogg"
+          "datei": "audio/kandidaten/kenney-digital-audio-powerup7.ogg"
         },
         {
           "datei": "audio/kandidaten/kenney-digital-audio-twotone1.ogg"
@@ -1670,17 +1653,13 @@
       "bus": "sfx",
       "wahl": [
         {
-          "datei": "audio/atlas.ogg",
-          "sprite": "warn"
-        },
-        {
           "datei": "audio/kandidaten/kenney-impact-sounds-impactbell-heavy-00.ogg"
         },
         {
-          "datei": "audio/kandidaten/kenney-interface-sounds-bong-001.ogg"
+          "datei": "audio/kandidaten/kenney-digital-audio-threetone2.ogg"
         },
         {
-          "datei": "audio/kandidaten/kenney-digital-audio-threetone2.ogg"
+          "datei": "audio/kandidaten/kenney-interface-sounds-bong-001.ogg"
         }
       ]
     },
@@ -1692,13 +1671,13 @@
       "bus": "sfx",
       "wahl": [
         {
-          "datei": "audio/kandidaten/kenney-digital-audio-zapthreetoneup.ogg"
-        },
-        {
           "datei": "audio/kandidaten/kenney-digital-audio-phasejump3.ogg"
         },
         {
           "datei": "audio/kandidaten/kenney-digital-audio-phaserdown2.ogg"
+        },
+        {
+          "datei": "audio/kandidaten/kenney-digital-audio-zapthreetoneup.ogg"
         }
       ]
     }

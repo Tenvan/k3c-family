@@ -1,6 +1,6 @@
 # SO2.1 · Workshop: Sounds je Ereignis hören und wählen, Katalog anlegen
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Workshop
 - **Agent:** Mensch
 - **Domäne:** CLI
@@ -49,11 +49,12 @@ Manuell durch 🧑 (Browser, `soundtest.html`, möglichst am TV).
 
 ## Ergebnis
 
-Vorbereitung durch den Agenten (2026-10-18, Workshop selbst noch offen, 🧑 wählt):
+Auswahl durch 🧑 am 2026-10-18 im Reiter „Slots“ des Asset-Studios (Chat: „Passt alles soweit“): je Slot Reihenfolge der Kandidaten gesetzt, die erste ist aktiv; Atlas-Probetöne und nicht gewählte Kandidaten sind aus dem Register entfernt. Stand: `data/assets.json`.
 
-- **Kandidaten** im Slot-Register `data/assets.json` (Reihenfolge = Präferenz, die erste ist im Spiel aktiv), Dateien unter `public/audio/kandidaten/`, Credits in `public/audio/README.md` › Importe (k3c-dev). Alle CC0, Lizenz „erkannt“, Bestätigung durch 🧑 in k3c-dev steht aus.
-- **SFX (Kenney, CC0):** je drei Kandidaten für `sfx:kill`, `arrow`, `strike`, `build`, `death`, `revive`, `skill`, `portal`; dazu je drei für die schon belegten `sfx:coin`, `hit`, `warn`. Dateien unverändert, zusammen unter 0,5 MB.
-- **Musik (OpenGameArt, CC0):** `music:tag` 3, `abend` 1, `nacht` 2, `kampf` 3, `tiefe` 1, `boss` 2, `lobby` 2, `ende` 1 (Sieg). Zum Hören neu auf Ogg Vorbis 96 kbit/s kodiert (9 MB statt 28 MB).
-- **Lücken:** keine Niederlage-Musik (`music:ende` hat nur den Sieg-Loop), nur je ein Kandidat für `abend`, `tiefe`, `ende`. `music:abend` und `music:tiefe` brauchen für „1–2 Stücke“ gegebenenfalls einen zweiten.
-- **Nicht möglich:** `assets_research` fand ohne freesound-Token nichts (`K3C_FREESOUND_TOKEN`, `.work/freesound-token`); alle Funde stammen aus Kenney-Packs und OpenGameArt-Seiten von Hand.
-- **Offen für 🧑:** Hören (Sound-Seite im Asset-Studio, Reiter Slots, oder `soundtest.html`), je Slot gewählte Reihenfolge, Lizenz-Bestätigung, Katalog `docs/assets/sounds.md` (Gerüst folgt mit der Auswahl, SO2.2).
+Vorbereitung durch den Agenten (2026-10-18):
+
+- **Kandidaten** im Slot-Register `data/assets.json`, Dateien unter `public/audio/kandidaten/`, Credits in `public/audio/README.md` › Importe (k3c-dev). Alle CC0, Lizenz „erkannt“; die Bestätigung in k3c-dev durch 🧑 steht aus.
+- **SFX (Kenney, CC0):** je drei Kandidaten für `sfx:kill`, `arrow`, `strike`, `build`, `death`, `revive`, `skill`, `portal`, `coin`, `hit`, `warn`.
+- **Musik (OpenGameArt, CC0):** `music:tag` 3, `abend` 1, `nacht` 2, `kampf` 3, `tiefe` 1, `boss` 2, `lobby` 2, `ende` 1 (nur Sieg). Zum Hören neu auf Ogg Vorbis 96 kbit/s kodiert.
+- **Lücken:** keine Niederlage-Musik; `abend`, `tiefe`, `ende` nur ein Kandidat. `assets_research` fand ohne freesound-Token nichts, alle Funde stammen von Hand aus Kenney-Packs und OpenGameArt-Seiten.
+- **Lautheit am TV:** gehört nicht zu SO2.1, sondern zu SO2.5 und SO4.5.

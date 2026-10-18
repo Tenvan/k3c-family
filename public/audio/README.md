@@ -38,19 +38,16 @@ Kenney-Dateien (Packs Digital Audio, RPG Audio, Impact Sounds, Interface Sounds,
 |---|---|---|---|---|---|
 | kandidaten/kenney-digital-audio-spacetrash2.ogg | Kenney Digital Audio: spaceTrash2 | Kenney | CC0 | https://kenney.nl/assets/digital-audio | Lizenz erkannt (Kenney) |
 | kandidaten/kenney-digital-audio-zapthreetonedown.ogg | Kenney Digital Audio: zapThreeToneDown | Kenney | CC0 | https://kenney.nl/assets/digital-audio#zapThreeToneDown | Lizenz erkannt (Kenney) |
-| kandidaten/kenney-impact-sounds-impactgeneric-light.ogg | Kenney Impact Sounds: impactGeneric_light_000 | Kenney | CC0 | https://kenney.nl/assets/impact-sounds#impactGeneric_light_000 | Lizenz erkannt (Kenney) |
 | kandidaten/kenney-rpg-audio-drawknife1.ogg | Kenney RPG Audio: drawKnife1 | Kenney | CC0 | https://kenney.nl/assets/rpg-audio#drawKnife1 | Lizenz erkannt (Kenney) |
 | kandidaten/kenney-digital-audio-phaserup2.ogg | Kenney Digital Audio: phaserUp2 | Kenney | CC0 | https://kenney.nl/assets/digital-audio#phaserUp2 | Lizenz erkannt (Kenney) |
 | kandidaten/kenney-digital-audio-laser5.ogg | Kenney Digital Audio: laser5 | Kenney | CC0 | https://kenney.nl/assets/digital-audio#laser5 | Lizenz erkannt (Kenney) |
 | kandidaten/kenney-rpg-audio-knifeslice.ogg | Kenney RPG Audio: knifeSlice | Kenney | CC0 | https://kenney.nl/assets/rpg-audio#knifeSlice | Lizenz erkannt (Kenney) |
 | kandidaten/kenney-rpg-audio-knifeslice2.ogg | Kenney RPG Audio: knifeSlice2 | Kenney | CC0 | https://kenney.nl/assets/rpg-audio#knifeSlice2 | Lizenz erkannt (Kenney) |
 | kandidaten/kenney-rpg-audio-chop.ogg | Kenney RPG Audio: chop | Kenney | CC0 | https://kenney.nl/assets/rpg-audio#chop | Lizenz erkannt (Kenney) |
-| kandidaten/kenney-impact-sounds-impactwood-medium-0.ogg | Kenney Impact Sounds: impactWood_medium_000 | Kenney | CC0 | https://kenney.nl/assets/impact-sounds#impactWood_medium_000 | Lizenz erkannt (Kenney) |
 | kandidaten/kenney-rpg-audio-metallatch.ogg | Kenney RPG Audio: metalLatch | Kenney | CC0 | https://kenney.nl/assets/rpg-audio#metalLatch | Lizenz erkannt (Kenney) |
 | kandidaten/kenney-impact-sounds-impactmining-000.ogg | Kenney Impact Sounds: impactMining_000 | Kenney | CC0 | https://kenney.nl/assets/impact-sounds#impactMining_000 | Lizenz erkannt (Kenney) |
 | kandidaten/kenney-digital-audio-lowdown.ogg | Kenney Digital Audio: lowDown | Kenney | CC0 | https://kenney.nl/assets/digital-audio#lowDown | Lizenz erkannt (Kenney) |
 | kandidaten/kenney-digital-audio-lowthreetone.ogg | Kenney Digital Audio: lowThreeTone | Kenney | CC0 | https://kenney.nl/assets/digital-audio#lowThreeTone | Lizenz erkannt (Kenney) |
-| kandidaten/kenney-impact-sounds-impactpunch-heavy-0.ogg | Kenney Impact Sounds: impactPunch_heavy_000 | Kenney | CC0 | https://kenney.nl/assets/impact-sounds#impactPunch_heavy_000 | Lizenz erkannt (Kenney) |
 | kandidaten/kenney-digital-audio-powerup3.ogg | Kenney Digital Audio: powerUp3 | Kenney | CC0 | https://kenney.nl/assets/digital-audio#powerUp3 | Lizenz erkannt (Kenney) |
 | kandidaten/kenney-digital-audio-highup.ogg | Kenney Digital Audio: highUp | Kenney | CC0 | https://kenney.nl/assets/digital-audio#highUp | Lizenz erkannt (Kenney) |
 | kandidaten/kenney-digital-audio-phaserup5.ogg | Kenney Digital Audio: phaserUp5 | Kenney | CC0 | https://kenney.nl/assets/digital-audio#phaserUp5 | Lizenz erkannt (Kenney) |
@@ -84,3 +81,6 @@ Kenney-Dateien (Packs Digital Audio, RPG Audio, Impact Sounds, Interface Sounds,
 | kandidaten/nes-shooter-music-map.ogg | NES Shooter Music: Map | chrismthegamedude | CC0 | https://opengameart.org/content/nes-shooter-music-5-tracks-3-jingles#Map | Lizenz erkannt (OpenGameArt) |
 | kandidaten/chiptune-medieval-the-bard-s-tale.ogg | [Chiptune] Medieval: The Bard's Tale | Snabisch | CC0 | https://opengameart.org/content/chiptune-medieval-the-bards-tale | Lizenz erkannt (OpenGameArt) |
 | kandidaten/8-bit-victory-loop.ogg | 8-Bit Victory Loop | josepharaoh99 | CC0 | https://opengameart.org/content/8-bit-victory-loop | Lizenz erkannt (OpenGameArt) |
+| kandidaten/a-big-adventure.ogg | A Big Adventure | Alexandr Zhelanov | CC-BY 4.0 | https://opengameart.org/content/a-big-adventure | bestätigt 🧑 2026-10-18 |
+| kandidaten/the-adventure-begins.wav | The Adventure Begins. | mismatchedmisfitz | CC0 | https://opengameart.org/content/the-adventure-begins | bestätigt 🧑 2026-10-18 |
+| kandidaten/summer-adventure-background-music.mp3 | Summer Adventure background music | dionelou | CC-BY 4.0 | https://opengameart.org/content/summer-adventure-background-music | bestätigt 🧑 2026-10-18 |

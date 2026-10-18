@@ -157,6 +157,9 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-489](B-489-spielstand-chunk-anzahl.md) | SIM | Problem | mittel | offen | – | Spielstände laden Chunk-Anzahl und Planung aus den aktuellen Daten |
 | [B-490](B-490-sim-chunk-anzahl-nachtraege.md) | SIM | Schuld | niedrig | offen | – | Sim: Chunk-Anzahl mit Kandidaten-hub.json und gemeinsame Prüfung der Inselgröße |
 | [B-491](B-491-welten-editor-kleinigkeiten.md) | DEV | Schuld | niedrig | offen | – | Welten Editor: kleine Nachträge zu Schieber, Klick-Sprung und Planungsliste |
+| [B-492](B-492-sfx-luecken-weitere-ereignisse.md) | CLI | Idee | mittel | offen | – | Weitere Ereignisse bekommen eigene Sound-Slots und Sounds |
+| [B-493](B-493-credits-seite-audio.md) | PLAT | Idee | mittel | offen | – | Die Credits-Seite zeigt auch die Sounds unter public/audio |
+| [B-494](B-494-sound-atlas-werkzeug.md) | INF | Idee | niedrig | offen | – | Ein Werkzeug packt die gewählten Sounds in einen Sound-Atlas |
 
 ## Archiv
 
