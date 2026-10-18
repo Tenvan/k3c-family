@@ -118,3 +118,5 @@
 .wd-band-hub { --wd-band: #ffd166; }
 .wd-band-special { --wd-band: #b388ff; }
 .wd-band-none { --wd-band: var(--gray-8, #5a6169); }
+/* Klick auf einen Chunk oder einen Eintrag der Planungsliste springt dorthin (B-485) */
+.wd-strip .wd-chunk, .wd-planned { cursor: pointer; }

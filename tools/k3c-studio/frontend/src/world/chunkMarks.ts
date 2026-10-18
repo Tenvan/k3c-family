@@ -33,14 +33,17 @@ export function slotHints(draft: readonly PlannedChunk[], check: PlanCheckView):
  *  für Plätze außerhalb des Levels gibt es keinen Abschnitt. */
 export function chunkMarks(level: { chunks: readonly ModelChunk[] }, hints: readonly SlotHint[]): Map<number, SlotHint> {
   const marks = new Map<number, SlotHint>();
-  const hub = level.chunks.filter((c) => c.kind === 'hub').map((c) => c.index);
-  if (hub.length === 0) return marks;
-  const [first, last] = [Math.min(...hub), Math.max(...hub)];
-  const known = new Set(level.chunks.map((c) => c.index));
   for (const h of hints) {
-    if (h.slot === 0) continue;
-    const index = h.slot > 0 ? last + h.slot : first + h.slot;
-    if (known.has(index)) marks.set(index, h);
+    const chunk = chunkAtSlot(level.chunks, h.slot);
+    if (chunk) marks.set(chunk.index, h);
   }
   return marks;
+}
+
+/** Abschnitt am Chunk-Platz (wie oben); undefined ohne Hub, für Platz 0 und außerhalb des Levels */
+export function chunkAtSlot(chunks: readonly ModelChunk[], slot: number): ModelChunk | undefined {
+  const hub = chunks.filter((c) => c.kind === 'hub').map((c) => c.index);
+  if (hub.length === 0 || slot === 0) return undefined;
+  const index = slot > 0 ? Math.max(...hub) + slot : Math.min(...hub) + slot;
+  return chunks.find((c) => c.index === index);
 }

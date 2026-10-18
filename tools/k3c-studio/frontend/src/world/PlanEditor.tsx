@@ -7,11 +7,13 @@ import type { PlanState } from './usePlan';
 
 const biomeName = (id: string) => BIOMES.find((b) => b.id === id)?.name ?? id;
 const defaultKind = (biome = ''): string => Object.keys(BIOMES.find((b) => b.id === biome)?.chunkWeights ?? {})[0] ?? 'forest';
+/** Klick auf ein Bedienelement im Eintrag (Feld, Knopf, Liste): kein Sprung */
+const isControl = (target: EventTarget) => target instanceof Element && target.closest('input, button, select, textarea, [role="listbox"]') !== null;
 const number = (value: string, fallback: number) => (value === '' || Number.isNaN(Number(value)) ? fallback : Number(value));
 
 /** Editor für geplante Chunks im Welt-Betrachter (B-461/AC-09): Insel und Stufe wählen, Chunks am Platz anlegen, Art,
- *  Chunk-Seed und feste Objekte bearbeiten; Art und Objekt in der durchsuchbaren Liste mit Emoji (B-485/AC-01). Prüffehler stehen am Platz (AC-06); Speichern nur, wenn der Entwurf gültig ist. */
-export function PlanEditor({ plan }: { plan: PlanState }) {
+ *  Chunk-Seed und feste Objekte bearbeiten; ein Klick auf einen Eintrag (nicht auf ein Feld) meldet seinen Platz an `onSlot`; Art und Objekt in der durchsuchbaren Liste mit Emoji (B-485/AC-01). Prüffehler stehen am Platz (AC-06); Speichern nur, wenn der Entwurf gültig ist. */
+export function PlanEditor({ plan, onSlot }: { plan: PlanState; onSlot?: (slot: number) => void }) {
   const { island, stage, draft, check, notice, dirty } = plan;
   const [slot, setSlot] = useState(1);
   if (!island) return <section className="wd-plan" aria-label="Planung"><Text size="2">{notice?.text ?? 'Lade Planung …'}</Text></section>;
@@ -38,7 +40,7 @@ export function PlanEditor({ plan }: { plan: PlanState }) {
       <ul className="wd-chunklist" aria-label="Geplante Chunks">
         {draft.length === 0 && <li><Text size="1" color="gray">Keine Planung: Die Stufe bleibt rein zufällig.</Text></li>}
         {draft.map((c, i) => (
-          <li key={i} className="wd-planned" data-slot={c.slot}>
+          <li key={i} className="wd-planned" data-slot={c.slot} onClick={(e) => { if (!isControl(e.target)) onSlot?.(c.slot); }}>
             <div className="wd-bar">
               <input className="wd-slot" type="number" aria-label={`Platz ${slotLabel(c.slot)}`} value={c.slot} onChange={(e) => plan.edit(updateChunk(draft, i, { slot: number(e.target.value, c.slot) }))} />
               <KindPicker label={`Art Platz ${slotLabel(c.slot)}`} value={c.kind} options={CHUNK_KINDS} onChange={(kind) => plan.edit(updateChunk(draft, i, { kind }))} />
