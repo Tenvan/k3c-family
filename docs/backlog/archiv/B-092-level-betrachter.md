@@ -4,7 +4,7 @@
 - **Typ:** Idee
 - **Prio:** mittel
 - **Umgebung:** live
-- **Status:** eingeplant
+- **Status:** verworfen
 - **Sprint:** HW1
 - **Projekt:** ABN
 - **Erstellt:** 2026-10-01
@@ -65,4 +65,4 @@ keine. Entschieden 2026-10-02 durch 🧑 (Chat, „ja, so starten“): „Im Spi
 
 ## Notizen
 
-B-091 (Endpunkt) ist erledigt. Start mit Seed und Tiefe: B-095. U3 abgeschlossen, AC-05 (TV-Abnahme) wartet auf 🧑. Start über vorhandenen gleichnamigen Spielstand: B-096.
+Verworfen 2026-10-18 durch 🧑 (Abnahme WZ7.7, Chat): Studio und Level-Betrachter brauchen keinen Xbox-Einsatz. `leveltest.html` ist entfernt, der Nachfolger ist der Welt-Betrachter im Asset-Studio (B-460, Nacharbeit B-477). AC-05 (TV-Abnahme) entfällt; Sprint HW1 verliert diese Session.

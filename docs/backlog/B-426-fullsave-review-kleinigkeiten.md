@@ -62,3 +62,4 @@ nicht relevant (Sammel-Ticket)
 ## Notizen
 
 Aus dem unabhängigen Review von PR #293 (2026-10-14); hängt an B-315.
+Entscheidung 🧑 2026-10-18 (Abnahme WZ7.7): Punkt 1 und Punkt 4 „passt“ im Studio-Welt-Betrachter, nichts weiter zu tun; beide gelten damit als verworfen (`leveltest.ts` ist entfernt, AC-01 und AC-04 entfallen). Offen bleiben Punkt 2 (AC-02) und Punkt 3 (AC-03), beide SRV.

@@ -1,6 +1,6 @@
 # WZ7.7 · Abnahme des Welt-Betrachters durch Ralf
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Review
 - **Agent:** Mensch
 - **Domäne:** DEV
@@ -62,5 +62,7 @@ Manuelle Abnahme durch 🧑 am PC; keine Befehle.
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+Abnahme durch 🧑 am PC, 2026-10-18 (zwei Screenshots im Chat); der Agent hat nicht geurteilt.
+- **Entscheidungen:** B-092 verworfen (Studio und Level-Betrachter brauchen keinen Xbox-Einsatz; AC-05 von B-092 entfällt). B-426 Punkt 1 und Punkt 4: „passt“, verworfen; Punkt 2 und 3 bleiben offen.
+- **AC-09 verschoben: B-477.** 🧑 hat den Welt-Betrachter nicht abgenommen. Mängel: maximiert ohne Live-Vorschau, Layout unten und zweite Scrollbar, Chunk- und Live-Vorschau scrollen nicht gemeinsam, getrennte statt gemeinsamer Ansicht, Gebäude-Filter unübersichtlich, kein stufenloser Zoom. B-477 (Spec freigegeben 2026-10-18) nimmt sie auf; die Abnahme des überarbeiteten Betrachters macht 🧑 im Sprint WZ16.
+- Neue Tickets: B-477.
