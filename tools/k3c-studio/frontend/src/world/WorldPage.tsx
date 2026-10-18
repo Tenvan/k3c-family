@@ -70,7 +70,7 @@ export function WorldPage() {
         <ViewBar views={views} spans={spans} widthUnits={widthUnits} range={centerRange(views, widthUnits, px)} jumps={jumpPoints(model, gates)}
           onScale={(scale) => zoom(BOTH, () => scale)} onZoom={zoomBy} onCenter={setCenter} />
       </ChunkPreview>
-      <PlanEditor plan={plan} onSlot={(slot) => { const c = model && chunkAtSlot(model.chunks, slot); if (c) jumpTo(c); }} />
+      <PlanEditor plan={plan} seed={source.seed} onSlot={(slot) => { const c = model && chunkAtSlot(model.chunks, slot); if (c) jumpTo(c); }} />
       <section className="wd-live" aria-label="Live-Vorschau">
         <LivePreview seed={source.seed} biome={source.biome} position={liveView} onPan={panLive} onWheel={(e) => onWheel(e, 'live')} onSites={onSites} plan={plan.source} />
         <LiveChunkBand stage={stage} view={liveView} model={model} draft={plan.draft} hints={hints} onChunk={jumpTo} />
