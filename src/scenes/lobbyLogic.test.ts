@@ -62,13 +62,13 @@ describe('Seed und Tiefe per URL (B-095/AC-02)', () => {
     expect(p).toMatchObject({ save: 'probe', seed: 'Familie-2026', depth: 2 });
   });
 
-  it.each(['depth=-1', 'depth=10', 'depth=1.5', 'depth=', 'depth=abc'])('ignoriert ungültiges %s', (q) => {
+  it.each(['depth=-1', 'depth=1.5', 'depth=', 'depth=abc', 'depth=1234'])('ignoriert ungültiges %s', (q) => {
     expect(parseStartParams(`?${q}`).depth).toBe(0);
   });
 
-  it('ein zu langer Seed (65 Zeichen) gilt als nicht gesetzt, 64 Zeichen bleiben', () => {
-    expect(parseStartParams(`?seed=${'ü'.repeat(65)}`).seed).toBe('');
-    expect(parseStartParams(`?seed=${'ü'.repeat(64)}`).seed).toBe('ü'.repeat(64));
+  it('Tiefe und Seed außerhalb der Grenzen gehen unverändert an den Server (bad_request, B-095)', () => {
+    expect(parseStartParams('?depth=10').depth).toBe(10);
+    expect(parseStartParams(`?seed=${'ü'.repeat(65)}`).seed).toBe('ü'.repeat(65));
   });
 
   it('create trägt seed und depth nur bei fresh', () => {

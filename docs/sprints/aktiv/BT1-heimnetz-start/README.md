@@ -59,7 +59,7 @@ keine (Entscheidungen 🧑 2026-10-18: neues Protokollfeld `seed` (B-095), Entsc
 |---|---|---|---|---|
 | BT1.1 | `BT1.1-seed-per-url.md` | Umsetzung | autonom | fertig |
 | BT1.2 | `BT1.2-windows-starter.md` | Umsetzung | autonom | fertig |
-| BT1.3 | `BT1.3-review.md` | Review | autonom | offen |
+| BT1.3 | `BT1.3-review.md` | Review | autonom | fertig |
 
 Entwurf. Vor dem Aktivieren jede Session als Datei nach `docs/vorlagen/session.md` schreiben, die Kriterien in Klammern werden ihr Feld `Kriterien`.
 
@@ -69,4 +69,8 @@ Entwurf. Vor dem Aktivieren jede Session als Datei nach `docs/vorlagen/session.m
 
 ## Abnahme
 
-–
+- 2026-10-18, Review BT1.3 (getrennter Reviewer): AC-02 bis AC-04 am Diff belegt (BT1.1: `create.seed`, `?seed=`/`?depth=`, Entscheidung 001; BT1.2: `tools/k3c-starter`); AC-01 entfällt (B-040 verworfen).
+- Behoben: Der Client verwarf ungültige Tiefe und zu langen Seed still, die Spec nennt eine Fehlermeldung des Servers → Client reicht beides unverändert an `create` (`bad_request`). Beim Starter schon vorher: Job-Objekt, sauberes Beenden, `stopping`-Flag (Review BT1.2).
+- B-041/AC-02 (Doppelklick am PC, Port belegt): `angenommen, Validierung offen` (Abnahme durch 🧑, Agent hat die EXE nur auf Loopback und mit Mock-Anzeige geprüft); Sprint bleibt `aktiv`, B-041 bleibt `eingeplant`, bis 🧑 abgenommen hat. B-095 und B-048 `erledigt`.
+- Neue Tickets: keine.
+- Version: v0.20.0 vorgeschlagen (Minor: neues Werkzeug und Protokollfeld); gesetzt nur nach Bestätigung durch 🧑.

@@ -16,10 +16,8 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-024](B-024-tiefe-3-4.md) | REG | Idee | niedrig | eingeplant | RG2 | Tiefe 3 und 4 sind beschrieben |
 | [B-041](B-041-wails-starter.md) | DEV | Idee | niedrig | eingeplant | BT1 | Wails-Starter für Windows existiert |
 | [B-042](B-042-pi-leistungsziel.md) | SRV | Frage | hoch | eingeplant | HW1 | Pi-Modell und Leistungsziel sind festgelegt |
-| [B-048](B-048-standardbibliothek-in-001.md) | SRV | Frage | niedrig | eingeplant | BT1 | Die Wahl der Go-Standardbibliothek ist dort festgehalten, wo B-001 auf sie verweist |
 | [B-080](B-080-dev-tasten-server.md) | SRV | Idee | niedrig | eingeplant | KB2 | Dev-Tasten (Gold, Stufe, Neustart) wirken über den Server |
 | [B-090](B-090-radar.md) | CLI | Idee | mittel | eingeplant | HW1 | Ein Radar im HUD zeigt Burg, Portale, Ausgang, Mitspieler und Gegner |
-| [B-095](B-095-start-mit-seed-und-tiefe.md) | SRV | Idee | niedrig | eingeplant | BT1 | Ein neues Spiel startet per URL mit eigenem Seed und gewählter Tiefe |
 | [B-098](B-098-debug-overlay-standard-zurueck.md) | CLI | Schuld | niedrig | eingeplant | K5 | Das Debug-Overlay ist vor dem Release wieder nur mit ?dev=1 verfügbar |
 | [B-099](B-099-balancing-tester.md) | SIM | Idee | mittel | eingeplant | BAL6 | Ein automatischer Balancing-Tester prüft Regeln und Werte gegen messbare Ziele |
 | [B-105](B-105-anlegen-dialog-optionen.md) | CLI | Idee | mittel | eingeplant | K5 | Der Anlegen-Dialog der Lobby wählt Grad, Ziel und Niederlage-Modus |
@@ -448,3 +446,5 @@ Zeile in diesen Abschnitt.
 | [B-288](archiv/B-288-alte-spielstaende-ohne-ruecksicht.md) | INF | Schuld | mittel | erledigt | RP1 | Formatänderungen am Spielstand nehmen keine Rücksicht auf alte Stände |
 | [B-094](archiv/B-094-npm-reste.md) | INF | Schuld | niedrig | erledigt | RP1 | Im Repo liegen keine Alt-Binaries und keine npm-Skripte mehr |
 | [B-058](archiv/B-058-execution-policy.md) | INF | Frage | niedrig | erledigt | RP1 | requirements.md empfiehlt keine Sicherheitseinstellung ohne Entscheidung von 🧑 |
+| [B-095](archiv/B-095-start-mit-seed-und-tiefe.md) | SRV | Idee | niedrig | erledigt | BT1 | Ein neues Spiel startet per URL mit eigenem Seed und gewählter Tiefe |
+| [B-048](archiv/B-048-standardbibliothek-in-001.md) | SRV | Frage | niedrig | erledigt | BT1 | Die Wahl der Go-Standardbibliothek ist dort festgehalten, wo B-001 auf sie verweist |

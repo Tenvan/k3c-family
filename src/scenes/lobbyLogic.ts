@@ -12,9 +12,7 @@ const SAVE_FORMAT = /^[a-z0-9-]{1,32}$/;
 const ROOM_FORMAT = /^[A-HJ-NP-Z]{4}$/;
 const MOCK_FORMAT = /^[0-3]$/;
 const PLAYERS_FORMAT = /^[1-4]$/;
-const DEPTH_FORMAT = /^[0-9]$/;
-/** Höchstlänge von `create.seed` in Zeichen (docs/protocol.md, B-095) */
-export const MAX_SEED_LENGTH = 64;
+const DEPTH_FORMAT = /^[0-9]{1,3}$/;
 
 export interface StartParams {
   autostart: boolean;
@@ -26,9 +24,9 @@ export interface StartParams {
   room: string | null;
   /** Lokale Spieler beim Beitritt aus `?players=` (1–4, B-353) */
   players: number;
-  /** Startstufe eines neuen Spiels aus `?depth=` (0–9, der Server prüft die Stufen), sonst 0 (B-095) */
+  /** Startstufe eines neuen Spiels aus `?depth=` (Zahl, sonst 0); ob es die Stufe gibt, prüft der Server (`bad_request`, B-095) */
   depth: number;
-  /** Seed eines neuen Spiels aus `?seed=` (höchstens 64 Zeichen), leer = der Name des Spielstands (B-095) */
+  /** Seed eines neuen Spiels aus `?seed=`, leer = der Name des Spielstands; die Länge (höchstens 64 Zeichen) prüft der Server (`bad_request`, B-095) */
   seed: string;
 }
 
@@ -49,7 +47,7 @@ export function parseStartParams(search: string): StartParams {
     room: ROOM_FORMAT.test(room) ? room : null,
     players: PLAYERS_FORMAT.test(players) ? Number(players) : 1,
     depth: DEPTH_FORMAT.test(depth) ? Number(depth) : 0,
-    seed: [...seed].length <= MAX_SEED_LENGTH ? seed : '',
+    seed,
   };
 }
 
