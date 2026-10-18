@@ -58,4 +58,4 @@ Welche Ereignisse sind „wichtig“? (🧑)
 
 ## Notizen
 
-AC-03 Lautstärke: Kern fertig (SO1: Mixer mit Bussen Musik, Effekte, Ambient, Speicher je Gerät). AC-01 und AC-02 folgen in SO2 (Effekte) und SO4 (Musik); Optionen für Ambient: B-218.
+Stand 2026-10-18: Effekte: SO2 fertig (SO2.5, Hören am TV, offen); Musik: SO4 läuft. Weitere Effekte und Reiten: B-492.

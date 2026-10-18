@@ -2,7 +2,7 @@
 
 - **Domäne:** PLAT
 - **Typ:** Idee
-- **Prio:** mittel
+- **Prio:** hoch
 - **Umgebung:** offline
 - **Status:** offen
 - **Sprint:** –
