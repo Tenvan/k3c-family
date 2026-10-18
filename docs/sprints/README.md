@@ -10,6 +10,7 @@ Die Reihenfolge der Arbeit ist allein der Projekt-Rang: [`../projekte/README.md`
 | Sprint | Domäne | Projekt | Thema | Am Ende sichtbar | Ordner |
 |---|---|---|---|---|---|
 | WZ8 | REG, SIM, SRV, DEV | WZG | Chunks je Insel und Stufe planen: Seed oder feste Objekte | – | `aktiv/WZ8-chunk-planung/` |
+| WZ16 | DEV | WZG | Welt-Betrachter: eine gemeinsame Ansicht mit Sprungleiste, Zoom und Gebäude-Filter | – | `aktiv/WZ16-welt-betrachter-ansicht/` |
 | GR7 | CLI | GRA | Figuren-Lücken, ganzzahlige Skalierung und Schrift | – | `aktiv/GR7-figuren-schrift/` |
 | SO4 | CLI | SND | Musik je Zustand | – | `aktiv/SO4-musik/` |
 
@@ -28,7 +29,6 @@ Abnahmen am Gerät (`Agent: Mensch`) sammelt das Projekt ABN im Sprint HW1: [`..
 | WZ13 | INF, REG | WZG | Glossar und Regeln: Verweis für das Morgengrauen auf B-470 | – | bereit | `geplant/WZ13-glossar-morgengrauen-verweis/` |
 | WZ14 | REG | WZG | Geplante Chunks tragen Ruinen und Gegnerlager | – | Entwurf | `geplant/WZ14-ruinen-gegnerlager/` |
 | WZ15 | REG, INF, SIM | WZG | Hub-Planung Vorlauf: Regeltabelle erzeugt, Prüfung ohne globalen Zustand | – | Entwurf | `geplant/WZ15-hub-planung-vorlauf/` |
-| WZ16 | DEV | WZG | Welt-Betrachter: eine gemeinsame Ansicht mit Sprungleiste, Zoom und Gebäude-Filter | – | bereit | `geplant/WZ16-welt-betrachter-ansicht/` |
 | BD2 | SIM, SRV, CLI | BED | Rückmeldungs-Ereignisse gedrosselt und geprüft, Lobby startet nie still leer | – | Entwurf | `geplant/BD2-rueckmeldung-lobby-nachtraege/` |
 | BD3 | SRV | BED | Raum-Pause im Couch-Raum, Schutz des pausierten Monarchen online | – | Entwurf | `geplant/BD3-raum-pause/` |
 | BD4 | CLI | BED | Gemeinsame HUD-Leiste oben, Fluss unten, lokale Spieler treten einzeln aus | – | Entwurf | `geplant/BD4-hud-leiste-austreten/` |
