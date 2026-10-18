@@ -1,6 +1,6 @@
 # SO2.3 · Einbau über den Audio-Kern, Rückfall bei fehlender Datei
 
-- **Status:** offen
+- **Status:** in Arbeit
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** CLI
