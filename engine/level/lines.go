@@ -108,3 +108,23 @@ func (d WallLines) generate(biomeID, seed string, hub float64) []WallLine {
 	}
 	return out
 }
+
+// farmOffsets sind die Abstände der Farm-Bauplätze zur Hub-Mitte aus data/hub.json › sites (beide Seiten, Q57).
+var farmOffsets = loadFarmOffsets()
+
+func loadFarmOffsets() []float64 {
+	var hub struct {
+		Sites []struct {
+			Kind        string  `json:"kind"`
+			OffsetUnits float64 `json:"offsetUnits"`
+		} `json:"sites"`
+	}
+	readData("hub.json", &hub)
+	var out []float64
+	for _, s := range hub.Sites {
+		if s.Kind == "farm" {
+			out = append(out, math.Abs(s.OffsetUnits))
+		}
+	}
+	return out
+}

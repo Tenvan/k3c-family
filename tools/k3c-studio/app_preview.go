@@ -27,14 +27,17 @@ type WorldPreviewView struct {
 	Error string `json:"error"`
 }
 
-// WorldPreview baut die Vorschau-Welt (Binding). Die Quelle ist in WZ7 das Biom; Insel + Stufe folgt mit WZ8.5.
+// WorldPreview baut die Vorschau-Welt (Binding). Die Quelle ist ein Biom oder Insel + Stufe, mit dem Entwurf der
+// geplanten Chunks wie bei WorldLevel (dieselbe Quelle für Chunk- und Live-Vorschau, B-461/AC-11).
 func (a *App) WorldPreview(args WorldPreviewArgs) WorldPreviewView {
-	if args.Source.Island != "" || args.Source.Stage != 0 {
-		return WorldPreviewView{Error: "Quelle Insel + Stufe folgt mit WZ8.5, bisher nur das Biom"}
+	biome, planned, err := a.resolveSource(args.Source)
+	if err != nil {
+		return WorldPreviewView{Error: err.Error()}
 	}
 	res, err := net.Preview(room.PreviewOptions{
-		Seed: args.Seed, Source: room.PreviewSource{Biome: args.Source.Biome}, HubLevel: args.HubLevel,
-		Phase: args.Phase, Progress: args.Progress, Buildings: args.Off, HubCandidate: []byte(args.HubCandidate),
+		Seed: args.Seed, Source: room.PreviewSource{Biome: biome}, HubLevel: args.HubLevel,
+		Phase: args.Phase, Progress: args.Progress, Buildings: args.Off, Planned: planned,
+		HubCandidate: []byte(args.HubCandidate),
 	})
 	if err != nil {
 		return WorldPreviewView{Error: err.Error()}

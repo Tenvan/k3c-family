@@ -1,6 +1,6 @@
 # WZ8.4 · Vorschau-Option geplante Chunks
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** SRV
@@ -54,5 +54,10 @@ Bei laufender Workbench `check_run`. Manuelle Prüfungen nennt diese Session nic
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+Umgesetzt von Claude (autonom), 2026-10-17; getrennter Reviewer-Agent vor dem Commit.
+
+- **Voraussetzung geprüft:** WZ7.1 liegt auf `develop` (`room.BuildPreview`, `room.PreviewOptions`, ohne globalen Zustand); WZ8.3 `fertig`. Die Options-Struktur reichte, kein Ticket nötig.
+- **AC-08 umgesetzt, geprüft (`task check:go` grün):** `room.PreviewOptions.Planned []level.PlannedChunk` („geplante Chunks“, ungespeicherter Entwurf möglich), durchgereicht über `sim.Options{Planned}` an `level.GenerateWith`; `net.Preview` und das Studio bleiben unverändert (die Option ist neu, der Nullwert ändert nichts). Tests in `engine/room/preview_planned_test.go`: gleiche Planung → gleiche Welt; nil und leer = Level wie `level.Generate`; ungültige Planung wird mit dem Grund der Prüfung (`Platz 0`) abgelehnt; aufeinanderfolgende Aufrufe mit verschiedener Planung liefern je ihre Welt (Portal bei Hub +325 nur mit Planung A), danach unverändert.
+- **Abweichung (Annahme, in der nächsten Session zu klären):** Ohne Option („nil“) gilt **keine** Planung statt der eingebetteten. Der Regeltext § 1 sagt, ein Biom-Level ohne Insel bleibt rein zufällig; die Vorschau hat in WZ7/WZ8 nur die Quelle Biom. „Eingebettete Planung als Standard“ gilt erst mit der Quelle Insel + Stufe (WZ8.5). `sim.CreateOptions` wird in dieser Session nicht benutzt, weil die Vorschau eine einzelne Welt über `sim.CreateWorld` baut; die Planung geht über `sim.Options`.
+- **Dateien:** nur `engine/room/preview.go` und der neue Test; keine Änderung an `engine/sim` oder `engine/level`.
+- **Manuelle Prüfung:** keine. Neue Tickets: keine.

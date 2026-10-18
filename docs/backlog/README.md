@@ -148,7 +148,6 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-463](B-463-monarch-vorschau-animationen.md) | DEV | Idee | mittel | eingeplant | WZ10 | Eine Monarch-Seite im Asset-Studio zeigt Reiten, Schlagen, Skills und weitere Vorschauen |
 | [B-464](B-464-gegner-bosse-vorschau.md) | DEV | Idee | mittel | eingeplant | WZ11 | Eine Gegner-Seite im Asset-Studio zeigt alle Gegnertypen und Bosse mit ihren Vorschauen |
 | [B-465](B-465-lint-sprintsbacklog-zeilen.md) | DEV | Problem | hoch | offen | – | task lint ist auf develop rot, weil SprintsBacklog 61 Zeilen hat |
-| [B-466](B-466-glossar-morgengrauen-verweis.md) | INF | Problem | niedrig | offen | WZ13 | Der Glossar-Eintrag Tageszyklus verweist für das Morgengrauen auf das richtige Ticket |
 | [B-467](B-467-worktree-pill-am-eintrag.md) | DEV | Idee | mittel | offen | WZ12 | Worktree-Änderungen stehen als Pill am Projekt, Sprint oder an der Session statt als Leiste oben |
 | [B-468](B-468-geplante-chunks-ruinen-gegnerlager.md) | REG | Idee | mittel | offen | WZ14 | Geplante Chunks tragen Ruinen und Gegnerlager |
 | [B-469](B-469-gegner-seite-boss-effekte-nach-k5.md) | DEV | Idee | niedrig | offen | – | Die Gegner-Seite zeigt Warnkreis, Boss-Leiste, Phasen und Event-Banner aus K5.1 |
@@ -158,6 +157,7 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-473](B-473-ci-rot-k3c-dev-planning-worktree-tests.md) | DEV | Problem | hoch | offen | – | CI auf develop rot: k3c-dev internal/planning Worktree-Tests scheitern auf dem Windows-Runner |
 | [B-474](B-474-testdownloadhit-norton-tls.md) | DEV | Problem | mittel | offen | – | TestDownloadHit scheitert lokal am TLS-Zertifikat (Norton), check:all rot |
 | [B-476](B-476-preload-sprites-beliebige-reittiere.md) | CLI | Schuld | niedrig | offen | – | preloadSprites und createSpriteAnims laden beliebige Reittiere statt nur das Standard-Reittier |
+| [B-475](B-475-frage-geplante-ereignisse-zaehlung.md) | REG | Frage | niedrig | offen | – | Frage: Wie zählen feste Ereignis-Objekte in geplanten Chunks, und gilt für „kein Platz mehr“ das Minimum oder das Maximum? |
 | [B-479](B-479-hub-pruefung-geplante-chunks.md) | SIM | Schuld | niedrig | offen | – | Prüfung der Kandidaten-hub.json: geplante Chunks nach WZ8 mitprüfen |
 | [B-483](B-483-worktree-eintraege-nur-lesend.md) | DEV | Problem | niedrig | offen | – | Planungsseite: Einträge nur im Worktree sind nur lesbar (Detail, Menüs, Rang) |
 | [B-484](B-484-worktree-neuer-sprint-leer.md) | DEV | Problem | niedrig | offen | – | Worktree-Vergleich: Sessions und Projekt eines neuen Sprints fehlen in den Pills |
@@ -443,3 +443,4 @@ Zeile in diesen Abschnitt.
 | [B-477](archiv/B-477-welt-betrachter-nacharbeit.md) | DEV | Problem | hoch | erledigt | WZ16 | Der Welt-Betrachter zeigt Chunk- und Live-Vorschau in einer gemeinsamen, synchron scrollenden Ansicht |
 | [B-482](archiv/B-482-planung-kurzpfad-vergleich.md) | DEV | Problem | hoch | erledigt | – | Planungs-Tools erkennen die Repo-Wurzel auch bei Kurzpfaden (8.3) und die CI-Tests des k3c-dev-Jobs sind grün |
 | [B-480](archiv/B-480-assetkit-downloadhit-tls.md) | DEV | Problem | mittel | verworfen | – | TestDownloadHit in tools/assetkit scheitert lokal am TLS-Zertifikat und blockiert task check:all |
+| [B-466](archiv/B-466-glossar-morgengrauen-verweis.md) | INF | Problem | niedrig | erledigt | WZ13 | Der Glossar-Eintrag Tageszyklus verweist für das Morgengrauen auf das richtige Ticket |

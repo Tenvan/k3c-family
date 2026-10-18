@@ -1,6 +1,11 @@
 package sim
 
-import "fmt"
+import (
+	"fmt"
+	"strconv"
+
+	"k3c/engine/level"
+)
 
 // Insel (Entscheidung 003, B-100): Ein Level mit mehreren Stufen. Alle Stufen laufen im selben Takt weiter, auch ohne
 // Spieler; jeder Spieler ist an genau eine Stufe gebunden. Das Baumaterial gehört der Insel (ein Vorrat für alle Stufen),
@@ -52,14 +57,39 @@ type Island struct {
 	travel map[int]*islandTravel
 }
 
-// CreateOptions steuern nur die Erzeugung einer Insel (B-461, B-462). Sie werden nicht gespeichert und sind getrennt
-// von IslandOptions (Grad, Ziel, Niederlage; im Spielstand). Der Nullwert ist das heutige Verhalten; Laden eines
-// Spielstands und Inselwechsel nutzen immer die eingebetteten Daten.
+// CreateOptions sind die Parameter der Erzeugung einer Insel (B-461, B-462). Sie gelten nur für die Erzeugung und werden
+// NICHT gespeichert (Spielstand-Format und IslandSaveVersion bleiben); getrennt von IslandOptions (Grad, Ziel, Niederlage).
+// Laden eines Spielstands und Inselwechsel nutzen die eingebetteten Daten und die Planung der Insel.
 type CreateOptions struct {
+	// Planned sind die geplanten Chunks je Tiefe (docs/rules/geplante-chunks.md). nil = die Planung der eingebetteten
+	// ersten Insel (data/islands.json); eine leere Map schaltet die Planung ab.
+	Planned map[int][]level.PlannedChunk
 	// Candidate: Kandidaten-hub.json (Gebäude-Planer, B-462); nil = eingebettete data/hub.json. Plätze, Hub-Stufen,
 	// Mauerlinien, Tor-Stufe, Händler und Startvorrat kommen dann aus ihm. CreateIsland prüft ihn vorher mit
 	// ValidateHubData und lehnt ihn bei Befunden ab (fail closed).
 	Candidate *HubData
+}
+
+// plannedFor liefert die geplanten Chunks der Tiefe.
+func (o CreateOptions) plannedFor(depth int) []level.PlannedChunk {
+	if o.Planned != nil {
+		return o.Planned[depth]
+	}
+	return islandDefs[0].plannedAt(depth)
+}
+
+// plannedAt liefert die geplanten Chunks der Insel für eine Tiefe (leer = reiner Zufall).
+func (d IslandDef) plannedAt(depth int) []level.PlannedChunk { return d.PlannedChunks[strconv.Itoa(depth)] }
+
+// CreateOptions liefert die Erzeugungs-Parameter dieser Insel aus den Daten (ihre eigene Planung).
+func (d IslandDef) CreateOptions() CreateOptions {
+	planned := map[int][]level.PlannedChunk{}
+	for _, depth := range d.Depths {
+		if plan := d.plannedAt(depth); len(plan) > 0 {
+			planned[depth] = plan
+		}
+	}
+	return CreateOptions{Planned: planned}
 }
 
 // CreateIsland baut die Stufen für die angegebenen Tiefen (Reihenfolge = Stufenindex). CycleSpeed 0 bedeutet 1.
@@ -71,8 +101,9 @@ func CreateIsland(seed string, depths []int, cycleSpeed float64, opts CreateOpti
 			return nil, fmt.Errorf("insel: Kandidaten-hub.json abgelehnt: %s", r.Findings[0])
 		}
 		h = cloneHub(opts.Candidate) // geprüft wird die Kopie, die die Welt behält: spätere Änderungen des Aufrufers wirken nicht
+		opts.Candidate = h
 	}
-	isl, err := createIsland(seed, depths, cycleSpeed, 0, h)
+	isl, err := createIsland(seed, depths, cycleSpeed, 0, opts)
 	if err != nil {
 		return nil, err
 	}
@@ -80,8 +111,8 @@ func CreateIsland(seed string, depths []int, cycleSpeed float64, opts CreateOpti
 	return isl, nil
 }
 
-// createIsland wie CreateIsland, mit Startzeit (Laden eines Spielstands); candidate nil = eingebettete hub.json.
-func createIsland(seed string, depths []int, cycleSpeed, startTime float64, candidate *HubData) (*Island, error) {
+// createIsland wie CreateIsland, mit Startzeit (Laden eines Spielstands).
+func createIsland(seed string, depths []int, cycleSpeed, startTime float64, opts CreateOptions) (*Island, error) {
 	if len(depths) == 0 {
 		return nil, fmt.Errorf("insel: keine Stufen")
 	}
@@ -91,7 +122,7 @@ func createIsland(seed string, depths []int, cycleSpeed, startTime float64, cand
 		if !hasDepth(d) {
 			return nil, fmt.Errorf("insel: unbekannte Tiefe %d", d)
 		}
-		w, err := CreateWorld(biomeForDepth(d), seed, Options{CycleSpeed: cycleSpeed, Time: startTime, hub: candidate})
+		w, err := CreateWorld(biomeForDepth(d), seed, Options{CycleSpeed: cycleSpeed, Time: startTime, Planned: opts.plannedFor(d), hub: opts.Candidate})
 		if err != nil {
 			return nil, fmt.Errorf("insel: Stufe mit Tiefe %d: %w", d, err)
 		}

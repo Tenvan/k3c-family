@@ -17,7 +17,9 @@ import (
 type Options struct {
 	CycleSpeed float64  // beschleunigt den Tag/Nacht-Zyklus (Tests, Dev)
 	Time       float64  // Startzeit in Sekunden, damit der globale Zyklus beim Stufenwechsel weiterläuft
-	hub        *HubData // Kandidaten-hub.json (CreateOptions.Candidate); nil = eingebettete data/hub.json
+	// Planned sind die geplanten Chunks dieser Stufe (docs/rules/geplante-chunks.md); leer = reiner Zufall.
+	Planned []level.PlannedChunk
+	hub     *HubData // Kandidaten-hub.json (CreateOptions.Candidate); nil = eingebettete data/hub.json
 }
 
 // hubOf ist die hub.json, aus der die Stufe gebaut ist: der Kandidat aus CreateOptions oder die eingebettete.
@@ -30,7 +32,7 @@ func hubOf(w *World) *HubData {
 
 // CreateWorld baut den Startzustand einer Stufe.
 func CreateWorld(b level.Biome, seed string, opts Options) (*World, error) {
-	var lo level.Options
+	lo := level.Options{Planned: opts.Planned}
 	if opts.hub != nil { // nur mit Kandidat: sonst bleibt der eingebettete Stand aus engine/level (Goldens)
 		lines := levelLines(opts.hub.WallLines)
 		lo.Lines = &lines
@@ -75,9 +77,10 @@ func CreateWorld(b level.Biome, seed string, opts Options) (*World, error) {
 
 // CreateWorldWith baut eine Stufe wie CreateWorld, ohne Insel, mit den Erzeugungs-Optionen (Vorschau des
 // Gebäude-Planers, WZ9.1, B-462). Ein Kandidat wird vorher mit ValidateHubData geprüft (fail closed); die Welt behält
-// eine Kopie, spätere Änderungen des Aufrufers wirken nicht. Ohne Kandidat gleich CreateWorld mit CycleSpeed 1.
-func CreateWorldWith(b level.Biome, seed string, o CreateOptions) (*World, error) {
-	opts := Options{CycleSpeed: 1}
+// eine Kopie, spätere Änderungen des Aufrufers wirken nicht. `planned` sind die geplanten Chunks dieser Stufe (WZ8.4); mit
+// Kandidat prüft der Generator sie gegen dessen Mauerlinien. Ohne Kandidat gleich CreateWorld mit CycleSpeed 1.
+func CreateWorldWith(b level.Biome, seed string, o CreateOptions, planned []level.PlannedChunk) (*World, error) {
+	opts := Options{CycleSpeed: 1, Planned: planned}
 	if o.Candidate != nil {
 		if r := ValidateHubData(o.Candidate); len(r.Findings) > 0 {
 			return nil, fmt.Errorf("welt: Kandidaten-hub.json abgelehnt: %s", r.Findings[0])

@@ -23,20 +23,22 @@ type WorldLevelView struct {
 	Error    string   `json:"error"`
 }
 
-// WorldSource ist die Quelle des Levels als Wert. In WZ7 wertet das Studio nur Biome aus; Island und Stage (Insel +
-// Stufe) trägt die Schnittstelle schon, WZ8.5 stellt die Chunk-Vorschau darauf um.
+// WorldSource ist die Quelle des Levels als Wert: ein Biom oder eine Insel mit Stufe (Index in ihren Tiefen). Planned
+// ist der Entwurf der geplanten Chunks (auch ungespeichert); nil nimmt bei einer Insel die gespeicherte Planung aus
+// data/islands.json, bei einem Biom keine.
 type WorldSource struct {
-	Biome  string `json:"biome"`
-	Island string `json:"island"`
-	Stage  int    `json:"stage"`
+	Biome   string                `json:"biome"`
+	Island  string                `json:"island"`
+	Stage   int                   `json:"stage"`
+	Planned *[]level.PlannedChunk `json:"planned"`
 }
 
 // WorldLevel berechnet das Level zu Seed und Quelle (Binding). Ein ungültiger Seed, eine fehlende oder unbekannte
 // Quelle ergibt Error, nie einen Pfadzugriff.
 func (a *App) WorldLevel(seed string, src WorldSource) WorldLevelView {
-	biome := src.Biome
-	if src.Island != "" || src.Stage != 0 {
-		return WorldLevelView{Warnings: []string{}, Error: "Quelle Insel + Stufe folgt mit WZ8.5, bisher nur das Biom"}
+	biome, planned, err := a.resolveSource(src)
+	if err != nil {
+		return WorldLevelView{Warnings: []string{}, Error: err.Error()}
 	}
 	if n := utf8.RuneCountInString(seed); n == 0 || n > maxWorldSeedRunes {
 		return WorldLevelView{Warnings: []string{}, Error: fmt.Sprintf("Seed braucht 1 bis %d Zeichen", maxWorldSeedRunes)}
@@ -48,7 +50,7 @@ func (a *App) WorldLevel(seed string, src WorldSource) WorldLevelView {
 	if err != nil {
 		return WorldLevelView{Warnings: []string{}, Error: fmt.Sprintf("Unbekanntes Biom %q", biome)}
 	}
-	layout, err := level.Generate(b, seed)
+	layout, err := level.GenerateWith(b, seed, level.Options{Planned: planned})
 	if err != nil {
 		return WorldLevelView{Warnings: []string{}, Error: "Level nicht erzeugbar: " + err.Error()}
 	}

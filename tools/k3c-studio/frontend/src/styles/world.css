@@ -63,3 +63,12 @@
 .wd-trait { font-size: 0.75rem; color: var(--gray-11); }
 .wd-gegner .wd-stage { min-height: 22rem; }
 .wd-boss { display: flex; flex-direction: column; gap: 2px; }
+
+/* Editor für geplante Chunks (B-461, WZ8.5) */
+.wd-plan { display: flex; flex-direction: column; gap: 6px; margin-top: 8px; }
+.wd-chunklist { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 6px; }
+.wd-planned { border: 1px solid var(--gray-6); border-radius: 6px; padding: 6px 8px; display: flex; flex-direction: column; gap: 4px; }
+.wd-object { display: flex; align-items: center; gap: 8px; margin-left: 1.5rem; }
+.wd-slot { width: 5rem; }
+.wd-kind, .wd-seed { width: 9rem; }
+.wd-error, .wd-notice { margin: 0; }
