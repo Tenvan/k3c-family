@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="de">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>K3C Server</title>
+    <style>
+      :root { color-scheme: dark; --bg: #0b1026; --panel: #151b3a; --text: #e8ecff; --muted: #9aa4d6; --ok: #5ad17a; --bad: #ff6b6b; --warn: #ffc857; }
+      * { box-sizing: border-box; }
+      body { margin: 0; padding: 20px; background: var(--bg); color: var(--text); font: 15px/1.45 "Segoe UI", system-ui, sans-serif; }
+      h1 { margin: 0 0 14px; font-size: 20px; }
+      .status { display: flex; align-items: center; gap: 10px; padding: 12px 14px; background: var(--panel); border-radius: 8px; }
+      .dot { width: 14px; height: 14px; border-radius: 50%; background: var(--bad); flex: none; }
+      .dot.run { background: var(--ok); }
+      .dot.wait { background: var(--warn); }
+      h2 { margin: 18px 0 6px; font-size: 14px; color: var(--muted); font-weight: 600; }
+      ul { list-style: none; margin: 0; padding: 0; }
+      li { display: flex; align-items: center; justify-content: space-between; gap: 8px; padding: 6px 10px; background: var(--panel); border-radius: 6px; margin-bottom: 4px; font-family: Consolas, monospace; }
+      button { background: #2b3566; color: var(--text); border: 0; border-radius: 6px; padding: 7px 14px; font: inherit; cursor: pointer; }
+      button:hover { background: #3a4690; }
+      button:disabled { opacity: 0.45; cursor: default; }
+      .row { display: flex; gap: 8px; margin-top: 16px; }
+      pre { margin: 0; padding: 10px; max-height: 190px; overflow: auto; background: #080c1c; border-radius: 6px; font: 12px/1.4 Consolas, monospace; color: var(--muted); white-space: pre-wrap; word-break: break-all; }
+    </style>
+  </head>
+  <body>
+    <h1>K3C Server</h1>
+    <div class="status"><span id="dot" class="dot"></span><span id="msg">Verbinde …</span></div>
+    <div id="urls-box" hidden>
+      <h2>Adressen im Heimnetz (Xbox und PC im Browser öffnen)</h2>
+      <ul id="urls"></ul>
+    </div>
+    <div class="row">
+      <button id="start">Starten</button>
+      <button id="stop">Beenden</button>
+    </div>
+    <h2>Meldungen des Servers</h2>
+    <pre id="log"></pre>
+    <script>
+      const $ = (id) => document.getElementById(id);
+      const app = () => window.go && window.go.main && window.go.main.App;
+
+      async function copy(url, btn) {
+        try {
+          await navigator.clipboard.writeText(url);
+          btn.textContent = 'Kopiert';
+        } catch {
+          btn.textContent = 'Nicht möglich';
+        }
+        setTimeout(() => { btn.textContent = 'Kopieren'; }, 1500);
+      }
+
+      function render(s) {
+        $('dot').className = 'dot' + (s.running ? ' run' : s.starting ? ' wait' : '');
+        $('msg').textContent = s.message;
+        $('start').disabled = s.running || s.starting;
+        $('stop').disabled = !s.running && !s.starting;
+        $('urls-box').hidden = s.urls.length === 0;
+        const ul = $('urls');
+        ul.textContent = '';
+        for (const url of s.urls) {
+          const li = document.createElement('li');
+          const text = document.createElement('span');
+          text.textContent = url;
+          const btn = document.createElement('button');
+          btn.textContent = 'Kopieren';
+          btn.addEventListener('click', () => copy(url, btn));
+          li.append(text, btn);
+          ul.append(li);
+        }
+        const log = $('log');
+        const atEnd = log.scrollTop + log.clientHeight >= log.scrollHeight - 4;
+        log.textContent = s.log.join('\n');
+        if (atEnd) log.scrollTop = log.scrollHeight;
+      }
+
+      async function poll() {
+        const a = app();
+        if (a) {
+          try { render(await a.State()); } catch (e) { $('msg').textContent = String(e); }
+        }
+        setTimeout(poll, 1000);
+      }
+
+      $('start').addEventListener('click', () => app() && app().Start());
+      $('stop').addEventListener('click', () => app() && app().Stop());
+      poll();
+    </script>
+  </body>
+</html>

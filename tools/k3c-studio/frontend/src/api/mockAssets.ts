@@ -34,6 +34,8 @@ function initial(): AssetSlot[] {
     slot('sfx:coin', 'sound', 'sfx', 'Münze', [{ datei: 'audio/atlas.ogg', sprite: 'coin' }], 'sfx'),
     slot('music:tag', 'sound', 'musik', 'Tag', [{ datei: 'audio/probe-a.ogg' }], 'music'),
     slot('music:abend', 'sound', 'musik', 'Abend', [], 'music'),
+    slot('music:nacht', 'sound', 'musik', 'Nacht', [{ datei: 'audio/probe-b.ogg' }], 'music'),
+    slot('music:kampf', 'sound', 'musik', 'Kampf', [{ datei: 'audio/probe-b.ogg' }, { datei: 'audio/probe-a.ogg' }], 'music'),
   ];
 }
 

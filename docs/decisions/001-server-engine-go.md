@@ -26,6 +26,8 @@ Stand: 2026-09-30 · Status: **beschlossen** · Backlog: B-001, B-002, B-003, B-
 
 1. **Go-Server ist die einzige Spiel-Engine** (autoritativ). Er rechnet alle Räume, der Browser schickt nur
    Eingaben und zeichnet Snapshots, lokal wie online. Es gibt danach **keine** Simulation mehr im Browser.
+   Der Server nutzt die **Go-Standardbibliothek** (`net/http`, `log/slog`); eine neue Abhängigkeit braucht ein Ticket und die
+   Zustimmung von 🧑 (Beschluss 2026-10-18, B-048; Quelle der Wahl: „Go, Standardbibliothek reicht“, alter Backlog, Commit `4c2e4d7`).
 2. **Mehrere Räume** und **mehrere lokale Spieler pro Gerät** sind von Anfang an im Kern (Raum-Verwaltung,
    Protokoll). Die Bedienung dafür (Lobby, Raum wählen) darf später kommen.
 3. Aufbau im Repo (ein Go-Modul im Root):
@@ -40,7 +42,7 @@ Stand: 2026-09-30 · Status: **beschlossen** · Backlog: B-001, B-002, B-003, B-
    engine/store/             Spielstände, Berichte
    cmd/k3c-server/           ohne Oberfläche: Windows-EXE, Linux, Docker (amd64 + arm64)
    cmd/k3c-tui/              Bubble Tea, spricht nur mit /api/status (lokal oder über das Netz)
-   cmd/k3c-desktop/          optional, später: Wails-Fenster um denselben Kern
+   tools/k3c-starter/        optional: Wails-Fenster um denselben Kern (BT1, B-041; ursprünglich cmd/k3c-desktop)
    ```
 
 4. **Schrittweise Umstellung** statt großem Wurf, abgesichert durch **Golden-Tests**: Die TS-Simulation erzeugt für

@@ -11,13 +11,13 @@ Audio-Subsystem des Clients (Presentation Layer): erzeugt Ton aus Spiel-Ereignis
 - `mixer.ts`: `Mixer` mit Master-Gain und je einem Bus (`music`, `sfx`, `ambient`); Lautstärken je Gerät in den Settings (`volumeToGain`).
 - `atlas.ts`: Sound-Atlas (`public/audio/atlas.json`, ein Sprite je Format): `parseAtlas`, `pickFile` nach `FORMAT_ORDER` (ogg, mp3, wav).
 - `music.ts` (SO4.2): reiner Zustands-Automat `nextMusicState` (acht Zustände, Priorität Lobby > Ende > Boss > Kampf > Tiefe > Tageszeit), Tabelle `MUSIC_TRACKS` (Zustand → ein Stück oder Lücke = Stille) und `MusicDirector` (`lobby()`, `update(view, events)`, `reset()`; `musicDirector()` liefert die Instanz), der per `preload` + `playFile` mit Crossfade (`CROSSFADE_SECONDS`) auf dem Bus `music` spielt; `musicViewOf(world)` leitet den Auszug ab, `trackUrl` wählt das Format. Fehlt die Datei einer Zustands-Zeile (`null`), blendet das laufende Stück aus. Gespeist von `GameScene` (Welt-Auszug, Ereignisse) und `LobbyScene`.
-- `events.ts`: reine Zuordnung `cueFor(GameEvent)` → `SoundCue` und Positionsdämpfung `attenuation` (`Listener` = Mitte/Breite der Kamera, `EDGE_GAIN`).
+- `events.ts` (SO2.3): reine Zuordnung `cueFor(GameEvent)` → `SoundCue {slot, global}` (Slot des Registers `data/assets.json`, Katalog `docs/assets/sounds.md`), `sfxUrls`/`SFX_URLS` (Slot → Datei, erste Präferenz), Positionsdämpfung `attenuation` (`Listener`, `EDGE_GAIN`), `eventX`, `nightGain`/`NIGHT_GAIN` (Nacht leise).
 
 ## Flow
 
 1. `GameScene.trackLastDevice()` ruft bei Eingabe `audioCore().onInput()`: Context anlegen, `Mixer` bauen, `loadAtlas()` (Atlas-JSON + eine Audiodatei dekodieren), `resume()`.
-2. `GameScene.spawnEffects()` ruft je Event `onEvent(e, x, listeners)`.
-3. `cueFor` wählt den Sprite, `attenuation` rechnet die Lautstärke aus Quellposition und Listenern.
+2. `GameScene.spawnEffects()` ruft je Event `onEvent(e, x, listeners, phase)`.
+3. `cueFor` wählt den Slot, `SFX_URLS` die Datei, `attenuation` und `nightGain` rechnen die Lautstärke; `playSample` spielt sie mehrstimmig (höchstens `MAX_SAMPLE_VOICES` je Datei), die Dateien lädt `preloadEffects` einmal nach der Entsperrung (fehlende bleiben stumm).
 4. `MusicDirector.update` (je Frame aus `GameScene`/`LobbyScene`) bestimmt mit `nextMusicState` den Zustand, lädt das Stück und startet es per `playFile` mit `loop` und Crossfade.
 5. `play(name, bus, volume)` startet einen `BufferSource` mit Sprite-Offset und Dauer am Bus-Knoten; ohne laufenden Context oder Atlas passiert nichts (Rückgabe `false`).
 

@@ -18,7 +18,7 @@ import {
 
 const room = { code: 'KRNZ', name: 'familie', depth: 1, grade: 'normal', taken: 2, free: 2, running: true };
 const lobby = { status: 'lobby' as Status, errorCode: null };
-const params = (p: Partial<StartParams> = {}): StartParams => ({ autostart: false, fresh: false, save: 'familie', mock: 0, room: null, players: 1, ...p });
+const params = (p: Partial<StartParams> = {}): StartParams => ({ autostart: false, fresh: false, save: 'familie', mock: 0, room: null, players: 1, depth: 0, seed: '', ...p });
 
 describe('Start-Parameter (AC-14, B-082/AC-01)', () => {
   it('gültige Werte', () => {
@@ -29,6 +29,8 @@ describe('Start-Parameter (AC-14, B-082/AC-01)', () => {
       mock: 3,
       room: 'KRNZ',
       players: 1,
+      depth: 0,
+      seed: '',
     });
   });
 
@@ -49,8 +51,35 @@ describe('Start-Parameter (AC-14, B-082/AC-01)', () => {
   });
 
   it('autostart und fresh nur mit 1; alte Parameter werden ignoriert', () => {
-    const p = parseStartParams('?autostart=yes&fresh=true&continue=1&online=X&seed=5&depth=2');
+    const p = parseStartParams('?autostart=yes&fresh=true&continue=1&online=X');
     expect(p).toEqual(params());
+  });
+});
+
+describe('Seed und Tiefe per URL (B-095/AC-02)', () => {
+  it('wertet ?seed= und ?depth= aus', () => {
+    const p = parseStartParams('?autostart=1&fresh=1&save=probe&seed=Familie-2026&depth=2');
+    expect(p).toMatchObject({ save: 'probe', seed: 'Familie-2026', depth: 2 });
+  });
+
+  it.each(['depth=-1', 'depth=1.5', 'depth=', 'depth=abc', 'depth=1234'])('ignoriert ungültiges %s', (q) => {
+    expect(parseStartParams(`?${q}`).depth).toBe(0);
+  });
+
+  it('Tiefe und Seed außerhalb der Grenzen gehen unverändert an den Server (bad_request, B-095)', () => {
+    expect(parseStartParams('?depth=10').depth).toBe(10);
+    expect(parseStartParams(`?seed=${'ü'.repeat(65)}`).seed).toBe('ü'.repeat(65));
+  });
+
+  it('create trägt seed und depth nur bei fresh', () => {
+    const p = { autostart: true, fresh: true, save: 'probe', seed: 'Familie-2026', depth: 1 };
+    expect(new LobbyFlow(params(p)).step(lobby)).toEqual({ t: 'create', save: 'probe', fresh: true, depth: 1, slots: [0], seed: 'Familie-2026' });
+    const load = new LobbyFlow(params({ ...p, fresh: false })).step(lobby);
+    expect(load).not.toHaveProperty('seed');
+  });
+
+  it('ohne seed trägt create kein seed-Feld (alte Server)', () => {
+    expect(new LobbyFlow(params({ autostart: true, fresh: true })).step(lobby)).not.toHaveProperty('seed');
   });
 });
 
@@ -78,10 +107,10 @@ describe('create-Befehl mit slots[] (AC-14, B-082/AC-02)', () => {
   it('applyCommand ruft create bzw. join am Client auf', () => {
     const calls: unknown[][] = [];
     const client = { create: (...a: unknown[]) => calls.push(['create', ...a]), join: (...a: unknown[]) => calls.push(['join', ...a]) };
-    applyCommand(client, { t: 'create', save: 's', fresh: true, depth: 0, slots: [0, 1] });
+    applyCommand(client, { t: 'create', save: 's', fresh: true, depth: 0, slots: [0, 1], seed: 'x' });
     applyCommand(client, { t: 'join', room: 'KRNZ', slots: [0] });
     expect(calls).toEqual([
-      ['create', 's', true, 0, [0, 1]],
+      ['create', 's', true, 0, [0, 1], 'x'],
       ['join', 'KRNZ', [0]],
     ]);
   });

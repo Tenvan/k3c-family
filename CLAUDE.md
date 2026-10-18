@@ -67,7 +67,8 @@ prüft die Regeln unten automatisch (Seiten eingetragen, `installPageChrome()`, 
 - `cmd/` – Go-Binaries: `k3c-server` (liefert `dist/` und die API aus), `k3c-load` (Lasttest), `k3c-tui`.
   `tools/k3c-dev` – Entwickler-Werkzeug (Wails-Fenster + MCP-Server `k3c-dev`). `tools/k3c-studio` – Asset-Studio
   (Wails-Fenster, Seiten Grafik und Sound, EXE `bin/k3c-studio.exe`, B-459). `tools/assetkit` – gemeinsame Asset-Logik
-  beider (eigenes Go-Modul, per `replace` eingebunden).
+  beider (eigenes Go-Modul, per `replace` eingebunden). `tools/k3c-starter` – Windows-Starter für den Server (Wails-Fenster
+  startet `bin/k3c-server`, zeigt Status und Adresse, EXE `bin/k3c-starter.exe`, `task k3c-starter:build`, B-041).
 - `src/model/` – Typen und Daten, die der Client vom Server kennt (`World`, `GameEvent`, `BIOMES`, `SaveGame` …), keine Logik.
 - `src/online/` – Client des Go-Servers (`clientConnection.ts`, Version in `clientProtocol.ts`): sendet nur Eingaben, zeichnet Snapshots. Ein Monarch pro Gerät.
 - `src/input/` – `PlayerInput`-Abstraktion (Tastatur, Gamepad, Touch-Overlay `touchInput.ts`, per `?touch=1` erzwingbar). Spiel-Code fragt Aktionen ab, nie konkrete Tasten.

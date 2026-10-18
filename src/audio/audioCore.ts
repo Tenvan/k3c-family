@@ -6,7 +6,7 @@
 import { clientLog } from '../core/clientLog';
 import { parseAtlas, pickFile, type Atlas } from './atlas';
 import type { GameEvent } from '../model/types';
-import { attenuation, cueFor, type Listener } from './events';
+import { SFX_URLS, attenuation, cueFor, nightGain, type Listener } from './events';
 import { Mixer, type AudioContextLike, type Bus, type GainNodeLike } from './mixer';
 import { QUICK_FADE_SECONDS, crossfadeCurves, fadeOutFrom } from './crossfade';
 
@@ -31,7 +31,12 @@ export interface CoreDeps {
   fetchJson(url: string): Promise<unknown>;
   fetchBytes(url: string): Promise<ArrayBuffer>;
   storage?: Pick<Storage, 'getItem' | 'setItem'>;
+  /** Slot → Datei der Effekte (Standard: Slot-Register); in Tests austauschbar */
+  sfx?: Readonly<Record<string, string>>;
 }
+
+/** Höchstens so viele gleichzeitige Instanzen je Effekt-Datei: viele Ereignisse je Tick (bis 32) verstopfen den Ton nicht. */
+export const MAX_SAMPLE_VOICES = 4;
 
 const ATLAS_URL = 'audio/atlas.json';
 
@@ -59,6 +64,8 @@ export class AudioCore {
   private buffer?: unknown;
   private readonly files = new Map<string, Promise<unknown>>();
   private readonly voices: Partial<Record<Bus, Voice>> = {};
+  private readonly decoded = new Map<string, unknown>();
+  private readonly active = new Map<string, number>();
 
   constructor(private readonly deps: CoreDeps) {}
 
@@ -74,6 +81,7 @@ export class AudioCore {
         this.ctx = this.deps.createContext();
         this.mixer = new Mixer(this.ctx, this.deps.storage);
         void this.loadAtlas();
+        void this.preloadEffects();
       }
       await this.ctx.resume();
     } catch (e) {
@@ -99,10 +107,40 @@ export class AudioCore {
     return true;
   }
 
-  /** Spiel-Ereignis → Ton, je nach Position gedämpft; `x` in Units (Quelle), `listeners` = Kameras der lokalen Spieler. */
-  onEvent(e: GameEvent, x: number | undefined, listeners: readonly Listener[]): boolean {
+  /**
+   * Spielt eine kurze Datei (Effekt) auf einem Bus, mehrstimmig (anders als `playFile`, je Bus ein Stück). Nur, wenn sie
+   * schon dekodiert ist (`preloadEffects`) und weniger als `MAX_SAMPLE_VOICES` Instanzen laufen; sonst stumm, nie ein Fehler.
+   */
+  playSample(url: string, bus: Bus = 'sfx', volume = 1): boolean {
+    const buf = this.decoded.get(url);
+    const { ctx, mixer } = this;
+    if (buf === undefined || !ctx || !mixer || !this.running || volume <= 0) return false;
+    const n = this.active.get(url) ?? 0;
+    if (n >= MAX_SAMPLE_VOICES) return false;
+    const src = ctx.createBufferSource();
+    src.buffer = buf;
+    const target = mixer.node(bus) as GainNodeLike;
+    if (volume < 1) {
+      const g = ctx.createGain(); // Dämpfung je Ton (Position, Nacht), der Bus-Regler bleibt unberührt
+      g.gain.value = volume;
+      g.connect(target);
+      src.connect(g);
+    } else src.connect(target);
+    src.onended = () => this.active.set(url, Math.max(0, (this.active.get(url) ?? 1) - 1));
+    try {
+      src.start(ctx.currentTime, 0);
+    } catch {
+      return false; // Kontext schon geschlossen: nicht zählen, sonst blieben dauerhaft Stimmen belegt
+    }
+    this.active.set(url, n + 1);
+    return true;
+  }
+
+  /** Spiel-Ereignis → Ton, je nach Position und Tageszeit gedämpft; `x` in Units (Quelle), `listeners` = Kameras der lokalen Spieler, `phase` = `world.cycle.phase`. */
+  onEvent(e: GameEvent, x: number | undefined, listeners: readonly Listener[], phase?: string): boolean {
     const cue = cueFor(e);
-    return !!cue && this.play(cue.sprite, 'sfx', attenuation(x, listeners, cue.global));
+    const url = cue && (this.deps.sfx ?? SFX_URLS)[cue.slot];
+    return !!cue && !!url && this.playSample(url, 'sfx', attenuation(x, listeners, cue.global) * nightGain(phase));
   }
 
   /** Lädt und dekodiert eine Datei einmal je URL; `false` bei Fehler (geloggt) oder ohne laufenden Kontext. Wirft nie. */
@@ -180,6 +218,15 @@ export class AudioCore {
         /* schon beendet */
       }
     }
+  }
+
+  /** Lädt die Effekt-Dateien einmal nach der Entsperrung; fehlende oder kaputte Dateien bleiben stumm (ein Logeintrag je Datei). */
+  private async preloadEffects(): Promise<void> {
+    const urls = new Set(Object.values(this.deps.sfx ?? SFX_URLS));
+    await Promise.all([...urls].map(async (url) => {
+      const buf = await this.loadBuffer(url);
+      if (buf !== undefined) this.decoded.set(url, buf);
+    }));
   }
 
   private loadBuffer(url: string): Promise<unknown> {
