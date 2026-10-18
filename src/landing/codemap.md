@@ -6,10 +6,11 @@ Presentation-Schicht der Shell (`index.html`): dauerhaft geöffnete Landingpage 
 
 ## Design
 
-- Registry: `pages.ts` – `PAGES: PageEntry[]` (title, description, icon, `href` als String oder Funktion, `section` `play|about`, `primary`, `small`), `SECTIONS` (Abschnittsnamen), `newGameHref()` (Start-URL „Neues Spiel“ mit `fresh=1` und eigenem Spielstandnamen aus der Uhrzeit). Nur Spieler-Kacheln plus die kleine Kachel „Entwicklung“ (`dev.html`, B-335); Werkzeug-Seiten stehen in `src/tools/devTiles.ts`.
+- Registry: `pages.ts` – `PAGES: PageEntry[]` (`id` `continue|new|online|licenses|dev`, `icon`, `href` als String oder Funktion, `section` `play|about`, `primary`, `small`; `title`/`description` sind Getter über `t('landing.<id>')`/`t('landing.<id>.desc')` und folgen der Gerätesprache, Helfer `page()`), `SECTIONS` (Abschnittsnamen), `newGameHref()` (Start-URL „Neues Spiel“ mit `fresh=1` und eigenem Spielstandnamen aus der Uhrzeit). Nur Spieler-Kacheln plus die kleine Kachel „Entwicklung“ (`dev.html`, B-335); Werkzeug-Seiten stehen in `src/tools/devTiles.ts`.
 - Shell/Host: `landing.ts` rendert Kacheln, erzeugt das iframe bei jedem Öffnen neu und entfernt es beim Schließen (keine Verlaufseinträge). `isOpenable()` aus `src/core/shell.ts` filtert Hash und `open`-Nachrichten.
 - Räumliche Navigation: nächste Kachel in Blickrichtung (Abstand in Richtung einfach, seitlicher Versatz doppelt gewichtet); Eingaben: Gamepad (D-Pad/Stick mit Repeat, A, Y, View+Menu), Tastatur, Maus. Fokus wird per eigener Klasse markiert und in `sessionStorage`/`FOCUS_KEY` gemerkt.
-- `serverCheck.ts`: `needsServer(page)` (Abschnitt `play`), `NO_SERVER_HINT`, `showNoServer(parent)` – Spielkacheln ohne Go-Server (GitHub Pages) deaktiviert.
+- Texte: `applyTexts()` setzt die `data-t`-Texte aus `index.html` und `document.documentElement.lang` aus `currentLanguage()` (B-369); Meldungen über `showToast` (z. B. Vollbild abgelehnt, mit Auslöser Taste F oder Controller Y).
+- `serverCheck.ts`: `needsServer(page)` (Abschnitt `play`), `showNoServer(parent)` (Hinweis `landing.noServerText`) – Spielkacheln ohne Go-Server (GitHub Pages) deaktiviert (`markNoServer()` in `landing.ts`).
 
 ## Flow
 
@@ -21,4 +22,4 @@ Presentation-Schicht der Shell (`index.html`): dauerhaft geöffnete Landingpage 
 ## Integration
 
 - Eingebunden von `index.html` (`/src/landing/landing.ts`).
-- Abhängigkeiten: `src/core/shell.ts` (Nachrichten, `isOpenable`), `src/core/fullscreen.ts`, `src/core/version.ts`; Endpoint `api/health`; Ziele sind die `*.html` im Repo-Root (`game.html`, `lizenzen.html`, `dev.html`; die Werkzeug-Seiten erreicht man über `dev.html`).
+- Abhängigkeiten: `src/core/shell.ts` (Nachrichten, `isOpenable`), `src/core/fullscreen.ts`, `src/core/version.ts`, `src/core/texts.ts`; Endpoint `api/health`; Ziele sind die `*.html` im Repo-Root (`game.html`, `lizenzen.html`, `dev.html`; die Werkzeug-Seiten erreicht man über `dev.html`).

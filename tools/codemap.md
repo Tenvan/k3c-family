@@ -1,15 +1,19 @@
 # tools/
 
 ## Responsibility
-Entwickler-Werkzeuge außerhalb des Spiels (Build-Time-Tools und Desktop-Dev-Tool). Keine eigenen Quelldateien.
+Entwickler-Werkzeuge außerhalb des Spiels (Build-Time-CLIs, Desktop-Tools, Claude-Code-Plugin). Keine eigenen Quelldateien.
 
 ## Design
 | Ordner | Rolle |
 |--------|-------|
 | [`atlas/`](atlas/codemap.md) | Build-Time-CLI: packt Sprite-Frames aus `data/sprites.json` zu Atlas-PNGs und Phaser-`atlas.json` |
 | [`k3c-dev/`](k3c-dev/codemap.md) | Wails-Desktop-Tool mit MCP-Server: Prüfläufe, Dienste, Logs, Planung, Balancing |
-| [`k3c-studio/`](k3c-studio/codemap.md) | Asset-Studio: Wails-Fenster mit Seiten Grafik und Sound (B-459) |
+| [`k3c-studio/`](k3c-studio/codemap.md) | Asset-Studio: Wails-Fenster mit Seiten Grafik, Sound, Monarch, Gegner, Gebäude-Planer und Welten Editor (B-459) |
 | [`assetkit/`](assetkit/codemap.md) | Gemeinsame Asset-Logik (Go-Modul) von k3c-dev und Asset-Studio |
+| [`aufraeumen/`](aufraeumen/codemap.md) | CLI: löscht lokale Branches und Worktrees nur in sicheren Fällen |
+| [`cockpit/`](cockpit/codemap.md) | Claude-Code-Plugin `tenvan-cc` mit Band, Panels und Chat-Skins |
+| [`gebaeude/`](gebaeude/codemap.md) | CLI: Gebäude-JSON → PNGs (Dichten 16/32/64/128) |
+| [`regeltabelle/`](regeltabelle/codemap.md) | CLI (`rules:update`): Block Hub-Stufe → Gebäude in der Regeldoku |
 
 ## Flow
 1. `task atlas` (Dependency von `dev` und `build`) baut und startet `tools/atlas`.
