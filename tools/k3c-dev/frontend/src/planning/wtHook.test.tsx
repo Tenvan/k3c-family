@@ -69,3 +69,34 @@ describe('Pill an der Projektkarte', () => {
     expect(html).toContain('sprint/x: Status aktiv → ruht');
   });
 });
+
+describe('useWorktreeDiffs: Zustand und Reihenfolge', () => {
+  it('loaded ist vor der ersten Antwort falsch; bei überlappenden Reloads zählt nur die jüngste Antwort', async () => {
+    let first!: (d: WorktreeDiff[]) => void;
+    let second!: (d: WorktreeDiff[]) => void;
+    check.mockReturnValueOnce(new Promise<WorktreeDiff[]>((r) => { first = r; }));
+    const m = await mount();
+    expect(m.get().loaded).toBe(false);
+    check.mockReturnValueOnce(new Promise<WorktreeDiff[]>((r) => { second = r; }));
+    await act(async () => { handlers['planning:changed']!(); });
+    await act(async () => { second(diff('NEU')); });
+    await act(async () => { first(diff('ALT')); }); // überholte Antwort
+    expect(m.get().loaded).toBe(true);
+    expect(m.get().diffs[0]!.changes[0]!.id).toBe('NEU');
+    m.done();
+  });
+});
+
+describe('Fehlerfall der Planungsseite', () => {
+  it('ohne Diffs (Fehler des Checks) gibt es keine Pills', () => {
+    const d = mockPlanningData();
+    const html = renderToStaticMarkup(
+      <Theme>
+        <WtContext.Provider value={indexChanges([])}>
+          <ProjectSections groups={groupProjects(d)} count={rankedCount(d.projects)} error={null} onMove={() => {}} data={d} sel="" renderSprint={() => <div />} />
+        </WtContext.Provider>
+      </Theme>,
+    );
+    expect(html).not.toContain('⎇');
+  });
+});
