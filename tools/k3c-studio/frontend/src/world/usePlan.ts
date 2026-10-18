@@ -9,6 +9,15 @@ const CHECK_DELAY = 200; // ms nach der letzten Änderung
 
 export type Notice = { kind: 'hint' | 'error' | 'stale'; text: string } | null;
 
+/** Speichern; lehnt der Aufruf ab (Wails mit Text), wird die Ablehnung zum Fehler, sonst bliebe sie ohne Meldung (B-486). */
+async function saveOrError(...args: Parameters<typeof backend.planSave>): Promise<PlanSaved> {
+  try {
+    return await backend.planSave(...args);
+  } catch (e) {
+    return { stand: '', hint: '', stale: false, error: `Speichern fehlgeschlagen: ${e instanceof Error ? e.message : String(e)}` };
+  }
+}
+
 /** Zustand des Editors für geplante Chunks (B-461, WZ8.5): geladene Inseln, Auswahl von Insel und Stufe, der Entwurf der
  *  gewählten Stufe, die Prüfung des Entwurfs (verzögert) und Speichern. Der Entwurf bleibt im Speicher, bis gespeichert,
  *  verworfen oder neu geladen wird; jede Änderung ruft die Prüfung auf, die Vorschauen zeigen den letzten gültigen Stand. */
@@ -57,13 +66,7 @@ export function usePlan() {
   const save = useCallback(async () => {
     if (!island || depth === undefined || !view) return;
     const chunks = normalized(draft);
-    let result: PlanSaved;
-    try {
-      result = await backend.planSave(island.id, depth, chunks, view.stand);
-    } catch (e) { // Wails lehnt mit Text ab: sonst bliebe das Speichern ohne jede Meldung (B-486)
-      setNotice({ kind: 'error', text: `Speichern fehlgeschlagen: ${e instanceof Error ? e.message : String(e)}` });
-      return;
-    }
+    const result = await saveOrError(island.id, depth, chunks, view.stand);
     if (result.error) { setNotice({ kind: result.stale ? 'stale' : 'error', text: result.error }); return; }
     setView({
       ...view, stand: result.stand,
