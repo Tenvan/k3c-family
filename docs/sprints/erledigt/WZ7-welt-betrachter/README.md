@@ -1,6 +1,6 @@
 # WZ7 · SIM, SRV, DEV · Welt-Betrachter im Asset-Studio mit Chunk- und Live-Vorschau
 
-- **Status:** aktiv
+- **Status:** erledigt
 - **Projekt:** WZG
 - **Domäne:** SIM, SRV, DEV
 - **Reife:** bereit
@@ -78,14 +78,14 @@ Beantwortet von 🧑 am 2026-10-17 (Chat), siehe `B-460 › Offene Fragen` 10–
 | WZ7.2 | `WZ7.2-seite-chunk-vorschau.md` | Umsetzung | autonom | fertig |
 | WZ7.3 | `WZ7.3-live-vorschau.md` | Umsetzung | autonom | fertig |
 | WZ7.4 | `WZ7.4-live-optionen-im-spiel.md` | Umsetzung | autonom | fertig |
-| WZ7.5 | `WZ7.5-leveltest-entfernen.md` | Umsetzung | autonom | offen |
-| WZ7.6 | `WZ7.6-review.md` | Review | autonom | offen |
-| WZ7.7 | `WZ7.7-abnahme.md` | Review | Mensch | offen |
+| WZ7.5 | `WZ7.5-leveltest-entfernen.md` | Umsetzung | autonom | fertig |
+| WZ7.6 | `WZ7.6-review.md` | Review | autonom | fertig |
+| WZ7.7 | `WZ7.7-abnahme.md` | Review | Mensch | fertig |
 
 
 Domänen-Reihenfolge: SIM (WZ7.8, zuerst) → SRV (WZ7.1) → DEV (WZ7.2–WZ7.7). WZ7.8 trägt die höchste Nummer, weil sie später aufgenommen wurde; die Nummern von WZ7.1–WZ7.7 bleiben stabil, weil WZ8–WZ11 und B-463 auf sie verweisen.
 
 ## Abnahme
 
-Wird von der Review-Session (Doku-Sprint: letzte Session) ausgefüllt, höchstens fünf Zeilen: Datum, Kriterien
-(Verweis auf Session-Ergebnisse), behobene Befunde, neue Tickets. Bis dahin `–`.
+2026-10-18 (Abnahme WZ7.7 durch 🧑 am PC): AC-01 bis AC-08 mit Nachweis aus WZ7.6; AC-09 verschoben nach B-477 (Mängel der Ansicht, Sprint WZ16). B-092 verworfen, B-426 Punkt 1 und 4 verworfen. Neue Tickets: B-477.
+Version: v0.19.0 gesetzt (2026-10-18, Minor wegen Wirkung im Werkzeug, zusammen mit WZ16; Tag auf `ea750844`, Release-Lauf grün, `/api/health` und Landingpage im Nachbau mit den Flags des Release-Workflows v0.19.0).

@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import { mockWorldPreview } from '../api/mockWorld';
-import { backgroundToggles, buildingToggles, hubLevelChoices, levelKey, previewArgsOf, siteKey, stageZoom, worldOf } from './stageLogic';
+import { backgroundToggles, buildingGroups, buildingToggles, hubLevelChoices, previewArgsOf, siteKey, worldOf } from './stageLogic';
 
 describe('Hub-Stufen (B-460/AC-04)', () => {
   it('aus data/hub.json › levels: 1 bis Anzahl der Einträge', () => {
@@ -28,6 +28,38 @@ describe('Gebäude-Liste aus dem Zustand (B-460/AC-04)', () => {
   it('die Liste des Mocks (vom Server erzeugter Zustand) hat zu jedem Platz einen Schalter', () => {
     const state = mockWorldPreview(previewArgsOf('k3c', 'forest', 5, new Set())).state!;
     expect(buildingToggles(state.sites)).toHaveLength(state.sites.length);
+  });
+});
+
+describe('Gebäude-Filter nach Art (B-477/AC-05)', () => {
+  const toggles = buildingToggles([
+    { kind: 'tower', x: 330 }, { kind: 'wall', x: 322 }, { kind: 'zelt', x: 10 }, { kind: 'wall', x: 345 }, { kind: 'gate', x: 318 }, { kind: 'altar', x: 5 },
+  ]);
+
+  it('Gruppen in fester Reihenfolge (Mauern, Türme, Tore), unbekannte Arten danach alphabetisch; Plätze von links nach rechts', () => {
+    const groups = buildingGroups(toggles, new Set());
+    expect(groups.map((g) => g.kind)).toEqual(['wall', 'tower', 'gate', 'altar', 'zelt']);
+    expect(groups.map((g) => g.label)).toEqual(['Mauern', 'Türme', 'Tore', 'altar', 'zelt']);
+    expect(groups[0]!.items.map((t) => t.key)).toEqual(['wall@322', 'wall@345']);
+  });
+
+  it('Zustand des Gruppenschalters: alle, keiner, gemischt', () => {
+    const state = (off: string[]) => Object.fromEntries(buildingGroups(toggles, new Set(off)).map((g) => [g.kind, [g.state, g.on]]));
+    expect(state([]).wall).toEqual(['all', 2]);
+    expect(state(['wall@322']).wall).toEqual(['some', 1]);
+    expect(state(['wall@322', 'wall@345']).wall).toEqual(['none', 0]);
+    expect(state(['wall@322']).tower).toEqual(['all', 1]);
+  });
+
+  it('jeder Platz steht in genau einer Gruppe; ohne Plätze keine Gruppen', () => {
+    expect(buildingGroups(toggles, new Set()).flatMap((g) => g.items)).toHaveLength(toggles.length);
+    expect(buildingGroups([], new Set())).toEqual([]);
+  });
+
+  it('die Gruppen des Mocks (vom Server erzeugter Zustand) enthalten jeden Platz', () => {
+    const state = mockWorldPreview(previewArgsOf('k3c', 'forest', 5, new Set())).state!;
+    const groups = buildingGroups(buildingToggles(state.sites), new Set());
+    expect(groups.reduce((n, g) => n + g.items.length, 0)).toBe(state.sites.length);
   });
 });
 
@@ -64,22 +96,6 @@ describe('Welt für den Renderer (B-460/AC-04)', () => {
     expect(worldOf(mockWorldPreview(previewArgsOf('fehler', 'forest', 5, new Set())))).toBeNull();
     const view = mockWorldPreview(previewArgsOf('k3c', 'forest', 5, new Set()));
     expect(worldOf({ ...view, level: { ...view.level, biomeId: 'nirgendwo' } })).toBeNull();
-  });
-});
-
-describe('Kamera', () => {
-  it('Zoom: Spielhöhe 1080 passt in die Bühnenhöhe', () => {
-    expect(stageZoom(540)).toBe(0.5);
-    expect(stageZoom(1080)).toBe(1);
-    expect(stageZoom(0)).toBe(1);
-  });
-
-  it('levelKey: ein anderes Level (Seed, Biom) zentriert neu, Hub-Stufe und Gebäude-Auswahl nicht', () => {
-    const base = worldOf(mockWorldPreview(previewArgsOf('k3c', 'forest', 5, new Set())))!;
-    const hub3 = worldOf(mockWorldPreview(previewArgsOf('k3c', 'forest', 3, new Set(['wall@322']))))!;
-    expect(levelKey(hub3)).toBe(levelKey(base));
-    expect(levelKey({ ...base, seed: 'anderer' })).not.toBe(levelKey(base));
-    expect(levelKey({ ...base, biome: { ...base.biome, id: 'cave' } })).not.toBe(levelKey(base));
   });
 });
 

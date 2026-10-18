@@ -1,6 +1,6 @@
 # WZ7.5 · leveltest.html entfernen
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** DEV
@@ -55,5 +55,10 @@ Kein Löschen von Historie (`docs/backlog`, `docs/sprints/erledigt`, Sprint-Ordn
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+Umgesetzt von Claude (autonom), 2026-10-17.
+
+- **AC-07 umgesetzt, geprüft:** `leveltest.html`, `src/tools/leveltest.ts`, `levelView.ts`/`levelApi.ts` mit Tests gelöscht; Kachel „Level“ in `devTiles.ts`, `LEVEL_TILES` und der Abschnitt „Level“ in `testing.html`/`testing.ts` entfernt; Texte `level.*`, `tile.level.*`, `test.h.level` entfernt; Codemaps und `docs/sprints/README.md` nachgezogen. `git grep -n -i leveltest` ist außerhalb von `.codemap`, `docs/backlog`, `docs/sprints/erledigt` und den Sprint-Ordnern WZ6/WZ7 leer. `task check` und `task build` grün (`check_run`).
+- **Abweichungen:** `dmApi.ts` nutzte `level.httpError`; der Text heißt jetzt `tool.httpError`. `texts.test.ts` und `textRule.test.ts` verwenden andere Beispiel-Schlüssel statt `level.*`. Kommentare im Studio-Frontend und die Erwähnung in WZ8.5 nennen die Seite nicht mehr beim Dateinamen.
+- **Code-Review:** getrennter Reviewer-Agent vor dem Commit, keine schweren Befunde (kosmetisch: `testing.html` hat jetzt eine Section nur mit der Notiz).
+- **Manuelle Prüfung:** keine.
+- Neue Tickets: keine.

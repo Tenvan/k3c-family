@@ -25,8 +25,9 @@ In Abarbeitungs-Reihenfolge; der erste nicht erledigte Sprint ist der nächste. 
 | WZ4 | Splitter-Test in DOM-Umgebung | erledigt |
 | WZ5 | Planungsseite im Look der erp-qs-Workbench | erledigt |
 | WZ6 | Asset-Studio als eigene EXE mit Seiten für Grafik und Sound | erledigt |
-| WZ7 | Welt-Betrachter im Asset-Studio mit Chunk- und Live-Vorschau | aktiv |
+| WZ7 | Welt-Betrachter im Asset-Studio mit Chunk- und Live-Vorschau | erledigt |
 | WZ8 | Chunks je Insel und Stufe planen: Seed oder feste Objekte | aktiv |
+| WZ16 | Welt-Betrachter: eine gemeinsame Ansicht mit Sprungleiste, Zoom und Gebäude-Filter | erledigt |
 | WZ15 | Hub-Planung Vorlauf: Regeltabelle erzeugt, Prüfung ohne globalen Zustand | geplant |
 | WZ9 | Gebäude-Planer für die Freischaltung je Hub-Stufe | geplant |
 | WZ10 | Abspiel-Bausteine und Monarch-Vorschau im Asset-Studio | aktiv |

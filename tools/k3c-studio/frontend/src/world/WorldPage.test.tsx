@@ -6,9 +6,11 @@ import { afterEach, describe, expect, it, vi } from 'vitest';
 import { backend } from '../api';
 import { mockWorldLevel } from '../api/mockWorld';
 import { WorldPage } from './WorldPage';
+import { MAX_SCALE, scaleOfPercent } from './viewState';
 
 // Die Phaser-Bühne braucht ein Canvas; ihr Zusammenspiel prüft LivePreview.test.tsx mit einer Attrappe.
-vi.mock('../stage/PreviewStage', () => ({ PreviewStage: class { show() {} refresh() {} setLook() {} destroy() {} } }));
+const views: { left: number; scale: number }[] = [];
+vi.mock('../stage/PreviewStage', () => ({ PreviewStage: class { show() {} setPosition(v: { left: number; scale: number }) { views.push(v); } setLook() {} destroy() {} } }));
 
 // B-460/AC-01, AC-02 im DOM: der Mock (ohne Wails) liefert das Level, die Chunk-Vorschau ist beim Öffnen maximiert.
 (globalThis as { IS_REACT_ACT_ENVIRONMENT?: boolean }).IS_REACT_ACT_ENVIRONMENT = true;
@@ -29,32 +31,46 @@ async function mount(): Promise<HTMLElement> {
 
 const button = (h: HTMLElement, label: string) => [...h.querySelectorAll('button')].find((b) => b.textContent === label || b.getAttribute('aria-label') === label)!;
 const live = (h: HTMLElement) => h.querySelector<HTMLElement>('.wd-live')!;
-const chunks = (h: HTMLElement) => h.querySelector<HTMLElement>('.wd-chunks')!;
+const page = (h: HTMLElement) => h.querySelector<HTMLElement>('.wd-page')!;
+const position = (h: HTMLElement) => h.querySelector<HTMLInputElement>('input[aria-label="Position"]')!;
+const stripWidth = (h: HTMLElement) => parseFloat(h.querySelector<HTMLElement>('.wd-strip')!.style.width);
+const setInput = (el: HTMLInputElement, value: string) => act(async () => {
+  Object.getOwnPropertyDescriptor(HTMLInputElement.prototype, 'value')!.set!.call(el, value);
+  el.dispatchEvent(new Event('input', { bubbles: true }));
+});
 
 afterEach(() => {
+  views.length = 0;
   vi.restoreAllMocks();
   act(() => root?.unmount());
   host?.remove();
 });
 
 describe('Seite Welt-Betrachter: Chunk-Vorschau (B-460/AC-01, AC-02)', () => {
-  it('ist beim Öffnen maximiert: Live-Vorschau eingeklappt, Knopf „Verkleinern“', async () => {
+  it('ist beim Öffnen maximiert und zeigt beide Vorschauen (B-477/AC-04)', async () => {
     const h = await mount();
-    expect(chunks(h).dataset.maximized).toBe('true');
-    expect(chunks(h).classList.contains('wd-max')).toBe(true);
-    expect(live(h).hidden).toBe(true);
+    expect(page(h).dataset.maximized).toBe('true');
+    expect(live(h).hidden).toBe(false);
+    expect(h.querySelector('.wd-viewport')).not.toBeNull();
+    expect(h.querySelector('.wd-stage')).not.toBeNull();
     expect(button(h, 'Verkleinern')).toBeDefined();
   });
 
-  it('verkleinern und wieder maximieren, die Live-Vorschau folgt', async () => {
+  it('verkleinern und wieder maximieren ändert nur die Höhen, beide Vorschauen bleiben sichtbar', async () => {
     const h = await mount();
     await act(async () => button(h, 'Verkleinern').click());
-    expect(chunks(h).dataset.maximized).toBe('false');
-    expect(chunks(h).classList.contains('wd-max')).toBe(false);
+    expect(page(h).dataset.maximized).toBe('false');
     expect(live(h).hidden).toBe(false);
+    expect(h.querySelector('.wd-viewport')).not.toBeNull();
     await act(async () => button(h, 'Maximieren').click());
-    expect(chunks(h).dataset.maximized).toBe('true');
-    expect(live(h).hidden).toBe(true);
+    expect(page(h).dataset.maximized).toBe('true');
+    expect(live(h).hidden).toBe(false);
+  });
+
+  it('hat genau eine Positions-Leiste und der Streifen scrollt nicht selbst (B-477/AC-01)', async () => {
+    const h = await mount();
+    expect(h.querySelectorAll('input[aria-label="Position"]')).toHaveLength(1);
+    expect(h.querySelector('.wd-viewport')!.tagName).toBe('DIV');
   });
 
   it('zeigt das Level ohne Spielserver: Abschnitte, Objekte, Legende, Zusammenfassung', async () => {
@@ -67,16 +83,62 @@ describe('Seite Welt-Betrachter: Chunk-Vorschau (B-460/AC-01, AC-02)', () => {
     expect(h.querySelector('[role="status"]')!.textContent).toContain(`${level.chunks.length} Abschnitte`);
   });
 
-  it('Zoom verbreitert den Streifen und endet an der Grenze', async () => {
+});
+
+describe('Seite Welt-Betrachter: gemeinsame Ansicht (B-477/AC-01 bis AC-03)', () => {
+  it('Zoom verbreitert den Streifen und endet an der Grenze, die Bühne bekommt denselben Maßstab (B-477/AC-03)', async () => {
     const h = await mount();
-    const width = () => parseFloat(h.querySelector<HTMLElement>('.wd-strip')!.style.width);
-    const before = width();
+    const before = stripWidth(h);
     await act(async () => button(h, 'Hineinzoomen').click());
-    expect(width()).toBeGreaterThan(before);
-    for (let i = 0; i < 20; i++) await act(async () => button(h, 'Hineinzoomen').click());
-    expect(width()).toBe(mockWorldLevel('k3c', { biome: 'forest' }).widthUnits * 24);
+    expect(stripWidth(h)).toBeGreaterThan(before);
+    for (let i = 0; i < 30; i++) await act(async () => button(h, 'Hineinzoomen').click());
+    expect(stripWidth(h)).toBe(mockWorldLevel('k3c', { biome: 'forest' }).widthUnits * MAX_SCALE);
+    expect(views.at(-1)!.scale).toBe(MAX_SCALE);
   });
 
+  it('der Zoom-Regler und die festen Stufen setzen den Maßstab für beide (B-477/AC-03)', async () => {
+    const h = await mount();
+    const units = mockWorldLevel('k3c', { biome: 'forest' }).widthUnits;
+    await setInput(h.querySelector<HTMLInputElement>('input[aria-label="Zoom"]')!, '20');
+    expect(stripWidth(h)).toBe(units * 20);
+    expect(views.at(-1)!.scale).toBe(20);
+    const select = h.querySelector<HTMLSelectElement>('select[aria-label="Zoomstufe"]')!;
+    await act(async () => { select.value = '50'; select.dispatchEvent(new Event('change', { bubbles: true })); });
+    expect(stripWidth(h)).toBe(units * scaleOfPercent(50));
+    expect(views.at(-1)!.scale).toBe(scaleOfPercent(50));
+  });
+
+  it('die Positions-Leiste bewegt Streifen und Bühne gemeinsam (B-477/AC-01)', async () => {
+    const h = await mount();
+    const viewport = h.querySelector<HTMLElement>('.wd-viewport')!;
+    expect(position(h).max).not.toBe('0');
+    await setInput(position(h), '200');
+    expect(viewport.scrollLeft).toBe(200 * views.at(-1)!.scale);
+    expect(views.at(-1)!.left).toBe(200);
+    await setInput(position(h), '0');
+    expect(viewport.scrollLeft).toBe(0);
+    expect(views.at(-1)!.left).toBe(0);
+  });
+
+  it('Sprungpunkte stellen beide Vorschauen auf denselben Ort; fehlende sind ausgegraut (B-477/AC-02)', async () => {
+    const h = await mount();
+    const level = mockWorldLevel('k3c', { biome: 'forest' });
+    const jump = (label: string) => [...h.querySelectorAll<HTMLButtonElement>('[aria-label="Sprungpunkte"] button')].find((b) => b.textContent === label)!;
+    await act(async () => jump('Ende').click());
+    expect(views.at(-1)!.left).toBeCloseTo(level.widthUnits - 1000 / views.at(-1)!.scale); // Ansicht 1000 px breit (nicht gemessen im Test)
+    expect(h.querySelector<HTMLElement>('.wd-viewport')!.scrollLeft).toBe(views.at(-1)!.left * views.at(-1)!.scale);
+    const left = views.at(-1)!.left;
+    await act(async () => jump('Anfang').click());
+    expect(views.at(-1)!.left).toBe(0);
+    await act(async () => jump('Hub').click());
+    expect(views.at(-1)!.left).toBeGreaterThan(0);
+    expect(left).toBeGreaterThan(views.at(-1)!.left);
+    expect(level.hubCenterUnits).toBeGreaterThan(0);
+  });
+
+});
+
+describe('Seite Welt-Betrachter: Hinweise und Warnungen (B-460/AC-01)', () => {
   it('eine abgelehnte Anfrage zeigt den Hinweis statt eines Streifens', async () => {
     const h = await mount();
     const input = h.querySelector<HTMLInputElement>('input')!;
@@ -104,30 +166,51 @@ describe('Seite Welt-Betrachter: Tasten und Anfragen (B-460/AC-02)', () => {
     const h = await mount();
     const press = (key: string, target: EventTarget = document.body) => act(async () => { target.dispatchEvent(new KeyboardEvent('keydown', { key, bubbles: true })); });
     await press('m');
-    expect(chunks(h).dataset.maximized).toBe('false');
+    expect(page(h).dataset.maximized).toBe('false');
     await press('M');
-    expect(chunks(h).dataset.maximized).toBe('true');
+    expect(page(h).dataset.maximized).toBe('true');
     await press('m', h.querySelector('input')!);
-    expect(chunks(h).dataset.maximized).toBe('true');
+    expect(page(h).dataset.maximized).toBe('true');
   });
 
-  it('Tasten + und − zoomen, Pfeile scrollen (wie leveltest.html)', async () => {
+  it('Tasten + und − zoomen, Pfeile scrollen', async () => {
     const h = await mount();
     const press = (key: string) => act(async () => { document.body.dispatchEvent(new KeyboardEvent('keydown', { key, bubbles: true })); });
-    const width = () => parseFloat(h.querySelector<HTMLElement>('.wd-strip')!.style.width);
-    const base = width();
+    const base = stripWidth(h);
     await press('+');
-    expect(width()).toBeGreaterThan(base);
+    expect(stripWidth(h)).toBeGreaterThan(base);
     await press('-');
     await press('-');
-    expect(width()).toBeLessThan(base);
-    const viewport = h.querySelector<HTMLElement>('.wd-viewport')!;
-    viewport.scrollLeft = 300;
+    expect(stripWidth(h)).toBeLessThan(base);
+    await setInput(position(h), String(Math.floor(Number(position(h).max) / 2)));
+    const start = views.at(-1)!.left;
+    const step = 120 / views.at(-1)!.scale; // 120 Pixel je Pfeiltaste
     await press('ArrowLeft');
-    expect(viewport.scrollLeft).toBe(180);
+    expect(views.at(-1)!.left).toBeCloseTo(start - step);
     await press('ArrowRight');
     await press('ArrowRight');
-    expect(viewport.scrollLeft).toBe(420);
+    expect(views.at(-1)!.left).toBeCloseTo(start + step);
+  });
+
+});
+
+describe('Seite Welt-Betrachter: Mausrad und Anfragen (B-477)', () => {
+  it('Mausrad über dem Streifen: Strg zoomt, Umschalt scrollt, das gewöhnliche Rad bleibt für die Seite (B-477)', async () => {
+    const h = await mount();
+    const viewport = h.querySelector<HTMLElement>('.wd-viewport')!;
+    const wheel = (init: WheelEventInit) => {
+      const e = Object.assign(new Event('wheel', { bubbles: true, cancelable: true }), { deltaX: 0, deltaY: 0, ctrlKey: false, shiftKey: false, ...init });
+      act(() => { viewport.dispatchEvent(e); });
+      return e.defaultPrevented;
+    };
+    const before = stripWidth(h);
+    expect(wheel({ deltaY: 100 })).toBe(false);
+    expect(stripWidth(h)).toBe(before);
+    expect(wheel({ deltaY: -100, ctrlKey: true })).toBe(true);
+    expect(stripWidth(h)).toBeGreaterThan(before);
+    const left = views.at(-1)!.left;
+    expect(wheel({ deltaY: 100, shiftKey: true })).toBe(true);
+    expect(views.at(-1)!.left).toBeGreaterThan(left);
   });
 
   it('bei zwei schnellen Anfragen gilt nur die letzte, auch wenn die erste später antwortet', async () => {

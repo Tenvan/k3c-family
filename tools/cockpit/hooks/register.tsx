@@ -197,14 +197,15 @@ async function note($: EngineInterface, src: LogSrc, text: string, tool?: { tool
   await update($, log, list => pushCapped(list, { at, src, text, ...tool }, LOG_MAX))
 }
 
-// Tool-Name farbig: Server gedimmt, Tool in Akzentfarbe; Ziel gedimmt hinter „→“ (nur, wenn es eins gibt), Fehler rot.
+// Tool-Name farbig: Server gedimmt, Tool in Akzentfarbe; Ziel in Gelb hinter gedimmtem „→“ (nur, wenn es eins gibt), Fehler rot.
 function toolLabel({ Text }: Ui, name: string, target = '', isError = false) {
   const p = splitTool(name)
   return (
     <Text>
       {p.server !== null && <Text color={THEME.textMuted}>{p.server} › </Text>}
       <Text bold color={THEME.accent}>{p.tool}</Text>
-      {target !== '' && <Text color={THEME.textSecondary}> → {target}</Text>}
+      {target !== '' && <Text color={THEME.textMuted}> →</Text>}
+      {target !== '' && <Text color={THEME.warning}> {target}</Text>}
       {isError && <Text color={THEME.error}> ✗</Text>}
     </Text>
   )

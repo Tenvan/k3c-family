@@ -223,7 +223,9 @@ export function oneLine(text: string, max = 80): string {
   return t.length > max ? `${t.slice(0, max - 1)}…` : t
 }
 
-// Ziel eines Tool-Calls für das Protokoll: Pfade auf die letzten zwei Segmente, sonst Muster/Befehl.
+const TARGET_KEYS = ['title', 'name', 'id', 'task', 'subject', 'section', 'service', 'action'] as const
+
+// Ziel eines Tool-Calls für das Protokoll:Pfade auf die letzten zwei Segmente, sonst Muster/Befehl.
 export function toolTarget(input: unknown): string {
   // Die Argumente liegen im Event selbst (tool.call) oder unter `input` (Aufruf per $.tool.check).
   const e = (input ?? {}) as Record<string, unknown>
@@ -231,7 +233,14 @@ export function toolTarget(input: unknown): string {
   const path = [i.file_path, i.path, i.notebook_path].find(x => typeof x === 'string' && x !== '')
   if (typeof path === 'string') return path.replace(/\\/g, '/').split('/').slice(-2).join('/')
   const other = [i.pattern, i.command, i.url, i.description, i.query].find(x => typeof x === 'string' && x !== '')
-  return typeof other === 'string' ? oneLine(other, 60) : ''
+  if (typeof other === 'string') return oneLine(other, 60)
+  // Fremde MCP-Tools: kennzeichnende Felder (Titel, Name, Kennung, Abschnitt …), bis zu zwei kurze Werte.
+  const ids = TARGET_KEYS.flatMap(k => {
+    const v = i[k]
+    const s = typeof v === 'number' ? String(v) : typeof v === 'string' ? v.trim() : ''
+    return s !== '' && s.length <= 40 ? [s] : []
+  })
+  return oneLine([...new Set(ids)].slice(0, 2).join(' · '), 60)
 }
 
 // Lade-Animation, solange ein Turn läuft: Spinner-Zeichen und ein Balken, in dem ein Block hin und her läuft.
