@@ -26,6 +26,8 @@ Abnahmen am Gerät (`Agent: Mensch`) sammelt das Projekt ABN im Sprint HW1: [`..
 |---|---|---|---|---|---|---|
 | WZ14 | REG | WZG | Geplante Chunks tragen Ruinen und Gegnerlager | – | Entwurf | `geplant/WZ14-ruinen-gegnerlager/` |
 | WZ17 | REG, SIM, SRV, DEV | WZG | Chunk-Editor komfortabel: Inselgrößen, getrennter Zoom, Seed-Chunk umwandeln | – | bereit | `geplant/WZ17-chunk-editor-komfort/` |
+| WZ18 | REG | WZG | Welten im Spiel: Welt-Dateien, Welt-Wahl im Raum und Welten-Editor | – | Entwurf | `geplant/WZ18-welten-im-spiel/` |
+| WZ19 | DEV | WZG | Chat im Studio mit Claude Code CLI und Welt per Prompt füllen | – | Entwurf | `geplant/WZ19-chat-und-prompt/` |
 | BD2 | SIM, SRV, CLI | BED | Rückmeldungs-Ereignisse gedrosselt und geprüft, Lobby startet nie still leer | – | Entwurf | `geplant/BD2-rueckmeldung-lobby-nachtraege/` |
 | BD3 | SRV | BED | Raum-Pause im Couch-Raum, Schutz des pausierten Monarchen online | – | Entwurf | `geplant/BD3-raum-pause/` |
 | BD4 | CLI | BED | Gemeinsame HUD-Leiste oben, Fluss unten, lokale Spieler treten einzeln aus | – | Entwurf | `geplant/BD4-hud-leiste-austreten/` |
