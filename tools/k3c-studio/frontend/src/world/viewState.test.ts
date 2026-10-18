@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import { levelModel } from './levelView';
-import { DEFAULT_SCALE, MAX_SCALE, MIN_SCALE, ZOOM_PERCENTS, clampLeft, clampScale, jumpPoints, leftFor, scaleOfPercent, zoomView } from './viewState';
+import { DEFAULT_SCALE, MAX_SCALE, MIN_SCALE, ZOOM_PERCENTS, clampLeft, clampScale, jumpPoints, leftFor, scaleOfPercent, wheelAction, zoomView } from './viewState';
 
 const model = levelModel({
   seed: 's', biomeId: 'forest', widthUnits: 900, chunkWidthUnits: 50, hubCenterUnits: 450, warnings: [],
@@ -53,6 +53,22 @@ describe('Position (B-477/AC-01)', () => {
     expect(leftFor(450, 900, 100)).toBe(400);
     expect(leftFor(0, 900, 100)).toBe(0);
     expect(leftFor(900, 900, 100)).toBe(800);
+  });
+});
+
+describe('Mausrad (B-477/AC-01, AC-03)', () => {
+  const wheel = (o: Partial<{ deltaX: number; deltaY: number; ctrlKey: boolean; shiftKey: boolean }>) => wheelAction({ deltaX: 0, deltaY: 0, ctrlKey: false, shiftKey: false, ...o });
+
+  it('das gewöhnliche Rad bewirkt nichts (die Seite scrollt senkrecht)', () => {
+    expect(wheel({ deltaY: 100 })).toBeNull();
+  });
+
+  it('Strg + Rad zoomt, Umschalt + Rad und seitliches Rad scrollen', () => {
+    expect(wheel({ deltaY: -100, ctrlKey: true })).toEqual({ kind: 'zoom', factor: 1.25 });
+    expect(wheel({ deltaY: 100, ctrlKey: true })).toEqual({ kind: 'zoom', factor: 0.8 });
+    expect(wheel({ deltaY: 100, shiftKey: true })).toEqual({ kind: 'pan', px: 100 });
+    expect(wheel({ deltaX: -60 })).toEqual({ kind: 'pan', px: -60 });
+    expect(wheel({ ctrlKey: true })).toBeNull();
   });
 });
 

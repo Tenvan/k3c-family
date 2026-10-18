@@ -192,6 +192,27 @@ describe('Seite Welt-Betrachter: Tasten und Anfragen (B-460/AC-02)', () => {
     expect(views.at(-1)!.left).toBeCloseTo(start + step);
   });
 
+});
+
+describe('Seite Welt-Betrachter: Mausrad und Anfragen (B-477)', () => {
+  it('Mausrad über dem Streifen: Strg zoomt, Umschalt scrollt, das gewöhnliche Rad bleibt für die Seite (B-477)', async () => {
+    const h = await mount();
+    const viewport = h.querySelector<HTMLElement>('.wd-viewport')!;
+    const wheel = (init: WheelEventInit) => {
+      const e = Object.assign(new Event('wheel', { bubbles: true, cancelable: true }), { deltaX: 0, deltaY: 0, ctrlKey: false, shiftKey: false, ...init });
+      act(() => { viewport.dispatchEvent(e); });
+      return e.defaultPrevented;
+    };
+    const before = stripWidth(h);
+    expect(wheel({ deltaY: 100 })).toBe(false);
+    expect(stripWidth(h)).toBe(before);
+    expect(wheel({ deltaY: -100, ctrlKey: true })).toBe(true);
+    expect(stripWidth(h)).toBeGreaterThan(before);
+    const left = views.at(-1)!.left;
+    expect(wheel({ deltaY: 100, shiftKey: true })).toBe(true);
+    expect(views.at(-1)!.left).toBeGreaterThan(left);
+  });
+
   it('bei zwei schnellen Anfragen gilt nur die letzte, auch wenn die erste später antwortet', async () => {
     let resolveFirst: (v: ReturnType<typeof mockWorldLevel>) => void = () => {};
     const first = new Promise<ReturnType<typeof mockWorldLevel>>((r) => { resolveFirst = r; });

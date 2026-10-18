@@ -35,6 +35,16 @@ export function zoomView(view: View, scale: number, widthUnits: number, viewPx: 
 /** Linke Kante, die `x` (Units) in die Mitte der Ansicht stellt. */
 export const leftFor = (x: number, widthUnits: number, viewUnits: number): number => clampLeft(x - viewUnits / 2, widthUnits, viewUnits);
 
+export type WheelAction = { kind: 'pan'; px: number } | { kind: 'zoom'; factor: number } | null;
+
+/** Was ein Mausrad-Ereignis über einer Vorschau bewirkt: Strg + Rad zoomt, Umschalt + Rad oder seitliches Rad scrollt
+ *  nach links und rechts; das gewöhnliche Rad bewirkt nichts, damit die Seite senkrecht scrollen kann. */
+export function wheelAction(e: { deltaX: number; deltaY: number; ctrlKey: boolean; shiftKey: boolean }): WheelAction {
+  if (e.ctrlKey) return e.deltaY === 0 ? null : { kind: 'zoom', factor: e.deltaY < 0 ? 1.25 : 0.8 };
+  const px = Math.abs(e.deltaX) > Math.abs(e.deltaY) ? e.deltaX : e.shiftKey ? e.deltaY : 0;
+  return px === 0 ? null : { kind: 'pan', px };
+}
+
 export interface JumpPoint {
   id: string;
   label: string;

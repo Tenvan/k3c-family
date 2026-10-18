@@ -1,10 +1,10 @@
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { LivePreview } from '../stage/LivePreview';
 import { ChunkPreview } from './ChunkPreview';
 import { GameLauncher } from './GameLauncher';
 import type { LevelModel } from './levelView';
 import { ViewBar } from './ViewBar';
-import { DEFAULT_SCALE, clampLeft, jumpPoints, leftFor, zoomView, type View } from './viewState';
+import { DEFAULT_SCALE, clampLeft, jumpPoints, leftFor, wheelAction, zoomView, type View } from './viewState';
 
 const KEY_STEP = 120; // Pixel je Pfeiltaste
 const FALLBACK_PX = 1000; // Breite der Ansicht, solange sie nicht gemessen ist
@@ -12,6 +12,7 @@ const FALLBACK_PX = 1000; // Breite der Ansicht, solange sie nicht gemessen ist
 /** Breite der Ansicht in Pixeln, folgt dem Element. */
 function useWidth(el: React.RefObject<HTMLElement | null>): number {
   const [px, setPx] = useState(FALLBACK_PX);
+  useLayoutEffect(() => { if (el.current && el.current.clientWidth > 0) setPx(el.current.clientWidth); }, [el]); // vor dem ersten Laden des Levels
   useEffect(() => {
     const target = el.current;
     if (!target || typeof ResizeObserver === 'undefined') return;
@@ -41,6 +42,14 @@ export function WorldPage() {
   const setLeft = (left: number) => setView((v) => ({ ...v, left: clampLeft(left, widthUnits, viewPx / v.scale) }));
   const jump = (x: number) => setView((v) => ({ ...v, left: leftFor(x, widthUnits, viewPx / v.scale) }));
 
+  // Strg + Rad zoomt, Umschalt + Rad scrollt (das gewöhnliche Rad scrollt die Seite); gilt über Streifen und Bühne.
+  const onWheel = (e: WheelEvent) => {
+    const a = wheelAction(e);
+    if (!a) return;
+    e.preventDefault();
+    if (a.kind === 'pan') panBy(a.px); else setView((v) => zoomView(v, v.scale * a.factor, widthUnits, viewPx));
+  };
+
   // Pfeile scrollen, + und − zoomen, M verkleinert und maximiert (nicht, solange im Eingabefeld getippt wird).
   const keys = useRef({ panBy, setScale, scale: view.scale });
   keys.current = { panBy, setScale, scale: view.scale };
@@ -69,11 +78,11 @@ export function WorldPage() {
 
   return (
     <div className="wd-page" data-maximized={maximized} ref={frame}>
-      <ChunkPreview maximized={maximized} onToggle={() => setMaximized((m) => !m)} onLoaded={onLoaded} view={view} onPan={panBy}>
+      <ChunkPreview maximized={maximized} onToggle={() => setMaximized((m) => !m)} onLoaded={onLoaded} view={view} onWheel={onWheel}>
         <ViewBar view={view} widthUnits={widthUnits} viewUnits={viewUnits} jumps={jumpPoints(model, gates)} onScale={setScale} onLeft={setLeft} onJump={jump} />
       </ChunkPreview>
       <section className="wd-live" aria-label="Live-Vorschau">
-        <LivePreview seed={source.seed} biome={source.biome} position={view} onPan={panBy} onSites={onSites} />
+        <LivePreview seed={source.seed} biome={source.biome} position={view} onPan={panBy} onWheel={onWheel} onSites={onSites} />
       </section>
       <GameLauncher seed={source.seed} biome={source.biome} />
     </div>

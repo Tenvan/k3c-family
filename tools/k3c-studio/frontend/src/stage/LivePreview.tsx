@@ -51,19 +51,21 @@ function usePreviewWorld(seed: string, biome: string, hubLevel: number, time: { 
 /** Phaser wird erst beim ersten Sichtbarwerden geladen (eigener Baustein, groß) und baut die Bühne im Element auf; danach
  *  zeichnet sie jede neue Welt mit der aktuellen Darstellung (`look`). Beim Verlassen wird sie abgebaut. Liefert Grafiken,
  *  die nicht geladen werden konnten. */
-function useStage(host: RefObject<HTMLDivElement | null>, world: World | null, look: Look, position: StagePosition, onPan: (px: number) => void): string[] {
+function useStage(host: RefObject<HTMLDivElement | null>, world: World | null, look: Look, position: StagePosition, onPan: (px: number) => void, onWheel: (e: WheelEvent) => void): string[] {
   const stage = useRef<PreviewStage | null>(null);
   const latest = useRef({ world, look, position });
   latest.current = { world, look, position };
   const pan = useRef(onPan);
   pan.current = onPan;
+  const wheel = useRef(onWheel);
+  wheel.current = onWheel;
   const [failed, setFailed] = useState<string[]>([]);
 
   useEffect(() => {
     let cancelled = false;
     void import('./PreviewStage').then(({ PreviewStage: Stage }) => {
       if (cancelled || stage.current || !host.current) return;
-      stage.current = new Stage(host.current, setFailed, (px) => pan.current(px));
+      stage.current = new Stage(host.current, setFailed, (px) => pan.current(px), (e) => wheel.current(e));
       stage.current.setLook(latest.current.look);
       stage.current.setPosition(latest.current.position);
       stage.current.show(latest.current.world);
@@ -107,9 +109,9 @@ function LookControls({ biome, timeId, setTimeId, progress, setProgress, hidden,
 /** Live-Vorschau des Welt-Betrachters (B-460/AC-04, AC-05): die Welt des Spiels mit der Spielgrafik auf der Phaser-Bühne
  *  des Studios. Hub-Stufe aus `data/hub.json` › `levels`, Gebäude einzeln ein und aus, Tageszeit, Hintergrund-Schichten
  *  mit Parallaxe (Kamera scrollt). Position und Zoom kommen von außen (`position`, B-477, gleich wie im Chunk-Streifen);
- *  Ziehen und Mausrad melden `onPan` (Pixel); `onSites` meldet die Bauplätze (für die Sprungpunkte). */
-export function LivePreview({ seed, biome, position, onPan, onSites }: {
-  seed: string; biome: string; position: StagePosition; onPan: (px: number) => void; onSites?: (sites: readonly { kind: string; x: number }[]) => void;
+ *  Ziehen meldet `onPan` (Pixel), das Mausrad geht an `onWheel`; `onSites` meldet die Bauplätze (für die Sprungpunkte). */
+export function LivePreview({ seed, biome, position, onPan, onWheel, onSites }: {
+  seed: string; biome: string; position: StagePosition; onPan: (px: number) => void; onWheel: (e: WheelEvent) => void; onSites?: (sites: readonly { kind: string; x: number }[]) => void;
 }) {
   const choices = useMemo(() => hubLevelChoices(), []);
   const [hubLevel, setHubLevel] = useState(choices.at(-1) ?? 1);
@@ -123,7 +125,7 @@ export function LivePreview({ seed, biome, position, onPan, onSites }: {
   const host = useRef<HTMLDivElement>(null);
   const world = useMemo(() => worldOf(view), [view]);
   const look = useMemo<Look>(() => ({ brightness: world ? brightnessOf(world.cycle) : 1, hiddenLayers: hidden }), [world, hidden]);
-  const failed = useStage(host, world, look, position, onPan);
+  const failed = useStage(host, world, look, position, onPan, onWheel);
   const sites = all?.state?.sites;
   const toggles = useMemo(() => buildingToggles(sites ?? []), [sites]);
   useEffect(() => { onSites?.(sites ?? []); }, [sites, onSites]);

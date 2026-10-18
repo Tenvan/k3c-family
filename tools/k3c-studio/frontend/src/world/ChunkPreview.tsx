@@ -81,11 +81,11 @@ function Legend({ model }: { model: LevelModel }) {
 
 /** Chunk-Vorschau des Welt-Betrachters (B-460/AC-01, AC-02): Seed und Biom wählen, das Level des Spiels als Streifen
  *  ansehen, mit Legende und Warnungen der Prüfung. Das Level rechnet das Studio selbst, ohne Spielserver. Position und
- *  Zoom kommen von außen (`view`, B-477): der Streifen hat keine eigene Scrollbar, das Mausrad meldet `onPan` (Pixel).
+ *  Zoom kommen von außen (`view`, B-477): der Streifen hat keine eigene Scrollbar, das Mausrad geht an `onWheel`.
  *  `children` stehen unter der Zeile mit der Zusammenfassung (Leiste für Zoom, Sprünge und Position). */
-export function ChunkPreview({ maximized, onToggle, onLoaded, view, onPan, children }: {
+export function ChunkPreview({ maximized, onToggle, onLoaded, view, onWheel, children }: {
   maximized: boolean; onToggle: () => void; onLoaded: (seed: string, biome: string, model: LevelModel) => void;
-  view: View; onPan: (px: number) => void; children?: ReactNode;
+  view: View; onWheel: (e: WheelEvent) => void; children?: ReactNode;
 }) {
   const [seed, setSeed] = useState(DEFAULT_SEED);
   const [biome, setBiome] = useState(DEFAULT_BIOME);
@@ -94,15 +94,15 @@ export function ChunkPreview({ maximized, onToggle, onLoaded, view, onPan, child
 
   useEffect(() => { if (viewport.current) viewport.current.scrollLeft = view.left * view.scale; }, [view, model]);
 
-  // Das Mausrad scrollt beide Vorschauen gemeinsam; ein React-Handler wäre passiv (kein preventDefault), daher am Element.
-  const pan = useRef(onPan);
-  pan.current = onPan;
+  // Ein React-Handler für das Rad wäre passiv (kein preventDefault), daher am Element; die Seite entscheidet und bricht ab.
+  const wheel = useRef(onWheel);
+  wheel.current = onWheel;
   useEffect(() => {
     const el = viewport.current;
     if (!el) return;
-    const onWheel = (e: WheelEvent) => { e.preventDefault(); pan.current(Math.abs(e.deltaX) > Math.abs(e.deltaY) ? e.deltaX : e.deltaY); };
-    el.addEventListener('wheel', onWheel, { passive: false });
-    return () => el.removeEventListener('wheel', onWheel);
+    const handler = (e: WheelEvent) => wheel.current(e);
+    el.addEventListener('wheel', handler, { passive: false });
+    return () => el.removeEventListener('wheel', handler);
   }, []);
 
   const random = () => {

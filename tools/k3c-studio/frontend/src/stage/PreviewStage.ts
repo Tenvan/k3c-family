@@ -10,9 +10,6 @@ import { createSpriteAnims, preloadSprites } from '@game/scenes/sprites';
 // nicht): lädt die Grafiken wie das Spiel (LoadScene) und zeichnet eine `World` mit `StageView`/`WorldRenderer` aus
 // `src/scenes/` (unverändert, über @game). Die Bühne rechnet nichts: sie zeichnet, was sie bekommt.
 
-/** Scroll-Schritt je Mausrad-Tick und Pfeiltaste (Bildschirm-Pixel) */
-const SCROLL_STEP = 120;
-
 /** Position und Zoom, von außen gesetzt: linke Kante in Units, Maßstab in Pixel je Unit (wie der Chunk-Streifen) */
 export interface StagePosition {
   left: number;
@@ -70,7 +67,6 @@ class PreviewScene extends Phaser.Scene {
       this.dragX = p.x;
     });
     this.input.on('pointerup', () => { this.dragX = null; });
-    this.input.on('wheel', (_p: unknown, _o: unknown, dx: number, dy: number) => this.onPan((Math.abs(dx) > Math.abs(dy) ? dx : dy) > 0 ? SCROLL_STEP : -SCROLL_STEP));
     this.show(this.pending);
   }
 
@@ -122,14 +118,17 @@ class PreviewScene extends Phaser.Scene {
   }
 }
 
-/** Phaser-Spiel im Element `parent`; die Größe folgt dem Element (Höhe per CSS festlegen); Ziehen und Mausrad melden `onPan`
+/** Phaser-Spiel im Element `parent`; die Größe folgt dem Element (Höhe per CSS festlegen); Ziehen meldet `onPan`, das Mausrad `onWheel`
  *  (die Pfeiltasten fängt die Seite, sonst würde jeder Druck doppelt scrollen). `onLoadError` meldet Grafiken, die nicht geladen werden konnten. */
 export class PreviewStage {
   private readonly game: Phaser.Game;
   private readonly scene: PreviewScene;
   private readonly resize: ResizeObserver;
+  private readonly wheel: (e: WheelEvent) => void;
+  private readonly parent: HTMLElement;
 
-  constructor(parent: HTMLElement, onLoadError: (files: string[]) => void = () => {}, onPan: (px: number) => void = () => {}) {
+  constructor(parent: HTMLElement, onLoadError: (files: string[]) => void = () => {}, onPan: (px: number) => void = () => {}, onWheel: (e: WheelEvent) => void = () => {}) {
+    this.parent = parent;
     this.scene = new PreviewScene(onLoadError, onPan);
     this.game = new Phaser.Game({
       type: Phaser.AUTO,
@@ -137,12 +136,14 @@ export class PreviewStage {
       backgroundColor: '#101018',
       scale: { mode: Phaser.Scale.RESIZE, width: '100%', height: '100%' },
       audio: { noAudio: true },
-      input: { gamepad: false, keyboard: false },
+      input: { gamepad: false, keyboard: false, mouse: { preventDefaultWheel: false } }, // das Rad entscheidet die Seite (wheelAction)
       scene: this.scene,
     });
     // Phaser hört nur auf das Fenster: ein Beobachter am Element fängt auch Layout-Änderungen ohne Fenster-Resize ab.
     this.resize = new ResizeObserver(() => this.game.scale.refresh());
     this.resize.observe(parent);
+    this.wheel = (e) => onWheel(e);
+    parent.addEventListener('wheel', this.wheel, { passive: false }); // nicht passiv: die Seite bricht das Ereignis bei Zoom und Scrollen ab
   }
 
   show(world: World | null): void {
@@ -166,6 +167,7 @@ export class PreviewStage {
 
   destroy(): void {
     this.resize.disconnect();
+    this.parent.removeEventListener('wheel', this.wheel);
     this.game.destroy(true);
   }
 }

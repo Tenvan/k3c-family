@@ -32,7 +32,7 @@ let host: HTMLElement | null = null;
 const flush = () => act(async () => { for (let i = 0; i < 5; i++) await new Promise((r) => setTimeout(r, 0)); });
 const lastWorld = (stage = 0) => stages[stage]!.shown.at(-1) as World;
 const VIEW = { left: 40, scale: 12 };
-const element = (seed: string, view = VIEW, onPan: (px: number) => void = () => {}) => <Theme><LivePreview seed={seed} biome="forest" position={view} onPan={onPan} /></Theme>;
+const element = (seed: string, view = VIEW, onPan: (px: number) => void = () => {}) => <Theme><LivePreview seed={seed} biome="forest" position={view} onPan={onPan} onWheel={() => {}} /></Theme>;
 
 async function mount(seed = 'k3c', onPan: (px: number) => void = () => {}): Promise<HTMLElement> {
   host = document.createElement('div');
@@ -81,7 +81,7 @@ describe('Live-Vorschau (B-460/AC-04)', () => {
     host = document.createElement('div');
     document.body.append(host);
     root = createRoot(host);
-    await act(async () => root!.render(<Theme><LivePreview seed="k3c" biome="forest" position={VIEW} onPan={() => {}} onSites={(s) => seen.push([...s])} /></Theme>));
+    await act(async () => root!.render(<Theme><LivePreview seed="k3c" biome="forest" position={VIEW} onPan={() => {}} onWheel={() => {}} onSites={(s) => seen.push([...s])} /></Theme>));
     await flush();
     expect(seen.at(-1)).toHaveLength(lastWorld().sites.length);
   });
