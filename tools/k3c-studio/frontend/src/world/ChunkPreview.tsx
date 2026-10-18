@@ -5,6 +5,7 @@ import { backend } from '../api';
 import type { WorldSource } from '../api';
 import type { PlanSource } from '../stage/stageLogic';
 import { BIG_KINDS, SPECIAL_CHUNKS, colorOf, levelModel, seedFromBytes, type LevelModel } from './levelView';
+import { chunkMarks, type SlotHint } from './chunkMarks';
 import { iconOf, nameOf } from './kindIcons';
 import type { View } from './viewState';
 
@@ -16,16 +17,24 @@ const toSource = (plan?: PlanSource): WorldSource => (plan ? { island: plan.isla
 
 const chunkClass = (kind: string) => `wd-chunk${kind === 'hub' ? ' wd-hub' : SPECIAL_CHUNKS.has(kind) ? ' wd-special' : ''}`;
 
-/** Streifen mit Abschnitten, Objekten und Hub-Mitte im Maßstab scale (Pixel je Unit). */
-export function Strip({ model, scale }: { model: LevelModel; scale: number }) {
+/** Streifen mit Abschnitten, Objekten und Hub-Mitte im Maßstab scale (Pixel je Unit). `hints` markieren Chunk-Plätze mit
+ *  einem farbigen unteren Rand im Abschnitt (B-485); der Rand liegt über der Unterkante und ändert die Größe nicht. */
+export function Strip({ model, scale, hints = [] }: { model: LevelModel; scale: number; hints?: readonly SlotHint[] }) {
+  const marks = chunkMarks(model, hints);
   return (
     <div className="wd-strip" style={{ width: model.widthUnits * scale }}>
-      {model.chunks.map((c) => (
-        <div key={c.index} className={chunkClass(c.kind)} style={{ left: c.from * scale, width: (c.to - c.from) * scale }}
-          title={`Abschnitt ${c.index}: ${nameOf(c.kind)} (${c.kind}, ${c.from}–${c.to} Units)`}>
-          {c.index} {iconOf(c.kind)} {nameOf(c.kind)}
-        </div>
-      ))}
+      {model.chunks.map((c) => {
+        const mark = marks.get(c.index);
+        const title = `Abschnitt ${c.index}: ${nameOf(c.kind)} (${c.kind}, ${c.from}–${c.to} Units)`;
+        return (
+          <div key={c.index} className={chunkClass(c.kind)} style={{ left: c.from * scale, width: (c.to - c.from) * scale }}
+            data-mark={mark?.kind} title={mark ? `${title}
+${mark.label}` : title}>
+            {c.index} {iconOf(c.kind)} {nameOf(c.kind)}
+            {mark && <span className={`wd-mark wd-mark-${mark.kind}`} aria-hidden="true" />}
+          </div>
+        );
+      })}
       {model.objects.map((o, i) => {
         const big = BIG_KINDS.has(o.kind);
         const size = big ? 22 : 10;
@@ -88,10 +97,10 @@ function Legend({ model }: { model: LevelModel }) {
  *  ansehen, mit Legende und Warnungen der Prüfung. Das Level rechnet das Studio selbst, ohne Spielserver. Position und
  *  Zoom kommen von außen (`view`, B-477): der Streifen hat keine eigene Scrollbar, das Mausrad geht an `onWheel`.
  *  `children` stehen unter der Zeile mit der Zusammenfassung (Leiste für Zoom, Sprünge und Position). Mit `source` zeigt er
- *  Insel und Stufe samt Entwurf der geplanten Chunks. */
-export function ChunkPreview({ maximized, onToggle, onLoaded, source, view, onWheel, children }: {
+ *  Insel und Stufe samt Entwurf der geplanten Chunks; `hints` markieren Chunk-Plätze (geplant, Prüffehler). */
+export function ChunkPreview({ maximized, onToggle, onLoaded, source, view, onWheel, hints, children }: {
   maximized: boolean; onToggle: () => void; onLoaded: (seed: string, biome: string, model: LevelModel) => void;
-  source?: PlanSource; view: View; onWheel: (e: WheelEvent) => void; children?: ReactNode;
+  source?: PlanSource; view: View; onWheel: (e: WheelEvent) => void; hints?: readonly SlotHint[]; children?: ReactNode;
 }) {
   const [seed, setSeed] = useState(DEFAULT_SEED);
   const { model, note, load } = useWorldLevel(onLoaded);
@@ -134,7 +143,7 @@ export function ChunkPreview({ maximized, onToggle, onLoaded, source, view, onWh
       </div>
       <p className="wd-note" role="status">{note}</p>
       {children}
-      <div className="wd-viewport" ref={viewport}>{model && <Strip model={model} scale={view.scale} />}</div>
+      <div className="wd-viewport" ref={viewport}>{model && <Strip model={model} scale={view.scale} hints={hints} />}</div>
       {model && <Legend model={model} />}
     </div>
   );

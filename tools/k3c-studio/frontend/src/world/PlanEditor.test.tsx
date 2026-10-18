@@ -249,3 +249,35 @@ describe('Durchsuchbare Auswahlliste mit Emoji (B-485/AC-01)', () => {
     expect(h.querySelectorAll('.wd-object .wd-pick-icon')[0].textContent).toBe(iconOf('portal'));
   });
 });
+
+describe('Hinweise am Chunk der Chunk-Vorschau (B-485)', () => {
+  const marked = (h: HTMLElement) => [...h.querySelectorAll<HTMLElement>('.wd-chunk[data-mark]')];
+  // Mock-Level: ein Hub-Abschnitt (5), Platz +1 ist der Abschnitt rechts daneben.
+  const PLUS_ONE = '6 ';
+
+  it('ohne Planung keine Markierung; ein Entwurf am Platz +1 markiert genau diesen Chunk als „planned“', async () => {
+    const h = await mount();
+    expect(marked(h)).toHaveLength(0);
+    await addChunk(h);
+    await settle();
+    const [chunk] = marked(h);
+    expect(marked(h)).toHaveLength(1);
+    expect(chunk.textContent!.startsWith(PLUS_ONE)).toBe(true);
+    expect(chunk.dataset.mark).toBe('planned');
+    expect(chunk.querySelector('.wd-mark.wd-mark-planned')).not.toBeNull();
+    expect(chunk.title).toContain(`Geplant: ${nameOf(field(h, 'Art Platz +1').dataset.value!)}`);
+    expect(chunk.title).toContain('ohne Chunk-Seed');
+  });
+
+  it('ein Prüffehler am Platz zeigt „error“; nach Verwerfen verschwindet die Markierung', async () => {
+    const h = await mount();
+    await addChunk(h);
+    await type(field(h, 'Art Platz +1'), 'volcano');
+    await settle();
+    expect(marked(h).map((c) => c.dataset.mark)).toEqual(['error']);
+    expect(marked(h)[0].title).toContain('volcano');
+    await act(async () => button(h, 'Verwerfen').click());
+    await flush();
+    expect(marked(h)).toHaveLength(0);
+  });
+});

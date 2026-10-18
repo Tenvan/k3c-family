@@ -94,3 +94,9 @@
 .wd-range-thumb:active { cursor: grabbing; }
 .wd-range-thumb:focus-visible { outline: 2px solid var(--accent-8, #8e7ae0); outline-offset: 1px; }
 .wd-range-second { position: absolute; bottom: 2px; height: 3px; min-width: 4px; border-radius: 2px; background: #ffd166; pointer-events: none; }
+
+/* Hinweise am Chunk (B-485): farbiger unterer Rand im Abschnitt, über der Unterkante, ohne die Größe zu ändern.
+   Neue Hinweis-Art: Klasse .wd-mark-<art> mit --wd-mark (Radix-Farbe, hell und dunkel) ergänzen (chunkMarks.ts › MarkKind). */
+.wd-mark { position: absolute; left: 0; right: 0; bottom: 0; height: 5px; background: var(--wd-mark); pointer-events: none; }
+.wd-mark-planned { --wd-mark: var(--blue-9, #0090ff); }
+.wd-mark-error { --wd-mark: var(--red-9, #e5484d); }

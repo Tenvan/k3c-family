@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import { LivePreview } from '../stage/LivePreview';
 import { ChunkPreview } from './ChunkPreview';
+import { slotHints } from './chunkMarks';
 import { GameLauncher } from './GameLauncher';
 import { PlanEditor } from './PlanEditor';
 import { usePlan } from './usePlan';
@@ -94,7 +95,8 @@ export function WorldPage() {
 
   return (
     <div className="wd-page" data-maximized={maximized} ref={frame}>
-      <ChunkPreview maximized={maximized} onToggle={() => setMaximized((m) => !m)} onLoaded={onLoaded} source={plan.source} view={chunkView} onWheel={(e) => onWheel(e, 'chunk')}>
+      <ChunkPreview maximized={maximized} onToggle={() => setMaximized((m) => !m)} onLoaded={onLoaded} source={plan.source} view={chunkView} onWheel={(e) => onWheel(e, 'chunk')}
+        hints={slotHints(plan.draft, plan.check)}>
         <ViewBar views={views} panes={{ chunk: chunkView, live: liveView }} viewPx={viewPx} widthUnits={widthUnits}
           range={centerRange([views.chunk, views.live], widthUnits, viewPx)} jumps={jumpPoints(model, gates)}
           onScale={(scale) => zoom(BOTH, () => scale)} onZoom={zoomBy} onCenter={setCenter} />
