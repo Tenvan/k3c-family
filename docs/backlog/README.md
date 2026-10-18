@@ -150,7 +150,6 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-463](B-463-monarch-vorschau-animationen.md) | DEV | Idee | mittel | eingeplant | WZ10 | Eine Monarch-Seite im Asset-Studio zeigt Reiten, Schlagen, Skills und weitere Vorschauen |
 | [B-464](B-464-gegner-bosse-vorschau.md) | DEV | Idee | mittel | eingeplant | WZ11 | Eine Gegner-Seite im Asset-Studio zeigt alle Gegnertypen und Bosse mit ihren Vorschauen |
 | [B-465](B-465-lint-sprintsbacklog-zeilen.md) | DEV | Problem | hoch | offen | – | task lint ist auf develop rot, weil SprintsBacklog 61 Zeilen hat |
-| [B-466](B-466-glossar-morgengrauen-verweis.md) | INF | Problem | niedrig | offen | WZ13 | Der Glossar-Eintrag Tageszyklus verweist für das Morgengrauen auf das richtige Ticket |
 | [B-467](B-467-worktree-pill-am-eintrag.md) | DEV | Idee | mittel | offen | WZ12 | Worktree-Änderungen stehen als Pill am Projekt, Sprint oder an der Session statt als Leiste oben |
 | [B-468](B-468-geplante-chunks-ruinen-gegnerlager.md) | REG | Idee | mittel | offen | WZ14 | Geplante Chunks tragen Ruinen und Gegnerlager |
 | [B-469](B-469-gegner-seite-boss-effekte-nach-k5.md) | DEV | Idee | niedrig | offen | – | Die Gegner-Seite zeigt Warnkreis, Boss-Leiste, Phasen und Event-Banner aus K5.1 |
@@ -436,3 +435,4 @@ Zeile in diesen Abschnitt.
 | [B-443](archiv/B-443-dev-logs-scrollen-liste.md) | DEV | Problem | mittel | erledigt | – | Auf der Log-Seite von k3c-dev scrollt nur die Log-Liste, nicht die ganze Seite |
 | [B-444](archiv/B-444-vite-ports-plus-zehn.md) | DEV | Problem | mittel | erledigt | – | Vite-Ports von Spiel und k3c-dev liegen 10 höher und kollidieren nicht mit dem Vite-Standardport |
 | [B-445](archiv/B-445-dev-splitter-assets-mcp.md) | DEV | Idee | mittel | erledigt | – | Assets- und MCP-Seite von k3c-dev haben ziehbare Splitter zwischen den Panelen |
+| [B-466](archiv/B-466-glossar-morgengrauen-verweis.md) | INF | Problem | niedrig | erledigt | WZ13 | Der Glossar-Eintrag Tageszyklus verweist für das Morgengrauen auf das richtige Ticket |
