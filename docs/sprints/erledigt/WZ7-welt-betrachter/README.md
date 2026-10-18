@@ -88,4 +88,4 @@ Domänen-Reihenfolge: SIM (WZ7.8, zuerst) → SRV (WZ7.1) → DEV (WZ7.2–WZ7.7
 ## Abnahme
 
 2026-10-18 (Abnahme WZ7.7 durch 🧑 am PC): AC-01 bis AC-08 mit Nachweis aus WZ7.6; AC-09 verschoben nach B-477 (Mängel der Ansicht, Sprint WZ16). B-092 verworfen, B-426 Punkt 1 und 4 verworfen. Neue Tickets: B-477.
-Version: Minor vorgeschlagen (Wirkung im Werkzeug, kein Spielstand- oder Protokoll-Wechsel); nicht gesetzt (Tag nach WZ16, Entscheidung 🧑).
+Version: v0.19.0 gesetzt (2026-10-18, Minor wegen Wirkung im Werkzeug, zusammen mit WZ16; Tag auf `ea750844`, Release-Lauf grün, `/api/health` und Landingpage im Nachbau mit den Flags des Release-Workflows v0.19.0).
