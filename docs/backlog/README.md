@@ -18,7 +18,6 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-041](B-041-wails-starter.md) | SRV | Idee | niedrig | eingeplant | BT1 | Wails-Starter für Windows existiert |
 | [B-042](B-042-pi-leistungsziel.md) | SRV | Frage | hoch | eingeplant | HW1 | Pi-Modell und Leistungsziel sind festgelegt |
 | [B-048](B-048-standardbibliothek-in-001.md) | SRV | Frage | niedrig | eingeplant | BT1 | Die Wahl der Go-Standardbibliothek ist dort festgehalten, wo B-001 auf sie verweist |
-| [B-053](B-053-ci-lauf-sp01.md) | INF | Problem | hoch | eingeplant | CI1 | Die CI hat die Prüfungen aus SP01 einmal grün durchlaufen |
 | [B-058](B-058-execution-policy.md) | INF | Frage | niedrig | eingeplant | RP1 | requirements.md empfiehlt keine Sicherheitseinstellung ohne Entscheidung von 🧑 |
 | [B-080](B-080-dev-tasten-server.md) | SRV | Idee | niedrig | eingeplant | KB2 | Dev-Tasten (Gold, Stufe, Neustart) wirken über den Server |
 | [B-090](B-090-radar.md) | CLI | Idee | mittel | eingeplant | HW1 | Ein Radar im HUD zeigt Burg, Portale, Ausgang, Mitspieler und Gegner |
@@ -444,3 +443,4 @@ Zeile in diesen Abschnitt.
 | [B-482](archiv/B-482-planung-kurzpfad-vergleich.md) | DEV | Problem | hoch | erledigt | – | Planungs-Tools erkennen die Repo-Wurzel auch bei Kurzpfaden (8.3) und die CI-Tests des k3c-dev-Jobs sind grün |
 | [B-480](archiv/B-480-assetkit-downloadhit-tls.md) | DEV | Problem | mittel | verworfen | – | TestDownloadHit in tools/assetkit scheitert lokal am TLS-Zertifikat und blockiert task check:all |
 | [B-466](archiv/B-466-glossar-morgengrauen-verweis.md) | INF | Problem | niedrig | erledigt | WZ13 | Der Glossar-Eintrag Tageszyklus verweist für das Morgengrauen auf das richtige Ticket |
+| [B-053](archiv/B-053-ci-lauf-sp01.md) | INF | Problem | hoch | erledigt | CI1 | Die CI hat die Prüfungen aus SP01 einmal grün durchlaufen |
