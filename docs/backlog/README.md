@@ -157,7 +157,6 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-472](B-472-nacht-dunkler-fackeln-lagerfeuer-licht.md) | CLI | Idee | niedrig | offen | – | Nacht und Morgengrauen sind dunkler, Fackeln und Lagerfeuer machen Licht |
 | [B-473](B-473-ci-rot-k3c-dev-planning-worktree-tests.md) | DEV | Problem | hoch | offen | – | CI auf develop rot: k3c-dev internal/planning Worktree-Tests scheitern auf dem Windows-Runner |
 | [B-474](B-474-testdownloadhit-norton-tls.md) | DEV | Problem | mittel | offen | – | TestDownloadHit scheitert lokal am TLS-Zertifikat (Norton), check:all rot |
-| [B-477](B-477-welt-betrachter-nacharbeit.md) | DEV | Problem | hoch | eingeplant | WZ16 | Der Welt-Betrachter zeigt Chunk- und Live-Vorschau in einer gemeinsamen, synchron scrollenden Ansicht |
 | [B-480](B-480-assetkit-downloadhit-tls.md) | DEV | Problem | mittel | offen | – | TestDownloadHit in tools/assetkit scheitert lokal am TLS-Zertifikat und blockiert task check:all |
 
 ## Archiv
@@ -438,3 +437,4 @@ Zeile in diesen Abschnitt.
 | [B-445](archiv/B-445-dev-splitter-assets-mcp.md) | DEV | Idee | mittel | erledigt | – | Assets- und MCP-Seite von k3c-dev haben ziehbare Splitter zwischen den Panelen |
 | [B-092](archiv/B-092-level-betrachter.md) | PLAT | Idee | mittel | verworfen | HW1 | Eine Testseite zeigt ein generiertes Level (Seed und Biom) ohne zu spielen |
 | [B-460](archiv/B-460-welt-betrachter-live-vorschau.md) | DEV | Idee | hoch | erledigt | WZ7 | Der Welt-Betrachter im Asset-Studio zeigt Chunks maximiert und eine Live-Vorschau mit Hub-Stufen und schaltbaren Gebäuden |
+| [B-477](archiv/B-477-welt-betrachter-nacharbeit.md) | DEV | Problem | hoch | erledigt | WZ16 | Der Welt-Betrachter zeigt Chunk- und Live-Vorschau in einer gemeinsamen, synchron scrollenden Ansicht |
