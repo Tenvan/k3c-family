@@ -13,6 +13,7 @@ Die Reihenfolge der Arbeit ist allein der Projekt-Rang: [`../projekte/README.md`
 | WZ10 | DEV | WZG | Abspiel-Bausteine und Monarch-Vorschau im Asset-Studio | – | `aktiv/WZ10-figuren-vorschau/` |
 | WZ11 | DEV | WZG | Gegner- und Boss-Vorschau im Asset-Studio, Figuren-Seiten entfernen | – | `aktiv/WZ11-gegner-bosse-vorschau/` |
 | WZ12 | DEV | WZG | Planungs-Werkzeug: Platzhalter-Zeilen und Worktree-Pills | – | `aktiv/WZ12-planungs-werkzeug-nachtraege/` |
+| WZ17 | REG, SIM, SRV, DEV | WZG | Chunk-Editor komfortabel: Inselgrößen, getrennter Zoom, Seed-Chunk umwandeln | – | `aktiv/WZ17-chunk-editor-komfort/` |
 | GR7 | CLI | GRA | Figuren-Lücken, ganzzahlige Skalierung und Schrift | – | `aktiv/GR7-figuren-schrift/` |
 | SO4 | CLI | SND | Musik je Zustand | – | `aktiv/SO4-musik/` |
 | BT1 | SRV, DEV | REL | Server im Heimnetz finden, Windows-Starter, Start mit Seed | – | `aktiv/BT1-heimnetz-start/` |
@@ -26,7 +27,6 @@ Abnahmen am Gerät (`Agent: Mensch`) sammelt das Projekt ABN im Sprint HW1: [`..
 | Sprint | Domäne | Projekt | Thema | Am Ende sichtbar | Reife | Ordner |
 |---|---|---|---|---|---|---|
 | WZ14 | REG | WZG | Geplante Chunks tragen Ruinen und Gegnerlager | – | Entwurf | `geplant/WZ14-ruinen-gegnerlager/` |
-| WZ17 | REG, SIM, SRV, DEV | WZG | Chunk-Editor komfortabel: Inselgrößen, getrennter Zoom, Seed-Chunk umwandeln | – | bereit | `geplant/WZ17-chunk-editor-komfort/` |
 | WZ18 | REG | WZG | Welten im Spiel: Welt-Dateien, Welt-Wahl im Raum und Welten-Editor | – | Entwurf | `geplant/WZ18-welten-im-spiel/` |
 | WZ19 | DEV | WZG | Chat im Studio mit Claude Code CLI und Welt per Prompt füllen | – | Entwurf | `geplant/WZ19-chat-und-prompt/` |
 | BD2 | SIM, SRV, CLI | BED | Rückmeldungs-Ereignisse gedrosselt und geprüft, Lobby startet nie still leer | – | Entwurf | `geplant/BD2-rueckmeldung-lobby-nachtraege/` |

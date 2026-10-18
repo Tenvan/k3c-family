@@ -55,3 +55,9 @@ export function savedPlan(island: PlanIsland | undefined, stage: number): Planne
   const depth = island?.depths[stage];
   return depth === undefined ? [] : normalized(island?.planned[String(depth)] ?? []);
 }
+
+/** Die gespeicherte Chunk-Anzahl einer Stufe; 0 = Biom-Länge (kein Eintrag in chunkCounts) */
+export function savedCount(island: PlanIsland | undefined, stage: number): number {
+  const depth = island?.depths[stage];
+  return depth === undefined ? 0 : (island?.chunkCounts?.[String(depth)] ?? 0);
+}

@@ -4,33 +4,49 @@ import { useCallback, useEffect, useRef, useState, type CSSProperties, type Reac
 import { backend } from '../api';
 import type { WorldSource } from '../api';
 import type { PlanSource } from '../stage/stageLogic';
-import { BIG_KINDS, SPECIAL_CHUNKS, colorOf, levelModel, seedFromBytes, type LevelModel } from './levelView';
+import { BIG_KINDS, SPECIAL_CHUNKS, colorOf, levelModel, seedFromBytes, type LevelModel, type ModelChunk } from './levelView';
+import { chunkMarks, type SlotHint } from './chunkMarks';
+import type { Span } from './RangeSlider';
+import { iconOf, nameOf } from './kindIcons';
 import type { View } from './viewState';
 
 const DEFAULT_SEED = 'k3c';
 const DEFAULT_BIOME = 'forest';
 
 /** Quelle der Anfrage: Insel + Stufe mit dem Entwurf (gleiche Quelle wie die Live-Vorschau), bis eine Insel geladen ist das Biom. */
-const toSource = (plan?: PlanSource): WorldSource => (plan ? { island: plan.island, stage: plan.stage, planned: plan.planned } : { biome: DEFAULT_BIOME });
+const toSource = (plan?: PlanSource): WorldSource => (plan ? { island: plan.island, stage: plan.stage, planned: plan.planned, chunkCount: plan.chunkCount } : { biome: DEFAULT_BIOME });
 
 const chunkClass = (kind: string) => `wd-chunk${kind === 'hub' ? ' wd-hub' : SPECIAL_CHUNKS.has(kind) ? ' wd-special' : ''}`;
 
-/** Streifen mit Abschnitten, Objekten und Hub-Mitte im Maßstab scale (Pixel je Unit). */
-export function Strip({ model, scale }: { model: LevelModel; scale: number }) {
+/** Streifen mit Abschnitten, Objekten und Hub-Mitte im Maßstab scale (Pixel je Unit). `hints` markieren Chunk-Plätze mit
+ *  einem farbigen unteren Rand im Abschnitt (B-485); der Rand liegt über der Unterkante und ändert die Größe nicht.
+ *  `liveSpan` rahmt die Chunks ein, die die Live-Vorschau gerade zeigt (bei eigenem Zoom, B-485/AC-05). Ein Klick auf einen
+ *  Abschnitt meldet ihn an `onChunk` (Sprung dorthin). */
+export function Strip({ model, scale, hints = [], liveSpan, onChunk }: {
+  model: LevelModel; scale: number; hints?: readonly SlotHint[]; liveSpan?: Span; onChunk?: (chunk: ModelChunk) => void;
+}) {
+  const marks = chunkMarks(model, hints);
   return (
     <div className="wd-strip" style={{ width: model.widthUnits * scale }}>
-      {model.chunks.map((c) => (
-        <div key={c.index} className={chunkClass(c.kind)} style={{ left: c.from * scale, width: (c.to - c.from) * scale }}
-          title={`Abschnitt ${c.index}: ${c.kind} (${c.from}–${c.to} Units)`}>
-          {c.index} {c.kind}
-        </div>
-      ))}
+      {model.chunks.map((c) => {
+        const mark = marks.get(c.index);
+        const title = `Abschnitt ${c.index}: ${nameOf(c.kind)} (${c.kind}, ${c.from}–${c.to} Units)`;
+        return (
+          <div key={c.index} className={chunkClass(c.kind)} style={{ left: c.from * scale, width: (c.to - c.from) * scale }}
+            data-mark={mark?.kind} title={mark ? `${title}
+${mark.label}` : title} onClick={() => onChunk?.(c)}>
+            {c.index} {iconOf(c.kind)} {nameOf(c.kind)}
+            {mark && <span className={`wd-mark wd-mark-${mark.kind}`} aria-hidden="true" />}
+          </div>
+        );
+      })}
       {model.objects.map((o, i) => {
         const big = BIG_KINDS.has(o.kind);
         const size = big ? 22 : 10;
         const style: CSSProperties = { left: o.x * scale - size / 2, top: big ? '0.5rem' : '3.25rem', width: size, height: size, background: colorOf(o.kind) };
         return <div key={i} className="wd-marker" style={style} title={`${o.kind} bei ${o.x} Units`} />;
       })}
+      {liveSpan && <div className="wd-live-range" title="Bereich der Live-Vorschau" style={{ left: liveSpan.left * scale, width: liveSpan.units * scale }} />}
       <div className="wd-hubline" style={{ left: model.hubCenterUnits * scale }} title={`Hub-Mitte bei ${model.hubCenterUnits} Units`} />
     </div>
   );
@@ -87,10 +103,11 @@ function Legend({ model }: { model: LevelModel }) {
  *  ansehen, mit Legende und Warnungen der Prüfung. Das Level rechnet das Studio selbst, ohne Spielserver. Position und
  *  Zoom kommen von außen (`view`, B-477): der Streifen hat keine eigene Scrollbar, das Mausrad geht an `onWheel`.
  *  `children` stehen unter der Zeile mit der Zusammenfassung (Leiste für Zoom, Sprünge und Position). Mit `source` zeigt er
- *  Insel und Stufe samt Entwurf der geplanten Chunks. */
-export function ChunkPreview({ maximized, onToggle, onLoaded, source, view, onWheel, children }: {
+ *  Insel und Stufe samt Entwurf der geplanten Chunks; `hints` markieren Chunk-Plätze (geplant, Prüffehler). */
+export function ChunkPreview({ maximized, onToggle, onLoaded, source, view, onWheel, hints, liveSpan, onChunk, children }: {
   maximized: boolean; onToggle: () => void; onLoaded: (seed: string, biome: string, model: LevelModel) => void;
-  source?: PlanSource; view: View; onWheel: (e: WheelEvent) => void; children?: ReactNode;
+  source?: PlanSource; view: View; onWheel: (e: WheelEvent) => void; hints?: readonly SlotHint[]; liveSpan?: Span;
+  onChunk?: (chunk: ModelChunk) => void; children?: ReactNode;
 }) {
   const [seed, setSeed] = useState(DEFAULT_SEED);
   const { model, note, load } = useWorldLevel(onLoaded);
@@ -133,7 +150,7 @@ export function ChunkPreview({ maximized, onToggle, onLoaded, source, view, onWh
       </div>
       <p className="wd-note" role="status">{note}</p>
       {children}
-      <div className="wd-viewport" ref={viewport}>{model && <Strip model={model} scale={view.scale} />}</div>
+      <div className="wd-viewport" ref={viewport}>{model && <Strip model={model} scale={view.scale} hints={hints} liveSpan={liveSpan} onChunk={onChunk} />}</div>
       {model && <Legend model={model} />}
     </div>
   );

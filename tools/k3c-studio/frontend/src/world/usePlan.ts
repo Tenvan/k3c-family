@@ -1,29 +1,33 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { backend } from '../api';
-import type { PlanCheckView, PlanIsland, PlanSaved, PlanView, PlannedChunk } from '../api';
+import type { PlanCheckView, PlanIsland, PlanView, PlannedChunk } from '../api';
 import type { PlanSource } from '../stage/stageLogic';
-import { isDirty, normalized, savedPlan } from './plan';
+import { isDirty, normalized, savedCount, savedPlan } from './plan';
+import { savePlan, type Notice } from './planSave';
+
+export type { Notice } from './planSave';
 
 const OK: PlanCheckView = { ok: true, slot: 0, error: '' };
 const CHECK_DELAY = 200; // ms nach der letzten Änderung
 
-export type Notice = { kind: 'hint' | 'error' | 'stale'; text: string } | null;
-
 /** Zustand des Editors für geplante Chunks (B-461, WZ8.5): geladene Inseln, Auswahl von Insel und Stufe, der Entwurf der
- *  gewählten Stufe, die Prüfung des Entwurfs (verzögert) und Speichern. Der Entwurf bleibt im Speicher, bis gespeichert,
- *  verworfen oder neu geladen wird; jede Änderung ruft die Prüfung auf, die Vorschauen zeigen den letzten gültigen Stand. */
+ *  gewählten Stufe (Planung und Chunk-Anzahl, 0 = Biom-Länge, B-485/AC-04), die Prüfung des Entwurfs (verzögert) und
+ *  Speichern. Der Entwurf bleibt im Speicher, bis gespeichert, verworfen oder neu geladen wird; jede Änderung ruft die
+ *  Prüfung auf, die Vorschauen zeigen den letzten gültigen Stand (`source`). */
 export function usePlan() {
   const [view, setView] = useState<PlanView | null>(null);
   const [islandId, setIslandId] = useState('');
   const [stage, setStageState] = useState(0);
   const [draft, setDraft] = useState<PlannedChunk[]>([]);
+  const [count, setCount] = useState(0);
   const [check, setCheck] = useState<PlanCheckView>(OK);
-  const [shown, setShown] = useState<PlannedChunk[] | null>(null);
+  const [shown, setShown] = useState<PlanSource | null>(null); // letzter gültiger Entwurf; null = gespeicherter Stand
   const [notice, setNotice] = useState<Notice>(null);
 
   const island: PlanIsland | undefined = view?.islands.find((i) => i.id === islandId) ?? view?.islands[0];
   const depth = island?.depths[stage];
   const saved = useMemo(() => savedPlan(island, stage), [island, stage]);
+  const savedSize = savedCount(island, stage);
 
   const load = useCallback(async () => {
     const next = await backend.planLoad();
@@ -33,52 +37,43 @@ export function usePlan() {
   }, []);
   useEffect(() => { void load(); }, [load]);
 
-  // Auswahl oder gespeicherte Planung wechseln (Laden, Speichern): der Entwurf beginnt bei der gespeicherten Planung.
+  // Auswahl oder gespeicherter Stand wechseln (Laden, Speichern): der Entwurf beginnt beim gespeicherten Stand.
   const stand = view?.stand ?? '';
-  useEffect(() => { setDraft(saved); setShown(saved); setCheck(OK); }, [island?.id, stage, stand, saved]);
+  useEffect(() => { setDraft(saved); setCount(savedSize); setShown(null); setCheck(OK); }, [island?.id, stage, stand, saved, savedSize]);
 
   useEffect(() => {
     if (!island || depth === undefined) return;
     let current = true;
     const chunks = normalized(draft);
     const timer = setTimeout(() => {
-      void backend.planCheck(island.id, depth, chunks).then((result) => {
+      void backend.planCheck(island.id, depth, chunks, count).then((result) => {
         if (!current) return;
         setCheck(result);
-        if (result.ok) setShown(chunks);
+        if (result.ok) setShown({ island: island.id, stage, planned: chunks, chunkCount: count });
       });
     }, CHECK_DELAY);
     return () => { current = false; clearTimeout(timer); };
-  }, [draft, island, depth]);
+  }, [draft, count, island, depth, stage]);
 
-  const dirty = isDirty(draft, saved);
+  const dirty = isDirty(draft, saved) || count !== savedSize;
   const edit = (next: PlannedChunk[]) => { setDraft(next); setNotice(null); };
+  const setSize = (next: number) => { setCount(next); setNotice(null); };
 
   const save = useCallback(async () => {
     if (!island || depth === undefined || !view) return;
-    const chunks = normalized(draft);
-    let result: PlanSaved;
-    try {
-      result = await backend.planSave(island.id, depth, chunks, view.stand);
-    } catch (e) { // Wails lehnt mit Text ab: sonst bliebe das Speichern ohne jede Meldung (B-486)
-      setNotice({ kind: 'error', text: `Speichern fehlgeschlagen: ${e instanceof Error ? e.message : String(e)}` });
-      return;
-    }
-    if (result.error) { setNotice({ kind: result.stale ? 'stale' : 'error', text: result.error }); return; }
-    setView({
-      ...view, stand: result.stand,
-      islands: view.islands.map((i) => (i.id === island.id ? { ...i, planned: { ...i.planned, [String(depth)]: chunks } } : i)),
-    });
-    setNotice({ kind: 'hint', text: result.hint });
-  }, [draft, island, depth, view]);
+    const result = await savePlan(view, island.id, depth, normalized(draft), count);
+    if (result.view) setView(result.view);
+    setNotice(result.notice);
+  }, [draft, count, island, depth, view]);
 
-  const discard = () => { setDraft(saved); setNotice(null); };
-  const source = useMemo<PlanSource | undefined>(() => (island ? { island: island.id, stage, planned: shown ?? saved } : undefined), [island, stage, shown, saved]);
+  const discard = () => { setDraft(saved); setCount(savedSize); setNotice(null); };
+  const fallback = useMemo<PlanSource | undefined>(() => (island ? { island: island.id, stage, planned: saved, chunkCount: savedSize } : undefined), [island, stage, saved, savedSize]);
+  const source = island ? (shown ?? fallback) : undefined;
   return {
-    view, island, stage, draft, check, notice, dirty, source,
+    view, island, stage, draft, count, sizes: view?.sizes ?? [], check, notice, dirty, source,
     selectIsland: (id: string) => { setIslandId(id); setStageState(0); },
     selectStage: setStageState,
-    edit, save, discard, reload: load,
+    edit, setSize, save, discard, reload: load,
   };
 }
 

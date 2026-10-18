@@ -1,33 +1,24 @@
-import { useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { LivePreview } from '../stage/LivePreview';
 import { ChunkPreview } from './ChunkPreview';
+import { chunkAtSlot, slotHints } from './chunkMarks';
 import { GameLauncher } from './GameLauncher';
+import { LiveChunkBand } from './LiveChunkBand';
 import { PlanEditor } from './PlanEditor';
 import { usePlan } from './usePlan';
-import type { LevelModel } from './levelView';
+import type { LevelModel, ModelChunk } from './levelView';
 import { ViewBar } from './ViewBar';
-import { DEFAULT_SCALE, clampLeft, jumpPoints, leftFor, wheelAction, zoomView, type View } from './viewState';
+import { BOTH, useBox, useViews } from './viewHooks';
+import { centerRange, centerViews, jumpPoints, paneUnits, type View } from './viewState';
 
 const KEY_STEP = 120; // Pixel je Pfeiltaste
-const FALLBACK_PX = 1000; // Breite der Ansicht, solange sie nicht gemessen ist
-
-/** Breite der Ansicht in Pixeln, folgt dem Element. */
-function useWidth(el: React.RefObject<HTMLElement | null>): number {
-  const [px, setPx] = useState(FALLBACK_PX);
-  useLayoutEffect(() => { if (el.current && el.current.clientWidth > 0) setPx(el.current.clientWidth); }, [el]); // vor dem ersten Laden des Levels
-  useEffect(() => {
-    const target = el.current;
-    if (!target || typeof ResizeObserver === 'undefined') return;
-    const watch = new ResizeObserver(() => { if (target.clientWidth > 0) setPx(target.clientWidth); });
-    watch.observe(target);
-    return () => watch.disconnect();
-  }, [el]);
-  return px;
-}
+/** Sichtbarer Bereich einer Vorschau für Schieber und Streifen */
+const spanOf = (v: View, units: number) => ({ left: v.left, units });
 
 /** Seite Welt-Betrachter des Asset-Studios (B-460, B-461, B-477): Chunk-Streifen und Live-Vorschau in einer Ansicht, dazwischen
- *  der Editor für geplante Chunks. Position und Zoom gelten für beide Vorschauen gleich (eine Positions-Leiste, Sprungpunkte,
- *  Zoom stufenlos und in festen Stufen); beide lesen dieselbe Quelle: Insel, Stufe und der Entwurf der Planung (B-461/AC-11).
+ *  der Editor für geplante Chunks. Beide zeigen dieselbe Weltposition in der Bildmitte (eine Positions-Leiste, Sprungpunkte);
+ *  der Zoom gilt je Vorschau (Alt + Rad), die Leiste und Strg + Rad zoomen beide (B-485/AC-05). Beide lesen dieselbe
+ *  Quelle: Insel, Stufe und der Entwurf der Planung (B-461/AC-11).
  *  „Verkleinern“ und „Maximieren“ ändern die Höhe der beiden Vorschauen, nie ihre Sichtbarkeit. */
 export function WorldPage() {
   const [maximized, setMaximized] = useState(true);
@@ -35,36 +26,28 @@ export function WorldPage() {
   const plan = usePlan();
   const [model, setModel] = useState<LevelModel | null>(null);
   const [gates, setGates] = useState<number[]>([]);
-  const [view, setView] = useState<View>({ left: 0, scale: DEFAULT_SCALE });
   const frame = useRef<HTMLDivElement>(null);
-  const viewPx = useWidth(frame);
+  const strip = useBox(frame, '.wd-viewport');
+  const stage = useBox(frame, '.wd-stage', true);
+  const px = useMemo(() => ({ chunk: strip.w, live: stage.w }), [strip.w, stage.w]);
   const widthUnits = model?.widthUnits ?? 0;
-  const viewUnits = viewPx / view.scale;
-
-  const panBy = useCallback((px: number) => setView((v) => ({ ...v, left: clampLeft(v.left + px / v.scale, widthUnits, viewPx / v.scale) })), [widthUnits, viewPx]);
-  const setScale = (scale: number) => setView((v) => zoomView(v, scale, widthUnits, viewPx));
-  const setLeft = (left: number) => setView((v) => ({ ...v, left: clampLeft(left, widthUnits, viewPx / v.scale) }));
-  const jump = (x: number) => setView((v) => ({ ...v, left: leftFor(x, widthUnits, viewPx / v.scale) }));
-
-  // Strg + Rad zoomt, Umschalt + Rad scrollt (das gewöhnliche Rad scrollt die Seite); gilt über Streifen und Bühne.
-  const onWheel = (e: WheelEvent) => {
-    const a = wheelAction(e);
-    if (!a) return;
-    e.preventDefault();
-    if (a.kind === 'pan') panBy(a.px); else setView((v) => zoomView(v, v.scale * a.factor, widthUnits, viewPx));
-  };
+  const { views, setViews, chunkView, liveView, panBy, panLive, zoom, zoomBy, setCenter, onWheel } = useViews(widthUnits, px);
+  const spans = { chunk: spanOf(chunkView, paneUnits(views, 'chunk', px)), live: spanOf(liveView, paneUnits(views, 'live', px)) };
+  const ownLive = views.live !== views.chunk;
+  const hints = slotHints(plan.draft, plan.check);
+  const jumpTo = (c: ModelChunk) => setCenter((c.from + c.to) / 2); // Klick auf einen Chunk: Bildmitte = Chunk-Mitte, Zoom bleibt
 
   // Pfeile scrollen, + und − zoomen, M verkleinert und maximiert (nicht, solange im Eingabefeld getippt wird).
-  const keys = useRef({ panBy, setScale, scale: view.scale });
-  keys.current = { panBy, setScale, scale: view.scale };
+  const keys = useRef({ panBy, zoomBy });
+  keys.current = { panBy, zoomBy };
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
       if (e.target instanceof HTMLInputElement || e.target instanceof HTMLSelectElement || e.ctrlKey || e.metaKey || e.altKey) return;
       const k = keys.current;
       if (e.key === 'ArrowLeft') k.panBy(-KEY_STEP);
       else if (e.key === 'ArrowRight') k.panBy(KEY_STEP);
-      else if (e.key === '+' || e.key === '=') k.setScale(k.scale * 1.25);
-      else if (e.key === '-') k.setScale(k.scale * 0.8);
+      else if (e.key === '+' || e.key === '=') k.zoomBy(1.25);
+      else if (e.key === '-') k.zoomBy(0.8);
       else if (e.key === 'm' || e.key === 'M') setMaximized((m) => !m);
     };
     document.addEventListener('keydown', onKey);
@@ -74,7 +57,7 @@ export function WorldPage() {
   const onLoaded = (seed: string, biome: string, next: LevelModel) => {
     setSource((s) => (s.seed === seed && s.biome === biome ? s : { seed, biome }));
     setModel(next);
-    setView((v) => ({ ...v, left: leftFor(next.hubCenterUnits, next.widthUnits, viewPx / v.scale) })); // ein neues Level beginnt beim Hub
+    setViews((v) => centerViews(v, next.hubCenterUnits, next.widthUnits, px)); // ein neues Level beginnt beim Hub, der Zoom bleibt
   };
   const onSites = useCallback((sites: readonly { kind: string; x: number }[]) => {
     setGates(sites.filter((s) => s.kind === 'gate').map((s) => s.x));
@@ -82,12 +65,15 @@ export function WorldPage() {
 
   return (
     <div className="wd-page" data-maximized={maximized} ref={frame}>
-      <ChunkPreview maximized={maximized} onToggle={() => setMaximized((m) => !m)} onLoaded={onLoaded} source={plan.source} view={view} onWheel={onWheel}>
-        <ViewBar view={view} widthUnits={widthUnits} viewUnits={viewUnits} jumps={jumpPoints(model, gates)} onScale={setScale} onLeft={setLeft} onJump={jump} />
+      <ChunkPreview maximized={maximized} onToggle={() => setMaximized((m) => !m)} onLoaded={onLoaded} source={plan.source} view={chunkView} onWheel={(e) => onWheel(e, 'chunk')}
+        hints={hints} liveSpan={ownLive ? spans.live : undefined} onChunk={jumpTo}>
+        <ViewBar views={views} spans={spans} widthUnits={widthUnits} range={centerRange(views, widthUnits, px)} jumps={jumpPoints(model, gates)}
+          onScale={(scale) => zoom(BOTH, () => scale)} onZoom={zoomBy} onCenter={setCenter} />
       </ChunkPreview>
-      <PlanEditor plan={plan} />
+      <PlanEditor plan={plan} seed={source.seed} onSlot={(slot) => { const c = model && chunkAtSlot(model.chunks, slot); if (c) jumpTo(c); }} />
       <section className="wd-live" aria-label="Live-Vorschau">
-        <LivePreview seed={source.seed} biome={source.biome} position={view} onPan={panBy} onWheel={onWheel} onSites={onSites} plan={plan.source} />
+        <LivePreview seed={source.seed} biome={source.biome} position={liveView} onPan={panLive} onWheel={(e) => onWheel(e, 'live')} onSites={onSites} plan={plan.source} />
+        <LiveChunkBand stage={stage} view={liveView} model={model} draft={plan.draft} hints={hints} onChunk={jumpTo} />
       </section>
       <GameLauncher seed={source.seed} biome={source.biome} />
     </div>

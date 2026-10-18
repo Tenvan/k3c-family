@@ -13,6 +13,9 @@ type Options struct {
 	Lines *WallLines
 	// Planned sind die geplanten Chunks dieser Stufe (docs/rules/geplante-chunks.md).
 	Planned []PlannedChunk
+	// ChunkCount ist die eingestellte Chunk-Anzahl der Stufe (Inselgröße, geplante-chunks.md § 7); 0 = gewürfelte
+	// Länge aus lengthUnits wie bisher. Sie ersetzt den Wurf der Länge.
+	ChunkCount int
 }
 
 func (o Options) lines() WallLines {

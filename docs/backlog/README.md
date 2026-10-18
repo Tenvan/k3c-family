@@ -154,6 +154,9 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-485](B-485-chunk-editor-bedienung.md) | DEV | Idee | mittel | offen | WZ17 | Chunk-Editor im Welt-Betrachter komfortabler bedienen |
 | [B-487](B-487-plan-editor-load-check-ablehnung.md) | DEV | Problem | niedrig | offen | – | Chunk-Editor: abgelehnte Aufrufe von planLoad und planCheck bleiben stumm |
 | [B-488](B-488-welten-inseln-editor-prompt.md) | DEV | Idee | mittel | offen | WZ18 | Welten und Inseln im Asset-Studio anlegen und bearbeiten, Welt per Prompt füllen |
+| [B-489](B-489-spielstand-chunk-anzahl.md) | SIM | Problem | mittel | offen | – | Spielstände laden Chunk-Anzahl und Planung aus den aktuellen Daten |
+| [B-490](B-490-sim-chunk-anzahl-nachtraege.md) | SIM | Schuld | niedrig | offen | – | Sim: Chunk-Anzahl mit Kandidaten-hub.json und gemeinsame Prüfung der Inselgröße |
+| [B-491](B-491-welten-editor-kleinigkeiten.md) | DEV | Schuld | niedrig | offen | – | Welten Editor: kleine Nachträge zu Schieber, Klick-Sprung und Planungsliste |
 
 ## Archiv
 

@@ -54,6 +54,7 @@ type gen struct {
 	kinds []string
 	cw    float64
 	hub   float64
+	count int // eingestellte Chunk-Anzahl (Options.ChunkCount); 0 = gewürfelte Länge aus lengthUnits
 	// Geplante Chunks (planned_gen.go): hubStart und hubChunks legen die Plätze fest, planned ordnet Chunk-Index
 	// und Plan zu, fixed zählt feste Portale, Truhen, Camps und Adern, sideFixed feste Portale je Seite.
 	lines WallLines
@@ -82,10 +83,13 @@ func Generate(b Biome, seed string) (Layout, error) { return GenerateWith(b, see
 // Generate. Eine ungültige Planung wird abgelehnt (ValidatePlan).
 func GenerateWith(b Biome, seed string, o Options) (Layout, error) {
 	lines := o.lines()
-	if err := ValidatePlan(b, o.Planned, lines); err != nil {
+	if err := checkCount(b, o.ChunkCount); err != nil {
+		return Layout{}, err
+	}
+	if err := ValidatePlanFor(b, o.Planned, lines, o.ChunkCount); err != nil {
 		return Layout{}, fmt.Errorf("geplante Chunks: %w", err)
 	}
-	g := &gen{b: b, r: rng.New(b.ID + ":" + seed), seed: seed, lines: lines, cw: b.ChunkWidthUnits}
+	g := &gen{b: b, r: rng.New(b.ID + ":" + seed), seed: seed, lines: lines, cw: b.ChunkWidthUnits, count: o.ChunkCount}
 	g.frame()
 	g.reserve(o.Planned)
 	if err := g.placePortals(); err != nil {
@@ -113,13 +117,29 @@ func GenerateWith(b Biome, seed string, o Options) (Layout, error) {
 	}, nil
 }
 
-// frame legt Chunk-Anzahl, Hub in der Mitte, Ausgang und Rand fest.
+// hubChunksOf ist die gerade Zahl der Hub-Chunks eines Bioms. math.Round = Math.round für positive Werte.
+func hubChunksOf(b Biome) int { return max(2, int(math.Round(b.HubWidthUnits/b.ChunkWidthUnits/2))*2) }
+
+// checkCount prüft eine eingestellte Chunk-Anzahl (0 = Länge aus lengthUnits): gerade, damit der Hub mittig liegt,
+// und Platz für Hub, Ausgang, Rand und je Seite mindestens einen Chunk. Die erlaubten Größen prüft engine/sim.
+func checkCount(b Biome, n int) error {
+	if least := hubChunksOf(b) + 4; n != 0 && (n%2 != 0 || n < least) {
+		return fmt.Errorf("eingestellte Chunk-Anzahl %d in %s: gerade und mindestens %d", n, b.ID, least)
+	}
+	return nil
+}
+
+// frame legt Chunk-Anzahl, Hub in der Mitte, Ausgang und Rand fest. Mit eingestellter Anzahl (g.count) entfällt der
+// Wurf der Länge; ohne bleibt die Reihenfolge der Würfe wie bisher.
 func (g *gen) frame() {
-	// Gerade Anzahl Chunks, damit der Hub exakt in der Mitte liegt. math.Round = Math.round für positive Werte.
-	hubChunks := max(2, int(math.Round(g.b.HubWidthUnits/g.cw/2))*2)
-	count := int(math.Round(float64(g.r.Int(g.b.LengthUnits.Min, g.b.LengthUnits.Max)) / g.cw))
-	if count%2 != 0 {
-		count++
+	// Gerade Anzahl Chunks, damit der Hub exakt in der Mitte liegt.
+	hubChunks := hubChunksOf(g.b)
+	count := g.count
+	if count == 0 {
+		count = int(math.Round(float64(g.r.Int(g.b.LengthUnits.Min, g.b.LengthUnits.Max)) / g.cw))
+		if count%2 != 0 {
+			count++
+		}
 	}
 	g.kinds = make([]string, count)
 	hubStart := count/2 - hubChunks/2

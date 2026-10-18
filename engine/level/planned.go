@@ -44,22 +44,34 @@ func (c *PlannedChunk) UnmarshalJSON(raw []byte) error {
 	return dec.Decode((*plain)(c))
 }
 
-// geometry beschreibt die kürzeste mögliche Länge eines Bioms in Chunks.
+// geometry beschreibt die Länge eines Bioms in Chunks, gegen die eine Planung geprüft wird.
 type geometry struct {
 	cw      float64 // Chunk-Breite
 	hubHalf float64 // halbe Breite der Hub-Chunks
-	usable  int     // planbare Plätze je Seite bei kürzester Länge (ohne Ausgang und Rand)
+	usable  int     // planbare Plätze je Seite (ohne Ausgang und Rand)
+	count   int     // eingestellte Chunk-Anzahl; 0 = kürzeste Länge des Bioms
 }
 
-// shortest rechnet wie `frame` im Generator mit der kleinsten Länge.
-func shortest(b Biome) geometry {
+// geometryOf rechnet wie `frame` im Generator: mit der eingestellten Anzahl count, ohne sie (0) mit der kleinsten Länge.
+func geometryOf(b Biome, count int) geometry {
 	cw := b.ChunkWidthUnits
-	hubChunks := max(2, int(math.Round(b.HubWidthUnits/cw/2))*2)
-	count := int(math.Round(float64(b.LengthUnits.Min) / cw))
-	if count%2 != 0 {
-		count++
+	hubChunks := hubChunksOf(b)
+	n := count
+	if n == 0 {
+		n = int(math.Round(float64(b.LengthUnits.Min) / cw))
+		if n%2 != 0 {
+			n++
+		}
 	}
-	return geometry{cw: cw, hubHalf: float64(hubChunks) * cw / 2, usable: (count-hubChunks)/2 - 1}
+	return geometry{cw: cw, hubHalf: float64(hubChunks) * cw / 2, usable: (n-hubChunks)/2 - 1, count: count}
+}
+
+// beyond ist der Grund für einen Platz jenseits der geprüften Länge.
+func (g geometry) beyond() error {
+	if g.count > 0 {
+		return fmt.Errorf("jenseits der Chunk-Anzahl %d (höchstens ±%d)", g.count, g.usable)
+	}
+	return fmt.Errorf("jenseits der kürzesten Länge (höchstens ±%d)", g.usable)
 }
 
 // dist ist der Abstand einer Stelle `at` Units hinter dem Chunk-Anfang von der Hub-Mitte.
@@ -117,11 +129,21 @@ func hasObjectKind(b Biome, kind string) bool {
 
 // ValidatePlan prüft die geplanten Chunks einer Tiefe unabhängig vom Seed. Ist die Planung gültig, scheitert kein Seed
 // zur Laufzeit. lines sind die Mauerlinien (DefaultWallLines für die eingebetteten). Der Fehler nennt Platz und Grund.
+// Gerechnet wird mit der kürzesten Länge des Bioms; ValidatePlanFor rechnet mit einer eingestellten Chunk-Anzahl.
 func ValidatePlan(b Biome, plan []PlannedChunk, lines WallLines) error {
+	return ValidatePlanFor(b, plan, lines, 0)
+}
+
+// ValidatePlanFor prüft wie ValidatePlan, aber gegen die Chunk-Anzahl count (Options.ChunkCount, geplante-chunks.md
+// § 7) statt gegen die kürzeste Länge; count 0 ist ValidatePlan.
+func ValidatePlanFor(b Biome, plan []PlannedChunk, lines WallLines, count int) error {
+	if err := checkCount(b, count); err != nil {
+		return err
+	}
 	if len(plan) == 0 {
 		return nil
 	}
-	g := shortest(b)
+	g := geometryOf(b, count)
 	seen, spots := make(map[int]bool, len(plan)), make(map[spotKey]bool, len(plan))
 	all := make([]placed, 0, len(plan))
 	for _, c := range plan {
@@ -152,7 +174,7 @@ func checkChunk(c PlannedChunk, b Biome, g geometry, seen map[int]bool) error {
 	case c.Kind == "hub" || c.Kind == "exit" || c.Kind == "edge":
 		return fmt.Errorf("die Art %q ist nicht planbar", c.Kind)
 	case c.Slot > g.usable || -c.Slot > g.usable:
-		return fmt.Errorf("jenseits der kürzesten Länge (höchstens ±%d)", g.usable)
+		return g.beyond()
 	case seen[c.Slot]:
 		return fmt.Errorf("doppelt geplant")
 	case !hasChunkKind(b, c.Kind):

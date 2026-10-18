@@ -6,11 +6,15 @@ import { afterEach, describe, expect, it, vi } from 'vitest';
 import { backend } from '../api';
 import { mockWorldLevel } from '../api/mockWorld';
 import { WorldPage } from './WorldPage';
-import { MAX_SCALE, scaleOfPercent } from './viewState';
+import { DEFAULT_SCALE, MAX_SCALE, scaleOfPercent } from './viewState';
 
 // Die Phaser-Bühne braucht ein Canvas; ihr Zusammenspiel prüft LivePreview.test.tsx mit einer Attrappe.
 const views: { left: number; scale: number }[] = [];
-vi.mock('../stage/PreviewStage', () => ({ PreviewStage: class { show() {} setPosition(v: { left: number; scale: number }) { views.push(v); } setLook() {} destroy() {} } }));
+const stage = { wheel: (_e: WheelEvent) => {} }; // Mausrad über der Bühne (die Attrappe leitet es wie PreviewStage weiter)
+vi.mock('../stage/PreviewStage', () => ({ PreviewStage: class {
+  constructor(_host: HTMLElement, _failed: unknown, _pan: unknown, wheel: (e: WheelEvent) => void) { stage.wheel = wheel; }
+  show() {} setPosition(v: { left: number; scale: number }) { views.push(v); } setLook() {} destroy() {}
+} }));
 
 // B-460/AC-01, AC-02 im DOM: der Mock (ohne Wails) liefert das Level, die Chunk-Vorschau ist beim Öffnen maximiert.
 (globalThis as { IS_REACT_ACT_ENVIRONMENT?: boolean }).IS_REACT_ACT_ENVIRONMENT = true;
@@ -32,8 +36,24 @@ async function mount(): Promise<HTMLElement> {
 const button = (h: HTMLElement, label: string) => [...h.querySelectorAll('button')].find((b) => b.textContent === label || b.getAttribute('aria-label') === label)!;
 const live = (h: HTMLElement) => h.querySelector<HTMLElement>('.wd-live')!;
 const page = (h: HTMLElement) => h.querySelector<HTMLElement>('.wd-page')!;
-const position = (h: HTMLElement) => h.querySelector<HTMLInputElement>('input[aria-label="Position"]')!;
+const position = (h: HTMLElement) => h.querySelector<HTMLElement>('[role="slider"][aria-label="Position"]')!;
+/** Klick auf die Spur des Bereichs-Schiebers bei Weltposition x (die Spur misst im Test 1000 px). */
+const seek = (h: HTMLElement, x: number) => act(async () => {
+  const track = h.querySelector<HTMLElement>('.wd-range')!;
+  track.getBoundingClientRect = () => ({ left: 0, width: 1000, top: 0, height: 20, right: 1000, bottom: 20, x: 0, y: 0, toJSON: () => ({}) });
+  const units = Number(h.querySelector('.wd-note')!.textContent!.match(/(\d+) Units/)![1]);
+  track.dispatchEvent(new MouseEvent('pointerdown', { bubbles: true, clientX: (x / units) * 1000 }));
+});
 const stripWidth = (h: HTMLElement) => parseFloat(h.querySelector<HTMLElement>('.wd-strip')!.style.width);
+/** Mausrad mit Alt an `send` schicken; true, wenn die Seite das Ereignis abgebrochen hat. */
+const altWheel = (send: (e: WheelEvent) => void, deltaY: number) => {
+  const e = Object.assign(new Event('wheel', { bubbles: true, cancelable: true }), { deltaX: 0, deltaY, ctrlKey: false, shiftKey: false, altKey: true }) as WheelEvent;
+  act(() => { send(e); });
+  return e.defaultPrevented;
+};
+const stripScale = (h: HTMLElement) => stripWidth(h) / Number(h.querySelector('.wd-note')!.textContent!.match(/(\d+) Units/)![1]);
+const chunkCenter = (h: HTMLElement) => h.querySelector<HTMLElement>('.wd-viewport')!.scrollLeft / stripScale(h) + 1000 / stripScale(h) / 2;
+const liveCenter = () => views.at(-1)!.left + 1000 / views.at(-1)!.scale / 2;
 const setInput = (el: HTMLInputElement, value: string) => act(async () => {
   Object.getOwnPropertyDescriptor(HTMLInputElement.prototype, 'value')!.set!.call(el, value);
   el.dispatchEvent(new Event('input', { bubbles: true }));
@@ -69,7 +89,7 @@ describe('Seite Welt-Betrachter: Chunk-Vorschau (B-460/AC-01, AC-02)', () => {
 
   it('hat genau eine Positions-Leiste und der Streifen scrollt nicht selbst (B-477/AC-01)', async () => {
     const h = await mount();
-    expect(h.querySelectorAll('input[aria-label="Position"]')).toHaveLength(1);
+    expect(h.querySelectorAll('[aria-label="Position"]')).toHaveLength(1);
     expect(h.querySelector('.wd-viewport')!.tagName).toBe('DIV');
   });
 
@@ -108,14 +128,14 @@ describe('Seite Welt-Betrachter: gemeinsame Ansicht (B-477/AC-01 bis AC-03)', ()
     expect(views.at(-1)!.scale).toBe(scaleOfPercent(50));
   });
 
-  it('die Positions-Leiste bewegt Streifen und Bühne gemeinsam (B-477/AC-01)', async () => {
+  it('der Bereichs-Schieber (Weltposition der Bildmitte) bewegt Streifen und Bühne gemeinsam (B-477/AC-01, B-485/AC-05)', async () => {
     const h = await mount();
     const viewport = h.querySelector<HTMLElement>('.wd-viewport')!;
-    expect(position(h).max).not.toBe('0');
-    await setInput(position(h), '200');
-    expect(viewport.scrollLeft).toBe(200 * views.at(-1)!.scale);
-    expect(views.at(-1)!.left).toBe(200);
-    await setInput(position(h), '0');
+    expect(Number(position(h).getAttribute('aria-valuemax'))).toBeGreaterThan(0);
+    await seek(h, 200);
+    expect(views.at(-1)!.left).toBeCloseTo(200 - 1000 / views.at(-1)!.scale / 2); // Ansicht 1000 px breit
+    expect(viewport.scrollLeft).toBeCloseTo(views.at(-1)!.left * views.at(-1)!.scale);
+    await seek(h, 0);
     expect(viewport.scrollLeft).toBe(0);
     expect(views.at(-1)!.left).toBe(0);
   });
@@ -182,7 +202,7 @@ describe('Seite Welt-Betrachter: Tasten und Anfragen (B-460/AC-02)', () => {
     await press('-');
     await press('-');
     expect(stripWidth(h)).toBeLessThan(base);
-    await setInput(position(h), String(Math.floor(Number(position(h).max) / 2)));
+    await seek(h, Number(position(h).getAttribute('aria-valuemax')) / 2);
     const start = views.at(-1)!.left;
     const step = 120 / views.at(-1)!.scale; // 120 Pixel je Pfeiltaste
     await press('ArrowLeft');
@@ -213,6 +233,95 @@ describe('Seite Welt-Betrachter: Mausrad und Anfragen (B-477)', () => {
     expect(views.at(-1)!.left).toBeGreaterThan(left);
   });
 
+});
+
+describe('Seite Welt-Betrachter: getrennter Zoom, gemeinsame Mitte (B-485/AC-05)', () => {
+  it('Alt + Rad zoomt nur die Vorschau unter dem Zeiger, beide behalten dieselbe Mitte (B-485/AC-05)', async () => {
+    const h = await mount();
+    const before = stripWidth(h);
+    expect(altWheel(stage.wheel, -100)).toBe(true);
+    expect(stripWidth(h)).toBe(before);
+    expect(views.at(-1)!.scale).toBeCloseTo(DEFAULT_SCALE * 1.25);
+    expect(chunkCenter(h)).toBeCloseTo(liveCenter());
+    const live = views.at(-1)!.scale;
+    expect(altWheel((e) => h.querySelector('.wd-viewport')!.dispatchEvent(e), -100)).toBe(true);
+    expect(stripWidth(h)).toBeGreaterThan(before);
+    expect(views.at(-1)!.scale).toBe(live);
+    expect(chunkCenter(h)).toBeCloseTo(liveCenter());
+  });
+
+  it('der Griff ist so breit wie der Sichtbereich; bei verschiedenem Zoom zeigt ein zweiter Griff die Live-Vorschau (B-485/AC-05)', async () => {
+    const h = await mount();
+    const units = Number(h.querySelector('.wd-note')!.textContent!.match(/(\d+) Units/)![1]);
+    const width = () => parseFloat(position(h).style.width);
+    expect(width()).toBeCloseTo((1000 / DEFAULT_SCALE / units) * 100);
+    expect(h.querySelector('.wd-range-second')).toBeNull();
+    await act(async () => button(h, 'Hineinzoomen').click());
+    expect(width()).toBeCloseTo((1000 / (DEFAULT_SCALE * 1.25) / units) * 100);
+    altWheel(stage.wheel, -100);
+    const second = h.querySelector<HTMLElement>('.wd-range-second')!;
+    expect(parseFloat(second.style.width)).toBeCloseTo((1000 / views.at(-1)!.scale / units) * 100);
+    expect(parseFloat(second.style.width)).toBeLessThan(width());
+  });
+
+  it('bei verschiedenem Zoom verschiebt der Bildlauf beide um dieselbe Welt-Strecke (B-485/AC-05)', async () => {
+    const h = await mount();
+    altWheel(stage.wheel, -100);
+    altWheel(stage.wheel, -100);
+    const [chunk, live] = [chunkCenter(h), liveCenter()];
+    await act(async () => { document.body.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowRight', bubbles: true })); });
+    const step = chunkCenter(h) - chunk;
+    expect(step).toBeGreaterThan(0);
+    expect(liveCenter() - live).toBeCloseTo(step);
+    expect(chunkCenter(h)).toBeCloseTo(liveCenter());
+  });
+
+  it('beide Zoom-Faktoren bleiben beim Wechsel der Stufe erhalten (B-485/AC-05)', async () => {
+    const h = await mount();
+    altWheel(stage.wheel, -100);
+    altWheel((e) => h.querySelector('.wd-viewport')!.dispatchEvent(e), 100);
+    const [chunk, live] = [stripScale(h), views.at(-1)!.scale];
+    expect(chunk).not.toBe(live);
+    const stufe = h.querySelector<HTMLSelectElement>('select[aria-label="Stufe"]')!;
+    await act(async () => { stufe.value = '2'; stufe.dispatchEvent(new Event('change', { bubbles: true })); });
+    await flush();
+    expect(h.querySelector('[role="status"]')!.textContent).not.toContain('forest');
+    expect(stripScale(h)).toBeCloseTo(chunk);
+    expect(views.at(-1)!.scale).toBeCloseTo(live);
+  });
+});
+
+describe('Live-Bereich mit der Breite der Bühne (B-485/AC-05, Fehler aus der Abnahme)', () => {
+  /** Bühne 600 px, Streifen 1000 px breit (happy-dom misst sonst 0) */
+  function stubWidths() {
+    const props = ['clientWidth', 'offsetWidth'] as const; // Bühne mit Rahmen wie Phaser (offsetWidth), Streifen ohne (clientWidth)
+    const originals = props.map((p) => Object.getOwnPropertyDescriptor(HTMLElement.prototype, p)!);
+    Object.defineProperty(HTMLElement.prototype, 'offsetWidth', { configurable: true, get(this: HTMLElement) { return this.classList.contains('wd-stage') ? 600 : 0; } });
+    Object.defineProperty(HTMLElement.prototype, 'clientWidth', { configurable: true, get(this: HTMLElement) { return this.classList.contains('wd-viewport') ? 1000 : 0; } });
+    return () => props.forEach((p, i) => Object.defineProperty(HTMLElement.prototype, p, originals[i]));
+  }
+
+  it('die Bühne zeigt dieselbe Mitte wie der Streifen; gelber Griff und Rahmen im Streifen zeigen genau ihren Bereich', async () => {
+    const restore = stubWidths();
+    try {
+      const h = await mount();
+      altWheel(stage.wheel, -100);
+      const live = views.at(-1)!;
+      expect(live.left + 600 / live.scale / 2).toBeCloseTo(chunkCenter(h)); // PreviewStage zentriert auf left + Bühnenbreite / Zoom / 2
+      const units = Number(h.querySelector('.wd-note')!.textContent!.match(/(\d+) Units/)![1]);
+      const second = h.querySelector<HTMLElement>('.wd-range-second')!;
+      expect(parseFloat(second.style.width)).toBeCloseTo((600 / live.scale / units) * 100);
+      expect(parseFloat(second.style.left)).toBeCloseTo((live.left / units) * 100);
+      const frame = h.querySelector<HTMLElement>('.wd-live-range')!; // Rahmen im Streifen über den Chunks der Live-Vorschau
+      expect(parseFloat(frame.style.left)).toBeCloseTo(live.left * stripScale(h));
+      expect(parseFloat(frame.style.width)).toBeCloseTo((600 / live.scale) * stripScale(h));
+    } finally {
+      restore();
+    }
+  });
+});
+
+describe('Seite Welt-Betrachter: Anfragen (B-460)', () => {
   it('bei zwei schnellen Anfragen gilt nur die letzte, auch wenn die erste später antwortet', async () => {
     let resolveFirst: (v: ReturnType<typeof mockWorldLevel>) => void = () => {};
     const first = new Promise<ReturnType<typeof mockWorldLevel>>((r) => { resolveFirst = r; });

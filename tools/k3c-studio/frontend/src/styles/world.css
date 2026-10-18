@@ -6,7 +6,6 @@
 .wd-viewbar { display: flex; flex-direction: column; gap: 4px; }
 .wd-jumps { display: inline-flex; flex-wrap: wrap; gap: 4px; margin-left: 8px; }
 .wd-viewbar input[type='range'] { accent-color: var(--accent-9, #6e56cf); }
-.wd-viewbar .wd-position { width: 100%; margin: 0; }
 .wd-bar { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; }
 .wd-seed { width: 12rem; }
 .wd-grow { flex: 1; }
@@ -72,3 +71,52 @@
 .wd-slot { width: 5rem; }
 .wd-kind, .wd-seed { width: 9rem; }
 .wd-error, .wd-notice { margin: 0; }
+
+/* Durchsuchbare Auswahlliste mit Emoji (B-485/AC-01, WZ17.4): große Liste unter dem Feld, Treffer oben, Rest abgeblendet */
+.wd-pick { position: relative; display: inline-flex; align-items: center; gap: 4px; }
+.wd-pick-icon { width: 1.4rem; text-align: center; }
+.wd-pick-list {
+  position: absolute; top: 100%; left: 0; z-index: 20; min-width: 16rem; max-height: 60vh; overflow-y: auto; margin: 2px 0 0; padding: 4px 0;
+  list-style: none; border: 1px solid var(--card-line); border-radius: 6px; background: var(--card); box-shadow: 0 6px 18px rgb(0 0 0 / 35%);
+}
+.wd-pick-list li { padding: 4px 10px; cursor: pointer; white-space: nowrap; }
+.wd-pick-list li:hover, .wd-pick-list li.wd-active { background: var(--accent-a4, rgb(110 86 207 / 25%)); }
+.wd-pick-list li[aria-selected='true'] { font-weight: 600; }
+.wd-pick-list li.wd-dim { opacity: 0.4; }
+.wd-zoom-live { color: var(--dim); font-size: 12px; }
+
+/* Bereichs-Schieber (B-485/AC-05): Spur = ganze Stufe, Griff = sichtbarer Bereich der Chunk-Vorschau, dünner Griff darunter = Live-Vorschau */
+.wd-range { position: relative; height: 22px; border: 1px solid var(--card-line); border-radius: 6px; background: var(--card); cursor: pointer; touch-action: none; user-select: none; }
+.wd-range-thumb {
+  position: absolute; top: 2px; height: 12px; min-width: 6px; box-sizing: border-box; border-radius: 4px; cursor: grab;
+  background: color-mix(in srgb, var(--accent-9, #6e56cf) 55%, transparent); border: 1px solid var(--accent-9, #6e56cf);
+}
+.wd-range-thumb:active { cursor: grabbing; }
+.wd-range-thumb:focus-visible { outline: 2px solid var(--accent-8, #8e7ae0); outline-offset: 1px; }
+.wd-range-second { position: absolute; bottom: 2px; height: 3px; min-width: 4px; border-radius: 2px; background: #ffd166; pointer-events: none; }
+
+/* Hinweise am Chunk (B-485): farbiger unterer Rand im Abschnitt, über der Unterkante, ohne die Größe zu ändern.
+   Neue Hinweis-Art: Klasse .wd-mark-<art> mit --wd-mark (Radix-Farbe, hell und dunkel) ergänzen (chunkMarks.ts › MarkKind). */
+.wd-mark { position: absolute; left: 0; right: 0; bottom: 0; height: 5px; background: var(--wd-mark); pointer-events: none; }
+.wd-mark-planned { --wd-mark: var(--blue-9, #0090ff); }
+.wd-mark-error { --wd-mark: var(--red-9, #e5484d); }
+/* Rahmen im Streifen: die Chunks, die die Live-Vorschau gerade zeigt (gleiche Farbe wie ihr Griff im Schieber) */
+.wd-live-range { position: absolute; top: 0; bottom: 0; box-sizing: border-box; border: 2px solid #ffd166; border-radius: 4px; pointer-events: none; }
+
+/* Chunk-Infos im Bodenstreifen der Live-Vorschau (B-485): Overlay über der Bühne, zwischen Boden-Oberfläche und Fluss */
+.wd-live .wd-stage { position: relative; }
+.wd-band { position: absolute; left: 0; right: 0; overflow: hidden; pointer-events: none; }
+.wd-band-chunk {
+  position: absolute; top: 0; bottom: 0; box-sizing: border-box; display: flex; flex-direction: column; justify-content: center;
+  padding: 0 4px; overflow: hidden; border-left: 3px solid var(--wd-band); color: #fff;
+  background: color-mix(in srgb, var(--wd-band) 30%, rgb(0 0 0 / 55%));
+}
+.wd-band-line { overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
+.wd-band-chunk[data-mode='compact'] { padding: 0 2px; }
+.wd-band-planned { --wd-band: var(--blue-9, #0090ff); }
+.wd-band-error { --wd-band: var(--red-9, #e5484d); }
+.wd-band-hub { --wd-band: #ffd166; }
+.wd-band-special { --wd-band: #b388ff; }
+.wd-band-none { --wd-band: var(--gray-8, #5a6169); }
+/* Klick auf einen Chunk oder einen Eintrag der Planungsliste springt dorthin (B-485) */
+.wd-strip .wd-chunk, .wd-planned { cursor: pointer; }
