@@ -13,7 +13,7 @@ import { StatusBadge } from './ui/parts';
 export const PAGES = ['grafik', 'sound', 'welt', 'planer', 'monarch', 'gegner'] as const;
 export type Page = (typeof PAGES)[number];
 
-const LABELS: Record<Page, string> = { grafik: 'Grafik', sound: 'Sound', welt: 'Welt-Betrachter', planer: 'Gebäude-Planer', monarch: 'Monarch', gegner: 'Gegner' };
+const LABELS: Record<Page, string> = { grafik: 'Grafik', sound: 'Sound', welt: 'Welten Editor', planer: 'Gebäude-Planer', monarch: 'Monarch', gegner: 'Gegner' };
 
 /** Rahmen des Asset-Studios (B-459): Kopfzeile mit Navigation Grafik/Sound/Welt-Betrachter/Gebäude-Planer/Monarch/Gegner. Nur die offene Seite ist eingehängt, das
  *  Verlassen der Seite Sound stoppt deshalb alle Busse. */
