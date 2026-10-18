@@ -1,14 +1,14 @@
 # CI1 · INF · CI-Nachweis, Release-Image ohne Dev-Mode, Test-Abdeckung
 
-- **Status:** geplant
+- **Status:** aktiv
 - **Projekt:** REL
 - **Domäne:** INF
-- **Reife:** Entwurf
+- **Reife:** bereit
 - **Tickets:** B-273, B-019
-- **Start-Commit:** –
-- **Spec:** Entwurf
+- **Start-Commit:** 8652833b
+- **Spec:** freigegeben
 - **Revision:** 1
-- **Freigabe:** –
+- **Freigabe:** 2026-10-18, Ralf im Chat (Revision 1)
 
 ## Ausgangslage
 
@@ -56,7 +56,11 @@ Entschieden von 🧑 am 2026-10-18 (Chat): Dev-Mode im Image aus (B-273), Abdeck
 
 ## Sessions
 
-Entwurf. Vor dem Aktivieren jede Session als Datei nach `docs/vorlagen/session.md` schreiben, die Kriterien in Klammern werden ihr Feld `Kriterien`.
+| Nr. | Datei | Typ | Agent | Status |
+|---|---|---|---|---|
+| CI1.1 | `CI1.1-release-image-dev-mode.md` | Umsetzung | autonom | offen |
+| CI1.2 | `CI1.2-abdeckung-engine.md` | Umsetzung | autonom | offen |
+| CI1.3 | `CI1.3-review.md` | Review | autonom | offen |
 
 - CI1.1 Release-Image ohne Dev-Mode: `Dockerfile`, `compose.yaml`, Smoke-Test in der CI (AC-01).
 - CI1.2 Abdeckung pro `engine/`-Paket als Task und im CI-Bericht (AC-02).

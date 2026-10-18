@@ -16,6 +16,7 @@ Die Reihenfolge der Arbeit ist allein der Projekt-Rang: [`../projekte/README.md`
 | WZ12 | DEV | WZG | Planungs-Werkzeug: Platzhalter-Zeilen und Worktree-Pills | – | `aktiv/WZ12-planungs-werkzeug-nachtraege/` |
 | GR7 | CLI | GRA | Figuren-Lücken, ganzzahlige Skalierung und Schrift | – | `aktiv/GR7-figuren-schrift/` |
 | SO4 | CLI | SND | Musik je Zustand | – | `aktiv/SO4-musik/` |
+| CI1 | INF | REL | CI-Nachweis, Release-Image ohne Dev-Mode, Test-Abdeckung | CI grün mit SP01-Prüfungen, Release-Image lehnt Dev-Aktionen ab, Abdeckung im CI-Bericht | `aktiv/CI1-ci-release-image/` |
 
 ## Offen am Gerät
 
@@ -45,7 +46,6 @@ Abnahmen am Gerät (`Agent: Mensch`) sammelt das Projekt ABN im Sprint HW1: [`..
 | LV1 | SIM | KMP | Level und Gegner: Lava, Camps, Adern-Takt, Orte und IDs | Keine Lava auf Linien, Camps mit Abstand, besiegte Gegner lassen Gold fallen, Ereignisse mit Ort | Entwurf | `geplant/LV1-level-gegner-korrektur/` |
 | KB1 | SIM | KMP | Kampf-Nachträge: Mond-Events, Endboss-Bau, Golden-Läufe, Feuergeist | – | Entwurf | `geplant/KB1-events-boss-golden/` |
 | KB2 | SRV, CLI | KMP | Protokoll-Nachträge Kampf: Inselwechsel, Game Over, Händler, Client-Typen | – | Entwurf | `geplant/KB2-protokoll-kampf-nachtraege/` |
-| CI1 | INF | REL | CI-Nachweis, Release-Image ohne Dev-Mode, Test-Abdeckung | CI grün mit SP01-Prüfungen, Release-Image lehnt Dev-Aktionen ab, Abdeckung im CI-Bericht | Entwurf | `geplant/CI1-ci-release-image/` |
 | RP1 | INF | REL | Repo-Hygiene: Branches aufräumen, Altlasten, Regeln | – | Entwurf | `geplant/RP1-repo-hygiene/` |
 | BT1 | SRV | REL | Server im Heimnetz finden, Windows-Starter, Start mit Seed | – | Entwurf | `geplant/BT1-heimnetz-start/` |
 | PG1 | PLAT | REL | Präsentationsseite mit echten Spielbildern | – | Entwurf | `geplant/PG1-praesentation-bilder/` |
