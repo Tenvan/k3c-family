@@ -76,3 +76,16 @@ describe('Komplexität & Schichten', () => {
     expect(bytes).toBeLessThanOrEqual(16 * 1024 * 1024);
   });
 });
+
+describe('Regeltabelle Hub-Stufe → Gebäude (WZ15.2, B-462)', () => {
+  const doc = read('docs/rules/materialien-gebaeude.md');
+  const from = doc.indexOf('## 3. Gebäude je Hub-Stufe');
+  const rules = doc.slice(from, doc.indexOf('\n## ', from + 1)); // nur § 3
+  const count = (needle: string) => rules.split(needle).length - 1;
+
+  it('§ 3 trägt die Marken des erzeugten Blocks je genau einmal, Start vor Ende', () => {
+    expect(count('<!-- rules:hub-levels:start -->')).toBe(1);
+    expect(count('<!-- rules:hub-levels:end -->')).toBe(1);
+    expect(rules.indexOf('<!-- rules:hub-levels:start -->')).toBeLessThan(rules.indexOf('<!-- rules:hub-levels:end -->'));
+  });
+});

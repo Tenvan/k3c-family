@@ -107,6 +107,15 @@ tasks:
       - go build -o bin/gebaeude{{exeExt}} ./tools/gebaeude
       - ./bin/gebaeude{{exeExt}}
 
+  rules:update:
+    desc: "Regeltabelle Hub-Stufe → Gebäude (docs/rules/materialien-gebaeude.md § 3) aus data/hub.json erzeugen (deterministisch; feste EXE bin/regeltabelle, WZ15.2, B-462)"
+    preconditions:
+      - sh: command -v go
+        msg: Go fehlt (requirements.md)
+    cmds:
+      - go build -o bin/regeltabelle{{exeExt}} ./tools/regeltabelle
+      - ./bin/regeltabelle{{exeExt}}
+
   build:
     desc: Atlas, Typecheck und Produktions-Build nach dist/
     deps: [atlas]

@@ -1,6 +1,6 @@
 # WZ9.2 · Gebäude-Planer: Matrix, Abweichung, Live-Vorschau
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** DEV
@@ -60,5 +60,10 @@ Unter k3c-dev: `check_run` mit `checkout` (inklusive Studio-Modul). Keine manuel
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+AC-01 geprüft: neue Studio-Seite „Gebäude-Planer“ (Tab `planer`), Go-Backend `App.HubPlan()` (`app_planer.go`) liefert das Matrix-Modell: Zeilen `sites`, `islandSites`, je Linie Mauer/Turm und Tor, Händler Kaufen/Verkaufen; Spalten `len(levels)`; Zelle mit Platz und Tiefe (`offsetUnits`, `fromDepth`, `needsDeeper`, `onlyDepth`). Test gegen die heutige `data/hub.json` (Rüstkammer ab Stufe 4 usw.).
+AC-03 geprüft: `App.HubRules(hubJSON)` (`app_planer_rules.go`) berechnet die Abweichung nur über `tabelle.Gegenprobe` (ist/soll, abweichende Zeilen, Task `rules:update`); Test mit absichtlich abweichender Tabelle auf einer Kopie, Regeltabelle des Checkouts bleibt byte-gleich.
+AC-04 geprüft: `WorldPreviewArgs.HubCandidate` geht als `room.PreviewOptions.HubCandidate` an die Live-Vorschau (`LivePreview` mit optionaler Prop `planer`, Bühne wiederverwendet, ohne Prop unverändert): ohne Kandidat steht die Rüstkammer in Stufe 3 nicht, mit Kandidat schon, ungültiger Kandidat → Fehler; Hub-Stufe und Kandidat steuert die Seite.
+AC-08 geprüft: `hub7.json` ergibt im Go-Test 7 Spalten, die Vorschau läuft mit Stufe 7 (8 nicht); Frontend-Test zeigt „Hub-Stufe 1…7“; im Code keine feste 5 (auch nicht im Mock, `hubLevelChoices().length`).
+Prüfung: Studio-Vitest (16 Dateien, 129 Tests), `tsc --noEmit`, `vite build`, Studio `go vet`/`go test`/`golangci-lint`, `task:check`, `task:check:go`, `go:lint` grün; `data/hub.json`, Regeltabelle und `testdata/golden` unverändert.
+Review (getrennter Agent, 0 CRITICAL/HIGH): behoben unbehandelte Promise-Ablehnungen (NoticeCard bei Fehler, 2 Tests), Kommentar `num`, Gebäude-Namen aus `site.<kind>` der Spieltexte, Kandidat in `ctx` der Vorschau (Auswahl wird zurückgesetzt), feste 5 und ungeschütztes `JSON.parse` im Mock, Fehlermeldung „nicht lesbar als hub.json“. Offen: Zeilen-Diff der Abweichung vergleicht nach Position (eine eingefügte Zeile markiert alle folgenden; Anzeige korrekt, nur schlecht lesbar) — bei Bedarf in WZ9.3; Matrix-Schlüssel `line@k`/`gate@k` passen nicht zu den Schaltern der Vorschau (`wall@x`); „Planer-Stand“ ist kein Glossar-Begriff (Kandidat genügt).
+Abweichungen: Seed und Biom der Planer-Vorschau fest `k3c`/`forest`; Mauerlinie und Tor als eine Zeile je Linie mit ± (hub.json ist symmetrisch); Burg und Ausbaustufen von Mauer/Turm nicht in der Matrix; der Browser-Mock zeigt die 7-Stufen-Fixture und meldet gegen die 5-Zeilen-Regeltabelle immer eine Abweichung.

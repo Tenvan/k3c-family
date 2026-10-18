@@ -105,3 +105,32 @@ func TestValidateMeldetPortalInnerhalbDerLinien(t *testing.T) {
 		t.Errorf("Validate = %q, erwartet Meldung „Portal innerhalb der äußersten Linie“", errs)
 	}
 }
+
+// WZ15.3 (B-462/AC-02): Die Linien kommen als Parameter; ohne Angabe gilt der eingebettete Stand.
+func TestGenerateWithLinienAlsParameter(t *testing.T) {
+	b := biome(t, "forest")
+	base, err := Generate(b, "7")
+	if err != nil {
+		t.Fatal(err)
+	}
+	def := DefaultWallLines()
+	same, err := GenerateWith(b, "7", Options{Lines: &def})
+	if err != nil || !slices.Equal(base.Lines, same.Lines) || !slices.Equal(base.Entities, same.Entities) {
+		t.Fatalf("Standard-Linien als Parameter weichen ab (%v)", err)
+	}
+	custom := WallLines{WallUnits: []float64{52, 64, 76, 88, 100, 112, 124}, FixedLines: 1, TowerInsetUnits: 4, GateOutsetUnits: 4}
+	l, err := GenerateWith(b, "7", Options{Lines: &custom})
+	if err != nil {
+		t.Fatal(err)
+	}
+	if n := len(custom.WallUnits); len(l.Lines) != 2*n || l.Lines[n-1].Wall != l.HubCenterUnits-124 || l.Lines[2*n-1].Gate != l.HubCenterUnits+128 {
+		t.Errorf("Linien aus dem Parameter: %+v", l.Lines)
+	}
+	if custom.ClearOf(60) || !custom.ClearOf(140) || !def.ClearOf(52) || custom.ClearOf(52) {
+		t.Errorf("ClearOf folgt nicht den übergebenen Linien")
+	}
+	def.WallUnits[0] = 0
+	if wallLines.WallUnits[0] == 0 {
+		t.Errorf("DefaultWallLines liefert keine Kopie")
+	}
+}

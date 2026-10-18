@@ -20,7 +20,7 @@ type siteSpec struct {
 // zieht beim Anlegen eine ID).
 func worldSiteSpecs(w *World) []siteSpec {
 	out := []siteSpec{}
-	for _, s := range hub.Sites {
+	for _, s := range hubOf(w).Sites {
 		if w.Biome.Depth < s.FromDepth || (s.NeedsDeeper && !hasDepth(w.Biome.Depth+1)) {
 			continue
 		}
@@ -62,7 +62,7 @@ func lineOpen(w *World, s *Site) bool {
 		return true
 	}
 	if s.Kind == "gate" {
-		return w.HubLevel >= max(hub.WallLines.GateHubLevel, l.Index) &&
+		return w.HubLevel >= max(hubOf(w).WallLines.GateHubLevel, l.Index) &&
 			wallBuilt(w, l.Side, l.Index) && !wallBuilt(w, l.Side, l.Index+1)
 	}
 	if w.HubLevel < l.Index {

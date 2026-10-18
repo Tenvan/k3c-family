@@ -120,4 +120,17 @@ describe('Optionen mit Tageszeit', () => {
   it('Sim-Phase und Fortschritt gehen in die Optionen', () => {
     expect(previewArgsOf('k3c', 'forest', 5, new Set(), { phase: 'dusk', progress: 0.25 })).toMatchObject({ phase: 'dusk', progress: 0.25 });
   });
+
+  it('Mock: Stufen aus dem Planer-Stand bzw. aus data/hub.json, ein unlesbarer Kandidat wird zum Hinweis', () => {
+    expect(mockWorldPreview(previewArgsOf('k3c', 'forest', 0, new Set())).state!.hubLevel).toBe(hubLevelChoices().length);
+    expect(mockWorldPreview(previewArgsOf('k3c', 'forest', 0, new Set(), undefined, '{"levels":[{},{},{},{},{},{},{}]}')).state!.hubLevel).toBe(7);
+    const broken = mockWorldPreview(previewArgsOf('k3c', 'forest', 3, new Set(), undefined, '{kaputt'));
+    expect(broken.state).toBeNull();
+    expect(broken.error).toContain('nicht lesbar');
+  });
+
+  it('der Planer-Stand geht nur mit, wenn er gesetzt ist (Gebäude-Planer)', () => {
+    expect(previewArgsOf('k3c', 'forest', 3, new Set(), undefined, '{"levels":[]}').hubCandidate).toBe('{"levels":[]}');
+    expect(previewArgsOf('k3c', 'forest', 3, new Set())).not.toHaveProperty('hubCandidate');
+  });
 });

@@ -13,10 +13,10 @@ const NONE: ReadonlySet<string> = new Set();
 interface Answer { key: string; off: string; view: WorldPreviewView }
 
 /** Vorschau-Welt zu Seed, Biom, Hub-Stufe und Tageszeit. `all` hat alle Gebäude (daraus die Schalter), `view` die Auswahl.
- *  Die Auswahl gehört zu Seed, Biom und Hub-Stufe (`ctx`): wechselt eines davon, gilt sie sofort als leer. Jede Antwort
+ *  Die Auswahl gehört zu Seed, Biom, Hub-Stufe und Planer-Stand (`ctx`): wechselt eines davon, gilt sie sofort als leer. Jede Antwort
  *  trägt ihren Schlüssel, eine veraltete wird nie gezeigt; bis die neue da ist, bleibt die letzte Welt stehen. */
-function usePreviewWorld(seed: string, biome: string, hubLevel: number, time: { phase: 'day' | 'dusk' | 'night'; progress: number }) {
-  const ctx = `${seed}|${biome}|${hubLevel}`;
+function usePreviewWorld(seed: string, biome: string, hubLevel: number, time: { phase: 'day' | 'dusk' | 'night'; progress: number }, candidate: string) {
+  const ctx = `${seed}|${biome}|${hubLevel}|${candidate}`; // ein anderer Planer-Stand leert die Auswahl wie eine andere Stufe
   const key = `${ctx}|${time.phase}|${time.progress}`;
   const [chosen, setChosen] = useState<{ ctx: string; off: ReadonlySet<string> }>({ ctx, off: NONE });
   const off = chosen.ctx === ctx ? chosen.off : NONE;
@@ -27,16 +27,16 @@ function usePreviewWorld(seed: string, biome: string, hubLevel: number, time: { 
 
   useEffect(() => {
     let current = true;
-    void backend.worldPreview(previewArgsOf(seed, biome, hubLevel, NONE, time)).then((view) => { if (current) setAll({ key, off: '', view }); });
+    void backend.worldPreview(previewArgsOf(seed, biome, hubLevel, NONE, time, candidate)).then((view) => { if (current) setAll({ key, off: '', view }); });
     return () => { current = false; };
-  }, [seed, biome, hubLevel, time, key]);
+  }, [seed, biome, hubLevel, time, candidate, key]);
 
   useEffect(() => {
     if (off.size === 0) return;
     let current = true;
-    void backend.worldPreview(previewArgsOf(seed, biome, hubLevel, off, time)).then((view) => { if (current) setPart({ key, off: offKey, view }); });
+    void backend.worldPreview(previewArgsOf(seed, biome, hubLevel, off, time, candidate)).then((view) => { if (current) setPart({ key, off: offKey, view }); });
     return () => { current = false; };
-  }, [seed, biome, hubLevel, time, key, off, offKey]);
+  }, [seed, biome, hubLevel, time, candidate, key, off, offKey]);
 
   const fresh = off.size === 0 ? (all?.key === key ? all.view : null) : (part?.key === key && part.off === offKey ? part.view : null);
   useEffect(() => { if (fresh) setShown(fresh); }, [fresh]);
@@ -107,22 +107,40 @@ function LookControls({ biome, timeId, setTimeId, progress, setProgress, hidden,
   );
 }
 
+/** Planer-Stand für die Live-Vorschau (Gebäude-Planer, B-462/AC-04): Kandidaten-hub.json, Anzahl ihrer Hub-Stufen und
+ *  die gewählte Stufe, gesteuert von der Seite. */
+export interface PlanerSource {
+  candidate: string;
+  levels: number;
+  hubLevel: number;
+  onHubLevel: (level: number) => void;
+}
+
+/** Wählbare Hub-Stufen und die gewählte: aus `data/hub.json`, mit Planer-Stand aus dessen Stufen und gesteuert von der Seite. */
+function useHubLevel(planer: PlanerSource | undefined) {
+  const levels = planer?.levels;
+  const choices = useMemo(() => (levels === undefined ? hubLevelChoices() : hubLevelChoices(Array.from({ length: levels }))), [levels]);
+  const [ownLevel, setOwnLevel] = useState(choices.at(-1) ?? 1);
+  return { choices, hubLevel: planer?.hubLevel ?? ownLevel, setHubLevel: planer?.onHubLevel ?? setOwnLevel };
+}
+
 /** Live-Vorschau des Welt-Betrachters (B-460/AC-04, AC-05): die Welt des Spiels mit der Spielgrafik auf der Phaser-Bühne
- *  des Studios. Hub-Stufe aus `data/hub.json` › `levels`, Gebäude einzeln ein und aus, Tageszeit, Hintergrund-Schichten
- *  mit Parallaxe (Kamera scrollt). Position und Zoom kommen von außen (`position`, B-477, gleich wie im Chunk-Streifen);
- *  Ziehen meldet `onPan` (Pixel), das Mausrad geht an `onWheel`; `onSites` meldet die Bauplätze (für die Sprungpunkte). */
-export function LivePreview({ seed, biome, position, onPan, onWheel, onSites }: {
-  seed: string; biome: string; position: StagePosition; onPan: (px: number) => void; onWheel: (e: WheelEvent) => void; onSites?: (sites: readonly { kind: string; x: number }[]) => void;
+ *  des Studios. Hub-Stufe aus `data/hub.json` › `levels` (mit `planer` aus dem Planer-Stand), Gebäude einzeln ein und aus,
+ *  Tageszeit, Hintergrund-Schichten mit Parallaxe (Kamera scrollt). Position und Zoom kommen von außen (`position`, B-477,
+ *  gleich wie im Chunk-Streifen); Ziehen meldet `onPan` (Pixel), das Mausrad geht an `onWheel`; `onSites` meldet die Bauplätze
+ *  (für die Sprungpunkte). */
+export function LivePreview({ seed, biome, position, onPan, onWheel, onSites, planer }: {
+  seed: string; biome: string; position: StagePosition; onPan: (px: number) => void; onWheel: (e: WheelEvent) => void;
+  onSites?: (sites: readonly { kind: string; x: number }[]) => void; planer?: PlanerSource;
 }) {
-  const choices = useMemo(() => hubLevelChoices(), []);
-  const [hubLevel, setHubLevel] = useState(choices.at(-1) ?? 1);
+  const { choices, hubLevel, setHubLevel } = useHubLevel(planer);
   const [timeId, setTimeId] = useState<TimeOfDayId>('day');
   const [progress, setProgress] = useState(0);
   const settled = useDebounced(progress, 120);
   const time = useMemo(() => simTime(timeId, settled), [timeId, settled]);
   const [hiddenFor, setHiddenFor] = useState<{ biome: string; hidden: ReadonlySet<string> }>({ biome, hidden: NONE });
   const hidden = hiddenFor.biome === biome ? hiddenFor.hidden : NONE;
-  const { all, view, off, setMany } = usePreviewWorld(seed, biome, hubLevel, time);
+  const { all, view, off, setMany } = usePreviewWorld(seed, biome, hubLevel, time, planer?.candidate ?? '');
   const host = useRef<HTMLDivElement>(null);
   const world = useMemo(() => worldOf(view), [view]);
   const look = useMemo<Look>(() => ({ brightness: world ? brightnessOf(world.cycle) : 1, hiddenLayers: hidden }), [world, hidden]);

@@ -53,6 +53,7 @@ type gen struct {
 	kinds []string
 	cw    float64
 	hub   float64
+	lines WallLines
 }
 
 func (g *gen) center(i int) float64 { return float64(float64(i)*g.cw) + g.cw/2 }
@@ -67,9 +68,23 @@ func (g *gen) free() []int {
 	return out
 }
 
-// Generate baut das Level für Biom und Seed.
+// Options sind Parameter des Generators (B-461, B-462); der Nullwert ist das heutige Verhalten.
+type Options struct {
+	// Lines: Mauerlinien (z. B. aus einer Kandidaten-hub.json); nil = eingebetteter Stand (DefaultWallLines).
+	Lines *WallLines
+}
+
+// Generate baut das Level für Biom und Seed mit den eingebetteten Mauerlinien.
 func Generate(b Biome, seed string) (Layout, error) {
-	g := &gen{b: b, r: rng.New(b.ID + ":" + seed), cw: b.ChunkWidthUnits}
+	return GenerateWith(b, seed, Options{})
+}
+
+// GenerateWith baut das Level für Biom und Seed mit den Parametern aus o.
+func GenerateWith(b Biome, seed string, o Options) (Layout, error) {
+	g := &gen{b: b, r: rng.New(b.ID + ":" + seed), cw: b.ChunkWidthUnits, lines: wallLines}
+	if o.Lines != nil {
+		g.lines = *o.Lines
+	}
 	g.frame()
 	if err := g.placePortals(); err != nil {
 		return Layout{}, err
@@ -92,7 +107,7 @@ func Generate(b Biome, seed string) (Layout, error) {
 	sort.SliceStable(entities, func(i, j int) bool { return entities[i].X < entities[j].X })
 	return Layout{
 		Seed: seed, BiomeID: b.ID, WidthUnits: float64(len(chunks)) * g.cw, ChunkWidthUnits: g.cw,
-		HubCenterUnits: g.hub, Chunks: chunks, Entities: entities, Lines: generateLines(b.ID, seed, g.hub),
+		HubCenterUnits: g.hub, Chunks: chunks, Entities: entities, Lines: g.lines.generate(b.ID, seed, g.hub),
 	}, nil
 }
 
@@ -174,7 +189,7 @@ func (g *gen) placeEvents(seed string) error {
 			// Stabil: gleich gute Slots behalten ihre Reihenfolge aus dem Mischen.
 			sort.SliceStable(slots, func(i, j int) bool {
 				di, dj := g.center(slots[i])-g.hub, g.center(slots[j])-g.hub
-				if ci, cj := clearOfLines(di), clearOfLines(dj); ci != cj {
+				if ci, cj := g.lines.ClearOf(di), g.lines.ClearOf(dj); ci != cj {
 					return ci
 				}
 				return math.Abs(di) < math.Abs(dj)
@@ -193,12 +208,12 @@ func (g *gen) placeEvents(seed string) error {
 func (g *gen) swapCampsWithChests() {
 	dist := func(i int) float64 { return math.Abs(g.center(i) - g.hub) }
 	for i, k := range g.kinds {
-		if k != "recruitCamp" || clearOfLines(g.center(i)-g.hub) {
+		if k != "recruitCamp" || g.lines.ClearOf(g.center(i)-g.hub) {
 			continue
 		}
 		best := -1
 		for j, kj := range g.kinds {
-			if kj == "chest" && clearOfLines(g.center(j)-g.hub) && (best < 0 || dist(j) < dist(best)) {
+			if kj == "chest" && g.lines.ClearOf(g.center(j)-g.hub) && (best < 0 || dist(j) < dist(best)) {
 				best = j
 			}
 		}

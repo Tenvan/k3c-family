@@ -17,7 +17,7 @@ import (
 // Boss und Beschwörungen kämpfen.
 func bossIsland(t *testing.T, players int) *Island {
 	t.Helper()
-	isl, err := CreateIsland("boss", []int{0, 1, 2}, 1)
+	isl, err := CreateIsland("boss", []int{0, 1, 2}, 1, CreateOptions{})
 	if err != nil {
 		t.Fatal(err)
 	}
