@@ -261,11 +261,12 @@ Die Golden-Daten (`testdata/golden/`) halten fest, was Simulation und Level-Gene
 
 ## Spielstand-Format ändern
 
-Gespeicherte Stände (`saves/`) überleben jedes Update; dafür sorgt die Regel aus B-137.
+**Beschluss 🧑 (2026-10-05, B-288): Bis auf Widerruf nimmt keine Formatänderung Rücksicht auf alte Spielstände** (es gibt noch keine relevanten).
+Eine Session baut keine Migration, kein neues Fixture und keinen Ladetest nur für alte Stände. Die Regel aus B-137 unten bleibt als Stand der Technik für den Widerruf, ihr vorhandener Code in `engine/sim/` bleibt bis zu einem eigenen SIM-Ticket unangetastet.
 
-- **Jede Formatänderung** des Spielstands (Feld neu, entfernt, umbenannt oder mit neuer Bedeutung) erhöht `IslandSaveVersion` (`engine/sim/island_save.go`); `ParseIslandSave` liest jede ältere Version und überführt sie.
-- **Fixture:** Ein kleiner, aus dem Code erzeugter Stand liegt unter `testdata/saves/v<n>/`; alte Fixtures bleiben unverändert liegen. `TestJedeVersionHatFixture` ist rot, solange eines fehlt.
-- **Test „alter Stand lädt“:** `engine/sim/save_migration_test.go` lädt jedes Fixture über `ParseIslandSave` und prüft Seed, Spieler und Hubs; eine neue Version ergänzt dort ihren Fall.
+- **Formatänderung** des Spielstands (Feld neu, entfernt, umbenannt oder mit neuer Bedeutung): `IslandSaveVersion` (`engine/sim/island_save.go`) darf steigen; ohne Widerruf ist eine Migration nicht nötig.
+- **Fixture:** Der kleine, aus dem Code erzeugte Stand unter `testdata/saves/v<n>/` der aktuellen Version bleibt gültig, wenn die Tests ihn verlangen; alte Fixtures werden nicht ergänzt. `TestJedeVersionHatFixture` bleibt bestehen, bis 🧑 das Löschen beschließt.
+- **Test „alter Stand lädt“:** `engine/sim/save_migration_test.go` bleibt, eine neue Version braucht dort ohne Widerruf keinen eigenen Fall.
 - **Neuere Version** (Stand von einem neueren Server): `ParseIslandSave` meldet gefundene und unterstützte Versionen und ändert keine Datei.
 
 ## Entscheidungen und Versionen
@@ -283,7 +284,7 @@ Gespeicherte Stände (`saves/`) überleben jedes Update; dafür sorgt die Regel 
 | Golden amd64 | CI-Job `go` (`task go:test`) auf dem Stand, der getaggt wird | grün |
 | Golden arm64 | CI-Job `go-arm64` (nativer arm64-Runner, B-071) | grün |
 | Alles grün | `task check:all` | Exit 0 (Client, Build, Go, k3c-dev) |
-| Spielstand-Migration | `testdata/saves/v<n>/` je `IslandSaveVersion` (`engine/sim/island_save.go`), `engine/sim/save_migration_test.go` | `TestJedeVersionHatFixture` und Ladetests grün (Abschnitt „Spielstand-Format ändern“) |
+| Spielstand-Migration (Beschluss 2026-10-05, B-288: bis auf Widerruf keine Rücksicht auf alte Stände) | `engine/sim/save_migration_test.go` | vorhandene Tests grün; neue Version ohne Migration zulässig (Abschnitt „Spielstand-Format ändern“) |
 | Dev-Reste aus (B-098, B-107, B-080) | Release-Server ohne `K3C_DEV` (`engine/room/dev.go` lehnt Dev-Aktionen ab); Client: Debug-Overlay und `window.game` nur mit `?dev=1` (`src/main.ts`) | Dev-Aktion wird mit „🚫 Dev-Aktion abgelehnt“ geloggt, ohne `?dev=1` kein Overlay |
 | Pi-Image | CI-Job `docker` (amd64 und arm64); beim Tag schiebt `release.yml` das Image nach `ghcr.io/tenvan/k3c-family` | beide Plattformen gebaut, Image mit Tag und `latest` vorhanden |
 | Version stimmt (B-141) | `VERSION` im `Taskfile.yml` (`git describe`), `/api/health` (Feld `version`), Versionszeile der Landingpage | alle drei nennen den Tag, kein Versionsunterschied zwischen Client und Server |

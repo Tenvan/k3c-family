@@ -58,7 +58,7 @@ Branch mit ungemergten Commits → bleibt, Hinweis im Ergebnis.
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
 | RP1.1 | `RP1.1-branch-aufraeumen.md` | Umsetzung | autonom | fertig |
-| RP1.2 | `RP1.2-regeln-altlasten.md` | Umsetzung | autonom | offen |
+| RP1.2 | `RP1.2-regeln-altlasten.md` | Umsetzung | autonom | fertig |
 | RP1.3 | `RP1.3-review.md` | Review | autonom | offen |
 
 Entwurf. Vor dem Aktivieren jede Session als Datei nach `docs/vorlagen/session.md` schreiben, die Kriterien in Klammern werden ihr Feld `Kriterien`.

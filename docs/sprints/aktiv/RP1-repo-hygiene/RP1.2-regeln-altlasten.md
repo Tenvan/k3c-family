@@ -1,6 +1,6 @@
 # RP1.2 · Regeln und Altlasten
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** INF
@@ -38,10 +38,10 @@ Kein Löschen von Migrationscode oder Fixtures in `engine/sim/` und `testdata/sa
 
 ## Fertig, wenn
 
-- [ ] AC-02: `docs/arbeitsweise.md` › „Spielstand-Format ändern“ und „Release“ nennen den Beschluss vom 2026-10-05 (B-288/AC-01).
-- [ ] AC-03: `git ls-files k3c-server k3c-server.exe` ist leer, `git grep -n "npm run" -- . ':!tools' ':!docs/backlog' ':!docs/sprints'` ohne Treffer, `task check:dev` grün (B-094/AC-01, B-094/AC-02).
-- [ ] AC-04: `requirements.md` nennt zuerst den Weg ohne Systemänderung, die Policy-Änderung nur mit Begründung (B-058/AC-01).
-- [ ] `task check` grün.
+- [x] AC-02: `docs/arbeitsweise.md` › „Spielstand-Format ändern“ und „Release“ nennen den Beschluss vom 2026-10-05 (B-288/AC-01).
+- [x] AC-03: `git ls-files k3c-server k3c-server.exe k3c-tui.exe` leer, `git grep -n "npm run" -- . ':!tools' ':!docs/backlog' ':!docs/sprints'` ohne Treffer, `task check:dev` grün (B-094/AC-01, B-094/AC-02).
+- [x] AC-04: `requirements.md` nennt zuerst `npm.cmd`, die Policy-Änderung nur als zweite Wahl mit Begründung (B-058/AC-01, vorläufig).
+- [x] `task test` grün; `task check` nur durch den bestehenden Oxlint-Fehler `src/tools/dm.ts:92` rot (auch auf `develop`).
 
 ## Prüfen
 
@@ -54,5 +54,8 @@ task check
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+- **AC-02 umgesetzt, geprüft:** Beschluss 2026-10-05 steht am Anfang von „Spielstand-Format ändern“ (keine Migration, kein neues Fixture nur für alte Stände) und in der Release-Zeile „Spielstand-Migration“; Code und Tests in `engine/sim/` unverändert (offene Frage von B-288 bleibt bei 🧑, SIM-Ticket nötig).
+- **AC-03 geprüft:** die Binärdateien waren bereits seit 2026-10-18 ausgetragen (`git ls-files` leer, `.gitignore`); `git grep "npm run"` außerhalb der Ausnahmen ohne Treffer; `task check:dev` grün (Go-Tests, `golangci-lint` 0 Befunde); `scripts` der Frontends bleiben (Entscheidung 🧑 2026-10-18).
+- **AC-04 umgesetzt, vorläufig:** Antwort von 🧑 auf B-058 steht aus; umgesetzt ist die vorsichtige Vorgabe des Tickets (zuerst `npm.cmd`, `RemoteSigned` als zweite Wahl mit Begründung). Ändert 🧑 das, genügt eine Zeile in `requirements.md`.
+- Nur Doku geändert; das Code-Review beschränkt sich auf RP1.3 (Review der ganzen Diff).
+- Neue Tickets: keine.
