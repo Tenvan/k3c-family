@@ -39,22 +39,7 @@ export function WorldPage() {
   const hints = slotHints(plan.draft, plan.check);
   const jumpTo = (c: ModelChunk) => setCenter((c.from + c.to) / 2); // Klick auf einen Chunk: Bildmitte = Chunk-Mitte, Zoom bleibt
 
-  // Pfeile scrollen, + und − zoomen, M verkleinert und maximiert (nicht, solange im Eingabefeld getippt wird).
-  const keys = useRef({ panBy, zoomBy });
-  keys.current = { panBy, zoomBy };
-  useEffect(() => {
-    const onKey = (e: KeyboardEvent) => {
-      if (e.target instanceof HTMLInputElement || e.target instanceof HTMLSelectElement || e.ctrlKey || e.metaKey || e.altKey) return;
-      const k = keys.current;
-      if (e.key === 'ArrowLeft') k.panBy(-KEY_STEP);
-      else if (e.key === 'ArrowRight') k.panBy(KEY_STEP);
-      else if (e.key === '+' || e.key === '=') k.zoomBy(1.25);
-      else if (e.key === '-') k.zoomBy(0.8);
-      else if (e.key === 'm' || e.key === 'M') setMaximized((m) => !m);
-    };
-    document.addEventListener('keydown', onKey);
-    return () => document.removeEventListener('keydown', onKey);
-  }, []);
+  useKeys(panBy, zoomBy, () => setMaximized((m) => !m));
 
   // Ein neues Level (Seed, Biom, Insel, Stufe, Inselgröße) beginnt beim Hub, der Zoom bleibt; lädt nur der Entwurf der
   // Planung neu, bleibt die Mitte (sonst spränge die Ansicht nach jeder Änderung eines Chunks zurück, WZ17.5).
@@ -91,4 +76,23 @@ export function WorldPage() {
       </div>
     </div>
   );
+}
+
+/** Pfeile scrollen, + und − zoomen, M verkleinert und maximiert (nicht, solange im Eingabefeld getippt wird). */
+function useKeys(panBy: (px: number) => void, zoomBy: (factor: number) => void, toggle: () => void) {
+  const keys = useRef({ panBy, zoomBy, toggle });
+  keys.current = { panBy, zoomBy, toggle };
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => {
+      if (e.target instanceof HTMLInputElement || e.target instanceof HTMLSelectElement || e.ctrlKey || e.metaKey || e.altKey) return;
+      const k = keys.current;
+      if (e.key === 'ArrowLeft') k.panBy(-KEY_STEP);
+      else if (e.key === 'ArrowRight') k.panBy(KEY_STEP);
+      else if (e.key === '+' || e.key === '=') k.zoomBy(1.25);
+      else if (e.key === '-') k.zoomBy(0.8);
+      else if (e.key === 'm' || e.key === 'M') k.toggle();
+    };
+    document.addEventListener('keydown', onKey);
+    return () => document.removeEventListener('keydown', onKey);
+  }, []);
 }
