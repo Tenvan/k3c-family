@@ -52,11 +52,11 @@ type Info struct {
 // App ist das Backend des Fensters: es hostet MCP-Server, Dienste und Log; seine exportierten Methoden sind die
 // Bindings der Oberfläche (frontend/src/api/).
 type App struct {
-	root  string
-	port  int
-	emit  func(ctx context.Context, name string, data ...any) // Test-Naht; Produktion: runtime.EventsEmit
-	usage string                                              // Datei der Nutzungsstatistik (Test-Naht)
-	open  func(url string)                                    // öffnet eine Adresse im Browser (Test-Naht; Produktion: runtime.BrowserOpenURL)
+	root   string
+	port   int
+	emit   func(ctx context.Context, name string, data ...any) // Test-Naht; Produktion: runtime.EventsEmit
+	usage  string                                              // Datei der Nutzungsstatistik (Test-Naht)
+	launch func(exe, dir string) error                         // startet ein Programm losgelöst (Test-Naht; Produktion: exec.Command.Start)
 	// ready schließt startup: Wails ruft OnStartup in einer eigenen Goroutine, Bindings können davor kommen.
 	ready chan struct{}
 

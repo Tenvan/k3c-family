@@ -1,6 +1,8 @@
 # tools/k3c-studio/
 
 ## Responsibility
+Eigenständiges Fenster (Wails, `main.go`, `window.go`): startet `engine/studio` und `dist/studio` auf Loopback (Port 8091, `K3C_STUDIO_PORT`), zeigt sie im Fenster und merkt Größe und Position wie k3c-dev (`%AppData%\k3c\k3c-studio.json`). Bauen: `task k3c-studio:build` → `bin/k3c-studio.exe`.
+
 Frontend des Asset-Studios (B-459): React-Oberfläche in `frontend/`, Build nach `dist/studio/` (`task studio:frontend`, von `task build` aufgerufen), vom Go-Server unter `/studio/index.html` ausgeliefert. Die Landingpage zeigt es über die Kachel „Welten bauen“ (`studio.html`, `src/tools/studioPage.ts`) im Vollflächen-Rahmen. Das **Backend** (RPC, Register, Planung) liegt in [`engine/studio/`](../../engine/studio/codemap.md).
 
 ## Design

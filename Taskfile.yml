@@ -259,6 +259,24 @@ tasks:
     generates:
       - ../../../dist/studio/**/*
 
+  k3c-studio:
+    desc: Asset-Studio als eigenes Fenster starten (Wails, ohne Spielserver; baut die Oberfläche bei Bedarf; B-459)
+    deps: [tmp, studio:frontend]
+    dir: '{{.STUDIO}}'
+    cmds:
+      - go run -tags desktop,production .
+
+  k3c-studio:build:
+    desc: EXE des Asset-Studios bauen, feste EXE bin/k3c-studio (Wails, wie k3c-starter; laufendes Studio vorher schließen, sonst scheitert die Kopie; startet es nicht; B-459)
+    deps: [tmp, studio:frontend]
+    preconditions:
+      - sh: command -v wails
+        msg: 'Wails-CLI fehlt – go install github.com/wailsapp/wails/v2/cmd/wails@v2.16.0 (requirements.md)'
+    cmds:
+      - cd {{.STUDIO}} && wails build -s
+      - mkdir -p bin
+      - cp {{.STUDIO}}/build/bin/k3c-studio{{exeExt}} bin/k3c-studio{{exeExt}}
+
   check:studio:
     desc: Asset-Studio-Frontend und gemeinsame Asset-Logik prüfen (Vitest, go test, golangci-lint; das Studio-Backend engine/studio prüft check:go; B-459)
     deps: [tmp, studio:frontend]
@@ -266,6 +284,8 @@ tasks:
       - npx vitest run --config {{.STUDIO}}/frontend/vitest.config.ts
       - cd tools/assetkit && go test ./...
       - cd tools/assetkit && golangci-lint run
+      - cd {{.STUDIO}} && go test ./...
+      - cd {{.STUDIO}} && golangci-lint run
 
   k3c-dev:
     desc: Entwickler-Werkzeug k3c-dev als Fenster starten (wails dev)
