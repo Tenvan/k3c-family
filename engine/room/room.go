@@ -36,7 +36,7 @@ var (
 	ErrClosed       = errors.New("room_closed") // Server fährt herunter
 	ErrForbidden    = errors.New("forbidden")   // dev ohne Dev-Mode (B-178)
 	ErrSaveInUse    = errors.New("save_in_use") // Spielstand in einem Raum mit verbundenem Gerät offen (B-424)
-	// ErrWorldUnknown: Welt unbekannt, Welt-ID oder Welt-Datei ungültig (welten.md § 5/6); den Protokoll-Code vergibt WZ18.5.
+	// ErrWorldUnknown: Welt unbekannt, Welt-ID oder Welt-Datei ungültig (welten.md § 5/6); Protokoll-Code world_unknown (WZ18.5).
 	ErrWorldUnknown = errors.New("world_unknown")
 )
 
@@ -67,7 +67,7 @@ const MaxSeedRunes = 64
 // ein eigener Strom (B-176). State bekommt den Zustand aus Manager.Snapshot; Geräte derselben Stufe teilen ihn, er ist
 // unveränderlich.
 type Peer interface {
-	Joined(room, name string, you []Seat)
+	Joined(room, name, world string, you []Seat) // world: Welt-ID des Raums
 	Level(stage, depth int, layout level.Layout)
 	State(tick, stage int, state any)
 	Seats(you []Seat, monarchs []string)
@@ -179,7 +179,7 @@ func (r *Room) join(id string, peer Peer, slots []int) error {
 	r.met.join(id)
 	r.syncFree()
 	r.log().Info("👑 Gerät im Raum", "device", short(id), "slots", slots, "wiederverbunden", old != nil, "geraete", r.connected())
-	peer.Joined(r.Code, r.Name, r.seats(d))
+	peer.Joined(r.Code, r.Name, r.isl.WorldID(), r.seats(d))
 	r.pushState(d, nil)
 	r.broadcastSeats()
 	return nil

@@ -55,7 +55,11 @@ func (c *conn) create(m inMsg) error {
 	if m.Fresh == nil {
 		return room.ErrBadRequest
 	}
-	return c.enter(c.s.cfg.Rooms.Create(c.device, c, m.Save, *m.Fresh, m.Depth, m.Slots, room.Options{Grade: m.Grade, Goal: m.Goal, Defeat: m.Defeat, Seed: m.Seed}))
+	opts := room.Options{Grade: m.Grade, Goal: m.Goal, Defeat: m.Defeat, Seed: m.Seed}
+	if *m.Fresh {
+		opts.World = m.World // ein Stand lädt in seiner gespeicherten Welt
+	}
+	return c.enter(c.s.cfg.Rooms.Create(c.device, c, m.Save, *m.Fresh, m.Depth, m.Slots, opts))
 }
 
 func (c *conn) enter(r *room.Room, err error) error {

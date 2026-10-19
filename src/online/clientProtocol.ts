@@ -1,9 +1,9 @@
 import type { LevelLayout } from '../model/types';
 import type { GameEvent, ResourceKind, World } from '../model/types';
 
-/** Protokoll v6 aus Sicht des Browsers (Vertrag: docs/protocol.md, Beispiele: testdata/protocol/). */
+/** Protokoll v7 aus Sicht des Browsers (Vertrag: docs/protocol.md, Beispiele: testdata/protocol/). */
 
-export const PROTOCOL_VERSION = 6;
+export const PROTOCOL_VERSION = 7;
 export const WS_PATH = '/ws';
 /** Ein Gerät sendet mindestens alle 500 ms eine `input` zur Bestätigung. */
 export const INPUT_KEEPALIVE_MS = 500;
@@ -19,7 +19,8 @@ export type ErrorCode =
   | 'replaced'
   | 'version'
   | 'bad_request'
-  | 'forbidden';
+  | 'forbidden'
+  | 'world_unknown';
 
 export interface Limits {
   monarchsPerRoom: number;
@@ -67,7 +68,8 @@ export type WorldState = Omit<World, StaticKey> & { events: GameEvent[]; depth: 
 export type ServerMessage =
   | { t: 'welcome'; v: number; tickHz: number; limits: Limits }
   | { t: 'rooms'; rooms: RoomInfo[] }
-  | { t: 'joined'; room: string; name: string; you: SlotSeat[] }
+  /** `world`: Welt-ID des Raums (docs/rules/welten.md § 6). */
+  | { t: 'joined'; room: string; name: string; world: string; you: SlotSeat[] }
   | { t: 'level'; stage: number; depth: number; layout: LevelLayout }
   | { t: 'snap'; stage: number; tick: number; ack: number; s: WorldState }
   | { t: 'delta'; stage: number; tick: number; ack: number; s: Record<string, unknown> }
@@ -76,7 +78,8 @@ export type ServerMessage =
 
 export type ClientMessage =
   | { t: 'hello'; v: number; device: string }
-  | { t: 'create'; save: string; fresh: boolean; depth?: number; seed?: string; slots: number[]; grade?: string; goal?: string; defeat?: string }
+  /** `world`: Welt-ID eines neuen Stands, fehlt = standard; eine andere nur im Dev-Mode des Servers (sonst `forbidden`). */
+  | { t: 'create'; save: string; fresh: boolean; depth?: number; seed?: string; world?: string; slots: number[]; grade?: string; goal?: string; defeat?: string }
   | { t: 'join'; room: string; slots: number[] }
   | { t: 'addSlot'; slot: number }
   | { t: 'removeSlot'; slot: number }

@@ -28,9 +28,11 @@ export interface StartParams {
   depth: number;
   /** Seed eines neuen Spiels aus `?seed=`, leer = der Name des Spielstands; die Länge (höchstens 64 Zeichen) prüft der Server (`bad_request`, B-095) */
   seed: string;
+  /** Welt eines neuen Spiels aus `?world=`, leer = standard; ob es sie gibt und ob sie erlaubt ist (nur Dev-Mode), prüft der Server (`world_unknown`, `forbidden`) */
+  world: string;
 }
 
-/** Wertet `?autostart=1&fresh=1&save=NAME&mock=N&room=CODE&players=N&depth=N&seed=TEXT` aus; ungültige Werte gelten als nicht gesetzt. */
+/** Wertet `?autostart=1&fresh=1&save=NAME&mock=N&room=CODE&players=N&depth=N&seed=TEXT&world=ID` aus; ungültige Werte gelten als nicht gesetzt. */
 export function parseStartParams(search: string): StartParams {
   const p = new URLSearchParams(search);
   const save = p.get('save') ?? '';
@@ -48,6 +50,7 @@ export function parseStartParams(search: string): StartParams {
     players: PLAYERS_FORMAT.test(players) ? Number(players) : 1,
     depth: DEPTH_FORMAT.test(depth) ? Number(depth) : 0,
     seed,
+    world: p.get('world') ?? '',
   };
 }
 
@@ -57,16 +60,16 @@ export function slotsFor(mock: number, players = 1): number[] {
 }
 
 export type LobbyCommand =
-  | { t: 'create'; save: string; fresh: boolean; depth: number; slots: number[]; seed?: string }
+  | { t: 'create'; save: string; fresh: boolean; depth: number; slots: number[]; seed?: string; world?: string }
   | { t: 'join'; room: string; slots: number[] };
 
 export interface LobbyClient {
-  create(save: string, fresh: boolean, depth: number, slots: number[], seed?: string): void;
+  create(save: string, fresh: boolean, depth: number, slots: number[], seed?: string, world?: string): void;
   join(room: string, slots: number[]): void;
 }
 
 export function applyCommand(client: LobbyClient, cmd: LobbyCommand): void {
-  if (cmd.t === 'create') client.create(cmd.save, cmd.fresh, cmd.depth, cmd.slots, cmd.seed);
+  if (cmd.t === 'create') client.create(cmd.save, cmd.fresh, cmd.depth, cmd.slots, cmd.seed, cmd.world);
   else client.join(cmd.room, cmd.slots);
 }
 
@@ -138,7 +141,7 @@ export function leavesGame(status: Status): boolean {
 
 /**
  * Wann die Lobby welchen Befehl sendet: Start-Parameter (`?room`, `?autostart`) einmal, Auswahl aus der Liste,
- * `save_not_found` → ein zweiter Versuch mit `fresh: true` (und `depth`, `seed` der Start-Parameter).
+ * `save_not_found` → ein zweiter Versuch mit `fresh: true` (und `depth`, `seed`, `world` der Start-Parameter).
  */
 export class LobbyFlow {
   private started = false;
@@ -177,8 +180,8 @@ export class LobbyFlow {
   }
 
   private create(fresh: boolean, save = this.params.save): LobbyCommand {
-    const { depth, seed } = this.params;
-    return { t: 'create', save, fresh, depth, slots: this.slots(), ...(fresh && seed ? { seed } : {}) };
+    const { depth, seed, world } = this.params;
+    return { t: 'create', save, fresh, depth, slots: this.slots(), ...(fresh && seed ? { seed } : {}), ...(fresh && world ? { world } : {}) };
   }
 
   private slots(): number[] {

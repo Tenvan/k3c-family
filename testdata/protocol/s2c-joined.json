@@ -2,5 +2,6 @@
   "t": "joined",
   "room": "KRNZ",
   "name": "familie",
+  "world": "standard",
   "you": [{ "slot": 0, "monarch": 2, "depth": 0, "stage": 0 }]
 }

@@ -158,12 +158,12 @@ export class RoomClient {
     return this.status === 'reconnecting' ? this.downSince : null;
   }
 
-  create(save: string, fresh: boolean, depth: number, slots: number[], seed?: string): void {
+  create(save: string, fresh: boolean, depth: number, slots: number[], seed?: string, world?: string): void {
     if (this.status !== 'lobby') return;
     this.slotsWanted = slots;
     this.notice = null;
     this.errorCode = null;
-    this.send({ t: 'create', save, fresh, ...(fresh ? { depth } : {}), ...(fresh && seed ? { seed } : {}), slots });
+    this.send({ t: 'create', save, fresh, ...(fresh ? { depth } : {}), ...(fresh && seed ? { seed } : {}), ...(fresh && world ? { world } : {}), slots });
   }
 
   join(room: string, slots: number[]): void {
@@ -411,7 +411,7 @@ export class RoomClient {
         this.setConnected();
         break;
       default:
-        // room_full, too_many_slots, too_many_rooms, save_exists, save_not_found: bleibt in Liste bzw. Raum
+        // room_full, too_many_slots, too_many_rooms, save_exists, save_not_found, world_unknown: bleibt in Liste bzw. Raum
         if (this.status === 'reconnecting') {
           this.clearRoom();
           this.setConnected();

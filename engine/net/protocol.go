@@ -8,11 +8,11 @@ import (
 	"k3c/engine/sim"
 )
 
-// Protokoll v6 (docs/protocol.md, Beispiele in testdata/protocol/). Eine Änderung hier ändert auch das Dokument, die
+// Protokoll v7 (docs/protocol.md, Beispiele in testdata/protocol/). Eine Änderung hier ändert auch das Dokument, die
 // Beispiele und den Client (docs/arbeitsweise.md › Grenzfall Protokoll).
 
 // ProtocolVersion steht nur im Handschlag (hello, welcome).
-const ProtocolVersion = 6
+const ProtocolVersion = 7
 
 // Codes ohne Gegenstück in engine/room.
 const (
@@ -35,12 +35,13 @@ var messages = map[string]string{
 	codeVersion:      "Veraltete Version, Seite neu laden",
 	codeBadRequest:   "Ungültige Nachricht",
 	"forbidden":      "Nur im Dev-Mode erlaubt",
+	"world_unknown":  "Welt unbekannt",
 }
 
 // codeOf übersetzt einen Fehler aus engine/room in seinen Code; alles andere ist bad_request.
 func codeOf(err error) string {
 	for _, e := range []error{room.ErrRoomFull, room.ErrTooManySlots, room.ErrTooManyRooms, room.ErrRoomNotFound,
-		room.ErrSaveExists, room.ErrSaveNotFound, room.ErrClosed, room.ErrForbidden} {
+		room.ErrSaveExists, room.ErrSaveNotFound, room.ErrClosed, room.ErrForbidden, room.ErrWorldUnknown} {
 		if errors.Is(err, e) {
 			return e.Error()
 		}
@@ -59,7 +60,8 @@ type inMsg struct {
 	Grade    string    `json:"grade"`
 	Goal     string    `json:"goal"`
 	Defeat   string    `json:"defeat"`
-	Seed     string    `json:"seed"` // create: Seed des neuen Stands (höchstens 64 Zeichen), leer = Name
+	Seed     string    `json:"seed"`  // create: Seed des neuen Stands (höchstens 64 Zeichen), leer = Name
+	World    string    `json:"world"` // create: Welt-ID des neuen Stands, leer = standard, eine andere nur im Dev-Mode
 	Slots    []int     `json:"slots"`
 	Room     string    `json:"room"`
 	Slot     *int      `json:"slot"`
@@ -115,10 +117,11 @@ type roomsMsg struct {
 }
 
 type joinedMsg struct {
-	T    string      `json:"t"`
-	Room string      `json:"room"`
-	Name string      `json:"name"`
-	You  []room.Seat `json:"you"`
+	T     string      `json:"t"`
+	Room  string      `json:"room"`
+	Name  string      `json:"name"`
+	World string      `json:"world"` // Welt-ID des Raums (docs/rules/welten.md § 6)
+	You   []room.Seat `json:"you"`
 }
 
 type seatsMsg struct {

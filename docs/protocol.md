@@ -1,4 +1,19 @@
-# Protokoll v6
+# Protokoll v7
+
+**Änderungen gegenüber v6 (WZ18.5, Version 7, B-488):** `create` nimmt die optionale Welt-ID `world` (Muster
+`^[a-z0-9][a-z0-9-]{0,31}$`, [`rules/welten.md`](rules/welten.md) § 4/6), nur bei `fresh: true`: Der neue Stand spielt
+die erste Insel dieser Welt. Fehlt `world` (oder ist leer), gilt `standard`, alte Aufrufe ohne Feld funktionieren unverändert.
+Eine andere Welt als `standard` gibt es nur im Dev-Mode des Servers (`K3C_DEV`), sonst `forbidden`; eine unbekannte oder
+ungültige Welt (keine Datei unter `K3C_WORLDS_DIR`, ID passt nicht zum Muster, Welt-Datei besteht die Prüfung nicht) ergibt
+den neuen Code `world_unknown`, die Ursache steht im Log. Bei `fresh: false` wird `world` ignoriert: Ein Spielstand lädt in
+seiner gespeicherten Welt (Fehler dort ebenfalls `world_unknown` bzw. `forbidden`). `joined` nennt immer die Welt-ID des
+Raums in `world` (auch `standard`). Der Client setzt `world` aus dem URL-Parameter `?world=` von `game.html`. `hello.v` muss
+7 sein; ein v6-Client erhält `version`. Beispiele: `c2s-create-world.json`, `s2c-joined.json`.
+
+```json
+{ "t": "create", "save": "nord", "fresh": true, "depth": 0, "world": "nordmeer", "slots": [0] }
+{ "t": "joined", "room": "KRNZ", "name": "nord", "world": "nordmeer", "you": [{ "slot": 0, "monarch": 0, "depth": 0, "stage": 0 }] }
+```
 
 **Optionales Feld `create.seed` (BT1, B-095, bleibt Version 6):** Text, höchstens 64 Zeichen (Unicode-Zeichen, wie `GET /api/level`),
 nur bei `fresh: true`. Er ist der Seed des neuen Stands und trennt ihn vom Namen des Spielstands; fehlt `seed` (oder ist leer),
@@ -223,8 +238,8 @@ vollständig und in Reihenfolge, deshalb braucht es keine Wiederholung und keine
 **Version:** Das Feld `v` steht nur im Handschlag (`hello`, `welcome`), nicht in jeder Nachricht. Die Version gilt für
 die ganze Verbindung; jede weitere Nachricht damit auszustatten kostet bei 30 Snapshots pro Sekunde nur Bytes.
 Erste Nachricht nach dem Verbinden ist immer `hello`. Ist sie kein gültiges `hello` (kein JSON, anderer Typ, Feld
-fehlt, `v` nicht 5), antwortet der Server mit `version` und schließt: Ein alter v1-Client schickt zuerst `join`, ein
-v4-Client schickt `v: 4`.
+fehlt, `v` nicht 7), antwortet der Server mit `version` und schließt: Ein alter v1-Client schickt zuerst `join`, ein
+v6-Client schickt `v: 6`.
 
 **Takt:** Ein laufender Raum tickt mit **30 Hz** und schickt jedem seiner Geräte pro Tick und Stufe des Geräts höchstens
 einen Zustand (`snap` oder `delta`, Stufen aufsteigend). Ein pausierter Raum schickt nichts. Geräte schicken `input`
@@ -241,12 +256,12 @@ das zählt als Abbruch.
 
 | Nachricht | Richtung | Wann | Felder | Beispiel |
 |---|---|---|---|---|
-| `hello` | Gerät → Server | als erste Nachricht | `v` Protokoll-Version (5), `device` Geräte-ID (≤ 64 Zeichen) | `c2s-hello.json` |
+| `hello` | Gerät → Server | als erste Nachricht | `v` Protokoll-Version (7), `device` Geräte-ID (≤ 64 Zeichen) | `c2s-hello.json` |
 | `welcome` | Server → Gerät | Antwort auf passendes `hello` | `v`, `tickHz`, `limits` (Grenzen aus *Grenzen*) | `s2c-welcome.json` |
 | `rooms` | Server → Gerät | nach `welcome`, sobald das Gerät wieder in keinem Raum ist, und bei jeder Änderung, solange es in keinem Raum ist | `rooms[]`: `code`, `name`, `depth`, `grade`, `taken` (besetzt + wartend), `free` (4 − `taken`), `running` | `s2c-rooms.json` |
-| `create` | Gerät → Server | Raum erstellen | `save` Name des Spielstands (`^[a-z0-9-]{1,32}$`), `fresh` neu (true) oder gespeicherten laden, `depth` Startstufe (nur bei `fresh`), `slots[]`, optional `grade`, `goal`, `defeat` (siehe oben), optional `seed` (nur bei `fresh`, höchstens 64 Zeichen, sonst gilt der Name) | `c2s-create.json`, `c2s-create-seed.json` |
+| `create` | Gerät → Server | Raum erstellen | `save` Name des Spielstands (`^[a-z0-9-]{1,32}$`), `fresh` neu (true) oder gespeicherten laden, `depth` Startstufe (nur bei `fresh`), `slots[]`, optional `grade`, `goal`, `defeat` (siehe oben), optional `seed` (nur bei `fresh`, höchstens 64 Zeichen, sonst gilt der Name), optional `world` (Welt-ID, nur bei `fresh`, fehlt = `standard`, eine andere nur im Dev-Mode; v7) | `c2s-create.json`, `c2s-create-seed.json`, `c2s-create-world.json` |
 | `join` | Gerät → Server | Raum beitreten oder wiederverbinden | `room` Code, `slots[]` | `c2s-join.json` |
-| `joined` | Server → Gerät | nach erfolgreichem `create`/`join` | `room`, `name`, `you[]`: `slot` → `monarch`, `depth`, `stage` | `s2c-joined.json` |
+| `joined` | Server → Gerät | nach erfolgreichem `create`/`join` | `room`, `name`, `world` (Welt-ID des Raums, v7), `you[]`: `slot` → `monarch`, `depth`, `stage` | `s2c-joined.json` |
 | `level` | Server → Gerät | nach `joined` und sobald eine Stufe für das Gerät neu ist, vor dem ersten Zustand der Stufe | `stage`, `depth`, `layout` (Level: Biom-ID, Breite, Chunks, Objekte) | `s2c-level.json` |
 | `snap` | Server → Gerät | voller Zustand einer Stufe: nach ihrem `level` (Beitreten, Wiederverbinden, Stufenwechsel) | `stage`, `tick`, `ack`, `s` (Zustand der Welt ohne Statisches, mit `events` und `depth`) | `s2c-snapshot-full.json`, `s2c-snapshot-wirtschaft.json`, `s2c-snapshot-boss.json`, `s2c-snapshot-event.json` |
 | `delta` | Server → Gerät | jeder weitere Tick, je Stufe | `stage`, `tick`, `ack`, `s` (nur Änderungen zum zuletzt gesendeten Zustand dieser Stufe) | `s2c-snapshot-delta.json` |
@@ -379,8 +394,9 @@ Geprüft von `TestWirtschaftZustand`, `TestWirtschaftDelta`, `TestKaempferZustan
 | `save_not_found` | `create` mit `fresh: false` und einem Namen, den es nicht gibt | bleibt |
 | `room_closed` | Raum abgestürzt oder Server fährt herunter; Gerät geht zurück zur Raumliste | bleibt (beim Herunterfahren: Server schließt) |
 | `replaced` | dieselbe Geräte-ID ist demselben Raum über eine neue Verbindung beigetreten | Server schließt, kein automatisches Neuverbinden |
-| `version` | erste Nachricht ist kein gültiges `hello` oder `v` ist nicht 5 | Server schließt |
-| `forbidden` | `dev` ohne Dev-Mode am Server; die Warnung steht im Log | bleibt, Nachricht wird verworfen |
+| `version` | erste Nachricht ist kein gültiges `hello` oder `v` ist nicht 7 | Server schließt |
+| `forbidden` | `dev` ohne Dev-Mode am Server, `create` mit einer anderen Welt als `standard` ohne Dev-Mode; die Warnung steht im Log | bleibt, Nachricht wird verworfen |
+| `world_unknown` | `create` mit unbekannter oder ungültiger Welt (`world`) bzw. Spielstand in einer solchen Welt (v7) | bleibt |
 | `bad_request` | kein gültiges JSON, unbekannter Typ, Feld fehlt, Name passt nicht zum Format, ungültiger Slot (doppelt, keine Zahl 0–3, bei `input`/`removeSlot` nicht vom Gerät, bei `addSlot` schon vergeben), ungültige Felder von `dev`, ungültiger Skill-Slot (`input.p[].skill` nicht 0–4), unbekannter Skill, abgelehntes `learn`/`respec` (Slot nicht vom Gerät, Feld fehlt, schon gelernt, keine Punkte, Tier-Gating, Respec nicht am Tag oder nicht an der Burg), Nachricht passt nicht zum Zustand (`input`, `addSlot`, `removeSlot`, `leave`, `dev`, `learn`, `respec` ohne Raum; `create`, `join` im Raum) | bleibt, Nachricht wird verworfen |
 
 `bad_request` ist kein Fehlerfall aus dem Raummodell, sondern Schutz vor kaputten Clients. Die Rückkehr nach 60 s ist
