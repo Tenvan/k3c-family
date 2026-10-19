@@ -33,6 +33,12 @@ func TestWeltenAnlegenWaehlenEntfernen(t *testing.T) {
 	if v := a.PlanWorldSelect("standard"); v.Active != "standard" || len(a.PlanLoad().Islands) != 1 {
 		t.Errorf("Wechsel zur Standard-Welt: %+v", v)
 	}
+	removeAndCheck(t, a, file)
+}
+
+func TestWeltenAblehnungen(t *testing.T) {
+	a := islandRepo(t)
+	a.PlanWorldAdd("Süd Küste")
 	if v := a.PlanWorldAdd("Süd Küste"); v.Error == "" {
 		t.Error("doppelte Welt angenommen")
 	}
@@ -47,6 +53,10 @@ func TestWeltenAnlegenWaehlenEntfernen(t *testing.T) {
 	if v := a.PlanWorldRemove("standard"); v.Error == "" {
 		t.Error("Standard-Welt entfernt")
 	}
+}
+
+func removeAndCheck(t *testing.T, a *App, file string) {
+	t.Helper()
 	if v := a.PlanWorldRemove("sued-kueste"); v.Error != "" || len(v.Worlds) != 1 || v.Active != "standard" {
 		t.Errorf("nach Entfernen: %+v", v)
 	}

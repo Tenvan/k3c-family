@@ -161,7 +161,7 @@ func (a *App) PlanWorldAdd(name string) WorldsView {
 	id := slugOf(name)
 	switch {
 	case name == "" || len([]rune(name)) > 60:
-		return a.worldsView(errors.New("Der Name braucht 1 bis 60 Zeichen"))
+		return a.worldsView(errors.New("der Name braucht 1 bis 60 Zeichen"))
 	case !worldID.MatchString(id) || id == standardWorld:
 		return a.worldsView(fmt.Errorf("aus %q wird keine gültige Welt-ID (a–z, 0–9, -)", name))
 	}
