@@ -155,6 +155,8 @@ export const de = {
   'tile.grafiken.desc': 'Gewählte CC0-Packs für Gebäude, Ressourcen und Hintergründe · mit Urheber, Lizenz und Quelle',
   'tile.sound.title': 'Hörprobe',
   'tile.sound.desc': 'Kandidaten für Musik und Effekte anhören · nach Zustand und Ereignis, mit Quelle und Lizenz',
+  'tile.studio.title': 'Asset-Studio',
+  'tile.studio.desc': 'Grafik, Sound, Welten Editor, Gebäude-Planer, Monarch und Gegner · neues Fenster ohne Rahmen (Dev-Mode des Servers)',
   'tile.dm.title': 'Dungeon Master',
   'tile.dm.desc': 'Laufende Räume beobachten und steuern: Zeit, Pause, Gold, Material, Welle, Tageszeit · neues Fenster (Dev-Mode des Servers)',
   'tile.monitor.title': 'Monitor',
