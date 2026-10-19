@@ -214,3 +214,17 @@ func TestOpenGameAntwortMitUngueltigemSpielstandName(t *testing.T) {
 		}
 	}
 }
+
+// WZ18.6 (B-488/AC-05): eine andere als die Standard-Welt startet als neues Spiel mit ihrer Welt-ID (`fresh`, `world`).
+func TestOpenGameStartetDieGewaehlteWelt(t *testing.T) {
+	srv, _, _ := gameServer(t, 200, `{}`)
+	a := &App{world: "nordmeer"}
+	res := a.WorldOpenGame(srv.URL, "probe", "forest", "new")
+	want := srv.URL + "/#game.html%3Fautostart%3D1%26fresh%3D1%26save%3Dprobe%26world%3Dnordmeer"
+	if res.Error != "" || res.URL != want {
+		t.Errorf("Ergebnis %+v, erwartet %s", res, want)
+	}
+	if res := a.WorldOpenGame(srv.URL, "probe", "forest", "full"); res.Error == "" || res.URL != "" {
+		t.Errorf("voll ausgebaut gibt es nur für die Standard-Welt: %+v", res)
+	}
+}

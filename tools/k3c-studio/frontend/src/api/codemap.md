@@ -9,13 +9,15 @@ Schnittstelle der Oberfläche zum Studio-Backend des Go-Servers (`engine/studio`
 - `mock.ts`: `mockBackend()` setzt `mockAssets.ts`, `mockWorld.ts`, `mockPlan.ts` und `mockHub.ts` zusammen; `external` spielt einen fremden Schreiber nach.
 - `mockAssets.ts`: erfundenes Slot-Register und Katalog, Stand zählt jede Änderung hoch, Schreibregel (`STALE`), `external` mit `quiet` (Fenster vor `assets:changed`).
 - `mockWorld.ts`: erfundenes Level je Seed (`kindsOf` nach Chunk-Anzahl, Seeds `fehler`/`warnung`), Vorschau-Welt aus `previewFixture.json` (Hub-Stufe, Phase, Gebäude-Auswahl, Kandidat), `mockOpenGame` (prüft den Seed wie Go, öffnet nichts).
-- `mockPlan.ts`: Plan-Teil im Speicher (Inseln mit fünf Tiefen, `MOCK_SIZES` gleich `data/island-sizes.json`, `mockCheckPlan` mit wenigen Fehlern, Stand `mock-<n>`, `touch` simuliert Änderung von außen, Seed-Inhalt für die Umwandlung).
-- `mockWorlds.ts`: Welten-Teil des Mock-Plans (`MockWorld`, `newWorld`, `mockWorlds`: wählen, anlegen, entfernen; Standard bleibt).
+- `mockPlan.ts`: Plan-Teil im Speicher (Welten mit Inseln, Tiefen 0–4, Planung je Insel, `MOCK_SIZES` gleich `data/island-sizes.json`, `mockCheckPlan` mit wenigen Fehlern, Stand `mock-<n>`, `touch` simuliert Änderung von außen, Seed-Inhalt für die Umwandlung).
+- `mockWorlds.ts`: Welten-Teil des Mock-Plans (`MockWorld`, `MockIsland`, `newWorld`, `mockWorlds`: wählen, anlegen leer oder als Kopie, entfernen; Standard bleibt).
+- `mockWorldDraft.ts`: Welt-Entwurf im Mock (`mockCheckWorld` mit den Fehlern der Prüfung des Ladens, die die Oberfläche zeigt, `planWorldSave` mit Stand; `HINT`, `staleText` wie in Go).
+- `worldTypes.ts`: Typen des Welt-Entwurfs (`WorldDraft`, `IslandDraft`, `DraftScaling`, `WorldCheckView`, `WorldDraftApi`), getrennt von `types.ts`.
 - `mockHub.ts`: Gebäude-Planer im Mock mit `hubFixture.json` (7-Stufen-Fixture, gleich zum Go-Backend).
 - `hubFixture.json`, `previewFixture.json`: Antworten des Go-Backends als Daten für die Mocks.
 - `stale.ts`: `STALE` und `isStale` erkennen die Ablehnung „Register geändert“ (Fehlertext aus Go als String oder `Error`).
 - `index.ts`: exportiert `backend` (`useMock()` ? Mock : HTTP), alle Typen und `isStale`/`STALE`.
-- Tests: `mockPlan.test.ts` (Inselgrößen gegen `data/island-sizes.json`).
+- Tests: `mockPlan.test.ts` (Inselgrößen gegen `data/island-sizes.json`, Stale-Text und REG-Hinweis wie Go).
 
 ## Flow
 1. Beim Laden von `index.ts` wird `backend` einmal gewählt: `useMock()` → Mock (Hinweis „Mock“ in `App.tsx`), sonst `httpBackend()`.

@@ -4,15 +4,32 @@ import { useState } from 'react';
 import { GameLauncher } from './GameLauncher';
 import { SizePicker } from './SizePicker';
 import type { PlanState } from './usePlan';
+import { useWorldDraft } from './useWorldDraft';
+import { WorldDraftEditor } from './WorldDraftEditor';
 
 const biomeName = (id: string) => BIOMES.find((b) => b.id === id)?.name ?? id;
 const lockOf = (plan: PlanState) => (plan.dirty ? 'Erst speichern oder verwerfen' : undefined);
 
-/** Welt wählen, anlegen (Name, eigene JSON-Datei unter data/worlds/) und löschen (die Standard-Welt bleibt). */
-function WorldBar({ plan }: { plan: PlanState }) {
+/** Neue Welt mit Namen anlegen: leer (eine Insel) oder als Kopie der gewählten; gesperrt mit Grund lock. */
+function AddWorld({ plan, lock }: { plan: PlanState; lock?: string }) {
   const [newName, setNewName] = useState('');
-  const { worlds, dirty } = plan;
-  const lock = lockOf(plan);
+  const off = lock !== undefined || newName.trim() === '';
+  const add = (copy: boolean) => { void (copy ? plan.copyWorld(newName) : plan.addWorld(newName)); setNewName(''); };
+  return (
+    <>
+      <input className="wd-seed" aria-label="Name der neuen Welt" placeholder="Name der neuen Welt" value={newName} onChange={(e) => setNewName(e.target.value)} />
+      <Button variant="soft" disabled={off} title={lock ?? 'Neue Welt mit einer Insel anlegen (eigene JSON-Datei unter data/worlds/)'} onClick={() => add(false)}>Welt +</Button>
+      <Button variant="soft" disabled={off} title={lock ?? 'Kopie der gewählten Welt mit allen Inseln, Planung und Inselgrößen'} onClick={() => add(true)}>Kopie</Button>
+    </>
+  );
+}
+
+/** Welt wählen, anlegen (leer oder als Kopie der gewählten, eigene JSON-Datei unter data/worlds/) und löschen (die
+ *  Standard-Welt bleibt); gesperrt, solange ein Entwurf (Planung oder Welt) offen ist. */
+function WorldBar({ plan, draftOpen }: { plan: PlanState; draftOpen: boolean }) {
+  const { worlds } = plan;
+  const dirty = plan.dirty || draftOpen;
+  const lock = dirty ? 'Erst speichern oder verwerfen' : undefined;
   const active = worlds?.worlds.find((w) => w.id === worlds.active);
   const isStandard = !worlds || worlds.active === 'standard';
   const remove = () => {
@@ -24,28 +41,20 @@ function WorldBar({ plan }: { plan: PlanState }) {
       <select className="wd-select" aria-label="Welt" value={worlds?.active ?? ''} disabled={dirty || !worlds} title={lock} onChange={(e) => void plan.selectWorld(e.target.value)}>
         {worlds?.worlds.map((w) => <option key={w.id} value={w.id}>{w.name}</option>)}
       </select>
-      <input className="wd-seed" aria-label="Name der neuen Welt" placeholder="Name der neuen Welt" value={newName} onChange={(e) => setNewName(e.target.value)} />
-      <Button variant="soft" disabled={dirty || newName.trim() === ''} title={lock ?? 'Neue Welt mit einer Insel anlegen (eigene JSON-Datei unter data/worlds/)'}
-        onClick={() => { void plan.addWorld(newName); setNewName(''); }}>Welt +</Button>
+      <AddWorld plan={plan} lock={lock} />
       <Button variant="outline" color="red" disabled={dirty || isStandard} title={lock ?? (isStandard ? 'Die Standard-Welt bleibt' : 'Gewählte Welt löschen (ihre Datei)')} onClick={remove}>Welt −</Button>
     </div>
   );
 }
 
-/** Insel und Stufe wählen, Insel anlegen (Kopie der letzten) und entfernen (die erste bleibt), Inselgröße der Stufe. */
+/** Insel und Stufe der gespeicherten Welt wählen und die Inselgröße der Stufe (Planung); Inseln anlegen und ordnen geht im
+ *  Welt-Entwurf. */
 function IslandBar({ plan }: { plan: PlanState }) {
   const { island, stage, dirty, view } = plan;
   const lock = lockOf(plan);
   const islands = view?.islands ?? [];
-  const isFirst = island !== undefined && island.id === islands[0]?.id;
   return (
     <>
-      <div className="wd-bar">
-        <Text size="2" weight="bold">Inseln</Text>
-        <span className="wd-grow" />
-        <Button variant="soft" disabled={dirty || !view} title={lock ?? 'Neue Insel als Kopie der letzten'} onClick={() => void plan.addIsland()}>Insel +</Button>
-        <Button variant="outline" color="red" disabled={dirty || !island || isFirst} title={lock ?? (isFirst ? 'Die erste Insel bleibt' : 'Gewählte Insel entfernen')} onClick={() => void plan.removeIsland()}>Insel −</Button>
-      </div>
       {island && (
         <div className="wd-bar">
           <select className="wd-select" aria-label="Insel" value={island.id} disabled={dirty} title={lock} onChange={(e) => plan.selectIsland(e.target.value)}>
@@ -92,13 +101,16 @@ function StructureTree({ plan }: { plan: PlanState }) {
   );
 }
 
-/** Welten- und Inselstruktur (Welten Editor, linke Spalte): Welt wählen, anlegen und löschen, darunter ihre Inseln und
- *  Stufen als Baum, Insel und Stufe wählen (die Vorschauen und der Editor für geplante Chunks folgen der Wahl), Insel anlegen
- *  und entfernen, Inselgröße der Stufe und „Im Spiel öffnen“. Alles Wechseln, Anlegen und Löschen geht nur ohne offenen Entwurf. */
+/** Welten- und Inselstruktur (Welten Editor, linke Spalte): Welt wählen, anlegen (leer, Kopie) und löschen, der Welt-Entwurf
+ *  (Name, Notizen, Inseln mit Stufen und Skalierung, WZ18.6), darunter die gespeicherten Inseln und Stufen als Baum, Insel und
+ *  Stufe wählen (die Vorschauen und der Editor für geplante Chunks folgen der Wahl), Inselgröße der Stufe und „Im Spiel öffnen“
+ *  (startet die gewählte Welt). Welt wechseln, anlegen und löschen geht nur ohne offenen Entwurf. */
 export function WorldStructure({ plan, seed, biome }: { plan: PlanState; seed: string; biome: string }) {
+  const world = useWorldDraft(plan);
   return (
     <section className="wd-struct" aria-label="Weltstruktur">
-      <WorldBar plan={plan} />
+      <WorldBar plan={plan} draftOpen={world.dirty} />
+      <WorldDraftEditor world={world} />
       <IslandBar plan={plan} />
       <StructureTree plan={plan} />
       <GameLauncher seed={seed} biome={biome} />

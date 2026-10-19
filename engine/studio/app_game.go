@@ -64,13 +64,14 @@ func loopbackBase(raw string) (string, error) {
 
 // WorldOpenGame startet das Level im Spiel (Binding): neu (`new`: nur Wald, Seed im Namensformat) oder voll ausgebaut
 // (`full`: legt über POST /api/dev/fullsave den Spielstand `voll-<seed>` an, nur im Dev-Mode des Servers). Die Landingpage
-// des Servers unter base öffnet danach `game.html` mit diesem Spielstand im Browser.
+// des Servers unter base öffnet danach `game.html` mit diesem Spielstand im Browser. Ist eine andere als die Standard-Welt
+// gewählt, startet `new` ein frisches Spiel in ihr (`fresh=1&world=<id>`, WZ18.6).
 func (a *App) WorldOpenGame(base, seed, biome, mode string) OpenGameResult {
 	root, err := loopbackBase(base)
 	if err != nil {
 		return OpenGameResult{Error: err.Error()}
 	}
-	save := seed
+	save, world := seed, a.activeWorld()
 	switch mode {
 	case modeNew:
 		if biome != "forest" {
@@ -80,6 +81,9 @@ func (a *App) WorldOpenGame(base, seed, biome, mode string) OpenGameResult {
 			return OpenGameResult{Error: "Seed muss aus Kleinbuchstaben, Ziffern und - bestehen (höchstens 32 Zeichen)"}
 		}
 	case modeFull:
+		if world != standardWorld {
+			return OpenGameResult{Error: "Voll ausgebaut gibt es nur für die Standard-Welt"}
+		}
 		if !gameFullSeed.MatchString(seed) {
 			return OpenGameResult{Error: "Für „voll ausgebaut“ muss der Seed aus Kleinbuchstaben, Ziffern und - bestehen (höchstens 27 Zeichen)"}
 		}
@@ -95,7 +99,12 @@ func (a *App) WorldOpenGame(base, seed, biome, mode string) OpenGameResult {
 			return OpenGameResult{Error: err.Error()}
 		}
 	}
-	target := root + "/#" + url.QueryEscape("game.html?"+url.Values{"autostart": {"1"}, "save": {save}}.Encode())
+	query := url.Values{"autostart": {"1"}, "save": {save}}
+	if world != standardWorld { // neues Spiel in der gewählten Welt (Dev-Mode des Servers, WZ18.5)
+		query.Set("fresh", "1")
+		query.Set("world", world)
+	}
+	target := root + "/#" + url.QueryEscape("game.html?"+query.Encode())
 	return OpenGameResult{URL: target, Save: save}
 }
 

@@ -68,7 +68,6 @@ export function usePlan() {
   }, [draft, count, island, depth, view]);
 
   const worlds = useWorlds(async () => { await load(); setIslandId(''); setStageState(0); }, setNotice);
-  const { addIsland, removeIsland } = useIslandEdit(view, island, (v, id) => { setView(v); setIslandId(id); setStageState(0); }, setNotice);
   const discard = () => { setDraft(saved); setCount(savedSize); setNotice(null); };
   const fallback = useMemo<PlanSource | undefined>(() => (island ? { island: island.id, stage, planned: saved, chunkCount: savedSize } : undefined), [island, stage, saved, savedSize]);
   const source = island ? (shown ?? fallback) : undefined;
@@ -76,25 +75,9 @@ export function usePlan() {
     view, island, stage, draft, count, sizes: view?.sizes ?? [], check, notice, dirty, source,
     selectIsland: (id: string) => { setIslandId(id); setStageState(0); },
     selectStage: setStageState,
-    edit, setSize, save, discard, reload: load, addIsland, removeIsland, ...worlds,
+    edit, setSize, save, discard, reload: load, ...worlds,
   };
 }
 
 export type PlanState = ReturnType<typeof usePlan>;
 
-/** Insel anlegen oder entfernen (nur ohne offenen Entwurf): nach dem Schreiben neu laden und die neue bzw. erste Insel wählen. */
-function useIslandEdit(view: PlanView | null, island: PlanIsland | undefined, apply: (view: PlanView, islandId: string) => void, setNotice: (n: Notice) => void) {
-  const run = useCallback(async (call: (stand: string) => Promise<{ error: string; stale: boolean; hint: string }>, pick: (v: PlanView) => string) => {
-    if (!view) return;
-    const result = await call(view.stand);
-    if (result.error) { setNotice({ kind: result.stale ? 'stale' : 'error', text: result.error }); return; }
-    const next = await backend.planLoad();
-    if (next.error) { setNotice({ kind: 'error', text: next.error }); return; }
-    apply(next, pick(next));
-    setNotice({ kind: 'hint', text: result.hint });
-  }, [view, apply, setNotice]);
-  return {
-    addIsland: () => run((stand) => backend.planIslandAdd(stand), (v) => v.islands.at(-1)?.id ?? ''),
-    removeIsland: () => island && run((stand) => backend.planIslandRemove(island.id, stand), (v) => v.islands[0]?.id ?? ''),
-  };
-}

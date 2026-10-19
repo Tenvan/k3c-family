@@ -6,7 +6,7 @@ import { afterEach, describe, expect, it, vi } from 'vitest';
 import { backend } from '../api';
 import { WorldPage } from './WorldPage';
 
-// Welten als Dateien im Welten Editor (DOM, Mock-Backend): Welt wählen, anlegen, löschen; Insel + und −.
+// Welten als Dateien im Welten Editor (DOM, Mock-Backend): Welt wählen, anlegen (leer, Kopie), löschen (WZ18.6, B-488/AC-05).
 vi.mock('../stage/PreviewStage', () => ({ PreviewStage: class { show() {} refresh() {} setLook() {} setPosition() {} destroy() {} } }));
 (globalThis as { IS_REACT_ACT_ENVIRONMENT?: boolean }).IS_REACT_ACT_ENVIRONMENT = true;
 
@@ -57,12 +57,31 @@ describe('Welten im Welten Editor', () => {
     expect(worldSelect(h).value).toBe('sued-kueste');
     expect([...worldSelect(h).options].map((o) => o.textContent)).toEqual(['Standard', 'Sued Kueste']);
     await act(async () => button(h, 'Insel +').click());
+    await wait(260);
+    await act(async () => button(h, 'Welt speichern').click());
     await flush();
     expect(islands(h)).toBe(2);
     Object.getOwnPropertyDescriptor(HTMLSelectElement.prototype, 'value')!.set!.call(worldSelect(h), 'standard');
     await act(async () => worldSelect(h).dispatchEvent(new Event('change', { bubbles: true })));
     await flush();
     expect(islands(h)).toBe(1);
+  });
+
+  it('legt eine Kopie der gewählten Welt an: alle Inseln, Name neu, die Kopie ist gewählt', async () => {
+    const h = await mount();
+    await typeIn(h.querySelector<HTMLInputElement>('input[aria-label="Name der neuen Welt"]')!, 'Basis');
+    await act(async () => button(h, 'Welt +').click());
+    await flush();
+    await act(async () => button(h, 'Insel +').click());
+    await wait(260);
+    await act(async () => button(h, 'Welt speichern').click());
+    await flush();
+    await typeIn(h.querySelector<HTMLInputElement>('input[aria-label="Name der neuen Welt"]')!, 'Nordmeer');
+    await act(async () => button(h, 'Kopie').click());
+    await flush();
+    expect(worldSelect(h).value).toBe('nordmeer');
+    expect(islands(h)).toBe(2);
+    expect(h.querySelector<HTMLInputElement>('input[aria-label="Name der Welt"]')!.value).toBe('Nordmeer');
   });
 
   it('löscht die gewählte Welt nach Rückfrage und wechselt zur Standard-Welt; ohne Zustimmung bleibt sie', async () => {

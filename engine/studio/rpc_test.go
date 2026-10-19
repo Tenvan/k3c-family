@@ -125,7 +125,7 @@ func TestRPCKodierterPfadUndLanHost(t *testing.T) {
 // Die Oberfläche darf genau diese Methoden aufrufen; eine neue mit passendem Präfix fällt hier auf.
 func TestRPCMethodenmenge(t *testing.T) {
 	want := []string{"AssetsCatalog", "AssetsDownload", "AssetsHitDrop", "AssetsHits", "AssetsLicenseOK", "AssetsList", "AssetsResearch", "AssetsSet",
-		"HubCheck", "HubPlan", "HubRules", "HubSave", "PlanChunkObjects", "PlanCheck", "PlanIslandAdd", "PlanIslandRemove", "PlanLoad", "PlanSave", "PlanWorldAdd", "PlanWorldRemove", "PlanWorldSelect", "PlanWorlds", "WorldLevel", "WorldOpenGame", "WorldPreview"}
+		"HubCheck", "HubPlan", "HubRules", "HubSave", "PlanChunkObjects", "PlanCheck", "PlanLoad", "PlanSave", "PlanWorldAdd", "PlanWorldCheck", "PlanWorldCopy", "PlanWorldRemove", "PlanWorldSave", "PlanWorldSelect", "PlanWorlds", "WorldLevel", "WorldOpenGame", "WorldPreview"}
 	var got []string
 	typ := reflect.TypeOf(&App{})
 	for i := 0; i < typ.NumMethod(); i++ {

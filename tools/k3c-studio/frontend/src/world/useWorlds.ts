@@ -3,7 +3,7 @@ import { backend, type WorldsView } from '../api';
 import type { Notice } from './planSave';
 
 /** Welten des Welten Editors (jede eine JSON-Datei mit allen Inseln und Anpassungen): Liste und gewählte Welt vom Backend.
- *  Wählen, Anlegen und Entfernen melden Fehler als Hinweis und rufen danach `onChanged` (Planung der gewählten Welt neu laden). */
+ *  Wählen, Anlegen (leer oder als Kopie der gewählten) und Entfernen melden Fehler als Hinweis und rufen danach `onChanged` (Planung der gewählten Welt neu laden). */
 export function useWorlds(onChanged: () => Promise<void>, setNotice: (n: Notice) => void) {
   const [worlds, setWorlds] = useState<WorldsView | null>(null);
   useEffect(() => { void backend.planWorlds().then(setWorlds); }, []);
@@ -15,8 +15,11 @@ export function useWorlds(onChanged: () => Promise<void>, setNotice: (n: Notice)
   };
   return {
     worlds,
+    /** Liste neu lesen (Name einer Welt nach dem Speichern ihres Entwurfs) */
+    refreshWorlds: async () => { setWorlds(await backend.planWorlds()); },
     selectWorld: (id: string) => apply(() => backend.planWorldSelect(id)),
     addWorld: (name: string) => apply(() => backend.planWorldAdd(name)),
+    copyWorld: (name: string) => apply(() => backend.planWorldCopy(name)),
     removeWorld: (id: string) => apply(() => backend.planWorldRemove(id)),
   };
 }

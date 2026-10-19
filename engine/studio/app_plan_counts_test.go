@@ -10,7 +10,7 @@ import (
 )
 
 // WZ17.5 (B-485/AC-04, geplante-chunks.md § 7): Chunk-Anzahl je Stufe im Editor. Alle Tests schreiben nur in Kopien
-// (t.TempDir()), nie in data/islands.json des Repos.
+// (t.TempDir()), nie in data/worlds/ des Repos.
 
 const countsFixture = `{
   "notes": "Fixture",

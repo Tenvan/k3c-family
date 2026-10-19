@@ -1,7 +1,6 @@
 package studio
 
 import (
-	"bytes"
 	"encoding/json"
 	"errors"
 	"fmt"
@@ -10,11 +9,14 @@ import (
 	"regexp"
 	"sort"
 	"strings"
+
+	"k3c/engine/sim"
 )
 
-// Welten als Dateien (Welten Editor): Jede Welt ist eine JSON-Datei mit allen Inseln und ihren Anpassungen (Planung,
-// Inselgrößen), im Format der Welt-Datei (docs/rules/welten.md). Die Welt „standard“ ist data/worlds/standard.json
-// (islandsPath, die das Spiel eingebettet lädt), weitere liegen daneben unter data/worlds/.
+// Welten als Dateien (Welten Editor, WZ18.6): Jede Welt ist eine JSON-Datei mit allen Inseln und ihren Anpassungen
+// (Planung, Inselgrößen), im Format der Welt-Datei (docs/rules/welten.md). Die Welt „standard“ ist
+// data/worlds/standard.json (islandsPath, die das Spiel eingebettet lädt), weitere liegen daneben unter data/worlds/.
+// Angelegt (leer oder als Kopie) wird nur eine Welt, die die Prüfung des Ladens besteht.
 // Das Studio bearbeitet immer die gewählte Welt; die Wahl gilt für alle Aufrufe der Planung (Laden, Prüfen, Speichern,
 // Inseln, Quelle der Vorschauen).
 
@@ -139,42 +141,67 @@ func slugOf(name string) string {
 	return s
 }
 
-// newWorldFile ist der Inhalt einer neuen Welt: Name und die erste Insel der Standard-Welt ohne Planung und Inselgrößen.
-func newWorldFile(standard []byte, name string) ([]byte, error) {
-	_, defs, err := islandList(standard)
-	if err != nil || len(defs) == 0 {
-		return nil, fmt.Errorf("Standard-Welt ohne Insel (%v)", err)
+// newWorldFile ist der Inhalt einer neuen, leeren Welt: id, Name und eine Insel nach dem Muster der ersten Insel der
+// Standard-Welt (Tiefen, Skalierung) ohne Planung und Inselgrößen.
+func newWorldFile(standard []byte, id, name string) ([]byte, error) {
+	w, err := sim.ParseWorld(standard, standardWorld)
+	if err != nil {
+		return nil, err
 	}
-	first := defs[0]
-	depths, _ := json.Marshal(first.Depths)
-	title, _ := json.Marshal(name)
-	var b bytes.Buffer
-	fmt.Fprintf(&b, "{\n  \"name\": %s,\n  \"islands\": [\n    { \"id\": \"island1\", \"name\": \"Insel 1\", \"depths\": %s, \"depthScaling\": %s, \"plannedChunks\": {} }\n  ]\n}\n",
-		title, bytes.TrimSpace(depths), bytes.TrimSpace(first.Scaling))
-	return b.Bytes(), nil
+	first := w.Islands[0]
+	scaling := DraftScaling{HP: first.DepthScaling.HP, Damage: first.DepthScaling.Damage, Speed: first.DepthScaling.Speed}
+	return fmt.Appendf(nil, newWorldText, jsonText(id), jsonText(name), depthsText(first.Depths), scalingText(scaling)), nil
 }
 
-// PlanWorldAdd legt eine neue Welt mit dem Namen name an (Binding): eine Insel nach dem Muster der ersten der Standard-Welt;
-// die neue Welt ist danach gewählt.
-func (a *App) PlanWorldAdd(name string) WorldsView {
-	name = strings.TrimSpace(name)
+// newWorldText ist das Muster einer neuen Welt-Datei (Felder in der Reihenfolge aus welten.md § 2).
+const newWorldText = `{
+  "id": %s,
+  "name": %s,
+  "notes": "",
+  "islands": [
+    { "id": "island1", "name": "Insel 1", "depths": %s, "depthScaling": %s, "plannedChunks": {} }
+  ]
+}
+`
+
+// copyWorldFile ist die Kopie einer Welt-Datei mit neuer id und neuem Namen; alle übrigen Bytes bleiben.
+func copyWorldFile(raw []byte, id, name string) ([]byte, error) {
+	out, err := setKey(raw, span{0, len(raw)}, "id", jsonText(id))
+	if err == nil {
+		out, err = setKey(out, span{0, len(out)}, "name", jsonText(name))
+	}
+	return out, err
+}
+
+// newWorldID prüft den Namen einer neuen Welt und liefert ihre id (aus dem Namen, noch nicht vergeben).
+func (a *App) newWorldID(name string) (string, error) {
 	id := slugOf(name)
 	switch {
 	case name == "" || len([]rune(name)) > 60:
-		return a.worldsView(errors.New("der Name braucht 1 bis 60 Zeichen"))
+		return "", errors.New("der Name braucht 1 bis 60 Zeichen")
 	case !worldID.MatchString(id) || id == standardWorld:
-		return a.worldsView(fmt.Errorf("aus %q wird keine gültige Welt-ID (a–z, 0–9, -)", name))
+		return "", fmt.Errorf("aus %q wird keine gültige Welt-ID (a–z, 0–9, -)", name)
 	}
 	for _, w := range a.listWorlds() {
 		if w.ID == id {
-			return a.worldsView(fmt.Errorf("die Welt %q gibt es schon", id))
+			return "", fmt.Errorf("die Welt %q gibt es schon", id)
 		}
 	}
-	standard, err := os.ReadFile(a.worldFile(standardWorld))
+	return id, nil
+}
+
+// addWorld legt die Welt name mit dem Inhalt aus content an: nur gültig (Prüfung des Ladens), atomar; danach ist sie
+// gewählt.
+func (a *App) addWorld(name string, content func(id string) ([]byte, error)) WorldsView {
+	name = strings.TrimSpace(name)
+	id, err := a.newWorldID(name)
 	if err != nil {
 		return a.worldsView(err)
 	}
-	raw, err := newWorldFile(standard, name)
+	raw, err := content(id)
+	if err == nil {
+		_, err = sim.ParseWorld(raw, id)
+	}
 	if err == nil {
 		err = os.MkdirAll(filepath.Join(a.root, worldsDir), 0o755)
 	}
@@ -185,6 +212,29 @@ func (a *App) PlanWorldAdd(name string) WorldsView {
 		return a.worldsView(err)
 	}
 	return a.PlanWorldSelect(id)
+}
+
+// PlanWorldAdd legt eine leere Welt mit dem Namen name an (Binding, siehe newWorldFile); sie ist danach gewählt.
+func (a *App) PlanWorldAdd(name string) WorldsView {
+	return a.addWorld(name, func(id string) ([]byte, error) {
+		standard, err := os.ReadFile(a.worldFile(standardWorld))
+		if err != nil {
+			return nil, err
+		}
+		return newWorldFile(standard, id, strings.TrimSpace(name))
+	})
+}
+
+// PlanWorldCopy legt eine Kopie der gewählten Welt mit dem Namen name an (Binding): alle Inseln mit Planung und
+// Inselgrößen; die Kopie ist danach gewählt.
+func (a *App) PlanWorldCopy(name string) WorldsView {
+	return a.addWorld(name, func(id string) ([]byte, error) {
+		raw, err := a.readIslands()
+		if err != nil {
+			return nil, err
+		}
+		return copyWorldFile(raw, id, strings.TrimSpace(name))
+	})
 }
 
 // PlanWorldRemove löscht die Welt id (Binding); „standard“ bleibt. Danach ist die Standard-Welt gewählt.

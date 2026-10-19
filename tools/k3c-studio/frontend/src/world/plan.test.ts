@@ -57,7 +57,7 @@ describe('Form zum Prüfen und Speichern', () => {
   });
 
   it('savedPlan liest die Planung der Stufe aus den Tiefen der Insel', () => {
-    const island: PlanIsland = { id: 'i', name: 'I', depths: [0, 1], biomes: ['forest', 'cave'], planned: { '1': [portal] }, chunkCounts: { '1': 24 } };
+    const island: PlanIsland = { id: 'i', name: 'I', depths: [0, 1], biomes: ['forest', 'cave'], planned: { '1': [portal] }, chunkCounts: { '1': 24 }, depthScaling: { hp: 1, damage: 1, speed: 1 } };
     expect(savedPlan(island, 1)).toEqual([portal]);
     expect(savedPlan(island, 0)).toEqual([]);
     expect(savedPlan(island, 5)).toEqual([]);
@@ -65,7 +65,7 @@ describe('Form zum Prüfen und Speichern', () => {
   });
 
   it('savedCount liest die Chunk-Anzahl der Stufe, ohne Eintrag 0 (Biom-Länge)', () => {
-    const island: PlanIsland = { id: 'i', name: 'I', depths: [0, 1], biomes: ['forest', 'cave'], planned: {}, chunkCounts: { '1': 24 } };
+    const island: PlanIsland = { id: 'i', name: 'I', depths: [0, 1], biomes: ['forest', 'cave'], planned: {}, chunkCounts: { '1': 24 }, depthScaling: { hp: 1, damage: 1, speed: 1 } };
     expect([savedCount(island, 1), savedCount(island, 0), savedCount(island, 5), savedCount(undefined, 0)]).toEqual([24, 0, 0, 0]);
   });
 
