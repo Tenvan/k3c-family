@@ -3,12 +3,12 @@
 - **Status:** geplant
 - **Projekt:** WZG
 - **Domäne:** DEV
-- **Reife:** Entwurf
+- **Reife:** bereit
 - **Tickets:** B-488
 - **Start-Commit:** – (wird beim Aktivieren gesetzt: `git rev-parse --short origin/develop`)
-- **Spec:** Entwurf
+- **Spec:** freigegeben
 - **Revision:** 1
-- **Freigabe:** –
+- **Freigabe:** 2026-10-19, Ralf im Chat (Revision 1)
 
 ## Ausgangslage
 
@@ -55,15 +55,20 @@ Aus `B-488`, Sprint 2:
 
 ## Offene Fragen
 
-Entschieden: `B-488 › Offene Fragen` (alle). Die Spec dieses Sprints (`Spec: Entwurf`) braucht die Freigabe von 🧑; Voraussetzung WZ18 erledigt. Offen für die Umsetzung: genauer Aufruf der CLI (`claude -p` mit Ausgabeformat) und Zuschnitt des Prompt-Textes, beides in WZ19.1 und WZ19.3 zu klären.
+Entschieden: `B-488 › Offene Fragen` (alle). Freigegeben von 🧑 am 2026-10-19 (Chat, Revision 1) mit dem Auftrag, den Sprint autonom umzusetzen; die neue Abhängigkeit assistant-ui ist damit freigegeben (Lizenz, Größe und React-Version belegt WZ19.2 trotzdem). Aktiviert wird WZ19, sobald WZ18 erledigt ist (Branch `sprint/wz19`). Offen für die Umsetzung: genauer Aufruf der CLI (`claude -p` mit Ausgabeformat) und Zuschnitt des Prompt-Textes, beides in WZ19.1 und WZ19.3 zu klären.
 
 ## Sessions
 
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
+| WZ19.1 | `WZ19.1-cli-anbindung-verlauf.md` | Umsetzung | autonom | offen |
+| WZ19.2 | `WZ19.2-chat-im-studio.md` | Umsetzung | autonom | offen |
+| WZ19.3 | `WZ19.3-prompt-grundgeruest.md` | Umsetzung | autonom | offen |
+| WZ19.4 | `WZ19.4-review.md` | Review | autonom | offen |
+| WZ19.5 | `WZ19.5-abnahme.md` | Review | Mensch | offen |
 
-- WZ19.1 (DEV) Go: Anbindung der Claude Code CLI als Wails-Binding mit Test-Ersatz, Zeitlimit, Abbruch, `.chats` mit Löschung nach einer Woche (AC-01, AC-02).
-- WZ19.2 (DEV) Abhängigkeit assistant-ui belegen (Lizenz, Größe, React-Version), von 🧑 freigeben lassen, dann Chat rechts im Studio auf allen Seiten (AC-03).
+- WZ19.1 (DEV) Go: Anbindung der Claude Code CLI als RPC-Methode des Studios (früher Wails-Binding) mit Test-Ersatz, Zeitlimit, Abbruch, `.chats` mit Löschung nach einer Woche (AC-01, AC-02).
+- WZ19.2 (DEV) Abhängigkeit assistant-ui belegen (Lizenz, Größe, React-Version; Freigabe durch 🧑 am 2026-10-19), dann Chat rechts im Studio auf allen Seiten (AC-03).
 - WZ19.3 (DEV) Button „Prompt-Grundgerüst“ aus den Daten, Antwort prüfen und als Entwurf im Welten Editor laden (AC-03).
 - WZ19.4 (DEV) Review: `task check:all`, Diff, PR (AC-05, alle).
 - WZ19.5 (DEV) Abnahme durch 🧑 am PC, Agent Mensch (AC-04).
