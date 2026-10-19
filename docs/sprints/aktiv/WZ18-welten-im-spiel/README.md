@@ -1,14 +1,14 @@
-# WZ18 · REG · Welten im Spiel: Welt-Dateien, Welt-Wahl im Raum und Welten-Editor
+# WZ18 · REG, SIM, SRV, DEV · Welten im Spiel: Welt-Dateien, Welt-Wahl im Raum und Welten-Editor
 
-- **Status:** geplant
+- **Status:** aktiv
 - **Projekt:** WZG
-- **Domäne:** REG
-- **Reife:** Entwurf
+- **Domäne:** REG, SIM, SRV, DEV
+- **Reife:** bereit
 - **Tickets:** B-488
-- **Start-Commit:** – (wird beim Aktivieren gesetzt: `git rev-parse --short origin/develop`)
-- **Spec:** Entwurf
+- **Start-Commit:** 9c54de70
+- **Spec:** freigegeben
 - **Revision:** 1
-- **Freigabe:** –
+- **Freigabe:** 2026-10-19, Ralf im Chat (Revision 1)
 
 ## Ausgangslage
 
@@ -59,20 +59,29 @@ Aus `B-488`, Sprint 1:
 
 ## Offene Fragen
 
-Entschieden: `B-488 › Offene Fragen` (alle). Offen für den Workshop WZ18.1: genaues Format der Welt-Datei, Behandlung der Insel-IDs über Welten hinweg, Verweis des Spielstands. Die Spec dieses Sprints (`Spec: Entwurf`) braucht die Freigabe von 🧑; Voraussetzung WZ17 erledigt.
+Entschieden: `B-488 › Offene Fragen` (alle). Offen für den Workshop WZ18.1: genaues Format der Welt-Datei, Behandlung der Insel-IDs über Welten hinweg, Verweis des Spielstands. Freigegeben von 🧑 am 2026-10-19 (Chat, Revision 1) mit dem Auftrag, den Sprint autonom umzusetzen; den Workshop WZ18.1 entscheidet Claude nach den Vorschlägen aus B-488 (Delegation durch 🧑, im Ergebnis vermerkt). Voraussetzung WZ17 ist erledigt.
 
 ## Sessions
 
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
+| WZ18.1 | `WZ18.1-workshop-welt-datei.md` | Workshop | autonom | offen |
+| WZ18.2 | `WZ18.2-welt-dateien-laden.md` | Umsetzung | autonom | offen |
+| WZ18.3 | `WZ18.3-spielstand-welt-inselwechsel.md` | Umsetzung | autonom | offen |
+| WZ18.4 | `WZ18.4-raum-welt.md` | Umsetzung | autonom | offen |
+| WZ18.5 | `WZ18.5-protokoll-welt.md` | Umsetzung | autonom | offen |
+| WZ18.6 | `WZ18.6-welten-editor.md` | Umsetzung | autonom | offen |
+| WZ18.7 | `WZ18.7-review.md` | Review | autonom | offen |
+| WZ18.8 | `WZ18.8-abnahme.md` | Review | Mensch | offen |
 
-- WZ18.1 (REG) Workshop mit 🧑: Format der Welt-Datei, Insel-IDs, Spielstand-Verweis; Regeltext in `docs/rules/`, Glossar (AC-01).
+- WZ18.1 (REG) Workshop (von 🧑 an Claude delegiert): Format der Welt-Datei, Insel-IDs, Spielstand-Verweis; Regeltext in `docs/rules/`, Glossar (AC-01).
 - WZ18.2 (SIM) Welt-Dateien laden und prüfen, Sim lädt über Parameter, `islands.json` → `data/worlds/standard.json` (AC-02).
 - WZ18.3 (SIM) Spielstand-Version +1 mit Welt-ID und Insel-ID, Migration alter Stände, Inselwechsel in Welten mit mehreren Inseln (AC-03).
-- WZ18.4 (SRV) Raum wählt die Welt (Dev-Mode), Protokoll mit Welt-ID, `docs/protocol.md` (AC-03, AC-04).
-- WZ18.5 (DEV) Welten Editor: Welten und Inseln anlegen und bearbeiten, Speichern nach den WZ8-Regeln (AC-05).
-- WZ18.6 (DEV) Review: `task check:all`, Diff aller Domänen, PR (AC-07, alle).
-- WZ18.7 (DEV) Abnahme durch 🧑 am PC, Agent Mensch (AC-06).
+- WZ18.4 (SRV) Raum wählt die Welt (Dev-Mode), Laden mit gespeicherter Welt, Inselwechsel im Raum (AC-03).
+- WZ18.5 (SRV) Protokoll mit Welt-ID und beiden Enden, `docs/protocol.md` (AC-03, AC-04); eigene Session nach `arbeitsweise.md` › Domänen › Grenzfälle (Protokoll), beim Bereitmachen von WZ18.4 abgetrennt.
+- WZ18.6 (DEV) Welten Editor: Welten und Inseln anlegen und bearbeiten, Speichern nach den WZ8-Regeln (AC-05).
+- WZ18.7 (DEV) Review: `task check:all`, Diff aller Domänen, PR (AC-07, alle).
+- WZ18.8 (DEV) Abnahme durch 🧑 am PC, Agent Mensch (AC-06).
 
 ## Abnahme
 
