@@ -365,7 +365,7 @@ Beispiel: `s2c-snapshot-wirtschaft.json` (Insel `w5-wirtschaft`, 3 Stufen, 4 Spi
 `wirtschaftsInsel` in `engine/net/wirtschaft_test.go`: Hub-Ausbau bezahlt und wartet auf Material, Lager gebaut und
 gefüllt, Händler da, ein Bauer mit Beruf; die drei Ereignisse in `events` sind von Hand ergänzt, siehe *Ereignisse*).
 Geprüft von `TestWirtschaftZustand`, `TestWirtschaftDelta`, `TestKaempferZustandUndDelta`, `TestWirtschaftBeispiel` und
-`src/online/clientWirtschaft.test.ts`.
+`src/online/clientEconomy.test.ts`.
 
 ### Fehler-Codes
 
@@ -412,7 +412,7 @@ Aktion, Werte, Raum).
 
 ### Kampf: Bosse, Events, Inselwechsel
 
-Der Zustand nennt den Kampf mit Feldern der Sim (`engine/sim/state_mirror.go`); der Client rechnet nichts, HP-Anteil,
+Der Zustand nennt den Kampf mit Feldern der Sim (`engine/sim/world_state_mirror.go`); der Client rechnet nichts, HP-Anteil,
 Phasen-Text und Zeitanzeige entstehen aus den Feldern. Zeiten in Sekunden, Orte in Units. **Fehlt ein Feld, trifft es nicht zu** (kein Boss, kein Event, kein Wechselpunkt); im Delta steht ein geändertes Feld ganz, ein verschwundenes in
 `unset`. Alle Felder sind additiv; die Version stieg mit K4.2 auf 6 (Inselwechsel).
 
@@ -426,7 +426,7 @@ Phasen-Text und Zeitanzeige entstehen aus den Feldern. Zeiten in Sekunden, Orte 
 
 Beispiele: `s2c-snapshot-boss.json` (Endboss in Phase 2 mit Warnkreis) und `s2c-snapshot-event.json` (Vollmond-Nacht,
 Wechselpunkt halb gefüllt), auf dem Zustand von `s2c-snapshot-full.json` aufgebaut. Geprüft von `TestKampfZustand`,
-`TestKampfDelta`, `TestKampfBeispiele` und `src/online/clientKampf.test.ts`. Der Wechsel entsteht durch Anwesenheit (keine Eingabe), siehe Strom-Regel „Inselwechsel“; das Ereignis `islandSwitch` kommt heute nicht beim Client an (B-385).
+`TestKampfDelta`, `TestKampfBeispiele` und `src/online/clientCombat.test.ts`. Der Wechsel entsteht durch Anwesenheit (keine Eingabe), siehe Strom-Regel „Inselwechsel“; das Ereignis `islandSwitch` kommt heute nicht beim Client an (B-385).
 
 ### Ereignisse
 

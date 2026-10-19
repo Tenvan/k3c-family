@@ -14,7 +14,7 @@
 
 ## Ausgangslage
 
-Mit festen Bauplätzen (Q43, B-206) gibt es Plätze, die noch gesperrt sind: Linie k braucht Hub-Stufe k und die Linie k−1 derselben Seite (Q48), ein Tor ist nur an der äußersten gebauten Linie bezahlbar (Q47), Gebäude schalten mit der Hub-Stufe frei. Der Client (`src/scenes/worldRenderer.ts`) zeichnet heute nur gebaute Plätze und Zahlziele. Der früher geplante Hinweis „Kein Platz für <Gebäude>“ (Q26) entfällt, weil kein Platz fehlen kann.
+Mit festen Bauplätzen (Q43, B-206) gibt es Plätze, die noch gesperrt sind: Linie k braucht Hub-Stufe k und die Linie k−1 derselben Seite (Q48), ein Tor ist nur an der äußersten gebauten Linie bezahlbar (Q47), Gebäude schalten mit der Hub-Stufe frei. Der Client (`src/scenes/render/worldRenderer.ts`) zeichnet heute nur gebaute Plätze und Zahlziele. Der früher geplante Hinweis „Kein Platz für <Gebäude>“ (Q26) entfällt, weil kein Platz fehlen kann.
 
 ## Ziel
 

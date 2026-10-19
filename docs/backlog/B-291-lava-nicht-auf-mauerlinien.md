@@ -14,7 +14,7 @@
 
 ## Ausgangslage
 
-Im Eisenstollen kann ein Lava-Chunk direkt neben dem Hub liegen (`data/biomes/ironhold.json`, Generator `engine/level/level.go`). Sein Lava-Streifen (8 Units in der Chunk-Mitte, `engine/sim/lava.go`) kann dann auf Mauer, Turm oder Tor einer Linie liegen; Bogenschützen hinter der Mauer und Bauern am Bauplatz nehmen dort Schaden.
+Im Eisenstollen kann ein Lava-Chunk direkt neben dem Hub liegen (`data/biomes/ironhold.json`, Generator `engine/level/level.go`). Sein Lava-Streifen (8 Units in der Chunk-Mitte, `engine/sim/world_lava.go`) kann dann auf Mauer, Turm oder Tor einer Linie liegen; Bogenschützen hinter der Mauer und Bauern am Bauplatz nehmen dort Schaden.
 
 ## Ziel
 

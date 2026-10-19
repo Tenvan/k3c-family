@@ -180,7 +180,8 @@ jobs:
           cache-dependency-path: |
             package-lock.json
             tools/k3c-dev/frontend/package-lock.json
-      # Der Typecheck des Frontends prüft auch die Tests; deren vitest kommt aus dem Hauptprojekt.
+      # Der Typecheck des Frontends prüft auch die Tests; vitest kommt aus dem Hauptprojekt, die Konfiguration
+      # (Alias @webkit) aus tools/k3c-dev/frontend/vitest.config.ts.
       - uses: go-task/setup-task@v1
       - run: npm ci
         working-directory: .
@@ -188,6 +189,8 @@ jobs:
       - run: npm ci
         working-directory: tools/k3c-dev/frontend
       - run: task dev:frontend
+      - run: npx vitest run --config vitest.config.ts
+        working-directory: tools/k3c-dev/frontend
       - run: go test ./...
       - uses: golangci/golangci-lint-action@v9
         with:

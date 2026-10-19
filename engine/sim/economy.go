@@ -16,7 +16,7 @@ type payTarget struct {
 	node     *ResourceNode
 	offer    *offerTarget
 	merchant string
-	sword    *Site // Schwert-Zahlziel der Werkstatt (warrior.go)
+	sword    *Site // Schwert-Zahlziel der Werkstatt (unit_warrior.go)
 }
 
 func stepPlayers(w *World, commands []PlayerCommand, dt float64) {
@@ -122,7 +122,7 @@ func findPayTarget(w *World, p *Player) *payTarget {
 }
 
 // sitePayable: Nimmt der Platz gerade Münzen? Unbezahlte Plätze erst ab ihrer Hub-Stufe, Linien-Plätze nach der
-// Linien-Regel (lines.go); gebaute für den Ausbau auf die nächste Stufe (hub_level.go) oder ihr Produkt (upgrades.go).
+// Linien-Regel (world_lines.go); gebaute für den Ausbau auf die nächste Stufe (hub_level.go) oder ihr Produkt (building_upgrades.go).
 func sitePayable(w *World, s *Site) bool {
 	if s.State == "unpaid" {
 		return w.HubLevel >= siteHubLevel(w, s) && lineOpen(w, s)
@@ -301,7 +301,7 @@ func collectCoins(w *World) {
 		} else {
 			taker.Gold++
 			if w.island != nil {
-				w.island.GoldCollected++ // Siegvariante gold (victory.go)
+				w.island.GoldCollected++ // Siegvariante gold (island_victory.go)
 			}
 			emit(w, "coinPickup", Event{"player": taker.Index, "x": unitX(c.X)})
 		}
@@ -370,8 +370,8 @@ func spend(s *Stock, c Cost) {
 }
 
 // stepSites: Bezahlte Bauplätze ziehen das Material aus dem Hub-Vorrat, sobald genug da ist. Werkstatt fertigt Bögen
-// (mit Herstellungszeit), voll bezahlte Angebote bilden Bauern aus (professions.go), Schmiede und Rüstkammer werten
-// auf (upgrades.go).
+// (mit Herstellungszeit), voll bezahlte Angebote bilden Bauern aus (unit_professions.go), Schmiede und Rüstkammer werten
+// auf (building_upgrades.go).
 func stepSites(w *World) {
 	for _, s := range w.Sites {
 		if cost := cheap(w, buildings[s.Kind].Cost); s.State == "waitingMaterial" && canAfford(*w.Stock, cost) {

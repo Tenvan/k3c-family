@@ -124,7 +124,7 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-426](B-426-fullsave-review-kleinigkeiten.md) | SRV | Schuld | niedrig | offen | – | Kleine Befunde aus dem Review von SV1 sind erledigt |
 | [B-435](B-435-gebaeude-grafik-per-prompt.md) | DEV | Idee | mittel | eingeplant | GEB1 | Gebäude und Strukturen entstehen im Asset-Manager aus Beschreibung und Prompt |
 | [B-436](B-436-plan-create-entwurf-zeilen.md) | DEV | Problem | niedrig | offen | WZ12 | plan_create scheitert an Platzhalter-Zeilen „– (Entwurf)“ in der Session-Tabelle |
-| [B-438](B-438-werkstatt-baeume-ins-spiel.md) | CLI | Idee | mittel | eingeplant | GEB6 | Werkstatt und Bäume aus tools/gebaeude erscheinen im Spiel |
+| [B-438](B-438-werkstatt-baeume-ins-spiel.md) | CLI | Idee | mittel | eingeplant | GEB6 | Werkstatt und Bäume aus tools/buildings erscheinen im Spiel |
 | [B-440](B-440-dev-test-entwurfs-sprints-ohne-sessions.md) | DEV | Problem | mittel | offen | – | k3c-dev-Planungstest lehnt Entwurfs-Sprints ohne Sessions ab |
 | [B-453](B-453-alte-biom-hintergruende-aufbewahren.md) | CLI | Idee | mittel | offen | – | Alte Biom-Hintergründe (Packs) als Grafik aufbewahren |
 | [B-454](B-454-baeume-hoeher-dichter-hoehle-wurzeln.md) | DEV | Problem | hoch | offen | – | Bäume höher und dichter, Höhle mit eigener Unterwelt-Flora (Wurzeln) |

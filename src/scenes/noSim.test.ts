@@ -5,7 +5,7 @@ import { describe, expect, it } from 'vitest';
  * `src/online/client*`, `src/online/protocol.ts`) importiert Typen und Daten nur aus `src/model`.
  */
 const sources = import.meta.glob(
-  ['./*.ts', '../core/*.ts', '../online/client*.ts', '../online/protocol.ts'],
+  ['./**/*.ts', '../core/*.ts', '../online/client*.ts', '../online/protocol.ts'],
   { query: '?raw', import: 'default', eager: true },
 ) as Record<string, string>;
 
@@ -21,7 +21,7 @@ describe('Client kennt src/world nicht (AC-05)', () => {
 
   it('findet die Client-Dateien', () => {
     expect(files.map(([n]) => n)).toEqual(
-      expect.arrayContaining(['./GameScene.ts', './HudScene.ts', './worldRenderer.ts', '../core/saveStore.ts', '../online/clientConnection.ts']),
+      expect.arrayContaining(['./GameScene.ts', './HudScene.ts', './render/worldRenderer.ts', '../core/saveStore.ts', '../online/clientConnection.ts']),
     );
   });
 

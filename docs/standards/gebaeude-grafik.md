@@ -1,6 +1,6 @@
 # Gebäude-Grafik: Grundregeln
 
-Gilt für alle Gebäude und Strukturen, die mit `tools/gebaeude` entstehen (Projekt GEB, B-435). Belegt an der
+Gilt für alle Gebäude und Strukturen, die mit `tools/buildings` entstehen (Projekt GEB, B-435). Belegt an der
 Werkstatt (`public/grafik/gebaeude/werkstatt.json`, Sprint GEB1). Die Regeln wachsen mit jedem Gebäude; Änderungen
 nur mit Zustimmung von 🧑.
 
@@ -33,7 +33,7 @@ nur mit Zustimmung von 🧑.
 
 ## 2. Palette und Licht
 
-- Nur **DB32** (DawnBringer 32, Namen nach Lospec, Tabelle in `tools/gebaeude/db32.go`); dazu Transparenz. Kein Anti-Aliasing, keine Zwischenfarben.
+- Nur **DB32** (DawnBringer 32, Namen nach Lospec, Tabelle in `tools/buildings/db32.go`); dazu Transparenz. Kein Anti-Aliasing, keine Zwischenfarben.
 - **Licht von links oben:** Kanten links und oben eine Stufe heller (z. B. `oiled-cedar` → `rope` → `twine` → `pancho`), Schatten unter Dächern und Brettern eine Stufe dunkler.
 
 ## 3. Materialsprache
@@ -195,7 +195,7 @@ Je Biom drei Schichten (`hg-<biom>-fern|mitte|nah`, Biom: `wald`, `hoehle`, `min
 - **Maß:** 24 × 15 Kacheln (768 × 480 px bei 32 px, 384 × 240 px bei 16 px); Spiel: Maßstab 1, Unterkante auf der Bodenlinie. Der Himmel ist `palette.sky` des Bioms (`data/biomes/*.json`, nicht DB32) und scheint oben durch: **oberste Pixelzeile transparent**.
 - **Bodenlinie:** unterste Pixelzeile **durchgehend deckend** (kein Spalt über dem Boden, die Fluss-Spiegelung zeigt sonst Streifen).
 - **Naht:** erste = letzte Pixelspalte. Nichts berührt die Randspalten außer durchgehenden Bändern (Boden); Bausteine gehen nie über die Bildkante, Wiederholungen enden mit Abstand zum Rand.
-- **Helligkeit (Luma 0,299 R + 0,587 G + 0,114 B, Mittel über die deckenden Pixel bei 32 px):** fern < mitte < nah, je Schicht mindestens **8** Punkte heller als die dahinter; „nah“ im Mittel höchstens **75**, also dunkler als das dunkelste Gebäude (Farm 79). Leuchtfarben (Glut, Kristalllicht) nur in kleinen Flächen. Prüfung: `TestHintergrundStufen` (`tools/gebaeude/hintergrund_test.go`).
+- **Helligkeit (Luma 0,299 R + 0,587 G + 0,114 B, Mittel über die deckenden Pixel bei 32 px):** fern < mitte < nah, je Schicht mindestens **8** Punkte heller als die dahinter; „nah“ im Mittel höchstens **75**, also dunkler als das dunkelste Gebäude (Farm 79). Leuchtfarben (Glut, Kristalllicht) nur in kleinen Flächen. Prüfung: `TestHintergrundStufen` (`tools/buildings/hintergrund_test.go`).
 - **Material:** die Zeilen „Hintergrund …“ in § 3 (Wald: Krone, Hügel, Farn; Holz: Stamm, Balken, Gerüst; Fels: Wand, Bogen, Zapfen; Eisen: Träger, Strebe; Glut: Lavaschein, Spalte; Kristall: Gruppe, Zapfen); fernere Schichten entsättigter und dunkler. Motive stehen in der Vorlage jeder JSON.
 - **Scroll-Faktoren im Spiel** (hinten < vorn, Code in `worldSprites.ts`): Wald 0,15 / 0,35 / 0,5, Höhle 0,1 / 0,2 / 0,4, Mine, Eisenstollen und Kristallhöhle 0,1 / 0,25 / 0,45. Der Faktor am TV bleibt offen (§ 8).
 - **Variation** entsteht nur in den Daten (Wiederholungen mit festen Schritten und Versätzen), nie durch Zufall.

@@ -5,7 +5,7 @@ import { createRoot, type Root } from 'react-dom/client';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { backend } from '../api';
 import type { AssetSlot } from '../api';
-import type { FigureItem } from '../abspiel/figureView';
+import type { FigureItem } from '../playback/figureView';
 import { MonarchPage } from './MonarchPage';
 
 // B-463 (WZ10.2) im DOM: Monarch-Seite mit einer Attrappe statt Phaser; die Bühne bekommt, was die Seite wählt.

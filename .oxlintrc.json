@@ -26,7 +26,7 @@
       "rules": { "complexity": ["error", { "max": 29 }] }
     },
     {
-      "files": ["src/scenes/worldRenderer.ts"],
+      "files": ["src/scenes/render/worldRenderer.ts"],
       "rules": { "complexity": ["error", { "max": 23 }] }
     },
     {

@@ -1,5 +1,5 @@
 import '@radix-ui/themes/styles.css';
-import './styles/theme.css';
+import '@webkit/theme.css';
 import './styles/app.css';
 import './styles/services.css';
 import './styles/logs.css';

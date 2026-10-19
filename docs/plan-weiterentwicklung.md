@@ -10,7 +10,7 @@
 - **Fertig:** Insel/Stufen-Kern (SP12), Optionen/Grade/Material/Lager in Go (SP13), Raum auf Insel + Protokoll v3 (SP14), Regelwerk R1–R4 beschlossen (`docs/rules/*.md`), Go-Server, Diagnose-TUI, k3c-dev, Logging (heute ausgebaut).
 - **Offen, Sim/Regeln:** Hub-Ausbau B-112, Plantage/Adern B-114, Stufenbreite B-115, Gebäude B-116, Monarch-Schlag/Pool B-118, Skills B-119, Wiederbeleben B-120, Berufe/Händler B-121, Elite/Limit B-122, Traits B-128, Gegner B-129, Bosse B-130, Events B-131, Siegvarianten B-102, Inseln B-103.
 - **Offen, Protokoll/Client:** B-123 Protokoll Skills, B-124 Skill-Menü, B-125 Aktionen-Overlay, B-126 Bürger-UI, B-117/B-132 Anzeigen, B-105 Anlegen-Dialog, B-106 Kamera je Stufe, B-107 Debug-Panel.
-- **Grafik:** Figuren vorhanden (`public/sprites/*`, 38 Packs, `data/sprites.json`), Pack-Grafiken für Gebäude/Ressourcen/Hintergründe liegen unter `public/grafik/*` (G1), sind aber nicht zugeordnet; Renderer zeichnet Bauplätze noch als Formen (`src/scenes/worldRenderer.ts`). Reittiere ohne Mechanik.
+- **Grafik:** Figuren vorhanden (`public/sprites/*`, 38 Packs, `data/sprites.json`), Pack-Grafiken für Gebäude/Ressourcen/Hintergründe liegen unter `public/grafik/*` (G1), sind aber nicht zugeordnet; Renderer zeichnet Bauplätze noch als Formen (`src/scenes/render/worldRenderer.ts`). Reittiere ohne Mechanik.
 - **Sound:** nichts vorhanden (kein Audio-Code in `src/`), B-011 ist nur ein Satz.
 - **Balancing:** Werte in `data/*.json`; B-099 (Tester) hat noch keine Zielzahlen; Spieleabend B-008 nie gespielt.
 - **Betrieb:** SP11 (Pi) wartet auf 🧑; B-071 (Golden auf arm64) offen.

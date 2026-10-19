@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { backend, type Notice } from '../api';
-import type { Tone } from './parts';
+import type { Tone } from '@webkit/parts';
 
 // Hinweise eines Agenten (notify_ui) unten rechts: höchstens vier, neueste unten; Fehler bleiben bis zum Klick,
 // alle anderen verschwinden nach AUTO_CLOSE_MS.

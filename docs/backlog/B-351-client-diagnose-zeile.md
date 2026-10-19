@@ -14,7 +14,7 @@
 
 ## Ausgangslage
 
-`sim_test` mit `clients` 1–4 (B-348/AC-04, TR1.3) liest FPS und Latenz der Clients aus dem Log `k3c-client` (`/api/clientlog`). B-349 setzt voraus, dass der Client sie „wie bisher“ meldet; heute zeigt sie nur das Debug-Overlay (`src/scenes/debugOverlay.ts`), im Client-Log steht keine solche Zeile. Der Status eines Laufs zeigt deshalb „keine Diagnose-Zeilen im Client-Log“.
+`sim_test` mit `clients` 1–4 (B-348/AC-04, TR1.3) liest FPS und Latenz der Clients aus dem Log `k3c-client` (`/api/clientlog`). B-349 setzt voraus, dass der Client sie „wie bisher“ meldet; heute zeigt sie nur das Debug-Overlay (`src/scenes/debug/debugOverlay.ts`), im Client-Log steht keine solche Zeile. Der Status eines Laufs zeigt deshalb „keine Diagnose-Zeilen im Client-Log“.
 
 ## Ziel
 

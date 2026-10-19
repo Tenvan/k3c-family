@@ -1,7 +1,7 @@
 import monarchJson from '@data/monarch.json';
 import { t } from '@game/core/texts';
-import { EFFECT_CONFIG, type EffectKind } from '@game/scenes/effects';
-import { gap, type Anim, type Gap } from '../abspiel/figure';
+import { EFFECT_CONFIG, type EffectKind } from '@game/scenes/effects/effects';
+import { gap, type Anim, type Gap } from '../playback/figure';
 
 // Aktionen und Skills der Monarch-Seite (B-463, WZ10.3): Schlagen, Münzen, Getroffen, Tod, Respawn und die Skill-Liste mit
 // Lücken. Effekte und Deckkraft stammen aus dem Spiel (`EFFECT_CONFIG`, `worldRenderer`); was das Spiel nicht darstellt,
@@ -14,7 +14,7 @@ const DATA = monarchJson as unknown as {
 };
 
 /** Deckkraft des Monarchen, solange er auf den Respawn wartet (`setAlpha(p.respawnIn > 0 ? 0.25 : 1)` im Spiel); ein Test
- *  prüft, dass der Wert noch in `src/scenes/worldRenderer.ts` steht. */
+ *  prüft, dass der Wert noch in `src/scenes/render/worldRenderer.ts` steht. */
 export const RESPAWN_ALPHA = 0.25;
 
 export type ActionId = 'swing' | 'coinGive' | 'coinPickup' | 'hit' | 'down' | 'respawn' | 'noTarget';

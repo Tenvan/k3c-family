@@ -14,7 +14,7 @@
 
 ## Ausgangslage
 
-Abnahme S7.3 am 2026-10-06 (🧑, PC, Tastatur, 1 Spieler): Im Stand sitzt der Monarch mittig auf dem braunen Pferd, beim Laufen und Sprinten „hinten auf dem Hintern des Pferds“. Befund in den Daten: `data/sprites.json` › `mounts.horse.saddle` hat für `idle` den Punkt x = 49, für `run` x = 38 bis 42 (Faktor `scale` 2,2, also rund 15 bis 24 px weiter hinten). `blackHorse` nutzt dieselben Punkte. Die Lage berechnet `src/scenes/mountPose.ts` (`saddleOf`, Ursprung des Sheets).
+Abnahme S7.3 am 2026-10-06 (🧑, PC, Tastatur, 1 Spieler): Im Stand sitzt der Monarch mittig auf dem braunen Pferd, beim Laufen und Sprinten „hinten auf dem Hintern des Pferds“. Befund in den Daten: `data/sprites.json` › `mounts.horse.saddle` hat für `idle` den Punkt x = 49, für `run` x = 38 bis 42 (Faktor `scale` 2,2, also rund 15 bis 24 px weiter hinten). `blackHorse` nutzt dieselben Punkte. Die Lage berechnet `src/scenes/render/mountPose.ts` (`saddleOf`, Ursprung des Sheets).
 
 ## Ziel
 

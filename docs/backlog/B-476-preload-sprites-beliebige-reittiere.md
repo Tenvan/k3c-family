@@ -14,11 +14,11 @@
 
 ## Ausgangslage
 
-`preloadSprites` und `createSpriteAnims` in `src/scenes/sprites.ts` laden nur Sheets mit Rolle (Atlas) und das Standard-Reittier `MONARCH.mount.sprite` als Einzel-PNG; `createRider` in `src/scenes/mountView.ts` ist an `Player` und das Standard-Reittier gebunden. Das Asset-Studio (WZ10.1) zeigt alle 13 Reittiere und baut dafür Laden und Animationen selbst nach (`abspiel/figureView.ts`, `loadFigureSheets`), weil `src/scenes/` nicht geändert werden darf. Das ist eine Abweichung von B-463/AC-02.
+`preloadSprites` und `createSpriteAnims` in `src/scenes/render/sprites.ts` laden nur Sheets mit Rolle (Atlas) und das Standard-Reittier `MONARCH.mount.sprite` als Einzel-PNG; `createRider` in `src/scenes/render/mountView.ts` ist an `Player` und das Standard-Reittier gebunden. Das Asset-Studio (WZ10.1) zeigt alle 13 Reittiere und baut dafür Laden und Animationen selbst nach (`abspiel/figureView.ts`, `loadFigureSheets`), weil `src/scenes/` nicht geändert werden darf. Das ist eine Abweichung von B-463/AC-02.
 
 ## Ziel
 
-`src/scenes/sprites.ts` bietet einen Weg, beliebige Reittiere (Sheets aus `data/sprites.json` › `mounts`) zu laden und ihre Animationen anzulegen, ohne dass das Studio Code des Spiels nachbaut; `createRider` nimmt das Reittier als Parameter. Danach entfallen `loadFigureSheets` und `createSheetAnims` im Studio.
+`src/scenes/render/sprites.ts` bietet einen Weg, beliebige Reittiere (Sheets aus `data/sprites.json` › `mounts`) zu laden und ihre Animationen anzulegen, ohne dass das Studio Code des Spiels nachbaut; `createRider` nimmt das Reittier als Parameter. Danach entfallen `loadFigureSheets` und `createSheetAnims` im Studio.
 
 ## Beteiligte und Zielgruppen
 

@@ -3,7 +3,7 @@ import { CROSSFADE_SECONDS } from '@game/audio/crossfade';
 import { candidatesFromSlots, fileFor, groupCandidates, keyAction, moveSelection, stepVolume, type Action, type Candidate, type Group } from '@game/tools/soundtestLogic';
 import { useEffect, useMemo, useRef, useState, type KeyboardEvent } from 'react';
 import { useAssets } from '../assets/useAssets';
-import { NoticeCard } from '../ui/parts';
+import { NoticeCard } from '@webkit/parts';
 import { core, stopAll } from './audio';
 
 // Reiter „Hörprobe“ der Seite Sound (B-459/AC-06, Inhalt von soundtest.html ohne Pad-Steuerung): ganze Dateien der

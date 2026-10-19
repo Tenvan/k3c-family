@@ -14,7 +14,7 @@
 
 ## Ausgangslage
 
-Der Client zeichnet Bauplätze und Truppen; er zeigt weder Material-Maximum noch Hub-Stufe, Wartegründe oder Adern (`src/scenes/worldRenderer.ts`, `HudScene.ts`).
+Der Client zeichnet Bauplätze und Truppen; er zeigt weder Material-Maximum noch Hub-Stufe, Wartegründe oder Adern (`src/scenes/render/worldRenderer.ts`, `HudScene.ts`).
 
 ## Ziel
 

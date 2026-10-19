@@ -9,7 +9,7 @@ import (
 )
 
 // K4.1 (B-154/AC-01, AC-03): Boss mit Phase und Warnkreis, Nacht-Event mit Restzeit und Inselwechsel im Zustand.
-// Die Felder setzt die Sim (K4.1a, state_mirror.go); stateOf reicht sie durch, das Delta nennt nur die Änderung.
+// Die Felder setzt die Sim (K4.1a, engine/sim/world_state_mirror.go); stateOf reicht sie durch, das Delta nennt nur die Änderung.
 
 // kampfWelt ist Stufe 0 einer Insel mit 4 Spielern und einem Endboss in Phase 2 (Flächenschlag in 3,4 s).
 func kampfWelt(t *testing.T) *sim.World {

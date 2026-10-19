@@ -1,7 +1,7 @@
 import { Flex, Switch, Tabs, Text } from '@radix-ui/themes';
 import type { McpState } from './api';
 import { StudioLink } from './StudioLink';
-import { StatusBadge, Tip } from './ui/parts';
+import { StatusBadge, Tip } from '@webkit/parts';
 
 export const PAGES = ['dienste', 'tasks', 'planung', 'mcp'] as const;
 export type Page = (typeof PAGES)[number];

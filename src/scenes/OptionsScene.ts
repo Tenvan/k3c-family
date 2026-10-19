@@ -15,7 +15,7 @@ import {
   tapOption,
   type OptionDir,
 } from './optionsLogic';
-import { pauseButton } from './pauseButton';
+import { pauseButton } from './hud/pauseButton';
 
 const TOP = 230;
 const ROW_H = 72; // 11 Zeilen über dem Hinweis unten

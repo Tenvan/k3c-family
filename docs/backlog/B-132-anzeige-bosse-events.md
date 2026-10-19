@@ -14,7 +14,7 @@
 
 ## Ausgangslage
 
-Der Client zeichnet Gegner und Wellen; Bosse, Phasen, Flächenangriffe und Events gibt es nicht (`src/scenes/worldRenderer.ts`, `HudScene.ts`).
+Der Client zeichnet Gegner und Wellen; Bosse, Phasen, Flächenangriffe und Events gibt es nicht (`src/scenes/render/worldRenderer.ts`, `HudScene.ts`).
 
 ## Ziel
 

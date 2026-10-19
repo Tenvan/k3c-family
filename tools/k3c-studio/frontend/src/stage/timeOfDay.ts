@@ -1,9 +1,9 @@
-import { daylight } from '@game/scenes/viewRules';
+import { daylight } from '@game/scenes/render/viewRules';
 import type { CycleInfo } from '@game/model/types';
 
 // Tageszeit der Live-Vorschau (B-460/AC-05, WZ7.4): vier Einträge in der Oberfläche, drei Sim-Phasen in Go. Das Morgengrauen
 // ist in der Sim nur ein Ereignis beim Tagesbeginn und keine Phase; der Client zeichnet es als die letzten 10 % der Nacht
-// (`daylight()` in `src/scenes/viewRules.ts`). Das Studio bildet es deshalb auf die Phase `night` mit Fortschritt
+// (`daylight()` in `src/scenes/render/viewRules.ts`). Das Studio bildet es deshalb auf die Phase `night` mit Fortschritt
 // 0,9 + 0,1·p ab. Eine echte Phase baut B-470; dann entfällt die Abbildung.
 
 export type SimPhase = 'day' | 'dusk' | 'night';

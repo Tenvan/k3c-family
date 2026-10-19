@@ -8,7 +8,7 @@ Build- und Toolchain-Konfiguration der k3c-dev-Oberfläche (React + TypeScript +
 
 - `package.json`: private ESM-Anwendung `k3c-dev-frontend`; Abhängigkeiten `react`/`react-dom` und `@radix-ui/themes` (feste Versionen), Dev: `vite`, `@vitejs/plugin-react`, `typescript`. Skripte `dev` (`vite`) und `build` (`tsc --noEmit && vite build`); `package.json.md5` ist ein Install-Stempel.
 - `vite.config.ts`: Plugin `react()`, Dev-Server Port 5191 (`strictPort`).
-- `tsconfig.json`: `strict`, `jsx: react-jsx`, `noUnusedLocals/Parameters`, Bundler-Resolution, `include: src, vite.config.ts`; Tests laufen im Vitest des Hauptprojekts.
+- `tsconfig.json`: `strict`, `jsx: react-jsx`, `noUnusedLocals/Parameters`, Bundler-Resolution, `include: src, ../../webkit`, `paths` für `@webkit/*` und für `react`/`@radix-ui/themes` aus dem eigenen `node_modules`. `paths.ts` (`ALIAS` mit `@webkit`, `DEDUPE`, `WEBKIT`) teilen `vite.config.ts` (Alias, Dedupe, `server.fs.allow`) und `vitest.config.ts` (eigenes Vitest, `task check:dev`; das Vitest der Wurzel nimmt das Frontend aus).
 - `index.html`: Einstieg mit `#root` und `src/main.tsx`.
 - Generiert, nicht von Hand: `wailsjs/` (Wails-Bindings), `dist/`; Quellcode in `src/`.
 

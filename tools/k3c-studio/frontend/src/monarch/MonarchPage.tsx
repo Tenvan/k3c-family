@@ -1,9 +1,9 @@
 import { Text } from '@radix-ui/themes';
 import { useEffect, useMemo, useState } from 'react';
 import { backend, type AssetSlot } from '../api';
-import { DEFAULT_CONTROL, type Anim, type Control } from '../abspiel/figure';
-import { FigureStage } from '../abspiel/FigureStage';
-import { GapBadge, PlaybackControls } from '../abspiel/PlaybackControls';
+import { DEFAULT_CONTROL, type Anim, type Control } from '../playback/figure';
+import { FigureStage } from '../playback/FigureStage';
+import { GapBadge, PlaybackControls } from '../playback/PlaybackControls';
 import type { FigureInfo } from '../stage/PreviewStage';
 import { ACTIONS, actionOf, type ActionId } from './actions';
 import { SkillList } from './SkillList';

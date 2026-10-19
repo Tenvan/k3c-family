@@ -27,7 +27,7 @@ B-462 › Beteiligte und Zielgruppen. Im Sprint: Agenten setzen WZ9.1–WZ9.3 um
 ## Anforderungen
 
 B-462 › Anforderungen (Matrix, Bearbeitbar, Schreiben, Schreibregel, REG-Hinweis, Live-Vorschau). Sprint-eigen:
-- **Voraussetzung WZ15:** Prüfung (`ValidateHub`), `sim.CreateOptions` mit Kandidat, Linien als Parameter in `engine/level`, Generator-Paket `tools/regeltabelle/tabelle` (`Block`, `Ersetzen`, Gegenprobe) und die 7-Stufen-Fixture liegen vor.
+- **Voraussetzung WZ15:** Prüfung (`ValidateHub`), `sim.CreateOptions` mit Kandidat, Linien als Parameter in `engine/level`, Generator-Paket `tools/ruletable/table` (`Block`, `Ersetzen`, Gegenprobe) und die 7-Stufen-Fixture liegen vor.
 - **Reihenfolge:** Erst baut SRV die Kandidaten-Option in den Snapshot (WZ9.1), dann der Planer (WZ9.2 Matrix, WZ9.3 Bearbeiten), dann Review (WZ9.4) und Abnahme (WZ9.5).
 - **Kandidat ohne globalen Zustand:** Die Snapshot-Option (WZ9.1) nimmt die Kandidaten-`hub.json` als Parameter; kein `sim.UseData`. Die Options-Struktur der Snapshot-Funktion legt WZ7.1 an.
 - **Vorrang im Snapshot:** Sind „geplante Chunks“ (WZ8.4) und Kandidaten-`hub.json` zugleich gesetzt, gelten die Kandidaten-Linien, und die Planung wird gegen sie geprüft.

@@ -18,7 +18,7 @@
 
 Biome (`data/biomes/*.json` › `enemies`, je `portal` und `night`): `forest` (Tiefe 0), `cave` (1), `mine` (2), `ironhold` (3), `crystal` (4). `alphaWolf` steht in keinem Biom, er kommt über das Event `fullMoon` (`data/events.json`).
 
-Bosse: `data/bosses.json` › `bosses` je Tiefe 0–4 (`goblinLeader`, `trollKing`, `ratQueen`, `lavaGolem`, `shardTitan`, Fähigkeiten `summon`, `aoe`, `flameTrail`, `shardThrow`) und `endBosses` (`crystalHeartWarden`, Tiefe 4, 3 Phasen). Boss-IDs haben keinen Eintrag in `sprites.json` › `enemies`; das Spiel zeichnet sie mit dem Rückfall `goblin` (`src/scenes/worldRenderer.ts`). Phase und Warnkreis liegen im Zustand (`enemies[].phase`, `enemies[].warn`, `docs/protocol.md` › Kampf), gezeichnet werden Warnkreis, Boss-Leiste, Phasen-Text und Event-Banner erst mit K5.1 (B-132, CLI, geplant). `figuren.html`/`aufstellung.html` zeigen Gegner nur statisch im Wechsel auf Canvas.
+Bosse: `data/bosses.json` › `bosses` je Tiefe 0–4 (`goblinLeader`, `trollKing`, `ratQueen`, `lavaGolem`, `shardTitan`, Fähigkeiten `summon`, `aoe`, `flameTrail`, `shardThrow`) und `endBosses` (`crystalHeartWarden`, Tiefe 4, 3 Phasen). Boss-IDs haben keinen Eintrag in `sprites.json` › `enemies`; das Spiel zeichnet sie mit dem Rückfall `goblin` (`src/scenes/render/worldRenderer.ts`). Phase und Warnkreis liegen im Zustand (`enemies[].phase`, `enemies[].warn`, `docs/protocol.md` › Kampf), gezeichnet werden Warnkreis, Boss-Leiste, Phasen-Text und Event-Banner erst mit K5.1 (B-132, CLI, geplant). `figuren.html`/`aufstellung.html` zeigen Gegner nur statisch im Wechsel auf Canvas.
 
 ## Ziel
 
@@ -31,7 +31,7 @@ Eine Gegner-Seite im Asset-Studio (B-459) zeigt alle Gegnertypen nach Biom und a
 ## Anforderungen
 
 - **Gleicher Aufbau:** dieselben Abspiel-Bausteine wie die Monarch-Seite (B-463: Steuerung, Maßstab, Lücken-Markierung) auf der Bühne aus B-460/WZ7.3 (dort entsteht die Phaser-Instanz mit Szene), kein zweiter Abspieler und keine eigene Phaser-Abhängigkeit.
-- **Spiel-Animationen:** Gegner über `makeSprite` und `playAnim` aus `src/scenes/sprites.ts` (mit `tint`, `scale`, `alpha`, `y`), Effekte `hit` und `kill` aus `EFFECT_CONFIG` (`src/scenes/effects.ts`), Import über `@game`/`@data`.
+- **Spiel-Animationen:** Gegner über `makeSprite` und `playAnim` aus `src/scenes/render/sprites.ts` (mit `tint`, `scale`, `alpha`, `y`), Effekte `hit` und `kill` aus `EFFECT_CONFIG` (`src/scenes/effects/effects.ts`), Import über `@game`/`@data`.
 - **Gruppen:** je Biom in Reihenfolge der Tiefe, darin `portal` vor `night`; ein Typ in mehreren Biomen erscheint in jedem; Typen ohne Biom in der Gruppe „ohne Biom“. Bosse als eigene Gruppe je Tiefe 0–4, Endbosse in ihrer Tiefe.
 - **Merkmale:** `traits` und die Zusatzfelder `swarmSize`, `aoe`, `phases`, `kiteDistance` als Text an der Karte; ohne Darstellung im Spiel als Lücke.
 - **Bosse:** Name, Art (Mini-/Endboss), Fähigkeit, Phasen mit Schwelle `belowHpPercent` als Text an der Karte; Grafik so, wie das Spiel sie zeichnet.

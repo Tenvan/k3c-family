@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { backend, type Source } from '../api';
-import { errorText } from '../lib/errors';
+import { errorText } from '@webkit/errors';
 import { upsertSource } from './lines';
 
 /** Alle Quellen (Dienste, Log-Dateien, Läufe, Konsolen), live über `source:state`. */

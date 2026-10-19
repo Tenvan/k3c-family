@@ -14,7 +14,7 @@
 
 ## Ausgangslage
 
-S9.2 hat `testdata/protocol/s2c-snapshot-rueckmeldung.json` (Ereignisse `strike` mit `hit`, `castFailed`) angelegt. Der Client liest es in `src/scenes/effects.test.ts`; auf der Server-Seite vergleicht kein Test die Schlüssel des Beispiels mit den Ereignissen, die `engine/sim` (`monarch.go`, `skills.go`) wirklich sendet (`ws_test.go` prüft nur die bestehenden Beispiele). Gefunden im Review S9.4.
+S9.2 hat `testdata/protocol/s2c-snapshot-rueckmeldung.json` (Ereignisse `strike` mit `hit`, `castFailed`) angelegt. Der Client liest es in `src/scenes/effects/effects.test.ts`; auf der Server-Seite vergleicht kein Test die Schlüssel des Beispiels mit den Ereignissen, die `engine/sim` (`monarch.go`, `skills.go`) wirklich sendet (`ws_test.go` prüft nur die bestehenden Beispiele). Gefunden im Review S9.4.
 
 ## Ziel
 

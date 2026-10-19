@@ -5,7 +5,7 @@ Stand: 2026-10-02 · Status: **beschlossen (Regelwerk), Umsetzung offen** · Bac
 ## Kontext
 
 - Bisher: Eine Kampagne hat eine Stufe nach der anderen (Wald → Höhle → Mine). Jede Stufe ist eine eigene Welt, alle Spieler wechseln
-  **gemeinsam** (`engine/sim/campaign.go`, `travel.go`), Stufen ohne Spieler stehen still. `game-design.md` und die bisherige Planung
+  **gemeinsam** (`engine/sim/campaign.go`, `world_travel.go`), Stufen ohne Spieler stehen still. `game-design.md` und die bisherige Planung
   folgten dem Vorbild Kingdom Two Crowns (Inseln als Hintereinander).
 - 🧑 hat im Workshop R1.3 (2026-10-02) klargestellt, dass das **anders geplant** ist: Stufen sind keine getrennten Inseln, sondern pro Spieler frei begehbar.
 

@@ -1,6 +1,6 @@
 # Harte Grenzen aus docs/arbeitsweise.md › Komplexitäts-Budget und die Go-Schichtgrenzen.
 # Die Dateilänge prüft tests/projectRules.test.ts (golangci-lint hat dafür keinen Linter, B-050).
-# Die Verschachtelung prüft tests/nesting_test.go (go/ast), gezählt wie Oxlint max-depth; die Linter aus
+# Die Verschachtelung prüft engine/internal/rules/nesting_test.go (go/ast), gezählt wie Oxlint max-depth; die Linter aus
 # golangci-lint zählen for range bzw. else if anders (B-054, B-057).
 version: "2"
 

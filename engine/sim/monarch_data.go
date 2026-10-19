@@ -17,7 +17,7 @@ type SkillData struct {
 	Provisional    bool // Startwert vorläufig, noch nicht von REG abgestimmt (Passive, S1.2c)
 }
 
-// skillEffect ist die Wirkung eines Skills; Type wählt die Funktion in skills.go (aktiv) bzw. passives.go (passiv),
+// skillEffect ist die Wirkung eines Skills; Type wählt die Funktion in skills.go (aktiv) bzw. monarch_passives.go (passiv),
 // die übrigen Felder sind Parameter je Typ (Units, Sekunden, HP; Factor, HPFraction und *Bonus als Anteil).
 type skillEffect struct {
 	Type                                          string

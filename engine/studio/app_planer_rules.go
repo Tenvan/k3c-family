@@ -6,11 +6,11 @@ import (
 	"path/filepath"
 	"strings"
 
-	"k3c/tools/regeltabelle/tabelle"
+	"k3c/tools/ruletable/table"
 )
 
 // Abweichung der Regeltabelle (B-462/AC-03, WZ9.2): der Block „Hub-Stufe → Gebäude“ in § 3 gegen den aus dem
-// Planer-Stand erzeugten Block, mit derselben Funktion wie der Task (tabelle.Gegenprobe). Nur lesen.
+// Planer-Stand erzeugten Block, mit derselben Funktion wie der Task (table.Gegenprobe). Nur lesen.
 
 const (
 	rulesFile = "docs/rules/materialien-gebaeude.md"
@@ -57,7 +57,7 @@ func hubRulesFrom(root string, hubJSON []byte) HubRulesView {
 		view.Error = fmt.Sprintf("%s nicht lesbar: %v", rulesFile, err)
 		return view
 	}
-	same, ist, soll, err := tabelle.Gegenprobe(string(doc), hubJSON)
+	same, ist, soll, err := table.Gegenprobe(string(doc), hubJSON)
 	if err != nil {
 		view.Error = "Regeltabelle nicht vergleichbar: " + err.Error()
 		return view

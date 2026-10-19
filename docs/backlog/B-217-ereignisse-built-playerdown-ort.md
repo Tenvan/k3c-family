@@ -14,7 +14,7 @@
 
 ## Ausgangslage
 
-Die Feedback-Ereignisse `built` und `playerDown` haben kein `x` (`src/model/types.ts` › `GameEvent`, `docs/protocol.md` › Ereignisse). Der Client (GR5.1, `src/scenes/effects.ts`) behilft sich: Für `built` merkt er sich das `x` des letzten `buildProgress` derselben Bauart, für `playerDown` liest er den Ort aus dem letzten Snapshot. Ohne vorheriges `buildProgress` (z. B. Bau in einem Tick fertig) gibt es keinen Bau-Effekt.
+Die Feedback-Ereignisse `built` und `playerDown` haben kein `x` (`src/model/types.ts` › `GameEvent`, `docs/protocol.md` › Ereignisse). Der Client (GR5.1, `src/scenes/effects/effects.ts`) behilft sich: Für `built` merkt er sich das `x` des letzten `buildProgress` derselben Bauart, für `playerDown` liest er den Ort aus dem letzten Snapshot. Ohne vorheriges `buildProgress` (z. B. Bau in einem Tick fertig) gibt es keinen Bau-Effekt.
 
 ## Ziel
 

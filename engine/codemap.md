@@ -15,6 +15,7 @@ Schichten von innen nach außen:
 | [`store/`](store/codemap.md) | File-Repository für Spielstände (`saves/`) und Berichte (`reports/`) |
 | [`net/`](net/codemap.md) | HTTP/WebSocket-Adapter (Protokoll v6) auf `room`, Build-Auslieferung, Diagnose |
 | [`conlog/`](conlog/codemap.md) | farbiger `slog.Handler` mit Emoji-Topics |
+| [`studio/`](studio/codemap.md) | Backend des Asset-Studios (`/api/studio/`, nur Dev-Mode und Loopback): Assets, Welten Editor, Gebäude-Planer |
 
 ## Flow
 1. `cmd/k3c-server` → `net` nimmt Verbindungen an → `room.Manager` ordnet Geräte einem Raum zu.
@@ -22,5 +23,6 @@ Schichten von innen nach außen:
 3. Spielstände laufen über die Store-Ports von `room` nach `store`.
 
 ## Integration
-- Konsumenten: `cmd/k3c-server`, `cmd/k3c-load`; in k3c-dev `internal/enginetools`, `internal/balance`, `internal/mcpsrv`, `internal/serverapi`, `internal/applog` (`conlog`).
+- Konsumenten: `cmd/k3c-server` (inkl. `studio`), `cmd/k3c-load`; in k3c-dev `internal/enginetools`, `internal/balance`, `internal/mcpsrv`, `internal/serverapi`, `internal/applog` (`conlog`).
 - Daten: `data/` per `go:embed`.
+- `internal/` (nur Tests und Test-Hilfen): `golden` (Golden-Dateien unter `testdata/golden/`), `rules` (Repo-Regeln für Go: Verschachtelungstiefe `nesting_test.go`, `map_range_test.go` für `sim`/`level`).

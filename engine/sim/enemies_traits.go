@@ -11,7 +11,7 @@ import (
 )
 
 // Traits der Gegner (gegner.md § 2): Flächenschlag (`aoe`), Phasen (`phases`), Kiting (`kiting`) und die Angriffsrate
-// je Gegner; der Schwarm (`swarm`) entsteht beim Planen der Welle (waves.go). Parameter stehen in data/enemies.json.
+// je Gegner; der Schwarm (`swarm`) entsteht beim Planen der Welle (enemies_waves.go). Parameter stehen in data/enemies.json.
 
 // knownTraits sind alle Traits, die die Simulation kennt; ein anderes Trait in enemies.json scheitert beim Laden (B-013).
 var knownTraits = []string{"stealsGold", "prefersTroops", "prefersBuildings", "prefersTowers", "prefersMonarch",

@@ -67,7 +67,7 @@ func hitSplash(w *World, p *Projectile, x float64) {
 }
 
 // stepHazards lässt die Flächen auslaufen und zieht allen Zielen darin einmal je Sekunde den Schaden einer Sekunde
-// ab (wie Lava, lava.go); ausgelaufene Flächen fallen in Listen-Reihenfolge heraus.
+// ab (wie Lava, world_lava.go); ausgelaufene Flächen fallen in Listen-Reihenfolge heraus.
 func stepHazards(w *World, dt float64) {
 	if len(w.Hazards) == 0 {
 		return

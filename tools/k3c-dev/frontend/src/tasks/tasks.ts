@@ -1,5 +1,5 @@
 import type { TaskGateState, TaskInfo, TaskNamespace, TaskRun, TaskRunState } from '../api';
-import type { Tone } from '../ui/parts';
+import type { Tone } from '@webkit/parts';
 
 // Reine Funktionen der Tasks-Seite: Filter (dieselbe Regel wie taskcat.Filter in Go, lokal, damit der Baum beim
 // Tippen ohne Roundtrip reagiert), Zustand → Badge, Argumentzeile, Listenpflege.

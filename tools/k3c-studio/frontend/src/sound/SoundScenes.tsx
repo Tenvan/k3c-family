@@ -2,9 +2,9 @@ import { Button, SegmentedControl, Text } from '@radix-ui/themes';
 import { CREDITS } from '@game/tools/credits';
 import { useState } from 'react';
 import { useAssets } from '../assets/useAssets';
-import { licenseFlag, resolveSlot, SCENES, slotsOf, type Query, type Resolved, type SceneId } from '../grafik/szenenLogic';
+import { licenseFlag, resolveSlot, SCENES, slotsOf, type Query, type Resolved, type SceneId } from '../graphics/scenesLogic';
 import { loadPref, savePref } from '../lib/prefs';
-import { ActionButton, NoticeCard } from '../ui/parts';
+import { ActionButton, NoticeCard } from '@webkit/parts';
 import { playChoice, stopAll } from './audio';
 import { playStatus } from './playback';
 

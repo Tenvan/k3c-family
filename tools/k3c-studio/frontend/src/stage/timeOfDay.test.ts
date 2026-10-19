@@ -1,4 +1,4 @@
-import { daylight } from '@game/scenes/viewRules';
+import { daylight } from '@game/scenes/render/viewRules';
 import type { CycleInfo } from '@game/model/types';
 import { describe, expect, it } from 'vitest';
 import { MAX_PROGRESS, NIGHT_BRIGHTNESS, TIMES_OF_DAY, brightnessOf, simTime } from './timeOfDay';

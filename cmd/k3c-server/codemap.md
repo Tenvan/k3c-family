@@ -8,6 +8,7 @@ CLI entry point und Composition Root des Go-Servers: liefert `dist/` aus, stellt
 
 - `main.go`: `config` aus der Umgebung (`K3C_HTTP_PORT`, `K3C_HTTPS_PORT`, `K3C_DIST`, `K3C_SAVES_DIR`, `K3C_REPORTS_DIR`, `K3C_CERTS_DIR`, `K3C_STATUS_TOKEN`, `K3C_DEV`; Dev-Mode an, solange nicht `0`); `run` verdrahtet `store.Saves`, `store.Reports`, `room.Manager` (`Log`, `Sessions` = Reports für die Spielmetrik, `Dev`) und `k3cnet.NewHandler` (Dependency Wiring); `-health` dient als Docker-HEALTHCHECK (`checkHealth`).
 - Version und Buildzeit per `-ldflags` (`version`, `built`, Fallback `buildTime` = Änderungszeit der EXE).
+- `studio.go`: `withStudio` hängt das Asset-Studio (`engine/studio`, `studio.Prefix` = `/api/studio/`) vor den Spiel-Handler, nur im Dev-Mode, nur in einem Checkout (`assets.FindRoot`), `K3C_STUDIO=0` schaltet es aus, `K3C_STUDIO_LAN=1` öffnet es fürs Heimnetz (sonst nur Loopback).
 - `logging.go`: `newLogger`/`newNamedLogger` mit `fanout` (zwei `slog.Handler`: farbige Konsole via `engine/conlog` + JSON-Datei), `rotating` (eine Vorgänger-Generation, `maxClientLogBytes`), `consoleLevel` (`K3C_LOG_LEVEL`), `logDir` (`K3C_LOG_DIR` oder vorhandener `logs/`).
 
 ## Flow
@@ -20,5 +21,5 @@ CLI entry point und Composition Root des Go-Servers: liefert `dist/` aus, stellt
 
 ## Integration
 
-- Abhängigkeiten: `engine/net`, `engine/room`, `engine/store`, `engine/conlog`; `dist/` aus `task build`.
+- Abhängigkeiten: `engine/net`, `engine/room`, `engine/store`, `engine/conlog`, `engine/studio`, `tools/assetkit`; `dist/` aus `task build`.
 - Konsumenten: Taskfile-Tasks `start`/`serve` (`bin/k3c-server`), `Dockerfile` (Image, HEALTHCHECK `-health`), `.github/workflows/ci.yml` (Smoke-Test), `cmd/k3c-tui` und `cmd/k3c-load` (über `/api/status`); k3c-dev liest `logs/k3c-server.jsonl` und `k3c-client.jsonl`.

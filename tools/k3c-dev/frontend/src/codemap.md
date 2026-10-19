@@ -6,14 +6,14 @@ React-Single-Page-App von k3c-dev: Shell mit vier Reitern (Dienste & Logs, Tasks
 
 ## Design
 
-- `main.tsx`: Einstieg; lädt `@radix-ui/themes/styles.css` und `styles/*.css` (`theme`, `app`, `services`, `logs`, `mcp`, `tasks`, `planning`, `planning-reader`), rendert `App` in `StrictMode`.
+- `main.tsx`: Einstieg; lädt `@radix-ui/themes/styles.css`, `@webkit/theme.css` und `styles/*.css` (`app`, `services`, `logs`, `mcp`, `tasks`, `planning`, `planning-reader`), rendert `App` in `StrictMode`.
 - `App.tsx`: Wurzel mit Radix `Theme` (dark/light, gemerkt, Vorgabe aus `prefers-color-scheme`) und `Tabs.Root`; Seite je Reiter gemerkt über `lib/prefs`; hält den MCP-Zustand (`mcp:state`, `backend.info()`); rendert unterhalb der Seiten `ui/Notices`.
 - `Header.tsx`: Reiterleiste `PAGES = dienste|tasks|planung|mcp`, `StudioLink`, MCP-Badge, `Mock`-Badge, Dark-Switch.
-- `StudioLink.tsx`: Knopf „Asset-Studio öffnen“ -> `backend.studioOpen()` (startet `bin/k3c-studio.exe`); zeigt den Hinweis aus Go (z. B. „Asset-Studio nicht gebaut“) als Badge, bis der nächste Versuch gelingt.
+- `StudioLink.tsx`: Knopf „Asset-Studio öffnen“ -> `backend.studioOpen()` (öffnet `/studio/index.html` des Spielservers im Browser); zeigt den Hinweis aus Go (z. B. „Spielserver nicht konfiguriert“) als Badge, bis der nächste Versuch gelingt.
 - Unterordner (je mit eigener codemap):
   - `api/` – Backend-Vertrag (`types.ts`), Wails-Adapter und Mock.
-  - `lib/` – Formatierung, Prefs, Hooks.
-  - `ui/` – gemeinsame Bausteine (`StatusBadge`, `ActionButton`, `MarkdownView`, `Notices`).
+  - `lib/` – Formatierung, Prefs (Präfix `k3c-dev.`), `useNow`; Gemeinsames in `tools/webkit` (`@webkit/…`).
+  - `ui/` – `MarkdownView`, `Notices`; die Radix-Bausteine (`StatusBadge`, `ActionButton` …) aus `@webkit/parts`.
   - `services/`, `tasks/`, `planning/`, `mcp/` – je eine Seite; `logs/` – Logs-Bereich der Dienste-Seite, Konsole auch von `tasks/` genutzt.
   - `styles/` – CSS je Seite (keine Logik).
 - Muster: Feature-Ordner mit pure Logik-Dateien (Vitest) getrennt von Komponenten und Data-Hooks.
@@ -29,4 +29,4 @@ React-Single-Page-App von k3c-dev: Shell mit vier Reitern (Dienste & Logs, Tasks
 
 - Abhängigkeiten: `react`, `react-dom`, `@radix-ui/themes`; Backend ausschließlich über `api/`.
 - Laufzeit: Wails-Fenster (Go-App `tools/k3c-dev/app.go`, Bindings u. a. `app_studio.go`) oder Browser mit Mock (`npx vite`).
-- Tests: Vitest des Hauptprojekts (siehe `tsconfig.json` des Frontends), z. B. `StudioLink.test.tsx`.
+- Tests: eigenes Vitest (`../vitest.config.ts`, `task check:dev`), z. B. `StudioLink.test.tsx`.

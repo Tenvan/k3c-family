@@ -1,6 +1,6 @@
 import type { ErrorsView, LogEntry, LogView } from '../api';
 import { formatBytes, formatNumber, formatTime } from '../lib/format';
-import type { Tone } from '../ui/parts';
+import type { Tone } from '@webkit/parts';
 
 // Reine Funktionen der Reiter Log und Fehler (verdichtet) (B-064).
 

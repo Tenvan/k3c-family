@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { backend, type TaskCatalog, type TaskGates, type TaskRun } from '../api';
-import { errorText } from '../lib/errors';
+import { errorText } from '@webkit/errors';
 import { pushHistory, upsertRun } from './tasks';
 
 /** Daten der Tasks-Seite aus Go: Katalog, Läufe (mit Verlauf dieser Sitzung) und Freigabe-Schlösser. */

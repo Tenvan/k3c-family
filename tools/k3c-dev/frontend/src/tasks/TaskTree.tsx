@@ -1,6 +1,6 @@
 import { Text } from '@radix-ui/themes';
 import type { TaskGateState, TaskInfo, TaskNamespace, TaskRun } from '../api';
-import { StatusBadge } from '../ui/parts';
+import { StatusBadge } from '@webkit/parts';
 import { describeGate, describeRun, taskTooltip } from './tasks';
 
 interface TaskTreeProps {

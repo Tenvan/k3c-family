@@ -1,12 +1,12 @@
 import Phaser from 'phaser';
 import { GAME_HEIGHT, UNIT_PX } from '@game/core/constants';
 import type { World } from '@game/model/types';
-import { StageView } from '@game/scenes/stageView';
-import { prepareWorld, preloadWorld } from '@game/scenes/objectView';
-import { prepareBuildings, preloadBuildings } from '@game/scenes/siteView';
-import { createSpriteAnims, preloadSprites } from '@game/scenes/sprites';
-import { DEFAULT_CONTROL, SHEETS, resolveAnim, type Control, type Gap } from '../abspiel/figure';
-import { FigureView, GROUND_Y, drawScale, loadFigureSheets, type FigureItem } from '../abspiel/figureView';
+import { StageView } from '@game/scenes/render/stageView';
+import { prepareWorld, preloadWorld } from '@game/scenes/render/objectView';
+import { prepareBuildings, preloadBuildings } from '@game/scenes/render/siteView';
+import { createSpriteAnims, preloadSprites } from '@game/scenes/render/sprites';
+import { DEFAULT_CONTROL, SHEETS, resolveAnim, type Control, type Gap } from '../playback/figure';
+import { FigureView, GROUND_Y, drawScale, loadFigureSheets, type FigureItem } from '../playback/figureView';
 import { hudPx } from './hudBar';
 import { refreshToParent, settleToParent } from './stageResize';
 

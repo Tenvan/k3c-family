@@ -16,9 +16,9 @@
 
 Die Regel Q65 (2026-10-04, `docs/rules/wirtschaft.md` § 3, Glossar › Tageszyklus) verlangt einen Tageszyklus aus **vier Phasen** Tag, Dämmerung, Nacht, Morgengrauen im Verhältnis 3:1:2:1, Startwert **6/2/4/2 min** (14 min). `dawn` (Gold je Spieler, Taverne, Händler, Autosave, Gegner ziehen ab) fällt nach Q65 bei Beginn des Morgengrauens.
 
-Gebaut sind heute **drei Phasen** `day`, `dusk`, `night` mit **10/1/5 min** im Wald (`data/biomes/forest.json` › `cycle`: `dayMinutes`, `twilightMinutes`, `nightMinutes`; `cycleAt` und `stepCycle` in `engine/sim/cycle.go`). `dawn` ist nur ein **Ereignis** beim Übergang Nacht → Tag, nicht eine Phase. Der globale Zyklus läuft auch unter Tage weiter (`globalDayNight`).
+Gebaut sind heute **drei Phasen** `day`, `dusk`, `night` mit **10/1/5 min** im Wald (`data/biomes/forest.json` › `cycle`: `dayMinutes`, `twilightMinutes`, `nightMinutes`; `cycleAt` und `stepCycle` in `engine/sim/world_cycle.go`). `dawn` ist nur ein **Ereignis** beim Übergang Nacht → Tag, nicht eine Phase. Der globale Zyklus läuft auch unter Tage weiter (`globalDayNight`).
 
-Der Client zeichnet das Morgengrauen heute als **letzte 10 % der Nacht**: `daylight()` in `src/scenes/viewRules.ts` (Z. 30–34) liefert für `night` bei Fortschritt über 0,9 eine Helligkeit von 0 bis 1. Eine unbekannte Phase wird wie `night` behandelt; bei Fortschritt über 0,9 ergibt `daylight()` daher auch für sie eine Helligkeit über 0 (`viewRules.ts:34`), sie ist also nicht durchgehend dunkel. Eine neue Phase `dawn` würde der Client ohne Anpassung nur so behandeln und nicht als eigene Phase mit eigenem Helligkeitsverlauf zeichnen.
+Der Client zeichnet das Morgengrauen heute als **letzte 10 % der Nacht**: `daylight()` in `src/scenes/render/viewRules.ts` (Z. 30–34) liefert für `night` bei Fortschritt über 0,9 eine Helligkeit von 0 bis 1. Eine unbekannte Phase wird wie `night` behandelt; bei Fortschritt über 0,9 ergibt `daylight()` daher auch für sie eine Helligkeit über 0 (`viewRules.ts:34`), sie ist also nicht durchgehend dunkel. Eine neue Phase `dawn` würde der Client ohne Anpassung nur so behandeln und nicht als eigene Phase mit eigenem Helligkeitsverlauf zeichnen.
 
 Weitere Stellen, die die Phasen kennen: `sim.DevSetPhase` (`engine/sim/dev.go`, Z. 49–56) springt mit einer Tabelle `starts`/`length` ohne `dawn` in die Phasen; `engine/sim/campaign.go` (Z. 82) bezieht sich auf die Phasen des Zyklus. Verweise „bis B-470“ stehen in `docs/rules/zielkorridore.md` (Z. 71 und 73) und `docs/game-design.md` (Z. 88).
 
@@ -26,7 +26,7 @@ Der Welt-Betrachter im Asset-Studio (B-460) bildet das Morgengrauen bis dahin al
 
 ## Ziel
 
-Der Tageszyklus hat eine eigene Phase `dawn` (Morgengrauen) zwischen Nacht und Tag: Sie ist in `engine/sim/cycle.go` gebaut, ihre Dauer steht in `data/biomes/*.json` › `cycle`, der Client zeichnet sie als eigene Phase, und das Ereignis `dawn` fällt bei ihrem Beginn (Q65). Die Abbildung des Morgengrauens als letzte 10 % der Nacht im Welt-Betrachter (B-460) entfällt.
+Der Tageszyklus hat eine eigene Phase `dawn` (Morgengrauen) zwischen Nacht und Tag: Sie ist in `engine/sim/world_cycle.go` gebaut, ihre Dauer steht in `data/biomes/*.json` › `cycle`, der Client zeichnet sie als eigene Phase, und das Ereignis `dawn` fällt bei ihrem Beginn (Q65). Die Abbildung des Morgengrauens als letzte 10 % der Nacht im Welt-Betrachter (B-460) entfällt.
 
 ## Beteiligte und Zielgruppen
 
@@ -34,7 +34,7 @@ Spieler erleben vier Phasen statt drei; 🧑 entscheidet über die Spec und nimm
 
 ## Anforderungen
 
-- Der Zyklus (`cycleAt` in `engine/sim/cycle.go`) kennt vier Phasen in der Reihenfolge `day`, `dusk`, `night`, `dawn`; `CycleInfo.Phase` nimmt auch `dawn` an, Fortschritt und Restzeit gelten je Phase.
+- Der Zyklus (`cycleAt` in `engine/sim/world_cycle.go`) kennt vier Phasen in der Reihenfolge `day`, `dusk`, `night`, `dawn`; `CycleInfo.Phase` nimmt auch `dawn` an, Fortschritt und Restzeit gelten je Phase.
 - Die Dauer der Phase `dawn` steht als Wert in `cycle` der Biome mit `type: dayNight` (`data/biomes/*.json`, einzige Quelle für Go und Client); Startwert 6/2/4/2 min (Tag, Dämmerung, Nacht, Morgengrauen, Q65).
 - Das Ereignis `dawn` und seine Folgen (Gold je Spieler, Taverne, Händler, Autosave, Gegner ziehen ab, Ende der Nachtereignisse) fallen bei **Beginn der Phase `dawn`**, nicht mehr bei Beginn des Tages; der Übergang `dawn` → `day` löst nichts aus (Q65).
 - Die Welle startet weiter mit Beginn der Nacht; der Aggressionspool unter Tage bleibt unverändert.
@@ -53,7 +53,7 @@ Spieler erleben vier Phasen statt drei; 🧑 entscheidet über die Spec und nimm
 
 ## Regeln und Einschränkungen
 
-- **Domänen:** SIM für `engine/sim/cycle.go`, `engine/sim/dev.go` (`sim.DevSetPhase`, Tabelle `starts`/`length` um `dawn` ergänzen, Z. 49–56), `engine/sim/campaign.go` (Z. 82, Phasenbezug anpassen), `engine/level` (Zyklus-Felder der Biome) und das Feld in `data/biomes/*.json` mit dem vorläufigen Startwert aus dem REG-Beschluss Q65 (Feld legt SIM an, danach ändert REG nur Werte, `docs/arbeitsweise.md`); danach CLI für `src/scenes/viewRules.ts` und den Client; Studio-Anpassung (B-460) und Doku (`docs/rules/`, Glossar, `docs/game-design.md`) in einer eigenen Session oder als Nachtrag. Reihenfolge SIM → CLI.
+- **Domänen:** SIM für `engine/sim/world_cycle.go`, `engine/sim/dev.go` (`sim.DevSetPhase`, Tabelle `starts`/`length` um `dawn` ergänzen, Z. 49–56), `engine/sim/campaign.go` (Z. 82, Phasenbezug anpassen), `engine/level` (Zyklus-Felder der Biome) und das Feld in `data/biomes/*.json` mit dem vorläufigen Startwert aus dem REG-Beschluss Q65 (Feld legt SIM an, danach ändert REG nur Werte, `docs/arbeitsweise.md`); danach CLI für `src/scenes/render/viewRules.ts` und den Client; Studio-Anpassung (B-460) und Doku (`docs/rules/`, Glossar, `docs/game-design.md`) in einer eigenen Session oder als Nachtrag. Reihenfolge SIM → CLI.
 - **Doku-Nachzüge:** `docs/rules/wirtschaft.md` § 3, Glossar, `docs/rules/zielkorridore.md` (Z. 71 und 73: Verweise „bis B-470“) und `docs/game-design.md` (Z. 88: Verweis „bis B-470“) beschreiben nach dem Umbau den gebauten Stand; keine Verweise auf B-470 mehr.
 - **Goldens:** Die Goldens in `testdata/golden/` verschieben sich (neue Phase, neue Dauern, `dawn` zu anderer Zeit). Das ist eine gewollte Regeländerung: **eigener Commit** mit `task golden:update` und Begründung im Commit-Text (welche Regel, welcher Wert, welche Kennzahl); `git diff --stat testdata/golden` vorher lesen.
 - **Protokoll und Spielstand:** `docs/protocol.md` und die Protokoll-Version (`clientProtocol.ts`) prüfen: die Phase `dawn` ist ein neuer Wert von `cycle.phase`; ob das ein Versionssprung ist, entscheidet die Spec (Offene Fragen). Keine Rücksicht auf alte Spielstände (Memory).
@@ -96,6 +96,6 @@ Entscheidung von 🧑:
 ## Notizen
 
 - Verwandt: B-466 (Glossar und Regeln verweisen für den Umbau auf dieses Ticket statt auf B-213), B-460 (Welt-Betrachter bildet Morgengrauen bis dahin als `night` mit 0,9 + 0,1·p ab), B-168 und SO4 (Musik im Morgengrauen; verweisen noch auf B-213), B-155 und BR1 (Balancing der Dauern, Zielkorridore „Grenze nach Q65“), Q65 in `docs/fragenkatalog.md`.
-- Code heute: `engine/sim/cycle.go` (`cycleAt`, `stepCycle`, Ereignis `dawn` beim Übergang zu `day`), `engine/sim/dev.go` Z. 49–56 (`sim.DevSetPhase`, Tabelle `starts`/`length` ohne `dawn`), `engine/sim/campaign.go` Z. 82 (Phasenbezug, mit anzupassen), `src/scenes/viewRules.ts` (`daylight()`, Z. 30–34: unbekannte Phase wie `night`, bei Fortschritt über 0,9 Helligkeit über 0), `data/biomes/forest.json` › `cycle`.
+- Code heute: `engine/sim/world_cycle.go` (`cycleAt`, `stepCycle`, Ereignis `dawn` beim Übergang zu `day`), `engine/sim/dev.go` Z. 49–56 (`sim.DevSetPhase`, Tabelle `starts`/`length` ohne `dawn`), `engine/sim/campaign.go` Z. 82 (Phasenbezug, mit anzupassen), `src/scenes/render/viewRules.ts` (`daylight()`, Z. 30–34: unbekannte Phase wie `night`, bei Fortschritt über 0,9 Helligkeit über 0), `data/biomes/forest.json` › `cycle`.
 - Doku-Nachzüge: Verweise „bis B-470“ in `docs/rules/zielkorridore.md` (Z. 71 und 73), `docs/game-design.md` (Z. 88), `docs/rules/wirtschaft.md` § 3 und im Glossar; AC-07 prüft sie per `git grep`.
 - Angelegt 2026-10-17 aus dem Review der Specs WZ7–WZ10.

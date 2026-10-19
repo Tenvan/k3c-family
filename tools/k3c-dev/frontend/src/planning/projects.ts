@@ -1,7 +1,7 @@
 // Reine Logik der Projekt-Ansicht (B-358): Projekte nach Rang, Fortschritt, nächste Session, Bereiche ABN und „Ohne
 // Projekt“, Rang verschieben. Kein React, damit Vitest sie prüft.
 import type { PlanProject, PlanSession, PlanSprint, PlanTicket, PlanningData } from '../api';
-import { errorText } from '../lib/errors';
+import { errorText } from '@webkit/errors';
 import type { Picked } from './prompts';
 
 /** Projekt der Abnahmen am Gerät: aktiv, ohne Rang, läuft neben der Rangfolge (arbeitsweise.md › Projekte und Rang). */

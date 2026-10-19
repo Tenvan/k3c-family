@@ -2,7 +2,7 @@ import hubData from '@data/hub.json';
 import { BIOMES } from '@game/model/biome';
 import type { World } from '@game/model/types';
 import { createViewWorld } from '@game/online/clientWorld';
-import { biomeBackground } from '@game/scenes/worldSprites';
+import { biomeBackground } from '@game/scenes/render/worldSprites';
 import type { WorldState } from '@game/online/clientProtocol';
 import type { PlannedChunk, SiteLook, WorldPreviewArgs, WorldPreviewView } from '../api';
 import type { SimPhase } from './timeOfDay';

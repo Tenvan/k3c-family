@@ -3,9 +3,9 @@ import { GAME_HEIGHT, GAME_WIDTH } from '../core/constants';
 import { clientLog } from '../core/clientLog';
 import type { RoomClient } from '../online/clientConnection';
 import { barFill, errorText, progressText } from './loadLogic';
-import { prepareWorld, preloadWorld } from './objectView';
-import { prepareBuildings, preloadBuildings } from './siteView';
-import { createSpriteAnims, preloadSprites } from './sprites';
+import { prepareWorld, preloadWorld } from './render/objectView';
+import { prepareBuildings, preloadBuildings } from './render/siteView';
+import { createSpriteAnims, preloadSprites } from './render/sprites';
 
 const STYLE = { fontSize: '36px', color: '#ffffff', stroke: '#000000', strokeThickness: 6, fontStyle: 'bold', align: 'center' };
 const BAR_W = 800;

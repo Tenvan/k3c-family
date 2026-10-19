@@ -90,7 +90,7 @@ func TestMauerStufe3BrauchtHubStufe3(t *testing.T) {
 }
 
 // Turm-Ausbau am selben Platz (Q45); der Bogenschütze bleibt oben, bis der Zaubertum ihn absteigen lässt (Q31,
-// spell_tower_test.go).
+// building_spell_tower_test.go).
 func TestTurmAusbauSchuetzeBleibt(t *testing.T) {
 	w := dayWorld(t)
 	p := AddPlayer(w)

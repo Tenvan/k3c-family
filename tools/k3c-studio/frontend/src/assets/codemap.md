@@ -15,5 +15,5 @@ Gemeinsame Seitenstruktur für Grafik und Sound: Slot-Liste mit Filter, Detailan
 3. Neuer Stand → `applySaved`; Ablehnung → Neuladen mit Hinweis; fremder Schreiber → `assets:changed` → Neuladen.
 
 ## Integration
-- Konsumenten: `../grafik/GrafikPage` und `../sound/SoundPage` (je mit eigener Art und eigenen Vorschau-Bausteinen).
-- Abhängigkeiten: `../api` (`backend`, `isStale`), `../ui/`, `../lib/`.
+- Konsumenten: `../graphics/GraphicsPage` und `../sound/SoundPage` (je mit eigener Art und eigenen Vorschau-Bausteinen).
+- Abhängigkeiten: `../api` (`backend`, `isStale`), `../ui/` (`Splitter`), `../lib/prefs`, `@webkit/parts`, `@webkit/errors`, `@webkit/useDebounced`.

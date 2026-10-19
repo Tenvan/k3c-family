@@ -39,7 +39,7 @@ var catalogDirs = []struct{ dir, credits string }{
 const selfMade = "selbst erzeugt (kein Credit nötig)"
 
 // ownBuilding gilt für eigene Gebäude-Grafik aus `task gebaeude` unter public/grafik/gebaeude/ (B-437).
-const ownBuilding = "eigene Grafik (tools/gebaeude, kein Credit nötig)"
+const ownBuilding = "eigene Grafik (tools/buildings, kein Credit nötig)"
 
 // Catalog liest alle Bilder und Sounds unter public/ mit Pack, Gruppe, Maßen und Credit.
 func Catalog(root string) ([]Asset, error) {
