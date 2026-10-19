@@ -28,7 +28,7 @@
         --sans: system-ui, 'Segoe UI', Roboto, sans-serif;
       }
       * { box-sizing: border-box; }
-      html { scroll-behavior: smooth; }
+      html { scroll-behavior: smooth; scroll-padding-top: 80px; }
       body { margin: 0; background: var(--bg); color: var(--text); font: 17px/1.6 var(--sans); }
       img, .px { image-rendering: pixelated; }
       a { color: var(--gold); }
@@ -38,6 +38,13 @@
       section { padding: 88px 16px; }
       .wrap { max-width: 1100px; margin: 0 auto; }
       .lead { color: var(--muted); max-width: 680px; font-size: 1.1rem; }
+
+      /* Work-in-Progress-Banner: oben angeheftet, Warnstreifen in Gold, rein CSS. */
+      .wip { position: sticky; top: 0; z-index: 10; display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: 4px 14px;
+        padding: 9px 16px; color: #23180a; font: 700 0.92rem/1.35 var(--sans); text-align: center;
+        background: repeating-linear-gradient(-45deg, var(--gold) 0 18px, #e0ab3a 18px 36px); border-bottom: 2px solid var(--gold-2); box-shadow: 0 4px 18px rgba(0, 0, 0, 0.45); }
+      .wip b { letter-spacing: 0.18em; text-transform: uppercase; padding: 2px 10px; border-radius: 999px; background: #23180a; color: var(--gold); }
+      .wip span { font-weight: 600; }
 
       /* Hero: Wald-Parallax (hg-wald-*, 768×480 px, auf 680 px Höhe), Figuren laufen auf der Stelle, die Welt zieht vorbei. */
       .hero { position: relative; height: min(92vh, 680px); min-height: 540px; overflow: hidden; padding: 0; background: #1e2a3a; }
@@ -102,6 +109,8 @@
       .d0 { --pic: url(app/grafik/gebaeude/hg-wald-mitte-32.png); }
       .d1 { --pic: url(app/grafik/gebaeude/hg-hoehle-mitte-32.png); }
       .d2 { --pic: url(app/grafik/gebaeude/hg-mine-mitte-32.png); }
+      .d3 { --pic: url(app/grafik/gebaeude/hg-eisenstollen-mitte-32.png); }
+      .d4 { --pic: url(app/grafik/gebaeude/hg-kristall-mitte-32.png); }
 
       /* Skills */
       .lines { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 16px; margin-top: 36px; }
@@ -136,6 +145,8 @@
         .huntress { --s: 2; left: 2%; }
         .goblin { --s: 1.5; right: -4%; }
         .coin { --s: 2; }
+        .wip span { display: none; }
+        .wip b span { display: inline; }
         .depth { grid-template-columns: 1fr; }
         .depth .no { text-align: left; }
       }
@@ -146,6 +157,7 @@
     </style>
   </head>
   <body>
+    <div class="wip"><b><span aria-hidden="true">🚧</span> Work in Progress</b><span>Das Spiel ist noch mitten in der Entwicklung. Vieles fehlt noch, und Werte und Regeln ändern sich ständig.</span></div>
     <header class="hero">
       <div class="layer l-back px"></div>
       <div class="layer l-mid px"></div>
@@ -161,8 +173,8 @@
       <div class="hero-text">
         <div class="crowns" aria-hidden="true">♛ ♛ ♛</div>
         <h1>Family Three Crowns</h1>
-        <p>Couch-Koop-Strategie im Stil von <em>Kingdom Two Crowns</em>. Baut gemeinsam euer Reich auf, verteidigt es bei Nacht und
-          steigt Stufe um Stufe in die Tiefe. Im Browser, auf der Xbox, mit der ganzen Familie.</p>
+        <p>Couch-Koop-Strategie im Stil von <em>Kingdom Two Crowns</em>. Ihr baut zusammen ein Reich auf, haltet es nachts gegen die Gegnerwellen
+          und geht Stufe für Stufe tiefer in die Erde. Läuft im Browser und auf der Xbox, für die ganze Familie.</p>
         <div class="btns">
           <a class="btn primary" href="#features">Features ansehen</a>
           <a class="btn ghost" href="https://github.com/tenvan/k3c-family">Quellcode auf GitHub</a>
@@ -174,20 +186,20 @@
       <section id="loop">
         <div class="wrap">
           <h2><small>Das Spielprinzip</small>Bei Tag bauen, bei Nacht halten</h2>
-          <p class="lead">Jeder Spieler ist ein eigener Monarch. Gold bekommt ihr aus Truhen und von Gegnern, Material holen eure Bauern.
-            Wer klug investiert, steht die Nacht durch.</p>
+          <p class="lead">Jeder von euch spielt einen eigenen Monarchen. Gold gibt es aus Truhen und von besiegten Gegnern, das Material holen eure Bauern.
+            Wer sein Gold klug ausgibt, überlebt die Nacht.</p>
           <div class="cycle">
             <div class="phase day">
               <h3>☀️ Tag</h3>
-              <ol><li>Erkunden und Gold sammeln</li><li>Landstreicher zu Bauern machen</li><li>Mauern, Türme und Werkstatt bauen</li><li>Bögen verteilen, Truppen ausrüsten</li></ol>
+              <ol><li>Gegend erkunden, Gold einsammeln</li><li>Landstreicher anwerben, sie werden zu Bauern</li><li>Mauern, Türme und Werkstatt bauen</li><li>Bögen verteilen, Truppen ausrüsten</li></ol>
             </div>
             <div class="phase night">
               <h3>🌙 Nacht</h3>
-              <ol><li>Portale öffnen sich</li><li>Gegnerwellen laufen auf den Hub zu</li><li>Bogenschützen schießen von den Türmen</li><li>Der Monarch greift mit Schlag und Skills ein</li></ol>
+              <ol><li>Die Portale öffnen sich</li><li>Gegnerwellen rennen auf euren Hub zu</li><li>Bogenschützen feuern von den Türmen</li><li>Ihr greift selbst ein, mit Schlag und Skills</li></ol>
             </div>
             <div class="phase goal">
               <h3>⬇️ Tiefer</h3>
-              <ol><li>Am Ende der Stufe wartet der Tiefen-Eingang</li><li>Darunter beginnt ein neuer Hub</li><li>Gebaute Treppen führen zurück nach oben</li><li>Ganz unten wartet der Endboss der Insel</li></ol>
+              <ol><li>Am Ende jeder Stufe liegt der Tiefen-Eingang</li><li>Dahinter startet ein neuer Hub</li><li>Selbst gebaute Treppen bringen euch wieder nach oben</li><li>Ganz unten sitzt der Endboss der Insel</li></ol>
             </div>
           </div>
         </div>
@@ -198,56 +210,62 @@
           <h2><small>Features</small>Was K3C ausmacht</h2>
           <div class="grid">
             <article class="feature"><div class="icon">🎮</div><h3>Couch und Online gemischt</h3>
-              <p>Zwei Controller an der Xbox im Split-Screen, weitere Spieler per Handy oder PC. Beitreten jederzeit mit einem Druck auf A.</p></article>
-            <article class="feature"><div class="icon">🗺️</div><h3>Prozedurale Level</h3>
-              <p>Jede Stufe entsteht aus festen Eckdaten und einem Seed. Gleicher Seed, gleiche Welt, gespeichert wird nur der Seed.</p></article>
+              <p>Zwei Controller an der Xbox im Split-Screen, dazu weitere Mitspieler per Handy oder PC. Mitspielen könnt ihr jederzeit: einmal A drücken, fertig.</p></article>
+            <article class="feature"><div class="icon">🗺️</div><h3>Zufallswelten</h3>
+              <p>Jede Stufe wird aus festen Eckdaten und einem Seed erzeugt. Gleicher Seed, gleiche Welt. Im Spielstand steckt nur der Seed, nicht die ganze Karte.</p></article>
             <article class="feature"><div class="icon">⛏️</div><h3>Die Welt geht nach unten</h3>
-              <p>Oberwelt, Höhle, Mine und tiefer. Jede Stufe hat ihren eigenen Hub, und alle Stufen laufen weiter, auch ohne Spieler.</p></article>
+              <p>Oberwelt, Höhle, Mine, Eisenstollen und Kristallhöhle. Jede Stufe hat ihren eigenen Hub. Alle Stufen laufen immer weiter, auch wenn gerade niemand dort ist.</p></article>
             <article class="feature"><div class="icon">⚔️</div><h3>Der Monarch kämpft mit</h3>
-              <p>Anders als in Kingdom führt der Monarch nicht nur: Er schlägt zu und setzt Skills aus vier Linien ein.</p></article>
+              <p>In Kingdom gibt der Monarch nur Befehle. Hier haut er selbst zu und nutzt Skills aus drei Linien (der Dieb folgt später).</p></article>
             <article class="feature"><div class="icon">🏰</div><h3>Hub in fünf Stufen</h3>
-              <p>Von Holz über Stein, Kupfer und Eisen bis Kristall. Jede Stufe schaltet stärkere Mauern, Türme und neue Gebäude frei.</p></article>
+              <p>Ihr baut euren Hub aus: von Holz über Stein, Kupfer und Eisen bis Kristall. Mit jeder Stufe kommen stärkere Mauern, Türme und neue Gebäude dazu.</p></article>
             <article class="feature"><div class="icon">🔥</div><h3>Aggressionspool</h3>
-              <p>Unter Tage gibt es keine Nacht. Jeder Kill und jede Ressource heizt den Pool an, bei 100 % greifen die Portale an. Ihr bestimmt das Tempo.</p></article>
+              <p>Unter Tage gibt es keine Nacht. Dafür füllt sich ein Aggro-Balken: Jeder Kill und jede Ressource heizt ihn an, und bei 100 % greifen die Portale an. Das Tempo bestimmt ihr.</p></article>
             <article class="feature"><div class="icon">👑</div><h3>Bosse und Ereignisse</h3>
-              <p>Ein Miniboss je Stufe, ein Endboss je Insel. Jede 7. Nacht Vollmond mit Alpha-Wolf, jede 13. Blutmond.</p></article>
+              <p>Pro Stufe wartet ein Miniboss, pro Insel ein Endboss. Jede 7. Nacht ist Vollmond und der Alpha-Wolf kommt, jede 13. Nacht ist Blutmond.</p></article>
             <article class="feature"><div class="icon">🛠️</div><h3>Welten bauen im Studio</h3>
-              <p>Das Asset-Studio ist eine Seite des Servers: Grafik und Sound zuordnen, Welten und Chunks planen, Gebäude je Hub-Stufe festlegen, Figuren in Bewegung ansehen.</p></article>
+              <p>Das Asset-Studio läuft als Seite auf dem Server. Dort ordnet ihr Grafik und Sound zu, plant Welten und Chunks, legt fest, welche Gebäude zu welcher Hub-Stufe gehören, und seht euch Figuren in Bewegung an.</p></article>
             <article class="feature"><div class="icon">🔊</div><h3>Effekt-Sounds</h3>
-              <p>Schläge, Treffer, Bauen und Münzen haben eigene Klänge aus einem Katalog freier Quellen, jeder mit nachvollziehbarer Lizenz.</p></article>
+              <p>Schläge, Treffer, Bauen und Münzen haben jeweils eigene Sounds. Sie stammen aus freien Quellen, und zu jedem lässt sich die Lizenz nachlesen.</p></article>
             <article class="feature"><div class="icon">📺</div><h3>Gemacht für den Fernseher</h3>
-              <p>Läuft in Edge auf der Xbox, komplett mit dem Controller bedienbar, große Schrift für den Couch-Abstand.</p></article>
+              <p>Läuft in Edge auf der Xbox und lässt sich komplett mit dem Controller bedienen. Die Schrift ist groß genug für den Abstand vom Sofa.</p></article>
           </div>
         </div>
       </section>
 
       <section id="stufen">
         <div class="wrap">
-          <h2><small>Die Welt</small>Drei Stufen, ein Vorrat</h2>
-          <p class="lead">Eine Insel besteht aus mehreren Stufen, die nach unten schmaler und dichter werden. Das Baumaterial gehört der ganzen Insel.</p>
+          <h2><small>Die Welt</small>Fünf Stufen, ein Vorrat</h2>
+          <p class="lead">Die erste Insel hat fünf Stufen, jede ein eigenes Level. Nach unten werden sie schmaler und dichter. Das Baumaterial teilt sich die ganze Insel in einem gemeinsamen Vorrat.</p>
           <div class="depths">
             <div class="depth d0 px"><div class="no">0<span>Oberwelt</span></div><div><h3>Wald</h3>
-              <p>Tag 10 Minuten, Nacht 5. Holz fällen, Lager aufbauen, die ersten Wellen abwehren.</p>
+              <p>Der Tag dauert 10 Minuten, die Nacht 5. Ihr fällt Holz, baut euer Lager auf und wehrt die ersten Wellen ab.</p>
               <div class="tags"><span class="tag">Holz</span><span class="tag">Greed</span><span class="tag">Goblin</span><span class="tag">Wolf bei Nacht</span></div></div></div>
             <div class="depth d1 px"><div class="no">1<span>Tiefe</span></div><div><h3>Höhle</h3>
-              <p>Hier tickt der Aggressionspool statt der Uhr. Stein abbauen, bevor die Fledermäuse über die Mauern fliegen.</p>
+              <p>Hier zählt nicht die Uhr, sondern der Aggro-Balken. Baut Stein ab, bevor die Fledermäuse über eure Mauern fliegen.</p>
               <div class="tags"><span class="tag">Stein</span><span class="tag">Fledermaus</span><span class="tag">Höhlentroll</span><span class="tag">Skelett</span></div></div></div>
             <div class="depth d2 px"><div class="no">2<span>Tiefe</span></div><div><h3>Mine</h3>
-              <p>Kupferadern liefern endlos, aber langsam. Zombies, Rattenschwärme und Minengeister machen es eng.</p>
+              <p>Kupferadern geben unbegrenzt her, aber nur langsam. Zombies, Rattenschwärme und Minengeister machen es euch eng.</p>
               <div class="tags"><span class="tag">Kupfer</span><span class="tag">Zombie</span><span class="tag">Rattenschwarm</span><span class="tag">Minengeist</span></div></div></div>
+            <div class="depth d3 px"><div class="no">3<span>Tiefe</span></div><div><h3>Eisenstollen</h3>
+              <p>Eisen ist hier die Beute, aber Lava schadet euch: 5 Schaden pro Sekunde, sobald ihr darin steht. Drei Portale halten euch auf Trab.</p>
+              <div class="tags"><span class="tag">Eisen</span><span class="tag">Lavaschleim</span><span class="tag">Eisenkäfer</span><span class="tag">Feuergeist</span></div></div></div>
+            <div class="depth d4 px"><div class="no">4<span>Tiefe</span></div><div><h3>Kristallhöhle</h3>
+              <p>Ganz unten liegt der Kristall, den ihr für den letzten Hub-Ausbau braucht. Dafür warten hier Kristallwächter mit Flächenschaden und Schwärme von Splitterwichten.</p>
+              <div class="tags"><span class="tag">Kristall</span><span class="tag">Kristallspinne</span><span class="tag">Splitterwicht</span><span class="tag">Kristallwächter</span></div></div></div>
           </div>
         </div>
       </section>
 
       <section id="skills" class="alt">
         <div class="wrap">
-          <h2><small>Skills</small>Vier Linien, frei kombinierbar</h2>
-          <p class="lead">Skill-Punkte findet ihr gemeinsam, verteilt werden sie von jedem selbst. Hybride Builds sind ausdrücklich erlaubt, umskillen kostet nichts.</p>
+          <h2><small>Skills</small>Drei Linien, frei kombinierbar</h2>
+          <p class="lead">Skill-Punkte findet ihr gemeinsam, verteilen darf sie jeder für sich. Mischt die Linien nach Lust und Laune, Hybrid-Builds sind ausdrücklich erlaubt. Umskillen kostet nichts, geht aber nur tagsüber an der Burg. Eine vierte Linie, der Dieb, kommt später dazu.</p>
           <div class="lines">
             <div class="line" style="--c: #e0a458"><h3>Tank</h3><ul><li><b>Taunt</b> zieht Gegner auf sich</li><li><b>Iron Wall</b> als Barriere</li><li>Ultimate: <b>Last Stand</b></li></ul></div>
             <div class="line" style="--c: #6fa8ff"><h3>Zauberer</h3><ul><li><b>Fireball</b> und <b>Ice Wall</b></li><li><b>Lightning Storm</b></li><li>Ultimate: <b>Meteor</b></li></ul></div>
             <div class="line" style="--c: #7fd48a"><h3>Heiler</h3><ul><li><b>Heal</b> und <b>Group Heal</b></li><li><b>Divine Shield</b></li><li>Ultimate: <b>Resurrection</b></li></ul></div>
-            <div class="line" style="--c: #c58cf0"><h3>Dieb</h3><ul><li><b>Backstab</b> und <b>Smoke Bomb</b></li><li><b>Poison Blade</b></li><li>Ultimate: <b>Shadow Strike</b></li></ul></div>
+            <div class="line" style="--c: #c58cf0"><h3>Dieb (kommt später)</h3><ul><li>Geplant: <b>Backstab</b> und <b>Smoke Bomb</b></li><li><b>Poison Blade</b></li><li>Ultimate: <b>Shadow Strike</b></li></ul></div>
           </div>
         </div>
       </section>
@@ -255,7 +273,7 @@
       <section id="steuerung">
         <div class="wrap">
           <h2><small>Steuerung</small>Controller in die Hand, los</h2>
-          <p class="lead">Kein Springen, nur links und rechts. Was gerade geht, zeigt das Spiel direkt am Ort an.</p>
+          <p class="lead">Springen gibt es nicht, ihr lauft nur nach links und rechts. Was an einer Stelle gerade möglich ist, blendet das Spiel direkt dort ein.</p>
           <div class="pad">
             <table>
               <thead><tr><th>Aktion</th><th>Xbox-Controller</th><th>Tastatur</th></tr></thead>
@@ -264,8 +282,9 @@
                 <tr><td>Sprinten</td><td><kbd>RT</kbd></td><td><kbd>Shift</kbd></td></tr>
                 <tr><td>Beitreten, Münzen geben (halten)</td><td><kbd>A</kbd></td><td><kbd>Leertaste</kbd></td></tr>
                 <tr><td>Schlag</td><td><kbd>X</kbd></td><td><kbd>E</kbd></td></tr>
-                <tr><td>Skills 1–4</td><td><kbd>LB</kbd> <kbd>RB</kbd> <kbd>LT</kbd> <kbd>↑</kbd></td><td><kbd>Q</kbd> <kbd>R</kbd> <kbd>T</kbd> <kbd>Z</kbd></td></tr>
-                <tr><td>Bau-Menü</td><td><kbd>Y</kbd></td><td><kbd>B</kbd></td></tr>
+                <tr><td>Skill-Slots 1–4</td><td><kbd>LB</kbd> <kbd>RB</kbd> <kbd>LT</kbd> <kbd>↑</kbd></td><td><kbd>Q</kbd> <kbd>R</kbd> <kbd>T</kbd> <kbd>Z</kbd></td></tr>
+                <tr><td>Skill-Menü</td><td><kbd>D-Pad ↓</kbd></td><td><kbd>K</kbd></td></tr>
+                <tr><td>Pause und Optionen</td><td><kbd>Menu</kbd></td><td><kbd>Esc</kbd></td></tr>
                 <tr><td>Vollbild</td><td>Rechten Stick drücken</td><td><kbd>F</kbd></td></tr>
               </tbody>
             </table>
@@ -280,27 +299,27 @@
             <div class="box">
               <h3>So läuft es</h3>
               <ul>
-                <li>Ein <b>Go-Server</b> im Heimnetz rechnet die Spielwelt, deterministisch und mit festen Seeds.</li>
-                <li>Der Browser ist reiner Client: <b>TypeScript</b> und <b>Phaser 4</b> zeichnen, Eingaben gehen per WebSocket zum Server.</li>
-                <li>Mehrere Räume parallel, zum Beispiel ein Spiel an der Xbox und eins auf den Handys.</li>
-                <li>Betrieb auf PC (mit Windows-Starter) oder als <b>Docker-Image</b> auf dem Raspberry Pi (amd64 und arm64).</li>
+                <li>Ein <b>Go-Server</b> in eurem Heimnetz rechnet die ganze Spielwelt. Das läuft immer gleich ab: gleicher Seed, gleiches Ergebnis.</li>
+                <li>Euer Gerät zeigt das Spiel nur an. Das übernehmen <b>TypeScript</b> und <b>Phaser 4</b> im Browser, eure Eingaben gehen per WebSocket an den Server.</li>
+                <li>Mehrere Räume laufen gleichzeitig, zum Beispiel eine Runde an der Xbox und eine auf den Handys.</li>
+                <li>Den Server startet ihr auf dem PC (mit Windows-Starter) oder als <b>Docker-Image</b> auf dem Raspberry Pi (amd64 und arm64).</li>
               </ul>
             </div>
             <div class="box">
               <h3>Wo wir stehen</h3>
               <ul>
                 <li class="done">✔ Ein Tag, eine Nacht: Gold, Bauern, Bauen, Bogenschützen, Wellen</li>
-                <li class="done">✔ Prozedurale Level für Wald, Höhle und Mine</li>
-                <li class="done">✔ Split-Screen-Koop und Spielstände auf dem Server</li>
-                <li class="done">✔ Asset-Studio mit Welten Editor, Gebäude-Planer sowie Monarch- und Gegner-Vorschau</li>
-                <li class="done">✔ Effekt-Sounds im Spiel, Start mit Seed und Tiefe per Adresse</li>
-                <li class="todo">… Skills, Bosse und Hub-Ausbau in Arbeit</li>
-                <li class="todo">… Musik, Gebäude-Grafiken und Welten für Spieler folgen</li>
+                <li class="done">✔ Zufallswelten für alle fünf Stufen von Wald bis Kristallhöhle</li>
+                <li class="done">✔ Split-Screen-Koop, Spielstände liegen auf dem Server</li>
+                <li class="done">✔ Asset-Studio mit Welten-Editor, Gebäude-Planer sowie Vorschau für Monarch und Gegner</li>
+                <li class="done">✔ Effekt-Sounds im Spiel, Start mit Seed und Tiefe über die Adresse</li>
+                <li class="todo">… Skills, Bosse und Hub-Ausbau sind noch in Arbeit</li>
+                <li class="todo">… Musik, Gebäude-Grafiken und Welten für Spieler kommen später</li>
               </ul>
             </div>
           </div>
-          <p class="note">Auf dieser Seite läuft kein Spiel: Gespielt wird über den eigenen Server im Heimnetz. Ohne Server ausprobieren lassen sich die
-            <a href="app/">Testseiten</a>, zum Beispiel der Gamepad-Test und die Figurenübersicht.</p>
+          <p class="note">Spielen könnt ihr hier nicht. Dafür braucht ihr den eigenen Server im Heimnetz. Ohne Server gibt es die
+            <a href="app/">Testseiten</a>, zum Beispiel den Gamepad-Test und die Figurenübersicht.</p>
         </div>
       </section>
     </main>
@@ -309,7 +328,7 @@
       <div class="wrap">
         <div><b>Family Three Crowns (K3C)</b> · © 2026 Ralf Stich · source-available, nur nicht-kommerziell
           (<a href="https://github.com/tenvan/k3c-family/blob/main/LICENSE">Lizenz</a>)</div>
-        <div>Figuren von LuizMelo und ansimuz, Umgebung von OpenGameArt-Künstlern (meist CC0).
+        <div>Die Figuren stammen von LuizMelo und ansimuz, die Umgebung von Künstlern auf OpenGameArt (meist CC0).
           Alle Danksagungen: <a href="app/lizenzen.html">Lizenzen &amp; Danksagung</a>.</div>
         <div>Inspiriert von <em>Kingdom Two Crowns</em>, kein offizielles Produkt und nicht verbunden mit dessen Herstellern.</div>
       </div>
