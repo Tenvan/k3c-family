@@ -4,10 +4,10 @@ import { useEffect, useMemo, useRef, useState, type CSSProperties, type RefObjec
 import type { World } from '@game/model/types';
 import { backend, type SiteLook, type WorldPreviewView } from '../api';
 import { useDebounced } from '@webkit/useDebounced';
-import type { Look, PreviewStage, StagePosition } from './PreviewStage';
+import type { Look, Marks, PreviewStage, StagePosition } from './PreviewStage';
 import { stagePx } from './hudBar';
 import { BuildingFilter } from './BuildingFilter';
-import { backgroundToggles, buildingToggles, hubLevelChoices, previewArgsOf, worldOf, type PlanSource } from './stageLogic';
+import { backgroundToggles, buildingToggles, focusXs, hubLevelChoices, previewArgsOf, worldOf, type PlanSource, type RowFocus } from './stageLogic';
 import { MAX_PROGRESS, TIMES_OF_DAY, brightnessOf, simTime, type TimeOfDayId } from './timeOfDay';
 
 const NONE: ReadonlySet<string> = new Set();
@@ -64,10 +64,10 @@ function usePreviewWorld(seed: string, biome: string, hubLevel: number, time: { 
 /** Phaser wird erst beim ersten Sichtbarwerden geladen (eigener Baustein, groß) und baut die Bühne im Element auf; danach
  *  zeichnet sie jede neue Welt mit der aktuellen Darstellung (`look`). Beim Verlassen wird sie abgebaut. Liefert Grafiken,
  *  die nicht geladen werden konnten. */
-function useStage(host: RefObject<HTMLDivElement | null>, world: World | null, look: Look, position: StagePosition, onPan: (px: number) => void, onWheel: (e: WheelEvent) => void): string[] {
+function useStage(host: RefObject<HTMLDivElement | null>, world: World | null, look: Look, position: StagePosition, marks: Marks, jump: { key: string; x: number } | null, onPan: (px: number) => void, onWheel: (e: WheelEvent) => void): string[] {
   const stage = useRef<PreviewStage | null>(null);
-  const latest = useRef({ world, look, position });
-  latest.current = { world, look, position };
+  const latest = useRef({ world, look, position, marks });
+  latest.current = { world, look, position, marks };
   const pan = useRef(onPan);
   pan.current = onPan;
   const wheel = useRef(onWheel);
@@ -81,6 +81,7 @@ function useStage(host: RefObject<HTMLDivElement | null>, world: World | null, l
       stage.current = new Stage(host.current, setFailed, (px) => pan.current(px), (e) => wheel.current(e));
       stage.current.setLook(latest.current.look);
       stage.current.setPosition(latest.current.position);
+      stage.current.setMarks?.(latest.current.marks);
       stage.current.show(latest.current.world);
     });
     return () => { cancelled = true; };
@@ -89,6 +90,9 @@ function useStage(host: RefObject<HTMLDivElement | null>, world: World | null, l
   useEffect(() => { stage.current?.show(world); }, [world]);
   useEffect(() => { stage.current?.setLook(look); }, [look]);
   useEffect(() => { stage.current?.setPosition(position); }, [position]);
+  useEffect(() => { stage.current?.setMarks?.(marks); }, [marks]);
+  // Springt zum gewählten Platz, sobald die Auswahl oder sein Ort wechselt; Ziehen danach bleibt unberührt (der Schlüssel der Auswahl ist der Auslöser).
+  useEffect(() => { if (jump) stage.current?.focusX?.(jump.x); }, [jump?.key]); // eslint-disable-line react-hooks/exhaustive-deps
   // Nach jedem Rendern (Zeilen, Meldungen, Objekte über der Bühne) Größe und Lage prüfen: Beobachter melden erst im
   // nächsten Bild-Takt (bei verdecktem Fenster nie); die Messung erzwingt das fertige Layout (WZ17.5). Optional, weil
   // Test-Attrappen der Bühne settle nicht kennen.
@@ -136,6 +140,8 @@ export interface PlanerSource {
   levels: number;
   hubLevel: number;
   onHubLevel: (level: number) => void;
+  /** gewählte Zeile der Matrix: Rahmen und Sprung in der Vorschau; Namen über allen Plätzen zeigt die Vorschau immer */
+  focus?: RowFocus;
 }
 
 /** Wählbare Hub-Stufen und die gewählte: aus `data/hub.json`, mit Planer-Stand aus dessen Stufen und gesteuert von der Seite. */
@@ -168,7 +174,11 @@ export function LivePreview({ seed, biome, position, onPan, onWheel, onSites, pl
   const host = useRef<HTMLDivElement>(null);
   const world = useMemo(() => worldOf(view), [view]);
   const look = useMemo<Look>(() => ({ brightness: world ? brightnessOf(world.cycle) : 1, hiddenLayers: hidden }), [world, hidden]);
-  const failed = useStage(host, world, look, position, onPan, onWheel);
+  const selectedXs = useMemo(() => focusXs(planer?.focus, world?.hubX ?? 0, world?.sites ?? []), [planer?.focus, world]);
+  const marks = useMemo<Marks>(() => ({ names: planer !== undefined, selected: selectedXs }), [planer, selectedXs]);
+  const jumpX = selectedXs[0];
+  const jump = useMemo(() => (jumpX === undefined ? null : { key: `${planer?.focus?.id}|${jumpX}`, x: jumpX }), [jumpX, planer?.focus?.id]);
+  const failed = useStage(host, world, look, position, marks, jump, onPan, onWheel);
   const sites = all?.state?.sites;
   const toggles = useMemo(() => buildingToggles(sites ?? []), [sites]);
   useEffect(() => { onSites?.(sites ?? []); }, [sites, onSites]);

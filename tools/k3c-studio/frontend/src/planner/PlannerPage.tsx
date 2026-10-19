@@ -2,6 +2,7 @@ import { Text } from '@radix-ui/themes';
 import { useMemo, useState } from 'react';
 import type { HubPlanView, HubRulesView, HubSaveResult } from '../api';
 import { LivePreview, type PlanerSource } from '../stage/LivePreview';
+import type { RowFocus } from '../stage/stageLogic';
 import { ActionButton, NoticeCard, StatusBadge } from '@webkit/parts';
 import { HubMatrixView, rowId } from './HubMatrixView';
 import { AddSite, RowEditor } from './PlannerEditor';
@@ -92,12 +93,18 @@ function PlanerBody({ planer, plan, shown }: { planer: ReturnType<typeof usePlan
   const [selected, setSelected] = useState('');
   const levels = shown.matrix.levels;
   const hubLevel = chosen !== null && chosen <= levels ? chosen : Math.max(1, levels);
-  const source = useMemo<PlanerSource>(() => ({ candidate, levels, hubLevel, onHubLevel: setChosen }), [candidate, levels, hubLevel]);
   const view = usePlannerView();
   const current = useMemo(() => hub ?? parseHub(plan.raw), [hub, plan]);
   const row = shown.matrix.rows.find((r) => rowId(r) === selected) ?? null;
+  const focus = useMemo<RowFocus | undefined>(() => {
+    if (!row) return undefined;
+    const cell = row.cells[hubLevel - 1]?.available ? row.cells[hubLevel - 1] : row.cells.find((c) => c.available);
+    return { id: rowId(row), kind: row.kind, offset: cell?.offsetUnits ?? null, bothSides: row.bothSides };
+  }, [row, hubLevel]);
+  const source = useMemo<PlanerSource>(() => ({ candidate, levels, hubLevel, onHubLevel: setChosen, focus }), [candidate, levels, hubLevel, focus]);
   return (
     <>
+      <div className="pl-middle">
       <Findings plan={shown} />
       <RulesDiff rules={rules} failed={rulesFailed} />
       <SaveBar planer={planer} />
@@ -106,6 +113,7 @@ function PlanerBody({ planer, plan, shown }: { planer: ReturnType<typeof usePlan
         <RowEditor hub={current} row={row} edit={edit} onRemoved={() => setSelected('')} />
         <AddSite kinds={plan.kinds} levels={levels} edit={edit} />
       </fieldset>
+      </div>
       <section className="wd-live" aria-label="Live-Vorschau">
         <Text size="2" color="gray">Live-Vorschau des Planer-Stands, Seed {PREVIEW.seed}, Wald</Text>
         <LivePreview seed={PREVIEW.seed} biome={PREVIEW.biome} position={view.position} onPan={view.onPan} onWheel={view.onWheel} planer={source} />

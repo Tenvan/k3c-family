@@ -133,8 +133,6 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-457](B-457-geb6-abnahme-splitscreen-ausgang-geschmack.md) | CLI | Frage | mittel | offen | – | GEB6: Split-Screen, Ausgang-Beschriftung und Geschmacksfragen später prüfen |
 | [B-458](B-458-hub-ausbau-wachstum-feinstufen.md) | DEV | Idee | hoch | offen | – | Hub wächst in Ausbaustufen sichtbar und kleinteilig (Lagerfeuer bis Burg, K2C-Stil) |
 | [B-462](B-462-gebaeude-planer-hub-stufen.md) | DEV | Idee | mittel | eingeplant | WZ9 | Ein Gebäude-Planer bearbeitet, welches Gebäude ab welcher Hub-Stufe verfügbar ist |
-| [B-463](B-463-monarch-vorschau-animationen.md) | DEV | Idee | mittel | eingeplant | WZ10 | Eine Monarch-Seite im Asset-Studio zeigt Reiten, Schlagen, Skills und weitere Vorschauen |
-| [B-464](B-464-gegner-bosse-vorschau.md) | DEV | Idee | mittel | eingeplant | WZ11 | Eine Gegner-Seite im Asset-Studio zeigt alle Gegnertypen und Bosse mit ihren Vorschauen |
 | [B-465](B-465-lint-sprintsbacklog-zeilen.md) | DEV | Problem | hoch | offen | – | task lint ist auf develop rot, weil SprintsBacklog 61 Zeilen hat |
 | [B-467](B-467-worktree-pill-am-eintrag.md) | DEV | Idee | mittel | offen | WZ12 | Worktree-Änderungen stehen als Pill am Projekt, Sprint oder an der Session statt als Leiste oben |
 | [B-468](B-468-geplante-chunks-ruinen-gegnerlager.md) | REG | Idee | mittel | offen | WZ14 | Geplante Chunks tragen Ruinen und Gegnerlager |
@@ -162,6 +160,7 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-497](B-497-grosse-inseln-last-und-umwandlung.md) | SIM | Frage | niedrig | offen | – | Große Inseln: Last im Spiel messen, Umwandlung in allen Biomen testen, PlanSave gegen Parallelität |
 | [B-499](B-499-studio-spiel-oeffnen-welt-zweimal.md) | DEV | Problem | niedrig | offen | – | Studio „Im Spiel öffnen“ in eigener Welt scheitert beim zweiten Mal mit demselben Seed |
 | [B-500](B-500-fullsave-tiefen-aus-welt.md) | SRV | Schuld | niedrig | offen | – | Voll ausgebauter Spielstand nimmt Tiefen aus den Biomen statt aus der Standard-Welt |
+| [B-501](B-501-planer-vorschau-fixiert-markiert.md) | DEV | Idee | mittel | offen | – | Gebäude-Planer: Live-Vorschau unten fest, gewähltes Gebäude markiert |
 
 ## Archiv
 
@@ -460,3 +459,5 @@ Zeile in diesen Abschnitt.
 | [B-270](archiv/B-270-respec-pruefung-ohne-seiteneffekt.md) | SIM | Schuld | mittel | erledigt | SK1 | Die Sim prüft Respec und Lernen ohne Seiteneffekt |
 | [B-485](archiv/B-485-chunk-editor-bedienung.md) | DEV | Idee | mittel | erledigt | WZ17 | Chunk-Editor im Welt-Betrachter komfortabler bedienen |
 | [B-498](archiv/B-498-studio-als-seite-im-go-server.md) | DEV | Idee | mittel | erledigt | – | Das Asset-Studio ist eine Seite des Go-Servers statt einer eigenen EXE |
+| [B-464](archiv/B-464-gegner-bosse-vorschau.md) | DEV | Idee | mittel | erledigt | WZ11 | Eine Gegner-Seite im Asset-Studio zeigt alle Gegnertypen und Bosse mit ihren Vorschauen |
+| [B-463](archiv/B-463-monarch-vorschau-animationen.md) | DEV | Idee | mittel | erledigt | WZ10 | Eine Monarch-Seite im Asset-Studio zeigt Reiten, Schlagen, Skills und weitere Vorschauen |

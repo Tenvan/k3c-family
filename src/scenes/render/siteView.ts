@@ -19,7 +19,7 @@ type View = Phaser.GameObjects.Container;
 const G = GROUND_Y;
 export const TEXT = { stroke: '#000000', strokeThickness: 4, fontStyle: 'bold' };
 
-const SITE_SIZE: Record<Site['kind'], [number, number]> = {
+export const SITE_SIZE: Record<Site['kind'], [number, number]> = {
   wall: [36, 150],
   tower: [70, 260],
   gate: [40, 160],
