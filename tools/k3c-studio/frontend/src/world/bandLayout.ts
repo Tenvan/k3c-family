@@ -1,4 +1,3 @@
-import { GAME_HEIGHT, GROUND_Y, UNIT_PX } from '@game/core/constants';
 import type { PlannedChunk } from '../api';
 import type { MarkKind, SlotHint } from './chunkMarks';
 import { iconOf, nameOf } from './kindIcons';
@@ -9,13 +8,12 @@ import type { View } from './viewState';
 // Chunk-Infos im Bodenstreifen der Live-Vorschau (B-485, WZ17.4): reine Logik, kein DOM. Die Bühne (PreviewStage.applyView)
 // zeigt die Welt mit Zoom = Maßstab / UNIT_PX, die Unterkante der Bühne ist GAME_HEIGHT, links beginnt sie bei `view.left`.
 
-/** Höhe der Bodenfläche zwischen Oberfläche und Fluss in Welt-Pixeln (src/scenes/stageView.ts: RIVER_Y = GROUND_Y + 36) */
-const BAND_WORLD_PX = 36;
+/** Feste Höhe der Chunk-Infos am oberen Rand der Vorschau (drei Zeilen), unabhängig vom Zoom */
+export const BAND_PX = 42;
 
-/** Lage des Bodenstreifens auf der Bühne in Pixeln (von oben) bei Bühnenhöhe `stageH` und Maßstab `scale` (Pixel je Unit) */
-export function bandBox(stageH: number, scale: number): { top: number; height: number } {
-  const zoom = scale / UNIT_PX;
-  return { top: stageH - (GAME_HEIGHT - GROUND_Y) * zoom, height: BAND_WORLD_PX * zoom };
+/** Lage der Chunk-Infos auf der Bühne in Pixeln: fest am oberen Rand, wo im Spiel die HUD-Leiste liegt (über dem Himmel) */
+export function bandBox(): { top: number; height: number } {
+  return { top: 0, height: BAND_PX };
 }
 
 export interface BandChunk {

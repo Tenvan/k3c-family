@@ -1,4 +1,3 @@
-import { GAME_HEIGHT, GROUND_Y, UNIT_PX } from '@game/core/constants';
 import { describe, expect, it } from 'vitest';
 import type { ModelChunk } from './levelView';
 import { bandBox, bandChunks, bandMode, chunkInfo, slotOfIndex } from './bandLayout';
@@ -6,10 +5,9 @@ import { bandBox, bandChunks, bandMode, chunkInfo, slotOfIndex } from './bandLay
 // Chunk-Infos im Bodenstreifen der Live-Vorschau (B-485, WZ17.4): reine Abbildung Welt -> Pixel der Bühne und Inhalt je Chunk.
 const chunks: ModelChunk[] = Array.from({ length: 8 }, (_, i) => ({ index: i, kind: i === 3 || i === 4 ? 'hub' : i === 0 ? 'edge' : 'forest', from: i * 50, to: i * 50 + 50 }));
 
-describe('Bodenstreifen auf der Bühne', () => {
-  it('liegt zwischen Boden-Oberfläche (GROUND_Y) und Fluss (36 px tiefer), die Unterkante der Bühne ist GAME_HEIGHT', () => {
-    const zoom = 16 / UNIT_PX;
-    expect(bandBox(500, 16)).toEqual({ top: 500 - (GAME_HEIGHT - GROUND_Y) * zoom, height: 36 * zoom });
+describe('Chunk-Infos auf der Bühne', () => {
+  it('liegt fest am oberen Rand mit fester Höhe, unabhängig vom Zoom', () => {
+    expect(bandBox()).toEqual({ top: 0, height: 42 });
   });
 
   it('Chunk -> Pixelbereich: (Anfang − linke Kante der Live-Vorschau) · Zoom, auf die Bühne beschnitten; nur sichtbare Chunks', () => {

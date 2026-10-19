@@ -45,15 +45,14 @@ function useTap(el: HTMLElement | null, onTap: (x: number, y: number) => void) {
   }, [el]);
 }
 
-/** Chunk-Infos im Bodenstreifen der Live-Vorschau (B-485, WZ17.4): ein Overlay über der Bühne zwischen Boden-Oberfläche
- *  und Fluss, je Chunk Farbe (Hinweis, Hub, besonders, neutral), Emoji, deutscher Name, Platz, Seed und feste Objekte.
+/** Chunk-Infos der Live-Vorschau (B-485, WZ17.4): ein Overlay fest am oberen Rand der Bühne, wo im Spiel die HUD-Leiste liegt, je Chunk Farbe (Hinweis, Hub, besonders, neutral), Emoji, deutscher Name, Platz, Seed und feste Objekte.
  *  Lage und Breite folgen Weltposition und Zoom der Live-Vorschau (`view`, Bühne `stage`); nur im Welten Editor, die Bühne
- *  selbst bleibt unverändert. Fängt keine Maus (Ziehen und Rad gehen an die Bühne); ein kurzer Klick in den Bodenstreifen
+ *  selbst bleibt unverändert. Fängt keine Maus (Ziehen und Rad gehen an die Bühne); ein kurzer Klick ins Overlay
  *  meldet den Chunk darunter an `onChunk` (Sprung dorthin). */
 export function LiveChunkBand({ stage, view, model, draft, hints, onChunk }: {
   stage: Box; view: View; model: LevelModel | null; draft: readonly PlannedChunk[]; hints: readonly SlotHint[]; onChunk: (chunk: ModelChunk) => void;
 }) {
-  const band = bandBox(stage.h, view.scale);
+  const band = bandBox();
   useTap(stage.el, (x, y) => {
     if (!model || y < band.top || y > band.top + band.height) return;
     const units = view.left + x / view.scale;
@@ -61,7 +60,6 @@ export function LiveChunkBand({ stage, view, model, draft, hints, onChunk }: {
     if (hit) onChunk(hit);
   });
   if (!stage.el || !model || stage.h <= 0) return null;
-  if (band.height < 2) return null;
   return createPortal(
     <div className="wd-band" aria-label="Chunk-Infos" style={{ top: band.top, height: band.height, fontSize: Math.min(12, Math.max(9, band.height * 0.7)), lineHeight: `${LINE_PX}px` }}>
       {bandChunks(model.chunks, view, stage.w).map(({ chunk, x, w }) => (
