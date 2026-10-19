@@ -11,8 +11,8 @@ import (
 // hub.Travel.Seconds lang, ist der Wechsel bereit (SwitchReady); den Austausch der Insel macht der Raum (B-345) mit
 // NextIsland.
 
-// isLast: Die Insel ist die letzte der Daten (kein Wechselpunkt, Kampagnensieg möglich).
-func (isl *Island) isLast() bool { return isl.Number+1 >= len(standardWorld.Islands) }
+// isLast: Die Insel ist die letzte ihrer Welt (kein Wechselpunkt, Kampagnensieg möglich).
+func (isl *Island) isLast() bool { return isl.Number+1 >= len(isl.world.Islands) }
 
 // gateStage ist die tiefste Stufe der Insel; dort liegt der Wechselpunkt (an der Burg).
 func (isl *Island) gateStage() *World {
@@ -58,25 +58,26 @@ func allAtGate(isl *Island, w *World) bool {
 	return n > 0
 }
 
-// NextDef liefert die Daten der nächsten Insel; ok ist false auf der letzten.
+// NextDef liefert die Daten der nächsten Insel der Welt; ok ist false auf der letzten.
 func (isl *Island) NextDef() (def IslandDef, ok bool) {
 	if isl.isLast() {
 		return IslandDef{}, false
 	}
-	return standardWorld.Islands[isl.Number+1], true
+	return isl.world.Islands[isl.Number+1], true
 }
 
-// NextIsland baut die nächste Insel nach def: Seed aus der Spiel-ID und dem Inselindex, Startvorrat, eigene Hubs,
-// Optionen der alten Insel. Die Spieler ziehen mit (Index, Gold, Skills und Slots bleiben) und stehen mit voller HP an
+// NextIsland baut die nächste Insel nach def in der Welt der alten Insel: Seed aus der Spiel-ID und dem Inselindex,
+// Startvorrat, eigene Hubs, Optionen der alten Insel, Insel-ID aus def. Die Spieler ziehen mit (Index, Gold, Skills und Slots bleiben) und stehen mit voller HP an
 // der Burg der ersten Stufe; ihre Skill-Basis ist die Zahl der mitgebrachten Skills.
 func NextIsland(cur *Island, def IslandDef) (*Island, error) {
 	number := cur.Number + 1
-	next, err := createIsland(fmt.Sprintf("%s:%d", cur.ID, number), def.Depths, cur.CycleSpeed, 0, def.CreateOptions())
+	next, err := createIsland(fmt.Sprintf("%s:%d", cur.ID, number), def.Depths, cur.CycleSpeed, 0, def.CreateOptions(), cur.world)
 	if err != nil {
 		return nil, err
 	}
 	*next.Stock = hub.IslandStartStock
-	next.ID, next.Number, next.Scaling, next.Options, next.nextPlayer = cur.ID, number, def.DepthScaling, cur.Options, cur.nextPlayer
+	next.ID, next.Number, next.islandID, next.Scaling = cur.ID, number, def.ID, def.DepthScaling
+	next.Options, next.nextPlayer = cur.Options, cur.nextPlayer
 	first := next.Stages[0]
 	for _, p := range cur.Players() {
 		q := *p

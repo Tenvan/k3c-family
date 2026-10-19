@@ -52,9 +52,9 @@ func TestKampfInselwechselTauschtMitGeraeten(t *testing.T) {
 		t.Fatalf("Xbox %v, Handy %v", x.since(xi), h.since(hi))
 	}
 	r.saveNow()
-	var s struct{ Island int }
-	if err := json.Unmarshal(f.store.data["stufen"], &s); err != nil || s.Island != 1 {
-		t.Fatalf("Spielstand: Insel %d, %v", s.Island, err)
+	var s sim.IslandSave // Version 8: Insel-ID statt Index (WZ18.3)
+	if err := json.Unmarshal(f.store.data["stufen"], &s); err != nil || s.IslandID != "testIsland2" {
+		t.Fatalf("Spielstand: Insel %q, %v", s.IslandID, err)
 	}
 }
 

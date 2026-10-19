@@ -83,8 +83,8 @@ func TestMirrorEvent(t *testing.T) {
 }
 
 func TestMirrorInselwechsel(t *testing.T) {
-	withTestIslands(t)
-	isl, _ := gateIsland(t, 2)
+	w, _ := testIslands()
+	isl, _ := gateIsland(t, w, 2)
 	isl.EndbossDefeated = false
 	stepSeconds(isl, 1)
 	if s := mirrorJSON(t, isl.Stages[1]); strings.Contains(s, "islandSwitch") {

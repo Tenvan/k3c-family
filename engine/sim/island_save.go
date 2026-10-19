@@ -8,17 +8,19 @@ import (
 	"sort"
 )
 
-// Spielstand der Insel (Version 7, B-100, S1.4, S2.2, K2.3b, K3.2a, W7.2). Die Campaign schreibt weiter Version 1 (save.go); der Raum benutzt bis zur
+// Spielstand der Insel (Version 8, B-100, S1.4, S2.2, K2.3b, K3.2a, W7.2, WZ18.3). Die Campaign schreibt weiter Version 1 (save.go); der Raum benutzt bis zur
 // Umstellung (B-133) nur Version 1. Gespeichert wird wie dort nur, was sich nicht aus dem Seed ergibt: Hubs, Truppen,
 // Vorrat, Gold und Entferntes. Flüchtiges (Gegner, Münzen am Boden, Geschosse, Zufallsstand) geht beim Laden verloren.
 
 // IslandSaveVersion ist die Version des Insel-Spielstands.
-const IslandSaveVersion = 7
+const IslandSaveVersion = 8
 
 // IslandSave ist ein Spielstand einer Insel.
 type IslandSave struct {
 	Version    int                `json:"version"`
 	CampaignID string             `json:"campaignId"`
+	World      string             `json:"world"`    // Welt-ID (Version 8, welten.md § 5; ältere Stände: standard)
+	IslandID   string             `json:"islandId"` // Insel-ID der aktuellen Insel in der Welt (Version 8)
 	SavedAt    string             `json:"savedAt"`
 	Day        int                `json:"day,omitempty"`   // Tag der Insel beim Speichern (Version 4, nur Anzeige)
 	Phase      string             `json:"phase,omitempty"` // day, dusk, night beim Speichern (Version 4, nur Anzeige)
@@ -29,8 +31,8 @@ type IslandSave struct {
 	Stages     []HubSave          `json:"stages"`    // je Stufe der Hub, nach Tiefe aufsteigend
 	SkillPool  int                `json:"skillPool"` // Fund-Pool der Insel (Version 2: Summe der Zähler je Stufe)
 	Players    []IslandPlayerSave `json:"players"`
-	// Version 5 (island_save_v5.go): aktuelle Insel, besiegte Bosse, Münzzähler und ob der Sieg schon gemeldet ist.
-	Island         int      `json:"island,omitempty"`
+	// Version 5 (island_save_v5.go): besiegte Bosse, Münzzähler und ob der Sieg schon gemeldet ist; die aktuelle Insel
+	// stand bis Version 7 als Index in `island` (Migration: island_save_v8.go).
 	DefeatedBosses []string `json:"defeatedBosses,omitempty"`
 	GoldCollected  int      `json:"goldCollected,omitempty"`
 	Won            bool     `json:"won,omitempty"`
@@ -55,10 +57,10 @@ type IslandPlayerSave struct {
 // ToSave schreibt den Spielstand. savedAt ist ein Zeitstempel (ISO 8601).
 func (isl *Island) ToSave(savedAt string) IslandSave {
 	s := IslandSave{
-		Version: IslandSaveVersion, CampaignID: isl.ID, SavedAt: savedAt, Seed: isl.Seed, Time: isl.Stages[0].Time,
+		Version: IslandSaveVersion, CampaignID: isl.ID, World: isl.world.ID, IslandID: isl.islandID, SavedAt: savedAt, Seed: isl.Seed, Time: isl.Stages[0].Time,
 		Day: isl.Stages[0].Cycle.Day, Phase: isl.Stages[0].Cycle.Phase,
 		Stock: *isl.Stock, Options: isl.Options, Stages: []HubSave{}, SkillPool: isl.SkillPool, Players: []IslandPlayerSave{},
-		Island: isl.Number, DefeatedBosses: slices.Clone(isl.DefeatedBosses), GoldCollected: isl.GoldCollected, Won: isl.Won,
+		DefeatedBosses: slices.Clone(isl.DefeatedBosses), GoldCollected: isl.GoldCollected, Won: isl.Won,
 		MerchantVisits: isl.MerchantVisits, Merchant: savedMerchant(isl),
 	}
 	for _, w := range isl.Stages {
@@ -73,29 +75,38 @@ func (isl *Island) ToSave(savedAt string) IslandSave {
 	return s
 }
 
-// ParseIslandSave liest einen Spielstand der Version 7 oder, überführt, der Version 6 (ohne Wirtschaft), 5 (ohne Händler), 4 (ohne Bosse und
-// Insel), 3 (ohne
-// Tag und Phase), 2 oder 1 (Campaign). Tag und Phase wirken beim Laden nicht, die Zeit kommt aus `time`.
+// ParseIslandSave liest einen Spielstand der Version 8 oder, überführt, der Version 7 (Insel als Index), 6 (ohne
+// Wirtschaft), 5 (ohne Händler), 4 (ohne Bosse und Insel), 3 (ohne Tag und Phase), 2 oder 1 (Campaign). Stände bis
+// Version 7 kommen in die Standard-Welt (migrateWorld). Tag und Phase wirken beim Laden nicht, die Zeit kommt aus `time`.
 func ParseIslandSave(raw []byte) (IslandSave, error) {
 	var head struct {
 		Version int `json:"version"`
+		Island  int `json:"island"` // bis Version 7: Index der Insel in der Standard-Welt
 	}
 	if err := json.Unmarshal(raw, &head); err != nil {
 		return IslandSave{}, fmt.Errorf("spielstand: %w", err)
 	}
+	var s IslandSave
+	var err error
 	switch head.Version {
+	case IslandSaveVersion:
+		return parseIslandV3(raw, "world", "islandId")
 	case SaveVersion:
-		old, err := ParseSave(raw)
-		if err != nil {
-			return IslandSave{}, err
+		var old SaveGame
+		if old, err = ParseSave(raw); err == nil {
+			s = islandFromV1(old)
 		}
-		return islandFromV1(old), nil
 	case 2:
-		return parseIslandV2(raw)
-	case 3, 4, 5, 6, IslandSaveVersion:
-		return parseIslandV3(raw)
+		s, err = parseIslandV2(raw)
+	case 3, 4, 5, 6, 7:
+		s, err = parseIslandV3(raw)
+	default:
+		return IslandSave{}, fmt.Errorf("spielstand: Version %d, erwartet %d, 2, 3, 4, 5, 6, 7 oder %d", head.Version, SaveVersion, IslandSaveVersion)
 	}
-	return IslandSave{}, fmt.Errorf("spielstand: Version %d, erwartet %d, 2, 3, 4, 5, 6 oder %d", head.Version, SaveVersion, IslandSaveVersion)
+	if err != nil {
+		return IslandSave{}, err
+	}
+	return migrateWorld(s, head.Island)
 }
 
 func validateIslandSave(s IslandSave) error {
@@ -162,10 +173,20 @@ func islandFromV1(old SaveGame) IslandSave {
 	return s
 }
 
-// FromIslandSave baut die Insel aus einem Spielstand (aus ParseIslandSave). Gespeicherte Spieler stehen wieder in ihrer
-// Stufe, mit ihrer gespeicherten Verteilung (das Beitritts-Preset gilt beim Laden nicht).
+// FromIslandSave baut die Insel aus einem Spielstand der Standard-Welt (FromIslandSaveIn).
 func FromIslandSave(s IslandSave, cycleSpeed float64) (*Island, error) {
+	return FromIslandSaveIn(s, cycleSpeed, standardWorld)
+}
+
+// FromIslandSaveIn baut die Insel aus einem Spielstand (aus ParseIslandSave) in der Welt world; Welt-ID und Insel-ID des
+// Stands müssen zu ihr passen (islandIn). Gespeicherte Spieler stehen wieder in ihrer Stufe, mit ihrer gespeicherten
+// Verteilung (das Beitritts-Preset gilt beim Laden nicht).
+func FromIslandSaveIn(s IslandSave, cycleSpeed float64, world WorldDef) (*Island, error) {
 	if err := validateIslandSave(s); err != nil {
+		return nil, err
+	}
+	number, err := islandIn(world, s)
+	if err != nil {
 		return nil, err
 	}
 	if cycleSpeed == 0 {
@@ -175,12 +196,13 @@ func FromIslandSave(s IslandSave, cycleSpeed float64) (*Island, error) {
 	for i, h := range s.Stages {
 		depths[i] = h.Depth
 	}
-	isl, err := createIsland(s.Seed, depths, cycleSpeed, s.Time, savedIslandOptions(s.Island))
+	def := world.Islands[number]
+	isl, err := createIsland(s.Seed, depths, cycleSpeed, s.Time, def.CreateOptions(), world)
 	if err != nil {
 		return nil, err
 	}
-	isl.ID = s.CampaignID
-	isl.Options = s.Options
+	isl.ID, isl.Options = s.CampaignID, s.Options
+	isl.Number, isl.islandID, isl.Scaling = number, def.ID, def.DepthScaling
 	for i, h := range s.Stages {
 		applyHub(isl.Stages[i], h)
 	}

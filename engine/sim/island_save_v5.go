@@ -5,15 +5,14 @@ import (
 	"slices"
 )
 
-// Spielstand Version 5 (K2.3b, B-130, B-103): besiegte Bosse, aktuelle Insel (Index in der Standard-Welt data/worlds/standard.json), Münzzähler
-// der Siegvariante `gold`, Sieg schon gemeldet, je Spieler die Skill-Basis. Ältere Versionen laden mit leerer Bossliste,
-// Insel 0 und Zählern 0 (die Felder fehlen dort). Gespeichert wird nur die aktuelle Insel.
+// Spielstand Version 5 (K2.3b, B-130, B-103): besiegte Bosse, aktuelle Insel (bis Version 7 als Index, ab Version 8
+// als Welt-ID und Insel-ID, island_save_v8.go), Münzzähler der Siegvariante `gold`, Sieg schon gemeldet, je Spieler die
+// Skill-Basis. Ältere Versionen laden mit leerer Bossliste, Insel 1 und Zählern 0 (die Felder fehlen dort). Gespeichert
+// wird nur die aktuelle Insel.
 
-// validateProgress prüft die Felder der Version 5: bekannte Bosse ohne Doppel, Insel aus den Daten, Zähler nicht negativ.
+// validateProgress prüft die Felder der Version 5: bekannte Bosse ohne Doppel, Zähler nicht negativ. Welt und Insel
+// prüft FromIslandSaveIn gegen die Welt (islandIn).
 func validateProgress(s IslandSave) error {
-	if s.Island < 0 || s.Island >= len(standardWorld.Islands) {
-		return fmt.Errorf("spielstand: Insel %d, die Daten kennen %d", s.Island, len(standardWorld.Islands))
-	}
 	if s.GoldCollected < 0 {
 		return fmt.Errorf("spielstand: Münzzähler %d negativ", s.GoldCollected)
 	}
@@ -33,10 +32,9 @@ func validateProgress(s IslandSave) error {
 	return nil
 }
 
-// restoreProgress setzt Insel, Tabelle, besiegte Bosse und Zähler; der Endboss gilt als besiegt, wenn ein Endboss in
+// restoreProgress setzt besiegte Bosse und Zähler; der Endboss gilt als besiegt, wenn ein Endboss in
 // der Liste steht (eine Quelle der Wahrheit).
 func restoreProgress(isl *Island, s IslandSave) {
-	isl.Number, isl.Scaling = s.Island, standardWorld.Islands[s.Island].DepthScaling
 	isl.DefeatedBosses = slices.Clone(s.DefeatedBosses)
 	isl.EndbossDefeated = slices.ContainsFunc(isl.DefeatedBosses, func(id string) bool { return bossByID(id).Kind == "end" })
 	isl.GoldCollected, isl.Won = s.GoldCollected, s.Won
