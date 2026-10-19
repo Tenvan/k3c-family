@@ -65,7 +65,7 @@ Entschieden: `B-488 › Offene Fragen` (alle). Offen für den Workshop WZ18.1: g
 
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
-| WZ18.1 | `WZ18.1-workshop-welt-datei.md` | Workshop | autonom | in Arbeit |
+| WZ18.1 | `WZ18.1-workshop-welt-datei.md` | Workshop | autonom | fertig |
 | WZ18.2 | `WZ18.2-welt-dateien-laden.md` | Umsetzung | autonom | offen |
 | WZ18.3 | `WZ18.3-spielstand-welt-inselwechsel.md` | Umsetzung | autonom | offen |
 | WZ18.4 | `WZ18.4-raum-welt.md` | Umsetzung | autonom | offen |
