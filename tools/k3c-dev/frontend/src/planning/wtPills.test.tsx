@@ -112,3 +112,18 @@ describe('Einträge nur im Worktree (B-467/AC-04)', () => {
     expect(withWorktreeEntries(root, dup).tickets).toHaveLength(1);
   });
 });
+
+describe('neue Einträge unter ihrem Projekt', () => {
+  it('Sprint kommt in die Sprint-Liste seines Projekts, Ticket trägt Projekt und Sprint', async () => {
+    const { withWorktreeEntries } = await import('./wtPills');
+    const data: PlanningData = { projects: [{ id: 'WZG', title: 'Werkzeuge', status: 'aktiv', rang: '1', sprints: [] }], sprints: [], tickets: [], done: 0 };
+    const diffs: WorktreeDiff[] = [{ branch: 'b', path: 'p', changes: [
+      { kind: 'neu', item: 'Sprint', id: 'WZ20', text: 'Dummy', project: 'WZG' },
+      { kind: 'neu', item: 'Ticket', id: 'B-9', text: 'Neu', project: 'WZG', sprint: 'WZ20' },
+    ] }];
+    const out = withWorktreeEntries(data, diffs);
+    expect(out.projects?.[0]?.sprints).toEqual(['WZ20']);
+    expect(out.sprints[0]?.project).toBe('WZG');
+    expect(out.tickets[0]).toMatchObject({ project: 'WZG', sprint: 'WZ20' });
+  });
+});

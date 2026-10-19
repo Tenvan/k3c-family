@@ -4,7 +4,7 @@
 - **Typ:** Problem
 - **Prio:** niedrig
 - **Umgebung:** ?
-- **Status:** offen
+- **Status:** erledigt
 - **Sprint:** WZ12
 - **Projekt:** WZG
 - **Erstellt:** 2026-10-16

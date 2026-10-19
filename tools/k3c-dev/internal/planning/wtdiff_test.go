@@ -158,19 +158,34 @@ func TestDiffDataReihenfolge(t *testing.T) {
 		Tickets: []Ticket{{Nr: "B-1", Title: "Eins", Status: "eingeplant", Prio: "hoch", Sprint: "WZ6"}},
 	}
 	want := []Change{
-		{"neu", "Projekt", "NEU", "Neu"},
-		{"geändert", "Projekt", "WZG", "Status ruht → aktiv"},
-		{"geändert", "Projekt", "WZG", "Rang 2 → 1"},
-		{"entfernt", "Projekt", "ALT", "Alt"},
-		{"geändert", "Sprint", "WZ6", "Status geplant → aktiv"},
-		{"geändert", "Sprint", "WZ6", "Projekt – → WZG"},
-		{"geändert", "Session", "WZ6.1", "Status offen → fertig"},
-		{"geändert", "Ticket", "B-1", "Status offen → eingeplant"},
-		{"geändert", "Ticket", "B-1", "Prio mittel → hoch"},
-		{"geändert", "Ticket", "B-1", "Sprint – → WZ6"},
-		{"entfernt", "Ticket", "B-2", "Zwei"},
+		{Kind: "neu", Item: "Projekt", ID: "NEU", Text: "Neu"},
+		{Kind: "geändert", Item: "Projekt", ID: "WZG", Text: "Status ruht → aktiv"},
+		{Kind: "geändert", Item: "Projekt", ID: "WZG", Text: "Rang 2 → 1"},
+		{Kind: "entfernt", Item: "Projekt", ID: "ALT", Text: "Alt"},
+		{Kind: "geändert", Item: "Sprint", ID: "WZ6", Text: "Status geplant → aktiv"},
+		{Kind: "geändert", Item: "Sprint", ID: "WZ6", Text: "Projekt – → WZG"},
+		{Kind: "geändert", Item: "Session", ID: "WZ6.1", Text: "Status offen → fertig"},
+		{Kind: "geändert", Item: "Ticket", ID: "B-1", Text: "Status offen → eingeplant"},
+		{Kind: "geändert", Item: "Ticket", ID: "B-1", Text: "Prio mittel → hoch"},
+		{Kind: "geändert", Item: "Ticket", ID: "B-1", Text: "Sprint – → WZ6"},
+		{Kind: "entfernt", Item: "Ticket", ID: "B-2", Text: "Zwei"},
 	}
 	if got := diffData(base, wt); !reflect.DeepEqual(got, want) {
 		t.Errorf("diffData:\n got %v\nwant %v", got, want)
+	}
+}
+
+func TestDiffDataNeueEintraegeTragenProjektUndSprint(t *testing.T) {
+	wt := Data{
+		Sprints: []Sprint{{ID: "WZ20", Title: "Dummy", Project: "WZG"}},
+		Tickets: []Ticket{{Nr: "B-9", Title: "Neu", Project: "WZG", Sprint: "WZ20"}},
+	}
+	got := diffData(Data{}, wt)
+	want := []Change{
+		{Kind: "neu", Item: "Sprint", ID: "WZ20", Text: "Dummy", Project: "WZG"},
+		{Kind: "neu", Item: "Ticket", ID: "B-9", Text: "Neu", Project: "WZG", Sprint: "WZ20"},
+	}
+	if !reflect.DeepEqual(got, want) {
+		t.Errorf("diffData: got %v, want %v", got, want)
 	}
 }

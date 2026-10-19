@@ -379,6 +379,9 @@ export interface WorktreeChange {
   item: 'Projekt' | 'Sprint' | 'Session' | 'Ticket';
   id: string;
   text: string;
+  /** Projekt und Sprint neuer Sprints und Tickets */
+  project?: string;
+  sprint?: string;
 }
 
 /** Planungsunterschiede eines Worktrees zur Wurzel (Go: planning.WorktreeDiff). */

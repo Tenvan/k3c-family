@@ -17,6 +17,9 @@ type Change struct {
 	Item string `json:"item"`
 	ID   string `json:"id"`
 	Text string `json:"text"`
+	// Project und Sprint der neuen Einträge (Sprint, Ticket), damit die Ansicht sie unter ihrem Projekt zeigt
+	Project string `json:"project,omitempty"`
+	Sprint  string `json:"sprint,omitempty"`
 }
 
 // WorktreeDiff fasst die Planungsunterschiede eines Worktrees zur Wurzel zusammen.
@@ -114,11 +117,36 @@ func diffData(base, wt Data) []Change {
 			out := append(changed("Sprint", s.ID, "Status", old.Status, s.Status), changed("Sprint", s.ID, "Projekt", old.Project, s.Project)...)
 			return append(out, diffSessions(old, s)...)
 		})...)
-	return append(cs, diffByID("Ticket", base.Tickets, wt.Tickets, func(t Ticket) (string, string) { return t.Nr, t.Title },
+	cs = append(cs, diffByID("Ticket", base.Tickets, wt.Tickets, func(t Ticket) (string, string) { return t.Nr, t.Title },
 		func(old, t Ticket) []Change {
 			out := append(changed("Ticket", t.Nr, "Status", old.Status, t.Status), changed("Ticket", t.Nr, "Prio", old.Prio, t.Prio)...)
 			return append(out, changed("Ticket", t.Nr, "Sprint", old.Sprint, t.Sprint)...)
 		})...)
+	return withPlacement(cs, wt)
+}
+
+// withPlacement trägt bei neuen Sprints und Tickets Projekt (und Sprint des Tickets) ein, wie der Worktree sie führt.
+func withPlacement(cs []Change, wt Data) []Change {
+	for i, c := range cs {
+		if c.Kind != "neu" {
+			continue
+		}
+		switch c.Item {
+		case "Sprint":
+			for _, s := range wt.Sprints {
+				if s.ID == c.ID {
+					cs[i].Project = s.Project
+				}
+			}
+		case "Ticket":
+			for _, t := range wt.Tickets {
+				if t.Nr == c.ID {
+					cs[i].Project, cs[i].Sprint = t.Project, t.Sprint
+				}
+			}
+		}
+	}
+	return cs
 }
 
 // diffByID vergleicht zwei Listen über die ID: in Reihenfolge des Worktrees neu oder die Feldänderungen aus fields,
@@ -137,12 +165,12 @@ func diffByID[T any](item string, base, wt []T, key func(T) (id, title string), 
 		if o, ok := old[id]; ok {
 			cs = append(cs, fields(o, w)...)
 		} else {
-			cs = append(cs, Change{"neu", item, id, title})
+			cs = append(cs, Change{Kind: "neu", Item: item, ID: id, Text: title})
 		}
 	}
 	for _, b := range base {
 		if id, title := key(b); !seen[id] {
-			cs = append(cs, Change{"entfernt", item, id, title})
+			cs = append(cs, Change{Kind: "entfernt", Item: item, ID: id, Text: title})
 		}
 	}
 	return cs
@@ -153,7 +181,7 @@ func changed(item, id, name, a, b string) []Change {
 	if a == b {
 		return nil
 	}
-	return []Change{{"geändert", item, id, name + " " + a + " → " + b}}
+	return []Change{{Kind: "geändert", Item: item, ID: id, Text: name + " " + a + " → " + b}}
 }
 
 func diffSessions(old, now Sprint) []Change {
@@ -168,14 +196,14 @@ func diffSessions(old, now Sprint) []Change {
 		o, ok := prev[s.Nr]
 		switch {
 		case !ok:
-			cs = append(cs, Change{"neu", "Session", s.Nr, s.Titel})
+			cs = append(cs, Change{Kind: "neu", Item: "Session", ID: s.Nr, Text: s.Titel})
 		case o.Status != s.Status:
-			cs = append(cs, Change{"geändert", "Session", s.Nr, "Status " + o.Status + " → " + s.Status})
+			cs = append(cs, Change{Kind: "geändert", Item: "Session", ID: s.Nr, Text: "Status " + o.Status + " → " + s.Status})
 		}
 	}
 	for _, s := range old.Sessions {
 		if !have[s.Nr] {
-			cs = append(cs, Change{"entfernt", "Session", s.Nr, s.Titel})
+			cs = append(cs, Change{Kind: "entfernt", Item: "Session", ID: s.Nr, Text: s.Titel})
 		}
 	}
 	return cs

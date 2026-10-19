@@ -54,10 +54,12 @@ const ADD: Record<WorktreeChange['item'], Add> = {
     if (d.projects && !d.projects.some((p) => p.id === c.id)) d.projects.push({ id: c.id, title: c.text, status: 'aktiv', rang: '–', sprints: [] });
   },
   Sprint: (d, c) => {
-    if (!d.sprints.some((s) => s.id === c.id)) d.sprints.push({ id: c.id, title: c.text, domain: '', status: 'geplant', reife: '', spec: '', tickets: [], sessions: [] });
+    if (!d.sprints.some((s) => s.id === c.id)) d.sprints.push({ id: c.id, title: c.text, domain: '', status: 'geplant', reife: '', spec: '', tickets: [], sessions: [], project: c.project || '–' });
+    const owner = d.projects?.find((p) => p.id === c.project);
+    if (owner && !owner.sprints.includes(c.id)) d.projects = d.projects?.map((p) => (p === owner ? { ...p, sprints: [...p.sprints, c.id] } : p));
   },
   Ticket: (d, c) => {
-    if (!d.tickets.some((x) => x.nr === c.id)) d.tickets.push({ nr: c.id, title: c.text, domain: '', typ: '', prio: '', env: '', status: 'offen', sprint: '', spec: '' });
+    if (!d.tickets.some((x) => x.nr === c.id)) d.tickets.push({ nr: c.id, title: c.text, domain: '', typ: '', prio: '', env: '', status: 'offen', sprint: c.sprint || '', spec: '', project: c.project || '–' });
   },
   Session: (d, c) => {
     const sp = d.sprints.find((s) => s.id === sprintOf(c.id));
