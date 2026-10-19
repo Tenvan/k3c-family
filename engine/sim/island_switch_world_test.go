@@ -50,3 +50,11 @@ func TestInselwechselLetzteInselDerWelt(t *testing.T) {
 		t.Errorf("letzte Insel: %d× islandGateOpen, bereit %v, %d× victory", count(ev, "islandGateOpen"), next.SwitchReady, count(ev, "victory"))
 	}
 }
+
+// NextIsland baut nur die nächste Insel der Welt (WZ18.4, Review WZ18.3): eine andere Insel ist ein Fehler.
+func TestInselwechselNurZurNaechstenInsel(t *testing.T) {
+	w := nordmeer(t)
+	if _, err := NextIsland(nordmeerIsland(t, w, 1), w.Islands[0]); err == nil {
+		t.Fatal("Wechsel auf Insel 1 statt Insel 2 angenommen")
+	}
+}

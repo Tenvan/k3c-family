@@ -12,12 +12,13 @@ import (
 )
 
 func TestKonfiguration(t *testing.T) {
-	if c := loadConfig(); c.httpPort != "8080" || c.httpsPort != "8443" || c.dist != "dist" || c.saves != "saves" {
+	if c := loadConfig(); c.httpPort != "8080" || c.httpsPort != "8443" || c.dist != "dist" || c.saves != "saves" || c.worlds != "data/worlds" {
 		t.Errorf("Vorgaben: %+v", c)
 	}
 	t.Setenv("K3C_HTTP_PORT", "9090")
 	t.Setenv("K3C_SAVES_DIR", "/data/saves")
-	if c := loadConfig(); c.httpPort != "9090" || c.saves != "/data/saves" {
+	t.Setenv("K3C_WORLDS_DIR", "/data/worlds")
+	if c := loadConfig(); c.httpPort != "9090" || c.saves != "/data/saves" || c.worlds != "/data/worlds" {
 		t.Errorf("Umgebung: %+v", c)
 	}
 }

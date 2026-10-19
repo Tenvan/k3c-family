@@ -70,6 +70,9 @@ func (isl *Island) NextDef() (def IslandDef, ok bool) {
 // Startvorrat, eigene Hubs, Optionen der alten Insel, Insel-ID aus def. Die Spieler ziehen mit (Index, Gold, Skills und Slots bleiben) und stehen mit voller HP an
 // der Burg der ersten Stufe; ihre Skill-Basis ist die Zahl der mitgebrachten Skills.
 func NextIsland(cur *Island, def IslandDef) (*Island, error) {
+	if want, ok := cur.NextDef(); !ok || want.ID != def.ID {
+		return nil, fmt.Errorf("insel: %q ist nicht die nächste Insel der Welt %q", def.ID, cur.world.ID)
+	}
 	number := cur.Number + 1
 	next, err := createIsland(fmt.Sprintf("%s:%d", cur.ID, number), def.Depths, cur.CycleSpeed, 0, def.CreateOptions(), cur.world)
 	if err != nil {

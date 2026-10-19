@@ -1,7 +1,7 @@
 // Command k3c-server ist der Server von K3C in Go: Auslieferung, Spielstände, Berichte und der Online-Modus (WebSocket).
 //
 // Konfiguration per Umgebung: K3C_HTTP_PORT (8080), K3C_HTTPS_PORT (8443, nur mit <certs>/key.pem und cert.pem),
-// K3C_DIST (dist), K3C_SAVES_DIR (saves), K3C_REPORTS_DIR (reports), K3C_CERTS_DIR (certs), K3C_STATUS_TOKEN
+// K3C_DIST (dist), K3C_SAVES_DIR (saves), K3C_WORLDS_DIR (data/worlds, Welt-Dateien, nur im Dev-Mode gelesen), K3C_REPORTS_DIR (reports), K3C_CERTS_DIR (certs), K3C_STATUS_TOKEN
 // (schützt /api/status; leer = Diagnose aus), K3C_LOG_LEVEL (Konsole: debug, info, warn, error; Standard info; die JSON-Dateien schreiben immer ab debug),
 // K3C_LOG_DIR (JSON-Log nach <Ordner>/k3c-server.jsonl, Browser-Meldungen nach k3c-client.jsonl; Standard: ein vorhandener
 // Ordner logs/, sonst nur Text auf stderr), K3C_DEV (Dev-Mode: leer oder 1 = an, 0 = aus; Grad dev wählbar und Standard). `k3c-server -health` fragt /api/health des laufenden Servers ab
@@ -57,7 +57,7 @@ const testSaveMaxAge = 24 * time.Hour
 // config sind die Einstellungen aus der Umgebung.
 type config struct {
 	httpPort, httpsPort string
-	dist, saves         string
+	dist, saves, worlds string
 	reports, certs      string
 	statusToken         string
 	dev                 bool
@@ -73,7 +73,7 @@ func env(key, fallback string) string {
 func loadConfig() config {
 	return config{
 		httpPort: env("K3C_HTTP_PORT", "8080"), httpsPort: env("K3C_HTTPS_PORT", "8443"),
-		dist: env("K3C_DIST", "dist"), saves: env("K3C_SAVES_DIR", "saves"),
+		dist: env("K3C_DIST", "dist"), saves: env("K3C_SAVES_DIR", "saves"), worlds: env("K3C_WORLDS_DIR", "data/worlds"),
 		reports: env("K3C_REPORTS_DIR", "reports"), certs: env("K3C_CERTS_DIR", "certs"),
 		statusToken: os.Getenv("K3C_STATUS_TOKEN"), dev: os.Getenv("K3C_DEV") != "0",
 	}
@@ -101,13 +101,16 @@ func run(cfg config, log *slog.Logger) error {
 		return fmt.Errorf("%s/index.html fehlt. Erst bauen: task build", cfg.dist)
 	}
 	log.Info("🚀 Server startet", "ns", "main", "version", version, "pid", os.Getpid(), "go", runtime.Version(), "http", cfg.httpPort,
-		"dist", cfg.dist, "saves", cfg.saves, "reports", cfg.reports, "dev", cfg.dev, "logDir", logDir(), "konsolenLevel", consoleLevel().String())
+		"dist", cfg.dist, "saves", cfg.saves, "worlds", cfg.worlds, "reports", cfg.reports, "dev", cfg.dev, "logDir", logDir(), "konsolenLevel", consoleLevel().String())
 	saves := &store.Saves{Dir: cfg.saves}
 	reports := &store.Reports{Dir: cfg.reports}
 	rooms := room.NewManager(saves)
 	rooms.Log = log
 	rooms.Sessions = reports // Spielmetrik-Report je Raumlauf (B-150)
 	rooms.Dev = cfg.dev
+	if cfg.dev { // weitere Welten nur im Dev-Mode, frisch von der Platte (docs/rules/welten.md § 6)
+		rooms.Worlds = os.DirFS(cfg.worlds)
+	}
 	// Testläufe (Spielstände mit Präfix test-, B-086) räumen sich beim Aufräumen des Raums auf; Reste alter Läufe hier.
 	if n, err := saves.Purge(room.TestPrefix, time.Now().Add(-testSaveMaxAge)); err != nil {
 		log.Error("💥 Test-Spielstände nicht aufgeräumt", "err", err)

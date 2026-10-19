@@ -36,6 +36,8 @@ var (
 	ErrClosed       = errors.New("room_closed") // Server fährt herunter
 	ErrForbidden    = errors.New("forbidden")   // dev ohne Dev-Mode (B-178)
 	ErrSaveInUse    = errors.New("save_in_use") // Spielstand in einem Raum mit verbundenem Gerät offen (B-424)
+	// ErrWorldUnknown: Welt unbekannt, Welt-ID oder Welt-Datei ungültig (welten.md § 5/6); den Protokoll-Code vergibt WZ18.5.
+	ErrWorldUnknown = errors.New("world_unknown")
 )
 
 // Zustände eines Monarchen.
@@ -54,7 +56,8 @@ type Seat struct {
 }
 
 // Options sind die Raum-Optionen aus `create` (leer = Standard); Seed ersetzt bei einem neuen Stand den Namen als Seed (B-095). Der Manager prüft sie beim Anlegen eines neuen Stands und setzt sie auf die Insel.
-type Options struct{ Grade, Goal, Defeat, Seed string }
+// World ist die Welt-ID eines neuen Stands (leer = standard, eine andere nur im Dev-Mode, docs/rules/welten.md § 6).
+type Options struct{ Grade, Goal, Defeat, Seed, World string }
 
 // MaxSeedRunes ist die Höchstlänge von `create.seed` (wie bei GET /api/level).
 const MaxSeedRunes = 64
