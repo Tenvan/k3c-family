@@ -52,7 +52,7 @@ function useTap(el: HTMLElement | null, onTap: (x: number, y: number) => void) {
 export function LiveChunkBand({ stage, view, model, draft, hints, onChunk }: {
   stage: Box; view: View; model: LevelModel | null; draft: readonly PlannedChunk[]; hints: readonly SlotHint[]; onChunk: (chunk: ModelChunk) => void;
 }) {
-  const band = bandBox();
+  const band = bandBox(view.scale);
   useTap(stage.el, (x, y) => {
     if (!model || y < band.top || y > band.top + band.height) return;
     const units = view.left + x / view.scale;

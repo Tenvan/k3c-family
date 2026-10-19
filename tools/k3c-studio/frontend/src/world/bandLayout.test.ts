@@ -1,3 +1,4 @@
+import { hudPx } from '../stage/hudBar';
 import { describe, expect, it } from 'vitest';
 import type { ModelChunk } from './levelView';
 import { bandBox, bandChunks, bandMode, chunkInfo, slotOfIndex } from './bandLayout';
@@ -6,8 +7,10 @@ import { bandBox, bandChunks, bandMode, chunkInfo, slotOfIndex } from './bandLay
 const chunks: ModelChunk[] = Array.from({ length: 8 }, (_, i) => ({ index: i, kind: i === 3 || i === 4 ? 'hub' : i === 0 ? 'edge' : 'forest', from: i * 50, to: i * 50 + 50 }));
 
 describe('Chunk-Infos auf der Bühne', () => {
-  it('liegt fest am oberen Rand mit fester Höhe, unabhängig vom Zoom', () => {
-    expect(bandBox()).toEqual({ top: 0, height: 42 });
+  it('liegt fest oben auf der HUD-Leiste und folgt ihrer Höhe', () => {
+    expect(bandBox(12)).toEqual({ top: 0, height: hudPx(12) }); // HUD-Höhe bei 100 %
+    expect(bandBox(12).height).toBeGreaterThan(30);
+    expect(bandBox(2).height).toBe(20); // herausgezoomt nie unter einer lesbaren Zeile
   });
 
   it('Chunk -> Pixelbereich: (Anfang − linke Kante der Live-Vorschau) · Zoom, auf die Bühne beschnitten; nur sichtbare Chunks', () => {

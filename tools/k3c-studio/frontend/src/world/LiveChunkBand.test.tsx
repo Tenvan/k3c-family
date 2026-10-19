@@ -55,7 +55,7 @@ describe('Chunk-Infos am oberen Rand (B-485)', () => {
     const h = await mount();
     const band = h.querySelector<HTMLElement>('.wd-stage .wd-band')!;
     expect(parseFloat(band.style.top)).toBe(0); // fest am oberen Rand, wo im Spiel die HUD-Leiste liegt
-    expect(parseFloat(band.style.height)).toBe(42); // feste Höhe, unabhängig vom Zoom
+    expect(parseFloat(band.style.height)).toBeGreaterThanOrEqual(20); // Höhe der HUD-Leiste, mindestens eine Zeile
     expect(cells(h).length).toBeGreaterThan(0);
     const hub = cells(h).find((c) => c.classList.contains('wd-band-hub'))!;
     expect(hub.textContent).toBe('🏰 Hub');
