@@ -29,7 +29,7 @@ In Abarbeitungs-Reihenfolge; der erste nicht erledigte Sprint ist der nächste. 
 | WZ8 | Chunks je Insel und Stufe planen: Seed oder feste Objekte | erledigt |
 | WZ16 | Welt-Betrachter: eine gemeinsame Ansicht mit Sprungleiste, Zoom und Gebäude-Filter | erledigt |
 | WZ15 | Hub-Planung Vorlauf: Regeltabelle erzeugt, Prüfung ohne globalen Zustand | erledigt |
-| WZ9 | Gebäude-Planer für die Freischaltung je Hub-Stufe | aktiv |
+| WZ9 | Gebäude-Planer für die Freischaltung je Hub-Stufe | erledigt |
 | WZ10 | Abspiel-Bausteine und Monarch-Vorschau im Asset-Studio | erledigt |
 | WZ11 | Gegner- und Boss-Vorschau im Asset-Studio, Figuren-Seiten entfernen | erledigt |
 | WZ12 | Planungs-Werkzeug: Platzhalter-Zeilen und Worktree-Pills | aktiv |

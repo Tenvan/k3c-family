@@ -1,6 +1,6 @@
 # WZ9.5 · Abnahme Gebäude-Planer durch 🧑
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Workshop
 - **Agent:** Mensch
 - **Domäne:** DEV
