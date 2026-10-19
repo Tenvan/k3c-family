@@ -37,7 +37,7 @@ In Abarbeitungs-Reihenfolge; der erste nicht erledigte Sprint ist der nächste. 
 | WZ14 | Geplante Chunks tragen Ruinen und Gegnerlager | geplant |
 | WZ17 | Chunk-Editor komfortabel: Inselgrößen, getrennter Zoom, Seed-Chunk umwandeln | erledigt |
 | WZ18 | Welten im Spiel: Welt-Dateien, Welt-Wahl im Raum und Welten-Editor | aktiv |
-| WZ19 | Chat im Studio mit Claude Code CLI und Welt per Prompt füllen | geplant |
+| WZ19 | Chat im Studio mit Claude Code CLI und Welt per Prompt füllen | aktiv |
 
 ## Nicht-Ziele
 

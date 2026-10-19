@@ -1,11 +1,11 @@
 # WZ19 · DEV · Chat im Studio mit Claude Code CLI und Welt per Prompt füllen
 
-- **Status:** geplant
+- **Status:** aktiv
 - **Projekt:** WZG
 - **Domäne:** DEV
 - **Reife:** bereit
 - **Tickets:** B-488
-- **Start-Commit:** – (wird beim Aktivieren gesetzt: `git rev-parse --short origin/develop`)
+- **Start-Commit:** 9c54de70 (origin/develop; Branch `sprint/wz19` setzt auf `sprint/wz18` b5cd145e auf, PR #385 offen)
 - **Spec:** freigegeben
 - **Revision:** 1
 - **Freigabe:** 2026-10-19, Ralf im Chat (Revision 1)
@@ -61,7 +61,7 @@ Entschieden: `B-488 › Offene Fragen` (alle). Freigegeben von 🧑 am 2026-10-1
 
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
-| WZ19.1 | `WZ19.1-cli-anbindung-verlauf.md` | Umsetzung | autonom | offen |
+| WZ19.1 | `WZ19.1-cli-anbindung-verlauf.md` | Umsetzung | autonom | in Arbeit |
 | WZ19.2 | `WZ19.2-chat-im-studio.md` | Umsetzung | autonom | offen |
 | WZ19.3 | `WZ19.3-prompt-grundgeruest.md` | Umsetzung | autonom | offen |
 | WZ19.4 | `WZ19.4-review.md` | Review | autonom | offen |
