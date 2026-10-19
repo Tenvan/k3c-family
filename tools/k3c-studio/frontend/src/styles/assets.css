@@ -1,6 +1,6 @@
 /* Seite Assets (B-298): Kopf mit Filtern, Slot-Liste | Splitter (B-445, Stil .pl-split-v) | Detail. Unter 1100 px
    Breite der Seite untereinander, ohne Splitter. */
-.as-page { container-type: inline-size; display: flex; flex-direction: column; gap: 10px; height: calc(100vh - 100px); min-height: 0; }
+.as-page { container-type: inline-size; display: flex; flex-direction: column; gap: 10px; height: calc(100vh - 140px); min-height: 0; }
 .as-head { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
 .as-filter { flex: 1; min-width: 220px; }
 .as-body { flex: 1; min-height: 0; display: grid; gap: 12px 4px; grid-template-columns: minmax(300px, var(--as-split, 38%)) 8px minmax(0, 1fr); }
