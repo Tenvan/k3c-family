@@ -139,6 +139,7 @@ export function ChunkPreview({ maximized, onToggle, onLoaded, source, view, onWh
   };
 
   return (
+    <>
     <div className="wd-chunks" data-maximized={maximized}>
       <div className="wd-bar">
         <TextField.Root className="wd-seed" aria-label="Seed" value={seed} onChange={(e) => setSeed(e.target.value)}
@@ -151,7 +152,8 @@ export function ChunkPreview({ maximized, onToggle, onLoaded, source, view, onWh
       <p className="wd-note" role="status">{note}</p>
       {children}
       <div className="wd-viewport" ref={viewport}>{model && <Strip model={model} scale={view.scale} hints={hints} liveSpan={liveSpan} onChunk={onChunk} />}</div>
-      {model && <Legend model={model} />}
     </div>
+    {model && <div className="wd-legend-block"><Legend model={model} /></div>}
+    </>
   );
 }

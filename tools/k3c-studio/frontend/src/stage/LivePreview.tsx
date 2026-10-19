@@ -1,6 +1,7 @@
 import { Checkbox, Select, Text } from '@radix-ui/themes';
 import { useEffect, useMemo, useRef, useState, type CSSProperties, type RefObject } from 'react';
 import { GAME_HEIGHT, UNIT_PX } from '@game/core/constants';
+import { WORLD_TOP } from '@game/scenes/layout';
 import type { World } from '@game/model/types';
 import { backend, type WorldPreviewView } from '../api';
 import { useDebounced } from '../lib/useDebounced';
@@ -85,10 +86,11 @@ function useStage(host: RefObject<HTMLDivElement | null>, world: World | null, l
   return failed;
 }
 
-/** Höhe der Bühne: so hoch wie die Szene im Spiel (GAME_HEIGHT), mit dem Zoom skaliert. Der Zoom verkleinert also die ganze
- *  Vorschau; sichtbar bleibt immer die volle Spielhöhe, nur die Breite wächst mit. */
+/** Höhe der Bühne: so hoch wie der Weltausschnitt im Spiel (von WORLD_TOP bis GAME_HEIGHT, der Himmel darüber entfällt wie
+ *  dort), mit dem Zoom skaliert. Der Zoom verkleinert also die ganze Vorschau; sichtbar bleibt immer die volle Spielhöhe,
+ *  nur die Breite wächst mit. Darüber liegt der Chunk-Streifen an der Stelle der HUD-Leiste. */
 export function stageStyle(scale: number): CSSProperties {
-  return { flex: 'none', minHeight: 0, height: Math.round((GAME_HEIGHT * scale) / UNIT_PX) };
+  return { flex: 'none', minHeight: 0, height: Math.round(((GAME_HEIGHT - WORLD_TOP) * scale) / UNIT_PX) };
 }
 
 /** Tageszeit (vier Einträge, Fortschritt) und Hintergrund-Schichten der Live-Vorschau */

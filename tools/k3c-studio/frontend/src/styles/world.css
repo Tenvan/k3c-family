@@ -120,3 +120,11 @@
 .wd-band-none { --wd-band: var(--gray-8, #5a6169); }
 /* Klick auf einen Chunk oder einen Eintrag der Planungsliste springt dorthin (B-485) */
 .wd-strip .wd-chunk, .wd-planned { cursor: pointer; }
+
+/* Die Live-Vorschau schließt unmittelbar an den Chunk-Streifen an (er liegt wie die HUD-Leiste im Spiel über der Welt); Legende,
+   Planung und Start folgen darunter. */
+.wd-page > * { order: 1; }
+.wd-page > .wd-chunks, .wd-page > .wd-live { order: 0; }
+.wd-page > .wd-chunks { margin-bottom: -12px; }
+.wd-page > .wd-live { flex: none; } /* die Höhe bestimmt der Zoom, kein Auffüllen der Fensterhöhe */
+.wd-legend-block { display: flex; flex-direction: column; gap: 4px; }
