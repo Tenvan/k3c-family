@@ -1,6 +1,6 @@
 # WZ12 · DEV · Planungs-Werkzeug: Platzhalter-Zeilen und Worktree-Pills
 
-- **Status:** aktiv
+- **Status:** erledigt
 - **Projekt:** WZG
 - **Domäne:** DEV
 - **Reife:** bereit
@@ -64,7 +64,7 @@ Vor der Freigabe offen: nichts. `B-436`: Platzhalter-Zeilen mit anderer Nummer b
 | WZ12.1 | `WZ12.1-platzhalter-zeilen.md` | Umsetzung | autonom | fertig |
 | WZ12.2 | `WZ12.2-worktree-pills.md` | Umsetzung | autonom | fertig |
 | WZ12.3 | `WZ12.3-review.md` | Review | autonom | fertig |
-| WZ12.4 | `WZ12.4-abnahme.md` | Review | Mensch | offen |
+| WZ12.4 | `WZ12.4-abnahme.md` | Review | Mensch | fertig |
 
 - WZ12.1 (DEV) Platzhalter-Zeilen ohne Datei in `plan_create` und Session-Tabelle behandeln, Go-Test (AC-01).
 - WZ12.2 (DEV) Worktree-Pills statt Leiste: Daten aus `WorktreeCheck`, Pill-Baustein, Komponententest (AC-02, AC-03, AC-04, AC-05).

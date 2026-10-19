@@ -32,7 +32,7 @@ In Abarbeitungs-Reihenfolge; der erste nicht erledigte Sprint ist der nächste. 
 | WZ9 | Gebäude-Planer für die Freischaltung je Hub-Stufe | erledigt |
 | WZ10 | Abspiel-Bausteine und Monarch-Vorschau im Asset-Studio | erledigt |
 | WZ11 | Gegner- und Boss-Vorschau im Asset-Studio, Figuren-Seiten entfernen | erledigt |
-| WZ12 | Planungs-Werkzeug: Platzhalter-Zeilen und Worktree-Pills | aktiv |
+| WZ12 | Planungs-Werkzeug: Platzhalter-Zeilen und Worktree-Pills | erledigt |
 | WZ13 | Glossar und Regeln: Verweis für das Morgengrauen auf B-470 | erledigt |
 | WZ14 | Geplante Chunks tragen Ruinen und Gegnerlager | geplant |
 | WZ17 | Chunk-Editor komfortabel: Inselgrößen, getrennter Zoom, Seed-Chunk umwandeln | erledigt |
