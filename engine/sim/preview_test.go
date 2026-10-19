@@ -279,33 +279,36 @@ func TestPreviewCycleOhneZyklusGeschwindigkeitIstFehler(t *testing.T) {
 	}
 }
 
-func TestPreviewSetSite(t *testing.T) {
+func builtWall(t *testing.T) *Site {
+	t.Helper()
 	w := newWorld(0, "x", Options{})
 	if err := PreviewHubLevel(w, len(hub.Levels)); err != nil {
 		t.Fatal(err)
 	}
-	var wall *Site
 	for _, s := range w.Sites {
 		if s.Kind == "wall" && s.State == "built" {
-			wall = s
-			break
+			return s
 		}
 	}
-	if wall == nil {
-		t.Fatal("keine gebaute Mauer")
-	}
+	t.Fatal("keine gebaute Mauer")
+	return nil
+}
+
+func TestPreviewSetSiteStufeUndTrefferpunkte(t *testing.T) {
+	wall := builtWall(t)
 	if err := PreviewSetSite(wall, SiteLook{Level: 2, HPPercent: 50}); err != nil {
 		t.Fatal(err)
 	}
 	if want := buildings["wall"].Levels[1].HP; wall.Level != 2 || wall.MaxHP != want || wall.HP != want/2 {
 		t.Errorf("Mauer Stufe 2 mit 50 %%: Level %d HP %v/%v, erwartet MaxHP %v", wall.Level, wall.HP, wall.MaxHP, want)
 	}
-	if err := PreviewSetSite(wall, SiteLook{Level: 99}); err == nil {
-		t.Error("Stufe 99 hätte abgelehnt werden müssen")
+	if PreviewSetSite(wall, SiteLook{Level: 99}) == nil || PreviewSetSite(wall, SiteLook{HPPercent: 101}) == nil {
+		t.Error("Stufe 99 und 101 % hätten abgelehnt werden müssen")
 	}
-	if err := PreviewSetSite(wall, SiteLook{HPPercent: 101}); err == nil {
-		t.Error("101 % hätte abgelehnt werden müssen")
-	}
+}
+
+func TestPreviewSetSiteNichtGebaut(t *testing.T) {
+	wall := builtWall(t)
 	if err := PreviewSetSite(wall, SiteLook{Unbuilt: true}); err != nil || wall.State != "unpaid" || wall.HP != 0 {
 		t.Errorf("nicht gebaut: %v, Zustand %q HP %v", err, wall.State, wall.HP)
 	}

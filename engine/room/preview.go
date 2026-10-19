@@ -96,21 +96,30 @@ func BuildPreview(o PreviewOptions) (*sim.World, error) {
 	if err := sim.PreviewCycle(w, phase, o.Progress); err != nil {
 		return nil, err
 	}
+	if err := applySites(w, o); err != nil {
+		return nil, err
+	}
+	return w, nil
+}
+
+// applySites setzt den Zustand einzelner Plätze (Sites) und entfernt abgewählte (Buildings). Erst nach dem Ausbau der
+// Hub-Stufe, damit die Stufen der übrigen bleiben.
+func applySites(w *sim.World, o PreviewOptions) error {
 	for _, s := range w.Sites {
 		if look, ok := o.Sites[PreviewSiteKey(s.Kind, s.X)]; ok {
 			if err := sim.PreviewSetSite(s, look); err != nil {
-				return nil, err
+				return err
 			}
 		}
 	}
-	sites := make([]*sim.Site, 0, len(w.Sites)) // erst nach dem Ausbau entfernen: die Stufen der übrigen bleiben
+	sites := make([]*sim.Site, 0, len(w.Sites))
 	for _, s := range w.Sites {
 		if on, set := o.Buildings[PreviewSiteKey(s.Kind, s.X)]; !set || on {
 			sites = append(sites, s)
 		}
 	}
 	w.Sites = sites
-	return w, nil
+	return nil
 }
 
 // previewWorld erzeugt die frische Welt und nennt die höchste Hub-Stufe: ohne Kandidat aus der eingebetteten
