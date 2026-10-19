@@ -46,5 +46,6 @@ Manuell durch 🧑 im Asset-Studio, siehe Schritte. Kein automatischer Befehl.
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+AC-06 geprüft: 🧑 (Ralf) hat am 2026-10-19 im Asset-Studio Matrix, Rüstkammer-Beispiel (Stufe 3), Live-Vorschau ungespeichert, Speichern mit erzeugtem Block und REG-Hinweis abgenommen; alles wie erwartet.
+Pflichtplätze geprüft: 🧑 bestätigt die Liste aus WZ15.3 unverändert (Werkstatt, Treppe runter, Treppe hoch, Farm je Seite; Kaserne, Taverne, Lager, Heilplatz, Schmiede, Rüstkammer entfernbar).
+Abweichungen vom Plan: keine. Wunsch aus der Abnahme (Bedienbarkeit): Live-Vorschau unten fixieren, Matrix scrollbar, gewähltes Gebäude in der Vorschau zeigen (blauer Rahmen, Namen über Gebäuden) → neues Ticket.

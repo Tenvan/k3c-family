@@ -160,6 +160,7 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-497](B-497-grosse-inseln-last-und-umwandlung.md) | SIM | Frage | niedrig | offen | – | Große Inseln: Last im Spiel messen, Umwandlung in allen Biomen testen, PlanSave gegen Parallelität |
 | [B-499](B-499-studio-spiel-oeffnen-welt-zweimal.md) | DEV | Problem | niedrig | offen | – | Studio „Im Spiel öffnen“ in eigener Welt scheitert beim zweiten Mal mit demselben Seed |
 | [B-500](B-500-fullsave-tiefen-aus-welt.md) | SRV | Schuld | niedrig | offen | – | Voll ausgebauter Spielstand nimmt Tiefen aus den Biomen statt aus der Standard-Welt |
+| [B-501](B-501-planer-vorschau-fixiert-markiert.md) | DEV | Idee | mittel | offen | – | Gebäude-Planer: Live-Vorschau unten fest, gewähltes Gebäude markiert |
 
 ## Archiv
 

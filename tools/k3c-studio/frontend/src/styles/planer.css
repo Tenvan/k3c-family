@@ -1,5 +1,9 @@
 /* Seite Gebäude-Planer (B-462, WZ9.2): Matrix Hub-Stufe × Bauplatz, Abweichung der Regeltabelle; Farben aus theme.css. */
 .pl-page { display: flex; flex-direction: column; gap: 12px; }
+/* Live-Vorschau unten fest: die Seite füllt die Fensterhöhe, nur der mittlere Bereich (Befunde, Matrix, Bearbeiten) scrollt. */
+.pl-page { height: calc(100vh - 9.5rem); min-height: 28rem; }
+.pl-page > .wd-bar, .pl-page > .wd-live { flex: none; }
+.pl-middle { flex: 1 1 0; min-height: 6rem; overflow-y: auto; display: flex; flex-direction: column; gap: 12px; padding-right: 4px; }
 .pl-findings { display: flex; flex-direction: column; gap: 4px; }
 .pl-scroll { overflow-x: auto; border: 1px solid var(--card-line); border-radius: 8px; background: var(--card); }
 .pl-matrix, .pl-diff-table { border-collapse: collapse; font-size: 12px; }
