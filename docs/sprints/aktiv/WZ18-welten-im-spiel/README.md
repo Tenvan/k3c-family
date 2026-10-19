@@ -71,7 +71,7 @@ Entschieden: `B-488 › Offene Fragen` (alle). Offen für den Workshop WZ18.1: g
 | WZ18.4 | `WZ18.4-raum-welt.md` | Umsetzung | autonom | fertig |
 | WZ18.5 | `WZ18.5-protokoll-welt.md` | Umsetzung | autonom | fertig |
 | WZ18.6 | `WZ18.6-welten-editor.md` | Umsetzung | autonom | fertig |
-| WZ18.7 | `WZ18.7-review.md` | Review | autonom | offen |
+| WZ18.7 | `WZ18.7-review.md` | Review | autonom | in Arbeit |
 | WZ18.8 | `WZ18.8-abnahme.md` | Review | Mensch | offen |
 
 - WZ18.1 (REG) Workshop (von 🧑 an Claude delegiert): Format der Welt-Datei, Insel-IDs, Spielstand-Verweis; Regeltext in `docs/rules/`, Glossar (AC-01).
