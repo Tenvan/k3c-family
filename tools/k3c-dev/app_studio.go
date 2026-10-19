@@ -1,53 +1,52 @@
 package main
 
-// „Asset-Studio öffnen“ (B-459): das Studio ist eine Seite des Go-Servers (engine/studio, /studio/index.html) und öffnet
-// sich im Browser. Die MCP-Tools assets_* bleiben hier.
+// „Asset-Studio öffnen“ (B-459): startet die eigenständige EXE bin/k3c-studio (tools/k3c-studio) wie ein Doppelklick;
+// sie bedient das Studio selbst und öffnet ein eigenes Fenster, ein zweiter Start holt nur ein Fenster auf das laufende
+// Studio. Die MCP-Tools assets_* bleiben hier.
 
 import (
 	"errors"
-	"fmt"
-
-	"github.com/wailsapp/wails/v2/pkg/runtime"
+	"os"
+	"os/exec"
+	"path/filepath"
+	"runtime"
 )
 
-// studioPage ist die Adresse der Studio-Oberfläche auf dem Spielserver.
-const studioPage = "/studio/index.html"
+// errStudioNotBuilt ist der Hinweis, wenn die EXE fehlt; der Text geht so an die Oberfläche.
+var errStudioNotBuilt = errors.New("bin/k3c-studio fehlt – erst bauen: task k3c-studio:build")
 
-// errStudioNoServer ist der Hinweis, wenn kein Spielserver konfiguriert ist; der Text geht so an die Oberfläche.
-var errStudioNoServer = errors.New("Spielserver nicht konfiguriert (services.json)")
-
-// studioURL ist die Adresse des Studios auf dem Spielserver mit dem Port aus services.json (Dienst „Spielserver“,
-// im Worktree mit Versatz); das Studio läuft nur im Dev-Mode des Servers.
-func (a *App) studioURL() (string, error) {
-	ctl, err := a.controller()
-	if err != nil {
-		return "", err
+// studioExe ist der Pfad der Studio-EXE im Checkout.
+func (a *App) studioExe() string {
+	name := "k3c-studio"
+	if runtime.GOOS == "windows" {
+		name += ".exe"
 	}
-	for _, svc := range ctl.Configs() {
-		if svc.Name == "Spielserver" {
-			return fmt.Sprintf("http://localhost:%d%s", svc.Port, studioPage), nil
-		}
-	}
-	return "", errStudioNoServer
+	return filepath.Join(a.root, "bin", name)
 }
 
-// StudioOpen öffnet das Asset-Studio im Browser (Binding). Keine Pfadteile oder Argumente aus der Oberfläche; der
-// Spielserver muss laufen (`svc_start`), sonst zeigt der Browser seinen Verbindungsfehler.
+// StudioOpen startet das Asset-Studio als eigenes Fenster (Binding). Keine Pfadteile oder Argumente aus der Oberfläche.
 func (a *App) StudioOpen() error {
-	url, err := a.studioURL()
-	if err != nil {
+	a.wait()
+	exe := a.studioExe()
+	if _, err := os.Stat(exe); err != nil {
+		return errStudioNotBuilt
+	}
+	if err := a.startProgram(exe, a.root); err != nil {
 		return err
 	}
-	a.openBrowser(url)
-	a.log.Info("🚀 Asset-Studio geöffnet", "ns", "main", "url", url)
+	a.log.Info("🚀 Asset-Studio gestartet", "ns", "main", "exe", exe)
 	return nil
 }
 
-// openBrowser öffnet eine Adresse im Standard-Browser (Test-Naht `open`).
-func (a *App) openBrowser(url string) {
-	if a.open != nil {
-		a.open(url)
-		return
+// startProgram startet exe im Ordner dir und wartet nicht auf das Ende (Test-Naht `launch`).
+func (a *App) startProgram(exe, dir string) error {
+	if a.launch != nil {
+		return a.launch(exe, dir)
 	}
-	runtime.BrowserOpenURL(a.ctx, url)
+	cmd := exec.Command(exe)
+	cmd.Dir = dir
+	if err := cmd.Start(); err != nil {
+		return err
+	}
+	return cmd.Process.Release()
 }
