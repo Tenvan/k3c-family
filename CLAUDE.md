@@ -67,7 +67,7 @@ prüft die Regeln unten automatisch (Seiten eingetragen, `installPageChrome()`, 
 - `cmd/` – Go-Binaries: `k3c-server` (liefert `dist/` und die API aus), `k3c-load` (Lasttest), `k3c-tui`.
   `tools/k3c-dev` – Entwickler-Werkzeug (Wails-Fenster + MCP-Server `k3c-dev`). Asset-Studio als
   Seite des Go-Servers: Backend `engine/studio` (`/api/studio/`), Frontend `tools/k3c-studio/frontend` (Build nach `dist/studio/`,
-  `task studio:frontend`), Kachel „Welten bauen“ auf der Landingpage (`studio.html`); nur im Dev-Mode und nur Loopback (B-459). `tools/assetkit` – gemeinsame Asset-Logik
+  `task studio:frontend`), Kachel „Welten bauen“ auf der Landingpage (`studio.html`); nur im Dev-Mode und nur Loopback (B-459). Dasselbe Studio gibt es als eigenständiges Wails-Fenster `tools/k3c-studio` (`task k3c-studio` bzw. `task k3c-studio:build` → `bin/k3c-studio.exe`, wie k3c-dev mit gemerkter Größe und Position): ohne Spielserver, eigener Loopback-Port 8091. `tools/assetkit` – gemeinsame Asset-Logik
   beider (eigenes Go-Modul, per `replace` eingebunden). `tools/k3c-starter` – Windows-Starter für den Server (Wails-Fenster
   startet `bin/k3c-server`, zeigt Status und Adresse, EXE `bin/k3c-starter.exe`, `task k3c-starter:build`, B-041).
   `tools/webkit` – gemeinsame Oberflächen-Bausteine der Frontends von k3c-dev und Studio (`@webkit/…`).
