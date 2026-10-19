@@ -51,6 +51,8 @@ class PreviewScene extends Phaser.Scene {
   }
 
   preload(): void {
+    // Die Bilder des Spiels liegen unter der Wurzel des Servers; das Studio liegt unter /studio/, relative Adressen träfen dort ins Leere.
+    this.load.setBaseURL(new URL('../', document.baseURI).href);
     this.load.on('loaderror', (file: Phaser.Loader.File) => this.failed.push(String(file.url)));
     preloadSprites(this);
     preloadBuildings(this);
