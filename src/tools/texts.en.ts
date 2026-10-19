@@ -154,6 +154,8 @@ export const en: Partial<Record<ToolTextKey, string>> = {
   'tile.grafiken.desc': 'Chosen CC0 packs for buildings, resources and backgrounds · with author, license and source',
   'tile.sound.title': 'Listening Test',
   'tile.sound.desc': 'Listen to candidates for music and effects · by state and event, with source and license',
+  'tile.studio.title': 'Asset studio',
+  'tile.studio.desc': 'Graphics, sound, world editor, building planner, monarch and enemies · new frameless window (server dev mode)',
   'tile.dm.title': 'Dungeon Master',
   'tile.dm.desc': 'Watch and control running rooms: time, pause, gold, material, wave, time of day · new window (server dev mode)',
   'tile.monitor.title': 'Monitor',

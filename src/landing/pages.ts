@@ -6,7 +6,7 @@
  */
 import { t } from '../core/texts';
 
-type PageId = 'continue' | 'new' | 'online' | 'licenses' | 'dev';
+type PageId = 'continue' | 'new' | 'online' | 'licenses' | 'studio' | 'dev';
 
 export interface PageEntry {
   /** Sprachunabhängiger Schlüssel; Titel `landing.<id>` und Beschreibung `landing.<id>.desc` aus den Textdateien (B-369). */
@@ -46,6 +46,7 @@ export const PAGES: PageEntry[] = [
   page('continue', { icon: '👑', href: 'game.html', section: 'play', primary: true }),
   page('new', { icon: '🏰', href: () => newGameHref(), section: 'play' }),
   page('online', { icon: '🌐', href: 'game.html', section: 'play' }),
+  page('studio', { icon: '🗺️', href: 'studio.html', section: 'play' }),
   page('licenses', { icon: '📜', href: 'lizenzen.html', section: 'about' }),
   page('dev', { icon: '🛠️', href: 'dev.html', section: 'about', small: true }),
 ];

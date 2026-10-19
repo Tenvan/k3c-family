@@ -154,12 +154,26 @@ export interface PlanObjectsView {
   error: string;
 }
 
+/** Wählbare Welten des Welten Editors (Go: WorldsView): jede Welt eine JSON-Datei mit allen Inseln und Anpassungen */
+export interface WorldsView {
+  worlds: { id: string; name: string }[];
+  active: string;
+  error: string;
+}
+
 /** Ergebnis des Speicherns (Go: PlanSaved); stale = Datei seit dem Laden von außen geändert, der Entwurf bleibt */
 export interface PlanSaved {
   stand: string;
   hint: string;
   error: string;
   stale: boolean;
+}
+
+/** Zustand eines Platzes in der Vorschau; fehlende Felder lassen den Platz, wie die Hub-Stufe ihn ausbaut. */
+export interface SiteLook {
+  level?: number;
+  hpPercent?: number;
+  unbuilt?: boolean;
 }
 
 /** Optionen der Live-Vorschau (Go: WorldPreviewArgs); Nullwerte: höchste Hub-Stufe, Tag, alle Gebäude. */
@@ -173,6 +187,8 @@ export interface WorldPreviewArgs {
   progress: number;
   /** false schaltet einen Platz aus (Schlüssel kind@x) */
   buildings: Record<string, boolean>;
+  /** Zustand einzelner Plätze (Schlüssel kind@x): Baustufe, Trefferpunkte in Prozent, nicht gebaut (Go: sim.SiteLook) */
+  sites?: Record<string, SiteLook>;
   /** Planer-Stand als Kandidaten-hub.json (Gebäude-Planer), auch ungespeichert; fehlt = eingebettete data/hub.json */
   hubCandidate?: string;
 }
@@ -322,6 +338,14 @@ export interface Backend {
   planLoad(): Promise<PlanView>;
   planCheck(island: string, depth: number, chunks: PlannedChunk[], count: number): Promise<PlanCheckView>;
   planSave(island: string, depth: number, chunks: PlannedChunk[], count: number, stand: string): Promise<PlanSaved>;
+  /** Weitere Insel anlegen (Kopie der letzten) bzw. eine Insel entfernen (die erste bleibt), jeweils auf dem Stand aus planLoad */
+  planIslandAdd(stand: string): Promise<PlanSaved>;
+  /** Welten: auflisten, wählen (danach liest planLoad ihre Datei), mit Namen anlegen (wird gewählt), entfernen (Standard bleibt) */
+  planWorlds(): Promise<WorldsView>;
+  planWorldSelect(id: string): Promise<WorldsView>;
+  planWorldAdd(name: string): Promise<WorldsView>;
+  planWorldRemove(id: string): Promise<WorldsView>;
+  planIslandRemove(id: string, stand: string): Promise<PlanSaved>;
   /** Seed-Inhalt des geplanten Chunks am Platz slot im Level zu Seed und Quelle (Umwandlung in feste Objekte, B-485/AC-06) */
   planChunkObjects(seed: string, source: WorldSource, slot: number): Promise<PlanObjectsView>;
   /** Im Spiel öffnen: `new` (neues Spiel mit dem Seed) oder `full` (voll ausgebaut), über die Landingpage des Servers unter base, nur Loopback */

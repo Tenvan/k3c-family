@@ -1,14 +1,18 @@
 import { Checkbox, Select, Text } from '@radix-ui/themes';
-import { useEffect, useMemo, useRef, useState, type RefObject } from 'react';
+import { createPortal } from 'react-dom';
+import { useEffect, useMemo, useRef, useState, type CSSProperties, type RefObject } from 'react';
 import type { World } from '@game/model/types';
-import { backend, type WorldPreviewView } from '../api';
+import { backend, type SiteLook, type WorldPreviewView } from '../api';
 import { useDebounced } from '../lib/useDebounced';
 import type { Look, PreviewStage, StagePosition } from './PreviewStage';
+import { stagePx } from './hudBar';
 import { BuildingFilter } from './BuildingFilter';
 import { backgroundToggles, buildingToggles, hubLevelChoices, previewArgsOf, worldOf, type PlanSource } from './stageLogic';
 import { MAX_PROGRESS, TIMES_OF_DAY, brightnessOf, simTime, type TimeOfDayId } from './timeOfDay';
 
 const NONE: ReadonlySet<string> = new Set();
+type Looks = Readonly<Record<string, SiteLook>>;
+const NO_LOOKS: Looks = {};
 
 interface Answer { key: string; off: string; view: WorldPreviewView }
 
@@ -18,9 +22,11 @@ interface Answer { key: string; off: string; view: WorldPreviewView }
 function usePreviewWorld(seed: string, biome: string, hubLevel: number, time: { phase: 'day' | 'dusk' | 'night'; progress: number }, plan: PlanSource | undefined, candidate: string) {
   const ctx = `${seed}|${biome}|${hubLevel}|${candidate}|${JSON.stringify(plan ?? null)}`; // ein anderer Planer-Stand oder Entwurf leert die Auswahl wie eine andere Stufe
   const key = `${ctx}|${time.phase}|${time.progress}`;
-  const [chosen, setChosen] = useState<{ ctx: string; off: ReadonlySet<string> }>({ ctx, off: NONE });
+  const [chosen, setChosen] = useState<{ ctx: string; off: ReadonlySet<string>; looks: Looks }>({ ctx, off: NONE, looks: NO_LOOKS });
   const off = chosen.ctx === ctx ? chosen.off : NONE;
-  const offKey = [...off].sort().join(',');
+  const looks = chosen.ctx === ctx ? chosen.looks : NO_LOOKS;
+  const changed = off.size > 0 || Object.keys(looks).length > 0;
+  const offKey = `${[...off].sort().join(',')}|${JSON.stringify(looks)}`;
   const [all, setAll] = useState<Answer | null>(null);
   const [part, setPart] = useState<Answer | null>(null);
   const [shown, setShown] = useState<WorldPreviewView | null>(null);
@@ -32,21 +38,27 @@ function usePreviewWorld(seed: string, biome: string, hubLevel: number, time: { 
   }, [seed, biome, hubLevel, time, key, plan, candidate]);
 
   useEffect(() => {
-    if (off.size === 0) return;
+    if (!changed) return;
     let current = true;
-    void backend.worldPreview(previewArgsOf(seed, biome, hubLevel, off, time, plan, candidate)).then((view) => { if (current) setPart({ key, off: offKey, view }); });
+    void backend.worldPreview(previewArgsOf(seed, biome, hubLevel, off, time, plan, candidate, looks)).then((view) => { if (current) setPart({ key, off: offKey, view }); });
     return () => { current = false; };
-  }, [seed, biome, hubLevel, time, key, off, offKey, plan, candidate]);
+  }, [seed, biome, hubLevel, time, key, off, looks, changed, offKey, plan, candidate]);
 
-  const fresh = off.size === 0 ? (all?.key === key ? all.view : null) : (part?.key === key && part.off === offKey ? part.view : null);
+  const fresh = !changed ? (all?.key === key ? all.view : null) : (part?.key === key && part.off === offKey ? part.view : null);
   useEffect(() => { if (fresh) setShown(fresh); }, [fresh]);
 
   const setMany = (names: readonly string[], on: boolean) => setChosen(() => {
     const next = new Set(off);
     for (const name of names) { if (on) next.delete(name); else next.add(name); }
-    return { ctx, off: next };
+    return { ctx, off: next, looks };
   });
-  return { all: all?.view ?? null, view: shown, off, setMany };
+  /** Zustand eines Platzes setzen; ein leerer Zustand entfernt den Eintrag */
+  const setLook = (name: string, look: SiteLook) => setChosen(() => {
+    const next = { ...looks };
+    if (look.level || look.hpPercent || look.unbuilt) next[name] = look; else delete next[name];
+    return { ctx, off, looks: next };
+  });
+  return { all: all?.view ?? null, view: shown, off, looks, setMany, setLook };
 }
 
 /** Phaser wird erst beim ersten Sichtbarwerden geladen (eigener Baustein, groß) und baut die Bühne im Element auf; danach
@@ -82,6 +94,12 @@ function useStage(host: RefObject<HTMLDivElement | null>, world: World | null, l
   // Test-Attrappen der Bühne settle nicht kennen.
   useEffect(() => { stage.current?.settle?.(); });
   return failed;
+}
+
+/** Höhe der Bühne: Leiste des globalen HUDs plus Weltausschnitt wie im Spiel (stage/hudBar.ts), mit dem Zoom skaliert. Der Zoom
+ *  verkleinert also die ganze Vorschau; sichtbar bleibt immer die volle Spielhöhe, nur die Breite wächst mit. */
+export function stageStyle(scale: number): CSSProperties {
+  return { flex: 'none', minHeight: 0, height: stagePx(scale) };
 }
 
 /** Tageszeit (vier Einträge, Fortschritt) und Hintergrund-Schichten der Live-Vorschau */
@@ -133,9 +151,11 @@ function useHubLevel(planer: PlanerSource | undefined) {
  *  Tageszeit, Hintergrund-Schichten mit Parallaxe (Kamera scrollt). Position und Zoom kommen von außen (`position`, B-477,
  *  gleich wie im Chunk-Streifen); Ziehen meldet `onPan` (Pixel), das Mausrad geht an `onWheel`; `onSites` meldet die Bauplätze
  *  (für die Sprungpunkte). Mit `plan` zeigt sie den Entwurf der geplanten Chunks (B-461/AC-11). */
-export function LivePreview({ seed, biome, position, onPan, onWheel, onSites, plan, planer }: {
+export function LivePreview({ seed, biome, position, onPan, onWheel, onSites, plan, planer, controlsHost, treeHost }: {
   seed: string; biome: string; position: StagePosition; onPan: (px: number) => void; onWheel: (e: WheelEvent) => void;
   onSites?: (sites: readonly { kind: string; x: number }[]) => void; plan?: PlanSource; planer?: PlanerSource;
+  /** Zielelemente der Seite: Hub-Stufe, Tageszeit und Schichten (`controlsHost`) und der Gebäude-Baum (`treeHost`) erscheinen dort statt um die Bühne */
+  controlsHost?: HTMLElement | null; treeHost?: HTMLElement | null;
 }) {
   const { choices, hubLevel, setHubLevel } = useHubLevel(planer);
   const [timeId, setTimeId] = useState<TimeOfDayId>('day');
@@ -144,7 +164,7 @@ export function LivePreview({ seed, biome, position, onPan, onWheel, onSites, pl
   const time = useMemo(() => simTime(timeId, settled), [timeId, settled]);
   const [hiddenFor, setHiddenFor] = useState<{ biome: string; hidden: ReadonlySet<string> }>({ biome, hidden: NONE });
   const hidden = hiddenFor.biome === biome ? hiddenFor.hidden : NONE;
-  const { all, view, off, setMany } = usePreviewWorld(seed, biome, hubLevel, time, plan, planer?.candidate ?? '');
+  const { all, view, off, looks, setMany, setLook } = usePreviewWorld(seed, biome, hubLevel, time, plan, planer?.candidate ?? '');
   const host = useRef<HTMLDivElement>(null);
   const world = useMemo(() => worldOf(view), [view]);
   const look = useMemo<Look>(() => ({ brightness: world ? brightnessOf(world.cycle) : 1, hiddenLayers: hidden }), [world, hidden]);
@@ -159,19 +179,23 @@ export function LivePreview({ seed, biome, position, onPan, onWheel, onSites, pl
     return { biome, hidden: next };
   });
 
+  const controls = (
+    <div className="wd-bar">
+      <Text size="2">Hub-Stufe</Text>
+      <Select.Root value={String(hubLevel)} onValueChange={(v) => setHubLevel(Number(v))}>
+        <Select.Trigger aria-label="Hub-Stufe" />
+        <Select.Content>{choices.map((n) => <Select.Item key={n} value={String(n)}>{n}</Select.Item>)}</Select.Content>
+      </Select.Root>
+      <LookControls biome={biome} timeId={timeId} setTimeId={setTimeId} progress={progress} setProgress={setProgress} hidden={hidden} toggleLayer={toggleLayer} />
+      {note && <Text size="2" color="red" role="status">{note}</Text>}
+    </div>
+  );
+  const tree = <BuildingFilter toggles={toggles} off={off} onSet={setMany} looks={looks} onLook={setLook} />;
   return (
     <div className="wd-live-body">
-      <div className="wd-bar">
-        <Text size="2">Hub-Stufe</Text>
-        <Select.Root value={String(hubLevel)} onValueChange={(v) => setHubLevel(Number(v))}>
-          <Select.Trigger aria-label="Hub-Stufe" />
-          <Select.Content>{choices.map((n) => <Select.Item key={n} value={String(n)}>{n}</Select.Item>)}</Select.Content>
-        </Select.Root>
-        <LookControls biome={biome} timeId={timeId} setTimeId={setTimeId} progress={progress} setProgress={setProgress} hidden={hidden} toggleLayer={toggleLayer} />
-        {note && <Text size="2" color="red" role="status">{note}</Text>}
-      </div>
-      <div className="wd-stage" ref={host} />
-      <BuildingFilter toggles={toggles} off={off} onSet={setMany} />
+      {controlsHost === undefined ? controls : controlsHost && createPortal(controls, controlsHost)}
+      <div className="wd-stage" ref={host} style={stageStyle(position.scale)} />
+      {treeHost === undefined ? tree : treeHost && createPortal(tree, treeHost)}
     </div>
   );
 }

@@ -4,17 +4,15 @@ import { useState } from 'react';
 import { ConvertButton } from './ConvertButton';
 import { KindPicker } from './KindPicker';
 import { CHUNK_KINDS, OBJECT_KINDS, addChunk, addObject, moveObject, removeChunk, removeObject, slotLabel, updateChunk } from './plan';
-import { SizePicker } from './SizePicker';
 import type { PlanState } from './usePlan';
 
-const biomeName = (id: string) => BIOMES.find((b) => b.id === id)?.name ?? id;
 const defaultKind = (biome = ''): string => Object.keys(BIOMES.find((b) => b.id === biome)?.chunkWeights ?? {})[0] ?? 'forest';
 /** Klick auf ein Bedienelement im Eintrag (Feld, Knopf, Liste): kein Sprung */
 const isControl = (target: EventTarget) => target instanceof Element && target.closest('input, button, select, textarea, [role="listbox"]') !== null;
 const number = (value: string, fallback: number) => (value === '' || Number.isNaN(Number(value)) ? fallback : Number(value));
 
-/** Editor für geplante Chunks im Welt-Betrachter (B-461/AC-09): Insel und Stufe wählen, Chunks am Platz anlegen, Art,
- *  Chunk-Seed und feste Objekte bearbeiten, die Inselgröße der Stufe wählen und einen Seed-Chunk mit dem Seed `seed` des
+/** Editor für geplante Chunks im Welt-Betrachter (B-461/AC-09, rechte Spalte als Baum): Chunks am Platz anlegen, Art,
+ *  Chunk-Seed und feste Objekte bearbeiten (Insel, Stufe und Inselgröße wählt `WorldStructure`) und einen Seed-Chunk mit dem Seed `seed` des
  *  Levels in feste Objekte umwandeln (B-485/AC-04, AC-06); ein Klick auf einen Eintrag (nicht auf ein Feld) und jede Änderung eines Chunks (nicht sein Löschen) melden seinen
  *  Platz an `onSlot`, bei neuem Platz den neuen (die Vorschauen zentrieren ihn, WZ17.5); Art und Objekt in der durchsuchbaren Liste mit Emoji (B-485/AC-01). Prüffehler stehen am Platz (AC-06); Speichern nur, wenn der Entwurf gültig ist. */
 export function PlanEditor({ plan, seed, onSlot }: { plan: PlanState; seed: string; onSlot?: (slot: number) => void }) {
@@ -28,13 +26,6 @@ export function PlanEditor({ plan, seed, onSlot }: { plan: PlanState; seed: stri
   return (
     <section className="wd-plan" aria-label="Planung">
       <div className="wd-bar">
-        <select className="wd-select" aria-label="Insel" value={island.id} disabled={dirty} title={lock} onChange={(e) => plan.selectIsland(e.target.value)}>
-          {plan.view?.islands.map((i) => <option key={i.id} value={i.id}>{i.name}</option>)}
-        </select>
-        <select className="wd-select" aria-label="Stufe" value={stage} disabled={dirty} title={lock} onChange={(e) => plan.selectStage(Number(e.target.value))}>
-          {island.depths.map((d, i) => <option key={d} value={i}>{`Stufe ${i + 1} · ${biomeName(island.biomes[i] ?? '')}`}</option>)}
-        </select>
-        <SizePicker plan={plan} />
         <input className="wd-slot" type="number" aria-label="Neuer Platz" value={slot} onChange={(e) => setSlot(number(e.target.value, slot))} />
         <Button variant="soft" onClick={() => change(addChunk(draft, slot, defaultKind(island.biomes[stage])), slot)}>Chunk hinzufügen</Button>
         <span className="wd-grow" />

@@ -32,6 +32,8 @@ COPY go.mod go.sum ./
 COPY data ./data
 COPY engine ./engine
 COPY cmd ./cmd
+COPY tools/assetkit ./tools/assetkit
+COPY tools/regeltabelle ./tools/regeltabelle
 RUN CGO_ENABLED=0 GOOS=$TARGETOS GOARCH=$TARGETARCH \
     go build -trimpath -ldflags "-s -w -X main.version=$VERSION -X main.built=$(date -u +%Y-%m-%dT%H:%M:%SZ)" -o /out/k3c-server ./cmd/k3c-server \
  && CGO_ENABLED=0 GOOS=$TARGETOS GOARCH=$TARGETARCH \

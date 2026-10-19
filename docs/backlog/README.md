@@ -457,3 +457,4 @@ Zeile in diesen Abschnitt.
 | [B-167](archiv/B-167-sfx-katalog.md) | CLI | Idee | hoch | erledigt | SO2 | Jedes wichtige Ereignis hat einen Sound mit Quelle und Lizenz |
 | [B-270](archiv/B-270-respec-pruefung-ohne-seiteneffekt.md) | SIM | Schuld | mittel | erledigt | SK1 | Die Sim prüft Respec und Lernen ohne Seiteneffekt |
 | [B-485](archiv/B-485-chunk-editor-bedienung.md) | DEV | Idee | mittel | erledigt | WZ17 | Chunk-Editor im Welt-Betrachter komfortabler bedienen |
+| [B-498](archiv/B-498-studio-als-seite-im-go-server.md) | DEV | Idee | mittel | erledigt | – | Das Asset-Studio ist eine Seite des Go-Servers statt einer eigenen EXE |

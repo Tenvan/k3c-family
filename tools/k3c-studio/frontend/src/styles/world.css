@@ -120,3 +120,29 @@
 .wd-band-none { --wd-band: var(--gray-8, #5a6169); }
 /* Klick auf einen Chunk oder einen Eintrag der Planungsliste springt dorthin (B-485) */
 .wd-strip .wd-chunk, .wd-planned { cursor: pointer; }
+
+/* Die Live-Vorschau schließt unmittelbar an den Chunk-Streifen an (er liegt wie die HUD-Leiste im Spiel über der Welt); Legende,
+   Planung und Start folgen darunter. */
+.wd-page > * { order: 1; }
+.wd-page > .wd-chunks, .wd-page > .wd-live { order: 0; }
+.wd-page > .wd-chunks { margin-bottom: -12px; }
+.wd-page > .wd-live { flex: none; } /* die Höhe bestimmt der Zoom, kein Auffüllen der Fensterhöhe */
+.wd-legend-block { display: flex; flex-direction: column; gap: 4px; }
+
+/* Baustufe und Zustand je Platz im Gebäude-Baum */
+.wd-look { display: inline-flex; gap: 6px; margin-left: 1.6rem; }
+.wd-group-items li { display: flex; flex-direction: column; gap: 2px; }
+
+/* Unten zwei Spalten: links Welten- und Inselstruktur, rechts der Baum aus geplanten Chunks und Gebäuden mit Zustand je Platz. */
+.wd-columns { display: grid; grid-template-columns: minmax(18rem, 1fr) minmax(24rem, 1.4fr); gap: 16px; align-items: start; }
+.wd-struct, .wd-tree { display: flex; flex-direction: column; gap: 8px; min-width: 0; }
+.wd-tree .wd-buildings { flex-direction: column; flex-wrap: nowrap; }
+.wd-tree .wd-group-items { flex-direction: column; max-width: none; }
+.wd-structure, .wd-structure ul { list-style: none; margin: 0; padding: 0; }
+.wd-structure ul { margin-left: 1.2rem; }
+.wd-node { all: unset; cursor: pointer; padding: 2px 6px; border-radius: 4px; font-size: 13px; }
+.wd-node:disabled { cursor: default; opacity: 0.55; }
+.wd-node:focus-visible { outline: 2px solid var(--accent-8); }
+.wd-structure li[data-selected='true'] > .wd-node { background: var(--accent-a4, rgb(60 100 255 / 25%)); }
+.wd-controls-host:empty { display: none; }
+@media (max-width: 900px) { .wd-columns { grid-template-columns: 1fr; } }

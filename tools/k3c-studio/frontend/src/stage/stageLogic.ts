@@ -4,7 +4,7 @@ import type { World } from '@game/model/types';
 import { createViewWorld } from '@game/online/clientWorld';
 import { biomeBackground } from '@game/scenes/worldSprites';
 import type { WorldState } from '@game/online/clientProtocol';
-import type { PlannedChunk, WorldPreviewArgs, WorldPreviewView } from '../api';
+import type { PlannedChunk, SiteLook, WorldPreviewArgs, WorldPreviewView } from '../api';
 import type { SimPhase } from './timeOfDay';
 
 // Reine Logik der Live-Vorschau (B-460, WZ7.3): Auswahl der Hub-Stufen, Gebäude-Liste, Welt für den Renderer. Kein
@@ -76,11 +76,13 @@ export function previewArgsOf(
   seed: string, biome: string, hubLevel: number, off: ReadonlySet<string>, time: { phase: SimPhase; progress: number } = { phase: 'day', progress: 0 },
   plan?: PlanSource,
   hubCandidate = '',
+  looks: Readonly<Record<string, SiteLook>> = {},
 ): WorldPreviewArgs {
   return {
     seed, source: plan ? { biome, island: plan.island, stage: plan.stage, planned: plan.planned, chunkCount: plan.chunkCount } : { biome }, hubLevel, phase: time.phase, progress: time.progress,
     buildings: Object.fromEntries([...off].sort().map((k) => [k, false])),
     ...(hubCandidate ? { hubCandidate } : {}),
+    ...(Object.keys(looks).length > 0 ? { sites: looks } : {}),
   };
 }
 

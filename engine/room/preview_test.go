@@ -222,3 +222,29 @@ func TestBuildPreviewNullwertVerhaeltSichWieStandard(t *testing.T) {
 		t.Error("Nullwerte (Hub 0, Phase leer, keine Auswahl) entsprechen nicht Hub 5, day, leere Auswahl")
 	}
 }
+
+func TestBuildPreviewSites(t *testing.T) {
+	base, err := BuildPreview(PreviewOptions{Seed: "k3c", Source: PreviewSource{Biome: "forest"}})
+	if err != nil {
+		t.Fatal(err)
+	}
+	var key string
+	for _, s := range base.Sites {
+		if s.Kind == "wall" && s.State == "built" {
+			key = PreviewSiteKey(s.Kind, s.X)
+			break
+		}
+	}
+	w, err := BuildPreview(PreviewOptions{Seed: "k3c", Source: PreviewSource{Biome: "forest"}, Sites: map[string]sim.SiteLook{key: {Unbuilt: true}, "nix@1": {Level: 3}}})
+	if err != nil {
+		t.Fatal(err)
+	}
+	for _, s := range w.Sites {
+		if PreviewSiteKey(s.Kind, s.X) == key && s.State == "built" {
+			t.Error("Platz blieb gebaut")
+		}
+	}
+	if _, err := BuildPreview(PreviewOptions{Seed: "k3c", Source: PreviewSource{Biome: "forest"}, Sites: map[string]sim.SiteLook{key: {Level: 99}}}); err == nil {
+		t.Error("ungültige Stufe wurde angenommen")
+	}
+}

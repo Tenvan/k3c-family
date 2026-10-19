@@ -1,9 +1,9 @@
+import { httpBackend, useMock } from './http';
 import { mockBackend } from './mock';
 import type { Backend } from './types';
-import { hasWails, wailsBackend } from './wails';
 
 export type * from './types';
 export { isStale, STALE } from './stale';
 
-/** Das Backend dieser Sitzung: Wails-Bindings im Fenster, sonst der Mock. */
-export const backend: Backend = hasWails() ? wailsBackend() : mockBackend();
+/** Das Backend dieser Sitzung: der Studio-Teil des Go-Servers, im Test und mit ?mock=1 der Mock. */
+export const backend: Backend = useMock() ? mockBackend() : httpBackend();

@@ -1,7 +1,7 @@
 /* Rahmen des Asset-Studios: Kopfzeile mit Navigation, darunter die Seite; Bausteine (Badge, Hinweis, Splitter) wie
    k3c-dev (app.css, planning.css, services.css). Farben aus theme.css. */
 .shell {
-  min-height: 100vh;
+  height: 100vh;
   display: flex;
   flex-direction: column;
 }
@@ -27,6 +27,8 @@
 
 .page {
   flex: 1;
+  min-height: 0;
+  overflow: auto; /* nur der Seiteninhalt scrollt, die Kopfzeile bleibt stehen und die Leiste sitzt darunter */
   padding: 12px 20px 20px;
 }
 

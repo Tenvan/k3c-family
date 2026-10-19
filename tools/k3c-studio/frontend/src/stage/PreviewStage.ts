@@ -7,6 +7,7 @@ import { prepareBuildings, preloadBuildings } from '@game/scenes/siteView';
 import { createSpriteAnims, preloadSprites } from '@game/scenes/sprites';
 import { DEFAULT_CONTROL, SHEETS, resolveAnim, type Control, type Gap } from '../abspiel/figure';
 import { FigureView, GROUND_Y, drawScale, loadFigureSheets, type FigureItem } from '../abspiel/figureView';
+import { hudPx } from './hudBar';
 import { refreshToParent, settleToParent } from './stageResize';
 
 // Die wiederverwendbare Phaser-Bühne des Asset-Studios (B-460, WZ7.3; WZ10/WZ11 nutzen sie wieder, eine zweite entsteht
@@ -51,6 +52,8 @@ class PreviewScene extends Phaser.Scene {
   }
 
   preload(): void {
+    // Die Bilder des Spiels liegen unter der Wurzel des Servers; das Studio liegt unter /studio/, relative Adressen träfen dort ins Leere.
+    this.load.setBaseURL(new URL('../', document.baseURI).href);
     this.load.on('loaderror', (file: Phaser.Loader.File) => this.failed.push(String(file.url)));
     preloadSprites(this);
     preloadBuildings(this);
@@ -178,7 +181,10 @@ class PreviewScene extends Phaser.Scene {
     const cam = this.cameras.main;
     const { left, scale } = this.position;
     const zoom = scale / UNIT_PX;
-    const heightPx = this.scale.height / zoom;
+    // Oben die Leiste des globalen HUDs (leer, Überlagerung der Seite), die Kamera zeigt darunter den Weltausschnitt wie im Spiel.
+    const bar = Math.min(hudPx(scale), this.scale.height);
+    cam.setViewport(0, bar, this.scale.width, this.scale.height - bar);
+    const heightPx = (this.scale.height - bar) / zoom;
     cam.setZoom(zoom);
     cam.setBounds(0, GAME_HEIGHT - heightPx, world.widthUnits * UNIT_PX, heightPx);
     this.view.scaleTexts(1 / zoom);

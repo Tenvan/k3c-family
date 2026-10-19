@@ -52,7 +52,7 @@ const tap = (h: HTMLElement, x: number, y: number, toX = x) => act(async () => {
   el.dispatchEvent(new MouseEvent('pointerdown', { bubbles: true, clientX: x, clientY: y, button: 0 }));
   el.dispatchEvent(new MouseEvent('pointerup', { bubbles: true, clientX: toX, clientY: y, button: 0 }));
 });
-const BAND_Y = 400 - 180 * (12 / 32) + 5; // im Bodenstreifen bei Maßstab 12
+const BAND_Y = 5; // im Overlay am oberen Rand
 
 beforeEach(async () => {
   views.length = 0;
@@ -87,7 +87,7 @@ describe('Klick auf einen Chunk im Streifen (B-485)', () => {
   });
 });
 
-describe('Tippen auf den Bodenstreifen der Live-Vorschau (B-485)', () => {
+describe('Tippen auf das Chunk-Overlay der Live-Vorschau (B-485)', () => {
   it('ein kurzer Klick auf eine Chunk-Info springt zu diesem Chunk', async () => {
     const h = await mount();
     const { left, scale } = views.at(-1)!;
@@ -97,12 +97,12 @@ describe('Tippen auf den Bodenstreifen der Live-Vorschau (B-485)', () => {
     expect(chunkCenter(h)).toBeCloseTo(mid(6));
   });
 
-  it('Ziehen löst keinen Sprung aus; ein Klick über dem Bodenstreifen auch nicht', async () => {
+  it('Ziehen löst keinen Sprung aus; ein Klick unter dem Overlay auch nicht', async () => {
     const h = await mount();
     const before = liveCenter();
     await tap(h, 100, BAND_Y, 160);
     expect(liveCenter()).toBeCloseTo(before);
-    await tap(h, 500, 50);
+    await tap(h, 500, 200);
     expect(liveCenter()).toBeCloseTo(before);
   });
 });

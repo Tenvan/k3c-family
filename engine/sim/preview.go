@@ -79,3 +79,38 @@ func PreviewHubLevel(w *World, level int) error {
 	}
 	return nil
 }
+
+// SiteLook ist der Zustand eines Platzes in der Vorschau (Asset-Studio): Baustufe, Zustand der Trefferpunkte oder noch
+// nicht gebaut. Nullwerte lassen den Platz, wie PreviewHubLevel ihn hinterlassen hat.
+type SiteLook struct {
+	Level     int  `json:"level"`     // Baustufe 1 bis Stufenzahl der Art; 0 = unverändert
+	HPPercent int  `json:"hpPercent"` // Trefferpunkte in Prozent der Höchstwerte (1 bis 100); 0 = unverändert
+	Unbuilt   bool `json:"unbuilt"`   // leerer Bauplatz (nicht bezahlt), Level und HPPercent entfallen
+}
+
+// PreviewSetSite setzt einen Platz der Vorschau-Welt auf look. Eine Baustufe oder Trefferpunkte an einem nicht
+// gebauten Platz werden ignoriert; eine Stufe außerhalb der Stufen der Art ist ein Fehler.
+func PreviewSetSite(s *Site, look SiteLook) error {
+	if look.Unbuilt {
+		*s = Site{ID: s.ID, Kind: s.Kind, X: s.X, State: "unpaid", MaxHP: buildings[s.Kind].HP}
+		return nil
+	}
+	if s.State != "built" {
+		return nil
+	}
+	levels := buildings[s.Kind].Levels
+	if look.Level != 0 {
+		if look.Level < 1 || look.Level > len(levels) {
+			return fmt.Errorf("vorschau: Baustufe %d außerhalb von 1 bis %d (%s)", look.Level, len(levels), s.Kind)
+		}
+		s.Level = look.Level
+		s.HP, s.MaxHP = levels[look.Level-1].HP, levels[look.Level-1].HP
+	}
+	if look.HPPercent != 0 {
+		if look.HPPercent < 1 || look.HPPercent > 100 {
+			return fmt.Errorf("vorschau: Trefferpunkte %d %% außerhalb von 1 bis 100 (%s)", look.HPPercent, s.Kind)
+		}
+		s.HP = s.MaxHP * float64(look.HPPercent) / 100
+	}
+	return nil
+}

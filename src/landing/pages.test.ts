@@ -7,7 +7,7 @@ const KNOWN_PARAMS = ['autostart', 'fresh', 'save', 'mock', 'room', 'dev', 'touc
 
 describe('Landing-Kacheln', () => {
   it('nur Spieler-Kacheln und genau eine kleine Kachel zur Entwicklerseite (B-335/AC-01)', () => {
-    expect(PAGES.map((p) => p.id)).toEqual(['continue', 'new', 'online', 'licenses', 'dev']);
+    expect(PAGES.map((p) => p.id)).toEqual(['continue', 'new', 'online', 'studio', 'licenses', 'dev']);
     const small = PAGES.filter((p) => p.small);
     expect(small.map((p) => p.href)).toEqual(['dev.html']);
     expect(small[0]!.primary).toBeFalsy();
