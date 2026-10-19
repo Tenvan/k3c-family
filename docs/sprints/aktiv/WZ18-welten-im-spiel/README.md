@@ -69,7 +69,7 @@ Entschieden: `B-488 › Offene Fragen` (alle). Offen für den Workshop WZ18.1: g
 | WZ18.2 | `WZ18.2-welt-dateien-laden.md` | Umsetzung | autonom | fertig |
 | WZ18.3 | `WZ18.3-spielstand-welt-inselwechsel.md` | Umsetzung | autonom | fertig |
 | WZ18.4 | `WZ18.4-raum-welt.md` | Umsetzung | autonom | fertig |
-| WZ18.5 | `WZ18.5-protokoll-welt.md` | Umsetzung | autonom | offen |
+| WZ18.5 | `WZ18.5-protokoll-welt.md` | Umsetzung | autonom | in Arbeit |
 | WZ18.6 | `WZ18.6-welten-editor.md` | Umsetzung | autonom | offen |
 | WZ18.7 | `WZ18.7-review.md` | Review | autonom | offen |
 | WZ18.8 | `WZ18.8-abnahme.md` | Review | Mensch | offen |
