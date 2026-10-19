@@ -13,7 +13,7 @@ Die Reihenfolge der Arbeit ist allein der Projekt-Rang: [`../projekte/README.md`
 | WZ10 | DEV | WZG | Abspiel-Bausteine und Monarch-Vorschau im Asset-Studio | – | `aktiv/WZ10-figuren-vorschau/` |
 | WZ11 | DEV | WZG | Gegner- und Boss-Vorschau im Asset-Studio, Figuren-Seiten entfernen | – | `aktiv/WZ11-gegner-bosse-vorschau/` |
 | WZ12 | DEV | WZG | Planungs-Werkzeug: Platzhalter-Zeilen und Worktree-Pills | – | `aktiv/WZ12-planungs-werkzeug-nachtraege/` |
-| WZ18 | REG, SIM, SRV, DEV | WZG | Welten im Spiel: Welt-Dateien, Welt-Wahl im Raum und Welten-Editor | Welt mit zwei Inseln im Studio angelegt und im Spiel gestartet | `aktiv/WZ18-welten-im-spiel/` |
+| WZ18 | REG, SIM, SRV, DEV | WZG | Welten im Spiel: Welt-Dateien, Welt-Wahl im Raum und Welten-Editor | Welt mit zwei Inseln im Studio angelegt und im Spiel gestartet (Review fertig, offen: WZ18.8 Abnahme 🧑 am PC) | `aktiv/WZ18-welten-im-spiel/` |
 | GR7 | CLI | GRA | Figuren-Lücken, ganzzahlige Skalierung und Schrift | – | `aktiv/GR7-figuren-schrift/` |
 | SO2 | CLI | SND | SFX-Katalog und Einbau | – | `aktiv/SO2-sfx-katalog/` |
 | SO4 | CLI | SND | Musik je Zustand | – | `aktiv/SO4-musik/` |

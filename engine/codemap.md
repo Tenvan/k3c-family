@@ -13,7 +13,7 @@ Schichten von innen nach außen:
 | [`level/`](level/codemap.md) | deterministischer Level-Generator mit Validator und Biome-Loader |
 | [`room/`](room/codemap.md) | Room/Manager: Geräte, Slots, Takt, Fristen, Speichern, Crash-Supervision über Peer/Store-Ports |
 | [`store/`](store/codemap.md) | File-Repository für Spielstände (`saves/`) und Berichte (`reports/`) |
-| [`net/`](net/codemap.md) | HTTP/WebSocket-Adapter (Protokoll v6) auf `room`, Build-Auslieferung, Diagnose |
+| [`net/`](net/codemap.md) | HTTP/WebSocket-Adapter (Protokoll v7) auf `room`, Build-Auslieferung, Diagnose |
 | [`conlog/`](conlog/codemap.md) | farbiger `slog.Handler` mit Emoji-Topics |
 | [`studio/`](studio/codemap.md) | Backend des Asset-Studios (`/api/studio/`, nur Dev-Mode und Loopback): Assets, Welten Editor, Gebäude-Planer |
 

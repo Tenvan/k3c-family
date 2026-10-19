@@ -1,5 +1,5 @@
 {
-  "notes": "Test-Planung für den Golden-Fall geplanter Chunks (WZ8.3, B-461): Wald mit Chunk-Seed, fester Truhe, festen Objekten und festem Portal. Keine echte Planung; data/islands.json bleibt leer.",
+  "notes": "Test-Planung für den Golden-Fall geplanter Chunks (WZ8.3, B-461): Wald mit Chunk-Seed, fester Truhe, festen Objekten und festem Portal. Keine echte Planung; data/worlds/standard.json bleibt leer.",
   "biome": "forest",
   "seeds": ["geplant-1", "geplant-2", "Käse🧀"],
   "planned": [

@@ -71,7 +71,7 @@ Entschieden: `B-488 › Offene Fragen` (alle). Offen für den Workshop WZ18.1: g
 | WZ18.4 | `WZ18.4-raum-welt.md` | Umsetzung | autonom | fertig |
 | WZ18.5 | `WZ18.5-protokoll-welt.md` | Umsetzung | autonom | fertig |
 | WZ18.6 | `WZ18.6-welten-editor.md` | Umsetzung | autonom | fertig |
-| WZ18.7 | `WZ18.7-review.md` | Review | autonom | in Arbeit |
+| WZ18.7 | `WZ18.7-review.md` | Review | autonom | fertig |
 | WZ18.8 | `WZ18.8-abnahme.md` | Review | Mensch | offen |
 
 - WZ18.1 (REG) Workshop (von 🧑 an Claude delegiert): Format der Welt-Datei, Insel-IDs, Spielstand-Verweis; Regeltext in `docs/rules/`, Glossar (AC-01).
@@ -85,5 +85,8 @@ Entschieden: `B-488 › Offene Fragen` (alle). Offen für den Workshop WZ18.1: g
 
 ## Abnahme
 
-Wird von der Review-Session (Doku-Sprint: letzte Session) ausgefüllt, höchstens fünf Zeilen: Datum, Kriterien
-(Verweis auf Session-Ergebnisse), behobene Befunde, neue Tickets. Bis dahin `–`.
+- 2026-10-19, Review WZ18.7 (Claude, getrennter Reviewer): AC-01–AC-05 und AC-07 geprüft (Nachweis in den Ergebnissen WZ18.1–WZ18.7), AC-06 offen (WZ18.8, 🧑 am PC).
+- Prüfungen: `task check` (Lint ohne ungetracktes `wailsjs/`), `task build`, `task check:go`, `task check:studio` grün; Golden byte-gleich; nur `standard.json` eingecheckt.
+- Behoben: veraltete `islands.json`-Pfade in Kommentaren/Notizen, Protokoll-Version 7 in Codemaps und Glossar. Keine schweren Befunde.
+- Neue Tickets: B-499 (Studio „Im Spiel öffnen“ zweimal in eigener Welt), B-500 (`fullsave.go` Tiefen aus der Welt). Hinweis zur Abnahme: „Im Spiel öffnen“ mit `fresh=1` überschreibt keinen gleichnamigen Stand, sondern scheitert mit `save_exists` (B-499).
+- Version: v0.21.0 vorgeschlagen (Minor: Welt-Dateien, Welt-Wahl im Raum, Spielstand v8, Protokoll v7, Welten Editor).

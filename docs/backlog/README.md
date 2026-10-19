@@ -160,6 +160,8 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-495](B-495-respec-in-aktionsliste.md) | SRV | Schuld | niedrig | offen | – | Die Aktionsliste nennt respec, wenn CanRespec erlaubt |
 | [B-496](B-496-studio-fensterposition-merken.md) | DEV | Idee | mittel | offen | – | Das Asset-Studio merkt sich Fensterposition und Größe und stellt sie sicher wieder her |
 | [B-497](B-497-grosse-inseln-last-und-umwandlung.md) | SIM | Frage | niedrig | offen | – | Große Inseln: Last im Spiel messen, Umwandlung in allen Biomen testen, PlanSave gegen Parallelität |
+| [B-499](B-499-studio-spiel-oeffnen-welt-zweimal.md) | DEV | Problem | niedrig | offen | – | Studio „Im Spiel öffnen“ in eigener Welt scheitert beim zweiten Mal mit demselben Seed |
+| [B-500](B-500-fullsave-tiefen-aus-welt.md) | SRV | Schuld | niedrig | offen | – | Voll ausgebauter Spielstand nimmt Tiefen aus den Biomen statt aus der Standard-Welt |
 
 ## Archiv
 
