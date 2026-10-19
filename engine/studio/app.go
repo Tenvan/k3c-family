@@ -5,6 +5,7 @@ package studio
 
 import (
 	"context"
+	"sync"
 	"time"
 
 	assets "k3c/tools/assetkit"
@@ -23,6 +24,9 @@ type App struct {
 	poll time.Duration // Takt der Beobachtung (Test-Naht)
 	ctx  context.Context
 	bus  *bus
+	mu   sync.Mutex // schützt world
+	// world ist die gewählte Welt des Welten Editors (app_world_files.go); leer = standard
+	world string
 }
 
 // New legt das Studio für die Repo-Wurzel root an; ctx begrenzt Beobachtung und Recherche (Ende des Servers).

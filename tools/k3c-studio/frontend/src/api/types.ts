@@ -154,6 +154,13 @@ export interface PlanObjectsView {
   error: string;
 }
 
+/** Wählbare Welten des Welten Editors (Go: WorldsView): jede Welt eine JSON-Datei mit allen Inseln und Anpassungen */
+export interface WorldsView {
+  worlds: { id: string; name: string }[];
+  active: string;
+  error: string;
+}
+
 /** Ergebnis des Speicherns (Go: PlanSaved); stale = Datei seit dem Laden von außen geändert, der Entwurf bleibt */
 export interface PlanSaved {
   stand: string;
@@ -333,6 +340,11 @@ export interface Backend {
   planSave(island: string, depth: number, chunks: PlannedChunk[], count: number, stand: string): Promise<PlanSaved>;
   /** Weitere Insel anlegen (Kopie der letzten) bzw. eine Insel entfernen (die erste bleibt), jeweils auf dem Stand aus planLoad */
   planIslandAdd(stand: string): Promise<PlanSaved>;
+  /** Welten: auflisten, wählen (danach liest planLoad ihre Datei), mit Namen anlegen (wird gewählt), entfernen (Standard bleibt) */
+  planWorlds(): Promise<WorldsView>;
+  planWorldSelect(id: string): Promise<WorldsView>;
+  planWorldAdd(name: string): Promise<WorldsView>;
+  planWorldRemove(id: string): Promise<WorldsView>;
   planIslandRemove(id: string, stand: string): Promise<PlanSaved>;
   /** Seed-Inhalt des geplanten Chunks am Platz slot im Level zu Seed und Quelle (Umwandlung in feste Objekte, B-485/AC-06) */
   planChunkObjects(seed: string, source: WorldSource, slot: number): Promise<PlanObjectsView>;

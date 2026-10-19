@@ -4,7 +4,6 @@ import (
 	"bytes"
 	"encoding/json"
 	"fmt"
-	"path/filepath"
 )
 
 // Inseln anlegen und entfernen (WZ18-Vorlauf, Welten Editor): erweitert die Liste `islands` in data/islands.json
@@ -89,7 +88,7 @@ func (a *App) planEdit(stand string, edit func([]byte) ([]byte, error)) PlanSave
 	if err != nil {
 		return PlanSaved{Error: err.Error()}
 	}
-	if err := writeAtomic(filepath.Join(a.root, islandsPath), out); err != nil {
+	if err := writeAtomic(a.worldFile(a.activeWorld()), out); err != nil {
 		return PlanSaved{Error: err.Error()}
 	}
 	return PlanSaved{Stand: planStand(out), Hint: planRegHint}

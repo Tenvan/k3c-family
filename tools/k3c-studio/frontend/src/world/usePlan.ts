@@ -3,6 +3,7 @@ import { backend } from '../api';
 import type { PlanCheckView, PlanIsland, PlanView, PlannedChunk } from '../api';
 import type { PlanSource } from '../stage/stageLogic';
 import { isDirty, normalized, savedCount, savedPlan } from './plan';
+import { useWorlds } from './useWorlds';
 import { savePlan, type Notice } from './planSave';
 
 export type { Notice } from './planSave';
@@ -66,6 +67,7 @@ export function usePlan() {
     setNotice(result.notice);
   }, [draft, count, island, depth, view]);
 
+  const worlds = useWorlds(async () => { await load(); setIslandId(''); setStageState(0); }, setNotice);
   const { addIsland, removeIsland } = useIslandEdit(view, island, (v, id) => { setView(v); setIslandId(id); setStageState(0); }, setNotice);
   const discard = () => { setDraft(saved); setCount(savedSize); setNotice(null); };
   const fallback = useMemo<PlanSource | undefined>(() => (island ? { island: island.id, stage, planned: saved, chunkCount: savedSize } : undefined), [island, stage, saved, savedSize]);
@@ -74,7 +76,7 @@ export function usePlan() {
     view, island, stage, draft, count, sizes: view?.sizes ?? [], check, notice, dirty, source,
     selectIsland: (id: string) => { setIslandId(id); setStageState(0); },
     selectStage: setStageState,
-    edit, setSize, save, discard, reload: load, addIsland, removeIsland,
+    edit, setSize, save, discard, reload: load, addIsland, removeIsland, ...worlds,
   };
 }
 

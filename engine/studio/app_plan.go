@@ -70,7 +70,7 @@ func biomeIDForDepth(depth int) (level.Biome, error) {
 }
 
 func (a *App) readIslands() ([]byte, error) {
-	return os.ReadFile(filepath.Join(a.root, islandsPath))
+	return os.ReadFile(a.worldFile(a.activeWorld()))
 }
 
 // PlanLoad liest data/islands.json frisch (Binding).
@@ -170,7 +170,7 @@ func (a *App) PlanCheck(island string, depth int, chunks []level.PlannedChunk, c
 // data/islands.json (Binding). Nur gültiger Entwurf, nur auf dem Stand aus PlanLoad (sonst Stale ohne Schreibzugriff),
 // format-stabil und atomar in einem Schreibvorgang; danach der REG-Hinweis.
 func (a *App) PlanSave(island string, depth int, chunks []level.PlannedChunk, count int, stand string) PlanSaved {
-	path := filepath.Join(a.root, islandsPath)
+	path := a.worldFile(a.activeWorld())
 	raw, err := a.readIslands()
 	if err != nil {
 		return PlanSaved{Error: err.Error()}
