@@ -161,6 +161,10 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-499](B-499-studio-spiel-oeffnen-welt-zweimal.md) | DEV | Problem | niedrig | offen | – | Studio „Im Spiel öffnen“ in eigener Welt scheitert beim zweiten Mal mit demselben Seed |
 | [B-500](B-500-fullsave-tiefen-aus-welt.md) | SRV | Schuld | niedrig | offen | – | Voll ausgebauter Spielstand nimmt Tiefen aus den Biomen statt aus der Standard-Welt |
 | [B-501](B-501-planer-vorschau-fixiert-markiert.md) | DEV | Idee | mittel | offen | – | Gebäude-Planer: Live-Vorschau unten fest, gewähltes Gebäude markiert |
+| [B-503](B-503-monarch-skill-darstellung.md) | CLI | Idee | niedrig | offen | – | Die 24 Monarch-Skills haben eine Darstellung im Spiel |
+| [B-504](B-504-preset-skills-backstab-smokebomb.md) | REG | Problem | niedrig | offen | – | Die Skills backstab und smokeBomb des Presets Dieb stehen in data/monarch.json |
+| [B-505](B-505-monarch-animationen-wurf-treffer-tod-respawn.md) | CLI | Idee | niedrig | offen | – | Monarch hat Animationen für Wurf, Treffer, Tod und Respawn |
+| [B-502](B-502-monarch-seite-ansicht-wuensche.md) | DEV | Idee | mittel | offen | – | Monarch-Seite: einheitliches Sheet, Zoom, zweispaltige Ansicht |
 
 ## Archiv
 
