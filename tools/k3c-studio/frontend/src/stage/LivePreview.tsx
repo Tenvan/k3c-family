@@ -1,5 +1,6 @@
 import { Checkbox, Select, Text } from '@radix-ui/themes';
-import { useEffect, useMemo, useRef, useState, type RefObject } from 'react';
+import { useEffect, useMemo, useRef, useState, type CSSProperties, type RefObject } from 'react';
+import { GAME_HEIGHT, UNIT_PX } from '@game/core/constants';
 import type { World } from '@game/model/types';
 import { backend, type WorldPreviewView } from '../api';
 import { useDebounced } from '../lib/useDebounced';
@@ -84,6 +85,12 @@ function useStage(host: RefObject<HTMLDivElement | null>, world: World | null, l
   return failed;
 }
 
+/** Höhe der Bühne: so hoch wie die Szene im Spiel (GAME_HEIGHT), mit dem Zoom skaliert. Der Zoom verkleinert also die ganze
+ *  Vorschau; sichtbar bleibt immer die volle Spielhöhe, nur die Breite wächst mit. */
+export function stageStyle(scale: number): CSSProperties {
+  return { flex: 'none', minHeight: 0, height: Math.round((GAME_HEIGHT * scale) / UNIT_PX) };
+}
+
 /** Tageszeit (vier Einträge, Fortschritt) und Hintergrund-Schichten der Live-Vorschau */
 function LookControls({ biome, timeId, setTimeId, progress, setProgress, hidden, toggleLayer }: {
   biome: string; timeId: TimeOfDayId; setTimeId: (id: TimeOfDayId) => void; progress: number; setProgress: (p: number) => void;
@@ -161,6 +168,7 @@ export function LivePreview({ seed, biome, position, onPan, onWheel, onSites, pl
 
   return (
     <div className="wd-live-body">
+      <div className="wd-stage" ref={host} style={stageStyle(position.scale)} />
       <div className="wd-bar">
         <Text size="2">Hub-Stufe</Text>
         <Select.Root value={String(hubLevel)} onValueChange={(v) => setHubLevel(Number(v))}>
@@ -170,7 +178,6 @@ export function LivePreview({ seed, biome, position, onPan, onWheel, onSites, pl
         <LookControls biome={biome} timeId={timeId} setTimeId={setTimeId} progress={progress} setProgress={setProgress} hidden={hidden} toggleLayer={toggleLayer} />
         {note && <Text size="2" color="red" role="status">{note}</Text>}
       </div>
-      <div className="wd-stage" ref={host} />
       <BuildingFilter toggles={toggles} off={off} onSet={setMany} />
     </div>
   );
