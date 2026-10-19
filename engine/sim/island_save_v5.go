@@ -5,14 +5,14 @@ import (
 	"slices"
 )
 
-// Spielstand Version 5 (K2.3b, B-130, B-103): besiegte Bosse, aktuelle Insel (Index in data/islands.json), Münzzähler
+// Spielstand Version 5 (K2.3b, B-130, B-103): besiegte Bosse, aktuelle Insel (Index in der Standard-Welt data/worlds/standard.json), Münzzähler
 // der Siegvariante `gold`, Sieg schon gemeldet, je Spieler die Skill-Basis. Ältere Versionen laden mit leerer Bossliste,
 // Insel 0 und Zählern 0 (die Felder fehlen dort). Gespeichert wird nur die aktuelle Insel.
 
 // validateProgress prüft die Felder der Version 5: bekannte Bosse ohne Doppel, Insel aus den Daten, Zähler nicht negativ.
 func validateProgress(s IslandSave) error {
-	if s.Island < 0 || s.Island >= len(islandDefs) {
-		return fmt.Errorf("spielstand: Insel %d, die Daten kennen %d", s.Island, len(islandDefs))
+	if s.Island < 0 || s.Island >= len(standardWorld.Islands) {
+		return fmt.Errorf("spielstand: Insel %d, die Daten kennen %d", s.Island, len(standardWorld.Islands))
 	}
 	if s.GoldCollected < 0 {
 		return fmt.Errorf("spielstand: Münzzähler %d negativ", s.GoldCollected)
@@ -36,7 +36,7 @@ func validateProgress(s IslandSave) error {
 // restoreProgress setzt Insel, Tabelle, besiegte Bosse und Zähler; der Endboss gilt als besiegt, wenn ein Endboss in
 // der Liste steht (eine Quelle der Wahrheit).
 func restoreProgress(isl *Island, s IslandSave) {
-	isl.Number, isl.Scaling = s.Island, islandDefs[s.Island].DepthScaling
+	isl.Number, isl.Scaling = s.Island, standardWorld.Islands[s.Island].DepthScaling
 	isl.DefeatedBosses = slices.Clone(s.DefeatedBosses)
 	isl.EndbossDefeated = slices.ContainsFunc(isl.DefeatedBosses, func(id string) bool { return bossByID(id).Kind == "end" })
 	isl.GoldCollected, isl.Won = s.GoldCollected, s.Won

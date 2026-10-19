@@ -12,7 +12,7 @@ import (
 // NextIsland.
 
 // isLast: Die Insel ist die letzte der Daten (kein Wechselpunkt, Kampagnensieg möglich).
-func (isl *Island) isLast() bool { return isl.Number+1 >= len(islandDefs) }
+func (isl *Island) isLast() bool { return isl.Number+1 >= len(standardWorld.Islands) }
 
 // gateStage ist die tiefste Stufe der Insel; dort liegt der Wechselpunkt (an der Burg).
 func (isl *Island) gateStage() *World {
@@ -63,7 +63,7 @@ func (isl *Island) NextDef() (def IslandDef, ok bool) {
 	if isl.isLast() {
 		return IslandDef{}, false
 	}
-	return islandDefs[isl.Number+1], true
+	return standardWorld.Islands[isl.Number+1], true
 }
 
 // NextIsland baut die nächste Insel nach def: Seed aus der Spiel-ID und dem Inselindex, Startvorrat, eigene Hubs,

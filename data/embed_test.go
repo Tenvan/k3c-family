@@ -11,7 +11,7 @@ import (
 var want = []string{
 	"biomes/cave.json", "biomes/forest.json", "biomes/mine.json",
 	"buildings.json", "difficulty.json", "economy.json", "enemies.json", "hub.json",
-	"monarch.json", "sprites.json", "troops.json", "waves.json",
+	"monarch.json", "sprites.json", "troops.json", "waves.json", "worlds/standard.json",
 }
 
 func TestEmbeddedFilesAreValidJSON(t *testing.T) {

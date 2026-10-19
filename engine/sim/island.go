@@ -39,7 +39,7 @@ type Island struct {
 	GoldCollected int
 	Won           bool
 	hadFinite     bool
-	// Number: Index der Insel in data/islands.json (0 = Insel 1); Scaling: ihre Tabelle der Gegner-Skalierung.
+	// Number: Index der Insel in der Standard-Welt (data/worlds/standard.json) (0 = Insel 1); Scaling: ihre Tabelle der Gegner-Skalierung.
 	// GateOpen: Wechselpunkt offen, SwitchReady: alle stehen dort, der Raum tauscht die Insel (island_switch.go).
 	Number         int
 	Scaling        struct{ HP, Damage, Speed float64 }
@@ -62,7 +62,7 @@ type Island struct {
 // Laden eines Spielstands und Inselwechsel nutzen die eingebetteten Daten und die Planung der Insel.
 type CreateOptions struct {
 	// Planned sind die geplanten Chunks je Tiefe (docs/rules/geplante-chunks.md). nil = die Planung der eingebetteten
-	// ersten Insel (data/islands.json); eine leere Map schaltet die Planung ab.
+	// ersten Insel der Standard-Welt (data/worlds/standard.json); eine leere Map schaltet die Planung ab.
 	Planned map[int][]level.PlannedChunk
 	// Candidate: Kandidaten-hub.json (Gebäude-Planer, B-462); nil = eingebettete data/hub.json. Plätze, Hub-Stufen,
 	// Mauerlinien, Tor-Stufe, Händler und Startvorrat kommen dann aus ihm. CreateIsland prüft ihn vorher mit
@@ -78,7 +78,7 @@ func (o CreateOptions) plannedFor(depth int) []level.PlannedChunk {
 	if o.Planned != nil {
 		return o.Planned[depth]
 	}
-	return islandDefs[0].plannedAt(depth)
+	return standardWorld.Islands[0].plannedAt(depth)
 }
 
 // countFor liefert die Chunk-Anzahl der Tiefe (0 = Länge des Bioms).
@@ -86,7 +86,7 @@ func (o CreateOptions) countFor(depth int) int {
 	if o.ChunkCounts != nil {
 		return o.ChunkCounts[depth]
 	}
-	return islandDefs[0].countAt(depth)
+	return standardWorld.Islands[0].countAt(depth)
 }
 
 // plannedAt liefert die geplanten Chunks der Insel für eine Tiefe (leer = reiner Zufall).
@@ -131,7 +131,7 @@ func createIsland(seed string, depths []int, cycleSpeed, startTime float64, opts
 		return nil, fmt.Errorf("insel: keine Stufen")
 	}
 	isl := &Island{ID: seed, Seed: seed, CycleSpeed: cycleSpeed, Stock: &Stock{}, Options: DefaultOptions(), travel: map[int]*islandTravel{}}
-	isl.Scaling = islandDefs[0].DepthScaling
+	isl.Scaling = standardWorld.Islands[0].DepthScaling
 	for _, d := range depths {
 		if !hasDepth(d) {
 			return nil, fmt.Errorf("insel: unbekannte Tiefe %d", d)

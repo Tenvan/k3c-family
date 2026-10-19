@@ -14,11 +14,11 @@ import (
 	"k3c/engine/level"
 )
 
-// Schreiben der Planung in data/islands.json (WZ8.5, B-461/AC-12): format-stabil (nur der Wert von `plannedChunks` der
+// Schreiben der Planung in die Welt-Datei (WZ8.5, B-461/AC-12): format-stabil (nur der Wert von `plannedChunks` der
 // betroffenen Insel wird ersetzt, alle übrigen Bytes bleiben), atomar (Temp-Datei, dann umbenennen) und mit Stand-Prüfung.
 
-// islandsPath ist data/islands.json relativ zur Repo-Wurzel.
-const islandsPath = "data/islands.json"
+// islandsPath ist die Standard-Welt data/worlds/standard.json relativ zur Repo-Wurzel (bis WZ18.2 data/islands.json).
+const islandsPath = "data/worlds/standard.json"
 
 // planRegHint ist der Hinweis nach jedem Speichern: Eine gespeicherte Planung ist eine REG-Änderung durch 🧑.
 const planRegHint = "REG-Änderung: Commit mit Begründung, `task golden:update` nur bei gewollter Änderung"
@@ -26,7 +26,7 @@ const planRegHint = "REG-Änderung: Commit mit Begründung, `task golden:update`
 // errPlanStale lehnt ein Speichern auf veraltetem Stand ab; der Entwurf bleibt in der Oberfläche.
 type planStaleError struct{}
 
-func (planStaleError) Error() string { return "data/islands.json geändert, bitte neu laden" }
+func (planStaleError) Error() string { return islandsPath + " geändert, bitte neu laden" }
 
 var errPlanStale error = planStaleError{}
 

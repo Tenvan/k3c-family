@@ -13,8 +13,8 @@ import (
 )
 
 // Welten als Dateien (Welten Editor): Jede Welt ist eine JSON-Datei mit allen Inseln und ihren Anpassungen (Planung,
-// Inselgrößen), im Format von data/islands.json (`islands`) plus optionalem `name`. Die Welt „standard“ ist
-// data/islands.json selbst (die das Spiel lädt, bis WZ18 die Welt-Dateien einführt), weitere liegen unter data/worlds/.
+// Inselgrößen), im Format der Welt-Datei (docs/rules/welten.md). Die Welt „standard“ ist data/worlds/standard.json
+// (islandsPath, die das Spiel eingebettet lädt), weitere liegen daneben unter data/worlds/.
 // Das Studio bearbeitet immer die gewählte Welt; die Wahl gilt für alle Aufrufe der Planung (Laden, Prüfen, Speichern,
 // Inseln, Quelle der Vorschauen).
 

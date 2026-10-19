@@ -8,7 +8,7 @@ import (
 	"k3c/engine/internal/golden"
 )
 
-// plannedCase ist die Test-Planung unter testdata/planned/ (keine echte Planung; data/islands.json bleibt leer).
+// plannedCase ist die Test-Planung unter testdata/planned/ (keine echte Planung; data/worlds/standard.json plant nichts).
 type plannedCase struct {
 	Biome   string         `json:"biome"`
 	Seeds   []string       `json:"seeds"`

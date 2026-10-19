@@ -105,7 +105,7 @@ func TestSpielstandBossUngueltig(t *testing.T) {
 	cases := map[string]func(s *IslandSave){
 		"unbekannter Boss": func(s *IslandSave) { s.DefeatedBosses = []string{"drache"} },
 		"doppelter Boss":   func(s *IslandSave) { s.DefeatedBosses = []string{"goblinLeader", "goblinLeader"} },
-		"Insel zu groß":    func(s *IslandSave) { s.Island = len(islandDefs) },
+		"Insel zu groß":    func(s *IslandSave) { s.Island = len(StandardWorld().Islands) },
 		"Insel negativ":    func(s *IslandSave) { s.Island = -1 },
 		"Münzen negativ":   func(s *IslandSave) { s.GoldCollected = -1 },
 		"Skill-Basis":      func(s *IslandSave) { s.Players[0].SkillBase = 1 },

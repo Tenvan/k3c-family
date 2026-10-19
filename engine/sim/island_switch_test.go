@@ -4,7 +4,6 @@ import (
 	"math"
 	"slices"
 	"testing"
-	"testing/fstest"
 )
 
 // Inselwechsel (B-103, K2.3a).
@@ -12,11 +11,11 @@ import (
 // withTestIslands hängt für einen Test eine zweite Insel an die Daten (Tiefen 0 und 1, eigene Tabelle).
 func withTestIslands(t *testing.T) IslandDef {
 	t.Helper()
-	old := islandDefs
+	old := standardWorld.Islands
 	two := IslandDef{ID: "testIsland2", Name: "Test-Insel", Depths: []int{0, 1}}
 	two.DepthScaling.HP, two.DepthScaling.Damage, two.DepthScaling.Speed = 2, 2, 1
-	islandDefs = append(slices.Clone(old), two)
-	t.Cleanup(func() { islandDefs = old })
+	standardWorld.Islands = append(slices.Clone(old), two)
+	t.Cleanup(func() { standardWorld.Islands = old })
 	return two
 }
 
@@ -195,7 +194,7 @@ func TestInselwechselTabelleDerInsel(t *testing.T) {
 }
 
 func TestInselwechselDaten(t *testing.T) {
-	d := islandDefs[0]
+	d := StandardWorld().Islands[0]
 	if !slices.Equal(d.Depths, []int{0, 1, 2, 3, 4}) || endBoss(4) == nil {
 		t.Fatalf("Insel 1: Tiefen %v, Endboss in Tiefe 4 %v", d.Depths, endBoss(4) != nil)
 	}
@@ -204,16 +203,15 @@ func TestInselwechselDaten(t *testing.T) {
 			t.Errorf("Insel 1: kein Miniboss in Tiefe %d", depth)
 		}
 	}
-	bad := map[string]string{
-		"ohne Endboss": `{"islands":[{"id":"a","depths":[0,1],"depthScaling":{"hp":1,"damage":1,"speed":1}}]}`,
-		"doppelt":      `{"islands":[{"id":"a","depths":[0,1,2,3,4],"depthScaling":{"hp":1,"damage":1,"speed":1}},{"id":"a","depths":[0,1,2,3,4],"depthScaling":{"hp":1,"damage":1,"speed":1}}]}`,
-		"Faktor 0":     `{"islands":[{"id":"a","depths":[0,1,2,3,4],"depthScaling":{"hp":0,"damage":1,"speed":1}}]}`,
-		"Tiefe fehlt":  `{"islands":[{"id":"a","depths":[4,9],"depthScaling":{"hp":1,"damage":1,"speed":1}}]}`,
-		"leer":         `{"islands":[]}`,
+	bad := map[string][]byte{
+		"ohne Endboss": testWorld(testIsland("a", `,"depths":[0,1]`)),
+		"doppelt":      testWorld(testIsland("a", "") + "," + testIsland("a", "")),
+		"Faktor 0":     testWorld(testIsland("a", `,"depthScaling":{"hp":0,"damage":1,"speed":1}`)),
+		"Tiefe fehlt":  testWorld(testIsland("a", `,"depths":[4,9]`)),
+		"leer":         testWorld(``),
 	}
 	for name, raw := range bad {
-		var dst []IslandDef
-		if err := loadIslands(fstest.MapFS{"islands.json": {Data: []byte(raw)}}, &dst); err == nil || dst != nil {
+		if w, err := ParseWorld(raw, "test"); err == nil || w.Islands != nil {
 			t.Errorf("%s: kein Fehler beim Laden", name)
 		}
 	}

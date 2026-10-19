@@ -2,17 +2,16 @@ package sim
 
 import (
 	"fmt"
-	"io/fs"
 	"maps"
 	"slices"
 	"strconv"
 
-	"k3c/data"
 	"k3c/engine/level"
 )
 
-// Inseln als Daten (data/islands.json, B-103): Liste in fester Reihenfolge, je Insel ihre Tiefen und ihre Tabelle der
-// Gegner-Skalierung. Welten ohne Insel skalieren nach waves.json › depthScaling.
+// Inseln als Daten (Welt-Datei data/worlds/<id>.json, B-103, B-488): Liste in fester Reihenfolge, je Insel ihre Tiefen
+// und ihre Tabelle der Gegner-Skalierung. Welten ohne Insel skalieren nach waves.json › depthScaling. Laden und
+// strenges Lesen: island_worlds.go.
 
 // IslandDef ist eine Insel aus den Daten.
 type IslandDef struct {
@@ -26,59 +25,34 @@ type IslandDef struct {
 	ChunkCounts map[string]int
 }
 
-var islandDefs = loadIslandDefs()
-
-func loadIslandDefs() []IslandDef {
-	var v []IslandDef
-	if err := loadIslands(data.Files, &v); err != nil {
-		panic(err)
-	}
-	return v
-}
-
-// loadIslands liest islands.json aus fsys und prüft jede Insel; bei einem Fehler bleibt *dst unverändert.
-func loadIslands(fsys fs.FS, dst *[]IslandDef) error {
-	var v struct{ Islands []IslandDef }
-	if err := loadFrom(fsys, "islands.json", &v); err != nil {
-		return err
-	}
-	if len(v.Islands) == 0 {
-		return fmt.Errorf("data/islands.json: keine Insel")
-	}
-	var ids []string
-	for _, d := range v.Islands {
-		if err := checkIsland(d); err != nil {
-			return fmt.Errorf("data/islands.json: %s: %w", d.ID, err)
-		}
-		if slices.Contains(ids, d.ID) {
-			return fmt.Errorf("data/islands.json: %s doppelt", d.ID)
-		}
-		ids = append(ids, d.ID)
-	}
-	*dst = v.Islands
-	return nil
-}
-
-// checkIsland: Tiefen vorhanden, je Tiefe ein Miniboss, in der tiefsten der Endboss, Faktoren > 0.
+// checkIsland prüft eine Insel in der Reihenfolge aus docs/rules/welten.md § 3: Name, Tiefen (vorhanden, bekannt,
+// einmalig), je Tiefe ein Miniboss, in der tiefsten der Endboss, Faktoren > 0, chunkCounts, plannedChunks. ID und
+// Eindeutigkeit prüft checkWorld.
 func checkIsland(d IslandDef) error {
-	s := d.DepthScaling
-	switch {
-	case d.ID == "":
-		return fmt.Errorf("ohne id")
-	case len(d.Depths) == 0:
+	if d.Name == "" {
+		return fmt.Errorf("name ist leer")
+	}
+	if len(d.Depths) == 0 {
 		return fmt.Errorf("ohne Tiefen")
-	case s.HP <= 0 || s.Damage <= 0 || s.Speed <= 0:
-		return fmt.Errorf("depthScaling braucht Faktoren > 0")
-	case endBoss(slices.Max(d.Depths)) == nil:
-		return fmt.Errorf("kein Endboss in der tiefsten Stufe %d", slices.Max(d.Depths))
+	}
+	for i, depth := range d.Depths {
+		switch {
+		case !hasDepth(depth):
+			return fmt.Errorf("unbekannte Tiefe %d", depth)
+		case slices.Contains(d.Depths[:i], depth):
+			return fmt.Errorf("doppelte Tiefe %d", depth)
+		}
 	}
 	for _, depth := range d.Depths {
-		if !hasDepth(depth) {
-			return fmt.Errorf("unbekannte Tiefe %d", depth)
-		}
 		if miniBoss(depth) == nil {
 			return fmt.Errorf("kein Miniboss in Tiefe %d", depth)
 		}
+	}
+	if deepest := slices.Max(d.Depths); endBoss(deepest) == nil {
+		return fmt.Errorf("kein Endboss in der tiefsten Stufe %d", deepest)
+	}
+	if s := d.DepthScaling; s.HP <= 0 || s.Damage <= 0 || s.Speed <= 0 {
+		return fmt.Errorf("depthScaling braucht Faktoren > 0")
 	}
 	if err := checkChunkCounts(d); err != nil {
 		return err
@@ -103,10 +77,10 @@ func checkPlannedChunks(d IslandDef, lines level.WallLines) error {
 }
 
 // savedIslandOptions liefert die Erzeugungs-Parameter für das Laden eines Spielstands der Insel `number`: die Planung
-// der Insel aus den Daten (die Planung selbst wird nicht gespeichert).
+// der Insel aus der Standard-Welt (die Planung selbst wird nicht gespeichert).
 func savedIslandOptions(number int) CreateOptions {
-	if number >= 0 && number < len(islandDefs) {
-		return islandDefs[number].CreateOptions()
+	if number >= 0 && number < len(standardWorld.Islands) {
+		return standardWorld.Islands[number].CreateOptions()
 	}
 	return CreateOptions{}
 }

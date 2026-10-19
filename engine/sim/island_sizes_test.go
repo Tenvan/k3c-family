@@ -8,9 +8,10 @@ import (
 
 // WZ17.2 (B-485/AC-02, AC-03): Inselgrößen und Chunk-Anzahl je Stufe (docs/rules/geplante-chunks.md § 7).
 
-func islandsWith(fields string) fstest.MapFS {
-	raw := `{"islands":[{"id":"a","depths":[0,1,2,3,4],"depthScaling":{"hp":1,"damage":1,"speed":1}` + fields + `}]}`
-	return fstest.MapFS{"islands.json": {Data: []byte(raw)}}
+// islandsWith liest eine Test-Welt mit einer Insel „a“ und den Feldern fields (island_worlds_test.go).
+func islandsWith(fields string) ([]IslandDef, error) {
+	w, err := parseTestWorld(fields)
+	return w.Islands, err
 }
 
 func TestInselgroessenAusDenDaten(t *testing.T) {
@@ -48,23 +49,22 @@ func TestInselgroessenWerdenGeprueft(t *testing.T) {
 }
 
 func TestChunkAnzahlWirdBeimLadenGeprueft(t *testing.T) {
-	var dst []IslandDef
-	if err := loadIslands(islandsWith(`,"chunkCounts":{"0":24,"4":160}`), &dst); err != nil {
+	dst, err := islandsWith(`,"chunkCounts":{"0":24,"4":160}`)
+	if err != nil {
 		t.Fatalf("gültige Anzahl abgelehnt: %v", err)
 	}
 	if o := dst[0].CreateOptions(); dst[0].ChunkCounts["0"] != 24 || o.ChunkCounts[0] != 24 || o.ChunkCounts[4] != 160 || len(o.ChunkCounts) != 2 {
 		t.Errorf("Anzahl nicht geladen: %v, CreateOptions %v", dst[0].ChunkCounts, o.ChunkCounts)
 	}
 	bad := map[string][]string{
-		`,"chunkCounts":{"0":18}`:  {"data/islands.json: a:", "Tiefe 0", "18", "16, 24, 40, 64, 100, 160"},
-		`,"chunkCounts":{"3":12}`:  {"data/islands.json: a:", "Tiefe 3", "12", "16, 24, 40, 64, 100, 160"},
-		`,"chunkCounts":{"7":24}`:  {"data/islands.json: a:", "Tiefe \"7\""},
-		`,"chunkCounts":{"x":24}`:  {"data/islands.json: a:", "Tiefe \"x\""},
-		`,"chunkCounts":{"01":24}`: {"data/islands.json: a:", "Tiefe \"01\""},
+		`,"chunkCounts":{"0":18}`:  {"data/worlds/test.json: Insel a:", "Tiefe 0", "18", "16, 24, 40, 64, 100, 160"},
+		`,"chunkCounts":{"3":12}`:  {"data/worlds/test.json: Insel a:", "Tiefe 3", "12", "16, 24, 40, 64, 100, 160"},
+		`,"chunkCounts":{"7":24}`:  {"data/worlds/test.json: Insel a:", "Tiefe \"7\""},
+		`,"chunkCounts":{"x":24}`:  {"data/worlds/test.json: Insel a:", "Tiefe \"x\""},
+		`,"chunkCounts":{"01":24}`: {"data/worlds/test.json: Insel a:", "Tiefe \"01\""},
 	}
 	for fields, want := range bad {
-		var out []IslandDef
-		err := loadIslands(islandsWith(fields), &out)
+		out, err := islandsWith(fields)
 		if err == nil || out != nil {
 			t.Errorf("%s: Fehler %v, Ergebnis %v", fields, err, out)
 			continue
@@ -80,12 +80,11 @@ func TestChunkAnzahlWirdBeimLadenGeprueft(t *testing.T) {
 // AC-03: Die Planung wird gegen die eingestellte Anzahl geprüft (Platz +9 im Wald: jenseits der kürzesten Länge ±7).
 func TestPlanungGegenChunkAnzahl(t *testing.T) {
 	plan := `,"plannedChunks":{"0":[{"slot":9,"kind":"forest"}]}`
-	var dst []IslandDef
-	if err := loadIslands(islandsWith(plan+`,"chunkCounts":{"0":24}`), &dst); err != nil {
+	if _, err := islandsWith(plan + `,"chunkCounts":{"0":24}`); err != nil {
 		t.Errorf("Platz +9 bei 24 Chunks abgelehnt: %v", err)
 	}
 	for _, counts := range []string{``, `,"chunkCounts":{"0":16}`} {
-		err := loadIslands(islandsWith(plan+counts), &dst)
+		_, err := islandsWith(plan + counts)
 		if err == nil || !strings.Contains(err.Error(), "Tiefe 0") || !strings.Contains(err.Error(), "Platz +9") {
 			t.Errorf("%q: Fehler %v", counts, err)
 		}
@@ -112,7 +111,7 @@ func TestInselMitChunkAnzahl(t *testing.T) {
 }
 
 func TestEingebetteteInselnOhneChunkAnzahl(t *testing.T) {
-	for _, d := range islandDefs {
+	for _, d := range StandardWorld().Islands {
 		if len(d.ChunkCounts) != 0 {
 			t.Errorf("%s: eingebettete Daten enthalten eine Chunk-Anzahl", d.ID)
 		}
