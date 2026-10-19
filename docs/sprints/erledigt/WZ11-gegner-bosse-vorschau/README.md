@@ -1,6 +1,6 @@
 # WZ11 · DEV · Gegner- und Boss-Vorschau im Asset-Studio, Figuren-Seiten entfernen
 
-- **Status:** aktiv
+- **Status:** erledigt
 - **Projekt:** WZG
 - **Domäne:** DEV
 - **Reife:** bereit
@@ -127,7 +127,7 @@ Vor der Freigabe offen: nichts.
 | WZ11.2 | `WZ11.2-bosse.md` | Umsetzung | autonom | fertig |
 | WZ11.3 | `WZ11.3-figuren-seiten-entfernen.md` | Umsetzung | autonom | fertig |
 | WZ11.4 | `WZ11.4-review.md` | Review | autonom | fertig |
-| WZ11.5 | `WZ11.5-abnahme.md` | Review | Mensch | offen |
+| WZ11.5 | `WZ11.5-abnahme.md` | Review | Mensch | fertig |
 
 - WZ11.1 (DEV) Gegner-Seite: Gegnertypen nach Biom, Animationen mit `tint`/`scale`/`alpha`/`y`, Rückfall `idle`, Getroffen/Sterben, Merkmale, Monarch-Vergleich, Grafik-Auswahl je Gegner-ID (AC-01, AC-02, AC-03, AC-04, AC-05, AC-06, AC-13, AC-14, AC-15, AC-16)
 - WZ11.2 (DEV) Bosse je Tiefe mit Name, Art, Fähigkeit, Phasen, Boss-Grafik wie im Spiel und den Lücken je Boss für die zutreffenden Effekte (Warnkreis, Boss-Leiste, Phasen-Text, Event-Banner); Anbindung später in B-469 (AC-07, AC-08, AC-12, AC-15, AC-16; AC-09 bis AC-11 nach B-469 verschoben)
