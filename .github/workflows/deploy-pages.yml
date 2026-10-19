@@ -27,11 +27,16 @@ jobs:
         with:
           node-version-file: .nvmrc
           cache: npm
+          cache-dependency-path: |
+            package-lock.json
+            tools/k3c-dev/frontend/package-lock.json
+            tools/k3c-studio/frontend/package-lock.json
       - uses: actions/setup-go@v7
         with:
           go-version-file: go.mod
       - uses: go-task/setup-task@v1
-      - run: npm ci
+      # Wie in ci.yml: Client und Frontends von k3c-dev und Asset-Studio (task test und task pages brauchen sie).
+      - run: task install
       - run: task test
       - run: task pages
       - uses: actions/configure-pages@v6
