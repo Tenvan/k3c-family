@@ -15,20 +15,20 @@ Skalierung ×2 bis ×3, Nachbearbeitung nur Skalieren und Palette.
 
 | Objekt | Herkunft | Pack | Datei/Frame | Stil (Raster, Palette, Skalierung) | Lizenz | Status |
 |---|---|---|---|---|---|---|
-| `castle` | `data/buildings.json` | `grafik/gebaeude` | `burg-<n>-32.png` (8 × 9 Kacheln, Hub-Stufen 1–5 in `burg.json`) | eigene Grafik (`tools/gebaeude`), 32 px je Kachel, ×1; GEB4; Stufe = `World.hubLevel`, siehe zuordnung-welt.md | eigen | zugeordnet |
-| `wall` | `data/buildings.json` | `grafik/gebaeude` | `mauer-<n>-32.png` (1 × 5 Kacheln, Stufen 1–5 in `mauer.json`) | eigene Grafik (`tools/gebaeude`), 32 px je Kachel, ×1; GEB3; Stufen siehe zuordnung-welt.md | eigen | zugeordnet |
-| `tower` | `data/buildings.json` | `grafik/gebaeude` | `turm-<n>-32.png` (3 × 8 Kacheln, Stufen 1–5 in `turm.json`) | eigene Grafik (`tools/gebaeude`), 32 px je Kachel, ×1; GEB3; Stufen siehe zuordnung-welt.md | eigen | zugeordnet |
-| `gate` | `data/buildings.json` | `grafik/gebaeude` | `tor-<n>-32.png` (2 × 4 Kacheln, Stufen 1–5 in `tor.json`) | eigene Grafik (`tools/gebaeude`), 32 px je Kachel, ×1; GEB4; Stufe = Stufe der gebauten Mauer seiner Linie, sonst 1 | eigen | zugeordnet |
-| `workshop` | `data/buildings.json` | `grafik/gebaeude` | `werkstatt-32.png` | 32 px je Kachel, eigene Grafik (`tools/gebaeude`), ×1; GEB1/GEB2 | eigen | zugeordnet |
-| `tavern` | `data/buildings.json` | `grafik/gebaeude` | `taverne-32.png` | 32 px je Kachel, eigene Grafik (`tools/gebaeude`), ×1; GEB2 | eigen | zugeordnet |
-| `healer` | `data/buildings.json` | `grafik/gebaeude` | `heilplatz-32.png` | 32 px je Kachel, eigene Grafik (`tools/gebaeude`), ×1; GEB2 | eigen | zugeordnet |
-| `smithy` | `data/buildings.json` | `grafik/gebaeude` | `schmiede-32.png` | 32 px je Kachel, eigene Grafik (`tools/gebaeude`), ×1; GEB2 | eigen | zugeordnet |
-| `armory` | `data/buildings.json` | `grafik/gebaeude` | `ruestkammer-32.png` | 32 px je Kachel, eigene Grafik (`tools/gebaeude`), ×1; GEB2 | eigen | zugeordnet |
-| `storage` | `data/buildings.json` | `grafik/gebaeude` | `lager-32.png` (6 × 4 Kacheln) | 32 px je Kachel, eigene Grafik (`tools/gebaeude`), ×1; GEB5 | eigen | zugeordnet |
-| `farm` | `data/buildings.json` | `grafik/gebaeude` | `farm-32.png` (4 × 3 Kacheln) | 32 px je Kachel, eigene Grafik (`tools/gebaeude`), ×1; GEB5 | eigen | zugeordnet |
-| `barracks` | `data/buildings.json` | `grafik/gebaeude` | `kaserne-32.png` (6 × 4 Kacheln) | 32 px je Kachel, eigene Grafik (`tools/gebaeude`), ×1; GEB5 | eigen | zugeordnet |
-| `stairsUp` | `data/buildings.json` | `grafik/gebaeude` | `treppe-hoch-32.png` (4 × 4 Kacheln, ein Bild) | 32 px je Kachel, eigene Grafik (`tools/gebaeude`), ×1; GEB5 | eigen | zugeordnet |
-| `stairsDown` | `data/buildings.json` | `grafik/gebaeude` | `treppe-runter-32.png` (4 × 3 Kacheln) | 32 px je Kachel, eigene Grafik (`tools/gebaeude`), ×1; GEB5 | eigen | zugeordnet |
+| `castle` | `data/buildings.json` | `grafik/gebaeude` | `burg-<n>-32.png` (8 × 9 Kacheln, Hub-Stufen 1–5 in `burg.json`) | eigene Grafik (`tools/buildings`), 32 px je Kachel, ×1; GEB4; Stufe = `World.hubLevel`, siehe zuordnung-welt.md | eigen | zugeordnet |
+| `wall` | `data/buildings.json` | `grafik/gebaeude` | `mauer-<n>-32.png` (1 × 5 Kacheln, Stufen 1–5 in `mauer.json`) | eigene Grafik (`tools/buildings`), 32 px je Kachel, ×1; GEB3; Stufen siehe zuordnung-welt.md | eigen | zugeordnet |
+| `tower` | `data/buildings.json` | `grafik/gebaeude` | `turm-<n>-32.png` (3 × 8 Kacheln, Stufen 1–5 in `turm.json`) | eigene Grafik (`tools/buildings`), 32 px je Kachel, ×1; GEB3; Stufen siehe zuordnung-welt.md | eigen | zugeordnet |
+| `gate` | `data/buildings.json` | `grafik/gebaeude` | `tor-<n>-32.png` (2 × 4 Kacheln, Stufen 1–5 in `tor.json`) | eigene Grafik (`tools/buildings`), 32 px je Kachel, ×1; GEB4; Stufe = Stufe der gebauten Mauer seiner Linie, sonst 1 | eigen | zugeordnet |
+| `workshop` | `data/buildings.json` | `grafik/gebaeude` | `werkstatt-32.png` | 32 px je Kachel, eigene Grafik (`tools/buildings`), ×1; GEB1/GEB2 | eigen | zugeordnet |
+| `tavern` | `data/buildings.json` | `grafik/gebaeude` | `taverne-32.png` | 32 px je Kachel, eigene Grafik (`tools/buildings`), ×1; GEB2 | eigen | zugeordnet |
+| `healer` | `data/buildings.json` | `grafik/gebaeude` | `heilplatz-32.png` | 32 px je Kachel, eigene Grafik (`tools/buildings`), ×1; GEB2 | eigen | zugeordnet |
+| `smithy` | `data/buildings.json` | `grafik/gebaeude` | `schmiede-32.png` | 32 px je Kachel, eigene Grafik (`tools/buildings`), ×1; GEB2 | eigen | zugeordnet |
+| `armory` | `data/buildings.json` | `grafik/gebaeude` | `ruestkammer-32.png` | 32 px je Kachel, eigene Grafik (`tools/buildings`), ×1; GEB2 | eigen | zugeordnet |
+| `storage` | `data/buildings.json` | `grafik/gebaeude` | `lager-32.png` (6 × 4 Kacheln) | 32 px je Kachel, eigene Grafik (`tools/buildings`), ×1; GEB5 | eigen | zugeordnet |
+| `farm` | `data/buildings.json` | `grafik/gebaeude` | `farm-32.png` (4 × 3 Kacheln) | 32 px je Kachel, eigene Grafik (`tools/buildings`), ×1; GEB5 | eigen | zugeordnet |
+| `barracks` | `data/buildings.json` | `grafik/gebaeude` | `kaserne-32.png` (6 × 4 Kacheln) | 32 px je Kachel, eigene Grafik (`tools/buildings`), ×1; GEB5 | eigen | zugeordnet |
+| `stairsUp` | `data/buildings.json` | `grafik/gebaeude` | `treppe-hoch-32.png` (4 × 4 Kacheln, ein Bild) | 32 px je Kachel, eigene Grafik (`tools/buildings`), ×1; GEB5 | eigen | zugeordnet |
+| `stairsDown` | `data/buildings.json` | `grafik/gebaeude` | `treppe-runter-32.png` (4 × 3 Kacheln) | 32 px je Kachel, eigene Grafik (`tools/buildings`), ×1; GEB5 | eigen | zugeordnet |
 
 ## Gegner
 

@@ -1,7 +1,7 @@
 import { Button, Flex, Text, TextField } from '@radix-ui/themes';
 import { useEffect, useRef, useState } from 'react';
 import { backend, type AssetChoice, type AssetRect, type CatalogAsset } from '../api';
-import { ActionButton } from '../ui/parts';
+import { ActionButton } from '@webkit/parts';
 import { fileUrl, GAME_SCALE, previewSize } from './assets';
 
 interface Props {

@@ -10,7 +10,7 @@ import { HudScene } from './scenes/HudScene';
 import { LoadScene } from './scenes/LoadScene';
 import { LobbyScene } from './scenes/LobbyScene';
 import { OptionsScene } from './scenes/OptionsScene';
-import { VERSION_KEY } from './scenes/debugOverlay';
+import { VERSION_KEY } from './scenes/debug/debugOverlay';
 
 // Seitenrahmen sofort (Home-Button, Zurück-Falle für B).
 installPageChrome();

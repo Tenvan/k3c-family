@@ -97,7 +97,7 @@ tasks:
       - sh: command -v go
         msg: Go fehlt (requirements.md)
     cmds:
-      - go build -o bin/aufraeumen{{exeExt}} ./tools/aufraeumen
+      - go build -o bin/aufraeumen{{exeExt}} ./tools/cleanup
       - ./bin/aufraeumen{{exeExt}} {{.CLI_ARGS}}
 
   gebaeude:
@@ -107,14 +107,14 @@ tasks:
       - sh: command -v go
         msg: Go fehlt (requirements.md)
     sources:
-      - tools/gebaeude/*.go
+      - tools/buildings/*.go
       - public/grafik/gebaeude/*.json
       - exclude: public/grafik/gebaeude/index.json
     generates:
       - public/grafik/gebaeude/*.png
       - public/grafik/gebaeude/index.json
     cmds:
-      - go build -o bin/gebaeude{{exeExt}} ./tools/gebaeude
+      - go build -o bin/gebaeude{{exeExt}} ./tools/buildings
       - ./bin/gebaeude{{exeExt}}
 
   rules:update:
@@ -123,7 +123,7 @@ tasks:
       - sh: command -v go
         msg: Go fehlt (requirements.md)
     cmds:
-      - go build -o bin/regeltabelle{{exeExt}} ./tools/regeltabelle
+      - go build -o bin/regeltabelle{{exeExt}} ./tools/ruletable
       - ./bin/regeltabelle{{exeExt}}
 
   build:
@@ -229,14 +229,17 @@ tasks:
       - index.html
       - package.json
       - vite.config.ts
+      - paths.ts
+      - ../../webkit/**/*
     generates:
       - dist/**/*
 
   check:dev:
-    desc: k3c-dev prüfen (Frontend, go test, golangci-lint)
+    desc: k3c-dev prüfen (Frontend mit Vitest, go test, golangci-lint)
     deps: [tmp, dev:frontend]
     dir: '{{.DEV}}'
     cmds:
+      - cd frontend && npx vitest run --config vitest.config.ts
       - go test ./...
       - golangci-lint run
 
@@ -251,6 +254,8 @@ tasks:
       - index.html
       - package.json
       - vite.config.ts
+      - paths.ts
+      - ../../webkit/**/*
     generates:
       - ../../../dist/studio/**/*
 

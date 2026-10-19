@@ -2,7 +2,7 @@ import { SegmentedControl, Text } from '@radix-ui/themes';
 import { useState, type CSSProperties } from 'react';
 import { loadPref, savePref } from '../lib/prefs';
 import { Splitter, useSplit } from '../tasks/TaskBars';
-import { NoticeCard } from '../ui/parts';
+import { NoticeCard } from '@webkit/parts';
 import { CallLog } from './CallLog';
 import { LiveMonitors } from './LiveMonitors';
 import { ServerCards } from './ServerCards';

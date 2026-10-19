@@ -1,10 +1,10 @@
 import { Text } from '@radix-ui/themes';
 import { useEffect, useMemo, useState, type CSSProperties } from 'react';
 import { backend, type PlanningData, type PlanSprint } from '../api';
-import { errorText } from '../lib/errors';
+import { errorText } from '@webkit/errors';
 import { loadText, savePref } from '../lib/prefs';
 import { Splitter, useSplit } from '../tasks/TaskBars';
-import { NoticeCard } from '../ui/parts';
+import { NoticeCard } from '@webkit/parts';
 import { BacklogView, useTarget } from './Backlog';
 import { PlanDetail } from './Detail';
 import { foldAll, unfold } from './fold';

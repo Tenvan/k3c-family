@@ -5,7 +5,7 @@ import { describe, expect, it } from 'vitest';
  * Umlaute, ß oder mindestens zwei Wörter mit Leerzeichen enthalten. Ausgenommen: Kommentare, CSS-Werte (mit `;`), Zeilen mit `clientLog(` oder
  * `console.`, das Debug-Overlay (Entwickler-Text).
  */
-const sources = import.meta.glob(['./*.ts', '../online/*.ts'], { query: '?raw', import: 'default', eager: true }) as Record<string, string>;
+const sources = import.meta.glob(['./**/*.ts', '../online/*.ts'], { query: '?raw', import: 'default', eager: true }) as Record<string, string>;
 
 const GERMAN = /[äöüßÄÖÜ]|[A-Za-z]{2,}\s+[A-Za-z]{2,}/;
 const DEV_FILES = /(^|\/)debug[^/]*\.ts$/;

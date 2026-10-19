@@ -1,6 +1,6 @@
 import type { ConsoleLine, Source } from '../api';
 import { badgeFor } from '../services/tables';
-import type { Tone } from '../ui/parts';
+import type { Tone } from '@webkit/parts';
 import { stripAnsi } from './ansi';
 
 // Reine Funktionen der Logs-Seite (B-064): Zeilen einsortieren, Randmarken, Quellen und ihre Punkte.

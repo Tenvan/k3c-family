@@ -2,7 +2,7 @@ import { Button, Flex } from '@radix-ui/themes';
 import { memo, useLayoutEffect, useRef, useState } from 'react';
 import type { ConsoleLine } from '../api';
 import { formatNumber } from '../lib/format';
-import { NoticeCard } from '../ui/parts';
+import { NoticeCard } from '@webkit/parts';
 import { parseAnsi } from './ansi';
 import { markOf, visibleLines } from './lines';
 import { useConsole } from './useConsole';

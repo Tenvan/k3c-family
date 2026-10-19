@@ -1,7 +1,7 @@
 import { Text } from '@radix-ui/themes';
 import { useMemo, useState } from 'react';
 import { isStringList, loadJSON, loadText, saveJSON, savePref } from '../lib/prefs';
-import { NoticeCard } from '../ui/parts';
+import { NoticeCard } from '@webkit/parts';
 import { Splitter, TasksFoot, TasksHead } from './TaskBars';
 import { TaskDetail } from './TaskDetail';
 import { TaskTree } from './TaskTree';

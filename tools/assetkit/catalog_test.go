@@ -43,7 +43,7 @@ func TestKatalogMitCredits(t *testing.T) {
 	}
 }
 
-// B-437: eigene Gebäude-Grafik (tools/gebaeude) ohne Credit-Zeile hat eine eigene Lizenz, fremde Packs ohne Credit bleiben „unbekannt“.
+// B-437: eigene Gebäude-Grafik (tools/buildings) ohne Credit-Zeile hat eine eigene Lizenz, fremde Packs ohne Credit bleiben „unbekannt“.
 func TestKatalogEigeneGebaeude(t *testing.T) {
 	root := repo(t)
 	writePNG(t, filepath.Join(root, "public", "grafik", "gebaeude", "taverne-32.png"), 192, 128)

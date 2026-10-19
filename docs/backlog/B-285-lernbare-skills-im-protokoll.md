@@ -14,7 +14,7 @@
 
 ## Ausgangslage
 
-`actions` je Spieler (`docs/protocol.md` › Skills und Aktionen) kennt nur ein pauschales `{ action: 'learn' }`. Das Skill-Menü (S3.2, `src/scenes/skillMenuLogic.ts`) markiert deshalb jeden ungelernten Skill als „lernen“, auch Tier 2–4 ohne genug gelernte Skills der Linie (Tier-Gating, `docs/rules/monarch.md` § 3). Der Server lehnt den Versuch mit `bad_request` ab; der Spieler sieht nur, dass nichts passiert.
+`actions` je Spieler (`docs/protocol.md` › Skills und Aktionen) kennt nur ein pauschales `{ action: 'learn' }`. Das Skill-Menü (S3.2, `src/scenes/hud/skillMenuLogic.ts`) markiert deshalb jeden ungelernten Skill als „lernen“, auch Tier 2–4 ohne genug gelernte Skills der Linie (Tier-Gating, `docs/rules/monarch.md` § 3). Der Server lehnt den Versuch mit `bad_request` ab; der Spieler sieht nur, dass nichts passiert.
 
 ## Ziel
 

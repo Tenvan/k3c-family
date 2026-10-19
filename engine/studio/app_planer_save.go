@@ -11,7 +11,7 @@ import (
 
 	"k3c/engine/sim"
 	assets "k3c/tools/assetkit"
-	"k3c/tools/regeltabelle/tabelle"
+	"k3c/tools/ruletable/table"
 )
 
 // Speichern im Gebäude-Planer (B-462/AC-02, AC-03, AC-05, AC-06; WZ9.3): nur ein geprüfter Kandidat ohne Befund; erst
@@ -125,18 +125,18 @@ func staleFile(root string, hub []byte, stand HubStand) string {
 }
 
 // writeRules schreibt den aus hubJSON erzeugten Block zwischen die Marken der Regeltabelle; der Rest bleibt
-// byte-gleich (tabelle.Ersetzen), ein unveränderter Block wird nicht geschrieben.
+// byte-gleich (table.Ersetzen), ein unveränderter Block wird nicht geschrieben.
 func writeRules(root string, hubJSON []byte) error {
 	path := filepath.Join(root, filepath.FromSlash(rulesFile))
 	doc, err := os.ReadFile(path)
 	if err != nil {
 		return err
 	}
-	block, err := tabelle.Block(hubJSON)
+	block, err := table.Block(hubJSON)
 	if err != nil {
 		return err
 	}
-	next, err := tabelle.Ersetzen(string(doc), block)
+	next, err := table.Ersetzen(string(doc), block)
 	if err != nil || next == string(doc) {
 		return err
 	}

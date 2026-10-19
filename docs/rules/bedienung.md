@@ -39,7 +39,7 @@ Heute liegen Hinweise und Info-Zeile bei 20 px (`src/scenes/HudScene.ts`), die A
 | **Monarch während der Frist, bei Tag und Nacht gleich:** unverwundbar und ausgeblendet, er steht still. | Ein getrennter Spieler soll nachts nicht schutzlos sterben; ausgeblendet, damit niemand auf ihn wartet. | Beschluss Q04 |
 | **Nach der Frist:** Der Platz ist frei (Zustand `free`), ein anderes Gerät kann den Monarchen übernehmen; bis dahin bleibt er ausgeblendet und unverwundbar. | Der Raum bleibt für Neue offen, ohne dass ein verwaister Monarch stirbt. | „frei“ beschlossen (Q04); Verhalten bis zur Übernahme bestätigt (F1.4) |
 | **Latenz Eingabe → Bild** im Heim-WLAN: Mittel **≤ 100 ms** (beschlossen), p95 **≤ 150 ms** (bestätigt in F1.4: Spielraum für einzelne WLAN-Spitzen bei 30 Hz). | Ohne Vorhersage des eigenen Monarchen spürt man mehr als 100 ms im Mittel. | Beschluss Q04 |
-| **Messweg:** 🧑 bzw. der Agent der Session misst am Gerät mit dem Debug-Overlay (`src/scenes/debugOverlay.ts`) über mindestens 60 s Spiel mit 2 Spielern; die Anzeige der Latenz fehlt dort noch (B-181). | Messung dort, wo gespielt wird, nicht am Server. | B-181 |
+| **Messweg:** 🧑 bzw. der Agent der Session misst am Gerät mit dem Debug-Overlay (`src/scenes/debug/debugOverlay.ts`) über mindestens 60 s Spiel mit 2 Spielern; die Anzeige der Latenz fehlt dort noch (B-181). | Messung dort, wo gespielt wird, nicht am Server. | B-181 |
 
 ## 4. Sprache
 

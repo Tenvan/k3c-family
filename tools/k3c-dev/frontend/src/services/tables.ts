@@ -1,6 +1,6 @@
 import type { LevelCounts, ServiceStatus } from '../api';
 import { formatBytes, formatPercent, formatUptime } from '../lib/format';
-import type { Tone } from '../ui/parts';
+import type { Tone } from '@webkit/parts';
 
 // Reine Daten und Funktionen der Dienste-Seite (B-068): Zustand → Badge, Zustand → Knöpfe, Ereignisse einsortieren,
 // Log-Balken, Metriken.

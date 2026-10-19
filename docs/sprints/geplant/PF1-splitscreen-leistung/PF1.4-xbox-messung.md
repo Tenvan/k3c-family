@@ -18,7 +18,7 @@
 
 - Hardware-Bahn (`docs/plan-weiterentwicklung.md` § 11.6): Diese Session sperrt nichts und läuft, sobald die Xbox bereitsteht. Ein Agent nimmt sie nicht, er darf nur den Build bereitstellen.
 - Gerät wie beim ersten Befund: Xbox, Edge, Server `pi-gaming` (Build mit PF1.2 auf dem Pi), zwei Controller.
-- Das Debug-Overlay (`src/scenes/debugOverlay.ts`) zeigt FPS, Snapshot-Hz, „letzter Snapshot … ms“, Puffer und Latenz (und die Frame-Zeit, falls PF1.1 sie ergänzt hat).
+- Das Debug-Overlay (`src/scenes/debug/debugOverlay.ts`) zeigt FPS, Snapshot-Hz, „letzter Snapshot … ms“, Puffer und Latenz (und die Frame-Zeit, falls PF1.1 sie ergänzt hat).
 - Ziel laut B-194/AC-02: im Mittel ≥ 55 FPS im Split-Screen mit zwei Spielern.
 - Die offene Frage aus B-194 (welches Szenario auf `testing.html`, ruckelt auch `game.html`?) klärt 🧑 hier mit: beide Seiten messen.
 

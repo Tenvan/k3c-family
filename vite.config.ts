@@ -57,8 +57,8 @@ export default defineConfig({
   },
   preview: { host: true, port: 4173 },
   // .claude/worktrees enthält komplette Checkouts anderer Branches; deren Tests gehören nicht zu diesem Lauf.
-  // tools/k3c-studio prüft sein eigenes Vitest (Aliase @game/@data, task check:studio).
-  test: { exclude: [...configDefaults.exclude, '.claude/**', 'tools/cockpit/**', 'tools/k3c-studio/**'] },
+  // tools/k3c-studio und tools/k3c-dev/frontend prüfen ihr eigenes Vitest (Aliase @game/@data/@webkit, task check:studio, check:dev).
+  test: { exclude: [...configDefaults.exclude, '.claude/**', 'tools/cockpit/**', 'tools/k3c-studio/**', 'tools/k3c-dev/frontend/**'] },
   build: {
     target: 'es2022',
     chunkSizeWarningLimit: 2000,

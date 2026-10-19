@@ -1,7 +1,7 @@
 import { Callout, Dialog, Flex, IconButton, Progress, Text, TextField } from '@radix-ui/themes';
 import { useEffect, useMemo, useRef, useState, type KeyboardEvent, type ReactNode, type RefObject } from 'react';
 import { backend } from '../api';
-import { errorText } from '../lib/errors';
+import { errorText } from '@webkit/errors';
 import { MarkdownView } from '../ui/MarkdownView';
 import { CopyPrompt } from './PromptParts';
 import { parseDoc, type ReaderSection } from './readerDoc';

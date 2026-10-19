@@ -1,4 +1,4 @@
-# B-438 · Werkstatt und Bäume aus tools/gebaeude erscheinen im Spiel
+# B-438 · Werkstatt und Bäume aus tools/buildings erscheinen im Spiel
 
 - **Domäne:** CLI
 - **Typ:** Idee
@@ -14,11 +14,11 @@
 
 ## Ausgangslage
 
-Sprint GEB1 hat Werkstatt, Tanne, Pappel und Birke mit `tools/gebaeude` erzeugt (`public/grafik/gebaeude/`, Regeln `docs/standards/gebaeude-grafik.md`). Ralf hat sie am 2026-10-16 in 32 und 16 px abgenommen und als Spiel-Dichte 32 px je Kachel ×1 festgelegt. Bisher erscheinen sie nur in der Asset-Vorschau; Slot `workshop` und `node:tree` in `data/assets.json` zeigen weiter die alten Packs.
+Sprint GEB1 hat Werkstatt, Tanne, Pappel und Birke mit `tools/buildings` erzeugt (`public/grafik/gebaeude/`, Regeln `docs/standards/gebaeude-grafik.md`). Ralf hat sie am 2026-10-16 in 32 und 16 px abgenommen und als Spiel-Dichte 32 px je Kachel ×1 festgelegt. Bisher erscheinen sie nur in der Asset-Vorschau; Slot `workshop` und `node:tree` in `data/assets.json` zeigen weiter die alten Packs.
 
 ## Ziel
 
-Im Spiel zeigen die Bäume (`node:tree`) die Grafiken aus `tools/gebaeude` (Tanne, Pappel, Birke) als überlappende Reihe in 32 px je Kachel ×1; alte Baum-Grafik wird nach der Aufräum-Regel des Projekts gelöscht. Die Werkstatt ist erledigt (GEB2.3).
+Im Spiel zeigen die Bäume (`node:tree`) die Grafiken aus `tools/buildings` (Tanne, Pappel, Birke) als überlappende Reihe in 32 px je Kachel ×1; alte Baum-Grafik wird nach der Aufräum-Regel des Projekts gelöscht. Die Werkstatt ist erledigt (GEB2.3).
 
 Eingeplant 2026-10-16 (Chat, Ralf) in GEB6 (Natur und Objekte), weil GEB6 die Bäume ohnehin behandelt.
 

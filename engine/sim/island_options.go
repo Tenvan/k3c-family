@@ -6,7 +6,7 @@ import (
 	"slices"
 )
 
-// Raum-Optionen der Insel (B-101): Schwierigkeitsgrad, Ziel und Niederlage-Modus. Das Ziel prüft victory.go (B-102);
+// Raum-Optionen der Insel (B-101): Schwierigkeitsgrad, Ziel und Niederlage-Modus. Das Ziel prüft island_victory.go (B-102);
 // der Niederlage-Modus ist hier nur ein Wert, seine Wirkung folgt mit B-102 (K2.2b). Die Regeln gelten nur für Inseln (World.island != nil).
 
 // IslandOptions sind die Optionen einer Insel. Grad: dev, easy, normal, hard, ultra.

@@ -2,7 +2,7 @@ import { Button, SegmentedControl, Select, Text, TextField } from '@radix-ui/the
 import { useMemo, useState, type CSSProperties } from 'react';
 import type { AssetKind, AssetSlot, AssetStatus } from '../api';
 import { loadText, savePref } from '../lib/prefs';
-import { NoticeCard, type Tone } from '../ui/parts';
+import { NoticeCard, type Tone } from '@webkit/parts';
 import { Splitter, useSplit } from '../ui/Splitter';
 import { CATEGORIES, countStatus, filterSlots, selectionOf, typen, typOf } from './assets';
 import { SlotDetail } from './SlotDetail';

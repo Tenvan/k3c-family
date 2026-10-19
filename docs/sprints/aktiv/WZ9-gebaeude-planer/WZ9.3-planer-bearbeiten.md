@@ -19,14 +19,14 @@ Der Gebäude-Planer bearbeitet die Freischaltung (Stufe, Platz, Tiefe, `needsDee
 - Baut auf WZ9.2 (Matrix, Kandidat, Live-Vorschau) und der Schreibregel aus B-459/AC-07 (atomar, bei extern geänderter Datei nicht überschreiben).
 - Das Speichern im Planer ist eine REG-Änderung durch 🧑 außerhalb des Sprints: Kein Sprint-Commit enthält eine geänderte `data/hub.json` oder Regeltabelle; Tests arbeiten auf Kopien (temporäres Verzeichnis).
 - Prüfung ausschließlich über die Go-Funktion aus WZ15.3 (eine Quelle der Regeln), nicht im Frontend nachbauen. Format-stabil: Schlüsselreihenfolge, Einrückung und Zahlenformat der Datei bleiben, Diff nur in geänderten Zeilen.
-- Das Ersetzen des Blocks zwischen den Markern kommt aus `tools/regeltabelle/tabelle` (Funktion aus WZ15.2), nicht aus `main`; das Studio baut es nicht nach.
+- Das Ersetzen des Blocks zwischen den Markern kommt aus `tools/ruletable/table` (Funktion aus WZ15.2), nicht aus `main`; das Studio baut es nicht nach.
 - Beispiel: Rüstkammer auf Stufe 3 → Live-Vorschau zeigt sie sofort → Speichern → zwei Diffs: eine Zeile in `data/hub.json` und der neu erzeugte Block in § 3; Hinweis „REG-Änderung, Goldens prüfen“. Die Meldung „Regeltabelle veraltet“ erscheint nur, wenn das Schreiben des Blocks scheitert.
 
 ## Erlaubte Dateien
 
 - `tools/k3c-studio/` (Backend, `frontend/`, Tests)
 - `tools/assetkit/` nur, wenn die gemeinsame Schreibregel dort liegt (Änderung abwärtskompatibel)
-- Lesen: `tools/regeltabelle/tabelle/`; geschrieben wird `docs/rules/materialien-gebaeude.md` nur zur Laufzeit des Studios und in Tests nur als Kopie in `t.TempDir()`
+- Lesen: `tools/ruletable/table/`; geschrieben wird `docs/rules/materialien-gebaeude.md` nur zur Laufzeit des Studios und in Tests nur als Kopie in `t.TempDir()`
 
 ## Nicht-Ziele
 
@@ -36,7 +36,7 @@ Keine echte Änderung an `data/hub.json`, der Regeltabelle oder `testdata/golden
 
 1. Frontend: Zellen der Matrix bearbeiten (`hubLevel`, `offsetUnits`, `fromDepth`, `needsDeeper` je Platz; `gateHubLevel`; `wallUnits[k]`; Händler `buyOffsetUnits`, `sellOffsetUnits`, `onlyDepth`), Plätze bekannter Arten hinzufügen und entfernen (Hinweis, dass alte Spielstände den entfernten Platz verlieren); Änderung als Kandidat führen, Live-Vorschau folgt.
 2. Backend: Kandidat mit der Funktion aus WZ15.3 prüfen, Befunde (inklusive geplanter Chunks, sofern WZ8) anzeigen; Speichern nur ohne Befund.
-3. Backend: atomares, format-stabiles Schreiben nach `data/hub.json`, danach den erzeugten Block (Funktionen aus `tools/regeltabelle/tabelle`) zwischen den Markern in `docs/rules/materialien-gebaeude.md` § 3, ebenfalls atomar; Text außerhalb der Marker bleibt byte-gleich. Scheitert der zweite Schritt, bleibt `data/hub.json` gespeichert, Meldung „Regeltabelle veraltet, `task rules:update`“.
+3. Backend: atomares, format-stabiles Schreiben nach `data/hub.json`, danach den erzeugten Block (Funktionen aus `tools/ruletable/table`) zwischen den Markern in `docs/rules/materialien-gebaeude.md` § 3, ebenfalls atomar; Text außerhalb der Marker bleibt byte-gleich. Scheitert der zweite Schritt, bleibt `data/hub.json` gespeichert, Meldung „Regeltabelle veraltet, `task rules:update`“.
 4. Schreibregel: Hash beider Dateien beim Laden merken; hat sich eine seither geändert, nicht schreiben, Neuladen anbieten, Eingaben behalten.
 5. Hinweis nach dem Speichern: „REG-Änderung: Commit mit Begründung (`data/hub.json` und Regeltabelle), `task golden:update` nur bei gewollter Änderung“.
 6. Tests auf Kopien: Rüstkammer-Beispiel mit Ein-Zeilen-Diff in `data/hub.json`, Platz hinzufügen und entfernen, `gateHubLevel`, Händler und `wallUnits` ändern, extern geänderte Datei (je Datei), ungültiger Kandidat, atomares Schreiben, Fehler im Tabellenschritt.

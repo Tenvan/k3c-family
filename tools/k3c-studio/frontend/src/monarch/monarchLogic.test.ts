@@ -2,10 +2,10 @@ import { describe, expect, it } from 'vitest';
 import monarchJson from '@data/monarch.json';
 import spritesJson from '@data/sprites.json';
 import { PLAYER_COLORS } from '@game/core/constants';
-import { mountPose } from '@game/scenes/mountPose';
-import type { MountData, SheetData, SpriteSpec } from '@game/scenes/sprites';
+import { mountPose } from '@game/scenes/render/mountPose';
+import type { MountData, SheetData, SpriteSpec } from '@game/scenes/render/sprites';
 import type { AssetSlot } from '../api';
-import { MOUNTS, SHEETS, mountPoseOf } from '../abspiel/figure';
+import { MOUNTS, SHEETS, mountPoseOf } from '../playback/figure';
 import { DEFAULT_MOUNT, MONARCH_ANIMS, MOUNT_KEYS, MOVES, PLAYERS, REF_SPEED, SPACING, monarchItems, moveOf, slotOptions } from './monarchLogic';
 
 // B-463 (WZ10.2): Vorschau-Liste, Reittiere, Spielerfarben und Grafik-Auswahl der Monarch-Seite.

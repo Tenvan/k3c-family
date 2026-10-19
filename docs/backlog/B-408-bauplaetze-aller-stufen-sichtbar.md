@@ -14,7 +14,7 @@
 
 ## Ausgangslage
 
-Bei der Sichtung von W6.2 (2026-10-11, 🧑) werden Bauplätze „von allen Stufen“ angezeigt, auch solche, die in der aktuellen Hub-Stufe oder Stufe noch nicht bezahlbar sind (`data/hub.json › sites` mit `hubLevel`, `fromDepth`, `needsDeeper`). Ob der Server sie im Zustand schickt oder der Client sie ungefiltert zeichnet (`src/scenes/worldRenderer.ts` › `this.sites.sync(world.sites)`), ist noch nicht geklärt.
+Bei der Sichtung von W6.2 (2026-10-11, 🧑) werden Bauplätze „von allen Stufen“ angezeigt, auch solche, die in der aktuellen Hub-Stufe oder Stufe noch nicht bezahlbar sind (`data/hub.json › sites` mit `hubLevel`, `fromDepth`, `needsDeeper`). Ob der Server sie im Zustand schickt oder der Client sie ungefiltert zeichnet (`src/scenes/render/worldRenderer.ts` › `this.sites.sync(world.sites)`), ist noch nicht geklärt.
 
 ## Ziel
 

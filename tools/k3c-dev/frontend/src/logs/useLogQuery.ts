@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useRef, useState, type RefObject } from 'react';
 import { backend, type LogQuery, type LogView } from '../api';
-import { errorText } from '../lib/errors';
+import { errorText } from '@webkit/errors';
 
 const POLL_MS = 2000; // B-064: alle 2 s nachladen, solange die Ansicht unten steht
 

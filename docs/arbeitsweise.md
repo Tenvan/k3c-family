@@ -245,7 +245,20 @@ Niedrige Komplexität ist in **jeder** Session Pflicht, nicht erst im Review.
   `engine/` nichts aus `cmd/`. Im Client rechnet `src/scenes` nichts, es zeichnet Snapshots.
   `src/model` enthält keine Logik; der Client importiert Typen und Daten nur von dort.
 - Werkzeuge: Oxlint (TypeScript), `golangci-lint` mit `funlen`, `gocyclo`, `depguard` (Go);
-  Go-Verschachtelung: `tests/nesting_test.go`; Dateilänge beider Sprachen: `tests/projectRules.test.ts`.
+  Go-Verschachtelung: `engine/internal/rules/nesting_test.go`; Dateilänge beider Sprachen: `tests/projectRules.test.ts`.
+
+### Namen und Ablage im Code
+
+- **Datei- und Ordnernamen im Code sind englisch** (`engine/`, `cmd/`, `src/`, `tools/`), camelCase in TypeScript,
+  snake_case in Go, React-Komponenten wie ihre Komponente. Deutsch bleiben Doku, Spieltexte, Task-Namen, Seiten
+  (`*.html`) und Begriffe aus dem Glossar in Kommentaren und Texten. Bestand wird angepasst, wenn eine Session die Datei
+  ohnehin ändert.
+- **Gruppen statt flacher Ordner:** In `engine/sim` beginnt jede Datei mit ihrer Gruppe (`building_`, `unit_`,
+  `monarch_`, `enemies_`, `boss_`, `skills_`, `events_`, `island_`, `hub_`, `world_`, `save_`); Kern-Dateien
+  (`world.go`, `types.go`, `data.go`, `common.go` …) haben keine. `src/scenes` hält nur Szenen und ihre Logik, der Rest
+  liegt in `render/`, `hud/`, `hints/`, `effects/`, `debug/`. Ab etwa 30 Dateien bekommt ein Ordner Gruppen.
+- Tests liegen neben dem Code; `tests/` nur für Regeln über das ganze Repo (TypeScript), Go-Regeln in
+  `engine/internal/rules`. Gemeinsame Oberflächen-Bausteine von k3c-dev und Asset-Studio liegen in `tools/webkit`.
 
 ## Golden aktualisieren
 

@@ -19,8 +19,12 @@
     "types": ["vite/client", "node"],
     "paths": {
       "@game/*": ["../../../src/*"],
-      "@data/*": ["../../../data/*"]
+      "@data/*": ["../../../data/*"],
+      "@webkit/*": ["../../webkit/*"],
+      "react": ["./node_modules/@types/react"],
+      "react/*": ["./node_modules/@types/react/*"],
+      "@radix-ui/themes": ["./node_modules/@radix-ui/themes"]
     }
   },
-  "include": ["src", "paths.ts", "vite.config.ts", "vitest.config.ts"]
+  "include": ["src", "../../webkit", "paths.ts", "vite.config.ts", "vitest.config.ts"]
 }

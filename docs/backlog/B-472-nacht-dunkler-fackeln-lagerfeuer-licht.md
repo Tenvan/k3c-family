@@ -14,7 +14,7 @@
 
 ## Ausgangslage
 
-Der Client zeichnet die Dunkelheit der Nacht über `daylight()` in `src/scenes/viewRules.ts` (Morgengrauen = letzte 10 % der Nacht). Nacht und Morgengrauen sind nach Ralf (2026-10-17, Chat zu `B-460 › Offene Fragen` 13) zu hell: sie sollen deutlich dunkler werden, dafür sollen Fackeln und Lagerfeuer Licht abgeben. Berührt B-460 (Welt-Betrachter, Tageszeit-Auswahl) und B-470 (Morgengrauen als echte Phase). Die Details (Dunkelstufe, Lichtradius, Lichtquellen) sind offen.
+Der Client zeichnet die Dunkelheit der Nacht über `daylight()` in `src/scenes/render/viewRules.ts` (Morgengrauen = letzte 10 % der Nacht). Nacht und Morgengrauen sind nach Ralf (2026-10-17, Chat zu `B-460 › Offene Fragen` 13) zu hell: sie sollen deutlich dunkler werden, dafür sollen Fackeln und Lagerfeuer Licht abgeben. Berührt B-460 (Welt-Betrachter, Tageszeit-Auswahl) und B-470 (Morgengrauen als echte Phase). Die Details (Dunkelstufe, Lichtradius, Lichtquellen) sind offen.
 
 ## Ziel
 
@@ -26,7 +26,7 @@ Spieler sehen die Nacht im Spiel (alle Spieler, auch Split-Screen). 🧑 entsche
 
 ## Anforderungen
 
-- Nacht und Morgengrauen werden gegenüber heute (`daylight()` in `src/scenes/viewRules.ts`) dunkler; die genaue Dunkelstufe legt 🧑 fest.
+- Nacht und Morgengrauen werden gegenüber heute (`daylight()` in `src/scenes/render/viewRules.ts`) dunkler; die genaue Dunkelstufe legt 🧑 fest.
 - Fackeln und Lagerfeuer erhellen ihre Umgebung (Lichtkegel mit Radius); Radius und Stärke sind Werte in `data/`, nicht im Code.
 - Die Darstellung ist deterministisch, rein Client-seitig (keine Änderung der Simulation) und läuft mit 2 Spielern im Split-Screen sowie auf der Xbox (Edge) ohne spürbaren Leistungseinbruch.
 - Der Welt-Betrachter (B-460) übernimmt die Änderung über dieselbe Funktion `daylight()` und dieselben Renderer; es entsteht keine zweite Kopie.

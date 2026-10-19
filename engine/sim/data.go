@@ -27,16 +27,16 @@ type BuildingData struct {
 	HP, BuildSeconds                 float64
 	Cost                             Cost
 	ArcherSlots, RangeBonus, BowRack int
-	SwordRack                        int                // Werkstatt: Schwerter im Regal (warrior.go)
-	Offers                           []Offer            // Angebots-Zahlziele am Gebäude (Q52), Berufe: professions.go
-	CraftSeconds                     map[string]float64 // Herstellungszeit je Stück (Q35, professions.go)
+	SwordRack                        int                // Werkstatt: Schwerter im Regal (unit_warrior.go)
+	Offers                           []Offer            // Angebots-Zahlziele am Gebäude (Q52), Berufe: unit_professions.go
+	CraftSeconds                     map[string]float64 // Herstellungszeit je Stück (Q35, unit_professions.go)
 	Levels                           []LevelData        // Ausbau-Stufen am Platz (Mauer, Turm; hub_level.go)
-	Plantation                       Plantation         // Farm: Bäume wachsen nach (plantation.go)
-	TroopLimit                       TroopLimit         // Kaserne: Kämpfer-Limit je Hub (barracks.go)
-	Vagrants                         Vagrants           // Taverne: Landstreicher je dawn (tavern.go)
-	Heal                             Heal               // Heilplatz (healing.go)
-	Spell                            Spell              // Turm ab Stufe FromLevel: Zaubertum (spell_tower.go)
-	Armor                            []ArmorStage       // Rüstkammer: Rüstungsstufen (upgrades.go)
+	Plantation                       Plantation         // Farm: Bäume wachsen nach (building_plantation.go)
+	TroopLimit                       TroopLimit         // Kaserne: Kämpfer-Limit je Hub (building_barracks.go)
+	Vagrants                         Vagrants           // Taverne: Landstreicher je dawn (building_tavern.go)
+	Heal                             Heal               // Heilplatz (building_healer.go)
+	Spell                            Spell              // Turm ab Stufe FromLevel: Zaubertum (building_spell_tower.go)
+	Armor                            []ArmorStage       // Rüstkammer: Rüstungsstufen (building_upgrades.go)
 }
 
 // ArmorStage: Rüstungsstufe ab HubLevel, HPBonus als Anteil der Basis-HP aller Kämpfer (Q37).
@@ -74,9 +74,9 @@ type Offer struct {
 type TroopData struct {
 	HP, Speed, Damage, Range, AttacksPerSecond float64
 	Cost, RecruitCost                          Cost
-	Professions                                map[string]ProfessionData // nur peasant: Berufe (professions.go)
-	PostUnits                                  float64                   // Krieger: Posten innen vor der Sperre (warrior.go)
-	UpgradeFrom                                string                    // Elite: aus dieser Figur aufgewertet (upgrades.go)
+	Professions                                map[string]ProfessionData // nur peasant: Berufe (unit_professions.go)
+	PostUnits                                  float64                   // Krieger: Posten innen vor der Sperre (unit_warrior.go)
+	UpgradeFrom                                string                    // Elite: aus dieser Figur aufgewertet (building_upgrades.go)
 }
 
 // Gatherable ist eine Ressource, die Bauern holen (Baum, Fels, Kupfererz).
@@ -98,7 +98,7 @@ type EnemyData struct {
 	SwarmSize                int
 	Phases                   struct{ EverySeconds, DurationSeconds float64 }
 	KiteDistance             float64
-	GrabRange                float64 // Units, in denen er Ausrüstung am Boden wegträgt (equipment_taken.go); 0 = nie
+	GrabRange                float64 // Units, in denen er Ausrüstung am Boden wegträgt (enemies_equipment_taken.go); 0 = nie
 }
 
 // HubSite ist ein Bauplatz relativ zur Hub-Mitte.
@@ -150,7 +150,7 @@ var (
 			Amount int
 		}
 		Gatherables map[string]Gatherable
-		Veins       map[string]VeinData // Adern (vein.go), nicht in Gatherables
+		Veins       map[string]VeinData // Adern (world_vein.go), nicht in Gatherables
 		Storage     struct{ BasePerHub, PerStorage int }
 		RecruitCamp struct {
 			MaxVagrants                 int
@@ -270,7 +270,7 @@ func hasDepth(depth int) bool {
 	return false
 }
 
-// Goals sind die Startwerte der Siegvarianten aus data/goals.json (victory.go).
+// Goals sind die Startwerte der Siegvarianten aus data/goals.json (island_victory.go).
 type Goals struct {
 	Gold, Days int
 }

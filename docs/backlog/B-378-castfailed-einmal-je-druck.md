@@ -14,7 +14,7 @@
 
 ## Ausgangslage
 
-Seit S9.1a (B-321) sendet `castSkill` (`engine/sim/skills.go`) `castFailed {from, slot, x}`, wenn ein bereiter Skill kein Ziel findet, ohne Abklingzeit. Hält ein Spieler die Taste, entsteht das Ereignis in jedem Tick (30 Hz), also bis zu 30 Ereignisse je Sekunde und Spieler im Netz. Der Client stapelt seit dem Review S9.4 keine Texte mehr (`src/scenes/effectsView.ts` › `label`), das Netz-Budget (Q08, ≤ 200 Byte je Tick und Client) belastet es trotzdem. Ob `TestEventsBudgetJeTick` gehaltene Tasten abdeckt, ist ungeprüft.
+Seit S9.1a (B-321) sendet `castSkill` (`engine/sim/skills.go`) `castFailed {from, slot, x}`, wenn ein bereiter Skill kein Ziel findet, ohne Abklingzeit. Hält ein Spieler die Taste, entsteht das Ereignis in jedem Tick (30 Hz), also bis zu 30 Ereignisse je Sekunde und Spieler im Netz. Der Client stapelt seit dem Review S9.4 keine Texte mehr (`src/scenes/effects/effectsView.ts` › `label`), das Netz-Budget (Q08, ≤ 200 Byte je Tick und Client) belastet es trotzdem. Ob `TestEventsBudgetJeTick` gehaltene Tasten abdeckt, ist ungeprüft.
 
 ## Ziel
 

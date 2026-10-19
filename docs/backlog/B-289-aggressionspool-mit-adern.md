@@ -54,4 +54,4 @@ Weg (🧑): `percentPerGather` senken, Ader-Lieferungen nicht oder schwächer z�
 
 ## Notizen
 
-Gefunden in W2.1 (`gatherPressure`, `engine/sim/units.go`).
+Gefunden in W2.1 (`gatherPressure`, `engine/sim/unit_common.go`).

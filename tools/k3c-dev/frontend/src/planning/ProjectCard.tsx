@@ -1,7 +1,7 @@
 import { Button } from '@radix-ui/themes';
 import type { ReactNode } from 'react';
 import type { PlanningData, PlanSprint } from '../api';
-import { NoticeCard } from '../ui/parts';
+import { NoticeCard } from '@webkit/parts';
 import { FoldButton, headClick, unfold, useFold } from './fold';
 import { Pill, stateTone } from './Pill';
 import { sessionProgress, stepRank, type ProjectView } from './projects';

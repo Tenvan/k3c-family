@@ -14,7 +14,7 @@
 
 ## Ausgangslage
 
-`gatherPressure` (`engine/sim/units.go`, Zeile 186) erhöht den Aggressionspool je vollständig abgegebener Lieferung um `cycle.percentPerGather` (1 % in `data/biomes/cave.json` und `mine.json`); Aufrufer sind `units.go` (Zeile 181) und `carryToStock` (`engine/sim/island_storage.go`, Zeile 70). Bisher begrenzt der endliche Startvorrat die Lieferungen. Mit den unendlichen Adern aus W2 (B-114) gilt das nicht mehr: Bei 10 Einheiten je Lieferung (wie `data/economy.json` › `gatherables`, Menge der Adern legt W2.1 fest) liefern 2 Stein-Adern mit je 2 Bauern 120 Stein/min = 12 Lieferungen/min, also +12 %/min zusätzlich zum Grundwert +1 %/min. Der Pool ist damit ohne Kills nach etwa 7,7 min voll, mit Kills (+5 % je Kill) deutlich früher. Rechnung, nicht gemessen.
+`gatherPressure` (`engine/sim/unit_common.go`, Zeile 186) erhöht den Aggressionspool je vollständig abgegebener Lieferung um `cycle.percentPerGather` (1 % in `data/biomes/cave.json` und `mine.json`); Aufrufer sind `unit_common.go` (Zeile 181) und `carryToStock` (`engine/sim/island_storage.go`, Zeile 70). Bisher begrenzt der endliche Startvorrat die Lieferungen. Mit den unendlichen Adern aus W2 (B-114) gilt das nicht mehr: Bei 10 Einheiten je Lieferung (wie `data/economy.json` › `gatherables`, Menge der Adern legt W2.1 fest) liefern 2 Stein-Adern mit je 2 Bauern 120 Stein/min = 12 Lieferungen/min, also +12 %/min zusätzlich zum Grundwert +1 %/min. Der Pool ist damit ohne Kills nach etwa 7,7 min voll, mit Kills (+5 % je Kill) deutlich früher. Rechnung, nicht gemessen.
 
 ## Ziel
 

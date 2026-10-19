@@ -5,7 +5,7 @@ import { t } from '../core/texts';
 import type { RoomClient, Status } from '../online/clientConnection';
 import type { GameSceneData } from './GameScene';
 import { LobbyFlow, applyCommand, entryLabel, lobbyEntries, lobbyNotice, moveSelection, parseStartParams, rowAt, slotsFor, type StartParams } from './lobbyLogic';
-import { VERSION_KEY } from './debugOverlay';
+import { VERSION_KEY } from './debug/debugOverlay';
 import { musicDirector } from '../audio/music';
 
 export interface LobbySceneData {

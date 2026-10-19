@@ -1,5 +1,5 @@
 # Grenzen aus docs/arbeitsweise.md › Komplexitäts-Budget, wie im Hauptmodul (.golangci.yml im Repo).
-# Dateilänge und Verschachtelung prüfen tests/projectRules.test.ts und tests/nesting_test.go.
+# Dateilänge und Verschachtelung prüfen tests/projectRules.test.ts und engine/internal/rules/nesting_test.go.
 version: "2"
 
 linters:

@@ -70,11 +70,15 @@ prüft die Regeln unten automatisch (Seiten eingetragen, `installPageChrome()`, 
   `task studio:frontend`), Kachel „Welten bauen“ auf der Landingpage (`studio.html`); nur im Dev-Mode und nur Loopback (B-459). `tools/assetkit` – gemeinsame Asset-Logik
   beider (eigenes Go-Modul, per `replace` eingebunden). `tools/k3c-starter` – Windows-Starter für den Server (Wails-Fenster
   startet `bin/k3c-server`, zeigt Status und Adresse, EXE `bin/k3c-starter.exe`, `task k3c-starter:build`, B-041).
+  `tools/webkit` – gemeinsame Oberflächen-Bausteine der Frontends von k3c-dev und Studio (`@webkit/…`).
+  CLIs: `tools/atlas`, `tools/buildings` (`task gebaeude`), `tools/ruletable` (`task rules:update`), `tools/cleanup` (`task aufraeumen`).
 - `src/model/` – Typen und Daten, die der Client vom Server kennt (`World`, `GameEvent`, `BIOMES`, `SaveGame` …), keine Logik.
 - `src/online/` – Client des Go-Servers (`clientConnection.ts`, Version in `clientProtocol.ts`): sendet nur Eingaben, zeichnet Snapshots. Ein Monarch pro Gerät.
 - `src/input/` – `PlayerInput`-Abstraktion (Tastatur, Gamepad, Touch-Overlay `touchInput.ts`, per `?touch=1` erzwingbar). Spiel-Code fragt Aktionen ab, nie konkrete Tasten.
-- `src/scenes/` – Phaser-Szenen (`GameScene` = Eingabe, `step()`, Kameras; `worldRenderer.ts` zeichnet den Zustand;
-  `HudScene` = bildschirmfeste Anzeigen). Neue Mechanik: Logik + Test in `engine/sim/`, dann nur zeichnen.
+- `src/scenes/` – Phaser-Szenen (`GameScene` = Eingabe, `step()`, Kameras; `HudScene` = bildschirmfeste Anzeigen);
+  Unterordner `render/` (`worldRenderer.ts` zeichnet den Zustand), `hud/`, `hints/`, `effects/`, `debug/`.
+  Neue Mechanik: Logik + Test in `engine/sim/`, dann nur zeichnen.
+- Namen und Ablage: Datei- und Ordnernamen im Code englisch, Gruppen-Präfixe in `engine/sim` (`docs/arbeitsweise.md` › Namen und Ablage).
 - Seiten: `index.html` = Landingpage/Shell (Kacheln aus `src/landing/pages.ts`), `game.html` = Spiel, weitere `*.html` = Testseiten.
   Jede `*.html` im Root wird automatisch gebaut.
 - `site/` – Präsentationsseite für GitHub Pages (B-183), rein statisch, ohne Server. `task pages` baut sie mit dem Build unter `app/` nach `_site/`.

@@ -112,7 +112,7 @@ func TestTorAusDenDaten(t *testing.T) {
 }
 
 // W3.2 (B-116/AC-03, Sprint W3 AC-03): Schmiede und Rüstkammer lassen sich bauen (oben, ab ihrer Hub-Stufe) und
-// zerstören; ihre Wirkung prüft upgrades_test.go (W4.3b, B-313).
+// zerstören; ihre Wirkung prüft building_upgrades_test.go (W4.3b, B-313).
 func TestSchmiedeUndRuestkammerZerstoerbar(t *testing.T) {
 	for _, kind := range []string{"smithy", "armory"} {
 		w := wantHubBuildFromData(t, kind)

@@ -8,7 +8,7 @@ Standardszenario **Wald, 2 Spieler, Bot „sparsam“, Normal, je 100 Seeds**.
 > betreten werden (wie in K2C), sondern: **1 Spielstand/Raum → n Inseln → pro Insel n Stufen.** Die Stufen einer Insel gehören zu
 > **einer** Insel und sind **pro Spieler frei begehbar**; jeder Spieler kann sich in einer anderen Stufe aufhalten.
 > Ein **Level** ist eine Stufe (wie Generator und Code), die Insel ist die Sammlung ihrer Stufen (Q61, 2026-10-04).
-> Im Code ist das heute anders (eine Stufe = eine Welt, alle reisen gemeinsam, `engine/sim/campaign.go`, `travel.go`).
+> Im Code ist das heute anders (eine Stufe = eine Welt, alle reisen gemeinsam, `engine/sim/campaign.go`, `world_travel.go`).
 > Entscheidung: [`../decisions/003-spielstruktur-inseln-stufen.md`](../decisions/003-spielstruktur-inseln-stufen.md).
 
 ## 1. Aufbau: Spielstand, Inseln, Stufen

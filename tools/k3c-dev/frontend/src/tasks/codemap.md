@@ -24,5 +24,5 @@ Reiter Tasks: Katalog der Go-Task-Ziele (`Taskfile.yml`) als Baum durchsuchen, m
 ## Integration
 
 - Konsument: `App.tsx` (Tab `tasks`); `Splitter`/`useSplit` nutzen zusätzlich `planning/SprintsBacklog.tsx`, `mcp/McpPage.tsx` und `mcp/StatsView.tsx`.
-- Abhängigkeiten: `api` (`TaskCatalog`, `TaskInfo`, `TaskRun`, `TaskGates`), `logs/ConsoleView`, `lib/` (`format`, `prefs`, `errors`), `ui/parts`, `@radix-ui/themes`.
+- Abhängigkeiten: `api` (`TaskCatalog`, `TaskInfo`, `TaskRun`, `TaskGates`), `logs/ConsoleView`, `lib/` (`format`, `prefs`), `@webkit/errors`, `@webkit/parts`, `@radix-ui/themes`.
 - Go-Seite: `Tasks`, `TasksReload`, `TaskStart`, `TaskStop`, `TaskRuns`, `TaskGatesView`, `TaskGateToggle`, `TaskGateSave`; Event `task:state`; Mock: `api/mockTasks.ts`.

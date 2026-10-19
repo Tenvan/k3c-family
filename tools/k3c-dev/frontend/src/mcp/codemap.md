@@ -22,5 +22,5 @@ Reiter MCP: Beobachtbarkeit des eingebauten MCP-Servers (Zustand, Tool-Kacheln, 
 ## Integration
 
 - Konsument: `App.tsx` (Tab `mcp`); `markdown.ts` nutzt zusätzlich `ui/MarkdownView.tsx` (auch von `planning/`).
-- Abhängigkeiten: `api` (`backend`, `McpCall`, `McpOverview`, `McpUsage`, `ToolStats` …), `lib/` (`format`, `prefs`, `useNow`, `errors`), `tasks/TaskBars` (`Splitter`, `useSplit`), `ui/parts`, `@radix-ui/themes`.
+- Abhängigkeiten: `api` (`backend`, `McpCall`, `McpOverview`, `McpUsage`, `ToolStats` …), `lib/` (`format`, `prefs`, `useNow`), `@webkit/errors`, `tasks/TaskBars` (`Splitter`, `useSplit`), `@webkit/parts`, `@radix-ui/themes`.
 - Go-Seite: `McpOverview`, `McpRestart`, `McpInstructions`, `McpCalls`, `McpUsage`; Events `mcp:state`, `mcp:start`, `mcp:call`.

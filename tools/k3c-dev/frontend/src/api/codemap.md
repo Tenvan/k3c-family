@@ -16,7 +16,7 @@ Backend-Vertrag der Oberfläche (Port/Adapter): typisiert alle Aufrufe und Ereig
 1. Beim Modulimport entscheidet `index.ts` über `hasWails()` und baut genau eine `backend`-Instanz.
 2. Komponenten und Hooks rufen `backend.<methode>()` (Promise) auf; Wails leitet an die Go-Methode weiter, der Mock beantwortet aus seinem Zustand.
 3. Für Live-Daten registrieren sie `backend.on(event, fn)` und erhalten eine Unsubscribe-Funktion; Go emittiert per Wails-Runtime, der Mock per `emit()`.
-4. Fehler kommen als abgelehntes Promise (Wails: String, Mock: Error) und werden mit `lib/errors.ts` zu Text.
+4. Fehler kommen als abgelehntes Promise (Wails: String, Mock: Error) und werden mit `@webkit/errors` (`tools/webkit/errors.ts`) zu Text.
 
 ## Integration
 

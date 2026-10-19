@@ -1,7 +1,7 @@
 import { Text } from '@radix-ui/themes';
 import { useEffect, useState } from 'react';
 import { backend, type GitHubData } from '../api';
-import { ActionButton } from '../ui/parts';
+import { ActionButton } from '@webkit/parts';
 import { Pill } from './Pill';
 
 /** GitHub-Stand: beim Öffnen und bei `planning:changed` aus dem Zwischenspeicher, per Knopf frisch. */

@@ -8,7 +8,7 @@ import (
 	"testing"
 
 	assets "k3c/tools/assetkit"
-	"k3c/tools/regeltabelle/tabelle"
+	"k3c/tools/ruletable/table"
 )
 
 // WZ9.3 (B-462/AC-02, AC-03, AC-05, AC-06): Speichern im Gebäude-Planer, ausschließlich auf Kopien in t.TempDir().
@@ -56,11 +56,11 @@ func wantSaved(t *testing.T, root, rulesBefore string, res HubSaveResult) {
 	if res.Stand != (HubStand{Hub: stamp([]byte(hub)), Rules: stamp([]byte(doc))}) {
 		t.Errorf("Stand nach dem Speichern %+v passt nicht zu den Dateien", res.Stand)
 	}
-	if same, _, _, err := tabelle.Gegenprobe(doc, []byte(hub)); err != nil || !same {
+	if same, _, _, err := table.Gegenprobe(doc, []byte(hub)); err != nil || !same {
 		t.Errorf("Regeltabelle nicht zur gespeicherten hub.json erzeugt: %v", err)
 	}
-	from, to := strings.Index(doc, tabelle.Start), strings.Index(doc, tabelle.End)+len(tabelle.End)
-	bf, bt := strings.Index(rulesBefore, tabelle.Start), strings.Index(rulesBefore, tabelle.End)+len(tabelle.End)
+	from, to := strings.Index(doc, table.Start), strings.Index(doc, table.End)+len(table.End)
+	bf, bt := strings.Index(rulesBefore, table.Start), strings.Index(rulesBefore, table.End)+len(table.End)
 	if doc[:from] != rulesBefore[:bf] || doc[to:] != rulesBefore[bt:] {
 		t.Error("Regeltabelle außerhalb der Marken verändert")
 	}
@@ -211,7 +211,7 @@ func TestHubSaveExternGeaendert(t *testing.T) {
 // Scheitert der Tabellenschritt (Marken fehlen), bleibt hub.json gespeichert: „Regeltabelle veraltet“.
 func TestHubSaveFehlerImTabellenschritt(t *testing.T) {
 	root := planerCopy(t, hubFile)
-	write(t, filepath.Join(root, filepath.FromSlash(rulesFile)), strings.Replace(readRepo(t, rulesFile), tabelle.Start, "", 1))
+	write(t, filepath.Join(root, filepath.FromSlash(rulesFile)), strings.Replace(readRepo(t, rulesFile), table.Start, "", 1))
 	hubBefore, rulesBefore := readIn(t, root, hubFile), readIn(t, root, rulesFile)
 	_, res := saveEdit(t, root, func(m map[string]any) { site(m, "sites", 8)["hubLevel"] = 3 })
 	if !res.Saved || !strings.HasPrefix(res.RulesError, "Regeltabelle veraltet, task rules:update") || res.Notice != regNotice {

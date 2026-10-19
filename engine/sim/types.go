@@ -49,7 +49,7 @@ type Player struct {
 	Shield       float64 `json:"shield,omitempty"`
 	ShieldFor    float64 `json:"shieldFor,omitempty"`
 	LastStandFor float64 `json:"lastStandFor,omitempty"`
-	// ReviveProgress: Sekunden, die ein Mitspieler diesen Gefallenen schon wiederbelebt (revive.go, B-120).
+	// ReviveProgress: Sekunden, die ein Mitspieler diesen Gefallenen schon wiederbelebt (monarch_revive.go, B-120).
 	ReviveProgress float64 `json:"reviveProgress,omitempty"`
 	reviving       bool    // belebt in diesem Tick jemanden wieder (lässt keine Münze fallen), ohne JSON
 	hit            bool    // seit dem letzten stepRevive wirksam getroffen, ohne JSON
@@ -65,13 +65,13 @@ type Coin struct {
 
 // Job ist der Auftrag eines Bauern; es sind nur die Felder seines Typs gesetzt (IDs sind nie 0).
 type Job struct {
-	Type     string  `json:"type"` // build, repair, gather, carry, fetchBow, fetchSword, pickup (Ausrüstung, warrior.go)
+	Type     string  `json:"type"` // build, repair, gather, carry, fetchBow, fetchSword, pickup (Ausrüstung, unit_warrior.go)
 	SiteID   int     `json:"siteId,omitempty"`
 	DropID   int     `json:"dropId,omitempty"`
 	NodeID   int     `json:"nodeId,omitempty"`
 	Resource string  `json:"resource,omitempty"`
 	Amount   int     `json:"amount,omitempty"`
-	progress float64 // Abbau an einer Ader (vein.go): Fortschritt dieses Bauern, ohne JSON
+	progress float64 // Abbau an einer Ader (world_vein.go): Fortschritt dieses Bauern, ohne JSON
 }
 
 // Troop ist eine eigene Einheit: vagrant, peasant oder archer.
@@ -87,10 +87,10 @@ type Troop struct {
 	Cooldown float64 `json:"cooldown"`
 	TowerID  *int    `json:"towerId"`
 	PaidGold int     `json:"paidGold"` // Landstreicher: bereits bezahltes Rekrutierungs-Gold
-	// Profession: Beruf eines Bauern (miner, builder, craftsman; professions.go), WorkSite: Gebäude eines Handwerkers.
+	// Profession: Beruf eines Bauern (miner, builder, craftsman; unit_professions.go), WorkSite: Gebäude eines Handwerkers.
 	Profession string `json:"profession,omitempty"`
 	WorkSite   int    `json:"workSite,omitempty"`
-	hitBy      string // Gegnerart des letzten Treffers für disarmed (warrior.go), ohne JSON
+	hitBy      string // Gegnerart des letzten Treffers für disarmed (unit_warrior.go), ohne JSON
 	// carried: Material, das ein Träger in einer Insel bei vollem Maximum behält, während er einen Bauauftrag übernimmt.
 	carried *Job
 }
@@ -104,7 +104,7 @@ type ResourceNode struct {
 	Marked   bool    `json:"marked"`
 	WorkerID *int    `json:"workerId"`
 	Progress float64 `json:"progress"`
-	gone     bool    // abgebaut und aus Nodes entfernt (Plantage, plantation.go)
+	gone     bool    // abgebaut und aus Nodes entfernt (Plantage, building_plantation.go)
 }
 
 // Site ist ein Bauplatz im Hub. State: unpaid, waitingMaterial, waitingWorker, built.
@@ -119,14 +119,14 @@ type Site struct {
 	MaxHP         float64 `json:"maxHp"`
 	WorkerID      *int    `json:"workerId"`
 	Bows          int     `json:"bows"`        // Werkstatt: fertige Bögen im Regal
-	BowPaidGold   int     `json:"bowPaidGold"` // bezahltes Gold für das Produkt am Platz (Werkstatt: Bogen; upgrades.go)
+	BowPaidGold   int     `json:"bowPaidGold"` // bezahltes Gold für das Produkt am Platz (Werkstatt: Bogen; building_upgrades.go)
 	// CraftDone: Spielzeit, zu der das Produkt am Platz fertig ist (Werkstatt: Bogen im Regal, Schmiede:
 	// Elite-Bogenschütze, Rüstkammer: Rüstungsstufe; 0 = keins in Arbeit); OfferPaid: bezahltes Gold je Angebot (Index
-	// wie buildings[Kind].Offers); OfferDone: wie CraftDone für das Elite-Krieger-Angebot der Schmiede (upgrades.go).
+	// wie buildings[Kind].Offers); OfferDone: wie CraftDone für das Elite-Krieger-Angebot der Schmiede (building_upgrades.go).
 	CraftDone float64 `json:"craftDone,omitempty"`
 	OfferPaid []int   `json:"offerPaid,omitempty"`
 	OfferDone float64 `json:"offerDone,omitempty"`
-	// Schwerter der Werkstatt (warrior.go), wie Bows, BowPaidGold und CraftDone.
+	// Schwerter der Werkstatt (unit_warrior.go), wie Bows, BowPaidGold und CraftDone.
 	Swords        int     `json:"swords,omitempty"`
 	SwordPaidGold int     `json:"swordPaidGold,omitempty"`
 	SwordDone     float64 `json:"swordDone,omitempty"`
@@ -135,8 +135,8 @@ type Site struct {
 	Level       int     `json:"level,omitempty"`
 	Upgrade     string  `json:"upgrade,omitempty"`
 	UpgradePaid int     `json:"upgradePaid,omitempty"`
-	plots       []plot  // Plantage einer gebauten Farm (plantation.go), ohne JSON
-	spellIn     float64 // Zaubertum: Sekunden bis zum nächsten Schuss (spell_tower.go), ohne JSON
+	plots       []plot  // Plantage einer gebauten Farm (building_plantation.go), ohne JSON
+	spellIn     float64 // Zaubertum: Sekunden bis zum nächsten Schuss (building_spell_tower.go), ohne JSON
 }
 
 // Castle ist die Burg in der Hub-Mitte.
@@ -161,7 +161,7 @@ type Enemy struct {
 	Cooldown    float64  `json:"cooldown"`
 	Fleeing     bool     `json:"fleeing"`
 	CarriedGold int      `json:"carriedGold"`
-	Carried     *Drop    `json:"carried,omitempty"` // weggetragene Ausrüstung (equipment_taken.go)
+	Carried     *Drop    `json:"carried,omitempty"` // weggetragene Ausrüstung (enemies_equipment_taken.go)
 	HomeX       float64  `json:"homeX"`             // Portal, aus dem der Gegner kam
 	// Stun: Sekunden betäubt (kein Schritt, kein Angriff). TauntFor: so lange zielt der Gegner auf den Spieler TauntID.
 	Stun     float64 `json:"stun,omitempty"`
@@ -173,7 +173,7 @@ type Enemy struct {
 	// AoeIn: Sekunden bis zum nächsten Flächenschlag (`aoe`); Spawned: Spawn-Zeit, nur bei `phases` (enemies_traits.go).
 	AoeIn   float64 `json:"aoeIn,omitempty"`
 	Spawned float64 `json:"spawned,omitempty"`
-	// Phase (nur Endboss, ab 1) und Warn (nächster Flächenschlag) spiegeln den Kampf für das Protokoll (state_mirror.go).
+	// Phase (nur Endboss, ab 1) und Warn (nächster Flächenschlag) spiegeln den Kampf für das Protokoll (world_state_mirror.go).
 	Phase int       `json:"phase,omitempty"`
 	Warn  *WarnZone `json:"warn,omitempty"`
 	// Boss: Miniboss oder Endboss (boss.go); Kind ist dann die Boss-ID aus data/bosses.json, AoeIn zählt bis zur
@@ -273,7 +273,7 @@ type World struct {
 	HubX       float64 `json:"hubX"`
 	// HubLevel ist die Hub-Stufe (Start 1, Ausbau an der Burg: hub_level.go); ohne JSON-Ausgabe (B-208).
 	HubLevel int `json:"-"`
-	// ArmorLevel ist die Rüstungsstufe der Kämpfer dieses Hubs (0 = keine, Rüstkammer: upgrades.go).
+	// ArmorLevel ist die Rüstungsstufe der Kämpfer dieses Hubs (0 = keine, Rüstkammer: building_upgrades.go).
 	ArmorLevel int `json:"armorLevel,omitempty"`
 	// hubSite ist der Zahlplatz für den Hub-Ausbau an der Burg (nicht in Sites, hub_level.go).
 	hubSite *Site
@@ -302,9 +302,9 @@ type World struct {
 	SkillPoints int       `json:"skillPoints"`
 	Travel      *Travel   `json:"travel"`
 	Merchant    *Merchant `json:"merchant,omitempty"` // Händler, nur in Tiefe 0 (merchant.go)
-	Drops       []*Drop   `json:"drops,omitempty"`    // Ausrüstung am Boden (warrior.go)
+	Drops       []*Drop   `json:"drops,omitempty"`    // Ausrüstung am Boden (unit_warrior.go)
 	Events      []Event   `json:"events"`             // wird bei jedem Step geleert
-	// NightEvents und IslandSwitch spiegeln den Zustand für das Protokoll (state_mirror.go); fehlen, wenn es sie nicht gibt.
+	// NightEvents und IslandSwitch spiegeln den Zustand für das Protokoll (world_state_mirror.go); fehlen, wenn es sie nicht gibt.
 	NightEvents  []ActiveEvent `json:"nightEvents,omitempty"`
 	IslandSwitch *SwitchState  `json:"islandSwitch,omitempty"`
 	// EventsDropped zählt die Ereignisse, die die Obergrenze je Tick in diesem Step verworfen hat (capEvents).
@@ -313,7 +313,7 @@ type World struct {
 	// noTravel: Die Stufe gehört zu einer Insel, deren Spieler einzeln wechseln (island_travel.go); der gemeinsame
 	// Stufenwechsel der Campaign (stepTravel) ist dort aus.
 	noTravel bool
-	// lavaIn: Sekunden bis zum nächsten Lava-Schaden (lava.go).
+	// lavaIn: Sekunden bis zum nächsten Lava-Schaden (world_lava.go).
 	lavaIn float64
 	// island: die Insel, zu der die Stufe gehört (nil bei Campaign und einzelnen Welten: keine Optionen, Faktor 1,
 	// kein Lager-Maximum).

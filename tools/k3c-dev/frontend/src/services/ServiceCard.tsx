@@ -1,8 +1,8 @@
 import { AlertDialog, Button, Flex } from '@radix-ui/themes';
 import { useState } from 'react';
 import { backend, type ServiceStatus } from '../api';
-import { errorText } from '../lib/errors';
-import { StatusBadge } from '../ui/parts';
+import { errorText } from '@webkit/errors';
+import { StatusBadge } from '@webkit/parts';
 import { RoleTags } from '../logs/RoleTags';
 import { badgeFor, buttonsFor, metricsOf, type Command } from './tables';
 

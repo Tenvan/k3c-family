@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { backend } from './api';
-import { errorText } from './lib/errors';
-import { ActionButton, StatusBadge, Tip } from './ui/parts';
+import { errorText } from '@webkit/errors';
+import { ActionButton, StatusBadge, Tip } from '@webkit/parts';
 
 /** Verweis „Asset-Studio öffnen“ (B-459): startet bin/k3c-studio.exe; die Assets-Seite lebt seit WZ6 dort.
  *  Fehlt die EXE, steht der Hinweis aus Go daneben, bis der nächste Versuch gelingt. */

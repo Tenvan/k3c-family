@@ -12,7 +12,7 @@
 
 ## Ausgangslage
 
-FPS, Zustands-Abstand, Puffer und Latenz zeigt nur das Debug-Overlay (`src/scenes/debugOverlay.ts`) zum Ablesen. `sim_test` mit Clients (TR1.3) findet deshalb keine Diagnose-Zeilen im Client-Log (B-351), und Einbrüche wie bei N2.4 lassen sich weder festhalten noch einer Ursache zuordnen (B-334).
+FPS, Zustands-Abstand, Puffer und Latenz zeigt nur das Debug-Overlay (`src/scenes/debug/debugOverlay.ts`) zum Ablesen. `sim_test` mit Clients (TR1.3) findet deshalb keine Diagnose-Zeilen im Client-Log (B-351), und Einbrüche wie bei N2.4 lassen sich weder festhalten noch einer Ursache zuordnen (B-334).
 
 ## Ziel
 

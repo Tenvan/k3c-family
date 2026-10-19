@@ -14,7 +14,7 @@
 
 ## Ausgangslage
 
-Bei der Abnahme N2.4 (2026-10-07, PC, Tastatur, 1 Spieler, `task load` mit 2 Räumen im Hintergrund) lief das Spiel für 🧑 generell flüssig, mit sporadischen Einbrüchen; die Ursache kann auch ein paralleler Build gewesen sein. Leistungswerte (FPS, Snapshot-Abstand, Puffer, Latenz Mittel/p95) zeigt heute nur das Debug-Overlay (`src/scenes/debugOverlay.ts`) zum Ablesen; 🧑: „Manuell macht das keinen Sinn.“ Einbrüche lassen sich so weder festhalten noch einer Ursache zuordnen.
+Bei der Abnahme N2.4 (2026-10-07, PC, Tastatur, 1 Spieler, `task load` mit 2 Räumen im Hintergrund) lief das Spiel für 🧑 generell flüssig, mit sporadischen Einbrüchen; die Ursache kann auch ein paralleler Build gewesen sein. Leistungswerte (FPS, Snapshot-Abstand, Puffer, Latenz Mittel/p95) zeigt heute nur das Debug-Overlay (`src/scenes/debug/debugOverlay.ts`) zum Ablesen; 🧑: „Manuell macht das keinen Sinn.“ Einbrüche lassen sich so weder festhalten noch einer Ursache zuordnen.
 
 ## Ziel
 

@@ -16,15 +16,15 @@ Im Asset-Studio zeigt die Seite Gebäude-Planer die Matrix Hub-Stufe × Bauplatz
 
 ## Kontext
 
-- Voraussetzungen: Asset-Studio (WZ6, erledigt), Live-Vorschau (WZ7.3), Snapshot-Option (WZ9.1), Generator-Paket `tools/regeltabelle/tabelle` (WZ15.2). Fehlt WZ7.3, WZ9.1 oder WZ15.2, Session `blockiert`.
-- Das Studio ist ein eigenes Go-Modul mit Wails-Oberfläche (`tools/k3c-studio/`: `app.go`, `frontend/`). Die Abweichung (Ist-Block der Tabelle gegen soll-Block aus der JSON) rechnet das Go-Backend mit der Funktion aus `tools/regeltabelle/tabelle`. Geschrieben wird der Block erst in WZ9.3.
+- Voraussetzungen: Asset-Studio (WZ6, erledigt), Live-Vorschau (WZ7.3), Snapshot-Option (WZ9.1), Generator-Paket `tools/ruletable/table` (WZ15.2). Fehlt WZ7.3, WZ9.1 oder WZ15.2, Session `blockiert`.
+- Das Studio ist ein eigenes Go-Modul mit Wails-Oberfläche (`tools/k3c-studio/`: `app.go`, `frontend/`). Die Abweichung (Ist-Block der Tabelle gegen soll-Block aus der JSON) rechnet das Go-Backend mit der Funktion aus `tools/ruletable/table`. Geschrieben wird der Block erst in WZ9.3.
 - Matrix: Zeilen Bauplatz (`sites`, `islandSites`, Mauerlinien, Tor, Händler), Spalten Hub-Stufen aus `levels` (beliebig viele, keine feste 5). Begriffe laut Glossar („Gebäude-Planer“, „Live-Vorschau“, „Hub-Stufe“).
 - Firewall-Regel des Studios (B-459) und Dateiregeln (≤ 400 Zeilen, Funktion ≤ 60) beachten.
 
 ## Erlaubte Dateien
 
 - `tools/k3c-studio/` (Backend, `frontend/`, Tests)
-- `tools/regeltabelle/tabelle/` nur lesend importieren (go.mod `replace` im Studio-Modul ist erlaubt)
+- `tools/ruletable/table/` nur lesend importieren (go.mod `replace` im Studio-Modul ist erlaubt)
 - Kein neuer Glossar-Begriff (WZ6.1 trägt „Gebäude-Planer“ ein); fehlt einer, Ticket anlegen
 
 ## Nicht-Ziele

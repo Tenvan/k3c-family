@@ -14,7 +14,7 @@
 
 ## Ausgangslage
 
-Bei Gefahr läuft eine Truppe ohne Auftrag zu `w.HubX + t.ID%5 - 2` (`engine/sim/units.go`, `stepTroop`). Jede neue Entity vor den Truppen (z. B. ein neuer Bauplatz in `data/hub.json`) verschiebt alle IDs und damit die Schutzplätze. In W0.1 hat das sieben neue Plätze zu Positions-, Kampf- und Münz-Änderungen in neun `sim-*.json` gemacht, obwohl sich keine Regel für Truppen geändert hat.
+Bei Gefahr läuft eine Truppe ohne Auftrag zu `w.HubX + t.ID%5 - 2` (`engine/sim/unit_common.go`, `stepTroop`). Jede neue Entity vor den Truppen (z. B. ein neuer Bauplatz in `data/hub.json`) verschiebt alle IDs und damit die Schutzplätze. In W0.1 hat das sieben neue Plätze zu Positions-, Kampf- und Münz-Änderungen in neun `sim-*.json` gemacht, obwohl sich keine Regel für Truppen geändert hat.
 
 ## Ziel
 

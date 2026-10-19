@@ -14,7 +14,7 @@
 
 ## Ausgangslage
 
-Seit K2.2b endet eine Insel im Niederlage-Modus „Komplett verloren“ mit `Island.Over = true` und dem Ereignis `gameOver` (`engine/sim/defeat.go`); `StepIsland` ändert danach nichts mehr. `engine/room/` speichert aber weiter (Autosave bei `dawn`, beim Verlassen) und würde den Stand nach dem Game Over über den letzten Spielstand schreiben.
+Seit K2.2b endet eine Insel im Niederlage-Modus „Komplett verloren“ mit `Island.Over = true` und dem Ereignis `gameOver` (`engine/sim/island_defeat.go`); `StepIsland` ändert danach nichts mehr. `engine/room/` speichert aber weiter (Autosave bei `dawn`, beim Verlassen) und würde den Stand nach dem Game Over über den letzten Spielstand schreiben.
 
 ## Ziel
 

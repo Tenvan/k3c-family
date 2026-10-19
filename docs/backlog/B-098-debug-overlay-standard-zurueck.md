@@ -14,7 +14,7 @@
 
 ## Ausgangslage
 
-In der Entwicklungsphase ist das Debug-Overlay (B-093, Revision 2) ohne Parameter verfügbar, nur `?dev=0` schaltet es ab (`debugEnabled` in `src/scenes/debugOverlay.ts`). Für Spielende (Familie, Xbox) soll es das später nicht sein.
+In der Entwicklungsphase ist das Debug-Overlay (B-093, Revision 2) ohne Parameter verfügbar, nur `?dev=0` schaltet es ab (`debugEnabled` in `src/scenes/debug/debugOverlay.ts`). Für Spielende (Familie, Xbox) soll es das später nicht sein.
 
 ## Ziel
 

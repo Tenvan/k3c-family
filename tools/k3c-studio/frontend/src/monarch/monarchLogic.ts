@@ -2,8 +2,8 @@ import monarchJson from '@data/monarch.json';
 import spritesJson from '@data/sprites.json';
 import { PLAYER_COLORS } from '@game/core/constants';
 import type { AssetSlot } from '../api';
-import { ANIMS, MOUNTS, SHEETS, animInfo, gap, type Anim, type FigureSpec, type Gap } from '../abspiel/figure';
-import type { FigureItem } from '../abspiel/figureView';
+import { ANIMS, MOUNTS, SHEETS, animInfo, gap, type Anim, type FigureSpec, type Gap } from '../playback/figure';
+import type { FigureItem } from '../playback/figureView';
 import type { Action } from './actions';
 
 // Reine Logik der Monarch-Seite (B-463, WZ10.2): Vorschau-Liste, Reittiere, Spielerfarben, Grafik-Auswahl. Werte stammen

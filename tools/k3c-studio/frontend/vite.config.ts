@@ -1,6 +1,6 @@
 import react from '@vitejs/plugin-react';
 import { defineConfig } from 'vite';
-import { ALIAS, DIST, PUBLIC, REPO } from './paths.ts';
+import { ALIAS, DEDUPE, DIST, PUBLIC, REPO } from './paths.ts';
 
 // Frontend des Asset-Studios (B-459), eine Seite des Go-Servers: `vite build` schreibt nach dist/studio/ (der Server
 // liefert dist/ aus, die Landingpage verlinkt studio.html), `base: './'` hält die Adressen relativ.
@@ -11,7 +11,7 @@ export default defineConfig(({ command }) => ({
   appType: 'mpa',
   base: './',
   plugins: [react()],
-  resolve: { alias: ALIAS },
+  resolve: { alias: ALIAS, dedupe: DEDUPE },
   publicDir: command === 'serve' ? PUBLIC : false,
   build: { outDir: DIST, emptyOutDir: true },
   server: {

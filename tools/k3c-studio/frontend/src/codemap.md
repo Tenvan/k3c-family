@@ -4,12 +4,13 @@
 React-Oberfläche des Asset-Studios: Rahmen mit Seitenwahl und die Seiten Grafik, Sound, Welten Editor, Gebäude-Planer, Monarch und Gegner.
 
 ## Design
-- `main.tsx` mountet `App`; `App.tsx`: Kopfzeile mit Tabs (`PAGES`: grafik, sound, welt, planer, monarch, gegner), gemerkte Seite unter `k3c-studio.app.page`, Mock-Hinweis ohne Wails; nur die offene Seite ist eingehängt (Sound stoppt beim Verlassen).
-- Seiten: `grafik/`, `sound/` (auf `assets/`), `world/`, `planer/`, `monarch/`, `gegner/` (auf `abspiel/`); gemeinsam `stage/` (Phaser-Bühne), `api/` (Backend und Mock), `lib/`, `ui/` (`parts.tsx`, `Splitter.tsx`), `styles/` (`theme.css`, `app.css`, `assets.css`, `szenen.css`, `world.css`, `planer.css`).
-- Spielcode nur lesend über die Aliase `@game` (`src/`) und `@data` (`data/`); Test `App.test.tsx`.
+- `main.tsx`: mountet `App` und lädt die Stile (Radix-Theme, `@webkit/theme.css`, `styles/*.css`).
+- `App.tsx`: Rahmen mit Kopfzeile und Tabs (`PAGES`: grafik, sound, welt, planer, monarch, gegner; Seiten-IDs deutsch, Ordner englisch), gemerkte Seite unter `k3c-studio.app.page`, Hinweis „Mock“ bei `backend.mock`; nur die offene Seite ist eingehängt (Sound stoppt beim Verlassen).
+- Seiten: `graphics/`, `sound/` (beide auf `assets/`), `world/`, `planner/`, `monarch/`, `enemies/` (beide auf `playback/`); gemeinsam `stage/` (Phaser-Bühne), `api/` (HTTP-Backend und Mock), `lib/` (`prefs.ts`: bindet `createPrefs` aus `@webkit/prefs` an `k3c-studio.`), `ui/` (`Splitter.tsx`), `styles/` (`app.css`, `assets.css`, `szenen.css`, `world.css`, `planer.css`).
+- Spielcode nur lesend über die Aliase `@game` (`src/`) und `@data` (`data/`); geteilte UI-Teile über `@webkit` (`tools/webkit/`: `errors.ts`, `useDebounced.ts`, `parts.tsx`, `theme.css`, `prefs.ts`); Test `App.test.tsx`.
 
 ## Flow
-Start → `App` liest die gemerkte Seite → Seite lädt über `backend` (Wails oder Mock) → Änderungen gehen als Binding-Aufruf mit `stand` ans Go-Backend.
+Start → `App` liest die gemerkte Seite → Seite lädt über `backend` (HTTP oder Mock) → Änderungen gehen als `POST /api/studio/rpc/<Methode>` mit `stand` an das Go-Backend `engine/studio`.
 
 ## Integration
-- Backend: `tools/k3c-studio/app*.go`; Build und Aliase: `../vite.config.ts`, `../paths.ts`.
+- Backend: `engine/studio/` (Go-Paket des Servers, Routen unter `/api/studio/`); Build und Aliase (`ALIAS`, `DEDUPE`): `../vite.config.ts`, `../paths.ts`; Ausgabe `dist/studio/`.

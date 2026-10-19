@@ -15,19 +15,19 @@ import "math"
 //	coinGive      – Münze gegeben: player, x, to (site, recruit, mark, offer, merchant); fällt sie nur zu Boden, kein Ereignis
 //	buildProgress – Bau fortgeschritten: site (ID), kind, x, percent (25, 50, 75; fertig = built)
 //	revive        – Monarch steht nach der Wartezeit wieder: player, x
-//	revived       – Monarch von einem Mitspieler wiederbelebt (A halten, revive.go; Q62): player, x
-//	trained       – Bauer ausgebildet (professions.go): kind (miner, builder, craftsman), x
+//	revived       – Monarch von einem Mitspieler wiederbelebt (A halten, monarch_revive.go; Q62): player, x
+//	trained       – Bauer ausgebildet (unit_professions.go): kind (miner, builder, craftsman), x
 //	merchantArrived – Händler kommt (merchant.go): resource, x (Zahlziel Kaufen); merchantLeft – Händler reist ab
 //	merchantFled  – Händler bei 0 HP geflohen, ein halber Kauf fällt als Münzen (merchant.go, B-373); hit mit target merchant
-//	disarmed      – Bürger verliert seine Ausrüstung (Verlust-Kaskade, warrior.go; Q67, Q69): kind (Figur oder
+//	disarmed      – Bürger verliert seine Ausrüstung (Verlust-Kaskade, unit_warrior.go; Q67, Q69): kind (Figur oder
 //	                Beruf), x, cause (Gegnerart wie playerDown); ohne Priorität, nicht beim Burgfall
-//	equipmentTaken – Gegner trägt Ausrüstung weg (Q68, Q69); kind (Figur oder Beruf), x (equipment_taken.go)
+//	equipmentTaken – Gegner trägt Ausrüstung weg (Q68, Q69); kind (Figur oder Beruf), x (enemies_equipment_taken.go)
 //	traded        – Tausch am Händler: player, resource, amount (+ gekauft, − verkauft), gold (− bezahlt, + erhalten)
 //	bossSpawned   – Boss erscheint (boss.go): boss (ID aus data/bosses.json), x
 //	bossDefeated  – Boss besiegt, Belohnung gegeben (boss.go): boss, x; statt `kill`
 //	bossPhase     – Endboss wechselt in die nächste Phase, je Wechsel einmal (boss_endboss.go): boss, phase (ab 2)
-//	victory       – Ziel der Insel erreicht, genau einmal je Insel, in Stufe 0 (victory.go): goal (Variante), day
-//	gameOver      – Burg gefallen im Niederlage-Modus „Komplett verloren“ (defeat.go): ohne Felder außer stage; danach
+//	victory       – Ziel der Insel erreicht, genau einmal je Insel, in Stufe 0 (island_victory.go): goal (Variante), day
+//	gameOver      – Burg gefallen im Niederlage-Modus „Komplett verloren“ (island_defeat.go): ohne Felder außer stage; danach
 //	                ruht die Insel (Island.Over), nach `castleFallen` im selben Tick
 //	islandGateOpen – Endboss besiegt, Wechselpunkt zur nächsten Insel offen, in der tiefsten Stufe (island_switch.go):
 //	                island (Index der nächsten Insel), x (Burg)

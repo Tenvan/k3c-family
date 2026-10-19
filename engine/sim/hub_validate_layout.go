@@ -48,7 +48,7 @@ func lineTargets(l WallLineData, left, right int) []hubTarget {
 }
 
 // fixedTargets: Burg, Hub- und Insel-Plätze (ohne Linien), Händler und Angebote, die es in Tiefe depth gibt
-// (deeper: es gibt eine tiefere Stufe), wie lines.go, island.go und merchant.go sie anlegen.
+// (deeper: es gibt eine tiefere Stufe), wie world_lines.go, island.go und merchant.go sie anlegen.
 func fixedTargets(h *HubData, depth int, deeper bool) []hubTarget {
 	out := []hubTarget{{"castle", 0}}
 	if depth == h.Merchant.OnlyDepth {

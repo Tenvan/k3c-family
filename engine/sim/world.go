@@ -155,7 +155,7 @@ func Step(w *World, commands []PlayerCommand, dt float64) {
 	stepStorms(w, dt)
 	stepProjectiles(w, dt)
 	removeDeadEnemies(w)
-	for _, t := range w.Troops { // Bürger sterben nicht: Verlust-Kaskade (Q67, warrior.go)
+	for _, t := range w.Troops { // Bürger sterben nicht: Verlust-Kaskade (Q67, unit_warrior.go)
 		if t.HP <= 0 {
 			loseLayer(w, t)
 		}
@@ -168,7 +168,7 @@ func Step(w *World, commands []PlayerCommand, dt float64) {
 }
 
 // castleFallen: Die Burg fällt. Respawn am Hub, die Burg steht danach wieder; die Verluste folgen dem Niederlage-Modus
-// der Insel (defeat.go). In einer geschützten Nacht (protectedNight) bleiben Gebäude, Ressourcen, Gold und Truppen.
+// der Insel (island_defeat.go). In einer geschützten Nacht (protectedNight) bleiben Gebäude, Ressourcen, Gold und Truppen.
 func castleFallen(w *World) {
 	w.Events = append(w.Events, Event{"type": "castleFallen"})
 	if w.Cycle.Phase == "night" {

@@ -2,8 +2,8 @@ import { Button, Flex, Select, TextField } from '@radix-ui/themes';
 import { useLayoutEffect, useRef, useState } from 'react';
 import type { LogEntry } from '../api';
 import { formatTime } from '../lib/format';
-import { useDebounced } from '../lib/useDebounced';
-import { NoticeCard, StatusBadge } from '../ui/parts';
+import { useDebounced } from '@webkit/useDebounced';
+import { NoticeCard, StatusBadge } from '@webkit/parts';
 import { budgetNote, entryKeys, footer, LEVEL_FILTERS, levelTone, LIMITS, oldestFirst, prettyData } from './logview';
 import { useLogQuery } from './useLogQuery';
 

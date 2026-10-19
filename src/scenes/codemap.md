@@ -2,38 +2,35 @@
 
 ## Responsibility
 
-Presentation Layer des Browser-Clients (Phaser 4): Szenen, Kamera-Layout, Rendering, Hinweis-Overlays (Aktionen, Skill-Menü, geführte erste Nacht) und Feedback. Der Ordner enthält keine Spielregeln; er zeichnet die Server-Snapshots und reicht Eingaben weiter. Logik, die ohne Phaser testbar sein soll, liegt in `*Logic.ts`/`*Rules.ts`.
+Phaser-Szenen des Browser-Clients (Laden, Lobby, Spiel, HUD, Optionen) samt Split-Screen-Layout und lokalen Slots. Keine Spielregeln: die Szenen zeichnen Server-Snapshots und reichen Eingaben weiter. Logik, die ohne Phaser testbar sein soll, liegt in `*Logic.ts`.
 
 ## Design
 
-- **Scene + reine Logik (Humble Object):** `LobbyScene.ts`/`lobbyLogic.ts`, `OptionsScene.ts`/`optionsLogic.ts`, `LoadScene.ts`/`loadLogic.ts`; die Szene zeichnet nur, die Logik-Datei hält Auswahl, Befehle, Texte.
-- **Szenen:** `LoadScene` (Atlas laden) → `LobbyScene` (Raumwahl) → `GameScene` (Eingabe, Frames, Kameras) + parallel `HudScene` (bildschirmfeste Anzeigen); `OptionsScene` als Overlay.
-- **Rendering:** `worldRenderer.ts` (`WorldRenderer`, ein Phaser-Objekt je Entity-id), `stageView.ts` (`StageView` je Stufe, Platzhalter-Layer für ungeladene Zellen, Hintergrund über `backgroundLayers`), `sprites.ts` (Sheets, Reittiere `MOUNTS`, `RIDER_WAIST` aus `data/sprites.json`), `viewRules.ts` (Darstellungsregeln ohne Sim-Import: `canAfford`, `hasDepth`, `isOnTower`, `daylight`, `PRICE_TAG_RANGE`).
-- **Grafik-Zuordnung (rein, `null` = Platzhalter):** `buildingSprites.ts` (`siteTexture`, `hubTexture`, `BUILDING_TEXTURES`), `plantation.ts` (`plantationPlots`, `isPlantationTree`: Setzling und Pappel der Farm, GEB5), `worldSprites.ts` (`objectSprite`, `biomeBackground`: drei Hintergrund-Schichten `bg:<biom>:<n>` je Biom aus `gebaeude/hg-*`, Maßstab 1, GEB7; `WORLD_TEXTURES`), `natureSprites.ts` (`treeTexture`, `natureLook`, `veinSlot`, `nodeSprite`: Baumform aus der Position, Look aus dem Biom, GEB6); gezeichnet von `siteView.ts` (`createSiteView`/`updateSiteView`, `createCastleView`/`updateCastleView` (Burg je Hub-Stufe), Tor-Stufe aus `gateRules.ts` (`gateStage`), Hintergrundmauer aus `backWallRules.ts` (`backWalls`, `BackWall`) und `backWallView.ts` (`createBackWallView`/`updateBackWallView`), `preloadBuildings`/`prepareBuildings`, Preisschild; welches Preisschild steht, wählt `priceTagRules.ts`: nur das nächste je Spieler, B-395) und `objectView.ts` (`preloadWorld`/`prepareWorld`, `objectImage`, `backgroundLayers`).
-- **HUD-Layout:** `hudLayout.ts` (`hudLayout`, `hudItems`, `anchorRect`, `overlaps`, `RANK`, `GAP`: reine Rechnung, Elemente je Zelle/Bildschirm ohne Überschneidung nach Rang) + `hudElements.ts` (`HudBox`, `BOX`: Kasten-Stil, `freeAreas`); genutzt von `HudScene.ts` und `skillMenuView.ts`.
-- **HUD-Zustand (rein):** `bannerQueue.ts` (`enqueueBanner`, `fitBanner`, `BANNER_MAX_CHARS`: einzeilige Meldungsleiste), `goldFlash.ts` (`GoldFlash`, `stepGoldFlash`: Goldzahl kurz hervorheben), `controlsHint.ts` (`ControlsTrack`, `stepControlsHint`: Steuerhinweis nach Beitritt/Gerätewechsel), `joinHint.ts` (`joinHintDevices`: beitrittsfähige Geräte), `pauseBanner.ts` (`pauseShown`, `PauseBanner`: „Pausiert“-Band bei `devPaused`), `cameraFollow.ts` (`refollow`, `FollowCam`: Kamera-Nachführung).
-- **Wirtschaft/Bürger-Anzeige:** `wirtschaftAnzeige.ts` (`waitInfo`, `siteWait`, `hubWait`, `stockTexts`, `hubText`: Wartegrund, Lagerstand, Hub-Stufe aus Server-Feldern), `siteStatusView.ts` (`siteStatus`, `statusLine`, `drawSiteStatus`: Wartegrund am Bauplatz, von `siteView.ts` genutzt), `buergerAnzeige.ts` (`buergerLines`, `professionLabel`, `merchantText`, `healerRanges`: Texte je Bürger) + `buergerView.ts` (`BuergerView`, vom `WorldRenderer` genutzt).
-- **Reittier:** `mountPose.ts` (`mountPose`: reine Pose aus `vx`, `facing`, Frame und `MountContext`, `timeScale` begrenzt) + `mountView.ts` (`createRider`/`updateRider`, Container je Monarch, vom `WorldRenderer` genutzt).
-- **Hinweise mit Tasten-Glyphen:** `glyphs.ts` (`glyphOf`: Aktion + Gerät → Glyph-Schlüssel `pad:`/`key:`/`touch:`, B und View nie als Bild) und `glyphView.ts` (`drawGlyph`, `GlyphRow`: Zeile aus Text und Glyphen); `actionHints.ts` (`playerHints`/`hintView`: Aktionen aus `actions` des Servers, Bauen/Zahlen wie das Preisschild) + `actionOverlay.ts` (`ActionOverlay`, `screenAt`); `guideHints.ts` (`nextGuide`/`stepGuide`/`guideDone`: geführte erste Nacht `coin`→`pay`→`dusk`→`recruit` aus dem Snapshot) + `guideOverlay.ts` (`GuideOverlay`; gesehen-Stand über `core/guideSeen`).
-- **Skill-Menü:** `skillMenuLogic.ts` (`menuEntries`, `slotViews`, `SkillMenus.route`: lernen/Respec aus `points`/`actions` des Servers, Befehle statt Spielerkommandos) + `skillMenuView.ts` (`SkillMenuLayer`).
-- **Split-Screen:** `layout.ts` (`computeLayout`, 1–4 Zellen, `BAR_HEIGHT` der Leiste oben), `cellStages.ts` (Stufe je Zelle), `localSlots.ts` (`LocalSlots`: Eingabegerät ↔ Slot, `addSlot`/`removeSlot`/`leave`).
-- **Radar:** `radar.ts` (reine Marker-Berechnung, `radarRect`) + `radarView.ts` (`RadarLayer`).
-- **Feedback/Juice:** `effects.ts` (`effectFor`, `EFFECT_CONFIG`, Limits), `effectRules.ts` (Blitz-Sperrfenster, Shake/Rumble-Auswahl je Seat), `effectsView.ts` (`StageEffects`, Ring + Partikel).
-- **Schrift:** `fontRules.ts` (`FONTS`-Katalog, Mindestgrößen, `contrastRatio`).
-- **Debug (`?dev`):** `debugOverlay.ts` (Textzeilen, u. a. `Puffer … ms` und `Latenz … ms (p95 … ms)`), `debugOverlayView.ts` (`DebugOverlay`), `debugOverlayPanel.ts` (`CheatDialog`, `focusStep`/`muteFocused`: Controller-Fokus sperrt Spielkommandos), `debugActions.ts` (`DEV_ACTIONS` → `DevMessage`, `pauseMessage`, `roomDevMode`), `debugGestures.ts` (`holdStep`: LB+RB 3 s = Cheat-Dialog, RB 3 s = Diagnose; `tapStep`/`listenTaps`: Doppeltap mit zwei bzw. einem Finger).
-- `pauseButton.ts`: Touch-Schaltfläche „Optionen“, ein Knopf pro Seite.
+- **Szenen:** `LoadScene.ts` (Atlas und Grafiken laden) → `LobbyScene.ts` (Raumwahl) → `GameScene.ts` (Eingabe, Frames, Kameras) + parallel `HudScene.ts` (bildschirmfeste Anzeigen); `OptionsScene.ts` als Overlay.
+- **Scene + reine Logik (Humble Object):** `LoadScene`/`loadLogic.ts` (`progressText`, `barFill`, `errorText`), `LobbyScene`/`lobbyLogic.ts` (`parseStartParams`, `applyCommand`, `LobbyFlow`: Auswahl und Befehle), `OptionsScene`/`optionsLogic.ts` (`OPTION_IDS`, Menü-Eingaben); die Szene zeichnet nur.
+- **Split-Screen:** `layout.ts` (`computeLayout`, 1–4 Zellen, `BAR_HEIGHT` der Leiste oben, `viewZoom`), `cellStages.ts` (`cellStages`: Stufe je Zelle), `localSlots.ts` (`LocalSlots`: Eingabegerät ↔ Slot, `addSlot`/`removeSlot`/`leave`, `pageBots`).
+- **Regel-Tests des Ordners:** `noSim.test.ts` (Client importiert nur aus `src/model`, keine Sim), `textRule.test.ts` (Spieltexte nur in `src/core/texts.*.ts`), `goldOnlyInHud.test.ts` (Gold nur im HUD, B-398), `mountData.test.ts` (Sattelpunkte des Reittiers, B-320); weitere Tests `cellStages`, `layout`, `loadLogic`, `lobbyLogic`, `localSlots`, `optionsLogic`.
+- **Unterordner:**
+
+| Ordner | Aufgabe |
+| --- | --- |
+| [render/](render/codemap.md) | Zeichnet die `World` je Stufe: `WorldRenderer`, `StageView`, Grafik-Zuordnung, Reiter, Bürger, Schrift-Katalog |
+| [hud/](hud/codemap.md) | Bildschirmfeste HUD-Anzeigen: Layout, Meldungen, Gold, Radar, Skill-Menü, Wirtschafts-/Bürger-Texte, Pause-Hinweise |
+| [hints/](hints/codemap.md) | Tasten-Glyphen, Aktions-Overlay und geführte erste Nacht |
+| [effects/](effects/codemap.md) | Feedback: Ring-/Partikel-Effekte, Kamera-Shake, Controller-Rumble |
+| [debug/](debug/codemap.md) | Diagnose-Overlay, Cheat-Dialog, Dev-Aktionen und Gesten |
 
 ## Flow
 
-1. `main.ts` registriert die Szenen; `LoadScene` lädt den Atlas und die Grafiken (`preloadSprites`, `preloadWorld`, `preloadBuildings`; danach `createSpriteAnims`, `prepareWorld`, `prepareBuildings`) und startet `LobbyScene`.
+1. `main.ts` registriert die Szenen; `LoadScene` lädt den Atlas und die Grafiken (`preloadSprites`, `preloadWorld`, `preloadBuildings` aus `render/`; danach `createSpriteAnims`, `prepareWorld`, `prepareBuildings`) und startet `LobbyScene`.
 2. `LobbyScene` führt `LobbyFlow`/`applyCommand` gegen `RoomClient`; bei Beitritt startet `GameScene` (`GameSceneData`).
-3. `GameScene.update()`: Eingaben aus Keyboard/Gamepad/Touch → `LocalSlots` → `SkillMenus.route` (Menü fängt Befehle ab) → Kommandos an `RoomClient`; `takeFrames()` schiebt Frames in die `Timeline` und löst `GameEvent`s sofort je Frame aus; `draw()` zeichnet `timeline.sample(now)`, ersetzt das x der lokalen Monarchen durch die Vorhersage (`Predictor` aus den gesendeten Eingaben) und schreibt über `applyState` (Verzögerung `delayMs` im Debug-Overlay).
-4. `spawnEffects()` je Event: `feedback()` (Shake/Rumble), `effectFor` → `StageEffects.spawn`, `audioCore().onEvent(...)` mit `listeners()` (Kamera-Ausschnitte).
-5. `StageView`/`WorldRenderer` zeichnen die `World` je Stufe in die Layer der Zellen (Gebäude über `siteView`, Welt-Objekte über `objectView`, Reiter über `mountView`); `showOnly` ordnet Kameras zu.
-6. `HudScene` liest `GameScene.hudCells()` und `pendingEvents`, ordnet die Elemente über `hudLayout` und zeichnet Gold (`GoldFlash`), Vorrat, Meldungen (`bannerQueue`), Wirtschafts- und Bürger-Texte, Steuer-/Beitrittshinweise, `PauseBanner`, `RadarLayer`, `SkillMenuLayer` (Zustand aus `GameScene.skillMenus`), `ActionOverlay`, `GuideOverlay` und `DebugOverlay`.
-7. Menu kurz bzw. Touch-`PauseButton` → `scene.launch('options')`; Änderungen gehen über `saveSettings` zurück; wird der Schalter `guide` wieder eingeschaltet, setzt `guideSeen.reset()` die Hinweise zurück.
+3. `GameScene.update()`: Eingaben aus Keyboard/Gamepad/Touch → `LocalSlots` → `SkillMenus.route` (`hud/`; Menü fängt Befehle ab) → Kommandos an `RoomClient`; `takeFrames()` schiebt Frames in die `Timeline` und löst `GameEvent`s sofort je Frame aus; `draw()` zeichnet `timeline.sample(now)`, ersetzt das x der lokalen Monarchen durch die Vorhersage (`Predictor` aus den gesendeten Eingaben) und schreibt über `applyState` (Verzögerung `delayMs` im Debug-Overlay).
+4. `spawnEffects()` je Event: `feedback()` (Shake/Rumble), `effectFor` → `StageEffects.spawn` (`effects/`), `audioCore().onEvent(...)` mit `listeners()` (Kamera-Ausschnitte).
+5. `StageView`/`WorldRenderer` (`render/`) zeichnen die `World` je Stufe in die Layer der Zellen; `cellStages` und `showOnly` ordnen Zellen und Kameras zu.
+6. `HudScene` liest `GameScene.hudCells()` und `pendingEvents`, ordnet die Elemente über `hudLayout` und zeichnet die Anzeigen aus `hud/`, `hints/` (`ActionOverlay`, `GuideOverlay`) und `debug/` (`DebugOverlay`).
+7. Menu kurz bzw. Touch-`PauseButton` (`hud/`) → `scene.launch('options')`; Änderungen gehen über `saveSettings` zurück; wird der Schalter `guide` wieder eingeschaltet, setzt `guideSeen.reset()` die Hinweise zurück.
 
 ## Integration
 
-- Konsument: `src/main.ts` (Szenen-Registrierung, `VERSION_KEY`); `src/tools/testScenarios.test.ts`.
-- Abhängigkeiten: `src/online/` (`RoomClient`, `clientWorld`, `clientTimeline`, `clientPredict`, `clientProtocol`), `src/model/` (`types`, `data`, `biome`), `src/input/` (`playerInput`, `touchInput`), `src/audio/audioCore`, `src/input/slotBindings` (Tasten-Belegung, `Device`), `src/core/` (`constants`, `texts`, `settings`, `fullscreen`, `clientLog`, `guideSeen`), `data/sprites.json`, Grafiken unter `public/grafik/`, Phaser.
+- Konsument: `src/main.ts` (Szenen-Registrierung, `VERSION_KEY` aus `debug/debugOverlay`); `src/tools/testScenarios.test.ts` (`lobbyLogic`); Asset-Studio `tools/k3c-studio/frontend` nutzt Dateien aus `render/` und `effects/` (siehe deren Codemaps).
+- Abhängigkeiten: `src/online/` (`RoomClient`, `clientWorld`, `clientTimeline`, `clientPredict`, `clientProtocol`), `src/model/` (`types`, `data`, `biome`), `src/input/` (`playerInput`, `touchInput`, `botInput`, `slotBindings`), `src/audio/` (`audioCore`, `events`, `music`), `src/core/` (`constants`, `texts`, `settings`, `saveStore`, `fullscreen`, `clientLog`, `guideSeen`), Phaser; Unterordner nur über die eigenen Codemaps.

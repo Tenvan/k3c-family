@@ -14,7 +14,7 @@
 
 ## Ausgangslage
 
-Das Spec-Beispiel von S6 („Hinweis ‚Aufheben‘ mit Glyph ‚A‘ über der Münze“) passt nicht zur Mechanik: Münzen werden beim Drüberlaufen aufgehoben (`collectCoins`), es gibt keine Taste. S6.3 zeigt für `coin` und `dusk` daher Text ohne Glyph (`src/scenes/guideOverlay.ts`, `guide.coin`, `guide.dusk`); nur Bauplatz und Bauer tragen die Bestätigen-Glyph.
+Das Spec-Beispiel von S6 („Hinweis ‚Aufheben‘ mit Glyph ‚A‘ über der Münze“) passt nicht zur Mechanik: Münzen werden beim Drüberlaufen aufgehoben (`collectCoins`), es gibt keine Taste. S6.3 zeigt für `coin` und `dusk` daher Text ohne Glyph (`src/scenes/hints/guideOverlay.ts`, `guide.coin`, `guide.dusk`); nur Bauplatz und Bauer tragen die Bestätigen-Glyph.
 
 ## Ziel
 

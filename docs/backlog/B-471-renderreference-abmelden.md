@@ -14,7 +14,7 @@
 
 ## Ausgangslage
 
-`renderReference` (`src/tools/spriteReference.ts`) startet je Aufruf eine eigene `requestAnimationFrame`-Schleife ohne Abmeldung. Auf `figuren.html` und `aufstellung.html` läuft es einmal je Seite, im Asset-Studio (Szene Figuren, `tools/k3c-studio/frontend/src/grafik/SlotCards.tsx`) bei jedem Wechsel zur Szene und jedem Neuladen mit geänderten Figuren; alte Schleifen laufen auf abgehängten Canvases weiter (zeichnen dank `isVisible` nichts, kosten aber je Frame Rechenzeit). Gefunden im Review von WZ6.3.
+`renderReference` (`src/tools/spriteReference.ts`) startet je Aufruf eine eigene `requestAnimationFrame`-Schleife ohne Abmeldung. Auf `figuren.html` und `aufstellung.html` läuft es einmal je Seite, im Asset-Studio (Szene Figuren, `tools/k3c-studio/frontend/src/graphics/SlotCards.tsx`) bei jedem Wechsel zur Szene und jedem Neuladen mit geänderten Figuren; alte Schleifen laufen auf abgehängten Canvases weiter (zeichnen dank `isVisible` nichts, kosten aber je Frame Rechenzeit). Gefunden im Review von WZ6.3.
 
 ## Ziel
 

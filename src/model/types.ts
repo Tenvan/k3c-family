@@ -4,7 +4,7 @@ import type { RareResource, ResourceKind } from './data';
 
 /**
  * Zustand der Simulation. Reine Daten, alle Positionen in Units, Zeiten in Sekunden.
- * Phaser liest diesen Zustand nur zum Zeichnen (src/scenes/worldRenderer.ts).
+ * Phaser liest diesen Zustand nur zum Zeichnen (src/scenes/render/worldRenderer.ts).
  */
 
 export type { ResourceKind };

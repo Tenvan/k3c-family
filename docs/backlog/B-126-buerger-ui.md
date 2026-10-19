@@ -14,7 +14,7 @@
 
 ## Ausgangslage
 
-Der Client zeigt Bürger ohne Berufe, Limit oder Händler (`src/scenes/worldRenderer.ts`).
+Der Client zeigt Bürger ohne Berufe, Limit oder Händler (`src/scenes/render/worldRenderer.ts`).
 
 ## Ziel
 

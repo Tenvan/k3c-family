@@ -17,7 +17,7 @@
 `docs/rules/buerger.md` § 1 nennt Handwerker „in Werkstatt, Schmiede oder Rüstkammer (1–2 je Gebäude)“. In
 `data/buildings.json` gibt es das Angebot `craftsman` aber nur an der Werkstatt (`dx −4`, W0.1); Schmiede (nur
 `eliteWarrior`) und Rüstkammer (keine `offers`) haben keins. Seit W4.2 bindet die Ausbildung einen Handwerker an das
-Gebäude, an dessen Angebot er bezahlt wurde (`engine/sim/professions.go`), deshalb beschleunigt heute kein Handwerker
+Gebäude, an dessen Angebot er bezahlt wurde (`engine/sim/unit_professions.go`), deshalb beschleunigt heute kein Handwerker
 Elite-Upgrade und Rüstung (W4.3b).
 
 ## Ziel

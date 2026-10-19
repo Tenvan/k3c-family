@@ -34,7 +34,7 @@ type Island struct {
 	EndbossDefeated bool
 	endboss         *endbossFight
 	// GoldCollected: Münzen, die Spieler auf der Insel aufgehoben haben, jede Aufnahme zählt (Siegvariante gold,
-	// victory.go). Won: Die Insel hat ihr Ziel erreicht, `victory` kam schon. hadFinite: Es stand ein endliches
+	// island_victory.go). Won: Die Insel hat ihr Ziel erreicht, `victory` kam schon. hadFinite: Es stand ein endliches
 	// Ressourcenobjekt (mineAll). Nur im Speicher, der Spielstand folgt mit K2.3b.
 	GoldCollected int
 	Won           bool
@@ -46,7 +46,7 @@ type Island struct {
 	GateOpen       bool
 	SwitchReady    bool
 	switchProgress float64
-	// Over: Niederlage-Modus „Komplett verloren“ (defeat.go); die Insel ist zu Ende, StepIsland ändert nichts mehr.
+	// Over: Niederlage-Modus „Komplett verloren“ (island_defeat.go); die Insel ist zu Ende, StepIsland ändert nichts mehr.
 	Over bool
 	// Dev: Schalter der Dev-Aktionen (dev.go), nur im Speicher; der Raum trägt sie über den Inselwechsel.
 	Dev DevFlags

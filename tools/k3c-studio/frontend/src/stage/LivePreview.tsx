@@ -3,7 +3,7 @@ import { createPortal } from 'react-dom';
 import { useEffect, useMemo, useRef, useState, type CSSProperties, type RefObject } from 'react';
 import type { World } from '@game/model/types';
 import { backend, type SiteLook, type WorldPreviewView } from '../api';
-import { useDebounced } from '../lib/useDebounced';
+import { useDebounced } from '@webkit/useDebounced';
 import type { Look, PreviewStage, StagePosition } from './PreviewStage';
 import { stagePx } from './hudBar';
 import { BuildingFilter } from './BuildingFilter';

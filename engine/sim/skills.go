@@ -51,7 +51,7 @@ func castSkill(w *World, p *Player, slot int) {
 	s, ok := skillByID(p.Slots[slot])
 	cast := skillEffects[s.Effect.Type]
 	e, cd := s.Effect, s.Cooldown
-	mult := damageMultOf(w, p, true) // Passive (passives.go): Zauberschaden, Abklingzeit, Spell Echo
+	mult := damageMultOf(w, p, true) // Passive (monarch_passives.go): Zauberschaden, Abklingzeit, Spell Echo
 	e.Damage, e.PerSecond = float64(e.Damage*mult), float64(e.PerSecond*mult)
 	if !ok || cast == nil {
 		return

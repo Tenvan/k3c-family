@@ -51,7 +51,7 @@ Gold-Drops je Gegnerart wie in `wirtschaft.md` § 1 (Werte in `data/enemies.json
 | **Wellenform unverändert:** Oberwelt eine Welle je Nacht; unten eine Welle je 100 % Aggressionspool; **2 Portale je Stufe, ab Tiefe 3 drei**. | Bewährter Rhythmus, Tempo unten bestimmt der Spieler. | `waves.json`, `biomes/*.json` › `portals.count` | – |
 | **Wellenzähler je Stufe**; Tag und Nacht bleiben global. | Jede Stufe hat ihre eigene Steigerung. | `World.Wave` je Stufe | – |
 | Größen laut Tabelle (Welle 1–5: 5–10 Standard; 6–10: 10–15 + 1–2 Elite; ab 11: 15–20 + 3–5 Elite), dazu Wellenfaktor je Spieleranzahl der Insel (Standard- und Elite-Zahl gleich, gerundet), Faktoren des Schwierigkeitsgrads und die Insel-Tabelle. | Bestehende Tabelle als Basis. | `waves.json` › `table` | Gegner einer Welle besiegt bis Tagesanbruch (Oberwelt) in ≥ 90 % |
-| **Tagesanbruch:** Gegner fliehen nur in der Oberwelt; unten bleiben sie bis zum Tod. | Unten bestimmen Spieler das Tempo. | `cycle.go` | – |
+| **Tagesanbruch:** Gegner fliehen nur in der Oberwelt; unten bleiben sie bis zum Tod. | Unten bestimmen Spieler das Tempo. | `world_cycle.go` | – |
 | **Aggressionspool unverändert:** +1 %/min, +5 % je Kill, +1 % je gesammelter Ressource; bei 100 % eine Welle, Reset. Die Spieleranzahl wirkt nur über den Wellenfaktor. | Einfach; Tempo bleibt beim Spieler. | `biomes/cave.json`, `mine.json` (und neue Biome) | Wellen unten im Abstand 4–12 min Spielzeit (Startziel) |
 | Zielkorridor Welle: letzter Gegner einer Welle tot **innerhalb 3 min nach Spawn** in ≥ 80 %. | Wellen sollen nicht ziehen. | – | ≥ 80 % (Kennzahl fehlt, B-099) |
 

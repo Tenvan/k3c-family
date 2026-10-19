@@ -14,7 +14,7 @@
 
 ## Ausgangslage
 
-Das Debug-Overlay (Info-Zeilen, `src/scenes/debugOverlayView.ts`, oben links ab y = 96) und die Aktionsliste (`src/scenes/debugOverlayPanel.ts`, `position:fixed; right:12px; top:72px`) liegen halbtransparent über dem HUD. Befund von 🧑 in der Abnahme DBG2.3 am PC (2026-10-03).
+Das Debug-Overlay (Info-Zeilen, `src/scenes/debug/debugOverlayView.ts`, oben links ab y = 96) und die Aktionsliste (`src/scenes/debug/debugOverlayPanel.ts`, `position:fixed; right:12px; top:72px`) liegen halbtransparent über dem HUD. Befund von 🧑 in der Abnahme DBG2.3 am PC (2026-10-03).
 
 ## Ziel
 

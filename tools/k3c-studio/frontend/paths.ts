@@ -9,7 +9,11 @@ export const REPO = fileURLToPath(new URL('../../../', import.meta.url));
 export const ALIAS = {
   '@game': fileURLToPath(new URL('../../../src', import.meta.url)),
   '@data': fileURLToPath(new URL('../../../data', import.meta.url)),
+  '@webkit': fileURLToPath(new URL('../../webkit', import.meta.url)),
 };
+
+/** Pakete, die auch Dateien außerhalb des Frontends (tools/webkit) aus diesem node_modules beziehen */
+export const DEDUPE = ['react', 'react-dom', '@radix-ui/themes'];
 
 /** public/ des Spiels: liefert im Dev-Modus der Studio-Vite, sonst der Spielserver aus dist/ */
 export const PUBLIC = fileURLToPath(new URL('../../../public', import.meta.url));

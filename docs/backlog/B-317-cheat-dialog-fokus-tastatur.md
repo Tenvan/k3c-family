@@ -14,7 +14,7 @@
 
 ## Ausgangslage
 
-Beobachtung 🧑 am 2026-10-06 (Chat): Im Cheat-Dialog des Debug-Overlays (B-231, `src/scenes/debugOverlayPanel.ts`, `src/scenes/debugOverlayView.ts`) lassen sich die Buttons mit der Maus anklicken, das Fokus-Rechteck gibt aber kein Feedback. Pfeiltasten und Leertaste tun nichts. Mit dem Controller auf der Xbox geht die Bedienung ebenfalls nicht.
+Beobachtung 🧑 am 2026-10-06 (Chat): Im Cheat-Dialog des Debug-Overlays (B-231, `src/scenes/debug/debugOverlayPanel.ts`, `src/scenes/debug/debugOverlayView.ts`) lassen sich die Buttons mit der Maus anklicken, das Fokus-Rechteck gibt aber kein Feedback. Pfeiltasten und Leertaste tun nichts. Mit dem Controller auf der Xbox geht die Bedienung ebenfalls nicht.
 
 Befund im Code: Die Auswahl bewegt nur `padEdges()` (Controller-Knöpfe A, D-Pad); eine Tastatur-Bedienung außer Ä (schließen) gibt es nicht. Die Markierung ist die Klasse `.sel` (gelber Rand); ein Mausklick (`pointerdown` mit `preventDefault`) löst die Aktion aus, setzt aber weder `.sel` noch den Browser-Fokus.
 

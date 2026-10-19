@@ -23,32 +23,32 @@ Viele dieser Objekte gibt es noch nicht im Code (B-112, B-114); dann ist die Her
 
 | Objekt | Herkunft | Pack | Datei/Frame | Stil (Raster, Palette, Skalierung) | Lizenz | Status |
 |---|---|---|---|---|---|---|
-| `hub:1` | `docs/rules/materialien-gebaeude.md` § 2 | `grafik/gebaeude` | `burg-1-32.png` (Holz) | eigene Grafik (`tools/gebaeude`), 32 px je Kachel, ×1; GEB4 | eigen | zugeordnet |
-| `hub:2` | `docs/rules/materialien-gebaeude.md` § 2 | `grafik/gebaeude` | `burg-2-32.png` (Stein) | eigene Grafik (`tools/gebaeude`), 32 px je Kachel, ×1; GEB4 | eigen | zugeordnet |
-| `hub:3` | `docs/rules/materialien-gebaeude.md` § 2 | `grafik/gebaeude` | `burg-3-32.png` (Kupfer) | eigene Grafik (`tools/gebaeude`), 32 px je Kachel, ×1; GEB4 | eigen | zugeordnet |
-| `hub:4` | `docs/rules/materialien-gebaeude.md` § 2 | `grafik/gebaeude` | `burg-4-32.png` (Eisen) | eigene Grafik (`tools/gebaeude`), 32 px je Kachel, ×1; GEB4 | eigen | zugeordnet |
-| `hub:5` | `docs/rules/materialien-gebaeude.md` § 2 | `grafik/gebaeude` | `burg-5-32.png` (Kristall) | eigene Grafik (`tools/gebaeude`), 32 px je Kachel, ×1; GEB4 | eigen | zugeordnet |
+| `hub:1` | `docs/rules/materialien-gebaeude.md` § 2 | `grafik/gebaeude` | `burg-1-32.png` (Holz) | eigene Grafik (`tools/buildings`), 32 px je Kachel, ×1; GEB4 | eigen | zugeordnet |
+| `hub:2` | `docs/rules/materialien-gebaeude.md` § 2 | `grafik/gebaeude` | `burg-2-32.png` (Stein) | eigene Grafik (`tools/buildings`), 32 px je Kachel, ×1; GEB4 | eigen | zugeordnet |
+| `hub:3` | `docs/rules/materialien-gebaeude.md` § 2 | `grafik/gebaeude` | `burg-3-32.png` (Kupfer) | eigene Grafik (`tools/buildings`), 32 px je Kachel, ×1; GEB4 | eigen | zugeordnet |
+| `hub:4` | `docs/rules/materialien-gebaeude.md` § 2 | `grafik/gebaeude` | `burg-4-32.png` (Eisen) | eigene Grafik (`tools/buildings`), 32 px je Kachel, ×1; GEB4 | eigen | zugeordnet |
+| `hub:5` | `docs/rules/materialien-gebaeude.md` § 2 | `grafik/gebaeude` | `burg-5-32.png` (Kristall) | eigene Grafik (`tools/buildings`), 32 px je Kachel, ×1; GEB4 | eigen | zugeordnet |
 
 ## Mauer-Stufen
 
 | Objekt | Herkunft | Pack | Datei/Frame | Stil (Raster, Palette, Skalierung) | Lizenz | Status |
 |---|---|---|---|---|---|---|
-| `wall:1` | `docs/rules/materialien-gebaeude.md` § 3.1 | `grafik/gebaeude` | `mauer-1-32.png` (Holz) | eigene Grafik (`tools/gebaeude`), 32 px je Kachel, ×1; GEB3 | eigen | zugeordnet |
-| `wall:2` | `docs/rules/materialien-gebaeude.md` § 3.1 | `grafik/gebaeude` | `mauer-2-32.png` (Stein) | eigene Grafik (`tools/gebaeude`), 32 px je Kachel, ×1; GEB3 | eigen | zugeordnet |
-| `wall:3` | `docs/rules/materialien-gebaeude.md` § 3.1 | `grafik/gebaeude` | `mauer-3-32.png` (Kupfer) | eigene Grafik (`tools/gebaeude`), 32 px je Kachel, ×1; GEB3 | eigen | zugeordnet |
-| `wall:4` | `docs/rules/materialien-gebaeude.md` § 3.1 | `grafik/gebaeude` | `mauer-4-32.png` (Eisen) | eigene Grafik (`tools/gebaeude`), 32 px je Kachel, ×1; GEB3 | eigen | zugeordnet |
-| `wall:5` | `docs/rules/materialien-gebaeude.md` § 3.1 | `grafik/gebaeude` | `mauer-5-32.png` (Kristall) | eigene Grafik (`tools/gebaeude`), 32 px je Kachel, ×1; GEB3 | eigen | zugeordnet |
+| `wall:1` | `docs/rules/materialien-gebaeude.md` § 3.1 | `grafik/gebaeude` | `mauer-1-32.png` (Holz) | eigene Grafik (`tools/buildings`), 32 px je Kachel, ×1; GEB3 | eigen | zugeordnet |
+| `wall:2` | `docs/rules/materialien-gebaeude.md` § 3.1 | `grafik/gebaeude` | `mauer-2-32.png` (Stein) | eigene Grafik (`tools/buildings`), 32 px je Kachel, ×1; GEB3 | eigen | zugeordnet |
+| `wall:3` | `docs/rules/materialien-gebaeude.md` § 3.1 | `grafik/gebaeude` | `mauer-3-32.png` (Kupfer) | eigene Grafik (`tools/buildings`), 32 px je Kachel, ×1; GEB3 | eigen | zugeordnet |
+| `wall:4` | `docs/rules/materialien-gebaeude.md` § 3.1 | `grafik/gebaeude` | `mauer-4-32.png` (Eisen) | eigene Grafik (`tools/buildings`), 32 px je Kachel, ×1; GEB3 | eigen | zugeordnet |
+| `wall:5` | `docs/rules/materialien-gebaeude.md` § 3.1 | `grafik/gebaeude` | `mauer-5-32.png` (Kristall) | eigene Grafik (`tools/buildings`), 32 px je Kachel, ×1; GEB3 | eigen | zugeordnet |
 
 ## Turm-Stufen
 
 | Objekt | Herkunft | Pack | Datei/Frame | Stil (Raster, Palette, Skalierung) | Lizenz | Status |
 |---|---|---|---|---|---|---|
-| `tower:1` | `docs/rules/materialien-gebaeude.md` § 3.1 | `grafik/gebaeude` | `turm-1-32.png` (Holz) | eigene Grafik (`tools/gebaeude`), 32 px je Kachel, ×1; GEB3 | eigen | zugeordnet |
-| `tower:2` | `docs/rules/materialien-gebaeude.md` § 3.1 | `grafik/gebaeude` | `turm-2-32.png` (Stein) | eigene Grafik (`tools/gebaeude`), 32 px je Kachel, ×1; GEB3 | eigen | zugeordnet |
-| `tower:3` | `docs/rules/materialien-gebaeude.md` § 3.1 | `grafik/gebaeude` | `turm-3-32.png` (Kupfer) | eigene Grafik (`tools/gebaeude`), 32 px je Kachel, ×1; GEB3 | eigen | zugeordnet |
-| `tower:4` | `docs/rules/materialien-gebaeude.md` § 3.1 | `grafik/gebaeude` | `turm-4-32.png` (Eisen) | eigene Grafik (`tools/gebaeude`), 32 px je Kachel, ×1; GEB3 | eigen | zugeordnet |
-| `tower:5` | `docs/rules/materialien-gebaeude.md` § 3.1 (Zaubertum) | `grafik/gebaeude` | `turm-5-32.png` (Kristall, Zaubertum) | eigene Grafik (`tools/gebaeude`), 32 px je Kachel, ×1; GEB3 | eigen | zugeordnet |
-| `wall:back` | B-442 (Hintergrundmauer, Typ B) | `grafik/gebaeude` | `hintergrundmauer-<n>-32.png` (1 × 4 Kacheln, kachelbar; Stufe der äußeren Mauer) | eigene Grafik (`tools/gebaeude`), 32 px je Kachel, ×1, Tiefe 1 hinter den Bauplätzen; GEB3 | eigen | zugeordnet |
+| `tower:1` | `docs/rules/materialien-gebaeude.md` § 3.1 | `grafik/gebaeude` | `turm-1-32.png` (Holz) | eigene Grafik (`tools/buildings`), 32 px je Kachel, ×1; GEB3 | eigen | zugeordnet |
+| `tower:2` | `docs/rules/materialien-gebaeude.md` § 3.1 | `grafik/gebaeude` | `turm-2-32.png` (Stein) | eigene Grafik (`tools/buildings`), 32 px je Kachel, ×1; GEB3 | eigen | zugeordnet |
+| `tower:3` | `docs/rules/materialien-gebaeude.md` § 3.1 | `grafik/gebaeude` | `turm-3-32.png` (Kupfer) | eigene Grafik (`tools/buildings`), 32 px je Kachel, ×1; GEB3 | eigen | zugeordnet |
+| `tower:4` | `docs/rules/materialien-gebaeude.md` § 3.1 | `grafik/gebaeude` | `turm-4-32.png` (Eisen) | eigene Grafik (`tools/buildings`), 32 px je Kachel, ×1; GEB3 | eigen | zugeordnet |
+| `tower:5` | `docs/rules/materialien-gebaeude.md` § 3.1 (Zaubertum) | `grafik/gebaeude` | `turm-5-32.png` (Kristall, Zaubertum) | eigene Grafik (`tools/buildings`), 32 px je Kachel, ×1; GEB3 | eigen | zugeordnet |
+| `wall:back` | B-442 (Hintergrundmauer, Typ B) | `grafik/gebaeude` | `hintergrundmauer-<n>-32.png` (1 × 4 Kacheln, kachelbar; Stufe der äußeren Mauer) | eigene Grafik (`tools/buildings`), 32 px je Kachel, ×1, Tiefe 1 hinter den Bauplätzen; GEB3 | eigen | zugeordnet |
 
 ## Materialien und Adern
 
@@ -59,36 +59,36 @@ Viele dieser Objekte gibt es noch nicht im Code (B-112, B-114); dann ist die Her
 | `material:copper` | `data/economy.json` › `gatherables.copperOre` | `grafik/various-stones-and-oregem-veins-16x16` | Erz-Sheet Zeile 2, Spalte 6 (Brocken) und 7 (Barren) | 16 px, vico (hell, gesättigt), ×2 | CC0 1.0 | zugeordnet |
 | `material:iron` | `docs/rules/materialien-gebaeude.md` § 1 | `grafik/various-stones-and-oregem-veins-16x16` | Erz-Sheet Zeile 3, Spalte 6 (Brocken) und 7 (Barren), helles Erz als Eisen gedeutet | 16 px, vico (hell, gesättigt), ×2 | CC0 1.0 | zugeordnet |
 | `material:crystal` | `docs/rules/materialien-gebaeude.md` § 1 | `grafik/various-stones-and-oregem-veins-16x16` | Erz-Sheet Zeile 9, Spalte 6 (türkiser Edelstein) | 16 px, vico (hell, gesättigt), ×2 | CC0 1.0 | zugeordnet |
-| `vein:stone` | `docs/rules/materialien-gebaeude.md` § 1 (Adern) | `grafik/gebaeude` | `ader-1-32.png` (2 × 2 Kacheln, Stufe 1 Stein) | eigene Grafik (`tools/gebaeude`), 32 px je Kachel, ×1; GEB6 | eigen | zugeordnet |
-| `vein:copper` | `docs/rules/materialien-gebaeude.md` § 1 (Adern) | `grafik/gebaeude` | `ader-2-32.png` (Stufe 2 Kupfer) | eigene Grafik (`tools/gebaeude`), 32 px je Kachel, ×1; GEB6 | eigen | zugeordnet |
-| `vein:iron` | `docs/rules/materialien-gebaeude.md` § 1 (Adern) | `grafik/gebaeude` | `ader-3-32.png` (Stufe 3 Eisen) | eigene Grafik (`tools/gebaeude`), 32 px je Kachel, ×1; GEB6 | eigen | zugeordnet |
-| `vein:crystal` | `docs/rules/materialien-gebaeude.md` § 1 (Adern) | `grafik/gebaeude` | `ader-4-32.png` (Stufe 4 Kristall) | eigene Grafik (`tools/gebaeude`), 32 px je Kachel, ×1; GEB6 | eigen | zugeordnet |
-| `plantation` | `docs/rules/materialien-gebaeude.md` § 1 (Farm-Plantage) | `grafik/gebaeude` | `setzling-32.png` (1 × 1 Kachel, leerer Platz; gewachsen: `pappel-32.png`) | eigene Grafik (`tools/gebaeude`), 32 px je Kachel, ×1; GEB5 | eigen | zugeordnet |
+| `vein:stone` | `docs/rules/materialien-gebaeude.md` § 1 (Adern) | `grafik/gebaeude` | `ader-1-32.png` (2 × 2 Kacheln, Stufe 1 Stein) | eigene Grafik (`tools/buildings`), 32 px je Kachel, ×1; GEB6 | eigen | zugeordnet |
+| `vein:copper` | `docs/rules/materialien-gebaeude.md` § 1 (Adern) | `grafik/gebaeude` | `ader-2-32.png` (Stufe 2 Kupfer) | eigene Grafik (`tools/buildings`), 32 px je Kachel, ×1; GEB6 | eigen | zugeordnet |
+| `vein:iron` | `docs/rules/materialien-gebaeude.md` § 1 (Adern) | `grafik/gebaeude` | `ader-3-32.png` (Stufe 3 Eisen) | eigene Grafik (`tools/buildings`), 32 px je Kachel, ×1; GEB6 | eigen | zugeordnet |
+| `vein:crystal` | `docs/rules/materialien-gebaeude.md` § 1 (Adern) | `grafik/gebaeude` | `ader-4-32.png` (Stufe 4 Kristall) | eigene Grafik (`tools/buildings`), 32 px je Kachel, ×1; GEB6 | eigen | zugeordnet |
+| `plantation` | `docs/rules/materialien-gebaeude.md` § 1 (Farm-Plantage) | `grafik/gebaeude` | `setzling-32.png` (1 × 1 Kachel, leerer Platz; gewachsen: `pappel-32.png`) | eigene Grafik (`tools/buildings`), 32 px je Kachel, ×1; GEB5 | eigen | zugeordnet |
 
 ## Truhen, Portale, Münzen, Ausgang
 
 | Objekt | Herkunft | Pack | Datei/Frame | Stil (Raster, Palette, Skalierung) | Lizenz | Status |
 |---|---|---|---|---|---|---|
-| `pickup:chest` | `data/economy.json` › `chestGold`, Pickup `chest` | `grafik/gebaeude` | `truhe-32.png` (1 × 1 Kachel, offene Truhe mit Gold) | eigene Grafik (`tools/gebaeude`), 32 px je Kachel, ×1; GEB6 | eigen | zugeordnet |
-| `portal` | `data/biomes/*.json` › `portals` | `grafik/gebaeude` | `portal-32.png` (2 × 3 Kacheln, statisch) | eigene Grafik (`tools/gebaeude`), 32 px je Kachel, ×1; GEB6 | eigen | zugeordnet |
+| `pickup:chest` | `data/economy.json` › `chestGold`, Pickup `chest` | `grafik/gebaeude` | `truhe-32.png` (1 × 1 Kachel, offene Truhe mit Gold) | eigene Grafik (`tools/buildings`), 32 px je Kachel, ×1; GEB6 | eigen | zugeordnet |
+| `portal` | `data/biomes/*.json` › `portals` | `grafik/gebaeude` | `portal-32.png` (2 × 3 Kacheln, statisch) | eigene Grafik (`tools/buildings`), 32 px je Kachel, ×1; GEB6 | eigen | zugeordnet |
 | `coin` | `data/economy.json` › `purse` | `grafik/16x16-small-and-medium-coin-animation` | `muenzen/sCoins_1.png`, `muenzen/sCoins_2.png` (Drehung, je 8 Frames 16×16) | 16 px, WolfTech (gelb), ×2 | CC0 1.0 | zugeordnet |
-| `guide:coin` | `src/scenes/guideHints.ts` › `guideImage('coin')` (Hinweis „Münze aufheben“, B-294) | `grafik/gold-treasure-icons-16x16` | `icons/2.png` (Münze von vorn, Textur `grafik:coinIcon`); die Münze aus `sCoins_1.png` ist als Symbol zu klein und hat Markierungspixel | 16 px, Bonsaiheldin (gelb/braun), ×4 (Münze 6 px → 24 px, etwa Texthöhe) | CC0 1.0 | zugeordnet |
-| `exit` | `src/scenes/worldRenderer.ts` › `drawStatic` (Level-Objekt `exit`) | `grafik/gebaeude` | `ausgang-32.png` (2 × 3 Kacheln, dunkle Öffnung, Beschriftung darüber) | eigene Grafik (`tools/gebaeude`), 32 px je Kachel, ×1; GEB6 | eigen | zugeordnet |
+| `guide:coin` | `src/scenes/hints/guideHints.ts` › `guideImage('coin')` (Hinweis „Münze aufheben“, B-294) | `grafik/gold-treasure-icons-16x16` | `icons/2.png` (Münze von vorn, Textur `grafik:coinIcon`); die Münze aus `sCoins_1.png` ist als Symbol zu klein und hat Markierungspixel | 16 px, Bonsaiheldin (gelb/braun), ×4 (Münze 6 px → 24 px, etwa Texthöhe) | CC0 1.0 | zugeordnet |
+| `exit` | `src/scenes/render/worldRenderer.ts` › `drawStatic` (Level-Objekt `exit`) | `grafik/gebaeude` | `ausgang-32.png` (2 × 3 Kacheln, dunkle Öffnung, Beschriftung darüber) | eigene Grafik (`tools/buildings`), 32 px je Kachel, ×1; GEB6 | eigen | zugeordnet |
 | `pickup:skillPoint` | `src/model/types.ts` › `Pickup` (`skillPoint`) | `grafik/item-ruby-banana-star` | `props/part-star.png` (Stern, 4 Frames 16×16) | 16 px, mieki256 (Gelb), ×2; Entscheidung 🧑 GR2.2 | CC0 1.0 | zugeordnet |
 
-`guide:moon` (Nacht-Hinweis, B-370): kein Pack-Bild. Das Emoji 🌙 wird zur Laufzeit in die Canvas-Textur `guide:moon` gezeichnet (`src/scenes/guideOverlay.ts` › `ensureMoon`, Systemfont, 28 px, ×1, kein Asset, keine Lizenz). Test: `guideHints.test.ts`.
+`guide:moon` (Nacht-Hinweis, B-370): kein Pack-Bild. Das Emoji 🌙 wird zur Laufzeit in die Canvas-Textur `guide:moon` gezeichnet (`src/scenes/hints/guideOverlay.ts` › `ensureMoon`, Systemfont, 28 px, ×1, kein Asset, keine Lizenz). Test: `guideHints.test.ts`.
 
 ## Ressourcen und Rekrutierungslager
 
-Level-Objekte, die `src/scenes/worldRenderer.ts` zeichnet (`createNode`, `drawStatic`); ab GEB6 eigene Grafik aus `tools/gebaeude` (Looks je Biom: Regeldatei § 6).
+Level-Objekte, die `src/scenes/render/worldRenderer.ts` zeichnet (`createNode`, `drawStatic`); ab GEB6 eigene Grafik aus `tools/buildings` (Looks je Biom: Regeldatei § 6).
 
 | Objekt | Herkunft | Pack | Datei/Frame | Stil (Raster, Palette, Skalierung) | Lizenz | Status |
 |---|---|---|---|---|---|---|
-| `node:tree` | `data/economy.json` › `gatherables.tree` | `grafik/gebaeude` | `tanne`, `pappel`, `birke` und je zwei weitere Formen (`<art>-2`, `<art>-3`); Form aus der Position, Look Wald oder Höhle aus dem Biom (`src/scenes/natureSprites.ts`) | eigene Grafik (`tools/gebaeude`), 32 px je Kachel, ×1; GEB6 | eigen | zugeordnet |
-| `node:rock` | `data/economy.json` › `gatherables.rock` | `grafik/gebaeude` | `felsen-1-32.png` (Wald), `felsen-2-32.png` (Höhle), `felsen-3-32.png` (Mine, auch Eisenstollen und Kristallhöhle) | eigene Grafik (`tools/gebaeude`), 32 px je Kachel, ×1; GEB6 | eigen | zugeordnet |
-| `node:copperOre` | `data/economy.json` › `gatherables.copperOre` | `grafik/gebaeude` | `erzbrocken-32.png` (1 × 1 Kachel) | eigene Grafik (`tools/gebaeude`), 32 px je Kachel, ×1; GEB6 | eigen | zugeordnet |
-| `node:bush` | `data/biomes/forest.json` › `resourcesPerChunk` (Deko) | `grafik/gebaeude` | `busch-32.png` (1 × 1 Kachel, nur Wald) | eigene Grafik (`tools/gebaeude`), 32 px je Kachel, ×1; GEB6 | eigen | zugeordnet |
-| `camp:recruit` | `data/economy.json` › `recruitCamp` | `grafik/gebaeude` | `rekrutierungslager-32.png` (3 × 2 Kacheln, Zelt und Feuerstelle in einem Bild, statisch) | eigene Grafik (`tools/gebaeude`), 32 px je Kachel, ×1; GEB6 | eigen | zugeordnet |
+| `node:tree` | `data/economy.json` › `gatherables.tree` | `grafik/gebaeude` | `tanne`, `pappel`, `birke` und je zwei weitere Formen (`<art>-2`, `<art>-3`); Form aus der Position, Look Wald oder Höhle aus dem Biom (`src/scenes/render/natureSprites.ts`) | eigene Grafik (`tools/buildings`), 32 px je Kachel, ×1; GEB6 | eigen | zugeordnet |
+| `node:rock` | `data/economy.json` › `gatherables.rock` | `grafik/gebaeude` | `felsen-1-32.png` (Wald), `felsen-2-32.png` (Höhle), `felsen-3-32.png` (Mine, auch Eisenstollen und Kristallhöhle) | eigene Grafik (`tools/buildings`), 32 px je Kachel, ×1; GEB6 | eigen | zugeordnet |
+| `node:copperOre` | `data/economy.json` › `gatherables.copperOre` | `grafik/gebaeude` | `erzbrocken-32.png` (1 × 1 Kachel) | eigene Grafik (`tools/buildings`), 32 px je Kachel, ×1; GEB6 | eigen | zugeordnet |
+| `node:bush` | `data/biomes/forest.json` › `resourcesPerChunk` (Deko) | `grafik/gebaeude` | `busch-32.png` (1 × 1 Kachel, nur Wald) | eigene Grafik (`tools/buildings`), 32 px je Kachel, ×1; GEB6 | eigen | zugeordnet |
+| `camp:recruit` | `data/economy.json` › `recruitCamp` | `grafik/gebaeude` | `rekrutierungslager-32.png` (3 × 2 Kacheln, Zelt und Feuerstelle in einem Bild, statisch) | eigene Grafik (`tools/buildings`), 32 px je Kachel, ×1; GEB6 | eigen | zugeordnet |
 
 ## Reittiere
 
@@ -139,18 +139,18 @@ Je Bild der Gruppe `icons` in `public/grafik/index.json` eine Zeile; die Verwend
 
 | Objekt | Herkunft | Pack | Datei/Frame | Stil (Raster, Palette, Skalierung) | Lizenz | Status |
 |---|---|---|---|---|---|---|
-| `bg:forest:1` | `data/biomes/forest.json` | `grafik/gebaeude` | `hg-wald-fern-32.png` (fern, 24×15 Kacheln, kachelbar) | eigene Grafik (`tools/gebaeude`), 32 px je Kachel, ×1, Regeldatei § 10; GEB7 | eigen | zugeordnet |
-| `bg:forest:2` | `data/biomes/forest.json` | `grafik/gebaeude` | `hg-wald-mitte-32.png` (mitte, 24×15 Kacheln, kachelbar) | eigene Grafik (`tools/gebaeude`), 32 px je Kachel, ×1, Regeldatei § 10; GEB7 | eigen | zugeordnet |
-| `bg:forest:3` | `data/biomes/forest.json` | `grafik/gebaeude` | `hg-wald-nah-32.png` (nah, 24×15 Kacheln, kachelbar) | eigene Grafik (`tools/gebaeude`), 32 px je Kachel, ×1, Regeldatei § 10; GEB7 | eigen | zugeordnet |
-| `bg:cave:1` | `data/biomes/cave.json` | `grafik/gebaeude` | `hg-hoehle-fern-32.png` (fern, 24×15 Kacheln, kachelbar) | eigene Grafik (`tools/gebaeude`), 32 px je Kachel, ×1, Regeldatei § 10; GEB7 | eigen | zugeordnet |
-| `bg:cave:2` | `data/biomes/cave.json` | `grafik/gebaeude` | `hg-hoehle-mitte-32.png` (mitte, 24×15 Kacheln, kachelbar) | eigene Grafik (`tools/gebaeude`), 32 px je Kachel, ×1, Regeldatei § 10; GEB7 | eigen | zugeordnet |
-| `bg:cave:3` | `data/biomes/cave.json` | `grafik/gebaeude` | `hg-hoehle-nah-32.png` (nah, 24×15 Kacheln, kachelbar) | eigene Grafik (`tools/gebaeude`), 32 px je Kachel, ×1, Regeldatei § 10; GEB7 | eigen | zugeordnet |
-| `bg:mine:1` | `data/biomes/mine.json` | `grafik/gebaeude` | `hg-mine-fern-32.png` (fern, 24×15 Kacheln, kachelbar) | eigene Grafik (`tools/gebaeude`), 32 px je Kachel, ×1, Regeldatei § 10; GEB7 | eigen | zugeordnet |
-| `bg:mine:2` | `data/biomes/mine.json` | `grafik/gebaeude` | `hg-mine-mitte-32.png` (mitte, 24×15 Kacheln, kachelbar) | eigene Grafik (`tools/gebaeude`), 32 px je Kachel, ×1, Regeldatei § 10; GEB7 | eigen | zugeordnet |
-| `bg:mine:3` | `data/biomes/mine.json` | `grafik/gebaeude` | `hg-mine-nah-32.png` (nah, 24×15 Kacheln, kachelbar) | eigene Grafik (`tools/gebaeude`), 32 px je Kachel, ×1, Regeldatei § 10; GEB7 | eigen | zugeordnet |
-| `bg:ironhold:1` | `data/biomes/ironhold.json` | `grafik/gebaeude` | `hg-eisenstollen-fern-32.png` (fern, 24×15 Kacheln, kachelbar) | eigene Grafik (`tools/gebaeude`), 32 px je Kachel, ×1, Regeldatei § 10; GEB7 | eigen | zugeordnet |
-| `bg:ironhold:2` | `data/biomes/ironhold.json` | `grafik/gebaeude` | `hg-eisenstollen-mitte-32.png` (mitte, 24×15 Kacheln, kachelbar) | eigene Grafik (`tools/gebaeude`), 32 px je Kachel, ×1, Regeldatei § 10; GEB7 | eigen | zugeordnet |
-| `bg:ironhold:3` | `data/biomes/ironhold.json` | `grafik/gebaeude` | `hg-eisenstollen-nah-32.png` (nah, 24×15 Kacheln, kachelbar) | eigene Grafik (`tools/gebaeude`), 32 px je Kachel, ×1, Regeldatei § 10; GEB7 | eigen | zugeordnet |
-| `bg:crystal:1` | `data/biomes/crystal.json` | `grafik/gebaeude` | `hg-kristall-fern-32.png` (fern, 24×15 Kacheln, kachelbar) | eigene Grafik (`tools/gebaeude`), 32 px je Kachel, ×1, Regeldatei § 10; GEB7 | eigen | zugeordnet |
-| `bg:crystal:2` | `data/biomes/crystal.json` | `grafik/gebaeude` | `hg-kristall-mitte-32.png` (mitte, 24×15 Kacheln, kachelbar) | eigene Grafik (`tools/gebaeude`), 32 px je Kachel, ×1, Regeldatei § 10; GEB7 | eigen | zugeordnet |
-| `bg:crystal:3` | `data/biomes/crystal.json` | `grafik/gebaeude` | `hg-kristall-nah-32.png` (nah, 24×15 Kacheln, kachelbar) | eigene Grafik (`tools/gebaeude`), 32 px je Kachel, ×1, Regeldatei § 10; GEB7 | eigen | zugeordnet |
+| `bg:forest:1` | `data/biomes/forest.json` | `grafik/gebaeude` | `hg-wald-fern-32.png` (fern, 24×15 Kacheln, kachelbar) | eigene Grafik (`tools/buildings`), 32 px je Kachel, ×1, Regeldatei § 10; GEB7 | eigen | zugeordnet |
+| `bg:forest:2` | `data/biomes/forest.json` | `grafik/gebaeude` | `hg-wald-mitte-32.png` (mitte, 24×15 Kacheln, kachelbar) | eigene Grafik (`tools/buildings`), 32 px je Kachel, ×1, Regeldatei § 10; GEB7 | eigen | zugeordnet |
+| `bg:forest:3` | `data/biomes/forest.json` | `grafik/gebaeude` | `hg-wald-nah-32.png` (nah, 24×15 Kacheln, kachelbar) | eigene Grafik (`tools/buildings`), 32 px je Kachel, ×1, Regeldatei § 10; GEB7 | eigen | zugeordnet |
+| `bg:cave:1` | `data/biomes/cave.json` | `grafik/gebaeude` | `hg-hoehle-fern-32.png` (fern, 24×15 Kacheln, kachelbar) | eigene Grafik (`tools/buildings`), 32 px je Kachel, ×1, Regeldatei § 10; GEB7 | eigen | zugeordnet |
+| `bg:cave:2` | `data/biomes/cave.json` | `grafik/gebaeude` | `hg-hoehle-mitte-32.png` (mitte, 24×15 Kacheln, kachelbar) | eigene Grafik (`tools/buildings`), 32 px je Kachel, ×1, Regeldatei § 10; GEB7 | eigen | zugeordnet |
+| `bg:cave:3` | `data/biomes/cave.json` | `grafik/gebaeude` | `hg-hoehle-nah-32.png` (nah, 24×15 Kacheln, kachelbar) | eigene Grafik (`tools/buildings`), 32 px je Kachel, ×1, Regeldatei § 10; GEB7 | eigen | zugeordnet |
+| `bg:mine:1` | `data/biomes/mine.json` | `grafik/gebaeude` | `hg-mine-fern-32.png` (fern, 24×15 Kacheln, kachelbar) | eigene Grafik (`tools/buildings`), 32 px je Kachel, ×1, Regeldatei § 10; GEB7 | eigen | zugeordnet |
+| `bg:mine:2` | `data/biomes/mine.json` | `grafik/gebaeude` | `hg-mine-mitte-32.png` (mitte, 24×15 Kacheln, kachelbar) | eigene Grafik (`tools/buildings`), 32 px je Kachel, ×1, Regeldatei § 10; GEB7 | eigen | zugeordnet |
+| `bg:mine:3` | `data/biomes/mine.json` | `grafik/gebaeude` | `hg-mine-nah-32.png` (nah, 24×15 Kacheln, kachelbar) | eigene Grafik (`tools/buildings`), 32 px je Kachel, ×1, Regeldatei § 10; GEB7 | eigen | zugeordnet |
+| `bg:ironhold:1` | `data/biomes/ironhold.json` | `grafik/gebaeude` | `hg-eisenstollen-fern-32.png` (fern, 24×15 Kacheln, kachelbar) | eigene Grafik (`tools/buildings`), 32 px je Kachel, ×1, Regeldatei § 10; GEB7 | eigen | zugeordnet |
+| `bg:ironhold:2` | `data/biomes/ironhold.json` | `grafik/gebaeude` | `hg-eisenstollen-mitte-32.png` (mitte, 24×15 Kacheln, kachelbar) | eigene Grafik (`tools/buildings`), 32 px je Kachel, ×1, Regeldatei § 10; GEB7 | eigen | zugeordnet |
+| `bg:ironhold:3` | `data/biomes/ironhold.json` | `grafik/gebaeude` | `hg-eisenstollen-nah-32.png` (nah, 24×15 Kacheln, kachelbar) | eigene Grafik (`tools/buildings`), 32 px je Kachel, ×1, Regeldatei § 10; GEB7 | eigen | zugeordnet |
+| `bg:crystal:1` | `data/biomes/crystal.json` | `grafik/gebaeude` | `hg-kristall-fern-32.png` (fern, 24×15 Kacheln, kachelbar) | eigene Grafik (`tools/buildings`), 32 px je Kachel, ×1, Regeldatei § 10; GEB7 | eigen | zugeordnet |
+| `bg:crystal:2` | `data/biomes/crystal.json` | `grafik/gebaeude` | `hg-kristall-mitte-32.png` (mitte, 24×15 Kacheln, kachelbar) | eigene Grafik (`tools/buildings`), 32 px je Kachel, ×1, Regeldatei § 10; GEB7 | eigen | zugeordnet |
+| `bg:crystal:3` | `data/biomes/crystal.json` | `grafik/gebaeude` | `hg-kristall-nah-32.png` (nah, 24×15 Kacheln, kachelbar) | eigene Grafik (`tools/buildings`), 32 px je Kachel, ×1, Regeldatei § 10; GEB7 | eigen | zugeordnet |

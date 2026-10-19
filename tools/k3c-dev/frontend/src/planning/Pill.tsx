@@ -1,9 +1,9 @@
 import { IconButton } from '@radix-ui/themes';
 import type { ReactNode } from 'react';
-import type { Tone } from '../ui/parts';
+import type { Tone } from '@webkit/parts';
 
 // Runde Statusmarke mit Farbpunkt wie in der erp-qs-Workbench (Workbench-Spec › Status-Marken): grün fertig, blau in
-// Arbeit, amber Freigabe/Warnung, rot Fehler, violett Worktree, grau offen. Töne wie ui/parts, dazu violett.
+// Arbeit, amber Freigabe/Warnung, rot Fehler, violett Worktree, grau offen. Töne wie @webkit/parts, dazu violett.
 
 export type PillTone = Tone | 'violet';
 

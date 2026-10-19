@@ -1,6 +1,6 @@
 import { Text } from '@radix-ui/themes';
 import { useMemo } from 'react';
-import { GapBadge } from '../abspiel/PlaybackControls';
+import { GapBadge } from '../playback/PlaybackControls';
 import { skillRows } from './actions';
 
 /** Alle Skills des Monarchen (B-463/AC-06, AC-07): Linie, Stufe, Art. Jeder Skill ohne Darstellung im Spiel trägt die Marke

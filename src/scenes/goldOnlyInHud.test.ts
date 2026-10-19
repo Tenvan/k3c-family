@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
-import { FONTS } from './fontRules';
-import renderer from './worldRenderer.ts?raw';
+import { FONTS } from './render/fontRules';
+import renderer from './render/worldRenderer.ts?raw';
 import hud from './HudScene.ts?raw';
 
 /** B-398: Das Gold steht nur im HUD (Spielerkarte), nicht als Text über dem Reiter in der Welt. */

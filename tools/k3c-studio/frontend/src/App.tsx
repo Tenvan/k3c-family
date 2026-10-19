@@ -1,14 +1,14 @@
 import { Tabs, Theme } from '@radix-ui/themes';
 import { useState } from 'react';
 import { backend } from './api';
-import { GrafikPage } from './grafik/GrafikPage';
+import { GraphicsPage } from './graphics/GraphicsPage';
 import { loadPref, savePref } from './lib/prefs';
-import { GegnerPage } from './gegner/GegnerPage';
+import { EnemiesPage } from './enemies/EnemiesPage';
 import { MonarchPage } from './monarch/MonarchPage';
-import { PlanerPage } from './planer/PlanerPage';
+import { PlannerPage } from './planner/PlannerPage';
 import { SoundPage } from './sound/SoundPage';
 import { WorldPage } from './world/WorldPage';
-import { StatusBadge } from './ui/parts';
+import { StatusBadge } from '@webkit/parts';
 
 export const PAGES = ['grafik', 'sound', 'welt', 'planer', 'monarch', 'gegner'] as const;
 export type Page = (typeof PAGES)[number];
@@ -39,12 +39,12 @@ export function App({ initial }: { initial?: Page }) {
           {backend.mock && <StatusBadge tone="warn">Mock</StatusBadge>}
         </header>
         <main className="page">
-          <Tabs.Content value="grafik"><GrafikPage /></Tabs.Content>
+          <Tabs.Content value="grafik"><GraphicsPage /></Tabs.Content>
           <Tabs.Content value="sound"><SoundPage /></Tabs.Content>
           <Tabs.Content value="welt"><WorldPage /></Tabs.Content>
-          <Tabs.Content value="planer"><PlanerPage /></Tabs.Content>
+          <Tabs.Content value="planer"><PlannerPage /></Tabs.Content>
           <Tabs.Content value="monarch"><MonarchPage /></Tabs.Content>
-          <Tabs.Content value="gegner"><GegnerPage /></Tabs.Content>
+          <Tabs.Content value="gegner"><EnemiesPage /></Tabs.Content>
         </main>
       </Tabs.Root>
     </Theme>

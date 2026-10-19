@@ -1,6 +1,6 @@
 import { createContext, useContext, useEffect, useRef, useState } from 'react';
 import { backend, type WorktreeChange, type WorktreeDiff } from '../api';
-import { errorText } from '../lib/errors';
+import { errorText } from '@webkit/errors';
 import { Pill } from './Pill';
 import { EMPTY_INDEX, marksFor, pillLabel, pillTitle, type WtIndex } from './wtPills';
 

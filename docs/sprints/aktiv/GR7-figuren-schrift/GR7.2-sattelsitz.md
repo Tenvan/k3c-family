@@ -18,7 +18,7 @@ Die Sattelpunkte von `horse` und `blackHorse` in `data/sprites.json` stimmen fü
 
 - **Befund B-320** (Abnahme S7.3, 🧑 am PC): Im Stand sitzt der Monarch mittig, beim Laufen und Sprinten hinten auf der Kruppe.
 - **Daten:** `data/sprites.json › mounts.horse.saddle` (`blackHorse` nutzt dieselben Punkte): `idle: [[49,26]]`, `run`: 11 Punkte mit x = 38 bis 42 und y = 21 bis 29. Sheet `horse` hat `frameWidth` 100, `frameHeight` 65, `originX` 0.55, `originY` 0.969, `scale` 2.2; `idle` 1 Frame, `run` 11 Frames; Bilder `public/sprites/horse/idle.png` und `run.png`. Der Unterschied x 49 gegen x ≈ 40 sind ~9 Sheet-Pixel, ×2,2 rund 20 px auf dem Bildschirm.
-- **Lage-Rechnung:** `src/scenes/mountPose.ts › saddleOf` und `mountPose` (`sx = (sattel.x − originX × frameWidth) × scale`); die Rechnung ist durch `mountPose.test.ts` abgedeckt, nur die Datenwerte sind verdächtig (ungeprüft). Zu klären ist: stimmen die Run-Punkte nicht, oder sitzt der Pferdekörper in den Lauf-Frames tatsächlich weiter links im Frame (anderer Ursprung zwischen Steh- und Lauf-Frame)?
+- **Lage-Rechnung:** `src/scenes/render/mountPose.ts › saddleOf` und `mountPose` (`sx = (sattel.x − originX × frameWidth) × scale`); die Rechnung ist durch `mountPose.test.ts` abgedeckt, nur die Datenwerte sind verdächtig (ungeprüft). Zu klären ist: stimmen die Run-Punkte nicht, oder sitzt der Pferdekörper in den Lauf-Frames tatsächlich weiter links im Frame (anderer Ursprung zwischen Steh- und Lauf-Frame)?
 - **Prüfen am Bild:** Pferdekörper je Frame aus `idle.png` und `run.png` auslesen (nicht transparente Pixel, Rumpf-Mitte oberhalb der Beine, z. B. mit Python und Pillow oder einem kleinen Skript im Scratchpad), daraus Sattelpunkte je Frame bestimmen und mit den Daten vergleichen. Das Bild ansehen (Read-Tool auf die PNG) ist erlaubt.
 - **Test-Idee (AC-05/B-320 AC-01):** Test liest `data/sprites.json`, prüft für `horse`: `|run[i][0] − idle[0][0]| ≤ 4` und `|run[i][1] − idle[0][1]| ≤ ~6` je Frame, mit Begründung für jede Ausnahme im Test (Kommentar), sofern das Bild den Sattel dort hat.
 - Andere Reittiere sind kein Ziel, nur `horse` und `blackHorse`; `horseWalk` hat eigene, stimmige Werte (x 27 bis 28).
@@ -26,7 +26,7 @@ Die Sattelpunkte von `horse` und `blackHorse` in `data/sprites.json` stimmen fü
 ## Erlaubte Dateien
 
 - `data/sprites.json` (nur `mounts.horse`, `mounts.blackHorse`, bei Bedarf `sheets.horse`)
-- `src/scenes/mountPose.ts`, `src/scenes/mountPose.test.ts`, bei Bedarf neuer Test `src/scenes/mountData.test.ts`
+- `src/scenes/render/mountPose.ts`, `src/scenes/render/mountPose.test.ts`, bei Bedarf neuer Test `src/scenes/mountData.test.ts`
 - `docs/sprints/geplant/GR7-figuren-schrift/`, `docs/sprints/aktiv/GR7-figuren-schrift/` (nur Status), `docs/backlog/` (nur Status und neue Tickets)
 
 ## Nicht-Ziele

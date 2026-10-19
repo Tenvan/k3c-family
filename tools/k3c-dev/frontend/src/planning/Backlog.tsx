@@ -1,7 +1,7 @@
 import { Checkbox, Select, Text } from '@radix-ui/themes';
 import { useState } from 'react';
 import { backend, type PlanTicket, type PlanningData } from '../api';
-import { errorText } from '../lib/errors';
+import { errorText } from '@webkit/errors';
 import { loadText, savePref } from '../lib/prefs';
 import { FoldButton, useFold } from './fold';
 import { Pill, prioTone, type PillTone } from './Pill';

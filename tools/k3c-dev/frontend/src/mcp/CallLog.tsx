@@ -3,7 +3,7 @@ import { Fragment, useState } from 'react';
 import type { McpCall } from '../api';
 import { formatDuration, formatTime } from '../lib/format';
 import { loadText, savePref } from '../lib/prefs';
-import { StatusBadge, type Tone } from '../ui/parts';
+import { StatusBadge, type Tone } from '@webkit/parts';
 import { buildGraph, callFooter, filterCalls, prettyArgs, type Row } from './lanes';
 
 const LANE = 14;

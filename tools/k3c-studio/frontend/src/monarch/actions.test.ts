@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import monarchJson from '@data/monarch.json';
-import workerSource from '@game/scenes/worldRenderer.ts?raw';
-import { EFFECT_CONFIG } from '@game/scenes/effects';
+import workerSource from '@game/scenes/render/worldRenderer.ts?raw';
+import { EFFECT_CONFIG } from '@game/scenes/effects/effects';
 import { ACTIONS, RESPAWN_ALPHA, actionOf, effectMs, skillRows } from './actions';
 import { MOVES, monarchItems, moveOf } from './monarchLogic';
 

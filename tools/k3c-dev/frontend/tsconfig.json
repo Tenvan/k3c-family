@@ -1,5 +1,5 @@
 {
-  // Typecheck des Frontends (wie das Hauptprojekt, plus JSX). Die Tests laufen im Vitest des Hauptprojekts.
+  // Typecheck des Frontends (wie das Hauptprojekt, plus JSX). Gemeinsame Bausteine über @webkit (tools/webkit); die Tests laufen mit vitest.config.ts (task check:dev).
   "compilerOptions": {
     "target": "ES2022",
     "module": "ESNext",
@@ -12,7 +12,14 @@
     "noFallthroughCasesInSwitch": true,
     "isolatedModules": true,
     "skipLibCheck": true,
-    "types": ["vite/client"]
+    "types": ["vite/client"],
+    "paths": {
+      "@webkit/*": ["../../webkit/*"],
+      "react": ["./node_modules/@types/react"],
+      "react/*": ["./node_modules/@types/react/*"],
+      "@radix-ui/themes": ["./node_modules/@radix-ui/themes"]
+    }
   },
-  "include": ["src", "vite.config.ts"]
+  "include": ["src", "../../webkit"]
+  // paths.ts, vite.config.ts und vitest.config.ts laufen unter Node (node:url) und bleiben ohne @types/node draußen.
 }

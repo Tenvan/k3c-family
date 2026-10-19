@@ -17,7 +17,7 @@ Die in PF1.1 gemessene Hauptlast ist behoben oder gesenkt; die Frame-Zeit mit zw
 ## Kontext
 
 - Grundlage sind die Messwerte und die vermutete Ursache in B-194 › Notizen (aus PF1.1). Ohne diese Werte nicht beginnen.
-- Kameras und Nacht-Filter: `src/scenes/GameScene.ts` › `layoutCameras()`, `aimAtStage()`, `addNightFx()`; Layer je Kamera über `showOnly()` in `src/scenes/stageView.ts`; Zeichnen in `src/scenes/worldRenderer.ts`.
+- Kameras und Nacht-Filter: `src/scenes/GameScene.ts` › `layoutCameras()`, `aimAtStage()`, `addNightFx()`; Layer je Kamera über `showOnly()` in `src/scenes/render/stageView.ts`; Zeichnen in `src/scenes/render/worldRenderer.ts`.
 - Liegt die Hauptlast im Netz oder Server (Snapshot-Takt, Puffer), gehört die Korrektur nicht in CLI: dann Ticket anlegen (Domäne SRV bzw. N2-Nachfolger), hier nur die Messwerte im Ergebnis.
 - Fallstrick: `src/scenes/GameScene.ts` hat schon 403 Zeilen. Eine Änderung dort darf die Datei nicht wachsen lassen; Logik als reine Funktion in eine eigene Datei unter `src/scenes/` mit Test.
 - Nacht im Canvas-Modus bleibt hell (`addNightFx`); eine Lösung darf das Verhalten bei Tag und Nacht für beide Spieler nicht ändern (2 Spieler gleichzeitig, `CLAUDE.md` › Regeln).
