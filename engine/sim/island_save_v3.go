@@ -17,13 +17,13 @@ type islandV2 struct {
 	StageSkillPoints []int `json:"stageSkillPoints"`
 }
 
-// decodeIsland prüft die Pflichtfelder (dazu poolField) und liest raw nach dst.
-func decodeIsland(raw []byte, poolField string, dst any) error {
+// decodeIsland prüft die Pflichtfelder (dazu extra, z. B. das Feld des Pools) und liest raw nach dst.
+func decodeIsland(raw []byte, dst any, extra ...string) error {
 	var check map[string]json.RawMessage
 	if err := json.Unmarshal(raw, &check); err != nil {
 		return fmt.Errorf("spielstand: %w", err)
 	}
-	for _, f := range []string{"campaignId", "seed", "time", "stock", "stages", poolField, "players"} {
+	for _, f := range append([]string{"campaignId", "seed", "time", "stock", "stages", "players"}, extra...) {
 		if v, ok := check[f]; !ok || string(v) == "null" {
 			return fmt.Errorf("spielstand: Feld %s fehlt", f)
 		}
@@ -37,7 +37,7 @@ func decodeIsland(raw []byte, poolField string, dst any) error {
 func parseIslandV2(raw []byte) (IslandSave, error) {
 	var v islandV2
 	v.Options = DefaultOptions() // Felder, die im Stand fehlen, behalten den Standard
-	if err := decodeIsland(raw, "stageSkillPoints", &v); err != nil {
+	if err := decodeIsland(raw, &v, "stageSkillPoints"); err != nil {
 		return IslandSave{}, err
 	}
 	if len(v.StageSkillPoints) != len(v.Stages) {
@@ -51,11 +51,12 @@ func parseIslandV2(raw []byte) (IslandSave, error) {
 	return s, validateIslandSave(s)
 }
 
-// parseIslandV3 liest Version 3 bis 6: Version 4 hat zusätzlich `day` und `phase`, Version 5 Bosse, Insel und Zähler,
-// Version 6 den Händler (island_save_v5.go); was fehlt, bleibt leer.
-func parseIslandV3(raw []byte) (IslandSave, error) {
+// parseIslandV3 liest Version 3 bis 8: Version 4 hat zusätzlich `day` und `phase`, Version 5 Bosse, Insel und Zähler,
+// Version 6 den Händler (island_save_v5.go), Version 8 die Pflichtfelder extra (`world`, `islandId`); was fehlt,
+// bleibt leer.
+func parseIslandV3(raw []byte, extra ...string) (IslandSave, error) {
 	s := IslandSave{Options: DefaultOptions()}
-	if err := decodeIsland(raw, "skillPool", &s); err != nil {
+	if err := decodeIsland(raw, &s, append([]string{"skillPool"}, extra...)...); err != nil {
 		return IslandSave{}, err
 	}
 	s.Version = IslandSaveVersion

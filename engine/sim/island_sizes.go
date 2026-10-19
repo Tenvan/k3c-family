@@ -12,7 +12,7 @@ import (
 )
 
 // Inselgrößen (docs/rules/geplante-chunks.md § 7, B-485): Die Chunk-Anzahl einer Stufe steht je Insel und Tiefe in
-// islands.json › chunkCounts; erlaubt sind nur die Anzahlen der Tabelle data/island-sizes.json (für alle Biome).
+// der Welt-Datei (data/worlds/<id>.json) › chunkCounts; erlaubt sind nur die Anzahlen der Tabelle data/island-sizes.json (für alle Biome).
 
 // IslandSize ist eine Inselgröße: Name und Chunk-Anzahl.
 type IslandSize struct {

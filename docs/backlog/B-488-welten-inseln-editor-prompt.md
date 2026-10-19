@@ -3,14 +3,14 @@
 - **Domäne:** DEV
 - **Typ:** Idee
 - **Prio:** mittel
-- **Umgebung:** ?
-- **Status:** offen
+- **Umgebung:** live
+- **Status:** eingeplant
 - **Sprint:** WZ18
 - **Projekt:** WZG
 - **Erstellt:** 2026-10-18
 - **Spec:** freigegeben
 - **Revision:** 1
-- **Freigabe:** 2026-10-18, Ralf im Chat (Revision 1)
+- **Freigabe:** 2026-10-18, Ralf im Chat (Revision 1); mit WZ18 und WZ19 bestätigt 2026-10-19, Ralf im Chat
 
 ## Ausgangslage
 

@@ -4,26 +4,27 @@ import (
 	"math"
 	"slices"
 	"testing"
-	"testing/fstest"
 )
 
 // Inselwechsel (B-103, K2.3a).
 
-// withTestIslands hängt für einen Test eine zweite Insel an die Daten (Tiefen 0 und 1, eigene Tabelle).
-func withTestIslands(t *testing.T) IslandDef {
-	t.Helper()
-	old := islandDefs
-	two := IslandDef{ID: "testIsland2", Name: "Test-Insel", Depths: []int{0, 1}}
+// testIslands ist eine Test-Welt: Insel 1 der Standard-Welt und dahinter eine zweite Insel (Tiefen 0 und 1, eigene
+// Tabelle). Sie ist nicht geprüft (die zweite Insel hätte keinen Endboss) und ändert die Standard-Welt nicht.
+func testIslands() (WorldDef, IslandDef) {
+	two := IslandDef{ID: "test-island2", Name: "Test-Insel", Depths: []int{0, 1}}
 	two.DepthScaling.HP, two.DepthScaling.Damage, two.DepthScaling.Speed = 2, 2, 1
-	islandDefs = append(slices.Clone(old), two)
-	t.Cleanup(func() { islandDefs = old })
-	return two
+	return WorldDef{ID: "test", Name: "Test", Islands: append(StandardWorld().Islands[:1:1], two)}, two
 }
 
-// gateIsland: Insel mit Wald und Höhle, n Spieler am Wechselpunkt in der Höhle (tiefste Stufe), Endboss besiegt.
-func gateIsland(t *testing.T, n int) (*Island, []*Player) {
+// gateIsland: erste Insel der Welt w mit Wald und Höhle, n Spieler am Wechselpunkt in der Höhle (tiefste Stufe),
+// Endboss besiegt.
+func gateIsland(t *testing.T, w WorldDef, n int) (*Island, []*Player) {
 	t.Helper()
-	isl := mustIsland(t, "wechsel", []int{0, 1})
+	isl, err := CreateIslandIn(w, "wechsel", []int{0, 1}, islandSpeed, CreateOptions{})
+	if err != nil {
+		t.Fatal(err)
+	}
+	*isl.Stock = Stock{}
 	var ps []*Player
 	for range n {
 		p := AddIslandPlayer(isl, 1)
@@ -47,8 +48,8 @@ func stepSeconds(isl *Island, seconds float64) []Event {
 }
 
 func TestInselwechselErstNachEndboss(t *testing.T) {
-	withTestIslands(t)
-	isl, _ := gateIsland(t, 2)
+	w, _ := testIslands()
+	isl, _ := gateIsland(t, w, 2)
 	isl.EndbossDefeated = false
 	if ev := stepSeconds(isl, 3); count(ev, "islandGateOpen") != 0 || isl.SwitchReady {
 		t.Fatal("Wechselpunkt vor dem Endboss")
@@ -58,7 +59,7 @@ func TestInselwechselErstNachEndboss(t *testing.T) {
 	if count(ev, "islandGateOpen") != 1 || count(ev, "islandSwitch") != 1 || !isl.SwitchReady {
 		t.Errorf("%d× islandGateOpen, %d× islandSwitch, bereit %v", count(ev, "islandGateOpen"), count(ev, "islandSwitch"), isl.SwitchReady)
 	}
-	if def, ok := isl.NextDef(); !ok || def.ID != "testIsland2" {
+	if def, ok := isl.NextDef(); !ok || def.ID != "test-island2" {
 		t.Errorf("nächste Insel %q, ok %v", def.ID, ok)
 	}
 	if count(ev, "victory") != 0 {
@@ -67,7 +68,7 @@ func TestInselwechselErstNachEndboss(t *testing.T) {
 }
 
 func TestInselwechselLetzteInselOhneWechsel(t *testing.T) {
-	isl, _ := gateIsland(t, 2)
+	isl, _ := gateIsland(t, StandardWorld(), 2)
 	ev := stepSeconds(isl, 3)
 	if count(ev, "islandGateOpen") != 0 || isl.SwitchReady || count(ev, "victory") != 1 {
 		t.Errorf("letzte Insel: %d× islandGateOpen, bereit %v, %d× victory", count(ev, "islandGateOpen"), isl.SwitchReady, count(ev, "victory"))
@@ -90,8 +91,8 @@ func TestInselwechselAlleLebendenAmPunkt(t *testing.T) {
 	}
 	for _, c := range cases {
 		t.Run(c.name, func(t *testing.T) {
-			withTestIslands(t)
-			isl, ps := gateIsland(t, c.n)
+			w, _ := testIslands()
+			isl, ps := gateIsland(t, w, c.n)
 			c.setup(isl, ps)
 			stepSeconds(isl, hub.Travel.Seconds+0.5)
 			if isl.SwitchReady != c.ready {
@@ -102,8 +103,8 @@ func TestInselwechselAlleLebendenAmPunkt(t *testing.T) {
 }
 
 func TestInselwechselAbbruchBeimWeggehen(t *testing.T) {
-	withTestIslands(t)
-	isl, ps := gateIsland(t, 2)
+	w, _ := testIslands()
+	isl, ps := gateIsland(t, w, 2)
 	gate := ps[0].X
 	stepSeconds(isl, 0.75*hub.Travel.Seconds)
 	ps[0].X = gate + 20
@@ -122,8 +123,8 @@ func TestInselwechselAbbruchBeimWeggehen(t *testing.T) {
 // switchedIsland: Insel 1 (Grad hard, Ziel gold) mit zwei Spielern, Gold und Skills, Wechsel zur Test-Insel.
 func switchedIsland(t *testing.T) (cur, next *Island) {
 	t.Helper()
-	def := withTestIslands(t)
-	cur, ps := gateIsland(t, 2)
+	w, def := testIslands()
+	cur, ps := gateIsland(t, w, 2)
 	if err := SetOptions(cur, IslandOptions{Grade: "hard", Goal: "gold", Defeat: "resources"}, false); err != nil {
 		t.Fatal(err)
 	}
@@ -195,7 +196,7 @@ func TestInselwechselTabelleDerInsel(t *testing.T) {
 }
 
 func TestInselwechselDaten(t *testing.T) {
-	d := islandDefs[0]
+	d := StandardWorld().Islands[0]
 	if !slices.Equal(d.Depths, []int{0, 1, 2, 3, 4}) || endBoss(4) == nil {
 		t.Fatalf("Insel 1: Tiefen %v, Endboss in Tiefe 4 %v", d.Depths, endBoss(4) != nil)
 	}
@@ -204,16 +205,15 @@ func TestInselwechselDaten(t *testing.T) {
 			t.Errorf("Insel 1: kein Miniboss in Tiefe %d", depth)
 		}
 	}
-	bad := map[string]string{
-		"ohne Endboss": `{"islands":[{"id":"a","depths":[0,1],"depthScaling":{"hp":1,"damage":1,"speed":1}}]}`,
-		"doppelt":      `{"islands":[{"id":"a","depths":[0,1,2,3,4],"depthScaling":{"hp":1,"damage":1,"speed":1}},{"id":"a","depths":[0,1,2,3,4],"depthScaling":{"hp":1,"damage":1,"speed":1}}]}`,
-		"Faktor 0":     `{"islands":[{"id":"a","depths":[0,1,2,3,4],"depthScaling":{"hp":0,"damage":1,"speed":1}}]}`,
-		"Tiefe fehlt":  `{"islands":[{"id":"a","depths":[4,9],"depthScaling":{"hp":1,"damage":1,"speed":1}}]}`,
-		"leer":         `{"islands":[]}`,
+	bad := map[string][]byte{
+		"ohne Endboss": testWorld(testIsland("a", `,"depths":[0,1]`)),
+		"doppelt":      testWorld(testIsland("a", "") + "," + testIsland("a", "")),
+		"Faktor 0":     testWorld(testIsland("a", `,"depthScaling":{"hp":0,"damage":1,"speed":1}`)),
+		"Tiefe fehlt":  testWorld(testIsland("a", `,"depths":[4,9]`)),
+		"leer":         testWorld(``),
 	}
 	for name, raw := range bad {
-		var dst []IslandDef
-		if err := loadIslands(fstest.MapFS{"islands.json": {Data: []byte(raw)}}, &dst); err == nil || dst != nil {
+		if w, err := ParseWorld(raw, "test"); err == nil || w.Islands != nil {
 			t.Errorf("%s: kein Fehler beim Laden", name)
 		}
 	}

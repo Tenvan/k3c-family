@@ -11,7 +11,7 @@ import (
 )
 
 // Chunk-Anzahl je Stufe im Editor (WZ17.5, B-485/AC-04, docs/rules/geplante-chunks.md § 7): Prüfen gegen die
-// Inselgrößen (data/island-sizes.json über sim.IslandSizes) und format-stabiles Schreiben von islands.json ›
+// Inselgrößen (data/island-sizes.json über sim.IslandSizes) und format-stabiles Schreiben der Welt-Datei ›
 // chunkCounts (nur der Wert der betroffenen Insel wird ersetzt, wie bei plannedChunks). 0 heißt „Biom-Länge“: kein
 // Eintrag, die Länge kommt aus lengthUnits des Bioms.
 
@@ -31,7 +31,7 @@ func checkIslandSize(n int) error {
 	return fmt.Errorf("die Chunk-Anzahl %d ist keine Inselgröße (gültig: %s)", n, strings.Join(valid, ", "))
 }
 
-// countsOf liest die Chunk-Anzahlen der Insel id (Tiefe → Anzahl) aus dem Inhalt von islands.json.
+// countsOf liest die Chunk-Anzahlen der Insel id (Tiefe → Anzahl) aus dem Inhalt der Welt-Datei.
 func countsOf(raw []byte, id string) (map[string]int, error) {
 	var f struct {
 		Islands []struct {
@@ -40,14 +40,14 @@ func countsOf(raw []byte, id string) (map[string]int, error) {
 		} `json:"islands"`
 	}
 	if err := json.Unmarshal(raw, &f); err != nil {
-		return nil, fmt.Errorf("%s: %w", islandsPath, err)
+		return nil, fmt.Errorf("Welt-Datei: %w", err)
 	}
 	for _, isl := range f.Islands {
 		if isl.ID == id {
 			return isl.Counts, nil
 		}
 	}
-	return nil, fmt.Errorf("die Insel %q gibt es nicht in %s", id, islandsPath)
+	return nil, fmt.Errorf("die Insel %q gibt es nicht in der Welt-Datei", id)
 }
 
 // encodeCounts schreibt die Anzahlen kompakt, Tiefen aufsteigend: {"0": 24, "2": 40}.

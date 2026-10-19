@@ -141,7 +141,7 @@ describe('Stand-Prüfung (B-461/AC-12)', () => {
     (backend as unknown as { touch: () => void }).touch();
     await act(async () => button(h, 'Speichern').click());
     await flush();
-    expect(h.querySelector('.wd-notice')!.textContent).toContain('data/islands.json geändert, bitte neu laden');
+    expect(h.querySelector('.wd-notice')!.textContent).toContain('data/worlds/standard.json geändert, bitte neu laden');
     expect(h.querySelector('.wd-notice')!.textContent).toContain('Entwurf bleibt');
     expect(h.querySelectorAll('.wd-planned')).toHaveLength(1);
     expect(button(h, 'Speichern').disabled).toBe(false);

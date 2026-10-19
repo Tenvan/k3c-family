@@ -1,4 +1,5 @@
 import type { AssetChoice, AssetHit, AssetSaved, AssetsView, Backend, CatalogAsset, EventName, Events, HubPlanView, HubRulesView, HubSaveResult, HubStand, OpenGameResult, PlanCheckView, PlanObjectsView, PlanSaved, PlanView, PlannedChunk, ResearchResult, WorldLevelView, WorldPreviewArgs, WorldPreviewView, WorldSource, WorldsView } from './types';
+import type { WorldCheckView, WorldDraft } from './worldTypes';
 
 // Das Studio ist eine Seite des Go-Servers (engine/studio): jede Methode von App ist ein POST auf /api/studio/rpc/<Methode>
 // mit den Argumenten als JSON-Array, die Antwort ist {result} oder {error}. Die Kopfzeile hält fremde Seiten fern (CORS-Preflight).
@@ -86,8 +87,9 @@ export function httpBackend(): Backend {
     planWorldSelect: (id: string) => rpc<WorldsView>('PlanWorldSelect', id),
     planWorldAdd: (name: string) => rpc<WorldsView>('PlanWorldAdd', name),
     planWorldRemove: (id: string) => rpc<WorldsView>('PlanWorldRemove', id),
-    planIslandAdd: (stand: string) => rpc<PlanSaved>('PlanIslandAdd', stand),
-    planIslandRemove: (id: string, stand: string) => rpc<PlanSaved>('PlanIslandRemove', id, stand),
+    planWorldCopy: (name: string) => rpc<WorldsView>('PlanWorldCopy', name),
+    planWorldCheck: (draft: WorldDraft) => rpc<WorldCheckView>('PlanWorldCheck', draft),
+    planWorldSave: (draft: WorldDraft, stand: string) => rpc<PlanSaved>('PlanWorldSave', draft, stand),
     planChunkObjects: (seed: string, src: WorldSource, slot: number) => rpc<PlanObjectsView>('PlanChunkObjects', seed, src, slot),
     hubPlan: () => rpc<HubPlanView>('HubPlan'),
     hubRules: (hubJSON: string) => rpc<HubRulesView>('HubRules', hubJSON),

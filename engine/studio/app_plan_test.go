@@ -11,7 +11,7 @@ import (
 )
 
 // WZ8.5 (B-461/AC-09, AC-11, AC-12): Editor für geplante Chunks. Alle Tests schreiben nur in Kopien (t.TempDir()),
-// nie in data/islands.json des Repos.
+// nie in data/worlds/ des Repos.
 
 const islandsFixture = `{
   "notes": "Fixture",
@@ -25,10 +25,10 @@ const islandsFixture = `{
 func planApp(t *testing.T, content string) (*App, string) {
 	t.Helper()
 	root := t.TempDir()
-	if err := os.MkdirAll(filepath.Join(root, "data"), 0o755); err != nil {
+	path := filepath.Join(root, islandsPath)
+	if err := os.MkdirAll(filepath.Dir(path), 0o755); err != nil {
 		t.Fatal(err)
 	}
-	path := filepath.Join(root, islandsPath)
 	if err := os.WriteFile(path, []byte(content), 0o644); err != nil {
 		t.Fatal(err)
 	}
@@ -180,7 +180,7 @@ func TestPlanSaveLehntVeralteteDateiAb(t *testing.T) {
 		t.Fatal(err)
 	}
 	s := app.PlanSave("island1", 0, portalPlan, 0, stand)
-	if !s.Stale || s.Error != "data/islands.json geändert, bitte neu laden" || readFile(t, path) != external {
+	if !s.Stale || s.Error != "data/worlds/standard.json geändert, bitte neu laden" || readFile(t, path) != external {
 		t.Errorf("veralteter Stand: %+v, Datei: %q", s, readFile(t, path))
 	}
 }
@@ -199,7 +199,7 @@ func TestPlanSaveNachSpeichernLehntExterneAenderungAb(t *testing.T) {
 		t.Fatal(err)
 	}
 	second := app.PlanSave("island1", 1, []level.PlannedChunk{{Slot: 4, Kind: "cavern"}}, 0, first.Stand)
-	if !second.Stale || second.Error != errPlanStale.Error() || readFile(t, path) != external {
+	if !second.Stale || second.Error != staleError("standard") || readFile(t, path) != external {
 		t.Fatalf("zweites Speichern: %+v, Datei unverändert: %v", second, readFile(t, path) == external)
 	}
 	reloaded := app.PlanLoad()

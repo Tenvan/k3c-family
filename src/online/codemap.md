@@ -2,7 +2,7 @@
 
 ## Responsibility
 
-Network-Client-Schicht (Protocol Adapter) zum Go-Server: WebSocket `/ws`, Protokoll v6 (`docs/protocol.md`). Der Browser sendet nur Eingaben und empfängt Zustand; er simuliert nichts und würfelt nicht. Phaser-frei und per `ClientEnv` testbar.
+Network-Client-Schicht (Protocol Adapter) zum Go-Server: WebSocket `/ws`, Protokoll v7 (`docs/protocol.md`). Der Browser sendet nur Eingaben und empfängt Zustand; er simuliert nichts und würfelt nicht. Phaser-frei und per `ClientEnv` testbar.
 
 ## Design
 

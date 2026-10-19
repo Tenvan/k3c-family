@@ -15,8 +15,8 @@ import (
 	"k3c/engine/sim"
 )
 
-// Planung geplanter Chunks im Welt-Betrachter (WZ8.5, B-461): Laden, Prüfen und Speichern von
-// data/islands.json › plannedChunks. Der Editor prüft den Entwurf bei jeder Änderung; gespeichert wird nur Gültiges.
+// Planung geplanter Chunks im Welten Editor (WZ8.5, B-461): Laden, Prüfen und Speichern von
+// data/worlds/<id>.json › plannedChunks (gewählte Welt). Der Editor prüft den Entwurf bei jeder Änderung; gespeichert wird nur Gültiges.
 
 // PlanIsland ist eine Insel mit ihren Tiefen und der gespeicherten Planung (Tiefe → Chunks).
 type PlanIsland struct {
@@ -27,10 +27,14 @@ type PlanIsland struct {
 	Planned map[string][]level.PlannedChunk `json:"planned"`
 	// ChunkCounts sind die gespeicherten Chunk-Anzahlen (Tiefe → Inselgröße, WZ17.5); ohne Eintrag gilt die Biom-Länge.
 	ChunkCounts map[string]int `json:"chunkCounts"`
+	Scaling     DraftScaling   `json:"depthScaling"` // Skalierung je Tiefe (WZ18.6)
 }
 
-// PlanView ist data/islands.json für den Editor. Stand ist der Hash der Datei beim Lesen; PlanSave braucht ihn.
+// PlanView ist die Welt-Datei der gewählten Welt für den Editor. Stand ist der Hash der Datei beim Lesen; PlanSave und
+// PlanWorldSave brauchen ihn.
 type PlanView struct {
+	Name    string           `json:"name"`  // Name der Welt (WZ18.6)
+	Notes   string           `json:"notes"` // Notizen der Welt
 	Islands []PlanIsland     `json:"islands"`
 	Sizes   []sim.IslandSize `json:"sizes"` // Inselgrößen zur Auswahl im Editor (data/island-sizes.json)
 	Stand   string           `json:"stand"`
@@ -73,7 +77,7 @@ func (a *App) readIslands() ([]byte, error) {
 	return os.ReadFile(a.worldFile(a.activeWorld()))
 }
 
-// PlanLoad liest data/islands.json frisch (Binding).
+// PlanLoad liest die Welt-Datei der gewählten Welt frisch (Binding).
 func (a *App) PlanLoad() PlanView {
 	view := PlanView{Islands: []PlanIsland{}, Sizes: sim.IslandSizes()}
 	raw, err := a.readIslands()
@@ -82,20 +86,23 @@ func (a *App) PlanLoad() PlanView {
 		return view
 	}
 	var f struct {
+		Name    string `json:"name"`
+		Notes   string `json:"notes"`
 		Islands []struct {
 			ID      string                          `json:"id"`
 			Name    string                          `json:"name"`
 			Depths  []int                           `json:"depths"`
 			Planned map[string][]level.PlannedChunk `json:"plannedChunks"`
 			Counts  map[string]int                  `json:"chunkCounts"`
+			Scaling DraftScaling                    `json:"depthScaling"`
 		} `json:"islands"`
 	}
 	if err := json.Unmarshal(raw, &f); err != nil {
-		view.Error = fmt.Sprintf("%s: %v", islandsPath, err)
+		view.Error = fmt.Sprintf("Welt-Datei: %v", err)
 		return view
 	}
 	for _, file := range f.Islands {
-		isl := PlanIsland{ID: file.ID, Name: file.Name, Depths: file.Depths, Planned: file.Planned, Biomes: []string{}, ChunkCounts: file.Counts}
+		isl := PlanIsland{ID: file.ID, Name: file.Name, Depths: file.Depths, Planned: file.Planned, Biomes: []string{}, ChunkCounts: file.Counts, Scaling: file.Scaling}
 		for _, d := range isl.Depths {
 			b, err := biomeIDForDepth(d)
 			if err != nil {
@@ -112,7 +119,7 @@ func (a *App) PlanLoad() PlanView {
 		}
 		view.Islands = append(view.Islands, isl)
 	}
-	view.Stand = planStand(raw)
+	view.Name, view.Notes, view.Stand = f.Name, f.Notes, planStand(raw)
 	return view
 }
 
@@ -129,7 +136,7 @@ func (a *App) checkPlan(raw []byte, island string, depth int, chunks []level.Pla
 		} `json:"islands"`
 	}
 	if err := json.Unmarshal(raw, &f); err != nil {
-		return fmt.Errorf("%s: %w", islandsPath, err)
+		return fmt.Errorf("Welt-Datei: %w", err)
 	}
 	for _, isl := range f.Islands {
 		if isl.ID != island {
@@ -167,16 +174,17 @@ func (a *App) PlanCheck(island string, depth int, chunks []level.PlannedChunk, c
 }
 
 // PlanSave ersetzt Planung und Chunk-Anzahl (0 = Biom-Länge, Eintrag entfällt) der Tiefe einer Insel in
-// data/islands.json (Binding). Nur gültiger Entwurf, nur auf dem Stand aus PlanLoad (sonst Stale ohne Schreibzugriff),
+// der Welt-Datei (Binding). Nur gültiger Entwurf, nur auf dem Stand aus PlanLoad (sonst Stale ohne Schreibzugriff),
 // format-stabil und atomar in einem Schreibvorgang; danach der REG-Hinweis.
 func (a *App) PlanSave(island string, depth int, chunks []level.PlannedChunk, count int, stand string) PlanSaved {
-	path := a.worldFile(a.activeWorld())
-	raw, err := a.readIslands()
+	id := a.activeWorld()
+	path := a.worldFile(id)
+	raw, err := os.ReadFile(path)
 	if err != nil {
 		return PlanSaved{Error: err.Error()}
 	}
 	if planStand(raw) != stand {
-		return PlanSaved{Error: errPlanStale.Error(), Stale: true}
+		return PlanSaved{Error: staleError(id), Stale: true}
 	}
 	if err := a.checkPlan(raw, island, depth, chunks, count); err != nil {
 		return PlanSaved{Error: err.Error()}

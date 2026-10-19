@@ -10,7 +10,7 @@ import (
 
 // Vorschau aus einer Kandidaten-hub.json (WZ9.1, B-462): der Gebäude-Planer zeigt seinen ungespeicherten Stand, ohne
 // EXE-Neubau und ohne sim.UseData. Geplante Chunks des Levels (WZ8.4) gehen mit; der Generator prüft sie gegen die
-// Linien des Kandidaten. Die geplanten Chunks der Inseln (data/islands.json) prüft ValidateHub noch nicht (B-479).
+// Linien des Kandidaten. Die geplanten Chunks der Inseln (Welt-Datei data/worlds/<id>.json) prüft ValidateHub noch nicht (B-479).
 
 // CandidateError: Die Kandidaten-hub.json ist kein JSON oder hat Befunde der Prüfung; es entsteht keine Welt.
 type CandidateError struct {

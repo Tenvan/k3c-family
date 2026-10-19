@@ -39,8 +39,11 @@ type Island struct {
 	GoldCollected int
 	Won           bool
 	hadFinite     bool
-	// Number: Index der Insel in data/islands.json (0 = Insel 1); Scaling: ihre Tabelle der Gegner-Skalierung.
+	// world: die Welt der Insel (welten.md, B-488); islandID: ihre Insel-ID darin (Spielstand, welten.md § 5).
+	// Number: Index der Insel in ihrer Welt (0 = Insel 1); Scaling: ihre Tabelle der Gegner-Skalierung.
 	// GateOpen: Wechselpunkt offen, SwitchReady: alle stehen dort, der Raum tauscht die Insel (island_switch.go).
+	world          WorldDef
+	islandID       string
 	Number         int
 	Scaling        struct{ HP, Damage, Speed float64 }
 	GateOpen       bool
@@ -58,35 +61,35 @@ type Island struct {
 }
 
 // CreateOptions sind die Parameter der Erzeugung einer Insel (B-461, B-462). Sie gelten nur für die Erzeugung und werden
-// NICHT gespeichert (Spielstand-Format und IslandSaveVersion bleiben); getrennt von IslandOptions (Grad, Ziel, Niederlage).
-// Laden eines Spielstands und Inselwechsel nutzen die eingebetteten Daten und die Planung der Insel.
+// NICHT gespeichert (gespeichert wird nur die Welt-ID, welten.md § 5); getrennt von IslandOptions (Grad, Ziel, Niederlage).
+// Laden eines Spielstands und Inselwechsel nutzen die Welt der Insel und die Planung der Insel darin.
 type CreateOptions struct {
-	// Planned sind die geplanten Chunks je Tiefe (docs/rules/geplante-chunks.md). nil = die Planung der eingebetteten
-	// ersten Insel (data/islands.json); eine leere Map schaltet die Planung ab.
+	// Planned sind die geplanten Chunks je Tiefe (docs/rules/geplante-chunks.md). nil = die Planung der ersten Insel
+	// der Welt (ohne Welt: Standard-Welt, data/worlds/standard.json); eine leere Map schaltet die Planung ab.
 	Planned map[int][]level.PlannedChunk
 	// Candidate: Kandidaten-hub.json (Gebäude-Planer, B-462); nil = eingebettete data/hub.json. Plätze, Hub-Stufen,
 	// Mauerlinien, Tor-Stufe, Händler und Startvorrat kommen dann aus ihm. CreateIsland prüft ihn vorher mit
 	// ValidateHubData und lehnt ihn bei Befunden ab (fail closed).
 	Candidate *HubData
-	// ChunkCounts sind die Chunk-Anzahlen je Tiefe (Inselgrößen, geplante-chunks.md § 7). nil = die der eingebetteten
-	// ersten Insel; ohne Eintrag gilt die Länge des Bioms. CreateIsland lehnt eine Anzahl ab, die keine Inselgröße ist.
+	// ChunkCounts sind die Chunk-Anzahlen je Tiefe (Inselgrößen, geplante-chunks.md § 7). nil = die der ersten Insel
+	// der Welt; ohne Eintrag gilt die Länge des Bioms. CreateIsland lehnt eine Anzahl ab, die keine Inselgröße ist.
 	ChunkCounts map[int]int
 }
 
-// plannedFor liefert die geplanten Chunks der Tiefe.
-func (o CreateOptions) plannedFor(depth int) []level.PlannedChunk {
+// plannedFor liefert die geplanten Chunks der Tiefe; ohne Planned die der Insel def.
+func (o CreateOptions) plannedFor(depth int, def IslandDef) []level.PlannedChunk {
 	if o.Planned != nil {
 		return o.Planned[depth]
 	}
-	return islandDefs[0].plannedAt(depth)
+	return def.plannedAt(depth)
 }
 
-// countFor liefert die Chunk-Anzahl der Tiefe (0 = Länge des Bioms).
-func (o CreateOptions) countFor(depth int) int {
+// countFor liefert die Chunk-Anzahl der Tiefe (0 = Länge des Bioms); ohne ChunkCounts die der Insel def.
+func (o CreateOptions) countFor(depth int, def IslandDef) int {
 	if o.ChunkCounts != nil {
 		return o.ChunkCounts[depth]
 	}
-	return islandDefs[0].countAt(depth)
+	return def.countAt(depth)
 }
 
 // plannedAt liefert die geplanten Chunks der Insel für eine Tiefe (leer = reiner Zufall).
@@ -106,9 +109,15 @@ func (d IslandDef) CreateOptions() CreateOptions {
 	return CreateOptions{Planned: planned, ChunkCounts: counts}
 }
 
-// CreateIsland baut die Stufen für die angegebenen Tiefen (Reihenfolge = Stufenindex). CycleSpeed 0 bedeutet 1.
-// Eine neue Insel startet mit dem Vorrat aus hub.json › islandStartStock; Spielstände setzen ihren eigenen (FromIslandSave).
+// CreateIsland baut die erste Insel der Standard-Welt (CreateIslandIn).
 func CreateIsland(seed string, depths []int, cycleSpeed float64, opts CreateOptions) (*Island, error) {
+	return CreateIslandIn(standardWorld, seed, depths, cycleSpeed, opts)
+}
+
+// CreateIslandIn baut die erste Insel der Welt world mit den Stufen für die angegebenen Tiefen (Reihenfolge =
+// Stufenindex). CycleSpeed 0 bedeutet 1. Eine neue Insel startet mit dem Vorrat aus hub.json › islandStartStock;
+// Spielstände setzen ihren eigenen (FromIslandSaveIn).
+func CreateIslandIn(world WorldDef, seed string, depths []int, cycleSpeed float64, opts CreateOptions) (*Island, error) {
 	h := &hub
 	if opts.Candidate != nil {
 		if r := ValidateHubData(opts.Candidate); len(r.Findings) > 0 {
@@ -117,7 +126,7 @@ func CreateIsland(seed string, depths []int, cycleSpeed float64, opts CreateOpti
 		h = cloneHub(opts.Candidate) // geprüft wird die Kopie, die die Welt behält: spätere Änderungen des Aufrufers wirken nicht
 		opts.Candidate = h
 	}
-	isl, err := createIsland(seed, depths, cycleSpeed, 0, opts)
+	isl, err := createIsland(seed, depths, cycleSpeed, 0, opts, world)
 	if err != nil {
 		return nil, err
 	}
@@ -125,24 +134,29 @@ func CreateIsland(seed string, depths []int, cycleSpeed float64, opts CreateOpti
 	return isl, nil
 }
 
-// createIsland wie CreateIsland, mit Startzeit (Laden eines Spielstands).
-func createIsland(seed string, depths []int, cycleSpeed, startTime float64, opts CreateOptions) (*Island, error) {
-	if len(depths) == 0 {
+// createIsland wie CreateIslandIn, mit Startzeit (Laden eines Spielstands). Die Insel ist zunächst die erste der Welt;
+// Laden und Inselwechsel setzen danach Number, islandID und Scaling.
+func createIsland(seed string, depths []int, cycleSpeed, startTime float64, opts CreateOptions, world WorldDef) (*Island, error) {
+	switch {
+	case len(depths) == 0:
 		return nil, fmt.Errorf("insel: keine Stufen")
+	case len(world.Islands) == 0:
+		return nil, fmt.Errorf("insel: Welt %q ohne Insel", world.ID)
 	}
+	first := world.Islands[0]
 	isl := &Island{ID: seed, Seed: seed, CycleSpeed: cycleSpeed, Stock: &Stock{}, Options: DefaultOptions(), travel: map[int]*islandTravel{}}
-	isl.Scaling = islandDefs[0].DepthScaling
+	isl.world, isl.islandID, isl.Scaling = world, first.ID, first.DepthScaling
 	for _, d := range depths {
 		if !hasDepth(d) {
 			return nil, fmt.Errorf("insel: unbekannte Tiefe %d", d)
 		}
-		count := opts.countFor(d)
+		count := opts.countFor(d, first)
 		if count != 0 {
 			if err := checkChunkCount(count); err != nil {
 				return nil, fmt.Errorf("insel: Stufe mit Tiefe %d: %w", d, err)
 			}
 		}
-		w, err := CreateWorld(biomeForDepth(d), seed, Options{CycleSpeed: cycleSpeed, Time: startTime, Planned: opts.plannedFor(d), ChunkCount: count, hub: opts.Candidate})
+		w, err := CreateWorld(biomeForDepth(d), seed, Options{CycleSpeed: cycleSpeed, Time: startTime, Planned: opts.plannedFor(d, first), ChunkCount: count, hub: opts.Candidate})
 		if err != nil {
 			return nil, fmt.Errorf("insel: Stufe mit Tiefe %d: %w", d, err)
 		}
@@ -156,6 +170,12 @@ func createIsland(seed string, depths []int, cycleSpeed, startTime float64, opts
 	}
 	return isl, nil
 }
+
+// WorldID ist die ID der Welt der Insel (Spielstand `world`, welten.md § 5).
+func (isl *Island) WorldID() string { return isl.world.ID }
+
+// IslandID ist die ID der Insel in ihrer Welt (Spielstand `islandId`).
+func (isl *Island) IslandID() string { return isl.islandID }
 
 // AddIslandPlayer stellt einen neuen Monarchen an die Burg der Stufe `stage`. Der Index zählt inselweit hoch und
 // bleibt auch nach einem Stufenwechsel derselbe (Eingaben werden über ihn zugeordnet).

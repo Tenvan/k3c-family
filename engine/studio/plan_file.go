@@ -14,21 +14,19 @@ import (
 	"k3c/engine/level"
 )
 
-// Schreiben der Planung in data/islands.json (WZ8.5, B-461/AC-12): format-stabil (nur der Wert von `plannedChunks` der
+// Schreiben der Planung in die Welt-Datei (WZ8.5, B-461/AC-12): format-stabil (nur der Wert von `plannedChunks` der
 // betroffenen Insel wird ersetzt, alle übrigen Bytes bleiben), atomar (Temp-Datei, dann umbenennen) und mit Stand-Prüfung.
 
-// islandsPath ist data/islands.json relativ zur Repo-Wurzel.
-const islandsPath = "data/islands.json"
+// islandsPath ist die Standard-Welt data/worlds/standard.json relativ zur Repo-Wurzel.
+const islandsPath = "data/worlds/standard.json"
 
 // planRegHint ist der Hinweis nach jedem Speichern: Eine gespeicherte Planung ist eine REG-Änderung durch 🧑.
 const planRegHint = "REG-Änderung: Commit mit Begründung, `task golden:update` nur bei gewollter Änderung"
 
-// errPlanStale lehnt ein Speichern auf veraltetem Stand ab; der Entwurf bleibt in der Oberfläche.
-type planStaleError struct{}
-
-func (planStaleError) Error() string { return "data/islands.json geändert, bitte neu laden" }
-
-var errPlanStale error = planStaleError{}
+// staleError ist die Ablehnung eines Speicherns auf veraltetem Stand; der Entwurf bleibt in der Oberfläche.
+func staleError(id string) string {
+	return "data/worlds/" + id + ".json geändert, bitte neu laden"
+}
 
 // planStand ist der Stand der Datei: SHA-256 des Inhalts (hex).
 func planStand(raw []byte) string {
@@ -36,7 +34,7 @@ func planStand(raw []byte) string {
 	return hex.EncodeToString(sum[:])
 }
 
-// planned liest die Planung der Insel id (Tiefe → Chunks) aus dem Inhalt von islands.json.
+// plannedOf liest die Planung der Insel id (Tiefe → Chunks) aus dem Inhalt der Welt-Datei.
 func plannedOf(raw []byte, id string) (map[string][]level.PlannedChunk, error) {
 	var f struct {
 		Islands []struct {
@@ -45,14 +43,14 @@ func plannedOf(raw []byte, id string) (map[string][]level.PlannedChunk, error) {
 		} `json:"islands"`
 	}
 	if err := json.Unmarshal(raw, &f); err != nil {
-		return nil, fmt.Errorf("%s: %w", islandsPath, err)
+		return nil, fmt.Errorf("Welt-Datei: %w", err)
 	}
 	for _, isl := range f.Islands {
 		if isl.ID == id {
 			return isl.Planned, nil
 		}
 	}
-	return nil, fmt.Errorf("die Insel %q gibt es nicht in %s", id, islandsPath)
+	return nil, fmt.Errorf("die Insel %q gibt es nicht in der Welt-Datei", id)
 }
 
 // span ist ein Byte-Bereich [from, to) im Inhalt.
@@ -83,29 +81,16 @@ func valueSpan(raw []byte, outer span, key string) (span, bool, error) {
 
 // islandSpan findet das Objekt der Insel id im Array `islands`.
 func islandSpan(raw []byte, id string) (span, error) {
-	root := span{0, len(raw)}
-	list, ok, err := valueSpan(raw, root, "islands")
-	if err != nil || !ok {
-		return span{}, fmt.Errorf("%s: kein Feld islands (%v)", islandsPath, err)
+	_, items, err := islandItems(raw)
+	if err != nil {
+		return span{}, err
 	}
-	dec := json.NewDecoder(bytes.NewReader(raw[list.from:list.to]))
-	if tok, err := dec.Token(); err != nil || tok != json.Delim('[') {
-		return span{}, fmt.Errorf("%s: islands ist keine Liste", islandsPath)
-	}
-	for dec.More() {
-		var v json.RawMessage
-		if err := dec.Decode(&v); err != nil {
-			return span{}, err
-		}
-		end := int(dec.InputOffset())
-		var head struct {
-			ID string `json:"id"`
-		}
-		if json.Unmarshal(v, &head) == nil && head.ID == id {
-			return span{list.from + end - len(v), list.from + end}, nil
+	for _, it := range items {
+		if it.id == id {
+			return it.at, nil
 		}
 	}
-	return span{}, fmt.Errorf("die Insel %q gibt es nicht in %s", id, islandsPath)
+	return span{}, fmt.Errorf("die Insel %q gibt es nicht in der Welt-Datei", id)
 }
 
 // encodePlanned schreibt die Planung kompakt, Tiefen aufsteigend (wie die Datei sie hält).
@@ -164,10 +149,16 @@ func nextPlanned(old map[string][]level.PlannedChunk, depth int, chunks []level.
 	return next, reflect.DeepEqual(oldClean, next)
 }
 
-// insertSpan ist die Stelle vor der schließenden Klammer der Insel, an der ein fehlendes Feld angehängt wird.
-func insertSpan(raw []byte, island span) span {
-	end := island.to - 1
-	for end > island.from && (raw[end-1] == ' ' || raw[end-1] == '\n' || raw[end-1] == '\r' || raw[end-1] == '\t') {
+// insertSpan ist die Stelle vor der schließenden Klammer des Objekts, an der ein fehlendes Feld angehängt wird; Leerraum
+// nach der Klammer (Zeilenende am Dateiende) wird übersprungen.
+func insertSpan(raw []byte, obj span) span {
+	space := func(b byte) bool { return b == ' ' || b == '\n' || b == '\r' || b == '\t' }
+	end := obj.to
+	for end > obj.from && space(raw[end-1]) {
+		end--
+	}
+	end-- // die schließende Klammer
+	for end > obj.from && space(raw[end-1]) {
 		end--
 	}
 	return span{end, end}
@@ -198,15 +189,7 @@ func replaceField(raw []byte, id, key string, text []byte) ([]byte, error) {
 	if err != nil {
 		return nil, err
 	}
-	at, found, err := valueSpan(raw, island, key)
-	if err != nil {
-		return nil, err
-	}
-	if !found {
-		at = insertSpan(raw, island)
-		text = append([]byte(fmt.Sprintf(`, %q: `, key)), text...)
-	}
-	return append(append(append([]byte{}, raw[:at.from]...), text...), raw[at.to:]...), nil
+	return setKey(raw, island, key, text)
 }
 
 // writeAtomic schreibt über eine Temp-Datei im selben Ordner, damit nie eine halbe Datei liegt.

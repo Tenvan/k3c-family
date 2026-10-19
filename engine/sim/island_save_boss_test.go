@@ -16,13 +16,21 @@ func reload(t *testing.T, isl *Island) *Island {
 
 // (a) Round-Trip: alles Neue bleibt erhalten, Speichern, Laden, Speichern ist gleich.
 func TestSpielstandBossRundlauf(t *testing.T) {
-	def := withTestIslands(t)
+	w, def := testIslands()
 	isl := nightIsland(t)
+	isl.world, isl.islandID = w, def.ID // die zweite Insel der Test-Welt
 	isl.Number, isl.DefeatedBosses, isl.GoldCollected, isl.Won = 1, []string{"goblinLeader", "trollKing"}, 37, true
 	p := isl.Stages[0].Players[0]
 	p.Skills, p.SkillBase = []string{"taunt"}, 1
 	first := saveJSON(t, isl.ToSave("2026-10-07T22:00:00Z"))
-	got := loadIsland(t, first)
+	parsed, err := ParseIslandSave(first)
+	if err != nil {
+		t.Fatal(err)
+	}
+	got, err := FromIslandSaveIn(parsed, islandSpeed, w)
+	if err != nil {
+		t.Fatal(err)
+	}
 	if got.Number != 1 || got.Scaling != def.DepthScaling || !slices.Equal(got.DefeatedBosses, isl.DefeatedBosses) ||
 		got.GoldCollected != 37 || !got.Won || got.EndbossDefeated {
 		t.Fatalf("Insel %d, Tabelle %+v, Bosse %v, Münzen %d, Sieg %v, Endboss %v",
@@ -100,13 +108,13 @@ func TestSpielstandBossAlteVersionen(t *testing.T) {
 	}
 }
 
-// (f) Unbekannter Boss, doppelter Boss, Insel außerhalb der Daten, negative Zähler: Fehler mit Meldung.
+// (f) Unbekannter Boss, doppelter Boss, Insel oder Welt unbekannt, negative Zähler: Fehler mit Meldung.
 func TestSpielstandBossUngueltig(t *testing.T) {
 	cases := map[string]func(s *IslandSave){
 		"unbekannter Boss": func(s *IslandSave) { s.DefeatedBosses = []string{"drache"} },
 		"doppelter Boss":   func(s *IslandSave) { s.DefeatedBosses = []string{"goblinLeader", "goblinLeader"} },
-		"Insel zu groß":    func(s *IslandSave) { s.Island = len(islandDefs) },
-		"Insel negativ":    func(s *IslandSave) { s.Island = -1 },
+		"Insel unbekannt":  func(s *IslandSave) { s.IslandID = "island2" },
+		"Welt unbekannt":   func(s *IslandSave) { s.World = "nordmeer" },
 		"Münzen negativ":   func(s *IslandSave) { s.GoldCollected = -1 },
 		"Skill-Basis":      func(s *IslandSave) { s.Players[0].SkillBase = 1 },
 	}

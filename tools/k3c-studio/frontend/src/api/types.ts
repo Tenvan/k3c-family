@@ -1,4 +1,5 @@
 import type { LevelLayout } from '@game/model/types';
+import type { DraftScaling, WorldDraftApi } from './worldTypes';
 
 // Typen des Asset-Studios (B-298, B-459): Slot-Register, Katalog und Recherche, wie Go sie liefert
 // (tools/assetkit, tools/k3c-studio/app_assets.go). Kopie aus k3c-dev, ergänzt um Stand und Backend.
@@ -131,10 +132,13 @@ export interface PlanIsland {
   biomes: string[];
   planned: Record<string, PlannedChunk[]>;
   chunkCounts: Record<string, number>;
+  depthScaling: DraftScaling;
 }
 
-/** data/islands.json für den Editor (Go: PlanView); stand ist der Hash der Datei beim Lesen, sizes die Inselgrößen */
+/** Welt-Datei der gewählten Welt für den Editor (Go: PlanView); stand ist der Hash der Datei beim Lesen, sizes die Inselgrößen */
 export interface PlanView {
+  name: string;
+  notes: string;
   islands: PlanIsland[];
   sizes: IslandSize[];
   stand: string;
@@ -318,7 +322,7 @@ export interface Events {
 export type EventName = keyof Events;
 
 /** Bindings des Asset-Studios (Wails) bzw. ihr Mock im Browser */
-export interface Backend {
+export interface Backend extends WorldDraftApi {
   mock: boolean;
   assetsList(): Promise<AssetsView>;
   assetsSet(id: string, wahl: AssetChoice[], stand: string): Promise<AssetSaved>;
@@ -333,19 +337,16 @@ export interface Backend {
   worldLevel(seed: string, source: WorldSource): Promise<WorldLevelView>;
   /** Live-Vorschau: Welt zu den Optionen, aus der Vorschau-Funktion des Servers (B-460) */
   worldPreview(args: WorldPreviewArgs): Promise<WorldPreviewView>;
-  /** Geplante Chunks: data/islands.json lesen, einen Entwurf (Planung und Chunk-Anzahl, 0 = Biom-Länge) prüfen, ohne zu
+  /** Geplante Chunks: Welt-Datei der gewählten Welt lesen, einen Entwurf (Planung und Chunk-Anzahl, 0 = Biom-Länge) prüfen, ohne zu
    *  schreiben, und Planung und Anzahl einer Tiefe speichern (B-461, B-485) */
   planLoad(): Promise<PlanView>;
   planCheck(island: string, depth: number, chunks: PlannedChunk[], count: number): Promise<PlanCheckView>;
   planSave(island: string, depth: number, chunks: PlannedChunk[], count: number, stand: string): Promise<PlanSaved>;
-  /** Weitere Insel anlegen (Kopie der letzten) bzw. eine Insel entfernen (die erste bleibt), jeweils auf dem Stand aus planLoad */
-  planIslandAdd(stand: string): Promise<PlanSaved>;
   /** Welten: auflisten, wählen (danach liest planLoad ihre Datei), mit Namen anlegen (wird gewählt), entfernen (Standard bleibt) */
   planWorlds(): Promise<WorldsView>;
   planWorldSelect(id: string): Promise<WorldsView>;
   planWorldAdd(name: string): Promise<WorldsView>;
   planWorldRemove(id: string): Promise<WorldsView>;
-  planIslandRemove(id: string, stand: string): Promise<PlanSaved>;
   /** Seed-Inhalt des geplanten Chunks am Platz slot im Level zu Seed und Quelle (Umwandlung in feste Objekte, B-485/AC-06) */
   planChunkObjects(seed: string, source: WorldSource, slot: number): Promise<PlanObjectsView>;
   /** Im Spiel öffnen: `new` (neues Spiel mit dem Seed) oder `full` (voll ausgebaut), über die Landingpage des Servers unter base, nur Loopback */

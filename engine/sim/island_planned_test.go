@@ -3,18 +3,18 @@ package sim
 import (
 	"strings"
 	"testing"
-	"testing/fstest"
 )
 
-func islandsWithPlan(plan string) fstest.MapFS {
-	raw := `{"islands":[{"id":"a","depths":[0,1,2,3,4],"depthScaling":{"hp":1,"damage":1,"speed":1},"plannedChunks":` + plan + `}]}`
-	return fstest.MapFS{"islands.json": {Data: []byte(raw)}}
+// islandsWithPlan liest eine Test-Welt mit einer Insel „a“ und der Planung plan (island_worlds_test.go).
+func islandsWithPlan(plan string) ([]IslandDef, error) {
+	w, err := parseTestWorld(`,"plannedChunks":` + plan)
+	return w.Islands, err
 }
 
 func TestInselPlanungWirdBeimLadenGeprueft(t *testing.T) {
 	good := `{"0":[{"slot":-3,"kind":"clearing","seed":"lichtung"}],"1":[{"slot":3,"kind":"cavern","objects":[{"kind":"stoneVein","at":40}]}]}`
-	var dst []IslandDef
-	if err := loadIslands(islandsWithPlan(good), &dst); err != nil {
+	dst, err := islandsWithPlan(good)
+	if err != nil {
 		t.Fatalf("gültige Planung abgelehnt: %v", err)
 	}
 	if len(dst[0].PlannedChunks["0"]) != 1 || dst[0].PlannedChunks["0"][0].Seed != "lichtung" {
@@ -31,9 +31,8 @@ func TestInselPlanungWirdBeimLadenGeprueft(t *testing.T) {
 		"Teil 2 reserviert": `{"0":[{"slot":1,"kind":"forest","buildings":[{"kind":"smithy"}]}]}`,
 	}
 	for name, plan := range bad {
-		var out []IslandDef
-		err := loadIslands(islandsWithPlan(plan), &out)
-		if err == nil || out != nil || !strings.Contains(err.Error(), "data/islands.json") {
+		out, err := islandsWithPlan(plan)
+		if err == nil || out != nil || !strings.Contains(err.Error(), "data/worlds/test.json") {
 			t.Errorf("%s: Fehler %v, Ergebnis %v", name, err, out)
 		}
 	}
@@ -41,12 +40,11 @@ func TestInselPlanungWirdBeimLadenGeprueft(t *testing.T) {
 
 func TestInselPlanungLeerIstKeinePlanung(t *testing.T) {
 	for _, plan := range []string{`{}`, `null`, `{"0":[]}`} {
-		var dst []IslandDef
-		if err := loadIslands(islandsWithPlan(plan), &dst); err != nil {
+		if _, err := islandsWithPlan(plan); err != nil {
 			t.Errorf("%s: %v", plan, err)
 		}
 	}
-	for _, d := range islandDefs {
+	for _, d := range StandardWorld().Islands {
 		if len(d.PlannedChunks) != 0 {
 			t.Errorf("%s: eingebettete Daten enthalten eine Planung", d.ID)
 		}

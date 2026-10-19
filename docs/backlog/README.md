@@ -150,7 +150,7 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-483](B-483-worktree-eintraege-nur-lesend.md) | DEV | Problem | niedrig | offen | – | Planungsseite: Einträge nur im Worktree sind nur lesbar (Detail, Menüs, Rang) |
 | [B-484](B-484-worktree-neuer-sprint-leer.md) | DEV | Problem | niedrig | offen | – | Worktree-Vergleich: Sessions und Projekt eines neuen Sprints fehlen in den Pills |
 | [B-487](B-487-plan-editor-load-check-ablehnung.md) | DEV | Problem | niedrig | offen | – | Chunk-Editor: abgelehnte Aufrufe von planLoad und planCheck bleiben stumm |
-| [B-488](B-488-welten-inseln-editor-prompt.md) | DEV | Idee | mittel | offen | WZ18 | Welten und Inseln im Asset-Studio anlegen und bearbeiten, Welt per Prompt füllen |
+| [B-488](B-488-welten-inseln-editor-prompt.md) | DEV | Idee | mittel | eingeplant | WZ18 | Welten und Inseln im Asset-Studio anlegen und bearbeiten, Welt per Prompt füllen |
 | [B-489](B-489-spielstand-chunk-anzahl.md) | SIM | Problem | mittel | offen | – | Spielstände laden Chunk-Anzahl und Planung aus den aktuellen Daten |
 | [B-490](B-490-sim-chunk-anzahl-nachtraege.md) | SIM | Schuld | niedrig | offen | – | Sim: Chunk-Anzahl mit Kandidaten-hub.json und gemeinsame Prüfung der Inselgröße |
 | [B-491](B-491-welten-editor-kleinigkeiten.md) | DEV | Schuld | niedrig | offen | – | Welten Editor: kleine Nachträge zu Schieber, Klick-Sprung und Planungsliste |
@@ -160,6 +160,8 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-495](B-495-respec-in-aktionsliste.md) | SRV | Schuld | niedrig | offen | – | Die Aktionsliste nennt respec, wenn CanRespec erlaubt |
 | [B-496](B-496-studio-fensterposition-merken.md) | DEV | Idee | mittel | offen | – | Das Asset-Studio merkt sich Fensterposition und Größe und stellt sie sicher wieder her |
 | [B-497](B-497-grosse-inseln-last-und-umwandlung.md) | SIM | Frage | niedrig | offen | – | Große Inseln: Last im Spiel messen, Umwandlung in allen Biomen testen, PlanSave gegen Parallelität |
+| [B-499](B-499-studio-spiel-oeffnen-welt-zweimal.md) | DEV | Problem | niedrig | offen | – | Studio „Im Spiel öffnen“ in eigener Welt scheitert beim zweiten Mal mit demselben Seed |
+| [B-500](B-500-fullsave-tiefen-aus-welt.md) | SRV | Schuld | niedrig | offen | – | Voll ausgebauter Spielstand nimmt Tiefen aus den Biomen statt aus der Standard-Welt |
 
 ## Archiv
 

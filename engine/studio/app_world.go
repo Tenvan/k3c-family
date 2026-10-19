@@ -25,7 +25,7 @@ type WorldLevelView struct {
 
 // WorldSource ist die Quelle des Levels als Wert: ein Biom oder eine Insel mit Stufe (Index in ihren Tiefen). Planned
 // ist der Entwurf der geplanten Chunks (auch ungespeichert); nil nimmt bei einer Insel die gespeicherte Planung aus
-// data/islands.json, bei einem Biom keine.
+// der Welt-Datei, bei einem Biom keine.
 type WorldSource struct {
 	Biome   string                `json:"biome"`
 	Island  string                `json:"island"`

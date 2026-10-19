@@ -4,6 +4,7 @@ import (
 	"context"
 	"errors"
 	"io"
+	"io/fs"
 	"log/slog"
 	"math/rand/v2"
 	"regexp"
@@ -43,6 +44,8 @@ type Manager struct {
 	Log     *slog.Logger
 	// Dev schaltet den Dev-Mode ein (K3C_DEV): Grad dev wählbar, Standardgrad eines neuen Raums ist dann dev.
 	Dev bool
+	// Worlds ist der Ordner der Welt-Dateien (K3C_WORLDS_DIR); nur im Dev-Mode gelesen, nil = nur die Standard-Welt.
+	Worlds fs.FS
 	// Changed meldet, dass sich Raumliste oder Plätze geändert haben (für `rooms` an Geräte ohne Raum).
 	// Aufruf ohne gehaltene Sperre.
 	Changed func()
@@ -169,8 +172,8 @@ func seedOf(name string, opts Options) (string, error) {
 	return opts.Seed, nil
 }
 
-// open lädt den Spielstand (Version 1 oder 2) oder legt eine neue Insel mit einer Stufe je Biom an (islandDepths). Die Spieler eines
-// geladenen Stands sind im Raum freie Monarchen.
+// open lädt den Spielstand in seiner gespeicherten Welt oder legt eine neue Insel in der Welt opts.World an (worlds.go).
+// Die Spieler eines geladenen Stands sind im Raum freie Monarchen.
 func (m *Manager) open(name string, fresh bool, depth int, opts Options) (*sim.Island, error) {
 	data, err := m.Store.Load(name)
 	switch {
@@ -185,14 +188,7 @@ func (m *Manager) open(name string, fresh bool, depth int, opts Options) (*sim.I
 		if err != nil {
 			return nil, err
 		}
-		depths, err := islandDepths()
-		if err != nil {
-			return nil, err
-		}
-		if !slices.Contains(depths, depth) {
-			return nil, ErrBadRequest // unbekannte Startstufe
-		}
-		isl, err := sim.CreateIsland(seed, depths, 1, sim.CreateOptions{})
+		isl, err := m.createIn(seed, depth, opts)
 		if err != nil {
 			return nil, err
 		}
@@ -206,7 +202,7 @@ func (m *Manager) open(name string, fresh bool, depth int, opts Options) (*sim.I
 	if err != nil {
 		return nil, err
 	}
-	isl, err := sim.FromIslandSave(s, 1)
+	isl, err := m.loadIn(s)
 	if err != nil {
 		return nil, err
 	}

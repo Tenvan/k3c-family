@@ -46,11 +46,14 @@ export function mockWorldPreview(args: WorldPreviewArgs): WorldPreviewView {
   return { level: { ...(fixture.level as object), seed: args.seed, biomeId: args.source.biome ?? 'forest' } as never, state, error: '' };
 }
 
-/** „Im Spiel öffnen“ im Mock: öffnet nichts, prüft wie Go nur den Seed und meldet die Adresse (ohne Wails kein Browser-Start). */
-export function mockOpenGame(base: string, seed: string, biome: string, mode: 'new' | 'full'): OpenGameResult {
+/** „Im Spiel öffnen“ im Mock: öffnet nichts, prüft wie Go nur den Seed und meldet die Adresse (ohne Wails kein Browser-Start);
+ *  eine andere als die Standard-Welt startet frisch mit ihrer id (WZ18.6). */
+export function mockOpenGame(base: string, seed: string, biome: string, mode: 'new' | 'full', world = 'standard'): OpenGameResult {
   if (mode === 'new' && biome !== 'forest') return { url: '', save: '', error: 'Start nur für den Wald (Tiefe 0)' };
+  if (mode === 'full' && world !== 'standard') return { url: '', save: '', error: 'Voll ausgebaut gibt es nur für die Standard-Welt' };
   const max = mode === 'full' ? 27 : 32;
   if (!new RegExp(`^[a-z0-9-]{1,${max}}$`).test(seed)) return { url: '', save: '', error: `Seed muss aus Kleinbuchstaben, Ziffern und - bestehen (höchstens ${max} Zeichen)` };
   const save = mode === 'full' ? `voll-${seed}` : seed;
-  return { url: `${base}/#${encodeURIComponent(`game.html?autostart=1&save=${save}`)}`, save, error: '' };
+  const query = world === 'standard' ? `autostart=1&save=${save}` : `autostart=1&fresh=1&save=${save}&world=${world}`;
+  return { url: `${base}/#${encodeURIComponent(`game.html?${query}`)}`, save, error: '' };
 }

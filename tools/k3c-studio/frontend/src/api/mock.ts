@@ -8,13 +8,14 @@ import type { AssetChoice, Backend, EventName, Events } from './types';
 export function mockBackend(): Backend & { external: (id: string, wahl: AssetChoice[], quiet?: boolean) => void } {
   const subs = new Map<EventName, Set<(data: never) => void>>();
   const emit = <E extends EventName>(event: E, data: Events[E]) => subs.get(event)?.forEach((fn) => (fn as (d: Events[E]) => void)(data));
+  const plan = mockPlan();
   return {
     mock: true,
     ...mockAssets(() => emit('assets:changed', null)),
     worldLevel: async (seed, source) => mockWorldLevel(seed, source),
     worldPreview: async (args) => mockWorldPreview(args),
-    worldOpenGame: async (base, seed, biome, mode) => mockOpenGame(base, seed, biome, mode),
-    ...mockPlan(),
+    worldOpenGame: async (base, seed, biome, mode) => mockOpenGame(base, seed, biome, mode, plan.active()),
+    ...plan,
     hubPlan: async () => mockHubPlan(),
     hubRules: async (hubJSON) => mockHubRules(hubJSON),
     hubCheck: async (candidate) => mockHubCheck(candidate),

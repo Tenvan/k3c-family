@@ -1,4 +1,5 @@
 import { describe, expect, it } from 'vitest';
+import createWorldMsg from '../../testdata/protocol/c2s-create-world.json';
 import inputMsg from '../../testdata/protocol/c2s-input.json';
 import learnMsg from '../../testdata/protocol/c2s-learn.json';
 import respecMsg from '../../testdata/protocol/c2s-respec.json';
@@ -9,7 +10,7 @@ import levelMsg from '../../testdata/protocol/s2c-level.json';
 import rooms from '../../testdata/protocol/s2c-rooms.json';
 import welcome from '../../testdata/protocol/s2c-welcome.json';
 import { RoomClient, type SocketLike } from './clientConnection';
-import { PROTOCOL_VERSION, type ClientMessage } from './clientProtocol';
+import { PROTOCOL_VERSION, type ClientMessage, type ServerMessage } from './clientProtocol';
 
 // S2.1 (B-123): Schlag, Skills und Aktionen im Protokoll v4, Beispiele aus testdata/protocol/.
 
@@ -46,10 +47,20 @@ function room() {
 }
 
 describe('Protokoll v4: Skills und Aktionen', () => {
-  it('hello trägt v 6 (K4.2), welcome aus dem Beispiel auch', () => {
-    expect(PROTOCOL_VERSION).toBe(6);
-    expect(lobby().sock.sent[0]).toEqual({ t: 'hello', v: 6, device: 'dev-1' });
+  it('hello trägt v 7 (WZ18.5), welcome aus dem Beispiel auch', () => {
+    expect(PROTOCOL_VERSION).toBe(7);
+    expect(lobby().sock.sent[0]).toEqual({ t: 'hello', v: 7, device: 'dev-1' });
     expect(welcome.v).toBe(PROTOCOL_VERSION);
+  });
+
+  it('create sendet world wie c2s-create-world.json, nur bei fresh; s2c-joined.json passt zum Typ mit world (WZ18.5)', () => {
+    const l = lobby();
+    l.client.create(createWorldMsg.save, false, 0, [0], undefined, createWorldMsg.world);
+    expect(l.sock.sent.at(-1)).not.toHaveProperty('world'); // laden: die Welt steht im Spielstand
+    l.client.create(createWorldMsg.save, true, createWorldMsg.depth, createWorldMsg.slots, undefined, createWorldMsg.world);
+    expect(l.sock.sent.at(-1)).toEqual(createWorldMsg);
+    const msg: ServerMessage = { ...joined, t: 'joined' };
+    expect(msg.t === 'joined' && msg.world).toBe('standard');
   });
 
   it('learn und respec senden die Nachrichten der Beispiele, nur im Raum', () => {

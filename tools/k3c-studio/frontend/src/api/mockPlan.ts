@@ -1,7 +1,8 @@
-import { mockWorlds, newWorld, type MockWorld } from './mockWorlds';
-import type { Backend, IslandSize, PlanCheckView, PlannedChunk, PlanObjectsView, PlanSaved, PlanView, WorldSource } from './types';
+import { mockWorldDraft, HINT, staleText } from './mockWorldDraft';
+import { mockWorlds, newWorld, type MockIsland, type MockWorld } from './mockWorlds';
+import type { Backend, IslandSize, PlanCheckView, PlanIsland, PlannedChunk, PlanObjectsView, PlanSaved, PlanView, WorldSource } from './types';
 
-// Geplante Chunks im Mock (Browser, Tests): eine Insel mit fünf Tiefen im Speicher. Die Prüfung kennt nur ein paar
+// Geplante Chunks im Mock (Browser, Tests): Welten mit Inseln (Tiefen 0–4) im Speicher. Die Prüfung kennt nur ein paar
 // Fehler: Platz 0, Platz jenseits der Länge (±7, mit Chunk-Anzahl n: ±(n/2 − 2)), die Art „volcano“ und eine Anzahl,
 // die keine Inselgröße ist (Go prüft alles, siehe level.ValidatePlanFor).
 
@@ -36,60 +37,45 @@ function mockChunkObjects(planned: PlannedChunk[], slot: number): PlanObjectsVie
   return { objects: [{ kind: 'tree', at: 4 + c.seed.length }, { kind: 'rock', at: 20 }], error: '' };
 }
 
-type PlanPart = Pick<Backend, 'planLoad' | 'planCheck' | 'planSave' | 'planIslandAdd' | 'planIslandRemove' | 'planChunkObjects' | 'planWorlds' | 'planWorldSelect' | 'planWorldAdd' | 'planWorldRemove'>;
+type PlanPart = Pick<Backend, 'planLoad' | 'planCheck' | 'planSave' | 'planChunkObjects' | 'planWorlds' | 'planWorldSelect' | 'planWorldAdd' | 'planWorldCopy' | 'planWorldRemove' | 'planWorldCheck' | 'planWorldSave'>;
 
-const HINT = 'REG-Änderung: Commit mit Begründung, `task golden:update` nur bei gewollter Änderung';
-const STALE = 'data/islands.json geändert, bitte neu laden';
+const islandView = (i: MockIsland): PlanIsland => ({
+  id: i.id, name: i.name, depths: [...i.depths], biomes: i.depths.map((d) => BIOMES[d] ?? ''), planned: structuredClone(i.planned), chunkCounts: { ...i.counts }, depthScaling: { ...i.depthScaling },
+});
 
-/** Plan-Teil des Mock-Backends; `touch` simuliert eine Änderung der Datei von außen (neuer Stand). Mehrere Welten wie im Backend:
- *  jede mit eigenen Inseln und Planung, gewählt ist immer eine. */
-export function mockPlan(): PlanPart & { touch: () => void } {
+/** Plan-Teil des Mock-Backends; `touch` simuliert eine Änderung der Datei von außen (neuer Stand), `active` nennt die gewählte
+ *  Welt. Mehrere Welten wie im Backend: jede mit eigenen Inseln und Planung, gewählt ist immer eine. */
+export function mockPlan(): PlanPart & { touch: () => void; active: () => string } {
   const worlds: Record<string, MockWorld> = { standard: newWorld('Standard') };
   let active = 'standard';
   let version = 1;
   const cur = () => worlds[active]!;
   const stand = () => `mock-${version}`;
-  const view = (): PlanView => ({
-    islands: Array.from({ length: cur().islands }, (_, i) => ({ id: `island${i + 1}`, name: `Insel ${i + 1}`, depths: [0, 1, 2, 3, 4], biomes: BIOMES, planned: i === 0 ? structuredClone(cur().planned) : {}, chunkCounts: i === 0 ? { ...cur().counts } : {} })),
-    sizes: MOCK_SIZES,
-    stand: stand(),
-    error: '',
-  });
-  const plannedOf = (source: WorldSource) => source.planned ?? cur().planned[String(source.stage ?? 0)] ?? [];
-  const saved = (): PlanSaved => ({ stand: stand(), hint: HINT, error: '', stale: false });
+  const view = (): PlanView => ({ name: cur().name, notes: cur().notes, islands: cur().islands.map(islandView), sizes: MOCK_SIZES, stand: stand(), error: '' });
+  const islandOf = (id?: string) => cur().islands.find((i) => i.id === id) ?? cur().islands[0]!;
+  const plannedOf = (source: WorldSource) => source.planned ?? islandOf(source.island).planned[String(islandOf(source.island).depths[source.stage ?? 0])] ?? [];
   const refused = (error: string, stale = false): PlanSaved => ({ stand: '', hint: '', error, stale });
   return {
     planLoad: async () => view(),
     planCheck: async (_island, _depth, chunks, count) => mockCheckPlan(chunks, count),
-    planSave: async (_island, depth, chunks, count, at) => {
-      if (at !== stand()) return refused(STALE, true);
+    planSave: async (island, depth, chunks, count, at) => {
+      if (at !== stand()) return refused(staleText(active), true);
       const check = mockCheckPlan(chunks, count);
       if (!check.ok) return refused(check.error);
-      const w = cur();
-      w.planned = { ...w.planned };
-      w.counts = { ...w.counts };
-      if (chunks.length > 0) w.planned[String(depth)] = structuredClone(chunks);
-      else delete w.planned[String(depth)];
-      if (count > 0) w.counts[String(depth)] = count;
-      else delete w.counts[String(depth)];
+      const isl = islandOf(island);
+      isl.planned = { ...isl.planned };
+      isl.counts = { ...isl.counts };
+      if (chunks.length > 0) isl.planned[String(depth)] = structuredClone(chunks);
+      else delete isl.planned[String(depth)];
+      if (count > 0) isl.counts[String(depth)] = count;
+      else delete isl.counts[String(depth)];
       version++;
-      return saved();
-    },
-    planIslandAdd: async (at) => {
-      if (at !== stand()) return refused(STALE, true);
-      cur().islands++;
-      version++;
-      return saved();
-    },
-    planIslandRemove: async (id, at) => {
-      if (at !== stand()) return refused(STALE, true);
-      if (id === 'island1' || cur().islands < 2) return refused('die erste Insel bleibt');
-      cur().islands--;
-      version++;
-      return saved();
+      return { stand: stand(), hint: HINT, error: '', stale: false };
     },
     ...mockWorlds(worlds, () => active, (id) => { active = id; version++; }),
+    ...mockWorldDraft(() => active, cur, (w) => { worlds[active] = w; }, stand, () => { version++; }),
     planChunkObjects: async (_seed, source, slot) => mockChunkObjects(plannedOf(source), slot),
     touch: () => { version++; },
+    active: () => active,
   };
 }

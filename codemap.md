@@ -1,7 +1,7 @@
 # Repository Atlas: K3C – Family Three Crowns
 
 ## Project Responsibility
-Couch-Koop-Side-Scroller im Stil von Kingdom Two Crowns für Edge auf der Xbox (Gamepad API), gehostet im Heimnetz. Ein Go-Server (`engine/`, `cmd/k3c-server`) rechnet die deterministische Simulation und verteilt Snapshots über WebSocket (Protokoll v6). Der Browser-Client (`src/`, TypeScript + Phaser 4 + Vite) sendet nur Eingaben und zeichnet. Balancing liegt als JSON in `data/` und ist die einzige Quelle für beide Seiten. `tools/k3c-dev` ist das Entwickler-Werkzeug (Wails-Desktop-App + MCP-Server), `tools/k3c-studio` das Frontend des Asset-Studios (Seite des Go-Servers unter `/studio/`, Backend `engine/studio`; Grafik, Sound, Monarch, Gegner, Gebäude-Planer und Welten Editor).
+Couch-Koop-Side-Scroller im Stil von Kingdom Two Crowns für Edge auf der Xbox (Gamepad API), gehostet im Heimnetz. Ein Go-Server (`engine/`, `cmd/k3c-server`) rechnet die deterministische Simulation und verteilt Snapshots über WebSocket (Protokoll v7). Der Browser-Client (`src/`, TypeScript + Phaser 4 + Vite) sendet nur Eingaben und zeichnet. Balancing liegt als JSON in `data/` und ist die einzige Quelle für beide Seiten. `tools/k3c-dev` ist das Entwickler-Werkzeug (Wails-Desktop-App + MCP-Server), `tools/k3c-studio` das Frontend des Asset-Studios (Seite des Go-Servers unter `/studio/`, Backend `engine/studio`; Grafik, Sound, Monarch, Gegner, Gebäude-Planer und Welten Editor).
 
 ## System Entry Points
 - `game.html` → `src/main.ts`: Spiel-Client (Phaser-Szenen `load` → `lobby` → `game` + `hud`)
@@ -25,7 +25,7 @@ Couch-Koop-Side-Scroller im Stil von Kingdom Two Crowns für Edge auf der Xbox (
 | `engine/sim/` | Domain Model und deterministischer Tick-Core (Stufe, Insel, Campaign): Wirtschaft, Bürger/Berufe, Monarch-Skills, Gegner-Traits, Saves, ohne I/O | [View Map](engine/sim/codemap.md) |
 | `engine/level/` | Deterministischer Level-Generator mit Validator, Biome-Loader, Mauerlinien, Adern und Lava | [View Map](engine/level/codemap.md) |
 | `engine/room/` | Room/Manager: Geräte, Slots, Takt, Fristen, Speichern (`saver`), Skills, Monitor-Messreihen, Crash-Supervision | [View Map](engine/room/codemap.md) |
-| `engine/net/` | HTTP/WebSocket-Adapter (Protokoll v6): REST inkl. Saves/Metriken/Dev, Delta-Zustand, Aktionen, RTT-Ping | [View Map](engine/net/codemap.md) |
+| `engine/net/` | HTTP/WebSocket-Adapter (Protokoll v7): REST inkl. Saves/Metriken/Dev, Delta-Zustand, Aktionen, RTT-Ping | [View Map](engine/net/codemap.md) |
 | `engine/store/` | File-Repository für Spielstände, Berichte und Spielmetrik (atomar, rotierende Sicherungen, `Saves.List`) | [View Map](engine/store/codemap.md) |
 | `engine/rng/` | Deterministischer mulberry32-Generator, einzige Zufallsquelle | [View Map](engine/rng/codemap.md) |
 | `engine/conlog/` | Farbiger `slog.Handler` mit Emoji-Topics | [View Map](engine/conlog/codemap.md) |
@@ -37,7 +37,7 @@ Couch-Koop-Side-Scroller im Stil von Kingdom Two Crowns für Edge auf der Xbox (
 | `src/scenes/hints/` | Hinweise mit Tasten-Glyphen: Aktions-Overlay, geführte erste Nacht | [View Map](src/scenes/hints/codemap.md) |
 | `src/scenes/effects/` | Feedback: Effekte je Ereignis, Blitz/Shake/Rumble-Regeln, Partikel | [View Map](src/scenes/effects/codemap.md) |
 | `src/scenes/debug/` | Debug-Overlay und Cheat-Dialog (`?dev`) | [View Map](src/scenes/debug/codemap.md) |
-| `src/online/` | WebSocket-Client `/ws` (Protokoll v6): `RoomClient`, Stufen-Streams, Delta, Timeline, Interpolation, Vorhersage, Latenz | [View Map](src/online/codemap.md) |
+| `src/online/` | WebSocket-Client `/ws` (Protokoll v7): `RoomClient`, Stufen-Streams, Delta, Timeline, Interpolation, Vorhersage, Latenz | [View Map](src/online/codemap.md) |
 | `src/model/` | Client-Typen (`World`, `GameEvent` …) und typisierter `data/*.json`-Zugriff | [View Map](src/model/codemap.md) |
 | `src/input/` | `PlayerInput`-Adapter für Tastatur, Gamepad und Touch; Tastenbelegung der Slots in `slotBindings.ts` | [View Map](src/input/codemap.md) |
 | `src/audio/` | Web-Audio: `AudioCore`, `Mixer`-Busse, Ton aus `GameEvent`s | [View Map](src/audio/codemap.md) |

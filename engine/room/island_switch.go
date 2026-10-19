@@ -6,16 +6,14 @@ import "k3c/engine/sim"
 // selben Takt durch die nächste. Monarchen und Slots bleiben (Spieler-Index = Monarch), jedes Gerät bekommt Level und
 // vollen Zustand jeder Stufe neu (kein Delta über den Wechsel), der Spielstand enthält die neue Insel.
 
-// nextDef liefert die Daten der nächsten Insel; ein Test ersetzt es, weil die Daten nur eine Insel kennen.
-var nextDef = (*sim.Island).NextDef
-
-// switchIsland tauscht die Insel, wenn der Wechsel bereit ist und es eine nächste gibt (unter der Raum-Sperre).
+// switchIsland tauscht die Insel, wenn der Wechsel bereit ist und es in der Welt des Raums eine nächste gibt (unter der
+// Raum-Sperre).
 // true: Die Insel wurde getauscht.
 func (r *Room) switchIsland() bool {
 	if !r.isl.SwitchReady {
 		return false
 	}
-	def, ok := nextDef(r.isl)
+	def, ok := r.isl.NextDef()
 	if !ok {
 		return false
 	}

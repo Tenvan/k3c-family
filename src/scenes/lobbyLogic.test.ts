@@ -18,7 +18,7 @@ import {
 
 const room = { code: 'KRNZ', name: 'familie', depth: 1, grade: 'normal', taken: 2, free: 2, running: true };
 const lobby = { status: 'lobby' as Status, errorCode: null };
-const params = (p: Partial<StartParams> = {}): StartParams => ({ autostart: false, fresh: false, save: 'familie', mock: 0, room: null, players: 1, depth: 0, seed: '', ...p });
+const params = (p: Partial<StartParams> = {}): StartParams => ({ autostart: false, fresh: false, save: 'familie', mock: 0, room: null, players: 1, depth: 0, seed: '', world: '', ...p });
 
 describe('Start-Parameter (AC-14, B-082/AC-01)', () => {
   it('gültige Werte', () => {
@@ -31,6 +31,7 @@ describe('Start-Parameter (AC-14, B-082/AC-01)', () => {
       players: 1,
       depth: 0,
       seed: '',
+      world: '',
     });
   });
 
@@ -81,6 +82,14 @@ describe('Seed und Tiefe per URL (B-095/AC-02)', () => {
   it('ohne seed trägt create kein seed-Feld (alte Server)', () => {
     expect(new LobbyFlow(params({ autostart: true, fresh: true })).step(lobby)).not.toHaveProperty('seed');
   });
+
+  it('create trägt ?world= nur bei fresh, ohne world kein Feld (WZ18.5)', () => {
+    const p = parseStartParams('?autostart=1&fresh=1&save=nord&world=nordmeer');
+    expect(p.world).toBe('nordmeer');
+    expect(new LobbyFlow(p).step(lobby)).toEqual({ t: 'create', save: 'nord', fresh: true, depth: 0, slots: [0], world: 'nordmeer' });
+    expect(new LobbyFlow({ ...p, fresh: false }).step(lobby)).not.toHaveProperty('world');
+    expect(new LobbyFlow(params({ autostart: true, fresh: true })).step(lobby)).not.toHaveProperty('world');
+  });
 });
 
 describe('create-Befehl mit slots[] (AC-14, B-082/AC-02)', () => {
@@ -107,10 +116,10 @@ describe('create-Befehl mit slots[] (AC-14, B-082/AC-02)', () => {
   it('applyCommand ruft create bzw. join am Client auf', () => {
     const calls: unknown[][] = [];
     const client = { create: (...a: unknown[]) => calls.push(['create', ...a]), join: (...a: unknown[]) => calls.push(['join', ...a]) };
-    applyCommand(client, { t: 'create', save: 's', fresh: true, depth: 0, slots: [0, 1], seed: 'x' });
+    applyCommand(client, { t: 'create', save: 's', fresh: true, depth: 0, slots: [0, 1], seed: 'x', world: 'nordmeer' });
     applyCommand(client, { t: 'join', room: 'KRNZ', slots: [0] });
     expect(calls).toEqual([
-      ['create', 's', true, 0, [0, 1], 'x'],
+      ['create', 's', true, 0, [0, 1], 'x', 'nordmeer'],
       ['join', 'KRNZ', [0]],
     ]);
   });

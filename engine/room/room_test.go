@@ -20,7 +20,7 @@ type peer struct {
 	world    *sim.World
 }
 
-func (p *peer) Joined(room, name string, you []Seat) {
+func (p *peer) Joined(room, name, _ string, you []Seat) {
 	p.you = you
 	p.log = append(p.log, fmt.Sprintf("joined %s %s %v", room, name, you))
 }

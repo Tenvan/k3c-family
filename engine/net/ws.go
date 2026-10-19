@@ -17,7 +17,7 @@ import (
 	"k3c/engine/room"
 )
 
-// WebSocket /ws nach Protokoll v6. Jede Verbindung hat eine Lese-Schleife (diese Goroutine) und eine
+// WebSocket /ws nach Protokoll v7. Jede Verbindung hat eine Lese-Schleife (diese Goroutine) und eine
 // Schreib-Goroutine mit Warteschlange. Ein Zustand ersetzt einen noch wartenden derselben Stufe am Ende der Warteschlange
 // (nur der neueste zählt, B-276; je Stufe ein Strom, B-176); Delta und JSON des Zustands baut erst die Schreib-Goroutine. Ist die Warteschlange voll, wird die
 // Verbindung geschlossen, das zählt als Abbruch.
@@ -144,11 +144,11 @@ func mergeEvents(old out, cur map[string]any) ([]any, int) {
 	return all[lost:], lost
 }
 
-func (c *conn) Joined(code, name string, you []room.Seat) {
+func (c *conn) Joined(code, name, world string, you []room.Seat) {
 	c.mu.Lock()
 	c.inRoom = true
 	c.mu.Unlock()
-	c.enqueue(joinedMsg{"joined", code, name, you})
+	c.enqueue(joinedMsg{"joined", code, name, world, you})
 }
 
 // Level: nach dem Level kommt immer ein voller Zustand der Stufe (Beitreten, Wiederverbinden, neue Stufe).
