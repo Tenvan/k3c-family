@@ -10,7 +10,6 @@ Die Reihenfolge der Arbeit ist allein der Projekt-Rang: [`../projekte/README.md`
 | Sprint | Domäne | Projekt | Thema | Am Ende sichtbar | Ordner |
 |---|---|---|---|---|---|
 | WZ9 | SRV, DEV | WZG | Gebäude-Planer für die Freischaltung je Hub-Stufe | – | `aktiv/WZ9-gebaeude-planer/` |
-| WZ11 | DEV | WZG | Gegner- und Boss-Vorschau im Asset-Studio, Figuren-Seiten entfernen | – | `aktiv/WZ11-gegner-bosse-vorschau/` |
 | WZ12 | DEV | WZG | Planungs-Werkzeug: Platzhalter-Zeilen und Worktree-Pills | – | `aktiv/WZ12-planungs-werkzeug-nachtraege/` |
 | WZ18 | REG, SIM, SRV, DEV | WZG | Welten im Spiel: Welt-Dateien, Welt-Wahl im Raum und Welten-Editor | Welt mit zwei Inseln im Studio angelegt und im Spiel gestartet (Review fertig, offen: WZ18.8 Abnahme 🧑 am PC) | `aktiv/WZ18-welten-im-spiel/` |
 | WZ19 | DEV | WZG | Chat im Studio mit Claude Code CLI und Welt per Prompt füllen | Chat rechts im Studio füllt eine Welt als Entwurf | `aktiv/WZ19-chat-und-prompt/` |
@@ -197,3 +196,4 @@ Gesamtplan und Begründung: [`../plan-weiterentwicklung.md`](../plan-weiterentwi
 | SK1 | Skill-Baum mit Tank und Zauberer, Respec-Regeln abfragbar | `erledigt/SK1-skill-baum/` |
 | WZ17 | Chunk-Editor komfortabel: Inselgrößen, getrennter Zoom, Seed-Chunk umwandeln | `erledigt/WZ17-chunk-editor-komfort/` |
 | WZ10 | Abspiel-Bausteine und Monarch-Vorschau im Asset-Studio | `erledigt/WZ10-figuren-vorschau/` |
+| WZ11 | Gegner- und Boss-Vorschau im Asset-Studio, Figuren-Seiten entfernen | `erledigt/WZ11-gegner-bosse-vorschau/` |
