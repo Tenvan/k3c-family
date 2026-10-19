@@ -35,16 +35,17 @@ function mockChunkObjects(planned: PlannedChunk[], slot: number): PlanObjectsVie
   return { objects: [{ kind: 'tree', at: 4 + c.seed.length }, { kind: 'rock', at: 20 }], error: '' };
 }
 
-type PlanPart = Pick<Backend, 'planLoad' | 'planCheck' | 'planSave' | 'planChunkObjects'>;
+type PlanPart = Pick<Backend, 'planLoad' | 'planCheck' | 'planSave' | 'planIslandAdd' | 'planIslandRemove' | 'planChunkObjects'>;
 
 /** Plan-Teil des Mock-Backends; `touch` simuliert eine Änderung der Datei von außen (neuer Stand). */
 export function mockPlan(): PlanPart & { touch: () => void } {
   let planned: Record<string, PlannedChunk[]> = {};
   let counts: Record<string, number> = {};
   let version = 1;
+  let islands = 1;
   const stand = () => `mock-${version}`;
   const view = (): PlanView => ({
-    islands: [{ id: 'island1', name: 'Insel 1', depths: [0, 1, 2, 3, 4], biomes: BIOMES, planned: structuredClone(planned), chunkCounts: { ...counts } }],
+    islands: Array.from({ length: islands }, (_, i) => ({ id: `island${i + 1}`, name: `Insel ${i + 1}`, depths: [0, 1, 2, 3, 4], biomes: BIOMES, planned: i === 0 ? structuredClone(planned) : {}, chunkCounts: i === 0 ? { ...counts } : {} })),
     sizes: MOCK_SIZES,
     stand: stand(),
     error: '',
@@ -63,6 +64,19 @@ export function mockPlan(): PlanPart & { touch: () => void } {
       else delete planned[String(depth)];
       if (count > 0) counts[String(depth)] = count;
       else delete counts[String(depth)];
+      version++;
+      return { stand: stand(), hint: 'REG-Änderung: Commit mit Begründung, `task golden:update` nur bei gewollter Änderung', error: '', stale: false };
+    },
+    planIslandAdd: async (at) => {
+      if (at !== stand()) return { stand: '', hint: '', error: 'data/islands.json geändert, bitte neu laden', stale: true };
+      islands++;
+      version++;
+      return { stand: stand(), hint: 'REG-Änderung: Commit mit Begründung, `task golden:update` nur bei gewollter Änderung', error: '', stale: false };
+    },
+    planIslandRemove: async (id, at) => {
+      if (at !== stand()) return { stand: '', hint: '', error: 'data/islands.json geändert, bitte neu laden', stale: true };
+      if (id === 'island1' || islands < 2) return { stand: '', hint: '', error: 'die erste Insel bleibt', stale: false };
+      islands--;
       version++;
       return { stand: stand(), hint: 'REG-Änderung: Commit mit Begründung, `task golden:update` nur bei gewollter Änderung', error: '', stale: false };
     },

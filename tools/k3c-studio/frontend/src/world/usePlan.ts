@@ -66,6 +66,21 @@ export function usePlan() {
     setNotice(result.notice);
   }, [draft, count, island, depth, view]);
 
+  /** Insel anlegen oder entfernen (nur ohne offenen Entwurf); danach neu laden und die neue bzw. erste Insel wählen */
+  const islandEdit = useCallback(async (run: (stand: string) => Promise<{ error: string; stale: boolean; hint: string }>, pick: (v: PlanView) => string) => {
+    if (!view) return;
+    const result = await run(view.stand);
+    if (result.error) { setNotice({ kind: result.stale ? 'stale' : 'error', text: result.error }); return; }
+    const next = await backend.planLoad();
+    if (next.error) { setNotice({ kind: 'error', text: next.error }); return; }
+    setView(next);
+    setIslandId(pick(next));
+    setStageState(0);
+    setNotice({ kind: 'hint', text: result.hint });
+  }, [view]);
+  const addIsland = () => islandEdit((s) => backend.planIslandAdd(s), (v) => v.islands.at(-1)?.id ?? '');
+  const removeIsland = () => island && islandEdit((s) => backend.planIslandRemove(island.id, s), (v) => v.islands[0]?.id ?? '');
+
   const discard = () => { setDraft(saved); setCount(savedSize); setNotice(null); };
   const fallback = useMemo<PlanSource | undefined>(() => (island ? { island: island.id, stage, planned: saved, chunkCount: savedSize } : undefined), [island, stage, saved, savedSize]);
   const source = island ? (shown ?? fallback) : undefined;
@@ -73,7 +88,7 @@ export function usePlan() {
     view, island, stage, draft, count, sizes: view?.sizes ?? [], check, notice, dirty, source,
     selectIsland: (id: string) => { setIslandId(id); setStageState(0); },
     selectStage: setStageState,
-    edit, setSize, save, discard, reload: load,
+    edit, setSize, save, discard, reload: load, addIsland, removeIsland,
   };
 }
 

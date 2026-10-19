@@ -82,6 +82,8 @@ export function httpBackend(): Backend {
     planLoad: () => rpc<PlanView>('PlanLoad'),
     planCheck: (island: string, depth: number, chunks: PlannedChunk[], count: number) => rpc<PlanCheckView>('PlanCheck', island, depth, chunks, count),
     planSave: (island: string, depth: number, chunks: PlannedChunk[], count: number, stand: string) => rpc<PlanSaved>('PlanSave', island, depth, chunks, count, stand),
+    planIslandAdd: (stand: string) => rpc<PlanSaved>('PlanIslandAdd', stand),
+    planIslandRemove: (id: string, stand: string) => rpc<PlanSaved>('PlanIslandRemove', id, stand),
     planChunkObjects: (seed: string, src: WorldSource, slot: number) => rpc<PlanObjectsView>('PlanChunkObjects', seed, src, slot),
     hubPlan: () => rpc<HubPlanView>('HubPlan'),
     hubRules: (hubJSON: string) => rpc<HubRulesView>('HubRules', hubJSON),

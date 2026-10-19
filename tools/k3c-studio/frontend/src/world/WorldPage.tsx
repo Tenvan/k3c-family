@@ -2,9 +2,9 @@ import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { LivePreview } from '../stage/LivePreview';
 import { ChunkPreview } from './ChunkPreview';
 import { chunkAtSlot, slotHints } from './chunkMarks';
-import { GameLauncher } from './GameLauncher';
 import { LiveChunkBand } from './LiveChunkBand';
 import { PlanEditor } from './PlanEditor';
+import { WorldStructure } from './WorldStructure';
 import { usePlan } from './usePlan';
 import type { LevelModel, ModelChunk } from './levelView';
 import { ViewBar } from './ViewBar';
@@ -27,6 +27,8 @@ export function WorldPage() {
   const [model, setModel] = useState<LevelModel | null>(null);
   const [gates, setGates] = useState<number[]>([]);
   const frame = useRef<HTMLDivElement>(null);
+  const [controlsHost, setControlsHost] = useState<HTMLElement | null>(null); // Hub-Stufe, Tageszeit, Schichten: unter der Seed-Zeile
+  const [treeHost, setTreeHost] = useState<HTMLElement | null>(null); // Gebäude-Baum: unter den geplanten Chunks
   const strip = useBox(frame, '.wd-viewport');
   const stage = useBox(frame, '.wd-stage', true);
   const px = useMemo(() => ({ chunk: strip.w, live: stage.w }), [strip.w, stage.w]);
@@ -72,15 +74,21 @@ export function WorldPage() {
     <div className="wd-page" data-maximized={maximized} ref={frame}>
       <ChunkPreview maximized={maximized} onToggle={() => setMaximized((m) => !m)} onLoaded={onLoaded} source={plan.source} view={chunkView} onWheel={(e) => onWheel(e, 'chunk')}
         hints={hints} liveSpan={ownLive ? spans.live : undefined} onChunk={jumpTo}>
+        <div ref={setControlsHost} className="wd-controls-host" />
         <ViewBar views={views} spans={spans} widthUnits={widthUnits} range={centerRange(views, widthUnits, px)} jumps={jumpPoints(model, gates)}
           onScale={(scale) => zoom(BOTH, () => scale)} onZoom={zoomBy} onCenter={setCenter} />
       </ChunkPreview>
       <section className="wd-live" aria-label="Live-Vorschau">
-        <LivePreview seed={source.seed} biome={source.biome} position={liveView} onPan={panLive} onWheel={(e) => onWheel(e, 'live')} onSites={onSites} plan={plan.source} />
+        <LivePreview seed={source.seed} biome={source.biome} position={liveView} onPan={panLive} onWheel={(e) => onWheel(e, 'live')} onSites={onSites} plan={plan.source} controlsHost={controlsHost} treeHost={treeHost} />
         <LiveChunkBand stage={stage} view={liveView} model={model} draft={plan.draft} hints={hints} onChunk={jumpTo} />
       </section>
-      <PlanEditor plan={plan} seed={source.seed} onSlot={(slot) => { const c = model && chunkAtSlot(model.chunks, slot); if (c) jumpTo(c); }} />
-      <GameLauncher seed={source.seed} biome={source.biome} />
+      <div className="wd-columns">
+        <WorldStructure plan={plan} seed={source.seed} biome={source.biome} />
+        <div className="wd-tree">
+          <PlanEditor plan={plan} seed={source.seed} onSlot={(slot) => { const c = model && chunkAtSlot(model.chunks, slot); if (c) jumpTo(c); }} />
+          <div ref={setTreeHost} />
+        </div>
+      </div>
     </div>
   );
 }

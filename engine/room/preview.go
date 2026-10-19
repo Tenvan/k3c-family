@@ -38,6 +38,9 @@ type PreviewOptions struct {
 	// Buildings: false schaltet einen Platz aus (Schlüssel PreviewSiteKey); fehlende und unbekannte Schlüssel
 	// bleiben an bzw. werden ignoriert.
 	Buildings map[string]bool
+	// Sites setzt Baustufe, Trefferpunkte oder „nicht gebaut“ einzelner Plätze (Schlüssel PreviewSiteKey), nach dem Ausbau
+	// der Hub-Stufe; unbekannte Schlüssel werden ignoriert, eine ungültige Stufe ist ein Fehler.
+	Sites map[string]sim.SiteLook
 	// Planned sind die geplanten Chunks dieses Levels (WZ8.4, docs/rules/geplante-chunks.md), auch ein ungespeicherter
 	// Entwurf. nil oder leer = reiner Zufall, wie bei jedem Biom-Level ohne Insel; eine ungültige Planung wird mit dem
 	// Fehler der Prüfung (level.ValidatePlan) abgelehnt. Sie wird als Parameter durchgereicht, nie gespeichert.
@@ -92,6 +95,13 @@ func BuildPreview(o PreviewOptions) (*sim.World, error) {
 	}
 	if err := sim.PreviewCycle(w, phase, o.Progress); err != nil {
 		return nil, err
+	}
+	for _, s := range w.Sites {
+		if look, ok := o.Sites[PreviewSiteKey(s.Kind, s.X)]; ok {
+			if err := sim.PreviewSetSite(s, look); err != nil {
+				return nil, err
+			}
+		}
 	}
 	sites := make([]*sim.Site, 0, len(w.Sites)) // erst nach dem Ausbau entfernen: die Stufen der übrigen bleiben
 	for _, s := range w.Sites {

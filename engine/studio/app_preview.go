@@ -3,6 +3,7 @@ package studio
 import (
 	"k3c/engine/net"
 	"k3c/engine/room"
+	"k3c/engine/sim"
 )
 
 // Live-Vorschau des Welt-Betrachters (B-460, WZ7.3): die Welt in dem Format, das ein Gerät im Spiel bekommt, aus der
@@ -17,6 +18,8 @@ type WorldPreviewArgs struct {
 	Phase    string          `json:"phase"`
 	Progress float64         `json:"progress"`
 	Off      map[string]bool `json:"buildings"` // Schlüssel kind@x; false schaltet den Platz aus
+	// Sites setzt je Platz (Schlüssel kind@x) Baustufe, Trefferpunkte in Prozent oder „nicht gebaut“.
+	Sites map[string]sim.SiteLook `json:"sites"`
 	// HubCandidate ist der Planer-Stand (Gebäude-Planer, WZ9.2), auch ungespeichert; leer = eingebettete data/hub.json.
 	HubCandidate string `json:"hubCandidate"`
 }
@@ -36,7 +39,7 @@ func (a *App) WorldPreview(args WorldPreviewArgs) WorldPreviewView {
 	}
 	res, err := net.Preview(room.PreviewOptions{
 		Seed: args.Seed, Source: room.PreviewSource{Biome: r.biome}, HubLevel: args.HubLevel,
-		Phase: args.Phase, Progress: args.Progress, Buildings: args.Off, Planned: r.planned,
+		Phase: args.Phase, Progress: args.Progress, Buildings: args.Off, Sites: args.Sites, Planned: r.planned,
 		HubCandidate: []byte(args.HubCandidate), ChunkCount: r.count,
 	})
 	if err != nil {
