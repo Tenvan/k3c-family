@@ -132,7 +132,6 @@ tasks:
     cmds:
       - npx tsc --noEmit
       - npx vite build
-      - task: studio:frontend
 
   pages:
     desc: GitHub-Pages-Seite nach _site/ (Präsentation site/ + Build unter app/; danach z. B. `npx vite preview --outDir _site`)
@@ -244,7 +243,7 @@ tasks:
       - golangci-lint run
 
   studio:frontend:
-    desc: Frontend des Asset-Studios nach dist/studio/ bauen (der Go-Server liefert es unter /studio/ aus; task build ruft es auf)
+    desc: Frontend des Asset-Studios nach tools/k3c-studio/frontend/dist/ bauen (das Fenster k3c-studio liefert es unter /studio/ aus, nicht der Spielserver; B-507)
     dir: '{{.STUDIO}}/frontend'
     cmds:
       - npx tsc --noEmit
@@ -257,7 +256,7 @@ tasks:
       - paths.ts
       - ../../webkit/**/*
     generates:
-      - ../../../dist/studio/**/*
+      - dist/**/*
 
   k3c-studio:
     desc: Asset-Studio als eigenes Fenster starten (Wails, ohne Spielserver; baut die Oberfläche bei Bedarf; B-459)

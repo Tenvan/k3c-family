@@ -199,19 +199,20 @@ jobs:
       - run: go install github.com/wailsapp/wails/v2/cmd/wails@v2.16.0
       - run: wails build -s
 
-  # Asset-Studio (B-459): Seite des Go-Servers. Frontend (Typecheck, Build nach dist/studio, Vitest) und die Asset-Logik
-  # tools/assetkit; das Studio-Backend engine/studio prüft der Job go.
+  # Asset-Studio (B-459, B-507): eigenes Fenster mit eigenem Server, keine Seite des Spielservers. Frontend (Typecheck,
+  # Build nach tools/k3c-studio/frontend/dist, Vitest), die Asset-Logik tools/assetkit und das Modul tools/k3c-studio
+  # samt Backend (go test, Lint). Windows wie k3c-dev: das Modul bindet Wails ein.
   k3c-studio:
     if: github.event_name != 'pull_request'
-    name: Asset-Studio · Frontend · Tests · Lint
-    runs-on: ubuntu-latest
+    name: Asset-Studio · Frontend · Tests · Lint (Windows)
+    runs-on: windows-latest
     timeout-minutes: 15
     steps:
       - uses: actions/checkout@v7
       - uses: actions/setup-go@v7
         with:
-          go-version-file: tools/assetkit/go.mod
-          cache: false
+          go-version-file: tools/k3c-studio/go.mod
+          cache-dependency-path: tools/k3c-studio/go.sum
       - uses: actions/setup-node@v7
         with:
           node-version-file: .nvmrc
@@ -233,6 +234,12 @@ jobs:
         with:
           version: v2.14
           working-directory: tools/assetkit
+      - run: go test ./...
+        working-directory: tools/k3c-studio
+      - uses: golangci/golangci-lint-action@v9
+        with:
+          version: v2.14
+          working-directory: tools/k3c-studio
 
   # Windows-Starter (B-041, BT1.2): statische Oberfläche in web/ (kein Frontend-Build), Go-Tests, Lint, Wails-Build.
   k3c-starter:

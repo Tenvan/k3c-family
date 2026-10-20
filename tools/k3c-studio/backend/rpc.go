@@ -60,7 +60,7 @@ func (b *bus) subscribe() (chan string, func()) {
 }
 
 // Handler beantwortet alle Adressen unter Prefix. Er erreicht nur Loopback (das Studio schreibt in den Checkout);
-// remote erlaubt weitere Adressen (Umgebung K3C_STUDIO_LAN).
+// remote erlaubt weitere Adressen (früher für den Spielserver im LAN; das Fenster k3c-studio übergibt false, B-507).
 func (a *App) Handler(remote bool) http.Handler {
 	mux := http.NewServeMux()
 	mux.HandleFunc("GET "+Prefix+"ping", func(w http.ResponseWriter, _ *http.Request) { reply(w, http.StatusOK, "ok", nil) })

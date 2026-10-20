@@ -22,7 +22,8 @@ func fixture(t *testing.T) string {
 		"public/beide.txt":       "public gewinnt",
 		"dist/beide.txt":         "dist verliert",
 		"dist/nur-dist.txt":      "aus dist",
-		"dist/studio/index.html": "<html>studio</html>",
+		"dist/studio/index.html": "<html>alt</html>", // alter Build des Spielservers, gilt nicht mehr (B-507)
+		"tools/k3c-studio/frontend/dist/index.html": "<html>studio</html>",
 	}
 	for name, body := range files {
 		path := filepath.Join(root, filepath.FromSlash(name))

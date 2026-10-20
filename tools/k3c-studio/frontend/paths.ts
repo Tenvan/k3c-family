@@ -15,8 +15,8 @@ export const ALIAS = {
 /** Pakete, die auch Dateien außerhalb des Frontends (tools/webkit) aus diesem node_modules beziehen */
 export const DEDUPE = ['react', 'react-dom', '@radix-ui/themes'];
 
-/** public/ des Spiels: liefert im Dev-Modus der Studio-Vite, sonst der Spielserver aus dist/ */
+/** public/ des Spiels: liefert im Dev-Modus der Studio-Vite, sonst der Server des Studios (k3c-studio) */
 export const PUBLIC = fileURLToPath(new URL('../../../public', import.meta.url));
 
-/** Ausgabe des Builds: der Studio-Teil von dist/, den der Go-Server unter /studio/ ausliefert */
-export const DIST = fileURLToPath(new URL('../../../dist/studio', import.meta.url));
+/** Ausgabe des Builds: eigener Ordner des Studios, den der Server des Studios unter /studio/ ausliefert (B-507) */
+export const DIST = fileURLToPath(new URL('./dist', import.meta.url));

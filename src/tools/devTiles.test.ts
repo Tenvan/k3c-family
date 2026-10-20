@@ -2,7 +2,7 @@ import { describe, expect, it } from 'vitest';
 import { DEV_SECTIONS, DEV_TILES } from './devTiles';
 
 /** Werkzeug-Seiten, die bis LP1 auf der Landingpage standen, dazu Dungeon Master (B-335/AC-02). */
-const TOOLS = ['testing.html', 'gamepad-test.html', 'grafiken.html', 'soundtest.html', 'monitor.html', 'dm.html', 'studio/index.html'];
+const TOOLS = ['testing.html', 'gamepad-test.html', 'grafiken.html', 'soundtest.html', 'monitor.html', 'dm.html'];
 
 describe('Entwicklerseite (B-335)', () => {
   it('gliedert nach Entwicklung, Performance und Balancing', () => {
@@ -21,7 +21,7 @@ describe('Entwicklerseite (B-335)', () => {
     expect(balance!.empty).not.toBe('');
   });
 
-  it('nur Dungeon Master und das Asset-Studio öffnen in einem neuen Fenster', () => {
-    expect(DEV_TILES.filter((t) => t.external).map((t) => t.href)).toEqual(['dm.html', 'studio/index.html']);
+  it('nur Dungeon Master öffnet in einem neuen Fenster (das Asset-Studio ist ein eigenes Fenster, B-507)', () => {
+    expect(DEV_TILES.filter((t) => t.external).map((t) => t.href)).toEqual(['dm.html']);
   });
 });

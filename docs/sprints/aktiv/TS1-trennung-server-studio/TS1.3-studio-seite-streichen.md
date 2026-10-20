@@ -1,6 +1,6 @@
 # TS1.3 · Studio-Seite des Servers streichen
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** SRV
@@ -51,5 +51,9 @@ task check:studio
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+- **AC-03 geprüft:** `engine/net/nostudio_test.go` (`TestKeineStudioSeite`): `/studio/`, `/studio/index.html`, `/studio.html`, `GET /api/studio/ping` und `POST /api/studio/rpc/…` antworten 404. Dafür beantwortet der Server unbekannte `/api/`-Adressen jetzt für jede Methode mit 404 (vorher 405 aus `static` bei POST). `tests/projectRules.test.ts` › „Keine Studio-Seite im Spielserver (B-507)“: keine `studio.html`, keine Kachel mit `studio`, `task build` ruft `studio:frontend` nicht mehr auf, das Studio baut nicht nach `dist/studio`, keine `/api/studio`-Regel in `vite.config.ts`, `K3C_STUDIO_LAN` kommt im Code (`src`, `engine`, `cmd`, `tools`; `.ts/.tsx/.go`) nicht vor. Nach `task build` gibt es kein `dist/studio`.
+- Entfernt: Kachel `studio` (Landingpage) und Dev-Kachel `studio/index.html`, `studio.html` samt Script `src/tools/studioPage.ts`, Vite-Ausnahme `isStudioPath`, `task: studio:frontend` in `build`.
+- Studio-Frontend baut nach `tools/k3c-studio/frontend/dist/` (`paths.ts`, Taskfile `generates`); `tools/k3c-studio/server.go` liefert `/studio/` aus diesem Ordner (`uiDir`), `checkBuilt` prüft ihn.
+- CI-Job `k3c-studio` (aus dem Review von TS1.1): läuft wieder auf Windows (Wails im Modul), `go-version-file` auf `tools/k3c-studio/go.mod`, zusätzlich `go test` und `golangci-lint` mit `working-directory: tools/k3c-studio`; Kommentar ohne `engine/studio`.
+- Prüfungen: `task:check` grün, `task:check:go` grün, `task:build` grün, `check:studio` grün (ein erster Lauf scheiterte einmalig an „Access is denied“ beim Umbenennen in `.work/tmp`, Wiederholung grün).
+- Abweichungen: Oxlint-Fehler `complexity` (17 > 15) in `tools/k3c-studio/frontend/src/stage/LivePreview.tsx` behoben, Ausnahme zur Dateiliste vom Orchestrator erlaubt: rein mechanische Extraktion der Planer-Markierungen in den Hook `usePlanerMarks`, ohne Verhaltensänderung; der Fehler bestand schon auf `origin/develop` (Datei dort gleich, seit #392). `src/tools/studioPage.ts` gelöscht (Script der gestrichenen `studio.html`). `engine/net/handler.go` bekommt eine `/api/`-Auffangroute (404). Texte `landing.studio*`, `studio.*` (`src/core/texts.*.ts`) und `tile.studio.*` (`src/tools/texts.*.ts`) sind jetzt ungenutzt, bleiben aber stehen (Dateien nicht erlaubt). `Handler(remote bool)` im Studio-Backend bleibt, nur die Kommentare zu `K3C_STUDIO_LAN` sind angepasst (keine Funktionsänderung). Kein Commit (Orchestrator).

@@ -15,8 +15,11 @@ import (
 // studioPage ist die Startseite der Oberfläche (http.FileServer liefert dort index.html).
 const studioPage = "/studio/"
 
+// uiDir ist der Build der Oberfläche (task studio:frontend), relativ zur Repo-Wurzel; nicht mehr dist/studio (B-507).
+const uiDir = "tools/k3c-studio/frontend/dist"
+
 // newHandler bedient das Studio auf einem eigenen Port: die API aus backend/, die Spiel-API seiner eingebundenen Engine
-// (/api/…, /ws; Vorschau-Spiele ohne Spielserver, B-507/AC-02), die Oberfläche aus dist/studio und die Grafiken, Töne
+// (/api/…, /ws; Vorschau-Spiele ohne Spielserver, B-507/AC-02), die Oberfläche aus uiDir und die Grafiken, Töne
 // und Seiten des Spiels zuerst aus public/ (Änderungen sofort sichtbar), dann aus dist/. Nur Loopback. Endet ctx,
 // speichert die Engine ihre Räume (backend.App.EngineWait).
 func newHandler(ctx context.Context, root string, log *slog.Logger) (http.Handler, *backend.App) {
@@ -87,9 +90,11 @@ func hostGuard(next http.Handler) http.Handler {
 	})
 }
 
-// siteHandler liefert Dateien erst aus public/, dann aus dist/; die Wurzel führt zum Studio.
+// siteHandler liefert unter studioPage die Oberfläche aus uiDir, alles andere erst aus public/, dann aus dist/; die
+// Wurzel führt zum Studio.
 func siteHandler(root string) http.Handler {
 	files := http.FileServer(overlay{http.Dir(filepath.Join(root, "public")), http.Dir(filepath.Join(root, "dist"))})
+	ui := http.StripPrefix(strings.TrimSuffix(studioPage, "/"), http.FileServer(http.Dir(filepath.Join(root, filepath.FromSlash(uiDir)))))
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		if r.URL.Path == "/" {
 			http.Redirect(w, r, studioPage, http.StatusFound)
@@ -101,6 +106,10 @@ func siteHandler(root string) http.Handler {
 		}
 		if strings.HasSuffix(r.URL.Path, "/") && r.URL.Path != studioPage { // keine Verzeichnislisten
 			http.NotFound(w, r)
+			return
+		}
+		if strings.HasPrefix(r.URL.Path, studioPage) {
+			ui.ServeHTTP(w, r)
 			return
 		}
 		files.ServeHTTP(w, r)

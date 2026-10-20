@@ -79,6 +79,8 @@ func NewHandler(cfg Config) http.Handler {
 		cfg.Rooms.Snapshot = func(w *sim.World, timescale int, paused bool) any { return stateOf(w, timescale, paused) }
 		mux.HandleFunc("/ws", s.websocket)
 	}
+	// Unbekannte API-Adressen (auch das frühere /api/studio, B-507) sind 404 für jede Methode, nicht 405 aus static.
+	mux.HandleFunc("/api/", http.NotFound)
 	mux.HandleFunc("/", s.static)
 	return s.accessLog(mux)
 }

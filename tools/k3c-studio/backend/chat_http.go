@@ -18,7 +18,7 @@ import (
 // Chat über HTTP (B-488, WZ19.1): POST /api/studio/chat startet die CLI und antwortet als Strom (text/event-stream)
 // mit den Ereignissen start {chat}, chunk {text} … und done {status, error, notice}. Der Strom ist die Antwort auf
 // den POST, damit die Kopfzeile X-K3C-Studio (guard) auch den Start schützt. Abbruch: Verbindung schließen oder
-// ChatCancel(id). Alle Chat-Adressen bedienen nur Loopback, auch mit K3C_STUDIO_LAN=1.
+// ChatCancel(id). Alle Chat-Adressen bedienen nur Loopback, auch mit Handler(true).
 
 const chatLoopbackMsg = "Der Chat ist nur auf dem Rechner des Servers erreichbar"
 

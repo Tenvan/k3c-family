@@ -1,6 +1,6 @@
 // Command k3c-studio ist das Asset-Studio von K3C als eigenständiges Fenster (B-459, B-498): ein Wails-Fenster (wie die
 // Workbench k3c-dev) mit gemerkter Größe und Position, ohne den Spielserver. Das Backend (backend/) und die
-// Oberfläche (dist/studio) bedient die EXE selbst auf Loopback; das Fenster zeigt diese Adresse. Schließen beendet alles.
+// Oberfläche (frontend/dist) bedient die EXE selbst auf Loopback; das Fenster zeigt diese Adresse. Schließen beendet alles.
 package main
 
 import (
@@ -85,8 +85,8 @@ func run() error {
 
 // checkBuilt verlangt die gebaute Oberfläche; sie kommt aus `task studio:frontend`.
 func checkBuilt(root string) error {
-	if _, err := os.Stat(filepath.Join(root, "dist", "studio", "index.html")); err != nil {
-		return fmt.Errorf("dist/studio/index.html fehlt in %s – erst bauen: task studio:frontend", root)
+	if _, err := os.Stat(filepath.Join(root, filepath.FromSlash(uiDir), "index.html")); err != nil {
+		return fmt.Errorf("%s/index.html fehlt in %s – erst bauen: task studio:frontend", uiDir, root)
 	}
 	return nil
 }
