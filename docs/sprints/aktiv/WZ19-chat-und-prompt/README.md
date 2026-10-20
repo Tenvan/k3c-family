@@ -66,7 +66,7 @@ Entschieden: `B-488 › Offene Fragen` (alle). Freigegeben von 🧑 am 2026-10-1
 | WZ19.1 | `WZ19.1-cli-anbindung-verlauf.md` | Umsetzung | autonom | fertig |
 | WZ19.2 | `WZ19.2-chat-im-studio.md` | Umsetzung | autonom | fertig |
 | WZ19.3 | `WZ19.3-prompt-grundgeruest.md` | Umsetzung | autonom | fertig |
-| WZ19.4 | `WZ19.4-review.md` | Review | autonom | offen |
+| WZ19.4 | `WZ19.4-review.md` | Review | autonom | in Arbeit |
 | WZ19.5 | `WZ19.5-abnahme.md` | Review | Mensch | offen |
 
 - WZ19.1 (DEV) Go: Anbindung der Claude Code CLI als RPC-Methode des Studios (früher Wails-Binding) mit Test-Ersatz, Zeitlimit, Abbruch, `.chats` mit Löschung nach einer Woche (AC-01, AC-02).
