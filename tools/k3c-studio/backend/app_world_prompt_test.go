@@ -117,3 +117,34 @@ func TestAntwortEntwurfLaesstSichPruefen(t *testing.T) {
 		t.Error("PlanWorldCheck hat geschrieben")
 	}
 }
+
+// B-514: Eine Insel der Antwort mit einer id aus der Datei und ohne Planfelder behält beim Speichern ihre Planung.
+func TestAntwortBehaeltPlanungBestehenderInsel(t *testing.T) {
+	a, path := worldApp(t)
+	d := *a.PlanWorldAnswer(answerWorld).Draft
+	if d.Islands[0].From != "island1" || d.Islands[1].From != "" {
+		t.Fatalf("From: %q / %q", d.Islands[0].From, d.Islands[1].From)
+	}
+	stand := planStand(mustRead(t, path))
+	if s := a.PlanWorldSave(d, stand); s.Error != "" {
+		t.Fatal(s.Error)
+	}
+	got := string(mustRead(t, path))
+	for _, want := range []string{`"kind": "clearing"`, `"0": 24`, `"eisinsel"`} {
+		if !strings.Contains(got, want) {
+			t.Errorf("Datei ohne %s:\n%s", want, got)
+		}
+	}
+	if strings.Contains(got, "island2") {
+		t.Error("island2 steht nicht in der Antwort und entfällt")
+	}
+}
+
+func mustRead(t *testing.T, path string) []byte {
+	t.Helper()
+	b, err := os.ReadFile(path)
+	if err != nil {
+		t.Fatal(err)
+	}
+	return b
+}

@@ -2,7 +2,9 @@ package backend
 
 import (
 	"encoding/json"
+	"os"
 	"regexp"
+	"slices"
 	"strings"
 
 	"k3c/engine/sim"
@@ -60,7 +62,7 @@ func (a *App) PlanWorldAnswer(text string) WorldAnswerView {
 	}
 	_, err := sim.ParseWorld([]byte(raw), id)
 	if err == nil {
-		d, derr := draftOfAnswer(raw)
+		d, derr := draftOfAnswer(raw, a.fileIslandIDs())
 		if derr != nil {
 			return WorldAnswerView{Error: answerUnreadable + ": " + derr.Error()}
 		}
@@ -70,16 +72,34 @@ func (a *App) PlanWorldAnswer(text string) WorldAnswerView {
 	if strings.Contains(msg, "unbekanntes Feld") || strings.Contains(msg, "kein gültiges JSON") {
 		return WorldAnswerView{Error: answerUnreadable + ": " + msg}
 	}
-	d, derr := draftOfAnswer(raw)
+	d, derr := draftOfAnswer(raw, a.fileIslandIDs())
 	if derr != nil {
 		return WorldAnswerView{Error: answerUnreadable + ": " + derr.Error()}
 	}
 	return WorldAnswerView{Error: msg, Draft: d}
 }
 
-// draftOfAnswer macht aus der Welt-Datei der Antwort einen Entwurf: alle Inseln neu (From leer), Planung und
-// Chunk-Anzahl gehen mit. Die ID der Antwort ersetzt nicht die der gewählten Welt (bleibt Dateiname).
-func draftOfAnswer(raw string) (*WorldDraft, error) {
+// fileIslandIDs liefert die Insel-ids der gewählten Welt-Datei (leer, wenn sie nicht lesbar ist).
+func (a *App) fileIslandIDs() []string {
+	raw, err := os.ReadFile(a.worldFile(a.activeWorld()))
+	if err != nil {
+		return nil
+	}
+	_, items, err := islandItems(raw)
+	if err != nil {
+		return nil
+	}
+	ids := make([]string, len(items))
+	for i, it := range items {
+		ids[i] = it.id
+	}
+	return ids
+}
+
+// draftOfAnswer macht aus der Welt-Datei der Antwort einen Entwurf: Inseln mit einer id, die schon in der Datei steht
+// (existing), behalten diese als From und damit ihre Planung, soweit die Antwort keine mitbringt; alle anderen sind neu.
+// Die ID der Antwort ersetzt nicht die der gewählten Welt (bleibt Dateiname).
+func draftOfAnswer(raw string, existing []string) (*WorldDraft, error) {
 	var w struct {
 		Name    string `json:"name"`
 		Notes   string `json:"notes"`
@@ -99,6 +119,9 @@ func draftOfAnswer(raw string) (*WorldDraft, error) {
 	d := &WorldDraft{Name: w.Name, Notes: w.Notes, Islands: []IslandDraft{}}
 	for _, i := range w.Islands {
 		isl := IslandDraft{ID: i.ID, Name: i.Name, Depths: i.Depths, Scaling: i.Scaling, PlannedChunks: i.Planned, ChunkCounts: i.Counts}
+		if i.ID != "" && slices.Contains(existing, i.ID) && !slices.ContainsFunc(d.Islands, func(o IslandDraft) bool { return o.From == i.ID }) {
+			isl.From = i.ID
+		}
 		if isl.Depths == nil {
 			isl.Depths = []int{}
 		}
