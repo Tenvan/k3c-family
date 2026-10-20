@@ -31,6 +31,25 @@ export function buildingToggles(sites: readonly { kind: string; x: number }[]): 
     .sort((a, b) => a.x - b.x || a.kind.localeCompare(b.kind));
 }
 
+/** Gewählter Platz des Gebäude-Planers: Art der Matrix-Zeile, Platz zur Hub-Mitte (null = unbekannt) und ob er je Seite gilt. */
+export interface RowFocus {
+  id: string;
+  kind: string;
+  offset: number | null;
+  bothSides: boolean;
+}
+
+/** Plätze der Welt (x in Units), die zur gewählten Zeile gehören: gleiche Art und Abstand zur Hub-Mitte gleich dem Platz
+ *  (± bei beiden Seiten, Toleranz für die Streuung je Seed); passt keiner, alle der Art. Der Händler ist kein Platz. */
+export function focusXs(focus: RowFocus | undefined, hubX: number, sites: readonly { kind: string; x: number }[]): number[] {
+  if (!focus || focus.kind.startsWith('merchant')) return [];
+  const ofKind = sites.filter((s) => s.kind === focus.kind);
+  if (focus.offset === null) return ofKind.map((s) => s.x);
+  const offset = focus.offset;
+  const exact = ofKind.filter((s) => (focus.bothSides ? Math.abs(Math.abs(s.x - hubX) - Math.abs(offset)) : Math.abs(s.x - (hubX + offset))) <= 0.5);
+  return (exact.length > 0 ? exact : ofKind).map((s) => s.x);
+}
+
 /** Quelle Insel + Stufe mit dem Entwurf der geplanten Chunks und der Chunk-Anzahl (0 = Biom-Länge; gleiche Quelle wie
  *  die Chunk-Vorschau, B-461/AC-11, B-485/AC-04). */
 export interface PlanSource {

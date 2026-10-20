@@ -1,0 +1,3 @@
+# Wails: EXE, Standard-Icon und Manifest (erzeugt wails build neu) und generierte Bindings (nicht genutzt)
+build/
+frontend/wailsjs/

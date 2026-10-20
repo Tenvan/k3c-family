@@ -1,6 +1,6 @@
 # WZ10 · DEV · Abspiel-Bausteine und Monarch-Vorschau im Asset-Studio
 
-- **Status:** aktiv
+- **Status:** erledigt
 - **Projekt:** WZG
 - **Domäne:** DEV
 - **Reife:** bereit
@@ -118,7 +118,7 @@ Vor der Freigabe offen: nichts.
 | WZ10.2 | `WZ10.2-monarch-seite-bewegung.md` | Umsetzung | autonom | fertig |
 | WZ10.3 | `WZ10.3-monarch-seite-aktionen.md` | Umsetzung | autonom | fertig |
 | WZ10.4 | `WZ10.4-review.md` | Review | autonom | fertig |
-| WZ10.5 | `WZ10.5-abnahme.md` | Review | Mensch | offen |
+| WZ10.5 | `WZ10.5-abnahme.md` | Review | Mensch | fertig |
 
 - WZ10.1 (DEV) Abspiel-Bausteine auf der Bühne aus WZ7.3 (kein neues Phaser): Spiel-Animationen, Steuerung, Maßstab, Reittier-Lader, Lücken-Markierung, als Parameter statt Monarch-Festwerte, damit WZ11 sie nutzt (AC-02, AC-11, AC-16)
 - WZ10.2 (DEV) Monarch-Seite: Laufen und Sprinten beritten, Reiten je Reittier, Spielerfarben mit Kennfarbe, Grafik-Auswahl (AC-01, AC-03, AC-04, AC-10, AC-12, AC-15)

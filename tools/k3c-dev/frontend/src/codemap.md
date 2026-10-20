@@ -9,7 +9,7 @@ React-Single-Page-App von k3c-dev: Shell mit vier Reitern (Dienste & Logs, Tasks
 - `main.tsx`: Einstieg; lädt `@radix-ui/themes/styles.css`, `@webkit/theme.css` und `styles/*.css` (`app`, `services`, `logs`, `mcp`, `tasks`, `planning`, `planning-reader`), rendert `App` in `StrictMode`.
 - `App.tsx`: Wurzel mit Radix `Theme` (dark/light, gemerkt, Vorgabe aus `prefers-color-scheme`) und `Tabs.Root`; Seite je Reiter gemerkt über `lib/prefs`; hält den MCP-Zustand (`mcp:state`, `backend.info()`); rendert unterhalb der Seiten `ui/Notices`.
 - `Header.tsx`: Reiterleiste `PAGES = dienste|tasks|planung|mcp`, `StudioLink`, MCP-Badge, `Mock`-Badge, Dark-Switch.
-- `StudioLink.tsx`: Knopf „Asset-Studio öffnen“ -> `backend.studioOpen()` (öffnet `/studio/index.html` des Spielservers im Browser); zeigt den Hinweis aus Go (z. B. „Spielserver nicht konfiguriert“) als Badge, bis der nächste Versuch gelingt.
+- `StudioLink.tsx`: Knopf „Asset-Studio öffnen“ -> `backend.studioOpen()` (startet die EXE `bin/k3c-studio`); zeigt den Hinweis aus Go (z. B. „bin/k3c-studio fehlt“) als Badge, bis der nächste Versuch gelingt.
 - Unterordner (je mit eigener codemap):
   - `api/` – Backend-Vertrag (`types.ts`), Wails-Adapter und Mock.
   - `lib/` – Formatierung, Prefs (Präfix `k3c-dev.`), `useNow`; Gemeinsames in `tools/webkit` (`@webkit/…`).

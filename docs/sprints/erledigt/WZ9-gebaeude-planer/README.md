@@ -1,6 +1,6 @@
 # WZ9 · SRV, DEV · Gebäude-Planer für die Freischaltung je Hub-Stufe
 
-- **Status:** aktiv
+- **Status:** erledigt
 - **Projekt:** WZG
 - **Domäne:** SRV, DEV
 - **Reife:** bereit
@@ -93,7 +93,7 @@ Offen: keine.
 | WZ9.2 | `WZ9.2-planer-matrix.md` | Umsetzung | autonom | fertig |
 | WZ9.3 | `WZ9.3-planer-bearbeiten.md` | Umsetzung | autonom | fertig |
 | WZ9.4 | `WZ9.4-review.md` | Review | autonom | fertig |
-| WZ9.5 | `WZ9.5-abnahme.md` | Workshop | Mensch | offen |
+| WZ9.5 | `WZ9.5-abnahme.md` | Workshop | Mensch | fertig |
 
 - WZ9.1 (SRV) Snapshot nimmt Kandidaten-`hub.json` als Option: Prüfung mit der Funktion aus WZ15.3 und Bau aus dem Kandidaten über die Options-Struktur aus WZ7.1 und `sim.CreateOptions`, ohne EXE-Neubau; bei zugleich gesetzter Option „geplante Chunks“ (WZ8.4, falls erledigt) gelten die Kandidaten-Linien; Go-Tests für Determinismus, Kandidat gegen eingebettet, ungültigen Kandidaten, Vorrang und 7-Stufen-Fixture (AC-09, AC-04, AC-08, AC-10).
 - WZ9.2 (DEV) Gebäude-Planer im Asset-Studio: Matrix aus `data/hub.json`, Abweichung zur Regeltabelle über das Go-Backend, Live-Vorschau folgt dem Planer-Stand (Kandidat) und der gewählten Hub-Stufe (AC-01, AC-03, AC-04, AC-08).

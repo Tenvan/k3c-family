@@ -3,11 +3,12 @@ import { GAME_HEIGHT, UNIT_PX } from '@game/core/constants';
 import type { World } from '@game/model/types';
 import { StageView } from '@game/scenes/render/stageView';
 import { prepareWorld, preloadWorld } from '@game/scenes/render/objectView';
-import { prepareBuildings, preloadBuildings } from '@game/scenes/render/siteView';
+import { TEXT, prepareBuildings, preloadBuildings, siteName } from '@game/scenes/render/siteView';
 import { createSpriteAnims, preloadSprites } from '@game/scenes/render/sprites';
 import { DEFAULT_CONTROL, SHEETS, resolveAnim, type Control, type Gap } from '../playback/figure';
 import { FigureView, GROUND_Y, drawScale, loadFigureSheets, type FigureItem } from '../playback/figureView';
 import { hudPx } from './hudBar';
+import { siteBox } from './siteBox';
 import { refreshToParent, settleToParent } from './stageResize';
 
 // Die wiederverwendbare Phaser-Bühne des Asset-Studios (B-460, WZ7.3; WZ10/WZ11 nutzen sie wieder, eine zweite entsteht
@@ -31,6 +32,16 @@ export interface Look {
   hiddenLayers: ReadonlySet<string>;
 }
 
+/** Beschriftung der Plätze: Namen über jedem Gebäude (Planer) und ein dicker blauer Rahmen um die gewählten (x in Units) */
+export interface Marks {
+  names: boolean;
+  selected: readonly number[];
+}
+
+const NO_MARKS: Marks = { names: false, selected: [] };
+const FRAME_COLOR = 0x2f81f7;
+const FRAME_PX = 5;
+
 const DEFAULT_LOOK: Look = { brightness: 1, hiddenLayers: new Set() };
 
 class PreviewScene extends Phaser.Scene {
@@ -39,6 +50,9 @@ class PreviewScene extends Phaser.Scene {
   private view: StageView | null = null;
   private position: StagePosition = DEFAULT_VIEW;
   private look: Look = DEFAULT_LOOK;
+  private marks: Marks = NO_MARKS;
+  private markObjects: Phaser.GameObjects.GameObject[] = [];
+  private markZoom = 0;
   private fx: Phaser.Filters.ColorMatrix | null = null;
   private dragX: number | null = null;
   // Figuren-Modus (WZ10.1): statt der Welt zeichnet die Bühne Figuren auf einer Bodenlinie mit Unit-Skala
@@ -94,12 +108,54 @@ class PreviewScene extends Phaser.Scene {
     if (!this.ready) return;
     this.view?.destroy();
     this.view = null;
+    this.clearMarks();
     if (!world) return;
     this.view = new StageView(this, world);
     this.cameras.main.setBackgroundColor(world.biome.palette.sky); // wie GameScene: der Himmel des Bioms, die Helligkeit der Tageszeit liegt als Filter darüber
     this.view.renderer.sync(world);
     this.applyView();
     this.applyLook();
+    this.drawMarks();
+  }
+
+  /** Namen und Rahmen setzen (Gebäude-Planer) */
+  setMarks(marks: Marks): void {
+    this.marks = marks;
+    if (this.ready) this.drawMarks();
+  }
+
+  private clearMarks(): void {
+    for (const o of this.markObjects) o.destroy();
+    this.markObjects = [];
+    this.markZoom = 0;
+  }
+
+  /** Namen über allen Plätzen und blauer Rahmen um die gewählten, in Welt-Koordinaten; Schrift und Linie bleiben beim Zoom gleich groß. */
+  private drawMarks(): void {
+    this.clearMarks();
+    const world = this.pending;
+    if (!world || !this.view || (!this.marks.names && this.marks.selected.length === 0)) return;
+    const zoom = this.position.scale / UNIT_PX;
+    this.markZoom = zoom;
+    const frame = this.add.graphics().setDepth(60).lineStyle(FRAME_PX / zoom, FRAME_COLOR);
+    this.markObjects.push(frame);
+    const pad = 4 / zoom;
+    for (const s of world.sites) {
+      const box = siteBox(s, this.view.layer.list);
+      const cx = (box.left + box.right) / 2;
+      if (this.marks.names) {
+        this.markObjects.push(this.add.text(cx, box.top - 12 / zoom, siteName(s.kind), { ...TEXT, fontSize: '16px', color: '#ffffff' }).setOrigin(0.5, 1).setDepth(61).setScale(1 / zoom));
+      }
+      if (this.marks.selected.includes(s.x)) frame.strokeRect(box.left - pad, box.top - pad, box.right - box.left + 2 * pad, box.bottom - box.top + 2 * pad);
+    }
+  }
+
+  /** Die Ansicht so verschieben, dass x (Units) in der Mitte steht; die Seite setzt die Position über `onPan` */
+  focusX(x: number): void {
+    if (!this.ready) return;
+    const { left, scale } = this.position;
+    const target = Math.max(0, x - this.scale.width / scale / 2);
+    this.onPan((target - left) * scale);
   }
 
   /** Tageszeit-Helligkeit und Hintergrund-Schichten übernehmen; gilt auch für später gezeichnete Welten. */
@@ -188,6 +244,7 @@ class PreviewScene extends Phaser.Scene {
     cam.setZoom(zoom);
     cam.setBounds(0, GAME_HEIGHT - heightPx, world.widthUnits * UNIT_PX, heightPx);
     this.view.scaleTexts(1 / zoom);
+    if (zoom !== this.markZoom) this.drawMarks();
     cam.centerOnX((left + this.scale.width / scale / 2) * UNIT_PX);
   }
 }
@@ -255,6 +312,16 @@ export class PreviewStage {
   /** Helligkeit und Hintergrund-Schichten setzen */
   setLook(look: Look): void {
     this.scene.setLook(look);
+  }
+
+  /** Namen über den Plätzen und Rahmen um die gewählten (Gebäude-Planer) */
+  setMarks(marks: Marks): void {
+    this.scene.setMarks(marks);
+  }
+
+  /** x (Units) in die Mitte der Ansicht bringen */
+  focusX(x: number): void {
+    this.scene.focusX(x);
   }
 
   /** Nach einer Layout-Änderung der Seite: neu skalieren, wenn sich Größe oder Lage des Elements geändert hat */
