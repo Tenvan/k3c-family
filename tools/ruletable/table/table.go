@@ -1,5 +1,5 @@
 // Package tabelle erzeugt den Block „Hub-Stufe → Gebäude“ der Regeln (`docs/rules/materialien-gebaeude.md` § 3) aus
-// `data/hub.json`. Reine Funktionen ohne Dateizugriff: der Task `rules:update` (tools/ruletable) und das Studio
+// `data/hub.json`. Reine Funktionen ohne Dateizugriff: der Task `gen:rules` (tools/ruletable) und das Studio
 // (WZ9) rufen dieselbe Implementierung auf. Die Zahl der Hub-Stufen kommt aus `levels`, es gibt keine feste Obergrenze.
 package table
 

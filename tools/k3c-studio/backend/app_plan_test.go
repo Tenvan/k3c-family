@@ -105,7 +105,7 @@ func TestPlanSaveIstFormatStabilUndAtomar(t *testing.T) {
 	if len(files) != 1 {
 		t.Errorf("Temp-Dateien übrig: %d Einträge in data/", len(files))
 	}
-	if !strings.Contains(planRegHint, "REG-Änderung: Commit mit Begründung") || !strings.Contains(planRegHint, "task golden:update") {
+	if !strings.Contains(planRegHint, "REG-Änderung: Commit mit Begründung") || !strings.Contains(planRegHint, "task go:golden") {
 		t.Errorf("REG-Hinweis: %q", planRegHint)
 	}
 }

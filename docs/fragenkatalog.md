@@ -93,7 +93,7 @@ Sprints bleiben `Spec: Entwurf`, bis 🧑 sie je Sprint freigibt.
 | Q06 | **Geändert 2026-10-04:** Belegung aus `game-design.md` übernommen: Schlag X, Skills 1–4 LB/RB/LT/D-Pad hoch (Tastatur Q/R/T/Z), Skill-Menü D-Pad runter (K), Vollbild Stick drücken; B frei, View + Menu reserviert. **Kein Bau-Menü** (Regel `materialien-gebaeude.md` § 3, Beschluss zu Q34), **Y ist frei** (für später). X1 bestätigt nur noch. | B-026, X1, S3, B-205 |
 | Q07 | Paket `ghcr.io/tenvan/k3c-family` **öffentlich**, Pi 3 mit 64-Bit-Betriebssystem. (SP11-Spec nennt dies als Annahme; Änderung der freigegebenen Spec nicht nötig.) | SP11 |
 | Q08 | 12 Ereignisse (Treffer, Kill, Münze auf/gegeben, Pfeil, Schlag, Bau-Fortschritt/fertig, Tod, Wiederbeleben, Skill, Nacht naht, Portal), Budget ≤ 200 Byte je Tick und Client im Mittel, im Delta mitgesendet, Benchmark in F4. **Hinweis 2026-10-04 (Q67, Q69):** „Tod“ gilt nur noch für Monarchen; Bürger sterben nicht, für sie gibt es `disarmed` und `equipmentTaken`. | B-139, B-140, F3, F4 |
-| Q09 | `task golden:update` plus Begründung im Commit-Text; die Review-Session prüft. Kein Freigabe-Zwang durch 🧑 bei Werteänderungen aus Beschlüssen. | B-137, F2 |
+| Q09 | `task go:golden` plus Begründung im Commit-Text; die Review-Session prüft. Kein Freigabe-Zwang durch 🧑 bei Werteänderungen aus Beschlüssen. | B-137, F2 |
 | Q10 | Speichern beim Verlassen jedes Geräts **und alle 60 s**, zusätzlich Tagesanbruch/Stufenwechsel; HUD zeigt „gesichert“. | B-147, S2 |
 | Q11 | Kontextuelle Hinweise mit Controller-Glyphen, geführte erste Nacht optional, Grad „leicht“ ohne Niederlage aus `data/difficulty.json`. | B-148, B-149, S6 |
 | Q12 | Spielmetrik wie vorgeschlagen (Tod durch was, Nächte überlebt, Zeit bis erstem Bau, Gold je Tag, Verbindungsabbrüche), JSON je Sitzung in `reports/`, nur Geräte-Kürzel. | B-150, S2 |
@@ -243,7 +243,7 @@ Fragen: Welche Liste ist Pflicht für den Spieleabend-Build? Wie viel Bandbreite
 🤖 Empfehlung: 12 Ereignisse als Minimum (siehe Plan SO2), Budget ≤ 200 Byte je Tick und Client im Mittel, gemessen mit dem Benchmark in F4; Ereignisse gehen im Delta mit, nicht als eigene Nachricht.
 
 **Q09 · Golden-Hash ändern** (B-137). Mit jeder Regeländerung ändern sich Golden-Läufe. Wer bestätigt eine Änderung, wie wird sie begründet?
-🤖 Empfehlung: ein `task golden:update`, Begründung im Commit-Text (Pflicht: welche Regel, welche Kennzahl), Review-Session prüft. Kein Freigabe-Zwang durch 🧑 bei Werteänderungen aus Beschlüssen.
+🤖 Empfehlung: ein `task go:golden`, Begründung im Commit-Text (Pflicht: welche Regel, welche Kennzahl), Review-Session prüft. Kein Freigabe-Zwang durch 🧑 bei Werteänderungen aus Beschlüssen.
 
 **Q10 · Wann wird gespeichert** (B-147). Heute bei Tagesanbruch, Stufenwechsel und wenn das letzte Gerät geht. Kinder brechen mitten in der Nacht ab.
 🤖 Empfehlung: zusätzlich beim Verlassen jedes Geräts und alle 60 s im Betrieb; maximaler Verlust 60 s, im HUD „gesichert“ nach Speichern.

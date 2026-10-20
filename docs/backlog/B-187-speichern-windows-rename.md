@@ -61,4 +61,4 @@ Ursache bestätigen (Defender-Ausnahme für `.work/tmp` testweise setzen, 🧑).
 
 ## Notizen
 
-Gefunden im Review F2.4 (2026-10-03), nicht Teil von F2.
+Umgesetzt 2026-10-20 auf `sprint/rename-retry` (nicht in ST1 geplant): `store.Rename` in `engine/store/atomic.go` wiederholt unter Windows ein mit `ERROR_ACCESS_DENIED` (5) oder `ERROR_SHARING_VIOLATION` (32) verweigertes `os.Rename` bis zu 6-mal im Abstand von 20 ms; `writeAtomic` der Engine und das des Studios (`tools/k3c-studio/backend/plan_file.go`, B-514) nutzen es. Ohne neue Abhängigkeit (`syscall.Errno`). AC-01: `engine/store/rename_test.go` (gelingt im dritten Versuch, dauerhafter Fehler nach 6 Versuchen, andere Fehler sofort; Windows-Tests laufen unter Linux nicht). AC-02: `go test -count=50 -run TestGleichzeitigesSpeichern ./engine/store` grün. Ursache weiter unbestätigt (Defender-Ausnahme, 🧑); die Wiederholung wirkt unabhängig davon.

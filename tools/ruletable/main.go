@@ -1,5 +1,5 @@
 // Command regeltabelle schreibt den Block „Hub-Stufe → Gebäude“ aus data/hub.json in docs/rules/materialien-gebaeude.md
-// (§ 3, zwischen den Marken). Aufruf nur über den Task `rules:update`; gleiche Daten ergeben byte-gleichen Text (WZ15.2, B-462).
+// (§ 3, zwischen den Marken). Aufruf nur über den Task `gen:rules`; gleiche Daten ergeben byte-gleichen Text (WZ15.2, B-462).
 package main
 
 import (

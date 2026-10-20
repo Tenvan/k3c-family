@@ -35,7 +35,7 @@ Neue Flucht-Regeln, Werte in `data/enemies.json`.
 
 ## Regeln und Einschränkungen
 
-Domäne SIM. Golden-Daten ändern sich nur, wenn ein Lauf den Fall enthält; dann `task golden:update` mit Begründung.
+Domäne SIM. Golden-Daten ändern sich nur, wenn ein Lauf den Fall enthält; dann `task go:golden` mit Begründung.
 
 ## Beispiele
 

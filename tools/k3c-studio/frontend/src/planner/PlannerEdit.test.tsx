@@ -114,7 +114,7 @@ describe('Gebäude-Planer: Speichern (B-462/AC-02, AC-05, AC-06)', () => {
     await changeArmory(h);
     await click(button(h, 'Speichern'));
     expect(save).toHaveBeenCalledWith(expect.stringContaining('"hubLevel": 5'), mockHubPlan().stand);
-    expect(h.textContent).toContain('REG-Änderung: Commit mit Begründung (data/hub.json und Regeltabelle), task golden:update nur bei gewollter Änderung');
+    expect(h.textContent).toContain('REG-Änderung: Commit mit Begründung (data/hub.json und Regeltabelle), task go:golden nur bei gewollter Änderung');
   });
 
   it('Befund der Prüfung sperrt das Speichern', async () => {
@@ -143,12 +143,12 @@ describe('Gebäude-Planer: Speichern (B-462/AC-02, AC-05, AC-06)', () => {
   });
 
   it('Fehler im Tabellenschritt: gespeichert, „Regeltabelle veraltet“', async () => {
-    const result = { ...mockHubSave('', mockHubPlan().stand), rulesError: 'Regeltabelle veraltet, task rules:update (marken fehlen)' };
+    const result = { ...mockHubSave('', mockHubPlan().stand), rulesError: 'Regeltabelle veraltet, task gen:rules (marken fehlen)' };
     vi.spyOn(backend, 'hubSave').mockResolvedValue(result);
     const h = await mount();
     await changeArmory(h);
     await click(button(h, 'Speichern'));
-    expect(h.textContent).toContain('Regeltabelle veraltet, task rules:update');
+    expect(h.textContent).toContain('Regeltabelle veraltet, task gen:rules');
     expect(h.textContent).toContain('REG-Änderung');
   });
 });

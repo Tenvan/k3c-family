@@ -12,6 +12,7 @@ import (
 	"strconv"
 
 	"k3c/engine/level"
+	"k3c/engine/store"
 )
 
 // Schreiben der Planung in die Welt-Datei (WZ8.5, B-461/AC-12): format-stabil (nur der Wert von `plannedChunks` der
@@ -21,7 +22,7 @@ import (
 const islandsPath = "data/worlds/standard.json"
 
 // planRegHint ist der Hinweis nach jedem Speichern: Eine gespeicherte Planung ist eine REG-Änderung durch 🧑.
-const planRegHint = "REG-Änderung: Commit mit Begründung, `task golden:update` nur bei gewollter Änderung"
+const planRegHint = "REG-Änderung: Commit mit Begründung, `task go:golden` nur bei gewollter Änderung"
 
 // staleError ist die Ablehnung eines Speicherns auf veraltetem Stand; der Entwurf bleibt in der Oberfläche.
 func staleError(id string) string {
@@ -207,7 +208,7 @@ func writeAtomic(path string, data []byte) error {
 		_ = os.Remove(tmp.Name())
 		return fmt.Errorf("schreiben: %v %v", werr, cerr)
 	}
-	if err := os.Rename(tmp.Name(), path); err != nil {
+	if err := store.Rename(tmp.Name(), path); err != nil {
 		_ = os.Remove(tmp.Name())
 		return err
 	}

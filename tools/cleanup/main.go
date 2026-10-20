@@ -1,5 +1,5 @@
 // Command aufraeumen löscht sichere lokale Branches und Worktrees und listet den Rest mit Grund (B-302).
-// Aufruf über `task aufraeumen` (`-- --dry` zeigt nur an). Auf origin löscht das Werkzeug nie etwas.
+// Aufruf über `task ops:aufraeumen` (`-- --dry` zeigt nur an). Auf origin löscht das Werkzeug nie etwas.
 package main
 
 import (

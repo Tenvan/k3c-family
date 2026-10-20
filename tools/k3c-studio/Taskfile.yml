@@ -1,0 +1,92 @@
+# Namespace `k3c-studio`: das Asset-Studio als eigenes Fenster (Wails, ohne Spielserver; B-459).
+# Die Oberfläche (frontend/) liegt nach `frontend` unter frontend/dist und wird von der EXE zur Laufzeit von der Platte
+# geliefert, steckt also nicht in der EXE: eine Änderung an der Oberfläche braucht keinen Neubau der EXE.
+# `dev` ist der Watcher: `wails dev` startet Vite mit Hot Reload und baut das Fenster bei Go-Änderungen neu.
+version: '3'
+
+vars:
+  STUDIO: '{{.ROOT_DIR}}/tools/k3c-studio'
+
+tasks:
+  dev:
+    desc: "Asset-Studio im Entwicklungsmodus (wails dev): Hot Reload der Oberfläche, Neubau bei Go-Änderungen (tools/k3c-studio, engine/, data/, tools/assetkit, tools/ruletable)"
+    deps: [':tmp', frontend]
+    dir: '{{.STUDIO}}'
+    env:
+      K3C_STUDIO_API: 'http://127.0.0.1:{{.K3C_STUDIO_PORT | default "8091"}}'
+    preconditions:
+      - sh: command -v wails
+        msg: 'Wails-CLI fehlt – go install github.com/wailsapp/wails/v2/cmd/wails@v2.16.0 (requirements.md)'
+    cmds:
+      - wails dev
+
+  default:
+    desc: Kurzform von k3c-studio:dev
+    cmds:
+      - task: dev
+
+  run:
+    desc: Asset-Studio als Fenster starten, ohne Watcher (baut die EXE bei Bedarf; B-459)
+    deps: [build]
+    cmds:
+      - ./bin/k3c-studio{{exeExt}}
+
+  frontend:
+    desc: Frontend des Asset-Studios nach tools/k3c-studio/frontend/dist/ bauen (das Fenster k3c-studio liefert es unter /studio/ aus, nicht der Spielserver; B-507; nur bei geänderten Quellen)
+    dir: '{{.STUDIO}}/frontend'
+    cmds:
+      - npx tsc --noEmit
+      - npx vite build
+    sources:
+      - src/**/*
+      - index.html
+      - package.json
+      - vite.config.ts
+      - paths.ts
+      - ../../webkit/**/*
+    generates:
+      - dist/**/*
+
+  build:
+    desc: "EXE des Asset-Studios bauen, feste EXE bin/k3c-studio (Wails; nur bei geänderten Go-Quellen, `--force` erzwingt; laufendes Studio vorher schließen, sonst scheitert die Kopie; startet es nicht; B-459)"
+    deps: [':tmp', frontend]
+    preconditions:
+      - sh: command -v wails
+        msg: 'Wails-CLI fehlt – go install github.com/wailsapp/wails/v2/cmd/wails@v2.16.0 (requirements.md)'
+    sources:
+      - tools/k3c-studio/*.go
+      - tools/k3c-studio/backend/**/*.go
+      - tools/k3c-studio/go.mod
+      - tools/k3c-studio/go.sum
+      - tools/k3c-studio/wails.json
+      - tools/k3c-studio/build/appicon.png
+      - tools/k3c-studio/build/windows/**/*
+      - tools/assetkit/**/*.go
+      - tools/assetkit/go.mod
+      - tools/ruletable/**/*.go
+      - engine/**/*.go
+      - data/**/*
+      - go.mod
+      - go.sum
+      - exclude: '**/*_test.go'
+    generates:
+      - bin/k3c-studio{{exeExt}}
+    cmds:
+      - cd {{.STUDIO}} && wails build -s
+      - mkdir -p bin
+      - cp {{.STUDIO}}/build/bin/k3c-studio{{exeExt}} bin/k3c-studio{{exeExt}}
+
+  test:
+    desc: Asset-Studio-Frontend und gemeinsame Asset-Logik testen (Vitest, go test; das Backend tools/k3c-studio/backend gehört zum Studio-Modul; B-459, B-507)
+    deps: [':tmp', frontend]
+    cmds:
+      - npx vitest run --config {{.STUDIO}}/frontend/vitest.config.ts
+      - cd tools/assetkit && go test ./...
+      - cd {{.STUDIO}} && go test ./...
+
+  lint:
+    desc: golangci-lint für das Asset-Studio und tools/assetkit
+    deps: [':tmp', frontend]
+    cmds:
+      - cd tools/assetkit && golangci-lint run
+      - cd {{.STUDIO}} && golangci-lint run

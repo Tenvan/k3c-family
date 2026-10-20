@@ -38,7 +38,7 @@ var catalogDirs = []struct{ dir, credits string }{
 // ponytail: Ordner-Annahme; ein fremder Sound braucht eine Zeile in der Credit-Tabelle (Import M10.5).
 const selfMade = "selbst erzeugt (kein Credit nötig)"
 
-// ownBuilding gilt für eigene Gebäude-Grafik aus `task gebaeude` unter public/grafik/gebaeude/ (B-437).
+// ownBuilding gilt für eigene Gebäude-Grafik aus `task gen:gebaeude` unter public/grafik/gebaeude/ (B-437).
 const ownBuilding = "eigene Grafik (tools/buildings, kein Credit nötig)"
 
 // Catalog liest alle Bilder und Sounds unter public/ mit Pack, Gruppe, Maßen und Credit.

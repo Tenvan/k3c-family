@@ -7,6 +7,9 @@ import (
 	"errors"
 	"os"
 	"path/filepath"
+	"runtime"
+	"syscall"
+	"time"
 )
 
 // Fehler, die die HTTP-Schicht in Statuscodes übersetzt.
@@ -32,10 +35,41 @@ func writeAtomic(path string, data []byte) error {
 		err = cerr
 	}
 	if err == nil {
-		err = os.Rename(name, path) // ersetzt unter Windows und Linux eine vorhandene Datei
+		err = Rename(name, path) // ersetzt unter Windows und Linux eine vorhandene Datei
 	}
 	if err != nil {
 		_ = os.Remove(name)
 	}
 	return err
+}
+
+// Windows: ERROR_ACCESS_DENIED und ERROR_SHARING_VIOLATION, wenn ein Fremdprozess (Virenscanner, Indexer) die Datei kurz hält.
+const (
+	errAccessDenied     syscall.Errno = 5
+	errSharingViolation syscall.Errno = 32
+)
+
+// Wiederholungen beim Ersetzen einer kurz gesperrten Datei (B-187): bis zu renameTries Versuche im Abstand renamePause.
+const (
+	renameTries = 6
+	renamePause = 20 * time.Millisecond
+)
+
+// renameFile ist os.Rename; die Naht für den Test.
+var renameFile = os.Rename
+
+// Rename benennt oldPath nach newPath um und ersetzt eine vorhandene Datei. Unter Windows wird ein kurz verweigertes
+// Ersetzen begrenzt wiederholt; andere Fehler und andere Systeme melden den Fehler sofort.
+func Rename(oldPath, newPath string) error {
+	err := renameFile(oldPath, newPath)
+	for i := 1; i < renameTries && retryable(err); i++ {
+		time.Sleep(renamePause)
+		err = renameFile(oldPath, newPath)
+	}
+	return err
+}
+
+func retryable(err error) bool {
+	var errno syscall.Errno
+	return runtime.GOOS == "windows" && errors.As(err, &errno) && (errno == errAccessDenied || errno == errSharingViolation)
 }

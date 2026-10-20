@@ -1,7 +1,7 @@
 # tools/k3c-studio/frontend/
 
 ## Responsibility
-Vite/React-Frontend des Asset-Studios im eigenen Fenster `tools/k3c-studio` (keine Seite des Spielservers, Entscheidung 004): Build nach `tools/k3c-studio/frontend/dist/` (`task studio:frontend`), ausgeliefert vom Fenster unter `/studio/`; im Dev-Modus lädt Vite (Port 5192).
+Vite/React-Frontend des Asset-Studios im eigenen Fenster `tools/k3c-studio` (keine Seite des Spielservers, Entscheidung 004): Build nach `tools/k3c-studio/frontend/dist/` (`task k3c-studio:frontend`), ausgeliefert vom Fenster unter `/studio/`; im Dev-Modus lädt Vite (Port 5192).
 
 ## Design
 - `package.json`: React 19, Radix Themes, Vite; Skripte `dev` (`vite`) und `build` (`tsc --noEmit && vite build`).
@@ -12,8 +12,8 @@ Vite/React-Frontend des Asset-Studios im eigenen Fenster `tools/k3c-studio` (kei
 - `src/`: siehe dort; gemeinsame UI-Teile aus `../../webkit/` (`errors.ts`, `useDebounced.ts`, `parts.tsx`, `theme.css`, `prefs.ts`) kommen über `@webkit/...`.
 
 ## Flow
-Produktiv: `task studio:frontend` baut nach `frontend/dist/`, das Fenster `k3c-studio` liefert es unter `/studio/` aus (nur Loopback, Port 8091). Entwicklung: `npm run dev` im Ordner startet Vite (5192), `/api` geht an das Studio (8091); ohne Server läuft mit `?mock=1` der Mock.
+Produktiv: `task k3c-studio:frontend` baut nach `frontend/dist/`, das Fenster `k3c-studio` liefert es unter `/studio/` aus (nur Loopback, Port 8091). Entwicklung: `npm run dev` im Ordner startet Vite (5192), `/api` geht an das Studio (8091); ohne Server läuft mit `?mock=1` der Mock.
 
 ## Integration
 - Backend: Go-Paket `tools/k3c-studio/backend/` (`rpc.go`, `app*.go`), eingehängt durch `tools/k3c-studio/server.go`; Asset-Logik in `tools/assetkit`.
-- Tasks: `task studio:frontend`, `task check:studio` (Vitest mit `vitest.config.ts`).
+- Tasks: `task k3c-studio:frontend`, `task check:studio` (Vitest mit `vitest.config.ts`).

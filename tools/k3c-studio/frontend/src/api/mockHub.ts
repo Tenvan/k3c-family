@@ -21,6 +21,6 @@ export function mockHubCheck(candidate: string): HubPlanView {
 
 /** Speichern im Mock: schreibt nichts, meldet aber wie das Go-Backend (Text von regNotice in app_planer_save.go). */
 export function mockHubSave(_candidate: string, stand: HubStand): HubSaveResult {
-  const notice = 'REG-Änderung: Commit mit Begründung (data/hub.json und Regeltabelle), task golden:update nur bei gewollter Änderung';
+  const notice = 'REG-Änderung: Commit mit Begründung (data/hub.json und Regeltabelle), task go:golden nur bei gewollter Änderung';
   return { saved: true, unchanged: false, stale: '', findings: [], error: '', rulesError: '', notice, stand };
 }

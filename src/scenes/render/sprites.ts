@@ -63,7 +63,7 @@ const textureKey = (sheet: string, anim: AnimName) => `${sheet}-${anim}`;
 /** Sheet des Standard-Reittiers (Monarch): liegt nicht im Atlas, sondern als einzelne PNGs `sprites/<sheet>/<anim>.png` */
 const MOUNT_SHEET = MOUNTS[MONARCH.mount.sprite]?.sheet;
 
-/** Schlüssel des Figuren-Atlas (Phaser-Multiatlas aus `task atlas`, Frames `<sheet>-<anim>/<i>`). */
+/** Schlüssel des Figuren-Atlas (Phaser-Multiatlas aus `task gen:atlas`, Frames `<sheet>-<anim>/<i>`). */
 export const ATLAS_KEY = 'atlas';
 
 /** Im preload() der Lade-Szene aufrufen: ein Multiatlas statt je Sheet und Animation eine PNG. */

@@ -39,7 +39,7 @@ export function mockCheckWorld(id: string, d: WorldDraft): WorldCheckView {
 }
 
 /** REG-Hinweis nach jedem Speichern, wie Go (planRegHint). */
-export const HINT = 'REG-Änderung: Commit mit Begründung, `task golden:update` nur bei gewollter Änderung';
+export const HINT = 'REG-Änderung: Commit mit Begründung, `task go:golden` nur bei gewollter Änderung';
 
 /** Ablehnung auf veraltetem Stand, wie Go (staleError in tools/k3c-studio/backend/plan_file.go). */
 export const staleText = (id: string) => `data/worlds/${id}.json geändert, bitte neu laden`;

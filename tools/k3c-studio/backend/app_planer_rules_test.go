@@ -38,7 +38,7 @@ func TestHubRulesOhneAbweichung(t *testing.T) {
 	if v.Error != "" || !v.Same || len(v.Lines) != 0 || v.Ist != v.Soll {
 		t.Fatalf("Regeltabelle weicht ab: %+v", v)
 	}
-	if v.Path != rulesFile || v.Task != "task rules:update" {
+	if v.Path != rulesFile || v.Task != "task gen:rules" {
 		t.Errorf("Pfad %q, Task %q", v.Path, v.Task)
 	}
 }

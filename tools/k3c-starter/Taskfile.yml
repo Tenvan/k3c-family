@@ -1,0 +1,60 @@
+# Namespace `k3c-starter`: der Windows-Starter für den Server (Wails-Fenster startet bin/k3c-server, B-041).
+# Die Oberfläche (web/) steckt in der EXE; `dev` baut sie bei jeder Änderung an Go-Code oder web/ neu und startet sie neu (k3c-watch).
+# Beobachtet werden nur .go und .html: `wails build` schreibt go.mod und frontend/wailsjs neu und löste sonst sich selbst aus.
+version: '3'
+
+vars:
+  STARTER: '{{.ROOT_DIR}}/tools/k3c-starter'
+
+tasks:
+  dev:
+    desc: "Starter bei jeder Änderung an tools/k3c-starter neu bauen und starten (k3c-watch); startet bin/k3c-server, der muss gebaut sein (task k3c-server:build)"
+    deps: [':watch:build']
+    cmds:
+      - ./bin/k3c-watch{{exeExt}} --name starter --paths tools/k3c-starter --ext .go,.html --grace 1s --build "task k3c-starter:exe" -- bin/k3c-starter{{exeExt}}
+
+  default:
+    desc: Kurzform von k3c-starter:dev
+    cmds:
+      - task: dev
+
+  exe:
+    desc: Nur die EXE bin/k3c-starter bauen (Wails; nur bei geänderten Quellen, `--force` erzwingt; laufenden Starter vorher schließen, sonst scheitert die Kopie)
+    deps: [':tmp']
+    preconditions:
+      - sh: command -v wails
+        msg: 'Wails-CLI fehlt – go install github.com/wailsapp/wails/v2/cmd/wails@v2.16.0 (requirements.md)'
+    sources:
+      - tools/k3c-starter/*.go
+      - tools/k3c-starter/web/**/*
+      - tools/k3c-starter/go.mod
+      - tools/k3c-starter/go.sum
+      - tools/k3c-starter/wails.json
+      - tools/k3c-starter/build/appicon.png
+      - tools/k3c-starter/build/windows/**/*
+      - exclude: '**/*_test.go'
+    generates:
+      - bin/k3c-starter{{exeExt}}
+    cmds:
+      - cd {{.STARTER}} && wails build -s
+      - mkdir -p bin
+      - cp {{.STARTER}}/build/bin/k3c-starter{{exeExt}} bin/k3c-starter{{exeExt}}
+
+  build:
+    desc: Windows-Starter bauen, feste EXE bin/k3c-starter (dazu bin/k3c-server und dist/; laufenden Starter vorher schließen, sonst scheitert die Kopie; B-041)
+    deps: [':tmp', ':build']
+    cmds:
+      - task: :k3c-server:build
+      - task: exe
+
+  test:
+    desc: Windows-Starter testen (go test; B-041)
+    deps: [':tmp']
+    cmds:
+      - cd {{.STARTER}} && go test ./...
+
+  lint:
+    desc: golangci-lint für den Windows-Starter
+    deps: [':tmp']
+    cmds:
+      - cd {{.STARTER}} && golangci-lint run

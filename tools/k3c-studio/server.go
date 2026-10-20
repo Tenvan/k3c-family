@@ -15,7 +15,7 @@ import (
 // studioPage ist die Startseite der Oberfläche (http.FileServer liefert dort index.html).
 const studioPage = "/studio/"
 
-// uiDir ist der Build der Oberfläche (task studio:frontend), relativ zur Repo-Wurzel; nicht mehr dist/studio (B-507).
+// uiDir ist der Build der Oberfläche (task k3c-studio:frontend), relativ zur Repo-Wurzel; nicht mehr dist/studio (B-507).
 const uiDir = "tools/k3c-studio/frontend/dist"
 
 // newHandler bedient das Studio auf einem eigenen Port: die API aus backend/, die Spiel-API seiner eingebundenen Engine

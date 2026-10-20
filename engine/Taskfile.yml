@@ -1,0 +1,51 @@
+# Namespace `go`: Tests und Lint des Go-Moduls an der Wurzel (cmd/, engine/, tools/ ohne die eigenen Module k3c-dev,
+# k3c-studio, k3c-starter und assetkit). Die Aufgaben laufen im Repo-Wurzelordner. Gesamtprüfung: `task check:go`.
+version: '3'
+
+tasks:
+  test:
+    desc: go test ./...
+    deps: [':tmp']
+    preconditions:
+      - sh: command -v go
+        msg: Go fehlt (requirements.md)
+    cmds:
+      - go test ./...
+
+  lint:
+    desc: golangci-lint
+    deps: [':tmp']
+    preconditions:
+      - sh: command -v golangci-lint
+        msg: golangci-lint fehlt (requirements.md)
+    cmds:
+      - golangci-lint run
+
+  race:
+    desc: go test -race für engine/ (braucht cgo und einen C-Compiler; ohne Compiler nur ein Hinweis, B-077)
+    deps: [':tmp']
+    cmds:
+      - cmd: |
+          if command -v gcc >/dev/null 2>&1 || command -v clang >/dev/null 2>&1; then
+            CGO_ENABLED=1 go test -race ./engine/...
+          else
+            echo "go:race übersprungen: kein C-Compiler (gcc oder clang), siehe requirements.md. Die CI prüft -race."
+          fi
+
+  cover:
+    desc: Abdeckung der Go-Tests je Paket unter engine/ anzeigen (kein Gate, B-019)
+    deps: [':tmp']
+    preconditions:
+      - sh: command -v go
+        msg: Go fehlt (requirements.md)
+    cmds:
+      - go test -cover ./engine/...
+
+  golden:
+    desc: "testdata/golden/ aus dem Ist-Zustand neu schreiben (B-137): nur bei gewollter Regel- oder Wertänderung, Begründung in den Commit-Text, die Review-Session prüft den Diff; rng.json bleibt"
+    deps: [':tmp']
+    preconditions:
+      - sh: command -v go
+        msg: Go fehlt (requirements.md)
+    cmds:
+      - go test -count=1 ./engine/sim ./engine/level -run Golden -update

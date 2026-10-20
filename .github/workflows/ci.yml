@@ -80,12 +80,12 @@ jobs:
       - uses: go-task/setup-task@v1
       - run: task go:test
       - name: Race-Detector für engine/ (B-077)
-        run: task check:race
+        run: task go:race
       # Abdeckung je Paket unter engine/ (B-019): nur Anzeige in der Job-Zusammenfassung, kein Mindestwert.
       - name: Abdeckung (engine/)
         run: |
           set -o pipefail
-          task coverage | tee coverage.txt
+          task go:cover | tee coverage.txt
           {
             echo '### Abdeckung engine/'
             echo '| Paket | Abdeckung |'
@@ -188,7 +188,7 @@ jobs:
       # go:embed braucht frontend/dist, deshalb zuerst das Frontend (mit Typecheck).
       - run: npm ci
         working-directory: tools/k3c-dev/frontend
-      - run: task dev:frontend
+      - run: task k3c-dev:frontend
       - run: npx vitest run --config vitest.config.ts
         working-directory: tools/k3c-dev/frontend
       - run: go test ./...
@@ -224,7 +224,7 @@ jobs:
       - run: npm ci
       - run: npm ci
         working-directory: tools/k3c-studio/frontend
-      - run: task studio:frontend
+      - run: task k3c-studio:frontend
       # Komponententests des Studios mit dessen Vitest-Konfiguration (Aliase @game/@data); das Vitest der Wurzel nimmt
       # tools/k3c-studio aus.
       - run: npx vitest run --config tools/k3c-studio/frontend/vitest.config.ts

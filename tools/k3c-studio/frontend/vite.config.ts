@@ -19,6 +19,7 @@ export default defineConfig(({ command }) => ({
     port: 5192,
     strictPort: true,
     fs: { allow: [REPO] },
-    proxy: { '/api': { target: 'http://127.0.0.1:8091', changeOrigin: false } },
+    // Standard: der Studio-Server (Port 8091). `task k3c-studio:dev` setzt K3C_STUDIO_API auf die EXE, die das Fenster begleitet.
+    proxy: { '/api': { target: process.env.K3C_STUDIO_API ?? 'http://127.0.0.1:8091', changeOrigin: false } },
   },
 }));
