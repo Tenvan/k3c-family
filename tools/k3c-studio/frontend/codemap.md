@@ -15,5 +15,5 @@ Vite/React-Frontend des Asset-Studios, eine Seite des Go-Servers: Build nach `di
 Produktiv: `task studio:frontend` baut nach `dist/studio/`, der Go-Server liefert es unter `/studio/` aus (nur Dev-Mode, nur Loopback). Entwicklung: `npm run dev` im Ordner startet Vite (5192), `/api` geht an den Spielserver (8080); ohne Server läuft mit `?mock=1` der Mock.
 
 ## Integration
-- Backend: Go-Paket `engine/studio/` (`rpc.go`, `app*.go`), eingehängt durch `cmd/k3c-server/studio.go`; Asset-Logik in `tools/assetkit`. Landingpage-Kachel „Welten bauen“: `studio.html`.
+- Backend: Go-Paket `tools/k3c-studio/backend/` (`rpc.go`, `app*.go`), eingehängt durch `tools/k3c-studio/server.go`; Asset-Logik in `tools/assetkit`. Landingpage-Kachel „Welten bauen“: `studio.html`.
 - Tasks: `task studio:frontend`, `task check:studio` (Vitest mit `vitest.config.ts`).

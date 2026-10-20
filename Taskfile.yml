@@ -278,7 +278,7 @@ tasks:
       - cp {{.STUDIO}}/build/bin/k3c-studio{{exeExt}} bin/k3c-studio{{exeExt}}
 
   check:studio:
-    desc: Asset-Studio-Frontend und gemeinsame Asset-Logik prüfen (Vitest, go test, golangci-lint; das Studio-Backend engine/studio prüft check:go; B-459)
+    desc: Asset-Studio prüfen (Frontend-Vitest; go test und golangci-lint für die Asset-Logik und das Modul tools/k3c-studio samt Backend; B-459, B-507)
     deps: [tmp, studio:frontend]
     cmds:
       - npx vitest run --config {{.STUDIO}}/frontend/vitest.config.ts

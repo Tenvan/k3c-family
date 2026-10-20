@@ -129,7 +129,6 @@ func run(cfg config, log *slog.Logger) error {
 	// SIGTERM schicken docker stop und compose down; ohne Handler würde PID 1 im Container es ignorieren.
 	ctx, stop := signal.NotifyContext(context.Background(), os.Interrupt, syscall.SIGTERM)
 	defer stop()
-	handler = withStudio(ctx, cfg, handler, log)
 	go rooms.Run(ctx) // eine Goroutine je Raum, 30 Hz, Fristen einmal pro Sekunde
 	servers := []*http.Server{newServer(":"+cfg.httpPort, handler)}
 	errs := make(chan error, 2)

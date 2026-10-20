@@ -8,7 +8,7 @@ import (
 	"strings"
 	"testing"
 
-	"k3c/engine/studio"
+	"k3c/tools/k3c-studio/backend"
 )
 
 // fixture legt eine Mini-Repo-Wurzel mit public/ und dist/ an.
@@ -69,7 +69,7 @@ func TestHandlerServesStudioAPI(t *testing.T) {
 	root := fixture(t)
 	srv := httptest.NewServer(newHandler(t.Context(), root))
 	defer srv.Close()
-	res, err := http.Get(srv.URL + studio.Prefix + "ping")
+	res, err := http.Get(srv.URL + backend.Prefix + "ping")
 	if err != nil {
 		t.Fatal(err)
 	}

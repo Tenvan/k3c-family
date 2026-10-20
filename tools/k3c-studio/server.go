@@ -7,17 +7,17 @@ import (
 	"path/filepath"
 	"strings"
 
-	"k3c/engine/studio"
+	"k3c/tools/k3c-studio/backend"
 )
 
 // studioPage ist die Startseite der Oberfläche (http.FileServer liefert dort index.html).
 const studioPage = "/studio/"
 
-// newHandler bedient das Studio auf einem eigenen Port: die API aus engine/studio, die Oberfläche aus dist/studio und
+// newHandler bedient das Studio auf einem eigenen Port: die API aus backend/, die Oberfläche aus dist/studio und
 // die Grafiken und Töne des Spiels zuerst aus public/ (Änderungen sofort sichtbar), dann aus dist/. Nur Loopback.
 func newHandler(ctx context.Context, root string) http.Handler {
 	mux := http.NewServeMux()
-	mux.Handle(studio.Prefix, studio.New(ctx, root).Handler(false))
+	mux.Handle(backend.Prefix, backend.New(ctx, root).Handler(false))
 	mux.Handle("/", siteHandler(root))
 	return hostGuard(mux)
 }

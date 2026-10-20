@@ -1,5 +1,5 @@
 // Command k3c-studio ist das Asset-Studio von K3C als eigenständiges Fenster (B-459, B-498): ein Wails-Fenster (wie die
-// Workbench k3c-dev) mit gemerkter Größe und Position, ohne den Spielserver. Das Backend (engine/studio) und die
+// Workbench k3c-dev) mit gemerkter Größe und Position, ohne den Spielserver. Das Backend (backend/) und die
 // Oberfläche (dist/studio) bedient die EXE selbst auf Loopback; das Fenster zeigt diese Adresse. Schließen beendet alles.
 package main
 

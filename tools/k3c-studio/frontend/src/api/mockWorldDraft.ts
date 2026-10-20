@@ -41,7 +41,7 @@ export function mockCheckWorld(id: string, d: WorldDraft): WorldCheckView {
 /** REG-Hinweis nach jedem Speichern, wie Go (planRegHint). */
 export const HINT = 'REG-Änderung: Commit mit Begründung, `task golden:update` nur bei gewollter Änderung';
 
-/** Ablehnung auf veraltetem Stand, wie Go (staleError in engine/studio/plan_file.go). */
+/** Ablehnung auf veraltetem Stand, wie Go (staleError in tools/k3c-studio/backend/plan_file.go). */
 export const staleText = (id: string) => `data/worlds/${id}.json geändert, bitte neu laden`;
 
 /** Die Welt nach dem Entwurf: Inseln in seiner Reihenfolge, Planung und Chunk-Anzahl gehen mit der Herkunft (from). */

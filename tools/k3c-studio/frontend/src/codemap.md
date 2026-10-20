@@ -10,7 +10,7 @@ React-Oberfläche des Asset-Studios: Rahmen mit Seitenwahl und die Seiten Grafik
 - Spielcode nur lesend über die Aliase `@game` (`src/`) und `@data` (`data/`); geteilte UI-Teile über `@webkit` (`tools/webkit/`: `errors.ts`, `useDebounced.ts`, `parts.tsx`, `theme.css`, `prefs.ts`); Test `App.test.tsx`.
 
 ## Flow
-Start → `App` liest die gemerkte Seite → Seite lädt über `backend` (HTTP oder Mock) → Änderungen gehen als `POST /api/studio/rpc/<Methode>` mit `stand` an das Go-Backend `engine/studio`.
+Start → `App` liest die gemerkte Seite → Seite lädt über `backend` (HTTP oder Mock) → Änderungen gehen als `POST /api/studio/rpc/<Methode>` mit `stand` an das Go-Backend `tools/k3c-studio/backend`.
 
 ## Integration
-- Backend: `engine/studio/` (Go-Paket des Servers, Routen unter `/api/studio/`); Build und Aliase (`ALIAS`, `DEDUPE`): `../vite.config.ts`, `../paths.ts`; Ausgabe `dist/studio/`.
+- Backend: `tools/k3c-studio/backend/` (Go-Paket, Routen unter `/api/studio/`); Build und Aliase (`ALIAS`, `DEDUPE`): `../vite.config.ts`, `../paths.ts`; Ausgabe `dist/studio/`.

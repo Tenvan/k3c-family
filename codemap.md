@@ -1,7 +1,7 @@
 # Repository Atlas: K3C – Family Three Crowns
 
 ## Project Responsibility
-Couch-Koop-Side-Scroller im Stil von Kingdom Two Crowns für Edge auf der Xbox (Gamepad API), gehostet im Heimnetz. Ein Go-Server (`engine/`, `cmd/k3c-server`) rechnet die deterministische Simulation und verteilt Snapshots über WebSocket (Protokoll v7). Der Browser-Client (`src/`, TypeScript + Phaser 4 + Vite) sendet nur Eingaben und zeichnet. Balancing liegt als JSON in `data/` und ist die einzige Quelle für beide Seiten. `tools/k3c-dev` ist das Entwickler-Werkzeug (Wails-Desktop-App + MCP-Server), `tools/k3c-studio` das Frontend des Asset-Studios (Seite des Go-Servers unter `/studio/`, Backend `engine/studio`; Grafik, Sound, Monarch, Gegner, Gebäude-Planer und Welten Editor).
+Couch-Koop-Side-Scroller im Stil von Kingdom Two Crowns für Edge auf der Xbox (Gamepad API), gehostet im Heimnetz. Ein Go-Server (`engine/`, `cmd/k3c-server`) rechnet die deterministische Simulation und verteilt Snapshots über WebSocket (Protokoll v7). Der Browser-Client (`src/`, TypeScript + Phaser 4 + Vite) sendet nur Eingaben und zeichnet. Balancing liegt als JSON in `data/` und ist die einzige Quelle für beide Seiten. `tools/k3c-dev` ist das Entwickler-Werkzeug (Wails-Desktop-App + MCP-Server), `tools/k3c-studio` das Frontend des Asset-Studios (Seite des Go-Servers unter `/studio/`, Backend `tools/k3c-studio/backend`; Grafik, Sound, Monarch, Gegner, Gebäude-Planer und Welten Editor).
 
 ## System Entry Points
 - `game.html` → `src/main.ts`: Spiel-Client (Phaser-Szenen `load` → `lobby` → `game` + `hud`)
@@ -29,7 +29,7 @@ Couch-Koop-Side-Scroller im Stil von Kingdom Two Crowns für Edge auf der Xbox (
 | `engine/store/` | File-Repository für Spielstände, Berichte und Spielmetrik (atomar, rotierende Sicherungen, `Saves.List`) | [View Map](engine/store/codemap.md) |
 | `engine/rng/` | Deterministischer mulberry32-Generator, einzige Zufallsquelle | [View Map](engine/rng/codemap.md) |
 | `engine/conlog/` | Farbiger `slog.Handler` mit Emoji-Topics | [View Map](engine/conlog/codemap.md) |
-| `engine/studio/` | Backend des Asset-Studios: RPC unter `/api/studio/` (Assets, Welten Editor, Chunk-Planung, Gebäude-Planer), SSE bei Registeränderungen, nur Dev-Mode und Loopback | [View Map](engine/studio/codemap.md) |
+| `tools/k3c-studio/backend/` | Backend des Asset-Studios (Modul `tools/k3c-studio`): RPC unter `/api/studio/` (Assets, Welten Editor, Chunk-Planung, Gebäude-Planer, Chat), SSE bei Registeränderungen, nur Loopback; `engine/` und `cmd/k3c-server` importieren nichts aus `tools/` | [View Map](tools/k3c-studio/backend/codemap.md) |
 | `src/` | Browser-Client (Thin Client): Composition Root `main.ts` | [View Map](src/codemap.md) |
 | `src/scenes/` | Presentation Layer: Phaser-Szenen mit ihrer Logik und Split-Screen; Unterordner für Rendering, HUD, Hinweise, Effekte, Debug | [View Map](src/scenes/codemap.md) |
 | `src/scenes/render/` | Zeichnen der Welt: `WorldRenderer`, `StageView`, Sprites und Grafik-Zuordnung, Plätze, Reittier, Bürger | [View Map](src/scenes/render/codemap.md) |

@@ -1,7 +1,7 @@
 import type { AssetChoice, AssetHit, AssetSaved, AssetsView, Backend, CatalogAsset, EventName, Events, HubPlanView, HubRulesView, HubSaveResult, HubStand, OpenGameResult, PlanCheckView, PlanObjectsView, PlanSaved, PlanView, PlannedChunk, ResearchResult, WorldLevelView, WorldPreviewArgs, WorldPreviewView, WorldSource, WorldsView } from './types';
 import type { WorldCheckView, WorldDraft } from './worldTypes';
 
-// Das Studio ist eine Seite des Go-Servers (engine/studio): jede Methode von App ist ein POST auf /api/studio/rpc/<Methode>
+// Das Studio ist eine Seite des Go-Servers (Backend tools/k3c-studio/backend): jede Methode von App ist ein POST auf /api/studio/rpc/<Methode>
 // mit den Argumenten als JSON-Array, die Antwort ist {result} oder {error}. Die Kopfzeile hält fremde Seiten fern (CORS-Preflight).
 const API = '/api/studio/';
 const HEADERS = { 'Content-Type': 'application/json', 'X-K3C-Studio': '1' };

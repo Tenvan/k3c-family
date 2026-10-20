@@ -1,6 +1,6 @@
 # TS1.1 · Studio-Backend nach tools/k3c-studio umziehen, Import-Regel
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** DEV
@@ -40,8 +40,8 @@ Funktionsänderungen am Chat oder Studio; Löschen der Studio-Seite im Server (T
 
 ## Fertig, wenn
 
-- [ ] AC-01: `engine/studio` existiert nicht mehr; der Import-Test ist grün und schlägt bei einem `tools/`-Import fehl (belegt durch roten Lauf in Schritt 1).
-- [ ] `task check:go` und die Studio-Tests grün.
+- [x] AC-01: `engine/studio` existiert nicht mehr; der Import-Test ist grün und schlägt bei einem `tools/`-Import fehl (belegt durch roten Lauf in Schritt 1).
+- [x] `task check:go` und die Studio-Tests grün.
 
 ## Prüfen
 
@@ -52,5 +52,9 @@ task check:studio
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+- **AC-01 geprüft:** `engine/studio` ist nach `tools/k3c-studio/backend` (Paket `backend`, Modul `k3c/tools/k3c-studio`) umgezogen, samt `chat_*` und Tests; `engine/studio` existiert nicht mehr. Neuer Test `engine/internal/rules/imports_test.go` (`TestServerImportsNothingFromTools`) liest die Importe von `engine/**` und `cmd/k3c-server` (mit Tests) und folgt allen Paketen des Hauptmoduls, die sie einbinden; kein Import darf mit `k3c/tools` beginnen. Roter Lauf vor dem Umzug (Schritt 1): 10 Befunde (`engine/studio/*` → `k3c/tools/assetkit`, `k3c/tools/ruletable/table`; `cmd/k3c-server/studio.go` → `k3c/tools/assetkit`); danach grün.
+- Server: `cmd/k3c-server/studio.go` gelöscht, Aufruf `withStudio` in `main.go` entfernt; das Hauptmodul braucht `k3c/tools/assetkit` nicht mehr (`require`/`replace` aus `go.mod` entfernt). Die Studio-Seite (Kachel, `studio.html`, `dist/studio`, Vite-Ausnahme, `K3C_STUDIO_LAN`-Doku) bleibt bis TS1.3.
+- Prüfungen (check_run): `go:test` grün, `go:lint` grün, `task:check:go` grün, `task:test` grün; `task check:studio` (über task_start) grün: `k3c/tools/k3c-studio/backend` ok, golangci-lint 0 issues.
+- Taskfile: nur die Beschreibung von `check:studio` (prüft jetzt das Backend); `codemap.md` verschoben und angepasst, Pfade in den übrigen Codemaps und in Kommentaren des Studio-Frontends nachgezogen.
+- **Abweichung:** `.github/workflows/ci.yml` steht nicht in den Erlaubten Dateien. Der CI-Job `k3c-studio` führt nur `go test`/Lint für `tools/assetkit` aus, nicht für das Modul `tools/k3c-studio`; die Backend-Tests laufen in der CI damit nicht mehr (vorher im Job `go`). Kommentar Zeile 203 nennt noch `engine/studio`. Nachziehen in TS1.3 oder TS1.5. `CLAUDE.md` (Struktur) folgt laut Plan in TS1.5. `.codemap/state.json` nicht angefasst.
+- Manuell geprüft: niemand (rein technischer Umzug).
