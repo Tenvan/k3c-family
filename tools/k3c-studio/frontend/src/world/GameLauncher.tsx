@@ -5,12 +5,12 @@ import { loadText, savePref } from '../lib/prefs';
 import { openGameReason } from './levelView';
 
 const BASE_KEY = 'world.gameBase';
-// Das Studio läuft auf dem Spielserver selbst: dessen Adresse. Der Mock im Test und im Studio-Vite kennt keinen und nimmt den Vite-Dev-Server von `task dev`.
+// Das Studio bringt seine Engine mit (B-507/AC-02): die Adresse seines eigenen Servers. Der Mock im Test und im Studio-Vite kennt keinen und nimmt den Vite-Dev-Server von `task dev`.
 const DEFAULT_BASE = backend.mock ? 'http://127.0.0.1:5183' : window.location.origin;
 
 /** „Im Spiel öffnen“ (B-460/AC-06): das Level neu oder voll ausgebaut im Browser starten, über die Landingpage des
  *  Spielservers unter der eingestellten Adresse (nur Loopback; Go prüft sie, die Seite öffnet den Browser). Ein neues Spiel gibt
- *  es nur für den Wald und passende Seeds, „voll ausgebaut“ braucht den Dev-Mode des Servers. */
+ *  es nur für den Wald und passende Seeds; „voll ausgebaut“ legt die Engine des Studios als Testspielstand an. */
 export function GameLauncher({ seed, biome }: { seed: string; biome: string }) {
   const [base, setBase] = useState(() => loadText(BASE_KEY, DEFAULT_BASE));
   const ctx = `${seed}|${biome}`;

@@ -62,7 +62,7 @@ keine
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
 | TS1.1 | `TS1.1-studio-backend-umziehen.md` | Umsetzung | autonom | fertig |
-| TS1.2 | `TS1.2-studio-engine-testspielstaende.md` | Umsetzung | autonom | offen |
+| TS1.2 | `TS1.2-studio-engine-testspielstaende.md` | Umsetzung | autonom | fertig |
 | TS1.3 | `TS1.3-studio-seite-streichen.md` | Umsetzung | autonom | offen |
 | TS1.4 | `TS1.4-datei-watch-server.md` | Umsetzung | autonom | offen |
 | TS1.5 | `TS1.5-pages-und-doku.md` | Umsetzung | autonom | offen |

@@ -2,8 +2,10 @@ package main
 
 import (
 	"context"
+	"log/slog"
 	"net"
 	"net/http"
+	"net/url"
 	"path/filepath"
 	"strings"
 
@@ -13,13 +15,59 @@ import (
 // studioPage ist die Startseite der Oberfläche (http.FileServer liefert dort index.html).
 const studioPage = "/studio/"
 
-// newHandler bedient das Studio auf einem eigenen Port: die API aus backend/, die Oberfläche aus dist/studio und
-// die Grafiken und Töne des Spiels zuerst aus public/ (Änderungen sofort sichtbar), dann aus dist/. Nur Loopback.
-func newHandler(ctx context.Context, root string) http.Handler {
+// newHandler bedient das Studio auf einem eigenen Port: die API aus backend/, die Spiel-API seiner eingebundenen Engine
+// (/api/…, /ws; Vorschau-Spiele ohne Spielserver, B-507/AC-02), die Oberfläche aus dist/studio und die Grafiken, Töne
+// und Seiten des Spiels zuerst aus public/ (Änderungen sofort sichtbar), dann aus dist/. Nur Loopback. Endet ctx,
+// speichert die Engine ihre Räume (backend.App.EngineWait).
+func newHandler(ctx context.Context, root string, log *slog.Logger) (http.Handler, *backend.App) {
+	studio := backend.New(ctx, root, log)
 	mux := http.NewServeMux()
-	mux.Handle(backend.Prefix, backend.New(ctx, root).Handler(false))
+	mux.Handle(backend.Prefix, studio.Handler(false))
+	game := gameGuard(studio.Game())
+	mux.Handle("/api/", game)
+	mux.Handle("/ws", game)
 	mux.Handle("/", siteHandler(root))
-	return hostGuard(mux)
+	return hostGuard(mux), studio
+}
+
+// gameGuard schützt die Spiel-API der Engine: nur Loopback (RemoteAddr), und schreibende Anfragen nur von derselben
+// Seite (Origin gleich Host, Sec-Fetch-Site same-origin oder none). GET und der WebSocket-Aufbau bleiben frei; den
+// prüft engine/net selbst auf gleiche Herkunft. Eine Pflicht-Kopfzeile wie bei /api/studio geht nicht: game.html
+// sendet sie nicht.
+func gameGuard(next http.Handler) http.Handler {
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		if !loopbackAddr(r.RemoteAddr) {
+			http.Error(w, "nur Loopback", http.StatusForbidden)
+			return
+		}
+		if r.Method != http.MethodGet && r.Method != http.MethodHead && !sameSite(r) {
+			http.Error(w, "fremde Herkunft", http.StatusForbidden)
+			return
+		}
+		next.ServeHTTP(w, r)
+	})
+}
+
+// sameSite: die Anfrage kommt nicht von einer fremden Seite im Browser.
+func sameSite(r *http.Request) bool {
+	if o := r.Header.Get("Origin"); o != "" {
+		u, err := url.Parse(o)
+		if err != nil || u.Host != r.Host {
+			return false
+		}
+	}
+	site := r.Header.Get("Sec-Fetch-Site")
+	return site == "" || site == "same-origin" || site == "none"
+}
+
+// loopbackAddr: die Gegenstelle ist 127.0.0.0/8 oder ::1.
+func loopbackAddr(remote string) bool {
+	host, _, err := net.SplitHostPort(remote)
+	if err != nil {
+		host = remote
+	}
+	ip := net.ParseIP(host)
+	return ip != nil && ip.IsLoopback()
 }
 
 // hostGuard lässt nur Loopback-Anfragen mit localhost oder einer IP als Host durch (DNS-Rebinding); die API hat

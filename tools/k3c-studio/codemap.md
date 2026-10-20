@@ -26,5 +26,5 @@ Frontend des Asset-Studios (B-459): React-Oberfläche in `frontend/`, Build nach
 
 ## Integration
 - Backend: `backend/` (eingehängt von `server.go`; der Spielserver bindet es seit TS1.1 nicht mehr ein); Asset-Logik in `tools/assetkit`; die MCP-Tools `assets_*` bleiben in k3c-dev (dessen Knopf „Asset-Studio öffnen“ öffnet `/studio/index.html` im Browser).
-- Tasks: `task studio:frontend` (Build), `task check:studio` (Studio-Vitest, Go-Tests und Lint von assetkit und diesem Modul samt Backend). `npm run dev` im Frontend-Ordner (Port 5192) leitet `/api` an den Spielserver (8080). Das Vitest der Wurzel nimmt `tools/k3c-studio/**` aus.
+- Tasks: `task studio:frontend` (Build), `task check:studio` (Studio-Vitest, Go-Tests und Lint von assetkit und diesem Modul samt Backend). `npm run dev` im Frontend-Ordner (Port 5192) leitet `/api` an den Server des Studios (8091). `server.go` liefert neben der Studio-API die Spiel-API der eingebundenen Engine (`/api/…`, `/ws`, B-507/AC-02), Vorschau-Spiele laufen ohne Spielserver. Das Vitest der Wurzel nimmt `tools/k3c-studio/**` aus.
 - Daten (über das Backend): `data/assets.json`, `data/assets-recherche.json`, `public/**`.

@@ -27,3 +27,6 @@ data/worlds/*
 
 # Chat-Verlauf des Asset-Studios bleibt lokal und wird nach einer Woche gelöscht (B-488/AC-07)
 /.chats/
+
+# Testspielstände des Asset-Studios (eingebundene Engine, B-507/AC-02), nie in saves/ des Servers
+/tools/k3c-studio/.studio-saves/

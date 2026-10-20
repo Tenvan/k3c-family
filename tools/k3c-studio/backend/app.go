@@ -5,6 +5,7 @@ package backend
 
 import (
 	"context"
+	"log/slog"
 	"sync"
 	"time"
 
@@ -30,11 +31,15 @@ type App struct {
 	// chat ist der Chat mit der Claude Code CLI (chat_*.go), angelegt beim ersten Gebrauch
 	chatOnce sync.Once
 	chat     *chatHub
+	// engine ist die eingebundene Engine für Vorschau-Spiele und Testspielstände (engine.go); nil = keine
+	engine *Engine
 }
 
-// New legt das Studio für die Repo-Wurzel root an; ctx begrenzt Beobachtung und Recherche (Ende des Servers).
-func New(ctx context.Context, root string) *App {
-	a := &App{root: root, poll: assetsPoll, ctx: ctx, bus: newBus()}
+// New legt das Studio für die Repo-Wurzel root an; ctx begrenzt Beobachtung, Recherche und die Räume der Engine (Ende
+// des Servers). log nimmt die Meldungen der Engine auf und darf nil sein.
+func New(ctx context.Context, root string, log *slog.Logger) *App {
+	a := &App{root: root, poll: assetsPoll, ctx: ctx, bus: newBus(), engine: NewEngine(root, log)}
+	a.engine.Start(ctx)
 	a.watch(ctx)
 	a.chatCleanup()
 	return a

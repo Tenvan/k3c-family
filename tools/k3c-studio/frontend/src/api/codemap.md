@@ -26,6 +26,6 @@ Schnittstelle der Oberfläche zum Studio-Backend (`tools/k3c-studio/backend`): T
 
 ## Integration
 - Gegenstück: `tools/k3c-studio/backend/` (`rpc.go` Routen unter `/api/studio/`, `app*.go` die aufrufbaren Methoden mit Präfix Assets/World/Plan/Hub) und `tools/assetkit`.
-- Dev-Server: Vite (Port 5192) reicht `/api` an den Spielserver (8080) weiter, siehe `../../vite.config.ts`; ohne Server hilft `?mock=1`.
+- Dev-Server: Vite (Port 5192) reicht `/api` an den Server des Studios (8091, B-507) weiter, siehe `../../vite.config.ts`; ohne Server hilft `?mock=1`.
 - Konsumenten: alle Seiten (`assets/`, `graphics/`, `sound/`, `world/`, `planner/`, `monarch/`, `enemies/`, `stage/`).
 - Typimport `@game/model/types` (Welt für die Vorschau); `mockWorld.ts` nutzt `../stage/stageLogic`.

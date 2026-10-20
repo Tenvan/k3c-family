@@ -23,6 +23,7 @@ import (
 	"github.com/wailsapp/wails/v2/pkg/runtime"
 
 	"k3c/engine/conlog"
+	"k3c/tools/k3c-studio/backend"
 	assets "k3c/tools/assetkit"
 )
 
@@ -42,6 +43,9 @@ type app struct {
 	ready chan struct{} // schließt startup: Wails ruft OnStartup und OnSecondInstanceLaunch in eigenen Goroutinen
 	srv   *http.Server
 	ln    net.Listener
+	// stop beendet den Kontext der Engine, studio wartet danach auf das Speichern ihrer Räume
+	stop   context.CancelFunc
+	studio *backend.App
 }
 
 func main() {
@@ -121,7 +125,10 @@ func (a *app) redirect() http.Handler {
 // startup startet den Server des Studios; er endet mit dem Fenster.
 func (a *app) startup(ctx context.Context) {
 	a.ctx = ctx
-	a.srv = &http.Server{Handler: newHandler(ctx, a.root), ReadHeaderTimeout: 10 * time.Second}
+	studioCtx, stop := context.WithCancel(ctx)
+	handler, studio := newHandler(studioCtx, a.root, a.log)
+	a.stop, a.studio = stop, studio
+	a.srv = &http.Server{Handler: handler, ReadHeaderTimeout: 10 * time.Second}
 	go func() {
 		if err := a.srv.Serve(a.ln); err != nil && !errors.Is(err, http.ErrServerClosed) {
 			a.log.Error("💥 Asset-Studio-Server beendet", "ns", "main", "err", err)
@@ -131,11 +138,19 @@ func (a *app) startup(ctx context.Context) {
 	a.log.Info("🚀 Asset-Studio bereit", "ns", "main", "root", a.root, "addr", a.ln.Addr().String())
 }
 
-// stopServer beendet den Server des Studios beim Schließen des Fensters.
+// stopServer beendet den Server des Studios beim Schließen des Fensters und wartet kurz, bis die Engine ihre Räume
+// gespeichert hat.
 func (a *app) stopServer() {
 	<-a.ready
 	_ = a.srv.Close()
+	a.stop()
+	if !a.studio.EngineWait(engineSaveWait) {
+		a.log.Warn("⏳ Räume des Studios nicht rechtzeitig gespeichert", "ns", "room", "frist", engineSaveWait.String())
+	}
 }
+
+// engineSaveWait ist die Frist für das Speichern der Räume beim Schließen.
+const engineSaveWait = 5 * time.Second
 
 // beforeClose merkt Größe und Position des Fensters; das Schließen läuft immer weiter.
 func (a *app) beforeClose(ctx context.Context) bool {

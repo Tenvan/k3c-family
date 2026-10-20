@@ -1,6 +1,6 @@
 # TS1.2 · Studio bindet die Engine ein, Vorschau und Spielstart ohne Server
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** DEV
@@ -48,5 +48,8 @@ task check:studio
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+- **AC-02 umgesetzt, geprüft:** `tools/k3c-studio/backend/engine.go` bindet die Engine ein (`NewEngine`: eigener `room.Manager` im Dev-Mode, Welten aus `data/worlds`, `store.Saves` unter `tools/k3c-studio/.studio-saves/`, Spiel-API über `engine/net.NewHandler`). `server.go` hängt `/api/…` und `/ws` der Engine neben `/api/studio/` ein, geschützt durch `gameGuard` (nur Loopback; Schreibanfragen nur bei gleicher Origin und `Sec-Fetch-Site` same-origin/none). „Im Spiel öffnen“ (`WorldOpenGame`) legt „voll ausgebaut“ über `Manager.FullSave` an und fragt keinen Spielserver mehr. Beim Schließen des Fensters beendet `stopServer` den Kontext der Engine und wartet bis 5 s (`EngineWait`), bis die Räume gespeichert sind. Go-Tests: `engine_test.go` (Raum in Welt `standard` und Test-Welt `probe` ohne Server, Spielstand nur im Testordner, kein `saves/`; Spiel-API; Spielstart ohne Server), `app_testsaves_test.go`, `server_test.go` (Spiel-API am Studio-Server, `TestGameGuard` fremde/gleiche Herkunft, `TestEngineWaitNachEnde`). Die Vorschau (`WorldPreview`) rief schon vorher `net.Preview` direkt auf.
+- **Testspielstände:** `WorldTestSaves`, `WorldTestSaveCreate(seed)` (voll ausgebaut), `WorldTestSaveOpen(base, name)` (Name geprüft, „nicht gefunden“ getrennt von anderen Fehlern), `WorldTestSaveDelete(name)` (abgelehnt bei offenem Raum; Race zwischen Prüfung und Löschen bewusst hingenommen, Kommentar); nur Methoden, keine Oberfläche.
+- **Prüfungen:** `task check:go` grün (check_run), `task check:studio` grün (Vitest, go test, golangci-lint).
+- **Abweichungen:** Spiel-Adresse `<Adresse>/index.html#game.html?…` statt `/#…`, weil die Wurzel des Studio-Servers zum Studio führt. Vite-Proxy des Studio-Frontends zeigt auf 8091 (Server des Studios) statt 8080. `.gitignore`: eine Zeile plus Kommentar. Abhängige Tests (`rpc_test.go` Methodenmenge, `chat_history_test.go` Signatur `New(ctx, root, log)`) nachgezogen. Nachbesserung nach Review: `gameGuard`, `Engine.Wait`, Fehlerunterscheidung in `WorldTestSaveOpen`.
+- Keine Änderung an `engine/`, kein neues Ticket nötig. Manuell geprüft: niemand.

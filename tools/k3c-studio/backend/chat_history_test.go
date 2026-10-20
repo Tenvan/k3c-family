@@ -51,7 +51,7 @@ func TestChatAufraeumenBeimStart(t *testing.T) {
 	young := chatFile(t, filepath.Join(root, chatDirName), "jung", 24*time.Hour, now)
 	ctx, cancel := context.WithCancel(context.Background())
 	defer cancel()
-	New(ctx, root)
+	New(ctx, root, nil)
 	if _, err := os.Stat(old); !os.IsNotExist(err) {
 		t.Error("alter Chat blieb beim Start liegen")
 	}
