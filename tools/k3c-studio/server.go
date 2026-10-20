@@ -112,8 +112,28 @@ func siteHandler(root string) http.Handler {
 			ui.ServeHTTP(w, r)
 			return
 		}
+		if r.URL.Path == "/index.html" { // http.FileServer würde auf "/" und damit zum Studio umleiten
+			serveFile(w, r, overlay{http.Dir(filepath.Join(root, "public")), http.Dir(filepath.Join(root, "dist"))}, "/index.html")
+			return
+		}
 		files.ServeHTTP(w, r)
 	})
+}
+
+// serveFile liefert name aus fsys ohne die Umleitung von index.html auf das Verzeichnis.
+func serveFile(w http.ResponseWriter, r *http.Request, fsys http.FileSystem, name string) {
+	f, err := fsys.Open(name)
+	if err != nil {
+		http.NotFound(w, r)
+		return
+	}
+	defer func() { _ = f.Close() }()
+	st, err := f.Stat()
+	if err != nil || st.IsDir() {
+		http.NotFound(w, r)
+		return
+	}
+	http.ServeContent(w, r, name, st.ModTime(), f)
 }
 
 // overlay öffnet einen Namen im ersten Dateisystem, das ihn kennt.

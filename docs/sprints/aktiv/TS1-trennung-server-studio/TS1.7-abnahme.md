@@ -46,5 +46,4 @@ Nur Plan-Test; die Abnahme selbst macht 🧑.
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+Zwischenstand 2026-10-20 (Chat): Claude hat vorbereitet (Spielserver auf `develop` neu gestartet, Port 8080). 🧑 hat den Welten-Editor ausprobiert; Befund/Wunsch: Spiel-Adresse (interne Engine oder Server) im Welten-Editor wählbar → B-513. Urteile je Punkt 1–4 von 🧑 stehen noch aus.

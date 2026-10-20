@@ -1,4 +1,4 @@
-import type { AssetChoice, AssetHit, AssetSaved, AssetsView, Backend, CatalogAsset, EventName, Events, HubPlanView, HubRulesView, HubSaveResult, HubStand, OpenGameResult, PlanCheckView, PlanObjectsView, PlanSaved, PlanView, PlannedChunk, ResearchResult, WorldLevelView, WorldPreviewArgs, WorldPreviewView, WorldSource, WorldsView } from './types';
+import type { AssetChoice, AssetHit, AssetSaved, AssetsView, Backend, CatalogAsset, EventName, Events, GameServersView, HubPlanView, HubRulesView, HubSaveResult, HubStand, OpenGameResult, PlanCheckView, PlanObjectsView, PlanSaved, PlanView, PlannedChunk, ResearchResult, WorldLevelView, WorldPreviewArgs, WorldPreviewView, WorldSource, WorldsView } from './types';
 import type { WorldCheckView, WorldDraft } from './worldTypes';
 
 // Das Studio ist eine Seite des Go-Servers (Backend tools/k3c-studio/backend): jede Methode von App ist ein POST auf /api/studio/rpc/<Methode>
@@ -42,8 +42,8 @@ async function importFile(id: string, hit: string): Promise<string> {
 }
 
 /** Meldet „Im Spiel öffnen“ im Browser; die Adresse prüft und liefert der Server. */
-async function openGame(base: string, seed: string, biome: string, mode: string): Promise<OpenGameResult> {
-  const res = await rpc<OpenGameResult>('WorldOpenGame', base, seed, biome, mode);
+async function openGame(base: string, seed: string, biome: string, mode: string, method = 'WorldOpenGame'): Promise<OpenGameResult> {
+  const res = await rpc<OpenGameResult>(method, base, seed, biome, mode);
   if (!res.error && res.url) window.open(res.url, '_blank', 'noopener');
   return res;
 }
@@ -79,7 +79,9 @@ export function httpBackend(): Backend {
     assetsLicenseOk: (id: string, hit: string) => rpc<void>('AssetsLicenseOK', id, hit),
     worldLevel: (seed: string, src: WorldSource) => rpc<WorldLevelView>('WorldLevel', seed, src),
     worldPreview: (args: WorldPreviewArgs) => rpc<WorldPreviewView>('WorldPreview', args),
-    worldOpenGame: openGame,
+    worldOpenGame: (base: string, seed: string, biome: string, mode: string) => openGame(base, seed, biome, mode),
+    worldGameServers: () => rpc<GameServersView>('WorldGameServers'),
+    worldOpenGameServer: (base: string, seed: string, biome: string, mode: string) => openGame(base, seed, biome, mode, 'WorldOpenGameServer'),
     planLoad: () => rpc<PlanView>('PlanLoad'),
     planCheck: (island: string, depth: number, chunks: PlannedChunk[], count: number) => rpc<PlanCheckView>('PlanCheck', island, depth, chunks, count),
     planSave: (island: string, depth: number, chunks: PlannedChunk[], count: number, stand: string) => rpc<PlanSaved>('PlanSave', island, depth, chunks, count, stand),

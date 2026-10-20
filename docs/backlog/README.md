@@ -472,3 +472,4 @@ Zeile in diesen Abschnitt.
 | [B-463](archiv/B-463-monarch-vorschau-animationen.md) | DEV | Idee | mittel | erledigt | WZ10 | Eine Monarch-Seite im Asset-Studio zeigt Reiten, Schlagen, Skills und weitere Vorschauen |
 | [B-436](archiv/B-436-plan-create-entwurf-zeilen.md) | DEV | Problem | niedrig | erledigt | WZ12 | plan_create scheitert an Platzhalter-Zeilen „– (Entwurf)“ in der Session-Tabelle |
 | [B-467](archiv/B-467-worktree-pill-am-eintrag.md) | DEV | Idee | mittel | erledigt | WZ12 | Worktree-Änderungen stehen als Pill am Projekt, Sprint oder an der Session statt als Leiste oben |
+| [B-513](archiv/B-513-welten-editor-spiel-adresse-waehlbar.md) | DEV | Idee | mittel | erledigt | – | Im Welten-Editor lässt sich die Spiel-Adresse wählen: interne Engine oder Server |

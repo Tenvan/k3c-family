@@ -55,6 +55,18 @@ func TestSiteHandlerPublicBeforeDist(t *testing.T) {
 	}
 }
 
+// /index.html ist die Landingpage des Spiels (Spiel-Adresse aus „Im Spiel öffnen“) und darf nicht zum Studio umleiten.
+func TestSiteHandlerIndexHtmlOhneUmleitung(t *testing.T) {
+	root := fixture(t)
+	if err := os.WriteFile(filepath.Join(root, "dist", "index.html"), []byte("<html>spiel</html>"), 0o600); err != nil {
+		t.Fatal(err)
+	}
+	rec := get(t, siteHandler(root), http.MethodGet, "/index.html")
+	if rec.Code != http.StatusOK || !strings.Contains(rec.Body.String(), "spiel") {
+		t.Errorf("/index.html: %d %q, erwartet 200 mit der Landingpage", rec.Code, rec.Body.String())
+	}
+}
+
 func TestSiteHandlerRootAndMethods(t *testing.T) {
 	h := siteHandler(fixture(t))
 	if rec := get(t, h, http.MethodGet, "/"); rec.Code != http.StatusFound || rec.Header().Get("Location") != studioPage {

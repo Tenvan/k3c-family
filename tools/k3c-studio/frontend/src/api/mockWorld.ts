@@ -1,6 +1,6 @@
 import fixture from './previewFixture.json';
 import { hubLevelChoices } from '../stage/stageLogic';
-import type { OpenGameResult, WorldLevelView, WorldPreviewArgs, WorldPreviewView, WorldSource } from './types';
+import type { GameServersView, OpenGameResult, WorldLevelView, WorldPreviewArgs, WorldPreviewView, WorldSource } from './types';
 
 // Erfundenes Level für den Mock (Browser, Tests): immer gleich zu gleichem Seed, 1 Abschnitt = 30 Units. Der Seed
 // „fehler“ liefert den Hinweis einer abgelehnten Anfrage.
@@ -56,4 +56,9 @@ export function mockOpenGame(base: string, seed: string, biome: string, mode: 'n
   const save = mode === 'full' ? `voll-${seed}` : seed;
   const query = world === 'standard' ? `autostart=1&save=${save}` : `autostart=1&fresh=1&save=${save}&world=${world}`;
   return { url: `${base}/#${encodeURIComponent(`game.html?${query}`)}`, save, error: '' };
+}
+
+/** Spielserver im Mock (B-513): einer auf dem Standardport, erreichbar, im Dev-Mode, mit erfundener Heimnetz-Adresse. */
+export function mockGameServers(): GameServersView {
+  return { servers: [{ base: 'http://127.0.0.1:8080', lan: '192.168.1.20:8080', host: 'studio-pc', reachable: true, dev: true, version: 'dev' }] };
 }
