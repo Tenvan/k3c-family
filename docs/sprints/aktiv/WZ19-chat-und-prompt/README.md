@@ -66,7 +66,7 @@ Entschieden: `B-488 › Offene Fragen` (alle). Freigegeben von 🧑 am 2026-10-1
 | WZ19.1 | `WZ19.1-cli-anbindung-verlauf.md` | Umsetzung | autonom | fertig |
 | WZ19.2 | `WZ19.2-chat-im-studio.md` | Umsetzung | autonom | fertig |
 | WZ19.3 | `WZ19.3-prompt-grundgeruest.md` | Umsetzung | autonom | fertig |
-| WZ19.4 | `WZ19.4-review.md` | Review | autonom | in Arbeit |
+| WZ19.4 | `WZ19.4-review.md` | Review | autonom | fertig |
 | WZ19.5 | `WZ19.5-abnahme.md` | Review | Mensch | offen |
 
 - WZ19.1 (DEV) Go: Anbindung der Claude Code CLI als RPC-Methode des Studios (früher Wails-Binding) mit Test-Ersatz, Zeitlimit, Abbruch, `.chats` mit Löschung nach einer Woche (AC-01, AC-02).
@@ -77,5 +77,6 @@ Entschieden: `B-488 › Offene Fragen` (alle). Freigegeben von 🧑 am 2026-10-1
 
 ## Abnahme
 
-Wird von der Review-Session (Doku-Sprint: letzte Session) ausgefüllt, höchstens fünf Zeilen: Datum, Kriterien
-(Verweis auf Session-Ergebnisse), behobene Befunde, neue Tickets. Bis dahin `–`.
+- 2026-10-20 Review WZ19.4: AC-01, AC-02, AC-03 und AC-05 geprüft (Nachweise in WZ19.1–WZ19.3 und WZ19.4 › Ergebnis), `task check:all` und `task check:go` grün; AC-04 offen (WZ19.5, Abnahme 🧑 am PC).
+- Getrennter Reviewer: keine schweren Befunde, Sicherheit der CLI-Anbindung bestätigt; neues Ticket B-514 (Nachbesserungen, nicht schwer).
+- Version: v0.22.0 vorgeschlagen (Minor: neues Chat- und Prompt-Werkzeug im Asset-Studio; nach TS1 v0.21.0, letzter Tag v0.20.0), gesetzt erst nach Bestätigung durch 🧑.
