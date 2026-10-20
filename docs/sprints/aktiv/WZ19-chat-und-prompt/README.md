@@ -57,6 +57,8 @@ Aus `B-488`, Sprint 2:
 
 Entschieden: `B-488 › Offene Fragen` (alle). Freigegeben von 🧑 am 2026-10-19 (Chat, Revision 1) mit dem Auftrag, den Sprint autonom umzusetzen; die neue Abhängigkeit assistant-ui ist damit freigegeben (Lizenz, Größe und React-Version belegt WZ19.2 trotzdem). Aktiviert wird WZ19, sobald WZ18 erledigt ist (Branch `sprint/wz19`). Offen für die Umsetzung: genauer Aufruf der CLI (`claude -p` mit Ausgabeformat) und Zuschnitt des Prompt-Textes, beides in WZ19.1 und WZ19.3 zu klären.
 
+**Studio getrennt vom Server (2026-10-20, TS1, B-507):** Das Studio ist nur noch ein eigenes Fenster, keine Seite des Spielservers; Backend und Chat aus WZ19.1 liegen in `tools/k3c-studio/backend` (früher `engine/studio`), `task build` baut kein Studio mehr (Prüfung über `task check:studio`). Siehe `docs/decisions/004-studio-getrennt-datei-watch.md`. Neu offen für 🧑: Chat global rechts in allen Studio-Seiten, Provider nur über CLI und ACP (Notiz in WZ19.2, Frage in `B-488 › Offene Fragen`).
+
 ## Sessions
 
 | Nr. | Datei | Typ | Agent | Status |

@@ -1,9 +1,9 @@
 # tools/k3c-studio/
 
 ## Responsibility
-Eigenständiges Fenster (Wails, `main.go`, `window.go`): startet das Backend `backend/` und `dist/studio` auf Loopback (Port 8091, `K3C_STUDIO_PORT`), zeigt sie im Fenster und merkt Größe und Position wie k3c-dev (`%AppData%\k3c\k3c-studio.json`). Bauen: `task k3c-studio:build` → `bin/k3c-studio.exe`.
+Eigenständiges Fenster (Wails, `main.go`, `window.go`): startet das Backend `backend/` und die Oberfläche `frontend/dist` auf Loopback (Port 8091, `K3C_STUDIO_PORT`), zeigt sie im Fenster und merkt Größe und Position wie k3c-dev (`%AppData%\k3c\k3c-studio.json`). Bauen: `task k3c-studio:build` → `bin/k3c-studio.exe`.
 
-Frontend des Asset-Studios (B-459): React-Oberfläche in `frontend/`, Build nach `dist/studio/` (`task studio:frontend`, von `task build` aufgerufen), vom Go-Server unter `/studio/index.html` ausgeliefert. Die Landingpage zeigt es über die Kachel „Welten bauen“ (`studio.html`, `src/tools/studioPage.ts`) im Vollflächen-Rahmen. Das **Backend** (RPC, Register, Planung) liegt in [`backend/`](backend/codemap.md) (Paket `backend`, bis TS1.1 `engine/studio`).
+Frontend des Asset-Studios (B-459): React-Oberfläche in `frontend/`, Build nach `frontend/dist/` (`task studio:frontend`), nur vom Fenster unter `/studio/` ausgeliefert; der Spielserver hat keine Studio-Seite und keine Kachel mehr (Entscheidung 004, B-507). Das **Backend** (RPC, Register, Planung) liegt in [`backend/`](backend/codemap.md) (Paket `backend`, bis TS1.1 `engine/studio`).
 
 ## Design
 - `frontend/`: Vite/React/Radix; Details in [`frontend/codemap.md`](frontend/codemap.md). Spiel-Code nur lesend über die Aliase `@game` (`src/`) und `@data` (`data/`), festgelegt in `frontend/paths.ts` für `vite.config.ts` (publicDir = `public/` nur im Dev-Modus, `server.fs.allow` auf die Repo-Wurzel) und `vitest.config.ts`. Gemeinsame UI-Teile (Fehlertext, Entprellen, Bausteine, Theme, Prefs-Fabrik) liegen in [`tools/webkit/`](../webkit/) (Alias `@webkit/...`, geteilt mit k3c-dev).
@@ -20,7 +20,7 @@ Frontend des Asset-Studios (B-459): React-Oberfläche in `frontend/`, Build nach
   - `lib/`, `ui/`, `styles/`: `lib/prefs.ts` bindet die Prefs-Fabrik aus `@webkit/prefs` an das Präfix `k3c-studio.`, `ui/Splitter.tsx` und die eigenen Styles (ohne `theme.css`, das kommt aus `@webkit/theme.css`).
 
 ## Flow
-1. `task studio:frontend` baut nach `dist/studio/`; der Go-Server (Dev-Mode, Checkout) liefert es unter `/studio/` aus.
+1. `task studio:frontend` baut nach `tools/k3c-studio/frontend/dist/`; das Fenster (`main.go`, `server.go`) liefert es auf Loopback unter `/studio/` aus.
 2. Die Seite ruft `/api/studio/rpc/<Methode>` auf (`src/api/http.ts`), lädt bei `assets:changed` (SSE) neu und speichert mit dem `stand` aus dem Laden.
 3. Ohne Server (`npm run dev` mit `?mock=1`, Vitest) antwortet der Mock.
 

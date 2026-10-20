@@ -1,11 +1,18 @@
-// Die GitHub-Pages-Seite (site/, B-183) ist rein statisch: kein Script, keine Anfrage an Server oder Fremddienste,
-// und jedes eingebundene Bild existiert (app/ = Spiel-Build, Bilder aus public/).
+// Die GitHub-Pages-Seite (site/, B-183) ist rein statisch: kein Script, keine Anfrage an Server oder Fremddienste.
+// Pages lädt nur site/ hoch (B-507): jedes eingebundene Bild und jeder lokale Link zeigt auf eine Datei in site/.
 import { existsSync, readFileSync } from 'node:fs';
 import { join, resolve } from 'node:path';
 import { describe, expect, it } from 'vitest';
 
 const ROOT = resolve(__dirname, '..');
-const html = readFileSync(join(ROOT, 'site/index.html'), 'utf8');
+const SITE = join(ROOT, 'site');
+const html = readFileSync(join(SITE, 'index.html'), 'utf8');
+
+/** Lokale Referenzen aus src/href/url(), ohne Anker, Fremdadressen und mailto. */
+function localRefs(): string[] {
+  const refs = [...html.matchAll(/(?:src|href)="([^"]+)"|url\(([^)]+)\)/g)].map((m) => (m[1] ?? m[2]).replace(/["']/g, ''));
+  return refs.filter((ref) => !/^(?:#|https?:|mailto:|var\()/.test(ref));
+}
 
 describe('GitHub-Pages-Seite', () => {
   it('lädt kein Script und spricht keinen Server an', () => {
@@ -18,12 +25,18 @@ describe('GitHub-Pages-Seite', () => {
     expect([...embeds, ...remoteLinkTags]).toEqual([]);
   });
 
-  it('jede Datei unter app/ gibt es im Build', () => {
-    const refs = [...html.matchAll(/app\/([\w./-]+\.(?:png|html))/g)].map((m) => m[1]);
-    expect(refs.length).toBeGreaterThan(0);
+  it('der Deploy-Workflow lädt nur site/ hoch, ohne Node und ohne Build', () => {
+    const workflow = readFileSync(join(ROOT, '.github/workflows/deploy-pages.yml'), 'utf8');
+    expect(workflow).not.toMatch(/setup-node|setup-go|setup-task|npm |npx |task /);
+    expect(workflow).toMatch(/path:\s*site\/\s*$/m);
+  });
+
+  it('jede lokale Referenz zeigt auf eine Datei in site/ (kein Spiel-Build unter app/)', () => {
+    const refs = localRefs();
+    expect(refs.some((ref) => ref.endsWith('.png'))).toBe(true);
     for (const ref of refs) {
-      const source = ref.endsWith('.html') ? ref : join('public', ref);
-      expect(existsSync(join(ROOT, source)), ref).toBe(true);
+      expect(ref.startsWith('/') || ref.includes('..'), ref).toBe(false);
+      expect(existsSync(join(SITE, ref)), ref).toBe(true);
     }
   });
 });

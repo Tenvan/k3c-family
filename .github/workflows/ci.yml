@@ -56,8 +56,8 @@ jobs:
       - run: task lint
       - run: task typecheck
       - run: task test
-      # Baut dist/ und die GitHub-Pages-Seite _site/ (Präsentation site/ + dist unter app/, B-183).
-      - run: task pages
+      # Produktions-Build (dist/); die GitHub-Pages-Seite site/ baut nichts (B-507).
+      - run: task build
 
       # Den Heimnetz-Server prüfen seit SP03 die Go-Tests (engine/net, httptest) im Job go (B-020).
 

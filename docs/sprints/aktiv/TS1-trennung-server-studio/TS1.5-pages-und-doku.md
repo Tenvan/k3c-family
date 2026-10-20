@@ -1,6 +1,6 @@
 # TS1.5 · GitHub Pages nur site/, Entscheidung und Dokumentation
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** INF
@@ -48,5 +48,5 @@ task test -- pagesSite
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+Siehe unten (Kurzfassung): AC-05 geprüft: `pagesSite`-Test rot→grün (Bildreferenzen auf `site/img`, Workflow ohne Node/Task/Build, `path: site/`); `task check` grün. AC-06 geprüft: Entscheidung `docs/decisions/004-studio-getrennt-datei-watch.md`, `CLAUDE.md`, Codemaps, `docs/arbeitsweise.md`, `docs/rules/welten.md`, `docs/glossar.md` angepasst; B-459 mit Vermerk „Abgelöst“; B-488 und WZ19 mit Notiz und offener Frage für 🧑 (Provider über CLI und ACP), WZ19.2 mit Notiz (Chat global rechts, Welt zuerst), Kriterien unverändert; `task test -- planning` grün.
+Abweichungen: `site/index.html`: Links auf `app/` zeigen jetzt auf das GitHub-Repo; zusätzliche Dateien: `docs/glossar.md`, `docs/rules/welten.md`, Text-Dateien (ungenutzte `studio`-Schlüssel entfernt), `.github/workflows/ci.yml` (`task pages` → `task build`, im Lauf von Claude nachgezogen), `engine/codemap.md`. Offen/Ticket: B-499 nennt noch den alten Pfad `engine/studio` (Ticket-Text, Entscheidung bei 🧑); Folgetickets B-508 bis B-512 aus TS1.4.

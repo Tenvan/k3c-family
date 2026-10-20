@@ -75,3 +75,5 @@ Offen: keine.
 ## Notizen
 
 B-421 (Abnahme M10 Ressourcen-Manager) prüft `assetvorschau.html` und die Workbench-Assets-Seite, die WZ6 entfernt; seine Abnahmepunkte (u. a. `sfx:coin`, Musikwechsel) gehen in die Abnahme WZ6.8 über, dort entscheidet 🧑 über B-421. Revision 2 (2026-10-17): AC-06 um Sound-Szenen, Hintergründe und Vorlagen ergänzt, AC-07 um die Schreibregel, Ausnahmefälle und Grenzfälle der Domäne nachgetragen (Review-Befunde).
+
+**Abgelöst (2026-10-20, TS1, B-507):** Die spätere Studio-Seite des Spielservers (`/studio/`, Backend `engine/studio`, Kachel „Welten bauen“, `studio.html`, `dist/studio/`, `K3C_STUDIO_LAN`) gibt es nicht mehr. Das Asset-Studio läuft nur als eigenes Fenster `tools/k3c-studio` (Backend `tools/k3c-studio/backend`, eingebundene Engine, Loopback-Port 8091); siehe `docs/decisions/004-studio-getrennt-datei-watch.md`.

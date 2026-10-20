@@ -13,4 +13,4 @@ React-Oberfläche des Asset-Studios: Rahmen mit Seitenwahl und die Seiten Grafik
 Start → `App` liest die gemerkte Seite → Seite lädt über `backend` (HTTP oder Mock) → Änderungen gehen als `POST /api/studio/rpc/<Methode>` mit `stand` an das Go-Backend `tools/k3c-studio/backend`.
 
 ## Integration
-- Backend: `tools/k3c-studio/backend/` (Go-Paket, Routen unter `/api/studio/`); Build und Aliase (`ALIAS`, `DEDUPE`): `../vite.config.ts`, `../paths.ts`; Ausgabe `dist/studio/`.
+- Backend: `tools/k3c-studio/backend/` (Go-Paket, Routen unter `/api/studio/`); Build und Aliase (`ALIAS`, `DEDUPE`): `../vite.config.ts`, `../paths.ts`; Ausgabe `frontend/dist/`.

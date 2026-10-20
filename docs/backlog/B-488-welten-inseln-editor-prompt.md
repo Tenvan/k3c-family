@@ -106,6 +106,10 @@ Entschieden von 🧑 am 2026-10-18 (Chat):
 
 Nichts Blockierendes offen. Nächster Schritt: Freigabe der Spec durch 🧑, dann Sprint-Entwürfe (Sprint 1 und 2) mit Sessions.
 
+**Offen für 🧑 (2026-10-20, aus B-507, Revision bleibt 1 bis zur Entscheidung):** B-507 verlangt für den Chat: global rechts in allen Studio-Seiten (Welt zuerst); Anbindung der Provider nur über CLI und ACP, automatisch erkannt und zum Verbinden vorgelegt. Die Anforderungen oben nennen nur die Claude Code CLI (`claude -p`). Soll die Spec (Revision 2) Provider über CLI und ACP mit automatischer Erkennung aufnehmen? Bis dahin steht es als Notiz in WZ19.2.
+
 ## Notizen
 
 Zwei Sprints mit gemeinsamer Spec (Freigabe 2026-10-18): WZ18 (Welten im Spiel, Feld `Sprint`) und WZ19 (Chat und Prompt, nach WZ18). Das Feld `Sprint` nimmt nur einen Sprint, daher steht WZ19 hier. Beide setzen WZ17 (Chunk-Anzahl je Stufe) voraus.
+
+**Studio getrennt vom Server (2026-10-20, TS1, B-507):** Das Studio ist keine Seite des Spielservers mehr, sondern nur ein eigenes Fenster; Backend und Chat (`chat_*.go`) liegen in `tools/k3c-studio/backend` (früher `engine/studio`). Der Chat läuft damit im Fenster des Studios auf Loopback; die Sicherheit (keine Werkzeuge, kein Schlüssel, nur Text) bleibt. Siehe `docs/decisions/004-studio-getrennt-datei-watch.md`. Die Anforderungen oben sind nicht still geändert; die Anpassung von WZ19.2 steht als Offene Frage.
