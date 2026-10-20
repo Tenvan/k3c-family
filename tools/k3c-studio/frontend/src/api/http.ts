@@ -1,5 +1,6 @@
+import { chatStreamHttp } from './chatHttp';
 import type { AssetChoice, AssetHit, AssetSaved, AssetsView, Backend, CatalogAsset, EventName, Events, GameServersView, HubPlanView, HubRulesView, HubSaveResult, HubStand, OpenGameResult, PlanCheckView, PlanObjectsView, PlanSaved, PlanView, PlannedChunk, ResearchResult, WorldLevelView, WorldPreviewArgs, WorldPreviewView, WorldSource, WorldsView } from './types';
-import type { WorldCheckView, WorldDraft } from './worldTypes';
+import type { WorldAnswerView, WorldCheckView, WorldDraft } from './worldTypes';
 
 // Das Studio ist eine Seite des Go-Servers (Backend tools/k3c-studio/backend): jede Methode von App ist ein POST auf /api/studio/rpc/<Methode>
 // mit den Argumenten als JSON-Array, die Antwort ist {result} oder {error}. Die Kopfzeile hält fremde Seiten fern (CORS-Preflight).
@@ -92,12 +93,15 @@ export function httpBackend(): Backend {
     planWorldCopy: (name: string) => rpc<WorldsView>('PlanWorldCopy', name),
     planWorldCheck: (draft: WorldDraft) => rpc<WorldCheckView>('PlanWorldCheck', draft),
     planWorldSave: (draft: WorldDraft, stand: string) => rpc<PlanSaved>('PlanWorldSave', draft, stand),
+    planWorldPrompt: () => rpc<string>('PlanWorldPrompt'),
+    planWorldAnswer: (text: string) => rpc<WorldAnswerView>('PlanWorldAnswer', text),
     planChunkObjects: (seed: string, src: WorldSource, slot: number) => rpc<PlanObjectsView>('PlanChunkObjects', seed, src, slot),
     hubPlan: () => rpc<HubPlanView>('HubPlan'),
     hubRules: (hubJSON: string) => rpc<HubRulesView>('HubRules', hubJSON),
     hubCheck: (candidate: string) => rpc<HubPlanView>('HubCheck', candidate),
     hubSave: (candidate: string, stand: HubStand) => rpc<HubSaveResult>('HubSave', candidate, stand),
     openUrl: (url: string) => void window.open(url, '_blank', 'noopener'),
+    chatStream: chatStreamHttp,
     on: subscribe,
   };
 }

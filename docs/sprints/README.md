@@ -9,7 +9,7 @@ Die Reihenfolge der Arbeit ist allein der Projekt-Rang: [`../projekte/README.md`
 
 | Sprint | Domäne | Projekt | Thema | Am Ende sichtbar | Ordner |
 |---|---|---|---|---|---|
-| WZ19 | DEV | WZG | Chat im Studio mit Claude Code CLI und Welt per Prompt füllen | Chat rechts im Studio füllt eine Welt als Entwurf | `aktiv/WZ19-chat-und-prompt/` |
+| WZ19 | DEV | WZG | Chat im Studio mit Claude Code CLI und Welt per Prompt füllen | Chat rechts im Studio füllt eine Welt als Entwurf (Review fertig, Abnahme WZ19.5 offen) | `aktiv/WZ19-chat-und-prompt/` |
 | TS1 | DEV, SRV, INF | WZG | Spielserver und Asset-Studio trennen, Server beobachtet Dateien | – | `aktiv/TS1-trennung-server-studio/` |
 | GR7 | CLI | GRA | Figuren-Lücken, ganzzahlige Skalierung und Schrift | – | `aktiv/GR7-figuren-schrift/` |
 | SO2 | CLI | SND | SFX-Katalog und Einbau | – | `aktiv/SO2-sfx-katalog/` |

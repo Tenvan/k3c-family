@@ -1,3 +1,4 @@
+import { mockChatStream } from './mockChat';
 import { mockAssets } from './mockAssets';
 import { mockPlan } from './mockPlan';
 import { mockHubCheck, mockHubPlan, mockHubRules, mockHubSave } from './mockHub';
@@ -23,6 +24,7 @@ export function mockBackend(): Backend & { external: (id: string, wahl: AssetCho
     hubCheck: async (candidate) => mockHubCheck(candidate),
     hubSave: async (candidate, stand) => mockHubSave(candidate, stand),
     openUrl: (url) => window.open(url, '_blank', 'noopener'),
+    chatStream: mockChatStream,
     on: <E extends EventName>(event: E, fn: (data: Events[E]) => void) => {
       const set = subs.get(event) ?? new Set();
       set.add(fn as (data: never) => void);

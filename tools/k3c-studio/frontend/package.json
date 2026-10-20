@@ -8,6 +8,7 @@
     "build": "tsc --noEmit && vite build"
   },
   "dependencies": {
+    "@assistant-ui/react": "0.15.30",
     "@radix-ui/themes": "3.3.0",
     "react": "19.3.0",
     "react-dom": "19.3.0"

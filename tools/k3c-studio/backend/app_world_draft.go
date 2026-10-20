@@ -2,6 +2,7 @@ package backend
 
 import (
 	"bytes"
+	"encoding/json"
 	"os"
 	"strconv"
 	"strings"
@@ -29,6 +30,10 @@ type IslandDraft struct {
 	Name    string       `json:"name"`
 	Depths  []int        `json:"depths"`
 	Scaling DraftScaling `json:"depthScaling"`
+	// PlannedChunks und ChunkCounts sind nur gesetzt, wenn der Entwurf sie mitbringt (Antwort aus dem Chat, WZ19.3);
+	// fehlen sie, bleibt die Planung der Insel in der Datei, wie sie ist.
+	PlannedChunks json.RawMessage `json:"plannedChunks,omitempty"`
+	ChunkCounts   json.RawMessage `json:"chunkCounts,omitempty"`
 }
 
 // WorldDraft ist der Entwurf der gewählten Welt; die id bleibt (gleich dem Dateinamen).
