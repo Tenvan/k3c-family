@@ -27,12 +27,16 @@ type App struct {
 	mu   sync.Mutex // schützt world
 	// world ist die gewählte Welt des Welten Editors (app_world_files.go); leer = standard
 	world string
+	// chat ist der Chat mit der Claude Code CLI (chat_*.go), angelegt beim ersten Gebrauch
+	chatOnce sync.Once
+	chat     *chatHub
 }
 
 // New legt das Studio für die Repo-Wurzel root an; ctx begrenzt Beobachtung und Recherche (Ende des Servers).
 func New(ctx context.Context, root string) *App {
 	a := &App{root: root, poll: assetsPoll, ctx: ctx, bus: newBus()}
 	a.watch(ctx)
+	a.chatCleanup()
 	return a
 }
 

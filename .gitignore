@@ -24,3 +24,6 @@ _site/
 # Eigene Welten bleiben lokal, eingecheckt ist nur die Standard-Welt (docs/rules/welten.md § 7, B-488/AC-10)
 data/worlds/*
 !data/worlds/standard.json
+
+# Chat-Verlauf des Asset-Studios bleibt lokal und wird nach einer Woche gelöscht (B-488/AC-07)
+/.chats/

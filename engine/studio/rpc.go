@@ -30,7 +30,7 @@ const (
 )
 
 // rpcPrefixes nennen die Methoden von App, die die Oberfläche aufrufen darf.
-var rpcPrefixes = []string{"Assets", "World", "Plan", "Hub"}
+var rpcPrefixes = []string{"Assets", "World", "Plan", "Hub", "Chat"}
 
 // bus verteilt Ereignisse (assets:changed) an die offenen Event-Ströme.
 type bus struct {
@@ -67,6 +67,7 @@ func (a *App) Handler(remote bool) http.Handler {
 	mux.HandleFunc("GET "+Prefix+"events", a.events)
 	mux.HandleFunc("POST "+Prefix+"rpc/{method}", a.rpc)
 	mux.HandleFunc("POST "+Prefix+"import", a.importFile)
+	mux.HandleFunc("POST "+Prefix+"chat", a.chatSend)
 	mux.Handle("GET "+Prefix+"public/", http.StripPrefix(strings.TrimSuffix(Prefix, "/")+"/public", publicHandler(a.root)))
 	return guard(mux, remote)
 }
@@ -132,6 +133,10 @@ func (a *App) rpc(w http.ResponseWriter, r *http.Request) {
 	m := reflect.ValueOf(a).MethodByName(name)
 	if !allowed(name) || !m.IsValid() {
 		fail(w, http.StatusNotFound, "Unbekannte Methode "+name)
+		return
+	}
+	if strings.HasPrefix(name, "Chat") && !isLoopback(r.RemoteAddr) { // startet ein Modell mit der Anmeldung von 🧑
+		fail(w, http.StatusForbidden, chatLoopbackMsg)
 		return
 	}
 	var raw []json.RawMessage
