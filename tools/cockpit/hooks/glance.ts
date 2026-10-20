@@ -205,7 +205,12 @@ export function lastQuestion(answer: string, max = 160): string {
   return ''
 }
 
-/** Job nach dem Turn: Pause, Abbruch, Rückfrage (Desktop-Abschlussfrage zuerst) oder fertig. */
+/** Alle Schritte erledigt: so hakt die Desktop-Abschlussbox (`wrap_up`) die Liste ab. Ein Turn-Ende allein tut das nicht (Hintergrundarbeit läuft weiter). */
+export function completeAll(job: Job, now: number): Job {
+  return { ...job, steps: job.steps.map(s => (s.status === 'done' ? s : stepAt(s, s.name, 'done', now))) }
+}
+
+/** Job nach dem Turn: Pause, Abbruch, Rückfrage (Desktop-Abschlussfrage zuerst) oder fertig; die Schritte bleiben, wie Claude sie gemeldet hat. */
 export function finishJob(job: Job, answer: string, isAborted: boolean, isPaused: boolean, now: number): Job {
   const question = job.ask !== '' ? job.ask : isAborted ? '' : lastQuestion(answer)
   const phase: JobPhase = isPaused ? 'paused' : isAborted ? 'stopped' : question !== '' ? 'needsYou' : 'done'

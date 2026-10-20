@@ -40,6 +40,7 @@ export const TINT: Record<Tone | 'neutral', string> = {
 // Gedimmte Gründe je Panel-Karte, im Wechsel kühl/warm, damit benachbarte Karten sich absetzen.
 export const CARD_TINT: Record<string, string> = {
   cardWorkdir: '#232a3a', // Navy
+  cardGit: '#1f2a40', // Nachtblau: gehört zum Arbeitsverzeichnis darüber
   cardContext: '#1e2e33', // Petrol
   cardOverview: '#2a2538', // Indigo-Violett
   cardTurn: '#1f2e2a', // Tannengrün
@@ -177,6 +178,35 @@ export function svgSource(text: string): string | null {
 // Includes und eine Worktree-Konfiguration zählen mit: sie laden weitere Konfiguration, die diese Prüfung nicht sieht.
 export const RISKY_GIT_CONFIG = '^(filter\\..*\\.(clean|smudge|process)|core\\.(fsmonitor|pager|editor|sshcommand|hookspath)|diff\\..*\\.(command|textconv)|diff\\.external|alias\\..*|include\\..*|includeif\\..*|extensions\\.worktreeconfig|gpg\\..*|log\\.showsignature)$'
 
+// Freigabe eines Repos mit riskanter Konfiguration: Eintrag „<Git-Ordner>|<Hash>“ in der globalen Git-Konfiguration
+// (`cockpit.trustedRepo`). Der Hash steht für die riskanten Schlüssel samt Werten (lokal und Worktree); ändert sich einer,
+// passt der Eintrag nicht mehr und das Repo ist wieder gesperrt.
+const normGitPath = (p: string): string => p.trim().split('\\').join('/').replace(/\/+$/, '').toLowerCase()
+
+/** Text, der gehasht wird: Ausgang und sortierte Zeilen der riskanten Schlüssel, lokal und im Worktree. */
+export function trustText(local: { code: number; out: string }, worktree: { code: number; out: string }): string {
+  const lines = (r: { code: number; out: string }) => r.out.split('\n').map(l => l.trim()).filter(l => l !== '').sort().join('\n')
+  return `local:${local.code}\n${lines(local)}\nworktree:${worktree.code}\n${lines(worktree)}\n`
+}
+
+export const trustEntry = (common: string, hash: string): string => `${common.trim()}|${hash.trim()}`
+
+/**
+ * Darf der Eintrag in einen Prompt mit Shell-Befehl? Der Git-Ordner stammt aus dem Repo; Anführungszeichen, Backtick, `$`,
+ * `;`, `&`, `|`, `%` und Steuerzeichen könnten den Befehl aufbrechen. Der Hash muss ein Git-Objekt-Hash sein (SHA-1 oder SHA-256).
+ */
+export const isSafeTrustEntry = (common: string, hash: string): boolean =>
+  common.trim() !== '' && !/["`$;&|%\u0000-\u001f\u007f]/.test(common) && /^(?:[0-9a-f]{40}|[0-9a-f]{64})$/.test(hash.trim())
+
+/** Steht für diesen Git-Ordner genau dieser Hash in der Liste der Einträge (eine pro Zeile)? Leerer Hash gilt nie. */
+export function isTrusted(entries: string, common: string, hash: string): boolean {
+  if (hash.trim() === '' || common.trim() === '') return false
+  return entries.split('\n').some(l => {
+    const at = l.lastIndexOf('|')
+    return at > 0 && normGitPath(l.slice(0, at)) === normGitPath(common) && l.slice(at + 1).trim() === hash.trim()
+  })
+}
+
 // Git-Stand aus den Ausgaben der git-Befehle; `counts` ist „behind<TAB>ahead“ oder leer ohne Upstream.
 export function parseRepo(o: { top: string; gitDir: string; commonDir: string; branch: string; sha: string; status: string | null; counts: string; prefix: string }): Repo {
   const norm = (p: string) => p.replace(/\\/g, '/').replace(/\/+$/, '').toLowerCase()
@@ -213,6 +243,10 @@ export function repoRows(r: Repo, lang: UiLang = 'de'): [label: string, value: s
   ]
 }
 
+// Git-Zeilen (Branch bis Upstream) für die Git-Karte, Ordner-Zeilen für „Arbeitsverzeichnis“.
+export const repoGitRows = (r: Repo, lang: UiLang = 'de'): [label: string, value: string][] => repoRows(r, lang).slice(0, 5)
+export const repoPathRows = (r: Repo, lang: UiLang = 'de'): [label: string, value: string][] => repoRows(r, lang).slice(5)
+
 // Protokoll im Flightdeck-Stil: nur die letzten LOG_MAX Einträge, je mit Quelle.
 export const LOG_MAX = 10
 export const SRC_COLOR = { you: undefined, main: THEME.accent, gate: THEME.error, agent: THEME.warning } as const
@@ -223,9 +257,16 @@ export function oneLine(text: string, max = 80): string {
   return t.length > max ? `${t.slice(0, max - 1)}…` : t
 }
 
-const TARGET_KEYS = ['title', 'name', 'id', 'task', 'subject', 'section', 'service', 'action'] as const
+const TARGET_KEYS = ['name', 'id', 'target', 'task', 'subject', 'section', 'service'] as const
 
-// Ziel eines Tool-Calls für das Protokoll:Pfade auf die letzten zwei Segmente, sonst Muster/Befehl.
+// `action` eines Tool-Calls (fremde MCP-Tools wie plan_session): steht grün in Klammern hinter dem Tool-Namen.
+export function toolAction(input: unknown): string {
+  const e = (input ?? {}) as Record<string, unknown>
+  const i = (e.input ?? e) as Record<string, unknown>
+  return typeof i.action === 'string' ? oneLine(i.action, 30) : ''
+}
+
+// Ziel eines Tool-Calls für das Protokoll: Pfade auf die letzten zwei Segmente, sonst Muster/Befehl.
 export function toolTarget(input: unknown): string {
   // Die Argumente liegen im Event selbst (tool.call) oder unter `input` (Aufruf per $.tool.check).
   const e = (input ?? {}) as Record<string, unknown>
@@ -234,13 +275,18 @@ export function toolTarget(input: unknown): string {
   if (typeof path === 'string') return path.replace(/\\/g, '/').split('/').slice(-2).join('/')
   const other = [i.pattern, i.command, i.url, i.description, i.query].find(x => typeof x === 'string' && x !== '')
   if (typeof other === 'string') return oneLine(other, 60)
-  // Fremde MCP-Tools: kennzeichnende Felder (Titel, Name, Kennung, Abschnitt …), bis zu zwei kurze Werte.
+  // Fremde MCP-Tools: kennzeichnende Felder (Titel, Name, Kennung, Abschnitt …), bis zu zwei kurze Werte; `project` zuerst, am Ende `title`, sonst `note` (gekürzt), je wenn vorhanden.
   const ids = TARGET_KEYS.flatMap(k => {
     const v = i[k]
     const s = typeof v === 'number' ? String(v) : typeof v === 'string' ? v.trim() : ''
     return s !== '' && s.length <= 40 ? [s] : []
   })
-  return oneLine([...new Set(ids)].slice(0, 2).join(' · '), 60)
+  const extra = (k: 'project' | 'title' | 'note', max: number) => (typeof i[k] === 'string' && i[k].trim() !== '' ? [oneLine(i[k] as string, max)] : [])
+  // `title` steht am Ende und überschreibt `note`, wenn beide vorhanden sind.
+  const tail = extra('title', 40).length > 0 ? extra('title', 40) : extra('note', 40)
+  // `timeoutSeconds` (Wartezeit des Aufrufs) steht als „300s“ ganz hinten.
+  const wait = typeof i.timeoutSeconds === 'number' && i.timeoutSeconds > 0 ? [`${i.timeoutSeconds}s`] : []
+  return oneLine([...extra('project', 30), ...[...new Set(ids)].slice(0, 2), ...tail, ...wait].join(' · '), 100)
 }
 
 // Lade-Animation, solange ein Turn läuft: Spinner-Zeichen und ein Balken, in dem ein Block hin und her läuft.
@@ -362,7 +408,7 @@ export function breakdownBarSvg(b: Breakdown, width = 600, height = 14): string 
 // Einstellungen: Gruppe je Schalter; Beschriftung und Erklärung liegen in i18n.ts unter `settings.<key>` und `settings.<key>.hint`.
 // Die Reihenfolge ist die der Einstellungsseite, Gruppen in der Reihenfolge ihres ersten Schalters.
 export type SettingKey = Exclude<keyof ModSettings, 'lang' | 'breathKey' | 'agentTiles'>
-export type SettingGroup = 'band' | 'glance' | 'work' | 'effort' | 'panel' | 'summary' | 'mr' | 'skins' | 'tools' | 'input' | 'marks'
+export type SettingGroup = 'band' | 'glance' | 'work' | 'effort' | 'panel' | 'summary' | 'mr' | 'skins' | 'tools' | 'input' | 'marks' | 'diag'
 
 export const SETTING_DEFS: readonly { key: SettingKey; group: SettingGroup }[] = [
   { key: 'rings', group: 'band' },
@@ -382,6 +428,7 @@ export const SETTING_DEFS: readonly { key: SettingKey; group: SettingGroup }[] =
   { key: 'autoEffort', group: 'effort' },
   { key: 'saveMode', group: 'effort' },
   { key: 'cardWorkdir', group: 'panel' },
+  { key: 'cardGit', group: 'panel' },
   { key: 'cardOverview', group: 'panel' },
   { key: 'cardContext', group: 'panel' },
   { key: 'cardTurn', group: 'panel' },
@@ -412,6 +459,9 @@ export const SETTING_DEFS: readonly { key: SettingKey; group: SettingGroup }[] =
   { key: 'chatInfo', group: 'marks' },
   { key: 'skinMarkIcon', group: 'marks' },
   { key: 'skinMarkLabel', group: 'marks' },
+  { key: 'inspectBand', group: 'diag' },
+  { key: 'profileBand', group: 'diag' },
+  { key: 'blastBand', group: 'diag' },
 ]
 
 export const settingLabel = (key: SettingKey, lang: UiLang): string => t(lang, `settings.${key}`)
@@ -419,7 +469,7 @@ export const settingHint = (key: SettingKey, lang: UiLang): string => t(lang, `s
 
 export const DEFAULT_SETTINGS: ModSettings = {
   rings: true, legend: true, branch: true, limits: true, cache: true, ctxTip: true, steps: true, animation: true,
-  cardWorkdir: true, cardCatchUp: true, cardOverview: true, cardContext: true, cardTurn: true, cardGate: true, cardAgents: true, cardTasks: true, mrPane: true, cardLog: true,
+  cardWorkdir: true, cardGit: true, cardCatchUp: true, cardOverview: true, cardContext: true, cardTurn: true, cardGate: true, cardAgents: true, cardTasks: true, mrPane: true, cardLog: true,
   paneMargins: true,
   chatInfo: true, chatLines: true, catchUp: false, lang: 'de',
   // Hervorhebungen zeichnen Antworten selbst und sind deshalb standardmäßig aus.
@@ -431,6 +481,7 @@ export const DEFAULT_SETTINGS: ModSettings = {
   agentTiles: 6,
   mrBand: true, mrNotify: true, mrFooter: true,
   glance: true, cardPlan: true, glanceHistory: true,
+  inspectBand: true, profileBand: true, blastBand: true,
 }
 
 // Kachelzahl der Subagents: gerade Werte von 2 bis 12.
@@ -766,6 +817,14 @@ export function parseTaskNotifications(text: string): { id: string; status: stri
     const id = tag('task-id')
     return id === '' ? [] : [{ id, status: tag('status') || 'completed', summary: tag('summary') }]
   })
+}
+
+// Text einer Unterhaltungszeile, die Hintergrund-Benachrichtigungen tragen darf: Prompt, Zustellung oder Anhang.
+// Mitten im Turn kommt das Ende einer Aufgabe als Anhang und nie als Prompt. Tool-Ergebnisse zählen nicht,
+// sonst gilt ein zitierter Text (Grep, Read) als Ende. Leer, wenn die Zeile keine tragen darf.
+export function notificationText(door: string, content: readonly { type: string; text?: unknown }[]): string {
+  if (door !== 'prompt' && door !== 'delivery' && door !== 'attachment') return ''
+  return content.map(b => (b.type === 'text' && typeof b.text === 'string' ? b.text : '')).join('\n')
 }
 
 // ---- Verzeichniswächter: arbeitet Claude außerhalb des Session-Ordners? ----

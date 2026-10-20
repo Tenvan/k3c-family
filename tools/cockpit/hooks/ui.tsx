@@ -27,15 +27,16 @@ export const BUSY_FILL = THEME.chip
 // ---- Atome ----
 
 // Knopf als Pille: Fläche in der Füllfarbe des Bereichs, beim Überfahren dunkler Text. Ein Button nimmt selbst keine Farbe an,
-// deshalb die Fläche drumherum. `busy`: grau mit „◌ … “, solange die Aktion läuft.
-export function pill(ui: Ui, mode: Mode, key: string, label: string, onPress: () => void, busy = false): RenderElement {
+// deshalb die Fläche drumherum. `busy`: grau mit „◌ … “, solange die Aktion läuft; `'locked'`: grau ohne Spinner und ohne Klick (eine andere Aktion läuft). `flat`: ohne Rundung, schmaler.
+export function pill(ui: Ui, mode: Mode, key: string, label: string, onPress: () => void, busy: boolean | 'locked' = false, flat = false): RenderElement {
   const { Box, Button } = ui
   const m = MODES[mode]
   const fill = busy ? BUSY_FILL : m.fill
-  const round = m.round && 'Svg' in ui
+  const round = m.round && !flat && 'Svg' in ui
+  const press = busy === 'locked' ? () => undefined : onPress
   return (
     <Box key={`${key}-pill`} backgroundColor={fill} paddingX={1} {...(round ? { borderStyle: 'round' as const, borderColor: fill } : {})}>
-      <Button key={key} label={busy ? `◌ ${label} …` : label} plain hover={{ color: THEME.surface }} onPress={onPress} />
+      <Button key={key} label={busy === true ? `◌ ${label} …` : label} plain hover={{ color: THEME.surface }} onPress={press} />
     </Box>
   )
 }

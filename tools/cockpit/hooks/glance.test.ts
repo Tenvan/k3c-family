@@ -5,7 +5,7 @@ import {
   jobTitle,
   FOLD_AT, HISTORY_DAYS, HISTORY_PREFIX, STUCK_MS,
   actOf, addRecord, avgStepMs, continuePrompt, dayKey, dayReport, etaOf, finishJob, isStuck, isWorthShowing, lastQuestion, newJob,
-  noteAct, noteFile, planUpdate, progressOf, recordsOf, shiftDay, shownPhase, staleKeys, storeKey, toRecord, touch, visibleSteps, weekReport,
+  completeAll, noteAct, noteFile, planUpdate, progressOf, recordsOf, shiftDay, shownPhase, staleKeys, storeKey, toRecord, touch, visibleSteps, weekReport,
 } from './glance'
 
 const step = (name: string, status: JobStep['status'], startedAt?: number, doneAt?: number): JobStep => ({
@@ -205,6 +205,15 @@ test('Turn-Ende: finishJob wählt zwischen paused, stopped, needsYou und done', 
   // Pause schlägt Abbruch und Frage
   expect(finishJob(job, 'Soll Claude pushen?', true, true, 9_000).phase).toBe('paused')
   expect(finishJob(job, 'Soll Claude pushen?', false, true, 9_000).phase).toBe('paused')
+})
+
+test('Turn-Ende: offene Schritte bleiben offen, nur wrap_up (completeAll) hakt sie ab', () => {
+  const job = base({ steps: [step('a', 'active', 1), step('b', 'upcoming')] })
+  expect(finishJob(job, 'Alles erledigt.', false, false, 9_000).steps.map(s => s.status)).toEqual(['active', 'upcoming'])
+  const all = completeAll(job, 9_000)
+  expect(all.steps.map(s => s.status)).toEqual(['done', 'done'])
+  expect(all.steps[0]).toMatchObject({ startedAt: 1, doneAt: 9_000 })
+  expect(progressOf(all)).toEqual({ done: 2, total: 2 })
 })
 
 test('Turn-Ende: die Frage der Desktop-Abschlussbox hat Vorrang', () => {

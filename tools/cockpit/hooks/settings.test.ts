@@ -1,6 +1,6 @@
 import { expect, test } from 'claude-code/testing'
 
-import { splitTool, toolText, parseTaskNotifications, backgroundOf, todosOf, wrapupOf, resetLeft, parseLinkedSessions, questionsOf, dirTarget, isForeignDir, nativeDir, withClaude, modelLabel, timelineSvg, summaryLines, summarySections, topRows, resetLabel, agentStats, agentFlags, DEFAULT_SETTINGS, SETTING_DEFS, settingHint, settingLabel, catchUpPrompt, catchUpSystem, fingerprint, formatMessage, nextChunk, settingsOf, startIndex } from './core'
+import { splitTool, toolText, parseTaskNotifications, notificationText, backgroundOf, todosOf, wrapupOf, resetLeft, parseLinkedSessions, questionsOf, dirTarget, isForeignDir, nativeDir, withClaude, modelLabel, timelineSvg, summaryLines, summarySections, topRows, resetLabel, agentStats, agentFlags, DEFAULT_SETTINGS, SETTING_DEFS, settingHint, settingLabel, catchUpPrompt, catchUpSystem, fingerprint, formatMessage, nextChunk, settingsOf, startIndex } from './core'
 import { STRINGS, t, type Key } from './i18n'
 
 type Msg = Parameters<typeof fingerprint>[0]
@@ -21,7 +21,7 @@ test('settingsOf: Standard, Teileingabe und leere Altzustände', () => {
 test('SETTING_DEFS: deckt alle Schalter außer lang, breathKey und agentTiles genau einmal ab', () => {
   const keys = SETTING_DEFS.map(d => d.key as string).sort()
   expect(keys).toEqual(Object.keys(DEFAULT_SETTINGS).filter(k => k !== 'lang' && k !== 'breathKey' && k !== 'agentTiles').sort())
-  const groups = ['band', 'glance', 'work', 'effort', 'panel', 'summary', 'mr', 'skins', 'tools', 'input', 'marks']
+  const groups = ['band', 'glance', 'work', 'effort', 'panel', 'summary', 'mr', 'skins', 'tools', 'input', 'marks', 'diag']
   for (const d of SETTING_DEFS) {
     for (const lang of ['de', 'en'] as const) {
       expect(settingLabel(d.key, lang).trim()).not.toBe('')
@@ -181,6 +181,12 @@ test('parseTaskNotifications: alle gebündelten Benachrichtigungen; leer ohne Ke
   expect(parseTaskNotifications(`${one('a', 'failed')}\nText\n${one('b', 'killed')}`).map(n => `${n.id}:${n.status}`)).toEqual(['a:failed', 'b:killed'])
   expect(parseTaskNotifications('<task-notification>\n<summary>Review fertig</summary>\n</task-notification>')).toEqual([])
   expect(parseTaskNotifications('normaler Prompt')).toEqual([])
+})
+
+test('notificationText: nur Prompt, Zustellung und Anhang; Tool-Ergebnisse (zitierter Text) nie', () => {
+  const content = [{ type: 'text', text: '<task-notification>A</task-notification>' }, { type: 'image' }, { type: 'text', text: 'B' }]
+  for (const door of ['prompt', 'delivery', 'attachment']) expect(notificationText(door, content)).toBe('<task-notification>A</task-notification>\n\nB')
+  for (const door of ['tool-result', 'response', 'note', 'hook-context']) expect(notificationText(door, content)).toBe('')
 })
 
 test('backgroundOf: Shell (auch per Timeout), Monitor, Workflow, Cloud-Agent; lokale Agents und Vordergrund nicht', () => {

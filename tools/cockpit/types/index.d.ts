@@ -52,7 +52,7 @@ export type Gate = { allow: number; you: number; ask: number; deny: number; file
 export type LogSrc = 'you' | 'main' | 'gate' | 'agent'
 
 // `tool`/`target`/`isError`: strukturierter Tool-Eintrag, damit Server und Tool getrennt und farbig gezeichnet werden.
-export type LogEntry = { at: number; src: LogSrc; text: string; tool?: string; target?: string; isError?: boolean }
+export type LogEntry = { at: number; src: LogSrc; text: string; tool?: string; target?: string; action?: string; isError?: boolean }
 
 // `why`: kurze Begründung; fehlt bei Vorschlägen aus älteren Versionen im State.
 // `fromClaude`: Claudes eigener Vorschlag (prompt.suggest), im Band mit Chip „CC“ markiert.
@@ -121,6 +121,7 @@ export type ModSettings = {
   steps: boolean
   animation: boolean
   cardWorkdir: boolean
+  cardGit: boolean
   cardCatchUp: boolean
   cardOverview: boolean
   cardContext: boolean
@@ -166,6 +167,10 @@ export type ModSettings = {
   glance: boolean
   cardPlan: boolean
   glanceHistory: boolean
+  // Diagnose (Idee: my-claude-code-mods): Kurzinfos im Band, je ein eigenes Panel
+  inspectBand: boolean
+  profileBand: boolean
+  blastBand: boolean
   lang: UiLang
 }
 
