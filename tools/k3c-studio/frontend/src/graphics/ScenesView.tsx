@@ -15,7 +15,7 @@ const GRAFIK = SCENES.filter((s) => s.art === 'grafik').map((s) => s.id);
 const TITLE: Partial<Record<SceneId, string>> = { figuren: 'Figuren', gebaeude: 'Gebäude', umgebung: 'Umgebung', objekte: 'Objekte', hud: 'HUD' };
 const NONE = 'keiner';
 
-/** Gebäude-Index (schreibt `task gebaeude`, GEB1); null = lädt noch, [] = fehlt */
+/** Gebäude-Index (schreibt `task gen:gebaeude`, GEB1); null = lädt noch, [] = fehlt */
 function useGebaeudeIndex(): GebaeudeEintrag[] | null {
   const [index, setIndex] = useState<GebaeudeEintrag[] | null>(null);
   useEffect(() => {

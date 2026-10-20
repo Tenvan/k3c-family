@@ -16,6 +16,6 @@ CLI `gebaeude` (GEB1, B-435): rendert Gebäude aus Daten-JSON (Rechtecke in Kach
 3. Alte PNGs entfernen, neue schreiben, `index.json` schreiben; Ausgabe `✅ gebaeude: n Gebäude gerendert`.
 
 ## Integration
-- Taskfile-Task `gebaeude` (baut `bin/gebaeude`, Quellen `public/grafik/gebaeude/*.json`, Ausgaben PNGs und `index.json`).
+- Taskfile-Task `gen:gebaeude` (baut `bin/gebaeude`, Quellen `public/grafik/gebaeude/*.json`, Ausgaben PNGs und `index.json`).
 - Eingabe und Ausgabe unter `public/grafik/gebaeude/`; die Asset-Vorschau liest `index.json`.
 - Tests: `buildings_test.go`, `stages_test.go`, `template_test.go`, `tile_test.go`, `background_test.go`, `repeat_test.go`.

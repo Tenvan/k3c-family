@@ -82,7 +82,7 @@ Regelwerk in [`rules/`](rules/), und das Glossar wird angepasst. Zahlen sind, wo
 | geplanter Chunk | Chunk, dessen Art und Inhalt je Insel und Tiefe in der Welt-Datei (`data/worlds/<id>.json`, `plannedChunks`) festgelegt sind: Chunk-Art fest, Inhalt aus Chunk-Seed oder festen Objekten. Alle anderen Chunks bleiben zufällig. | `rules/geplante-chunks.md`, B-461 |
 | Getrennter Monarch (`Player.Free`) | Monarch, dessen Gerät die Verbindung verloren hat: 60 s reserviert (`waiting`), danach frei (`free`); unverwundbar, ausgeblendet, nicht wiederbelebbar. | `rules/bedienung.md` § 3, Q04, Q33 |
 | Gold | Währung je Spieler (Start 100, höchstens 100, morgens +5); bezahlt Bauten, Rekrutierung, Markierung. Gehört dem Spieler, ist kein Material. | `rules/wirtschaft.md` § 1 |
-| Golden (Golden-Daten) | Referenzergebnisse von Simulation und Level-Generator in `testdata/golden/`; Update nur bei gewollter Regeländerung per `task golden:update` mit Begründung. | `arbeitsweise.md` › Golden aktualisieren |
+| Golden (Golden-Daten) | Referenzergebnisse von Simulation und Level-Generator in `testdata/golden/`; Update nur bei gewollter Regeländerung per `task go:golden` mit Begründung. | `arbeitsweise.md` › Golden aktualisieren |
 | Grabstein | Gefallener Monarch, der am Ort liegen bleibt, bis er wiederbelebt wird oder respawnt. | `rules/monarch.md` § 5 |
 | Händler | Besucher je Insel im Hub der Tiefe 0 (Hub-Platz +8/+12): kommt bei `dawn` alle 3 Tage (mit Taverne alle 2), bleibt einen Tag, tauscht 10 Material = 5 Gold an „Kaufen“ und „Verkaufen“. | `rules/buerger.md` § 1, Q36, Q55 |
 | Handwerker | Beruf (30 Gold) in Werkstatt, Schmiede oder Rüstkammer (1–2 je Gebäude): +50 % Herstellungstempo je Handwerker. | `rules/buerger.md` § 1, Q35 |

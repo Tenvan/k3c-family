@@ -15,6 +15,6 @@ describe('Inselgrößen im Mock', () => {
 describe('Texte im Mock wie in Go', () => {
   it('Stale nennt die Welt-Datei der gewählten Welt, der REG-Hinweis ist der aus Go', () => {
     expect(staleText('nordmeer')).toBe('data/worlds/nordmeer.json geändert, bitte neu laden');
-    expect(HINT).toBe('REG-Änderung: Commit mit Begründung, `task golden:update` nur bei gewollter Änderung');
+    expect(HINT).toBe('REG-Änderung: Commit mit Begründung, `task go:golden` nur bei gewollter Änderung');
   });
 });

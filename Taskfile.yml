@@ -1,10 +1,25 @@
-# Einstieg für alle Aufgaben: `task --list`. Voraussetzung: Go Task (requirements.md).
+# Einstieg für alle Aufgaben: `task --list` (Voraussetzung: Go Task, requirements.md).
 # Die Werkzeuge laufen direkt (npx, go, wails); package.json hält nur noch Abhängigkeiten.
+#
+# Aufbau: Dieses Taskfile hält die Kernbefehle ohne Namensraum (Workspace) und die Prüf-Aggregate `check:*`.
+# Alles andere liegt als eigenes Taskfile im Ordner des Projekts und erscheint hier unter dem Namen des Projekts
+# (die Workbench gruppiert nach dem Namensraum vor dem Doppelpunkt):
+#
+#   go           engine/Taskfile.yml            go test, Lint, Race, Abdeckung, Golden-Dateien
+#   k3c-server   cmd/k3c-server/Taskfile.yml    Spielserver: build, run, dev (Watcher)
+#   k3c-load     cmd/k3c-load/Taskfile.yml      Lasttest
+#   k3c-tui      cmd/k3c-tui/Taskfile.yml       Diagnose-Oberfläche
+#   k3c-dev      tools/k3c-dev/Taskfile.yml     Workbench: dev (wails dev), build, frontend, test, lint
+#   k3c-studio   tools/k3c-studio/Taskfile.yml  Asset-Studio: dev (wails dev), build, frontend, test, lint
+#   k3c-starter  tools/k3c-starter/Taskfile.yml Windows-Starter: dev (Watcher), build, test, lint
+#   balance      tools/k3c-dev/internal/balance/Taskfile.yml  Balancing-Tester
+#   gen          tools/Taskfile.yml             Generatoren: Atlas, Gebäude, Regeltabelle
+#   ops          scripts/Taskfile.yml           Betrieb: Aufräumen, Spielstände sichern
+#   watch        tools/watch/Taskfile.yml       k3c-watch, der Watcher der Tasks `<projekt>:dev`
+#
+# Jedes EXE-Projekt kennt dieselben Verben: `build` (EXE bauen), `run` (bauen und starten), `dev` (bei jeder Änderung
+# neu bauen und starten, ohne das Terminal zu verlassen). Der Name des Projekts allein (`task k3c-dev`) startet `dev`.
 version: '3'
-
-vars:
-  DEV: tools/k3c-dev
-  STUDIO: tools/k3c-studio
 
 # Go-Build-Temp (go-build, Test-EXEs) und Wails-Bindings-EXE liegen fest im Projekt statt in %TEMP%:
 # Nur so reicht EINE Norton-Ausnahme für `.work/` (Ordner legt `task install` an).
@@ -13,8 +28,22 @@ env:
   TMP: '{{.ROOT_DIR}}/.work/tmp'
   TEMP: '{{.ROOT_DIR}}/.work/tmp'
 
+includes:
+  go: engine/Taskfile.yml
+  k3c-server: cmd/k3c-server/Taskfile.yml
+  k3c-load: cmd/k3c-load/Taskfile.yml
+  k3c-tui: cmd/k3c-tui/Taskfile.yml
+  k3c-dev: tools/k3c-dev/Taskfile.yml
+  k3c-studio: tools/k3c-studio/Taskfile.yml
+  k3c-starter: tools/k3c-starter/Taskfile.yml
+  balance: tools/k3c-dev/internal/balance/Taskfile.yml
+  gen: tools/Taskfile.yml
+  ops: scripts/Taskfile.yml
+  watch: tools/watch/Taskfile.yml
+
 tasks:
   # Legt das feste Temp-Verzeichnis an (GOTMPDIR muss existieren, auch in der CI und in frischen Klonen ohne `task install`).
+  # Die Taskfiles der Projekte rufen es als `:tmp` auf.
   tmp:
     internal: true
     run: once
@@ -27,17 +56,21 @@ tasks:
     cmds:
       - task --list
 
+  # --- Einrichten ---------------------------------------------------------------------------------------------------
+
   install:
     desc: Abhängigkeiten holen (Client, Frontends von k3c-dev und Asset-Studio)
     cmds:
       - mkdir -p .work/tmp
       - npm ci
-      - npm ci --prefix {{.DEV}}/frontend
-      - npm ci --prefix {{.STUDIO}}/frontend
+      - npm ci --prefix tools/k3c-dev/frontend
+      - npm ci --prefix tools/k3c-studio/frontend
+
+  # --- Client (Phaser, Vite) ----------------------------------------------------------------------------------------
 
   dev:
     desc: Dev-Server (LAN, Port 5183); /api und /ws gehen an den Go-Server (Port 8080, `task start`)
-    deps: [atlas]
+    deps: [gen:atlas]
     cmds:
       - npx vite --host {{.CLI_ARGS}}
 
@@ -67,72 +100,13 @@ tasks:
     cmds:
       - npx vitest
 
-  check:
-    desc: Lint, Typecheck, Tests des Clients (vor jedem Abschluss)
-    cmds:
-      - task: lint
-      - task: typecheck
-      - task: test
-
-  atlas:
-    desc: Figuren-Atlas nach public/atlas/ packen (aus data/sprites.json, deterministisch; feste EXE bin/atlas, B-163)
-    deps: [tmp]
-    preconditions:
-      - sh: command -v go
-        msg: Go fehlt (requirements.md)
-    sources:
-      - tools/atlas/*.go
-      - data/sprites.json
-      - public/sprites/**/*.png
-    generates:
-      - public/atlas/atlas.json
-    cmds:
-      - go build -o bin/atlas{{exeExt}} ./tools/atlas
-      - ./bin/atlas{{exeExt}}
-
-  aufraeumen:
-    desc: "Lokale Branches und Worktrees aufräumen (B-302): löscht nur sichere Fälle, listet den Rest mit Grund; task aufraeumen -- --dry zeigt nur an; auf origin löscht nur 🧑"
-    deps: [tmp]
-    preconditions:
-      - sh: command -v go
-        msg: Go fehlt (requirements.md)
-    cmds:
-      - go build -o bin/aufraeumen{{exeExt}} ./tools/cleanup
-      - ./bin/aufraeumen{{exeExt}} {{.CLI_ARGS}}
-
-  gebaeude:
-    desc: Gebäude-PNGs aus public/grafik/gebaeude/*.json rendern (16/32/64/128 px je Kachel, deterministisch; feste EXE bin/gebaeude, GEB1)
-    deps: [tmp]
-    preconditions:
-      - sh: command -v go
-        msg: Go fehlt (requirements.md)
-    sources:
-      - tools/buildings/*.go
-      - public/grafik/gebaeude/*.json
-      - exclude: public/grafik/gebaeude/index.json
-    generates:
-      - public/grafik/gebaeude/*.png
-      - public/grafik/gebaeude/index.json
-    cmds:
-      - go build -o bin/gebaeude{{exeExt}} ./tools/buildings
-      - ./bin/gebaeude{{exeExt}}
-
-  rules:update:
-    desc: "Regeltabelle Hub-Stufe → Gebäude (docs/rules/materialien-gebaeude.md § 3) aus data/hub.json erzeugen (deterministisch; feste EXE bin/regeltabelle, WZ15.2, B-462)"
-    preconditions:
-      - sh: command -v go
-        msg: Go fehlt (requirements.md)
-    cmds:
-      - go build -o bin/regeltabelle{{exeExt}} ./tools/ruletable
-      - ./bin/regeltabelle{{exeExt}}
-
   build:
-    desc: Atlas, Typecheck und Produktions-Build nach dist/
-    deps: [atlas]
+    desc: Atlas, Typecheck und Produktions-Build nach dist/ (dazu die Oberfläche des Asset-Studios nach dist/studio/)
+    deps: [gen:atlas]
     cmds:
       - npx tsc --noEmit
       - npx vite build
-      - task: studio:frontend
+      - task: k3c-studio:frontend
 
   pages:
     desc: GitHub-Pages-Seite nach _site/ (Präsentation site/ + Build unter app/; danach z. B. `npx vite preview --outDir _site`)
@@ -143,226 +117,54 @@ tasks:
       - cp -r dist _site/app
       - cp -r site/. _site/
 
+  # --- Spielserver --------------------------------------------------------------------------------------------------
+
+  start:
+    desc: Go-Server ohne Web-Build (feste EXE bin/k3c-server, damit die Firewall-Freigabe bleibt, B-085); Kurzform von k3c-server:run
+    cmds:
+      - task: k3c-server:run
+
   serve:
     desc: Build und Go-Server (Port 8080)
     deps: [build]
     cmds:
       - task: start
 
-  start:
-    desc: Go-Server ohne Web-Build (feste EXE bin/k3c-server, damit die Firewall-Freigabe bleibt, B-085)
-    deps: [tmp]
-    vars:
-      VERSION: # steht in /api/health und auf der Landingpage
-        sh: git describe --tags --always --dirty || echo dev
-    cmds:
-      - go build -ldflags "-X main.version={{.VERSION}}" -o bin/k3c-server{{exeExt}} ./cmd/k3c-server
-      - ./bin/k3c-server{{exeExt}}
+  # --- Prüfen: ein Name je Projekt, `check` ist der Client -----------------------------------------------------------
 
-  go:test:
-    desc: go test ./...
-    deps: [tmp]
-    preconditions:
-      - sh: command -v go
-        msg: Go fehlt (requirements.md)
+  check:
+    desc: Lint, Typecheck, Tests des Clients (vor jedem Abschluss)
     cmds:
-      - go test ./...
-
-  saves:backup:
-    desc: "Spielstände sichern (B-142): task saves:backup -- <ziel>; Quelle K3C_SAVES_DIR, sonst /data/saves im Compose-Dienst k3c"
-    cmds:
-      - sh scripts/backup-saves.sh {{.CLI_ARGS}}
-
-  golden:update:
-    desc: "testdata/golden/ aus dem Ist-Zustand neu schreiben (B-137): nur bei gewollter Regel- oder Wertänderung, Begründung in den Commit-Text, die Review-Session prüft den Diff; rng.json bleibt"
-    deps: [tmp]
-    preconditions:
-      - sh: command -v go
-        msg: Go fehlt (requirements.md)
-    cmds:
-      - go test -count=1 ./engine/sim ./engine/level -run Golden -update
-
-  go:lint:
-    desc: golangci-lint
-    deps: [tmp]
-    preconditions:
-      - sh: command -v golangci-lint
-        msg: golangci-lint fehlt (requirements.md)
-    cmds:
-      - golangci-lint run
-
-  coverage:
-    desc: Abdeckung der Go-Tests je Paket unter engine/ anzeigen (kein Gate, B-019)
-    deps: [tmp]
-    preconditions:
-      - sh: command -v go
-        msg: Go fehlt (requirements.md)
-    cmds:
-      - go test -cover ./engine/...
+      - task: lint
+      - task: typecheck
+      - task: test
 
   check:go:
     desc: Go-Tests, Race-Detector (falls möglich) und golangci-lint
     cmds:
       - task: go:test
-      - task: check:race
+      - task: go:race
       - task: go:lint
-
-  check:race:
-    desc: go test -race für engine/ (braucht cgo und einen C-Compiler; ohne Compiler nur ein Hinweis, B-077)
-    deps: [tmp]
-    cmds:
-      - cmd: |
-          if command -v gcc >/dev/null 2>&1 || command -v clang >/dev/null 2>&1; then
-            CGO_ENABLED=1 go test -race ./engine/...
-          else
-            echo "check:race übersprungen: kein C-Compiler (gcc oder clang), siehe requirements.md. Die CI prüft -race."
-          fi
-
-  dev:frontend:
-    desc: Frontend von k3c-dev bauen (go:embed braucht frontend/dist)
-    dir: '{{.DEV}}/frontend'
-    cmds:
-      - npx tsc --noEmit
-      - npx vite build
-    sources:
-      - src/**/*
-      - index.html
-      - package.json
-      - vite.config.ts
-      - paths.ts
-      - ../../webkit/**/*
-    generates:
-      - dist/**/*
 
   check:dev:
     desc: k3c-dev prüfen (Frontend mit Vitest, go test, golangci-lint)
-    deps: [tmp, dev:frontend]
-    dir: '{{.DEV}}'
     cmds:
-      - cd frontend && npx vitest run --config vitest.config.ts
-      - go test ./...
-      - golangci-lint run
-
-  studio:frontend:
-    desc: Frontend des Asset-Studios nach dist/studio/ bauen (der Go-Server liefert es unter /studio/ aus; task build ruft es auf)
-    dir: '{{.STUDIO}}/frontend'
-    cmds:
-      - npx tsc --noEmit
-      - npx vite build
-    sources:
-      - src/**/*
-      - index.html
-      - package.json
-      - vite.config.ts
-      - paths.ts
-      - ../../webkit/**/*
-    generates:
-      - ../../../dist/studio/**/*
-
-  k3c-studio:
-    desc: Asset-Studio als eigenes Fenster starten (Wails, ohne Spielserver; baut die Oberfläche bei Bedarf; B-459)
-    deps: [tmp, studio:frontend]
-    dir: '{{.STUDIO}}'
-    cmds:
-      - go run -tags desktop,production .
-
-  k3c-studio:build:
-    desc: EXE des Asset-Studios bauen, feste EXE bin/k3c-studio (Wails, wie k3c-starter; laufendes Studio vorher schließen, sonst scheitert die Kopie; startet es nicht; B-459)
-    deps: [tmp, studio:frontend]
-    preconditions:
-      - sh: command -v wails
-        msg: 'Wails-CLI fehlt – go install github.com/wailsapp/wails/v2/cmd/wails@v2.16.0 (requirements.md)'
-    cmds:
-      - cd {{.STUDIO}} && wails build -s
-      - mkdir -p bin
-      - cp {{.STUDIO}}/build/bin/k3c-studio{{exeExt}} bin/k3c-studio{{exeExt}}
+      - task: k3c-dev:frontend
+      - task: k3c-dev:test
+      - task: k3c-dev:lint
 
   check:studio:
     desc: Asset-Studio-Frontend und gemeinsame Asset-Logik prüfen (Vitest, go test, golangci-lint; das Studio-Backend engine/studio prüft check:go; B-459)
-    deps: [tmp, studio:frontend]
     cmds:
-      - npx vitest run --config {{.STUDIO}}/frontend/vitest.config.ts
-      - cd tools/assetkit && go test ./...
-      - cd tools/assetkit && golangci-lint run
-      - cd {{.STUDIO}} && go test ./...
-      - cd {{.STUDIO}} && golangci-lint run
-
-  k3c-dev:
-    desc: Entwickler-Werkzeug k3c-dev als Fenster starten (wails dev)
-    deps: [tmp]
-    dir: '{{.DEV}}'
-    preconditions:
-      - sh: command -v wails
-        msg: 'Wails-CLI fehlt – go install github.com/wailsapp/wails/v2/cmd/wails@v2.16.0 (requirements.md)'
-    cmds:
-      - wails dev
-
-  load:
-    desc: 'Lasttest gegen laufenden Server, Bericht nach reports/ (z. B. `task load -- -url http://pi-gaming:8080 -token … -rooms 2 -players 3 -duration night`; feste EXE bin/k3c-load, B-175)'
-    deps: [tmp]
-    cmds:
-      - go build -o bin/k3c-load{{exeExt}} ./cmd/k3c-load
-      - ./bin/k3c-load{{exeExt}} {{.CLI_ARGS}}
-
-  balance:
-    desc: 'Zielkorridore prüfen: 100 feste Seeds, Bericht reports/balance-<Zeit>.json und .md, Vergleich mit testdata/balance/baseline.json (z. B. `task balance -- --seeds 10`; kein Teil von `task check`)'
-    deps: [tmp]
-    cmds:
-      - cd {{.DEV}} && go build -o ../../bin/k3c-balance{{exeExt}} ./internal/balance/cmd
-      - ./bin/k3c-balance{{exeExt}} --targets --baseline testdata/balance/baseline.json --replay-dir reports/balance-replays {{.CLI_ARGS}}
-
-  balance:baseline:
-    desc: 'Baseline neu schreiben (testdata/balance/baseline.json); nur mit Begründung im Commit, wie bei Golden-Dateien'
-    deps: [tmp]
-    cmds:
-      - cd {{.DEV}} && go build -o ../../bin/k3c-balance{{exeExt}} ./internal/balance/cmd
-      - ./bin/k3c-balance{{exeExt}} --targets --write-baseline --baseline testdata/balance/baseline.json {{.CLI_ARGS}}
-
-  balance:sensitivity:
-    desc: 'Sensitivität und Grad-Kurven: Werte aus data/ um ±10/±25 % nur im Speicher ändern, gekippte Ziele und Kurven je Grad nach reports/sensitivity-<Zeit>.json und .md (z. B. `task balance:sensitivity -- --seeds 10 --vary economy.json:purse.startGold`; kein Teil von `task check`)'
-    deps: [tmp]
-    cmds:
-      - cd {{.DEV}} && go build -o ../../bin/k3c-balance{{exeExt}} ./internal/balance/cmd
-      - ./bin/k3c-balance{{exeExt}} --sensitivity --curves {{.CLI_ARGS}}
-
-  balance:run:
-    desc: 'Balancing-Tester: Bots spielen eine Szenario-Matrix, Kennzahlen als JSON (z. B. `task balance:run -- --seeds 10 --bots saver --days 5`)'
-    deps: [tmp]
-    cmds:
-      - cd {{.DEV}} && go build -o ../../bin/k3c-balance{{exeExt}} ./internal/balance/cmd
-      - ./bin/k3c-balance{{exeExt}} {{.CLI_ARGS}}
-
-  k3c-dev:build:
-    desc: EXE von k3c-dev bauen (wails build)
-    deps: [tmp]
-    dir: '{{.DEV}}'
-    preconditions:
-      - sh: command -v wails
-        msg: 'Wails-CLI fehlt – go install github.com/wailsapp/wails/v2/cmd/wails@v2.16.0 (requirements.md)'
-    cmds:
-      - wails build
+      - task: k3c-studio:frontend
+      - task: k3c-studio:test
+      - task: k3c-studio:lint
 
   check:starter:
     desc: Windows-Starter prüfen (go test, golangci-lint; B-041)
-    deps: [tmp]
     cmds:
-      - cd tools/k3c-starter && go test ./...
-      - cd tools/k3c-starter && golangci-lint run
-
-  k3c-starter:build:
-    desc: Windows-Starter bauen, feste EXE bin/k3c-starter (dazu bin/k3c-server und dist/; laufenden Starter vorher schließen, sonst scheitert die Kopie; B-041)
-    deps: [tmp, build]
-    vars:
-      VERSION:
-        sh: git describe --tags --always --dirty || echo dev
-    preconditions:
-      - sh: command -v wails
-        msg: 'Wails-CLI fehlt – go install github.com/wailsapp/wails/v2/cmd/wails@v2.16.0 (requirements.md)'
-    cmds:
-      - go build -ldflags "-X main.version={{.VERSION}}" -o bin/k3c-server{{exeExt}} ./cmd/k3c-server
-      - cd tools/k3c-starter && wails build -s
-      - mkdir -p bin
-      - cp tools/k3c-starter/build/bin/k3c-starter{{exeExt}} bin/k3c-starter{{exeExt}}
+      - task: k3c-starter:test
+      - task: k3c-starter:lint
 
   check:all:
     desc: Alles prüfen (Client, Go, k3c-dev, Asset-Studio, Starter, Build)

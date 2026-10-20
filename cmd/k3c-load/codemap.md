@@ -23,5 +23,5 @@ CLI entry point (Load-Test-Client): legt n Test-Räume mit je m Bots gegen einen
 ## Integration
 
 - Abhängigkeiten: `engine/net` (Protokollversion), `engine/rng`; WebSocket `/ws` und `/api/status` von `cmd/k3c-server`; `docs/protocol.md`.
-- Gebaut und gestartet über Taskfile-Task `load` (`bin/k3c-load`, Aufruf `task load -- -url … -token …`).
+- Gebaut und gestartet über Taskfile-Task `load` (`bin/k3c-load`, Aufruf `task k3c-load -- -url … -token …`).
 - Berichte landen in `reports/load-<Zeit>.{json,md}`.

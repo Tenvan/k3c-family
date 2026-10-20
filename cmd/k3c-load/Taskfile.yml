@@ -1,0 +1,20 @@
+# Namespace `k3c-load`: der Lasttest gegen einen laufenden Server (B-175). Feste EXE bin/k3c-load.
+version: '3'
+
+tasks:
+  build:
+    desc: EXE bin/k3c-load bauen
+    deps: [':tmp']
+    cmds:
+      - go build -o bin/k3c-load{{exeExt}} ./cmd/k3c-load
+
+  run:
+    desc: 'Lasttest gegen laufenden Server, Bericht nach reports/ (z. B. `task k3c-load -- -url http://pi-gaming:8080 -token … -rooms 2 -players 3 -duration night`)'
+    cmds:
+      - task: build
+      - ./bin/k3c-load{{exeExt}} {{.CLI_ARGS}}
+
+  default:
+    desc: Kurzform von k3c-load:run
+    cmds:
+      - task: run

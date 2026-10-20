@@ -83,7 +83,7 @@ func TestCheckBuilt(t *testing.T) {
 	if err := checkBuilt(fixture(t)); err != nil {
 		t.Errorf("gebaut: %v", err)
 	}
-	if err := checkBuilt(t.TempDir()); err == nil || !strings.Contains(err.Error(), "task studio:frontend") {
+	if err := checkBuilt(t.TempDir()); err == nil || !strings.Contains(err.Error(), "task k3c-studio:frontend") {
 		t.Errorf("ungebaut: %v", err)
 	}
 }
@@ -122,5 +122,21 @@ func TestWindowStateRoundTrip(t *testing.T) {
 	}
 	if got, _ := loadWindow(path); got.Width != minWidth || got.Height != minHeight {
 		t.Errorf("Minimum nicht angewandt: %v", got)
+	}
+}
+
+func TestWindowURL(t *testing.T) {
+	none := func(string) string { return "" }
+	if got := windowURL("127.0.0.1:8091", none); got != "http://127.0.0.1:8091/studio/" {
+		t.Errorf("ohne wails dev: %q", got)
+	}
+	dev := func(k string) string {
+		if k == "frontenddevserverurl" {
+			return "http://localhost:5192/"
+		}
+		return ""
+	}
+	if got := windowURL("127.0.0.1:8091", dev); got != "http://localhost:5192/" {
+		t.Errorf("unter wails dev: %q", got)
 	}
 }

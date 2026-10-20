@@ -10,7 +10,7 @@ const zuordnung = zuordnungObjekte + zuordnungWelt;
 const lizenzen =renderCredits(CREDITS.filter((c) => c.root === 'grafik'));
 
 /** Alle Dateien unter public/grafik (Schlüssel: Pfad ab dem Ordner) */
-/** ohne `gebaeude/`: eigene Grafik mit Daten-JSON aus `task gebaeude` (GEB1), kein Fremd-Pack */
+/** ohne `gebaeude/`: eigene Grafik mit Daten-JSON aus `task gen:gebaeude` (GEB1), kein Fremd-Pack */
 const files = Object.keys(import.meta.glob('../../public/grafik/**/*', { query: '?url', import: 'default' }))
   .map((p) => p.replace('../../public/grafik/', ''))
   .filter((f) => !f.startsWith('gebaeude/'));

@@ -33,7 +33,7 @@ const (
 // Nur Emojis aus einem Codepunkt (ohne U+FE0F), sonst verrutscht die Breite in manchen Terminals. Neuer ns → hier eintragen.
 var Topics = map[string]string{
 	"main": "🚀", "http": "📡", "ws": "🔌", "room": "🏰", "client": "🌐", "save": "💾", "store": "📦",
-	"report": "📊", "diag": "🩺", "svc": "🔧", "check": "🧪", "tasks": "📋", "mcp": "🤖", "usage": "📈",
+	"report": "📊", "diag": "🩺", "svc": "🔧", "check": "🧪", "tasks": "📋", "mcp": "🤖", "usage": "📈", "watch": "👀",
 }
 
 // Color sagt, ob die Konsole Farben bekommt: aus, sobald NO_COLOR gesetzt ist (https://no-color.org).

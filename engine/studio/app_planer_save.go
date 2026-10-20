@@ -21,7 +21,7 @@ import (
 // Meldungen des Speicherns.
 const (
 	rulesStale = "Regeltabelle veraltet, " + rulesTask
-	regNotice  = "REG-Änderung: Commit mit Begründung (data/hub.json und Regeltabelle), task golden:update nur bei gewollter Änderung"
+	regNotice  = "REG-Änderung: Commit mit Begründung (data/hub.json und Regeltabelle), task go:golden nur bei gewollter Änderung"
 	staleHint  = "seit dem Laden geändert: nicht gespeichert, bitte neu laden (Eingaben bleiben bis dahin erhalten)"
 )
 

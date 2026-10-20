@@ -97,7 +97,7 @@ describe('Gebäude-Planer: Abweichung der Regeltabelle (B-462/AC-03)', () => {
     const rules = mockHubRules('');
     expect(spy).toHaveBeenCalledWith(mockHubPlan().raw);
     expect(h.querySelector('.pl-diff [role="status"]')!.textContent).toContain('Regeltabelle weicht ab');
-    expect(h.querySelector('.pl-diff')!.textContent).toContain('task rules:update');
+    expect(h.querySelector('.pl-diff')!.textContent).toContain('task gen:rules');
     const lines = h.querySelectorAll('.pl-diff-table tbody tr');
     expect(lines).toHaveLength(rules.lines.length);
     expect(lines[0]!.querySelector('.pl-ist')!.textContent).toBe(rules.lines[0]!.ist);

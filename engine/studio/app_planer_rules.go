@@ -14,7 +14,7 @@ import (
 
 const (
 	rulesFile = "docs/rules/materialien-gebaeude.md"
-	rulesTask = "task rules:update"
+	rulesTask = "task gen:rules"
 )
 
 // HubRulesLine ist eine abweichende Zeile des Blocks (1-basiert); fehlt sie auf einer Seite, ist der Text dort leer.

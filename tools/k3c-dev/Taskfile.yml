@@ -1,0 +1,86 @@
+# Namespace `k3c-dev`: die Workbench (Wails-Fenster, MCP-Server, React-Oberfläche in frontend/).
+# `dev` ist der Watcher: `wails dev` startet Vite mit Hot Reload (Oberfläche ohne Neustart) und baut das Fenster bei jeder
+# Go-Änderung neu (in tools/k3c-dev und, laut wails.json `reloaddirs`, in engine/, data/ und tools/assetkit).
+version: '3'
+
+vars:
+  DEV: '{{.ROOT_DIR}}/tools/k3c-dev'
+
+tasks:
+  dev:
+    desc: "Workbench als Fenster im Entwicklungsmodus (wails dev): Hot Reload der Oberfläche, Neubau bei Go-Änderungen"
+    deps: [':tmp']
+    dir: '{{.DEV}}'
+    preconditions:
+      - sh: command -v wails
+        msg: 'Wails-CLI fehlt – go install github.com/wailsapp/wails/v2/cmd/wails@v2.16.0 (requirements.md)'
+    cmds:
+      - wails dev
+
+  default:
+    desc: Kurzform von k3c-dev:dev
+    cmds:
+      - task: dev
+
+  frontend:
+    desc: Frontend von k3c-dev bauen (go:embed braucht frontend/dist; nur bei geänderten Quellen)
+    dir: '{{.DEV}}/frontend'
+    cmds:
+      - npx tsc --noEmit
+      - npx vite build
+    sources:
+      - src/**/*
+      - index.html
+      - package.json
+      - vite.config.ts
+      - paths.ts
+      - ../../webkit/**/*
+    generates:
+      - dist/**/*
+
+  test:
+    desc: k3c-dev testen (Frontend mit Vitest, go test)
+    deps: [':tmp', frontend]
+    dir: '{{.DEV}}'
+    cmds:
+      - cd frontend && npx vitest run --config vitest.config.ts
+      - go test ./...
+
+  lint:
+    desc: golangci-lint für k3c-dev
+    deps: [':tmp', frontend]
+    dir: '{{.DEV}}'
+    cmds:
+      - golangci-lint run
+
+  build:
+    desc: "EXE von k3c-dev bauen (wails build; nur bei geänderten Quellen, `--force` erzwingt)"
+    deps: [':tmp']
+    dir: '{{.DEV}}'
+    preconditions:
+      - sh: command -v wails
+        msg: 'Wails-CLI fehlt – go install github.com/wailsapp/wails/v2/cmd/wails@v2.16.0 (requirements.md)'
+    sources:
+      - '*.go'
+      - go.mod
+      - go.sum
+      - wails.json
+      - internal/**/*
+      - build/appicon.png
+      - build/windows/**/*
+      - frontend/src/**/*
+      - frontend/index.html
+      - frontend/package.json
+      - frontend/vite.config.ts
+      - frontend/paths.ts
+      - ../webkit/**/*
+      - ../assetkit/**/*.go
+      - ../../engine/**/*.go
+      - ../../data/**/*
+      - ../../go.mod
+      - ../../go.sum
+      - exclude: '**/*_test.go'
+    generates:
+      - build/bin/k3c-dev{{exeExt}}
+    cmds:
+      - wails build

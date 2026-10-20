@@ -117,7 +117,7 @@ export function figureCard(slot: AssetSlot, choice: Choice & { sheet: string }):
 // src/scenes/render/worldSprites.ts). Erst übernehmen, wenn die Vorschau dort täuscht.
 export const GRAFIK_SCALE = 2;
 
-/** Eintrag aus `public/grafik/gebaeude/index.json` (schreibt `task gebaeude`, GEB1) */
+/** Eintrag aus `public/grafik/gebaeude/index.json` (schreibt `task gen:gebaeude`, GEB1) */
 export interface GebaeudeEintrag {
   id: string;
   klasse?: string;

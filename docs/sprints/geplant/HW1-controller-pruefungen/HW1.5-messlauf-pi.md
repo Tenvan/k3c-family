@@ -16,7 +16,7 @@
 
 ## Kontext
 
-Übernommen aus LT1.3 (PJ3, 2026-10-08); dort steht der PC-Lauf vom 2026-10-07 (p99 < 10 ms erreicht, sagt nichts über den Pi). Bis zur Messung gilt das angenommene Ziel aus B-042 (Tick-p99 < 10 ms bei 30 Hz, 2 Räume × 3 Spieler; Handmessung 2026-10-03: Nacht 10,2 bis 10,3 ms). Etwa 15 Minuten Arbeit plus eine Nacht Laufzeit. Der Pi-Server braucht `K3C_STATUS_TOKEN`. Gestartet wird der Lauf über `sim_test` der Workbench (B-348), nicht über `task load` in der Shell; ein Agent kann den Bericht danach auswerten.
+Übernommen aus LT1.3 (PJ3, 2026-10-08); dort steht der PC-Lauf vom 2026-10-07 (p99 < 10 ms erreicht, sagt nichts über den Pi). Bis zur Messung gilt das angenommene Ziel aus B-042 (Tick-p99 < 10 ms bei 30 Hz, 2 Räume × 3 Spieler; Handmessung 2026-10-03: Nacht 10,2 bis 10,3 ms). Etwa 15 Minuten Arbeit plus eine Nacht Laufzeit. Der Pi-Server braucht `K3C_STATUS_TOKEN`. Gestartet wird der Lauf über `sim_test` der Workbench (B-348), nicht über `task k3c-load` in der Shell; ein Agent kann den Bericht danach auswerten.
 
 ## Erlaubte Dateien
 

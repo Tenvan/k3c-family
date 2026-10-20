@@ -86,7 +86,7 @@ Einstellungen per Umgebung: `K3C_HTTP_PORT`,
   läuft weiter. Täglich um 4 Uhr per `crontab -e`:
   `0 4 * * * cd /home/pi/k3c && sh scripts/backup-saves.sh /media/usb >> /media/usb/k3c-backup.log 2>&1`.
   **Restore:** `docker compose cp /media/usb/k3c-saves-<…>/. k3c:/data/saves/`, dann `docker compose restart`.
-  Schützt nur vor einem Ausfall der SD-Karte, nicht vor dem Verlust des Pi. Lokal: `task saves:backup -- <ziel>` mit
+  Schützt nur vor einem Ausfall der SD-Karte, nicht vor dem Verlust des Pi. Lokal: `task ops:backup -- <ziel>` mit
   `K3C_SAVES_DIR=<ordner>`. Berichte (`reports/`, die letzten 100) und das Client-Log (`k3c-client.jsonl`, 1 MB plus
   eine alte Generation `k3c-client.1.jsonl`) rotieren von selbst; Spielstände fasst die Rotation nie an.
 - **Release:** Ein Tag `v*` hängt `k3c-server` für Windows, Linux amd64 und arm64 an den Release.

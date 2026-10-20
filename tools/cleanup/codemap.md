@@ -17,5 +17,5 @@ CLI für das Aufräumen lokaler Branches und Worktrees (B-302, RP1.1): löscht n
 
 ## Integration
 
-- Taskfile-Task `aufraeumen` (baut `bin/aufraeumen`, `-- --dry` reicht Flags durch); Meilensteine stehen in `docs/arbeitsweise.md` › Branches.
+- Taskfile-Task `ops:aufraeumen` (baut `bin/aufraeumen`, `-- --dry` reicht Flags durch); Meilensteine stehen in `docs/arbeitsweise.md` › Branches.
 - Test `cleanup_test.go` baut temporäre Repos mit `origin` und prüft jeden Fall.

@@ -16,7 +16,7 @@ Nach GEB1–GEB8 haben nur Burg, Mauer, Turm, Tor und Hintergrundmauer Grafik in
 
 - `data/buildings.json` führt `levels` nur für `wall` und `tower`. Die Hub-Stufe (`data/hub.json` › `levels`, heute 1–5; `engine/sim/hub_level.go`) steht im Snapshot (`World.hubLevel`); der Client nutzt sie nur für die Burg (`siteView.ts` › `updateCastleView`, `buildingSprites.ts` › `hubTexture`). `siteTexture` bekommt sonst die Stufe des Bauplatzes.
 - Material je Hub-Stufe (`docs/rules/materialien-gebaeude.md` § 2): 1 Holz, 2 Stein, 3 Kupfer, 4 Eisen, 5 Kristall.
-- **Freischaltung:** Quelle ist `data/hub.json` (`sites`, `islandSites`). Die Tabelle in `materialien-gebaeude.md` § 3 wird daraus erzeugt (`task rules:update`, WZ15), bearbeitet wird sie im **Gebäude-Planer** des Asset-Studios (WZ9, B-462). Stand heute: Werkstatt und Farm ab Hub-Stufe 1; Kaserne, Lager, Taverne ab 2; Schmiede und Heilplatz ab 3; Rüstkammer ab 4. Die Zuordnung kann sich mit dem Planer (und B-458) ändern; GEB9 liest sie nicht und ändert sie nicht, die Grafik hängt nur an der Hub-Stufe.
+- **Freischaltung:** Quelle ist `data/hub.json` (`sites`, `islandSites`). Die Tabelle in `materialien-gebaeude.md` § 3 wird daraus erzeugt (`task gen:rules`, WZ15), bearbeitet wird sie im **Gebäude-Planer** des Asset-Studios (WZ9, B-462). Stand heute: Werkstatt und Farm ab Hub-Stufe 1; Kaserne, Lager, Taverne ab 2; Schmiede und Heilplatz ab 3; Rüstkammer ab 4. Die Zuordnung kann sich mit dem Planer (und B-458) ändern; GEB9 liest sie nicht und ändert sie nicht, die Grafik hängt nur an der Hub-Stufe.
 - Die Grundformen von Kaserne, Taverne, Schmiede und Rüstkammer enthalten schon Stein- bzw. Eisenfarben; „Grundform = Holz“ gilt nicht für alle.
 - Das Camp ist kein Hub-Gebäude, sondern ein Welt-Objekt; seine Grafik kommt über `src/scenes/render/natureSprites.ts`.
 - Ausbaustufen entstehen nach `docs/standards/gebaeude-grafik.md` § 6 aus **einer** JSON (Grundform = Stufe 1, `stufen` lückenlos ab 2). Mit `stufen` schreibt `tools/buildings` nur noch `<id>-<n>-<dichte>.png` und löscht `<id>-<dichte>.png`.
@@ -58,7 +58,7 @@ Kleinteiligere Hub-Stufen oder neue Stufenfolge (Lagerfeuer bis Burg) und Freisc
 
 ## Beispiele
 
-- `task gebaeude` mit `taverne.json` (mit `stufen`) → `taverne-1-32.png` bis `taverne-5-32.png` plus 16/64/128; während des Übergangs zusätzlich `taverne-32.png` (= Stufe 1), nach GEB9.5 nicht mehr.
+- `task gen:gebaeude` mit `taverne.json` (mit `stufen`) → `taverne-1-32.png` bis `taverne-5-32.png` plus 16/64/128; während des Übergangs zusätzlich `taverne-32.png` (= Stufe 1), nach GEB9.5 nicht mehr.
 - Hub-Stufe 3, Schmiede gebaut → Schmiede in Kupfer (`schmiede-3-32.png`) neben Burg Stufe 3.
 - Hub-Stufe 2 → Rüstkammer gibt es noch nicht (heute ab Hub-Stufe 4, `data/hub.json`); ihre Stufen 1–3 erscheinen nur in der Vorschau. Verschiebt der Gebäude-Planer die Rüstkammer auf Stufe 3, zeigt das Spiel sie ohne Änderung an GEB9 in Kupfer.
 - Hub steigt von 2 auf 3 → alle gebauten Hub-Gebäude wechseln mit dem nächsten Snapshot auf Stufe 3.

@@ -78,7 +78,7 @@ zurückgeben. Die Gliederung folgt der gemeinsamen Spec der Workbench-Seiten (`d
 - `task_list {namespace?, query?}`: Taskfile-Baum; `*` = Schloss offen, `task_start` erlaubt. Das Schloss setzt 🧑 auf
   der Tasks-Seite (Datei `tools/k3c-dev/task-freigaben.json` plus Schalter bis zum Beenden).
 - `task_start {task, args?}` kehrt sofort zurück; `task_status`, `task_output {task, limit?, since?}`, `task_stop {task}`.
-- Wer auf das Ende warten will, nimmt `check_run`. Testläufe nie über `task balance`/`task load`, sondern `sim_test`.
+- Wer auf das Ende warten will, nimmt `check_run`. Testläufe nie über `task balance`/`task k3c-load`, sondern `sim_test`.
 
 ## Projektspezifisch
 
@@ -133,7 +133,7 @@ zurückgeben. Die Gliederung folgt der gemeinsamen Spec der Workbench-Seiten (`d
 
 ### Testläufe
 
-- **Jeder Testlauf** (Balancing, Performance, Stabilität) läuft über `sim_test`, nie über `task balance`/`task load` in
+- **Jeder Testlauf** (Balancing, Performance, Stabilität) läuft über `sim_test`, nie über `task balance`/`task k3c-load` in
   der Shell. `sim_test {action: start, mode, clients, focus, …}` kehrt sofort mit einer ID zurück; `sim_test {action:
   status, id}` zeigt den Lauf in höchstens 10 Zeilen, `stop` bricht ab, `list` zeigt die Läufe des Checkouts.
 - `mode: offline` (Standard, Mocks im Prozess) baut den Balancing-Tester im Checkout und bewertet die Ziele aus

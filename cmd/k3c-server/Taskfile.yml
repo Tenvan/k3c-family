@@ -1,0 +1,33 @@
+# Namespace `k3c-server`: der Go-Spielserver. Immer die feste EXE bin/k3c-server, damit die Firewall-Freigabe bleibt (B-085).
+# Gebaut wird mit dem Go-Cache: ohne Änderung kostet `build` nur das Binden, deshalb ohne `sources`.
+version: '3'
+
+vars:
+  EXE: 'bin/k3c-server{{exeExt}}'
+
+tasks:
+  build:
+    desc: EXE bin/k3c-server bauen (Version aus `git describe`, steht in /api/health und auf der Landingpage)
+    deps: [':tmp']
+    vars:
+      VERSION:
+        sh: git describe --tags --always --dirty || echo dev
+    cmds:
+      - go build -ldflags "-X main.version={{.VERSION}}" -o {{.EXE}} ./cmd/k3c-server
+
+  run:
+    desc: Go-Server ohne Web-Build bauen und starten (Port 8080; `task start` ist die Kurzform)
+    cmds:
+      - task: build
+      - ./{{.EXE}}
+
+  dev:
+    desc: Go-Server bei jeder Änderung an cmd/, engine/ oder data/ neu (ohne data/worlds und data/hub.json, die das Studio zur Laufzeit schreibt) bauen und starten (k3c-watch); ein Build-Fehler lässt die laufende Version stehen
+    deps: [':watch:build']
+    cmds:
+      - ./bin/k3c-watch{{exeExt}} --name server --paths cmd/k3c-server,engine,data,go.mod,go.sum --ignore data/worlds,data/hub.json --build "task k3c-server:build" -- {{.EXE}}
+
+  default:
+    desc: Kurzform von k3c-server:dev
+    cmds:
+      - task: dev

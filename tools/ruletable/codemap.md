@@ -12,6 +12,6 @@ CLI `regeltabelle` (WZ15.2, B-462): schreibt den Block „Hub-Stufe → Gebäude
 2. Gleicher Text: `✅ regeltabelle: Block ist aktuell`; sonst schreiben und `✅ regeltabelle: Block aktualisiert`.
 
 ## Integration
-- Taskfile-Task `rules:update` (baut `bin/regeltabelle`, startet es).
+- Taskfile-Task `gen:rules` (baut `bin/regeltabelle`, startet es).
 - Eingabe `data/hub.json`, Ausgabe `docs/rules/materialien-gebaeude.md`.
 - Test: `main_test.go`.
