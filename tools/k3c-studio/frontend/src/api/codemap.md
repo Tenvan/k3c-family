@@ -12,6 +12,7 @@ Schnittstelle der Oberfläche zum Studio-Backend (`tools/k3c-studio/backend`): T
 - `mockPlan.ts`: Plan-Teil im Speicher (Welten mit Inseln, Tiefen 0–4, Planung je Insel, `MOCK_SIZES` gleich `data/island-sizes.json`, `mockCheckPlan` mit wenigen Fehlern, Stand `mock-<n>`, `touch` simuliert Änderung von außen, Seed-Inhalt für die Umwandlung).
 - `mockWorlds.ts`: Welten-Teil des Mock-Plans (`MockWorld`, `MockIsland`, `newWorld`, `mockWorlds`: wählen, anlegen leer oder als Kopie, entfernen; Standard bleibt).
 - `mockWorldDraft.ts`: Welt-Entwurf im Mock (`mockCheckWorld` mit den Fehlern der Prüfung des Ladens, die die Oberfläche zeigt, `planWorldSave` mit Stand; `HINT`, `staleText` wie in Go).
+  Dazu `planWorldPrompt`/`planWorldAnswer` (WZ19.3): `MOCK_PROMPT`, `mockAnswer` (JSON lösen, unbekannte Felder, Prüfung wie oben).
 - `worldTypes.ts`: Typen des Welt-Entwurfs (`WorldDraft`, `IslandDraft`, `DraftScaling`, `WorldCheckView`, `WorldDraftApi`), getrennt von `types.ts`.
 - `mockHub.ts`: Gebäude-Planer im Mock mit `hubFixture.json` (7-Stufen-Fixture, gleich zum Go-Backend).
 - `hubFixture.json`, `previewFixture.json`: Antworten des Go-Backends als Daten für die Mocks.

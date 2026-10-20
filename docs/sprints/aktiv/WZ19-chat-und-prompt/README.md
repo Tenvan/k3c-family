@@ -65,7 +65,7 @@ Entschieden: `B-488 › Offene Fragen` (alle). Freigegeben von 🧑 am 2026-10-1
 |---|---|---|---|---|
 | WZ19.1 | `WZ19.1-cli-anbindung-verlauf.md` | Umsetzung | autonom | fertig |
 | WZ19.2 | `WZ19.2-chat-im-studio.md` | Umsetzung | autonom | fertig |
-| WZ19.3 | `WZ19.3-prompt-grundgeruest.md` | Umsetzung | autonom | in Arbeit |
+| WZ19.3 | `WZ19.3-prompt-grundgeruest.md` | Umsetzung | autonom | fertig |
 | WZ19.4 | `WZ19.4-review.md` | Review | autonom | offen |
 | WZ19.5 | `WZ19.5-abnahme.md` | Review | Mensch | offen |
 

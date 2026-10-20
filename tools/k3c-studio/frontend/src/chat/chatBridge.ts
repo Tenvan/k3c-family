@@ -7,6 +7,7 @@ const STATES = ['offen', 'zu'] as const;
 const listeners = new Set<() => void>();
 let open = loadPref('chat.state', STATES, 'offen') === 'offen';
 let filler: ((text: string) => void) | null = null;
+let loader: ((text: string) => Promise<void>) | null = null;
 
 export function setChatOpen(next: boolean) {
   open = next;
@@ -16,6 +17,24 @@ export function setChatOpen(next: boolean) {
 
 export function useChatOpen(): boolean {
   return useSyncExternalStore((fn) => { listeners.add(fn); return () => listeners.delete(fn); }, () => open, () => open);
+}
+
+/** Eine Seite (Welten Editor) meldet an, wie eine Antwort des Modells als Entwurf geladen wird; ohne sie bleibt der Knopf weg. */
+export function registerDraftLoader(fn: (text: string) => Promise<void>): () => void {
+  loader = fn;
+  listeners.forEach((l) => l());
+  return () => { if (loader === fn) { loader = null; listeners.forEach((l) => l()); } };
+}
+
+export function useCanLoadDraft(): boolean {
+  return useSyncExternalStore((fn) => { listeners.add(fn); return () => listeners.delete(fn); }, () => loader !== null, () => false);
+}
+
+/** Lädt die Antwort `text` als Entwurf (prüft sie vorher); false, wenn keine Seite sie annimmt. */
+export async function loadDraft(text: string): Promise<boolean> {
+  if (!loader) return false;
+  await loader(text);
+  return true;
 }
 
 /** Der Chat meldet hier an, wie sein Eingabefeld gefüllt wird (nur ein Chat zugleich). */

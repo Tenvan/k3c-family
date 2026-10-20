@@ -24,6 +24,7 @@ Planung
 - `usePlan.ts`: Zustand des Editors: geladene Inseln, Auswahl, Entwurf mit Chunk-Anzahl, verzögerte Prüfung (`planCheck`), Speichern, Verwerfen; `source` für beide Vorschauen.
 - `worldDraft.ts`: reine Logik des Welt-Entwurfs (WZ18.6): `draftOf`, `sameDraft`, `addIsland` (Kopie der letzten, freie id), `moveIsland`, `removeIsland`, `updateIsland`, `toggleDepth`.
 - `useWorldDraft.ts`: Zustand des Welt-Entwurfs: verzögerte Prüfung (`planWorldCheck`, Fehler am Feld, Vorschau), Speichern auf dem Stand (`planWorldSave`, Stale lässt den Entwurf stehen), Verwerfen.
+- `useChatDraft.ts`: nimmt Antworten des Chats an (`registerDraftLoader`): `planWorldAnswer`, lesbarer Entwurf wird geladen (Prüffehler am Entwurf), Unlesbares nur als Meldung, ungespeicherter Entwurf nur nach Rückfrage; `WorldDraftEditor` hat den Knopf „Prompt-Grundgerüst“ (`fillChat`). Test `ChatDraft.test.tsx`.
 - `WorldDraftEditor.tsx`: Welt-Kopf (Name, Notizen), Inseln (Name, id, hoch/runter, entfernen, Stufen als Biome, Skalierung), Fehler am Feld, Vorschau der Welt-Datei, „Welt speichern“.
 - `planSave.ts`: Speichern mit Stand (`planSave`), `Notice` (`hint`, `error`, `stale`), Sicht nach dem Speichern.
 - `useWorlds.ts`: Liste und Wahl der Welten (`planWorlds`, `planWorldSelect`, `planWorldAdd`, `planWorldCopy`, `planWorldRemove`, `refreshWorlds`).

@@ -3,7 +3,7 @@ import { Button } from '@radix-ui/themes';
 import { useEffect, useMemo, useState } from 'react';
 import { backend } from '../api';
 import { createChatAdapter } from './chatAdapter';
-import { registerChatFill, setChatOpen, useChatOpen } from './chatBridge';
+import { loadDraft, registerChatFill, setChatOpen, useCanLoadDraft, useChatOpen } from './chatBridge';
 
 const WHO = { user: 'Ich', assistant: 'Claude', system: 'System' } as const;
 
@@ -20,11 +20,13 @@ function endNote(m: ThreadMessage): string {
 
 function Message({ message }: { message: ThreadMessage }) {
   const note = endNote(message);
+  const canLoad = useCanLoadDraft() && message.role === 'assistant' && message.status.type === 'complete';
   return (
     <div className="chat-msg" data-role={message.role} data-status={message.role === 'assistant' ? message.status.type : undefined}>
       <div className="chat-who">{WHO[message.role]}</div>
       <div className="chat-text">{messageText(message)}</div>
       {note && <div className="chat-note" role="status">{note}</div>}
+      {canLoad && <Button size="1" variant="soft" onClick={() => void loadDraft(messageText(message))}>Als Entwurf laden</Button>}
     </div>
   );
 }

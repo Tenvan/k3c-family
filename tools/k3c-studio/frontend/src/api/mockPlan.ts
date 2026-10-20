@@ -37,7 +37,7 @@ function mockChunkObjects(planned: PlannedChunk[], slot: number): PlanObjectsVie
   return { objects: [{ kind: 'tree', at: 4 + c.seed.length }, { kind: 'rock', at: 20 }], error: '' };
 }
 
-type PlanPart = Pick<Backend, 'planLoad' | 'planCheck' | 'planSave' | 'planChunkObjects' | 'planWorlds' | 'planWorldSelect' | 'planWorldAdd' | 'planWorldCopy' | 'planWorldRemove' | 'planWorldCheck' | 'planWorldSave'>;
+type PlanPart = Pick<Backend, 'planLoad' | 'planCheck' | 'planSave' | 'planChunkObjects' | 'planWorlds' | 'planWorldSelect' | 'planWorldAdd' | 'planWorldCopy' | 'planWorldRemove' | 'planWorldCheck' | 'planWorldSave' | 'planWorldPrompt' | 'planWorldAnswer'>;
 
 const islandView = (i: MockIsland): PlanIsland => ({
   id: i.id, name: i.name, depths: [...i.depths], biomes: i.depths.map((d) => BIOMES[d] ?? ''), planned: structuredClone(i.planned), chunkCounts: { ...i.counts }, depthScaling: { ...i.depthScaling },

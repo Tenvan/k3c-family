@@ -87,6 +87,24 @@ func setKey(raw []byte, obj span, key string, text []byte) ([]byte, error) {
 	return slices.Concat(raw[:at.from], text, raw[at.to:]), nil
 }
 
+// patchField ist ein Feld der Insel: Schlüssel, ob die Datei ihn schon so hat, und der neue Text.
+type patchField struct {
+	key  string
+	same bool
+	text []byte
+}
+
+// given: der Entwurf bringt den Wert mit (nicht leer, nicht null).
+func given(v json.RawMessage) bool { return len(v) > 0 && string(v) != "null" }
+
+func compactJSON(v json.RawMessage) []byte {
+	var b bytes.Buffer
+	if json.Compact(&b, v) != nil {
+		return v
+	}
+	return b.Bytes()
+}
+
 // patchIsland setzt id, Name, Tiefen und Skalierung einer Insel, nur wo sie vom Entwurf abweichen.
 func patchIsland(text []byte, d IslandDraft) ([]byte, error) {
 	var cur struct {
@@ -94,19 +112,23 @@ func patchIsland(text []byte, d IslandDraft) ([]byte, error) {
 		Name    string        `json:"name"`
 		Depths  []int         `json:"depths"`
 		Scaling *DraftScaling `json:"depthScaling"`
+		Planned json.RawMessage `json:"plannedChunks"`
+		Counts  json.RawMessage `json:"chunkCounts"`
 	}
 	if err := json.Unmarshal(text, &cur); err != nil {
 		return nil, fmt.Errorf("die Insel %q ist kein JSON-Objekt: %w", d.From, err)
 	}
-	fields := []struct {
-		key  string
-		same bool
-		text []byte
-	}{
+	fields := []patchField{
 		{"id", cur.ID == d.ID, jsonText(d.ID)},
 		{"name", cur.Name == d.Name, jsonText(d.Name)},
 		{"depths", cur.Depths != nil && slices.Equal(cur.Depths, d.Depths), depthsText(d.Depths)},
 		{"depthScaling", cur.Scaling != nil && *cur.Scaling == d.Scaling, scalingText(d.Scaling)},
+	}
+	if given(d.PlannedChunks) {
+		fields = append(fields, patchField{"plannedChunks", len(cur.Planned) > 0 && sameJSON(cur.Planned, d.PlannedChunks), compactJSON(d.PlannedChunks)})
+	}
+	if given(d.ChunkCounts) {
+		fields = append(fields, patchField{"chunkCounts", len(cur.Counts) > 0 && sameJSON(cur.Counts, d.ChunkCounts), compactJSON(d.ChunkCounts)})
 	}
 	var err error
 	for _, f := range fields {

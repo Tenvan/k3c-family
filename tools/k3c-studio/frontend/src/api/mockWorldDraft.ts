@@ -1,6 +1,6 @@
 import type { MockIsland, MockWorld } from './mockWorlds';
 import type { PlanSaved } from './types';
-import type { DraftField, WorldCheckView, WorldDraft, WorldDraftApi } from './worldTypes';
+import type { DraftField, WorldAnswerView, WorldCheckView, WorldDraft, WorldDraftApi } from './worldTypes';
 
 // Entwurf einer Welt im Mock (Browser, Tests): Die Prüfung kennt die Fälle der Prüfung des Ladens, die die Oberfläche
 // zeigt (Go prüft alles, siehe sim.ParseWorld); Meldungen im Muster `<Datei>: Insel <id>: <Grund>` wie in Go.
@@ -56,6 +56,8 @@ function applyDraft(w: MockWorld, d: WorldDraft): MockWorld {
 /** Entwurfs-Teil des Mock-Plans: prüfen und speichern auf dem Stand (`stand`), danach `bump` (neuer Stand). */
 export function mockWorldDraft(active: () => string, world: () => MockWorld, replace: (w: MockWorld) => void, stand: () => string, bump: () => void): Omit<WorldDraftApi, 'planWorldCopy'> {
   return {
+    planWorldPrompt: async () => MOCK_PROMPT,
+    planWorldAnswer: async (text) => mockAnswer(active(), text),
     planWorldCheck: async (d) => mockCheckWorld(active(), d),
     planWorldSave: async (d, at): Promise<PlanSaved> => {
       if (at !== stand()) return { stand: '', hint: '', error: staleText(active()), stale: true };
@@ -66,4 +68,32 @@ export function mockWorldDraft(active: () => string, world: () => MockWorld, rep
       return { stand: stand(), hint: HINT, error: '', stale: false };
     },
   };
+}
+
+/** Prompt-Grundgerüst im Mock (Go erzeugt es aus den Daten, tools/k3c-studio/backend/app_world_prompt.go). */
+export const MOCK_PROMPT = 'Du entwirfst eine Welt für das Spiel „Family Three Crowns“ als Welt-Datei im JSON-Format.\n\n## Format\n\n(Mock)\n\nMEINE WÜNSCHE:\n';
+
+/** JSON aus der Antwort lösen: Code-Block oder vom ersten „{“ bis zum letzten „}“. */
+function answerJSON(text: string): string | null {
+  const fenced = /```[a-zA-Z]*\s*(\{[\s\S]*?\})\s*```/.exec(text);
+  if (fenced) return fenced[1]!;
+  const from = text.indexOf('{');
+  const to = text.lastIndexOf('}');
+  return from >= 0 && to > from ? text.slice(from, to + 1) : null;
+}
+
+const KNOWN = ['id', 'name', 'notes', 'islands'];
+
+/** Antwort prüfen wie Go (PlanWorldAnswer): nicht lesbar oder unbekanntes Feld = ohne Entwurf, sonst Entwurf mit dem Grund. */
+export function mockAnswer(id: string, text: string): WorldAnswerView {
+  const raw = answerJSON(text);
+  const unreadable = (why: string): WorldAnswerView => ({ ok: false, error: `Antwort nicht lesbar: ${why}`, draft: null });
+  if (raw === null) return unreadable('kein JSON gefunden');
+  let v: { name?: string; notes?: string; islands?: { id: string; name: string; depths: number[]; depthScaling: WorldDraft['islands'][number]['depthScaling']; plannedChunks?: unknown; chunkCounts?: unknown }[] };
+  try { v = JSON.parse(raw); } catch (e) { return unreadable(String(e)); }
+  const extra = Object.keys(v).find((k) => !KNOWN.includes(k));
+  if (extra) return unreadable(`unbekanntes Feld "${extra}"`);
+  const draft: WorldDraft = { name: v.name ?? '', notes: v.notes ?? '', islands: (v.islands ?? []).map((i) => ({ from: '', id: i.id, name: i.name, depths: i.depths ?? [], depthScaling: i.depthScaling, plannedChunks: i.plannedChunks, chunkCounts: i.chunkCounts })) };
+  const check = mockCheckWorld(id, draft);
+  return { ok: check.ok, error: check.error, draft };
 }
