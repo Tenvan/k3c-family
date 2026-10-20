@@ -413,7 +413,7 @@ export function inputPath(e: unknown): string {
 export type Tone = 'path' | 'touched' | 'version' | 'number'
 export const TONE_COLOR: Record<Tone, string> = { path: THEME.accent, touched: THEME.success, version: THEME.max, number: THEME.warning }
 
-const TOKEN = /((?:[A-Za-z]:)?(?:[\w.-]+[\\/])+[\w.-]+|\b[\w-]+\.(?:tsx?|jsx?|json|md|py|cs|sql|ya?ml|toml|css|html|sh|ps1|txt)\b)|(\bv?\d+\.\d+\.\d+(?:-[\w.]+)?\b)|(\b\d+(?:[.,]\d+)?\s?%?)/g
+const TOKEN = /((?:[A-Za-z]:)?(?:[\w.-]+[\\/])+[\w.-]+|\b[\w-]+\.(?:tsx?|jsx?|json|md|py|cs|sql|ya?ml|toml|css|html|sh|ps1|txt)\b)|(\b[A-Z][A-Z0-9]*-\d+\b)|(\bv?\d+\.\d+\.\d+(?:-[\w.]+)?\b)|(\b\d+(?:[.,]\d+)?\s?%?)/g
 
 const baseName = (p: string): string => p.replace(/\\/g, '/').split('/').pop()?.toLowerCase() ?? ''
 
@@ -425,7 +425,7 @@ export function inlineTokens(text: string, touched: readonly string[] = []): { t
   for (const m of text.matchAll(TOKEN)) {
     const idx = m.index ?? 0
     if (idx > at) out.push({ text: text.slice(at, idx) })
-    const tone: Tone = m[1] ? (names.has(baseName(m[1])) ? 'touched' : 'path') : m[2] ? 'version' : 'number'
+    const tone: Tone = m[1] ? (names.has(baseName(m[1])) ? 'touched' : 'path') : m[3] ? 'version' : 'number'
     out.push({ text: m[0], tone })
     at = idx + m[0].length
   }

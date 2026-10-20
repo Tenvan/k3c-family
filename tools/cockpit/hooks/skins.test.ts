@@ -122,11 +122,30 @@ test('ToolUse: Symbol als einfaches Svg, Details klappen als Code auf; Terminal 
   const term = await $.ui.mount({ plugin: 'tenvan-cc', surface: 'terminal', component: 'ToolUse', props: TOOL_USE })
   expect(await term.find({ type: 'Svg' })).toBe(undefined)
   expect(await term.find({ type: 'Button', key: 'om-xb-u1' })).not.toBe(undefined)
-  // Modus „skin“: orange Pille, auf dem Desktop abgerundet, im Terminal ohne Rahmen.
+  // Details: orange Pille ohne Rundung (klein), im Terminal ohne Rahmen
   const pillOf = async (v: { find(q: { key: string }): Promise<unknown> }) => JSON.stringify(await v.find({ key: 'om-xb-u1-pill' }))
   expect(await pillOf(row)).toContain(MODES.skin.fill)
-  expect(await pillOf(row)).toContain('"borderStyle":"round"')
+  expect(await pillOf(row)).not.toContain('borderStyle')
   expect(await pillOf(term)).not.toContain('borderStyle')
+})
+
+test('Hervorhebungen: Kennungen wie PJ-013 als ein Block', () => {
+  const parts = inlineTokens('Claude schließt PJ-013 ab, WB-025 archivieren, v1.2.3 und 5 %.')
+  expect(parts.filter(p => p.tone === 'number').map(p => p.text)).toEqual(['PJ-013', 'WB-025', '5 %'])
+  expect(parts.filter(p => p.tone === 'version').map(p => p.text)).toEqual(['v1.2.3'])
+})
+
+test('ToolUse: einzelner MCP-Aufruf zeigt Server, Tool, grüne Aktion und gelbes Ziel', async ($, on) => {
+  on('ui.render', { component: 'ToolUse' }, () => ({ type: 'Box' as const }))
+  const props = { ...TOOL_USE, tool: 'mcp__plugin_dev-workbench_dev-workbench__plan_session', input: { action: 'done', project: 'PJ', id: 13 } }
+  const row = await $.ui.mount({ plugin: 'tenvan-cc', surface: 'desktop', component: 'ToolUse', props })
+  const line = JSON.stringify(await row.findAll({ type: 'Text' }))
+  expect(line).toContain('dev-workbench')
+  expect(line).toContain('plan_session')
+  expect(line).toContain('(done)')
+  expect(line).toContain('PJ · 13')
+  const term = await $.ui.mount({ plugin: 'tenvan-cc', surface: 'terminal', component: 'ToolUse', props })
+  expect(JSON.stringify(await term.findAll({ type: 'Text' }))).toContain('plan_session')
 })
 
 test('ToolResult: Diff-Karte, ruhige Zeile, echte Fehlerzeile', async ($, on) => {

@@ -1,6 +1,6 @@
 import { expect, mock, test } from 'claude-code/testing'
 
-import { THEME, TINT, spinnerText, contextTip, limitTip, cacheTip, RISKY_GIT_CONFIG, paceText, markdownStats, shortHash, statsLines, toolInfoLines, cacheHitPct, cacheLeftMs, pace, breakdownTitle, contextColor, oneLine, parseRepo, parseSteps, repoRows, repoShort, svgSource, toBreakdown, breakdownBarSvg, ringSvg, spinner, title, titleText, toolKind, toolTarget } from './core'
+import { THEME, TINT, spinnerText, contextTip, limitTip, cacheTip, RISKY_GIT_CONFIG, paceText, markdownStats, shortHash, statsLines, toolInfoLines, cacheHitPct, cacheLeftMs, pace, breakdownTitle, contextColor, oneLine, parseRepo, parseSteps, repoRows, repoShort, svgSource, toBreakdown, breakdownBarSvg, ringSvg, spinner, title, titleText, toolKind, toolTarget, toolAction, repoGitRows, repoPathRows, trustText, trustEntry, isTrusted, isSafeTrustEntry } from './core'
 
 const H = 3600_000
 const MEASURE = {
@@ -261,6 +261,19 @@ test('Protokoll: Prompt gekürzt, Ziel des Tool-Calls, Pfade auf zwei Segmente',
   expect(toolTarget({ id: 'B-426', section: 'Notizen', text: 'x'.repeat(200) })).toBe('B-426 · Notizen')
   expect(toolTarget({ id: 'B-092', fields: { Status: 'verworfen' } })).toBe('B-092')
   expect(toolTarget({ checkout: 'C:/x', limit: 5 })).toBe('')
+  // project und note stehen mit in der Zeile, die Notiz gekürzt
+  expect(toolTarget({ project: 'orga', id: 12, action: 'done', note: 'Sprint abgeschlossen' })).toBe('orga · 12 · Sprint abgeschlossen')
+  expect(toolAction({ project: 'orga', action: 'done' })).toBe('done')
+  expect(toolAction({ input: { action: 'done' } })).toBe('done')
+  expect(toolAction({ id: 1 })).toBe('')
+  expect(toolTarget({ id: 5, note: 'x'.repeat(100) })).toBe(`5 · ${'x'.repeat(39)}…`)
+  expect(toolTarget({ project: 'orga' })).toBe('orga')
+  // target und timeoutSeconds stehen mit in der Zeile
+  expect(toolTarget({ target: 'todos:sprint-check', timeoutSeconds: 300 })).toBe('todos:sprint-check · 300s')
+  expect(toolTarget({ timeoutSeconds: 0 })).toBe('')
+  // title überschreibt note und steht am Ende
+  expect(toolTarget({ project: 'orga', id: 12, title: 'Sprint 3', note: 'Sprint abgeschlossen' })).toBe('orga · 12 · Sprint 3')
+  expect(toolTarget({ title: 'x'.repeat(100), note: 'n' })).toBe(`${'x'.repeat(39)}…`)
 })
 
 test('Spinner: wechselt das Zeichen je Frame', () => {
@@ -399,6 +412,9 @@ test('Repo-Infozeile: Branch, Worktree, Commit, Änderungen, Upstream, Ordner', 
   const main = parseRepo({ top: 'C:/W/repo', gitDir: 'C:/W/repo/.git', commonDir: 'C:/W/repo/.git', branch: '', sha: 'abc1234', status: '', counts: '', prefix: '' })
   expect(repoShort(main)).toBe('⎇ detached')
   expect(repoRows(main).map(r => r[1])).toEqual(['detached', 'repo (Hauptcheckout)', 'abc1234', 'sauber', 'kein Upstream', 'C:/W/repo'])
+  // Git-Karte: Branch bis Upstream; „Arbeitsverzeichnis“ behält die Ordner-Zeilen
+  expect(repoGitRows(main).map(r => r[0])).toEqual(['Branch', 'Worktree', 'Commit', 'Änderungen', 'Upstream'])
+  expect(repoPathRows(main)).toEqual([['Ordner', 'C:/W/repo']])
   // Riskante Repo-Konfiguration: Status wird nicht ausgeführt, die Zeile sagt es.
   const untrusted = parseRepo({ top: 'C:/W/repo', gitDir: 'C:/W/repo/.git', commonDir: 'C:/W/repo/.git', branch: 'x', sha: 'abc1234', status: null, counts: '', prefix: '' })
   expect(untrusted.dirty).toBe(null)
@@ -518,4 +534,28 @@ test('Verzeichniswächter: Wechsel aus dem Session-Ordner wird zur Rückfrage, d
   const band = await $.ui.mount({ ...BAND, surface: 'desktop' })
   for (let i = 0; i < 200 && !(await band.find({ key: 'dir-warn' })); i++) await Promise.resolve()
   expect(await band.find({ type: 'Text', text: /außerhalb des Session-Ordners: C:\\WORKSPACE\\ErpApi/ })).not.toBe(undefined)
+})
+
+test('Freigabe: Eintrag Git-Ordner|Hash, nur bei gleichem Hash; Reihenfolge der Zeilen egal', () => {
+  const a = trustText({ code: 0, out: 'alias.x !git foo\ninclude.path ../g\n' }, { code: 1, out: '' })
+  const b = trustText({ code: 0, out: 'include.path ../g\nalias.x !git foo\n' }, { code: 1, out: '' })
+  expect(a).toBe(b)
+  expect(trustText({ code: 0, out: 'alias.x !git bar' }, { code: 1, out: '' })).not.toBe(a)
+  expect(trustText({ code: 0, out: 'alias.x !git foo\ninclude.path ../g' }, { code: 0, out: 'core.pager less' })).not.toBe(a)
+  const entries = `C:/old/.git|aaa\n${trustEntry('C:/W/repo/.git', 'h1')}\n`
+  expect(isTrusted(entries, 'C:/W/repo/.git', 'h1')).toBe(true)
+  expect(isTrusted(entries, 'c:\\W\\repo\\.git\\', 'h1')).toBe(true)
+  // geänderte Konfiguration (anderer Hash), anderer Ordner, alter Eintrag ohne Hash, leerer Hash
+  expect(isTrusted(entries, 'C:/W/repo/.git', 'h2')).toBe(false)
+  expect(isTrusted(entries, 'C:/W/other/.git', 'h1')).toBe(false)
+  expect(isTrusted('C:/W/repo/.git\n', 'C:/W/repo/.git', 'h1')).toBe(false)
+  expect(isTrusted(entries, 'C:/W/repo/.git', '')).toBe(false)
+})
+
+test('Freigabe-Prompt: Git-Ordner mit Shell-Zeichen und Hashes ohne Hex-Form werden abgelehnt', () => {
+  const sha1 = '7e64a47d69d51cb8d400ce717de82cdd543f0126'
+  expect(isSafeTrustEntry('C:/WORKSPACE/marketplaces/orga-marketplace/.git', sha1)).toBe(true)
+  expect(isSafeTrustEntry('C:/Users/Max Muster/repo/.git', 'a'.repeat(64))).toBe(true)
+  for (const bad of ['C:/x"; rm -rf ~; "/.git', 'C:/x`id`/.git', 'C:/$HOME/.git', 'C:/a&b/.git', 'C:/a|b/.git', 'C:/a%PATH%/.git', 'C:/a'+String.fromCharCode(10)+'b/.git', '']) expect(isSafeTrustEntry(bad, sha1)).toBe(false)
+  for (const bad of ['', 'xyz', sha1.toUpperCase(), sha1.slice(1), `${sha1}; id`]) expect(isSafeTrustEntry('C:/ok/.git', bad)).toBe(false)
 })

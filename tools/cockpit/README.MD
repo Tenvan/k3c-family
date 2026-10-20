@@ -6,6 +6,7 @@ Universal-Mod für **Claude Desktop** und die **Claude-Code-CLI**: ein schmales 
 - [augiefra/token-weather-usage](https://github.com/augiefra/claude-mods/tree/main/plugins/token-weather-usage) – Band mit Kontext, Limits, Cache, Kosten
 - [pawandeepdhall/next-steps](https://github.com/pawandeepdhall/claude-mods/tree/main/plugins/next-steps) – Folge-Schritte als Buttons
 - [Antreas-Strb/glanceflow](https://github.com/Antreas-Strb/glanceflow) – Checkliste mit Status, Fortschritt und Verlauf
+- [YeonwooSung/my-claude-code-mods](https://github.com/YeonwooSung/my-claude-code-mods) – Diagnose: Kontext-Inspektor, Agent-Profiler, Blast-Radius
 
 Kein Code aus diesen Projekten wurde übernommen. Kein Netzwerk, keine Telemetrie, kein Lesen von Transcripts – alle Werte kommen aus den Mod-Events der Engine und `$.session.usage()`. Einzige Ausnahme sind die Folge-Schritte: Sie kosten einen kurzen Haiku-Call pro Antwort über die eigene Claude-Anbindung.
 
@@ -66,6 +67,18 @@ Einstellungen (Gruppe „Checkliste“ unter `/cockpit-einstellungen`):
 | Verlauf speichern | an | Jede Aufgabe mit Ergebnis, Schritten, Dauer und Dateinamen 30 Tage lokal speichern; Grundlage der Berichte |
 
 Im Verlauf stehen Aufgabentitel (die ersten 70 Zeichen deines Prompts), Schrittnamen, die letzte Rückfrage und Dateinamen, nur lokal im Speicher des Mods. Die Berichte enthalten weder Tokens noch Modelle noch Dateinamen.
+
+## Diagnose
+
+Drei Kurzinfos im Band, jede ein Knopf, der das Panel „Profiling“ öffnet (`/cockpit-profiling`): ein Panel im Schema des Cockpit-Panels mit einer einklappbaren Karte je Mod. Alle lesen nur mit (kein `deny`, kein Rewrite, kein Netzwerk) und sind einzeln abschaltbar (Gruppe „Diagnose“ unter `/cockpit-einstellungen`).
+
+| Mod | Band | Bericht im Chat | Inhalt |
+| --- | --- | --- | --- |
+| Kontext-Inspektor | `Kontext 62 % · Verschwendung ≈8,1k` | `/cockpit-kontext text` | Belegung des Fensters nach Kategorie und Ziel, erneut gelesene Dateien (auch „unverändert, noch im Fenster“ = reine Verschwendung), ähnliche Ausgaben (Hash und SimHash), was Kompaktieren behalten und verloren hat, Zeilenänderungen gegen Kontextwachstum, Hinweise mit geschätzter Ersparnis. Tokenwerte sind Schätzungen (`≈`), kalibriert am gemessenen Input |
+| Agent-Profiler | `Modell 61 % · Tools 28 % · läuft: Bash npm test 14s` | `/cockpit-profil text` oder `turn` | Zeitverteilung Modell (erster Chunk, Thinking, Ausgabe), Tools (Ausführung gemessen, Wartezeit abgeleitet, Freigabewartezeit), Subagents und Engine-Overhead; langsamste Tools, Testläufe, wiederholte Reads. Jeder Wert trägt seinen Beobachtungsgrad |
+| Blast-Radius | `Blast: 5 betroffen · 2 Tests` | `/cockpit-blast [watch <Pfad> \| unwatch <Pfad> \| <Pfad> \| reset]` | Rückwärts-Importe geänderter (git status) und beobachteter Dateien, Testkandidaten, unaufgelöste Aliase. Nur statische relative JS/TS-Importe; höchstens 2.000 Dateien und 2 MiB, Listen auf 200 Einträge gekappt, sonst „unvollständig“ |
+
+Grenzen: Der Zustand liegt im Speicher und beginnt nach einem Reload von vorn (beobachtete Blast-Pfade bleiben im `$.store`). Der Profiler exportiert bewusst keine OTLP-Traces (kein Netzwerk). Blast-Radius ruft einmal je Turn `git` lesend auf und bleibt in Repos mit riskanter Git-Konfiguration gesperrt, bis das Repo im Git-Teil des Panels entsperrt ist.
 
 ## Grenzen
 
