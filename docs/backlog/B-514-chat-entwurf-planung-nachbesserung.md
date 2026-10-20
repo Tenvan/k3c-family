@@ -58,4 +58,4 @@ Entscheidung, betroffener Umfang, wer entscheidet (🧑). Sonst `keine`.
 
 ## Notizen
 
-Links, Messwerte, verworfene Ansätze. Darf leer bleiben (`–`).
+Punkt 1 behoben (2026-10-20, auf `sprint/wz19`): `draftOfAnswer` setzt `From` für Inseln, deren id schon in der Welt-Datei steht, Test `TestAntwortBehaeltPlanungBestehenderInsel`. Offen bleiben Punkt 2 bis 4 sowie aus dem Review des Fixes: `mockWorldDraft.ts:96` setzt `from` noch immer leer (Mock weicht von Go ab); ein offener Chat-Entwurf bleibt beim Weltwechsel stehen (`useWorldDraft.ts:32`, älter).
