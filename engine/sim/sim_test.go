@@ -12,7 +12,7 @@ import (
 )
 
 // goldenRun ist eine Datei testdata/golden/sim-*.json (ursprünglich aus der TS-Simulation; neu schreiben mit
-// `task golden:update`, B-137).
+// `task go:golden`, B-137).
 type goldenRun struct {
 	path          string
 	Name          string

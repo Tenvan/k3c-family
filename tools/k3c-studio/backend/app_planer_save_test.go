@@ -49,7 +49,7 @@ func wantSaved(t *testing.T, root, rulesBefore string, res HubSaveResult) {
 	if !res.Saved || res.Error != "" || res.Stale != "" || res.RulesError != "" || len(res.Findings) != 0 {
 		t.Fatalf("nicht gespeichert: %+v", res)
 	}
-	if res.Notice != regNotice || !strings.Contains(res.Notice, "task golden:update") {
+	if res.Notice != regNotice || !strings.Contains(res.Notice, "task go:golden") {
 		t.Errorf("REG-Hinweis %q", res.Notice)
 	}
 	hub, doc := readIn(t, root, hubFile), readIn(t, root, rulesFile)
@@ -214,7 +214,7 @@ func TestHubSaveFehlerImTabellenschritt(t *testing.T) {
 	write(t, filepath.Join(root, filepath.FromSlash(rulesFile)), strings.Replace(readRepo(t, rulesFile), table.Start, "", 1))
 	hubBefore, rulesBefore := readIn(t, root, hubFile), readIn(t, root, rulesFile)
 	_, res := saveEdit(t, root, func(m map[string]any) { site(m, "sites", 8)["hubLevel"] = 3 })
-	if !res.Saved || !strings.HasPrefix(res.RulesError, "Regeltabelle veraltet, task rules:update") || res.Notice != regNotice {
+	if !res.Saved || !strings.HasPrefix(res.RulesError, "Regeltabelle veraltet, task gen:rules") || res.Notice != regNotice {
 		t.Fatalf("Tabellenfehler nicht gemeldet: %+v", res)
 	}
 	wantOneLine(t, hubBefore, readIn(t, root, hubFile), armory4+",", armory3+",")

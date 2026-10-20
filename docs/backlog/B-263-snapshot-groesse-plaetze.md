@@ -26,7 +26,7 @@ Spieler (2+ Monarchen, mehrere Räume), Betrieb auf dem Pi; SRV setzt um, 🧑 e
 
 ## Anforderungen
 
-- Messung mit `task load` (LT1) vor und nach W0: Bytes je voller Zustand und je Delta, CPU je Tick.
+- Messung mit `task k3c-load` (LT1) vor und nach W0: Bytes je voller Zustand und je Delta, CPU je Tick.
 - Falls über Budget: Plätze ohne Änderung nicht in jedem vollen Zustand senden (z. B. mit B-208 festlegen).
 
 ## Nicht-Ziele
@@ -47,7 +47,7 @@ nicht relevant: Messaufgabe.
 
 ## Akzeptanzkriterien
 
-- **AC-01** Eine `task load`-Messung mit dem Stand nach W0 ist im Ticket vermerkt und mit LT1 verglichen; liegt sie über Budget, gibt es ein Folge-Ticket mit Maßnahme.
+- **AC-01** Eine `task k3c-load`-Messung mit dem Stand nach W0 ist im Ticket vermerkt und mit LT1 verglichen; liegt sie über Budget, gibt es ein Folge-Ticket mit Maßnahme.
 
 ## Offene Fragen
 

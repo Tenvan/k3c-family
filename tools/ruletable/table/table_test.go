@@ -25,7 +25,7 @@ func TestBlockDerRegelnIstGleichDerJSON(t *testing.T) {
 		t.Fatal(err)
 	}
 	if !gleich {
-		t.Fatalf("Block weicht ab (task rules:update):\n--- ist\n%s\n--- soll\n%s", ist, soll)
+		t.Fatalf("Block weicht ab (task gen:rules):\n--- ist\n%s\n--- soll\n%s", ist, soll)
 	}
 }
 

@@ -110,7 +110,7 @@ Rüstkammer: `sockel`, `scharte`, `tor`, `band`, `niete`, `staender`, `helm`, `r
   Pflicht; von links nach rechts, hinten nach vorn, Lage grob in Kacheln), `materialien` (Namen aus § 3), `stimmung`,
   `fein` (was bei 16 px entfällt). Sie beschreibt, was das PNG zeigt, und ist die Grundlage, um das Gebäude später
   annähernd gleich neu zu erzeugen. Fehlt sie, ist `motiv` oder `teile` leer oder steht ein unbekanntes Feld in der
-  Datei, bricht `task gebaeude` ab. `index.json` übernimmt sie.
+  Datei, bricht `task gen:gebaeude` ab. `index.json` übernimmt sie.
 - `rechteck` = `[x, y, b, h]` in Kacheln, Ursprung oben links. Dateiname = `id` + `.json`.
 - `klasse` (optional) gruppiert in der Vorschau; `baum` = Teil der Baum-Reihe; `kachel` = in der Breite nahtlos kachelbar
   (Vorschau zeigt drei Kacheln nebeneinander). Kachelbar heißt: keine Seitenkanten, Muster periodisch über die Breite,
@@ -119,7 +119,7 @@ Rüstkammer: `sockel`, `scharte`, `tor`, `band`, `niete`, `staender`, `helm`, `r
   unterste Pixelzeile deckend. Die Vorschau zeigt sie im Streifen „Hintergründe“ (§ 9), nicht als Gebäude-Karte.
 - `wiederholung: { "schritt": <Kacheln>, "anzahl": <n ≥ 2> }` am Baustein (GEB7): `anzahl` Kopien entlang x im Abstand `schritt`
   (die erste ist das Original, Kopien folgen direkt in der Zeichenreihenfolge). Schritt ein positives Vielfaches von 1/32, jede Kopie
-  im Bild; sonst bricht `task gebaeude` mit Gebäude, Baustein und Feld ab. Gilt auch für `zusaetze`.
+  im Bild; sonst bricht `task gen:gebaeude` mit Gebäude, Baustein und Feld ab. Gilt auch für `zusaetze`.
 - `fein: true` markiert Details, die bei gröberer Dichte entfallen (Werkzeuge, Faltenlicht, Plankenfugen).
 
 ### Bäume
@@ -183,7 +183,7 @@ das **Material** (1 Stein, 2 Kupfer, 3 Eisen, 4 Kristall), nicht das Biom.
 
 1. Zuerst die Vorlage schreiben (§ 5), dann die Bausteine danach zeichnen; ändert sich das Bild, die Vorlage mitziehen.
    Daten-JSON in `public/grafik/gebaeude/` anlegen oder ändern.
-2. `task gebaeude` rendert `<id>-16.png`, `-32.png`, `-64.png`, `-128.png` und `index.json`; gleiche Daten → byte-gleiche PNGs.
+2. `task gen:gebaeude` rendert `<id>-16.png`, `-32.png`, `-64.png`, `-128.png` und `index.json`; gleiche Daten → byte-gleiche PNGs.
 3. Vorschau: Asset-Studio, Seite Grafik, Reiter Szenen, Szene Gebäude, Streifen „Neue Gebäude (GEB)“ (Baum-Reihe, dann je Gebäude 32 px ×1 neben 16 px ×2).
 4. Hintergrund-Schichten: Streifen „Hintergründe“ (Szene Umgebung desselben Reiters) (je Biom die drei Schichten fern → nah auf `palette.sky`, zwei Kacheln nebeneinander, 32 px ×1 und 16 px ×2).
 5. PNGs und `index.json` mit committen.

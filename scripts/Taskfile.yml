@@ -1,0 +1,18 @@
+# Namespace `ops`: Betrieb und Pflege des Repos und der Spielstände.
+version: '3'
+
+tasks:
+  aufraeumen:
+    desc: "Lokale Branches und Worktrees aufräumen (B-302): löscht nur sichere Fälle, listet den Rest mit Grund; task ops:aufraeumen -- --dry zeigt nur an; auf origin löscht nur 🧑"
+    deps: [':tmp']
+    preconditions:
+      - sh: command -v go
+        msg: Go fehlt (requirements.md)
+    cmds:
+      - go build -o bin/aufraeumen{{exeExt}} ./tools/cleanup
+      - ./bin/aufraeumen{{exeExt}} {{.CLI_ARGS}}
+
+  backup:
+    desc: "Spielstände sichern (B-142): task ops:backup -- <ziel>; Quelle K3C_SAVES_DIR, sonst /data/saves im Compose-Dienst k3c"
+    cmds:
+      - sh scripts/backup-saves.sh {{.CLI_ARGS}}

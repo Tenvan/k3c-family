@@ -1,0 +1,20 @@
+# Namespace `k3c-tui`: die Diagnose-Oberfläche für den laufenden Server (B-002). Feste EXE bin/k3c-tui.
+version: '3'
+
+tasks:
+  build:
+    desc: EXE bin/k3c-tui bauen
+    deps: [':tmp']
+    cmds:
+      - go build -o bin/k3c-tui{{exeExt}} ./cmd/k3c-tui
+
+  run:
+    desc: 'Diagnose-Oberfläche starten (braucht K3C_STATUS_TOKEN; z. B. `task k3c-tui -- -once`)'
+    cmds:
+      - task: build
+      - ./bin/k3c-tui{{exeExt}} {{.CLI_ARGS}}
+
+  default:
+    desc: Kurzform von k3c-tui:run
+    cmds:
+      - task: run

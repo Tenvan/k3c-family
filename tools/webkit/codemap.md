@@ -19,5 +19,5 @@ Gemeinsame Oberflächen-Bausteine der beiden Werkzeug-Frontends (k3c-dev und Ass
 
 ## Integration
 
-- Konsumenten: `tools/k3c-dev/frontend/src/**`, `tools/k3c-studio/frontend/src/**`; geprüft von deren Typecheck (`include` mit `../../webkit`) und Vitest (`task check:dev`, `task check:studio`); Build-Quellen in `dev:frontend` und `studio:frontend`.
+- Konsumenten: `tools/k3c-dev/frontend/src/**`, `tools/k3c-studio/frontend/src/**`; geprüft von deren Typecheck (`include` mit `../../webkit`) und Vitest (`task check:dev`, `task check:studio`); Build-Quellen in `k3c-dev:frontend` und `k3c-studio:frontend`.
 - Abhängigkeiten: `react`, `@radix-ui/themes` (aus dem Frontend), Browser-`localStorage`.

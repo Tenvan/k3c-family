@@ -9,7 +9,7 @@ import (
 )
 
 // campaignFile ist testdata/golden/campaign-abstieg.json (ursprünglich aus der TS-Simulation; neu schreiben mit
-// `task golden:update`, B-137).
+// `task go:golden`, B-137).
 type campaignFile struct {
 	Name          string
 	Seed          string

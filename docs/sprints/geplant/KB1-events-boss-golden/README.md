@@ -32,7 +32,7 @@ Balancing der Werte (BAL ruht); Anzeige im Client (K5); neue Gegner oder Events.
 
 ## Regeln und Einschränkungen
 
-Nur Domäne SIM; Werte aus `data/*.json`; `engine/rng`, kein `math/rand`. Golden-Dateien nur mit `task golden:update` und Begründung. Regeln in `docs/rules/gegner.md` und `docs/rules/` gelten; Abweichungen werden dort vom REG-Beschluss, nicht von der Sim bestimmt.
+Nur Domäne SIM; Werte aus `data/*.json`; `engine/rng`, kein `math/rand`. Golden-Dateien nur mit `task go:golden` und Begründung. Regeln in `docs/rules/gegner.md` und `docs/rules/` gelten; Abweichungen werden dort vom REG-Beschluss, nicht von der Sim bestimmt.
 
 ## Beispiele
 

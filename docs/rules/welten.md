@@ -151,7 +151,7 @@ Entschieden von Claude (Delegation 🧑, 2026-10-19), Empfehlung 5 der Session W
 |---|---|---|
 | Eingecheckt ist nur `data/worlds/standard.json`. Eigene Welten bleiben lokal: `.gitignore` bekommt `data/worlds/*` und `!data/worlds/standard.json` (umgesetzt in WZ18.2). | Entwürfe gelangen nicht versehentlich in Commits, Builds oder die CI (B-488/AC-10: keine eingecheckte Welt). | `.gitignore` |
 | Eine weitere Welt einchecken entscheidet 🧑; dann bekommt `.gitignore` eine eigene Ausnahme `!data/worlds/<id>.json`, und die Welt ist eine REG-Änderung mit Begründung im Commit. | Bewusste Entscheidung statt Nebeneffekt. | `.gitignore` |
-| Eine geänderte Standard-Welt ist eine REG-Änderung durch 🧑 (`task golden:update` nur bei gewollter Änderung), wie die Planung (`geplante-chunks.md` § 6). Quelle: B-488 › Regeln. | Golden ändert sich nur gewollt. | `data/worlds/standard.json` |
+| Eine geänderte Standard-Welt ist eine REG-Änderung durch 🧑 (`task go:golden` nur bei gewollter Änderung), wie die Planung (`geplante-chunks.md` § 6). Quelle: B-488 › Regeln. | Golden ändert sich nur gewollt. | `data/worlds/standard.json` |
 
 ## 8. Begriffe im Code
 

@@ -1,0 +1,10 @@
+# Namespace `watch`: k3c-watch baut ein Programm bei jeder Quelländerung neu und startet es neu (tools/watch).
+# Die Tasks `<projekt>:dev` rufen es auf; hier nur der Build der EXE (fest bin/k3c-watch, Go-Cache).
+version: '3'
+
+tasks:
+  build:
+    desc: k3c-watch bauen (bin/k3c-watch), den Watcher der Tasks `<projekt>:dev`
+    deps: [':tmp']
+    cmds:
+      - go build -o bin/k3c-watch{{exeExt}} ./tools/watch

@@ -37,15 +37,29 @@ task check         # Lint + Typecheck + Tests (vor jedem Abschluss)
 task check:go      # go test + golangci-lint (Rechner mit Go)
 task check:dev     # k3c-dev: Frontend, go test, golangci-lint
 task check:all     # alles inklusive Build
-task golden:update # testdata/golden/ neu schreiben, nur bei gewollter Regel-/Wertänderung (Begründung in den Commit)
-task k3c-dev       # Entwickler-Werkzeug k3c-dev als Fenster starten (wails dev; EXE: task k3c-dev:build)
+task go:golden     # testdata/golden/ neu schreiben, nur bei gewollter Regel-/Wertänderung (Begründung in den Commit)
 task build         # Typecheck + Produktions-Build nach dist/
 task pages         # GitHub-Pages-Seite nach _site/ (kopiert nur site/, kein Build)
 task serve         # Build + Go-Server (Port 8080, bin/k3c-server)
 task start         # Go-Server ohne Web-Build (task dev leitet /api und /ws an ihn weiter)
-task k3c-studio    # Asset-Studio als eigenes Fenster (Loopback-Port 8091; EXE: task k3c-studio:build)
+task k3c-dev       # Workbench als Fenster im Watch-Modus (wails dev); EXE: task k3c-dev:build
+task k3c-studio    # Asset-Studio als Fenster im Watch-Modus (wails dev); EXE: task k3c-studio:build
 task check:studio  # Asset-Studio: Frontend-Vitest, go test + golangci-lint für tools/assetkit und tools/k3c-studio
 ```
+
+**Taskfile-Gruppen:** `Taskfile.yml` hält nur die Kernbefehle (Workspace) und die Prüf-Aggregate `check:*`; jedes Projekt hat sein
+Taskfile im eigenen Ordner und erscheint als Namensraum (`task --list`, Tasks-Seite der Workbench): `go` (engine/), `k3c-server`,
+`k3c-load`, `k3c-tui` (cmd/), `k3c-dev`, `k3c-studio`, `k3c-starter` (tools/), `balance`, `gen` (Generatoren: `gen:atlas`,
+`gen:gebaeude`, `gen:rules`), `ops` (`ops:aufraeumen`, `ops:backup`), `watch`. Neue Aufgaben kommen in das Taskfile ihres Projekts, nicht
+in die Wurzel.
+
+**Watcher statt Neubau:** Jedes EXE-Projekt kennt `build` (EXE bauen), `run` (bauen und starten) und `dev` (bei jeder Änderung neu).
+Der Projektname allein (`task k3c-dev`) startet `dev`. Wails-Fenster (`k3c-dev`, `k3c-studio`) nutzen `wails dev`: Oberfläche mit
+Hot Reload ohne Neustart, Neubau und Neustart des Fensters nur bei Go-Änderungen (auch in `engine/`, `data/`, `tools/assetkit`, `tools/ruletable`).
+Server und Starter (`k3c-server:dev` nur für Go-Code, `data/` und `public/` beobachtet der Server selbst; `k3c-starter:dev`) laufen unter `k3c-watch` (`tools/watch`, `bin/k3c-watch`): Build bei Änderung,
+Tausch gegen die laufende EXE am festen Pfad, bei Build-Fehler läuft die alte Version weiter. Wails-Builds (`k3c-dev:build`,
+`k3c-studio:build`, `k3c-starter:exe`) und die Frontends laufen nur bei geänderten Quellen (`sources`/`generates`); `--force` erzwingt.
+Die Oberfläche des Studios steckt nicht in der EXE (liegt unter `tools/k3c-studio/frontend/dist/`), eine Änderung daran braucht keinen EXE-Neubau.
 
 Der Go-Server beobachtet `data/` und `public/` immer (auch produktiv, `engine/watch`, Entscheidung 004): Nach einer
 Änderung prüft er den neuen Stand (`k3c-server -check-data`), zeigt allen Geräten „Server startet neu“ und startet sich
@@ -59,7 +73,7 @@ Die Gamepad-Testseite (`gamepad-test.html`) schickt Berichte von der Xbox nach `
 `logs_errors`/`logs_query`, Berichte und Spielstände über `reports_list`/`report_read`/`saves_list`, Balancing über
 `sim_run`/`level_generate`. **Jeder autonome Testlauf** (Balancing, Performance von Server und Client, Stabilität;
 offline, online, headless oder mit Clients) startet und läuft **nur über `sim_test`** (`start`, `status`, `stop`, `list`),
-nie über `task balance`, `task load` oder Binaries in der Shell (B-348). Die Shell-Befehle unten nur, wenn k3c-dev nicht läuft.
+nie über `task balance`, `task k3c-load` oder Binaries in der Shell (B-348). Die Shell-Befehle unten nur, wenn k3c-dev nicht läuft.
 
 **Tasks und Ausführungen laufen ausschließlich über `task`** (Neues in `Taskfile.yml`, nicht in `package.json`).
 Vor jedem Abschluss: `task check` muss grün sein.
@@ -79,12 +93,12 @@ prüft die Regeln unten automatisch (Seiten eingetragen, `installPageChrome()`, 
   eigenständiges Wails-Fenster, keine Seite des Spielservers (Entscheidung 004, B-507): Backend `tools/k3c-studio/backend`
   (`/api/studio/` auf eigenem Loopback-Port 8091, samt Chat), bindet die Engine als Bibliothek ein (Vorschau und „Im Spiel
   öffnen“ ohne Spielserver, eigene Testspielstände); Frontend `tools/k3c-studio/frontend` (Build nach
-  `tools/k3c-studio/frontend/dist/`, `task studio:frontend`); `task k3c-studio` bzw. `task k3c-studio:build` → `bin/k3c-studio.exe`,
+  `tools/k3c-studio/frontend/dist/`, `task k3c-studio:frontend`); `task k3c-studio` bzw. `task k3c-studio:build` → `bin/k3c-studio.exe`,
   wie k3c-dev mit gemerkter Größe und Position. Das Studio schreibt `data/**` und `public/`, der Server liest sie nur.
   `tools/assetkit` – gemeinsame Asset-Logik von k3c-dev und Studio (eigenes Go-Modul, per `replace` eingebunden). `tools/k3c-starter` – Windows-Starter für den Server (Wails-Fenster
   startet `bin/k3c-server`, zeigt Status und Adresse, EXE `bin/k3c-starter.exe`, `task k3c-starter:build`, B-041).
   `tools/webkit` – gemeinsame Oberflächen-Bausteine der Frontends von k3c-dev und Studio (`@webkit/…`).
-  CLIs: `tools/atlas`, `tools/buildings` (`task gebaeude`), `tools/ruletable` (`task rules:update`), `tools/cleanup` (`task aufraeumen`).
+  CLIs: `tools/atlas`, `tools/buildings` (`task gen:gebaeude`), `tools/ruletable` (`task gen:rules`), `tools/cleanup` (`task ops:aufraeumen`). `tools/watch` – `k3c-watch`, der Watcher der Tasks `k3c-server:dev` und `k3c-starter:dev`.
 - `src/model/` – Typen und Daten, die der Client vom Server kennt (`World`, `GameEvent`, `BIOMES`, `SaveGame` …), keine Logik.
 - `src/online/` – Client des Go-Servers (`clientConnection.ts`, Version in `clientProtocol.ts`): sendet nur Eingaben, zeichnet Snapshots. Ein Monarch pro Gerät.
 - `src/input/` – `PlayerInput`-Abstraktion (Tastatur, Gamepad, Touch-Overlay `touchInput.ts`, per `?touch=1` erzwingbar). Spiel-Code fragt Aktionen ab, nie konkrete Tasten.

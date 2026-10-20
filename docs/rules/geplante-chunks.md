@@ -57,7 +57,7 @@ Beispiel (Reihenfolge der Schlüssel: `slot`, `kind`, `seed`, `objects`; Teil-2-
 
 | Regel | Begründung | Daten |
 |---|---|---|
-| Der Chunk-Editor im Welten Editor schreibt die Welt-Datei der gewählten Welt (`data/worlds/<id>.json`) atomar und format-stabil und nur nach einer Stand-Prüfung (geändert seit dem Laden → nicht speichern, Entwurf bleibt). Nach jedem Speichern erscheint „REG-Änderung: Commit mit Begründung, `task golden:update` nur bei gewollter Änderung“. Eine gespeicherte Planung ist eine REG-Änderung durch 🧑. | Das Werkzeug schreibt REG-Daten; Golden ändert sich nur gewollt. | `data/worlds/<id>.json` |
+| Der Chunk-Editor im Welten Editor schreibt die Welt-Datei der gewählten Welt (`data/worlds/<id>.json`) atomar und format-stabil und nur nach einer Stand-Prüfung (geändert seit dem Laden → nicht speichern, Entwurf bleibt). Nach jedem Speichern erscheint „REG-Änderung: Commit mit Begründung, `task go:golden` nur bei gewollter Änderung“. Eine gespeicherte Planung ist eine REG-Änderung durch 🧑. | Das Werkzeug schreibt REG-Daten; Golden ändert sich nur gewollt. | `data/worlds/<id>.json` |
 
 ## 7. Chunk-Anzahl und Inselgrößen
 

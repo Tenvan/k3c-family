@@ -22,4 +22,4 @@ Build-Time-CLI (Asset Pipeline): packt die im Spiel genutzten Figuren-Frames aus
 
 - Eingaben: `data/sprites.json`, `public/sprites/**/*.png`.
 - Ausgabe: `public/atlas/atlas.json` und `atlas-*.png`; der Client lädt sie über `src/scenes/render/sprites.ts` (`LoadScene`).
-- Taskfile-Task `atlas` (baut `bin/atlas`, Dependency von `dev` und `build`, mit Quellen/Erzeugnissen als Task-Cache).
+- Taskfile-Task `gen:atlas` (baut `bin/atlas`, Dependency von `dev` und `build`, mit Quellen/Erzeugnissen als Task-Cache).

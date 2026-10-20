@@ -80,9 +80,9 @@ func Diff(at string, want, got any) string {
 	return ""
 }
 
-// Update ist der Schalter -update (B-137, `task golden:update`): Die Golden-Tests schreiben dann den Ist-Zustand in
+// Update ist der Schalter -update (B-137, `task go:golden`): Die Golden-Tests schreiben dann den Ist-Zustand in
 // ihre Datei, statt zu vergleichen. Nur für gewollte Regel- oder Wertänderungen; Ablauf in docs/arbeitsweise.md.
-var Update = flag.Bool("update", false, "Golden-Dateien aus dem Ist-Zustand neu schreiben (task golden:update)")
+var Update = flag.Bool("update", false, "Golden-Dateien aus dem Ist-Zustand neu schreiben (task go:golden)")
 
 // File ist eine Golden-Datei in ihrer Form: oberste Ebene ein Objekt, ein Schlüssel je Zeile, Werte kompakt; Listen,
 // die schon über mehrere Zeilen stehen, behalten einen Eintrag je Zeile.

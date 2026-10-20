@@ -13,5 +13,5 @@ Paket `table`: erzeugt aus `data/hub.json` den Block „Hub-Stufe → Gebäude�
 `Block(hub.json)` → `Ersetzen(doc, block)` → neuer Dokumenttext; `Gegenprobe` erzeugt den Block und vergleicht ohne zu schreiben.
 
 ## Integration
-- Aufrufer: `tools/ruletable/main.go` (Task `rules:update`) und das Studio (`tools/k3c-studio/app_planer_rules.go`, `app_planer_save.go`).
+- Aufrufer: `tools/ruletable/main.go` (Task `gen:rules`) und das Studio (`tools/k3c-studio/app_planer_rules.go`, `app_planer_save.go`).
 - Test: `table_test.go`.
