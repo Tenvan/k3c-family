@@ -14,10 +14,12 @@ Band über der Eingabe
 • Merge Requests – auf GitLab-, GitHub- und Bitbucket-Repos MR/PR des Branches im Band (Pipeline, Freigaben, Threads), Hinweise bei Änderungen, im Panel Rebase, Mergen, Pipeline neu, Anmerkungen an Claude und „MR anlegen“ mit Entwurf.
 • Folge-Schritte – drei Vorschläge nebeneinander nach jeder Antwort, Tasten 1–3.
 • Checkliste – ganz oben Claudes Aufgabenliste mit Status (arbeitet, braucht dich, hängt?, fertig), Fortschritt, Restzeit, Pause/Weiter und Plan-Karte; /cockpit-verlauf mit Tages- und Wochenbericht zum Kopieren.
+• Diagnose – drei Kurzinfos im Band, ein Panel „Profiling“ (/cockpit-profiling) mit einer Karte je Mod: Kontext-Inspektor (/cockpit-kontext: Belegung des Fensters, doppelt gelesene Dateien, ähnliche Ausgaben, Verluste durch Kompaktieren, Hinweise), Agent-Profiler (/cockpit-profil: Zeit in Modell, Tools, Subagents, Overhead) und Blast-Radius (/cockpit-blast: betroffene Dateien und Testkandidaten deiner Änderungen). Lesen nur mit, ohne Netzwerk.
 
 Panel rechts (/cockpit)
 • Agent arbeitet – Laufzeit, Tool-Calls und Edits, solange ein Turn läuft.
-• Arbeitsverzeichnis – Branch, Commit, Änderungen und Abstand zum Upstream.
+• Arbeitsverzeichnis – Session-Ordner, Prozess-Ordner und verknüpfte Sessions.
+• Git – Branch, Commit, Änderungen und Abstand zum Upstream.
 • Kontextfenster – wofür der Kontext gerade draufgeht.
 • Kontext-Diät – MCP-Server, die Tokens fressen, aber nie benutzt wurden.
 • Turn-Bilanz – Kosten je Turn; teure Turns ohne Edit sind gelb.

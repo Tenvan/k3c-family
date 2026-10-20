@@ -11,12 +11,12 @@ import { canMergeNow, conflictPrompt, draftPrompt, inRepo, refOf, forgeRemote, m
 import { authMissing, canAutoMerge, forgeCreate, forgeDefault, forgeFind, forgeLists, forgeLoad, forgeMerge, forgeRebase, forgeRetry, forgeThreads } from './forge'
 import type { Io, Remote } from './forge'
 import type { Mr, MrDraft, MrMine } from '../types'
-import { THEME, TINT, CARD_TINT, cycleTint, summarySections, splitTool, toolText, withClaude, parseTaskNotifications, backgroundOf, NEW_STYLES, todosOf, wrapupOf, resetLeft, dirTarget, isForeignDir, nativeDir, parseLinkedSessions, infoSvg, legendSvg, modelLabel, SPIN_MODE, spinnerText, timelineSvg, demoTable, agentStats, agentFlags, breakdownBarSvg, contextTip, limitTip, cacheTip, summaryLines, topRows, resetLabel, CATCH0, CATCH_KEEP, DEFAULT_SETTINGS, SETTING_DEFS, settingLabel, settingHint, catchUpPrompt, catchUpSystem, nextChunk, settingsOf, startIndex, fingerprint } from './core'
+import { THEME, TINT, CARD_TINT, cycleTint, summarySections, splitTool, toolText, withClaude, parseTaskNotifications, notificationText, backgroundOf, NEW_STYLES, todosOf, wrapupOf, resetLeft, dirTarget, isForeignDir, nativeDir, parseLinkedSessions, infoSvg, legendSvg, modelLabel, SPIN_MODE, spinnerText, timelineSvg, demoTable, agentStats, agentFlags, breakdownBarSvg, contextTip, limitTip, cacheTip, summaryLines, topRows, resetLabel, CATCH0, CATCH_KEEP, DEFAULT_SETTINGS, SETTING_DEFS, settingLabel, settingHint, catchUpPrompt, catchUpSystem, nextChunk, settingsOf, startIndex, fingerprint } from './core'
 import type { SettingGroup, SettingKey, Tone } from './core'
 import { TILES, EFFORT_LEVELS, effortColor, effectiveEffort, effortJudgeText, handoffMarkdown, handoffPays, isTrivialPrompt, limitAlert } from './core'
 import type { EffortLevel } from './core'
 import { CACHE_WARN_MS, WASTE_USD, compactFocus, detectLoop, isAgentHeavy, isWasteful, mcpDiet, mcpKey, turnBarsSvg, turnBarsText } from './core'
-import { RISKY_GIT_CONFIG, COMPACT_AT, DECISION_COLOR, RING_HEX, contextColor, LEGEND, LEGEND_NOTE, paceText, LIMIT_LABEL, LOG_MAX, SRC_COLOR, bar, cacheHitPct, cacheLeftMs, clockTime, duration, limitColor, pace, parseSteps, questionsOf, pushCapped, markdownStats, shortHash, statsLines, toolInfoLines, oneLine, parseRepo, repoRows, repoShort, ringSvg, svgSource, titleText, toBreakdown, breakdownTitle, categoryColor, spinner, title, toolTarget, toolKind, tokens, usd } from './core'
+import { RISKY_GIT_CONFIG, COMPACT_AT, DECISION_COLOR, RING_HEX, contextColor, LEGEND, LEGEND_NOTE, paceText, LIMIT_LABEL, LOG_MAX, SRC_COLOR, bar, cacheHitPct, cacheLeftMs, clockTime, duration, limitColor, pace, parseSteps, questionsOf, pushCapped, markdownStats, shortHash, statsLines, toolInfoLines, oneLine, parseRepo, trustText, trustEntry, isTrusted, isSafeTrustEntry, repoGitRows, repoPathRows, repoShort, ringSvg, svgSource, titleText, toBreakdown, breakdownTitle, categoryColor, spinner, title, toolTarget, toolAction, toolKind, tokens, usd } from './core'
 import { t } from './i18n'
 import type { Key } from './i18n'
 import { ALERT_COLOR, CODE_BG, CODE_FG, ICON_COLOR, TONE_COLOR, detailInput, detailOutput, diffCardSvg, diffOf, errorText, firstErrorLine, iconKind, inlineTokens, inputPath, isReadOnlyShell, isShell, isStyled, lineCountOf, mdLiteral, QUIET_TOOLS, quietLine, shellCommand, splitMessage, toolIconSvg } from './skins'
@@ -25,9 +25,15 @@ import type { RichPart, Segment, SplitOptions } from './skins'
 import { diagramType, mermaidSvg } from './mermaid'
 import { chip, labelRow, pill, tile } from './ui'
 import type { Ui } from './ui'
-import { addRecord, avgStepMs, continuePrompt, dayKey, dayReport, etaOf, finishJob, isWorthShowing, newJob, noteAct, noteFile, planUpdate, progressOf, recordsOf, shiftDay, shownPhase, staleKeys, stepGuessMs, storeKey, toRecord, touch, visibleSteps, weekReport } from './glance'
+import { addRecord, avgStepMs, completeAll, continuePrompt, dayKey, dayReport, etaOf, finishJob, isWorthShowing, newJob, noteAct, noteFile, planUpdate, progressOf, recordsOf, shiftDay, shownPhase, staleKeys, stepGuessMs, storeKey, toRecord, touch, visibleSteps, weekReport } from './glance'
 import type { ShownPhase } from './glance'
 import type { Job, JobRecord, JobStep } from '../types'
+import { bandText as inspectBand, ingestAppend, ingestCompaction, ingestToolCall, ingestToolResult, inputOf, newInspect, paneView as inspectView, reportText as inspectReport, sampleInput, summarize as summarizeInspect } from './inspect'
+import type { InspectSummary } from './inspect'
+import { bandText as profileBand, newProfiler, paneView as profileView, reportText as profileReport, stepBegin, stepChunk, stepEnd, stopFailure, subagentStart, subagentStop, summarize as summarizeProfile, toolApproval, toolBegin, toolEnd, toolExec, turnComplete, turnStart } from './profiler'
+import type { ProfileSummary } from './profiler'
+import { bandText as blastBand, blastScan, normalizeTarget, paneView as blastView, parseCommand, reportText as blastReport } from './blast'
+import type { BlastIo, BlastResult } from './blast'
 
 const PLUGIN = 'tenvan-cc'
 // Slash-Command des Hauptpanels: kurz statt der Plugin-ID.
@@ -41,6 +47,7 @@ const panes = (lang: UiLang) => ({
   settings: { id: 'tenvan-cc-settings', title: t(lang, 'common.paneSettings') },
   mr: { id: 'tenvan-cc-mr', title: t(lang, 'common.paneMr') },
   history: { id: 'tenvan-cc-history', title: t(lang, 'common.paneHistory') },
+  profiling: { id: 'tenvan-cc-profiling', title: t(lang, 'common.paneProfiling') },
 })
 const EDIT_TOOLS = new Set(['Edit', 'Write', 'NotebookEdit'])
 const LIVE = new Set(['pending', 'running', 'waiting'])
@@ -192,18 +199,19 @@ const langOf = async ($: EngineInterface): Promise<UiLang> => (await read($, set
 const same = (a: unknown, b: unknown): boolean => JSON.stringify(a) === JSON.stringify(b)
 
 // ponytail: Log-Einträge speichern fertigen Text in der Sprache beim Schreiben; nach einem Sprachwechsel bleiben alte Einträge so, bis sie aus dem Log fallen
-async function note($: EngineInterface, src: LogSrc, text: string, tool?: { tool: string; target: string; isError: boolean }) {
+async function note($: EngineInterface, src: LogSrc, text: string, tool?: { tool: string; target: string; action?: string; isError: boolean }) {
   const at = await $.clock.now()
   await update($, log, list => pushCapped(list, { at, src, text, ...tool }, LOG_MAX))
 }
 
 // Tool-Name farbig: Server gedimmt, Tool in Akzentfarbe; Ziel in Gelb hinter gedimmtem „→“ (nur, wenn es eins gibt), Fehler rot.
-function toolLabel({ Text }: Ui, name: string, target = '', isError = false) {
+function toolLabel({ Text }: Ui, name: string, target = '', isError = false, action = '') {
   const p = splitTool(name)
   return (
     <Text>
       {p.server !== null && <Text color={THEME.textMuted}>{p.server} › </Text>}
       <Text bold color={THEME.accent}>{p.tool}</Text>
+      {action !== '' && <Text color={THEME.success}> ({action})</Text>}
       {target !== '' && <Text color={THEME.textMuted}> →</Text>}
       {target !== '' && <Text color={THEME.warning}> {target}</Text>}
       {isError && <Text color={THEME.error}> ✗</Text>}
@@ -214,7 +222,7 @@ function toolLabel({ Text }: Ui, name: string, target = '', isError = false) {
 // Log-Eintrag: strukturierte Tool-Einträge farbig, alles andere als Text.
 function entryView(ui: Ui, l: LogEntry, dim: boolean) {
   const { Text } = ui
-  return l.tool !== undefined ? toolLabel(ui, l.tool, l.target ?? '', l.isError === true) : <Text dimColor={dim}>{l.text}</Text>
+  return l.tool !== undefined ? toolLabel(ui, l.tool, l.target ?? '', l.isError === true, l.action ?? '') : <Text dimColor={dim}>{l.text}</Text>
 }
 
 // ponytail: kein Build-Schritt – „Build“ ist die jüngste Änderung der Hook-Dateien; echter Stempel erst mit Build-Pipeline
@@ -323,9 +331,44 @@ async function gitText($: EngineInterface, args: readonly string[], cwd?: string
 
 // Enthält die lokale Konfiguration Schlüssel, über die das Repo beim Lesen Befehle starten kann?
 // Nur Exit 1 („kein Treffer“) gilt als unbedenklich; ein Treffer oder jeder Fehler (kaputte Konfiguration) als riskant.
+// Ausnahme: der Nutzer hat das Repo freigegeben (Knopf „Entsperren“): sein Git-Ordner steht mit dem Hash der riskanten
+// Schlüssel samt Werten in der globalen Git-Konfiguration (`cockpit.trustedRepo`, siehe `isTrusted`). Die Marke liegt
+// bewusst nicht im Repo, und ein später geänderter Eintrag passt nicht mehr zum Hash: dann ist das Repo wieder gesperrt.
+const GIT_BASE = ['git', '-c', 'core.fsmonitor=false', '--no-optional-locks'] as const
+
+// Git-Ordner und Hash der riskanten Konfiguration; null, wenn etwas davon nicht zu lesen ist (dann gilt das Repo als gesperrt).
+async function repoTrust($: EngineInterface, cwd?: string): Promise<{ common: string; hash: string } | null> {
+  const opts = cwd === undefined ? undefined : { cwd }
+  const run = (...args: string[]) => $.process.run([...GIT_BASE, ...args], opts).catch(() => null)
+  const [common, local, worktree] = await Promise.all([
+    run('rev-parse', '--path-format=absolute', '--git-common-dir'),
+    run('config', '--local', '--includes', '--get-regexp', RISKY_GIT_CONFIG),
+    run('config', '--worktree', '--includes', '--get-regexp', RISKY_GIT_CONFIG),
+  ])
+  if (common === null || common.exitCode !== 0 || common.stdout.trim() === '' || local === null || worktree === null) return null
+  const text = trustText({ code: local.exitCode, out: local.stdout }, { code: worktree.exitCode, out: worktree.stdout })
+  const hashed = await $.process.run([...GIT_BASE, 'hash-object', '--stdin'], { ...(opts ?? {}), stdin: text }).catch(() => null)
+  const hash = hashed !== null && hashed.exitCode === 0 ? hashed.stdout.trim() : ''
+  return hash === '' ? null : { common: common.stdout.trim(), hash }
+}
+
 async function isRiskyRepo($: EngineInterface, cwd?: string): Promise<boolean> {
-  const r = await $.process.run(['git', '-c', 'core.fsmonitor=false', '--no-optional-locks', 'config', '--local', '--includes', '--name-only', '--get-regexp', RISKY_GIT_CONFIG], cwd === undefined ? undefined : { cwd })
-  return r.exitCode !== 1
+  const opts = cwd === undefined ? undefined : { cwd }
+  const r = await $.process.run([...GIT_BASE, 'config', '--local', '--includes', '--name-only', '--get-regexp', RISKY_GIT_CONFIG], opts)
+  if (r.exitCode === 1) return false
+  const [entries, fp] = await Promise.all([
+    $.process.run([...GIT_BASE, 'config', '--global', '--no-includes', '--get-all', 'cockpit.trustedRepo'], opts).catch(() => null),
+    repoTrust($, cwd),
+  ])
+  if (entries === null || entries.exitCode !== 0 || fp === null) return true
+  return !isTrusted(entries.stdout, fp.common, fp.hash)
+}
+
+// Prompt für den Knopf „Entsperren“ mit dem fertigen Befehl samt Hash dieses Repos; null, wenn der Hash nicht zu bilden ist.
+async function trustPrompt($: EngineInterface, lang: UiLang): Promise<string | null> {
+  const cwd = await $.session.root().catch(() => undefined)
+  const fp = await repoTrust($, cwd)
+  return fp === null || !isSafeTrustEntry(fp.common, fp.hash) ? null : t(lang, 'repo.trustPrompt', { regex: RISKY_GIT_CONFIG, entry: trustEntry(fp.common, fp.hash) })
 }
 
 // Git-Stand des Arbeitsverzeichnisses; rein lesend, ohne Netzwerk. Außerhalb eines Repos null.
@@ -1348,8 +1391,14 @@ async function loadMineDetails($: EngineInterface, force = false) {
   if (!same(await read($, mrDetails), out)) await update($, mrDetails, () => out)
 }
 
+// Globale Sperre für schreibende MR-Aktionen: solange eine läuft, nimmt keine zweite (auch kein anderer Knopf) einen Klick an.
+// Zustand außerhalb der Atome, damit zwei Klicks im selben Moment sicher nur einen durchlassen.
+let mrRunning = false
+
 // „Aktualisieren“: Panel aus dem tatsächlichen Stand neu aufbauen (MR, Branch, Listen, Repo-Infos), alte Rückfragen verwerfen.
 async function reloadMrPane($: EngineInterface) {
+  if (mrRunning) return
+  mrRunning = true
   const L = (await read($, settings)).lang
   await update($, mrBusy, () => t(L, 'mr.refreshing'))
   try {
@@ -1361,22 +1410,25 @@ async function reloadMrPane($: EngineInterface) {
     $.ui.toast(t(L, 'mr.failed', { what: t(L, 'mr.refresh'), why: err instanceof Error ? err.message : String(err) }))
   } finally {
     await update($, mrBusy, () => '')
+    mrRunning = false
   }
 }
 
 // Eine schreibende Aktion mit Statuszeile, Ergebnis als Toast und anschließender Abfrage.
 async function mrStep($: EngineInterface, what: string, run: (r: Remote, m: Mr) => Promise<{ ok: boolean; err: string }>, ref?: string) {
   const m = ref === undefined ? await read($, mrCur) : ((await read($, mrDetails))[ref] ?? null)
-  if (m === null || mrRemote === null) return
+  if (m === null || mrRemote === null || mrRunning) return
+  mrRunning = true
   const r = mrRemote
   const L = (await read($, settings)).lang
-  await update($, mrBusy, () => t(L, 'mr.working'))
+  await update($, mrBusy, () => `${what} …`)
   try {
     const x = await run(r, m)
     $.ui.toast(x.ok ? t(L, 'mr.done', { what }) : t(L, 'mr.failed', { what, why: x.err }))
     await note($, 'main', x.ok ? t(L, 'mr.done', { what }) : t(L, 'mr.failed', { what, why: x.err }))
   } finally {
     await update($, mrBusy, () => '')
+    mrRunning = false
     await refreshMr($, true)
     await loadMineDetails($, true).catch(() => undefined)
   }
@@ -1389,7 +1441,7 @@ const retryPipeline = async ($: EngineInterface) => mrStep($, t((await read($, s
 // merget GitLab bzw. GitHub, sobald sie grün ist.
 async function mergeMr($: EngineInterface, ref?: string) {
   const m = ref === undefined ? await read($, mrCur) : ((await read($, mrDetails))[ref] ?? null)
-  if (m === null) return
+  if (m === null || mrRunning) return
   const key = `merge-${m.iid}`
   if ((await read($, mrConfirm)) !== key) {
     await update($, mrConfirm, () => key)
@@ -1411,6 +1463,8 @@ async function toggleSquash($: EngineInterface, iid: number) {
 
 // Entwurf für einen neuen MR: Haiku schreibt Titel und Beschreibung aus Commits und Diffstat; angelegt wird erst per Klick.
 async function draftMr($: EngineInterface) {
+  if (mrRunning) return
+  mrRunning = true
   const L = (await read($, settings)).lang
   await update($, mrBusy, () => t(L, 'mr.drafting'))
   try {
@@ -1427,6 +1481,7 @@ async function draftMr($: EngineInterface) {
     await update($, mrDraft, () => ({ ...d, source: branch, target }))
   } finally {
     await update($, mrBusy, () => '')
+    mrRunning = false
   }
   await $.ui.open({ ...panes(L).mr, focus: true }).catch(() => undefined)
 }
@@ -1434,7 +1489,8 @@ async function draftMr($: EngineInterface) {
 // Branch pushen, dann den MR/PR aus dem Entwurf anlegen (Beschreibung über stdin bzw. REST, kein Editor).
 async function createMr($: EngineInterface, asDraft: boolean) {
   const d = await read($, mrDraft)
-  if (d === null || mrRemote === null) return
+  if (d === null || mrRemote === null || mrRunning) return
+  mrRunning = true
   const L = (await read($, settings)).lang
   await update($, mrBusy, () => t(L, 'mr.creating'))
   try {
@@ -1453,6 +1509,7 @@ async function createMr($: EngineInterface, asDraft: boolean) {
     await note($, 'main', t(L, 'mr.created', { ref: d.source }))
   } finally {
     await update($, mrBusy, () => '')
+    mrRunning = false
     await refreshMr($, true)
   }
 }
@@ -1463,14 +1520,18 @@ async function threadsToClaude($: EngineInterface) {
   if (m === null || mrRemote === null) return
   const threads = await forgeThreads(forgeIo($), mrRemote, m)
   if (threads.length === 0) return
-  await $.prompt.fill({ text: threadsPrompt(m, threads, (await read($, settings)).lang) })
+  const L = (await read($, settings)).lang
+  await $.prompt.fill({ text: threadsPrompt(m, threads, L) })
+  $.ui.toast(t(L, 'mr.filled'))
 }
 
 // Konflikt als Auftrag ins Eingabefeld; gesendet wird erst mit Enter. Mit `ref` ein eigener MR eines anderen Branches (Worktree).
 async function conflictToClaude($: EngineInterface, ref?: string) {
   const m = ref === undefined ? await read($, mrCur) : ((await read($, mrDetails))[ref] ?? null)
   if (m === null || !m.conflicts) return
-  await $.prompt.fill({ text: conflictPrompt(m, (await read($, settings)).lang, ref !== undefined) })
+  const L = (await read($, settings)).lang
+  await $.prompt.fill({ text: conflictPrompt(m, L, ref !== undefined) })
+  $.ui.toast(t(L, 'mr.filled'))
 }
 
 // Statusteile eines MR für Band und Panel: Nummer, Zustand, Pipeline, Approvals, Threads, Konflikt.
@@ -1581,7 +1642,10 @@ async function mrPaneBody($: EngineInterface, ui: Ui, L: UiLang, mock: { mr: Mr;
   if (mock === null) mrPaneAt = now
   const reviews = mock !== null ? [] : await read($, mrReview)
   const [ahead, draft, busy, confirm, down, squashed] = await Promise.all([read($, mrAhead), read($, mrDraft), read($, mrBusy), read($, mrConfirm), read($, pressed), read($, mrSquash)])
-  const btn = (key: string, label: string, run: () => Promise<unknown>) => pill(ui, 'pane', key, label, () => void act($, key, run).catch(() => undefined), down === key)
+  // Läuft eine MR-Aktion, sind alle Knöpfe grau und nehmen keinen Klick an; der gedrückte zeigt „◌ … “.
+  const lock = busy !== ''
+  const btn = (key: string, label: string, run: () => Promise<unknown>) =>
+    pill(ui, 'pane', key, label, () => void act($, key, run).catch(() => undefined), down === key ? true : lock ? 'locked' : false)
   const out: RenderElement[] = []
   const branch: RenderChildren[] = [<Text key="mr-bh" bold>{t(L, 'mr.branchHead')}</Text>]
   const refreshBtn = btn('mr-a-refresh', t(L, 'mr.refresh'), () => reloadMrPane($))
@@ -1606,13 +1670,13 @@ async function mrPaneBody($: EngineInterface, ui: Ui, L: UiLang, mock: { mr: Mr;
           {m.conflicts && btn('mr-a-fix', t(L, 'mr.fixConflict'), () => conflictToClaude($))}
           {btn('mr-a-rebase', t(L, 'mr.rebase'), () => rebaseMr($))}
           {(canMergeNow(m) || (isPipelineRunning(m) && canAutoMerge(m))) &&
-            (asking ? (
-              <Button key="mr-a-merge" label={mergeLabel} variant="primary" onPress={() => void mergeMr($).catch(() => undefined)} />
+            (asking && down !== 'mr-a-merge' && !lock ? (
+              <Button key="mr-a-merge" label={mergeLabel} variant="primary" onPress={() => void act($, 'mr-a-merge', () => mergeMr($)).catch(() => undefined)} />
             ) : (
-              pill(ui, 'pane', 'mr-a-merge', mergeLabel, () => void mergeMr($).catch(() => undefined))
+              btn('mr-a-merge', mergeLabel, () => mergeMr($))
             ))}
           {(canMergeNow(m) || (isPipelineRunning(m) && canAutoMerge(m))) &&
-            pill(ui, 'pane', 'mr-a-squash', t(L, squashed.includes(`merge-${m.iid}`) ? 'mr.squashOn' : 'mr.squashOff'), () => void toggleSquash($, m.iid).catch(() => undefined))}
+            pill(ui, 'pane', 'mr-a-squash', t(L, squashed.includes(`merge-${m.iid}`) ? 'mr.squashOn' : 'mr.squashOff'), () => { if (!lock) void toggleSquash($, m.iid).catch(() => undefined) }, lock ? 'locked' : false)}
           {m.pipeline !== null && m.pipeline.status === 'failed' && m.pipeline.id > 0 && btn('mr-a-retry', t(L, 'mr.retry'), () => retryPipeline($))}
           {refreshBtn}
         </Box>,
@@ -1656,7 +1720,11 @@ async function mrPaneBody($: EngineInterface, ui: Ui, L: UiLang, mock: { mr: Mr;
         <Text key="mr-dt" bold color={THEME.accent}>{draft.title}</Text>,
         draft.description !== '' && <Markdown onLinkPress={ext} key="mr-dd" text={draft.description} />,
         <Box key="mr-dactions" flexDirection="row" columnGap={2} flexWrap="wrap" marginTop={1}>
-          <Button key="mr-d-create" label={t(L, 'mr.submit')} variant="primary" onPress={() => void createMr($, false).catch(() => undefined)} />
+          {down !== 'mr-d-create' && !lock ? (
+            <Button key="mr-d-create" label={t(L, 'mr.submit')} variant="primary" onPress={() => void act($, 'mr-d-create', () => createMr($, false)).catch(() => undefined)} />
+          ) : (
+            btn('mr-d-create', t(L, 'mr.submit'), () => createMr($, false))
+          )}
           {btn('mr-d-draft', t(L, 'mr.submitDraft'), () => createMr($, true))}
           {btn('mr-d-redraft', t(L, 'mr.redraft'), () => draftMr($))}
           {btn('mr-d-discard', t(L, 'mr.discard'), () => update($, mrDraft, () => null))}
@@ -1679,13 +1747,13 @@ async function mrPaneBody($: EngineInterface, ui: Ui, L: UiLang, mock: { mr: Mr;
             {d.state === 'opened' && d.conflicts && btn(`mine-fix-${d.iid}`, t(L, 'mr.fixConflict'), () => conflictToClaude($, x.ref))}
             {d.state === 'opened' && btn(`mine-rebase-${d.iid}`, t(L, 'mr.rebase'), () => rebaseMr($, x.ref))}
             {mergeable && d !== undefined &&
-              (asking ? (
-                <Button key={`mine-merge-${d.iid}`} label={t(L, 'mr.confirm')} variant="primary" onPress={() => void mergeMr($, x.ref).catch(() => undefined)} />
+              (asking && down !== `mine-merge-${d.iid}` && !lock ? (
+                <Button key={`mine-merge-${d.iid}`} label={t(L, 'mr.confirm')} variant="primary" onPress={() => void act($, `mine-merge-${d.iid}`, () => mergeMr($, x.ref)).catch(() => undefined)} />
               ) : (
-                pill(ui, 'pane', `mine-merge-${d.iid}`, t(L, canMergeNow(d) || !canAutoMerge(d) ? 'mr.merge' : 'mr.mergeAuto'), () => void mergeMr($, x.ref).catch(() => undefined))
+                btn(`mine-merge-${d.iid}`, asking ? t(L, 'mr.confirm') : t(L, canMergeNow(d) || !canAutoMerge(d) ? 'mr.merge' : 'mr.mergeAuto'), () => mergeMr($, x.ref))
               ))}
             {mergeable && d !== undefined &&
-              pill(ui, 'pane', `mine-squash-${d.iid}`, t(L, squashed.includes(`merge-${d.iid}`) ? 'mr.squashOn' : 'mr.squashOff'), () => void toggleSquash($, d.iid).catch(() => undefined))}
+              pill(ui, 'pane', `mine-squash-${d.iid}`, t(L, squashed.includes(`merge-${d.iid}`) ? 'mr.squashOn' : 'mr.squashOff'), () => { if (!lock) void toggleSquash($, d.iid).catch(() => undefined) }, lock ? 'locked' : false)}
           </Box>
         )}
       </Box>
@@ -1694,6 +1762,277 @@ async function mrPaneBody($: EngineInterface, ui: Ui, L: UiLang, mock: { mr: Mr;
   if (mine.length > 0) out.push(section(4, 'mr-s-mine', <Text key="mr-mine-h" bold>{t(L, 'mr.mine')}</Text>, ...mineRows))
   if (reviews.length > 0) out.push(section(5, 'mr-s-review', <Text key="mr-rev-h" bold>{t(L, 'mr.review')}</Text>, <Markdown onLinkPress={ext} key="mr-rev" text={list(reviews)} />))
   return out
+}
+
+// ---- Diagnose (Idee: YeonwooSung/my-claude-code-mods: context-inspector, agent-profiler, blast-radius; kein Code übernommen) ----
+// Zustand der drei Module liegt in Modul-Variablen, nicht in Atomen: er hält bis zu 20.000 Datensätze, und ein Reload beginnt
+// von vorn (// ponytail: kein Wiederaufbau aus $.session.messages(); Ausbaupfad: backfill wie im Original). Rein beobachtend.
+let inspectSt = newInspect()
+let inspectVer = 0
+let inspectAll = false
+let inspectMemo: { ver: number; all: boolean; sec: number; sum: InspectSummary } | null = null
+let profileSt = newProfiler()
+let profileVer = 0
+let profileMemo: { ver: number; sec: number; sum: ProfileSummary } | null = null
+let blastRes: BlastResult | null = null
+let blastWatched: string[] = []
+let blastRun: Promise<void> | null = null
+let blastLocked = false
+let lastRepaint = 0
+
+// Eine Beobachtung stört die Session nie: jeder Eintrag läuft hierdurch und zählt die Version hoch (Cache der Auswertung).
+const observeInspect = (fn: () => void): void => {
+  try {
+    fn()
+    inspectVer++
+  } catch {
+    // verworfen
+  }
+}
+const observeProfile = (fn: () => void): void => {
+  try {
+    fn()
+    profileVer++
+  } catch {
+    // verworfen
+  }
+}
+
+// Das Band zeichnet während eines Turns im 250-ms-Takt, jede Beobachtung zählt die Version hoch: im Band darum höchstens
+// einmal je Sekunde neu rechnen (`throttled`); Panel und Bericht rechnen frisch.
+const inspectSum = (now = 0, throttled = false): InspectSummary => {
+  const sec = Math.floor(now / 1000)
+  const stale = inspectMemo === null || inspectMemo.all !== inspectAll || (inspectMemo.ver !== inspectVer && (!throttled || inspectMemo.sec !== sec))
+  if (stale) inspectMemo = { ver: inspectVer, all: inspectAll, sec, sum: summarizeInspect(inspectSt, inspectAll) }
+  return inspectMemo!.sum
+}
+const profileSum = (now: number, throttled = false): ProfileSummary => {
+  const sec = Math.floor(now / 1000)
+  const stale = profileMemo === null || (profileMemo.ver !== profileVer && (!throttled || profileMemo.sec !== sec)) || (!throttled && profileMemo.sec !== sec)
+  if (stale) profileMemo = { ver: profileVer, sec, sum: summarizeProfile(profileSt, now) }
+  return profileMemo!.sum
+}
+
+// Uhr für die Beobachtung: fehlt sie (Test-Host), zählt die Beobachtung nicht, die Session läuft weiter.
+const stamp = async ($: EngineInterface): Promise<number> => {
+  try {
+    return await $.clock.now()
+  } catch {
+    return 0
+  }
+}
+
+// Zeichnet Band und Panels neu, höchstens einmal je Sekunde.
+async function repaint($: EngineInterface) {
+  const now = await stamp($)
+  if (now - lastRepaint < 1_000) return
+  lastRepaint = now
+  $.ui.invalidate('ui.render')
+}
+
+const blastKey = (cwd: string) => `blast:watch:${cwd}`
+
+async function loadBlast($: EngineInterface) {
+  const cwd = await projectCwd($)
+  if (cwd === '') return
+  const saved = await $.store.get(blastKey(cwd))
+  blastWatched = Array.isArray(saved) ? saved.filter((x): x is string => typeof x === 'string').slice(0, 200) : []
+  if ((await read($, settings)).blastBand) await refreshBlast($)
+}
+
+async function saveBlast($: EngineInterface, cwd: string) {
+  await $.store.set(blastKey(cwd), blastWatched)
+}
+
+// Git-Aufrufe wie überall im Cockpit: ohne fsmonitor und Locks, und nie in einem Repo, dessen Konfiguration Befehle starten kann.
+async function blastIo($: EngineInterface): Promise<BlastIo | null> {
+  const cwd = await projectCwd($)
+  if (cwd === '') return null
+  blastLocked = await isRiskyRepo($, cwd)
+  if (blastLocked) return null
+  return {
+    cwd,
+    read: path => $.fs.read(path),
+    run: argv => $.process.run(argv[0] === 'git' ? [...GIT_BASE, ...argv.slice(1)] : argv, { cwd, timeoutMs: 10_000 }),
+  }
+}
+
+// Läuft schon eine Berechnung, kehrt der Aufruf sofort zurück; `wait` (Befehle) wartet sie ab und rechnet danach neu.
+async function refreshBlast($: EngineInterface, wait = false) {
+  if (blastRun !== null) {
+    if (!wait) return
+    await blastRun
+  }
+  const run = (async () => {
+    try {
+      const io = await blastIo($)
+      blastRes = io === null ? null : await blastScan(io, blastWatched)
+    } catch {
+      // die alten Zahlen bleiben
+    }
+  })()
+  blastRun = run
+  try {
+    await run
+  } finally {
+    blastRun = null
+    await repaint($).catch(() => undefined)
+  }
+}
+
+async function blastCommand($: EngineInterface, args: string): Promise<string> {
+  const L = await langOf($)
+  const cmd = parseCommand(args)
+  if (cmd.kind === 'help') return t(L, 'diag.blastHelp')
+  const cwd = await projectCwd($)
+  if (cmd.kind === 'reset') {
+    blastWatched = []
+    await saveBlast($, cwd)
+    await refreshBlast($, true)
+    return blastReport(blastRes, blastWatched, L)
+  }
+  if (cmd.kind === 'auto') {
+    await $.ui.open({ ...panes(L).profiling, focus: true })
+    void refreshBlast($).catch(() => undefined)
+    return ''
+  }
+  const path = normalizeTarget(cwd, cmd.path)
+  if (path === null) return t(L, 'diag.blastBad')
+  if (cmd.kind === 'watch') blastWatched = [...new Set([...blastWatched, path])].slice(-200)
+  if (cmd.kind === 'unwatch') blastWatched = blastWatched.filter(p => p !== path)
+  if (cmd.kind === 'target') {
+    const io = await blastIo($)
+    return io === null ? t(L, 'diag.blastLocked') : blastReport(await blastScan(io, [path]), blastWatched, L)
+  }
+  await saveBlast($, cwd)
+  await refreshBlast($, true)
+  return blastReport(blastRes, blastWatched, L)
+}
+
+type DiagSection = { title: string; rows: readonly { label: string; value: string; pct?: number; tone?: 'ok' | 'warn' | 'bad' | 'dim' }[]; note?: string }
+
+// Zeilen eines Moduls im Profiling-Panel: Abschnittsüberschrift gedimmt, Zeilen als Bezeichnung und Wert (kurze Bezeichnungen
+// im Raster, lange – Dateipfade – gedimmt davor), Anteile als Textbalken, zwischen den Abschnitten eine Leerzeile.
+function diagRows(ui: Ui, key: string, sections: readonly DiagSection[]): RenderElement[] {
+  const { Box, Text } = ui
+  const TONE = { ok: THEME.success, warn: THEME.warning, bad: THEME.error, dim: THEME.textMuted } as const
+  return sections.flatMap((sec, i) => [
+    <Text key={`${key}-${i}-h`} bold color={THEME.textMuted}>{sec.title}</Text>,
+    ...sec.rows.map((r, j) => {
+      const value = (
+        <Text key={`${key}-${i}-${j}-v`} wrap="truncate-end" color={r.tone === undefined ? undefined : TONE[r.tone]}>
+          {r.pct === undefined ? '' : `${bar(r.pct, 12)} `}
+          {r.value}
+        </Text>
+      )
+      return r.label.length <= 12 ? (
+        labelRow(ui, 'pane', `${key}-${i}-${j}`, r.label, value)
+      ) : (
+        <Box key={`${key}-${i}-${j}`} flexDirection="row" columnGap={1}>
+          <Text dimColor wrap="truncate-end">{r.label}</Text>
+          {value}
+        </Box>
+      )
+    }),
+    ...(sec.note === undefined ? [] : [<Text key={`${key}-${i}-note`} dimColor wrap="wrap">{sec.note}</Text>]),
+    ...(i < sections.length - 1 ? [<Box key={`${key}-${i}-gap`} height={1} />] : []),
+  ])
+}
+
+// Profiling-Panel im Schema des Cockpit-Panels: Kopf mit Modellzeile, darunter je Modul eine Karte mit ▾/▸ (Atom `collapsed`).
+async function profilingPane($: EngineInterface, e: ResolveInput): Promise<RenderElement> {
+  const s = await read($, settings)
+  const L = s.lang
+  const marg = s.paneMargins ? 1 : 0
+  const ui = elementsOf($, e)
+  const { Box, Text } = ui
+  const now = await $.clock.now()
+  await read($, tick)
+  const folded = await read($, collapsed)
+  const cards = [
+    {
+      id: 'inspect',
+      title: t(L, 'diag.cardInspect'),
+      sections: () => inspectView(inspectSum(), L),
+      action: pill(ui, 'pane', 'diag-agents', t(L, inspectAll ? 'diag.mainOnly' : 'diag.withAgents'), () => {
+        inspectAll = !inspectAll
+        $.ui.invalidate('ui.render')
+      }),
+    },
+    { id: 'profile', title: t(L, 'diag.cardProfile'), sections: () => profileView(profileSum(now), now, L), action: null },
+    {
+      id: 'blast',
+      title: t(L, 'diag.cardBlast'),
+      sections: () => blastView(blastRes, blastWatched, L),
+      action: pill(ui, 'pane', 'diag-refresh', t(L, 'diag.refresh'), () => void refreshBlast($, true).catch(() => undefined), blastRun !== null),
+    },
+  ]
+  const tiles = cards.map((c, i) => {
+    const key = `diag-${c.id}`
+    const open = !folded.includes(key)
+    let rows: RenderElement[]
+    try {
+      rows = diagRows(ui, key, c.sections())
+    } catch (error) {
+      rows = [<Text key={`${key}-fail`} color={THEME.error} wrap="wrap">{t(L, 'diag.failed', { why: String(error) })}</Text>]
+    }
+    return tile(
+      ui,
+      'pane',
+      {
+        key: `card-${key}`,
+        tint: cycleTint(i + 1),
+        marg,
+        grow: true,
+        open,
+        head: (
+          <Box flexDirection="row" justifyContent="space-between">
+            <Text bold>{c.title}</Text>
+            <Box flexDirection="row" columnGap={1}>
+              {open && c.action}
+              {pill(ui, 'pane', `card-fold-${key}`, open ? '▾' : '▸', () => void toggleCard($, key).catch(() => undefined))}
+            </Box>
+          </Box>
+        ),
+      },
+      ...(c.id === 'blast' && blastLocked ? [<Text key="diag-locked" color={THEME.warning} wrap="wrap">{t(L, 'diag.blastLocked')}</Text>] : []),
+      ...rows,
+    )
+  })
+  return (
+    <Box flexDirection="column">
+      {await paneHead($, ui, L)}
+      {...tiles}
+    </Box>
+  )
+}
+
+// Kurzinfos im Band: je ein Knopf, der das zugehörige Panel öffnet; leere Kurzinfos (noch keine Daten) fehlen.
+function diagChips($: EngineInterface, ui: Ui, s: ModSettings, percent: number | undefined, now: number): RenderElement | null {
+  const L = s.lang
+  const open = (p: { id: string; title: string }) => () => void $.ui.open({ ...p, focus: true }).catch(() => undefined)
+  const safe = (fn: () => string): string => {
+    try {
+      return fn()
+    } catch {
+      return ''
+    }
+  }
+  const items = [
+    { key: 'diag-inspect', on: s.inspectBand, text: () => inspectBand(inspectSum(now, true), percent, L), pane: panes(L).profiling },
+    { key: 'diag-profile', on: s.profileBand, text: () => profileBand(profileSum(now, true), now, L), pane: panes(L).profiling },
+    { key: 'diag-blast', on: s.blastBand, text: () => blastBand(blastRes, L), pane: panes(L).profiling },
+  ]
+  const chips = items.flatMap(i => {
+    const text = i.on ? safe(i.text) : ''
+    return text === '' ? [] : [pill(ui, 'band', i.key, text, open(i.pane), false, true)]
+  })
+  if (chips.length === 0) return null
+  return (
+    <ui.Box key="diag-row" flexDirection="row" flexWrap="wrap" columnGap={2} alignItems="center">
+      {chips}
+    </ui.Box>
+  )
 }
 
 export const register: Register = (on, options) => {
@@ -1711,6 +2050,12 @@ export const register: Register = (on, options) => {
   on('session.start', async ($, e, next) => {
     const info = await loadAbout($)
     await update($, about, () => info)
+    // Diagnose: neue Session, neue Messung (der Zustand liegt in Modul-Variablen und überlebt keinen Reload).
+    inspectSt = newInspect()
+    profileSt = newProfiler()
+    inspectVer++
+    profileVer++
+    blastRes = null
     await loadSettings($, { steps: options.nextSteps !== false, chatInfo: options.chatInfo !== false })
     void $.store.get('collapsed').then(v => update($, collapsed, () => foldedOf(v))).catch(() => undefined)
     void loadCatchUp($).catch(() => undefined)
@@ -1729,6 +2074,11 @@ export const register: Register = (on, options) => {
     await $.command.register({ name: 'cockpit-mr', description: t(lang, 'common.cmdMr') })
     await $.command.register({ name: 'cockpit-features', description: t(lang, 'common.cmdFeatures') })
     await $.command.register({ name: 'cockpit-verlauf', description: t(lang, 'common.cmdHistory') })
+    await $.command.register({ name: 'cockpit-profiling', description: t(lang, 'common.cmdProfiling') })
+    await $.command.register({ name: 'cockpit-kontext', description: t(lang, 'common.cmdInspect') })
+    await $.command.register({ name: 'cockpit-profil', description: t(lang, 'common.cmdProfile') })
+    await $.command.register({ name: 'cockpit-blast', description: t(lang, 'common.cmdBlast') })
+    void refreshDirs($).then(() => loadBlast($)).catch(() => undefined)
     // Checkliste: mittlere Schrittdauer aus dem Verlauf, sobald der Session-Ordner bekannt ist.
     void refreshDirs($).then(() => projectCwd($)).then(async cwd => loadAvg($, cwd, await $.clock.now())).catch(() => undefined)
     // ponytail: Git-Stand alle 30 s neu (auch nach Worktree-Wechsel oder Neustart ohne neuen Turn), classic.CwdChanged wäre sofort
@@ -1825,6 +2175,14 @@ export const register: Register = (on, options) => {
           {el}
         </Box>
       )
+    // Einzelner MCP-Aufruf (nicht gruppiert): dieselbe farbige Zeile „Server › Tool (Aktion) → Ziel“ wie in der Tool-Gruppe.
+    if (icon !== null && splitTool(p.tool).server !== null)
+      el = (
+        <Box key={`om-ml-${id}`} flexDirection="column">
+          {el}
+          <Text wrap="truncate-end" dimColor={!p.isRunning}>{'  '}{toolLabel(ui, p.tool, toolTarget(p.input), p.isErrored, toolAction(p.input))}</Text>
+        </Box>
+      )
     if (s.skinExpand && !p.isRunning) {
       const open = (await read($, expanded)).includes(id)
       const toggle = () => void update($, expanded, ids => (ids.includes(id) ? ids.filter(x => x !== id) : pushCapped(ids, id, 50))).catch(() => undefined)
@@ -1835,7 +2193,7 @@ export const register: Register = (on, options) => {
           {el}
           <Box flexDirection="row" columnGap={1} alignItems="center">
             {skinMark(ui, await markerOf($), `om-xm-${id}`, 'style.expand')}
-            {pill(ui, 'skin', `om-xb-${id}`, t(s.lang, open ? 'skin.detailsOpen' : 'skin.details'), toggle)}
+            {pill(ui, 'skin', `om-xb-${id}`, t(s.lang, open ? 'skin.detailsOpen' : 'skin.details'), toggle, false, true)}
           </Box>
           {open && (
             <Box flexDirection="column" borderStyle="round" borderColor={THEME.border} paddingX={1}>
@@ -1884,7 +2242,7 @@ export const register: Register = (on, options) => {
         </Box>
         {shown.map((c, i) => (
           <Text key={`om-gl-${base}-${i}`} wrap="truncate-end" dimColor={!c.isRunning}>
-            {'  '}{toolLabel(ui, c.tool, toolTarget(c.input), c.isErrored)}
+            {'  '}{toolLabel(ui, c.tool, toolTarget(c.input), c.isErrored, toolAction(c.input))}
           </Text>
         ))}
         {mcp.length > shown.length && <Text key={`om-gx-${base}`} dimColor>{'  '}+{mcp.length - shown.length}</Text>}
@@ -2099,6 +2457,7 @@ export const register: Register = (on, options) => {
   // Nach /compact misst die Engine erst mit dem nächsten Request neu: Kontext, Aufschlüsselung und Cache selbst nachlesen.
   on('session.compact', async ($, e, next) => {
     const done = await next(e)
+    observeInspect(() => ingestCompaction(inspectSt, e as never, done as never))
     if (e.agentId === undefined && e.trigger !== 'precompute' && done.skip === undefined) {
       const reread = async () => {
         const v = toUsage(await $.session.usage())
@@ -2111,6 +2470,14 @@ export const register: Register = (on, options) => {
       $.clock.after(1500, () => void reread().catch(() => undefined))
     }
     return done
+  })
+
+  // Mitten im Turn kommt das Ende einer Hintergrundaufgabe als Anhang in die Unterhaltung, nicht als Prompt.
+  on('session.append', async ($, e, next) => {
+    observeInspect(() => ingestAppend(inspectSt, e as never))
+    const text = notificationText(e.door, e.message.content)
+    if (text.includes('<task-notification>')) await finishBackground($, text).catch(() => undefined)
+    return next(e)
   })
 
   on('prompt.submit', async ($, e, next) => {
@@ -2140,12 +2507,21 @@ export const register: Register = (on, options) => {
     // Ein laufender Aufruf der Hauptschleife (langer Build, offene Freigabe) ist kein „hängt?“.
     const isMain = e.agentId === undefined
     if (isMain) toolsInFlight++
+    const startedAt = await stamp($)
+    observeInspect(() => ingestToolCall(inspectSt, e.tool_use_id, e.tool, e.agentId, args))
+    observeProfile(() => toolBegin(profileSt, e.tool_use_id, e.tool, e.agentId, args, startedAt))
+    void repaint($).catch(() => undefined)
     let ran: Awaited<ReturnType<typeof next>>
+    let ranOk = false
     try {
       ran = await next(e)
+      ranOk = ran.deny === undefined && ran.isError !== true
     } finally {
       if (isMain) toolsInFlight = Math.max(0, toolsInFlight - 1)
+      const endedAt = await stamp($)
+      observeProfile(() => toolEnd(profileSt, e.tool_use_id, endedAt, ranOk))
     }
+    observeInspect(() => ingestToolResult(inspectSt, e.tool_use_id, ran))
     const isEdit = EDIT_TOOLS.has(e.tool)
     const isError = ran.isError === true
     const path = isEdit && !isError ? inputPath(e) : ''
@@ -2162,6 +2538,7 @@ export const register: Register = (on, options) => {
           if (path !== '') nj = noteFile(nj, path)
           if (e.tool === 'AskUserQuestion' && nj.phase === 'needsYou') nj = { ...nj, phase: 'working', question: '' }
           // Desktop-Abschlussbox: ihre Frage hat am Turn-Ende Vorrang vor der Frage aus der Antwort.
+          if (e.tool === 'mcp__ccd_turn__wrap_up' && !isError) nj = completeAll(nj, now)
           if (e.tool === 'mcp__ccd_turn__wrap_up' && typeof args.ask === 'string' && args.ask.trim() !== '') nj = { ...nj, ask: oneLine(args.ask, 160) }
           return nj
         })
@@ -2178,7 +2555,7 @@ export const register: Register = (on, options) => {
       // Eine ignorierte Warnung (gleiche Art, gleiches Ziel) kommt in dieser Session nicht wieder.
       if (alert !== null && !(await read($, loopIgnored)).includes(loopKey(alert))) await update($, loopAlert, () => alert)
     }
-    await note($, 'main', `${toolText(e.tool)}${target === '' ? '' : ` → ${target}`}${isError ? ' ✗' : ''}`, { tool: e.tool, target, isError })
+    await note($, 'main', `${toolText(e.tool)}${target === '' ? '' : ` → ${target}`}${isError ? ' ✗' : ''}`, { tool: e.tool, target, action: toolAction(e), isError })
     await settleAsk($, e.tool_use_id, ran.deny !== undefined)
     if (e.agentId !== undefined) await update($, agents, list => list.map(a => (a.id === e.agentId ? { ...a, steps: (a.steps ?? 0) + 1 } : a)))
     await trackBackground($, e, ran)
@@ -2202,6 +2579,7 @@ export const register: Register = (on, options) => {
     const out = engine.decision === 'allow' && (await read($, settings)).dirGuard ? await foreignTarget($, e.tool, e).catch(() => null) : null
     const verdict = out === null ? engine : { decision: 'ask' as const, reason: t(await langOf($), 'dir.ask', { root: (await read($, dirs)).root, dir: out }) }
     const id = e.tool_use_id
+    if (id !== undefined) observeProfile(() => toolApproval(profileSt, id, verdict.decision))
     // Die Engine prüft denselben Aufruf mitunter mehrfach: je tool_use_id nur einmal zählen.
     if (id === undefined || checked.has(id)) return verdict
     checked.add(id)
@@ -2245,7 +2623,36 @@ export const register: Register = (on, options) => {
     const want = e.agentId ? undefined : await effortFor($, e.effort)
     // Checkliste: jeder Model-Request (auch eines Subagents) ist ein Lebenszeichen.
     await touchJob($)
-    const result = yield* next(want === undefined ? e : { ...e, effort: want })
+    // Diagnose: den Stream von Hand durchreichen, damit Zeiten (erster Chunk, Thinking, Ausgabe) und Usage beobachtbar sind.
+    const stepAt = await stamp($)
+    observeProfile(() => stepBegin(profileSt, e.turnId, e.index, e.model, e.agentId, stepAt))
+    const gen = next(want === undefined ? e : { ...e, effort: want })
+    let step: Awaited<ReturnType<typeof gen.next>> | undefined
+    let stepOk = false
+    let prevKind = ''
+    try {
+      step = await gen.next()
+      while (step.done !== true) {
+        const chunk = step.value
+        // Die Uhr nur bei Wechsel der Chunk-Art fragen: ein Host-Aufruf je Chunk würde den Stream bremsen.
+        if (chunk.kind !== prevKind) {
+          prevKind = chunk.kind
+          const at = await stamp($)
+          observeProfile(() => stepChunk(profileSt, e.turnId, e.index, { kind: chunk.kind as never, usage: chunk.kind === 'stop' ? chunk.usage : undefined }, at))
+        }
+        if (chunk.kind === 'stop') observeInspect(() => sampleInput(inspectSt, e.agentId, inputOf(chunk.usage)))
+        yield chunk
+        step = await gen.next()
+      }
+      stepOk = true
+    } finally {
+      // Wie `yield*`: bricht der Aufrufer ab (Esc), geht das Ende auch an den Stream darunter.
+      if (step === undefined || step.done !== true) await gen.return(undefined as never).catch(() => undefined)
+      const endAt = await stamp($)
+      const stepUsage = step !== undefined && step.done === true ? step.value.usage : undefined
+      observeProfile(() => stepEnd(profileSt, e.turnId, e.index, endAt, stepUsage, stepOk))
+    }
+    const result = step.value
     if (!e.agentId) {
       const v = { ...(await read($, modelInfo)), model: e.model, effort: want ?? e.effort }
       if (!same(await read($, modelInfo), v)) await update($, modelInfo, () => v)
@@ -2288,6 +2695,8 @@ export const register: Register = (on, options) => {
   // Checkliste: turnId des Haupt-Turns für „Pause“ merken; der Start eines Subagent-Laufs ist ein Lebenszeichen.
   on('turn.start', async ($, e, next) => {
     const started = await next(e)
+    const turnAt = await stamp($)
+    observeProfile(() => turnStart(profileSt, e.turnId, e.agentId, turnAt))
     if (e.agentId === undefined) {
       mainTurnId = e.turnId
       cmdTurnStarted = true
@@ -2298,7 +2707,11 @@ export const register: Register = (on, options) => {
 
   on('turn.complete', async ($, e, next) => {
     const done = await next(e)
+    const doneAt = await stamp($)
+    observeProfile(() => turnComplete(profileSt, e.turnId, doneAt, e.reason))
     if (!e.agentId) void refreshMr($, true).catch(() => undefined)
+    if (!e.agentId && (await read($, settings)).blastBand) void refreshBlast($).catch(() => undefined)
+    void repaint($).catch(() => undefined)
     if (e.agentId) {
       const status = e.isAborted ? 'killed' : 'completed'
       const u = e.usage
@@ -2342,6 +2755,31 @@ export const register: Register = (on, options) => {
     }
     return done
   })
+
+  // Diagnose (Profiler): gemessene Ausführungszeit der Tools und Lebenslauf der Subagents aus den klassischen Hook-Events.
+  on('classic.PostToolUse', async ($, e, next) => {
+    if (e.duration_ms !== undefined) observeProfile(() => toolExec(profileSt, e.tool_use_id, e.duration_ms ?? 0))
+    return next(e)
+  }).catch(($, e, next) => (next.called ? undefined : next(e)))
+  on('classic.PostToolUseFailure', async ($, e, next) => {
+    if (e.duration_ms !== undefined) observeProfile(() => toolExec(profileSt, e.tool_use_id, e.duration_ms ?? 0))
+    return next(e)
+  }).catch(($, e, next) => (next.called ? undefined : next(e)))
+  on('classic.SubagentStart', async ($, e, next) => {
+    const at = await stamp($)
+    observeProfile(() => subagentStart(profileSt, e.agent_id, e.agent_type, at))
+    return next(e)
+  }).catch(($, e, next) => (next.called ? undefined : next(e)))
+  on('classic.SubagentStop', async ($, e, next) => {
+    const at = await stamp($)
+    observeProfile(() => subagentStop(profileSt, e.agent_id, at))
+    return next(e)
+  }).catch(($, e, next) => (next.called ? undefined : next(e)))
+  on('classic.StopFailure', async ($, e, next) => {
+    const at = await stamp($)
+    observeProfile(() => stopFailure(profileSt, e.agent_id, at, String(e.error)))
+    return next(e)
+  }).catch(($, e, next) => (next.called ? undefined : next(e)))
 
   on('ui.render', { component: 'AbovePrompt' }, async ($, e, next) => {
     const s = await read($, settings)
@@ -2462,6 +2900,7 @@ export const register: Register = (on, options) => {
           </Box>
         </Box>
         {u !== null && metrics(u, await read($, lastTurnAt), await read($, cacheHit), await read($, breakdown))}
+        {diagChips($, ui, s, u?.contextPercent, now)}
         {s.breath && Svg && (await (async () => {
           const tn = await read($, turn)
           const labels = { in: t(L, 'breath.in'), sip: t(L, 'breath.sip'), hold: t(L, 'breath.hold'), out: t(L, 'breath.out') }
@@ -2616,6 +3055,31 @@ export const register: Register = (on, options) => {
         </Box>
       )
     }
+  })
+
+  // Profiling: Kontext-Inspektor, Agent-Profiler und Blast-Radius in einem Panel; die drei Befehle liefern Berichte als Text.
+  on('ui.render', { component: 'Pane', requestId: 'tenvan-cc-profiling' }, async ($, e, next) => (drawsOn(e.surface) ? profilingPane($, e) : next(e)))
+
+  on('command.run', { command: 'cockpit-profiling' }, async $ => {
+    await $.ui.open({ ...panes(await langOf($)).profiling, focus: true })
+    return {}
+  })
+  on('command.run', { command: 'cockpit-kontext' }, async ($, e) => {
+    const L = await langOf($)
+    if ((e.args ?? '').trim() === 'text') return { text: inspectReport(inspectSum(), L) }
+    await $.ui.open({ ...panes(L).profiling, focus: true })
+    return {}
+  })
+  on('command.run', { command: 'cockpit-profil' }, async ($, e) => {
+    const L = await langOf($)
+    const arg = (e.args ?? '').trim()
+    if (arg === 'text' || arg === 'turn') return { text: profileReport(profileSum(await $.clock.now()), await $.clock.now(), L, arg === 'turn' ? 'turn' : 'session') }
+    await $.ui.open({ ...panes(L).profiling, focus: true })
+    return {}
+  })
+  on('command.run', { command: 'cockpit-blast' }, async ($, e) => {
+    const text = await blastCommand($, e.args ?? '')
+    return text === '' ? {} : { text }
   })
 
   // Zusammenfassung in eigenem Panel rechts: Knöpfe oben, darunter die Abschnitte als einfacher Text (kein Markdown-Rendering).
@@ -3076,22 +3540,7 @@ export const register: Register = (on, options) => {
                 </Box>
               )
             })(),
-            ...(place === null ? [] : repoRows(place, L)).map(([label, value]) => labelRow(ui, 'pane', `wd-row-${label}`, label, value)),
-            // Kurzer MR-Status unter Upstream (nur GitLab): Knopf öffnet das MR-Panel, ohne MR „n Commits ohne MR“.
-            await (async () => {
-              const wm = m?.mr ?? (await read($, mrCur))
-              const ahead = m !== null ? 0 : await read($, mrAhead)
-              if (wm === null && ahead === 0) return null
-              const label = wm !== null ? ` ${mrBadge(wm).replace(/ · /g, ' ')} ` : ` ${t(L, 'mr.ahead', { n: ahead })} `
-              return (
-                labelRow(ui, 'pane', 'wd-mr', t(L, 'mr.short'), (
-                  <Box flexDirection="row" columnGap={1} flexShrink={1}>
-                    {pill(ui, 'pane', 'wd-mr-open', label, () => void $.ui.open({ ...P.mr, focus: true }).catch(() => undefined))}
-                    {wm !== null && wm.title !== '' && <Text color={THEME.textMuted} wrap="truncate-end">{wm.title}</Text>}
-                  </Box>
-                ))
-              )
-            })(),
+            ...(place === null ? [] : repoPathRows(place, L)).map(([label, value]) => labelRow(ui, 'pane', `wd-row-${label}`, label, value)),
             // Verknüpfte Sessions (nur Desktop): Status, Name, Branch; neueste zuerst wie die App sie liefert.
             await (async () => {
               const ls = m?.linked ?? (await read($, linked))
@@ -3108,6 +3557,34 @@ export const register: Register = (on, options) => {
                     </Box>
                   ))}
                 </Box>
+              )
+            })(),
+          )}
+        {s.cardGit && place !== null &&
+          card(
+            'cardGit',
+            t(L, 'panel.git'),
+            ...(place === null ? [] : repoGitRows(place, L)).map(([label, value]) =>
+              labelRow(ui, 'pane', `git-row-${label}`, label, place.dirty === null && label === t(L, 'panel.repoChanges') ? (
+                <Box flexDirection="row" columnGap={1} flexShrink={1}>
+                  <Text wrap="truncate-end">{value}</Text>
+                  {pill(ui, 'pane', 'git-trust', ` ${t(L, 'repo.trust')} `, () => void trustPrompt($, L).then(text => (text === null ? $.ui.toast(t(L, 'repo.trustFail')) : $.prompt.fill({ text }))).catch(() => undefined))}
+                </Box>
+              ) : value),
+            ),
+            // Kurzer MR-Status unter Upstream (nur GitLab): Knopf öffnet das MR-Panel, ohne MR „n Commits ohne MR“.
+            await (async () => {
+              const wm = m?.mr ?? (await read($, mrCur))
+              const ahead = m !== null ? 0 : await read($, mrAhead)
+              if (wm === null && ahead === 0) return null
+              const label = wm !== null ? ` ${mrBadge(wm).replace(/ · /g, ' ')} ` : ` ${t(L, 'mr.ahead', { n: ahead })} `
+              return (
+                labelRow(ui, 'pane', 'wd-mr', t(L, 'mr.short'), (
+                  <Box flexDirection="row" columnGap={1} flexShrink={1}>
+                    {pill(ui, 'pane', 'wd-mr-open', label, () => void $.ui.open({ ...P.mr, focus: true }).catch(() => undefined))}
+                    {wm !== null && wm.title !== '' && <Text color={THEME.textMuted} wrap="truncate-end">{wm.title}</Text>}
+                  </Box>
+                ))
               )
             })(),
           )}

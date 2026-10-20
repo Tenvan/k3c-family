@@ -44,3 +44,8 @@ Die Merge-Request-Funktion übernimmt Ideen aus guided-mr (https://github.com/al
 ## glanceflow (Antreas-Strb)
 
 Die Checkliste im Band folgt der Idee von glanceflow (https://github.com/Antreas-Strb/glanceflow): Aufgabenliste mit Status, Fortschritt und Restzeit, Verlauf mit Tages- und Wochenbericht, Pause und Weiter. Kein Code übernommen; die Umsetzung (`hooks/glance.ts`, Teile in `hooks/register.tsx`) ist eigen und rein beobachtend: Schritte stammen nur aus Claudes eigener Aufgabenliste, es gibt weder Prompt-Einschub noch eigene Werkzeuge noch ein Sperren von Tools. Lizenz: MIT, Copyright (c) 2026 Antreas-Strb.
+
+## my-claude-code-mods (YeonwooSung)
+
+Die Diagnose-Funktionen von tenvan-cc (`hooks/inspect.ts`, `hooks/profiler.ts`, `hooks/blast.ts`) folgen dem Funktionsumfang der Mods `context-inspector`, `agent-profiler` und `blast-radius` aus https://github.com/YeonwooSung/my-claude-code-mods (Stand 82f9bf6, Apache License 2.0, https://www.apache.org/licenses/LICENSE-2.0).
+Es wurde kein Code übernommen: Die Umsetzung ist eigen, nur Funktionsumfang und Beobachtungsgrade (measured, observed, reported, inferred) sind Ideen der Vorlage. Der OTLP-Export des Profilers fehlt bewusst.
