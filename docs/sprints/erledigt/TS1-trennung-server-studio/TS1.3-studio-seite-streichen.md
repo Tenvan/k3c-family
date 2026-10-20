@@ -38,8 +38,8 @@ Watch (TS1.4); Pages (TS1.5); Dokumentation (TS1.5); Funktionsänderungen im Stu
 
 ## Fertig, wenn
 
-- [ ] AC-03: Tests für 404 auf `/studio/` und `/api/studio`, keine Kachel, kein `dist/studio`; `grep K3C_STUDIO_LAN` ohne Treffer im Code.
-- [ ] `task check` und `task check:go` grün.
+- [x] AC-03: Tests für 404 auf `/studio/` und `/api/studio`, keine Kachel, kein `dist/studio`; `grep K3C_STUDIO_LAN` ohne Treffer im Code.
+- [x] `task check` und `task check:go` grün.
 
 ## Prüfen
 

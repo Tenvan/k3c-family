@@ -1,6 +1,6 @@
 # TS1 · DEV, SRV, INF · Spielserver und Asset-Studio trennen, Server beobachtet Dateien
 
-- **Status:** aktiv
+- **Status:** erledigt
 - **Projekt:** WZG
 - **Domäne:** DEV, SRV, INF
 - **Reife:** bereit
@@ -67,14 +67,15 @@ keine
 | TS1.4 | `TS1.4-datei-watch-server.md` | Umsetzung | autonom | fertig |
 | TS1.5 | `TS1.5-pages-und-doku.md` | Umsetzung | autonom | fertig |
 | TS1.6 | `TS1.6-review.md` | Review | autonom | fertig |
-| TS1.7 | `TS1.7-abnahme.md` | Review | Mensch | offen |
+| TS1.7 | `TS1.7-abnahme.md` | Review | Mensch | fertig |
 
 Bei `Reife: Entwurf` genügen Stichpunkte mit den Kriterien in Klammern statt Session-Dateien. Vor dem Aktivieren
 wird jede Session als eigene Datei nach `docs/vorlagen/session.md` geschrieben.
 
 ## Abnahme
 
-2026-10-20 (Review TS1.6): AC-01 bis AC-06 geprüft, siehe Session-Ergebnisse TS1.1 bis TS1.5; AC-07 steht bei TS1.7 (🧑 am PC).
+2026-10-20 (Review TS1.6): AC-01 bis AC-06 geprüft, siehe Session-Ergebnisse TS1.1 bis TS1.5.
 Behoben im Review: Neustartschleife bei Dateien mit Änderungszeit in der Zukunft (Watch) und Schleifenbremse im Supervisor.
 Neue Tickets: B-508 bis B-512 (aus TS1.4); offene Frage zur Abnahme: Soll `public/` im Produktivbetrieb einen Neustart auslösen (B-509)?
+2026-10-20 (Abnahme TS1.7): AC-07 von 🧑 am PC abgenommen (Quelle Chat); Befund B-513.
 Version: v0.21.0 vorgeschlagen (Server/Studio getrennt, Datei-Watch mit Selbst-Neustart), gesetzt erst nach Bestätigung durch 🧑.

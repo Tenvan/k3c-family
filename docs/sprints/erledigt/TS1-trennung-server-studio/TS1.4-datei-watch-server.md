@@ -37,8 +37,8 @@ Hot-Reload ohne Neustart als Pflicht; Änderungen an Regeln, Spielstand-Format; 
 
 ## Fertig, wenn
 
-- [ ] AC-04: Go-Tests (Entprellen, ungültige Datei, Hinweis vor Neustart, kein Schreiben in beobachtete Ordner); Client-Test für den Hinweis.
-- [ ] `task check` und `task check:go` grün.
+- [x] AC-04: Go-Tests (Entprellen, ungültige Datei, Hinweis vor Neustart, kein Schreiben in beobachtete Ordner); Client-Test für den Hinweis.
+- [x] `task check` und `task check:go` grün.
 
 ## Prüfen
 
