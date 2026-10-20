@@ -1,8 +1,8 @@
-import { SegmentedControl, Text } from '@radix-ui/themes';
 import { useState, type CSSProperties } from 'react';
-import { loadPref, savePref } from '../lib/prefs';
-import { Splitter, useSplit } from '../tasks/TaskBars';
-import { NoticeCard } from '@webkit/parts';
+import { SegmentedControl, Splitter, Text } from '@webkit/atoms';
+import { useSplit } from '@webkit/lib/split';
+import { NoticeCard } from '@webkit/molecules';
+import { loadPref, prefsStore, savePref } from '../lib/prefs';
 import { CallLog } from './CallLog';
 import { LiveMonitors } from './LiveMonitors';
 import { ServerCards } from './ServerCards';
@@ -18,7 +18,7 @@ type View = (typeof VIEWS)[number];
 export function McpPage() {
   const [view, setView] = useState<View>(() => loadPref('mcp.view', VIEWS, 'uebersicht'));
   const data = useMcpData();
-  const [split, setSplit, resetSplit] = useSplit('mcp.split.band', 60);
+  const [split, setSplit, resetSplit] = useSplit(prefsStore, 'mcp.split.band', 60);
   const choose = (v: string) => {
     const next = VIEWS.includes(v as View) ? (v as View) : 'uebersicht';
     setView(next);
@@ -38,7 +38,7 @@ export function McpPage() {
           <ServerCards overview={overview} error={data.error} reload={data.reload} />
           <div className="mcp-band2" style={{ '--mcp-band': `${split}%` } as CSSProperties}>
             <ToolTiles tools={overview.stats.tools} />
-            <Splitter className="pl-split-v" value={split} onChange={setSplit} onReset={resetSplit} />
+            <Splitter className="mcp-split" value={split} onChange={setSplit} onReset={resetSplit} />
             <LiveMonitors minutes={data.usage?.minutes ?? []} tools={overview.stats.tools} />
           </div>
           <CallLog calls={data.calls} tools={overview.stats.tools.map((t) => t.name)} />

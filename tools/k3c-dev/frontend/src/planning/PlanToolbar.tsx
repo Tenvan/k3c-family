@@ -1,5 +1,6 @@
-import { Badge, Button, DropdownMenu, Text, TextField } from '@radix-ui/themes';
 import type { PlanningData } from '../api';
+import { Badge, Button, LinkButton, Text, TextField } from '@webkit/atoms';
+import { DropdownMenu } from '@webkit/organisms';
 import { AREA_LABEL, filterChips, filterGroups, isDirty, JOIN_HINT, resetFilter, toggleValue, type FilterArea, type FilterGroup, type GroupKey } from './filterGroups';
 import type { PlanFilter } from './planning';
 import { RemovableChip } from './Pill';
@@ -66,9 +67,9 @@ export function PlanToolbar({ data, filter, setFilter, hits }: Props) {
           <RemovableChip key={`${c.group}:${c.id}`} group={c.groupLabel} label={c.label} onRemove={() => toggle(c.group, c.id)} />
         ))}
         {isDirty(filter) && (
-          <button type="button" className="pl-textlink" title="Suche leeren und alle Häkchen entfernen" onClick={() => setFilter(resetFilter(filter))}>
+          <LinkButton size="1" title="Suche leeren und alle Häkchen entfernen" onClick={() => setFilter(resetFilter(filter))}>
             alle zurücksetzen
-          </button>
+          </LinkButton>
         )}
         <span className="pl-tb-hits">{hits} Treffer</span>
       </div>

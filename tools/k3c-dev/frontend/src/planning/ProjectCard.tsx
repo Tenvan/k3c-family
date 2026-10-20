@@ -1,7 +1,7 @@
-import { Button } from '@radix-ui/themes';
 import type { ReactNode } from 'react';
 import type { PlanningData, PlanSprint } from '../api';
-import { NoticeCard } from '@webkit/parts';
+import { Button } from '@webkit/atoms';
+import { NoticeCard } from '@webkit/molecules';
 import { FoldButton, headClick, unfold, useFold } from './fold';
 import { Pill, stateTone } from './Pill';
 import { sessionProgress, stepRank, type ProjectView } from './projects';
@@ -109,13 +109,16 @@ function cardState({ project: p, open }: ProjectView, folded: boolean, sel: stri
     .filter(Boolean).join(' ');
 }
 
+/** Farbe des Sprint-Chips: aktiv in der Akzentfarbe, blockiert amber, erledigt grün, sonst grau. */
+const chipColor = (kind: string) => (kind === 'aktiv' ? undefined : kind === 'blockiert' ? 'amber' : kind === 'erledigt' ? 'green' : 'gray');
+
 /** Sprint im Projektkopf: eckiger Chip, damit er sich von den runden Status-Pills abhebt. */
 function SprintChip({ s, onPick }: { s: PlanSprint; onPick: () => void }) {
   const [done, all] = sessionProgress(s);
   const kind = s.sessions.some((x) => x.status === 'blockiert') ? 'blockiert' : s.status;
   return (
-    <button type="button" className={`pl-chip is-${kind}`} title={s.title} onClick={onPick}>
+    <Button size="1" variant="outline" radius="small" color={chipColor(kind)} className="pl-chip" data-kind={kind} title={s.title} onClick={onPick}>
       {s.id} · {s.status} · {done}/{all}
-    </button>
+    </Button>
   );
 }

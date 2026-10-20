@@ -1,4 +1,5 @@
 import type { Source } from '../api';
+import { CardButton, Text, TONE_COLOR } from '@webkit/atoms';
 import { dotTone } from './lines';
 import { RoleTags } from './RoleTags';
 import { describe, tagsOf, type Group } from './sources';
@@ -27,14 +28,14 @@ export function SourceBar({ groups, selected, onSelect }: Props) {
 
 function Item({ s, on, onSelect }: { s: Source; on: boolean; onSelect: (name: string) => void }) {
   return (
-    <button className={on ? 'src-item src-item-on' : 'src-item'} onClick={() => onSelect(s.name)} aria-current={on}>
-      <span className={`badge-dot tone-${dotTone(s)}`} aria-hidden />
+    <CardButton variant={on ? 'surface' : 'ghost'} className="src-item" onClick={() => onSelect(s.name)} aria-current={on}>
+      <Text size="1" color={TONE_COLOR[dotTone(s)]} className="src-dot" aria-hidden>●</Text>
       <span className="src-text">
         <span className="src-name">{s.name}</span>
         <RoleTags tags={tagsOf(s)} />
         <span className="src-desc">{describe(s)}</span>
         {s.detail && <span className="src-desc">{s.detail}</span>}
       </span>
-    </button>
+    </CardButton>
   );
 }

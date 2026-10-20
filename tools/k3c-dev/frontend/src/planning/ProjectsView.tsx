@@ -1,6 +1,6 @@
-import { Text } from '@radix-ui/themes';
 import { useState, type ReactNode } from 'react';
 import { backend, type PlanningData, type PlanSprint, type PlanTicket } from '../api';
+import { Button, Text } from '@webkit/atoms';
 import { FoldButton, useFold } from './fold';
 import { ProjectCard } from './ProjectCard';
 import { groupProjects, moveRank, rankedCount, type ProjectGroups } from './projects';
@@ -49,9 +49,9 @@ export function ProjectSections({ groups: g, count, error, onMove, data, sel, on
         <FoldSection id="ABN" area="abn" className="pl-card pl-project is-abn"
           title={<>Abnahmen am Gerät (ABN) <small>ohne Rang · {g.abnOpen.length} offen</small></>}>
           {g.abnOpen.map(({ sprint, session }) => (
-            <button type="button" key={session.nr} className="pl-abn-row" onClick={() => onPick?.(session.nr)}>
+            <Button key={session.nr} size="1" variant="ghost" color="gray" highContrast className="pl-abn-row" onClick={() => onPick?.(session.nr)}>
               {session.nr} · {session.titel} <Text color="gray">({sprint.id})</Text>
-            </button>
+            </Button>
           ))}
           {g.abnOpen.length === 0 && <Text size="1" color="gray">Keine offene Abnahme.</Text>}
         </FoldSection>

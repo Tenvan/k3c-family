@@ -13,34 +13,18 @@
   .tk-wrap .tk-split { display: none; }
   .tk-wrap { height: auto; }
 }
-.tk-split { cursor: col-resize; border-radius: 4px; margin: 0 2px; }
-.tk-split:hover, .tk-split:active { background: var(--accent-a5); }
 .tk-detail { display: flex; flex-direction: column; gap: 10px; min-height: 0; min-width: 0; padding-left: 6px; }
 .tk-tree { overflow: auto; border: 1px solid var(--card-line); border-radius: 10px; background: var(--card); padding: 6px; min-height: 0; }
-.tk-ns {
-  all: unset; display: block; box-sizing: border-box; width: 100%; padding: 6px 8px; cursor: pointer;
-  font-weight: 600; color: var(--title); border-radius: 6px;
-}
-.tk-ns:hover { background: var(--gray-a3); }
-.tk-ns-fav { cursor: default; }
-.tk-ns-fav:hover { background: none; }
+/* Namensraum und Zeile sind Radix-Knöpfe (ghost); hier nur die Lage im Baum. */
+.tk-ns { display: flex; box-sizing: border-box; width: 100%; margin: 0; padding: 6px 8px; justify-content: flex-start; font-weight: 600; }
+.tk-ns-fav { padding: 6px 8px; font-weight: 600; color: var(--title); }
 .tk-ns-count { color: var(--dim); font-weight: 400; margin-left: 4px; }
 .tk-row { display: flex; align-items: center; gap: 4px; padding: 2px 8px 2px 14px; border-radius: 6px; }
 .tk-row:hover { background: var(--gray-a3); }
 .tk-row-on { background: var(--accent-a4); }
-.tk-row-main {
-  all: unset; box-sizing: border-box; flex: 1; min-width: 0; display: flex; align-items: center; gap: 10px;
-  padding: 3px 4px; cursor: pointer; color: var(--text);
-}
-.tk-icon {
-  all: unset; cursor: pointer; width: 22px; height: 22px; display: inline-grid; place-items: center;
-  border: 1px solid transparent; border-radius: 5px; font-size: 13px;
-}
-.tk-icon:hover { background: var(--gray-a4); }
-.tk-icon:focus-visible, .tk-row-main:focus-visible, .tk-ns:focus-visible { outline: 2px solid var(--accent-8); }
-.tk-lock-temp { border: 1px dashed var(--amber-9); }
+.tk-row-main { flex: 1; min-width: 0; margin: 0; justify-content: flex-start; gap: 10px; font-weight: 400; text-align: left; }
+.tk-icon { margin: 0; }
 .tk-pin { opacity: 0.25; }
-.tk-pin-on { opacity: 1; }
 .tk-row-name { font-family: var(--code-font-family); font-size: 13px; white-space: nowrap; }
 .tk-row-desc { flex: 1; min-width: 0; color: var(--dim); font-size: 12px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .tk-detail-body { display: flex; flex-direction: column; gap: 10px; height: 100%; min-height: 0; }

@@ -1,4 +1,4 @@
-import { Badge, Flex } from '@radix-ui/themes';
+import { Badge, Flex } from '@webkit/atoms';
 
 /** Feste Farbe je Einordnung, damit Spiel/Tool und Backend/Client auf einen Blick auseinanderfallen. */
 const COLORS = { Spiel: 'amber', Tool: 'violet', Backend: 'blue', Client: 'green' } as const;

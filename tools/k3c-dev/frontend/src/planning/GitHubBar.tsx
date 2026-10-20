@@ -1,7 +1,6 @@
-import { Text } from '@radix-ui/themes';
 import { useEffect, useState } from 'react';
 import { backend, type GitHubData } from '../api';
-import { ActionButton } from '@webkit/parts';
+import { ActionButton, LinkButton, Text } from '@webkit/atoms';
 import { Pill } from './Pill';
 
 /** GitHub-Stand: beim Öffnen und bei `planning:changed` aus dem Zwischenspeicher, per Knopf frisch. */
@@ -23,9 +22,9 @@ export function GitHubBar({ gh, reload }: { gh: GitHubData | null; reload: () =>
     <div className="pl-ghbar">
       <Text size="1" color="gray">GitHub</Text>
       {gh?.develop && (
-        <button type="button" className="pl-link" onClick={() => backend.openUrl(gh.develop!.url)} title={gh.develop.created}>
+        <LinkButton underline="none" onClick={() => backend.openUrl(gh.develop!.url)} title={gh.develop.created}>
           <Pill tone={TONE[gh.develop.ci]}>develop · CI {gh.develop.ci}</Pill>
-        </button>
+        </LinkButton>
       )}
       {gh?.develop && <Text size="1" color="gray" className="pl-ellipsis">{gh.develop.title}</Text>}
       {gh?.error && <Pill tone="warn">{gh.error}</Pill>}

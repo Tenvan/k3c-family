@@ -1,13 +1,13 @@
-import { Button, Flex, Heading, Text } from '@radix-ui/themes';
 import { useEffect, useRef, useState } from 'react';
 import { backend, type ServiceStatus, type ServicesView } from '../api';
-import { errorText } from '@webkit/errors';
+import { Button, Flex, Heading, Text } from '@webkit/atoms';
+import { errorText } from '@webkit/lib/errors';
 import { loadText, savePref } from '../lib/prefs';
 import { SourceBar } from '../logs/SourceBar';
 import { SourcePanel } from '../logs/SourcePanel';
 import { logFor, otherGroups } from '../logs/sources';
 import { useSources } from '../logs/useSources';
-import { NoticeCard } from '@webkit/parts';
+import { NoticeCard } from '@webkit/molecules';
 import { LogBox } from './LogBox';
 import { ServiceCard } from './ServiceCard';
 import { applyStatus, orderLine, preferredSource } from './tables';

@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
-import { backend, type Notice } from '../api';
-import type { Tone } from '@webkit/parts';
+import { backend, type Notice } from '../../api';
+import { CardButton, Flex, Text, TONE_COLOR, type Tone } from '@webkit/atoms';
 
 // Hinweise eines Agenten (notify_ui) unten rechts: höchstens vier, neueste unten; Fehler bleiben bis zum Klick,
 // alle anderen verschwinden nach AUTO_CLOSE_MS.
@@ -27,11 +27,13 @@ export function Notices() {
   return (
     <div className="notices" role="status" aria-live="polite">
       {list.map((n) => (
-        <button key={n.id} type="button" className={`notice notice-toast tone-${TONES[n.level]}`} title="Klick schließt"
+        <CardButton key={n.id} variant="classic" className="notice-toast" data-tone={TONES[n.level]} title="Klick schließt"
           onClick={() => setList((l) => l.filter((x) => x.id !== n.id))}>
-          <span className="notice-title">{n.title}</span>
-          {n.text && <span className="notice-body">{n.text}</span>}
-        </button>
+          <Flex direction="column" gap="1" align="start">
+            <Text weight="bold" color={TONE_COLOR[TONES[n.level]]}>{n.title}</Text>
+            {n.text && <Text size="2" color="gray">{n.text}</Text>}
+          </Flex>
+        </CardButton>
       ))}
     </div>
   );

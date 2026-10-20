@@ -1,4 +1,4 @@
-import { parseMarkdown, type Block, type Inline } from '../mcp/markdown';
+import { parseMarkdown, type Block, type Inline } from '../../lib/markdown';
 
 /** Markdown als React-Elemente (nie als HTML-String). headingOffset schiebt die Ebenen, wenn die Seite selbst eine h1 hat. */
 export function MarkdownView({ source, headingOffset = 0 }: { source: string; headingOffset?: number }) {

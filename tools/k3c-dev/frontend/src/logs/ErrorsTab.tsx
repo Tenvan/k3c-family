@@ -1,9 +1,9 @@
-import { Flex, SegmentedControl } from '@radix-ui/themes';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { backend, type ErrorsView } from '../api';
-import { errorText } from '@webkit/errors';
+import { errorText } from '@webkit/lib/errors';
 import { formatNumber } from '../lib/format';
-import { ActionButton, NoticeCard, StatusBadge } from '@webkit/parts';
+import { ActionButton, Flex, SegmentedControl, StatusBadge } from '@webkit/atoms';
+import { NoticeCard } from '@webkit/molecules';
 import { budgetNote, footer, levelTone, oneLine, timeWindow } from './logview';
 
 const EXPLAIN =
