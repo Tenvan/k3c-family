@@ -20,7 +20,10 @@ import (
 // den POST, damit die Kopfzeile X-K3C-Studio (guard) auch den Start schützt. Abbruch: Verbindung schließen oder
 // ChatCancel(id). Alle Chat-Adressen bedienen nur Loopback, auch mit Handler(true).
 
-const chatLoopbackMsg = "Der Chat ist nur auf dem Rechner des Servers erreichbar"
+const (
+	chatLoopbackMsg = "Der Chat ist nur auf dem Rechner des Servers erreichbar"
+	chatBusyMsg     = "Für diesen Chat läuft noch eine Antwort"
+)
 
 // chatHistoryMax begrenzt die Nachrichten des Verlaufs, die mit in den Prompt gehen (die CLI kennt keinen Verlauf).
 const chatHistoryMax = 20
@@ -31,11 +34,12 @@ type chatHub struct {
 	store   chatStore
 	mu      sync.Mutex
 	running map[string]context.CancelFunc
+	deleted map[string]struct{} // gelöschte Chats dieses Laufs: eine spät eintreffende Nachricht legt sie nicht neu an
 }
 
 func newChatHub(root string) *chatHub {
 	return &chatHub{cli: defaultCLI(), store: chatStore{dir: filepath.Join(root, chatDirName), now: time.Now},
-		running: map[string]context.CancelFunc{}}
+		running: map[string]context.CancelFunc{}, deleted: map[string]struct{}{}}
 }
 
 // chats liefert den Chat des Studios (Tests setzen a.chat vorher).
@@ -89,6 +93,13 @@ func (h *chatHub) isRunning(id string) bool {
 	return ok
 }
 
+func (h *chatHub) wasDeleted(id string) bool {
+	h.mu.Lock()
+	defer h.mu.Unlock()
+	_, ok := h.deleted[id]
+	return ok
+}
+
 // open lädt den Chat id; fehlt er, beginnt er leer. Nur unter der Sperre aus begin aufrufen.
 func (h *chatHub) open(id string) (ChatLog, error) {
 	c, err := h.store.load(id)
@@ -106,8 +117,15 @@ type chatEnd struct {
 }
 
 type chatRequest struct {
-	Chat string `json:"chat"`
-	Text string `json:"text"`
+	Chat     string `json:"chat"`
+	Text     string `json:"text"`
+	Provider string `json:"provider"` // leer = Standard; erlaubt laut chat_options.go
+	Model    string `json:"model"`
+	Effort   string `json:"effort"`
+}
+
+func (r chatRequest) options() chatOptions {
+	return chatOptions{Provider: r.Provider, Model: r.Model, Effort: r.Effort}
 }
 
 func readChatRequest(r *http.Request) (chatRequest, error) {
@@ -121,7 +139,7 @@ func readChatRequest(r *http.Request) (chatRequest, error) {
 	if req.Chat != "" && !chatIDPattern.MatchString(req.Chat) {
 		return req, errors.New("ungültige Chat-id (nur Kleinbuchstaben, Ziffern, Bindestrich)")
 	}
-	return req, nil
+	return req, req.options().validate()
 }
 
 // chatSend beantwortet POST /api/studio/chat als Strom.
@@ -147,10 +165,14 @@ func (a *App) chatSend(w http.ResponseWriter, r *http.Request) {
 	}
 	ctx, release, ok := h.begin(a.context(), r.Context(), id) // erst sperren, dann laden: kein Überschreiben
 	if !ok {
-		fail(w, http.StatusConflict, "Für diesen Chat läuft noch eine Antwort")
+		fail(w, http.StatusConflict, chatBusyMsg)
 		return
 	}
 	defer release()
+	if h.wasDeleted(id) {
+		fail(w, http.StatusGone, "Der Chat wurde gelöscht")
+		return
+	}
 	log, err := h.open(id)
 	if err != nil {
 		fail(w, http.StatusUnprocessableEntity, err.Error())
@@ -160,14 +182,17 @@ func (a *App) chatSend(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Cache-Control", "no-store")
 	sendEvent(w, fl, "start", map[string]string{"chat": log.ID})
 	asked := h.store.now()
-	out := h.cli.run(ctx, chatPrompt(log.Messages, req.Text), func(s string) {
+	opts := req.options()
+	out := h.cli.run(ctx, chatPrompt(log.Messages, req.Text), opts, func(s string) {
 		sendEvent(w, fl, "chunk", map[string]string{"text": s})
 	})
-	sendEvent(w, fl, "done", h.record(&log, req.Text, asked, out))
+	sendEvent(w, fl, "done", h.record(&log, req.Text, opts, asked, out))
 }
 
-// record hängt Frage und Antwort an den Verlauf und speichert; scheitert das, läuft der Chat mit Hinweis weiter.
-func (h *chatHub) record(c *ChatLog, text string, asked time.Time, out chatOutcome) chatEnd {
+// record hängt Frage und Antwort an den Verlauf, merkt die Einstellungen und speichert; scheitert das, läuft der Chat
+// mit Hinweis weiter.
+func (h *chatHub) record(c *ChatLog, text string, opts chatOptions, asked time.Time, out chatOutcome) chatEnd {
+	c.Provider, c.Model, c.Effort = opts.Provider, opts.Model, opts.Effort
 	c.Messages = append(c.Messages, ChatMessage{Role: chatUser, Text: text, Time: asked},
 		ChatMessage{Role: chatModel, Text: out.Text, Status: out.Status, Error: out.Error, Time: h.store.now()})
 	end := chatEnd{Status: out.Status, Error: out.Error}
@@ -219,3 +244,23 @@ func (a *App) ChatGet(id string) (ChatLog, error) {
 
 // ChatCancel bricht die laufende Antwort des Chats id ab; false, wenn keine läuft.
 func (a *App) ChatCancel(id string) bool { return a.chats().cancel(id) }
+
+// ChatDelete löscht den Chat id; nicht, solange für ihn eine Antwort läuft.
+func (a *App) ChatDelete(id string) error {
+	h := a.chats()
+	h.mu.Lock() // die Sperre hält begin fern: keine neue Antwort, die den Chat gleich wieder anlegt
+	defer h.mu.Unlock()
+	if _, busy := h.running[id]; busy {
+		return errors.New(chatBusyMsg) //nolint:staticcheck // Meldung der Oberfläche, ein ganzer Satz
+	}
+	err := h.store.remove(id)
+	if errors.Is(err, os.ErrNotExist) {
+		return errors.New("kein Chat mit der id " + id)
+	}
+	if err != nil {
+		return err
+	}
+	h.deleted[id] = struct{}{}
+	slog.Info("🧹 Chat gelöscht", "ns", "main", "chat", id)
+	return nil
+}

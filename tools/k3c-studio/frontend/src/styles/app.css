@@ -89,7 +89,9 @@
 .body > .page { flex: 1; min-width: 0; }
 
 .chat {
-  flex: 0 0 360px;
+  flex: 0 0 360px; /* Breite setzt ChatPanel (flex-basis, gemerkt); die Grenzen gelten auch beim Verkleinern des Fensters */
+  min-width: 280px;
+  max-width: 60vw;
   display: flex;
   flex-direction: column;
   min-height: 0;
@@ -103,13 +105,42 @@
 
 .chat-head {
   display: flex;
-  align-items: center;
-  justify-content: space-between;
+  flex-direction: column;
+  gap: 6px;
   padding: 8px 12px;
   border-bottom: 1px solid var(--card-line);
-  color: var(--title);
-  font-weight: 700;
 }
+
+.chat-head-row { display: flex; align-items: center; gap: 6px; }
+.chat-title { flex: 1; color: var(--title); font-weight: 700; }
+.chat-choices { gap: 8px; }
+.chat-choice { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 2px; font-size: 11px; color: var(--muted, #888); }
+.chat-select {
+  width: 100%;
+  min-width: 0;
+  padding: 3px 6px;
+  border: 1px solid var(--card-line);
+  border-radius: 4px;
+  background: var(--card);
+  color: var(--text);
+  color-scheme: dark;
+  font: inherit;
+  font-size: 12px;
+}
+.chat-head-note { margin: 0; }
+
+/* Trennlinie zwischen Seite und Chat (Breite in Pixeln, Ziehen, Pfeiltasten, Doppelklick = Vorgabe) */
+.chat-split {
+  flex: 0 0 8px;
+  margin: 0 -4px 0 -4px;
+  z-index: 1;
+  cursor: col-resize;
+  touch-action: none;
+  border-radius: 999px;
+  background: linear-gradient(to right, transparent 3px, var(--gray-a5) 3px 5px, transparent 5px);
+  transition: background 120ms ease-out;
+}
+.chat-split:hover, .chat-split:focus-visible { background: var(--accent-a8); outline: none; }
 
 .chat-viewport { flex: 1; min-height: 0; overflow: auto; padding: 8px 12px; }
 .chat-empty { color: var(--muted, #888); font-size: 13px; }
