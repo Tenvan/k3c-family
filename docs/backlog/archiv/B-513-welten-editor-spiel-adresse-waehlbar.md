@@ -3,14 +3,14 @@
 - **Domäne:** DEV
 - **Typ:** Idee
 - **Prio:** mittel
-- **Umgebung:** ?
-- **Status:** offen
+- **Umgebung:** offline
+- **Status:** erledigt
 - **Sprint:** –
 - **Projekt:** WZG
 - **Erstellt:** 2026-10-20
-- **Spec:** Entwurf
+- **Spec:** freigegeben
 - **Revision:** 1
-- **Freigabe:** –
+- **Freigabe:** 2026-10-20, Ralf im Chat (Umsetzung für die Abnahme TS1.7 gewünscht, Revision 1)
 
 ## Ausgangslage
 
@@ -56,4 +56,9 @@ Ungültige oder seltene Situation → gewolltes Verhalten. Passt nichts: `nicht 
 
 ## Notizen
 
-Links, Messwerte, verworfene Ansätze. Darf leer bleiben (`–`).
+**Umsetzung 2026-10-20** (Branch `b513/spiel-adresse`), Entscheidungen zu den offenen Fragen vom Koordinator:
+- **Server-Erkennung:** `WorldGameServers()` (`tools/k3c-studio/backend/app_game_server.go`) prüft `GET /api/health` und `GET /api/dev` an `http://127.0.0.1:<K3C_HTTP_PORT|8080>` (2 s). Heimnetz-Adresse (erste private IPv4 mit Port) und Rechnername stehen nur zur Anzeige in der Liste.
+- **Auswahl:** Im Welten-Editor wählt die Liste „Spiel läuft auf“ (`GameLauncher.tsx`) „Interne Engine des Studios (<eigene Adresse>)“ oder „Spielserver <Adresse> · im Heimnetz <LAN>“. Nicht erreichbare sind ausgegraut („nicht erreichbar“), ohne Dev-Mode steht „ohne Dev-Mode“ dabei, „Neu suchen“ prüft erneut. Die Wahl wird gemerkt (`k3c-studio.world.gameTarget`, localStorage über `@webkit/prefs` mit try/catch); ist der gemerkte Server nicht erreichbar, gilt die Engine.
+- **Ziel Spielserver:** `WorldOpenGameServer(base, seed, biome, mode)` wie vor TS1.2: Gesundheitsprüfung, „voll ausgebaut“ über `POST /api/dev/fullsave` des Servers (Hinweis ohne Dev-Mode), andere Welten nur im Dev-Mode des Servers; Landingpage `<Adresse>/#game.html?…`. Der Studio-Spielstand wandert nicht mit.
+- **Sicherheit:** `base` nur Loopback (`loopbackBase`), keine Weiterleitungen (`gameClient`); die LAN-Adresse wird nie angesprochen.
+- **Nachweis:** Go-Tests `app_game_server_test.go` (Erkennung, nicht erreichbar, ohne Dev-Mode, Port, neu/voll auf dem Server, Hinweise, Loopback und Weiterleitung, andere Welt), Vitest `GameLauncher.test.tsx` (Liste, Server-Binding, gemerkte Wahl, ausgegraut mit Rückfall, Neu suchen). `task check`, `task check:go`, `task check:studio` grün. Manuelle Abnahme: TS1.7 durch 🧑.

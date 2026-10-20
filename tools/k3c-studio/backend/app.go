@@ -33,6 +33,8 @@ type App struct {
 	chat     *chatHub
 	// engine ist die eingebundene Engine für Vorschau-Spiele und Testspielstände (engine.go); nil = keine
 	engine *Engine
+	// serverBase ist die Adresse des Spielservers für „Im Spiel öffnen“ (Test-Naht, B-513); leer = Loopback-Standardport
+	serverBase string
 }
 
 // New legt das Studio für die Repo-Wurzel root an; ctx begrenzt Beobachtung, Recherche und die Räume der Engine (Ende

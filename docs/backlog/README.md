@@ -170,7 +170,6 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-510](B-510-k3c-dev-kein-doppelter-neustart.md) | DEV | Schuld | niedrig | offen | – | k3c-dev startet den Spielserver bei Änderungen in data/ nicht mehr selbst neu, der Server macht das allein |
 | [B-511](B-511-studio-schreibt-atomar.md) | DEV | Schuld | niedrig | offen | – | Das Studio schreibt jede Datei in data/ und public/ atomar, der Server sieht nie eine halbe Datei |
 | [B-512](B-512-k3c-dev-uebernommener-server-neue-pid.md) | DEV | Problem | niedrig | offen | – | k3c-dev beendet einen übernommenen Spielserver auch nach dessen Selbst-Neustart (neue PID am Port, Supervisor-Prozess) |
-| [B-513](B-513-welten-editor-spiel-adresse-waehlbar.md) | DEV | Idee | mittel | offen | – | Im Welten-Editor lässt sich die Spiel-Adresse wählen: interne Engine oder Server |
 
 ## Archiv
 
@@ -473,3 +472,4 @@ Zeile in diesen Abschnitt.
 | [B-463](archiv/B-463-monarch-vorschau-animationen.md) | DEV | Idee | mittel | erledigt | WZ10 | Eine Monarch-Seite im Asset-Studio zeigt Reiten, Schlagen, Skills und weitere Vorschauen |
 | [B-436](archiv/B-436-plan-create-entwurf-zeilen.md) | DEV | Problem | niedrig | erledigt | WZ12 | plan_create scheitert an Platzhalter-Zeilen „– (Entwurf)“ in der Session-Tabelle |
 | [B-467](archiv/B-467-worktree-pill-am-eintrag.md) | DEV | Idee | mittel | erledigt | WZ12 | Worktree-Änderungen stehen als Pill am Projekt, Sprint oder an der Session statt als Leiste oben |
+| [B-513](archiv/B-513-welten-editor-spiel-adresse-waehlbar.md) | DEV | Idee | mittel | erledigt | – | Im Welten-Editor lässt sich die Spiel-Adresse wählen: interne Engine oder Server |
