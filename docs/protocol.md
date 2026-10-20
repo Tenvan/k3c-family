@@ -1,5 +1,9 @@
 # Protokoll v7
 
+**Nachgetragen ohne neue Version (TS1.4, B-507):** Fehler-Code `restarting` („Server startet neu“) an alle Geräte,
+bevor der Server wegen geänderter Dateien neu startet (siehe *Neustart des Servers*). Ein älterer Client zeigt ihn wie
+jeden unbekannten Code als Hinweis; die Version bleibt 7.
+
 **Änderungen gegenüber v6 (WZ18.5, Version 7, B-488):** `create` nimmt die optionale Welt-ID `world` (Muster
 `^[a-z0-9][a-z0-9-]{0,31}$`, [`rules/welten.md`](rules/welten.md) § 4/6), nur bei `fresh: true`: Der neue Stand spielt
 die erste Insel dieser Welt. Fehlt `world` (oder ist leer), gilt `standard`, alte Aufrufe ohne Feld funktionieren unverändert.
@@ -227,8 +231,21 @@ sequenceDiagram
 | Dieselbe Geräte-ID tritt demselben Raum über eine neue Verbindung bei | Die alte Verbindung bekommt „an anderer Stelle geöffnet“ und wird geschlossen, kein automatisches Neuverbinden (siehe *Wiederverbinden*). |
 | Gerät kommt nach mehr als 60 s zurück | Kein Fehler: normales Beitreten, freie Monarchen desselben Geräts zuerst (siehe *Wiederverbinden*). |
 | Falsche Protokoll-Version oder erste Nachricht ist kein gültiges `hello` | Fehler „veraltete Version, Seite neu laden“, der Server schließt die Verbindung. |
+| Server startet wegen geänderter Dateien neu | Hinweis „Server startet neu“ an alle Geräte, nach 3 s „Raum ist geschlossen“ und Schließen wie beim Herunterfahren (siehe *Neustart des Servers*). |
 
-Fehler beenden nie einen Raum und betreffen nie andere Räume; außer `room_closed` betreffen sie nur das eine Gerät.
+Fehler beenden nie einen Raum und betreffen nie andere Räume; außer `room_closed` und `restarting` betreffen sie nur das eine Gerät.
+
+### Neustart des Servers
+
+(TS1.4, B-507) Der Server beobachtet immer `data/**` und `public/` (Grafiken, Sound), die das Asset-Studio schreibt; er
+selbst schreibt dort nie. Nach einer Änderung wartet er 2 s Ruhe ab (mehrere Dateien ergeben einen Neustart) und prüft
+den neuen Stand. Ist er ungültig, läuft der Server mit dem alten Stand weiter (Fehler im Log). Sonst:
+
+1. `error` mit Code `restarting` an jedes verbundene Gerät, in der Raumliste wie im Raum; Raum und Verbindung bleiben.
+   Der Client zeigt den Hinweis im Spiel und behält ihn bis zum nächsten `welcome`.
+2. Nach 3 s fährt der Server herunter wie bei einem Signal: Alle Räume speichern, `room_closed`, die Verbindung schließt.
+3. Der neue Prozess lädt die Daten von der Platte. Das Gerät verbindet sich neu (siehe *Wiederverbinden*) und landet in
+   der Raumliste; der Spielstand ist gespeichert und lässt sich über *Raum erstellen* wieder öffnen.
 
 ## Nachrichten
 
@@ -396,6 +413,7 @@ Geprüft von `TestWirtschaftZustand`, `TestWirtschaftDelta`, `TestKaempferZustan
 | `replaced` | dieselbe Geräte-ID ist demselben Raum über eine neue Verbindung beigetreten | Server schließt, kein automatisches Neuverbinden |
 | `version` | erste Nachricht ist kein gültiges `hello` oder `v` ist nicht 7 | Server schließt |
 | `forbidden` | `dev` ohne Dev-Mode am Server, `create` mit einer anderen Welt als `standard` ohne Dev-Mode; die Warnung steht im Log | bleibt, Nachricht wird verworfen |
+| `restarting` | Server startet gleich neu (geänderte Dateien, siehe *Neustart des Servers*); danach folgt `room_closed` | bleibt (bis zum Herunterfahren) |
 | `world_unknown` | `create` mit unbekannter oder ungültiger Welt (`world`) bzw. Spielstand in einer solchen Welt (v7) | bleibt |
 | `bad_request` | kein gültiges JSON, unbekannter Typ, Feld fehlt, Name passt nicht zum Format, ungültiger Slot (doppelt, keine Zahl 0–3, bei `input`/`removeSlot` nicht vom Gerät, bei `addSlot` schon vergeben), ungültige Felder von `dev`, ungültiger Skill-Slot (`input.p[].skill` nicht 0–4), unbekannter Skill, abgelehntes `learn`/`respec` (Slot nicht vom Gerät, Feld fehlt, schon gelernt, keine Punkte, Tier-Gating, Respec nicht am Tag oder nicht an der Burg), Nachricht passt nicht zum Zustand (`input`, `addSlot`, `removeSlot`, `leave`, `dev`, `learn`, `respec` ohne Raum; `create`, `join` im Raum) | bleibt, Nachricht wird verworfen |
 

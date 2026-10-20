@@ -20,7 +20,8 @@ export type ErrorCode =
   | 'version'
   | 'bad_request'
   | 'forbidden'
-  | 'world_unknown';
+  | 'world_unknown'
+  | 'restarting';
 
 export interface Limits {
   monarchsPerRoom: number;

@@ -64,7 +64,7 @@ keine
 | TS1.1 | `TS1.1-studio-backend-umziehen.md` | Umsetzung | autonom | fertig |
 | TS1.2 | `TS1.2-studio-engine-testspielstaende.md` | Umsetzung | autonom | fertig |
 | TS1.3 | `TS1.3-studio-seite-streichen.md` | Umsetzung | autonom | fertig |
-| TS1.4 | `TS1.4-datei-watch-server.md` | Umsetzung | autonom | offen |
+| TS1.4 | `TS1.4-datei-watch-server.md` | Umsetzung | autonom | fertig |
 | TS1.5 | `TS1.5-pages-und-doku.md` | Umsetzung | autonom | offen |
 | TS1.6 | `TS1.6-review.md` | Review | autonom | offen |
 | TS1.7 | `TS1.7-abnahme.md` | Review | Mensch | offen |
