@@ -4,6 +4,7 @@
     "dist", "_site", "node_modules", "public",
     "tools/k3c-dev/frontend/dist", "tools/k3c-dev/frontend/wailsjs",
     "tools/k3c-studio/frontend/dist",
+    "tools/k3c-starter/frontend/dist", "tools/k3c-starter/frontend/wailsjs",
     ".claude", // fremde Skill-Skripte, nicht Teil des Spiel-Codes
     "tools/cockpit" // Claude-Code-Mod mit eigener Toolchain (`claude plugin test`), nicht Teil des Spiel-Codes (B-415)
   ],

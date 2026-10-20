@@ -18,8 +18,10 @@ import (
 // instanceID verbindet einen zweiten Start mit dem laufenden Fenster (ein Starter je Rechner).
 const instanceID = "k3c-starter-5d2b7a40"
 
-//go:embed all:web
-var web embed.FS
+// Die Oberfläche (React, Radix Themes) entsteht mit `task k3c-starter:frontend` nach frontend/dist und steckt in der EXE.
+//
+//go:embed all:frontend/dist
+var ui embed.FS
 
 func main() {
 	if err := run(); err != nil {
@@ -29,7 +31,7 @@ func main() {
 }
 
 func run() error {
-	assets, err := fs.Sub(web, "web")
+	assets, err := fs.Sub(ui, "frontend/dist")
 	if err != nil {
 		return err
 	}
