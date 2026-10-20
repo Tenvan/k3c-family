@@ -11,7 +11,7 @@ describe('Inselgrößen im Mock', () => {
   });
 });
 
-// Die Texte des Mocks sind die aus Go (engine/studio: staleError, planRegHint), damit Tests der Oberfläche den echten Text prüfen.
+// Die Texte des Mocks sind die aus Go (tools/k3c-studio/backend: staleError, planRegHint), damit Tests der Oberfläche den echten Text prüfen.
 describe('Texte im Mock wie in Go', () => {
   it('Stale nennt die Welt-Datei der gewählten Welt, der REG-Hinweis ist der aus Go', () => {
     expect(staleText('nordmeer')).toBe('data/worlds/nordmeer.json geändert, bitte neu laden');

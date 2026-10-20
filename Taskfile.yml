@@ -132,15 +132,12 @@ tasks:
     cmds:
       - npx tsc --noEmit
       - npx vite build
-      - task: studio:frontend
 
   pages:
-    desc: GitHub-Pages-Seite nach _site/ (Präsentation site/ + Build unter app/; danach z. B. `npx vite preview --outDir _site`)
-    deps: [build]
+    desc: GitHub-Pages-Seite nach _site/ (kopiert nur site/, kein Build, B-507; danach z. B. `npx vite preview --outDir _site`)
     cmds:
       - rm -rf _site
       - mkdir -p _site
-      - cp -r dist _site/app
       - cp -r site/. _site/
 
   serve:
@@ -244,7 +241,7 @@ tasks:
       - golangci-lint run
 
   studio:frontend:
-    desc: Frontend des Asset-Studios nach dist/studio/ bauen (der Go-Server liefert es unter /studio/ aus; task build ruft es auf)
+    desc: Frontend des Asset-Studios nach tools/k3c-studio/frontend/dist/ bauen (das Fenster k3c-studio liefert es unter /studio/ aus, nicht der Spielserver; B-507)
     dir: '{{.STUDIO}}/frontend'
     cmds:
       - npx tsc --noEmit
@@ -257,7 +254,7 @@ tasks:
       - paths.ts
       - ../../webkit/**/*
     generates:
-      - ../../../dist/studio/**/*
+      - dist/**/*
 
   k3c-studio:
     desc: Asset-Studio als eigenes Fenster starten (Wails, ohne Spielserver; baut die Oberfläche bei Bedarf; B-459)
@@ -278,7 +275,7 @@ tasks:
       - cp {{.STUDIO}}/build/bin/k3c-studio{{exeExt}} bin/k3c-studio{{exeExt}}
 
   check:studio:
-    desc: Asset-Studio-Frontend und gemeinsame Asset-Logik prüfen (Vitest, go test, golangci-lint; das Studio-Backend engine/studio prüft check:go; B-459)
+    desc: Asset-Studio prüfen (Frontend-Vitest; go test und golangci-lint für die Asset-Logik und das Modul tools/k3c-studio samt Backend; B-459, B-507)
     deps: [tmp, studio:frontend]
     cmds:
       - npx vitest run --config {{.STUDIO}}/frontend/vitest.config.ts

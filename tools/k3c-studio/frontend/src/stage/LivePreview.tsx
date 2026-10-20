@@ -152,6 +152,15 @@ function useHubLevel(planer: PlanerSource | undefined) {
   return { choices, hubLevel: planer?.hubLevel ?? ownLevel, setHubLevel: planer?.onHubLevel ?? setOwnLevel };
 }
 
+/** Markierungen und Sprungziel der gewählten Planer-Zeile: Namen über allen Plätzen mit Planer, Rahmen und Sprung zur Zeile. */
+function usePlanerMarks(planer: PlanerSource | undefined, world: ReturnType<typeof worldOf>) {
+  const selectedXs = useMemo(() => focusXs(planer?.focus, world?.hubX ?? 0, world?.sites ?? []), [planer?.focus, world]);
+  const marks = useMemo<Marks>(() => ({ names: planer !== undefined, selected: selectedXs }), [planer, selectedXs]);
+  const jumpX = selectedXs[0];
+  const jump = useMemo(() => (jumpX === undefined ? null : { key: `${planer?.focus?.id}|${jumpX}`, x: jumpX }), [jumpX, planer?.focus?.id]);
+  return { marks, jump };
+}
+
 /** Live-Vorschau des Welt-Betrachters (B-460/AC-04, AC-05): die Welt des Spiels mit der Spielgrafik auf der Phaser-Bühne
  *  des Studios. Hub-Stufe aus `data/hub.json` › `levels` (mit `planer` aus dem Planer-Stand), Gebäude einzeln ein und aus,
  *  Tageszeit, Hintergrund-Schichten mit Parallaxe (Kamera scrollt). Position und Zoom kommen von außen (`position`, B-477,
@@ -174,10 +183,7 @@ export function LivePreview({ seed, biome, position, onPan, onWheel, onSites, pl
   const host = useRef<HTMLDivElement>(null);
   const world = useMemo(() => worldOf(view), [view]);
   const look = useMemo<Look>(() => ({ brightness: world ? brightnessOf(world.cycle) : 1, hiddenLayers: hidden }), [world, hidden]);
-  const selectedXs = useMemo(() => focusXs(planer?.focus, world?.hubX ?? 0, world?.sites ?? []), [planer?.focus, world]);
-  const marks = useMemo<Marks>(() => ({ names: planer !== undefined, selected: selectedXs }), [planer, selectedXs]);
-  const jumpX = selectedXs[0];
-  const jump = useMemo(() => (jumpX === undefined ? null : { key: `${planer?.focus?.id}|${jumpX}`, x: jumpX }), [jumpX, planer?.focus?.id]);
+  const { marks, jump } = usePlanerMarks(planer, world);
   const failed = useStage(host, world, look, position, marks, jump, onPan, onWheel);
   const sites = all?.state?.sites;
   const toggles = useMemo(() => buildingToggles(sites ?? []), [sites]);

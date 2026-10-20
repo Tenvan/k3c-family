@@ -37,6 +37,8 @@ type Config struct {
 	Conns *sync.WaitGroup
 	// CPU liefert die CPU-Last des Prozesses in Prozent einer CPU für /api/status (B-175); nil = systemCPU, dort nil = kein Feld.
 	CPU func() (float64, bool)
+	// Notices schickt Hinweise an alle Geräte (Neustart, B-507); nil = keine. NewHandler verbindet sie.
+	Notices *Notices
 }
 
 type server struct {
@@ -79,6 +81,11 @@ func NewHandler(cfg Config) http.Handler {
 		cfg.Rooms.Snapshot = func(w *sim.World, timescale int, paused bool) any { return stateOf(w, timescale, paused) }
 		mux.HandleFunc("/ws", s.websocket)
 	}
+	if cfg.Notices != nil {
+		cfg.Notices.restarting = s.broadcastRestarting
+	}
+	// Unbekannte API-Adressen (auch das frühere /api/studio, B-507) sind 404 für jede Methode, nicht 405 aus static.
+	mux.HandleFunc("/api/", http.NotFound)
 	mux.HandleFunc("/", s.static)
 	return s.accessLog(mux)
 }

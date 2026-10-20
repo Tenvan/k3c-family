@@ -1,7 +1,7 @@
 # tools/k3c-studio/frontend/src/api/
 
 ## Responsibility
-Schnittstelle der Oberfläche zum Studio-Backend des Go-Servers (`engine/studio`): Typen, HTTP-Backend und ein Mock für Browser ohne Server und Tests; wählt das Backend je nach Laufzeit.
+Schnittstelle der Oberfläche zum Studio-Backend (`tools/k3c-studio/backend`): Typen, HTTP-Backend und ein Mock für Browser ohne Server und Tests; wählt das Backend je nach Laufzeit.
 
 ## Design
 - `types.ts`: Typen der Antworten wie Go sie liefert (Slot-Register mit `stand`, Katalog, Recherche, `WorldSource`, `PlanView`/`PlannedChunk`/`IslandSize`/`WorldsView`, `WorldPreviewArgs` mit `SiteLook` und `hubCandidate`, Planer `HubPlanView`/`HubMatrix`/`HubSaveResult`/`HubRulesView`, `OpenGameResult`, Ereignisse `Events`) und das Interface `Backend` (`mock`, `assets*`, `worldLevel`, `worldPreview`, `worldOpenGame`, `plan*` inkl. Welten und Inseln, `hub*`, `openUrl`, `on`).
@@ -25,7 +25,7 @@ Schnittstelle der Oberfläche zum Studio-Backend des Go-Servers (`engine/studio`
 3. Ereignisse (`assets:changed`) laufen über `backend.on` (SSE bzw. Mock-Bus) und liefern die Abmeldung.
 
 ## Integration
-- Gegenstück: `engine/studio/` (`rpc.go` Routen unter `/api/studio/`, `app*.go` die aufrufbaren Methoden mit Präfix Assets/World/Plan/Hub) und `tools/assetkit`.
-- Dev-Server: Vite (Port 5192) reicht `/api` an den Spielserver (8080) weiter, siehe `../../vite.config.ts`; ohne Server hilft `?mock=1`.
+- Gegenstück: `tools/k3c-studio/backend/` (`rpc.go` Routen unter `/api/studio/`, `app*.go` die aufrufbaren Methoden mit Präfix Assets/World/Plan/Hub) und `tools/assetkit`.
+- Dev-Server: Vite (Port 5192) reicht `/api` an den Server des Studios (8091, B-507) weiter, siehe `../../vite.config.ts`; ohne Server hilft `?mock=1`.
 - Konsumenten: alle Seiten (`assets/`, `graphics/`, `sound/`, `world/`, `planner/`, `monarch/`, `enemies/`, `stage/`).
 - Typimport `@game/model/types` (Welt für die Vorschau); `mockWorld.ts` nutzt `../stage/stageLogic`.

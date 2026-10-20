@@ -299,7 +299,7 @@ export class RoomClient {
     if (this.closedByUs || this.status === 'ended' || this.status === 'lost') return;
     if (this.status !== 'reconnecting') {
       this.status = 'reconnecting';
-      this.notice = t('net.reconnecting');
+      if (this.errorCode !== 'restarting') this.notice = t('net.reconnecting'); // „Server startet neu“ bleibt stehen
       this.downSince = this.env.now();
       this.attempt = 0;
       clientLog('warn', '🔁 Verbindung abgebrochen, verbinde neu', { room: this.roomCode });
@@ -404,10 +404,12 @@ export class RoomClient {
       case 'bad_request':
         return void console.warn(`bad_request: ${message}`);
       case 'forbidden':
-        break; // dev ohne Dev-Mode: Hinweis zeigen, Raum und Verbindung bleiben
+      case 'restarting':
+        break; // dev ohne Dev-Mode bzw. Neustart angekündigt (B-507): Hinweis zeigen, Raum und Verbindung bleiben
       case 'room_closed':
       case 'room_not_found':
         this.clearRoom();
+        if (code === 'room_closed' && this.errorCode === 'restarting') return void (this.status = 'lobby'); // „Server startet neu“ bleibt
         this.setConnected();
         break;
       default:

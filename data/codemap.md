@@ -22,7 +22,7 @@ Configuration Data: einzige Quelle für Balancing-Werte (JSON) für den TS-Clien
 
 1. Go: `engine/sim/data.go` (`load[...]`, u. a. `goals.json`), `boss_data.go`, `island_worlds.go`, `events.go`, `engine/level/biome.go`, `engine/net/level.go` lesen per `data.Files`.
 2. TS: `src/model/data.ts` importiert die JSON-Dateien direkt (Vite), `src/scenes/render/sprites.ts` importiert `sprites.json`.
-3. `tools/atlas` liest `sprites.json`; `tools/assetkit/register.go` (genutzt von `tools/k3c-dev/internal/mcpsrv/tools_assets.go` und `engine/studio`) liest und schreibt `assets.json`; `tools/k3c-dev/internal/balance` liest `balance-targets.json` und die Spielwerte.
+3. `tools/atlas` liest `sprites.json`; `tools/assetkit/register.go` (genutzt von `tools/k3c-dev/internal/mcpsrv/tools_assets.go` und `tools/k3c-studio/backend`) liest und schreibt `assets.json`; `tools/k3c-dev/internal/balance` liest `balance-targets.json` und die Spielwerte.
 
 ## Integration
 

@@ -129,9 +129,9 @@ export function lobbyNotice(c: { status: Status; notice: string | null }): strin
   return c.notice;
 }
 
-/** Hinweis im Spiel bei Abbruch der Verbindung, sonst null */
-export function gameNotice(c: { status: Status; notice: string | null }): string | null {
-  return c.status === 'reconnecting' ? c.notice : null;
+/** Hinweis im Spiel bei Abbruch der Verbindung oder angekündigtem Neustart des Servers (B-507), sonst null */
+export function gameNotice(c: { status: Status; notice: string | null; errorCode?: string | null }): string | null {
+  return c.status === 'reconnecting' || c.errorCode === 'restarting' ? c.notice : null;
 }
 
 /** Das Spiel endet, sobald der Client nicht mehr im Raum ist (Raum geschlossen/unbekannt, 120 s ohne Verbindung, an anderer Stelle geöffnet) */

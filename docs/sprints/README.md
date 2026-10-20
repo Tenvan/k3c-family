@@ -9,8 +9,8 @@ Die Reihenfolge der Arbeit ist allein der Projekt-Rang: [`../projekte/README.md`
 
 | Sprint | Domäne | Projekt | Thema | Am Ende sichtbar | Ordner |
 |---|---|---|---|---|---|
-| WZ18 | REG, SIM, SRV, DEV | WZG | Welten im Spiel: Welt-Dateien, Welt-Wahl im Raum und Welten-Editor | Welt mit zwei Inseln im Studio angelegt und im Spiel gestartet (Review fertig, offen: WZ18.8 Abnahme 🧑 am PC) | `aktiv/WZ18-welten-im-spiel/` |
 | WZ19 | DEV | WZG | Chat im Studio mit Claude Code CLI und Welt per Prompt füllen | Chat rechts im Studio füllt eine Welt als Entwurf | `aktiv/WZ19-chat-und-prompt/` |
+| TS1 | DEV, SRV, INF | WZG | Spielserver und Asset-Studio trennen, Server beobachtet Dateien | – | `aktiv/TS1-trennung-server-studio/` |
 | GR7 | CLI | GRA | Figuren-Lücken, ganzzahlige Skalierung und Schrift | – | `aktiv/GR7-figuren-schrift/` |
 | SO2 | CLI | SND | SFX-Katalog und Einbau | – | `aktiv/SO2-sfx-katalog/` |
 | SO4 | CLI | SND | Musik je Zustand | – | `aktiv/SO4-musik/` |
@@ -197,3 +197,4 @@ Gesamtplan und Begründung: [`../plan-weiterentwicklung.md`](../plan-weiterentwi
 | WZ11 | Gegner- und Boss-Vorschau im Asset-Studio, Figuren-Seiten entfernen | `erledigt/WZ11-gegner-bosse-vorschau/` |
 | WZ9 | Gebäude-Planer für die Freischaltung je Hub-Stufe | `erledigt/WZ9-gebaeude-planer/` |
 | WZ12 | Planungs-Werkzeug: Platzhalter-Zeilen und Worktree-Pills | `erledigt/WZ12-planungs-werkzeug-nachtraege/` |
+| WZ18 | Welten im Spiel: Welt-Dateien, Welt-Wahl im Raum und Welten-Editor | `erledigt/WZ18-welten-im-spiel/` |

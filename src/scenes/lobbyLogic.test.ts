@@ -213,6 +213,11 @@ describe('Hinweise (AC-09, AC-10)', () => {
   it('Abbruch-Hinweis im Spiel nur beim Wiederverbinden', () => {
     expect(gameNotice({ status: 'reconnecting', notice: 'Verbindung weg, verbinde neu …' })).toBe('Verbindung weg, verbinde neu …');
     expect(gameNotice({ status: 'room', notice: null })).toBeNull();
+    expect(gameNotice({ status: 'room', notice: 'Raum ist voll', errorCode: 'room_full' })).toBeNull();
+  });
+
+  it('„Server startet neu“ steht im Spiel schon vor dem Abbruch (B-507)', () => {
+    expect(gameNotice({ status: 'room', notice: 'Server startet neu', errorCode: 'restarting' })).toBe('Server startet neu');
   });
 
   it('Rückkehr zur Lobby nach room_closed/room_not_found (lobby), 120 s (lost) und replaced/version (ended)', () => {
