@@ -164,6 +164,7 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-505](B-505-monarch-animationen-wurf-treffer-tod-respawn.md) | CLI | Idee | niedrig | offen | – | Monarch hat Animationen für Wurf, Treffer, Tod und Respawn |
 | [B-502](B-502-monarch-seite-ansicht-wuensche.md) | DEV | Idee | mittel | offen | – | Monarch-Seite: einheitliches Sheet, Zoom, zweispaltige Ansicht |
 | [B-506](B-506-spielmenue-welten-und-spielstaende.md) | CLI | Problem | hoch | offen | – | Spielmenü zeigt keine Welt und erlaubt kein Anlegen oder Löschen von Spielständen |
+| [B-507](B-507-server-und-studio-trennen-dateiwatch.md) | DEV | Schuld | hoch | eingeplant | TS1 | Spielserver und Asset-Studio sind getrennt, der Server beobachtet die Dateien des Studios |
 
 ## Archiv
 
