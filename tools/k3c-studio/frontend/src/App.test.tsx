@@ -1,6 +1,6 @@
 import { renderToStaticMarkup } from 'react-dom/server';
 import { describe, expect, it, vi } from 'vitest';
-import { App } from './App';
+import { App, PAGES } from './App';
 
 vi.mock('./api', () => ({ backend: { mock: true } }));
 
@@ -35,5 +35,13 @@ describe('Asset-Studio-Rahmen (B-459)', () => {
     const html = renderToStaticMarkup(<App initial="planer" />);
     expect(html).toMatch(/aria-selected="true"[^>]*>.*?Gebäude-Planer/);
     expect(html).toContain('class="pl-page"');
+  });
+
+  it('zeigt den Chat rechts auf jeder Seite mit Knopf zum Ein- und Ausblenden (WZ19.2/AC-03)', () => {
+    for (const page of PAGES) {
+      const html = renderToStaticMarkup(<App initial={page} />);
+      expect(html, page).toContain('data-testid="chat-panel"');
+      expect(html, page).toContain('data-testid="chat-toggle"');
+    }
   });
 });

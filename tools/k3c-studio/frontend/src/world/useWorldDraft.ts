@@ -46,8 +46,8 @@ export function useWorldDraft(plan: PlanState) {
     if (!draft || !view) return;
     const result = await saveOrError(draft, view.stand);
     if (result.error) { setNotice({ kind: result.stale ? 'stale' : 'error', text: result.error }); return; }
-    // gespeichert: Herkunft der Inseln = ihre neue id; Eingaben während des Speicherns bleiben stehen
-    setDraft((d) => (sameDraft(d, draft) ? { ...draft, islands: draft.islands.map((i) => ({ ...i, from: i.id })) } : d));
+    // gespeichert: Herkunft der Inseln = ihre neue id, Planfelder aus dem Chat sind jetzt in der Datei (sonst bliebe der Entwurf offen und schriebe sie später zurück); Eingaben während des Speicherns bleiben stehen
+    setDraft((d) => (sameDraft(d, draft) ? { ...draft, islands: draft.islands.map(({ plannedChunks: _p, chunkCounts: _c, ...i }) => ({ ...i, from: i.id })) } : d));
     await reload();
     await refreshWorlds();
     setNotice({ kind: 'hint', text: result.hint });
@@ -58,6 +58,13 @@ export function useWorldDraft(plan: PlanState) {
     /** Grund, warum Speichern gesperrt ist: ein offener Entwurf der Planung ginge beim Neuladen verloren */
     lock: plan.dirty ? 'Erst die Planung speichern oder verwerfen' : undefined,
     edit: (next: WorldDraft) => { setDraft(next); setNotice(null); },
+    /** Entwurf aus dem Chat (WZ19.3): ersetzt den Entwurf, nichts wird gespeichert; ein Prüffehler steht als Meldung am Entwurf */
+    load: (next: WorldDraft, error: string) => {
+      setDraft(next);
+      setNotice(error ? { kind: 'error', text: error } : { kind: 'hint', text: 'Antwort aus dem Chat als Entwurf geladen, nichts gespeichert' });
+    },
+    /** Meldung am Entwurf, ohne ihn zu ändern (z. B. „Antwort nicht lesbar“) */
+    report: (text: string) => setNotice({ kind: 'error', text }),
     discard: () => { setDraft(null); setNotice(null); },
   };
 }

@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { GameLauncher } from './GameLauncher';
 import { SizePicker } from './SizePicker';
 import type { PlanState } from './usePlan';
+import { useChatDraft } from './useChatDraft';
 import { useWorldDraft } from './useWorldDraft';
 import { WorldDraftEditor } from './WorldDraftEditor';
 
@@ -107,6 +108,7 @@ function StructureTree({ plan }: { plan: PlanState }) {
  *  (startet die gewählte Welt). Welt wechseln, anlegen und löschen geht nur ohne offenen Entwurf. */
 export function WorldStructure({ plan, seed, biome }: { plan: PlanState; seed: string; biome: string }) {
   const world = useWorldDraft(plan);
+  useChatDraft(world);
   return (
     <section className="wd-struct" aria-label="Weltstruktur">
       <WorldBar plan={plan} draftOpen={world.dirty} />

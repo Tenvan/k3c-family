@@ -32,7 +32,7 @@ describe('Seiten & Navigation', () => {
   });
 
   it('jede Kachel zeigt auf eine vorhandene Seite', () => {
-    for (const href of hrefs.filter((h) => !h.includes('/'))) expect(allHtml).toContain(href); // `studio/index.html` liegt im Build von tools/k3c-studio
+    for (const href of hrefs.filter((h) => !h.includes('/'))) expect(allHtml).toContain(href); // Ziele in Unterordnern liegen nicht im Projektordner
   });
 
   it.each(htmlPages)('%s ruft installPageChrome() auf', (page) => {
@@ -87,5 +87,34 @@ describe('Regeltabelle Hub-Stufe → Gebäude (WZ15.2, B-462)', () => {
     expect(count('<!-- rules:hub-levels:start -->')).toBe(1);
     expect(count('<!-- rules:hub-levels:end -->')).toBe(1);
     expect(rules.indexOf('<!-- rules:hub-levels:start -->')).toBeLessThan(rules.indexOf('<!-- rules:hub-levels:end -->'));
+  });
+});
+
+// Der Spielserver hat keine Studio-Seite mehr; das Studio ist ein eigenes Fenster mit eigenem Build (B-507/AC-03).
+describe('Keine Studio-Seite im Spielserver (B-507)', () => {
+  const taskBlock = (name: string) => {
+    const file = read('Taskfile.yml').replace(/\r\n/g, '\n');
+    const from = file.indexOf(`\n  ${name}:\n`);
+    return file.slice(from, file.indexOf('\n\n', from + 1));
+  };
+
+  it('keine studio.html und keine Kachel zum Studio', () => {
+    expect(allHtml).not.toContain('studio.html');
+    expect(hrefs.filter((h) => h.includes('studio'))).toEqual([]);
+  });
+
+  it('task build baut kein Studio, das Studio baut nicht nach dist/', () => {
+    expect(taskBlock('build')).not.toContain('studio');
+    expect(taskBlock('studio:frontend')).not.toMatch(/dist\/studio/);
+    expect(read('tools/k3c-studio/frontend/paths.ts')).not.toMatch(/dist\/studio/);
+  });
+
+  it('Vite reicht /api ohne Studio-Ausnahme weiter', () => {
+    expect(read('vite.config.ts')).not.toMatch(/api\/studio|isStudioPath/);
+  });
+
+  it('K3C_STUDIO_LAN kommt im Code nicht mehr vor', () => {
+    const code = ['src', 'engine', 'cmd', 'tools'].flatMap((d) => filesIn(d, (n) => /\.(ts|tsx|go)$/.test(n)));
+    expect(code.filter((f) => read(f).includes('K3C_STUDIO_LAN'))).toEqual([]);
   });
 });

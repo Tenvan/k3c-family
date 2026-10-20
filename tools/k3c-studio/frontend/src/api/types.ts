@@ -1,4 +1,5 @@
 import type { LevelLayout } from '@game/model/types';
+import type { ChatStream } from './chatTypes';
 import type { DraftScaling, WorldDraftApi } from './worldTypes';
 
 // Typen des Asset-Studios (B-298, B-459): Slot-Register, Katalog und Recherche, wie Go sie liefert
@@ -313,6 +314,20 @@ export interface OpenGameResult {
   error: string;
 }
 
+/** Spielserver für „Im Spiel öffnen“ (Go: GameServer, B-513): base ist die Loopback-Adresse fürs Binding, lan und host nur Anzeige. */
+export interface GameServer {
+  base: string;
+  lan: string;
+  host: string;
+  reachable: boolean;
+  dev: boolean;
+  version: string;
+}
+
+export interface GameServersView {
+  servers: GameServer[];
+}
+
 export type WorldLevelView = LevelLayout & { warnings: string[]; error: string };
 
 /** Ereignisse des Backends: assets:changed = data/assets.json geändert (MCP, Editor, eigenes Speichern) */
@@ -351,6 +366,10 @@ export interface Backend extends WorldDraftApi {
   planChunkObjects(seed: string, source: WorldSource, slot: number): Promise<PlanObjectsView>;
   /** Im Spiel öffnen: `new` (neues Spiel mit dem Seed) oder `full` (voll ausgebaut), über die Landingpage des Servers unter base, nur Loopback */
   worldOpenGame(base: string, seed: string, biome: string, mode: 'new' | 'full'): Promise<OpenGameResult>;
+  /** Spielserver dieses Rechners für „Im Spiel öffnen“ prüfen (GET /api/health am Standardport, B-513) */
+  worldGameServers(): Promise<GameServersView>;
+  /** Im Spiel öffnen auf dem Spielserver unter base (nur Loopback; „voll ausgebaut“ über seine Dev-API, B-513) */
+  worldOpenGameServer(base: string, seed: string, biome: string, mode: 'new' | 'full'): Promise<OpenGameResult>;
   /** Gebäude-Planer: data/hub.json als Matrix mit Befunden der Prüfung (B-462) */
   hubPlan(): Promise<HubPlanView>;
   /** Gebäude-Planer: Abweichung der Regeltabelle vom Planer-Stand (leer = data/hub.json) */
@@ -360,6 +379,8 @@ export interface Backend extends WorldDraftApi {
   /** Gebäude-Planer: speichert den Stand, wenn beide Dateien noch den Stand `stand` haben (B-462/AC-02, AC-06) */
   hubSave(candidate: string, stand: HubStand): Promise<HubSaveResult>;
   openUrl(url: string): void;
+  /** Chat: schickt eine Nachricht an die Claude Code CLI und liefert die Antwort als Strom (WZ19) */
+  chatStream: ChatStream;
   /** Abo eines Ereignisses; liefert die Abmeldung */
   on<E extends EventName>(event: E, fn: (data: Events[E]) => void): () => void;
 }

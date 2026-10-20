@@ -58,7 +58,6 @@ export const DEV_SECTIONS: readonly DevSection[] = [
     tile('grafiken', '🏰', 'grafiken.html'),
     tile('sound', '🔊', 'soundtest.html'),
     tile('dm', '🎲', 'dm.html', true),
-    tile('studio', '🗺️', 'studio/index.html', true), // das Studio ohne Shell-Rahmen, im eigenen Fenster (B-498)
   ]),
   section('perf', [tile('monitor', '📈', 'monitor.html')]),
   section('balance', []),

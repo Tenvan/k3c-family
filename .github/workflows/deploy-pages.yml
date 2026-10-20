@@ -1,5 +1,5 @@
-# CD: Stand von main auf GitHub Pages: Präsentationsseite site/ (B-183) als Startseite, darunter unter app/ der Build
-# mit allem, was ohne Server geht (Testseiten; Spiel-Kacheln erklärt, B-032).
+# CD: Präsentationsseite site/ (B-183) von main auf GitHub Pages. Rein statisch, kein Node und kein Build (B-507):
+# die Bilder liegen als Kopien in site/img/, tests/pagesSite.test.ts prüft die Referenzen (läuft in ci.yml).
 # Einmalig aktivieren: Repo → Settings → Pages → Source: "GitHub Actions".
 name: Deploy (GitHub Pages)
 
@@ -20,29 +20,13 @@ permissions:
 jobs:
   build:
     runs-on: ubuntu-latest
-    timeout-minutes: 15
+    timeout-minutes: 5
     steps:
       - uses: actions/checkout@v7
-      - uses: actions/setup-node@v7
-        with:
-          node-version-file: .nvmrc
-          cache: npm
-          cache-dependency-path: |
-            package-lock.json
-            tools/k3c-dev/frontend/package-lock.json
-            tools/k3c-studio/frontend/package-lock.json
-      - uses: actions/setup-go@v7
-        with:
-          go-version-file: go.mod
-      - uses: go-task/setup-task@v1
-      # Wie in ci.yml: Client und Frontends von k3c-dev und Asset-Studio (task test und task pages brauchen sie).
-      - run: task install
-      - run: task test
-      - run: task pages
       - uses: actions/configure-pages@v6
       - uses: actions/upload-pages-artifact@v5
         with:
-          path: _site/
+          path: site/
 
   deploy:
     needs: build

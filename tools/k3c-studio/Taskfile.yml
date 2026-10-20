@@ -1,5 +1,5 @@
 # Namespace `k3c-studio`: das Asset-Studio als eigenes Fenster (Wails, ohne Spielserver; B-459).
-# Die Oberfläche (frontend/) liegt nach `frontend` unter dist/studio und wird von der EXE zur Laufzeit von der Platte
+# Die Oberfläche (frontend/) liegt nach `frontend` unter frontend/dist und wird von der EXE zur Laufzeit von der Platte
 # geliefert, steckt also nicht in der EXE: eine Änderung an der Oberfläche braucht keinen Neubau der EXE.
 # `dev` ist der Watcher: `wails dev` startet Vite mit Hot Reload und baut das Fenster bei Go-Änderungen neu.
 version: '3'
@@ -32,7 +32,7 @@ tasks:
       - ./bin/k3c-studio{{exeExt}}
 
   frontend:
-    desc: Frontend des Asset-Studios nach dist/studio/ bauen (der Go-Server liefert es unter /studio/ aus; task build ruft es auf; nur bei geänderten Quellen)
+    desc: Frontend des Asset-Studios nach tools/k3c-studio/frontend/dist/ bauen (das Fenster k3c-studio liefert es unter /studio/ aus, nicht der Spielserver; B-507; nur bei geänderten Quellen)
     dir: '{{.STUDIO}}/frontend'
     cmds:
       - npx tsc --noEmit
@@ -45,7 +45,7 @@ tasks:
       - paths.ts
       - ../../webkit/**/*
     generates:
-      - ../../../dist/studio/**/*
+      - dist/**/*
 
   build:
     desc: "EXE des Asset-Studios bauen, feste EXE bin/k3c-studio (Wails; nur bei geänderten Go-Quellen, `--force` erzwingt; laufendes Studio vorher schließen, sonst scheitert die Kopie; startet es nicht; B-459)"
@@ -55,6 +55,7 @@ tasks:
         msg: 'Wails-CLI fehlt – go install github.com/wailsapp/wails/v2/cmd/wails@v2.16.0 (requirements.md)'
     sources:
       - tools/k3c-studio/*.go
+      - tools/k3c-studio/backend/**/*.go
       - tools/k3c-studio/go.mod
       - tools/k3c-studio/go.sum
       - tools/k3c-studio/wails.json
@@ -76,7 +77,7 @@ tasks:
       - cp {{.STUDIO}}/build/bin/k3c-studio{{exeExt}} bin/k3c-studio{{exeExt}}
 
   test:
-    desc: Asset-Studio-Frontend und gemeinsame Asset-Logik testen (Vitest, go test; das Studio-Backend engine/studio prüft go:test; B-459)
+    desc: Asset-Studio-Frontend und gemeinsame Asset-Logik testen (Vitest, go test; das Backend tools/k3c-studio/backend gehört zum Studio-Modul; B-459, B-507)
     deps: [':tmp', frontend]
     cmds:
       - npx vitest run --config {{.STUDIO}}/frontend/vitest.config.ts

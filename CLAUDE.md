@@ -21,6 +21,7 @@ Zielplattform ist **Edge auf der Xbox** (Gamepad API), gehostet im Heimnetz. Die
 - **Spielstruktur (003):** Ein Raum hat einen Spielstand mit n Inseln, jede Insel n Stufen; Stufen sind pro Spieler frei begehbar und laufen alle weiter. Im Go-Code rechnet ein Raum eine Insel mit mehreren Stufen im selben Takt, Einzelwechsel je Spieler und einem Material-Vorrat je Insel (`engine/sim/island*.go`, SP12–SP14); noch offen: mehrere Inseln und Inselwechsel (B-103). Regeln: `docs/rules/stufen.md`.
 - Architektur-Entscheidungen: `docs/decisions/` – **001: Die Spiel-Engine wandert auf einen Go-Server**, der Browser
   wird reiner Client. Umgesetzt (SP09): Es gibt keine TS-Simulation mehr, neue Mechaniken entstehen in `engine/` (Go).
+  **004: Asset-Studio getrennt vom Spielserver**, Schnittstelle sind die Dateien, der Server beobachtet sie (TS1, B-507).
 - Altes Godot-Projekt (nur Referenz): `C:\WORKSPACE\FamilyCrowns`
 
 ## Befehle
@@ -38,11 +39,12 @@ task check:dev     # k3c-dev: Frontend, go test, golangci-lint
 task check:all     # alles inklusive Build
 task go:golden     # testdata/golden/ neu schreiben, nur bei gewollter Regel-/Wertänderung (Begründung in den Commit)
 task build         # Typecheck + Produktions-Build nach dist/
-task pages         # GitHub-Pages-Seite nach _site/ (site/ + dist unter app/)
+task pages         # GitHub-Pages-Seite nach _site/ (kopiert nur site/, kein Build)
 task serve         # Build + Go-Server (Port 8080, bin/k3c-server)
 task start         # Go-Server ohne Web-Build (task dev leitet /api und /ws an ihn weiter)
 task k3c-dev       # Workbench als Fenster im Watch-Modus (wails dev); EXE: task k3c-dev:build
 task k3c-studio    # Asset-Studio als Fenster im Watch-Modus (wails dev); EXE: task k3c-studio:build
+task check:studio  # Asset-Studio: Frontend-Vitest, go test + golangci-lint für tools/assetkit und tools/k3c-studio
 ```
 
 **Taskfile-Gruppen:** `Taskfile.yml` hält nur die Kernbefehle (Workspace) und die Prüf-Aggregate `check:*`; jedes Projekt hat sein
@@ -53,11 +55,16 @@ in die Wurzel.
 
 **Watcher statt Neubau:** Jedes EXE-Projekt kennt `build` (EXE bauen), `run` (bauen und starten) und `dev` (bei jeder Änderung neu).
 Der Projektname allein (`task k3c-dev`) startet `dev`. Wails-Fenster (`k3c-dev`, `k3c-studio`) nutzen `wails dev`: Oberfläche mit
-Hot Reload ohne Neustart, Neubau und Neustart des Fensters nur bei Go-Änderungen (auch in `engine/`, `data/`, `tools/assetkit`).
-Server und Starter (`k3c-server:dev`, `k3c-starter:dev`) laufen unter `k3c-watch` (`tools/watch`, `bin/k3c-watch`): Build bei Änderung,
+Hot Reload ohne Neustart, Neubau und Neustart des Fensters nur bei Go-Änderungen (auch in `engine/`, `data/`, `tools/assetkit`, `tools/ruletable`).
+Server und Starter (`k3c-server:dev` nur für Go-Code, `data/` und `public/` beobachtet der Server selbst; `k3c-starter:dev`) laufen unter `k3c-watch` (`tools/watch`, `bin/k3c-watch`): Build bei Änderung,
 Tausch gegen die laufende EXE am festen Pfad, bei Build-Fehler läuft die alte Version weiter. Wails-Builds (`k3c-dev:build`,
 `k3c-studio:build`, `k3c-starter:exe`) und die Frontends laufen nur bei geänderten Quellen (`sources`/`generates`); `--force` erzwingt.
-Die Oberfläche des Studios steckt nicht in der EXE (liegt unter `dist/studio/`), eine Änderung daran braucht keinen EXE-Neubau.
+Die Oberfläche des Studios steckt nicht in der EXE (liegt unter `tools/k3c-studio/frontend/dist/`), eine Änderung daran braucht keinen EXE-Neubau.
+
+Der Go-Server beobachtet `data/` und `public/` immer (auch produktiv, `engine/watch`, Entscheidung 004): Nach einer
+Änderung prüft er den neuen Stand (`k3c-server -check-data`), zeigt allen Geräten „Server startet neu“ und startet sich
+über seinen Supervisor neu (Kindprozess mit `K3C_CHILD=1`, Exit-Code 75 = Neustart, Daten von der Platte aus
+`K3C_DATA_DIR`, Standard `data/`; ohne Ordner eingebettet). Ein ungültiger Stand lässt den alten Stand laufen.
 
 Die Gamepad-Testseite (`gamepad-test.html`) schickt Berichte von der Xbox nach `reports/*.json`. Dort die Ergebnisse nachlesen.
 
@@ -76,14 +83,19 @@ prüft die Regeln unten automatisch (Seiten eingetragen, `installPageChrome()`, 
 ## Struktur
 
 - `data/` – Balancing als JSON (Biome, Gegner, Truppen, Gebäude, Monarch), einzige Quelle für Client (Import) und
-  Go-Server (`go:embed`, `data/embed.go`). Werte gehören hierher, nicht in den Code.
+  Go-Server (`data/embed.go`: von der Platte aus `K3C_DATA_DIR`, ohne Ordner per `go:embed`). Werte gehören hierher, nicht in den Code.
 - `engine/` – Go: `sim/` (Simulation, deterministisch), `level/` (Level-Generator), `room/`, `net/` (HTTP, WebSocket `/ws`,
-  Protokoll laut `docs/protocol.md`), `store/` (Spielstände → `saves/`, Berichte → `reports/`).
-- `cmd/` – Go-Binaries: `k3c-server` (liefert `dist/` und die API aus), `k3c-load` (Lasttest), `k3c-tui`.
-  `tools/k3c-dev` – Entwickler-Werkzeug (Wails-Fenster + MCP-Server `k3c-dev`). Asset-Studio als
-  Seite des Go-Servers: Backend `engine/studio` (`/api/studio/`), Frontend `tools/k3c-studio/frontend` (Build nach `dist/studio/`,
-  `task k3c-studio:frontend`), Kachel „Welten bauen“ auf der Landingpage (`studio.html`); nur im Dev-Mode und nur Loopback (B-459). Dasselbe Studio gibt es als eigenständiges Wails-Fenster `tools/k3c-studio` (`task k3c-studio` bzw. `task k3c-studio:build` → `bin/k3c-studio.exe`, wie k3c-dev mit gemerkter Größe und Position): ohne Spielserver, eigener Loopback-Port 8091. `tools/assetkit` – gemeinsame Asset-Logik
-  beider (eigenes Go-Modul, per `replace` eingebunden). `tools/k3c-starter` – Windows-Starter für den Server (Wails-Fenster
+  Protokoll laut `docs/protocol.md`), `store/` (Spielstände → `saves/`, Berichte → `reports/`), `watch/` (Datei-Watch für
+  `data/` und `public/`). `engine/` und `cmd/k3c-server` importieren nichts aus `tools/` (`engine/internal/rules/imports_test.go`).
+- `cmd/` – Go-Binaries: `k3c-server` (liefert `dist/` und die API aus; Supervisor `supervise.go`, Neustart bei geänderten
+  Dateien `restart.go`), `k3c-load` (Lasttest), `k3c-tui`.
+  `tools/k3c-dev` – Entwickler-Werkzeug (Wails-Fenster + MCP-Server `k3c-dev`). `tools/k3c-studio` – Asset-Studio als
+  eigenständiges Wails-Fenster, keine Seite des Spielservers (Entscheidung 004, B-507): Backend `tools/k3c-studio/backend`
+  (`/api/studio/` auf eigenem Loopback-Port 8091, samt Chat), bindet die Engine als Bibliothek ein (Vorschau und „Im Spiel
+  öffnen“ ohne Spielserver, eigene Testspielstände); Frontend `tools/k3c-studio/frontend` (Build nach
+  `tools/k3c-studio/frontend/dist/`, `task k3c-studio:frontend`); `task k3c-studio` bzw. `task k3c-studio:build` → `bin/k3c-studio.exe`,
+  wie k3c-dev mit gemerkter Größe und Position. Das Studio schreibt `data/**` und `public/`, der Server liest sie nur.
+  `tools/assetkit` – gemeinsame Asset-Logik von k3c-dev und Studio (eigenes Go-Modul, per `replace` eingebunden). `tools/k3c-starter` – Windows-Starter für den Server (Wails-Fenster
   startet `bin/k3c-server`, zeigt Status und Adresse, EXE `bin/k3c-starter.exe`, `task k3c-starter:build`, B-041).
   `tools/webkit` – gemeinsame Oberflächen-Bausteine der Frontends von k3c-dev und Studio (`@webkit/…`).
   CLIs: `tools/atlas`, `tools/buildings` (`task gen:gebaeude`), `tools/ruletable` (`task gen:rules`), `tools/cleanup` (`task ops:aufraeumen`). `tools/watch` – `k3c-watch`, der Watcher der Tasks `k3c-server:dev` und `k3c-starter:dev`.
@@ -96,7 +108,7 @@ prüft die Regeln unten automatisch (Seiten eingetragen, `installPageChrome()`, 
 - Namen und Ablage: Datei- und Ordnernamen im Code englisch, Gruppen-Präfixe in `engine/sim` (`docs/arbeitsweise.md` › Namen und Ablage).
 - Seiten: `index.html` = Landingpage/Shell (Kacheln aus `src/landing/pages.ts`), `game.html` = Spiel, weitere `*.html` = Testseiten.
   Jede `*.html` im Root wird automatisch gebaut.
-- `site/` – Präsentationsseite für GitHub Pages (B-183), rein statisch, ohne Server. `task pages` baut sie mit dem Build unter `app/` nach `_site/`.
+- `site/` – Präsentationsseite für GitHub Pages (B-183), rein statisch, ohne Server. Pages lädt nur `site/` hoch (kein Node, kein Build); Bilder liegen als Kopien in `site/img/` (B-507).
 - `src/core/shell.ts` – Seiten-Rahmen (Home-Button, Home-Kombi, Zurück-Falle), `src/core/fullscreen.ts` – Vollbild über die Shell.
 
 ## Regel: Seiten & Navigation

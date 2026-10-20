@@ -22,10 +22,10 @@ tasks:
       - ./{{.EXE}}
 
   dev:
-    desc: Go-Server bei jeder Änderung an cmd/, engine/ oder data/ neu (ohne data/worlds und data/hub.json, die das Studio zur Laufzeit schreibt) bauen und starten (k3c-watch); ein Build-Fehler lässt die laufende Version stehen
+    desc: Go-Server bei jeder Änderung an cmd/ oder engine/ neu bauen und starten (k3c-watch; data/ und public/ beobachtet der Server selbst und startet sich dafür über seinen Supervisor neu); ein Build-Fehler lässt die laufende Version stehen
     deps: [':watch:build']
     cmds:
-      - ./bin/k3c-watch{{exeExt}} --name server --paths cmd/k3c-server,engine,data,go.mod,go.sum --ignore data/worlds,data/hub.json --build "task k3c-server:build" -- {{.EXE}}
+      - ./bin/k3c-watch{{exeExt}} --name server --paths cmd/k3c-server,engine,go.mod,go.sum --build "task k3c-server:build" -- {{.EXE}}
 
   default:
     desc: Kurzform von k3c-server:dev

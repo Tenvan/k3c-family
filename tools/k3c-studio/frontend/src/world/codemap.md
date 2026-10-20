@@ -24,6 +24,7 @@ Planung
 - `usePlan.ts`: Zustand des Editors: geladene Inseln, Auswahl, Entwurf mit Chunk-Anzahl, verzögerte Prüfung (`planCheck`), Speichern, Verwerfen; `source` für beide Vorschauen.
 - `worldDraft.ts`: reine Logik des Welt-Entwurfs (WZ18.6): `draftOf`, `sameDraft`, `addIsland` (Kopie der letzten, freie id), `moveIsland`, `removeIsland`, `updateIsland`, `toggleDepth`.
 - `useWorldDraft.ts`: Zustand des Welt-Entwurfs: verzögerte Prüfung (`planWorldCheck`, Fehler am Feld, Vorschau), Speichern auf dem Stand (`planWorldSave`, Stale lässt den Entwurf stehen), Verwerfen.
+- `useChatDraft.ts`: nimmt Antworten des Chats an (`registerDraftLoader`): `planWorldAnswer`, lesbarer Entwurf wird geladen (Prüffehler am Entwurf), Unlesbares nur als Meldung, ungespeicherter Entwurf nur nach Rückfrage; `WorldDraftEditor` hat den Knopf „Prompt-Grundgerüst“ (`fillChat`). Test `ChatDraft.test.tsx`.
 - `WorldDraftEditor.tsx`: Welt-Kopf (Name, Notizen), Inseln (Name, id, hoch/runter, entfernen, Stufen als Biome, Skalierung), Fehler am Feld, Vorschau der Welt-Datei, „Welt speichern“.
 - `planSave.ts`: Speichern mit Stand (`planSave`), `Notice` (`hint`, `error`, `stale`), Sicht nach dem Speichern.
 - `useWorlds.ts`: Liste und Wahl der Welten (`planWorlds`, `planWorldSelect`, `planWorldAdd`, `planWorldCopy`, `planWorldRemove`, `refreshWorlds`).
@@ -33,7 +34,7 @@ Planung
 - `convert.ts`: reine Logik und ein Aufruf (`planChunkObjects`): Seed-Chunk in feste Objekte umwandeln (`convertLock`, `inSync`, `convertChunk`, `seedObjects`).
 - `ConvertButton.tsx`: Knopf „In feste Objekte umwandeln“ je geplantem Chunk, gesperrt mit Grund, verwirft veraltete Ergebnisse.
 - `WorldStructure.tsx`: linke Spalte: Welt wählen, anlegen (leer, Kopie), löschen (`WorldBar`, `AddWorld`), Welt-Entwurf (`WorldDraftEditor`), Insel und Stufe (`IslandBar`), Baum der Inseln und Stufen (`StructureTree`), `GameLauncher`; Wechsel nur ohne offenen Entwurf.
-- `GameLauncher.tsx`: „Im Spiel öffnen“ und „Voll ausgebaut öffnen“ (`worldOpenGame`), Adresse des Spielservers gemerkt (`../lib/prefs`, gebunden an `k3c-studio.`).
+- `GameLauncher.tsx`: „Im Spiel öffnen“ und „Voll ausgebaut öffnen“; Liste „Spiel läuft auf“: interne Engine des Studios (`worldOpenGame`) oder erkannter Spielserver (`worldGameServers`, `worldOpenGameServer`, nicht erreichbare ausgegraut, „Neu suchen“), Wahl gemerkt (`../lib/prefs`, Schlüssel `k3c-studio.world.gameTarget`; B-513).
 
 Tests (je neben der Quelle): `levelView`, `viewState`, `plan`, `chunkMarks`, `bandLayout`, `kindIcons`, `convert`, `worldDraft` (`.test.ts`); `PlanEditor`, `GameLauncher`, `WorldPage`, `LiveChunkBand`, `RangeSlider`, `ConvertButton`, `ChunkCount`, `ChunkFocus`, `ChunkJump`, `WorldFiles`, `WorldDraft` (`.test.tsx`).
 
@@ -42,8 +43,8 @@ Tests (je neben der Quelle): `levelView`, `viewState`, `plan`, `chunkMarks`, `ba
 2. Entwurf ändern (`PlanEditor`, `ConvertButton`, `SizePicker`) → verzögerte Prüfung (`planCheck`) → gültiger Stand geht an Streifen, Band und Vorschau; Hinweise (`slotHints`) markieren Chunks → Speichern (`planSave` mit Stand) schreibt die Weltdatei.
 3. Ansicht: Rad, Tasten, `ViewBar`, Klick auf Chunk oder Platz → `useViews` (gemeinsame Mitte, Zoom je Vorschau) → `chunkView` und `liveView`.
 4. Welt wählen/anlegen/löschen (`WorldStructure`, nur ohne Entwurf) → `useWorlds` → neu laden; Welt-Entwurf ändern → `useWorldDraft` prüft (`planWorldCheck`) → „Welt speichern“ (`planWorldSave`) → neu laden.
-5. `GameLauncher` → `worldOpenGame` → Browser auf dem Spielserver.
+5. `GameLauncher` → `worldOpenGame` (interne Engine) oder `worldOpenGameServer` (Spielserver) → Browser.
 
 ## Integration
-- Backend: HTTP über `../api/http.ts` (POST `/api/studio/rpc/<Methode>`) an `engine/studio`: `app_world.go` (`WorldLevel`), `app_preview.go` (`WorldPreview`), `app_plan.go` (`PlanLoad`, `PlanCheck`, `PlanSave`), `app_plan_convert.go` (`PlanChunkObjects`), `app_world_draft.go` (`PlanWorldCheck`, `PlanWorldSave`), `app_world_files.go` (`PlanWorlds`, `PlanWorld*`), `app_game.go` (`WorldOpenGame`), `plan_file.go`; Mock `../api/mockWorld.ts`, `../api/mockPlan.ts`, `../api/mockWorlds.ts`, `../api/mockWorldDraft.ts`.
+- Backend: HTTP über `../api/http.ts` (POST `/api/studio/rpc/<Methode>`) an `tools/k3c-studio/backend`: `app_world.go` (`WorldLevel`), `app_preview.go` (`WorldPreview`), `app_plan.go` (`PlanLoad`, `PlanCheck`, `PlanSave`), `app_plan_convert.go` (`PlanChunkObjects`), `app_world_draft.go` (`PlanWorldCheck`, `PlanWorldSave`), `app_world_files.go` (`PlanWorlds`, `PlanWorld*`), `app_game.go` (`WorldOpenGame`), `app_game_server.go` (`WorldGameServers`, `WorldOpenGameServer`), `plan_file.go`; Mock `../api/mockWorld.ts`, `../api/mockPlan.ts`, `../api/mockWorlds.ts`, `../api/mockWorldDraft.ts`.
 - Abhängigkeiten: `../stage/` (`LivePreview`, `hudBar`, `stageLogic`), `../api`, `../lib/prefs`, `../styles/world.css`, `@game/model/*`; Regeln `docs/rules/geplante-chunks.md`; eingehängt in `../App.tsx` (Seite `welt`, Tab „Welten Editor“).

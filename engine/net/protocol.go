@@ -36,6 +36,7 @@ var messages = map[string]string{
 	codeBadRequest:   "Ungültige Nachricht",
 	"forbidden":      "Nur im Dev-Mode erlaubt",
 	"world_unknown":  "Welt unbekannt",
+	codeRestarting:   "Server startet neu",
 }
 
 // codeOf übersetzt einen Fehler aus engine/room in seinen Code; alles andere ist bad_request.

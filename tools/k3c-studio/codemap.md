@@ -1,9 +1,9 @@
 # tools/k3c-studio/
 
 ## Responsibility
-Eigenständiges Fenster (Wails, `main.go`, `window.go`): startet `engine/studio` und `dist/studio` auf Loopback (Port 8091, `K3C_STUDIO_PORT`), zeigt sie im Fenster und merkt Größe und Position wie k3c-dev (`%AppData%\k3c\k3c-studio.json`). Bauen: `task k3c-studio:build` → `bin/k3c-studio.exe`.
+Eigenständiges Fenster (Wails, `main.go`, `window.go`): startet das Backend `backend/` und die Oberfläche `frontend/dist` auf Loopback (Port 8091, `K3C_STUDIO_PORT`), zeigt sie im Fenster und merkt Größe und Position wie k3c-dev (`%AppData%\k3c\k3c-studio.json`). Bauen: `task k3c-studio:build` → `bin/k3c-studio.exe`.
 
-Frontend des Asset-Studios (B-459): React-Oberfläche in `frontend/`, Build nach `dist/studio/` (`task k3c-studio:frontend`, von `task build` aufgerufen), vom Go-Server unter `/studio/index.html` ausgeliefert. Die Landingpage zeigt es über die Kachel „Welten bauen“ (`studio.html`, `src/tools/studioPage.ts`) im Vollflächen-Rahmen. Das **Backend** (RPC, Register, Planung) liegt in [`engine/studio/`](../../engine/studio/codemap.md).
+Frontend des Asset-Studios (B-459): React-Oberfläche in `frontend/`, Build nach `frontend/dist/` (`task k3c-studio:frontend`), nur vom Fenster unter `/studio/` ausgeliefert; der Spielserver hat keine Studio-Seite und keine Kachel mehr (Entscheidung 004, B-507). Das **Backend** (RPC, Register, Planung) liegt in [`backend/`](backend/codemap.md) (Paket `backend`, bis TS1.1 `engine/studio`).
 
 ## Design
 - `frontend/`: Vite/React/Radix; Details in [`frontend/codemap.md`](frontend/codemap.md). Spiel-Code nur lesend über die Aliase `@game` (`src/`) und `@data` (`data/`), festgelegt in `frontend/paths.ts` für `vite.config.ts` (publicDir = `public/` nur im Dev-Modus, `server.fs.allow` auf die Repo-Wurzel) und `vitest.config.ts`. Gemeinsame UI-Teile (Fehlertext, Entprellen, Bausteine, Theme, Prefs-Fabrik) liegen in [`tools/webkit/`](../webkit/) (Alias `@webkit/...`, geteilt mit k3c-dev).
@@ -20,11 +20,11 @@ Frontend des Asset-Studios (B-459): React-Oberfläche in `frontend/`, Build nach
   - `lib/`, `ui/`, `styles/`: `lib/prefs.ts` bindet die Prefs-Fabrik aus `@webkit/prefs` an das Präfix `k3c-studio.`, `ui/Splitter.tsx` und die eigenen Styles (ohne `theme.css`, das kommt aus `@webkit/theme.css`).
 
 ## Flow
-1. `task k3c-studio:frontend` baut nach `dist/studio/`; der Go-Server (Dev-Mode, Checkout) liefert es unter `/studio/` aus.
+1. `task k3c-studio:frontend` baut nach `tools/k3c-studio/frontend/dist/`; das Fenster (`main.go`, `server.go`) liefert es auf Loopback unter `/studio/` aus.
 2. Die Seite ruft `/api/studio/rpc/<Methode>` auf (`src/api/http.ts`), lädt bei `assets:changed` (SSE) neu und speichert mit dem `stand` aus dem Laden.
 3. Ohne Server (`npm run dev` mit `?mock=1`, Vitest) antwortet der Mock.
 
 ## Integration
-- Backend: `engine/studio/` (eingehängt von `cmd/k3c-server/studio.go`); Asset-Logik in `tools/assetkit`; die MCP-Tools `assets_*` bleiben in k3c-dev (dessen Knopf „Asset-Studio öffnen“ öffnet `/studio/index.html` im Browser).
-- Tasks: `task k3c-studio:frontend` (Build), `task check:studio` (Studio-Vitest, assetkit-Tests, Lint); das Backend prüft `task check:go`. `npm run dev` im Frontend-Ordner (Port 5192) leitet `/api` an den Spielserver (8080). Das Vitest der Wurzel nimmt `tools/k3c-studio/**` aus.
+- Backend: `backend/` (eingehängt von `server.go`; der Spielserver bindet es seit TS1.1 nicht mehr ein); Asset-Logik in `tools/assetkit`; die MCP-Tools `assets_*` bleiben in k3c-dev (dessen Knopf „Asset-Studio öffnen“ öffnet `/studio/index.html` im Browser).
+- Tasks: `task k3c-studio:frontend` (Build), `task check:studio` (Studio-Vitest, Go-Tests und Lint von assetkit und diesem Modul samt Backend). `npm run dev` im Frontend-Ordner (Port 5192) leitet `/api` an den Server des Studios (8091). `server.go` liefert neben der Studio-API die Spiel-API der eingebundenen Engine (`/api/…`, `/ws`, B-507/AC-02), Vorschau-Spiele laufen ohne Spielserver. Das Vitest der Wurzel nimmt `tools/k3c-studio/**` aus.
 - Daten (über das Backend): `data/assets.json`, `data/assets-recherche.json`, `public/**`.

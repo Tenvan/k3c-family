@@ -17,15 +17,6 @@ const serverPort = process.env.K3C_HTTP_PORT ?? '8080';
 
 // Nur das eigene .claude/ (Worktrees) ignorieren: Ein Glob auf .claude träfe jede Datei, wenn diese Wurzel selbst darunter liegt (B-275).
 const claudeDir = resolve(__dirname, '.claude');
-/** Gehört die Anfrage zu /api/studio? Der Pfad wird erst dekodiert und von `.`/`//` befreit. */
-function isStudioPath(url: string | undefined): boolean {
-  try {
-    const path = decodeURIComponent(new URL(url ?? '', 'http://x').pathname).replace(/\/+/g, '/');
-    return /^\/api\/(\.\/)*studio(\/|$)/i.test(path);
-  } catch {
-    return true; // nicht lesbar: lieber nicht weiterleiten
-  }
-}
 
 function inClaudeDir(file: string): boolean {
   const rel = relative(claudeDir, file);
@@ -45,10 +36,8 @@ export default defineConfig({
   server: {
     host: true,
     port: Number(process.env.K3C_VITE_PORT ?? 5183),
-    // /api/studio bleibt draußen: das Studio schreibt in den Checkout und erlaubt nur Loopback, über den Proxy sähe jedes Gerät im LAN
-    // wie Loopback aus. Geprüft wird der dekodierte Pfad (`/api/%73tudio` zählt als studio).
     proxy: {
-      '/api': { target: `http://localhost:${serverPort}`, bypass: (req) => (isStudioPath(req.url) ? false : undefined) },
+      '/api': { target: `http://localhost:${serverPort}` },
       '/ws': { target: `ws://localhost:${serverPort}`, ws: true },
     },
     // Worktrees im eigenen .claude/ (zehntausende Dateien) und laufend geschriebene Ausgaben nicht beobachten,

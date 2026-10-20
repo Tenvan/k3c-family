@@ -16,6 +16,9 @@ export interface IslandDraft {
   name: string;
   depths: number[];
   depthScaling: DraftScaling;
+  /** Planung und Chunk-Anzahl, nur wenn der Entwurf sie mitbringt (Antwort aus dem Chat); sonst bleibt die Datei, wie sie ist. */
+  plannedChunks?: unknown;
+  chunkCounts?: unknown;
 }
 
 /** Entwurf der gewählten Welt (Go: WorldDraft); die id der Welt bleibt (gleich dem Dateinamen). */
@@ -38,6 +41,14 @@ export interface WorldCheckView {
   preview: string;
 }
 
+/** Prüfung einer Antwort des Modells (Go: WorldAnswerView): draft ist gesetzt, wenn die Welt lesbar ist (auch mit Prüffehler);
+ *  ok nur, wenn sie außerdem die Prüfung des Ladens besteht. */
+export interface WorldAnswerView {
+  ok: boolean;
+  error: string;
+  draft: WorldDraft | null;
+}
+
 /** Aufrufe für Welten und Inseln (Go: PlanWorldCheck, PlanWorldSave, PlanWorldCopy) */
 export interface WorldDraftApi {
   /** Entwurf prüfen wie beim Laden der Welt, ohne zu schreiben */
@@ -46,4 +57,8 @@ export interface WorldDraftApi {
   planWorldSave(draft: WorldDraft, stand: string): Promise<PlanSaved>;
   /** Kopie der gewählten Welt mit neuem Namen anlegen (wird gewählt) */
   planWorldCopy(name: string): Promise<WorldsView>;
+  /** Prompt-Grundgerüst aus den Daten für den Chat (WZ19.3), endet mit „MEINE WÜNSCHE:“ */
+  planWorldPrompt(): Promise<string>;
+  /** Antwort des Modells prüfen und als Entwurf liefern; schreibt nichts */
+  planWorldAnswer(text: string): Promise<WorldAnswerView>;
 }

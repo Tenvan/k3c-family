@@ -163,6 +163,14 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-504](B-504-preset-skills-backstab-smokebomb.md) | REG | Problem | niedrig | offen | – | Die Skills backstab und smokeBomb des Presets Dieb stehen in data/monarch.json |
 | [B-505](B-505-monarch-animationen-wurf-treffer-tod-respawn.md) | CLI | Idee | niedrig | offen | – | Monarch hat Animationen für Wurf, Treffer, Tod und Respawn |
 | [B-502](B-502-monarch-seite-ansicht-wuensche.md) | DEV | Idee | mittel | offen | – | Monarch-Seite: einheitliches Sheet, Zoom, zweispaltige Ansicht |
+| [B-506](B-506-spielmenue-welten-und-spielstaende.md) | CLI | Problem | hoch | offen | – | Spielmenü zeigt keine Welt und erlaubt kein Anlegen oder Löschen von Spielständen |
+| [B-507](B-507-server-und-studio-trennen-dateiwatch.md) | DEV | Schuld | hoch | eingeplant | TS1 | Spielserver und Asset-Studio sind getrennt, der Server beobachtet die Dateien des Studios |
+| [B-508](B-508-raeume-nach-neustart-wieder-offen.md) | SRV | Idee | mittel | offen | – | Offene Räume sind nach einem Neustart des Servers wieder offen, Geräte kehren ohne Umweg über die Raumliste zurück |
+| [B-509](B-509-grafik-sound-aus-public-live.md) | SRV | Idee | mittel | offen | – | Im Studio geänderte Grafiken und Sounds erreichen die Clients ohne neuen Build |
+| [B-510](B-510-k3c-dev-kein-doppelter-neustart.md) | DEV | Schuld | niedrig | offen | – | k3c-dev startet den Spielserver bei Änderungen in data/ nicht mehr selbst neu, der Server macht das allein |
+| [B-511](B-511-studio-schreibt-atomar.md) | DEV | Schuld | niedrig | offen | – | Das Studio schreibt jede Datei in data/ und public/ atomar, der Server sieht nie eine halbe Datei |
+| [B-512](B-512-k3c-dev-uebernommener-server-neue-pid.md) | DEV | Problem | niedrig | offen | – | k3c-dev beendet einen übernommenen Spielserver auch nach dessen Selbst-Neustart (neue PID am Port, Supervisor-Prozess) |
+| [B-514](B-514-chat-entwurf-planung-nachbesserung.md) | DEV | Problem | niedrig | offen | – | Chat-Entwurf: Planung bei gleicher Insel-id schützen, CLI-Prozessbaum, Test-Riegel |
 
 ## Archiv
 
@@ -465,3 +473,4 @@ Zeile in diesen Abschnitt.
 | [B-463](archiv/B-463-monarch-vorschau-animationen.md) | DEV | Idee | mittel | erledigt | WZ10 | Eine Monarch-Seite im Asset-Studio zeigt Reiten, Schlagen, Skills und weitere Vorschauen |
 | [B-436](archiv/B-436-plan-create-entwurf-zeilen.md) | DEV | Problem | niedrig | erledigt | WZ12 | plan_create scheitert an Platzhalter-Zeilen „– (Entwurf)“ in der Session-Tabelle |
 | [B-467](archiv/B-467-worktree-pill-am-eintrag.md) | DEV | Idee | mittel | erledigt | WZ12 | Worktree-Änderungen stehen als Pill am Projekt, Sprint oder an der Session statt als Leiste oben |
+| [B-513](archiv/B-513-welten-editor-spiel-adresse-waehlbar.md) | DEV | Idee | mittel | erledigt | – | Im Welten-Editor lässt sich die Spiel-Adresse wählen: interne Engine oder Server |

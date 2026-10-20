@@ -1,7 +1,8 @@
+import { mockChatStream } from './mockChat';
 import { mockAssets } from './mockAssets';
 import { mockPlan } from './mockPlan';
 import { mockHubCheck, mockHubPlan, mockHubRules, mockHubSave } from './mockHub';
-import { mockOpenGame, mockWorldLevel, mockWorldPreview } from './mockWorld';
+import { mockGameServers, mockOpenGame, mockWorldLevel, mockWorldPreview } from './mockWorld';
 import type { AssetChoice, Backend, EventName, Events } from './types';
 
 /** Backend ohne Wails (Browser, Tests): erfundene Daten; `external` spielt einen fremden Schreiber nach. */
@@ -15,12 +16,15 @@ export function mockBackend(): Backend & { external: (id: string, wahl: AssetCho
     worldLevel: async (seed, source) => mockWorldLevel(seed, source),
     worldPreview: async (args) => mockWorldPreview(args),
     worldOpenGame: async (base, seed, biome, mode) => mockOpenGame(base, seed, biome, mode, plan.active()),
+    worldGameServers: async () => mockGameServers(),
+    worldOpenGameServer: async (base, seed, biome, mode) => mockOpenGame(base, seed, biome, mode, plan.active()),
     ...plan,
     hubPlan: async () => mockHubPlan(),
     hubRules: async (hubJSON) => mockHubRules(hubJSON),
     hubCheck: async (candidate) => mockHubCheck(candidate),
     hubSave: async (candidate, stand) => mockHubSave(candidate, stand),
     openUrl: (url) => window.open(url, '_blank', 'noopener'),
+    chatStream: mockChatStream,
     on: <E extends EventName>(event: E, fn: (data: Events[E]) => void) => {
       const set = subs.get(event) ?? new Set();
       set.add(fn as (data: never) => void);
