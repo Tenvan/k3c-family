@@ -1,6 +1,6 @@
 # WZ18 · REG, SIM, SRV, DEV · Welten im Spiel: Welt-Dateien, Welt-Wahl im Raum und Welten-Editor
 
-- **Status:** aktiv
+- **Status:** erledigt
 - **Projekt:** WZG
 - **Domäne:** REG, SIM, SRV, DEV
 - **Reife:** bereit
@@ -72,7 +72,7 @@ Entschieden: `B-488 › Offene Fragen` (alle). Offen für den Workshop WZ18.1: g
 | WZ18.5 | `WZ18.5-protokoll-welt.md` | Umsetzung | autonom | fertig |
 | WZ18.6 | `WZ18.6-welten-editor.md` | Umsetzung | autonom | fertig |
 | WZ18.7 | `WZ18.7-review.md` | Review | autonom | fertig |
-| WZ18.8 | `WZ18.8-abnahme.md` | Review | Mensch | offen |
+| WZ18.8 | `WZ18.8-abnahme.md` | Review | Mensch | fertig |
 
 - WZ18.1 (REG) Workshop (von 🧑 an Claude delegiert): Format der Welt-Datei, Insel-IDs, Spielstand-Verweis; Regeltext in `docs/rules/`, Glossar (AC-01).
 - WZ18.2 (SIM) Welt-Dateien laden und prüfen, Sim lädt über Parameter, `islands.json` → `data/worlds/standard.json` (AC-02).
