@@ -160,6 +160,7 @@ func TestAenderungZwischenLadenUndGrundstand(t *testing.T) {
 	dir := t.TempDir()
 	write(t, dir, "alt.json", `{}`, time.Unix(1000, 0))
 	write(t, dir, "neu.json", `{}`, time.Unix(3000, 0))
+	write(t, dir, "zukunft.json", `{}`, time.Now().Add(24*time.Hour)) // falsche Uhr: zählt nicht als Änderung
 	w := New([]Root{{Name: "data", FS: os.DirFS(dir)}}, quiet, time.Unix(2000, 0))
 	if got := w.Poll(time.Unix(2000, 0).Add(quiet - time.Millisecond)); got != nil {
 		t.Fatalf("vor der Frist: %v", got)

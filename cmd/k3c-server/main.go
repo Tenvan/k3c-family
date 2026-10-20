@@ -97,7 +97,7 @@ func main() {
 		dir, log := dataDir(), consoleLogger()
 		sigs := make(chan os.Signal, 2) // für die ganze Laufzeit: kein Signal beendet den Supervisor vor dem Kind
 		signal.Notify(sigs, os.Interrupt, syscall.SIGTERM)
-		os.Exit(supervise(startChild(dir, log), sigs, time.Now, dir == "", log))
+		os.Exit(supervise(startChild(dir, log), sigs, clock{time.Now, time.After}, dir == "", log))
 	}
 	log, closeLog := newLogger(logDir(), os.Stderr)
 	err := run(loadConfig(), log)

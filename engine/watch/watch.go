@@ -34,12 +34,14 @@ type Watcher struct {
 
 // New merkt sich den aktuellen Stand; quiet ist die Entprellfrist nach der letzten Änderung. Dateien mit einer
 // Änderungszeit ab since (Laden der Daten, vor New) zählen schon als geändert, damit keine Änderung zwischen Laden und
-// Grundstand verloren geht; die Frist läuft dann ab since. Null: keine.
+// Grundstand verloren geht; die Frist läuft dann ab since. Null: keine. Zeiten nach jetzt (falsche Uhr, kopierte
+// Dateien) zählen nicht, sonst startete jeder Prozess sofort wieder neu.
 func New(roots []Root, quiet time.Duration, since time.Time) *Watcher {
 	w := &Watcher{roots: roots, quiet: quiet, changed: map[string]bool{}}
 	w.seen = w.scan()
+	now := time.Now().UnixNano()
 	for p, s := range w.seen {
-		if !since.IsZero() && s.mod >= since.UnixNano() {
+		if !since.IsZero() && s.mod >= since.UnixNano() && s.mod <= now { // Zeit in der Zukunft (falsche Uhr): keine Änderung
 			w.mark(p, since)
 		}
 	}

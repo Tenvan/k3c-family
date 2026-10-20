@@ -1,6 +1,6 @@
 # TS1.6 · Review: Trennung Server und Studio
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Review
 - **Agent:** autonom
 - **Domäne:** DEV
@@ -46,5 +46,7 @@ task check:all
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+- AC-01 bis AC-06 geprüft (2026-10-20): `task check`, `task check:go`, `task build` grün; Einzel-Reviews je Session und ein Sprint-Review über den ganzen Diff (Sonnet).
+- Befund behoben: Neustartschleife bei Dateien mit Änderungszeit in der Zukunft (`engine/watch`), dazu Schleifenbremse im Supervisor (mehr als 3 Neustarts in 60 s → 30 s Pause), mit Tests.
+- Frage an die Abnahme (TS1.7): `public/` löst im Betrieb einen Neustart ohne sichtbare Wirkung aus, solange `dist/` ausgeliefert wird (B-509).
+- Abnahme in der Sprint-README ausgefüllt, Version v0.21.0 vorgeschlagen. Sprint-PR geöffnet; TS1.7 (Mensch, live) steht noch aus, deshalb bleibt TS1 in `aktiv/`.

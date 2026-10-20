@@ -19,7 +19,16 @@ import (
 const (
 	childEnv   = "K3C_CHILD"      // markiert den Kindprozess, der den Server wirklich betreibt
 	earlyCrash = 10 * time.Second // ein Ende mit Fehler davor gilt als Absturz beim Laden der Daten
+	loopWindow = time.Minute      // Schleifenbremse: mehr als loopMax Neustarts in diesem Fenster …
+	loopMax    = 3
+	loopPause  = 30 * time.Second // … ergeben diese Pause vor dem nächsten Start
 )
+
+// clock ist die Uhr des Supervisors (Test: eingespeist).
+type clock struct {
+	now   func() time.Time
+	after func(time.Duration) <-chan time.Time
+}
 
 // proc ist ein laufendes Kind: done liefert seinen Exit-Code (beendet durch ein Signal: negativ), signal reicht ein
 // Signal weiter.
@@ -33,10 +42,11 @@ type proc struct {
 // Fehler endet (dann einmal eingebettet). Nach einem Signal (sigs, für die ganze Laufzeit) startet nichts mehr neu;
 // ein Ende durch Signal oder von außen (negativer Code, Kill nach längerer Laufzeit) wird nur weitergereicht.
 // embedded: Es gibt keinen Daten-Ordner.
-func supervise(start func(embedded bool) (proc, error), sigs <-chan os.Signal, now func() time.Time, embedded bool, log *slog.Logger) int {
+func supervise(start func(embedded bool) (proc, error), sigs <-chan os.Signal, clk clock, embedded bool, log *slog.Logger) int {
 	cur := embedded
+	var restarts []time.Time
 	for {
-		began := now()
+		began := clk.now()
 		p, err := start(cur)
 		if err != nil {
 			log.Error("💥 Server-Prozess nicht gestartet", "ns", "main", "err", err)
@@ -52,7 +62,13 @@ func supervise(start func(embedded bool) (proc, error), sigs <-chan os.Signal, n
 		case code == restartCode:
 			log.Info("🔁 Server startet neu", "ns", "watch")
 			cur = embedded
-		case code > 0 && !cur && now().Sub(began) < earlyCrash:
+			if restarts = recent(append(restarts, clk.now()), clk.now()); len(restarts) > loopMax {
+				if !brake(sigs, clk, log) {
+					return 0
+				}
+				restarts = nil
+			}
+		case code > 0 && !cur && clk.now().Sub(began) < earlyCrash:
 			log.Error("❌ Server mit Daten von der Platte abgestürzt, starte mit eingebettetem Stand", "ns", "watch", "code", code)
 			cur = true
 		case code < 0:
@@ -60,6 +76,26 @@ func supervise(start func(embedded bool) (proc, error), sigs <-chan os.Signal, n
 		default:
 			return code
 		}
+	}
+}
+
+// recent sind die Neustarts der letzten loopWindow.
+func recent(times []time.Time, now time.Time) []time.Time {
+	for len(times) > 0 && now.Sub(times[0]) > loopWindow {
+		times = times[1:]
+	}
+	return times
+}
+
+// brake wartet loopPause (Neustart-Schleife, z. B. Dateien ändern sich dauernd); false: Ein Signal kam, nicht neu starten.
+func brake(sigs <-chan os.Signal, clk clock, log *slog.Logger) bool {
+	log.Error("❌ zu viele Neustarts in kurzer Zeit", "ns", "watch", "anzahl", loopMax+1, "fensterS", loopWindow.Seconds())
+	log.Warn("⏳ Pause vor dem nächsten Start", "ns", "watch", "pauseS", loopPause.Seconds())
+	select {
+	case <-sigs:
+		return false
+	case <-clk.after(loopPause):
+		return true
 	}
 }
 

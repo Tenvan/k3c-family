@@ -95,7 +95,7 @@ type fakeRun struct {
 // runSupervisor spielt die Kinder runs der Reihe nach; liefert Exit-Code, Modus je Start und weitergereichte Signale.
 func runSupervisor(t *testing.T, embedded bool, runs ...fakeRun) (int, []bool, int) {
 	t.Helper()
-	clock := time.Unix(0, 0)
+	tnow := time.Unix(0, 0)
 	sigs := make(chan os.Signal, 2)
 	var modes []bool
 	forwarded := 0
@@ -108,7 +108,7 @@ func runSupervisor(t *testing.T, embedded bool, runs ...fakeRun) (int, []bool, i
 		modes = append(modes, e)
 		done := make(chan int, 1)
 		p := proc{done: done, signal: func(os.Signal) { forwarded++; done <- r.code }}
-		clock = clock.Add(r.ran)
+		tnow = tnow.Add(r.ran)
 		if r.signal {
 			sigs <- os.Interrupt
 		} else {
@@ -116,7 +116,8 @@ func runSupervisor(t *testing.T, embedded bool, runs ...fakeRun) (int, []bool, i
 		}
 		return p, nil
 	}
-	code := supervise(start, sigs, func() time.Time { return clock }, embedded, slog.New(slog.NewTextHandler(io.Discard, nil)))
+	clk := testClock(&tnow, nil)
+	code := supervise(start, sigs, clk, embedded, slog.New(slog.NewTextHandler(io.Discard, nil)))
 	return code, modes, forwarded
 }
 
@@ -133,7 +134,7 @@ func TestSupervisorNeustartUndRueckfall(t *testing.T) {
 		t.Errorf("eingebettet: %d %v", code, modes)
 	}
 	log := slog.New(slog.NewTextHandler(io.Discard, nil))
-	if code := supervise(func(bool) (proc, error) { return proc{}, errors.New("kein exe") }, nil, time.Now, false, log); code != 1 {
+	if code := supervise(func(bool) (proc, error) { return proc{}, errors.New("kein exe") }, nil, clock{time.Now, time.After}, false, log); code != 1 {
 		t.Errorf("Start scheitert: %d", code)
 	}
 }
@@ -197,5 +198,71 @@ func TestPruefungWelten(t *testing.T) {
 	cfg.dev = false
 	if code := checkData(cfg, &out); code != 0 {
 		t.Fatalf("ohne Dev-Mode liest der Server keine Welten: %d", code)
+	}
+}
+
+// testClock ist eine eingespeiste Uhr; after rückt sie um d vor und meldet sich sofort, pauses zählt die Pausen.
+func testClock(now *time.Time, pauses *[]time.Duration) clock {
+	return clock{
+		now: func() time.Time { return *now },
+		after: func(d time.Duration) <-chan time.Time {
+			if pauses != nil {
+				*pauses = append(*pauses, d)
+			}
+			*now = now.Add(d)
+			ch := make(chan time.Time, 1)
+			ch <- *now
+			return ch
+		},
+	}
+}
+
+// Schleifenbremse: mehr als 3 Neustarts binnen 60 s ergeben 30 s Pause (❌/⏳ im Log); langsame Neustarts nicht.
+func TestSupervisorSchleifenbremse(t *testing.T) {
+	run := func(gap time.Duration, n int) ([]time.Duration, string) {
+		now := time.Unix(0, 0)
+		var pauses []time.Duration
+		var logs bytes.Buffer
+		starts := 0
+		start := func(bool) (proc, error) {
+			starts++
+			now = now.Add(gap)
+			done := make(chan int, 1)
+			if starts <= n {
+				done <- restartCode
+			} else {
+				done <- 0
+			}
+			return proc{done: done, signal: func(os.Signal) {}}, nil
+		}
+		supervise(start, make(chan os.Signal, 1), testClock(&now, &pauses), false, slog.New(slog.NewTextHandler(&logs, nil)))
+		return pauses, logs.String()
+	}
+	pauses, logs := run(5*time.Second, 5)
+	if !slices.Equal(pauses, []time.Duration{loopPause}) || !strings.Contains(logs, "❌") || !strings.Contains(logs, "⏳") {
+		t.Errorf("schnelle Neustarts: Pausen %v, Log %s", pauses, logs)
+	}
+	if pauses, _ := run(30*time.Second, 6); len(pauses) != 0 {
+		t.Errorf("langsame Neustarts: Pausen %v", pauses)
+	}
+	if pauses, _ := run(5*time.Second, 3); len(pauses) != 0 {
+		t.Errorf("3 Neustarts: Pausen %v", pauses)
+	}
+}
+
+// Ein Signal während der Pause beendet den Supervisor ohne Neustart.
+func TestSupervisorSignalInPause(t *testing.T) {
+	sigs := make(chan os.Signal, 1)
+	starts := 0
+	start := func(bool) (proc, error) {
+		starts++
+		done := make(chan int, 1)
+		done <- restartCode
+		return proc{done: done, signal: func(os.Signal) {}}, nil
+	}
+	now := time.Unix(0, 0)
+	clk := clock{now: func() time.Time { return now }, after: func(time.Duration) <-chan time.Time { sigs <- os.Interrupt; return nil }}
+	if code := supervise(start, sigs, clk, false, slog.New(slog.NewTextHandler(io.Discard, nil))); code != 0 || starts != loopMax+1 {
+		t.Errorf("Code %d, Starts %d", code, starts)
 	}
 }
