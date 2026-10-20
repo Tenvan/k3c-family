@@ -189,6 +189,7 @@ jobs:
       - run: npm ci
         working-directory: tools/k3c-dev/frontend
       - run: task k3c-dev:frontend
+        working-directory: .
       - run: npx vitest run --config vitest.config.ts
         working-directory: tools/k3c-dev/frontend
       - run: go test ./...
