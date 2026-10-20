@@ -170,6 +170,7 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-510](B-510-k3c-dev-kein-doppelter-neustart.md) | DEV | Schuld | niedrig | offen | – | k3c-dev startet den Spielserver bei Änderungen in data/ nicht mehr selbst neu, der Server macht das allein |
 | [B-511](B-511-studio-schreibt-atomar.md) | DEV | Schuld | niedrig | offen | – | Das Studio schreibt jede Datei in data/ und public/ atomar, der Server sieht nie eine halbe Datei |
 | [B-512](B-512-k3c-dev-uebernommener-server-neue-pid.md) | DEV | Problem | niedrig | offen | – | k3c-dev beendet einen übernommenen Spielserver auch nach dessen Selbst-Neustart (neue PID am Port, Supervisor-Prozess) |
+| [B-513](B-513-welten-editor-spiel-adresse-waehlbar.md) | DEV | Idee | mittel | offen | – | Im Welten-Editor lässt sich die Spiel-Adresse wählen: interne Engine oder Server |
 
 ## Archiv
 
