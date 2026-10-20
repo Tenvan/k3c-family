@@ -1,4 +1,5 @@
 import type { LevelLayout } from '@game/model/types';
+import type { ChatStream } from './chatTypes';
 import type { DraftScaling, WorldDraftApi } from './worldTypes';
 
 // Typen des Asset-Studios (B-298, B-459): Slot-Register, Katalog und Recherche, wie Go sie liefert
@@ -378,6 +379,8 @@ export interface Backend extends WorldDraftApi {
   /** Gebäude-Planer: speichert den Stand, wenn beide Dateien noch den Stand `stand` haben (B-462/AC-02, AC-06) */
   hubSave(candidate: string, stand: HubStand): Promise<HubSaveResult>;
   openUrl(url: string): void;
+  /** Chat: schickt eine Nachricht an die Claude Code CLI und liefert die Antwort als Strom (WZ19) */
+  chatStream: ChatStream;
   /** Abo eines Ereignisses; liefert die Abmeldung */
   on<E extends EventName>(event: E, fn: (data: Events[E]) => void): () => void;
 }
